@@ -2,62 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C51DB9EA82
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 12:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA511B9E9B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 12:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1jDc-000267-Nu; Thu, 25 Sep 2025 06:28:56 -0400
+	id 1v1j3V-0007C6-Ty; Thu, 25 Sep 2025 06:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1v1jDX-00024O-Gk
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 06:28:51 -0400
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <naveen@kernel.org>) id 1v1jDR-0002kl-0q
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 06:28:48 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id D2FAD604BC;
- Thu, 25 Sep 2025 10:28:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC736C4CEF0;
- Thu, 25 Sep 2025 10:28:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1758796120;
- bh=Wuc2qfFEjfMhlPNTWgQmKvKYL3mBw8RHG6zBs9vYyK8=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IWnWI4E14WC8NK7X26MJ2wISywUhckZqN/7ROXeh0uL5q9fi/fIu9KcN9Y0IKorwM
- zJwxrFn1jmjuMk5efECFdCJxBSK9KGafkTBksNBI2mKrMIJGQALqG+StNhuGaD2Coc
- KnKkpSoZlQU6tuDZqd/MRo0R/kxq/2sZuqPdBAS3o1bl4MINeyCmCZ1vx3TSmjsphj
- Fes/TCBtJUYqzvJKj2BtnjNp6P+a2J7G1ZJhTclakRLYbwFJ68I12K5c8DfOJTJcmH
- M9AgN6aewEsxIpCj2WRHraSIVwJQVKueIJvGqGKJPnQTGGGGXiz3NUOmX+ZaxHmjHX
- ESGZOW4vBKkgQ==
-From: "Naveen N Rao (AMD)" <naveen@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
- Michael Roth <michael.roth@amd.com>,
- Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: [PATCH v2 7/9] target/i386: SEV: Add support for enabling Secure TSC
- SEV feature
-Date: Thu, 25 Sep 2025 15:47:36 +0530
-Message-ID: <00290b0b185152d8ddfd36f552006b0d6d2d0172.1758794556.git.naveen@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1758794556.git.naveen@kernel.org>
-References: <cover.1758794556.git.naveen@kernel.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v1j3B-0007BS-0w
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 06:18:10 -0400
+Received: from mail-yx1-xb130.google.com ([2607:f8b0:4864:20::b130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v1j2v-0000ZW-6V
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 06:18:07 -0400
+Received: by mail-yx1-xb130.google.com with SMTP id
+ 956f58d0204a3-6353e91a04aso370974d50.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 03:17:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758795469; x=1759400269; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=CaCP64UrwKP4Wgxn6ein3eHOxagjsn0jyFVx6H8/3gk=;
+ b=fM3YVyzISysNFLDdLu19oZf2HPc7Q3bVUIuSS2fNcdpi/fAniRvtRPevVnMG7NP5l5
+ xsJBFHHD0KsmBcCU+SxmlW+icGuckEHVRNQiMygO2gY0+DbOQlqvOV82DaeHp23E4ZTI
+ R2LReB1vkTt9znXeuPBAH5XhbVUfRS8Q6Xt6OsWpY4I3WLxZv/Nv5x4Rw+RaWTRaRv8a
+ aNOz38GLJg6RRihvaEFBd8hnmOJ+D8Njh7awv466cCHImiKYLYqhm0pNJKD36DoDDXof
+ nhz4umCNmtpiW6v3RxLWkJ79vv6/Vkh34iLphY2/zdV3VIG5DtTvuuO3N04QEG8dN5iA
+ vlgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758795469; x=1759400269;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CaCP64UrwKP4Wgxn6ein3eHOxagjsn0jyFVx6H8/3gk=;
+ b=D9WPVwvOUbdqdMu8ncg1uyxkdCZSp+udxRSGgT3FWKPM3AXoV8GypYV0myu4C6ReqW
+ Fi5kznEjFWwYAJyFgdeGwLyI9mskMURJFZDhDDOpCV+ogYRwbvltn8vGSeMxioiu+viD
+ 9v6nkW/Uv/nluuWk0QOswjg9Z3/D6yn7nHo9LbKtSq607y4xxt4fZnK0DfzrQBgKhOVN
+ m+af0bmpOkN+Jge8XYrpBVhVHfjC3nYMwP0VDiksvs/ZJY79AloV4RS/bZ8uTXIfq1yB
+ TyBTjrWKm4NTmXRq8KA5Ojn7i2amwiMX/UiqtL1BHYlblxaQS8V30TxgQ6Fj5npe1CSZ
+ w2Pw==
+X-Gm-Message-State: AOJu0YyWJWIBRgq69REAOyOjgux9XK/zZPk9WbbuUdsiT0TUzJ7g7LE/
+ L5C50h21kuWkoY2PVl/sAn11iP/ojansxcq2dYSboR2+M05HHnhxAWjJjgfmZq6UKR36yZqCUjw
+ olU/Y/2a49Ai6JR0a7eJO9D4YbPt/WtndPv/ZEvgxuDTAcAWPOXDj
+X-Gm-Gg: ASbGncsySL5DuA5kEvqpD870tVxcCMdwg9360cwExA0Vn9TNDJthW16hF6rTj0sy9iy
+ jBXIWSTt85CKjn2I23JL0vxW3fCSSc1QZ+Wjn2UeDhzrxHuNvRS1Xm2e1/5LeZiBjIDdrLp0vy8
+ Uz80gOWcIcBvHs9GUEmpBggBSXAeBGL4LsO8yzcDSEq7l5CKbWuucd/KZP5vGiAQ/kzMOuw+1V5
+ vwCvY2hVvCbcZYUJ5A=
+X-Google-Smtp-Source: AGHT+IGR41dPF1V0goOufSPGPWbN5X9fZqO/iCzls13ivL4E9ybbKwLbK5/8SOlqfic0NzcQyGq8ysMyQrdtwMGonMs=
+X-Received: by 2002:a05:690e:251b:10b0:636:cc3:af48 with SMTP id
+ 956f58d0204a3-6361a716926mr1832676d50.8.1758795469249; Thu, 25 Sep 2025
+ 03:17:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
- envelope-from=naveen@kernel.org; helo=tor.source.kernel.org
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20250903155410.1910145-1-nabihestefan@google.com>
+In-Reply-To: <20250903155410.1910145-1-nabihestefan@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 25 Sep 2025 11:17:37 +0100
+X-Gm-Features: AS18NWAJBq-gYZJ0HoXsE3nstejBfzePtm6cH8tKhdG1WN8D_Lqh3UsGHaQBKOw
+Message-ID: <CAFEAcA_OiO9UynBQ4SO_KMRv2Z6S8VMC0NJotpePvmmavoGkEw@mail.gmail.com>
+Subject: Re: [PATCH v3] hw/sensor: added MAX16600 device model
+To: Nabih Estefan <nabihestefan@google.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, philmd@linaro.org, 
+ farosas@suse.de, lvivier@redhat.com, qemu-arm@nongnu.org, 
+ Shengtan Mao <stmao@google.com>, Titus Rwantare <titusr@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,94 +92,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for enabling Secure TSC VMSA SEV feature in SEV-SNP guests
-through a new "secure-tsc" boolean property on SEV-SNP guest objects. By
-default, KVM uses the host TSC frequency for Secure TSC.
+On Wed, 3 Sept 2025 at 16:54, Nabih Estefan <nabihestefan@google.com> wrote:
+>
+> From: Shengtan Mao <stmao@google.com>
+>
+> Signed-off-by: Shengtan Mao <stmao@google.com>
+> Signed-off-by: Titus Rwantare <titusr@google.com>
+> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> ---
+>  hw/arm/Kconfig               |   1 +
+>  hw/sensor/Kconfig            |   4 +
+>  hw/sensor/max16600.c         | 197 ++++++++++++++++++++++++++++
+>  hw/sensor/meson.build        |   1 +
+>  include/hw/sensor/max16600.h |  46 +++++++
+>  tests/qtest/max16600-test.c  | 241 +++++++++++++++++++++++++++++++++++
+>  tests/qtest/meson.build      |   1 +
 
-Sample command-line:
-  -machine q35,confidential-guest-support=sev0 \
-  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,secure-tsc=on
+No documentation, and no board code user of it? The
+empty commit message gives no hint of the motivation
+behind implementing this device either.
 
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Ketan Chaturvedi <Ketan.Chaturvedi@amd.com>
-Signed-off-by: Ketan Chaturvedi <Ketan.Chaturvedi@amd.com>
-Co-developed-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
----
- target/i386/sev.h |  1 +
- target/i386/sev.c | 13 +++++++++++++
- qapi/qom.json     |  6 +++++-
- 3 files changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/target/i386/sev.h b/target/i386/sev.h
-index 8e09b2ce1976..87e73034ad15 100644
---- a/target/i386/sev.h
-+++ b/target/i386/sev.h
-@@ -46,6 +46,7 @@ bool sev_snp_enabled(void);
- 
- #define SVM_SEV_FEAT_SNP_ACTIVE     BIT(0)
- #define SVM_SEV_FEAT_DEBUG_SWAP     BIT(5)
-+#define SVM_SEV_FEAT_SECURE_TSC     BIT(9)
- 
- typedef struct SevKernelLoaderContext {
-     char *setup_data;
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index e9d84ea25571..68d193402de3 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -3121,6 +3121,16 @@ sev_snp_guest_set_host_data(Object *obj, const char *value, Error **errp)
-     memcpy(finish->host_data, blob, len);
- }
- 
-+static bool sev_snp_guest_get_secure_tsc(Object *obj, Error **errp)
-+{
-+    return is_sev_feature_set(SEV_COMMON(obj), SVM_SEV_FEAT_SECURE_TSC);
-+}
-+
-+static void sev_snp_guest_set_secure_tsc(Object *obj, bool value, Error **errp)
-+{
-+    sev_set_feature(SEV_COMMON(obj), SVM_SEV_FEAT_SECURE_TSC, value);
-+}
-+
- static void
- sev_snp_guest_class_init(ObjectClass *oc, const void *data)
- {
-@@ -3156,6 +3166,9 @@ sev_snp_guest_class_init(ObjectClass *oc, const void *data)
-     object_class_property_add_str(oc, "host-data",
-                                   sev_snp_guest_get_host_data,
-                                   sev_snp_guest_set_host_data);
-+    object_class_property_add_bool(oc, "secure-tsc",
-+                                  sev_snp_guest_get_secure_tsc,
-+                                  sev_snp_guest_set_secure_tsc);
- }
- 
- static void
-diff --git a/qapi/qom.json b/qapi/qom.json
-index df962d4a5215..52c23e85e349 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -1100,6 +1100,9 @@
- #     firmware.  Set this to true to disable the use of VCEK.
- #     (default: false) (since: 9.1)
- #
-+# @secure-tsc: enable Secure TSC
-+#     (default: false) (since 10.2)
-+#
- # Since: 9.1
- ##
- { 'struct': 'SevSnpGuestProperties',
-@@ -1111,7 +1114,8 @@
-             '*id-auth': 'str',
-             '*author-key-enabled': 'bool',
-             '*host-data': 'str',
--            '*vcek-disabled': 'bool' } }
-+            '*vcek-disabled': 'bool',
-+            '*secure-tsc': 'bool' } }
- 
- ##
- # @TdxGuestProperties:
--- 
-2.51.0
-
+thanks
+-- PMM
 
