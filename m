@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BAEB9F8F8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 15:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5D7B9F92E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 15:29:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1lxV-0007La-9a; Thu, 25 Sep 2025 09:24:29 -0400
+	id 1v1m18-0002Jt-MV; Thu, 25 Sep 2025 09:28:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v1lxL-0007LA-RF
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 09:24:20 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1m0q-0002EC-Iz
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 09:27:58 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v1lxC-0003At-EA
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 09:24:19 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-b2e66a2fb63so174351466b.2
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 06:24:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1m0Y-00042d-MJ
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 09:27:54 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-46e29d65728so6436385e9.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 06:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758806642; x=1759411442; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vgiPj1g3LbRwQGf0tFC1ezm4NNNMo9eY7QGMXPTOWZA=;
- b=DfvPAo8wKvEZkZgRbeO6B5/YfoZxDk1yHOqxxwKO3mVlL72vjRvFj3DIkIEnalTlfk
- vDbWzcJfQA7gh15sU+VXlifpYMbAohDjqwoznGXi7Syi5mYOL7oZXCpYkyM6ji3kCmMs
- GqMuqzmNOhr6jR7eAGE2JjUqqzpa1QBtyLfaq8HuDpkgPbrYCujDHY+27oooKJAvLvSd
- NS6Vgtkz6qWowkuVRK4pDLMpjlZZSz2UDqjZZPJ5gxDZf0i++ay2w+5VSLGSeuOoHaj4
- kvp4ErVs28t6/ndsOvYVS+sjznHXptkugSia8L3H9kk4YDUe2N+rHlLcoK5ZQpgvkTbg
- cSKQ==
+ d=linaro.org; s=google; t=1758806842; x=1759411642; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NjMPQE377yWC4BwZprcuIrqn9Y8wpLi9x+QBGTW/6Sg=;
+ b=x49s5KrzHg670rfu0xaiiMXiANVDLAEPQ6A86iU2xxUbFq9CY6yRpxoH63o5THfYKo
+ nT5ZW6wcKFB3ZG1oT+PSZvPEBakxdN/zjFUxN3WReuemhUqtnH2CFpomvCgcrnbbT8mH
+ xcM4gVWQu/x3KmtKOdq5D3JDSzI72pKsb5lCpsoj5g7l7psYHwyZd/zq8UuymMjwCXwU
+ tASd9VDsjVbzXejyEhBxoxsUb0m0Q0zgZRD90K6LcWVMZjyfsXd7tf0p8KAkcmo7MSTq
+ 93wyDl3bXj4fB2/rogrHDEDfa+GQvZoTQJbpNVlI7a5IygSrafiLlTu0Q4BmI/Y5zd2X
+ QoUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758806642; x=1759411442;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vgiPj1g3LbRwQGf0tFC1ezm4NNNMo9eY7QGMXPTOWZA=;
- b=efHhC+biT3hhEMe5MxCeWTH6p1/7Z89pUDOLvs5P+ykojhHYZ7aA6hreFMH8KxTy2O
- 9Wol4Wnk9QTTzsQtnju2JF7OLlrudp5Muu/AP8krW5BgOufgJL1lhlBQX1967bKcCrRI
- /t1xf5/KDQRnq+FmE80umtQBLiJ7cMiqZgkxz3S3afNYFaE6GNEzsG9y0gsGMbJq4dTa
- 9adveLbJn3yBw9Q70NU2IjS+iUKpPYYo+3odQQhj5qnWZuw3xAFnk8ri9IMLxx5X8NDq
- NM7TwUGW4CMkhuEPzUXAHgeiC5QkHhqDNwzBz5sLKfvgPll5qmB+8dpy77GJrm3zSp4K
- zeVA==
+ d=1e100.net; s=20230601; t=1758806842; x=1759411642;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NjMPQE377yWC4BwZprcuIrqn9Y8wpLi9x+QBGTW/6Sg=;
+ b=QASC5/vHMPm1cj5Htutc04/y6KnWj8WjSpFLH/5vNSX2Oc0Q4fBmN5N91IV1Ujgdpv
+ QaOOSMLx5Kw6vr2yC21ewi1hyKcCdW/2jdOxEyvRAt8RfuXWXA86Z7AGBwW29bp5DgYP
+ C4ZhoYS2lQWivKx/3Rkljl4/hztlz4EayOVHV8KTyWBAxZ3cApU0KilQ5gQwTrktvw2D
+ 1bOPcI5u0IXwWJKDD4O4NkoQlxZsbOEO5pavZni5sWpra6z6rVy8bmKOC856ePjhgdKc
+ 5qZYp/Z0ZCMIETVgwsaIpcH59QemxmDvgZ6g64NYgqFenXwsTeZTt49JpUhs0Mcystyx
+ Bo6Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXw1jT1kC4LMD8b/oDQXJkbEsXPyKo9bpB5grd7WME6IwTgonYGYWYbNUi4Z7WlVY+E47z2ZWCwdBCP@nongnu.org
-X-Gm-Message-State: AOJu0YwCn9ypTT5lo0svzYr5UY0OaXOsGxNftf1t6fPqEYuVWoM5p+q6
- 2sYPXkzagCiWMvcY3IEg6R9ST9hRPWGw9Qs0PCla7wXgAxIQHYRB0iJ4l4IaqvGClQhc5dNSZvd
- cEt519bcsJYOv+Rlew+g7nc+f87RCimOJ1T1idJ5QpA==
-X-Gm-Gg: ASbGncvz8XDJLgW0F6nhVuMUS21fm/qpeJfVB1WzADlAN/5UJBOpKFq8pZIQj/P98TU
- Cantij3N6YPfEbWbVL/4QNsJWOUKuqnamTyN0HfnQ0BeDYXRGdCgQeccPEmO+ZwFnVzYtkQaGRA
- T5mzRoqFwDLU5FBpmzI8rDMxEWXBtHowKlLjdgoS/geuwjp3ZxyJOM2nPc5JVt0DT7tzfeyHYXg
- 94JyPGU
-X-Google-Smtp-Source: AGHT+IGTMKdLMpXicDW0fLs7RbT1LVFRXHZKRZjRPJus8JsfD1XsKelzlri8X20rG5A31YHVSk9NTI1aUbg11xLrC+s=
-X-Received: by 2002:a17:907:9710:b0:b04:8358:26fe with SMTP id
- a640c23a62f3a-b34bbbd9a1fmr375302266b.34.1758806642266; Thu, 25 Sep 2025
- 06:24:02 -0700 (PDT)
+ AJvYcCUnzUGJh6+9ULR8caHgnJnZhtdpHcifOjca8Lkalir/NjMxuO5/oW8604SJ6h/3Um80EXgwbYQThRyo@nongnu.org
+X-Gm-Message-State: AOJu0YxGsnyPpqITYNpzaTFofpH6AkXaAwphYcK/eQN3rGPdksDtNYTM
+ X5xwC1VlPbVcazc45Jw3AwnjoG3cQxxH4n4uX6W2EQTLMdINSuy0dRCMIh1RIyZypzc=
+X-Gm-Gg: ASbGnctk2iF+Gutj+/03xTYdxAxpwmlapo2mwOPFblphRK57gdscLnSQCpZn0MveXaX
+ jibWVaprbNtNFIBUXTJDEUMG7DRNwAv7TE5up9BRqHnUNuZvB32lz4vKwqfLEk0b4hj5z4sceT1
+ /0y/htlL1iBO4Uad2yDbX7KE+mQhy3UcevaaPeTmWIuPsrPyUgmkvJaTQNHIlAGo8PFPRMCnD02
+ ZkxGXUbPdSNQs2SUogteHkeUfkX+NegCAp8xRfsAa7L/6oLRt0paaunOimVahv/YaPGgebv9AYd
+ fk6bDKRtMksHUoKvHMrGSHWDrj7M+3oTsC4mnBp3R46tDiMDtzxQ/DVIGbMmMO+5ioNhJ5eSG58
+ LLB7HDlNVBYWk5R1JwVEBC9CHQttOToeHJok19hOZ5O09FgbUrQqoXu5WrYPul394AQ==
+X-Google-Smtp-Source: AGHT+IHepAVNDYnXo+HoiFAVGkMxexzv2w/1SL4VQcKgBX0N/MySC4a1fq2OrNmSIhe8+cIJK50CQQ==
+X-Received: by 2002:a05:600c:8b65:b0:46e:36f8:1eb7 with SMTP id
+ 5b1f17b1804b1-46e36f81fbamr22679275e9.10.1758806842258; 
+ Thu, 25 Sep 2025 06:27:22 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e32bd164fsm18956365e9.1.2025.09.25.06.27.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Sep 2025 06:27:21 -0700 (PDT)
+Message-ID: <f6585a63-a32b-4a8a-aeab-ddb68ab3bc87@linaro.org>
+Date: Thu, 25 Sep 2025 15:27:20 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 23/36] target/arm: Move cpreg elimination to
+ define_one_arm_cp_reg
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org
 References: <20250916142238.664316-1-richard.henderson@linaro.org>
- <20250916142238.664316-9-richard.henderson@linaro.org>
- <59ae43f2-d392-4582-96dc-8465bf893bb1@linaro.org>
-In-Reply-To: <59ae43f2-d392-4582-96dc-8465bf893bb1@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 25 Sep 2025 14:23:48 +0100
-X-Gm-Features: AS18NWCkkR_qMKtmEisoD2JXa5ujJGfsCmf37uG0wTkJxgRKc71ZUHtPSuwYkt8
-Message-ID: <CAFEAcA9QSfz=JaDhLyf0v6ttCGX3fsy6U1tJMV4hqHRfZSitDg@mail.gmail.com>
-Subject: Re: [PATCH v2 08/36] target/arm/hvf: Sort the cpreg_indexes array
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x631.google.com
+ <20250916142238.664316-24-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250916142238.664316-24-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,47 +101,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 25 Sept 2025 at 11:33, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.o=
-rg> wrote:
->
-> On 16/9/25 16:22, Richard Henderson wrote:
-> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> > ---
-> >   target/arm/hvf/hvf.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> > diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-> > index b043eac8c6..99d8672b9b 100644
-> > --- a/target/arm/hvf/hvf.c
-> > +++ b/target/arm/hvf/hvf.c
-> > @@ -925,6 +925,9 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-> >       arm_cpu->cpreg_array_len =3D sregs_cnt;
-> >       arm_cpu->cpreg_vmstate_array_len =3D sregs_cnt;
-> >
-> > +    /* cpreg tuples must be in strictly ascending order */
->
-> I don't get the "why". If this is related to a previous change,
-> maybe better to squash there?
+On 16/9/25 16:22, Richard Henderson wrote:
+> Eliminate unused registers earlier, so that by the time we
+> arrive in add_cpreg_to_hashtable we never skip.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/arm/helper.c | 123 +++++++++++++++++++++++---------------------
+>   1 file changed, 64 insertions(+), 59 deletions(-)
 
-It's a requirement on the cpreg list data structure;
-compare kvm_arm_init_cpreg_list()'s comment
-    /* Sort the list we get back from the kernel, since cpreg_tuples
-     * must be in strictly ascending order.
-     */
-and the one in init_cpreg_list():
-    /*
-     * Initialise the cpreg_tuples[] array based on the cp_regs hash.
-     * Note that we require cpreg_tuples[] to be sorted by key ID.
-     */
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The underlying reason for this is the algorithm we use
-for incoming migration in cpu_post_load(), where we
-iterate through the incoming-data list and the one
-we have on the destination comparing indexes. This
-only works if the list is in order so that we can
-easily identify "register in our list but not theirs"
-and "register in their list but not ours" by comparing
-the next value in the index lists.
-
--- PMM
 
