@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEE4B9D6B4
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 07:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DFFB9D6AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 07:08:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1eBI-0008Vr-TY; Thu, 25 Sep 2025 01:06:12 -0400
+	id 1v1eBR-00005f-TY; Thu, 25 Sep 2025 01:06:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v1eB9-0008VH-Lp; Thu, 25 Sep 2025 01:06:03 -0400
+ id 1v1eBJ-0008WI-14; Thu, 25 Sep 2025 01:06:13 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v1eAu-0006qM-M9; Thu, 25 Sep 2025 01:05:55 -0400
+ id 1v1eBF-0006qM-2a; Thu, 25 Sep 2025 01:06:11 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 25 Sep
@@ -28,11 +28,15 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 0/8] Support VBOOTROM to ast2700fc machine
-Date: Thu, 25 Sep 2025 13:05:26 +0800
-Message-ID: <20250925050535.2657256-1-jamin_lin@aspeedtech.com>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 1/8] hw/arm/aspeed: Move aspeed_board_init_flashes() to
+ common SoC code
+Date: Thu, 25 Sep 2025 13:05:27 +0800
+Message-ID: <20250925050535.2657256-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250925050535.2657256-1-jamin_lin@aspeedtech.com>
+References: <20250925050535.2657256-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -61,46 +65,95 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1
- 1. Added support for Vboot ROM.
- 2. Moved coprocessor initialization from machine level to SoC level
- 3. Unified SCU controllers between PSP and coprocessors
- 4. Shared the same SRAM between PSP and coprocessors
- 5. Support PSP DRAM remaps coprocessor SDRAM
- 6. Added support for controlling coprocessor reset via SCU registers.
+Relocate aspeed_board_init_flashes() from hw/arm/aspeed.c into
+hw/arm/aspeed_soc_common.c so the helper can be reused by all
+ASPEED machines. The API was already declared in
+include/hw/arm/aspeed_soc.h; this change moves its
+implementation out of the machine file to keep aspeed.c cleaner.
 
-v2
-Split the original patch set into smaller sub-patches for review.
- This patch focuses on:
-  1. Adding support for Vboot ROM.
-  2. Moving common APIs to SoC-level code for reuse in different
-     platforms and reducing duplication.
+No functional change.
 
-v3
-  1. Drop dead return checks.
-  2. Make sub-init functions return bool with errp.
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/arm/aspeed.c            | 22 ----------------------
+ hw/arm/aspeed_soc_common.c | 23 +++++++++++++++++++++++
+ 2 files changed, 23 insertions(+), 22 deletions(-)
 
-Dependencies
-
-Based on https://github.com/legoater/qemu at the aspeed-next branch.
-
-Jamin Lin (8):
-  hw/arm/aspeed: Move aspeed_board_init_flashes() to common SoC code
-  hw/arm/aspeed: Move write_boot_rom to common SoC code
-  hw/arm/aspeed: Move aspeed_install_boot_rom to common SoC code
-  hw/arm/aspeed: Move aspeed_load_vbootrom to common SoC code
-  hw/arm/aspeed_ast27x0-fc: Drop dead return checks
-  hw/arm/aspeed_ast27x0-fc: Make sub-init functions return bool with
-    errp
-  hw/arm/aspeed_ast27x0-fc: Map FMC0 flash contents into CA35 boot ROM
-  hw/arm/aspeed_ast27x0-fc: Add VBOOTROM support
-
- include/hw/arm/aspeed_soc.h |   8 +++
- hw/arm/aspeed.c             | 105 ++----------------------------------
- hw/arm/aspeed_ast27x0-fc.c  |  96 +++++++++++++++++----------------
- hw/arm/aspeed_soc_common.c  |  96 +++++++++++++++++++++++++++++++++
- 4 files changed, 159 insertions(+), 146 deletions(-)
-
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index d21b21965a..55f0afe0a4 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -337,28 +337,6 @@ static void aspeed_load_vbootrom(AspeedMachineState *bmc, const char *bios_name,
+     }
+ }
+ 
+-void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
+-                                      unsigned int count, int unit0)
+-{
+-    int i;
+-
+-    if (!flashtype) {
+-        return;
+-    }
+-
+-    for (i = 0; i < count; ++i) {
+-        DriveInfo *dinfo = drive_get(IF_MTD, 0, unit0 + i);
+-        DeviceState *dev;
+-
+-        dev = qdev_new(flashtype);
+-        if (dinfo) {
+-            qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
+-        }
+-        qdev_prop_set_uint8(dev, "cs", i);
+-        qdev_realize_and_unref(dev, BUS(s->spi), &error_fatal);
+-    }
+-}
+-
+ static void sdhci_attach_drive(SDHCIState *sdhci, DriveInfo *dinfo, bool emmc,
+                                bool boot_emmc)
+ {
+diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
+index 1c4ac93a0f..31b1e683c3 100644
+--- a/hw/arm/aspeed_soc_common.c
++++ b/hw/arm/aspeed_soc_common.c
+@@ -16,6 +16,7 @@
+ #include "hw/misc/unimp.h"
+ #include "hw/arm/aspeed_soc.h"
+ #include "hw/char/serial-mm.h"
++#include "system/blockdev.h"
+ 
+ 
+ const char *aspeed_soc_cpu_type(AspeedSoCClass *sc)
+@@ -124,6 +125,28 @@ void aspeed_mmio_map_unimplemented(AspeedSoCState *s, SysBusDevice *dev,
+                                         sysbus_mmio_get_region(dev, 0), -1000);
+ }
+ 
++void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
++                               unsigned int count, int unit0)
++{
++    int i;
++
++    if (!flashtype) {
++        return;
++    }
++
++    for (i = 0; i < count; ++i) {
++        DriveInfo *dinfo = drive_get(IF_MTD, 0, unit0 + i);
++        DeviceState *dev;
++
++        dev = qdev_new(flashtype);
++        if (dinfo) {
++            qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
++        }
++        qdev_prop_set_uint8(dev, "cs", i);
++        qdev_realize_and_unref(dev, BUS(s->spi), &error_fatal);
++    }
++}
++
+ static void aspeed_soc_realize(DeviceState *dev, Error **errp)
+ {
+     AspeedSoCState *s = ASPEED_SOC(dev);
 -- 
 2.43.0
 
