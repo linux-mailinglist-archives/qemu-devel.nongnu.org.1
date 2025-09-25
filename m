@@ -2,102 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE28BA0F3B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 19:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CB5BA1000
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 20:25:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1q65-000460-Rv; Thu, 25 Sep 2025 13:49:38 -0400
+	id 1v1qc3-00040G-UP; Thu, 25 Sep 2025 14:22:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1v1q5i-0003vQ-HI; Thu, 25 Sep 2025 13:49:15 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v1qbz-0003xJ-3w
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 14:22:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1v1q5b-0008LO-HD; Thu, 25 Sep 2025 13:49:14 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58PAQwI2007389;
- Thu, 25 Sep 2025 17:49:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=jq2i/gelLXmT8TSyq
- 6Z2M6/hJosHLf7AlJNL1I5JmIU=; b=pBJfkYRDEd01GhDyJwiAocw4jLsbPKags
- jdGQEAwhM1xmTgvX/DZKxWBhomESi94bCiLx7EWfbt12R0n6gf7gst/LxGz+Wvf3
- Epr6+Y5ZMnsg4ef3znLZaVr02ew/scIr/+YyRAkRVXyMAHTOSCU6ZBhamDIYCCu7
- +PUsPkbPaxV0D7pMZlT6WUAIuFGB6634+HdcX3yPH2eitLtxSBzVXAnMMC6wpjpP
- LOGq9Ghum+qAqlZ99BNahpwCXTMNHOWjJYNL6c9b/Gn880QTAuNWzqV218N4QaN3
- 27t06w52PxVA8ONwXE3rxIflQRTuS0RSvW+08GlaPLxIbXjXlJzkA==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jyam4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Sep 2025 17:49:00 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58PHSr6n030336;
- Thu, 25 Sep 2025 17:48:59 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a9a1f28s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Sep 2025 17:48:59 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58PHmlMd60686604
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Sep 2025 17:48:47 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AFC1258059;
- Thu, 25 Sep 2025 17:48:57 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 20DD55805D;
- Thu, 25 Sep 2025 17:48:57 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.251.202])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 25 Sep 2025 17:48:57 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, thuth@redhat.com,
- alex.williamson@redhat.com, clg@redhat.com
-Subject: [PATCH v3 5/5] s390x/pci: Reset a device in error state
-Date: Thu, 25 Sep 2025 10:48:52 -0700
-Message-ID: <20250925174852.1302-6-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250925174852.1302-1-alifm@linux.ibm.com>
-References: <20250925174852.1302-1-alifm@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v1qbq-00058h-Hs
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 14:22:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758824534;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3Q3Hl9rhig5CitoEb3Mt+8lv/Kt9Fhlny3WSQIw6C4M=;
+ b=OE3cg8aFur9eNqEYx8M2jxOAMT8A+i/CRQVgqC8rULHRLHlN6l+v57Xr03mDWzwUlWRrw/
+ mv+I3UlJcNCuUXILgmlJ/7ywARfVlsAvCE3pojKhmfq6glOY/A23KuMhisypmQHxepfuQr
+ p1R888lGpc9CmdrtDT30aDImm9Xtd48=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-KYvlIWnMPyKQJpT18b9neg-1; Thu, 25 Sep 2025 14:22:10 -0400
+X-MC-Unique: KYvlIWnMPyKQJpT18b9neg-1
+X-Mimecast-MFC-AGG-ID: KYvlIWnMPyKQJpT18b9neg_1758824529
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4d9ec6e592bso26142831cf.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 11:22:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758824529; x=1759429329;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Q3Hl9rhig5CitoEb3Mt+8lv/Kt9Fhlny3WSQIw6C4M=;
+ b=j1Mex57XtgIBmI/r7tQPbHPitg+3fiCeOHQ0bLpMJCDxOXCuCAkr4RAWlMqRZ+EsaY
+ blHes/tQkkxKyLvs3kYwLYIwbZual/S1Mb421y0yvZcnYkyzoj37lJ2NDUP5fPGhhHtg
+ 3iveY3Toan5ZfFWcrs8l4k4hM5P77DKoeuaqzeZPZu4N4NCVWxUWsYUfbZR19OU44hBz
+ T2Mj2XOkblnDDk8S9n2mT6qgvrudeyp95UJSf55c7jmIedxtDzOuUS3atizr+6uankOx
+ 7aAsTbQBipeP8TmHg0ocpBoezr+AuyohrUpVHg7xco4CIkNTnNoVCfWeUFDnHWgOcW/M
+ Bo1Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWjV8kkieh8Gc4iPASvCHUAG/NCbEtKaYPzITQ5SWrgmZXCApt1g67iu85yb44I8g6ZY4GtMUav3csp@nongnu.org
+X-Gm-Message-State: AOJu0Ywy5LZ1+h9ujiorbbmdv8xBthawoLdPogFuEIiOInEia18A1O+Y
+ faHsFBi0t+e6EsorB0Ny9Ep4/1UzVBPhCgw84s14Kfm+xupwdckdHOMUAUYhaHE8hQbEORHcUCB
+ O38SyobLqAiaiWpUFCvMLvbpsTctgz3ZG00/VoCQADyIRXrexbUH0wyT7
+X-Gm-Gg: ASbGncsT+n7HE0aiWyVQ++9DdSBpqtxDS0CbF4Z9x+h1nbDzU25eDVXIJF+7jgKeWWz
+ HoKbL5ykVcFHVkwV8EL/68Bqlm//v48JANaLmKfOeddXwWRXl5n3aIbgjWjoseBTev3JCYFxvNM
+ /B9j5KUr7cGZqxhaO3KWfVA7tNQYupvn+lKYMXXCJtZrMEZlo72EOOM+wyb4qoOsV5lb6NUZA0g
+ LrInFrhkJlSoaECfCSfJcYKYQl2rEKIQq0AacPvzuPuHj6OOF4wPBkllo25IofBLlbokmGL64O5
+ HnvfvPTpfvgqT7Tu2WLbDnIQFJvG85q6
+X-Received: by 2002:a05:622a:5508:b0:4d2:d413:1f3a with SMTP id
+ d75a77b69052e-4da4c9651aemr57426601cf.64.1758824529224; 
+ Thu, 25 Sep 2025 11:22:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkQzbL3u1zL9zks+sLFPr/tYyOBKi9Ak9ZRV8q6LhQdQ+IPOVHRBU+drU0cRrZcbZA1m7Vkw==
+X-Received: by 2002:a05:622a:5508:b0:4d2:d413:1f3a with SMTP id
+ d75a77b69052e-4da4c9651aemr57426131cf.64.1758824528596; 
+ Thu, 25 Sep 2025 11:22:08 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4db10874bb9sm14256271cf.24.2025.09.25.11.22.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Sep 2025 11:22:07 -0700 (PDT)
+Date: Thu, 25 Sep 2025 14:22:06 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?B?SmnFmcOt?= Denemark <jdenemar@redhat.com>
+Cc: Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 4/4] migration: Introduce POSTCOPY_DEVICE state
+Message-ID: <aNWITu36f_DlhZo1@x1.local>
+References: <20250915115918.3520735-1-jmarcin@redhat.com>
+ <20250915115918.3520735-5-jmarcin@redhat.com>
+ <aNUtgHsiQwR12jPs@orkuz.int.mamuti.net>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMyBTYWx0ZWRfX5P1ZqBbEbbEh
- g7wfUS6gRMsJZ8O1PRXoH/fr3MP1JrHzBqBtMWpVvFSwh1ad9ie58RWUhhhzg5CBYbRPPhtV9iQ
- SsCmX0LdUg6LWkZbQoswaG22J4i6DDZ+vuZoBZfM9FuTJ33TrTA3mtwjqOiwCuc1SUEIpSzEYzY
- SKwotB0HQ1dwmeVh4wFRrUZfDZCOk7nS73i5veYTaY8OV7TqI+2UmiA00gTNt7ZBlp2k7ygd1W7
- I2dMkmbWWUvqB25IobW1XlNLP5yxqTpDvUEX3fAL0em+81TEfKt/QE5qi+LHb70ooPRQCFErgD8
- nvpKZpufZJbTsw80U6A8patjdgWa+b02uabeTQCeTHJev6So+HfPHJMrGK/t8cMmJDI4ecAaoTn
- NCGk1v8X
-X-Authority-Analysis: v=2.4 cv=TOlFS0la c=1 sm=1 tr=0 ts=68d5808c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=A6rq8h5Md1LYvE6mRIYA:9
-X-Proofpoint-ORIG-GUID: E6A9tcWviRvGZN3pffGc4obFdVn9pHjp
-X-Proofpoint-GUID: E6A9tcWviRvGZN3pffGc4obFdVn9pHjp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-25_01,2025-09-25_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509200033
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <aNUtgHsiQwR12jPs@orkuz.int.mamuti.net>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,81 +109,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For passthrough devices in error state, for a guest driven reset of the
-device we can attempt a reset to recover the device. A reset of the device
-will trigger a CLP disable/enable cycle on the host to bring the device
-into a recovered state.
+On Thu, Sep 25, 2025 at 01:54:40PM +0200, Jiří Denemark wrote:
+> On Mon, Sep 15, 2025 at 13:59:15 +0200, Juraj Marcin wrote:
+> > From: Juraj Marcin <jmarcin@redhat.com>
+> > 
+> > Currently, when postcopy starts, the source VM starts switchover and
+> > sends a package containing the state of all non-postcopiable devices.
+> > When the destination loads this package, the switchover is complete and
+> > the destination VM starts. However, if the device state load fails or
+> > the destination side crashes, the source side is already in
+> > POSTCOPY_ACTIVE state and cannot be recovered, even when it has the most
+> > up-to-date machine state as the destination has not yet started.
+> > 
+> > This patch introduces a new POSTCOPY_DEVICE state which is active
+> > while the destination machine is loading the device state, is not yet
+> > running, and the source side can be resumed in case of a migration
+> > failure.
+> > 
+> > To transition from POSTCOPY_DEVICE to POSTCOPY_ACTIVE, the source
+> > side uses a PONG message that is a response to a PING message processed
+> > just before the POSTCOPY_RUN command that starts the destination VM.
+> > Thus, this change does not require any changes on the destination side
+> > and is effective even with older destination versions.
+> 
+> Thanks, this will help libvirt as we think that the migration can be
+> safely aborted unless we successfully called "cont" and thus we just
+> kill QEMU on the destination. But since QEMU on the source already
+> entered postcopy-active, we can't cancel the migration and the result is
+> a paused VM with no way of recovering it.
+> 
+> This series will make the situation better as the source will stay in
+> postcopy-device until the destination successfully loads device data.
+> There's still room for some enhancement though. Depending on how fast
+> this loading is libvirt may issue cont before device data is loaded (the
+> destination is already in postcopy-active at this point), which always
+> succeeds as it only marks the domain to be autostarted, but the actual
+> start may fail later. When discussing this with Juraj we agreed on
+> introducing the new postcopy-device state on the destination as well to
 
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
----
- hw/s390x/s390-pci-bus.c          | 7 +++++++
- hw/s390x/s390-pci-vfio.c         | 6 ++++++
- include/hw/s390x/s390-pci-vfio.h | 2 ++
- 3 files changed, 15 insertions(+)
+I used to think and define postcopy-active be the state we should never be
+able to cancel it anymore, implying that the real postcopy process is in
+progress, and also implying the state where we need to start assume the
+latest VM pages are spread on both sides, not one anymore.  Cancellation or
+killing either side means crashing VM then.
 
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 9f7b17e807..c0216d4a82 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -1497,6 +1497,8 @@ static void s390_pci_device_reset(DeviceState *dev)
-         return;
-     case ZPCI_FS_STANDBY:
-         break;
-+    case ZPCI_FS_ERROR:
-+        break;
-     default:
-         pbdev->fh &= ~FH_MASK_ENABLE;
-         pbdev->state = ZPCI_FS_DISABLED;
-@@ -1509,6 +1511,11 @@ static void s390_pci_device_reset(DeviceState *dev)
-     } else if (pbdev->summary_ind) {
-         pci_dereg_irqs(pbdev);
-     }
-+
-+    if (pbdev->state == ZPCI_FS_ERROR) {
-+        s390_pci_reset(pbdev);
-+    }
-+
-     if (pbdev->iommu->enabled) {
-         pci_dereg_ioat(pbdev->iommu);
-     }
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index 1697a84de7..27e300f95d 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -155,6 +155,12 @@ static bool s390_pci_err_handler(VFIOPCIDevice *vfio_pci, Error **errp)
-     return true;
- }
- 
-+void s390_pci_reset(S390PCIBusDevice *pbdev)
-+{
-+    VFIOPCIDevice *vfio_pci = VFIO_PCI_BASE(pbdev->pdev);
-+    ioctl(vfio_pci->vbasedev.fd, VFIO_DEVICE_RESET);
-+}
-+
- static void s390_pci_read_base(S390PCIBusDevice *pbdev,
-                                struct vfio_device_info *info)
- {
-diff --git a/include/hw/s390x/s390-pci-vfio.h b/include/hw/s390x/s390-pci-vfio.h
-index b45ffa5044..5d7f21023f 100644
---- a/include/hw/s390x/s390-pci-vfio.h
-+++ b/include/hw/s390x/s390-pci-vfio.h
-@@ -23,6 +23,7 @@ void s390_pci_end_dma_count(S390pciState *s, S390PCIDMACount *cnt);
- bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh);
- void s390_pci_get_clp_info(S390PCIBusDevice *pbdev);
- bool s390_pci_setup_err_handler(S390PCIBusDevice *pbdev, Error **errp);
-+void s390_pci_reset(S390PCIBusDevice *pbdev);
- #else
- static inline bool s390_pci_update_dma_avail(int fd, unsigned int *avail)
- {
-@@ -45,6 +46,7 @@ static inline bool s390_pci_setup_err_handler(S390PCIBusDevice *pbdev, Error **e
-     error_setg(errp, "VFIO not available, cannot setup error handler\n");
-     return false;
- }
-+static inline void s390_pci_reset(S390PCIBusDevice *pbdev) { }
- #endif
- 
- #endif
+It could be a good thing indeed to have postcopy-device on dest too from
+that regard, because having postcopy-device on dest can mark out the small
+initial window when dest qemu hasn't yet start to generate new data but
+only applying old data (device data, which src also owns a copy).  From
+that POV, that indeed does not belong to the point if we define
+postcopy-active as above.
+
+IOW, also with such definition, setting postcopy-active on dest QEMU right
+at the entry of ram load thread (what we do right now..) is too early.
+
+> make sure libvirt will only call cont once device data was successfully
+> loaded so that we always get a proper result when running cont. But it
+
+Do we know an estimate of how much extra downtime this would introduce?
+
+We should have discussed this in a previous thread, the issue is if we cont
+only after device loaded, then dest QEMU may need to wait a while until it
+receives the cont from libvirt, that will contribute to the downtime.  It
+would best be avoided, or if it's negligible then it's fine too but I'm not
+sure whether it's guaranteed to be negligible..
+
+If the goal is to make sure libvirt knows what is happening, can it still
+relies on the event emitted, in this case, RESUME?  We can also reorg how
+postcopy-device and postcopy-active states will be reported on dest, then
+they'll help if RESUME is too coarse grained.
+
+So far, dest QEMU will try to resume the VM after getting RUN command, that
+is what loadvm_postcopy_handle_run_bh() does, and it will (when autostart=1
+set): (1) firstly try to activate all block devices, iff it succeeded, (2)
+do vm_start(), at the end of which RESUME event will be generated.  So
+RESUME currently implies both disk activation success, and vm start worked.
+
+> may still fail when locking disks fails (not sure if this is the only
+> way cont may fail). In this case we cannot cancel the migration on the
+
+Is there any known issue with locking disks that dest would fail?  This
+really sound like we should have the admin taking a look.
+
+I recall Juraj mentioned off list that drive lock sometimes will stop
+working.  Is that relevant here?
+
+> source as it is already in postcopy-active and we can't recover
+> migration either as the CPUs are not running on the destination. Ideally
+> we'd have a way of canceling the migration in postocpy-active if we are
+> sure CPUs were not started yet. Alternatively a possibility to recover
+> migration would work as well.
+
+Thanks,
+
 -- 
-2.43.0
+Peter Xu
 
 
