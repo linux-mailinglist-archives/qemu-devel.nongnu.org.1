@@ -2,146 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578CBBA07E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 17:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34054BA07F0
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 17:56:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1oIp-0002HP-Nw; Thu, 25 Sep 2025 11:54:39 -0400
+	id 1v1oJ7-0002P2-2u; Thu, 25 Sep 2025 11:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1oIm-00027d-1Y
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:54:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1oIf-0006Z7-6X
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:54:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758815666;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Y9Z6fCvKKFF3TjJpcIzjchy317oKmhi0u6bDJyrJEQM=;
- b=fzHmflTMAFcAz30D1+RodhY3BaW97q28Av9InjSNHnz4k5wswqt3FJW7iRKZEtSqgqUIrI
- Vrw3aML2xM9LiqU+LDs9L4rogThwplGre29qFTvP4afSHXCmZNbe/9YCTm3BPdUetxakg0
- eObGU8oj6cVhWhH14NyweLEVdRrk9dI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-j-3xxYrMMzWvpxuTyFQmog-1; Thu, 25 Sep 2025 11:54:23 -0400
-X-MC-Unique: j-3xxYrMMzWvpxuTyFQmog-1
-X-Mimecast-MFC-AGG-ID: j-3xxYrMMzWvpxuTyFQmog_1758815663
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-46e36f2c502so3635265e9.0
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 08:54:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1oJ4-0002Ob-4o
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:54:54 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1oIw-0006cH-Fv
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:54:53 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-4060b4b1200so1220506f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 08:54:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758815682; x=1759420482; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hm7whsFYISmy7dLa/PeFakqCR790Q2wvG2RaA/IoxvQ=;
+ b=cv7AeD7Ip8wU+IWLoYEmG5/xYX+XqTMixzBVQu4Jdc84A9KqYDgXHe8aMuTbT7TVyg
+ WFwzvwPokWcUwP5CmlvXt1udFfdlP7hGT1fKdN/sSZb5SKlMHY1xuJdhopg4aicZO64O
+ b2TCHUI1gutOWDyZsfsYAUO6HwDtO1kz/1N+9b87mPRtCn2qZmVcQ6ElGK1Kbbe4305S
+ UwFczQ6iTnfYOrKo9PO+s0EcEycphwXjRjZUZuWjg3T0U1gf2SKyY9IznM2/tld+gQAw
+ EzhFZJx1CW2fF9gfiHInXWLYEDF+hrTrVLge+WIVKLfU5iLY2Rjny8VS8HlONUogBYd+
+ kCUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758815662; x=1759420462;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1758815682; x=1759420482;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y9Z6fCvKKFF3TjJpcIzjchy317oKmhi0u6bDJyrJEQM=;
- b=Di09EnvBknsvhAALMahlF4EwncV7VftutoOeMbRarDjJVYryW8hadjJMgvbWnM2RnF
- pSGqSf/7a7/Hb591ELmbqKEtzUrFT+7sHSCVJ7o5jfZKyTVUuBRAQIapSkzEyMkaGG8L
- A42cjdzFgAre/lPR6bS3dXeG1Va7fbEyRWkOsmH426lW0pV6KEsllxp4bzNnJ0hLvFSZ
- KQTPxgHHQINc/cqzohe9ZDiS1kt76vGBw7mBxqOZ6ul5sTKSBk2n8dufbAt6h56K5qRh
- w2exmajSVD82Omot+3N9PcBQv0UKxSY9N6YChUx/n5D4PYCp1DmGH59Qi2BXBXt8lGi7
- ifvQ==
+ bh=hm7whsFYISmy7dLa/PeFakqCR790Q2wvG2RaA/IoxvQ=;
+ b=ZKTY/N5cqDuld4yu9ZMOB3i5Z8M6UIBKr8NiLKJHrjqlH0gwCnpHQ8ZWtuC0y1D0X9
+ ZX3K8fmrEdNTU3f3FkD+CYqZ/QSHRtVF1AfjYkw65ODEBx6/LmLTz9R6dzirdD03TgJ4
+ nT0SCEGnc1CF0A7O91MMY6FErGmiMKd87kNZQDb8ruQ2wi6e0Ml5RFdhIh0ZHAWjb/Rt
+ 6yTyFdu25QbuUDZXVA+aml3Blb5xOH4dHMB1/tPXtry/a+6crIX88VecTseKya84FIIl
+ 0IhP1NcaUnSQ0oM9b3vQwwxK6Q/ivaKCQNLRCl+CnjG8PVaSxHJeCoiclm2Mx3mGJPGM
+ +uXg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWBvjFnKTF3zpbVqAkCi/ZyBinN4zZhpu/WKfJUFzjAUcyKVBwjpntV8+TPKQV5gDR7gGANWUgKk6tr@nongnu.org
-X-Gm-Message-State: AOJu0YwKC6b8xDlfJgCZSB5a74MbRGv+cAwF99tZmkmHtqcww4i8Wz2H
- aCy/n5dyZMX3A2mOzueX3PwtU8GiSchdVyq5TxpDzYXqvh6otkiYDMfRyU0xGbRq3jeNMNxR1su
- L9+Dbv5bE0sAY5Cgif99Ml868K5f3VLIsEzSYrdr/Z80FX5IRoqspw93r
-X-Gm-Gg: ASbGncsiKBt/bfYUjf6QjARHxKe3cLg2GKgZ+BQN4XGiY8i1LOklTbuYq6cYLnwcwWJ
- C9BpbWg12Cu26JvJoO7ddpRlEZaHghs7HmYsvUzTCGUy86Wb8Mnrx32ajsKVNfSdBItNwtzy0C0
- TgRVjIvkEhYzSCLHXjrexvfjqcEb4Sq7xaCWCuDpSSmkl255I3mltt3S51RP+CckTYKcoi4irLv
- 0njyKdNNr06uMy/wAfIJSFTBO2SfCTJh6AMr+j3vw0z7D+Wjhk6RJu6tKESRnIqGiKJQADOUJx0
- 6IGm/eatW+dB08WpTDVVp5W78tT1pbffiSymPQ5FaZXB4GMbMd02TYaPO0Ys+cJEALT1sLWZ1VZ
- Hoik=
-X-Received: by 2002:a05:600c:6216:b0:46e:396b:f5ae with SMTP id
- 5b1f17b1804b1-46e396bf90bmr8725195e9.16.1758815662470; 
- Thu, 25 Sep 2025 08:54:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2zu1hqzq8RSOW0ZJYIb8ZZrtF3c8ORmajSzDlOeIZz9tkJxFwNGYDKi+7kBCMMeIrh42njQ==
-X-Received: by 2002:a05:600c:6216:b0:46e:396b:f5ae with SMTP id
- 5b1f17b1804b1-46e396bf90bmr8724805e9.16.1758815661992; 
- Thu, 25 Sep 2025 08:54:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e33baa53dsm38408275e9.6.2025.09.25.08.54.20
+ AJvYcCUf1vpZSveSxE70UgIuPhaEGuGuMKuG5NTChv0WBGEt1m173s8HfePQ0Qhgrn8950/CwYBJM/hS3AbY@nongnu.org
+X-Gm-Message-State: AOJu0Yy/T1KLCr9T3lhN66Gr1ISBKKnmUGfqrisA0ehcgxkcNDQVsw+T
+ sy07jne4CzQZjMueV5Twsr3kw/8dn2Bz/Umzt21pJZ/r2zX4NheHAbtEc2RwvOYYJkc=
+X-Gm-Gg: ASbGncsAqRr8T8TuL32mG6LdyZD+J2QG5X2XPFysj8GBXYTlI4vzaVFe0hE8O+FbJPy
+ pdDLTXEuYzwQehhS7QS9R49LiSHyrW264TItiPKOQHtLflGffTgqcz+6JVs9Da/MHCXcNRW/sQj
+ UQHGTUrm7G75HNuH7aRxs1pgKaKGHgAIHmv57ljfH2OpbEIvm00nEciJm93aP2WL6o9Z2ph8nIz
+ 3cv+aJLw+5aP/v08kXZBiZRGWzHgLhbrWnj3DbPz3141S4yO5ORFKb1iB7/HfrJogDbyQZ6RI/2
+ 7fEGWgTSQU5c8H0/AkuAw/upcrFzCfkvi4pg7UnvRU8YXQ5Kbka6Zce8yZGMV5V4HZ9OME4E8aE
+ 64tMXkc7x11rBKagNxXXNQdIgBRjxorZkKfmsDfItON5Wme47ejVptZkR3ifvp6ntfA==
+X-Google-Smtp-Source: AGHT+IGpYOrppO9JCm1OAv8A0ioH40AgfAnaWD4cUYPzbXr721bt9q+wRFVjI/UNJI5wpiVU6T/cqQ==
+X-Received: by 2002:a05:6000:105:b0:3ea:63d:44c6 with SMTP id
+ ffacd0b85a97d-413591d794amr397045f8f.35.1758815681721; 
+ Thu, 25 Sep 2025 08:54:41 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fb9e1b665sm3417758f8f.27.2025.09.25.08.54.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Sep 2025 08:54:21 -0700 (PDT)
-Message-ID: <a420c311-9569-4f54-a770-95b49583183b@redhat.com>
-Date: Thu, 25 Sep 2025 17:54:20 +0200
+ Thu, 25 Sep 2025 08:54:41 -0700 (PDT)
+Message-ID: <55d6e655-85ac-4a1d-b278-8a5c1f78e417@linaro.org>
+Date: Thu, 25 Sep 2025 17:54:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/28] vfio: improve naming conventions
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
- harshpb@linux.ibm.com, mjrosato@linux.ibm.com, farman@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- john.levon@nutanix.com, thanos.makatos@nutanix.com,
- alex.williamson@redhat.com, steven.sistare@oracle.com, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-References: <20250925113159.1760317-1-mark.caveayland@nutanix.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250925113159.1760317-1-mark.caveayland@nutanix.com>
+Subject: Re: [PATCH v2 24/36] target/arm: Add key parameter to
+ add_cpreg_to_hashtable
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+References: <20250916142238.664316-1-richard.henderson@linaro.org>
+ <20250916142238.664316-25-richard.henderson@linaro.org>
+ <63a29a08-67ea-449f-954b-f62abbc39346@linaro.org>
+ <CAFEAcA86ruJ9R8OFCXd1LHhNffyNNC_N92oXunm6UgBh6yyYDQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA86ruJ9R8OFCXd1LHhNffyNNC_N92oXunm6UgBh6yyYDQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,120 +104,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/25/25 13:31, Mark Cave-Ayland wrote:
-> This series aims to further improve the naming conventions for some
-> QOM-related parts of VFIO so that it is easier to understand the
-> object model.
+On 25/9/25 16:51, Peter Maydell wrote:
+> On Thu, 25 Sept 2025 at 12:07, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> On 16/9/25 16:22, Richard Henderson wrote:
+>>> Hoist the computation of key into the caller, where
+>>> state is a known constant.
 > 
-> The first part of the series renames VFIOContainer to VFIOLegacyContainer
-> as the existing name is misleading, particularly in the context of classes
-> that are derived from it. Following on from this the VFIOContainerBase
-> struct is now renamed to VFIOContainer as it represents the parent of
-> other VFIOFOOContainer types.
+>>> @@ -7587,18 +7582,22 @@ static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, const ARMCPRegInfo *r,
+>>>             */
+>>>            ARMCPRegInfo nxs_ri = *r;
+>>>            g_autofree char *name = g_strdup_printf("%sNXS", r->name);
+>>> +        uint32_t nxs_key;
+>>>
+>>>            assert(nxs_ri.crn < 0xf);
+>>>            nxs_ri.crn++;
+>>> +        nxs_key = key + (1 << CP_REG_ARM64_SYSREG_CRN_SHIFT);
+>>
+>> This is new but not mentioned. While the CRN bit is know to be 0,
+>> we usually use '|' to set a bit, not '+'. Preferably using '|':
 > 
-> The next part of the series adds some extra QOM casts that were missed
-> from my last patchset, which then allows us to rename the QOM parent
-> object to parent_obj as per our current coding guidelines.
+> I thought so too at first glance -- but what we're doing here
+> is adding one to crn (there's a comment in this function that's
+> just outside the context of the diff that explains this).
+> Since crn is both in the reginfo field and also encoded into
+> the key, we need to increment both the crn and the bitfield
+> inside the key. As it happens, at the moment all the regdefs
+> with ARM_CP_ADD_TLBI_NXS have crn == 8 and so whether we add
+> or OR makes no difference, but conceptually the addition is
+> correct.
 > 
-> After this there are some more renames for various QOM/qdev declarations
-> so that the function names correspond with the underlying QOM type
-> name: this makes it easier to locate them within the source tree.
-> 
-> Finally there is also a rename of TYPE_VFIO_PCI_BASE to
-> TYPE_VFIO_PCI_DEVICE since that allows the QOM type (and cast) to match
-> the name of the underlying VFIOPCIDevice struct.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> 
-> (Patches still needing review: 28)
-> 
-> 
-> v2:
-> - Rebase onto master
-> - Add R-B tags from Cedric
-> - Update patches 3 and 4 to also correct the include header guard name
-> - Add patch 28 to correct the include header guard name for vfio-device.h
-> 
-> 
-> Mark Cave-Ayland (28):
->    include/hw/vfio/vfio-container.h: rename VFIOContainer to
->      VFIOLegacyContainer
->    include/hw/vfio/vfio-container-base.h: rename VFIOContainerBase to
->      VFIOContainer
->    include/hw/vfio/vfio-container.h: rename file to
->      vfio-container-legacy.h
->    include/hw/vfio/vfio-container-base.h: rename file to vfio-container.h
->    hw/vfio/container.c: rename file to container-legacy.c
->    hw/vfio/container-base.c: rename file to container.c
->    vfio/iommufd.c: use QOM casts where appropriate
->    vfio/cpr-iommufd.c: use QOM casts where appropriate
->    vfio/vfio-iommufd.h: rename VFIOContainer bcontainer field to
->      parent_obj
->    vfio/spapr.c: use QOM casts where appropriate
->    vfio/spapr.c: rename VFIOContainer bcontainer field to parent_obj
->    vfio/pci.c: rename vfio_instance_init() to vfio_pci_init()
->    vfio/pci.c: rename vfio_instance_finalize() to vfio_pci_finalize()
->    vfio/pci.c: rename vfio_pci_dev_class_init() to vfio_pci_class_init()
->    vfio/pci.c: rename vfio_pci_dev_info to vfio_pci_info
->    hw/vfio/types.h: rename TYPE_VFIO_PCI_BASE to TYPE_VFIO_PCI_DEVICE
->    vfio/pci.c: rename vfio_pci_base_dev_class_init() to
->      vfio_pci_device_class_init()
->    vfio/pci.c: rename vfio_pci_base_dev_info to vfio_pci_device_info
->    vfio/pci.c: rename vfio_pci_dev_properties[] to vfio_pci_properties[]
->    vfio/pci.c: rename vfio_pci_dev_nohotplug_properties[] to
->      vfio_pci_nohotplug_properties[]
->    vfio/pci.c: rename vfio_pci_nohotplug_dev_class_init() to
->      vfio_pci_nohotplug_class_init()
->    vfio/pci.c: rename vfio_pci_nohotplug_dev_info to
->      vfio_pci_nohotplug_info
->    vfio-user/pci.c: rename vfio_user_pci_dev_class_init() to
->      vfio_user_pci_class_init()
->    vfio-user/pci.c: rename vfio_user_pci_dev_properties[] to
->      vfio_user_pci_properties[]
->    vfio-user/pci.c: rename vfio_user_instance_init() to
->      vfio_user_pci_init()
->    vfio-user/pci.c: rename vfio_user_instance_finalize() to
->      vfio_user_pci_finalize()
->    vfio-user/pci.c: rename vfio_user_pci_dev_info to vfio_user_pci_info
->    include/hw/vfio/vfio-device.h: fix include header guard name
-> 
->   hw/vfio-user/container.h                |    4 +-
->   hw/vfio/pci.h                           |    2 +-
->   hw/vfio/types.h                         |    4 +-
->   hw/vfio/vfio-iommufd.h                  |    9 +-
->   hw/vfio/vfio-listener.h                 |    4 +-
->   include/hw/vfio/vfio-container-base.h   |  279 -----
->   include/hw/vfio/vfio-container-legacy.h |   39 +
->   include/hw/vfio/vfio-container.h        |  286 ++++-
->   include/hw/vfio/vfio-cpr.h              |   15 +-
->   include/hw/vfio/vfio-device.h           |   12 +-
->   hw/ppc/spapr_pci_vfio.c                 |   14 +-
->   hw/s390x/s390-pci-vfio.c                |   16 +-
->   hw/vfio-user/container.c                |   18 +-
->   hw/vfio-user/pci.c                      |   35 +-
->   hw/vfio/container-base.c                |  347 ------
->   hw/vfio/container-legacy.c              | 1277 ++++++++++++++++++++++
->   hw/vfio/container.c                     | 1325 ++++-------------------
->   hw/vfio/cpr-iommufd.c                   |    4 +-
->   hw/vfio/cpr-legacy.c                    |   43 +-
->   hw/vfio/device.c                        |    4 +-
->   hw/vfio/iommufd.c                       |   48 +-
->   hw/vfio/listener.c                      |   74 +-
->   hw/vfio/pci.c                           |   68 +-
->   hw/vfio/spapr.c                         |   52 +-
->   hw/vfio/meson.build                     |    2 +-
->   25 files changed, 1991 insertions(+), 1990 deletions(-)
->   delete mode 100644 include/hw/vfio/vfio-container-base.h
->   create mode 100644 include/hw/vfio/vfio-container-legacy.h
->   delete mode 100644 hw/vfio/container-base.c
->   create mode 100644 hw/vfio/container-legacy.c
-> 
+> I have added a comment
+>   /* Also increment the CRN field inside the key value */
+> to hopefully make it a bit clearer that we're doing an
+> increment operation here.
 
-Applied to vfio-next.
-
-Thanks,
-
-C.
-
+Thanks!
 
 
