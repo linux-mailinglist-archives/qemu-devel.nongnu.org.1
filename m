@@ -2,60 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E36BA09DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 18:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A1CBA0ACF
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 18:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1oox-00074T-GK; Thu, 25 Sep 2025 12:27:51 -0400
+	id 1v1ozw-0006tT-0d; Thu, 25 Sep 2025 12:39:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v1ooF-0006U8-5Z; Thu, 25 Sep 2025 12:27:07 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v1ons-0004mc-J1; Thu, 25 Sep 2025 12:27:04 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAXHbU7bdVopAo6CQ--.561S2;
- Fri, 26 Sep 2025 00:26:35 +0800 (CST)
-Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwDHLestbdVoW_MeAA--.7120S14;
- Fri, 26 Sep 2025 00:26:32 +0800 (CST)
-From: Tao Tang <tangtao1634@phytium.com.cn>
-To: Eric Auger <eric.auger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>, pierrick.bouvier@linaro.org,
- philmd@linaro.org, jean-philippe@linaro.org, smostafa@google.com,
- Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [PATCH v2 11/14] hw/arm/smmuv3: Harden security checks in MMIO
- handlers
-Date: Fri, 26 Sep 2025 00:26:15 +0800
-Message-Id: <20250925162618.191242-12-tangtao1634@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250925162618.191242-1-tangtao1634@phytium.com.cn>
-References: <20250925162618.191242-1-tangtao1634@phytium.com.cn>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v1ozd-0006q9-0W
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 12:38:55 -0400
+Received: from mail-yx1-xb135.google.com ([2607:f8b0:4864:20::b135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v1ozY-0006BZ-Ag
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 12:38:52 -0400
+Received: by mail-yx1-xb135.google.com with SMTP id
+ 956f58d0204a3-6089a139396so102920d50.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 09:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758818322; x=1759423122; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=dIB4ikkGPpd/LQWWihg21QzJdZhbbIkOBvpKAKdXc98=;
+ b=lWBXaPWgmk57nTLvlpVfwC9LvCSSAk1KzDMlbaflMgnJNFNE43b1SZ0/PgAytL9LLg
+ Y8RBQVHI7aO6RYfjAFtfSWXzW7iJF0yVhaw+ankKMdzMKNl+KoOtnkofwgKGu2D5WWnj
+ qWzenf47Qt/T0XJwxxnYl9TyyxEceEdAUIXeQDAfiu7YdxCqeMuZ2+lOdnMiaCccjnHo
+ ukNQADaz5kljy/bPXk1RY5BKFUi/W1W5uxybN2O0ZJzku5D1Mphp/fXNACXw/y/bcXzi
+ MmTwMxtvm1y7hv3E+FgfkcXLAYLeL/TKA036ZjYEYpQprpesAPeWFt1W3+mk9MdUqFMl
+ vLfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758818322; x=1759423122;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dIB4ikkGPpd/LQWWihg21QzJdZhbbIkOBvpKAKdXc98=;
+ b=QjTS7M1h/6TFMNQ+mapLTc2cORMOjYV2AYdn/y5PX90SaJi7irTT4x76SUwkRr8Enq
+ 0Wd6z5REyUmIFwVJcYHx2GbH6xn0EANnPOFny0Qnd4nNb+9QxfgYNds35c4/C+uWZGVK
+ hYv0nuVM7WA4jKPLCgm0mD2qMbVuS4RQ1LIS76jhZsHxsOXpKipupr8pV8aSpaO2fMBo
+ VePtaSoOcoo8kr28yh5mkrYU1/AElqk98gKOyg6QxEEos1+cgv1GG+wmpOooA/mQQuZ7
+ 8wHrGWs0i3jarGq4u+ZncCCrHqlRo2GBr0c0klRbA3Q3hr0BjLkVSPM1S1vf4kCEx9cS
+ g2rA==
+X-Gm-Message-State: AOJu0Yw2vNYBbwce9zai2CJ+a9SxJeGErflGVCbOr2WzlMaatuJdD/oj
+ VVg9ejGbGlESSmPtFo0RlU4iSl4LHMVTTusgxD8rSipQvYMEBXGLhB0BMBkjJbu8ARDypzaP2rZ
+ d8HqsivTwwH3hTyR+iEtL8maTsv1umCaW9D6ZghHHwg==
+X-Gm-Gg: ASbGncv8ptlXUVE2CY48qABm8HP1uIdLLFSOZJpIpLBw5QiZ88/5LziO/cNNoC43iPb
+ V1QZDnOw/asXkirHvNnmJOZAg59H0u43R1kERfAAptyWBanXbIy5fo3eAHFeHkEP7GdLDFgD0gh
+ hS7MQ9+4Z4fv9d2NYcjuqA0PYfi4PWHoa9KnP8Uq3nf3huS4dAQnCTdO2vWySOdaqcCi1NfAYDo
+ zT2T0xg
+X-Google-Smtp-Source: AGHT+IFvTkTQ7g2XXsPfqxMZh2BUR/Ijb0GBbNjExY374J5YpX9/KNJjxAdomatUm6sJnR82sDBkjjEx2oFY60eWpC0=
+X-Received: by 2002:a05:690e:1699:b0:636:cc3:af35 with SMTP id
+ 956f58d0204a3-6361d696f45mr2309384d50.22.1758818321797; Thu, 25 Sep 2025
+ 09:38:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwDHLestbdVoW_MeAA--.7120S14
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAEBWjUSMIHwwAAsy
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxGFykuF15Gw4xWrW5AFWfAFb_yoWrXF18pr
- WvgryYgr4DGF13Xan3Jw1kCF1FkrWkWF9rGrZxGrW8Za4UJ3yrJ3W8Aa45Ka4DGFyUAws7
- JFyfAF4fWF12y3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=162.243.164.118;
- envelope-from=tangtao1634@phytium.com.cn;
- helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <20250909-pcie-root-upstream-v1-0-d85883b2688d@google.com>
+ <20250909-pcie-root-upstream-v1-2-d85883b2688d@google.com>
+In-Reply-To: <20250909-pcie-root-upstream-v1-2-d85883b2688d@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 25 Sep 2025 17:38:30 +0100
+X-Gm-Features: AS18NWBzDo_cx4HsJw0UkXHFUOYxAteuB0B_pGGIqMgdEUEUYVa6CJ-jLQzyZ4g
+Message-ID: <CAFEAcA8QAj54xxTfk087=8dERGiM28Bz2mw9eVtMd6qNOd7aYw@mail.gmail.com>
+Subject: Re: [PATCH 2/7] hw/pci-host: add basic Nuvoton PCIe window support
+To: Yubin Zou <yubinz@google.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ qemu-arm@nongnu.org, Titus Rwantare <titusr@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,116 +93,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch hardens the security validation within the main MMIO
-dispatcher functions (smmu_read_mmio and smmu_write_mmio).
+On Tue, 9 Sept 2025 at 23:11, Yubin Zou <yubinz@google.com> wrote:
+>
+> From: Titus Rwantare <titusr@google.com>
+>
+> Adds the windowing registers without address translation
+>
+> Signed-off-by: Titus Rwantare <titusr@google.com>
+> ---
+>  hw/pci-host/npcm_pcierc.c         | 223 +++++++++++++++++++++++++++++++++++++-
+>  include/hw/pci-host/npcm_pcierc.h |  77 ++++++++++++-
+>  2 files changed, 297 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/pci-host/npcm_pcierc.c b/hw/pci-host/npcm_pcierc.c
+> index 3afe92e264f6ce4312e94f05b5e908840008df64..bffdec71acaba6562856b3bdd8aec07c3c153323 100644
+> --- a/hw/pci-host/npcm_pcierc.c
+> +++ b/hw/pci-host/npcm_pcierc.c
+> @@ -16,6 +16,193 @@
+>  #include "qom/object.h"
+>  #include "trace.h"
+>
+> +/* Map enabled windows to a memory subregion */
+> +static void npcm_pcierc_map_enabled(NPCMPCIERCState *s, NPCMPCIEWindow *w)
+> +{
+> +    MemoryRegion *system = get_system_memory();
 
-First, accesses to the secure register space are now correctly gated by
-whether the SECURE_IMPL feature is enabled in the model. This prevents
-guest software from accessing the secure programming interface when it is
-disabled, though some registers are exempt from this check as per the
-architecture.
+> +    /* TODO: set subregion to target translation address */
+> +    /* add subregion starting at the window source address */
+> +    if (!memory_region_is_mapped(&w->mem)) {
+> +        memory_region_init(&w->mem, OBJECT(s), name, size);
+> +        memory_region_add_subregion(system, bar, &w->mem);
+> +    }
 
-Second, the check for the input stream's security is made more robust.
-It now validates not only the legacy MemTxAttrs.secure bit, but also
-the .space field. This brings the SMMU's handling of security spaces
-into full alignment with the PE.
+This looks weird. Generally devices should not map themselves
+into the system address space, although some of our older
+pci-host devices do for historical reasons. Should we
+be modelling this some other way?
 
-Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
----
- hw/arm/smmuv3.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
-
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 53c7eff0e3..eec36d5fd2 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -1484,6 +1484,12 @@ static bool smmu_eventq_irq_cfg_writable(SMMUv3State *s,
-     return smmu_irq_ctl_evtq_irqen_disabled(s, sec_idx);
- }
- 
-+/* Check if the SMMU hardware itself implements secure state features */
-+static inline bool smmu_hw_secure_implemented(SMMUv3State *s)
-+{
-+    return FIELD_EX32(s->bank[SMMU_SEC_IDX_S].idr[1], S_IDR1, SECURE_IMPL);
-+}
-+
- static int smmuv3_cmdq_consume(SMMUv3State *s, SMMUSecurityIndex sec_idx)
- {
-     SMMUState *bs = ARM_SMMU(s);
-@@ -1723,6 +1729,43 @@ static int smmuv3_cmdq_consume(SMMUv3State *s, SMMUSecurityIndex sec_idx)
-     return 0;
- }
- 
-+static bool is_secure_impl_exempt_reg(hwaddr offset)
-+{
-+    switch (offset) {
-+    case A_S_EVENTQ_IRQ_CFG0:
-+    case A_S_EVENTQ_IRQ_CFG1:
-+    case A_S_EVENTQ_IRQ_CFG2:
-+        return true;
-+    default:
-+        return false;
-+    }
-+}
-+
-+/* Helper function for Secure register access validation */
-+static bool smmu_check_secure_access(SMMUv3State *s, MemTxAttrs attrs,
-+                                     hwaddr offset, bool is_read)
-+{   /* Check if the access is secure */
-+    if (!(attrs.space == ARMSS_Secure || attrs.space == ARMSS_Root ||
-+          attrs.secure == 1)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "%s: Non-secure %s attempt at offset 0x%" PRIx64 " (%s)\n",
-+            __func__, is_read ? "read" : "write", offset,
-+            is_read ? "RAZ" : "WI");
-+        return false;
-+    }
-+
-+    /* Check if the secure state is implemented. Some registers are exempted */
-+    /* from this check. */
-+    if (!is_secure_impl_exempt_reg(offset) && !smmu_hw_secure_implemented(s)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "%s: Secure %s attempt at offset 0x%" PRIx64 ". But Secure state "
-+            "is not implemented (RES0)\n",
-+            __func__, is_read ? "read" : "write", offset);
-+        return false;
-+    }
-+    return true;
-+}
-+
- static MemTxResult smmu_writell(SMMUv3State *s, hwaddr offset,
-                                uint64_t data, MemTxAttrs attrs,
-                                SMMUSecurityIndex reg_sec_idx)
-@@ -2038,6 +2081,13 @@ static MemTxResult smmu_write_mmio(void *opaque, hwaddr offset, uint64_t data,
-     /* CONSTRAINED UNPREDICTABLE choice to have page0/1 be exact aliases */
-     offset &= ~0x10000;
-     SMMUSecurityIndex reg_sec_idx = SMMU_SEC_IDX_NS;
-+    if (offset >= SMMU_SECURE_BASE_OFFSET) {
-+        if (!smmu_check_secure_access(s, attrs, offset, false)) {
-+            trace_smmuv3_write_mmio(offset, data, size, MEMTX_OK);
-+            return MEMTX_OK;
-+        }
-+        reg_sec_idx = SMMU_SEC_IDX_S;
-+    }
- 
-     switch (size) {
-     case 8:
-@@ -2252,6 +2302,14 @@ static MemTxResult smmu_read_mmio(void *opaque, hwaddr offset, uint64_t *data,
-     /* CONSTRAINED UNPREDICTABLE choice to have page0/1 be exact aliases */
-     offset &= ~0x10000;
-     SMMUSecurityIndex reg_sec_idx = SMMU_SEC_IDX_NS;
-+    if (offset >= SMMU_SECURE_BASE_OFFSET) {
-+        if (!smmu_check_secure_access(s, attrs, offset, true)) {
-+            *data = 0;
-+            trace_smmuv3_read_mmio(offset, *data, size, MEMTX_OK);
-+            return MEMTX_OK;
-+        }
-+        reg_sec_idx = SMMU_SEC_IDX_S;
-+    }
- 
-     switch (size) {
-     case 8:
--- 
-2.34.1
-
+thanks
+-- PMM
 
