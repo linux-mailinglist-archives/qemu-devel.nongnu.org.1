@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833B4B9E19B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 10:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A61A5B9E1B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 10:46:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1hXa-0008O3-Ty; Thu, 25 Sep 2025 04:41:27 -0400
+	id 1v1hbf-0001Y4-H4; Thu, 25 Sep 2025 04:45:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hector.cao@canonical.com>)
- id 1v1hXX-0008Nq-VZ
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 04:41:24 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
+ (Exim 4.90_1) (envelope-from
+ <BATV+205e12e154e5edb89d5b+8068+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1v1hbQ-0001XU-OV
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 04:45:24 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hector.cao@canonical.com>)
- id 1v1hXQ-0001ZA-GG
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 04:41:23 -0400
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id E77143F94C
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 08:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1758789665;
- bh=6h8lHxgWeK4v8KPEtoKwoe1WC1MIiH6bwxHaV4HdlH8=;
- h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type;
- b=s4NX36xOGH/rRsrkOjfQcQyc5F41f7QhfLgNwERklKtVBuoZgJSeQwADwIqVEvHNO
- eqzB//1o16RximaWZdBnWuQoiQC8TgNxbj4T3w0L4zKTqI6zHKfHNZbnGlzUQucfU5
- cBjo2rQuJWkvLAS1Ti6UQU46L2hG0yaL6GT48Rhp2FVsE96z8OEQ+5FrBiED456e7i
- 8axJVgb+UqokAMC3FlVQ6eGAqw34mKb37mipjefDRH//VYkkoFy0wQMbrtSgjnYsh8
- T8LQw43LV2NKaBDXLS86hXRMrtW9lgWaW/WF7/2PoFFuXvh+LbHsqBGShSyCL0qPjo
- 48gbnyRscLUsw==
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-61d32034b66so1894292a12.1
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 01:41:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758789663; x=1759394463;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6h8lHxgWeK4v8KPEtoKwoe1WC1MIiH6bwxHaV4HdlH8=;
- b=PVSDS18ulENq78aORVujpo2Jr+l8PrZpPoTMNULeSkRtWkqJLtg5VU4f2B5uKa9eHL
- uFSk6ThOzHV5LYp3+pXDdtCabPGcx6S1pHP02H5mNpD0RDUYvVA/DEK4X45SBzdZ55F3
- cSgqwishOrmLbVU8ugJLMlpaSWDKoWLTHbte++EO9PDWMcVgd7QHMwO4ofnSoYDjzb3J
- /loXLhNzD+2KPmapGLfOIR/G/motGYIFfQfjTIXJ/0d5AI12r2Dh1mhOZkz3yxjAIGmp
- u8/jgy4alSYOG/5Ochn2BlyqpkHiE3GIokdfSJMW3NSpsWiOl1l72vPWP91yrrRFqyMf
- mUMg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU5tNMOUngMUePxsSkL6orDd1oRvWfmMs1JGPNBNw42PPZvGGaos8t3cGnx8dA9uabPgR9/MkHjEPI4@nongnu.org
-X-Gm-Message-State: AOJu0Yz1ORd1MxdCjAt261sRR8+WEw5MGqSsM1d+DsZocIimoICiltaC
- MwKG6EloRCK/s0PMrD2CK22fxN5sY+RMbT6hjE68rLUfwj3MEoqVOKTsH0EP06wR6K/2ACUSq6B
- n0tBm3TUy6oNFpRxIBguOS4YWMnGc5aKgG3Vk982OBj0EfUZqotqdMV+xqpn0LDr1WBfhyddJFe
- WdjMlSjGcI8D+KtCMUALTBjz3hKoVjxFYOrmNf7mIwHol4Fnr73qSdrArabL26
-X-Gm-Gg: ASbGncvk18IgV2nAZXQPAUttbTm2d7TEIcD0Dr+EyGg3/owdA99nEpNM22eipw8s/D1
- O9hYHdMlirCSY4xWEiH8kJB6sRIHh5iw4wLJ4BLXIjuHJlvuFauOc4qCXqS40Q/BxqoLbwAZb1G
- oHyOS9i4nkPgykd+KpKIb0jEV3GZjLNc8RqRCpzdRmE2I6Fj2k5VWhLeDYLhT/ksRa4tLia8jp
-X-Received: by 2002:a05:6402:4614:b0:634:9acf:f33f with SMTP id
- 4fb4d7f45d1cf-634a335aa7emr1621641a12.16.1758789663497; 
- Thu, 25 Sep 2025 01:41:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWc7a/W110MzRES/AnoJELX/wq/ztwcH02Jbpyl2Jlj156mJHE2JDz2FqU8T2JJtfB2m/20klNqe8+dUAVAqU=
-X-Received: by 2002:a05:6402:4614:b0:634:9acf:f33f with SMTP id
- 4fb4d7f45d1cf-634a335aa7emr1621631a12.16.1758789663086; Thu, 25 Sep 2025
- 01:41:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <BATV+205e12e154e5edb89d5b+8068+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1v1hbA-0002Ag-Sv
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 04:45:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=M9u8mUKPAfSDyBXsKc1oLFsIrFGjSYqd9GDM3NLoJFg=; b=Xa2YNm5qEFdSwu7EBEEXgm74/F
+ wFf4dqIbEnqbGZ1oE7lDjj+jyJaJ6b7ZDCSC1I7alkfGN8lVhMMm1f9bxneFTmXEu5fsAL27HX/0b
+ puTVFJCda8zw/YwaqN+wZ+mn1JLJKZ1BlrOmbyYI3oz86/pLkHMNfM7UKeWWrbuqyvUzLdjcqGeKy
+ 95MZ3qN4lPH4iJdqmIEYx5C5qAfeUIuN1Axe65zR8qSxIWnN5f+YtQnZEhkOOaB4m/W/s2y1hZt6B
+ lcSDfJIXnXH3Rg1557j1y0YsZCVHNxOdYwokoMzo6MeL7zskffUWpqtE9/Ro6HyaiUl5kWAoqUlKY
+ liHnrzAQ==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
+ by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+ id 1v1hav-00000000GyT-2pV9; Thu, 25 Sep 2025 08:44:54 +0000
+Message-ID: <acca55a49bad023fad30625fc81e19ef1c3d0ed8.camel@infradead.org>
+Subject: Re: Should QEMU (accel=kvm) kvm-clock/guest_tsc stop counting
+ during downtime blackout?
+From: David Woodhouse <dwmw2@infradead.org>
+To: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org
+Date: Thu, 25 Sep 2025 09:44:54 +0100
+In-Reply-To: <2cf13be8-cd27-4bfb-af8e-ef33286d633b@oracle.com>
+References: <2d375ec3-a071-4ae3-b03a-05a823c48016@oracle.com>
+ <3d30b662b8cdb2d25d9b4c5bae98af1c45fac306.camel@infradead.org>
+ <1e9f9c64-af03-466b-8212-ce5c828aac6e@oracle.com>
+ <c1ceaa4e68b9264fc1c811c1ad0b60628d7fd9cd.camel@infradead.org>
+ <7d91b34c-36fe-44ee-8a2a-fb00eaebddd8@oracle.com>
+ <71b79d3819b5f5435b7bc7d8c451be0d276e02db.camel@infradead.org>
+ <bbadb98b-964c-4eaa-8826-441a28e08100@oracle.com>
+ <2e958c58d1d1f0107475b3d91f7a6f2a28da13de.camel@infradead.org>
+ <2cf13be8-cd27-4bfb-af8e-ef33286d633b@oracle.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-8mqoIiVtnlclBKnvEqXL"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-From: Hector Cao <hector.cao@canonical.com>
-Date: Thu, 25 Sep 2025 10:40:52 +0200
-X-Gm-Features: AS18NWDGIrKehDxhFhG4PfRoFpCV2lOhgNuIeG2166bJk8Lf3vKVB_Q3qLCX0Ec
-Message-ID: <CABjvBV4Lgih8dJneZnz66Yd0LGmrmJgeRvN1CZHFKLcbaCcb_Q@mail.gmail.com>
-Subject: [RFT PATCH v2 0/2] Fix cross migration issue with missing features:
- pdcm, arch-capabilities
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000001a6d1f063f9c21c6"
-Received-SPF: pass client-ip=185.125.188.123;
- envelope-from=hector.cao@canonical.com;
- helo=smtp-relay-internal-1.canonical.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+205e12e154e5edb89d5b+8068+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,40 +81,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001a6d1f063f9c21c6
+
+--=-8mqoIiVtnlclBKnvEqXL
 Content-Type: text/plain; charset="UTF-8"
-
-Thanks Paolo for the great improvements you made to the original POC
-patches,
-
-I can confirm that the migration we had for Intel CPU (Haswell) is fixed
-with these 2 patches.
-
-I can see that for arch-capabilities, in addition to the
-compatibility property, you did slightly change
-the behavior by limiting it to AMD CPU (other x86 CPUs like Intel will have
-the old behavior prior 10.1 so no migration issue).
-Do you think it is good to make it clear in the commit log ?
-
-I'm also trying to test on an AMD CPU and will report back.
-
-Thanks,
-Hector
-
---0000000000001a6d1f063f9c21c6
-Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Thanks Paolo for the great improvements you made to t=
-he original POC patches,</div><div><br></div><div>I can confirm that the mi=
-gration we had for Intel CPU (Haswell) is fixed with these 2 patches.</div>=
-<div><br></div><div>I can see that for arch-capabilities, in addition to th=
-e compatibility=C2=A0property, you did slightly change</div><div>the behavi=
-or by limiting it to AMD=C2=A0CPU (other x86 CPUs like Intel will have the =
-old behavior prior 10.1 so no migration issue).</div><div>Do you think it i=
-s good to make it clear in the commit log ?</div><div><br></div><div>I&#39;=
-m also trying to test on an AMD CPU and will report back.</div><div><br></d=
-iv><div>Thanks,</div><div>Hector</div></div>
+On Wed, 2025-09-24 at 13:53 -0700, Dongli Zhang wrote:
+>=20
+>=20
+> On 9/23/25 10:47 AM, David Woodhouse wrote:
+> > On Tue, 2025-09-23 at 10:25 -0700, Dongli Zhang wrote:
+> > >=20
+> > >=20
+> > > On 9/23/25 9:26 AM, David Woodhouse wrote:
+> > > > On Mon, 2025-09-22 at 12:37 -0700, Dongli Zhang wrote:
+> > > > > On 9/22/25 11:16 AM, David Woodhouse wrote:
+> > >=20
+> > > [snip]
+> > >=20
+> > > > > >=20
+> > > > > > >=20
+> > > > > > > As demonstrated in my test, currently guest_tsc doesn't stop =
+counting during
+> > > > > > > blackout because of the lack of "MSR_IA32_TSC put" at
+> > > > > > > kvmclock_vm_state_change(). Per my understanding, it is a bug=
+ and we may need to
+> > > > > > > fix it.
+> > > > > > >=20
+> > > > > > > BTW, kvmclock_vm_state_change() already utilizes KVM_SET_CLOC=
+K to re-configure
+> > > > > > > kvm-clock before continuing the guest VM.
+> > > >=20
+> > > > Yeah, right now it's probably just introducing errors for a stop/st=
+art
+> > > > of the VM.
+> > >=20
+> > > But that help can meet the expectation?
+> > >=20
+> > > Thanks to KVM_GET_CLOCK and KVM_SET_CLOCK, QEMU saves the clock with
+> > > KVM_GET_CLOCK when the VM is stopped, and restores it with KVM_SET_CL=
+OCK when
+> > > the VM is continued.
+> >=20
+> > It saves the actual *value* of the clock. I would prefer to phrase that
+> > as "it makes the clock jump backwards to the time at which the guest
+> > was paused".
+> >=20
+> > > This ensures that the clock value itself does not change between stop=
+ and cont.
+> > >=20
+> > > However, QEMU does not adjust the TSC offset via MSR_IA32_TSC during =
+stop.
+> > >=20
+> > > As a result, when execution resumes, the guest TSC suddenly jumps for=
+ward.
+> >=20
+> > Oh wow, that seems really broken. If we're going to make it experience
+> > a time warp, we should at least be *consistent*.
+> >=20
+> > So a guest which uses the TSC for timekeeping should be mostly
+> > unaffected by this and its wallclock should still be accurate. A guest
+> > which uses the KVM clock will be hosed by it.
+> >=20
+> > I think we should fix this so that the KVM clock is unaffected too.
+>=20
+> From my understanding of your reply, the kvm-clock/tsc should always be a=
+djusted
+> whenever a QEMU VM is paused and then resumed (i.e. via stop/cont).
 
---0000000000001a6d1f063f9c21c6--
+I think I agree, except I still hate the way you use the word
+'adjusted'.
+
+If I look at my clock, and then go to sleep for a while and look at the
+clock again, nobody *adjusts* it. It just keeps running.
+
+That's the effect we should always strive for, and that's how we should
+think about it and talk about it.
+
+It's difficult to talk about clocks because what does it mean for a
+clock to be "unchanged"? Does it mean that it should return the same
+time value? Or that it should continue to count consistently? I would
+argue that we should *always* use language which assumes the latter.
+
+Turning to physics for a clumsy analogy, it's about the frame of
+reference. We're all on a moving train. I look at you in the seat
+opposite me, I go to sleep for a while, and I wake up and you're still
+there. Nobody has "adjusted" your position to accommodate for the
+movement of the train while I was asleep.
+
+
+
+
+> This applies to:
+>=20
+> - stop / cont
+> - savevm / loadvm
+> - live migration
+> - cpr
+>=20
+> It is a bug if the clock jumps backwards to the time at which the guest w=
+as paused.
+>=20
+> The time elapsed while the VM is paused should always be accounted for an=
+d
+> reflected in kvm-clock/tsc once the VM resumes.
+
+In particular, in *all* but the live migration case, there should be
+basically nothing to do. No addition, no subtraction. Only restoring
+the *existing* relationships, precisely as they were before. That is
+the TSC *offset* value, and the precise TSC=E2=86=92kvmclock parameters, al=
+l
+bitwise *exactly* the same as before.
+
+And the only thing that changes on live migration is that you have to
+set the TSC offset such that the guest sees the values it *would* have
+seen on the original host at any given moment in time... and doesn't
+know it was kidnapped and moved onto a different train while it was
+sleeping...?
+
+
+--=-8mqoIiVtnlclBKnvEqXL
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDkyNTA4NDQ1
+NFowLwYJKoZIhvcNAQkEMSIEIEKtBt2X7UCgQuU8khW2B0XXnqZusCQvQhqrCuvG5Wv6MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAkSKgPrDt3Uho
+J3/C7bjVoW37s7hzTsnU3137pGib5qXp3tqadOlFQESr9IUnKu0pQKmN09gtiVOBkx2JPYz5d9PA
+RXokQ6GycM1ZlgqrOtO9usiJUP3K9RR8aryHBxEtKGiXrkIzwHf3D6H/RoXj5pGXClwntkBUM1l6
+3yKXj9pqApzEwURTmFn/sJsnPuwnR9BPi/T4qK22ML3OIrdfizlpzICOAS7HPLISNY+QEw2g+cQJ
+ojp07dRwx/Uf+hTxLXVMJZxV2TIufiRHeQKRPj3CWBUKT7rG8XGp/I1Ht7SeQwnm8ZM5A4dnhtEj
+rL771DudAckdJwGt0aS/iVRdfFQCEls8T/49rnMOuIzhuPOmFgHuC0qoDOaivjWkVJZ7GCP40y79
+Vson2bZ1OVU9NRbu8MimpDbVPvfTIkMybnZujLqSKHvWNXBBC1LneTdcb6QaIkSXR8JfpIp+gPw4
+k8kdGDnLqEdjprN/7v4CCtl5feRYAVN2cRzSQf+RjxicPY9kghgotq1kaTd7SblVBk7TGhu/I4qR
+MXeE2MUESeva/XH0CowUt1+CPQ4+lk3Aak+3fBWUfsBGMcc3UFnrLyvFMf4KBMoqo1NTQu/tv2La
+OYO+v0EYfNjX/etc/NS9BDY8ItZeszZral69MRXJYDYUqmg5/Gy9z4zl+A1dTgkAAAAAAAA=
+
+
+--=-8mqoIiVtnlclBKnvEqXL--
 
