@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C61BA0F41
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 19:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4D3BA0F38
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 19:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1q5x-0003y3-Hu; Thu, 25 Sep 2025 13:49:29 -0400
+	id 1v1q62-00044P-HB; Thu, 25 Sep 2025 13:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1v1q5h-0003uJ-2K; Thu, 25 Sep 2025 13:49:13 -0400
+ id 1v1q5g-0003uO-CP; Thu, 25 Sep 2025 13:49:12 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1v1q5X-0008Kg-1m; Thu, 25 Sep 2025 13:49:10 -0400
+ id 1v1q5W-0008Km-Ry; Thu, 25 Sep 2025 13:49:08 -0400
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58PG4mXG030517;
- Thu, 25 Sep 2025 17:48:56 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58PGvuJj000866;
+ Thu, 25 Sep 2025 17:48:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=h5Oc3f7CeW37awS+w
- spcvNS2uIDgLPoWE84YDze3pxk=; b=KeRyoF1GWhdQsIDGro4abcQBK8fVwPXyI
- SEcjESbLFR6Pz6BOEzXDUwcOpQIUqEPqARl32p/1+2PCEem4CBI5ZE+6paW50M6m
- pgzxWa6A+uD51kWM2rWHbEb/J8UO0wm0yz28Rn8J3PmvST/qdUeEHB9W00oz8xi2
- 91+CXqqchJWGt/fpJgAUEdXrOQNFXXQmD/H2k45Mr8/8ej2qaUU2NRYheabRCIGL
- Cjliby2xwMpqC+Y/xVPpm+Wi1jfvtrbGLBojqjl5sMCAA4HTMc9wFl3yuhWE5GjF
- vzewzTuTPbyVUqkxts9FFRVJUs+DUGfgEQ8F8+2r9GbbwgkzrYEgw==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499kwyxhjr-1
+ :mime-version:references:subject:to; s=pp1; bh=VB1I0L17tgvxsXN2M
+ Mzwj2lFCLXpcy+ZiA+OwtiRdaI=; b=pA3oVE2zzkPK40yJCQTen9xRMV5PidjeQ
+ Pn1UDVHrvdD84OskmmtlSRmuuYVMz1roJAzKxCtP0Pg2YXttNiQemB7CKkVvlizO
+ 1Ejhtqua18r6XlUX9VQwHBx9Hu8Ffn/0ELtLcGYvlN4bV/UzGDiF1BPOHu2m0TyX
+ O/xbfoOjBktmEvipFUNGDymvQsBQFSLC0PyLtasiei0rOhY0YFAcA9rheHJW6AbB
+ 6H+l4LQzc8RXIaLxbvZenVz28SBMS7LoQvG0yb3pMYchFvE7IHofIQMwxGFTKJet
+ Gz7BOGgMNnXV08+KZ2zui3OqPZO9tNiBbU82stlpnMTRZ0Cpgo80g==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499kwyxhju-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Sep 2025 17:48:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58PHGQu2030370;
- Thu, 25 Sep 2025 17:48:55 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a9a1f28g-1
+ Thu, 25 Sep 2025 17:48:57 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58PGs9hu013333;
+ Thu, 25 Sep 2025 17:48:57 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49cj34ed5n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Sep 2025 17:48:55 +0000
+ Thu, 25 Sep 2025 17:48:57 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58PHmsio21758576
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58PHmtH110748494
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Sep 2025 17:48:54 GMT
+ Thu, 25 Sep 2025 17:48:55 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9C3158059;
- Thu, 25 Sep 2025 17:48:54 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 857B458059;
+ Thu, 25 Sep 2025 17:48:55 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DA5F58055;
+ by IMSVA (Postfix) with ESMTP id E7D3E58055;
  Thu, 25 Sep 2025 17:48:54 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.251.202])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
@@ -59,28 +59,27 @@ From: Farhan Ali <alifm@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
 Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, thuth@redhat.com,
  alex.williamson@redhat.com, clg@redhat.com
-Subject: [PATCH v3 1/5] [NOTFORMERGE] linux-headers: Update for zpci vfio
- device
-Date: Thu, 25 Sep 2025 10:48:48 -0700
-Message-ID: <20250925174852.1302-2-alifm@linux.ibm.com>
+Subject: [PATCH v3 2/5] vfio/pci: Add an error handler callback
+Date: Thu, 25 Sep 2025 10:48:49 -0700
+Message-ID: <20250925174852.1302-3-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250925174852.1302-1-alifm@linux.ibm.com>
 References: <20250925174852.1302-1-alifm@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=J5Cq7BnS c=1 sm=1 tr=0 ts=68d58088 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=Ef7EkEwsYO5O5uvjYS4A:9
-X-Proofpoint-GUID: Ps9FP8G_g1sbJHBvjpQX2JV8zfPvhMVW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxNSBTYWx0ZWRfX9msAB8oYF4jK
- sPrLWG+I2P/02zb9uIQANLZ9c3KFhYCp6IdrityYDjysgh+pD/tOfnyzmZ5wiyjdTxQ9rQsMq/h
- pYQJcWF4GICL7zRhcp9qAp9vvy38sU89DWFa8/24iw4zM99TrbGqs23StyNkxtAIfLT0UTk6MH2
- 5ZpDzceqt5PlLQ5RLwvHQvXve9V2Qv+nh3I0HdQJVP2K2ePujK+rFzNC8dp6XvUZ3fb7rtkQsrd
- b8kRCzvdWqyY3eke0WGM5JSqhd+wisfa3xHPX7lXE/b6zlNz2VzUkptAnknaac6lGw3w38iTw+b
- FgLEtnk9zusQPwfv+hJDj7j7UHgVaxkE6YeMGCG1mV6bN4iUa3rirg2KHkl3i96rs1TLG28QQib
- 5Wn3Kc+r
-X-Proofpoint-ORIG-GUID: Ps9FP8G_g1sbJHBvjpQX2JV8zfPvhMVW
+X-Authority-Analysis: v=2.4 cv=J5Cq7BnS c=1 sm=1 tr=0 ts=68d58089 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=2pRrx5hCKfqBIdAPaiEA:9
+X-Proofpoint-GUID: pRQJT-KcmsXVtOXnWNWgmaR7iRo1eFDU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxNSBTYWx0ZWRfX7hzdMsqmqKXb
+ jYITMjw37g4O1dQodxVTvHv2Hza8SncogB2PbKzIeH5/trN67GyF158OmizAkZqFQYXX7IBs07O
+ auXXgXZocmeda/AHJUXPlrKp4rof5R1ZM60BHF8lK+BBConv37evTuxdRTqt0nAAd1txPrVFcmr
+ PzMwl8gvbxzSLZaehtITsod4frLz6Zh4bz35F6tqFtZ/PWyNESnoU0VkW0bPWgDjAGVu3wUeygd
+ rzOcBlZ5ykCGhYoGU4Hl4nRXSLpsPvrEC+tUwl0R1fBFEGyIjOY47XEnI1Vv9kNxiyFuJRnP0Pw
+ oijBdjYKpEU5uIIvyHR6QHJBHlY5Rv6fEhN3GCcxmzz4UM4nVd7nm5iJszBlt+fB/i8BZGVJe17
+ ezLl27re
+X-Proofpoint-ORIG-GUID: pRQJT-KcmsXVtOXnWNWgmaR7iRo1eFDU
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-25_01,2025-09-25_01,2025-03-28_01
@@ -98,7 +97,7 @@ X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,37 +113,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Provide a vfio error handling callback, that can be used by devices to
+handle PCI errors for passthrough devices.
+
 Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 ---
- linux-headers/linux/vfio.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ hw/vfio/pci.c | 8 ++++++++
+ hw/vfio/pci.h | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
-index 79bf8c0cc5..2918080ad9 100644
---- a/linux-headers/linux/vfio.h
-+++ b/linux-headers/linux/vfio.h
-@@ -1468,6 +1468,21 @@ struct vfio_device_feature_bus_master {
- };
- #define VFIO_DEVICE_FEATURE_BUS_MASTER 10
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index bc0b4c4d56..b02a974954 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3063,11 +3063,19 @@ void vfio_pci_put_device(VFIOPCIDevice *vdev)
+ static void vfio_err_notifier_handler(void *opaque)
+ {
+     VFIOPCIDevice *vdev = opaque;
++    Error *err = NULL;
  
-+/**
-+ * VFIO_DEVICE_FEATURE_ZPCI_ERROR feature provides PCI error information to
-+ * userspace for vfio-pci devices on s390x. On s390x PCI error recovery involves
-+ * platform firmware and notification to operating system is done by
-+ * architecture specific mechanism.  Exposing this information to userspace
-+ * allows userspace to take appropriate actions to handle an error on the
-+ * device.
-+ */
-+struct vfio_device_feature_zpci_err {
-+        __u16 pec;
-+        __u8 pending_errors;
-+        __u8 pad;
-+};
-+#define VFIO_DEVICE_FEATURE_ZPCI_ERROR 11
+     if (!event_notifier_test_and_clear(&vdev->err_notifier)) {
+         return;
+     }
+ 
++    if (vdev->err_handler) {
++        if (vdev->err_handler(vdev, &err)) {
++            return;
++        }
++        error_report_err(err);
++    }
 +
- /* -------- API for Type1 VFIO IOMMU -------- */
- 
- /**
+     /*
+      * TBD. Retrieve the error details and decide what action
+      * needs to be taken. One of the actions could be to pass
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index e0aef82a89..faadce487c 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -146,6 +146,7 @@ struct VFIOPCIDevice {
+     EventNotifier err_notifier;
+     EventNotifier req_notifier;
+     int (*resetfn)(struct VFIOPCIDevice *);
++    bool (*err_handler)(struct VFIOPCIDevice *, Error **);
+     uint32_t vendor_id;
+     uint32_t device_id;
+     uint32_t sub_vendor_id;
 -- 
 2.43.0
 
