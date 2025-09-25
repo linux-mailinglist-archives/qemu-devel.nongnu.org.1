@@ -2,95 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7961BB9DF1B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 09:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E96B9E13C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 10:37:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1gqc-0006Si-46; Thu, 25 Sep 2025 03:57:02 -0400
+	id 1v1hRp-0005s6-Tb; Thu, 25 Sep 2025 04:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1gqN-0006SS-Og
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 03:56:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1gqG-0003Uw-Qf
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 03:56:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758786995;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=SbWG7Zlr4yi8D4ornrvh5tBoQGWL7huHdsqWJWJpEro=;
- b=gdTvWDP2yI29Obl237ApRHTPOnwh1lBQFjyg6dnCZWH73t0MbExObqo8gc6AF0Y7Ll+GyP
- wOnmp3dDC4Nd/ThUe9UhsCjBdslz/OogxrJ/2JLnFcI0kAj/t02KoWP3ImFdJno32HerMj
- lLyOs4cNToSBdoBkZU8oLLsTMJBnGr8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-FTl2qwa8N7OWhurdJG233g-1; Thu, 25 Sep 2025 03:56:34 -0400
-X-MC-Unique: FTl2qwa8N7OWhurdJG233g-1
-X-Mimecast-MFC-AGG-ID: FTl2qwa8N7OWhurdJG233g_1758786993
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b28ae2e8ad9so57310666b.0
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 00:56:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1hRj-0005r9-OD
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 04:35:23 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1hRP-0000NW-Iz
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 04:35:09 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-46c889b310dso4700795e9.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 01:34:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758789296; x=1759394096; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Kyx8PAMulr6JtWbbO/iZ3MRPGcwo9sej+tWYqV5u/pQ=;
+ b=YXdKFHnPZpOUmbNW/iwmNsFa/kn9vEzbzR+aaCRj+fSAOs+HR1UJKH0pT048q1LG71
+ pdavfmRn9V/s/Z0Fayf5CmIOai0ufbwh81fO87jCejw/UCNP+ckssixQiLc5u1SAkmYe
+ PZy5djeLwKFY9zM32OP3yuj6LMupBQMjX0drVa2zkSjUNNgr0zea42QxaApdXp0FbEXx
+ ffxJ2KXH+WEosEUxaf+DO8M3D53VSa/FK1Pc28082gtIfYAvhccx13YcaHNdkK8+XxML
+ J2wLqChefGbXyxhu8knmDWrSXJRNEnh/LhkbtYJ4H6L+6KHY3tj2CNdlbdbAKtqINWvD
+ pLnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758786992; x=1759391792;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SbWG7Zlr4yi8D4ornrvh5tBoQGWL7huHdsqWJWJpEro=;
- b=TNmIjMJl2uwNknSXz64a6rFMN2XZUCpfJiMQ0WLPj3FEj5RCx1IctXPZKNxMjIlKm/
- nOTphwl0VDqQonLlNA/uuhYaJGPdAoS1BNPpg24BGQYVtvGXlhMvTzJ1mAue1GcoG8xd
- gaGWqrbChdtiKLbxVWAVHtOdam22S9dbhhXcF75qzEClgr/NZvve4NxYc6mtIjXhuiCr
- 2QsqqU+KB/8yo9/eLrNyVJ/t2HTndn7LYCBZ/HrBd/UqEUybT326FgQJfbNEFYyIBhDA
- 8VfJxjC/JArdnWvOYBlxzy3fSfD61kyCRbTlwTpM5kKjRNUQiYBYiU4dv/9IYmGf25R1
- LwrQ==
-X-Gm-Message-State: AOJu0YyphoVfFhT6PsAEMYCd8NYboGWrnGC756r4v6XVWiJ02Xf/oyVS
- eFyTMNBp+joHAK/nPdgQRLppMTPBUjCqsOHOxCxENMT989awhM/2pTvTYQJQsueC/BYwhdSVhcb
- 7jiYZrZY4B4K5HICEDHd1Fq+CmT7DQ3ST7wGPHFOHjUWDyJRfSsswhwWOGWVJxOH71GPJOorXwI
- jQsTmIDrBFFgGW1C2S0z6S3c4aM5oLfS0qlUyxrxO+
-X-Gm-Gg: ASbGncvfmIPDu5RWiFuTMQSWzzJfm1caTnXESsqVTzwsd5m9/UBlfxY4+aujwUG8ffe
- 0R/BkJengb5tVqOgqfoz3f9DexO2nkFoQ2JG+eOqub9WBNN3Ixm3zgTlwkQf2WQX58dtg7Se/dq
- pJvbLBWqDf4/rFl0FQeQ972SpgncE/ophYju0oBXt/hJc3aN7LQ6fG0c5l8699zsYmi2BL36tIV
- 4jPCgWhuJxLBubb6DkCmwC6rW3z0gq0rZKOoVS2kUBr9Q3b9goNKU4kRc26cqmws/T5L7yDC+tB
- 2L6IwOToUKw0WUSqWdo/n5S3/nWgTUgB5vkIlkTdYBVuskzXos/wpSIxAzulN/gv2RcQ/C/qs7m
- o4GdFHin5/h7yiHu0M6/oxEG5vsPCXUIN8BREQ4fcsjiVTw==
-X-Received: by 2002:a17:906:c14e:b0:b07:e04d:c89d with SMTP id
- a640c23a62f3a-b34be7cee18mr303512966b.48.1758786992488; 
- Thu, 25 Sep 2025 00:56:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhmr9rZMslqHqv7SsR593thdpTmCpGneapmc0161yGNE3mOLfWcFb44PmkTUaHhXSInBE9ow==
-X-Received: by 2002:a17:906:c14e:b0:b07:e04d:c89d with SMTP id
- a640c23a62f3a-b34be7cee18mr303509366b.48.1758786991938; 
- Thu, 25 Sep 2025 00:56:31 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.127.188])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b35446f76b4sm111777466b.64.2025.09.25.00.56.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Sep 2025 00:56:31 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, stefanha@redhat.com, berrange@redhat.com,
- alex.bennee@linaro.org
-Subject: [PATCH] docs/code-provenance: add an exception for non-creative AI
- changes
-Date: Thu, 25 Sep 2025 09:56:30 +0200
-Message-ID: <20250925075630.352720-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
+ d=1e100.net; s=20230601; t=1758789296; x=1759394096;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Kyx8PAMulr6JtWbbO/iZ3MRPGcwo9sej+tWYqV5u/pQ=;
+ b=Kzdkp5KEzM9XvoHTI7JXkX2Ewgzde0tVdVADoaFFJQDNAKmnx5sWyzG3DkCmfEZYYY
+ Ai5f4iRyn3vQrr/37WlNKZKFF2EIpuqoEe9rACkPVvQcZpvLPThK0uAx7dpT4s92lgRT
+ +TxYYIpHIPME1WL8nFhYzUlqxsESMFWMgwo0zWjmWOtABe2lAvSWHAZwA56WPzg8bTa6
+ 9CdDR3BQTggFWOmf1ThdLB2fFjkthqsLo0CCDB25w8xtlarwW8RbRrkmAuqvFakndcjM
+ b2peZUMfmiiszlqp7feVdNcRTs7m/2WYHLT3bRVRfnbFb6FC00KdtrHfQ1JW2PIngrks
+ Wshw==
+X-Gm-Message-State: AOJu0YydS5mBPfX618Dgl/r04yoWctCc3ParXSDw5AGV1Y/gNsA3+EjA
+ TZ+nDJYuTidM93dk+Oe2IjsA0tA+lj7Mz37FK1j3j8xsyJmBT+36zuWe1Zhb1x6A+yWpfZslldH
+ TJW24aVl2PQ==
+X-Gm-Gg: ASbGncvoy/awku9axvNdOwk3wEXIc0vOjvUmSykeiJpcJzIWpl69LwMLbIwpAZ0KTdI
+ iAROsYS0LrhqfayXtRJQaoWS78Ro3BDuVJ7xOPRLzr9fZ6Mkovo9ytJkngFpoSH+Vc696tCNOi0
+ zfqdahPeErecDSi+8bG5apDAKCGqjlprOjNoM2uL5/2M9kmZETQv6U5nZU87nlRlwD3p1EevuSt
+ bzLJ8y+s5SCYxIlepO0vbHKAg6vHjOojvDAVF1BluSYawjE3Ovv0Bao0Ckf8o1UEO5vTmz5iXdZ
+ EwSKG6mLUTUNneRnTHXQfoQO03uQ5DsPl2Dmi5mGM9WdJN9EUdtXfTdhVPzm8RLnWguW0hPhhvH
+ on53JUnfUpxklYq0bMlotXxC81HjFzOc4rO2KC24NaO7K7r2LPX6x/d3XtKA4BRoTlw==
+X-Google-Smtp-Source: AGHT+IFlgO74C2YcG6q5IKTj9eWkg4P1wEhNIYti5paAxgJPjsvqLpBpxGkvuauS+hGqPoIlU6LSBQ==
+X-Received: by 2002:a05:600c:4ecc:b0:46e:33ed:bca4 with SMTP id
+ 5b1f17b1804b1-46e33edbe6fmr15561145e9.15.1758789295506; 
+ Thu, 25 Sep 2025 01:34:55 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e33b9e8aesm23277225e9.4.2025.09.25.01.34.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Sep 2025 01:34:54 -0700 (PDT)
+Message-ID: <4e49f12c-f345-4e8f-95ea-5b5f6fcfede8@linaro.org>
+Date: Thu, 25 Sep 2025 10:34:53 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] cpus: Only resume halted CPUs
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Mads Ynddal
+ <mads@ynddal.dk>, Alexander Graf <agraf@csgraf.de>,
+ Cameron Esfahani <dirty@apple.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Roman Bolshakov <rbolshakov@ddn.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+References: <20250925025520.71805-1-philmd@linaro.org>
+ <20250925025520.71805-2-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250925025520.71805-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,83 +107,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AI tools can be used as a natural language refactoring engine for simple
-tasks such as modifying all callers of a given function or all accesses
-to a variable.  These tasks are interesting for an exception because:
+On 25/9/25 04:55, Philippe Mathieu-Daudé wrote:
+> Avoid kicking running CPUs, trying to resume them.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   system/cpus.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/system/cpus.c b/system/cpus.c
+> index aa7bfcf56e5..6062226d4ac 100644
+> --- a/system/cpus.c
+> +++ b/system/cpus.c
+> @@ -666,7 +666,9 @@ void resume_all_vcpus(void)
+>   
+>       qemu_clock_enable(QEMU_CLOCK_VIRTUAL, true);
+>       CPU_FOREACH(cpu) {
+> -        cpu_resume(cpu);
+> +        if (cpu->halted) {
+> +            cpu_resume(cpu);
+> +        }
+>       }
+>   }
+>   
 
-* it is credible for a contributor to claim DCO compliance.  If the
-contributor can reasonably make the same change with different tools or
-with just an editor, which tool is used (including an LLM) should have
-no bearing on compliance.  This also applies to less simple tasks such
-as adding Python type annotations.
-
-* they are relatively easy to test and review, and can provide noticeable
-time savings;
-
-* this kind of change is easily separated from more complex non-AI-generated
-ones, which we encourage people to do anyway.  It is therefore natural
-to highlight them as AI-generated.
-
-Make an exception for patches that have "limited creative content" - that
-is, mechanical transformations where the creativity lies in deciding what
-to change rather than in how to implement the change.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- docs/devel/code-provenance.rst | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
-
-diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-index 8cdc56f6649..d6e86636964 100644
---- a/docs/devel/code-provenance.rst
-+++ b/docs/devel/code-provenance.rst
-@@ -290,9 +290,11 @@ Use of AI-generated content
- 
- TL;DR:
- 
--  **Current QEMU project policy is to DECLINE any contributions which are
-+  **The general QEMU project policy is to DECLINE any contributions which are
-   believed to include or derive from AI generated content. This includes
--  ChatGPT, Claude, Copilot, Llama and similar tools.**
-+  ChatGPT, Claude, Copilot, Llama and similar tools.** The following exceptions
-+  are acceptable:
-+  * **Limited creative content** (e.g., mechanical transformations)
- 
-   **This policy does not apply to other uses of AI, such as researching APIs
-   or algorithms, static analysis, or debugging, provided their output is not
-@@ -323,8 +325,9 @@ content generators commonly available today is unclear.  The QEMU project is
- not willing or able to accept the legal risks of non-compliance.
- 
- The QEMU project thus requires that contributors refrain from using AI content
--generators on patches intended to be submitted to the project, and will
--decline any contribution if use of AI is either known or suspected.
-+generators on patches intended to be submitted to the project, with exceptions
-+outlined below.  If use of AI is known or suspected to go beyond the exceptions,
-+QEMU will decline a contribution.
- 
- Examples of tools impacted by this policy includes GitHub's CoPilot, OpenAI's
- ChatGPT, Anthropic's Claude, and Meta's Code Llama, and code/content
-@@ -347,3 +350,19 @@ requirements for contribution.  In particular, the "Signed-off-by"
- label in a patch submission is a statement that the author takes
- responsibility for the entire contents of the patch, including any parts
- that were generated or assisted by AI tools or other tools.
-+
-+The following exceptions are currently in place:
-+
-+**Limited creative content**
-+  Mechanical transformations where there is reasonably only one way to
-+  implement the change.  Any tool, as well as a manual change, would
-+  produce substantially the same modifications to the code.  Examples
-+  include adjustments to data structures, mechanical API migrations,
-+  or applying non-functional changes uniformly across a codebase.
-+
-+It is highly encouraged to provide background information such as the
-+prompts that were used, and to not mix AI- and human-written code in the
-+same commit, as much as possible.
-+
-+Maintainers should ask for a second opinion and avoid applying the
-+exception to their own patch submissions.
--- 
-2.51.0
-
+Please disregard this patch for now, as other changes (non
+included in this series) are required before this change is
+correct.
 
