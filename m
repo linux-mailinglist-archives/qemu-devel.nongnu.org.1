@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F52FB9D6C3
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 07:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D3EB9D6BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 07:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1eCh-0000oz-Ju; Thu, 25 Sep 2025 01:07:39 -0400
+	id 1v1eCm-0000rx-LO; Thu, 25 Sep 2025 01:07:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v1eCe-0000oX-L5; Thu, 25 Sep 2025 01:07:36 -0400
+ id 1v1eCi-0000r4-ON; Thu, 25 Sep 2025 01:07:40 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v1eCV-00072D-5Y; Thu, 25 Sep 2025 01:07:34 -0400
+ id 1v1eCf-00072D-6g; Thu, 25 Sep 2025 01:07:40 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 25 Sep
@@ -29,9 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 5/8] hw/arm/aspeed_ast27x0-fc: Drop dead return checks
-Date: Thu, 25 Sep 2025 13:05:31 +0800
-Message-ID: <20250925050535.2657256-6-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 6/8] hw/arm/aspeed_ast27x0-fc: Make sub-init functions
+ return bool with errp
+Date: Thu, 25 Sep 2025 13:05:32 +0800
+Message-ID: <20250925050535.2657256-7-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250925050535.2657256-1-jamin_lin@aspeedtech.com>
 References: <20250925050535.2657256-1-jamin_lin@aspeedtech.com>
@@ -63,96 +64,105 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1. object_property_set_link() can return false only when it fails, and it
-sets an error when it fails. Since passing &error_abort causes an abort,
-the function never returns false, and the return statement is effectively
-dead code.
-2. object_property_set_int() is considered as a routine which shouldn't fail.
-So the common practice in models is to pass &error_abort and ignore the returned value.
-https://patchwork.kernel.org/project/qemu-devel/patch/20250717034054.1903991-3-jamin_lin@aspeedtech.com/#26540626
-
-No functional change.
+Refactor ast2700fc_ca35_init(), ast2700fc_ssp_init(), and ast2700fc_tsp_init()
+to take an Error **errp parameter and return a bool.
+Each function now reports failure through the error object and returns false.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0-fc.c | 43 +++++++++++++-------------------------
- 1 file changed, 14 insertions(+), 29 deletions(-)
+ hw/arm/aspeed_ast27x0-fc.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
 diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-index 7087be4288..ebf3784df5 100644
+index ebf3784df5..2e16a0340a 100644
 --- a/hw/arm/aspeed_ast27x0-fc.c
 +++ b/hw/arm/aspeed_ast27x0-fc.c
-@@ -74,19 +74,12 @@ static void ast2700fc_ca35_init(MachineState *machine)
-                                 AST2700FC_BMC_RAM_SIZE, &error_abort)) {
-         return;
-     }
--    if (!object_property_set_link(OBJECT(&s->ca35), "memory",
--                                  OBJECT(&s->ca35_memory),
--                                  &error_abort)) {
--        return;
--    };
--    if (!object_property_set_link(OBJECT(&s->ca35), "dram",
--                                  OBJECT(&s->ca35_dram), &error_abort)) {
--        return;
--    }
--    if (!object_property_set_int(OBJECT(&s->ca35), "ram-size",
--                                 AST2700FC_BMC_RAM_SIZE, &error_abort)) {
--        return;
--    }
-+    object_property_set_link(OBJECT(&s->ca35), "memory",
-+                             OBJECT(&s->ca35_memory), &error_abort);
-+    object_property_set_link(OBJECT(&s->ca35), "dram", OBJECT(&s->ca35_dram),
-+                             &error_abort);
-+    object_property_set_int(OBJECT(&s->ca35), "ram-size",
-+                            AST2700FC_BMC_RAM_SIZE, &error_abort);
+@@ -56,7 +56,7 @@ struct Ast2700FCState {
+ #define AST2700FC_FMC_MODEL "w25q01jvq"
+ #define AST2700FC_SPI_MODEL "w25q512jv"
  
-     for (int i = 0; i < sc->macs_num; i++) {
-         if (!qemu_configure_nic_device(DEVICE(&soc->ftgmac100[i]),
-@@ -94,14 +87,10 @@ static void ast2700fc_ca35_init(MachineState *machine)
-             break;
-         }
+-static void ast2700fc_ca35_init(MachineState *machine)
++static bool ast2700fc_ca35_init(MachineState *machine, Error **errp)
+ {
+     Ast2700FCState *s = AST2700A1FC(machine);
+     AspeedSoCState *soc;
+@@ -71,8 +71,8 @@ static void ast2700fc_ca35_init(MachineState *machine)
+     memory_region_add_subregion(get_system_memory(), 0, &s->ca35_memory);
+ 
+     if (!memory_region_init_ram(&s->ca35_dram, OBJECT(&s->ca35), "ca35-dram",
+-                                AST2700FC_BMC_RAM_SIZE, &error_abort)) {
+-        return;
++                                AST2700FC_BMC_RAM_SIZE, errp)) {
++        return false;
      }
--    if (!object_property_set_int(OBJECT(&s->ca35), "hw-strap1",
--                                 AST2700FC_HW_STRAP1, &error_abort)) {
--        return;
--    }
--    if (!object_property_set_int(OBJECT(&s->ca35), "hw-strap2",
--                                 AST2700FC_HW_STRAP2, &error_abort)) {
--        return;
--    }
-+    object_property_set_int(OBJECT(&s->ca35), "hw-strap1",
-+                            AST2700FC_HW_STRAP1, &error_abort);
-+    object_property_set_int(OBJECT(&s->ca35), "hw-strap2",
-+                            AST2700FC_HW_STRAP2, &error_abort);
+     object_property_set_link(OBJECT(&s->ca35), "memory",
+                              OBJECT(&s->ca35_memory), &error_abort);
+@@ -92,8 +92,8 @@ static void ast2700fc_ca35_init(MachineState *machine)
+     object_property_set_int(OBJECT(&s->ca35), "hw-strap2",
+                             AST2700FC_HW_STRAP2, &error_abort);
      aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART12, serial_hd(0));
-     if (!qdev_realize(DEVICE(&s->ca35), NULL, &error_abort)) {
-         return;
-@@ -133,10 +122,8 @@ static void ast2700fc_ssp_init(MachineState *machine)
-                        UINT64_MAX);
- 
-     qdev_connect_clock_in(DEVICE(&s->ssp), "sysclk", s->ssp_sysclk);
--    if (!object_property_set_link(OBJECT(&s->ssp), "memory",
--                                  OBJECT(&s->ssp_memory), &error_abort)) {
+-    if (!qdev_realize(DEVICE(&s->ca35), NULL, &error_abort)) {
 -        return;
--    }
-+    object_property_set_link(OBJECT(&s->ssp), "memory",
-+                             OBJECT(&s->ssp_memory), &error_abort);
++    if (!qdev_realize(DEVICE(&s->ca35), NULL, errp)) {
++        return false;
+     }
+ 
+     /*
+@@ -108,9 +108,11 @@ static void ast2700fc_ca35_init(MachineState *machine)
+     ast2700fc_board_info.loader_start = sc->memmap[ASPEED_DEV_SDRAM];
+ 
+     arm_load_kernel(ARM_CPU(first_cpu), machine, &ast2700fc_board_info);
++
++    return true;
+ }
+ 
+-static void ast2700fc_ssp_init(MachineState *machine)
++static bool ast2700fc_ssp_init(MachineState *machine, Error **errp)
+ {
+     AspeedSoCState *soc;
+     Ast2700FCState *s = AST2700A1FC(machine);
+@@ -127,12 +129,14 @@ static void ast2700fc_ssp_init(MachineState *machine)
  
      soc = ASPEED_SOC(&s->ssp);
      aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART4, serial_hd(1));
-@@ -157,10 +144,8 @@ static void ast2700fc_tsp_init(MachineState *machine)
-                        UINT64_MAX);
- 
-     qdev_connect_clock_in(DEVICE(&s->tsp), "sysclk", s->tsp_sysclk);
--    if (!object_property_set_link(OBJECT(&s->tsp), "memory",
--                                  OBJECT(&s->tsp_memory), &error_abort)) {
+-    if (!qdev_realize(DEVICE(&s->ssp), NULL, &error_abort)) {
 -        return;
--    }
-+    object_property_set_link(OBJECT(&s->tsp), "memory",
-+                             OBJECT(&s->tsp_memory), &error_abort);
++    if (!qdev_realize(DEVICE(&s->ssp), NULL, errp)) {
++        return false;
+     }
++
++    return true;
+ }
+ 
+-static void ast2700fc_tsp_init(MachineState *machine)
++static bool ast2700fc_tsp_init(MachineState *machine, Error **errp)
+ {
+     AspeedSoCState *soc;
+     Ast2700FCState *s = AST2700A1FC(machine);
+@@ -149,16 +153,18 @@ static void ast2700fc_tsp_init(MachineState *machine)
  
      soc = ASPEED_SOC(&s->tsp);
      aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART7, serial_hd(2));
+-    if (!qdev_realize(DEVICE(&s->tsp), NULL, &error_abort)) {
+-        return;
++    if (!qdev_realize(DEVICE(&s->tsp), NULL, errp)) {
++        return false;
+     }
++
++    return true;
+ }
+ 
+ static void ast2700fc_init(MachineState *machine)
+ {
+-    ast2700fc_ca35_init(machine);
+-    ast2700fc_ssp_init(machine);
+-    ast2700fc_tsp_init(machine);
++    ast2700fc_ca35_init(machine, &error_abort);
++    ast2700fc_ssp_init(machine, &error_abort);
++    ast2700fc_tsp_init(machine, &error_abort);
+ }
+ 
+ static void ast2700fc_class_init(ObjectClass *oc, const void *data)
 -- 
 2.43.0
 
