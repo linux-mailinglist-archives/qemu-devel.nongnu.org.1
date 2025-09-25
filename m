@@ -2,85 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC999B9E7F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 11:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B4EB9E842
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 11:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1iZl-0002W2-3V; Thu, 25 Sep 2025 05:47:46 -0400
+	id 1v1ifL-0002Ig-8a; Thu, 25 Sep 2025 05:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1iZY-0002Lb-69
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:47:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1iZD-0001ry-Da
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:47:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758793627;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7onLwSgDG8MwC4q4AzmFO1Ny6FrS9IFthDLL+WX7Fjc=;
- b=Jtu9uUr+GF0U4ypUmyVz/pmu4Z/1ELJRogyKt27UvcGQkLwNRvq3vjQWn3Ffc/7Z1X4pWF
- cuaF4/6/22fIV+pBERQJDtzAKEHD8krjl3XVti7V9lQqbMc2OrQ/4q2dHaEXTjyMaTga56
- xwgOExwOBBGj1CfIKVydM5bDp0I4GGI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-7Bg_FVRqNmOEwks9vnVGeQ-1; Thu,
- 25 Sep 2025 05:47:04 -0400
-X-MC-Unique: 7Bg_FVRqNmOEwks9vnVGeQ-1
-X-Mimecast-MFC-AGG-ID: 7Bg_FVRqNmOEwks9vnVGeQ_1758793622
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CFFDF19560B0; Thu, 25 Sep 2025 09:47:02 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.163])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 96AE0300021A; Thu, 25 Sep 2025 09:46:57 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1if9-0002Cb-Jo
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:53:20 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1iet-0003A8-H2
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:53:17 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-46e30ef74b0so4903295e9.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 02:52:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758793958; x=1759398758; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ch4rC9dUwhktjgX64QbhPwjwyRiTlK3EhVImeheBex4=;
+ b=Sc0iW55GxIL2N53hoEhkUoiEaMTYU7nQza2Gtnn6zAsxQpNvNRK/yHj4JOLyjx0q/N
+ DGD/vsdbqrDzpK47R3zuIe+Rhd78WBYTGw8OTIr16ymvSevvOv2qmQjoQF1967RNe/l6
+ NcgVzu5IOvBA8GMF/0donPKC2swCoQ90twDzVIZC3NdWC2xwPELwfvJuGAspq5DHGvDZ
+ lgiZSGJK3lCzznaxpkxpiXkGyiXyKr+NkF7I+KHJtHkaWybjOjCBxJTqVNZO5pk3mdrV
+ pcUaTCSCsBNBsm9FFdjVoMMnXshnTWa4SYChxt23B0b4r8h0LUUOcjWwXH0y7Qb+OmcF
+ NhDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758793958; x=1759398758;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ch4rC9dUwhktjgX64QbhPwjwyRiTlK3EhVImeheBex4=;
+ b=CoCP3V37BFYRtGjSEHuQPRlGluBZPPuvDGFKfQ6/LoioxD+ZSmQJdQHS9/+gZkqlwn
+ g1czAl93zhu0Q/yFUwxoQbEFpe7rS+4iTEwRYnPpgE5YAELYvyZhn6XCBXjuZfXCHtp4
+ aY0cAsAUE2MePudUAQdMttUD60MVMQtyKmrgXctuHEIuqpLmTU2C9gY2GduYJ0x2Pt+g
+ gxOAaJsJ00prPvUgA0kAonSX22MKqio6lZjkwCkk0SdzRIzHBtvgkO8A9WiJlZQTGd6y
+ NhS7b0qttiZzRurS6xCU3L1gKaTwos13jCHWWPTceYGN977IONkYROTLVHnxQYA/1Xg6
+ oFIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcAtYAaFDMK6qWQ2By+x2kDSG2ok57QskXCQvhV5wS47dG5rCrX3Da/g2+GTHgydWd6o4giDuY7VEn@nongnu.org
+X-Gm-Message-State: AOJu0Yzp5abmw4PE39zZnugRkdc1p7ViMdu8b2p0YYK00RtTuN3tGboQ
+ a6WDmkmJYLoenflJ4KWb6Yb20paCyajgEG/+RIxhdf3ViAypV1k10bxp5+jjhot5foc=
+X-Gm-Gg: ASbGnctSjTvIQCiQtVH5bCP/kh48mjmQIpYBu9XAyjsEULAgrLUr04vT/9tZTuYfcaX
+ LhGk++p59b0443nsDT/+YMD16aM1D2La1bUanUHE2hn6ds5127jOB8taUCDhwZfs2hdkIK06fxE
+ R4arfeNrzo//qPm9cp2MivBU0LcJ3ABV1bflXhrY+uDiwLYkwweNj6ivDfNCk1lTVfR7kQ3ksda
+ 0kA9rllxhV/giGPrMQUEC+3ouWB/34kak12vmU27yveA6FlC1exw90Adw4ILWBwKSnQDtuJdpij
+ 1TfJBhJpRQ4mId1sh0oqgVZRE+aFMGHyBtt7rYjCvqZhPaIsHnUcelr0ihQfe5/NQe+BBkM2+JW
+ a/cNiiciBgUb4kAvb9jantmoxv1JGz7B8XfrH8Zrr8YpmBUbaZH3DXdRaTT+Th7QqXQ==
+X-Google-Smtp-Source: AGHT+IE8LXVgsByWDuVLoICxXwfRhVIoSg9kqGYiN/K6iXIQWgIYnbS5ScoHetFwao0FAsOAcPoc9A==
+X-Received: by 2002:a05:6000:1447:b0:3ed:f690:a390 with SMTP id
+ ffacd0b85a97d-40e4adce95fmr3049581f8f.40.1758793958579; 
+ Thu, 25 Sep 2025 02:52:38 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fc9248f56sm2428364f8f.61.2025.09.25.02.52.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Sep 2025 02:52:38 -0700 (PDT)
+Message-ID: <dbd997f7-d7b8-4244-9ea6-28a625afde50@linaro.org>
+Date: Thu, 25 Sep 2025 11:52:26 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/23] util: expose qemu_thread_set_name
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, qemu-rust@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Stefan Weil <sw@weilnetz.de>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, qemu-block@nongnu.org,
+ Stefan Weil <sw@weilnetz.de>, "Dr. David Alan Gilbert" <dave@treblig.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, devel@lists.libvirt.org,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 23/23] util: add brackets around guest name in message
- context
-Date: Thu, 25 Sep 2025 10:44:41 +0100
-Message-ID: <20250925094441.1651372-24-berrange@redhat.com>
-In-Reply-To: <20250925094441.1651372-1-berrange@redhat.com>
 References: <20250925094441.1651372-1-berrange@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20250925094441.1651372-5-berrange@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250925094441.1651372-5-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +110,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The message context can optionally include the guest name if the
-argument '-msg guest-name=on' is given. The formatting, however,
-does not look good if the guest name contains whitespace. Change
-the output to include square brackets to demarcate the name.
+On 25/9/25 11:44, Daniel P. Berrangé wrote:
+> The ability to set the thread name needs to be used in a number
+> of places, so expose the current impls as public methods.
+> 
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   include/qemu/thread.h    |  1 +
+>   util/qemu-thread-posix.c | 26 ++++++++++++++++----------
+>   util/qemu-thread-win32.c | 13 ++++++++-----
+>   3 files changed, 25 insertions(+), 15 deletions(-)
 
-Before:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*' -msg guest-name=on -name "fish food"
-  fish food qemu-system-x86_64: (1146846:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55657e94e690 dir=fish
-  fish food qemu-system-x86_64: (1146846:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55657e94e690 filename=ca-cert.pem path=<none>
-  fish food qemu-system-x86_64: (1146846:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-After:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*' -msg guest-name=on -name "fish food"
-  [fish food] qemu-system-x86_64: (1144713:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5604ada2c950 dir=fish
-  [fish food] qemu-system-x86_64: (1144713:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5604ada2c950 filename=ca-cert.pem path=<none>
-  [fish food] qemu-system-x86_64: (1144713:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- util/message.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/util/message.c b/util/message.c
-index 814ca0316e..7d94b9d970 100644
---- a/util/message.c
-+++ b/util/message.c
-@@ -28,7 +28,7 @@ void qmessage_context_print(FILE *fp)
- 
-     if ((message_format & QMESSAGE_FORMAT_WORKLOAD_NAME) &&
-         message_workloadname) {
--        fprintf(fp, "%s ", message_workloadname);
-+        fprintf(fp, "[%s] ", message_workloadname);
-     }
- 
-     if (message_format & QMESSAGE_FORMAT_PROGRAM_NAME) {
--- 
-2.50.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
