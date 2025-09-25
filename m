@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AACCB9EF76
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 13:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A88B9B9EF2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 13:40:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1kFM-0000CQ-OP; Thu, 25 Sep 2025 07:34:48 -0400
+	id 1v1kFC-00089i-V0; Thu, 25 Sep 2025 07:34:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1v1kDt-0006aW-JN; Thu, 25 Sep 2025 07:33:19 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ id 1v1kDs-0006aO-Gq; Thu, 25 Sep 2025 07:33:18 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1v1kDm-0008O8-S5; Thu, 25 Sep 2025 07:33:17 -0400
-Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 58P2J7xa2034377; Thu, 25 Sep 2025 04:32:57 -0700
+ id 1v1kDn-0008Oi-5D; Thu, 25 Sep 2025 07:33:14 -0400
+Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 58P7dCfm3782006; Thu, 25 Sep 2025 04:33:01 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
  content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=q54MZtLMQR80krtnG2BA/y4cgR4bMp2erfVibh7Bf
- +Y=; b=2h6smT+0j+pNGZYL/vgq3soPymbptURsW47rO2hvawzXg5nYcUWv4y3D+
- bH0OaHp41xazJ/lzRQZl3HxeneYO4s17Q9nYfW/rV6pQYJgXEZ0G/MjDH0UPWVwH
- Cte7gk2TkkCqs0/WFc+JhQoQarz+/w2sGSO9wuPGa6hdN9gH3qb2We5F75OHANq3
- rQxXRvHfbkBdhFoYZjl6Ta+1oHgX1i7KgB3w4b+v3r2S+jz57gJWWYlDhmeyp2E9
- HZ8zqSRQjSvXLOdiRu2hVMtga4OBvC7OYA/xS1+m25jWMGtSlIP/I0y82jESEGrH
- 7SSZmBRUTc3nFCVS1XZFDhrYmKY4Q==
-Received: from ph0pr06cu001.outbound.protection.outlook.com
- (mail-westus3azon11021117.outbound.protection.outlook.com [40.107.208.117])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 49cj95tkns-1
+ proofpoint20171006; bh=Mu/g4bcmwg/bDc6oFJSPsZtRZAK0aWPP5+XxKhvdV
+ 34=; b=mK+zOCw14B/BZ4APhn185zTsrkSUKNe21h3ec1q+L9c46y7SY1+yWCU9x
+ ytb/6Guc+Y4dMNjTu+j7ol5ZYH1GT1a0QFOWoZUeYeuKhL3eTuzsDkcpDkCi3TbV
+ Wkxdrbme1eYAZ0Jp0FAH8xmaRqemdYCDP/P4fOHuzkH415jIjrS9uKMj5PzAEB3v
+ A+gP0SF0/3NiitiSUOdFyd9MVuqmghU7yLgEySQ6A9QWcuy1+6z1+B+RBmllEzwj
+ 25/3lOzxzTENRrSgV5FAc+I7IDtsftzaHyVZNMJbustJQV96QrU0mBs4dIQk/zdA
+ bczp2ayrQ7TUNmdnNdWxVw4FEK7yA==
+Received: from ch4pr04cu002.outbound.protection.outlook.com
+ (mail-northcentralusazon11023143.outbound.protection.outlook.com
+ [40.107.201.143])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 49d1hn0fmn-1
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 25 Sep 2025 04:32:57 -0700 (PDT)
+ Thu, 25 Sep 2025 04:33:00 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CF39BWvTVznNW2UmFI3IjMLhPxz7luUuCF7AMVZIwzZZG9p4YVJ6tbjwKQAXUIKSxKPC4Dv7Uw43BxcPhO3zNP3MubGUXWOhbmMewy9Cxg0qHfMFCg1VoGuHG62P5xxL1CkcWKr/7AmXR6491mVOIoVXtSIyouPCL2nBOYvIiHzFOW4sx1820k0URSLGDCO7xvIqXNB3SXtR2Jas7bHrVkG2/Z7L/PCiTtFHOn6g94UpLqBtAIYmDrP7TyiBuWDIDGyAHfGB2+KSETUU0EhPW3Mz2JI+G+QkCxn4LYFL+jYzq0uing33tGJNXWZaIAVD6LSrBebOdrF5y0rplWMcdg==
+ b=FqahNlifJhJNjhyi3nZLwso4lWszD584+tfYyvXtyq1h5CxZOn9gXYVu94yi7BCk+tcSiAABnF+8atB4r8XHPmWb2q5YLOwdggs1JzUYeJYOsLcWl9N/v+k7VbQqJUwC96A7svazW1HhIXhIdcGKdasjJPTbjuh31iGMy7AseqainWIOYjR5w0rB6MUMzPm+5p4xGEqZhsp9Fxsc0hXGpZX4XcRkclbtX1hIbLlmpz1Nk11EjIWfNMu92gRpUcN9+JqTItQlu0WD9+R+akGbqMCWxQhWw66p2RNT+hAoH1gZQdtzQETzU0RjB7/8hg39LDKdaUNJd+/vcZtAHe3iCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q54MZtLMQR80krtnG2BA/y4cgR4bMp2erfVibh7Bf+Y=;
- b=oFjx58SS4mrueQPyRrgPXUuBxrD40faHmK6vqecjMuS+CK4giV/kvyzouQfGmJeXihoAfpX2LR4SWwvdCZljuOhuDI6lCSDrfClPwuxqevvZSm81rFpBz+0TtKPYzuja457Dyz5yBT5tITLFFgTbJ4ktxXD+pjrwilP/eyOHbxrgI+98ZzWBPUDPrXVLiIEe5jKkhU699l85tZJmdRKGrmTbMrS9iMGRdhs1VdAT+ieoSlTw6tWU4NC/QSdI7rxLwDqM7UToDDuaGUscfG2G8O9w+thZB2NRnWnMEwrdYAO80wx6KHBOrnOqoj7AfYoq2fD7PxvZoHSwVqVGUmAJsw==
+ bh=Mu/g4bcmwg/bDc6oFJSPsZtRZAK0aWPP5+XxKhvdV34=;
+ b=uqNG91Z7ohKqAMnj5B8aTCE//SZMHn4RPvBbVhWGLzkv0vhmnBVMosiUmc/TMtYUSFiJQPMf98+nUQ0Yi+hRxDnvffdugjWI47UYiYjcFD02dP/JZUzS3cm/yGr61dq90b48hpn9Eq4WbQB6ecnZ7OwpifkALsoY2L+dRrgN1Mq/6pxwmDMGM5h8BIt+uHZx2cU1mOfjkLUUw41PBW2RBaBvcj8BT9jihJ0IM3MN5huMDy0obKD9BNkzL25D8l4a8QnkOSQEEU2M6ou1PWJT0ot8aOXQfBn9fT+KWc4OVo4t+xIPsc0VReAtyQBkGrqBy0P6d/QMm5Tlfdnc9xEOug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q54MZtLMQR80krtnG2BA/y4cgR4bMp2erfVibh7Bf+Y=;
- b=xWI9zMp87pk5aQtx9YzqV67mq8Fp2FwgtcnwOI1zpybLLmJnW3S/xWKQdM+IzhBRLVI8oxP+LOm6X3E3v9E1mlBNCi8/jDn60Ox7/jNQR/NbP/nfIL9hsgHLJWXo+EkKfcmu7v/Gu0XhgUcNUymOaWLZeqpSJcZRzsuEH3nLsB5gdf83OA5m6NFSfPswA5PfI4+lhboEpJ0Irdthw+IuaM/zgtfqESNtVfyWjbRPw1u2YiAR57Mb0spT99ze4fWxBhs6CU3p6yeHg2MXyhRuqKyCryvgNTX5cHDB2R2m/DcFuqLFFFv4SfuobkwfD2yjzY8G/oi4JBjDNwKuxVQMdw==
+ bh=Mu/g4bcmwg/bDc6oFJSPsZtRZAK0aWPP5+XxKhvdV34=;
+ b=nhy1QJ3g0F2GcOKb1Gx3hiXvot4E+WHk57dWnZuhY5CKsHzjSUtuoNI7Ik6BXsB8kY1z171xtrPpVf8YEzXnk7ACIXr7pj+MEO2VhgoJLArPzrR1HyYcV8sVB/NtL+wFNJvb23v/3aE01wMS4hlCWgx6VJeoox2De4fL7cl0xpydH3kHQFyopqVolLKMKStq7Fds3/hAjltJ8YcFRGpNpbAWinsSs/Qh0PQWHSWAZABDhTLzawMmctAx16v3/Oq5RbI1ClJUYymz7c0/Xxp2qo2o7EALG1cSzj6Z9qrebdjgTu6lMqMKuwT0MG9Ng/cHvt4c2J/7DAc9DlF8KOnsOQ==
 Received: from PH0PR02MB7159.namprd02.prod.outlook.com (2603:10b6:510:16::8)
  by IA0PR02MB9854.namprd02.prod.outlook.com (2603:10b6:208:483::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Thu, 25 Sep
- 2025 11:32:55 +0000
+ 2025 11:32:58 +0000
 Received: from PH0PR02MB7159.namprd02.prod.outlook.com
  ([fe80::6cf9:b35c:b143:bb88]) by PH0PR02MB7159.namprd02.prod.outlook.com
  ([fe80::6cf9:b35c:b143:bb88%3]) with mapi id 15.20.9160.010; Thu, 25 Sep 2025
- 11:32:55 +0000
+ 11:32:58 +0000
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 To: npiggin@gmail.com, harshpb@linux.ibm.com, mjrosato@linux.ibm.com,
  farman@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
@@ -65,134 +66,135 @@ To: npiggin@gmail.com, harshpb@linux.ibm.com, mjrosato@linux.ibm.com,
  iii@linux.ibm.com, john.levon@nutanix.com, thanos.makatos@nutanix.com,
  clg@redhat.com, alex.williamson@redhat.com, steven.sistare@oracle.com,
  qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v2 15/28] vfio/pci.c: rename vfio_pci_dev_info to vfio_pci_info
-Date: Thu, 25 Sep 2025 12:31:23 +0100
-Message-ID: <20250925113159.1760317-16-mark.caveayland@nutanix.com>
+Subject: [PATCH v2 16/28] hw/vfio/types.h: rename TYPE_VFIO_PCI_BASE to
+ TYPE_VFIO_PCI_DEVICE
+Date: Thu, 25 Sep 2025 12:31:24 +0100
+Message-ID: <20250925113159.1760317-17-mark.caveayland@nutanix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250925113159.1760317-1-mark.caveayland@nutanix.com>
 References: <20250925113159.1760317-1-mark.caveayland@nutanix.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0409.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:189::18) To PH0PR02MB7159.namprd02.prod.outlook.com
+X-ClientProxiedBy: LO4P265CA0043.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ac::22) To PH0PR02MB7159.namprd02.prod.outlook.com
  (2603:10b6:510:16::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|IA0PR02MB9854:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14856f8c-9acd-49e8-5d73-08ddfc274555
+X-MS-Office365-Filtering-Correlation-Id: 4d45114c-3411-49c3-5d30-08ddfc274730
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|7416014|1800799024|366016|376014|10070799003|921020; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SWpWYkpnSUVWanhkV2NoMzNpSGttMHo4bGg0UytJOGFuK1FDNFdCRDYzUHAw?=
- =?utf-8?B?eEVQUkg4MGx3dzhWM2NlNVpYUWdJckszSVJXSzk3bFpXRWJxTDQ4NTN5dlZD?=
- =?utf-8?B?cWQyUVFMZERkK3dmRmUrUFc3MEYrdjA4b01YckQrUGlTYlpFOVExc0wxcTJR?=
- =?utf-8?B?eFlWdWJCby9lMFBpZHJVODNwVWNxSTRWYnNyYnk2M2FYeVRPaUVDVHhibC90?=
- =?utf-8?B?N0FFb3RudHFnbDhUM2VXU2UxWUU3Q0sxYnJGZXl1cWUvRVQ1bm5IOHVGcTZ4?=
- =?utf-8?B?NmlzU0VRVnU4ajNHSit5TW5yVHFUNTltRHlTS3FTZUlUQTBLVENBK0E4dUZu?=
- =?utf-8?B?QXgrVytkalBiVENtdXowbkVYMnNqbmpiWmo3SlhRcWh3SmRDcnVjS3hKOVdk?=
- =?utf-8?B?dXkyOEYyRTQ3SHl0ZDE5L0lYd0wvTmwzOUFBQXFDdTdWSVZ6WWhEL2V5eW1W?=
- =?utf-8?B?NEFjNHdhTWloaytHcXVoVkhldVRONWNVQ3l1c1ovT2xGa2ZISTI1aS8zcXFZ?=
- =?utf-8?B?aTRNajM3SE1QZ2ErUm5VOG1jVFZhTlpsMnVsT21SSW52RWxJTkNxT2p5ZnZT?=
- =?utf-8?B?S3JsZzN2VTByck5Eek5LaFl4MlZPRHRBTlpJQ3ZBQ2VqQmdudHNScE0zOXRI?=
- =?utf-8?B?QnpOL0luclVDaTdTM3RoalNKazhIL0lrQm5SeEQ1cnlMYkN4SmdBQ2NYWDcr?=
- =?utf-8?B?NXFsNmk5aFVLTm41RTB6K0ZrQzJnVVpkOEN4N1lCYisrdnV1RzBoY0FJN3pj?=
- =?utf-8?B?WUNNOXFid2dvcWxGNERMQW9mNVdMSTZNU1dtR0RyaGY0Wk9NeGwvT2xnamd1?=
- =?utf-8?B?UWx6ZGRxMUxYMld0OW50RnJMSW9PQmMwbENpdG9IYlIxSUlKQWFTbVF6Q1ZY?=
- =?utf-8?B?S0U0QzExRTIvMTFtZDVZaWFUUFBjdFRNZHBiTXB0bVZQeTFGMzlDRUxMbHpF?=
- =?utf-8?B?cVl2RlRFN0xhWUVwbFJocUM3RGNJUUZ0a1dmdHpBZDFxNkRYMi9xR0NqZkdh?=
- =?utf-8?B?M2xkQU51RWppQ0JLRzEvUEczNG1yZDU5S0xaRjFwd3ZyTEtwclNKeTVlRE5I?=
- =?utf-8?B?ZW9LZ1lMblFsYnE4bi9RSlpBWEgxY1dieDdsdkw4ci9KaFh3RWhBdTlZMkhp?=
- =?utf-8?B?QXVHZ2ZqMi9HL2NNemptTUJadHpkSkxsdEJFM0tIRWRYZFNFK0RpUWZNSFNW?=
- =?utf-8?B?QmNmYVRSZVY1MDVHZnV0NncrenNCZll4RFljYmlZdjNiS0crcGowRzhyYlZw?=
- =?utf-8?B?NDcxYWc1LzJRSHRrT3FhRUdnL29Wa1M5Ujdkd25scGR6REpjVXBJekQ5SDdm?=
- =?utf-8?B?TDJkWUtCZ0t4VkdWVG52YXVCdGZDTDdhclZoYmZsLzJ4VVNvTFczM29lVkE2?=
- =?utf-8?B?QU4wRDlMWGMwM295UFVybWV3R2JkbElZZDlIbzg2VEhmOHhDTlY4M2ZTSTl4?=
- =?utf-8?B?UmM5QUdYQjdUeW9tS21mb2dQbVpWc01TRFJHVUQ1VVNzWE9RaXZjNDNKdzRu?=
- =?utf-8?B?VDREMHlacFl0dVlldk40ZW41dkd4M3V4RkpTMjdLK09jUW51YzhqeHhTblNH?=
- =?utf-8?B?SFF2WlVtaDFETG9lMW1MTVhLOW4zRUwyUkxQcHVuQ0dhaE5ycWEzYnNRS3Nm?=
- =?utf-8?B?eC8yYy9lb0pTL0d3TUdhYlF5b3V2VlJrelpUemlIQ2JlNS9DUkVNazZ4NGZ6?=
- =?utf-8?B?UmFyRHJ5L1NSYjF2bTQzMk41am8xeCs4UTlRdlRwSllKNnZsZU9DZjhzaFY4?=
- =?utf-8?B?R25RRHFVM1lRSDk4Yjh6UTM3Z1hqTnc4RFRUSTRNYSt4S0QzWFJsNzJGRkIz?=
- =?utf-8?B?VXJUaWpiZCtPZ0pwQUYyWllRb0VqQ3NwV1RScjNIMTlVV3lRTitKaDVXcVRC?=
- =?utf-8?B?OUZ5N2dGZklRZDNNdVJEOGNQKy9jTHNJNTdJenRxRDZzYVU2V0R2bmJVODNi?=
- =?utf-8?B?TVkrcVJUYmRIR2d5TTQzQVFWMldPc0g5UHVlNGtoWHFRbXpKN1F6RmZOWUFl?=
- =?utf-8?Q?Wvv+cdgTXAPlffrNsZIx4U6P16+bII=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?R296U1kyQUlFOFpON0lCMzIrZ1YyM3VQMVNSQjYvZjdYb2Vzbm9JQ1AydCt2?=
+ =?utf-8?B?eFgrTFNMZ0Uxek1pdEZaejk1Q0FqUkdlemtkZ0dFSVdCdzF5S1FOSDRzT2lo?=
+ =?utf-8?B?NTNvNlYrUnkzYmJmQkxxdXkrVWFkdVZ4ZTlsWG1Fc2RRcTkzUmpSWGQyT3RM?=
+ =?utf-8?B?L3dXTnF1SUdoaUJobUZ2K0VHTDlqZlpVQ3ZRdjZwMnE5UVMzSHlVbE1TTVE3?=
+ =?utf-8?B?MjZtZWsrT1ZKajZWcDFCTk85ZVVMOExkNW5kZWRVZGM0citVeGVMUmMzMVYx?=
+ =?utf-8?B?SDNqQ0M4dkpaUDI0RUNWeUNBYXZNeFo4Vi9jdkdhcHZXazJtRXZQWWJNeVlC?=
+ =?utf-8?B?SHl2cVhUY3loOUtjd1RDbmQyRXI5Vk96SWg2MnVhekk1aURYdEgyRzE2d1RK?=
+ =?utf-8?B?NElSczI4RXRhNTVmUWJQUE92alBlY1NCZ044Qmh6Z2grRjNhc0JtMis3Z2pK?=
+ =?utf-8?B?WFFmTDY4NjJycCtKUVhJSHR4V0JLa1pKZWE3Z2tybGlLb3dna0xjTjBHL0E5?=
+ =?utf-8?B?RDRmbXlaL2FUME9OZ3R6VkdzMURqMzd4Ykt3bUdwaUZIM2VncWkzd1dtN0k2?=
+ =?utf-8?B?MXRibDMyK3lpUEhGdG9keHpPcGxrcTFsZnY0YWpmdmVlU0NkSW5RbmhHMlpp?=
+ =?utf-8?B?WjE4L0RqeXhzZ2N3aEg5R1dING53YWxlWnYzQzZwZFJCSnNwMk4yN1pEcWh1?=
+ =?utf-8?B?UWdVV0hTWlQxR20wNlo2SDJ4dkRVQnZGWUx2WHNIeXM3M0NlRFYrR0ZzK3JL?=
+ =?utf-8?B?WVp6dmpDdUdhVFAvZlhRTS9DWG5VaXFLZ2I3OWlsRklQZWNrRzRxMkQzNEZT?=
+ =?utf-8?B?TmdIdmdKYllCT01vWWZvRUlPZGtNRjB2bWFBUXB2L0djVjBPSVJOeDhIN25x?=
+ =?utf-8?B?ODBnV3U5WEVCeUV6YURjYSt1UGpjd3JHakdxcnJhcVYzdlJNcDlqQXM5WVZF?=
+ =?utf-8?B?REZJcnYrbGZveFVOeTRRYTFTeEI5MnVKYnBOTkM1dERXcFdlWDBJN3EzVUxI?=
+ =?utf-8?B?cmhrSTFWcEo4cVh5MnhCZHh3eHg2UkwyTktVSE1CVnpGNlR3NUhiVkpQQXhw?=
+ =?utf-8?B?b1dyU3dUckxSOXQ2Qll0RlZYYXcra2lnbWRjRzZNUnRya3hxWVdLaU55d2Nz?=
+ =?utf-8?B?YzRzNno4am5TY1ZZc2VvM3hTT0RtenZnMlVDN0tZRWFCeExGWC9KcHo0dHpN?=
+ =?utf-8?B?ek83R09TamNIMHF6OXAvbDByZ3k4cVdDVXluUkVKdTdEN2dYWXZUemM2WDRB?=
+ =?utf-8?B?cFVMMDN5WDVqVFhFUi9jRzc1VXVQMyt5NkR3RXlqNExUKytON3VvWitLTzVH?=
+ =?utf-8?B?OWZHQk1XZGxpQTdETjF3bWFlakl2SFBJSXI2TmYySEdNTTVQRHpHTUs4L3pk?=
+ =?utf-8?B?SjZMV1ZNTEV2eTJOeWtrSjY1SHoyVWx4dXAzeDlLcjI3QU4rQ3VLL0F6RTN2?=
+ =?utf-8?B?VTBVKzE1YmVpTUQwaWFwb2lJN04wZUZQMVpJeWc0Zjk0SzlLRVRNVmNYWDBl?=
+ =?utf-8?B?dHVONVhxZVlZdUV1Z3FqQVVMcy9hZGgxcC9UZ0xRYjMyV28yYTJXeGE4WDV0?=
+ =?utf-8?B?UDJIM1Q1RXdOSDBUVDdJM1V6THkzS2Vic2RqcE1FdzZ1NkhtUnZCZ2lUMXZY?=
+ =?utf-8?B?VE9wLzhrejJJZThkdmhTNWF2TW1hem04b2dmQityMTB5aWU4ci9yUmR0SWFs?=
+ =?utf-8?B?KzdZZDByWVE1MnllQXpsTlU4MjJBT0N2dGkrNUQ2cHRIM0ZCRU1PcTV2OU9k?=
+ =?utf-8?B?dGJSa3l5WnBnN2VjYUplNlpNZDNXbFVjWFg3Tk9ZTWN4bzJRTm9iNVFHc0VC?=
+ =?utf-8?B?eW85TW9LcU4xRUl0akthVGtZaCtkeFFEMk5aaEw0QTVObkduMjVOMDhiZWVp?=
+ =?utf-8?B?alM1dm5NL0owc013UXBGdmlFRGpvOG8xdFpZS3VrU0p3bUV3R3dTekVMcWRT?=
+ =?utf-8?B?VDFkVDV5MW1Ya1Uzb2xFcWFLL2Ixd2lDL1BJMU84cFQrZXNaQ2Z2b0JzNWJp?=
+ =?utf-8?Q?24H54L0C3M+hGY5DiBRaJBJH9uwcOU=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR02MB7159.namprd02.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(7416014)(1800799024)(366016)(376014)(10070799003)(921020);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q0dOaW1RbGw1ajVhTU1pWFgzZUtxNUNSSXd5eE5UU2l3MTdoK3JXSmxhbU9U?=
- =?utf-8?B?UHBNM3l1QjZJRkFxWlpMWXNjN2NqQ3FsRFlaNTNseVBVamQzRTBNVTArWjFH?=
- =?utf-8?B?LzdUd1FibEZMbnlXQTgxMFJ1NXc2ZWt3Nk42SjZhZHgzbENrWU9acHFhdVZx?=
- =?utf-8?B?U3loMEpPUENsdEtZQm5UcE9rOE4yeFh3VVJjaHgrbUFqVFErd2dEdWhVMzJm?=
- =?utf-8?B?UU9UWEFVcFhRQ0pZZ0lIZjJscDAwcm1OUktobHJCZjZMSWJCaUNYZzFnQ0ZX?=
- =?utf-8?B?NTgvOGthcHk4KzN3RDJHcXorbFZGc0FkZ2F0TWE0TXpUdGIwd09yYys4YUZw?=
- =?utf-8?B?dUVHbjVnMU5GL1hORUgvWkFSdFFLaEYwZjJNanp4TTZ4TTl2YkZZUjJDOGdZ?=
- =?utf-8?B?NDg4czZYdzhkNm5VdkoxaUZsYTNSRllqSzA5VUxjaDRERkJhSEcxOVJKTHpl?=
- =?utf-8?B?eUV2NEI1S0tTYy9JVFVnSlhNcU14dEx0UGhLWS8zcEVUYWU3aTc4SXJJa1cr?=
- =?utf-8?B?OXZvMzNSbDFwZm91OXNYczNxbnNreXE2K2Y5NXNyb1g3TWRmVEFZL2VwbDhM?=
- =?utf-8?B?U0tWZXU3aStOdCs5S2MwTjZIbnEwUWN3Y3lSa01MNXhQSmJQTDd2YklzK1NH?=
- =?utf-8?B?Z2wzb2VMd21Dd25qRjB0MGJsZTlndEppSzhoRVE0YWxSZTdRUFliekJuSkI3?=
- =?utf-8?B?MUR0TFFYNzFHdTZJdGFKYTQzQnpkS2xmRTF1ZWRRZ1NKQWFhMFcwRlR1NVdZ?=
- =?utf-8?B?U2Y2UVAvM0dmTjI3VzFNYkVXYldzcHQ1eGVUM29uRmFKR24zWGlrMGhQMmpw?=
- =?utf-8?B?eFpiMWxIMEZEN2g1OEU3MDBFN09WQm5QVnZhdnlhT3U0WExrb0VpdWRFK2Yr?=
- =?utf-8?B?WXNNbWErTDlKWlFWb0hFTnRvelJtYnREOHlEMGVvRFQ5emNSVDA1YXV1ajd1?=
- =?utf-8?B?Sjl4UU9YUld0T2EwTHBEQmhYbWZad2FkOUdzTTRlU05vZG9xMG94R09LQXd1?=
- =?utf-8?B?bHRadHpGelFtR2hnTy82ZUEyVmdjMHFDcC8xZkpLdXFIK25SZHQ5THVSaUti?=
- =?utf-8?B?ak55UW8yU1dmZUJFemtwOTlQbm0vVHJJeHpYYnlBUnpNcnBiVVV5SG9WdUtk?=
- =?utf-8?B?bHlZMml2N3VNKytqa1hBait5VXRQU3pjVHlxUmhsTW4wVXBxZzBTb0lQRDQ5?=
- =?utf-8?B?SFppSnc4aEY0bnJ3dmFacWZzUE9yYXRZUXpqOVRpQkNQU0czbDJXdzJEWUUv?=
- =?utf-8?B?bmdMNGhtelJJd1VvamdzZDhIMmVVUGExNG5SWS9zY3V3WGJTbEFTUmNOQXJ0?=
- =?utf-8?B?cUE0emlZTlV5bzBPS0h1QU9wYURWNVdRL2FRNFRWaU9EOE1paU9FaitkT0p1?=
- =?utf-8?B?SEJpak1TWEMvUU9OS0hycDMwNkwxVnJ0Um00Q2taMXlibjc2aFNxd3ZDUVZo?=
- =?utf-8?B?U3pWYlRHWlNCUTc5a3JsaXlSTjdhQ0QxeTYzUWNvT3cydmJ4WGd0eSt1L3RZ?=
- =?utf-8?B?L1V0TnZUdGFyUURRR0JoYmtDQVpiQWNIQzY4V0s3K0ZuQXNLRGN1S2w0YzJT?=
- =?utf-8?B?cyswV0hWVjNINk94WHlLSmswdXp3MjdhWS9NbHZUdm4vWFRGOW9WTjVQM3VJ?=
- =?utf-8?B?dEh3RjU1NEVGZFVCTWhXaHhKWG9tYVpOdlhzL0xVNGtRR2tQa2QxMXNVM0V3?=
- =?utf-8?B?ZnM3OWJXcmNCcXdNWk50QlBnWlBmZkVQREtDSXdSMktvRCt1WmRXZlowb04v?=
- =?utf-8?B?ZlM4RFA2N0E3clhRMkFVSVAyQk8xdnV5TUVkL3Q5RnhsREp0Slc1QXdtdGdC?=
- =?utf-8?B?dmN6dEc4blI3RGpXMG5oeDRNY1ZKVFJHRis4ZGlnamJDRWtYUWJ1dTFZQW1m?=
- =?utf-8?B?SjNLSS8vbzdJNEZjWjA5a2FJcjBMMENCdndGOS9EUUhNeDRybXNiSlRaTmk3?=
- =?utf-8?B?V3BnZzBIckJ4dktCSkVJVjdwa3Rkc3BFVHFhN0NVYks5WnpjUTRFRDR0V1l6?=
- =?utf-8?B?RTZDa2xrc3YvWlA5dUVtUThBYWZ4NzVEOWF1YjAwcmkrVGhJY2gyOEtYV3Ju?=
- =?utf-8?B?MzErZHp2RVdtU240eWtxejZtOHJSWUE2Q1ducmRPVGUwZnBDTlZJSm5KeUc3?=
- =?utf-8?B?RHNyaUNDRzZGaFdTUmd6M0wrSU1PZGlQcG82cC9ON3RYSDgwMmtMUFpZWHBV?=
- =?utf-8?B?aUdVS0NyNW94ZDlGUlVkQm53N2NGdGtXWGFxTmFBayszaWZZSlcxNWxRLzNx?=
- =?utf-8?B?ZVQrNWVzNVFjOGtKa0hSWVhsOUh3PT0=?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U0pzZEZEMTRWQlZONXR6MmhENHVOSDVKV0NxV01jOUI1alp6TVdKS3BKdjBv?=
+ =?utf-8?B?eUx2Z2ZrcXozU0hmbzFwdGNVcWwwQzhyVnFYSmppdzVrRGZ2SDJUVDd3Y3lm?=
+ =?utf-8?B?WnA2NndzVDZsOWlpOUtHVTd3ZnJSWS9QV1A4c2ljKy96YkhvZUltdFlzREJX?=
+ =?utf-8?B?MU55NUtIbVhtdXl0dWR4bmphNk53T3ZqZFZ1UkxYZ2xuRlp2NGVBWkdYVFJs?=
+ =?utf-8?B?MDVSeG5mNXJHZWNtcmJTd0FieVJ1MDBod3JyYnJza3VhRCtzV3k2TDVTWDRh?=
+ =?utf-8?B?ZDM1R0xpbzkyUkkzcEpWWFpvTnVUNkFra3BSUXMrbXN5Vjg4ZFlPelF4N3Fu?=
+ =?utf-8?B?TWJaa3YzditCaWRVZjRRTEtsUDF3K25jU1NPNE5UaGMvcnJXYzR4bzdDVlhE?=
+ =?utf-8?B?eWkxQ3lFNUd0RHRPNWxlVjhCOUdyM0N1ZUNNWW1oY2kzakt1Z1dHYlVTS3c0?=
+ =?utf-8?B?K1B4UVZydmZkQk40dE11Mm5HODhNOG14cC9MNWJNMlRkbldhaGNTQnM1OTc3?=
+ =?utf-8?B?RnJlY0U2azRNODlCbkx3MUk2V0JmR2JuSktjcEJIcnlQNWRVbkdtMlJEUW1S?=
+ =?utf-8?B?c25BNGI4OVh5VnlsVWdOQStUYTdRMEpGZDJrZytpUVg3MmJMTno3dzJpWU5R?=
+ =?utf-8?B?UzBFcVhJM3pmQmlPMENzTGk2aHlOUHJNTi9taGFNdFZiT2tHbjlZbEROMXJz?=
+ =?utf-8?B?R3RXQ2FYSGRJQUwwTWk5d1djMGw3cEVTdUQydWZ4NVVadkdnbzRUSmFzTHlZ?=
+ =?utf-8?B?YVZmSFNPdHJwMUJKQ244dGNDTGdZcFJZZWpLeldrRXhGdDRiZ1kzN1dZVlRr?=
+ =?utf-8?B?bmZUelh4MmFsMjlzMC9LVjlxL0NoeG1mQjQ0Z2NFRlFCbjFrTlBIam95ZlFR?=
+ =?utf-8?B?b2IvRGVSSXN4ZGorSWY1S2tlNHkvTzJvTXF6U09Fc1N4VVVOeTNGZWFyeUYy?=
+ =?utf-8?B?QnNXYXBwL3pUaUZlWlZOZlZaWXV3T3BxdlR2aE9KMWlOTnoyZ3lSdmxTWkhy?=
+ =?utf-8?B?TnN2K05uUGZDUEw0V1FmNHVFam5qWWJwVklqbnIwdW04a0JjOGxYb3IybkQ2?=
+ =?utf-8?B?YU1iUnJQcFZaZmNSTkhKMVNmYkw5NERDSzNudHVmTDFvbWR0RjlSMDVjZ01C?=
+ =?utf-8?B?TVQxY1pkZEFCS2I0QjZPSWNhSHpLd1BTRDVvZHFhWlJpMWEvSHNVc3JnQVB5?=
+ =?utf-8?B?N2dPbEpueG1ic3ZocVBxaC9SZUUzd1BWckpCWURmejJNaEtrQ2FMYmJEVUkz?=
+ =?utf-8?B?V0RseTlmRUxJT0hyS2lXc2NIWUQ2Tmh5dXZBS2dHcXFQV21uYWsvQXdRR3I1?=
+ =?utf-8?B?UHZia1ZTTnl3Z1NGZGJnSjBPWUJoMHpGZ2cvRkNMdUtsTjVUNHhhNkFpUDUw?=
+ =?utf-8?B?UzdKY0dBbjV0MzJIMzVsVWxPTlBZQnh5dFpaOGVLaDcrQW11ZDhIanJZaVF4?=
+ =?utf-8?B?b1FUYUtjbThZUEpnTmtPS0RHUzcwV1pMN3M1WndIUzBkWldDbDJCeGhqNzJ0?=
+ =?utf-8?B?aWMrZi9XVi9UWkpLS0tyS3dmRFFBZWo2TU1Ma081eWxKbmNFVFVQUlJCMGxj?=
+ =?utf-8?B?a001WVV5VXAzOVNDbXc1WXBHYWJXQmIvYm50NlJKRE1Zb0ZrcExlcFJlOWxq?=
+ =?utf-8?B?dVcvS0ZpTTlyalhjN21WOGlGSUVmOW5naWN1K09kMnpqVkdwcTQ0djlxQzdx?=
+ =?utf-8?B?cU5FS0xyNmNUTXFvcGxSNWljMHd3UnZxUnp0U3lBWVdXalNIVVcxY21ZMGkx?=
+ =?utf-8?B?NVU2RFJrVlJyQWs0U215MXRLYUFsc0poTEkzTmt5ejRVd2FnYVlwRThmbzFr?=
+ =?utf-8?B?cG1iZSt4OW96ZHFwM1M3RVZ2Kzg2SlJiNDZZeVJpckUvSjgwSlFlU1JQb014?=
+ =?utf-8?B?SjhMNnhCdlVsaFZGZUNCbWo4R3IwWXVFOG5wd0d4Z0lpOGJPNFo3WnR1aWJE?=
+ =?utf-8?B?a2c5aTduaVB4ckFxRmQ2N0U4bXc0bUF4czlTQjhJUjJVcFBFc09WdnpTeHQr?=
+ =?utf-8?B?VGZaeHI2NzF4QnU4RjhDZ05IWVNkTUhXMTRndm5vMkVlNU9uSVRKNkZDY0hE?=
+ =?utf-8?B?UUtDM1VsM1hLWVBuM2Y3VXZrb0lFOEVyNXdRSlp4UE91b3hsVWNjQklxSVd6?=
+ =?utf-8?B?WWhXTThWSTZOR0hxS2FnRU1RMTZoL2xkQ0g1WXZVL2ZnS0IwVUd5U1RPVlJW?=
+ =?utf-8?B?alRJVndOZDc3ZFZMc1ZPZFBxTitRcWgxOUozSlZwRDhOUGIxZXNRN1JiaWI5?=
+ =?utf-8?B?SFhyS2EzbzlTYlN4WjNjMHpMY0FRPT0=?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14856f8c-9acd-49e8-5d73-08ddfc274555
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d45114c-3411-49c3-5d30-08ddfc274730
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR02MB7159.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 11:32:55.4426 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 11:32:58.7078 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i72meAFeWQidytM2Gt3uEPDHrFI0hJUp8ek/Lg73nqyWgf449essbJWkvIv9hx00V2+LqwTkysw1c9izzGUv7w31EUGfbC//4gjNpWc6ewA=
+X-MS-Exchange-CrossTenant-UserPrincipalName: t3FBqMb73kbDzJwvZlsMejoxCr6Qu9ax1ypv1Wn5RhBik4fotXd9M6HSmUHAL7B5s9OND+9mVaPoC1alvQZCnd8+crd3uHVQpcLTVYHMbzw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR02MB9854
-X-Authority-Analysis: v=2.4 cv=fPk53Yae c=1 sm=1 tr=0 ts=68d52869 cx=c_pps
- a=fJIB0T+C2yAfE4P2TQxPqg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-Proofpoint-GUID: 94qWw8i1N11kgl90ofgkhNlgAd2DB1sC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDEwOCBTYWx0ZWRfX9SAXceKU7/DA
+ N4nUKtSi2s2J7b0mAjTb81ejsu9GnmnaQzxgDN+djark2gJbWIaVx0y9LA7L+i06UlzPbwBa3lo
+ yslbRMcf9WYpPU2uNmH9AemXen7IkmjgCQmc0gHVrD2e1LNTNTA9TqsWzcuKULQDpIeI3EKemw6
+ 4jnNFNpNMel6eUNcA/ObUYqm+OYqP1IZfJ+lAV+wtPeCHPW/imYCeeLFK394C5WkGRX2OvjkBWo
+ NU6YCzExKOg3N8qJH8qqFWyMix1ORQsx3rUQXUQB+IzAPugXT2f9NlOqIAdmdNVRygTMfEs3m4W
+ 0a02qUv2YNX2uw2IJ/Ty4gN8vARorHnQdoiWc/xraj/m0coptRIfwvVMVsTi68=
+X-Proofpoint-ORIG-GUID: 94qWw8i1N11kgl90ofgkhNlgAd2DB1sC
+X-Authority-Analysis: v=2.4 cv=D6FHKuRj c=1 sm=1 tr=0 ts=68d5286d cx=c_pps
+ a=TDYc4WexHdh/ivIjU2umhQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
  a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=0kUYKlekyDsA:10
- a=64Cc0HZtAAAA:8 a=20KFwNOVAAAA:8 a=-an67RP_g-7o1LT8KO4A:9 a=3ZKOabzyN94A:10
+ a=64Cc0HZtAAAA:8 a=20KFwNOVAAAA:8 a=kqlIrpWXdM3z53z3dXEA:9 a=3ZKOabzyN94A:10
  a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: mPzwcqePFPnk0e59NxvEJzxkUJ2rLuFj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDEwOCBTYWx0ZWRfXy5JWRUzSngoe
- QA6TYU4N8EGYjMGv24tf0lniW/u1istOKa34v2eXJMiCh2O/u9ApWnCxE4kYegOHNnVTJ1Nh5Lm
- 2RwArJ19QAvSdOs0GthpMQaYwgJxp03rgHH2G/5oKsJWRXJFlSxg7rtq1X+sZPPWRVYLFAVrPpT
- +l93YNXxbGwPtaGPDKVw9aHn21OIcoby89gOC1doh0SmVXmAyF+mVR1QI7sbMuv2hCfbdvns34m
- PfQCBFzzWHHLpEre9nLsWeLmtCRWOtHudLwZGpYCrQExHA277HohzVoKkDon0Sc4fLu6KcAhYyb
- Q+RtVlN0T26M1re06H5EuC+8CFpNz+d8CNPEkPRK9OhpXd4XYX1ngM0bJQSIc0=
-X-Proofpoint-ORIG-GUID: mPzwcqePFPnk0e59NxvEJzxkUJ2rLuFj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-25_01,2025-09-24_01,2025-03-28_01
 X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12;
- envelope-from=mark.caveayland@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=mark.caveayland@nutanix.com; helo=mx0a-002c1b01.pphosted.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -216,36 +218,320 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This changes the prefix to match the name of the QOM type.
+This brings the QOM type name in line with the underlying VFIOPCIDevice structure.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/vfio/pci.h            |  2 +-
+ hw/vfio/types.h          |  4 ++--
+ hw/s390x/s390-pci-vfio.c | 14 +++++++-------
+ hw/vfio-user/pci.c       | 13 +++++++------
+ hw/vfio/device.c         |  2 +-
+ hw/vfio/pci.c            | 28 ++++++++++++++--------------
+ 6 files changed, 32 insertions(+), 31 deletions(-)
 
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index e0aef82a89..0f78cf9cdb 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -120,7 +120,7 @@ typedef struct VFIOMSIXInfo {
+     MemoryRegion *pba_region;
+ } VFIOMSIXInfo;
+ 
+-OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI_BASE)
++OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI_DEVICE)
+ 
+ struct VFIOPCIDevice {
+     PCIDevice parent_obj;
+diff --git a/hw/vfio/types.h b/hw/vfio/types.h
+index c19334ff25..5482d90808 100644
+--- a/hw/vfio/types.h
++++ b/hw/vfio/types.h
+@@ -9,11 +9,11 @@
+ #define HW_VFIO_VFIO_TYPES_H
+ 
+ /*
+- * TYPE_VFIO_PCI_BASE is an abstract type used to share code
++ * TYPE_VFIO_PCI_DEVICE is an abstract type used to share code
+  * between VFIO implementations that use a kernel driver
+  * with those that use user sockets.
+  */
+-#define TYPE_VFIO_PCI_BASE "vfio-pci-base"
++#define TYPE_VFIO_PCI_DEVICE "vfio-pci-device"
+ 
+ #define TYPE_VFIO_PCI "vfio-pci"
+ /* TYPE_VFIO_PCI shares struct VFIOPCIDevice. */
+diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
+index 7760780aff..9e31029d7a 100644
+--- a/hw/s390x/s390-pci-vfio.c
++++ b/hw/s390x/s390-pci-vfio.c
+@@ -62,7 +62,7 @@ S390PCIDMACount *s390_pci_start_dma_count(S390pciState *s,
+ {
+     S390PCIDMACount *cnt;
+     uint32_t avail;
+-    VFIOPCIDevice *vpdev = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vpdev = VFIO_PCI_DEVICE(pbdev->pdev);
+     int id;
+ 
+     assert(vpdev);
+@@ -108,7 +108,7 @@ static void s390_pci_read_base(S390PCIBusDevice *pbdev,
+ {
+     struct vfio_info_cap_header *hdr;
+     struct vfio_device_info_cap_zpci_base *cap;
+-    VFIOPCIDevice *vpci = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vpci = VFIO_PCI_DEVICE(pbdev->pdev);
+     uint64_t vfio_size;
+ 
+     hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_ZPCI_BASE);
+@@ -162,7 +162,7 @@ static bool get_host_fh(S390PCIBusDevice *pbdev, struct vfio_device_info *info,
+ {
+     struct vfio_info_cap_header *hdr;
+     struct vfio_device_info_cap_zpci_base *cap;
+-    VFIOPCIDevice *vpci = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vpci = VFIO_PCI_DEVICE(pbdev->pdev);
+ 
+     hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_ZPCI_BASE);
+ 
+@@ -185,7 +185,7 @@ static void s390_pci_read_group(S390PCIBusDevice *pbdev,
+     struct vfio_device_info_cap_zpci_group *cap;
+     S390pciState *s = s390_get_phb();
+     ClpRspQueryPciGrp *resgrp;
+-    VFIOPCIDevice *vpci = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vpci = VFIO_PCI_DEVICE(pbdev->pdev);
+     uint8_t start_gid = pbdev->zpci_fn.pfgid;
+ 
+     hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_ZPCI_GROUP);
+@@ -264,7 +264,7 @@ static void s390_pci_read_util(S390PCIBusDevice *pbdev,
+ {
+     struct vfio_info_cap_header *hdr;
+     struct vfio_device_info_cap_zpci_util *cap;
+-    VFIOPCIDevice *vpci = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vpci = VFIO_PCI_DEVICE(pbdev->pdev);
+ 
+     hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_ZPCI_UTIL);
+ 
+@@ -291,7 +291,7 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
+ {
+     struct vfio_info_cap_header *hdr;
+     struct vfio_device_info_cap_zpci_pfip *cap;
+-    VFIOPCIDevice *vpci = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vpci = VFIO_PCI_DEVICE(pbdev->pdev);
+ 
+     hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_ZPCI_PFIP);
+ 
+@@ -314,7 +314,7 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
+ 
+ static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev)
+ {
+-    VFIOPCIDevice *vfio_pci = VFIO_PCI_BASE(pbdev->pdev);
++    VFIOPCIDevice *vfio_pci = VFIO_PCI_DEVICE(pbdev->pdev);
+ 
+     return vfio_get_device_info(vfio_pci->vbasedev.fd);
+ }
+diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
+index e2c309784f..efceae69de 100644
+--- a/hw/vfio-user/pci.c
++++ b/hw/vfio-user/pci.c
+@@ -234,9 +234,10 @@ static void vfio_user_pci_realize(PCIDevice *pdev, Error **errp)
+ {
+     ERRP_GUARD();
+     VFIOUserPCIDevice *udev = VFIO_USER_PCI(pdev);
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     const char *sock_name;
++
+     AddressSpace *as;
+     SocketAddress addr;
+     VFIOUserProxy *proxy;
+@@ -346,7 +347,7 @@ error:
+ static void vfio_user_instance_init(Object *obj)
+ {
+     PCIDevice *pci_dev = PCI_DEVICE(obj);
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(obj);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     device_add_bootindex_property(obj, &vdev->bootindex,
+@@ -371,7 +372,7 @@ static void vfio_user_instance_init(Object *obj)
+ 
+ static void vfio_user_instance_finalize(Object *obj)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(obj);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     if (vdev->msix != NULL) {
+@@ -387,7 +388,7 @@ static void vfio_user_instance_finalize(Object *obj)
+ 
+ static void vfio_user_pci_reset(DeviceState *dev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(dev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     vfio_pci_pre_reset(vdev);
+@@ -421,7 +422,7 @@ static void vfio_user_pci_set_socket(Object *obj, Visitor *v, const char *name,
+     VFIOUserPCIDevice *udev = VFIO_USER_PCI(obj);
+     bool success;
+ 
+-    if (VFIO_PCI_BASE(udev)->vbasedev.proxy) {
++    if (VFIO_PCI_DEVICE(udev)->vbasedev.proxy) {
+         error_setg(errp, "Proxy is connected");
+         return;
+     }
+@@ -464,7 +465,7 @@ static void vfio_user_pci_dev_class_init(ObjectClass *klass, const void *data)
+ 
+ static const TypeInfo vfio_user_pci_dev_info = {
+     .name = TYPE_VFIO_USER_PCI,
+-    .parent = TYPE_VFIO_PCI_BASE,
++    .parent = TYPE_VFIO_PCI_DEVICE,
+     .instance_size = sizeof(VFIOUserPCIDevice),
+     .class_init = vfio_user_pci_dev_class_init,
+     .instance_init = vfio_user_instance_init,
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 963cefc053..64f8750389 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -423,7 +423,7 @@ bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
+ VFIODevice *vfio_get_vfio_device(Object *obj)
+ {
+     if (object_dynamic_cast(obj, TYPE_VFIO_PCI)) {
+-        return &VFIO_PCI_BASE(obj)->vbasedev;
++        return &VFIO_PCI_DEVICE(obj)->vbasedev;
+     } else {
+         return NULL;
+     }
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 1fd087de3c..479def72c5 100644
+index 479def72c5..aa9d3e0354 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3912,7 +3912,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
-                                           "multifd channels");
+@@ -305,7 +305,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
+ 
+ static void vfio_intx_routing_notifier(PCIDevice *pdev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     PCIINTxRoute route;
+ 
+     if (vdev->interrupt != VFIO_INT_INTx) {
+@@ -660,7 +660,7 @@ void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIOMSIVector *vector;
+     int ret;
+     bool resizing = !!(vdev->nr_vectors < nr + 1);
+@@ -755,7 +755,7 @@ static int vfio_msix_vector_use(PCIDevice *pdev,
+ 
+ static void vfio_msix_vector_release(PCIDevice *pdev, unsigned int nr)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIOMSIVector *vector = &vdev->msi_vectors[nr];
+ 
+     trace_vfio_msix_vector_release(vdev->vbasedev.name, nr);
+@@ -1346,7 +1346,7 @@ static const MemoryRegionOps vfio_vga_ops = {
+  */
+ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIORegion *region = &vdev->bars[bar].region;
+     MemoryRegion *mmap_mr, *region_mr, *base_mr;
+     PCIIORegion *r;
+@@ -1392,7 +1392,7 @@ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+  */
+ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     uint32_t emu_bits = 0, emu_val = 0, phys_val = 0, val;
+ 
+@@ -1426,7 +1426,7 @@ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ void vfio_pci_write_config(PCIDevice *pdev,
+                            uint32_t addr, uint32_t val, int len)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     uint32_t val_le = cpu_to_le32(val);
+     int ret;
+@@ -3392,7 +3392,7 @@ bool vfio_pci_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
+ static void vfio_pci_realize(PCIDevice *pdev, Error **errp)
+ {
+     ERRP_GUARD();
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     int i;
+     char uuid[UUID_STR_LEN];
+@@ -3552,14 +3552,14 @@ error:
+ 
+ static void vfio_pci_finalize(Object *obj)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(obj);
+ 
+     vfio_pci_put_device(vdev);
  }
  
--static const TypeInfo vfio_pci_dev_info = {
-+static const TypeInfo vfio_pci_info = {
+ static void vfio_exitfn(PCIDevice *pdev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     vfio_unregister_req_notifier(vdev);
+@@ -3583,7 +3583,7 @@ static void vfio_exitfn(PCIDevice *pdev)
+ 
+ static void vfio_pci_reset(DeviceState *dev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(dev);
+ 
+     /* Do not reset the device during qemu_system_reset prior to cpr load */
+     if (cpr_is_incoming()) {
+@@ -3628,7 +3628,7 @@ post_reset:
+ static void vfio_pci_init(Object *obj)
+ {
+     PCIDevice *pci_dev = PCI_DEVICE(obj);
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(obj);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     device_add_bootindex_property(obj, &vdev->bootindex,
+@@ -3669,7 +3669,7 @@ static void vfio_pci_base_dev_class_init(ObjectClass *klass, const void *data)
+ }
+ 
+ static const TypeInfo vfio_pci_base_dev_info = {
+-    .name = TYPE_VFIO_PCI_BASE,
++    .name = TYPE_VFIO_PCI_DEVICE,
+     .parent = TYPE_PCI_DEVICE,
+     .instance_size = sizeof(VFIOPCIDevice),
+     .abstract = true,
+@@ -3758,7 +3758,7 @@ static const Property vfio_pci_dev_properties[] = {
+ #ifdef CONFIG_IOMMUFD
+ static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_DEVICE(obj);
+     vfio_device_set_fd(&vdev->vbasedev, str, errp);
+ }
+ #endif
+@@ -3914,7 +3914,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
+ 
+ static const TypeInfo vfio_pci_info = {
      .name = TYPE_VFIO_PCI,
-     .parent = TYPE_VFIO_PCI_BASE,
+-    .parent = TYPE_VFIO_PCI_BASE,
++    .parent = TYPE_VFIO_PCI_DEVICE,
      .class_init = vfio_pci_class_init,
-@@ -3970,7 +3970,7 @@ static void register_vfio_pci_dev_type(void)
-     vfio_pci_migration_multifd_transfer_prop.realized_set_allowed = true;
- 
-     type_register_static(&vfio_pci_base_dev_info);
--    type_register_static(&vfio_pci_dev_info);
-+    type_register_static(&vfio_pci_info);
-     type_register_static(&vfio_pci_nohotplug_dev_info);
- }
- 
+     .instance_init = vfio_pci_init,
+     .instance_finalize = vfio_pci_finalize,
 -- 
 2.43.0
 
