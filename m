@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AEABA0718
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 17:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CBEBA07ED
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 17:56:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1oD5-0007HR-Ev; Thu, 25 Sep 2025 11:48:43 -0400
+	id 1v1oJv-0002vk-VE; Thu, 25 Sep 2025 11:55:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v1oCw-0007Fi-PJ
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:48:37 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ id 1v1oJq-0002ur-40
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:55:42 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v1oCk-0005oE-0J
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:48:33 -0400
+ id 1v1oJl-0006sX-QH
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 11:55:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758815302; x=1790351302;
+ t=1758815737; x=1790351737;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=6jRnfbN8/31Fw5rEfraQVnTTPcvtsXf+CfbhRcCHwDI=;
- b=CH1gQMWxauHupwOICb8QnKJVmJDaFLoUisR7Cy8O2YvIR51QscLcMhX8
- EciwDRX6NHfur2CL3rQEowHZVup9jyWRTt0MU+2yu6q3aWKpJ38qeWpBL
- c/OvlVTDeCJIM9fTRjOwEEU8vpcLfljlfIrp1nQaQQ7jzeYszL1OV6eKI
- pohWsD+2Hb+YPpRSaqI591P+rDTpfyhq8NOydzpeIRNQ/rX7HbVEk6dvG
- b5fJsIB4axF8O1xT9PhjZnpO54D01SyCjeGMvvG1fm0zjZMW+DggPJHOJ
- kgEhAeYXH/7X8Oy0Em3hjLATzWAysDA589tDbrnhfrJ7vKhyUdazfuUK0 A==;
-X-CSE-ConnectionGUID: IArOiKsfQWCHzs5WrZEHjA==
-X-CSE-MsgGUID: fOS/onZ8TvihcjZqyNAOWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="60838819"
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; d="scan'208";a="60838819"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2025 08:48:13 -0700
-X-CSE-ConnectionGUID: VCemASL0SkyPxzDahHWoFw==
-X-CSE-MsgGUID: GWJO0FXkQ16UZ4Fmw65WbQ==
+ bh=ZjTIS1cmPArdo/fNffduXvO4bwpQS7mGZ23t9iv887M=;
+ b=RZrCmO9JJgrNAvkUxM9vycgTofH2a19xlLf5ReORz4UzmzEw4Cljf02o
+ fqfC8cMX13mOy4VYDbzzJgBEXbrXJ7Y9G8yk+NJ+YjtavfDQtN3TuMjKP
+ 1CEdmhxBAcJbLrNaYZdeWDFrUnmzy+r1YP+h7+rT0qwCeD0Z+qq/tgef4
+ YqIHCKGMinBPI9mTTMyTRlX4LxY3Fji0QBocFDTAlQ1eE0d5+ZiUDtMuJ
+ /akG96DIcZadqYiaB1QSeHyo/r00txtcDiaxiJ2bM/a8IJ8IuJgq6dxVR
+ 9vRK5H6siaRSPsinTelAm62TynSUqVR3mAxjA2NTaYhV754HPQwgLvFPG Q==;
+X-CSE-ConnectionGUID: 4PURw32uS868NwGYgS4Xvg==
+X-CSE-MsgGUID: Lr/LUfeXTJSmvo7/O9s9Iw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="48703471"
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; d="scan'208";a="48703471"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2025 08:55:10 -0700
+X-CSE-ConnectionGUID: uGnWCKJqQ6q7/dnnNRiBYQ==
+X-CSE-MsgGUID: tYLXBX1dS32WlD9EeaZFAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; d="scan'208";a="181375221"
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; d="scan'208";a="182530640"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 25 Sep 2025 08:48:13 -0700
-Date: Fri, 26 Sep 2025 00:10:10 +0800
+ by orviesa005.jf.intel.com with ESMTP; 25 Sep 2025 08:55:09 -0700
+Date: Fri, 26 Sep 2025 00:17:06 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, hector.cao@canonical.com, lk@c--e.de,
- berrange@redhat.com
-Subject: Re: [RFT PATCH v2 2/2] target/i386: add compatibility property for
- pdcm feature
-Message-ID: <aNVpYlFmo2dXgoSF@intel.com>
+ berrange@redhat.com, Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [RFT PATCH v2 0/2] Fix cross migration issue with missing
+ features: pdcm, arch-capabilities
+Message-ID: <aNVrAkx+ahn7ZRns@intel.com>
 References: <20250923104136.133875-1-pbonzini@redhat.com>
- <20250923104136.133875-3-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250923104136.133875-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250923104136.133875-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
@@ -66,7 +65,8 @@ X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,35 +82,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 23, 2025 at 12:41:36PM +0200, Paolo Bonzini wrote:
-> Date: Tue, 23 Sep 2025 12:41:36 +0200
+On Tue, Sep 23, 2025 at 12:41:34PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 23 Sep 2025 12:41:34 +0200
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [RFT PATCH v2 2/2] target/i386: add compatibility property for
->  pdcm feature
+> Subject: [RFT PATCH v2 0/2] Fix cross migration issue with missing
+>  features: pdcm, arch-capabilities
 > X-Mailer: git-send-email 2.51.0
 > 
-> From: Hector Cao <hector.cao@canonical.com>
+> Add two compatibility properties to restore legacy behavior of machine types
+> prior to QEMU 10.1.  Each of them addresses the two changes to CPUID:
 > 
-> The pdcm feature is supposed to be disabled when PMU is not
-> available. Up until v10.1, pdcm feature is enabled even when PMU
-> is off. This behavior has been fixed but this change breaks the
-> migration of VMs that are run with QEMU < 10.0 and expect the pdcm
-> feature to be enabled on the destination host.
+> - ARCH_CAPABILITIES should not be autoenabled when the CPU model specifies AMD
+>   as the vendor
 > 
-> This commit restores the legacy behavior for machines with version
-> prior to 10.1 to allow the migration from older QEMU to QEMU 10.1.
+> - specifying PDCM without PMU now causes an error, instead of being silently
+>   dropped in cpu_x86_cpuid.
 > 
-> Signed-off-by: Hector Cao <hector.cao@canonical.com>
-> Link: https://lore.kernel.org/r/20250910115733.21149-3-hector.cao@canonical.com
-> Fixes: e68ec298090 ("i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check", 2025-06-20)
-> [Move property from migration object to CPU. - Paolo]
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  target/i386/cpu.h |  6 ++++++
->  hw/i386/pc.c      |  1 +
->  target/i386/cpu.c | 15 ++++++++++++---
->  3 files changed, 19 insertions(+), 3 deletions(-)
+> Note, I only tested this lightly.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Sorry for late.
+
+I found the previous 2 fixes were merged into stable 10.0:
+
+24778b1c7ee7aca9721ed4757b0e0df0c16390f7
+3d26cb65c27190e57637644ecf6c96b8c3d246a3
+
+Should stable 10.0 revert these 2 fixes, to ensure migration
+compatibility?
+
+(+Michael)
+
+Regards,
+Zhao
 
 
