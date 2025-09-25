@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1B8B9E7CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 11:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D427CB9E7C7
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 11:48:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1iYJ-000184-16; Thu, 25 Sep 2025 05:46:15 -0400
+	id 1v1iYS-000196-3d; Thu, 25 Sep 2025 05:46:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1iYF-00016b-IW
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:46:11 -0400
+ id 1v1iYJ-00018i-AM
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:46:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1iXp-0001Zi-6c
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:46:10 -0400
+ id 1v1iXt-0001bS-H9
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 05:46:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758793542;
+ s=mimecast20190719; t=1758793547;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lhvlmbocLMImejtfkUQoIH3CBQ2wk54B4Lb6eRqTx5U=;
- b=HQxlqo2fJAP82LgD/oOvqHrCmnH/tQ8xmdFxkomnaYhmqLvsm+plq/0rr67IZQAoO8savc
- BMBC4O8EBO/KVeQQjvFItbRQR4aTmZguzsvIHxUr7oKCCn3yO4bviVOFkPleWowFUGfpQs
- NTkghu7NzDp443cNW6NrcZKIpIobKS4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=XvkLe5PlKeo0HdSyG7FFTgKImW+3jifmX4pZMoyAdkQ=;
+ b=NWYnNPN0WD2rotL+XpIkdCuBIZ8H2QOFW7W9flIvSWUBM42MNptBu7E7t+gcKitwBn/Ws2
+ ni7CLQw/joxQLWLqXKqYY3osUpHfnoWumUf0p2+gNRxqgun2he3Pl0scGv7BE6zZ/GaVaL
+ 9DxF6ULK6TGUphcm3iWG7+qYF6hohfM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-410-EoJm9mPwOkqu78JmdZ4qmg-1; Thu,
- 25 Sep 2025 05:45:37 -0400
-X-MC-Unique: EoJm9mPwOkqu78JmdZ4qmg-1
-X-Mimecast-MFC-AGG-ID: EoJm9mPwOkqu78JmdZ4qmg_1758793536
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-tUPuQASIN2CtD6daej_t6g-1; Thu,
+ 25 Sep 2025 05:45:43 -0400
+X-MC-Unique: tUPuQASIN2CtD6daej_t6g-1
+X-Mimecast-MFC-AGG-ID: tUPuQASIN2CtD6daej_t6g_1758793542
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 25C001955D48; Thu, 25 Sep 2025 09:45:36 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ECA18195605B; Thu, 25 Sep 2025 09:45:41 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.163])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B24C4300021A; Thu, 25 Sep 2025 09:45:30 +0000 (UTC)
+ id ACEE830002D1; Thu, 25 Sep 2025 09:45:36 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -60,10 +60,9 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, devel@lists.libvirt.org,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 08/23] log: avoid repeated prefix on incremental qemu_log
- calls
-Date: Thu, 25 Sep 2025 10:44:26 +0100
-Message-ID: <20250925094441.1651372-9-berrange@redhat.com>
+Subject: [PATCH v4 09/23] util: introduce some API docs for logging APIs
+Date: Thu, 25 Sep 2025 10:44:27 +0100
+Message-ID: <20250925094441.1651372-10-berrange@redhat.com>
 In-Reply-To: <20250925094441.1651372-1-berrange@redhat.com>
 References: <20250925094441.1651372-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -95,58 +94,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some code makes multiple qemu_log calls to incrementally emit
-a single message. Currently timestamps get prepended to all
-qemu_log calls, even those continuing a previous incomplete
-message.
+This addresses two key gotchas with the logging APIs:
 
-This changes the qemu_log so it skips adding a new line prefix,
-if the previous qemu_log call did NOT end with a newline.
+ * Safely outputting a single line of text using
+   multiple qemu_log() calls requires use of the
+   qemu_log_trylock/unlock functions to avoid
+   interleaving between threads
 
-Fixes: 012842c07552 (log: make '-msg timestamp=on' apply to all qemu_log usage)
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+ * Directly outputting to the FILE object returned
+   by qemu_log_trylock() must be discouraged because
+   it prevents the inclusion of configured log message
+   prefixes.
+
+Reported-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- util/log.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/qemu/log-for-trace.h | 35 ++++++++++++++++++++++++++++++++++-
+ include/qemu/log.h           | 26 ++++++++++++++++++++++++++
+ rust/util/src/log.rs         |  7 +++++++
+ 3 files changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/util/log.c b/util/log.c
-index abdcb6b311..2642a55c59 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -143,6 +143,12 @@ void qemu_log_unlock(FILE *logfile)
-     }
+diff --git a/include/qemu/log-for-trace.h b/include/qemu/log-for-trace.h
+index d47c9cd446..4e05b2e26f 100644
+--- a/include/qemu/log-for-trace.h
++++ b/include/qemu/log-for-trace.h
+@@ -29,7 +29,40 @@ static inline bool qemu_loglevel_mask(int mask)
+     return (qemu_loglevel & mask) != 0;
  }
  
-+/*
-+ * 'true' if the previous log message lacked a trailing '\n',
-+ * and thus the subsequent call must skip any prefix
+-/* main logging function */
++/**
++ * qemu_log: report a log message
++ * @fmt: the format string for the message
++ * @...: the format string arguments
++ *
++ * This will emit a log message to the current output stream.
++ *
++ * The @fmt string should normally represent a complete line
++ * of text, ending with a newline character.
++ *
++ * If intending to call this function multiple times to
++ * incrementally construct a line of text, locking must
++ * be used to ensure that output from different threads
++ * is not interleaved.
++ *
++ * This is achieved by calling qemu_log_trylock() before
++ * starting the log line; calling qemu_log() multiple
++ * times with the last call having a newline at the end
++ * of @fmt; finishing with a call to qemu_log_unlock().
++ *
++ * The FILE object returned by qemu_log_trylock() does
++ * not need to be used for outputting text directly,
++ * it is merely used to associate the lock.
++ *
++ *    FILE *f = qemu_log_trylock()
++ *
++ *    qemu_log("Something");
++ *    qemu_log("Something");
++ *    qemu_log("Something");
++ *    qemu_log("The end\n");
++ *
++ *    qemu_log_unlock(f);
++ *
 + */
-+static __thread bool incomplete;
+ void G_GNUC_PRINTF(1, 2) qemu_log(const char *fmt, ...);
+ 
+ #endif
+diff --git a/include/qemu/log.h b/include/qemu/log.h
+index aae72985f0..867fe327e4 100644
+--- a/include/qemu/log.h
++++ b/include/qemu/log.h
+@@ -41,7 +41,33 @@ bool qemu_log_separate(void);
+ 
+ /* Lock/unlock output. */
+ 
++/**
++ * Acquires a lock on the current log output stream.
++ * The returned FILE object must be passed to
++ * qemu_log_unlock() to later release the lock.
++ *
++ * This should be used to protect a sequence of calls
++ * to qemu_log(), if they are being used to incrementally
++ * output a single line of text. For qemu_log() calls which
++ * output a complete line of text it is not required to
++ * take explicit locks.
++ *
++ * The returned FILE object may be used to directly
++ * output log messages, however, doing so will prevent
++ * the inclusion of configured log message prefixes.
++ * It is thus recommended that this be used sparingly,
++ * only in cases where it is required to dump large
++ * data volumes. Use of qemu_log() is preferred for
++ * most output tasks.
++ *
++ * Returns: the current FILE if available, NULL on error
++ */
+ FILE *qemu_log_trylock(void) G_GNUC_WARN_UNUSED_RESULT;
 +
- void qemu_log(const char *fmt, ...)
- {
-     FILE *f;
-@@ -154,7 +160,7 @@ void qemu_log(const char *fmt, ...)
-      * was emitted if we are delayed acquiring the
-      * mutex
-      */
--    if (message_with_timestamp) {
-+    if (message_with_timestamp && !incomplete) {
-         g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
-         timestr = g_date_time_format_iso8601(dt);
-     }
-@@ -170,6 +176,7 @@ void qemu_log(const char *fmt, ...)
-         va_start(ap, fmt);
-         vfprintf(f, fmt, ap);
-         va_end(ap);
-+        incomplete = fmt[strlen(fmt) - 1] != '\n';
-         qemu_log_unlock(f);
-     }
- }
++/**
++ * Releases the lock on the log output, previously
++ * acquired by qemu_log_trylock().
++ */
+ void qemu_log_unlock(FILE *fd);
+ 
+ /* Logging functions: */
+diff --git a/rust/util/src/log.rs b/rust/util/src/log.rs
+index af9a3e9123..eaf493f0df 100644
+--- a/rust/util/src/log.rs
++++ b/rust/util/src/log.rs
+@@ -55,6 +55,13 @@ impl LogGuard {
+     ///     writeln!(log, "test");
+     /// }
+     /// ```
++    ///
++    /// Note that directly writing to the log output will prevent the
++    /// inclusion of configured log prefixes. It is thus recommended
++    /// that this be used sparingly, only in cases where it is required
++    /// to dump large data volumes. Use of [`log_mask_ln!()`](crate::log_mask_ln)
++    /// macro() is preferred for most output tasks.
++
+     pub fn new() -> Option<Self> {
+         let f = unsafe { bindings::qemu_log_trylock() }.cast();
+         NonNull::new(f).map(Self)
 -- 
 2.50.1
 
