@@ -2,87 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F9DB9F8FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 15:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA37BB9F413
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 14:32:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1lyp-0008Qi-5M; Thu, 25 Sep 2025 09:25:51 -0400
+	id 1v1l66-000553-Hw; Thu, 25 Sep 2025 08:29:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3CRrVaAgKCt4ZHUYIFEIGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--zhuyifei.bounces.google.com>)
- id 1v1jGV-0006uL-Ki
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 06:31:55 -0400
-Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3CRrVaAgKCt4ZHUYIFEIGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--zhuyifei.bounces.google.com>)
- id 1v1jGK-0003QD-6U
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 06:31:55 -0400
-Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-b55283ff3fcso643777a12.3
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 03:31:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1758796298; x=1759401098; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=YemKi91g7ARuyO0/fukWjxkMGSCeafJRb6DqN69yA+g=;
- b=v4tT0gDC+53vqJb7yekw6CHdgiOV4kWawRBdFFqDCAY3nQYyGGAkLyiSOmGCESgCti
- ZhNJrkXmz5DQL0q9wl26Nz2e04YLz1SmBCiEMtgUFIWoOTu6y0lQEQQH4STrrgWcDvT+
- ZRtIYcKHABFIpZsUcJm/Mpdt7kczElTyGyWRW6DhTPq6K4KIxeZ8tujg45JpJlw6DLv2
- PCGLtzKU4plOAYR8V/Te/462iW1zt6JWfP/cPKQ1qMSUbkmy3XlfLwU+FVS+95xOrBFS
- uMMWlfxl+D5vlWvNC2FhEsRUBNRvMdXuTOmDX+Xx42x+vVxUYT4Gr5Z5vo4ag9GQZFkp
- x3cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758796298; x=1759401098;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YemKi91g7ARuyO0/fukWjxkMGSCeafJRb6DqN69yA+g=;
- b=IDZSfs5QfuzIvP7kzvAisYIrEjEV/CxKGQFwjfw5XfQIHfdtHHrfaP1jW82ZgpHrlC
- kl3nLotVeAYrHOmCP+29JylMPN4x/EOjIDalFJN2n2H3rX35WIG7m6XNVYM7wjQ4nrjc
- uSIuEBF/Nek0zS0dsQHEks6igIxCcXByE521M66V4mZmB/NLbcFwypQiNPLdOPf1A3Cv
- 3SORzosvGVcO6OWcQ/vYimMP2OHDzGg7a/gKQ1f7C+aJvFJT738QfJPsB8GD4lxZ+zO9
- JpSf8dlLRZeq9AlBGA6b1kwCGe9sb4zeHFNFe0DpPdagwksiaHHNQ3+FS3pFFqdSJ2pB
- cK4Q==
-X-Gm-Message-State: AOJu0YxkE18pZgDGyFRRvViEjNpwlMLaOoxD3QW9iCJ0GgDi+hj0lOdX
- SnsoYgtqsjaboPvKTATnm3eHoT4ooLyH9JR7n6pIHLlekaIn9AVXKKI7o/BIbsqQQEViDPLi+fK
- aDXEf8Ba8GR5WCTYKxuB399BsZX+C9CnCfJYpNQ0itKVo7EjPipRHmHGieP9T/typmxLM4fQ0NG
- p0EzXUA2d/ZFAEiX28XlP6wgtJd8pv4lRP2ECNwu/2d0wGeQ==
-X-Google-Smtp-Source: AGHT+IF/XdGu8daZGR+d5C5TvYEzLCs2WJ6qY5IEQXsGcogJpG4Vq1M2fNNAW8Ww++EuAxvO1pvpikR9J/MzKg==
-X-Received: from pjbpq4.prod.google.com ([2002:a17:90b:3d84:b0:332:8246:26ae])
- (user=zhuyifei job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3a8b:b0:32e:1b61:309 with SMTP id
- 98e67ed59e1d1-3342a299f27mr3043852a91.23.1758796297773; 
- Thu, 25 Sep 2025 03:31:37 -0700 (PDT)
-Date: Thu, 25 Sep 2025 10:30:57 +0000
-In-Reply-To: <cover.1758794468.git.zhuyifei@google.com>
-Mime-Version: 1.0
-References: <cover.1758794468.git.zhuyifei@google.com>
-X-Mailer: git-send-email 2.51.0.536.g15c5d4f767-goog
-Message-ID: <2bacb9b24e9d337dbe48791aa25d349eb9c52c3a.1758794468.git.zhuyifei@google.com>
-Subject: [PATCH 2/2] i386/tcg/smm_helper: Properly apply DR values on SMM
- entry / exit
-From: YiFei Zhu <zhuyifei@google.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- qemu-stable@nongnu.org, unvariant.winter@gmail.com, 
- YiFei Zhu <zhuyifei1999@gmail.com>, YiFei Zhu <zhuyifei@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=3CRrVaAgKCt4ZHUYIFEIGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--zhuyifei.bounces.google.com;
- helo=mail-pg1-x549.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1v1l60-00054j-9m
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 08:29:12 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1v1l5u-00005s-SA
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 08:29:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=zT+mFifkx6mrfoJu5Ra9oCKfvTQW3XId3qS52KTKNJQ=; b=Q39TYL5f1w8DDZ/4Hr0+bKXkO+
+ qyUy5CoLPEoRktIMJ0FRgnh4DWwQ5Td7fALm7zLBRSOT+PX7cUuEkvT7erlfYwV+J4rC6UiMy3++7
+ jRGniwSTxofK8k+d1vi1DU2FpypuHIRO05MB/MwpIbSdjLnEdJV+fCOZVqtmeBsJbQbF9AGFd+nOh
+ 042VdZVvuGS9mEGMWHiw2sZijGnGJWmJplaav0UvmDSExT3Jw17yAn5ZOAWE76L+AVME2e3oGLVH2
+ 9XcjAzBYzhg7BX0tTbwXKFIDlKSFFVns85FUMdlAwE0iGCkYxTP7dWwimUn3Ju7uA9L3gm3bIYR8T
+ uGh5+iWNkNLjphCU3sxreRosOy5zMCULSjjLEw2YhGVaFUqKx5zIDlAfwZMVYrh/nXWF51FZJfTca
+ apwMQtQabmcxJQq8gHNCPZyyx/BtgaxBhCooDJ8rknaUE747gyNHZGktAgsNuC+T4nABZZtHgi/t5
+ Mh3foZRoC5ziIy74Qh7rUkvr0Byxr6M9YIVjcGPNunpQIMBSOnFo8CiGR5jFH74c+sRH8qzoZbGMJ
+ 5zVLx/SOHG8sTBPLrZBM97JVkLoDc5NTm3Er7pFVMm19NPNUIzxwUgkCKq2PvcAPOaTRNghCg617D
+ Tx3/VHtTNY2kbWUx7/GeuPTy423pRYvE5wzVAKAK0=;
+Received: from [217.155.175.48] (helo=cheesecake.fritz.box)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1v1l3c-0008Tc-L5; Thu, 25 Sep 2025 13:26:48 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: pbonzini@redhat.com, fam@euphon.net, farosas@suse.de, lvivier@redhat.com,
+ qemu-devel@nongnu.org
+Date: Thu, 25 Sep 2025 13:28:44 +0100
+Message-Id: <20250925122846.527615-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 217.155.175.48
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 0/2] esp.c: fix esp_cdb_ready() FIFO wraparound limit
+ calculation
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 25 Sep 2025 09:25:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,57 +74,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-do_smm_enter and helper_rsm sets the env->dr, but does not sync the
-values with cpu_x86_update_dr7. A malicious kernel may control the
-instruction pointer in SMM by setting a breakpoint on the SMI
-entry point, and after do_smm_enter cpu->breakpoints contains the
-stale breakpoint; and because IDT is not reloaded upon SMI entry,
-the debug exception handler controlled by the malicious kernel
-is invoked.
+This small series fixes a bug in the ESP cmdfifo FIFO wraparound limit
+calculation as reported at https://gitlab.com/qemu-project/qemu/-/issues/3082, as
+well as adding the reported test case to qtest.
 
-Fixes: 01df040b5247 ("x86: Debug register emulation (Jan Kiszka)")
-Reported-by: unvariant.winter@gmail.com
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
----
- target/i386/tcg/system/smm_helper.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+In normal usage the cmdfifo does not overflow, however the test case reported by
+the fuzzer was enough to show that the FIFO overflow check in esp_cdb_ready()
+was not working correctly.
 
-diff --git a/target/i386/tcg/system/smm_helper.c b/target/i386/tcg/system/smm_helper.c
-index 251eb7856c..fb028a8272 100644
---- a/target/i386/tcg/system/smm_helper.c
-+++ b/target/i386/tcg/system/smm_helper.c
-@@ -168,7 +168,7 @@ void do_smm_enter(X86CPU *cpu)
-                        env->cr[0] & ~(CR0_PE_MASK | CR0_EM_MASK | CR0_TS_MASK |
-                                       CR0_PG_MASK));
-     cpu_x86_update_cr4(env, 0);
--    env->dr[7] = 0x00000400;
-+    helper_set_dr(env, 7, 0x00000400);
- 
-     cpu_x86_load_seg_cache(env, R_CS, (env->smbase >> 4) & 0xffff, env->smbase,
-                            0xffffffff,
-@@ -233,8 +233,8 @@ void helper_rsm(CPUX86State *env)
-     env->eip = x86_ldq_phys(cs, sm_state + 0x7f78);
-     cpu_load_eflags(env, x86_ldl_phys(cs, sm_state + 0x7f70),
-                     ~(CC_O | CC_S | CC_Z | CC_A | CC_P | CC_C | DF_MASK));
--    env->dr[6] = x86_ldl_phys(cs, sm_state + 0x7f68);
--    env->dr[7] = x86_ldl_phys(cs, sm_state + 0x7f60);
-+    helper_set_dr(env, 6, x86_ldl_phys(cs, sm_state + 0x7f68));
-+    helper_set_dr(env, 7, x86_ldl_phys(cs, sm_state + 0x7f60));
- 
-     cpu_x86_update_cr4(env, x86_ldl_phys(cs, sm_state + 0x7f48));
-     cpu_x86_update_cr3(env, x86_ldq_phys(cs, sm_state + 0x7f50));
-@@ -268,8 +268,8 @@ void helper_rsm(CPUX86State *env)
-     env->regs[R_EDX] = x86_ldl_phys(cs, sm_state + 0x7fd8);
-     env->regs[R_ECX] = x86_ldl_phys(cs, sm_state + 0x7fd4);
-     env->regs[R_EAX] = x86_ldl_phys(cs, sm_state + 0x7fd0);
--    env->dr[6] = x86_ldl_phys(cs, sm_state + 0x7fcc);
--    env->dr[7] = x86_ldl_phys(cs, sm_state + 0x7fc8);
-+    helper_set_dr(env, 6, x86_ldl_phys(cs, sm_state + 0x7fcc));
-+    helper_set_dr(env, 7, x86_ldl_phys(cs, sm_state + 0x7fc8));
- 
-     env->tr.selector = x86_ldl_phys(cs, sm_state + 0x7fc4) & 0xffff;
-     env->tr.base = x86_ldl_phys(cs, sm_state + 0x7f64);
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+
+Mark Cave-Ayland (2):
+  esp.c: fix esp_cdb_ready() FIFO wraparound limit calculation
+  qtest/am53c974-test: add additional test for cmdfifo overflow
+
+ hw/scsi/esp.c               |  6 ++++--
+ tests/qtest/am53c974-test.c | 40 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 2 deletions(-)
+
 -- 
-2.51.0.536.g15c5d4f767-goog
+2.39.5
 
 
