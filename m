@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAFFBA2E85
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DB4BA2E39
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:13:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23YT-0007ID-Ut; Fri, 26 Sep 2025 04:11:51 -0400
+	id 1v23Yl-0007PR-Vx; Fri, 26 Sep 2025 04:12:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23YO-0007HL-Lc; Fri, 26 Sep 2025 04:11:44 -0400
+ id 1v23YW-0007Mz-SD; Fri, 26 Sep 2025 04:11:53 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23YG-0000Jp-NR; Fri, 26 Sep 2025 04:11:43 -0400
+ id 1v23YT-0000N0-8l; Fri, 26 Sep 2025 04:11:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6A97E157D51;
+ by isrv.corpit.ru (Postfix) with ESMTP id 79AE7157D52;
  Fri, 26 Sep 2025 11:10:31 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7E386290C35;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8D2B7290C36;
  Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 09/60] hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ
- objects
-Date: Fri, 26 Sep 2025 11:09:37 +0300
-Message-ID: <20250926081031.2214971-9-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Yan Vugenfirer <yvugenfi@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 10/60] qga/installer: Remove QGA VSS if QGA
+ installation failed
+Date: Fri, 26 Sep 2025 11:09:38 +0300
+Message-ID: <20250926081031.2214971-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,94 +58,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 
-In stm32f250_soc_initfn() we mostly use the standard pattern
-for child objects of calling object_initialize_child(). However
-for s->adc_irqs we call object_new() and then later qdev_realize(),
-and we never unref the object on deinit. This causes a leak,
-detected by ASAN on the device-introspect-test:
+When QGA Installer failed to install QGA service but install
+QGA VSS provider, provider should be removed before installer
+exits. Otherwise QGA VSS will has broken infomation and
+prevent QGA installation in next run.
 
-Indirect leak of 10 byte(s) in 1 object(s) allocated from:
-    #0 0x5b9fc4789de3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (BuildId: 267a2619a026ed91c78a07b1eb2ef15381538efe)
-    #1 0x740de3f28b09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #2 0x740de3f3e4d8 in g_strdup (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x784d8) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #3 0x5b9fc70159e1 in g_strdup_inline /usr/include/glib-2.0/glib/gstrfuncs.h:321:10
-    #4 0x5b9fc70159e1 in object_property_try_add /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1276:18
-    #5 0x5b9fc7015f94 in object_property_add /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1294:12
-    #6 0x5b9fc701b900 in object_add_link_prop /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:2021:10
-    #7 0x5b9fc701b3fc in object_property_add_link /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:2037:12
-    #8 0x5b9fc4c299fb in qdev_init_gpio_out_named /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/core/gpio.c:90:9
-    #9 0x5b9fc4c29b26 in qdev_init_gpio_out /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/core/gpio.c:101:5
-    #10 0x5b9fc4c0f77a in or_irq_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/core/or-irq.c:70:5
-    #11 0x5b9fc70257e1 in object_init_with_type /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:428:9
-    #12 0x5b9fc700cd4b in object_initialize_with_type /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:570:5
-    #13 0x5b9fc700e66d in object_new_with_type /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:774:5
-    #14 0x5b9fc700e750 in object_new /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:789:12
-    #15 0x5b9fc68b2162 in stm32f205_soc_initfn /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/stm32f205_soc.c:69:26
-
-Switch to using object_initialize_child() like all our
-other child objects for this SoC object.
-
-Cc: qemu-stable@nongnu.org
-Fixes: b63041c8f6b ("STM32F205: Connect the ADC devices")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250821154229.2417453-1-peter.maydell@linaro.org
-(cherry picked from commit 2e27650bddd35477d994a795a3b1cb57c8ed5c76)
+Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250825143155.160913-1-kkostiuk@redhat.com
+Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+(cherry picked from commit 85ff0e956bf26a93c92e4dca8f6257613269a0cf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/stm32f205_soc.c b/hw/arm/stm32f205_soc.c
-index 229af7fb10..e3c7203c6e 100644
---- a/hw/arm/stm32f205_soc.c
-+++ b/hw/arm/stm32f205_soc.c
-@@ -66,7 +66,7 @@ static void stm32f205_soc_initfn(Object *obj)
-                                 TYPE_STM32F2XX_TIMER);
-     }
+diff --git a/qga/installer/qemu-ga.wxs b/qga/installer/qemu-ga.wxs
+index df572adb4a..32b8308728 100644
+--- a/qga/installer/qemu-ga.wxs
++++ b/qga/installer/qemu-ga.wxs
+@@ -151,6 +151,14 @@
+               Return="check"
+               >
+     </CustomAction>
++    <CustomAction Id="UnRegisterCom_Rollback"
++              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMUnregister'
++              Execute="rollback"
++              Property="rundll"
++              Impersonate="no"
++              Return="check"
++              >
++    </CustomAction>
+     <?endif?>
  
--    s->adc_irqs = OR_IRQ(object_new(TYPE_OR_IRQ));
-+    object_initialize_child(obj, "adc-irq-orgate", &s->adc_irqs, TYPE_OR_IRQ);
+     <Feature Id="QEMUFeature" Title="QEMU Guest Agent" Level="1">
+@@ -174,8 +182,19 @@
  
-     for (i = 0; i < STM_NUM_ADCS; i++) {
-         object_initialize_child(obj, "adc[*]", &s->adc[i], TYPE_STM32F2XX_ADC);
-@@ -171,12 +171,12 @@ static void stm32f205_soc_realize(DeviceState *dev_soc, Error **errp)
-     }
- 
-     /* ADC 1 to 3 */
--    object_property_set_int(OBJECT(s->adc_irqs), "num-lines", STM_NUM_ADCS,
-+    object_property_set_int(OBJECT(&s->adc_irqs), "num-lines", STM_NUM_ADCS,
-                             &error_abort);
--    if (!qdev_realize(DEVICE(s->adc_irqs), NULL, errp)) {
-+    if (!qdev_realize(DEVICE(&s->adc_irqs), NULL, errp)) {
-         return;
-     }
--    qdev_connect_gpio_out(DEVICE(s->adc_irqs), 0,
-+    qdev_connect_gpio_out(DEVICE(&s->adc_irqs), 0,
-                           qdev_get_gpio_in(armv7m, ADC_IRQ));
- 
-     for (i = 0; i < STM_NUM_ADCS; i++) {
-@@ -187,7 +187,7 @@ static void stm32f205_soc_realize(DeviceState *dev_soc, Error **errp)
-         busdev = SYS_BUS_DEVICE(dev);
-         sysbus_mmio_map(busdev, 0, adc_addr[i]);
-         sysbus_connect_irq(busdev, 0,
--                           qdev_get_gpio_in(DEVICE(s->adc_irqs), i));
-+                           qdev_get_gpio_in(DEVICE(&s->adc_irqs), i));
-     }
- 
-     /* SPI 1 and 2 */
-diff --git a/include/hw/arm/stm32f205_soc.h b/include/hw/arm/stm32f205_soc.h
-index 4f4c8bbebc..46eda3403a 100644
---- a/include/hw/arm/stm32f205_soc.h
-+++ b/include/hw/arm/stm32f205_soc.h
-@@ -59,7 +59,7 @@ struct STM32F205State {
-     STM32F2XXADCState adc[STM_NUM_ADCS];
-     STM32F2XXSPIState spi[STM_NUM_SPIS];
- 
--    OrIRQState *adc_irqs;
-+    OrIRQState adc_irqs;
- 
-     MemoryRegion sram;
-     MemoryRegion flash;
+     <InstallExecuteSequence>
+       <?ifdef var.InstallVss?>
+-      <Custom Action="UnRegisterCom" After="StopServices">Installed</Custom>
+-      <Custom Action="RegisterCom" After="InstallServices">NOT REMOVE</Custom>
++        <!-- Use explicit Sequence number to provide an absolute position in the sequence-->
++        <!-- This is needed to set "UnRegisterCom_Rollback" before "RegisterCom" and after "InstallFiles"-->
++        <!-- but, Wix detect this double condition incorrectly -->
++
++        <!-- UnRegisterCom_Rollback (for install rollback): at 5849, right before RegisterCom (5850)-->
++        <!-- Runs only if the installation fails and rolls back-->
++        <Custom Action="UnRegisterCom_Rollback" Sequence="5849">NOT REMOVE</Custom>
++
++        <!-- RegisterCom (for install): at 5850, right after InstallFiles (5849) (old: After="InstallServices")-->
++        <Custom Action="RegisterCom" Sequence="5850">NOT REMOVE</Custom>
++
++        <!-- UnRegisterCom (for uninstall): at 1901, right after StopServices (1900) (old: After="StopServices")-->
++        <Custom Action="UnRegisterCom" Sequence="1901">Installed</Custom>
+       <?endif?>
+     </InstallExecuteSequence>
+   </Product>
 -- 
 2.47.3
 
