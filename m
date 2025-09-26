@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C449CBA2098
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 02:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E8EBA2092
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 02:14:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1w4J-0002KT-3D; Thu, 25 Sep 2025 20:12:12 -0400
+	id 1v1w4r-0002Ur-2v; Thu, 25 Sep 2025 20:12:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1w4F-0002Jz-3J
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 20:12:07 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1v1w4Z-0002Q4-E3
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 20:12:30 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1w3x-0005EP-Jm
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 20:12:06 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-267facf9b58so12198775ad.2
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 17:11:43 -0700 (PDT)
+ id 1v1w3z-0005Ed-GZ
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 20:12:25 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b5515eaefceso1504062a12.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 17:11:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758845500; x=1759450300; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758845501; x=1759450301; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vivjIlgr13Ze+mKb52uWp8aOAE5om3WBoS6OrJZHKBg=;
- b=baszOTmXVnjzRjc8x04DckY/CBOM17NZf8NLOECbjCS01Jd7e0NavT6Buq5ZmzGw5B
- j43ayCGGdXdGCHP3ZYDmEhCLivBdBKfDchTzvK0SLN2rgQ0UPtxhYK0Xri9Rt34/kizR
- dYJuD0HgN0j4tlmyO+3OdsvB71K0ymzY6k3PJiPrp6fULp0OpUsP3E6/79GSTyf0CAgv
- BrGigVfuKbhp38nVQiLPBFQZ1b79r3y1GEvYaeqoCoIXlnPTLke7N2UREESRIn0WZ89T
- XKk/jgEkYmkFDey6GzOMlIRPw8O9yAtlbVNq8IQ4KDpbtx78pTdyN3alJsZgSgNwU4ec
- GsmQ==
+ bh=3qDnKsSaswSY9Uz2CP7z+gEIsVNNGoF8/gWfXHJioIQ=;
+ b=UcbNyaovhvPhrm82K6gk/BCbqxiD7TAFFF6pNChrc64yPouHGBCoYRIL4wVZmolqJ1
+ VpLIsoSk+ym5cyT6lmg0D5Ye1BMVzCn8vz0nh+K7EtjsB+mjepodbYgkgy43m6+8A6jK
+ 9vjfgfDi07Q1ok5WkTa3+5gmXEaNAT1r0vGt2jZk2vVYEjZZQbH2ELpI73r6Qc/bYGa8
+ IOM9j+1iR/GJ2WL6vGG2jqXwpinLibsVaKJsw4SMTMciAidjLE2gc+Zx2MvJF/m0RBWB
+ cqG/OJP/1I/FdEAG5dg2XVwv+LzVhERzIGjqrBBrg6z6TGMHPbZbfaHahieTz9SfKLeI
+ 598A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758845500; x=1759450300;
+ d=1e100.net; s=20230601; t=1758845501; x=1759450301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vivjIlgr13Ze+mKb52uWp8aOAE5om3WBoS6OrJZHKBg=;
- b=AZK5FdlKofTjOlYjYJp+yhK3zFEhksnW33WjrtarmcW6glYkRxC3423jOdl1LRrpse
- 2U5zCxPzcPIMMUE+gkukvpP2xkU0eI4dDG2X8I5yXkwzuj96ClpAtPGbhaD6386Bw/HN
- IKaAMnhWlpH6vdFoP5bFGHJfzv1nVCQF3GX0LJQKpNYAgRqAjFSimSsQMTYNTIGIVk9/
- JNWBPMKXF7UN34GhNE93RoGkq2a7OKU5dvacNnlp+yUIuEekAjLjHy2bdWD9n5bJJCdr
- PK+chGxtcd7mCk3dE7kNKL36gRviO5L5/Zb7LwjSdWinQlPA7ir+xQNMbCBHWfKn1BaF
- 62Ag==
-X-Gm-Message-State: AOJu0Yx0y/7JhuxNrkr0Z7WpKV6rJLePU2Fl4Jh4RuhSU4JAgGVbk0du
- NIo2Y0NpjtcJjnfP3ydHXibfIXTBshq6qQoTaiJ4poKHqmx4PwjglE9BDbvHrZv+qYnFah5sTj1
- Q/cRD
-X-Gm-Gg: ASbGncsbAtsw2HpiFvcTuCIwCRSK2QHMylGWLp9qlA1eUfD+WZKsWdQ1a5te+mwdjPN
- KoutYMQUdH85JI74mwrN5/75pipqgCXY5Hi/psLxXNHJ3IIsba3bQZrYwZIVnn30deheYCXGhai
- giJtYSlAswtTX4XJIUgks5gbUJazYltSLltKSz9gCNP7uyCL5WfXoNJ7fIlLc5zNa0VYr+RKfFO
- o+ykACSKXPmCNEpN+LxLCAGJlEboMSWgZMdaJaiLdA/kfo5xWBnAyPjRJbsqSe8eVPOl2oqrhij
- t4yl/A53ym5LD7TgbpRL1IdqU/P4S/Jkhmz3mLfg7CuSsq/ZkY2MJzXS5jdujCL3ey/PuxzvliU
- VN4vwhCNb9IKsgg46pjZWhFQo9Vge
-X-Google-Smtp-Source: AGHT+IGH/3kdWmq2FYwlpP7OGirtprHW2mLA5VoswuNNwSUMWqomVuOkrEJWhp0+IM6eLHSu3D1jWA==
-X-Received: by 2002:a17:902:e54b:b0:26d:e984:8157 with SMTP id
- d9443c01a7336-27ed4a08e9emr47184165ad.8.1758845500094; 
+ bh=3qDnKsSaswSY9Uz2CP7z+gEIsVNNGoF8/gWfXHJioIQ=;
+ b=Ntak3M99NOnxukgzCcWGfA5LKA+7Q2TnZSmjXmoXZ+eKkVq8aVXd51IJsQCyHhngnY
+ FwZ68v9NUzwv3T+y+YRXjRInnZhZg/srnX9sOXuCkp39Y+SE/WC4P9GB+6MMioDzCDbl
+ 0ji45fw5sjdhib4VSxiiO3dtocHafLh28UIxzLJ2Q9u32OWgaOwyGVVWasYdUSV9tQEF
+ FfLcEIuzJjh5sQ/+ngCce62nG5XyoXQVTu5bVLwh2s5N8S1/wbiCEYin8/x5pQNDfgBo
+ slVKDY49MzgPXzhD2ZS43Nzar0hDzY8igRPQFa8v5gvPspwZNn/JSDe1cXTXlHFD0YZ4
+ gCdg==
+X-Gm-Message-State: AOJu0YxFiu2tmvceAl3aLJM/r/8cQMYvGiUqyU/lvBYOOfIghk32VNnJ
+ 5L84EFyr7e8LU6Q/n6FVYoSiWue9dY0buyW61gmVR9OTTb7V7Av65UeOg7x5GCy6l3yZS2FNsay
+ BsLC1
+X-Gm-Gg: ASbGnctGE/mwLEHy+PuFqobnf2yS+7MJc3i+fWwg7eUDpXQ4qBGIoJ+3fhPXfYEOe+T
+ ymUkY4PCpewjTqh3b1GHB0k0AmJbZX5QmskAMmRtELgW3OmVjymI23lr7Ah0p8OEV/vn4XdogYN
+ yRunonKnnZDkIzKjw4vqhRLCC6ujTeA6NjJkdiXcNZN/KrSOF1BQVnZhMNU74tE2qBmvjxAMtUe
+ gIa3heylcZa+GX0iPNZL5hmzRnDfYbfZPTMROrioWUyy7FaspVf6bH7oy0r7XGKr41vmlrEcGEp
+ 0Sh6Hqji+/d6WMyxTNvFhLHKJMX5Y0g25jS7zmYdJtSdTWxHnlPiX5ZGr2uHQ3ZnRWTk8i9QBM/
+ izh5Q0ty/NrHDk0aIboUjmpvk0S5J
+X-Google-Smtp-Source: AGHT+IEGo8UYQVKhFIHiqS8Y/vZCvy+mA+2Qi0b2KKoAd/ZMM/9xKj91Q4FtSrwtKpjOJE6wxOYMPQ==
+X-Received: by 2002:a17:903:3d0e:b0:277:3488:787e with SMTP id
+ d9443c01a7336-27ed49b85d6mr54700085ad.12.1758845500948; 
  Thu, 25 Sep 2025 17:11:40 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-27ed6ac37efsm35829425ad.137.2025.09.25.17.11.39
+ d9443c01a7336-27ed6ac37efsm35829425ad.137.2025.09.25.17.11.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Sep 2025 17:11:39 -0700 (PDT)
+ Thu, 25 Sep 2025 17:11:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 06/10] target/arm: Implement GPT_NonSecureOnly
-Date: Thu, 25 Sep 2025 17:11:30 -0700
-Message-ID: <20250926001134.295547-7-richard.henderson@linaro.org>
+Subject: [PATCH 07/10] target/arm: Implement SPAD, NSPAD, RLPAD
+Date: Thu, 25 Sep 2025 17:11:31 -0700
+Message-ID: <20250926001134.295547-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926001134.295547-1-richard.henderson@linaro.org>
 References: <20250926001134.295547-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,46 +96,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These bits disable all access to a particular address space.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ target/arm/ptw.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 3df5d4da12..56a3cd8fa0 100644
+index 56a3cd8fa0..36917be83e 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -318,6 +318,7 @@ static bool regime_translation_disabled(CPUARMState *env, ARMMMUIdx mmu_idx,
+@@ -387,7 +387,25 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
+     l0gptsz = 30 + FIELD_EX64(gpccr, GPCCR, L0GPTSZ);
  
- static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
-                                      ARMSecuritySpace pspace,
-+                                     ARMSecuritySpace ss,
-                                      ARMMMUFaultInfo *fi)
- {
-     MemTxAttrs attrs = {
-@@ -490,6 +491,13 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
-             return true;
-         }
-         break;
-+    case 0b1101: /* non-secure only */
-+        /* aa64_rme_gpc2 was checked in gpccr_write */
-+        if (FIELD_EX64(gpccr, GPCCR, NSO)) {
-+            return (pspace == ARMSS_NonSecure &&
-+                    (ss == ARMSS_NonSecure || ss == ARMSS_Root));
+     /*
+-     * GPC Priority 2: Secure, Realm or Root address exceeds PPS.
++     * GPC Priority 2: Access to Secure, NonSecure or Realm is prevented
++     * by one of the GPCCR_EL3 address space disable bits (R_TCWMD).
++     * All of these bits are checked vs aa64_rme_gpc2 in gpccr_write.
++     */
++    {
++        static const uint8_t disable_masks[4] = {
++            [ARMSS_Secure] = R_GPCCR_SPAD_MASK,
++            [ARMSS_NonSecure] = R_GPCCR_NSPAD_MASK,
++            [ARMSS_Root] = 0,
++            [ARMSS_Realm] = R_GPCCR_RLPAD_MASK,
++        };
++
++        if (gpccr & disable_masks[pspace]) {
++            goto fault_fail;
 +        }
-+        goto fault_walk;
-     default:
++    }
++
++    /*
++     * GPC Priority 3: Secure, Realm or Root address exceeds PPS.
+      * R_CPDSB: A NonSecure physical address input exceeding PPS
+      * does not experience any fault.
+      */
+@@ -398,7 +416,7 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
+         goto fault_size;
+     }
+ 
+-    /* GPC Priority 3: the base address of GPTBR_EL3 exceeds PPS. */
++    /* GPC Priority 4: the base address of GPTBR_EL3 exceeds PPS. */
+     tableaddr = env->cp15.gptbr_el3 << 12;
+     if (tableaddr & ~pps_mask) {
+         goto fault_size;
+@@ -502,6 +520,7 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
          goto fault_walk; /* reserved */
      }
-@@ -3553,7 +3561,7 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
-         return true;
-     }
-     if (!granule_protection_check(env, result->f.phys_addr,
--                                  result->f.attrs.space, fi)) {
-+                                  result->f.attrs.space, ptw->in_space, fi)) {
-         fi->type = ARMFault_GPCFOnOutput;
-         return true;
-     }
+ 
++ fault_fail:
+     fi->gpcf = GPCF_Fail;
+     goto fault_common;
+  fault_eabt:
 -- 
 2.43.0
 
