@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D20BA2A8F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 09:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 881B2BA2A92
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 09:14:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v22c7-0000TO-FL; Fri, 26 Sep 2025 03:11:32 -0400
+	id 1v22bc-0007yy-B3; Fri, 26 Sep 2025 03:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1v22aY-0006s2-1N; Fri, 26 Sep 2025 03:09:54 -0400
-Received: from mail-centralusazlp170100005.outbound.protection.outlook.com
- ([2a01:111:f403:c111::5] helo=DM1PR04CU001.outbound.protection.outlook.com)
+ id 1v22aT-0006l9-PJ; Fri, 26 Sep 2025 03:09:50 -0400
+Received: from mail-southcentralusazlp170110003.outbound.protection.outlook.com
+ ([2a01:111:f403:c10d::3] helo=SN4PR0501CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1v22aD-0006gq-7N; Fri, 26 Sep 2025 03:09:53 -0400
+ id 1v22aF-0006gs-Gi; Fri, 26 Sep 2025 03:09:48 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C1WSfL2jtibkoH1aFxMzAw3BRKHwLtMM6pbjMc/vVCvN+O1ent5jfqWEXjjFl2nDoRtCHN1RgbMEpDFARxE4sAxWIPH2CAOq9TeqEd935AQrrLYXasrucf8q/hwKHvugDiT95thq48JGcqYF1Z6KXUcrrsbttBEw88PNXLFevc740OOlL5DBllY0nsMgzXc3JcW3Z2Dr/Y8nu0GXBuvSKB/MVqzg74XGsH6hBam2qLF/oyBUC11jBmv4otwFIzWR1ZNpdW6+xkvrd7e3b46I6xLZTfYKBNf4w7t2jf0wTlx+8YL8CBxzN4Mo6VMZuD/rn+LrXFzu+LIQQIdI7O9WoA==
+ b=i066dFY2GBLhnT43JQTT9vy2P4WbXGJwTDr25JqUFs+2qaHwYn5W7hP2Aro1V2VrH1CtR1SkzdC6GXDWpZlDjICDxoTDVSNACgFRvnx0AymulVGkx0h6xpzLvMozZHjbZguJrm6J2GUqfeP9oxKRgSXQHKeuguGF2Sm2fCLyXRbvnzQJ1V714VtoB6qn4IVr4fWn3citf/OQHgtBBhQieE18GKOVitYA/bWJvotKqX0pOY6fvUYWHTACSi0j8ldqYh0HrfzNJxZzkSU+m6gB5OekXY0XMj5fMAqVqHzkmjk0DtDv6shRvDTNVXX5bo+ySbiiQC5ppmfRBcjDu8Uqpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=arXFpiSgamUjWgkPJnIAyfINvAhfm7l22v2b4uLfKQ0=;
- b=IQw9dbeT/APzK1bk7vej/gQUyfIPukgWyP0HrbJw4ocM5SIsnhEBAQg0cksRESyRaOio82hu/sVmOKLwSgErtfFJCkj+BiMXVxHKeOsjnbXgf1AMhQTWSA/8PnToAood/r1c7PjCpNeaTqKCK4v21xQ/5Q5idr+cFuGyvFFySqczToGB2awftNVlAoAZ+yxtRuZf44ZwxqVVGoSekheHV+r4chfWQH1BaRQDf+tpG92IuzDS8Fxh7ZMHk7XyQY8ez694AsYcSn4rt1WmnbtJ2X0GGiU+MFzNrC1p47pluLh+Lt5EZlCX5IJG7OvcOb0TDahNFJBncb0sKcWxQz4ECA==
+ bh=YlJDcseIU8su1ldR01v/SuSzsm9Bl46VEStISTBwrjU=;
+ b=nMI2geo9P2dBrTGjG2jmbFSNfiq66ymqiRoD9MfgLjOTkHENXm8JiSnYw4gZAyX78Scsn28y0C0MfMyw7BqQUR4KWZNEyqvNpIpmNCGN9J2QwCw9kCHQWtUOp6orT71JFAp67dUS7G2f7kZz2sbDPzTlc7spKYvJmAtqluGZC5dMXoy0fli7CCwA40b0eheYVSSSDadsm4CcpwFEPkhI4iv6UAnPaCHkmofPBjWIGS686nLyLfvENzX9XPY/uXfpbB+MtxyJM8TlsK7jQtZjgDU7ZY3rYn3VSQf+QOAImnIUjx+b6ejtDFGja8WdgCreCHs60kw8py6BbhYpsm3C1Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=arXFpiSgamUjWgkPJnIAyfINvAhfm7l22v2b4uLfKQ0=;
- b=I6vQ6VALjufJ1nlaThPiP0qZfkGyFe41BAWgMxjoFXlxBWYp1Ff4iM43iNmBaNkrPanPv9FuEPNrloyqlQbxI/WNTAsNyzXoHNDUq55WC1h9nS/rVkvAmvEl1rSRx6WMvMEHvDdua6SVLUrIBx26btnXr37USkxFbVgyiuvlcyA=
-Received: from PH8PR21CA0017.namprd21.prod.outlook.com (2603:10b6:510:2ce::17)
- by IA4PR12MB9833.namprd12.prod.outlook.com (2603:10b6:208:55b::16)
+ bh=YlJDcseIU8su1ldR01v/SuSzsm9Bl46VEStISTBwrjU=;
+ b=iqliTGGN0iJQtHeI0tZGFWcWFcK5Z3Rbsjh57/Tszkwe0/iojaSO+luv6zUxgXFdtgVNra8gUMBFVEUQz8Z7YMaGlDqriH7hCJ5D88VmbTYVVPAjNPpITCzXwcSVbFJcJWCHPEEau5Zed8La4xtTh7yVV9wR2BcyokodTda+tko=
+Received: from PH8PR21CA0002.namprd21.prod.outlook.com (2603:10b6:510:2ce::16)
+ by CY5PR12MB6454.namprd12.prod.outlook.com (2603:10b6:930:36::22)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.14; Fri, 26 Sep
- 2025 07:09:23 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Fri, 26 Sep
+ 2025 07:09:25 +0000
 Received: from SN1PEPF0002BA4F.namprd03.prod.outlook.com
- (2603:10b6:510:2ce:cafe::8c) by PH8PR21CA0017.outlook.office365.com
- (2603:10b6:510:2ce::17) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:510:2ce:cafe::de) by PH8PR21CA0002.outlook.office365.com
+ (2603:10b6:510:2ce::16) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.6 via Frontend Transport; Fri,
- 26 Sep 2025 07:09:22 +0000
+ 26 Sep 2025 07:09:24 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,18 +51,18 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  SN1PEPF0002BA4F.mail.protection.outlook.com (10.167.242.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9 via Frontend Transport; Fri, 26 Sep 2025 07:09:23 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ 15.20.9160.9 via Frontend Transport; Fri, 26 Sep 2025 07:09:24 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 26 Sep
- 2025 00:09:10 -0700
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 26 Sep
- 2025 00:09:09 -0700
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 26 Sep
+ 2025 00:09:12 -0700
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 26 Sep
+ 2025 02:09:11 -0500
 Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
  satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Fri, 26 Sep 2025 00:09:08 -0700
+ via Frontend Transport; Fri, 26 Sep 2025 00:09:10 -0700
 From: Luc Michel <luc.michel@amd.com>
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
@@ -70,9 +70,10 @@ CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>,
  <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
  Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Subject: [PATCH v6 32/47] hw/misc/xlnx-versal-crl: refactor device reset logic
-Date: Fri, 26 Sep 2025 09:07:50 +0200
-Message-ID: <20250926070806.292065-33-luc.michel@amd.com>
+Subject: [PATCH v6 33/47] hw/arm/xlnx-versal: reconnect the CRL to the other
+ devices
+Date: Fri, 26 Sep 2025 09:07:51 +0200
+Message-ID: <20250926070806.292065-34-luc.michel@amd.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250926070806.292065-1-luc.michel@amd.com>
 References: <20250926070806.292065-1-luc.michel@amd.com>
@@ -81,63 +82,62 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4F:EE_|IA4PR12MB9833:EE_
-X-MS-Office365-Filtering-Correlation-Id: dcce53f6-80de-47bb-9256-08ddfccb9f04
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4F:EE_|CY5PR12MB6454:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6100c29-98de-4150-332e-08ddfccb9fe4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|36860700013|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?zdKuM5wuuAWaVttXMBLhlu9745rRWBRcyrB0qIIwhfCRg/eGP19852xyI+1e?=
- =?us-ascii?Q?F3hnwqHIjPtV8FVHuqsIOUpPEgXJO13s4HiCUXHoUVPK6PxeHfw2rthVvOw3?=
- =?us-ascii?Q?+98L9NqkgxtyofOBscVeaXaBiDUMu14tPh+68IQj66ub9JWvzgodH0lu1gFT?=
- =?us-ascii?Q?a0G/EnSau60/0LeH504w6RZGST1up7sFBHD2zP9BPJUz8tHR7wxX5oVbUH1Z?=
- =?us-ascii?Q?oVC7H7doX/qEFellW9T97gbp7n7J3g/jSAHPlW7pVkkVudVDvg5IK3T/wDKh?=
- =?us-ascii?Q?r6b5uVoEACLwF5GzrmyhQE429FHvJR4eOT2MPoIeeByPfrfLWdS27JzYclS+?=
- =?us-ascii?Q?7j+2PRU4nnMaJfTZ1RXmOXL0MR7h2W7IjowvggHxpzFJyH1Q4td3IKplbkGQ?=
- =?us-ascii?Q?hmpNN+cs2yL3EoPzcgqisSHtMU/VlfqEma12tLrS3592XXjscPi7CtLpxyPP?=
- =?us-ascii?Q?uIf+lAXxFCunUj0oUaGgtDguozEMlEOPNibLNf1e43yNr696xkyY52IxE+Oj?=
- =?us-ascii?Q?6whtJFayT7NgaOHgjq2HfcR9UxbzaHULppucLhd+jqvCjmCmqUSIMzhHFiCg?=
- =?us-ascii?Q?ehi1KRoCrVzQmcge8zHpqB/jr46Y9Km/cGLglJjOa3qeLYBRbL6vPZMqQiOg?=
- =?us-ascii?Q?fvxM5lOBYiZuYVciR+v00X2XZwWPF3n/wh0NfsgiMDm8fdpdkFw/1XntqKbx?=
- =?us-ascii?Q?5bgYurLRcjQ4ooBoe+90Ou3dVuDZn6ek0KGWATdv8wzTEz2xEpP70bjlvQnO?=
- =?us-ascii?Q?FtunO/uH7pToezhKEBU0h9b+9PqMWWcli5wRol8k0D1+egTJ4dgYYrBSsKns?=
- =?us-ascii?Q?XI5UoZefrcvvlP/iQXd2ErC4fHKaUbsPcUpgieN38KBywTjB8Ae6qhq2Jjqw?=
- =?us-ascii?Q?gBlAPGvSJ9JMYcCdzeihENs4/npPQgAbK7lmAKXJxryzcy03uBJC3uTaCzdL?=
- =?us-ascii?Q?/5xtMIidt8pnPsdpZb68CA71tCAdvH2pl5Wbh4WSU2zwGd1Ronmq1B+M2+x8?=
- =?us-ascii?Q?Y4pQg6XtKaztQkxe0VIviodZ+w9C6HwENGeSLfUj7ZRA+LhK88p4CmIB8eTx?=
- =?us-ascii?Q?7e/lOR94g43vNUkYHwMhfAzXS0zAu4uDnVWGfqXKL4bvu9ajGqb1TzK67GbX?=
- =?us-ascii?Q?9hPXX0iL+DTjT6B20vVhBuEsiOoKdbieRFFp4M5svIhOXHzzPducJ8YeqDWA?=
- =?us-ascii?Q?Geqcias6/vYRtNmqf9BYNu05TOC7tMPNTivRL+cyGkofi6uAdqjSff1US0hN?=
- =?us-ascii?Q?GN/YXs+5g61VEc5KQL3QrLh0komOXcVfABIcYgGmuRl4wWO2eAPRgiIf9X5p?=
- =?us-ascii?Q?b/beIXIe5I2uQwrVm0du/8ksGlqgp/w0UJKQG46+824xyy7Hl84ziBagdLKJ?=
- =?us-ascii?Q?V/aUwwyBlXVFFh+86SqDihCdOTOdGvIylpDEolqqgORC3zXrKGTPkKBISNda?=
- =?us-ascii?Q?Squ/7Bm0asEzDRzCua3DwYG1gTmOpeOZWSdFIokSuZ/NI6bNK9azIH5Ddkov?=
- =?us-ascii?Q?f2wqCmjr7rO1m3bLyDUj3JaaaiUUddZNSHIbD8kgMqU7Fx4M/DYZuO0M8nlE?=
- =?us-ascii?Q?hGUynEcshuiORp+dzhM=3D?=
+ ARA:13230040|36860700013|376014|82310400026|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?cJZbVVnja8h8Z3VVhwrzXjEt8VdxGpNVRPKkD66OvgQJRRiVQftc8JxzuzNJ?=
+ =?us-ascii?Q?bf5Cr7MS/+9zEfM5IOaQmPJqh5N3gy/ZP85CS79OgJBIq8M1n1q61T3fOyl5?=
+ =?us-ascii?Q?dGeVJNbUqy3k/qq9SJ7P9Ycra96FWu+EHNt/YhQ7Y++NuCdNZC80FvyFAXwU?=
+ =?us-ascii?Q?JZqTrVxhL/SyW3ohAaYKzn/B4s9Zf7PdSFJtxrA2zjcjtefKwblIJNzMRhlX?=
+ =?us-ascii?Q?cmZnSo34Tzn1OkG4nb2kx2AW4VPpSnHpEq8qNIO4E7o19ii6A2OJqZktXxl0?=
+ =?us-ascii?Q?EvgCnuKklVlqCi16xS1ZGhXsGnPM5LP+6M8qHFgoixvpJJGYm/uZU+r80KKp?=
+ =?us-ascii?Q?jzr5h/SW99Gk8zCWjautjRljCQnPyHTYnAsBSumQ8WfWox6TfFIMzCi3bUjZ?=
+ =?us-ascii?Q?KniY2aFgcsVsbyYGF3tOZ0wO3+aKjHwNv8alop99gtAa0vbCbFhm7iwagrag?=
+ =?us-ascii?Q?+vwDeebSyIJ3qXSLZ+QaYW2bbToZJuCxnG3z/f5eXg3HWKTKqanA2Nit9ogk?=
+ =?us-ascii?Q?KTdJbOV1OGn/vg3ydsDfn7esYgIO2djF0xAVWUutbux+zZzIWCVBroEhY1Qq?=
+ =?us-ascii?Q?gGt9BHj8pN0jEJcYVLWpXDmobWZ3eHImVKT4DtuAHJnsFK93rseqyOFwrCBj?=
+ =?us-ascii?Q?7P2NGDAg1UrdCg4YKVRHOK+IHK8KjSC2Jt84XY5ikQK8cGFWbxfdF74U2i9Q?=
+ =?us-ascii?Q?tXNWluR4chqLY/ONMVsC+58/zYf9KImgXCgX2JnnjQ0IJNGMj93Le3SvLhn7?=
+ =?us-ascii?Q?0/g+sfRPeax1FMF7RkkqLEawBOneffIphuyrCxGBzHD439dkyOQVQd1i8pql?=
+ =?us-ascii?Q?OT/3R7cvRA70TCRFrljGj26tiQHfPRAD2423+stuGtIH16fUMKGYFDSJTtAs?=
+ =?us-ascii?Q?QHhv8SouwAhYyyT3jhoWB8R/qWjjggd7ENOGIXhwVGYtrxjZeJdEqu8NYRQf?=
+ =?us-ascii?Q?EOQ1KwURXfLRsSQvmV7lxE1M3+l70I9MwJZA5H0gXyhSuRsxqRKsM7wsRDkB?=
+ =?us-ascii?Q?DcMHpXXreExUGIM3nqYZt7iGpZjwpBHYuqtVM4V10ACud+vRyslBKFFh4H1J?=
+ =?us-ascii?Q?rI3wvIe9yWvWe/9fUsxllc8wwoec2XedtFJZihccxCUpia3HtKv/DQJfjCf5?=
+ =?us-ascii?Q?4SNZrBXTUKROCFySN6FuMc9zp+9WECuO4cpaz4PtyvmHVQ/jCVsic3dhu76m?=
+ =?us-ascii?Q?z7//psNngNojnh3Llc2w4PQIelHGsarJIO+KJAz6avZbDKqQ+WU47Aurb7HD?=
+ =?us-ascii?Q?COqtEp3qnWn/73AL7rWWSDjMPY4bZjNOw5C0ZcHYWUWhl3b2W3wp7BaxEBCK?=
+ =?us-ascii?Q?SfL5HAixeqPrhAtDFxc6lr/5y9ap57YgC7dngxbB7YClfJ8GpwLSahprNjd6?=
+ =?us-ascii?Q?DrhZnbDeXMO9lFKzCtWu8mh9PwRLAN7fNHHo/6vJGSQSVO2Ei7/pvFxr2JvB?=
+ =?us-ascii?Q?CPrupGuUbAPtQTcDbZvRfWtxj6gnyUutrNVHR1NeyPdbne5//4P6KIkiUvC4?=
+ =?us-ascii?Q?H0rDUVZQ7kPfvk3069ef1B8VHFH8K/G2mrC/bJ2xtKmykKzcJ4uDbMR+PTNC?=
+ =?us-ascii?Q?qOwUrpdHXA1TPCnFSQU=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014); DIR:OUT;
+ SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 07:09:23.2172 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dcce53f6-80de-47bb-9256-08ddfccb9f04
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 07:09:24.6965 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6100c29-98de-4150-332e-08ddfccb9fe4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA4F.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9833
-Received-SPF: permerror client-ip=2a01:111:f403:c111::5;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6454
+Received-SPF: permerror client-ip=2a01:111:f403:c10d::3;
  envelope-from=Luc.Michel@amd.com;
- helo=DM1PR04CU001.outbound.protection.outlook.com
+ helo=SN4PR0501CU005.outbound.protection.outlook.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,327 +153,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor the device reset logic to have a common register write callback
-for all the devices. This uses a decode function to map the register
-address to the actual peripheral to reset. This refactoring changes the
-CPU property name from cpu_r5[*] to rpu[*] to ease with the connections
-in the Versal SoC. It also fixes a bug where the gem device pointer
-was mapped to the usb link property.
+The CRL connects to various devices through link properties to be able
+to reset them. The connections were dropped during the SoC refactoring.
+Reintroduce them now.
+
+Rely on the QOM tree to retrieve the devices to connect. The component
+parts of the device names are chosen to match the properties on the CRL.
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- include/hw/misc/xlnx-versal-crl.h |   8 +-
- hw/misc/xlnx-versal-crl.c         | 163 ++++++++++++++++--------------
- 2 files changed, 92 insertions(+), 79 deletions(-)
+ hw/arm/xlnx-versal.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/misc/xlnx-versal-crl.h b/include/hw/misc/xlnx-versal-crl.h
-index 2b39d203a67..7e50a95ad3c 100644
---- a/include/hw/misc/xlnx-versal-crl.h
-+++ b/include/hw/misc/xlnx-versal-crl.h
-@@ -218,33 +218,33 @@ REG32(PSM_RST_MODE, 0x370)
-     FIELD(PSM_RST_MODE, WAKEUP, 2, 1)
-     FIELD(PSM_RST_MODE, RST_MODE, 0, 2)
- 
- #define CRL_R_MAX (R_PSM_RST_MODE + 1)
- 
--#define RPU_MAX_CPU 2
--
- struct XlnxVersalCRLBase {
-     SysBusDevice parent_obj;
- 
-     RegisterInfoArray *reg_array;
-     uint32_t *regs;
- };
- 
- struct XlnxVersalCRLBaseClass {
-     SysBusDeviceClass parent_class;
-+
-+    DeviceState ** (*decode_periph_rst)(XlnxVersalCRLBase *s, hwaddr, size_t *);
- };
- 
- struct XlnxVersalCRL {
-     XlnxVersalCRLBase parent_obj;
-     qemu_irq irq;
- 
-     struct {
--        ARMCPU *cpu_r5[RPU_MAX_CPU];
-+        DeviceState *rpu[2];
-         DeviceState *adma[8];
-         DeviceState *uart[2];
-         DeviceState *gem[2];
--        DeviceState *usb;
-+        DeviceState *usb[1];
-     } cfg;
- 
-     uint32_t regs[CRL_R_MAX];
-     RegisterInfo regs_info[CRL_R_MAX];
- };
-diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
-index be89e0da40d..6225a92e0bd 100644
---- a/hw/misc/xlnx-versal-crl.c
-+++ b/hw/misc/xlnx-versal-crl.c
-@@ -53,94 +53,103 @@ static uint64_t crl_disable_prew(RegisterInfo *reg, uint64_t val64)
-     s->regs[R_IR_MASK] |= val;
-     crl_update_irq(s);
-     return 0;
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 2e28b807d71..6604e24a9cd 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -1474,21 +1474,50 @@ static void versal_create_cfu(Versal *s, const struct VersalCfuMap *map)
+     sysbus_realize_and_unref(sbd, &error_fatal);
+     memory_region_add_subregion(&s->mr_ps, map->cfu_sfr,
+                                 sysbus_mmio_get_region(sbd, 0));
  }
  
--static void crl_reset_dev(XlnxVersalCRL *s, DeviceState *dev,
--                          bool rst_old, bool rst_new)
-+static DeviceState **versal_decode_periph_rst(XlnxVersalCRLBase *s,
-+                                              hwaddr addr, size_t *count)
- {
--    device_cold_reset(dev);
--}
-+    size_t idx;
-+    XlnxVersalCRL *xvc = XLNX_VERSAL_CRL(s);
- 
--static void crl_reset_cpu(XlnxVersalCRL *s, ARMCPU *armcpu,
--                          bool rst_old, bool rst_new)
--{
--    if (rst_new) {
--        arm_set_cpu_off(arm_cpu_mp_affinity(armcpu));
--    } else {
--        arm_set_cpu_on_and_reset(arm_cpu_mp_affinity(armcpu));
--    }
--}
-+    *count = 1;
- 
--#define REGFIELD_RESET(type, s, reg, f, new_val, dev) {     \
--    bool old_f = ARRAY_FIELD_EX32((s)->regs, reg, f);       \
--    bool new_f = FIELD_EX32(new_val, reg, f);               \
--                                                            \
--    /* Detect edges.  */                                    \
--    if (dev && old_f != new_f) {                            \
--        crl_reset_ ## type(s, dev, old_f, new_f);           \
--    }                                                       \
--}
-+    switch (addr) {
-+    case A_RST_CPU_R5:
-+        return xvc->cfg.rpu;
- 
--static uint64_t crl_rst_r5_prew(RegisterInfo *reg, uint64_t val64)
--{
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
-+    case A_RST_ADMA:
-+        /* A single register fans out to all DMA reset inputs */
-+        *count = ARRAY_SIZE(xvc->cfg.adma);
-+        return xvc->cfg.adma;
- 
--    REGFIELD_RESET(cpu, s, RST_CPU_R5, RESET_CPU0, val64, s->cfg.cpu_r5[0]);
--    REGFIELD_RESET(cpu, s, RST_CPU_R5, RESET_CPU1, val64, s->cfg.cpu_r5[1]);
--    return val64;
--}
-+    case A_RST_UART0 ... A_RST_UART1:
-+        idx = (addr - A_RST_UART0) / sizeof(uint32_t);
-+        return xvc->cfg.uart + idx;
- 
--static uint64_t crl_rst_adma_prew(RegisterInfo *reg, uint64_t val64)
--{
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
--    int i;
-+    case A_RST_GEM0 ... A_RST_GEM1:
-+        idx = (addr - A_RST_GEM0) / sizeof(uint32_t);
-+        return xvc->cfg.gem + idx;
++static inline void crl_connect_dev(Object *crl, Object *dev)
++{
++    const char *prop = object_get_canonical_path_component(dev);
 +
-+    case A_RST_USB0:
-+        return xvc->cfg.usb;
- 
--    /* A single register fans out to all ADMA reset inputs.  */
--    for (i = 0; i < ARRAY_SIZE(s->cfg.adma); i++) {
--        REGFIELD_RESET(dev, s, RST_ADMA, RESET, val64, s->cfg.adma[i]);
-+    default:
-+        /* invalid or unimplemented */
-+        return NULL;
-     }
--    return val64;
- }
- 
--static uint64_t crl_rst_uart0_prew(RegisterInfo *reg, uint64_t val64)
-+static uint64_t crl_rst_cpu_prew(RegisterInfo *reg, uint64_t val64)
- {
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
-+    XlnxVersalCRLBase *s = XLNX_VERSAL_CRL_BASE(reg->opaque);
-+    XlnxVersalCRLBaseClass *xvcbc = XLNX_VERSAL_CRL_BASE_GET_CLASS(s);
-+    DeviceState **dev;
-+    size_t i, count;
- 
--    REGFIELD_RESET(dev, s, RST_UART0, RESET, val64, s->cfg.uart[0]);
--    return val64;
--}
-+    dev = xvcbc->decode_periph_rst(s, reg->access->addr, &count);
- 
--static uint64_t crl_rst_uart1_prew(RegisterInfo *reg, uint64_t val64)
--{
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
-+    for (i = 0; i < 2; i++) {
-+        bool prev, new;
-+        uint64_t aff;
- 
--    REGFIELD_RESET(dev, s, RST_UART1, RESET, val64, s->cfg.uart[1]);
--    return val64;
--}
-+        prev = extract32(s->regs[reg->access->addr / 4], i, 1);
-+        new = extract32(val64, i, 1);
- 
--static uint64_t crl_rst_gem0_prew(RegisterInfo *reg, uint64_t val64)
--{
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
-+        if (prev == new) {
-+            continue;
-+        }
- 
--    REGFIELD_RESET(dev, s, RST_GEM0, RESET, val64, s->cfg.gem[0]);
--    return val64;
--}
-+        aff = arm_cpu_mp_affinity(ARM_CPU(dev[i]));
- 
--static uint64_t crl_rst_gem1_prew(RegisterInfo *reg, uint64_t val64)
--{
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
-+        if (new) {
-+            arm_set_cpu_off(aff);
-+        } else {
-+            arm_set_cpu_on_and_reset(aff);
-+        }
++    /* The component part of the device path matches the CRL property name */
++    object_property_set_link(crl, prop, dev, &error_abort);
++}
++
++static inline void crl_connect_dev_by_name(Versal *s, Object *crl,
++                                           const char *name, size_t num)
++{
++    size_t i;
++
++    for (i = 0; i < num; i++) {
++        Object *dev = versal_get_child_idx(s, name, i);
++
++        crl_connect_dev(crl, dev);
 +    }
- 
--    REGFIELD_RESET(dev, s, RST_GEM1, RESET, val64, s->cfg.gem[1]);
-     return val64;
- }
- 
--static uint64_t crl_rst_usb_prew(RegisterInfo *reg, uint64_t val64)
-+static uint64_t crl_rst_dev_prew(RegisterInfo *reg, uint64_t val64)
++}
++
+ static inline void versal_create_crl(Versal *s)
  {
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
-+    XlnxVersalCRLBase *s = XLNX_VERSAL_CRL_BASE(reg->opaque);
-+    XlnxVersalCRLBaseClass *xvcbc = XLNX_VERSAL_CRL_BASE_GET_CLASS(s);
-+    DeviceState **dev;
-+    bool prev, new;
-+    size_t i, count;
+     const VersalMap *map;
+     const char *crl_class;
+     DeviceState *dev;
++    Object *obj;
+ 
+     map = versal_get_map(s);
+ 
+     crl_class = TYPE_XLNX_VERSAL_CRL;
+     dev = qdev_new(crl_class);
+-    object_property_add_child(OBJECT(s), "crl", OBJECT(dev));
++    obj = OBJECT(dev);
++    object_property_add_child(OBJECT(s), "crl", obj);
 +
-+    dev = xvcbc->decode_periph_rst(s, reg->access->addr, &count);
-+
-+    if (dev == NULL) {
-+        return val64;
-+    }
-+
-+    prev = s->regs[reg->access->addr / 4] & 0x1;
-+    new = val64 & 0x1;
-+
-+    if (prev == new) {
-+        return val64;
-+    }
-+
-+    for (i = 0; i < count; i++) {
-+        if (dev[i]) {
-+            device_cold_reset(dev[i]);
-+        }
-+    }
++    crl_connect_dev_by_name(s, obj, "rpu-cluster/rpu",
++                            map->rpu.num_cluster * map->rpu.num_core);
++    crl_connect_dev_by_name(s, obj, map->zdma[0].name, map->zdma[0].num_chan);
++    crl_connect_dev_by_name(s, obj, "uart", map->num_uart);
++    crl_connect_dev_by_name(s, obj, "gem", map->num_gem);
++    crl_connect_dev_by_name(s, obj, "usb", map->num_usb);
  
--    REGFIELD_RESET(dev, s, RST_USB0, RESET, val64, s->cfg.usb);
-     return val64;
- }
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_abort);
  
- static const RegisterAccessInfo crl_regs_info[] = {
-     {   .name = "ERR_CTRL",  .addr = A_ERR_CTRL,
-@@ -242,31 +251,31 @@ static const RegisterAccessInfo crl_regs_info[] = {
-         .reset = 0x3c00,
-         .rsvd = 0xfdfc00f8,
-     },{ .name = "RST_CPU_R5",  .addr = A_RST_CPU_R5,
-         .reset = 0x17,
-         .rsvd = 0x8,
--        .pre_write = crl_rst_r5_prew,
-+        .pre_write = crl_rst_cpu_prew,
-     },{ .name = "RST_ADMA",  .addr = A_RST_ADMA,
-         .reset = 0x1,
--        .pre_write = crl_rst_adma_prew,
-+        .pre_write = crl_rst_dev_prew,
-     },{ .name = "RST_GEM0",  .addr = A_RST_GEM0,
-         .reset = 0x1,
--        .pre_write = crl_rst_gem0_prew,
-+        .pre_write = crl_rst_dev_prew,
-     },{ .name = "RST_GEM1",  .addr = A_RST_GEM1,
-         .reset = 0x1,
--        .pre_write = crl_rst_gem1_prew,
-+        .pre_write = crl_rst_dev_prew,
-     },{ .name = "RST_SPARE",  .addr = A_RST_SPARE,
-         .reset = 0x1,
-     },{ .name = "RST_USB0",  .addr = A_RST_USB0,
-         .reset = 0x1,
--        .pre_write = crl_rst_usb_prew,
-+        .pre_write = crl_rst_dev_prew,
-     },{ .name = "RST_UART0",  .addr = A_RST_UART0,
-         .reset = 0x1,
--        .pre_write = crl_rst_uart0_prew,
-+        .pre_write = crl_rst_dev_prew,
-     },{ .name = "RST_UART1",  .addr = A_RST_UART1,
-         .reset = 0x1,
--        .pre_write = crl_rst_uart1_prew,
-+        .pre_write = crl_rst_dev_prew,
-     },{ .name = "RST_SPI0",  .addr = A_RST_SPI0,
-         .reset = 0x1,
-     },{ .name = "RST_SPI1",  .addr = A_RST_SPI1,
-         .reset = 0x1,
-     },{ .name = "RST_CAN0",  .addr = A_RST_CAN0,
-@@ -341,13 +350,13 @@ static void versal_crl_init(Object *obj)
-                               CRL_R_MAX * 4);
-     xvcb->regs = s->regs;
-     sysbus_init_mmio(sbd, &xvcb->reg_array->mem);
-     sysbus_init_irq(sbd, &s->irq);
- 
--    for (i = 0; i < ARRAY_SIZE(s->cfg.cpu_r5); ++i) {
--        object_property_add_link(obj, "cpu_r5[*]", TYPE_ARM_CPU,
--                                 (Object **)&s->cfg.cpu_r5[i],
-+    for (i = 0; i < ARRAY_SIZE(s->cfg.rpu); ++i) {
-+        object_property_add_link(obj, "rpu[*]", TYPE_ARM_CPU,
-+                                 (Object **)&s->cfg.rpu[i],
-                                  qdev_prop_allow_set_link_before_realize,
-                                  OBJ_PROP_LINK_STRONG);
-     }
- 
-     for (i = 0; i < ARRAY_SIZE(s->cfg.adma); ++i) {
-@@ -369,14 +378,16 @@ static void versal_crl_init(Object *obj)
-                                  (Object **)&s->cfg.gem[i],
-                                  qdev_prop_allow_set_link_before_realize,
-                                  OBJ_PROP_LINK_STRONG);
-     }
- 
--    object_property_add_link(obj, "usb", TYPE_DEVICE,
--                             (Object **)&s->cfg.gem[i],
--                             qdev_prop_allow_set_link_before_realize,
--                             OBJ_PROP_LINK_STRONG);
-+    for (i = 0; i < ARRAY_SIZE(s->cfg.usb); ++i) {
-+        object_property_add_link(obj, "usb[*]", TYPE_DEVICE,
-+                                 (Object **)&s->cfg.usb[i],
-+                                 qdev_prop_allow_set_link_before_realize,
-+                                 OBJ_PROP_LINK_STRONG);
-+    }
- }
- 
- static void crl_finalize(Object *obj)
- {
-     XlnxVersalCRLBase *s = XLNX_VERSAL_CRL_BASE(obj);
-@@ -394,15 +405,17 @@ static const VMStateDescription vmstate_versal_crl = {
- };
- 
- static void versal_crl_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    XlnxVersalCRLBaseClass *xvcc = XLNX_VERSAL_CRL_BASE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-     dc->vmsd = &vmstate_versal_crl;
-     rc->phases.enter = versal_crl_reset_enter;
-     rc->phases.hold = versal_crl_reset_hold;
-+    xvcc->decode_periph_rst = versal_decode_periph_rst;
- }
- 
- static const TypeInfo crl_base_info = {
-     .name          = TYPE_XLNX_VERSAL_CRL_BASE,
-     .parent        = TYPE_SYS_BUS_DEVICE,
+     memory_region_add_subregion(&s->mr_ps, map->crl.addr,
+                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
 -- 
 2.51.0
 
