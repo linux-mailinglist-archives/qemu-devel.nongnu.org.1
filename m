@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BBCBA40BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4284BA40AB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v293U-0006p1-CL; Fri, 26 Sep 2025 10:04:12 -0400
+	id 1v293T-0006no-P4; Fri, 26 Sep 2025 10:04:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293N-0006nd-J0
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v293L-0006n4-JZ
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293A-0004qi-C3
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:04 -0400
+ id 1v293E-0004rV-Fg
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895429;
+ s=mimecast20190719; t=1758895433;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ea+0MhEY9iX2+yYiaaMVa1DUQB95GkrV93+grZ+Cioc=;
- b=dw5x/81C76NeWjM7FrEulybCu+iKYySNRDQOj2/Pkto9nOo+yp2XCQekZksqKYbDeLAHou
- SWeNl6n717AJ/iK3r0kqR4omJvNBGK6FuKZt9NJ1BsZjoHFf6RvoZzQ+QjwJ5ssi9Hx2Wx
- 3MtgR8KBsZ6bWT8TjYSuyFGk6NPwBYo=
+ bh=0EG0UHxXlT7ifLJrFLKM9KqjYitx4zh2UVX0jlUVOoU=;
+ b=G+Qc0flPW7ntgKpQz9GSFrFWUuvlOz/8mPH+vWzlKgI2CJeblu4WyRkNSC4HjOB4okmP/b
+ ZdQuhVNV9kEzPBxxcePIJvdpMfBJqtBCXNnaq+PZhYSyt4v5SUL182ewCYhq0qXOSGu3wZ
+ KOVJYeZv664j3QTaT2uwwM2m1AJ1xeM=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-MEJXisDkOzC7Cj_FeY2XMA-1; Fri,
- 26 Sep 2025 10:03:46 -0400
-X-MC-Unique: MEJXisDkOzC7Cj_FeY2XMA-1
-X-Mimecast-MFC-AGG-ID: MEJXisDkOzC7Cj_FeY2XMA_1758895425
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-q_O02v1WPRuAbEuEFU9wcA-1; Fri,
+ 26 Sep 2025 10:03:51 -0400
+X-MC-Unique: q_O02v1WPRuAbEuEFU9wcA-1
+X-Mimecast-MFC-AGG-ID: q_O02v1WPRuAbEuEFU9wcA_1758895430
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E8DB01800597; Fri, 26 Sep 2025 14:03:44 +0000 (UTC)
+ id 5ED49180057B; Fri, 26 Sep 2025 14:03:50 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 96F9A1956095; Fri, 26 Sep 2025 14:03:40 +0000 (UTC)
+ id 7BF8F1956095; Fri, 26 Sep 2025 14:03:45 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,23 +53,23 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 19/32] hw: mark all virtio CCW devices as secure
-Date: Fri, 26 Sep 2025 15:01:30 +0100
-Message-ID: <20250926140144.1998694-20-berrange@redhat.com>
+Subject: [PATCH v2 20/32] hw: mark all vhost devices a secure
+Date: Fri, 26 Sep 2025 15:01:31 +0100
+Message-ID: <20250926140144.1998694-21-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,248 +92,218 @@ provide a security boundary.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/s390x/vhost-scsi-ccw.c     | 1 +
- hw/s390x/vhost-user-fs-ccw.c  | 1 +
- hw/s390x/vhost-vsock-ccw.c    | 1 +
- hw/s390x/virtio-ccw-9p.c      | 1 +
- hw/s390x/virtio-ccw-balloon.c | 1 +
- hw/s390x/virtio-ccw-blk.c     | 1 +
- hw/s390x/virtio-ccw-crypto.c  | 1 +
- hw/s390x/virtio-ccw-gpu.c     | 1 +
- hw/s390x/virtio-ccw-input.c   | 5 +++++
- hw/s390x/virtio-ccw-md.c      | 1 +
- hw/s390x/virtio-ccw-mem.c     | 1 +
- hw/s390x/virtio-ccw-net.c     | 1 +
- hw/s390x/virtio-ccw-rng.c     | 1 +
- hw/s390x/virtio-ccw-scsi.c    | 1 +
- hw/s390x/virtio-ccw-serial.c  | 1 +
- hw/s390x/virtio-ccw.c         | 1 +
- 16 files changed, 20 insertions(+)
+ hw/block/vhost-user-blk.c      | 1 +
+ hw/display/vhost-user-gpu.c    | 1 +
+ hw/scsi/vhost-scsi.c           | 1 +
+ hw/scsi/vhost-user-scsi.c      | 1 +
+ hw/virtio/vhost-user-base.c    | 3 ++-
+ hw/virtio/vhost-user-device.c  | 1 +
+ hw/virtio/vhost-user-fs.c      | 1 +
+ hw/virtio/vhost-user-gpio.c    | 1 +
+ hw/virtio/vhost-user-i2c.c     | 1 +
+ hw/virtio/vhost-user-input.c   | 1 +
+ hw/virtio/vhost-user-rng.c     | 1 +
+ hw/virtio/vhost-user-scmi.c    | 1 +
+ hw/virtio/vhost-user-snd.c     | 1 +
+ hw/virtio/vhost-user-vsock.c   | 1 +
+ hw/virtio/vhost-vsock-common.c | 1 +
+ hw/virtio/vhost-vsock.c        | 1 +
+ 16 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/hw/s390x/vhost-scsi-ccw.c b/hw/s390x/vhost-scsi-ccw.c
-index 8341b23a95..2a16f8d06e 100644
---- a/hw/s390x/vhost-scsi-ccw.c
-+++ b/hw/s390x/vhost-scsi-ccw.c
-@@ -62,6 +62,7 @@ static const TypeInfo vhost_ccw_scsi = {
-     .instance_size = sizeof(VHostSCSICcw),
-     .instance_init = vhost_ccw_scsi_instance_init,
-     .class_init    = vhost_ccw_scsi_class_init,
-+    .secure        = true,
- };
- 
- static void virtio_ccw_scsi_register(void)
-diff --git a/hw/s390x/vhost-user-fs-ccw.c b/hw/s390x/vhost-user-fs-ccw.c
-index cc1b8227fc..74c2ac288b 100644
---- a/hw/s390x/vhost-user-fs-ccw.c
-+++ b/hw/s390x/vhost-user-fs-ccw.c
-@@ -64,6 +64,7 @@ static const TypeInfo vhost_user_fs_ccw = {
-     .instance_size = sizeof(VHostUserFSCcw),
-     .instance_init = vhost_user_fs_ccw_instance_init,
-     .class_init    = vhost_user_fs_ccw_class_init,
-+    .secure        = true,
- };
- 
- static void vhost_user_fs_ccw_register(void)
-diff --git a/hw/s390x/vhost-vsock-ccw.c b/hw/s390x/vhost-vsock-ccw.c
-index 552e9e86a4..60a286f6d5 100644
---- a/hw/s390x/vhost-vsock-ccw.c
-+++ b/hw/s390x/vhost-vsock-ccw.c
-@@ -71,6 +71,7 @@ static const TypeInfo vhost_vsock_ccw_info = {
-     .instance_size = sizeof(VHostVSockCCWState),
-     .instance_init = vhost_vsock_ccw_instance_init,
-     .class_init    = vhost_vsock_ccw_class_init,
-+    .secure        = true,
- };
- 
- static void vhost_vsock_ccw_register(void)
-diff --git a/hw/s390x/virtio-ccw-9p.c b/hw/s390x/virtio-ccw-9p.c
-index 72bf6ec80c..72430b9897 100644
---- a/hw/s390x/virtio-ccw-9p.c
-+++ b/hw/s390x/virtio-ccw-9p.c
-@@ -64,6 +64,7 @@ static const TypeInfo virtio_ccw_9p_info = {
-     .instance_size = sizeof(V9fsCCWState),
-     .instance_init = virtio_ccw_9p_instance_init,
-     .class_init    = virtio_ccw_9p_class_init,
-+    .secure        = true,
- };
- 
- static void virtio_ccw_9p_register(void)
-diff --git a/hw/s390x/virtio-ccw-balloon.c b/hw/s390x/virtio-ccw-balloon.c
-index 399b40f366..40425a5995 100644
---- a/hw/s390x/virtio-ccw-balloon.c
-+++ b/hw/s390x/virtio-ccw-balloon.c
-@@ -69,6 +69,7 @@ static const TypeInfo virtio_ccw_balloon = {
-     .instance_size = sizeof(VirtIOBalloonCcw),
-     .instance_init = virtio_ccw_balloon_instance_init,
-     .class_init    = virtio_ccw_balloon_class_init,
-+    .secure        = true,
- };
- 
- static void virtio_ccw_balloon_register(void)
-diff --git a/hw/s390x/virtio-ccw-blk.c b/hw/s390x/virtio-ccw-blk.c
-index 7d8c4a75ce..a61da0f6d6 100644
---- a/hw/s390x/virtio-ccw-blk.c
-+++ b/hw/s390x/virtio-ccw-blk.c
-@@ -67,6 +67,7 @@ static const TypeInfo virtio_ccw_blk = {
-     .instance_size = sizeof(VirtIOBlkCcw),
-     .instance_init = virtio_ccw_blk_instance_init,
-     .class_init    = virtio_ccw_blk_class_init,
-+    .secure        = true,
- };
- 
- static void virtio_ccw_blk_register(void)
-diff --git a/hw/s390x/virtio-ccw-crypto.c b/hw/s390x/virtio-ccw-crypto.c
-index 75e714603b..0903cc0c97 100644
---- a/hw/s390x/virtio-ccw-crypto.c
-+++ b/hw/s390x/virtio-ccw-crypto.c
-@@ -67,6 +67,7 @@ static const TypeInfo virtio_ccw_crypto = {
-     .instance_size = sizeof(VirtIOCryptoCcw),
-     .instance_init = virtio_ccw_crypto_instance_init,
-     .class_init    = virtio_ccw_crypto_class_init,
-+    .secure        = true,
- };
- 
- static void virtio_ccw_crypto_register(void)
-diff --git a/hw/s390x/virtio-ccw-gpu.c b/hw/s390x/virtio-ccw-gpu.c
-index edb6a47d37..9f6170bcd4 100644
---- a/hw/s390x/virtio-ccw-gpu.c
-+++ b/hw/s390x/virtio-ccw-gpu.c
-@@ -66,6 +66,7 @@ static const TypeInfo virtio_ccw_gpu = {
-     .instance_size = sizeof(VirtIOGPUCcw),
-     .instance_init = virtio_ccw_gpu_instance_init,
-     .class_init    = virtio_ccw_gpu_class_init,
-+    .secure        = true,
- };
- module_obj(TYPE_VIRTIO_GPU_CCW);
- module_kconfig(VIRTIO_CCW);
-diff --git a/hw/s390x/virtio-ccw-input.c b/hw/s390x/virtio-ccw-input.c
-index 2250d8cf98..f5e1a209d1 100644
---- a/hw/s390x/virtio-ccw-input.c
-+++ b/hw/s390x/virtio-ccw-input.c
-@@ -96,6 +96,7 @@ static const TypeInfo virtio_ccw_input = {
-     .instance_size = sizeof(VirtIOInputCcw),
-     .class_init    = virtio_ccw_input_class_init,
-     .abstract = true,
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index c0cc5f6942..dbe672c5c4 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -618,6 +618,7 @@ static const TypeInfo vhost_user_blk_info = {
+     .instance_size = sizeof(VHostUserBlk),
+     .instance_init = vhost_user_blk_instance_init,
+     .class_init = vhost_user_blk_class_init,
 +    .secure = true,
  };
  
- static const TypeInfo virtio_ccw_input_hid = {
-@@ -103,6 +104,7 @@ static const TypeInfo virtio_ccw_input_hid = {
-     .parent        = TYPE_VIRTIO_INPUT_CCW,
-     .instance_size = sizeof(VirtIOInputHIDCcw),
-     .abstract = true,
+ static void virtio_register_types(void)
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 9fc6bbcd2c..3fc6267c4f 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -694,6 +694,7 @@ static const TypeInfo vhost_user_gpu_info = {
+     .instance_init = vhost_user_gpu_instance_init,
+     .instance_finalize = vhost_user_gpu_instance_finalize,
+     .class_init = vhost_user_gpu_class_init,
 +    .secure = true,
  };
- 
- static const TypeInfo virtio_ccw_keyboard = {
-@@ -110,6 +112,7 @@ static const TypeInfo virtio_ccw_keyboard = {
-     .parent        = TYPE_VIRTIO_INPUT_HID_CCW,
-     .instance_size = sizeof(VirtIOInputHIDCcw),
-     .instance_init = virtio_ccw_keyboard_instance_init,
-+    .secure        = true,
- };
- 
- static const TypeInfo virtio_ccw_mouse = {
-@@ -117,6 +120,7 @@ static const TypeInfo virtio_ccw_mouse = {
-     .parent        = TYPE_VIRTIO_INPUT_HID_CCW,
-     .instance_size = sizeof(VirtIOInputHIDCcw),
-     .instance_init = virtio_ccw_mouse_instance_init,
-+    .secure        = true,
- };
- 
- static const TypeInfo virtio_ccw_tablet = {
-@@ -124,6 +128,7 @@ static const TypeInfo virtio_ccw_tablet = {
-     .parent        = TYPE_VIRTIO_INPUT_HID_CCW,
-     .instance_size = sizeof(VirtIOInputHIDCcw),
-     .instance_init = virtio_ccw_tablet_instance_init,
-+    .secure        = true,
- };
- 
- static void virtio_ccw_input_register(void)
-diff --git a/hw/s390x/virtio-ccw-md.c b/hw/s390x/virtio-ccw-md.c
-index 0370f58450..9a0264efda 100644
---- a/hw/s390x/virtio-ccw-md.c
-+++ b/hw/s390x/virtio-ccw-md.c
-@@ -140,6 +140,7 @@ static const TypeInfo virtio_ccw_md_info = {
-     .instance_size = sizeof(VirtIOMDCcw),
-     .class_size = sizeof(VirtIOMDCcwClass),
-     .abstract = true,
+ module_obj(TYPE_VHOST_USER_GPU);
+ module_kconfig(VHOST_USER_GPU);
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index cdf405b0f8..7b8aec50e6 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -401,6 +401,7 @@ static const TypeInfo vhost_scsi_info = {
+     .instance_size = sizeof(VHostSCSI),
+     .class_init = vhost_scsi_class_init,
+     .instance_init = vhost_scsi_instance_init,
 +    .secure = true,
      .interfaces = (const InterfaceInfo[]) {
-         { TYPE_MEMORY_DEVICE },
+         { TYPE_FW_PATH_PROVIDER },
          { }
-diff --git a/hw/s390x/virtio-ccw-mem.c b/hw/s390x/virtio-ccw-mem.c
-index daa485d189..719386cfa7 100644
---- a/hw/s390x/virtio-ccw-mem.c
-+++ b/hw/s390x/virtio-ccw-mem.c
-@@ -216,6 +216,7 @@ static const TypeInfo virtio_ccw_mem = {
-     .instance_size = sizeof(VirtIOMEMCcw),
-     .instance_init = virtio_ccw_mem_instance_init,
-     .class_init = virtio_ccw_mem_class_init,
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 25f2d894e7..0ce5436090 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -426,6 +426,7 @@ static const TypeInfo vhost_user_scsi_info = {
+     .instance_size = sizeof(VHostUserSCSI),
+     .class_init = vhost_user_scsi_class_init,
+     .instance_init = vhost_user_scsi_instance_init,
++    .secure = true,
+     .interfaces = (const InterfaceInfo[]) {
+         { TYPE_FW_PATH_PROVIDER },
+         { }
+diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+index ff67a020b4..626657ced3 100644
+--- a/hw/virtio/vhost-user-base.c
++++ b/hw/virtio/vhost-user-base.c
+@@ -372,7 +372,8 @@ static const TypeInfo vub_types[] = {
+         .instance_size = sizeof(VHostUserBase),
+         .class_init = vub_class_init,
+         .class_size = sizeof(VHostUserBaseClass),
+-        .abstract = true
++        .abstract = true,
++        .secure = true,
+     }
+ };
+ 
+diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
+index 3939bdf755..d2e80c9f09 100644
+--- a/hw/virtio/vhost-user-device.c
++++ b/hw/virtio/vhost-user-device.c
+@@ -53,6 +53,7 @@ static const TypeInfo vud_info = {
+     .name = TYPE_VHOST_USER_DEVICE,
+     .parent = TYPE_VHOST_USER_BASE,
+     .class_init = vud_class_init,
 +    .secure = true,
  };
  
- static void virtio_ccw_mem_register_types(void)
-diff --git a/hw/s390x/virtio-ccw-net.c b/hw/s390x/virtio-ccw-net.c
-index a7d4afbeb9..b2ebc76000 100644
---- a/hw/s390x/virtio-ccw-net.c
-+++ b/hw/s390x/virtio-ccw-net.c
-@@ -70,6 +70,7 @@ static const TypeInfo virtio_ccw_net = {
-     .instance_size = sizeof(VirtIONetCcw),
-     .instance_init = virtio_ccw_net_instance_init,
-     .class_init    = virtio_ccw_net_class_init,
+ static void vu_register_types(void)
+diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
+index e77c69eb12..6861e4ff33 100644
+--- a/hw/virtio/vhost-user-fs.c
++++ b/hw/virtio/vhost-user-fs.c
+@@ -447,6 +447,7 @@ static const TypeInfo vuf_info = {
+     .instance_size = sizeof(VHostUserFS),
+     .instance_init = vuf_instance_init,
+     .class_init = vuf_class_init,
++    .secure = true,
+ };
+ 
+ static void vuf_register_types(void)
+diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
+index a7fd49b10a..47b9d685a2 100644
+--- a/hw/virtio/vhost-user-gpio.c
++++ b/hw/virtio/vhost-user-gpio.c
+@@ -53,6 +53,7 @@ static const TypeInfo vu_gpio_info = {
+     .parent = TYPE_VHOST_USER_BASE,
+     .instance_size = sizeof(VHostUserGPIO),
+     .class_init = vu_gpio_class_init,
++    .secure = true,
+ };
+ 
+ static void vu_gpio_register_types(void)
+diff --git a/hw/virtio/vhost-user-i2c.c b/hw/virtio/vhost-user-i2c.c
+index ae007fe97d..6e7558bc85 100644
+--- a/hw/virtio/vhost-user-i2c.c
++++ b/hw/virtio/vhost-user-i2c.c
+@@ -53,6 +53,7 @@ static const TypeInfo vu_i2c_info = {
+     .parent = TYPE_VHOST_USER_BASE,
+     .instance_size = sizeof(VHostUserI2C),
+     .class_init = vu_i2c_class_init,
++    .secure = true,
+ };
+ 
+ static void vu_i2c_register_types(void)
+diff --git a/hw/virtio/vhost-user-input.c b/hw/virtio/vhost-user-input.c
+index 5cfc5bbb56..a850e3770e 100644
+--- a/hw/virtio/vhost-user-input.c
++++ b/hw/virtio/vhost-user-input.c
+@@ -47,6 +47,7 @@ static const TypeInfo vhost_input_info = {
+     .parent        = TYPE_VHOST_USER_BASE,
+     .instance_size = sizeof(VHostUserInput),
+     .class_init    = vhost_input_class_init,
 +    .secure        = true,
  };
  
- static void virtio_ccw_net_register(void)
-diff --git a/hw/s390x/virtio-ccw-rng.c b/hw/s390x/virtio-ccw-rng.c
-index 3263287d45..6216cc76dc 100644
---- a/hw/s390x/virtio-ccw-rng.c
-+++ b/hw/s390x/virtio-ccw-rng.c
-@@ -66,6 +66,7 @@ static const TypeInfo virtio_ccw_rng = {
-     .instance_size = sizeof(VirtIORNGCcw),
-     .instance_init = virtio_ccw_rng_instance_init,
-     .class_init    = virtio_ccw_rng_class_init,
-+    .secure        = true,
+ static void vhost_input_register_types(void)
+diff --git a/hw/virtio/vhost-user-rng.c b/hw/virtio/vhost-user-rng.c
+index 61dadcda05..5ebae80635 100644
+--- a/hw/virtio/vhost-user-rng.c
++++ b/hw/virtio/vhost-user-rng.c
+@@ -55,6 +55,7 @@ static const TypeInfo vu_rng_info = {
+     .parent = TYPE_VHOST_USER_BASE,
+     .instance_size = sizeof(VHostUserRNG),
+     .class_init = vu_rng_class_init,
++    .secure = true,
  };
  
- static void virtio_ccw_rng_register(void)
-diff --git a/hw/s390x/virtio-ccw-scsi.c b/hw/s390x/virtio-ccw-scsi.c
-index 06b4c6c4a5..a9e99b5af1 100644
---- a/hw/s390x/virtio-ccw-scsi.c
-+++ b/hw/s390x/virtio-ccw-scsi.c
-@@ -76,6 +76,7 @@ static const TypeInfo virtio_ccw_scsi = {
-     .instance_size = sizeof(VirtIOSCSICcw),
-     .instance_init = virtio_ccw_scsi_instance_init,
-     .class_init    = virtio_ccw_scsi_class_init,
-+    .secure        = true,
+ static void vu_rng_register_types(void)
+diff --git a/hw/virtio/vhost-user-scmi.c b/hw/virtio/vhost-user-scmi.c
+index f9264c4374..565618d7aa 100644
+--- a/hw/virtio/vhost-user-scmi.c
++++ b/hw/virtio/vhost-user-scmi.c
+@@ -305,6 +305,7 @@ static const TypeInfo vu_scmi_info = {
+     .parent = TYPE_VIRTIO_DEVICE,
+     .instance_size = sizeof(VHostUserSCMI),
+     .class_init = vu_scmi_class_init,
++    .secure = true,
  };
  
- static void virtio_ccw_scsi_register(void)
-diff --git a/hw/s390x/virtio-ccw-serial.c b/hw/s390x/virtio-ccw-serial.c
-index 0dac590c08..5ae7bb2f30 100644
---- a/hw/s390x/virtio-ccw-serial.c
-+++ b/hw/s390x/virtio-ccw-serial.c
-@@ -76,6 +76,7 @@ static const TypeInfo virtio_ccw_serial = {
-     .instance_size = sizeof(VirtioSerialCcw),
-     .instance_init = virtio_ccw_serial_instance_init,
-     .class_init    = virtio_ccw_serial_class_init,
-+    .secure        = true,
+ static void vu_scmi_register_types(void)
+diff --git a/hw/virtio/vhost-user-snd.c b/hw/virtio/vhost-user-snd.c
+index 732411c655..d79e7d037c 100644
+--- a/hw/virtio/vhost-user-snd.c
++++ b/hw/virtio/vhost-user-snd.c
+@@ -72,6 +72,7 @@ static const TypeInfo vu_snd_info = {
+     .parent = TYPE_VHOST_USER_BASE,
+     .instance_size = sizeof(VHostUserSound),
+     .class_init = vu_snd_class_init,
++    .secure = true,
  };
  
- static void virtio_ccw_serial_register(void)
-diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
-index d2f85b39f3..5977357aa9 100644
---- a/hw/s390x/virtio-ccw.c
-+++ b/hw/s390x/virtio-ccw.c
-@@ -1249,6 +1249,7 @@ static const TypeInfo virtio_ccw_device_info = {
-     .class_init = virtio_ccw_device_class_init,
-     .class_size = sizeof(VirtIOCCWDeviceClass),
+ static void vu_snd_register_types(void)
+diff --git a/hw/virtio/vhost-user-vsock.c b/hw/virtio/vhost-user-vsock.c
+index 993c287348..a430d07a55 100644
+--- a/hw/virtio/vhost-user-vsock.c
++++ b/hw/virtio/vhost-user-vsock.c
+@@ -175,6 +175,7 @@ static const TypeInfo vuv_info = {
+     .parent = TYPE_VHOST_VSOCK_COMMON,
+     .instance_size = sizeof(VHostUserVSock),
+     .class_init = vuv_class_init,
++    .secure = true,
+ };
+ 
+ static void vuv_register_types(void)
+diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
+index c6c44d8989..d06d2342d9 100644
+--- a/hw/virtio/vhost-vsock-common.c
++++ b/hw/virtio/vhost-vsock-common.c
+@@ -308,6 +308,7 @@ static const TypeInfo vhost_vsock_common_info = {
+     .instance_size = sizeof(VHostVSockCommon),
+     .class_init = vhost_vsock_common_class_init,
      .abstract = true,
 +    .secure = true,
  };
  
- /* virtio-ccw-bus */
+ static void vhost_vsock_common_register_types(void)
+diff --git a/hw/virtio/vhost-vsock.c b/hw/virtio/vhost-vsock.c
+index 107d88babe..0fefe94b52 100644
+--- a/hw/virtio/vhost-vsock.c
++++ b/hw/virtio/vhost-vsock.c
+@@ -226,6 +226,7 @@ static const TypeInfo vhost_vsock_info = {
+     .parent = TYPE_VHOST_VSOCK_COMMON,
+     .instance_size = sizeof(VHostVSock),
+     .class_init = vhost_vsock_class_init,
++    .secure = true,
+ };
+ 
+ static void vhost_vsock_register_types(void)
 -- 
 2.50.1
 
