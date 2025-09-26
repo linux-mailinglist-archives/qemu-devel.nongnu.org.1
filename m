@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2C6BA416F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B775EBA40C6
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:09:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v293f-0006uQ-OU; Fri, 26 Sep 2025 10:04:24 -0400
+	id 1v293r-0007Bp-6N; Fri, 26 Sep 2025 10:04:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293c-0006sx-I9
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:20 -0400
+ id 1v293k-0006y4-Tn
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293U-0004tz-Th
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:20 -0400
+ id 1v293e-0004v1-1X
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895449;
+ s=mimecast20190719; t=1758895455;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4GpLmzNQcy+8p/pY6cW+syPpqcjBb4Ee4uSNVN4CvDM=;
- b=WMXgYCaARy3bZNjgn72NZuXpaqEloPO6s9EiXq1VwHeu73+o4hR6ovAp44gQNY05CQOw+W
- IbBDLniyhY3d0CVuGkPf01X3ku0lEkp3R7BPvNiupLR3acVPnlACCzC5WIIQDqQw2LYinE
- cia5CCP60uQQROy+oTku7pflG0NarHI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=xHYuilp4oPhNWzNcKosL8QrjGiebh/fmn4/Oiz8qpng=;
+ b=Vi+aZoPoEvE/8hQ3wgSetMcwfveTOj+vhQjZM0QOJ9vSABUuvphdSELfLB0pE46DM6HfxJ
+ krs0pf/Ge7T13ZM6/wB80dPhPBIjvMYkK4NdFLia++gPpCgy78yz5oyYR76MA1i/5rwI0F
+ iKtF+h8jynGcOn1KA2yzVFj/h0AaT/I=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-65-TlQEFdHWM12y73ilDEPYdw-1; Fri,
- 26 Sep 2025 10:04:05 -0400
-X-MC-Unique: TlQEFdHWM12y73ilDEPYdw-1
-X-Mimecast-MFC-AGG-ID: TlQEFdHWM12y73ilDEPYdw_1758895444
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-6pXjO7_1NV6Ogmln5OqqIg-1; Fri,
+ 26 Sep 2025 10:04:09 -0400
+X-MC-Unique: 6pXjO7_1NV6Ogmln5OqqIg-1
+X-Mimecast-MFC-AGG-ID: 6pXjO7_1NV6Ogmln5OqqIg_1758895448
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 46A9F1955D56; Fri, 26 Sep 2025 14:04:04 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E4EC1956056; Fri, 26 Sep 2025 14:04:08 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2E5511956095; Fri, 26 Sep 2025 14:04:00 +0000 (UTC)
+ id BCEE31956095; Fri, 26 Sep 2025 14:04:04 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 24/32] hw/net: mark most non-virtio NICs as insecure
-Date: Fri, 26 Sep 2025 15:01:35 +0100
-Message-ID: <20250926140144.1998694-25-berrange@redhat.com>
+Subject: [PATCH v2 25/32] hw/usb: mark most USB devices/hosts as secure
+Date: Fri, 26 Sep 2025 15:01:36 +0100
+Message-ID: <20250926140144.1998694-26-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,618 +87,476 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Historically most NICs are only interesting for non-virtualization
-use cases and have not been written with malicious guests in mind.
+Most of the USB devices / host controllers are relevant for
+virtualization use cases, so should be declared secure. The
+exceptions are
 
-As a general rule either virtio-net or xen-net should be used in
-all virtualized guests requiring a security boundary.
-
-There are a handful of exceptions resulting from historical usage
-in the x86 world, to support virtualized guests lacking virtio
-support.
-
-Thus the rtl8139, e1000 & e1000e NICs are declared to provide a
-security boundary.
+ * dwc2/dwc3 - emulating Raspberry Pi hardware.
+ * mtp - a complex file sharing device, unclear if
+   it has been used/proven sufficiently to consider
+   it secure
+ * braille - a variant of USB serial, using the
+   chardev baum backend, unclear that is written
+   with a hostile guest in mind
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/net/allwinner-sun8i-emac.c  | 1 +
- hw/net/allwinner_emac.c        | 3 ++-
- hw/net/cadence_gem.c           | 1 +
- hw/net/can/can_kvaser_pci.c    | 1 +
- hw/net/can/can_mioe3680_pci.c  | 1 +
- hw/net/can/can_pcm3680_pci.c   | 1 +
- hw/net/can/ctucan_pci.c        | 1 +
- hw/net/can/xlnx-versal-canfd.c | 1 +
- hw/net/can/xlnx-zynqmp-can.c   | 1 +
- hw/net/dp8393x.c               | 1 +
- hw/net/e1000.c                 | 1 +
- hw/net/e1000e.c                | 1 +
- hw/net/eepro100.c              | 1 +
- hw/net/fsl_etsec/etsec.c       | 1 +
- hw/net/ftgmac100.c             | 1 +
- hw/net/igb.c                   | 1 +
- hw/net/igbvf.c                 | 1 +
- hw/net/imx_fec.c               | 2 ++
- hw/net/lan9118.c               | 1 +
- hw/net/lan9118_phy.c           | 1 +
- hw/net/lance.c                 | 1 +
- hw/net/lasi_i82596.c           | 1 +
- hw/net/mcf_fec.c               | 1 +
- hw/net/msf2-emac.c             | 1 +
- hw/net/mv88w8618_eth.c         | 1 +
- hw/net/ne2000-isa.c            | 1 +
- hw/net/ne2000-pci.c            | 1 +
- hw/net/npcm7xx_emc.c           | 1 +
- hw/net/npcm_gmac.c             | 1 +
- hw/net/npcm_pcs.c              | 1 +
- hw/net/opencores_eth.c         | 1 +
- hw/net/pcnet-pci.c             | 1 +
- hw/net/rocker/rocker.c         | 1 +
- hw/net/rtl8139.c               | 1 +
- hw/net/smc91c111.c             | 1 +
- hw/net/spapr_llan.c            | 1 +
- hw/net/stellaris_enet.c        | 1 +
- hw/net/sungem.c                | 1 +
- hw/net/sunhme.c                | 1 +
- hw/net/tulip.c                 | 1 +
- hw/net/virtio-net.c            | 1 +
- hw/net/vmxnet3.c               | 1 +
- hw/net/xgmac.c                 | 1 +
- hw/net/xilinx_axienet.c        | 1 +
- hw/net/xilinx_ethlite.c        | 1 +
- 45 files changed, 47 insertions(+), 1 deletion(-)
+ hw/usb/dev-audio.c            | 1 +
+ hw/usb/dev-hid.c              | 4 ++++
+ hw/usb/dev-hub.c              | 1 +
+ hw/usb/dev-mtp.c              | 1 +
+ hw/usb/dev-network.c          | 1 +
+ hw/usb/dev-serial.c           | 3 +++
+ hw/usb/dev-smartcard-reader.c | 3 +++
+ hw/usb/dev-storage-bot.c      | 1 +
+ hw/usb/dev-storage-classic.c  | 1 +
+ hw/usb/dev-storage.c          | 1 +
+ hw/usb/dev-uas.c              | 1 +
+ hw/usb/dev-wacom.c            | 1 +
+ hw/usb/hcd-dwc2.c             | 1 +
+ hw/usb/hcd-dwc3.c             | 1 +
+ hw/usb/hcd-ehci-pci.c         | 2 ++
+ hw/usb/hcd-ehci-sysbus.c      | 8 ++++++++
+ hw/usb/hcd-ohci-pci.c         | 1 +
+ hw/usb/hcd-ohci-sysbus.c      | 1 +
+ hw/usb/hcd-uhci.c             | 2 ++
+ hw/usb/hcd-xhci-nec.c         | 1 +
+ hw/usb/hcd-xhci-pci.c         | 2 ++
+ hw/usb/hcd-xhci-sysbus.c      | 3 ++-
+ hw/usb/hcd-xhci.c             | 1 +
+ hw/usb/host-libusb.c          | 1 +
+ hw/usb/redirect.c             | 1 +
+ 25 files changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/hw/net/allwinner-sun8i-emac.c b/hw/net/allwinner-sun8i-emac.c
-index 30a81576b4..b03a917aa3 100644
---- a/hw/net/allwinner-sun8i-emac.c
-+++ b/hw/net/allwinner-sun8i-emac.c
-@@ -892,6 +892,7 @@ static const TypeInfo allwinner_sun8i_emac_info = {
-     .instance_size  = sizeof(AwSun8iEmacState),
-     .instance_init  = allwinner_sun8i_emac_init,
-     .class_init     = allwinner_sun8i_emac_class_init,
-+    .secure         = false,
+diff --git a/hw/usb/dev-audio.c b/hw/usb/dev-audio.c
+index 26af709f31..8be35a1cdf 100644
+--- a/hw/usb/dev-audio.c
++++ b/hw/usb/dev-audio.c
+@@ -1019,6 +1019,7 @@ static const TypeInfo usb_audio_info = {
+     .parent        = TYPE_USB_DEVICE,
+     .instance_size = sizeof(USBAudioState),
+     .class_init    = usb_audio_class_init,
++    .secure        = true,
  };
  
- static void allwinner_sun8i_emac_register_types(void)
-diff --git a/hw/net/allwinner_emac.c b/hw/net/allwinner_emac.c
-index 77d089d988..836138bba3 100644
---- a/hw/net/allwinner_emac.c
-+++ b/hw/net/allwinner_emac.c
-@@ -528,8 +528,9 @@ static const TypeInfo aw_emac_info = {
-     .name           = TYPE_AW_EMAC,
-     .parent         = TYPE_SYS_BUS_DEVICE,
-     .instance_size  = sizeof(AwEmacState),
--    .instance_init   = aw_emac_init,
-+    .instance_init  = aw_emac_init,
-     .class_init     = aw_emac_class_init,
-+    .secure         = false,
- };
- 
- static void aw_emac_register_types(void)
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index 44446666de..760e0d5e99 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -1833,6 +1833,7 @@ static const TypeInfo gem_info = {
-     .instance_size  = sizeof(CadenceGEMState),
-     .instance_init = gem_init,
-     .class_init = gem_class_init,
-+    .secure   = false,
- };
- 
- static void gem_register_types(void)
-diff --git a/hw/net/can/can_kvaser_pci.c b/hw/net/can/can_kvaser_pci.c
-index be16769de2..7764c29ced 100644
---- a/hw/net/can/can_kvaser_pci.c
-+++ b/hw/net/can/can_kvaser_pci.c
-@@ -305,6 +305,7 @@ static const TypeInfo kvaser_pci_info = {
-     .instance_size = sizeof(KvaserPCIState),
-     .class_init    = kvaser_pci_class_init,
-     .instance_init = kvaser_pci_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/can/can_mioe3680_pci.c b/hw/net/can/can_mioe3680_pci.c
-index 44f3ba370d..3e1c5eda19 100644
---- a/hw/net/can/can_mioe3680_pci.c
-+++ b/hw/net/can/can_mioe3680_pci.c
-@@ -248,6 +248,7 @@ static const TypeInfo mioe3680_pci_info = {
-     .instance_size = sizeof(Mioe3680PCIState),
-     .class_init    = mioe3680_pci_class_init,
-     .instance_init = mioe3680_pci_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/can/can_pcm3680_pci.c b/hw/net/can/can_pcm3680_pci.c
-index 7296d63be7..964e074a36 100644
---- a/hw/net/can/can_pcm3680_pci.c
-+++ b/hw/net/can/can_pcm3680_pci.c
-@@ -249,6 +249,7 @@ static const TypeInfo pcm3680i_pci_info = {
-     .instance_size = sizeof(Pcm3680iPCIState),
-     .class_init    = pcm3680i_pci_class_init,
-     .instance_init = pcm3680i_pci_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/can/ctucan_pci.c b/hw/net/can/ctucan_pci.c
-index bed6785433..1530959ea8 100644
---- a/hw/net/can/ctucan_pci.c
-+++ b/hw/net/can/ctucan_pci.c
-@@ -262,6 +262,7 @@ static const TypeInfo ctucan_pci_info = {
-     .instance_size = sizeof(CtuCanPCIState),
-     .class_init    = ctucan_pci_class_init,
-     .instance_init = ctucan_pci_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 3eb111949f..0073812e3c 100644
---- a/hw/net/can/xlnx-versal-canfd.c
-+++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -2068,6 +2068,7 @@ static const TypeInfo canfd_info = {
-     .instance_size = sizeof(XlnxVersalCANFDState),
-     .class_init    = canfd_class_init,
-     .instance_init = canfd_init,
-+    .secure        = false,
- };
- 
- static void canfd_register_types(void)
-diff --git a/hw/net/can/xlnx-zynqmp-can.c b/hw/net/can/xlnx-zynqmp-can.c
-index ca9edd4a5b..e859e447af 100644
---- a/hw/net/can/xlnx-zynqmp-can.c
-+++ b/hw/net/can/xlnx-zynqmp-can.c
-@@ -1194,6 +1194,7 @@ static const TypeInfo can_info = {
-     .instance_size = sizeof(XlnxZynqMPCANState),
-     .class_init    = xlnx_zynqmp_can_class_init,
-     .instance_init = xlnx_zynqmp_can_init,
-+    .secure        = false,
- };
- 
- static void can_register_types(void)
-diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
-index d49032059b..b508b6f779 100644
---- a/hw/net/dp8393x.c
-+++ b/hw/net/dp8393x.c
-@@ -956,6 +956,7 @@ static const TypeInfo dp8393x_info = {
-     .instance_size = sizeof(dp8393xState),
-     .instance_init = dp8393x_instance_init,
-     .class_init    = dp8393x_class_init,
-+    .secure        = false,
- };
- 
- static void dp8393x_register_types(void)
-diff --git a/hw/net/e1000.c b/hw/net/e1000.c
-index a80a7b0cdb..684350557f 100644
---- a/hw/net/e1000.c
-+++ b/hw/net/e1000.c
-@@ -1759,6 +1759,7 @@ static void e1000_register_types(void)
-         type_info.parent = TYPE_E1000_BASE;
-         type_info.class_data = info;
-         type_info.class_init = e1000_class_init;
-+        type_info.secure = true,
- 
-         type_register_static(&type_info);
-     }
-diff --git a/hw/net/e1000e.c b/hw/net/e1000e.c
-index 89e6d52ba0..83cf3cf643 100644
---- a/hw/net/e1000e.c
-+++ b/hw/net/e1000e.c
-@@ -721,6 +721,7 @@ static const TypeInfo e1000e_info = {
-     .instance_size = sizeof(E1000EState),
-     .class_init = e1000e_class_init,
-     .instance_init = e1000e_instance_init,
+ static void usb_audio_register_types(void)
+diff --git a/hw/usb/dev-hid.c b/hw/usb/dev-hid.c
+index 96623aa322..79a3c0387f 100644
+--- a/hw/usb/dev-hid.c
++++ b/hw/usb/dev-hid.c
+@@ -790,6 +790,7 @@ static const TypeInfo usb_hid_type_info = {
+     .parent = TYPE_USB_DEVICE,
+     .instance_size = sizeof(USBHIDState),
+     .abstract = true,
 +    .secure = true,
+     .class_init = usb_hid_class_initfn,
+ };
+ 
+@@ -815,6 +816,7 @@ static const TypeInfo usb_tablet_info = {
+     .name          = "usb-tablet",
+     .parent        = TYPE_USB_HID,
+     .class_init    = usb_tablet_class_initfn,
++    .secure        = true,
+ };
+ 
+ static const Property usb_mouse_properties[] = {
+@@ -837,6 +839,7 @@ static const TypeInfo usb_mouse_info = {
+     .name          = "usb-mouse",
+     .parent        = TYPE_USB_HID,
+     .class_init    = usb_mouse_class_initfn,
++    .secure        = true,
+ };
+ 
+ static const Property usb_keyboard_properties[] = {
+@@ -860,6 +863,7 @@ static const TypeInfo usb_keyboard_info = {
+     .name          = "usb-kbd",
+     .parent        = TYPE_USB_HID,
+     .class_init    = usb_keyboard_class_initfn,
++    .secure        = true,
+ };
+ 
+ static void usb_hid_register_types(void)
+diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
+index a19350d9c4..66d6b76973 100644
+--- a/hw/usb/dev-hub.c
++++ b/hw/usb/dev-hub.c
+@@ -694,6 +694,7 @@ static const TypeInfo hub_info = {
+     .parent        = TYPE_USB_DEVICE,
+     .instance_size = sizeof(USBHubState),
+     .class_init    = usb_hub_class_initfn,
++    .secure        = true,
+ };
+ 
+ static void usb_hub_register_types(void)
+diff --git a/hw/usb/dev-mtp.c b/hw/usb/dev-mtp.c
+index ce45c9cd06..11b0f284c7 100644
+--- a/hw/usb/dev-mtp.c
++++ b/hw/usb/dev-mtp.c
+@@ -2107,6 +2107,7 @@ static const TypeInfo mtp_info = {
+     .parent        = TYPE_USB_DEVICE,
+     .instance_size = sizeof(MTPState),
+     .class_init    = usb_mtp_class_initfn,
++    .secure        = false,
+ };
+ 
+ static void usb_mtp_register_types(void)
+diff --git a/hw/usb/dev-network.c b/hw/usb/dev-network.c
+index 1df2454181..cb539d8dd3 100644
+--- a/hw/usb/dev-network.c
++++ b/hw/usb/dev-network.c
+@@ -1435,6 +1435,7 @@ static const TypeInfo net_info = {
+     .instance_size = sizeof(USBNetState),
+     .class_init    = usb_net_class_initfn,
+     .instance_init = usb_net_instance_init,
++    .secure        = true,
+ };
+ 
+ static void usb_net_register_types(void)
+diff --git a/hw/usb/dev-serial.c b/hw/usb/dev-serial.c
+index 1c116d8b0f..51d11ba4d0 100644
+--- a/hw/usb/dev-serial.c
++++ b/hw/usb/dev-serial.c
+@@ -655,6 +655,7 @@ static const TypeInfo usb_serial_dev_type_info = {
+     .parent = TYPE_USB_DEVICE,
+     .instance_size = sizeof(USBSerialState),
+     .abstract = true,
++    .secure = true,
+     .class_init = usb_serial_dev_class_init,
+ };
+ 
+@@ -672,6 +673,7 @@ static const TypeInfo serial_info = {
+     .name          = "usb-serial",
+     .parent        = TYPE_USB_SERIAL,
+     .class_init    = usb_serial_class_initfn,
++    .secure        = true,
+ };
+ 
+ static const Property braille_properties[] = {
+@@ -692,6 +694,7 @@ static const TypeInfo braille_info = {
+     .name          = "usb-braille",
+     .parent        = TYPE_USB_SERIAL,
+     .class_init    = usb_braille_class_initfn,
++    .secure        = false,
+ };
+ 
+ static void usb_serial_register_types(void)
+diff --git a/hw/usb/dev-smartcard-reader.c b/hw/usb/dev-smartcard-reader.c
+index 6ce7154fee..ebde3365f8 100644
+--- a/hw/usb/dev-smartcard-reader.c
++++ b/hw/usb/dev-smartcard-reader.c
+@@ -1178,6 +1178,7 @@ static const TypeInfo ccid_bus_info = {
+     .name = TYPE_CCID_BUS,
+     .parent = TYPE_BUS,
+     .instance_size = sizeof(CCIDBus),
++    .secure = true,
+ };
+ 
+ void ccid_card_send_apdu_to_guest(CCIDCardState *card,
+@@ -1458,6 +1459,7 @@ static const TypeInfo ccid_info = {
+     .parent        = TYPE_USB_DEVICE,
+     .instance_size = sizeof(USBCCIDState),
+     .class_init    = ccid_class_initfn,
++    .secure        = true,
      .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
+         { TYPE_HOTPLUG_HANDLER },
          { }
-diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
-index d47df5a97f..3bc232d3c2 100644
---- a/hw/net/eepro100.c
-+++ b/hw/net/eepro100.c
-@@ -2094,6 +2094,7 @@ static void eepro100_register_types(void)
-         type_info.class_init = eepro100_class_init;
-         type_info.instance_size = sizeof(EEPRO100State);
-         type_info.instance_init = eepro100_instance_init;
-+        type_info.secure   = false,
-         type_info.interfaces = (const InterfaceInfo[]) {
-             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-             { },
-diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
-index 846f6cbc5d..4f82678941 100644
---- a/hw/net/fsl_etsec/etsec.c
-+++ b/hw/net/fsl_etsec/etsec.c
-@@ -437,6 +437,7 @@ static const TypeInfo etsec_types[] = {
-         .instance_size = sizeof(eTSEC),
-         .class_init    = etsec_class_init,
-         .instance_init = etsec_instance_init,
-+        .secure        = false,
-     },
+@@ -1478,6 +1480,7 @@ static const TypeInfo ccid_card_type_info = {
+     .parent = TYPE_DEVICE,
+     .instance_size = sizeof(CCIDCardState),
+     .abstract = true,
++    .secure = true,
+     .class_size = sizeof(CCIDCardClass),
+     .class_init = ccid_card_class_init,
+ };
+diff --git a/hw/usb/dev-storage-bot.c b/hw/usb/dev-storage-bot.c
+index df6ab7f656..d9b0277856 100644
+--- a/hw/usb/dev-storage-bot.c
++++ b/hw/usb/dev-storage-bot.c
+@@ -52,6 +52,7 @@ static const TypeInfo bot_info = {
+     .name          = "usb-bot",
+     .parent        = TYPE_USB_STORAGE,
+     .class_init    = usb_msd_class_bot_initfn,
++    .secure        = true,
  };
  
-diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
-index c41ce889cf..936a38a4f8 100644
---- a/hw/net/ftgmac100.c
-+++ b/hw/net/ftgmac100.c
-@@ -1277,6 +1277,7 @@ static const TypeInfo ftgmac100_info = {
-     .parent = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(FTGMAC100State),
-     .class_init = ftgmac100_class_init,
-+    .secure = false,
+ static void register_types(void)
+diff --git a/hw/usb/dev-storage-classic.c b/hw/usb/dev-storage-classic.c
+index dabe156359..e3e7d79ecf 100644
+--- a/hw/usb/dev-storage-classic.c
++++ b/hw/usb/dev-storage-classic.c
+@@ -133,6 +133,7 @@ static const TypeInfo msd_info = {
+     .parent        = TYPE_USB_STORAGE,
+     .class_init    = usb_msd_class_storage_initfn,
+     .instance_init = usb_msd_instance_init,
++    .secure        = true,
  };
  
- /*
-diff --git a/hw/net/igb.c b/hw/net/igb.c
-index e4c02365d6..6ab7af33d5 100644
---- a/hw/net/igb.c
-+++ b/hw/net/igb.c
-@@ -635,6 +635,7 @@ static const TypeInfo igb_info = {
-     .instance_size = sizeof(IGBState),
-     .class_init = igb_class_init,
-     .instance_init = igb_instance_init,
-+    .secure = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
-         { }
-diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
-index 31d72c4977..8a193db414 100644
---- a/hw/net/igbvf.c
-+++ b/hw/net/igbvf.c
-@@ -325,6 +325,7 @@ static const TypeInfo igbvf_info = {
-     .parent = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(IgbVfState),
-     .class_init = igbvf_class_init,
-+    .secure   = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
-         { }
-diff --git a/hw/net/imx_fec.c b/hw/net/imx_fec.c
-index e5e34dd1a4..d288ba0e2d 100644
---- a/hw/net/imx_fec.c
-+++ b/hw/net/imx_fec.c
-@@ -1261,12 +1261,14 @@ static const TypeInfo imx_fec_info = {
-     .instance_size = sizeof(IMXFECState),
-     .instance_init = imx_fec_init,
-     .class_init    = imx_eth_class_init,
+ static void register_types(void)
+diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
+index b13fe345c4..374312e57a 100644
+--- a/hw/usb/dev-storage.c
++++ b/hw/usb/dev-storage.c
+@@ -607,6 +607,7 @@ static const TypeInfo usb_storage_dev_type_info = {
+     .parent = TYPE_USB_DEVICE,
+     .instance_size = sizeof(MSDState),
+     .abstract = true,
++    .secure = true,
+     .class_init = usb_msd_class_initfn_common,
+ };
+ 
+diff --git a/hw/usb/dev-uas.c b/hw/usb/dev-uas.c
+index 21cc2835c6..6fde2bdf71 100644
+--- a/hw/usb/dev-uas.c
++++ b/hw/usb/dev-uas.c
+@@ -982,6 +982,7 @@ static const TypeInfo uas_info = {
+     .parent        = TYPE_USB_DEVICE,
+     .instance_size = sizeof(UASDevice),
+     .class_init    = usb_uas_class_initfn,
++    .secure        = true,
+ };
+ 
+ static void usb_uas_register_types(void)
+diff --git a/hw/usb/dev-wacom.c b/hw/usb/dev-wacom.c
+index f4b71a2147..6c2a37a53e 100644
+--- a/hw/usb/dev-wacom.c
++++ b/hw/usb/dev-wacom.c
+@@ -442,6 +442,7 @@ static const TypeInfo wacom_info = {
+     .parent        = TYPE_USB_DEVICE,
+     .instance_size = sizeof(USBWacomState),
+     .class_init    = usb_wacom_class_init,
++    .secure        = true,
+ };
+ 
+ static void usb_wacom_register_types(void)
+diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
+index 83864505bb..10a996cc4a 100644
+--- a/hw/usb/hcd-dwc2.c
++++ b/hw/usb/hcd-dwc2.c
+@@ -1473,6 +1473,7 @@ static const TypeInfo dwc2_usb_type_info = {
+     .instance_init = dwc2_init,
+     .class_size    = sizeof(DWC2Class),
+     .class_init    = dwc2_class_init,
 +    .secure        = false,
  };
  
- static const TypeInfo imx_enet_info = {
-     .name          = TYPE_IMX_ENET,
-     .parent        = TYPE_IMX_FEC,
-     .instance_init = imx_enet_init,
+ static void dwc2_usb_register_types(void)
+diff --git a/hw/usb/hcd-dwc3.c b/hw/usb/hcd-dwc3.c
+index 98a342b8b8..54fa3a7922 100644
+--- a/hw/usb/hcd-dwc3.c
++++ b/hw/usb/hcd-dwc3.c
+@@ -682,6 +682,7 @@ static const TypeInfo usb_dwc3_info = {
+     .instance_size = sizeof(USBDWC3),
+     .class_init    = usb_dwc3_class_init,
+     .instance_init = usb_dwc3_init,
 +    .secure        = false,
  };
  
- static void imx_eth_register_types(void)
-diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index 3017e12971..a190cf8a34 100644
---- a/hw/net/lan9118.c
-+++ b/hw/net/lan9118.c
-@@ -1325,6 +1325,7 @@ static const TypeInfo lan9118_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(lan9118_state),
-     .class_init    = lan9118_class_init,
-+    .secure        = false,
- };
- 
- static void lan9118_register_types(void)
-diff --git a/hw/net/lan9118_phy.c b/hw/net/lan9118_phy.c
-index 4c4e03df11..a32eb3374f 100644
---- a/hw/net/lan9118_phy.c
-+++ b/hw/net/lan9118_phy.c
-@@ -216,6 +216,7 @@ static const TypeInfo types[] = {
-         .instance_size = sizeof(Lan9118PhyState),
-         .instance_init = lan9118_phy_init,
-         .class_init    = lan9118_phy_class_init,
-+        .secure        = false,
-     }
- };
- 
-diff --git a/hw/net/lance.c b/hw/net/lance.c
-index dfb855c23a..366869a004 100644
---- a/hw/net/lance.c
-+++ b/hw/net/lance.c
-@@ -161,6 +161,7 @@ static const TypeInfo lance_info = {
-     .instance_size = sizeof(SysBusPCNetState),
-     .class_init    = lance_class_init,
-     .instance_init = lance_instance_init,
-+    .secure        = false,
- };
- 
- static void lance_register_types(void)
-diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
-index 9e1dd21546..323cbcef96 100644
---- a/hw/net/lasi_i82596.c
-+++ b/hw/net/lasi_i82596.c
-@@ -181,6 +181,7 @@ static const TypeInfo lasi_82596_info = {
-     .instance_size = sizeof(SysBusI82596State),
-     .class_init    = lasi_82596_class_init,
-     .instance_init = lasi_82596_instance_init,
-+    .secure        = false,
- };
- 
- static void lasi_82596_register_types(void)
-diff --git a/hw/net/mcf_fec.c b/hw/net/mcf_fec.c
-index ae128fa311..3a061139d0 100644
---- a/hw/net/mcf_fec.c
-+++ b/hw/net/mcf_fec.c
-@@ -681,6 +681,7 @@ static const TypeInfo mcf_fec_info = {
-     .instance_size = sizeof(mcf_fec_state),
-     .instance_init = mcf_fec_instance_init,
-     .class_init    = mcf_fec_class_init,
-+    .secure        = false,
- };
- 
- static void mcf_fec_register_types(void)
-diff --git a/hw/net/msf2-emac.c b/hw/net/msf2-emac.c
-index 59045973ab..3a72b96fac 100644
---- a/hw/net/msf2-emac.c
-+++ b/hw/net/msf2-emac.c
-@@ -581,6 +581,7 @@ static const TypeInfo msf2_emac_info = {
-     .instance_size = sizeof(MSF2EmacState),
-     .instance_init = msf2_emac_init,
-     .class_init    = msf2_emac_class_init,
-+    .secure        = false,
- };
- 
- static void msf2_emac_register_types(void)
-diff --git a/hw/net/mv88w8618_eth.c b/hw/net/mv88w8618_eth.c
-index 6f08846c81..77a748104d 100644
---- a/hw/net/mv88w8618_eth.c
-+++ b/hw/net/mv88w8618_eth.c
-@@ -392,6 +392,7 @@ static const TypeInfo mv88w8618_eth_info = {
-     .instance_size = sizeof(mv88w8618_eth_state),
-     .instance_init = mv88w8618_eth_init,
-     .class_init    = mv88w8618_eth_class_init,
-+    .secure        = false,
- };
- 
- static void musicpal_register_types(void)
-diff --git a/hw/net/ne2000-isa.c b/hw/net/ne2000-isa.c
-index 673c785abc..433a348f4d 100644
---- a/hw/net/ne2000-isa.c
-+++ b/hw/net/ne2000-isa.c
-@@ -142,6 +142,7 @@ static const TypeInfo ne2000_isa_info = {
-     .instance_size = sizeof(ISANE2000State),
-     .class_init    = isa_ne2000_class_initfn,
-     .instance_init = isa_ne2000_instance_init,
-+    .secure        = false,
- };
- 
- static void ne2000_isa_register_types(void)
-diff --git a/hw/net/ne2000-pci.c b/hw/net/ne2000-pci.c
-index ce937e1b61..23c663de10 100644
---- a/hw/net/ne2000-pci.c
-+++ b/hw/net/ne2000-pci.c
-@@ -122,6 +122,7 @@ static const TypeInfo ne2000_info = {
-     .instance_size = sizeof(PCINE2000State),
-     .class_init    = ne2000_class_init,
-     .instance_init = ne2000_instance_init,
-+    .secure        = false,
+ static void usb_dwc3_register_types(void)
+diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
+index 38ad3406b3..d80792422d 100644
+--- a/hw/usb/hcd-ehci-pci.c
++++ b/hw/usb/hcd-ehci-pci.c
+@@ -171,6 +171,7 @@ static const TypeInfo ehci_pci_type_info = {
+     .instance_init = usb_ehci_pci_init,
+     .instance_finalize = usb_ehci_pci_finalize,
+     .abstract = true,
++    .secure = true,
+     .class_init = ehci_class_init,
      .interfaces = (const InterfaceInfo[]) {
          { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/npcm7xx_emc.c b/hw/net/npcm7xx_emc.c
-index 9ba35e2c81..6e148b4fdd 100644
---- a/hw/net/npcm7xx_emc.c
-+++ b/hw/net/npcm7xx_emc.c
-@@ -867,6 +867,7 @@ static const TypeInfo npcm7xx_emc_info = {
-     .parent = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(NPCM7xxEMCState),
-     .class_init = npcm7xx_emc_class_init,
-+    .secure = false,
- };
+@@ -219,6 +220,7 @@ static void ehci_pci_register_types(void)
+     TypeInfo ehci_type_info = {
+         .parent        = TYPE_PCI_EHCI,
+         .class_init    = ehci_data_class_init,
++        .secure        = true,
+     };
+     int i;
  
- static void npcm7xx_emc_register_type(void)
-diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-index 5e32cd3edf..f8cd4e5f12 100644
---- a/hw/net/npcm_gmac.c
-+++ b/hw/net/npcm_gmac.c
-@@ -933,6 +933,7 @@ static const TypeInfo npcm_gmac_types[] = {
-         .parent = TYPE_SYS_BUS_DEVICE,
-         .instance_size = sizeof(NPCMGMACState),
-         .class_init = npcm_gmac_class_init,
-+        .secure = false,
+diff --git a/hw/usb/hcd-ehci-sysbus.c b/hw/usb/hcd-ehci-sysbus.c
+index 0449f5fa6d..24b8a72af3 100644
+--- a/hw/usb/hcd-ehci-sysbus.c
++++ b/hw/usb/hcd-ehci-sysbus.c
+@@ -240,6 +240,7 @@ static const TypeInfo ehci_sysbus_types[] = {
+         .instance_init = ehci_sysbus_init,
+         .instance_finalize = ehci_sysbus_finalize,
+         .abstract      = true,
++        .secure        = true,
+         .class_init    = ehci_sysbus_class_init,
+         .class_size    = sizeof(SysBusEHCIClass),
+     },
+@@ -247,32 +248,38 @@ static const TypeInfo ehci_sysbus_types[] = {
+         .name          = TYPE_PLATFORM_EHCI,
+         .parent        = TYPE_SYS_BUS_EHCI,
+         .class_init    = ehci_platform_class_init,
++        .secure        = true,
+     },
+     {
+         .name          = TYPE_EXYNOS4210_EHCI,
+         .parent        = TYPE_SYS_BUS_EHCI,
+         .class_init    = ehci_exynos4210_class_init,
++        .secure        = true,
+     },
+     {
+         .name          = TYPE_AW_H3_EHCI,
+         .parent        = TYPE_SYS_BUS_EHCI,
+         .class_init    = ehci_aw_h3_class_init,
++        .secure        = true,
+     },
+     {
+         .name          = TYPE_NPCM7XX_EHCI,
+         .parent        = TYPE_SYS_BUS_EHCI,
+         .class_init    = ehci_npcm7xx_class_init,
++        .secure        = true,
+     },
+     {
+         .name          = TYPE_TEGRA2_EHCI,
+         .parent        = TYPE_SYS_BUS_EHCI,
+         .class_init    = ehci_tegra2_class_init,
++        .secure        = true,
+     },
+     {
+         .name          = TYPE_PPC4xx_EHCI,
+         .parent        = TYPE_SYS_BUS_EHCI,
+         .class_init    = ehci_ppc4xx_class_init,
+         .instance_init = ehci_ppc4xx_init,
++        .secure        = true,
+     },
+     {
+         .name          = TYPE_FUSBH200_EHCI,
+@@ -280,6 +287,7 @@ static const TypeInfo ehci_sysbus_types[] = {
+         .instance_size = sizeof(FUSBH200EHCIState),
+         .instance_init = fusbh200_ehci_init,
+         .class_init    = fusbh200_ehci_class_init,
++        .secure        = true,
      },
  };
- DEFINE_TYPES(npcm_gmac_types)
-diff --git a/hw/net/npcm_pcs.c b/hw/net/npcm_pcs.c
-index 6aec105271..82bc1f16c3 100644
---- a/hw/net/npcm_pcs.c
-+++ b/hw/net/npcm_pcs.c
-@@ -405,6 +405,7 @@ static const TypeInfo npcm_pcs_types[] = {
-         .parent = TYPE_SYS_BUS_DEVICE,
-         .instance_size = sizeof(NPCMPCSState),
-         .class_init = npcm_pcs_class_init,
-+        .secure = false,
-     },
- };
- DEFINE_TYPES(npcm_pcs_types)
-diff --git a/hw/net/opencores_eth.c b/hw/net/opencores_eth.c
-index 7e955c0132..8d1c4523dc 100644
---- a/hw/net/opencores_eth.c
-+++ b/hw/net/opencores_eth.c
-@@ -763,6 +763,7 @@ static const TypeInfo open_eth_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(OpenEthState),
-     .class_init    = open_eth_class_init,
-+    .secure        = false,
- };
  
- static void open_eth_register_types(void)
-diff --git a/hw/net/pcnet-pci.c b/hw/net/pcnet-pci.c
-index 0ca5bc2193..90a27cdab5 100644
---- a/hw/net/pcnet-pci.c
-+++ b/hw/net/pcnet-pci.c
-@@ -280,6 +280,7 @@ static const TypeInfo pcnet_info = {
-     .instance_size = sizeof(PCIPCNetState),
-     .class_init    = pcnet_class_init,
-     .instance_init = pcnet_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/rocker/rocker.c b/hw/net/rocker/rocker.c
-index cc49701dd3..8923ec6473 100644
---- a/hw/net/rocker/rocker.c
-+++ b/hw/net/rocker/rocker.c
-@@ -1498,6 +1498,7 @@ static const TypeInfo rocker_info = {
+diff --git a/hw/usb/hcd-ohci-pci.c b/hw/usb/hcd-ohci-pci.c
+index 94d1077eb9..9adfe564db 100644
+--- a/hw/usb/hcd-ohci-pci.c
++++ b/hw/usb/hcd-ohci-pci.c
+@@ -149,6 +149,7 @@ static const TypeInfo ohci_pci_info = {
      .parent        = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(Rocker),
-     .class_init    = rocker_class_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/rtl8139.c b/hw/net/rtl8139.c
-index 324fb932aa..f8cc0b728d 100644
---- a/hw/net/rtl8139.c
-+++ b/hw/net/rtl8139.c
-@@ -3439,6 +3439,7 @@ static const TypeInfo rtl8139_info = {
-     .instance_size = sizeof(RTL8139State),
-     .class_init    = rtl8139_class_init,
-     .instance_init = rtl8139_instance_init,
+     .instance_size = sizeof(OHCIPCIState),
+     .class_init    = ohci_pci_class_init,
 +    .secure        = true,
      .interfaces = (const InterfaceInfo[]) {
          { INTERFACE_CONVENTIONAL_PCI_DEVICE },
          { },
-diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 5cd78e334b..59ebebdf19 100644
---- a/hw/net/smc91c111.c
-+++ b/hw/net/smc91c111.c
-@@ -928,6 +928,7 @@ static const TypeInfo smc91c111_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(smc91c111_state),
-     .class_init    = smc91c111_class_init,
-+    .secure        = false,
- };
- 
- static void smc91c111_register_types(void)
-diff --git a/hw/net/spapr_llan.c b/hw/net/spapr_llan.c
-index f6f217d632..85b2c9809a 100644
---- a/hw/net/spapr_llan.c
-+++ b/hw/net/spapr_llan.c
-@@ -873,6 +873,7 @@ static const TypeInfo spapr_vlan_info = {
-     .class_init    = spapr_vlan_class_init,
-     .instance_init = spapr_vlan_instance_init,
-     .instance_finalize = spapr_vlan_instance_finalize,
-+    .secure        = false,
- };
- 
- static void spapr_vlan_register_types(void)
-diff --git a/hw/net/stellaris_enet.c b/hw/net/stellaris_enet.c
-index 2fc51e1e16..bebd1d04cc 100644
---- a/hw/net/stellaris_enet.c
-+++ b/hw/net/stellaris_enet.c
-@@ -516,6 +516,7 @@ static const TypeInfo stellaris_enet_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(stellaris_enet_state),
-     .class_init    = stellaris_enet_class_init,
-+    .secure        = false,
- };
- 
- static void stellaris_enet_register_types(void)
-diff --git a/hw/net/sungem.c b/hw/net/sungem.c
-index b405eb89fa..1de709d274 100644
---- a/hw/net/sungem.c
-+++ b/hw/net/sungem.c
-@@ -1477,6 +1477,7 @@ static const TypeInfo sungem_info = {
-     .instance_size = sizeof(SunGEMState),
-     .class_init    = sungem_class_init,
-     .instance_init = sungem_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { }
-diff --git a/hw/net/sunhme.c b/hw/net/sunhme.c
-index c2f7a8483d..59639afaac 100644
---- a/hw/net/sunhme.c
-+++ b/hw/net/sunhme.c
-@@ -958,6 +958,7 @@ static const TypeInfo sunhme_info = {
-     .class_init    = sunhme_class_init,
-     .instance_size = sizeof(SunHMEState),
-     .instance_init = sunhme_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { }
-diff --git a/hw/net/tulip.c b/hw/net/tulip.c
-index 319af906c8..32e7839a83 100644
---- a/hw/net/tulip.c
-+++ b/hw/net/tulip.c
-@@ -1035,6 +1035,7 @@ static const TypeInfo tulip_info = {
-     .instance_size = sizeof(TULIPState),
-     .class_init    = tulip_class_init,
-     .instance_init = tulip_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 6b5b5dace3..b34c0f3afc 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -4259,6 +4259,7 @@ static const TypeInfo virtio_net_info = {
-     .instance_size = sizeof(VirtIONet),
-     .instance_init = virtio_net_instance_init,
-     .class_init = virtio_net_class_init,
-+    .secure = true,
- };
- 
- static void virtio_register_types(void)
-diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index af73aa8ef2..25e28e5467 100644
---- a/hw/net/vmxnet3.c
-+++ b/hw/net/vmxnet3.c
-@@ -2491,6 +2491,7 @@ static const TypeInfo vmxnet3_info = {
-     .instance_size = sizeof(VMXNET3State),
-     .class_init    = vmxnet3_class_init,
-     .instance_init = vmxnet3_instance_init,
-+    .secure        = false,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-diff --git a/hw/net/xgmac.c b/hw/net/xgmac.c
-index d45f872467..fc71bc1e00 100644
---- a/hw/net/xgmac.c
-+++ b/hw/net/xgmac.c
-@@ -432,6 +432,7 @@ static const TypeInfo xgmac_enet_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(XgmacState),
-     .class_init    = xgmac_enet_class_init,
-+    .secure        = false,
- };
- 
- static void xgmac_enet_register_types(void)
-diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
-index 1f5c748047..9b3618facb 100644
---- a/hw/net/xilinx_axienet.c
-+++ b/hw/net/xilinx_axienet.c
-@@ -1038,6 +1038,7 @@ static const TypeInfo xilinx_enet_info = {
-     .instance_size = sizeof(XilinxAXIEnet),
-     .class_init    = xilinx_enet_class_init,
-     .instance_init = xilinx_enet_init,
-+    .secure = false,
- };
- 
- static const TypeInfo xilinx_enet_data_stream_info = {
-diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index 42b19d07c7..5ea2c1e692 100644
---- a/hw/net/xilinx_ethlite.c
-+++ b/hw/net/xilinx_ethlite.c
-@@ -401,6 +401,7 @@ static const TypeInfo xilinx_ethlite_types[] = {
-         .instance_size = sizeof(XlnxXpsEthLite),
-         .instance_init = xilinx_ethlite_init,
-         .class_init    = xilinx_ethlite_class_init,
-+        .secure        = false,
+diff --git a/hw/usb/hcd-ohci-sysbus.c b/hw/usb/hcd-ohci-sysbus.c
+index 3fc6cce44b..b57bbd4173 100644
+--- a/hw/usb/hcd-ohci-sysbus.c
++++ b/hw/usb/hcd-ohci-sysbus.c
+@@ -81,6 +81,7 @@ static const TypeInfo ohci_sysbus_types[] = {
+         .parent        = TYPE_SYS_BUS_DEVICE,
+         .instance_size = sizeof(OHCISysBusState),
+         .class_init    = ohci_sysbus_class_init,
++        .secure        = true,
      },
  };
  
+diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
+index 4822c704f6..f3ab8dd978 100644
+--- a/hw/usb/hcd-uhci.c
++++ b/hw/usb/hcd-uhci.c
+@@ -1277,6 +1277,7 @@ static const TypeInfo uhci_pci_type_info = {
+     .instance_size = sizeof(UHCIState),
+     .class_size    = sizeof(UHCIPCIDeviceClass),
+     .abstract = true,
++    .secure = true,
+     .class_init = uhci_class_init,
+     .interfaces = (const InterfaceInfo[]) {
+         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+@@ -1374,6 +1375,7 @@ static void uhci_register_types(void)
+     TypeInfo uhci_type_info = {
+         .parent        = TYPE_UHCI,
+         .class_init    = uhci_data_class_init,
++        .secure        = true,
+     };
+     int i;
+ 
+diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
+index 9e0fea26f4..74815af265 100644
+--- a/hw/usb/hcd-xhci-nec.c
++++ b/hw/usb/hcd-xhci-nec.c
+@@ -67,6 +67,7 @@ static const TypeInfo nec_xhci_info = {
+     .instance_size = sizeof(XHCINecState),
+     .instance_init = nec_xhci_instance_init,
+     .class_init    = nec_xhci_class_init,
++    .secure        = true,
+ };
+ 
+ static void nec_xhci_register_types(void)
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index b93c80b09d..fedc5b7cc2 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -248,6 +248,7 @@ static const TypeInfo xhci_pci_info = {
+     .class_init    = xhci_class_init,
+     .instance_init = xhci_instance_init,
+     .abstract      = true,
++    .secure        = true,
+     .interfaces = (const InterfaceInfo[]) {
+         { INTERFACE_PCIE_DEVICE },
+         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+@@ -280,6 +281,7 @@ static const TypeInfo qemu_xhci_info = {
+     .parent        = TYPE_XHCI_PCI,
+     .class_init    = qemu_xhci_class_init,
+     .instance_init = qemu_xhci_instance_init,
++    .secure        = true,
+ };
+ 
+ static void xhci_register_types(void)
+diff --git a/hw/usb/hcd-xhci-sysbus.c b/hw/usb/hcd-xhci-sysbus.c
+index 244698e5f2..f801290284 100644
+--- a/hw/usb/hcd-xhci-sysbus.c
++++ b/hw/usb/hcd-xhci-sysbus.c
+@@ -111,7 +111,8 @@ static const TypeInfo xhci_sysbus_info = {
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(XHCISysbusState),
+     .class_init    = xhci_sysbus_class_init,
+-    .instance_init = xhci_sysbus_instance_init
++    .instance_init = xhci_sysbus_instance_init,
++    .secure        = true,
+ };
+ 
+ static void xhci_sysbus_register_types(void)
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 292c378bfc..2218899d5c 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -3655,6 +3655,7 @@ static const TypeInfo xhci_info = {
+     .parent        = TYPE_DEVICE,
+     .instance_size = sizeof(XHCIState),
+     .class_init    = xhci_class_init,
++    .secure        = true,
+ };
+ 
+ static void xhci_register_types(void)
+diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
+index b74670ae25..d42f9cdd70 100644
+--- a/hw/usb/host-libusb.c
++++ b/hw/usb/host-libusb.c
+@@ -1807,6 +1807,7 @@ static const TypeInfo usb_host_dev_info = {
+     .instance_size = sizeof(USBHostDevice),
+     .class_init    = usb_host_class_initfn,
+     .instance_init = usb_host_instance_init,
++    .secure        = true,
+ };
+ module_obj(TYPE_USB_HOST_DEVICE);
+ module_kconfig(USB);
+diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
+index f516ff42a1..038507ce0b 100644
+--- a/hw/usb/redirect.c
++++ b/hw/usb/redirect.c
+@@ -2619,6 +2619,7 @@ static const TypeInfo usbredir_dev_info = {
+     .instance_size = sizeof(USBRedirDevice),
+     .class_init    = usbredir_class_initfn,
+     .instance_init = usbredir_instance_init,
++    .secure        = true,
+ };
+ module_obj(TYPE_USB_REDIR);
+ module_kconfig(USB);
 -- 
 2.50.1
 
