@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA7EBA41E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45958BA4160
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:18:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v29AD-0000xE-QJ; Fri, 26 Sep 2025 10:11:10 -0400
+	id 1v299z-0000jr-Ht; Fri, 26 Sep 2025 10:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v299O-0000Bn-Jh
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:18 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1v299Z-0000Ih-No
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:30 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298d-0005mr-1Y
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:16 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3ee12332f3dso1839734f8f.2
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:27 -0700 (PDT)
+ id 1v298f-0005nH-Lq
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:21 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3b9edf4cf6cso2254996f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895766; x=1759500566; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895767; x=1759500567; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=e6CNBDVRbhEagCdpp+s+XfPoXED4J+gbWqZ29Lsly9k=;
- b=sqIeUCpzbCTGsvKCc6RtUyUdbVQ8L4M2yjrRUZWS8cgynHfFrpT5rjHShathmMAjpH
- oRLVpYv8XMmHUqxI5/+tKUNijpPlPfZfnZ7NYHyhoT6ch3Y22iyPYhCSe9JOAdFtiN4U
- djG2XOhkBWpdXSftMMbyeU2s/XbVZuJlSk70cEs3sRqE1pg2keBN+lZIgoIYjE4KYWpJ
- ocSFrnWDgdShsMq3swTcUqonuQNmSOGfUIOH5oyOsl8tdKOt+OMdEVfYAbaDcV/h0sAW
- ihBTEpqGhufK8B/iNu+fq3eMEcF9uDQNaZrJi3aUI18v7T1In8gdi1/7kcXZBwsM/ZCZ
- Xq0Q==
+ :reply-to; bh=71SPKxC6TrHmGazKirT7T3wwRBAuIbbjNemK5xYBRvE=;
+ b=R506isnkVKQCkcpnMEvhQ4S+5Uz2Qre1azpmxekKIPEt5+ceEYoWsikOeIKaxAa4F9
+ tbCn0c/KAUxhAIcDjL8hZ4jP29kgLV8hKO7VAghMrG4XH03Wbocu9T6AMkZhyPFVROWP
+ eWXCRe+R0fL369tQQQiq1WmfcmODHHgAZAIp7dI29pNS0kjx6Br1qclSfCLoaKAGZiXe
+ sq065h2R01uC9J2Xn9qmVSwHjXZxMKCUNZWyNYPVzXrtLMjmGcvrpc0vK4yttHeS3/GP
+ CZ6VtJ4/TDQ3Yt6cWLfFO3Np8pxR+q2sBreQAulQ7XpdDWpPMINzdifMAbnrOQ8ldWBm
+ L/uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895766; x=1759500566;
+ d=1e100.net; s=20230601; t=1758895767; x=1759500567;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e6CNBDVRbhEagCdpp+s+XfPoXED4J+gbWqZ29Lsly9k=;
- b=g70grYJ59Wrc9sgW79YWVUVIM4kKL1FC8p8gxtePHc9PlJ/UMGE/lIJlL0dPjJxqa7
- OMAE91hSS7VolRBZ7hqJuCvfzMZVV6WCZfiag2h18/zKJXyl4TsO9VVhyFaoG4XZ7Bjw
- d+sNlaJrF/vMrGZc0hUUtkUfZiFMm450eCqeVKKbDZr0h19+UBNlyEIV/4S+caBi8OQd
- T3l9kWHYWc2GhOibsdI+Wv/PsNiUg6UgNZAa0Ti4cYvSjop3eydkidNJpBA7dkCMWNcv
- 4U1eHiwh6vXmR+WNtkKh9TEPoxYllkk9jFxDZyOF9JRVLRnsb/Wkfwwq4wdQ3FDCacqh
- c+fQ==
-X-Gm-Message-State: AOJu0YzJ6dTAPvN++5xPRlvzUDCLUaGipWLsZtOI5dhr1OQavgpCQWe6
- iwGA5cDzMKe4JmdX1CGP6H6Qbh89acrYxLRf1V3A2/RvnVNx2jmAlDlIzYl5S3ZpG/NNjwf8bx7
- 6W4B1
-X-Gm-Gg: ASbGnctmCsS2kkYk3epLfY3OEVIZTIApzhcW5Q+8pPP8A+vtZ4A27oKLTN57sAByy1c
- JHiciGnsP/QBe47X4rIvPULStD0aGhNmf20o7aCdkbfh1VT/Q/PP9cMcVEfcBoifBALGuNmhv3t
- I68XNIJ+PUQt2W3IPflCl0tuVyD6JEyfolU5p5oiOYi5SJ7tovZUffMFCvmARxDk65V+HlxPs3m
- 2mynVs/ahqds5OScWt49N3jo/k64kyI+xHmBG06/ZK8xkUYFG7vO4M6hOKnZGbDcV+xMDg4Tj4x
- X2u+1UXRAwAiv3/HbKgmfdvPesQKY+1qdxwUxPdlNt7UMQhboMkWJfCac6ZIioQjMsWsvPi/XaD
- FfweF374VFabwtzEx8wK6nkar2cV4
-X-Google-Smtp-Source: AGHT+IFxZL5yP8oEeQlzXtaf+LzMg4BR2ZQIg0We5fDFt9ihOhoXfYDN9RZvxLiE7+aKnJz58q0sRQ==
-X-Received: by 2002:a05:6000:2002:b0:3ea:f4a1:f063 with SMTP id
- ffacd0b85a97d-40e4dabef59mr7224131f8f.55.1758895766097; 
- Fri, 26 Sep 2025 07:09:26 -0700 (PDT)
+ bh=71SPKxC6TrHmGazKirT7T3wwRBAuIbbjNemK5xYBRvE=;
+ b=vT89RSaVPiqGn3SO5vINzcbjsQpjCurAVe0T6W4Pbr/XVhiZ8VCIU8dCD0stCyyTnW
+ zawRPoMxIRtAD3NcoIJWCqRVKzXgK+Kch523oyiEHYUIZ+Sp6BjhIdwgFjo0w1cnsdcH
+ BS5If0NEKc/EpU3bxicd/XVtC7eaFQQHnc3NB3YeNpYDh0JGjeBJ9XnZavR0R759YxRd
+ Cv8g5gb+ZxVcivDu4k/+HORDLHa7U8BqmttwFFY3rCv0SFrqC3rWuw577kfWvvA3NpWb
+ vSTmtz+Y4ALMH151X4h2CT4+lyvYlJarX2KkngDjDDxLK9Gydc4SSZFvKtm9o7Ink8PT
+ ppIA==
+X-Gm-Message-State: AOJu0YxdcEiZrplF1iMVaeLrdC6xiRjJlCse4acpRMMxcLleCwJT+eDV
+ GFC/UNX8Q0xktN1pQar3mGfC9f84VgZn+wM9XnQkBF8y73YtcW35A58By6K3K5pDYyd+iqYbw9g
+ 93i/H
+X-Gm-Gg: ASbGnctvr0skKiq0TUKct18+Fn4yFptz4G6FgH3Lt5J1tGzhZh98zgYa1stvr0mAo5m
+ 0TVn7S1imY4WkAFtbpBBHDz5t4Yjwa5e6uRmHQwWfK9EaGiZjybREFY2Qt/pHgZLAgb7PkRr3Kv
+ rs9uB9Ybo32h0TBmM78ainlmZDbrwXAsUBWFZU7cYMezpJNEF9kdDEBcscRz0Ax+N6FCtTeHZdG
+ K/O9B3JVu7uknLPcakA9KTI5Cw1HNZ/SKJs8GB6CGku3MeF2hmmFZ01YNF8P0aHoU2g6AQrQWNO
+ haWZeTACpWFI2fFPzQMZOvdmfg5kVAH0qV3MDgRPeBpjNgJD0FQsJnMhVY0gGxglDVwmhAv3DKV
+ B2z4voFEdTMNIUGLOx+muISX9NG/t
+X-Google-Smtp-Source: AGHT+IH0GPA4leIYJ4GAHnBWiOgP3uXcszdD9znqzIx+Pa9PtWHDB0lnho3sjW4pd0zjPrN4wlKMVg==
+X-Received: by 2002:a05:6000:400b:b0:3f4:84d0:401a with SMTP id
+ ffacd0b85a97d-40e46514cb5mr6071138f8f.4.1758895767011; 
+ Fri, 26 Sep 2025 07:09:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.24
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:09:25 -0700 (PDT)
+ Fri, 26 Sep 2025 07:09:26 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 39/44] target/arm: Replace magic GIC values by proper
- definitions
-Date: Fri, 26 Sep 2025 15:08:39 +0100
-Message-ID: <20250926140844.1493020-40-peter.maydell@linaro.org>
+Subject: [PULL 40/44] target/arm: Convert power control DPRINTF() uses to
+ trace events
+Date: Fri, 26 Sep 2025 15:08:40 +0100
+Message-ID: <20250926140844.1493020-41-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,38 +100,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Prefer the FIELD_DP64() macro and self-describing GIC
-definitions over magic values.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/arm-powerctl.c | 26 ++++++++------------------
+ target/arm/trace-events   |  6 ++++++
+ 2 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index c5a8ef50493..a18d920ac18 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5007,7 +5007,7 @@ static uint64_t id_pfr1_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     uint64_t pfr1 = GET_IDREG(&cpu->isar, ID_PFR1);
+diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
+index 20c70c7d6bb..a788376d1d3 100644
+--- a/target/arm/arm-powerctl.c
++++ b/target/arm/arm-powerctl.c
+@@ -17,24 +17,12 @@
+ #include "qemu/main-loop.h"
+ #include "system/tcg.h"
+ #include "target/arm/multiprocessing.h"
+-
+-#ifndef DEBUG_ARM_POWERCTL
+-#define DEBUG_ARM_POWERCTL 0
+-#endif
+-
+-#define DPRINTF(fmt, args...) \
+-    do { \
+-        if (DEBUG_ARM_POWERCTL) { \
+-            fprintf(stderr, "[ARM]%s: " fmt , __func__, ##args); \
+-        } \
+-    } while (0)
++#include "trace.h"
  
-     if (env->gicv3state) {
--        pfr1 |= 1 << 28;
-+        pfr1 = FIELD_DP64(pfr1, ID_PFR1, GIC, 1);
-     }
-     return pfr1;
- }
-@@ -5018,7 +5018,7 @@ static uint64_t id_aa64pfr0_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     uint64_t pfr0 = GET_IDREG(&cpu->isar, ID_AA64PFR0);
+ CPUState *arm_get_cpu_by_id(uint64_t id)
+ {
+     CPUState *cpu;
  
-     if (env->gicv3state) {
--        pfr0 |= 1 << 24;
-+        pfr0 = FIELD_DP64(pfr0, ID_AA64PFR0, GIC, 1);
-     }
-     return pfr0;
- }
+-    DPRINTF("cpu %" PRId64 "\n", id);
+-
+     CPU_FOREACH(cpu) {
+         ARMCPU *armcpu = ARM_CPU(cpu);
+ 
+@@ -102,9 +90,9 @@ int arm_set_cpu_on(uint64_t cpuid, uint64_t entry, uint64_t context_id,
+ 
+     assert(bql_locked());
+ 
+-    DPRINTF("cpu %" PRId64 " (EL %d, %s) @ 0x%" PRIx64 " with R0 = 0x%" PRIx64
+-            "\n", cpuid, target_el, target_aa64 ? "aarch64" : "aarch32", entry,
+-            context_id);
++    trace_arm_powerctl_set_cpu_on(cpuid, target_el,
++                                  target_aa64 ? "aarch64" : "aarch32",
++                                  entry, context_id);
+ 
+     /* requested EL level need to be in the 1 to 3 range */
+     assert((target_el > 0) && (target_el < 4));
+@@ -208,6 +196,8 @@ int arm_set_cpu_on_and_reset(uint64_t cpuid)
+ 
+     assert(bql_locked());
+ 
++    trace_arm_powerctl_set_cpu_on_and_reset(cpuid);
++
+     /* Retrieve the cpu we are powering up */
+     target_cpu_state = arm_get_cpu_by_id(cpuid);
+     if (!target_cpu_state) {
+@@ -261,7 +251,7 @@ int arm_set_cpu_off(uint64_t cpuid)
+ 
+     assert(bql_locked());
+ 
+-    DPRINTF("cpu %" PRId64 "\n", cpuid);
++    trace_arm_powerctl_set_cpu_off(cpuid);
+ 
+     /* change to the cpu we are powering up */
+     target_cpu_state = arm_get_cpu_by_id(cpuid);
+@@ -297,7 +287,7 @@ int arm_reset_cpu(uint64_t cpuid)
+ 
+     assert(bql_locked());
+ 
+-    DPRINTF("cpu %" PRId64 "\n", cpuid);
++    trace_arm_powerctl_set_cpu_off(cpuid);
+ 
+     /* change to the cpu we are resetting */
+     target_cpu_state = arm_get_cpu_by_id(cpuid);
+diff --git a/target/arm/trace-events b/target/arm/trace-events
+index 4438dce7bec..252c05a9ebe 100644
+--- a/target/arm/trace-events
++++ b/target/arm/trace-events
+@@ -13,3 +13,9 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
+ 
+ # kvm.c
+ kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
++
++# arm-powerctl.c
++arm_powerctl_set_cpu_on(uint64_t mp_aff, unsigned target_el, const char *mode, uint64_t entry, uint64_t context_id) "cpu %" PRIu64 " (EL %u, %s) @ 0x%" PRIx64 " with R0 = 0x%" PRIx64
++arm_powerctl_set_cpu_on_and_reset(uint64_t mp_aff) "cpu %" PRIu64
++arm_powerctl_set_cpu_off(uint64_t mp_aff) "cpu %" PRIu64
++arm_powerctl_reset_cpu(uint64_t mp_aff) "cpu %" PRIu64
 -- 
 2.43.0
 
