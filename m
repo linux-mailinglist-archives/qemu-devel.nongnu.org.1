@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189CABA3DB7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E354BA3DC0
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:21:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v28LU-00089n-4x; Fri, 26 Sep 2025 09:18:44 -0400
+	id 1v28Lb-0008Do-ME; Fri, 26 Sep 2025 09:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v28LQ-00087n-Bh
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:40 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1v28LX-0008CK-NN
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:47 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v28Kw-000451-04
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:39 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-4060b4b1200so2035246f8f.3
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 06:18:06 -0700 (PDT)
+ id 1v28Kw-000457-Kw
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:47 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-46e326e4e99so11929345e9.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 06:18:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758892683; x=1759497483; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758892685; x=1759497485; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CGV/ovuNyIkegXod3SFApgfQtr3bgHJbOlxaNSaOG6U=;
- b=Xz1R4+0kMysSgfZ0nLThkWZkVCigbvYzAV3LRdf8TFcw+wHGYgAfzpdO1OR6Bu2wJy
- 02UG+WXl9CCuXwUMA3ZucPdWnWJWGurcwhHyQMWDKqtD3NKYrDVin3ejx69VjSVGNB+L
- CXllu0o+YUnb1OJTlaF795Ray3LE3erRYG1t9TP47gNjptMExKFNHs3zJh9/4jIObCnj
- nNZZv4rHylSaHTT4ytZIqa6w9jN4no2YL7a3PMrRSNlgZnaJxAeYSjsYhsQK2zrv7SdK
- /tXUH0P08UTmjiMLCcP4ICd1moDnlo8Qf5GSeYGUC95Zd+gp25K2tas9UINMpf4Eyz76
- gY8Q==
+ bh=GzN/TgoAIkonCXT/uVBGl8EaJyMt7CwI7sLpMGZB2gI=;
+ b=nxpMkFHVnamkn44Fz7LIDSVqyo28u/2SRrFgnwI3HtaFxUjehLfKVOr0DbMUZT44VS
+ 4D6zb679aDtu3ntlU5TgNeQJ58GTHoOYMQvJi65aGJqedvjp67X4y2HXA719QGNn2PJe
+ V54TzxUZ98HPlCBDZ+vDs2nRuCUJ02pwEqIl/sOi0MnzRrcvrys7qHp2fGREanO9r4DY
+ 2l682EwUEwLRsa3EQyyGDwmCQqI+JkbpSMGqIZbgLXsXhpFIZD9L/3hIUEBk7BnCgX2C
+ UXwn2m8kuXM+gM76SPvltmwwOAsnVjYKDsyRkdry+CLWDZgQiit99wvs7pfUC6jJPHVX
+ +I3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758892683; x=1759497483;
+ d=1e100.net; s=20230601; t=1758892685; x=1759497485;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CGV/ovuNyIkegXod3SFApgfQtr3bgHJbOlxaNSaOG6U=;
- b=gOUloS1GX41qDIcL5P5zKUz8HCGWP68BTRzLKW2XmWtCFwVu/YXGKdkPBQocFYjYNM
- 2vp0z/GLgn5c4vbXQXVvKIUk2SnQXyN1/0GpK6BFzzTavH2mf6647wJjkYamNJRnWep2
- Mx8Ih1YrVZko8+bUtY9rJ6ct4aj25bWBAoPOjIz4+RX/z3PnMTk2rcmy8s8yayytMQej
- 345jlWWLPEVM09cYIWl0HsUPNnGzJZLRvT2xau/ktv7rB4N1Q6gVIl5uE69T7Q8EIbTU
- TrOCXveQhUlwmYYSdNXhOhja3qaB3flSffsgD0I6nzFl8d/L+fL5NKETA2QqiQbIX2Lg
- wI0w==
-X-Gm-Message-State: AOJu0Yw+BkfEJyBdazLsYbum1mNxGGPIm1PxF3eGBtX3mGjbpG6by91G
- lZSjj8nP9lAW1ngKweqCiTF5f9blLLdP6FzQKPuvK2LmVqtOTrxqsGOfLisP/z7ZsGM=
-X-Gm-Gg: ASbGncvIq80zQhF0YeqRlLZKvxx/5xYnkEp/b6VU6x5YX1uNdP/bd15id1UR4SeM7mb
- RoOF7UIUfuDnfjKNyCxbuGX7vwgHg+4Joubdhh8vlG8fgx5TProaf2TTCTD/GJxqdBzsgI/g44K
- q2f1W1YAtwkeQiHkP5oNcDSo5YZFOXge8NjmintkGzcNkPhylFgyTjK+MrcpcR8L6JIRCfkLM9q
- eGFTM4BTpcuOlp/CCT3QCGbrnLWd8QzobNiLu+KAMvy69+dzhgrOeTPzpSQ/gInqicpLUWWC8Zj
- JkquR7uUqVraZaJENfpBJtcdVFgUH0PwvUPpxHyWCmM1k+u0kt0S+qOoEQbch64EzD9M1XhWeSh
- RS5pHPZ9EPoWRdLcNM/hzaac=
-X-Google-Smtp-Source: AGHT+IGPqn24RRByExxDxg0OKc0IwFdWACknOyFRPsB09p+6WhtGHvZ1oLLR5jkeI+6XoQ9E1OXqSA==
-X-Received: by 2002:a05:6000:2285:b0:3de:78c8:120e with SMTP id
- ffacd0b85a97d-40e468e7392mr5964230f8f.6.1758892683366; 
- Fri, 26 Sep 2025 06:18:03 -0700 (PDT)
+ bh=GzN/TgoAIkonCXT/uVBGl8EaJyMt7CwI7sLpMGZB2gI=;
+ b=XnC1NZp01s0FnVPHXN/Y0pVDHOlSVmMlTX7S4/1s8x3GWSOecIwe1Mhxqh5pF4EMMy
+ Y8StDQAtifap03xpWQyDPCicuIY6Vlv1BnqULpcDIJ2hQawtWN0RwW7BilrRY43QYOhu
+ zeZE6XdLUqPHqRM9C1rY7T158c7WW7yQYw/cjKq4+V3So07QUo7fytBwkDDAPfSveMKO
+ dY9pDw1daeMBz40IsET9J2sTuiDZK+7VkI52FEwoIW0ytlQ4sez+B5n3qkOBNnpSYOVx
+ +lRCEKqzySM7Pq5kTlgTxmg72M3Yd5AHaY4R7TfxbVkCuR8sR5WgsL7lEiF7maZ8AZu3
+ xnNw==
+X-Gm-Message-State: AOJu0YzHdZzn3MFl28eJOt54rhtfpqdjBJpGuOgMFef1DQykyWmGs3JP
+ ewLFz0Gw64ncGMuOQgXWb6uKbIUZTYs/WI9LaT7v3QwbjYOHTvyvZ1Y4CDNEE/Ux78w=
+X-Gm-Gg: ASbGncvo3rlTunhR3wYp7LGhNXsn4qmEUR+9grUNNsipOkWFTHQ5FjpcFeV9syPFpdp
+ HsUdQtCPGaRl1jXIpBL0y4iyPRGOinIzkhkKyTCgDZtctLTC0Orh0nMrnpDyWYpDS4LN4FGopxD
+ LzyBfLwy7IwSjd4Tcu/xGFYF0SQAEBv9m8B1TKhP016PPi34nLHiYE6hkuEsGm4/5ghh6NHx4dO
+ 5om8jpvGkiRT5Mg8eWJCPeNJHqwlInEo+knuu1m0BEwZawzPGrLtmaNhYQQ0eqnUshyUkiVZ2qX
+ pf1YSNLxkUcgYclalUujoN5NmF7/QCFGJARGXGxgQRf21RoQiKSPbJQ63jDL7iK7+qYLGYzhSee
+ +O8CdhWKJSI9ALnUEok14iVg=
+X-Google-Smtp-Source: AGHT+IE6ih/y01eCo5mD5dGThigSu6jb7OvGSIkPL/6XOGqCD5efUMCmsZw9pFChFQ7b1TTlj4Wclg==
+X-Received: by 2002:a05:600c:8907:b0:46e:3732:88ec with SMTP id
+ 5b1f17b1804b1-46e37328daemr44843325e9.9.1758892684737; 
+ Fri, 26 Sep 2025 06:18:04 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2a9ac5basm138161865e9.7.2025.09.26.06.17.51
+ 5b1f17b1804b1-46e330fbcc5sm37966075e9.4.2025.09.26.06.17.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 Sep 2025 06:17:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 26D685F924;
+ by draig.lan (Postfix) with ESMTP id 3D6945F926;
  Fri, 26 Sep 2025 14:17:46 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 15/24] contrib/plugins/execlog: Explicitly check for
- qemu_plugin_read_register() failure
-Date: Fri, 26 Sep 2025 14:17:34 +0100
-Message-ID: <20250926131744.432185-16-alex.bennee@linaro.org>
+Subject: [PULL 16/24] contrib/plugins/uftrace: skeleton file
+Date: Fri, 26 Sep 2025 14:17:35 +0100
+Message-ID: <20250926131744.432185-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250926131744.432185-1-alex.bennee@linaro.org>
 References: <20250926131744.432185-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,35 +104,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-In insn_check_regs() we don't explicitly check whether
-qemu_plugin_read_register() failed, which confuses Coverity into
-thinking that sz can be -1 in the memcmp().  In fact the assertion
-that sz == reg->last->len means this can't happen, but it's clearer
-to both humans and Coverity if we explicitly assert that sz > 0, as
-we already do in init_vcpu_register().
+We define a scoreboard that will hold our data per cpu. As well, we
+define a buffer per cpu that will be used to read registers and memories
+in a thread-safe way.
 
-Coverity: CID 1611901, 1611902
-Fixes: af6e4e0a22c1 ("contrib/plugins: extend execlog to track register changes")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250710144543.1187715-1-peter.maydell@linaro.org>
+For now, we just instrument all instructions with an empty callback.
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20250902075042.223990-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250922093711.2768983-17-alex.bennee@linaro.org>
+Message-ID: <20250922093711.2768983-18-alex.bennee@linaro.org>
 
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 06ec76d6e9a..811f3203199 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -95,6 +95,7 @@ static void insn_check_regs(CPU *cpu)
- 
-         g_byte_array_set_size(reg->new, 0);
-         sz = qemu_plugin_read_register(reg->handle, reg->new);
-+        g_assert(sz > 0);
-         g_assert(sz == reg->last->len);
- 
-         if (memcmp(reg->last->data, reg->new->data, sz)) {
+diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
+new file mode 100644
+index 00000000000..4af0130b159
+--- /dev/null
++++ b/contrib/plugins/uftrace.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright (C) 2025, Pierrick Bouvier <pierrick.bouvier@linaro.org>
++ *
++ * Generates a trace compatible with uftrace (similar to uftrace record).
++ * https://github.com/namhyung/uftrace
++ *
++ * See docs/about/emulation.rst|Uftrace for details and examples.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <qemu-plugin.h>
++#include <glib.h>
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++
++typedef struct Cpu {
++    GByteArray *buf;
++} Cpu;
++
++static struct qemu_plugin_scoreboard *score;
++
++static void track_callstack(unsigned int cpu_index, void *udata)
++{
++}
++
++static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
++{
++    size_t n_insns = qemu_plugin_tb_n_insns(tb);
++
++    for (size_t i = 0; i < n_insns; i++) {
++        struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
++
++        uintptr_t pc = qemu_plugin_insn_vaddr(insn);
++        qemu_plugin_register_vcpu_insn_exec_cb(insn, track_callstack,
++                                               QEMU_PLUGIN_CB_R_REGS,
++                                               (void *) pc);
++    }
++}
++
++static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
++{
++    Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
++    cpu->buf = g_byte_array_new();
++}
++
++static void vcpu_end(unsigned int vcpu_index)
++{
++    Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
++    g_byte_array_free(cpu->buf, true);
++    memset(cpu, 0, sizeof(Cpu));
++}
++
++static void at_exit(qemu_plugin_id_t id, void *data)
++{
++    for (size_t i = 0; i < qemu_plugin_num_vcpus(); ++i) {
++        vcpu_end(i);
++    }
++
++    qemu_plugin_scoreboard_free(score);
++}
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
++                                           const qemu_info_t *info,
++                                           int argc, char **argv)
++{
++    score = qemu_plugin_scoreboard_new(sizeof(Cpu));
++    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
++    qemu_plugin_register_atexit_cb(id, at_exit, NULL);
++    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
++
++    return 0;
++}
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+index 1876bc78438..7eb3629c95d 100644
+--- a/contrib/plugins/meson.build
++++ b/contrib/plugins/meson.build
+@@ -1,5 +1,6 @@
+ contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
+-                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger']
++                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger',
++                   'uftrace']
+ if host_os != 'windows'
+   # lockstep uses socket.h
+   contrib_plugins += 'lockstep'
 -- 
 2.47.3
 
