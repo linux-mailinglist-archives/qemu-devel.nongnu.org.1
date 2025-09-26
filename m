@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE62BA42CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5AEBA424D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v298a-0007Sk-JT; Fri, 26 Sep 2025 10:09:28 -0400
+	id 1v2994-00087O-JJ; Fri, 26 Sep 2025 10:09:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298T-0007JZ-PY
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:22 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1v298W-0007NU-KV
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:25 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298E-0005fJ-DR
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:19 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3f99ac9acc4so1874772f8f.3
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:01 -0700 (PDT)
+ id 1v298E-0005fh-D7
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:24 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-46cf7bbfda8so12136035e9.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895739; x=1759500539; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895740; x=1759500540; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=khGd2vyM0LqffZpI9eeao31QS+mzqXWFdrP3S+/byUk=;
- b=a2d9FwnH66FQnQvFi+TlDOaKjwLpHPQm2BTDhb0XtKpdlQblEmmT65hrXqQqp3ZtbP
- uTwAwzz4yar4NCl9UPILRHzM5rD7mvaZIX6LEdded1Rra5gnbnhTZth/Jyf8CXGspVHc
- aLJzMSbxeApKgoPXTgsx8zieRw6kruPbzMlhu8XOU0XV0B5DLQJXDL3pYJO5b6uf8h5Q
- 75JVed+yyvfFDHYCqylIHPBa7p7FjBRlRNIjPTvtivElb9y0wEt+jcaEfo7wRVkWbmq8
- ttEw8h00q6N9mfHz0sIkpmqfFGNZKJ5ei8Xaar9xTYjs9yhy1Y9fJyDKrrFPlgcgJl0x
- HMjw==
+ :reply-to; bh=Q3RNZ4P3Tq3zjqcHANGsM138DWjS8vi9+XNzo2XY8fw=;
+ b=n7zU10VQNlHtoILDgw07275e0A52IdeTHOGWa6qSn4lxvscvYLIz1ZX7K1Offt1KBY
+ yWZgoxRYq3LLm3jHlm7VI4zU5ehQ4/yTmQfKeh+LrmnOcNZ6Hqo/sBekfZfXfbOoHoTm
+ sB/LzB8oRbkDxNYPm18PGTsyI3EyuS418DDhmzkJLR/olL6YBoCae2QrlNsGEa5i8Yds
+ AKKA/fL8xPIdjM6MRCvfOr9dpokrEvdZ7VCmCgUxcoI62gB+IA1NVU/AjDRIbOKsOYCk
+ pMN3/p1GWeZZ+Wcskh0/vBfefbJhM6snFTLlflMjpG35RBk/gldIrTJ6ZGb4bTQQ20Ws
+ UZdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895739; x=1759500539;
+ d=1e100.net; s=20230601; t=1758895740; x=1759500540;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=khGd2vyM0LqffZpI9eeao31QS+mzqXWFdrP3S+/byUk=;
- b=rCLajvcfgQS0GqPsTpCt9bKpOBEn1K39BEzcn/4D9/4zL/b4OS4D/dDdcv+n8YccWb
- o4rWySin4Fzox0SX/9uZAADcgHp1jeGEIh/LbaasA/MohnPukPFizqrcE+s17Gh5GGhN
- 6lK/rC7utjln/Ed2rWdhK76PcQE87xUqokzdpoY67p6nCjobW4Re7hSSMKmGU9crX1F1
- 8sSsjBTw6MgNQMhGIDPfaIzt1pVEhMNrQ1e+o1awLEDdodDADq9Ra+znTEES32PBsDda
- bfDLaF2ptLElEQiHxmTkRh8vss4lfMKMPqeHFavuKMLDP8w+onOHWMitj52ISW62Yy4G
- FX9w==
-X-Gm-Message-State: AOJu0Yxw7Zqn0avAFD6nVPipOT3r/CD+jj2Y1rxOu9VXDW/2l2KQu1Eq
- EW0R1cFlLlQ0891X3g/noifQ5tnksPBpYfEQrco3h2v4zfujhiRtXAEUHdTiMiqlHdh3Qgm5RTx
- IJ3jb
-X-Gm-Gg: ASbGncvZeZz48qZYiyPOiMRqfCJfi8tdILje8SylnZ3NGyajJD0kSD6GlD8VsulIve1
- iGJDTTuM7lwSwZf6e9Pm22eNU0PACrhgNpB4aRY76ri0sA6+2fAspqF93F2WUa11xgquxyYd3vB
- evkMyXDX5wK/0onBPVm1RiUkpG4GEKCkfQhsn/wb4lyVL2wkFJ0TMarpkvWUlZjnVW2raGi7+I6
- zpAo39hpph/4yVcoOFa+QPpWKN4j5K0n+rizEItgxwhMgczz8o4ohENtk0RSSdXSN88eHka51yL
- Ar0Zzi2o0h5R9k3j6yOpR9WtlO8rdSMMiSyTJRiFH3s1/cdNumU1Bk+9AqiXTjtPHINIaeChzyD
- eVTi++6J1q6hP0XFwAVNL78EiYVBBlXUblaanJekYn3/q4Jbh9w==
-X-Google-Smtp-Source: AGHT+IHslPOYx0lwfX8wo0b/kTZjIkOZ2QkWI8vmlCmLEw6vmluthLj8heE3PzcY/gSzqXQCkSdb8Q==
-X-Received: by 2002:a05:6000:40e0:b0:3e1:9b75:f0b8 with SMTP id
- ffacd0b85a97d-40e499acc26mr6216180f8f.47.1758895739173; 
- Fri, 26 Sep 2025 07:08:59 -0700 (PDT)
+ bh=Q3RNZ4P3Tq3zjqcHANGsM138DWjS8vi9+XNzo2XY8fw=;
+ b=hI7YxXc4cPk4OMl4SVybqtfFsxBhBW1rTL+rfHeNSUg+OaM/XvW5JrMVhB4QbsnMYI
+ 3QBmDFzsyvvkEwLEt2h6OcL7EezVcqGjpWVvTUK6YmONc9NSmjALHUbpBr7L7B3ln60O
+ AhhsX2xRKGYO/9LZXcdgmzvQnYp+xts16Vy5VUe3eILOa3RIuqSjlMG4zsBqXDqioDXN
+ cFeczCAQ3CmTGKjADlm+uE1mPG6Q/W3whdThJuLGWP115UmE2s0uKkw3wwTGRDsPrGKR
+ MEAjdFxaaievYyhEV0o61UjT4+nXnY6Kj+xB8spOykwv7Uc1/XtRTE5lUtg73ODBCklS
+ viSQ==
+X-Gm-Message-State: AOJu0YxiT4ON+lQwgcHRFgJBMrAQzhtWNSm3QW1p1PGQ9Xlgh2BvNCW/
+ vuXeqzwuIvdG+ix5/AFoeI2ve8sZfHuSB6y2tkzWhwKBkLzDqncXlFdh3H+/2+8kTo2kV/kkb6K
+ Oc/8o
+X-Gm-Gg: ASbGncuoptICyEEfKJ/W5SGfzM8kIM4Yg64XHQS39ygMXmeZLhPMi8NyDuGNFhDEnkf
+ 0UWyQvL4HRP5igSXsousriP7ueHsJhZReTCL41GM2NeZ9dE+vYjzkmOTPrxlsKo0hdj93pTn+1H
+ lmgRn9fDGlZSFvcnNl/ruLRa1ShI8UP3NTM/pZVuCISdewL7CRfLkIGkrV4SOKFtvyjvn3ijrzw
+ M3qP/Iy+ftsZp/VzSZYxcwz4v4mZVmwLRvgQ9TyCmoR9Tk8g0hq+C0ijjhVGnIfgHF5Imzg8hWh
+ TUXey6zsSlrG/KOzNS4eNFbE6IW7ui4FCXu/sp6vZ96b5JDHAYmPxJCavi+kON1RMAjvoIof+Hm
+ 9HwPYSzm5yuaVsL+OJ2OdhLErk3zB0RPFzOUB3GU=
+X-Google-Smtp-Source: AGHT+IFRcgRb8fY8Vo9zR2iQtE7cg1FfM5Ytvevipl4wSITKKtlU/yZh03r+Lj25NQim8D4JrLxFuw==
+X-Received: by 2002:a05:600c:4816:b0:46e:3287:57d6 with SMTP id
+ 5b1f17b1804b1-46e32a0bd2amr44971485e9.27.1758895740090; 
+ Fri, 26 Sep 2025 07:09:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.08.58
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.08.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:08:58 -0700 (PDT)
+ Fri, 26 Sep 2025 07:08:59 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/44] target/arm: Use raw_write in cp_reg_reset
-Date: Fri, 26 Sep 2025 15:08:12 +0100
-Message-ID: <20250926140844.1493020-13-peter.maydell@linaro.org>
+Subject: [PULL 13/44] target/arm: Rename all ARMCPRegInfo from opaque to ri
+Date: Fri, 26 Sep 2025 15:08:13 +0100
+Message-ID: <20250926140844.1493020-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,7 +100,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Reduce the places that know about field types by 1.
+These pointers are no opaque, they have a specific type.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
@@ -108,30 +108,74 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ target/arm/cpregs.h | 10 +++++-----
+ target/arm/helper.c |  6 +++---
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index c65af7e7614..91ae56dddb2 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -192,14 +192,8 @@ static void cp_reg_reset(gpointer key, gpointer value, gpointer opaque)
-      * This is basically only used for fields in non-core coprocessors
-      * (like the pxa2xx ones).
-      */
--    if (!ri->fieldoffset) {
--        return;
--    }
--
--    if (cpreg_field_is_64bit(ri)) {
--        CPREG_FIELD64(&cpu->env, ri) = ri->resetvalue;
--    } else {
--        CPREG_FIELD32(&cpu->env, ri) = ri->resetvalue;
-+    if (ri->fieldoffset) {
-+        raw_write(&cpu->env, ri, ri->resetvalue);
-     }
+diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+index 2a4826f5c4f..8f3e728d8ed 100644
+--- a/target/arm/cpregs.h
++++ b/target/arm/cpregs.h
+@@ -866,15 +866,15 @@ typedef struct ARMCPRegInfo ARMCPRegInfo;
+  * Access functions for coprocessor registers. These cannot fail and
+  * may not raise exceptions.
+  */
+-typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *opaque);
+-typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *opaque,
++typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *ri);
++typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *ri,
+                        uint64_t value);
+ /* Access permission check functions for coprocessor registers. */
+ typedef CPAccessResult CPAccessFn(CPUARMState *env,
+-                                  const ARMCPRegInfo *opaque,
++                                  const ARMCPRegInfo *ri,
+                                   bool isread);
+ /* Hook function for register reset */
+-typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *opaque);
++typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *ri);
+ 
+ #define CP_ANY 0xff
+ 
+@@ -1100,7 +1100,7 @@ void raw_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value);
+  * CPResetFn that does nothing, for use if no reset is required even
+  * if fieldoffset is non zero.
+  */
+-void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque);
++void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri);
+ 
+ /*
+  * Return true if this reginfo struct's field in the cpu state struct
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 009f8d6fa1c..7b23e7e5889 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -1073,7 +1073,7 @@ static const ARMCPRegInfo v6k_cp_reginfo[] = {
+       .resetvalue = 0 },
+ };
+ 
+-static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *opaque)
++static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *ri)
+ {
+     ARMCPU *cpu = env_archcpu(env);
+ 
+@@ -5382,7 +5382,7 @@ static const ARMCPRegInfo rndr_reginfo[] = {
+       .access = PL0_R, .readfn = rndr_readfn },
+ };
+ 
+-static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
++static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *ri,
+                           uint64_t value)
+ {
+ #ifdef CONFIG_TCG
+@@ -7829,7 +7829,7 @@ uint64_t arm_cp_read_zero(CPUARMState *env, const ARMCPRegInfo *ri)
+     return 0;
  }
  
+-void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque)
++void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri)
+ {
+     /* Helper coprocessor reset function for do-nothing-on-reset registers */
+ }
 -- 
 2.43.0
 
