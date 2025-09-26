@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0008ABA2F7E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F4EBA2F2E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:30:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23em-0008MH-6o; Fri, 26 Sep 2025 04:18:20 -0400
+	id 1v23ej-0008IF-H2; Fri, 26 Sep 2025 04:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23ec-0008Ce-R6; Fri, 26 Sep 2025 04:18:10 -0400
+ id 1v23ec-0008C8-IF; Fri, 26 Sep 2025 04:18:10 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23eR-00024Z-DX; Fri, 26 Sep 2025 04:18:10 -0400
+ id 1v23eW-00025A-T1; Fri, 26 Sep 2025 04:18:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB50D157D7A;
+ by isrv.corpit.ru (Postfix) with ESMTP id EBE7A157D7B;
  Fri, 26 Sep 2025 11:10:34 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id EE285290C5E;
- Fri, 26 Sep 2025 11:10:35 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0A913290C5F;
+ Fri, 26 Sep 2025 11:10:36 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 50/60] target/sparc: Loosen decode of RDPSR for v7
-Date: Fri, 26 Sep 2025 11:10:18 +0300
-Message-ID: <20250926081031.2214971-50-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 51/60] target/sparc: Loosen decode of RDWIM for v7
+Date: Fri, 26 Sep 2025 11:10:19 +0300
+Message-ID: <20250926081031.2214971-51-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -41,8 +41,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,40 +63,64 @@ From: Richard Henderson <richard.henderson@linaro.org>
 For v7, bits [18:0] are ignored.
 For v8, bits [18:14] are reserved and bits [13:0] are ignored.
 
-Fixes: 668bb9b755e ("target/sparc: Move RDPSR, RDHPR to decodetree")
+Fixes: 5d617bfba07 ("target/sparc: Move RDWIM, RDPR to decodetree")
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit a0345f628394fbd001276c80fd02c8ad0d1b7ee2)
+(cherry picked from commit dc9678cc9725d6c3053c6f110f162d956eb9d48f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 74848996ae..1c6403ad8a 100644
+index 1c6403ad8a..77b2f54fdf 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -158,14 +158,16 @@ CALL    01 i:s30
- }
+@@ -180,26 +180,28 @@ RESTORED            10 00001 110001 00000 0 0000000000000
+ # UA2005 INVALW
  
  {
--  RDPSR             10 rd:5  101001 00000 0 0000000000000
--  RDHPR_hpstate     10 rd:5  101001 00000 0 0000000000000
+-  RDWIM             10 rd:5  101010 00000 0 0000000000000
+-  RDPR_tpc          10 rd:5  101010 00000 0 0000000000000
 +  [
-+    RDHPR_hpstate       10 rd:5  101001 00000 0 0000000000000
-+    RDHPR_htstate       10 rd:5  101001 00001 0 0000000000000
-+    RDHPR_hintp         10 rd:5  101001 00011 0 0000000000000
-+    RDHPR_htba          10 rd:5  101001 00101 0 0000000000000
-+    RDHPR_hver          10 rd:5  101001 00110 0 0000000000000
-+    RDHPR_hstick_cmpr   10 rd:5  101001 11111 0 0000000000000
++    RDPR_tpc            10 rd:5  101010 00000 0 0000000000000
++    RDPR_tnpc           10 rd:5  101010 00001 0 0000000000000
++    RDPR_tstate         10 rd:5  101010 00010 0 0000000000000
++    RDPR_tt             10 rd:5  101010 00011 0 0000000000000
++    RDPR_tick           10 rd:5  101010 00100 0 0000000000000
++    RDPR_tba            10 rd:5  101010 00101 0 0000000000000
++    RDPR_pstate         10 rd:5  101010 00110 0 0000000000000
++    RDPR_tl             10 rd:5  101010 00111 0 0000000000000
++    RDPR_pil            10 rd:5  101010 01000 0 0000000000000
++    RDPR_cwp            10 rd:5  101010 01001 0 0000000000000
++    RDPR_cansave        10 rd:5  101010 01010 0 0000000000000
++    RDPR_canrestore     10 rd:5  101010 01011 0 0000000000000
++    RDPR_cleanwin       10 rd:5  101010 01100 0 0000000000000
++    RDPR_otherwin       10 rd:5  101010 01101 0 0000000000000
++    RDPR_wstate         10 rd:5  101010 01110 0 0000000000000
++    RDPR_gl             10 rd:5  101010 10000 0 0000000000000
++    RDPR_strand_status  10 rd:5  101010 11010 0 0000000000000
++    RDPR_ver            10 rd:5  101010 11111 0 0000000000000
 +  ]
-+  RDPSR                 10 rd:5  101001 ----- - -------------
++  RDWIM                 10 rd:5  101010 ----- - -------------
  }
--RDHPR_htstate       10 rd:5  101001 00001 0 0000000000000
--RDHPR_hintp         10 rd:5  101001 00011 0 0000000000000
--RDHPR_htba          10 rd:5  101001 00101 0 0000000000000
--RDHPR_hver          10 rd:5  101001 00110 0 0000000000000
--RDHPR_hstick_cmpr   10 rd:5  101001 11111 0 0000000000000
+-RDPR_tnpc           10 rd:5  101010 00001 0 0000000000000
+-RDPR_tstate         10 rd:5  101010 00010 0 0000000000000
+-RDPR_tt             10 rd:5  101010 00011 0 0000000000000
+-RDPR_tick           10 rd:5  101010 00100 0 0000000000000
+-RDPR_tba            10 rd:5  101010 00101 0 0000000000000
+-RDPR_pstate         10 rd:5  101010 00110 0 0000000000000
+-RDPR_tl             10 rd:5  101010 00111 0 0000000000000
+-RDPR_pil            10 rd:5  101010 01000 0 0000000000000
+-RDPR_cwp            10 rd:5  101010 01001 0 0000000000000
+-RDPR_cansave        10 rd:5  101010 01010 0 0000000000000
+-RDPR_canrestore     10 rd:5  101010 01011 0 0000000000000
+-RDPR_cleanwin       10 rd:5  101010 01100 0 0000000000000
+-RDPR_otherwin       10 rd:5  101010 01101 0 0000000000000
+-RDPR_wstate         10 rd:5  101010 01110 0 0000000000000
+-RDPR_gl             10 rd:5  101010 10000 0 0000000000000
+-RDPR_strand_status  10 rd:5  101010 11010 0 0000000000000
+-RDPR_ver            10 rd:5  101010 11111 0 0000000000000
  
  {
-   WRPSR             10 00000 110001 ..... . .............  @n_r_ri
+   WRWIM             10 00000 110010 ..... . .............  @n_r_ri
 -- 
 2.47.3
 
