@@ -2,35 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FA6BA3AD3
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800D4BA3ABC
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:48:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v27qD-00089n-Jk; Fri, 26 Sep 2025 08:46:25 -0400
+	id 1v27q9-00086j-LE; Fri, 26 Sep 2025 08:46:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v27q1-00083J-Gp; Fri, 26 Sep 2025 08:46:15 -0400
+ id 1v27pr-00081P-O1; Fri, 26 Sep 2025 08:46:09 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v27pg-0006Yb-0h; Fri, 26 Sep 2025 08:46:03 -0400
+ id 1v27ph-0006Ya-JJ; Fri, 26 Sep 2025 08:46:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AB128157F48;
+ by isrv.corpit.ru (Postfix) with ESMTP id C396E157F49;
  Fri, 26 Sep 2025 15:45:39 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1B2C1290F06;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2D5A9290F07;
  Fri, 26 Sep 2025 15:45:41 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 00/38] Patch Round-up for stable 10.0.5,
- freeze on 2025-10-06
-Date: Fri, 26 Sep 2025 15:45:00 +0300
-Message-ID: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, WANG Rui <wangrui@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 01/38] target/loongarch: Add CRC feature flag and use
+ it to gate CRC instructions
+Date: Fri, 26 Sep 2025 15:45:01 +0300
+Message-ID: <20250926124540.2221746-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
+References: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,101 +61,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v10.0.5:
+From: WANG Rui <wangrui@loongson.cn>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
+This patch replaces the obsolete IOCSR_BRD bit with CRC in cpucfg1[25],
+in both LA464 and LA132 CPU initialization functions. The corresponding
+field macro in `cpu.h` is updated to reflect this change.
 
-Patch freeze is 2025-10-06, and the release is planned for 2025-10-08:
+Additionally, the availability macro `avail_CRC()` is introduced in
+`translate.h` to check the CRC feature flag.
 
-  https://wiki.qemu.org/Planning/10.0
+All CRC-related instruction translations are updated to be gated by
+the new CRC feature flag instead of hardcoded CPU features.
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+This ensures correctness and configurability when enabling CRC
+instructions based on hardware capabilities.
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250418082103.447780-2-wangrui@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+(cherry picked from commit 256df51e727235b3d5e937ca2784c45663c00f59)
+(Mjt: pick this one up for 10.0.x so subsequent changes applies cleanly)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Thanks!
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index ea1665e270..fc439d0090 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -431,7 +431,7 @@ static void loongarch_la464_initfn(Object *obj)
+     data = FIELD_DP32(data, CPUCFG1, EP, 1);
+     data = FIELD_DP32(data, CPUCFG1, RPLV, 1);
+     data = FIELD_DP32(data, CPUCFG1, HP, 1);
+-    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
++    data = FIELD_DP32(data, CPUCFG1, CRC, 1);
+     env->cpucfg[1] = data;
+ 
+     data = 0;
+@@ -530,7 +530,7 @@ static void loongarch_la132_initfn(Object *obj)
+     data = FIELD_DP32(data, CPUCFG1, EP, 0);
+     data = FIELD_DP32(data, CPUCFG1, RPLV, 0);
+     data = FIELD_DP32(data, CPUCFG1, HP, 1);
+-    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
++    data = FIELD_DP32(data, CPUCFG1, CRC, 1);
+     env->cpucfg[1] = data;
+ }
+ 
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 254e4fbdcd..ab76a0b451 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -129,7 +129,7 @@ FIELD(CPUCFG1, RI, 21, 1)
+ FIELD(CPUCFG1, EP, 22, 1)
+ FIELD(CPUCFG1, RPLV, 23, 1)
+ FIELD(CPUCFG1, HP, 24, 1)
+-FIELD(CPUCFG1, IOCSR_BRD, 25, 1)
++FIELD(CPUCFG1, CRC, 25, 1)
+ FIELD(CPUCFG1, MSG_INT, 26, 1)
+ 
+ /* cpucfg[1].arch */
+diff --git a/target/loongarch/tcg/insn_trans/trans_extra.c.inc b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
+index cfa361fecf..eda3d6e561 100644
+--- a/target/loongarch/tcg/insn_trans/trans_extra.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
+@@ -97,11 +97,11 @@ static bool gen_crc(DisasContext *ctx, arg_rrr *a,
+     return true;
+ }
+ 
+-TRANS(crc_w_b_w, 64, gen_crc, gen_helper_crc32, tcg_constant_tl(1))
+-TRANS(crc_w_h_w, 64, gen_crc, gen_helper_crc32, tcg_constant_tl(2))
+-TRANS(crc_w_w_w, 64, gen_crc, gen_helper_crc32, tcg_constant_tl(4))
+-TRANS(crc_w_d_w, 64, gen_crc, gen_helper_crc32, tcg_constant_tl(8))
+-TRANS(crcc_w_b_w, 64, gen_crc, gen_helper_crc32c, tcg_constant_tl(1))
+-TRANS(crcc_w_h_w, 64, gen_crc, gen_helper_crc32c, tcg_constant_tl(2))
+-TRANS(crcc_w_w_w, 64, gen_crc, gen_helper_crc32c, tcg_constant_tl(4))
+-TRANS(crcc_w_d_w, 64, gen_crc, gen_helper_crc32c, tcg_constant_tl(8))
++TRANS(crc_w_b_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(1))
++TRANS(crc_w_h_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(2))
++TRANS(crc_w_w_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(4))
++TRANS(crc_w_d_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(8))
++TRANS(crcc_w_b_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(1))
++TRANS(crcc_w_h_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(2))
++TRANS(crcc_w_w_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(4))
++TRANS(crcc_w_d_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(8))
+diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
+index 195f53573a..018dc5eb17 100644
+--- a/target/loongarch/translate.h
++++ b/target/loongarch/translate.h
+@@ -25,6 +25,7 @@
+ #define avail_LSX(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSX))
+ #define avail_LASX(C)  (FIELD_EX32((C)->cpucfg2, CPUCFG2, LASX))
+ #define avail_IOCSR(C) (FIELD_EX32((C)->cpucfg1, CPUCFG1, IOCSR))
++#define avail_CRC(C)   (FIELD_EX32((C)->cpucfg1, CPUCFG1, CRC))
+ 
+ /*
+  * If an operation is being performed on less than TARGET_LONG_BITS,
+-- 
+2.47.3
 
-/mjt
-
---------------------------------------
-01 256df51e7272 WANG Rui:
-   target/loongarch: Add CRC feature flag and use it to gate CRC instructions
-02 96e7448c1f82 WANG Rui:
-   target/loongarch: Guard 64-bit-only insn translation with TRANS64 macro
-03 38dd513263d8 Thomas Huth:
-   ui/vnc: Fix crash when specifying [vnc] without id in the config file
-04 1e343714bfc0 John Snow:
-   python: backport 'kick event queue on legacy event_pull()'
-05 f9d2e0a3bd7b John Snow:
-   python: backport 'drop Python3.6 workarounds'
-06 0408b8d7a086 John Snow:
-   python: backport 'Use @asynciocontextmanager'
-07 fcaeeb7653d2 John Snow:
-   python: backport 'qmp-shell-wrap: handle missing binary gracefully'
-08 fd0ed46d4eff John Snow:
-   python: backport 'qmp-tui: Do not crash if optional dependencies are not 
-   met'
-09 5d99044d09db John Snow:
-   python: backport 'Remove deprecated get_event_loop calls'
-10 85f223e5b031 John Snow:
-   python: backport 'avoid creating additional event loops per thread'
-11 82c7cb93c750 Daniel P. Berrangé:
-   iotests: drop compat for old version context manager
-12 6ccb48ffc19f Daniel P. Berrangé:
-   python: ensure QEMUQtestProtocol closes its socket
-13 d4d0ebfcc926 Daniel P. Berrangé:
-   iotests/147: ensure temporary sockets are closed before exiting
-14 2b2fb25c2aaf Daniel P. Berrangé:
-   iotests/151: ensure subprocesses are cleaned up
-15 9a494d835386 Daniel P. Berrangé:
-   iotests/check: always enable all python warnings
-16 a11d1847d5ef Alex Bennée:
-   .gitmodules: move u-boot mirrors to qemu-project-mirrors
-17 8b182b6600 Michael Tokarev:
-   tests/docker/dockerfiles/python.docker: pull fedora:40 image instead of 
-   fedora:latest
-18 eb8f7292e131 Paolo Bonzini:
-   ci: run RISC-V cross jobs by default
-19 6b3fad084fc4 Paolo Bonzini:
-   rust: hpet: fix new warning
-20 aaf042299acf Stéphane Graber:
-   hw/usb/network: Remove hardcoded 0x40 prefix in STRING_ETHADDR response
-21 0516f4b70264 Xiaoyao Li:
-   i386/cpu: Enable SMM cpu address space under KVM
-22 591f817d819f Xiaoyao Li:
-   target/i386: Define enum X86ASIdx for x86's address spaces
-23 4c8f69b94839 Xiaoyao Li:
-   multiboot: Fix the split lock
-24 db05b0d21ec1 Paolo Bonzini:
-   linux-user: avoid -Werror=int-in-bool-context
-25 b7cd0a1821ad Richard Henderson:
-   target/sparc: Allow TRANS macro with no extra arguments
-26 b6cdd6c60505 Richard Henderson:
-   target/sparc: Loosen decode of STBAR for v8
-27 49d669ccf33a Richard Henderson:
-   target/sparc: Loosen decode of RDY for v7
-28 a0345f628394 Richard Henderson:
-   target/sparc: Loosen decode of RDPSR for v7
-29 dc9678cc9725 Richard Henderson:
-   target/sparc: Loosen decode of RDWIM for v7
-30 6ff52f9dee06 Richard Henderson:
-   target/sparc: Loosen decode of RDTBR for v7
-31 df663ac0a4e5 Richard Henderson:
-   target/sparc: Relax decode of rs2_or_imm for v7
-32 e4a1b308b27c Peter Maydell:
-   hw/pci-host/dino: Don't call pci_register_root_bus() in init
-33 76d2b8d42adb Peter Maydell:
-   hw/pci-host/astro: Don't call pci_regsiter_root_bus() in init
-34 a50347a4145f WANG Rui:
-   tcg/optimize: Fix folding of vector bitsel
-35 fd34f56fe886 Peter Maydell:
-   .gitlab-ci.d/buildtest.yml: Unset CI_COMMIT_DESCRIPTION for htags
-36 4f1ebc7712a7 Thomas Huth:
-   tests: Fix "make check-functional" for targets without thorough tests
-37 03fe6659803f Richard Henderson:
-   accel/tcg: Properly unlink a TB linked to itself
-38 e13e1195db8a Richard Henderson:
-   tests/tcg/multiarch: Add tb-link test
 
