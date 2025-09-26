@@ -2,90 +2,222 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D79BBA3E0F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF69CBA3E27
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:26:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v28Q6-0006Q3-UX; Fri, 26 Sep 2025 09:23:31 -0400
+	id 1v28La-0008CI-6O; Fri, 26 Sep 2025 09:18:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v28Q2-0006MJ-De
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:23:27 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v28Pq-0004vl-62
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:23:25 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-46e2e6a708fso12862995e9.0
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 06:23:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v28LV-0008BU-Bd
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:45 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v28Kw-00044h-HJ
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:45 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58QDHBsY028202;
+ Fri, 26 Sep 2025 13:18:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=p69cq2Y5ZMINJD0qtiFp5zuaFis7FLEGRV7yroDELE4=; b=
+ G2UviHyKma49EFEHG3Rrri65JUbYz3u6dzvx0fRgNwKoezU/C0zF42+xWlHNj1uf
+ HxaIeULkCsJNXKW/a6nPYOB2gR+nnxJJLoDNxMrhSzttSi47TPrR0MhFuq5vgAK8
+ gBlmlcp2iCRh4e4Dua9QHVM3WQiGKw6LfaYBqoIBlhUEjIHBHkdG3soPG6Mw4ZIj
+ /ELzj5Pfl1uR19/1Ef1SA3u0qjAv3BRM9iRJzSQ0MoR4Nc85dLI0ZsDcTjGfP3Yg
+ O7Uh0F+EuRvHZ+VDy3pdXvp7UDMybszK0Mmnn3FSBTxwefIj7L5pqwWLBtdTgbrj
+ NR90Y6IKgAjYT2DDe4LvUg==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49dud2r0tj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Sep 2025 13:18:01 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 58QCDnYB010253; Fri, 26 Sep 2025 13:18:00 GMT
+Received: from sa9pr02cu001.outbound.protection.outlook.com
+ (mail-southcentralusazon11013023.outbound.protection.outlook.com
+ [40.93.196.23])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49dawkyp2f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Sep 2025 13:18:00 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TMSG4UPpDk5sAMi0ZFfpUIOKu/iH2WhPT3BWtsnyysM4dXCQJj4g3QEcmaOqnfDPGS6+gi7iOlUaUEtHch/Zu0fhVNbWQ4fzBkvJ0BzA21eSGvLaHe52DxMcYClMQwQHiCb0q6tdt2rhopGP4XEyr3i5LiGMbXC2/L811SMM4pWS8xT6PukMIoybgeDCXsDD2XtQhufIXBfptDn6DzbMzEG5Vwyi/snzBr/yTo9RIe5seyfQOdUZZ6ULt5LNTL/QsqmGNoWWV6/1c9IDOGGkjmQwJeS4AhR3cQT33UtWGLXPOAd16GozE7rPx0DEDBjD84YObste9X4qu51tQG988A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p69cq2Y5ZMINJD0qtiFp5zuaFis7FLEGRV7yroDELE4=;
+ b=DnyQvjNVrjaZJ1su7QsXHTtPLfKY3+xSJjt+nbEyLHDK4JUi6B1MAZnWN/XQkQedWXTxw6jF4ojOctpbZ7eoUDKGHZmFlA8qH3IpDnL9+PRpcMFK9+oJwkce48sW9UE4G68FfHgHWk0b2f0y9mu4vV+y3Yu5QcFRPOpIgM7fv2pTnix3quEt5gnHUoaOruQyprqgaeHflaGw+agAt3jdn7zPko8nJrfVgiqWk79dIrIcvXPdlgug9zvD1Jz7exLpFtwNhDZoHePYYOtLdBomdCKtvc1h0kLEOpdL256Y+bVP55Dag+RmlcNdbvrRa0GgXw4w4zfG4DMcALIbYyYYwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758892984; x=1759497784; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ig8MokYIXy0til7GLX4taqlZ5Cp0jTBRcRZcRMKzHJM=;
- b=NpYDYgUyoL6fCBr3y0R5XJSfz+dP8RkR5CJsNSjZzBUuPbKcGtVUSxAB1osfjfXgnV
- 07n9GjGri3a+ugODN+GM4VlsuXmlp1Nyu5keTsdqC6Qq9oJG1S9uwvS8Vn/jjF+Yphoh
- uMcalQXYCBcEXmh/vOH8n0mjyuFAx969oRguvux7M45RMz0A3SsshdhPYhK2rNqhnCiD
- b3GqTD1NvkPgQVUftDCdlbKd2affW5tCL/8q2WM8Z72QfKNTUJnOCxtEJpYr8/Ny5Ov3
- zo5I7Oux6J9ijqfUi+f17m2xP4JLYvgGrzJOxCx7JdNiwZHM7ljrfDKz4rS62/Y1BVBg
- 3Izw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758892984; x=1759497784;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ig8MokYIXy0til7GLX4taqlZ5Cp0jTBRcRZcRMKzHJM=;
- b=lQlyutwul0Or5v/IxgErvCjxgIRWhah4fLfhSfTsEw1n9ApU8FYVYzpkpYPIJKfpLY
- UddkDl1jOyEjKJVI7OzZhLHatkWsaWwnJvLjskPW7XT9bgszAFiuwxejKuLY3EFzVZd5
- wnRF2HoLe0BPCjlfbTmFT0JVvHGCbvjQQh0RwDgsC0OW+0aPYhNTp/MSlGKJxiV45NCM
- TJlJahhyv6RWE3nJy5ikNLWEpQn0K9I60zeg4JR19d9nKFMn3lz6QTmmiQQSE9LEcln8
- GWeOpeC+4jeGu5AgAI0IiOB5UOLPpsYNZ8lgO1BBbEofLYt3Ysz2MrGmGaX/MtihS7fu
- 9/RQ==
-X-Gm-Message-State: AOJu0YyoY9EhgtvyU6nlNg67VZ5jGThcsXbyThHFfsgAeP7eeUsFo+26
- 8QaEm2P5ixmW08mxiWcBKCGoA1SSjIVWxHyWO1vvOvdqnoe6chg5njDZTBJSV8apLS0=
-X-Gm-Gg: ASbGnculsPegeJjwj7IFMM3gLN4RvnPR22MoG5+mMM71jOAivqxM6s1bFj2nzK5Id2G
- MbWhxwBZw1yj2CWzI+k8Yb81nQ7YE9iyEkpA015Qa5bNfYC7BAG2g8KiGG67+8fnkZJg32U6Z7i
- jWk5WXeeGBqV49fdg/oHO6eOG9WWEED2VDsPKedbnyV67dfbvqWXHzbzrRXxzbKYnbW6T8ZIQ5J
- 0JV1vro6XGLz8+lFvk77vwJehNk13wI9DmVnXEFjQC6VaU6H8XFW6DDVy15Hr9OdE2DLq77iCyQ
- CM/U9z1GZswpbCSN/J9l45gCF8Qi41rGfI/xcSuRh4wCQutERza7UNaasY8fY02AwKzednx9spj
- YiZdkUspifmcGI8GpcEUz7mScH/H573o7yA==
-X-Google-Smtp-Source: AGHT+IHJ9+e+ASnXgE/YVTSM+apUUftj1NfzrZ46iuszcBmC8HaH7uPphKpsTpv0crMhFUsIJ33owg==
-X-Received: by 2002:a7b:c5d9:0:b0:45c:4470:271c with SMTP id
- 5b1f17b1804b1-46e329eb0cemr55309615e9.18.1758892983892; 
- Fri, 26 Sep 2025 06:23:03 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2a7c8531sm117831085e9.0.2025.09.26.06.23.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 06:23:00 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 06CA75F93E;
- Fri, 26 Sep 2025 14:17:47 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 24/24] contrib/plugins/uftrace: add documentation
-Date: Fri, 26 Sep 2025 14:17:43 +0100
-Message-ID: <20250926131744.432185-25-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250926131744.432185-1-alex.bennee@linaro.org>
-References: <20250926131744.432185-1-alex.bennee@linaro.org>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p69cq2Y5ZMINJD0qtiFp5zuaFis7FLEGRV7yroDELE4=;
+ b=JPE3z/v7QlmLmG6szFWjXlpux6POb6Oozy930Um2Ua+DVw90Imv35Ph3NByTUv3kMcKHtWnnVpRH587K48s1irDr87QDLsTPUNIrNuqbE7cyKGPIYPcNi1mk/yZiC0IU0yCMenZwDDm9uAcZL1hDXufRIey2rh5Wxp5DxxoJmrQ=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by IA1PR10MB6898.namprd10.prod.outlook.com (2603:10b6:208:422::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.13; Fri, 26 Sep
+ 2025 13:17:57 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.9160.011; Fri, 26 Sep 2025
+ 13:17:57 +0000
+Message-ID: <72aeaf62-cc9e-4ee1-a72f-145334b1aebb@oracle.com>
+Date: Fri, 26 Sep 2025 09:17:52 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] accel/kvm: Fix SIGSEGV when execute "query-balloon"
+ after CPR transfer
+To: Markus Armbruster <armbru@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
+ eric.auger@redhat.com
+References: <20250926022540.1884023-1-zhenzhong.duan@intel.com>
+ <87v7l5stsj.fsf@pond.sub.org>
+Content-Language: en-US
+From: Steven Sistare <steven.sistare@oracle.com>
+In-Reply-To: <87v7l5stsj.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR05CA0088.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::29) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|IA1PR10MB6898:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d8901a6-b419-4f7b-8d01-08ddfcff1c10
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?R2FwR2tUYmZYZmQ2S055SW9jdTZITGhBajFjSDEvTExPZjBxQmx2OUhzYWVL?=
+ =?utf-8?B?QnRkd2V1QTlpaW5seVRlT242V2R6M1U1VitXU0RtZWxMUU1hQVN2bVFQclk3?=
+ =?utf-8?B?ZSs1RUZRUmZEd1psQ0pCV2EzSzkyOEw5MFV0MElZRjBjQWhhQzAxZGdWUHpk?=
+ =?utf-8?B?c0FaYlBvcEdFekgxYWRDUktGaVA5b0RhL2krY3FWRHNIZ2lrOWp2V2VHZVp2?=
+ =?utf-8?B?d2d2R1NHQVFkZ0cyYmdpTWg5cFRvTlZjVkpINml0SlE5akhZTFRERFB0M3M4?=
+ =?utf-8?B?M3JLOFNpQ2lvY05pV3ZpZ3Q2ek52b292VXJyY2ZWcjRqTnh3QjFHS0ZmNEdw?=
+ =?utf-8?B?eDhBdk9EQ25Hc2RpeERuKzFXaHBPVExoMGMveW9hRFpiNlY4WUdVZWprWWZ2?=
+ =?utf-8?B?QWpNWWV6Z3AvZ0owbjBhMkpOVFdaUklTem1OVjFFdnhidkQveDk2WTQ5ZU80?=
+ =?utf-8?B?MDJrZjVxTjVUczJJVVMzTjFtNHVRWFE1QVJJa1FIQmdVR3B4TVkzbGxJK0VI?=
+ =?utf-8?B?bm11NkFmQmEzTTNYcmJZR2VTVzIzN1RueU9WVENoMHBHUTlka2N4V3hwS21o?=
+ =?utf-8?B?dmJZRmJtY2tzUWt3ME8vdmlzbDNxZGNzUHk4dC9FTkVNMWJITmdjYmRKUjhs?=
+ =?utf-8?B?U2ZhdEgvWjFlNmJQcXVWbisvZEg1VUFTLzc0RkNWRDVCZ1MxU2tiYUIyQ0tS?=
+ =?utf-8?B?akFsWWdOZjdIRG1kSjc5L0JZRWIyQlFTbVdGMG5pNFBKb0F3TGtTQ0dGTnNx?=
+ =?utf-8?B?RzNvbDh6U0JraWVyNXNRU05ZNnlLUkVNWWxnZitTSFdFZndEd2V1WmxBaGVP?=
+ =?utf-8?B?ZFJQOGo2dGc1djdLL01QM1h1MWhHOTJqcVg3QTRXeUduU2p6L3Z0UVJmRk9H?=
+ =?utf-8?B?eDhRcmQxRjFVMy9HajZwcEgwa0RpbFB1TkdPOGFVVmFGWlhUT2VkY25RY2lG?=
+ =?utf-8?B?ZVJNSG1JZEM2NUQ0SG9JNlBRN3liS0NlRzFadS84WVFwcWx2YWFKMW5Kakd4?=
+ =?utf-8?B?cDZ2NnhMSWR6bXIzS3lWTTd6ZnJZYm9iQWxJMkRjaTZjb0VpRWF0QXNCZ3Vx?=
+ =?utf-8?B?THg3K1gxOUR3bGdMVHNEOEwzaDVYekVFUDFtbCtOM01EanM2QWlQTE16T3Bm?=
+ =?utf-8?B?WEhwcFdXMy8wc1RTSWpnWmREay84UWFBSE8rZ1lpZVQ4cG5Rbms3cVB5UWtu?=
+ =?utf-8?B?WU5ONmZaVXdJb0wreDNOV0xQQmxkelpOODlMbUlJSThVdStmL3M0akc3TEFh?=
+ =?utf-8?B?T1NTMDErTGNNY0Yzdkc3TC9KV1gyZnpJZ2QrcHFyN3VrcW1aNzJQOTlZRDBj?=
+ =?utf-8?B?aTM4WmNIbmkrKzVMOEZrWDZ5enlPTEdtbEd4UXpPdUNBTElBQm5HTXp5N2Z0?=
+ =?utf-8?B?ZzJCTkFUZXJTTlRqUUtzQmtXLzdML295bSt6dkwwYW9VZWlqRG42YXhlaks5?=
+ =?utf-8?B?U3lQNEY3MVlmYldOWTNtMGJQdXNxWWQ4ODRDQVNkd1VTYUdzNnBVYW5NdmQ3?=
+ =?utf-8?B?cjRRaVUxbHlzT012T0NpTkhERDRtVTVuVUJsRE5VYndtRGttNnNmSGQvTElR?=
+ =?utf-8?B?VTZicE54MWZuRWI1dEo1RlpJUkx0K3FrL21IbW1YQlczWUhiaGVtR2dKUlkv?=
+ =?utf-8?B?dVdYSlM1WXJ4Q1Uyb2U2VTEyRWt4TVpzazMwQlJyMzdvWE82WlFESzlFOEJq?=
+ =?utf-8?B?eHdPR1h5dnYxK0JhZFkydXR4K3dlb1dDZW1FWVo1TnBBTkRVMVQyWW1LMXpo?=
+ =?utf-8?B?d2RNSG9iUjBsSm05OGFDSjUzVmc0ZkEzbHNiZHdvN05vTHpzSkZGcTU3SXZV?=
+ =?utf-8?B?YTE4VTEwWmxCalFYU0U1Z1dLWGg4Ym15RVZoeWpFdWtlSDIySFZnMmMwZEEz?=
+ =?utf-8?B?TG5zTUVBc24vYy81YnhPR09WSEhuTnordVZzQVZyOGJPdXdXRjd3UmlYcTVv?=
+ =?utf-8?Q?ox33vhIj0EY=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RnZWZjB0RmxMM200N2tXWlBHOWVwWHhzSU11bW85cE1lZEJDWkdST2MycGw3?=
+ =?utf-8?B?TmkraFN6YkMxcFNYVjd5cnVLWmJuQlBKY1MvS011Y0dIQkhSV3FqTFJwTUdh?=
+ =?utf-8?B?TldadkxrQU9TeWFWdkNabW1FRm5URERiK2M4TGRzKzBQT3l2bVFMbS9qUFlk?=
+ =?utf-8?B?dkJBSUt3L24xNXhYcWlCcVRvdHBaTlo1L0tuell2WDRQSVlJckZmdDRqVGZp?=
+ =?utf-8?B?Z1hZQjV4R3pLQmFTeEpBazQ0MDRpYTIyK2VCSHF6cFMzNnB5eEtUMnNVcnlX?=
+ =?utf-8?B?SGRVTlY2YXoxN0c1c01Ub0tvQy9oc0pwVDFHTGZ3VDV0SVdjWFRaYWxLZ3FU?=
+ =?utf-8?B?cElrSUlFWXFZNWpiM0c1VXFWR3NwNEZ5MHNRTi8xblNnTUNWWGdYVzlBanhj?=
+ =?utf-8?B?SG1RTUhneFlTY01Nd1pjN09EZ2dhMG9vcS8zdlNMbWRwMkEvMTE2cHUyL3RH?=
+ =?utf-8?B?RHo3d2prQUMxc2xHY2VlR0NqWU8xMUk1TGdLRkR1WXhVQUR3L0tPREEyK3Mz?=
+ =?utf-8?B?TzRmcW13OEh5VkFyUUhENkdKT1ZPK09CNGFwZzhRVjBFcmJ3eGxFYW5iWmRN?=
+ =?utf-8?B?WVYybmRWWDZHZ2wrbXdveFJDTnJUV3czdnB0dWxOSW0zM1V0anE2Q3hwY1gx?=
+ =?utf-8?B?THh0eUs2LzBoMmRFbmt5YVIvbGpWd3hUMXBrMWxIVzN4dEJ0NENaaFh5SUFJ?=
+ =?utf-8?B?TWhFdzFNMDNZd09acTllWmRYUGNjS25VNTU4aU5yNUZYZ3BRdVUyRlllS3dn?=
+ =?utf-8?B?NHZIcFlacmlWdTV6bEdvTVM3bHkrOUlTUnlwbjJBWjdKNmpJRG5ab20zRDVK?=
+ =?utf-8?B?SFNBbnBnQVlWVitiYVVVaTU2bEhDOW05anVuMk84RldpQmFGSTV0NUViYThy?=
+ =?utf-8?B?TFpVZ0JGcmJicy9HRnB1SHc2dFdOUGpqUXdYTVE1L3Fuckc4T2NWTXpvTVR2?=
+ =?utf-8?B?VStjamI2czBJNWhTNWVjcHRZYUpOWFZSa25RMTJVK1gxK1NHMEFEcjZHU2Rw?=
+ =?utf-8?B?anhMc0RXb1NQUGRTbFU0MEtiWjB1ZXZZc1prR1ZMSUFERkJ2NjU1NTJja2Zs?=
+ =?utf-8?B?QzgvT2JqMVl1K2dkYlVYTktvQ1ljM1gwTStEQ2JrbGNzelpjayt6MjFUL2o1?=
+ =?utf-8?B?OVl4Yk1wTG50cHdqTWh6a2I5ZDFKY3FEM0hsL2Z6ajkzZmNhb0NMTnlDK1BO?=
+ =?utf-8?B?NGg2bDYrL2FjSXJiWkVJcDFkTUlDNzR2aVVjaVpCRzNWenpCNjEvWm9XSjhL?=
+ =?utf-8?B?MHgvS3ZoeWVtWEgxSHV1V0duYjFIbUVFZ20wQ3hMT0tQNHAwakF2RXkrQlZ3?=
+ =?utf-8?B?cmxLWkxPR1VGR1p2TUNIUWQrZDU2OXN1TWdxaDR4dVQvWUlSVzhTOWgrZTdI?=
+ =?utf-8?B?a05RK1UvNVNmMGpVZkJYczJTWHcwSWpLaE9Ea0dmOGdYdllwTDc2cXlVNlk3?=
+ =?utf-8?B?WEo5QWFBclBzQ2UvM0pma0wwZkpGZXc2UWRwUkxlb0M2UGh4T2w5bDlpeVdq?=
+ =?utf-8?B?Q2d4RGVRTHlnSGEyMFlycWJPZytuOHptSXdBVmZiN0RUaWRkdE9xcGd3V3E4?=
+ =?utf-8?B?Y1YwdjlNdTNsTE9qWmQvbEpmSHNXV1ROV0RMS0lUUUlWR1h1aGw4MWV5MVRB?=
+ =?utf-8?B?Y0hnYnBhd1NFOG9icXBNb1JpN2RadjBCZW1PZ0E4MlNreHcrbUpaYzYrcWQ4?=
+ =?utf-8?B?aDcwQ3FWNm85MnJpamlOdkxtNm1tZUtQRTRBVWpIaUlPQ3ovTmhENHY2ckpH?=
+ =?utf-8?B?ZktPYjNBQyt2OGdXTU84eWZhZEtQbmFUa1ZxUENMbmhuUlAzQjgzSXVnVTA3?=
+ =?utf-8?B?cG9MYnNDd052NlJxcElsd3dGNU9XQ1JQdDJ0cEtuMDBaQlBOQm5pN2xPOU1k?=
+ =?utf-8?B?c1RBaGZrRGp4a296c3p3azRMTkxMczA0OGJqSzNQdUE0VnNiNjFoNU5sUFZ2?=
+ =?utf-8?B?dG1nQ0JCVWNMV3kwR3l4d0h0T2NLRzAya2g2NUo1U0pmYmpRU0NNTlNDb1c2?=
+ =?utf-8?B?WmNoT0NKL0k5dHlxVnB2eEtnVFJrYnd6SGI4WVRTeC8yRGVReldOQUozY1FP?=
+ =?utf-8?B?ajFjcnAxenNaajFNb2QzR0cvdUtZWnR3VFJrN0t2UW5RK3Z1c0JvNjlZaWRU?=
+ =?utf-8?B?WmJtdGcwUkxTQzVnckpuc0lJcU5QeFdwdVI5aDk2VEJDT1hUYlV4eHhtS2Fq?=
+ =?utf-8?B?dFE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: gEx409QSxLhXaU+wfQtZ3ZSooYgxl9ujjiz88ZQ2sGxhr8szDwPdDvPfJRR9eTAmrQhfrP1DWCLDNmS2s6WVsQbV5hMCeiU8zFtszdkFf7cE4HXr3H/nmh8Gvnt0cuqTh+TjbZnwC9W+TKZhoD4w6s37hO5dcpZ9naGdVr6UkK7XKDF7VZdhAeS70KsNk38hJ8Ua0DJ1Guba7dFrzzru14lV/JghMGOXemNI/3EwiR/xl2ihPxGbEM32FohGsl0Yk0w4gPLBnxYFshsg0P0WFvdoXR5XyNKmOopyZ5msEIIwtS2Y6do9Ja5oYmKUfcKnZ1+I6KIr7YHsxi8Wk74y/OphpHccS2s2/8q6bya6Q8VXqa/DxloHEJvRSuStzNeMCabFvahD/lGhTG3uGKZGdRrAVr9H1ZOL+QCK4t24i7619l+4l6GJfN2FmcB4Zczdsb1jVQ4vm/9usLkUubGLuW2MwFtlTG9CsJy6TCrdqbnEmiizbYIg6mmK/XQeqGvwspsysMz3Wyi4vlAoy3T2LuF8pY7E3d23jiN+VfBut0Er07RfM3zIJbR99HHE44DDiuD9jdpPZALHKAZ/txnHHVKRXpIc0vZ6DQpVO6RjtJo=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d8901a6-b419-4f7b-8d01-08ddfcff1c10
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 13:17:57.6425 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d3NWvM61OvjPKbmL+blTJMqFt83s+nkXGtLsAg0I0YC0zuCh2XhpTsJmXKqWFCr0YoIJjJzI9WgM9e+woZhlfj6JJy91KVW0+39g4Xlywxk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6898
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-26_04,2025-09-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ suspectscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=999 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2509150000 definitions=main-2509260122
+X-Authority-Analysis: v=2.4 cv=M+9A6iws c=1 sm=1 tr=0 ts=68d69289 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117
+ a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=QyXUC8HyAAAA:8 a=i2Y-thalyPeD3TXGFfoA:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:12090
+X-Proofpoint-GUID: GLmKf64Np55LpWyeYAn9UqExbTJfsBAU
+X-Proofpoint-ORIG-GUID: GLmKf64Np55LpWyeYAn9UqExbTJfsBAU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI2MDEyMCBTYWx0ZWRfXzn5xw8LnxLAL
+ 6JIdFkPdpOt/l3MyKoyp8zeIVFK4yyEvWUewAQKtQz9euMJdWQX4KGaZeRG2z+MqYXj0BFhX4hm
+ u3Vyp0uPGIlPe7nTKePjfpIS7gjDt7+eFrI5KBT8Wb4tpckLHya/6OcQBLIxqi8ZsmQ71tTVsEr
+ lgX0WDuT4n4zYc6lqp3QV7/UpZN0UFqFhSjp87976Qf/pICyJultP8a+7chbvdD6xTJSa/CGMQa
+ hd8vakw8lEqYCPGee8Boe02bXnk41HWnI55kj3+8EHYD2cXIpLe+0bE8q0FnaCXKXE2qIyRU2de
+ di4dJgQXBIM0orUgTZxBS/C0TJM/p9WcmaY10gKK4w+MbAghwfsgz3/JIqb+aJ9x6vLkDGeP3Gw
+ qrvL/dGYO43ucEKC4u0zjvCGsHfFX+CD9gQKzeSH8kUXOnyBPQc=
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,230 +233,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+On 9/26/2025 12:48 AM, Markus Armbruster wrote:
+> Zhenzhong Duan <zhenzhong.duan@intel.com> writes:
+> 
+>> After CPR transfer, source QEMU close kvm fd and free kvm_state,
+>> "query-balloon" will check kvm_state->sync_mmu and trigger NULL
+>> pointer reference.
+>>
+>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>> ---
+>>   accel/kvm/kvm-all.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+>> index 9060599cd7..a3e2d11763 100644
+>> --- a/accel/kvm/kvm-all.c
+>> +++ b/accel/kvm/kvm-all.c
+>> @@ -3479,7 +3479,7 @@ int kvm_device_access(int fd, int group, uint64_t attr,
+>>   
+>>   bool kvm_has_sync_mmu(void)
+>>   {
+>> -    return kvm_state->sync_mmu;
+>> +    return kvm_state && kvm_state->sync_mmu;
+>>   }
+>>   
+>>   int kvm_has_vcpu_events(void)
+> 
+> This dereference could signify there's a general assumption *kvm_state
+> is valid, i.e. there might be more dereferences hiding in the code.
+> 
+> Have you checked?
+> 
+> Is freeing @kvm_state after CPR transfer useful?
 
-This documentation summarizes how to use the plugin, and present two
-examples of the possibilities offered by it, in system and user mode.
+There are other references to kvm_state which are checked by earlier cpr patches.
+The risk/consequence of missing something is low, because this only occurs on source
+QEMU after the target is live.
 
-As well, it explains how to rebuild and reproduce those examples.
+The KVM instance is closed to release KVM page table references and speed execv
+during cpr-exec mode.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250902075042.223990-10-pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250922093711.2768983-26-alex.bennee@linaro.org>
-
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index 456d01d5b08..8a5e128f677 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -816,6 +816,205 @@ This plugin can limit the number of Instructions Per Second that are executed::
-       The lower the number the more accurate time will be, but the less efficient the plugin.
-       Defaults to ips/10
- 
-+Uftrace
-+.......
-+
-+``contrib/plugins/uftrace.c``
-+
-+This plugin generates a binary trace compatible with
-+`uftrace <https://github.com/namhyung/uftrace>`_.
-+
-+Plugin supports aarch64 and x64, and works in user and system mode, allowing to
-+trace a system boot, which is not something possible usually.
-+
-+In user mode, the memory mapping is directly copied from ``/proc/self/maps`` at
-+the end of execution. Uftrace should be able to retrieve symbols by itself,
-+without any additional step.
-+In system mode, the default memory mapping is empty, and you can generate
-+one (and associated symbols) using ``contrib/plugins/uftrace_symbols.py``.
-+Symbols must be present in ELF binaries.
-+
-+It tracks the call stack (based on frame pointer analysis). Thus, your program
-+and its dependencies must be compiled using ``-fno-omit-frame-pointer
-+-mno-omit-leaf-frame-pointer``. In 2024, `Ubuntu and Fedora enabled it by
-+default again on x64
-+<https://www.brendangregg.com/blog/2024-03-17/the-return-of-the-frame-pointers.html>`_.
-+On aarch64, this is less of a problem, as they are usually part of the ABI,
-+except for leaf functions. That's true for user space applications, but not
-+necessarily for bare metal code. You can read this `section
-+<uftrace_build_system_example>` to easily build a system with frame pointers.
-+
-+When tracing long scenarios (> 1 min), the generated trace can become very long,
-+making it hard to extract data from it. In this case, a simple solution is to
-+trace execution while generating a timestamped output log using
-+``qemu-system-aarch64 ... | ts "%s"``. Then, ``uftrace --time-range=start~end``
-+can be used to reduce trace for only this part of execution.
-+
-+Performance wise, overhead compared to normal tcg execution is around x5-x15.
-+
-+.. list-table:: Uftrace plugin arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - trace-privilege-level=[on|off]
-+    - Generate separate traces for each privilege level (Exception Level +
-+      Security State on aarch64, Rings on x64).
-+
-+.. list-table:: uftrace_symbols.py arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - elf_file [elf_file ...]
-+    - path to an ELF file. Use /path/to/file:0xdeadbeef to add a mapping offset.
-+  * - --prefix-symbols
-+    - prepend binary name to symbols
-+
-+Example user trace
-+++++++++++++++++++
-+
-+As an example, we can trace qemu itself running git::
-+
-+    $ ./build/qemu-aarch64 -plugin \
-+      build/contrib/plugins/libuftrace.so \
-+      ./build/qemu-aarch64 /usr/bin/git --help
-+
-+    # and generate a chrome trace directly
-+    $ uftrace dump --chrome | gzip > ~/qemu_aarch64_git_help.json.gz
-+
-+For convenience, you can download this trace `qemu_aarch64_git_help.json.gz
-+<https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz>`_.
-+Download it and open this trace on https://ui.perfetto.dev/. You can zoom in/out
-+using :kbd:`W`, :kbd:`A`, :kbd:`S`, :kbd:`D` keys.
-+Some sequences taken from this trace:
-+
-+- Loading program and its interpreter
-+
-+.. image:: https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
-+   :height: 200px
-+
-+- open syscall
-+
-+.. image:: https://fileserver.linaro.org/s/rsXPTeZZPza4PcE/preview
-+   :height: 200px
-+
-+- TB creation
-+
-+.. image:: https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
-+   :height: 200px
-+
-+It's usually better to use ``uftrace record`` directly. However, tracing
-+binaries through qemu-user can be convenient when you don't want to recompile
-+them (``uftrace record`` requires instrumentation), as long as symbols are
-+present.
-+
-+Example system trace
-+++++++++++++++++++++
-+
-+A full trace example (chrome trace, from instructions below) generated from a
-+system boot can be found `here
-+<https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz>`_.
-+Download it and open this trace on https://ui.perfetto.dev/. You can see code
-+executed for all privilege levels, and zoom in/out using
-+:kbd:`W`, :kbd:`A`, :kbd:`S`, :kbd:`D` keys. You can find below some sequences
-+taken from this trace:
-+
-+- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
-+
-+.. image:: https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
-+   :height: 200px
-+
-+- U-boot initialization (until code relocation, after which we can't track it)
-+
-+.. image:: https://fileserver.linaro.org/s/LKTgsXNZFi5GFNC/preview
-+   :height: 200px
-+
-+- Stat and open syscalls in kernel
-+
-+.. image:: https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
-+   :height: 200px
-+
-+- Timer interrupt
-+
-+.. image:: https://fileserver.linaro.org/s/TM5yobYzJtP7P3C/preview
-+   :height: 200px
-+
-+- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
-+
-+.. image:: https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
-+   :height: 200px
-+
-+Build and run system example
-+++++++++++++++++++++++++++++
-+
-+.. _uftrace_build_system_example:
-+
-+Building a full system image with frame pointers is not trivial.
-+
-+We provide a `simple way <https://github.com/pbo-linaro/qemu-linux-stack>`_ to
-+build an aarch64 system, combining Arm Trusted firmware, U-boot, Linux kernel
-+and debian userland. It's based on containers (``podman`` only) and
-+``qemu-user-static (binfmt)`` to make sure it's easily reproducible and does not depend
-+on machine where you build it.
-+
-+You can follow the exact same instructions for a x64 system, combining edk2,
-+Linux, and Ubuntu, simply by switching to
-+`x86_64 <https://github.com/pbo-linaro/qemu-linux-stack/tree/x86_64>`_ branch.
-+
-+To build the system::
-+
-+    # Install dependencies
-+    $ sudo apt install -y podman qemu-user-static
-+
-+    $ git clone https://github.com/pbo-linaro/qemu-linux-stack
-+    $ cd qemu-linux-stack
-+    $ ./build.sh
-+
-+    # system can be started using:
-+    $ ./run.sh /path/to/qemu-system-aarch64
-+
-+To generate a uftrace for a system boot from that::
-+
-+    # run true and poweroff the system
-+    $ env INIT=true ./run.sh path/to/qemu-system-aarch64 \
-+      -plugin path/to/contrib/plugins/libuftrace.so,trace-privilege-level=on
-+
-+    # generate symbols and memory mapping
-+    $ path/to/contrib/plugins/uftrace_symbols.py \
-+      --prefix-symbols \
-+      arm-trusted-firmware/build/qemu/debug/bl1/bl1.elf \
-+      arm-trusted-firmware/build/qemu/debug/bl2/bl2.elf \
-+      arm-trusted-firmware/build/qemu/debug/bl31/bl31.elf \
-+      u-boot/u-boot:0x60000000 \
-+      linux/vmlinux
-+
-+    # inspect trace with
-+    $ uftrace replay
-+
-+Uftrace allows to filter the trace, and dump flamegraphs, or a chrome trace.
-+This last one is very interesting to see visually the boot process::
-+
-+    $ uftrace dump --chrome > boot.json
-+    # Open your browser, and load boot.json on https://ui.perfetto.dev/.
-+
-+Long visual chrome traces can't be easily opened, thus, it might be
-+interesting to generate them around a particular point of execution::
-+
-+    # execute qemu and timestamp output log
-+    $ env INIT=true ./run.sh path/to/qemu-system-aarch64 \
-+      -plugin path/to/contrib/plugins/libuftrace.so,trace-privilege-level=on |&
-+      ts "%s" | tee exec.log
-+
-+    $ cat exec.log  | grep 'Run /init'
-+      1753122320 [   11.834391] Run /init as init process
-+      # init was launched at 1753122320
-+
-+    # generate trace around init execution (2 seconds):
-+    $ uftrace dump --chrome --time-range=1753122320~1753122322 > init.json
-+
- Other emulation features
- ------------------------
- 
--- 
-2.47.3
+- Steve
 
 
