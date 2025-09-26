@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D65BA2E3C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1363BA2E4E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:15:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23Y3-00076x-3Y; Fri, 26 Sep 2025 04:11:23 -0400
+	id 1v23Y3-00077U-3o; Fri, 26 Sep 2025 04:11:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Xy-00075R-0C; Fri, 26 Sep 2025 04:11:18 -0400
+ id 1v23Xy-00075v-Te; Fri, 26 Sep 2025 04:11:18 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Xs-0000Cp-LD; Fri, 26 Sep 2025 04:11:17 -0400
+ id 1v23Xs-0000DF-JY; Fri, 26 Sep 2025 04:11:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 09258157D4C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1C7C1157D4D;
  Fri, 26 Sep 2025 11:10:31 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 17CDD290C30;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2D1E4290C31;
  Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gustavo Romero <gustavo.romero@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 04/60] tests/functional: Fix reverse_debugging asset
- precaching
-Date: Fri, 26 Sep 2025 11:09:32 +0300
-Message-ID: <20250926081031.2214971-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Steve Sistare <steven.sistare@oracle.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 05/60] hw/intc/arm_gicv3_kvm: preserve pending
+ interrupts during cpr
+Date: Fri, 26 Sep 2025 11:09:33 +0300
+Message-ID: <20250926081031.2214971-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -60,50 +59,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-This commit fixes the asset precaching in the reverse_debugging test on
-aarch64.
+Close a race condition that causes cpr-transfer to lose VFIO
+interrupts on ARM.
 
-QemuBaseTest.main() precaches assets (kernel, rootfs, DT blobs, etc.)
-that are defined in variables with the ASSET_ prefix. This works because
-it ultimately calls Asset.precache_test(), which relies on introspection
-to locate these variables.
+CPR stops VCPUs but does not disable VFIO interrupts, which may continue
+to arrive throughout the transition to new QEMU.
 
-If an asset variable is not named with the ASSET_ prefix, precache_test
-cannot find the asset and precaching silently fails. Hence, fix the
-asset precaching by fixing the asset variable name.
+CPR calls kvm_irqchip_remove_irqfd_notifier_gsi in old QEMU to force
+future interrupts to the producer eventfd, where they are preserved.
+Old QEMU then destroys the old KVM instance.  However, interrupts may
+already be pending in KVM state.  To preserve them, call ioctl
+KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES to flush them to guest RAM, where
+they will be picked up when the new KVM+VCPU instance is created.
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20250827001008.22112-1-gustavo.romero@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 36fb9796662e8d1f8626b1cacb1a6d5e35a8bd00)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-id: 1754936384-278328-1-git-send-email-steven.sistare@oracle.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 376cdd7e9c94f1e03b2c58e068e8ebfe78b49514)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/functional/test_aarch64_reverse_debug.py b/tests/functional/test_aarch64_reverse_debug.py
-index 58d4532835..8bc91ccfde 100755
---- a/tests/functional/test_aarch64_reverse_debug.py
-+++ b/tests/functional/test_aarch64_reverse_debug.py
-@@ -21,7 +21,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 6166283cd1..0cd14d78a7 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -31,6 +31,7 @@
+ #include "gicv3_internal.h"
+ #include "vgic_common.h"
+ #include "migration/blocker.h"
++#include "migration/misc.h"
+ #include "qom/object.h"
+ #include "target/arm/cpregs.h"
  
-     REG_PC = 32
+@@ -776,6 +777,17 @@ static void vm_change_state_handler(void *opaque, bool running,
+     }
+ }
  
--    KERNEL_ASSET = Asset(
-+    ASSET_KERNEL = Asset(
-         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
-@@ -30,7 +30,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
-     def test_aarch64_virt(self):
-         self.set_machine('virt')
-         self.cpu = 'cortex-a53'
--        kernel_path = self.KERNEL_ASSET.fetch()
-+        kernel_path = self.ASSET_KERNEL.fetch()
-         self.reverse_debugging(args=('-kernel', kernel_path))
++static int kvm_arm_gicv3_notifier(NotifierWithReturn *notifier,
++                                  MigrationEvent *e, Error **errp)
++{
++    if (e->type == MIG_EVENT_PRECOPY_DONE) {
++        GICv3State *s = container_of(notifier, GICv3State, cpr_notifier);
++        return kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++                                 KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES,
++                                 NULL, true, errp);
++    }
++    return 0;
++}
  
+ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+ {
+@@ -917,6 +929,9 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+     if (kvm_device_check_attr(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
+                               KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES)) {
+         qemu_add_vm_change_state_handler(vm_change_state_handler, s);
++        migration_add_notifier_mode(&s->cpr_notifier,
++                                    kvm_arm_gicv3_notifier,
++                                    MIG_MODE_CPR_TRANSFER);
+     }
+ }
  
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index c18503869f..572d971d22 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -27,6 +27,7 @@
+ #include "hw/sysbus.h"
+ #include "hw/intc/arm_gic_common.h"
+ #include "qom/object.h"
++#include "qemu/notify.h"
+ 
+ /*
+  * Maximum number of possible interrupts, determined by the GIC architecture.
+@@ -271,6 +272,8 @@ struct GICv3State {
+     GICv3CPUState *cpu;
+     /* List of all ITSes connected to this GIC */
+     GPtrArray *itslist;
++
++    NotifierWithReturn cpr_notifier;
+ };
+ 
+ #define GICV3_BITMAP_ACCESSORS(BMP)                                     \
 -- 
 2.47.3
 
