@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFF9BA4141
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9312CBA4311
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:30:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v29A5-0000mt-VK; Fri, 26 Sep 2025 10:11:02 -0400
+	id 1v29A9-0000p0-Kw; Fri, 26 Sep 2025 10:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v2995-0008Ip-61
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:00 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1v299N-00006i-A1
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:17 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298U-0005k8-Hp
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:54 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46cb53c5900so24401025e9.3
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:19 -0700 (PDT)
+ id 1v298Y-0005ki-Mf
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:02 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3ece0e4c5faso2050774f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895756; x=1759500556; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895757; x=1759500557; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=EHT5aieK++hY09AXJRzSJMjJlTqqjIrNE0E91jZWOnU=;
- b=k3h+ezv8cGAF8VMTKNhXzbZGuJZwqKO3GMflT3qu60Tn5IOUzmOgEjgjyLeLgG4MzD
- 6E//d34Tolj+HHgszK9TkDveuLWYoHjB83QN8MA3joHPllr8XmJm6eNHopsZnRcjGyUg
- qk2BVSCMaVYU0fBMp3YqWnnJElruWn++0Bzp4xQlAt4sQGE3Ic7JAmeJgIuld4ETxbVT
- Xs+iP321lursVciomGoZrT6k/VVnWGEY2bQBzGwHWM79xarvbh1chqk9AoPkrxhi5DsV
- Rewl7qWbMmzsFEqWEh0n3gSK0Vi4zIL+4iU+P2LN1sFE3Dza1gIJDiMX3YKPvOvPl9Q3
- Y26Q==
+ :reply-to; bh=+TKuT+/hIikpcraTr+q4FAKa4j7Yp774WfscMXmqb7w=;
+ b=cPxEttfe9Yg0/EX3wT1Iz7Ho3y6YJOz5dyCx7ym0OCr+HF3qpCoXNde3sEf0txu4iS
+ QxQmEkvX76AYpLk4ydMMvuGAND/7v2pQDs52jfe+JcbjdkQbXmS2O5PuT+vadZPKwnhX
+ QK4AslXG0VL18MPF5t1OtANDgDNF8nEeUjPZNYMZqy9dhdx7GABXWTMNQwKlp/HEg65+
+ y7bI5h3aD52dgM9ehHXno0FGk0sMI2bXwuZGfhmUmtd9DkoyRf7YyFana/jQVnMVZO5V
+ jBFipTLyq8WDaYtwoLHavV+numUTt3RkVXcAUAXbaq7j9p+uRJ+/Up37bBiDGWUqPLIE
+ nfcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895756; x=1759500556;
+ d=1e100.net; s=20230601; t=1758895757; x=1759500557;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EHT5aieK++hY09AXJRzSJMjJlTqqjIrNE0E91jZWOnU=;
- b=KEH++EeuuJJ7w/6fdS6Cxj+pd37/6pHrNaLL5iKAtEPnuC3vliBwtTQtxJTEHaRB78
- O4RFT/nkV4r4eHKZzTB4f7W184X6hOId2mc8CX8RD5MFC8EdZHBnz9qi6VOWufvKH7H4
- qkOnZaZSI3PkP76gLfUOEoj+Q74zGuvP1k4w8IwuXP2DysD+2wvqCj3Oyiyg0i0CZwP+
- xPyGc/Qk/WMuKjZs12upRi62aAAEZqU+tXW6pUEi5+UUTyVp+2X3md+JtDw+gxDZS08P
- E33v1x3Cj6PcCOlLSnU7KCjP/H/hQhVOp0cu7+FC+zu5c9YJE6EjGVlJEbP+k4ypWWU+
- i1GQ==
-X-Gm-Message-State: AOJu0YxMKvGfbi00ukJzVCbgcnuTxtSqc5PWh5DFR28wq7Q1o4VZ7YOa
- fN9SPLNJc5l/DNc95wLuCe2u4bkfkmVvyI+lW5/mRM7sukUd2FJ6DNOjIJ+jCAxVxgd+jtsOFKK
- N7HQF
-X-Gm-Gg: ASbGnctYg4ZTEqdPduO6RSuSd6tAzoyphkwuMh2SE+gFpUdS6macImbGTdivFPm2WGc
- kij5DgcJJvvY3msbcl7pfzwkDh8MZFt8f6sKVIfkUMF4BmcePkXPpPot3hMBPhoX5IL3h2Ac9/X
- b90fWx6L/t7JIczZ2WBgzwFETIbvbSm22p3vLDD9ithVop1SBIymyivo2O8du0JAebxftg9MwM5
- vzzbpv9Y0W1GZ+tpq4u95i3Ko0uUFtXOmO7Gml4uKouFVOBiBjCzqYhLNRqNSfBbMdKQ2YhQRfI
- UcdmCJW/0dFTLwUqCMgvcZyieWKmxmj7qY3pE0fBW86uUvH2WS3FB5BDBE9rBMNy1rjEoB97Pib
- z0tGBsJNjwx0dvUYvWxStjettPozOJ7cQ8Pv+zcs=
-X-Google-Smtp-Source: AGHT+IGvq0kJ/TJjv26NaVeMufVVCbtQ2B4xt62kq1dWQKP58KFNCUHfC6CtVr3RnjmbMCzC8UGIGA==
-X-Received: by 2002:a5d:5889:0:b0:3ec:98fb:d767 with SMTP id
- ffacd0b85a97d-40e4d9c9f15mr7510691f8f.58.1758895756215; 
- Fri, 26 Sep 2025 07:09:16 -0700 (PDT)
+ bh=+TKuT+/hIikpcraTr+q4FAKa4j7Yp774WfscMXmqb7w=;
+ b=K2aDUEsihvJ07xOUuYEQE8ktG27tMTkK0OHrZGf59M8KbMfGmOlEaPqF08HA4vP6Uo
+ +cQwgU9Q7NXUobPDbvtPSzUv4QEmIIJC+LKBR/ahCL1sr8pVPp7aBkOz6/sK9xByT63F
+ xgY0h85PAvFdBMYms1wYzGVmnUxVV/s/dHkVTeMX+OJRdWmVry++zwrdDXSMmLkL5reR
+ fqKdcvcc0XG01nkT5SKVo5+5A8mJs6rH0gtzRo7RwnC0/s3KVNny4V46AGmoMl0pUMUA
+ BzCdA5Y1VlJW2EVjzbMfmDlTblBDayzyYWXhlDIvhA/elHn1wM/eV1+Ep9+MK7P0XEYj
+ CPyQ==
+X-Gm-Message-State: AOJu0Ywe2yLyZhsdhGVy/wNKY5DuCg6n250QYkiFve9U3RdkSHx7t4sZ
+ Eky8+Zn1siewoAPWKi4p1g1R6Ykjugf3dLlJpp8HsZZ506hxklnNyBOFwe1SpCtgCuvkUR0N5HX
+ m9CGm
+X-Gm-Gg: ASbGncukRs4YKSys8L0mLH9EWUnDd2ukg/442Bk5Bja7JfLDGkX+XGlRLo+0HMITdnz
+ DJqQLc59yjYFiRMIHOZiCfLjlCbQBsJYMQBiyho4OxojqsFhBs+u6mvuviDjGlOouS/PumsIS3N
+ PFZTI6F3ykelKvL6/eauxOQip/NuzgBmvIX+sPIlzSOdg9oarF+SeA4g44Ut05R621ifCekF1hL
+ NBGsU85e+debLa0xAB1weFpwR1VvoZUNZo2sWixWTYV15JgpTpGncXLMjEtu4ncyTg45JTrpvtk
+ zqGGeukHqFfGtGn5bq1eL+8872LWC+c9TojbjfxxW363t4h6ffoOXvj92hH9OZnhCU8uC1qOAfB
+ f7BmmsRzTr6+82qRaHmD8TeymRNHdgsG6Ndyvva2ddDLRxQ6j+A==
+X-Google-Smtp-Source: AGHT+IG2prdz1XZ9eGTDiIzjqcNPqZtzxR1a6lghZb8RmLUFF/BaQgC0oKbzs7MLxKQs4HWuS8Vpcg==
+X-Received: by 2002:a05:6000:2dc5:b0:3e9:a1cb:ea93 with SMTP id
+ ffacd0b85a97d-40e43b08e26mr6436522f8f.21.1758895757124; 
+ Fri, 26 Sep 2025 07:09:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.15
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.16
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:09:15 -0700 (PDT)
+ Fri, 26 Sep 2025 07:09:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/44] target/arm: Remove name argument to alloc_cpreg
-Date: Fri, 26 Sep 2025 15:08:29 +0100
-Message-ID: <20250926140844.1493020-30-peter.maydell@linaro.org>
+Subject: [PULL 30/44] target/arm: Move alias setting for wildcards
+Date: Fri, 26 Sep 2025 15:08:30 +0100
+Message-ID: <20250926140844.1493020-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,68 +100,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-All callers now pass in->name, so take the value from there.
+Move this test from add_cpreg_to_hashtable to
+define_one_arm_cp_reg_with_opaque, where we can also
+simplify it based on the loop variables.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[PMM: adjusted placement of comma in a comment]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/arm/helper.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 88b5ec1a5a2..a199320f140 100644
+index a199320f140..274b7b5808e 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -7366,9 +7366,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-  * Copy a ARMCPRegInfo structure, allocating it along with the name
-  * and an optional suffix to the name.
-  */
--static ARMCPRegInfo *alloc_cpreg(const ARMCPRegInfo *in,
--                                 const char *name, const char *suffix)
-+static ARMCPRegInfo *alloc_cpreg(const ARMCPRegInfo *in, const char *suffix)
- {
-+    const char *name = in->name;
-     size_t name_len = strlen(name);
-     size_t suff_len = suffix ? strlen(suffix) : 0;
-     ARMCPRegInfo *out = g_malloc(sizeof(*in) + name_len + suff_len + 1);
-@@ -7508,7 +7508,7 @@ static void add_cpreg_to_hashtable_aa32(ARMCPU *cpu, ARMCPRegInfo *r,
-                                cp, crm, opc1, opc2, key);
-         break;
-     case ARM_CP_SECSTATE_BOTH:
--        r_s = alloc_cpreg(r, r->name, "_S");
-+        r_s = alloc_cpreg(r, "_S");
-         add_cpreg_to_hashtable(cpu, r_s, ARM_CP_STATE_AA32, ARM_CP_SECSTATE_S,
-                                cp, crm, opc1, opc2, key);
+@@ -7448,20 +7448,12 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, ARMCPRegInfo *r,
+     }
  
-@@ -7538,7 +7538,7 @@ static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, ARMCPRegInfo *r,
-          * and name that it is passed, so it's OK to use
-          * a local struct here.
-          */
--        ARMCPRegInfo *nxs_ri = alloc_cpreg(r, r->name, "NXS");
-+        ARMCPRegInfo *nxs_ri = alloc_cpreg(r, "NXS");
-         uint32_t nxs_key;
+     /*
+-     * By convention, for wildcarded registers only the first
+-     * entry is used for migration; the others are marked as
+-     * ALIAS so we don't try to transfer the register
+-     * multiple times. Special registers (ie NOP/WFI) are
+-     * never migratable and not even raw-accessible.
++     * Special registers (ie NOP/WFI) are never migratable and
++     * are not even raw-accessible.
+      */
+     if (r->type & ARM_CP_SPECIAL_MASK) {
+         r->type |= ARM_CP_NO_RAW;
+     }
+-    if (((r->crm == CP_ANY) && crm != 0) ||
+-        ((r->opc1 == CP_ANY) && opc1 != 0) ||
+-        ((r->opc2 == CP_ANY) && opc2 != 0)) {
+-        r->type |= ARM_CP_ALIAS | ARM_CP_NO_GDB;
+-    }
  
-         assert(nxs_ri->crn < 0xf);
-@@ -7762,7 +7762,7 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
-     for (int crm = crmmin; crm <= crmmax; crm++) {
-         for (int opc1 = opc1min; opc1 <= opc1max; opc1++) {
-             for (int opc2 = opc2min; opc2 <= opc2max; opc2++) {
--                ARMCPRegInfo *r2 = alloc_cpreg(r, r->name, NULL);
-+                ARMCPRegInfo *r2 = alloc_cpreg(r, NULL);
+     /*
+      * Update fields to match the instantiation, overwiting wildcards
+@@ -7765,6 +7757,16 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
+                 ARMCPRegInfo *r2 = alloc_cpreg(r, NULL);
                  ARMCPRegInfo *r3;
  
++                /*
++                 * By convention, for wildcarded registers only the first
++                 * entry is used for migration; the others are marked as
++                 * ALIAS so we don't try to transfer the register
++                 * multiple times.
++                 */
++                if (crm != crmmin || opc1 != opc1min || opc2 != opc2min) {
++                    r2->type |= ARM_CP_ALIAS | ARM_CP_NO_GDB;
++                }
++
                  switch (r->state) {
-@@ -7773,7 +7773,7 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
-                     add_cpreg_to_hashtable_aa64(cpu, r2, crm, opc1, opc2);
-                     break;
-                 case ARM_CP_STATE_BOTH:
--                    r3 = alloc_cpreg(r2, r2->name, NULL);
-+                    r3 = alloc_cpreg(r2, NULL);
+                 case ARM_CP_STATE_AA32:
                      add_cpreg_to_hashtable_aa32(cpu, r2, cp, crm, opc1, opc2);
-                     add_cpreg_to_hashtable_aa64(cpu, r3, crm, opc1, opc2);
-                     break;
 -- 
 2.43.0
 
