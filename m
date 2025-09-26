@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33894BA3B13
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA65BA3B8F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v27u2-0004Sz-QS; Fri, 26 Sep 2025 08:50:23 -0400
+	id 1v27tv-0003pU-Sw; Fri, 26 Sep 2025 08:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v27tb-00036H-GE; Fri, 26 Sep 2025 08:49:58 -0400
+ id 1v27tb-00036D-09; Fri, 26 Sep 2025 08:49:58 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v27tT-0007HH-KG; Fri, 26 Sep 2025 08:49:54 -0400
+ id 1v27tV-0007Hg-MR; Fri, 26 Sep 2025 08:49:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1476F157F60;
+ by isrv.corpit.ru (Postfix) with ESMTP id 34526157F61;
  Fri, 26 Sep 2025 15:45:42 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6AB1D290F1E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8C37F290F1F;
  Fri, 26 Sep 2025 15:45:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 24/38] linux-user: avoid -Werror=int-in-bool-context
-Date: Fri, 26 Sep 2025 15:45:24 +0300
-Message-ID: <20250926124540.2221746-24-mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 25/38] target/sparc: Allow TRANS macro with no extra
+ arguments
+Date: Fri, 26 Sep 2025 15:45:25 +0300
+Message-ID: <20250926124540.2221746-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
 References: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -44,7 +43,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,36 +59,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-linux-user is failing to compile on Fedora 43:
+Use ## to drop the preceding comma if __VA_ARGS__ is empty.
 
-../linux-user/strace.c:57:66: error: enum constant in boolean context [-Werror=int-in-bool-context]
-   57 | #define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO(!(M)), N }
-
-The warning does not seem to be too useful and we could even disable it,
-but the workaround is simple in this case.
-
-Cc: qemu-stable@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit db05b0d21ec1e0532cf5f5103ae6520a838d96f9)
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit b7cd0a1821adf9906c5edb248394bb2a95482656)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 3b744ccd4a..85b956fdfb 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -54,7 +54,7 @@ struct flags {
- };
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index bfe63649db..ddc4154ee3 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -2488,7 +2488,7 @@ static int extract_qfpreg(DisasContext *dc, int x)
  
- /* No 'struct flags' element should have a zero mask. */
--#define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO(!(M)), N }
-+#define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO((M) == 0), N }
+ #define TRANS(NAME, AVAIL, FUNC, ...) \
+     static bool trans_##NAME(DisasContext *dc, arg_##NAME *a) \
+-    { return avail_##AVAIL(dc) && FUNC(dc, __VA_ARGS__); }
++    { return avail_##AVAIL(dc) && FUNC(dc, ## __VA_ARGS__); }
  
- /* common flags for all architectures */
- #define FLAG_GENERIC_MASK(V, M)  FLAG_BASIC(V, M, #V)
+ #define avail_ALL(C)      true
+ #ifdef TARGET_SPARC64
 -- 
 2.47.3
 
