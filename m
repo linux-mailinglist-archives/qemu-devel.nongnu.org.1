@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5AEBA424D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950DFBA41AB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:20:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2994-00087O-JJ; Fri, 26 Sep 2025 10:09:59 -0400
+	id 1v298l-0007XX-Jl; Fri, 26 Sep 2025 10:09:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298W-0007NU-KV
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:25 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1v298V-0007Ko-MF
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:23 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298E-0005fh-D7
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:24 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-46cf7bbfda8so12136035e9.2
+ id 1v298E-0005fl-CY
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:22 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3ee13baf2e1so1766998f8f.3
  for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895740; x=1759500540; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895741; x=1759500541; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Q3RNZ4P3Tq3zjqcHANGsM138DWjS8vi9+XNzo2XY8fw=;
- b=n7zU10VQNlHtoILDgw07275e0A52IdeTHOGWa6qSn4lxvscvYLIz1ZX7K1Offt1KBY
- yWZgoxRYq3LLm3jHlm7VI4zU5ehQ4/yTmQfKeh+LrmnOcNZ6Hqo/sBekfZfXfbOoHoTm
- sB/LzB8oRbkDxNYPm18PGTsyI3EyuS418DDhmzkJLR/olL6YBoCae2QrlNsGEa5i8Yds
- AKKA/fL8xPIdjM6MRCvfOr9dpokrEvdZ7VCmCgUxcoI62gB+IA1NVU/AjDRIbOKsOYCk
- pMN3/p1GWeZZ+Wcskh0/vBfefbJhM6snFTLlflMjpG35RBk/gldIrTJ6ZGb4bTQQ20Ws
- UZdg==
+ :reply-to; bh=apLLASp4weKyN7zWsCtf8AKJ98rMJgUXlQ4z+73SGew=;
+ b=elcBGXhfoWk1ca29fCqpJibV/D/E9i9Us78O38eMEexmetDZo6XrBPsl2CGMGzBHFK
+ 77yywEfjgP5bZdJMjBsELRcoTUaoCtGJUm6NlZ87mtmR+Y3+xaQjJDTZlPFC1i2r0R/I
+ 88yW71QBtDj+hWboM0idBfliGIgxIlrpjZTqsvM8W32yMJlZzMNp/7v6BJBHbR2gNoB3
+ qumk+g5V8o+zULFhq4cbJuRAZDwV3oqeTfpVlWTaEWGbbXWo6jjCp1JnJuUbh3HyQUwI
+ 8RJWg5zjZIyukV5q5jw0BlC+m6Jm6dGILO8+HCZSEWa+gvgccfj76bAB/9alsdNaYaGF
+ KcPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895740; x=1759500540;
+ d=1e100.net; s=20230601; t=1758895741; x=1759500541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q3RNZ4P3Tq3zjqcHANGsM138DWjS8vi9+XNzo2XY8fw=;
- b=hI7YxXc4cPk4OMl4SVybqtfFsxBhBW1rTL+rfHeNSUg+OaM/XvW5JrMVhB4QbsnMYI
- 3QBmDFzsyvvkEwLEt2h6OcL7EezVcqGjpWVvTUK6YmONc9NSmjALHUbpBr7L7B3ln60O
- AhhsX2xRKGYO/9LZXcdgmzvQnYp+xts16Vy5VUe3eILOa3RIuqSjlMG4zsBqXDqioDXN
- cFeczCAQ3CmTGKjADlm+uE1mPG6Q/W3whdThJuLGWP115UmE2s0uKkw3wwTGRDsPrGKR
- MEAjdFxaaievYyhEV0o61UjT4+nXnY6Kj+xB8spOykwv7Uc1/XtRTE5lUtg73ODBCklS
- viSQ==
-X-Gm-Message-State: AOJu0YxiT4ON+lQwgcHRFgJBMrAQzhtWNSm3QW1p1PGQ9Xlgh2BvNCW/
- vuXeqzwuIvdG+ix5/AFoeI2ve8sZfHuSB6y2tkzWhwKBkLzDqncXlFdh3H+/2+8kTo2kV/kkb6K
- Oc/8o
-X-Gm-Gg: ASbGncuoptICyEEfKJ/W5SGfzM8kIM4Yg64XHQS39ygMXmeZLhPMi8NyDuGNFhDEnkf
- 0UWyQvL4HRP5igSXsousriP7ueHsJhZReTCL41GM2NeZ9dE+vYjzkmOTPrxlsKo0hdj93pTn+1H
- lmgRn9fDGlZSFvcnNl/ruLRa1ShI8UP3NTM/pZVuCISdewL7CRfLkIGkrV4SOKFtvyjvn3ijrzw
- M3qP/Iy+ftsZp/VzSZYxcwz4v4mZVmwLRvgQ9TyCmoR9Tk8g0hq+C0ijjhVGnIfgHF5Imzg8hWh
- TUXey6zsSlrG/KOzNS4eNFbE6IW7ui4FCXu/sp6vZ96b5JDHAYmPxJCavi+kON1RMAjvoIof+Hm
- 9HwPYSzm5yuaVsL+OJ2OdhLErk3zB0RPFzOUB3GU=
-X-Google-Smtp-Source: AGHT+IFRcgRb8fY8Vo9zR2iQtE7cg1FfM5Ytvevipl4wSITKKtlU/yZh03r+Lj25NQim8D4JrLxFuw==
-X-Received: by 2002:a05:600c:4816:b0:46e:3287:57d6 with SMTP id
- 5b1f17b1804b1-46e32a0bd2amr44971485e9.27.1758895740090; 
- Fri, 26 Sep 2025 07:09:00 -0700 (PDT)
+ bh=apLLASp4weKyN7zWsCtf8AKJ98rMJgUXlQ4z+73SGew=;
+ b=dXgmWHDDceuEgdHmLmJKkJ4NXmqk6hMuK5cVIVJYmq/17OlyACq4Qf92Oex4FBylpS
+ vJm/UaMkoeu+w6Q/irV8eIG+GnnC0tLjNxmD/+jXCmnrmodh/HjzAFhk7jp2PcUM27iA
+ n0saqSmSqm2eGrPM30te4t4i0vG+BUo79YP6QXjZlmkuuCgjvkGc/DeZoKH/DXLra8UH
+ hN9junAj7abxuzvu+jPbOWGUO+SoKi9SA1nncDBS8XXBX1QbjrDQBINrSsLHjyfZYhHE
+ lVBfuFGhR3VO9hC5yqOgvv63ZUECFVWRhNP5l+aZk+hyBY9TdeazfW4MfM2DtsEKU3DN
+ oLNQ==
+X-Gm-Message-State: AOJu0YwbGCLO4z++ngCu2IidS8L0Mcd0z82rf18kytE9v/1JhAgswe1Q
+ axeB5sMm+FU2WKFYIItXCnEToVxhWWnH4VgbFfxfYpcG7t2iTEZbt3ijAkfAkcw8ny5yXX7/83l
+ zy9TQ
+X-Gm-Gg: ASbGncsCH8DVPow6/9BIQ6aYfOksyZ1Nj/rp4pFoz36R2Exu0cQ3z7YCMbEhShWXndh
+ 6gPIGNBM6JHblNJbouR9i4JZNLGbh391BhadFipsQJtF5dxON6v1bX/C7xsEXn/dEneJkop6XSw
+ 2s+CuJUhUTGi/KnsPe+0UFa5RQUOBd10WNodk0JKN6e8STv51OJ4ohoET7k1ykYsUx6hqikc2Kv
+ X3VbZqV5PDMR36jpfhPnyWwVGv6vfBUZVPHEnSH5+q2xvBTumxBQCkxH4T/czuXTPe/VE9XDDBy
+ dhQQmciU8hhGF0/OqrsyApRipVrh5XHoYDU8By928TiT4Zw4+MpsVlgUroh0v/uEYRpAoy4cC2T
+ ajdJ//lu4nncb0lVX0SpSx2X2O4wx
+X-Google-Smtp-Source: AGHT+IES8WEcjchgptnlNTXXyi+JNRvV3wB2zq3FdRYGmusigJEa5Ei31F+5Xv6dsypfAr4ChKFRpg==
+X-Received: by 2002:a05:6000:26cf:b0:3ee:1125:5250 with SMTP id
+ ffacd0b85a97d-40e46ad0128mr7048187f8f.24.1758895741139; 
+ Fri, 26 Sep 2025 07:09:01 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.08.59
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:08:59 -0700 (PDT)
+ Fri, 26 Sep 2025 07:09:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/44] target/arm: Rename all ARMCPRegInfo from opaque to ri
-Date: Fri, 26 Sep 2025 15:08:13 +0100
-Message-ID: <20250926140844.1493020-14-peter.maydell@linaro.org>
+Subject: [PULL 14/44] target/arm: Drop define_one_arm_cp_reg_with_opaque
+Date: Fri, 26 Sep 2025 15:08:14 +0100
+Message-ID: <20250926140844.1493020-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,7 +100,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-These pointers are no opaque, they have a specific type.
+The last use of this interface was removed in 603bc048a27f
+("hw/arm: Remove pxa2xx_pic").  As the comment in gicv3
+stated, keeping pointer references to cpregs has SMP issues,
+so avoid future temptation by removing the interface.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
@@ -108,74 +111,186 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpregs.h | 10 +++++-----
- target/arm/helper.c |  6 +++---
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ target/arm/cpregs.h       | 32 ++++++++------------------------
+ hw/intc/arm_gicv3_cpuif.c | 10 +---------
+ target/arm/helper.c       | 29 +++++++++++------------------
+ 3 files changed, 20 insertions(+), 51 deletions(-)
 
 diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 2a4826f5c4f..8f3e728d8ed 100644
+index 8f3e728d8ed..d02d74f1f5d 100644
 --- a/target/arm/cpregs.h
 +++ b/target/arm/cpregs.h
-@@ -866,15 +866,15 @@ typedef struct ARMCPRegInfo ARMCPRegInfo;
-  * Access functions for coprocessor registers. These cannot fail and
-  * may not raise exceptions.
-  */
--typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *opaque);
--typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *opaque,
-+typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *ri);
-+typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *ri,
-                        uint64_t value);
- /* Access permission check functions for coprocessor registers. */
- typedef CPAccessResult CPAccessFn(CPUARMState *env,
--                                  const ARMCPRegInfo *opaque,
-+                                  const ARMCPRegInfo *ri,
-                                   bool isread);
- /* Hook function for register reset */
--typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *opaque);
-+typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *ri);
+@@ -931,11 +931,7 @@ struct ARMCPRegInfo {
+      */
+     uint32_t nv2_redirect_offset;
  
- #define CP_ANY 0xff
+-    /*
+-     * The opaque pointer passed to define_arm_cp_regs_with_opaque() when
+-     * this register was defined: can be used to hand data through to the
+-     * register read/write functions, since they are passed the ARMCPRegInfo*.
+-     */
++    /* This is used only by VHE. */
+     void *opaque;
+     /*
+      * Value of this register, if it is ARM_CP_CONST. Otherwise, if
+@@ -1029,27 +1025,15 @@ struct ARMCPRegInfo {
+ #define CPREG_FIELD64(env, ri) \
+     (*(uint64_t *)((char *)(env) + (ri)->fieldoffset))
  
-@@ -1100,7 +1100,7 @@ void raw_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value);
-  * CPResetFn that does nothing, for use if no reset is required even
-  * if fieldoffset is non zero.
-  */
--void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque);
-+void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri);
+-void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu, const ARMCPRegInfo *reg,
+-                                       void *opaque);
++void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *regs);
++void define_arm_cp_regs_len(ARMCPU *cpu, const ARMCPRegInfo *regs, size_t len);
+ 
+-static inline void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *regs)
+-{
+-    define_one_arm_cp_reg_with_opaque(cpu, regs, NULL);
+-}
+-
+-void define_arm_cp_regs_with_opaque_len(ARMCPU *cpu, const ARMCPRegInfo *regs,
+-                                        void *opaque, size_t len);
+-
+-#define define_arm_cp_regs_with_opaque(CPU, REGS, OPAQUE)               \
+-    do {                                                                \
+-        QEMU_BUILD_BUG_ON(ARRAY_SIZE(REGS) == 0);                       \
+-        define_arm_cp_regs_with_opaque_len(CPU, REGS, OPAQUE,           \
+-                                           ARRAY_SIZE(REGS));           \
++#define define_arm_cp_regs(CPU, REGS)                           \
++    do {                                                        \
++        QEMU_BUILD_BUG_ON(ARRAY_SIZE(REGS) == 0);               \
++        define_arm_cp_regs_len(CPU, REGS, ARRAY_SIZE(REGS));    \
+     } while (0)
+ 
+-#define define_arm_cp_regs(CPU, REGS) \
+-    define_arm_cp_regs_with_opaque(CPU, REGS, NULL)
+-
+ const ARMCPRegInfo *get_arm_cp_reginfo(GHashTable *cpregs, uint32_t encoded_cp);
  
  /*
-  * Return true if this reginfo struct's field in the cpu state struct
+@@ -1168,7 +1152,7 @@ static inline bool arm_cpreg_traps_in_nv(const ARMCPRegInfo *ri)
+      * means that the right set of registers is exactly those where
+      * the opc1 field is 4 or 5. (You can see this also in the assert
+      * we do that the opc1 field and the permissions mask line up in
+-     * define_one_arm_cp_reg_with_opaque().)
++     * define_one_arm_cp_reg().)
+      * Checking the opc1 field is easier for us and avoids the problem
+      * that we do not consistently use the right architectural names
+      * for all sysregs, since we treat the name field as largely for debug.
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index 4b4cf091570..72e91f971a4 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -3037,15 +3037,7 @@ void gicv3_init_cpuif(GICv3State *s)
+          *  cpu->gic_pribits
+          */
+ 
+-        /* Note that we can't just use the GICv3CPUState as an opaque pointer
+-         * in define_arm_cp_regs_with_opaque(), because when we're called back
+-         * it might be with code translated by CPU 0 but run by CPU 1, in
+-         * which case we'd get the wrong value.
+-         * So instead we define the regs with no ri->opaque info, and
+-         * get back to the GICv3CPUState from the CPUARMState.
+-         *
+-         * These CP regs callbacks can be called from either TCG or HVF code.
+-         */
++        /* These CP regs callbacks can be called from either TCG or HVF. */
+         define_arm_cp_regs(cpu, gicv3_cpuif_reginfo);
+ 
+         /*
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 009f8d6fa1c..7b23e7e5889 100644
+index 7b23e7e5889..b76a0edb0f4 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -1073,7 +1073,7 @@ static const ARMCPRegInfo v6k_cp_reginfo[] = {
-       .resetvalue = 0 },
- };
- 
--static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *opaque)
-+static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *ri)
- {
-     ARMCPU *cpu = env_archcpu(env);
- 
-@@ -5382,7 +5382,7 @@ static const ARMCPRegInfo rndr_reginfo[] = {
-       .access = PL0_R, .readfn = rndr_readfn },
- };
- 
--static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
-+static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *ri,
-                           uint64_t value)
- {
- #ifdef CONFIG_TCG
-@@ -7829,7 +7829,7 @@ uint64_t arm_cp_read_zero(CPUARMState *env, const ARMCPRegInfo *ri)
-     return 0;
+@@ -7355,12 +7355,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
  }
  
--void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque)
-+void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri)
+ /*
+- * Private utility function for define_one_arm_cp_reg_with_opaque():
++ * Private utility function for define_one_arm_cp_reg():
+  * add a single reginfo struct to the hash table.
+  */
+ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
+-                                   void *opaque, CPState state,
+-                                   CPSecureState secstate,
++                                   CPState state, CPSecureState secstate,
+                                    int crm, int opc1, int opc2,
+                                    const char *name)
  {
-     /* Helper coprocessor reset function for do-nothing-on-reset registers */
+@@ -7448,9 +7447,6 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
+     r2->opc2 = opc2;
+     r2->state = state;
+     r2->secure = secstate;
+-    if (opaque) {
+-        r2->opaque = opaque;
+-    }
+ 
+     if (make_const) {
+         /* This should not have been a very special register to begin. */
+@@ -7555,8 +7551,7 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
  }
+ 
+ 
+-void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
+-                                       const ARMCPRegInfo *r, void *opaque)
++void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
+ {
+     /*
+      * Define implementations of coprocessor registers.
+@@ -7715,7 +7710,7 @@ void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
+                         if (nxs_ri.fgt) {
+                             nxs_ri.fgt |= R_FGT_NXS_MASK;
+                         }
+-                        add_cpreg_to_hashtable(cpu, &nxs_ri, opaque, state,
++                        add_cpreg_to_hashtable(cpu, &nxs_ri, state,
+                                                ARM_CP_SECSTATE_NS,
+                                                crm, opc1, opc2, name);
+                     }
+@@ -7729,17 +7724,17 @@ void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
+                         switch (r->secure) {
+                         case ARM_CP_SECSTATE_S:
+                         case ARM_CP_SECSTATE_NS:
+-                            add_cpreg_to_hashtable(cpu, r, opaque, state,
++                            add_cpreg_to_hashtable(cpu, r, state,
+                                                    r->secure, crm, opc1, opc2,
+                                                    r->name);
+                             break;
+                         case ARM_CP_SECSTATE_BOTH:
+                             name = g_strdup_printf("%s_S", r->name);
+-                            add_cpreg_to_hashtable(cpu, r, opaque, state,
++                            add_cpreg_to_hashtable(cpu, r, state,
+                                                    ARM_CP_SECSTATE_S,
+                                                    crm, opc1, opc2, name);
+                             g_free(name);
+-                            add_cpreg_to_hashtable(cpu, r, opaque, state,
++                            add_cpreg_to_hashtable(cpu, r, state,
+                                                    ARM_CP_SECSTATE_NS,
+                                                    crm, opc1, opc2, r->name);
+                             break;
+@@ -7751,7 +7746,7 @@ void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
+                          * AArch64 registers get mapped to non-secure instance
+                          * of AArch32
+                          */
+-                        add_cpreg_to_hashtable(cpu, r, opaque, state,
++                        add_cpreg_to_hashtable(cpu, r, state,
+                                                ARM_CP_SECSTATE_NS,
+                                                crm, opc1, opc2, r->name);
+                     }
+@@ -7762,12 +7757,10 @@ void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
+ }
+ 
+ /* Define a whole list of registers */
+-void define_arm_cp_regs_with_opaque_len(ARMCPU *cpu, const ARMCPRegInfo *regs,
+-                                        void *opaque, size_t len)
++void define_arm_cp_regs_len(ARMCPU *cpu, const ARMCPRegInfo *regs, size_t len)
+ {
+-    size_t i;
+-    for (i = 0; i < len; ++i) {
+-        define_one_arm_cp_reg_with_opaque(cpu, regs + i, opaque);
++    for (size_t i = 0; i < len; ++i) {
++        define_one_arm_cp_reg(cpu, regs + i);
+     }
+ }
+ 
 -- 
 2.43.0
 
