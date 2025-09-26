@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF27ABA40A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BBCBA40BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v293N-0006n2-0v; Fri, 26 Sep 2025 10:04:05 -0400
+	id 1v293U-0006p1-CL; Fri, 26 Sep 2025 10:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293I-0006ke-S8
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:00 -0400
+ id 1v293N-0006nd-J0
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v2936-0004pY-Ui
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:58 -0400
+ id 1v293A-0004qi-C3
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895423;
+ s=mimecast20190719; t=1758895429;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WzvJdoRpKjbbnlvFY+3uY75z5RpH1paQjQOZjP0sbEY=;
- b=c64WU1zeo/3OK2xmx+Gv3v1yoPgqObr/7ywiMbJ89SkFQFByr4tv67fPHItnUbVuY5mnj3
- GoBd11iGzoYM5z+dq5UeDm8Zgj4Fl9GH1x52Xg/FCZjXGEM6Y400lXPLHbeJcI9ud1TbgI
- RQzvyMNqiINCJ3rhZZWEeJt86rGmiF8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ea+0MhEY9iX2+yYiaaMVa1DUQB95GkrV93+grZ+Cioc=;
+ b=dw5x/81C76NeWjM7FrEulybCu+iKYySNRDQOj2/Pkto9nOo+yp2XCQekZksqKYbDeLAHou
+ SWeNl6n717AJ/iK3r0kqR4omJvNBGK6FuKZt9NJ1BsZjoHFf6RvoZzQ+QjwJ5ssi9Hx2Wx
+ 3MtgR8KBsZ6bWT8TjYSuyFGk6NPwBYo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-FelZ0o6_OLCclBMHzXTQwg-1; Fri,
- 26 Sep 2025 10:03:41 -0400
-X-MC-Unique: FelZ0o6_OLCclBMHzXTQwg-1
-X-Mimecast-MFC-AGG-ID: FelZ0o6_OLCclBMHzXTQwg_1758895420
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-MEJXisDkOzC7Cj_FeY2XMA-1; Fri,
+ 26 Sep 2025 10:03:46 -0400
+X-MC-Unique: MEJXisDkOzC7Cj_FeY2XMA-1
+X-Mimecast-MFC-AGG-ID: MEJXisDkOzC7Cj_FeY2XMA_1758895425
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 303C119560AD; Fri, 26 Sep 2025 14:03:40 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E8DB01800597; Fri, 26 Sep 2025 14:03:44 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2DC5A19540EB; Fri, 26 Sep 2025 14:03:34 +0000 (UTC)
+ id 96F9A1956095; Fri, 26 Sep 2025 14:03:40 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 18/32] hw: mark all virtio PCI devices as secure
-Date: Fri, 26 Sep 2025 15:01:29 +0100
-Message-ID: <20250926140144.1998694-19-berrange@redhat.com>
+Subject: [PATCH v2 19/32] hw: mark all virtio CCW devices as secure
+Date: Fri, 26 Sep 2025 15:01:30 +0100
+Message-ID: <20250926140144.1998694-20-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -92,65 +92,248 @@ provide a security boundary.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/display/virtio-gpu-pci-rutabaga.c | 1 +
- hw/display/virtio-gpu-pci.c          | 3 ++-
- hw/virtio/virtio-pci.c               | 3 +++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ hw/s390x/vhost-scsi-ccw.c     | 1 +
+ hw/s390x/vhost-user-fs-ccw.c  | 1 +
+ hw/s390x/vhost-vsock-ccw.c    | 1 +
+ hw/s390x/virtio-ccw-9p.c      | 1 +
+ hw/s390x/virtio-ccw-balloon.c | 1 +
+ hw/s390x/virtio-ccw-blk.c     | 1 +
+ hw/s390x/virtio-ccw-crypto.c  | 1 +
+ hw/s390x/virtio-ccw-gpu.c     | 1 +
+ hw/s390x/virtio-ccw-input.c   | 5 +++++
+ hw/s390x/virtio-ccw-md.c      | 1 +
+ hw/s390x/virtio-ccw-mem.c     | 1 +
+ hw/s390x/virtio-ccw-net.c     | 1 +
+ hw/s390x/virtio-ccw-rng.c     | 1 +
+ hw/s390x/virtio-ccw-scsi.c    | 1 +
+ hw/s390x/virtio-ccw-serial.c  | 1 +
+ hw/s390x/virtio-ccw.c         | 1 +
+ 16 files changed, 20 insertions(+)
 
-diff --git a/hw/display/virtio-gpu-pci-rutabaga.c b/hw/display/virtio-gpu-pci-rutabaga.c
-index 5fdff37f2c..56e32e9f5b 100644
---- a/hw/display/virtio-gpu-pci-rutabaga.c
-+++ b/hw/display/virtio-gpu-pci-rutabaga.c
-@@ -34,6 +34,7 @@ static const TypeInfo virtio_gpu_rutabaga_pci_info[] = {
-         .parent = TYPE_VIRTIO_GPU_PCI_BASE,
-         .instance_size = sizeof(VirtIOGPURutabagaPCI),
-         .instance_init = virtio_gpu_rutabaga_initfn,
-+        .secure = true,
-         .interfaces = (const InterfaceInfo[]) {
-             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-             { },
-diff --git a/hw/display/virtio-gpu-pci.c b/hw/display/virtio-gpu-pci.c
-index c0d71b6254..6c7cac7a25 100644
---- a/hw/display/virtio-gpu-pci.c
-+++ b/hw/display/virtio-gpu-pci.c
-@@ -75,7 +75,8 @@ static const TypeInfo virtio_gpu_pci_base_info = {
-     .parent = TYPE_VIRTIO_PCI,
-     .instance_size = sizeof(VirtIOGPUPCIBase),
-     .class_init = virtio_gpu_pci_base_class_init,
--    .abstract = true
-+    .abstract = true,
+diff --git a/hw/s390x/vhost-scsi-ccw.c b/hw/s390x/vhost-scsi-ccw.c
+index 8341b23a95..2a16f8d06e 100644
+--- a/hw/s390x/vhost-scsi-ccw.c
++++ b/hw/s390x/vhost-scsi-ccw.c
+@@ -62,6 +62,7 @@ static const TypeInfo vhost_ccw_scsi = {
+     .instance_size = sizeof(VHostSCSICcw),
+     .instance_init = vhost_ccw_scsi_instance_init,
+     .class_init    = vhost_ccw_scsi_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_scsi_register(void)
+diff --git a/hw/s390x/vhost-user-fs-ccw.c b/hw/s390x/vhost-user-fs-ccw.c
+index cc1b8227fc..74c2ac288b 100644
+--- a/hw/s390x/vhost-user-fs-ccw.c
++++ b/hw/s390x/vhost-user-fs-ccw.c
+@@ -64,6 +64,7 @@ static const TypeInfo vhost_user_fs_ccw = {
+     .instance_size = sizeof(VHostUserFSCcw),
+     .instance_init = vhost_user_fs_ccw_instance_init,
+     .class_init    = vhost_user_fs_ccw_class_init,
++    .secure        = true,
+ };
+ 
+ static void vhost_user_fs_ccw_register(void)
+diff --git a/hw/s390x/vhost-vsock-ccw.c b/hw/s390x/vhost-vsock-ccw.c
+index 552e9e86a4..60a286f6d5 100644
+--- a/hw/s390x/vhost-vsock-ccw.c
++++ b/hw/s390x/vhost-vsock-ccw.c
+@@ -71,6 +71,7 @@ static const TypeInfo vhost_vsock_ccw_info = {
+     .instance_size = sizeof(VHostVSockCCWState),
+     .instance_init = vhost_vsock_ccw_instance_init,
+     .class_init    = vhost_vsock_ccw_class_init,
++    .secure        = true,
+ };
+ 
+ static void vhost_vsock_ccw_register(void)
+diff --git a/hw/s390x/virtio-ccw-9p.c b/hw/s390x/virtio-ccw-9p.c
+index 72bf6ec80c..72430b9897 100644
+--- a/hw/s390x/virtio-ccw-9p.c
++++ b/hw/s390x/virtio-ccw-9p.c
+@@ -64,6 +64,7 @@ static const TypeInfo virtio_ccw_9p_info = {
+     .instance_size = sizeof(V9fsCCWState),
+     .instance_init = virtio_ccw_9p_instance_init,
+     .class_init    = virtio_ccw_9p_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_9p_register(void)
+diff --git a/hw/s390x/virtio-ccw-balloon.c b/hw/s390x/virtio-ccw-balloon.c
+index 399b40f366..40425a5995 100644
+--- a/hw/s390x/virtio-ccw-balloon.c
++++ b/hw/s390x/virtio-ccw-balloon.c
+@@ -69,6 +69,7 @@ static const TypeInfo virtio_ccw_balloon = {
+     .instance_size = sizeof(VirtIOBalloonCcw),
+     .instance_init = virtio_ccw_balloon_instance_init,
+     .class_init    = virtio_ccw_balloon_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_balloon_register(void)
+diff --git a/hw/s390x/virtio-ccw-blk.c b/hw/s390x/virtio-ccw-blk.c
+index 7d8c4a75ce..a61da0f6d6 100644
+--- a/hw/s390x/virtio-ccw-blk.c
++++ b/hw/s390x/virtio-ccw-blk.c
+@@ -67,6 +67,7 @@ static const TypeInfo virtio_ccw_blk = {
+     .instance_size = sizeof(VirtIOBlkCcw),
+     .instance_init = virtio_ccw_blk_instance_init,
+     .class_init    = virtio_ccw_blk_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_blk_register(void)
+diff --git a/hw/s390x/virtio-ccw-crypto.c b/hw/s390x/virtio-ccw-crypto.c
+index 75e714603b..0903cc0c97 100644
+--- a/hw/s390x/virtio-ccw-crypto.c
++++ b/hw/s390x/virtio-ccw-crypto.c
+@@ -67,6 +67,7 @@ static const TypeInfo virtio_ccw_crypto = {
+     .instance_size = sizeof(VirtIOCryptoCcw),
+     .instance_init = virtio_ccw_crypto_instance_init,
+     .class_init    = virtio_ccw_crypto_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_crypto_register(void)
+diff --git a/hw/s390x/virtio-ccw-gpu.c b/hw/s390x/virtio-ccw-gpu.c
+index edb6a47d37..9f6170bcd4 100644
+--- a/hw/s390x/virtio-ccw-gpu.c
++++ b/hw/s390x/virtio-ccw-gpu.c
+@@ -66,6 +66,7 @@ static const TypeInfo virtio_ccw_gpu = {
+     .instance_size = sizeof(VirtIOGPUCcw),
+     .instance_init = virtio_ccw_gpu_instance_init,
+     .class_init    = virtio_ccw_gpu_class_init,
++    .secure        = true,
+ };
+ module_obj(TYPE_VIRTIO_GPU_CCW);
+ module_kconfig(VIRTIO_CCW);
+diff --git a/hw/s390x/virtio-ccw-input.c b/hw/s390x/virtio-ccw-input.c
+index 2250d8cf98..f5e1a209d1 100644
+--- a/hw/s390x/virtio-ccw-input.c
++++ b/hw/s390x/virtio-ccw-input.c
+@@ -96,6 +96,7 @@ static const TypeInfo virtio_ccw_input = {
+     .instance_size = sizeof(VirtIOInputCcw),
+     .class_init    = virtio_ccw_input_class_init,
+     .abstract = true,
 +    .secure = true,
  };
- module_obj(TYPE_VIRTIO_GPU_PCI_BASE);
- module_kconfig(VIRTIO_PCI);
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 767216d795..f2f720792a 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2494,6 +2494,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
-         .name = t->generic_name,
-         .parent = base_type_info.name,
-         .class_init = virtio_pci_generic_class_init,
-+        .secure = true,
-         .interfaces = (const InterfaceInfo[]) {
-             { INTERFACE_PCIE_DEVICE },
-             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-@@ -2529,6 +2530,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
-             .name          = t->non_transitional_name,
-             .parent        = base_type_info.name,
-             .instance_init = virtio_pci_non_transitional_instance_init,
-+            .secure = true,
-             .interfaces = (const InterfaceInfo[]) {
-                 { INTERFACE_PCIE_DEVICE },
-                 { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-@@ -2543,6 +2545,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
-             .name          = t->transitional_name,
-             .parent        = base_type_info.name,
-             .instance_init = virtio_pci_transitional_instance_init,
-+            .secure = true,
-             .interfaces = (const InterfaceInfo[]) {
-                 /*
-                  * Transitional virtio devices work only as Conventional PCI
+ 
+ static const TypeInfo virtio_ccw_input_hid = {
+@@ -103,6 +104,7 @@ static const TypeInfo virtio_ccw_input_hid = {
+     .parent        = TYPE_VIRTIO_INPUT_CCW,
+     .instance_size = sizeof(VirtIOInputHIDCcw),
+     .abstract = true,
++    .secure = true,
+ };
+ 
+ static const TypeInfo virtio_ccw_keyboard = {
+@@ -110,6 +112,7 @@ static const TypeInfo virtio_ccw_keyboard = {
+     .parent        = TYPE_VIRTIO_INPUT_HID_CCW,
+     .instance_size = sizeof(VirtIOInputHIDCcw),
+     .instance_init = virtio_ccw_keyboard_instance_init,
++    .secure        = true,
+ };
+ 
+ static const TypeInfo virtio_ccw_mouse = {
+@@ -117,6 +120,7 @@ static const TypeInfo virtio_ccw_mouse = {
+     .parent        = TYPE_VIRTIO_INPUT_HID_CCW,
+     .instance_size = sizeof(VirtIOInputHIDCcw),
+     .instance_init = virtio_ccw_mouse_instance_init,
++    .secure        = true,
+ };
+ 
+ static const TypeInfo virtio_ccw_tablet = {
+@@ -124,6 +128,7 @@ static const TypeInfo virtio_ccw_tablet = {
+     .parent        = TYPE_VIRTIO_INPUT_HID_CCW,
+     .instance_size = sizeof(VirtIOInputHIDCcw),
+     .instance_init = virtio_ccw_tablet_instance_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_input_register(void)
+diff --git a/hw/s390x/virtio-ccw-md.c b/hw/s390x/virtio-ccw-md.c
+index 0370f58450..9a0264efda 100644
+--- a/hw/s390x/virtio-ccw-md.c
++++ b/hw/s390x/virtio-ccw-md.c
+@@ -140,6 +140,7 @@ static const TypeInfo virtio_ccw_md_info = {
+     .instance_size = sizeof(VirtIOMDCcw),
+     .class_size = sizeof(VirtIOMDCcwClass),
+     .abstract = true,
++    .secure = true,
+     .interfaces = (const InterfaceInfo[]) {
+         { TYPE_MEMORY_DEVICE },
+         { }
+diff --git a/hw/s390x/virtio-ccw-mem.c b/hw/s390x/virtio-ccw-mem.c
+index daa485d189..719386cfa7 100644
+--- a/hw/s390x/virtio-ccw-mem.c
++++ b/hw/s390x/virtio-ccw-mem.c
+@@ -216,6 +216,7 @@ static const TypeInfo virtio_ccw_mem = {
+     .instance_size = sizeof(VirtIOMEMCcw),
+     .instance_init = virtio_ccw_mem_instance_init,
+     .class_init = virtio_ccw_mem_class_init,
++    .secure = true,
+ };
+ 
+ static void virtio_ccw_mem_register_types(void)
+diff --git a/hw/s390x/virtio-ccw-net.c b/hw/s390x/virtio-ccw-net.c
+index a7d4afbeb9..b2ebc76000 100644
+--- a/hw/s390x/virtio-ccw-net.c
++++ b/hw/s390x/virtio-ccw-net.c
+@@ -70,6 +70,7 @@ static const TypeInfo virtio_ccw_net = {
+     .instance_size = sizeof(VirtIONetCcw),
+     .instance_init = virtio_ccw_net_instance_init,
+     .class_init    = virtio_ccw_net_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_net_register(void)
+diff --git a/hw/s390x/virtio-ccw-rng.c b/hw/s390x/virtio-ccw-rng.c
+index 3263287d45..6216cc76dc 100644
+--- a/hw/s390x/virtio-ccw-rng.c
++++ b/hw/s390x/virtio-ccw-rng.c
+@@ -66,6 +66,7 @@ static const TypeInfo virtio_ccw_rng = {
+     .instance_size = sizeof(VirtIORNGCcw),
+     .instance_init = virtio_ccw_rng_instance_init,
+     .class_init    = virtio_ccw_rng_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_rng_register(void)
+diff --git a/hw/s390x/virtio-ccw-scsi.c b/hw/s390x/virtio-ccw-scsi.c
+index 06b4c6c4a5..a9e99b5af1 100644
+--- a/hw/s390x/virtio-ccw-scsi.c
++++ b/hw/s390x/virtio-ccw-scsi.c
+@@ -76,6 +76,7 @@ static const TypeInfo virtio_ccw_scsi = {
+     .instance_size = sizeof(VirtIOSCSICcw),
+     .instance_init = virtio_ccw_scsi_instance_init,
+     .class_init    = virtio_ccw_scsi_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_scsi_register(void)
+diff --git a/hw/s390x/virtio-ccw-serial.c b/hw/s390x/virtio-ccw-serial.c
+index 0dac590c08..5ae7bb2f30 100644
+--- a/hw/s390x/virtio-ccw-serial.c
++++ b/hw/s390x/virtio-ccw-serial.c
+@@ -76,6 +76,7 @@ static const TypeInfo virtio_ccw_serial = {
+     .instance_size = sizeof(VirtioSerialCcw),
+     .instance_init = virtio_ccw_serial_instance_init,
+     .class_init    = virtio_ccw_serial_class_init,
++    .secure        = true,
+ };
+ 
+ static void virtio_ccw_serial_register(void)
+diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
+index d2f85b39f3..5977357aa9 100644
+--- a/hw/s390x/virtio-ccw.c
++++ b/hw/s390x/virtio-ccw.c
+@@ -1249,6 +1249,7 @@ static const TypeInfo virtio_ccw_device_info = {
+     .class_init = virtio_ccw_device_class_init,
+     .class_size = sizeof(VirtIOCCWDeviceClass),
+     .abstract = true,
++    .secure = true,
+ };
+ 
+ /* virtio-ccw-bus */
 -- 
 2.50.1
 
