@@ -2,142 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED524BA2878
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 08:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A56DBA2890
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 08:34:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v21x7-00037R-Cq; Fri, 26 Sep 2025 02:29:09 -0400
+	id 1v220r-0004ii-F5; Fri, 26 Sep 2025 02:33:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v21x4-00037J-Ax
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 02:29:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1v220n-0004iP-Rs; Fri, 26 Sep 2025 02:32:58 -0400
+Received: from mail-eastus2azlp170110003.outbound.protection.outlook.com
+ ([2a01:111:f403:c110::3] helo=BN8PR05CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v21x1-0000PY-A8
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 02:29:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758868138;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=lpQpAIJosCOed9258DodS2zvga0mExJzCeEg8bte1VI=;
- b=aOqQH0Ua5xxowD5Oulmnr3GTukP4d6QkpFwyUmwrBiCCP66uHfd7zgqxM7IhxmDz0vP/yr
- Ng5yHgIQyqmAPxk1FbM3gSRmWLkInd/iVbYInMcZdxsgqSpciabjOOBjInVsz1IrpePmXm
- 3N/l/V0tg5rvjY16hTwkfMsDf4PFrXg=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-C2hQ0JUEPH6d9YCiF3DJqA-1; Fri, 26 Sep 2025 02:28:56 -0400
-X-MC-Unique: C2hQ0JUEPH6d9YCiF3DJqA-1
-X-Mimecast-MFC-AGG-ID: C2hQ0JUEPH6d9YCiF3DJqA_1758868135
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-62f9731a4f9so1603526a12.1
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 23:28:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758868135; x=1759472935;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lpQpAIJosCOed9258DodS2zvga0mExJzCeEg8bte1VI=;
- b=B46zccb582uKGUKA+K+8CvJeWzXwWyuym6KFa4eZjWvzpOOhc2xZin2lnFIrQZRs6M
- 23BMZ5OdjbH6P1Aih+i+fa1vrVWqyWAMeaoO7kjYJPq5dpD5hnFeuKLVGrb3ixlZ/AKO
- WdM/VbRoE2j0c/9uOHdsIPfj71zbscxIj9qEnODYkofJs7vGdinIwUa0W7LpE3UwLEfn
- VwxQYYQrBzfjpr4gDb9GsyIvXRAr3rKX/ZYtxyM4aY9pC1dq0oITsxPL6gfco7Ocu5YF
- 2Pet9Xot3pnS8/fY4PNLGceAHHwRaErAb5MTiKzCm0P2JU2/vSeCKRgS/2F/4gK1c/Jh
- jpkQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWSyoLT37jVlve1sP+wsEzHV1T21J2unaIVed1cnBVe5KQ2aGqoQ5+HxtXYQme70v4GUfCqorbYIa2B@nongnu.org
-X-Gm-Message-State: AOJu0YzSNZ/PGKRFn9zvyLwvbpPzdzGYvWMH4HNVuvdl7R1+W4ldC962
- G5WaYrPxgh6YLjV8L1h7oxfRv+MqBLRPCGPgX5vOxe+2IWagj8ixkdq6OlXK/T7v6rG9cP6HLAN
- mrCce4pRatZGrkS44FuaxRkX5nQ+ThdadGoMozcZjWxr2pNST3lFVJJ7h
-X-Gm-Gg: ASbGncuely+zDToOj/2nY4kbNcxWExAHIowqYzfMPGx/2ro+iW9izqagrRLBNcnSEDZ
- 8ZyZcSPHAFRRRjqMR6XTdwrsTIsjr48EQrnm6/RczivG+dSODVxeD0x4fsJh6JIGv40HrYJNMhH
- RYzfWuoyrbP3Z5/a/17Jgwekwy7TnmjmTtx614PUjeKloGpTj7LtcZQG4zUKak5fYpS0ypMt/mK
- cHpoqIEMPB2rbbyeBr5nlfTfVWRzGbrq4hi7UWwV2ljJa2xo5SeaDBX9QhKgjSyCVZKyTC6lK+U
- GtzL8I8CJZu18WixA/C0AZYpF1Sk6oqP8C2pSmJKM6RMIodPNSo0eCxpbZapnFQG9pQ9jJjT36S
- JbkfXNw==
-X-Received: by 2002:aa7:d497:0:b0:62c:75bf:6501 with SMTP id
- 4fb4d7f45d1cf-6349fa2fef3mr3741753a12.15.1758868135096; 
- Thu, 25 Sep 2025 23:28:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhgwiaoxBsPv62eQfLoFJ8YatDsnSBmqsOBVupRttOobdqbChYJ/uMhzoKUcmKPiT5XpkKAQ==
-X-Received: by 2002:aa7:d497:0:b0:62c:75bf:6501 with SMTP id
- 4fb4d7f45d1cf-6349fa2fef3mr3741725a12.15.1758868134269; 
- Thu, 25 Sep 2025 23:28:54 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-114-212.pools.arcor-ip.net.
- [47.64.114.212]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634a3af4c7csm2352860a12.35.2025.09.25.23.28.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Sep 2025 23:28:53 -0700 (PDT)
-Message-ID: <6610a755-c215-471f-a357-a7a0a8d365da@redhat.com>
-Date: Fri, 26 Sep 2025 08:28:51 +0200
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1v220f-0000rb-1a; Fri, 26 Sep 2025 02:32:57 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D2MUS1RcVAGOTBYJfyzci6NUQkbCwUUNFKZjkcNbSZpxGat91NnV+28VullU6MYHFPpi3Uq4cv7haKHelX5yPScgQhJpkbfYS+qYlAMhDW1TOZWNK6/0ZKUBQxK49G3APVxI5YgHGVvjKAHkDerUhefy8QyWDLyyY3gRA0B7GAzGcmdW9jnEf7wnU1ncGZrWXFihBSVukshP87z/6SuYi3aTGGU5ME3XY6psCgkM5WKIk2nC74xtsYx3po/cwroqik/310tuFBxBXWiCLxGA6NUgm+HGOWyux8Tzvu/sjstQRXk971/4FU3166yozJMkbqLMcxXBAjsUAdlCHjKUvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vNLcaK02sGFoQ1WZGTDG2YNOUc0VuIg6qVsnQjE9O08=;
+ b=pjFe3VVZ7bZIqsTLQYTVBWCwocXswH6oGasBJ4rmpbvmppX71BUIr5GwfoDvryQMNpEUIWH/Zj8vwRb8qwJglyl1StvBI4MWv9vnhDJ+91NLBf1Rbc0uAEusM9adQ0nVp8fsYXV6f7hR7UyAkCCIR8lgdRB1/Yvl32O7aN+D/3wxwuW5udbiORiYzH9mb0Ax/ERhlPmvzWA2Yxh0qgaCpsJ5xdGz0XfPwOyQrv1tTxrjMB1WB+vULYQb21utuCQUtv9u3g8INrmHvWeA+rr7voZZMQM7dPV70Norc3+S/j+Za3TZWILgKwRA2VFGuPNhVqV8mwO8bLmP7svBqydxwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vNLcaK02sGFoQ1WZGTDG2YNOUc0VuIg6qVsnQjE9O08=;
+ b=eKk/Tt3Z3/hSe+hnVz1VX62pTOlIjrD7W8iJmnYqxyd5Fey3cQmk9oFKR+IOyPJXOOq0ErV1b5M5l3jxxDrtMhNJ0p30pPMuHPUm7T48b2w2ngDmhD40AzGVe9ajXUzQJspKFSXGruLkg1tNJUGD8YHPkPDAu+uGhCiSrTiEr/s=
+Received: from BYAPR08CA0003.namprd08.prod.outlook.com (2603:10b6:a03:100::16)
+ by SJ1PR12MB6145.namprd12.prod.outlook.com (2603:10b6:a03:45c::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Fri, 26 Sep
+ 2025 06:32:29 +0000
+Received: from SJ5PEPF000001ED.namprd05.prod.outlook.com
+ (2603:10b6:a03:100:cafe::17) by BYAPR08CA0003.outlook.office365.com
+ (2603:10b6:a03:100::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.12 via Frontend Transport; Fri,
+ 26 Sep 2025 06:32:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001ED.mail.protection.outlook.com (10.167.242.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9160.9 via Frontend Transport; Fri, 26 Sep 2025 06:32:28 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 25 Sep
+ 2025 23:32:28 -0700
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 25 Sep
+ 2025 23:32:28 -0700
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Thu, 25 Sep 2025 23:32:26 -0700
+Date: Fri, 26 Sep 2025 08:32:21 +0200
+From: Luc Michel <luc.michel@amd.com>
+To: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Francisco Iglesias <francisco.iglesias@amd.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alistair Francis
+ <alistair@alistair23.me>, Frederic Konrad <frederic.konrad@amd.com>, "Sai
+ Pavan Boddu" <sai.pavan.boddu@amd.com>
+Subject: Re: [PATCH v5 02/47] hw/arm/xlnx-versal: prepare for FDT creation
+Message-ID: <aNYzRquHGMEG3LvF@XFR-LUMICHEL-L2.amd.com>
+References: <20250912100059.103997-1-luc.michel@amd.com>
+ <20250912100059.103997-3-luc.michel@amd.com>
+ <aMRVsn6cbN7fjPuq@zapote>
+ <aMkR9fr7ITfggWV7@XFR-LUMICHEL-L2.amd.com>
+ <aMugpMt4qU4XSnay@zapote> <aNWN3KxHvMlszraG@zapote>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/9] python: Install pygdbmi in meson's venv
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org, berrange@redhat.com
-Cc: qemu-arm@nongnu.org, manos.pitsidianakis@linaro.org,
- peter.maydell@linaro.org
-References: <20250926051542.104432-1-gustavo.romero@linaro.org>
- <20250926051542.104432-3-gustavo.romero@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250926051542.104432-3-gustavo.romero@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aNWN3KxHvMlszraG@zapote>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001ED:EE_|SJ1PR12MB6145:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2dec5373-8226-42fd-b39a-08ddfcc67710
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|36860700013|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?dn6vJ7uj86aueoE8gx+rhHuZXBiQBX2Y8cbTiIFkPJ8mjDX18v9v9HWOKXKT?=
+ =?us-ascii?Q?yOxOdONwPiqEo/jESW5vC/A4z+/DjDMi7Oled8tEoofMAvp8Oqvf07cd86lC?=
+ =?us-ascii?Q?Yh0J86GGVOlFJ7U2s8IkUeNxWXm3FwqTyZjLaTUv1Dp4+mKm/LQt3IJjBB0e?=
+ =?us-ascii?Q?IcF4p6wk84EtMcKbxpGvFYIYD0ixlV0/cZ++jWkcyMwISiMIq2eczkIYPpnX?=
+ =?us-ascii?Q?y1EtQ0pVPwyDRERN8aG7DJ4D+NjOYbAED8yRclBwUpTOP9WqmITVSjzHAmqX?=
+ =?us-ascii?Q?gDekW1Z1Po1gbdr9D9EDDC35/nVlCxOXoDoq/3Y/FCyfmm9wlFXksE4aOp8n?=
+ =?us-ascii?Q?hSG60V2zir4nZwBt6lC0Bhgtt30I1wuYYJfv98EdSN5UZiWrHpjr4IGIUJHj?=
+ =?us-ascii?Q?9RUSGjMFJ/rhfAu/1PVI0gmSJKKVn0OmWdDVSh3RfD/UQ8E6VJX7avP2V9Is?=
+ =?us-ascii?Q?39P43b6wgSJGvipx8Ks+etd70eVwqj6yfChBEwJvFktr3BDTCH6/o95hk9JG?=
+ =?us-ascii?Q?QVvP+VmovSP0a7hJFZNvZAOF9Y+xhDUUMvh1RmVjDpprJXhKy8n0vDG+69y0?=
+ =?us-ascii?Q?OwfSgTNij70C08qt6rY7RVktwhxzPEKledDlNPPIekwFGUrh6Q2MlSmyJVf2?=
+ =?us-ascii?Q?RteAsAXF2I4jhOujibNONMkB+zW+USI7f72rG1RJ7l5tWnQpvEbnifNYGndY?=
+ =?us-ascii?Q?C+MRQPGcDxbRkIljA5+8JA8PaFGKUrfOnrl3Dr8soWn+fVaC58ofy30om+UX?=
+ =?us-ascii?Q?kHkkSROYh1kgmJ9jnZSKu7rMj7fF+dYNcmavNiZeOKz8rQlg/gP1XZh/DsGl?=
+ =?us-ascii?Q?rdibIV+SYgq9d7NGCQRY8p2NrWjIy6wNUFtSaEQEVUwsUaxYUh1g7rq+c/9h?=
+ =?us-ascii?Q?kFmmVVxCuRBcGmPCK2BzHx8hdKkMD6HLb73NtkWb9AcKTXyyc0MsFi9Nldfn?=
+ =?us-ascii?Q?s1ZW+KIMeSGDBLgkia9Lb1Gsq47PURNKLcnmtx8udfTmL050mGMnCMkcmIB8?=
+ =?us-ascii?Q?4MzD2UQhcecIPYvYtugjcPz/UHuOi3VT0iTpSiEf3MhCyEuDQXq8G12oeAYq?=
+ =?us-ascii?Q?kldekuYqkX56EulbiMa7VNAPdTbE3PsLIYJK/YiCcxHkKdlfmVEahQ42X5ZC?=
+ =?us-ascii?Q?QiShL7S7RdgZCp2TWVd+pgjjM/41p1oRcwA1yy46Pc2iDcCzVRPt5ulv0VFE?=
+ =?us-ascii?Q?Wc1J/az82bTu+bDcOfc4TQnjDIQ/SPBMEZhcCHYz9vZGjKNj0y7dFEN3rHGW?=
+ =?us-ascii?Q?7KjhvYUuZSjW3T6uyWbCXzg/ECydCQaD1rlZgtIzscnyKTVCXBv/LeAI7+2S?=
+ =?us-ascii?Q?dALR2YlwSQ5IkENLdnnmQH8SFDEqCXbV7tthksm3Y24osjKtkzQFX/L6Xzi5?=
+ =?us-ascii?Q?HC5VLCNUR7I+wpQyt6+ipeltiY8XTeRWzlPjVsJqh8MGyS3oSkadLcqTq6Wu?=
+ =?us-ascii?Q?x5+amziotNKNRXiEFKS84OMVdfXD0lapCN2CsmVeGZ4lkiSRuR3bGZtC/rMP?=
+ =?us-ascii?Q?v4SJT7bsiNRmca4xc1309Mx7A+yLxx5tkx2a?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 06:32:28.6446 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2dec5373-8226-42fd-b39a-08ddfcc67710
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001ED.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6145
+Received-SPF: permerror client-ip=2a01:111:f403:c110::3;
+ envelope-from=Luc.Michel@amd.com;
+ helo=BN8PR05CU002.outbound.protection.outlook.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -154,26 +155,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/09/2025 07.15, Gustavo Romero wrote:
-> The upcoming changes in the reverse_debugging functional test to remove
-> Avocado as a dependency will require pygdbmi for interacting with GDB,
-> so install it in meson's venv (located in the build dir's pyvenv/).
+On 20:45 Thu 25 Sep     , Edgar E. Iglesias wrote:
+> On Thu, Sep 18, 2025 at 08:10:18AM +0200, Edgar E. Iglesias wrote:
+> > On Tue, Sep 16, 2025 at 09:30:46AM +0200, Luc Michel wrote:
+> > > Hi Edgar,
+> > >
 > 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-> ---
->   pythondeps.toml | 1 +
->   1 file changed, 1 insertion(+)
+> [snip]
 > 
-> diff --git a/pythondeps.toml b/pythondeps.toml
-> index 16fb2a989c..98e99e7900 100644
-> --- a/pythondeps.toml
-> +++ b/pythondeps.toml
-> @@ -33,3 +33,4 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
->   
->   [testdeps]
->   qemu.qmp = { accepted = ">=0.0.3", installed = "0.0.3" }
-> +pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
+> > > [snip]
+> > > 
+> > > > > +
+> > > > >  static void versal_realize(DeviceState *dev, Error **errp)
+> > > > >  {
+> > > > >      Versal *s = XLNX_VERSAL_BASE(dev);
+> > > > >      qemu_irq pic[XLNX_VERSAL_NR_IRQS];
+> > > > >  
+> > > > > +    if (s->cfg.fdt == NULL) {
+> > > > > +        int fdt_size;
+> > > > > +
+> > > > > +        s->cfg.fdt = create_device_tree(&fdt_size);
+> > > > > +    }
+> > > > > +
+> > > > > +    s->phandle.clk_25mhz = fdt_add_clk_node(s, "/clk25", 25 * 1000 * 1000);
+> > > > > +    s->phandle.clk_125mhz = fdt_add_clk_node(s, "/clk125", 125 * 1000 * 1000);
+> > > > > +
+> > > > 
+> > > > Should we be adding nodes if s->cfg.fdt wasn't created by us?
+> > > > If the user passes a dtb, I wonder if we should just assume the user
+> > > > knows what they are doing and use it as is...
+> > > > 
+> > > > Or do you have use-cases where it makes sense?
+> > > 
+> > > Note that the device tree created in the SoC code is just a dummy one to
+> > > avoid crashing when the SoC user does not provide one, as stated in the
+> > > commit message:
+> > > 
+> > > "If no FDT is passed, a dummy one is created internally as a stub to the
+> > > fdt function calls."
+> > 
+> > Aha, thanks!
+> > 
+> > But then is there really a case when the dummy one is needed? won't
+> > versal-virt always pass an fdt?
+> > 
+> > If that is the case then maybe we could just assert(s->cfg.fdt);
+> 
+> 
+> Luc, up to you if you want to add an assert rather than creating the
+> dummy stub. My preference would be to assert.
+> 
+> In any case, feel free to add my RB tag on the whole series:
+> Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+OK, let me reroll with an assert here. I guess we can always come back
+to this if needed (I think I had the user supplied DTB use-case in mind
+initially when I did this. I then realized later that we unconditionally
+build the fdt anyway).
 
+Thanks
+
+-- 
+Luc
 
