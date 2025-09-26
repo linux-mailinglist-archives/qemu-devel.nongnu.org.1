@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03C9BA415D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2DEBA413B
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v29AH-00014Z-3P; Fri, 26 Sep 2025 10:11:13 -0400
+	id 1v29AM-0001Ko-SB; Fri, 26 Sep 2025 10:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v299R-0000Gu-7z
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:21 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1v299Y-0000Ij-Nb
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:30 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298g-0005nc-P4
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:20 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3fa528f127fso1672914f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:30 -0700 (PDT)
+ id 1v298g-0005nn-35
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:25 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e37d10f3eso13722505e9.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895768; x=1759500568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895769; x=1759500569; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=r1Aatavlnp9I8vVGVCmlOFy7hlPRhQsimFryDicIoL4=;
- b=gn6t50aKFgFPvLjxoTJZxLSljvn8raKZMyJdt5Kphdh3QpzOBdnv9esv02anW55iy1
- cDW3nzPOD0VgxNq/UxkieXssso0LbRsxWYqk/CmElJSl4+qeWDveL2PHm8xSXSJPsSi9
- RewYqAnErTxxsL/3sFXmSRZiQd39eHV2MyTr6DPV5kp2+ucq3xeaI/K9z+5NtyqryKL3
- NJmFmjk69xCBHjH5Se44xGL4Kd6GeZqsG4dkg9TPKCOJGo1yjM3A02bPGa+1n5DOJ/dn
- dXGeTnKdPkWbjUaWCq7PoCmNMmQvdqvrdHMgVeotSz0SCHqpk4p99q/SwT8bPIs/O/nh
- t65g==
+ :reply-to; bh=IHG8pw94kQh9rgj79VlxQY7WE57C9ajUY74LgQzgrVQ=;
+ b=MHA+TdDmZIes2gaySRbx3SiyGpm7VV+x1n435fZ8qDHwZL44yAv1eZ67UXYO5gVBfq
+ v9vSgVuHFFPMFYt94OmTMsH9VyWbxet8l0ItS2c2iIzq6Mv7koHptAM05Q/u1+KYpPx3
+ sCgOSkFVC9xoiSYx/K0hrn7yhl5QnjCl0dUwSsOQDwBd3cNfzU9h2SdsTxlsSzsVljJX
+ D4qQ/O7RROxlheqUM/JKrqonLsd2p9VBz/Q30kultvyuMqE71NwGNH7vZsoYF62YNh/l
+ eMsF7vMVEC+QavJwJoRoZNfLaHvLPizUFvgPOFvcpS5aq2yWYNfy1IixYQUHAHuxmr99
+ Pvhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895768; x=1759500568;
+ d=1e100.net; s=20230601; t=1758895769; x=1759500569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r1Aatavlnp9I8vVGVCmlOFy7hlPRhQsimFryDicIoL4=;
- b=oDMJPnPE8ajPS1DugweZ3/xJYhRRnZYoIkksxf/Wxeey2B6tuzlEDal7bm0pVEFW6t
- WDTAwRkqhqP2tQvmrTNav/m1dkQs8qAZqWeCRNhhwNCKaAx4V087S3k6y9o+7Buovuwc
- mjmb/oraXOa6tnGy0Tpfgg+ikbQv62y0CKk4ycZu7Hdf5hNw3N/U4qrQLWahy5IFwzKx
- 186mKhY+KFtmQdDyj01KLPtmx764gYEib/6ZKLDkGAXo60JXJvenh8/w4zRg4WuUSm5v
- YVqqgUcUwuTEcjbOByOqGv092QmqmmjXu4jXs+EWMlcH12ydZ07WsViuQptvP8T/jAoN
- Zx8w==
-X-Gm-Message-State: AOJu0Yw4R8iXlUeWXT33aGbun0TAXYvW4Fl7Hbcclf6u8oYfdom44w0V
- MRFKqMdH1Eq4eK/J7AQv5N0okjsOYavmc3eidXDhETdt0dtz66WsHhxb9xvArnvNHWx9Iv6HgS9
- 6+55j
-X-Gm-Gg: ASbGnctwJrR8MflDAHb+SmxfBv9SUsh0gXpLfF2ZaXHYOj7V7m/blEM7bjhXuZSuFVB
- x6g9DQsvFf/Gpf+9N/D1UZlQtYJDZoAVChxYpydiBJMXcYBS4IbU95GcfioxJ9V/+edPdbKtIKC
- VFEStHcK7KbLphcNsUBymAWCn9tmK5bUfHEcrKwjr6LvjZEFklh51dBFiWZ+tKC7x+kmyPv1OI/
- dM3bZLaCAQLvVoMk6xO1meJDICBBRl7EaC2xmm8sP/SImqWMgY/o/LBG6MRKbe5Ig/VjluJ27oh
- L9niyNhg9Or0oN+KpXqduXpV2il1t/6h9xp1+cgTDOl++m39T8TjAH9ZHK0CJyhuGcE+6l5rI4K
- KwG5TcFEkVU1TNNrt7heb+PNqDqxv/mrVOC88MM4=
-X-Google-Smtp-Source: AGHT+IGZDmVSiEkMPSgp8WpTNjr5A65bAtE9dn7+dVjd/cW6slNwH4/yhN6IwQuY+K3uiJhRo4H8EA==
-X-Received: by 2002:a05:6000:2dc1:b0:3d0:e221:892e with SMTP id
- ffacd0b85a97d-40f6617670dmr6987541f8f.27.1758895767920; 
- Fri, 26 Sep 2025 07:09:27 -0700 (PDT)
+ bh=IHG8pw94kQh9rgj79VlxQY7WE57C9ajUY74LgQzgrVQ=;
+ b=tj84V3acjg4Q0KtaId2PI1ymRGC8ny8bhgwXP/cVTXJs0tOwPhaBsm9aD/RRAmmKC4
+ Ap4MQ5K8eO+iOImCcrsNaRzBMAZCghD2sMb6sbrboIn//Pf3h1zEyV5rT3XpDFdsXvVn
+ I/tY+hw7Bl8Ho2ZHEmFFS6LQ1JGXD6/vNpDKnfDJpnTSQfJTtlvYJbMGc6iqqD8Bx+6B
+ 7pI7kFSVCVvOR7eXhElA8xy6Mdcy72rhMEivrJqsmoq+S5JM9u95yL6T35vwKX6yF6Ot
+ 3aNI2RGs430plxbmJhfUhjnpio90O/5YCtf/49burAwVfGIdcAJLeK4W1/c6TTm1s2Ae
+ BTRA==
+X-Gm-Message-State: AOJu0Ywc17nAaInWlk1cfH2Nnrv0C1O3SLdxE8Sv4n7x4vfQJTqPfFTd
+ BIYTXHYMIxwvdGlWVUsJlDL3wiG/TeoWfTHc58SX3MTHMdROlWPge+hAPTYX2kRiFjzh68LbUKk
+ fr41+
+X-Gm-Gg: ASbGncuLXgcK/bMsw/3D5onQsNlsPWtEBEDrQjzF9XKTjmHejSgV2qNEP3WOt2btIyy
+ IxqncEzg17KuJ3gzKLsOP49pd7Fzn0HSnEO62ynV+UDywDgb08s2i0yCRJowmXaUW978ta1R6nO
+ MA3wTYJQVBMVXJ3wxudvQuMJvRBAoC1m0M6PyB6LVNsuqJZaH0tfyPASOvOAO5pisvRdYVi9ILM
+ HjuMX8oZM1c5Xw2dU3RaizImipH14Ca3CaF7kICXp1L9j4hUO5UOYqoGEpDQsdLmX6odbBc/AHw
+ xPXxPK1XzMjRpaOwEHAbR9l643siyw0RFNkCxhdmHh3TN61Iy5vk4i9GB6xgkoj1N66plEEu2l5
+ DExuE1NgDV3dPtFOdojrTv3FI2Op8
+X-Google-Smtp-Source: AGHT+IEarU7dMmoTdBTYVwqRcU6FkUY0PyembsqnOgr5Ne2ceeu52ot/fj9gxiFs0i4knOmHY/0BQQ==
+X-Received: by 2002:a05:600c:64c4:b0:46e:36f2:2a62 with SMTP id
+ 5b1f17b1804b1-46e36f22d9fmr51261705e9.27.1758895768841; 
+ Fri, 26 Sep 2025 07:09:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.27
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:09:27 -0700 (PDT)
+ Fri, 26 Sep 2025 07:09:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 41/44] target/arm: Trace emulated firmware reset call
-Date: Fri, 26 Sep 2025 15:08:41 +0100
-Message-ID: <20250926140844.1493020-42-peter.maydell@linaro.org>
+Subject: [PULL 42/44] target/arm: Trace vCPU reset call
+Date: Fri, 26 Sep 2025 15:08:42 +0100
+Message-ID: <20250926140844.1493020-43-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,46 +103,35 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.c        | 4 ++++
- target/arm/trace-events | 3 +++
- 2 files changed, 7 insertions(+)
+ target/arm/cpu.c        | 2 ++
+ target/arm/trace-events | 1 +
+ 2 files changed, 3 insertions(+)
 
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 91ae56dddb2..f8e6749ff99 100644
+index f8e6749ff99..30e29fd3153 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -52,6 +52,8 @@
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
+@@ -227,6 +227,8 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
+     ARMCPUClass *acc = ARM_CPU_GET_CLASS(obj);
+     CPUARMState *env = &cpu->env;
  
-+#include "trace.h"
++    trace_arm_cpu_reset(arm_cpu_mp_affinity(cpu));
 +
- static void arm_cpu_set_pc(CPUState *cs, vaddr value)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-@@ -574,6 +576,8 @@ void arm_emulate_firmware_reset(CPUState *cpustate, int target_el)
-     bool have_el3 = arm_feature(env, ARM_FEATURE_EL3);
-     bool have_el2 = arm_feature(env, ARM_FEATURE_EL2);
- 
-+    trace_arm_emulate_firmware_reset(arm_cpu_mp_affinity(cpu), target_el);
-+
-     /*
-      * Check we have the EL we're aiming for. If that is the
-      * highest implemented EL, then cpu_reset has already done
+     if (acc->parent_phases.hold) {
+         acc->parent_phases.hold(obj, type);
+     }
 diff --git a/target/arm/trace-events b/target/arm/trace-events
-index 252c05a9ebe..badff2b2e46 100644
+index badff2b2e46..72a2c7d0969 100644
 --- a/target/arm/trace-events
 +++ b/target/arm/trace-events
-@@ -14,6 +14,9 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
- # kvm.c
+@@ -15,6 +15,7 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
  kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
  
-+# cpu.c
-+arm_emulate_firmware_reset(uint64_t mp_aff, unsigned target_el) "cpu %" PRIu64 " @EL%u"
-+
+ # cpu.c
++arm_cpu_reset(uint64_t mp_aff) "cpu %" PRIu64
+ arm_emulate_firmware_reset(uint64_t mp_aff, unsigned target_el) "cpu %" PRIu64 " @EL%u"
+ 
  # arm-powerctl.c
- arm_powerctl_set_cpu_on(uint64_t mp_aff, unsigned target_el, const char *mode, uint64_t entry, uint64_t context_id) "cpu %" PRIu64 " (EL %u, %s) @ 0x%" PRIx64 " with R0 = 0x%" PRIx64
- arm_powerctl_set_cpu_on_and_reset(uint64_t mp_aff) "cpu %" PRIu64
 -- 
 2.43.0
 
