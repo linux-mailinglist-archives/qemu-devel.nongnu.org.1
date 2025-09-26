@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA80EBA3AC7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E33FBA3B93
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v27s9-0000NZ-Fx; Fri, 26 Sep 2025 08:48:25 -0400
+	id 1v27sC-0000Rz-U8; Fri, 26 Sep 2025 08:48:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v27rl-00004u-Oj; Fri, 26 Sep 2025 08:48:05 -0400
+ id 1v27rp-00005T-EH; Fri, 26 Sep 2025 08:48:15 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v27rW-0006vv-JG; Fri, 26 Sep 2025 08:48:00 -0400
+ id 1v27rf-0006x9-AT; Fri, 26 Sep 2025 08:48:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C9C51157F54;
+ by isrv.corpit.ru (Postfix) with ESMTP id E4FDE157F55;
  Fri, 26 Sep 2025 15:45:40 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 31A39290F12;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4C395290F13;
  Fri, 26 Sep 2025 15:45:42 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 12/38] python: ensure QEMUQtestProtocol closes its
- socket
-Date: Fri, 26 Sep 2025 15:45:12 +0300
-Message-ID: <20250926124540.2221746-12-mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 13/38] iotests/147: ensure temporary sockets are
+ closed before exiting
+Date: Fri, 26 Sep 2025 15:45:13 +0300
+Message-ID: <20250926124540.2221746-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
 References: <qemu-stable-10.0.5-20250926154509@cover.tls.msk.ru>
@@ -44,8 +44,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,28 +62,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-While QEMUQtestMachine closes the socket that was passed to
-QEMUQtestProtocol, the python resource leak manager still
-believes that the copy QEMUQtestProtocol holds is open. We
-must explicitly call close to avoid this leak warnnig.
+This avoids the python resource leak detector from issuing warnings
+in the iotests.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 6ccb48ffc19fe25511313a246d4a8bad51114ea9)
+(cherry picked from commit d4d0ebfcc926c11d16320d0d5accf22e3441c115)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
-index 4f5ede85b2..781f674ffa 100644
---- a/python/qemu/machine/qtest.py
-+++ b/python/qemu/machine/qtest.py
-@@ -177,6 +177,8 @@ def _post_shutdown(self) -> None:
-             self._qtest_sock_pair[0].close()
-             self._qtest_sock_pair[1].close()
-             self._qtest_sock_pair = None
-+        if self._qtest is not None:
-+            self._qtest.close()
-         super()._post_shutdown()
+diff --git a/tests/qemu-iotests/147 b/tests/qemu-iotests/147
+index 6d6f077a14..3e14bd389a 100755
+--- a/tests/qemu-iotests/147
++++ b/tests/qemu-iotests/147
+@@ -277,6 +277,7 @@ class BuiltinNBD(NBDBlockdevAddBase):
+                      } }
+         self.client_test(filename, flatten_sock_addr(address), 'nbd-export')
  
-     def qtest(self, cmd: str) -> str:
++        sockfd.close()
+         self._server_down()
+ 
+ 
 -- 
 2.47.3
 
