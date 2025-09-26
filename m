@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A187BA2EC4
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A982FBA2EDC
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:23:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23cT-0004ml-0F; Fri, 26 Sep 2025 04:15:57 -0400
+	id 1v23cZ-0005HS-2x; Fri, 26 Sep 2025 04:16:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23c2-0004Vl-AK; Fri, 26 Sep 2025 04:15:37 -0400
+ id 1v23cK-0004im-Mn; Fri, 26 Sep 2025 04:15:51 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23bu-0001T9-Aa; Fri, 26 Sep 2025 04:15:29 -0400
+ id 1v23c4-0001VM-UE; Fri, 26 Sep 2025 04:15:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9F38F157D6C;
+ by isrv.corpit.ru (Postfix) with ESMTP id B69D2157D6D;
  Fri, 26 Sep 2025 11:10:33 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B45DE290C50;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C24AB290C51;
  Fri, 26 Sep 2025 11:10:34 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 36/60] iotests: drop compat for old version context
- manager
-Date: Fri, 26 Sep 2025 11:10:04 +0300
-Message-ID: <20250926081031.2214971-36-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 37/60] python: ensure QEMUQtestProtocol closes its
+ socket
+Date: Fri, 26 Sep 2025 11:10:05 +0300
+Message-ID: <20250926081031.2214971-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -62,77 +62,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-Our minimum python is now 3.9, so back compat with prior
-python versions is no longer required.
+While QEMUQtestMachine closes the socket that was passed to
+QEMUQtestProtocol, the python resource leak manager still
+believes that the copy QEMUQtestProtocol holds is open. We
+must explicitly call close to avoid this leak warnnig.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 82c7cb93c750196f513a1b11cb85e0328bad444f)
+(cherry picked from commit 6ccb48ffc19fe25511313a246d4a8bad51114ea9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
-index 6326e46b7b..29caaa8a34 100644
---- a/tests/qemu-iotests/testenv.py
-+++ b/tests/qemu-iotests/testenv.py
-@@ -22,15 +22,12 @@
- from pathlib import Path
- import shutil
- import collections
-+import contextlib
- import random
- import subprocess
- import glob
- from typing import List, Dict, Any, Optional
+diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
+index 4f5ede85b2..781f674ffa 100644
+--- a/python/qemu/machine/qtest.py
++++ b/python/qemu/machine/qtest.py
+@@ -177,6 +177,8 @@ def _post_shutdown(self) -> None:
+             self._qtest_sock_pair[0].close()
+             self._qtest_sock_pair[1].close()
+             self._qtest_sock_pair = None
++        if self._qtest is not None:
++            self._qtest.close()
+         super()._post_shutdown()
  
--if sys.version_info >= (3, 9):
--    from contextlib import AbstractContextManager as ContextManager
--else:
--    from typing import ContextManager
- 
- DEF_GDB_OPTIONS = 'localhost:12345'
- 
-@@ -58,7 +55,7 @@ def get_default_machine(qemu_prog: str) -> str:
-     return default_machine
- 
- 
--class TestEnv(ContextManager['TestEnv']):
-+class TestEnv(contextlib.AbstractContextManager['TestEnv']):
-     """
-     Manage system environment for running tests
- 
-diff --git a/tests/qemu-iotests/testrunner.py b/tests/qemu-iotests/testrunner.py
-index 2e236c8fa3..14cc8492f9 100644
---- a/tests/qemu-iotests/testrunner.py
-+++ b/tests/qemu-iotests/testrunner.py
-@@ -30,11 +30,6 @@
- from typing import List, Optional, Any, Sequence, Dict
- from testenv import TestEnv
- 
--if sys.version_info >= (3, 9):
--    from contextlib import AbstractContextManager as ContextManager
--else:
--    from typing import ContextManager
--
- 
- def silent_unlink(path: Path) -> None:
-     try:
-@@ -57,7 +52,7 @@ def file_diff(file1: str, file2: str) -> List[str]:
-         return res
- 
- 
--class LastElapsedTime(ContextManager['LastElapsedTime']):
-+class LastElapsedTime(contextlib.AbstractContextManager['LastElapsedTime']):
-     """ Cache for elapsed time for tests, to show it during new test run
- 
-     It is safe to use get() at any time.  To use update(), you must either
-@@ -112,7 +107,7 @@ def __init__(self, status: str, description: str = '',
-         self.interrupted = interrupted
- 
- 
--class TestRunner(ContextManager['TestRunner']):
-+class TestRunner(contextlib.AbstractContextManager['TestRunner']):
-     shared_self = None
- 
-     @staticmethod
+     def qtest(self, cmd: str) -> str:
 -- 
 2.47.3
 
