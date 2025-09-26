@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10582BA2AC6
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 09:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF32FBA2B47
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 09:26:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v22dl-00034X-35; Fri, 26 Sep 2025 03:13:13 -0400
+	id 1v22eQ-0004N7-Eg; Fri, 26 Sep 2025 03:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v22ba-0008Qt-M9
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:11:00 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v22dx-0003S9-Ou
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:13:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v22bJ-00078o-CN
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:10:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v22dp-0007Qa-Le
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:13:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758870634;
+ s=mimecast20190719; t=1758870790;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=0K0LTKFIfWtWq/ncnJeZZBY7UP+S0QGSXyf3nqKABxc=;
- b=N1Dg73Gr7KyPpR8NqKUx3SAQ/91zc/RTpDVem8xbscHUF+tMCL0mDcuYtQDD0iQrQam1fA
- q13r9FK4neHUtZT9OriZavnuLahN84f1N8ufctlAE6ilNpGqF5RtkH1kC39n7ByYmuKsOn
- JQUvGQ8XKZi5NRJWPtnYqdzk0Jub3uQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/yX+KmMRxbPatjplaD00Um/Vz/TRqwgjub2EflmjWDY=;
+ b=VzAgG16eBjqg68m1hsuVgYHcf2dtUX3eOvgADFB9nvEgEKT96forsYYS0SByEhDQy4a226
+ IWyHXjrG+fKNGLg0B1T7Z+puc2C4hpoMd6tTGrroM8eA0GjI9cZfPckAP96iqT7t5a9ZG4
+ ze5P4GtCcusFEfm3vcH65iibiYpL8RM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-Bd4BnkXAN_SEmdYg6WI2zQ-1; Fri, 26 Sep 2025 03:10:32 -0400
-X-MC-Unique: Bd4BnkXAN_SEmdYg6WI2zQ-1
-X-Mimecast-MFC-AGG-ID: Bd4BnkXAN_SEmdYg6WI2zQ_1758870631
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45de07b831dso11560945e9.1
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 00:10:32 -0700 (PDT)
+ us-mta-444-bbrsaxouMqiR_h6GZk6Vlw-1; Fri, 26 Sep 2025 03:13:08 -0400
+X-MC-Unique: bbrsaxouMqiR_h6GZk6Vlw-1
+X-Mimecast-MFC-AGG-ID: bbrsaxouMqiR_h6GZk6Vlw_1758870787
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3fba0d9eb87so770944f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 00:13:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758870631; x=1759475431;
+ d=1e100.net; s=20230601; t=1758870787; x=1759475587;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=0K0LTKFIfWtWq/ncnJeZZBY7UP+S0QGSXyf3nqKABxc=;
- b=eAda40xEg0jB2EQJoC5t2NOWrYvzDpGC9bBLc7M6lkPTU6QhTIddpLB38Ij+7YnDqm
- pYuDRWwrWx6WLz+47vTGRbM7rpZH9QoNAsGZZlQZIlogNJS/8uOWHaGXUHNMR4kk11ER
- BwiiPdGy24F4eQoKkfuGDZTYjYRHxi8HJQa4Dwe74eD7wYzeqicL52M0HK1LNYYd/4Mw
- Y7+RyI9fRPGn7LYNtL7Ul1Zm1PeEXXjhR3aOSv8AG84fgNblCLByJr8b2A9AXgDMLejV
- NBE2fkmxv6VoIqEL39aO6/x6sUENRDsibxjULyfmyjjtMmii3T6EpLgDQ7g7dYt+zkrZ
- sYmQ==
+ bh=/yX+KmMRxbPatjplaD00Um/Vz/TRqwgjub2EflmjWDY=;
+ b=bbf9cPVSNoFzTKgJ+C5qvfv4AWZCi+bpRW/bGwTXdytUKgGOZaZZp4iB2gR8SjO+I5
+ iul1IYe0Q6mLtc5AvJZI9I1gRA2ub1H00Jf7KOxzNwzC6qkvGphJeUIbcRWYpGFZv9Ht
+ 5lxB9uV/r4ykD54pgI0hleQVgMkwNGiIAeTVuCT/L0JeFyPmxE3aS5qmEFyCsgLPQkTK
+ 2aDem/hL5Ba0xWojofztbBMFDRN+aXYphAo21T0zoS5Eu3E4Aow4Riri958SE8l3FHar
+ CECGOfQ6MG2dfvuzIBMyFmMS9gJT6L08RKxlnFbWJyhn/YBieBdbVEBUU3Dqtndlu1lT
+ tDaQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXQp4cTRgoVfWeuX3ZxQTC1/S8+YxQXWPUBHfmWEMs8b0b1eSxSTnXydvUgf5wh3MOMZwBFmvgc10Yr@nongnu.org
-X-Gm-Message-State: AOJu0YwDG6HYzqK2NNW9Ef3Cj8WTJ6goVfrRJ1LWaXb9w+tXv45TSBEo
- NxlmvFoL5l4l8QyXBUlnkBA7tDrV2qkuHrreGW/Hu2qlPijkAluOJlNMty5Ecp8Pr7Jxv+JFnr5
- JT+FoSNP0+soInNPh8HBBLOP9l+5+gt9fzdsMXdrsQ0FnDEM5s1qdx4dI
-X-Gm-Gg: ASbGncuOI2DTQ1Ukf7ENL+TaOYFgUNqk1TY1VRNfHpS1iD5pRHo0tlBtRjDaWsj1R0B
- R2QvC1rKIjlJim/ofm3wm4Gv42HOyUHCswwkc/+aNyeOvWoQvw5frbPaHZL6MKCwpc8+yigTB/W
- AMXvUIK84cmDUS1wgkn+SS8MB/7A0pc8mJVADOcAEtik+9MWKOVi3g8hJyPMKGklNtE1TuZd3XH
- 8kTL34QgvqACZEmOAxRGjBbyro8G4onO3TxHm9ASM7RSRcZBQzkO9sAM02WlAj39kREyQpKS4rh
- x8ESihPSZGrmGYb8iGaPpgLetjMBwiVvKCFk/5ldW6RjQsoZ/or/YGn9xgaT8y6wgTLNm027wZR
- D8CGHOw==
-X-Received: by 2002:a05:600c:8b5b:b0:46e:3dcb:d9a3 with SMTP id
- 5b1f17b1804b1-46e3dcbdc9bmr7845485e9.12.1758870631338; 
- Fri, 26 Sep 2025 00:10:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFC8ApxEEqCcyTQzXfYCRorE+Ba5GYsjFeBZSU5DNqZ1F0BFBhHw8m/J0DY3CYjBWx7oLaq+w==
-X-Received: by 2002:a05:600c:8b5b:b0:46e:3dcb:d9a3 with SMTP id
- 5b1f17b1804b1-46e3dcbdc9bmr7845105e9.12.1758870630881; 
- Fri, 26 Sep 2025 00:10:30 -0700 (PDT)
+ AJvYcCXliSim9pL68r6FtxssmoCPpsLh3mCCcn5VKnBuneGwOWR368IakPc5/aQnrYBzwkl2HuZBcAr5GnIb@nongnu.org
+X-Gm-Message-State: AOJu0Yz/PAqWvgEJGyKj0kTvybXt10qy6sHjd1Au/G11afblc5w29WHw
+ 9MEkVBRPQnI0teZrXJzWePAyQYAb2wdmhSet631hjrLIoJaU9i9vld10BOgeONMf9n4c7zTn2RC
+ /tAWKzbaiGtI+ZfDJ3JPi5QGIT+mXdfJFDXi2fud1et7i6FJo+px+yNn4
+X-Gm-Gg: ASbGnct8l2CO7BDrynlsDNjzTKUgKcM0+U8cqpxPkmM6l97CQs6cR0NvKyfc500BlVR
+ kNZej8uONdAGK2UjNQW4kJvDGMTMwzO35YjhsKtN4tIQs4eRdti1UAWt+ijuD/muGbjOG7sqd0l
+ 30p9AjEJ6/6Z5HTlpPu3XR+LBudmmHVS5PqxUIjl/sxyJvn3JTAFiWYmMcZngWDfGnsfj4S/RXh
+ fFeWx2kVnaqk2FLnBFlBRYBMCT7Ju45+eGj96jjTfMeewLWhid7OSqdBCsdze8iwHyhisBwtjUS
+ gUnTUBFl/wryb0opNjHzu6lTEENpV+yHiC8ob4LPSbUcOT26c2ixQtyILT1Mig++vca2cxx9L41
+ o5CQX7Q==
+X-Received: by 2002:a05:6000:2601:b0:400:1bbb:d279 with SMTP id
+ ffacd0b85a97d-40e4adc1653mr5841702f8f.39.1758870786634; 
+ Fri, 26 Sep 2025 00:13:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTjLgISIJHPFyyMUco+pZMscoC8TPVZ8hmaQgiQxj38p4gmvoj1f4a+oSJ6YnxzdhTTxfgUQ==
+X-Received: by 2002:a05:6000:2601:b0:400:1bbb:d279 with SMTP id
+ ffacd0b85a97d-40e4adc1653mr5841672f8f.39.1758870786194; 
+ Fri, 26 Sep 2025 00:13:06 -0700 (PDT)
 Received: from [192.168.0.7] (ltea-047-064-114-212.pools.arcor-ip.net.
  [47.64.114.212]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e33b562d8sm62795155e9.0.2025.09.26.00.10.29
+ ffacd0b85a97d-40fc9248f56sm6026653f8f.61.2025.09.26.00.13.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Sep 2025 00:10:30 -0700 (PDT)
-Message-ID: <650efc3c-26e5-46e7-bd3c-c186e443939d@redhat.com>
-Date: Fri, 26 Sep 2025 09:10:29 +0200
+ Fri, 26 Sep 2025 00:13:05 -0700 (PDT)
+Message-ID: <dd5e9a1a-a6a3-4cb0-bee4-49e7170ec760@redhat.com>
+Date: Fri, 26 Sep 2025 09:13:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/9] tests/functional: replace avocado process with
- subprocess
+Subject: Re: [PATCH v4 6/9] tests/functional: drop datadrainer class in
+ reverse debugging
 To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
  alex.bennee@linaro.org, berrange@redhat.com
 Cc: qemu-arm@nongnu.org, manos.pitsidianakis@linaro.org,
  peter.maydell@linaro.org
 References: <20250926051542.104432-1-gustavo.romero@linaro.org>
- <20250926051542.104432-6-gustavo.romero@linaro.org>
+ <20250926051542.104432-7-gustavo.romero@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250926051542.104432-6-gustavo.romero@linaro.org>
+In-Reply-To: <20250926051542.104432-7-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -137,9 +137,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,47 +158,17 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 26/09/2025 07.15, Gustavo Romero wrote:
 > From: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> The standard python subprocess.check_call method is better than
-> avocado.utils.process as it doesn't require stuffing all args
-> into a single string.
+> The reverse debugging test uses the avocado datadrainer class to
+> create a background thread that reads from the console socket and
+> dumps it via python logger.
+> 
+> Most tests log console output as a side effect of doing calls
+> to match strings, but this test never tries to match anything.
+> 
+> This isn't critical, so just drop the functionality.
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/functional/reverse_debugging.py | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/functional/reverse_debugging.py b/tests/functional/reverse_debugging.py
-> index f9a1d395f1..a7ff47cb90 100644
-> --- a/tests/functional/reverse_debugging.py
-> +++ b/tests/functional/reverse_debugging.py
-> @@ -11,6 +11,7 @@
->   # later.  See the COPYING file in the top-level directory.
->   import os
->   import logging
-> +from subprocess import check_output
->   
->   from qemu_test import LinuxKernelTest, get_qemu_img
->   from qemu_test.ports import Ports
-> @@ -100,7 +101,6 @@ def vm_get_icount(vm):
->   
->       def reverse_debugging(self, shift=7, args=None):
->           from avocado.utils import gdb
-> -        from avocado.utils import process
->   
->           logger = logging.getLogger('replay')
->   
-> @@ -111,8 +111,9 @@ def reverse_debugging(self, shift=7, args=None):
->           if qemu_img is None:
->               self.skipTest('Could not find "qemu-img", which is required to '
->                             'create the temporary qcow2 image')
-> -        cmd = '%s create -f qcow2 %s 128M' % (qemu_img, image_path)
-> -        process.run(cmd)
-> +        out = check_output([qemu_img, 'create', '-f', 'qcow2', image_path, '128M'],
-> +                           encoding='utf8')
-> +        logger.info("qemu-img: %s" % out)
->   
->           replay_path = os.path.join(self.workdir, 'replay.bin')
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
