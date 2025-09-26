@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796C5BA41AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD686BA426C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v293g-0006vi-Rx; Fri, 26 Sep 2025 10:04:24 -0400
+	id 1v293p-00077v-6Z; Fri, 26 Sep 2025 10:04:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293c-0006sz-TX
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:20 -0400
+ id 1v293k-0006xF-MS
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293P-0004sv-AZ
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:20 -0400
+ id 1v293c-0004uk-Bw
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895442;
+ s=mimecast20190719; t=1758895452;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IaduB1l9EVSWfjwC3wQO3lTWrvM0XkEeEU8nymRvCOk=;
- b=HMZDEFxcIPnPY8J3LUHSdq16BIogTZFN+dqBXbGRFa38P5AexQsi561xGZQqgahQVh8GY8
- qRf1wGJ3Wa4i6ut5Rbs/QyAq5miQtc83uG8dIXenhSS31lwmH3sOetDhu6qmC9DxdpNGSy
- vKEoMOexJrP5Ka/qfjvT6FOcWAzdFCs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Lg/hoDvOgBupiHUWGYJ7xqCBjjHA430ydslXyLpv5JA=;
+ b=G6EbyskiDj6Rqsd/B0lazhB9nwMiCpFNWMVnxjw6VYPjD3HtmTJ3/Jvrrpdu36+WDIkwhI
+ CwdqlMjduQvN3UgtlkLpPfq/e8qkCFXMCrJ3KFcMBi5tIBOYMp3ogJLHFWCwW7odXFbTOP
+ ImaNjVOR/WhHAehAAcc5tsoUrp+zq/I=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-295-ZWl2oFHiO1abbyBF9vcApg-1; Fri,
- 26 Sep 2025 10:03:58 -0400
-X-MC-Unique: ZWl2oFHiO1abbyBF9vcApg-1
-X-Mimecast-MFC-AGG-ID: ZWl2oFHiO1abbyBF9vcApg_1758895437
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-gjg6ipFTMDK9UZ1MNlJ0fw-1; Fri,
+ 26 Sep 2025 10:04:01 -0400
+X-MC-Unique: gjg6ipFTMDK9UZ1MNlJ0fw-1
+X-Mimecast-MFC-AGG-ID: gjg6ipFTMDK9UZ1MNlJ0fw_1758895440
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99220195E916; Fri, 26 Sep 2025 14:03:57 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B81FA1800370; Fri, 26 Sep 2025 14:04:00 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8228D195419F; Fri, 26 Sep 2025 14:03:54 +0000 (UTC)
+ id 1CBF81956095; Fri, 26 Sep 2025 14:03:57 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,9 +53,10 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 22/32] hw/vfio: mark all VFIO object classes as secure
-Date: Fri, 26 Sep 2025 15:01:33 +0100
-Message-ID: <20250926140144.1998694-23-berrange@redhat.com>
+Subject: [PATCH v2 23/32] hw/xen: mark all Xen related object types as being
+ secure
+Date: Fri, 26 Sep 2025 15:01:34 +0100
+Message-ID: <20250926140144.1998694-24-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -69,9 +70,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,131 +88,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VFIO subsystem is about securely passing host PCI devices
-to a guest, so all the classes should be presumed to be offering
-a security boundary.
+All Xen paravirtualized devices are intended to provide a host /
+guest security barrier, so mark all Xen object types as scure.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/vfio/ap.c        | 1 +
- hw/vfio/ccw.c       | 1 +
- hw/vfio/container.c | 2 ++
- hw/vfio/igd.c       | 1 +
- hw/vfio/iommufd.c   | 2 ++
- hw/vfio/pci.c       | 3 +++
- hw/vfio/spapr.c     | 1 +
- 7 files changed, 11 insertions(+)
+ hw/block/xen-block.c        | 3 +++
+ hw/char/xen_console.c       | 1 +
+ hw/i386/xen/xen_platform.c  | 1 +
+ hw/net/xen_nic.c            | 1 +
+ hw/xen/xen-bus.c            | 3 +++
+ hw/xen/xen-legacy-backend.c | 3 +++
+ hw/xen/xen_pt.c             | 1 +
+ 7 files changed, 13 insertions(+)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 7719f24579..811866876c 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -361,6 +361,7 @@ static const TypeInfo vfio_ap_info = {
-     .instance_size = sizeof(VFIOAPDevice),
-     .instance_init = vfio_ap_instance_init,
-     .class_init = vfio_ap_class_init,
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index 74de897c79..5112d8bdb3 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -699,6 +699,7 @@ static const TypeInfo xen_block_type_info = {
+     .parent = TYPE_XEN_DEVICE,
+     .instance_size = sizeof(XenBlockDevice),
+     .abstract = true,
++    .secure = true,
+     .class_size = sizeof(XenBlockDeviceClass),
+     .class_init = xen_block_class_init,
+ };
+@@ -740,6 +741,7 @@ static const TypeInfo xen_disk_type_info = {
+     .parent = TYPE_XEN_BLOCK_DEVICE,
+     .instance_size = sizeof(XenDiskDevice),
+     .class_init = xen_disk_class_init,
 +    .secure = true,
  };
  
- static void vfio_ap_type_init(void)
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 9560b8d851..bddeb5dffd 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -729,6 +729,7 @@ static const TypeInfo vfio_ccw_info = {
-     .instance_size = sizeof(VFIOCCWDevice),
-     .instance_init = vfio_ccw_instance_init,
-     .class_init = vfio_ccw_class_init,
+ static void xen_cdrom_unrealize(XenBlockDevice *blockdev)
+@@ -787,6 +789,7 @@ static const TypeInfo xen_cdrom_type_info = {
+     .parent = TYPE_XEN_BLOCK_DEVICE,
+     .instance_size = sizeof(XenCDRomDevice),
+     .class_init = xen_cdrom_class_init,
 +    .secure = true,
  };
  
- static void register_vfio_ccw_type(void)
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 030c6d3f89..a4d89cadcc 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -1265,10 +1265,12 @@ static const TypeInfo types[] = {
-         .instance_init = vfio_iommu_legacy_instance_init,
-         .instance_size = sizeof(VFIOContainer),
-         .class_init = vfio_iommu_legacy_class_init,
-+        .secure = true,
-     }, {
-         .name = TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO,
-         .parent = TYPE_HOST_IOMMU_DEVICE,
-         .class_init = hiod_legacy_vfio_class_init,
-+        .secure = true,
-     }
+ static void xen_block_register_types(void)
+diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+index 9c34a554bf..7ba2d82c0f 100644
+--- a/hw/char/xen_console.c
++++ b/hw/char/xen_console.c
+@@ -513,6 +513,7 @@ static const TypeInfo xen_console_type_info = {
+     .parent = TYPE_XEN_DEVICE,
+     .instance_size = sizeof(XenConsole),
+     .class_init = xen_console_class_init,
++    .secure = true,
  };
  
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 4bfa2e0fcd..53d7dea87e 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -312,6 +312,7 @@ static const TypeInfo vfio_pci_igd_lpc_bridge_info = {
-     .name = "vfio-pci-igd-lpc-bridge",
-     .parent = TYPE_PCI_DEVICE,
-     .class_init = vfio_pci_igd_lpc_bridge_class_init,
-+    .secure = true,
+ static void xen_console_register_types(void)
+diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
+index c8b852be0c..ec0084d6fb 100644
+--- a/hw/i386/xen/xen_platform.c
++++ b/hw/i386/xen/xen_platform.c
+@@ -604,6 +604,7 @@ static const TypeInfo xen_platform_info = {
+     .parent        = TYPE_PCI_DEVICE,
+     .instance_size = sizeof(PCIXenPlatformState),
+     .class_init    = xen_platform_class_init,
++    .secure        = true,
      .interfaces = (const InterfaceInfo[]) {
          { INTERFACE_CONVENTIONAL_PCI_DEVICE },
          { },
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 8c27222f75..2d6168a90e 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -958,10 +958,12 @@ static const TypeInfo types[] = {
-         .parent = TYPE_VFIO_IOMMU,
-         .instance_size = sizeof(VFIOIOMMUFDContainer),
-         .class_init = vfio_iommu_iommufd_class_init,
-+        .secure = true,
-     }, {
-         .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO,
-         .parent = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
-         .class_init = hiod_iommufd_vfio_class_init,
-+        .secure = true,
-     }
+diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
+index 34c6a1d0b0..eae29b4407 100644
+--- a/hw/net/xen_nic.c
++++ b/hw/net/xen_nic.c
+@@ -581,6 +581,7 @@ static const TypeInfo xen_net_type_info = {
+     .parent = TYPE_XEN_DEVICE,
+     .instance_size = sizeof(XenNetDev),
+     .class_init = xen_netdev_class_init,
++    .secure = true,
  };
  
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index bc0b4c4d56..f98384da93 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3673,6 +3673,7 @@ static const TypeInfo vfio_pci_base_dev_info = {
-     .parent = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(VFIOPCIDevice),
+ static void xen_net_register_types(void)
+diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+index 6bd2e546f6..1098156209 100644
+--- a/hw/xen/xen-bus.c
++++ b/hw/xen/xen-bus.c
+@@ -399,6 +399,7 @@ static const TypeInfo xen_bus_type_info = {
+     .instance_size = sizeof(XenBus),
+     .class_size = sizeof(XenBusClass),
+     .class_init = xen_bus_class_init,
++    .secure = true,
+     .interfaces = (const InterfaceInfo[]) {
+         { TYPE_HOTPLUG_HANDLER },
+         { }
+@@ -1122,6 +1123,7 @@ static const TypeInfo xen_device_type_info = {
+     .parent = TYPE_DEVICE,
+     .instance_size = sizeof(XenDevice),
      .abstract = true,
 +    .secure = true,
-     .class_init = vfio_pci_base_dev_class_init,
+     .class_size = sizeof(XenDeviceClass),
+     .class_init = xen_device_class_init,
+ };
+@@ -1136,6 +1138,7 @@ static const TypeInfo xen_bridge_type_info = {
+     .name = TYPE_XEN_BRIDGE,
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(XenBridge),
++    .secure = true,
+ };
+ 
+ static void xen_register_types(void)
+diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
+index 5ed53f8943..bc6c662678 100644
+--- a/hw/xen/xen-legacy-backend.c
++++ b/hw/xen/xen-legacy-backend.c
+@@ -648,6 +648,7 @@ static const TypeInfo xendev_type_info = {
+     .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
+     .class_init    = xendev_class_init,
+     .instance_size = sizeof(XenLegacyDevice),
++    .secure        = true,
+ };
+ 
+ static void xen_sysbus_class_init(ObjectClass *klass, const void *data)
+@@ -661,6 +662,7 @@ static const TypeInfo xensysbus_info = {
+     .name       = TYPE_XENSYSBUS,
+     .parent     = TYPE_BUS,
+     .class_init = xen_sysbus_class_init,
++    .secure     = true,
      .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
-@@ -3918,6 +3919,7 @@ static const TypeInfo vfio_pci_dev_info = {
-     .class_init = vfio_pci_dev_class_init,
-     .instance_init = vfio_instance_init,
-     .instance_finalize = vfio_instance_finalize,
+         { TYPE_HOTPLUG_HANDLER },
+         { }
+@@ -670,6 +672,7 @@ static const TypeInfo xensysbus_info = {
+ static const TypeInfo xensysdev_info = {
+     .name          = TYPE_XENSYSDEV,
+     .parent        = TYPE_SYS_BUS_DEVICE,
++    .secure        = true,
+ };
+ 
+ static void xenbe_register_types(void)
+diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+index 006b5b55f2..c3ffb95b2d 100644
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -1079,6 +1079,7 @@ static const TypeInfo xen_pci_passthrough_info = {
+     .instance_finalize = xen_pci_passthrough_finalize,
+     .class_init = xen_pci_passthrough_class_init,
+     .class_size = sizeof(XenPTDeviceClass),
 +    .secure = true,
- };
- 
- static const Property vfio_pci_dev_nohotplug_properties[] = {
-@@ -3954,6 +3956,7 @@ static const TypeInfo vfio_pci_nohotplug_dev_info = {
-     .parent = TYPE_VFIO_PCI,
-     .instance_size = sizeof(VFIOPCIDevice),
-     .class_init = vfio_pci_nohotplug_dev_class_init,
-+    .secure = true,
- };
- 
- static void register_vfio_pci_dev_type(void)
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index c41e4588d6..a926faa0aa 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -571,6 +571,7 @@ static const TypeInfo types[] = {
-         .parent = TYPE_VFIO_IOMMU_LEGACY,
-         .instance_size = sizeof(VFIOSpaprContainer),
-         .class_init = vfio_iommu_spapr_class_init,
-+        .secure = true,
-     },
- };
- 
+     .instance_init = xen_pci_passthrough_instance_init,
+     .interfaces = (const InterfaceInfo[]) {
+         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
 -- 
 2.50.1
 
