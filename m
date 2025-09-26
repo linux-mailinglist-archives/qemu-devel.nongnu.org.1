@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537FEBA2EFA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F9ABA2EFD
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:25:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23aq-0001vD-S5; Fri, 26 Sep 2025 04:14:18 -0400
+	id 1v23at-0001vK-CW; Fri, 26 Sep 2025 04:14:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23a3-00011R-S8; Fri, 26 Sep 2025 04:13:31 -0400
+ id 1v23aR-0001Hi-0B; Fri, 26 Sep 2025 04:13:52 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Zv-0000pd-DD; Fri, 26 Sep 2025 04:13:27 -0400
+ id 1v23a9-0000rZ-7u; Fri, 26 Sep 2025 04:13:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 877DB157D5E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 97002157D5F;
  Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 98808290C42;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AA5AE290C43;
  Fri, 26 Sep 2025 11:10:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Glenn Miles <milesg@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 22/60] hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
-Date: Fri, 26 Sep 2025 11:09:50 +0300
-Message-ID: <20250926081031.2214971-22-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 23/60] hw/char/max78000_uart: Destroy FIFO on deinit
+Date: Fri, 26 Sep 2025 11:09:51 +0300
+Message-ID: <20250926081031.2214971-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -62,60 +61,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In pca9554_set_pin() we have a string property which we parse in
-order to set some non-string fields in the device state.  So we call
-visit_type_str(), passing it the address of the local variable
-state_str.
+In the max78000_uart we create a FIFO in the instance_init function,
+but we don't destroy it on deinit, so ASAN reports a leak in the
+device-introspect-test:
 
-visit_type_str() will allocate a new copy of the string; we
-never free this string, so the result is a memory leak, detected
-by ASAN during a "make check" run:
+    #0 0x561cc92d5de3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (BuildId: 98fdf9fc85c3beaeca8eda0be8412f1e11b9c6ad)
+    #1 0x70cbf2afab09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
+    #2 0x561ccc4c884d in fifo8_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../util/fifo8.c:27:18
+    #3 0x561cc9744ec9 in max78000_uart_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/char/max78000_uart.c:241:5
 
-Direct leak of 5 byte(s) in 1 object(s) allocated from:
-    #0 0x5d605212ede3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (
-BuildId: 3d5373c89317f58bfcd191a33988c7347714be14)
-    #1 0x7f7edea57b09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b68282
-9a6913cf682d75)
-    #2 0x7f7edea6d4d8 in g_strdup (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x784d8) (BuildId: 1eb6131419edb83b2178b68282
-9a6913cf682d75)
-    #3 0x5d6055289a91 in g_strdup_inline /usr/include/glib-2.0/glib/gstrfuncs.h:321:10
-    #4 0x5d6055289a91 in qobject_input_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qo
-bject-input-visitor.c:542:12
-    #5 0x5d605528479c in visit_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qapi-visit
--core.c:349:10
-    #6 0x5d60528bdd87 in pca9554_set_pin /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/gpio/pca9554.c:179:10
-    #7 0x5d60549bcbbb in object_property_set /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1450:5
-    #8 0x5d60549d2055 in object_property_set_qobject /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/qom-qobject.c:28:10
-    #9 0x5d60549bcdf1 in object_property_set_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1458:15
-    #10 0x5d605439d077 in gb200nvl_bmc_i2c_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:1267:5
-    #11 0x5d60543a3bbc in aspeed_machine_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:493:9
-
-Make the state_str g_autofree, so that we will always free
-it, on both error-exit and success codepaths.
+Add an instance_finalize method to destroy the FIFO.
 
 Cc: qemu-stable@nongnu.org
-Fixes: de0c7d543bca ("misc: Add a pca9554 GPIO device model")
+Fixes: d447e4b70295 ("MAX78000: UART Implementation")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250821154459.2417976-1-peter.maydell@linaro.org>
+Message-ID: <20250821154358.2417744-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 3284d1c07cfd8d42aa27d1cf83d3e65fcd62e35e)
+(cherry picked from commit ac6b124180f7698084ef2a59282e8fa65a45f23b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/gpio/pca9554.c b/hw/gpio/pca9554.c
-index de3f883aee..eac0d23be3 100644
---- a/hw/gpio/pca9554.c
-+++ b/hw/gpio/pca9554.c
-@@ -174,7 +174,7 @@ static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
-     PCA9554State *s = PCA9554(obj);
-     int pin, rc, val;
-     uint8_t state, mask;
--    char *state_str;
-+    g_autofree char *state_str = NULL;
+diff --git a/hw/char/max78000_uart.c b/hw/char/max78000_uart.c
+index 19506d52ef..c76c0e759b 100644
+--- a/hw/char/max78000_uart.c
++++ b/hw/char/max78000_uart.c
+@@ -247,6 +247,12 @@ static void max78000_uart_init(Object *obj)
+     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
+ }
  
-     if (!visit_type_str(v, name, &state_str, errp)) {
-         return;
++static void max78000_uart_finalize(Object *obj)
++{
++    Max78000UartState *s = MAX78000_UART(obj);
++    fifo8_destroy(&s->rx_fifo);
++}
++
+ static void max78000_uart_realize(DeviceState *dev, Error **errp)
+ {
+     Max78000UartState *s = MAX78000_UART(dev);
+@@ -274,6 +280,7 @@ static const TypeInfo max78000_uart_info = {
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(Max78000UartState),
+     .instance_init = max78000_uart_init,
++    .instance_finalize = max78000_uart_finalize,
+     .class_init    = max78000_uart_class_init,
+ };
+ 
 -- 
 2.47.3
 
