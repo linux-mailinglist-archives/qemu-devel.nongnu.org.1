@@ -2,46 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7370ABA2EE2
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCD5BA2F3F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:30:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23gp-0002wo-Bq; Fri, 26 Sep 2025 04:20:27 -0400
+	id 1v23mi-0004gE-7n; Fri, 26 Sep 2025 04:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23g2-00022y-Cl; Fri, 26 Sep 2025 04:19:41 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v23mX-0004YQ-FI
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 04:26:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23fv-0002KY-CX; Fri, 26 Sep 2025 04:19:37 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A8CA0157D84;
- Fri, 26 Sep 2025 11:10:35 +0300 (MSK)
-Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BD7ED290C68;
- Fri, 26 Sep 2025 11:10:36 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 60/60] tests/tcg/multiarch: Add tb-link test
-Date: Fri, 26 Sep 2025 11:10:28 +0300
-Message-ID: <20250926081031.2214971-60-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
-References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v23mJ-000483-5T
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 04:26:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758875159;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3fkcbdRvFe5rP5fks2YyE2LtbpGvYVXP01HheqHl07M=;
+ b=ZECll+7U6+pjqAkn2o/fUeNMm30//f3OW4mcpbTdiTcXWqAoLmc4WoMF4YLGNEyTFg/ENv
+ 7RBcUCYV7oVBcfxO11/yMpq1lYc58BU1Qb2Hjl74fVgQtrTz8xuHn60L8iRP4j8YS/WOkI
+ TmLmlqQ5iC808pCul+6rrSLTA1/7NK8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-w1pDSGV1OZCxXlddtubTyA-1; Fri,
+ 26 Sep 2025 04:25:51 -0400
+X-MC-Unique: w1pDSGV1OZCxXlddtubTyA-1
+X-Mimecast-MFC-AGG-ID: w1pDSGV1OZCxXlddtubTyA_1758875151
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DFB931955F27; Fri, 26 Sep 2025 08:25:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.175])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7BA2180044F; Fri, 26 Sep 2025 08:25:43 +0000 (UTC)
+Date: Fri, 26 Sep 2025 09:25:36 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH 7.2.x] use fedora:37 for python container instead of
+ :latest
+Message-ID: <aNZN6bON0bckydql@redhat.com>
+References: <20250926073120.2212284-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250926073120.2212284-1-mjt@tls.msk.ru>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,102 +82,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On Fri, Sep 26, 2025 at 10:31:19AM +0300, Michael Tokarev wrote:
+> More recent fedora does not have our minimum python versions
+> anymore.  Stick with the most common fedora version used in
+> 7.2.x in other places, which is 37.  This way, python tests
+> works again.
+> 
+> This is a 7.2-specific change, not aimed for the master branch.
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>  tests/docker/dockerfiles/python.docker | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit e13e1195db8af18e149065a59351ea85215645bb)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 8dc65d7a06..f5b4d2b813 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -46,6 +46,8 @@ vma-pthread: LDFLAGS+=-pthread
- sigreturn-sigmask: CFLAGS+=-pthread
- sigreturn-sigmask: LDFLAGS+=-pthread
- 
-+tb-link: LDFLAGS+=-lpthread
-+
- # GCC versions 12/13/14/15 at least incorrectly complain about
- # "'SHA1Transform' reading 64 bytes from a region of size 0"; see the gcc bug
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106709
-diff --git a/tests/tcg/multiarch/tb-link.c b/tests/tcg/multiarch/tb-link.c
-new file mode 100644
-index 0000000000..4e40306fa1
---- /dev/null
-+++ b/tests/tcg/multiarch/tb-link.c
-@@ -0,0 +1,67 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Verify that a single TB spin-loop is properly invalidated,
-+ * releasing the thread from the spin-loop.
-+ */
-+
-+#include <assert.h>
-+#include <sys/mman.h>
-+#include <pthread.h>
-+#include <stdint.h>
-+#include <stdbool.h>
-+#include <unistd.h>
-+#include <sched.h>
-+
-+
-+#ifdef __x86_64__
-+#define READY   0x000047c6      /* movb $0,0(%rdi) */
-+#define LOOP    0xfceb9090      /* 1: nop*2; jmp 1b */
-+#define RETURN  0x909090c3      /* ret; nop*3 */
-+#define NOP     0x90909090      /* nop*4 */
-+#elif defined(__aarch64__)
-+#define READY   0x3900001f      /* strb wzr,[x0] */
-+#define LOOP    0x14000000      /* b . */
-+#define RETURN  0xd65f03c0      /* ret */
-+#define NOP     0xd503201f      /* nop */
-+#elif defined(__riscv)
-+#define READY   0x00050023      /* sb zero, (a0) */
-+#define LOOP    0x0000006f      /* jal zero, #0 */
-+#define RETURN  0x00008067      /* jalr zero, ra, 0 */
-+#define NOP     0x00000013      /* nop */
-+#endif
-+
-+
-+int main()
-+{
-+#ifdef READY
-+    int tmp;
-+    pthread_t thread_id;
-+    bool hold = true;
-+    uint32_t *buf;
-+
-+    buf = mmap(NULL, 3 * sizeof(uint32_t),
-+               PROT_READ | PROT_WRITE | PROT_EXEC,
-+               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    assert(buf != MAP_FAILED);
-+
-+    buf[0] = READY;
-+    buf[1] = LOOP;
-+    buf[2] = RETURN;
-+
-+    alarm(2);
-+
-+    tmp = pthread_create(&thread_id, NULL, (void *(*)(void *))buf, &hold);
-+    assert(tmp == 0);
-+
-+    while (hold) {
-+        sched_yield();
-+    }
-+
-+    buf[1] = NOP;
-+    __builtin___clear_cache(&buf[1], &buf[2]);
-+
-+    tmp = pthread_join(thread_id, NULL);
-+    assert(tmp == 0);
-+#endif
-+    return 0;
-+}
+
+With regards,
+Daniel
 -- 
-2.47.3
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
