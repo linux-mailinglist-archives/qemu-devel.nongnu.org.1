@@ -2,85 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34AFBA2F78
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3666FBA2F8D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:37:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23p5-0006v7-Lt; Fri, 26 Sep 2025 04:28:59 -0400
+	id 1v23ue-0005ej-Sz; Fri, 26 Sep 2025 04:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1v23oy-0006mN-Pz
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 04:28:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v23uI-0005Wi-ME
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 04:34:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1v23of-0004U6-NX
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 04:28:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v23u9-0005cP-Un
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 04:34:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758875303;
+ s=mimecast20190719; t=1758875646;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uXG7m5KDjP1Is+bTNzxNlxebMl2kXve7KKE48SCW8rI=;
- b=UC3ccL/AKKRn0Oz4TgAPPWlxpJacZh94qzNU4tCp1S9akdPI61x6a+ci6LPd2tgpGD2Yih
- 0WqEUIBvHsxdehq5d//Sxe+wP8cfMPsp2ZAi9UL0pUsFB7WoPOSzTpEYCpk41Pp8hlmlEY
- ubnGRZHo/JyfgX7yToiUDBFthXzSQq0=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=8mZE2FYJMCgXiYZB8/8ECtLx0/lede0Tr0e9hP5BoZE=;
+ b=V5PltzNT53aaL9lGJTRTg0kbFezX1USB/mR4BRigSH8ca3uwq8atS5cEf4itOf5BI7PZ7P
+ XI3nbCx73kVNy2x4DYMOuCsAl3kBmJ3Y2DOtvd1duJPtcEw7fSrUjAZgCeb4c3PLlZjIwR
+ D85flwR2B33WD+iWH7lz/Sii3CEK3W0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-hVoT80cMOj-BXpsHk5suHg-1; Fri, 26 Sep 2025 04:28:20 -0400
-X-MC-Unique: hVoT80cMOj-BXpsHk5suHg-1
-X-Mimecast-MFC-AGG-ID: hVoT80cMOj-BXpsHk5suHg_1758875299
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-26985173d8eso36571115ad.1
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 01:28:20 -0700 (PDT)
+ us-mta-272-g5s-dFfROkGHVzbO58G2Hw-1; Fri, 26 Sep 2025 04:34:05 -0400
+X-MC-Unique: g5s-dFfROkGHVzbO58G2Hw-1
+X-Mimecast-MFC-AGG-ID: g5s-dFfROkGHVzbO58G2Hw_1758875644
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3f93db57449so918286f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 01:34:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758875299; x=1759480099;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uXG7m5KDjP1Is+bTNzxNlxebMl2kXve7KKE48SCW8rI=;
- b=QnCAS6QmoT15pDo62+atiDRflXn0i/iJI+iRpWhAxSF4moPQCfoiTVhYLpwr1ktin7
- GcS/VWU8OnViSQV7SFoHfpSmswv6iJ8UHiUm9jiQzQFH/WkE7QOxLxl1cyaGDmIODlz9
- z7oUdhPizfmndRzAO1OAbQm3HkQ+eb+b5dmvPvs0JPUu/LliXxQiH6sV+DI0GR9Ip7cJ
- qLPlqs3C9oCtKA6mZ3ZC4h7uJoROvpooqt9QpwV17QBTEv0ER7g1deVMwf+865CNuAnZ
- 58+/G11JmhgarHDrSttTrdnPZLraUAgoNUHwm7eEqko7mpFB+hDT48symQX8uOkIu/eF
- yoZg==
-X-Gm-Message-State: AOJu0YzSMZimMypMQE3m4l5ivrGP6k/IRWIMnxLIKi89JlEdMrjLnbPc
- kio+2OlctIV/UgBGowHWUL/8txygfZWcePLVF8/qtvFTeyYSl3fFdoUP9Czvh92L+6ca0RPki0K
- 2dt8isNAm6Uur+8vQdxACr8Yj8rWVnf6fZnyVU2M4wWLRifG/IStWTj/9UhNLBpVm2EwP54gqfR
- fXjjyEj5MtRP7LBrZbLD9E3sNBks1f1nieXGPm+Ug=
-X-Gm-Gg: ASbGncv5F5dLmJJPKmlhhQ7IrfIoYvdgGvPc7xHZbFa2SLQa6GNwoVI6I87uYqPXk1w
- 8FeCfNrrLFcA170/qgZVPF6cajK+fb7ZBnk6orlJTHpllVIoM0EOYv5xxUUHlfF0TnQdEwa+f8A
- fRjBxQE0KJKzc9/C2c
-X-Received: by 2002:a17:903:b8f:b0:271:7eba:a49 with SMTP id
- d9443c01a7336-27ed49dd8bcmr72765875ad.19.1758875298799; 
- Fri, 26 Sep 2025 01:28:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/MIeHiBUDw6vvecvv8sqQyTFdnM9y1D/SSx8aO0/0sTA0FSktW3ML3qY6P9wJ0kTYgtrKG5mp3VejdRWoeF8=
-X-Received: by 2002:a17:903:b8f:b0:271:7eba:a49 with SMTP id
- d9443c01a7336-27ed49dd8bcmr72765585ad.19.1758875298436; Fri, 26 Sep 2025
- 01:28:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758875644; x=1759480444;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8mZE2FYJMCgXiYZB8/8ECtLx0/lede0Tr0e9hP5BoZE=;
+ b=cWe3wThEQZs41rmSMs3m/md5hUCrno9tSLtSiHkjRaSKGvAbhrWOM/TDweCd7KWAqK
+ OV5o0Cg0Qrfupk64gU9jeOb9ztht1M2gxZoIanHCLIHXuSn40ssYVAQdvu97qM+bxrTN
+ LtbncUsVfnMbz39u2jDaSlc5hHw7GyvKsyb1nsP6Wk9MsuajOZotICMBBwdwXf8X2eKB
+ U5saGuhcbubC/XmmPo1Q7h3RUiVJy5lB6nQS983XCbSmsT65NUq2X2a2ClEsdVAnyWh2
+ j14e/FZwA4PkrV4sVb9pkXj/tol0yQ2y8Uzmw0ex6IoR7MLTVTOQILsjiJTqI6J5M1L1
+ 7IGw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWAgCoz2pEqtY4oAgYc4Z4cDIQbcu3GgKgkL6RXKs4QzKORhMUFXdd76jqbx12Otl9NOIF+s9cWURc9@nongnu.org
+X-Gm-Message-State: AOJu0Yz7iXwQKGnx2cmovQoR9uYcoJK9jqRBELF2TMUpQUrV0fP08m7m
+ RjhZPNu+k7hUH82eJBBPB+G6q/Kk9nZCiJhgdiBRwqpGxCacc256MpaFgQXIympq9dq8nMvT70Y
+ BO88mhCxxVmx/Q/EHVPwiQaIPXoNErAI0aQxfDRB6+kPo7bP1cRXpjp44
+X-Gm-Gg: ASbGncs0VYCbPp86NfzhhgmoaC0scU0+VSmWFpl9hB7Ya4qwB1fR9yH32Lz0BpHqnQj
+ EED++hvN8fyYKoqcd+cF2/w9xvqA0eMjHHp4Wgv8OFytKTw1sIk7ywwsUOQgISJT6U12rtx9pCt
+ WFLmqUjz40s/caPkN4J1AQvzfU+rWzdJ9rDBOuJpBrq9TOnt5Ps+ftVzXgU0mzEfCAlpAAwTs3e
+ bYfihxPaD9+m9MC6T5zSH2pSVXRFmEFJOPCpjXChECvzSdbtksrFsF5Nvi7Wi+mmROI3LZ82Jmh
+ xcuJPxJggnZE+cUe3udpj7ww1GoxaV17UTJT4PXiWfNYUbtbMYKglzyI66Di17aSD8SVbxbhA3i
+ jy98WGg==
+X-Received: by 2002:a05:6000:288d:b0:3f4:a9f5:c10e with SMTP id
+ ffacd0b85a97d-40e4adc0ffdmr5799189f8f.36.1758875643689; 
+ Fri, 26 Sep 2025 01:34:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGaA9o+kshjHg2RcscH862m44tXCVgHqzMd/fF4fpm1LSKSegx2ot1LQNMbkLJSzPW7E5MP2w==
+X-Received: by 2002:a05:6000:288d:b0:3f4:a9f5:c10e with SMTP id
+ ffacd0b85a97d-40e4adc0ffdmr5799166f8f.36.1758875643314; 
+ Fri, 26 Sep 2025 01:34:03 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-114-212.pools.arcor-ip.net.
+ [47.64.114.212]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fc9248f56sm6285673f8f.61.2025.09.26.01.34.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Sep 2025 01:34:02 -0700 (PDT)
+Message-ID: <5aefdfa3-4b8b-4512-a6a4-1a1684352d0f@redhat.com>
+Date: Fri, 26 Sep 2025 10:34:01 +0200
 MIME-Version: 1.0
-References: <20250910115420.1012191-1-aesteve@redhat.com>
-In-Reply-To: <20250910115420.1012191-1-aesteve@redhat.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Fri, 26 Sep 2025 10:28:07 +0200
-X-Gm-Features: AS18NWBRFOGot9vc9s-7qnpfd0h8ELIl4cGYG5Z5ZjQu-BCaQR7Fgh3_OxdyC7o
-Message-ID: <CADSE00K1zU9EeHYRCXie=i=jz55YLzExXdJ5_Ng6sH2w0fySVQ@mail.gmail.com>
-Subject: Re: [PATCH v8 0/7] vhost-user: Add SHMEM_MAP/UNMAP requests
-To: qemu-devel@nongnu.org
-Cc: stevensd@chromium.org, dbassey@redhat.com, 
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- mst@redhat.com, slp@redhat.com, 
- hi@alyssa.is, stefanha@redhat.com, Fabiano Rosas <farosas@suse.de>, 
- Stefano Garzarella <sgarzare@redhat.com>, jasowang@redhat.com, david@redhat.com,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/9] tests/functional: Re-activate the check-venv target
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org, berrange@redhat.com
+Cc: qemu-arm@nongnu.org, manos.pitsidianakis@linaro.org,
+ peter.maydell@linaro.org
+References: <20250926051542.104432-1-gustavo.romero@linaro.org>
+ <20250926051542.104432-2-gustavo.romero@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250926051542.104432-2-gustavo.romero@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -88,8 +137,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,98 +154,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 10, 2025 at 1:54=E2=80=AFPM Albert Esteve <aesteve@redhat.com> =
-wrote:
->
-> Hi all,
->
-> v7->v8
-> - Unified VhostUserShmemObject and VirtioSharedMemoryMapping
-> - Refined shmem_obj lifecycle by transferring ownership
-> - Other small improvements
-> v6->v7
-> - Fixed vhost_user_shmem_object_new to use
->   memory_region_init_ram_from_fd as before
-> v5->v6
-> - Added intermediate QOM object to manage shared MemoryRegion lifecycle
->   with reference counting, and automatic cleanup
-> - Resolved BAR conflict, change from 2 to 3 to avoid conflict with
->   `modern-pio-notify=3Don`
-> - Added SHMEM_CONFIG validation in vhost-user-test
-> - Changed VirtSharedMemory -> VirtioSharedMemory
-> - Changed MappedMemoryRegion -> VirtioSharedMemoryMapping
-> - Changed from heap-allocated MemoryRegion *mr to embedded MemoryRegion
->   mr in VirtioSharedMemory structure to eliminate memory leaks and
->   simplify cleanup
-> - Fixed VirtioSharedMemory initialization and cleanup with
->   memory_region_init() and object_unparent()
-> - Other minor fixes, typos, and updates.
->
-> This patch series implements dynamic fd-backed memory mapping support
-> for vhost-user backends, enabling backends to dynamically request memory
-> mappings and unmappings during runtime through the new
-> VHOST_USER_BACKEND_SHMEM_MAP/UNMAP protocol messages.
->
-> This feature benefits various VIRTIO devices that require dynamic shared
-> memory management, including virtiofs (for DAX mappings), virtio-gpu
-> (for resource sharing), and the recently standardized virtio-media.
->
-> The implementation introduces a QOM-based architecture for managing
-> shared memory lifecycle:
->
-> - VirtioSharedMemoryMapping: an intermediate object that manages
->   individual memory mappings by acting as generic container for regions
->   declared in any vhost-user device type
-> - Dynamic Mapping: backends can request mappings via SHMEM_MAP messages,
->   with the frontend creating MemoryRegions from the provided file
->   descriptors and adding them as subregions
->
-> When a SHMEM_MAP request is received, the frontend:
-> 1. Creates VirtioSharedMemoryMapping to manage the mapping lifecycle
-> 2. Maps the provided fd with memory_region_init_ram_from_fd()
-> 3. Creates a MemoryRegion backed by the mapped memory
-> 4. Adds it as a subregion of the appropiate VIRTIO Shared Memory Region
->
-> The QOM reference counting ensures automatic cleanup when mappings are
-> removed or the device is destroyed.
->
-> This patch also includes:
-> - VHOST_USER_GET_SHMEM_CONFIG: a new frontend request allowing generic
->   vhost-user devices to query shared memory configuration from backends
->   at device initialization, enabling the generic vhost-user-device
->   frontend to work with any backend regardless of specific shared memory
->   requirements.
+On 26/09/2025 07.15, Gustavo Romero wrote:
+> Add check-venv target as a dependency for the functional tests. This
+> causes Python modules listed in pythondeps.toml, under the testdeps
+> group, to be installed when 'make check-functional' is executed to
+> prepare and run the functional tests.
+> 
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Suggested-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/Makefile.include | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/Makefile.include b/tests/Makefile.include
+> index 3538c0c740..d012a9b25d 100644
+> --- a/tests/Makefile.include
+> +++ b/tests/Makefile.include
+> @@ -109,7 +109,7 @@ $(FUNCTIONAL_TARGETS):
+>   	@$(MAKE) SPEED=thorough $(subst -functional,-func,$@)
+>   
+>   .PHONY: check-functional
+> -check-functional:
+> +check-functional: check-venv
 
-Small bump to avoid this patch series falling too much.
+I just noticed that there's still a problem: If you run "make 
+check-functional-aarch64" immediately after configuring + compiling QEMU in 
+a fresh folder for the first time, the functional tests fail with:
 
->
-> The implementation has been tested with rust-vmm based backends and
-> includes SHMEM_CONFIG QTest validation.
->
-> Albert Esteve (7):
->   vhost-user: Add VirtIO Shared Memory map request
->   vhost_user.rst: Align VhostUserMsg excerpt members
->   vhost_user.rst: Add SHMEM_MAP/_UNMAP to spec
->   vhost_user: Add frontend get_shmem_config command
->   vhost_user.rst: Add GET_SHMEM_CONFIG message
->   qmp: add shmem feature map
->   vhost-user-device: Add shared memory BAR
->
->  docs/interop/vhost-user.rst               | 101 +++++++++
->  hw/virtio/vhost-user-base.c               |  47 +++-
->  hw/virtio/vhost-user-device-pci.c         |  34 ++-
->  hw/virtio/vhost-user.c                    | 249 +++++++++++++++++++++-
->  hw/virtio/virtio-qmp.c                    |   3 +
->  hw/virtio/virtio.c                        | 198 +++++++++++++++++
->  include/hw/virtio/vhost-backend.h         |  10 +
->  include/hw/virtio/vhost-user.h            |   1 +
->  include/hw/virtio/virtio.h                | 138 ++++++++++++
->  subprojects/libvhost-user/libvhost-user.c |  70 ++++++
->  subprojects/libvhost-user/libvhost-user.h |  54 +++++
->  11 files changed, 898 insertions(+), 7 deletions(-)
->
-> --
-> 2.49.0
->
+ModuleNotFoundError: No module named 'pygdbmi'
+
+We either need to add dependencies to the check-functional-<arch> targets, 
+too, or we have to make sure that tests still get properly skipped in the 
+case that pygdbmi has not been installed into the venv yet.
+
+  Thomas
 
 
