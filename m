@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DBDBA412C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 316D2BA4092
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:06:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2947-0007Xi-Vb; Fri, 26 Sep 2025 10:04:52 -0400
+	id 1v2949-0007kW-Es; Fri, 26 Sep 2025 10:04:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293u-0007MN-Mu
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:39 -0400
+ id 1v293y-0007Qc-6d
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v293l-0004wl-Lj
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:37 -0400
+ id 1v293m-0004xN-NK
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895465;
+ s=mimecast20190719; t=1758895468;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2MA67hwgmOVSUjbcZ6+Q25GN6MEzWgtJgiJNA+1UWhc=;
- b=LOL1I4Jctp6UHlyoGw+LoZ4NuFAKMI+FqNt05SAreLPXoooa0Y0oyxDXphQ2+a0aBKP5fq
- axu3AyodO/mJHj9UXJOH3Cq3CSrsz4fJYqt6RZt/h5IJi9+tdgWE/SlkOCFPDTeSF2vmgy
- KiZKCvSWsvg4MT2Wpd0S+muAAYn7vOA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=FSI4koEj6hTiFW4jnJoIN1bQ8wVMLP2Vge1rchVPfvU=;
+ b=AytI5zL3ZC1nwhg3I8NaRGXLD7HcpOH+TlkmQq4yNPhPSK99ZMUokRCSyBifm5FrbPe4Q9
+ UtjhNvx7QLKrPD+C9LvS9iKJzzp8LLRkOKbQUyJO12PeFab/7thg+4nOQ1KCZnMa3ccAOo
+ iZC8JVHn92uf4VrzfDSmemtN14pys+Y=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-vPG8kEPgMGeSOpgJFq4N8Q-1; Fri,
- 26 Sep 2025 10:04:22 -0400
-X-MC-Unique: vPG8kEPgMGeSOpgJFq4N8Q-1
-X-Mimecast-MFC-AGG-ID: vPG8kEPgMGeSOpgJFq4N8Q_1758895461
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-2b71tKyLOYi4bilypwR__A-1; Fri,
+ 26 Sep 2025 10:04:26 -0400
+X-MC-Unique: 2b71tKyLOYi4bilypwR__A-1
+X-Mimecast-MFC-AGG-ID: 2b71tKyLOYi4bilypwR__A_1758895465
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E1AF1800294; Fri, 26 Sep 2025 14:04:21 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C377119560B5; Fri, 26 Sep 2025 14:04:25 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AA59C1956095; Fri, 26 Sep 2025 14:04:17 +0000 (UTC)
+ id DF84B1956095; Fri, 26 Sep 2025 14:04:21 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 28/32] hw/ide: mark ICH9 and ide-hd/ide-cd as secure
-Date: Fri, 26 Sep 2025 15:01:39 +0100
-Message-ID: <20250926140144.1998694-29-berrange@redhat.com>
+Subject: [PATCH v2 29/32] hw: mark test/demo devices as insecure
+Date: Fri, 26 Sep 2025 15:01:40 +0100
+Message-ID: <20250926140144.1998694-30-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -69,8 +69,7 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,56 +86,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These have a long history of usage in virtualization scenarios on
-x86, for OS which lack modern virtio drivers for storage, and thus
-must be considered secure.
+These devices are either intended for use by the test suite,
+or as a demonstration for how to write devices. None of them
+should be used for real guest workload deployments.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/ide/ich.c     | 1 +
- hw/ide/ide-dev.c | 3 +++
- 2 files changed, 4 insertions(+)
+ hw/hyperv/hyperv_testdev.c | 1 +
+ hw/misc/edu.c              | 1 +
+ hw/misc/pc-testdev.c       | 1 +
+ hw/misc/pci-testdev.c      | 1 +
+ 4 files changed, 4 insertions(+)
 
-diff --git a/hw/ide/ich.c b/hw/ide/ich.c
-index b00987f08d..c7d50a15c1 100644
---- a/hw/ide/ich.c
-+++ b/hw/ide/ich.c
-@@ -198,6 +198,7 @@ static const TypeInfo ich_ahci_info = {
-     .instance_size = sizeof(AHCIPCIState),
-     .instance_init = pci_ich9_ahci_init,
-     .class_init    = ich_ahci_class_init,
-+    .secure        = true,
+diff --git a/hw/hyperv/hyperv_testdev.c b/hw/hyperv/hyperv_testdev.c
+index 2d4a63693b..e31df31207 100644
+--- a/hw/hyperv/hyperv_testdev.c
++++ b/hw/hyperv/hyperv_testdev.c
+@@ -316,6 +316,7 @@ static const TypeInfo hv_test_dev_info = {
+     .parent         = TYPE_ISA_DEVICE,
+     .instance_size  = sizeof(HypervTestDev),
+     .class_init     = hv_test_dev_class_init,
++    .secure         = false,
+ };
+ 
+ static void hv_test_dev_register_types(void)
+diff --git a/hw/misc/edu.c b/hw/misc/edu.c
+index cece633e11..8b7c8b9467 100644
+--- a/hw/misc/edu.c
++++ b/hw/misc/edu.c
+@@ -436,6 +436,7 @@ static const TypeInfo edu_types[] = {
+         .instance_size = sizeof(EduState),
+         .instance_init = edu_instance_init,
+         .class_init    = edu_class_init,
++        .secure        = false,
+         .interfaces    = (const InterfaceInfo[]) {
+             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+             { },
+diff --git a/hw/misc/pc-testdev.c b/hw/misc/pc-testdev.c
+index 67c486f347..bae405b687 100644
+--- a/hw/misc/pc-testdev.c
++++ b/hw/misc/pc-testdev.c
+@@ -206,6 +206,7 @@ static const TypeInfo testdev_info = {
+     .parent         = TYPE_ISA_DEVICE,
+     .instance_size  = sizeof(PCTestdev),
+     .class_init     = testdev_class_init,
++    .secure         = false,
+ };
+ 
+ static void testdev_register_types(void)
+diff --git a/hw/misc/pci-testdev.c b/hw/misc/pci-testdev.c
+index ba71c5069f..22ca87722f 100644
+--- a/hw/misc/pci-testdev.c
++++ b/hw/misc/pci-testdev.c
+@@ -353,6 +353,7 @@ static const TypeInfo pci_testdev_info = {
+     .parent        = TYPE_PCI_DEVICE,
+     .instance_size = sizeof(PCITestDevState),
+     .class_init    = pci_testdev_class_init,
++    .secure        = false,
      .interfaces = (const InterfaceInfo[]) {
          { INTERFACE_CONVENTIONAL_PCI_DEVICE },
          { },
-diff --git a/hw/ide/ide-dev.c b/hw/ide/ide-dev.c
-index 5d478588c6..f555d0fb04 100644
---- a/hw/ide/ide-dev.c
-+++ b/hw/ide/ide-dev.c
-@@ -214,6 +214,7 @@ static const TypeInfo ide_hd_info = {
-     .parent        = TYPE_IDE_DEVICE,
-     .instance_size = sizeof(IDEDrive),
-     .class_init    = ide_hd_class_init,
-+    .secure        = true,
- };
- 
- static const Property ide_cd_properties[] = {
-@@ -236,6 +237,7 @@ static const TypeInfo ide_cd_info = {
-     .parent        = TYPE_IDE_DEVICE,
-     .instance_size = sizeof(IDEDrive),
-     .class_init    = ide_cd_class_init,
-+    .secure        = true,
- };
- 
- static void ide_device_class_init(ObjectClass *klass, const void *data)
-@@ -252,6 +254,7 @@ static const TypeInfo ide_device_type_info = {
-     .parent = TYPE_DEVICE,
-     .instance_size = sizeof(IDEDevice),
-     .abstract = true,
-+    .secure = true,
-     .class_size = sizeof(IDEDeviceClass),
-     .class_init = ide_device_class_init,
-     .instance_init = ide_dev_instance_init,
 -- 
 2.50.1
 
