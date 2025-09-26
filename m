@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073F1BA416C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4001CBA42C6
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2930-0006a5-Fm; Fri, 26 Sep 2025 10:03:42 -0400
+	id 1v2932-0006eC-9r; Fri, 26 Sep 2025 10:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v292t-0006Tb-Ng
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v292v-0006Wt-P1
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v292e-0004ln-7h
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:33 -0400
+ id 1v292l-0004mW-LL
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895395;
+ s=mimecast20190719; t=1758895399;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XVrAynmvaUFzruaGCEo1jmveHQiY6eBskywHu4uSLF4=;
- b=Yv1pQsuAjXWsbSskNMZNWGu4AS+0AYpWihc9cs5cj+NSNv/W4bcWVQoH2eZ4XLOFn6z3ru
- 1I5HRwXC3CTvYLD5zCJnWzflueQ+vFYdV/An9Pg1k2vW/8QTDAyw9pxCqmfPInKQSlxrZm
- sVhzuqrnJfcAqo6hneOVktdIghukAuY=
+ bh=4IWeST0K4wA1sxKfivRbQ89bYlDWZwGSw/0nanXkI7k=;
+ b=R/0sRYtnlv/l+Z5rAe5x9LcZZr9EpYTpZ/CTsBhwzgZ6DfHKvVG0oTb2m6ITsuvSKkdq9Y
+ LX3fPa4kU+Slhdk5GHKukHdQBYFGNDdydDv9ZiTKIW1bfJxr03hwP8AgxndwkSY6TRuFx+
+ mN9zOOS68/ZMzGIb9rFjTboF41CYnYU=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-386-NQZhS5cDPkuLPkhdrZ_sFQ-1; Fri,
- 26 Sep 2025 10:03:10 -0400
-X-MC-Unique: NQZhS5cDPkuLPkhdrZ_sFQ-1
-X-Mimecast-MFC-AGG-ID: NQZhS5cDPkuLPkhdrZ_sFQ_1758895389
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-Y6eL0tnQMAK_RSoqs_Ttgw-1; Fri,
+ 26 Sep 2025 10:03:16 -0400
+X-MC-Unique: Y6eL0tnQMAK_RSoqs_Ttgw-1
+X-Mimecast-MFC-AGG-ID: Y6eL0tnQMAK_RSoqs_Ttgw_1758895394
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D9D1A180AB1D; Fri, 26 Sep 2025 14:03:00 +0000 (UTC)
+ id C074D1800621; Fri, 26 Sep 2025 14:03:07 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0AF8F1956095; Fri, 26 Sep 2025 14:02:55 +0000 (UTC)
+ id 9CE82195419F; Fri, 26 Sep 2025 14:03:01 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,26 +53,26 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 13/32] machine: add helpers for declaring secure/insecure
- machine types
-Date: Fri, 26 Sep 2025 15:01:24 +0100
-Message-ID: <20250926140144.1998694-14-berrange@redhat.com>
+Subject: [PATCH v2 14/32] hw: mark x86, s390, ppc,
+ arm versioned machine types as secure
+Date: Fri, 26 Sep 2025 15:01:25 +0100
+Message-ID: <20250926140144.1998694-15-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,98 +88,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current DEFINE_MACHINE macro will declare machine type without any
-explicit statement about the security status. As such the machine type
-will be treated as implicitly insecure at runtime.
-
-Introduce new DEFINE_SECURE_MACHINE and DEFINE_INSECURE_MACHINE macros
-that allow code to make an explicit statement about security status
-of the machine. All machine declarations should transition to the new
-macros allowing the implicit macro to eventually be removed.
-
-The same is done for the specialized i386 PC related macros.
+The versioned machine types are typically present for use in
+virtualization use cases and can be expected to provide a security
+barrier. The only exceptions are the m68k versioned machine types
+which are only used with TCG.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/boards.h  | 12 +++++++++++-
- include/hw/i386/pc.h | 13 ++++++++++++-
- 2 files changed, 23 insertions(+), 2 deletions(-)
+ hw/arm/virt.c              | 1 +
+ hw/ppc/spapr.c             | 1 +
+ hw/s390x/s390-virtio-ccw.c | 1 +
+ include/hw/i386/pc.h       | 1 +
+ 4 files changed, 4 insertions(+)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 665b620121..8105c54a90 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -762,7 +762,7 @@ struct MachineState {
-         } \
-     } while (0)
- 
--#define DEFINE_MACHINE(namestr, machine_initfn) \
-+#define DEFINE_MACHINE_IMPL(namestr, machine_initfn, issecure) \
-     static void machine_initfn##_class_init(ObjectClass *oc, const void *data) \
-     { \
-         MachineClass *mc = MACHINE_CLASS(oc); \
-@@ -772,6 +772,7 @@ struct MachineState {
-         .name       = MACHINE_TYPE_NAME(namestr), \
-         .parent     = TYPE_MACHINE, \
-         .class_init = machine_initfn##_class_init, \
-+        .secure     = issecure, \
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 02209fadcf..c25ef1c306 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -127,6 +127,7 @@ static void arm_virt_compat_set(MachineClass *mc)
+         .name = MACHINE_VER_TYPE_NAME("virt", __VA_ARGS__), \
+         .parent = TYPE_VIRT_MACHINE, \
+         .class_init = MACHINE_VER_SYM(class_init, virt, __VA_ARGS__), \
++        .secure = true, \
      }; \
-     static void machine_initfn##_register_types(void) \
+     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
      { \
-@@ -779,6 +780,15 @@ struct MachineState {
-     } \
-     type_init(machine_initfn##_register_types)
- 
-+/* Implicitly insecure, prefer explicitly declaring security status */
-+#define DEFINE_MACHINE(namestr, machine_initfn) \
-+    DEFINE_MACHINE_IMPL(namestr, machine_initfn, false)
-+
-+#define DEFINE_SECURE_MACHINE(namestr, machine_initfn) \
-+    DEFINE_MACHINE_IMPL(namestr, machine_initfn, true)
-+#define DEFINE_INSECURE_MACHINE(namestr, machine_initfn) \
-+    DEFINE_MACHINE_IMPL(namestr, machine_initfn, false)
-+
- extern GlobalProperty hw_compat_10_1[];
- extern const size_t hw_compat_10_1_len;
- 
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index eb22333404..3581f581a4 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4748,6 +4748,7 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
+         .name = MACHINE_VER_TYPE_NAME("pseries", __VA_ARGS__),       \
+         .parent = TYPE_SPAPR_MACHINE,                                \
+         .class_init = MACHINE_VER_SYM(class_init, spapr, __VA_ARGS__), \
++        .secure = true,                                              \
+     };                                                               \
+     static void MACHINE_VER_SYM(register, spapr, __VA_ARGS__)(void)  \
+     {                                                                \
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index d0c6e80cb0..54bc4e1b74 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -896,6 +896,7 @@ static const TypeInfo ccw_machine_info = {
+         .name = MACHINE_VER_TYPE_NAME("s390-ccw-virtio", __VA_ARGS__),        \
+         .parent = TYPE_S390_CCW_MACHINE,                                      \
+         .class_init = MACHINE_VER_SYM(class_init, ccw, __VA_ARGS__),          \
++        .secure = true,                                                       \
+     };                                                                        \
+     static void MACHINE_VER_SYM(register, ccw, __VA_ARGS__)(void)             \
+     {                                                                         \
 diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index e83157ab35..1ccb6ed9fc 100644
+index 1ccb6ed9fc..f576b3892e 100644
 --- a/include/hw/i386/pc.h
 +++ b/include/hw/i386/pc.h
-@@ -301,7 +301,7 @@ extern const size_t pc_compat_2_7_len;
- extern GlobalProperty pc_compat_2_6[];
- extern const size_t pc_compat_2_6_len;
- 
--#define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-+#define DEFINE_PC_MACHINE_IMPL(suffix, namestr, initfn, optsfn, issecure) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
-                                                  const void *data) \
-     { \
-@@ -313,6 +313,7 @@ extern const size_t pc_compat_2_6_len;
-         .name       = namestr TYPE_MACHINE_SUFFIX, \
+@@ -353,6 +353,7 @@ extern const size_t pc_compat_2_6_len;
+         .name       = MACHINE_VER_TYPE_NAME(namestr, __VA_ARGS__), \
          .parent     = TYPE_PC_MACHINE, \
-         .class_init = pc_machine_##suffix##_class_init, \
-+        .secure     = issecure, \
+         .class_init = MACHINE_VER_SYM(class_init, namesym, __VA_ARGS__), \
++        .secure     = true, \
      }; \
-     static void pc_machine_init_##suffix(void) \
+     static void MACHINE_VER_SYM(register, namesym, __VA_ARGS__)(void) \
      { \
-@@ -320,6 +321,16 @@ extern const size_t pc_compat_2_6_len;
-     } \
-     type_init(pc_machine_init_##suffix)
- 
-+/* Implicitly insecure, prefer explicitly declaring security status */
-+#define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-+    DEFINE_PC_MACHINE_IMPL(suffix, namestr, initfn, optsfn, false)
-+
-+#define DEFINE_SECURE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-+    DEFINE_PC_MACHINE_IMPL(suffix, namestr, initfn, optsfn, true)
-+#define DEFINE_INSECURE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-+    DEFINE_PC_MACHINE_IMPL(suffix, namestr, initfn, optsfn, false)
-+
-+
- #define DEFINE_PC_VER_MACHINE(namesym, namestr, initfn, isdefault, malias, ...) \
-     static void MACHINE_VER_SYM(init, namesym, __VA_ARGS__)( \
-         MachineState *machine) \
 -- 
 2.50.1
 
