@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B920BA2E8E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A187BA2EC4
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23cZ-0005KR-1T; Fri, 26 Sep 2025 04:16:04 -0400
+	id 1v23cT-0004ml-0F; Fri, 26 Sep 2025 04:15:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23bu-0004Jy-DJ; Fri, 26 Sep 2025 04:15:24 -0400
+ id 1v23c2-0004Vl-AK; Fri, 26 Sep 2025 04:15:37 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23bl-0001RC-Hz; Fri, 26 Sep 2025 04:15:21 -0400
+ id 1v23bu-0001T9-Aa; Fri, 26 Sep 2025 04:15:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 91710157D6B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9F38F157D6C;
  Fri, 26 Sep 2025 11:10:33 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A39EC290C4F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B45DE290C50;
  Fri, 26 Sep 2025 11:10:34 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, John Snow <jsnow@redhat.com>,
- "Richard W.M. Jones" <rjones@redhat.com>,
+Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 35/60] python: backport 'avoid creating additional
- event loops per thread'
-Date: Fri, 26 Sep 2025 11:10:03 +0300
-Message-ID: <20250926081031.2214971-35-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 36/60] iotests: drop compat for old version context
+ manager
+Date: Fri, 26 Sep 2025 11:10:04 +0300
+Message-ID: <20250926081031.2214971-36-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -61,193 +60,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-This commit is two backports squashed into one to avoid regressions.
+Our minimum python is now 3.9, so back compat with prior
+python versions is no longer required.
 
-python: *really* remove get_event_loop
-
-A prior commit, aa1ff990, switched away from using get_event_loop *by
-default*, but this is not good enough to avoid deprecation warnings as
-`asyncio.get_event_loop_policy().get_event_loop()` is *also*
-deprecated. Replace this mechanism with explicit calls to
-asyncio.get_new_loop() and revise the cleanup mechanisms in __del__ to
-match.
-
-python: avoid creating additional event loops per thread
-
-"Too hasty by far!", commit 21ce2ee4 attempted to avoid deprecated
-behavior altogether by calling new_event_loop() directly if there was no
-loop currently running, but this has the unfortunate side effect of
-potentially creating multiple event loops per thread if tests
-instantiate multiple QMP connections in a single thread. This behavior
-is apparently not well-defined and causes problems in some, but not all,
-combinations of Python interpreter version and platform environment.
-
-Partially revert to Daniel Berrange's original patch, which calls
-get_event_loop and simply suppresses the deprecation warning in
-Python<=3.13. This time, however, additionally register new loops
-created with new_event_loop() so that future calls to get_event_loop()
-will return the loop already created.
-
-Reported-by: Richard W.M. Jones <rjones@redhat.com>
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: John Snow <jsnow@redhat.com>
-cherry picked from commit python-qemu-qmp@21ce2ee4f2df87efe84a27b9c5112487f4670622
-cherry picked from commit python-qemu-qmp@c08fb82b38212956ccffc03fc6d015c3979f42fe
-Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 85f223e5b031eb8ab63fbca314a4fb296a3a2632)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 82c7cb93c750196f513a1b11cb85e0328bad444f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
-index 735d42971e..e46695ae2c 100644
---- a/python/qemu/qmp/legacy.py
-+++ b/python/qemu/qmp/legacy.py
-@@ -38,6 +38,7 @@
- from .error import QMPError
- from .protocol import Runstate, SocketAddrT
- from .qmp_client import QMPClient
-+from .util import get_or_create_event_loop
+diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
+index 6326e46b7b..29caaa8a34 100644
+--- a/tests/qemu-iotests/testenv.py
++++ b/tests/qemu-iotests/testenv.py
+@@ -22,15 +22,12 @@
+ from pathlib import Path
+ import shutil
+ import collections
++import contextlib
+ import random
+ import subprocess
+ import glob
+ from typing import List, Dict, Any, Optional
+ 
+-if sys.version_info >= (3, 9):
+-    from contextlib import AbstractContextManager as ContextManager
+-else:
+-    from typing import ContextManager
+ 
+ DEF_GDB_OPTIONS = 'localhost:12345'
+ 
+@@ -58,7 +55,7 @@ def get_default_machine(qemu_prog: str) -> str:
+     return default_machine
  
  
- #: QMPMessage is an entire QMP message of any kind.
-@@ -86,17 +87,13 @@ def __init__(self,
-                 "server argument should be False when passing a socket")
- 
-         self._qmp = QMPClient(nickname)
--
--        try:
--            self._aloop = asyncio.get_running_loop()
--        except RuntimeError:
--            # No running loop; since this is a sync shim likely to be
--            # used in fully sync programs, create one if neccessary.
--            self._aloop = asyncio.get_event_loop_policy().get_event_loop()
--
-         self._address = address
-         self._timeout: Optional[float] = None
- 
-+        # This is a sync shim intended for use in fully synchronous
-+        # programs. Create and set an event loop if necessary.
-+        self._aloop = get_or_create_event_loop()
-+
-         if server:
-             assert not isinstance(self._address, socket.socket)
-             self._sync(self._qmp.start_server(self._address))
-@@ -313,17 +310,30 @@ def send_fd_scm(self, fd: int) -> None:
-         self._qmp.send_fd_scm(fd)
- 
-     def __del__(self) -> None:
--        if self._qmp.runstate == Runstate.IDLE:
--            return
-+        if self._qmp.runstate != Runstate.IDLE:
-+            self._qmp.logger.warning(
-+                "QEMUMonitorProtocol object garbage collected without a prior "
-+                "call to close()"
-+            )
- 
-         if not self._aloop.is_running():
--            self.close()
--        else:
--            # Garbage collection ran while the event loop was running.
--            # Nothing we can do about it now, but if we don't raise our
--            # own error, the user will be treated to a lot of traceback
--            # they might not understand.
-+            if self._qmp.runstate != Runstate.IDLE:
-+                # If the user neglected to close the QMP session and we
-+                # are not currently running in an asyncio context, we
-+                # have the opportunity to close the QMP session. If we
-+                # do not do this, the error messages presented over
-+                # dangling async resources may not make any sense to the
-+                # user.
-+                self.close()
-+
-+        if self._qmp.runstate != Runstate.IDLE:
-+            # If QMP is still not quiesced, it means that the garbage
-+            # collector ran from a context within the event loop and we
-+            # are simply too late to take any corrective action. Raise
-+            # our own error to give meaningful feedback to the user in
-+            # order to prevent pages of asyncio stacktrace jargon.
-             raise QMPError(
--                "QEMUMonitorProtocol.close()"
--                " was not called before object was garbage collected"
-+                "QEMUMonitorProtocol.close() was not called before object was "
-+                "garbage collected, and could not be closed due to GC running "
-+                "in the event loop"
-             )
-diff --git a/python/qemu/qmp/qmp_tui.py b/python/qemu/qmp/qmp_tui.py
-index 12bdc17c99..d946c20513 100644
---- a/python/qemu/qmp/qmp_tui.py
-+++ b/python/qemu/qmp/qmp_tui.py
-@@ -51,7 +51,7 @@
- from .message import DeserializationError, Message, UnexpectedTypeError
- from .protocol import ConnectError, Runstate
- from .qmp_client import ExecInterruptedError, QMPClient
--from .util import pretty_traceback
-+from .util import get_or_create_event_loop, pretty_traceback
- 
- 
- # The name of the signal that is used to update the history list
-@@ -387,13 +387,7 @@ def run(self, debug: bool = False) -> None:
-         """
-         screen = urwid.raw_display.Screen()
-         screen.set_terminal_properties(256)
--
--        try:
--            self.aloop = asyncio.get_running_loop()
--        except RuntimeError:
--            # No running asyncio event loop. Create one if necessary.
--            self.aloop = asyncio.get_event_loop_policy().get_event_loop()
--
-+        self.aloop = get_or_create_event_loop()
-         self.aloop.set_debug(debug)
- 
-         # Gracefully handle SIGTERM and SIGINT signals
-diff --git a/python/qemu/qmp/util.py b/python/qemu/qmp/util.py
-index 0b3e781373..47ec39a8b5 100644
---- a/python/qemu/qmp/util.py
-+++ b/python/qemu/qmp/util.py
-@@ -10,6 +10,7 @@
- import sys
- import traceback
- from typing import TypeVar, cast
-+import warnings
- 
- 
- T = TypeVar('T')
-@@ -20,6 +21,32 @@
- # --------------------------
- 
- 
-+def get_or_create_event_loop() -> asyncio.AbstractEventLoop:
-+    """
-+    Return this thread's current event loop, or create a new one.
-+
-+    This function behaves similarly to asyncio.get_event_loop() in
-+    Python<=3.13, where if there is no event loop currently associated
-+    with the current context, it will create and register one. It should
-+    generally not be used in any asyncio-native applications.
-+    """
-+    try:
-+        with warnings.catch_warnings():
-+            # Python <= 3.13 will trigger deprecation warnings if no
-+            # event loop is set, but will create and set a new loop.
-+            warnings.simplefilter("ignore")
-+            loop = asyncio.get_event_loop()
-+    except RuntimeError:
-+        # Python 3.14+: No event loop set for this thread,
-+        # create and set one.
-+        loop = asyncio.new_event_loop()
-+        # Set this loop as the current thread's loop, to be returned
-+        # by calls to get_event_loop() in the future.
-+        asyncio.set_event_loop(loop)
-+
-+    return loop
-+
-+
- async def flush(writer: asyncio.StreamWriter) -> None:
+-class TestEnv(ContextManager['TestEnv']):
++class TestEnv(contextlib.AbstractContextManager['TestEnv']):
      """
-     Utility function to ensure a StreamWriter is *fully* drained.
+     Manage system environment for running tests
+ 
+diff --git a/tests/qemu-iotests/testrunner.py b/tests/qemu-iotests/testrunner.py
+index 2e236c8fa3..14cc8492f9 100644
+--- a/tests/qemu-iotests/testrunner.py
++++ b/tests/qemu-iotests/testrunner.py
+@@ -30,11 +30,6 @@
+ from typing import List, Optional, Any, Sequence, Dict
+ from testenv import TestEnv
+ 
+-if sys.version_info >= (3, 9):
+-    from contextlib import AbstractContextManager as ContextManager
+-else:
+-    from typing import ContextManager
+-
+ 
+ def silent_unlink(path: Path) -> None:
+     try:
+@@ -57,7 +52,7 @@ def file_diff(file1: str, file2: str) -> List[str]:
+         return res
+ 
+ 
+-class LastElapsedTime(ContextManager['LastElapsedTime']):
++class LastElapsedTime(contextlib.AbstractContextManager['LastElapsedTime']):
+     """ Cache for elapsed time for tests, to show it during new test run
+ 
+     It is safe to use get() at any time.  To use update(), you must either
+@@ -112,7 +107,7 @@ def __init__(self, status: str, description: str = '',
+         self.interrupted = interrupted
+ 
+ 
+-class TestRunner(ContextManager['TestRunner']):
++class TestRunner(contextlib.AbstractContextManager['TestRunner']):
+     shared_self = None
+ 
+     @staticmethod
 -- 
 2.47.3
 
