@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E45CBA2353
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 04:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D3CBA235F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 04:27:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1y8e-0003C7-3B; Thu, 25 Sep 2025 22:24:48 -0400
+	id 1v1yA6-0003mz-SC; Thu, 25 Sep 2025 22:26:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v1y8a-0003Bb-3M
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 22:24:45 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ id 1v1yA5-0003l5-52
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 22:26:17 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v1y8O-0005Re-Pr
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 22:24:43 -0400
+ id 1v1y9n-000615-Af
+ for qemu-devel@nongnu.org; Thu, 25 Sep 2025 22:26:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758853473; x=1790389473;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=X+Emfv4DcrVssxkKvR+Bpa6J8phmDa7Bb2D55UY7z9I=;
- b=WHwo+l4h4rwi1lbjciqZl5Hdl+jzRlobq53eIzAJTZ2phxLwZA6gUIRh
- sn+/Ht2xwM2e2xh5hNvbkyq1SH8mGA78/iCksv8e5YXuUm96JZZ34BF2E
- +YXQI3hObn5VUy35BuGtjumrOzs9R7zXK4nE+NwpXdIJW1hGZfBK3stgS
- BlKiGsYvrT1zYdGjzn4Yo3fGqAYD5JFwox5XAVB50ve5d6ylSCXVpM4v+
- aw2UC/x6coyC9cfYQ+QmSVzH7oj2gS7GnouQxd1h75S1MP+NpjtIxTzRf
- gOV66IzuYhKPkAzYITPBR2PpaC+s482uGgySlDr4PFk1Ae8xnPaDJdThI A==;
-X-CSE-ConnectionGUID: Cs2OztZ6RyOxjM7oyzVBOg==
-X-CSE-MsgGUID: YWwddEqlSxy6hYzbmeVPfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61234094"
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; d="scan'208";a="61234094"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2025 19:24:10 -0700
-X-CSE-ConnectionGUID: 1c3RcsLTRAmvK3gc+GeUtw==
-X-CSE-MsgGUID: NzBu1uxWT2qLMNHFBtiIEw==
+ t=1758853559; x=1790389559;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9p5TFP5IXSL/3hMVqbtrGjD6yrnK8SNBoTLObmipajY=;
+ b=mmS/Kp8a0VEHYDTqbkK8LIceu1yWRRZp7ChskCa2FxDCPl8cqi1uTkG/
+ q26s/kh4DJtU5Q3HmWcB176+12Vi15mqo5w0PZ0xx3mCaEGP3mYPCoqZ1
+ 2tJD0iFBv1jmfDnx8dsWyjMbsMWRIVtJuhZ4cnR0PhsPiTcCnb1wOwHtN
+ b19A8Z4h/A+6DcvHW8+oAb7DgQ6yExgB7c9fJWTRfuIfDECDTWzf0YUYS
+ xuBaJ8lOKZjEPqrNmcPbPn8M7pO7kT10LDk6FCOoU0bRhkr7Gqom2dU1+
+ RddP3/84j7nA9vFl/D9nJ2LQAb/cYnE9zE4vCuiWEN7F3raxAR4BF9MpW w==;
+X-CSE-ConnectionGUID: OG0l3N9VS8eE5VbO+arsNA==
+X-CSE-MsgGUID: janTe1UZTUyfiv2adKMOKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61104656"
+X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; d="scan'208";a="61104656"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2025 19:25:50 -0700
+X-CSE-ConnectionGUID: h+jEIRWnSsGmC1sYJ7kr4w==
+X-CSE-MsgGUID: 7kmMGPipThS5OCRf2YZo/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; d="scan'208";a="176613450"
+X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; d="scan'208";a="177327183"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2025 19:24:08 -0700
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2025 19:25:49 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- steven.sistare@oracle.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 4/5] vfio/iommufd: Restore vbasedev's reference to hwpt after
+ steven.sistare@oracle.com
+Subject: [PATCH 5/5] accel/kvm: Fix SIGSEGV when execute "query-balloon" after
  CPR transfer
-Date: Thu, 25 Sep 2025 22:23:47 -0400
-Message-ID: <20250926022348.1883776-5-zhenzhong.duan@intel.com>
+Date: Thu, 25 Sep 2025 22:25:40 -0400
+Message-ID: <20250926022540.1884023-1-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250926022348.1883776-1-zhenzhong.duan@intel.com>
-References: <20250926022348.1883776-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.14;
+Received-SPF: pass client-ip=192.198.163.17;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,34 +79,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After CPR transfer, if there are more than one VFIO devices, the second
-device's reference to hwpt isn't restored on destination. We still need
-to call iommufd_cdev_attach_container() to restore it after a matching
-container is found, or else SIGSEV triggers.
+After CPR transfer, source QEMU close kvm fd and free kvm_state,
+"query-balloon" will check kvm_state->sync_mmu and trigger NULL
+pointer reference.
 
-Fixes: 4296ee07455e ("vfio/iommufd: reconstruct device")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ accel/kvm/kvm-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 103ff43426..6df99d3aa6 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -565,10 +565,9 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-             continue;
-         }
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 9060599cd7..a3e2d11763 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3479,7 +3479,7 @@ int kvm_device_access(int fd, int group, uint64_t attr,
  
--        if (!cpr_is_incoming()) {
-+        if (!cpr_is_incoming() ||
-+            (vbasedev->cpr.ioas_id == container->ioas_id)) {
-             res = iommufd_cdev_attach_container(vbasedev, container, &err);
--        } else if (vbasedev->cpr.ioas_id == container->ioas_id) {
--            res = true;
-         } else {
-             continue;
-         }
+ bool kvm_has_sync_mmu(void)
+ {
+-    return kvm_state->sync_mmu;
++    return kvm_state && kvm_state->sync_mmu;
+ }
+ 
+ int kvm_has_vcpu_events(void)
 -- 
 2.47.1
 
