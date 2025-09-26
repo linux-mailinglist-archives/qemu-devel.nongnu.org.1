@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EC1BA4175
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8A5BA4138
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v299v-0000ht-2r; Fri, 26 Sep 2025 10:10:51 -0400
+	id 1v299r-0000Mb-Pd; Fri, 26 Sep 2025 10:10:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298x-00086U-3E
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:51 -0400
+ id 1v298t-0007w3-Nr
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:48 -0400
 Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298T-0005id-Vj
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:49 -0400
+ id 1v298U-0005ix-0p
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:46 -0400
 Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-45dd505a1dfso12675085e9.2
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:13 -0700 (PDT)
+ 5b1f17b1804b1-46e317bc647so15092255e9.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895751; x=1759500551; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895752; x=1759500552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Eg6nfok1GwG5zNCB5mi0v4fpJCgjR6fP+MDXEr0QDn8=;
- b=LeokCobNN2gp/0NarPHbAF0esq95H/z1PPXftGy66PLQIn6juFTEvf+KR4l3L6mQa8
- CbxvXoEei4jDtCb21QivFDfXDMRvjB5dGoeYhtUBLtQwSbOXCMDfJVeybp+mUPiJbT7t
- o+XAlxNdED/8kGQspC5F/bxW3QWyONdXwz/re50Cd5HVPDL/EBmb23Y3JeuOCX/34Lu+
- rZE0oVoMHiOeXBPUTU06ceOMvKfpSsyMPZmSlbfeCi8OtyQ1ctxOvDInNQxYdwmQWg/d
- 7P0jT++R97ffW/EXkKbR+QxzW8zg1GNCoSKEi5kEI694/mpCUxUXcoaLYVe9IgyoWbZU
- 7P6Q==
+ :reply-to; bh=rpIrhuYE6q9Jr9VMOg9Sf2KgkjnAL/weTQU2KUeBzTI=;
+ b=UqbOlHqciwRxaTqDU3vEIA3n92i8O/O1ExG2Fam6piPnRaMPLoLtmLLRpxuo5aF4pz
+ SD6dbqmbf9cThmkR2Ut1A2BG8TaSz5RBB9/kTaL9ooBwwTJ6C6XBa9wtL6pEmPX+/jxn
+ yb4FKBPWjzhb8Vz1X5YkxgTJz5msQK3ycweV/jJQjOiXmzA5elwn/IMfEaI6bE80IYEV
+ p8Zf1e48rkJJHUoRBvMlMeT83RPkRkHXZscwVeaoYpM50XzkiecR+MywfB+19N6uVCpR
+ 6nmo8jrSzA1TZugp/5zRMAX4/8BgWdDMQfVMgznZUTM57SX5zjs8ex+4H5g6/gFBfgjY
+ YT2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895751; x=1759500551;
+ d=1e100.net; s=20230601; t=1758895752; x=1759500552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Eg6nfok1GwG5zNCB5mi0v4fpJCgjR6fP+MDXEr0QDn8=;
- b=eRuDWMrQ414nKWfgufnZ0oOPUSJcgG/Sk7fDyCXEYNX1AlcbfiMMLSG4D/fNwox8dx
- 0r7rNF/WmEQmLecoXsZS+YKeo1FxYKehYh2eSLIFbrY/WbZy8IE1wckr7jX71bOGfcQc
- FgwC37MPwRgCUwOVCLfnGFI0tCqMThuljKsosekg07uZaioWM+oet+nOtIr4O5paZaQu
- oxjkql0UXz6KKeoxmm+2kRFaXvdVvCKUZrv4WDTzi3QTx5Vp2c23JB6ykH45AL/JmfiU
- 1m5K1EnPn8KExXoMtz6lOYSnimwi20jGsrWAXn7UjJnCmCINGy/p4iHLqHmAmcY2HXEB
- XNkg==
-X-Gm-Message-State: AOJu0YyCEYUa34VnkhF3VQdfXStRZiafp7RCJuO7anZ4ZH8Y42NS0/YO
- OghsDYasv92+maff1T+XEGw7JTZboQOhsYR1HlPOyS6/ytRHCNfChi04eQx0ya4J5F+O1BWI6HY
- iG4P1
-X-Gm-Gg: ASbGncuzlWnJpoHdccc8SCosUdB/xvqfpAFFvPDpuXNhoP+jDninTXfDPmyKB9bI/9t
- tORXAgNQt5jIi8Id+4BCfo/3WNVI3f8Dl0TiEp95dQjr4o4RT+n/KncIstLH06vp7dvIYpWR+83
- t/o2dDv167mK632HmzbHedAopiXGRXua5lJaAJszgyYe0kFAZj3eNX0ycJo3dMyj5CPOlu7Iy6A
- Dyg0HFJlwQziEHjyPRmRXSd0ka1KA+qwlAe0pBIMgwtbo32AYpHitKo8VmH02dpLBO6XU0qIRwm
- i16EQQHuCYhzDGSeBNJPmzSN+abEq4z+df8WJaR8TJ1HyBvSGLDOusSeo9sTCjZQ0DHNO+zfsti
- 1D9K3hcFBy6GiWWbpKKsIgsqyNkCo
-X-Google-Smtp-Source: AGHT+IGSFhAOg0W+ArWQFeAHzr1Q9MIEFOMWR4NbiA8VLX11MgExdYuPGde0PLZN65BKBaIhb+tiEA==
-X-Received: by 2002:a05:600c:310c:b0:46e:21c8:ad37 with SMTP id
- 5b1f17b1804b1-46e35d550acmr55983085e9.25.1758895751486; 
- Fri, 26 Sep 2025 07:09:11 -0700 (PDT)
+ bh=rpIrhuYE6q9Jr9VMOg9Sf2KgkjnAL/weTQU2KUeBzTI=;
+ b=gALwq9E5urB4Vt1jiSAb1sVka5BTdXleR2VJZOvi01wAa+G5gxXkMjnHWOLzf1nVY5
+ RPhkx/W6lTnbzHjQiJZe5ml0/N0asyY2ay+uQ6kL5IhRRGVhAQEASpf1PlINwqtmwVJG
+ z8QBTimNY2/l1XZIuxSS5AW6KF1g52e4ep8IzN2mRgV3nprsGLKuJhthxxARElIKlrJg
+ tbkLcJ7r//lUdrq+kVPWQpLc83Kmm5eJHkbSP5DS/HU5ozx7jSQUm5CEc1Gk/0dwMP+z
+ +HIg047N05+b01TDBqRRbX4VE0iXCTApAEyei9JiK+6pHFS925PLXfgj2Kk3zpYIKqwI
+ 27zg==
+X-Gm-Message-State: AOJu0YwayjBNfBL50fr9pdduRjij+INawihJZ5e7dIc//01oosYPCgG1
+ QoM3bpdsRX6zLGPAuRMx8Afdm+3B5oRK/eH+1hRNJQWjkWmHzIQiUM269uv2i3PPVpAAjQAt5bM
+ EBq94
+X-Gm-Gg: ASbGncuh8M4vW3BJkdbonNJbb+250aWrxRsm1DMqT1lWVVpkkBidtP2Urirh4q3mHbU
+ 4ywemmtnvV2j9BBa8erSX1yMhnK13iUXpZtIyk7MLGRy7m+VXG126Wf2fEI4QOe6XYXql8geKkC
+ 5pWBnICute5D6b21oZwHv1KhGGFlNovNA9TQPlXvZExN1AYu+8gKSzs5RKXsHAU1ZDKtuHXIik/
+ S8VI1A9leBm+VpMbBz341Qdbwo9ehdg1PpLj9RCNQXuENbtH0fdu6mJ2GoPM57689GlKmHjaLBG
+ lYeJfNtqBz9ExW8nSdac0KE9E9Wy3C/vQVVnYzH5nIcqlBD1ePXaCSmhbLxAbl0vwABkzcUy0xv
+ /8TO7PGl/ob7f0/qu97upar+nxagjJbmt1cdEBXY=
+X-Google-Smtp-Source: AGHT+IGMuKIrvVIeq9n+bXmy/l7Zi+XLMHBDDFAoEro8ms/iliQUlblbHdasXbg+9/MZ5QUt3hco7Q==
+X-Received: by 2002:a5d:5888:0:b0:3ec:dd16:fc16 with SMTP id
+ ffacd0b85a97d-40e4bd186aamr6986613f8f.43.1758895752497; 
+ Fri, 26 Sep 2025 07:09:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.10
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:09:10 -0700 (PDT)
+ Fri, 26 Sep 2025 07:09:11 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/44] target/arm: Move cp processing to define_one_arm_cp_reg
-Date: Fri, 26 Sep 2025 15:08:24 +0100
-Message-ID: <20250926140844.1493020-25-peter.maydell@linaro.org>
+Subject: [PULL 25/44] target/arm: Move cpreg elimination to
+ define_one_arm_cp_reg
+Date: Fri, 26 Sep 2025 15:08:25 +0100
+Message-ID: <20250926140844.1493020-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
@@ -100,160 +101,179 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Processing of cp was split between add_cpreg_to_hashtable and
-define_one_arm_cp_reg.  Unify it all to the top-level function.
+Eliminate unused registers earlier, so that by the time we
+arrive in add_cpreg_to_hashtable we never skip.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 53 +++++++++++++++++++--------------------------
- 1 file changed, 22 insertions(+), 31 deletions(-)
+ target/arm/helper.c | 123 +++++++++++++++++++++++---------------------
+ 1 file changed, 64 insertions(+), 59 deletions(-)
 
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8c2b7e037e8..f0e423e623b 100644
+index f0e423e623b..ade16138e75 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -7368,7 +7368,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-  */
- static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
-                                    CPState state, CPSecureState secstate,
--                                   int crm, int opc1, int opc2,
-+                                   int cp, int crm, int opc1, int opc2,
-                                    const char *name)
- {
-     CPUARMState *env = &cpu->env;
-@@ -7376,28 +7376,14 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
-     ARMCPRegInfo *r2;
+@@ -7377,7 +7377,6 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
      bool is64 = r->type & ARM_CP_64BIT;
      bool ns = secstate & ARM_CP_SECSTATE_NS;
--    int cp = r->cp;
      size_t name_len;
-     bool make_const;
+-    bool make_const;
  
      switch (state) {
      case ARM_CP_STATE_AA32:
--        /* We assume it is a cp15 register if the .cp field is left unset. */
--        if (cp == 0 && r->state == ARM_CP_STATE_BOTH) {
--            cp = 15;
--        }
-         key = ENCODE_CP_REG(cp, is64, ns, r->crn, crm, opc1, opc2);
-         break;
-     case ARM_CP_STATE_AA64:
--        /*
--         * To allow abbreviation of ARMCPRegInfo definitions, we treat
--         * cp == 0 as equivalent to the value for "standard guest-visible
--         * sysreg".  STATE_BOTH definitions are also always "standard sysreg"
--         * in their AArch64 view (the .cp value may be non-zero for the
--         * benefit of the AArch32 view).
--         */
--        assert(cp == 0 || r->state == ARM_CP_STATE_BOTH);
--        cp = 0;
-         key = ENCODE_AA64_CP_REG(r->opc0, opc1, r->crn, crm, opc2);
-         break;
-     default:
-@@ -7558,7 +7544,7 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
- }
- 
- static void add_cpreg_to_hashtable_aa32(ARMCPU *cpu, const ARMCPRegInfo *r,
--                                        int crm, int opc1, int opc2)
-+                                        int cp, int crm, int opc1, int opc2)
- {
-     /*
-      * Under AArch32 CP registers can be common
-@@ -7571,16 +7557,16 @@ static void add_cpreg_to_hashtable_aa32(ARMCPU *cpu, const ARMCPRegInfo *r,
-     switch (r->secure) {
-     case ARM_CP_SECSTATE_S:
-     case ARM_CP_SECSTATE_NS:
--        add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA32,
--                               r->secure, crm, opc1, opc2, r->name);
-+        add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA32, r->secure,
-+                               cp, crm, opc1, opc2, r->name);
-         break;
-     case ARM_CP_SECSTATE_BOTH:
-         name = g_strdup_printf("%s_S", r->name);
--        add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA32,
--                               ARM_CP_SECSTATE_S, crm, opc1, opc2, name);
-+        add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA32, ARM_CP_SECSTATE_S,
-+                               cp, crm, opc1, opc2, name);
-         g_free(name);
--        add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA32,
--                               ARM_CP_SECSTATE_NS, crm, opc1, opc2, r->name);
-+        add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA32, ARM_CP_SECSTATE_NS,
-+                               cp, crm, opc1, opc2, r->name);
-         break;
-     default:
-         g_assert_not_reached();
-@@ -7611,11 +7597,11 @@ static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, const ARMCPRegInfo *r,
-             nxs_ri.fgt |= R_FGT_NXS_MASK;
+@@ -7398,32 +7397,6 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
          }
-         add_cpreg_to_hashtable(cpu, &nxs_ri, ARM_CP_STATE_AA64,
--                               ARM_CP_SECSTATE_NS, crm, opc1, opc2, name);
-+                               ARM_CP_SECSTATE_NS, 0, crm, opc1, opc2, name);
      }
  
-     add_cpreg_to_hashtable(cpu, r, ARM_CP_STATE_AA64, ARM_CP_SECSTATE_NS,
--                           crm, opc1, opc2, r->name);
-+                           0, crm, opc1, opc2, r->name);
- }
+-    /*
+-     * Eliminate registers that are not present because the EL is missing.
+-     * Doing this here makes it easier to put all registers for a given
+-     * feature into the same ARMCPRegInfo array and define them all at once.
+-     */
+-    make_const = false;
+-    if (arm_feature(env, ARM_FEATURE_EL3)) {
+-        /*
+-         * An EL2 register without EL2 but with EL3 is (usually) RES0.
+-         * See rule RJFFP in section D1.1.3 of DDI0487H.a.
+-         */
+-        int min_el = ctz32(r->access) / 2;
+-        if (min_el == 2 && !arm_feature(env, ARM_FEATURE_EL2)) {
+-            if (r->type & ARM_CP_EL3_NO_EL2_UNDEF) {
+-                return;
+-            }
+-            make_const = !(r->type & ARM_CP_EL3_NO_EL2_KEEP);
+-        }
+-    } else {
+-        CPAccessRights max_el = (arm_feature(env, ARM_FEATURE_EL2)
+-                                 ? PL2_RW : PL1_RW);
+-        if ((r->access & max_el) == 0) {
+-            return;
+-        }
+-    }
+-
+     /* Combine cpreg and name into one allocation. */
+     name_len = strlen(name) + 1;
+     r2 = g_malloc(sizeof(*r2) + name_len);
+@@ -7441,38 +7414,7 @@ static void add_cpreg_to_hashtable(ARMCPU *cpu, const ARMCPRegInfo *r,
+     r2->state = state;
+     r2->secure = secstate;
  
- void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
-@@ -7650,6 +7636,7 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
-     int opc1max = (r->opc1 == CP_ANY) ? 7 : r->opc1;
+-    if (make_const) {
+-        /* This should not have been a very special register to begin. */
+-        int old_special = r2->type & ARM_CP_SPECIAL_MASK;
+-        assert(old_special == 0 || old_special == ARM_CP_NOP);
+-        /*
+-         * Set the special function to CONST, retaining the other flags.
+-         * This is important for e.g. ARM_CP_SVE so that we still
+-         * take the SVE trap if CPTR_EL3.EZ == 0.
+-         */
+-        r2->type = (r2->type & ~ARM_CP_SPECIAL_MASK) | ARM_CP_CONST;
+-        /*
+-         * Usually, these registers become RES0, but there are a few
+-         * special cases like VPIDR_EL2 which have a constant non-zero
+-         * value with writes ignored.
+-         */
+-        if (!(r->type & ARM_CP_EL3_NO_EL2_C_NZ)) {
+-            r2->resetvalue = 0;
+-        }
+-        /*
+-         * ARM_CP_CONST has precedence, so removing the callbacks and
+-         * offsets are not strictly necessary, but it is potentially
+-         * less confusing to debug later.
+-         */
+-        r2->readfn = NULL;
+-        r2->writefn = NULL;
+-        r2->raw_readfn = NULL;
+-        r2->raw_writefn = NULL;
+-        r2->resetfn = NULL;
+-        r2->fieldoffset = 0;
+-        r2->bank_fieldoffsets[0] = 0;
+-        r2->bank_fieldoffsets[1] = 0;
+-    } else {
++    {
+         bool isbanked = r->bank_fieldoffsets[0] && r->bank_fieldoffsets[1];
+ 
+         if (isbanked) {
+@@ -7637,6 +7579,8 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
      int opc2min = (r->opc2 == CP_ANY) ? 0 : r->opc2;
      int opc2max = (r->opc2 == CP_ANY) ? 7 : r->opc2;
-+    int cp = r->cp;
+     int cp = r->cp;
++    ARMCPRegInfo r_const;
++    CPUARMState *env = &cpu->env;
  
      /*
       * AArch64 regs are all 64 bit so ARM_CP_64BIT is meaningless.
-@@ -7672,21 +7659,25 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
-      */
-     switch (r->state) {
-     case ARM_CP_STATE_BOTH:
--        /* 0 has a special meaning, but otherwise the same rules as AA32. */
--        if (r->cp == 0) {
+@@ -7742,6 +7686,67 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
+         }
+     }
+ 
++    /*
++     * Eliminate registers that are not present because the EL is missing.
++     * Doing this here makes it easier to put all registers for a given
++     * feature into the same ARMCPRegInfo array and define them all at once.
++     */
++    if (arm_feature(env, ARM_FEATURE_EL3)) {
 +        /*
-+         * If the cp field is left unset, assume cp15.
-+         * Otherwise apply the same rules as AA32.
++         * An EL2 register without EL2 but with EL3 is (usually) RES0.
++         * See rule RJFFP in section D1.1.3 of DDI0487H.a.
 +         */
-+        if (cp == 0) {
-+            cp = 15;
-             break;
-         }
-         /* fall through */
-     case ARM_CP_STATE_AA32:
-         if (arm_feature(&cpu->env, ARM_FEATURE_V8) &&
-             !arm_feature(&cpu->env, ARM_FEATURE_M)) {
--            assert(r->cp >= 14 && r->cp <= 15);
-+            assert(cp >= 14 && cp <= 15);
-         } else {
--            assert(r->cp < 8 || (r->cp >= 14 && r->cp <= 15));
-+            assert(cp < 8 || (cp >= 14 && cp <= 15));
-         }
-         break;
-     case ARM_CP_STATE_AA64:
--        assert(r->cp == 0);
-+        assert(cp == 0);
-         break;
-     default:
-         g_assert_not_reached();
-@@ -7756,13 +7747,13 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
++        int min_el = ctz32(r->access) / 2;
++        if (min_el == 2 && !arm_feature(env, ARM_FEATURE_EL2)) {
++            if (r->type & ARM_CP_EL3_NO_EL2_UNDEF) {
++                return;
++            }
++            if (!(r->type & ARM_CP_EL3_NO_EL2_KEEP)) {
++                /* This should not have been a very special register. */
++                int old_special = r->type & ARM_CP_SPECIAL_MASK;
++                assert(old_special == 0 || old_special == ARM_CP_NOP);
++
++                r_const = *r;
++
++                /*
++                 * Set the special function to CONST, retaining the other flags.
++                 * This is important for e.g. ARM_CP_SVE so that we still
++                 * take the SVE trap if CPTR_EL3.EZ == 0.
++                 */
++                r_const.type = (r->type & ~ARM_CP_SPECIAL_MASK) | ARM_CP_CONST;
++                /*
++                 * Usually, these registers become RES0, but there are a few
++                 * special cases like VPIDR_EL2 which have a constant non-zero
++                 * value with writes ignored.
++                 */
++                if (!(r->type & ARM_CP_EL3_NO_EL2_C_NZ)) {
++                    r_const.resetvalue = 0;
++                }
++                /*
++                 * ARM_CP_CONST has precedence, so removing the callbacks and
++                 * offsets are not strictly necessary, but it is potentially
++                 * less confusing to debug later.
++                 */
++                r_const.readfn = NULL;
++                r_const.writefn = NULL;
++                r_const.raw_readfn = NULL;
++                r_const.raw_writefn = NULL;
++                r_const.resetfn = NULL;
++                r_const.fieldoffset = 0;
++                r_const.bank_fieldoffsets[0] = 0;
++                r_const.bank_fieldoffsets[1] = 0;
++
++                r = &r_const;
++            }
++        }
++    } else {
++        CPAccessRights max_el = (arm_feature(env, ARM_FEATURE_EL2)
++                                 ? PL2_RW : PL1_RW);
++        if ((r->access & max_el) == 0) {
++            return;
++        }
++    }
++
+     for (int crm = crmmin; crm <= crmmax; crm++) {
+         for (int opc1 = opc1min; opc1 <= opc1max; opc1++) {
              for (int opc2 = opc2min; opc2 <= opc2max; opc2++) {
-                 switch (r->state) {
-                 case ARM_CP_STATE_AA32:
--                    add_cpreg_to_hashtable_aa32(cpu, r, crm, opc1, opc2);
-+                    add_cpreg_to_hashtable_aa32(cpu, r, cp, crm, opc1, opc2);
-                     break;
-                 case ARM_CP_STATE_AA64:
-                     add_cpreg_to_hashtable_aa64(cpu, r, crm, opc1, opc2);
-                     break;
-                 case ARM_CP_STATE_BOTH:
--                    add_cpreg_to_hashtable_aa32(cpu, r, crm, opc1, opc2);
-+                    add_cpreg_to_hashtable_aa32(cpu, r, cp, crm, opc1, opc2);
-                     add_cpreg_to_hashtable_aa64(cpu, r, crm, opc1, opc2);
-                     break;
-                 default:
 -- 
 2.43.0
 
