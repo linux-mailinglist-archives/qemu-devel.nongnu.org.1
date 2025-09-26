@@ -2,87 +2,219 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18868BA42D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B0EBA42C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v29A9-0000nr-BD; Fri, 26 Sep 2025 10:11:05 -0400
+	id 1v29MO-0001ER-S7; Fri, 26 Sep 2025 10:23:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v299Z-0000Ia-NP
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:30 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298j-0005oO-7L
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:10:25 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3f42b54d1b9so2297562f8f.0
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:09:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v29MD-0001Dp-OH
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:23:34 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v29M3-0000KI-RJ
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:23:33 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58QEJecs018842;
+ Fri, 26 Sep 2025 14:23:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=VxWIasDWZa6dZhYtWiwpQHgM1LXxUkp1EbmU2enAIeQ=; b=
+ YBW6Sginl5MqfHdY9Z7haVBSxOqKsrONtXzdAuCF0Jx5j2g4VlA03N2/Aa7gxjC+
+ 0Wf1iwkaoRP/F1/5DK5/ZMuomTHaD8vHlhd3WTkp+ndN1L83Z0OvfrqAoF3325Un
+ Cftsdt28D1TUGkcl4GsVvFFAW7MF5RhHXKFVXY7QimeZln352UzP+8TWqUc/cHKB
+ WPhBEWSV9pAejzJ/ZGCjmq3CHY5ldFTUUuq2lF2iEW2O7mf5ZKP1r4ioxkchnqHE
+ E1Dp14wSvi2SIA8WQj/VE6Y311rNRzfcEp3U2wB624OQHJb4sZKqOeinJl82Cu/d
+ 7y4DwtnHBNh2gxYSFro9Hg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49dvg7r03h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Sep 2025 14:23:15 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 58QEIwsQ036960; Fri, 26 Sep 2025 14:23:14 GMT
+Received: from ph8pr06cu001.outbound.protection.outlook.com
+ (mail-westus3azon11012041.outbound.protection.outlook.com [40.107.209.41])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49dawkhwm3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Sep 2025 14:23:14 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=otVcFvIhxREyEsyJro+ILrjIrUqBTbiQPJwEJPG6S5QHyOCp2heBPgx4bxSAsMpBkpbrV5zN1nLyqJqrFkTo3mdQr2ED6+dtGPFnIhQUn5T6t4NdXqVLuqQ/OeGelOuC4lpZ0wetu44wP8l42ROJCSWsQcCcQqgwJ0WTB4+v1e62XCeiO3wBJQb+frr0cbYMhGPWb4hfzEBoyKgvy0d1mR1z799pauAyuqsdowHg7RBKfOieAdY6VXsDnRDQ6v2bdW48H8le84cp5jASEAbCLM4uXk4qCN9fNsI9UdwnpiwERgIotZQLWKW1veROkiEX2CwCobDQ1NEwOm0JT+dHDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VxWIasDWZa6dZhYtWiwpQHgM1LXxUkp1EbmU2enAIeQ=;
+ b=pgjWFjJZB7S3tH2fnFvNFzmsRj4mS4qAnI8UT0X4WEpZtuTml8hF95qpu3W82pDmLruwZ9bF8bMfji07/qkGO3ju7ckFv2XICL0Q5GYxhtMRQr02l+wRKBoWQqcG5JFXfzG0SraN8PGZjlLjbmbIHgJxpe3qBa9RKI+FD448fCDIozGldno7NBx/OuHBjA+lo56ZX3eVAzqOxNU6y2vDGw6wXQDxCOKgojXkkcfpIyNRu4nH2WICDwf38SEXRZXdWBBQNkd/aQFIZlbfLcAdgZos6tS4393AwOKRqSCd9vRehxjPtyx3ZGms2kOd2bw0ocGR91czyi0Y/wDDO8CeNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895771; x=1759500571; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HfRxq0U7zhd1tsQFSFudYaq3Tr4Dt63MO1uZEXfIFSY=;
- b=JHX+b+fj8n8FjALvOzjFpYpis9ukjkv9yfWsnVH1jih1S6L5Sp10pU7mLU9hoViJ0m
- XjeY2YRaD9o/8y0EubAyVcrj54D+n9IY6wZg1KT5GbVos3ZAs1H4TJMHw7SwPeKD3gR1
- d0uzcgOZknC/eESJZwdesQCxLRSqR9MbiR/GprlNOKAhj+6k1S6YkCX1fXQTyAZrf9sp
- KOd2zCPvCOv8Kw1xePYZgPZjV6vEdGeiactHS5r8nuZDUyLKyfOOlx6g5ugQ2MTsaPyW
- iShPlNnpl8bPWoYozsNUbDZ+xHCia/2F0ZaURVRh/k/rrPYFTLP0vFdAGl6/PHP6QwSV
- sjKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895771; x=1759500571;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HfRxq0U7zhd1tsQFSFudYaq3Tr4Dt63MO1uZEXfIFSY=;
- b=EvSf01Ljn/k8uojz0UdeI1PRUFTZYv8sluBbh9BFcjrivZ4OueV+QATBWQDJAJDD8V
- 4lin33dPp4oz1739jmn8SGyLt8KkHicYpQjAke8vkOsE2Uc+tg/ZvDqwuOg231Bi/d0M
- N0AJuM2taJ++FUL8XS1IzotLhxIJOSHi/PD4tZFXtOthe0nvZFTGUuE7CGpHJ+B3Rsi9
- b1vc+G0C4/DfzRMnnpLsx8bLaVpMqFBLhO2sN21QRRaosZ1zyK2SvZu9MxTQ9/ByEkJh
- 70h36NUUuAhKQp/TN7vgyOSYhdJFzWHv9teFUL0m8IOUL9oWkzIo6qhvumfYwauAVyJ+
- mcCQ==
-X-Gm-Message-State: AOJu0YwrS8tr7hKiLkaEdtbCrTBcLCPO4HjLLlSEKlz0NG8FclQOMdT4
- 8+aTjPtt4Fmeneh89WxpRspuSIlanym3V/t2E70F6UYMHLAlIKeyS1AR29YPOSl0eV2RxZjebUS
- Zt5ZZ
-X-Gm-Gg: ASbGncu1KuAOrR93ImMiKymcYnpXFTmOEnYU8h7bjh9cPUJPt/c5wbfPxkkl3wCwRu0
- y32Rv2yXQWYUn2j1I4IgXJRwKAYF9piAJ58SAOTV57OUX8g0PtR+8mmQgb0GQo99UJ73rcPo8bQ
- Vp6/u/4aujQAldwO/nxToqn/9huILPn+TT9raBTYzrbN8mlNRTc6ZqZep2y60E8B0CNB5vyhAxD
- CaMYTK2OyP5jOyMkoAYFmdcKCXTpkoCRYrQyU2k1EK47deRNTOKPs0K/4Al/GUtMwGY5lFL4ymU
- wfBrcW8sthy/u6ITFlNscMmRSbNBX+cTgCWxdxUNuTOT1nLp3U1QTcmi+hwIomgWcbMlynRY79m
- nlBkCuTXJwYcJqXc3b17JeOc1OHgXGKFSpg7Q1P4=
-X-Google-Smtp-Source: AGHT+IFwxfofrZt1N9GKvBzoTJ2s3VeIA3llPtjGzHCbHdKspqNzi5lU4j7iDS94h0RBGOC+Xq5byg==
-X-Received: by 2002:a5d:5f52:0:b0:3ee:b126:6b6 with SMTP id
- ffacd0b85a97d-40e4886df41mr6361997f8f.34.1758895771073; 
- Fri, 26 Sep 2025 07:09:31 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.09.30
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:09:30 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 44/44] target/arm: Implement ID_AA64PFR2_EL1
-Date: Fri, 26 Sep 2025 15:08:44 +0100
-Message-ID: <20250926140844.1493020-45-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
-References: <20250926140844.1493020-1-peter.maydell@linaro.org>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VxWIasDWZa6dZhYtWiwpQHgM1LXxUkp1EbmU2enAIeQ=;
+ b=odO+Qes8aODTfLXqUL7+oAqYf8GHEds142z9LfgMpbBjoJhytPIMqGzyl5IwCHgdml6FSxQSOuu//yiNu6cgigYcXOfxKhbbYmEeNqgy5fGV/VcTOBoMRp+jzIuHYB1YRqC2jU7WIgpT+1avGtL79VT4d7JurSddBUjUk6l/HUI=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by CO1PR10MB4659.namprd10.prod.outlook.com (2603:10b6:303:6c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.14; Fri, 26 Sep
+ 2025 14:23:01 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.9160.011; Fri, 26 Sep 2025
+ 14:23:00 +0000
+Message-ID: <7bef3208-9960-4bb0-93e8-b10d061e4578@oracle.com>
+Date: Fri, 26 Sep 2025 10:22:55 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] vfio/iommufd: Restore vbasedev's reference to hwpt
+ after CPR transfer
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com
+References: <20250926022348.1883776-1-zhenzhong.duan@intel.com>
+ <20250926022348.1883776-5-zhenzhong.duan@intel.com>
+Content-Language: en-US
+From: Steven Sistare <steven.sistare@oracle.com>
+In-Reply-To: <20250926022348.1883776-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PH8PR07CA0015.namprd07.prod.outlook.com
+ (2603:10b6:510:2cd::20) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|CO1PR10MB4659:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a8c4d60-b067-4f06-a9eb-08ddfd083237
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YVhJYmxFVGJFTXptMys5Slo4THRGS0RsdUNDMUxSUUtrK2tXWTNSM1ZWbkxV?=
+ =?utf-8?B?c0tXY1dTTndnT0EvVlZoMzZnUUxKblFESGNHWDBKVXJBVHBkTis2ZzJYVGV0?=
+ =?utf-8?B?L2R4SS9zMHFTekFXaGJTNERsR0ExZWg1VU9zMk1hamZEVnVRYnRGWU9qK3NO?=
+ =?utf-8?B?T3NOaWZFSzcrWDFLVHR1dDFiMmYyTnB3N3ljNGl5cFcyWFVCc1cxVjBjc3hp?=
+ =?utf-8?B?SUdpVG1HU1VtYldqNC9vZEpLcEdFSVRqeTVIWm96d09nMDVLdHdtZG5XNnYv?=
+ =?utf-8?B?ZHoyNm1GUzR5dGQyTG1yS2M1aVFOdTU3Smo4Rmt1UFVaLzdtWG5VYzhPdktB?=
+ =?utf-8?B?cWJsdjM4MjhEQ1QwMjdUNDdySmdYc25rbCsxNFdCdFl0bkRnaGthdHZUbWxF?=
+ =?utf-8?B?ZXF3UzFVYUNwZ0VzU2lvc2RMTGlzZlluZ3I0UXkva1R2QkZRcnpTM3pvVjI4?=
+ =?utf-8?B?bVJMck1pUWltaDdOaTdXekVtL05DaFhDQTF3SFpTaDR0YktqOW14bWMrODYr?=
+ =?utf-8?B?eEdseTh1RW1iVkVFZnJ5ZkI5dSs5SDIzb25UcHFUT01QZ3hJeHJnNzJXUkF3?=
+ =?utf-8?B?OEdldnhyNFJXY2R3bVFnQW1lTDlMUXJLUmNRR0ZhbWdhWGpZdEVmWnBoOHcw?=
+ =?utf-8?B?QzZJSEN0eHVmVldhRFlYeWJYajVBN2s3NnArbS8xbGViNm8zTTJmOFBWNGdI?=
+ =?utf-8?B?dUVjZDgvNXJDTjd4L2xWREFyS0pYcmN5MEhNWFI5TWp5dS9xM0lDOGVjdS9x?=
+ =?utf-8?B?WlVmMlJYbHRyMGFBMWZUNUhKRHRsVHEyUkgwR3RTWjMrVElVOHg2bzFIY1Ex?=
+ =?utf-8?B?dndyOGxiUFlCaXVJWjhaUVl0WlhtVGZSKzBWZVZGb3N3MDV0N05GUUlwY0Vq?=
+ =?utf-8?B?S3lGNmI5ZUdkR1VpdkpiSFNueTdvVUdnUmFEckg0ajR0VW42ZHdVSUFqSDgw?=
+ =?utf-8?B?NWZDbldnSFVVaW5YZmN4a0pKRVNMaDhVblhYZnpvaWRTRVJlc2E0WXZPRFlH?=
+ =?utf-8?B?dG5YMFNvdWNxd3NlbGlwTlBTaGZSWHlMNTM1K1dIb09SQnh4cjdDMEVhY1hU?=
+ =?utf-8?B?dGIvYVc3RlQxd0thSUpZMURiODdVekIrYk0zVkorMzdVcU5mRE1xQUd3djg1?=
+ =?utf-8?B?TSt1allBS21GcU1uOTRqWHk3RHhLRDZYTXYyTXUxOVpWTmN0RnlWZzFMUHJM?=
+ =?utf-8?B?QlVSaEpBM203cGd3TUxoQlJMOVFVVGtjNXBSamlDcDZsOEo4VlRqN1d2YWF3?=
+ =?utf-8?B?TzZGQUhscXlSdS92a1lRemk2RVY2RWRNUVdpYm9xSnhOWlpyalEyK0QzN3ZJ?=
+ =?utf-8?B?Uk9Hejd0VDdndDRMbTR4MGRrQ0ZGdzAvZk16NFJXNHBKcnZmOEJuckNkL2R5?=
+ =?utf-8?B?aVNzbjd2Y1RNMEdWdk9va2ZXcXZTU3laUVRzZWNWaGRxYnFsM3E4aUxibWNn?=
+ =?utf-8?B?QkxSZ1FtN3Q5dzFMbjc5R09GZ1VocUpiUFNSSnFyMUFIUUM1aHpSeVRHYW1O?=
+ =?utf-8?B?NzY2U2VBd3djL2tBTW9Cd0twYThuY0tjcU4vdy9ySkJzTG1CYVJabVRLcU5B?=
+ =?utf-8?B?eHVvV3JRR2pGaW5sYTZvV1BlV1ZrNk8wY2NKdnVJU1p1TTltaE1pNFZVVFE4?=
+ =?utf-8?B?THJFRnJ5Y0JDb0lRaFkreHFDcUUwbnByeFpHT0hxQ0tRdjVJZkRnUGVod1o3?=
+ =?utf-8?B?WG9UNUZLT3BzdUdiWEw5ODlYcWlybTVxUWRSNkljMFRleTJEQ2MyZUlEakpN?=
+ =?utf-8?B?MG01MWZnZHpaSlFlcVJaUkhWQ2lnNktVMXVtdEQzblI2WjFSdStCKzh5YXBp?=
+ =?utf-8?B?Ymh0cTdITkdranlIK3hYNTdvc0tzM3prVkZFWmJWQ0FZWld1MlhjaVJabVJ1?=
+ =?utf-8?B?b2kxdmFOL29QRTdjcXR1VFNoeHRXQzBMMHFoU2tQMDJmdXlXSWM3RjU1TlVO?=
+ =?utf-8?Q?ONmkNxvQgZI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEhHMHBzektVNDRVMFhlNUNNY2ZnVStDYTJlTGJ0d09tL0NRVUFaTGhPbG9V?=
+ =?utf-8?B?cndpdWRkOGxWS0FMQm1ISzdtME1DK3hXQm40eHJtbHJpYlAyY1ljWVhWZTRu?=
+ =?utf-8?B?RWhSZnFLanNnYlR3WlJFT2c0Qk04R1NyWXB1d1NFTEl1clNuVWs5czdsdkxj?=
+ =?utf-8?B?aTJrVk9zRjlYTnE2VGllS1hRQ3JVSTdnWjFnUUM1Zitabk9KVGhGUklxbkhR?=
+ =?utf-8?B?WmlhWm9SWlhvZVk4SzhTVlM2MUFHNGdTdGMvZzdUTHlxenZ5Vko4Ry9yclRQ?=
+ =?utf-8?B?RGxRMWNUM3UwWjEyWjRJUjJaVWl2Q1ZVY1dBUUVsZGFtWDJDcXFHcTk5VUNz?=
+ =?utf-8?B?dWNxejU4MkxzT05kMHk2QlNpUmFVaG96bnNkWHFEeWphM25iSi9VNW8xUjNq?=
+ =?utf-8?B?V0ZDOFRXWnFsNTU1SGQwSG9DVlRnZGhaWWwxV2Q0c1hJZHJJd2k2bE9va3Az?=
+ =?utf-8?B?dGJQclRwQXR5RlorWXF6d1gxVzNwTW1qWTU1Ti9MSWk2aU9ONDFid25CNk1V?=
+ =?utf-8?B?dUkzdVBoZVZwdFU0Z3VmeUtFcG9CWk0xZDZMK0dpZFBzcXJ0S01WOUo2ajY5?=
+ =?utf-8?B?Zm9QS21YbXFoWEk4WEoxWDlGZnhiS2lYU3hTOWNDNmE5NFBMVjBrN0NzZG52?=
+ =?utf-8?B?R3lyNjIzTktJdHNLU3pYdDQrKzNVL1ZBNzFGWkczRWdPSGR5eUhxcngxMDE5?=
+ =?utf-8?B?SkxlTGorUWU1WlV3T1Z0dDFmVWhoMEVaY0JxZFlja3FIYWFmMVNNNWpKcGZ4?=
+ =?utf-8?B?UXNQUENkSFhIbzd1Z3laY0FPOGFrYnBkUjBMZWQ4UDREZUQzQysraUpVWmpP?=
+ =?utf-8?B?bmpTY09XbEdMZzdqTWE4MTUveDYyVWxjemlON2IyU3hDbyt3YWN5WnNXYmdh?=
+ =?utf-8?B?Y21pWXJZM081UFJZeForclFkQjA4YTg4NFZrcTJXMEFreTZ0TWcwMzQyaXZu?=
+ =?utf-8?B?eDk1Rk1MaWExaWY5QmtUZGt3cjFRdjBwbG5WV0lRZnc3TWtMa0liOGhmOHBT?=
+ =?utf-8?B?VmhqYlNSUEFPeDN6dVpDSTEydWNSTmVzN1V0dFRGUDkxVGtaYTUvSWdLK2Q3?=
+ =?utf-8?B?ODRuMjM3a2tUUUtrUUdoaVFOb0pVMWtSM1B4WncwUkMxQzJscE9yNWtKbnRu?=
+ =?utf-8?B?aVJ3SU4vdlJ3RWQ3dmZHQTB4Z0I1S3FvZm94Vm5Kb1dMWWxEdW85RWhlQjlR?=
+ =?utf-8?B?WURhR0pvRkwyeXp4SlZtN2ZFejNiZGdkNWEzeGpJeUdTZGJEY0w5ZUlieDFH?=
+ =?utf-8?B?MDZVRlJVQnFQUzkxNmU5Z0pUNU9TUFRUUWxGb2JvakpQVDZ3RGZFVXg1NjZM?=
+ =?utf-8?B?L3hwS1BockkrVmllY1VxMmxvVGR2b0RRMWtqZEdORVpVRDVKUjBOK0NoTFZi?=
+ =?utf-8?B?WEQxRkp2aTU1WDlrbyt6bVFpbzkvcHlUOWsya0tOaWRDMVREUlZzcmVzbksy?=
+ =?utf-8?B?RjIwUFNXQmlpbVFRUHloZzVWWmJ2cDQ4RzhBMUErcVlLeW1PUDJrKzNIblcr?=
+ =?utf-8?B?RTZtdFg1WHU1WkpxQWh5bDFmV1VQaWRwY1o2WFFkdzZvUzhyYk93ZVdweG95?=
+ =?utf-8?B?d2RLTUYzNzZhNGljMGVRR3dGWHN4WVl2b1h5OFJFNGY0aWJsTGxVZEQyQkd4?=
+ =?utf-8?B?VGNKNXpHM2VzS0pQWGN5SEpaYmlqek8ybTBURDBzcVN6UlVuU3BQZUxYNk10?=
+ =?utf-8?B?czIvNFdabEkvVVNpY2lpcWxqNmd0K0lUQlRianZZUGxqbjJXZ3JQYVdCM3hS?=
+ =?utf-8?B?aTRreCtLWHdPK1lwZFpTRDNlVnB6eEhVZnh5WkRSMVFWWUl5WVllaDk2bkRD?=
+ =?utf-8?B?Vk9sS1NBYUYzdGZ1dE1DSkIyQ21iWGF1TWo5NHpxcjhieUx0QVZDWmZFUVRs?=
+ =?utf-8?B?NkF5akREYVlIOHZBS1ZwN1pZcWtudmJUc2NvWko3NUphSGNQdW1iVFlYMFRz?=
+ =?utf-8?B?VlVvNEhYK1FqL0szdU53b011ZXlzajdtU3M1dUtKamxJMUlDRGJLQTVLbjFa?=
+ =?utf-8?B?L0QrQzZxWW43ZEhIc2Q3Y0V2Yy96WGJveWNrK3A0KzN6N3RkRDN1amRGaXU3?=
+ =?utf-8?B?OUtDakU2eFdUdFJ5MURkWmNQaFZ6eWJWckp5L0h6VjhjWlprb2hOdm4vVGlw?=
+ =?utf-8?B?Mm9mZU5HRk5ieTM1STk2YmYxc2lOdy82V0dFa2RhRlA4T3pDWVdjaVkyQXgv?=
+ =?utf-8?B?L2c9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: KH5yOGdVKLwXM8mbRW0ZzNmWiZfeg1Qj5H7lQ5RCL9ZO4pcdYoSmhBH0d2MQT5qv5GLTvXvMtsHIMD97bLTXm5vg9hoWV90BborEKr0REx/snIYYCbzWz8T5l40s2oji3QXnfJIPH5Bs8pgfJTacdZvNWXS3C/I1GYCmvfP/tcP/wxgDXwxsg/cxVHV0sW5Py/9GfdVUO3NdKsvQBj+fWp2G4pUcXzDEXHe8Xd16LEbzwaj+PQQcXEIQXpJFs5dgRE707vzjfSEsnIY2hxiXT8tpl1UXqj0MXp0fTTbeF4GO3Q3TaemNJPsQqptRgPN561wEu78Ylb3uLDnqbxXEVycX4CO9zlKyia5mnat6SjQ+8YK4lKS7NxjnX4K02e0CrUjiZ82B97QdTnUofJR5M3yAFmcHjl2fJ+xtcuUU8rhgW/+1W3d2lDfWStkKzGG9TtWKHTepTS46rQqaO3Ivz9r5chyorikHMW5E6DCcxNlrfCIfC5PPN2kBtacpBW70bCSPIIEalaMovsdcCjPG5myDo3LapJ1MBuvrhjLEyVsxJsZgvJbskibDg8uq8kR44aVrxzh8fVbil7LQY9EAvIOf7W08/Y4uIKz75PEzXWk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a8c4d60-b067-4f06-a9eb-08ddfd083237
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 14:23:00.3214 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ijaz7mSVRAE/x95XNWmHy1ezAYXUWIdKnFoSLgPIPbuLVSF1CumqTWGPnqk5yJ3K5Be+cFDmn5GaVuaZ/mEkkep3Y4DonID6fJ12OYOAs2o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4659
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-26_05,2025-09-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0 adultscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2509150000
+ definitions=main-2509260132
+X-Proofpoint-GUID: HPGdazJ2LZCHe8cODuYo0jCClyfBHGmo
+X-Proofpoint-ORIG-GUID: HPGdazJ2LZCHe8cODuYo0jCClyfBHGmo
+X-Authority-Analysis: v=2.4 cv=c/+mgB9l c=1 sm=1 tr=0 ts=68d6a1d3 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117
+ a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8
+ a=8GsVHmWbNEM55XU-hvMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI2MDEzMiBTYWx0ZWRfX0AyDoVYUfXdC
+ mrTSPGyVDaDbHz2NLjaHgf+Hag9UvmKZm/UrEiP+Fq1sManjKPNfL7x7B4eoOHWRdPRRWaGi6hr
+ o0epsZSYnFJ8LDxhENYovY9LBuHJUgM0/dQQeNdKXkgH4us0104yMkSGaArnXYwca/p/a8hRWlm
+ KpfRrnwBINqyYh3qephW4TJxnnimqbpWT/P+2MB00qC865UzS9GP92y/onLt3dSfENMK8GhTtFo
+ lr+7qlnkCHNqy7JSAEW5yivGgKV9KdLavoJEoyOzKOeqnCMFa1euMmkD7fMRBrAKStAKm910JPJ
+ uOQnBaceGUaS0DGYMakgQSPqn6cNMIgYp5ylLdJqVB90dxkFQFsqfN4IB2vldvS52132zVkI3LL
+ NrCVadFBeM9Tl4cmLeDGo1t6YCVmiA==
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,122 +230,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we define the ID_AA64PFR2_EL1 encoding as reserved (with
-the required RAZ behaviour for unassigned system registers in the ID
-register encoding space).  Newer architecture versions start to
-define fields in this ID register, so define the appropriate
-constants and implement it as an ID register backed by a field in
-cpu->isar.  Since none of our CPUs set that isar field to non-zero,
-there is no behavioural change here (other than the name exposed to
-the user via the gdbstub), but this paves the way for implementing
-the new features that use fields in this register.
+On 9/25/2025 10:23 PM, Zhenzhong Duan wrote:
+> After CPR transfer, if there are more than one VFIO devices, the second
+> device's reference to hwpt isn't restored on destination. 
 
-The fields here are the ones documented in rev L.b of the Arm ARM.
+More specifically, the device is not added to hwpt->device_list.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/cpu-features.h    | 5 +++++
- target/arm/cpu-sysregs.h.inc | 1 +
- target/arm/helper.c          | 6 ++++--
- target/arm/hvf/hvf.c         | 1 +
- target/arm/kvm.c             | 1 +
- target/arm/hvf/sysreg.c.inc  | 1 +
- 6 files changed, 13 insertions(+), 2 deletions(-)
+> We still need
+> to call iommufd_cdev_attach_container() to restore it after a matching
+> container is found, or else SIGSEV triggers.
+> 
+> Fixes: 4296ee07455e ("vfio/iommufd: reconstruct device")
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index ad571e2ffee..602f6a88e53 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -277,6 +277,11 @@ FIELD(ID_AA64PFR1, MTEX, 52, 4)
- FIELD(ID_AA64PFR1, DF2, 56, 4)
- FIELD(ID_AA64PFR1, PFAR, 60, 4)
- 
-+FIELD(ID_AA64PFR2, MTEPERM, 0, 4)
-+FIELD(ID_AA64PFR2, MTESTOREONLY, 4, 4)
-+FIELD(ID_AA64PFR2, MTEFAR, 8, 4)
-+FIELD(ID_AA64PFR2, FPMR, 32, 4)
-+
- FIELD(ID_AA64MMFR0, PARANGE, 0, 4)
- FIELD(ID_AA64MMFR0, ASIDBITS, 4, 4)
- FIELD(ID_AA64MMFR0, BIGEND, 8, 4)
-diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
-index f48a9daa7c1..2bb2861c623 100644
---- a/target/arm/cpu-sysregs.h.inc
-+++ b/target/arm/cpu-sysregs.h.inc
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- DEF(ID_AA64PFR0_EL1, 3, 0, 0, 4, 0)
- DEF(ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
-+DEF(ID_AA64PFR2_EL1, 3, 0, 0, 4, 2)
- DEF(ID_AA64SMFR0_EL1, 3, 0, 0, 4, 5)
- DEF(ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
- DEF(ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index a18d920ac18..aa730addf2f 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -6109,11 +6109,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
-               .resetvalue = GET_IDREG(isar, ID_AA64PFR1)},
--            { .name = "ID_AA64PFR2_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-+            { .name = "ID_AA64PFR2_EL1", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 4, .opc2 = 2,
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
--              .resetvalue = 0 },
-+              .resetvalue = GET_IDREG(isar, ID_AA64PFR2)},
-             { .name = "ID_AA64PFR3_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 4, .opc2 = 3,
-               .access = PL1_R, .type = ARM_CP_CONST,
-@@ -6341,6 +6341,8 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-                                R_ID_AA64PFR1_SSBS_MASK |
-                                R_ID_AA64PFR1_MTE_MASK |
-                                R_ID_AA64PFR1_SME_MASK },
-+            { .name = "ID_AA64PFR2_EL1",
-+              .exported_bits = 0 },
-             { .name = "ID_AA64PFR*_EL1_RESERVED",
-               .is_glob = true },
-             { .name = "ID_AA64ZFR0_EL1",
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 8b467b36638..0658a99a2d1 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -744,6 +744,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     } regs[] = {
-         { HV_SYS_REG_ID_AA64PFR0_EL1, &host_isar.idregs[ID_AA64PFR0_EL1_IDX] },
-         { HV_SYS_REG_ID_AA64PFR1_EL1, &host_isar.idregs[ID_AA64PFR1_EL1_IDX] },
-+        /* Add ID_AA64PFR2_EL1 here when HVF supports it */
-         { HV_SYS_REG_ID_AA64DFR0_EL1, &host_isar.idregs[ID_AA64DFR0_EL1_IDX] },
-         { HV_SYS_REG_ID_AA64DFR1_EL1, &host_isar.idregs[ID_AA64DFR1_EL1_IDX] },
-         { HV_SYS_REG_ID_AA64ISAR0_EL1, &host_isar.idregs[ID_AA64ISAR0_EL1_IDX] },
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 5a75ff59271..b8a1c071f57 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -324,6 +324,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-         err = 0;
-     } else {
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64PFR1_EL1_IDX);
-+        err |= get_host_cpu_reg(fd, ahcf, ID_AA64PFR2_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64SMFR0_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64DFR0_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64DFR1_EL1_IDX);
-diff --git a/target/arm/hvf/sysreg.c.inc b/target/arm/hvf/sysreg.c.inc
-index f2276d534e6..067a8603fa7 100644
---- a/target/arm/hvf/sysreg.c.inc
-+++ b/target/arm/hvf/sysreg.c.inc
-@@ -92,6 +92,7 @@ DEF_SYSREG(HV_SYS_REG_ID_AA64PFR0_EL1, 3, 0, 0, 4, 0)
- #endif
- 
- DEF_SYSREG(HV_SYS_REG_ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
-+/* Add ID_AA64PFR2_EL1 here when HVF supports it */
- DEF_SYSREG(HV_SYS_REG_ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
- DEF_SYSREG(HV_SYS_REG_ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
- DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR0_EL1, 3, 0, 0, 6, 0)
--- 
-2.43.0
+Thanks again.
+
+Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
+
+> ---
+>   hw/vfio/iommufd.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 103ff43426..6df99d3aa6 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -565,10 +565,9 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+>               continue;
+>           }
+>   
+> -        if (!cpr_is_incoming()) {
+> +        if (!cpr_is_incoming() ||
+> +            (vbasedev->cpr.ioas_id == container->ioas_id)) {
+>               res = iommufd_cdev_attach_container(vbasedev, container, &err);
+> -        } else if (vbasedev->cpr.ioas_id == container->ioas_id) {
+> -            res = true;
+>           } else {
+>               continue;
+>           }
 
 
