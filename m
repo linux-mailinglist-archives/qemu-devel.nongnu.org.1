@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4063BA2E2A
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D65BA2E3C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:13:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23Xu-00070h-PR; Fri, 26 Sep 2025 04:11:16 -0400
+	id 1v23Y3-00076x-3Y; Fri, 26 Sep 2025 04:11:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Xn-0006xb-VU; Fri, 26 Sep 2025 04:11:07 -0400
+ id 1v23Xy-00075R-0C; Fri, 26 Sep 2025 04:11:18 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Xh-00009c-AI; Fri, 26 Sep 2025 04:11:07 -0400
+ id 1v23Xs-0000Cp-LD; Fri, 26 Sep 2025 04:11:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E86C5157D4B;
- Fri, 26 Sep 2025 11:10:30 +0300 (MSK)
-Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F0F30290C2F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 09258157D4C;
  Fri, 26 Sep 2025 11:10:31 +0300 (MSK)
+Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 17CDD290C30;
+ Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Joel Stanley <joel@jms.id.au>,
+Cc: qemu-stable@nongnu.org, Gustavo Romero <gustavo.romero@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 03/60] linux-user: Add strace for rseq
-Date: Fri, 26 Sep 2025 11:09:31 +0300
-Message-ID: <20250926081031.2214971-3-mjt@tls.msk.ru>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 04/60] tests/functional: Fix reverse_debugging asset
+ precaching
+Date: Fri, 26 Sep 2025 11:09:32 +0300
+Message-ID: <20250926081031.2214971-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -58,34 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
- build/qemu-riscv64 -cpu rv64,v=on -d strace  build/tests/tcg/riscv64-linux-user/test-vstart-overflow
- 1118081 riscv_hwprobe(0xffffbc038200,1,0,0,0,0) = 0
- 1118081 brk(NULL) = 0x0000000000085000
- 1118081 brk(0x0000000000085b00) = 0x0000000000085b00
- 1118081 set_tid_address(0x850f0) = 1118081
- 1118081 set_robust_list(0x85100,24) = -1 errno=38 (Function not implemented)
- 1118081 rseq(0x857c0,32,0,0xf1401073) = -1 errno=38 (Function not implemented)
+This commit fixes the asset precaching in the reverse_debugging test on
+aarch64.
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+QemuBaseTest.main() precaches assets (kernel, rootfs, DT blobs, etc.)
+that are defined in variables with the ASSET_ prefix. This works because
+it ultimately calls Asset.precache_test(), which relies on introspection
+to locate these variables.
+
+If an asset variable is not named with the ASSET_ prefix, precache_test
+cannot find the asset and precaching silently fails. Hence, fix the
+asset precaching by fixing the asset variable name.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250826060341.1118670-1-joel@jms.id.au>
-(cherry picked from commit f91563d011a0439cd6709e169cdfac268779d562)
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-ID: <20250827001008.22112-1-gustavo.romero@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 36fb9796662e8d1f8626b1cacb1a6d5e35a8bd00)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/strace.list b/linux-user/strace.list
-index ab818352a9..51b5ead969 100644
---- a/linux-user/strace.list
-+++ b/linux-user/strace.list
-@@ -1719,3 +1719,6 @@
- #ifdef TARGET_NR_riscv_hwprobe
- { TARGET_NR_riscv_hwprobe, "riscv_hwprobe" , "%s(%p,%d,%d,%d,%d,%d)", NULL, NULL },
- #endif
-+#ifdef TARGET_NR_rseq
-+{ TARGET_NR_rseq, "rseq" , "%s(%p,%u,%d,%#x)", NULL, NULL },
-+#endif
+diff --git a/tests/functional/test_aarch64_reverse_debug.py b/tests/functional/test_aarch64_reverse_debug.py
+index 58d4532835..8bc91ccfde 100755
+--- a/tests/functional/test_aarch64_reverse_debug.py
++++ b/tests/functional/test_aarch64_reverse_debug.py
+@@ -21,7 +21,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+ 
+     REG_PC = 32
+ 
+-    KERNEL_ASSET = Asset(
++    ASSET_KERNEL = Asset(
+         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
+          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
+         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
+@@ -30,7 +30,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+     def test_aarch64_virt(self):
+         self.set_machine('virt')
+         self.cpu = 'cortex-a53'
+-        kernel_path = self.KERNEL_ASSET.fetch()
++        kernel_path = self.ASSET_KERNEL.fetch()
+         self.reverse_debugging(args=('-kernel', kernel_path))
+ 
+ 
 -- 
 2.47.3
 
