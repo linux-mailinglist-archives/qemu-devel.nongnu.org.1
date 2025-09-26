@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDB1BA3B64
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9846BA3C29
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:07:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v27v9-0005dX-Dh; Fri, 26 Sep 2025 08:51:32 -0400
+	id 1v2883-00039H-Do; Fri, 26 Sep 2025 09:04:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v27v6-0005dE-Ta
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 08:51:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v2869-0001dF-GP
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:02:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v27uv-0007jS-0y
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 08:51:28 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v285y-0001Bb-I7
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:02:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758891068;
+ s=mimecast20190719; t=1758891748;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=UZwPR8KjezRG8M2r0uya15bF5b7eCBWA8imat/ch2H8=;
- b=YTU/6IL2pl8pIWYx6/0YaOE6QSZfV7PmyK6uB6q6GTKU6Jl9gyXmzoisNQJKzyzMRKhc2v
- iBLkfsQ0Kuj0TtJtzG/an0ooYwHFeIifkeGd+DHYaS/ZYrL0qYSTqy73UM4XNB8q2+rH77
- aVfe7Rfz54PpLkfAUzRJqkDpYzDfDoc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nbZvIc5LKcLtvFIwDbeACPUWfhCRHxyPKp9hV4ev1v4=;
+ b=ceOMavsFIk4KOn52lVNle2lTVwpcNxylQWR+qauWzHBne1vM0X1iLSrhHarMebVi38Ndyu
+ AdHDCi7OlnglLhMWxl3wuSPZRA67aHecqC/ZkpfNWFnp2ofZqKPbLBX3qLJd1ME5hj+B7P
+ O7CJyVRIQF06pYXPqfhvf3c7o63O8UA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-l03SlJ3KMuqIstU4sqKkIA-1; Fri, 26 Sep 2025 08:51:06 -0400
-X-MC-Unique: l03SlJ3KMuqIstU4sqKkIA-1
-X-Mimecast-MFC-AGG-ID: l03SlJ3KMuqIstU4sqKkIA_1758891066
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-46e3dcb36a1so5050735e9.2
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 05:51:06 -0700 (PDT)
+ us-mta-131-v7eloZaHNwemv3TWBJ17Jw-1; Fri, 26 Sep 2025 09:02:25 -0400
+X-MC-Unique: v7eloZaHNwemv3TWBJ17Jw-1
+X-Mimecast-MFC-AGG-ID: v7eloZaHNwemv3TWBJ17Jw_1758891744
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3ee1317b132so1671292f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 06:02:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758891065; x=1759495865;
+ d=1e100.net; s=20230601; t=1758891744; x=1759496544;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UZwPR8KjezRG8M2r0uya15bF5b7eCBWA8imat/ch2H8=;
- b=TfJsMJ7qsTrkAq1L/4tmbkclV70SvRq9s4IYLDOiJj/owBUeW2Re6qJ6yEFw81jcOD
- u+RxCamwBt9mij2wePjXWfsO3wah2NPVeNUBC0gVmbC00BaXcBB7LnPT2dLo0hCQzMkc
- hmzrjr+z2f6ELKDuUEI13nDeaYe8I3QhWLOMwRZExGanmUVuhHoJ3rYxnx88osiVmhh2
- 2ibvPooV1s+97mTAPXCa6oMQoa+JLFMAjz94Uq1fZYu9Qj+Qalumbuu4KRgMKeogrVsM
- J8JMTHicfdNpr0N3/fhNxlsTcuWWjfSvBl4N7SbPp3EmJU/oGCbkEgTkq7ENlZiBzPxX
- vJhQ==
+ bh=nbZvIc5LKcLtvFIwDbeACPUWfhCRHxyPKp9hV4ev1v4=;
+ b=hHhZGdZvuJtdMKS0jvdO9BHXO4XK1eX/UmbsJX45oH63haNTQkpWHTkZ+eIAzEBYY6
+ O2t8PPLSc/fuygOQ43q0c5kKJrsB+AUR3VdueGRWfPMp+mj/7K/IQPVf6s8HbIBv4fH2
+ u4REM4KCsrD23lY83kMG7jt0+RDgajukmlN3qxNRRKYDDQc2zwla9Fj0mtFOLgVx/O8q
+ NGbOYy36ZHKKcjL0jeiWVImBthf4SpVayzV84PsamCvpgzXFzSw2Hn3TrWJv5XvwX+Hq
+ zQhyUp3XnlgCcOAqZ+ajpqSjw8DAcCTl91FZxL8p+lmg8miLHPK2AKei0z/1aR6Y5oqp
+ IRZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWhuXQYmhLuygSNT/sxkakqGKmfN1xRyAAtUcly1zJdr5EUpFHqv94EMitxTJRr3pG+4rIrij2a0m+B@nongnu.org
-X-Gm-Message-State: AOJu0Yxd5Nich5db6zc8CHcZyJs/obYyLn+o6RMni7VoqsWWbGDpgvwo
- xL0taGpTb/O2BP8gvKzxHHEXxCFBuGlKWHZ3fhFriUtTgbUOee+TyYWXRHrPBqPekfrqOwvNEPt
- WRd9fC3HPfDscxXtwfpF4WAf6thNWJznOlvCs22698NP0IynBevXsRqJV
-X-Gm-Gg: ASbGncsmPcSOGNkhegS6c5cCvG3Gc1L1FSMjRXiNcODm8NW/7jleM8tPV6r5Ubg26Xq
- EH+/Y772YwlpcFDIvqJM1r/7tQWeSxlBcbraYYjCiTNU3kJzIX1Z0OImlsGVQTvThx/+eIBKRnt
- VNqXrC95lp0Ocj0+qhxi8MyQhCa6vGaAfMagZCbAJq+aVkSdLjdlNG/p41IZ49Ys7OMYKFBeeT8
- QpgFXLvy2dh/FN4cTe8AGkCdj5x6QI8LjS8woUvdvHd3i+AhtkguUnO0re6Nw66p8YQWWHTjPzU
- nJQc2YiNF3jq9PbuGdRXkL64mPF/RW3N2skUQwokV6RkG8f7lvtd6O0DVHThxfvN3QD4KWkZ/9m
- /GdxAFg==
-X-Received: by 2002:a05:600c:5486:b0:46e:27fb:17ff with SMTP id
- 5b1f17b1804b1-46e329d47e4mr60798965e9.2.1758891065487; 
- Fri, 26 Sep 2025 05:51:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGpd3yu5PaCQyaRutYhYSmDCnqcnbDz6f6go242komNFGl/zvyANmgTg/b2xdWdG7sNB97ntw==
-X-Received: by 2002:a05:600c:5486:b0:46e:27fb:17ff with SMTP id
- 5b1f17b1804b1-46e329d47e4mr60798585e9.2.1758891065002; 
- Fri, 26 Sep 2025 05:51:05 -0700 (PDT)
+ AJvYcCUtJbqPPEalk9l7ocSxZlc4T0VZapjJo9C0DFsP0G0JGTjJ+CEmecGZF265zxtbleNT22gEjZaLWvFP@nongnu.org
+X-Gm-Message-State: AOJu0YzJvcoSGML9hdlaBpfrTolI9UY6lYZreVdx636htwc3OHr/GATp
+ qvg5JW7u5Jczxe2fhfssITLqvpWzyGnEoFqyaeEgsFj/xaOhWAfk5qTdDTtKTFzHUmD1Pv4OnTJ
+ uXamCwBBXQ7rZnRJfZgb2dHWHmWDeHRHUQnp1em9pG6x1gHRJbNX4EEpM
+X-Gm-Gg: ASbGncuQqN5AZRE1FVZ/AwixfufM/4ikbdXYmuBADD8iTu0xkFQD0mhTAqJ4sqI7vVd
+ mQWGVWekbxRiFz5ghThcvv4LC4x3pfiwoy5EQ5yDVMb4p/qkd5hLWULSYF+1PsgvNQtbrOjw6Yu
+ OoYRA62F1t0Ng/alBnGQdvXrUMlrWIw8/cNbJJIr4kbhmvYY5cSaj2zPgzuROFoOeF0S/qjhhJk
+ +l5n6PPEt974EjSv2UUXywNyRzqcmyNS/3bnr7iLkJPh6bd5cECd6TgVOa326yvw++UX6TVJjHC
+ 13p3YeCS9yez21RpT3fiisgiIup9a+TPv5iEsouQarBc1H8q5PKINUBlclGpi/JiZaSyAsSEZcx
+ +Utn97A==
+X-Received: by 2002:a05:6000:40c9:b0:3ee:1521:95fc with SMTP id
+ ffacd0b85a97d-40e4745e16emr7354172f8f.14.1758891744291; 
+ Fri, 26 Sep 2025 06:02:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH539vk3K+rstVY9cN4MFahA0hlS3Vh4zxhSjOWxtkMM60CFmvnLGpZyls92exbZCYH4AahTg==
+X-Received: by 2002:a05:6000:40c9:b0:3ee:1521:95fc with SMTP id
+ ffacd0b85a97d-40e4745e16emr7354132f8f.14.1758891743875; 
+ Fri, 26 Sep 2025 06:02:23 -0700 (PDT)
 Received: from [192.168.0.7] (ltea-047-064-114-212.pools.arcor-ip.net.
  [47.64.114.212]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2ab838b6sm115182885e9.24.2025.09.26.05.51.03
+ ffacd0b85a97d-40fc5602eccsm7302185f8f.40.2025.09.26.06.02.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Sep 2025 05:51:04 -0700 (PDT)
-Message-ID: <a651058e-5559-4996-a281-f51b8d8887d6@redhat.com>
-Date: Fri, 26 Sep 2025 14:51:03 +0200
+ Fri, 26 Sep 2025 06:02:23 -0700 (PDT)
+Message-ID: <569e0dd6-a578-4b31-9740-799566880311@redhat.com>
+Date: Fri, 26 Sep 2025 15:02:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 17/28] pc-bios/s390-ccw: Refactor zipl_run()
+Subject: Re: [PATCH v6 18/28] pc-bios/s390-ccw: Rework zipl_load_segment
+ function
 To: Zhuoying Cai <zycai@linux.ibm.com>, berrange@redhat.com,
  richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
  qemu-s390x@nongnu.org, qemu-devel@nongnu.org
@@ -83,7 +84,7 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
  iii@linux.ibm.com, eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
 References: <20250917232131.495848-1-zycai@linux.ibm.com>
- <20250917232131.495848-18-zycai@linux.ibm.com>
+ <20250917232131.495848-19-zycai@linux.ibm.com>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -128,19 +129,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250917232131.495848-18-zycai@linux.ibm.com>
+In-Reply-To: <20250917232131.495848-19-zycai@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,93 +158,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/09/2025 01.21, Zhuoying Cai wrote:
-> Refactor to enhance readability before enabling secure IPL in later
-> patches.
+> Make the address variable a parameter of zipl_load_segment and return
+> segment length.
+> 
+> Modify this function to allow the caller to specify a memory address
+> where segment data should be loaded into.
+> 
+> seg_len variable is necessary to store the calculated segment length and
+> is used during signature verification. Return the length on success, or
+> a negative return code on failure.
 > 
 > Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 > ---
->   pc-bios/s390-ccw/bootmap.c | 49 ++++++++++++++++++++++++--------------
->   1 file changed, 31 insertions(+), 18 deletions(-)
-> 
-> diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
-> index 0f8baa0198..ff0fa78cf0 100644
-> --- a/pc-bios/s390-ccw/bootmap.c
-> +++ b/pc-bios/s390-ccw/bootmap.c
-> @@ -674,6 +674,35 @@ static int zipl_load_segment(ComponentEntry *entry)
->       return 0;
->   }
->   
-> +static int zipl_run_normal(ComponentEntry **entry_ptr, uint8_t *tmp_sec)
-> +{
-> +    ComponentEntry *entry = *entry_ptr;
-> +
-> +    while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
-> +           entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> +
-> +        /* Secure boot is off, so we skip signature entries */
-> +        if (entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> +            entry++;
-> +            continue;
-> +        }
-> +
-> +        if (zipl_load_segment(entry)) {
-> +            return -1;
-> +        }
-> +
-> +        entry++;
-> +
-> +        if ((uint8_t *)&entry[1] > tmp_sec + MAX_SECTOR_SIZE) {
-> +            puts("Wrong entry value");
-> +            return -EINVAL;
-> +        }
-> +    }
-> +
-> +    *entry_ptr = entry;
-> +    return 0;
-> +}
-> +
->   /* Run a zipl program */
->   static int zipl_run(ScsiBlockPtr *pte)
->   {
-> @@ -700,25 +729,9 @@ static int zipl_run(ScsiBlockPtr *pte)
->   
->       /* Load image(s) into RAM */
->       entry = (ComponentEntry *)(&header[1]);
-> -    while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
-> -           entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> -
-> -        /* We don't support secure boot yet, so we skip signature entries */
-> -        if (entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> -            entry++;
-> -            continue;
-> -        }
->   
-> -        if (zipl_load_segment(entry)) {
-> -            return -1;
-> -        }
-> -
-> -        entry++;
-> -
-> -        if ((uint8_t *)(&entry[1]) > (tmp_sec + MAX_SECTOR_SIZE)) {
-> -            puts("Wrong entry value");
-> -            return -EINVAL;
 
-So in this case the code returned -EINVAL ...
-
-> -        }
-> +    if (zipl_run_normal(&entry, tmp_sec)) {
-> +        return -1;
-
-... but now it's always returning -1.
-
-It likely does not make much difference in this case here, but it's 
-certainly better style to preserve the error value.
-
-  Thomas
-
-
->       }
->   
->       if (entry->component_type != ZIPL_COMP_ENTRY_EXEC) {
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
