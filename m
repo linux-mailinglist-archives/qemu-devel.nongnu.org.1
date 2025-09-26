@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BE3BA26E4
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 07:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29706BA26D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 07:18:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v20p5-0004pX-6v; Fri, 26 Sep 2025 01:16:47 -0400
+	id 1v20p9-0004rS-Li; Fri, 26 Sep 2025 01:16:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v20ov-0004mC-Lv
+ id 1v20ow-0004mD-3g
  for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:16:38 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v20om-00060k-AC
+ id 1v20op-00060z-Dc
  for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:16:37 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-27d69771e3eso15166345ad.3
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 22:16:23 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-27eceb38eb1so20637705ad.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 22:16:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758863780; x=1759468580; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758863783; x=1759468583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qbcIM6Ru+KfZSzivGndOpNutXXn65xOK6v6HYqWFFQA=;
- b=RlxoGNi9EkVISz1yxgW+/7q+h2uKZrvIGgLLhx3hkYZxKoHWNRUq2Ht4nnYa/3qpOO
- HRfqfJFug3niFqBI+lrws4J1VOsAwSAJ42PiVXl61S+95drWrRYWXj7SdRI7opU8y+u5
- nyESgAPd7dcnfI3qJS2tTuaF/hk72flcxgVF2Z+lso8uGhUz4oQ4DQZig6CFyFtBl3g/
- CWVTnbIKgLM5fq6+NQ+//9Vuy1oDdo/QeTPJxGW8rY3O46KLPc5w+yXMeQGv7I9gZSHG
- N4NmJoAmWsxapFVSHBpq1hWFZOhaLOGLM1x6eVmP2qmhTi6UElHaFelrpBL3/WwQUaXS
- q0hA==
+ bh=A8qxry6y1z0qQGV3uHFHjxCr8kbyKn/3ReS6+iwe5go=;
+ b=pAEbcY4vJtZWge0MzehHUv/C42VRTlOYpFRWkC5J2dyBFGpnKXrXyhTMIuaOAo8tSS
+ h/edFGeAewRPc3LC+6nqVMvWdyvepFOPY5MYw3qqBLIPX7+PIijWYdXauEFLp+ensAzG
+ PIuSTyvzRJgg6NVKt5FuD7D0bpwpgEgOJOU/99bPgSZvTiaCOV62EVA9EXX1AzBblQRQ
+ OlDXhcbxRfItMLxJWEf9BIYWlvGjTXgdMZtzS/G4ASDs9X/NSw33b/okFLUeXdf4rRog
+ pieyS0Keq0cfUEHffhqYYmLlnh8NCh2wyxFf4PlFArDpKNncobkM1Nfu1D+S75SEgjEm
+ Vnaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758863780; x=1759468580;
+ d=1e100.net; s=20230601; t=1758863783; x=1759468583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qbcIM6Ru+KfZSzivGndOpNutXXn65xOK6v6HYqWFFQA=;
- b=VNl0AWHyJaWALC3Cqm9lbMXF6oEV+9xAgL4z4mjfKh127LcGAJugAtfQwOx3urLn27
- 4BrIpJcUCLznU7ZxysEfJaoJWWatLzu/t7ED3wfPAKRjJTnMotEKXqFMGuRvvePP2UAf
- 97M5QWGQzxHTo01N8hAJ9kIsBzrZGubxQN8oprrPIcpJdyYk2aT4gJt+M5vxlJs1gIKK
- Ii6OrKeBG2ph34sv70tFyuAYTEMbR6exJsR1NhoFo7Y57jf1IasInnvJEY9ApX7V4Cm+
- /fC/LIFld2qT1zRheMFesrFclHPGZ+QQnNGvsFoWQ1Xv5RGVlstT3SKMwekIvOC2Z3dy
- G1/A==
-X-Gm-Message-State: AOJu0Yz9ctcifyCprAncobSSbok85814nJ4UvQMMGXgQnea/9a9UwyHL
- oeIYaofeljbUZ7VX8Za7iGU84MIonRLz+j8NtJDFfK9fpjhQ4eq2jrAM65YLfAvMWajmuZ7cMgk
- fN80E
-X-Gm-Gg: ASbGncszJb+tpqSsPAvnwrJu33600rlwyEAKvQh+n+iX5xMcPQPtlfcacj0MF9D8Alx
- DO66L6rhbWXX02R/MKxEx38eQI0JoRfADRLPBchB10cAOIAgounx/yOX/MCWw50KO8ukFUKbYQz
- +pytUu+wDtc2iNNXSjd+gGsk1ZS895yhChM7iB4RpZorMoYxCTIXLJSagxDQrbiibi++0PRPDRq
- pIs1YOOXseP/UKY/kRNlNLz8PoaOwvtU+0jKG9FLleAGXvDbLyBzfVwQEFMRUMz3pIlndWRJLAX
- sNOr3J4Pe9+YilChvgppzi6bZQktmi3HlJ5OLGZt6Ap4KVOg7oI/UPqcKDBdTGdP9mK3bffJans
- svqgS03094n/PzXw1quMfzIyl0SWu/KOKdlqmb5CGMs+a7Q92ICz4OBz9Zg==
-X-Google-Smtp-Source: AGHT+IE/+rh4i8OLGMJBItC4kYEuKliujmcOCqYvDVB8J8+aqhIAeK/4Jk9/mQ9ydvoYLkPl36oEeA==
-X-Received: by 2002:a17:903:1a2d:b0:25a:24f2:af00 with SMTP id
- d9443c01a7336-27ed4a06c8fmr64226065ad.12.1758863780084; 
- Thu, 25 Sep 2025 22:16:20 -0700 (PDT)
+ bh=A8qxry6y1z0qQGV3uHFHjxCr8kbyKn/3ReS6+iwe5go=;
+ b=jA/MBHEhRcmXCxvIKjFLaop7Q84HhlNGlpXsrmsIDwOMcYlyym5mckNSsH3Fcvw+3Z
+ W/Hx1eoQS5Wh09cYrqmhKW95KPvnbNEyxl5pJpTbw66infOav/y4XJrH6aLbyQ1vlDsU
+ q/v5n8zgPGoxzS+WIp5iXwxZSDGc6Gf12vw6CdYNlSFxzMTAiW/RdHSmcMJE+iXYaoKN
+ 1aU/LnvwIn+7OQyuEWuAdmZilTXPxp3XKJBzlqef7vQZIlsqf7bqV7C9Cfm2xbr+9vvG
+ 3DMH9S2V0i9T3/l6kNZmiS6p9iMKHNghw+QaE5y+GqE00oxAHLaeafn5Div5wbUzfljp
+ rQJQ==
+X-Gm-Message-State: AOJu0YyV3VCd/ZszYK5NuEI9pEq3PNeD49YxIHzf2QRGITv9njyG57ug
+ St6HF5dXosF6DqmIyNnNAJW6id54DGqFLdMXgttY1u34T4F/MabUd2sT4hHpUXq/7my+rfxSsuT
+ b7vA+
+X-Gm-Gg: ASbGncsY4We+e94hND9dip6Zix3NGg7nD6YY1vd6hVADE7129f2tXHMoJvSzvmxcLAB
+ QvkpUpo8/f5n5R+NG4kW3tAeIoi9MlwdpjnHkmwtFXmmRaYSqBL1+JrCOH2/d3RkCW+V/aDLmT8
+ MBoymqxlpHDiriW3qLhw4xDef188iP1OdmgDr5yUFizxd20MJMi+v6DZwy8wLNxqNWHQVdRDcBE
+ bDLXWjjMH5uzud7/hjVJd+E0r5OgiTIgx/PFtRcn6yHqv7jHZFSlQn919YiUXpRORljYZKkqUeJ
+ uJ3ISgsPmt8QC04dnQQX70zHyDlxVV5ARWvVjr2n4z/SG+xI8F6n1Cb3I8nmtGlJBRJJP7O7Z+j
+ v+3xL95/AALnTAipYrzLPSjEVDytN26WaDGLZ3T017Dv/Cdo7TVFuv6P6lrBXh6NuVkdS
+X-Google-Smtp-Source: AGHT+IGbsw6PoUjjNBRK/UL3bi1UNQOe1bXaSwEcY/e2fh2jEivINMtlpTKtmOZ6o4HV+auqGSnnww==
+X-Received: by 2002:a17:903:2c9:b0:259:5fdf:d79c with SMTP id
+ d9443c01a7336-27ed4ad65e1mr54084735ad.51.1758863782936; 
+ Thu, 25 Sep 2025 22:16:22 -0700 (PDT)
 Received: from gromero0.. (189-47-45-49.dsl.telesp.net.br. [189.47.45.49])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-27ed672a51fsm42160085ad.63.2025.09.25.22.16.17
+ d9443c01a7336-27ed672a51fsm42160085ad.63.2025.09.25.22.16.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Sep 2025 22:16:19 -0700 (PDT)
+ Thu, 25 Sep 2025 22:16:22 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
  berrange@redhat.com
 Cc: qemu-arm@nongnu.org, gustavo.romero@linaro.org,
  manos.pitsidianakis@linaro.org, peter.maydell@linaro.org
-Subject: [PATCH v4 5/9] tests/functional: replace avocado process with
- subprocess
-Date: Fri, 26 Sep 2025 05:15:38 +0000
-Message-Id: <20250926051542.104432-6-gustavo.romero@linaro.org>
+Subject: [PATCH v4 6/9] tests/functional: drop datadrainer class in reverse
+ debugging
+Date: Fri, 26 Sep 2025 05:15:39 +0000
+Message-Id: <20250926051542.104432-7-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250926051542.104432-1-gustavo.romero@linaro.org>
 References: <20250926051542.104432-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,48 +104,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The standard python subprocess.check_call method is better than
-avocado.utils.process as it doesn't require stuffing all args
-into a single string.
+The reverse debugging test uses the avocado datadrainer class to
+create a background thread that reads from the console socket and
+dumps it via python logger.
+
+Most tests log console output as a side effect of doing calls
+to match strings, but this test never tries to match anything.
+
+This isn't critical, so just drop the functionality.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/reverse_debugging.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/functional/reverse_debugging.py | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/tests/functional/reverse_debugging.py b/tests/functional/reverse_debugging.py
-index f9a1d395f1..a7ff47cb90 100644
+index a7ff47cb90..7fd8c7607f 100644
 --- a/tests/functional/reverse_debugging.py
 +++ b/tests/functional/reverse_debugging.py
-@@ -11,6 +11,7 @@
- # later.  See the COPYING file in the top-level directory.
- import os
- import logging
-+from subprocess import check_output
+@@ -34,8 +34,6 @@ class ReverseDebugging(LinuxKernelTest):
+     endian_is_le = True
  
- from qemu_test import LinuxKernelTest, get_qemu_img
- from qemu_test.ports import Ports
-@@ -100,7 +101,6 @@ def vm_get_icount(vm):
- 
-     def reverse_debugging(self, shift=7, args=None):
-         from avocado.utils import gdb
--        from avocado.utils import process
- 
+     def run_vm(self, record, shift, args, replay_path, image_path, port):
+-        from avocado.utils import datadrainer
+-
          logger = logging.getLogger('replay')
+         vm = self.get_vm(name='record' if record else 'replay')
+         vm.set_console()
+@@ -53,10 +51,6 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
+         if args:
+             vm.add_args(*args)
+         vm.launch()
+-        console_drainer = datadrainer.LineLogger(vm.console_socket.fileno(),
+-                                    logger=self.log.getChild('console'),
+-                                    stop_check=(lambda : not vm.is_running()))
+-        console_drainer.start()
+         return vm
  
-@@ -111,8 +111,9 @@ def reverse_debugging(self, shift=7, args=None):
-         if qemu_img is None:
-             self.skipTest('Could not find "qemu-img", which is required to '
-                           'create the temporary qcow2 image')
--        cmd = '%s create -f qcow2 %s 128M' % (qemu_img, image_path)
--        process.run(cmd)
-+        out = check_output([qemu_img, 'create', '-f', 'qcow2', image_path, '128M'],
-+                           encoding='utf8')
-+        logger.info("qemu-img: %s" % out)
- 
-         replay_path = os.path.join(self.workdir, 'replay.bin')
- 
+     @staticmethod
 -- 
 2.34.1
 
