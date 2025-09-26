@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61375BA40AA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D63EBA42D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:28:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v294M-0000R3-QC; Fri, 26 Sep 2025 10:05:06 -0400
+	id 1v298E-00077V-Lz; Fri, 26 Sep 2025 10:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v294I-00005M-Rm
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:05:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v2944-0004zC-E2
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:05:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895481;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EvhVVuj+5rYph1gX9Yow5UTEaohDQnvCpXPfzyRrpsM=;
- b=hUzPHX39BqzEG8CoAkSyOSKIkJB0sHoqctjxadY7hvVx+nzGTUBBONuCXnvGR2PVw7ooUl
- QzL/p/APwwcV5R1e3ZwzORYf5LhSVFwV2XCEKn38d5piqq1YNw3+0eM8z7XPFKGT8Tfi2W
- 7FTrd7Qf0dv3N6I39Cnh3isLgyYobdk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-quB5zPXBOuy6kG41xDrBOg-1; Fri,
- 26 Sep 2025 10:04:37 -0400
-X-MC-Unique: quB5zPXBOuy6kG41xDrBOg-1
-X-Mimecast-MFC-AGG-ID: quB5zPXBOuy6kG41xDrBOg_1758895477
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C911B195605E; Fri, 26 Sep 2025 14:04:36 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.175])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 85D49195419F; Fri, 26 Sep 2025 14:04:33 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v2989-00075Z-Dk
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:01 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v2983-0005cX-D4
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:01 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3fa528f127fso1672298f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:08:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758895726; x=1759500526; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/dMwIyh1iNIO97lphlkJ/89s8F24iW7pVMUpbZbQCCc=;
+ b=xNjFzjXdW6Rj22XUmQvnOpI+mIBhcd39kHIrYkybb93XtXfkriOPG4RyLAnrdEU1DA
+ z6tRiJTzQvKtSHSz45z6ZFZI74JJDkZOG//gdO00MLuzE+fM5yr4ukXQp3UQPS0V2qit
+ q8wzKm/KRLda9O77+5rRJA8E+lL92llbJ+EoEfu/PMuK5Zz1ygZjgLRArEvj7H4CDZ9a
+ Lv4evVVeZpW/O2DvKa5dfefIG1/c046Z2KkOfQNy9cNTpX/EyuxxPNXUO1/ehrnJYXBh
+ L85VWXZLL8Js45x9kS6BYLalgLhqRX/DlY5eThu+DQFjZQcyjlRdurEMZcs/aw3HvMmh
+ iP6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758895726; x=1759500526;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/dMwIyh1iNIO97lphlkJ/89s8F24iW7pVMUpbZbQCCc=;
+ b=cGifMMOWqt38FOnwyVF61g1kgiOa4mjh9xu1Xftl8G/Rn0RfwOpcJ5Fhxs4RYLwSn5
+ dpKYaNU073RpE/01Im1i9HYPPRFwUwKw2qIWHSfzgGDP9DKK3GuFrVvpf+pOyrwD43k5
+ goiZ/myUFmxmvHI+5XW3+O0p4U5nor3UF00jzuY1qJ76OUzr3NGeuEmNSbWJpako6G3D
+ 2fSyrEn5pmVy7wU6gapM4IMTpqtbjRRy/hEGIhkEht1VRkkzgzdE9RpOl/n4fBg6B3j0
+ 5fsB8nKlm2p3+E1ERgmvjonUUTz2v80eHvGfyxDAt4ajuYuXdfiZHDMt2SCuRJFGLMih
+ 5Nlw==
+X-Gm-Message-State: AOJu0YxJAQyOkmnQA/ULuyYbN0lB964fm7XcltAfFNPhG6tTv55Nhh6a
+ LPGzIoxA7t715q8RbYcyU9ewImgqATGFn0AnFR3YPs6FTcaHeNHiVnsw96QodlwaPz1az+Xnd9T
+ MdeWQ
+X-Gm-Gg: ASbGncvZ2jpUxq3BPjTp1H9fIZB8uNU1z9Xhbdbib5e63eomfqqX5aGOHeI5NF8Di1y
+ UDeyXJUXWSYu9LOizM7E/BA9oW3srN7k1eBZlufNGUtGu/xPUbcLM2/Fh9x9gwgnA5CJolL1R9X
+ nm0uXQt/r6ZcLfqt0CaGHhdcFi5lrxXsQTcNUfz+BK9HYrj/kcF0IuAMQKSM2sBhFfuO4+nruJU
+ PSs/1eqiYZ/Yc+X/gNcJWk7Kwpzc0WGej3No4IeAhSIVc9E9uaXYhE0Vvh7aZxnB8qgvnpzjuJ9
+ vUbIly1glJAiA5bKWr7FPZJd/b//wm1Vq+aR4ZXI3ZiqksyZ/Xwsy1N7zJTrMLKZwtKDq4Bu7Cx
+ X1iwnQRxJl7uq6VFFotLSx0Ies2gBm6ilkfHpLoc=
+X-Google-Smtp-Source: AGHT+IFqbUrd7f14j83l2UZUgtPi566lW0ve2euI2ru8yGy0wjpTzt54xPQiqK98wyg64oD2OhUtEA==
+X-Received: by 2002:a05:6000:220b:b0:3ea:6680:8fb9 with SMTP id
+ ffacd0b85a97d-40f5f60d329mr6749086f8f.3.1758895726300; 
+ Fri, 26 Sep 2025 07:08:46 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.08.45
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Sep 2025 07:08:45 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 32/32] hw/display: mark most display adapters as insecure
-Date: Fri, 26 Sep 2025 15:01:43 +0100
-Message-ID: <20250926140144.1998694-33-berrange@redhat.com>
-In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
-References: <20250926140144.1998694-1-berrange@redhat.com>
+Subject: [PULL 00/44] target-arm queue
+Date: Fri, 26 Sep 2025 15:08:00 +0100
+Message-ID: <20250926140844.1493020-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,445 +95,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of thte display adapters are emulating old hardware which is not
-relevant to virtualization use cases.
+Hi; here's an arm pullreq...
 
-The exceptions that should be considered secure are Cirrus (PCI, not
-ISA), Bochs, QXL, RAMFB, VGA (PCI, MMIO, not ISA) and VMWare VGA.
+thanks
+-- PMM
 
-The Cirrus PCI decision is borderline. It has been heavily used with
-virtualization in the past, but these days VGA / RAMFB are strongly
-recommended instead. Due to its historical usage though, we can
-consider the code fairly mature, even if no longer hugely relevant
-to virtualization use cases.
+The following changes since commit 95b9e0d2ade5d633fd13ffba96a54e87c65baf39:
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- hw/display/artist.c           | 1 +
- hw/display/ati.c              | 1 +
- hw/display/bcm2835_fb.c       | 1 +
- hw/display/bochs-display.c    | 1 +
- hw/display/cg3.c              | 1 +
- hw/display/cirrus_vga.c       | 1 +
- hw/display/cirrus_vga_isa.c   | 1 +
- hw/display/dm163.c            | 1 +
- hw/display/dpcd.c             | 1 +
- hw/display/exynos4210_fimd.c  | 1 +
- hw/display/g364fb.c           | 1 +
- hw/display/i2c-ddc.c          | 3 ++-
- hw/display/jazz_led.c         | 1 +
- hw/display/macfb.c            | 2 ++
- hw/display/next-fb.c          | 1 +
- hw/display/pl110.c            | 3 +++
- hw/display/qxl.c              | 4 ++++
- hw/display/ramfb-standalone.c | 1 +
- hw/display/sii9022.c          | 1 +
- hw/display/sm501.c            | 1 +
- hw/display/ssd0303.c          | 1 +
- hw/display/ssd0323.c          | 1 +
- hw/display/tcx.c              | 1 +
- hw/display/vga-isa.c          | 1 +
- hw/display/vga-mmio.c         | 1 +
- hw/display/vga-pci.c          | 3 +++
- hw/display/vmware_vga.c       | 1 +
- hw/display/xlnx_dp.c          | 1 +
- 28 files changed, 37 insertions(+), 1 deletion(-)
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-09-24 12:04:18 -0700)
 
-diff --git a/hw/display/artist.c b/hw/display/artist.c
-index 3c884c9243..caab4d1d4c 100644
---- a/hw/display/artist.c
-+++ b/hw/display/artist.c
-@@ -1504,6 +1504,7 @@ static const TypeInfo artist_info = {
-     .instance_size = sizeof(ARTISTState),
-     .instance_init = artist_initfn,
-     .class_init    = artist_class_init,
-+    .secure        = false,
- };
- 
- static void artist_register_types(void)
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index f7c0006a87..6e332e02d2 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -1080,6 +1080,7 @@ static const TypeInfo ati_vga_info = {
-     .instance_size = sizeof(ATIVGAState),
-     .class_init = ati_vga_class_init,
-     .instance_init = ati_vga_init,
-+    .secure = false,
-     .interfaces = (const InterfaceInfo[]) {
-           { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-           { },
-diff --git a/hw/display/bcm2835_fb.c b/hw/display/bcm2835_fb.c
-index 1bb2ee45a0..bb6c986fb8 100644
---- a/hw/display/bcm2835_fb.c
-+++ b/hw/display/bcm2835_fb.c
-@@ -459,6 +459,7 @@ static const TypeInfo bcm2835_fb_info = {
-     .instance_size = sizeof(BCM2835FBState),
-     .class_init    = bcm2835_fb_class_init,
-     .instance_init = bcm2835_fb_init,
-+    .secure        = false,
- };
- 
- static void bcm2835_fb_register_types(void)
-diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
-index ad2821c974..0495d900f6 100644
---- a/hw/display/bochs-display.c
-+++ b/hw/display/bochs-display.c
-@@ -374,6 +374,7 @@ static const TypeInfo bochs_display_type_info = {
-     .instance_size  = sizeof(BochsDisplayState),
-     .instance_init  = bochs_display_init,
-     .class_init     = bochs_display_class_init,
-+    .secure         = true,
-     .interfaces     = (const InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-diff --git a/hw/display/cg3.c b/hw/display/cg3.c
-index daeef15217..f437921a7e 100644
---- a/hw/display/cg3.c
-+++ b/hw/display/cg3.c
-@@ -384,6 +384,7 @@ static const TypeInfo cg3_info = {
-     .instance_size = sizeof(CG3State),
-     .instance_init = cg3_initfn,
-     .class_init    = cg3_class_init,
-+    .secure        = false,
- };
- 
- static void cg3_register_types(void)
-diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index ef08694626..d9403ccb57 100644
---- a/hw/display/cirrus_vga.c
-+++ b/hw/display/cirrus_vga.c
-@@ -3013,6 +3013,7 @@ static const TypeInfo cirrus_vga_info = {
-     .parent        = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(PCICirrusVGAState),
-     .class_init    = cirrus_vga_class_init,
-+    .secure        = true,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/display/cirrus_vga_isa.c b/hw/display/cirrus_vga_isa.c
-index 4b55c48eff..7b38e6c33a 100644
---- a/hw/display/cirrus_vga_isa.c
-+++ b/hw/display/cirrus_vga_isa.c
-@@ -91,6 +91,7 @@ static const TypeInfo isa_cirrus_vga_info = {
-     .parent        = TYPE_ISA_DEVICE,
-     .instance_size = sizeof(ISACirrusVGAState),
-     .class_init = isa_cirrus_vga_class_init,
-+    .secure        = false,
- };
- 
- static void cirrus_vga_isa_register_types(void)
-diff --git a/hw/display/dm163.c b/hw/display/dm163.c
-index f8340d8275..f043786775 100644
---- a/hw/display/dm163.c
-+++ b/hw/display/dm163.c
-@@ -343,6 +343,7 @@ static const TypeInfo dm163_types[] = {
-         .parent = TYPE_DEVICE,
-         .instance_size = sizeof(DM163State),
-         .class_init = dm163_class_init
-+        .secure = false,
-     }
- };
- 
-diff --git a/hw/display/dpcd.c b/hw/display/dpcd.c
-index a157dc64e7..733f643375 100644
---- a/hw/display/dpcd.c
-+++ b/hw/display/dpcd.c
-@@ -155,6 +155,7 @@ static const TypeInfo dpcd_info = {
-     .instance_size = sizeof(DPCDState),
-     .class_init    = dpcd_class_init,
-     .instance_init = dpcd_init,
-+    .secure        = false,
- };
- 
- static void dpcd_register_types(void)
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index c61e0280a7..85e32e8700 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -1974,6 +1974,7 @@ static const TypeInfo exynos4210_fimd_info = {
-     .instance_size = sizeof(Exynos4210fimdState),
-     .instance_init = exynos4210_fimd_init,
-     .class_init = exynos4210_fimd_class_init,
-+    .secure = false,
- };
- 
- static void exynos4210_fimd_register_types(void)
-diff --git a/hw/display/g364fb.c b/hw/display/g364fb.c
-index a6ddc21d3e..c23d584684 100644
---- a/hw/display/g364fb.c
-+++ b/hw/display/g364fb.c
-@@ -543,6 +543,7 @@ static const TypeInfo g364fb_sysbus_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(G364SysBusState),
-     .class_init    = g364fb_sysbus_class_init,
-+    .secure        = false,
- };
- 
- static void g364fb_register_types(void)
-diff --git a/hw/display/i2c-ddc.c b/hw/display/i2c-ddc.c
-index 2adfc1a147..525479aa49 100644
---- a/hw/display/i2c-ddc.c
-+++ b/hw/display/i2c-ddc.c
-@@ -117,7 +117,8 @@ static const TypeInfo i2c_ddc_info = {
-     .parent = TYPE_I2C_SLAVE,
-     .instance_size = sizeof(I2CDDCState),
-     .instance_init = i2c_ddc_init,
--    .class_init = i2c_ddc_class_init
-+    .class_init = i2c_ddc_class_init,
-+    .secure = false,
- };
- 
- static void ddc_register_devices(void)
-diff --git a/hw/display/jazz_led.c b/hw/display/jazz_led.c
-index 90e82b58be..946f78306e 100644
---- a/hw/display/jazz_led.c
-+++ b/hw/display/jazz_led.c
-@@ -310,6 +310,7 @@ static const TypeInfo jazz_led_info = {
-     .instance_size = sizeof(LedState),
-     .instance_init = jazz_led_init,
-     .class_init    = jazz_led_class_init,
-+    .secure        = false,
- };
- 
- static void jazz_led_register(void)
-diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-index 574d667173..b80ce26d9b 100644
---- a/hw/display/macfb.c
-+++ b/hw/display/macfb.c
-@@ -825,6 +825,7 @@ static const TypeInfo macfb_sysbus_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(MacfbSysBusState),
-     .class_init    = macfb_sysbus_class_init,
-+    .secure        = false,
- };
- 
- static const TypeInfo macfb_nubus_info = {
-@@ -833,6 +834,7 @@ static const TypeInfo macfb_nubus_info = {
-     .instance_size = sizeof(MacfbNubusState),
-     .class_init    = macfb_nubus_class_init,
-     .class_size    = sizeof(MacfbNubusDeviceClass),
-+    .secure        = false,
- };
- 
- static void macfb_register_types(void)
-diff --git a/hw/display/next-fb.c b/hw/display/next-fb.c
-index ec81b766a7..9ddbd13ba3 100644
---- a/hw/display/next-fb.c
-+++ b/hw/display/next-fb.c
-@@ -134,6 +134,7 @@ static const TypeInfo nextfb_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(NeXTFbState),
-     .class_init    = nextfb_class_init,
-+    .secure        = false,
- };
- 
- static void nextfb_register_types(void)
-diff --git a/hw/display/pl110.c b/hw/display/pl110.c
-index 09c3c59e0e..ce33d4c68c 100644
---- a/hw/display/pl110.c
-+++ b/hw/display/pl110.c
-@@ -596,18 +596,21 @@ static const TypeInfo pl110_info = {
-     .instance_size = sizeof(PL110State),
-     .instance_init = pl110_init,
-     .class_init    = pl110_class_init,
-+    .secure        = false,
- };
- 
- static const TypeInfo pl110_versatile_info = {
-     .name          = "pl110_versatile",
-     .parent        = TYPE_PL110,
-     .instance_init = pl110_versatile_init,
-+    .secure        = false,
- };
- 
- static const TypeInfo pl111_info = {
-     .name          = "pl111",
-     .parent        = TYPE_PL110,
-     .instance_init = pl111_init,
-+    .secure        = false,
- };
- 
- static void pl110_register_types(void)
-diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index 18f482ca7f..8f876c872a 100644
---- a/hw/display/qxl.c
-+++ b/hw/display/qxl.c
-@@ -2516,7 +2516,9 @@ static const TypeInfo qxl_pci_type_info = {
-     .parent = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(PCIQXLDevice),
-     .abstract = true,
-+    .secure = true,
-     .class_init = qxl_pci_class_init,
-+    .secure        = true,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-@@ -2539,6 +2541,7 @@ static const TypeInfo qxl_primary_info = {
-     .name          = "qxl-vga",
-     .parent        = TYPE_PCI_QXL,
-     .class_init    = qxl_primary_class_init,
-+    .secure        = true,
- };
- module_obj("qxl-vga");
- module_kconfig(QXL);
-@@ -2557,6 +2560,7 @@ static const TypeInfo qxl_secondary_info = {
-     .name          = "qxl",
-     .parent        = TYPE_PCI_QXL,
-     .class_init    = qxl_secondary_class_init,
-+    .secure        = true,
- };
- module_obj("qxl");
- 
-diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
-index 72b2071aed..6fbb90d74c 100644
---- a/hw/display/ramfb-standalone.c
-+++ b/hw/display/ramfb-standalone.c
-@@ -83,6 +83,7 @@ static const TypeInfo ramfb_info = {
-     .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-     .instance_size = sizeof(RAMFBStandaloneState),
-     .class_init    = ramfb_class_initfn,
-+    .secure        = true,
- };
- 
- static void ramfb_register_types(void)
-diff --git a/hw/display/sii9022.c b/hw/display/sii9022.c
-index d00d3e9fc5..06d7863a9e 100644
---- a/hw/display/sii9022.c
-+++ b/hw/display/sii9022.c
-@@ -185,6 +185,7 @@ static const TypeInfo sii9022_info = {
-     .parent        = TYPE_I2C_SLAVE,
-     .instance_size = sizeof(sii9022_state),
-     .class_init    = sii9022_class_init,
-+    .secure        = false,
- };
- 
- static void sii9022_register_types(void)
-diff --git a/hw/display/sm501.c b/hw/display/sm501.c
-index bc091b3c9f..abbb78ea3e 100644
---- a/hw/display/sm501.c
-+++ b/hw/display/sm501.c
-@@ -2114,6 +2114,7 @@ static const TypeInfo sm501_sysbus_info = {
-     .instance_size = sizeof(SM501SysBusState),
-     .class_init    = sm501_sysbus_class_init,
-     .instance_init = sm501_sysbus_init,
-+    .secure        = false,
- };
- 
- #define TYPE_PCI_SM501 "sm501"
-diff --git a/hw/display/ssd0303.c b/hw/display/ssd0303.c
-index 87781438cd..4be9d3bcc5 100644
---- a/hw/display/ssd0303.c
-+++ b/hw/display/ssd0303.c
-@@ -328,6 +328,7 @@ static const TypeInfo ssd0303_info = {
-     .parent        = TYPE_I2C_SLAVE,
-     .instance_size = sizeof(ssd0303_state),
-     .class_init    = ssd0303_class_init,
-+    .secure        = false,
- };
- 
- static void ssd0303_register_types(void)
-diff --git a/hw/display/ssd0323.c b/hw/display/ssd0323.c
-index af5ff4fecd..8deddf2f47 100644
---- a/hw/display/ssd0323.c
-+++ b/hw/display/ssd0323.c
-@@ -378,6 +378,7 @@ static const TypeInfo ssd0323_info = {
-     .parent        = TYPE_SSI_PERIPHERAL,
-     .instance_size = sizeof(ssd0323_state),
-     .class_init    = ssd0323_class_init,
-+    .secure        = false,
- };
- 
- static void ssd03232_register_types(void)
-diff --git a/hw/display/tcx.c b/hw/display/tcx.c
-index 4853c5e142..1bbbc670dd 100644
---- a/hw/display/tcx.c
-+++ b/hw/display/tcx.c
-@@ -901,6 +901,7 @@ static const TypeInfo tcx_info = {
-     .instance_size = sizeof(TCXState),
-     .instance_init = tcx_initfn,
-     .class_init    = tcx_class_init,
-+    .secure        = false,
- };
- 
- static void tcx_register_types(void)
-diff --git a/hw/display/vga-isa.c b/hw/display/vga-isa.c
-index 3618913b3b..d01d73ddb0 100644
---- a/hw/display/vga-isa.c
-+++ b/hw/display/vga-isa.c
-@@ -108,6 +108,7 @@ static const TypeInfo vga_isa_info = {
-     .parent        = TYPE_ISA_DEVICE,
-     .instance_size = sizeof(ISAVGAState),
-     .class_init    = vga_isa_class_initfn,
-+    .secure        = false,
- };
- 
- static void vga_isa_register_types(void)
-diff --git a/hw/display/vga-mmio.c b/hw/display/vga-mmio.c
-index 33263856b7..1c53422b59 100644
---- a/hw/display/vga-mmio.c
-+++ b/hw/display/vga-mmio.c
-@@ -132,6 +132,7 @@ static const TypeInfo vga_mmio_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(VGAMmioState),
-     .class_init    = vga_mmio_class_initfn,
-+    .secure        = true,
- };
- 
- static void vga_mmio_register_types(void)
-diff --git a/hw/display/vga-pci.c b/hw/display/vga-pci.c
-index b81f7fd2d0..acd59865d3 100644
---- a/hw/display/vga-pci.c
-+++ b/hw/display/vga-pci.c
-@@ -368,6 +368,7 @@ static const TypeInfo vga_pci_type_info = {
-     .parent = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(PCIVGAState),
-     .abstract = true,
-+    .secure = true,
-     .class_init = vga_pci_class_init,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-@@ -408,6 +409,7 @@ static const TypeInfo vga_info = {
-     .name          = "VGA",
-     .parent        = TYPE_PCI_VGA,
-     .class_init    = vga_class_init,
-+    .secure        = true,
- };
- 
- static const TypeInfo secondary_info = {
-@@ -415,6 +417,7 @@ static const TypeInfo secondary_info = {
-     .parent        = TYPE_PCI_VGA,
-     .instance_init = pci_secondary_vga_init,
-     .class_init    = secondary_class_init,
-+    .secure        = true,
- };
- 
- static void vga_register_types(void)
-diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
-index bc1a8ed466..8734da1175 100644
---- a/hw/display/vmware_vga.c
-+++ b/hw/display/vmware_vga.c
-@@ -1363,6 +1363,7 @@ static const TypeInfo vmsvga_info = {
-     .parent        = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(struct pci_vmsvga_state_s),
-     .class_init    = vmsvga_class_init,
-+    .secure        = true,
-     .interfaces = (const InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-         { },
-diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
-index ef73e1815f..dc239537a9 100644
---- a/hw/display/xlnx_dp.c
-+++ b/hw/display/xlnx_dp.c
-@@ -1412,6 +1412,7 @@ static const TypeInfo xlnx_dp_info = {
-     .instance_init = xlnx_dp_init,
-     .instance_finalize = xlnx_dp_finalize,
-     .class_init    = xlnx_dp_class_init,
-+    .secure        = false,
- };
- 
- static void xlnx_dp_register_types(void)
--- 
-2.50.1
+are available in the Git repository at:
 
+  https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20250926
+
+for you to fetch changes up to b71e2b281a23aca474e128a8487efb07e29f4019:
+
+  target/arm: Implement ID_AA64PFR2_EL1 (2025-09-26 13:43:33 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * reimplement VHE alias register handling
+ * replace magic GIC values by proper definitions
+ * convert power control DPRINTF() uses to trace events
+ * better reset related tracepoints
+ * implement ID_AA64PFR2_EL1
+ * hw/usb/hcd-uhci: don't assert for SETUP to non-0 endpoint
+ * net/passt: Fix build failure due to missing GIO dependency
+
+----------------------------------------------------------------
+Laurent Vivier (1):
+      net/passt: Fix build failure due to missing GIO dependency
+
+Peter Maydell (3):
+      hw/usb/hcd-uhci: don't assert for SETUP to non-0 endpoint
+      target/arm: Move ID register field defs to cpu-features.h
+      target/arm: Implement ID_AA64PFR2_EL1
+
+Philippe Mathieu-Daudé (4):
+      target/arm: Replace magic GIC values by proper definitions
+      target/arm: Convert power control DPRINTF() uses to trace events
+      target/arm: Trace emulated firmware reset call
+      target/arm: Trace vCPU reset call
+
+Richard Henderson (36):
+      target/arm: Introduce KVMID_AA64_SYS_REG64
+      target/arm: Move compare_u64 to helper.c
+      target/arm/hvf: Split out sysreg.c.inc
+      target/arm/hvf: Reorder DEF_SYSREG arguments
+      target/arm/hvf: Add KVMID_TO_HVF, HVF_TO_KVMID
+      target/arm/hvf: Remove hvf_sreg_match.key
+      target/arm/hvf: Replace hvf_sreg_match with hvf_sreg_list
+      target/arm/hvf: Sort the cpreg_indexes array
+      target/arm/hvf: Use raw_read, raw_write to access
+      target/arm: Use raw_write in cp_reg_reset
+      target/arm: Rename all ARMCPRegInfo from opaque to ri
+      target/arm: Drop define_one_arm_cp_reg_with_opaque
+      target/arm: Restrict the scope of CPREG_FIELD32, CPREG_FIELD64
+      target/arm: Replace cpreg_field_is_64bit with cpreg_field_type
+      target/arm: Add CP_REG_AA32_64BIT_{SHIFT,MASK}
+      target/arm: Rename CP_REG_AA32_NS_{SHIFT,MASK}
+      target/arm: Convert init_cpreg_list to g_hash_table_foreach
+      target/arm: Remove cp argument to ENCODE_AA64_CP_REG
+      target/arm: Reorder ENCODE_AA64_CP_REG arguments
+      target/arm: Split out add_cpreg_to_hashtable_aa{32, 64}
+      target/arm: Improve asserts in define_one_arm_cp_reg
+      target/arm: Move cp processing to define_one_arm_cp_reg
+      target/arm: Move cpreg elimination to define_one_arm_cp_reg
+      target/arm: Add key parameter to add_cpreg_to_hashtable
+      target/arm: Split out alloc_cpreg
+      target/arm: Hoist the allocation of ARMCPRegInfo
+      target/arm: Remove name argument to alloc_cpreg
+      target/arm: Move alias setting for wildcards
+      target/arm: Move writeback of CP_ANY fields
+      target/arm: Move endianness fixup for 32-bit registers
+      target/arm: Rename TBFLAG_A64_NV2_MEM_E20 with *_E2H
+      target/arm: Split out redirect_cpreg
+      target/arm: Redirect VHE FOO_EL1 -> FOO_EL2 during translation
+      target/arm: Redirect VHE FOO_EL12 to FOO_EL1 during translation
+      target/arm: Rename some cpreg to their aarch64 names
+      target/arm: Remove define_arm_vh_e2h_redirects_aliases
+
+ meson.build                    |   1 +
+ linux-user/arm/target_proc.h   |   2 +
+ target/arm/cpregs.h            | 111 ++---
+ target/arm/cpu-features.h      | 415 ++++++++++++++++++
+ target/arm/cpu.h               | 413 +-----------------
+ target/arm/internals.h         |   3 +
+ target/arm/kvm-consts.h        |  14 +-
+ target/arm/tcg/translate.h     |   2 +
+ target/arm/cpu-sysregs.h.inc   |   1 +
+ hw/intc/arm_gicv3_cpuif.c      |  10 +-
+ hw/usb/hcd-uhci.c              |  10 +-
+ target/arm/arm-powerctl.c      |  26 +-
+ target/arm/cpu.c               |  16 +-
+ target/arm/gdbstub.c           |  14 +-
+ target/arm/helper.c            | 933 +++++++++++++++++++----------------------
+ target/arm/hvf/hvf.c           | 240 +++--------
+ target/arm/kvm.c               |  12 +-
+ target/arm/tcg/hflags.c        |   8 +-
+ target/arm/tcg/translate-a64.c |  47 ++-
+ target/arm/hvf/sysreg.c.inc    | 147 +++++++
+ target/arm/trace-events        |  10 +
+ 21 files changed, 1199 insertions(+), 1236 deletions(-)
+ create mode 100644 target/arm/hvf/sysreg.c.inc
 
