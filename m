@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69469BA2EAF
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3E7BA2EBB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:20:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23Zp-0000Vx-QL; Fri, 26 Sep 2025 04:13:14 -0400
+	id 1v23aT-000174-0D; Fri, 26 Sep 2025 04:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Zh-0000US-EQ; Fri, 26 Sep 2025 04:13:05 -0400
+ id 1v23Zr-0000dd-58; Fri, 26 Sep 2025 04:13:18 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23ZZ-0000jm-FK; Fri, 26 Sep 2025 04:13:05 -0400
+ id 1v23Zh-0000lY-Si; Fri, 26 Sep 2025 04:13:12 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 47318157D5B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6193B157D5C;
  Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4DAB2290C3F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6A4E2290C40;
  Fri, 26 Sep 2025 11:10:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
+Cc: qemu-stable@nongnu.org, Denis Rastyogin <gerben@altlinux.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Justin Applegate <justink.applegate@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 19/60] linux-user/mips: Select M14Kc CPU to run
- microMIPS binaries
-Date: Fri, 26 Sep 2025 11:09:47 +0300
-Message-ID: <20250926081031.2214971-19-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 20/60] target/mips: fix TLB huge page check to use
+ 64-bit shift
+Date: Fri, 26 Sep 2025 11:09:48 +0300
+Message-ID: <20250926081031.2214971-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -62,37 +60,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Denis Rastyogin <gerben@altlinux.org>
 
-The M14Kc is our latest CPU supporting the microMIPS ASE.
+Use extract64(entry, psn, 1) instead of (entry & (1 << psn)) to avoid
+undefined behavior for shifts by 32–63 and to make bit extraction intent explicit.
 
-Note, currently QEMU doesn't have 64-bit CPU supporting microMIPS ASE.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 3c824109da0 ("target-mips: microMIPS ASE support")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3054
-Reported-by: Justin Applegate <justink.applegate@gmail.com>
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+Message-ID: <20250814104914.13101-1-gerben@altlinux.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250814070650.78657-4-philmd@linaro.org>
-(cherry picked from commit 51c3aebfda6489b49cebef593a1ceb597cb97a7e)
-(Mjt: in 10.1 and before, the code is in linux-user/mips/target_elf.h)
+(cherry picked from commit 1f82ca723478f44823a18e7151e487d58da03659)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index cd8622ce28..d20c6080cc 100644
---- a/linux-user/mips/target_elf.h
-+++ b/linux-user/mips/target_elf.h
-@@ -12,6 +12,9 @@ static inline const char *cpu_get_model(uint32_t eflags)
-     if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
-         return "mips32r6-generic";
+diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
+index eccaf3624c..1e8901556d 100644
+--- a/target/mips/tcg/system/tlb_helper.c
++++ b/target/mips/tcg/system/tlb_helper.c
+@@ -652,7 +652,7 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+         return 0;
      }
-+    if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_MICROMIPS) {
-+        return "M14Kc";
-+    }
-     if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_M16) {
-         return "74Kf";
-     }
+ 
+-    if ((entry & (1 << psn)) && hugepg) {
++    if (extract64(entry, psn, 1) && hugepg) {
+         *huge_page = true;
+         *hgpg_directory_hit = true;
+         entry = get_tlb_entry_layout(env, entry, leaf_mop, pf_ptew);
 -- 
 2.47.3
 
