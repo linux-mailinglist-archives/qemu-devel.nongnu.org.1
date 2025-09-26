@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7EBBA2ECA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 537FEBA2EFA
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:25:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23ah-0001Tp-PA; Fri, 26 Sep 2025 04:14:10 -0400
+	id 1v23aq-0001vD-S5; Fri, 26 Sep 2025 04:14:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23a0-0000qs-Aq; Fri, 26 Sep 2025 04:13:29 -0400
+ id 1v23a3-00011R-S8; Fri, 26 Sep 2025 04:13:31 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Zq-0000np-AV; Fri, 26 Sep 2025 04:13:24 -0400
+ id 1v23Zv-0000pd-DD; Fri, 26 Sep 2025 04:13:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 75038157D5D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 877DB157D5E;
  Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8470D290C41;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 98808290C42;
  Fri, 26 Sep 2025 11:10:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Aditya Gupta <adityag@linux.ibm.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Glenn Miles <milesg@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 21/60] hw/ppc: Fix build error with CONFIG_POWERNV
- disabled
-Date: Fri, 26 Sep 2025 11:09:49 +0300
-Message-ID: <20250926081031.2214971-21-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 22/60] hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
+Date: Fri, 26 Sep 2025 11:09:50 +0300
+Message-ID: <20250926081031.2214971-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -62,267 +60,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Currently when CONFIG_POWERNV is not enabled, the build fails, such as
-with --without-default-devices:
+In pca9554_set_pin() we have a string property which we parse in
+order to set some non-string fields in the device state.  So we call
+visit_type_str(), passing it the address of the local variable
+state_str.
 
-    $ ./configure --without-default-devices
-    $ make
+visit_type_str() will allocate a new copy of the string; we
+never free this string, so the result is a memory leak, detected
+by ASAN during a "make check" run:
 
-    [281/283] Linking target qemu-system-ppc64
-    FAILED: qemu-system-ppc64
-    cc -m64 @qemu-system-ppc64.rsp
-    /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in function `helper_load_sprd':
-    .../target/ppc/misc_helper.c:335:(.text+0xcdc): undefined reference to `pnv_chip_find_core'
-    /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in function `helper_store_sprd':
-    .../target/ppc/misc_helper.c:375:(.text+0xdf4): undefined reference to `pnv_chip_find_core'
-    collect2: error: ld returned 1 exit status
-    ...
+Direct leak of 5 byte(s) in 1 object(s) allocated from:
+    #0 0x5d605212ede3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (
+BuildId: 3d5373c89317f58bfcd191a33988c7347714be14)
+    #1 0x7f7edea57b09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b68282
+9a6913cf682d75)
+    #2 0x7f7edea6d4d8 in g_strdup (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x784d8) (BuildId: 1eb6131419edb83b2178b68282
+9a6913cf682d75)
+    #3 0x5d6055289a91 in g_strdup_inline /usr/include/glib-2.0/glib/gstrfuncs.h:321:10
+    #4 0x5d6055289a91 in qobject_input_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qo
+bject-input-visitor.c:542:12
+    #5 0x5d605528479c in visit_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qapi-visit
+-core.c:349:10
+    #6 0x5d60528bdd87 in pca9554_set_pin /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/gpio/pca9554.c:179:10
+    #7 0x5d60549bcbbb in object_property_set /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1450:5
+    #8 0x5d60549d2055 in object_property_set_qobject /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/qom-qobject.c:28:10
+    #9 0x5d60549bcdf1 in object_property_set_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1458:15
+    #10 0x5d605439d077 in gb200nvl_bmc_i2c_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:1267:5
+    #11 0x5d60543a3bbc in aspeed_machine_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:493:9
 
-This is since target/ppc/misc_helper.c references PowerNV specific
-'pnv_chip_find_core' call.
+Make the state_str g_autofree, so that we will always free
+it, on both error-exit and success codepaths.
 
-Split the PowerNV specific SPRD code out of the generic PowerPC code, by
-moving the SPRD code to pnv.c
-
-Fixes: 9808ce6d5cb ("target/ppc: Big-core scratch register fix")
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reported-by: Thomas Huth <thuth@redhat.com>
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Acked-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20250820122516.949766-2-adityag@linux.ibm.com>
+Cc: qemu-stable@nongnu.org
+Fixes: de0c7d543bca ("misc: Add a pca9554 GPIO device model")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250821154459.2417976-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 46d03bb23dde86513465724760d85f42eb17539e)
+(cherry picked from commit 3284d1c07cfd8d42aa27d1cf83d3e65fcd62e35e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index d84c9067ed..9c74f46091 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -21,6 +21,7 @@
+diff --git a/hw/gpio/pca9554.c b/hw/gpio/pca9554.c
+index de3f883aee..eac0d23be3 100644
+--- a/hw/gpio/pca9554.c
++++ b/hw/gpio/pca9554.c
+@@ -174,7 +174,7 @@ static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
+     PCA9554State *s = PCA9554(obj);
+     int pin, rc, val;
+     uint8_t state, mask;
+-    char *state_str;
++    g_autofree char *state_str = NULL;
  
- #include "qemu/osdep.h"
- #include "qemu/datadir.h"
-+#include "qemu/log.h"
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qapi/error.h"
-@@ -1794,12 +1795,83 @@ static void pnv_chip_power9_pec_realize(PnvChip *chip, Error **errp)
-     }
- }
- 
-+static uint64_t pnv_handle_sprd_load(CPUPPCState *env)
-+{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
-+    uint64_t sprc = env->spr[SPR_POWER_SPRC];
-+
-+    if (pc->big_core) {
-+        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
-+    }
-+
-+    switch (sprc & 0x3e0) {
-+    case 0: /* SCRATCH0-3 */
-+    case 1: /* SCRATCH4-7 */
-+        return pc->scratch[(sprc >> 3) & 0x7];
-+
-+    case 0x1e0: /* core thread state */
-+        if (env->excp_model == POWERPC_EXCP_POWER9) {
-+            /*
-+             * Only implement for POWER9 because skiboot uses it to check
-+             * big-core mode. Other bits are unimplemented so we would
-+             * prefer to get unimplemented message on POWER10 if it were
-+             * used anywhere.
-+             */
-+            if (pc->big_core) {
-+                return PPC_BIT(63);
-+            } else {
-+                return 0;
-+            }
-+        }
-+        /* fallthru */
-+
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
-+                                  TARGET_FMT_lx"\n", sprc);
-+        break;
-+    }
-+    return 0;
-+}
-+
-+static void pnv_handle_sprd_store(CPUPPCState *env, uint64_t val)
-+{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    uint64_t sprc = env->spr[SPR_POWER_SPRC];
-+    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
-+    int nr;
-+
-+    if (pc->big_core) {
-+        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
-+    }
-+
-+    switch (sprc & 0x3e0) {
-+    case 0: /* SCRATCH0-3 */
-+    case 1: /* SCRATCH4-7 */
-+        /*
-+         * Log stores to SCRATCH, because some firmware uses these for
-+         * debugging and logging, but they would normally be read by the BMC,
-+         * which is not implemented in QEMU yet. This gives a way to get at the
-+         * information. Could also dump these upon checkstop.
-+         */
-+        nr = (sprc >> 3) & 0x7;
-+        pc->scratch[nr] = val;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "mtSPRD: Unimplemented SPRC:0x"
-+                                  TARGET_FMT_lx"\n", sprc);
-+        break;
-+    }
-+}
-+
- static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
- {
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
-     Pnv9Chip *chip9 = PNV9_CHIP(dev);
-     PnvChip *chip = PNV_CHIP(dev);
-     Pnv9Psi *psi9 = &chip9->psi;
-+    PowerPCCPU *cpu;
-+    PowerPCCPUClass *cpu_class;
-     Error *local_err = NULL;
-     int i;
- 
-@@ -1827,6 +1899,12 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+     if (!visit_type_str(v, name, &state_str, errp)) {
          return;
-     }
- 
-+    /* Set handlers for Special registers, such as SPRD */
-+    cpu = chip->cores[0]->threads[0];
-+    cpu_class = POWERPC_CPU_GET_CLASS(cpu);
-+    cpu_class->load_sprd = pnv_handle_sprd_load;
-+    cpu_class->store_sprd = pnv_handle_sprd_store;
-+
-     /* XIVE interrupt controller (POWER9) */
-     object_property_set_int(OBJECT(&chip9->xive), "ic-bar",
-                             PNV9_XIVE_IC_BASE(chip), &error_fatal);
-@@ -2078,6 +2156,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
-     PnvChip *chip = PNV_CHIP(dev);
-     Pnv10Chip *chip10 = PNV10_CHIP(dev);
-+    PowerPCCPU *cpu;
-+    PowerPCCPUClass *cpu_class;
-     Error *local_err = NULL;
-     int i;
- 
-@@ -2105,6 +2185,12 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /* Set handlers for Special registers, such as SPRD */
-+    cpu = chip->cores[0]->threads[0];
-+    cpu_class = POWERPC_CPU_GET_CLASS(cpu);
-+    cpu_class->load_sprd = pnv_handle_sprd_load;
-+    cpu_class->store_sprd = pnv_handle_sprd_store;
-+
-     /* XIVE2 interrupt controller (POWER10) */
-     object_property_set_int(OBJECT(&chip10->xive), "ic-bar",
-                             PNV10_XIVE2_IC_BASE(chip), &error_fatal);
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 6b90543811..0e26e4343d 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1522,6 +1522,10 @@ struct PowerPCCPUClass {
-     void (*init_proc)(CPUPPCState *env);
-     int  (*check_pow)(CPUPPCState *env);
-     int  (*check_attn)(CPUPPCState *env);
-+
-+    /* Handlers to be set by the machine initialising the chips */
-+    uint64_t (*load_sprd)(CPUPPCState *env);
-+    void (*store_sprd)(CPUPPCState *env, uint64_t val);
- };
- 
- static inline bool ppc_cpu_core_single_threaded(CPUState *cs)
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index e7d9462518..0e625cbb70 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -328,69 +328,22 @@ target_ulong helper_load_sprd(CPUPPCState *env)
-      * accessed by powernv machines.
-      */
-     PowerPCCPU *cpu = env_archcpu(env);
--    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
--    target_ulong sprc = env->spr[SPR_POWER_SPRC];
-+    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
- 
--    if (pc->big_core) {
--        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
-+    if (pcc->load_sprd) {
-+        return pcc->load_sprd(env);
-     }
- 
--    switch (sprc & 0x3e0) {
--    case 0: /* SCRATCH0-3 */
--    case 1: /* SCRATCH4-7 */
--        return pc->scratch[(sprc >> 3) & 0x7];
--
--    case 0x1e0: /* core thread state */
--        if (env->excp_model == POWERPC_EXCP_POWER9) {
--            /*
--             * Only implement for POWER9 because skiboot uses it to check
--             * big-core mode. Other bits are unimplemented so we would
--             * prefer to get unimplemented message on POWER10 if it were
--             * used anywhere.
--             */
--            if (pc->big_core) {
--                return PPC_BIT(63);
--            } else {
--                return 0;
--            }
--        }
--        /* fallthru */
--
--    default:
--        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
--                                  TARGET_FMT_lx"\n", sprc);
--        break;
--    }
-     return 0;
- }
- 
- void helper_store_sprd(CPUPPCState *env, target_ulong val)
- {
--    target_ulong sprc = env->spr[SPR_POWER_SPRC];
-     PowerPCCPU *cpu = env_archcpu(env);
--    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
--    int nr;
--
--    if (pc->big_core) {
--        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
--    }
-+    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
- 
--    switch (sprc & 0x3e0) {
--    case 0: /* SCRATCH0-3 */
--    case 1: /* SCRATCH4-7 */
--        /*
--         * Log stores to SCRATCH, because some firmware uses these for
--         * debugging and logging, but they would normally be read by the BMC,
--         * which is not implemented in QEMU yet. This gives a way to get at the
--         * information. Could also dump these upon checkstop.
--         */
--        nr = (sprc >> 3) & 0x7;
--        pc->scratch[nr] = val;
--        break;
--    default:
--        qemu_log_mask(LOG_UNIMP, "mtSPRD: Unimplemented SPRC:0x"
--                                  TARGET_FMT_lx"\n", sprc);
--        break;
-+    if (pcc->store_sprd) {
-+        return pcc->store_sprd(env, val);
-     }
- }
- 
 -- 
 2.47.3
 
