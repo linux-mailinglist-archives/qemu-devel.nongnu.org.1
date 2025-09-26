@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1417BA407D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF27ABA40A7
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:07:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v293G-0006ge-4b; Fri, 26 Sep 2025 10:04:00 -0400
+	id 1v293N-0006n2-0v; Fri, 26 Sep 2025 10:04:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v2935-0006fx-Iw
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:49 -0400
+ id 1v293I-0006ke-S8
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:04:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v2932-0004oz-2A
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:47 -0400
+ id 1v2936-0004pY-Ui
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895419;
+ s=mimecast20190719; t=1758895423;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fE5De4SjYRlCpVLxA+SQVwGwECmyEZ+H53iSXNQLIpI=;
- b=aWtGQ+UZWlHvDyO4EgSL2onJcB30SO+IqDnJN4ypEP7kBUe3I1kLd3QDFRa7OdVd+xD4MN
- XXbhrbJ8W62MPKUNI74IIv0H4+qQiVRbCzccnTDuE6lDyefK5fLcTmEfEzFWDYQ+ayNTeI
- b3d6FW3q6popkqcyn6b2QxcfMwYEpnE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=WzvJdoRpKjbbnlvFY+3uY75z5RpH1paQjQOZjP0sbEY=;
+ b=c64WU1zeo/3OK2xmx+Gv3v1yoPgqObr/7ywiMbJ89SkFQFByr4tv67fPHItnUbVuY5mnj3
+ GoBd11iGzoYM5z+dq5UeDm8Zgj4Fl9GH1x52Xg/FCZjXGEM6Y400lXPLHbeJcI9ud1TbgI
+ RQzvyMNqiINCJ3rhZZWEeJt86rGmiF8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-_o3dCpmAMIe2fMKNfYDkuA-1; Fri,
- 26 Sep 2025 10:03:35 -0400
-X-MC-Unique: _o3dCpmAMIe2fMKNfYDkuA-1
-X-Mimecast-MFC-AGG-ID: _o3dCpmAMIe2fMKNfYDkuA_1758895414
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-FelZ0o6_OLCclBMHzXTQwg-1; Fri,
+ 26 Sep 2025 10:03:41 -0400
+X-MC-Unique: FelZ0o6_OLCclBMHzXTQwg-1
+X-Mimecast-MFC-AGG-ID: FelZ0o6_OLCclBMHzXTQwg_1758895420
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6498C1800451; Fri, 26 Sep 2025 14:03:34 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 303C119560AD; Fri, 26 Sep 2025 14:03:40 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7B8E81956095; Fri, 26 Sep 2025 14:03:23 +0000 (UTC)
+ id 2DC5A19540EB; Fri, 26 Sep 2025 14:03:34 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,10 +53,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 17/32] accel: mark kvm, xen & hvf as secure;
- tcg & qtest as insecure
-Date: Fri, 26 Sep 2025 15:01:28 +0100
-Message-ID: <20250926140144.1998694-18-berrange@redhat.com>
+Subject: [PATCH v2 18/32] hw: mark all virtio PCI devices as secure
+Date: Fri, 26 Sep 2025 15:01:29 +0100
+Message-ID: <20250926140144.1998694-19-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,176 +87,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG is too complex to be considered to provide a security boundary
-for malicious guest workloads. QTest is only used for functional
-testing and thus is not relevant to mark secure.
-
-KVM, HVF and Xen, meanwhile are all servicing virtualization use
-cases which must provide security.
+These are all intended for use in a virtualization scenario and must
+provide a security boundary.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- accel/accel-common.c      | 1 +
- accel/accel-system.c      | 1 +
- accel/accel-target.c      | 1 +
- accel/hvf/hvf-accel-ops.c | 1 +
- accel/hvf/hvf-all.c       | 1 +
- accel/kvm/kvm-accel-ops.c | 1 +
- accel/kvm/kvm-all.c       | 1 +
- accel/qtest/qtest.c       | 2 ++
- accel/tcg/tcg-accel-ops.c | 1 +
- accel/tcg/tcg-all.c       | 1 +
- accel/xen/xen-all.c       | 2 ++
- 11 files changed, 13 insertions(+)
+ hw/display/virtio-gpu-pci-rutabaga.c | 1 +
+ hw/display/virtio-gpu-pci.c          | 3 ++-
+ hw/virtio/virtio-pci.c               | 3 +++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/accel/accel-common.c b/accel/accel-common.c
-index 850c5ab4b8..cb44315f27 100644
---- a/accel/accel-common.c
-+++ b/accel/accel-common.c
-@@ -138,6 +138,7 @@ static const TypeInfo accel_types[] = {
-         .class_size     = sizeof(AccelClass),
-         .instance_size  = sizeof(AccelState),
-         .abstract       = true,
-+        .secure         = true,
-     },
- };
- 
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index 1e97c64fdc..fbffcccbd6 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -114,6 +114,7 @@ static const TypeInfo accel_ops_type_info = {
-     .name = TYPE_ACCEL_OPS,
-     .parent = TYPE_OBJECT,
-     .abstract = true,
-+    .secure = true,
-     .class_size = sizeof(AccelOpsClass),
-     .class_init = accel_ops_class_init,
- };
-diff --git a/accel/accel-target.c b/accel/accel-target.c
-index 7fd392fbc4..6ea9386cb8 100644
---- a/accel/accel-target.c
-+++ b/accel/accel-target.c
-@@ -31,6 +31,7 @@ static const TypeInfo accel_cpu_type = {
-     .parent = TYPE_OBJECT,
-     .abstract = true,
-     .class_size = sizeof(AccelCPUClass),
+diff --git a/hw/display/virtio-gpu-pci-rutabaga.c b/hw/display/virtio-gpu-pci-rutabaga.c
+index 5fdff37f2c..56e32e9f5b 100644
+--- a/hw/display/virtio-gpu-pci-rutabaga.c
++++ b/hw/display/virtio-gpu-pci-rutabaga.c
+@@ -34,6 +34,7 @@ static const TypeInfo virtio_gpu_rutabaga_pci_info[] = {
+         .parent = TYPE_VIRTIO_GPU_PCI_BASE,
+         .instance_size = sizeof(VirtIOGPURutabagaPCI),
+         .instance_init = virtio_gpu_rutabaga_initfn,
++        .secure = true,
+         .interfaces = (const InterfaceInfo[]) {
+             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+             { },
+diff --git a/hw/display/virtio-gpu-pci.c b/hw/display/virtio-gpu-pci.c
+index c0d71b6254..6c7cac7a25 100644
+--- a/hw/display/virtio-gpu-pci.c
++++ b/hw/display/virtio-gpu-pci.c
+@@ -75,7 +75,8 @@ static const TypeInfo virtio_gpu_pci_base_info = {
+     .parent = TYPE_VIRTIO_PCI,
+     .instance_size = sizeof(VirtIOGPUPCIBase),
+     .class_init = virtio_gpu_pci_base_class_init,
+-    .abstract = true
++    .abstract = true,
 +    .secure = true,
  };
- 
- static void register_accel_types(void)
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 8b794c2d41..e807103379 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -397,6 +397,7 @@ static const TypeInfo hvf_accel_ops_type = {
-     .parent = TYPE_ACCEL_OPS,
-     .class_init = hvf_accel_ops_class_init,
-     .abstract = true,
-+    .secure = true,
- };
- 
- static void hvf_accel_ops_register_types(void)
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 0a4b498e83..1d49a59053 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -304,6 +304,7 @@ static const TypeInfo hvf_accel_type = {
-     .parent = TYPE_ACCEL,
-     .instance_size = sizeof(HVFState),
-     .class_init = hvf_accel_class_init,
-+    .secure = true,
- };
- 
- static void hvf_type_init(void)
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 8ed6945c2f..d4d30c311f 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -119,6 +119,7 @@ static const TypeInfo kvm_accel_ops_type = {
-     .parent = TYPE_ACCEL_OPS,
-     .class_init = kvm_accel_ops_class_init,
-     .abstract = true,
-+    .secure = true,
- };
- 
- static void kvm_accel_ops_register_types(void)
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 9060599cd7..67f2172443 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -4066,6 +4066,7 @@ static const TypeInfo kvm_accel_type = {
-     .instance_init = kvm_accel_instance_init,
-     .class_init = kvm_accel_class_init,
-     .instance_size = sizeof(KVMState),
-+    .secure = true,
- };
- 
- static void kvm_type_init(void)
-diff --git a/accel/qtest/qtest.c b/accel/qtest/qtest.c
-index 1d4337d698..44649b0ebb 100644
---- a/accel/qtest/qtest.c
-+++ b/accel/qtest/qtest.c
-@@ -58,6 +58,7 @@ static const TypeInfo qtest_accel_type = {
-     .name = TYPE_QTEST_ACCEL,
-     .parent = TYPE_ACCEL,
-     .class_init = qtest_accel_class_init,
-+    .secure = false,
- };
- module_obj(TYPE_QTEST_ACCEL);
- 
-@@ -77,6 +78,7 @@ static const TypeInfo qtest_accel_ops_type = {
-     .parent = TYPE_ACCEL_OPS,
-     .class_init = qtest_accel_ops_class_init,
-     .abstract = true,
-+    .secure = false,
- };
- module_obj(ACCEL_OPS_NAME("qtest"));
- 
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 3bd9800504..125017df29 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -239,6 +239,7 @@ static const TypeInfo tcg_accel_ops_type = {
-     .parent = TYPE_ACCEL_OPS,
-     .class_init = tcg_accel_ops_class_init,
-     .abstract = true,
-+    .secure = false,
- };
- module_obj(ACCEL_OPS_NAME("tcg"));
- 
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index 18ea0c58b0..3aab82b51b 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -296,6 +296,7 @@ static const TypeInfo tcg_accel_type = {
-     .instance_init = tcg_accel_instance_init,
-     .class_init = tcg_accel_class_init,
-     .instance_size = sizeof(TCGState),
-+    .secure = false,
- };
- module_obj(TYPE_TCG_ACCEL);
- 
-diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
-index 97377d67d1..754a4099a4 100644
---- a/accel/xen/xen-all.c
-+++ b/accel/xen/xen-all.c
-@@ -147,6 +147,7 @@ static const TypeInfo xen_accel_type = {
-     .name = TYPE_XEN_ACCEL,
-     .parent = TYPE_ACCEL,
-     .class_init = xen_accel_class_init,
-+    .secure = true,
- };
- 
- static void xen_accel_ops_class_init(ObjectClass *oc, const void *data)
-@@ -163,6 +164,7 @@ static const TypeInfo xen_accel_ops_type = {
-     .parent = TYPE_ACCEL_OPS,
-     .class_init = xen_accel_ops_class_init,
-     .abstract = true,
-+    .secure = true,
- };
- 
- static void xen_type_init(void)
+ module_obj(TYPE_VIRTIO_GPU_PCI_BASE);
+ module_kconfig(VIRTIO_PCI);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 767216d795..f2f720792a 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2494,6 +2494,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+         .name = t->generic_name,
+         .parent = base_type_info.name,
+         .class_init = virtio_pci_generic_class_init,
++        .secure = true,
+         .interfaces = (const InterfaceInfo[]) {
+             { INTERFACE_PCIE_DEVICE },
+             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+@@ -2529,6 +2530,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+             .name          = t->non_transitional_name,
+             .parent        = base_type_info.name,
+             .instance_init = virtio_pci_non_transitional_instance_init,
++            .secure = true,
+             .interfaces = (const InterfaceInfo[]) {
+                 { INTERFACE_PCIE_DEVICE },
+                 { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+@@ -2543,6 +2545,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+             .name          = t->transitional_name,
+             .parent        = base_type_info.name,
+             .instance_init = virtio_pci_transitional_instance_init,
++            .secure = true,
+             .interfaces = (const InterfaceInfo[]) {
+                 /*
+                  * Transitional virtio devices work only as Conventional PCI
 -- 
 2.50.1
 
