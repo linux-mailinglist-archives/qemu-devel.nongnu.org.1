@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B91BA2796
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 07:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B569BA2777
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 07:41:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v216l-0008Po-Iu; Fri, 26 Sep 2025 01:35:03 -0400
+	id 1v216f-0008OF-CY; Fri, 26 Sep 2025 01:34:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v216c-0008Md-Hw
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:34:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v216W-0008KU-W5
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:34:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v216Q-0000q6-Vb
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:34:53 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v216P-0000qT-OQ
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:34:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758864877;
+ s=mimecast20190719; t=1758864878;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jGNYZrfWhSesxz0a2yRX7ofpdrxFXUQ/L0oIa38+Lms=;
- b=jIjIJS2sUkxR4KOwBgMSTXnj2T500jdNFrSSUmK8h9GzLcCqpLj4soOZAybb68QuCHLegL
- mlQiB4g8S4wsTPMBg8dIT11mNhq8Nu0sIPYN7eGODEZBO2Il0t7iTMLVzxShtvXFOfSWZ5
- Mx3QjBQ68DIZYz837TmuIc02pPqCAdY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=RzbvkqXZcEOVOclgPdGfWjrEFoyLvJwr9KQzHfBpumU=;
+ b=DOZJ3C9bYHdBv5aahK5xNCOAiu5ZhkKS0cb5mVJxQL3N8u7+YGol5ph8VjnSOY+arFNbxf
+ J2lx5uFx3xRTNShWhVaaZo/9SS4DhWZHep+43d6ZFdXCDXaRWQwKwh/+8olWfAZ2trTkIo
+ skk9DC2GDrXz504K9xqlXE0an1l2nnw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-262-XtQwKdrCMgaORm8EzdhAKw-1; Fri,
- 26 Sep 2025 01:34:33 -0400
-X-MC-Unique: XtQwKdrCMgaORm8EzdhAKw-1
-X-Mimecast-MFC-AGG-ID: XtQwKdrCMgaORm8EzdhAKw_1758864872
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-sxnZyORLOROllAU_CxN5dA-1; Fri,
+ 26 Sep 2025 01:34:35 -0400
+X-MC-Unique: sxnZyORLOROllAU_CxN5dA-1
+X-Mimecast-MFC-AGG-ID: sxnZyORLOROllAU_CxN5dA_1758864874
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4EE2A19560B2; Fri, 26 Sep 2025 05:34:32 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CE5B11800365; Fri, 26 Sep 2025 05:34:34 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.226.26])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7FE4D1800452; Fri, 26 Sep 2025 05:34:30 +0000 (UTC)
+ id E58BE1800452; Fri, 26 Sep 2025 05:34:32 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 11/29] vfio/spapr.c: use QOM casts where appropriate
-Date: Fri, 26 Sep 2025 07:33:40 +0200
-Message-ID: <20250926053358.308198-12-clg@redhat.com>
+Subject: [PULL 12/29] vfio/spapr.c: rename VFIOContainer bcontainer field to
+ parent_obj
+Date: Fri, 26 Sep 2025 07:33:41 +0200
+Message-ID: <20250926053358.308198-13-clg@redhat.com>
 In-Reply-To: <20250926053358.308198-1-clg@redhat.com>
 References: <20250926053358.308198-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,89 +85,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-Use QOM casts to convert between VFIOSpaprContainer and VFIOLegacyContainer
-instead of accessing bcontainer directly.
+Now that nothing accesses the bcontainer field directly, rename bcontainer to
+parent_obj as per our current coding guidelines.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250925113159.1760317-11-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250925113159.1760317-12-mark.caveayland@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/spapr.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ hw/vfio/spapr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index acaa9c141916f127a87440d239facf285f9e34e0..c883ba6da9e984f392a8d75adfb0fb8c74027d08 100644
+index c883ba6da9e984f392a8d75adfb0fb8c74027d08..8d9d68da4ec8ffa975f9fc45f42ac9562f870430 100644
 --- a/hw/vfio/spapr.c
 +++ b/hw/vfio/spapr.c
-@@ -61,7 +61,7 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
- {
-     VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
-                                                   prereg_listener);
--    VFIOLegacyContainer *container = &scontainer->container;
-+    VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(scontainer);
-     VFIOContainer *bcontainer = VFIO_IOMMU(container);
-     const hwaddr gpa = section->offset_within_address_space;
-     hwaddr end;
-@@ -121,7 +121,7 @@ static void vfio_prereg_listener_region_del(MemoryListener *listener,
- {
-     VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
-                                                   prereg_listener);
--    VFIOLegacyContainer *container = &scontainer->container;
-+    VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(scontainer);
-     const hwaddr gpa = section->offset_within_address_space;
-     hwaddr end;
-     int ret;
-@@ -245,8 +245,7 @@ static bool vfio_spapr_create_window(VFIOLegacyContainer *container,
- {
-     int ret = 0;
-     VFIOContainer *bcontainer = VFIO_IOMMU(container);
--    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
--                                                  container);
-+    VFIOSpaprContainer *scontainer = VFIO_IOMMU_SPAPR(bcontainer);
-     IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-     uint64_t pagesize = memory_region_iommu_get_min_page_size(iommu_mr), pgmask;
-     unsigned entries, bits_total, bits_per_level, max_levels, ddw_levels;
-@@ -353,8 +352,7 @@ vfio_spapr_container_add_section_window(VFIOContainer *bcontainer,
-                                         Error **errp)
- {
-     VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
--    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
--                                                  container);
-+    VFIOSpaprContainer *scontainer = VFIO_IOMMU_SPAPR(container);
-     VFIOHostDMAWindow *hostwin;
-     hwaddr pgsize = 0;
-     int ret;
-@@ -443,8 +441,7 @@ vfio_spapr_container_del_section_window(VFIOContainer *bcontainer,
-                                         MemoryRegionSection *section)
- {
-     VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
--    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
--                                                  container);
-+    VFIOSpaprContainer *scontainer = VFIO_IOMMU_SPAPR(container);
+@@ -30,12 +30,13 @@ typedef struct VFIOHostDMAWindow {
+     QLIST_ENTRY(VFIOHostDMAWindow) hostwin_next;
+ } VFIOHostDMAWindow;
  
-     if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
-         return;
-@@ -464,8 +461,7 @@ vfio_spapr_container_del_section_window(VFIOContainer *bcontainer,
- static void vfio_spapr_container_release(VFIOContainer *bcontainer)
- {
-     VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
--    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
--                                                  container);
-+    VFIOSpaprContainer *scontainer = VFIO_IOMMU_SPAPR(container);
-     VFIOHostDMAWindow *hostwin, *next;
+-typedef struct VFIOSpaprContainer {
+-    VFIOLegacyContainer container;
++struct VFIOSpaprContainer {
++    VFIOLegacyContainer parent_obj;
++
+     MemoryListener prereg_listener;
+     QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
+     unsigned int levels;
+-} VFIOSpaprContainer;
++};
  
-     if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
-@@ -482,8 +478,7 @@ static bool vfio_spapr_container_setup(VFIOContainer *bcontainer,
-                                        Error **errp)
- {
-     VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
--    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
--                                                  container);
-+    VFIOSpaprContainer *scontainer = VFIO_IOMMU_SPAPR(container);
-     struct vfio_iommu_spapr_tce_info info;
-     bool v2 = container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU;
-     int ret, fd = container->fd;
+ OBJECT_DECLARE_SIMPLE_TYPE(VFIOSpaprContainer, VFIO_IOMMU_SPAPR);
+ 
 -- 
 2.51.0
 
