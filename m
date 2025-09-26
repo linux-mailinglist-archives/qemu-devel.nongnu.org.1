@@ -2,143 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC0DBA2B41
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 09:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84767BA2B35
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 09:24:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v22lU-0007eI-PE; Fri, 26 Sep 2025 03:21:13 -0400
+	id 1v22mH-0000xM-2p; Fri, 26 Sep 2025 03:22:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v22lB-0007Kp-6a
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:20:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v22m7-0000sI-AS
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:21:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v22l0-0000fZ-NJ
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:20:51 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v22ly-0000kt-EV
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 03:21:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758871235;
+ s=mimecast20190719; t=1758871290;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=VinELw6ydp3dgsoXc6HgLqtnSRgTojW1SO0ckdaWQYk=;
- b=WqNfrNOsQKVq8yiF7zCzljKVFyIoyFKmRowDDxvSd9x3v3jINwr/HxutIxEaleX8MPi/7F
- nd18CYAPvvhuTRHahWlYn/r2rP/DqiCjYf9AMTyNjOsOf5t8JbPxkr9s7hflvfeJb4HGBl
- nzGlgBdFti/iKSNdMZnv2Mj7LNuDm4U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0M6DHrcIlftENbTu2YNpYnWf0KmCbKUek8G5IF4o/Dw=;
+ b=Wd8Uno5BZPBk9lazU38H6A3RZ37uteUN0xhBkenbnYrtDXS9jgxZJ7FphdVUbD5nXyn85Q
+ grSEYHMFKUd7jTEEc2QzJukBEodlK015hS8IOUn3O9Ex8s04f1jQXUyaCVmpPFsc9xMj1H
+ yI2lSNuJZRuC2zXRUbuDLDF9AffVBlU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-HHC60OiAM8OJSLODJpyP6w-1; Fri, 26 Sep 2025 03:20:33 -0400
-X-MC-Unique: HHC60OiAM8OJSLODJpyP6w-1
-X-Mimecast-MFC-AGG-ID: HHC60OiAM8OJSLODJpyP6w_1758871232
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-46e36686ca1so12618785e9.2
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 00:20:33 -0700 (PDT)
+ us-mta-117-0Q-PCzsTM62jEqoj2e3bHQ-1; Fri, 26 Sep 2025 03:21:28 -0400
+X-MC-Unique: 0Q-PCzsTM62jEqoj2e3bHQ-1
+X-Mimecast-MFC-AGG-ID: 0Q-PCzsTM62jEqoj2e3bHQ_1758871288
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46cde0b2226so4709215e9.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 00:21:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758871232; x=1759476032;
+ d=1e100.net; s=20230601; t=1758871288; x=1759476088;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=VinELw6ydp3dgsoXc6HgLqtnSRgTojW1SO0ckdaWQYk=;
- b=Zx0CGslQPbo5DR+EPoDR7eYEXjIoAq9Zj/Ez6++gsQWSBPjTpNiReTPq5ccPi8Dbqr
- 8+cXmlgNYJy1myL9jtFbbWhRAn9n3GJnM/K+23HAw5Rw8RaPCIEBe6IxGw5Q/7PvfgGb
- jmr0R+Gjt9EolHXGXnaR5n7qbaqoBsUuYG8xFtC0n4Bg+XS5/iU8Ht7QWiBPlHp0kCxQ
- eumDCWqT/RJ2fT8KeHGEl0Zh7py7TxH4fPLxr/zqlhi+pItyN8/Btn6jhlC0plP8gUta
- DzZ3K+Bb0Y5x7HoPthHh2tzjqFuUlejIfGBHNEjPZcRKL3e+K7b7t6L8H5uXSZu3TIbA
- /wfg==
+ bh=0M6DHrcIlftENbTu2YNpYnWf0KmCbKUek8G5IF4o/Dw=;
+ b=EPnTyyteAsAYpZNt+FtdFWA1VXHqqMNg9pRPlogu9xCG/RcR0nNzoOZdX8npcTLnA3
+ 121oSVPVaCagxyiix9I8hhVGHg0iL90c93gVDoW0Y99lnasL1SSzSbi+xBVrdYCgLmso
+ VVZJUpVd0tpjlfVIPZZ0C6ClH+Sv/5ZIbZgL/soXy6PGus26qqY4J3kJxGV+XIg3S+RC
+ E2iWZqx8tXn1m4DLk8vkdWza3oMncoqKOPLuyEn5npwl9sXXhxBx9nJ1MHdhxzxyCeQ3
+ yF0DbyoYJ4c/CZr782wAe8TfgNIwnxSRVuuiRZV0H1y0ma81d26moNDgRpL4MnRduemb
+ W5kQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV6O8jR3psP5YWxONyBo4Ny7T6w4lW3tMMk6UUGowYbw502NLK3UG1exonmasKPr0UICou2eHNIWCkU@nongnu.org
-X-Gm-Message-State: AOJu0Yyr2t77UxcKngqFGmTPHM+VcMKbhyYyGiA/AfAJ6aYwqikVhVLa
- ckNswKOsDzWO50YDq+Lu5Hxf6SCnen125K0ulTCZgxiu8h0hLy3lfeUr+Kmz/sotU+2cSZ7ruew
- 1HHDSoV/HWW08O8kqvjIkuCzkd+omIrzQjen2kH8MomV1POvZ6wR2Bc5y
-X-Gm-Gg: ASbGncsICKyF+hSJyXXvzGYZkQ/ek+cf6rJ12NmkwhHlAZeYpbYwHUyz23bvNLCumTq
- vSTuRc9+FhsX/axzxDnmWGc4+aFKYp5rnRycqdfBJh+YX8vb0Ei/Z2JH2LpVfI5nlQatGj8/ffl
- wzFGdoyxA7UoOWBYKzJ3LZT5gNPfaSCkTaO7P2Ay/ZKY9soXOtFbMMz0exiL5F715ZBTAISbN8O
- wQ939nwv5uoMr+lWELWVcUM5dXiHxcbsD+9RPxM8a+rbMLEpL1dHQrYmyaI/uOEC7GwJWnnZPyc
- 2F7m9vaN1f/9Bt+P8PfUo++KBfLNCqAj4VvzGFltngqdP7WA5CTWJ9ZUVWcAnrogKpRxN7PSnVf
- BurWMGQ==
-X-Received: by 2002:a05:600c:8b62:b0:45d:5c71:769a with SMTP id
- 5b1f17b1804b1-46e39bdf9b4mr25035395e9.26.1758871232140; 
- Fri, 26 Sep 2025 00:20:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGiDgzizr52SOtouLjyTVgDlHSR3/bjbj4VZSaffUKV9p00Q6aVP5hRf/ROPGznM83WDGc8bA==
-X-Received: by 2002:a05:600c:8b62:b0:45d:5c71:769a with SMTP id
- 5b1f17b1804b1-46e39bdf9b4mr25035145e9.26.1758871231750; 
- Fri, 26 Sep 2025 00:20:31 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-114-212.pools.arcor-ip.net.
- [47.64.114.212]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2a9af27dsm108684475e9.8.2025.09.26.00.20.30
+ AJvYcCUA4cnE3lxF7hDDmBGwM0XcQbyF2srEjYYUXRtInY+GOjxdd9zePQZD7TV2ZkplRaLqyc7zwodPdmfC@nongnu.org
+X-Gm-Message-State: AOJu0YwIFkUugqdzyPxjl+uML48ztFMHWV16ZRevQcQhxk7dT/kgtFLg
+ Jp8s7FzHzSD0MoJtbLwSrTrnr0NH7Lb5hMdC+mxivy7XHQqJF68L2LSEO/vpDT9VVo0mea5rJsp
+ V9Y0K9HbTNxE/4Ky+sSrk1wWA9FRpg9OwFHWgTL2uqrxFfy3yOS4d6CNh
+X-Gm-Gg: ASbGnctGN4xTLe23VYWdU2I75JSlw7QHHlPQOo2jV1ZFq2lEuQSz6l09gJbVZjNoGKg
+ 1FVQQUeFVAaHK0cFp1cFBim1v0WGv+7ayW0UZol6c0SHyMWB5lcnm9e/ji4E6oSkc613bIeJvhB
+ 4gHrwo7RUSpRuMHRntTkWHL1pEYGwoavawPpjwVXxASsHlPB39d7V2tnqCVmmEFkX+X3GbhWN5a
+ /6xoopWj2agmANvq+Xikf0V7KjeHMQJ5yNuD4nMPmlIDRnomtaBFy5VudE2EniKN8NGP97AQAfd
+ i+qgPIDDgGDff+fG9Vx6ibaugPHUyb9PQy2olrL7hYAoH9P9icfo9XPxm31IbySKeeWrB9rj0Hj
+ wWFc=
+X-Received: by 2002:a05:600c:997:b0:468:7a5a:1494 with SMTP id
+ 5b1f17b1804b1-46e329a81e7mr32480195e9.1.1758871287586; 
+ Fri, 26 Sep 2025 00:21:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBF6XAN6SvS7vzNfCte5lcQ83wm6wKEgy8Oc9zml+OEyKc9YLkOnvWLfSc516hlbMbpAFNRw==
+X-Received: by 2002:a05:600c:997:b0:468:7a5a:1494 with SMTP id
+ 5b1f17b1804b1-46e329a81e7mr32479995e9.1.1758871287073; 
+ Fri, 26 Sep 2025 00:21:27 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e2a9b6e1bsm117222865e9.10.2025.09.26.00.21.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Sep 2025 00:20:31 -0700 (PDT)
-Message-ID: <d67d8967-dbe3-4d94-978f-0fcc35b12c17@redhat.com>
-Date: Fri, 26 Sep 2025 09:20:30 +0200
+ Fri, 26 Sep 2025 00:21:26 -0700 (PDT)
+Message-ID: <e84f815c-3ec0-4ebf-b50f-87711b707bef@redhat.com>
+Date: Fri, 26 Sep 2025 09:21:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/9] tests/functional: Add decorator to skip test on
- missing env vars
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org, berrange@redhat.com
-Cc: qemu-arm@nongnu.org, manos.pitsidianakis@linaro.org,
- peter.maydell@linaro.org
-References: <20250926051542.104432-1-gustavo.romero@linaro.org>
- <20250926051542.104432-8-gustavo.romero@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250926051542.104432-8-gustavo.romero@linaro.org>
+Subject: Re: [PATCH 2/2] intel_iommu: Simplify caching mode check with VFIO
+ device
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, yi.l.liu@intel.com,
+ clement.mathieu--drif@eviden.com
+References: <20250919070638.983549-1-zhenzhong.duan@intel.com>
+ <20250919070638.983549-3-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250919070638.983549-3-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,18 +157,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/09/2025 07.15, Gustavo Romero wrote:
-> Add a decorator to skip tests on missing env variable(s). Multiple
-> variable names can be provided and if one or more of them are not set in
-> the test environment the test is skipped and the missing vars are
-> printed out.
+On 9/19/25 09:06, Zhenzhong Duan wrote:
+> In early days, we have different tricks to ensure caching-mode=on with VFIO
+> device:
 > 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> 28cf553afe ("intel_iommu: Sanity check vfio-pci config on machine init done")
+> c6cbc29d36 ("pc/q35: Disallow vfio-pci hotplug without VT-d caching mode")
+> b8d78277c0 ("intel-iommu: fail MAP notifier without caching mode")
+> 
+> Because without caching mode, MAP notifier won't work correctly since guest
+> won't send IOTLB update event when it establishes new mappings in the I/O page
+> tables.
+> 
+> Now with host IOMMU device interface between VFIO and vIOMMU, we can simplify
+> it with a small check in set_iommu_device(). This also works for future VDPA
+> implementation which may also need caching mode on.
+> 
+> For coldplug VFIO device:
+> 
+> qemu-system-x86_64: -device vfio-pci,host=0000:3b:00.0,id=hostdev3,bus=root0,iommufd=iommufd0: vfio 0000:3b:00.0: Failed to set vIOMMU: Device assignment is not allowed without enabling caching-mode=on for Intel IOMMU.
+> 
+> For hotplug VFIO device:
+> 
+> Error: vfio 0000:3b:00.0: Failed to set vIOMMU: Device assignment is not allowed without enabling caching-mode=on for Intel IOMMU.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->   tests/functional/qemu_test/__init__.py   |  3 ++-
->   tests/functional/qemu_test/decorators.py | 18 ++++++++++++++++++
->   2 files changed, 20 insertions(+), 1 deletion(-)
+>   hw/i386/intel_iommu.c | 47 ++++++-------------------------------------
+>   hw/i386/pc.c          | 20 ------------------
+>   2 files changed, 6 insertions(+), 61 deletions(-)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+This is a nice cleanup.
+
+Acked-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+
+> 
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index f04300022e..5c67b42dde 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -85,13 +85,6 @@ struct vtd_iotlb_key {
+>   static void vtd_address_space_refresh_all(IntelIOMMUState *s);
+>   static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n);
+>   
+> -static void vtd_panic_require_caching_mode(void)
+> -{
+> -    error_report("We need to set caching-mode=on for intel-iommu to enable "
+> -                 "device assignment with IOMMU protection.");
+> -    exit(1);
+> -}
+> -
+>   static void vtd_define_quad(IntelIOMMUState *s, hwaddr addr, uint64_t val,
+>                               uint64_t wmask, uint64_t w1cmask)
+>   {
+> @@ -3731,13 +3724,6 @@ static int vtd_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
+>                            "Snoop Control with vhost or VFIO is not supported");
+>           return -ENOTSUP;
+>       }
+> -    if (!s->caching_mode && (new & IOMMU_NOTIFIER_MAP)) {
+> -        error_setg_errno(errp, ENOTSUP,
+> -                         "device %02x.%02x.%x requires caching mode",
+> -                         pci_bus_num(vtd_as->bus), PCI_SLOT(vtd_as->devfn),
+> -                         PCI_FUNC(vtd_as->devfn));
+> -        return -ENOTSUP;
+> -    }
+>       if (!x86_iommu->dt_supported && (new & IOMMU_NOTIFIER_DEVIOTLB_UNMAP)) {
+>           error_setg_errno(errp, ENOTSUP,
+>                            "device %02x.%02x.%x requires device IOTLB mode",
+> @@ -4378,6 +4364,12 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>   
+>       assert(hiod);
+>   
+> +    if (!s->caching_mode) {
+> +        error_setg(errp, "Device assignment is not allowed without enabling "
+> +                   "caching-mode=on for Intel IOMMU.");
+> +        return false;
+> +    }
+> +
+>       vtd_iommu_lock(s);
+>   
+>       if (g_hash_table_lookup(s->vtd_host_iommu_dev, &key)) {
+> @@ -4910,32 +4902,6 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+>       return true;
+>   }
+>   
+> -static int vtd_machine_done_notify_one(Object *child, void *unused)
+> -{
+> -    IntelIOMMUState *iommu = INTEL_IOMMU_DEVICE(x86_iommu_get_default());
+> -
+> -    /*
+> -     * We hard-coded here because vfio-pci is the only special case
+> -     * here.  Let's be more elegant in the future when we can, but so
+> -     * far there seems to be no better way.
+> -     */
+> -    if (object_dynamic_cast(child, "vfio-pci") && !iommu->caching_mode) {
+> -        vtd_panic_require_caching_mode();
+> -    }
+> -
+> -    return 0;
+> -}
+> -
+> -static void vtd_machine_done_hook(Notifier *notifier, void *unused)
+> -{
+> -    object_child_foreach_recursive(object_get_root(),
+> -                                   vtd_machine_done_notify_one, NULL);
+> -}
+> -
+> -static Notifier vtd_machine_done_notify = {
+> -    .notify = vtd_machine_done_hook,
+> -};
+> -
+>   static void vtd_realize(DeviceState *dev, Error **errp)
+>   {
+>       MachineState *ms = MACHINE(qdev_get_machine());
+> @@ -4990,7 +4956,6 @@ static void vtd_realize(DeviceState *dev, Error **errp)
+>       pci_setup_iommu(bus, &vtd_iommu_ops, dev);
+>       /* Pseudo address space under root PCI bus. */
+>       x86ms->ioapic_as = vtd_host_dma_iommu(bus, s, Q35_PSEUDO_DEVFN_IOAPIC);
+> -    qemu_add_machine_init_done_notifier(&vtd_machine_done_notify);
+>   }
+>   
+>   static void vtd_class_init(ObjectClass *klass, const void *data)
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index bc048a6d13..01cd9a67db 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1720,25 +1720,6 @@ static void pc_machine_wakeup(MachineState *machine)
+>       cpu_synchronize_all_post_reset();
+>   }
+>   
+> -static bool pc_hotplug_allowed(MachineState *ms, DeviceState *dev, Error **errp)
+> -{
+> -    X86IOMMUState *iommu = x86_iommu_get_default();
+> -    IntelIOMMUState *intel_iommu;
+> -
+> -    if (iommu &&
+> -        object_dynamic_cast((Object *)iommu, TYPE_INTEL_IOMMU_DEVICE) &&
+> -        object_dynamic_cast((Object *)dev, "vfio-pci")) {
+> -        intel_iommu = INTEL_IOMMU_DEVICE(iommu);
+> -        if (!intel_iommu->caching_mode) {
+> -            error_setg(errp, "Device assignment is not allowed without "
+> -                       "enabling caching-mode=on for Intel IOMMU.");
+> -            return false;
+> -        }
+> -    }
+> -
+> -    return true;
+> -}
+> -
+>   static void pc_machine_class_init(ObjectClass *oc, const void *data)
+>   {
+>       MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -1758,7 +1739,6 @@ static void pc_machine_class_init(ObjectClass *oc, const void *data)
+>       x86mc->apic_xrupt_override = true;
+>       assert(!mc->get_hotplug_handler);
+>       mc->get_hotplug_handler = pc_get_hotplug_handler;
+> -    mc->hotplug_allowed = pc_hotplug_allowed;
+>       mc->auto_enable_numa_with_memhp = true;
+>       mc->auto_enable_numa_with_memdev = true;
+>       mc->has_hotpluggable_cpus = true;
 
 
