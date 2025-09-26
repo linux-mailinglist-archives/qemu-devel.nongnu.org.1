@@ -2,148 +2,210 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C02BA39C0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2ADBA39DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 14:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v27Wh-0008Gj-3W; Fri, 26 Sep 2025 08:26:16 -0400
+	id 1v27Z6-00028O-Ua; Fri, 26 Sep 2025 08:28:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v27WW-0008Ei-Um
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 08:26:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
+ id 1v27Yy-0001zi-2j
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 08:28:38 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v27WO-0001mJ-Pw
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 08:26:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758889552;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=G5JU/92u4s3yiJRWpFY+A/rsCW2wno6nr50WCmGPNdM=;
- b=MfK5CRt+RI2brJOqmKih8ruh4iC/D55+ZOkDz5h81eD4oMK5YWpNUhJs3BiCdMQfYSGmvM
- 3AetZ0UxFNpTj57yV3q1PCAXPlX+2ERBChAbBxTvPha9q73Hbys7PgtOayihhbZ2vdt+9F
- ICXvxtJCd7r3WTvBu4ed98W5X4U3PNs=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-LcCQU1RiO8yw1PpvrKOKZQ-1; Fri, 26 Sep 2025 08:25:50 -0400
-X-MC-Unique: LcCQU1RiO8yw1PpvrKOKZQ-1
-X-Mimecast-MFC-AGG-ID: LcCQU1RiO8yw1PpvrKOKZQ_1758889550
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3ece14b9231so1367123f8f.0
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 05:25:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758889549; x=1759494349;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=G5JU/92u4s3yiJRWpFY+A/rsCW2wno6nr50WCmGPNdM=;
- b=uWsplKquF9OQ4ZbgVXR2PWFQuUk4JC1CZqcknZyJizrdlR692axcBl477V5vkob6Ld
- Cir1t7TPlsnBZLSepol9EJsaQAWozh7aAe5u+dYm4DehF9IlP21YYoAsx7bQmoXgHsy2
- Zwy4gSLefEriMjaeug54Ilnk4mkukE1bvqnmscL14YJUCniB3BkT7qLmnK8b8nd75STW
- ybC4GQW0UE4SK48Ntx6+BdjYq5Yoa8c0K7rOwSbpm/rTNC0De1cCPqfRUaqMvLGacP6z
- WLFOlvyka2yla22yF5PJRrBxLNIYo/ET+Y/BhwpyqGtvKcC2uIJ16Atn1rCJDYA67asB
- BaxQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXDj/BZMw1AsyTWmXG7BWwmCY3wf+YLOMYwV/A/JVRupyZm7nNyGnnUFaotm8RnwbZ4ZlIIxJw1er4o@nongnu.org
-X-Gm-Message-State: AOJu0Yz26oNHj6Z8dl9AgnTz6Rh1H708GHdWdqyawxnZXXF7ASaUvHY4
- 5EG6UXqeUFmtOyXkOY8bwvbPgTQ1kD2g1lz+ZAMW6c/e3AtGQc0Xsvwa+ZAXmjJf368WdpinHAC
- 4lZdjqNIJ6dZbPwqO/b9qDmbvzkXYS/5mv4puIwZ+uWANYbO5//FUQUX7
-X-Gm-Gg: ASbGncs34GRt04P2wmOW5p2MTr0Cz0INe1BdKsgB7Isy3wHooz3rzn8p2sMFRxLV1At
- +9GHzdR5ZeaziZxRbdHOakFGNMlHCTPvH9AwvHr03UNNAGwFrtqEb4Paa6J/2geNjwr2xMQGImO
- D8Imo8I0Tgle58H7Vy3fz1mvbUus7Ec6f9zIC1ZcQ7vC3Qx3ATvH9kE/mhvheeob2+LjvcE3PRg
- Pp09eHxOQXoPmGiMJQrcUIkjXx4+n2tCWy1r+AvM4nuPKLH4vh0VzRwI3lH80cn1NA6CL3R7JAs
- B+w7IXsZOfHi9ej2SQMFPCk3HHsi3edlroBeH4Zx8aTaalhJN6Gk/4cHMskRviPFiDlIqOPmC4K
- Th9M=
-X-Received: by 2002:a05:6000:2284:b0:3ec:b384:322b with SMTP id
- ffacd0b85a97d-40e4ff19bebmr6661632f8f.46.1758889549500; 
- Fri, 26 Sep 2025 05:25:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3nH81jKLVyJvoVqF1Yx9WA8UYqiv8SKCAR0oqTJIZziAYRNwXBW0tFOh8bzuLNWBit6OlQg==
-X-Received: by 2002:a05:6000:2284:b0:3ec:b384:322b with SMTP id
- ffacd0b85a97d-40e4ff19bebmr6661591f8f.46.1758889549049; 
- Fri, 26 Sep 2025 05:25:49 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc82f2ff6sm6823136f8f.56.2025.09.26.05.25.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Sep 2025 05:25:48 -0700 (PDT)
-Message-ID: <076fb297-2c05-404c-b2e1-15f4587b03d3@redhat.com>
-Date: Fri, 26 Sep 2025 14:25:47 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
+ id 1v27Yk-0002Rx-8z
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 08:28:35 -0400
+Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 58Q7LCF91598878; Fri, 26 Sep 2025 05:28:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ proofpoint20171006; bh=y/w/FZNDR2MgVs7ypJlDS0jJgUIS+8E06kBoEmMcp
+ lY=; b=bkJ3uN/moO68zDrmCn2LuKyyBapwtb0iTHzkspBwrT6+6Os/3K4lhXqP/
+ hU3slRnWCGYkk/TtOj5TyLIexC2OMLW4t8ZxIk+nSP/9WbrazO9q1Osx4qDLLTbD
+ 72zhpij1CrpmN9MJQROqY2WOHuLUXaEmGFx1DarTxPjG13lZbS9PRGTsDMgGQQqp
+ GCWYnPa0VCr30Hv2O6ZWhXCvHnWYRXJyuchjzuG4TVzuUBVsWziUVnogsSe6Dhp5
+ OQ3U1RJfQ7JoQvrWKVduktYaIUFbLY5GYPETfr2/4dXBzAJHns2HPl1+FU2Th/Gv
+ xsMmwj5Ad7H1SWtPEj7xFLXqdcnpg==
+Received: from bn8pr05cu002.outbound.protection.outlook.com
+ (mail-eastus2azon11021112.outbound.protection.outlook.com [52.101.57.112])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 49dbrf1xgg-1
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 26 Sep 2025 05:28:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rR3sbohZbb++E2o4ubkXHoRi2UOuEcmY3SyLU2s1RIVcd1Xwp5Ygs1RHWAOenKsdmImujn2LOBojMyM4paZN5lbpYFERl3r0vrwt+DkGD4SinXts0DA5WtOc5J7F5lGKb3xPFJJ6dQXMhFCo6SYXbodiDusBd06ieQt9uQiPwdPrUBwJftVgF4FW7sGvp64nPcsaJg8wyHHRULdQWseCn6xR4GOELWjKTd4SWXj3RgznpC38PbDXzLqXkHd7v5dlDdamn+KW5x2BIE4PSBGO3lhQSAtFY9+3q7qihn3pGFYo1Q5nOTfYoehkLlwIbCrAFWIZnK+LtDv3ZHKObY0Hiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y/w/FZNDR2MgVs7ypJlDS0jJgUIS+8E06kBoEmMcplY=;
+ b=dIAm22VjzC7ShHe/9Fp3i9ZuGOw6nTnXGc9DO9kjRBGFoMK5ajdI44xlWKSCkNNtS9Xb9CFevYF499h85aXmC0DU+zg9vEmMCktnc/+Jdhp1RSxDwaf5NSPPbBxMKT7ZThVyh2KfSDupuU8/Clh/7Go+G0vvH5PpygYGVzWhvf29v2qZqAgSdpzBh2suYid9TqI2RlvKmqppublNo9ZOKbDlu6dMe6kus9ioWHI38nJmTnvLl7TxAHeQJiDKJWppNAKTrFvSP+6TCOcZuu1MC+/XrYEnTDsbVFhgsD8eBLQUjDA8+nDorbBQqKuV8D1bapWGMSUmjaMgqRgvfZSPgw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y/w/FZNDR2MgVs7ypJlDS0jJgUIS+8E06kBoEmMcplY=;
+ b=FC0mzK+gM/yoIhO9v0f1pB8UbQYf/1LEPcEEB0ZQfQgh/ICy0Qj3LatMc0JqMVDSDVi/pV7FEFARfUrbF9sc2klFs4zAo3SFpcg12V89DE3BcCWwa+R0c5fef40l78Ijql5lc0QRfGvmtz/K4R9JbPALC1XLMREuf2N+97FdkXs/BsVufXudThpb918SAwhFXPmHqUje3UOrha0vCP4k3mgsU569sPF6gonqL8G02FrkVvoo5B1b9F4lY1fPklYP19e3QMBQlqIExSfSERPQgL3rxZk1DDKwYRwLwu9uB3YBQEUsXK4pFCJv9MmXx1UlLy8gw55uZss3bK/lRJQwPg==
+Received: from PH0PR02MB7159.namprd02.prod.outlook.com (2603:10b6:510:16::8)
+ by PH0PR02MB9383.namprd02.prod.outlook.com (2603:10b6:510:289::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Fri, 26 Sep
+ 2025 12:26:25 +0000
+Received: from PH0PR02MB7159.namprd02.prod.outlook.com
+ ([fe80::6cf9:b35c:b143:bb88]) by PH0PR02MB7159.namprd02.prod.outlook.com
+ ([fe80::6cf9:b35c:b143:bb88%3]) with mapi id 15.20.9160.010; Fri, 26 Sep 2025
+ 12:26:25 +0000
+Message-ID: <9343fab3-f1e8-4a07-ae15-cc905d4bc42c@nutanix.com>
+Date: Fri, 26 Sep 2025 13:26:15 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 19/22] vfio: Add a new element bypass_ro in
- VFIOContainerBase
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com
-References: <20250918085803.796942-1-zhenzhong.duan@intel.com>
- <20250918085803.796942-20-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250918085803.796942-20-zhenzhong.duan@intel.com>
+Subject: Re: [PATCH v2 2/2] docs/about/deprecated.rst: document new
+ restrictions for isapc CPU models
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: imammedo@redhat.com, philmd@linaro.org, berrange@redhat.com,
+ jdenemar@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, qemu-devel@nongnu.org
+References: <20250925160453.2025885-1-mark.caveayland@nutanix.com>
+ <20250925160453.2025885-3-mark.caveayland@nutanix.com>
+ <CAFEAcA_w1QkHACeb9y6GGUOPunu1YHYVQQwat4zdFWODG3u2Nw@mail.gmail.com>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+In-Reply-To: <CAFEAcA_w1QkHACeb9y6GGUOPunu1YHYVQQwat4zdFWODG3u2Nw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR02CA0099.eurprd02.prod.outlook.com
+ (2603:10a6:208:154::40) To PH0PR02MB7159.namprd02.prod.outlook.com
+ (2603:10b6:510:16::8)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|PH0PR02MB9383:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26f85549-cfd3-449b-a1b8-08ddfcf7e8f1
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|10070799003|366016|1800799024|376014|7416014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eTJhRUxZSEdxQndZLzdmYVFuUTNZWlFTaEswelFNbHM1bkM2NEM5SFhSckU4?=
+ =?utf-8?B?cnRkT2wwdkpMVFdNcDlGdVFBWmlhUGYxbi8rVVo0MUZib1JURmFQQ0UxLy9Z?=
+ =?utf-8?B?UWw2YXdjdzBGblNXaGZyV3JOOXVXbHRRK1hUNndPdkRSbURLemE1WlhBSkRx?=
+ =?utf-8?B?YWZRZjlzNlN5V3hXeFlKamdKTVpMOGNVOWJvL01Tb0J0R2lrUnM5ak5GTVJ4?=
+ =?utf-8?B?anhkQVFXOFM1UHgvRHZsL1c5RTA5V3FuRFExSVdNc3F0cXBCVzNPQ3REQkpO?=
+ =?utf-8?B?eDZXckZPWSs2dUJkaHl1SDEvdFVzM0tiSm5UZzFXWmdyQTlKbTQ0Z01ueUZ0?=
+ =?utf-8?B?UFdYRWpLYVpnaVFuOXpZSHlNckxOWUo0U203cGQxVG0wY2ZZb0NnbVA1U0Vs?=
+ =?utf-8?B?QUl2azdPTnAvaTBqREQweG5RQUpVTC93MjhDRy9BVUFsOHlTL3ZmN0JaK1cv?=
+ =?utf-8?B?SGlaWFhLeXJkZVIyaXpid29GSnlEVWdKMi90anc4Wmc2cjdTSE01a1NoVlUv?=
+ =?utf-8?B?UmZRNkU5WmNvOWZUeGlhaURuNFMxVVRWMHZ3U0p5eDRwM3BkYXN0UzNvc1lt?=
+ =?utf-8?B?SEVLRWFnVDNVZ2F6by9Qek1WUklhYlFGKzZ2dTZzVUtjbDFpYVViNDF1NkpB?=
+ =?utf-8?B?NEQxWVc3TlA5TWNxWmpZMlFNZTZzNlVqRWp4b2hCSTVBUWtKTVpNYmd3YXJP?=
+ =?utf-8?B?Ykg1RVd2Nm8zRUxmeURGNGlSL1dSVlRNSlFKenJ2cWxWUGs5SDN3dE1hREl3?=
+ =?utf-8?B?aUd5UnhRMnc5WFNlQUlVbmRSeFU0bTNiNXltRk8zd1BMYzNuOWgzV3JUdXFl?=
+ =?utf-8?B?NitLMzFDUkV2K3phQVVibjFYV2tJYkhGcmJVTUJHOW9BZnMxNjhRL0kvVWRN?=
+ =?utf-8?B?SXNyL09CRE1zZnpRWmVINWhwRFhvNUUzanFHQUZMb3dUOGQ2eEFMeTdyUlJq?=
+ =?utf-8?B?a3NLenNxa1B3Y2lLUzBWaDJ1MkhWNVcwakdpd0NVQTZCQm5Pa3Rib3RwcHB0?=
+ =?utf-8?B?QzFEeTZWK0tEdUVVSVZ3b1NkUG93b1dBb2hlZVQzd0F6dVpRWVRJK1hWY3dU?=
+ =?utf-8?B?NmdJZjErb0t1Q2ZvMTdCRFFZL3lYcHBJaHhyN0xFWFNFQzY3ZHZ4UDU3NnBD?=
+ =?utf-8?B?M0R4Vys5ZHE3VmkrR084ZEtNV3pjNTI4b3ZKMFNkNmcvN21EMk8vMEtZVjZV?=
+ =?utf-8?B?Q2lwNThEUWZaaUVaRmEyR0txelJKeWM1NGhvdklWQlBzZUlOaG1aSEg1VWNO?=
+ =?utf-8?B?QXc0S2JQcnZtU3FMRisxV0R6Z0NEMUxsOVgzVXRFV050RC82T3QxVVdtWG5J?=
+ =?utf-8?B?YU9IWDFWMWUyNVdNSVp0ZHdUbThzaVMwNUg3dml1bUZ3b1BtVmJKOE1FSWdB?=
+ =?utf-8?B?dFdaczZGTmdZdUVUN3RpS0hOaVdMdG81VHRiK1ZqMndTNWtQdUdtb0hRMnJ6?=
+ =?utf-8?B?bWxFMHhOYlB5YngvSVlxZzhuWjNuUk1tWlZXS0RBMkRKTWpQZ3RZY3czaXZC?=
+ =?utf-8?B?MVY2YmdCeDZHTmk0VzlmQUh4WmFqeEdIU1BDZTZvQmhLMnBVMzVDMUVpTDZt?=
+ =?utf-8?B?S2QvcDJUNGEzRGxiRFZRWEZKcWxaaSs3bnNQRDU4QytXcitkNmZrcFhZcTFD?=
+ =?utf-8?B?Q2lUWWs5Wmc1QVh6d1ByaVh2Qk1JMXh0eTAxSkxIeFlhQnlXcFdlRUpzM3Fj?=
+ =?utf-8?B?ai8ydHpNdTJNb2J6NDRLeUNSNDBkd3FVaGJxU252cjZ4MVRhaDhpczVtVFUx?=
+ =?utf-8?B?dTZCc3dnNUowY09jbnZsRlVGa1IzTDJpS3JNWkJBQWNvN2dpY1RFd0Vsa1dF?=
+ =?utf-8?B?cHY4STgvb2pMVkhnamYxVjBsSCtUam1tVU5YUlhTRUFxOHg2YWk0MmtybU9M?=
+ =?utf-8?B?YjlZa1NNT0h5UVpFNzZSZGN3K1A4VnJJZ1RuS2JUUGR4VVI5WTlmbFdYWWpv?=
+ =?utf-8?Q?0mT0gktN2RZ7GidUcMtAoQECDV1Snpy6?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR02MB7159.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Tzl6bGlMSDBpZndXYXFFbzk2VTR5U3dGb2NyaWFSMnN0MkhFanhQZm1kM1Qx?=
+ =?utf-8?B?K1A1OTJWZjU4NENTaEdlemQwcHVNbk83b2x3Yk5qZm5VTnp1SmI1WFJHYTlH?=
+ =?utf-8?B?Y1ZNeERXVEpUaEJ6clRnVy9NZHB4UXlKNmxjZzlBVm9XMCs1eTVuVWZyL3BL?=
+ =?utf-8?B?UzIyZXNybk9kRnBjOERidDlYUGQweWt6dUFOK056c2hWdWdnRk1iYzNYajlG?=
+ =?utf-8?B?M1BjcllsNjVYOFc4RDFQT0p0Nk5oZENmcjE5UXZWNUgvak9iTWp0WE1KcWd3?=
+ =?utf-8?B?TDQwRzRnTTJTVDhrM1dtKy8rSVBEa3A4RHlDT1BKY0J1bkdkMmYybVNqMlJB?=
+ =?utf-8?B?eFM5aThBMTVkcXA2OGEvSTA3MVBwVHVlUytWSzFaakFGVFMvL29TYUs1S3Fu?=
+ =?utf-8?B?L0swa3pxeUkrRUlEOGoxYjdNTElWTGRwU2JjTUZDY3pEaFRtYlpqNXg2UUxu?=
+ =?utf-8?B?MkFxU1Nlc1RncDZFczBwa0lzeWJBZ09MbEpVWHlaZDQ1U2duZ2FrR3U1WjBh?=
+ =?utf-8?B?VGxxTW1TRkFiazRFWEp1d0pLOFZTdVhnSlFVV01ONjBJM0E2eHh2L05vS1ZB?=
+ =?utf-8?B?aTR2NWhKcFNlbHZqbUNBTjZRNXJldzJYemJrUVZMTisvd01MQkRYODJEcXVn?=
+ =?utf-8?B?ZWZIbW9KYWtBWlgyVytJdERJZ2p5dDRaWVFZNEJVa1JVNzJsQkFla0RGL0Rl?=
+ =?utf-8?B?UllpQ285RVZOYkJ1TTBzZmJCNHRVR3pZcDdyWk1KQmtBajY0M2lOTnZ5cUtH?=
+ =?utf-8?B?V0hrallVakV4N1hsVzhwazVvZGw3ZWNOSU1pSHZRdE11T1JNSkdOcDNlQkhx?=
+ =?utf-8?B?Q0Fhait2MUVtMjAxaHdYN2hwNWV4NzBXOUZPKzAzbXRaSW9tUmI0WURGSmFD?=
+ =?utf-8?B?NysrZ2FaWDRRTmY4dWpzbXQ5R3dWMkJzeFF4UFlkTzB6YmZrbTllYllDTnVT?=
+ =?utf-8?B?VXVZd2ZLT1JGV3ZscHJIaDJnYTBiaXZ6ZmlCWlNxcDhKN05UT1VwRGpXZHhl?=
+ =?utf-8?B?ZGFSSlBvQjhPMXBUZFdSdnJZUTJ3N3Bob1JsZ1pGMGZXN0hvbThRT0NFWHpB?=
+ =?utf-8?B?WFhQcWIxNHoyRzVSWkJsMTRueVc4VEZJMjRWc2duSmZFaTdyWXdTNVZzdTVx?=
+ =?utf-8?B?djdwSERBVitKM2hBOXUzMi9ESTQrb3JKWTZ2Ti9xUjhzUEdCdG13WWYwcHQ1?=
+ =?utf-8?B?OHRiM1JvalFzUmRndmNZdmZRR2owdmVlZnRveWQvMHdMVmY4MXRjZVU5N3FG?=
+ =?utf-8?B?dGRacXN0ek5nbks0eTVpMUUvU1hodDBtY1lJOXd3UEo3SEk4bGdJN0xUOWRo?=
+ =?utf-8?B?VFlnQTlRSDUzSHJ5UFpIa0E5cmVSMExYQUZ1akRhYWJwM0Y5QVhlWnUydm5J?=
+ =?utf-8?B?WjVaY3B3dGtsaXlxTGxKMEZNWE5KV3pCb2kyd3Qza2ZSWFBoWGNkYk11cnY4?=
+ =?utf-8?B?TlE2MjU2cnBDaHFxZm9GWmRWalhveVRJODFsTFJzc1hVSHBjNXBQVWpxT2pw?=
+ =?utf-8?B?WEoxTndGbi9rcU5MbHc1cHJrZjRReEN4THF0L2ZLY2U4eklwU2ZUaUxTVUlC?=
+ =?utf-8?B?MTVaNFluaUVndEZxYlZoZXJJenRwdGtIeGYyMGNabjhZbERqR3RuWVF2Z3I1?=
+ =?utf-8?B?Um53QUVBR2xld0NTQS9uZ1hBdHRuMkJGV1FTRFJLeFlrUW5weTd2YitseVJN?=
+ =?utf-8?B?cDlibWQrZUc0TXNhbng0VEFZaWlmd2lSVHQxalFTRjIyVEx4M0xLSkp1UCtT?=
+ =?utf-8?B?cE1ETGpaV3Z0UGtrNUZwQkh4ZjJaRFVieWYrZGVObFd4YXFtcFh4WlhjbkR6?=
+ =?utf-8?B?VytON1ZvYVp1RkdLQTdtYkczNUZkeExMWGJxS21kcTRZWk5TTW9ySCtsandH?=
+ =?utf-8?B?bkYzWlZHeGNvTFZEWlVEM2laN3RYQ0o4cmorSkdnUjNYZ3J0d1JxL2JnZEVQ?=
+ =?utf-8?B?elVIR1B6RWhPa2F3M3RQa1AwSEJnYVFpcFo0TzNUSEpIaXBVUDU1RTV6WlhS?=
+ =?utf-8?B?Rk5yOXZxOFhJemRwa01PSDlWMTJubGVpZ2xEZklPNFpYWUxpSG5yRmxDVHZN?=
+ =?utf-8?B?NFJnUDJ0eTY2RXBNLzVtSzJiaTdBOHNsSGU4VTRMV3FmSkMvUTdURCt2RVAy?=
+ =?utf-8?B?MktFUGJTQzdCV3hPQjdhUmhWdlBkWEoyUVE0bU5Dbm5kRWR0czd1dTZOREd2?=
+ =?utf-8?B?Mm5la0pxeTMvWExTbHRmY3VCcVRTbnRYVW1jVE05U0J0UHBHSm43WHpmWmxp?=
+ =?utf-8?B?azgwSlZYdEpxNmd6OCtmM0dtTlN3PT0=?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26f85549-cfd3-449b-a1b8-08ddfcf7e8f1
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR02MB7159.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 12:26:25.4342 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QUi5GtAAiFTkiJnyDtNzpCSUAD5B2j/uvqkeuMl4gMyY5Ide6lMt1fLuzeC11huZrW5FfghEto3Dm2MOg+Iym6Ek38BiLnkmCMOq+VjMJmQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB9383
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI2MDExNCBTYWx0ZWRfX80X6zou+gTqv
+ CvmLxX50B5blrM/j5D/batsw5eJwufAaqCPGlYbujiDrDhjloSRIWNmMqqhoIqly/ae87A1AhDw
+ yxO6L8pFGy1+UlbIQvpw5oudHsWg4u+PRuDsTfVRTX3/egP/Vd2agkFro4rFWTj73epV6PPm0jZ
+ TPHMK/UMdlzgk5xzfvhnkje4CVJwnqapK57OZYJyE1/dBu6MhcJykVrhDqrJLnpf2v3+8oyTZm0
+ vYS/CWEr5XktD76KCaBEy46c0zOyvPcdzQ+Ll8qj+8Dw4aGR8gIJir1dduNRRdKAqHuvFpfuZ4f
+ XP7qNyTmJbjs3jGvvU86Yl3fbAUdbxh62Wnsz5CiP+m2FA+Sxrp2UzwCaGHBIiXwn0+zlSKBJGQ
+ 55UEPIIBOKPzrIHPuPdwcTdbY/IcNQ==
+X-Proofpoint-ORIG-GUID: 9nsE4C7g6lJfhRgsWOCuYeEwHrrD4fc1
+X-Proofpoint-GUID: 9nsE4C7g6lJfhRgsWOCuYeEwHrrD4fc1
+X-Authority-Analysis: v=2.4 cv=aKj9aL9m c=1 sm=1 tr=0 ts=68d686da cx=c_pps
+ a=Tfh5kxD+BHZRkXOJdNqs0Q==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=0kUYKlekyDsA:10
+ a=64Cc0HZtAAAA:8 a=Y3w0Dp44TZVTHr_NwsMA:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-26_03,2025-09-26_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=mark.caveayland@nutanix.com; helo=mx0a-002c1b01.pphosted.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,108 +221,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/25 10:57, Zhenzhong Duan wrote:
-> When bypass_ro is true, readonly memory section is bypassed from mapping
-> in the container.
+On 26/09/2025 13:05, Peter Maydell wrote:
+
+> On Thu, 25 Sept 2025 at 17:07, Mark Cave-Ayland
+> <mark.caveayland@nutanix.com> wrote:
+>>
+>> Add a new paragraph in the "Backwards compatibility" section documenting that
+>> the isapc machine is now restricted to 32-bit x86 CPUs, and -cpu host and
+>> -cpu max are no longer supported.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+>> ---
+>>   docs/about/deprecated.rst | 13 +++++++++++++
+>>   1 file changed, 13 insertions(+)
+>>
+>> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>> index aa300bbd50..4c7000650d 100644
+>> --- a/docs/about/deprecated.rst
+>> +++ b/docs/about/deprecated.rst
+>> @@ -514,6 +514,19 @@ available firmwares that are using the current (wrong) name.  The
+>>   property is kept as is in 9.1, together with "riscv,delegation", to
+>>   give more time for firmware developers to change their code.
+>>
+>> +x86 "isapc" board restricted to 32-bit x86 CPUs (since 10.2)
+>> +''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+>> +
+>> +The "isapc" board represents a historical x86 ISA PC and is intended for
+>> +older 32-bit x86 CPU models, defaulting to a 486 CPU model.  Previously it
+>> +was possible (but non-sensical) to specify a more modern x86 CPU, including
+>> +``-cpu host`` or ``-cpu max`` even if the features were incompatible with many
+>> +of the intended guest OSs.
+>> +
+>> +Now the "isapc" board contains an explicit list of supported 32-bit x86 CPU
+>> +models. If the user requests an unsupported CPU model then an error message is
+>> +returned indicating the available CPU models.
 > 
-> This is a preparing patch to workaround Intel ERRATA_772415, see changelog
-> in next patch for details about the errata.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> This should go in "removed.rst", I think. "deprecated.rst" is for
+> things that still work today (perhaps with a warning) but will stop
+> working in a future QEMU release, not for things that we have already
+> caused to stop working. (And we should only go directly to
+> 'removed' for features that we are sure nobody's using, but
+> I assume we've already had that discussion for the code change.)
+
+It's an interesting one because rather than removing something, we're 
+adding a validation check to prevent the user from doing something that 
+is nonsensical, i.e. using a modern CPU on a board/OSs that would never 
+happen in real life. Given that just about everyone other than hobbyists 
+is using the pc/q35 machines on x86, the target audience for isapc is 
+comparatively small.
+
+There was some concern that libvirt could generate -cpu host/-cpu max 
+for isapc on the command line which is why I added the original 
+workaround, but then Igor intervened as maintainer and requested this to 
+be removed and enforced via valid_cpu_types instead.
+
+Where do you think would be a suitable place in removed.rst? Maybe the 
+"System emulator machines" section?
 
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+ATB,
 
-Thanks,
-
-C.
-
-
-> ---
->   include/hw/vfio/vfio-container-base.h |  1 +
->   hw/vfio/listener.c                    | 21 ++++++++++++++-------
->   2 files changed, 15 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index acbd48a18a..2b9fec217a 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -52,6 +52,7 @@ struct VFIOContainerBase {
->       QLIST_HEAD(, VFIODevice) device_list;
->       GList *iova_ranges;
->       NotifierWithReturn cpr_reboot_notifier;
-> +    bool bypass_ro;
->   };
->   
->   #define TYPE_VFIO_IOMMU "vfio-iommu"
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index e093833165..581ebfda36 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -76,8 +76,13 @@ static bool vfio_log_sync_needed(const VFIOContainerBase *bcontainer)
->       return true;
->   }
->   
-> -static bool vfio_listener_skipped_section(MemoryRegionSection *section)
-> +static bool vfio_listener_skipped_section(MemoryRegionSection *section,
-> +                                          bool bypass_ro)
->   {
-> +    if (bypass_ro && section->readonly) {
-> +        return true;
-> +    }
-> +
->       return (!memory_region_is_ram(section->mr) &&
->               !memory_region_is_iommu(section->mr)) ||
->              memory_region_is_protected(section->mr) ||
-> @@ -368,9 +373,9 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
->   }
->   
->   static bool vfio_listener_valid_section(MemoryRegionSection *section,
-> -                                        const char *name)
-> +                                        bool bypass_ro, const char *name)
->   {
-> -    if (vfio_listener_skipped_section(section)) {
-> +    if (vfio_listener_skipped_section(section, bypass_ro)) {
->           trace_vfio_listener_region_skip(name,
->                   section->offset_within_address_space,
->                   section->offset_within_address_space +
-> @@ -497,7 +502,8 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
->       int ret;
->       Error *err = NULL;
->   
-> -    if (!vfio_listener_valid_section(section, "region_add")) {
-> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-> +                                     "region_add")) {
->           return;
->       }
->   
-> @@ -663,7 +669,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
->       int ret;
->       bool try_unmap = true;
->   
-> -    if (!vfio_listener_valid_section(section, "region_del")) {
-> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-> +                                     "region_del")) {
->           return;
->       }
->   
-> @@ -820,7 +827,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
->           container_of(listener, VFIODirtyRangesListener, listener);
->       hwaddr iova, end;
->   
-> -    if (!vfio_listener_valid_section(section, "tracking_update") ||
-> +    if (!vfio_listener_valid_section(section, false, "tracking_update") ||
->           !vfio_get_section_iova_range(dirty->bcontainer, section,
->                                        &iova, &end, NULL)) {
->           return;
-> @@ -1214,7 +1221,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
->       int ret;
->       Error *local_err = NULL;
->   
-> -    if (vfio_listener_skipped_section(section)) {
-> +    if (vfio_listener_skipped_section(section, false)) {
->           return;
->       }
->   
+Mark.
 
 
