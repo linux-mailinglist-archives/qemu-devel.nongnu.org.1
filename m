@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADDDBA26D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 07:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BE3BA26E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 07:19:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v20p3-0004nn-UX; Fri, 26 Sep 2025 01:16:46 -0400
+	id 1v20p5-0004pX-6v; Fri, 26 Sep 2025 01:16:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v20ou-0004lM-5U
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:16:37 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1v20ov-0004mC-Lv
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:16:38 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v20oi-00060O-2g
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:16:35 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-27d69771e3eso15166115ad.3
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 22:16:19 -0700 (PDT)
+ id 1v20om-00060k-AC
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 01:16:37 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-27d69771e3eso15166345ad.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 22:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758863777; x=1759468577; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758863780; x=1759468580; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UmMZ8OavtJPqXFVQhgzCSfktwxUsbE5ixRVmorJ3R6E=;
- b=JVJsKNYs+rb99/2j+xBjBX+BIyrdsm1S//8gaXce3axo6pFjAkarkRHTMKufnecNWH
- 4yjIq/HwMYpMdIR0Mtf4aLIKWvb2se2JaQqkYtfHwoPGeoc4kfx/xqfpErVtKaSYlHbM
- QQlkEbdLP/cl2lqGE/5Uty8GFJQxo7B2uVgefifECehbcPP0xAez5iKBxjDCHEmV1YmH
- VBhYloqHM67FjY1/JpBu0J55kybXRFLdoxbokFSovgfVOQf6GzyCR625SU7loE/DWOAg
- I15KP7n4NX63hzJbbJUYvOTr/c++DMaQZzzBdSJ4PVY77tyztruSLwW16v9MqcoAZy0+
- A/uA==
+ bh=qbcIM6Ru+KfZSzivGndOpNutXXn65xOK6v6HYqWFFQA=;
+ b=RlxoGNi9EkVISz1yxgW+/7q+h2uKZrvIGgLLhx3hkYZxKoHWNRUq2Ht4nnYa/3qpOO
+ HRfqfJFug3niFqBI+lrws4J1VOsAwSAJ42PiVXl61S+95drWrRYWXj7SdRI7opU8y+u5
+ nyESgAPd7dcnfI3qJS2tTuaF/hk72flcxgVF2Z+lso8uGhUz4oQ4DQZig6CFyFtBl3g/
+ CWVTnbIKgLM5fq6+NQ+//9Vuy1oDdo/QeTPJxGW8rY3O46KLPc5w+yXMeQGv7I9gZSHG
+ N4NmJoAmWsxapFVSHBpq1hWFZOhaLOGLM1x6eVmP2qmhTi6UElHaFelrpBL3/WwQUaXS
+ q0hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758863777; x=1759468577;
+ d=1e100.net; s=20230601; t=1758863780; x=1759468580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UmMZ8OavtJPqXFVQhgzCSfktwxUsbE5ixRVmorJ3R6E=;
- b=a2q6iFPBcImoSZG1O2bAml1uZwxHwSPy5BTxrsyaKS9loyhXZr5XZ28vmSXS9f3xnG
- 6ojj5Zrq68a03fs3KsnSDzTbmETdZM1vvfWNXVB9J2cDbqTn8Q9cmpLgEs6LapTjTdMx
- hh1YjJSIlw1TLZ/ro15SjSSOzcSP86/hzXPY++lMpJVKIZ/RMV/zLJu/idbwOuWMKs8Y
- tl5flTAOZ65kLPn1J2iq72grbZzb53Ke7uG3DQ/1quuFqIu0TXVpIzToaOD8oqAu70EJ
- unGoJ6078fQJ5jJvGFRLGJ3qXudhame1TvX1SSLKKW8I6cd2TAOxdxldV/XqcL1Ew5SD
- N1oQ==
-X-Gm-Message-State: AOJu0YxxLgZeNHQ9TEYaDFQ2/Z5YEsjLkf5QBIf1TRyyJ0iP1/Obxvpi
- hiCu9LK3WGhGnCRJGbM3c3IfZXHO+uacJLJYPUI6MwFUGp7ZBUOKE1kwv35gLXUmJ5rrpeVOHVu
- djBRJ
-X-Gm-Gg: ASbGncu59SMN0DhMRQmAlFMfVQWNquXvTPoX1PYef2ERB/Mf0M50SnvbjPsZsstxEL/
- +0pWeK0QWGJDrtS5CuwNImLlZDSdkKWAl6JwqBmJ6zx6KuoN+UG3QIIY+txBiZoYerGqTzgyFmE
- sHC/Oxsm2e8iXdQmBsWC5DtzO4ciTCNx23HymSjDeF6gYM7gkxx9BwO2n6XOC/5q/55wjJEbTUI
- py8tNRxq0t3tWmE/4mWekbnTkW+JxUCFqHKS9j47Y/XDIDu7EWAcOyMGTL5CBxx+1YoX5hYdhrJ
- ER2miuVnD9N+DAupOLfh8rQ2KnHEIzlaA5JLIOD7VsclkO4ADAQiGFr4qKZzI02SxHtFFyzYJdZ
- 6aJPE0p4pZNkHjt5cZoEonnnNUOc/63pV7qA0jWoCOIPCheBx35fX2vXcGA==
-X-Google-Smtp-Source: AGHT+IGz4CBWZEb5vkf9iuGypfPBXgcL/HApohmU/5SkQ2nu/NBWVYVaPmgYZwfxo/lXEN08sDH5tg==
-X-Received: by 2002:a17:902:d60d:b0:269:8edf:67f8 with SMTP id
- d9443c01a7336-27ed4ab6084mr65626315ad.52.1758863777412; 
- Thu, 25 Sep 2025 22:16:17 -0700 (PDT)
+ bh=qbcIM6Ru+KfZSzivGndOpNutXXn65xOK6v6HYqWFFQA=;
+ b=VNl0AWHyJaWALC3Cqm9lbMXF6oEV+9xAgL4z4mjfKh127LcGAJugAtfQwOx3urLn27
+ 4BrIpJcUCLznU7ZxysEfJaoJWWatLzu/t7ED3wfPAKRjJTnMotEKXqFMGuRvvePP2UAf
+ 97M5QWGQzxHTo01N8hAJ9kIsBzrZGubxQN8oprrPIcpJdyYk2aT4gJt+M5vxlJs1gIKK
+ Ii6OrKeBG2ph34sv70tFyuAYTEMbR6exJsR1NhoFo7Y57jf1IasInnvJEY9ApX7V4Cm+
+ /fC/LIFld2qT1zRheMFesrFclHPGZ+QQnNGvsFoWQ1Xv5RGVlstT3SKMwekIvOC2Z3dy
+ G1/A==
+X-Gm-Message-State: AOJu0Yz9ctcifyCprAncobSSbok85814nJ4UvQMMGXgQnea/9a9UwyHL
+ oeIYaofeljbUZ7VX8Za7iGU84MIonRLz+j8NtJDFfK9fpjhQ4eq2jrAM65YLfAvMWajmuZ7cMgk
+ fN80E
+X-Gm-Gg: ASbGncszJb+tpqSsPAvnwrJu33600rlwyEAKvQh+n+iX5xMcPQPtlfcacj0MF9D8Alx
+ DO66L6rhbWXX02R/MKxEx38eQI0JoRfADRLPBchB10cAOIAgounx/yOX/MCWw50KO8ukFUKbYQz
+ +pytUu+wDtc2iNNXSjd+gGsk1ZS895yhChM7iB4RpZorMoYxCTIXLJSagxDQrbiibi++0PRPDRq
+ pIs1YOOXseP/UKY/kRNlNLz8PoaOwvtU+0jKG9FLleAGXvDbLyBzfVwQEFMRUMz3pIlndWRJLAX
+ sNOr3J4Pe9+YilChvgppzi6bZQktmi3HlJ5OLGZt6Ap4KVOg7oI/UPqcKDBdTGdP9mK3bffJans
+ svqgS03094n/PzXw1quMfzIyl0SWu/KOKdlqmb5CGMs+a7Q92ICz4OBz9Zg==
+X-Google-Smtp-Source: AGHT+IE/+rh4i8OLGMJBItC4kYEuKliujmcOCqYvDVB8J8+aqhIAeK/4Jk9/mQ9ydvoYLkPl36oEeA==
+X-Received: by 2002:a17:903:1a2d:b0:25a:24f2:af00 with SMTP id
+ d9443c01a7336-27ed4a06c8fmr64226065ad.12.1758863780084; 
+ Thu, 25 Sep 2025 22:16:20 -0700 (PDT)
 Received: from gromero0.. (189-47-45-49.dsl.telesp.net.br. [189.47.45.49])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-27ed672a51fsm42160085ad.63.2025.09.25.22.16.15
+ d9443c01a7336-27ed672a51fsm42160085ad.63.2025.09.25.22.16.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Sep 2025 22:16:17 -0700 (PDT)
+ Thu, 25 Sep 2025 22:16:19 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
  berrange@redhat.com
 Cc: qemu-arm@nongnu.org, gustavo.romero@linaro.org,
  manos.pitsidianakis@linaro.org, peter.maydell@linaro.org
-Subject: [PATCH v4 4/9] tests/functional: Add GDB class
-Date: Fri, 26 Sep 2025 05:15:37 +0000
-Message-Id: <20250926051542.104432-5-gustavo.romero@linaro.org>
+Subject: [PATCH v4 5/9] tests/functional: replace avocado process with
+ subprocess
+Date: Fri, 26 Sep 2025 05:15:38 +0000
+Message-Id: <20250926051542.104432-6-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250926051542.104432-1-gustavo.romero@linaro.org>
 References: <20250926051542.104432-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,117 +102,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add GDB class, which provides methods to run and capture GDB command
-output. The GDB class is a wrapper around the pygdbmi module and
-interacts with GDB via GDB's machine interface (MI).
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+The standard python subprocess.check_call method is better than
+avocado.utils.process as it doesn't require stuffing all args
+into a single string.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/qemu_test/__init__.py |  1 +
- tests/functional/qemu_test/gdb.py      | 85 ++++++++++++++++++++++++++
- 2 files changed, 86 insertions(+)
- create mode 100644 tests/functional/qemu_test/gdb.py
+ tests/functional/reverse_debugging.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
-index 6e666a059f..60d19891bf 100644
---- a/tests/functional/qemu_test/__init__.py
-+++ b/tests/functional/qemu_test/__init__.py
-@@ -18,3 +18,4 @@
-     skipIfMissingImports, skipIfOperatingSystem, skipLockedMemoryTest
- from .archive import archive_extract
- from .uncompress import uncompress
-+from .gdb import GDB
-diff --git a/tests/functional/qemu_test/gdb.py b/tests/functional/qemu_test/gdb.py
-new file mode 100644
-index 0000000000..15eb5eca18
---- /dev/null
-+++ b/tests/functional/qemu_test/gdb.py
-@@ -0,0 +1,85 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# A simple interface module built around pygdbmi for handling GDB commands.
-+#
-+# Copyright (c) 2025 Linaro Limited
-+#
-+# Author:
-+#  Gustavo Romero <gustavo.romero@linaro.org>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import re
-+from pygdbmi.gdbcontroller import GdbController
-+
-+
-+class GDB:
-+    """Provides methods to run and capture GDB command output."""
-+
-+
-+    def __init__(self, gdb_path, echo=True, suffix='# ', prompt="$ "):
-+        gdb_cmd = [gdb_path, "-q", "--interpreter=mi2"]
-+        self.gdbmi = GdbController(gdb_cmd)
-+        self.echo = echo
-+        self.suffix = suffix
-+        self.prompt = prompt
-+        self.response = None
-+        self.cmd_output = None
-+
-+
-+    def get_payload(self, response, kind):
-+        output = []
-+        for o in response:
-+            # Unpack payloads of the same type.
-+            _type, _, payload, *_ = o.values()
-+            if _type == kind:
-+                output += [payload]
-+
-+        # Some output lines do not end with \n but begin with it,
-+        # so remove the leading \n and merge them with the next line
-+        # that ends with \n.
-+        lines = [line.lstrip('\n') for line in output]
-+        lines = "".join(lines)
-+        lines = lines.splitlines(keepends=True)
-+
-+        return lines
-+
-+
-+    def cli(self, cmd, timeout=4.0):
-+        self.response = self.gdbmi.write(cmd, timeout_sec=timeout)
-+        self.cmd_output = self.get_payload(self.response, "console")
-+        if self.echo:
-+            print(self.suffix + self.prompt + cmd)
-+
-+            if len(self.cmd_output) > 0:
-+                cmd_output = self.suffix.join(self.cmd_output)
-+                print(self.suffix + cmd_output, end="")
-+
-+        return self
-+
-+
-+    def get_addr(self):
-+        address_pattern = r"0x[0-9A-Fa-f]+"
-+        cmd_output = "".join(self.cmd_output) # Concat output lines.
-+
-+        match = re.search(address_pattern, cmd_output)
-+
-+        return int(match[0], 16) if match else None
-+
-+
-+    def get_log(self):
-+        r = self.get_payload(self.response, kind="log")
-+        r = "".join(r)
-+
-+        return r
-+
-+
-+    def get_console(self):
-+        r = "".join(self.cmd_output)
-+
-+        return r
-+
-+
-+    def exit(self):
-+        self.gdbmi.exit()
+diff --git a/tests/functional/reverse_debugging.py b/tests/functional/reverse_debugging.py
+index f9a1d395f1..a7ff47cb90 100644
+--- a/tests/functional/reverse_debugging.py
++++ b/tests/functional/reverse_debugging.py
+@@ -11,6 +11,7 @@
+ # later.  See the COPYING file in the top-level directory.
+ import os
+ import logging
++from subprocess import check_output
+ 
+ from qemu_test import LinuxKernelTest, get_qemu_img
+ from qemu_test.ports import Ports
+@@ -100,7 +101,6 @@ def vm_get_icount(vm):
+ 
+     def reverse_debugging(self, shift=7, args=None):
+         from avocado.utils import gdb
+-        from avocado.utils import process
+ 
+         logger = logging.getLogger('replay')
+ 
+@@ -111,8 +111,9 @@ def reverse_debugging(self, shift=7, args=None):
+         if qemu_img is None:
+             self.skipTest('Could not find "qemu-img", which is required to '
+                           'create the temporary qcow2 image')
+-        cmd = '%s create -f qcow2 %s 128M' % (qemu_img, image_path)
+-        process.run(cmd)
++        out = check_output([qemu_img, 'create', '-f', 'qcow2', image_path, '128M'],
++                           encoding='utf8')
++        logger.info("qemu-img: %s" % out)
+ 
+         replay_path = os.path.join(self.workdir, 'replay.bin')
+ 
 -- 
 2.34.1
 
