@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15F7BA40FF
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C3EBA42ED
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:29:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v298T-0007AM-Fp; Fri, 26 Sep 2025 10:09:21 -0400
+	id 1v298O-00079K-Bc; Fri, 26 Sep 2025 10:09:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v298G-00079I-SJ
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:09 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1v298F-00078a-Kd
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:07 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v2984-0005cz-5O
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:08 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3f0308469a4so1433830f8f.0
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:08:54 -0700 (PDT)
+ id 1v2986-0005d0-2t
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:09:05 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b85so2062968f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 07:08:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758895729; x=1759500529; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758895730; x=1759500530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LteooIRckejsKoiNLalnbU5BZGqP5YHRgNXf4dsk110=;
- b=mtLJGN1K5YZ80zbZ+WUW8oVTo+blpH+o2180/LUFq/1oPL23tm2sMWgtOSnTP3Ey3n
- qrF4mzZnOpXeyPFTDLzKbkbVoKu5oP5i/HH/2djf2ImNtuNskbQnLAGaIynopoewjbmS
- ejTAERHU2RlgGlUtz/Sk9KCySbkHcJ7Sx9RzOATrtyAgTWMZYlr25u8RI+2fBvTS/cVx
- d9bIXd8ycHZ104DiB046cRLvnP7BB0EiZfJ7InSD6/WDs99Jze6t9qKlrWVm4DatOwW3
- zQxtI7AYLvxz0TAa3j/wP9FCRkyW8Cd7jfC1Pdh3mKJBCTgcBW0sizT05/oJPSS5wjDR
- ICBA==
+ :reply-to; bh=eDFX7y4atdN+lmLu8Si4CvEkIGbpJPZtNB7piylWeSY=;
+ b=ObcBZ9yUjUlKhEzGjNNdlUlF6BHlfkOjQsCA97VPMybnBOeH5P+pI46y8UIamfMrV7
+ vjLZy+T6H2sQLVj6qiFtFdivPge5X7SYPSMvfBLnYG44Y676R7C9IL+9ejk7hntL5FXm
+ 4M1SPLSZRawJhpPEleHl02ym51FUZck+GpEOXnmoVxJr4LCcdOA0warUe6XQO+Sj6Pdf
+ Fu/WMdCv57TDtsO+prU28XpO1tFwxro/RqQWJCPp7v1ROCAxqlZmRBHsg1Gl+epCx4em
+ 2AUfcfNz8qtrOg+zwhEnsrZUCETAHrkfjMfQB1vtqQWnHqPX0w7qaMOGfzp6tW1Vc0wp
+ nSsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758895729; x=1759500529;
+ d=1e100.net; s=20230601; t=1758895730; x=1759500530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LteooIRckejsKoiNLalnbU5BZGqP5YHRgNXf4dsk110=;
- b=ZN7l5Gb8qGjX601ygOAMABiNUUsa1Q7D/uAlp+JleTp5fcZqOhifsjcg+FUxmkyHmH
- 9sAsROl1lpXXkDyOrVVomBPMTBW2OPyz2NP1tYpFRkLDuqG5hFQms0vwU+3C8Ujl3ls/
- I3TasDhUCWIy19xxsQl/xVuNUn/82HtPvr1V3P3s/u1YgygpZxFTJ5t8OAt/rarBjI+w
- t0kvBsCdc3StZy3cYOVOaQJHPaxCI+mGDg1coDcjsNh6CChMPKwLkAtOY/ITOv6ZYr6X
- YsD1atldwjsQXW3yONS4M+o+Y4lQQMC8J/gSFMEOAxgKNlfIVkHsD+MCmSDULYSdMuZd
- qV7Q==
-X-Gm-Message-State: AOJu0Yzn3QoXl74AT1xNrco1ppRgKSxfUEnuvgullxGVuBuJqRJ3VYhA
- i1HFg2lUt6vq4nsJkoLJoqIC9KHspwqhTjem61mbcJY4abE8juZ3GjtQtaPhTnjbSbsxCUGjpcu
- 6IESK
-X-Gm-Gg: ASbGnctXhIe8tWnmBA4sxV81evgrEEuDqMkqHlBN/eooJyRSlcMZnmDiU6HshWT3h4U
- AH6t9rBIW9KqSh1RRUn2uH0SiY0rDqs8iMn4AQGBqfokkxSNclAt9eSBDPXAwilkPnmNoXBkYwV
- mewWbcn17tfTAwiqM94RBDRRv7r5jG2c+YnGVEa08hDoossSe92HtvBHJQda8+U9OMBhnyNnt5Q
- BJCcUqAMvSsmKwYseMtfJP8OfD/nd8xRIAVYVaDdTF3sMpGR4jYbB3dNeJ0wEgsuhvD2wy6Qxv9
- uyXdkOCVqpSvn8+OOhqMd96Sg+MYGohAJv8sVlPvvA250s4zPxp9XqCZntSS3kdvisso8Nl90WN
- olY98mS1toYRSoznJ+e5mcqsAu3vxXtHXAeorfRw=
-X-Google-Smtp-Source: AGHT+IFiRiSDZ2YRmxIIxIX0jH+HDHQBa2F+T+f0CmG9OBsv7KjshEUKJKlWdRCH82hkfwIWbtfz7Q==
-X-Received: by 2002:a05:6000:4282:b0:3dd:981d:43a5 with SMTP id
- ffacd0b85a97d-40e4b294eacmr6139675f8f.47.1758895728770; 
- Fri, 26 Sep 2025 07:08:48 -0700 (PDT)
+ bh=eDFX7y4atdN+lmLu8Si4CvEkIGbpJPZtNB7piylWeSY=;
+ b=geZf7ZZ0mLA1g/cBNSoqlePghgx7iYZRgbeAzLjKnrhoL48ZnBOXUMu5NpmCgCE+f5
+ XVaTimLLnglETaNYUxjpu0fn/1cp1jyUOfVQ21ShW4Fr/bvao5yWtGhH1pjs2GSyRlH5
+ yVQMBT5weWXHgu3A/GvWw4JnHQc2Q43DviFJWFd2BnMYZQTMsQdT4z1DCAHcYXa8eT62
+ 2Ur2Av64+gafxgL+Z20xPWQr0aeg9RDTuCj1S5NGIGxFaTYHj0CM0VtQKjpjejal13TN
+ B6s3Y6p4xkrneqHAOH4T7xphmmuH+Ufbf58hqQkOo0D5RBDSsPnX4/pMNS0wcaIyjoZl
+ UPFQ==
+X-Gm-Message-State: AOJu0YxZK5OEWLklZYBe6XU1KVdTkY2HELzHmYrGbtwsJLU31jMH7lWW
+ HPqWXzQU6fsOiCVwwST54NcrLvOxUC2xS1O+AKHNPZvsJEFvk2J4mAYyJf9y0odEjipgpYF0STd
+ /pLqc
+X-Gm-Gg: ASbGncubogUeVg0xZJ2i9S5XV4yL9mOL9FsxoO7kOe0uS/77AhqLhpkO77Aw7ca4f1y
+ Gh3oarsMGpLHRzDKg+AUOkScbTBKPp9T3JKIQwKfFLlICqaX78e9rkwg+XjDxP8WP3Fq6H/cLhB
+ mAFiv8oahiidCQix649N7ExSm6PEznLZDEKSHMmmvVj9N0Xn+tITMOKcEmqbJgqqBmST0FMeHjj
+ 6yNn8lF28sTzOFhFdhrsQm0k3fMMQtUPTtjjHNIyeSHK6soNb7GcWYTIBbKr3BN+pFs5b/gw1VB
+ 23vwptHrI+lMY/RFusRIq43CcO7KxTvlEE8paaTgTFX12VTL3t1GI8WttaQCBLZkKOokEiHUl9+
+ IgsDRvRFNLzlSIaKRcMh+Ucxy5Lu9xQIK3l6lBPg=
+X-Google-Smtp-Source: AGHT+IFlTbUdJ8ApgOD2m0UMPYCRAh/iL3YXXivP5feAPaZuKn2mHgpek8ysUQKXtZFRIGzKyLAOKA==
+X-Received: by 2002:a05:6000:26ce:b0:3ee:141a:ede5 with SMTP id
+ ffacd0b85a97d-40e4a42f3aemr6923075f8f.57.1758895729897; 
+ Fri, 26 Sep 2025 07:08:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.08.47
+ ffacd0b85a97d-410f2007372sm6338315f8f.16.2025.09.26.07.08.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Sep 2025 07:08:47 -0700 (PDT)
+ Fri, 26 Sep 2025 07:08:49 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/44] net/passt: Fix build failure due to missing GIO
- dependency
-Date: Fri, 26 Sep 2025 15:08:02 +0100
-Message-ID: <20250926140844.1493020-3-peter.maydell@linaro.org>
+Subject: [PULL 03/44] target/arm: Introduce KVMID_AA64_SYS_REG64
+Date: Fri, 26 Sep 2025 15:08:03 +0100
+Message-ID: <20250926140844.1493020-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250926140844.1493020-1-peter.maydell@linaro.org>
 References: <20250926140844.1493020-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,56 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The passt networking backend uses functions from the GIO library,
-such as g_subprocess_launcher_new(), to manage its daemon process.
-So, building with passt enabled requires GIO to be available.
+Allow us to create kvm ids directly, rather than going
+through ENCODE_AA64_CP_REG + cpreg_to_kvm_id.
 
-If we enable passt and disable gio the build fails during linkage with
-undefined reference errors:
-
-  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `net_passt_start_daemon':
-  net/passt.c:250: undefined reference to `g_subprocess_launcher_new'
-  /usr/bin/ld: net/passt.c:251: undefined reference to `g_subprocess_launcher_take_fd'
-  /usr/bin/ld: net/passt.c:253: undefined reference to `g_subprocess_launcher_spawnv'
-  /usr/bin/ld: net/passt.c:256: undefined reference to `g_object_unref'
-  /usr/bin/ld: net/passt.c:263: undefined reference to `g_subprocess_wait'
-  /usr/bin/ld: net/passt.c:268: undefined reference to `g_subprocess_get_if_exited'
-  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `glib_autoptr_clear_GSubprocess':
-  /usr/include/glib-2.0/gio/gio-autocleanups.h:132: undefined reference to `g_object_unref'
-  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `net_passt_start_daemon':
-  net/passt.c:269: undefined reference to `g_subprocess_get_exit_status'
-
-Fix this by adding an explicit weson dependency on GIO for the passt
-option.
-The existing dependency on linux is kept because passt is only available
-on this OS.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 854ee02b222 ("net: Add passt network backend")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3121
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/kvm-consts.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index 72da97829ab..bdfb6214e6f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1280,6 +1280,7 @@ endif
+diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
+index c44d23dbe79..fdb305eea1a 100644
+--- a/target/arm/kvm-consts.h
++++ b/target/arm/kvm-consts.h
+@@ -180,4 +180,15 @@ MISMATCH_CHECK(CP_REG_ARM64_SYSREG_OP2_SHIFT, KVM_REG_ARM64_SYSREG_OP2_SHIFT);
  
- enable_passt = get_option('passt') \
-   .require(host_os == 'linux', error_message: 'passt is supported only on Linux') \
-+  .require(gio.found(), error_message: 'passt requires gio') \
-   .allowed()
+ #undef MISMATCH_CHECK
  
- vde = not_found
++#define KVMID_AA64_SYS_REG_(op0, op1, crn, crm, op2)    \
++    (CP_REG_AA64_MASK | CP_REG_ARM64_SYSREG |           \
++     ((op0) << CP_REG_ARM64_SYSREG_OP0_SHIFT) |         \
++     ((op1) << CP_REG_ARM64_SYSREG_OP1_SHIFT) |         \
++     ((crn) << CP_REG_ARM64_SYSREG_CRN_SHIFT) |         \
++     ((crm) << CP_REG_ARM64_SYSREG_CRM_SHIFT) |         \
++     ((op2) << CP_REG_ARM64_SYSREG_OP2_SHIFT))
++
++#define KVMID_AA64_SYS_REG64(op0, op1, crn, crm, op2)   \
++    (KVMID_AA64_SYS_REG_(op0, op1, crn, crm, op2) | CP_REG_SIZE_U64)
++
+ #endif
 -- 
 2.43.0
 
