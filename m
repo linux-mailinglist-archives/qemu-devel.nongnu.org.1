@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3692BA3DBA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CACBA3DFA
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 15:25:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v28LG-00083u-SG; Fri, 26 Sep 2025 09:18:30 -0400
+	id 1v28LD-00081g-4W; Fri, 26 Sep 2025 09:18:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v28LF-00083h-E5
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:29 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1v28L9-00080x-LB
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:23 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v28Kq-00041v-SO
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:29 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-46e2e363118so21371745e9.0
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 06:17:50 -0700 (PDT)
+ id 1v28Ks-000429-Sy
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 09:18:23 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-46e3af7889fso6958855e9.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 06:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758892667; x=1759497467; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9MrBP/WehAnzW20DTxcVONaqDOfwmmdiFwVtzOXuhTw=;
- b=Bt2KjfDi8wi9J4gbA2tVdr8hJjgGm8hIKc16j3qwqT5J9gyEt7kpJlKhMMgISlnZFy
- 0NtYOV7i7TzZpZZfTdR6uoaAThxKfQwxjhHap0EsrDz3B5mL76YhpbNrk1BIJVFUKTb6
- W8JYmaYDvlWpojMPPi5HuMJmEfnn74mStTaEX6PMm59YyX+dEfF3WIJVMpB8GE+DhVGr
- KjbdgilB7x3mzcZuD1zTmJ1k+BWodqjV/JVc+VlLhcWC4PZokgb7cfg04JwsAMGwjb2V
- RpRum2pRNeoUuI6KyBxojQ67KMcmwqGi7fheUdQ8jrkxyNtxUuiOOYLjMQisD8m5sLKY
- mzdg==
+ d=linaro.org; s=google; t=1758892669; x=1759497469; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M/bRTlt+mHsgTlsr9RW/nD8staDPYyKjxTlCJTfUZE8=;
+ b=HJutUhhXkahZKxenyFoPfcb5b8UKtf3wNjIPMOCLf0+Ufcbbmu5zpbNjo1S36fnOkV
+ pzpXGxEgefsGD932cCGVXjxaQbLeVIfW//ISMZQLt01xd1RHep+g08J7IH4ZVCiPhGtz
+ wGTFGUFsrXwkdxUIQVoXtduZYwm9ZjccKxLTk+K8Tmul1czulwC6K2k8SnlneKlA5SYF
+ /CouVrd1ZNYCGpeMt+wY+fStS9jPY3ECW2qqHzpkozmyoeC7pJ4u3VzsFTRqTxqRI34K
+ uiKRO/cpb1yto79l4/tp/tG0eE5OSJ80VOofwcUl6QsKrExBMBSempXl4nrfGBpGN9w7
+ K4wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758892667; x=1759497467;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9MrBP/WehAnzW20DTxcVONaqDOfwmmdiFwVtzOXuhTw=;
- b=ockmfC1eGX9J8XzoPfjmmGNxCUGWgib/WxjxEdWTNoKxccxbeIjvwFuUWJB8NVwj9T
- I50cx5xe0OV0xn/Gp3rRTtO/UZ3GClrGxIFrl2N0KYMBxSHzygc1u3MSmRWaZQxPzFfJ
- 2ng6VlNZcAt8EqZo3S4dYcIwan5svTe4Un52L0K4fxW9oaCZSJzXSFSJ4gHa5hi3lsdx
- 9vdjcOxSF/oWy4mAGmwWMq375CflJ4gpvIbGjZzTn0rpzdGROJLlVyQF7Xf1gUYx8Ak3
- h83FRkOsYMUnJHUrXvrnOTZ/R9EIfqktnd1zR7VHC3ZjBYmnVU2DVWBZF9ffycRlg2/X
- 8Glg==
-X-Gm-Message-State: AOJu0YwZ36OXLaTwLBWH2gLCT0J4x6D63zVJFQoMWBQWCrZ0Nu5Mwamp
- cjGoDs3JnLP+wT8uBaCOhl4kX7NRW8WJ6or2MpfjDDu4j4tpRo79MGmq3UCMBOxY2VGGAG98MXg
- stpK/6Js=
-X-Gm-Gg: ASbGncuNhC3khRL0n/5xkn6gE144rvM+PZyHSfJ1P2FHd9/xYzbm7/oHaZwBXf18thz
- nsorHJUtGHjdgQYnWY6JlhzwMY+i7EFhdLMEqbeEKJ/4OdAjlPB6vdRPfKWb31RRto7VF4dzbz0
- hmJyuF/BhGrH/j7hW7agsfG+posjgHeqaya4PUzkz2UJ4btdCKaW2DcGKUhYQqr+9uUaWPlTnMl
- lv+cQAHrSFkozgABg2QfYeNT42/it/IWa3Qo+7Ml5XAf/welG9i/4D03jjBEMEbRnBX+5Z5mVJJ
- Ujoo5AlidyXwgaYd0s4B1nDp3dt04Tvk/29el7VQF+w8joGzyTozJllBdOY+MID7eY3BFOsA9nG
- ffP9spnc8YzYC2CYDng5gbbI=
-X-Google-Smtp-Source: AGHT+IGO2jS7TI8cwIjByobvdlhRxL5k/YcVdqodXZ1MSond6XZlVvzq+1ZjLpjT02xTFojsKvSV3w==
-X-Received: by 2002:a05:600c:444d:b0:46e:2638:289d with SMTP id
- 5b1f17b1804b1-46e3299f6a9mr79920355e9.5.1758892666516; 
- Fri, 26 Sep 2025 06:17:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758892669; x=1759497469;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M/bRTlt+mHsgTlsr9RW/nD8staDPYyKjxTlCJTfUZE8=;
+ b=kdpipfn7LwhuBAsa6MHOQDbVF3qx0NZ99aR7hkhAhWyIxFPAJ+LwmVC+42DYkED+ox
+ gwT6exrehfTJ0fp/8Ph6w0RPGd6sq9hddrnWGyQgJsSsN+3FX/DbKtsfHcONfIjci1h7
+ oTGtjz2E5Jst/JQPMQMR3fXI1ZHxpjFFGYsl8vGQe9VCYeenaNxSP74nFkGdgDwJvbeH
+ 8kUvByji+EsEzd21JZ9nhWGqWKXrZ8hwHzcmszQxybxhSC57f+u7Bn3RaeDJnM18ZtxM
+ TUWHtShPzfTPzC8UpVVCPvgPey0d/SUYRG3hSn3m1GNBTRqgf3scBO3R0NeC4ZMfUBCn
+ IRsg==
+X-Gm-Message-State: AOJu0Yz136YE/kuZwWwtT0j3/5/KdKZt0yRKvDdJNgPs6fA+7HCmU8Vy
+ sWSZPXrgT8B7Dqvo+7Bm3EqvFaOw4h8w25oVoPW5GRgSA4xNdtw/Y6YVc5ht8MMxg+E=
+X-Gm-Gg: ASbGncskxRS4JmbKZamwOvpxfECUhqbGnbGXowofXOpJ4LhblCYdhhXG7K5J/RJ5u9T
+ a9iCT6Ouv7MbA8jnakHubKE0sU/lWCsVUjgPmPaRUW5ioIVwzXIV7wTdOyZ0ZA43XFeC9QOJ7xJ
+ onKlimtTwm/7ByIxrq0quL+e0V5iXPAsuyUa+aSjshcWR8PqfoLdV8wSU4pqRvy8ErgZJfFskQc
+ NMgLi4Ji3PKvoaBKkTRXouFMG7XFEMLYEQOPkB4Icv3e7k/+54dcG5fgikh2t7X8YxC+LYMgE9y
+ 5gU5QKwNAbk0y6edOEJ3d+502/O6wzctrozWsqRFwuq+05gMJwkQifBobA50/UsFxdF7a5XSKIm
+ dlv8XJQYHlgM+JkofLIkt8mUCjGAbbxRU5A==
+X-Google-Smtp-Source: AGHT+IEoJsuvq3T1s/LuLL9mpKiE3/d0FvBOstG3kJOabwc2WvsVIPouUlA1QrCjkcjbKB0ZjXT9xw==
+X-Received: by 2002:a05:600c:3551:b0:45d:f81d:eae7 with SMTP id
+ 5b1f17b1804b1-46e32a13207mr69480315e9.28.1758892668509; 
+ Fri, 26 Sep 2025 06:17:48 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc5603365sm7353409f8f.37.2025.09.26.06.17.45
+ 5b1f17b1804b1-46e33bf701dsm73403215e9.24.2025.09.26.06.17.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 Sep 2025 06:17:45 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id ACE135F7C3;
+ by draig.lan (Postfix) with ESMTP id C19CD5F7D9;
  Fri, 26 Sep 2025 14:17:44 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/24] maintainer updates (scripts, semihosting, plugins)
-Date: Fri, 26 Sep 2025 14:17:19 +0100
-Message-ID: <20250926131744.432185-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 01/24] scripts/ci: add gitlab-failure-analysis script
+Date: Fri, 26 Sep 2025 14:17:20 +0100
+Message-ID: <20250926131744.432185-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250926131744.432185-1-alex.bennee@linaro.org>
+References: <20250926131744.432185-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,88 +102,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 95b9e0d2ade5d633fd13ffba96a54e87c65baf39:
+This is a script designed to collect data from multiple pipelines and
+analyse the failure modes they have. By default it will probe the last
+3 failed jobs on the staging branch. However this can all be
+controlled by the CLI:
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-09-24 12:04:18 -0700)
+  ./scripts/ci/gitlab-failure-analysis --count 2 --branch=testing/next --id 39915562 --status=
+  running pipeline 2028486060, total jobs 125, skipped 5, failed 0,  39742 tests, 0 failed tests
+  success pipeline 2015018135, total jobs 125, skipped 5, failed 0,  49219 tests, 0 failed tests
 
-are available in the Git repository at:
+You can also skip failing jobs and just dump the tests:
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-10.2-maintainer-260925-1
+  ./scripts/ci/gitlab-failure-analysis --branch= --id 39915562 --status= --skip-jobs --pipeline 1946202491 1919542960
+  failed pipeline 1946202491, total jobs 127, skipped 5, failed 26,  38742 tests, 278 skipped tests, 2 failed tests
+    Failed test qemu.qemu:qtest+qtest-s390x / qtest-s390x/boot-serial-test, check-system-opensuse, 1 /s390x/boot-serial/s390-ccw-virtio - FATAL-ERROR: Failed to find expected string. Please check '/tmp/qtest-boot-serial-sW77EA3'
+    Failed test qemu.qemu:qtest+qtest-aarch64 / qtest-aarch64/arm-cpu-features, check-system-opensuse, 1 /aarch64/arm/query-cpu-model-expansion - ERROR:../tests/qtest/arm-cpu-features.c:459:test_query_cpu_model_expansion: assertion failed (_error == "The CPU type 'host' requires KVM"): ("The CPU type 'host' requires hardware accelerator" == "The CPU type 'host' requires KVM")
+  failed pipeline 1919542960, total jobs 127, skipped 5, failed 2,  48753 tests, 441 skipped tests, 1 failed tests
+    Failed test qemu.qemu:unit / test-aio, msys2-64bit, 12 /aio/timer/schedule - ERROR:../tests/unit/test-aio.c:413:test_timer_schedule: assertion failed: (aio_poll(ctx, true))
 
-for you to fetch changes up to 16b10fbf8bdb71ae20c7f74ab19c78d07c013ac7:
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250922093711.2768983-3-alex.bennee@linaro.org>
 
-  contrib/plugins/uftrace: add documentation (2025-09-26 10:07:54 +0100)
-
-----------------------------------------------------------------
-September maintainer updates (scripts, semihosting, plugins)
-
- - new gitlab-failure-analysis script
- - tweak checkpath to ignore license in removed lines
- - refactor semihosting to build once
- - add explicit assert to execlog for coverity
- - new uftrace plugin
-
-----------------------------------------------------------------
-Alex Bennée (1):
-      scripts/ci: add gitlab-failure-analysis script
-
-Nabih Estefan (1):
-      checkpatch: Ignore removed lines in license check
-
-Peter Maydell (1):
-      contrib/plugins/execlog: Explicitly check for qemu_plugin_read_register() failure
-
-Pierrick Bouvier (21):
-      semihosting/syscalls: compile once in system and per target for user mode
-      semihosting/syscalls: replace uint64_t with vaddr where appropriate
-      semihosting/guestfd: compile once for system/user
-      semihosting/arm-compat-semi: change common_semi_sys_exit_extended
-      target/riscv/common-semi-target: remove sizeof(target_ulong)
-      target/{arm, riscv}/common-semi-target: eradicate target_ulong
-      include/semihosting/common-semi: extract common_semi API
-      semihosting/arm-compat-semi: eradicate sizeof(target_ulong)
-      semihosting/arm-compat-semi: replace target_ulong
-      semihosting/arm-compat-semi: eradicate target_long
-      semihosting/arm-compat-semi: remove dependency on cpu.h
-      semihosting/arm-compat-semi: compile once in system and per target for user mode
-      contrib/plugins/uftrace: skeleton file
-      contrib/plugins/uftrace: define cpu operations and implement aarch64
-      contrib/plugins/uftrace: track callstack
-      contrib/plugins/uftrace: implement tracing
-      contrib/plugins/uftrace: implement privilege level tracing
-      contrib/plugins/uftrace: generate additional files for uftrace
-      contrib/plugins/uftrace: implement x64 support
-      contrib/plugins/uftrace_symbols.py
-      contrib/plugins/uftrace: add documentation
-
- docs/about/emulation.rst                           | 199 +++++
- include/semihosting/common-semi.h                  |   6 +
- include/semihosting/guestfd.h                      |   7 -
- include/semihosting/semihost.h                     |   2 +
- include/semihosting/syscalls.h                     |  30 +-
- contrib/plugins/execlog.c                          |   1 +
- contrib/plugins/uftrace.c                          | 878 +++++++++++++++++++++
- semihosting/arm-compat-semi-stub.c                 |  19 +
- semihosting/arm-compat-semi.c                      |  63 +-
- semihosting/guestfd.c                              |  26 +-
- semihosting/syscalls.c                             | 109 ++-
- .../{common-semi-target.h => common-semi-target.c} |  22 +-
- .../{common-semi-target.h => common-semi-target.c} |  23 +-
- contrib/plugins/meson.build                        |   3 +-
- contrib/plugins/uftrace_symbols.py                 | 152 ++++
- scripts/checkpatch.pl                              |   3 +-
- scripts/ci/gitlab-failure-analysis                 | 117 +++
- semihosting/meson.build                            |  18 +-
- target/arm/meson.build                             |   4 +
- target/riscv/meson.build                           |   4 +
- 20 files changed, 1538 insertions(+), 148 deletions(-)
- create mode 100644 contrib/plugins/uftrace.c
- create mode 100644 semihosting/arm-compat-semi-stub.c
- rename target/arm/{common-semi-target.h => common-semi-target.c} (59%)
- rename target/riscv/{common-semi-target.h => common-semi-target.c} (53%)
- create mode 100755 contrib/plugins/uftrace_symbols.py
- create mode 100755 scripts/ci/gitlab-failure-analysis
-
+diff --git a/scripts/ci/gitlab-failure-analysis b/scripts/ci/gitlab-failure-analysis
+new file mode 100755
+index 00000000000..906725be973
+--- /dev/null
++++ b/scripts/ci/gitlab-failure-analysis
+@@ -0,0 +1,117 @@
++#!/usr/bin/env python3
++#
++# A script to analyse failures in the gitlab pipelines. It requires an
++# API key from gitlab with the following permissions:
++#  - api
++#  - read_repository
++#  - read_user
++#
++
++import argparse
++import gitlab
++import os
++
++#
++# Arguments
++#
++class NoneForEmptyStringAction(argparse.Action):
++    def __call__(self, parser, namespace, value, option_string=None):
++        if value == '':
++            setattr(namespace, self.dest, None)
++        else:
++            setattr(namespace, self.dest, value)
++
++
++parser = argparse.ArgumentParser(description="Analyse failed GitLab CI runs.")
++
++parser.add_argument("--gitlab",
++                    default="https://gitlab.com",
++                    help="GitLab instance URL (default: https://gitlab.com).")
++parser.add_argument("--id", default=11167699,
++                    type=int,
++                    help="GitLab project id (default: 11167699 for qemu-project/qemu)")
++parser.add_argument("--token",
++                    default=os.getenv("GITLAB_TOKEN"),
++                    help="Your personal access token with 'api' scope.")
++parser.add_argument("--branch",
++                    type=str,
++                    default="staging",
++                    action=NoneForEmptyStringAction,
++                    help="The name of the branch (default: 'staging')")
++parser.add_argument("--status",
++                    type=str,
++                    action=NoneForEmptyStringAction,
++                    default="failed",
++                    help="Filter by branch status (default: 'failed')")
++parser.add_argument("--count", type=int,
++                    default=3,
++                    help="The number of failed runs to fetch.")
++parser.add_argument("--skip-jobs",
++                    default=False,
++                    action='store_true',
++                    help="Skip dumping the job info")
++parser.add_argument("--pipeline", type=int,
++                    nargs="+",
++                    default=None,
++                    help="Explicit pipeline ID(s) to fetch.")
++
++
++if __name__ == "__main__":
++    args = parser.parse_args()
++
++    gl = gitlab.Gitlab(url=args.gitlab, private_token=args.token)
++    project = gl.projects.get(args.id)
++
++
++    pipelines_to_process = []
++
++    # Use explicit pipeline IDs if provided, otherwise fetch a list
++    if args.pipeline:
++        args.count = len(args.pipeline)
++        for p_id in args.pipeline:
++            pipelines_to_process.append(project.pipelines.get(p_id))
++    else:
++        # Use an iterator to fetch the pipelines
++        pipe_iter = project.pipelines.list(iterator=True,
++                                           status=args.status,
++                                           ref=args.branch)
++        # Check each failed pipeline
++        pipelines_to_process = [next(pipe_iter) for _ in range(args.count)]
++
++    # Check each pipeline
++    for p in pipelines_to_process:
++
++        jobs = p.jobs.list(get_all=True)
++        failed_jobs = [j for j in jobs if j.status == "failed"]
++        skipped_jobs = [j for j in jobs if j.status == "skipped"]
++        manual_jobs = [j for j in jobs if j.status == "manual"]
++
++        trs = p.test_report_summary.get()
++        total = trs.total["count"]
++        skipped = trs.total["skipped"]
++        failed = trs.total["failed"]
++
++        print(f"{p.status} pipeline {p.id}, total jobs {len(jobs)}, "
++              f"skipped {len(skipped_jobs)}, "
++              f"failed {len(failed_jobs)}, ",
++              f"{total} tests, "
++              f"{skipped} skipped tests, "
++              f"{failed} failed tests")
++
++        if not args.skip_jobs:
++            for j in failed_jobs:
++                print(f"  Failed job {j.id}, {j.name}, {j.web_url}")
++
++        # It seems we can only extract failing tests from the full
++        # test report, maybe there is some way to filter it.
++
++        if failed > 0:
++            ftr = p.test_report.get()
++            failed_suites = [s for s in ftr.test_suites if
++                             s["failed_count"] > 0]
++            for fs in failed_suites:
++                name = fs["name"]
++                tests = fs["test_cases"]
++                failed_tests = [t for t in tests if t["status"] == 'failed']
++                for t in failed_tests:
++                    print(f"  Failed test {t["classname"]}, {name}, {t["name"]}")
 -- 
 2.47.3
 
