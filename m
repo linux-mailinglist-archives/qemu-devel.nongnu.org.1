@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4001CBA42C6
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BFCBA4223
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 16:23:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2932-0006eC-9r; Fri, 26 Sep 2025 10:03:44 -0400
+	id 1v2934-0006cd-Ji; Fri, 26 Sep 2025 10:03:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v292v-0006Wt-P1
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:39 -0400
+ id 1v292t-0006Tc-PT
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v292l-0004mW-LL
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:31 -0400
+ id 1v292j-0004mf-6K
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 10:03:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758895399;
+ s=mimecast20190719; t=1758895400;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4IWeST0K4wA1sxKfivRbQ89bYlDWZwGSw/0nanXkI7k=;
- b=R/0sRYtnlv/l+Z5rAe5x9LcZZr9EpYTpZ/CTsBhwzgZ6DfHKvVG0oTb2m6ITsuvSKkdq9Y
- LX3fPa4kU+Slhdk5GHKukHdQBYFGNDdydDv9ZiTKIW1bfJxr03hwP8AgxndwkSY6TRuFx+
- mN9zOOS68/ZMzGIb9rFjTboF41CYnYU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ON1oCROzXKOqVCyq7lvjKP0qQnRGrVbdScAqq/11Wc0=;
+ b=SsiN7j0Be2EMnor7UQoiG6sSjUWFryZ/R6ODBWZEloXTKyYCDFcOu4UgYDgFzteyqqQqbL
+ dTFOReV6oKWFNjk8IDJBkeV0FcWSJGXKBv+Vs87IIw5AfRwJ0j73e8uyE24Aj0CBw0A2MA
+ fU4xfnlH4MJ+DYPioIk9ZTvkYKYPWbo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-Y6eL0tnQMAK_RSoqs_Ttgw-1; Fri,
- 26 Sep 2025 10:03:16 -0400
-X-MC-Unique: Y6eL0tnQMAK_RSoqs_Ttgw-1
-X-Mimecast-MFC-AGG-ID: Y6eL0tnQMAK_RSoqs_Ttgw_1758895394
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-319-3GRB-QJHN9mwOeraGj6qqw-1; Fri,
+ 26 Sep 2025 10:03:17 -0400
+X-MC-Unique: 3GRB-QJHN9mwOeraGj6qqw-1
+X-Mimecast-MFC-AGG-ID: 3GRB-QJHN9mwOeraGj6qqw_1758895396
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C074D1800621; Fri, 26 Sep 2025 14:03:07 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 07EA7180048E; Fri, 26 Sep 2025 14:03:16 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.175])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9CE82195419F; Fri, 26 Sep 2025 14:03:01 +0000 (UTC)
+ id 0E06F1956095; Fri, 26 Sep 2025 14:03:08 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,10 +53,10 @@ Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 14/32] hw: mark x86, s390, ppc,
- arm versioned machine types as secure
-Date: Fri, 26 Sep 2025 15:01:25 +0100
-Message-ID: <20250926140144.1998694-15-berrange@redhat.com>
+Subject: [PATCH v2 15/32] hw: declare Xen & microvm machines as secure,
+ isapc as insecure
+Date: Fri, 26 Sep 2025 15:01:26 +0100
+Message-ID: <20250926140144.1998694-16-berrange@redhat.com>
 In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com>
 References: <20250926140144.1998694-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -65,14 +65,14 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,67 +88,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The versioned machine types are typically present for use in
-virtualization use cases and can be expected to provide a security
-barrier. The only exceptions are the m68k versioned machine types
-which are only used with TCG.
+The Xen and microvm machines are used in virtualization use cases,
+while isapc is only for emulation.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/arm/virt.c              | 1 +
- hw/ppc/spapr.c             | 1 +
- hw/s390x/s390-virtio-ccw.c | 1 +
- include/hw/i386/pc.h       | 1 +
- 4 files changed, 4 insertions(+)
+ hw/arm/xen-pvh.c           | 1 +
+ hw/i386/isapc.c            | 4 ++--
+ hw/i386/microvm.c          | 1 +
+ hw/i386/pc_piix.c          | 8 ++++----
+ hw/i386/xen/xen-pvh.c      | 1 +
+ hw/i386/xen/xen_pvdevice.c | 1 +
+ hw/xen/xen-pvh-common.c    | 1 +
+ hw/xenpv/xen_machine_pv.c  | 2 +-
+ 8 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 02209fadcf..c25ef1c306 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -127,6 +127,7 @@ static void arm_virt_compat_set(MachineClass *mc)
-         .name = MACHINE_VER_TYPE_NAME("virt", __VA_ARGS__), \
-         .parent = TYPE_VIRT_MACHINE, \
-         .class_init = MACHINE_VER_SYM(class_init, virt, __VA_ARGS__), \
-+        .secure = true, \
-     }; \
-     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
-     { \
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index eb22333404..3581f581a4 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4748,6 +4748,7 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
-         .name = MACHINE_VER_TYPE_NAME("pseries", __VA_ARGS__),       \
-         .parent = TYPE_SPAPR_MACHINE,                                \
-         .class_init = MACHINE_VER_SYM(class_init, spapr, __VA_ARGS__), \
-+        .secure = true,                                              \
-     };                                                               \
-     static void MACHINE_VER_SYM(register, spapr, __VA_ARGS__)(void)  \
-     {                                                                \
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index d0c6e80cb0..54bc4e1b74 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -896,6 +896,7 @@ static const TypeInfo ccw_machine_info = {
-         .name = MACHINE_VER_TYPE_NAME("s390-ccw-virtio", __VA_ARGS__),        \
-         .parent = TYPE_S390_CCW_MACHINE,                                      \
-         .class_init = MACHINE_VER_SYM(class_init, ccw, __VA_ARGS__),          \
-+        .secure = true,                                                       \
-     };                                                                        \
-     static void MACHINE_VER_SYM(register, ccw, __VA_ARGS__)(void)             \
-     {                                                                         \
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 1ccb6ed9fc..f576b3892e 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -353,6 +353,7 @@ extern const size_t pc_compat_2_6_len;
-         .name       = MACHINE_VER_TYPE_NAME(namestr, __VA_ARGS__), \
-         .parent     = TYPE_PC_MACHINE, \
-         .class_init = MACHINE_VER_SYM(class_init, namesym, __VA_ARGS__), \
-+        .secure     = true, \
-     }; \
-     static void MACHINE_VER_SYM(register, namesym, __VA_ARGS__)(void) \
-     { \
+diff --git a/hw/arm/xen-pvh.c b/hw/arm/xen-pvh.c
+index 1a9eeb01c8..d6b777cb20 100644
+--- a/hw/arm/xen-pvh.c
++++ b/hw/arm/xen-pvh.c
+@@ -95,6 +95,7 @@ static const TypeInfo xen_arm_machine_type = {
+     .class_init = xen_arm_machine_class_init,
+     .instance_size = sizeof(XenPVHMachineState),
+     .instance_init = xen_arm_instance_init,
++    .secure = true,
+ };
+ 
+ static void xen_arm_machine_register_types(void)
+diff --git a/hw/i386/isapc.c b/hw/i386/isapc.c
+index 44f4a44672..2da7a255f9 100644
+--- a/hw/i386/isapc.c
++++ b/hw/i386/isapc.c
+@@ -185,5 +185,5 @@ static void isapc_machine_options(MachineClass *m)
+     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
+ }
+ 
+-DEFINE_PC_MACHINE(isapc, "isapc", pc_init_isa,
+-                  isapc_machine_options);
++DEFINE_INSECURE_PC_MACHINE(isapc, "isapc", pc_init_isa,
++                           isapc_machine_options);
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index 94d22a232a..c9ff29da0e 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -729,6 +729,7 @@ static const TypeInfo microvm_machine_info = {
+     .instance_init = microvm_machine_initfn,
+     .class_size    = sizeof(MicrovmMachineClass),
+     .class_init    = microvm_class_init,
++    .secure        = true,
+     .interfaces = (const InterfaceInfo[]) {
+          { TYPE_HOTPLUG_HANDLER },
+          { }
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index caf8bab68e..1d75b7c89e 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -755,8 +755,8 @@ static void xenfv_machine_4_2_options(MachineClass *m)
+     m->default_machine_opts = "accel=xen,suppress-vmdesc=on";
+ }
+ 
+-DEFINE_PC_MACHINE(xenfv_4_2, "xenfv-4.2", pc_xen_hvm_init,
+-                  xenfv_machine_4_2_options);
++DEFINE_SECURE_PC_MACHINE(xenfv_4_2, "xenfv-4.2", pc_xen_hvm_init,
++                         xenfv_machine_4_2_options);
+ 
+ static void xenfv_machine_3_1_options(MachineClass *m)
+ {
+@@ -767,6 +767,6 @@ static void xenfv_machine_3_1_options(MachineClass *m)
+     m->default_machine_opts = "accel=xen,suppress-vmdesc=on";
+ }
+ 
+-DEFINE_PC_MACHINE(xenfv, "xenfv-3.1", pc_xen_hvm_init,
+-                  xenfv_machine_3_1_options);
++DEFINE_SECURE_PC_MACHINE(xenfv, "xenfv-3.1", pc_xen_hvm_init,
++                         xenfv_machine_3_1_options);
+ #endif
+diff --git a/hw/i386/xen/xen-pvh.c b/hw/i386/xen/xen-pvh.c
+index 067f73e977..f30cb82962 100644
+--- a/hw/i386/xen/xen-pvh.c
++++ b/hw/i386/xen/xen-pvh.c
+@@ -115,6 +115,7 @@ static const TypeInfo xen_pvh_x86_machine_type = {
+     .class_init = xen_pvh_machine_class_init,
+     .instance_init = xen_pvh_instance_init,
+     .instance_size = sizeof(XenPVHx86State),
++    .secure = true,
+ };
+ 
+ static void xen_pvh_machine_register_types(void)
+diff --git a/hw/i386/xen/xen_pvdevice.c b/hw/i386/xen/xen_pvdevice.c
+index 87a974ae5a..adf4948b9a 100644
+--- a/hw/i386/xen/xen_pvdevice.c
++++ b/hw/i386/xen/xen_pvdevice.c
+@@ -139,6 +139,7 @@ static const TypeInfo xen_pv_type_info = {
+     .parent        = TYPE_PCI_DEVICE,
+     .instance_size = sizeof(XenPVDevice),
+     .class_init    = xen_pv_class_init,
++    .secure        = true,
+     .interfaces = (const InterfaceInfo[]) {
+         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+         { },
+diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
+index b93ff80c85..5b1572f531 100644
+--- a/hw/xen/xen-pvh-common.c
++++ b/hw/xen/xen-pvh-common.c
+@@ -389,6 +389,7 @@ static const TypeInfo xen_pvh_info = {
+     .instance_size = sizeof(XenPVHMachineState),
+     .class_size = sizeof(XenPVHMachineClass),
+     .class_init = xen_pvh_class_init,
++    .secure = true,
+ };
+ 
+ static void xen_pvh_register_types(void)
+diff --git a/hw/xenpv/xen_machine_pv.c b/hw/xenpv/xen_machine_pv.c
+index 99c02492ef..26a77ef007 100644
+--- a/hw/xenpv/xen_machine_pv.c
++++ b/hw/xenpv/xen_machine_pv.c
+@@ -69,4 +69,4 @@ static void xenpv_machine_init(MachineClass *mc)
+     mc->default_machine_opts = "accel=xen";
+ }
+ 
+-DEFINE_MACHINE("xenpv", xenpv_machine_init)
++DEFINE_SECURE_MACHINE("xenpv", xenpv_machine_init)
 -- 
 2.50.1
 
