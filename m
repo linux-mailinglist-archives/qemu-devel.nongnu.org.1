@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45409BA2EA3
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69469BA2EAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:19:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23Zj-0000TW-BH; Fri, 26 Sep 2025 04:13:07 -0400
+	id 1v23Zp-0000Vx-QL; Fri, 26 Sep 2025 04:13:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Za-0000SF-Lh; Fri, 26 Sep 2025 04:12:58 -0400
+ id 1v23Zh-0000US-EQ; Fri, 26 Sep 2025 04:13:05 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23ZU-0000hE-5r; Fri, 26 Sep 2025 04:12:57 -0400
+ id 1v23ZZ-0000jm-FK; Fri, 26 Sep 2025 04:13:05 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2A18B157D5A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 47318157D5B;
  Fri, 26 Sep 2025 11:10:32 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 31854290C3E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4DAB2290C3F;
  Fri, 26 Sep 2025 11:10:33 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -29,10 +29,10 @@ Cc: qemu-stable@nongnu.org,
  Justin Applegate <justink.applegate@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 18/60] linux-user/mips: Select 74Kf CPU to run MIPS16e
- binaries
-Date: Fri, 26 Sep 2025 11:09:46 +0300
-Message-ID: <20250926081031.2214971-18-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 19/60] linux-user/mips: Select M14Kc CPU to run
+ microMIPS binaries
+Date: Fri, 26 Sep 2025 11:09:47 +0300
+Message-ID: <20250926081031.2214971-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -46,7 +46,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,34 +64,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The 74Kf is our latest CPU supporting MIPS16e ASE.
+The M14Kc is our latest CPU supporting the microMIPS ASE.
 
-Note, currently QEMU doesn't have 64-bit CPU supporting MIPS16e ASE.
+Note, currently QEMU doesn't have 64-bit CPU supporting microMIPS ASE.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 6ea219d0196..d19954f46df ("target-mips: MIPS16 support")
+Fixes: 3c824109da0 ("target-mips: microMIPS ASE support")
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3054
 Reported-by: Justin Applegate <justink.applegate@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250814070650.78657-3-philmd@linaro.org>
-(cherry picked from commit 7a09b3cc70ab6d717b18dec5c5995f7a06af4593)
-(Mjt: in 10.1 and before the code is in linux-user/mips/target_elf.h)
+Message-Id: <20250814070650.78657-4-philmd@linaro.org>
+(cherry picked from commit 51c3aebfda6489b49cebef593a1ceb597cb97a7e)
+(Mjt: in 10.1 and before, the code is in linux-user/mips/target_elf.h)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index 71a32315a8..cd8622ce28 100644
+index cd8622ce28..d20c6080cc 100644
 --- a/linux-user/mips/target_elf.h
 +++ b/linux-user/mips/target_elf.h
 @@ -12,6 +12,9 @@ static inline const char *cpu_get_model(uint32_t eflags)
      if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
          return "mips32r6-generic";
      }
-+    if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_M16) {
-+        return "74Kf";
++    if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_MICROMIPS) {
++        return "M14Kc";
 +    }
-     if (eflags & EF_MIPS_NAN2008) {
-         return "P5600";
+     if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_M16) {
+         return "74Kf";
      }
 -- 
 2.47.3
