@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6001BA2E2B
+	by mail.lfdr.de (Postfix) with ESMTPS id A4063BA2E2A
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23Xq-0006y1-5S; Fri, 26 Sep 2025 04:11:10 -0400
+	id 1v23Xu-00070h-PR; Fri, 26 Sep 2025 04:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Xm-0006x5-Eb; Fri, 26 Sep 2025 04:11:07 -0400
+ id 1v23Xn-0006xb-VU; Fri, 26 Sep 2025 04:11:07 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23Xg-00008z-NL; Fri, 26 Sep 2025 04:11:05 -0400
+ id 1v23Xh-00009c-AI; Fri, 26 Sep 2025 04:11:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CE001157D4A;
+ by isrv.corpit.ru (Postfix) with ESMTP id E86C5157D4B;
  Fri, 26 Sep 2025 11:10:30 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E2AA9290C2E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F0F30290C2F;
  Fri, 26 Sep 2025 11:10:31 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zero Tang <zero.tangptr@gmail.com>,
+Cc: qemu-stable@nongnu.org, Joel Stanley <joel@jms.id.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 02/60] i386/tcg/svm: fix incorrect canonicalization
-Date: Fri, 26 Sep 2025 11:09:30 +0300
-Message-ID: <20250926081031.2214971-2-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 03/60] linux-user: Add strace for rseq
+Date: Fri, 26 Sep 2025 11:09:31 +0300
+Message-ID: <20250926081031.2214971-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
@@ -57,38 +58,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zero Tang <zero.tangptr@gmail.com>
+From: Joel Stanley <joel@jms.id.au>
 
-For all 32-bit systems and 64-bit Windows systems, "long" is 4 bytes long.
-Due to using "long" for a linear address, svm_canonicalization would
-set all high bits to 1 when (assuming 48-bit linear address) the segment
-base is bigger than 0x7FFF.
+ build/qemu-riscv64 -cpu rv64,v=on -d strace  build/tests/tcg/riscv64-linux-user/test-vstart-overflow
+ 1118081 riscv_hwprobe(0xffffbc038200,1,0,0,0,0) = 0
+ 1118081 brk(NULL) = 0x0000000000085000
+ 1118081 brk(0x0000000000085b00) = 0x0000000000085b00
+ 1118081 set_tid_address(0x850f0) = 1118081
+ 1118081 set_robust_list(0x85100,24) = -1 errno=38 (Function not implemented)
+ 1118081 rseq(0x857c0,32,0,0xf1401073) = -1 errno=38 (Function not implemented)
 
-This fixes booting guests under TCG when the guest IDT and GDT bases are
-above 0x7FFF, thereby resulting in incorrect bases. When an interrupt
-arrives, it would trigger a #PF exception; the #PF would trigger again,
-resulting in a #DF exception; the #PF would trigger for the third time,
-resulting in triple-fault, and eventually causes a shutdown VM-Exit to
-the hypervisor right after guest boot.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Zero Tang <zero.tangptr@gmail.com>
-(cherry picked from commit c12cbaa007c9da97a11e74119ea3aed9fcc3ac4c)
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250826060341.1118670-1-joel@jms.id.au>
+(cherry picked from commit f91563d011a0439cd6709e169cdfac268779d562)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
-index b27049b9ed..dea039b87a 100644
---- a/target/i386/tcg/system/svm_helper.c
-+++ b/target/i386/tcg/system/svm_helper.c
-@@ -49,7 +49,7 @@ static void svm_save_seg(CPUX86State *env, int mmu_idx, hwaddr addr,
- static inline void svm_canonicalization(CPUX86State *env, target_ulong *seg_base)
- {
-     uint16_t shift_amt = 64 - cpu_x86_virtual_addr_width(env);
--    *seg_base = ((((long) *seg_base) << shift_amt) >> shift_amt);
-+    *seg_base = (((int64_t) *seg_base) << shift_amt) >> shift_amt;
- }
- 
- static void svm_load_seg(CPUX86State *env, int mmu_idx, hwaddr addr,
+diff --git a/linux-user/strace.list b/linux-user/strace.list
+index ab818352a9..51b5ead969 100644
+--- a/linux-user/strace.list
++++ b/linux-user/strace.list
+@@ -1719,3 +1719,6 @@
+ #ifdef TARGET_NR_riscv_hwprobe
+ { TARGET_NR_riscv_hwprobe, "riscv_hwprobe" , "%s(%p,%d,%d,%d,%d,%d)", NULL, NULL },
+ #endif
++#ifdef TARGET_NR_rseq
++{ TARGET_NR_rseq, "rseq" , "%s(%p,%u,%d,%#x)", NULL, NULL },
++#endif
 -- 
 2.47.3
 
