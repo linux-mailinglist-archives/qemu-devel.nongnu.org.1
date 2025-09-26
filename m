@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069F2BA2F5D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64030BA2F00
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 10:25:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v23gP-0002FS-CL; Fri, 26 Sep 2025 04:20:01 -0400
+	id 1v23gO-0002Bg-3W; Fri, 26 Sep 2025 04:20:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23fr-0001sy-0u; Fri, 26 Sep 2025 04:19:30 -0400
+ id 1v23g2-00022z-GR; Fri, 26 Sep 2025 04:19:41 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v23fd-0002FC-5K; Fri, 26 Sep 2025 04:19:19 -0400
+ id 1v23fl-0002G7-HK; Fri, 26 Sep 2025 04:19:38 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 87B15157D82;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9A4A9157D83;
  Fri, 26 Sep 2025 11:10:35 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 90B10290C66;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AB8A3290C67;
  Fri, 26 Sep 2025 11:10:36 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 58/60] tests: Fix "make check-functional" for targets
- without thorough tests
-Date: Fri, 26 Sep 2025 11:10:26 +0300
-Message-ID: <20250926081031.2214971-58-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?=E6=9D=8E=E5=A8=81=E5=A8=81?= <liweiwei@kubuds.cn>,
+ Anton Johansson <anjo@rev.ng>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 59/60] accel/tcg: Properly unlink a TB linked to itself
+Date: Fri, 26 Sep 2025 11:10:27 +0300
+Message-ID: <20250926081031.2214971-59-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20250926101857@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -42,7 +43,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,38 +59,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-If QEMU gets configured for a single target that does not have
-any thorough functional tests, "make check-functional" currently
-fails with the error message "No rule to make target 'check-func'".
-This happens because "check-func" only gets defined for thorough
-tests (quick ones get added to "check-func-quick" instead).
-The same problem can happen with the quick tests for targets that
-do not have any functional test at all. To fix it, simply make sure
-that the targets are always available in the Makefile.
+When we remove dest from orig's links, we lose the link
+that we rely on later to reset links.  This can lead to
+failure to release from spinlock with self-modifying code.
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/3119
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250918125154.126072-1-thuth@redhat.com>
-(cherry picked from commit 4f1ebc7712a7db61155080164f2169320d033559)
+Cc: qemu-stable@nongnu.org
+Reported-by: 李威威 <liweiwei@kubuds.cn>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Tested-by: Anton Johansson <anjo@rev.ng>
+(cherry picked from commit 03fe6659803f83690b8587d01f8ee56bb4be4b90)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 23fb722d42..9a3d137283 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -112,6 +112,9 @@ check-functional:
- 	@$(NINJA) precache-functional
- 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
- 
-+.PHONY: check-func check-func-quick
-+check-func check-func-quick:
-+
- # Consolidated targets
- 
- .PHONY: check check-clean
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 0048316f99..e6d45c9c12 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -836,6 +836,14 @@ static inline void tb_remove_from_jmp_list(TranslationBlock *orig, int n_orig)
+      * We first acquired the lock, and since the destination pointer matches,
+      * we know for sure that @orig is in the jmp list.
+      */
++    if (dest == orig) {
++        /*
++         * In the case of a TB that links to itself, removing the entry
++         * from the list means that it won't be present later during
++         * tb_jmp_unlink -- unlink now.
++         */
++        tb_reset_jump(orig, n_orig);
++    }
+     pprev = &dest->jmp_list_head;
+     TB_FOR_EACH_JMP(dest, tb, n) {
+         if (tb == orig && n == n_orig) {
 -- 
 2.47.3
 
