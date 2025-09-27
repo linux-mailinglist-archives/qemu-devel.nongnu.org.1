@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D70BA5442
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Sep 2025 23:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97935BA569B
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 02:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2GKP-0004rO-O1; Fri, 26 Sep 2025 17:50:09 -0400
+	id 1v2Ihe-0006gC-Rh; Fri, 26 Sep 2025 20:22:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixiaoyan@google.com>)
- id 1v2GKE-0004pN-V7
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 17:49:59 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1v2IhX-0006fp-KD
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 20:22:13 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lixiaoyan@google.com>)
- id 1v2GK6-0000yf-Rr
- for qemu-devel@nongnu.org; Fri, 26 Sep 2025 17:49:58 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-62fa84c6916so3439a12.0
- for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 14:49:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1v2IhF-0006Qo-1U
+ for qemu-devel@nongnu.org; Fri, 26 Sep 2025 20:22:11 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-77d94c6562fso3108933b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Sep 2025 17:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1758923387; x=1759528187; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TyQtqxcwVuUILv14pGNYKUXF2U0siZAi7IEnH+SlLmk=;
- b=Q+YNoEeWmepMpiUQvFChHLuiXv3XFUxfJQ+zFf6uWOBwM36wR3b9k8uhaLr0EHCKmg
- kdDxEMlszFEvbXq5PaI95YwhJs7XsgZ2SiJMWdob1gAslMrpKFmiBlbNiEoVee2TgXEO
- SYs038p7fOOAhW49GgzkfO3XX8Elnw3SqVdG4ebe8H9MN5botBq1Kw4NwSSQ+GAZXOi+
- En4zXFgBHdDXY9SdR0VQQw5m5ZjNlcBUm1jrrswoUfKpQCj3XreeFPLJFPk0LomqE6J7
- bmSULw5hD3qNI1zHpiZzmtvhoSZPfu7diggbVrbNVQIgbIPP5AvtIZlHEnpsXjx+SkdX
- Jo/w==
+ d=gmail.com; s=20230601; t=1758932503; x=1759537303; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tQTR/LW73pcGQZucVeSjNBBl318LBz6n0O2J7WibIuY=;
+ b=F2pcF9MRJ6R0bd+pynE+VUxIYLqE/y9ckcPB8y2XQVLTB4LE14BjRskWfSMhVGFmM+
+ gkgrTtFHX6evp9ZlEd4qWjyLyMA3VDQG3blqYh9lfB+KIJGLyCBvbpD6jQe7I4V95V6t
+ XU6eP5m+LLkimLvy2TpuGBzv1U97nyn5cwbDhKd/pzauS8GtGtRQCY6xtsUDggCCDJ4D
+ yZ5glENbT/t7+48zIgFrh2gnRbYDxeBPTsU4EtGH1DDrEHZaNCBjnKSMQ5GhanoMTjA9
+ wfZLw6VCHIQnM89m2eOStbWsHaTvZPEUoBDBu2vCv2+wRVus+s4vyPs8HDm1opSISTmV
+ m2fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758923387; x=1759528187;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1758932503; x=1759537303;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=TyQtqxcwVuUILv14pGNYKUXF2U0siZAi7IEnH+SlLmk=;
- b=oeGSLVRDAEydUey0DK9/YWQZCdoxyPof/9OCDteQtl8/RrmRWneskmyqZvWQNxZIid
- O3pSGRnlqpFqs09ul4VM2yXxTt9YjX0yloH3irD3/qvP3BEgzEmufwis8iNg01/aI2iP
- iWq6XRmfu80+ARIcywnJtBLWsZ3td17tW/uIbdjxe3Jr/311aW7MVEvm7DSVOhP9DZ6A
- XxwYAEQiz+8luEjKT/+qFXEeA/HI2crGaa4PZoRt9gegv5DcNzCSEby2dZDrHVW/wNZL
- aDZkTDLOww5iOCkwNGl/N+33k+joEE8zUsO2s02pBhkR9jm2XARxgdygHdQmkmw2jMi7
- W0kQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU+Pb5MTUZk/egmlDSvP5OutO7OXyZo6b0mfKGlwQejWfn3izMUzyuWmna0WMdBWU4/Uvvu72ChiQjq@nongnu.org
-X-Gm-Message-State: AOJu0YwCTO5gDWn3fhAZrqN5YU8+AN67EfByAWZxBE0lo2YqI7MHal5Y
- G8bFahXaKI//BxZpQJhhv7g3Fxp0kkJJ8e4wUP2xN2lJd5DxxQPuAW0JnZfnjrw24gl81QJELD1
- PzYActDH9xZ/boE8SRwa6p5fMH5awO28WcRbWG9gC
-X-Gm-Gg: ASbGncukoQ8YDo9ZlPuYf0ZuAlkBfTdAuzUTPfwk3v4qTqJk7cKL/3o8jH0PbDWABAP
- Np1sMPRKciV7TkJTbjX4HwmOjomFtvl4l0Y7+lIIAzGodSIlhteH61u036gcQbYeJvjLZiYZCrT
- 3eGFmweZ8gfTzQRuRIVl8DKuldzJ+yEJoJzSnnvnhJfiRn3F3QOft98Jmfz9jtPD/5R5J5gNrq6
- vWuukzbPZPUx9+wzafCkQbVqoxgl4u9GR/uFA3a2g0zz4ZufBK49hxWTw==
-X-Google-Smtp-Source: AGHT+IHNvYqnZb/806e7ueHZNChuMAzJ57MSZTJYUZctgIk39qYmLQSOWYn6DpHWD4iGUD/2zpn9iW6CLlhO3O6jwzU=
-X-Received: by 2002:a50:99c4:0:b0:634:90bb:185e with SMTP id
- 4fb4d7f45d1cf-634cd728159mr45877a12.5.1758923386456; Fri, 26 Sep 2025
- 14:49:46 -0700 (PDT)
+ bh=tQTR/LW73pcGQZucVeSjNBBl318LBz6n0O2J7WibIuY=;
+ b=DJoSfV5x/L1TPBl1+uHMJwfR7BvD9yHLmCamV+Irx4xg78ByPochwbRr30Qc8uMmP8
+ IrH5YIpHUxllNueD3bkkyUUSdtS7SjKwRSUIbrkOVQ3RcjA//buW03YM9F5lGdLhDcvN
+ Wxl3vehLbsx1SvGXMcEUkmmK55vVkdSUjmt8hEX9+Tte2xEBguKAX172Pe/W2+H+F+2u
+ p7ZQeOxsItm53IlurbyoVWB2UEY5hFzvGXCW9sGfJSD3pXVGBdqR7nX4KvpfaIKLt2cZ
+ 5i50I4pC1VIrrPC37TZjvBe+fQQ6P0idsviYONh44jX+kpCBlXCPwZiboqAPzivFaZ7m
+ e/dQ==
+X-Gm-Message-State: AOJu0YwbKBaRNx5q7bmdCHyxLNqZbYRrTh7664eSVqi2sACyWsNmmxPZ
+ 6gjH9Ft7LWmwbjTHlY5E5AK88a7NiYj3QvwzcvYKeYYIOsP9b/yF3klBZXjXAQ==
+X-Gm-Gg: ASbGncslQ8Fps1FQA2NQbtTQNFwuxeB/Y9DD7l9YJk/+efLp+pcBY4/dGszx7JLn+/s
+ us1ljJ5ajbUQPt3VXu5kbJ/1PLCFHaAizksFKxUGhkcZVyD+ER05aVgbsVaaE7/uYrJ7xVglkgW
+ zbCX6VCGA42T0T/Vlz8scIlNC36Bmj4SEtIV/i532DXZdnZmHqwgLfX5XkGao2kF5qn551mZIW5
+ TR69xfkdy59vtvKPafCWIc3J7OpTJaoDl8WiDObpebnJE8gg8b96NFT9/iw1JqtVYwpoGH1N0mn
+ iRs/WjluZZgb8EAQ8qEN28e1RqziLMaLlOaI+nOA5yCanLhzJu/0nWxvASeblZuaHftTqs2xnA1
+ C7yEKWeWjf2EQSsBNqxydTzSLJAgwwx2rZf0cxKzsOX9EP8DorrMEag==
+X-Google-Smtp-Source: AGHT+IGxmhCV2WruVI+XO8VL9LJ3RKewJCIuMAwgl7jSu9H1qilIOZb32R7DmoucZ7lRJaQj+xypGg==
+X-Received: by 2002:a05:6a00:acd:b0:77f:50df:df36 with SMTP id
+ d2e1a72fcca58-780fcec5cedmr10386545b3a.18.1758932502876; 
+ Fri, 26 Sep 2025 17:21:42 -0700 (PDT)
+Received: from deb-101020-bm01.dtc.local ([149.97.161.244])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7810238ca29sm5350489b3a.6.2025.09.26.17.21.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Sep 2025 17:21:42 -0700 (PDT)
+From: anisa.su887@gmail.com
+To: qemu-devel@nongnu.org
+Cc: Jonathan.Cameron@huawei.com, dave@stgolabs.net, linux-cxl@vger.kernel.org,
+ Anisa Su <anisa.su@samsung.com>
+Subject: [QEMU PATCH 0/1] CXL: Enable FMAPI Add for MHSLDs
+Date: Sat, 27 Sep 2025 00:18:06 +0000
+Message-ID: <20250927002125.860668-1-anisa.su887@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250925005832.3708492-1-lixiaoyan@google.com>
- <20250925005832.3708492-6-lixiaoyan@google.com>
- <132cc9e6-bab2-47d7-bfe3-c08ac5fc6816@linaro.org>
-In-Reply-To: <132cc9e6-bab2-47d7-bfe3-c08ac5fc6816@linaro.org>
-From: Coco Li <lixiaoyan@google.com>
-Date: Fri, 26 Sep 2025 14:49:34 -0700
-X-Gm-Features: AS18NWAYj3T_1ktEWi6X6TuQzG5Nb6gxoatkOPHTXnWG_UeQgkA_tTaUB747YD8
-Message-ID: <CADjXwji7AHfRAUiSNxcxU-T7i7rnwDdddyyeC4tWxMf-cYqHww@mail.gmail.com>
-Subject: Re: [PATCH v1 5/5] hw/gpio/npcm8xx: Implement npcm sgpio device input
- pin logic
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: peter.maydell@linaro.org, clg@kaod.org, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, 
- flwu@google.com, andrew@codeconstruct.com.au, Hao Wu <wuhaotsh@google.com>
-Content-Type: multipart/alternative; boundary="000000000000a3c224063fbb4399"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=lixiaoyan@google.com; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -165
-X-Spam_score: -16.6
-X-Spam_bar: ----------------
-X-Spam_report: (-16.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=anisa.su887@gmail.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,93 +96,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a3c224063fbb4399
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Anisa Su <anisa.su@samsung.com>
 
-Good call, I can put it in the next version.
+This patch adds support for FMAPI Initiate Add command (5604h) for MHSLDs. It
+is based on the following branch:
+https://gitlab.com/jic23/qemu/-/tree/cxl-2025-07-03
 
-On Wed, Sep 24, 2025 at 6:11=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
-@linaro.org>
-wrote:
+This code was tested by starting 2 VMs, host_1, which initializes the MHSLD, and
+host_2, with the following topologies, then sending the FMAPI command from both
+hosts.
 
-> On 25/9/25 02:58, Coco Li wrote:
-> > Signed-off-by: Coco Li <lixiaoyan@google.com>
-> > Reviewed-by: Hao Wu <wuhaotsh@google.com>
-> > ---
-> >   hw/gpio/npcm8xx_sgpio.c          | 134 ++++++++++++++++++++---
-> >   include/hw/gpio/npcm8xx_sgpio.h  |   4 +-
-> >   tests/qtest/npcm8xx_sgpio-test.c | 180 ++++++++++++++++++++++++++----=
--
-> >   3 files changed, 274 insertions(+), 44 deletions(-)
-> >
-> > diff --git a/hw/gpio/npcm8xx_sgpio.c b/hw/gpio/npcm8xx_sgpio.c
->
->
-> > +static uint8_t get_even_bits(uint16_t n)
-> > +{
-> > +    n &=3D 0x5555;
-> > +
-> > +    n =3D (n | (n >> 1)) & 0x3333;
-> > +    n =3D (n | (n >> 2)) & 0x0F0F;
-> > +    n =3D (n | (n >> 4)) & 0x00FF;
-> > +
-> > +    return (uint8_t)n;
-> > +}
-> > +
-> > +static uint8_t get_odd_bits(uint16_t n)
-> > +{
-> > +    return get_even_bits(n >> 1);
-> > +}
->
-> Candidates for "include/qemu/bitops.h"?
->
+host_1 = "-device usb-ehci,id=ehci \
+     -object memory-backend-file,id=cxl-mem1,mem-path=/tmp/t3_cxl1.raw,size=4G \
+     -object memory-backend-file,id=cxl-lsa1,mem-path=/tmp/t3_lsa1.raw,size=1M \
+     -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+     -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
+     -device cxl-mhsld,bus=cxl_rp_port0,num-dc-regions=2,volatile-dc-memdev=cxl-mem1,id=cxl-mhd0,sn=99,mhd-head=0,mhd-state_file=mhd_metadata,mhd-init=true \
+     -device usb-cxl-mctp,bus=ehci.0,id=usb0,target=cxl-mhd0\
+     -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k"
 
---000000000000a3c224063fbb4399
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+host_2 = "-device usb-ehci,id=ehci \
+     -object memory-backend-file,id=cxl-mem1,mem-path=/tmp/t3_cxl1.raw,size=4G \
+     -object memory-backend-file,id=cxl-lsa1,mem-path=/tmp/t3_lsa1.raw,size=1M \
+     -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+     -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
+     -device cxl-mhsld,bus=cxl_rp_port0,num-dc-regions=2,volatile-dc-memdev=cxl-mem1,id=cxl-mhd0,sn=99,mhd-head=1,mhd-state_file=mhd_metadata,mhd-init=false \
+     -device usb-cxl-mctp,bus=ehci.0,id=usb0,target=cxl-mhd0\
+     -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k"
 
-<div dir=3D"ltr">Good call, I can put it in the next version.</div><br><div=
- class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmai=
-l_attr">On Wed, Sep 24, 2025 at 6:11=E2=80=AFPM Philippe Mathieu-Daud=C3=A9=
- &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 25/9/25 02:58=
-, Coco Li wrote:<br>
-&gt; Signed-off-by: Coco Li &lt;<a href=3D"mailto:lixiaoyan@google.com" tar=
-get=3D"_blank">lixiaoyan@google.com</a>&gt;<br>
-&gt; Reviewed-by: Hao Wu &lt;<a href=3D"mailto:wuhaotsh@google.com" target=
-=3D"_blank">wuhaotsh@google.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0hw/gpio/npcm8xx_sgpio.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-| 134 ++++++++++++++++++++---<br>
-&gt;=C2=A0 =C2=A0include/hw/gpio/npcm8xx_sgpio.h=C2=A0 |=C2=A0 =C2=A04 +-<b=
-r>
-&gt;=C2=A0 =C2=A0tests/qtest/npcm8xx_sgpio-test.c | 180 +++++++++++++++++++=
-+++++++-----<br>
-&gt;=C2=A0 =C2=A03 files changed, 274 insertions(+), 44 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/hw/gpio/npcm8xx_sgpio.c b/hw/gpio/npcm8xx_sgpio.c<br>
-<br>
-<br>
-&gt; +static uint8_t get_even_bits(uint16_t n)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 n &amp;=3D 0x5555;<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 n =3D (n | (n &gt;&gt; 1)) &amp; 0x3333;<br>
-&gt; +=C2=A0 =C2=A0 n =3D (n | (n &gt;&gt; 2)) &amp; 0x0F0F;<br>
-&gt; +=C2=A0 =C2=A0 n =3D (n | (n &gt;&gt; 4)) &amp; 0x00FF;<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 return (uint8_t)n;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static uint8_t get_odd_bits(uint16_t n)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 return get_even_bits(n &gt;&gt; 1);<br>
-&gt; +}<br>
-<br>
-Candidates for &quot;include/qemu/bitops.h&quot;?<br>
-</blockquote></div>
+libcxlmi is cloned on both hosts and used to send the FMAPI add/release commands
+from both host_1 and host_2 and the expected behavior is verified by printing
+the response payload from the Get DC Region Lists command (5603h).
+The following interactive program from libcxlmi is
+used to do so: https://github.com/computexpresslink/libcxlmi/blob/main/examples/fmapi-mctp.c
 
---000000000000a3c224063fbb4399--
+Question:
+Currently, the input payload to FMAPI Init Add contains an array of CXLDCExtentRaw
+elements. The mshld_reserve_extents() function expects a pointer of type
+CxlDynamicCapacityExtentList, so a loop is introduced to convert CXLDCExtentRaw[]
+to CxlDynamicCapacityExtentList.
+
+I am wondering why the typedefs for extents/extent list in qapi-types-cxl.h
+are separate from the typedefs in cxl_device.h? Is there a nice way to avoid
+introducing a loop here just to convert types here?
+
+Anisa Su (1):
+  hw/cxl/cxl-mailbox-utils: Enable FMAPI Initiate Add for MHSLD
+
+ hw/cxl/cxl-mailbox-utils.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+-- 
+2.51.0
+
 
