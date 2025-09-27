@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031BDBA5C1C
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24285BA5C13
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:11:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2QsQ-0004yN-EO; Sat, 27 Sep 2025 05:05:58 -0400
+	id 1v2QsF-0004hx-Vi; Sat, 27 Sep 2025 05:05:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2QsC-0004jz-F7; Sat, 27 Sep 2025 05:05:45 -0400
+ id 1v2Qs7-0004ex-Pi; Sat, 27 Sep 2025 05:05:40 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qs2-0007Bz-65; Sat, 27 Sep 2025 05:05:43 -0400
+ id 1v2Qs2-0007CL-CS; Sat, 27 Sep 2025 05:05:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4633A158564;
+ by isrv.corpit.ru (Postfix) with ESMTP id 54D90158565;
  Sat, 27 Sep 2025 12:03:03 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 23F5A291581;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 36024291582;
  Sat, 27 Sep 2025 12:03:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?=E6=9D=8E=E5=A8=81=E5=A8=81?= <liweiwei@kubuds.cn>,
- Anton Johansson <anjo@rev.ng>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 15/16] accel/tcg: Properly unlink a TB linked to itself
-Date: Sat, 27 Sep 2025 12:02:59 +0300
-Message-ID: <20250927090304.2901324-15-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.21 16/16] tests/tcg/multiarch: Add tb-link test
+Date: Sat, 27 Sep 2025 12:03:00 +0300
+Message-ID: <20250927090304.2901324-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,37 +59,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-When we remove dest from orig's links, we lose the link
-that we rely on later to reset links.  This can lead to
-failure to release from spinlock with self-modifying code.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: 李威威 <liweiwei@kubuds.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Tested-by: Anton Johansson <anjo@rev.ng>
-(cherry picked from commit 03fe6659803f83690b8587d01f8ee56bb4be4b90)
+(cherry picked from commit e13e1195db8af18e149065a59351ea85215645bb)
+(Mjt: resolve context conflict in tests/tcg/multiarch/Makefile.target)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 9d9f651c78..077265172e 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -186,6 +186,14 @@ static inline void tb_remove_from_jmp_list(TranslationBlock *orig, int n_orig)
-      * We first acquired the lock, and since the destination pointer matches,
-      * we know for sure that @orig is in the jmp list.
-      */
-+    if (dest == orig) {
-+        /*
-+         * In the case of a TB that links to itself, removing the entry
-+         * from the list means that it won't be present later during
-+         * tb_jmp_unlink -- unlink now.
-+         */
-+        tb_reset_jump(orig, n_orig);
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 5f0fee1aad..2fdec1f05f 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -39,6 +39,8 @@ signals: LDFLAGS+=-lrt -lpthread
+ munmap-pthread: CFLAGS+=-pthread
+ munmap-pthread: LDFLAGS+=-pthread
+ 
++tb-link: LDFLAGS+=-lpthread
++
+ # We define the runner for test-mmap after the individual
+ # architectures have defined their supported pages sizes. If no
+ # additional page sizes are defined we only run the default test.
+diff --git a/tests/tcg/multiarch/tb-link.c b/tests/tcg/multiarch/tb-link.c
+new file mode 100644
+index 0000000000..4e40306fa1
+--- /dev/null
++++ b/tests/tcg/multiarch/tb-link.c
+@@ -0,0 +1,67 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Verify that a single TB spin-loop is properly invalidated,
++ * releasing the thread from the spin-loop.
++ */
++
++#include <assert.h>
++#include <sys/mman.h>
++#include <pthread.h>
++#include <stdint.h>
++#include <stdbool.h>
++#include <unistd.h>
++#include <sched.h>
++
++
++#ifdef __x86_64__
++#define READY   0x000047c6      /* movb $0,0(%rdi) */
++#define LOOP    0xfceb9090      /* 1: nop*2; jmp 1b */
++#define RETURN  0x909090c3      /* ret; nop*3 */
++#define NOP     0x90909090      /* nop*4 */
++#elif defined(__aarch64__)
++#define READY   0x3900001f      /* strb wzr,[x0] */
++#define LOOP    0x14000000      /* b . */
++#define RETURN  0xd65f03c0      /* ret */
++#define NOP     0xd503201f      /* nop */
++#elif defined(__riscv)
++#define READY   0x00050023      /* sb zero, (a0) */
++#define LOOP    0x0000006f      /* jal zero, #0 */
++#define RETURN  0x00008067      /* jalr zero, ra, 0 */
++#define NOP     0x00000013      /* nop */
++#endif
++
++
++int main()
++{
++#ifdef READY
++    int tmp;
++    pthread_t thread_id;
++    bool hold = true;
++    uint32_t *buf;
++
++    buf = mmap(NULL, 3 * sizeof(uint32_t),
++               PROT_READ | PROT_WRITE | PROT_EXEC,
++               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++    assert(buf != MAP_FAILED);
++
++    buf[0] = READY;
++    buf[1] = LOOP;
++    buf[2] = RETURN;
++
++    alarm(2);
++
++    tmp = pthread_create(&thread_id, NULL, (void *(*)(void *))buf, &hold);
++    assert(tmp == 0);
++
++    while (hold) {
++        sched_yield();
 +    }
-     pprev = &dest->jmp_list_head;
-     TB_FOR_EACH_JMP(dest, tb, n) {
-         if (tb == orig && n == n_orig) {
++
++    buf[1] = NOP;
++    __builtin___clear_cache(&buf[1], &buf[2]);
++
++    tmp = pthread_join(thread_id, NULL);
++    assert(tmp == 0);
++#endif
++    return 0;
++}
 -- 
 2.47.3
 
