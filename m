@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CCCBA5BFB
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E1CBA5C0D
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:10:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2QrW-0004Jz-RT; Sat, 27 Sep 2025 05:05:03 -0400
+	id 1v2Qrc-0004Mw-TX; Sat, 27 Sep 2025 05:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2QrU-0004IL-8X; Sat, 27 Sep 2025 05:05:00 -0400
+ id 1v2QrZ-0004Kz-EQ; Sat, 27 Sep 2025 05:05:05 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2QrJ-0006vx-5P; Sat, 27 Sep 2025 05:04:57 -0400
+ id 1v2QrJ-0006w2-J3; Sat, 27 Sep 2025 05:05:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C8E2315855E;
+ by isrv.corpit.ru (Postfix) with ESMTP id DD86415855F;
  Sat, 27 Sep 2025 12:03:02 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9E6D529157B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B9B3529157C;
  Sat, 27 Sep 2025 12:03:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+Cc: qemu-stable@nongnu.org, Peter Delevoryas <peter@pjd.dev>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [Stable-7.2.21 09/16] use fedora:37 for python container instead of
- :latest
-Date: Sat, 27 Sep 2025 12:02:53 +0300
-Message-ID: <20250927090304.2901324-9-mjt@tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.21 10/16] python/machine: Fix AF_UNIX path too long on
+ macOS
+Date: Sat, 27 Sep 2025 12:02:54 +0300
+Message-ID: <20250927090304.2901324-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
@@ -60,29 +61,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-More recent fedora does not have our minimum python versions
-anymore.  Stick with the most common fedora version used in
-7.2.x in other places, which is 37.  This way, python tests
-works again.
+From: Peter Delevoryas <peter@pjd.dev>
 
-This is a 7.2-specific change, not aimed for the master branch.
+On macOS, private $TMPDIR's are the default. These $TMPDIR's are
+generated from a user's unix UID and UUID [1], which can create a
+relatively long path:
 
+    /var/folders/d7/rz20f6hd709c1ty8f6_6y_z40000gn/T/
+
+QEMU's avocado tests create a temporary directory prefixed by
+"avo_qemu_sock_", and create QMP sockets within _that_ as well.
+The QMP socket is unnecessarily long, because a temporary directory
+is created for every QEMUMachine object.
+
+    /avo_qemu_sock_uh3w_dgc/qemu-37331-10bacf110-monitor.sock
+
+The path limit for unix sockets on macOS is 104: [2]
+
+    /*
+     * [XSI] Definitions for UNIX IPC domain.
+     */
+    struct  sockaddr_un {
+        unsigned char   sun_len;        /* sockaddr len including null */
+        sa_family_t     sun_family;     /* [XSI] AF_UNIX */
+        char            sun_path[104];  /* [XSI] path name (gag) */
+    };
+
+This results in avocado tests failing on macOS because the QMP unix
+socket can't be created, because the path is too long:
+
+    ERROR| Failed to establish connection: OSError: AF_UNIX path too long
+
+This change resolves by reducing the size of the socket directory prefix
+and the suffix on the QMP and console socket names.
+
+The result is paths like this:
+
+    pdel@pdel-mbp:/var/folders/d7/rz20f6hd709c1ty8f6_6y_z40000gn/T
+    $ tree qemu*
+    qemu_df4evjeq
+    qemu_jbxel3gy
+    qemu_ml9s_gg7
+    qemu_oc7h7f3u
+    qemu_oqb1yf97
+    ├── 10a004050.con
+    └── 10a004050.qmp
+
+[1] https://apple.stackexchange.com/questions/353832/why-is-mac-osx-temp-directory-in-weird-path
+[2] /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/un.h
+
+Signed-off-by: Peter Delevoryas <peter@pjd.dev>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230110082930.42129-2-peter@pjd.dev
+Signed-off-by: John Snow <jsnow@redhat.com>
+(cherry picked from commit f9922937d173f50fe59fd1b20fadc445fb6b2564)
+(Mjt: pick this simple fix for 7.2.x so subsequent changes applies cleanly)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/docker/dockerfiles/python.docker b/tests/docker/dockerfiles/python.docker
-index 175c10a34e..8cc5d3567e 100644
---- a/tests/docker/dockerfiles/python.docker
-+++ b/tests/docker/dockerfiles/python.docker
-@@ -1,6 +1,6 @@
- # Python library testing environment
+diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
+index 37191f433b..5df210c810 100644
+--- a/python/qemu/machine/machine.py
++++ b/python/qemu/machine/machine.py
+@@ -157,7 +157,7 @@ def __init__(self,
+         self._wrapper = wrapper
+         self._qmp_timer = qmp_timer
  
--FROM fedora:latest
-+FROM fedora:37
- MAINTAINER John Snow <jsnow@redhat.com>
+-        self._name = name or f"qemu-{os.getpid()}-{id(self):02x}"
++        self._name = name or f"{id(self):x}"
+         self._temp_dir: Optional[str] = None
+         self._base_temp_dir = base_temp_dir
+         self._sock_dir = sock_dir
+@@ -167,7 +167,7 @@ def __init__(self,
+             self._monitor_address = monitor_address
+         else:
+             self._monitor_address = os.path.join(
+-                self.sock_dir, f"{self._name}-monitor.sock"
++                self.sock_dir, f"{self._name}.qmp"
+             )
  
- # Please keep this list sorted alphabetically
+         self._console_log_path = console_log
+@@ -192,7 +192,7 @@ def __init__(self,
+         self._console_set = False
+         self._console_device_type: Optional[str] = None
+         self._console_address = os.path.join(
+-            self.sock_dir, f"{self._name}-console.sock"
++            self.sock_dir, f"{self._name}.con"
+         )
+         self._console_socket: Optional[socket.socket] = None
+         self._remove_files: List[str] = []
+diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
+index 910f3ba1ea..25a546842f 100644
+--- a/tests/avocado/avocado_qemu/__init__.py
++++ b/tests/avocado/avocado_qemu/__init__.py
+@@ -306,7 +306,7 @@ def require_netdev(self, netdevname):
+             self.cancel('no support for user networking')
+ 
+     def _new_vm(self, name, *args):
+-        self._sd = tempfile.TemporaryDirectory(prefix="avo_qemu_sock_")
++        self._sd = tempfile.TemporaryDirectory(prefix="qemu_")
+         vm = QEMUMachine(self.qemu_bin, base_temp_dir=self.workdir,
+                          sock_dir=self._sd.name, log_dir=self.logdir)
+         self.log.debug('QEMUMachine "%s" created', name)
 -- 
 2.47.3
 
