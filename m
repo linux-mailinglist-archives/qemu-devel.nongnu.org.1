@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18166BA5BEF
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031BDBA5C1C
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:12:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2QsB-0004eU-9l; Sat, 27 Sep 2025 05:05:43 -0400
+	id 1v2QsQ-0004yN-EO; Sat, 27 Sep 2025 05:05:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qry-0004VU-CO; Sat, 27 Sep 2025 05:05:32 -0400
+ id 1v2QsC-0004jz-F7; Sat, 27 Sep 2025 05:05:45 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qro-0007Am-7C; Sat, 27 Sep 2025 05:05:29 -0400
+ id 1v2Qs2-0007Bz-65; Sat, 27 Sep 2025 05:05:43 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 33D74158563;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4633A158564;
  Sat, 27 Sep 2025 12:03:03 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1150B291580;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 23F5A291581;
  Sat, 27 Sep 2025 12:03:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 14/16] multiboot: Fix the split lock
-Date: Sat, 27 Sep 2025 12:02:58 +0300
-Message-ID: <20250927090304.2901324-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?=E6=9D=8E=E5=A8=81=E5=A8=81?= <liweiwei@kubuds.cn>,
+ Anton Johansson <anjo@rev.ng>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.21 15/16] accel/tcg: Properly unlink a TB linked to itself
+Date: Sat, 27 Sep 2025 12:02:59 +0300
+Message-ID: <20250927090304.2901324-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
@@ -59,90 +59,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-While running the kvm-unit-tests on Intel platforms with "split lock
-disable" feature, every test triggers a kernel warning of
+When we remove dest from orig's links, we lose the link
+that we rely on later to reset links.  This can lead to
+failure to release from spinlock with self-modifying code.
 
-  x86/split lock detection: #AC: qemu-system-x86_64/373232 took a split_lock trap at address: 0x1e3
-
-Hack KVM by exiting to QEMU on split lock #AC, we get
-
-KVM: exception 17 exit (error code 0x0)
-EAX=00000001 EBX=00000000 ECX=00000014 EDX=0001fb80
-ESI=00000000 EDI=000000a8 EBP=00000000 ESP=00006f10
-EIP=000001e3 EFL=00010002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
-ES =0900 00009000 0000ffff 00009300 DPL=0 DS16 [-WA]
-CS =c000 000c0000 0000ffff 00009b00 DPL=0 CS16 [-RA]
-SS =0000 00000000 0000ffff 00009300 DPL=0 DS16 [-WA]
-DS =c000 000c0000 0000ffff 00009300 DPL=0 DS16 [-WA]
-FS =0950 00009500 0000ffff 00009300 DPL=0 DS16 [-WA]
-GS =06f2 00006f20 0000ffff 00009300 DPL=0 DS16 [-WA]
-LDT=0000 00000000 0000ffff 00008200 DPL=0 LDT
-TR =0000 00000000 0000ffff 00008b00 DPL=0 TSS32-busy
-GDT=     000c02b4 00000027
-IDT=     00000000 000003ff
-CR0=00000011 CR2=00000000 CR3=00000000 CR4=00000000
-DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 DR3=0000000000000000
-DR6=00000000ffff0ff0 DR7=0000000000000400
-EFER=0000000000000000
-Code=89 16 08 00 65 66 0f 01 16 06 00 66 b8 01 00 00 00 0f 22 c0 <65> 66 ff 2e 00 00 b8 10 00 00 00 8e d0 8e d8 8e c0 8e e0 8e e8 66 b8 08 00 66 ba 10 05 66
-
-And it matches with what disassembled from multiboo_dma.bin:
-
- #objdump -b binary -m i386 -D pc-bios/multiboot_dma.bin
-
-  1d1:   08 00                   or     %al,(%eax)
-  1d3:   65 66 0f 01 16          lgdtw  %gs:(%esi)
-  1d8:   06                      push   %es
-  1d9:   00 66 b8                add    %ah,-0x48(%esi)
-  1dc:   01 00                   add    %eax,(%eax)
-  1de:   00 00                   add    %al,(%eax)
-  1e0:   0f 22 c0                mov    %eax,%cr0
-> 1e3:   65 66 ff 2e             ljmpw  *%gs:(%esi)
-  1e7:   00 00                   add    %al,(%eax)
-  1e9:   b8 10 00 00 00          mov    $0x10,%eax
-  1ee:   8e d0                   mov    %eax,%ss
-  1f0:   8e d8                   mov    %eax,%ds
-  1f2:   8e c0                   mov    %eax,%es
-  1f4:   8e e0                   mov    %eax,%fs
-  1f6:   8e e8                   mov    %eax,%gs
-  1f8:   66 b8 08 00             mov    $0x8,%ax
-  1fc:   66 ba 10 05             mov    $0x510,%dx
-
-We can see that the instruction at 0x1e3 is a far jmp through the GDT.
-However, the GDT is not 8 byte aligned, the base is 0xc02b4.
-
-Intel processors follow the LOCK semantics to set the accessed flag of the
-segment descriptor when loading a segment descriptor. If the the segment
-descriptor crosses two cache line, it causes split lock.
-
-Fix it by aligning the GDT on 8 bytes, so that segment descriptor cannot
-span two cache lines.
-
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20250808035027.2194673-1-xiaoyao.li@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 4c8f69b94839f72314c69902312068d0b9b05a34)
+Cc: qemu-stable@nongnu.org
+Reported-by: 李威威 <liweiwei@kubuds.cn>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Tested-by: Anton Johansson <anjo@rev.ng>
+(cherry picked from commit 03fe6659803f83690b8587d01f8ee56bb4be4b90)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/pc-bios/multiboot_dma.bin b/pc-bios/multiboot_dma.bin
-index c0e2c3102a..e6d0c97093 100644
-Binary files a/pc-bios/multiboot_dma.bin and b/pc-bios/multiboot_dma.bin differ
-diff --git a/pc-bios/optionrom/multiboot.S b/pc-bios/optionrom/multiboot.S
-index 181a4b03a3..c95e35c9cb 100644
---- a/pc-bios/optionrom/multiboot.S
-+++ b/pc-bios/optionrom/multiboot.S
-@@ -208,7 +208,7 @@ ljmp2:
- prot_jump:	.long prot_mode
- 		.short 8
- 
--.align 4, 0
-+.align 8, 0
- gdt:
- 	/* 0x00 */
- .byte	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 9d9f651c78..077265172e 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -186,6 +186,14 @@ static inline void tb_remove_from_jmp_list(TranslationBlock *orig, int n_orig)
+      * We first acquired the lock, and since the destination pointer matches,
+      * we know for sure that @orig is in the jmp list.
+      */
++    if (dest == orig) {
++        /*
++         * In the case of a TB that links to itself, removing the entry
++         * from the list means that it won't be present later during
++         * tb_jmp_unlink -- unlink now.
++         */
++        tb_reset_jump(orig, n_orig);
++    }
+     pprev = &dest->jmp_list_head;
+     TB_FOR_EACH_JMP(dest, tb, n) {
+         if (tb == orig && n == n_orig) {
 -- 
 2.47.3
 
