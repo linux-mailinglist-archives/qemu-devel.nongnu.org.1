@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4593ABA5C2E
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8A6BA5C19
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:11:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2Qqs-00045z-LH; Sat, 27 Sep 2025 05:04:22 -0400
+	id 1v2Qr3-00047z-5T; Sat, 27 Sep 2025 05:04:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qqi-000454-V5; Sat, 27 Sep 2025 05:04:12 -0400
+ id 1v2Qqy-000479-AE; Sat, 27 Sep 2025 05:04:28 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qqe-0006rO-EV; Sat, 27 Sep 2025 05:04:12 -0400
+ id 1v2Qql-0006sS-03; Sat, 27 Sep 2025 05:04:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5BE05158559;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6BDD415855A;
  Sat, 27 Sep 2025 12:03:02 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3AC8E291576;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4C751291577;
  Sat, 27 Sep 2025 12:03:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yuxue Liu <yuxue.liu@jaguarmicro.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 04/16] vhost-user-test: no set non-blocking for cal fd
- less than 0.
-Date: Sat, 27 Sep 2025 12:02:48 +0300
-Message-ID: <20250927090304.2901324-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.21 05/16] Revert "tests/qtest: use qos_printf instead of
+ g_test_message"
+Date: Sat, 27 Sep 2025 12:02:49 +0300
+Message-ID: <20250927090304.2901324-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
@@ -41,8 +41,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,43 +58,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+From: Markus Armbruster <armbru@redhat.com>
 
-In the scenario where vhost-user sets eventfd to -1,
-qemu_chr_fe_get_msgfds retrieves fd as -1. When vhost_user_read
-receives, it does not perform blocking operations on the descriptor
-with fd=-1, so non-blocking operations should not be performed here
-either.This is a normal use case. Calling g_unix_set_fd_nonblocking
-at this point will cause the test to interrupt.
+This reverts commit 30ea13e9d97dcbd4ea541ddf9e8857fa1d5cb30f.
 
-When vhost_user_write sets the call fd to -1, it sets the number of
-fds to 0, so the fds obtained by qemu_chr_fe_get_msgfds will also
-be 0.
+Also rewrites qos_printf() calls added later.
 
-Signed-off-by: Yuxue Liu <yuxue.liu@jaguarmicro.com>
-Message-Id: <20240411073555.1357-1-yuxue.liu@jaguarmicro.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit f72fc16910c8f44edf052f52672e0e63bbbc773c)
-(Mjt: pick this trivial focused change up for 7.2.x so that subsequent change(s) in this area apply cleanly)
+"make check" prints many lines like
+
+    stdout: 138: UNKNOWN:     # # qos_test running single test in subprocess
+    stdout: 139: UNKNOWN:     # # set_protocol_features: 0x42
+    stdout: 140: UNKNOWN:     # # set_owner: start of session
+    stdout: 141: UNKNOWN:     # # vhost-user: un-handled message: 14
+    stdout: 142: UNKNOWN:     # # vhost-user: un-handled message: 14
+    stdout: 143: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 144: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 145: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 146: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 147: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 148: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 149: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 150: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 151: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 152: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 153: UNKNOWN:     # # set_vring_num: 0/256
+    stdout: 154: UNKNOWN:     # # set_vring_addr: 0x7f9060000000/0x7f905ffff000/0x7f9060001000
+
+Turns out this is qos-test, and the culprit is a commit meant to ease
+debugging.  Revert it until a better solution is found.
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20250728145747.3165315-1-armbru@redhat.com>
+[Commit message clarified]
+(cherry picked from commit c9a1ea9c52e6462ad5c7814f3abd65baa69dc4ce)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
+diff --git a/tests/qtest/qos-test.c b/tests/qtest/qos-test.c
+index 5da4091ec3..566cb3b00b 100644
+--- a/tests/qtest/qos-test.c
++++ b/tests/qtest/qos-test.c
+@@ -321,11 +321,6 @@ static void walk_path(QOSGraphNode *orig_path, int len)
+ int main(int argc, char **argv, char** envp)
+ {
+     g_test_init(&argc, &argv, NULL);
+-
+-    if (g_test_subprocess()) {
+-        qos_printf("qos_test running single test in subprocess\n");
+-    }
+-
+     if (g_test_verbose()) {
+         qos_printf("ENVIRONMENT VARIABLES: {\n");
+         for (char **env = envp; *env != 0; env++) {
 diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index e4f95b2858..6d9e53ff07 100644
+index 6d9e53ff07..9bfd7f7217 100644
 --- a/tests/qtest/vhost-user-test.c
 +++ b/tests/qtest/vhost-user-test.c
-@@ -456,7 +456,10 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-     case VHOST_USER_SET_VRING_KICK:
+@@ -26,7 +26,6 @@
+ #include "libqos/virtio-pci.h"
+ 
+ #include "libqos/malloc-pc.h"
+-#include "libqos/qgraph_internal.h"
+ #include "hw/virtio/virtio-net.h"
+ 
+ #include "standard-headers/linux/vhost_types.h"
+@@ -338,7 +337,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+     }
+ 
+     if (size != VHOST_USER_HDR_SIZE) {
+-        qos_printf("%s: Wrong message size received %d\n", __func__, size);
++        g_test_message("Wrong message size received %d", size);
+         return;
+     }
+ 
+@@ -349,8 +348,8 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+         p += VHOST_USER_HDR_SIZE;
+         size = qemu_chr_fe_read_all(chr, p, msg.size);
+         if (size != msg.size) {
+-            qos_printf("%s: Wrong message size received %d != %d\n",
+-                       __func__, size, msg.size);
++            g_test_message("Wrong message size received %d != %d",
++                           size, msg.size);
+             goto out;
+         }
+     }
+@@ -386,7 +385,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * We don't need to do anything here, the remote is just
+          * letting us know it is in charge. Just log it.
+          */
+-        qos_printf("set_owner: start of session\n");
++        g_test_message("set_owner: start of session\n");
+         break;
+ 
+     case VHOST_USER_GET_PROTOCOL_FEATURES:
+@@ -412,7 +411,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * the remote end to send this. There is no handshake reply so
+          * just log the details for debugging.
+          */
+-        qos_printf("set_protocol_features: 0x%"PRIx64 "\n", msg.payload.u64);
++        g_test_message("set_protocol_features: 0x%"PRIx64 "\n", msg.payload.u64);
+         break;
+ 
+         /*
+@@ -420,11 +419,11 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * address of the vrings but we can simply report them.
+          */
+     case VHOST_USER_SET_VRING_NUM:
+-        qos_printf("set_vring_num: %d/%d\n",
++        g_test_message("set_vring_num: %d/%d\n",
+                    msg.payload.state.index, msg.payload.state.num);
+         break;
+     case VHOST_USER_SET_VRING_ADDR:
+-        qos_printf("set_vring_addr: 0x%"PRIx64"/0x%"PRIx64"/0x%"PRIx64"\n",
++        g_test_message("set_vring_addr: 0x%"PRIx64"/0x%"PRIx64"/0x%"PRIx64"\n",
+                    msg.payload.addr.avail_user_addr,
+                    msg.payload.addr.desc_user_addr,
+                    msg.payload.addr.used_user_addr);
+@@ -457,7 +456,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
      case VHOST_USER_SET_VRING_CALL:
          /* consume the fd */
--        qemu_chr_fe_get_msgfds(chr, &fd, 1);
-+        if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
-+            qos_printf("call fd: %d, do not set non-blocking\n", fd);
-+            break;
-+        }
+         if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
+-            qos_printf("call fd: %d, do not set non-blocking\n", fd);
++            g_test_message("call fd: %d, do not set non-blocking\n", fd);
+             break;
+         }
          /*
-          * This is a non-blocking eventfd.
-          * The receive function forces it to be blocking,
+@@ -503,12 +502,12 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * fully functioning vhost-user we would enable/disable the
+          * vring monitoring.
+          */
+-        qos_printf("set_vring(%d)=%s\n", msg.payload.state.index,
++        g_test_message("set_vring(%d)=%s\n", msg.payload.state.index,
+                    msg.payload.state.num ? "enabled" : "disabled");
+         break;
+ 
+     default:
+-        qos_printf("vhost-user: un-handled message: %d\n", msg.request);
++        g_test_message("vhost-user: un-handled message: %d\n", msg.request);
+         break;
+     }
+ 
+@@ -532,7 +531,7 @@ static const char *init_hugepagefs(void)
+     }
+ 
+     if (access(path, R_OK | W_OK | X_OK)) {
+-        qos_printf("access on path (%s): %s", path, strerror(errno));
++        g_test_message("access on path (%s): %s", path, strerror(errno));
+         g_test_fail();
+         return NULL;
+     }
+@@ -542,13 +541,13 @@ static const char *init_hugepagefs(void)
+     } while (ret != 0 && errno == EINTR);
+ 
+     if (ret != 0) {
+-        qos_printf("statfs on path (%s): %s", path, strerror(errno));
++        g_test_message("statfs on path (%s): %s", path, strerror(errno));
+         g_test_fail();
+         return NULL;
+     }
+ 
+     if (fs.f_type != HUGETLBFS_MAGIC) {
+-        qos_printf("Warning: path not on HugeTLBFS: %s", path);
++        g_test_message("Warning: path not on HugeTLBFS: %s", path);
+         g_test_fail();
+         return NULL;
+     }
 -- 
 2.47.3
 
