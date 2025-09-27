@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AE1BA5C1F
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E69BA5BF5
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:08:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2Qrj-0004Qf-C6; Sat, 27 Sep 2025 05:05:15 -0400
+	id 1v2QsB-0004cQ-Kb; Sat, 27 Sep 2025 05:05:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qrf-0004QJ-Nt; Sat, 27 Sep 2025 05:05:11 -0400
+ id 1v2Qrx-0004VP-4o; Sat, 27 Sep 2025 05:05:32 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qrd-00077m-A8; Sat, 27 Sep 2025 05:05:11 -0400
+ id 1v2Qrk-0007AB-Py; Sat, 27 Sep 2025 05:05:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0E109158561;
+ by isrv.corpit.ru (Postfix) with ESMTP id 207EA158562;
  Sat, 27 Sep 2025 12:03:03 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E010D29157E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F22D229157F;
  Sat, 27 Sep 2025 12:03:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -28,10 +28,10 @@ Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 12/16] python/qmp/legacy: make QEMUMonitorProtocol
- accept a socket
-Date: Sat, 27 Sep 2025 12:02:56 +0300
-Message-ID: <20250927090304.2901324-12-mjt@tls.msk.ru>
+Subject: [Stable-7.2.21 13/16] python/qemu/machine: use socketpair() for QMP
+ by default
+Date: Sat, 27 Sep 2025 12:02:57 +0300
+Message-ID: <20250927090304.2901324-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
@@ -63,70 +63,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Teach QEMUMonitorProtocol to accept an exisiting socket.
+When no monitor address is given, establish the QMP communication through
+a socketpair() (API is also supported on Windows since Python 3.5)
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-id: 20230111080101.969151-3-marcandre.lureau@redhat.com
+Message-id: 20230111080101.969151-4-marcandre.lureau@redhat.com
+[Resolved conflicts, fixed typing error. --js]
 Signed-off-by: John Snow <jsnow@redhat.com>
-(cherry picked from commit 603a3bad4b9a95b524dc8d6a41b1be4d5c5cacdf)
+(cherry picked from commit bd4c0ef409140bd1be393407c04005ac077d4574)
+(Mjt: this fixes quite a few qemu iotests which was probably racing somewhere)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
-index 1951754455..8b09ee7dbb 100644
---- a/python/qemu/qmp/legacy.py
-+++ b/python/qemu/qmp/legacy.py
-@@ -22,6 +22,7 @@
- #
+diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
+index 5df210c810..b6cb366584 100644
+--- a/python/qemu/machine/machine.py
++++ b/python/qemu/machine/machine.py
+@@ -158,17 +158,13 @@ def __init__(self,
+         self._qmp_timer = qmp_timer
  
- import asyncio
-+import socket
- from types import TracebackType
- from typing import (
-     Any,
-@@ -69,22 +70,32 @@ class QEMUMonitorProtocol:
+         self._name = name or f"{id(self):x}"
++        self._sock_pair: Optional[Tuple[socket.socket, socket.socket]] = None
+         self._temp_dir: Optional[str] = None
+         self._base_temp_dir = base_temp_dir
+         self._sock_dir = sock_dir
+         self._log_dir = log_dir
  
-     :param address:  QEMU address, can be either a unix socket path (string)
-                      or a tuple in the form ( address, port ) for a TCP
--                     connection
-+                     connection or None
-+    :param sock:     a socket or None
-     :param server:   Act as the socket server. (See 'accept')
-     :param nickname: Optional nickname used for logging.
-     """
+-        if monitor_address is not None:
+-            self._monitor_address = monitor_address
+-        else:
+-            self._monitor_address = os.path.join(
+-                self.sock_dir, f"{self._name}.qmp"
+-            )
++        self._monitor_address = monitor_address
  
--    def __init__(self, address: SocketAddrT,
-+    def __init__(self,
-+                 address: Optional[SocketAddrT] = None,
-+                 sock: Optional[socket.socket] = None,
-                  server: bool = False,
-                  nickname: Optional[str] = None):
+         self._console_log_path = console_log
+         if self._console_log_path:
+@@ -303,7 +299,11 @@ def _base_args(self) -> List[str]:
+         args = ['-display', 'none', '-vga', 'none']
  
-+        assert address or sock
-         self._qmp = QMPClient(nickname)
-         self._aloop = asyncio.get_event_loop()
-         self._address = address
-+        self._sock = sock
-         self._timeout: Optional[float] = None
+         if self._qmp_set:
+-            if isinstance(self._monitor_address, tuple):
++            if self._sock_pair:
++                fd = self._sock_pair[0].fileno()
++                os.set_inheritable(fd, True)
++                moncdev = f"socket,id=mon,fd={fd}"
++            elif isinstance(self._monitor_address, tuple):
+                 moncdev = "socket,id=mon,host={},port={}".format(
+                     *self._monitor_address
+                 )
+@@ -337,10 +337,17 @@ def _pre_launch(self) -> None:
+             self._remove_files.append(self._console_address)
  
-         if server:
--            self._sync(self._qmp.start_server(self._address))
-+            if sock:
-+                assert self._sock is not None
-+                self._sync(self._qmp.open_with_socket(self._sock))
-+            else:
-+                assert self._address is not None
-+                self._sync(self._qmp.start_server(self._address))
+         if self._qmp_set:
++            monitor_address = None
++            sock = None
++            if self._monitor_address is None:
++                self._sock_pair = socket.socketpair()
++                sock = self._sock_pair[1]
+             if isinstance(self._monitor_address, str):
+                 self._remove_files.append(self._monitor_address)
++                monitor_address = self._monitor_address
+             self._qmp_connection = QEMUMonitorProtocol(
+-                self._monitor_address,
++                address=monitor_address,
++                sock=sock,
+                 server=True,
+                 nickname=self._name
+             )
+@@ -360,6 +367,8 @@ def _pre_launch(self) -> None:
+         ))
  
-     _T = TypeVar('_T')
- 
-@@ -139,6 +150,7 @@ def connect(self, negotiate: bool = True) -> Optional[QMPMessage]:
-         :return: QMP greeting dict, or None if negotiate is false
-         :raise ConnectError: on connection errors
-         """
-+        assert self._address is not None
-         self._qmp.await_greeting = negotiate
-         self._qmp.negotiate = negotiate
+     def _post_launch(self) -> None:
++        if self._sock_pair:
++            self._sock_pair[0].close()
+         if self._qmp_connection:
+             self._qmp.accept(self._qmp_timer)
  
 -- 
 2.47.3
