@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E69BA5BF5
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18166BA5BEF
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:07:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2QsB-0004cQ-Kb; Sat, 27 Sep 2025 05:05:44 -0400
+	id 1v2QsB-0004eU-9l; Sat, 27 Sep 2025 05:05:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qrx-0004VP-4o; Sat, 27 Sep 2025 05:05:32 -0400
+ id 1v2Qry-0004VU-CO; Sat, 27 Sep 2025 05:05:32 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qrk-0007AB-Py; Sat, 27 Sep 2025 05:05:27 -0400
+ id 1v2Qro-0007Am-7C; Sat, 27 Sep 2025 05:05:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 207EA158562;
+ by isrv.corpit.ru (Postfix) with ESMTP id 33D74158563;
  Sat, 27 Sep 2025 12:03:03 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F22D229157F;
- Sat, 27 Sep 2025 12:03:05 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1150B291580;
+ Sat, 27 Sep 2025 12:03:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 13/16] python/qemu/machine: use socketpair() for QMP
- by default
-Date: Sat, 27 Sep 2025 12:02:57 +0300
-Message-ID: <20250927090304.2901324-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.21 14/16] multiboot: Fix the split lock
+Date: Sat, 27 Sep 2025 12:02:58 +0300
+Message-ID: <20250927090304.2901324-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
@@ -61,85 +59,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-When no monitor address is given, establish the QMP communication through
-a socketpair() (API is also supported on Windows since Python 3.5)
+While running the kvm-unit-tests on Intel platforms with "split lock
+disable" feature, every test triggers a kernel warning of
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-id: 20230111080101.969151-4-marcandre.lureau@redhat.com
-[Resolved conflicts, fixed typing error. --js]
-Signed-off-by: John Snow <jsnow@redhat.com>
-(cherry picked from commit bd4c0ef409140bd1be393407c04005ac077d4574)
-(Mjt: this fixes quite a few qemu iotests which was probably racing somewhere)
+  x86/split lock detection: #AC: qemu-system-x86_64/373232 took a split_lock trap at address: 0x1e3
+
+Hack KVM by exiting to QEMU on split lock #AC, we get
+
+KVM: exception 17 exit (error code 0x0)
+EAX=00000001 EBX=00000000 ECX=00000014 EDX=0001fb80
+ESI=00000000 EDI=000000a8 EBP=00000000 ESP=00006f10
+EIP=000001e3 EFL=00010002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+ES =0900 00009000 0000ffff 00009300 DPL=0 DS16 [-WA]
+CS =c000 000c0000 0000ffff 00009b00 DPL=0 CS16 [-RA]
+SS =0000 00000000 0000ffff 00009300 DPL=0 DS16 [-WA]
+DS =c000 000c0000 0000ffff 00009300 DPL=0 DS16 [-WA]
+FS =0950 00009500 0000ffff 00009300 DPL=0 DS16 [-WA]
+GS =06f2 00006f20 0000ffff 00009300 DPL=0 DS16 [-WA]
+LDT=0000 00000000 0000ffff 00008200 DPL=0 LDT
+TR =0000 00000000 0000ffff 00008b00 DPL=0 TSS32-busy
+GDT=     000c02b4 00000027
+IDT=     00000000 000003ff
+CR0=00000011 CR2=00000000 CR3=00000000 CR4=00000000
+DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 DR3=0000000000000000
+DR6=00000000ffff0ff0 DR7=0000000000000400
+EFER=0000000000000000
+Code=89 16 08 00 65 66 0f 01 16 06 00 66 b8 01 00 00 00 0f 22 c0 <65> 66 ff 2e 00 00 b8 10 00 00 00 8e d0 8e d8 8e c0 8e e0 8e e8 66 b8 08 00 66 ba 10 05 66
+
+And it matches with what disassembled from multiboo_dma.bin:
+
+ #objdump -b binary -m i386 -D pc-bios/multiboot_dma.bin
+
+  1d1:   08 00                   or     %al,(%eax)
+  1d3:   65 66 0f 01 16          lgdtw  %gs:(%esi)
+  1d8:   06                      push   %es
+  1d9:   00 66 b8                add    %ah,-0x48(%esi)
+  1dc:   01 00                   add    %eax,(%eax)
+  1de:   00 00                   add    %al,(%eax)
+  1e0:   0f 22 c0                mov    %eax,%cr0
+> 1e3:   65 66 ff 2e             ljmpw  *%gs:(%esi)
+  1e7:   00 00                   add    %al,(%eax)
+  1e9:   b8 10 00 00 00          mov    $0x10,%eax
+  1ee:   8e d0                   mov    %eax,%ss
+  1f0:   8e d8                   mov    %eax,%ds
+  1f2:   8e c0                   mov    %eax,%es
+  1f4:   8e e0                   mov    %eax,%fs
+  1f6:   8e e8                   mov    %eax,%gs
+  1f8:   66 b8 08 00             mov    $0x8,%ax
+  1fc:   66 ba 10 05             mov    $0x510,%dx
+
+We can see that the instruction at 0x1e3 is a far jmp through the GDT.
+However, the GDT is not 8 byte aligned, the base is 0xc02b4.
+
+Intel processors follow the LOCK semantics to set the accessed flag of the
+segment descriptor when loading a segment descriptor. If the the segment
+descriptor crosses two cache line, it causes split lock.
+
+Fix it by aligning the GDT on 8 bytes, so that segment descriptor cannot
+span two cache lines.
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20250808035027.2194673-1-xiaoyao.li@intel.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 4c8f69b94839f72314c69902312068d0b9b05a34)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index 5df210c810..b6cb366584 100644
---- a/python/qemu/machine/machine.py
-+++ b/python/qemu/machine/machine.py
-@@ -158,17 +158,13 @@ def __init__(self,
-         self._qmp_timer = qmp_timer
+diff --git a/pc-bios/multiboot_dma.bin b/pc-bios/multiboot_dma.bin
+index c0e2c3102a..e6d0c97093 100644
+Binary files a/pc-bios/multiboot_dma.bin and b/pc-bios/multiboot_dma.bin differ
+diff --git a/pc-bios/optionrom/multiboot.S b/pc-bios/optionrom/multiboot.S
+index 181a4b03a3..c95e35c9cb 100644
+--- a/pc-bios/optionrom/multiboot.S
++++ b/pc-bios/optionrom/multiboot.S
+@@ -208,7 +208,7 @@ ljmp2:
+ prot_jump:	.long prot_mode
+ 		.short 8
  
-         self._name = name or f"{id(self):x}"
-+        self._sock_pair: Optional[Tuple[socket.socket, socket.socket]] = None
-         self._temp_dir: Optional[str] = None
-         self._base_temp_dir = base_temp_dir
-         self._sock_dir = sock_dir
-         self._log_dir = log_dir
- 
--        if monitor_address is not None:
--            self._monitor_address = monitor_address
--        else:
--            self._monitor_address = os.path.join(
--                self.sock_dir, f"{self._name}.qmp"
--            )
-+        self._monitor_address = monitor_address
- 
-         self._console_log_path = console_log
-         if self._console_log_path:
-@@ -303,7 +299,11 @@ def _base_args(self) -> List[str]:
-         args = ['-display', 'none', '-vga', 'none']
- 
-         if self._qmp_set:
--            if isinstance(self._monitor_address, tuple):
-+            if self._sock_pair:
-+                fd = self._sock_pair[0].fileno()
-+                os.set_inheritable(fd, True)
-+                moncdev = f"socket,id=mon,fd={fd}"
-+            elif isinstance(self._monitor_address, tuple):
-                 moncdev = "socket,id=mon,host={},port={}".format(
-                     *self._monitor_address
-                 )
-@@ -337,10 +337,17 @@ def _pre_launch(self) -> None:
-             self._remove_files.append(self._console_address)
- 
-         if self._qmp_set:
-+            monitor_address = None
-+            sock = None
-+            if self._monitor_address is None:
-+                self._sock_pair = socket.socketpair()
-+                sock = self._sock_pair[1]
-             if isinstance(self._monitor_address, str):
-                 self._remove_files.append(self._monitor_address)
-+                monitor_address = self._monitor_address
-             self._qmp_connection = QEMUMonitorProtocol(
--                self._monitor_address,
-+                address=monitor_address,
-+                sock=sock,
-                 server=True,
-                 nickname=self._name
-             )
-@@ -360,6 +367,8 @@ def _pre_launch(self) -> None:
-         ))
- 
-     def _post_launch(self) -> None:
-+        if self._sock_pair:
-+            self._sock_pair[0].close()
-         if self._qmp_connection:
-             self._qmp.accept(self._qmp_timer)
- 
+-.align 4, 0
++.align 8, 0
+ gdt:
+ 	/* 0x00 */
+ .byte	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 -- 
 2.47.3
 
