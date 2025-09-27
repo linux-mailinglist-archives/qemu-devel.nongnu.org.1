@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62E8BA5C04
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CCCBA5BFB
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2QrJ-0004EQ-EC; Sat, 27 Sep 2025 05:04:49 -0400
+	id 1v2QrW-0004Jz-RT; Sat, 27 Sep 2025 05:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2QrD-0004Be-Al; Sat, 27 Sep 2025 05:04:43 -0400
+ id 1v2QrU-0004IL-8X; Sat, 27 Sep 2025 05:05:00 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qr1-0006vB-HB; Sat, 27 Sep 2025 05:04:40 -0400
+ id 1v2QrJ-0006vx-5P; Sat, 27 Sep 2025 05:04:57 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AE9BF15855D;
+ by isrv.corpit.ru (Postfix) with ESMTP id C8E2315855E;
  Sat, 27 Sep 2025 12:03:02 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8DC1E29157A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9E6D529157B;
  Sat, 27 Sep 2025 12:03:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@stgraber.org>,
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 08/16] hw/usb/network: Remove hardcoded 0x40 prefix in
- STRING_ETHADDR response
-Date: Sat, 27 Sep 2025 12:02:52 +0300
-Message-ID: <20250927090304.2901324-8-mjt@tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [Stable-7.2.21 09/16] use fedora:37 for python container instead of
+ :latest
+Date: Sat, 27 Sep 2025 12:02:53 +0300
+Message-ID: <20250927090304.2901324-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
 References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
@@ -61,57 +60,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stéphane Graber <stgraber@stgraber.org>
+More recent fedora does not have our minimum python versions
+anymore.  Stick with the most common fedora version used in
+7.2.x in other places, which is 37.  This way, python tests
+works again.
 
-USB NICs have a "40:" prefix hardcoded for all MAC addresses when we
-return the guest the MAC address if it queries the STRING_ETHADDR USB
-string property.  This doesn't match what we use for the
-OID_802_3_PERMANENT_ADDRESS or OID_802_3_CURRENT_ADDRESS OIDs for
-NDIS, or the MAC address we actually use in the QEMU networking code
-to send/receive packets for this device, or the NIC info string we
-print for users.  In all those other places we directly use
-s->conf.macaddr.a, which is the full thing the user asks for.
+This is a 7.2-specific change, not aimed for the master branch.
 
-This overrides user-provided configuration and leads to an inconsistent
-experience.
-
-I couldn't find any documented reason (comment or git commits) for
-this behavior.  It seems like everyone is just expecting the MAC
-address to be fully passed through to the guest, but it isn't.
-
-This may have been a debugging hack that accidentally made it through
-to the accepted patch: it has been in the code since it was originally
-added back in 2008.
-
-This is also particularly problematic as the "40:" prefix isn't a
-reserved prefix for MAC addresses (IEEE OUI).  There are a number of
-valid allocations out there which use this prefix, meaning that QEMU
-may be causing MAC address conflicts.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 6c9f886ceae5b ("Add CDC-Ethernet usb NIC (original patch from Thomas Sailer)"
-Signed-off-by: Stéphane Graber <stgraber@stgraber.org>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2951
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-[PMM: beef up commit message based on mailing list discussion]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit aaf042299acf83919862c7d7dd5fc36acf4e0671)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/usb/dev-network.c b/hw/usb/dev-network.c
-index 2c33e36cad..1b6004c902 100644
---- a/hw/usb/dev-network.c
-+++ b/hw/usb/dev-network.c
-@@ -1391,7 +1391,7 @@ static void usb_net_realize(USBDevice *dev, Error **errp)
-     qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
-     snprintf(s->usbstring_mac, sizeof(s->usbstring_mac),
-              "%02x%02x%02x%02x%02x%02x",
--             0x40,
-+             s->conf.macaddr.a[0],
-              s->conf.macaddr.a[1],
-              s->conf.macaddr.a[2],
-              s->conf.macaddr.a[3],
+diff --git a/tests/docker/dockerfiles/python.docker b/tests/docker/dockerfiles/python.docker
+index 175c10a34e..8cc5d3567e 100644
+--- a/tests/docker/dockerfiles/python.docker
++++ b/tests/docker/dockerfiles/python.docker
+@@ -1,6 +1,6 @@
+ # Python library testing environment
+ 
+-FROM fedora:latest
++FROM fedora:37
+ MAINTAINER John Snow <jsnow@redhat.com>
+ 
+ # Please keep this list sorted alphabetically
 -- 
 2.47.3
 
