@@ -2,37 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24285BA5C13
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C7EBA5C10
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Sep 2025 11:10:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2QsF-0004hx-Vi; Sat, 27 Sep 2025 05:05:48 -0400
+	id 1v2Qsu-0005h4-OR; Sat, 27 Sep 2025 05:06:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qs7-0004ex-Pi; Sat, 27 Sep 2025 05:05:40 -0400
+ id 1v2Qse-0005JU-UT; Sat, 27 Sep 2025 05:06:14 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v2Qs2-0007CL-CS; Sat, 27 Sep 2025 05:05:39 -0400
+ id 1v2QsQ-0007Gx-5P; Sat, 27 Sep 2025 05:06:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 54D90158565;
- Sat, 27 Sep 2025 12:03:03 +0300 (MSK)
-Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 36024291582;
- Sat, 27 Sep 2025 12:03:06 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.21 16/16] tests/tcg/multiarch: Add tb-link test
-Date: Sat, 27 Sep 2025 12:03:00 +0300
-Message-ID: <20250927090304.2901324-16-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
-References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
+ by isrv.corpit.ru (Postfix) with ESMTP id 1EE4E15856D;
+ Sat, 27 Sep 2025 12:05:52 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 02B7F291587;
+ Sat, 27 Sep 2025 12:05:54 +0300 (MSK)
+Message-ID: <2eff69a9-d7ae-4f97-85d5-d657b7793f79@tls.msk.ru>
+Date: Sat, 27 Sep 2025 12:05:54 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Stable-7.2.21 00/16] Patch Round-up for stable 7.2.21, freeze on
+ 2025-10-06
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <qemu-stable-7.2.21-20250927105809@cover.tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,100 +102,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On 27.09.2025 12:02, Michael Tokarev wrote:
+> The following patches are queued for QEMU stable v7.2.21:
+> 
+>    https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+> 
+> Patch freeze is 2025-10-06, and the release is planned for 2025-10-08:
+> 
+>    https://wiki.qemu.org/Planning/7.2
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit e13e1195db8af18e149065a59351ea85215645bb)
-(Mjt: resolve context conflict in tests/tcg/multiarch/Makefile.target)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+There aren't many fixes (so far) for 7.2.x, - the bulk of changes
+are various testsuite tweaks.  However, this change:
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 5f0fee1aad..2fdec1f05f 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -39,6 +39,8 @@ signals: LDFLAGS+=-lrt -lpthread
- munmap-pthread: CFLAGS+=-pthread
- munmap-pthread: LDFLAGS+=-pthread
- 
-+tb-link: LDFLAGS+=-lpthread
-+
- # We define the runner for test-mmap after the individual
- # architectures have defined their supported pages sizes. If no
- # additional page sizes are defined we only run the default test.
-diff --git a/tests/tcg/multiarch/tb-link.c b/tests/tcg/multiarch/tb-link.c
-new file mode 100644
-index 0000000000..4e40306fa1
---- /dev/null
-+++ b/tests/tcg/multiarch/tb-link.c
-@@ -0,0 +1,67 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Verify that a single TB spin-loop is properly invalidated,
-+ * releasing the thread from the spin-loop.
-+ */
-+
-+#include <assert.h>
-+#include <sys/mman.h>
-+#include <pthread.h>
-+#include <stdint.h>
-+#include <stdbool.h>
-+#include <unistd.h>
-+#include <sched.h>
-+
-+
-+#ifdef __x86_64__
-+#define READY   0x000047c6      /* movb $0,0(%rdi) */
-+#define LOOP    0xfceb9090      /* 1: nop*2; jmp 1b */
-+#define RETURN  0x909090c3      /* ret; nop*3 */
-+#define NOP     0x90909090      /* nop*4 */
-+#elif defined(__aarch64__)
-+#define READY   0x3900001f      /* strb wzr,[x0] */
-+#define LOOP    0x14000000      /* b . */
-+#define RETURN  0xd65f03c0      /* ret */
-+#define NOP     0xd503201f      /* nop */
-+#elif defined(__riscv)
-+#define READY   0x00050023      /* sb zero, (a0) */
-+#define LOOP    0x0000006f      /* jal zero, #0 */
-+#define RETURN  0x00008067      /* jalr zero, ra, 0 */
-+#define NOP     0x00000013      /* nop */
-+#endif
-+
-+
-+int main()
-+{
-+#ifdef READY
-+    int tmp;
-+    pthread_t thread_id;
-+    bool hold = true;
-+    uint32_t *buf;
-+
-+    buf = mmap(NULL, 3 * sizeof(uint32_t),
-+               PROT_READ | PROT_WRITE | PROT_EXEC,
-+               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    assert(buf != MAP_FAILED);
-+
-+    buf[0] = READY;
-+    buf[1] = LOOP;
-+    buf[2] = RETURN;
-+
-+    alarm(2);
-+
-+    tmp = pthread_create(&thread_id, NULL, (void *(*)(void *))buf, &hold);
-+    assert(tmp == 0);
-+
-+    while (hold) {
-+        sched_yield();
-+    }
-+
-+    buf[1] = NOP;
-+    __builtin___clear_cache(&buf[1], &buf[2]);
-+
-+    tmp = pthread_join(thread_id, NULL);
-+    assert(tmp == 0);
-+#endif
-+    return 0;
-+}
--- 
-2.47.3
+02 a11d1847d5ef Alex Bennée:
+    .gitmodules: move u-boot mirrors to qemu-project-mirrors
 
+is needed for 7.2.x to build from git.
+
+Thanks,
+
+/mjt
 
