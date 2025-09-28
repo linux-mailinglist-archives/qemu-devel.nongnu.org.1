@@ -2,93 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C43BA7724
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86D8BA7730
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:36:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2x3v-0003Dt-5t; Sun, 28 Sep 2025 15:27:59 -0400
+	id 1v2xA4-0003xL-3x; Sun, 28 Sep 2025 15:34:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v2x3p-0003Cp-NQ
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:54 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v2x3d-0004DE-1k
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:53 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-77e87003967so1877677b3a.1
- for <qemu-devel@nongnu.org>; Sun, 28 Sep 2025 12:27:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759087653; x=1759692453; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VlD+WdcA+JLTreAT/pG66awwZMoZ/4YZ72FaKfp9294=;
- b=L+NAU70UHW0AthoBMpfdMEKqyGLNg+SXeSsuEZqzhB5hHYWlDyKduRdkirNuNfOI6K
- ghSW6yU4/e+1+AXAR6ZU86uUTNudegSeX9iSYQN+xkBievwbT0aqy6H8ClQ8BYwpDDBN
- AHrbc4AVqHPtczHu6ipyn/TwOiKJHKFxOV5f/I7WvhLOpjvJfhpkLZRDfqUMtKChW1Ub
- FPOIDIF3a4QUjKrymPgKqwJnZLcfQqPw+hV1ZybSa5RersNGDqChBi/LRjt3B4O+Ygmi
- VXs1Xoc8HzwikUUKH2jE7B440uuQamMoQbaLgFgHR67tQTboBpeqEWG+1U4ngllhDHeA
- A2NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759087653; x=1759692453;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VlD+WdcA+JLTreAT/pG66awwZMoZ/4YZ72FaKfp9294=;
- b=Igu4MslEye0r4S0SaCUf+7WMpbPcO7K6xBs5mCRxnSKI01a6C8IakHVHfsRmD1o5jB
- W+HwVtBQr81b4908NKep5RmEJq12p93c/ksytk+HWTKH9lSf+34mXKKtf7IM+QYBZqnJ
- 1S12QiYqYyYaizM2jOqCiP8/M1GEG8dYccvaOkNlj8za/CIzIkMfyh+HS2Vu4LDmwkIM
- MGI+XRQJSJ8f6jxuaX44CfTVaUP0AUk2Wv4ktjf1l6MUsEU29irMHL447Zvk2+9CEYz9
- 2fBOolGnQSb3TKKC5xdrdpfxBrNo5pMD+/+GUQ9l8jsrMqO7q5jIqzN3cktph1mSO1S2
- Klhg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV0n/mv2xbLVA0TTeA5X0W3onzczCB+C4IplGzqO2wKeTMpIb1NrTL+eTyrG1U0q/cBMm67dIEcvm0u@nongnu.org
-X-Gm-Message-State: AOJu0YxmXkRvbEY48GwcTswYIW8WoffpIz8VuifvEC5fRw7TqWVNJuPy
- 8eAJb4hi8lfusbu3QDNs2/ap7EQNA4W4pZo01Ka2k/6eH3oc6URRiAT9O+13GVgw7jA=
-X-Gm-Gg: ASbGnctCmdaTOJy9BabLutcDo/KbPnAODqSj0ohn+ofeTojgum3oYURIBKPfybMx2Lv
- zkjOAs9F9FNmFvzrDsDRy/ColbKs/z0nmnD8qqKG0sY0zc2sJRSI5f6gTX+3B6dDtWxdPZkzhoE
- 6wVF3afm1CdEE8uYlZxzfHO5XeEjVdSgKJd3NFv22nXdAbQrJubxETJp4XRLrFn7HqQDrAgHial
- /P7+QoZa+yu3JNI02+Xur/Ghz4HB3wHB05oN3FtKgYjRDhtyMeC66lyZdUm0aW1iNCoWGCg0lih
- HB+r9IsXoq59cmS0gn5mg18X8ojNTk2GcfXUFp2BAar/XN0Uwelyi2TKjQ8yksByd2tb6Yf7oyz
- YCCoQcqNLLYkvyiupHIY+BdHZmNDwgnHBADh0wtNu6VwnALk=
-X-Google-Smtp-Source: AGHT+IFE9VLXf4WNHo5LbX31fhQSnzU8VbJmfSQtw0F5SJxp1vYF+R6lj7rQtrg6gsMrVfMKcZc0gw==
-X-Received: by 2002:a05:6a20:158d:b0:2bd:2798:7ae7 with SMTP id
- adf61e73a8af0-2e7cdda05e1mr16988677637.31.1759087652913; 
- Sun, 28 Sep 2025 12:27:32 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7810238ca6dsm9115937b3a.8.2025.09.28.12.27.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Sep 2025 12:27:32 -0700 (PDT)
-Message-ID: <50d8690f-d5a9-4cc4-9111-8f2d4e5bfd5f@linaro.org>
-Date: Sun, 28 Sep 2025 12:27:30 -0700
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1v2xA0-0003x7-65; Sun, 28 Sep 2025 15:34:16 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1v2x9u-0005ld-K8; Sun, 28 Sep 2025 15:34:15 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58S7e4K6009738;
+ Sun, 28 Sep 2025 19:34:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=4kjXPe
+ kc2vlePcNLVeQtfix3nc112uKHX+gqmBUv9Ek=; b=GAAx1cis4wa+0OO0pH2BFb
+ CaWp8Ve9Sz8BSu3aavl9QD4qBvUcsH6TeZIti+37P/D8S4pczFLJ8OCS9/4jG+Yk
+ XpZDMGs2/SRnAR9RXuAtl//a3qMmedRpjdD+30+qoOzhMoJNVVY0RvZJngThiTmb
+ bf6ES5ydqCBy8ftihUPRo5nFr9fJJN0I8xZceTppGmit/dv4tTzTGOtCm3XdrxzS
+ ELXhXpGuMTkHf0umULbM8YrPuFFWZZkuVavrsptWL2Z3QLTc3js5Vn0CGwrL0oTB
+ ZR3nqJxTdMf35o/3VrctXcgYJDXrTL4CEfSm5R3+MHqkkZ5ky9gBljRxjLZtHkiw
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktxqmq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 28 Sep 2025 19:34:02 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58SJQKQC003151;
+ Sun, 28 Sep 2025 19:34:02 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktxqmp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 28 Sep 2025 19:34:02 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SHFSYe003325;
+ Sun, 28 Sep 2025 19:34:01 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49etmxk0r8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 28 Sep 2025 19:34:01 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58SJXxhX10224292
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 28 Sep 2025 19:34:00 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D770258056;
+ Sun, 28 Sep 2025 19:33:59 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 21F2658052;
+ Sun, 28 Sep 2025 19:33:57 +0000 (GMT)
+Received: from [9.39.17.115] (unknown [9.39.17.115])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Sun, 28 Sep 2025 19:33:56 +0000 (GMT)
+Message-ID: <586cd866-0f8b-4960-acda-316d6e2c0b92@linux.ibm.com>
+Date: Mon, 29 Sep 2025 01:03:55 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 7/9] hw/ppc: Support for an IBM PPE42 CPU decrementer
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+To: Richard Henderson <richard.henderson@linaro.org>,
  Glenn Miles <milesg@linux.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@redhat.com, npiggin@gmail.com, thuth@redhat.com, 
  rathc@linux.ibm.com
 References: <20250925201758.652077-1-milesg@linux.ibm.com>
  <20250925201758.652077-8-milesg@linux.ibm.com>
  <f023d7c8-1556-448b-8cf6-1ee1cc2f7b50@linux.ibm.com>
-From: Richard Henderson <richard.henderson@linaro.org>
+ <50d8690f-d5a9-4cc4-9111-8f2d4e5bfd5f@linaro.org>
 Content-Language: en-US
-In-Reply-To: <f023d7c8-1556-448b-8cf6-1ee1cc2f7b50@linux.ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <50d8690f-d5a9-4cc4-9111-8f2d4e5bfd5f@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=T7WBjvKQ c=1 sm=1 tr=0 ts=68d98daa cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10
+ a=6d6SYI82db8bXswPYFIA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+ a=oH34dK2VZjykjzsv8OSz:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=jd6J4Gguk5HxikPWLKER:22
+X-Proofpoint-GUID: kkQ_Ql1DVUU9hy5rYtSOA2xwSQ28EpHD
+X-Proofpoint-ORIG-GUID: qWpGsZcsk8ipk1rSEbkQ12ytcqdJPpBY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfX90znaOLFry6C
+ ruyYxZGvVSY7iUPFsDYgcxte6YCBJp96Hdr1VLH6e8AOJto8PMu4heoHuP8pG+nSUTzKmeGdF6M
+ sIS/WsgwQkJtjL0oYulwkq3JY9TjQ5srf13Z4HEKyAO1JMYF9wXxgB4pn980P8KF5iNLIwlFugR
+ 9RDSgc2dVQuoHWPa9ichHqSuigd/Rvt92mYko5BnA6FCdX8pQ+urkEQRVFaQvYYcXfEQ1NOd7KZ
+ 0WLgoh8BIGIgiDBUiL58fkoW28WQoQr2LzMcUUl5V83o1erNv+NXugkXmiz7utZ18nz7q5tauSX
+ Z8NvdeXA1zi0qtVipoSA5e2zbfb2kOpAhjXL+QjlPyFzYeOPQneC94bmT6eMQkbX705mnrXdy8f
+ WE0ojejdipHjkw/UCr6lsTT+x3mxuQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-28_08,2025-09-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 spamscore=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,19 +129,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/28/25 10:51, Harsh Prateek Bora wrote:
-> 
-> 
-> On 9/26/25 01:47, Glenn Miles wrote:
->> The IBM PPE42 processors support a 32-bit decrementer
->> that can raise an external interrupt when DEC[0]
->> transitions from a 0 to a 1 (a non-negative value to a
-> 
-> I guess it was meant to be 0 to -1 (0xffffffff)?
-> No need to re-spin just for that though.
-
-No, Glenn is talking about bit DEC[0], so 0 or 1 only.
 
 
-r~
+On 9/29/25 00:57, Richard Henderson wrote:
+> On 9/28/25 10:51, Harsh Prateek Bora wrote:
+>>
+>>
+>> On 9/26/25 01:47, Glenn Miles wrote:
+>>> The IBM PPE42 processors support a 32-bit decrementer
+>>> that can raise an external interrupt when DEC[0]
+>>> transitions from a 0 to a 1 (a non-negative value to a
+>>
+>> I guess it was meant to be 0 to -1 (0xffffffff)?
+>> No need to re-spin just for that though.
+> 
+> No, Glenn is talking about bit DEC[0], so 0 or 1 only.
+
+Oh, yeh. I just posted a pull-req after updating it to -1 though.
+Not sure if we want a pull-req v2 for that.
+
+regards,
+Harsh
+
+> 
+> 
+> r~
 
