@@ -2,99 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EBBBA772A
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E8EBA773C
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:36:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2x3a-00031o-Lq; Sun, 28 Sep 2025 15:27:38 -0400
+	id 1v2x3r-0003CY-70; Sun, 28 Sep 2025 15:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x3V-000301-7Q
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:34 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1v2x3Z-00032b-52
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:38 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x3K-000487-Hl
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:32 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58SHoSve024019;
- Sun, 28 Sep 2025 19:27:15 GMT
+ id 1v2x3S-00048O-S7
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:36 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58SHVViW008078;
+ Sun, 28 Sep 2025 19:27:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=6rxJghI/Ay80Y/ymC
- YTnBc6UkYhodyjmT/QkBmZUX0A=; b=J4e/gl+tIT1pB8Z/K2M1+I5RvM9FtL5tc
- IHKLykcBLJRCFAR6N2GKBue0Ogqom0MWpBd6EPwDZCVtXh9nYRoSsa9pKm9FB9Z2
- 2bJ22LDnRtTT2iVE7oHExFPe/WhjetkuJhBz+xSw2IBfD0u/zH4xkvHArmqfE3J4
- Xyt1Nsp6aPrKVhi7hHRFOBC+ZSLWQWGIol6s20MZF1pHV99X/h4SVi5rWD9u/t7t
- NtYeB4y4MJ/0qSoefiAkqhdcrudKvtGsxHJLA//yUJ1Il0jgt9Zj2Jv5PTsRWFnO
- wJuBUkeSKx873oUoH/Ukcgf73VsB3Zu7OL8ZLyscMAIGI2vJ5XVlg==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktxq29-1
+ :mime-version:references:subject:to; s=pp1; bh=ZzfpCMciRpwKaURik
+ 4UQBgOVjKPhOEyFnK/J59woDow=; b=ko7Mv6ouFH009Qe9HENk8cYd0kegMq+/n
+ PMLevrkBfBxtR6xzNK4QvXtsxibkFc8kahXFMBehussrrW8e/4kQeyqSDia1riUz
+ i97ym92rzkiFeT0aFpypDGjlkrbvZMrRcLRyo6OpZI0y/a2bk5SNjwV7TjHMJDds
+ Dso148ts5OiGiInjw1+HKPxUbs/Ek853Efee6ejaemGvI5LS4ageXfj1bzz7XWeO
+ g+KcAljGEwPOArDTZ6FaY7IZXxdiQi/gqhufChS2U5dFeXD71mBYqOOcp8yeSOy1
+ psENgkOdlM4DZtF+2e6oWsQyxLOKdWZO5UO7vas1SP65PO3RMJ0vA==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e5bqevgc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:27:14 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SGtIIJ020064;
- Sun, 28 Sep 2025 19:27:14 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49et8ru1dq-1
+ Sun, 28 Sep 2025 19:27:16 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SH0MqD003369;
+ Sun, 28 Sep 2025 19:27:15 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49etmxk033-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:27:13 +0000
+ Sun, 28 Sep 2025 19:27:15 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58SJRAnE52429300
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58SJRBM555705974
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 28 Sep 2025 19:27:10 GMT
+ Sun, 28 Sep 2025 19:27:11 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 60BF12004D;
+ by IMSVA (Postfix) with ESMTP id C257120049;
+ Sun, 28 Sep 2025 19:27:11 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BE4E420040;
  Sun, 28 Sep 2025 19:27:10 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59CF120040;
- Sun, 28 Sep 2025 19:27:09 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.39.17.115]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 28 Sep 2025 19:27:09 +0000 (GMT)
+ Sun, 28 Sep 2025 19:27:10 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: Chinmay Rath <rathc@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 22/27] target/ppc: Move floating-point compare instructions to
+Subject: [PULL 23/27] target/ppc: Move floating-point move instructions to
  decodetree.
-Date: Mon, 29 Sep 2025 00:56:24 +0530
-Message-ID: <20250928192629.139822-23-harshpb@linux.ibm.com>
+Date: Mon, 29 Sep 2025 00:56:25 +0530
+Message-ID: <20250928192629.139822-24-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250928192629.139822-1-harshpb@linux.ibm.com>
 References: <20250928192629.139822-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=T7WBjvKQ c=1 sm=1 tr=0 ts=68d98c12 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI2MDIxNCBTYWx0ZWRfXyGEhFO39OHQ1
+ HUhjkMx96/4xFusFQdpnzIu8YQWiEGzkzVXjT3+uS0clWlH2i9HQSuinyaSHqtLwICwtyRPvFke
+ fCTVY/ZrTBgO7ibmFMhogPp2oAPUCpZgKoPxbYSJQnQYG9kOJxosbm/4ROy5SGP2eUc0aPEXiq3
+ VrqttVEojRoMG6naeJfcT9EW3uxDbQJT71HbF9NjFk/t6+39KtJCgeNnnK73zzP7Bk3IibgYtQm
+ ib2cyiB5Io1c8UCL5uOCX7x63uELr3rCK435UVr+Hk6Ht8ZmTKwtjP8GEBOkCzJy/3BEa5I63Hy
+ zBjiPqkBRLwA7Y9dsCLhCS09TKxTxu3TM/88VBruKgfeKTbbeu+t5b45sksSbj3Lmdk33XFUS+i
+ 2HHc6MaagN6Ex9QAan0IIsL6a7n5/g==
+X-Proofpoint-GUID: A2bxKhSWS9nWzvhaV5-3gK_3sVYQfYHc
+X-Authority-Analysis: v=2.4 cv=LLZrgZW9 c=1 sm=1 tr=0 ts=68d98c14 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=KKAkSRfTAAAA:8 a=TaHRx3OIgkk5F58xYbkA:9 a=cvBusfyB2V15izCimMoJ:22
+ a=KKAkSRfTAAAA:8 a=R2UZqdDKM_ImC5moMnwA:9 a=cvBusfyB2V15izCimMoJ:22
  a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-GUID: 0_vgopz5PowhAXJn8ue3dEUBETYKIrRd
-X-Proofpoint-ORIG-GUID: 0_vgopz5PowhAXJn8ue3dEUBETYKIrRd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfX3okEpdNZe248
- 6GVdCcJdyETdD4N8Sjx049XQH8c5F0HburGlw90cbPLBMUjNRKZg4Z9eiq4P3mfIYNLNQ9MlHGX
- g+A+bOkPxp3hjtDGLHI+ACWrF5DwHHdh89Ggr7cmy0RCbnXiJmvM5o62BulVnfqAhuqwihHxcJ+
- HXqW3+P7gAzl/HLFQCa+b16wy7dvStYDs+QVL3RJO3xXpYTwLjSBoJ34c6BJmK7qMYMi1BGbJCQ
- M3hpmrSV4enGa+y3aGz1/eZfTKGTBimBjLUL2Yvm3TeRLu3OO4dHPPABDweLr1iNtA6apWddQR5
- dkCPu4Q/10YaVzCZ8Kp2S+d1h4qPW6dKcWv6iuOQkWsE4nTQJ/pDwbCz4rQ4wtpzvWSuEk1b2A+
- hjctTEhRKoba+jfQtWwDa0sC8hckgQ==
+X-Proofpoint-ORIG-GUID: A2bxKhSWS9nWzvhaV5-3gK_3sVYQfYHc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-28_08,2025-09-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ spamscore=0 impostorscore=0 bulkscore=0 malwarescore=0 suspectscore=0
+ clxscore=1015 priorityscore=1501 phishscore=0 lowpriorityscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509260214
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -120,9 +120,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chinmay Rath <rathc@linux.ibm.com>
 
-Move below instructions to decodetree specification :
+Move below instructions to decodetree specification:
 
-	fcmp{u, o}		: X-form
+	f{mr, neg, abs, nabs}		: X-form
 
 The changes were verified by validating that the tcg ops generated by
 those instructions remain the same, which were captured with the '-d
@@ -131,85 +131,91 @@ in_asm,op' flag.
 Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250619095840.369351-3-rathc@linux.ibm.com
-Message-ID: <20250619095840.369351-3-rathc@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250619095840.369351-4-rathc@linux.ibm.com
+Message-ID: <20250619095840.369351-4-rathc@linux.ibm.com>
 ---
- target/ppc/helper.h                |  4 +--
- target/ppc/insn32.decode           |  5 ++++
- target/ppc/fpu_helper.c            |  4 +--
- target/ppc/translate/fp-impl.c.inc | 45 +++++++++---------------------
- target/ppc/translate/fp-ops.c.inc  |  2 --
- 5 files changed, 22 insertions(+), 38 deletions(-)
+ target/ppc/insn32.decode           |  7 +++
+ target/ppc/translate/fp-impl.c.inc | 80 ++++++++----------------------
+ target/ppc/translate/fp-ops.c.inc  |  4 --
+ 3 files changed, 28 insertions(+), 63 deletions(-)
 
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 96000f4f0d..e99c8c824b 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -94,8 +94,8 @@ DEF_HELPER_2(fpscr_setbit, void, env, i32)
- DEF_HELPER_FLAGS_1(todouble, TCG_CALL_NO_RWG_SE, i64, i32)
- DEF_HELPER_FLAGS_1(tosingle, TCG_CALL_NO_RWG_SE, i32, i64)
- 
--DEF_HELPER_4(fcmpo, void, env, i64, i64, i32)
--DEF_HELPER_4(fcmpu, void, env, i64, i64, i32)
-+DEF_HELPER_4(FCMPO, void, env, i64, i64, i32)
-+DEF_HELPER_4(FCMPU, void, env, i64, i64, i32)
- 
- DEF_HELPER_2(FCTIW, i64, env, i64)
- DEF_HELPER_2(FCTIWU, i64, env, i64)
 diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index 0c7472d929..d446ec534d 100644
+index d446ec534d..063d5726cb 100644
 --- a/target/ppc/insn32.decode
 +++ b/target/ppc/insn32.decode
-@@ -592,6 +592,11 @@ FCFIDS          111011 ..... ----- ..... 1101001110 .   @X_tb_rc
- FCFIDU          111111 ..... ----- ..... 1111001110 .   @X_tb_rc
- FCFIDUS         111011 ..... ----- ..... 1111001110 .   @X_tb_rc
+@@ -530,6 +530,13 @@ STFDU           110111 ..... ...... ...............     @D
+ STFDX           011111 ..... ...... .... 1011010111 -   @X
+ STFDUX          011111 ..... ...... .... 1011110111 -   @X
  
-+### Floating-Point Compare Instructions
++### Floating-Point Move Instructions
 +
-+FCMPU           111111 ... -- ..... ..... 0000000000 -  @X_bf
-+FCMPO           111111 ... -- ..... ..... 0000100000 -  @X_bf
++FMR             111111 ..... ----- ..... 0001001000 .   @X_tb_rc
++FNEG            111111 ..... ----- ..... 0000101000 .   @X_tb_rc
++FABS            111111 ..... ----- ..... 0100001000 .   @X_tb_rc
++FNABS           111111 ..... ----- ..... 0010001000 .   @X_tb_rc
 +
- ### Floating-Point Select Instruction
+ ### Floating-Point Arithmetic Instructions
  
- FSEL            111111 ..... ..... ..... ..... 10111 .  @A
-diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
-index 503cbd98ad..850aca6ed1 100644
---- a/target/ppc/fpu_helper.c
-+++ b/target/ppc/fpu_helper.c
-@@ -871,7 +871,7 @@ uint32_t helper_FTSQRT(uint64_t frb)
-     return 0x8 | (fg_flag ? 4 : 0) | (fe_flag ? 2 : 0);
- }
- 
--void helper_fcmpu(CPUPPCState *env, uint64_t arg1, uint64_t arg2,
-+void helper_FCMPU(CPUPPCState *env, uint64_t arg1, uint64_t arg2,
-                   uint32_t crfD)
- {
-     CPU_DoubleU farg1, farg2;
-@@ -902,7 +902,7 @@ void helper_fcmpu(CPUPPCState *env, uint64_t arg1, uint64_t arg2,
-     }
- }
- 
--void helper_fcmpo(CPUPPCState *env, uint64_t arg1, uint64_t arg2,
-+void helper_FCMPO(CPUPPCState *env, uint64_t arg1, uint64_t arg2,
-                   uint32_t crfD)
- {
-     CPU_DoubleU farg1, farg2;
+ FADD            111111 ..... ..... ..... ----- 10101 .  @A_tab
 diff --git a/target/ppc/translate/fp-impl.c.inc b/target/ppc/translate/fp-impl.c.inc
-index f296cfcdb0..4e18d350c0 100644
+index 4e18d350c0..2843f71122 100644
 --- a/target/ppc/translate/fp-impl.c.inc
 +++ b/target/ppc/translate/fp-impl.c.inc
-@@ -257,46 +257,27 @@ static bool trans_FTSQRT(DisasContext *ctx, arg_X_bf_b *a)
+@@ -280,82 +280,44 @@ TRANS(FCMPU, do_helper_cmp, gen_helper_FCMPU);
+ TRANS(FCMPO, do_helper_cmp, gen_helper_FCMPO);
+ 
+ /***                         Floating-point move                           ***/
+-/* fabs */
+-/* XXX: beware that fabs never checks for NaNs nor update FPSCR */
+-static void gen_fabs(DisasContext *ctx)
+-{
+-    TCGv_i64 t0;
+-    TCGv_i64 t1;
+-    if (unlikely(!ctx->fpu_enabled)) {
+-        gen_exception(ctx, POWERPC_EXCP_FPU);
+-        return;
+-    }
+-    t0 = tcg_temp_new_i64();
+-    t1 = tcg_temp_new_i64();
+-    get_fpr(t0, rB(ctx->opcode));
+-    tcg_gen_andi_i64(t1, t0, ~(1ULL << 63));
+-    set_fpr(rD(ctx->opcode), t1);
+-    if (unlikely(Rc(ctx->opcode))) {
+-        gen_set_cr1_from_fpscr(ctx);
+-    }
+-}
+ 
+ /* fmr  - fmr. */
+ /* XXX: beware that fmr never checks for NaNs nor update FPSCR */
+-static void gen_fmr(DisasContext *ctx)
++static bool trans_FMR(DisasContext *ctx, arg_FMR *a)
+ {
+     TCGv_i64 t0;
+-    if (unlikely(!ctx->fpu_enabled)) {
+-        gen_exception(ctx, POWERPC_EXCP_FPU);
+-        return;
+-    }
++    REQUIRE_INSNS_FLAGS(ctx, FLOAT);
++    REQUIRE_FPU(ctx);
+     t0 = tcg_temp_new_i64();
+-    get_fpr(t0, rB(ctx->opcode));
+-    set_fpr(rD(ctx->opcode), t0);
+-    if (unlikely(Rc(ctx->opcode))) {
++    get_fpr(t0, a->rb);
++    set_fpr(a->rt, t0);
++    if (unlikely(a->rc)) {
+         gen_set_cr1_from_fpscr(ctx);
+     }
++    return true;
  }
  
- /***                         Floating-Point compare                        ***/
--
--/* fcmpo */
--static void gen_fcmpo(DisasContext *ctx)
-+static bool do_helper_cmp(DisasContext *ctx, arg_X_bf *a,
-+                          void (*helper)(TCGv_env, TCGv_i64, TCGv_i64,
-+                                         TCGv_i32))
+-/* fnabs */
+-/* XXX: beware that fnabs never checks for NaNs nor update FPSCR */
+-static void gen_fnabs(DisasContext *ctx)
++/* XXX: beware that f{neg, abs, nabs} never checks for NaNs nor update FPSCR */
++static bool do_move_b(DisasContext *ctx, arg_X_tb_rc *a, int64_t val,
++                      void (*tcg_op)(TCGv_i64, TCGv_i64, int64_t))
  {
-     TCGv_i32 crf;
 -    TCGv_i64 t0;
 -    TCGv_i64 t1;
 -    if (unlikely(!ctx->fpu_enabled)) {
@@ -221,23 +227,23 @@ index f296cfcdb0..4e18d350c0 100644
 +    REQUIRE_FPU(ctx);
      t0 = tcg_temp_new_i64();
      t1 = tcg_temp_new_i64();
-     gen_reset_fpstatus();
--    crf = tcg_constant_i32(crfD(ctx->opcode));
--    get_fpr(t0, rA(ctx->opcode));
--    get_fpr(t1, rB(ctx->opcode));
--    gen_helper_fcmpo(tcg_env, t0, t1, crf);
-+    crf = tcg_constant_i32(a->bf);
-+    get_fpr(t0, a->ra);
-+    get_fpr(t1, a->rb);
-+    helper(tcg_env, t0, t1, crf);
-     gen_helper_float_check_status(tcg_env);
+-    get_fpr(t0, rB(ctx->opcode));
+-    tcg_gen_ori_i64(t1, t0, 1ULL << 63);
+-    set_fpr(rD(ctx->opcode), t1);
+-    if (unlikely(Rc(ctx->opcode))) {
++    get_fpr(t0, a->rb);
++    tcg_op(t1, t0, val);
++    set_fpr(a->rt, t1);
++    if (unlikely(a->rc)) {
+         gen_set_cr1_from_fpscr(ctx);
+     }
 +    return true;
  }
  
--/* fcmpu */
--static void gen_fcmpu(DisasContext *ctx)
+-/* fneg */
+-/* XXX: beware that fneg never checks for NaNs nor update FPSCR */
+-static void gen_fneg(DisasContext *ctx)
 -{
--    TCGv_i32 crf;
 -    TCGv_i64 t0;
 -    TCGv_i64 t1;
 -    if (unlikely(!ctx->fpu_enabled)) {
@@ -246,31 +252,34 @@ index f296cfcdb0..4e18d350c0 100644
 -    }
 -    t0 = tcg_temp_new_i64();
 -    t1 = tcg_temp_new_i64();
--    gen_reset_fpstatus();
--    crf = tcg_constant_i32(crfD(ctx->opcode));
--    get_fpr(t0, rA(ctx->opcode));
--    get_fpr(t1, rB(ctx->opcode));
--    gen_helper_fcmpu(tcg_env, t0, t1, crf);
--    gen_helper_float_check_status(tcg_env);
+-    get_fpr(t0, rB(ctx->opcode));
+-    tcg_gen_xori_i64(t1, t0, 1ULL << 63);
+-    set_fpr(rD(ctx->opcode), t1);
+-    if (unlikely(Rc(ctx->opcode))) {
+-        gen_set_cr1_from_fpscr(ctx);
+-    }
 -}
-+TRANS(FCMPU, do_helper_cmp, gen_helper_FCMPU);
-+TRANS(FCMPO, do_helper_cmp, gen_helper_FCMPO);
++TRANS(FNEG, do_move_b, 1ULL << 63, tcg_gen_xori_i64);
++TRANS(FABS, do_move_b, ~(1ULL << 63), tcg_gen_andi_i64);
++TRANS(FNABS, do_move_b, 1ULL << 63, tcg_gen_ori_i64);
  
- /***                         Floating-point move                           ***/
- /* fabs */
+ /* fcpsgn: PowerPC 2.05 specification */
+ /* XXX: beware that fcpsgn never checks for NaNs nor update FPSCR */
 diff --git a/target/ppc/translate/fp-ops.c.inc b/target/ppc/translate/fp-ops.c.inc
-index acb8ac32da..502453da35 100644
+index 502453da35..5053cb135c 100644
 --- a/target/ppc/translate/fp-ops.c.inc
 +++ b/target/ppc/translate/fp-ops.c.inc
-@@ -10,8 +10,6 @@ GEN_STXF(stfiw, st32fiw, 0x17, 0x1E, PPC_FLOAT_STFIWX)
+@@ -10,10 +10,6 @@ GEN_STXF(stfiw, st32fiw, 0x17, 0x1E, PPC_FLOAT_STFIWX)
  GEN_HANDLER_E(stfdepx, 0x1F, 0x1F, 0x16, 0x00000001, PPC_NONE, PPC2_BOOKE206),
  GEN_HANDLER_E(stfdpx, 0x1F, 0x17, 0x1C, 0x00200001, PPC_NONE, PPC2_ISA205),
  
--GEN_HANDLER(fcmpo, 0x3F, 0x00, 0x01, 0x00600001, PPC_FLOAT),
--GEN_HANDLER(fcmpu, 0x3F, 0x00, 0x00, 0x00600001, PPC_FLOAT),
- GEN_HANDLER(fabs, 0x3F, 0x08, 0x08, 0x001F0000, PPC_FLOAT),
- GEN_HANDLER(fmr, 0x3F, 0x08, 0x02, 0x001F0000, PPC_FLOAT),
- GEN_HANDLER(fnabs, 0x3F, 0x08, 0x04, 0x001F0000, PPC_FLOAT),
+-GEN_HANDLER(fabs, 0x3F, 0x08, 0x08, 0x001F0000, PPC_FLOAT),
+-GEN_HANDLER(fmr, 0x3F, 0x08, 0x02, 0x001F0000, PPC_FLOAT),
+-GEN_HANDLER(fnabs, 0x3F, 0x08, 0x04, 0x001F0000, PPC_FLOAT),
+-GEN_HANDLER(fneg, 0x3F, 0x08, 0x01, 0x001F0000, PPC_FLOAT),
+ GEN_HANDLER_E(fcpsgn, 0x3F, 0x08, 0x00, 0x00000000, PPC_NONE, PPC2_ISA205),
+ GEN_HANDLER_E(fmrgew, 0x3F, 0x06, 0x1E, 0x00000001, PPC_NONE, PPC2_VSX207),
+ GEN_HANDLER_E(fmrgow, 0x3F, 0x06, 0x1A, 0x00000001, PPC_NONE, PPC2_VSX207),
 -- 
 2.43.5
 
