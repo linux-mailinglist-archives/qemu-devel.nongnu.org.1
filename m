@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB79BA772D
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB1CBA76FD
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2x3G-0002iL-30; Sun, 28 Sep 2025 15:27:18 -0400
+	id 1v2x3A-0002ZN-Db; Sun, 28 Sep 2025 15:27:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x2x-0002Wf-Ds
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:26:59 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1v2x2y-0002Xx-Lc
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:00 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x2n-0003zn-R7
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:26:58 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58SJQV9V028057;
- Sun, 28 Sep 2025 19:26:45 GMT
+ id 1v2x2s-000408-Nd
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:00 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58S1fpml014288;
+ Sun, 28 Sep 2025 19:26:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=wmK6oB
- wW43C4VKS60XIWyw2pHN0tu3gMP0BMOKtDONY=; b=bLjTMHPZfu09uiHsxSBAm/
- qBI9midPBateKh4QA4xr+R7Nsxw5NcxlroCUTCAqZwlzvm9/ry90/+tUoSyHbvGR
- +CbvLz9uMUrVQws+nZQjg3g9z2mzQZMFJz+R1vLv/XpMul34dlO0RJFx5w5l7aDL
- KUUKkyCGkngHk1U552hkbS7OeA9/SojPvRrtQ539bDS52Cf9abLGNlut8LIfpsMH
- de5FdcsV5wT6Yp59WPx9WmDs7QpxAymTl9rkrYZbakg2U9ZVp1/YW+FKrGJs//zt
- Ti9bIX5GoRI0EGjHsIhENySvJpxdKLTVRcQXRfsVZERYOW8/Ndwx/zC0jkVc+/4g
+ :message-id:mime-version:references:subject:to; s=pp1; bh=3pnNs+
+ NQwCzmeZ5Xk9ZhVSzVtVMhqSHZeXfAzJlmo1w=; b=jZ/+B5M7z6p7yOeirhBwpu
+ 0EZssJUsMj/UMgAbP5lP6jKnyV39o34bTWWD3Of+HO27Z/YvL2yfpNj73vs3/RKK
+ 6/8uAdGuQvxfSSKdV1RRWd/+aBF/KlmFiviAKFeImVSKb36q8CFMO6YLyMC3EEf5
+ NanTZpLDlWlUF71PIXa1xnmqoEYY9395YBH2MXc/bgIsjq93LrZTEnlw2YnS+z6e
+ f8XY2FK+zd5w2suY8gtWI3yIU10QOaTI8eyFntZuGJ+Bfbr7IPNvzTIX20dnoju2
+ q2P2G9MpXhWNmOxsw/wjx2lXGxetPstpL9DNdIeZMMcMJ3TXhhrjwKer4x7ndnfQ
  ==
 Received: from ppma21.wdc07v.mail.ibm.com
  (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e5bqeva4-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7e6xp96-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:26:45 +0000 (GMT)
+ Sun, 28 Sep 2025 19:26:46 +0000 (GMT)
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SI48oO026756;
- Sun, 28 Sep 2025 19:26:44 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49eu8mjuav-1
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SI48oP026756;
+ Sun, 28 Sep 2025 19:26:45 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49eu8mjub1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:26:44 +0000
+ Sun, 28 Sep 2025 19:26:45 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58SJQeIV39518594
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58SJQfGB13697446
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 28 Sep 2025 19:26:40 GMT
+ Sun, 28 Sep 2025 19:26:41 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC00F20049;
- Sun, 28 Sep 2025 19:26:39 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5B73C20049;
+ Sun, 28 Sep 2025 19:26:41 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86F0B20040;
- Sun, 28 Sep 2025 19:26:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2718820040;
+ Sun, 28 Sep 2025 19:26:40 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.39.17.115]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 28 Sep 2025 19:26:38 +0000 (GMT)
+ Sun, 28 Sep 2025 19:26:39 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: Aditya Gupta <adityag@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: [PULL 02/27] ppc/pnv: Introduce Power11 PowerNV machine
-Date: Mon, 29 Sep 2025 00:56:04 +0530
-Message-ID: <20250928192629.139822-3-harshpb@linux.ibm.com>
+Subject: [PULL 03/27] ppc/pnv: Add PnvChipClass handler to get reference to
+ interrupt controller
+Date: Mon, 29 Sep 2025 00:56:05 +0530
+Message-ID: <20250928192629.139822-4-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250928192629.139822-1-harshpb@linux.ibm.com>
 References: <20250928192629.139822-1-harshpb@linux.ibm.com>
@@ -73,31 +74,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI2MDIxNCBTYWx0ZWRfX1E6nPOaStuPl
- csA+BKd65dy1NHrrx9ui9EBoDHYxzxptEXsR5P8vsAsthg5sjPL4ODTNe683MnW9vhG8hBL8Pmq
- ZURqAmAO9QAwwtUn4aW4ywLEs1gNlJ2N0SoLLdcdMGc/YPxDRYFY+35qVyq/mRQOmJ5uX/1sdL5
- 15vPFC2TaVdWmiFwvx8NMPPSlLSpcf2TEpC4Nz4w77LNKA8EvQBJLyUxOAaP7mvImo3nWUbt9aI
- f9CtsaUsjp9altWEuGpq88t43B5+R/uNy5msUWf3YeVBjFZIAbU2mOU5657KIhf4jcTmYzFWtUA
- 8DFg00bUhjKDxFxvknQW0KYjE6UDTLl8SQpF+CfsfeiN0xm1CPqGdf6hMpVB2+SGhYjDK+9nrr3
- 1JBbmfbHiTH+x6s10PxweSTgoXwYgw==
-X-Proofpoint-GUID: jjUUSzBPr7T1NrqmT6JDWGmEw1O1AERk
-X-Authority-Analysis: v=2.4 cv=LLZrgZW9 c=1 sm=1 tr=0 ts=68d98bf5 cx=c_pps
+X-Proofpoint-ORIG-GUID: wlJo9Pdql10VzXa4EHnGRRR-F_OcYwv-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyMCBTYWx0ZWRfX2cyFlwkdXANj
+ jVoUC/XyHXq/Ii8GHgrpYrZuEnaIfryizBSFK5K2Vuxmp3bZjVV+/kutCOGhjQxh8P09aAAS+hr
+ jqROWmG8RTYHt8Nz6NgM32QasasxJvT8q8khEii4GhPzyw5QpSGm4QinvbHKKWuefiuFI8zG0Ue
+ /ZPY5yDX/7vFQpdDdY0rwvuPPRLl1+CY35ZK2DmFyO/VVxwJA2U11gETOq5QZwv54iHpe2jF/j+
+ dwPRlY4R/hEwJ54htHweo4mAHDAuVylGui8TfC6xpoJeYks40YzVyyR9JcMUahh80cCote6u9Rn
+ E60vc6In8rl9hPd3LqmaebVzN39xgbigp7hCWq8Vh7gSN/bCMO0mSwhg5cV7Jv5cuD7IG44Dt2Z
+ 0Fvkqvr85qvnUyvDzqJG+yMd8u/6RQ==
+X-Proofpoint-GUID: wlJo9Pdql10VzXa4EHnGRRR-F_OcYwv-
+X-Authority-Analysis: v=2.4 cv=Jvj8bc4C c=1 sm=1 tr=0 ts=68d98bf6 cx=c_pps
  a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=0il2isBTLgtUhG5GGzUA:9 a=3ZKOabzyN94A:10
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=iorEynmUMFpPDaT-22UA:9 a=3ZKOabzyN94A:10
  a=QEXdDO2ut3YA:10 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
  a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-ORIG-GUID: jjUUSzBPr7T1NrqmT6JDWGmEw1O1AERk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-28_08,2025-09-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- clxscore=1015 priorityscore=1501 phishscore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509260214
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2509270020
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -123,110 +125,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Aditya Gupta <adityag@linux.ibm.com>
 
-The Powernv11 machine doesn't have XIVE & PHBs as of now
+Existing code in XIVE2 assumes the chip to be a Power10 Chip.
+Instead add a handler to get reference to the interrupt controller (XIVE)
+for a given Power Chip.
 
-XIVE2 interface and PHB5 added in later patches to Powernv11 machine
-
-Also add mention of Power11 to powernv documentation
-
-Note: A difference from P10's and P11's machine_class_init is, in P11
-different number of PHBs cannot be used on the command line, ie. the
-following line does NOT exist in pnv_machine_power11_class_init, which
-existed in case of Power10:
-
-    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 Tested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250925173049.891406-3-adityag@linux.ibm.com
-Message-ID: <20250925173049.891406-3-adityag@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250925173049.891406-4-adityag@linux.ibm.com
+Message-ID: <20250925173049.891406-4-adityag@linux.ibm.com>
 ---
- docs/system/ppc/powernv.rst |  9 +++++----
- hw/ppc/pnv.c                | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+), 4 deletions(-)
+ include/hw/ppc/pnv_chip.h |  1 +
+ hw/intc/pnv_xive2.c       |  4 ++--
+ hw/ppc/pnv.c              | 12 ++++++++++++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/docs/system/ppc/powernv.rst b/docs/system/ppc/powernv.rst
-index f3ec2cc69c..5154794cc8 100644
---- a/docs/system/ppc/powernv.rst
-+++ b/docs/system/ppc/powernv.rst
-@@ -1,5 +1,5 @@
--PowerNV family boards (``powernv8``, ``powernv9``, ``powernv10``)
--==================================================================
-+PowerNV family boards (``powernv8``, ``powernv9``, ``powernv10``, ``powernv11``)
-+================================================================================
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 6bd930f8b4..a5b8c49680 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -170,6 +170,7 @@ struct PnvChipClass {
+     void (*intc_reset)(PnvChip *chip, PowerPCCPU *cpu);
+     void (*intc_destroy)(PnvChip *chip, PowerPCCPU *cpu);
+     void (*intc_print_info)(PnvChip *chip, PowerPCCPU *cpu, GString *buf);
++    void* (*intc_get)(PnvChip *chip);
+     ISABus *(*isa_create)(PnvChip *chip, Error **errp);
+     void (*dt_populate)(PnvChip *chip, void *fdt);
+     void (*pic_print_info)(PnvChip *chip, GString *buf);
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index e019cad5c1..0663baab54 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -110,8 +110,8 @@ static PnvXive2 *pnv_xive2_get_remote(uint32_t vsd_type, hwaddr fwd_addr)
+     int i;
  
- PowerNV (as Non-Virtualized) is the "bare metal" platform using the
- OPAL firmware. It runs Linux on IBM and OpenPOWER systems and it can
-@@ -15,11 +15,12 @@ beyond the scope of what QEMU addresses today.
- Supported devices
- -----------------
+     for (i = 0; i < pnv->num_chips; i++) {
+-        Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
+-        PnvXive2 *xive = &chip10->xive;
++        PnvChipClass *k = PNV_CHIP_GET_CLASS(pnv->chips[i]);
++        PnvXive2 *xive = PNV_XIVE2(k->intc_get(pnv->chips[i]));
  
-- * Multi processor support for POWER8, POWER8NVL and POWER9.
-+ * Multi processor support for POWER8, POWER8NVL, POWER9, Power10 and Power11.
-  * XSCOM, serial communication sideband bus to configure chiplets.
-  * Simple LPC Controller.
-  * Processor Service Interface (PSI) Controller.
-- * Interrupt Controller, XICS (POWER8) and XIVE (POWER9) and XIVE2 (Power10).
-+ * Interrupt Controller, XICS (POWER8) and XIVE (POWER9) and XIVE2 (Power10 &
-+   Power11).
-  * POWER8 PHB3 PCIe Host bridge and POWER9 PHB4 PCIe Host bridge.
-  * Simple OCC is an on-chip micro-controller used for power management tasks.
-  * iBT device to handle BMC communication, with the internal BMC simulator
+         /*
+          * Is this the XIVE matching the forwarded VSD address is for this
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 77136091bb..423954ba7e 100644
+index 423954ba7e..a4fdf59207 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -3235,6 +3235,35 @@ static void pnv_machine_p10_rainier_class_init(ObjectClass *oc,
-     pmc->i2c_init = pnv_rainier_i2c_init;
+@@ -1486,6 +1486,16 @@ static void pnv_chip_power10_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+     xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), buf);
  }
  
-+static void pnv_machine_power11_class_init(ObjectClass *oc, const void *data)
++static void *pnv_chip_power10_intc_get(PnvChip *chip)
 +{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
-+    static const char compat[] = "qemu,powernv11\0ibm,powernv";
-+
-+    pmc->compat = compat;
-+    pmc->compat_size = sizeof(compat);
-+    pmc->max_smt_threads = 4;
-+    pmc->has_lpar_per_thread = true;
-+    pmc->quirk_tb_big_core = true;
-+    pmc->dt_power_mgt = pnv_dt_power_mgt;
-+
-+    mc->desc = "IBM PowerNV (Non-Virtualized) Power11";
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power11_v2.0");
-+
-+    object_class_property_add_bool(oc, "big-core",
-+                                   pnv_machine_get_big_core,
-+                                   pnv_machine_set_big_core);
-+    object_class_property_set_description(oc, "big-core",
-+                              "Use big-core (aka fused-core) mode");
-+
-+    object_class_property_add_bool(oc, "lpar-per-core",
-+                                   pnv_machine_get_lpar_per_core,
-+                                   pnv_machine_set_lpar_per_core);
-+    object_class_property_set_description(oc, "lpar-per-core",
-+                              "Use 1 LPAR per core mode");
++    return &PNV10_CHIP(chip)->xive;
 +}
 +
- static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, run_on_cpu_data arg)
- {
-     CPUPPCState *env = cpu_env(cs);
-@@ -3348,6 +3377,11 @@ static void pnv_machine_class_init(ObjectClass *oc, const void *data)
-     }
- 
- static const TypeInfo types[] = {
-+    {
-+        .name          = MACHINE_TYPE_NAME("powernv11"),
-+        .parent        = TYPE_PNV_MACHINE,
-+        .class_init    = pnv_machine_power11_class_init,
-+    },
-     {
-         .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
-         .parent        = MACHINE_TYPE_NAME("powernv10"),
++static void *pnv_chip_power11_intc_get(PnvChip *chip)
++{
++    return &PNV11_CHIP(chip)->xive;
++}
++
+ /*
+  * Allowed core identifiers on a POWER8 Processor Chip :
+  *
+@@ -2680,6 +2690,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, const void *data)
+     k->intc_reset = pnv_chip_power10_intc_reset;
+     k->intc_destroy = pnv_chip_power10_intc_destroy;
+     k->intc_print_info = pnv_chip_power10_intc_print_info;
++    k->intc_get = pnv_chip_power10_intc_get;
+     k->isa_create = pnv_chip_power10_isa_create;
+     k->dt_populate = pnv_chip_power10_dt_populate;
+     k->pic_print_info = pnv_chip_power10_pic_print_info;
+@@ -2709,6 +2720,7 @@ static void pnv_chip_power11_class_init(ObjectClass *klass, const void *data)
+     k->chip_cfam_id = 0x220da04980000000ull; /* P11 DD2.0 (with NX) */
+     k->cores_mask = POWER11_CORE_MASK;
+     k->get_pir_tir = pnv_get_pir_tir_p10;
++    k->intc_get = pnv_chip_power11_intc_get;
+     k->isa_create = pnv_chip_power11_isa_create;
+     k->dt_populate = pnv_chip_power11_dt_populate;
+     k->pic_print_info = pnv_chip_power11_pic_print_info;
 -- 
 2.43.5
 
