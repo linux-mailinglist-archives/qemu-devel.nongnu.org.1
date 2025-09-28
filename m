@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F812BA770C
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B056FBA7727
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:35:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2x3O-0002qX-Pp; Sun, 28 Sep 2025 15:27:27 -0400
+	id 1v2x3O-0002kv-QT; Sun, 28 Sep 2025 15:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x3D-0002iV-CM
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:15 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1v2x3A-0002gk-CV
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:12 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x32-00044a-W2
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:15 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58S4x4tK003960;
- Sun, 28 Sep 2025 19:26:52 GMT
+ id 1v2x2z-000429-MO
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 15:27:11 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58SGRuQI009840;
+ Sun, 28 Sep 2025 19:26:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Atd48o
- s/OPIaVZSipUgaR79fnSsWhLKytoLIwnVGGnI=; b=NDtbKBC0HT67f1dlJ6r0UG
- U21tG2YhaaKMCdT50NT+Qs+P7lT+JeWW7Ul4pVgPdHVaDVkaIyt1xXLawI9EK68o
- b/VwLRThjs1DxfuMckBLf6BeGkHyHzt12i685TmZ2Ak06cE6on5KA/UbepDH+jrf
- /UoXDabloM3BqPRPXg093BK2FpOR2kNRUwXfNMYtzfUEwX+oCFu9Ik7VAzx92GoX
- +gf2F6itFKTAyzVF64mbjmNhsCjwKFTCoZXSSV/KvjszpI+VxtKNgcA4HWqH0nwa
- 2bF4yIEaBrbuuU5elHMgy0rn4D/3snJtD+ht3V20Cy6kH7W2d9sPU7aTDi+j+pbw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=GjJiWa
+ kpheQgzKkS2nn5l+rLtWqD56iP/NqLPx05jlY=; b=OrhojBI5ac+jt370m2S+qr
+ WlmvRqCIGXQXNp0hApMSFZY0p8ncYKo8s+lZJnRKV+UVYOGbMsEGd1wi/zc2eJql
+ WoTGozn7f1Rt4qTkC+RZ3QFm73ZPyK49BgvOwypHLwYyHbeXJm1GWrNxFGqHiKE7
+ twciWFvsr1id2lqgWV1YtDgHcaRfWLKRKmiDSOBt59iuC14vTtpry2Djim7oh7XC
+ l8V4xosq55DhluKqPLmEGzhz8PVWOS4hlsq34sBnuhpI7xfuwiFSNmLlOhDYLLgL
+ XWOt//ZpG1OFqXgidDfrK8WqLyGNQlyy1at0dtLVV0ZGChAQR1fnYxPkkkeRUPlw
  ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e6bh6q80-1
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktxpy7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:26:52 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SHPLCn003599;
- Sun, 28 Sep 2025 19:26:51 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49etmxjyxf-1
+ Sun, 28 Sep 2025 19:26:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SGtII0020064;
+ Sun, 28 Sep 2025 19:26:53 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49et8ru19p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:26:51 +0000
+ Sun, 28 Sep 2025 19:26:53 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58SJQm8Q34865676
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58SJQnPR61604336
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 28 Sep 2025 19:26:48 GMT
+ Sun, 28 Sep 2025 19:26:49 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3A1920049;
- Sun, 28 Sep 2025 19:26:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9BD6B20049;
+ Sun, 28 Sep 2025 19:26:49 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9137220040;
- Sun, 28 Sep 2025 19:26:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5EB4120040;
+ Sun, 28 Sep 2025 19:26:48 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.39.17.115]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 28 Sep 2025 19:26:46 +0000 (GMT)
+ Sun, 28 Sep 2025 19:26:48 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: Aditya Gupta <adityag@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: [PULL 07/27] tests/powernv: Switch to buildroot images instead of
- op-build
-Date: Mon, 29 Sep 2025 00:56:09 +0530
-Message-ID: <20250928192629.139822-8-harshpb@linux.ibm.com>
+Subject: [PULL 08/27] tests/powernv: Add PowerNV test for Power11
+Date: Mon, 29 Sep 2025 00:56:10 +0530
+Message-ID: <20250928192629.139822-9-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250928192629.139822-1-harshpb@linux.ibm.com>
 References: <20250928192629.139822-1-harshpb@linux.ibm.com>
@@ -75,32 +73,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Se/6t/Ru c=1 sm=1 tr=0 ts=68d98bfc cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10 a=NEAV23lmAAAA:8
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=vTr9H3xdAAAA:8 a=aow-egSQAAAA:8
- a=20KFwNOVAAAA:8 a=d7QG3KQTCe1-xXpN3u8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=gFNbaldVC-z-bsjSTzMo:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
+X-Authority-Analysis: v=2.4 cv=T7WBjvKQ c=1 sm=1 tr=0 ts=68d98bfe cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=Z7-HQTgbr6av74WwzWEA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
  a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAxMCBTYWx0ZWRfX0Q2uw4gGs/w+
- 468gm1aeinQuqOEHjZiIM4owQJHb70AKwNhJZkR5He2B5Z0digqXODyUUY2eqhBgBQR1GUBTeRU
- qgZmk130oj4/29Q2yZNwjlJmaJ2zRLisL4oeeSEZAtgQY1pvbXcRRkjZJcYFx9nqbR6gqA4A5HF
- Gm4n/o5zMbh4qCoNSTu7fWVslQNUHjaQDlvxHnmz4uM8NpGUrmR5rizQ8IY/z3RkzsAcgbGUsES
- mPjSSs9y/NnEYEgP1ACpOm9pMbqZRsB3eTmS12ymRLL5Xmehe1rpuJW3337Jq62oPpWUV+8t8jS
- HMYPuakOPAXnALEU1EErdIxSSeKMkukws1vMAUf3gISCnfJIJNi8HkY/oakyCjL5x1Gay+wme5u
- M+ruqkjlkim/UENuial3Z2ZR/TESyA==
-X-Proofpoint-GUID: uNRt0dXBaIeBIxgC_Qy9dNWgrXpoYCHq
-X-Proofpoint-ORIG-GUID: uNRt0dXBaIeBIxgC_Qy9dNWgrXpoYCHq
+X-Proofpoint-GUID: DhEdBNMSB0FLotsOOQALEdU_h50ZVr5s
+X-Proofpoint-ORIG-GUID: DhEdBNMSB0FLotsOOQALEdU_h50ZVr5s
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfX5scQU0xlufoC
+ oSXDG21LjP/ohtaUqX/ugpctzHJfmBZZKcFN380lkliJe8JmLGR9wXpcy1wlFeqxdBUeZXzba/p
+ c6fqGblLEjZkdL4TrnzbjPbbqFLUcehDvEh3dnGaxFzRPaEM1r6bxyA5Gs58dq3Gp+pRuW7KNxG
+ oxVIejWAeTQjdjVAjfmBYLl351ed46/i6ODa3NNc3gbA6HuEUR620veJyo2oUenIkQCWTu9cbjc
+ PAQY0H/4ZuQz16sIi4ELNW9sCpe5VteF+gSemyO9pZLOMDazyDAiVrngfzPN4FscfNmInxTnHad
+ /mfDooPaa7lVYGFKcC3gesLeWoU8WGgh1epQRfrZm4QLCSxqW1rT8VZL7l8ZnH/LRMakMnCUY6s
+ r15BVruWM8y1gvYWw2lBjjaJtkBTKA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-28_08,2025-09-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- clxscore=1015 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270010
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -126,92 +123,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Aditya Gupta <adityag@linux.ibm.com>
 
-As op-build images haven't been updated from long time (and may not get
-updated in future), use buildroot images provided by cedric [1].
+With all Power11 support in place, add Power11 PowerNV test.
 
-Use existing nvme device being used in the test to mount the initrd.
-
-Also replace the check for "zImage loaded message" to skiboot's message
-when it starts the kernel: "Starting kernel at", since we are no longer
-using zImage from op-build
-
-This is required for newer processor tests such as Power11, as the
-op-build kernel image is old and doesn't support Power11.
-
-Power11 test has been added in a later patch.
-
-[1]: https://github.com/legoater/qemu-ppc-boot/tree/main/buildroot/qemu_ppc64le_powernv8-2025.02
-
-Suggested-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 Tested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250925173049.891406-8-adityag@linux.ibm.com
-Message-ID: <20250925173049.891406-8-adityag@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250925173049.891406-9-adityag@linux.ibm.com
+Message-ID: <20250925173049.891406-9-adityag@linux.ibm.com>
 ---
- tests/functional/ppc64/test_powernv.py | 30 ++++++++++++++------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ tests/functional/ppc64/test_powernv.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/tests/functional/ppc64/test_powernv.py b/tests/functional/ppc64/test_powernv.py
-index 685e2178ed..2b4db1cf99 100755
+index 2b4db1cf99..9ada832b78 100755
 --- a/tests/functional/ppc64/test_powernv.py
 +++ b/tests/functional/ppc64/test_powernv.py
-@@ -18,9 +18,14 @@ class powernvMachine(LinuxKernelTest):
-     good_message = 'VFS: Cannot open root device'
+@@ -116,5 +116,9 @@ def test_powernv10(self):
+         self.set_machine('powernv10')
+         self.do_test_ppc64_powernv('P10')
  
-     ASSET_KERNEL = Asset(
--        ('https://archives.fedoraproject.org/pub/archive/fedora-secondary/'
--         'releases/29/Everything/ppc64le/os/ppc/ppc64/vmlinuz'),
--        '383c2f5c23bc0d9d32680c3924d3fd7ee25cc5ef97091ac1aa5e1d853422fc5f')
-+        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/'
-+         'buildroot/qemu_ppc64le_powernv8-2025.02/vmlinux'),
-+        '6fd29aff9ad4362511ea5d0acbb510667c7031928e97d64ec15bbc5daf4b8151')
++    def test_powernv11(self):
++        self.set_machine('powernv11')
++        self.do_test_ppc64_powernv('Power11')
 +
-+    ASSET_INITRD = Asset(
-+        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/'
-+         'buildroot/qemu_ppc64le_powernv8-2025.02/rootfs.ext2'),
-+        'aee2192b692077c4bde31cb56ce474424b358f17cec323d5c94af3970c9aada2')
- 
-     def do_test_linux_boot(self, command_line = KERNEL_COMMON_COMMAND_LINE):
-         self.require_accelerator("tcg")
-@@ -78,27 +83,24 @@ def test_linux_big_boot(self):
-         wait_for_console_pattern(self, console_pattern, self.panic_message)
-         wait_for_console_pattern(self, self.good_message, self.panic_message)
- 
--
--    ASSET_EPAPR_KERNEL = Asset(
--        ('https://github.com/open-power/op-build/releases/download/v2.7/'
--         'zImage.epapr'),
--        '0ab237df661727e5392cee97460e8674057a883c5f74381a128fa772588d45cd')
--
-     def do_test_ppc64_powernv(self, proc):
-         self.require_accelerator("tcg")
--        kernel_path = self.ASSET_EPAPR_KERNEL.fetch()
-+        kernel_path = self.ASSET_KERNEL.fetch()
-+        initrd_path = self.ASSET_INITRD.fetch()
-         self.vm.set_console()
-         self.vm.add_args('-kernel', kernel_path,
--                         '-append', 'console=tty0 console=hvc0',
-+                         '-drive',
-+                         f'file={initrd_path},format=raw,if=none,id=drive0,readonly=on',
-+                         '-append', 'root=/dev/nvme0n1 console=tty0 console=hvc0',
-                          '-device', 'pcie-pci-bridge,id=bridge1,bus=pcie.1,addr=0x0',
--                         '-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234',
-+                         '-device', 'nvme,drive=drive0,bus=pcie.2,addr=0x0,serial=1234',
-                          '-device', 'e1000e,bus=bridge1,addr=0x3',
-                          '-device', 'nec-usb-xhci,bus=bridge1,addr=0x2')
-         self.vm.launch()
- 
-         self.wait_for_console_pattern("CPU: " + proc + " generation processor")
--        self.wait_for_console_pattern("zImage starting: loaded")
--        self.wait_for_console_pattern("Run /init as init process")
-+        self.wait_for_console_pattern("INIT: Starting kernel at ")
-+        self.wait_for_console_pattern("Run /sbin/init as init process")
-         # Device detection output driven by udev probing is sometimes cut off
-         # from console output, suspect S14silence-console init script.
- 
+ if __name__ == '__main__':
+     LinuxKernelTest.main()
 -- 
 2.43.5
 
