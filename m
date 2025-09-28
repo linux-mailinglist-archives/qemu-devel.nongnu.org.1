@@ -2,118 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86D8BA7730
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 21:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1759EBA7919
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 00:44:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2xA4-0003xL-3x; Sun, 28 Sep 2025 15:34:20 -0400
+	id 1v305K-0000CZ-PQ; Sun, 28 Sep 2025 18:41:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2xA0-0003x7-65; Sun, 28 Sep 2025 15:34:16 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1v2x9u-0005ld-K8; Sun, 28 Sep 2025 15:34:15 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58S7e4K6009738;
- Sun, 28 Sep 2025 19:34:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=4kjXPe
- kc2vlePcNLVeQtfix3nc112uKHX+gqmBUv9Ek=; b=GAAx1cis4wa+0OO0pH2BFb
- CaWp8Ve9Sz8BSu3aavl9QD4qBvUcsH6TeZIti+37P/D8S4pczFLJ8OCS9/4jG+Yk
- XpZDMGs2/SRnAR9RXuAtl//a3qMmedRpjdD+30+qoOzhMoJNVVY0RvZJngThiTmb
- bf6ES5ydqCBy8ftihUPRo5nFr9fJJN0I8xZceTppGmit/dv4tTzTGOtCm3XdrxzS
- ELXhXpGuMTkHf0umULbM8YrPuFFWZZkuVavrsptWL2Z3QLTc3js5Vn0CGwrL0oTB
- ZR3nqJxTdMf35o/3VrctXcgYJDXrTL4CEfSm5R3+MHqkkZ5ky9gBljRxjLZtHkiw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktxqmq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:34:02 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58SJQKQC003151;
- Sun, 28 Sep 2025 19:34:02 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktxqmp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:34:02 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SHFSYe003325;
- Sun, 28 Sep 2025 19:34:01 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49etmxk0r8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Sep 2025 19:34:01 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58SJXxhX10224292
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 28 Sep 2025 19:34:00 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D770258056;
- Sun, 28 Sep 2025 19:33:59 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 21F2658052;
- Sun, 28 Sep 2025 19:33:57 +0000 (GMT)
-Received: from [9.39.17.115] (unknown [9.39.17.115])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 28 Sep 2025 19:33:56 +0000 (GMT)
-Message-ID: <586cd866-0f8b-4960-acda-316d6e2c0b92@linux.ibm.com>
-Date: Mon, 29 Sep 2025 01:03:55 +0530
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1v305H-0000CR-B8
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 18:41:35 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1v3058-0007Q3-TO
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 18:41:34 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-3369dcfef12so1961699a91.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Sep 2025 15:41:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1759099278; x=1759704078; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bw8Do6TCBTO6+PCNSxJoZxpFtGThJdCleJrfkPVVW6Y=;
+ b=KYXQVbKerJVutz4lyxUJpXghv0lyKYYPcOlyGZiSoD3jV5oqt0fbeMbW95TpzdyazP
+ Onp25a/Zx+QFOFoVt8QXPoMCZkcaxnRBArCxxs48Qe0MTY5oIMk5kks5X0UvjLdQ12wt
+ qYvUJdy1ijJi4l2ESP652wYuSqSSW1u8ciSR6BbP54GzmCeZAX9faZq1tkvoaz8EFkBX
+ h7/+b2DAoTCTxbx4zVsJFAwlUzPgj7M4vYYrcWTgBFAG5VlEleQErN3UY1HjqUL4RCnK
+ kuZh0i26QxeAStK5Tqa+605u4AUgVGP13mCXo/jlA2hC6FZ5Q3x5vkvuJx742d/BsL7T
+ mBKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759099278; x=1759704078;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bw8Do6TCBTO6+PCNSxJoZxpFtGThJdCleJrfkPVVW6Y=;
+ b=r8Wu7LEBV2PkHp+QZulvstyuaV0nARO1qNHRT+jKge/UIL70Qbpy4Aus+mDiZheMaH
+ avp+WY/IbG3t/iCJv2mqn89Nk6ODtqTtvynxEnX8cJO96kwT/vhTPhm0e+cWUH5WuhWm
+ ihCvzGpGzWDTmPpFOgHDx3ckp/Xqk3uYmG125/iNGKG49t0EGiVBfeH+FpI5e3l0fWrd
+ UIvxnyC/10nDGMjDXnETCDJQuy6WOLcBP3G/pSYMwbbFK5j7Z+L8ViA1HzoChCDzJUmP
+ dmYQHicUqnrZPe2EQwJYsQICIeK3bvlaEYikvIg7nMi/kxpsDNQ3NVHhAihQwAHs9vqo
+ LRsw==
+X-Gm-Message-State: AOJu0YwXd/NC9PCrmLnF0rYz/HlIZvEYZStVVuivRkKxk5D8b/eS1J+o
+ QHqmudM7mihnRfXijBXAkRPn0w1qvtnKd9JbJYe9HVTGBQhf+zR1yrfZJD9Wa8FFuCxksI3G4qO
+ N7nvU61dInabBGigUwM//MHcfAPgP8Ns=
+X-Gm-Gg: ASbGnctOnKY2gNvHeHW60HUbNELS+zN62uow62M2J3M/aeMPH+BV0hUxW00B2BnfkcD
+ bWNAYiaP0BZu/oMe5cSERERJyEZ6VDEqFJ/owuqcTp4mh/jbfOsDXr5E00tNlRbnlwczcD7wz7f
+ CqraUfx7r16ivxVdgOr9FWxKan+STT7uks6fPU80sl/vtc05fyqloU1ybKgfB0zGCaZWacalLbX
+ HP5UKvb2wf7Cis77wrrHScVfCk=
+X-Google-Smtp-Source: AGHT+IFlEqPODjwSDjHyIisdLTCCc1svInsgFmbCa2p9+TEpbDsDPn3g33Ou9ggGh/wkaPvN+6JNcE9QceOX4lHrwTk=
+X-Received: by 2002:a17:90a:dfcd:b0:332:fb46:9a34 with SMTP id
+ 98e67ed59e1d1-3342a2c2a76mr18308145a91.29.1759099278028; Sun, 28 Sep 2025
+ 15:41:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/9] hw/ppc: Support for an IBM PPE42 CPU decrementer
-To: Richard Henderson <richard.henderson@linaro.org>,
- Glenn Miles <milesg@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, clg@redhat.com, npiggin@gmail.com, thuth@redhat.com, 
- rathc@linux.ibm.com
-References: <20250925201758.652077-1-milesg@linux.ibm.com>
- <20250925201758.652077-8-milesg@linux.ibm.com>
- <f023d7c8-1556-448b-8cf6-1ee1cc2f7b50@linux.ibm.com>
- <50d8690f-d5a9-4cc4-9111-8f2d4e5bfd5f@linaro.org>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <50d8690f-d5a9-4cc4-9111-8f2d4e5bfd5f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=T7WBjvKQ c=1 sm=1 tr=0 ts=68d98daa cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10
- a=6d6SYI82db8bXswPYFIA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
- a=oH34dK2VZjykjzsv8OSz:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=jd6J4Gguk5HxikPWLKER:22
-X-Proofpoint-GUID: kkQ_Ql1DVUU9hy5rYtSOA2xwSQ28EpHD
-X-Proofpoint-ORIG-GUID: qWpGsZcsk8ipk1rSEbkQ12ytcqdJPpBY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfX90znaOLFry6C
- ruyYxZGvVSY7iUPFsDYgcxte6YCBJp96Hdr1VLH6e8AOJto8PMu4heoHuP8pG+nSUTzKmeGdF6M
- sIS/WsgwQkJtjL0oYulwkq3JY9TjQ5srf13Z4HEKyAO1JMYF9wXxgB4pn980P8KF5iNLIwlFugR
- 9RDSgc2dVQuoHWPa9ichHqSuigd/Rvt92mYko5BnA6FCdX8pQ+urkEQRVFaQvYYcXfEQ1NOd7KZ
- 0WLgoh8BIGIgiDBUiL58fkoW28WQoQr2LzMcUUl5V83o1erNv+NXugkXmiz7utZ18nz7q5tauSX
- Z8NvdeXA1zi0qtVipoSA5e2zbfb2kOpAhjXL+QjlPyFzYeOPQneC94bmT6eMQkbX705mnrXdy8f
- WE0ojejdipHjkw/UCr6lsTT+x3mxuQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-28_08,2025-09-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250925013513.67780-1-philmd@linaro.org>
+In-Reply-To: <20250925013513.67780-1-philmd@linaro.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Sun, 28 Sep 2025 15:41:06 -0700
+X-Gm-Features: AS18NWCAFOaLNH2K6fg1xbGTirvhBYrPcR-DZLPQbiRPIlNDygS02bcFIw3tXug
+Message-ID: <CAMo8BfJ6W+fCmBjx2bYb=0v-cOBb4_x+f6Bm7WCsCrgNsRtYEA@mail.gmail.com>
+Subject: Re: [PATCH] hw/xtensa/xtfpga: Have xtfpga_init() only initialize MMU
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x102d.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,29 +93,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Sep 24, 2025 at 6:35=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> cpu_reset() should not be used with an unrealized CPU.
+> Here we simply want to initialize the MMU, not the CPU,
+> so just call reset_mmu().
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/xtensa/xtfpga.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 
-On 9/29/25 00:57, Richard Henderson wrote:
-> On 9/28/25 10:51, Harsh Prateek Bora wrote:
->>
->>
->> On 9/26/25 01:47, Glenn Miles wrote:
->>> The IBM PPE42 processors support a 32-bit decrementer
->>> that can raise an external interrupt when DEC[0]
->>> transitions from a 0 to a 1 (a non-negative value to a
->>
->> I guess it was meant to be 0 to -1 (0xffffffff)?
->> No need to re-spin just for that though.
-> 
-> No, Glenn is talking about bit DEC[0], so 0 or 1 only.
-
-Oh, yeh. I just posted a pull-req after updating it to -1 though.
-Not sure if we want a pull-req v2 for that.
-
-regards,
-Harsh
-
-> 
-> 
-> r~
+--=20
+Thanks.
+-- Max
 
