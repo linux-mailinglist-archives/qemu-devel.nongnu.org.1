@@ -2,72 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C21BA6C41
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 10:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32221BA6E41
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 11:50:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2nCJ-0006VF-Jv; Sun, 28 Sep 2025 04:55:59 -0400
+	id 1v2o0s-0001d6-Gj; Sun, 28 Sep 2025 05:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v2nCF-0006UO-4C
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:55 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v2nC8-00044H-Lw
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759049749; x=1790585749;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kPLupQPAUBUcNZDsIGDQVNkPtYijna1nTxTrWEhgc4I=;
- b=mX4TshKd3GFuU01vdwwvGRDTy+NyqBXvfKLeg6F3P20kNYplQDKs2D7e
- pflVGcnMNMR/daHwOL/KwG9kUAqVz9BnpVq7Yq7GSy3TLB3qe8J6n1709
- c0pUvxIREgQgepEsFGdenlQM+KVDpH4y+M9E7aBNfTu/Meums8pHt9fba
- RNM4GupWJgrunw0zGw6dkB2jpF35YLzcpmAW+8VWfb6/6JSZ0SBBvHdbx
- L/iv1FoCsXOzmXfF54m7x90CQWQcQhqUJDTbv1rpbF5jwI6tkUm+v9lp/
- Dw0BdGfSqld9TjlhOqYjkCjzVZzWV2Ew1t641MvFBmiVVC3DEAzqwvxp1 g==;
-X-CSE-ConnectionGUID: 5IXCqz8JRJChPZHJbjrgaQ==
-X-CSE-MsgGUID: uNC98ggHQeapacoNgGd3VQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="65167447"
-X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="65167447"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2025 01:55:28 -0700
-X-CSE-ConnectionGUID: Pw3ed5hcTn+pDadMFJaZNg==
-X-CSE-MsgGUID: bXU8akrsSMKkdwdkaEJEGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="177810823"
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2025 01:55:26 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1v2o0o-0001cp-PM
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 05:48:11 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1v2o0g-0006QV-H9
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 05:48:10 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxidFHBNlofM4PAA--.33264S3;
+ Sun, 28 Sep 2025 17:47:51 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowJDx_8NCBNloMpa5AA--.63673S2;
+ Sun, 28 Sep 2025 17:47:47 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- steven.sistare@oracle.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute "query-balloon"
- after CPR transfer
-Date: Sun, 28 Sep 2025 04:54:32 -0400
-Message-ID: <20250928085432.40107-7-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250928085432.40107-1-zhenzhong.duan@intel.com>
-References: <20250928085432.40107-1-zhenzhong.duan@intel.com>
+Subject: [PULL v2 00/11] loongarch-to-apply queue
+Date: Sun, 28 Sep 2025 17:23:57 +0800
+Message-Id: <20250928092408.948035-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.12;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowJDx_8NCBNloMpa5AA--.63673S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,46 +59,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After CPR transfer, source QEMU closes kvm fd and sets kvm_state to NULL,
-"query-balloon" will check kvm_state->sync_mmu and trigger NULL pointer
-reference.
+The following changes since commit d6dfd8d40cebebc3378d379cd28879e0345fbf91:
 
-We don't need to NULL kvm_state as all states in kvm_state aren't released
-actually. Just closing kvm fd is enough so we could still query states
-through "query_*" qmp command.
+  Merge tag 'pull-target-arm-20250926' of https://gitlab.com/pm215/qemu into staging (2025-09-26 13:27:01 -0700)
 
-Opportunistically drop an unnecessary check in kvm_close().
+are available in the Git repository at:
 
-Fixes: 7ed0919119b0 ("migration: close kvm after cpr")
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- accel/kvm/kvm-all.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+  https://github.com/gaosong715/qemu.git tags/pull-loongarch-20250928
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 23fd491441..b4c717290d 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -639,13 +639,10 @@ void kvm_close(void)
-         cpu->kvm_vcpu_stats_fd = -1;
-     }
- 
--    if (kvm_state && kvm_state->fd != -1) {
--        close(kvm_state->vmfd);
--        kvm_state->vmfd = -1;
--        close(kvm_state->fd);
--        kvm_state->fd = -1;
--    }
--    kvm_state = NULL;
-+    close(kvm_state->vmfd);
-+    kvm_state->vmfd = -1;
-+    close(kvm_state->fd);
-+    kvm_state->fd = -1;
- }
- 
- /*
--- 
-2.47.1
+for you to fetch changes up to 7470657ec157d4526752147165b2d368e2c7002e:
+
+  hw/loongarch: Implement DINTC plug/unplug interfaces (2025-09-28 17:31:04 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20250928
+
+v2: fix build win64 errors.
+
+----------------------------------------------------------------
+Song Gao (11):
+      target/loongarch: move some machine define to virt.h
+      hw/loongarch: add virt feature dmsi support
+      hw/loongarch: add misc register support dmsi
+      loongarch: add a direct interrupt controller device
+      target/loongarch: add msg interrupt CSR registers
+      hw/loongarch: DINTC add a MemoryRegion
+      hw/loongarch: Implement dintc realize and unrealize
+      hw/loongarch: Implement dintc set irq
+      target/loongarch: Add CSR_ESTAT.bit15 and CSR_ECFG.bit15 for msg interrupts.
+      target/loongarch:Implement csrrd CSR_MSGIR register
+      hw/loongarch: Implement DINTC plug/unplug interfaces
+
+ hw/intc/Kconfig                                    |   3 +
+ hw/intc/loongarch_dintc.c                          | 212 +++++++++++++++++++++
+ hw/intc/meson.build                                |   1 +
+ hw/loongarch/Kconfig                               |   1 +
+ hw/loongarch/virt.c                                | 110 ++++++++++-
+ include/hw/intc/loongarch_dintc.h                  |  36 ++++
+ include/hw/loongarch/virt.h                        |  34 ++++
+ include/hw/pci-host/ls7a.h                         |   2 +
+ target/loongarch/cpu-csr.h                         |   9 +-
+ target/loongarch/cpu.c                             |  29 +++
+ target/loongarch/cpu.h                             |  36 ++--
+ target/loongarch/csr.c                             |   5 +
+ target/loongarch/machine.c                         |  25 ++-
+ target/loongarch/tcg/csr_helper.c                  |  21 ++
+ target/loongarch/tcg/helper.h                      |   1 +
+ .../tcg/insn_trans/trans_privileged.c.inc          |   1 +
+ 16 files changed, 499 insertions(+), 27 deletions(-)
+ create mode 100644 hw/intc/loongarch_dintc.c
+ create mode 100644 include/hw/intc/loongarch_dintc.h
 
 
