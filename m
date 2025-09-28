@@ -2,36 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32221BA6E41
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 11:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 668BABA6E29
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 11:49:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2o0s-0001d6-Gj; Sun, 28 Sep 2025 05:48:14 -0400
+	id 1v2o0t-0001dp-0M; Sun, 28 Sep 2025 05:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1v2o0o-0001cp-PM
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 05:48:11 -0400
+ id 1v2o0q-0001dH-Hn
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 05:48:12 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1v2o0g-0006QV-H9
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 05:48:10 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1v2o0i-0006Qc-24
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 05:48:12 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxidFHBNlofM4PAA--.33264S3;
- Sun, 28 Sep 2025 17:47:51 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxvdJKBNlofc4PAA--.32827S3;
+ Sun, 28 Sep 2025 17:47:54 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJDx_8NCBNloMpa5AA--.63673S2;
- Sun, 28 Sep 2025 17:47:47 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowJDx_8NCBNloMpa5AA--.63673S3;
+ Sun, 28 Sep 2025 17:47:53 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 00/11] loongarch-to-apply queue
-Date: Sun, 28 Sep 2025 17:23:57 +0800
-Message-Id: <20250928092408.948035-1-gaosong@loongson.cn>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL v2 01/11] target/loongarch: move some machine define to virt.h
+Date: Sun, 28 Sep 2025 17:23:58 +0800
+Message-Id: <20250928092408.948035-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250928092408.948035-1-gaosong@loongson.cn>
+References: <20250928092408.948035-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDx_8NCBNloMpa5AA--.63673S2
+X-CM-TRANSID: qMiowJDx_8NCBNloMpa5AA--.63673S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -59,55 +62,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d6dfd8d40cebebc3378d379cd28879e0345fbf91:
+move some machine define to virt.h
 
-  Merge tag 'pull-target-arm-20250926' of https://gitlab.com/pm215/qemu into staging (2025-09-26 13:27:01 -0700)
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <20250916122109.749813-2-gaosong@loongson.cn>
+---
+ include/hw/loongarch/virt.h | 19 +++++++++++++++++++
+ target/loongarch/cpu.h      | 21 ---------------------
+ 2 files changed, 19 insertions(+), 21 deletions(-)
 
-are available in the Git repository at:
-
-  https://github.com/gaosong715/qemu.git tags/pull-loongarch-20250928
-
-for you to fetch changes up to 7470657ec157d4526752147165b2d368e2c7002e:
-
-  hw/loongarch: Implement DINTC plug/unplug interfaces (2025-09-28 17:31:04 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20250928
-
-v2: fix build win64 errors.
-
-----------------------------------------------------------------
-Song Gao (11):
-      target/loongarch: move some machine define to virt.h
-      hw/loongarch: add virt feature dmsi support
-      hw/loongarch: add misc register support dmsi
-      loongarch: add a direct interrupt controller device
-      target/loongarch: add msg interrupt CSR registers
-      hw/loongarch: DINTC add a MemoryRegion
-      hw/loongarch: Implement dintc realize and unrealize
-      hw/loongarch: Implement dintc set irq
-      target/loongarch: Add CSR_ESTAT.bit15 and CSR_ECFG.bit15 for msg interrupts.
-      target/loongarch:Implement csrrd CSR_MSGIR register
-      hw/loongarch: Implement DINTC plug/unplug interfaces
-
- hw/intc/Kconfig                                    |   3 +
- hw/intc/loongarch_dintc.c                          | 212 +++++++++++++++++++++
- hw/intc/meson.build                                |   1 +
- hw/loongarch/Kconfig                               |   1 +
- hw/loongarch/virt.c                                | 110 ++++++++++-
- include/hw/intc/loongarch_dintc.h                  |  36 ++++
- include/hw/loongarch/virt.h                        |  34 ++++
- include/hw/pci-host/ls7a.h                         |   2 +
- target/loongarch/cpu-csr.h                         |   9 +-
- target/loongarch/cpu.c                             |  29 +++
- target/loongarch/cpu.h                             |  36 ++--
- target/loongarch/csr.c                             |   5 +
- target/loongarch/machine.c                         |  25 ++-
- target/loongarch/tcg/csr_helper.c                  |  21 ++
- target/loongarch/tcg/helper.h                      |   1 +
- .../tcg/insn_trans/trans_privileged.c.inc          |   1 +
- 16 files changed, 499 insertions(+), 27 deletions(-)
- create mode 100644 hw/intc/loongarch_dintc.c
- create mode 100644 include/hw/intc/loongarch_dintc.h
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 602feab0f0..7120b46714 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -13,6 +13,25 @@
+ #include "hw/block/flash.h"
+ #include "hw/loongarch/boot.h"
+ 
++#define IOCSRF_TEMP             0
++#define IOCSRF_NODECNT          1
++#define IOCSRF_MSI              2
++#define IOCSRF_EXTIOI           3
++#define IOCSRF_CSRIPI           4
++#define IOCSRF_FREQCSR          5
++#define IOCSRF_FREQSCALE        6
++#define IOCSRF_DVFSV1           7
++#define IOCSRF_GMOD             9
++#define IOCSRF_VM               11
++
++#define VERSION_REG             0x0
++#define FEATURE_REG             0x8
++#define VENDOR_REG              0x10
++#define CPUNAME_REG             0x20
++#define MISC_FUNC_REG           0x420
++#define IOCSRM_EXTIOI_EN        48
++#define IOCSRM_EXTIOI_INT_ENCODE 49
++
+ #define LOONGARCH_MAX_CPUS      256
+ 
+ #define VIRT_FWCFG_BASE         0x1e020000UL
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index c8b96f74dc..8c35bf120a 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -21,27 +21,6 @@
+ #include "cpu-csr.h"
+ #include "cpu-qom.h"
+ 
+-#define IOCSRF_TEMP             0
+-#define IOCSRF_NODECNT          1
+-#define IOCSRF_MSI              2
+-#define IOCSRF_EXTIOI           3
+-#define IOCSRF_CSRIPI           4
+-#define IOCSRF_FREQCSR          5
+-#define IOCSRF_FREQSCALE        6
+-#define IOCSRF_DVFSV1           7
+-#define IOCSRF_GMOD             9
+-#define IOCSRF_VM               11
+-
+-#define VERSION_REG             0x0
+-#define FEATURE_REG             0x8
+-#define VENDOR_REG              0x10
+-#define CPUNAME_REG             0x20
+-#define MISC_FUNC_REG           0x420
+-#define IOCSRM_EXTIOI_EN        48
+-#define IOCSRM_EXTIOI_INT_ENCODE 49
+-
+-#define IOCSR_MEM_SIZE          0x428
+-
+ #define FCSR0_M1    0x1f         /* FCSR1 mask, Enables */
+ #define FCSR0_M2    0x1f1f0000   /* FCSR2 mask, Cause and Flags */
+ #define FCSR0_M3    0x300        /* FCSR3 mask, Round Mode */
+-- 
+2.47.0
 
 
