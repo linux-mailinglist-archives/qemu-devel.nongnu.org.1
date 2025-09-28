@@ -2,51 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE557BA6BEA
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 10:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B12EBA6C47
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 10:57:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2n4r-0007ZZ-Ij; Sun, 28 Sep 2025 04:48:17 -0400
+	id 1v2nBv-0006QP-KE; Sun, 28 Sep 2025 04:55:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1v2n4j-0007WZ-GW
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:48:09 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1v2n4S-000286-Hi
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:48:09 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxL9Mp9thoVcsPAA--.32610S3;
- Sun, 28 Sep 2025 16:47:37 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJBxC8Eg9tho32y5AA--.23975S15;
- Sun, 28 Sep 2025 16:47:37 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1v2nBr-0006QE-Qy
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:31 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1v2nBk-00044H-05
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759049724; x=1790585724;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QBEUFXYHYtpWj/I3pwOjDT9zSZPzhvDVrZ4P+o54GbE=;
+ b=W8gEUjWOAuHyMhI3osMt53tAd86rdgBtVPl/+cyX/yiNbJKbw0T4GdH2
+ /ejcAzVwALzcu6Z7CxEEgXfyF3khEQHH3oFIxdvoU/rwKjJwJhHtC4rhA
+ eS1+4SG+S1kLJPrQQ/maG0dBAX4imiTRJ2S32bqQJNeQNlLkXURL25hP2
+ tfITTcQfRcc9Fb9xLh6v6DswyMUbuKfjN5xc5t+CFhx42f+zbrhJNxfDk
+ GAJN+Ejvi9JHARbiUFQORMYr6AP/UPqKTHfw3YU0mzrXtiNPAqOChiZ57
+ 0GQ+vPommwFQGRFjqtx6AeeYshpgmiws2Qu8ErR+Jn2ieZAkLr6Onbmrf g==;
+X-CSE-ConnectionGUID: SIqoWjotTDmj1SEo9PHWBQ==
+X-CSE-MsgGUID: nhKSQT8NQQiQm9Ww1/aVAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="65167425"
+X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="65167425"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Sep 2025 01:55:17 -0700
+X-CSE-ConnectionGUID: J4Nxw6bkQHGRHARt126Pug==
+X-CSE-MsgGUID: uDoB4QxtTzO25XdEebZE3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="177810793"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Sep 2025 01:55:15 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/13] target/loongarch: Only flush one TLB entry in
- helper_invtlb_page_asid()
-Date: Sun, 28 Sep 2025 16:47:28 +0800
-Message-Id: <20250928084728.1972177-14-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250928084728.1972177-1-maobibo@loongson.cn>
-References: <20250928084728.1972177-1-maobibo@loongson.cn>
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ steven.sistare@oracle.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v2 0/6] VFIO: cpr-transfer fixes
+Date: Sun, 28 Sep 2025 04:54:26 -0400
+Message-ID: <20250928085432.40107-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxC8Eg9tho32y5AA--.23975S15
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, T_SPF_HELO_TEMPERROR=0.01,
+Received-SPF: pass client-ip=192.198.163.12;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,33 +79,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With function helper_invtlb_page_asid(), only one TLB entry in
-LoongArch emulated TLB is invalidated. so with QEMU TLB, it is not
-necessary to flush all QEMU TLB, only flush address range specified
-LoongArch emulated TLB is ok. Here invalidate_tlb_entry() is called
-so that only QEMU TLB entry with specified address range is flushed.
+Hi,
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/loongarch/tcg/tlb_helper.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Patch1: fixed an error restore path when virtio-mem is configured.
+Patch2: fixed assert failure on error restore path, this issue happens
+no matter if virtio-mem is configured.
+Some trick is played to trigger the error path,
+see https://github.com/yiliu1765/qemu/commit/494d19e7f7242dbc47d7f236937cde0c396a4a7c
 
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 243f945612..8cfce48a29 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -541,8 +541,7 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
-     func = tlb_match_asid;
-     tlb = loongarch_tlb_search_cb(env, addr, asid, func);
-     if (tlb) {
--        tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
--        tlb_flush(env_cpu(env));
-+        invalidate_tlb(env, tlb - env->tlb);
-     }
- }
- 
+Patch3-4: issue only happens with two or more VFIO devices, no issue
+if only one VFIO device.
+
+Patch5: fix a bug that impact "query-balloon" execution
+
+Patch6: SIGSEGV if I send "query-balloon" to source qmp monitor,
+I'm not quite sure if it's deserved to be fixed, as guest has been
+migrated to destination, it's not a big issue for source qemu to
+SIGSEGV?
+
+Thanks
+Zhenzhong
+
+Changelog:
+v2:
+- minor polishment to commit log (Steve)
+- keep kvm_state so "query-balloon" could work after CPR-transfer (Markus)
+- add a fix which is found during "query-balloon" execution
+- rebased to master
+
+Zhenzhong Duan (6):
+  vfio/container: Remap only populated parts in a section
+  vfio/cpr-legacy: drop an erroneous assert
+  vfio/iommufd: Set cpr.ioas_id on source side for CPR transfer
+  vfio/iommufd: Restore vbasedev's reference to hwpt after CPR transfer
+  accel/kvm: Fix an erroneous check on coalesced_mmio_ring
+  accel/kvm: Fix SIGSEGV when execute "query-balloon" after CPR transfer
+
+ include/hw/vfio/vfio-cpr.h |  2 +-
+ accel/kvm/kvm-all.c        | 14 ++++++--------
+ hw/vfio/cpr-legacy.c       | 22 +++++++++++++++-------
+ hw/vfio/iommufd.c          |  8 ++++----
+ hw/vfio/listener.c         |  4 ++--
+ 5 files changed, 28 insertions(+), 22 deletions(-)
+
 -- 
-2.43.5
+2.47.1
 
 
