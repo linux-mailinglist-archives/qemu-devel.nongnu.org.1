@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC9ABA6C3E
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 10:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE4FBA6C44
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Sep 2025 10:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v2nC2-0006Ri-Ir; Sun, 28 Sep 2025 04:55:42 -0400
+	id 1v2nCA-0006Sy-GH; Sun, 28 Sep 2025 04:55:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v2nC0-0006RJ-ST
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:40 -0400
+ id 1v2nC5-0006Sa-Vj
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:46 -0400
 Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v2nBm-00045O-Lh
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:39 -0400
+ id 1v2nBs-00044H-HI
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 04:55:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759049727; x=1790585727;
+ t=1759049733; x=1790585733;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1bPMtFRL3YYOPfBbPcLgkc9GDo/yeMUTGUUDeY1Ngok=;
- b=aXyPVoPNPKjlIZYcTwa6njqorEAuOe6wgvtEzwEbJAFXYyCq98F1Mdun
- QrevVI2gxxVCaneO3EANIockvDwt32Dpb/xurr0j+mmKCfmRWVukdCW8a
- kwmXN8iPeVZIG1FIDb73bPvlUTTj5Ck7t4UgV08tBJvd5Ngbt1a1bJ2RI
- Szu+WnDow6Ez2OLON7VU1fzO31fVkxXKVGGevcd5TCNnIB74YAYhB8BL6
- CgMHBsqk/eRyqPy18SUKS/UgS4Ljqf8ZUbrBvtNLPIZQ+xx6O08YAlui9
- ujGXNT7Au6wGIBS3K886dx1+oibJO2F+hSBPNvE5bx20nyd4a4Y28sMV6 Q==;
-X-CSE-ConnectionGUID: Ylmka4j1SAiAaScEaFSKWw==
-X-CSE-MsgGUID: ZCITI5h1Q+eHOLf2gqQc0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="65167433"
-X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="65167433"
+ bh=ZaOR0GwkP7gj0Qjq7ISfL5dfkwjjlxyWj/oRNzcntF8=;
+ b=M/I8Ig/+0i+P8JlLKbA2c+/qqYzGDYA5Imacaxfc/NnqVyjkY7BvX5qY
+ wKgI6ynq/Pwz3a7fZQbU3JQYxhGPazI1xiuvCu+PjJe721KlG7byewG6f
+ DiKWaquX+VPBrwnKP3b6vmPSyy23PxJ2ITWvzc1NmuugliaPUIuDbekLI
+ OG+lTSvXmPCFFs+eHQRbwsxk/V4nR7sf4gDtCCCG+aUq9gNf8GOwNncRz
+ v6gfzpaq67dBA+FfE/A09ZdisT+pYm+Ljt9QEclzsvy0YfMRdCIgy25or
+ nWArqWOWd1WJeDkjsDYa7EZYG7vdBaP3QdfOpchypmLq73U7kAPQ8BOsb A==;
+X-CSE-ConnectionGUID: HhRCF9QCRWC9lEQkjge+SQ==
+X-CSE-MsgGUID: aZUEMEsCQeCEED8UL3cpCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="65167436"
+X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="65167436"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2025 01:55:20 -0700
-X-CSE-ConnectionGUID: OrNMCXMPTI26irWx+yq3tw==
-X-CSE-MsgGUID: 0IgDBlKrQ4GEUo0JJUbxEw==
+ 28 Sep 2025 01:55:22 -0700
+X-CSE-ConnectionGUID: SzKgkaStTA2XU/LkjxfU/g==
+X-CSE-MsgGUID: BMSXHGg3Tiu+XLNMWgjaDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="177810804"
+X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; d="scan'208";a="177810810"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2025 01:55:19 -0700
+ 28 Sep 2025 01:55:21 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  steven.sistare@oracle.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 2/6] vfio/cpr-legacy: drop an erroneous assert
-Date: Sun, 28 Sep 2025 04:54:28 -0400
-Message-ID: <20250928085432.40107-3-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 3/6] vfio/iommufd: Set cpr.ioas_id on source side for CPR
+ transfer
+Date: Sun, 28 Sep 2025 04:54:29 -0400
+Message-ID: <20250928085432.40107-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250928085432.40107-1-zhenzhong.duan@intel.com>
 References: <20250928085432.40107-1-zhenzhong.duan@intel.com>
@@ -58,11 +59,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.12;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+X-Spam_score_int: -47
+X-Spam_score: -4.8
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -81,30 +82,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_legacy_cpr_dma_map() is not only used in post_load on destination
-but also error recovery path on source side. Assert it for destination
-is wrong.
+On source side, if there are more than one VFIO devices and they
+attach to same container, only the first device sets cpr.ioas_id,
+the others are bypassed. We should set it for each device, or
+else only first device works.
 
-Fixes: 7e9f21411302 ("vfio/container: restore DMA vaddr")
+Fixes: 4296ee07455e ("vfio/iommufd: reconstruct device")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/cpr-legacy.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/vfio/iommufd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index 9a37e8c604..c2b81f4a4b 100644
---- a/hw/vfio/cpr-legacy.c
-+++ b/hw/vfio/cpr-legacy.c
-@@ -52,8 +52,6 @@ static int vfio_legacy_cpr_dma_map(const VFIOContainer *bcontainer,
-         .size = size,
-     };
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index f0ffe23591..13c5c49d5e 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -602,7 +602,6 @@ skip_ioas_alloc:
+     container->be = vbasedev->iommufd;
+     container->ioas_id = ioas_id;
+     QLIST_INIT(&container->hwpt_list);
+-    vbasedev->cpr.ioas_id = ioas_id;
  
--    g_assert(cpr_is_incoming());
--
-     if (ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map)) {
-         return -errno;
-     }
+     bcontainer = VFIO_IOMMU(container);
+     vfio_address_space_insert(space, bcontainer);
+@@ -636,6 +635,8 @@ skip_ioas_alloc:
+     bcontainer->initialized = true;
+ 
+ found_container:
++    vbasedev->cpr.ioas_id = container->ioas_id;
++
+     ret = ioctl(devfd, VFIO_DEVICE_GET_INFO, &dev_info);
+     if (ret) {
+         error_setg_errno(errp, errno, "error getting device info");
 -- 
 2.47.1
 
