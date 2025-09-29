@@ -2,144 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC8BBA9746
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C33BA968F
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3EA7-0004iO-BF; Mon, 29 Sep 2025 09:43:31 -0400
+	id 1v3EB1-0007Nf-8p; Mon, 29 Sep 2025 09:44:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1v3E8h-0003nD-9J; Mon, 29 Sep 2025 09:42:03 -0400
-Received: from mail-westusazlp170100001.outbound.protection.outlook.com
- ([2a01:111:f403:c000::1] helo=BYAPR05CU005.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1v3E8Q-000405-W6; Mon, 29 Sep 2025 09:42:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aiHg4uTHzFdpqwXyHdWxnI2Kptw97633WhuFqmyD5IFmphRJAGspkKWe4cwR6KtyHKZnG79CI0mzz0EEg9TOd4fKSdRLyEIczuo3rq/r+teDEoOvYAYY9LDluoBT0gRZr7mf2VxyvSWcyNe8ckyJGRiW0u+PPYAVEUTWFQCCLI8Cuc8sfFr3eeaY7/4xDTrs54XjZebe2ITunSweR4RsL5SSyTQtt2gjy4wGTHzgGA0gGPb8NyTyufA5Sy1gl8ixZnXG/BGAdxtOAthRBe6O81zAgHgsn3eZVizitZnyf2mLsflhAEWNkGKJ/U4gzzu5aEf8784gTSYNbgdBzEJh/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FWXFu4ctiXC1RwXCpC2CxZSxLVU4UltahOVGboeoMAc=;
- b=Hsnxe2FMqHs84tv4cIKkc4NtSS2l1ZCURrQr0hQUPk5ZT8xb0cDXLbHMmDfq4KMA682q/L0pQM2YFyzuE2/kBaJ2hmAlpoPvPQXjSX1UY1K35KDFeXXULUtiWePwxQLjv03/rxMOCK5P4KuLK/tXsjU5yetcZmSKSdp8cV62MR/t36mttpBTON3O3bni7XJbLmjEgJ3tKo5lAWm4Od4bHKiRoJEEfKnKNVYFW6x93y9YLexhXdkmvR/m0UwjggtzzusTsfUaUYeZlTIhMjP8JOj7+QwMXm3a2KJpPeaULnheqRPs5USr2Xr86KKDjez8dU/0Qo/3dG4dXmO1H1CkUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FWXFu4ctiXC1RwXCpC2CxZSxLVU4UltahOVGboeoMAc=;
- b=kJ+d8/CudT8TDRJJGVKvYbLNAd89nhiF6R0A99eBOaEUoCVL+Y4kjKXHZluk6FRfeil+BQXuqTjNv4x3McFrM8x/kbmY0Di827ZNy0AHHmnZbocRY5tk7sUdz73cHTZD3z56sfre2dnlqY6CWY+fMr2NlevR7+xoE89W4+FTlFA5Ei8Mx22kQ9bXDE24wgpCE5ZoZMoXTgYXx1C5D4MNmiKE8VO8jnNGiupUJht9j7V2v8C1kkmNmkCnBN4vpJVPge5ex8UK3uIE8NF4DFtmKZXenAvKlNOfX0GU485OMjr56qNmrtXOg79BA01Lruh+FYGeiO7qeIQlejwGY4Xi3g==
-Received: from CH2PR08CA0010.namprd08.prod.outlook.com (2603:10b6:610:5a::20)
- by SA5PPF9176ED2F1.namprd12.prod.outlook.com
- (2603:10b6:80f:fc04::8d7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.21; Mon, 29 Sep
- 2025 13:41:25 +0000
-Received: from CH1PEPF0000AD7F.namprd04.prod.outlook.com
- (2603:10b6:610:5a:cafe::24) by CH2PR08CA0010.outlook.office365.com
- (2603:10b6:610:5a::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.16 via Frontend Transport; Mon,
- 29 Sep 2025 13:41:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH1PEPF0000AD7F.mail.protection.outlook.com (10.167.244.88) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9 via Frontend Transport; Mon, 29 Sep 2025 13:41:24 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 29 Sep
- 2025 06:41:05 -0700
-Received: from NV-2Y5XW94.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 29 Sep
- 2025 06:40:54 -0700
-From: Shameer Kolothum <skolothumtho@nvidia.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
- <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
- <nathanc@nvidia.com>, <mochs@nvidia.com>, <smostafa@google.com>,
- <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
- <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
- <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <shameerkolothum@gmail.com>
-Subject: [PATCH v4 27/27] hw.arm/smmuv3: Add support for PASID enable
-Date: Mon, 29 Sep 2025 14:36:43 +0100
-Message-ID: <20250929133643.38961-28-skolothumtho@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250929133643.38961-1-skolothumtho@nvidia.com>
-References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v3EAy-0007KJ-0B
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:44:24 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v3EAj-0004iw-6p
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:44:23 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-46e37d10ed2so44946115e9.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 06:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759153437; x=1759758237; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GPSTf1Nqxqut7hMCbWBenb7Umki+Ui9sveMve5KSzJc=;
+ b=Eha4wphJmA9/CsLhb2U0v8qwosqP9tLtabwr5rs2LGOt2FsZS1WMjWFZvHggqCpGor
+ rHzZZmQL4j3E7V1bK9WM0fboV5wyWPc9x5MuejKv5oFl1NzW71th14JqyIXIXeUcJqMf
+ xkMomgh1DlEqs2hfh8ig6dAfUeX47eoEoohmUIcYzhftQeKpKqw5ioaRJH+fPz+q7zAo
+ 45wAcUF5Z6aVRTV90SKylbyceS+XTLHuubz6qHQfxvSHxI9aJMPgYzRNhUgXtS00hmip
+ fa2O4AuVD8jBrIpl3rhYQo91ySjXvzCai4MSQEAXVGQQkbrz0i5QYIW6bQSSZc0P7H3w
+ /1cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759153437; x=1759758237;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GPSTf1Nqxqut7hMCbWBenb7Umki+Ui9sveMve5KSzJc=;
+ b=NnhYqQl9j4OQMPMhw1gUAWT/4UzXGCqSCsgqsur6uVyBjsus1cAsVM5oZT+CnqlwBz
+ N8MbBbYd5Sy1nDdEUWlN3jBM+MoS3M6gSNKz96uoIhK0xjAzMPQvx6dk6Txm0izgr8a1
+ ORMSeASRUChQ/nUzSFfE5t4ACy2izJbKyCHeb/lHVgJodcDa7S3wVI9wq4hTWN0VevKh
+ SRzuU7evUS4vwaRSBgPc9U08ySdwC1bgu//OKDev9GdaGkVTKGZysJGFxFlmunHGJ0Cb
+ K/v/grzZm/4dVb6LBoWbLloGDvMxIYDrLle9KUebt6Au9EnXUJDFAdxnFi56NmfU1zem
+ ulEQ==
+X-Gm-Message-State: AOJu0YzqFik1VqndOF8k68n8rb+sKcDeBGXqdQafk/50Tr5Tmu8Ncug1
+ bkWy9VSGHiB95tFsRT9pOHQUG5OmN9Br/HKX3Y/QJErX3Akkp7ptlrFSb8lEqPvtaYA=
+X-Gm-Gg: ASbGncuGYe8KPS80mlrNRsSoDbArcI687s2ryr7XlBG9yCxW+0Yu7x9BKumXON2usxD
+ d/Yks95MgwQQ4xJplcIXQgBpt+ESDo1msCAsPfWAQBP5rP5pqPDBMsBDNacWFqXAwdzoY9RdTjH
+ I1Z7vWH7Cbs1YkOAg9FY5rFVTUcH582ukiowv0LwmhncvRwn40+IQmoOEDAasMXYWqp/9zb9FgR
+ X1JZv2+D91AuMzvq+/AgjgHrZssmDsYzJH4dFWUSK6KTYZFhMs/OubuqP6usQYB6dLuQynePx+x
+ XBvwkDoARQEfE6DlzIeQQ6ckRSBtWvnRc2tDDEPhuvYVBsTvnXLbXhVGyW1ppslcOxIMaoY9znC
+ AC8nKiQfj6oav+3gBO1xk4vxMDU8SLn0pJ62xlF0EzROh
+X-Google-Smtp-Source: AGHT+IE9/Pn1KTFugl9ikHm89RkR7TfY1cVxR4TpjYAJjzDoIzbc00+nwutiFLMHrcsmABfz30vErg==
+X-Received: by 2002:a05:600c:8b27:b0:46d:27b7:e7e5 with SMTP id
+ 5b1f17b1804b1-46e39d7a4b7mr114179535e9.32.1759153437400; 
+ Mon, 29 Sep 2025 06:43:57 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fc6cf3835sm18532433f8f.46.2025.09.29.06.43.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Sep 2025 06:43:56 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 005A55F83A;
+ Mon, 29 Sep 2025 14:43:55 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [RFC PATCH] .gitpublish: use origin/master as default base
+Date: Mon, 29 Sep 2025 14:43:48 +0100
+Message-ID: <20250929134348.1589790-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.126.230.35]
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7F:EE_|SA5PPF9176ED2F1:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a3b5ffa-60f2-49cf-10ac-08ddff5de234
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|7416014|376014|82310400026|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?kxDt1eF7v0k8T0fH2dSpqdykREP6GVM6a3ri34APLw3CtvGMXzY1EUdRPAgw?=
- =?us-ascii?Q?6dVn1J4xjYjBuHrvhSPmwfsyJqtkJMB5nQdeKm1sASRL4GdsD1a86K8c2iGL?=
- =?us-ascii?Q?CqG6l1YB8eTnJ1Xpyl4sHbfdGjDJKGEU7OFJTKqgHMGcNGSQxQKSsJzI1OMq?=
- =?us-ascii?Q?g0Z8nQ4/ssCwDKycF4Pjs35/SE+Yo4Op44/QFr4i8WwOmTtrFxO39fi6awlE?=
- =?us-ascii?Q?IQpJlTYb15UPaHuMrgS7+FFvfl8ooreMCPnr0jST+xP2R0ihBy+L2Uph2ra1?=
- =?us-ascii?Q?dGYjNVyvCMTT/h4L3y32otKucORr4H5Wz+j75zeRJIk3AG5Augw7+vFTihmO?=
- =?us-ascii?Q?pEQxdOuj0g1u2XjmxONZNjb3tSMIGvfTlHp5HZANtduDZmtwbdQC3Hbfz/8K?=
- =?us-ascii?Q?NLbw2tTXr+gQOkmM0yg9IfZXDq8OaBTGGq1+U/A85EYH01zDDrjTvtOwFoh+?=
- =?us-ascii?Q?1MC8hx9herog1g+ndYRcpHAOw7rEdVM3MfScvR0HgCrkifv9lA1f5+Xr/bEQ?=
- =?us-ascii?Q?AJBbnDjui3ji0v9wwVaJ7I4r9CEQsIaxLOAQZNrNvnQQ3+41FVNTV8xNubjy?=
- =?us-ascii?Q?QIPylj0Lo0K0vMwIAtGJ3JPentffrK3Ku0JGARvcUsIB4BjDzn+S1gJnWlWM?=
- =?us-ascii?Q?frh2ScAA+w6oNHJOhzyUjdSpsWBEF1hfYrHnQW/iQ0byBjnCiZlep0fyo3WC?=
- =?us-ascii?Q?qZ5emIGN1EWKjm8k6zZUyykpn7gkBG9QJzpLtVb3dC4K1jy0mJBDZqI6WiQM?=
- =?us-ascii?Q?X6058zJpfhINvqgKTvABCYxK28ePMjPWtvdJDrzeZW6yn71XNZg+FWlhr9VH?=
- =?us-ascii?Q?GqcflgO5VOEwYWif8VR1aGwZ3dDjF+yLzqbP2xVUg+Znm8yjr6KKoBiX0xHa?=
- =?us-ascii?Q?6Epp1elzX9zUnHddPII9n32J3D21Q/wO5d8IfrwkraHSTPhhk4AdU0OhrcgY?=
- =?us-ascii?Q?95lSKnfk24zmFdk2ezh4PlsMb+PdcyOF2Zdm44FvvmfmS47RawDovsQcmL1m?=
- =?us-ascii?Q?sqEcd2Dpktmpa/UJeLnN5duys/XZp1aw+YKUjvGqp3v1e9DQiHHfDTf/OscL?=
- =?us-ascii?Q?FqOlhhuIVU3y7DhBAd6HFLvTrmpqbGa75QE5z7Ois19wgsyuA2quKqf69sSP?=
- =?us-ascii?Q?yFk81GEgbWSVMEYKdtkpxTYbwwqgaMKN60kXfB2BVcZADNGbi2mPAO0hOnyS?=
- =?us-ascii?Q?nQpj7MFii1jd7z/IjpQHRL3v8ypBliZOTkbhbm7XtR6xfevetlZ3S5AhYntn?=
- =?us-ascii?Q?COUYeYUsM4r8E17mP6Alr0jmgNPjjKEUsY/D5N1WcTi1SIgqWd7M/5446wW8?=
- =?us-ascii?Q?3mhcbkxhFlujUP63fZm+/P6OM+T34GCOypNesBkJ9p93fO06Fi+Y+1PlImag?=
- =?us-ascii?Q?IHnuVEfASP2KAkUMBAeo/7nczz9TbMuUt2n/s/YTX66wAo39TjloA4OKMsjI?=
- =?us-ascii?Q?MjexkcnbV4Tyu+DDUWGqmlTqllGR1RTftcasOtFrAluPtIvNiicnyKHo1Jvs?=
- =?us-ascii?Q?Cp+GTSWQT1xKPlphWrSVUPcpl/G9WmPSSagNXfoRpMjaiiCLmCaYsQIswyRc?=
- =?us-ascii?Q?x5JY5JRJTij7ZbPSRD8=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 13:41:24.6931 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a3b5ffa-60f2-49cf-10ac-08ddff5de234
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD7F.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF9176ED2F1
-Received-SPF: permerror client-ip=2a01:111:f403:c000::1;
- envelope-from=skolothumtho@nvidia.com;
- helo=BYAPR05CU005.outbound.protection.outlook.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FORGED_SPF_HELO=1, KHOP_HELO_FCRDNS=0.4, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,129 +98,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU SMMUv3 currently forces SSID (Substream ID) to zero. One key use case
-for accelerated mode is Shared Virtual Addressing (SVA), which requires
-SSID support so the guest can maintain multiple context descriptors per
-substream ID.
+This is very much the result of my recent fat finger but I think it's
+safer to assume that origin/master points to a recent commit (or at
+least a commit a given branch is based on) than master.
 
-Provide an option for user to enable PASID support. A SSIDSIZE of 16
-is currently used as default.
-
-Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/arm/smmuv3-accel.c    | 24 +++++++++++++++++++++++-
- hw/arm/smmuv3-internal.h |  1 +
- hw/arm/smmuv3.c          |  8 +++++++-
- include/hw/arm/smmuv3.h  |  1 +
- 4 files changed, 32 insertions(+), 2 deletions(-)
+ .gitpublish | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-index 283d36e6cd..0de9598dcb 100644
---- a/hw/arm/smmuv3-accel.c
-+++ b/hw/arm/smmuv3-accel.c
-@@ -79,6 +79,13 @@ smmuv3_accel_check_hw_compatible(SMMUv3State *s,
-         return false;
-     }
+diff --git a/.gitpublish b/.gitpublish
+index a13f8c7c0ec..a3adb21ffa1 100644
+--- a/.gitpublish
++++ b/.gitpublish
+@@ -4,48 +4,48 @@
+ # See https://github.com/stefanha/git-publish for more information
+ #
+ [gitpublishprofile "default"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
-+    /* If user enables PASID support(pasid=on), QEMU sets SSIDSIZE to 16 */
-+    val = FIELD_EX32(info->idr[1], IDR1, SSIDSIZE);
-+    if (val < FIELD_EX32(s->idr[1], IDR1, SSIDSIZE)) {
-+        error_setg(errp, "Host SUMMUv3 SSIDSIZE not compatible");
-+        return false;
-+    }
-+
-     /* User can override QEMU SMMUv3 Range Invalidation support */
-     val = FIELD_EX32(info->idr[3], IDR3, RIL);
-     if (val != FIELD_EX32(s->idr[3], IDR3, RIL)) {
-@@ -635,7 +642,14 @@ static uint64_t smmuv3_accel_get_viommu_flags(void *opaque)
-      * The real HW nested support should be reported from host SMMUv3 and if
-      * it doesn't, the nesting parent allocation will fail anyway in VFIO core.
-      */
--    return VIOMMU_FLAG_WANT_NESTING_PARENT;
-+    uint64_t flags = VIOMMU_FLAG_WANT_NESTING_PARENT;
-+    SMMUState *bs = opaque;
-+    SMMUv3State *s = ARM_SMMUV3(bs);
-+
-+    if (s->pasid) {
-+        flags |= VIOMMU_FLAG_PASID_SUPPORTED;
-+    }
-+    return flags;
- }
+ [gitpublishprofile "rfc"]
+-base = master
++base = origin/master
+ prefix = RFC PATCH
+ to = qemu-devel@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
- static const PCIIOMMUOps smmuv3_accel_ops = {
-@@ -664,6 +678,14 @@ void smmuv3_accel_idr_override(SMMUv3State *s)
-     if (s->oas == 48) {
-         s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS_48);
-     }
-+
-+    /*
-+     * By default QEMU SMMUv3 has no PASID(SSID) support. Update IDR1 if user
-+     * has enabled it.
-+     */
-+    if (s->pasid) {
-+        s->idr[1] = FIELD_DP32(s->idr[1], IDR1, SSIDSIZE, SMMU_IDR1_SSIDSIZE);
-+    }
- }
+ [gitpublishprofile "stable"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cc = qemu-stable@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
- /*
-diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index 910a34e05b..38e9da245b 100644
---- a/hw/arm/smmuv3-internal.h
-+++ b/hw/arm/smmuv3-internal.h
-@@ -81,6 +81,7 @@ REG32(IDR1,                0x4)
-     FIELD(IDR1, ECMDQ,        31, 1)
+ [gitpublishprofile "trivial"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cc = qemu-trivial@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
- #define SMMU_IDR1_SIDSIZE 16
-+#define SMMU_IDR1_SSIDSIZE 16
- #define SMMU_CMDQS   19
- #define SMMU_EVENTQS 19
+ [gitpublishprofile "block"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cc = qemu-block@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 7c391ab711..f7a1635ec7 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -604,7 +604,8 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
-         }
-     }
+ [gitpublishprofile "arm"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cc = qemu-arm@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
--    if (STE_S1CDMAX(ste) != 0) {
-+    /* If pasid enabled, we report SSIDSIZE = 16 */
-+    if (!FIELD_EX32(s->idr[1], IDR1, SSIDSIZE) && STE_S1CDMAX(ste) != 0) {
-         qemu_log_mask(LOG_UNIMP,
-                       "SMMUv3 does not support multiple context descriptors yet\n");
-         goto bad_ste;
-@@ -1962,6 +1963,10 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
-         error_setg(errp, "oas can only be set to 44 bits if accel=off");
-         return false;
-     }
-+    if (s->pasid) {
-+        error_setg(errp, "pasid can only be enabled if accel=on");
-+        return false;
-+    }
-     return true;
- }
+ [gitpublishprofile "s390"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cc = qemu-s390@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
  
-@@ -2088,6 +2093,7 @@ static const Property smmuv3_properties[] = {
-     DEFINE_PROP_BOOL("ril", SMMUv3State, ril, true),
-     DEFINE_PROP_BOOL("ats", SMMUv3State, ats, false),
-     DEFINE_PROP_UINT8("oas", SMMUv3State, oas, 44),
-+    DEFINE_PROP_BOOL("pasid", SMMUv3State, pasid, false),
- };
- 
- static void smmuv3_instance_init(Object *obj)
-diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
-index d3788b2d85..3781b79fc8 100644
---- a/include/hw/arm/smmuv3.h
-+++ b/include/hw/arm/smmuv3.h
-@@ -71,6 +71,7 @@ struct SMMUv3State {
-     bool ril;
-     bool ats;
-     uint8_t oas;
-+    bool pasid;
- };
- 
- typedef enum {
+ [gitpublishprofile "ppc"]
+-base = master
++base = origin/master
+ to = qemu-devel@nongnu.org
+ cc = qemu-ppc@nongnu.org
+ cccmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback 2>/dev/null
 -- 
-2.43.0
+2.47.3
 
 
