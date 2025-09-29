@@ -2,118 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8C5BA93C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 14:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63370BA94A8
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3DGH-00085J-5e; Mon, 29 Sep 2025 08:45:49 -0400
+	id 1v3Dd8-0004tB-IP; Mon, 29 Sep 2025 09:09:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v3DGC-000855-27
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 08:45:45 -0400
-Received: from mail-yx1-xb12f.google.com ([2607:f8b0:4864:20::b12f])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v3Dd5-0004sY-3V
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:09:23 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v3DFv-0005vI-KS
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 08:45:43 -0400
-Received: by mail-yx1-xb12f.google.com with SMTP id
- 956f58d0204a3-633b6595287so3260139d50.1
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 05:45:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v3Dcy-0002bj-0Q
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:09:22 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3ece0e4c5faso3990077f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 06:09:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759149917; x=1759754717; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jyP9+jtL06/tm73mNn1RnvPClvFnZ13PspnRp1VXLUM=;
- b=y6JjIlUpKyHdGMwsnQ6OajZxKdTYVdKLEuAFSpGSDDDTEmxAEs/RW+kBlTqWakakZw
- rVLY9yjJiJ8+GtMnqXcdFIuFFgVLzJgShKN7Njq+040e2KZV+GZBy1ImPXOeSt8+mhb+
- dNpM9ebco6gdT5IPyxZN6usyN0k8lYZ3LC/Vi0k7063IU35olj4JxrVdvEnaeJnpAiGu
- 1bC269csndAI08c4c381+gwFxiG8w3BhXJLMkBXpu94zhDsdaC31J62bzII+NsCWQwD1
- qouM/LUzvy0C6WO38/pMaJBUWVhWv8vjIuhCX76q93A1UJhA57KdrQWhiN2lPC5gB+os
- p/OA==
+ d=linaro.org; s=google; t=1759151348; x=1759756148; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rZ4UdbL/hYSxoPVg7obe/FpOdZRL4ZQ8Zf4h474kUl8=;
+ b=p5weLqEZeEvl0my5d+9VM/QvrH3519A7J1ZwvL0SdFgrT25L2Uw76871WhdMZidaJ+
+ zcdKk4QMXXmxgdwcYekpCqODt3uCuHK44ANUNsvJk83RAKXS1oiLryE8CuRWrSdYVrxh
+ YuBtUYp5lkuhEBCuubEdOHULv012RSZiq3GNCWUsZroLbjv/Rl23CY4R1l9qnyiVtU4a
+ o55ES3Yt00tIXcfduavyZu8ItBpTfuHkPVd3yJYz43M969HWeLgAqhvOEovSxFCAdjg7
+ h6HhmvhVvHOrP39EDFZjF77MgMmHnthSk/MzH72fl2uH4+ZMVTujvL1WDwGQL7EyzBln
+ q+Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759149917; x=1759754717;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jyP9+jtL06/tm73mNn1RnvPClvFnZ13PspnRp1VXLUM=;
- b=JceqFphu545vdgRgjeRkgh57qQORPsmwyWvZ9KLwtYzb2awM1C8cGDFtRS8VLeqzG3
- zSCiOyR/iIbaPkwKGMwbRjyoZTD/1VMLP3npTSnTxpotWYHcX0AFS8uziM7nG8TlrScM
- t2LpZIqJmN3c10C0g4RB08BFCy8gAFxx7WR4FMBujU4EheCTJPtSGWuz3AGkMOQ7dnRc
- ZlBeo8UEkmhIOunJ5Pxkj2FiQYgM34ZYEco2vIpuZarYbziJDIqLpDoz33IP+PP6Ai1x
- gsXs1g7e7xMTt9UTfjv5n385/uQedHnMUBnYMZfGUWdtP4PxM9Yc3+v816BPcTu90ioX
- 2ncQ==
+ d=1e100.net; s=20230601; t=1759151348; x=1759756148;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rZ4UdbL/hYSxoPVg7obe/FpOdZRL4ZQ8Zf4h474kUl8=;
+ b=gnPrZUFqlXVDbgkaU/IXLY3EqJ7h3mKEiuprxobA+uEYW65ysFniIK9OVBTv4vJ3Jo
+ N3f4AAAVJ8Y6KuV1cnkYIGu/G57BbnTWJlgyK0k5RXuHPS/Q5gN5UJwUeWSCn/jaIRyl
+ HthK5+Fbvx+uJzhd4EK3aBCe+IGy6usvbnU6lPHdx+m79w17EA1x+MVSNi4Mq6ctqOux
+ WiuNPZD0KsW8N4rVBNlzcFyGThAQyjZ9nPXVCuL/Hy8oM6jKkV3MeBcMzbfysE/j9WyG
+ wlq6bNF+XsQpSAmYQFEf1U//CxjZv/E6Efl+kDo37MuMbBxokVhBvRz2zJJV0xfFYtUq
+ Vlog==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVkGdgKDKg8h4bi+Qj/bNra8iAWP11chkdrOj9ax2DjgMsS54QRoSodzA2zs6Wwk2nlmpUUBB55lEFv@nongnu.org
-X-Gm-Message-State: AOJu0Yxdq0/7BmPsgnTiMSJocY9Cgd1uWuVg9FbNqvW+RptY8GSiVwxz
- qRaG2vrpz1DbM3ygpk2URNbPQ7LINgO1tWkiLyZfBCS+NanigrxypvILHobAwUK5vLhCJOp8hJh
- MPSN6+a7CuhZso9fhBEjL/SRJv4OLtfux6WwWgxi7Qg==
-X-Gm-Gg: ASbGncuB4c2vIXCXCeBa8Mua2hUh6OV2MFVMTITHjiBnre1wY91WzKYa4LTQSdnyVqn
- DrY6CHVpvBbwdv4TkZZGByJPOtfvyKBbMA270suutzYkWNPP86hHGYPjA7cq+rKNUDrZkI6Cv1R
- 8n3TnX1pYb5jKPrvtbdEJarAZ63OQ/8/iq842ndghFEHQ9Io4AUvU4NoaBRT6+Qe0XSjYGFpNuN
- apQBjB1
-X-Google-Smtp-Source: AGHT+IHK+EM3ua48yHYal71qUevjdZrS3If07P3raJiWSCQ8lE4o3xnPVaUBMOXGATWmetiIfjOUcqfxqDwq6gAXI3Q=
-X-Received: by 2002:a05:690e:1505:b0:62d:cb07:f098 with SMTP id
- 956f58d0204a3-6361a6d2effmr19321696d50.18.1759149917019; Mon, 29 Sep 2025
- 05:45:17 -0700 (PDT)
+ AJvYcCX/1au4oIYMf/4mCOl5W6krkJrj3le722TDRJVaTIxIYXdn2oH/sX04AspGtPMSqRvfkWsxMuWM0v8f@nongnu.org
+X-Gm-Message-State: AOJu0YyBrKPSs040UvoJWFl3Dkp6+GGkBFc5SV56Dj+jyPu4nC3NpfDA
+ fItljNX804HNijFlMIumlxRl/JPAF4zTk3+xZiF7npLj6fqNyRSRArlao4l8GNxmYsM=
+X-Gm-Gg: ASbGncuR0zaWQxFkxKxW1D9HbxY7IziKCOS8q9FUbsTZsULUi3GY0xUt/Ms02koSNzf
+ A9lF+DAN60r9oXQY9trR9lKgVqZVNeJ4hgIuk2cvTUKso/EJP6vFmkCd10LnBQA9oGy6Y28gklM
+ wlJnQ6SIqvV4el/c1XHfcFK77QXeJ/dzuXo8uMIlOj73g2mooHFkBYVAPXlyMUffcz9sFGfI+jn
+ up/lzdGQZ/11CJNKiD/9L5Zl3Eho7fmeXsLEgFt27/YATIXiPJ3jQYrHj6ENqRLhbx51yOfTlbz
+ ZCLptJFAzM++SRIBK5LLy5dpBgMamqJla6hC8C5Qto0k/ln9FTGCmrsEpF2svDpZc0GVQQ+9JCq
+ kUM6n1iv4jGVIc7ziBq4FxahBp56Q6HUWSw==
+X-Google-Smtp-Source: AGHT+IFdkYgOgZIOjig+JmAKfWQWn2GHVkFrlU6bk8DhQBSENHwN455cTdfWgoc6tUE3ep5MRZNSUw==
+X-Received: by 2002:a05:6000:26ce:b0:3ee:141a:ede5 with SMTP id
+ ffacd0b85a97d-40e4a42f3aemr14857556f8f.57.1759151347831; 
+ Mon, 29 Sep 2025 06:09:07 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e336f2425sm88724685e9.10.2025.09.29.06.09.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Sep 2025 06:09:06 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id CF6405F83A;
+ Mon, 29 Sep 2025 14:09:05 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alessandro Di Federico <ale@rev.ng>, Alistair Francis
+ <alistair.francis@wdc.com>, Anton Johansson <anjo@rev.ng>, Markus
+ Armbruster <armbru@redhat.com>, Brian Cain <bcain@quicinc.com>, "Daniel P.
+ Berrange" <berrange@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ cjia@nvidia.com, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ cw@f00f.org, demiobenour@gmail.com, dhedde@kalrayinc.com, Eric Blake
+ <eblake@redhat.com>, eblot@rivosinc.com, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Elena
+ Ufimtseva <elena.ufimtseva@oracle.com>, Auger Eric
+ <eric.auger@redhat.com>, felipe@nutanix.com, Alyssa Ross <hi@alyssa.is>,
+ iggy@theiggy.com, Warner Losh <imp@bsdimp.com>, Jan Kiszka
+ <jan.kiszka@web.de>, Jason Gunthorpe <jgg@nvidia.com>,
+ jidong.xiao@gmail.com, Jim Shu <jim.shu@sifive.com>, Joao Martins
+ <joao.m.martins@oracle.com>, Konrad Rzeszutek Wilk
+ <konrad.wilk@oracle.com>, Luc Michel <luc@lmichel.fr>, Manos Pitsidianakis
+ <manos.pitsidianakis@linaro.org>, Max Chou <max.chou@sifive.com>, Mark
+ Burton <mburton@qti.qualcomm.com>, mdean@redhat.com, "Ho, Nelson"
+ <nelson.ho@windriver.com>, Paul Walmsley <paul.walmsley@sifive.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, QEMU Developers
+ <qemu-devel@nongnu.org>, Roberto Campesato <rbc@meta.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Shameerali Kolothum Thodi
+ <shameerali.kolothum.thodi@huawei.com>, Bernhard Beschow
+ <shentey@gmail.com>, Stefan Hajnoczi <stefanha@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, wei.w.wang@intel.com, z.huo@139.com, LIU Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, zwu.kernel@gmail.com
+Subject: KVM/QEMU community call 30/09/2025 agenda items?
+User-Agent: mu4e 1.12.14-dev1; emacs 30.1
+Date: Mon, 29 Sep 2025 14:09:05 +0100
+Message-ID: <87y0pxl826.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20250906-mr-v2-0-2820f5a3d282@rsg.ci.i.u-tokyo.ac.jp>
- <20250906-mr-v2-3-2820f5a3d282@rsg.ci.i.u-tokyo.ac.jp>
- <aMHxhTIw2EGRyD4-@x1.local>
- <fe1969e6-bc13-4438-816d-b352926c33a8@rsg.ci.i.u-tokyo.ac.jp>
- <aMNMjetBDJfBiThl@x1.local>
- <4108b4f2-accf-4080-af29-a3f464d862f9@rsg.ci.i.u-tokyo.ac.jp>
- <aNRfHQoBgwBMjK04@x1.local>
- <CAFEAcA8wTsZiihr8-LKucTmeZwPBdnkdA-o3mUgaW1WzrADhOg@mail.gmail.com>
- <aNWgnBV-9p6UnsYT@x1.local>
- <CAFEAcA8qdWtdX0Xc0WAuT9eZsXbudV2g2=Da8pK6tEfytdMbpw@mail.gmail.com>
- <aNauXSMiP0LUWQ5J@x1.local>
-In-Reply-To: <aNauXSMiP0LUWQ5J@x1.local>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 29 Sep 2025 13:45:05 +0100
-X-Gm-Features: AS18NWB7rAkpuMAb93lMBXEcoo15Q1s543eIHGHPswpxfNn7P9xRGtaIfstfsUw
-Message-ID: <CAFEAcA--K0=EJNNvj98i=ewGY=tN3u4S0+fNb9kJpYynzjHEhw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] memory: Stop piggybacking on memory region owners
-To: Peter Xu <peterx@redhat.com>
-Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org, 
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, David Hildenbrand <david@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, 
- John Levon <john.levon@nutanix.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>, 
- Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,70 +123,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 26 Sept 2025 at 16:16, Peter Xu <peterx@redhat.com> wrote:
->
-> On Fri, Sep 26, 2025 at 10:09:29AM +0100, Peter Maydell wrote:
-> > On Thu, 25 Sept 2025 at 21:06, Peter Xu <peterx@redhat.com> wrote:
-> > >
-> > > On Thu, Sep 25, 2025 at 10:03:45AM +0100, Peter Maydell wrote:
-> > > > On Wed, 24 Sept 2025 at 22:14, Peter Xu <peterx@redhat.com> wrote:
-> > > > > Side note: when I was trying to test hotplugs with i386/q35, unfortunately
-> > > > > I didn't really see when the address space was destroyed, maybe there's a
-> > > > > bug somewhere; I put that info into appendix at the end.
-> > > >
-> > > > This is https://gitlab.com/qemu-project/qemu/-/issues/2517
-> > > >
-> > > > I got blocked on that because I ran into a weird "I have some
-> > > > memory that needs to be freed by the RCU callback, but only
-> > > > after the callback has freed some other RCU stuff". I see
-> > > > Paolo made a reply on that bug -- I would need to get back
-> > > > to it and reproduce whatever it was I was doing.
-> > >
-> > > Thanks for the link, right that looks exactly like what I hit.
-> > >
-> > > I am curious if FIFO is guaranteed for RCU in general, or it is an impl
-> > > detail only specific to QEMU.
-> > >
-> > > The other thing is I feel like it should be OK to reorder callbacks, if all
-> > > the call_rcu() users can make sure the rcu-freed object is completely
-> > > detached from the rest world, e.g. resetting all relevant pointers to NULL.
-> > > With that, it seems the order won't matter too, because nobody will be able
-> > > to reference the internal object anyway, so the two objects (after reseting
-> > > all referers to NULL pointer of the inner object) are completely standalone.
-> >
-> > The specific ordering problem for cpu_address_space is that
-> > there's a g_new allocated array of memory which contains
-> > the AddressSpace objects (not pointers to them). The ASes need
-> > to be RCU-deallocated first so they can clean up their internal
-> > data structures; only once that has happened can we free the
-> > memory that holds the AddressSpace structs themselves.
->
-> If it's about cpu_address_space_destroy(), then IIUC it can also be done by
-> providing a destroy_free() function so that instead of trying to serialize
-> two rcu callbacks, we could easily serialize the operations in one
-> callback.  One sample patch attached to avoid relying on order of rcu
-> enqueue.
 
-I figured out what my problem was here: like the existing
-cpu_address_space_destroy(), it wants to first destroy the AS
-and then free the memory the AS is using. So it does the
-obvious thing:
-    address_space_destroy(cpuas->as);
-    g_free_rcu(cpuas->as, rcu);
+Hi,
 
-This doesn't work, because address_space_destroy() sets
-up an RCU callback using the 'rcu' node in the AddressSpace
-struct. But then g_free_rcu() tries to do exactly the same
-thing and overwrites the info in the 'rcu' node: so we never
-call the do_address_space_destroy() hook.
+The KVM/QEMU community call is at:
 
-(1) Is there some way we can make this "tried to use the RCU
-node twice" assert?
+https://meet.jit.si/kvmcallmeeting
+@
+30/09/2025 13:00 UTC
 
-(2) I think the simplest fix here is something like the
-patch you propose that does the "destroy + free" in one
-RCU callback.
+Are there any agenda items for the sync-up?
 
-thanks
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
