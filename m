@@ -2,62 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA9CBAA128
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E32BAA130
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3H9M-0006OS-09; Mon, 29 Sep 2025 12:54:56 -0400
+	id 1v3HAn-0000Ya-VK; Mon, 29 Sep 2025 12:56:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1v3H8C-0003Po-Pu; Mon, 29 Sep 2025 12:53:44 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v3HAV-0000C6-1n
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:56:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1v3H86-0002uF-3h; Mon, 29 Sep 2025 12:53:44 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cb6hL2Nn1z6L55j;
- Tue, 30 Sep 2025 00:53:22 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
- by mail.maildlp.com (Postfix) with ESMTPS id B3EDD1402CB;
- Tue, 30 Sep 2025 00:53:33 +0800 (CST)
-Received: from localhost (10.47.79.72) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 29 Sep
- 2025 17:53:32 +0100
-Date: Mon, 29 Sep 2025 17:53:31 +0100
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
- <peter.maydell@linaro.org>, <jgg@nvidia.com>, <nicolinc@nvidia.com>,
- <ddutile@redhat.com>, <berrange@redhat.com>, <nathanc@nvidia.com>,
- <mochs@nvidia.com>, <smostafa@google.com>, <wangzhou1@hisilicon.com>,
- <jiangkunkun@huawei.com>, <zhangfei.gao@linaro.org>,
- <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <shameerkolothum@gmail.com>
-Subject: Re: [PATCH v4 13/27] hw/arm/smmuv3-accel: Add support to issue
- invalidation cmd to host
-Message-ID: <20250929175331.00003800@huawei.com>
-In-Reply-To: <20250929133643.38961-14-skolothumtho@nvidia.com>
-References: <20250929133643.38961-1-skolothumtho@nvidia.com>
- <20250929133643.38961-14-skolothumtho@nvidia.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v3HAQ-0003at-CX
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:56:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759164958;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=heYTRHS2SbH7q6OYEFsVEoaYnBvmxAG63VXARphQakI=;
+ b=RSgiGhhUO9g0r9Ss61iKtXaHIBIgCFDGD3rwYJcYWe7r6brde3DfzTuoDIcupMeYG4bWRe
+ FZ3RYHrF1tmp1nW6kOdL6lQfzJmJFpeJWcN0ApxazjB6WiLej3aOTzNAJQRnIcM2gL4ho7
+ 675liN+SP8+mIuZ9Xg4V1PNiSwOqxm4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-w1n8LBMMNrqzDGmWvXdEIw-1; Mon,
+ 29 Sep 2025 12:55:56 -0400
+X-MC-Unique: w1n8LBMMNrqzDGmWvXdEIw-1
+X-Mimecast-MFC-AGG-ID: w1n8LBMMNrqzDGmWvXdEIw_1759164955
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A100619560BD; Mon, 29 Sep 2025 16:55:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.51])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 139B7180047F; Mon, 29 Sep 2025 16:55:53 +0000 (UTC)
+Date: Mon, 29 Sep 2025 17:55:50 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
+ functional
+Message-ID: <aNq6Fu0-nb1XMRxk@redhat.com>
+References: <20250801170212.54409-1-berrange@redhat.com>
+ <aNqsnaBkQe8i_MLK@x1.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.47.79.72]
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aNqsnaBkQe8i_MLK@x1.local>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,22 +85,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 29 Sep 2025 14:36:29 +0100
-Shameer Kolothum <skolothumtho@nvidia.com> wrote:
+On Mon, Sep 29, 2025 at 11:58:21AM -0400, Peter Xu wrote:
+> On Fri, Aug 01, 2025 at 06:02:10PM +0100, Daniel P. Berrangé wrote:
+> > This is a followup to previously merged patches that claimed to
+> > workaround the gnutls bug impacting migration, but in fact were
+> > essentially non-functional. Juraj Marcin pointed this out, and
+> > this new patch tweaks the workaround to make it actually do
+> > something useful.
+> > 
+> > Daniel P. Berrangé (2):
+> >   migration: simplify error reporting after channel read
+> >   migration: fix workaround for gnutls thread safety
+> > 
+> >  crypto/tlssession.c   | 16 ----------------
+> >  migration/qemu-file.c | 22 +++++++++++++++++-----
+> >  2 files changed, 17 insertions(+), 21 deletions(-)
+> 
+> Dan, is there a planned repost on this one?
 
-> Provide a helper and use that to issue the invalidation cmd to host SMMUv=
-3.
-> We only issue one cmd at a time for now.
->=20
-> Support for batching of commands=A0will be added later after analysing the
-> impact.
->=20
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-LGTM
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+It is on my todo list, but I don't have a firm ETA yet.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
