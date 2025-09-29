@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B950CBAA4FC
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 20:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4F1BAA510
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 20:34:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3IgT-0004yN-Gu; Mon, 29 Sep 2025 14:33:13 -0400
+	id 1v3Igg-00051a-2B; Mon, 29 Sep 2025 14:33:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3IgM-0004xx-Q7
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 14:33:06 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3IgU-0004zB-An
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 14:33:15 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3IgH-0002zH-GZ
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 14:33:05 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e3a50bc0fso32868785e9.3
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 11:32:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3IgM-00030K-UW
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 14:33:13 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-46e29d65728so34191415e9.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 11:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759170777; x=1759775577; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gjcLUmOUJAsFuFPIcikgqMGc8qGXLm4Hg2dBmXJH0DU=;
- b=FSFOIUs/3am6NfFrqS+1iDFuzuUVIT4L1spupPB/LtLpyI97t8cW+5CHeZzAV/Z1rG
- jbNXb2KjddbJQrfhtZA7aDTC7sUqErxmG1IxWK1/45HWS683/Z0HFjqxTgvK7WTovgQm
- 2Io37SIpU25nKCuV2JyzDSRMhNQ0zXQ+4b7RZfryDdDA+iQ6/oo479wb5DixHjOMu+HM
- 9jQA8eSjP7B6IiDn0JCH1wzrnXoNU5nouS+pr3/9NbBGkCQJMeerY7hhR5PSUDW5KzV7
- FTRCkB90Mm9Umj9Bw+6Ud6etQ65u/7a0qs1pSYEDGv8PqAslks8zb+0f8DQ8HYLz6KmF
- RwoA==
+ d=linaro.org; s=google; t=1759170783; x=1759775583; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o8vf9ta3nqwm/Fyb5G7ZjHvxKsRPPnP+TTAqHaMFdKE=;
+ b=p6PuFORvTLr1q1tX1oMiJFYqxudVyO45cSHEssUZgjVdlirIFerLVCYFU00VaFr9YI
+ B1onTLI7Gs3gewHWfLMn/i7/s/xqAmvndhvLNqMO9C9TVFWkz25QSAWXeQGmNbhCBuoV
+ WmReD4t991SZnxaznNeoDV51cJxhHVLCrpVnoOmPaZK8qAoCgeYTIi3YcvotieYM8aUA
+ RlkdekApg6up/cXMwLT8CIVLTVpbF+qyLte24yHT4yOWlUOKmC5u4iHe53MtW6MppBvc
+ OmLQnpy/jWlNdLhrKtxVr+v90sjm0AjoGiudqKBhSPfQGt3ZlJA+b4VYZT0sHLQbeiLq
+ I/2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759170777; x=1759775577;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gjcLUmOUJAsFuFPIcikgqMGc8qGXLm4Hg2dBmXJH0DU=;
- b=KmY2FyJZtPkUxGSGnCOL1z+8iKFy4riwHt8YktEyQAJY/gMyfh2I7WCPBCqD6Ncf7R
- JyJbR0ltztG6VLDiK1SNlA6JNr6vnaBZ79bu2sdMjFkDOH/Aos7wPJafG1Se9Oa8+hMS
- Bwsmiccc0keuCNZMlA6ovN2fuNDNAG19Vm0jyMAsKOp4ksw8aop9MsAHOD5dpX5KjgZ8
- vaXPKZjuyNhBcje5NjYhywzB8SvzQRRXeB4xA0GICzIAocEaXX2dRmtKbfJ2tEIEThJ7
- 3S9YHiiLDc51f5bmb67ipvIC7x37B7wXtIbw9cFEkrcbmQLR6CXpTur0MLb+epqRy2xT
- gEJg==
+ d=1e100.net; s=20230601; t=1759170783; x=1759775583;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o8vf9ta3nqwm/Fyb5G7ZjHvxKsRPPnP+TTAqHaMFdKE=;
+ b=qTkh3XN7xTBMH7sTUI04ifiuV09FcxXKYBpc+eCv99mCsqaXNtQjmMdDbS/6Y6z270
+ CfgceV8BHzNEVnLzwi6zP0x0UQKh2AsdffmHh9Xmq3a6TVj1OM70PSW9XwRCwFYeMr8i
+ pt+s4Nn2wc3OHh0I1v7Fn9E4lrtl0kFXCdd4VlhAVmxx7keUzq5vgaj+PNvDlmGwt3Ue
+ ev1EHX7AUGWIqQ711KqhWOWHgYnlP1Xjk0+AYT4BwkjDQAA2v0gYwEog6yzJpTNp4615
+ 4X45eaEIqim7T8/zBvABmUoxpwdJ2WNF+y+0Fjil/zF7eJuuBdRNsAa06xa5u2w/iAnD
+ jCSg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXbHETholWbBnUQd8ZmxXNrmqWhcZ7AdFLfQc9+wu9Jk20ebkAhln+PGdhhSsq9XekWue/eq1UmhwVH@nongnu.org
-X-Gm-Message-State: AOJu0Yz1UctKqKOQLku9QR0A7G01f1MElgeH+MYiSX7CTx0o3XS+cDCq
- yULV4t/Dmjwx+eirZmelGSmrQO8D9ZKRRwGXxu7KXBWek/FiSlxABTVvu4JcHEqgdnM=
-X-Gm-Gg: ASbGncvZb3o0pmtMzvArliT+hpCakq9MY21mMtKPfC6PHxnzPufcImnRAbA9DzOxtSt
- /SlewJS1mtlpp+DVu6rt0ADMTJETAC8IQJ1A0148tSIY9c/QJFlS/ITbh1ADtXz3+tAFCThPobs
- UHBHN93o7zIJC/XHsnpTWB5LpIADpPNRioDHUvaPMZZnRySyxg4YTCvZIaz9qDXsvV72KTtsWXH
- je1oDcpVR/DZSd7XHoF1YGl3CW2Znl9Xvtv8FvCZ6kBJXHraCzM1LFqhq2tw82RmvHBt0DogNwh
- fwmRiWzc9noX8K9y6I3ZJvOmDnoMI4EY5D4buZRe6497ghZZdYIMzyT1NpwOyA1fpkeFR/11AbU
- JOgfjnzn3U20r6OpG3XjzovsNWemldAC2R8lr7niHWXFL1aJM6U9gDTUsWOsfFTVj8hUIEtBN
-X-Google-Smtp-Source: AGHT+IGPwe4k1nSiLo3Q7fXg2P2eLKRZ1aglm2SdrtFWVXuSkGkjq+3L8RzYMElaCZp3EfcaDxFBpg==
-X-Received: by 2002:a05:600c:350b:b0:46e:36fa:6b40 with SMTP id
- 5b1f17b1804b1-46e36fa6c4emr125120035e9.24.1759170777268; 
- Mon, 29 Sep 2025 11:32:57 -0700 (PDT)
+ AJvYcCVgHCe7qRsS7K1UfCVk/KnuGintk5aqwu1t2LEF9IkZyI/RmhwpWLsLOE/j+wU2aQ8spPerKgaNcHZN@nongnu.org
+X-Gm-Message-State: AOJu0YxFexjF2cQYDqCwD/FWapv+CdP1k0dOrANlFQ0QQKLg0Q0HWV9m
+ 2xyQvE7HNgXX9FeU6P5m75QcC0ur0cskcWr8D2ZAWHYdwgZmEzcM9Nuy1eCbKsO9LX8=
+X-Gm-Gg: ASbGncvckLi12B4lOiVJWGA3t7vneQrLO+Rp5tZUYjN5jSC7k3LvUoylMh850hLKa9Y
+ 1VaUgqAjFIVUIiAj4EWmPpITNZz/h8nDIh10QKB+wb1HNtGh60s9NwBpjDep5SjVexhUX0EwzZr
+ CClybo61rYqNS5ZAiuw6bV8zdLkOA/y/zGaEg68Xsk1owceRn3mCrbvjG4KoZXAlPwpmvSqQCY/
+ 0j7xAHB8VaL9ZcGEA031kHmIkh6KJ4KHaLiAyVx900DIb2tP88aOL20aGaTMBAGh/J8h24Ilv5x
+ WJF7mThxdCxxYBqmvRgeiHDiYcEqxm5CXIoe8HUpCM03cW7ypBb5aG5uEIlUceRI7Q9CqsUtVxC
+ /H/1SWa0JQBPFu4w8rmccoBEFYuZLWIDCt76Cj8ZuNzpD2pp0gfyfPjVko4ZdtS77NCsN3VXQmW
+ 0/lOtag3w=
+X-Google-Smtp-Source: AGHT+IHvn5eYPMtDO5pcLQu1/TqV9ktVhW1E6kH/3j8sdOMbTO5qR8/yD6k9KVyFZbMuU0yLOSpWPQ==
+X-Received: by 2002:a05:600c:1508:b0:458:c094:8ba5 with SMTP id
+ 5b1f17b1804b1-46e329b62bcmr112008465e9.12.1759170782675; 
+ Mon, 29 Sep 2025 11:33:02 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e56f76b21sm21984265e9.19.2025.09.29.11.32.55
+ ffacd0b85a97d-40fc88b0779sm19057657f8f.58.2025.09.29.11.33.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Sep 2025 11:32:56 -0700 (PDT)
+ Mon, 29 Sep 2025 11:33:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
@@ -81,23 +83,25 @@ Cc: Stefano Stabellini <sstabellini@kernel.org>,
  Anthony PERARD <anthony@xenproject.org>, qemu-s390x@nongnu.org,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Peter Xu <peterx@redhat.com>, Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: [PATCH 00/15] system/physmem: Remove cpu_physical_memory _is_io() and
- _rw()
-Date: Mon, 29 Sep 2025 20:32:39 +0200
-Message-ID: <20250929183254.85478-1-philmd@linaro.org>
+Subject: [PATCH 01/15] docs/devel/loads-stores: Stop mentioning
+ cpu_physical_memory_write_rom()
+Date: Mon, 29 Sep 2025 20:32:40 +0200
+Message-ID: <20250929183254.85478-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250929183254.85478-1-philmd@linaro.org>
+References: <20250929183254.85478-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,65 +117,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The cpu_physical_memory API is legacy (see commit b7ecba0f6f6):
+Update the documentation after commit 3c8133f9737 ("Rename
+cpu_physical_memory_write_rom() to address_space_write_rom()").
 
-  ``cpu_physical_memory_*``
-  ~~~~~~~~~~~~~~~~~~~~~~~~~
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ docs/devel/loads-stores.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  These are convenience functions which are identical to
-  ``address_space_*`` but operate specifically on the system address space,
-  always pass a ``MEMTXATTRS_UNSPECIFIED`` set of memory attributes and
-  ignore whether the memory transaction succeeded or failed.
-  For new code they are better avoided:
-  ...
-
-This series removes:
-  - cpu_physical_memory_is_io()
-  - cpu_physical_memory_rw()
-and start converting some
-  - cpu_physical_memory_map()
-  - cpu_physical_memory_unmap()
-calls.
-
-Based-on: <20250922192940.2908002-1-richard.henderson@linaro.org>
-          "system/memory: Split address_space_write_rom_internal"
-
-Philippe Mathieu-Daudé (15):
-  docs/devel/loads-stores: Stop mentioning
-    cpu_physical_memory_write_rom()
-  system/memory: Factor address_space_memory_is_io() out
-  target/i386/arch_memory_mapping: Use address_space_memory_is_io()
-  hw/s390x/sclp: Use address_space_memory_is_io() in sclp_service_call()
-  system/physmem: Remove cpu_physical_memory_is_io()
-  system/physmem: Pass address space argument to
-    cpu_flush_icache_range()
-  target/s390x/mmu: Replace [cpu_physical_memory -> address_space]_rw()
-  target/i386/whpx: Replace legacy cpu_physical_memory_rw() call
-  target/i386/kvm: Replace legacy cpu_physical_memory_rw() call
-  target/i386/nvmm: Inline cpu_physical_memory_rw() in nvmm_mem_callback
-  hw/xen/hvm: Inline cpu_physical_memory_rw() in rw_phys_req_item()
-  system/physmem: Un-inline cpu_physical_memory_read/write()
-  system/physmem: Inline cpu_physical_memory_rw() and remove it
-  hw/virtio/vhost: Replace legacy cpu_physical_memory_*map() calls
-  hw/virtio/virtio: Replace legacy cpu_physical_memory_map() call
-
- docs/devel/loads-stores.rst            |  6 ++--
- scripts/coccinelle/exec_rw_const.cocci | 22 --------------
- include/exec/cpu-common.h              | 18 ++---------
- include/system/memory.h                | 12 ++++++++
- hw/core/loader.c                       |  2 +-
- hw/s390x/sclp.c                        | 14 ++++++---
- hw/virtio/vhost.c                      |  6 ++--
- hw/virtio/virtio.c                     | 10 +++---
- hw/xen/xen-hvm-common.c                |  8 +++--
- system/physmem.c                       | 42 ++++++++++++++------------
- target/i386/arch_memory_mapping.c      | 10 +++---
- target/i386/kvm/xen-emu.c              |  4 ++-
- target/i386/nvmm/nvmm-all.c            |  5 ++-
- target/i386/whpx/whpx-all.c            |  7 +++--
- target/s390x/mmu_helper.c              |  6 ++--
- 15 files changed, 84 insertions(+), 88 deletions(-)
-
+diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
+index 9471bac8599..f9b565da57a 100644
+--- a/docs/devel/loads-stores.rst
++++ b/docs/devel/loads-stores.rst
+@@ -474,7 +474,7 @@ This function is intended for use by the GDB stub and similar code.
+ It takes a virtual address, converts it to a physical address via
+ an MMU lookup using the current settings of the specified CPU,
+ and then performs the access (using ``address_space_rw`` for
+-reads or ``cpu_physical_memory_write_rom`` for writes).
++reads or ``address_space_write_rom`` for writes).
+ This means that if the access is a write to a ROM then this
+ function will modify the contents (whereas a normal guest CPU access
+ would ignore the write attempt).
 -- 
 2.51.0
 
