@@ -2,146 +2,222 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF36BA95C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2E0BA9644
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:44:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Dy4-0000CA-CC; Mon, 29 Sep 2025 09:31:04 -0400
+	id 1v3E8T-0003Oe-7k; Mon, 29 Sep 2025 09:41:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v3Dxw-0000BV-1w
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:30:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v3E7G-0002l0-Sz
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:40:39 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v3Dxj-0000YR-Rh
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:30:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759152627;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=B3VqoqtRVvSRBtsjz80NI7VbQOTlekqwcEaT7aog+ps=;
- b=MdADUt2x5PkdQvpeayMWCEplzS4H6uvTkp2747IHS1ml+mq/1nDDXafhQ8JHjPe69pZah/
- 8N2GpLiPhbLvSwl9M3o4nhdJDtpgO8dTQ/G0N4LDCOe6LCUfJUbBuVjXKW7j/zl7Q1qzJX
- detxcXNEWIF6sYaf6+7Bs9boSPW5gWQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-jxt0rijoM8-cvRjpXIskqQ-1; Mon, 29 Sep 2025 09:30:24 -0400
-X-MC-Unique: jxt0rijoM8-cvRjpXIskqQ-1
-X-Mimecast-MFC-AGG-ID: jxt0rijoM8-cvRjpXIskqQ_1759152623
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-40cfb98eddbso2344985f8f.0
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 06:30:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759152623; x=1759757423;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=B3VqoqtRVvSRBtsjz80NI7VbQOTlekqwcEaT7aog+ps=;
- b=NLhka2KdDr+1CIxQi0drdswKMN/m2NQ+FZbXZe/VqdhQsqfJlCh0wRV4ufbWCEauG8
- IJSRh/uPQLhQezA1ccyM8wo2HhKE5HYiuPoWZ1t9IJI1S5c4NA7fcE7PQGGJfBgxrqHx
- D6wk9BBiH2WflRcDfZovgRoYFRMfBlcAreiOHgp1QbEk0ifZEE2qFxl9r/MEzT4tDaln
- rfZKUM/UEH0ATGz7WbZUtGCRj8FfwiDaeMCoRplif/crWnTetEu4vlgEKjS5tubcOTlD
- pwktWyp4PBGkb8V084RukDHGTDGWClivfJNKOZOV9EdUM4wB5xBz3qMwHhJ2cfOB+zog
- LBVQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUbBDEkT0GSOLuA6KK5Hx7GUkvDkzRz8bXa2Ekcy0LOWEmKyOlMjimVNL+opZ62wjcbNaFMljBbrGn3@nongnu.org
-X-Gm-Message-State: AOJu0YxvqYTmZeXiwdkA3VNopI9s5Hj3uRGY7N1nFaBacQJ50uTGfB7A
- CUVtqg58srxxJ8p8PZ8B4qF/uLRYpo0muFbYmIZ3/3hOLmaYoIctDDT38azWUhuyX0sSwjVE8Kr
- A/JNuMr+UEKp0dNjwDgKcCzzQV78e81p85wfqQqkfTCOyEOovFuOJ/3zf
-X-Gm-Gg: ASbGncsIUtpujyZvoXn7iTbrESDucvlwdxSHUKng9Ru2Ke/48iE5OwW4pNCxUQuv7ot
- e4c+JkOnFTDaqz+LfuEUzk1vEtyFoLKMfDkq9SUsaiSwEp3i6kLydLutstlS2i2XzBAySLphz1B
- S2Hz2FCEqupAhVh7oagozHF2Zg/an5tS3esGG2gr88kGO4t9E+N5H9yOoIkyLs/9zv3E2eo4HyQ
- 67GitWFfayRfyA7wO5pp866K+5RK4F9FK7tD1Fj5A9K4lObH6wmQBmQ9O2gkhpb+Lktqey4QVQd
- xVltNZzq+zjnfdyY3Q1hs9g1NCGb3uokmuzmLI0LG9wawzqJROpzsDLLQuvg6XHmPOqg17lZdt1
- dJVGJLw==
-X-Received: by 2002:a05:6000:2301:b0:3e9:54d1:e708 with SMTP id
- ffacd0b85a97d-424119ce8e9mr559443f8f.20.1759152623371; 
- Mon, 29 Sep 2025 06:30:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETzU8hV29f1UVPhK4fyktO1v3OCVMdBBLCDwWoZSQ9Gbzjd3dQh2GDWkCB3zLrXNbTQnAfag==
-X-Received: by 2002:a05:6000:2301:b0:3e9:54d1:e708 with SMTP id
- ffacd0b85a97d-424119ce8e9mr559392f8f.20.1759152622779; 
- Mon, 29 Sep 2025 06:30:22 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-114-212.pools.arcor-ip.net.
- [47.64.114.212]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc6921f4esm18347839f8f.44.2025.09.29.06.30.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Sep 2025 06:30:22 -0700 (PDT)
-Message-ID: <e5faaffd-fb58-4002-817f-ff9e787e8272@redhat.com>
-Date: Mon, 29 Sep 2025 15:30:20 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v3E6x-0003Op-Ne
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 09:40:34 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58TCYtrc029274;
+ Mon, 29 Sep 2025 13:40:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=dOnhcQklxyfkmxH5Jimqkzjvk/BVaKGs5H+JKlz3hvw=; b=
+ FA6DBixYS1SWaBCgxaOzZcitiagEtKgqJ82O5OGpGpbjBA+FYpWgbWQrvUppUcMR
+ bcewkZ3YHYjhgsol4yJL8QGqUHJLwCXma7rE0U4G8SQOiYzFICkRzN06pDTlQkmQ
+ HaxNh2VkJneXDBkFd5OKu9gGIQ9soCgraFijK6/E69ZuMLVTDn33a9ssZ/dKXHC5
+ AwrfXdbxZ//eoyZlQDsA83FTUSo82Pgp9kyEaR9DEDchLK6u6Du5Je9FmDHtvtI7
+ ppA2upXH5qVu194W8bbAIsIwxZzHI7p3XLM7W+b2o9bilefeLRibadv+QFWfIHdw
+ M5YsunPPnqYzJnA5u0HlEQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49ft7cr4x6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Sep 2025 13:40:00 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 58TD7uJp011545; Mon, 29 Sep 2025 13:35:00 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com
+ (mail-northcentralusazon11013066.outbound.protection.outlook.com
+ [40.107.201.66])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49e6c6y6mx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Sep 2025 13:35:00 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AZEloSW1wdhsJWezT9azKGQKRJUeZr2ri95N8yWHv4Zu2zJsbG1mSqvO4YSuPhy10DJhtSMYhtCqNAQHKGWz7uZjfXjrAYq4ABabbquwFWG6VWinEoKctV65whBjdfO7eTLQeRcF04jHTE9GmztbAyJs999d7RmDaKI83TASuA4ejwI+S5mieS7YcDBFSZsuXtRlx/IlP94KInYdE2pZKzYIJc6tuLEHIivxaU90NTtpQuwxLMwtsw4roa2OfkJhZl2IXRkhkNuGK6bc6Q0K33AU/Im0UDR4ylhqVvxETWLYDzVQ5tW1qmc7BF7k9NuX7tzkv1yiOBWcQLW3AGuoRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dOnhcQklxyfkmxH5Jimqkzjvk/BVaKGs5H+JKlz3hvw=;
+ b=hkC7AdjFM418HqNzwzCvFp6zBgIGRc4+v05sLt7K5lKj/CdKFk4HnCAcs4Ojwl1QHlhsRGdYu43PmxUA2JhK+aWb8f7Vx28MfPLQpJBIg/JpUlTjvj1uDXIhGY67moYQUo+8sQZGAbwYea6yP3AcbNtMbwIzfq2752djc0EgKChS2tPt0oQU+zrWXqE34gQpwrCdtbX2HX0zJyIuleHXMbMJwF0IUGVJ9cneTmnEKKBj9vEALDVRTKmVIgNe32HFprIWJCsLi2Eeo/Am5er+IxP/WS7mV06TE2GJvdgZE4IGoa8ymvtKTNzC5534YnTrvv6p3hIi1cWgtcOKvA+S4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dOnhcQklxyfkmxH5Jimqkzjvk/BVaKGs5H+JKlz3hvw=;
+ b=XjPQ8Oo5MsOT18LffoM+vfFGONt7BhSN3SZGLJawjbb9nELxrWX2RgPb/v+tJjeWA1qTwQuLMT/CzxoOUCyXZbhHbM+64oKdpIgAQ4ij0ac55OLXieoTw34+1IDs0DkWkRKg+V8TVYN35nCvoLoyM6y/XudJpr8Shrlul2zmJ8c=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by PH7PR10MB7085.namprd10.prod.outlook.com (2603:10b6:510:279::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Mon, 29 Sep
+ 2025 13:34:57 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.9160.015; Mon, 29 Sep 2025
+ 13:34:56 +0000
+Message-ID: <011cdcf9-f918-4ceb-8ef0-acfc20d15c11@oracle.com>
+Date: Mon, 29 Sep 2025 09:34:53 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 21/28] pc-bios/s390-ccw: Add additional security checks
- for secure boot
-To: Zhuoying Cai <zycai@linux.ibm.com>, berrange@redhat.com,
- david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, borntraeger@linux.ibm.com
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
- farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com,
- alifm@linux.ibm.com
-References: <20250917232131.495848-1-zycai@linux.ibm.com>
- <20250917232131.495848-22-zycai@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 5/6] accel/kvm: Fix an erroneous check on
+ coalesced_mmio_ring
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ Markus Armbruster <armbru@redhat.com>
+References: <20250928085432.40107-1-zhenzhong.duan@intel.com>
+ <20250928085432.40107-6-zhenzhong.duan@intel.com>
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250917232131.495848-22-zycai@linux.ibm.com>
+From: Steven Sistare <steven.sistare@oracle.com>
+In-Reply-To: <20250928085432.40107-6-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+X-ClientProxiedBy: PH8P220CA0036.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:348::16) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|PH7PR10MB7085:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12a0bc88-09a3-4622-0f69-08ddff5cfac3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UmRpaEYxUjhVVXpVSzREblcrUjlDR2VUTldBVE1kSi9QZWVOUVErTzMvZE1H?=
+ =?utf-8?B?alJTeGRmQnlHWjZtUUpkUDNveUNIbkFSMXkrUFR0Rm50RjRxaytkd2xrTFJs?=
+ =?utf-8?B?elpzQTZPZ3EyV3Ryd05GSFE4TFlNdlJCZnM4ckRMR1BFQ0hJaDRJLzBhdUY5?=
+ =?utf-8?B?d0ZheWpEeXFycUhOZmRkM2VxN1VNdEZNQ3Fja3haMGxLbTlzV05ZL2JaM2t4?=
+ =?utf-8?B?WmthUU5yWFc0SCtHdWladDNsNTZmZWEwRTJZeEQ1VmdFU3FvRWhmVXdGcjg3?=
+ =?utf-8?B?MlgvYXkrYzZpSHg5MEJLdkZ0NXhmRGx6UnZheEk3M3p0TWY0SDI4b3NVanJy?=
+ =?utf-8?B?UmlMRW9PUWZEUko5OUQyMFR3alJiUC80cE12TUt0RzBQWHU4L0pPdGFZaDhS?=
+ =?utf-8?B?Vk1hYWVOMGNGbi9LOFcyNE5DYmx2elgzSEdlUzY3dmlDNFV4U29qZFFraVNL?=
+ =?utf-8?B?Y0VIZndGa2s2TytEMDNsQlBFRjhUT1B1R25qS3VRRk5jeUM4RWdMcVlmMi9T?=
+ =?utf-8?B?TUdlZmJUM1hOU0VHWUNmQjR6czRGMGw5TEIzS0VrL25FMnoyL1hGWmVtenFR?=
+ =?utf-8?B?Skx5azBTWHJxYnVhWkxzZjBxMUFjYTMvcWFLMHdIYVdoUjBnZjFERVg5SU5O?=
+ =?utf-8?B?YWZDSW1GVElyVjNpQ2E4YzhtWXUxK294RCtKanc0a0FlOFEvaCtuYUcvVWpB?=
+ =?utf-8?B?TGJvWDVybUtLQVNRNFd3Y2pSRjdOZm40eExlR01GeDBxZ3RabDZ0M0l3Zjdn?=
+ =?utf-8?B?aWcrcEl4cVdtTG01UU41R3JnMWdma25GNmVFMTlNc2NQMHdpTkdoU1h6NjBG?=
+ =?utf-8?B?b05Da3dSYWlRMWF1Ylk3WXZ6UHRxRTMrSnhLOVE5TWVLeXFUTU03WnR2akE5?=
+ =?utf-8?B?L0dxWmFBUzZNcEl2UnNVUXllQUpGQXpQRWxQNTJBK2N0ZWZhNTZjN1NXYWpw?=
+ =?utf-8?B?UlVhZFRNcktTcVVIc29kMVRRNHdqYVl6WlZCb3hTQmlIWDdmOExBWEdKbXk2?=
+ =?utf-8?B?dWZKdHBKYVBZank1VWF3QXNGN1hWbGZyRnI3L2hzY0JqOHZvUVROdGdOaTQ1?=
+ =?utf-8?B?NFVzL29wV29VTit3RjhwZDdlMGZsdnZobDAzdzNIbzRQdkhFQ3daNVo3SEQz?=
+ =?utf-8?B?M2xIZmZlZkVMS04yN2tYcEl5dWZOQS8wQSs3b2RPRCtBeTM2N1YxOEFGODh6?=
+ =?utf-8?B?dTVTejZjUk9PZmwwVGUrTmxZUWtROGFRM2lSNmxmekNibXF0bVE5N1VLUDZ6?=
+ =?utf-8?B?a0duWVBnaTBpcDdOSURTbVZudlo0RTZZNGg2WW5QL1FLTjIzcExDaGRUMTZP?=
+ =?utf-8?B?ZzVjSmE2ZGJxRUxkbXRJQTlIYlRMQ3Rtd1JzUkpRUlhSY0ozUVJwSmVqNmEy?=
+ =?utf-8?B?T3hHMXFPNkpyNk8zcmJKdFBHN0NFL2VKeWZXN2dBdFJyMU4yalF1WmYwdy9X?=
+ =?utf-8?B?NCtnQzBEdDg4MUxsdE1MY1B1TzRZb1ZvcmZCZDNWemhGcHRpc3I1d1JXcXNn?=
+ =?utf-8?B?eUp4MWV2ZWNKUm1xYm1mdlpDMEwxZFNtTjNmRDFSYUM2d1UyRlFkOXVPM1NX?=
+ =?utf-8?B?dXRhZTIvUExyLzFRZGJ3MHhyOVJVRUJuZUM4c2Q1WVdKbXM5WS9lOGU1SlBi?=
+ =?utf-8?B?Ty9KdTI2RnFBSk0zMnRDRkFtVmRDUHRsYVgxRnc5T2syNTl1U1pHT3JLV3cy?=
+ =?utf-8?B?L1NueVh2MUc0Y01VTVJkZ2VCTzlnSmkxZS84RlBFOC9MR0QwSFNuUHFUOVpW?=
+ =?utf-8?B?WFhjQjBSRWNCU1pNY0Y3VFk5Q2kwWjdxYllYNEpzM0N5Z2NRU3BKMGkyeUxv?=
+ =?utf-8?B?blAwVTBPdjBiWGYwTEphTWU3dTFsQjZSV1JIb1h2TFMwTzRrYmVEM3R0MkxM?=
+ =?utf-8?B?YXNZYkJZS3VZb0VsZ1lZWGRZQUordkc3d0hjNUVINU1NWHlqa2VEb1E1MFJG?=
+ =?utf-8?Q?QEG/tO7or7V9yHSz6DR59vD+GwNfWaUJ?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cDlsWlpnVHNaVTd1amxvTHVwUFB6T1NoRVhQdDFsYVZzbFBHelN5dDFFNUc1?=
+ =?utf-8?B?eGdEVlhuSWhFQUtxcS93djdPOStRREVMZU9MRmg3Y01MV2xNcmE1R1lFd2kx?=
+ =?utf-8?B?eFR3d0NmcHBQdHZCcElWVDMwamc1TGNxTGtMdTlRbVErZFlQaXhhdTJpSktC?=
+ =?utf-8?B?bHFkZFgyZFp4N2VwWlVBeCtpeDRRT1hFQ1I4aXhuVjFLM010a1dQd3BiY3o5?=
+ =?utf-8?B?ZW5uWHBxeUlkT3U2Wkp6WGN1Q0l2cXJrU1NPY0xIdUxHMmVZVjZkS3RYaWJ6?=
+ =?utf-8?B?QTNJUTdtblVqczkwc1d1dWxzTDRmWWgwZDhtSzY5Y1k1UTRLYU16UU1PQUZ6?=
+ =?utf-8?B?c0dDcGo2L3htOHhTVVpmcUIvd1FSSFhudUVGaDZZUGlBaFR4OHJxRFQyTUJ6?=
+ =?utf-8?B?Z3BZeTNXY1AxK1V2eU1xRWZYR2FJYUM4eERMVWhsWDJoUThHWkNRR0VSdkpy?=
+ =?utf-8?B?OUh1dzFibVhVTHRJWVJhRVJqVW95M3o5aURnMFRhc2JzMUhyQUhRTUhnSXMx?=
+ =?utf-8?B?UUxoZm41U2ZSd0lZbGF6ajczSFlqN1ZHbnlFZnpYZXlKUzJMZE1KQ0g0bTVn?=
+ =?utf-8?B?dkFPOXpia1pyZTBSWGxlT253Vkk4cmxnUlBoVXFTaUQ4SVArYXUyUjRCUng2?=
+ =?utf-8?B?R2UzakxOVGhrR1dISEtxNU1OdGZqRmtyWVB2U0Z2Y1ZJU0FJdXJscDdYWXNo?=
+ =?utf-8?B?bWx2alNtU3pIKzE5NW9FZUFTcERseDV6VC9uOFY0dUZITXVSaGxoUlNJSU1H?=
+ =?utf-8?B?ekI2RGQxdCtTUDBjYzhXbS8vL0Qxc1lmYzNoVjRTMGdxYmg2WW56UjQ1MllZ?=
+ =?utf-8?B?bEdySG8wRXRnTk16VXIxVU5QQXJPZE1laDlldXFaTkZHN3dNTW1pY0krYlli?=
+ =?utf-8?B?RVJXTTRzek5uUFUraVpXaWh3bFBPWGdxSDBVY3Y3VWFYaTlBMW8zYUc2eFN5?=
+ =?utf-8?B?ckZBYTkxK0RnTVF1bFJRK1hudjFJMFRrS2FmbCtBSUZMdmZZS3lrbVFiWE5m?=
+ =?utf-8?B?bFkvZVJuZVMrdEFxNTkvdXN1OXp5STFpdi9vbkZOMzFRc0psYk90dzVVa3FV?=
+ =?utf-8?B?YmdXdU1OeFA0U0dzQ2V5am5SUFd3eDltalBhRFpqdzQ5N3ZsbjAyTi96Smtv?=
+ =?utf-8?B?QlVNaW4vTjJ2bE5SNWFRUFNlSHRvQld5Q3JpWHREK1JCa1QwbkJyWDB1MnQ1?=
+ =?utf-8?B?eWdMY3orZE1GZUk3QUJ4N0NONUdtRTJHb285Zm1xdmRaTFk5UWNsTEg3RmV6?=
+ =?utf-8?B?TTVESmRTc08rR0cwNkxuakxhRS9pb1JtMmJSdE5SK0p5NVFHNnU4UDErOTVh?=
+ =?utf-8?B?d3hId0ppWjVrM2JQdXN5L1N0NzlGeEJ5citFMUJhdEpFdEpWUm5OeWhLenFM?=
+ =?utf-8?B?R1d0a2hob0tRL1duRG9ON1piVSthV2QrQUhpSVpaREVUV0ZaeFZUUWViclpn?=
+ =?utf-8?B?WFJsTkI4Zmt1VktRWURTdXc4ckVqMm92c2J3Z1kyaExSTnJDWlZlVStBS3VN?=
+ =?utf-8?B?cTFWcUxFaG5jODNyYlJYSHhjZWpLS3Nrbzd1VUMxMGwxcWM2NWV5N2VkQVd1?=
+ =?utf-8?B?Qm03eXhSeEc3aVBBRjlwaXlHNnRuTnFsNWdDL2pFRmVwWndJNEsydDc0UW5m?=
+ =?utf-8?B?RXRGMCtmbmM3VXptSWFQdm5qZWtTbGM2K1JJOWU2M0JZL1RxeElSZEhsQk9h?=
+ =?utf-8?B?WDUvdEhVTWF1UlJHaXMxRFVibTdHS2J6SU8yRDZnbTNZbGZvUXBIRFlSeWt5?=
+ =?utf-8?B?cU1ZWmIyNTUydG1FNEIvb1JuWVFZVmhMZDQ5cjQveTBJdU5XYkx3QTFCaWxo?=
+ =?utf-8?B?NU1sK1MwL0IzM0E2bkt1a3Y5dFlIb0pHUE1uSkFQQTFTSGs3RFZSYk9PbkhN?=
+ =?utf-8?B?aWlDNGpHejVqY3JNQUhCRndKY2JDU0t0a0J5S0JKNDVuRnpOL2RIQ0E0Sncw?=
+ =?utf-8?B?TCt3Y0FXWVoyOVBsQXo2YkxNNXE3eW9jOEJJeFdEQTlHS1pIbnNhMUlsdHFK?=
+ =?utf-8?B?b2JEdVkrTFp1K1QvOUY3SWlmWWxiYkJqT1JJU0hDYXVxdUJUNFUxWENNM2xn?=
+ =?utf-8?B?UXVPcHUzWkhFRnhla0gwTVkvR1pGZGN1SlBzSks1aEpWem5jTGk1MmlpWUc2?=
+ =?utf-8?B?c3I2Rm5kYlFCUFNFdGluRzNJMDFROVpzTlhiU1g2c0Eyekc3MUNDWlRobUc1?=
+ =?utf-8?B?ZUE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: QJYRXGbuhaPWpOitkhdGBPTGQlO6KC1KW2p3h9Z50e/mhfPPE75c9CoQDru6U0JxUBPNYOLaqH0Yp3PPsP2lJ9iygQHcGSo26O9TrQwtpu1Oz59Lv18DrqKj+AwdwVFXWMb6Ck+zFGcfuFfCi6LR1yCWV0BSWC2H68vnea0tZ5n5zKo+YgNdDZEIr4g5EFNKvxPLEk0+8kuDuSVXTLykaZXYCAEbEz01XwiztXci3kmHAMvKSAj8XLQdsqYseXjHl6/31DaK3dVqIa/KqBGrKec4C3vC3GYBhCGr9z1y4L1TU4kT81jWhA3cDHWDc3et0QizvzFYnFD+bqi6i8sy1pdAwtSrqhCeCVC/lqiPN+hd03yf6fYh5cltgDEopCRWaphQQb/nYbmqIjEJqkShS7zLxhESQDMSBDOiExIRTEafdEl5yOojtAWcFhEM18SEFf0hDYISfH7cp0z0s7w5hX3ced3kteE+Zl9AnDSfCY8N1FQWIrDd12k/kwA7Mu4Chna1t8vXLQP4NiThhelb9QEeNKcf56/dICNZ675hNrUnITSKzFArXhjITW4GDtH8BVnDNec8XZD3nK3vZ9EJ4aY4ZIcvFD8HDHOp35/hhVk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12a0bc88-09a3-4622-0f69-08ddff5cfac3
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 13:34:56.8101 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /Fj7fQFAg5aDbSJK3LdrBgucbW39+d+IbyEi0mk3BVM0WY3XEf+YIaefQKDv+2KSuAcw/pU0qDtQ3fBunu8YiSbtPnk3EpR2EZfSOT9wcYo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7085
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-29_04,2025-09-29_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ bulkscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2509150000 definitions=main-2509290128
+X-Authority-Analysis: v=2.4 cv=cruWUl4i c=1 sm=1 tr=0 ts=68da8c31 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117
+ a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=QyXUC8HyAAAA:8
+ a=yPCof4ZbAAAA:8 a=c-vfriJzW8-EUOynajAA:9 a=QEXdDO2ut3YA:10 cc=ntf
+ awl=host:13622
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI5MDEyMSBTYWx0ZWRfXy6rdqq/oskcw
+ 2DgKkBiKzpcSWXEGxzZhnthd58yplckGmb4GB925piznzlK7IhmVArxYqijNOrs1XZ4uEDIdwRC
+ opBqBmiPWCHiJCyNDxHoTIV0FsWz+R9S68fZV+eZIRs97FVurQ1AGxnPQd7w2Dq3GWPei18eJZG
+ /b6pAbr3GZissFlnVgREbRyZgfwCapqP9MrcdJHWc5QDo7rnBjktGQCzHjU4eOctN/BFS3wMdWA
+ roD/XrTQCo6ZNSi4hhF1muMJRkBlzGWIHKhl1lIt2g6ALrHmOW1NYqcFpcvkvGpAKWul4FujRRC
+ 1bzJ/1iqLg0s2tQ9E36U/LRvtIuzZ0Tkqqkd0AbQMTKJA3naxqeZTDJJsJ439k/FagB+wgdX4A4
+ Xh2RsVDKmB8/herpy1hxcA9ydPwnlyxY3iwHAXyP2+q76yysWeQ=
+X-Proofpoint-GUID: _gpc4iWIdSyLgV-3O81vmMR2ckdbYJa5
+X-Proofpoint-ORIG-GUID: _gpc4iWIdSyLgV-3O81vmMR2ckdbYJa5
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,374 +233,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/09/2025 01.21, Zhuoying Cai wrote:
-> Add additional checks to ensure that components do not overlap with
-> signed components when loaded into memory.
+On 9/28/2025 4:54 AM, Zhenzhong Duan wrote:
+> According to KVM uAPI, coalesced mmio page is KVM_COALESCED_MMIO_PAGE_OFFSET
+> offset from kvm_run pages. For x86 it's 2 pages offset, for arm it's 1 page
+> offset currently. We shouldn't presume it's hardcoded 1 page or else
+> coalesced_mmio_ring will not be cleared in do_kvm_destroy_vcpu() in x86.
 > 
-> Add additional checks to ensure the load addresses of unsigned components
-> are greater than or equal to 0x2000.
-> 
-> When the secure IPL code loading attributes facility (SCLAF) is installed,
-> all signed components must contain a secure code loading attributes block
-> (SCLAB).
-> 
-> The SCLAB provides further validation of information on where to load the
-> signed binary code from the load device, and where to start the execution
-> of the loaded OS code.
-> 
-> When SCLAF is installed, its content must be evaluated during secure IPL.
-> However, a missing SCLAB will not be reported in audit mode. The SCALB
-> checking will be skipped in this case.
-> 
-> Add IPL Information Error Indicators (IIEI) and Component Error
-> Indicators (CEI) for IPL Information Report Block (IIRB).
-> 
-> When SCLAF is installed, additional secure boot checks are performed
-> during zipl and store results of verification into IIRB.
-> 
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+> Fixes: 7ed0919119b0 ("migration: close kvm after cpr")
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+
+Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
+
 > ---
-...
-> diff --git a/pc-bios/s390-ccw/secure-ipl.c b/pc-bios/s390-ccw/secure-ipl.c
-> index 8eab19cb09..cd798c1198 100644
-> --- a/pc-bios/s390-ccw/secure-ipl.c
-> +++ b/pc-bios/s390-ccw/secure-ipl.c
-> @@ -202,6 +202,12 @@ static bool secure_ipl_supported(void)
->           return false;
+>   accel/kvm/kvm-all.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 9060599cd7..23fd491441 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -523,7 +523,8 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
 >       }
 >   
-> +    if (!sclp_is_sclaf_on()) {
-> +        puts("Secure IPL Code Loading Attributes Facility is not supported by" \
-
-No need for the backslash here.
-
-> +             " the hypervisor!");
-> +        return false;
-> +    }
-> +
->       return true;
->   }
+>       /* If I am the CPU that created coalesced_mmio_ring, then discard it */
+> -    if (s->coalesced_mmio_ring == (void *)cpu->kvm_run + PAGE_SIZE) {
+> +    if (s->coalesced_mmio_ring ==
+> +           (void *)cpu->kvm_run + s->coalesced_mmio * PAGE_SIZE) {
+>           s->coalesced_mmio_ring = NULL;
+>       }
 >   
-> @@ -214,6 +220,393 @@ static void init_lists(IplDeviceComponentList *comps, IplSignatureCertificateLis
->       certs->ipl_info_header.len = sizeof(certs->ipl_info_header);
->   }
->   
-> +static bool is_comp_overlap(SecureIplCompAddrRange *comp_addr_range, int addr_range_index,
-
-I'd suggest to move the second parameter to a separate line, to keep the 
-line length below 80 columns.
-
-> +                            uint64_t start_addr, uint64_t end_addr)
-> +{
-> +    /* neither a signed nor an unsigned component can overlap with a signed component */
-> +    for (int i = 0; i < addr_range_index; i++) {
-> +        if ((comp_addr_range[i].start_addr <= end_addr &&
-> +            start_addr <= comp_addr_range[i].end_addr) &&
-> +            comp_addr_range[i].is_signed) {
-> +            return true;
-> +       }
-> +    }
-> +
-> +    return false;
-> +}
-> +
-> +static void comp_addr_range_add(SecureIplCompAddrRange *comp_addr_range,
-> +                                int addr_range_index, bool is_signed,
-> +                                uint64_t start_addr, uint64_t end_addr)
-> +{
-> +    if (addr_range_index > MAX_CERTIFICATES - 1) {
-
-That error goes completely unnoticed. Should there be a log / warning here?
-
-> +        return;
-> +    }
-> +
-> +    comp_addr_range[addr_range_index].is_signed = is_signed;
-> +    comp_addr_range[addr_range_index].start_addr = start_addr;
-> +    comp_addr_range[addr_range_index].end_addr = end_addr;
-> +}
-> +
-> +static void check_unsigned_addr(uint64_t load_addr, IplDeviceComponentList *comps,
-> +                                int comp_index)
-> +{
-> +    uint32_t flag;
-> +    const char *msg;
-> +    bool valid;
-> +
-> +    valid = validate_unsigned_addr(load_addr);
-> +    if (!valid) {
-> +        flag = S390_IPL_COMPONENT_CEI_INVALID_UNSIGNED_ADDR;
-> +        msg = "Load address is less than 0x2000";
-> +        set_cei_with_log(comps, comp_index, flag, msg);
-
-I'd maybe rather pass the string directly as parameter, without the detour 
-through the "msg" variable.
-
-> +    }
-> +}
-> +
-> +static void addr_overlap_check(SecureIplCompAddrRange *comp_addr_range,
-> +                               int *addr_range_index,
-> +                               uint64_t start_addr, uint64_t end_addr, bool is_signed)
-> +{
-> +    bool overlap;
-> +
-> +    overlap = is_comp_overlap(comp_addr_range, *addr_range_index,
-> +                              start_addr, end_addr);
-> +    if (!overlap) {
-> +        comp_addr_range_add(comp_addr_range, *addr_range_index, is_signed,
-> +                            start_addr, end_addr);
-> +        *addr_range_index += 1;
-> +    } else {
-> +        zipl_secure_handle("Component addresses overlap");
-> +    }
-> +}
-> +
-> +static bool check_sclab_presence(uint8_t *sclab_magic,
-> +                                 IplDeviceComponentList *comps, int comp_index)
-> +{
-> +    if (!validate_sclab_magic(sclab_magic)) {
-> +        comps->device_entries[comp_index].cei |= S390_IPL_COMPONENT_CEI_INVALID_SCLAB;
-> +
-> +        /* a missing SCLAB will not be reported in audit mode */
-> +        return false;
-> +    }
-> +
-> +    return true;
-> +}
-> +
-> +static void check_sclab_length(uint16_t sclab_len,
-> +                               IplDeviceComponentList *comps, int comp_index)
-> +{
-> +    const char *msg;
-> +    uint32_t flag;
-> +    bool valid;
-> +
-> +    valid = validate_sclab_length(sclab_len);
-> +    if (!valid) {
-> +        flag = S390_IPL_COMPONENT_CEI_INVALID_SCLAB_LEN |
-> +               S390_IPL_COMPONENT_CEI_INVALID_SCLAB;
-> +        msg = "Invalid SCLAB length";
-> +        set_cei_with_log(comps, comp_index, flag, msg);
-
-Again, pass string directly, without msg variable?
-
-> +    }
-> +}
-> +
-> +static void check_sclab_format(uint8_t sclab_format,
-> +                               IplDeviceComponentList *comps, int comp_index)
-> +{
-> +    const char *msg;
-> +    uint32_t flag;
-> +    bool valid;
-> +
-> +    valid = validate_sclab_format(sclab_format);
-> +    if (!valid) {
-> +        flag = S390_IPL_COMPONENT_CEI_INVALID_SCLAB_FORMAT;
-> +        msg = "Format-0 SCLAB is not being use";
-> +        set_cei_with_log(comps, comp_index, flag, msg);
-
-dito
-
-> +    }
-> +}
-> +
-> +static void check_sclab_opsw(SecureCodeLoadingAttributesBlock *sclab,
-> +                             SecureIplSclabInfo *sclab_info,
-> +                             IplDeviceComponentList *comps, int comp_index)
-> +{
-> +    const char *msg;
-> +    uint32_t flag;
-> +    bool is_opsw_set;
-> +    bool valid;
-> +
-> +    is_opsw_set = is_sclab_flag_set(sclab->flags, S390_SECURE_IPL_SCLAB_FLAG_OPSW);
-> +    if (!is_opsw_set) {
-> +        valid = validate_sclab_opsw_zero(sclab->load_psw);
-> +        if (!valid) {
-> +            flag = S390_IPL_COMPONENT_CEI_SCLAB_LOAD_PSW_NOT_ZERO;
-> +            msg = "Load PSW is not zero when Override PSW bit is zero";
-> +            set_cei_with_log(comps, comp_index, flag, msg);
-> +        }
-> +    } else {
-> +        /* OPSW = 1 indicating global SCLAB */
-> +        valid = validate_sclab_opsw_one(sclab->flags);
-> +        if (!valid) {
-> +            flag = S390_IPL_COMPONENT_CEI_SCLAB_OLA_NOT_ONE;
-> +            msg = "Override Load Address bit is not set to one in the global SCLAB";
-> +            set_cei_with_log(comps, comp_index, flag, msg);
-
-Is it ok here to continue with the code below, even if it was not valid? Or 
-should there be a return statement here?
-
-> +        }
-> +
-> +        sclab_info->global_count += 1;
-> +        if (sclab_info->global_count == 1) {
-> +            sclab_info->load_psw = sclab->load_psw;
-> +            sclab_info->flags = sclab->flags;
-> +        }
-> +    }
-> +}
-> +
-> +static void check_sclab_ola(SecureCodeLoadingAttributesBlock *sclab,
-> +                            uint64_t load_addr, IplDeviceComponentList *comps,
-> +                            int comp_index)
-> +{
-> +    const char *msg;
-> +    uint32_t flag;
-> +    bool is_ola_set;
-> +    bool valid;
-> +
-> +    is_ola_set = is_sclab_flag_set(sclab->flags, S390_SECURE_IPL_SCLAB_FLAG_OLA);
-> +    if (!is_ola_set) {
-> +        valid = validate_sclab_ola_zero(sclab->load_addr);
-> +        if (!(valid)) {
-
-No need for the inner braces here.
-
-> +            flag = S390_IPL_COMPONENT_CEI_SCLAB_LOAD_ADDR_NOT_ZERO;
-> +            msg = "Load Address is not zero when Override Load Address bit is zero";
-> +            set_cei_with_log(comps, comp_index, flag, msg);
-> +        }
-> +
-> +    } else {
-> +        valid = validate_sclab_ola_one(sclab->load_addr, load_addr);
-> +        if (!valid) {
-> +            flag = S390_IPL_COMPONENT_CEI_UNMATCHED_SCLAB_LOAD_ADDR;
-> +            msg = "Load Address does not match with component load address";
-> +            set_cei_with_log(comps, comp_index, flag, msg);
-> +        }
-> +    }
-> +}
-> +
-> +static void check_sclab_nuc(uint16_t sclab_flags, IplDeviceComponentList *comps,
-> +                            int comp_index)
-> +{
-> +    const char *msg;
-> +    uint32_t flag;
-> +    bool is_nuc_set;
-> +    bool is_global_sclab;
-> +
-> +    is_nuc_set = is_sclab_flag_set(sclab_flags, S390_SECURE_IPL_SCLAB_FLAG_NUC);
-> +    is_global_sclab = is_sclab_flag_set(sclab_flags, S390_SECURE_IPL_SCLAB_FLAG_OPSW);
-> +    if (is_nuc_set && !is_global_sclab) {
-> +        flag = S390_IPL_COMPONENT_CEI_NUC_NOT_IN_GLOBAL_SCLA;
-> +        msg = "No Unsigned Components bit is set, but not in the global SCLAB";
-> +        set_cei_with_log(comps, comp_index, flag, msg);
-> +    }
-> +}
-> +
-> +static void check_sclab_sc(uint16_t sclab_flags, IplDeviceComponentList *comps,
-> +                           int comp_index)
-> +{
-> +    const char *msg;
-> +    uint32_t flag;
-> +    bool is_sc_set;
-> +    bool is_global_sclab;
-> +
-> +    is_sc_set = is_sclab_flag_set(sclab_flags, S390_SECURE_IPL_SCLAB_FLAG_SC);
-> +    is_global_sclab = is_sclab_flag_set(sclab_flags, S390_SECURE_IPL_SCLAB_FLAG_OPSW);
-> +    if (is_sc_set && !is_global_sclab) {
-> +        flag = S390_IPL_COMPONENT_CEI_SC_NOT_IN_GLOBAL_SCLAB;
-> +        msg = "Single Component bit is set, but not in the global SCLAB";
-> +        set_cei_with_log(comps, comp_index, flag, msg);
-> +    }
-> +}
-> +
-> +static bool is_psw_valid(uint64_t psw, SecureIplCompAddrRange *comp_addr_range,
-> +                         int range_index)
-> +{
-> +    uint32_t addr = psw & 0x3FFFFFFF;
-
-Shouldn't that be 0x7fffffff instead?
-
-> +    /* PSW points within a signed binary code component */
-> +    for (int i = 0; i < range_index; i++) {
-> +        if (comp_addr_range[i].is_signed &&
-> +            addr >= comp_addr_range[i].start_addr &&
-> +            addr <= comp_addr_range[i].end_addr) {
-
-is it still OK if the address points to the end_addr? Or should that be 
-end_addr - 2 instead (since an opcode has at least two bytes)?
-
-> +            return true;
-> +       }
-> +    }
-> +
-> +    return false;
-> +}
-...
->   
-> +static inline bool is_sclab_flag_set(uint16_t sclab_flags, uint16_t flag)
-> +{
-> +    return (sclab_flags & flag) != 0;
-> +}
-> +
-> +static inline bool validate_unsigned_addr(uint64_t comp_load_addr)
-> +{
-> +    /* usigned load address must be greater than or equal to 0x2000 */
-> +    return comp_load_addr >= 0x2000;
-> +}
-> +
-> +static inline bool validate_sclab_magic(uint8_t *sclab_magic)
-> +{
-> +    /* identifies the presence of SCLAB */
-> +    return magic_match(sclab_magic, ZIPL_MAGIC);
-> +}
-> +
-> +static inline bool validate_sclab_length(uint16_t sclab_len)
-> +{
-> +    /* minimum SCLAB length is 32 bytes */
-> +    return sclab_len >= 32;
-> +}
-> +
-> +static inline bool validate_sclab_format(uint8_t sclab_format)
-> +{
-> +    /* SCLAB format must set to zero, indicating a format-0 SCLAB being used */
-> +    return sclab_format == 0;
-> +}
-> +
-> +static inline bool validate_sclab_ola_zero(uint64_t sclab_load_addr)
-> +{
-> +    /* Load address field in SCLAB must contain zeros */
-> +    return sclab_load_addr == 0;
-> +}
-> +
-> +static inline bool validate_sclab_ola_one(uint64_t sclab_load_addr,
-> +                                          uint64_t comp_load_addr)
-> +{
-> +   /* Load address field must match storage address of the component */
-> +   return sclab_load_addr == comp_load_addr;
-> +}
-> +
-> +static inline bool validate_sclab_opsw_zero(uint64_t sclab_load_psw)
-> +{
-> +    /* Load PSW field in SCLAB must contain zeros */
-> +    return sclab_load_psw == 0;
-> +}
->
-> +static inline bool validate_sclab_opsw_one(uint16_t sclab_flags)
-> +{
-> +   /* OLA must set to one */
-> +   return is_sclab_flag_set(sclab_flags, S390_SECURE_IPL_SCLAB_FLAG_OLA);
-> +}
-> +
-> +static inline bool validate_lpsw(uint64_t sclab_load_psw, uint64_t comp_load_psw)
-> +{
-> +    /* compare load PSW with the PSW specified in component */
-> +    return sclab_load_psw == comp_load_psw;
-> +}
-
-Most of these inline functions just compare something with 0 or other values 
-here, and you only use them in one spot of the code ... So you need 5 lines 
-of code for something that could be done in two lines of code at the calling 
-sites instead, i.e. this looks like unnecessary code to me. Please inline 
-the comparisons (together with the comment that you've got here) in the 
-calling sites to get rid of this code bloat.
-
-  Thanks,
-   Thomas
 
 
