@@ -2,73 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3697FBAA157
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA9CBAA128
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:57:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3H9U-0006xe-Rf; Mon, 29 Sep 2025 12:55:05 -0400
+	id 1v3H9M-0006OS-09; Mon, 29 Sep 2025 12:54:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3H8T-0003pI-VB
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:54:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1v3H8C-0003Po-Pu; Mon, 29 Sep 2025 12:53:44 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3H8M-0002xx-Hx
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:54:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759164831;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dQfZbCFWhgJY25myTtGE4Qvn1E3bngTEvcqBPgfUd54=;
- b=C05TDEvAjyzkyK9O0bWFEx699ACmE3ifatr+POlPkRAZqICNFkSyk8gz/ZW+ZvYWnnvqNh
- bmDrrz24l3JpoBRgP7nZcSi5A1/zQHEg7Zr6DD9UQch8bVt0QRwu/Ir62CXRShHwZQDu9f
- zCOgmO30rNWZlZlLcs52s4Uid5Qjnzg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-ax9wkHQZMUyTaMDDIOpGkQ-1; Mon,
- 29 Sep 2025 12:53:49 -0400
-X-MC-Unique: ax9wkHQZMUyTaMDDIOpGkQ-1
-X-Mimecast-MFC-AGG-ID: ax9wkHQZMUyTaMDDIOpGkQ_1759164828
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E1A9318004D4; Mon, 29 Sep 2025 16:53:47 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.27])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4AA2B1800452; Mon, 29 Sep 2025 16:53:46 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 32/32] hw/arm/aspeed_ast27x0-fc: Make sub-init functions return
- bool with errp
-Date: Mon, 29 Sep 2025 18:52:30 +0200
-Message-ID: <20250929165230.797471-33-clg@redhat.com>
-In-Reply-To: <20250929165230.797471-1-clg@redhat.com>
-References: <20250929165230.797471-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1v3H86-0002uF-3h; Mon, 29 Sep 2025 12:53:44 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cb6hL2Nn1z6L55j;
+ Tue, 30 Sep 2025 00:53:22 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+ by mail.maildlp.com (Postfix) with ESMTPS id B3EDD1402CB;
+ Tue, 30 Sep 2025 00:53:33 +0800 (CST)
+Received: from localhost (10.47.79.72) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 29 Sep
+ 2025 17:53:32 +0100
+Date: Mon, 29 Sep 2025 17:53:31 +0100
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
+ <peter.maydell@linaro.org>, <jgg@nvidia.com>, <nicolinc@nvidia.com>,
+ <ddutile@redhat.com>, <berrange@redhat.com>, <nathanc@nvidia.com>,
+ <mochs@nvidia.com>, <smostafa@google.com>, <wangzhou1@hisilicon.com>,
+ <jiangkunkun@huawei.com>, <zhangfei.gao@linaro.org>,
+ <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <shameerkolothum@gmail.com>
+Subject: Re: [PATCH v4 13/27] hw/arm/smmuv3-accel: Add support to issue
+ invalidation cmd to host
+Message-ID: <20250929175331.00003800@huawei.com>
+In-Reply-To: <20250929133643.38961-14-skolothumtho@nvidia.com>
+References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+ <20250929133643.38961-14-skolothumtho@nvidia.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.47.79.72]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,114 +70,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+On Mon, 29 Sep 2025 14:36:29 +0100
+Shameer Kolothum <skolothumtho@nvidia.com> wrote:
 
-Refactor ast2700fc_ca35_init(), ast2700fc_ssp_init(), and ast2700fc_tsp_init()
-to take an Error **errp parameter and return a bool.
-Each function now reports failure through the error object and returns false.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250925050535.2657256-7-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/arm/aspeed_ast27x0-fc.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
-
-diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-index ebf3784df588..2e16a0340a7b 100644
---- a/hw/arm/aspeed_ast27x0-fc.c
-+++ b/hw/arm/aspeed_ast27x0-fc.c
-@@ -56,7 +56,7 @@ struct Ast2700FCState {
- #define AST2700FC_FMC_MODEL "w25q01jvq"
- #define AST2700FC_SPI_MODEL "w25q512jv"
- 
--static void ast2700fc_ca35_init(MachineState *machine)
-+static bool ast2700fc_ca35_init(MachineState *machine, Error **errp)
- {
-     Ast2700FCState *s = AST2700A1FC(machine);
-     AspeedSoCState *soc;
-@@ -71,8 +71,8 @@ static void ast2700fc_ca35_init(MachineState *machine)
-     memory_region_add_subregion(get_system_memory(), 0, &s->ca35_memory);
- 
-     if (!memory_region_init_ram(&s->ca35_dram, OBJECT(&s->ca35), "ca35-dram",
--                                AST2700FC_BMC_RAM_SIZE, &error_abort)) {
--        return;
-+                                AST2700FC_BMC_RAM_SIZE, errp)) {
-+        return false;
-     }
-     object_property_set_link(OBJECT(&s->ca35), "memory",
-                              OBJECT(&s->ca35_memory), &error_abort);
-@@ -92,8 +92,8 @@ static void ast2700fc_ca35_init(MachineState *machine)
-     object_property_set_int(OBJECT(&s->ca35), "hw-strap2",
-                             AST2700FC_HW_STRAP2, &error_abort);
-     aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART12, serial_hd(0));
--    if (!qdev_realize(DEVICE(&s->ca35), NULL, &error_abort)) {
--        return;
-+    if (!qdev_realize(DEVICE(&s->ca35), NULL, errp)) {
-+        return false;
-     }
- 
-     /*
-@@ -108,9 +108,11 @@ static void ast2700fc_ca35_init(MachineState *machine)
-     ast2700fc_board_info.loader_start = sc->memmap[ASPEED_DEV_SDRAM];
- 
-     arm_load_kernel(ARM_CPU(first_cpu), machine, &ast2700fc_board_info);
-+
-+    return true;
- }
- 
--static void ast2700fc_ssp_init(MachineState *machine)
-+static bool ast2700fc_ssp_init(MachineState *machine, Error **errp)
- {
-     AspeedSoCState *soc;
-     Ast2700FCState *s = AST2700A1FC(machine);
-@@ -127,12 +129,14 @@ static void ast2700fc_ssp_init(MachineState *machine)
- 
-     soc = ASPEED_SOC(&s->ssp);
-     aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART4, serial_hd(1));
--    if (!qdev_realize(DEVICE(&s->ssp), NULL, &error_abort)) {
--        return;
-+    if (!qdev_realize(DEVICE(&s->ssp), NULL, errp)) {
-+        return false;
-     }
-+
-+    return true;
- }
- 
--static void ast2700fc_tsp_init(MachineState *machine)
-+static bool ast2700fc_tsp_init(MachineState *machine, Error **errp)
- {
-     AspeedSoCState *soc;
-     Ast2700FCState *s = AST2700A1FC(machine);
-@@ -149,16 +153,18 @@ static void ast2700fc_tsp_init(MachineState *machine)
- 
-     soc = ASPEED_SOC(&s->tsp);
-     aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART7, serial_hd(2));
--    if (!qdev_realize(DEVICE(&s->tsp), NULL, &error_abort)) {
--        return;
-+    if (!qdev_realize(DEVICE(&s->tsp), NULL, errp)) {
-+        return false;
-     }
-+
-+    return true;
- }
- 
- static void ast2700fc_init(MachineState *machine)
- {
--    ast2700fc_ca35_init(machine);
--    ast2700fc_ssp_init(machine);
--    ast2700fc_tsp_init(machine);
-+    ast2700fc_ca35_init(machine, &error_abort);
-+    ast2700fc_ssp_init(machine, &error_abort);
-+    ast2700fc_tsp_init(machine, &error_abort);
- }
- 
- static void ast2700fc_class_init(ObjectClass *oc, const void *data)
--- 
-2.51.0
-
+> Provide a helper and use that to issue the invalidation cmd to host SMMUv=
+3.
+> We only issue one cmd at a time for now.
+>=20
+> Support for batching of commands=A0will be added later after analysing the
+> impact.
+>=20
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+LGTM
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
