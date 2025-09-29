@@ -2,96 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9650EBAA17B
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 19:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C19E5BAA27E
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 19:23:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3HDR-0007iN-46; Mon, 29 Sep 2025 12:59:09 -0400
+	id 1v3HYo-00026g-Qd; Mon, 29 Sep 2025 13:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v3HDP-0007hi-6A
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:59:07 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v3HDK-0004CR-91
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:59:06 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3fc36b99e92so3596841f8f.0
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 09:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759165135; x=1759769935; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=B0S6EILPN7ffIU403Vjsy+sm3b2HrDWxSRYwj6LQPxs=;
- b=QdgO9kcjl9pYQy7DYFw+FozNBR6ytlhLJtBvhmKtUL9l2Zq9EBmQr9kK9/myrOJcCM
- n/EQqRBwwm2rbYfdBEALUsUnBGCfrZfhV86KpddgAMUzR8jpxEaheAbWooulF4uB40My
- 1MsRt8EGvzjaW5x4pC6WizTiTpBbI8xd94p6fIk18Q5dh44n99P+03I2r/3M4HuSVPhU
- JPdLygXQbrGVZ7CQ9Jz8uE80dut2XtmGCOuDCQ2mWHpbf5hmuBNDk+ftd13Sc+eSvqP1
- hhOF2OdBUivSG6rjxQaV9QmeCF4prpvjZ2dfjJ4zvwoezZRVn2LA8nudb/ZyCzkh/8w3
- hmQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759165135; x=1759769935;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=B0S6EILPN7ffIU403Vjsy+sm3b2HrDWxSRYwj6LQPxs=;
- b=o3ost0Zs9kXrW8Kxs5smbkj8CFNy+YiZgq5MY2awMLbZU59tRFxvDvjuGThTa9AGxI
- OgczoBnxBJeK6J9kOyXwq+7ktLXYoV6V3bKOBAhKpmdUpzoqvNdp6/xlfuMjJhTVK8uA
- UamCdw3XxGDl09xu4jKoFl8+XpVIUuC4QSdCT8YbZ9EgRUxPVihZo0HytXaT3q+mUwyt
- K46yvvX92LertDVQmQkWOIXDbBIuRsA/DB/ZpWgecwKlOL7GYRZPdlWQLRPjh75JuvIT
- ZmSmQfc0Y/9PY249DsN9HenlW9GZxt8kbqdktgVXR2fLm4x2+5Vn26+5nRVk8S/0f5ux
- jBPw==
-X-Gm-Message-State: AOJu0YwYKv7D4mLCdjkmzfcJIebFWzDdew1+EsC8VJDG6X7T+yyI9/ps
- GvZYynNMDpOZTQYJ9sanvdq+BRhvQUIzl5QhpQyXuCvZI2P1+05JIaX+gMbFkjGF5Nc=
-X-Gm-Gg: ASbGncsR+VNuROhWTn+N1G4QpjwGAxiUvpTLaCpcYqDx2egWuB8oPORkgKK6AXD8hDl
- 8hTI1a7wkWTAR90SDLi1dPnjcKbMOiZXdyRg7daSUFpWmE6c7wUuPgDPTJ9+Qz0PLdwhMfGhcfT
- 7YASKauAEHRU480Y+txYQgskABsxqSrfqCcFHnl/2MahzPMVSxjmCnX5iUbotfeiGlGh53Gk21n
- oNeB3ahlzdIqTu8l7zTI82kf5eOpjinYSVIM8znKWqMPvd7Iw57NPjMcXd3djFddVquI/jcjuW7
- ab1+Y+ZVp9YT6+euJkJQ2mcdO5Su8unDCFQDste2fXo8c74bdoRybhzGzUK5Cxk4bl8kqtIs7a2
- aTJ0OuO0UeILzxFoQFzCMvDc=
-X-Google-Smtp-Source: AGHT+IH2fA59YHeZ+ymUy+20ZdxLapcCSwGaTQZySF6RUlu+W+xpISnyvkhcUOy2xZVW+sXHaCiDow==
-X-Received: by 2002:a5d:5f96:0:b0:3e8:f67:894f with SMTP id
- ffacd0b85a97d-42411da986cmr1265597f8f.26.1759165135585; 
- Mon, 29 Sep 2025 09:58:55 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb7203b8asm19257053f8f.9.2025.09.29.09.58.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Sep 2025 09:58:54 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 063085F83A;
- Mon, 29 Sep 2025 17:58:54 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  "Maciej S.
- Szmigiero" <maciej.szmigiero@oracle.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
- <david@redhat.com>,  kvm@vger.kernel.org,  Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 2/6] system/ramblock: Move ram_block_is_pmem() declaration
-In-Reply-To: <20250929154529.72504-3-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 29 Sep 2025 17:45:25
- +0200")
-References: <20250929154529.72504-1-philmd@linaro.org>
- <20250929154529.72504-3-philmd@linaro.org>
-User-Agent: mu4e 1.12.14-dev1; emacs 30.1
-Date: Mon, 29 Sep 2025 17:58:53 +0100
-Message-ID: <87zfadjiuq.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1v3HYi-00025e-Ej; Mon, 29 Sep 2025 13:21:08 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1v3HYa-0001QJ-Bo; Mon, 29 Sep 2025 13:21:08 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58TH4wkv006555;
+ Mon, 29 Sep 2025 17:20:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=7iHJoJ
+ t/TwpYePxs2wnHFRlsZOkCvypFIsP7+HcOc+c=; b=jNGZKYH9b2cmyjGU+J82kJ
+ L2LaVAm8SryaEeNrBemEo0BTmmyNWWbF/plb+jQHXuwW4tKQb/4XAOmWKuZm45fJ
+ nyr/j2qo78GriA9suSOnQw8qmfPO1I1v35m2uzfXV3zbAWZYWPSx3YA5Om+jhbGs
+ GwJ5BxIqbftp5flUni9FcY2gtH03HQq8bQjf0NsBmYPdQbTSrdFsHPgpCxALoToZ
+ 1Tk/HMGZ5687DQi6d76cOcgR+2rG7uPkNaCpFwSnKpGMRot1QnN1w0Jg0g6OfJwl
+ O6x6hK1c5GlruJmXtw7XT5Y9hpjmDYZR9A/NGTmYtLmwPkvzbOrbQQAzaDAa41TA
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ku3vg1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Sep 2025 17:20:54 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58TE3k3l024110;
+ Mon, 29 Sep 2025 17:20:53 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49evy0xxqw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Sep 2025 17:20:53 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58THKfJf24707796
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Sep 2025 17:20:41 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 978DD58052;
+ Mon, 29 Sep 2025 17:20:52 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C0EB858050;
+ Mon, 29 Sep 2025 17:20:51 +0000 (GMT)
+Received: from [9.61.248.197] (unknown [9.61.248.197])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 29 Sep 2025 17:20:51 +0000 (GMT)
+Message-ID: <0c221734-5faf-4829-bc17-21ec96a91fa5@linux.ibm.com>
+Date: Mon, 29 Sep 2025 10:20:38 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] vfio/pci: Add an error handler callback
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, mjrosato@linux.ibm.com,
+ thuth@redhat.com, alex.williamson@redhat.com
+References: <20250925174852.1302-1-alifm@linux.ibm.com>
+ <20250925174852.1302-3-alifm@linux.ibm.com> <87qzvtstd7.fsf@pond.sub.org>
+ <90de0c70-9309-4fd0-a5d7-3bd9e7088a0e@linux.ibm.com>
+ <87ms6gmo4j.fsf@pond.sub.org>
+ <4207529b-a0a5-4360-8449-f4c20661e9e8@redhat.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <4207529b-a0a5-4360-8449-f4c20661e9e8@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=T7WBjvKQ c=1 sm=1 tr=0 ts=68dabff6 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=Iq89dDL6uS_rAWto0rgA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: EftZPmcMekQGGQuLeyc9LapsbjbN615E
+X-Proofpoint-ORIG-GUID: EftZPmcMekQGGQuLeyc9LapsbjbN615E
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfX1eAjQ0upGugW
+ h5hW7opXkX8uhC+naVRDWVf8Z7IUV9X87pJzlkZ8QXan+MnLk2v3+ip4WO7VtKMNXKEoxhhZmtB
+ WGGA8TWgFlXvRPooLSmI0vg/T31Cd02rgpXRMNtxyrFwx4YTKHPm2T4Tbu7mTWifpabL39P7Gqj
+ NH9nRS/1cwDYaAHcdaJ3jZ4uZWUI/uq2CjeBqp31M3VAOol31gYOxNsdG0GUEpySHitlrPmb/sV
+ n+oeCXQf+ps8uyfdqGaUZ6i5ZkuS0plvJtCbOW0MOuZtDzuIChJ3ShVY6dwHVUXIdGk8F5VC9+I
+ zC7I88UQqfYtZYVZjdQXTQyz0tiCYD2PBMTLMNBBl5hML8x7tkNFvmrSNG/InnxA72+gADVX53a
+ uP96rG8y2ZESxlngx3ZnaaBPXkT48w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-29_06,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 spamscore=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,115 +121,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Move ramblock_is_pmem() along with the RAM Block API
-> exposed by the "system/ramblock.h" header. Rename as
-> ram_block_is_pmem() to keep API prefix consistency.
+On 9/27/2025 12:05 AM, Cédric Le Goater wrote:
+> On 9/27/25 07:59, Markus Armbruster wrote:
+>> Farhan Ali <alifm@linux.ibm.com> writes:
+>>
+>>> On 9/25/2025 9:57 PM, Markus Armbruster wrote:
+>>>> Farhan Ali <alifm@linux.ibm.com> writes:
+>>>>
+>>>>> Provide a vfio error handling callback, that can be used by 
+>>>>> devices to
+>>>>> handle PCI errors for passthrough devices.
+>>>>>
+>>>>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>>>>> ---
+>>>>>    hw/vfio/pci.c | 8 ++++++++
+>>>>>    hw/vfio/pci.h | 1 +
+>>>>>    2 files changed, 9 insertions(+)
+>>>>>
+>>>>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>>>>> index bc0b4c4d56..b02a974954 100644
+>>>>> --- a/hw/vfio/pci.c
+>>>>> +++ b/hw/vfio/pci.c
+>>>>> @@ -3063,11 +3063,19 @@ void vfio_pci_put_device(VFIOPCIDevice *vdev)
+>>>>>   static void vfio_err_notifier_handler(void *opaque)
+>>>>>   {
+>>>>>       VFIOPCIDevice *vdev = opaque;
+>>>>> +    Error *err = NULL;
+>>>>>
+>>>>>       if (!event_notifier_test_and_clear(&vdev->err_notifier)) {
+>>>>>           return;
+>>>>>       }
+>>>>>
+>>>>> +    if (vdev->err_handler) {
+>>>>> +        if (vdev->err_handler(vdev, &err)) {
+>>>>> +            return;
+>>>>> +        }
+>>>>> +        error_report_err(err);
+>>>>> +    }
+>>>>
+>>>> This is unusual.
+>>>>
+>>>> Functions taking an Error ** argument usually do so to report errors.
+>>>> The rules spelled out in qapi/error.h apply.  In particular:
+>>>>
+>>>>    * - On success, the function should not touch *errp.  On 
+>>>> failure, it
+>>>>    *   should set a new error, e.g. with error_setg(errp, ...), or
+>>>>    *   propagate an existing one, e.g. with error_propagate(errp, 
+>>>> ...).
+>>>>    *
+>>>>    * - Whenever practical, also return a value that indicates 
+>>>> success /
+>>>>    *   failure.  This can make the error checking more concise, and 
+>>>> can
+>>>>    *   avoid useless error object creation and destruction. Note that
+>>>>    *   we still have many functions returning void.  We recommend
+>>>>    *   • bool-valued functions return true on success / false on 
+>>>> failure,
+>>>>
+>>>> If ->err_handler() behaved that way, it @err would be null after it
+>>>> returns false.  We'd call error_report_err(NULL), and crash.
+>>>>
+>>>> Functions with unusual behavior need a contract: a comment spelling 
+>>>> out
+>>>> their behavior.
+>>>>
+>>>> What is the intended behavior of the err_handler() callback?
+>>>
+>>> Hi Markus,
+>>>
+>>> Thanks for reviewing! The intended behavior for err_handler() is to 
+>>> set errp and report the error on false/failure. With the above code, 
+>>> I also intended fall through to vm_stop() when err_handler() fails.
+>>>
+>>> I think I misunderstood the errp error handling, it seems like the 
+>>> correct way to do what I intended would be
+>>>
+>>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>>> index b02a974954..630de46c90 100644
+>>> --- a/hw/vfio/pci.c
+>>> +++ b/hw/vfio/pci.c
+>>> @@ -3070,10 +3070,11 @@ static void vfio_err_notifier_handler(void 
+>>> *opaque)
+>>>       }
+>>>
+>>>       if (vdev->err_handler) {
+>>> -        if (vdev->err_handler(vdev, &err)) {
+>>> +        if (!vdev->err_handler(vdev, &err)) {
+>>> +            error_report_err(err);
+>>> +        } else {
+>>>               return;
+>>>           }
+>>> -        error_report_err(err);
+>>>       }
+>>>
+>>> Please correct me if I missed anything.
+>>
+>> Resulting function:
+>>
+>>     static void vfio_err_notifier_handler(void *opaque)
+>>     {
+>>         VFIOPCIDevice *vdev = opaque;
+>>         Error *err = NULL;
+>>
+>>         if (!event_notifier_test_and_clear(&vdev->err_notifier)) {
+>>             return;
+>>         }
+>>
+>>         if (vdev->err_handler) {
+>>             if (!vdev->err_handler(vdev, &err)) {
+>>                 error_report_err(err);
+>>             } else {
+>>                 return;
+>>             }
+>>         }
+>>
+>>         /*
+>>          * TBD. Retrieve the error details and decide what action
+>>          * needs to be taken. One of the actions could be to pass
+>>          * the error to the guest and have the guest driver recover
+>>          * from the error. This requires that PCIe capabilities be
+>>          * exposed to the guest. For now, we just terminate the
+>>          * guest to contain the error.
+>>          */
+>>
+>>         error_report("%s(%s) Unrecoverable error detected. Please 
+>> collect any data possible and then kill the guest", __func__, 
+>> vdev->vbasedev.name);
+>>
+>>         vm_stop(RUN_STATE_INTERNAL_ERROR);
+>>     }
+>>
+>> Slighly rearranged for clearer control flow:
+>>
+>>     static void vfio_err_notifier_handler(void *opaque)
+>>     {
+>>         VFIOPCIDevice *vdev = opaque;
+>>         Error *err = NULL;
+>>
+>>         if (!event_notifier_test_and_clear(&vdev->err_notifier)) {
+>>             return;
+>>         }
+>>
+>>         if (vdev->err_handler) {
+>>             if (vdev->err_handler(vdev, &err)) {
+>>                 /* Error successfully handled */
+>>                 return;
+>>             }
+>>             error_report_err(err);
+>>         }
+
+Yes, this is what i intended to do with my patch and provide a clearer 
+flow. Though the compiler error reported by Cedric, is a little 
+confusing, need to understand why that happens.
+
+
+>>
+>>         /*
+>>          * TBD. Retrieve the error details and decide what action
+>>          * needs to be taken. One of the actions could be to pass
+>>          * the error to the guest and have the guest driver recover
+>>          * from the error. This requires that PCIe capabilities be
+>>          * exposed to the guest. For now, we just terminate the
+>>          * guest to contain the error.
+>>          */
+>>
+>>         error_report("%s(%s) Unrecoverable error detected. Please 
+>> collect any data possible and then kill the guest", __func__, 
+>> vdev->vbasedev.name);
+>>
+>>         vm_stop(RUN_STATE_INTERNAL_ERROR);
+>>     }
+>>
+>> Questions / issues:
+>>
+>> * Is the comment still accurate?
+
+This comment would still apply for vfio-pci devices on other 
+architectures except for s390x. We are trying to change this behavior 
+for s390x.
+
+>>
+>> * When ->err_handler() fails, we report the error twice. Would it make
+>>    sense to combine the two error reports into one?
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  include/system/ram_addr.h | 2 --
->  include/system/ramblock.h | 5 +++++
->  migration/ram.c           | 3 ++-
->  system/physmem.c          | 5 +++--
->  4 files changed, 10 insertions(+), 5 deletions(-)
+> Yes. It was my request too.
 >
-> diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-> index 15a1b1a4fa2..53c0c8c3856 100644
-> --- a/include/system/ram_addr.h
-> +++ b/include/system/ram_addr.h
-> @@ -99,8 +99,6 @@ static inline unsigned long int ramblock_recv_bitmap_of=
-fset(void *host_addr,
->      return host_addr_offset >> TARGET_PAGE_BITS;
->  }
->=20=20
-> -bool ramblock_is_pmem(RAMBlock *rb);
-> -
->  /**
->   * qemu_ram_alloc_from_file,
->   * qemu_ram_alloc_from_fd:  Allocate a ram block from the specified back=
-ing
-> diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-> index 8999206592d..12f64fbf78b 100644
-> --- a/include/system/ramblock.h
-> +++ b/include/system/ramblock.h
-> @@ -108,4 +108,9 @@ void ram_block_attributes_destroy(RamBlockAttributes =
-*attr);
->  int ram_block_attributes_state_change(RamBlockAttributes *attr, uint64_t=
- offset,
->                                        uint64_t size, bool to_discard);
->=20=20
-> +/**
-> + * ramblock_is_pmem: Whether the RAM block is of persistent memory
+> Thanks,
+>
+> C.
 
-missed a rename
-
-Otherwise:
-
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+I was a little hesitant about changing the existing error message as its 
+been there for almost 12 years (since commit 7b4b0e9eda ("vfio: 
+QEMU-AER: Qemu changes to support AER for VFIO-PCI devices")). Nothing 
+should ever dependent on specific error messages, but still.. .If the 
+preference is to combine/change the message I can do that.
 
 
-> + */
-> +bool ram_block_is_pmem(RAMBlock *rb);
-> +
->  #endif
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 7208bc114fb..91e65be83d8 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -53,6 +53,7 @@
->  #include "qemu/rcu_queue.h"
->  #include "migration/colo.h"
->  #include "system/cpu-throttle.h"
-> +#include "system/ramblock.h"
->  #include "savevm.h"
->  #include "qemu/iov.h"
->  #include "multifd.h"
-> @@ -4367,7 +4368,7 @@ static bool ram_has_postcopy(void *opaque)
->  {
->      RAMBlock *rb;
->      RAMBLOCK_FOREACH_NOT_IGNORED(rb) {
-> -        if (ramblock_is_pmem(rb)) {
-> +        if (ram_block_is_pmem(rb)) {
->              info_report("Block: %s, host: %p is a nvdimm memory, postcop=
-y"
->                           "is not supported now!", rb->idstr, rb->host);
->              return false;
-> diff --git a/system/physmem.c b/system/physmem.c
-> index ae8ecd50ea1..3766fae0aba 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -43,6 +43,7 @@
->  #include "system/kvm.h"
->  #include "system/tcg.h"
->  #include "system/qtest.h"
-> +#include "system/ramblock.h"
->  #include "qemu/timer.h"
->  #include "qemu/config-file.h"
->  #include "qemu/error-report.h"
-> @@ -1804,7 +1805,7 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t sta=
-rt, ram_addr_t length)
->=20=20
->  #ifdef CONFIG_LIBPMEM
->      /* The lack of support for pmem should not block the sync */
-> -    if (ramblock_is_pmem(block)) {
-> +    if (ram_block_is_pmem(block)) {
->          void *addr =3D ramblock_ptr(block, start);
->          pmem_persist(addr, length);
->          return;
-> @@ -3943,7 +3944,7 @@ int ram_block_discard_guest_memfd_range(RAMBlock *r=
-b, uint64_t start,
->      return ret;
->  }
->=20=20
-> -bool ramblock_is_pmem(RAMBlock *rb)
-> +bool ram_block_is_pmem(RAMBlock *rb)
->  {
->      return rb->flags & RAM_PMEM;
->  }
+>
+>
+>
+>> * Preexisting: the second error message is ugly.
+>>
+>>    Error messages should be short and to the point: single phrase, with
+>>    no newline or trailing punctuation.  The "please collect ..." part
+>>    does not belong to the error message proper, it's advice on what to
+>>    do.  Better: report the error, then print advice:
+>>
+>>         error_report("%s(%s) Unrecoverable error detected",
+>>                      __func__, vdev->vbasedev.name);
+>>         error_printf("Please collect any data possible and then kill 
+>> the guest.");
+>>
+>>    Including __func__ in an error message is an anti-pattern. Look at
+>>
+>>      vfio_err_notifier_handler(fred) Unrecoverable error detected
+>>
+>>    with a user's eyes: "vfio_err_notifier_handler" is programmer
+>>    gobbledygook, the device name "fred" is useful once you realize what
+>>    it is, "Unrecoverable error detected" lacks detail.
+>>
+>> [...]
+>>
+>
+How about "(device) Unrecoverable PCIe error detected for device"
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks
+Farhan
+
+
 
