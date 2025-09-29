@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17C1BA9DEF
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6B9BA9E2E
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:55:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3G8y-0000us-D5; Mon, 29 Sep 2025 11:50:28 -0400
+	id 1v3G96-0000x4-Cp; Mon, 29 Sep 2025 11:50:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3G8k-0000oL-8V
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:50:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v3G8e-0000md-ED
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:50:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3G8S-0000Ks-Ru
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:50:14 -0400
+ id 1v3G8S-0000LA-Nm
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:50:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759160993;
+ s=mimecast20190719; t=1759160995;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zssUXyxt0r2aqICD8A4lC9b3IkJOGajawZcurIep6Xg=;
- b=GMOQlPCN8q21rxPZo4bpxZqmXpv1fYwhNiwX045R1Von4YiTN7e+e3zIwtZ3bXaclinsrQ
- wUpyv3KUGjzkeFuzsYeTlwvmqRwayYDPXp1lBvqfdRe9HleMgxtw4DtJqei3t1XI+0GMUE
- IH2qWGU1DtEaaFIk3cEHfQVXxczMdVE=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QCOPbYu7ryKrm76CAIdUgFO9Ove0c1exWjeI/Cavblo=;
+ b=ieLIDOCraSGi0c+JhFP5Sgkg1E3oz4YhibRtK7vq1S6MFJdlfersinj4il/ZTTWOrpT6pc
+ l3tEQTAksYjupEVigbDiMRJR1jWjay+294YdC0ksVUUsJz4g0BVRHv72C3/Q9KaYsCBuwl
+ XPuXlXXRfei6ymK70fuj3ohcfSPc8xg=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-o4uxKdtfOhWvpJL3Bdg1-w-1; Mon, 29 Sep 2025 11:49:51 -0400
-X-MC-Unique: o4uxKdtfOhWvpJL3Bdg1-w-1
-X-Mimecast-MFC-AGG-ID: o4uxKdtfOhWvpJL3Bdg1-w_1759160990
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-62f9cfb8075so5641939a12.2
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:49:50 -0700 (PDT)
+ us-mta-403-yjX9C4c4PCeg14XRkqaQYg-1; Mon, 29 Sep 2025 11:49:53 -0400
+X-MC-Unique: yjX9C4c4PCeg14XRkqaQYg-1
+X-Mimecast-MFC-AGG-ID: yjX9C4c4PCeg14XRkqaQYg_1759160992
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-6344e493258so4307515a12.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:49:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759160989; x=1759765789;
+ d=1e100.net; s=20230601; t=1759160991; x=1759765791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zssUXyxt0r2aqICD8A4lC9b3IkJOGajawZcurIep6Xg=;
- b=E8Nm3zfJSjukAw4RnRPpNg2gdsu5f1mZiiUpRWMaxERKXQzAluPDVi3RsGtTcuJH88
- Nca1k6VnrQDH+OF4islXR0VxrZEPfSs5A+LahzPt9kY8OIpRv026HlJAbOVri/lZyj9u
- AW9RUIIHA09xWOLZKTPV6y3xZd3J0aiEmI6T3E6ictkzMki9l/3SIJRRvc9oJwxM4taN
- cBqAzbtnXCJuETtNfeKckKNnknEsppGt79lJI9e3MhY0hZaMdbGuLsmP2kc5qqHTDlSj
- 5vhO6rMaxu5mEeF0kEi1l8diPrq1WEUozrKeGc4ANPb5YzlYWmk39roXNNC8TGReA8aP
- Su1A==
-X-Gm-Message-State: AOJu0YwJ6PvoPkOnJB4Xl5Vs+EYW852vpMS2U2F42FqxHOFHYPuZABAc
- ySmUmdq0bC2m2Zj208ybYW35ABce0Z0RQgYHXcYW+rAChFok2eDQ/ylUayUqAR55bpRTQ0inQ6G
- m3BIwLOmFqP1vqkkhZIdr9HEIQU3faM2YZIa7FcaOy0W0FU3KMPaewuLmxOxDLBcrOq0Ggk7DYc
- phLYOLUiQKDqhy/BKmpIHlJ1FFLuDhPq5uOdVdiJYE
-X-Gm-Gg: ASbGnct3hp1v7w5o7/CjJ20bOHJ7MKlTTVdCZcnhuw+ePP2K/RbvrJQW/l1FhWZkvFW
- B8/BmjaREBFLmul7qdS+b3OjK6bUnyMyCjEghRrwi2F4JAR37mHpuAXxSPWGV3EjlK9Na7wHUz3
- YBjc9RnpvYN1ZxvYt3RvKLTK7q2Du0bDSNZFVs2iuo2vzX+tcVOA/YZhaMViEyOrzd2q0bM2ink
- xVK1ljjCtWo2TDVYXWmrkAGsqhJBdez2Ep6AvH3IsLgtS6FiRd6IWL1EjH4awGr1xdiY57GISK5
- ZfcLsXONX/IfGKzSS8tuazHWlUwHjbLjf/AkMOywkpkZtmWUBc7xVlXw7Uv1WjL8wstL1x76nP1
- AtDSF1E2WzWJPji3+zfYJsGmpJcdnfa31v6tpWDdOF4xHHw==
-X-Received: by 2002:a05:6402:2348:b0:634:cd66:9cdd with SMTP id
- 4fb4d7f45d1cf-634cd669e4dmr9420567a12.10.1759160988901; 
- Mon, 29 Sep 2025 08:49:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFk85iq0L3Iyoo1HVp6LgFPta4lQ3SAq2ctZg731jREEQzaGnOHBYQMBaNsAGu0zqBYvO2igw==
-X-Received: by 2002:a05:6402:2348:b0:634:cd66:9cdd with SMTP id
- 4fb4d7f45d1cf-634cd669e4dmr9420537a12.10.1759160988368; 
- Mon, 29 Sep 2025 08:49:48 -0700 (PDT)
+ bh=QCOPbYu7ryKrm76CAIdUgFO9Ove0c1exWjeI/Cavblo=;
+ b=R6YTmepVJ1YhIqIn3UH9JdF6JQZpQWxCFWK2wtXN3NMU5hd2x7FXHlMxETuLWUG6eo
+ 2ciCVvXXypmP3zm/eJK00w6vCeyAM+GULe0+PX7O3xtRmG2F+AuLOpP5TU2b/CUDUm7K
+ fpFCfqLqTsuDIt8h1Ug2GVbov9ybao/w1wz4LOdGhKGHgJksbkl0bzABi8a6yk/T9GhB
+ h1ildBgiGus7Kfoab53GntAZT+zC0MKLnboMegY6q9g4aX/lHV6LYDbykl5uaBejzpjt
+ po8AFmzy995NONk9xRQSHWS5k/IPfJvJ72bjIZ8uPP9k4znW6l0DCyhumqbsZYd8tV/p
+ yoJQ==
+X-Gm-Message-State: AOJu0Yzwld4HSOikY/gOMl11t5di9WrzbXSEemQSm6rz9CHsz8J4TBJX
+ WyS2qfFtO1kYXZS3D3nsu0XrMcz8yghtvRp8jFjaJZnkAP4Phq+cbbSwJx9R2Zvf0DcaucMehgL
+ 5DGZGi0ed+REV3Lg4ipzqr2CtP312tDIkEX6SXFaBZK6V4XQGdJcTCCQ+MjcneBRV0wFZAqxDPD
+ AlsQZ7U5jawk5l6qdDcWaKf3JjI2Pqd9Mi+9vML5GS
+X-Gm-Gg: ASbGncu4M2mPXwsxDPTDqk+6BdiOMnB9dRDVfaw8LXoxA2kfnkz3m18v+/ZUiLYxwTS
+ 4rYE1HSOQtp6YpVxOGyHVbKxPS2m6464qaU8qAH1fLum3OTU6IObwRrXu0R2JBSv8Ank2hW5GSB
+ X6QdQ9cflryosL8ILCI+gnqu3ZJybrlA94vKTotKpOgHNKKIxFlVXncARHo+o11sgGvNRfD+pcR
+ LWfEo+KvO/bHJpJp43dcCls9VTU7vceid1W3pZezpUWjQPYmwT0imPJvTOQCIFGhjJqZt6zcck+
+ sBKYNQuSDEfH24gQeJ+3jtolXFpbk13+2FtJf1/fOl7Ky6CGLWEWpO3wiyd7nq7Zvm4ygtLEzbU
+ WDf/rxGLEVuKaZZKo5p6Q7oVf1iazWbSdItjeviqCkrUX2A==
+X-Received: by 2002:a05:6402:291:b0:634:544b:a756 with SMTP id
+ 4fb4d7f45d1cf-6349fa9464fmr12376234a12.32.1759160991331; 
+ Mon, 29 Sep 2025 08:49:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG89lNt93/2CJxTZEWvqqvBpk4mU0wvXqR/CQaewsWXrhs+63GrZJGh6xBTe/G+o5aUNjIwmw==
+X-Received: by 2002:a05:6402:291:b0:634:544b:a756 with SMTP id
+ 4fb4d7f45d1cf-6349fa9464fmr12376196a12.32.1759160990823; 
+ Mon, 29 Sep 2025 08:49:50 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634c065a67csm5967821a12.36.2025.09.29.08.49.45
+ 4fb4d7f45d1cf-634c4b96ff6sm5541900a12.46.2025.09.29.08.49.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Sep 2025 08:49:46 -0700 (PDT)
+ Mon, 29 Sep 2025 08:49:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Tanish Desai <tanishdesai37@gmail.com>,
@@ -79,25 +79,24 @@ Cc: Tanish Desai <tanishdesai37@gmail.com>,
  Mads Ynddal <mads@ynddal.dk>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-rust@nongnu.org
-Subject: [PATCH 03/16] treewide: remove unnessary "coding" header
-Date: Mon, 29 Sep 2025 17:49:25 +0200
-Message-ID: <20250929154938.594389-4-pbonzini@redhat.com>
+Subject: [PATCH 04/16] tracetool: add SPDX headers
+Date: Mon, 29 Sep 2025 17:49:26 +0200
+Message-ID: <20250929154938.594389-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250929154938.594389-1-pbonzini@redhat.com>
 References: <20250929154938.594389-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,412 +112,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "-*- coding: utf-8 -*-" header was needed in Python 2,
-but in Python 3 UTF-8 is already the default encoding of
-source files.
-
-It is even less necessary in .css files that do not have UTF-8
-sequences at all.
-
-Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/conf.py                                   | 2 --
- docs/sphinx-static/theme_overrides.css         | 3 +--
- scripts/analyse-locks-simpletrace.py           | 1 -
- scripts/modinfo-collect.py                     | 1 -
- scripts/modinfo-generate.py                    | 1 -
- scripts/oss-fuzz/minimize_qtest_trace.py       | 1 -
- scripts/oss-fuzz/output_reproducer.py          | 1 -
- scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py | 1 -
- scripts/probe-gdb-support.py                   | 1 -
- scripts/qapi/error.py                          | 2 --
- scripts/qapi/expr.py                           | 2 --
- scripts/qapi/gen.py                            | 2 --
- scripts/qapi/parser.py                         | 2 --
- scripts/qapi/schema.py                         | 2 --
- scripts/qemu-plugin-symbols.py                 | 1 -
- scripts/qemugdb/tcg.py                         | 2 --
- scripts/qemugdb/timers.py                      | 1 -
- scripts/replay-dump.py                         | 1 -
- scripts/tracetool.py                           | 1 -
- scripts/tracetool/__init__.py                  | 2 --
- scripts/tracetool/backend/__init__.py          | 2 --
- scripts/tracetool/backend/dtrace.py            | 2 --
- scripts/tracetool/backend/ftrace.py            | 2 --
- scripts/tracetool/backend/log.py               | 2 --
- scripts/tracetool/backend/simple.py            | 2 --
- scripts/tracetool/backend/syslog.py            | 2 --
- scripts/tracetool/backend/ust.py               | 2 --
- scripts/tracetool/format/__init__.py           | 2 --
- scripts/tracetool/format/c.py                  | 2 --
- scripts/tracetool/format/d.py                  | 2 --
- scripts/tracetool/format/h.py                  | 2 --
- scripts/tracetool/format/log_stap.py           | 2 --
- scripts/tracetool/format/simpletrace_stap.py   | 2 --
- scripts/tracetool/format/stap.py               | 2 --
- scripts/tracetool/format/ust_events_c.py       | 2 --
- scripts/tracetool/format/ust_events_h.py       | 2 --
- 36 files changed, 1 insertion(+), 61 deletions(-)
+ scripts/tracetool/__init__.py                | 2 ++
+ scripts/tracetool/backend/__init__.py        | 2 ++
+ scripts/tracetool/backend/dtrace.py          | 2 ++
+ scripts/tracetool/backend/ftrace.py          | 2 ++
+ scripts/tracetool/backend/log.py             | 2 ++
+ scripts/tracetool/backend/simple.py          | 2 ++
+ scripts/tracetool/backend/syslog.py          | 2 ++
+ scripts/tracetool/backend/ust.py             | 2 ++
+ scripts/tracetool/format/__init__.py         | 2 ++
+ scripts/tracetool/format/c.py                | 2 ++
+ scripts/tracetool/format/d.py                | 2 ++
+ scripts/tracetool/format/h.py                | 2 ++
+ scripts/tracetool/format/log_stap.py         | 2 ++
+ scripts/tracetool/format/simpletrace_stap.py | 2 ++
+ scripts/tracetool/format/stap.py             | 2 ++
+ scripts/tracetool/format/ust_events_c.py     | 2 ++
+ scripts/tracetool/format/ust_events_h.py     | 2 ++
+ 17 files changed, 34 insertions(+)
 
-diff --git a/docs/conf.py b/docs/conf.py
-index e09769e5f83..0c9ec74097f 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # QEMU documentation build configuration file, created by
- # sphinx-quickstart on Thu Jan 31 16:40:14 2019.
- #
-diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index b225bf706f5..f312e9b57e4 100644
---- a/docs/sphinx-static/theme_overrides.css
-+++ b/docs/sphinx-static/theme_overrides.css
-@@ -1,5 +1,4 @@
--/* -*- coding: utf-8; mode: css -*-
-- *
-+/*
-  * Sphinx HTML theme customization: read the doc
-  * Based on Linux Documentation/sphinx-static/theme_overrides.css
-  */
-diff --git a/scripts/analyse-locks-simpletrace.py b/scripts/analyse-locks-simpletrace.py
-index d650dd71408..bd04cd43c94 100755
---- a/scripts/analyse-locks-simpletrace.py
-+++ b/scripts/analyse-locks-simpletrace.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- #
- # Analyse lock events and compute statistics
- #
-diff --git a/scripts/modinfo-collect.py b/scripts/modinfo-collect.py
-index 48bd92bd618..6ebaea989db 100644
---- a/scripts/modinfo-collect.py
-+++ b/scripts/modinfo-collect.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- 
- import os
- import sys
-diff --git a/scripts/modinfo-generate.py b/scripts/modinfo-generate.py
-index b1538fcced7..aaf23544c46 100644
---- a/scripts/modinfo-generate.py
-+++ b/scripts/modinfo-generate.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- 
- import os
- import sys
-diff --git a/scripts/oss-fuzz/minimize_qtest_trace.py b/scripts/oss-fuzz/minimize_qtest_trace.py
-index d1f3990c16a..414a6d91dd8 100755
---- a/scripts/oss-fuzz/minimize_qtest_trace.py
-+++ b/scripts/oss-fuzz/minimize_qtest_trace.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- 
- """
- This takes a crashing qtest trace and tries to remove superfluous operations
-diff --git a/scripts/oss-fuzz/output_reproducer.py b/scripts/oss-fuzz/output_reproducer.py
-index e8ef76b3413..0df96cf9587 100755
---- a/scripts/oss-fuzz/output_reproducer.py
-+++ b/scripts/oss-fuzz/output_reproducer.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- 
- """
- Convert plain qtest traces to C or Bash reproducers
-diff --git a/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py b/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py
-index b154a25508f..8af0d5d9c4e 100755
---- a/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py
-+++ b/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- 
- """
- Use this to convert qtest log info from a generic fuzzer input into a qtest
-diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
-index 6bcadce1500..43c70302873 100644
---- a/scripts/probe-gdb-support.py
-+++ b/scripts/probe-gdb-support.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# coding: utf-8
- #
- # Probe gdb for supported architectures.
- #
-diff --git a/scripts/qapi/error.py b/scripts/qapi/error.py
-index e35e4ddb26a..f73bc553db6 100644
---- a/scripts/qapi/error.py
-+++ b/scripts/qapi/error.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # Copyright (c) 2017-2019 Red Hat Inc.
- #
- # Authors:
-diff --git a/scripts/qapi/expr.py b/scripts/qapi/expr.py
-index cae0a083591..f40b247f8b6 100644
---- a/scripts/qapi/expr.py
-+++ b/scripts/qapi/expr.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # Copyright IBM, Corp. 2011
- # Copyright (c) 2013-2021 Red Hat Inc.
- #
-diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
-index d3c56d45c89..0c9b8db3b02 100644
---- a/scripts/qapi/gen.py
-+++ b/scripts/qapi/gen.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # QAPI code generation
- #
- # Copyright (c) 2015-2019 Red Hat Inc.
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 2529edf81aa..9fbf80a5410 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # QAPI schema parser
- #
- # Copyright IBM, Corp. 2011
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 3abddea3525..8d88b40de2e 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # QAPI schema internal representation
- #
- # Copyright (c) 2015-2019 Red Hat Inc.
-diff --git a/scripts/qemu-plugin-symbols.py b/scripts/qemu-plugin-symbols.py
-index e285ebb8f9e..69644979c19 100755
---- a/scripts/qemu-plugin-symbols.py
-+++ b/scripts/qemu-plugin-symbols.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- #
- # Extract QEMU Plugin API symbols from a header file
- #
-diff --git a/scripts/qemugdb/tcg.py b/scripts/qemugdb/tcg.py
-index 16c03c06a94..22529c72775 100644
---- a/scripts/qemugdb/tcg.py
-+++ b/scripts/qemugdb/tcg.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--#
- # GDB debugging support, TCG status
- #
- # Copyright 2016 Linaro Ltd
-diff --git a/scripts/qemugdb/timers.py b/scripts/qemugdb/timers.py
-index 46537b27cf0..5714f92cc21 100644
---- a/scripts/qemugdb/timers.py
-+++ b/scripts/qemugdb/timers.py
-@@ -1,4 +1,3 @@
--# -*- coding: utf-8 -*-
- # GDB debugging support
- #
- # Copyright 2017 Linaro Ltd
-diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
-index 4ce7ff51cc7..097636570dd 100755
---- a/scripts/replay-dump.py
-+++ b/scripts/replay-dump.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- #
- # Dump the contents of a recorded execution stream
- #
-diff --git a/scripts/tracetool.py b/scripts/tracetool.py
-index 5de9ce96d30..0fdc9cb9477 100755
---- a/scripts/tracetool.py
-+++ b/scripts/tracetool.py
-@@ -1,5 +1,4 @@
- #!/usr/bin/env python3
--# -*- coding: utf-8 -*-
- 
- """
- Command-line wrapper for the tracetool machinery.
 diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index 4ef1dc1fca3..9dd8ec27e15 100644
+index 9dd8ec27e15..c4fa0f74e6f 100644
 --- a/scripts/tracetool/__init__.py
 +++ b/scripts/tracetool/__init__.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Machinery for generating tracing-related intermediate files.
  """
 diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
-index 6c6344deddb..70401309196 100644
+index 70401309196..bf91e443e99 100644
 --- a/scripts/tracetool/backend/__init__.py
 +++ b/scripts/tracetool/backend/__init__.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Backend management.
  
 diff --git a/scripts/tracetool/backend/dtrace.py b/scripts/tracetool/backend/dtrace.py
-index e17edc9b9d8..4835454193d 100644
+index 4835454193d..b4af403025c 100644
 --- a/scripts/tracetool/backend/dtrace.py
 +++ b/scripts/tracetool/backend/dtrace.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  DTrace/SystemTAP backend.
  """
 diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index 5fa30ccc08e..e6317ca4bfb 100644
+index e6317ca4bfb..a14aafcee62 100644
 --- a/scripts/tracetool/backend/ftrace.py
 +++ b/scripts/tracetool/backend/ftrace.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Ftrace built-in backend.
  """
 diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
-index eb50ceea34c..9842522b184 100644
+index 9842522b184..faacec46105 100644
 --- a/scripts/tracetool/backend/log.py
 +++ b/scripts/tracetool/backend/log.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Stderr built-in backend.
  """
 diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
-index 7c84c06b200..066e5e9f11f 100644
+index 066e5e9f11f..97e40495ee9 100644
 --- a/scripts/tracetool/backend/simple.py
 +++ b/scripts/tracetool/backend/simple.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Simple built-in backend.
  """
 diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/backend/syslog.py
-index 3f82e54aabf..74af0380899 100644
+index 74af0380899..78ee67136b8 100644
 --- a/scripts/tracetool/backend/syslog.py
 +++ b/scripts/tracetool/backend/syslog.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Syslog built-in backend.
  """
 diff --git a/scripts/tracetool/backend/ust.py b/scripts/tracetool/backend/ust.py
-index c857516f212..6cc651646dd 100644
+index 6cc651646dd..3aa9bb1da29 100644
 --- a/scripts/tracetool/backend/ust.py
 +++ b/scripts/tracetool/backend/ust.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  LTTng User Space Tracing backend.
  """
 diff --git a/scripts/tracetool/format/__init__.py b/scripts/tracetool/format/__init__.py
-index 042fe7d103c..94a37bfce9f 100644
+index 94a37bfce9f..7b9d1b57826 100644
 --- a/scripts/tracetool/format/__init__.py
 +++ b/scripts/tracetool/format/__init__.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Format management.
  
 diff --git a/scripts/tracetool/format/c.py b/scripts/tracetool/format/c.py
-index e473fb6c6eb..3c4398c2373 100644
+index 3c4398c2373..50e03313cbf 100644
 --- a/scripts/tracetool/format/c.py
 +++ b/scripts/tracetool/format/c.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  trace/generated-tracers.c
  """
 diff --git a/scripts/tracetool/format/d.py b/scripts/tracetool/format/d.py
-index a5e096e214b..684598c1835 100644
+index 684598c1835..e9e33dfe30a 100644
 --- a/scripts/tracetool/format/d.py
 +++ b/scripts/tracetool/format/d.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  trace/generated-tracers.dtrace (DTrace only).
  """
 diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
-index bd9e0ca7f23..2119753be10 100644
+index 2119753be10..be7f32e67b9 100644
 --- a/scripts/tracetool/format/h.py
 +++ b/scripts/tracetool/format/h.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  trace/generated-tracers.h
  """
 diff --git a/scripts/tracetool/format/log_stap.py b/scripts/tracetool/format/log_stap.py
-index 5b1bbe907ff..02f23bfb8d2 100644
+index 02f23bfb8d2..259303a189d 100644
 --- a/scripts/tracetool/format/log_stap.py
 +++ b/scripts/tracetool/format/log_stap.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Generate .stp file that printfs log messages (DTrace with SystemTAP only).
  """
 diff --git a/scripts/tracetool/format/simpletrace_stap.py b/scripts/tracetool/format/simpletrace_stap.py
-index ac39a492d96..3c3584a9318 100644
+index 3c3584a9318..c7bde97a855 100644
 --- a/scripts/tracetool/format/simpletrace_stap.py
 +++ b/scripts/tracetool/format/simpletrace_stap.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Generate .stp file that outputs simpletrace binary traces (DTrace with SystemTAP only).
  """
 diff --git a/scripts/tracetool/format/stap.py b/scripts/tracetool/format/stap.py
-index 4d77fbc11a9..04c7a35a25f 100644
+index 04c7a35a25f..285c9203ba7 100644
 --- a/scripts/tracetool/format/stap.py
 +++ b/scripts/tracetool/format/stap.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  Generate .stp file (DTrace with SystemTAP only).
  """
 diff --git a/scripts/tracetool/format/ust_events_c.py b/scripts/tracetool/format/ust_events_c.py
-index 569754a3048..ea5f0ae99fa 100644
+index ea5f0ae99fa..074226bfd37 100644
 --- a/scripts/tracetool/format/ust_events_c.py
 +++ b/scripts/tracetool/format/ust_events_c.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  trace/generated-ust.c
  """
 diff --git a/scripts/tracetool/format/ust_events_h.py b/scripts/tracetool/format/ust_events_h.py
-index 2a31fefeca1..242c9814fdc 100644
+index 242c9814fdc..cee7970a403 100644
 --- a/scripts/tracetool/format/ust_events_h.py
 +++ b/scripts/tracetool/format/ust_events_h.py
-@@ -1,5 +1,3 @@
--# -*- coding: utf-8 -*-
--
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
  """
  trace/generated-ust-provider.h
  """
