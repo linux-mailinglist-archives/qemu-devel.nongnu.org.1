@@ -2,64 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D54BA9CF1
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A777BA9CEE
 	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:32:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Fpj-0003oj-EG; Mon, 29 Sep 2025 11:30:35 -0400
+	id 1v3Fpl-0003yb-8P; Mon, 29 Sep 2025 11:30:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v3FpB-0003mx-Ab; Mon, 29 Sep 2025 11:30:01 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v3Fp5-0001dF-DK; Mon, 29 Sep 2025 11:30:00 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAXG5fmpdpoVk8AAA--.1S2;
- Mon, 29 Sep 2025 23:29:42 +0800 (CST)
-Received: from [192.168.31.222] (unknown [113.246.232.83])
- by mail (Coremail) with SMTP id AQAAfwD3WujmpdpoGGkvAA--.28840S2;
- Mon, 29 Sep 2025 23:29:42 +0800 (CST)
-Message-ID: <a66ec5e4-d4ca-4c68-9459-3253c01096c4@phytium.com.cn>
-Date: Mon, 29 Sep 2025 23:29:41 +0800
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3FpJ-0003tq-1w
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:30:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3FpB-0001h4-4V
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:30:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759159797;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=VNiv9ZgbthKEdix6/c00x5jnVy/OuDbqGH2b6KKB+Nw=;
+ b=JQyqfhF7G6akx7Mw19P1hTrjR2gWdZY+aon3oYHKRZp0dp/49zsL7u+5MCWELvHhiANky0
+ lxEFsO2GsLuoRu3UsVeQDrhQsxilkWDqYRDElefGZlrPFR30Ad5jcJKD3u2TxOqsNZX3H8
+ tiSZjX19y6l9MYn3AuPneW1ltUlsxnU=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-l38J-PJ2PHGbtDic-XwJlg-1; Mon, 29 Sep 2025 11:29:56 -0400
+X-MC-Unique: l38J-PJ2PHGbtDic-XwJlg-1
+X-Mimecast-MFC-AGG-ID: l38J-PJ2PHGbtDic-XwJlg_1759159795
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-8635d475527so787447285a.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:29:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759159795; x=1759764595;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VNiv9ZgbthKEdix6/c00x5jnVy/OuDbqGH2b6KKB+Nw=;
+ b=DbvcZcQ3BjOBvN/gaiNrYpRMCU4RgbfWiG5dH6dMITizjAHsklHe8/Yzh9MpewMjdI
+ iP9lRprOtMCt4hTv+wkiNkMi77ToJyCirYsJnNWpsly9/ONeDI1pK1+keKweZ55N//KW
+ JteQTJ8D2/50/LPv3w9jJ4WTYwQEgzUTMl+AIYthiUHmfsXTDGG+ZFaAGdoDU+mPYuyV
+ in7U2jOgAClQR/4dBl6AqPuMb8u4SmnkJytlMkzZvgZmF+rBBGU/bsTk56EyQHnKFkAA
+ JYJyiNqUTycEOO3tuzv8ATY3DY1rQU45hPDZzwNL7HA91acl847b0LeU4Dnfvo+IY894
+ 4mHA==
+X-Gm-Message-State: AOJu0YxdsbrDujbmBb8PhM8m4N41dWsfNr/aJhiTeJceP80R+aBkaCK2
+ cmVSZC+0vy4VckU0fFWEgZPyzTn2XT4IP4t2UsbPffmSj7H2pdOsU1wb3P+C5iD/oWXEUp254BN
+ a3M1kjuaYQjXS4P/H4pK7VUWQ3v5QQ+Xp6G627yVAxuVqfRcfNevPn3dW
+X-Gm-Gg: ASbGncv6JTSCUH9OcgsEGKnTLHEbnPCrMnAEKmZpYxHoIpqXG8sE8UMvKWuaTTH77Ls
+ OFqlav0MhlnXG2plcLbsDqvgiQvFXIlFBrRilm6GebrRmB7rPDnrb1jEgPNYUcxlEWsApKw21ot
+ RdN0lptGZWj9hziJsJ6q0B+zv9d/we0CeoS+TL2O08O3F/p5K5PULnyMtiPD02hvTXlzAqxqXwz
+ wPLFuZSUJhoA1W4hi4+ZHp6cGHoMPoRIyUAvKA0zgjMCtd17njbmlMYYjESce3+noTpuwttlMJt
+ pIWWGXjaVwo45q4HnS1pduN4ARPfafPz
+X-Received: by 2002:a05:620a:29d2:b0:813:41c3:e888 with SMTP id
+ af79cd13be357-85ae061bc62mr2360267485a.32.1759159795388; 
+ Mon, 29 Sep 2025 08:29:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbAe4zWRo71M9xTdPvmZjG9Q5tYTwjlZwIBBPgQaz5N/WHJeAUDR09HMlv72vnecVUd60QjA==
+X-Received: by 2002:a05:620a:29d2:b0:813:41c3:e888 with SMTP id
+ af79cd13be357-85ae061bc62mr2360261785a.32.1759159794738; 
+ Mon, 29 Sep 2025 08:29:54 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-862e20312f8sm612232485a.42.2025.09.29.08.29.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Sep 2025 08:29:54 -0700 (PDT)
+Date: Mon, 29 Sep 2025 11:29:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Bin Guo <guobin@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de
+Subject: Re: [PATCH] migration: HMP: Adjust the order of output fields
+Message-ID: <aNql8ZfkTAg5gJde@x1.local>
+References: <20250929021213.28369-1-guobin@linux.alibaba.com>
+ <aNqT4mJWxdYJt4Wc@x1.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/14] hw/arm/smmuv3: Add secure TLB entry management
-To: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>
-References: <20250925162618.191242-1-tangtao1634@phytium.com.cn>
- <20250925162618.191242-10-tangtao1634@phytium.com.cn>
- <78cf7d16-2e15-4610-9150-065ee816e586@redhat.com>
-From: Tao Tang <tangtao1634@phytium.com.cn>
-In-Reply-To: <78cf7d16-2e15-4610-9150-065ee816e586@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAfwD3WujmpdpoGGkvAA--.28840S2
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAIBWjZjscNDwAEsy
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7Zry5Xw4DCw1kCw47ZrW3trb_yoW8AFy3pr
- WrWw4qyrZ7KFyIvw1xWw48W3W09ws5J3yUJws5Kwn8Z3W5tr1FqFyS93909FZxWFs3Z3W2
- qa12qa93J34jvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=162.243.164.118;
- envelope-from=tangtao1634@phytium.com.cn;
- helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aNqT4mJWxdYJt4Wc@x1.local>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,53 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Sep 29, 2025 at 10:12:50AM -0400, Peter Xu wrote:
+> On Mon, Sep 29, 2025 at 10:12:13AM +0800, Bin Guo wrote:
+> > Adjust the positions of 'tls-authz' and 'max-postcopy-bandwidth' in
+> > the fields output by the 'info migrate_parameters' command so that
+> > related fields are next to each other.
+> > 
+> > For clarity only, no functional changes.
+> > 
+> > Sample output after this commit:
+> > (qemu) info migrate_parameters
+> > ...
+> > max-cpu-throttle: 99
+> > tls-creds: ''
+> > tls-hostname: ''
+> > tls-authz: ''
+> > max-bandwidth: 134217728 bytes/second
+> > avail-switchover-bandwidth: 0 bytes/second
+> > max-postcopy-bandwidth: 0 bytes/second
+> 
+> This can be moved even above "avail-switchover-bandwidth", IMHO.
 
-On 2025/9/29 22:57, Eric Auger wrote:
-> Hi Tao,
->
-> On 9/25/25 6:26 PM, Tao Tang wrote:
->> To prevent aliasing between secure and non-secure translations for the
->> same address space, the IOTLB lookup key must incorporate the security
->> state of the transaction. A secure parameter has been added to
->> smmu_get_iotlb_key, ensuring that secure and non-secure TLB entries are
->> treated as distinct entities within the cache.
-> In the same spirit as my previous comments I would encourage to split
-> this into 2 patches:
-> 1) add the sec_sid in the key. This should cause no regression with the
-> NS current code base.
-> 2) introduce a separate patch for the new smmuv3_invalidate_all_caches
-> and A_S_INIT_ALIAS support.
-> Those can be easily separated and you can refocus the associated commit
-> messages.
->
-> I also see you adapted some range invalidations for STAGE2 with sec_idx.
-> Since secure path is not implemented for S2 yet you may abort if this is
-> attempted at some point
->
-> Thanks
->
-> Eric
-
-
-Hi Eric,
-
-Thank you for the review and for the excellent suggestion on how to 
-split this patch.
-
-Following the same spirit as your previous reviews, this makes perfect 
-sense. Separating the IOTLB key modification from the new S_INIT 
-functionality will indeed make the changes much cleaner and easier to 
-verify. I will restructure this for the v3 series into the two patches 
-you proposed.
-
-You also made a very important point about the unimplemented Secure 
-Stage 2 path. Silently letting it fall through is a risk. Furthermore, I 
-will take this opportunity to proactively audit the code and check if 
-there are any other areas where the yet-to-be-implemented Secure Stage 2 
-logic might be incorrectly invoked, and I will add similar assertions 
-there as well.
+I queued it with this change, please shoot if there's objections.
 
 Thanks,
-Tao
+
+-- 
+Peter Xu
 
 
