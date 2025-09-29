@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9226CBA8E6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 12:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF29BA8E78
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 12:39:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3BDl-0007Fg-9d; Mon, 29 Sep 2025 06:35:05 -0400
+	id 1v3BGE-0008Sv-CB; Mon, 29 Sep 2025 06:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3BDd-0007FI-TA
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 06:34:58 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3BGD-0008SN-1i
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 06:37:37 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3BDW-0002JJ-OC
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 06:34:56 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3ee12807d97so4096144f8f.0
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 03:34:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3BFv-0003Wr-KB
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 06:37:34 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3ee1381b835so3735651f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 03:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759142084; x=1759746884; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759142234; x=1759747034; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lU5j1ZW8B4DIdcsW0g80wtIon3aynrm35V2NiS0LFpQ=;
- b=ZhX+l+ZC4BNh2EkcN7j6YObbnYlTV1nJ9zoR/Ehwxw8zzSMbVi0Bq05QTZqmcgm2ri
- NijqZpuylIw6vaULvbaqUIHC09ZT1Ppsx3GSiOHmNBAGRhDt/QYobAXBjGzNuq00KqYT
- oXbR6d4cqqdkkhlvQzKMnXG65OgAbXnimWAJikrwZXrD3EZFqh554s4pAU4FpXYkr4It
- Aq5YxO+xzyegYCk9DNVuiUydv+XQCzN+nRXCGGxjz7FZzvSCBZQaBkShUfLg7yOpzIVt
- /OWQGxobyjuEMVdb0Zmzr7xF1B7xeY/36F5HuYPxQ/Gu3dQu1IxzhA7QnGCkLbnMqiMw
- tdbg==
+ bh=NHmGHuJT1zpBQ/Sas9LNG7FOWNeDyKz6iO/DCJsJlNU=;
+ b=WJyRcbit9Jxw6azsqnm5uE4+bh4G3z4LtH3r9jvjU/xHqaE59tyT7OWIpbVNCkDLid
+ vV/W5DS2OpQ3VfPfuSN2TXXdXOje9CgLVM22Q9IJZm+/JiMGZ3dCLcQvgfTS0cVSkun4
+ XBqe7Y5YZgS88oGQOdvIOTEmdxZ5YC+RXi9pJv5tX1t0JsdNn4GZsBrhZXae+XINRsUW
+ OVkWpKyRFzitVGOWHnZKaY9vnh6G7+jLKUcOZGJENcPNasN2kE3BhQO67Y8JVrpTfWK5
+ tZh65/LWzg686ss970H32I8ohlPCJWJVn3NGW1PXJGyq+ynS4FrGgUzGu96iJpt4BnqX
+ 4UEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759142084; x=1759746884;
+ d=1e100.net; s=20230601; t=1759142234; x=1759747034;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lU5j1ZW8B4DIdcsW0g80wtIon3aynrm35V2NiS0LFpQ=;
- b=IAUaUDAjNS+SEofuVAwZJkSgyno/idIK+0t2K2wr51eBfhQBlZM6AnEs9MlJ44wdRB
- CMI4bGDVm7QHGxg5fVHvF+HdZWkZ53ugYWZMvb/Gxrlz5qBieG+PJUnT+6U+IW80qs/9
- b+uvkjDsd5yL4+G6+jhTbHSP8HMzkyhPHw6wLNtxH1v516vJWK6GYjYUP6+SMCm0+dwe
- o/J1P+/O1fsb8RlFfPB8UuvNu6rtqLN1teZoSzu81s05/CXw3yBvmu9PkrMgWIc2ozjM
- 7Q1GN0deX4qYwkRfCkSK2b7IKni4SmAUxXdxutq2bYhENRxjlXAJcVKDporgzVG+jHuF
- 4YyA==
+ bh=NHmGHuJT1zpBQ/Sas9LNG7FOWNeDyKz6iO/DCJsJlNU=;
+ b=OQL6O4JzavUUcZ5J+3CYSNeekhraDra5bOam0KYGrRLn2p5thEzTkgY2Hva92Fu/0W
+ F7rXHE/x230t14fFEk/fZ0HsKtm6Y9IfAcvCRM6ZGiPiae++pDI4nNqwZB3wIEX8CvMp
+ 0j81r1wQGSB59hxonPc8pyLR9uwN5hAtirOYN+v08LDYsz6ByVknt3ENCV+Z0iG+JZbE
+ M5fTA8+a0a2rt2oncSNgGWA4C8QbjZCKfoDqF8ju1gZEVGglmuM/qt7MV/m/nSpNKVfn
+ kfZoeUplOyi4/6pgSxRqk2QfoQ7HJpmNuw/OxMx2ICRtmYFYuFXJgPI2qljRI3/b4THA
+ 840A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUU8k7n7hKF0LFhRrxURnjPRAzUoxP4gSbWUpg4zqb3PE7B3Y1+3+TYva5oNIUDeOrxnFZg+P9nTVrd@nongnu.org
-X-Gm-Message-State: AOJu0Yx1VdpX66VLmzp5gtxvlu8+LEkCc2kTWx5o8esSV0hnzs2Cs7XA
- tyxcSjO5w07nO6YGNTIyzpiOPY3+x7OufXJKaKXOIb9PDqXUyaH5gL4U7RnyAvVaqwY=
-X-Gm-Gg: ASbGncsB0xAuJb3Yvhntt+RKp1Nhdu5qkCX7u/zWk+KhH2QE83bMiMBBVXxoOvDh6b4
- PqRQj6P6cLg6vqkew4+BnrsOFTXoJQ8OlD+vEoEkl8TH468VkOE2R7Ln/Ku9N2AXImN4z7T04J1
- wYXwRKPBHOIvh6tX/dNUiVtlLuO2TKcIv7AG0pvevYZgqCRITwAnfOZsg+8ka09x8DeqRb1RTOx
- hy/0p65tV7aGobDYTlE8oeT5oNMYVRohW+JzGWCDM2nLfYDy8JP6roOIkABBD+zrDMqYeIN4eCL
- bFCYf2mLZfSoYSdIbFRvFBANJNmjYmta54vZBSlQcRdt59ahcX+Ti2xpr8TnWIOjCmOKgiBhu1c
- 2inEFUdOGtXFwYYtfyGUPAQf9Km/WslzmXYBSIOXfSWz1OT5rQA2F2ATaEttcpHSV4A==
-X-Google-Smtp-Source: AGHT+IEkNGd02Gft0MURV60kI3ZYG/yZ4zzb59CnjidNYnApzfkGAVWU5ekJUime5iaOE0RPsRn02g==
-X-Received: by 2002:a05:6000:220e:b0:3ea:9042:e682 with SMTP id
- ffacd0b85a97d-40e469db815mr16093360f8f.11.1759142084111; 
- Mon, 29 Sep 2025 03:34:44 -0700 (PDT)
+ AJvYcCWJ2SZJnncteoj+uNyomQqbVqdl3Pl0NcNPrDyefvsg/Ie0g3cXeV7lrijhV2fjhjX5hmdALWTquKMx@nongnu.org
+X-Gm-Message-State: AOJu0YzNDtc3T6geJGHiqDcQ+QoNgiigJ/SXV3+UTORKM4T9/CAPXW9q
+ pYq1ucUGBiAkp3QJ96Mw/O0XBY46BobOdPnxw7HhD80rA1f9RamzduEjG7/k6iN7O2U=
+X-Gm-Gg: ASbGncturj+7cmevByXflpieN1/RbLNLrDyV7H4xffAo3NFJabA6pXQ0usOdvuG33/A
+ KFQak7bDI/W2dUW1EfZabMOEh/by36iEIla3jsaS6x70wjLzWwQfdyw1g+LK5jxNboXSRqz7pZK
+ Lw1gm96kNKtKe70hgxXrKLbcSBZdF5qG5KoENl/2YzVFBy8A4+ISqrKJ98qVSF+79crt1e7SfMc
+ ejPH9cN/43PkTViibaTFFQdS+iP2jeZXMuYnKbQYXlbKpf6MiAVAVrwDwVn6b7jKhr42ARPLPGm
+ 20fa3XfoUOVi/00KRD96lso46umo3ivgKLrse6ATlJNcKCJOnKRry+9OwdtRwsUKDH/5r4ZlI34
+ mj+mi1cgEZRoJBXToHvD+kuzdMLAVDaYzec+Vq9oacvWReAJo7zxgCNJQglptFANWx92cuks2y0
+ PF
+X-Google-Smtp-Source: AGHT+IHGOr8tBv+CYOVl7o84jEjuG1JnC59qGA4jK26SV3wkJAdYg0Vab8EN5g3iYcugpZeyrxZMKw==
+X-Received: by 2002:adf:ee44:0:b0:3ec:1b42:1f93 with SMTP id
+ ffacd0b85a97d-413591d7997mr8460872f8f.37.1759142233687; 
+ Mon, 29 Sep 2025 03:37:13 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc88b0779sm17497647f8f.58.2025.09.29.03.34.43
+ 5b1f17b1804b1-46e2ab31f62sm221035915e9.15.2025.09.29.03.37.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Sep 2025 03:34:43 -0700 (PDT)
-Message-ID: <70156c9c-5559-496d-8753-99f1ba5f68d1@linaro.org>
-Date: Mon, 29 Sep 2025 12:34:42 +0200
+ Mon, 29 Sep 2025 03:37:13 -0700 (PDT)
+Message-ID: <fb099da4-19b3-48af-bf22-b08b0d42ce4b@linaro.org>
+Date: Mon, 29 Sep 2025 12:37:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 38/47] hw/arm/xlnx-versal: add the target field in IRQ
- descriptor
+Subject: Re: [PATCH v6 40/47] hw/arm/xlnx-versal: add versal2 SoC
 Content-Language: en-US
 To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -77,13 +77,13 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Frederic Konrad <frederic.konrad@amd.com>,
  Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 References: <20250926070806.292065-1-luc.michel@amd.com>
- <20250926070806.292065-39-luc.michel@amd.com>
+ <20250926070806.292065-41-luc.michel@amd.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250926070806.292065-39-luc.michel@amd.com>
+In-Reply-To: <20250926070806.292065-41-luc.michel@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,127 +107,70 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 26/9/25 09:07, Luc Michel wrote:
-> Add the target field in the IRQ descriptor. This allows to target an IRQ
-> to another IRQ controller than the GIC(s). Other supported targets are
-> the PMC PPU1 CPU interrupt controller and the EAM (Error management)
-> device. Those two devices are currently not implemented so IRQs
-> targeting those will be left unconnected. This is in preparation for
+> Add the Versal Gen 2 (versal2) version of the Versal SoC family.
+> This version embeds up to 8 Cortex-A78AE cores (split into 4 clusters)
+> and 10 Cortex-R52 cores (split into 5 clusters). The similarities
+> between versal and versal2 in term of architecture allow to reuse the
+> VersalMap structure to almost fully describe the implemented parts of
 > versal2.
+> 
+> The versal2 eFuse device differs quite a lot from the versal one and is
+> left as future work.
 > 
 > Signed-off-by: Luc Michel <luc.michel@amd.com>
 > Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 > ---
->   hw/arm/xlnx-versal.c | 41 +++++++++++++++++++++++++++++++++++++++--
->   1 file changed, 39 insertions(+), 2 deletions(-)
+>   include/hw/arm/xlnx-versal.h |  17 ++-
+>   hw/arm/xlnx-versal.c         | 207 ++++++++++++++++++++++++++++++++---
+>   2 files changed, 209 insertions(+), 15 deletions(-)
 > 
-> diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-> index 3d960ed2636..64744401182 100644
-> --- a/hw/arm/xlnx-versal.c
-> +++ b/hw/arm/xlnx-versal.c
-> @@ -50,18 +50,30 @@
->   #include "hw/cpu/cluster.h"
->   #include "hw/arm/bsa.h"
->   
+> diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+> index b6cc71f7209..e1fb1f4cf5b 100644
+> --- a/include/hw/arm/xlnx-versal.h
+> +++ b/include/hw/arm/xlnx-versal.h
+> @@ -1,7 +1,7 @@
 >   /*
->    * IRQ descriptor to catch the following cases:
-> + *   - An IRQ can either connect to the GICs, to the PPU1 intc, or the the EAM
->    *   - Multiple devices can connect to the same IRQ. They are OR'ed together.
->    */
->   FIELD(VERSAL_IRQ, IRQ, 0, 16)
-> +FIELD(VERSAL_IRQ, TARGET, 16, 2)
->   FIELD(VERSAL_IRQ, ORED, 18, 1)
->   FIELD(VERSAL_IRQ, OR_IDX, 19, 4) /* input index on the IRQ OR gate */
+> - * Model of the Xilinx Versal
+> + * AMD/Xilinx Versal family SoC model.
+>    *
+>    * Copyright (c) 2018 Xilinx Inc.
+>    * Copyright (c) 2025 Advanced Micro Devices, Inc.
+>    * Written by Edgar E. Iglesias
+>    *
+> @@ -20,10 +20,11 @@
 >   
-> +typedef enum VersalIrqTarget {
-> +    IRQ_TARGET_GIC,
-> +    IRQ_TARGET_PPU1,
-> +    IRQ_TARGET_EAM,
+>   #define TYPE_XLNX_VERSAL_BASE "xlnx-versal-base"
+>   OBJECT_DECLARE_TYPE(Versal, VersalClass, XLNX_VERSAL_BASE)
+>   
+>   #define TYPE_XLNX_VERSAL "xlnx-versal"
+> +#define TYPE_XLNX_VERSAL2 "xlnx-versal2"
+>   
+>   struct Versal {
+>       /*< private >*/
+>       SysBusDevice parent_obj;
+>   
+> @@ -70,6 +71,20 @@ hwaddr versal_get_reserved_mmio_addr(Versal *s);
+>   
+>   int versal_get_num_cpu(VersalVersion version);
+>   int versal_get_num_can(VersalVersion version);
+>   int versal_get_num_sdhci(VersalVersion version);
+>   
+> +static inline const char *versal_get_class(VersalVersion version)
+> +{
 
-Maybe declare IRQ_TARGET_RSVD here,
+Not a blocker, but inlining isn't really justified here.
 
-> +} VersalIrqTarget;
+> +    switch (version) {
+> +    case VERSAL_VER_VERSAL:
+> +        return TYPE_XLNX_VERSAL;
 > +
-> +#define PPU1_IRQ(irq) ((IRQ_TARGET_PPU1 << R_VERSAL_IRQ_TARGET_SHIFT) | (irq))
-> +#define EAM_IRQ(irq) ((IRQ_TARGET_EAM << R_VERSAL_IRQ_TARGET_SHIFT) | (irq))
->   #define OR_IRQ(irq, or_idx) \
->       (R_VERSAL_IRQ_ORED_MASK | ((or_idx) << R_VERSAL_IRQ_OR_IDX_SHIFT) | (irq))
-> +#define PPU1_OR_IRQ(irq, or_idx) \
-> +    ((IRQ_TARGET_PPU1 << R_VERSAL_IRQ_TARGET_SHIFT) | OR_IRQ(irq, or_idx))
->   
->   typedef struct VersalSimplePeriphMap {
->       uint64_t addr;
->       int irq;
->   } VersalSimplePeriphMap;
-> @@ -412,19 +424,27 @@ static qemu_irq versal_get_gic_irq(Versal *s, int irq_idx)
->    * Or gates are placed under the /soc/irq-or-gates QOM container.
->    */
->   static qemu_irq versal_get_irq_or_gate_in(Versal *s, int irq_idx,
->                                             qemu_irq target_irq)
->   {
-> +    static const char *TARGET_STR[] = {
-> +        [IRQ_TARGET_GIC] = "gic",
-> +        [IRQ_TARGET_PPU1] = "ppu1",
-> +        [IRQ_TARGET_EAM] = "eam",
-> +    };
-> +
-> +    VersalIrqTarget target;
->       Object *container = versal_get_child(s, "irq-or-gates");
->       DeviceState *dev;
->       g_autofree char *name;
->       int idx, or_idx;
->   
->       idx = FIELD_EX32(irq_idx, VERSAL_IRQ, IRQ);
->       or_idx = FIELD_EX32(irq_idx, VERSAL_IRQ, OR_IDX);
-> +    target = FIELD_EX32(irq_idx, VERSAL_IRQ, TARGET);
-
-and assert(target != IRQ_TARGET_RSVD) here?
-
->   
-> -    name = g_strdup_printf("irq[%d]", idx);
-> +    name = g_strdup_printf("%s-irq[%d]", TARGET_STR[target], idx);
->       dev = DEVICE(object_resolve_path_at(container, name));
->   
->       if (dev == NULL) {
->           dev = qdev_new(TYPE_OR_IRQ);
->           object_property_add_child(container, name, OBJECT(dev));
-> @@ -436,16 +456,33 @@ static qemu_irq versal_get_irq_or_gate_in(Versal *s, int irq_idx,
->       return qdev_get_gpio_in(dev, or_idx);
->   }
->   
->   static qemu_irq versal_get_irq(Versal *s, int irq_idx)
->   {
-> +    VersalIrqTarget target;
->       qemu_irq irq;
->       bool ored;
->   
-> +    target = FIELD_EX32(irq_idx, VERSAL_IRQ, TARGET);
->       ored = FIELD_EX32(irq_idx, VERSAL_IRQ, ORED);
->   
-> -    irq = versal_get_gic_irq(s, irq_idx);
-> +    switch (target) {
-> +    case IRQ_TARGET_EAM:
-> +        /* EAM not implemented */
-> +        return NULL;
-> +
-> +    case IRQ_TARGET_PPU1:
-> +        /* PPU1 CPU not implemented */
-> +        return NULL;
-> +
-> +    case IRQ_TARGET_GIC:
-> +        irq = versal_get_gic_irq(s, irq_idx);
-> +        break;
+> +    case VERSAL_VER_VERSAL2:
+> +        return TYPE_XLNX_VERSAL2;
 > +
 > +    default:
-
-And here 'case IRQ_TARGET_RSVD' instead.
-
 > +        g_assert_not_reached();
 > +    }
->   
->       if (ored) {
->           irq = versal_get_irq_or_gate_in(s, irq_idx, irq);
->       }
->   
-
+> +}
 
