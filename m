@@ -2,68 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CA5BA9DE3
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B15D5BA9F18
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3G9k-0001Yh-FV; Mon, 29 Sep 2025 11:51:16 -0400
+	id 1v3GLd-0006Rg-EJ; Mon, 29 Sep 2025 12:03:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v3G9d-0001Ky-33; Mon, 29 Sep 2025 11:51:09 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v3G9U-0000iA-KQ; Mon, 29 Sep 2025 11:51:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759161061; x=1790697061;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9W74zEoqyUET7A2cUfqGOGYlA5GRpaX5PAiAbi7NmyE=;
- b=CNY8OEWxzizStz5tPxpT67FZIxRgdqtpj6cjiEOLGmzqhk4xRBeYZkVD
- PDWkkikCyKq6ccGVJJso6ofBF1kPiiwfh/eGK4yJ0iE6ajG7YwjkIC0sU
- xEjNSqCvqJPQrZyiZcmYn2P31SAJY50TLltrBGqSt37YrtynhyoP24c4r
- +mtIpwTiVdq7P/IrR8dt6chPsymTeceGWqTo/7GhyysagqPKZraUzQfHY
- 4Y9Oe2z1e1mKzC5etd4i28CrpOJmWB9P/EXyOFgf1fWVwiquQ1U+ec7r/
- I0STrAEZB9QwRgEdJ/tCqv2o3t0eHuAOWhWOgQtVZhdqlnaEdY2xAHixC A==;
-X-CSE-ConnectionGUID: gvtRRVT6Qu2KnCSLyFjhnA==
-X-CSE-MsgGUID: QitGmT2vSnKfvbmusFs9GQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="78829376"
-X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; d="scan'208";a="78829376"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 08:50:51 -0700
-X-CSE-ConnectionGUID: hYRn1zx3TVWyDaW6ZgrGgg==
-X-CSE-MsgGUID: kOgdylrIQpGeb0HdBDrxxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; d="scan'208";a="177519499"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 29 Sep 2025 08:50:49 -0700
-Date: Tue, 30 Sep 2025 00:12:48 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, manos.pitsidianakis@linaro.org
-Subject: Re: [PATCH 6/7] rust: migration: implement ToMigrationState for Timer
-Message-ID: <aNqwACkjytK3+QQ4@intel.com>
-References: <20250920142958.181910-1-pbonzini@redhat.com>
- <20250920142958.181910-7-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1v3GLM-00068y-Vv; Mon, 29 Sep 2025 12:03:20 -0400
+Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1v3GLG-0003PJ-2g; Mon, 29 Sep 2025 12:03:14 -0400
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBXRVywrdpoWgsAAA--.93S2;
+ Tue, 30 Sep 2025 00:02:56 +0800 (CST)
+Received: from [192.168.31.222] (unknown [113.246.232.83])
+ by mail (Coremail) with SMTP id AQAAfwCnDeuprdpoFI4vAA--.40173S2;
+ Tue, 30 Sep 2025 00:02:51 +0800 (CST)
+Message-ID: <36dc34ba-2673-4529-9af7-4f83b4478cbf@phytium.com.cn>
+Date: Tue, 30 Sep 2025 00:02:49 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250920142958.181910-7-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 12/14] hw/arm/smmuv3: Use iommu_index to represent the
+ security context
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20250925162618.191242-1-tangtao1634@phytium.com.cn>
+ <20250926030831.1067440-1-tangtao1634@phytium.com.cn>
+ <39446b6c-d7dd-4aeb-a2ee-96db03997e4a@redhat.com>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <39446b6c-d7dd-4aeb-a2ee-96db03997e4a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwCnDeuprdpoFI4vAA--.40173S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAIBWjZjscNoQAAsY
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxXr1UAr48JF4DAw4kXw4fXwb_yoWrAF4DpF
+ 48GFZxKa1fJFy3Ar1fJa1UZF4a93ykKry7ZFZxK3Z5CF1DZrn7JryvkFyYgryDurWUCw42
+ va109FW3WF1qyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=129.150.39.64;
+ envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,85 +76,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Sep 20, 2025 at 04:29:57PM +0200, Paolo Bonzini wrote:
-> Date: Sat, 20 Sep 2025 16:29:57 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 6/7] rust: migration: implement ToMigrationState for Timer
-> X-Mailer: git-send-email 2.51.0
-> 
-> Timer is a complex struct, allow adding it to a struct that
-> uses #[derive(ToMigrationState)]; similar to vmstate_timer, only
-> the expiration time has to be preserved.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/migration/src/migratable.rs | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
-> 
-> diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
-> index fa25317eea8..c4ad4f73d5c 100644
-> --- a/rust/migration/src/migratable.rs
-> +++ b/rust/migration/src/migratable.rs
-> @@ -202,6 +202,37 @@ fn restore_migrated_state(
->      ) -> Result<(), InvalidError>;
->  }
->  
-> +impl ToMigrationState for util::timer::Timer {
-> +    type Migrated = i64;
+Hi Eric,
 
-This converts a Timer to i64, then we don't need vmstate_info_timer
-anymore. Good idea.
+On 2025/9/29 23:33, Eric Auger wrote:
+>
+> On 9/26/25 5:08 AM, Tao Tang wrote:
+>> Resending patches 12–14/14 that were missing due to a send issue. Sorry
+>> for the noise.
+>>
+>> The Arm SMMUv3 architecture uses a SEC_SID (Secure StreamID) to select
+>> the programming interface. To support future extensions like RME, which
+>> defines four security states (Non-secure, Secure, Realm, and Root), the
+>> QEMU model must cleanly separate these contexts for all operations.
+>>
+>> This commit leverages the generic iommu_index to represent this
+>> security context. The core IOMMU layer now uses the SMMU's .attrs_to_index
+>> callback to map a transaction's ARMSecuritySpace attribute to the
+>> corresponding iommu_index.
+>>
+>> This index is then passed down to smmuv3_translate and used throughout
+>> the model to select the correct register bank and processing logic. This
+>> makes the iommu_index the clear QEMU equivalent of the architectural
+>> SEC_SID, cleanly separating the contexts for all subsequent lookups.
+>>
+>> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+>> ---
+>>   hw/arm/smmuv3.c | 37 ++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 36 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+>> index eec36d5fd2..c92cc0f06a 100644
+>> --- a/hw/arm/smmuv3.c
+>> +++ b/hw/arm/smmuv3.c
+>> @@ -1099,6 +1099,38 @@ static void smmuv3_fixup_event(SMMUEventInfo *event, hwaddr iova)
+>>       }
+>>   }
+>>
+>> +static SMMUSecurityIndex smmuv3_attrs_to_security_index(MemTxAttrs attrs)
+>> +{
+>> +    switch (attrs.space) {
+>> +    case ARMSS_Secure:
+>> +        return SMMU_SEC_IDX_S;
+>> +    case ARMSS_NonSecure:
+>> +    default:
+>> +        return SMMU_SEC_IDX_NS;
+>> +    }
+>> +}
+>> +
+>> +/*
+>> + * ARM SMMU IOMMU index mapping (implements SEC_SID from ARM SMMU):
+>> + * iommu_idx = 0: Non-secure transactions
+>> + * iommu_idx = 1: Secure transactions
+>> + *
+>> + * The iommu_idx parameter effectively implements the SEC_SID
+>> + * (Security Stream ID) attribute from the ARM SMMU architecture
+>> + * specification, which allows the SMMU to differentiate between
+>> + * secure and non-secure transactions at the hardware level.
+>> + */
+>> +static int smmuv3_attrs_to_index(IOMMUMemoryRegion *iommu, MemTxAttrs attrs)
+>> +{
+>> +    return smmuv3_attrs_to_security_index(attrs);
+>> +}
+>> +
+>> +static int smmuv3_num_indexes(IOMMUMemoryRegion *iommu)
+>> +{
+>> +    /* Support 2 IOMMU indexes for now: NS/S */
+>> +    return SMMU_SEC_IDX_NUM;
+>> +}
+>> +
+>>   /* Entry point to SMMU, does everything. */
+>>   static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+>>                                         IOMMUAccessFlags flag, int iommu_idx)
+>> @@ -1111,7 +1143,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+>>                              .inval_ste_allowed = false};
+>>       SMMUTranslationStatus status;
+>>       SMMUTransCfg *cfg = NULL;
+>> -    SMMUSecurityIndex sec_idx = SMMU_SEC_IDX_NS;
+>> +    SMMUSecurityIndex sec_idx = iommu_idx;
+>>       IOMMUTLBEntry entry = {
+>>           .target_as = &address_space_memory,
+>>           .iova = addr,
+>> @@ -1155,6 +1187,7 @@ epilogue:
+>>           entry.perm = cached_entry->entry.perm;
+>>           entry.translated_addr = CACHED_ENTRY_TO_ADDR(cached_entry, addr);
+>>           entry.addr_mask = cached_entry->entry.addr_mask;
+>> +        entry.target_as = cached_entry->entry.target_as;
+> this change looks unrelated to the commit desc.
+>
+> Eric
 
-> +    fn snapshot_migration_state(&self, target: &mut i64) -> Result<(), InvalidError> {
-> +        // SAFETY: as_ptr() is unsafe to ensure that the caller reasons about
-> +        // the pinning of the data inside the Opaque<>.  Here all we do is
-> +        // access a field.
-> +        *target = unsafe { &*self.as_ptr() }.expire_time;
 
-C side checks timer_pending(), which ensures when the timer is
-inactive, it always saves u64::MAX.
+You are absolutely right. That line of code is clearly part of the IOTLB 
+cache logic and doesn't belong in this commit.
 
-But now we save the expire_time directly in Rust. I think this would be
-possible to break the migration from Rust timer to C timer, because at
-C side, timer_get() checks whether expire_time is -1 and we can't ensure
-expire_time won't store -2 (or other unusual negative values).
+I will move this change to the relevant IOTLB cache commit in the next 
+version of the series.
 
-So maybe it's better to follow C side behavior to return u64::MAX for
-non-pending case?
+Thanks for catching that.
 
-> +        Ok(())
-> +    }
-> +
-> +    fn restore_migrated_state_mut(
-> +        &mut self,
-> +        source: Self::Migrated,
-> +        version_id: u8,
-> +    ) -> Result<(), InvalidError> {
-> +        self.restore_migrated_state(source, version_id)
-> +    }
-> +}
-> +
-> +impl ToMigrationStateShared for util::timer::Timer {
-> +    fn restore_migrated_state(&self, source: i64, _version_id: u8) -> Result<(), InvalidError> {
-> +        if source >= 0 {
+Best,
+Tao
 
-This can work for the migration cases of C->Rust and Rust->Rust.
+>>           trace_smmuv3_translate_success(mr->parent_obj.name, sid, addr,
+>>                                          entry.translated_addr, entry.perm,
+>>                                          cfg->stage);
+>> @@ -2534,6 +2567,8 @@ static void smmuv3_iommu_memory_region_class_init(ObjectClass *klass,
+>>
+>>       imrc->translate = smmuv3_translate;
+>>       imrc->notify_flag_changed = smmuv3_notify_flag_changed;
+>> +    imrc->attrs_to_index = smmuv3_attrs_to_index;
+>> +    imrc->num_indexes = smmuv3_num_indexes;
+>>   }
+>>
+>>   static const TypeInfo smmuv3_type_info = {
+>> --
+>> 2.34.1
+>>
 
-Thanks,
-Zhao
-
-> +            self.modify(source as u64);
-> +        } else {
-> +            self.delete();
-> +        }
-> +        Ok(())
-> +    }
-> +}
-> +
->  impl<T: ToMigrationStateShared, const N: usize> ToMigrationStateShared for [T; N]
->  where
->      [T::Migrated; N]: Default,
-> -- 
-> 2.51.0
-> 
 
