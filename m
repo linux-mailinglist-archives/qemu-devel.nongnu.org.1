@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5EDBA9668
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BACBA96FE
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 15:53:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3E8s-0003xb-Ts; Mon, 29 Sep 2025 09:42:17 -0400
+	id 1v3E8Z-0003a2-K1; Mon, 29 Sep 2025 09:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1v3E7v-000308-L9; Mon, 29 Sep 2025 09:41:18 -0400
-Received: from mail-eastusazlp17011000f.outbound.protection.outlook.com
- ([2a01:111:f403:c100::f] helo=BL2PR02CU003.outbound.protection.outlook.com)
+ id 1v3E7v-000301-Hx; Mon, 29 Sep 2025 09:41:18 -0400
+Received: from mail-northcentralusazlp170130007.outbound.protection.outlook.com
+ ([2a01:111:f403:c105::7] helo=CH4PR04CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1v3E7c-0003mI-RS; Mon, 29 Sep 2025 09:41:13 -0400
+ id 1v3E7c-0003mH-Sd; Mon, 29 Sep 2025 09:41:11 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Sxz3WHn8YzSnQqZ/j2F4iC7Amw5aIVO33nb5BcbwQ/QJfYsp1rZ5qxm2D246zHZhg6jDGMUukizw/rgGUfvjn5/+/ezZnzp8QcpDW5zWzfF/c3xCHejJg+L+h0CsZ8Zr26hTuQx3QCuxXdm6MK8i9RK/NzKZfZ2qd4L56VAeBpv5W7xt/pFI3eAdktGIbe3z15GB3XujE++0FBXlkZ5a0W110LptP9IZ4y7uB+T5Rlgjhc0rAINnSyMUQejOqtE1M2vVGIadzmgeXBnnvbj4WtYBB2qv1FC42DpIIFyY/8Bm/oMGRyL68RkKwYyPuUi+FoRhNGoJIvjeEvi/pVqD4w==
+ b=W2oEel3rVYC4cYvJ3bLbKKDtfH1kHCrpceHjuFGeRL22CxxwTTTsmRcEQhjArZuzW+r1aPGEFB1wFuXPbanb2xXu+XCWFnT6tTdEdQmzcmb4vRJBvy/8IJlyi6nhUD/Vy0ZR35DSATLgBa4DoudB2ZqILrPJOt9ZwpZ18ukaQz4z1wpP4xAsiUuj7HpsM143s3ZJOJ/ItyQBJEJLsj9bgsx/0c75NP82JirKM6Ydw1m01jYG418rqAI4ZrVBDBQVm9CfgnpFYjsjhbRIutNgxS4AL9Jh4hztS0c+EJ3zC1sFw0ur8x6/SMAJrMKVpsIA/sbxnOjPk6xOZD+7zukDbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9VBrzX6EFwUVADZtTQKhxfA4NxnQpIXRi43ymbRVQbk=;
- b=KO4OnX4iGmY4TOL/HRpOfaPL5/LVixsLN1F4GKns5ymFWdQtHwrTn4lqHy596POLo6E3H1gCm8hWD7e44D0+G4zd0wA2A15BeXXlPS+w/wxVlYD8atsRAgtMlpOHTZFqIOyRlTZGkVJMLw94v/8tmob1SZ9U3OiILJ8q/9cKm4EAFEMvByo5TQilOgq9gN0Cjxz/7Z/7U5Wqd4/flWVoSvEy/vU5CS6cDnC7fMVhC03pQeeQwbo1oe8guyvNeho2KylzCq9gsu3A+BnrKDPERbWVYx09RPuVnO7NNMwptsaKg/lp5aM8PeyGMWs30TJlZvf2j2rEMZF3YM/PO4eGXw==
+ bh=jY1hacvnDglO0sqnwK5ODJBG59DscJPUmvF5gULS9E4=;
+ b=b8IdtTKuuNm2HttmQgt2Nx0tBuLv/sSPhM9pienZwXENiXV3CMt41jN48Hi8IBDImYaRl+ff4wTZIAvTvQrEE/Mz88Z1cxeUnrs8DuyUR+wDSKt65OlyIzogAogdamyLwHmGZNmAVWJviVrcW/cZp7tnmyje+Yihp+KNd1pFYOUXNvoIGyWLglGEaNMHS0whRGYbNwesh76xYLd6JwmjcI2f+0YKQSaXSEoiMboIYoQf4KJRkThCVKVAHw5EO4lQu8RC9McCl59iOD0y0QLcBNnA061UiqOJ5pB8vpShSXb9HVZvt0COFGFDYeowKPRixsOIG585zk+IIbqlIlPYsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9VBrzX6EFwUVADZtTQKhxfA4NxnQpIXRi43ymbRVQbk=;
- b=ghGeOn2izkb29H2WscGxGYRYA/oRyEeJlHAj+D3D1xXFzWrQYo9rXyigFUtmeFo1Atr8uu8oLCkevuWXxJklhiWsO+j/k/B7TXUfq6A06h8d/OASgW5J8yLXrrXOup074Fifk2sMpa3ZrdZYnWUmbKUaPr88uQBxcwYzUCot6wJrv43CT7w9033Rij7vv5WY72vrY9dw4r4EXwSA6AVlFqZb1lXghN9yCzAdcL9k26At1u5sUoY3RUiKc5KqTSs/lpBA3rDDgzvtfv9Ss06keGy9jUYC2iDijmczd6I4GZVOZU3l+3yUCnBuovIcabJN1NLCwfbuIeHq/RfYmT1KxA==
-Received: from CH2PR08CA0008.namprd08.prod.outlook.com (2603:10b6:610:5a::18)
- by PH8PR12MB6892.namprd12.prod.outlook.com (2603:10b6:510:1bc::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.16; Mon, 29 Sep
+ bh=jY1hacvnDglO0sqnwK5ODJBG59DscJPUmvF5gULS9E4=;
+ b=E3QXgm4o6B2itrHS+J+p6ASAAE8r2w+oP8NCrXMPW+kM75zrW7aPyBQ78AaV1RdtbrUSJRsUmlhBpePwUbP8NXW5Y13t81rG128WqLOX7Xre74E+pjoilXrNaoCHFbzmLhXHd4kT7VHOS/5trazvqMJlaDHLmsf5//1YHuCR+QGFhqC7zgdrj1k3FX2TmVEbQMVCdXbarHaV9pB80pnrA46Jz5ntmC42VFZSfIYj23Qd6zds25behC3T/9zL4xNBDsndnPA5YQtrz0Hairx58TCHMavSWQa3iNGTozVW3YQW9p5jtFTRtrKAwOHBWJKvx8qLmRGbxMftsM6LxDI1EA==
+Received: from CH2PR14CA0050.namprd14.prod.outlook.com (2603:10b6:610:56::30)
+ by IA0PPFD4454CAA9.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::be5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.18; Mon, 29 Sep
  2025 13:40:34 +0000
-Received: from CH1PEPF0000AD82.namprd04.prod.outlook.com
- (2603:10b6:610:5a:cafe::a8) by CH2PR08CA0008.outlook.office365.com
- (2603:10b6:610:5a::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.16 via Frontend Transport; Mon,
- 29 Sep 2025 13:40:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+Received: from CH2PEPF0000009D.namprd02.prod.outlook.com
+ (2603:10b6:610:56:cafe::36) by CH2PR14CA0050.outlook.office365.com
+ (2603:10b6:610:56::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.17 via Frontend Transport; Mon,
+ 29 Sep 2025 13:40:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH1PEPF0000AD82.mail.protection.outlook.com (10.167.244.91) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH2PEPF0000009D.mail.protection.outlook.com (10.167.244.25) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9 via Frontend Transport; Mon, 29 Sep 2025 13:40:32 +0000
+ 15.20.9160.9 via Frontend Transport; Mon, 29 Sep 2025 13:40:33 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 29 Sep
- 2025 06:40:11 -0700
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Mon, 29 Sep
+ 2025 06:40:15 -0700
 Received: from NV-2Y5XW94.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 29 Sep
- 2025 06:40:07 -0700
+ 2025 06:40:12 -0700
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
@@ -70,10 +70,9 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
  <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <shameerkolothum@gmail.com>
-Subject: [PATCH v4 16/27] hw/pci-host/gpex: Allow to generate preserve boot
- config DSM #5
-Date: Mon, 29 Sep 2025 14:36:32 +0100
-Message-ID: <20250929133643.38961-17-skolothumtho@nvidia.com>
+Subject: [PATCH v4 17/27] hw/arm/virt: Set PCI preserve_config for accel SMMUv3
+Date: Mon, 29 Sep 2025 14:36:33 +0100
+Message-ID: <20250929133643.38961-18-skolothumtho@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250929133643.38961-1-skolothumtho@nvidia.com>
 References: <20250929133643.38961-1-skolothumtho@nvidia.com>
@@ -85,63 +84,62 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD82:EE_|PH8PR12MB6892:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8431de5-7dd2-4ac3-783e-08ddff5dc337
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009D:EE_|IA0PPFD4454CAA9:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27659d61-cfbf-4169-97ed-08ddff5dc3ac
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|7416014|376014|82310400026|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?LzCNgpTGlCqGDHZ+7r0JffboV+wletCve8P7GGkmNv5FVmbYyjwxhjEepMu3?=
- =?us-ascii?Q?lbTibQ490RgyXCBA8jCS0H6/jA8ua0pF8ae+IJWJwosud/A2/lGGy65hDcuU?=
- =?us-ascii?Q?2KBpNSygLBLCH/A6C7atOBzjEdf9wO/mPXRM0eaYr7uCwZOIjrsWLkOEFeyq?=
- =?us-ascii?Q?GlbdqoVwFMSLG/vQkrQpQF2HcawexehydGUnGNcC65GlWqMkeeyUSVOsYgjQ?=
- =?us-ascii?Q?EkKKaHAyUQ7TPYfssXm4agqvu/D08M7dz8/4oXVxZly01Yb+wHm3NLwKLTXx?=
- =?us-ascii?Q?np9tNUgw4pSy4KFKVgIaDtjSbT3+iYrAnfSuhhfZQIqp1m/KClng4pVbp6qp?=
- =?us-ascii?Q?L19pNMA2Yj1KedALPSjwRi2K7Y2kWiOTgucW6+J2bVCDeA4CO9yQDg5/Mehj?=
- =?us-ascii?Q?wexC7q/hEYsLYfg1o5baqJFKdOXH8iRdnojU2rl2hcAwm8qB7mu8lv1+LxQX?=
- =?us-ascii?Q?M2rhI2gV8awF9h+5gieygnMlzHrXkr94Ilpe+7O91A1K/0mcG9pyv3oo3+jr?=
- =?us-ascii?Q?hqio1WWEWi4yvUmqPOSPzcIGUQLTMoIG/KyDKIX/GumgbW6i0NaZaiNlC4la?=
- =?us-ascii?Q?xJeokaP1aiFtY10vtqNA98EG3n3mfZBdQgfWipkV4DjGgjbFMVPiZoRom1Ux?=
- =?us-ascii?Q?TcR4K4eWNdz/jl2RUVjRaUivR3CFFdvaHTAu6rcXTZ6Z9aLHwjuu683dGc8Y?=
- =?us-ascii?Q?I3dGk+SVSGhDIQrXUDNULDdBmlJuRnBNDsefFF4AdpO98xtGTvo/nZ04dlIQ?=
- =?us-ascii?Q?Jl3JwhU2dc6ggxpFQbfEFZbGd++pXGoiIv1tkgtylcKNT0MXGK6g/Qooj2Ex?=
- =?us-ascii?Q?ELq2TzDXIYHGAP2X2HaOPK8285ds39pKHBSpCjv/EwRiuGFBsNSKOzoidohN?=
- =?us-ascii?Q?nvbsPpCR7pItE21Cr3+dd8g/Sr/fA7uuuw7XuMM28K7Kpc/OrDbqD9HzJo3f?=
- =?us-ascii?Q?Y0TlTPVSqX0Ujs9Ds6cM9UNra3/TNnDlC6FD//+igIbypL/BgOByoS4hkB1W?=
- =?us-ascii?Q?n91utMwhAZmeT8nItxGsR8vVDjT4bFN7I5ytF7Ju3jl7wZzZDDyC5xToZWIk?=
- =?us-ascii?Q?2uITizpsNuZwvdBHrxpEghB9RpPuZSo1zdTip/ApipKkd72mauA+UJ6xTvA8?=
- =?us-ascii?Q?s3mQUkhMolx/IFQm081zHkTHpHh79imYSxmYEsDfVyrsaU6/qmqXr55N0isx?=
- =?us-ascii?Q?vIGir8K3ZlYhZ0cZ5iJ7fA2XqQkUQ97gWbgpcYLP49FFKh+h7EgRmrLz0AJt?=
- =?us-ascii?Q?/Cp6DYE7/3zKs9mHW80/dsFKQX8tBolPgkP04SlMANh5cyw/v7fCltLv7SrT?=
- =?us-ascii?Q?EQuw7Uz+Er7t9zv4l3rioOWG+Rqt6sp/Zy1QYgEVXsW5wnWagACk4UxiD01k?=
- =?us-ascii?Q?w2SBjWclAy13UbXUxFWYFX10pVHmXOEaLmbtdKtloVOU+02TPAn4AJO1liM1?=
- =?us-ascii?Q?YD0ghNdfjet1Qj2tMvFP/FmqU90NK0G7BM3xANk9jCYncWcC0vQ6nSIo6U/B?=
- =?us-ascii?Q?1dM2R3mni5Te54JFOscjRH06Wt3sUjcTulbbBAiwbQmrpVs0bK2WgBSNIt1d?=
- =?us-ascii?Q?oZYsKqB3vB4z4XUxWs0=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(36860700013); DIR:OUT;
+ ARA:13230040|36860700013|7416014|376014|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?hLPqcqFdqtQzjIJv1WN08VZkaGiRUhiBYZ19rcAPAh+wnFO7RE8onxTwugKL?=
+ =?us-ascii?Q?dhmjG6p5IhcqnqmsFxfVn4N1YpwtkTQHXrOdYq7n8eMh8OcCtC9K2xRX3i+w?=
+ =?us-ascii?Q?BItMdZEE+nX3uEa+ax9ksGQ7TYQ9wacgT1FcF1X/yy0nWnmMT9ExF4GTJaOa?=
+ =?us-ascii?Q?H1jShwniBF+Md6by9gA7PU/IuP0goDhpM/f5XMXzdrwRE8yxvSYBTzGSKU2u?=
+ =?us-ascii?Q?uABVJA2klXlI78sfRIILNCcVmvS3j8A9vmTc9zIkv436RJUokaZBDy13V6iZ?=
+ =?us-ascii?Q?Mmc8+GesiCjHhRU2scqN1lPwk5q3AHZwHfs2NjemsBSEPROz/g2iEYO1d6h5?=
+ =?us-ascii?Q?q7ACWd6bIyv8VfCgOtpA+7nDfmzWLqZ4laSDn4jOOTGJXHeT3eWeMwV/iHUa?=
+ =?us-ascii?Q?Ja/s+r/Xhf7WIWtpk0aTmtR2gifSmQyNSOml4TihwbTdh6eZwzwYyFeF6tpw?=
+ =?us-ascii?Q?EpKI6HQ3qm8lblMycK5jL0oN6xPAJV5v3Y1xN04jQZUiN0A7VM/dGSQwl5Ff?=
+ =?us-ascii?Q?IsvxudMOZVu+Yumeb5G8g/0rfwZTEmabgbK9s/MEAyHyEGHmvqVuyNUFrny1?=
+ =?us-ascii?Q?jlfIokMkVBbykaPXV1HMTk4a7ejnuQzVR7YXaMAwHWkcRVEcZ9qUB1Q7VcRQ?=
+ =?us-ascii?Q?d4QZ0VwG86+uWayIVRm8NBXEOOy7Phvm21/pl0eZfaqPkDV+DWjdE2CpKqmH?=
+ =?us-ascii?Q?NEqN1HNnfdAvmqllqGefbUR82qyLHT8CDUvso0xmTD13DAm2hBttCH1thcUn?=
+ =?us-ascii?Q?Sa432SznIWeBBkVmNzPJH3LF93kAIurHBzzGQ4502hI1DDb35dOqGBGdxfg1?=
+ =?us-ascii?Q?kdjp1cFIDbb1cMy1EweDkHsHn0ZzblX05SH8DdrmonZNVB2BAEtJfW746mAr?=
+ =?us-ascii?Q?8orlrTvPq1+O+tT4qYgV3KZKU55cUIJiOkBD/2O/vEixQTyAlib4Fo0x2DEa?=
+ =?us-ascii?Q?ROqN125Lo95fnZ/yObKI3NoXrGCbf5VeMRNvdY6mXZmr1xOlS8rImFTJZqoU?=
+ =?us-ascii?Q?cQ2LijhTqEx9ZwYc6i8DLqNGFS+RzCp8w/PUza4XZptjvj8w3PoeLTlSUSEY?=
+ =?us-ascii?Q?M27PpLdGI4DdKZquzpHNcBGueM6wQB0+MDwxL/tnCQb3KdDTGX3L829ahzsi?=
+ =?us-ascii?Q?Aory0R6NcHRfPG3g1wuGYFdeoFRx3ClqmCJZV8ftv8h3Rj8x3IMKR84XtPOr?=
+ =?us-ascii?Q?HI79H+DW8j1kJa0Pg7uXKwcJ2v59/ihi/pF2luoYPAF+qsUbbyPPOmVrgO0J?=
+ =?us-ascii?Q?j62sxk81zVygGn81lOHUMmg1ptlMJ8d3MRx8humTotHqd3EruA80egqbFlyu?=
+ =?us-ascii?Q?WaNJqHdmZybsCMvHqeKaVLVMpujXix2KR+oFNMnTYgIVtMBoOplNOJvHm/Yl?=
+ =?us-ascii?Q?UO20Dy+gzalrJ7wJAQrQnX4DM1Y2PKPtiVT+54qUc9pew7zJ861+2E7GeQPr?=
+ =?us-ascii?Q?zzrlv+yRq+NodXNnHgxZuNZGCKJUAB22g79RrmotzHBLwR9eyWcAEKBSt2mL?=
+ =?us-ascii?Q?orA6o0UZR3GeXE4xzPDpdGFZdJagAWd78ncTzhtFCVw1j7s3Hpq9hoYXqB3J?=
+ =?us-ascii?Q?27ho1tkj86QG7Iwh2+4=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230040)(36860700013)(7416014)(376014)(1800799024)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 13:40:32.7158 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8431de5-7dd2-4ac3-783e-08ddff5dc337
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 13:40:33.5140 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27659d61-cfbf-4169-97ed-08ddff5dc3ac
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD82.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000009D.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6892
-Received-SPF: permerror client-ip=2a01:111:f403:c100::f;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFD4454CAA9
+Received-SPF: permerror client-ip=2a01:111:f403:c105::7;
  envelope-from=skolothumtho@nvidia.com;
- helo=BL2PR02CU003.outbound.protection.outlook.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ helo=CH4PR04CU002.outbound.protection.outlook.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_NONE=0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,122 +155,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+In a subsequent patch, SMMUv3 accel mode will make use of IORT RMR nodes
+to enable nested translation of MSI doorbell addresses. IORT RMR requires
+_DSM #5 to be set for the PCI host bridge so that the Guest kernel preserves
+the PCI boot configuration.
 
-Add a 'preserve_config' field in struct GPEXConfig and if set, generate the
-DSM #5 for preserving PCI boot configurations. For SMMUV3 accel=on support,
-we are making use of IORT RMRs in a subsequent patch and that requires the
-DSM #5.
-
-At the moment the DSM generation is not yet enabled.
-
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-[Shameer: Removed possible duplicate _DSM creations]
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 ---
-Previously, QEMU reverted an attempt to enable DSM #5 because it caused a
-regression,
-https://lore.kernel.org/all/20210724185234.GA2265457@roeck-us.net/.
+ hw/arm/virt-acpi-build.c | 8 ++++++++
+ hw/arm/virt.c            | 4 ++++
+ include/hw/arm/virt.h    | 1 +
+ 3 files changed, 13 insertions(+)
 
-However, in this series, we enable it selectively, only when SMMUv3 is in
-accelerator mode. The devices involved in the earlier regression are not
-expected in accelerated SMMUv3 use cases.
----
- hw/pci-host/gpex-acpi.c    | 29 +++++++++++++++++++++++------
- include/hw/pci-host/gpex.h |  1 +
- 2 files changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index 4587baeb78..e3825ed0b1 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -51,10 +51,11 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
-     }
- }
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 96830f7c4e..fd03b7f6a9 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -163,6 +163,14 @@ static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
+         .pci_native_hotplug = !acpi_pcihp,
+     };
  
--static Aml *build_pci_host_bridge_dsm_method(void)
-+static Aml *build_pci_host_bridge_dsm_method(bool preserve_config)
- {
-     Aml *method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
-     Aml *UUID, *ifctx, *ifctx1, *buf;
-+    uint8_t byte_list[1] = {0};
- 
-     /* PCI Firmware Specification 3.0
-      * 4.6.1. _DSM for PCI Express Slot Information
-@@ -64,10 +65,23 @@ static Aml *build_pci_host_bridge_dsm_method(void)
-     UUID = aml_touuid("E5C937D0-3553-4D7A-9117-EA4D19C3434D");
-     ifctx = aml_if(aml_equal(aml_arg(0), UUID));
-     ifctx1 = aml_if(aml_equal(aml_arg(2), aml_int(0)));
--    uint8_t byte_list[1] = {0};
-+    if (preserve_config) {
-+        /* support for function 0 and function 5 */
-+        byte_list[0] = 0x21;
-+    }
-     buf = aml_buffer(1, byte_list);
-     aml_append(ifctx1, aml_return(buf));
-     aml_append(ifctx, ifctx1);
-+    if (preserve_config) {
-+        Aml *ifctx2 = aml_if(aml_equal(aml_arg(2), aml_int(5)));
-+        /*
-+         * 0 - The operating system must not ignore the PCI configuration that
-+         *     firmware has done at boot time.
-+         */
-+        aml_append(ifctx2, aml_return(aml_int(0)));
-+        aml_append(ifctx, ifctx2);
++    /*
++     * Accel SMMU requires RMRs for MSI 1-1 mapping, which
++     * require _DSM for preserving PCI Boot Configurations
++     */
++    if (vms->pci_preserve_config) {
++        cfg.preserve_config = true;
 +    }
 +
-     aml_append(method, ifctx);
- 
-     byte_list[0] = 0;
-@@ -77,12 +91,13 @@ static Aml *build_pci_host_bridge_dsm_method(void)
- }
- 
- static void acpi_dsdt_add_host_bridge_methods(Aml *dev,
--                                              bool enable_native_pcie_hotplug)
-+                                              bool enable_native_pcie_hotplug,
-+                                              bool preserve_config)
- {
-     /* Declare an _OSC (OS Control Handoff) method */
-     aml_append(dev,
-                build_pci_host_bridge_osc_method(enable_native_pcie_hotplug));
--    aml_append(dev, build_pci_host_bridge_dsm_method());
-+    aml_append(dev, build_pci_host_bridge_dsm_method(preserve_config));
- }
- 
- void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-@@ -152,7 +167,8 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-                 build_cxl_osc_method(dev);
-             } else {
-                 /* pxb bridges do not have ACPI PCI Hot-plug enabled */
--                acpi_dsdt_add_host_bridge_methods(dev, true);
-+                acpi_dsdt_add_host_bridge_methods(dev, true,
-+                                                  cfg->preserve_config);
+     if (vms->highmem_mmio) {
+         cfg.mmio64 = memmap[VIRT_HIGH_PCIE_MMIO];
+     }
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index b533b0556e..6467d7cfc8 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3087,6 +3087,10 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
              }
  
-             aml_append(scope, dev);
-@@ -227,7 +243,8 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+             create_smmuv3_dev_dtb(vms, dev, bus);
++            if (object_property_get_bool(OBJECT(dev), "accel", &error_abort) &&
++                                         !vms->pci_preserve_config) {
++                vms->pci_preserve_config = true;
++            }
+         }
      }
-     aml_append(dev, aml_name_decl("_CRS", rbuf));
  
--    acpi_dsdt_add_host_bridge_methods(dev, cfg->pci_native_hotplug);
-+    acpi_dsdt_add_host_bridge_methods(dev, cfg->pci_native_hotplug,
-+                                      cfg->preserve_config);
- 
-     Aml *dev_res0 = aml_device("%s", "RES0");
-     aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));
-diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-index feaf827474..7eea16e728 100644
---- a/include/hw/pci-host/gpex.h
-+++ b/include/hw/pci-host/gpex.h
-@@ -46,6 +46,7 @@ struct GPEXConfig {
-     int         irq;
-     PCIBus      *bus;
-     bool        pci_native_hotplug;
-+    bool        preserve_config;
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index ea2cff05b0..00287941a9 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -180,6 +180,7 @@ struct VirtMachineState {
+     bool ns_el2_virt_timer_irq;
+     CXLState cxl_devices_state;
+     bool legacy_smmuv3_present;
++    bool pci_preserve_config;
  };
  
- typedef struct GPEXIrq GPEXIrq;
+ #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
 -- 
 2.43.0
 
