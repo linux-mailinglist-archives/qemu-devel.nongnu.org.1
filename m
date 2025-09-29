@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709ACBA9DC5
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A6BBA9E42
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:56:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3G8x-0000tn-6M; Mon, 29 Sep 2025 11:50:27 -0400
+	id 1v3G9N-00015J-Ps; Mon, 29 Sep 2025 11:50:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3G8d-0000lb-5U
+ id 1v3G8d-0000jJ-4E
  for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:50:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3G8N-0000Jv-E1
+ id 1v3G8P-0000K7-4y
  for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:50:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759160987;
+ s=mimecast20190719; t=1759160989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=bB3ETipJ99LL4ETjcgIieiwbUW59t6EdehJVc92k5SU=;
- b=TSrSVhmQYqHKw72+SsyeMeiS9POxC7c2Q77J82DdgqEBxFMIJtXv87U8u3bE4ziH6nQQAp
- yGXUhVwmlOs5bvy3fqFRucO0BywGL9xaKQZGvOh5qvzOAclJp/Vw/HMKiTlNGTSg3BIJ7k
- sxxxDi5PJ3PRlBPdJNq6apfHO3TYHx0=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YG+Kj4OjUTaTT7jTstOf3QwSS6l76vhdq2cWEryDBwk=;
+ b=CDuOFUtD0gjhrCx3Xkg7ZKw28nosfrtHRBYq+ewN+2rv5393f1xpL8P84HjZZsz7q0cT76
+ 6Xa2BG5cCKMtyjfPUItLkuf422ZBo1txTbo+VxLrmU1y2JjcVc0KFFKgU/GZk5Dfyve9gl
+ mFcdOOXmIJxsWinRQoGExAXUzd5C9gE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-324-KWpJmmB6NMuFZeOMWoqK1A-1; Mon, 29 Sep 2025 11:49:43 -0400
-X-MC-Unique: KWpJmmB6NMuFZeOMWoqK1A-1
-X-Mimecast-MFC-AGG-ID: KWpJmmB6NMuFZeOMWoqK1A_1759160982
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-634c2fc71c9so3960164a12.3
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:49:42 -0700 (PDT)
+ us-mta-132-b06jOwYNPySgIoI6Y6dCJA-1; Mon, 29 Sep 2025 11:49:45 -0400
+X-MC-Unique: b06jOwYNPySgIoI6Y6dCJA-1
+X-Mimecast-MFC-AGG-ID: b06jOwYNPySgIoI6Y6dCJA_1759160984
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-b3f2cfc26edso106279266b.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:49:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759160981; x=1759765781;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bB3ETipJ99LL4ETjcgIieiwbUW59t6EdehJVc92k5SU=;
- b=vf7t8dFHN7M1u1LyFTSh+MSKj1HkQQ+WVbnUVD73YNJ4O339hGVNA5oJ8BGVUJWy/C
- NDfaRc2VHI+v2ereXJs4ngpyKgkD3nyQHFRMlMt0py4oKPbcdIv9KVwaVbqMzuqIOj3F
- QZwu95bOMYeKGlgmTC+TjX0iu0SHDtbVqpkD/CMIpnqaq8PKCvmXf60ajGkDlrh7MaRN
- UteRGs2+FjQBJCZPo0GM4PagaQo76soNlHllUq5rUzXEStGOtOq8st8rSkeRceTcDl74
- 72AvF/pzOuR7LwaXL1h1jiTgbvyvQqgI3W8TQugV1FURDnHufcb6mwHLnb3qffZbrqXn
- YGPA==
-X-Gm-Message-State: AOJu0YyK8uDf2SbPt1XolNg2cIieVGwh6QFVUf2wH1C/m6ILymenJ1zG
- FETxB86NQ0cvPRUlWsMX4aqTPD7XaI3U9l3oKIdRAV08xTVMQi3VXtAQ+tK8YJ6m31ViFyJO0d+
- eqqw6VwycaH91Xg7bPE+HyScl+exDldszXcAgXBuzoAMbC7GZPG+qMqfDQYqtVGY+WNDBeUmjEw
- FNuaaoz2nnNb54n1i10RPsZs1DHHXU6MLMLp8atk3r
-X-Gm-Gg: ASbGncu2j6HAgWPt/78U1AlYuD+Jz9ueaTApc1aY1JYi2iSyPr8SClw7hhIOzATrCRo
- htHpbZxBSw8JWGFTbhIOiKm1en+dzl9iCaMHhOwu6T0vFQTbJQ3BLEdApKk4d9zp8SBVEoNsC52
- ogC+BN3nXR+/xTlBXut8sTLlzJIpTIOoJOKab+wVVMJwVpdzxiMpYsiqG1iuV/j/C0IbHwO25A5
- PWah2KZy39O2L62pPXXTO8Oi7tcXlXouDDYCk1Yz74ycBYlEb/0VkNEIKs5Pc2YYjY9lq0pdBmt
- SlklYSHTCK0z8141PNktP4oCtMfUDavXeirT2H3f3UObKQp7PO8RKYwDzYo6IFvxRllnyjUhKYp
- T2Lk6kUgZ8g7JCBSNFEMKw/7I7Lq9GmXWWT+eUyF0Bt1Rpg==
-X-Received: by 2002:aa7:c88f:0:b0:631:b058:bef0 with SMTP id
- 4fb4d7f45d1cf-6349faa0ceamr11279726a12.32.1759160980846; 
- Mon, 29 Sep 2025 08:49:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXgsOHFcd6JSZV6Wo6JxAKLpLGxS4etIUT99AJBFdRUizQ2bqY53dKfIwB3sq6zTvkOZDAcg==
-X-Received: by 2002:aa7:c88f:0:b0:631:b058:bef0 with SMTP id
- 4fb4d7f45d1cf-6349faa0ceamr11279698a12.32.1759160980366; 
- Mon, 29 Sep 2025 08:49:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759160983; x=1759765783;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YG+Kj4OjUTaTT7jTstOf3QwSS6l76vhdq2cWEryDBwk=;
+ b=CPgWAKp6w++t0fQWKox6u3bcVGAjHhg52cxphcfjpFhG1EdWU7kGjHYXRHFl727G62
+ vAkUi2DKDR4WGwmOobDQJwHm4In9e7zBK9m5HJDtYiroRs2qkJkpT+cT4CtHH7VNqRwC
+ D0gn2V3MTR6mqkp10C2TDaf2tmwheW5UHIUOMdZJs23yUfS71icMbM9ZyaoJWdBHoQ+Q
+ V00KPfGdfw4AqktFj2ZZcDNlUuHaUlUR7rrbwULsu5JnMEnXKuecqYHC1jUN6Z/CraIm
+ MmF2pdHWku/gqIYeJg9tyavw5ZqYuhMlg7TWqB/FyussZwyY9hL1h0BJwsmcDLpUSX5R
+ KKMA==
+X-Gm-Message-State: AOJu0YwQTbap5AqvBZKIgemrmCDVZT3yoBDNSlwpdlDKaS3Su3ZZy8vM
+ ZavBQQcMSBOagyOtkp0Bbn53xF7GfTWDHewVtn6RaX/h8oH8UrjOAGghIW8Xisoz2LSJ3s865gM
+ YYPe1zosnlYxnfo0iVu3ZAm6oad1e6bDbYucOOUnbcba7f4oK2xQBSXQxscO1dzwNjgGLdU3KuK
+ zlH/zEvzGZC9/aixuczcL6yDXwv2hkzyaLHaaJtOnX
+X-Gm-Gg: ASbGncvouYa6XHCe0qsn9JohHQjzbBA4lRplwjGekilWyM8+tyGjQU9yG9ea8Yjl3D9
+ QYelD2SwrgCSLMb9TctO+BFeLz1gENwcyq4SBQkSPpEzU2oq15LADt1qFDeu443XO0C/yhv5g6h
+ C8h1OiNgWsfCscYFNBh647PUAyB3UaVdaP74N7aPwnC2LibYqfXkui1WvYTOQ2Jzr67/T/T2ouE
+ ndStJx/GlLIvaRo+BMyNmBooKPPTlIj8GdYFAIHGnjX7iaAeuV4qmXJniMGq2Trfy18MdKOz5Gg
+ uVNaviC0XptO1GFvrotZpyWAh30Y1Y078saVTbbS0FY61Weehtw6YpmmOhTWOURnhX3vJETwFEy
+ o8LffdxoDFB1AnXN5ghcwHEKMldH6CoGsFyGifeHphc8Lvw==
+X-Received: by 2002:a17:907:1c95:b0:b2b:2967:5550 with SMTP id
+ a640c23a62f3a-b34b684a607mr1735538966b.5.1759160983459; 
+ Mon, 29 Sep 2025 08:49:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkRZw+cjfBjzE0zBl+cVMYhsnOi4WHvU6zVQt1fLSJa6I869c6OpqPg8aJnTuvr3X9qp11FA==
+X-Received: by 2002:a17:907:1c95:b0:b2b:2967:5550 with SMTP id
+ a640c23a62f3a-b34b684a607mr1735535366b.5.1759160982983; 
+ Mon, 29 Sep 2025 08:49:42 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634a3629878sm8072891a12.5.2025.09.29.08.49.39
+ a640c23a62f3a-b3d27759835sm326470166b.13.2025.09.29.08.49.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Sep 2025 08:49:39 -0700 (PDT)
+ Mon, 29 Sep 2025 08:49:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Tanish Desai <tanishdesai37@gmail.com>,
@@ -78,12 +79,13 @@ Cc: Tanish Desai <tanishdesai37@gmail.com>,
  Mads Ynddal <mads@ynddal.dk>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-rust@nongnu.org
-Subject: [PATCH v2 00/16] tracetool: add Rust support
-Date: Mon, 29 Sep 2025 17:49:22 +0200
-Message-ID: <20250929154938.594389-1-pbonzini@redhat.com>
+Subject: [PATCH 01/16] tracetool: fix usage of try_import()
+Date: Mon, 29 Sep 2025 17:49:23 +0200
+Message-ID: <20250929154938.594389-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250929154938.594389-1-pbonzini@redhat.com>
+References: <20250929154938.594389-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -93,8 +95,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,122 +112,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is almost the same as v1, other than:
-- more dead code removal in patches 2 and 8
-- renaming a function in patch 8, and consequent change to test vectors
+try_import returns a tuple of a boolean and the requested module or attribute.
+exists() functions return tracetool.try_import("tracetool.format." + name)[1]
+but they should return the boolean value instead.
 
-It adds Rust support to tracetool and tracepoint support for the pl011
-device.  All the backends are supported except dtrace and ust.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ scripts/tracetool/backend/__init__.py | 2 +-
+ scripts/tracetool/format/__init__.py  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Patches 1-5 are cleanups.
-
-Patches 6-7 are tracetool patches that have been posted before, now
-rebased on top of the "make check-tracetool" series.  Their purpose
-is to simplify .h code generation for tracetool backends, and these
-simplifications translate directly to the new .rs code generation.
-
-Patches 8-9 add the minimal support for adding tracepoint functions
-in Rust, albeit with no content and thus no actual tracing.
-
-Patches 10-11 add back tracepoints to the Rust pl011 device model.
-
-Patches 12-16 finally add Rust code generation to the supported
-tracing backends.
-
-Paolo
-
-Paolo Bonzini (8):
-  tracetool: fix usage of try_import()
-  tracetool: remove dead code
-  treewide: remove unnessary "coding" header
-  tracetool: add SPDX headers
-  trace/ftrace: move snprintf+write from tracepoints to ftrace.c
-  rust: qdev: add minimal clock bindings
-  rust: pl011: add tracepoints
-  log: change qemu_loglevel to unsigned
-
-Tanish Desai (8):
-  tracetool: add CHECK_TRACE_EVENT_GET_STATE
-  tracetool/backend: remove redundant trace event checks
-  tracetool: Add Rust format support
-  rust: add trace crate
-  tracetool/simple: add Rust support
-  tracetool/log: add Rust support
-  tracetool/ftrace: add Rust support
-  tracetool/syslog: add Rust support
-
- docs/conf.py                                  |   2 -
- docs/sphinx-static/theme_overrides.css        |   3 +-
- include/qemu/log-for-trace.h                  |   4 +-
- include/qemu/log.h                            |  44 ++--
- tests/tracetool/ftrace.h                      |  28 +--
- tests/tracetool/log.h                         |  16 +-
- trace/ftrace.h                                |   1 +
- trace/ftrace.c                                |  15 ++
- util/log.c                                    |   2 +-
- hw/char/trace-events                          |  14 +-
- rust/Cargo.lock                               |   8 +
- rust/Cargo.toml                               |   1 +
- rust/hw/char/pl011/Cargo.toml                 |   1 +
- rust/hw/char/pl011/meson.build                |   1 +
- rust/hw/char/pl011/src/device.rs              |  57 +++--
- rust/hw/core/src/qdev.rs                      |  33 +++
- rust/meson.build                              |   2 +-
- rust/trace/Cargo.toml                         |  19 ++
- rust/trace/meson.build                        |  19 ++
- rust/trace/src/lib.rs                         |  39 ++++
- rust/util/src/log.rs                          |   2 +-
- scripts/analyse-locks-simpletrace.py          |   1 -
- scripts/modinfo-collect.py                    |   1 -
- scripts/modinfo-generate.py                   |   1 -
- scripts/oss-fuzz/minimize_qtest_trace.py      |   1 -
- scripts/oss-fuzz/output_reproducer.py         |   1 -
- .../oss-fuzz/reorder_fuzzer_qtest_trace.py    |   1 -
- scripts/probe-gdb-support.py                  |   1 -
- scripts/qapi/error.py                         |   2 -
- scripts/qapi/expr.py                          |   2 -
- scripts/qapi/gen.py                           |   2 -
- scripts/qapi/parser.py                        |   2 -
- scripts/qapi/schema.py                        |   2 -
- scripts/qemu-plugin-symbols.py                |   1 -
- scripts/qemugdb/tcg.py                        |   2 -
- scripts/qemugdb/timers.py                     |   1 -
- scripts/replay-dump.py                        |   1 -
- scripts/tracetool.py                          |   1 -
- scripts/tracetool/__init__.py                 | 202 ++++++++++++++----
- scripts/tracetool/backend/__init__.py         |  43 ++--
- scripts/tracetool/backend/dtrace.py           |   2 +-
- scripts/tracetool/backend/ftrace.py           |  26 +--
- scripts/tracetool/backend/log.py              |  22 +-
- scripts/tracetool/backend/simple.py           |  17 +-
- scripts/tracetool/backend/syslog.py           |  17 +-
- scripts/tracetool/backend/ust.py              |   2 +-
- scripts/tracetool/format/__init__.py          |   4 +-
- scripts/tracetool/format/c.py                 |   2 +-
- scripts/tracetool/format/d.py                 |   2 +-
- scripts/tracetool/format/h.py                 |  18 +-
- scripts/tracetool/format/log_stap.py          |   4 +-
- scripts/tracetool/format/rs.py                |  64 ++++++
- scripts/tracetool/format/simpletrace_stap.py  |   4 +-
- scripts/tracetool/format/stap.py              |   2 +-
- scripts/tracetool/format/ust_events_c.py      |   2 +-
- scripts/tracetool/format/ust_events_h.py      |   2 +-
- tests/tracetool/ftrace.rs                     |  40 ++++
- tests/tracetool/log.rs                        |  44 ++++
- tests/tracetool/simple.rs                     |  40 ++++
- tests/tracetool/syslog.rs                     |  40 ++++
- tests/tracetool/tracetool-test.py             |   2 +
- trace/meson.build                             |   8 +-
- 62 files changed, 720 insertions(+), 223 deletions(-)
- create mode 100644 rust/trace/Cargo.toml
- create mode 100644 rust/trace/meson.build
- create mode 100644 rust/trace/src/lib.rs
- create mode 100644 scripts/tracetool/format/rs.py
- create mode 100644 tests/tracetool/ftrace.rs
- create mode 100644 tests/tracetool/log.rs
- create mode 100644 tests/tracetool/simple.rs
- create mode 100644 tests/tracetool/syslog.rs
-
+diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
+index 7bfcc86cc53..6c6344deddb 100644
+--- a/scripts/tracetool/backend/__init__.py
++++ b/scripts/tracetool/backend/__init__.py
+@@ -94,7 +94,7 @@ def exists(name):
+     if name == "nop":
+         return True
+     name = name.replace("-", "_")
+-    return tracetool.try_import("tracetool.backend." + name)[1]
++    return tracetool.try_import("tracetool.backend." + name)[0]
+ 
+ 
+ class Wrapper:
+diff --git a/scripts/tracetool/format/__init__.py b/scripts/tracetool/format/__init__.py
+index 2dc46f3dd93..042fe7d103c 100644
+--- a/scripts/tracetool/format/__init__.py
++++ b/scripts/tracetool/format/__init__.py
+@@ -70,7 +70,7 @@ def exists(name):
+     if len(name) == 0:
+         return False
+     name = name.replace("-", "_")
+-    return tracetool.try_import("tracetool.format." + name)[1]
++    return tracetool.try_import("tracetool.format." + name)[0]
+ 
+ 
+ def generate(events, format, backend, group):
 -- 
 2.51.0
 
