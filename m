@@ -2,77 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E32BAA130
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9650EBAA17B
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 19:01:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3HAn-0000Ya-VK; Mon, 29 Sep 2025 12:56:26 -0400
+	id 1v3HDR-0007iN-46; Mon, 29 Sep 2025 12:59:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v3HAV-0000C6-1n
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:56:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v3HAQ-0003at-CX
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:56:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759164958;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=heYTRHS2SbH7q6OYEFsVEoaYnBvmxAG63VXARphQakI=;
- b=RSgiGhhUO9g0r9Ss61iKtXaHIBIgCFDGD3rwYJcYWe7r6brde3DfzTuoDIcupMeYG4bWRe
- FZ3RYHrF1tmp1nW6kOdL6lQfzJmJFpeJWcN0ApxazjB6WiLej3aOTzNAJQRnIcM2gL4ho7
- 675liN+SP8+mIuZ9Xg4V1PNiSwOqxm4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-w1n8LBMMNrqzDGmWvXdEIw-1; Mon,
- 29 Sep 2025 12:55:56 -0400
-X-MC-Unique: w1n8LBMMNrqzDGmWvXdEIw-1
-X-Mimecast-MFC-AGG-ID: w1n8LBMMNrqzDGmWvXdEIw_1759164955
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A100619560BD; Mon, 29 Sep 2025 16:55:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.51])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 139B7180047F; Mon, 29 Sep 2025 16:55:53 +0000 (UTC)
-Date: Mon, 29 Sep 2025 17:55:50 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
- functional
-Message-ID: <aNq6Fu0-nb1XMRxk@redhat.com>
-References: <20250801170212.54409-1-berrange@redhat.com>
- <aNqsnaBkQe8i_MLK@x1.local>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v3HDP-0007hi-6A
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:59:07 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v3HDK-0004CR-91
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:59:06 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3fc36b99e92so3596841f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 09:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759165135; x=1759769935; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=B0S6EILPN7ffIU403Vjsy+sm3b2HrDWxSRYwj6LQPxs=;
+ b=QdgO9kcjl9pYQy7DYFw+FozNBR6ytlhLJtBvhmKtUL9l2Zq9EBmQr9kK9/myrOJcCM
+ n/EQqRBwwm2rbYfdBEALUsUnBGCfrZfhV86KpddgAMUzR8jpxEaheAbWooulF4uB40My
+ 1MsRt8EGvzjaW5x4pC6WizTiTpBbI8xd94p6fIk18Q5dh44n99P+03I2r/3M4HuSVPhU
+ JPdLygXQbrGVZ7CQ9Jz8uE80dut2XtmGCOuDCQ2mWHpbf5hmuBNDk+ftd13Sc+eSvqP1
+ hhOF2OdBUivSG6rjxQaV9QmeCF4prpvjZ2dfjJ4zvwoezZRVn2LA8nudb/ZyCzkh/8w3
+ hmQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759165135; x=1759769935;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=B0S6EILPN7ffIU403Vjsy+sm3b2HrDWxSRYwj6LQPxs=;
+ b=o3ost0Zs9kXrW8Kxs5smbkj8CFNy+YiZgq5MY2awMLbZU59tRFxvDvjuGThTa9AGxI
+ OgczoBnxBJeK6J9kOyXwq+7ktLXYoV6V3bKOBAhKpmdUpzoqvNdp6/xlfuMjJhTVK8uA
+ UamCdw3XxGDl09xu4jKoFl8+XpVIUuC4QSdCT8YbZ9EgRUxPVihZo0HytXaT3q+mUwyt
+ K46yvvX92LertDVQmQkWOIXDbBIuRsA/DB/ZpWgecwKlOL7GYRZPdlWQLRPjh75JuvIT
+ ZmSmQfc0Y/9PY249DsN9HenlW9GZxt8kbqdktgVXR2fLm4x2+5Vn26+5nRVk8S/0f5ux
+ jBPw==
+X-Gm-Message-State: AOJu0YwYKv7D4mLCdjkmzfcJIebFWzDdew1+EsC8VJDG6X7T+yyI9/ps
+ GvZYynNMDpOZTQYJ9sanvdq+BRhvQUIzl5QhpQyXuCvZI2P1+05JIaX+gMbFkjGF5Nc=
+X-Gm-Gg: ASbGncsR+VNuROhWTn+N1G4QpjwGAxiUvpTLaCpcYqDx2egWuB8oPORkgKK6AXD8hDl
+ 8hTI1a7wkWTAR90SDLi1dPnjcKbMOiZXdyRg7daSUFpWmE6c7wUuPgDPTJ9+Qz0PLdwhMfGhcfT
+ 7YASKauAEHRU480Y+txYQgskABsxqSrfqCcFHnl/2MahzPMVSxjmCnX5iUbotfeiGlGh53Gk21n
+ oNeB3ahlzdIqTu8l7zTI82kf5eOpjinYSVIM8znKWqMPvd7Iw57NPjMcXd3djFddVquI/jcjuW7
+ ab1+Y+ZVp9YT6+euJkJQ2mcdO5Su8unDCFQDste2fXo8c74bdoRybhzGzUK5Cxk4bl8kqtIs7a2
+ aTJ0OuO0UeILzxFoQFzCMvDc=
+X-Google-Smtp-Source: AGHT+IH2fA59YHeZ+ymUy+20ZdxLapcCSwGaTQZySF6RUlu+W+xpISnyvkhcUOy2xZVW+sXHaCiDow==
+X-Received: by 2002:a5d:5f96:0:b0:3e8:f67:894f with SMTP id
+ ffacd0b85a97d-42411da986cmr1265597f8f.26.1759165135585; 
+ Mon, 29 Sep 2025 09:58:55 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fb7203b8asm19257053f8f.9.2025.09.29.09.58.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Sep 2025 09:58:54 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 063085F83A;
+ Mon, 29 Sep 2025 17:58:54 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  "Maciej S.
+ Szmigiero" <maciej.szmigiero@oracle.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
+ <david@redhat.com>,  kvm@vger.kernel.org,  Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH 2/6] system/ramblock: Move ram_block_is_pmem() declaration
+In-Reply-To: <20250929154529.72504-3-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 29 Sep 2025 17:45:25
+ +0200")
+References: <20250929154529.72504-1-philmd@linaro.org>
+ <20250929154529.72504-3-philmd@linaro.org>
+User-Agent: mu4e 1.12.14-dev1; emacs 30.1
+Date: Mon, 29 Sep 2025 17:58:53 +0100
+Message-ID: <87zfadjiuq.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aNqsnaBkQe8i_MLK@x1.local>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,35 +104,118 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 29, 2025 at 11:58:21AM -0400, Peter Xu wrote:
-> On Fri, Aug 01, 2025 at 06:02:10PM +0100, Daniel P. Berrangé wrote:
-> > This is a followup to previously merged patches that claimed to
-> > workaround the gnutls bug impacting migration, but in fact were
-> > essentially non-functional. Juraj Marcin pointed this out, and
-> > this new patch tweaks the workaround to make it actually do
-> > something useful.
-> > 
-> > Daniel P. Berrangé (2):
-> >   migration: simplify error reporting after channel read
-> >   migration: fix workaround for gnutls thread safety
-> > 
-> >  crypto/tlssession.c   | 16 ----------------
-> >  migration/qemu-file.c | 22 +++++++++++++++++-----
-> >  2 files changed, 17 insertions(+), 21 deletions(-)
-> 
-> Dan, is there a planned repost on this one?
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-It is on my todo list, but I don't have a firm ETA yet.
+> Move ramblock_is_pmem() along with the RAM Block API
+> exposed by the "system/ramblock.h" header. Rename as
+> ram_block_is_pmem() to keep API prefix consistency.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  include/system/ram_addr.h | 2 --
+>  include/system/ramblock.h | 5 +++++
+>  migration/ram.c           | 3 ++-
+>  system/physmem.c          | 5 +++--
+>  4 files changed, 10 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
+> index 15a1b1a4fa2..53c0c8c3856 100644
+> --- a/include/system/ram_addr.h
+> +++ b/include/system/ram_addr.h
+> @@ -99,8 +99,6 @@ static inline unsigned long int ramblock_recv_bitmap_of=
+fset(void *host_addr,
+>      return host_addr_offset >> TARGET_PAGE_BITS;
+>  }
+>=20=20
+> -bool ramblock_is_pmem(RAMBlock *rb);
+> -
+>  /**
+>   * qemu_ram_alloc_from_file,
+>   * qemu_ram_alloc_from_fd:  Allocate a ram block from the specified back=
+ing
+> diff --git a/include/system/ramblock.h b/include/system/ramblock.h
+> index 8999206592d..12f64fbf78b 100644
+> --- a/include/system/ramblock.h
+> +++ b/include/system/ramblock.h
+> @@ -108,4 +108,9 @@ void ram_block_attributes_destroy(RamBlockAttributes =
+*attr);
+>  int ram_block_attributes_state_change(RamBlockAttributes *attr, uint64_t=
+ offset,
+>                                        uint64_t size, bool to_discard);
+>=20=20
+> +/**
+> + * ramblock_is_pmem: Whether the RAM block is of persistent memory
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+missed a rename
 
+Otherwise:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+
+> + */
+> +bool ram_block_is_pmem(RAMBlock *rb);
+> +
+>  #endif
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 7208bc114fb..91e65be83d8 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -53,6 +53,7 @@
+>  #include "qemu/rcu_queue.h"
+>  #include "migration/colo.h"
+>  #include "system/cpu-throttle.h"
+> +#include "system/ramblock.h"
+>  #include "savevm.h"
+>  #include "qemu/iov.h"
+>  #include "multifd.h"
+> @@ -4367,7 +4368,7 @@ static bool ram_has_postcopy(void *opaque)
+>  {
+>      RAMBlock *rb;
+>      RAMBLOCK_FOREACH_NOT_IGNORED(rb) {
+> -        if (ramblock_is_pmem(rb)) {
+> +        if (ram_block_is_pmem(rb)) {
+>              info_report("Block: %s, host: %p is a nvdimm memory, postcop=
+y"
+>                           "is not supported now!", rb->idstr, rb->host);
+>              return false;
+> diff --git a/system/physmem.c b/system/physmem.c
+> index ae8ecd50ea1..3766fae0aba 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -43,6 +43,7 @@
+>  #include "system/kvm.h"
+>  #include "system/tcg.h"
+>  #include "system/qtest.h"
+> +#include "system/ramblock.h"
+>  #include "qemu/timer.h"
+>  #include "qemu/config-file.h"
+>  #include "qemu/error-report.h"
+> @@ -1804,7 +1805,7 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t sta=
+rt, ram_addr_t length)
+>=20=20
+>  #ifdef CONFIG_LIBPMEM
+>      /* The lack of support for pmem should not block the sync */
+> -    if (ramblock_is_pmem(block)) {
+> +    if (ram_block_is_pmem(block)) {
+>          void *addr =3D ramblock_ptr(block, start);
+>          pmem_persist(addr, length);
+>          return;
+> @@ -3943,7 +3944,7 @@ int ram_block_discard_guest_memfd_range(RAMBlock *r=
+b, uint64_t start,
+>      return ret;
+>  }
+>=20=20
+> -bool ramblock_is_pmem(RAMBlock *rb)
+> +bool ram_block_is_pmem(RAMBlock *rb)
+>  {
+>      return rb->flags & RAM_PMEM;
+>  }
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
