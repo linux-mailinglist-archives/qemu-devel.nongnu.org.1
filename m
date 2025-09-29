@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1386CBAA154
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C6BBAA16F
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 19:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3H8r-0004QQ-MM; Mon, 29 Sep 2025 12:54:26 -0400
+	id 1v3H8n-0003uL-Cd; Mon, 29 Sep 2025 12:54:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3H7d-0002uY-Tu
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:53:12 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3H7f-0002uu-GF
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:53:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3H7X-0002nY-TW
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:53:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3H7X-0002nV-Md
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:53:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1759164782;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aqVOYhGw94Jf/OiJAawsJ2cAh/HpqFgHZnqY+6tx1CA=;
- b=Mrbni4vZgRAmd4V7+fsm2geSF3qdHrTQGCLH5ATfi6x85y0RqCW3G0oC0tdB9Y/+Gy8sSA
- kXvWlPC/L2/5t86wLGuN7vSqrAoke5bCtb1FXmIx2JrW2OSqtWOS1SHph2ZMDvsXfeLpSe
- KgP/E+aDVKbZCm3KgZQKBubfJ4r0yAE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=LtZkkfn48BVSq6kvoBsfQMoqoIUkdv0Eh2+9wImb+4E=;
+ b=eIePFgbZm9brY6oMtroeB7NQh0moZQ3JrOurCpsYqwxT2vD5RKPGYDigHFjpQ1e+vSgSbu
+ Brdy+q7McmKHT2+w3BZvRlY91eNTJtD4BGxkcNmsz8kAi0I/jLvJ4wA/S+/BA/0lpS5xVf
+ 5LPTfqJsDKgeV+ubscvW4IeDSkQceUM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-Uud92gsJNb6nHzOenO94-w-1; Mon,
- 29 Sep 2025 12:52:58 -0400
-X-MC-Unique: Uud92gsJNb6nHzOenO94-w-1
-X-Mimecast-MFC-AGG-ID: Uud92gsJNb6nHzOenO94-w_1759164777
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-414rMYyNPcOmS6PkunwGXw-1; Mon,
+ 29 Sep 2025 12:53:00 -0400
+X-MC-Unique: 414rMYyNPcOmS6PkunwGXw-1
+X-Mimecast-MFC-AGG-ID: 414rMYyNPcOmS6PkunwGXw_1759164779
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9484C1800577; Mon, 29 Sep 2025 16:52:57 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B77151956087; Mon, 29 Sep 2025 16:52:59 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.27])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F08611800452; Mon, 29 Sep 2025 16:52:55 +0000 (UTC)
+ id 1FE201800452; Mon, 29 Sep 2025 16:52:57 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Kane-Chen-AS <kane_chen@aspeedtech.com>,
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 09/32] docs/system/arm/aspeed: Document OTP memory options
-Date: Mon, 29 Sep 2025 18:52:07 +0200
-Message-ID: <20250929165230.797471-10-clg@redhat.com>
+Subject: [PULL 10/32] hw/arm/aspeed Move ast2700-evb alias to ast2700a1-evb
+Date: Mon, 29 Sep 2025 18:52:08 +0200
+Message-ID: <20250929165230.797471-11-clg@redhat.com>
 In-Reply-To: <20250929165230.797471-1-clg@redhat.com>
 References: <20250929165230.797471-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,63 +82,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Add documentation for the OTP memory module used by AST2600 and AST1030
-SoCs, and describe options for using a pre-generated image or an
-internal buffer. Include example commands for configuration and image
-generation.
+This patch moves the "ast2700-evb" alias from the A0 to A1.
+The A0 machine remains available via its explicit name
+("ast2700a0-evb"), while functional tests are updated to
+target A0 by name instead of relying on the generic alias.
 
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250812094011.2617526-11-kane_chen@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20250902062550.3797040-1-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/system/arm/aspeed.rst | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ hw/arm/aspeed.c                                 | 2 +-
+ tests/functional/aarch64/test_aspeed_ast2700.py | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index bf18c5634700..6317c0e910a2 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -243,6 +243,37 @@ under Linux), use :
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index c31bbe770138..d21b21965aa6 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1995,7 +1995,6 @@ static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc,
+     MachineClass *mc = MACHINE_CLASS(oc);
+     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
  
-   -M ast2500-evb,bmc-console=uart3
+-    mc->alias = "ast2700-evb";
+     mc->desc = "Aspeed AST2700 A0 EVB (Cortex-A35)";
+     amc->soc_name  = "ast2700-a0";
+     amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
+@@ -2018,6 +2017,7 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
+     MachineClass *mc = MACHINE_CLASS(oc);
+     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
  
-+OTP Option
-+^^^^^^^^^^
-+
-+Both the AST2600 and AST1030 chips use the same One Time Programmable
-+(OTP) memory module, which is utilized for configuration, key storage,
-+and storing user-programmable data. This OTP memory module is managed
-+by the Secure Boot Controller (SBC). The following options can be
-+specified or omitted based on your needs.
-+
-+  * When the options are specified, the pre-generated configuration
-+    file will be used as the OTP memory storage.
-+
-+  * When the options are omitted, an internal memory buffer will be
-+    used to store the OTP memory data.
-+
-+.. code-block:: bash
-+
-+  -blockdev driver=file,filename=otpmem.img,node-name=otp \
-+  -global aspeed-otp.drive=otp \
-+
-+The following bash command can be used to generate a default
-+configuration file for OTP memory:
-+
-+.. code-block:: bash
-+
-+  if [ ! -f otpmem.img ]; then
-+    for i in $(seq 1 2048); do
-+      printf '\x00\x00\x00\x00\xff\xff\xff\xff'
-+    done > otpmem.img
-+  fi
-+
- Aspeed 2700 family boards (``ast2700-evb``)
- ==================================================================
++    mc->alias = "ast2700-evb";
+     mc->desc = "Aspeed AST2700 A1 EVB (Cortex-A35)";
+     amc->soc_name  = "ast2700-a1";
+     amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
+index 8a08bc46888e..a3db26729499 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700.py
+@@ -115,8 +115,8 @@ def start_ast2700_test_vbootrom(self, name):
+         self.do_test_aarch64_aspeed_sdk_start(
+                 self.scratch_file(name, 'image-bmc'))
  
+-    def test_aarch64_ast2700_evb_sdk_v09_06(self):
+-        self.set_machine('ast2700-evb')
++    def test_aarch64_ast2700a0_evb_sdk_v09_06(self):
++        self.set_machine('ast2700a0-evb')
+ 
+         self.archive_extract(self.ASSET_SDK_V906_AST2700)
+         self.start_ast2700_test('ast2700-a0-default')
 -- 
 2.51.0
 
