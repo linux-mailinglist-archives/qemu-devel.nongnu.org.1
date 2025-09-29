@@ -2,108 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF70BA9D39
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BECCBA9D9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:49:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3G1a-00012C-GU; Mon, 29 Sep 2025 11:42:50 -0400
+	id 1v3G6S-0005Zr-Pf; Mon, 29 Sep 2025 11:47:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1v3G1T-000110-84
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:42:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mohd.akram@outlook.com>)
+ id 1v3G6G-0005KX-Ej
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:47:41 -0400
+Received: from mail-westeuropeazolkn19013087.outbound.protection.outlook.com
+ ([52.103.33.87] helo=AM0PR02CU008.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1v3G1O-0007VZ-Te
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:42:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759160548;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dOARqUcTvT98mGme+kov79qFfzh5RARqViuydc0c43c=;
- b=PYOPMK/ovozJ5G3RS5hh+/IHrniD94XQ8S98ZnVVzUhNtBNDkoPRoQ0KwMPIuhoNuWxsrB
- fp4jEitcOMH0k3/Wq0Rsy0XmR58k1jowN2yt/+hwIIhKT2hfd7B2BEr++23jcupUz7f6VT
- 62lKqQGpGETL3xS4E525WkVqgXTnG0w=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-6-o01l8hMb2orPGkNRACzw-1; Mon, 29 Sep 2025 11:42:21 -0400
-X-MC-Unique: 6-o01l8hMb2orPGkNRACzw-1
-X-Mimecast-MFC-AGG-ID: 6-o01l8hMb2orPGkNRACzw_1759160540
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-46e35baddc1so30643485e9.2
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:42:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759160540; x=1759765340;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dOARqUcTvT98mGme+kov79qFfzh5RARqViuydc0c43c=;
- b=h81IuQlDDSniPqXkfxNcb0wj1eJ9JXVzXR8nrPICMPuv/4IbWyckkpLPjGD5dT0dDQ
- 4CJkYlWsG6U5C+WvdUK7jg3PYig2C5vGRUq9M/NnVacJD/NH/zCQuxFeE459x3OEByEU
- CIO/Rj0RR/7fykfkTB+qOsm6ig9muCWKimODrZq6IEFN5xbirk6l+/hm7RgiLy7GMFKE
- HfA4wmokuWF6MzPA9n8POXJGlKbkzJYJzTENXjgNyK4jrftqHyywJvTt4bRDo66Ds3rY
- U0SLXhu6gLo7ekmVGTqIPu9bQ0QlQS2sMNu61BWJwaVXGpiLOqednol8BYzVdbacM843
- GMXg==
-X-Gm-Message-State: AOJu0Yx6+RjOb6uBAwZV1v+wuTxXBJlEkHnv67BcmVebhfPY700DHvft
- k+vWVGILEd1gifmbGSck20wLhrehBy/J8mH1EoH89Q+4Tt/QAbaqwa7RW0TTMI6YB18Wt6bOzSV
- s6EFSjSeLZbLfvqBGAKyZUTmmfwK4riapTH8L9Y+XxyKZKMDQcvs28lqL
-X-Gm-Gg: ASbGnctOkbOqmM2ukTD9diKMMOpoaSE0qYamb7T7kJ+yLECU+RuJOoO6ZZBVfFzqjlh
- ejZYlsiEktHKFVy7ba7CzZGATNHSmSnNu9Q/JMqjoWpCbVh15x4WCXEGyH2x9LQbR7CSXG2gQfg
- mmjtERYJ/gXZEdqnPJcehM9SEQhHlmF1MqqQgBaAvPx3BfzBWIp86/BBMsiVE64s+ehjE798rPw
- KSvXKdy4sMmWG3kQ0+mPldBhANkygO1ZhVsVPWcYHoXKBlG8pmMky8SSlxvjtgado2NRdmhEL+0
- jy0H6nnAcPXJbYLHtpAdIdvQBMY2WDA2nfkJ3uXJlNh99TF6/VaLhF6W1X3wVjm6tODgxaPK3yf
- bqynZG4EdJx4=
-X-Received: by 2002:a05:600c:4743:b0:46e:33b2:c8da with SMTP id
- 5b1f17b1804b1-46e33b2ca06mr137958425e9.32.1759160540139; 
- Mon, 29 Sep 2025 08:42:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSnGHcz90rl4d1aZkzvH0OjSS4fgI2vCZkPcjzx8C2zPObejImQsdb+EFx6alHj2s5ZnJ+fg==
-X-Received: by 2002:a05:600c:4743:b0:46e:33b2:c8da with SMTP id
- 5b1f17b1804b1-46e33b2ca06mr137958145e9.32.1759160539713; 
- Mon, 29 Sep 2025 08:42:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc6921f4esm18785309f8f.44.2025.09.29.08.42.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Sep 2025 08:42:19 -0700 (PDT)
-Message-ID: <512210c3-95cc-484e-b8aa-78ceb631264f@redhat.com>
-Date: Mon, 29 Sep 2025 17:42:17 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/14] hw/arm/smmuv3: Add property to enable Secure
- SMMU support
+ (Exim 4.90_1) (envelope-from <mohd.akram@outlook.com>)
+ id 1v3G67-0008W9-VU
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:47:39 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qJEpzT+XMgMrAkMHTM8bNAHOJG5E9mK/Nuh69FsLf/tA8MolH+XcZu3BBKXRFE5YE7YR8XndNy9YFjOUqAo10LKgz7H3D1+ZIYeA6c+EsfgeNzt2QI28/XtsEYsieHYtFMQtJnkDOIy7AeTppG5QByciSLx7ZqgDU+AhInXqRp82UglkKEKjixrofXU6HC+ziCrB1AXVsk7Mv2rjDaYNtOgn8ZxIJBUpuoRTcn1jIEOWRNhpu3d3AUDpCvumldNh0n1rob3tedxjaIjhfOfNSY8c+vh1CFhcn56jKwGBbEKKt65RvDEzU4VdaIhqiXbl7ojwIPSCgv39Dc70IwahGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IjVlU3KdpnZ5Sdp3VQYm6kck6kpW5d/LvJ+iNWU1YZY=;
+ b=V5yKwTWX1aeDPW5mI83lJ3oyOV4tx5gnPUyCfJ1Ex2xKUXspJSrYDvPDVz37DQG4FeiA72xpho7AhwXEO/t1Ws8YDD0mc5bH3lWyp+SOfdHVRwjIruhmJVExqdnBZ8L5aNhWbYXiACxw53vhTsLjvXpJH97s0lafirkoKmhu879SzeqWV8cNxhbp2q4AbOFWHyi8Y3tQLYDRNfYAw8hLW0YPPo0o/aUuoq6M+7N/qbdovsx5nWXqYWXBIESLEkohc3jJmzjzvHFsHsYsS1ME8ORjtfkaLesICyS1jc3V2yZ60BQ7QsAD2WGCqW+gZS+GhErMxm3rlE4kReBDEm+5Sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IjVlU3KdpnZ5Sdp3VQYm6kck6kpW5d/LvJ+iNWU1YZY=;
+ b=VS2hA4cOWpoyN/pK39JB2g5kvkr3avIUKcBSWrCZMwli9QXu6g2FagAdlOvLbbSMhMcF5v/yQMINX0dgSuYseBUpo6Y1h0CXKA9YLMzn2pqAoKlZT+uDS0t7G0W4e86lqO5LG4l4sefZ33gZ6TptKUB0/ZhsjH/LbNRQA5exKCRHIfTcTIPTLgZGg+8cwFyJ0u4CPy7Vac5s79pHwBiFLDMXu3uHOHdC3Ucaw6TKgFRsKOwbmwAqkiMLgF2Hwy7ph1YxA6g1nzuLOcH7Ge4lI4CtIy8laeVk37tV2eTc08XcwGuncaptSeO3/5i4Es0OiJOp6js0sve/Mt37nx3gDQ==
+Received: from BESP195MB2851.EURP195.PROD.OUTLOOK.COM (2603:10a6:b10:eb::11)
+ by AM9P195MB1284.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:3aa::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Mon, 29 Sep
+ 2025 15:42:24 +0000
+Received: from BESP195MB2851.EURP195.PROD.OUTLOOK.COM
+ ([fe80::b263:ce33:cd7d:676e]) by BESP195MB2851.EURP195.PROD.OUTLOOK.COM
+ ([fe80::b263:ce33:cd7d:676e%2]) with mapi id 15.20.9160.015; Mon, 29 Sep 2025
+ 15:42:24 +0000
+From: Mohamed Akram <mohd.akram@outlook.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: [PATCH v2] ui/spice: Fix abort on macOS
+Thread-Topic: [PATCH v2] ui/spice: Fix abort on macOS
+Thread-Index: AQHcMVemgZZ6bIZg40y1tjudHUjBmg==
+Date: Mon, 29 Sep 2025 15:42:24 +0000
+Message-ID: <C87205B9-DD8F-4E53-AB5B-C8BF82EF1D16@outlook.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Tao Tang <tangtao1634@phytium.com.cn>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>
-References: <20250925162618.191242-1-tangtao1634@phytium.com.cn>
- <20250926032339.1089647-1-tangtao1634@phytium.com.cn>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250926032339.1089647-1-tangtao1634@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Apple Mail (2.3826.700.81)
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BESP195MB2851:EE_|AM9P195MB1284:EE_
+x-ms-office365-filtering-correlation-id: d0714b20-9231-48ed-9da5-08ddff6ec907
+x-microsoft-antispam: BCL:0;
+ ARA:14566002|19110799012|8062599012|8060799015|31061999003|461199028|12121999013|15080799012|41001999006|40105399003|51005399003|440099028|39105399003|3412199025|10035399007|102099032;
+x-microsoft-antispam-message-info: =?us-ascii?Q?PtFcX5EYWdN4lBKTmkAWLECq5nVGekCTzxYLQmVTtlSLJ5LRWklWPFIf10EZ?=
+ =?us-ascii?Q?fa8Oq37XBOYDgszFp9n8gXcTPOh+PxTxf71xPzJUWujru1aibfEqMW0mqEhu?=
+ =?us-ascii?Q?CvTNJwCtmKGqUVTJxRME/BJA/YrSg0UlcbLvmmZHO0nFqMFSEQHw90WbTxg3?=
+ =?us-ascii?Q?IeR0M361gZLVOBRc9R2rL0CNRTI/PyVMwyvJzAnafSskvUXQ24QNOLyW9mXl?=
+ =?us-ascii?Q?mHzaeBM6BKgwXBzuzo0G6Cc1SgNi1nVAN47qAm9MjGP1S/Vmd75CbjoTaTh7?=
+ =?us-ascii?Q?rkD2iosMGBIxr8zn7jFPCI8pUR5rRXJsdnhaK1Ur77BhSU7WDNXCEWFMkFG0?=
+ =?us-ascii?Q?WCywCa1cFQuAOuY/wndCViHVuE1MklDlXZR+6msaerjo5eWB3p0aPLsOv3v+?=
+ =?us-ascii?Q?XpJoSbxVrOiiG2wtbNgTf+u/xInKswlfegNo5pAXyvokwYu9zVPAAnB+E5C7?=
+ =?us-ascii?Q?ZYC6ner79Bp+aUFu7cWaKu//3WyfCyGR8wFaLJJsEa+h9Thj015aGmdRDMAp?=
+ =?us-ascii?Q?clR2v+gwMOcVUm/1nOSPSIbBNz3/QwDAjT2U5gZ9Udi2as8DgOT0XUQmsKNI?=
+ =?us-ascii?Q?RUq9bAbmV5pWW3LBbaVfKbp/7Eb7BRXL2SjxiuUQkjTEcuPwhkfv0Oi/UUZb?=
+ =?us-ascii?Q?4XBKgyCkve9ttmdKmSFJUdT+2XO99YY84Ma3x2gsbxq3nTCuK4GrqAmhKy1V?=
+ =?us-ascii?Q?zCbcEkCFRsQDaquOADhxaEwwKc+N0dS/cII334yZSAfomYnDMfUlNU7HiZte?=
+ =?us-ascii?Q?rNZTYAu+feZvlyXxHvkMfPQv4njsjnBQBiHTK+ObamsXO6YvsD9xM9wffjrC?=
+ =?us-ascii?Q?Raqjq1C3WFH6aV1ZHl/G5NhzrWLVm0TFjEOs52rJde+F9Lv5ogZOztQyWAJp?=
+ =?us-ascii?Q?JV2awk3HixIdr0OtWGH7JRhthgShzMX8O+6mHFLl8y37SC66Khcr1bspp3g6?=
+ =?us-ascii?Q?jorGe+/Syg+Hk3zqEOjGtpYKGfoYguRlcm1hA6qug3/6euIR886sY9f/DMO0?=
+ =?us-ascii?Q?jrOA8lICqezj2FCoGMAWCquhdY7e3mDaixzpK8Yq0EOPt4GijMqmh0cL4Vy1?=
+ =?us-ascii?Q?lvGf8fd8YWpRzfvSuTF0RteaBC8qSBEu2b0fiBUnjBS3aTtlZHRIc0FSHTZ/?=
+ =?us-ascii?Q?2B9Vue5rjE+XOT50ji3CGRfy9jvWMny4judJiYmmtumy6rS/wmDQPTsv2SCw?=
+ =?us-ascii?Q?55YgxIRulqMu/7jO//3JkChYuS/pUe3xwF8m0QzCckmJIE04rjTDSg1aH+9S?=
+ =?us-ascii?Q?i/+Sh8Jw3B4oVgPNVv9VSAQR8itkxySEOcqYvtE2JUD9HbOFsrYfWFGG1x3o?=
+ =?us-ascii?Q?04k=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8+s6s6EDkeUt2ngs5dbLkNHQrWt5oIcvNSWtUC3/+WdquT08K+RtPWpniBL0?=
+ =?us-ascii?Q?DgI2rj1XFqmxN0+cyCQOKrVPkBlr55HHx0a9eklqwCYXQdkXOznjinaUlbDo?=
+ =?us-ascii?Q?Guq8hHBQTGl8Nk/oiIgfOm+q5ZzxI4Ar15BuE4AcO2cSTZYCV88P71Fdizq6?=
+ =?us-ascii?Q?3KOUDtnBsFrWN25GgbrEm7YW3kunVyih3mdkg84tal+Vr1yasSfK+2qjb8JZ?=
+ =?us-ascii?Q?T7bwFB/rCoPbvhvfuEjEp6Gdebchb6mw1HnbUM7hc3f3auQGII1ML/MR289g?=
+ =?us-ascii?Q?iIfSAIRBAwAbp+R5xwS/NZ+EErHRMZwuHrgIoCckTNFdURrzku7G3fvyx9mV?=
+ =?us-ascii?Q?gaGbaD1TaKpjR6QeAZQRRx8tTUduIVD5F1Z5y+fLsxipLX1b5uSwIzMUcgIg?=
+ =?us-ascii?Q?/cQjbFHqtIVlsRIgkLQ6gSO+EM2WsbMNDdogAUJgPx+hKoaX7j9SPjj5rs7u?=
+ =?us-ascii?Q?oWA44xcXWAt2d1WyA3ccQlT9aYY3oxFwKtHlKPccUraQK97gUlserK361m2p?=
+ =?us-ascii?Q?QJO5faIq0/0PrlOLuMheiAslY9fjil4H+GTvMnzbeHMuURHYBNXD4c+aTdkD?=
+ =?us-ascii?Q?kPq2f9zOnfJQ6Z99FdN8kR4ILlGJHv9Zb9CNzrJ29ErBrX2+8317SONJjhC7?=
+ =?us-ascii?Q?6i9ewdy+0TK5mEjPoGGUVqrTwTzYY8j+npD1/lOeYjULciDiAFRiBiRLQM3y?=
+ =?us-ascii?Q?wsbzZacfezuHVi3Y7TgrWTQzBUkTGcI1SwHW8jBuiLEku6jM7k2TaGTIP7XP?=
+ =?us-ascii?Q?nGa0wPensYzI8N6R4A4l0ThFcQ/FIWgRDHC0IxTfhXnAkgYtRpXdRQQBUDkp?=
+ =?us-ascii?Q?4PDT/6uifGvcoi/xsDKxnZiLh1OwJbvv3o6gloyMpgeWXyjv2OwBHOFchw6w?=
+ =?us-ascii?Q?vM5H126uh+z4dmYnOQvxKQjm/s5RStzagnd5WNKXLtfhH4rTkbtbjjb0JGM/?=
+ =?us-ascii?Q?0tkVUXcuQMwD+hSAp90UvK3BgQDBnurG7QP5L54OTjS6ZciB0uVKhClBCA7l?=
+ =?us-ascii?Q?miC5yzDGthLsXzZAlBwiDy8RAKW8koul3sk0XxzSU71CJNSAf5QHYY7QHlj7?=
+ =?us-ascii?Q?A3eWAPxUPUltD2Dda4HvrAn60pl4sC6gN0FjVHjEUXaZsVgZEDRt7Sscdxmy?=
+ =?us-ascii?Q?8uwR8NiKe8adVGDilQRobbQdwK35qVvr9KUp5/2/ogqpoGNQEQ1AoMnUO6Qg?=
+ =?us-ascii?Q?XUmXCt8ACmEnx/PSBZsI39pZfJNrxvsKTxBrfWkYtgkhu16rRrEJkFD/t5VR?=
+ =?us-ascii?Q?rEjE4AnmmQOxMyo9I9tTmpo5oFBYNtZ7aBwmiU5xYB2GncMmRv2OFpMa03Yo?=
+ =?us-ascii?Q?Zzk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <9BF6935FFC7E8947A874D7645833C869@EURP195.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BESP195MB2851.EURP195.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0714b20-9231-48ed-9da5-08ddff6ec907
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2025 15:42:24.0637 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P195MB1284
+Received-SPF: pass client-ip=52.103.33.87; envelope-from=mohd.akram@outlook.com;
+ helo=AM0PR02CU008.outbound.protection.outlook.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
+ FREEMAIL_FROM=0.001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,86 +143,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The check is faulty because the thread variable was assigned in the main
+thread while the main loop runs in a different thread on macOS.
 
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3070
+Signed-off-by: Mohamed Akram <mohd.akram@outlook.com>
+---
+ ui/spice-core.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-On 9/26/25 5:23 AM, Tao Tang wrote:
-> My apologies, resending patches 13-14/14 to fix a threading mistake from
-> my previous attempt.
->
-> This commit completes the initial implementation of the Secure SMMUv3
-> model by making the feature user-configurable.
->
-> A new boolean property, "secure-impl", is introduced to the device.
-> This property defaults to false, ensuring backward compatibility for
-> existing machine types that do not expect the secure programming
-> interface.
->
-> When "secure-impl" is set to true, the smmuv3_init_regs function now
-> initializes the secure register bank (bank[SMMU_SEC_IDX_S]). Crucially,
-> the S_IDR1.SECURE_IMPL bit is set according to this property,
-> correctly advertising the presence of the secure functionality to the
-> guest.
->
-> This patch ties together all the previous refactoring work. With this
-> property enabled, the banked registers, security-aware queues, and
-> other secure features become active, allowing a guest to probe and
-> configure the Secure SMMU.
->
-> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
-> ---
->  hw/arm/smmuv3.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index c92cc0f06a..80fbc25cf5 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -351,6 +351,16 @@ static void smmuv3_init_regs(SMMUv3State *s)
->      s->statusr = 0;
->      s->bank[SMMU_SEC_IDX_NS].gbpa = SMMU_GBPA_RESET_VAL;
->
-> +    /* Initialize Secure bank (SMMU_SEC_IDX_S) */
-same comment as before, use a local pointer to the secure bank.
-> +    memset(s->bank[SMMU_SEC_IDX_S].idr, 0, sizeof(s->bank[SMMU_SEC_IDX_S].idr));
-> +    s->bank[SMMU_SEC_IDX_S].idr[1] = FIELD_DP32(s->bank[SMMU_SEC_IDX_S].idr[1],
-> +                                                S_IDR1, SECURE_IMPL,
-> +                                                s->secure_impl);
-> +    s->bank[SMMU_SEC_IDX_S].idr[1] = FIELD_DP32(
-> +        s->bank[SMMU_SEC_IDX_S].idr[1], IDR1, SIDSIZE, SMMU_IDR1_SIDSIZE);
-> +    s->bank[SMMU_SEC_IDX_S].gbpa = SMMU_GBPA_RESET_VAL;
-> +    s->bank[SMMU_SEC_IDX_S].cmdq.entry_size = sizeof(struct Cmd);
-> +    s->bank[SMMU_SEC_IDX_S].eventq.entry_size = sizeof(struct Evt);
->  }
->
->  static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
-> @@ -2505,6 +2515,12 @@ static const Property smmuv3_properties[] = {
->       * Defaults to stage 1
->       */
->      DEFINE_PROP_STRING("stage", SMMUv3State, stage),
-> +    /*
-> +     * SECURE_IMPL field in S_IDR1 register.
-> +     * Indicates whether secure state is implemented.
-> +     * Defaults to false (0)
-> +     */
-> +    DEFINE_PROP_BOOL("secure-impl", SMMUv3State, secure_impl, false),
->  };
-I would introduce the secure-impl property at the very end of the series
-because at this point migration is not yet supported.
-By the way the secure_impl field can be introduced in the first which
-uses it. I don't think "hw/arm/smmuv3: Introduce banked registers for
-SMMUv3 state" does
-
-Thanks
-
-Eric
->
->  static void smmuv3_instance_init(Object *obj)
-> --
-> 2.34.1
->
+diff --git a/ui/spice-core.c b/ui/spice-core.c
+index 5992f9d..2645e96 100644
+--- a/ui/spice-core.c
++++ b/ui/spice-core.c
+@@ -50,8 +50,6 @@ static int spice_migration_completed;
+ static int spice_display_is_running;
+ static int spice_have_target_host;
+=20
+-static QemuThread me;
+-
+ struct SpiceTimer {
+     QEMUTimer *timer;
+ };
+@@ -222,7 +220,7 @@ static void channel_event(int event, SpiceChannelEventI=
+nfo *info)
+      * thread and grab the BQL if so before calling qemu
+      * functions.
+      */
+-    bool need_lock =3D !qemu_thread_is_self(&me);
++    bool need_lock =3D !bql_locked();
+     if (need_lock) {
+         bql_lock();
+     }
+@@ -675,8 +673,6 @@ static void qemu_spice_init(void)
+     spice_wan_compression_t wan_compr;
+     bool seamless_migration;
+=20
+-    qemu_thread_get_self(&me);
+-
+     if (!opts) {
+         return;
+     }
+--=20
+2.51.0
 
 
