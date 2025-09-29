@@ -2,94 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75F2BA9E82
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26CA5BA9DE3
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 17:52:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3GH6-0003kt-B6; Mon, 29 Sep 2025 11:58:53 -0400
+	id 1v3G9k-0001Yh-FV; Mon, 29 Sep 2025 11:51:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3GGm-0003cm-Ix
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:58:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v3G9d-0001Ky-33; Mon, 29 Sep 2025 11:51:09 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3GGi-0002QO-3G
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 11:58:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759161506;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HVBwHdyMoSuqADJCUP/Sjz/GPAPj0aKz0ieGI8fQacY=;
- b=DruOA8K5nvwGIfb1jbR3GuSeo9/kf8/gHuz1xEoycIu6sywgJ1dT7LOauJ56BtZE9BvbVB
- H2MRhYh+rkN28pQ0pAmRh1kOuF8tzxkMYn1JToWeWnNJ1clUUwEnuW79NJLn5G25qRpT8v
- leLeZ3DTChq1d1t0iEru67XTxQ6/EiU=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-f8fReCDcPWqemvRzRCSUiQ-1; Mon, 29 Sep 2025 11:58:24 -0400
-X-MC-Unique: f8fReCDcPWqemvRzRCSUiQ-1
-X-Mimecast-MFC-AGG-ID: f8fReCDcPWqemvRzRCSUiQ_1759161504
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-85a0492b5feso1502473285a.0
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 08:58:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759161504; x=1759766304;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HVBwHdyMoSuqADJCUP/Sjz/GPAPj0aKz0ieGI8fQacY=;
- b=fT1PEao+hgPdA21hxKUOrqc6JUSCaPOs87Aip0maTZmDHPIror+cbmz3wptgNYHPzV
- A+GikBwscUVOVl4ARaZkV5Pegh785Mx2MIYvd1psHlfI2KMe24skZ3AHiiG330UrBd5q
- ac5OYUm8rqbzT9f7V4a6Y3Que6Y+VlU+JzBKv0h9VDG9Gl6N2h9lz8u4t/ORhiUc9yXg
- zGZ8oFrKBkbJ4OIznUTVDFXqLqRkP3E21bO6WjzUbC82z+76qMQXHhowlUUAopXc0RDm
- lEHrH+D7JPiB0G8ghgbfo5GHa+Off57wpzWf36C205dpVxhz8o8gCTEJPK6FRPWZGkac
- Awbg==
-X-Gm-Message-State: AOJu0YwVN1jSMnHuhdKTwJTW1FnGBJqmndNx4KMTHUKyI9MtC6cRUcuu
- H9DBmn2q9qbcVBmOlmMVjIbwO0iPX2FgEHxl/2QNTrZj9uEe5E3u42bijA6J/wNHIEQwZ7yHxIs
- 75PhCI4dyKtiwXnYFw8IFfyCmLmFG+LXA38jiAK49f1yWN4okNa5WGU6v
-X-Gm-Gg: ASbGnctK9/qNKej1UTUDxE9RHqTGbDBayDMoRYTmZPIo/ldkp3R/Ma0MN8AI0IMXiko
- cYzNGltRcEx9+hdu3uuNLWCBY/uBFhXlmHrWP4nREnOyxOf4g7mpBv0tseaYbaspCFtLd8B7bxe
- R8yvXrbw/JoFLOnP4vowJEJA+Z6RkDltfPsjBp+Jpi9AgNtCwIOQSyUFio77TeM9BEcpKfq1+0x
- HrPVi6srFJngTjSshBIvP32OMxBzIm9v303pGGkCXMM8asl2Uq2BSRvVgFMCx5si62d/gxtI18J
- jckXX527OFSGViZ4cILU2dYONQzBEljg
-X-Received: by 2002:a05:6214:2a8d:b0:78f:1312:2d94 with SMTP id
- 6a1803df08f44-7fc4066ec7dmr255365266d6.56.1759161503642; 
- Mon, 29 Sep 2025 08:58:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8X87U/CO2zsunwAypdrtx1xbVRVTh/ZFoJjAalFB3fZQJXTfWx9GAJOv/hHNG5jVThk2cHg==
-X-Received: by 2002:a05:6214:2a8d:b0:78f:1312:2d94 with SMTP id
- 6a1803df08f44-7fc4066ec7dmr255365036d6.56.1759161503210; 
- Mon, 29 Sep 2025 08:58:23 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-80135b54636sm78407866d6.6.2025.09.29.08.58.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Sep 2025 08:58:22 -0700 (PDT)
-Date: Mon, 29 Sep 2025 11:58:21 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
- functional
-Message-ID: <aNqsnaBkQe8i_MLK@x1.local>
-References: <20250801170212.54409-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v3G9U-0000iA-KQ; Mon, 29 Sep 2025 11:51:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759161061; x=1790697061;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9W74zEoqyUET7A2cUfqGOGYlA5GRpaX5PAiAbi7NmyE=;
+ b=CNY8OEWxzizStz5tPxpT67FZIxRgdqtpj6cjiEOLGmzqhk4xRBeYZkVD
+ PDWkkikCyKq6ccGVJJso6ofBF1kPiiwfh/eGK4yJ0iE6ajG7YwjkIC0sU
+ xEjNSqCvqJPQrZyiZcmYn2P31SAJY50TLltrBGqSt37YrtynhyoP24c4r
+ +mtIpwTiVdq7P/IrR8dt6chPsymTeceGWqTo/7GhyysagqPKZraUzQfHY
+ 4Y9Oe2z1e1mKzC5etd4i28CrpOJmWB9P/EXyOFgf1fWVwiquQ1U+ec7r/
+ I0STrAEZB9QwRgEdJ/tCqv2o3t0eHuAOWhWOgQtVZhdqlnaEdY2xAHixC A==;
+X-CSE-ConnectionGUID: gvtRRVT6Qu2KnCSLyFjhnA==
+X-CSE-MsgGUID: QitGmT2vSnKfvbmusFs9GQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="78829376"
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; d="scan'208";a="78829376"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2025 08:50:51 -0700
+X-CSE-ConnectionGUID: hYRn1zx3TVWyDaW6ZgrGgg==
+X-CSE-MsgGUID: kOgdylrIQpGeb0HdBDrxxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; d="scan'208";a="177519499"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa010.jf.intel.com with ESMTP; 29 Sep 2025 08:50:49 -0700
+Date: Tue, 30 Sep 2025 00:12:48 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, manos.pitsidianakis@linaro.org
+Subject: Re: [PATCH 6/7] rust: migration: implement ToMigrationState for Timer
+Message-ID: <aNqwACkjytK3+QQ4@intel.com>
+References: <20250920142958.181910-1-pbonzini@redhat.com>
+ <20250920142958.181910-7-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250801170212.54409-1-berrange@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+In-Reply-To: <20250920142958.181910-7-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,26 +79,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 01, 2025 at 06:02:10PM +0100, Daniel P. Berrangé wrote:
-> This is a followup to previously merged patches that claimed to
-> workaround the gnutls bug impacting migration, but in fact were
-> essentially non-functional. Juraj Marcin pointed this out, and
-> this new patch tweaks the workaround to make it actually do
-> something useful.
+On Sat, Sep 20, 2025 at 04:29:57PM +0200, Paolo Bonzini wrote:
+> Date: Sat, 20 Sep 2025 16:29:57 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 6/7] rust: migration: implement ToMigrationState for Timer
+> X-Mailer: git-send-email 2.51.0
 > 
-> Daniel P. Berrangé (2):
->   migration: simplify error reporting after channel read
->   migration: fix workaround for gnutls thread safety
+> Timer is a complex struct, allow adding it to a struct that
+> uses #[derive(ToMigrationState)]; similar to vmstate_timer, only
+> the expiration time has to be preserved.
 > 
->  crypto/tlssession.c   | 16 ----------------
->  migration/qemu-file.c | 22 +++++++++++++++++-----
->  2 files changed, 17 insertions(+), 21 deletions(-)
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/migration/src/migratable.rs | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
+> index fa25317eea8..c4ad4f73d5c 100644
+> --- a/rust/migration/src/migratable.rs
+> +++ b/rust/migration/src/migratable.rs
+> @@ -202,6 +202,37 @@ fn restore_migrated_state(
+>      ) -> Result<(), InvalidError>;
+>  }
+>  
+> +impl ToMigrationState for util::timer::Timer {
+> +    type Migrated = i64;
 
-Dan, is there a planned repost on this one?
+This converts a Timer to i64, then we don't need vmstate_info_timer
+anymore. Good idea.
 
-Thanks!
+> +    fn snapshot_migration_state(&self, target: &mut i64) -> Result<(), InvalidError> {
+> +        // SAFETY: as_ptr() is unsafe to ensure that the caller reasons about
+> +        // the pinning of the data inside the Opaque<>.  Here all we do is
+> +        // access a field.
+> +        *target = unsafe { &*self.as_ptr() }.expire_time;
 
--- 
-Peter Xu
+C side checks timer_pending(), which ensures when the timer is
+inactive, it always saves u64::MAX.
 
+But now we save the expire_time directly in Rust. I think this would be
+possible to break the migration from Rust timer to C timer, because at
+C side, timer_get() checks whether expire_time is -1 and we can't ensure
+expire_time won't store -2 (or other unusual negative values).
+
+So maybe it's better to follow C side behavior to return u64::MAX for
+non-pending case?
+
+> +        Ok(())
+> +    }
+> +
+> +    fn restore_migrated_state_mut(
+> +        &mut self,
+> +        source: Self::Migrated,
+> +        version_id: u8,
+> +    ) -> Result<(), InvalidError> {
+> +        self.restore_migrated_state(source, version_id)
+> +    }
+> +}
+> +
+> +impl ToMigrationStateShared for util::timer::Timer {
+> +    fn restore_migrated_state(&self, source: i64, _version_id: u8) -> Result<(), InvalidError> {
+> +        if source >= 0 {
+
+This can work for the migration cases of C->Rust and Rust->Rust.
+
+Thanks,
+Zhao
+
+> +            self.modify(source as u64);
+> +        } else {
+> +            self.delete();
+> +        }
+> +        Ok(())
+> +    }
+> +}
+> +
+>  impl<T: ToMigrationStateShared, const N: usize> ToMigrationStateShared for [T; N]
+>  where
+>      [T::Migrated; N]: Default,
+> -- 
+> 2.51.0
+> 
 
