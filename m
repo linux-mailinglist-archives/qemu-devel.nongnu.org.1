@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F52ABAA676
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 21:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B27BAA6AA
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 21:09:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3J9u-00069P-12; Mon, 29 Sep 2025 15:03:38 -0400
+	id 1v3JEQ-0007Ug-C7; Mon, 29 Sep 2025 15:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3J9r-00069B-PR
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 15:03:36 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3JEN-0007UI-6M
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 15:08:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3J9g-0003YU-Ls
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 15:03:35 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3JEH-0004ta-VE
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 15:08:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759172602;
+ s=mimecast20190719; t=1759172887;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dzVduiv11jNq+bbRyBXccImOPJV2Mp6W3x2rQ69EkKI=;
- b=aXQMuyULgQhcSil8GtruEdP2dOAYEdyiCnw/dad6oUj5/yv9z20lqbZOKg4sK1qTopope0
- Xqnl78IYzIKRdCJB+HuDfNEALFcx1iYPqBM0xkHqhZICoOlXiDZ2tkPZQxvallc4n34NGK
- Mm44cZhJDPkC9yF911gdJPe2FGO11K0=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=IFHaJxFspsNlQilRqQeh502WQ94P873aByB9B6dMPnw=;
+ b=UAx4QG1pri7NF/uwJnJhxIT4+e5KlXh6lgN8SEZd3RNHB18VIHu7lOt8MfVLeHyjhSCWHr
+ JK4lKjjBsLv03puhX5xv1OBKmZp+VZF8l2MaS8nH/22zH9Znud6Lo28+YKSbxfEzpmZBX2
+ tcp/Fvbhcmzzu9BnvdPdzy50+PA3x3Y=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-AGv55quhMdWP9KL5AJxSGw-1; Mon, 29 Sep 2025 15:03:19 -0400
-X-MC-Unique: AGv55quhMdWP9KL5AJxSGw-1
-X-Mimecast-MFC-AGG-ID: AGv55quhMdWP9KL5AJxSGw_1759172599
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-827061b4ca9so881177385a.3
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 12:03:19 -0700 (PDT)
+ us-mta-171-hPmm51lfNF2QzBm3_69xpQ-1; Mon, 29 Sep 2025 15:08:04 -0400
+X-MC-Unique: hPmm51lfNF2QzBm3_69xpQ-1
+X-Mimecast-MFC-AGG-ID: hPmm51lfNF2QzBm3_69xpQ_1759172884
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-7946137e7c2so142813056d6.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 12:08:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759172599; x=1759777399;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dzVduiv11jNq+bbRyBXccImOPJV2Mp6W3x2rQ69EkKI=;
- b=qlWKpFlQ9vq+d3loTdtrZqdXrW5Q0/Mu3xq+wmU1XMuvp9bXiRVxS1B+h2Xb0pRnqT
- BZ9g5VKzg1LP40PjYWx/rZMVnUOSlBmCvpmtkfdjMBf9exVUEkDfbUkslMN5eHaEJeWf
- J4giMfcxqaYGeTU7ltxaOI+MFQ5fYCZSTfl4CS/zkdwX6yMlut9hIc3YcshoSgFylUXj
- 49Oaqan5OJjZUFRwjPoswln2MZczJwykvXCUjsALY/r1uJ0le62RIaQSUKKzD7wRMbpy
- C8hEzqQhY6nVx1pdhxGC15ruwdn9N8PBS1nF4qolX87Y2XM9rRI3z0G2vYqr/d/C7oZX
- YHgA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVWBC4FfcrMhzyr6JfTgWLWJn3EXjnBvEUEnWjmFLPJUqkN7Znnb2bGDEp+9xUMLNyOcIhPs6oi9FyV@nongnu.org
-X-Gm-Message-State: AOJu0YyPi32Eghcb/SO2UBMrret89theQaW5UKwAH/ZPkG7G+BTx/yC/
- I/PCMDuXIWLOSFFrwnTiWP2fnGzyLQ9LQVBU2g3JtlNVi5Ko9nId1ODEYeiKxzeEvwC6kgMLspZ
- zr+vmw/eQPBqGnAogOR6mgpS4PtQyeUwBG/q+L8l+voqwqNt2ybWa7Qjp1FzUSMzu
-X-Gm-Gg: ASbGncsGJKYRQTEBEjzMBB3QHhOM1JFteQTdp6z9H6ozezm6gQslOnTmLtcuaWAfLaN
- 61DxMEV3EYuUJC7+dA7j5ykgnBuNeQJ46mqD1H8PkOwr4z7y1njzggSfFA3MUZEzUFYKYdF5J6K
- yIwo0evxIsif7m1tUzmQrBmmP99P7Uv06AMG8IIudbPeysGEp7fkI20MjS2MV8vs+B9sZrva7Ng
- 0HQqf6kiBoV2bd9jRf67w59FAnSEU3e7EnTjDup9/ETbO/qV8doX8zvktB1rGxtIY63oghXCMjk
- LWg3wHYMb/0xByQddZVY7SkdK5YHh1iw
-X-Received: by 2002:a05:6214:1d23:b0:787:5934:689 with SMTP id
- 6a1803df08f44-7fc19a78ceemr196072156d6.0.1759172599063; 
- Mon, 29 Sep 2025 12:03:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEeWCaV8Z5Ze3vjOpdnQa61l9kVreYKN3lPOkPc7jVLZipbVndJGgfGVt1kNCMBdDQb8bvGfA==
-X-Received: by 2002:a05:6214:1d23:b0:787:5934:689 with SMTP id
- 6a1803df08f44-7fc19a78ceemr196071736d6.0.1759172598552; 
- Mon, 29 Sep 2025 12:03:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759172884; x=1759777684;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IFHaJxFspsNlQilRqQeh502WQ94P873aByB9B6dMPnw=;
+ b=mK8o+LtWTtxHIk5bEyjRNRUG7FRh6hLMpVqt6z1Otkz4pw+qo2hY5jCVBgXJ1yqbF5
+ Ko8aBClUsQcWFXLui5ozPMQ2pLrqC7LRmJ4JoPnEkctMcC46Pw75AQWFvwiCogdLC/yf
+ 0DQDZjROwiGfKO3sC3bccE1CARunMUVOobkwKXuZzR+hlCciyJIGoaYxAdKNvb5kD3Uy
+ RX/OgC9L3K+lIYBaxzWJpgPoS3V4lZdOUzSP0q8/gKF+QULQ2JSGDphHPkAenaIFA1kM
+ DLv7ocdJOaK8KYNLFu00yOxDNOYJxrWNt90KuhwSbc2I+U3jvzSPgBBhlQv8QUcpLtuN
+ IKGw==
+X-Gm-Message-State: AOJu0YyDA+z91RDU0pCaf72rjBB3BZr2tBmRVA2JGSXczc3c+4zXAyzA
+ cdIAiS55hAqrnWHzedBH00fYcn+XW+Ue90jwmawjmCbsTK+itbDADvAy+WlEx1gUlXO78nPJLR4
+ cJJJ61Le9WE1RBz+6/GizTPxjjWBKQdUa4SdZh+/49PdpFdTndvZC11QlchwhDfVxPr8u7otTh0
+ Sre3BuqPJ+Kv6I/mgrJaRmD5rU2nTGhz3CkJRZ/g==
+X-Gm-Gg: ASbGnctlkbFsYx/jTS2Al+isGDgXMZbxLuiYT+++qDAPH1DfsJoZ5HFxGiNejUA0SDY
+ c5RfrcrbOe7ujEXVgMkQJnz6FlcxwC7EBox2r0tDai/yIjgZnqPo3saQ3NCpQAtoaSnJ6MbQ1O4
+ oTIxEJaFdkAbK+JRSBnHaxXSZ/mynXsAUtDdm1NFOZAjgEUj1rXfzU70Wg9f6VX+YBYAI6wX0pE
+ OEo3H9rCCxoGL0ZPoOnv4FLuLJLgMD1rJHB20oop2LJFcMaZvCbZKxLvsObwo0mpUcWcIz2SMfw
+ 4Qrvxz2TGTNdp13t3DY4o7Mwme8BER8h
+X-Received: by 2002:a05:6214:4d03:b0:7a0:9c00:8575 with SMTP id
+ 6a1803df08f44-7fc3b6df584mr187656196d6.41.1759172883522; 
+ Mon, 29 Sep 2025 12:08:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/TZTVuQ6PaGUKEybDA7K7y8eKiY8dB4+YzWeKC4ak46bKhNcm1KS+uZx+rNT/8X4iwIBwMA==
+X-Received: by 2002:a05:6214:4d03:b0:7a0:9c00:8575 with SMTP id
+ 6a1803df08f44-7fc3b6df584mr187655676d6.41.1759172882937; 
+ Mon, 29 Sep 2025 12:08:02 -0700 (PDT)
 Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-80135b54636sm81127186d6.6.2025.09.29.12.03.17
+ 6a1803df08f44-80142f5d6d1sm79626296d6.33.2025.09.29.12.08.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Sep 2025 12:03:17 -0700 (PDT)
-Date: Mon, 29 Sep 2025 15:03:16 -0400
+ Mon, 29 Sep 2025 12:08:02 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Salil Mehta <salil.mehta@huawei.com>
-Subject: Re: [PATCH 0/3] system: Don't leak CPU AddressSpaces
-Message-ID: <aNrX9AnoCY2uJStJ@x1.local>
-References: <20250929144228.1994037-1-peter.maydell@linaro.org>
- <e6d4526c-6b3e-4b95-9d6b-54823a219a47@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <rth@twiddle.net>, "Emilio G . Cota" <cota@braap.org>,
+ peterx@redhat.com
+Subject: [PATCH 0/3] rcu: Detect accidental reuse of rcu head
+Date: Mon, 29 Sep 2025 15:07:58 -0400
+Message-ID: <20250929190801.931989-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e6d4526c-6b3e-4b95-9d6b-54823a219a47@linaro.org>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -95,8 +88,7 @@ X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,41 +104,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 29, 2025 at 05:02:40PM +0200, Philippe Mathieu-Daudé wrote:
-> Cc'ing Salil for previous discussions on
-> https://lore.kernel.org/qemu-devel/20230918160257.30127-1-philmd@linaro.org/
+This is an idea suggested by Peter Maydell:
 
-Thanks.
+https://lore.kernel.org/all/CAFEAcA--K0=EJNNvj98i=ewGY=tN3u4S0+fNb9kJpYynzjHEhw@mail.gmail.com/
 
-While waiting for more comments, I pre-queued this series.
+After this small series applied, we should be able to assert on misuse of
+accidental (wrong) re-use on a rcu head.
 
-Regarding to patch 1: I still think it's almost impossible to use it
-correctly on address_space_destroy(), even with the doc.. but I agree
-that's the best we can have right now.
+Please review, thanks.
 
-The problem is, afaiu we don't even have a way to know when a rcu callback
-is processed, unlike the grace period (which corresponds to synchronize_rcu()).
+Peter Xu (3):
+  qht: Zero-initialize qht_map
+  tests/test-rcu-*: Zero-initialize allocated elements
+  rcu: Avoid double rcu frees
 
-I think it means there's almost no existing way for the user to properly
-release the AddressSpace memory if it is e.g. embeded inside a Device
-object.  Here, we will need to rcu-free the Device object too (which I
-don't think we do at all..), making sure it's called after ASes' rcu
-callback.
-
-Even if we'll do so, we'll have yet another problem of having the Device
-free() rcu callback to happen after the AddressSpace's destroy rcu
-callback, we could rely on what Paolo mentioned on FIFO behavior of rcu
-queues, but it looks unwanted.
-
-For the long term, IMHO we may need to convert all embeded AddressSpaces
-into using dynamically allocated AddressSpaces (for CPUs, we can stick with
-cpu's address space API, but we have other places using ASes too that may
-also need to be converted to heap allocations).  Then after all users
-switching to that we may be able to drop address_space_destroy().
-
-Thanks,
+ tests/unit/test-rcu-list.c | 4 ++--
+ util/qht.c                 | 2 +-
+ util/rcu.c                 | 2 ++
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
 -- 
-Peter Xu
+2.50.1
 
 
