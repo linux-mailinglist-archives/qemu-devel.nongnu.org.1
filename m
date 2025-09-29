@@ -2,94 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A58BA9A64
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 16:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF10BA9ACA
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 16:47:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3F4R-0003qd-8V; Mon, 29 Sep 2025 10:41:43 -0400
+	id 1v3F5u-0004ip-Kr; Mon, 29 Sep 2025 10:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3F4M-0003hY-Jg
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 10:41:38 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v3F5i-0004eI-Ep
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 10:43:03 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3F45-0001OT-Mw
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 10:41:36 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-3306d93e562so5016949a91.1
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 07:41:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v3F5N-0001kA-6d
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 10:42:58 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-46e384dfde0so48655855e9.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 07:42:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759156872; x=1759761672; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MkzCGJhxmBl7pB+ADBh0H9ogb846oJxdcaEE8Qh58OA=;
- b=W2w7tfWXMHuF3azQwR0H8tP4awGwW5xh5AkikSG4A0HnL4bTC3J0c9ekWrSAB/Ruwl
- gvG572N6KlNnz6uODbIqc2BRD3sgqKeM8UShzKdKp4Vwr6Y++GqnLZ+YmNyf8cpn2tqZ
- OLj3RfkzVMqMBIzFRbnuI4dvXRWu0u5ufptUWfhOLHoveMOJ+TNYhmzyJBxpRKY34hEF
- 4deTgkQvYgjOa97/Z0OXYWRW5KcQBsfthJBgJpzaII0SmtoFyFuwyHrllDgZ4Y8nWWYu
- Xvxdp/SHxz/cTmNoKvVYs6bmTsS137g1ctQkK/QWUorG6cbEHt2e87HMliMhVNSMjxX6
- Ak2Q==
+ d=linaro.org; s=google; t=1759156951; x=1759761751; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=hAzyKK2avmxJErsVwK5KjZxJGok1xSdKxfjGTCv72nQ=;
+ b=tP6Z1wRV5alFbhh/Ok7wfOFir6CtMjcZ9t0QwdyqE7RC5wEBBkjEyrmDu8SJV9tmuL
+ ilzbLeEZG/fBPuXwdxdxZBFEYiv9zltg/GvFhLr3zknW0JHF0Ftz/1rVMzREVm34DeSL
+ kXR1T2c4CiQvVd8+jS+k5cSmo0CRqFI/goLto88il5ttv0+hQmpZZ3HDvAyEq3hZIG4F
+ GlxFZQi1wwmr595ZVypKjIernL9Nd5FYEs4iuql9yBEdbtJZDC//9Tk3e3amf8JUcBdr
+ AJQgtLRqse9hTuPsPBa3OyaSdGWS4vr4re0tjloKHwOzfOVkRQV9Ke+S+EKn3F8moNXm
+ 6ayw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759156872; x=1759761672;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MkzCGJhxmBl7pB+ADBh0H9ogb846oJxdcaEE8Qh58OA=;
- b=ZZuhUgYM1pZUuYG+0JDwY4MDMxTFbUZ2T7ZXNOVG1hWoH0EWKiidXdCQm99Fij5m+/
- ewahK8yxRV4Y32VFjJ8y7INuQtzgcgtE+yTwtPNrYZsLkaQMiIcHB8aSaQiW5Wq+D+m1
- RGZL/ai88t8cZ9ieO3qe1aB4maR7GF+WNsvG3KKmOFKRqIIJ3f6sNA/5MByfo1oC4akk
- zti9bGTr3fy20CBg9FHT+1E4S2fcgcfyQyJvBpAPMquNa2ApVYdTX/aAmbOm2JQo8kdi
- D8RBAJ24wrQLjyi3Qvvq8k1/9quuk+b2DxYZRN9pX746y7SVVdLwOEzQ2dGDaeNpnJty
- pqow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWGGfATnLWkZ1qGxC+uNIGq+w3cpfxynHvMaIhVFfkMLWNpBX8Jf13c5fZ5LQOvfC1VTupcv7X8V4s3@nongnu.org
-X-Gm-Message-State: AOJu0YyImk8tCcMYFjTUx7RGuOVZFgFJ566c8Y1R6z1Dyn0x2BY7BFBd
- 48rIjFuxtygiLkAkSjh6E8tWhb/PbTFEd76a4wdGqfb7cNTFdlSl1Ycj5genKpfG4M8=
-X-Gm-Gg: ASbGncuju3xLrMHK2IhBpwGMRiQd03hTd7aLPX23Lhag+aZPFkvu+6YD8Pyx5QFHEVT
- 8j8eWGB/iuyCYjXUWVBybZIhBNMv/uurfB9tJUC1lZYmwNYqNWFX2DhQa5O/la91fquFRxeFX3y
- 0EHZj9zG9yFiM2ziW0Rj1EZ8JLOs0QR096heprafQATpNy/8ySS+x+7w3Ex++34vh34YJMSRkoC
- 8PVPDqKVVDIt5K98UQ7QjXUYN9q6DFW52GGrQsVOreqq2PdYEFwhnIQMIVERLJbTIb8xpibg1Cm
- BWiygLWjx6OUul2k6YHMYssSldJUj8EV7P2HPJV0RdOeS4GGw9jFZ1NAtZkmNTt46qDAkudpqHm
- RLcPomccpe8I/pja5SHExFfFEi07Gr+hmoT+45SAR5yse6zjUGSF21rgE5A==
-X-Google-Smtp-Source: AGHT+IHPy3QvNuZjOj6YBc+0r5YGXTW69E4S91z1ivN0tb6fevgW3Q5wqiYPN2nAFuNMgcVURiqjBA==
-X-Received: by 2002:a17:90b:5627:b0:330:793a:4240 with SMTP id
- 98e67ed59e1d1-3342a2c5d9cmr15797380a91.31.1759156872409; 
- Mon, 29 Sep 2025 07:41:12 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
+ d=1e100.net; s=20230601; t=1759156951; x=1759761751;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hAzyKK2avmxJErsVwK5KjZxJGok1xSdKxfjGTCv72nQ=;
+ b=vy8K3wUL1BGK6aiVonY87YNwsceSAE1Rfnha+Ep03ha/kZ3kalaid0kizGrh5Xwg6d
+ AtUCapsBRz4fuuTierbmTVPTvPSAUxy3D4P6uQAG3RwgDl/lsDWcDC+tRwqaF/vp5Tgk
+ WNVBE0RZRZytymMhRnKFhuCUbb23oBoPjoN3R/SgHuLIX2A3Iru5XNbrK0MjweTUwquP
+ tlFxkw0j5c7pVoX5nlYHOY7euG5y+c+CH2Q91aA6dbnI8bH/OMSKkBx0csKhGLNOeCdV
+ viZE0H10bKiTW6Bc+tG1qQ7oQQtgTLIkyYbhworOdbOja4bXWzfj796WFRQ37e7ym8+o
+ X0hw==
+X-Gm-Message-State: AOJu0YxQn4hOcrnTF9cic8L9gcF9ZQYDTCE6sh7d+aJgL8/DeRtH0YSd
+ bHbXEw4p/6VALKeV4Yj9P+SD0Dyss70jV6cclL2mjIXc+XHy3KfOGW7F1nMl8UTg4TO1xXy8xWF
+ kYkKx
+X-Gm-Gg: ASbGncvhEIZD3SIPwxkJAEErOzjzBDdqKedF6lF00CcX5DB2AkJX2cvjJKKAEKZzljo
+ zmup3e7KwTvdu9X4p1rGAJYm2a2phMCYRF8DCeRpurGIkKg2yZ2kaGlpsbISAl7qyc5y8MT4diX
+ E2YW5ps20xTHDObcmsnv2nbNtWK5EiKj6abWABk1tzrK+s8OMeGo0l3Lr1l+OJB3gEtgR9R3vHI
+ SoE/L1S1zViDIjVz89bx7vkxR/j/uOpaD151s/Q/3jGgL/1o3HZ0xT2mIX1SKTslC70u+KYyB+e
+ GbMeYebGkYqn37Zb1f/KB4rcucTzxQP81XzUewUBZrKkt3J5SNBPFQU0fOYgbnHBPTIjPY3V0rz
+ d+s6+xJFbRaSv61zc8ETh3UDOls+uLcaeGjHDqnY=
+X-Google-Smtp-Source: AGHT+IEn9+EqLhqnXDgCbSR5/hiXJpJAcqtGfpglMlne8UfNbOwx7tEb+VcqcXOcBB1I7LGULvPM2A==
+X-Received: by 2002:a05:600c:3145:b0:46c:d6ed:2311 with SMTP id
+ 5b1f17b1804b1-46e329f9d06mr136195605e9.19.1759156951104; 
+ Mon, 29 Sep 2025 07:42:31 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3341bd90332sm17219996a91.1.2025.09.29.07.41.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Sep 2025 07:41:12 -0700 (PDT)
-Message-ID: <3fb026bf-3b33-4cfa-a20f-8e1d442e7902@linaro.org>
-Date: Mon, 29 Sep 2025 07:41:09 -0700
+ 5b1f17b1804b1-46e56f64849sm15893885e9.11.2025.09.29.07.42.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Sep 2025 07:42:30 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH 0/3] system: Don't leak CPU AddressSpaces
+Date: Mon, 29 Sep 2025 15:42:25 +0100
+Message-ID: <20250929144228.1994037-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: Fix endianness swap on compressed
- instructions
-To: Valentin Haudiquet <valentin.haudiquet@canonical.com>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, qemu-trivial@nongnu.org,
- zhiwei_liu@linux.alibaba.com, dbarboza@ventanamicro.com,
- liwei1518@gmail.com, alistair.francis@wdc.com, palmer@dabbelt.com,
- vhaudiquet <vhaudiquet343@hotmail.fr>
-References: <20250929115543.1648157-1-valentin.haudiquet@canonical.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250929115543.1648157-1-valentin.haudiquet@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,55 +100,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/29/25 04:55, Valentin Haudiquet wrote:
-> From: vhaudiquet <vhaudiquet343@hotmail.fr>
-> 
-> Three instructions were not using the endianness swap flag, which resulted in a bug on big-endian architectures.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3131
-> Buglink: https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/2123828
-> 
-> Signed-off-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
-> ---
->   target/riscv/insn_trans/trans_rvzce.c.inc | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+When a vCPU is created, it typically calls cpu_address_space_init()
+one or more times to set up its address spaces. We don't currently
+do anything to destroy these address spaces, which means that we
+will leak them on a vcpu hot-plug -> hot-unplug cycle.
 
-Cc: qemu-stable@nongnu.org
-Fixes: e0a3054f18e ("target/riscv: add support for Zcb extension")
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This patchset fixes the leak by replacing the current
+cpu_address_space_destroy() (which has an awkward API, includes
+a bug, and is never called from anywhere) with a new
+cpu_destroy_address_spaces() which cleans up all the ASes a CPU
+has and is called from generic unrealize code.
 
+Patch 1 is just a comment improvement to clarify that
+address_space_destroy() defers most of its work to RCU and you
+can't free the memory for the AS struct itself until it's done.
 
-r~
+Patch 2 is from Peter Xu; we need to be able to do "destroy and
+free an AS" via RCU, and at the moment you can't do that.
 
-> 
-> diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/insn_trans/trans_rvzce.c.inc
-> index c77c2b927b..dd15af0f54 100644
-> --- a/target/riscv/insn_trans/trans_rvzce.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvzce.c.inc
-> @@ -88,13 +88,13 @@ static bool trans_c_lbu(DisasContext *ctx, arg_c_lbu *a)
->   static bool trans_c_lhu(DisasContext *ctx, arg_c_lhu *a)
->   {
->       REQUIRE_ZCB(ctx);
-> -    return gen_load(ctx, a, MO_UW);
-> +    return gen_load(ctx, a, MO_TEUW);
->   }
->   
->   static bool trans_c_lh(DisasContext *ctx, arg_c_lh *a)
->   {
->       REQUIRE_ZCB(ctx);
-> -    return gen_load(ctx, a, MO_SW);
-> +    return gen_load(ctx, a, MO_TESW);
->   }
->   
->   static bool trans_c_sb(DisasContext *ctx, arg_c_sb *a)
-> @@ -106,7 +106,7 @@ static bool trans_c_sb(DisasContext *ctx, arg_c_sb *a)
->   static bool trans_c_sh(DisasContext *ctx, arg_c_sh *a)
->   {
->       REQUIRE_ZCB(ctx);
-> -    return gen_store(ctx, a, MO_UW);
-> +    return gen_store(ctx, a, MO_TEUW);
->   }
->   
->   #define X_S0    8
+Patch 3 is the bugfix proper.
+
+thanks
+-- PMM
+
+Peter Maydell (2):
+  include/system/memory.h: Clarify address_space_destroy() behaviour
+  physmem: Destroy all CPU AddressSpaces on unrealize
+
+Peter Xu (1):
+  memory: New AS helper to serialize destroy+free
+
+ include/exec/cpu-common.h          | 10 ++++-----
+ include/hw/core/cpu.h              |  1 -
+ include/system/memory.h            | 24 ++++++++++++++++++---
+ hw/core/cpu-common.c               |  1 +
+ stubs/cpu-destroy-address-spaces.c | 15 +++++++++++++
+ system/memory.c                    | 20 +++++++++++++++++-
+ system/physmem.c                   | 34 ++++++++++++++----------------
+ stubs/meson.build                  |  1 +
+ 8 files changed, 78 insertions(+), 28 deletions(-)
+ create mode 100644 stubs/cpu-destroy-address-spaces.c
+
+-- 
+2.43.0
 
 
