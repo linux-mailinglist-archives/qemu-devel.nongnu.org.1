@@ -2,51 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CB5BA8AB6
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 11:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64F1BA8AB9
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 11:39:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3AJV-0002UD-2M; Mon, 29 Sep 2025 05:36:58 -0400
+	id 1v3AKE-0002Yd-K6; Mon, 29 Sep 2025 05:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3AJR-0002Tz-9L
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 05:36:53 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3AJz-0002Y9-VF
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 05:37:27 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3AJG-0005D0-Bm
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 05:36:49 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3AJq-0005Kf-Jk
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 05:37:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
- :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=FxyUNwzEjhFCjy/WHl0ngwC7Tn/NPrKeGE7HgM945N8=; b=ZtcR2QPV/boV3Xz
- +5HngwjPUQ8ih0f63TK3gvBdCYFbxbg7LSdayLOp5cMBZJh9sCQno50z1yf4FlZXfj46c5RSr1ZWE
- LdE8U8yR5RT9CEeNUCw8DywJQt8KsAQ8FO2BWPk3XuYCbS6htPzc7dzpjx8siz+5o8GQVmUhWUjsY
- 7w=;
-Date: Mon, 29 Sep 2025 11:39:01 +0200
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH 03/34] target/riscv: Fix size of mcause
-Message-ID: <js46hjbkexanadfdo3kuhoc2wacyt2skwbbhlxmed5qpjmhq4p@jlwyfjdg4rwp>
+ List-Help; bh=80Dr2gIhp/Kq0rHAEWQ+/7pm+Z421V3nfZeCo0d0pXM=; b=qfl6dvHCfcYkwuO
+ 4vyI6rOzH0Kz3bGtywjRwdE4HGpPtyqDL3xWaxmhFvwDgw0WgTbo6IRCBmOI9+PXI+4JW294pR3tz
+ jckKrysl3iHgPSJg+B5hFMm8DmF23W+pdH6H+LusfzgcHTwI25KM4bxMEl6n8K2wdpOeQbu5cQ5nm
+ 7M=;
+Date: Mon, 29 Sep 2025 11:39:48 +0200
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, 
+	qemu-devel@nongnu.org
+Subject: Re: [RFC PATCH 02/34] target/riscv: Fix size of trivial CPUArchState
+ fields
+Message-ID: <b3onx34e5csnxtsrttjbx2bu3ayzkyce4hfiqlrm32kuogibof@ow5z4z2ewan7>
 References: <20250924072124.6493-1-anjo@rev.ng>
- <20250924072124.6493-4-anjo@rev.ng>
- <d78f6956-0800-4a7f-9cc0-7c2d9935dc3e@linaro.org>
+ <20250924072124.6493-3-anjo@rev.ng>
+ <63d16a48-f5ad-4357-a33b-09a157d33826@linaro.org>
+ <CAKmqyKP6oeF5Xy868A3D=4yZR5_=gFbSt9J2wzPB7Gr1RmO2dQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <d78f6956-0800-4a7f-9cc0-7c2d9935dc3e@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKmqyKP6oeF5Xy868A3D=4yZR5_=gFbSt9J2wzPB7Gr1RmO2dQ@mail.gmail.com>
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,29 +63,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
+Reply-to:  "anjo@rev.ng" <anjo@rev.ng>
+From:  "anjo@rev.ng" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/09/25, Richard Henderson wrote:
-> On 9/24/25 00:20, Anton Johansson via wrote:
-> > and update formatting in logs.
-> > 
-> > Signed-off-by: Anton Johansson <anjo@rev.ng>
-> > ---
-> >   target/riscv/cpu.h     | 2 +-
-> >   target/riscv/machine.c | 2 +-
-> >   2 files changed, 2 insertions(+), 2 deletions(-)
+On 29/09/25, Alistair Francis wrote:
+> On Thu, Sep 25, 2025 at 7:37 AM Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+> >
+> > On 9/24/25 00:20, Anton Johansson via wrote:
+> > > +++ b/target/riscv/machine.c
+> > > @@ -84,13 +84,13 @@ static const VMStateDescription vmstate_hyper = {
+> > >       .minimum_version_id = 4,
+> > >       .needed = hyper_needed,
+> > >       .fields = (const VMStateField[]) {
+> > > -        VMSTATE_UINTTL(env.hstatus, RISCVCPU),
+> > > -        VMSTATE_UINTTL(env.hedeleg, RISCVCPU),
+> > > +        VMSTATE_UINT64(env.hstatus, RISCVCPU),
+> > > +        VMSTATE_UINT64(env.hedeleg, RISCVCPU),
+> >
+> > You can't change these sizes without bumping the version id.
+> >
+> > I don't know if riscv really cares about migration stability yet.
+> > If it does, then you have to jump through more hoops.
 > 
-> There is no updating of logs.  Incorrectly split patch?
-> Cut and paste error on the commit message?
+> Not really, I think a version bump would be enough
 > 
-> r~
+> Alistair
 
-Agh yes you're right, I was going to squash this patch into the trivial
-changes.  A previous verision of this patchset touched larger parts of
-target/.
+Thanks, I will address this in v2.
 
 //Anton
 
