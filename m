@@ -2,134 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CDEBA9F8B
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F13ABA9FBB
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 18:15:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3GTu-00039f-AK; Mon, 29 Sep 2025 12:12:06 -0400
+	id 1v3GVb-00049q-A9; Mon, 29 Sep 2025 12:13:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3GTi-00038S-1Y
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:11:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1v3GVW-000498-SO
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:13:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3GTe-0004oF-7q
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:11:53 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1v3GVN-0005Ge-34
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 12:13:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759162306;
+ s=mimecast20190719; t=1759162410;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=klCbdKWv205TueXph5zhcNjHe/0wKnrtkNzFlmAYT+c=;
- b=LiSm0eRcdndDgUW2x610TekW8nXU5yhDo8UAtBCddzvXT9uYROtWv+58DvdykrLNWWX+u/
- Wl5QWq9wM4Jmz3yKlmhVejaU5f9k3NSCH9iJcx4ACYB+XLkq/doDDGKEMoHhENTMEX076T
- e0r/RKSFEMWmwx0V/TClxbumWQPumbs=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V5FQfi5+60+FYu1bBdU/dOdi8w4fRkHBNI51zjoQbQU=;
+ b=AH/84x6g+HHVyu/LIKhV1Afnm74In7P55YlFBzPaSmtyWPJptd0CFj8N9wL0+vtEg34SK9
+ jPqZw3NWelOuRsLyvNmi1pzbdGch9kzX91ld2dSlCtwkYjovkAiLNPyRK9WDZ34MlGcXHv
+ 6T98E5B/NMX7emkqMirIRbMm73svnvs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-4vne1bs-M0KAUqpLmy2YOg-1; Mon, 29 Sep 2025 12:11:44 -0400
-X-MC-Unique: 4vne1bs-M0KAUqpLmy2YOg-1
-X-Mimecast-MFC-AGG-ID: 4vne1bs-M0KAUqpLmy2YOg_1759162303
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b3cd45a823cso125957066b.2
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 09:11:43 -0700 (PDT)
+ us-mta-218-19yP3OhWNh6gDSEwmL3BFQ-1; Mon, 29 Sep 2025 12:13:27 -0400
+X-MC-Unique: 19yP3OhWNh6gDSEwmL3BFQ-1
+X-Mimecast-MFC-AGG-ID: 19yP3OhWNh6gDSEwmL3BFQ_1759162407
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3f3787688b0so2637841f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 09:13:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759162303; x=1759767103;
+ d=1e100.net; s=20230601; t=1759162406; x=1759767206;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=klCbdKWv205TueXph5zhcNjHe/0wKnrtkNzFlmAYT+c=;
- b=lk7GAcvWr+PNFqjhysyqVJh8GXuBw/Lhm/cbuQqI/OKdzqI+9/On4WtuS5sN8ZM+7k
- 3ZNZk52JCaeTXKDwQixFiNvexZUpclHrCTUaRQyRLWvHTf7xBmQywOob0sIscFufIdQl
- xZnTfRcn4tLau33lb708HAmmSDElFRLnRfBBQbmPpiO/lPph9Jj6OOOFGDM7e5+MdJYc
- cyTN+1cG3FVlLj/1/hMinwvOwKzyLY8vPUVffTY9rvGfLIC1kWZVavNkrRqHnMdlaEg7
- qd0cI6KKNqyR1INQtfUIR9v+DayqD8ltwxY/rwOr+zFd5+RwoR6XsTUrudooVXqwR9Bo
- 56ww==
-X-Gm-Message-State: AOJu0YxokMzauCps4/WasJsu1Rmohx5Y1fEN0JVderCgAgQFIQTtP1Xj
- Vz++ADlYxYm/l/YW95jk1nFy3meYVRNpq1KemJ8QHlrspTNS6JzPQJAdHAYw9QwnBmNmA1l29/i
- G7cfLxMd9SJfLpnF0x0VsSJDtFQsnRSy1Hx6oofqhNhXjkChCf41Im7nL
-X-Gm-Gg: ASbGnct37EG/4xkyMgdJeA2vrBUlgBFMgVjf72Ebyt6+x9oIdnALw5fz1T3pnmViLsM
- Klqjk5mtUBfZMIABummdjD/wumf13N/y/kRXbneR6tkvjm8RYHLxh5fKw8GBAa+yDcndzlul0wd
- Bs3Le5qaqOSUAjrxxKfLbTSTXpbaCD5m5p8qFmxTn+qQhLcaJ4h5VuL9+4FNr4qVNgnhzNmx/Rp
- v4luFCHvGMRQqaylS49DKEwFl3+lP2ePPuoRpB8WsncydG1QrMJM0Nd6His5EEvJdBOhSkAbWme
- WlmJj62iZJSRSPQXoxmdYgnKtaBB+vSlSc80hXfdJDeCOV2g3vjbmKGQoGChjR2FvjI3r5Rdw3d
- 0/t2BXLKGTGZ2fstpB39wnnYFxo4DeTavt88jW5ssU3N5cQ==
-X-Received: by 2002:a17:907:7e9b:b0:b3b:5fe6:577a with SMTP id
- a640c23a62f3a-b3b5fe659a4mr817162566b.8.1759162302843; 
- Mon, 29 Sep 2025 09:11:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWKLATIsGwEd2IQPO/MK4Gp9VHRj1JyWwRahwLThgpB2FNtf33pP20yzVUbSpsqTIh0F+D5Q==
-X-Received: by 2002:a17:907:7e9b:b0:b3b:5fe6:577a with SMTP id
- a640c23a62f3a-b3b5fe659a4mr817160466b.8.1759162302349; 
- Mon, 29 Sep 2025 09:11:42 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.127.188])
- by smtp.googlemail.com with ESMTPSA id
- a640c23a62f3a-b3c40d9ced1sm404876766b.80.2025.09.29.09.11.41
+ bh=V5FQfi5+60+FYu1bBdU/dOdi8w4fRkHBNI51zjoQbQU=;
+ b=NAhubFi3p6rXeeN6Ll/3BdOOZb4cSPwDXGTp3K/rfq9CM0xBuZ9p3Ea6kZ3skmAPzt
+ 4rgsLKGWbzZJc5y38YjACCg4uDozcaudamhRST6+q0yhfXQ3gifXjFQiu63BjG7aaAgV
+ 4hSn+bH6Ar4IygUs6L9Zh/hh7Kj26gBXVQVG1z6ayzN8R0pxCqKgyEUnPpbWeOL+DtJC
+ zgW9Oa4s0yzZL4iiXsJ3L3jmy+t5Nwn7gW3U2pgzaZjKyxbFqergVVXu01QB4cI9sZi6
+ Com24gNZtsgyfIbS4hg+MTeD+F28impQSq4qxi04LhmU6ZtX/sKcreXn8ondibstyZ7j
+ nPog==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVgxI29657BCuDnzLd1ZO/oJKAGpRu+XCXREgAQ52V61TjUSY5Qu5X0BBexWaZJ0PIPMaFXaqReQ25O@nongnu.org
+X-Gm-Message-State: AOJu0YyvNrpmBtVq1ABhgjsp6tl2x8rqTgACcYm3M3WY9ZGEODETarwD
+ T1dXd0np57ckLehK38J4zgPwaEEp+P/NNeIQrYZbbenRFJpgK5bNeKqyQvHaxR7qgnkiQlM1WS2
+ 6cGY39a/JLoagI9SvPVzObXvJQEZvLEqRDRzqu7MDPF32dnogFHebdNdM
+X-Gm-Gg: ASbGncsfzgZrLbn6++FnMORDZvodEdrmtcySNiWtyprAUzc3dRPBXdNNs8i5uv7I/tv
+ yma8me+I4E9uruqtRVIQiA+rBL2QKy+orKpIo/kjcifXCC8fHvWscBP/2XsJZmNyv1Y9m09VAX/
+ dNzcqKfK5YmwojxHrUJQObvUgyFrft3UwA4TrVlWf0DuyLFUQ4aOEVLyPtvUBUGCh7ZpX01arwz
+ HUwSfNVC3nL/nDFQXNzQ+xIcSm53BTYVZNvwAK7XpWXg2/pJtHEsFAwFbmJ3j5HzC9pcPg53ERs
+ dcuoDKyDbAjH4clO0m2vVctp1l01gbmecwCiQ8WK0Gs4YBIrdin3QT9BxS4GPtCd4MjPAeNqSr5
+ Weqo=
+X-Received: by 2002:a05:6000:2c06:b0:3ee:1125:fb6d with SMTP id
+ ffacd0b85a97d-40e468e7375mr11782383f8f.9.1759162406532; 
+ Mon, 29 Sep 2025 09:13:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKpSH9fRflMsb1ojiq5LUNQpXmbTnkW3vSiA+dsRwDaRi0QYqZM24S/w/DhOGTZ1BCCMV2aw==
+X-Received: by 2002:a05:6000:2c06:b0:3ee:1125:fb6d with SMTP id
+ ffacd0b85a97d-40e468e7375mr11782363f8f.9.1759162406151; 
+ Mon, 29 Sep 2025 09:13:26 -0700 (PDT)
+Received: from ?IPV6:2a01:599:901:4a65:f2e2:845:f3d2:404d?
+ ([2a01:599:901:4a65:f2e2:845:f3d2:404d])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-41f0c467ecasm6026435f8f.38.2025.09.29.09.13.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Sep 2025 09:11:41 -0700 (PDT)
-Message-ID: <af2375da-427e-4546-83a2-fc816717ee69@redhat.com>
-Date: Mon, 29 Sep 2025 18:11:40 +0200
+ Mon, 29 Sep 2025 09:13:25 -0700 (PDT)
+Message-ID: <d6a3321c-1492-4c64-9341-8071659220fe@redhat.com>
+Date: Mon, 29 Sep 2025 18:13:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] rust: migration: implement ToMigrationState for Timer
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, manos.pitsidianakis@linaro.org
-References: <20250920142958.181910-1-pbonzini@redhat.com>
- <20250920142958.181910-7-pbonzini@redhat.com> <aNqwACkjytK3+QQ4@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 1/6] system/ramblock: Remove obsolete comment
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ kvm@vger.kernel.org, Peter Xu <peterx@redhat.com>
+References: <20250929154529.72504-1-philmd@linaro.org>
+ <20250929154529.72504-2-philmd@linaro.org>
+From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <aNqwACkjytK3+QQ4@intel.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250929154529.72504-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,25 +160,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/29/25 18:12, Zhao Liu wrote:
->> +    fn snapshot_migration_state(&self, target: &mut i64) -> Result<(), InvalidError> {
->> +        // SAFETY: as_ptr() is unsafe to ensure that the caller reasons about
->> +        // the pinning of the data inside the Opaque<>.  Here all we do is
->> +        // access a field.
->> +        *target = unsafe { &*self.as_ptr() }.expire_time;
+On 29.09.25 17:45, Philippe Mathieu-Daudé wrote:
+> This comment was added almost 5 years ago in commit 41aa4e9fd84
+> ("ram_addr: Split RAMBlock definition"). Clearly it got ignored:
 > 
-> C side checks timer_pending(), which ensures when the timer is
-> inactive, it always saves u64::MAX.
+>    $ git grep -l system/ramblock.h
+>    hw/display/virtio-gpu-udmabuf.c
+>    hw/hyperv/hv-balloon.c
+>    hw/virtio/vhost-user.c
+>    migration/dirtyrate.c
+>    migration/file.c
+>    migration/multifd-nocomp.c
+>    migration/multifd-qatzip.c
+>    migration/multifd-qpl.c
+>    migration/multifd-uadk.c
+>    migration/multifd-zero-page.c
+>    migration/multifd-zlib.c
+>    migration/multifd-zstd.c
+>    migration/multifd.c
+>    migration/postcopy-ram.c
+>    system/ram-block-attributes.c
+>    target/i386/kvm/tdx.c
+>    tests/qtest/fuzz/generic_fuzz.c
 > 
-> But now we save the expire_time directly in Rust. I think this would be
-> possible to break the migration from Rust timer to C timer, because at
-> C side, timer_get() checks whether expire_time is -1 and we can't ensure
-> expire_time won't store -2 (or other unusual negative values).
+> At this point it seems saner to just remove it.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
 
-I think this should work in both cases because timer_pending() checks >= 
-0 and negative values are extremely far in the future.  But I'll change 
-it to timer_expire_time_ns() for safety and clarity.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Paolo
+-- 
+Cheers
+
+David / dhildenb
 
 
