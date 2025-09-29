@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA0ABA7E2C
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 05:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91369BA7E35
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 05:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v34xe-0005Ia-0y; Sun, 28 Sep 2025 23:54:02 -0400
+	id 1v34xn-0005JR-1o; Sun, 28 Sep 2025 23:54:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1v34xa-0005IF-S6
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 23:53:58 -0400
+ id 1v34xj-0005JC-D5
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 23:54:07 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1v34xS-0002xf-7i
- for qemu-devel@nongnu.org; Sun, 28 Sep 2025 23:53:57 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1v34xS-0002xe-7M
+ for qemu-devel@nongnu.org; Sun, 28 Sep 2025 23:54:05 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxG9LGAtpocvQPAA--.32580S3;
+ by gateway (Coremail) with SMTP id _____8Bx2tHGAtpodfQPAA--.33952S3;
  Mon, 29 Sep 2025 11:53:42 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJBxpeTDAtpoKGG8AA--.3627S4;
+ by front1 (Coremail) with SMTP id qMiowJBxpeTDAtpoKGG8AA--.3627S5;
  Mon, 29 Sep 2025 11:53:42 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 2/3] target/loongarch: Move function do_raise_exception()
- to tcg_cpu.c
-Date: Mon, 29 Sep 2025 11:53:37 +0800
-Message-Id: <20250929035338.2320419-3-maobibo@loongson.cn>
+Subject: [PATCH v2 3/3] target/loongarch: Define loongarch_exception_name() as
+ static
+Date: Mon, 29 Sep 2025 11:53:38 +0800
+Message-Id: <20250929035338.2320419-4-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250929035338.2320419-1-maobibo@loongson.cn>
 References: <20250929035338.2320419-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxpeTDAtpoKGG8AA--.3627S4
+X-CM-TRANSID: qMiowJBxpeTDAtpoKGG8AA--.3627S5
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,152 +65,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Function do_raise_exception() is specified with TCG mode, so move
-it to file target/loongarch/tcg/tcg_cpu.c
-
-It is only code movement and there is no any function change.
+Function loongarch_exception_name() is only called in defined file
+target/loongarch/tcg/tcg_cpu.c, set this function as static.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/cpu.c         | 56 ----------------------------------
- target/loongarch/tcg/tcg_cpu.c | 56 ++++++++++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+), 56 deletions(-)
+ target/loongarch/internals.h   | 2 --
+ target/loongarch/tcg/tcg_cpu.c | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 245c6d3ab9..86490e0f72 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -44,62 +44,6 @@ const char * const fregnames[32] = {
-     "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31",
- };
+diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
+index e994f5a3d3..8793bd9df6 100644
+--- a/target/loongarch/internals.h
++++ b/target/loongarch/internals.h
+@@ -24,8 +24,6 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
+                                    uint32_t exception,
+                                    uintptr_t pc);
  
--struct TypeExcp {
--    int32_t exccode;
--    const char * const name;
--};
+-const char *loongarch_exception_name(int32_t exception);
 -
--static const struct TypeExcp excp_names[] = {
--    {EXCCODE_INT, "Interrupt"},
--    {EXCCODE_PIL, "Page invalid exception for load"},
--    {EXCCODE_PIS, "Page invalid exception for store"},
--    {EXCCODE_PIF, "Page invalid exception for fetch"},
--    {EXCCODE_PME, "Page modified exception"},
--    {EXCCODE_PNR, "Page Not Readable exception"},
--    {EXCCODE_PNX, "Page Not Executable exception"},
--    {EXCCODE_PPI, "Page Privilege error"},
--    {EXCCODE_ADEF, "Address error for instruction fetch"},
--    {EXCCODE_ADEM, "Address error for Memory access"},
--    {EXCCODE_SYS, "Syscall"},
--    {EXCCODE_BRK, "Break"},
--    {EXCCODE_INE, "Instruction Non-Existent"},
--    {EXCCODE_IPE, "Instruction privilege error"},
--    {EXCCODE_FPD, "Floating Point Disabled"},
--    {EXCCODE_FPE, "Floating Point Exception"},
--    {EXCCODE_DBP, "Debug breakpoint"},
--    {EXCCODE_BCE, "Bound Check Exception"},
--    {EXCCODE_SXD, "128 bit vector instructions Disable exception"},
--    {EXCCODE_ASXD, "256 bit vector instructions Disable exception"},
--    {EXCP_HLT, "EXCP_HLT"},
--};
--
--const char *loongarch_exception_name(int32_t exception)
--{
--    int i;
--
--    for (i = 0; i < ARRAY_SIZE(excp_names); i++) {
--        if (excp_names[i].exccode == exception) {
--            return excp_names[i].name;
--        }
--    }
--    return "Unknown";
--}
--
--void G_NORETURN do_raise_exception(CPULoongArchState *env,
--                                   uint32_t exception,
--                                   uintptr_t pc)
--{
--    CPUState *cs = env_cpu(env);
--
--    qemu_log_mask(CPU_LOG_INT, "%s: exception: %d (%s)\n",
--                  __func__,
--                  exception,
--                  loongarch_exception_name(exception));
--    cs->exception_index = exception;
--
--    cpu_loop_exit_restore(cs, pc);
--}
--
- static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
- {
-     set_pc(cpu_env(cs), value);
+ #ifdef CONFIG_TCG
+ int ieee_ex_to_loongarch(int xcpt);
+ void restore_fp_status(CPULoongArchState *env);
 diff --git a/target/loongarch/tcg/tcg_cpu.c b/target/loongarch/tcg/tcg_cpu.c
-index c7f49838e3..59b5800ecf 100644
+index 59b5800ecf..82b54e6dc3 100644
 --- a/target/loongarch/tcg/tcg_cpu.c
 +++ b/target/loongarch/tcg/tcg_cpu.c
-@@ -16,6 +16,62 @@
- #include "tcg_loongarch.h"
- #include "internals.h"
+@@ -45,7 +45,7 @@ static const struct TypeExcp excp_names[] = {
+     {EXCP_HLT, "EXCP_HLT"},
+ };
  
-+struct TypeExcp {
-+    int32_t exccode;
-+    const char * const name;
-+};
-+
-+static const struct TypeExcp excp_names[] = {
-+    {EXCCODE_INT, "Interrupt"},
-+    {EXCCODE_PIL, "Page invalid exception for load"},
-+    {EXCCODE_PIS, "Page invalid exception for store"},
-+    {EXCCODE_PIF, "Page invalid exception for fetch"},
-+    {EXCCODE_PME, "Page modified exception"},
-+    {EXCCODE_PNR, "Page Not Readable exception"},
-+    {EXCCODE_PNX, "Page Not Executable exception"},
-+    {EXCCODE_PPI, "Page Privilege error"},
-+    {EXCCODE_ADEF, "Address error for instruction fetch"},
-+    {EXCCODE_ADEM, "Address error for Memory access"},
-+    {EXCCODE_SYS, "Syscall"},
-+    {EXCCODE_BRK, "Break"},
-+    {EXCCODE_INE, "Instruction Non-Existent"},
-+    {EXCCODE_IPE, "Instruction privilege error"},
-+    {EXCCODE_FPD, "Floating Point Disabled"},
-+    {EXCCODE_FPE, "Floating Point Exception"},
-+    {EXCCODE_DBP, "Debug breakpoint"},
-+    {EXCCODE_BCE, "Bound Check Exception"},
-+    {EXCCODE_SXD, "128 bit vector instructions Disable exception"},
-+    {EXCCODE_ASXD, "256 bit vector instructions Disable exception"},
-+    {EXCP_HLT, "EXCP_HLT"},
-+};
-+
-+const char *loongarch_exception_name(int32_t exception)
-+{
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(excp_names); i++) {
-+        if (excp_names[i].exccode == exception) {
-+            return excp_names[i].name;
-+        }
-+    }
-+    return "Unknown";
-+}
-+
-+void G_NORETURN do_raise_exception(CPULoongArchState *env,
-+                                   uint32_t exception,
-+                                   uintptr_t pc)
-+{
-+    CPUState *cs = env_cpu(env);
-+
-+    qemu_log_mask(CPU_LOG_INT, "%s: exception: %d (%s)\n",
-+                  __func__,
-+                  exception,
-+                  loongarch_exception_name(exception));
-+    cs->exception_index = exception;
-+
-+    cpu_loop_exit_restore(cs, pc);
-+}
-+
- #ifndef CONFIG_USER_ONLY
- static void loongarch_cpu_do_interrupt(CPUState *cs)
+-const char *loongarch_exception_name(int32_t exception)
++static const char *loongarch_exception_name(int32_t exception)
  {
+     int i;
+ 
 -- 
 2.39.3
 
