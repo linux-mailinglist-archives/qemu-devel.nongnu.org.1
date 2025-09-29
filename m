@@ -2,88 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705B4BA8086
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 07:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 823A5BA8344
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Sep 2025 08:58:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v36ou-0007XO-NU; Mon, 29 Sep 2025 01:53:08 -0400
+	id 1v37oH-0006sW-Bf; Mon, 29 Sep 2025 02:56:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1v36oZ-0007WJ-ED
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 01:52:49 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1v36oQ-0002FI-3I
- for qemu-devel@nongnu.org; Mon, 29 Sep 2025 01:52:47 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-6349e3578adso7996350a12.1
- for <qemu-devel@nongnu.org>; Sun, 28 Sep 2025 22:52:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759125148; x=1759729948; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+VCq/p/lbn3Kl+U3I6tXHtQ0bYzRnf9Ug2LmxEWr4K4=;
- b=ZRrbDXp25a8RRLMird1amQ7/B9A34aXBhWPfSXUmYrq/D/cyB0OAfP201wOGMmfbNy
- 2jgJ0XaaAboipWOGjMckSKBOsyNWK31HEDHBV/WT7BXJpKQk6GbDqz6NeDKUBVfQCnwd
- 3d74iVotBxTgBknYz91qlR+mKlPwGPH3C5vDrMuoFjoYbL1bsFji/xgXGHUKQh6xdjYS
- xc8dCuTRQU/2m7nh4Je3ZYRkPMV7GOSMICFSsPL6usuOhMnTeptIwaknZzLF9MNOF8eT
- wWamrOpynCUBWxMxy620wTWyc67Ux0vvrOasmHBxgDjHS/afNAYcr876RfpO5/DvwnHd
- FLHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759125148; x=1759729948;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+VCq/p/lbn3Kl+U3I6tXHtQ0bYzRnf9Ug2LmxEWr4K4=;
- b=KTiXV41AeNnBJ1EF5mg4/z0oyRQSSiBaPgeaQTTqchSC3WcgtEMVMpOoTiMueE/JPc
- 4WeJqYmganwuHtbCuHiLgu+IM8sci6NnBIhJQvN4meysK3l7BlI/LgNZ24gEvBhSPEmh
- 4UXP2klsaaWnVv3HKhbhQaAULHDmKPB2znT+E4Arekh1TR03VMyzRCkA2pYuRkaqjJPt
- ks/X84qhjX7CFqMjPmfkKCOu9TPWXSAPGZONIEVbTKM1inRlvpUqrVGZifzInF0SptQV
- 8hp/TExmBsibSYveXJTVUC1zeZb3NQkx0n4zXxm+ImEwTZ+tW5Avj8oIf6Eg11IG1o6Q
- TN/w==
-X-Gm-Message-State: AOJu0YzrKX4pq1GOGTUgnNIXxwoDPfTLQWp+3WVEZR/f0RSoRrCrZuXU
- o8GXyAFt5iqspqMyUFzhI/9RGxpx3XyMydSTIic0ZKYDaGGYzLKe3j6WjbHIzvtcgNax33a8+IO
- 5QKbwbNXeDlQ5ZjRQIEd3uNSVyZP64UvPVfsBFg8zoA==
-X-Gm-Gg: ASbGncsNlD8byBgFNQFCSCeD5MqFnfEOwj/iij46hHuVUII09/yrYlFlG0sEgaTwLtT
- 7dVy/VbMiweGsGkvuQanWk7U+b50mDi7VxbR1yjuGmhxrbkvYt30nJgewJoIKfpQeHC/BLnw7gJ
- s38uoJZEMpvA4VkyaEiHRRKfmptBtLNPqQMXc55qr3HSq14u+wN4cPzOCs3Ex2EMGX9RIHCv0yC
- T9D
-X-Google-Smtp-Source: AGHT+IHmR0pXlkXEaqYJAssv72wOWNWbEpP7cKo7XWRMxbPtxerSu5ZwGFrCXz8PUQpfUTuMB4DcO2s5jaBgQlgA0uM=
-X-Received: by 2002:a17:906:16d9:b0:b3b:b839:577b with SMTP id
- a640c23a62f3a-b3bb8395f8cmr507944166b.12.1759125147852; Sun, 28 Sep 2025
- 22:52:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v37oE-0006sO-Jz
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 02:56:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v37o6-0003ft-Df
+ for qemu-devel@nongnu.org; Mon, 29 Sep 2025 02:56:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759128974;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=ya2ZjeKqMyBlEfIJG3gRL2TQ4Zi5/Td4YQqqSAYntjA=;
+ b=KUTuRBK48trUparpI00T8mqPFTGt1/L2qFtBjYXDWkZUk4uM0AdmuSf6Ksfk96i9VkU/3x
+ ffEZ9GckVwfyX9W0ySyLf8EaGTW7smDDMkWlLCwm0Www8GI7Sh5EgXgXoH6h1T7JF513ty
+ qs6lLeObVxRgasFs7axrPVWmUNACTI4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-c14mZT0oP1abl1eajFFx2Q-1; Mon,
+ 29 Sep 2025 02:56:10 -0400
+X-MC-Unique: c14mZT0oP1abl1eajFFx2Q-1
+X-Mimecast-MFC-AGG-ID: c14mZT0oP1abl1eajFFx2Q_1759128969
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 582951956053; Mon, 29 Sep 2025 06:56:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B8AFC19560A2; Mon, 29 Sep 2025 06:56:08 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2784921E6A27; Mon, 29 Sep 2025 08:56:06 +0200 (CEST)
+Resent-To: zhenzhong.duan@intel.com, qemu-devel@nongnu.org,
+ steven.sistare@oracle.com
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Mon, 29 Sep 2025 08:56:06 +0200
+Resent-Message-ID: <87wm5h927t.fsf@pond.sub.org>
+X-From-Line: armbru@redhat.com Mon Sep 29 08:00:06 2025
+Received: from imap.gmail.com ([2a00:1450:400c:c1d::6c]:993) by
+ dusky.pond.sub.org with IMAP4-SSL getmail6 msgid:11/362461; 29 Sep 2025
+ 06:00:06 -0000
+Received: from blackfin.pond.sub.org (p4fd050ba.dip0.t-ipconnect.de.
+ [79.208.80.186]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e32bf61b1sm88009965e9.2.2025.09.28.21.32.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 28 Sep 2025 21:32:47 -0700 (PDT)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4DC7021E6A27; Mon, 29 Sep 2025 06:32:46 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,  "eric.auger@redhat.com"
+ <eric.auger@redhat.com>,  "steven.sistare@oracle.com"
+ <steven.sistare@oracle.com>
+Subject: Re: [PATCH 5/5] accel/kvm: Fix SIGSEGV when execute "query-balloon"
+ after CPR transfer
+In-Reply-To: <IA3PR11MB91367C4C3B50CFCCDDB96C3A9218A@IA3PR11MB9136.namprd11.prod.outlook.com>
+ (Zhenzhong Duan's message of "Sun, 28 Sep 2025 08:13:11 +0000")
+References: <20250926022540.1884023-1-zhenzhong.duan@intel.com>
+ <87v7l5stsj.fsf@pond.sub.org>
+ <IA3PR11MB91367C4C3B50CFCCDDB96C3A9218A@IA3PR11MB9136.namprd11.prod.outlook.com>
+Date: Mon, 29 Sep 2025 06:32:46 +0200
+Message-ID: <875xd1anf5.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20250925025520.71805-1-philmd@linaro.org>
- <20250925025520.71805-3-philmd@linaro.org>
-In-Reply-To: <20250925025520.71805-3-philmd@linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Mon, 29 Sep 2025 08:52:01 +0300
-X-Gm-Features: AS18NWB3aHu3e0FbaOMrIuIjUMcGC42FdIPVgPmXuiLfo0G3DvYKo2-l5KGdA-I
-Message-ID: <CAAjaMXa9qGfE=tjOsLg_pZ_Zjzpwen1agdfxjJe6VNi2MnOYgQ@mail.gmail.com>
-Subject: Re: [PATCH 2/4] cpus: Access CPUState::thread_kicked atomically
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, Mads Ynddal <mads@ynddal.dk>, 
- Alexander Graf <agraf@csgraf.de>, Cameron Esfahani <dirty@apple.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Roman Bolshakov <rbolshakov@ddn.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-getmail-retrieved-from-mailbox: [Gmail]/All Mail
+X-GMAIL-LABELS: "\\Sent"
+X-GMAIL-THRID: 1844291735063470039
+X-GMAIL-MSGID: 1844571398150629311
+Lines: 16
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.539,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,39 +110,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 25, 2025 at 5:55=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> cpus_kick_thread() is called via cpu_exit() -> qemu_cpu_kick(),
-> and also via gdb_syscall_handling(). Access the CPUState field
-> using atomic accesses. See commit 8ac2ca02744 ("accel: use atomic
-> accesses for exit_request") for rationale.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  system/cpus.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/system/cpus.c b/system/cpus.c
-> index 6062226d4ac..818a8047198 100644
-> --- a/system/cpus.c
-> +++ b/system/cpus.c
-> @@ -480,10 +480,10 @@ void qemu_process_cpu_events(CPUState *cpu)
->
->  void cpus_kick_thread(CPUState *cpu)
->  {
-> -    if (cpu->thread_kicked) {
-> +    if (qatomic_read(&cpu->thread_kicked)) {
->          return;
->      }
-> -    cpu->thread_kicked =3D true;
-> +    qatomic_set(&cpu->thread_kicked, true);
->
->  #ifndef _WIN32
->      int err =3D pthread_kill(cpu->thread->thread, SIG_IPI);
-> --
-> 2.51.0
->
+"Duan, Zhenzhong" <zhenzhong.duan@intel.com> writes:
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>>-----Original Message-----
+>>From: Markus Armbruster <armbru@redhat.com>
+
+[...]
+
+>>Is freeing @kvm_state after CPR transfer useful?
+>
+> kvm_state was NULLed, let me try to keep it for query just like in kernel
+> task struct is retained when child process exit.
+>
+> I'd like to add your Suggested-by on this if you don't object.
+
+I don't :)
+
 
