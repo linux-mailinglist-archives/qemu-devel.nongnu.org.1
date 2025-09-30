@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50E7BAC3D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 11:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAF4BAC3D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 11:18:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3WST-0004xO-Oi; Tue, 30 Sep 2025 05:15:41 -0400
+	id 1v3WSW-0004wr-C2; Tue, 30 Sep 2025 05:15:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3WSF-0004sx-5N
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3WSF-0004sy-53
  for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:15:27 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3WS3-00017Y-9S
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:15:24 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3f0134ccc0cso3886239f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 02:15:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3WS6-000191-OT
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:15:26 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-46e34bd8eb2so10668045e9.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 02:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759223708; x=1759828508; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759223713; x=1759828513; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9WFpW9ypRp+isif0eE27JaFFn5D2+mWBML36ZQI1h6A=;
- b=CTi2yeuwHnV2vz9QF9g7xGar/lU5B+Pl7IMfLF53IozlBOZKIYDWkc2Hiu1rhBfDiZ
- Vpgdfukyza+ZG2Fv8utc4jbQk1jXBZ0oIyamjzFqlST9vvwYpZCwM+wXKfC2IIfUxr+G
- 3T7Zlt5+X59I97L1sUtI474IxWNClGt98NIThoXJvBDIgbOk54idjo9WufaWeTd8+ng9
- grxGg+7AfLH1c8FTCHfl9VCz5zWM9sUqg/TnqQC2AzUzdmaumu6B28gX8RDqpML2G4XG
- lh6mX24swSK3UMnB1SHrBDnVa6lBAxDlcDdQXBO3LAKI7rJ/LKOfqb1HPMYLwqDnbn5c
- KU6Q==
+ bh=jyfUsjfODVQJYQKbba0puUbRexP7Udvd0C0uJa768IQ=;
+ b=EMJo+ZS+AqsG7m1i+RN6muyArAx2TWxJa8egozEDHHQ3jPTa/jIfyjnWuIKgswdSDw
+ JaQjkxz9/JHBIA3lII69mGpS9DSv5Aa8enONgLSHrx3GPusLOoWd0/Z3Xg6EwGMKs1PE
+ Xv0uuHA2uZg6Wv29Zx+7YyOdtJERW43TFEM3f1vkCE4UuXRyn7heozkbCHMMTPgnSaBU
+ JkRJkzCb05BL7GanLzUvN+KqCxbZ2wRyuOTzVBrN5pXKtncQOOy/dQ5/I8mibFTdJbwV
+ MmtE9bm4vENdc0pU8Ic6dEi/L6K/lKsxFI3VWd3VMmgNItVt53fJmAj7J07F22N4Vawk
+ aaXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759223708; x=1759828508;
+ d=1e100.net; s=20230601; t=1759223713; x=1759828513;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9WFpW9ypRp+isif0eE27JaFFn5D2+mWBML36ZQI1h6A=;
- b=F3yqDLmFgwg+K6nrIZqR926Mej02EPkcC/rdKLN5Hrk7HHSd8dkMdO4Y87iWv5BcW4
- do/6d26On0YJ6fSRHYgU3P15VBdF/nAtiyvngZZDWo8PSUC3lF+VXCnf95s/Z2wIxbcP
- 6HRoejkPb094j2j8IS0wgy8UZpysqCdOJGIPVjxo0x8u5pi4cuH9DAcXtCaVV0CkO/fV
- XnoDjzK+uDE+IAiOGGR3oJSgSoPcI5i52hbjN3Cwei1Bt41Ku5mh97fPYZkMwefNZxUZ
- 22WyNyFlnnCKnfO+xgNGAo/hihVIjv2vGrp9/K2Crti/UDe3cv3tkYbGuc6RFO+g1/fj
- UbWg==
-X-Gm-Message-State: AOJu0YwKCRoNmS/rwh67OvRRCWm0xsyKVseZJBKYet0Bna+vE3mf7ZBN
- LoLxeYKHrXK7lGu6/b/UJkg7ctBnbrtcFcGqB7qh7t3o6SJXdmSM9rerKtl2loNm1GisLeiqRjg
- An4DPm3I7CA==
-X-Gm-Gg: ASbGncuGNZbPfFPdEfwkvQmb82112nE9mQTaEIxcaRfZH7Pbz42CH996UfHX+Rn1ujw
- 5jvtFedEQqHbHutaJNkSwvfvFKcGLv0FztW4I1DAdrgef+dnmHOJT5RpE/XwkqlHCLKNZEQY0ti
- xwpaTyUp4YrpF9GSloGHcV2Bdbj0Oys9Uw/zTgCVOOI+UJEKF1cA1plZ/NDylizTR6HJrmtRUX6
- b0J+qnVjOs3X3mp3X9PRrt2SREIaGjwowHUF0f5ENmyoMttiLeZmCnmnIA8P54uTgzMyDHGwkfB
- kdRyoPn8wjadKXQU9QmYAWNLNsiekXFvRUz1dBg3s3RCPB2I2GycaTcrpkQtzB4MkxvQ9Sv206U
- +h+8is83g6nFXapJGvqZcCNsMZHU2fjC9TUZLPwaYD442r+EvfWok3Zb03JgWAJ7NwCNxqFl81g
- wg8ySKaJ+vT5Us6GL1BGDg4IFrYCZrGK8=
-X-Google-Smtp-Source: AGHT+IH9rK3GzgXLjxZvYt9xiU1DMXIbzMT3q6OC7g2eMAZBYQUcBbaIwuSBzcfSkocqMTULK+xfng==
-X-Received: by 2002:a05:6000:25c3:b0:3ec:6259:5096 with SMTP id
- ffacd0b85a97d-40e45b8770fmr15917620f8f.21.1759223707849; 
- Tue, 30 Sep 2025 02:15:07 -0700 (PDT)
+ bh=jyfUsjfODVQJYQKbba0puUbRexP7Udvd0C0uJa768IQ=;
+ b=koXk+I8IMHnGs3AkBGCpe+R4yjX2DqQUTqA0w4VWrFNb5cF8DsJ/AoA/lIkmHkwwgH
+ waS4hc9QmEvbXO/aq1VfudNnyusUd6RnGCfS2l75FmY/WAoZP5aoQNo/OFYAGiKYGV/8
+ +qs8DjOi9YPzj00CXFm0w7M2rxGUwjMvtL3UPW5ZpbPpY3KCWkR3/qOU4DdK307+8YjU
+ mK+T4p4VAgPGm6975Qi9F0ikSvEDTYQwT8nke/hgpuOBX4rKIPcZ2f42vj5F/8Y4OC8z
+ hPNwUvfRCWDSyz7t7SldjKVcaRuIajdUE66NbSPdSKtXB+U2p3GsKrXXSrj0KddmZRMc
+ Jkxw==
+X-Gm-Message-State: AOJu0YzQeSvQ7xn/N41TYetWuSomvED7lq9Y9YLYrqcZs3SgW3HA2lOd
+ 8btnrMqDqMCRBj63NO7r56wfczm71817fyj9hoAzrjOUziIJ+U8blc6IWIJcjR5h2jM6jn1Co2G
+ H8jVNLRIKMQ==
+X-Gm-Gg: ASbGncvC6zPel4tRXRkH9vosBiYnVU0sVEYk1LcIGjKY36ihN8wpB2fTw27cd1nbBkX
+ okDyUME0paiFB4/PkGMELiGlvCbzzyGmB/rP5X9VNJVBPoYgd+vg5Wu/llJI24G+2U7cWQ3dmH3
+ zwGWAC0DzZ4vb49SSs6TJbLHakAJVJiwYtcGP53UwNrjnweO2g2DYBy5yGZoOgnkF4lQzfti9Nk
+ jTal47zpGPieXJhixniJN0tQMwkhxmhMj+dZkOMdcntf6JwP/khFeHgWrh+s19f+00M0McKltXT
+ uMlWq3Rlul8u6t5NNZfoxQxsJb36GiWLa1+glhjp3GKGrS/GYuJEYgx8GEThVjShu0ggI8Sta+b
+ ZMsL+Q+oYnOVbvy4JBcogShCgnc+dHLw5wNQBqKb0KG1NOd0azktk4ct5xChU5PjMixgIcVBBZS
+ 308Qn8q+gKowZxeSoSCiKS
+X-Google-Smtp-Source: AGHT+IHrJ1AOAIg3tX8s3cG29OdXc6+pUMYGelwaFUNI33VZputogZi6W5363Py7mIXbHlAe9FVEJA==
+X-Received: by 2002:a05:6000:2410:b0:3ee:13ba:e133 with SMTP id
+ ffacd0b85a97d-40e4354d631mr17350108f8f.1.1759223712906; 
+ Tue, 30 Sep 2025 02:15:12 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-41f00aebdb7sm9073250f8f.57.2025.09.30.02.15.06
+ ffacd0b85a97d-40fb74e46bcsm22011810f8f.8.2025.09.30.02.15.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Sep 2025 02:15:07 -0700 (PDT)
+ Tue, 30 Sep 2025 02:15:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
@@ -72,24 +72,23 @@ Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
  Alex Williamson <alex.williamson@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
  John Levon <john.levon@nutanix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/3] hw/vfio: Avoid ram_addr_t in
- vfio_container_query_dirty_bitmap()
-Date: Tue, 30 Sep 2025 11:14:55 +0200
-Message-ID: <20250930091456.34524-3-philmd@linaro.org>
+Subject: [PATCH v2 3/3] hw/vfio: Use uint64_t for IOVA mapping size in
+ vfio_container_dma_*map
+Date: Tue, 30 Sep 2025 11:14:56 +0200
+Message-ID: <20250930091456.34524-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930091456.34524-1-philmd@linaro.org>
 References: <20250930091456.34524-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,125 +111,205 @@ The 'ram_addr_t' type is described as:
   addresses into an intermediate address space that can map
   to host virtual address spaces.
 
-vfio_container_query_dirty_bitmap() doesn't expect such QEMU
-intermediate address, but a guest physical addresses. Use the
-appropriate 'hwaddr' type, rename as @translated_addr for
-clarity.
+This doesn't represent well an IOVA mapping size. Simply use
+the uint64_t type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/vfio/vfio-container.h |  3 ++-
- hw/vfio/container.c              | 11 ++++++-----
- hw/vfio/listener.c               | 12 ++++++------
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ include/hw/vfio/vfio-container.h | 10 +++++-----
+ include/hw/vfio/vfio-cpr.h       |  2 +-
+ hw/vfio-user/container.c         |  4 ++--
+ hw/vfio/container-legacy.c       |  8 ++++----
+ hw/vfio/container.c              |  4 ++--
+ hw/vfio/cpr-legacy.c             |  2 +-
+ hw/vfio/iommufd.c                |  6 +++---
+ 7 files changed, 18 insertions(+), 18 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
-index b8fb2b8b5d7..093c360f0ee 100644
+index 093c360f0ee..c4b58d664b7 100644
 --- a/include/hw/vfio/vfio-container.h
 +++ b/include/hw/vfio/vfio-container.h
-@@ -98,7 +98,8 @@ bool vfio_container_dirty_tracking_is_started(
- bool vfio_container_devices_dirty_tracking_is_supported(
-     const VFIOContainer *bcontainer);
- int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
--    uint64_t iova, uint64_t size, ram_addr_t ram_addr, Error **errp);
-+                                      uint64_t iova, uint64_t size,
-+                                      hwaddr translated_addr, Error **errp);
+@@ -81,10 +81,10 @@ void vfio_address_space_insert(VFIOAddressSpace *space,
+                                VFIOContainer *bcontainer);
  
- GList *vfio_container_get_iova_ranges(const VFIOContainer *bcontainer);
- 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 250b20f4245..9d694393714 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -246,7 +246,7 @@ static int vfio_container_devices_query_dirty_bitmap(
- 
- int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
-                                       uint64_t iova, uint64_t size,
--                                      ram_addr_t ram_addr, Error **errp)
-+                                      hwaddr translated_addr, Error **errp)
- {
-     bool all_device_dirty_tracking =
-         vfio_container_devices_dirty_tracking_is_supported(bcontainer);
-@@ -255,7 +255,7 @@ int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
-     int ret;
- 
-     if (!bcontainer->dirty_pages_supported && !all_device_dirty_tracking) {
--        cpu_physical_memory_set_dirty_range(ram_addr, size,
-+        cpu_physical_memory_set_dirty_range(translated_addr, size,
-                                             tcg_enabled() ? DIRTY_CLIENTS_ALL :
-                                             DIRTY_CLIENTS_NOCODE);
-         return 0;
-@@ -280,11 +280,12 @@ int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
-         goto out;
-     }
- 
--    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-+    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap,
-+                                                         translated_addr,
-                                                          vbmap.pages);
- 
--    trace_vfio_container_query_dirty_bitmap(iova, size, vbmap.size, ram_addr,
--                                            dirty_pages);
-+    trace_vfio_container_query_dirty_bitmap(iova, size, vbmap.size,
-+                                            translated_addr, dirty_pages);
- out:
-     g_free(vbmap.bitmap);
- 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index 3b6f17f0c3a..4e2565905e0 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -1059,7 +1059,7 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     VFIOGuestIOMMU *giommu = gdn->giommu;
-     VFIOContainer *bcontainer = giommu->bcontainer;
-     hwaddr iova = iotlb->iova + giommu->iommu_offset;
--    ram_addr_t translated_addr;
-+    hwaddr translated_addr;
-     Error *local_err = NULL;
-     int ret = -EINVAL;
-     MemoryRegion *mr;
-@@ -1108,7 +1108,7 @@ static int vfio_ram_discard_query_dirty_bitmap(MemoryRegionSection *section,
- {
-     const hwaddr size = int128_get64(section->size);
-     const hwaddr iova = section->offset_within_address_space;
--    const ram_addr_t ram_addr = memory_region_get_ram_addr(section->mr) +
-+    const hwaddr addr = memory_region_get_ram_addr(section->mr) +
-                                 section->offset_within_region;
-     VFIORamDiscardListener *vrdl = opaque;
-     Error *local_err = NULL;
-@@ -1118,7 +1118,7 @@ static int vfio_ram_discard_query_dirty_bitmap(MemoryRegionSection *section,
-      * Sync the whole mapped region (spanning multiple individual mappings)
-      * in one go.
+ int vfio_container_dma_map(VFIOContainer *bcontainer,
+-                           hwaddr iova, ram_addr_t size,
++                           hwaddr iova, uint64_t size,
+                            void *vaddr, bool readonly, MemoryRegion *mr);
+ int vfio_container_dma_unmap(VFIOContainer *bcontainer,
+-                             hwaddr iova, ram_addr_t size,
++                             hwaddr iova, uint64_t size,
+                              IOMMUTLBEntry *iotlb, bool unmap_all);
+ bool vfio_container_add_section_window(VFIOContainer *bcontainer,
+                                        MemoryRegionSection *section,
+@@ -167,7 +167,7 @@ struct VFIOIOMMUClass {
+      * Returns 0 to indicate success and -errno otherwise.
       */
--    ret = vfio_container_query_dirty_bitmap(vrdl->bcontainer, iova, size, ram_addr,
-+    ret = vfio_container_query_dirty_bitmap(vrdl->bcontainer, iova, size, addr,
-                                 &local_err);
-     if (ret) {
-         error_report_err(local_err);
-@@ -1183,7 +1183,7 @@ static int vfio_sync_iommu_dirty_bitmap(VFIOContainer *bcontainer,
- static int vfio_sync_dirty_bitmap(VFIOContainer *bcontainer,
-                                   MemoryRegionSection *section, Error **errp)
- {
--    ram_addr_t ram_addr;
-+    hwaddr addr;
+     int (*dma_map)(const VFIOContainer *bcontainer,
+-                   hwaddr iova, ram_addr_t size,
++                   hwaddr iova, uint64_t size,
+                    void *vaddr, bool readonly, MemoryRegion *mr);
+     /**
+      * @dma_map_file
+@@ -182,7 +182,7 @@ struct VFIOIOMMUClass {
+      * @readonly: map read only if true
+      */
+     int (*dma_map_file)(const VFIOContainer *bcontainer,
+-                        hwaddr iova, ram_addr_t size,
++                        hwaddr iova, uint64_t size,
+                         int fd, unsigned long start, bool readonly);
+     /**
+      * @dma_unmap
+@@ -198,7 +198,7 @@ struct VFIOIOMMUClass {
+      * Returns 0 to indicate success and -errno otherwise.
+      */
+     int (*dma_unmap)(const VFIOContainer *bcontainer,
+-                     hwaddr iova, ram_addr_t size,
++                     hwaddr iova, uint64_t size,
+                      IOMMUTLBEntry *iotlb, bool unmap_all);
  
-     if (memory_region_is_iommu(section->mr)) {
-         return vfio_sync_iommu_dirty_bitmap(bcontainer, section);
-@@ -1198,12 +1198,12 @@ static int vfio_sync_dirty_bitmap(VFIOContainer *bcontainer,
-         return ret;
-     }
  
--    ram_addr = memory_region_get_ram_addr(section->mr) +
-+    addr = memory_region_get_ram_addr(section->mr) +
-                section->offset_within_region;
+diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+index 26ee0c4fe15..81f4e24e229 100644
+--- a/include/hw/vfio/vfio-cpr.h
++++ b/include/hw/vfio/vfio-cpr.h
+@@ -21,7 +21,7 @@ struct VFIOIOMMUFDContainer;
+ struct IOMMUFDBackend;
  
-     return vfio_container_query_dirty_bitmap(bcontainer,
-                    REAL_HOST_PAGE_ALIGN(section->offset_within_address_space),
--                                 int128_get64(section->size), ram_addr, errp);
-+                                 int128_get64(section->size), addr, errp);
+ typedef int (*dma_map_fn)(const struct VFIOContainer *bcontainer,
+-                          hwaddr iova, ram_addr_t size, void *vaddr,
++                          hwaddr iova, uint64_t size, void *vaddr,
+                           bool readonly, MemoryRegion *mr);
+ 
+ typedef struct VFIOContainerCPR {
+diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
+index 411eb7b28b7..e45192fef65 100644
+--- a/hw/vfio-user/container.c
++++ b/hw/vfio-user/container.c
+@@ -39,7 +39,7 @@ static void vfio_user_listener_commit(VFIOContainer *bcontainer)
  }
  
- static void vfio_listener_log_sync(MemoryListener *listener,
+ static int vfio_user_dma_unmap(const VFIOContainer *bcontainer,
+-                               hwaddr iova, ram_addr_t size,
++                               hwaddr iova, uint64_t size,
+                                IOMMUTLBEntry *iotlb, bool unmap_all)
+ {
+     VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+@@ -81,7 +81,7 @@ static int vfio_user_dma_unmap(const VFIOContainer *bcontainer,
+ }
+ 
+ static int vfio_user_dma_map(const VFIOContainer *bcontainer, hwaddr iova,
+-                             ram_addr_t size, void *vaddr, bool readonly,
++                             uint64_t size, void *vaddr, bool readonly,
+                              MemoryRegion *mrp)
+ {
+     VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
+index c0f87f774a0..3a710d8265c 100644
+--- a/hw/vfio/container-legacy.c
++++ b/hw/vfio/container-legacy.c
+@@ -69,7 +69,7 @@ static int vfio_ram_block_discard_disable(VFIOLegacyContainer *container,
+ }
+ 
+ static int vfio_dma_unmap_bitmap(const VFIOLegacyContainer *container,
+-                                 hwaddr iova, ram_addr_t size,
++                                 hwaddr iova, uint64_t size,
+                                  IOMMUTLBEntry *iotlb)
+ {
+     const VFIOContainer *bcontainer = VFIO_IOMMU(container);
+@@ -122,7 +122,7 @@ unmap_exit:
+ }
+ 
+ static int vfio_legacy_dma_unmap_one(const VFIOContainer *bcontainer,
+-                                     hwaddr iova, ram_addr_t size,
++                                     hwaddr iova, uint64_t size,
+                                      IOMMUTLBEntry *iotlb)
+ {
+     const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
+@@ -185,7 +185,7 @@ static int vfio_legacy_dma_unmap_one(const VFIOContainer *bcontainer,
+  * DMA - Mapping and unmapping for the "type1" IOMMU interface used on x86
+  */
+ static int vfio_legacy_dma_unmap(const VFIOContainer *bcontainer,
+-                                 hwaddr iova, ram_addr_t size,
++                                 hwaddr iova, uint64_t size,
+                                  IOMMUTLBEntry *iotlb, bool unmap_all)
+ {
+     int ret;
+@@ -210,7 +210,7 @@ static int vfio_legacy_dma_unmap(const VFIOContainer *bcontainer,
+ }
+ 
+ static int vfio_legacy_dma_map(const VFIOContainer *bcontainer, hwaddr iova,
+-                               ram_addr_t size, void *vaddr, bool readonly,
++                               uint64_t size, void *vaddr, bool readonly,
+                                MemoryRegion *mr)
+ {
+     const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 9d694393714..41de3439246 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -74,7 +74,7 @@ void vfio_address_space_insert(VFIOAddressSpace *space,
+ }
+ 
+ int vfio_container_dma_map(VFIOContainer *bcontainer,
+-                           hwaddr iova, ram_addr_t size,
++                           hwaddr iova, uint64_t size,
+                            void *vaddr, bool readonly, MemoryRegion *mr)
+ {
+     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+@@ -93,7 +93,7 @@ int vfio_container_dma_map(VFIOContainer *bcontainer,
+ }
+ 
+ int vfio_container_dma_unmap(VFIOContainer *bcontainer,
+-                             hwaddr iova, ram_addr_t size,
++                             hwaddr iova, uint64_t size,
+                              IOMMUTLBEntry *iotlb, bool unmap_all)
+ {
+     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+index bbf7a0d35f0..3a1d126556e 100644
+--- a/hw/vfio/cpr-legacy.c
++++ b/hw/vfio/cpr-legacy.c
+@@ -39,7 +39,7 @@ static bool vfio_dma_unmap_vaddr_all(VFIOLegacyContainer *container,
+  * The incoming state is cleared thereafter.
+  */
+ static int vfio_legacy_cpr_dma_map(const VFIOContainer *bcontainer,
+-                                   hwaddr iova, ram_addr_t size, void *vaddr,
++                                   hwaddr iova, uint64_t size, void *vaddr,
+                                    bool readonly, MemoryRegion *mr)
+ {
+     const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index f0ffe235919..68470d552ec 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -35,7 +35,7 @@
+             TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
+ 
+ static int iommufd_cdev_map(const VFIOContainer *bcontainer, hwaddr iova,
+-                            ram_addr_t size, void *vaddr, bool readonly,
++                            uint64_t size, void *vaddr, bool readonly,
+                             MemoryRegion *mr)
+ {
+     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
+@@ -46,7 +46,7 @@ static int iommufd_cdev_map(const VFIOContainer *bcontainer, hwaddr iova,
+ }
+ 
+ static int iommufd_cdev_map_file(const VFIOContainer *bcontainer,
+-                                 hwaddr iova, ram_addr_t size,
++                                 hwaddr iova, uint64_t size,
+                                  int fd, unsigned long start, bool readonly)
+ {
+     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
+@@ -57,7 +57,7 @@ static int iommufd_cdev_map_file(const VFIOContainer *bcontainer,
+ }
+ 
+ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
+-                              hwaddr iova, ram_addr_t size,
++                              hwaddr iova, uint64_t size,
+                               IOMMUTLBEntry *iotlb, bool unmap_all)
+ {
+     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
 -- 
 2.51.0
 
