@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA10BAC052
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8383DBAC046
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:25:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3VeE-0000dL-Va; Tue, 30 Sep 2025 04:23:48 -0400
+	id 1v3VeO-0000iR-37; Tue, 30 Sep 2025 04:23:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Vdw-0000NY-Rl
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Vdw-0000NR-Rc
  for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:23:35 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Vd9-000149-0a
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:23:20 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-414f48bd785so3014681f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 01:22:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3VdA-00016N-OM
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:23:25 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-46e2e6a708fso36253475e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 01:22:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759220549; x=1759825349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759220554; x=1759825354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=onCfEhinWarPReSMP2g+nvBYz1NYywUR3fuXcFIYVYM=;
- b=i4tQgF7hYrGuZ60RQAURVSNyvx0BrFL2D6boTJfPkWQ1J27F2P0dDbb0amjvHG92l6
- cuqr3thBOuZsoUqT7COVg0+FwO/dYy+athglfxg8DLMdcA/RsO59DndYeTvTeeW5Xs5t
- 3P7KT+jpvzgzcjJo5jLfNwoE0WJvn+1K2waINscKD9wFIiTkJQIJLU3jjylFgXTOgxwu
- zPbRXFrDrdYGhcWdFCVVVuMemgkg2wQ5ntYmDeRfOnXhwCErV8SaFF+G0g+Tn1dym8q+
- enjR4aLVaqq/wjlzRDSUrcF9tlnhvIafjN8AnOuOT//58bUbQCsO7jF/zBUzBip02JsG
- X3fA==
+ bh=QtU1C0M8U0OTbHcI2E95ZD2Zrsmz5/OESKETD6NudSM=;
+ b=rEBKSr+z2e5v81+Ut3ociqit4LzvaSZogqXI2psMnXYgSlUETJbCLlZiUYfcrqpP6k
+ 1ZzoFFhD3H4S/LH8p/D30gQ5oqbNZ0NbcMPExoiDf8olM8SlX3gMIAzOdHJGiEFMJcWb
+ Jzo6+ORAr875A1LoNi1jfK3nHKsMoyMRmwF6zh2tey/hx/d+bjOh0prRCjSSxjqSQl3j
+ /UDzUomhOno/0e6/OXpQHWES/Cu/Gi8qsGTRvxaogUj1do7YJ0SsY2rPzu3YtdtoIiCm
+ L8kY4tuo/bWUlO3RKKwRceErUdGGg0mEwRIMxvUgncxVX0W51YenK0uHlq8jA5RMFrtl
+ iRpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759220549; x=1759825349;
+ d=1e100.net; s=20230601; t=1759220554; x=1759825354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=onCfEhinWarPReSMP2g+nvBYz1NYywUR3fuXcFIYVYM=;
- b=Z9o1MX0caoSpv2sSfHBcWfm1dmATeU07nsX4jt+VMO3k32KeEAg7OUkzUZ7qcHdUSN
- aG2TKLmuTphkSZxD43u/VF8/J07OmzDp9ECubeacBrb9j5TK6L46H0ZcNY7SutV9Jhkb
- SGJ2uo05QvC+oAAvKLTxGnpCsEQt6IC7YLSgyymi8vMCa0n9IamCiQPuk9QZRoq2o20o
- nkzRTmmWaG2L3hPWZo6NKlgzovup41z3Tq2J0W+CN21xgEWX/qC5U+EBrV5Vhq1pqGqf
- qZGXhbJNqcBF8vQOa5QgcmveB75dcxtfQXLzvBewx3Wgp5kV5kMIrdGp8/og3vOmpCxe
- S+JQ==
-X-Gm-Message-State: AOJu0Yx8YS81yeGZJflNTFme9TitnX2dCYht2jgnLScRaPI044c2TxHR
- sA0W9plFfQfjM8S9DPfTyBtNw1F/LdvBrf+N6WOoq3kAuP7l7K7CLqK+Wx+ZGw/zgZXKgAs0ZZE
- fZ/uKiyQbBA==
-X-Gm-Gg: ASbGncsqH+GyGg496RoFxeeb8S+4gxjnNozJW0IZFsLQiWUjJ4djDOEJCoLgVEuoXpi
- dxoxqLh/07MGfbVC0DvL8XtHQzIywgTJZ+DBwhXNauz8BOunVYOM1KFrNkyCYUJRBUOnB60t/iE
- omxlsjAS5oEnbUIHcF4WHoPgCwg6Ow+PMJfuiaX7NInCWcCxoDvcLQDjN09BdvGLfkz+Ze+4zrM
- anONEb3at1ST5OqRavJtoekjobU2nFQhVruv4c4R1MYcDCSPtV5fkAoMKV9Wd7DWYMjuaZs/y3T
- UA5YOr+LZZ1wGdhPXK+hdN8wWK19gO/cf6MB6q90Y0YsuqvRM4ulTWFtI40Pd/uZCRxhgu9uLj2
- P7FgqryuyfC56UEGnXufLpNyMoFi6sefRi/TkNhzZaIOYb9mDdcMhKKlpB+m1Bd+StPbUpPhCpK
- /00m0YFMVnuP0JJedhok1rMpiaiM+tBYY=
-X-Google-Smtp-Source: AGHT+IGEB7zt4QY7wj3rTZFjv9pmOMXqLorCZDEnNJaXiQGRhxTkEhGFSRSSrKDdM5xt6JNSxZxslA==
-X-Received: by 2002:a05:6000:18a7:b0:3e9:d0a5:e436 with SMTP id
- ffacd0b85a97d-40e437371acmr19690967f8f.23.1759220549024; 
- Tue, 30 Sep 2025 01:22:29 -0700 (PDT)
+ bh=QtU1C0M8U0OTbHcI2E95ZD2Zrsmz5/OESKETD6NudSM=;
+ b=CzBq/anN9sbl4294kCltKoodfLipv5AtGBZWnzU4cuOtAQ+V0ceCUqs3zWAIQY9erk
+ aDXqdsSc5BJzSDXw1c8lZizcCt793ygPl/L7aPxura/+C6k0WDrJF3zoTXhU478c0zgb
+ cQP/RlEHo8ooDCs4Dh5XKKIdSH1Dcmyr5cl7wpQhlqy5l7orAdEBoc16nZZhyIXkl4Tg
+ kSVlVQ/nCLSpFOu1yrlF9PYcjOTAU4YT4aP6VnaufGmow9L2qHUIXMMI8bOOlWByFn9O
+ EYLq5HXYzUcOtfgdN9HXGnEmyW90unCo3Ni/dnjcWFjk5bUNghIdCGGuxFlP2JMiAy86
+ BYwA==
+X-Gm-Message-State: AOJu0Yy5MmbYA6yxaOXoZJZ91veir/f9ngxRoUr6VOExSeQWu9mdyVn3
+ sxgW0J9HTnrmkhpK+/7tjDOFLdSMIN/KJu9D+8p9WXhNBcwC/5mOlgT08I9hpQtC7cf84kGSClE
+ 1YgzVH65rcg==
+X-Gm-Gg: ASbGnct2hm1wqU9OxuA6x/8NYZg7O6JourxDUHKATSKvioDp1vwWb05gGWQantrsLJM
+ HZYUrS/JzpO0FYnkoa+/SznNdWYKeQLCEMvx7dZV8tm7Ddqnwk4GWZXOS/wN+S0wEDDhyeM0psy
+ xxbCTU4wDqFdV+iMQ2H6pf93V1q30JW2ldCEYp6ONh+1t1yP2zisPlDLA/8SbBjCyvhkMW9KF3t
+ HcDoHA/8fKvCgpuAbORTF6PY1N+8LrqILnPk3Epj+UXnKcACsmI5imZ0Yso1ltZqhj8gHNlD+gz
+ jRtCzPjDMxtw8kdCwzaJuie2MGybpRXZXJTdtJ1UX0i7qHZgbvCunWnKs/XFkjQ2S6O/8H2QlQD
+ iLItGk8E0PnDIbymwfTmMU67i34aVZlP5irSvA+DdU7OAn0HiYFfxJTXzMaz8C0JP1rbXSD/KEq
+ XHbo1Vj/uUuZrikuX9O5EPh7ftxchra1Y=
+X-Google-Smtp-Source: AGHT+IHFPJkofYr79h9pu+6ONde86qKMR3dCMR8GX+HG+gEgb0uWvZOFxlaIJxTQ7PTY8pGPvnTorQ==
+X-Received: by 2002:a05:600c:81e:b0:46e:1a14:a81b with SMTP id
+ 5b1f17b1804b1-46e32a1a396mr111982275e9.36.1759220554357; 
+ Tue, 30 Sep 2025 01:22:34 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e572683ccsm47008715e9.22.2025.09.30.01.22.27
+ ffacd0b85a97d-40fb74e46bcsm21775814f8f.8.2025.09.30.01.22.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Sep 2025 01:22:28 -0700 (PDT)
+ Tue, 30 Sep 2025 01:22:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -83,25 +83,25 @@ Cc: Marcelo Tosatti <mtosatti@redhat.com>,
  Anthony PERARD <anthony@xenproject.org>,
  Jason Herne <jjherne@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v3 11/18] target/i386/kvm: Replace legacy
- cpu_physical_memory_rw() call
-Date: Tue, 30 Sep 2025 10:21:18 +0200
-Message-ID: <20250930082126.28618-12-philmd@linaro.org>
+Subject: [PATCH v3 12/18] target/i386/nvmm: Inline cpu_physical_memory_rw() in
+ nvmm_mem_callback
+Date: Tue, 30 Sep 2025 10:21:19 +0200
+Message-ID: <20250930082126.28618-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930082126.28618-1-philmd@linaro.org>
 References: <20250930082126.28618-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,43 +117,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Get the vCPU address space and convert the legacy
-cpu_physical_memory_rw() by address_space_rw().
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/kvm/xen-emu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/i386/nvmm/nvmm-all.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index 284c5ef6f68..52de0198343 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -21,6 +21,7 @@
- #include "system/address-spaces.h"
- #include "xen-emu.h"
- #include "trace.h"
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index ed424251673..2e442baf4b7 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -15,6 +15,7 @@
+ #include "accel/accel-ops.h"
+ #include "system/nvmm.h"
+ #include "system/cpus.h"
 +#include "system/memory.h"
  #include "system/runstate.h"
- 
- #include "hw/pci/msi.h"
-@@ -75,6 +76,7 @@ static bool kvm_gva_to_gpa(CPUState *cs, uint64_t gva, uint64_t *gpa,
- static int kvm_gva_rw(CPUState *cs, uint64_t gva, void *_buf, size_t sz,
-                       bool is_write)
+ #include "qemu/main-loop.h"
+ #include "qemu/error-report.h"
+@@ -516,7 +517,9 @@ nvmm_io_callback(struct nvmm_io *io)
+ static void
+ nvmm_mem_callback(struct nvmm_mem *mem)
  {
-+    AddressSpace *as = cpu_addressspace(cs, MEMTXATTRS_UNSPECIFIED);
-     uint8_t *buf = (uint8_t *)_buf;
-     uint64_t gpa;
-     size_t len;
-@@ -87,7 +89,7 @@ static int kvm_gva_rw(CPUState *cs, uint64_t gva, void *_buf, size_t sz,
-             len = sz;
-         }
+-    cpu_physical_memory_rw(mem->gpa, mem->data, mem->size, mem->write);
++    /* TODO: Get CPUState via mem->vcpu? */
++    address_space_rw(&address_space_memory, mem->gpa, MEMTXATTRS_UNSPECIFIED,
++                     mem->data, mem->size, mem->write);
  
--        cpu_physical_memory_rw(gpa, buf, len, is_write);
-+        address_space_rw(as, gpa, MEMTXATTRS_UNSPECIFIED, buf, len, is_write);
- 
-         buf += len;
-         sz -= len;
+     /* Needed, otherwise infinite loop. */
+     current_cpu->vcpu_dirty = false;
 -- 
 2.51.0
 
