@@ -2,92 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273F2BACBF9
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 13:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB62BACC1B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 14:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3YzL-0000XN-EN; Tue, 30 Sep 2025 07:57:48 -0400
+	id 1v3Z2Z-0002bc-Ts; Tue, 30 Sep 2025 08:01:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1v3YzJ-0000W0-2o
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 07:57:45 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1v3Yz6-0001cl-CG
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 07:57:44 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-46e34052bb7so58865955e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 04:57:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1759233443; x=1759838243; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OQ/Lu1tU0Qj8neKJhLVxbk1XtF5ADWgaXLTN2vtV7aE=;
- b=AEYN+TLRvfosz07MDxCt48nbUAvlybAf/EZpVuPqPdGweNAs5MJqUFJHQ2TpDfX9o9
- IS6lBwTyVzqUAjYqAy0MRedwfpm5/FddetKt6hTRaVN2R1DKEc+IjV6qlypaBWtl4qfE
- y16bP0OGUNlrhIUuycMl0Wthws2CM7Gt/nYMSx9ktGhzYFCoUSML9/bIczoTQbQa27Bg
- vVqwTZ6y78VYlo7vqI329LVMkzQhBlcz3VAptF41y+Nt6kR+UoQqG/0lP08nVQmjpevR
- vEIfTWA3ON8yNP3aQnTZ/9eIzxPrDcWmx2YIx/q54rU56z3OGGkU2804d7SmjRB+FTZn
- jhhA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v3Z1s-0002YT-34
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:00:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v3Z1n-0002sd-6I
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:00:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759233614;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9cRZKuLYf1PeX3kptJkawumw9y9xmtGwH/7o1mOtoO4=;
+ b=OXMpv3GnWJYA1og3x5+EPCc3j1Hs7hvuf7zpNeP078ruNhIuOJ+3YUJe2wccapDFOP9ulX
+ iZXNQgJ10ZkPH9UOwIeuZ3foPHm6lXiHJOAM9mZLmJFViqbF/PPYGBGV2cIHtg9QzWhGSa
+ +dE2uzn8tVB2XVbNHzLUmcFy/DBevLk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-Z0IY5lHlNvaMTsm1NGs9Ow-1; Tue, 30 Sep 2025 08:00:13 -0400
+X-MC-Unique: Z0IY5lHlNvaMTsm1NGs9Ow-1
+X-Mimecast-MFC-AGG-ID: Z0IY5lHlNvaMTsm1NGs9Ow_1759233612
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-633009e440aso5634031a12.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 05:00:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759233443; x=1759838243;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OQ/Lu1tU0Qj8neKJhLVxbk1XtF5ADWgaXLTN2vtV7aE=;
- b=REmPQ+oISVhHWB2Aj0Wb4Yd0MnDopWekV2xekar/hoY6lezQ8UwL5dOn9BjPP4lOgI
- UslydptAErkBGTKyyloFBsze0ar3MR9LRBiXxUHMCPU+BrGEAU/YYisobc64jNBOqBRx
- 7oC/iDDBFdPdMcKf5MsP4UIty108TfX4xXgWguba/Ssb54PpMWGGukzuZpKA4dfQnROL
- w0WX4XzdIReFdJlg3YEMCDdnQoCLXi13xbILY59NSiOyjz4KYue7ZKh0IU0HdtIfuwQr
- YyekDibmluljWQ3bZzAA40IHv3XJJtYu7CDI27TgnPh2Ucu7s52xkaCVrls0pvhCctrR
- XHQQ==
-X-Gm-Message-State: AOJu0YwpFZuTSQz+yx6SK3fJxw8uIWvYE/h+aQJS0QyJXBVV6DCeJUlu
- zDwFWmA/15euL0a7ciopljYPmnsa12zJdm0q1T6zNn0bL9/o5+J7TcB8LGll/4j4WAlHxOuDLiy
- xlck=
-X-Gm-Gg: ASbGncv76mydqQT+lr5unzCa8OdwHih4+Kx+EeURym7P6Viqf31xQ5yQOeNeFSiJepm
- tFcWbtLNcR6kJgFC5GldMUA1Jl02oBu9he/eKLkc7S6ZFpGTQg2RgLWFS45ZH6220qNAnCXnjBs
- V0By5GffeqdS/emgGjYMzBeP/KFnGfSYbc4m6gJvFd0eh8zhya+kOZiC+Zr8RDqDLSrgBb81Bb6
- /1UcIRCgYcNK3xVh8O93gcw96sMrTFXSuSfAtfDaKTPm2hCg2txS+99NpXNJ3j4dWrk+E19SguH
- cTiGCHncljQzIgWXUa1PGndc64wqssgffEcJbhXRzr/+DozcqYnyORDZ+qZNWQJcKbG7Yw3v/IB
- EDTGdziP2cvFoWQBE2jIqlbJQPcZrrMZU7fF1LuxolrjKYr3jK/CqAB1DwkQDZoN5h3bKPiShvi
- xXKIVFyCAGfm7CVPTU6udit1QqdKLMbqrTc4wcWQXi1e3THplWzGUvnw==
-X-Google-Smtp-Source: AGHT+IG/o6++1RyXT7Ee5lkCnQkJZgJv4zu0CSyFTKl+NcO1JIu9cFeylxTJqGSajEStQeuySNqq3Q==
-X-Received: by 2002:a05:6000:654:b0:411:3c14:3a97 with SMTP id
- ffacd0b85a97d-4113c238757mr14851466f8f.51.1759233443282; 
- Tue, 30 Sep 2025 04:57:23 -0700 (PDT)
-Received: from chigot-Dell.telnowedge.local
- (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
+ d=1e100.net; s=20230601; t=1759233611; x=1759838411;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9cRZKuLYf1PeX3kptJkawumw9y9xmtGwH/7o1mOtoO4=;
+ b=big/IRDS1al4VyWi0nB14zeLZP6rB4VWzB86IQ2uB87Zvs6tMJ3DOL/K7Vcl/zUs1u
+ 7rUaUW1Ag/NBFNS1qbb4EETU8HwSAbnkWSdDsdH5Suf+r21lvkkjesNkCFOPi4eb3hwt
+ R/fsDU1R55idqdTdkYMs/zAH+oVoe728AXQPIne9VTG+8xgw7nHHpCPUT4x+/5NefMXe
+ 17W0OblVzLEb5l1D6WulblRQ4o4m372K4QwBDgbS/U4U97FuoGW64bVgJqdUDVYcqej0
+ V4mrG0dOVYm+oINpnNr89D+E07tI30T5HKB6a1kZ86+7yvDUy3TikIy4fhvaemO+lnqg
+ Euzw==
+X-Gm-Message-State: AOJu0Yypr6NCgJ7wW39/BJumQKj/unTeAUYrpZ83r28aXiiDG+WuMYA5
+ 3L859PRHTRkA5GfBd4vflmlfMOF9pQpFzA9/SV6xweQmAxhy2HTrZtJtOXCPlcyfBOc6OcSnBIG
+ SdJHnz9+SgkTcSe4K6NoMJn/Kmxq96jJweLFPZjjKCUHcLObpjazbja8v1UQdwX+wgAxACDaosr
+ 75E5eBCYRSDzBh28PqrW2bmNAI5HALixlte4Km4ceh
+X-Gm-Gg: ASbGnculf4jlhYzko0sE2tQ8KVlosS0EKQw1F2WhBENXYvxil0hv9Ce7fWiZTG4XFU1
+ FoKPLtYpmM9qOABimQPEATVp1QOHdOU6uywYnamFZEtDX2exMddl/XYmd5WoZGzQvVlWzxJyZrH
+ C0eIG6+14GJg8ayKK7qeIWhrFlFURE6YIULGAN1M+TJ80fTiNxzEItShDAYVo1nLX3HO768YYqL
+ iKWp3khZtOJF/zydXyR+e0RoF6x8xXRVNXgOlPavdm0gii1jTffjkE/tuYru32EWzr3KqEN51Y6
+ p0y4nNyL2U5fzP4bKuUMxgrmZmkvH5fQufX1E/chUotG6QiavjHoaRBHqfTxdioJYGz0ckAMyNC
+ RY1ZOPanbfYW9MStwwWerERMn2iZS3x6vGyzkOVjTptQIBSFy5aw=
+X-Received: by 2002:a05:6402:278d:b0:633:feba:4756 with SMTP id
+ 4fb4d7f45d1cf-6365af1a3ddmr4402907a12.12.1759233610840; 
+ Tue, 30 Sep 2025 05:00:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGjOaenNlHHDq9jIg/F4D+8KKBtXNwbIfWtSXj7ZXcenUTEz66o6MRefduo4uK2bGBT3SsgTA==
+X-Received: by 2002:a05:6402:278d:b0:633:feba:4756 with SMTP id
+ 4fb4d7f45d1cf-6365af1a3ddmr4402860a12.12.1759233610421; 
+ Tue, 30 Sep 2025 05:00:10 -0700 (PDT)
+Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc7d3780asm22448289f8f.52.2025.09.30.04.57.22
+ 4fb4d7f45d1cf-634a3ae2cb3sm9714991a12.27.2025.09.30.05.00.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 04:57:22 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+ Tue, 30 Sep 2025 05:00:09 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, edgar.iglesias@gmail.com,
- alistair@alistair23.me, Frederic Konrad <konrad.frederic@yahoo.fr>,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH 3/3] hw/arm/xlnx-zynqmp: wire a second GIC for the Cortex-R5
-Date: Tue, 30 Sep 2025 13:57:18 +0200
-Message-Id: <20250930115718.437100-4-chigot@adacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250930115718.437100-1-chigot@adacore.com>
-References: <20250930115718.437100-1-chigot@adacore.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-rust@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] subprojects: Remove version number from .gitignore
+Date: Tue, 30 Sep 2025 14:00:08 +0200
+Message-ID: <20250930120008.700432-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,169 +108,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frederic Konrad <konrad.frederic@yahoo.fr>
+Get rid of all the version numbers, and use wildcard matches instead,
+because peopl will repeatedly forgot to change these versions.
 
-This wires a second GIC for the Cortex-R5, all the IRQs are split when there
-is an RPU instanciated.
-
-Signed-off-by: Clément Chigot <chigot@adacore.com>
+Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/arm/xlnx-zynqmp.c         | 77 +++++++++++++++++++++++++++++++++++-
- include/hw/arm/xlnx-zynqmp.h |  4 ++
- 2 files changed, 80 insertions(+), 1 deletion(-)
+ subprojects/.gitignore | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-index 3d8c46986e..ffed6e5126 100644
---- a/hw/arm/xlnx-zynqmp.c
-+++ b/hw/arm/xlnx-zynqmp.c
-@@ -384,6 +384,7 @@ static void xlnx_zynqmp_init(Object *obj)
-     XlnxZynqMPState *s = XLNX_ZYNQMP(obj);
-     int i;
-     int num_apus = MIN(ms->smp.cpus, XLNX_ZYNQMP_NUM_APU_CPUS);
-+    int num_rpus = xlnx_zynqmp_get_rpu_number(ms);
+diff --git a/subprojects/.gitignore b/subprojects/.gitignore
+index 58a29f01204..0b5d9634094 100644
+--- a/subprojects/.gitignore
++++ b/subprojects/.gitignore
+@@ -6,21 +6,21 @@
+ /keycodemapdb
+ /libvfio-user
+ /slirp
+-/anyhow-1.0.98
+-/arbitrary-int-1.2.7
+-/attrs-0.2.9
+-/bilge-0.2.0
+-/bilge-impl-0.2.0
+-/either-1.12.0
+-/foreign-0.3.1
+-/itertools-0.11.0
+-/libc-0.2.162
+-/proc-macro-error-1.0.4
+-/proc-macro-error-attr-1.0.4
+-/proc-macro2-1.0.95
+-/quote-1.0.36
+-/syn-2.0.66
+-/unicode-ident-1.0.12
++/anyhow-*
++/arbitrary-int-*
++/attrs-*
++/bilge-*
++/bilge-impl-*
++/either-*
++/foreign-*
++/itertools-*
++/libc-*
++/proc-macro-error-*
++/proc-macro-error-attr-*
++/proc-macro*
++/quote-*
++/syn-*
++/unicode-ident-*
  
-     object_initialize_child(obj, "apu-cluster", &s->apu_cluster,
-                             TYPE_CPU_CLUSTER);
-@@ -397,6 +398,12 @@ static void xlnx_zynqmp_init(Object *obj)
- 
-     object_initialize_child(obj, "gic", &s->gic, gic_class_name());
- 
-+    if (num_rpus) {
-+        /* Do not create the rpu_gic if we don't have rpus */
-+        object_initialize_child(obj, "rpu_gic", &s->rpu_gic,
-+                                gic_class_name());
-+    }
-+
-     for (i = 0; i < XLNX_ZYNQMP_NUM_GEMS; i++) {
-         object_initialize_child(obj, "gem[*]", &s->gem[i], TYPE_CADENCE_GEM);
-         object_initialize_child(obj, "gem-irq-orgate[*]",
-@@ -446,6 +453,15 @@ static void xlnx_zynqmp_init(Object *obj)
-     object_initialize_child(obj, "qspi-irq-orgate",
-                             &s->qspi_irq_orgate, TYPE_OR_IRQ);
- 
-+    if (num_rpus) {
-+        for (i = 0; i < ARRAY_SIZE(s->splitter); i++) {
-+            g_autofree char *name = g_strdup_printf("irq-splitter%d", i);
-+            object_initialize_child(obj, name, &s->splitter[i], TYPE_SPLIT_IRQ);
-+        }
-+    }
-+
-+
-+
-     for (i = 0; i < XLNX_ZYNQMP_NUM_USB; i++) {
-         object_initialize_child(obj, "usb[*]", &s->usb[i], TYPE_USB_DWC3);
-     }
-@@ -459,6 +475,7 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-     uint8_t i;
-     uint64_t ram_size;
-     int num_apus = MIN(ms->smp.cpus, XLNX_ZYNQMP_NUM_APU_CPUS);
-+    int num_rpus = xlnx_zynqmp_get_rpu_number(ms);
-     const char *boot_cpu = s->boot_cpu ? s->boot_cpu : "apu-cpu[0]";
-     ram_addr_t ddr_low_size, ddr_high_size;
-     qemu_irq gic_spi[XLNX_ZYNQMP_GIC_NUM_SPI_INTR];
-@@ -517,6 +534,14 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-     qdev_prop_set_bit(DEVICE(&s->gic),
-                       "has-virtualization-extensions", s->virt);
- 
-+    if (num_rpus) {
-+        qdev_prop_set_uint32(DEVICE(&s->rpu_gic), "num-irq",
-+                             XLNX_ZYNQMP_GIC_NUM_SPI_INTR + 32);
-+        qdev_prop_set_uint32(DEVICE(&s->rpu_gic), "revision", 1);
-+        qdev_prop_set_uint32(DEVICE(&s->rpu_gic), "num-cpu", num_rpus);
-+        qdev_prop_set_uint32(DEVICE(&s->rpu_gic), "first-cpu-index", 4);
-+    }
-+
-     qdev_realize(DEVICE(&s->apu_cluster), NULL, &error_fatal);
- 
-     /* Realize APUs before realizing the GIC. KVM requires this.  */
-@@ -616,13 +641,63 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    if (num_rpus) {
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->rpu_gic), errp)) {
-+            return;
-+        }
-+
-+        for (i = 0; i < num_rpus; i++) {
-+            qemu_irq irq;
-+
-+            sysbus_mmio_map(SYS_BUS_DEVICE(&s->rpu_gic), i + 1,
-+                            GIC_BASE_ADDR + i * 0x1000);
-+            sysbus_connect_irq(SYS_BUS_DEVICE(&s->rpu_gic), i,
-+                               qdev_get_gpio_in(DEVICE(&s->rpu_cpu[i]),
-+                                                ARM_CPU_IRQ));
-+            sysbus_connect_irq(SYS_BUS_DEVICE(&s->rpu_gic), i + num_rpus,
-+                               qdev_get_gpio_in(DEVICE(&s->rpu_cpu[i]),
-+                                                ARM_CPU_FIQ));
-+            sysbus_connect_irq(SYS_BUS_DEVICE(&s->rpu_gic), i + num_rpus * 2,
-+                               qdev_get_gpio_in(DEVICE(&s->rpu_cpu[i]),
-+                                                ARM_CPU_VIRQ));
-+            sysbus_connect_irq(SYS_BUS_DEVICE(&s->rpu_gic), i + num_rpus * 3,
-+                               qdev_get_gpio_in(DEVICE(&s->rpu_cpu[i]),
-+                                                ARM_CPU_VFIQ));
-+            irq = qdev_get_gpio_in(DEVICE(&s->rpu_gic),
-+                                   arm_gic_ppi_index(i, ARM_PHYS_TIMER_PPI));
-+            qdev_connect_gpio_out(DEVICE(&s->rpu_cpu[i]), GTIMER_PHYS, irq);
-+            irq = qdev_get_gpio_in(DEVICE(&s->rpu_gic),
-+                                   arm_gic_ppi_index(i, ARM_VIRT_TIMER_PPI));
-+            qdev_connect_gpio_out(DEVICE(&s->rpu_cpu[i]), GTIMER_VIRT, irq);
-+            irq = qdev_get_gpio_in(DEVICE(&s->rpu_gic),
-+                                   arm_gic_ppi_index(i, ARM_HYP_TIMER_PPI));
-+            qdev_connect_gpio_out(DEVICE(&s->rpu_cpu[i]), GTIMER_HYP, irq);
-+            irq = qdev_get_gpio_in(DEVICE(&s->rpu_gic),
-+                                   arm_gic_ppi_index(i, ARM_SEC_TIMER_PPI));
-+            qdev_connect_gpio_out(DEVICE(&s->rpu_cpu[i]), GTIMER_SEC, irq);
-+        }
-+
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->rpu_gic), 0, GIC_BASE_ADDR);
-+    }
-+
-     if (!s->boot_cpu_ptr) {
-         error_setg(errp, "ZynqMP Boot cpu %s not found", boot_cpu);
-         return;
-     }
- 
-     for (i = 0; i < XLNX_ZYNQMP_GIC_NUM_SPI_INTR; i++) {
--        gic_spi[i] = qdev_get_gpio_in(DEVICE(&s->gic), i);
-+        if (num_rpus) {
-+            DeviceState *splitter = DEVICE(&s->splitter[i]);
-+            qdev_prop_set_uint16(splitter, "num-lines", 2);
-+            qdev_realize(splitter, NULL, &error_abort);
-+            gic_spi[i] = qdev_get_gpio_in(splitter, 0);
-+            qdev_connect_gpio_out(splitter, 0,
-+                                  qdev_get_gpio_in(DEVICE(&s->gic), i));
-+            qdev_connect_gpio_out(splitter, 1,
-+                                  qdev_get_gpio_in(DEVICE(&s->rpu_gic), i));
-+        } else {
-+            gic_spi[i] = qdev_get_gpio_in(DEVICE(&s->gic), i);
-+        }
-     }
- 
-     for (i = 0; i < XLNX_ZYNQMP_NUM_GEMS; i++) {
-diff --git a/include/hw/arm/xlnx-zynqmp.h b/include/hw/arm/xlnx-zynqmp.h
-index 6a407c2962..a3117bd6c5 100644
---- a/include/hw/arm/xlnx-zynqmp.h
-+++ b/include/hw/arm/xlnx-zynqmp.h
-@@ -42,6 +42,7 @@
- #include "hw/misc/xlnx-zynqmp-crf.h"
- #include "hw/timer/cadence_ttc.h"
- #include "hw/usb/hcd-dwc3.h"
-+#include "hw/core/split-irq.h"
- 
- #define TYPE_XLNX_ZYNQMP "xlnx-zynqmp"
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxZynqMPState, XLNX_ZYNQMP)
-@@ -106,6 +107,9 @@ struct XlnxZynqMPState {
-     GICState gic;
-     MemoryRegion gic_mr[XLNX_ZYNQMP_GIC_REGIONS][XLNX_ZYNQMP_GIC_ALIASES];
- 
-+    GICState rpu_gic;
-+    SplitIRQ splitter[XLNX_ZYNQMP_GIC_NUM_SPI_INTR];
-+
-     MemoryRegion ocm_ram[XLNX_ZYNQMP_NUM_OCM_BANKS];
- 
-     MemoryRegion *ddr_ram;
+ # Workaround for Meson v1.9.0 https://github.com/mesonbuild/meson/issues/14948
+ /.wraplock
 -- 
-2.34.1
+2.51.0
 
 
