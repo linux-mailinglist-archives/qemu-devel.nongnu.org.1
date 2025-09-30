@@ -2,46 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7255BBACA71
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 13:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 431E1BACB81
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 13:41:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3YIW-0007wN-Cn; Tue, 30 Sep 2025 07:13:32 -0400
+	id 1v3YhD-0006Zh-PT; Tue, 30 Sep 2025 07:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1v3YIH-0007sy-2k; Tue, 30 Sep 2025 07:13:18 -0400
-Received: from smtpout2.mo529.mail-out.ovh.net ([79.137.123.220])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3Yh8-0006ZY-RX
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 07:38:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1v3YIA-000174-RK; Tue, 30 Sep 2025 07:13:15 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.109.231.193])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4cbb595w06z5xHh;
- Tue, 30 Sep 2025 11:13:01 +0000 (UTC)
-Received: from kaod.org (37.59.142.100) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 30 Sep
- 2025 13:13:01 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R003ce42045c-629d-492e-8d7e-a674b623c77e,
- 012DEA80DA8F652C9231DB37D1304F33C12A2C6A) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <e493e89d-d161-4c5b-abf2-053034aa82b4@kaod.org>
-Date: Tue, 30 Sep 2025 13:13:00 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3Yh2-0003NB-F9
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 07:38:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759232323;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=s9TN9TZeQjktmd6QWuTV4gF6Ocin9z3f2O7pXCiqRtI=;
+ b=PdVb61gfjsjOWHpzWGjxcxA8yom/lZKivsXvKeOSDldw/Op/Uvl/MapoB5CHFMfXk67WUs
+ yuzOpjsxs5LEyaE5pYIoi0v1VnoxEiBvsR+JXQrVWTRO9P3mu6OLP9/0brbpnk1Q7N56Vd
+ JiByxFX9UO6UwCKtmxRBDomXoE3FnSs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-39-q519jA4aOOuocveaySIHrw-1; Tue, 30 Sep 2025 07:38:42 -0400
+X-MC-Unique: q519jA4aOOuocveaySIHrw-1
+X-Mimecast-MFC-AGG-ID: q519jA4aOOuocveaySIHrw_1759232321
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e4943d713so17948965e9.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 04:38:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759232321; x=1759837121;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s9TN9TZeQjktmd6QWuTV4gF6Ocin9z3f2O7pXCiqRtI=;
+ b=ZNChhofrtsgXB9h06wCR+hQmZ1cS0dmyE+R+G0DF5HsMq1MBb7vI3FnEl7fS4zNB8a
+ U7TZ5Vsv2DRHdChybqCteEyqwUY0/JqaDSmuy0JptLCaXFawfDaQOMnly49YOmQQN4fi
+ AD5nZw5zBAZc4gr5fBsygGhMEpnxu2lsiFgtQIjZoEqQHEhIHR9jDx4C7OyLMBevSvdu
+ FtJm367inNJ7y8CI7jjAdTSewcNWtQ7ggClqqOhjYzGht1rkPfhB5z9ZyUjo8NStatmh
+ VqEVuHyT3ivrOYJkRRvRnylhrFaHrF+UNg7hl5zLxw/aea09B2PGemtVFo3YnHQEY8FC
+ uOXg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWeBfa8vzpQuXl0S3Mc8Z8kDrAOVJw8nl2myjX13eAx+AewjeoViUpsvw1rG4cZqLmpy4wR4ok3Ivfu@nongnu.org
+X-Gm-Message-State: AOJu0Yzelwz4wrwtO6zFLATfhZ/BQbuZRsalDjkinnwolV7d2eL0SC2o
+ /YStKvEoFKCe/ZfjrFeZH5wfAXFdC6BlVbSUTFESB2xR8kIkx4RzxReY3o3XXkyRVR5oE4mZkmQ
+ twSCk1TtO5VkpzTIHRt83p6GLRufBRCS6SceL+RARlyBELbEKMQEOHT9g7jRaKATw
+X-Gm-Gg: ASbGncvADHYr6qVnishhvhAscR/xoTu1BpQx2dwMralh2+o8JHvZyLALVEL/waarRyo
+ zFAO15JmrxXzUF/uZ6DemAmDPJ3DA/zmAju7zeTIq8F+ItYZ35BixcoYpEC/PRW69D4p7vFcg72
+ ezIrEU1MB74GbyPsRT+3/6kthQhOMOQQR4RkLfpduHN60KRNBbinljvcTGRpf3YgmdM5XFkRkCA
+ wm2bpHvfYz+k4OuNXa1dnlXAqTjAAVM2vBin9gFabNm5Ml46lRQx2OmIPBKvIBRA6zaUiaWk435
+ 0TrEK3W8fCZImpS1vMdaj2qew9X0nVh8yBjUhfY0/J4RYc62NEfNUvk1wjTG9jwG0BF4g3+wIGm
+ ZGgPEAURi
+X-Received: by 2002:a05:600c:4748:b0:46e:43fa:2dd7 with SMTP id
+ 5b1f17b1804b1-46e43fa2e79mr110760035e9.24.1759232320683; 
+ Tue, 30 Sep 2025 04:38:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdY6KwQFQLlozfTW5uZlxtzZgRMZAc+14zrffISPJx0UY+E063oljvtfEvVg5B50QMio9SwA==
+X-Received: by 2002:a05:600c:4748:b0:46e:43fa:2dd7 with SMTP id
+ 5b1f17b1804b1-46e43fa2e79mr110759765e9.24.1759232320237; 
+ Tue, 30 Sep 2025 04:38:40 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e2a7c8531sm266630785e9.0.2025.09.30.04.38.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 Sep 2025 04:38:39 -0700 (PDT)
+Message-ID: <30ac36dd-8a08-41f0-8189-6b555aea38e7@redhat.com>
+Date: Tue, 30 Sep 2025 13:38:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] aspeed: Add Supermicro X11 SPI machine type
-To: Guenter Roeck <linux@roeck-us.net>
-CC: Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery
- <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-References: <20221025165109.1226001-1-linux@roeck-us.net>
- <dbea5c97-071e-4d7c-a022-8cd5d9cf6171@kaod.org>
- <e6ad0500-29b5-422f-a584-34d33a5e9a0a@roeck-us.net>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Subject: Re: [PATCH v2 2/3] hw/vfio: Avoid ram_addr_t in
+ vfio_container_query_dirty_bitmap()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Eric Auger
+ <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Yi Liu <yi.l.liu@intel.com>, John Levon <john.levon@nutanix.com>
+References: <20250930091456.34524-1-philmd@linaro.org>
+ <20250930091456.34524-3-philmd@linaro.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
+Autocrypt: addr=clg@redhat.com; keydata=
  xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
  8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
  yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
@@ -51,67 +99,52 @@ Autocrypt: addr=clg@kaod.org; keydata=
  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
- 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
-In-Reply-To: <e6ad0500-29b5-422f-a584-34d33a5e9a0a@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250930091456.34524-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: 0e066b3c-908a-4898-8671-8a5aa70ba92c
-X-Ovh-Tracer-Id: 13491940061823929126
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEwimGix62z5d6ymBRsktbNn+Rff4WB+yiWe9qPmZYtq7+GRL2pgCyzXe+4F57PWh/iIa1R/1+AzoO1DkKYhIYTz781ov3rZ6NtSrzY7NTBbauH6RXCoeZGM0pWwtCgpq3gtvO3JFiaDP+rhixV8rWcnAiDjUrtQMABrpQAI059Y3uA0q7XcJDQfSEzzfK91TWMi8/LO9nlZX2n5SQ4RMN7+jbtHJgQwGgtNS6StYo++pOhf+wQGwUNNVywtYWtWhMeBnHkek2FtjPNMYtDCoB0ey72LGM2QIs/LYm0q3a5w6PjqFX9s5gYb9J8xd0Dj3YzSi/oKzo24seLjQyd8I7+thbv2ZzPIfgT1gBoDdL9Hn29Yr7QwvrJyjsUbwwJl2vuU9+VVYrmE/6stcwttPdvs4KJhYD3WEY+MvYUEMA4pj5/e8QGJulyC5Ql+Y3fZPmCRflJpWlTmfzvk0eRx4UOvA/zS96Jf3XjkXjifklhzwEgbLZ0Bq30sQHJhaPKzLufY9RCckj9mkqIUrmQN+rg36ILNOEVLhv0cWTM2SAFub6qyKItEZFCtf5Mc7fvcDCvfR2j5dnehX7i4Heu4TaLWP0Eo09/G/RvVEConznfQBIgGVDZujsTrxnMI0Wlha96NQhvyUeoUe0cuojk4q8FA2/lZykbQfwmEWz60u/OXg
-DKIM-Signature: a=rsa-sha256; bh=R+xvhpupGTYzNQ9a040wfBj7JORG0AwjbrY+8dkK9Fs=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1759230782; v=1;
- b=k0hspo6qvhaSeXoKKvCOOl3HHE1Z0GU7cs1q/GbFYyW6EKLj1SQhVPuwF6CSZNekBLa579iG
- pCMO56uMYiW/82G2O3QZ7fH9mb4+d0wXgO28nkFA/ECKeNBdVlQ9Q6KKgurQ287QStO1EG9VbFw
- CW6aWlHI0uPKj6WF4jtxlN7zUXA3Flds54U/Q3iDNBQ1d0WFtIiqP+RbBhCw2MvGNknDGBekaW4
- JjvNWIm1RPmCRmBgtUiZ2o0+0BKpz59bYMiWozd/9h1tLL3J+9R/09HDpPFu6uxtunKR4v+2sbB
- +AJCGRr4Z+0aX/fnDreDEa927n8ocxO9vz+xivN+5nMcg==
-Received-SPF: pass client-ip=79.137.123.220; envelope-from=clg@kaod.org;
- helo=smtpout2.mo529.mail-out.ovh.net
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,42 +160,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/30/25 12:08, Guenter Roeck wrote:
-> On 9/29/25 22:55, Cédric Le Goater wrote:
->> On 10/25/22 18:51, Guenter Roeck wrote:
->>> supermicrox11-bmc is configured with ast2400-a1 SoC. This does not match
->>> the Supermicro documentation for X11 BMCs, and it does not match the
->>> devicetree file in the Linux kernel.
->>>
->>> As it turns out, some Supermicro X11 motherboards use AST2400 SoCs,
->>> while others use AST2500.
->>>
->>> Introduce new machine type supermicrox11-spi-bmc with AST2500 SoC
->>> to match the devicetree description in the Linux kernel. Hardware
->>> configuration details for this machine type are guesswork and taken
->>> from defaults as well as from the Linux kernel devicetree file.
->>>
->>> The new machine type was tested with aspeed-bmc-supermicro-x11spi.dts
->>> from the Linux kernel and with Linux versions 6.0.3 and 6.1-rc2.
->>> Linux booted successfully from initrd and from both SPI interfaces.
->>> Ethernet interfaces were confirmed to be operational.
->>>
->>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->>
->> Hello Guenter
->>
->> Would it be possible to contribute a functional test for this
->> machine ?
->>
->> Since this machine contributes little to the Aspeed models,
->> its value lies in the firmware it can run to exercise the
->> models. Without functional tests, I plan to schedule the
->> removal in the QEMU 10.2 cycle.
->>
+On 9/30/25 11:14, Philippe Mathieu-Daudé wrote:
+> The 'ram_addr_t' type is described as:
 > 
-> I use it to test the Linux kernel. Nor worth enough to spend more time on.
-> Just drop it; I'll drop the respective test runs.
-Can the FW be downloaded ?
+>    a QEMU internal address space that maps guest RAM physical
+>    addresses into an intermediate address space that can map
+>    to host virtual address spaces.
+> 
+> vfio_container_query_dirty_bitmap() doesn't expect such QEMU
+> intermediate address, but a guest physical addresses. Use the
+> appropriate 'hwaddr' type, rename as @translated_addr for
+> clarity.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/hw/vfio/vfio-container.h |  3 ++-
+>   hw/vfio/container.c              | 11 ++++++-----
+>   hw/vfio/listener.c               | 12 ++++++------
+>   3 files changed, 14 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
+> index b8fb2b8b5d7..093c360f0ee 100644
+> --- a/include/hw/vfio/vfio-container.h
+> +++ b/include/hw/vfio/vfio-container.h
+> @@ -98,7 +98,8 @@ bool vfio_container_dirty_tracking_is_started(
+>   bool vfio_container_devices_dirty_tracking_is_supported(
+>       const VFIOContainer *bcontainer);
+>   int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
+> -    uint64_t iova, uint64_t size, ram_addr_t ram_addr, Error **errp);
+> +                                      uint64_t iova, uint64_t size,
+> +                                      hwaddr translated_addr, Error **errp);
+>   
+>   GList *vfio_container_get_iova_ranges(const VFIOContainer *bcontainer);
+>   
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 250b20f4245..9d694393714 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -246,7 +246,7 @@ static int vfio_container_devices_query_dirty_bitmap(
+>   
+>   int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
+>                                         uint64_t iova, uint64_t size,
+> -                                      ram_addr_t ram_addr, Error **errp)
+> +                                      hwaddr translated_addr, Error **errp)
+>   {
+>       bool all_device_dirty_tracking =
+>           vfio_container_devices_dirty_tracking_is_supported(bcontainer);
+> @@ -255,7 +255,7 @@ int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
+>       int ret;
+>   
+>       if (!bcontainer->dirty_pages_supported && !all_device_dirty_tracking) {
+> -        cpu_physical_memory_set_dirty_range(ram_addr, size,
+> +        cpu_physical_memory_set_dirty_range(translated_addr, size,
+>                                               tcg_enabled() ? DIRTY_CLIENTS_ALL :
+>                                               DIRTY_CLIENTS_NOCODE);
+>           return 0;
+> @@ -280,11 +280,12 @@ int vfio_container_query_dirty_bitmap(const VFIOContainer *bcontainer,
+>           goto out;
+>       }
+>   
+> -    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
+> +    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap,
+> +                                                         translated_addr,
+>                                                            vbmap.pages);
+>   
+> -    trace_vfio_container_query_dirty_bitmap(iova, size, vbmap.size, ram_addr,
+> -                                            dirty_pages);
+> +    trace_vfio_container_query_dirty_bitmap(iova, size, vbmap.size,
+> +                                            translated_addr, dirty_pages);
+>   out:
+>       g_free(vbmap.bitmap);
+>   
+> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+> index 3b6f17f0c3a..4e2565905e0 100644
+> --- a/hw/vfio/listener.c
+> +++ b/hw/vfio/listener.c
+> @@ -1059,7 +1059,7 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       VFIOGuestIOMMU *giommu = gdn->giommu;
+>       VFIOContainer *bcontainer = giommu->bcontainer;
+>       hwaddr iova = iotlb->iova + giommu->iommu_offset;
+> -    ram_addr_t translated_addr;
+> +    hwaddr translated_addr;
+>       Error *local_err = NULL;
+>       int ret = -EINVAL;
+>       MemoryRegion *mr;
+> @@ -1108,7 +1108,7 @@ static int vfio_ram_discard_query_dirty_bitmap(MemoryRegionSection *section,
+>   {
+>       const hwaddr size = int128_get64(section->size);
+>       const hwaddr iova = section->offset_within_address_space;
+> -    const ram_addr_t ram_addr = memory_region_get_ram_addr(section->mr) +
+> +    const hwaddr addr = memory_region_get_ram_addr(section->mr) +
+>                                   section->offset_within_region;
+
+While we're at it, could I ask, for consistency with other callers
+of vfio_container_query_dirty_bitmap(), that you rename 'addr' to
+'translated_addr' here and below as well ?
+
+Feel free to ignore.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
 
 C.
+
+
+>       VFIORamDiscardListener *vrdl = opaque;
+>       Error *local_err = NULL;
+> @@ -1118,7 +1118,7 @@ static int vfio_ram_discard_query_dirty_bitmap(MemoryRegionSection *section,
+>        * Sync the whole mapped region (spanning multiple individual mappings)
+>        * in one go.
+>        */
+> -    ret = vfio_container_query_dirty_bitmap(vrdl->bcontainer, iova, size, ram_addr,
+> +    ret = vfio_container_query_dirty_bitmap(vrdl->bcontainer, iova, size, addr,
+>                                   &local_err);
+>       if (ret) {
+>           error_report_err(local_err);
+> @@ -1183,7 +1183,7 @@ static int vfio_sync_iommu_dirty_bitmap(VFIOContainer *bcontainer,
+>   static int vfio_sync_dirty_bitmap(VFIOContainer *bcontainer,
+>                                     MemoryRegionSection *section, Error **errp)
+>   {
+> -    ram_addr_t ram_addr;
+> +    hwaddr addr;
+>   
+>       if (memory_region_is_iommu(section->mr)) {
+>           return vfio_sync_iommu_dirty_bitmap(bcontainer, section);
+> @@ -1198,12 +1198,12 @@ static int vfio_sync_dirty_bitmap(VFIOContainer *bcontainer,
+>           return ret;
+>       }
+>   
+> -    ram_addr = memory_region_get_ram_addr(section->mr) +
+> +    addr = memory_region_get_ram_addr(section->mr) +
+>                  section->offset_within_region;
+>   
+>       return vfio_container_query_dirty_bitmap(bcontainer,
+>                      REAL_HOST_PAGE_ALIGN(section->offset_within_address_space),
+> -                                 int128_get64(section->size), ram_addr, errp);
+> +                                 int128_get64(section->size), addr, errp);
+>   }
+>   
+>   static void vfio_listener_log_sync(MemoryListener *listener,
+
 
