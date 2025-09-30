@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB1FBAB4E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 06:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242C7BAB529
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 06:17:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Rks-0001ka-Jl; Tue, 30 Sep 2025 00:14:22 -0400
+	id 1v3Rl2-0001sl-6w; Tue, 30 Sep 2025 00:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Rkh-0001j4-FY
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:12 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Rkt-0001oX-Jz
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:25 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Rke-0000rN-IA
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:10 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-46e2e363118so52025625e9.0
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 21:14:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Rki-0000sE-VR
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:22 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3ee13baf2e1so4219949f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 21:14:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759205643; x=1759810443; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759205649; x=1759810449; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GJHuzj8i65yKq7/CrLnIUXqdpZj8DIZ6OJzdCMb/6CI=;
- b=kc1TilDrb2lMBkaiZCYIoes1wX/QHPMypNoiY8a5pLECo68NhFVX69WIraL+upBwrK
- nvu47nWut88HdrteiMK+f/15xyPCBNfwDDe2324Nm5pNd64+JvY4yWNDtkMtXWnjW4R8
- b0wHdPwFcNsTSENc5IQ4xWn+YMCiyg37kJNWyQc0Xas7840c7Dov923sdwElps4ZJdoG
- 3e4x6IRBJwM33rLV5Cmsmpv1yZyaH6r6BSX1pdRAO/cH9rnRgqgg+IjIFH5RkDPNOP2B
- I5w6+PteApsqfNUQoABVA9CuR8Q9yfMDQUqrgaYsq7+ePCCzLyWvO5AP6qLHD3Q8xy/2
- ek6A==
+ bh=uk5+wyHN7CkT7HC+T4CiL8GLFFBvq7A2wJEeem4enV4=;
+ b=xJGZps97udBTc2lbfhV+49ELlHyw0ojHO/PMueyhP1nVif2psNO344j4cpFBRI1QL4
+ BY1I23c4Jv03axcXlQYgoZIWQxBnSWt5rcILbINxT7HYJhBjUtwKpqzEu0v8B9IZFr1h
+ bHnFIzQU/J4o4SZxkPT5LJAgXbALr+vlQ7BMrFgKmhGR/F9mBfKZM7YvkL6qmwTLjseX
+ vA/uDYmHe2FNgiskdTMHWzYMuEu7pKUTix2v68JkfmbEwW2T1oJtGodhOONuFmyR6dPe
+ u+SlfntkO6PmpuXBlf67qiMUzKlfwvBt2XTB9Us5dCH54oyBNN6NGdBPuas4/MIlGjv8
+ ci3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759205643; x=1759810443;
+ d=1e100.net; s=20230601; t=1759205649; x=1759810449;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GJHuzj8i65yKq7/CrLnIUXqdpZj8DIZ6OJzdCMb/6CI=;
- b=hVeAGHWu/6AJTT5QgxMMTxkcZwGuBu/BK4XjgKN/bVocICckTBuGLYaJZWko3twYEx
- YeWF2szeljh59IbCCwf6bXrajl0R0q3HbtC2eTOTiOiMfWIl+7MwXZkDly2uq2gogtia
- Jm5sRwZxgNZ7E//kEwVpIO6TOqW1Mw2FGMEnmby5SCmA9ZxNOyFSW/f0Oi0H4t0o/3h3
- Se14eHwndEr+41GISZGQPj9OrgHHrXJDa1lYfyW51/KIxNNIBd7q6bYsDh1O6oSlSwNK
- akKIUxkuovmwkGJyf0dS66NKlVgIYvgonjaiG2tadNpzkplxZdvYvYqTJLI+fR1G2omR
- FBOg==
-X-Gm-Message-State: AOJu0Yw/oe4p+J5Yb06RE/KWllGV8gdnysZhnLzM1jfz8MvZS2MRXi/Q
- X3BKVpXJLln4sJ59GNPmLuoL4qN+puXfoeTOa5vJ+ICkg1U22s6oYK6yxYrsWDiXo2+8GQZb/3H
- uZJle7pNwmw==
-X-Gm-Gg: ASbGncsLVcMg/HR3WLrzsIkfDLJXTrbdq1h9Dr0ArrayJf8gUQMzTyM56oxxClqx9D6
- VJP/YuSFz0aejoukHNxkHm0c5iesJXMvFVwYUWtYdWYBYsDYr9EHCYVLBHvGWN4eVMfjV6FXvRx
- bWAIimA+RDkWnfWaOuBGdV7xIEwxfDVV88VxzkQa3NwcwWy/TjChybKkQWhTOinA4QTz7Q47FZh
- fjn4bKmk1XSoUChW6kvywR//5IJYPl+q6b5896thMSu17Rcy4JSOS8DQ+YzZBieNA8b+hL9siM6
- JzGoy43a6BHxaMHnYn8yYTPptahVZiTe/dDvfPNoL2PeTACDCXGKQQoQPnzXUQB8SdeMRyWhcwO
- jedoxErJNOToWx8zaAjziofRtaoX78+/SHhV8Db3TxMki6DuPJoTiQpzT1fy+HKChuU67kIbjHj
- 7UUE6l3bm4Ez+H0JdvW/bG7u4BnKSaYCo=
-X-Google-Smtp-Source: AGHT+IFzoydC/PtH1+zccfqdIbgaSIsqjwZE3Y6j7iXWudBl2KZiSFlGWhLtg5m0yJ4ctRkRXODKlQ==
-X-Received: by 2002:a5d:588c:0:b0:3f9:fd59:7a5f with SMTP id
- ffacd0b85a97d-40e4a05bf52mr18187688f8f.33.1759205643111; 
- Mon, 29 Sep 2025 21:14:03 -0700 (PDT)
+ bh=uk5+wyHN7CkT7HC+T4CiL8GLFFBvq7A2wJEeem4enV4=;
+ b=viX3Swa+UnhKCLZp1ZB33mF4RvhhDwrNlJAjHaww3LkOi2F35nFcXfmK9AuHIiyMjw
+ Zy5f8oQ6tLRKJQWpQms/RTtBwHENwZACUOptBnuq5WhK9WPx4DKwFlIKhAISOX48FCJc
+ abtgfFOF2Yz8vg5/BgsLSNT9L1C8G4Zus3exFLrVKUpU27dW0+kbgfhHfvTXVqgNuzbY
+ zEytzYvSDKNacjokSOioSirQrYjtwAt3XLbzwuq5Zfq6XSJ/AvrVpYgNKBR1K/GEmnW3
+ MoZ6pCbExPnmXWvxusGbSC/DDLWlQfJ0GyAYqCxh/9cJllGdJhie2iBSsjZanz2V7fxG
+ JLkw==
+X-Gm-Message-State: AOJu0Yx9uBIwmhHyLfQEYIGV/dNJ3+R4TjC7xJ3ZoAMLFhRx8ynGnWAj
+ nIALwu75OhiyH1+94MBBoIt9eK1iBrXMXq48Vg2VFaWYkpcMrbp+vwN5RWDVlDHcSk45qSmG/1s
+ PX/fImsin0g==
+X-Gm-Gg: ASbGncvc/x2sWF0qeLSlst62o+KFFK0/oZf0eofhFdOq6qFtRk7Ab89gJngSnLdAjhi
+ UNIlwnxdFuuvElu8M5ue/Zqrnt4lDNr1xzQGaJyDcfM7NWkoQAe7naCYGAX8e4+b72JoBSuLRLg
+ XaH3lGvZyTeWcfkjDKacyIm0jdEE2vfW5wOb2sp3NUbL2Db/P7B94o2JAS6U0wzss+Xu+wDlMBr
+ 7Ul7/eOJtWDjfMxSvOyxSNMsMTMsdCNEX0A6XhuC9urwidDpmQ0kRt5NgNY3j8AxsQ6uGJEjOif
+ crVsLSThcPBQhg2ZL0sqZsbGF7KKWvrmnxsH2RRdDV0KvRxO5KuW97klPmE78wuknOs0KqnYgtQ
+ 1pkQ5C9iy9PtDe88GczDRJ6L+8bxqCi7sKUxKHwCX2M9/YhnDDuO2EGgBJgtycDaJhRgLUBO1WX
+ R7y6UWBeaaxNpFZxq0/sPW8SlJXK/uFdc=
+X-Google-Smtp-Source: AGHT+IHVwaY6Q4s0F84QmaOmJAx4BK9ueW3Bbg0HpiOJvzkr7RtDJkQ0plXWj1SaEJLGINz1Ov7KPQ==
+X-Received: by 2002:a05:6000:3101:b0:3eb:5e99:cbbc with SMTP id
+ ffacd0b85a97d-40e458a9394mr12531634f8f.9.1759205648705; 
+ Mon, 29 Sep 2025 21:14:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc6cf3835sm20954191f8f.46.2025.09.29.21.14.00
+ 5b1f17b1804b1-46e5b69bc0bsm5141855e9.3.2025.09.29.21.14.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Sep 2025 21:14:01 -0700 (PDT)
+ Mon, 29 Sep 2025 21:14:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -82,17 +82,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 06/17] system/physmem: Remove cpu_physical_memory_is_io()
-Date: Tue, 30 Sep 2025 06:13:14 +0200
-Message-ID: <20250930041326.6448-7-philmd@linaro.org>
+Subject: [PATCH v2 07/17] system/physmem: Pass address space argument to
+ cpu_flush_icache_range()
+Date: Tue, 30 Sep 2025 06:13:15 +0200
+Message-ID: <20250930041326.6448-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930041326.6448-1-philmd@linaro.org>
 References: <20250930041326.6448-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,45 +116,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are no more uses of the legacy cpu_physical_memory_is_io()
-method. Remove it.
+Rename cpu_flush_icache_range() as address_space_flush_icache_range(),
+passing an address space by argument. The single caller, rom_reset(),
+already operates on an address space. Use it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  include/exec/cpu-common.h | 2 --
- system/physmem.c          | 5 -----
- 2 files changed, 7 deletions(-)
+ include/system/memory.h   | 2 ++
+ hw/core/loader.c          | 2 +-
+ system/physmem.c          | 5 ++---
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index e413d8b3079..a73463a7038 100644
+index a73463a7038..6c7d84aacb4 100644
 --- a/include/exec/cpu-common.h
 +++ b/include/exec/cpu-common.h
-@@ -149,8 +149,6 @@ void *cpu_physical_memory_map(hwaddr addr,
- void cpu_physical_memory_unmap(void *buffer, hwaddr len,
-                                bool is_write, hwaddr access_len);
+@@ -156,8 +156,6 @@ void cpu_physical_memory_unmap(void *buffer, hwaddr len,
+  */
+ void qemu_flush_coalesced_mmio_buffer(void);
  
--bool cpu_physical_memory_is_io(hwaddr phys_addr);
+-void cpu_flush_icache_range(hwaddr start, hwaddr len);
 -
- /* Coalesced MMIO regions are areas where write operations can be reordered.
-  * This usually implies that write operations are side-effect free.  This allows
-  * batching which can make a major impact on performance when using
+ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
+ 
+ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 546c643961d..dfea90c4d6b 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -2977,6 +2977,8 @@ void address_space_cache_invalidate(MemoryRegionCache *cache,
+  */
+ void address_space_cache_destroy(MemoryRegionCache *cache);
+ 
++void address_space_flush_icache_range(AddressSpace *as, hwaddr addr, hwaddr len);
++
+ /* address_space_get_iotlb_entry: translate an address into an IOTLB
+  * entry. Should be called from an RCU critical section.
+  */
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 524af6f14a0..477661a0255 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -1242,7 +1242,7 @@ static void rom_reset(void *unused)
+          * that the instruction cache for that new region is clear, so that the
+          * CPU definitely fetches its instructions from the just written data.
+          */
+-        cpu_flush_icache_range(rom->addr, rom->datasize);
++        address_space_flush_icache_range(rom->as, rom->addr, rom->datasize);
+ 
+         trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
+     }
 diff --git a/system/physmem.c b/system/physmem.c
-index be8e66dfe02..573e5bb1adc 100644
+index 573e5bb1adc..70b02675b93 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -3763,11 +3763,6 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-     return 0;
+@@ -3214,7 +3214,7 @@ MemTxResult address_space_write_rom(AddressSpace *as, hwaddr addr,
+     return MEMTX_OK;
  }
  
--bool cpu_physical_memory_is_io(hwaddr phys_addr)
--{
--    return address_space_is_io(&address_space_memory, phys_addr);
--}
--
- int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque)
+-void cpu_flush_icache_range(hwaddr addr, hwaddr len)
++void address_space_flush_icache_range(AddressSpace *as, hwaddr addr, hwaddr len)
  {
-     RAMBlock *block;
+     /*
+      * This function should do the same thing as an icache flush that was
+@@ -3229,8 +3229,7 @@ void cpu_flush_icache_range(hwaddr addr, hwaddr len)
+     RCU_READ_LOCK_GUARD();
+     while (len > 0) {
+         hwaddr addr1, l = len;
+-        MemoryRegion *mr = address_space_translate(&address_space_memory,
+-                                                   addr, &addr1, &l, true,
++        MemoryRegion *mr = address_space_translate(as, addr, &addr1, &l, true,
+                                                    MEMTXATTRS_UNSPECIFIED);
+ 
+         if (!memory_region_supports_direct_access(mr)) {
 -- 
 2.51.0
 
