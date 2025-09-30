@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7131ABAB579
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 06:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C28DABAB5CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 06:29:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Rtz-0008Sf-Fs; Tue, 30 Sep 2025 00:23:49 -0400
+	id 1v3RuS-0000H8-88; Tue, 30 Sep 2025 00:24:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1v3RsJ-00061C-QG
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:22:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v3RsO-00066O-8L
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:22:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1v3Rs9-0003Bt-F6
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:22:02 -0400
+ id 1v3RsE-0003Fy-NY
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:22:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759206106;
+ s=mimecast20190719; t=1759206115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Nt2BdcjCfw2C3SywznVrdvSqpi6ZfH0CwzvWi2Q/H10=;
- b=QFrcwPQQDlavoMF429ul9SApMWuRX3gQ6X1MeI4sUmWECkxvsB1MWhPWuipCUM7DUGaXct
- 9oSdiflZgx43sY1zt6JCogYAygtDczHGRxefPd3TNcIEKhB9O3XdyYhadGl0OEpmRwnoTt
- 9V21ko2At4DxSUAYnOHcY6pRy1cCojw=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9gc7wzZUyIJXyoHgHGeLqeL6vT8K0cbzJspgkY8Cs98=;
+ b=f1eSHCx11gLkhewCejHjRC3hoAejz76kLvWeGWluNuSZJCEjgdaVr7bweaFV+8I9DYN3vN
+ VMlj3rqFYnxseZlmI11Z6E8v1kH1prZyZGv2zJjycJdq1IabMkI62kntd6gUdQ4oJ6BTjp
+ fPhtiK5awK9E1wcYfb5NG/hUfNkNudI=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-628-G0A-0eLcN3OBW8X0oWnOwA-1; Tue, 30 Sep 2025 00:21:44 -0400
-X-MC-Unique: G0A-0eLcN3OBW8X0oWnOwA-1
-X-Mimecast-MFC-AGG-ID: G0A-0eLcN3OBW8X0oWnOwA_1759206103
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-32ec69d22b2so5079765a91.1
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 21:21:44 -0700 (PDT)
+ us-mta-15-Pr8oAipLP-O6LcYsU8oadw-1; Tue, 30 Sep 2025 00:21:52 -0400
+X-MC-Unique: Pr8oAipLP-O6LcYsU8oadw-1
+X-Mimecast-MFC-AGG-ID: Pr8oAipLP-O6LcYsU8oadw_1759206112
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-b5527f0d39bso7639956a12.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 21:21:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759206102; x=1759810902;
+ d=1e100.net; s=20230601; t=1759206111; x=1759810911;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Nt2BdcjCfw2C3SywznVrdvSqpi6ZfH0CwzvWi2Q/H10=;
- b=Prra4IC6w/qHTH9/jqNXCxl5Vit4+uUS4EJAhgo8ZNbJzj7Fd04vsVnG65hLeLsNrd
- HkdoZAiLmbVv+Dd3l6RYm5tDFUMN89cEdM4zq6GWE3iLVRjGGY3MIppqkYIQwpbbA0uy
- k9YTph4agLFh0ZMx6Nk8tpnvLwLBft9xNn80xstFTstV8Bdb7P0W3iqfjvOoPw9vKDxF
- yWbQqUWStctMGaudZrALjPFtbq3OdzIrPUlYmKTzsKCvqzfcJ5XhRNaD5R8SwQfE9dEV
- 6x8t4yfM1Sg9WoXv6kon4IweBqJmR/qPT5k5lsnCGbU3+TwecO+69QEHSsFvZidUMM1R
- yJbQ==
-X-Gm-Message-State: AOJu0YzKEe3xh24/QeslNBm+L751ciVmkDrQfJaRbrWi6UjWud6c6++V
- 6H5PB977/ywmrpORUAnXIJ/v1Zsn++pXx00TTXcr2wdqL0HPBegBt2XJQHDLUL9J17VlDo+sv/q
- wGrEPu9Wl4pAZpegCE0cxiE3WqDVbjp5guFqMi1UIsHBVdjGc3kxLfIcd
-X-Gm-Gg: ASbGncvN4tHq2OkdUvNshGTfki92fhsuo9ypl2E9ztqHfBBC3YYOXJfEvFV2vUOgBrH
- JUVuRvENP35oQZlTvapatV9CiuICmEVGYi7ywgy0O6xmIQKGbJi8PhD0tmVDv8THh/VNIPA/YXK
- L3G4/18KkJ2QDI9C9PTrbPhvffpQ4bRkL4zhx9mBGxpgLqg2jDdS3BmCO/eHpeWnwBNpU3PFVro
- c+e3XQzq9PsPxRXuBKxI/cVM+PWBVjaNeZU9pxNrneuJTR6dHQSA32AioCPIAtJJ1gFGjj2AH2j
- QMJ71m/IDrhmrPvKNyjCA3JIQq94y9NFVvvijdKAVVC65Cb038EWlh3Wfw==
-X-Received: by 2002:a17:90b:33d2:b0:330:9c0b:5494 with SMTP id
- 98e67ed59e1d1-3342a2992cfmr19981641a91.22.1759206101675; 
- Mon, 29 Sep 2025 21:21:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7GdRMSHqdEqMK/fZHh7igzuyFGpe3tNAm5kAEqwInUMCT0Xn8hyl81qdC2vxPkOlCgjUe9Q==
-X-Received: by 2002:a17:90b:33d2:b0:330:9c0b:5494 with SMTP id
- 98e67ed59e1d1-3342a2992cfmr19981621a91.22.1759206101335; 
- Mon, 29 Sep 2025 21:21:41 -0700 (PDT)
+ bh=9gc7wzZUyIJXyoHgHGeLqeL6vT8K0cbzJspgkY8Cs98=;
+ b=mywd/B657IjZ0xjxtL6FBDnznoVDgHvWiLu+WOhCkTcxAJ9JQSrHDOOxIkdQByezLK
+ hKHjhWvTIkgzZc2O4K2DFW4kqW7GqirhaebT6vEiTEgcwpj9ztoJBtomctUPY607sjZ1
+ waq/idmcnbwrqO2ccT/VDxN+ElxO4QzORRHIXBd8O6B9p8QdETOo/OtWHRzJKNS5yZCj
+ Dx1w6KAFMbYx4Yf0wb42KzcfsHpoFnnjWj994PqWwkRmLeTJAE0PS8m7/i3HSWD1981n
+ 5WXf0tIMwdtGcHlgtLMMpG96sUXMGIDVc5GGPSxzHzOInvIdCYURZ1E5I9lPOx3I9Hsm
+ LkUA==
+X-Gm-Message-State: AOJu0YzUeBYxaxM7oCbN9gD8UKsUQ7xTYx3NwypxvTfsilImmFKP6SM3
+ 1d0rnYv91/RVaHTKdNblcf9whtUtDssACNHHI00/BQSkf+8vntKcuaafxexg6yr5eFEsEMVJ6yC
+ vY/dWHtuNtX+UImjMPPnv4EcpoKz2J4zVj6VmxrN9OADpYr+BXl3d5GOV
+X-Gm-Gg: ASbGncthXfrdH6SOzdmZODq0Ichs61bhFaGRYIpG8iImHqAf6ToXT9I7ApfoK0rwPEO
+ EYyG4/r4Atft1BTW/y/gdQKrKr2LlYnFjpFWmkEZ1WG27a0JdR4YGr0sBpRdhH6zBpw7GyqKaU9
+ JdpIkqfXCYp8gIcc43dhOPZQznHvdlbS2mf4btEz+j9nBVpduVv5Ko0vrOnq8lljS/z+bAawdqG
+ 1lhIIxsD3LcEYfUGx4I+Uwl/aq8RA8lB+G2KiU8Vx5OQbfY73duMEqhaV86fCsHDOuJd9Q8Y09Y
+ GnOtvGnLtV1r+40tKKXqCEuocDc4kULMACUbaari90MsAEgH5Ia5bfbxfA==
+X-Received: by 2002:a05:6a21:6daa:b0:245:fb85:ef69 with SMTP id
+ adf61e73a8af0-2e7d82c3279mr23825791637.40.1759206111686; 
+ Mon, 29 Sep 2025 21:21:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMk7W4Q6Ln+EuBwkSEVrVfqYwHwVT8JJ4QmdtCFrAm2/+TypgYuSlqlv3DgQ/YnVdYdr50Bw==
+X-Received: by 2002:a05:6a21:6daa:b0:245:fb85:ef69 with SMTP id
+ adf61e73a8af0-2e7d82c3279mr23825767637.40.1759206111331; 
+ Mon, 29 Sep 2025 21:21:51 -0700 (PDT)
 Received: from armenon-kvm.bengluru.csb ([49.36.108.92])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b57c55a339dsm12534158a12.40.2025.09.29.21.21.32
+ 41be03b00d2f7-b57c55a339dsm12534158a12.40.2025.09.29.21.21.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Sep 2025 21:21:41 -0700 (PDT)
+ Mon, 29 Sep 2025 21:21:51 -0700 (PDT)
 From: Arun Menon <armenon@redhat.com>
-Date: Tue, 30 Sep 2025 09:48:28 +0530
-Subject: [PATCH v15 19/26] migration: push Error **errp into
- loadvm_handle_recv_bitmap()
+Date: Tue, 30 Sep 2025 09:48:29 +0530
+Subject: [PATCH v15 20/26] migration: Return -1 on memory allocation
+ failure in ram.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250930-propagate_tpm_error-v15-19-84afd3af1e47@redhat.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250930-propagate_tpm_error-v15-20-84afd3af1e47@redhat.com>
 References: <20250930-propagate_tpm_error-v15-0-84afd3af1e47@redhat.com>
 In-Reply-To: <20250930-propagate_tpm_error-v15-0-84afd3af1e47@redhat.com>
 To: qemu-devel@nongnu.org
@@ -103,27 +103,26 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Hailiang Zhang <zhanghailiang@xfusion.com>, 
  Stefan Berger <stefanb@linux.vnet.ibm.com>, 
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- Arun Menon <armenon@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+ Arun Menon <armenon@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2748; i=armenon@redhat.com;
- h=from:subject:message-id; bh=eQZYnlZRcR0SBqpqymYhsTca0TVM2HZLHtbTROMUgkI=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ8btKEGvqF2555fMcTVkOpw8/7+8xPF3DRNspMRuWqzz0
- FnwJ1y0o5SFQYyLQVZMkaXha4BsU0BhRKTty+swc1iZQIYwcHEKwEQqExkZPk89qfDftStlfdrX
- nwtZBcsOdWXPnNBTqWxjo94zd3fadEaGlxWGAmuVyp4vdw3tO9p/RtJ9hebK6vsy+XNtb3Ud9+z
- mBAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1743; i=armenon@redhat.com;
+ h=from:subject:message-id; bh=5O+CXW2cDOnC8HtDO4/gLXusDTQkF/UkXMU+X+jO3fg=;
+ b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ8btKMEjr7ULBNVYZXN2Ps3+w9pvk7DAVmWKZ+7bY6yVq
+ zsNOxd1lLIwiHExyIopsjR8DZBtCiiMiLR9eR1mDisTyBAGLk4BmMjNSob/Gd1VN1+5SBdOP2Uk
+ UO65JdB2+6Ujyi7hswPtahiEW2yKGP6nmWh1MP94eXz2+pC4CtOSq4GrwioD+d/KHpxaplBiZ8c
+ NAA==
 X-Developer-Key: i=armenon@redhat.com; a=openpgp;
  fpr=80F5501D82507158593DE9D76A7A2538D90F328E
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armenon@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -139,80 +138,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an incremental step in converting vmstate loading
-code to report error via Error objects instead of directly
-printing it to console/monitor.
-It is ensured that loadvm_handle_recv_bitmap() must report an error
-in errp, in case of failure.
+The function colo_init_ram_cache() currently returns -errno if
+qemu_anon_ram_alloc() fails. However, the subsequent cleanup loop that
+calls qemu_anon_ram_free() could potentially alter the value of errno.
+This would cause the function to return a value that does not accurately
+represent the original allocation failure.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+This commit changes the return value to -1 on memory allocation failure.
+This ensures that the return value is consistent and is not affected by
+any errno changes that may occur during the free process.
+
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Tested-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Signed-off-by: Arun Menon <armenon@redhat.com>
 ---
- migration/savevm.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ migration/ram.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index b80da04b47ff08b4cb6aed1a57c703acaf3eb9ac..2e8776768fcc7d139b9f06fff9285673166a8951 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2476,32 +2476,35 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis, Error **errp)
-  * len (1 byte) + ramblock_name (<255 bytes)
+diff --git a/migration/ram.c b/migration/ram.c
+index 6a0dcc04f436524a37672c41c38f201f06773374..163265a57f26fb1dc88d9797629d58c278e9afb7 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3575,6 +3575,8 @@ static void colo_init_ram_state(void)
+  * colo cache: this is for secondary VM, we cache the whole
+  * memory of the secondary VM, it is need to hold the global lock
+  * to call this helper.
++ *
++ * Returns zero to indicate success or -1 on error.
   */
- static int loadvm_handle_recv_bitmap(MigrationIncomingState *mis,
--                                     uint16_t len)
-+                                     uint16_t len, Error **errp)
+ int colo_init_ram_cache(void)
  {
-     QEMUFile *file = mis->from_src_file;
-     RAMBlock *rb;
-     char block_name[256];
-     size_t cnt;
-+    int ret;
- 
-     cnt = qemu_get_counted_string(file, block_name);
-     if (!cnt) {
--        error_report("%s: failed to read block name", __func__);
-+        error_setg(errp, "failed to read block name");
-         return -EINVAL;
-     }
- 
-     /* Validate before using the data */
--    if (qemu_file_get_error(file)) {
--        return qemu_file_get_error(file);
-+    ret = qemu_file_get_error(file);
-+    if (ret < 0) {
-+        error_setg(errp, "loadvm failed: stream error: %d", ret);
-+        return ret;
-     }
- 
-     if (len != cnt + 1) {
--        error_report("%s: invalid payload length (%d)", __func__, len);
-+        error_setg(errp, "invalid payload length (%d)", len);
-         return -EINVAL;
-     }
- 
-     rb = qemu_ram_block_by_name(block_name);
-     if (!rb) {
--        error_report("%s: block '%s' not found", __func__, block_name);
-+        error_setg(errp, "block '%s' not found", block_name);
-         return -EINVAL;
-     }
- 
-@@ -2640,11 +2643,7 @@ static int loadvm_process_command(QEMUFile *f, Error **errp)
-         return 0;
- 
-     case MIG_CMD_RECV_BITMAP:
--        ret = loadvm_handle_recv_bitmap(mis, len);
--        if (ret < 0) {
--            error_setg(errp, "Failed to load device state command: %d", ret);
--        }
--        return ret;
-+        return loadvm_handle_recv_bitmap(mis, len, errp);
- 
-     case MIG_CMD_ENABLE_COLO:
-         ret = loadvm_process_enable_colo(mis);
+@@ -3594,7 +3596,7 @@ int colo_init_ram_cache(void)
+                         block->colo_cache = NULL;
+                     }
+                 }
+-                return -errno;
++                return -1;
+             }
+             if (!machine_dump_guest_core(current_machine)) {
+                 qemu_madvise(block->colo_cache, block->used_length,
 
 -- 
 2.51.0
