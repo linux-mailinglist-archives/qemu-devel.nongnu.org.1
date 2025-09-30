@@ -2,64 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2842BBAE1AC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 18:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C4DBAE23F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 19:11:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3dcO-0007fN-JG; Tue, 30 Sep 2025 12:54:24 -0400
+	id 1v3dqC-0004A9-Uv; Tue, 30 Sep 2025 13:08:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v3dcF-0007dj-W7; Tue, 30 Sep 2025 12:54:16 -0400
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v3dcA-0007tB-Ia; Tue, 30 Sep 2025 12:54:15 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwDnpF0kC9xoGuMDAA--.7073S2;
- Wed, 01 Oct 2025 00:53:56 +0800 (CST)
-Received: from phytium.com.cn (unknown [113.246.232.83])
- by mail (Coremail) with SMTP id AQAAfwAHbOkaC9xoFaU1AA--.36915S5;
- Wed, 01 Oct 2025 00:53:55 +0800 (CST)
-From: tangtao1634 <tangtao1634@phytium.com.cn>
-To: pbonzini@redhat.com, farosas@suse.de, lvivier@redhat.com,
- Eric Auger <eric.auger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>, Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [RFC v2 2/2] tests/qtest: add SMMUv3 smoke test using smmu-testdev
- DMA source
-Date: Wed,  1 Oct 2025 00:53:40 +0800
-Message-Id: <20250930165340.42788-3-tangtao1634@phytium.com.cn>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20250930165340.42788-1-tangtao1634@phytium.com.cn>
-References: <20250930165340.42788-1-tangtao1634@phytium.com.cn>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3dpy-00048z-Tr
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 13:08:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3dpq-0004wd-Ie
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 13:08:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759252092;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ey/6o95xRv+Vgqw/ApEvFnVJay4Qx1xYDPi7txHKqzE=;
+ b=Rfd4ZsVJEFLjDW88HJ46KKL1E6iG1Cd1lNQzDNMJmQQ9CbMKhiIM6seNaHiOVXkcLej9Sk
+ 4RDeS5tcD3uujxHFVtIsk2BKNISDeW4tK1EZcGXLiaaLDZQ+UqkV0j3CDAa7orY9X2fAN4
+ bsnHhlSpcbiTFDDwzZ3LsE9rBUmB+R8=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-6-wSjy4fsQPe6lg-DeT8u1Bw-1; Tue, 30 Sep 2025 13:08:11 -0400
+X-MC-Unique: wSjy4fsQPe6lg-DeT8u1Bw-1
+X-Mimecast-MFC-AGG-ID: wSjy4fsQPe6lg-DeT8u1Bw_1759252091
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-856d34460a3so1357190485a.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 10:08:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759252091; x=1759856891;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ey/6o95xRv+Vgqw/ApEvFnVJay4Qx1xYDPi7txHKqzE=;
+ b=LNzJsxJfI19JHdfjr2N1C2xIXJN1gGbPHpYwhou23gGzIjTnP1nZBEpuc766LdeGcF
+ o+rCTF3qQ/9iAwoUjpPFn4sYFjRpKXzBU81gAIuos2Zi9S8akgHFIXtKigbLi9X52jea
+ VXzwkN9BAOVMBi10KKawxzrpKHoXVGah7Dqe5WbAUmxgMGY+L76hF+FwU5jrPi4uyXAN
+ iAdqm6yWINcl8rsnlmhIQo9A9VnsS7ZBV/eOlH7EtEVHjsQfeemi54yBoZYdbPZR45b6
+ 6P2gCbh8MCeP9y5OJk503Q+8KW0MGjz53nBZDf9qAkwkgZnMxqejzTosEy9vPDl7nWSr
+ sJBg==
+X-Gm-Message-State: AOJu0YzOpyF8i0tBI+vWXgSOSRiLViEcPcelq9hBt5zMY+tF3Tosux/3
+ xM4b8S8oI473HWd7IrVxIYCzGL6P1PK23Jwn3JJuE8J41X9ED36Wm5IKxhseNqlRym3yWK7IZGS
+ cmsp/Ro9X1mU+lvCJ/SUC8rp7OLmLppmfHAevR/ovSGzZa4v0USlrj3ww
+X-Gm-Gg: ASbGncv7AOMm2nMjkEZjwJA2OnhZEnQDlUL+W+dIChRbtfO94DNqueoC4snV0OrlbSB
+ RcotmJpnnd2B0Joug+EHjQmaRNSk7G/mUogh1JGatuV/PO3eCozk8JQNddMa76a3soGovpQ9n5O
+ TDYznOC1+aQmlwZ69azOAbqOONheNFTZ6oi9V1NbcrdyuMfWewCT9m0201H7lXvuZUjMkGJF/lH
+ T6yg/VIVL26YK7yAD5rjL3eJXs4+b2d133OiW5dvoujM6o/keqdMtX9rEMOvR+0jb47+/IEi57O
+ AhphIpO7kLN+4hihixmDCHettN4UgKPwnGt5fA==
+X-Received: by 2002:a05:620a:191d:b0:85e:96ce:e833 with SMTP id
+ af79cd13be357-873797b25cemr70016385a.67.1759252090635; 
+ Tue, 30 Sep 2025 10:08:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFiYG6f9gQBgBRo5UEeNPEdvdvAh9tIm7uF+lHHRX8AyNPun7mTuPjORDcvoQmbSIRCM7Opg==
+X-Received: by 2002:a05:620a:191d:b0:85e:96ce:e833 with SMTP id
+ af79cd13be357-873797b25cemr70010985a.67.1759252090086; 
+ Tue, 30 Sep 2025 10:08:10 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-85c27099635sm1137900485a.2.2025.09.30.10.08.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Sep 2025 10:08:09 -0700 (PDT)
+Date: Tue, 30 Sep 2025 13:08:08 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH V1 11/11] migration-test: test cpr-exec
+Message-ID: <aNwOeCkXZpPtmPTF@x1.local>
+References: <1758291153-349744-1-git-send-email-steven.sistare@oracle.com>
+ <1758291153-349744-12-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwAHbOkaC9xoFaU1AA--.36915S5
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAJBWja4KgF5AAAsW
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvAXoW3try3Wr4UCFy5Wr4xXryDGFg_yoW8JF4xuo
- WS9Fsxua1xGF17Ar48Crn7G347Xr1I9FnxAF15Wr45Ga4FkF15Gw1rtw43G3s5trsYkFW7
- WFZ7Kw1ftr17X3s3n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
- J3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UU
- UUUUUUU==
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1758291153-349744-12-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,372 +103,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tao Tang <tangtao1634@phytium.com.cn>
+On Fri, Sep 19, 2025 at 07:12:33AM -0700, Steve Sistare wrote:
+> Add a test for the cpr-exec migration mode.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-Introduce a bare-metal qtest that drives the new smmu-testdev to exercise
-the SMMUv3 emulation without guest firmware or drivers. The test programs
-a minimal Non-Secure context (STE/CD/PTE), triggers a DMA, and asserts
-translation results.
+Looks good, only some nitpicks or pure questions below.
 
-Motivation
-----------
-SMMU testing in emulation often requires a large software stack and a
-realistic PCIe fabric, which adds flakiness and obscures failures. This
-qtest keeps the surface small and deterministic by using a hermetic DMA
-source that feeds the SMMU directly.
+> ---
+>  tests/qtest/migration/cpr-tests.c | 120 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+> 
+> diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
+> index 5e764a6..f33af76 100644
+> --- a/tests/qtest/migration/cpr-tests.c
+> +++ b/tests/qtest/migration/cpr-tests.c
+> @@ -110,6 +110,125 @@ static void test_mode_transfer_defer(void)
+>      test_mode_transfer_common(true);
+>  }
+>  
+> +static void set_cpr_exec_args(QTestState *who, MigrateCommon *args)
+> +{
+> +    g_autofree char *qtest_from_args = NULL;
+> +    g_autofree char *from_args = NULL;
+> +    g_autofree char *to_args = NULL;
+> +    g_autofree char *exec_args = NULL;
+> +    g_auto(GStrv) argv = NULL;
+> +    char *from_str, *src, *dst;
+> +
+> +    args->start.hide_stderr = false;    /* omit redirection word from args */
 
-What the test covers
---------------------
-* Builds a Non-Secure STE/CD/PTE for a chosen stream_id/ssid.
-* Primes source and destination host buffers.
-* Kicks a DMA via smmu-testdev and waits for completion.
-* Verifies translated access and payload equality.
+It's default off, right?  Could I request for some more explanations?
 
-Non-goals and scope limits
---------------------------
-* Secure bank flows are omitted because Secure SMMU support is still RFC.
-  A local Secure test exists and can be posted once the upstream series
-  lands.
-* PCIe discovery, MSI/INTx, ATS/PRI, and driver bring-up are out of scope
-  as smmu-testdev is not a realistic PCIe Endpoint nor a platform device.
+Could we also set it in test_mode_exec() directly if needed?
 
-Rationale for a dedicated path
-------------------------------
-Using a generic PCI or virtio device would still require driver init and a
-richer bus model, undermining determinism for this focused purpose. This
-qtest, paired with smmu-testdev, keeps failures attributable to the SMMU
-translation path.
+> +    migrate_args(&from_args, &to_args, args->listen_uri, &args->start);
+> +    qtest_from_args = qtest_qemu_args(from_args);
+> +
+> +    /* De-dup spaces so argv does not contain empty strings */
+> +    from_str = src = dst = g_strstrip(qtest_from_args);
+> +    do {
+> +        if (*src != ' ' || src[-1] != ' ') {
+> +            *dst++ = *src;
+> +        }
+> +    } while (*src++);
 
-Finally we document the smmu-testdev device in docs/specs.
+Pure ask.. when will empty string be present?
 
-Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
----
- docs/specs/index.rst             |   1 +
- docs/specs/smmu-testdev.rst      |  45 ++++++
- tests/qtest/meson.build          |   1 +
- tests/qtest/smmu-testdev-qtest.c | 238 +++++++++++++++++++++++++++++++
- 4 files changed, 285 insertions(+)
- create mode 100644 docs/specs/smmu-testdev.rst
- create mode 100644 tests/qtest/smmu-testdev-qtest.c
+> +
+> +    exec_args = g_strconcat(qtest_qemu_binary(QEMU_ENV_SRC),
 
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index f19d73c9f6..47a18c48f1 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -39,3 +39,4 @@ guest hardware that is specific to QEMU.
-    riscv-iommu
-    riscv-aia
-    aspeed-intc
-+   smmu-testdev
-\ No newline at end of file
-diff --git a/docs/specs/smmu-testdev.rst b/docs/specs/smmu-testdev.rst
-new file mode 100644
-index 0000000000..2599b46e4f
---- /dev/null
-+++ b/docs/specs/smmu-testdev.rst
-@@ -0,0 +1,45 @@
-+smmu-testdev — Minimal SMMUv3 DMA test device
-+=============================================
-+
-+Overview
-+--------
-+``smmu-testdev`` is a tiny, test-only DMA source intended to exercise the
-+SMMUv3 emulation without booting firmware or a guest OS. It lets tests
-+populate STE/CD/PTE with known values and trigger a DMA that flows through
-+the SMMU translation path. It is **not** a faithful PCIe endpoint nor a
-+platform device and must be considered a QEMU-internal test vehicle.
-+
-+Status
-+------
-+* Location: ``hw/misc/smmu-testdev.c``
-+* Build guard: ``CONFIG_SMMU_TESTDEV``
-+* Default machines: none (tests instantiate it explicitly)
-+* Intended use: qtests under ``tests/qtest/smmu-testdev-qtest.c``
-+
-+Running the qtest
-+-----------------
-+The smoke test ships with this device and is the recommended entry point::
-+
-+    QTEST_QEMU_BINARY=qemu-system-aarch64 ./tests/qtest/smmu-testdev-qtest
-+     --tap -k
-+
-+This programs a minimal Non-Secure SMMU context, kicks a DMA, and verifies
-+translation + data integrity.
-+
-+Instantiation (advanced)
-+------------------------
-+The device is not wired into any board by default. For ad-hoc experiments,
-+tests (or developers) can create it dynamically via qtest or the QEMU
-+monitor. It exposes a single MMIO window that the test drives directly.
-+
-+Limitations
-+-----------
-+* Non-Secure bank only in this version; Secure SMMU tests are planned once
-+  upstream Secure support lands.
-+* No PCIe discovery, MSI, ATS/PRI, or driver bring-up is modeled.
-+* The device is test-only; do not rely on it for machine realism.
-+
-+See also
-+--------
-+* ``tests/qtest/smmu-testdev-qtest.c`` — the companion smoke test
-+* SMMUv3 emulation and documentation under ``hw/arm/smmu*``
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 669d07c06b..bcdb51e141 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -263,6 +263,7 @@ qtests_aarch64 = \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
-   (config_all_devices.has_key('CONFIG_NPCM8XX') ? qtests_npcm8xx : []) + \
-+  (config_all_devices.has_key('CONFIG_SMMU_TESTDEV') ? ['smmu-testdev-qtest'] : []) + \
-   qtests_cxl +                                                                                  \
-   ['arm-cpu-features',
-    'numa-test',
-diff --git a/tests/qtest/smmu-testdev-qtest.c b/tests/qtest/smmu-testdev-qtest.c
-new file mode 100644
-index 0000000000..d89e45757b
---- /dev/null
-+++ b/tests/qtest/smmu-testdev-qtest.c
-@@ -0,0 +1,238 @@
-+/*
-+ * QTest for smmu-testdev
-+ *
-+ * This QTest file is used to test the smmu-testdev so that we can test SMMU
-+ * without any guest kernel or firmware.
-+ *
-+ * Copyright (c) 2025 Phytium Technology
-+ *
-+ * Author:
-+ *  Tao Tang <tangtao1634@phytium.com.cn>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "libqos/pci.h"
-+#include "libqos/generic-pcihost.h"
-+#include "hw/pci/pci_regs.h"
-+#include "hw/misc/smmu-testdev.h"
-+
-+#define VIRT_SMMU_BASE    0x0000000009050000ULL
-+#define DMA_LEN           0x20U
-+
-+static inline uint64_t smmu_bank_base(uint64_t base, SMMUTestDevSpace sp)
-+{
-+    /* Map only the Non-Secure bank for now; future domains may offset. */
-+    (void)sp;
-+    return base;
-+}
-+
-+static uint32_t expected_dma_result(uint32_t mode,
-+                                    SMMUTestDevSpace s1_space,
-+                                    SMMUTestDevSpace s2_space)
-+{
-+    (void)mode;
-+    if (s1_space != STD_SPACE_NONSECURE || s2_space != STD_SPACE_NONSECURE) {
-+        return STD_DMA_ERR_TX_FAIL;
-+    }
-+    return 0u;
-+}
-+
-+static void smmu_prog_bank(QTestState *qts, uint64_t B, SMMUTestDevSpace sp)
-+{
-+    g_assert_cmpuint(sp, ==, STD_SPACE_NONSECURE);
-+    /* Program minimal SMMUv3 state in a given control bank. */
-+    qtest_writel(qts, B + 0x0044, 0x80000000); /* GBPA UPDATE */
-+    qtest_writel(qts, B + 0x0020, 0x0);       /* CR0 */
-+    qtest_writel(qts, B + 0x0028, 0x0d75);    /* CR1 */
-+    {
-+        /* CMDQ_BASE: add address-space offset (S/NS/Root/Realm). */
-+        uint64_t v = 0x400000000e16b00aULL + std_space_offset(sp);
-+        qtest_writeq(qts, B + 0x0090, v);
-+    }
-+    qtest_writel(qts, B + 0x009c, 0x0);       /* CMDQ_CONS */
-+    qtest_writel(qts, B + 0x0098, 0x0);       /* CMDQ_PROD */
-+    {
-+        /* EVENTQ_BASE: add address-space offset (S/NS/Root/Realm). */
-+        uint64_t v = 0x400000000e17000aULL + std_space_offset(sp);
-+        qtest_writeq(qts, B + 0x00a0, v);
-+    }
-+    qtest_writel(qts, B + 0x00a8, 0x0);       /* EVENTQ_PROD */
-+    qtest_writel(qts, B + 0x00ac, 0x0);       /* EVENTQ_CONS */
-+    qtest_writel(qts, B + 0x0088, 0x5);       /* STRTAB_BASE_CFG */
-+    {
-+        /* STRTAB_BASE: add address-space offset (S/NS/Root/Realm). */
-+        uint64_t v = 0x400000000e179000ULL + std_space_offset(sp);
-+        qtest_writeq(qts, B + 0x0080, v);
-+    }
-+    qtest_writel(qts, B + 0x003C, 0x1);       /* INIT */
-+    qtest_writel(qts, B + 0x0020, 0xD);       /* CR0 */
-+}
-+
-+static void smmu_prog_minimal(QTestState *qts, SMMUTestDevSpace space)
-+{
-+    /* Always program Non-Secure bank, then the requested space. */
-+    uint64_t ns_base = smmu_bank_base(VIRT_SMMU_BASE, STD_SPACE_NONSECURE);
-+    smmu_prog_bank(qts, ns_base, STD_SPACE_NONSECURE);
-+
-+    uint64_t sp_base = smmu_bank_base(VIRT_SMMU_BASE, space);
-+    if (sp_base != ns_base) {
-+        smmu_prog_bank(qts, sp_base, space);
-+    }
-+}
-+
-+static uint32_t poll_dma_result(QPCIDevice *dev, QPCIBar bar,
-+                                QTestState *qts)
-+{
-+    /* Trigger side effects (DMA) via REG_ID read once. */
-+    (void)qpci_io_readl(dev, bar, STD_REG_ID);
-+
-+    /* Poll until not BUSY, then return the result. */
-+    for (int i = 0; i < 1000; i++) {
-+        uint32_t r = qpci_io_readl(dev, bar, STD_REG_DMA_RESULT);
-+        if (r != STD_DMA_RESULT_BUSY) {
-+            return r;
-+        }
-+        /* Small backoff to avoid busy spinning. */
-+        g_usleep(1000);
-+    }
-+    /* Timeout treated as failure-like non-zero. */
-+    return STD_DMA_RESULT_BUSY;
-+}
-+
-+static void test_mmio_access(void)
-+{
-+    QTestState *qts;
-+    QGenericPCIBus gbus;
-+    QPCIDevice *dev;
-+    QPCIBar bar;
-+    uint8_t buf[DMA_LEN];
-+    uint32_t attr_ns;
-+    qts = qtest_init("-machine virt,acpi=off,gic-version=3,iommu=smmuv3 " \
-+                     "-display none -smp 1  -m 512 -cpu max -net none "
-+                     "-device smmu-testdev,device=0x0,function=0x1 ");
-+
-+    qpci_init_generic(&gbus, qts, NULL, false);
-+
-+    /* Find device by vendor/device ID to avoid slot surprises. */
-+    dev = NULL;
-+    for (int slot = 0; slot < 32 && !dev; slot++) {
-+        for (int fn = 0; fn < 8 && !dev; fn++) {
-+            QPCIDevice *cand = qpci_device_find(&gbus.bus,
-+                                               QPCI_DEVFN(slot, fn));
-+            if (!cand) {
-+                continue;
-+            }
-+            uint16_t vid = qpci_config_readw(cand, PCI_VENDOR_ID);
-+            uint16_t did = qpci_config_readw(cand, PCI_DEVICE_ID);
-+            if (vid == 0x1b36 && did == 0x0005) {
-+                dev = cand;
-+            } else {
-+                g_free(cand);
-+            }
-+        }
-+    }
-+    g_assert_nonnull(dev);
-+
-+    qpci_device_enable(dev);
-+    bar = qpci_iomap(dev, 0, NULL);
-+    g_assert_false(bar.is_io);
-+
-+    /* Baseline attribute reads. */
-+    attr_ns = qpci_io_readl(dev, bar, STD_REG_ATTR_NS);
-+    g_assert_cmpuint(attr_ns, ==, 0x2);
-+
-+    /* Program SMMU base and DMA parameters. */
-+    qpci_io_writel(dev, bar, STD_REG_SMMU_BASE_LO, (uint32_t)VIRT_SMMU_BASE);
-+    qpci_io_writel(dev, bar, STD_REG_SMMU_BASE_HI,
-+                   (uint32_t)(VIRT_SMMU_BASE >> 32));
-+    qpci_io_writel(dev, bar, STD_REG_DMA_IOVA_LO, (uint32_t)STD_IOVA);
-+    qpci_io_writel(dev, bar, STD_REG_DMA_IOVA_HI,
-+                   (uint32_t)(STD_IOVA >> 32));
-+    qpci_io_writel(dev, bar, STD_REG_DMA_LEN, DMA_LEN);
-+    qpci_io_writel(dev, bar, STD_REG_DMA_DIR, 0); /* device -> host */
-+
-+    qtest_memset(qts, STD_IOVA, 0x00, DMA_LEN);
-+    qtest_memread(qts, STD_IOVA, buf, DMA_LEN);
-+
-+    /* Refresh attrs via write to ensure legacy functionality still works. */
-+    qpci_io_writel(dev, bar, STD_REG_ID, 0x1);
-+    /*
-+     * invoke translation builder for multiple
-+     * stage/security-space combinations (readable/refactored).
-+     */
-+    const uint32_t modes[] = { 0u, 1u, 2u }; /* Stage1, Stage2, Nested stage */
-+    const SMMUTestDevSpace spaces[] = { STD_SPACE_NONSECURE };
-+    /* Use attrs-DMA path for end-to-end */
-+    qpci_io_writel(dev, bar, STD_REG_DMA_MODE, 1);
-+    for (size_t mi = 0; mi < sizeof(modes) / sizeof(modes[0]); mi++) {
-+        const SMMUTestDevSpace *s1_set = NULL;
-+        size_t s1_count = 0;
-+        const SMMUTestDevSpace *s2_set = NULL;
-+        size_t s2_count = 0;
-+
-+        switch (modes[mi]) {
-+        case 0u:
-+        case 1u:
-+        case 2u:
-+            s1_set = spaces;
-+            s1_count = sizeof(spaces) / sizeof(spaces[0]);
-+            s2_set = spaces;
-+            s2_count = sizeof(spaces) / sizeof(spaces[0]);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+
-+        for (size_t si = 0; si < s1_count; si++) {
-+            for (size_t sj = 0; sj < s2_count; sj++) {
-+                qpci_io_writel(dev, bar, STD_REG_TRANS_MODE, modes[mi]);
-+                qpci_io_writel(dev, bar, STD_REG_S1_SPACE, s1_set[si]);
-+                qpci_io_writel(dev, bar, STD_REG_S2_SPACE, s2_set[sj]);
-+                qpci_io_writel(dev, bar, STD_REG_TRANS_DBELL, 0x2);
-+                qpci_io_writel(dev, bar, STD_REG_TRANS_DBELL, 0x1);
-+
-+                uint32_t st = qpci_io_readl(dev, bar,
-+                                            STD_REG_TRANS_STATUS);
-+                g_test_message("build: stage=%s s1=%s s2=%s status=0x%x",
-+                                std_mode_to_str(modes[mi]),
-+                                std_space_to_str(s1_set[si]),
-+                                std_space_to_str(s2_set[sj]), st);
-+                /* Program SMMU registers in selected control bank. */
-+                smmu_prog_minimal(qts, s1_set[si]);
-+
-+                /* End-to-end DMA using tx_space per mode. */
-+                SMMUTestDevSpace tx_space =
-+                    (modes[mi] == 0u) ? s1_set[si] : s2_set[sj];
-+                uint32_t dma_attrs = ((uint32_t)tx_space << 1);
-+                qpci_io_writel(dev, bar, STD_REG_DMA_ATTRS,
-+                                dma_attrs);
-+                qpci_io_writel(dev, bar, STD_REG_DMA_DBELL, 1);
-+                /* Wait for DMA completion and assert success. */
-+                {
-+                    uint32_t dr = poll_dma_result(dev, bar, qts);
-+                    uint32_t exp = expected_dma_result(modes[mi],
-+                                                        spaces[si],
-+                                                        spaces[sj]);
-+                    g_assert_cmpuint(dr, ==, exp);
-+                    g_test_message("polling end. attrs=0x%x res=0x%x",
-+                                   dma_attrs, dr);
-+                }
-+                /* Clear CD/STE/PTE built by the device for next round. */
-+                qpci_io_writel(dev, bar, STD_REG_TRANS_CLEAR, 1);
-+                g_test_message("clear cache end.");
-+            }
-+        }
-+    }
-+
-+    qtest_quit(qts);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("/smmu-testdev/mmio", test_mmio_access);
-+    return g_test_run();
-+}
+Should this be QEMU_ENV_DST?
+
+OTOH, we can use migration_get_env()->qemu_dst to reduce referencing global
+vars.
+
+> +                            " -incoming defer ", from_str, NULL);
+> +    argv = g_strsplit(exec_args, " ", -1);
+> +    migrate_set_parameter_strv(who, "cpr-exec-command", argv);
+> +}
+> +
+> +static void wait_for_migration_event(QTestState *who, const char *waitfor)
+> +{
+> +    QDict *rsp, *data;
+> +    char *status;
+> +    bool done = false;
+> +
+> +    while (!done) {
+> +        rsp = qtest_qmp_eventwait_ref(who, "MIGRATION");
+> +        g_assert(qdict_haskey(rsp, "data"));
+> +        data = qdict_get_qdict(rsp, "data");
+> +        g_assert(qdict_haskey(data, "status"));
+> +        status = g_strdup(qdict_get_str(data, "status"));
+> +        g_assert(strcmp(status, "failed"));
+> +        done = !strcmp(status, waitfor);
+> +        qobject_unref(rsp);
+> +    }
+> +}
+> +
+> +static void test_cpr_exec(MigrateCommon *args)
+> +{
+> +    QTestState *from, *to;
+> +    void *data_hook = NULL;
+> +    g_autofree char *connect_uri = g_strdup(args->connect_uri);
+> +    g_autofree char *filename = g_strdup_printf("%s/%s", tmpfs,
+> +                                                FILE_TEST_FILENAME);
+> +
+> +
+
+Newline can be dropped.
+
+> +    if (migrate_start(&from, NULL, args->listen_uri, &args->start)) {
+> +        return;
+> +    }
+> +
+> +    /* Source and dest never run concurrently */
+> +    g_assert_false(args->live);
+> +
+> +    if (args->start_hook) {
+> +        data_hook = args->start_hook(from, NULL);
+> +    }
+> +
+> +    wait_for_serial("src_serial");
+> +    set_cpr_exec_args(from, args);
+> +    migrate_set_capability(from, "events", true);
+> +    migrate_qmp(from, NULL, connect_uri, NULL, "{}");
+> +    wait_for_migration_event(from, "completed");
+> +
+> +    to = qtest_init_after_exec(from);
+> +
+> +    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
+> +                             "  'arguments': { "
+> +                             "      'channels': [ { 'channel-type': 'main',"
+> +                             "      'addr': { 'transport': 'file',"
+> +                             "                'filename': %s,"
+> +                             "                'offset': 0  } } ] } }",
+> +                             filename);
+> +    wait_for_migration_complete(to);
+> +
+> +    wait_for_resume(to, get_dst());
+> +    /* Device on target is still named src_serial because args do not change */
+> +    wait_for_serial("src_serial");
+> +
+> +    if (args->end_hook) {
+> +        args->end_hook(from, to, data_hook);
+> +    }
+> +
+> +    migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
+> +}
+> +
+> +static void *test_mode_exec_start(QTestState *from, QTestState *to)
+> +{
+> +    assert(!to);
+> +    migrate_set_parameter_str(from, "mode", "cpr-exec");
+> +    return NULL;
+> +}
+> +
+> +static void test_mode_exec(void)
+> +{
+> +    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+> +                                           FILE_TEST_FILENAME);
+> +    g_autofree char *listen_uri = g_strdup_printf("defer");
+> +
+> +    MigrateCommon args = {
+> +        .start.only_source = true,
+> +        .start.opts_source = "-machine aux-ram-share=on -nodefaults",
+> +        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
+> +                                " -machine memory-backend=pc.ram",
+> +        .connect_uri = uri,
+> +        .listen_uri = listen_uri,
+> +        .start_hook = test_mode_exec_start,
+> +    };
+> +
+> +    test_cpr_exec(&args);
+> +}
+> +
+>  void migration_test_add_cpr(MigrationTestEnv *env)
+>  {
+>      tmpfs = env->tmpfs;
+> @@ -132,5 +251,6 @@ void migration_test_add_cpr(MigrationTestEnv *env)
+>          migration_test_add("/migration/mode/transfer", test_mode_transfer);
+>          migration_test_add("/migration/mode/transfer/defer",
+>                             test_mode_transfer_defer);
+> +        migration_test_add("/migration/mode/exec", test_mode_exec);
+>      }
+>  }
+> -- 
+> 1.8.3.1
+> 
+
 -- 
-2.49.0
+Peter Xu
 
 
