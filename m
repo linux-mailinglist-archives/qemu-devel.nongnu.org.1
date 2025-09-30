@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6662BBADEF4
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94718BADEFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:40:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3cRU-0008J8-JW; Tue, 30 Sep 2025 11:39:05 -0400
+	id 1v3cRc-0008R0-22; Tue, 30 Sep 2025 11:39:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v3cRQ-0008IM-3p
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:39:00 -0400
+ id 1v3cRa-0008Pb-76
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:39:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v3cRN-0004MG-3Y
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:59 -0400
+ id 1v3cRT-0004PD-2x
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:39:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759246736;
+ s=mimecast20190719; t=1759246741;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uPcDEO/CMK9gofcqE4QPeZIROK1IWhYtJyezMIbObmk=;
- b=fjH1cHEr23nhlTMW9Yz6TSMhXI1M7VLMdB7bO/IZiG5d6C8N4yd6I1yRgdjERbUKh3XjGs
- wleqncL9KTE5p7IiPqjptmAIVEOToGhE2YoGpYghGX5ZW7CbrmzSairPhRSSfG7+Ims03q
- KqrxxL465CrbcIRmHjER7PLJkOmNA+I=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=NnHoGa6GbN0hh9V/MSQpqRR2eK1qQRWWptgarG6ZgMw=;
+ b=Dzth3oEkN9sQiNDyMVYwMIPX4mhV3xcOOpyuJ8umVSMDlRzUrXGNj1yN6noA1q3fct/ldV
+ F/5h0tCdVLjjg5CNnowtzPvr3LqOJZECgkemNHq1YLJsJ9/CTkjBHoP1FkoswH5iCAc53l
+ 4pu9j/aRz/NXEJ0BlK11dmlU+0cDDZ0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-498-3qI4ZirqNJuRuxJWpkTISg-1; Tue,
- 30 Sep 2025 11:38:52 -0400
-X-MC-Unique: 3qI4ZirqNJuRuxJWpkTISg-1
-X-Mimecast-MFC-AGG-ID: 3qI4ZirqNJuRuxJWpkTISg_1759246731
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-380-0mShz1HXMbGg74Wd-0PJvg-1; Tue,
+ 30 Sep 2025 11:38:58 -0400
+X-MC-Unique: 0mShz1HXMbGg74Wd-0PJvg-1
+X-Mimecast-MFC-AGG-ID: 0mShz1HXMbGg74Wd-0PJvg_1759246736
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E26B818004D4; Tue, 30 Sep 2025 15:38:50 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 76AB419560A5; Tue, 30 Sep 2025 15:38:56 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.7])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 806C730003BA; Tue, 30 Sep 2025 15:38:49 +0000 (UTC)
+ id 6779B30002C5; Tue, 30 Sep 2025 15:38:54 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: devel@lists.libvirt.org,
@@ -60,9 +60,9 @@ Cc: devel@lists.libvirt.org,
  Li-Wen Hsu <lwhsu@freebsd.org>, Warner Losh <imp@bsdimp.com>,
  Kyle Evans <kevans@freebsd.org>, Ed Maste <emaste@freebsd.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 10/23] tests/docker/common: print meson log on configure failure
-Date: Tue, 30 Sep 2025 19:37:31 +0400
-Message-ID: <20250930153746.573875-11-marcandre.lureau@redhat.com>
+Subject: [PULL 11/23] build-sys: cfi_debug and safe_stack are not compatible
+Date: Tue, 30 Sep 2025 19:37:32 +0400
+Message-ID: <20250930153746.573875-12-marcandre.lureau@redhat.com>
 In-Reply-To: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 References: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -79,7 +79,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,26 +97,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+It fails to link on fedora >= 41:
+/usr/bin/ld: /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.safestack.a(safestack.cpp.o): in function `__sanitizer_internal_memcpy':
+(.text.__sanitizer_internal_memcpy+0x0): multiple definition of `__sanitizer_internal_memcpy'; /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.ubsan_standalone.a(sanitizer_libc.cpp.o):(.text.__sanitizer_internal_memcpy+0x0): first defined here
+/usr/bin/ld: /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.safestack.a(safestack.cpp.o): in function `__sanitizer_internal_memmove':
+(.text.__sanitizer_internal_memmove+0x0): multiple definition of `__sanitizer_internal_memmove'; /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.ubsan_standalone.a(sanitizer_libc.cpp.o):(.text.__sanitizer_internal_memmove+0x0): first defined here
+/usr/bin/ld: /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.safestack.a(safestack.cpp.o): in function `__sanitizer_internal_memset':
+(.text.__sanitizer_internal_memset+0x0): multiple definition of `__sanitizer_internal_memset'; /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.ubsan_standalone.a(sanitizer_libc.cpp.o):(.text.__sanitizer_internal_memset+0x0): first defined here
+
+cfi_debug seems to pull ubsan which has conflicting symbols with safe_stack.
+
+See also: https://bugzilla.redhat.com/show_bug.cgi?id=2397265
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250924120426.2158655-11-marcandre.lureau@redhat.com>
+Message-ID: <20250924120426.2158655-12-marcandre.lureau@redhat.com>
 ---
- tests/docker/common.rc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build                | 3 +++
+ .gitlab-ci.d/buildtest.yml | 6 +++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/docker/common.rc b/tests/docker/common.rc
-index 2ed2365a61..d202c0c666 100755
---- a/tests/docker/common.rc
-+++ b/tests/docker/common.rc
-@@ -50,7 +50,7 @@ configure_qemu()
-     echo "Configure options:"
-     echo $config_opts
-     $QEMU_SRC/configure $config_opts || \
--        { cat config.log >&2 && test_fail "Failed to run 'configure'"; }
-+        { cat config.log >&2 ; cat meson-logs/meson-log.txt >&2 ; test_fail "Failed to run 'configure'"; }
- }
- 
- build_qemu()
+diff --git a/meson.build b/meson.build
+index c08e2df6bb..14e626aa1e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -681,6 +681,9 @@ if get_option('cfi')
+     error('-fsanitize-cfi-icall-generalize-pointers is not supported by the compiler')
+   endif
+   if get_option('cfi_debug')
++    if get_option('safe_stack')
++      error('cfi_debug is not compatible with safe_stack')
++    endif
+     if cc.compiles('int main () { return 0; }',
+                    name: '-fno-sanitize-trap=cfi-icall',
+                    args: ['-flto', '-fsanitize=cfi-icall',
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 3be36e5499..0502094b9a 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -479,7 +479,7 @@ build-cfi-aarch64:
+     LD_JOBS: 1
+     AR: llvm-ar
+     IMAGE: fedora
+-    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-cfi --enable-cfi-debug
++    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-cfi
+       --enable-safe-stack --disable-slirp
+     TARGETS: aarch64-softmmu
+     MAKE_CHECK_ARGS: check-build
+@@ -517,7 +517,7 @@ build-cfi-ppc64-s390x:
+     LD_JOBS: 1
+     AR: llvm-ar
+     IMAGE: fedora
+-    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-cfi --enable-cfi-debug
++    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-cfi
+       --enable-safe-stack --disable-slirp
+     TARGETS: ppc64-softmmu s390x-softmmu
+     MAKE_CHECK_ARGS: check-build
+@@ -555,7 +555,7 @@ build-cfi-x86_64:
+     LD_JOBS: 1
+     AR: llvm-ar
+     IMAGE: fedora
+-    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-cfi --enable-cfi-debug
++    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-cfi
+       --enable-safe-stack --disable-slirp
+     TARGETS: x86_64-softmmu
+     MAKE_CHECK_ARGS: check-build
 -- 
 2.51.0
 
