@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7EABADF09
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B29BADF3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:44:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3cRJ-0008GW-Vc; Tue, 30 Sep 2025 11:38:54 -0400
+	id 1v3cRV-0008Ky-TB; Tue, 30 Sep 2025 11:39:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v3cRG-0008FO-7O
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:50 -0400
+ id 1v3cRS-0008J9-Gx
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:39:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v3cRD-0004IY-SB
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:49 -0400
+ id 1v3cRM-0004Ly-Di
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:39:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759246725;
+ s=mimecast20190719; t=1759246734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sQYPqfUXsjz7W9/xKJSSjQiLNj41jOUSF6BbGeXrJ2A=;
- b=EL+lokBDSzUJ+MEB+a8Kl1oY0eVYaQkmgQ1HDHJWdbYOAm58wFXIOeFGpPv3blehCxqM8M
- hq6d1tEMbhSfxUlsaI9gX4GKsxFKVfHIRf7ye29HeM7tFoNaGV/t/iR3gKSDxKgtxvZwAU
- wkkcou7OMzQPf6WnFDkIrxukiWniFbY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DlKkwYQZuythXF5SkYF9/V+KhexejJOrTJiJWX7b/fg=;
+ b=XB46KJzUYGNHBasAEMPNi0eokSslyVKLHTcLC/WoPFxpDFM0V4uii8T+IkG6dzkd6urE61
+ DWsuaphH4xP10Y7MnVi+/1z49VMwFkoMqnDCO38BKFWfDP3F80/VBJj40cWpWkBIjauOzj
+ 3vVog9iRQagKLG8FT6zfxaGkSpa2IVg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-h3U8YTGENYiSWlqIghwP9w-1; Tue,
- 30 Sep 2025 11:38:41 -0400
-X-MC-Unique: h3U8YTGENYiSWlqIghwP9w-1
-X-Mimecast-MFC-AGG-ID: h3U8YTGENYiSWlqIghwP9w_1759246719
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-494-UDDU3SdvNkKzLh2Q-sAO1w-1; Tue,
+ 30 Sep 2025 11:38:46 -0400
+X-MC-Unique: UDDU3SdvNkKzLh2Q-sAO1w-1
+X-Mimecast-MFC-AGG-ID: UDDU3SdvNkKzLh2Q-sAO1w_1759246725
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A2DD81956055; Tue, 30 Sep 2025 15:38:39 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 19B4519560AF; Tue, 30 Sep 2025 15:38:45 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.7])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5A92F19560B4; Tue, 30 Sep 2025 15:38:37 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0E3111800452; Tue, 30 Sep 2025 15:38:43 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: devel@lists.libvirt.org,
@@ -60,26 +60,26 @@ Cc: devel@lists.libvirt.org,
  Li-Wen Hsu <lwhsu@freebsd.org>, Warner Losh <imp@bsdimp.com>,
  Kyle Evans <kevans@freebsd.org>, Ed Maste <emaste@freebsd.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 08/23] tests/docker/common: print errors to stderr
-Date: Tue, 30 Sep 2025 19:37:29 +0400
-Message-ID: <20250930153746.573875-9-marcandre.lureau@redhat.com>
+Subject: [PULL 09/23] tests/docker: use fully qualified image name for emsdk
+Date: Tue, 30 Sep 2025 19:37:30 +0400
+Message-ID: <20250930153746.573875-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 References: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +97,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Without it, at least it fails with podman on fc42:
+
+[1/6] STEP 1/15: FROM emscripten/emsdk:3.1.50 AS build-base
+Error: creating build container: short-name resolution enforced but cannot prompt without a TTY
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250924120426.2158655-9-marcandre.lureau@redhat.com>
+Reviewed-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Message-ID: <20250924120426.2158655-10-marcandre.lureau@redhat.com>
 ---
- tests/docker/common.rc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/docker/dockerfiles/emsdk-wasm32-cross.docker | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/docker/common.rc b/tests/docker/common.rc
-index a611e6adf9..2ed2365a61 100755
---- a/tests/docker/common.rc
-+++ b/tests/docker/common.rc
-@@ -50,7 +50,7 @@ configure_qemu()
-     echo "Configure options:"
-     echo $config_opts
-     $QEMU_SRC/configure $config_opts || \
--        { cat config.log && test_fail "Failed to run 'configure'"; }
-+        { cat config.log >&2 && test_fail "Failed to run 'configure'"; }
- }
+diff --git a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+index 60a7d02f56..6b1642a207 100644
+--- a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
++++ b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+@@ -8,7 +8,7 @@ ARG PIXMAN_VERSION=0.44.2
+ ARG FFI_VERSION=v3.4.7
+ ARG MESON_VERSION=1.5.0
  
- build_qemu()
-@@ -73,7 +73,7 @@ check_qemu()
- 
- test_fail()
- {
--    echo "$@"
-+    echo "$@" >&2
-     exit 1
- }
- 
+-FROM emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base
++FROM docker.io/emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base
+ ARG MESON_VERSION
+ ENV TARGET=/builddeps/target
+ ENV CPATH="$TARGET/include"
 -- 
 2.51.0
 
