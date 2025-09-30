@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A0BBAC121
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1127BAC2D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 11:07:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Voo-0006G3-FX; Tue, 30 Sep 2025 04:34:42 -0400
+	id 1v3WIH-0007xS-3M; Tue, 30 Sep 2025 05:05:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v3Voi-0006FR-JN; Tue, 30 Sep 2025 04:34:36 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v3WIC-0007xJ-Mq
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:05:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v3VoS-0004Lj-KM; Tue, 30 Sep 2025 04:34:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759221261; x=1790757261;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=XCYBHdWFnAHJy2lZ8v6AJlWDsa9aJoHiYZLd17M0hqM=;
- b=kPtZvpLT0/5DqeH8QewuaJ2moddDRrvd9e61hWA3tuBWhh1QMp80tJ/t
- WmBGVX3d6+NjUfyHgY18drrlWwsRhrlwWZj0cRsiphB6nAs0UbysMwvfu
- rDgacVN66kZ0fnU0EN7roRmv29euTKuQNotKkHCeWUO+f31HDTjOneKG+
- Eelu/o901ky8zyvadcC0F5BH04sdw7h9xNJg2CVxHs/y/57ZN1N39GYRR
- lkL7HZAapjJIM/zcZDSop53v2V5fcePXz4eJ1Pc6oaTXj3Ck4VTF7hjE7
- ocWPVMTE/0tcx14SGP3xMMUxiCBjM4vpwyLnylcVBIvKyOex2VjZcrMzx A==;
-X-CSE-ConnectionGUID: sOwwAd1YSMmecn+W8hDSAQ==
-X-CSE-MsgGUID: cUeWuCaJTl+xaN6AQgIFjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="49033833"
-X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; d="scan'208";a="49033833"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 01:34:12 -0700
-X-CSE-ConnectionGUID: XHA0BA5/Swivmjq9zSNGaQ==
-X-CSE-MsgGUID: 0iRrWZ0MQSC3N0Apu2+bRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; d="scan'208";a="209421370"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 30 Sep 2025 01:34:11 -0700
-Date: Tue, 30 Sep 2025 16:56:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH] subprojects: Update .gitignore for syn
-Message-ID: <aNubKjqYulKoLJ6q@intel.com>
-References: <20250930075351.1853721-1-zhao1.liu@intel.com>
- <aNuP98uhOzOd5glp@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v3WI7-0004W2-Lb
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:05:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759223091;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=K7OcregwWwev1spFlVX+pUwSh3UzPm2H6Gin4pIfkVk=;
+ b=InLlccJ2/hgbR3xLI22r6PDoLgEBkw08Yg/n/s8nr4qpMbi6TgtBl66pOHUrz3oi/2PvJE
+ sfvtK7thaz65rtHn3DFbNDO5Nf5QUvLy5fB600t/5g260a9ifBvgveFDFB0j0CoIMF9Hmg
+ 3FLh3RTH8xDT4wVXeZ8g3z8KK2VWeGg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-D6qYKMxyPCyBMjklBnIzwQ-1; Tue,
+ 30 Sep 2025 05:04:49 -0400
+X-MC-Unique: D6qYKMxyPCyBMjklBnIzwQ-1
+X-Mimecast-MFC-AGG-ID: D6qYKMxyPCyBMjklBnIzwQ_1759223088
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5AAA618002D6; Tue, 30 Sep 2025 09:04:48 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.33.89])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 282001956095; Tue, 30 Sep 2025 09:04:45 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>,
+	qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH] tests/qtest: Add missing checks for the availability of
+ machines
+Date: Tue, 30 Sep 2025 11:04:44 +0200
+Message-ID: <20250930090444.234431-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aNuP98uhOzOd5glp@redhat.com>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,17 +79,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> IMHO we should get rid of all the version numbers, and use wildcard
-> matches instead, to eliminate the bug scenario entirely, as people
-> will repeatedly forgot to change these versions.
+From: Thomas Huth <thuth@redhat.com>
 
-(Manos had the similar comment before.) 
+When QEMU has been compiled with "--without-default-devices", the
+machines might not be available in the binary. Let's properly check
+for the machines before running the tests to avoid that they are
+failing in this case.
 
-My thought is that exact matching could help identify outdated
-subprojects, notifying developers to clean them up and free up a little
-local space?
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/qtest/bios-tables-test.c | 2 +-
+ tests/qtest/cpu-plug-test.c    | 2 +-
+ tests/qtest/riscv-csr-test.c   | 4 +++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-Regrads,
-Zhao
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 4fa8ac5096a..6b892ef23e1 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2864,7 +2864,7 @@ int main(int argc, char *argv[])
+                            test_acpi_riscv64_virt_tcg_acpi_spcr);
+         }
+     } else if (strcmp(arch, "loongarch64") == 0) {
+-        if (has_tcg) {
++        if (has_tcg && qtest_has_machine("virt")) {
+             qtest_add_func("acpi/virt", test_acpi_loongarch64_virt);
+             qtest_add_func("acpi/virt/topology",
+                            test_acpi_loongarch64_virt_topology);
+diff --git a/tests/qtest/cpu-plug-test.c b/tests/qtest/cpu-plug-test.c
+index 44d704680b1..0aa4ccc5b61 100644
+--- a/tests/qtest/cpu-plug-test.c
++++ b/tests/qtest/cpu-plug-test.c
+@@ -190,7 +190,7 @@ int main(int argc, char **argv)
+         qtest_cb_for_every_machine(add_pseries_test_case, g_test_quick());
+     } else if (g_str_equal(arch, "s390x")) {
+         qtest_cb_for_every_machine(add_s390x_test_case, g_test_quick());
+-    } else if (g_str_equal(arch, "loongarch64")) {
++    } else if (g_str_equal(arch, "loongarch64") && qtest_has_machine("virt")) {
+         add_loongarch_test_case("virt");
+     }
+ 
+diff --git a/tests/qtest/riscv-csr-test.c b/tests/qtest/riscv-csr-test.c
+index ff5c29e6c6f..bb1b0ffed30 100644
+--- a/tests/qtest/riscv-csr-test.c
++++ b/tests/qtest/riscv-csr-test.c
+@@ -50,7 +50,9 @@ int main(int argc, char **argv)
+ {
+     g_test_init(&argc, &argv, NULL);
+ 
+-    qtest_add_func("/cpu/csr", run_test_csr);
++    if (qtest_has_machine("virt")) {
++        qtest_add_func("/cpu/csr", run_test_csr);
++    }
+ 
+     return g_test_run();
+ }
+-- 
+2.51.0
 
 
