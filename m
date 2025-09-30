@@ -2,91 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA85BAC618
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 12:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 466E9BAC53F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 11:39:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3X76-00038u-My; Tue, 30 Sep 2025 05:57:41 -0400
+	id 1v3WoU-0004uC-HZ; Tue, 30 Sep 2025 05:38:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsntk18@gmail.com>) id 1v3Wmx-0004VO-Lk
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:36:52 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vsntk18@gmail.com>) id 1v3Wmp-0001h2-6D
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:36:51 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-afcb7a16441so931548666b.2
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 02:36:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759224998; x=1759829798; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IYB4a6nRiUdsdyEnHHCpEQNpTkh6ei0Uct+Ltx+xwnc=;
- b=PfjgVU4N4pKvjUxqzWvu0BTfh4blW4LnKgnu7NqMKmoqhtKyMa7N6odRu/jelihuUj
- Io6ISWU5UACerICwwqcUD+ktyvj8lM6w3WTbilCL7AgDL3mGezDNPuGOhUuDkRCruzB9
- ZeEZxaWt8RXAr+UM0zEPCitPwRW6OZjJ5eaGFo4N9ykKeVynK5R9ajjwdJOafsOqsJpo
- MkTsrSspuPq8wzLo7cyTn7X8KFlCCiwbPlu0d4wZ6Hhb5O/fiSBrcfK/NjsPw01exh7b
- ObdmGODDPT0+jWhy6MHFEP2QNSl78OfHrC9QVjFANb2Lr2j5L3Tqfbqxj6If+Cbu+ctD
- 5JQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759224998; x=1759829798;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IYB4a6nRiUdsdyEnHHCpEQNpTkh6ei0Uct+Ltx+xwnc=;
- b=NCFa+vrJRB72rrbuJQ3NdeAQOyKMGJAy7TXIXhXZUudUU5bFoAgV9MnQ7TBrhEMIc8
- xLsHmkh55ZG4UdMs9kfmb8z2SNIvdrz9eLhWm9TcMe5S+EzBwDl/gQLA+0z6VjH3YGVl
- gU9iVS2mam/CDTKUb5VlsrFDnn3TwMqNYl1dT8CVtJejjNQsDgRcTPzHWsd0qACrXE05
- E+f1ez85zTI7SQ6c1drsxD1dkin5eOexClZfjVb9GMq43XyckGN5VLJJjwolUruKLEhO
- jQJ4ISyyEk0+MWB1tK1KBTdkUhWhRJgm0eZa7BPqNQl1sc4XHtllrmPEys+4b+hXNPwo
- 6UrQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUgAHRVAIW0OelEl6GwsECnkRx2DoeWs0OAQ1mkC+3aS/cOooUCFF/bN1B7UNHhAGElUVQkde/vHTzu@nongnu.org
-X-Gm-Message-State: AOJu0YyPbnHYIvX7B2yJ6GtXzIUSpFwwDvJjVJ+4BNBk+0H006Dv14ke
- +krerh3q8FvtAqG6veygC4vjna9Mk+v19XadKWj4ReCWuQI7zHaD+BaB
-X-Gm-Gg: ASbGncscmSXEpCklyp2TnIrgJJm0Xgzi9l0UpmrF4Tc+DBbYkjhErv+fZ4+v72o3pIk
- 9pr6X2n/ZUNPsqOHyD859e+AMMziP0moIU76S++yvp0jA/EcYc54wcGT7dXh4qSmMO4Y4SE6HKt
- FlX5RhXU6yac3uwACavbt21/UDieO/bU8mIAXcII/3fSRK/G9c3KenT/dWlU0bOr2lH0Txh98Ks
- nHYXt1kjOIE1t/Rkaw5rNn1LLgWQ0VHCM6SwzaFDNF25M3rJh+qUpTjCYThXYilDdHgZB5awRAu
- e6KqQAsjHOLH1QQG+UllG29I5y6t3yKFq/IGr7bw26FqYzDD3ZEl1dcHC3GWRrLsbJxpe/asfNM
- GbS6MYXzJSSpO5yQ5/HD1E5LS4e3yZ2ZZ7Bstd7vnuy5VDC+HgjQ=
-X-Google-Smtp-Source: AGHT+IG9L1Lwzem4vZVswo7Wt2wPXR8eh6T4QT19VLRvUzxkOmvOJpB2RVM0jSjCXqXcBVWECOs8QQ==
-X-Received: by 2002:a17:907:6e8c:b0:b3f:c562:faf7 with SMTP id
- a640c23a62f3a-b3fc562fe27mr644277466b.55.1759224998338; 
- Tue, 30 Sep 2025 02:36:38 -0700 (PDT)
-Received: from vasant-suse.suse.org ([81.95.8.245])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b3f57c9c2a9sm349178766b.71.2025.09.30.02.36.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 02:36:37 -0700 (PDT)
-From: vsntk18@gmail.com
-To: sarunkod@amd.com
-Cc: Suravee.Suthikulpanit@amd.com, alejandro.j.jimenez@oracle.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, mst@redhat.com,
- pbonzini@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, vasant.hegde@amd.com
-Subject: Re: [PATCH v3 1/6] hw/i386/amd_iommu: Fix MMIO register write tracing
-Date: Tue, 30 Sep 2025 11:36:36 +0200
-Message-Id: <20250930093636.11796-1-vsntk18@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250801060507.3382-2-sarunkod@amd.com>
-References: <20250801060507.3382-2-sarunkod@amd.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v3WoK-0004pr-U3
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:38:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v3WoD-0001xv-5j
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:38:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759225085;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=FNIGH+aeK2x8pcmjHpypzzIQrc/GSxU9dwFck2oJcrQ=;
+ b=acZXwNzUvMGz6pjJ4x6o9znTywQ9nYeaNFSG2QKCZQoV7+RuDpKtJa+y80uwTC4ZGzs5GD
+ tHSVJ/HXNpDed8zap0bpnzeo3LJYl/KpwQ9mqe+Z0d32OOnGA9oD2qVKeJtoItYiMlJ4wS
+ 3gNST7cgAHK9f8vEi81vksLa28KhgQs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-VlFqiasHP-2BtPrJKGi5QA-1; Tue,
+ 30 Sep 2025 05:38:01 -0400
+X-MC-Unique: VlFqiasHP-2BtPrJKGi5QA-1
+X-Mimecast-MFC-AGG-ID: VlFqiasHP-2BtPrJKGi5QA_1759225079
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7B8DE1944EB8; Tue, 30 Sep 2025 09:37:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.102])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E66C219560B8; Tue, 30 Sep 2025 09:37:53 +0000 (UTC)
+Date: Tue, 30 Sep 2025 10:37:50 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Zhuoying Cai <zycai@linux.ibm.com>, richard.henderson@linaro.org,
+ david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org, walling@linux.ibm.com, jjherne@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com,
+ eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
+Subject: Re: [PATCH v6 01/28] Add boot-certs to s390-ccw-virtio machine type
+ option
+Message-ID: <aNuk7o2XYjoFsfXT@redhat.com>
+References: <20250917232131.495848-1-zycai@linux.ibm.com>
+ <20250917232131.495848-2-zycai@linux.ibm.com>
+ <9f3a8d43-c428-45d4-bce5-1af764cf18a9@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=vsntk18@gmail.com; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9f3a8d43-c428-45d4-bce5-1af764cf18a9@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 Sep 2025 05:57:28 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,37 +87,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->-static void amdvi_mmio_trace(hwaddr addr, unsigned size)
->+static inline uint8_t amdvi_mmio_get_index(hwaddr addr)
-> {
->     uint8_t index = (addr & ~0x2000) / 8;
->
->    if ((addr & 0x2000)) {
->         /* high table */
->         index = index >= AMDVI_MMIO_REGS_HIGH ? AMDVI_MMIO_REGS_HIGH : index;
->-        trace_amdvi_mmio_read(amdvi_mmio_high[index], addr, size, addr & ~0x07);
->     } else {
->         index = index >= AMDVI_MMIO_REGS_LOW ? AMDVI_MMIO_REGS_LOW : index;
->-        trace_amdvi_mmio_read(amdvi_mmio_low[index], addr, size, addr & ~0x07);
->     }
->+
->+    return index;
->+}
->+
->+static void amdvi_mmio_trace_read(hwaddr addr, unsigned size)
->+{
->+    uint8_t index = amdvi_mmio_get_index(addr);
->+    trace_amdvi_mmio_read(amdvi_mmio_low[index], addr, size, addr & ~0x07);
->+}
->+
->+static void amdvi_mmio_trace_write(hwaddr addr, unsigned size, uint64_t val)
->+{
->+    uint8_t index = amdvi_mmio_get_index(addr);
->+    trace_amdvi_mmio_write(amdvi_mmio_low[index], addr, size, val,
+On Tue, Sep 30, 2025 at 11:34:23AM +0200, Thomas Huth wrote:
+> On 18/09/2025 01.21, Zhuoying Cai wrote:
+> > Introduce a new `boot-certs` machine type option for the s390-ccw-virtio
+> > machine. This allows users to specify one or more certificate file paths
+> > or directories to be used during secure boot.
+> > 
+> > Each entry is specified using the syntax:
+> > 	boot-certs.<index>.path=/path/to/cert.pem
+> > 
+> > Multiple paths can be specify using array properties:
+> > 	boot-certs.0.path=/path/to/cert.pem,
+> > 	boot-certs.1.path=/path/to/cert-dir,
+> > 	boot-certs.2.path=/path/to/another-dir...
+> > 
+> > Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+> > ---
+> >   docs/system/s390x/secure-ipl.rst   | 21 +++++++++++++++++++++
+> >   hw/s390x/s390-virtio-ccw.c         | 30 ++++++++++++++++++++++++++++++
+> >   include/hw/s390x/s390-virtio-ccw.h |  2 ++
+> >   qapi/machine-s390x.json            | 22 ++++++++++++++++++++++
+> >   qapi/pragma.json                   |  1 +
+> >   qemu-options.hx                    |  6 +++++-
+> >   6 files changed, 81 insertions(+), 1 deletion(-)
+> >   create mode 100644 docs/system/s390x/secure-ipl.rst
+> > 
+> > diff --git a/docs/system/s390x/secure-ipl.rst b/docs/system/s390x/secure-ipl.rst
+> > new file mode 100644
+> > index 0000000000..92c1bb2153
+> > --- /dev/null
+> > +++ b/docs/system/s390x/secure-ipl.rst
+> > @@ -0,0 +1,21 @@
+> > +.. SPDX-License-Identifier: GPL-2.0-or-later
+> > +
+> > +Secure IPL Command Line Options
+> > +===============================
+> > +
+> > +The s390-ccw-virtio machine type supports secure IPL. These parameters allow users
+> > +to provide certificates and enable secure IPL directly via the command line.
+> > +
+> > +Providing Certificates
+> > +----------------------
+> > +
+> > +The certificate store can be populated by supplying a list of X.509 certificate file
+> > +paths or directories containing certificate files on the command-line:
+> > +
+> > +Note: certificate files must have a .pem extension.
+> > +
+> > +.. code-block:: shell
+> > +
+> > +    qemu-system-s390x -machine s390-ccw-virtio, \
+> > +                               boot-certs.0.path=/.../qemu/certs, \
+> > +                               boot-certs.1.path=/another/path/cert.pem ...
+> 
+> Using newlines/spaces between parameters does not work, so people cannot
+> copy-n-paste this example to the shell.
+> 
+> So I think you either have to merge it into one line, or use multiple
+> "-machine" statements, e.g.:
+> 
+>     qemu-system-s390x -M s390-ccw-virtio \
+>                       -M boot-certs.0.path=/.../qemu/certs \
+>                       -M boot-certs.1.path=/another/path/cert.pem ...
 
-Shouldn't you be picking between amdvi_mmio_low and amdvi_mmio_high in the
-above 2 fuctions depending on the addr value?
+The inability to copy+paste is unfortunate, but IMHO the docs are better
+in the way they are already expressed. Repeating the -M arg in this way
+is not a natural way we'd expect people to configure QEMU, even if it
+happens to work in the case of -M/-machine.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
