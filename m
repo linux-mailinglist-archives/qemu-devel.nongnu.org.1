@@ -2,90 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EA5BABD5C
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 09:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A12B4BABDD7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 09:41:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3UoW-0002pt-4V; Tue, 30 Sep 2025 03:30:20 -0400
+	id 1v3UxA-0004j9-Pr; Tue, 30 Sep 2025 03:39:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3UoS-0002pc-3n
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 03:30:16 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Uwx-0004ih-VP
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 03:39:05 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3UoJ-0000Qb-Ie
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 03:30:15 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46e3ea0445fso21468115e9.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 00:30:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Uwr-0002lf-WB
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 03:39:03 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3f0308469a4so3168962f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 00:38:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759217401; x=1759822201; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1759217932; x=1759822732; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Liroi9WcUhGYQAmYmNDdi1IoVOl5PKEVAA6F6iTtODM=;
- b=D/ic15nIJGmf3Scgqoc+WGSwZeOcphj8LRZS0/HT90yRjpuLMDlVDp34BuVy9YbUo3
- qh+AG62oZjjEpNRDt1gISEWsLsu7KIdzwMmG3LIWKl3eALown5k+MD2RI8+ghwGYaiS5
- pVfgRCoS2CRQcR0r04ZLChFTdyylG2z2sIPsHNI94C7ZC55cjK8bxqhZRqoffDvhm3Cd
- JWvtpcqj67TA2smgLdTm90PBWy1TlOsmQ2xVVAZWiA1npasIJQs6umoB43zZuXhUFYmz
- QPA9D8dvXMFHWsipX8NqVgc//UK8W55cS3qC+TnHd4AEvbhPFjLMoRSp+aQHFkqyvXH+
- Pkew==
+ bh=qE2E68kg55lkWKGNUPUbXEU5stTPqSQmthsm27d4faI=;
+ b=QV7VR+IVZwyrwBCBqwWdb1hO9pWxk95sMiMDn61VwUYscWPXLEorqNxKvk8m+yNs41
+ vDCByPOu6UV3T27ZqSJTcdyNRmLld/ebvFe1aQrOtdQXa3Vi50bIPehKkoPigDfq4ehv
+ spSbheZKlJCKP6EVOOVNeEZVk3C4j1dLhE4rfOvxnfXk0LgZu1EzzvAZQ6XnRLYSf0dk
+ ja+GojgsgKMaZKu7O1xnQvVdJUuU12JbpLpFWvnlrSxGUJboepemd99P6GA7QiEfO8qf
+ i3cWu+diO2ijB/jb+5+eFQ3SGhWR7Jl0+kq5eqPFxdnIdWKsw9kPbUFr68V14Vwrro44
+ pyCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759217402; x=1759822202;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1759217932; x=1759822732;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Liroi9WcUhGYQAmYmNDdi1IoVOl5PKEVAA6F6iTtODM=;
- b=NTG2x6J/rRu/HlLmH1FKBAqU1YnggNNMoHyG9i471RhVUce3dhr8d52WencH1Ca4sw
- M2JQwose3gRxu4N7LDhy7gq60cJ/HZmHghVN5ShRI2w4hOSvWXuuFKvvWoQsBMmb9s1Z
- OPBHm/Cr7BKfAZqNN/kdaGWmzkSfOYGlzek8t6FFO2+ZPMAzr/8fEodqqIuNGSsGTvsE
- TDviu5pMXHGAIi/cxx7d6+rpHs+ZS1Reh+M1n/+sQNVY2+PQ1gD7AMdEBoIFA5uMkmK1
- HELiHl8C2A3354S0VbtkcYryipdv2ad+yzzqc/NGCwF+5bA6riIVgqgxGm5TRAvb2e5e
- wZ/g==
-X-Gm-Message-State: AOJu0Yx0iR7YS7kDI3MzIaqsS0ufkDb163PP5LM3LQUJuoSeHmcxdjSQ
- Ng5z8uHvIsjEvHjIgDum+3fJx+UIQA1jpUO+HafTga+RaXQsDSXw4G06jQK1tMiBiuo=
-X-Gm-Gg: ASbGncsuahL/i6OtguxFKzRg5hXvDAc8BSdebSDExOed/vFOHo1Ytrrt67T+Uc7iLFm
- PLZUZhi0jsWKVacaqLjbG3xCmoiXyKOxzE8YtTZGb3qJeYC9hphiB/BRzNUAgR97e18MY1H5zou
- VfriMGvJlKfQ9lSNmtkIE+cRUG1sKsOyORW2HvAk4JAmWPxKDiafj2Oi5Ny0hie1GpA8FvM0lu6
- dp3rXYG8PFilpycSeMDahm/FjnmH+UJLtodgLsVIFFa0k3PFpsmPAR8UJ3ZoY6hShy1XC7SX+21
- wv7ArGgY9J44U6w7zg/51HKneCjkyEcPo/PSiIwPyvVAF8zXznVskxz5SZC2vj3q+u7dEF9quOJ
- RB9+WnNu2SkwMOkXYFp3BawKW4BHztvvhcFZQ4xM+AK59LumnyTySZrOJJwHgNiPsweQ9bDZCsI
- UvHgjDNymp+pDdZbJUwijYES7m
-X-Google-Smtp-Source: AGHT+IGtXfL0Jmx58YY2GQD+3/N7UII2j2tkr2qjbfMg8pgv1A6WoRS0WqglI5zD67fQhazgeaOExQ==
-X-Received: by 2002:a5d:5d07:0:b0:3e5:190b:b04e with SMTP id
- ffacd0b85a97d-40e4ece6421mr14598458f8f.37.1759217401589; 
- Tue, 30 Sep 2025 00:30:01 -0700 (PDT)
+ bh=qE2E68kg55lkWKGNUPUbXEU5stTPqSQmthsm27d4faI=;
+ b=k2AIv7WE2Dw1AiKulDMJOFJDHneSPOc1iOMy0n5yIUQwT4btuG/DfDN3b++qoWdtbI
+ ChgfMlg9JXjtIvrfYZ9JvpuSRubXFlZ0E3lltoP0NJB4mRKqvT2Z5UjrFwsJOTo/J8eo
+ Ob0BoqEUhcCEr5uwM5ol/AHddv364nvcl4WsgV/nrF5zkHxCu3Szcg3eo3tJ93XAm237
+ wz3rrwi6dkzs+1N15a+FNCbTeX716ei2pHjrHou9P9O4PR/MQSXAcSsB5dtV2TZuj7na
+ nVHqEGM5v441REnun8E25c4tSrrp/AlEtUFG6i5CPU9duOpjvQ851XH/Mgnl5NbhBcCy
+ NZIg==
+X-Gm-Message-State: AOJu0Yyre5fMuVvhVCik7UcdCh5pWXABezgfqkSZ3sARa/yASG+4JdJD
+ pemQfsw2tUHEs4RiAnkZ0TE00ltx9zJcT5GVwbiUmiA+qGvf1Ul6lPSrNQ9ivMgglo0v8KR/gi7
+ IZrefaLm0lw==
+X-Gm-Gg: ASbGncs6fcZDOS8C1fc4pDAPnnHyubK5zgBY3gMKwzXK881iZ2Fco/F+Z/Sf6EF7mxZ
+ Vko+oFWArC5TGDvvIHjbiBrcUmmJU55JmwrJ65oScBJEq6yfEnrPIsjoXZLv1uPhin7cgPxDa51
+ V0v23OFOlhlkDh+YVmj+prNQURZApdnCAWEJS4VkZrgt6NlcU6S6plYPz5wdKUdTrjFR2sx4PMZ
+ Scb1r9AU5rQ0hTRNUurxZbU3BWqm82Ab9CrYXgim6t8YgYZamVZnDWWZG9iih1U6+GJS68QqQ0E
+ E2WnLxs+nfH2PgjqqXJoJ7gTg23RThsNw6nGLnhODGeDlHFVAU+n9xHpwqZ9EH/APqiAQsOtKlE
+ Nz2A2RFhM/aI1ulfzdYJNDXJ3F0MLPXx8mQOEoTWAkDoDswCrV5ssFC2y6O7dCEGGH0hRU6TscE
+ NDkH/w54jBMJ3TLEm9da4i+EPd
+X-Google-Smtp-Source: AGHT+IE+CAzuCcPF3rL8oHgsDWK0spr1fitX6ekcCdqYoQO8jnWYejdEAIaIwc3jMgWkxQsuV9mqBA==
+X-Received: by 2002:a05:6000:2f87:b0:3e9:2fea:6795 with SMTP id
+ ffacd0b85a97d-40e4b389223mr19891217f8f.53.1759217931688; 
+ Tue, 30 Sep 2025 00:38:51 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc82f2ff6sm21331401f8f.56.2025.09.30.00.30.00
+ ffacd0b85a97d-40fc5602efdsm22464734f8f.34.2025.09.30.00.38.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Sep 2025 00:30:01 -0700 (PDT)
-Message-ID: <0f3b1559-1ce2-4201-bd29-3ac131f557cc@linaro.org>
-Date: Tue, 30 Sep 2025 09:30:00 +0200
+ Tue, 30 Sep 2025 00:38:51 -0700 (PDT)
+Message-ID: <b06323d4-96e8-41c2-b437-ea27b2952e7a@linaro.org>
+Date: Tue, 30 Sep 2025 09:38:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 38/47] hw/arm/xlnx-versal: add the target field in IRQ
- descriptor
+Subject: Re: [PATCH v2 16/17] hw/virtio/vhost: Replace legacy
+ cpu_physical_memory_*map() calls
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Cc: Jason Herne <jjherne@linux.ibm.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Stefano Garzarella <sgarzare@redhat.com>, xen-devel@lists.xenproject.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ Eric Farman <farman@linux.ibm.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Zhao Liu <zhao1.liu@intel.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>, kvm@vger.kernel.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+References: <20250930041326.6448-1-philmd@linaro.org>
+ <20250930041326.6448-17-philmd@linaro.org>
 Content-Language: en-US
-To: Luc Michel <luc.michel@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- Alistair Francis <alistair@alistair23.me>,
- Frederic Konrad <frederic.konrad@amd.com>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-References: <20250926070806.292065-1-luc.michel@amd.com>
- <20250926070806.292065-39-luc.michel@amd.com>
- <70156c9c-5559-496d-8753-99f1ba5f68d1@linaro.org>
- <aNt6vez--_Len36t@XFR-LUMICHEL-L2.amd.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <aNt6vez--_Len36t@XFR-LUMICHEL-L2.amd.com>
+In-Reply-To: <20250930041326.6448-17-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,56 +116,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/9/25 08:37, Luc Michel wrote:
-> Hi Phil,
+On 30/9/25 06:13, Philippe Mathieu-Daudé wrote:
+> Use VirtIODevice::dma_as address space to convert the legacy
+> cpu_physical_memory_[un]map() calls to address_space_[un]map().
 > 
-> On 12:34 Mon 29 Sep     , Philippe Mathieu-Daudé wrote:
->> On 26/9/25 09:07, Luc Michel wrote:
->>> Add the target field in the IRQ descriptor. This allows to target an IRQ
->>> to another IRQ controller than the GIC(s). Other supported targets are
->>> the PMC PPU1 CPU interrupt controller and the EAM (Error management)
->>> device. Those two devices are currently not implemented so IRQs
->>> targeting those will be left unconnected. This is in preparation for
->>> versal2.
->>>
->>> Signed-off-by: Luc Michel <luc.michel@amd.com>
->>> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
->>> Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
->>> ---
->>>    hw/arm/xlnx-versal.c | 41 +++++++++++++++++++++++++++++++++++++++--
->>>    1 file changed, 39 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
->>> index 3d960ed2636..64744401182 100644
->>> --- a/hw/arm/xlnx-versal.c
->>> +++ b/hw/arm/xlnx-versal.c
->>> @@ -50,18 +50,30 @@
->>>    #include "hw/cpu/cluster.h"
->>>    #include "hw/arm/bsa.h"
->>>
->>>    /*
->>>     * IRQ descriptor to catch the following cases:
->>> + *   - An IRQ can either connect to the GICs, to the PPU1 intc, or the the EAM
->>>     *   - Multiple devices can connect to the same IRQ. They are OR'ed together.
->>>     */
->>>    FIELD(VERSAL_IRQ, IRQ, 0, 16)
->>> +FIELD(VERSAL_IRQ, TARGET, 16, 2)
->>>    FIELD(VERSAL_IRQ, ORED, 18, 1)
->>>    FIELD(VERSAL_IRQ, OR_IDX, 19, 4) /* input index on the IRQ OR gate */
->>>
->>> +typedef enum VersalIrqTarget {
->>> +    IRQ_TARGET_GIC,
->>> +    IRQ_TARGET_PPU1,
->>> +    IRQ_TARGET_EAM,
->>
->> Maybe declare IRQ_TARGET_RSVD here,
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/virtio/vhost.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> I'm not convinced. In the future we may need more targets, even more
-> than 4. In this case we will increase the TARGET field size, probably we
-> will then have even more reserved fields. I feel the way it's done here
-> is simple enough to catch all the buggy cases thanks to the default case
-> in the switch below.
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index 6557c58d12a..890d2bac585 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -27,6 +27,7 @@
+>   #include "migration/blocker.h"
+>   #include "migration/qemu-file-types.h"
+>   #include "system/dma.h"
+> +#include "system/memory.h"
+>   #include "trace.h"
+>   
+>   /* enabled until disconnected backend stabilizes */
+> @@ -455,7 +456,8 @@ static void *vhost_memory_map(struct vhost_dev *dev, hwaddr addr,
+>                                 hwaddr *plen, bool is_write)
+>   {
+>       if (!vhost_dev_has_iommu(dev)) {
+> -        return cpu_physical_memory_map(addr, plen, is_write);
+> +        return address_space_map(vdev->dma_as, addr, plen, is_write,
+> +                                 MEMTXATTRS_UNSPECIFIED);
+>       } else {
+>           return (void *)(uintptr_t)addr;
+>       }
+> @@ -466,7 +468,7 @@ static void vhost_memory_unmap(struct vhost_dev *dev, void *buffer,
+>                                  hwaddr access_len)
+>   {
+>       if (!vhost_dev_has_iommu(dev)) {
+> -        cpu_physical_memory_unmap(buffer, len, is_write, access_len);
+> +        address_space_unmap(vdev->dma_as, buffer, len, is_write, access_len);
+>       }
+>   }
+>   
 
-Fine then!
+Forgot to squash:
 
+-- >8 --
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 890d2bac585..acd359bdb3f 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -456,7 +456,7 @@ static void *vhost_memory_map(struct vhost_dev *dev, 
+hwaddr addr,
+                                hwaddr *plen, bool is_write)
+  {
+      if (!vhost_dev_has_iommu(dev)) {
+-        return address_space_map(vdev->dma_as, addr, plen, is_write,
++        return address_space_map(dev->vdev->dma_as, addr, plen, is_write,
+                                   MEMTXATTRS_UNSPECIFIED);
+      } else {
+          return (void *)(uintptr_t)addr;
+(1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,e,p,?]? y
+@@ -468,7 +468,8 @@ static void vhost_memory_unmap(struct vhost_dev 
+*dev, void *buffer,
+                                 hwaddr access_len)
+  {
+      if (!vhost_dev_has_iommu(dev)) {
+-        address_space_unmap(vdev->dma_as, buffer, len, is_write, 
+access_len);
++        address_space_unmap(dev->vdev->dma_as, buffer, len, is_write,
++                            access_len);
+      }
+  }
+
+---
 
