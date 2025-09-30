@@ -2,188 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C941CBAB9FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 08:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E71BABAD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 08:39:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3TQC-0003C9-K3; Tue, 30 Sep 2025 02:01:08 -0400
+	id 1v3U0O-0005BG-UH; Tue, 30 Sep 2025 02:38:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v3TQ7-0003Bl-NA
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 02:01:04 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1v3U0J-0005B1-BB; Tue, 30 Sep 2025 02:38:27 -0400
+Received: from mail-eastusazlp170120007.outbound.protection.outlook.com
+ ([2a01:111:f403:c101::7] helo=BL0PR03CU003.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v3TQ3-0005E3-KM
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 02:01:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759212060; x=1790748060;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=ubdXcknVB1rsE4JzrFZUL4HXDrfi08pDLhWXtbLek84=;
- b=W/0SfisECWYGqh+bdIbyDmylOjorOmzy37xDko2px15akW5KjOVxbMph
- MFiOqSh+Ap9YFwqNU3LFEgQ19AqDS5bHAwz8EBdl8ft8nGyJQ+BDpALfp
- G648TmMJ3ME/5tU1YqQ18LOkl4oJ+B4SbYsSd17aWJ5n3eWsPIbdaD8nn
- zePrEr9ietpcNa6St+n2iSG1o9Y2Ofvd0C3nb9B+SPo0hMTZ+DC563O3k
- UA11rpZ3RsL5k/pc8SYR6LQcQrrLZExkhlLkRfhiYSkxoDQf0dE4Uvi9u
- JzGrMDSfGaDsGGadGUWnyMXRk5qyk13ZfbW9i+UK7jOKWX0pUGaLWGtcY w==;
-X-CSE-ConnectionGUID: fjwUQJ0ESyyN6aKYYkCp3Q==
-X-CSE-MsgGUID: kH3Vl9XkQjqiuealFf/UYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="65316653"
-X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; d="scan'208";a="65316653"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 23:00:49 -0700
-X-CSE-ConnectionGUID: TFre7zRFQlSKgeChNzwH4Q==
-X-CSE-MsgGUID: IWzJYQnNRV+9m2pKkyqjgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; d="scan'208";a="178816604"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 23:00:48 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 29 Sep 2025 23:00:48 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 29 Sep 2025 23:00:48 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.55) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 29 Sep 2025 23:00:47 -0700
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1v3U06-0007pJ-EC; Tue, 30 Sep 2025 02:38:23 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bTThY4jSx2RtRWSyhbNQR6mOIrK4ATAxtxVFZmqrwOzGOA7+LDiynjcRg222FaOII8RDJhaAbmrEOiPW93n21Rqrn6c0fEzdAWgodzjJE2BioaTpwk/wGMygktelo10hZhMzoJncP10/ndXWoBPO4kpb0HkcMS8XeW4HF+/yGEYYZw+RRC7hCaQ//QscLHg+VN7mpgKzkRizyP6kT/tYJ52nOTWoHjOQKLECYBjdBjB+VwX/NPJf56mb8HNec9ATH5OgFYX7ldkbpjVUq5RBU3a4FkXQbn2CNqmtcBzHGcqbTERaPKzai15rRld9A5QgwiOCNvZvXOOi45VQl7H3yA==
+ b=v4/o3sHnR2Cr13GEqyKLwOs8X/6G2IDNU0Xax+AOF42Kr3kVuhVDZ2bwc1SU0sV9lihjGe62//rT42gh0bCMwOAoVgPvP61ErLLVJU4h4IdR4SpGUsNLlaz1Aj6vbw3bNMA2JFRUrkx/iFQwDadH/Bbi9YBDNxy4oGuoyoYg2cJ0vfhIv6RcQVFXphT9YPQfd0R0pdsVoBOkOoskWO4ORa6twsnqkACftQGYemGgT/9jCVEq3oV8zPwQh2r6LjLanJVoAAr8gvkb0sVmxtHyr1NTf+0+j/gOcZemQGj6xgWgiQh26frGHzvhTSnSZN+LVW3Nd2SRCRhDm+Slp2obUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sQMjWDHK6f4uTH00rVFlj6UUVpcHSrqCSPTX0KrxRH0=;
- b=ItQfptWXvQFH+5RvhrTWdhTgzv2s9sIDioiGTXFhyJniy8jsnKKBOaBWdJTTqvLXgpL8y0PjFtYp2kn9h6HvloR5qwjyElLMJHdsO4ZuGG1lAgi9/X2i2LJShMDUaK1WOU2n+6JhZY5/Ek2dTNTK/DH6Bz9SwQdjVwACDyl68FHjfWn+yL4K8r8G6xmZQT/cTHlUdpbo+YzCSVQzhlqOQEdxlZib51X6dsJ/45wPRdY46H8YmY4QvrhbQLtHuLS8/EL7a+LJ227IOArRgynNgf5q7avVKycI86x0SFzrFDIq8Gc5nKBdFcB4LlsqAu0ypDxMWS1hM2mB5UyFAt4Tmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
- by SJ0PR11MB6766.namprd11.prod.outlook.com (2603:10b6:a03:47c::12)
+ bh=tOyqLF1UgoQelcZaXPVtYhGq0nf3KAIFXaTO5oe94H8=;
+ b=Z8j1//PmY8EMWP3Cuegj01G1jE2+MdtL2bOg3gl/ITyoVfK+ZgeRyCUjFpwbCcpEGwiESbqHKFGrTsswGzEQVnlHqRfji2IdHz2cAEf0ptzP/McO1NOccCbfG0XJbJeMWdz7CGDLmqsak//YJCo/0rkIPU0cOCYGmjBH/PQ5/ksxs21oi5fXCjbCrpX1hyamBAyTAkWxop1Qg+uTATEyW0dKq6KfRCMQKnwYYU8zOYbQGQkgJoHhyg9ZUrhZpiCrFVNHkgGB0yPS7Igts6NRK4jNTyq2uL6lEngQmcoNHm1ms/GERp7IrPqcCY4ZCv/oweTsUvnGtfnkWbSPlrRA8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tOyqLF1UgoQelcZaXPVtYhGq0nf3KAIFXaTO5oe94H8=;
+ b=GFsu+b/q4AsCcEOWhe1X0vAl/jxS7B0yxxOW7iG9lU2KdPJLl6K/p9UvgJYfCh+Io+3Tdmr6uPas9+kyTpWCihItXyHPzV9U4harSgPIOwKE0ka/UVVZfkKhmYX/akQt4VcHqhFxFikWWfnuVntC1kZKcIMmcVrYbIgsiDxu4KE=
+Received: from CH0PR07CA0014.namprd07.prod.outlook.com (2603:10b6:610:32::19)
+ by PH7PR12MB6884.namprd12.prod.outlook.com (2603:10b6:510:1ba::12)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Tue, 30 Sep
- 2025 06:00:45 +0000
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::604b:77a4:b1be:3f13]) by IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::604b:77a4:b1be:3f13%4]) with mapi id 15.20.9115.020; Tue, 30 Sep 2025
- 06:00:45 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Steven Sistare <steven.sistare@oracle.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: RE: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute
- "query-balloon" after CPR transfer
-Thread-Topic: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute
- "query-balloon" after CPR transfer
-Thread-Index: AQHcMFWngtFRdKHVOkWcXMje/gJxi7SqMJYAgADkn4A=
-Date: Tue, 30 Sep 2025 06:00:45 +0000
-Message-ID: <IA3PR11MB913635F06F6522102D8FC15D921AA@IA3PR11MB9136.namprd11.prod.outlook.com>
-References: <20250928085432.40107-1-zhenzhong.duan@intel.com>
- <20250928085432.40107-7-zhenzhong.duan@intel.com>
- <1ba0dbca-08b2-4f80-ba12-01884a25ef0d@oracle.com>
-In-Reply-To: <1ba0dbca-08b2-4f80-ba12-01884a25ef0d@oracle.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|SJ0PR11MB6766:EE_
-x-ms-office365-filtering-correlation-id: 5c979082-dc97-4ef9-8206-08ddffe6b266
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?RzuuenFYbVysV0AXrYuF/nWoZuH8Y2ZsLAUIQuIjP6fAwLCduPZ5h7G2Y+hb?=
- =?us-ascii?Q?FrqdFh3t/NRh0kUfMfEBRv9ji730qfwcol1z3rqLckq99zF6mdnH8Aa+BvyK?=
- =?us-ascii?Q?RxdEsKF0gRnSg0mncIQUTRVZhEBmtjU28C4yGsx7CwDUNsDgqjh4GNpjUDLv?=
- =?us-ascii?Q?VBhU7+uw+FqKbPaVqz8DHWWJb/0QpbpZ9B+hmlnp9EABf2HNA5M04OAbtb5P?=
- =?us-ascii?Q?GPg24n/3mNF+oL9J8JQChujPziiRUmxE+IQIIRr1B95f64VO29WLV1ph9uSf?=
- =?us-ascii?Q?ifWL48h+lRj3ZfRG/tMdwUpU3sWkmW+Axk7RTVRETYzCc4oumeUB+t/3wXl4?=
- =?us-ascii?Q?jf0XXRTshlqmGxR2xDkgPmgBOIHFZwcF9fCpwZlI64I/nUDaJU2Z2ovpKjgB?=
- =?us-ascii?Q?B0lUb43mn8MGy9SY2++qKM2mpg+mxb3R+61doewzWM5YJ3BnmSw6n9p8Bhyj?=
- =?us-ascii?Q?UGosZ8+64yJ47mBrLb3fkD0Gdi8gMgGnxqkFC5PRZWpWq3q11baWox4hxILS?=
- =?us-ascii?Q?aRtR019CoxEAeIlTTdiQCXZOla6awd4RRpe2f93ysGP+8Gk/UxJU01SJTOOT?=
- =?us-ascii?Q?V5bzhvDBsZF/cJaptqNURQmg/LC1Bq8i94JXH4Oeb5kywNhYhr99p0vBioJV?=
- =?us-ascii?Q?MfzkggO7bJ+rE+3P5bF3xrFUWZ84MZ6kSvyx15UVefLjWsEd0jCWro6liGiB?=
- =?us-ascii?Q?qtCzk+8zqI9jQOHqn4p8isDZknzcGPFxeCzAkCZyHtHSiallN49z7Q7VMiUN?=
- =?us-ascii?Q?AAEjLEeNyxEBFD6PqUDWaURsSPfR73Fy2mgZTdaGaaNjMDPG11AixvDQDzO5?=
- =?us-ascii?Q?STR6hxFypSaXk8RnrG8unnWzPRlCA5fhvLbWPk+ljjv82PNA+jbD3ULejd8K?=
- =?us-ascii?Q?CS4Hcb4tmyyshVWdN7H79FRpXYHgKyEDYmxpAcwskTu8mq684xC9rAbAgp66?=
- =?us-ascii?Q?Cn0Dti9OLM6HzBqGnbZ0igchKxn42+Tnz2ch/EY097Ljg7UmdyWlqbQiNmof?=
- =?us-ascii?Q?15cH4PfW21BhrScCqNgnbi33umaly+SwI/cb5z36sUMCC7/SVfJHT7JWJV5D?=
- =?us-ascii?Q?AtMkJvhFF4nGKS1++kf2xQ/W3kAsglUbSbWFMmpDYH7FW0sqdoOUgCLQZ82U?=
- =?us-ascii?Q?+H4+VyG8HLUL3GK6+MQKjdPJ8kwztgafQ792ctoQgQrFSXbl2k9AfLUMYgxt?=
- =?us-ascii?Q?9Al731n4G8MWW1GV+41nrGp/osxtlH/HDhBgFRKJKYi9shcjFbWG1UWTT3cH?=
- =?us-ascii?Q?L7TIHVHA6tXL2Iy93YVdZ9WEtzbn+K5+HREWrcDEdHYSO9kx+D0rJH8gJZa4?=
- =?us-ascii?Q?sCRNCTDVVszf/31cY9O44iOTJiepJecC6C8TyTVAbkcFziICO0IYyYdSPmBJ?=
- =?us-ascii?Q?y1bZT6FR5W1w6Pol1N/LM6byi877EDeQcKLn8M3dyg/MjVbf11CqnuHxA8hL?=
- =?us-ascii?Q?9erW8hWnbCtU9NHEvS8Jn3ieZrapDLCY1vcYjDeum5I3KskSjUbpsaaMGLuZ?=
- =?us-ascii?Q?+644qm449McJxh3wETPB0sMSUSfQtRuqTdaJ?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA3PR11MB9136.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700021); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?OGEVte9LCDYthPZAQ1OCPybEV7r7DwLSrJCmPKlidTuieXKqXfAfRvarUwvx?=
- =?us-ascii?Q?lqHu+/lw6l6/7qjZpTasi/6Dgq8T5EIIU9pC+ZzHgew6MsodF156Ca0MTQ02?=
- =?us-ascii?Q?eyBoybMZla4uaTZufuZy+f5lmILMi49Z1xdg26ei6TQj0RU3eAYb4IqSFGXL?=
- =?us-ascii?Q?NTP0SJI9JCsDIag1d049ejznt3jp49C2El9NXXTpbXdlo5iSKexQkt1ETEwX?=
- =?us-ascii?Q?2HNYQkVVtdDj2qGaHbb3hrYE2HS0+863I13OgrI/8Rhg9CC1nltWDyBLDmPO?=
- =?us-ascii?Q?DPVB+9eFCcZGK5haQjZewXkkoWqIzz582OSWOvNT05+VBoR4TmoZD3rvqZ/5?=
- =?us-ascii?Q?dayPVtvVfgPGhsizMw5YsdCn52fJdv/l3C6LuLrXR79tCYeU/bYX2T5+ubv8?=
- =?us-ascii?Q?sNYWozqc6i/e+dS/kYDkv4Klhpzeg8gOELqqAj2u9yjZegzt8Vcp/bGU66cL?=
- =?us-ascii?Q?Pyi/rHYSQQGa+ieVyjRkFX8y5pnvp4ZL2hFmFFBaUcnsCINERfj8AHLNR1N8?=
- =?us-ascii?Q?AWQqxvKllxVdpoNfq/k9ClcDqMlphjFfnPf9bl03o6KryQqX4PA5XppVUYxv?=
- =?us-ascii?Q?BaZdY3Gelvhq0CFxSWBRVK8ay++cTGozSP3DquH9DXJSoV2DNADIxhSO/ck2?=
- =?us-ascii?Q?sQ/sT0Q+YZkiNPL9x8gxnVnxyp1qxdXIESiKA7MoQKvxrSRqJpSPX5wFzqZp?=
- =?us-ascii?Q?jH+Sm045WFkkNgWsXOA7ZODhMGySpQNacKiHBe/ywZuAOlBKHUqm2Y+Q/3JW?=
- =?us-ascii?Q?0oWbIqUKCvljF5S8O20tY4yKN1afJaA4YJGyrumjYiUYdi/0waV2ERkBESXw?=
- =?us-ascii?Q?apzVQj+bDj5V3J6qiPtbQDbA6HTGIUoELb8PxzXrmqXOAfRoCPDDIHaFYSg3?=
- =?us-ascii?Q?dzB4kpKuHUpzWdeJ1CJx5MTiGjhqqLZ6MMd4HI6opRdLChaVjVAfH+him6PB?=
- =?us-ascii?Q?ArYCR5JsDsRfmBeAXP2mtUM7KsiOJSTilFDuYwoA31jV0hBhtznjy1E6UDvT?=
- =?us-ascii?Q?0Aphaj5J9lPpi6l9ZgbP2Zr0YIUoYILlcZrIVfsBUKdGuO+XPSeGfblXU4IJ?=
- =?us-ascii?Q?Cz+Lr5EaSeLExCMjpkcRXFa7/73i9+aQZBY/18eJ0UJkGX18JKqNuZH1NgmQ?=
- =?us-ascii?Q?g1vmkKbDg4BOXNZYI359ZeaOW0wyDqFuDT2VqYzwc7H1SYGxBbgLRSqCkAjv?=
- =?us-ascii?Q?hjTKDanKzxgUPCMARCa6HeIMmOcvQM3iBuJ/yuEitPkoP2GVIUz6LOqxSES6?=
- =?us-ascii?Q?vfq83IK/CQs7/DC48e6Ho7vCrWUfCl/KlIR4MHTkMlxE2ieMlyW1U6kh8o1t?=
- =?us-ascii?Q?JRuHBD2dPjx8ewDvIGsAtNx+YTSAzGDK2442auoTsgp/7aBU8meUo2QnsPBS?=
- =?us-ascii?Q?7Dhu/vn+lmSZ2qipaJPQ3CGYWmdUtYuWgIho/Yv6irUywgxxK8D9aLdRDWvz?=
- =?us-ascii?Q?ugrTLdumTg14d1Ck2XWZEwq6ThMyu//eYJJVHpizT0rid/+R0+DJJRRFq7gc?=
- =?us-ascii?Q?FBwt240dxdavmeBdkaoDTn3luDqteqa7qBalXxndrJwckZOouPcc7WGfPGOj?=
- =?us-ascii?Q?055lErT0fyILuyphgfbCIhLogN/zfQGR52rGwo8X?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2025 06:37:55 +0000
+Received: from DS3PEPF0000C37D.namprd04.prod.outlook.com
+ (2603:10b6:610:32:cafe::5e) by CH0PR07CA0014.outlook.office365.com
+ (2603:10b6:610:32::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.17 via Frontend Transport; Tue,
+ 30 Sep 2025 06:37:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS3PEPF0000C37D.mail.protection.outlook.com (10.167.23.7) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9160.9 via Frontend Transport; Tue, 30 Sep 2025 06:37:52 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Mon, 29 Sep
+ 2025 23:37:51 -0700
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 30 Sep
+ 2025 01:37:50 -0500
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Mon, 29 Sep 2025 23:37:49 -0700
+Date: Tue, 30 Sep 2025 08:37:49 +0200
+From: Luc Michel <luc.michel@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Francisco Iglesias <francisco.iglesias@amd.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>, Alistair Francis
+ <alistair@alistair23.me>, Frederic Konrad <frederic.konrad@amd.com>, "Sai
+ Pavan Boddu" <sai.pavan.boddu@amd.com>
+Subject: Re: [PATCH v6 38/47] hw/arm/xlnx-versal: add the target field in IRQ
+ descriptor
+Message-ID: <aNt6vez--_Len36t@XFR-LUMICHEL-L2.amd.com>
+References: <20250926070806.292065-1-luc.michel@amd.com>
+ <20250926070806.292065-39-luc.michel@amd.com>
+ <70156c9c-5559-496d-8753-99f1ba5f68d1@linaro.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c979082-dc97-4ef9-8206-08ddffe6b266
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2025 06:00:45.6629 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qlh456uuVjRCdB5BxM5Rif1QxYBUUw6x5tfzRJsZhe9qb0mjhBkh4PF0tGYw/q04zhpMD4JphZf4OZMqy7TJfcEqtfAOgD08Q4uhLoOCN/Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6766
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.12;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70156c9c-5559-496d-8753-99f1ba5f68d1@linaro.org>
+Received-SPF: None (SATLEXMB05.amd.com: luc.michel@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37D:EE_|PH7PR12MB6884:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5c1b963-741f-419a-67fa-08ddffebe1a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MmVRZEljbzkzVUN1N0Fndzc0Mk0vbXZtcFJCSDFqdy9pa042cGpCSW8zeExS?=
+ =?utf-8?B?TmgzNzJ5OU1NeEV4eWVlL2FrSCszaFh3WXFkaUR1ay9NQnhMZk50cFo4blpS?=
+ =?utf-8?B?NUV2UU9RN3ZXdllmS0ZqVmdnMzdhbVQzVFFXQlM2d0F0UksrSmYrdml2SWJS?=
+ =?utf-8?B?K1RZbnFhRHVUSkREWHIrT2tCR0piU0M0L09obXRRek52VUlPOFZJYzhNSDdv?=
+ =?utf-8?B?bGR3aWRRM3VSQVBOdTJWRE85MHFHbGgwNmVQY3hZcm1MMVhKUkhTWWpJMGd6?=
+ =?utf-8?B?SDVOSEE2alZoSjNwWTZmNmk2YVJwVHh4MmxheWQzZVI2MEVJS2JkZm83QUFG?=
+ =?utf-8?B?eEhmR1d5TXVQMm04WmV5ZGxZUzlRNVVvWUpNSXBoTzhPQ2ZhYk5wNC9UR01s?=
+ =?utf-8?B?bEx4Ykx1WFEybFNacXpqSkd6dWVWaVJYMDI1djBBVlpaRURmUEJRM2NpcmQz?=
+ =?utf-8?B?a1RXaGNGSEMxMTVvRkpYaEpWektSaW11djBldVFrakFUdE1yTmhNVFNQaDNz?=
+ =?utf-8?B?TU0zR0dLd0hUUTFpenZZNXUveXZ3bjdwcmFQTkxYOXZhcEhFMnMzR3l6NURY?=
+ =?utf-8?B?Wlg4b2c0U0pzd2VkcjVLa2NhdmpXdWs4OXorajdFY0syeW5SRWhjZyt6c1JY?=
+ =?utf-8?B?M2NiWFY1ZzZScVVWMGJPaGJ3cS9RaUk2aWtyeW1tQnMwZ0M2b00relRxNUlU?=
+ =?utf-8?B?blJ6MEc1OFlqMDVaaU1heGVzc00rYkF4cW9Zek43YWxBaGRnYmJVdm9IK2Vy?=
+ =?utf-8?B?SVphS3dvNkZ4cU02SE8vbmRSMm84UmZ4MFgvQkUwQWo2alZRSmJsUksxa2l1?=
+ =?utf-8?B?cm5xZFJvOS9CQldBcUxwaFNOTGhYR2o0a2xFcHhPZW5IMGczSHNkMUJXTGxI?=
+ =?utf-8?B?V0s4L2xuYm5Sd0JQa0tDREp5RHZiaGZ1L1JiZlpVbFNIeUxuQ1RhRjJxejV4?=
+ =?utf-8?B?NVcvR1I2VU8xKytqRzN0WStEMXVLa0dUUFI3YndzOTNHTjVzbmU5MVNlWUty?=
+ =?utf-8?B?RnRtREQ5ZTFjb1ByL0Z6SCtPT1paYVA1WDM2TlV6TEVSRlNsMXlkRjVuUGFl?=
+ =?utf-8?B?T2UxVzJQMTM0K1FQam9DVEVWanhCdStGQ0pGWFdzeU9CMTdZbTRLeUlrZzQ1?=
+ =?utf-8?B?dUp0MktPUGRTbkU3eWIySmpwYWdNcndNQ2tJamZJVkdpRG1TSTFrc3hjVzlW?=
+ =?utf-8?B?TXJsZEwrUnI0bVh5WWw2cUNqMDE2ZU9vN094TlF2YXNmaHFZZmJ6cktsYm5w?=
+ =?utf-8?B?YkMreVJDdU1mVzFXQmNORzhsMzEyd2N1MlR6SW45Nmh6d0xDOGdsYTlEQlVo?=
+ =?utf-8?B?dkVncU0wS002c2gxcFlVMFlTU3hHbGhHRUljVFU0RFFKN1dqRkdibTBHYlJW?=
+ =?utf-8?B?QTlkUlp0NjJtU21oL3pSTVc3Sm8vR016ZUs3RU9OaGRxRERSM2svaW9lbmlT?=
+ =?utf-8?B?Ums2VWNiWFZyeGhRTkhTemlGV25kZWdjMnpaVnFPMThWdWpuU3Z6RVJxY0xI?=
+ =?utf-8?B?YllLTmI1cDU2Y2lLVHIwMmxmTk1oU2lVMFlCbkRCL2RUcURjMEd3V2dSaVdu?=
+ =?utf-8?B?dlpiTjFvS1JXWnRSZTJ5UmsxQ3Q5RnRoeXJ5REk1WXJPR055M2pBaTA2UFRE?=
+ =?utf-8?B?Ym5aVVJOdnZ6aHVyLzJ6V0VRMkNON09BdUhpYmcraS9yaStod1JGM0dLYXN6?=
+ =?utf-8?B?UmtleXdzanV1UmNqeWlnWjdWeXRUS1BJZGFZcStySGRqWXRNcy9vOFdhTlFp?=
+ =?utf-8?B?dDNpZERyQm9BQ0g5YW5jS2ZQSi9ZS1IrYnNHTlUyV3AxSDVZV3hZUUd1UUIy?=
+ =?utf-8?B?LzI0bHU5QTFjdFkxK09kS1ZZcVB1VkgwOHliekl5VjJLR2dLQUxpT0lHSC9i?=
+ =?utf-8?B?cGRFK0ZEeDhwdnY3a0JGUHo2RkU1b1JDR2xhQ3pSc3pScWhhYmFOUXVqNUNs?=
+ =?utf-8?B?WklNcDhrV1lQZGpHQ1Izb1hZQkViRkRZNHVsNGtwb3k4TmhLdCtHNjd3Yngv?=
+ =?utf-8?B?U2lYK1FuL1pxT2xJV3FpNmoxZXlobittcDVKUitacTY5cWE4Y1JSbDgwOWRk?=
+ =?utf-8?B?bURpb054TnYxN0dlaXk1ZUIrK0J2VEcxWDRMQ3Qwa2RBRGFUdUZ5SHJTZTR5?=
+ =?utf-8?Q?fvBI=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 06:37:52.3839 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5c1b963-741f-419a-67fa-08ddffebe1a5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF0000C37D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6884
+Received-SPF: permerror client-ip=2a01:111:f403:c101::7;
+ envelope-from=Luc.Michel@amd.com;
+ helo=BL0PR03CU003.outbound.protection.outlook.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -199,56 +167,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Phil,
 
+On 12:34 Mon 29 Sep     , Philippe Mathieu-Daudé wrote:
+> On 26/9/25 09:07, Luc Michel wrote:
+> > Add the target field in the IRQ descriptor. This allows to target an IRQ
+> > to another IRQ controller than the GIC(s). Other supported targets are
+> > the PMC PPU1 CPU interrupt controller and the EAM (Error management)
+> > device. Those two devices are currently not implemented so IRQs
+> > targeting those will be left unconnected. This is in preparation for
+> > versal2.
+> > 
+> > Signed-off-by: Luc Michel <luc.michel@amd.com>
+> > Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> > Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+> > ---
+> >   hw/arm/xlnx-versal.c | 41 +++++++++++++++++++++++++++++++++++++++--
+> >   1 file changed, 39 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+> > index 3d960ed2636..64744401182 100644
+> > --- a/hw/arm/xlnx-versal.c
+> > +++ b/hw/arm/xlnx-versal.c
+> > @@ -50,18 +50,30 @@
+> >   #include "hw/cpu/cluster.h"
+> >   #include "hw/arm/bsa.h"
+> > 
+> >   /*
+> >    * IRQ descriptor to catch the following cases:
+> > + *   - An IRQ can either connect to the GICs, to the PPU1 intc, or the the EAM
+> >    *   - Multiple devices can connect to the same IRQ. They are OR'ed together.
+> >    */
+> >   FIELD(VERSAL_IRQ, IRQ, 0, 16)
+> > +FIELD(VERSAL_IRQ, TARGET, 16, 2)
+> >   FIELD(VERSAL_IRQ, ORED, 18, 1)
+> >   FIELD(VERSAL_IRQ, OR_IDX, 19, 4) /* input index on the IRQ OR gate */
+> > 
+> > +typedef enum VersalIrqTarget {
+> > +    IRQ_TARGET_GIC,
+> > +    IRQ_TARGET_PPU1,
+> > +    IRQ_TARGET_EAM,
+> 
+> Maybe declare IRQ_TARGET_RSVD here,
 
->-----Original Message-----
->From: Steven Sistare <steven.sistare@oracle.com>
->Subject: Re: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute
->"query-balloon" after CPR transfer
->
->On 9/28/2025 4:54 AM, Zhenzhong Duan wrote:
->> After CPR transfer, source QEMU closes kvm fd and sets kvm_state to
->NULL,
->> "query-balloon" will check kvm_state->sync_mmu and trigger NULL pointer
->> reference.
->>
->> We don't need to NULL kvm_state as all states in kvm_state aren't releas=
-ed
->> actually. Just closing kvm fd is enough so we could still query states
->> through "query_*" qmp command.
->
->IMO this does not make sense.  Much of the state in kvm_state was derived
->from ioctl's on the descriptors, and closing them invalidates it.  Asking
->historical questions about what used to be makes no sense.
+I'm not convinced. In the future we may need more targets, even more
+than 4. In this case we will increase the TARGET field size, probably we
+will then have even more reserved fields. I feel the way it's done here
+is simple enough to catch all the buggy cases thanks to the default case
+in the switch below.
 
-You also have your valid point.
+> 
+> > +} VersalIrqTarget;
+> > +
+> > +#define PPU1_IRQ(irq) ((IRQ_TARGET_PPU1 << R_VERSAL_IRQ_TARGET_SHIFT) | (irq))
+> > +#define EAM_IRQ(irq) ((IRQ_TARGET_EAM << R_VERSAL_IRQ_TARGET_SHIFT) | (irq))
+> >   #define OR_IRQ(irq, or_idx) \
+> >       (R_VERSAL_IRQ_ORED_MASK | ((or_idx) << R_VERSAL_IRQ_OR_IDX_SHIFT) | (irq))
+> > +#define PPU1_OR_IRQ(irq, or_idx) \
+> > +    ((IRQ_TARGET_PPU1 << R_VERSAL_IRQ_TARGET_SHIFT) | OR_IRQ(irq, or_idx))
+> > 
+> >   typedef struct VersalSimplePeriphMap {
+> >       uint64_t addr;
+> >       int irq;
+> >   } VersalSimplePeriphMap;
+> > @@ -412,19 +424,27 @@ static qemu_irq versal_get_gic_irq(Versal *s, int irq_idx)
+> >    * Or gates are placed under the /soc/irq-or-gates QOM container.
+> >    */
+> >   static qemu_irq versal_get_irq_or_gate_in(Versal *s, int irq_idx,
+> >                                             qemu_irq target_irq)
+> >   {
+> > +    static const char *TARGET_STR[] = {
+> > +        [IRQ_TARGET_GIC] = "gic",
+> > +        [IRQ_TARGET_PPU1] = "ppu1",
+> > +        [IRQ_TARGET_EAM] = "eam",
+> > +    };
+> > +
+> > +    VersalIrqTarget target;
+> >       Object *container = versal_get_child(s, "irq-or-gates");
+> >       DeviceState *dev;
+> >       g_autofree char *name;
+> >       int idx, or_idx;
+> > 
+> >       idx = FIELD_EX32(irq_idx, VERSAL_IRQ, IRQ);
+> >       or_idx = FIELD_EX32(irq_idx, VERSAL_IRQ, OR_IDX);
+> > +    target = FIELD_EX32(irq_idx, VERSAL_IRQ, TARGET);
+> 
+> and assert(target != IRQ_TARGET_RSVD) here?
 
->
->Clearing kvm_state and setting kvm_allowed=3Dfalse would be a safer fix.
+This is already ensured by the default case of the switch below.
+versal_get_irq gets called before versal_get_irq_or_gate_in.
 
-But clearing kvm_state will make some qmp commands which dereferencing
-kvm_state trigger SIGSEGV. We can expect failure on those qmp, but SIGSEGV
-is worse.
-
-E.g., {"execute": "query-cpu-definitions"}, below error print with v2 but S=
-IGSEGV with v1:
-
-KVM get MSR (index=3D0x10a) feature failed, Bad file descriptor
-
-
-I also see inconsistence on "query-balloon" result with v1 patch, before cp=
-r-transfer:
-
-{"error": {"class": "DeviceNotActive", "desc": "No balloon device has been =
-activated"}}
-
-after transfer:
-
-{"error": {"class": "KVMMissingCap", "desc": "Using KVM without synchronous=
- MMU, balloon unavailable"}}
-
-It's confusing there is no synchronous MMU support but we do have it.
 
 Thanks
-Zhenzhong
+
+-- 
+Luc
+
+> 
+> > 
+> > -    name = g_strdup_printf("irq[%d]", idx);
+> > +    name = g_strdup_printf("%s-irq[%d]", TARGET_STR[target], idx);
+> >       dev = DEVICE(object_resolve_path_at(container, name));
+> > 
+> >       if (dev == NULL) {
+> >           dev = qdev_new(TYPE_OR_IRQ);
+> >           object_property_add_child(container, name, OBJECT(dev));
+> > @@ -436,16 +456,33 @@ static qemu_irq versal_get_irq_or_gate_in(Versal *s, int irq_idx,
+> >       return qdev_get_gpio_in(dev, or_idx);
+> >   }
+> > 
+> >   static qemu_irq versal_get_irq(Versal *s, int irq_idx)
+> >   {
+> > +    VersalIrqTarget target;
+> >       qemu_irq irq;
+> >       bool ored;
+> > 
+> > +    target = FIELD_EX32(irq_idx, VERSAL_IRQ, TARGET);
+> >       ored = FIELD_EX32(irq_idx, VERSAL_IRQ, ORED);
+> > 
+> > -    irq = versal_get_gic_irq(s, irq_idx);
+> > +    switch (target) {
+> > +    case IRQ_TARGET_EAM:
+> > +        /* EAM not implemented */
+> > +        return NULL;
+> > +
+> > +    case IRQ_TARGET_PPU1:
+> > +        /* PPU1 CPU not implemented */
+> > +        return NULL;
+> > +
+> > +    case IRQ_TARGET_GIC:
+> > +        irq = versal_get_gic_irq(s, irq_idx);
+> > +        break;
+> > +
+> > +    default:
+> 
+> And here 'case IRQ_TARGET_RSVD' instead.
+> 
+> > +        g_assert_not_reached();
+> > +    }
+> > 
+> >       if (ored) {
+> >           irq = versal_get_irq_or_gate_in(s, irq_idx, irq);
+> >       }
+> > 
+> 
+
+-- 
 
