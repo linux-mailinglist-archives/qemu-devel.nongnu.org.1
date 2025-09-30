@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8580DBAB4F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 06:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6887BAB4F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 06:15:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3RlJ-0001yp-Dw; Tue, 30 Sep 2025 00:14:49 -0400
+	id 1v3RlR-00023j-NY; Tue, 30 Sep 2025 00:14:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3RlG-0001y5-O3
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:46 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3RlN-00020O-83
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:53 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Rl9-00011h-T6
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:45 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3ee1221ceaaso4373514f8f.3
- for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 21:14:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3RlJ-00013a-TJ
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 00:14:51 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e30ef74b0so37706055e9.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Sep 2025 21:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759205676; x=1759810476; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759205681; x=1759810481; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=onCfEhinWarPReSMP2g+nvBYz1NYywUR3fuXcFIYVYM=;
- b=e9ObO9+i5mCbpoDDuedu/yNO+zKxoX10Iy8Wt4QnDiuReW4dzoEu3Meu32BXjNfoSo
- /uitIfrLHWKhYsYb2U9SgBWtRSSiKkeSkj32ZhwH4keEe4h0GITlmOkTD2ZG6HjKdaAg
- O5V9c5pxE8cUOiqjhMhYGVQ82TkkTmkLT6EFvu+/fBPds5Tm2NmIB1VOr3/dQuBMIAdH
- AR7Xg4wv9JVSqLY4B57tmU7mfp6vfTmVYurBzyCjIleT1HNWah3BXlVALk9m06LeFBA+
- tntYrNxw30BGaNJMcW4cOVAIxHs+10EyGgq43VnHlX1k+SI2rLZXBFMniaz0y4ASjBl4
- QR2w==
+ bh=QtU1C0M8U0OTbHcI2E95ZD2Zrsmz5/OESKETD6NudSM=;
+ b=z2B7yiHln37aClp2bGkqESsXoKLWWnrzwDJtaUjneo2v1YiLk6/xEmokAxxCS1sHSO
+ P1juIOxgWJGx07p7c/6hdl42fs1OmFMBlVcQ4nR6Bg0dIwxtNfH3sqBjWU8h2qS4N7xa
+ 2DmOfeV5gyU1swg5ma9U3kthuaiGw++4lZk/VC6tjzOe8g7GPmmEyFiFNorM0v3GT+Zs
+ bJ8xT2uLHqPJRvEX7HwaQdKNYxoiJ3P+Eaz2CEeXcZRe5heT4/PeJ/iZ/GJk+4c9jPzq
+ kLmh6X73i+wfUykpVvKik7TjDSZ8xtz/3JADMIBajqd37RMxL5vO+DMWY5kLMIN8Qyfp
+ GZlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759205676; x=1759810476;
+ d=1e100.net; s=20230601; t=1759205681; x=1759810481;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=onCfEhinWarPReSMP2g+nvBYz1NYywUR3fuXcFIYVYM=;
- b=uoq+LLy4N5IdD/jMd2r6N4eFRRBPe8KlC+7X0j5z5EundKOvYV3WuaIEg64qdrADcB
- GsuNc6Es74daODu7P4IxbH3/F1lVCe3Y0wV9FikZkgvh3hsgNLd+glYT6qLI9RZV7FeM
- Nux73Me6N+JRU6zU8da2N/Sa2rgNFhiHDxi0ylZ8T7qRDtDi7A+LURQVYdZxaQd0b/Ic
- kVWo4LoJP7TaPpWXMiKx4Gm7FnRw38W3m8ZSRs7sAXuk2JzqzkORB7NZYhHDCiYsJ1qm
- fb8e0RBRkBoM+yNs2N3+lIdnjXNL/oLKNAQh927LJv4xK1qpkqT5RbI/jLOJGJt2eS2w
- tBKg==
-X-Gm-Message-State: AOJu0YwlNXKhP+3lU4Zp5HqqM3r7DgYjmuPQbANKAUMXjhsZcPpWWuos
- MCBjAvVk8H16xcG1tlOoU/Pb4/Sn4TfNpSQxn3KQ9aof9H/bE0y4k7n1iLnyT3P1YlBhiIO8xDG
- /jtsqCofssg==
-X-Gm-Gg: ASbGncuvrWN+ft7fGgBC+VKMQ8flUArd1dWutfp7mwIbF2GlL+IlbFT3ClcWprX0tXW
- +OAEYn/unEsAkoys0y8R3JOjMBah0+qJ6s2ih6coW5dsBHc8xClM2JojAfcp8y/L4UzFvm1f5Jn
- ATTv6xvlF8PwBjZ2qJwIpSKr100bz1TwSLUIQt6F6pqHMFMck77IVg4/kq6t3+hqco0fWzcDJc8
- fYDy4ctZrVs9roWYIu/c4ikKGKJB47ebIHHkwJ5flZ+XGfUZzX/879VlWyk0LdnD4FlhDVpBJlK
- TLBB3UfeOTef5fsWrTgu2AocYxQBrl5wsSpmLqLopvFqDVB/UGfswhisInRqigVZQmaubtw0Rw2
- 7ZG+hjhyi/Btg/UrGnRbIPupUTARBn85NkYtr0c9Wgu/w5brjl4d8uHHx6jPmozU5wE8dsoz209
- vob5cYGIcCdiajHOw4kH+z0ybJa+JbW/MET8AMWlewHA==
-X-Google-Smtp-Source: AGHT+IHXSt4CkpBPH+1BT7FZNZBNpbDyORtYFCRXPSlc1PSaGA5no80rsQKq3Agt1aNkmXQ30vgX3Q==
-X-Received: by 2002:a05:6000:2689:b0:424:2158:c1a7 with SMTP id
- ffacd0b85a97d-4242158c3cbmr1203705f8f.34.1759205675919; 
- Mon, 29 Sep 2025 21:14:35 -0700 (PDT)
+ bh=QtU1C0M8U0OTbHcI2E95ZD2Zrsmz5/OESKETD6NudSM=;
+ b=HAP7QVwQIcG49bGpMu1SaAyNlhPBcpuywvt4a7LdRIkFJHfRspnnB6fV4b7BRgaazn
+ QnkxcI6g+yJwGnjPDJtUhc9oGx4TmEAjzKKZGXi5869WMlaczfznGU5C28sSZbj/OkdJ
+ Kg+FtvW2oJzi8hcYgpLOOxhpB/tEx8hLVsmR+s+zOaqntd4EvuSz7dSLt00miB5XLy8e
+ +dEpBJgGxw+zNcZhw5jjX+rl5VL3CmjXh86TdVog6/FLz0s/LHHUSXI9KTcusZAaQPYO
+ Ba0BHMTN+iKZd4lbvtyGNbB4jzGbzbiLXAYM/Ro752b3ML3bfWa3AmTX8nuZ6tQfctGG
+ 6dWA==
+X-Gm-Message-State: AOJu0YzP/YZOKcJZ/CXmSln73PekXlImpr9GMQ3YsexRPaosbImMBA5d
+ lb7HDVUSdfGi4sfX5xCFpYEGFMVrfDM2S4zzyMrZqEXgJyvXncJz/JVMxAxncNNfBHUmnToAchJ
+ klsbwxfCTgw==
+X-Gm-Gg: ASbGncsKLdU6TL8IyrBH8dbOwPwq3rh6DxTdc0rqD87yC59KLNP7Q2tciQUMBlcwxqV
+ ulkuYa0TMdbC3+6QVvonjCt2qKB2kl5me+C7fPJYb3hmlYFUuLGnrfr9QhZpfFes6lwlWjNL8jS
+ Xwj35XbGjCUgobgZJyU7bJTkenYx47SQ2UOL32AA0Y/dlfk2xlPHglpgTHXlYyjAFRPXdjV6DLP
+ 4acG7XqVNo4QTIl8c4DgAUpHNRzE1wx4SPOjxA3vreCh95O1aCB/yhrtYadHUXFyqYmpUyhJqZ2
+ vYCs82lfhNwh1CQBHmlykIsAweRD9jKISD88RfjQYy73Ksx6k9tPOdg26DFFM3BqTamFkbyBACN
+ weS1Uil20m3NICC874ge4asq35XdvnNJRV6CEguKxFA+f76/0FAO8mLSjWJ1psDQzRna8SmoJQd
+ orkyIpjIBLIjXw8QZN79js
+X-Google-Smtp-Source: AGHT+IGUG79kearmVn7+9qugGuIF+Iaatq5RHrgppUdDi9qlZIXdMZGH9YdXisC+M3CCPhGM+TJyoQ==
+X-Received: by 2002:a05:600c:a00c:b0:46e:41b0:f0cb with SMTP id
+ 5b1f17b1804b1-46e41b0f464mr152474875e9.25.1759205681405; 
+ Mon, 29 Sep 2025 21:14:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc72b0aeesm21288982f8f.49.2025.09.29.21.14.32
+ 5b1f17b1804b1-46e4ab0bf62sm98607665e9.9.2025.09.29.21.14.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Sep 2025 21:14:34 -0700 (PDT)
+ Mon, 29 Sep 2025 21:14:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -82,18 +82,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 11/17] target/i386/kvm: Replace legacy
- cpu_physical_memory_rw() call
-Date: Tue, 30 Sep 2025 06:13:19 +0200
-Message-ID: <20250930041326.6448-12-philmd@linaro.org>
+Subject: [PATCH v2 12/17] target/i386/nvmm: Inline cpu_physical_memory_rw() in
+ nvmm_mem_callback
+Date: Tue, 30 Sep 2025 06:13:20 +0200
+Message-ID: <20250930041326.6448-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930041326.6448-1-philmd@linaro.org>
 References: <20250930041326.6448-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,43 +116,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Get the vCPU address space and convert the legacy
-cpu_physical_memory_rw() by address_space_rw().
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/kvm/xen-emu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/i386/nvmm/nvmm-all.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index 284c5ef6f68..52de0198343 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -21,6 +21,7 @@
- #include "system/address-spaces.h"
- #include "xen-emu.h"
- #include "trace.h"
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index ed424251673..2e442baf4b7 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -15,6 +15,7 @@
+ #include "accel/accel-ops.h"
+ #include "system/nvmm.h"
+ #include "system/cpus.h"
 +#include "system/memory.h"
  #include "system/runstate.h"
- 
- #include "hw/pci/msi.h"
-@@ -75,6 +76,7 @@ static bool kvm_gva_to_gpa(CPUState *cs, uint64_t gva, uint64_t *gpa,
- static int kvm_gva_rw(CPUState *cs, uint64_t gva, void *_buf, size_t sz,
-                       bool is_write)
+ #include "qemu/main-loop.h"
+ #include "qemu/error-report.h"
+@@ -516,7 +517,9 @@ nvmm_io_callback(struct nvmm_io *io)
+ static void
+ nvmm_mem_callback(struct nvmm_mem *mem)
  {
-+    AddressSpace *as = cpu_addressspace(cs, MEMTXATTRS_UNSPECIFIED);
-     uint8_t *buf = (uint8_t *)_buf;
-     uint64_t gpa;
-     size_t len;
-@@ -87,7 +89,7 @@ static int kvm_gva_rw(CPUState *cs, uint64_t gva, void *_buf, size_t sz,
-             len = sz;
-         }
+-    cpu_physical_memory_rw(mem->gpa, mem->data, mem->size, mem->write);
++    /* TODO: Get CPUState via mem->vcpu? */
++    address_space_rw(&address_space_memory, mem->gpa, MEMTXATTRS_UNSPECIFIED,
++                     mem->data, mem->size, mem->write);
  
--        cpu_physical_memory_rw(gpa, buf, len, is_write);
-+        address_space_rw(as, gpa, MEMTXATTRS_UNSPECIFIED, buf, len, is_write);
- 
-         buf += len;
-         sz -= len;
+     /* Needed, otherwise infinite loop. */
+     current_cpu->vcpu_dirty = false;
 -- 
 2.51.0
 
