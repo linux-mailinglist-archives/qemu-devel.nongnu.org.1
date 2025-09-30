@@ -2,96 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CF2BAC124
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C02ABAC166
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:39:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Vou-0006JZ-2F; Tue, 30 Sep 2025 04:34:48 -0400
+	id 1v3VsA-0000eu-5v; Tue, 30 Sep 2025 04:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
- id 1v3Vos-0006HL-0n
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:34:46 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
- id 1v3Voj-0004RY-BR
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:34:44 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-33255011eafso5651253a91.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 01:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1759221265; x=1759826065; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zLBYrqjpNvkhmLUsF54KL5bWhDBVu9ThZEehNSlvIcQ=;
- b=nhOpkzcEGd9drnsB3/ABbmvUT7KUCvZHE4+yPFvaLR5yIhH0L2QgndiAWT8N435XlI
- ietS7oKGpD7/4A+O8PoaRq2PKG1ef42Z43RMv5Jt+p5DOa16nGGsQaccPNoY8juo+G1z
- pjzftxWJfQDRb0WkTIhTy9z7PdK+oyHhZ1Q2XaigZzcxyTCvqQZ8NdGf9gOxW+foMFSx
- 76nAt+W7TvQODlwADUiFTPqNB2vhppr2W4Y+ragcKCV3KzlESV1TFxoZctUTH+kVFcl5
- xXjqB0Ih9UoHSiKyb0bVmagDzXF9zgcOEv5THrw9HEpMJMAjJWe6E5OPIMopiA9IOnU4
- jn/Q==
+ (Exim 4.90_1) (envelope-from <hector.cao@canonical.com>)
+ id 1v3Vs7-0000eN-QJ
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:38:07 -0400
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hector.cao@canonical.com>)
+ id 1v3Vs1-0005WO-OV
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:38:07 -0400
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 83EC93F861
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 08:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1759221474;
+ bh=rxvoYiPVlV2AMiY/BLVsONmUu2KVIioLgihYH+EWT3A=;
+ h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type;
+ b=j5Tk9103MdGY8/nBs/ukDHHgjEArlYhThSo3CM/jtfbzu2jAEy6hz2s0v1+PcJw3H
+ yeYzmxpgtSxYt9ENFq02DoDW6r/ERGAGWq8lpr5rniLH9LIz2CxZsFb2vyQoOh0b3x
+ +lXIMzlULxR4RP5hsHSSyLN2LPRa9KpHKRIKM+Lh/1klI+JLINfj2r4Bcmy90mY+Fa
+ I6gq6KQwEPAwMpa93ajf1nchjHYz6OySJBv2DSk/kEIHHhefV8dB6c7dTr4udB8+FJ
+ 3cqSct5MhFYxk63e/0GgdHAB5kXQnofwTzKYNTmCVWll8+x/aWHhT02UBVSfxTSxof
+ OwYqRx8hiMHWQ==
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-634ae1ee0a5so5428514a12.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 01:37:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759221265; x=1759826065;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zLBYrqjpNvkhmLUsF54KL5bWhDBVu9ThZEehNSlvIcQ=;
- b=mviHs3RFxXMcnhdKJiiJpja3KDs56FkTh8IFBooIG9V8P9IOqSMzp7t630rTs+JyG3
- 3qzX9aaFr1DE7S71LK1eTMKUT4R3uo9p2EhF93nSApvZkyoD2w7o/DVaWn4wmdfD5gv2
- qnd1XvpJq4zrAWeFrEA21zGPILoliBMwzyZcZlzoxwbWAVCAPFqAr0PnmCJ6JGmNCoPQ
- FTA4pDEiLy2Vy60MDZEI/Qw/0aTd/cWYU19q4DlyEDQgXC0YHtav44SM0v6a6CKVQZsT
- /zvu6Y1Qd30tF67dVBb4GgypDBzaCvjcLjzB3CrnTIGpVck3mcSoEZFL3kV476nBEqhR
- Yz9g==
-X-Gm-Message-State: AOJu0YxG6qO89Z8zK2AS/Q0uOU8pku8G7H9IaiW9U44BbK9mkEWUI23P
- qzl1qcXmJbBedof/cH7aS940wl5M4jjm/TswTjXlbrjX5Mt3pnal19mz2Qt5j3y3kWkaCcE6D+G
- FBvBf1jeTTzfL6WP87eDydzNw/h0eEFLtFFORZVlS5WIjThgtTyr1o2wr0B8ZRgjeHvi+LUTuWt
- emj6w0yI3loUdIWvKq+wzocqdZndtPrGx8dpkdpvBv
-X-Gm-Gg: ASbGncvKK0718q2eRUJwoW7V6HpzvO+GOMZTgxIMAyjsP5Xf5u431Bn/8ioE1zSHruI
- QzZEL1w0cRikYMyEpSuj5J4kP3BpEcAGDT2f6wtt1vdnsLcRL9Ra37l672aAnC2AFcKj675yHRX
- /uPKBXJDBKgBy0d0nSE1ZY7t5k819iBusxdvNXs/m5AOmpo6N8EXs3MRO0nKH5wQ/xe3mjHx8yr
- uhNSov0a83SDvPPeicwurEkxVYt8C9SPf45WBxgEmNgQ7LjdDcd81LNz9dVzRogyTxoMDvP6P6o
- Z6CJ0zbbxA0wUmQwbuAh9HQE33PkTIvstZ6A4GHPIjjbwunnSTF7CrfVTLxMQcL3vOVv7LaWSOI
- DG6VlKxoBZ7MQU+SBvjXfoUgvLagTe0XCETgP/jkxPltJTYE7OXPdyiflVMZ3oO6u2djsvEpzHk
- T0tK/8kWrXEQ==
-X-Google-Smtp-Source: AGHT+IGEXTjk3S30/hwvfoxbI+ekPBIblXJ80EPwi785hk6LWn8afelfHnQgJo9pnxJQQ66Yfyq/Ng==
-X-Received: by 2002:a17:90b:1a81:b0:32e:8c14:5cd2 with SMTP id
- 98e67ed59e1d1-3342a2b0debmr19197010a91.28.1759221264641; 
- Tue, 30 Sep 2025 01:34:24 -0700 (PDT)
-Received: from jchang-1875.internal.sifive.com ([136.226.240.190])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b580bd86c4csm10340089a12.14.2025.09.30.01.34.22
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Sep 2025 01:34:24 -0700 (PDT)
-From: Jay Chang <jay.chang@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Jay Chang <jay.chang@sifive.com>, Frank Chang <frank.chang@sifive.com>,
- Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH 2/2] target/riscv: Make PMP CSRs conform to WARL constraints
-Date: Tue, 30 Sep 2025 16:33:59 +0800
-Message-ID: <20250930083359.27637-3-jay.chang@sifive.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250930083359.27637-1-jay.chang@sifive.com>
-References: <20250930083359.27637-1-jay.chang@sifive.com>
+ d=1e100.net; s=20230601; t=1759221474; x=1759826274;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rxvoYiPVlV2AMiY/BLVsONmUu2KVIioLgihYH+EWT3A=;
+ b=JhtsT4GtaXJgeMmrrMvIE2Q/UMHXHGHx9kitJypA0IrCkuV9nEXEd+yAHyWmDAfQNp
+ FPXTBjjnvTDtQ70trUwN7ojNA7EHNfzsI81DQCi6mVAi28Thw2LLmwqCsK/G7XIBRVqy
+ O43bWgWhwrYJJvpXIJQKPZT4Xn8100Cdx8yrGGbBM1i9BnQX7i51rVwsbwr7OBzbugse
+ Zx7gjClrp8ARIZX/PuAQTNXCKVmFi/F8PMUOsQppq1/M9VvTLJJAHhpEWFTPKhdXqk7w
+ tczpjg8OW6lB3cwi/eoHuVRZBt+dJpx+HB7MG9MD5umn33FE3XFTK3dmosLyIz7OI+2p
+ i7ug==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUIb8nU8yDH5qWqmlW7iFMzSdWbSHFDp2fSBsmkuzB3L2M4PppgcjmUn8zbWLBLYFO7tsBMvLli5uwQ@nongnu.org
+X-Gm-Message-State: AOJu0YyJ+PD2g6wBhj8mQYI701aDBSvquFb7lKtclVnWyRA50PCr3Kgg
+ xgfKIwTtMXl7WizLPGDf+K/RK8VKvB8nXrEaDZJ8LHXjXYVqijgiEKb509mw/8qz7nxSiJjE1Q7
+ wuWi/NU38LtOTbcpOsns90IEpfOCMM2eBayzqU0gI0RiSu3jnm5rGpzi0gl+aHjNG8ddpSZFLkO
+ Q6RTPrIKpzPlpXG6PK/3xuHhs0Cln0CmcNNwPHJ3axhhRs2Fs=
+X-Gm-Gg: ASbGnculxfuWahbuGsG8IYOoygIWaCB0ApxJvcNxnHJUchjot964nqElUtSdBcbaP/h
+ SG6KbVMwCfbfeLLWoYsnTprnqHTdWGM+VmQHfYgzFsr0UMBNwBdAFPolp+adV8eHqsRcNT1Pm63
+ 6QGn3CUdT6zM/sb/yLfprGaY1mFC5TGKv7O2jnCl80q+ScVLIi86+3HZal4zHIpxJ1/cRHm7U+c
+ 94bpot2hzfU46Xt
+X-Received: by 2002:aa7:d588:0:b0:628:7716:357c with SMTP id
+ 4fb4d7f45d1cf-6349faa99edmr13099313a12.25.1759221474004; 
+ Tue, 30 Sep 2025 01:37:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8kz0hbFup2GP9gwTRW2WnSc6Df0hE69z4ZLlIRQp5/6eNcIjQdFoJOUTYjxjnr36JGMUSHNDryCm3Ydp+kq4=
+X-Received: by 2002:aa7:d588:0:b0:628:7716:357c with SMTP id
+ 4fb4d7f45d1cf-6349faa99edmr13099299a12.25.1759221473674; Tue, 30 Sep 2025
+ 01:37:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=jay.chang@sifive.com; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Hector Cao <hector.cao@canonical.com>
+Date: Tue, 30 Sep 2025 10:37:42 +0200
+X-Gm-Features: AS18NWCHCkc57HVkKlf31P1ehEI_rAX6KV4RyQVU4mQyflxqoIc5G1q66J2tXZM
+Message-ID: <CABjvBV5MgSnf28WO9nqE7VpsPkpHJ1wrWsVnua91HfCsTkwMGQ@mail.gmail.com>
+Subject: [RFT PATCH v2 0/2] Fix cross migration issue with missing features:
+ pdcm, arch-capabilities
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="00000000000005198f064000abd6"
+Received-SPF: pass client-ip=185.125.188.123;
+ envelope-from=hector.cao@canonical.com;
+ helo=smtp-relay-internal-1.canonical.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,122 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch ensure pmpcfg and pmpaddr comply with WARL constraints.
+--00000000000005198f064000abd6
+Content-Type: text/plain; charset="UTF-8"
 
-When the PMP granularity is greater than 4 bytes, NA4 mode is not valid
-per the spec and will be silently ignored.
+Hello Paolo,
 
-According to the spec, changing pmpcfg.A only affects the "read" value
-of pmpaddr. When G > 2 and pmpcfg.A is NAPOT, bits pmpaddr[G-2:0] read
-as all ones. When G > 1 and pmpcfg.A is OFF or TOR, bits pmpaddr[G-1:0]
-read as all zeros. This allows software to read back the correct
-granularity value.
+I tested the migration on both Intel and AMD CPUs and the migration issue
+is fixed with your proposed patches.
 
-In addition, when updating the PMP address rule in TOR mode,
-the start and end addresses of the PMP region should be aligned
-to the PMP granularity. (The current SPEC only state in TOR mode
-that bits pmpaddr[G-1:0] do not affect the TOR address-matching logic.)
+Thanks for the work.
 
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Jim Shu <jim.shu@sifive.com>
----
- target/riscv/pmp.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Hector
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 72f1372a49..d5cd76df3a 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -108,6 +108,17 @@ static int pmp_is_invalid_smepmp_cfg(CPURISCVState *env, uint8_t val)
-         g_assert_not_reached();
-     }
- }
-+/*
-+ * Calculate PMP granularity value 'g'
-+ *
-+ * The granularity value 'g' is defined as log2(granularity) - 2, where
-+ * granularity is the minimum alignment requirement for PMP regions in bytes.
-+ */
-+static inline int pmp_get_granularity_g(CPURISCVState *env)
-+{
-+    return __builtin_ctz(riscv_cpu_cfg(env)->pmp_granularity >> 2);
-+}
-+
- 
- /*
-  * Count the number of active rules.
-@@ -153,6 +164,15 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "ignoring pmpcfg write - invalid\n");
-         } else {
-+            uint8_t a_field = pmp_get_a_field(val);
-+            /*
-+             * When granularity g >= 1 (i.e., granularity > 4 bytes),
-+             * the NA4 (Naturally Aligned 4-byte) mode is not selectable
-+             */
-+            if ((riscv_cpu_cfg(env)->pmp_granularity >
-+                MIN_RISCV_PMP_GRANULARITY) && (a_field == PMP_AMATCH_NA4)) {
-+                    return false;
-+            }
-             env->pmp_state.pmp[pmp_index].cfg_reg = val;
-             pmp_update_rule_addr(env, pmp_index);
-             return true;
-@@ -199,6 +219,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-     target_ulong prev_addr = 0u;
-     hwaddr sa = 0u;
-     hwaddr ea = 0u;
-+    int g = pmp_get_granularity_g(env);
- 
-     if (pmp_index >= 1u) {
-         prev_addr = env->pmp_state.pmp[pmp_index - 1].addr_reg;
-@@ -211,6 +232,11 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-         break;
- 
-     case PMP_AMATCH_TOR:
-+        /* Bits pmpaddr[G-1:0] do not affect the TOR address-matching logic. */
-+        if (g >= 1) {
-+            prev_addr &= ~((1UL << g) - 1UL);
-+            this_addr &= ~((1UL << g) - 1UL);
-+        }
-         if (prev_addr >= this_addr) {
-             sa = ea = 0u;
-             break;
-@@ -577,6 +603,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
- 
- /*
-  * Handle a read from a pmpaddr CSR
-+ * Change A field of pmpcfg affects the read value of pmpaddr
-  */
- target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index)
- {
-@@ -585,6 +612,25 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index)
- 
-     if (addr_index < pmp_regions) {
-         val = env->pmp_state.pmp[addr_index].addr_reg;
-+        int g = pmp_get_granularity_g(env);
-+        switch (pmp_get_a_field(env->pmp_state.pmp[addr_index].cfg_reg)) {
-+        case PMP_AMATCH_OFF:
-+            /* fallthrough */
-+        case PMP_AMATCH_TOR:
-+            /* Bit [g-1:0] read all zero */
-+            if (g >= 1) {
-+                val &= ~((1 << g) - 1);
-+            }
-+            break;
-+        case PMP_AMATCH_NAPOT:
-+            /* Bit [g-2:0] read all one */
-+            if (g >= 2) {
-+                val |= ((1 << (g - 1)) - 1);
-+            }
-+            break;
-+        default:
-+            break;
-+        }
-         trace_pmpaddr_csr_read(env->mhartid, addr_index, val);
-     } else {
-         qemu_log_mask(LOG_GUEST_ERROR,
--- 
-2.48.1
+--00000000000005198f064000abd6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><div>Hello Paolo,</div><div><br></div><div>I tested the mi=
+gration on both Intel and AMD CPUs and the migration issue is fixed with yo=
+ur proposed patches.</div><div><br></div><div>Thanks for the work.</div><di=
+v><br></div><div>Hector</div><div dir=3D"ltr" class=3D"gmail_signature" dat=
+a-smartmail=3D"gmail_signature"><div dir=3D"ltr"><div style=3D"text-align:l=
+eft">
+
+</div></div></div></div>
+
+--00000000000005198f064000abd6--
 
