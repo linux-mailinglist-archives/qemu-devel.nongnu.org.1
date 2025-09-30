@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B689EBADF36
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E835BADECD
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3cR3-0008BR-ID; Tue, 30 Sep 2025 11:38:37 -0400
+	id 1v3cR6-0008CC-Q5; Tue, 30 Sep 2025 11:38:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v3cR1-0008Ab-3V
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:35 -0400
+ id 1v3cR4-0008Bk-8u
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v3cQx-0004DX-4g
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:34 -0400
+ id 1v3cR1-0004Fw-R5
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759246709;
+ s=mimecast20190719; t=1759246713;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AkopEzcMgre1oqPqOMOI0pY8SSCf0ly5kfTMun2HyVk=;
- b=M8eubEIPj1/vjpbx3qH/6KXZWPAF5og88ZJVuczvoPFVnOlEwXk7UlXOCUP376fN0Bcrrv
- +f6WeiJhfNopLty7vlTegxgmECnNekPSkfedPOQOCweWq5f4ccnKmPFhbT1FVaXJCe7hjc
- c12mFL4xhD9fk4fDvbJFfq89KA/PPy4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=W1NyfX4soRju/8fy+ZFeLE43fMSLPTeXbpc4OZtvOpw=;
+ b=i0IESHcCWbodyiuFpxrjp0lLJgDVLMH93pxXsCptrcSGLpn0rtswR8bUvPcG6ndfrND37t
+ 13CL1ToygjE6G8FI/AqfnyuUISuu/Pclcf0i+6jE6iPXtzrJHi64B13vm3drsd8SKfrIWD
+ 7uvpa8Gd8EirMrIVDOVsVFFPoDgMoRk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-xLwcWBTsNJ-ywGMm6wmhlg-1; Tue,
- 30 Sep 2025 11:38:25 -0400
-X-MC-Unique: xLwcWBTsNJ-ywGMm6wmhlg-1
-X-Mimecast-MFC-AGG-ID: xLwcWBTsNJ-ywGMm6wmhlg_1759246702
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-_Zu199rOM7K800cE0k2PDg-1; Tue,
+ 30 Sep 2025 11:38:30 -0400
+X-MC-Unique: _Zu199rOM7K800cE0k2PDg-1
+X-Mimecast-MFC-AGG-ID: _Zu199rOM7K800cE0k2PDg_1759246708
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 70FDB1800593; Tue, 30 Sep 2025 15:38:22 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3589E18002D0; Tue, 30 Sep 2025 15:38:28 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.7])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1ED361956095; Tue, 30 Sep 2025 15:38:20 +0000 (UTC)
+ id BD3271956095; Tue, 30 Sep 2025 15:38:26 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: devel@lists.libvirt.org,
@@ -60,9 +60,9 @@ Cc: devel@lists.libvirt.org,
  Li-Wen Hsu <lwhsu@freebsd.org>, Warner Losh <imp@bsdimp.com>,
  Kyle Evans <kevans@freebsd.org>, Ed Maste <emaste@freebsd.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 05/23] scripts/archive-source: use a bash array
-Date: Tue, 30 Sep 2025 19:37:26 +0400
-Message-ID: <20250930153746.573875-6-marcandre.lureau@redhat.com>
+Subject: [PULL 06/23] configure: fix rust meson configuration
+Date: Tue, 30 Sep 2025 19:37:27 +0400
+Message-ID: <20250930153746.573875-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 References: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -97,64 +97,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250924120426.2158655-6-marcandre.lureau@redhat.com>
----
- scripts/archive-source.sh | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+It was incorrectly set on the [host_machine] and caused error:
+File "/tmp/qemu-test/build/pyvenv/lib/python3.11/site-packages/mesonbuild/envconfig.py", line 281, in from_literal
+    assert all(isinstance(v, str) for v in raw.values()), 'for mypy'
+AssertionError: for mypy
 
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index b86e632161..a725dd923d 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -26,12 +26,27 @@ sub_file="${sub_tdir}/submodule.tar"
- # independent of what the developer currently has initialized
- # in their checkout, because the build environment is completely
- # different to the host OS.
--subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
--  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs attrs-0.2-rs bilge-0.2-rs
--  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
--  libc-0.2-rs proc-macro2-1-rs
--  proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
--  syn-2-rs unicode-ident-1-rs"
-+subprojects=(
-+  anyhow-1-rs
-+  arbitrary-int-1-rs
-+  attrs-0.2-rs
-+  berkeley-softfloat-3
-+  berkeley-testfloat-3
-+  bilge-0.2-rs
-+  bilge-impl-0.2-rs
-+  either-1-rs
-+  foreign-0.3-rs
-+  itertools-0.11-rs
-+  keycodemapdb
-+  libc-0.2-rs
-+  libvfio-user
-+  proc-macro-error-1-rs
-+  proc-macro-error-attr-1-rs
-+  proc-macro2-1-rs
-+  quote-1-rs
-+  syn-2-rs
-+  unicode-ident-1-rs
-+)
- sub_deinit=""
- 
- function cleanup() {
-@@ -77,10 +92,10 @@ function subproject_dir() {
- git archive --format tar "$(tree_ish)" > "$tar_file"
- test $? -ne 0 && error "failed to archive qemu"
- 
--meson subprojects download $subprojects >/dev/null
-+meson subprojects download ${subprojects[@]} >/dev/null
- test $? -ne 0 && error "failed to download subprojects $subprojects"
- 
--for sp in $subprojects; do
-+for sp in "${subprojects[@]}"; do
-     tar --append --file "$tar_file" --exclude=.git subprojects/"$(subproject_dir $sp)"
-     test $? -ne 0 && error "failed to append subproject $sp to $tar_file"
- done
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20250924120426.2158655-7-marcandre.lureau@redhat.com>
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 0f7eb95586..66613f3f4c 100755
+--- a/configure
++++ b/configure
+@@ -1958,7 +1958,7 @@ if test "$skip_meson" = no; then
+     echo "[binaries]" >> $native
+     echo "c = [$(meson_quote $host_cc)]" >> $native
+     if test "$rust" != disabled; then
+-      echo "rust = [$(meson_quote $rustc)]" >> $cross
++      echo "rust = [$(meson_quote $rustc)]" >> $native
+     fi
+     mv $native config-meson.native
+     meson_option_add --native-file
 -- 
 2.51.0
 
