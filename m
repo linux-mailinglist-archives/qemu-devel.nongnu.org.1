@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D432BACEF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 14:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DEABACEBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 14:48:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3ZlX-00086A-Ub; Tue, 30 Sep 2025 08:47:36 -0400
+	id 1v3ZlJ-0007zN-FV; Tue, 30 Sep 2025 08:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3ZlU-000853-OD
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:32 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3ZlB-0007wa-DF
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3ZlH-0002QN-5J
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3Zl8-0002NL-2q
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759236435;
+ s=mimecast20190719; t=1759236427;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X5YJlMqecW6QA8SOaBnakdTvG0ozDxgcpc/frxXn3ks=;
- b=hVukbhfwUqfYMRzN62mDvSb0ySfjTt+UGUL8hc3KeM7tRwft5dzKp3szf7A6ld9N6Xqt9r
- 3v6M/sLlvKNp9tF4xwhCt80ZTUsHeEgF1iKefsAWsSO6miGLnzAJGOiLI4kFTSjyZACKGU
- 47/24pZwEQSBdZJoE8DWXPbwI0GeiRk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=tnWQ+Mw4LJPjRQmp7z1hs4XUA3T/cuBkwT+P7Gve70A=;
+ b=HwS1sq1Ddlj3iAHclXLY1r6oj5uKxuNmh4E6tQYOBskI7JsrdxyR82F1Nqhi1eSuIlFjkr
+ KcpDbX8hW1ioWpDyj4VunX5RxMWgiWG2v/w4bxr1KQuLnS0Z506P4hvMQmen+j6DkNr55q
+ YNxyqmXw5vPXnEyJOc6ZZflYjjSMeU4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-RAU21BkMPZeqP93X8p_h2A-1; Tue,
- 30 Sep 2025 08:47:11 -0400
-X-MC-Unique: RAU21BkMPZeqP93X8p_h2A-1
-X-Mimecast-MFC-AGG-ID: RAU21BkMPZeqP93X8p_h2A_1759236431
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-IZK4_KJrM3OHYYJ8owpgnQ-1; Tue,
+ 30 Sep 2025 08:47:03 -0400
+X-MC-Unique: IZK4_KJrM3OHYYJ8owpgnQ-1
+X-Mimecast-MFC-AGG-ID: IZK4_KJrM3OHYYJ8owpgnQ_1759236422
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AE86180A8DE; Tue, 30 Sep 2025 12:47:00 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 286E51956062; Tue, 30 Sep 2025 12:47:01 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 356A819560B8; Tue, 30 Sep 2025 12:47:00 +0000 (UTC)
+ id BB84E19560B4; Tue, 30 Sep 2025 12:47:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7E2A021E66C5; Tue, 30 Sep 2025 14:46:53 +0200 (CEST)
+ id 824FA21E66E9; Tue, 30 Sep 2025 14:46:53 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PULL 08/13] util/oslib-win32: Do not treat null @errp as &error_warn
-Date: Tue, 30 Sep 2025 14:46:48 +0200
-Message-ID: <20250930124653.321609-9-armbru@redhat.com>
+Subject: [PULL 09/13] ui/pixman: Consistent error handling in
+ qemu_pixman_shareable_free()
+Date: Tue, 30 Sep 2025 14:46:49 +0200
+Message-ID: <20250930124653.321609-10-armbru@redhat.com>
 In-Reply-To: <20250930124653.321609-1-armbru@redhat.com>
 References: <20250930124653.321609-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -85,109 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_socket_select() and its wrapper qemu_socket_unselect() treat a
-null @errp as &error_warn.  This is wildly inappropriate.  A caller
-passing null @errp specifies that errors are to be ignored.  If
-warnings are wanted, the caller must pass &error_warn.
+qemu_pixman_shareable_free() wraps around either qemu_memfd_free() or
+qemu_win32_map_free().  The former reports trouble as error, with
+error_report(), then succeeds.  The latter reports it as warning (we
+pass it &error_warn), then succeeds.
 
-Change callers to do that, and drop the inappropriate treatment of
-null @errp.
-
-This assumes that warnings are wanted.  I'm not familiar with the
-calling code, so I can't say whether it will work when the socket is
-invalid, or WSAEventSelect() fails.  If it doesn't, then this should
-be an error instead of a warning.  Invalid socket might even be a
-programming error.
-
-These warnings were introduced in commit f5fd677ae7cf (win32/socket:
-introduce qemu_socket_select() helper).  I considered reverting to
-silence, but Daniel Berrangé asked for the warnings to be preserved.
+Change the latter to report as error, too.
 
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250923091000.3180122-9-armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20250923091000.3180122-10-armbru@redhat.com>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- io/channel-socket.c | 4 ++--
- io/channel-watch.c  | 2 +-
- util/aio-win32.c    | 2 +-
- util/oslib-win32.c  | 6 +-----
- 4 files changed, 5 insertions(+), 9 deletions(-)
+ ui/qemu-pixman.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/io/channel-socket.c b/io/channel-socket.c
-index e53d9ac76f..fdc7670867 100644
---- a/io/channel-socket.c
-+++ b/io/channel-socket.c
-@@ -454,7 +454,7 @@ static void qio_channel_socket_finalize(Object *obj)
-             }
-         }
- #ifdef WIN32
--        qemu_socket_unselect(ioc->fd, NULL);
-+        qemu_socket_unselect(ioc->fd, &error_warn);
- #endif
-         close(ioc->fd);
-         ioc->fd = -1;
-@@ -929,7 +929,7 @@ qio_channel_socket_close(QIOChannel *ioc,
- 
-     if (sioc->fd != -1) {
- #ifdef WIN32
--        qemu_socket_unselect(sioc->fd, NULL);
-+        qemu_socket_unselect(sioc->fd, &error_warn);
- #endif
-         if (qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_LISTEN)) {
-             socket_listen_cleanup(sioc->fd, errp);
-diff --git a/io/channel-watch.c b/io/channel-watch.c
-index 64b486e378..ec76bd1ec6 100644
---- a/io/channel-watch.c
-+++ b/io/channel-watch.c
-@@ -283,7 +283,7 @@ GSource *qio_channel_create_socket_watch(QIOChannel *ioc,
- 
-     qemu_socket_select(sockfd, ioc->event,
-                        FD_READ | FD_ACCEPT | FD_CLOSE |
--                       FD_CONNECT | FD_WRITE | FD_OOB, NULL);
-+                       FD_CONNECT | FD_WRITE | FD_OOB, &error_warn);
- 
-     source = g_source_new(&qio_channel_socket_source_funcs,
-                           sizeof(QIOChannelSocketSource));
-diff --git a/util/aio-win32.c b/util/aio-win32.c
-index 6583d5c5f3..b125924433 100644
---- a/util/aio-win32.c
-+++ b/util/aio-win32.c
-@@ -121,7 +121,7 @@ void aio_set_fd_handler(AioContext *ctx,
- 
-         QLIST_INSERT_HEAD_RCU(&ctx->aio_handlers, node, node);
-         event = event_notifier_get_handle(&ctx->notifier);
--        qemu_socket_select(fd, event, bitmask, NULL);
-+        qemu_socket_select(fd, event, bitmask, &error_warn);
-     }
-     if (old_node) {
-         aio_remove_fd_handler(ctx, old_node);
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index b9ce2f96ee..6a2367c89d 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -182,7 +182,7 @@ bool qemu_set_blocking(int fd, bool block, Error **errp)
-     unsigned long opt = block ? 0 : 1;
- 
-     if (block) {
--        qemu_socket_unselect(fd, NULL);
-+        qemu_socket_unselect(fd, &error_warn);
-     }
- 
-     if (ioctlsocket(fd, FIONBIO, &opt) != NO_ERROR) {
-@@ -293,10 +293,6 @@ bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index ef4e71da11..e46c6232cf 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -288,7 +288,10 @@ qemu_pixman_shareable_free(qemu_pixman_shareable handle,
+                            void *ptr, size_t size)
  {
-     SOCKET s = _get_osfhandle(sockfd);
- 
--    if (errp == NULL) {
--        errp = &error_warn;
--    }
--
-     if (s == INVALID_SOCKET) {
-         error_setg(errp, "invalid socket fd=%d", sockfd);
-         return false;
+ #ifdef WIN32
+-    qemu_win32_map_free(ptr, handle, &error_warn);
++    Error *err = NULL;
++
++    qemu_win32_map_free(ptr, handle, &err);
++    error_report_err(err);
+ #else
+     qemu_memfd_free(ptr, size, handle);
+ #endif
 -- 
 2.49.0
 
