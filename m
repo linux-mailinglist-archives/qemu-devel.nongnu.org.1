@@ -2,94 +2,161 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAF4BAC3D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 11:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07763BAC3F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 11:20:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3WSW-0004wr-C2; Tue, 30 Sep 2025 05:15:44 -0400
+	id 1v3WVu-0007k2-7V; Tue, 30 Sep 2025 05:19:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3WSF-0004sy-53
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:15:27 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3WS6-000191-OT
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:15:26 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-46e34bd8eb2so10668045e9.3
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 02:15:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759223713; x=1759828513; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jyfUsjfODVQJYQKbba0puUbRexP7Udvd0C0uJa768IQ=;
- b=EMJo+ZS+AqsG7m1i+RN6muyArAx2TWxJa8egozEDHHQ3jPTa/jIfyjnWuIKgswdSDw
- JaQjkxz9/JHBIA3lII69mGpS9DSv5Aa8enONgLSHrx3GPusLOoWd0/Z3Xg6EwGMKs1PE
- Xv0uuHA2uZg6Wv29Zx+7YyOdtJERW43TFEM3f1vkCE4UuXRyn7heozkbCHMMTPgnSaBU
- JkRJkzCb05BL7GanLzUvN+KqCxbZ2wRyuOTzVBrN5pXKtncQOOy/dQ5/I8mibFTdJbwV
- MmtE9bm4vENdc0pU8Ic6dEi/L6K/lKsxFI3VWd3VMmgNItVt53fJmAj7J07F22N4Vawk
- aaXg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v3WVl-0007jT-J5
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:19:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v3WVa-0003EX-VK
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 05:19:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759223917;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=d3jiynPnEzxxv2oRAoAk1Ku5mtXrOi1sVDTTsgV+r60=;
+ b=a+dyQP0nYTMjk/34CFtYyx990HGPl3Af7YYZrHacBxLB+NrpatnBtbl6vsXw8qndG7sQtx
+ QZzIC4ak1s4aSapyyx0+lPffTT7ryKiSchkgdW6ulyG0o+UiUXo/itjgdKas7hCgiU8LWq
+ 85bK5uucRALykBOJj14ZumsRSuHnRXs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-0P1u-majMxOTSvhQnW9U2Q-1; Tue, 30 Sep 2025 05:18:35 -0400
+X-MC-Unique: 0P1u-majMxOTSvhQnW9U2Q-1
+X-Mimecast-MFC-AGG-ID: 0P1u-majMxOTSvhQnW9U2Q_1759223914
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46e3e177893so35420395e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 02:18:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759223713; x=1759828513;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jyfUsjfODVQJYQKbba0puUbRexP7Udvd0C0uJa768IQ=;
- b=koXk+I8IMHnGs3AkBGCpe+R4yjX2DqQUTqA0w4VWrFNb5cF8DsJ/AoA/lIkmHkwwgH
- waS4hc9QmEvbXO/aq1VfudNnyusUd6RnGCfS2l75FmY/WAoZP5aoQNo/OFYAGiKYGV/8
- +qs8DjOi9YPzj00CXFm0w7M2rxGUwjMvtL3UPW5ZpbPpY3KCWkR3/qOU4DdK307+8YjU
- mK+T4p4VAgPGm6975Qi9F0ikSvEDTYQwT8nke/hgpuOBX4rKIPcZ2f42vj5F/8Y4OC8z
- hPNwUvfRCWDSyz7t7SldjKVcaRuIajdUE66NbSPdSKtXB+U2p3GsKrXXSrj0KddmZRMc
- Jkxw==
-X-Gm-Message-State: AOJu0YzQeSvQ7xn/N41TYetWuSomvED7lq9Y9YLYrqcZs3SgW3HA2lOd
- 8btnrMqDqMCRBj63NO7r56wfczm71817fyj9hoAzrjOUziIJ+U8blc6IWIJcjR5h2jM6jn1Co2G
- H8jVNLRIKMQ==
-X-Gm-Gg: ASbGncvC6zPel4tRXRkH9vosBiYnVU0sVEYk1LcIGjKY36ihN8wpB2fTw27cd1nbBkX
- okDyUME0paiFB4/PkGMELiGlvCbzzyGmB/rP5X9VNJVBPoYgd+vg5Wu/llJI24G+2U7cWQ3dmH3
- zwGWAC0DzZ4vb49SSs6TJbLHakAJVJiwYtcGP53UwNrjnweO2g2DYBy5yGZoOgnkF4lQzfti9Nk
- jTal47zpGPieXJhixniJN0tQMwkhxmhMj+dZkOMdcntf6JwP/khFeHgWrh+s19f+00M0McKltXT
- uMlWq3Rlul8u6t5NNZfoxQxsJb36GiWLa1+glhjp3GKGrS/GYuJEYgx8GEThVjShu0ggI8Sta+b
- ZMsL+Q+oYnOVbvy4JBcogShCgnc+dHLw5wNQBqKb0KG1NOd0azktk4ct5xChU5PjMixgIcVBBZS
- 308Qn8q+gKowZxeSoSCiKS
-X-Google-Smtp-Source: AGHT+IHrJ1AOAIg3tX8s3cG29OdXc6+pUMYGelwaFUNI33VZputogZi6W5363Py7mIXbHlAe9FVEJA==
-X-Received: by 2002:a05:6000:2410:b0:3ee:13ba:e133 with SMTP id
- ffacd0b85a97d-40e4354d631mr17350108f8f.1.1759223712906; 
- Tue, 30 Sep 2025 02:15:12 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb74e46bcsm22011810f8f.8.2025.09.30.02.15.11
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Sep 2025 02:15:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/3] hw/vfio: Use uint64_t for IOVA mapping size in
- vfio_container_dma_*map
-Date: Tue, 30 Sep 2025 11:14:56 +0200
-Message-ID: <20250930091456.34524-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930091456.34524-1-philmd@linaro.org>
-References: <20250930091456.34524-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1759223914; x=1759828714;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d3jiynPnEzxxv2oRAoAk1Ku5mtXrOi1sVDTTsgV+r60=;
+ b=Tcnz/xkfU8myJao2Jvui//4tA5L0AMT4hp7CGi4XMvieI2yhDExt4VlROntF2wtQEi
+ fOSiy01PPdjJzuVhK7mAS5wXqyNXPpPGL32P9DBUbC9b3MxW9/hHT+kyt1QIJexsU+LR
+ UybSfesNYLtKCAE6Q58tJ4em9nZ9UVkjUWVaf7u0sorSGDbai821NtJV5M1I6pk7+Y5B
+ A9WzrCYEHaYPvzePDuWSk9BrS739gnc+IQ16XJ4Y+ibbPaPdyuvOfz2DTVQ2To7w6iiH
+ m5Lf0ckKQWLtkOqXzi+QJ+QIjtn5J8/3a2BMiIB1BVbFh4bi2/zM3nWEm2beJ27YI4OM
+ OYKw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+vysNWlF2IQ4ThkF5dH7Am0yzSraxnyfgG3m7Xuqn0D2WZZ2D/FuVbNvbs9jss5g4JGzKLfCBx97r@nongnu.org
+X-Gm-Message-State: AOJu0YxKD8TZsP4uLTN+kjRwfeBKdLtOAEGslNRf9/LTI/Avw3Ic8wQu
+ Iu7LoMq0n+VHA3HQ7f8qvJWRC3QUfkTa4+gKxDqE1LY4i3IdsczF+aGpfczuEG7PPcm7VFgwghJ
+ z+EGUn2FUaS+8fI1UFA7kUExU6gFzgRN+9ulW4019+ikWBs9Rq9REO4xb
+X-Gm-Gg: ASbGncvHepHXnilowdYV5AVwygVpG9e/osF9yn9jBkfqzFNAolwCAmxRj1EHj12xZss
+ WL7VHSb2tA5N8zl3FXobnpPn1jAsNhNmo6xRY24S85hMZEQeJq0zC8VMPil0lhQMrQs++Z5kFWO
+ kj2aBBu2s0M5+CA71JXNaPu+NZkYS2lQYY4Ox++YukCCE+Lko0AqPWFvA1yIw1ZRX1zr5v1glJb
+ 4hV8HNHkoYybGPTL+rjrdQThPAsL5Y8KUdSK/ZVN9M0zI8HqLE/8qf642AgBNCmz6wHCRoIHoZc
+ Wd95yvCsFGdnlpI3CvovTr1dKswEQgk3JukhK6KPcfSwYpz/3C/3zfZF3va/GsEwWKl2H/kJYET
+ PVchpF/R3PA==
+X-Received: by 2002:a05:600c:4e52:b0:46e:4499:ba30 with SMTP id
+ 5b1f17b1804b1-46e51fa6a03mr62469335e9.30.1759223913931; 
+ Tue, 30 Sep 2025 02:18:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHA7zZRePx4N9OF9Phbhrr1b0KhGDD1FpkIOIr+WZAiVdK6e9WSFSf5gyO0we3QGfFVloHyA==
+X-Received: by 2002:a05:600c:4e52:b0:46e:4499:ba30 with SMTP id
+ 5b1f17b1804b1-46e51fa6a03mr62468955e9.30.1759223913515; 
+ Tue, 30 Sep 2025 02:18:33 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-114-056.pools.arcor-ip.net.
+ [47.64.114.56]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e2ab6a514sm260322475e9.22.2025.09.30.02.18.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 Sep 2025 02:18:33 -0700 (PDT)
+Message-ID: <9993b187-7b44-4f9b-801d-fdfa6b309362@redhat.com>
+Date: Tue, 30 Sep 2025 11:18:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/18] system/memory: Better describe @plen argument of
+ flatview_translate()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Reinoud Zandijk <reinoud@netbsd.org>,
+ Zhao Liu <zhao1.liu@intel.com>, David Hildenbrand <david@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>, kvm@vger.kernel.org,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ xen-devel@lists.xenproject.org, Stefano Garzarella <sgarzare@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Paul Durrant <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Anthony PERARD <anthony@xenproject.org>, Jason Herne
+ <jjherne@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>
+References: <20250930082126.28618-1-philmd@linaro.org>
+ <20250930082126.28618-3-philmd@linaro.org>
+ <525dd07f-ae64-4ba7-b3ec-b9fcd86aa8a5@redhat.com>
+ <ededf937-5424-4cf7-8ea1-e07709db27f1@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ededf937-5424-4cf7-8ea1-e07709db27f1@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,212 +172,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'ram_addr_t' type is described as:
+On 30/09/2025 10.31, Philippe Mathieu-Daudé wrote:
+> Hi Thomas,
+> 
+> On 30/9/25 10:24, Thomas Huth wrote:
+>> On 30/09/2025 10.21, Philippe Mathieu-Daudé wrote:
+>>> flatview_translate()'s @plen argument is output-only and can be NULL.
+>>>
+>>> When Xen is enabled, only update @plen_out when non-NULL.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   include/system/memory.h | 5 +++--
+>>>   system/physmem.c        | 9 +++++----
+>>>   2 files changed, 8 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/include/system/memory.h b/include/system/memory.h
+>>> index aa85fc27a10..3e5bf3ef05e 100644
+>>> --- a/include/system/memory.h
+>>> +++ b/include/system/memory.h
+>>> @@ -2992,13 +2992,14 @@ IOMMUTLBEntry 
+>>> address_space_get_iotlb_entry(AddressSpace *as, hwaddr addr,
+>>>    * @addr: address within that address space
+>>>    * @xlat: pointer to address within the returned memory region section's
+>>>    * #MemoryRegion.
+>>> - * @len: pointer to length
+>>> + * @plen_out: pointer to valid read/write length of the translated address.
+>>> + *            It can be @NULL when we don't care about it.
+>>>    * @is_write: indicates the transfer direction
+>>>    * @attrs: memory attributes
+>>>    */
+>>>   MemoryRegion *flatview_translate(FlatView *fv,
+>>>                                    hwaddr addr, hwaddr *xlat,
+>>> -                                 hwaddr *len, bool is_write,
+>>> +                                 hwaddr *plen_out, bool is_write,
+>>>                                    MemTxAttrs attrs);
+>>>   static inline MemoryRegion *address_space_translate(AddressSpace *as,
+>>> diff --git a/system/physmem.c b/system/physmem.c
+>>> index 8a8be3a80e2..86422f294e2 100644
+>>> --- a/system/physmem.c
+>>> +++ b/system/physmem.c
+>>> @@ -566,7 +566,7 @@ iotlb_fail:
+>>>   /* Called from RCU critical section */
+>>>   MemoryRegion *flatview_translate(FlatView *fv, hwaddr addr, hwaddr *xlat,
+>>> -                                 hwaddr *plen, bool is_write,
+>>> +                                 hwaddr *plen_out, bool is_write,
+>>>                                    MemTxAttrs attrs)
+>>>   {
+>>>       MemoryRegion *mr;
+>>> @@ -574,13 +574,14 @@ MemoryRegion *flatview_translate(FlatView *fv, 
+>>> hwaddr addr, hwaddr *xlat,
+>>>       AddressSpace *as = NULL;
+>>>       /* This can be MMIO, so setup MMIO bit. */
+>>> -    section = flatview_do_translate(fv, addr, xlat, plen, NULL,
+>>> +    section = flatview_do_translate(fv, addr, xlat, plen_out, NULL,
+>>>                                       is_write, true, &as, attrs);
+>>>       mr = section.mr;
+>>> -    if (xen_enabled() && memory_access_is_direct(mr, is_write, attrs)) {
+>>> +    if (xen_enabled() && plen_out && memory_access_is_direct(mr, is_write,
+>>> +                                                             attrs)) {
+>>>           hwaddr page = ((addr & TARGET_PAGE_MASK) + TARGET_PAGE_SIZE) - 
+>>> addr;
+>>> -        *plen = MIN(page, *plen);
+>>> +        *plen_out = MIN(page, *plen_out);
+>>>       }
+>>
+>> My question from the previous version is still unanswered:
+>>
+>> https://lore.kernel.org/qemu- 
+>> devel/22ff756a-51a2-43f4-8fe1-05f17ff4a371@redhat.com/
+> 
+> This patches
+> - checks for plen not being NULL
+> - describes it as
+>    "When Xen is enabled, only update @plen_out when non-NULL."
+> - mention that in the updated flatview_translate() documentation
+>    "It can be @NULL when we don't care about it." as documented for
+>    the flatview_do_translate() callee in commit d5e5fafd11b ("exec:
+>    add page_mask for flatview_do_translate")
+> 
+> before:
+> 
+>    it was not clear whether we can pass plen=NULL without having
+>    to look at the code.
+> 
+> after:
+> 
+>    no change when plen is not NULL, we can pass plen=NULL safely
+>    (it is documented).
+> 
+> I shouldn't be understanding your original question, do you mind
+> rewording it?
 
-  a QEMU internal address space that maps guest RAM physical
-  addresses into an intermediate address space that can map
-  to host virtual address spaces.
+Ah, you've updated the patch in v3 to include a check for plen_out in the 
+if-statement! It was not there in v2. Ok, this should be fine now:
 
-This doesn't represent well an IOVA mapping size. Simply use
-the uint64_t type.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/vfio/vfio-container.h | 10 +++++-----
- include/hw/vfio/vfio-cpr.h       |  2 +-
- hw/vfio-user/container.c         |  4 ++--
- hw/vfio/container-legacy.c       |  8 ++++----
- hw/vfio/container.c              |  4 ++--
- hw/vfio/cpr-legacy.c             |  2 +-
- hw/vfio/iommufd.c                |  6 +++---
- 7 files changed, 18 insertions(+), 18 deletions(-)
+I just re-complained since you did not respond to my mail in v2, and when I 
+looked at the changelog in your v3 cover letter, you did not mention the 
+modification here, so I blindly assumed that this patch was unchanged.
 
-diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
-index 093c360f0ee..c4b58d664b7 100644
---- a/include/hw/vfio/vfio-container.h
-+++ b/include/hw/vfio/vfio-container.h
-@@ -81,10 +81,10 @@ void vfio_address_space_insert(VFIOAddressSpace *space,
-                                VFIOContainer *bcontainer);
- 
- int vfio_container_dma_map(VFIOContainer *bcontainer,
--                           hwaddr iova, ram_addr_t size,
-+                           hwaddr iova, uint64_t size,
-                            void *vaddr, bool readonly, MemoryRegion *mr);
- int vfio_container_dma_unmap(VFIOContainer *bcontainer,
--                             hwaddr iova, ram_addr_t size,
-+                             hwaddr iova, uint64_t size,
-                              IOMMUTLBEntry *iotlb, bool unmap_all);
- bool vfio_container_add_section_window(VFIOContainer *bcontainer,
-                                        MemoryRegionSection *section,
-@@ -167,7 +167,7 @@ struct VFIOIOMMUClass {
-      * Returns 0 to indicate success and -errno otherwise.
-      */
-     int (*dma_map)(const VFIOContainer *bcontainer,
--                   hwaddr iova, ram_addr_t size,
-+                   hwaddr iova, uint64_t size,
-                    void *vaddr, bool readonly, MemoryRegion *mr);
-     /**
-      * @dma_map_file
-@@ -182,7 +182,7 @@ struct VFIOIOMMUClass {
-      * @readonly: map read only if true
-      */
-     int (*dma_map_file)(const VFIOContainer *bcontainer,
--                        hwaddr iova, ram_addr_t size,
-+                        hwaddr iova, uint64_t size,
-                         int fd, unsigned long start, bool readonly);
-     /**
-      * @dma_unmap
-@@ -198,7 +198,7 @@ struct VFIOIOMMUClass {
-      * Returns 0 to indicate success and -errno otherwise.
-      */
-     int (*dma_unmap)(const VFIOContainer *bcontainer,
--                     hwaddr iova, ram_addr_t size,
-+                     hwaddr iova, uint64_t size,
-                      IOMMUTLBEntry *iotlb, bool unmap_all);
- 
- 
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index 26ee0c4fe15..81f4e24e229 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -21,7 +21,7 @@ struct VFIOIOMMUFDContainer;
- struct IOMMUFDBackend;
- 
- typedef int (*dma_map_fn)(const struct VFIOContainer *bcontainer,
--                          hwaddr iova, ram_addr_t size, void *vaddr,
-+                          hwaddr iova, uint64_t size, void *vaddr,
-                           bool readonly, MemoryRegion *mr);
- 
- typedef struct VFIOContainerCPR {
-diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
-index 411eb7b28b7..e45192fef65 100644
---- a/hw/vfio-user/container.c
-+++ b/hw/vfio-user/container.c
-@@ -39,7 +39,7 @@ static void vfio_user_listener_commit(VFIOContainer *bcontainer)
- }
- 
- static int vfio_user_dma_unmap(const VFIOContainer *bcontainer,
--                               hwaddr iova, ram_addr_t size,
-+                               hwaddr iova, uint64_t size,
-                                IOMMUTLBEntry *iotlb, bool unmap_all)
- {
-     VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
-@@ -81,7 +81,7 @@ static int vfio_user_dma_unmap(const VFIOContainer *bcontainer,
- }
- 
- static int vfio_user_dma_map(const VFIOContainer *bcontainer, hwaddr iova,
--                             ram_addr_t size, void *vaddr, bool readonly,
-+                             uint64_t size, void *vaddr, bool readonly,
-                              MemoryRegion *mrp)
- {
-     VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
-diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
-index c0f87f774a0..3a710d8265c 100644
---- a/hw/vfio/container-legacy.c
-+++ b/hw/vfio/container-legacy.c
-@@ -69,7 +69,7 @@ static int vfio_ram_block_discard_disable(VFIOLegacyContainer *container,
- }
- 
- static int vfio_dma_unmap_bitmap(const VFIOLegacyContainer *container,
--                                 hwaddr iova, ram_addr_t size,
-+                                 hwaddr iova, uint64_t size,
-                                  IOMMUTLBEntry *iotlb)
- {
-     const VFIOContainer *bcontainer = VFIO_IOMMU(container);
-@@ -122,7 +122,7 @@ unmap_exit:
- }
- 
- static int vfio_legacy_dma_unmap_one(const VFIOContainer *bcontainer,
--                                     hwaddr iova, ram_addr_t size,
-+                                     hwaddr iova, uint64_t size,
-                                      IOMMUTLBEntry *iotlb)
- {
-     const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
-@@ -185,7 +185,7 @@ static int vfio_legacy_dma_unmap_one(const VFIOContainer *bcontainer,
-  * DMA - Mapping and unmapping for the "type1" IOMMU interface used on x86
-  */
- static int vfio_legacy_dma_unmap(const VFIOContainer *bcontainer,
--                                 hwaddr iova, ram_addr_t size,
-+                                 hwaddr iova, uint64_t size,
-                                  IOMMUTLBEntry *iotlb, bool unmap_all)
- {
-     int ret;
-@@ -210,7 +210,7 @@ static int vfio_legacy_dma_unmap(const VFIOContainer *bcontainer,
- }
- 
- static int vfio_legacy_dma_map(const VFIOContainer *bcontainer, hwaddr iova,
--                               ram_addr_t size, void *vaddr, bool readonly,
-+                               uint64_t size, void *vaddr, bool readonly,
-                                MemoryRegion *mr)
- {
-     const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 9d694393714..41de3439246 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -74,7 +74,7 @@ void vfio_address_space_insert(VFIOAddressSpace *space,
- }
- 
- int vfio_container_dma_map(VFIOContainer *bcontainer,
--                           hwaddr iova, ram_addr_t size,
-+                           hwaddr iova, uint64_t size,
-                            void *vaddr, bool readonly, MemoryRegion *mr)
- {
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-@@ -93,7 +93,7 @@ int vfio_container_dma_map(VFIOContainer *bcontainer,
- }
- 
- int vfio_container_dma_unmap(VFIOContainer *bcontainer,
--                             hwaddr iova, ram_addr_t size,
-+                             hwaddr iova, uint64_t size,
-                              IOMMUTLBEntry *iotlb, bool unmap_all)
- {
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index bbf7a0d35f0..3a1d126556e 100644
---- a/hw/vfio/cpr-legacy.c
-+++ b/hw/vfio/cpr-legacy.c
-@@ -39,7 +39,7 @@ static bool vfio_dma_unmap_vaddr_all(VFIOLegacyContainer *container,
-  * The incoming state is cleared thereafter.
-  */
- static int vfio_legacy_cpr_dma_map(const VFIOContainer *bcontainer,
--                                   hwaddr iova, ram_addr_t size, void *vaddr,
-+                                   hwaddr iova, uint64_t size, void *vaddr,
-                                    bool readonly, MemoryRegion *mr)
- {
-     const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index f0ffe235919..68470d552ec 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -35,7 +35,7 @@
-             TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
- 
- static int iommufd_cdev_map(const VFIOContainer *bcontainer, hwaddr iova,
--                            ram_addr_t size, void *vaddr, bool readonly,
-+                            uint64_t size, void *vaddr, bool readonly,
-                             MemoryRegion *mr)
- {
-     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
-@@ -46,7 +46,7 @@ static int iommufd_cdev_map(const VFIOContainer *bcontainer, hwaddr iova,
- }
- 
- static int iommufd_cdev_map_file(const VFIOContainer *bcontainer,
--                                 hwaddr iova, ram_addr_t size,
-+                                 hwaddr iova, uint64_t size,
-                                  int fd, unsigned long start, bool readonly)
- {
-     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
-@@ -57,7 +57,7 @@ static int iommufd_cdev_map_file(const VFIOContainer *bcontainer,
- }
- 
- static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
--                              hwaddr iova, ram_addr_t size,
-+                              hwaddr iova, uint64_t size,
-                               IOMMUTLBEntry *iotlb, bool unmap_all)
- {
-     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
--- 
-2.51.0
+  Thomas
 
 
