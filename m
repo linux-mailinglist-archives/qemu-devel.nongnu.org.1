@@ -2,60 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B4DBADED1
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA40BADED0
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 17:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3cPf-0007dc-60; Tue, 30 Sep 2025 11:37:11 -0400
+	id 1v3cQf-00083W-7e; Tue, 30 Sep 2025 11:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1v3cPc-0007d5-4C
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:37:08 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1v3cQc-000837-2v
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1v3cPQ-0003vz-8G
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:37:07 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cbhtr4yMhz6L4wr;
- Tue, 30 Sep 2025 23:34:28 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
- by mail.maildlp.com (Postfix) with ESMTPS id 4DED71402ED;
- Tue, 30 Sep 2025 23:36:39 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 30 Sep
- 2025 16:36:38 +0100
-Date: Tue, 30 Sep 2025 16:36:36 +0100
-To: Davidlohr Bueso <dave@stgolabs.net>
-CC: <ira.weiny@intel.com>, <lucerop@amd.com>, <a.manzanares@samsung.com>,
- <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <armbru@redhat.com>,
- <linux-cxl@vger.kernel.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 4/5] hw/cxl: Support type3 HDM-DB
-Message-ID: <20250930163636.00006770@huawei.com>
-In-Reply-To: <20250930032153.1127773-5-dave@stgolabs.net>
-References: <20250930032153.1127773-1-dave@stgolabs.net>
- <20250930032153.1127773-5-dave@stgolabs.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1v3cQV-00046H-1X
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 11:38:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759246677;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TqJY5vKuHYUM7fM1CWg648HsgEJdaABDWRIdG4d57L8=;
+ b=YUV82eYOr22E+rP2WMTn3IYzmEbGoZvArsjgluFn1o9ac3In3b4vi3HBsurYCi1F3Xqw9U
+ hlXOad5skos4gy/84x/dSVpii2A3+ZId96sCeZHF1Db/7YeF5wnjkr34O66+PdAG8ym3pT
+ Y1YhNYWljyhrEPqGZwvHFRvEQoqH46o=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-295-ZNAY5GEPNR2-EIe-x5xTYg-1; Tue,
+ 30 Sep 2025 11:37:54 -0400
+X-MC-Unique: ZNAY5GEPNR2-EIe-x5xTYg-1
+X-Mimecast-MFC-AGG-ID: ZNAY5GEPNR2-EIe-x5xTYg_1759246672
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DC4D0195608E; Tue, 30 Sep 2025 15:37:51 +0000 (UTC)
+Received: from localhost (unknown [10.45.242.7])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3250C180057A; Tue, 30 Sep 2025 15:37:49 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: devel@lists.libvirt.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-rust@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Li-Wen Hsu <lwhsu@freebsd.org>, Warner Losh <imp@bsdimp.com>,
+ Kyle Evans <kevans@freebsd.org>, Ed Maste <emaste@freebsd.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 00/23] Rust ci patches
+Date: Tue, 30 Sep 2025 19:37:21 +0400
+Message-ID: <20250930153746.573875-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,287 +89,104 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 29 Sep 2025 20:21:52 -0700
-Davidlohr Bueso <dave@stgolabs.net> wrote:
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-> Add basic plumbing for memory expander devices that support Back
-> Invalidation. This introduces a 'hdm-db=on|off' parameter and
-> exposes the relevant BI RT/Decoder component cachemem registers.
-> 
-> Some noteworthy properties:
->  - Devices require enabling Flit mode.
->  - Explicit BI-ID commit is required.
->  - HDM decoder support both host and dev coherency models.
-> 
-> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Hi Davidlohr,
+The following changes since commit 85a3fd1c4cb3ba7a9eb291c1e222f935e922d1f7:
 
-Comments inline mostly focus on the bi parameter.  I think flipping
-it to true for components where we are hard coding it as true will
-move that logic decision up a layer and make the code easier to follow.
+  Merge tag 'pull-aspeed-20250929' of https://github.com/legoater/qemu into staging (2025-09-29 10:52:48 -0700)
 
-Thanks,
+are available in the Git repository at:
 
-Jonathan
+  https://gitlab.com/marcandre.lureau/qemu.git tags/rust-ci-pull-request
 
-> diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-> index a43d227336ca..2098e9999a88 100644
-> --- a/hw/cxl/cxl-component-utils.c
-> +++ b/hw/cxl/cxl-component-utils.c
+for you to fetch changes up to 582a39beea414c092dbd8c178f3eff3a718eee77:
 
-> @@ -235,7 +309,7 @@ static void ras_init_common(uint32_t *reg_state, uint32_t *write_msk)
->  }
->  
->  static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
-> -                            enum reg_type type)
-> +                            enum reg_type type, bool bi)
->  {
->      int decoder_count = CXL_HDM_DECODER_COUNT;
->      int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-> @@ -260,7 +334,9 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
->                       UIO_DECODER_COUNT, 0);
->      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, MEMDATA_NXM_CAP, 0);
->      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
-> -                     SUPPORTED_COHERENCY_MODEL, 0); /* Unknown */
-> +                     SUPPORTED_COHERENCY_MODEL,
-> +                     /* host+dev or Unknown */
-> +                     type == CXL2_TYPE3_DEVICE && bi ? 3 : 0);
->      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_GLOBAL_CONTROL,
->                       HDM_DECODER_ENABLE, 0);
->      write_msk[R_CXL_HDM_DECODER_GLOBAL_CONTROL] = 0x3;
-> @@ -271,8 +347,7 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
->          write_msk[R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc] = 0xffffffff;
->          write_msk[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc] = 0x13ff;
->          if (type == CXL2_DEVICE ||
-> -            type == CXL2_TYPE3_DEVICE ||
-> -            type == CXL2_LOGICAL_DEVICE) {
-> +            type == CXL2_TYPE3_DEVICE || type == CXL2_LOGICAL_DEVICE) {
+  build-sys: pass -fvisibility=default for wasm bindgen (2025-09-30 19:33:25 +0400)
 
-Unrelated change? Or am I missing something real here?
+----------------------------------------------------------------
+CI/build-sys fixes for Rust
 
->              write_msk[R_CXL_HDM_DECODER0_TARGET_LIST_LO + i * hdm_inc] =
->                  0xf0000000;
->          } else {
-> @@ -283,9 +358,43 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
+Collect CI/build-sys patches related to Rust.
 
+----------------------------------------------------------------
 
->  void cxl_component_register_init_common(uint32_t *reg_state,
->                                          uint32_t *write_msk,
-> -                                        enum reg_type type)
-> +                                        enum reg_type type,
-> +                                        bool bi)
+Marc-André Lureau (23):
+  build-sys: require -lrt when no shm_open() in std libs
+  gitlab-ci: fix 'needs' property type must be array
+  scripts/archive-source: speed up downloading subprojects
+  scripts/archive-source: silence subprojects downloads
+  scripts/archive-source: use a bash array
+  configure: fix rust meson configuration
+  configure: set the bindgen cross target
+  tests/docker/common: print errors to stderr
+  tests/docker: use fully qualified image name for emsdk
+  tests/docker/common: print meson log on configure failure
+  build-sys: cfi_debug and safe_stack are not compatible
+  lcitool: update, switch to f41
+  lcitool/qemu: include libclang-rt for TSAN
+  lcitool/alpine: workaround bindgen issue
+  tests/lcitool: add missing rust-std dep
+  tests/lcitool: update to debian13
+  tests/docker: add ENABLE_RUST environment
+  tests/lcitool: enable rust & refresh
+  configure: set the meson executable suffix/ext
+  tests/freebsd: enable Rust
+  meson: rust-bindgen limit allowlist-file to srcdir/include
+  build-sys: deprecate mips host
+  build-sys: pass -fvisibility=default for wasm bindgen
 
-I wonder if we shouldn't set bi for all 3 component types that actually
-have the BI related capability?   For Type3 we keep it controllable
-and for DSP and RP hard code the parameter to true.
+ docs/about/build-platforms.rst                |   2 -
+ docs/about/deprecated.rst                     |   9 +-
+ configure                                     |  23 +++-
+ meson.build                                   |  34 +++--
+ .gitlab-ci.d/buildtest.yml                    |  62 +++++-----
+ .gitlab-ci.d/cirrus.yml                       |   2 +-
+ .gitlab-ci.d/crossbuilds.yml                  |  46 +++----
+ .gitlab-ci.d/static_checks.yml                |   6 +-
+ rust/bql/meson.build                          |   1 +
+ rust/chardev/meson.build                      |   1 +
+ rust/hw/char/pl011/meson.build                |   1 +
+ rust/hw/core/meson.build                      |   1 +
+ rust/migration/meson.build                    |   3 +-
+ rust/qom/meson.build                          |   1 +
+ rust/system/meson.build                       |   1 +
+ rust/util/meson.build                         |   1 +
+ scripts/archive-source.sh                     |  34 +++--
+ .../ci/setup/ubuntu/ubuntu-2204-aarch64.yaml  |   5 +-
+ .../ci/setup/ubuntu/ubuntu-2204-s390x.yaml    |   5 +-
+ scripts/rust-to-clang-target-test.sh          |  43 +++++++
+ scripts/rust-to-clang-target.sh               |  60 +++++++++
+ tests/docker/common.rc                        |  13 +-
+ tests/docker/dockerfiles/alpine.docker        |   6 +-
+ tests/docker/dockerfiles/centos9.docker       |   4 +
+ .../dockerfiles/debian-amd64-cross.docker     |  18 ++-
+ .../dockerfiles/debian-arm64-cross.docker     |  18 ++-
+ .../dockerfiles/debian-armhf-cross.docker     |  21 ++--
+ .../dockerfiles/debian-i686-cross.docker      |  20 +--
+ .../dockerfiles/debian-mips64el-cross.docker  |   9 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |   9 +-
+ .../dockerfiles/debian-ppc64el-cross.docker   |  18 ++-
+ .../dockerfiles/debian-riscv64-cross.docker   | 116 +++++++++++++++++-
+ .../dockerfiles/debian-s390x-cross.docker     |  18 ++-
+ tests/docker/dockerfiles/debian.docker        |  18 ++-
+ .../dockerfiles/emsdk-wasm32-cross.docker     |   2 +-
+ .../dockerfiles/fedora-rust-nightly.docker    |  18 ++-
+ .../dockerfiles/fedora-win64-cross.docker     |  15 ++-
+ tests/docker/dockerfiles/fedora.docker        |  18 ++-
+ tests/docker/dockerfiles/opensuse-leap.docker |   7 +-
+ tests/docker/dockerfiles/ubuntu2204.docker    |   7 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/projects/qemu.yml               |   3 +-
+ tests/lcitool/refresh                         |  49 +++++---
+ tests/vm/freebsd                              |   4 +-
+ 44 files changed, 574 insertions(+), 180 deletions(-)
+ create mode 100755 scripts/rust-to-clang-target-test.sh
+ create mode 100644 scripts/rust-to-clang-target.sh
 
->  {
->      int caps = 0;
->  
-> @@ -325,7 +434,7 @@ void cxl_component_register_init_common(uint32_t *reg_state,
->      case CXL2_LOGICAL_DEVICE:
->          /* + HDM */
->          init_cap_reg(HDM, 5, 1);
-> -        hdm_init_common(reg_state, write_msk, type);
-> +        hdm_init_common(reg_state, write_msk, type, bi);
->          /* fallthrough */
->      case CXL2_DOWNSTREAM_PORT:
->      case CXL2_DEVICE:
-> @@ -340,6 +449,26 @@ void cxl_component_register_init_common(uint32_t *reg_state,
->          abort();
->      }
->  
-> +    /* back invalidate */
-
-With bi set true in cases where there is anything to do here, could wrap
-this in an if (bi)
-
-> +    switch (type) {
-> +    case CXL2_UPSTREAM_PORT:
-> +        init_cap_reg(BI_RT, 11, CXL_BI_RT_CAP_VERSION);
-> +        bi_rt_init_common(reg_state, write_msk);
-> +        break;
-> +    case CXL2_ROOT_PORT:
-> +    case CXL2_DOWNSTREAM_PORT:
-> +    case CXL2_TYPE3_DEVICE:
-> +        if (type == CXL2_TYPE3_DEVICE && !bi)  {
-
-With the values for the other types tweaked this check becomes unnecessary
-
-> +            break;
-> +        }
-> +
-> +        init_cap_reg(BI_DECODER, 12, CXL_BI_DECODER_CAP_VERSION);
-> +        bi_decoder_init_common(reg_state, write_msk, type);
-> +        break;
-> +    default:
-> +        break;
-> +    }
-> +
->      ARRAY_FIELD_DP32(reg_state, CXL_CAPABILITY_HEADER, ARRAY_SIZE, caps);
->  #undef init_cap_reg
->  }
-
->  
->  static uint64_t get_lsa_size(CXLType3Dev *ct3d)
-> diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstream.c
-> index f8d64263ac08..e0593e783803 100644
-> --- a/hw/pci-bridge/cxl_downstream.c
-> +++ b/hw/pci-bridge/cxl_downstream.c
-> @@ -42,7 +42,7 @@ static void latch_registers(CXLDownstreamPort *dsp)
->      uint32_t *write_msk = dsp->cxl_cstate.crb.cache_mem_regs_write_mask;
->  
->      cxl_component_register_init_common(reg_state, write_msk,
-> -                                       CXL2_DOWNSTREAM_PORT);
-> +                                       CXL2_DOWNSTREAM_PORT, false);
-This false briefly confused me and is the reason for comment above.
-DSPs and RPs have BI support and it's odd to set a parameter here called
-bi to false, only to enable it always.
-
->  }
->  
->  /* TODO: Look at sharing this code across all CXL port types */
-> diff --git a/hw/pci-bridge/cxl_root_port.c b/hw/pci-bridge/cxl_root_port.c
-> index f3472f081707..1c0087d3f111 100644
-> --- a/hw/pci-bridge/cxl_root_port.c
-> +++ b/hw/pci-bridge/cxl_root_port.c
-> @@ -106,7 +106,8 @@ static void latch_registers(CXLRootPort *crp)
->      uint32_t *reg_state = crp->cxl_cstate.crb.cache_mem_registers;
->      uint32_t *write_msk = crp->cxl_cstate.crb.cache_mem_regs_write_mask;
->  
-> -    cxl_component_register_init_common(reg_state, write_msk, CXL2_ROOT_PORT);
-> +    cxl_component_register_init_common(reg_state, write_msk,
-> +                                       CXL2_ROOT_PORT, false);
-
-Same here.  Also I think under 80 chars with CXL2_ROOT_PORT, on first line
-
-
->  }
->  
->  static void build_dvsecs(PCIDevice *d, CXLComponentState *cxl)
-> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-> index e5a0d1fb308c..4bc185df8c87 100644
-> --- a/hw/pci-bridge/cxl_upstream.c
-> +++ b/hw/pci-bridge/cxl_upstream.c
-> @@ -136,7 +136,7 @@ static void latch_registers(CXLUpstreamPort *usp)
->      uint32_t *write_msk = usp->cxl_cstate.crb.cache_mem_regs_write_mask;
->  
->      cxl_component_register_init_common(reg_state, write_msk,
-> -                                       CXL2_UPSTREAM_PORT);
-> +                                       CXL2_UPSTREAM_PORT, false);
-
-Obviously different structure but still seems odd that bi is false yet we create
-BI_RT structure in this call.
-
->      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, TARGET_COUNT, 8);
->  }
-
-> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-> index cd92cb02532a..0ff9f5b0fddf 100644
-> --- a/include/hw/cxl/cxl_component.h
-> +++ b/include/hw/cxl/cxl_component.h
-> @@ -67,6 +67,8 @@ CXLx_CAPABILITY_HEADER(LINK, 2)
->  CXLx_CAPABILITY_HEADER(HDM, 3)
->  CXLx_CAPABILITY_HEADER(EXTSEC, 4)
->  CXLx_CAPABILITY_HEADER(SNOOP, 5)
-> +CXLx_CAPABILITY_HEADER(BI_RT, 6)
-> +CXLx_CAPABILITY_HEADER(BI_DECODER, 7)
->  
->  /*
->   * Capability structures contain the actual registers that the CXL component
-> @@ -211,10 +213,55 @@ HDM_DECODER_INIT(3);
->      (CXL_IDE_REGISTERS_OFFSET + CXL_IDE_REGISTERS_SIZE)
->  #define CXL_SNOOP_REGISTERS_SIZE   0x8
->  
-> -QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET +
-> -                    CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
-> +#define CXL_BI_RT_CAP_VERSION 1
-> +#define CXL_BI_RT_REGISTERS_OFFSET \
-> +    (CXL_SNOOP_REGISTERS_OFFSET + CXL_SNOOP_REGISTERS_SIZE)
-> +#define CXL_BI_RT_REGISTERS_SIZE   0xC
-> +
-> +REG32(CXL_BI_RT_CAPABILITY, CXL_BI_RT_REGISTERS_OFFSET)
-> +    FIELD(CXL_BI_RT_CAPABILITY, EXPLICIT_COMMIT, 0, 1)
-> +REG32(CXL_BI_RT_CTRL, CXL_BI_RT_REGISTERS_OFFSET + 0x4)
-> +    FIELD(CXL_BI_RT_CTRL, COMMIT, 0, 1)
-> +REG32(CXL_BI_RT_STATUS, CXL_BI_RT_REGISTERS_OFFSET + 0x8)
-> +    FIELD(CXL_BI_RT_STATUS, COMMITTED, 0, 1)
-> +    FIELD(CXL_BI_RT_STATUS, ERR_NOT_COMMITTED, 1, 1)
-> +    FIELD(CXL_BI_RT_STATUS, COMMIT_TMO_SCALE, 8, 4)
-> +    FIELD(CXL_BI_RT_STATUS, COMMIT_TMO_BASE, 12, 4)
-> +
-> +/* CXL r3.2 8.2.4.27 - CXL BI Decoder Capability Structure */
-> +#define CXL_BI_DECODER_CAP_VERSION 1
-> +#define CXL_BI_DECODER_REGISTERS_OFFSET \
-> +    (CXL_BI_RT_REGISTERS_OFFSET + CXL_BI_RT_REGISTERS_SIZE)
-> +#define CXL_BI_DECODER_REGISTERS_SIZE   0xC
-> +
-> +REG32(CXL_BI_DECODER_CAPABILITY, CXL_BI_DECODER_REGISTERS_OFFSET)
-> +    FIELD(CXL_BI_DECODER_CAPABILITY, HDM_D, 0, 1)
-> +    FIELD(CXL_BI_DECODER_CAPABILITY, EXPLICIT_COMMIT, 1, 1)
-> +REG32(CXL_BI_DECODER_CTRL, CXL_BI_DECODER_REGISTERS_OFFSET + 0x4)
-> +    FIELD(CXL_BI_DECODER_CTRL, BI_FW, 0, 1)
-> +    FIELD(CXL_BI_DECODER_CTRL, BI_ENABLE, 1, 1)
-> +    FIELD(CXL_BI_DECODER_CTRL, COMMIT, 2, 1)
-> +REG32(CXL_BI_DECODER_STATUS, CXL_BI_DECODER_REGISTERS_OFFSET + 0x8)
-> +    FIELD(CXL_BI_DECODER_STATUS, COMMITTED, 0, 1)
-> +    FIELD(CXL_BI_DECODER_STATUS, ERR_NOT_COMMITTED, 1, 1)
-> +    FIELD(CXL_BI_DECODER_STATUS, COMMIT_TMO_SCALE, 8, 4)
-> +    FIELD(CXL_BI_DECODER_STATUS, COMMIT_TMO_BASE, 12, 4)
-> +
-> +QEMU_BUILD_BUG_MSG((CXL_BI_DECODER_REGISTERS_OFFSET +
-> +                    CXL_BI_DECODER_REGISTERS_SIZE) >= 0x1000,
->                     "No space for registers");
->  
-> +/* track BI explicit commit handling for route table and decoder */
-> +enum {
-> +    CXL_BISTATE_RT = 0,
-> +    CXL_BISTATE_DECODER,
-> +    CXL_BISTATE_MAX
-> +};
-> +
-> +typedef struct bi_state {
-> +    uint64_t last_commit;  /* last 0->1 transition */
-> +} BIState;
-> +
->  typedef struct component_registers {
->      /*
->       * Main memory region to be registered with QEMU core.
-> @@ -260,6 +307,7 @@ typedef struct cxl_component {
->  
->      CDATObject cdat;
->      CXLCompObject compliance;
-> +    BIState bi_state[CXL_BISTATE_MAX];
->  } CXLComponentState;
->  
->  void cxl_component_register_block_init(Object *obj,
-> @@ -267,7 +315,7 @@ void cxl_component_register_block_init(Object *obj,
->                                         const char *type);
->  void cxl_component_register_init_common(uint32_t *reg_state,
->                                          uint32_t *write_msk,
-> -                                        enum reg_type type);
-> +                                        enum reg_type type, bool bi);
->  
->  void cxl_component_create_dvsec(CXLComponentState *cxl_cstate,
->                                  enum reg_type cxl_dev_type, uint16_t length,
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 0abfd678b875..75603b8180b5 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -841,6 +841,9 @@ struct CXLType3Dev {
->      CXLMemSparingReadAttrs rank_sparing_attrs;
->      CXLMemSparingWriteAttrs rank_sparing_wr_attrs;
->  
-> +    /* BI flows */
-> +    bool hdmdb;
-> +
->      struct dynamic_capacity {
->          HostMemoryBackend *host_dc;
->          AddressSpace host_dc_as;
+-- 
+2.51.0
 
 
