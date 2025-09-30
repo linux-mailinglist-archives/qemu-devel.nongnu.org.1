@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCB9BACEE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 14:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D81BACEDA
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 14:49:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3ZlN-00081k-5i; Tue, 30 Sep 2025 08:47:25 -0400
+	id 1v3ZlV-000857-BU; Tue, 30 Sep 2025 08:47:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3ZlH-0007zr-H3
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3ZlP-000839-3S
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3Zl7-0002L0-7B
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3Zl8-0002Ms-Um
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:47:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759236423;
+ s=mimecast20190719; t=1759236426;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uz7RNBEAEBdXmG29OjUxsITslyyHKQttpS30gmS2uso=;
- b=RMlc03T5h0oIWLHbTfVE4+faLR1nwj+sYXdSf8ucNUGT6FfUSNbezSIZhT7YdKMYCpU0aB
- rLJSI7m5h2XdeBC300F0qbCJ+w2+EhDQJ69ZeU5MXbqmCSOjoTHkkiXOCF88XNyagtN6aM
- nhWp7ay6WN+/ZNzIkrdEkN9/1nYhMp4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Hhp3A0Ok0hueUzTv/YAOZ+wnHKN/iRf5eq99+sRzYn0=;
+ b=KpHuHIQx1z3qZ+WkCRo+h9B6k32RotbSH0BFizn+ylyHwWMbN9vT23b0WFkV4ozACoGVlQ
+ NbaZaoEZ08cGwp7LwnItHSb3bE3kUtZfxbGAejZufZqPeu2ANJuZqwJ7o0MZAhkDyAIOFz
+ CnXxcIwqkIPtb3xyYjk1Lv6TJVhvIxE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-RftXwutDOOGbavl1GIxvqw-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-i1dk9aN4MBStT86iFSa5Jw-1; Tue,
  30 Sep 2025 08:47:00 -0400
-X-MC-Unique: RftXwutDOOGbavl1GIxvqw-1
-X-Mimecast-MFC-AGG-ID: RftXwutDOOGbavl1GIxvqw_1759236419
+X-MC-Unique: i1dk9aN4MBStT86iFSa5Jw-1
+X-Mimecast-MFC-AGG-ID: i1dk9aN4MBStT86iFSa5Jw_1759236419
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BED8F195DE25; Tue, 30 Sep 2025 12:46:58 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0CBB7197764F; Tue, 30 Sep 2025 12:46:59 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2487B1944A8E; Tue, 30 Sep 2025 12:46:57 +0000 (UTC)
+ id 6D55C1944DD7; Tue, 30 Sep 2025 12:46:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6130821E6924; Tue, 30 Sep 2025 14:46:53 +0200 (CEST)
+ id 65C5521E6925; Tue, 30 Sep 2025 14:46:53 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PULL 01/13] monitor: Clean up HMP gdbserver error reporting
-Date: Tue, 30 Sep 2025 14:46:41 +0200
-Message-ID: <20250930124653.321609-2-armbru@redhat.com>
+Subject: [PULL 02/13] tcg: Fix error reporting on mprotect() failure in
+ tcg_region_init()
+Date: Tue, 30 Sep 2025 14:46:42 +0200
+Message-ID: <20250930124653.321609-3-armbru@redhat.com>
 In-Reply-To: <20250930124653.321609-1-armbru@redhat.com>
 References: <20250930124653.321609-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -68,8 +67,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,81 +85,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HMP command gdbserver used to emit two error messages for certain
-errors.  For instance, with -M none:
+tcg_region_init() calls one of qemu_mprotect_rwx(),
+qemu_mprotect_rw(), and mprotect(), then reports failure with
+error_setg_errno(&error_fatal, errno, ...).
 
-    (qemu) gdbserver
-    gdbstub: meaningless to attach gdb to a machine without any CPU.
-    Could not open gdbserver on device 'tcp::1234'
+The use of &error_fatal is undesirable.  qapi/error.h advises:
 
-The first message is the specific error, and the second one a generic
-additional message that feels superfluous to me.
+ * Please don't error_setg(&error_fatal, ...), use error_report() and
+ * exit(), because that's more obvious.
 
-Commit c0e6b8b798b (system: propagate Error to gdbserver_start (and
-other device setups)) turned the first message into a warning:
+The use of errno is wrong.  qemu_mprotect_rwx() and qemu_mprotect_rw()
+wrap around qemu_mprotect__osdep().  qemu_mprotect__osdep() calls
+mprotect() on POSIX, VirtualProtect() on Windows, and reports failure
+with error_report().  VirtualProtect() doesn't set errno.  mprotect()
+does, but error_report() may clobber it.
 
-    warning: gdbstub: meaningless to attach gdb to a machine without any CPU.
-    Could not open gdbserver on device 'tcp::1234'
+Fix tcg_region_init() to report errors only when it calls mprotect(),
+and rely on qemu_mprotect_rwx()'s and qemu_mprotect_rw()'s error
+reporting otherwise.  Use error_report(), not error_setg().
 
-This is arguably worse.
-
-hmp_gdbserver() passes &error_warn to gdbserver_start(), so that
-failure gets reported as warning, and then additionally emits the
-generic error on failure.  This is a misuse of &error_warn.
-
-Instead, receive the error in &err and report it, as usual.  With
-this, gdbserver reports just the error:
-
-    gdbstub: meaningless to attach gdb to a machine without any CPU.
-
-Cc: Alex Bennée <alex.bennee@linaro.org>
+Fixes: 22c6a9938f75 (tcg: Merge buffer protection and guard page protection)
+Fixes: 6bc144237a85 (tcg: Use Error with alloc_code_gen_buffer)
+Cc: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250923091000.3180122-2-armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250923091000.3180122-3-armbru@redhat.com>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/exec/gdbstub.h | 3 ---
- monitor/hmp-cmds.c     | 7 ++++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ tcg/region.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index a16c0051ce..bd7182c4d3 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -55,9 +55,6 @@ void gdb_unregister_coprocessor_all(CPUState *cpu);
-  * system emulation you can use a full chardev spec for your gdbserver
-  * port.
-  *
-- * The error handle should be either &error_fatal (for start-up) or
-- * &error_warn (for QMP/HMP initiated sessions).
-- *
-  * Returns true when server successfully started.
-  */
- bool gdbserver_start(const char *port_or_device, Error **errp);
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 74a0f56566..33a88ce205 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -280,14 +280,15 @@ void hmp_log(Monitor *mon, const QDict *qdict)
- 
- void hmp_gdbserver(Monitor *mon, const QDict *qdict)
- {
-+    Error *err = NULL;
-     const char *device = qdict_get_try_str(qdict, "device");
-+
-     if (!device) {
-         device = "tcp::" DEFAULT_GDBSTUB_PORT;
-     }
- 
--    if (!gdbserver_start(device, &error_warn)) {
--        monitor_printf(mon, "Could not open gdbserver on device '%s'\n",
--                       device);
-+    if (!gdbserver_start(device, &err)) {
-+        error_report_err(err);
-     } else if (strcmp(device, "none") == 0) {
-         monitor_printf(mon, "Disabled gdbserver\n");
-     } else {
+diff --git a/tcg/region.c b/tcg/region.c
+index 7ea0b37a84..2181267e48 100644
+--- a/tcg/region.c
++++ b/tcg/region.c
+@@ -832,13 +832,16 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_threads)
+             } else {
+ #ifdef CONFIG_POSIX
+                 rc = mprotect(start, end - start, need_prot);
++                if (rc) {
++                    error_report("mprotect of jit buffer: %s",
++                                 strerror(errno));
++                }
+ #else
+                 g_assert_not_reached();
+ #endif
+             }
+             if (rc) {
+-                error_setg_errno(&error_fatal, errno,
+-                                 "mprotect of jit buffer");
++                exit(1);
+             }
+         }
+         if (have_prot != 0) {
 -- 
 2.49.0
 
