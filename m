@@ -2,106 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FB9BAC05E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979D8BAC02B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 10:24:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3VeY-00017p-49; Tue, 30 Sep 2025 04:24:06 -0400
+	id 1v3Vdi-0000ET-74; Tue, 30 Sep 2025 04:23:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3VeP-0000rD-Mw
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:23:58 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3Vdw-0001KS-9M
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:23:57 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-46e33b260b9so9309405e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 01:23:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759220587; x=1759825387; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+R20KfaeepivX48ztS5Qk+Utu4Wf2nP4nwxC8R0e4a4=;
- b=IcOF1Rksu59wCMGsQtXrXlv4DfZ3ADC3f5+lfaal01RYwA+drmix7wot0u8aknJIW+
- 3Z9tujov//vnQge+q1DlNv4ICQX5ByBIUAHRTPx+lE0F2quoWR30Im42HvF5haCoc2Jh
- c39bGf3PQFsrAMxj0uRQbi5edRHXFZrFaBN4Xn68HKUKnCJFTj539xdGE33AycZsL+gZ
- FR5qnsFOKomjRk341o3M9rPe0vzlINs5JITOFrNfBvSpGfHeDbvXS37yqlo45pYib5OX
- 1WH+DU0FoMy7fWbpCid9+eFRdGZxJ/9H6zcuBBb9vvH7WzCvuAzkWJpAikIi5zi5+HHw
- 8MUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759220587; x=1759825387;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+R20KfaeepivX48ztS5Qk+Utu4Wf2nP4nwxC8R0e4a4=;
- b=pVdRDKv5hI7Zvs7uMcMnOfEGucDg6mhcFCZqRGcycE0CPMHRvvhrE4f6L+Glcd259+
- QmKnxc7ertS+VWy6s8W6quhgCwTnEMjXcGD5sMm9BdgXBwr9eunNcIepPmD69wavvgu9
- pljkhcbYntEvKBlESnWu5GO/1q0r8qPkPra1zP7V5CiiwD3HcRs8RPlb8d5/3KKbRT7X
- 4pmrg0mnrP436+KjbgoJ+RAfXo1fAf00OfZJemgFPTX9txFzkuLqs4GusHldLrMaDyUM
- 4M72X+HegpRBEi5oekPpkx5sGi0smHUXDcP0dm9ywu0uYTJnj5qEUD4XdNPDt6BTBkkz
- wZ/A==
-X-Gm-Message-State: AOJu0YwmtdhyfwH4YTQY4BKbGIRiofd/PPg2rdHSTHC0VE9TlWRQ26WZ
- GiKGg8GjNemca6MtCWhjnkb7uVMAR/hYUYYWPbiA92lszFL0Ci61iS8N29mI9sEk6Zj4AGf7cwI
- /r3uKevSx8A==
-X-Gm-Gg: ASbGnctcFZZBEnGeIgmL5s9m9c7jLJgk2Rjbl3zmVUGkjcPFRWd/ZOenHaSvAzTE+U5
- kUe5Fn6VJCozcFAjnxakoUUEyo7I0wnB4khoXN947wD26boQEkrMSG3NbWjOR5asn6YHD4kcYqt
- 1IF3TDgLpxHA7ZCeuW8i6oO9+K6tmu0CtjRlzVa3QKIC9JRCpKaVcToWERY/mNeAq0IEhFd8DX9
- 6Jsp6gsHgIoVzSlo7kUJfBqPx71Byw6aEVhRjS0KkdJa78dE58z3rtCZgrgpxgY5/FAeq64zibb
- aKeVJiuruLw5wu/7MSXCkicIYE0HNaSZLNU81roOJP0UZcDJSDWrX8zBNtqWMHjewSXsEkQ8Jy+
- qyk/qseWtinxwhuyglTrwsdvi8j0ctY4QeIghiP002t2dmqpBjEcKer7wtgfuo6BFLbH6de/w2x
- ll7f8BI2ka8AS414hO9mTkwNj/jVH5UNY=
-X-Google-Smtp-Source: AGHT+IGvdNJkPsXhO7mhTBAmSS24HJr1NcQFoKlHMGEeSQcfQp9VTD/G8Mg1Kg5Mqclxy+K9+gFIZw==
-X-Received: by 2002:a05:600c:4e8c:b0:46e:477a:16cc with SMTP id
- 5b1f17b1804b1-46e477a1b4emr94534015e9.24.1759220587242; 
- Tue, 30 Sep 2025 01:23:07 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc82f2965sm21484653f8f.55.2025.09.30.01.23.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Sep 2025 01:23:06 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Reinoud Zandijk <reinoud@netbsd.org>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, David Hildenbrand <david@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>, kvm@vger.kernel.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org, Stefano Garzarella <sgarzare@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org,
- Paul Durrant <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Anthony PERARD <anthony@xenproject.org>,
- Jason Herne <jjherne@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v3 18/18] hw/virtio/virtio: Replace legacy
- cpu_physical_memory_map() call
-Date: Tue, 30 Sep 2025 10:21:25 +0200
-Message-ID: <20250930082126.28618-19-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930082126.28618-1-philmd@linaro.org>
-References: <20250930082126.28618-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3VdG-0008W9-I0
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:22:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v3VcU-0000oc-VP
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 04:22:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759220511;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=fOgK8Rj4RLSl64NdTyDOu6qpfuXmT4oW+TX2rEPOAHg=;
+ b=jTUrmWrRdcQ45e+FLSuGE0OwKlXnofQiRhVyC3GtqqTulgGN3GBOKgeitDZqdpm3sxsOdl
+ gwPKjsxkZk1aIwmSG+NhIj4naET26E9qsSkh20HfW9B4m50cXTpdaa3mGqnF6D74HP99cs
+ 16xHhAoFOZbYxVFJdSdt9v8Jvo4VvkM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-AuvH5StMP5CK-EiyK6UNKg-1; Tue,
+ 30 Sep 2025 04:21:47 -0400
+X-MC-Unique: AuvH5StMP5CK-EiyK6UNKg-1
+X-Mimecast-MFC-AGG-ID: AuvH5StMP5CK-EiyK6UNKg_1759220506
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 28E2A19560AB; Tue, 30 Sep 2025 08:21:46 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DE20419560B4; Tue, 30 Sep 2025 08:21:44 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5990F21E6A27; Tue, 30 Sep 2025 10:21:42 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org,  odaki@rsg.ci.i.u-tokyo.ac.jp,
+ marcandre.lureau@redhat.com,  berrange@redhat.com,
+ richard.henderson@linaro.org,  Jagannathan Raman <jag.raman@oracle.com>
+Subject: Re: [PATCH v3 05/13] hw/remote/vfio-user: Clean up error reporting
+In-Reply-To: <77f8b8ba-911e-4965-bb10-2c0cc31a0d3d@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Tue, 30 Sep 2025 11:02:38 +0300")
+References: <20250923091000.3180122-1-armbru@redhat.com>
+ <20250923091000.3180122-6-armbru@redhat.com>
+ <1a10e0d3-17fc-4ec9-aa4c-cdfed13988e6@yandex-team.ru>
+ <878qi1so4j.fsf@pond.sub.org>
+ <77f8b8ba-911e-4965-bb10-2c0cc31a0d3d@yandex-team.ru>
+Date: Tue, 30 Sep 2025 10:21:42 +0200
+Message-ID: <87a52cz6y1.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,65 +88,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Propagate VirtIODevice::dma_as to virtqueue_undo_map_desc()
-in order to replace the legacy cpu_physical_memory_unmap()
-call by address_space_unmap().
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/virtio/virtio.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+> On 26.09.25 09:51, Markus Armbruster wrote:
+>> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+>> 
+>>> On 23.09.25 12:09, Markus Armbruster wrote:
+>>>> VFU_OBJECT_ERROR() reports the error with error_setg(&error_abort,
+>>>> ...) when auto-shutdown is enabled, else with error_report().
+>>>>
+>>>> Issues:
+>>>>
+>>>> 1. The error is serious enough to warrant aborting the process when
+>>>> auto-shutdown is enabled, yet harmless enough to permit carrying on
+>>>> when it's disabled.  This makes no sense to me.
+>>>>
+>>>> 2. Like assert(), &error_abort is strictly for programming errors.  Is
+>>>> this one?
+>>>
+>>> Brief look at the code make me think that, no it isn't.
+>> So the use of &error_abort is wrong.
+>> 
+>>>>   Or should we exit(1) instead?
+>>>>
+>>>> 3. qapi/error.h advises "don't error_setg(&error_abort, ...), use
+>>>> assert()."
+>>>>
+>>>> This patch addresses just 3.
+>>>>
+>>>> Cc: Jagannathan Raman <jag.raman@oracle.com>
+>>>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>>>> ---
+>>>>    hw/remote/vfio-user-obj.c | 9 +++------
+>>>>    1 file changed, 3 insertions(+), 6 deletions(-)
+>>>> diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+>>>> index ea6165ebdc..eb96982a3a 100644
+>>>> --- a/hw/remote/vfio-user-obj.c
+>>>> +++ b/hw/remote/vfio-user-obj.c
+>>>> @@ -75,12 +75,9 @@ OBJECT_DECLARE_TYPE(VfuObject, VfuObjectClass, VFU_OBJECT)
+>>>>     */
+>>>>    #define VFU_OBJECT_ERROR(o, fmt, ...)                                     \
+>>>>        {                                                                     \
+>>>> -        if (vfu_object_auto_shutdown()) {                                 \
+>>>> -            error_setg(&error_abort, (fmt), ## __VA_ARGS__);              \
+>>>> -        } else {                                                          \
+>>>> -            error_report((fmt), ## __VA_ARGS__);                          \
+>>>> -        }                                                                 \
+>>>> -    }                                                                     \
+>>>> +        error_report((fmt), ## __VA_ARGS__);                              \
+>>>> +        assert(!vfu_object_auto_shutdown());                              \
+>>>
+>>> Probably, it's only my feeling, but for me, assert() is really strictly bound
+>>> to programming errors, more than abort(). Using abort() for errors which are
+>>> not programming, but we can't handle them looks less confusing, i.e.
+>>>
+>>> if (vfu_object_auto_shutdown()) {
+>>>      abort();
+>>> }
+>>
+>> assert(COND) is if (COND) abort() plus a message meant to help
+>> developers.  Both are for programming errors.  If it isn't something
+>> that needs debugging, why dump core?
+>>
+>> But this particular error condition is *not* a programming error.  So
+>>          assert(!vfu_object_auto_shutdown());
+>>
+>> and
+>>
+>>          if (vfu_object_auto_shutdown()) {
+>>              abort();
+>>          }
+>>
+>> are both equally wrong.  However, the latter makes it easier to add a
+>> FIXME comment:
+>>
+>>          if (vfu_object_auto_shutdown()) {
+>>              /*
+>>               * FIXME This looks inappropriate.  The error is serious
+>>               * enough programming error to warrant aborting the process
+>>               * when auto-shutdown is enabled, yet harmless enough to
+>>               * permit carrying on when it's disabled.  Makes no sense.
+>>               */
+>>              abort();
+>>          }
+>> 
+>
+> Looks more readable, yes.
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 9a81ad912e0..1ed3aa6abab 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -31,6 +31,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/virtio/virtio-access.h"
- #include "system/dma.h"
-+#include "system/memory.h"
- #include "system/runstate.h"
- #include "virtio-qmp.h"
- 
-@@ -1622,7 +1623,8 @@ out:
-  * virtqueue_unmap_sg() can't be used).  Assumes buffers weren't written to
-  * yet.
-  */
--static void virtqueue_undo_map_desc(unsigned int out_num, unsigned int in_num,
-+static void virtqueue_undo_map_desc(AddressSpace *as,
-+                                    unsigned int out_num, unsigned int in_num,
-                                     struct iovec *iov)
- {
-     unsigned int i;
-@@ -1630,7 +1632,7 @@ static void virtqueue_undo_map_desc(unsigned int out_num, unsigned int in_num,
-     for (i = 0; i < out_num + in_num; i++) {
-         int is_write = i >= out_num;
- 
--        cpu_physical_memory_unmap(iov->iov_base, iov->iov_len, is_write, 0);
-+        address_space_unmap(as, iov->iov_base, iov->iov_len, is_write, 0);
-         iov++;
-     }
- }
-@@ -1832,7 +1834,7 @@ done:
-     return elem;
- 
- err_undo_map:
--    virtqueue_undo_map_desc(out_num, in_num, iov);
-+    virtqueue_undo_map_desc(vdev->dma_as, out_num, in_num, iov);
-     goto done;
- }
- 
-@@ -1982,7 +1984,7 @@ done:
-     return elem;
- 
- err_undo_map:
--    virtqueue_undo_map_desc(out_num, in_num, iov);
-+    virtqueue_undo_map_desc(vdev->dma_as, out_num, in_num, iov);
-     goto done;
- }
- 
--- 
-2.51.0
+Sold!
+
+>> The commit message would then need a tweak.  Perhaps
+>>
+>>    Issues:
+>>
+>>    1. The error is serious enough to warrant killing the process when
+>>    auto-shutdown is enabled, yet harmless enough to permit carrying on
+>>    when it's disabled.  This makes no sense to me.
+>>
+>>    2. Like assert(), &error_abort is strictly for programming errors.  Is
+>>    this one?  Vladimir Sementsov-Ogievskiy tells me it's not.
+>
+> :)) I'm not an expert in vfio-user at all. But yes, I said it:)
+
+I'll soften it to "believes it's not."
+
+>>    3. qapi/error.h advises "don't error_setg(&error_abort, ...), use
+>>    assert()."
+>>
+>>    This patch addresses just 3.  It adds a FIXME comment for the other
+>>    two.
+>>
+>> Thoughts?
+>
+> Looks good.
+
+Thanks again!
+
+>> 
+>>> Not really matter. Anyway:
+>>>
+>>> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> Thanks!
+>> 
+>>>> +    }
+>>>>      struct VfuObjectClass {
+>>>>        ObjectClass parent_class;
+>> 
 
 
