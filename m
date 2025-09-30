@@ -2,93 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2BABAE0A8
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 18:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29297BAE137
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 18:42:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3dCm-0007e4-7k; Tue, 30 Sep 2025 12:27:56 -0400
+	id 1v3dOS-0002Ig-NS; Tue, 30 Sep 2025 12:40:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3dCk-0007d3-7F
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 12:27:54 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3dCa-0004WI-0Y
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 12:27:53 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b5a631b9c82so2009149a12.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 09:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759249659; x=1759854459; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SPwAVZxmlSNrOaZrxkI8iwyQG2S8MXWihaQELs3iif4=;
- b=ALMJoS2MsR1zzXgQvbvX0SRRmTymiq0/mLYfFy2IuXhCBY2KPqY8Adi3rP1HSjNwX3
- sBFe5V0aSlA5QnKiFQQYK3sTWfuTHNJ31C7tXAeSdqULbzGQzGVbtRNAwsUu/57Wkktd
- X+zDGpHwLD+RjftWEbKE1GC75ai6AZWUVb3SzOx6/WgBRtzCRdpgjYDPYuUyrI0dwZz2
- meGZcMXsLxiw5oaM7zz8zSIu4ocWLtuHk5uP+rM9+8OkYB4R6NtrPQxxLVWXG6FprPF2
- StBD3eqv5kIXVBseQbk+9vp1PeEFGxQYjttX6OcD9tCpvuG7+Ixj5owTJ3tI0ZrebS7s
- 7Vmg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3dOQ-0002IJ-Cg
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 12:39:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v3dOJ-0001oF-Uj
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 12:39:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759250388;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pCLF4zSOyJMtFkwU4MaSjs4mSYhBhlROsh/QoRm+3Vc=;
+ b=BH5ow9rKOHjSRcIkhbtuAwnFIHFFkeekqugBHMXc/hxtSo8Z63nmrYQ5+ELM4bo3ClmR+9
+ /2T1VKkBx1B2mfJ+KeNYYCxZoD0Q54QnM7JK11K9yM8KYoY7e5TxsM2sCzAo7kDBWc1Ktx
+ b/TfhqriZ8F1Z2L4PLWWYfeyLBlHGu0=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-348-E5X9O5m4PZGf4evUuTBGzA-1; Tue, 30 Sep 2025 12:39:46 -0400
+X-MC-Unique: E5X9O5m4PZGf4evUuTBGzA-1
+X-Mimecast-MFC-AGG-ID: E5X9O5m4PZGf4evUuTBGzA_1759250386
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-78e5b6f1296so106413076d6.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 09:39:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759249659; x=1759854459;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SPwAVZxmlSNrOaZrxkI8iwyQG2S8MXWihaQELs3iif4=;
- b=GSDeqnjCtQJehwI/4oBpr06XTznHzbUdzj6Q6sjfLTF8GjTLQyL/9j2SXt7er3F+3j
- Jj0zF8JbbkPtqMvT68VqnM8eNPfmFvn0u8E75puQa+0G2bQB1psDzcrORtAqwH9Wtfuw
- UL9/lfwPnMd+YlBKV1DGr8/vBCMMzRrLvTkVFk0+1Jv2/jQlRM8qzEO8dY2O4URFUuwO
- CFMVUd4BpgGoNTFELaiFWZXx2w1rLSCZxEr/HlkS/0zFHjQ7hyCyzCfquFEq0MPxJWtl
- OQQRV9WXvAwekKxtBfafza846lOefDL9FmAC0LEzBqb1WbvG740mn7xQ8aQHFvDH4pVg
- X62w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWE3LHalpZuPP/wG9lWRZfSyQ051lmJM1+pVhNIcb6P3rngAWAEIpqMONsJGMdFNV9hELoRV5fkNnk4@nongnu.org
-X-Gm-Message-State: AOJu0Ywl3rWprNsYGsReYJwHf5lQZKYAtCb5rqR1Q+rRkiKBE8CcmmBq
- gb93FpYLdSQx/SxlRjl3snt5gHyvG77W8T7DCYxseYBc0OwtAFoiGPeIlkaF7qqja8G6hxnjdcM
- HanwjBmTQdw==
-X-Gm-Gg: ASbGncvTdP24XuKzOWfvmS6jZNJKqx+Jd1tZY5q40g0p+Z85uXIeCKwhm6UwydvdsUb
- mAVu446ffGLQzRUw7dcYx0srDgps6rw3195PbFIIN2HXEQa1tM46AZ8SjRSSP7YSnWmjEXOLjBP
- xKcJdl+/xtvA+TkyBSo4d+5UdQMp9SmFJOZxJ9dbT6h7rfwBfTTv+mLS3GFFP2g3HbCNvaah+x7
- Xq5pQEBlCWs7Z+IyLfRJ8mkyPbCCfLT/lluMI3M90BEvDYyKNc4J0A7uH/InyZ0uVdwDWZHegxe
- tkgkwXVZoPve9C6J5s0DMUjeCxuH/rix7xNKmlm7VaHL2+PC9caoXeZ+yLnk9MwOI9BJx/Isoh2
- jFuRrIStvZ39UwECdg2dbrLgjqctF35EWBoRPplQ5e6QuknxP7Y+d4ZVR6pPp
-X-Google-Smtp-Source: AGHT+IFRglaQmXG6fYHYrEaz91F9C1JiTYzUyPN09axcLwoWBz/m4kuMIUp3ksoHQTxSzUgcfXMNTw==
-X-Received: by 2002:a17:90b:38cb:b0:32e:3686:830e with SMTP id
- 98e67ed59e1d1-339a6f3cd02mr61126a91.23.1759249658964; 
- Tue, 30 Sep 2025 09:27:38 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-339a6f01566sm34609a91.18.2025.09.30.09.27.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Sep 2025 09:27:38 -0700 (PDT)
-Message-ID: <fcd1c427-7686-4b55-8696-8a589b10964f@linaro.org>
-Date: Tue, 30 Sep 2025 09:27:36 -0700
+ d=1e100.net; s=20230601; t=1759250386; x=1759855186;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pCLF4zSOyJMtFkwU4MaSjs4mSYhBhlROsh/QoRm+3Vc=;
+ b=ccINpgKrQqXAyB5ftuqncpVY+OUarsS68gv00+dXE3stg9/4Zz/ZVMyQ9sC3kzhTjn
+ BWH28ysqIxBy6JMHsVWODE2R6LgTDtSZl0xtbsED3cDLVi2ePv6OgTOEAmlzWwpM8gTJ
+ g/b3AwvZxnN+/PTzOlEtoKU/Ud3DqCI9QsyDC++DQx2cS3OSTxlJSArRg9xiodPSf5G9
+ e6D6MFaxOjbcBzIQeVwKXQ0hs4Snp0h8badEuIpm7DvrmfuccIvb1iMp9gSIlQGXMVi2
+ 107vUZkYSkwboA+3f7nJ7lEpD45Frnoxg5qp17qQ9zccgomTjg2/B80/sbZEnLRnu6hq
+ pXpA==
+X-Gm-Message-State: AOJu0YwoE4OFfH6IXjwi47RzDPtOcDZkKTkWqVNeqdlqehEtFQ8l7Fu2
+ /Dra825wGX6cikaB25tlqX62/WwkI0l9sEmmjq0Ms8jZiGvw/33oSGHX8LHqntRtjGq/ZPGd2yt
+ QBdWB+YCGCQj21XUzZOqTtn0xS4BFWc4jBvaD7TM1JHM7kEKAyaW39ZEZ
+X-Gm-Gg: ASbGncvN+YNEeoNeB7QcIaPHJP1rKrN5IKmx9kWDIBGEkzKQZSBCjK0+JwCH2+RZm7v
+ oLuvZ2Gb2YGwCodycLrDvkfP35WuqCqCOGI3rjt+QC6fbGx8lT22MZUh0dgJUClnXL4+JNEblY7
+ q55rSC1fjcjVhmqXQi41WshJE2yEHuRIphhoQK+U4qsvBQCNLkq6tcerEn+5feVt9LnKGDdvwub
+ ZoNtuomOcrJyDc8I6eO4s+YL6vwQSxrzdrswWzCZNndQkq/cCAuFuCyhrO1W3dAHgQlgOOS6tAQ
+ 4c/T7ky8OgdrixZigimAoF++zZAfHDrEKLtJyg==
+X-Received: by 2002:a05:6214:1942:b0:77c:a783:c9c6 with SMTP id
+ 6a1803df08f44-8739b0b0b9bmr5977016d6.3.1759250385987; 
+ Tue, 30 Sep 2025 09:39:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2+PFLq1DacD67OOdR5G0OrGjEfK49ed7kvext21L8hBUbUJG1oK7GcguqG++5j87nG8tibA==
+X-Received: by 2002:a05:6214:1942:b0:77c:a783:c9c6 with SMTP id
+ 6a1803df08f44-8739b0b0b9bmr5976756d6.3.1759250385205; 
+ Tue, 30 Sep 2025 09:39:45 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-8016ce9a3cbsm97194826d6.56.2025.09.30.09.39.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Sep 2025 09:39:44 -0700 (PDT)
+Date: Tue, 30 Sep 2025 12:39:43 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Cedric Le Goater <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+Subject: Re: [PATCH V4 6/8] migration: cpr-exec mode
+Message-ID: <aNwHz39FkYIq7DgX@x1.local>
+References: <1758548985-354793-1-git-send-email-steven.sistare@oracle.com>
+ <1758548985-354793-7-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 11/13] ui/dbus: Consistent handling of texture mutex failure
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-References: <20250930124653.321609-1-armbru@redhat.com>
- <20250930124653.321609-12-armbru@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250930124653.321609-12-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1758548985-354793-7-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,65 +107,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/30/25 05:46, Markus Armbruster wrote:
-> We report d3d_texture2d_acquire0() and d3d_texture2d_release0()
-> failure as error, except in dbus_update_gl_cb(), where we report it as
-> warning.  Report it as error there as well.
+On Mon, Sep 22, 2025 at 06:49:43AM -0700, Steve Sistare wrote:
+> Add the cpr-exec migration mode.  Usage:
+>   qemu-system-$arch -machine aux-ram-share=on ...
+>   migrate_set_parameter mode cpr-exec
+>   migrate_set_parameter cpr-exec-command \
+>     <arg1> <arg2> ... -incoming <uri-1> \
+>   migrate -d <uri-1>
 > 
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Message-ID: <20250923091000.3180122-12-armbru@redhat.com>
-> Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> The migrate command stops the VM, saves state to uri-1,
+> directly exec's a new version of QEMU on the same host,
+> replacing the original process while retaining its PID, and
+> loads state from uri-1.  Guest RAM is preserved in place,
+> albeit with new virtual addresses.
+> 
+> The new QEMU process is started by exec'ing the command
+> specified by the @cpr-exec-command parameter.  The first word of
+> the command is the binary, and the remaining words are its
+> arguments.  The command may be a direct invocation of new QEMU,
+> or may be a non-QEMU command that exec's the new QEMU binary.
+> 
+> This mode creates a second migration channel that is not visible
+> to the user.  At the start of migration, old QEMU saves CPR state
+> to the second channel, and at the end of migration, it tells the
+> main loop to call cpr_exec.  New QEMU loads CPR state early, before
+> objects are created.
+> 
+> Because old QEMU terminates when new QEMU starts, one cannot
+> stream data between the two, so uri-1 must be a type,
+> such as a file, that accepts all data before old QEMU exits.
+> Otherwise, old QEMU may quietly block writing to the channel.
+> 
+> Memory-backend objects must have the share=on attribute, but
+> memory-backend-epc is not supported.  The VM must be started with
+> the '-machine aux-ram-share=on' option, which allows anonymous
+> memory to be transferred in place to the new process.  The memfds
+> are kept open across exec by clearing the close-on-exec flag, their
+> values are saved in CPR state, and they are mmap'd in new QEMU.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 > ---
->   ui/dbus-listener.c | 17 +++++++++++------
->   1 file changed, 11 insertions(+), 6 deletions(-)
+>  qapi/migration.json       | 25 +++++++++++++-
+>  include/migration/cpr.h   |  1 +
+>  migration/cpr-exec.c      | 84 +++++++++++++++++++++++++++++++++++++++++++++++
+>  migration/cpr.c           | 28 ++++++++++++++--
+>  migration/migration.c     | 10 +++++-
+>  migration/ram.c           |  1 +
+>  migration/vmstate-types.c |  8 +++++
+>  system/vl.c               |  4 ++-
+>  migration/trace-events    |  1 +
+>  9 files changed, 157 insertions(+), 5 deletions(-)
 > 
-> diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-> index 09d7a319b1..b82e7c7115 100644
-> --- a/ui/dbus-listener.c
-> +++ b/ui/dbus-listener.c
-> @@ -214,26 +214,31 @@ static void dbus_update_gl_cb(GObject *source_object,
->                                 GAsyncResult *res,
->                                 gpointer user_data)
->   {
-> -    g_autoptr(GError) err = NULL;
-> +    g_autoptr(GError) gerr = NULL;
-> +#ifdef WIN32
-> +    Error **err = NULL;
-> +#endif
->       DBusDisplayListener *ddl = user_data;
->       bool success;
->   
->   #ifdef CONFIG_GBM
->       success = qemu_dbus_display1_listener_call_update_dmabuf_finish(
-> -        ddl->proxy, res, &err);
-> +        ddl->proxy, res, &gerr);
->       if (!success) {
-> -        error_report("Failed to call update: %s", err->message);
-> +        error_report("Failed to call update: %s", gerr->message);
->       }
->   #endif
->   
->   #ifdef WIN32
->       success = qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d_finish(
-> -        ddl->d3d11_proxy, res, &err);
-> +        ddl->d3d11_proxy, res, &gerr);
->       if (!success) {
-> -        error_report("Failed to call update: %s", err->message);
-> +        error_report("Failed to call update: %s", gerr->message);
->       }
->   
-> -    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
-> +    if (!d3d_texture2d_acquire0(ddl->d3d_texture, &err)) {
-> +        error_report_err(err);
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 2be8fa1..be0f3fc 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -694,9 +694,32 @@
+>  #     until you issue the `migrate-incoming` command.
+>  #
+>  #     (since 10.0)
+> +#
+> +# @cpr-exec: The migrate command stops the VM, saves state to the
+> +#     migration channel, directly exec's a new version of QEMU on the
+> +#     same host, replacing the original process while retaining its
+> +#     PID, and loads state from the channel.  Guest RAM is preserved
+> +#     in place.  Devices and their pinned pages are also preserved for
+> +#     VFIO and IOMMUFD.
+> +#
+> +#     Old QEMU starts new QEMU by exec'ing the command specified by
+> +#     the @cpr-exec-command parameter.  The command may be a direct
+> +#     invocation of new QEMU, or may be a wrapper that exec's the new
+> +#     QEMU binary.
+> +#
+> +#     Because old QEMU terminates when new QEMU starts, one cannot
+> +#     stream data between the two, so the channel must be a type,
+> +#     such as a file, that accepts all data before old QEMU exits.
+> +#     Otherwise, old QEMU may quietly block writing to the channel.
+> +#
+> +#     Memory-backend objects must have the share=on attribute, but
+> +#     memory-backend-epc is not supported.  The VM must be started
+> +#     with the '-machine aux-ram-share=on' option.
+> +#
+> +#     (since 10.2)
+>  ##
+>  { 'enum': 'MigMode',
+> -  'data': [ 'normal', 'cpr-reboot', 'cpr-transfer' ] }
+> +  'data': [ 'normal', 'cpr-reboot', 'cpr-transfer', 'cpr-exec' ] }
+>  
+>  ##
+>  # @ZeroPageDetection:
+> diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+> index b84389f..beed392 100644
+> --- a/include/migration/cpr.h
+> +++ b/include/migration/cpr.h
+> @@ -53,6 +53,7 @@ int cpr_get_fd_param(const char *name, const char *fdname, int index,
+>  QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
+>  QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
+>  
+> +void cpr_exec_init(void);
+>  QEMUFile *cpr_exec_output(Error **errp);
+>  QEMUFile *cpr_exec_input(Error **errp);
+>  void cpr_exec_persist_state(QEMUFile *f);
+> diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
+> index 2c32e9c..8cf55a3 100644
+> --- a/migration/cpr-exec.c
+> +++ b/migration/cpr-exec.c
+> @@ -6,15 +6,21 @@
+>  
+>  #include "qemu/osdep.h"
+>  #include "qemu/cutils.h"
+> +#include "qemu/error-report.h"
+>  #include "qemu/memfd.h"
+>  #include "qapi/error.h"
+> +#include "qapi/type-helpers.h"
+>  #include "io/channel-file.h"
+>  #include "io/channel-socket.h"
+> +#include "block/block-global-state.h"
+> +#include "qemu/main-loop.h"
+>  #include "migration/cpr.h"
+>  #include "migration/qemu-file.h"
+> +#include "migration/migration.h"
+>  #include "migration/misc.h"
+>  #include "migration/vmstate.h"
+>  #include "system/runstate.h"
+> +#include "trace.h"
+>  
+>  #define CPR_EXEC_STATE_NAME "QEMU_CPR_EXEC_STATE"
+>  
+> @@ -92,3 +98,81 @@ QEMUFile *cpr_exec_input(Error **errp)
+>      lseek(mfd, 0, SEEK_SET);
+>      return qemu_file_new_fd_input(mfd, CPR_EXEC_STATE_NAME);
+>  }
+> +
+> +static bool preserve_fd(int fd)
+> +{
+> +    qemu_clear_cloexec(fd);
+> +    return true;
+> +}
+> +
+> +static bool unpreserve_fd(int fd)
+> +{
+> +    qemu_set_cloexec(fd);
+> +    return true;
+> +}
+> +
+> +static void cpr_exec_cb(void *opaque)
+> +{
+> +    MigrationState *s = migrate_get_current();
+> +    char **argv = strv_from_str_list(s->parameters.cpr_exec_command);
+> +    Error *err = NULL;
+> +
+> +    /*
+> +     * Clear the close-on-exec flag for all preserved fd's.  We cannot do so
+> +     * earlier because they should not persist across miscellaneous fork and
+> +     * exec calls that are performed during normal operation.
+> +     */
+> +    cpr_walk_fd(preserve_fd);
+> +
+> +    trace_cpr_exec();
+> +    execvp(argv[0], argv);
+> +
+> +    /*
+> +     * exec should only fail if argv[0] is bogus, or has a permissions problem,
+> +     * or the system is very short on resources.
+> +     */
+> +    g_strfreev(argv);
+> +    cpr_walk_fd(unpreserve_fd);
+> +
+> +    error_setg_errno(&err, errno, "execvp %s failed", argv[0]);
+> +    error_report_err(error_copy(err));
+> +    migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+
+I believe this is the only place we can have the state machine from
+COMPLETED->FAILED.  It's pretty hacky.  Maybe add a quick comment?
+
+> +    migrate_set_error(s, err);
+> +
+> +    migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
+> +
+> +    err = NULL;
+> +    if (!migration_block_activate(&err)) {
+> +        /* error was already reported */
+> +        return;
 > +    }
->   #endif
+> +
+> +    if (runstate_is_live(s->vm_old_state)) {
+> +        vm_start();
+> +    }
 
-This doesn't build: https://gitlab.com/qemu-project/qemu/-/jobs/11550221970
+We have rollback logic in migration_iteration_finish().  Make a small
+helper and reuse the code?
 
-I think you have one too many * for the declaration of err.
+> +}
+> +
+> +static int cpr_exec_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
+> +                             Error **errp)
+> +{
+> +    MigrationState *s = migrate_get_current();
+> +
+> +    if (e->type == MIG_EVENT_PRECOPY_DONE) {
+> +        QEMUBH *cpr_exec_bh = qemu_bh_new(cpr_exec_cb, NULL);
+> +        assert(s->state == MIGRATION_STATUS_COMPLETED);
+> +        qemu_bh_schedule(cpr_exec_bh);
+> +        qemu_notify_event();
+> +
 
+Newline can be dropped.
 
-r~
+> +    } else if (e->type == MIG_EVENT_PRECOPY_FAILED) {
+> +        cpr_exec_unpersist_state();
+> +    }
+> +    return 0;
+> +}
+> +
+> +void cpr_exec_init(void)
+> +{
+> +    static NotifierWithReturn exec_notifier;
+> +
+> +    migration_add_notifier_mode(&exec_notifier, cpr_exec_notifier,
+> +                                MIG_MODE_CPR_EXEC);
+> +}
+> diff --git a/migration/cpr.c b/migration/cpr.c
+> index d3e370e..eea3773 100644
+> --- a/migration/cpr.c
+> +++ b/migration/cpr.c
+> @@ -185,6 +185,8 @@ int cpr_state_save(MigrationChannel *channel, Error **errp)
+>      if (mode == MIG_MODE_CPR_TRANSFER) {
+>          g_assert(channel);
+>          f = cpr_transfer_output(channel, errp);
+> +    } else if (mode == MIG_MODE_CPR_EXEC) {
+> +        f = cpr_exec_output(errp);
+>      } else {
+>          return 0;
+>      }
+> @@ -202,6 +204,10 @@ int cpr_state_save(MigrationChannel *channel, Error **errp)
+>          return ret;
+>      }
+>  
+> +    if (migrate_mode() == MIG_MODE_CPR_EXEC) {
+> +        cpr_exec_persist_state(f);
+> +    }
+> +
+>      /*
+>       * Close the socket only partially so we can later detect when the other
+>       * end closes by getting a HUP event.
+> @@ -213,6 +219,12 @@ int cpr_state_save(MigrationChannel *channel, Error **errp)
+>      return 0;
+>  }
+>  
+> +static bool unpreserve_fd(int fd)
+> +{
+> +    qemu_set_cloexec(fd);
+> +    return true;
+> +}
+
+Is this function defined twice?
+
+> +
+>  int cpr_state_load(MigrationChannel *channel, Error **errp)
+>  {
+>      int ret;
+> @@ -220,7 +232,13 @@ int cpr_state_load(MigrationChannel *channel, Error **errp)
+>      QEMUFile *f;
+>      MigMode mode = 0;
+>  
+> -    if (channel) {
+> +    if (cpr_exec_has_state()) {
+> +        mode = MIG_MODE_CPR_EXEC;
+> +        f = cpr_exec_input(errp);
+> +        if (channel) {
+> +            warn_report("ignoring cpr channel for migration mode cpr-exec");
+> +        }
+> +    } else if (channel) {
+>          mode = MIG_MODE_CPR_TRANSFER;
+>          cpr_set_incoming_mode(mode);
+>          f = cpr_transfer_input(channel, errp);
+> @@ -232,6 +250,7 @@ int cpr_state_load(MigrationChannel *channel, Error **errp)
+>      }
+>  
+>      trace_cpr_state_load(MigMode_str(mode));
+> +    cpr_set_incoming_mode(mode);
+>  
+>      v = qemu_get_be32(f);
+>      if (v != QEMU_CPR_FILE_MAGIC) {
+> @@ -253,6 +272,11 @@ int cpr_state_load(MigrationChannel *channel, Error **errp)
+>          return ret;
+>      }
+>  
+> +    if (migrate_mode() == MIG_MODE_CPR_EXEC) {
+> +        /* Set cloexec to prevent fd leaks from fork until the next cpr-exec */
+> +        cpr_walk_fd(unpreserve_fd);
+> +    }
+> +
+>      /*
+>       * Let the caller decide when to close the socket (and generate a HUP event
+>       * for the sending side).
+> @@ -273,7 +297,7 @@ void cpr_state_close(void)
+>  bool cpr_incoming_needed(void *opaque)
+>  {
+>      MigMode mode = migrate_mode();
+> -    return mode == MIG_MODE_CPR_TRANSFER;
+> +    return mode == MIG_MODE_CPR_TRANSFER || mode == MIG_MODE_CPR_EXEC;
+>  }
+>  
+>  /*
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 08a98f7..2515bec 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -333,6 +333,7 @@ void migration_object_init(void)
+>  
+>      ram_mig_init();
+>      dirty_bitmap_mig_init();
+> +    cpr_exec_init();
+>  
+>      /* Initialize cpu throttle timers */
+>      cpu_throttle_init();
+> @@ -1796,7 +1797,8 @@ bool migrate_mode_is_cpr(MigrationState *s)
+>  {
+>      MigMode mode = s->parameters.mode;
+>      return mode == MIG_MODE_CPR_REBOOT ||
+> -           mode == MIG_MODE_CPR_TRANSFER;
+> +           mode == MIG_MODE_CPR_TRANSFER ||
+> +           mode == MIG_MODE_CPR_EXEC;
+>  }
+>  
+>  int migrate_init(MigrationState *s, Error **errp)
+> @@ -2145,6 +2147,12 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
+>          return false;
+>      }
+>  
+> +    if (migrate_mode() == MIG_MODE_CPR_EXEC &&
+> +        !s->parameters.has_cpr_exec_command) {
+> +        error_setg(errp, "cpr-exec mode requires setting cpr-exec-command");
+> +        return false;
+> +    }
+> +
+>      if (migration_is_blocked(errp)) {
+>          return false;
+>      }
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 7208bc1..6730a41 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -228,6 +228,7 @@ bool migrate_ram_is_ignored(RAMBlock *block)
+>      MigMode mode = migrate_mode();
+>      return !qemu_ram_is_migratable(block) ||
+>             mode == MIG_MODE_CPR_TRANSFER ||
+> +           mode == MIG_MODE_CPR_EXEC ||
+>             (migrate_ignore_shared() && qemu_ram_is_shared(block)
+>                                      && qemu_ram_is_named_file(block));
+>  }
+> diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
+> index 741a588..1aa0573 100644
+> --- a/migration/vmstate-types.c
+> +++ b/migration/vmstate-types.c
+> @@ -321,6 +321,10 @@ static int get_fd(QEMUFile *f, void *pv, size_t size,
+>                    const VMStateField *field)
+>  {
+>      int32_t *v = pv;
+> +    if (migrate_mode() == MIG_MODE_CPR_EXEC) {
+> +        qemu_get_sbe32s(f, v);
+> +        return 0;
+> +    }
+>      *v = qemu_file_get_fd(f);
+>      return 0;
+>  }
+> @@ -329,6 +333,10 @@ static int put_fd(QEMUFile *f, void *pv, size_t size,
+>                    const VMStateField *field, JSONWriter *vmdesc)
+>  {
+>      int32_t *v = pv;
+> +    if (migrate_mode() == MIG_MODE_CPR_EXEC) {
+> +        qemu_put_sbe32s(f, v);
+> +        return 0;
+> +    }
+>      return qemu_file_put_fd(f, *v);
+>  }
+>  
+> diff --git a/system/vl.c b/system/vl.c
+> index 4c24073..f395d04 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -3867,6 +3867,8 @@ void qemu_init(int argc, char **argv)
+>      }
+>      qemu_init_displays();
+>      accel_setup_post(current_machine);
+> -    os_setup_post();
+> +    if (migrate_mode() != MIG_MODE_CPR_EXEC) {
+> +        os_setup_post();
+> +    }
+>      resume_mux_open();
+>  }
+> diff --git a/migration/trace-events b/migration/trace-events
+> index 706db97..e8edd1f 100644
+> --- a/migration/trace-events
+> +++ b/migration/trace-events
+> @@ -354,6 +354,7 @@ cpr_state_save(const char *mode) "%s mode"
+>  cpr_state_load(const char *mode) "%s mode"
+>  cpr_transfer_input(const char *path) "%s"
+>  cpr_transfer_output(const char *path) "%s"
+> +cpr_exec(void) ""
+>  
+>  # block-dirty-bitmap.c
+>  send_bitmap_header_enter(void) ""
+> -- 
+> 1.8.3.1
+> 
+
+-- 
+Peter Xu
+
 
