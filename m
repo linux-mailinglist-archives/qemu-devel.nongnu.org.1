@@ -2,98 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB62BACC1B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 14:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA10DBACF7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 15:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3Z2Z-0002bc-Ts; Tue, 30 Sep 2025 08:01:09 -0400
+	id 1v3a0L-0001ME-4d; Tue, 30 Sep 2025 09:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3Z1s-0002YT-34
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:00:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <cp0613@linux.alibaba.com>)
+ id 1v3XEN-0007E6-SD; Tue, 30 Sep 2025 06:05:11 -0400
+Received: from [115.124.30.101] (helo=out30-101.freemail.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3Z1n-0002sd-6I
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 08:00:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759233614;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=9cRZKuLYf1PeX3kptJkawumw9y9xmtGwH/7o1mOtoO4=;
- b=OXMpv3GnWJYA1og3x5+EPCc3j1Hs7hvuf7zpNeP078ruNhIuOJ+3YUJe2wccapDFOP9ulX
- iZXNQgJ10ZkPH9UOwIeuZ3foPHm6lXiHJOAM9mZLmJFViqbF/PPYGBGV2cIHtg9QzWhGSa
- +dE2uzn8tVB2XVbNHzLUmcFy/DBevLk=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-Z0IY5lHlNvaMTsm1NGs9Ow-1; Tue, 30 Sep 2025 08:00:13 -0400
-X-MC-Unique: Z0IY5lHlNvaMTsm1NGs9Ow-1
-X-Mimecast-MFC-AGG-ID: Z0IY5lHlNvaMTsm1NGs9Ow_1759233612
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-633009e440aso5634031a12.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 05:00:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759233611; x=1759838411;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9cRZKuLYf1PeX3kptJkawumw9y9xmtGwH/7o1mOtoO4=;
- b=big/IRDS1al4VyWi0nB14zeLZP6rB4VWzB86IQ2uB87Zvs6tMJ3DOL/K7Vcl/zUs1u
- 7rUaUW1Ag/NBFNS1qbb4EETU8HwSAbnkWSdDsdH5Suf+r21lvkkjesNkCFOPi4eb3hwt
- R/fsDU1R55idqdTdkYMs/zAH+oVoe728AXQPIne9VTG+8xgw7nHHpCPUT4x+/5NefMXe
- 17W0OblVzLEb5l1D6WulblRQ4o4m372K4QwBDgbS/U4U97FuoGW64bVgJqdUDVYcqej0
- V4mrG0dOVYm+oINpnNr89D+E07tI30T5HKB6a1kZ86+7yvDUy3TikIy4fhvaemO+lnqg
- Euzw==
-X-Gm-Message-State: AOJu0Yypr6NCgJ7wW39/BJumQKj/unTeAUYrpZ83r28aXiiDG+WuMYA5
- 3L859PRHTRkA5GfBd4vflmlfMOF9pQpFzA9/SV6xweQmAxhy2HTrZtJtOXCPlcyfBOc6OcSnBIG
- SdJHnz9+SgkTcSe4K6NoMJn/Kmxq96jJweLFPZjjKCUHcLObpjazbja8v1UQdwX+wgAxACDaosr
- 75E5eBCYRSDzBh28PqrW2bmNAI5HALixlte4Km4ceh
-X-Gm-Gg: ASbGnculf4jlhYzko0sE2tQ8KVlosS0EKQw1F2WhBENXYvxil0hv9Ce7fWiZTG4XFU1
- FoKPLtYpmM9qOABimQPEATVp1QOHdOU6uywYnamFZEtDX2exMddl/XYmd5WoZGzQvVlWzxJyZrH
- C0eIG6+14GJg8ayKK7qeIWhrFlFURE6YIULGAN1M+TJ80fTiNxzEItShDAYVo1nLX3HO768YYqL
- iKWp3khZtOJF/zydXyR+e0RoF6x8xXRVNXgOlPavdm0gii1jTffjkE/tuYru32EWzr3KqEN51Y6
- p0y4nNyL2U5fzP4bKuUMxgrmZmkvH5fQufX1E/chUotG6QiavjHoaRBHqfTxdioJYGz0ckAMyNC
- RY1ZOPanbfYW9MStwwWerERMn2iZS3x6vGyzkOVjTptQIBSFy5aw=
-X-Received: by 2002:a05:6402:278d:b0:633:feba:4756 with SMTP id
- 4fb4d7f45d1cf-6365af1a3ddmr4402907a12.12.1759233610840; 
- Tue, 30 Sep 2025 05:00:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjOaenNlHHDq9jIg/F4D+8KKBtXNwbIfWtSXj7ZXcenUTEz66o6MRefduo4uK2bGBT3SsgTA==
-X-Received: by 2002:a05:6402:278d:b0:633:feba:4756 with SMTP id
- 4fb4d7f45d1cf-6365af1a3ddmr4402860a12.12.1759233610421; 
- Tue, 30 Sep 2025 05:00:10 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.127.188])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634a3ae2cb3sm9714991a12.27.2025.09.30.05.00.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 05:00:09 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-rust@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] subprojects: Remove version number from .gitignore
-Date: Tue, 30 Sep 2025 14:00:08 +0200
-Message-ID: <20250930120008.700432-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
+ (Exim 4.90_1) (envelope-from <cp0613@linux.alibaba.com>)
+ id 1v3XEB-00031p-Lo; Tue, 30 Sep 2025 06:05:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1759226671; h=From:To:Subject:Date:Message-ID:MIME-Version;
+ bh=aUdLrT+iVgq95+lSK7IeL/ys+YabbNel8o+D0C30PHE=;
+ b=nhHcVcyAk3u0zG0YxB4xHBobpyKoahjOt7Bt3CJT/biDObdHvHXqQhNXoDWs4IIhv3v9+MDnyAdQaMSrebNtwyAkSu2NCYz7osGC8GvS4nCt+XVeKRlf9HqQiqb7pPFu+8gQ8vDbnI/X1i0Mtzfb9jT9OfQlc97Gu0ieGv0F6FI=
+Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com
+ fp:SMTPD_---0WpB.CLb_1759226335 cluster:ay36) by smtp.aliyun-inc.com;
+ Tue, 30 Sep 2025 17:58:59 +0800
+From: cp0613@linux.alibaba.com
+To: guoren@kernel.org
+Cc: alistair.francis@wdc.com, liujingqi@lanxincomputing.com,
+ liwei1518@gmail.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-stable@nongnu.org, seb@rivosinc.com, tjeznach@rivosinc.com,
+ zhiwei_liu@linux.alibaba.com, Chen Pei <cp0613@linux.alibaba.com>
+Subject: Re: [PATCH V3] hw/riscv/riscv-iommu: Fixup PDT Nested Walk
+Date: Tue, 30 Sep 2025 17:58:43 +0800
+Message-ID: <20250930095843.62128-1-cp0613@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250913041233.972870-1-guoren@kernel.org>
+References: <20250913041233.972870-1-guoren@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.101 (deferred)
+Received-SPF: pass client-ip=115.124.30.101;
+ envelope-from=cp0613@linux.alibaba.com;
+ helo=out30-101.freemail.mail.aliyun.com
+X-Spam_score_int: -166
+X-Spam_score: -16.7
+X-Spam_bar: ----------------
+X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 30 Sep 2025 09:02:21 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,59 +67,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Get rid of all the version numbers, and use wildcard matches instead,
-because peopl will repeatedly forgot to change these versions.
+On Sat, 13 Sep 2025 00:12:33 -0400, guoren@kernel.org wrote:
 
-Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- subprojects/.gitignore | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+> Changes in V3:
+>  - Fixup inner non-leaf walking for 4KB-align.
+>  - Add two Reviewed-by tags.> 
 
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index 58a29f01204..0b5d9634094 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -6,21 +6,21 @@
- /keycodemapdb
- /libvfio-user
- /slirp
--/anyhow-1.0.98
--/arbitrary-int-1.2.7
--/attrs-0.2.9
--/bilge-0.2.0
--/bilge-impl-0.2.0
--/either-1.12.0
--/foreign-0.3.1
--/itertools-0.11.0
--/libc-0.2.162
--/proc-macro-error-1.0.4
--/proc-macro-error-attr-1.0.4
--/proc-macro2-1.0.95
--/quote-1.0.36
--/syn-2.0.66
--/unicode-ident-1.0.12
-+/anyhow-*
-+/arbitrary-int-*
-+/attrs-*
-+/bilge-*
-+/bilge-impl-*
-+/either-*
-+/foreign-*
-+/itertools-*
-+/libc-*
-+/proc-macro-error-*
-+/proc-macro-error-attr-*
-+/proc-macro*
-+/quote-*
-+/syn-*
-+/unicode-ident-*
- 
- # Workaround for Meson v1.9.0 https://github.com/mesonbuild/meson/issues/14948
- /.wraplock
--- 
-2.51.0
+> Changes in V2:
+>  - Remove nested param to make patch clearer.
+> ---
+>  hw/riscv/riscv-iommu.c | 141 ++++++++++++++++++++
+>  1 file changed, 139 insertions(+), 2 deletions(-)
 
+Tested-by: Chen Pei <cp0613@linux.alibaba.com>
+
+Thanks,
+Pei
 
