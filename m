@@ -2,65 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5882FBABD62
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 09:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8AFBABEDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 09:57:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3UqN-0003gJ-2K; Tue, 30 Sep 2025 03:32:15 -0400
+	id 1v3VDr-0001Nt-2r; Tue, 30 Sep 2025 03:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v3UqJ-0003fg-IG; Tue, 30 Sep 2025 03:32:12 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1v3VDm-0001NZ-U7
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 03:56:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v3UqF-0000wo-HB; Tue, 30 Sep 2025 03:32:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759217527; x=1790753527;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tyL90xQ/psWNfhHyJbOAxWbUINQafqkHOjy+g6gz1hQ=;
- b=PxHRojvfNDyae+PmuauT77PTLw8wRXndC7UmYpYHYhSUeI0sMOtNQiUl
- ZtcDonxiG6oPrg+26xaN2ns5lR0BgONiiCjDXo/b8KBiGcUnE6HdQXGFU
- H/ZnFlnBnzf/jqxMNYQhshXdkbcUzFk9Sqy3r4xgF/wk3zHJ72WbHSuxe
- yJgFlWMf7wZtVlSl2Wfj26R8TsOEssVnAemlvOaiTWCw6MondTXI2xELf
- ccl4eZcKkJk5WD5YkXdhBAznSv3sCmku6EPEW3x6UdOCjfJGyUZKep2jE
- OYUF6yqLIt1ZazH287yZxb7uaL92H06uNJ1wS/wq0JUxcjuNE9nfK/5vu g==;
-X-CSE-ConnectionGUID: zgcBYmQHQISCA4eaU+036A==
-X-CSE-MsgGUID: GQGxbOBwSmqcKkzSgK3suQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61380988"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="61380988"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 00:31:58 -0700
-X-CSE-ConnectionGUID: /VdAs/3MQgauh9/d1mRJrA==
-X-CSE-MsgGUID: eDPr56yCTW6fy8hSeaDruA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; d="scan'208";a="177579608"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 30 Sep 2025 00:31:57 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] subprojects: Update .gitignore for syn
-Date: Tue, 30 Sep 2025 15:53:51 +0800
-Message-Id: <20250930075351.1853721-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1v3VDe-0008Pc-Np
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 03:56:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759218967;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/BG6cJ2MdL2F3EFk0gEyBTdltqZXcyQ/KvC8RD9dhTg=;
+ b=gSsj/N5UELqtwXLnSaL+nm0RxQwhUoT3m7BwRu8k20etX+XupeZLb02YUIlJ0dDGkK3I7z
+ e0XZbzolZhdd+rYcC0jCUqOyqnEf6OfQDbWjwhuDKxdJ3wX6BC/cEH+qFFsBlxGwTmHYBy
+ GKU1WKnWIRvf7Yk2DuA/trmmaeJxx64=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-SsWwrGKLPXi5xSIo4Pp7sw-1; Tue,
+ 30 Sep 2025 03:56:05 -0400
+X-MC-Unique: SsWwrGKLPXi5xSIo4Pp7sw-1
+X-Mimecast-MFC-AGG-ID: SsWwrGKLPXi5xSIo4Pp7sw_1759218965
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BDA341955EC6; Tue, 30 Sep 2025 07:56:04 +0000 (UTC)
+Received: from localhost (unknown [10.45.242.7])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9A61C1800446; Tue, 30 Sep 2025 07:56:02 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ richard.henderson@linaro.org
+Subject: [PULL 0/5] Ui patches
+Date: Tue, 30 Sep 2025 11:55:54 +0400
+Message-ID: <20250930075559.133650-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.513,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,32 +81,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The commit a530a8d4ac39 missed to update syn version, this is because
-the code base of its v2 patch has fixed syn version, so that the fix for
-syn were lost during the rebase from v1 to v2.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-To rectify this mistake, update the syn version.
+The following changes since commit 9b16edec6e9a483469c789475b2065d26b52db35:
 
-Fixes: a530a8d4ac39 ("subprojects: Update .gitignore for proc-macro2 and syn")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- subprojects/.gitignore | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  Merge tag 'pull-ppc-for-20250928-20250929' of https://gitlab.com/harshpb/qemu into staging (2025-09-29 07:25:28 -0700)
 
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index 58a29f012044..136e30cd99ad 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -19,7 +19,7 @@
- /proc-macro-error-attr-1.0.4
- /proc-macro2-1.0.95
- /quote-1.0.36
--/syn-2.0.66
-+/syn-2.0.104
- /unicode-ident-1.0.12
- 
- # Workaround for Meson v1.9.0 https://github.com/mesonbuild/meson/issues/14948
+are available in the Git repository at:
+
+  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
+
+for you to fetch changes up to 9163424c50981dbc4ded9990228ac01a3b193656:
+
+  ui/icons/qemu.svg: Add metadata information (author, license) to the logo (2025-09-30 11:21:55 +0400)
+
+----------------------------------------------------------------
+UI-related
+
+Fixes for gtk, sdl2, spice UI backends.
+
+----------------------------------------------------------------
+
+Marc-André Lureau (1):
+  ui/spice: fix crash when disabling GL scanout on
+
+Mohamed Akram (1):
+  ui/spice: Fix abort on macOS
+
+Nir Lichtman (1):
+  ui/sdl2: fix reset scaling binding to be consistent with gtk
+
+Thomas Huth (1):
+  ui/icons/qemu.svg: Add metadata information (author, license) to the
+    logo
+
+Weifeng Liu (1):
+  gtk: Skip drawing if console surface is NULL
+
+ ui/gtk-egl.c       |  5 +----
+ ui/gtk-gl-area.c   |  5 +----
+ ui/sdl2.c          |  2 +-
+ ui/spice-core.c    |  6 +-----
+ ui/spice-display.c |  4 +++-
+ ui/icons/qemu.svg  | 21 ++++++++++++++++++++-
+ 6 files changed, 27 insertions(+), 16 deletions(-)
+
 -- 
-2.34.1
+2.51.0
 
 
