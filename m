@@ -2,64 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68C6BAC61E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 12:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565EFBAC687
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Sep 2025 12:06:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3X7E-0003Dk-TB; Tue, 30 Sep 2025 05:57:49 -0400
+	id 1v3XDu-00075P-Cv; Tue, 30 Sep 2025 06:04:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wang.yechao255@zte.com.cn>)
- id 1v3WzA-00016p-DN; Tue, 30 Sep 2025 05:49:28 -0400
-Received: from mxct.zte.com.cn ([183.62.165.209])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wang.yechao255@zte.com.cn>)
- id 1v3Wyz-0005Gg-Vf; Tue, 30 Sep 2025 05:49:28 -0400
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mxct.zte.com.cn (FangMail) with ESMTPS id 4cbYD92zqkz4xNtD;
- Tue, 30 Sep 2025 17:48:57 +0800 (CST)
-Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
- by mse-fl2.zte.com.cn with SMTP id 58U9ml0l059640;
- Tue, 30 Sep 2025 17:48:47 +0800 (+08)
- (envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp02[null]) by mapi (Zmail) with MAPI id mid12;
- Tue, 30 Sep 2025 17:48:49 +0800 (CST)
-Date: Tue, 30 Sep 2025 17:48:49 +0800 (CST)
-X-Zmail-TransId: 2b0468dba7817bb-0a1c6
-X-Mailer: Zmail v1.0
-Message-ID: <20250930174849833XG1Q1ETbNvg66WU2UVBTV@zte.com.cn>
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <palmer@dabbelt.com>, <alistair.francis@wdc.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>
-Cc: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: =?UTF-8?B?W1BBVENIXSB0YXJnZXQvcmlzY3Y6IEZsdXNoIHRoZSBUTEIgZW50cnkgZm9yIHRoZSBzcGVjaWZpZWQgYWRkcmVzcw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL: mse-fl2.zte.com.cn 58U9ml0l059640
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 30 Sep 2025 17:48:57 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68DBA789.000/4cbYD92zqkz4xNtD
-Received-SPF: pass client-ip=183.62.165.209;
- envelope-from=wang.yechao255@zte.com.cn; helo=mxct.zte.com.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3XDq-00074r-Qj
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 06:04:39 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3XDj-00031D-P4
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 06:04:38 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-46e3af7889fso32584075e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 03:04:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759226665; x=1759831465; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=j0rzO/VT1zC0JROCevxKtQYy0KyGXEt7waNrDHcyX4g=;
+ b=aBec8NuPWUYp8dmdBnseBzb/NPN1/AubaRVNAGqBGijV61cBe2zYsPtd9lop3vjxqN
+ cAsjVL5988mhoa4VoWnFB5u8W33JzkiCpvSRG8ffFEQtSs6hHLr2ni9zgnRhBQnG+kLX
+ qJn0rWcHhKyimH50xAfOlruVxRAIbu/iA+Uk3gXl2goSIGywM+xTAteGnwRGm0xIonWk
+ W6SUfLReglCPH48jRkdUr+G8OGY2YZ7Z1oGkOAAe643l5wQieq8tdev4rtNnfTCc4kEn
+ nrOQWuvuKQx+vmLEUgXCGIwVEnkPcuVkmo8TCFgeEnbmhKl2mDA0B1Ul3PAzaDHZ1kxm
+ 21wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759226665; x=1759831465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j0rzO/VT1zC0JROCevxKtQYy0KyGXEt7waNrDHcyX4g=;
+ b=s600mj4ZqcC73RtjusmZ64FWDj55yk5SGyl5udOSNBdSxv9+c53tbTIyW+yknZ/W2M
+ 1ZMwd76YOdrI7/k8Hfw/RDQklCXtJrIFrGhUvxT4o+w4JceOytauwbR13DNXJGayoSSS
+ wy5+L83QeO265XMwIk7N3zXKKoEXLJJNH/YaB8UcOG+/4K6m3PcB7hiMMmsXVTtYFIco
+ hypjx4xjxcAyvs8UmtIFx7SPCT/p7R+RLbQMm3JBGnE2DKtOA9gQmlDJ2ogALc80ycwh
+ ndt4CHb8MTOBHMr8ktMXF64b3/lSipNVYdvCpRfcoWvcfHfrQqxWrXYJROIJDuhOnPq1
+ a4pA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWvLa/fEyv56o0N4tpmZKk1Rc8HX4CTNxzwKIDOnQyIuSnyIzkUj8DA837NgX/eOSl64JNksprY5Mps@nongnu.org
+X-Gm-Message-State: AOJu0YztCwmF1f1hwwClGfONzdG4Nq5c2zXpZJax/qQi82sgty4URmt4
+ DzTWEBBZ1dH24cKDUP12A4higoQ0A6VRLBCNmzt6rz7vLhSLLx3ORnl+CeguZX6JdfE=
+X-Gm-Gg: ASbGnctCqz7h91VDe2HYOM6t/1t9hlMQC8BRFhmR420CR8SsoWgY+2rvsE65+fiSolD
+ Ln8bAwedvy7ydY07nQ9EvCaEx7EjNZVYR0mMb0prOYNLwZ2+t1xIdmjQQdXlauanH2VS6wddT6i
+ G3alvtCK2nPKWCH1KpEoCjWXXar1+b18V3poV3v9gLe+nnKt31xTQYtuH8osZosoYJLkyoJKPk7
+ Vevx6rXbAxxAU7XODVbQiUwd6kxDyq7VjKach3TEkMvSPk/3NiJCHnfnZcWxmtzPGrHNgKyN6rw
+ tVk3Y0NQorAlqWTxvH3nCA9iuAAfSlWHf+7Nor52KdWUVWjKKTli3aCI5nhkJxXP96UzjyEguvr
+ VIKYsCd9wu8xp4lvHPBrZDzEfkpb2ksRYONvUtX1yeDG0YLADDBi2SFowD6qI9d6pQZpuv66RHL
+ UgNo7Qgc9BqDBbKIjt5Ovw5bBU
+X-Google-Smtp-Source: AGHT+IH/MLFqaqpbjAlBHCfbxfU/prxhPdDUbX2SCsmuyFah/8ykfhCrUjP6QGTw3gXQUxbrfLBbdg==
+X-Received: by 2002:a05:600c:314b:b0:46e:3d41:5fe7 with SMTP id
+ 5b1f17b1804b1-46e3d41626cmr145802425e9.29.1759226664964; 
+ Tue, 30 Sep 2025 03:04:24 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fc5602df0sm22064227f8f.36.2025.09.30.03.04.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 Sep 2025 03:04:24 -0700 (PDT)
+Message-ID: <a9cb3275-4707-4476-84e5-e42711e89116@linaro.org>
+Date: Tue, 30 Sep 2025 12:04:23 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: Flush the TLB entry for the specified
+ address
+Content-Language: en-US
+To: wang.yechao255@zte.com.cn, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+References: <20250930174849833XG1Q1ETbNvg66WU2UVBTV@zte.com.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250930174849833XG1Q1ETbNvg66WU2UVBTV@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 Sep 2025 05:57:39 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,95 +102,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: yechao-w <wang.yechao255@zte.com.cn>
+Hi,
 
-When the guest executes sfence/svinval with an address parameter,
-invalidating only the specific TLB entry for that address rather
-than the entire TLB enhances TCG performance.
+On 30/9/25 11:48, wang.yechao255@zte.com.cn wrote:
+> From: yechao-w <wang.yechao255@zte.com.cn>
+> 
+> When the guest executes sfence/svinval with an address parameter,
+> invalidating only the specific TLB entry for that address rather
+> than the entire TLB enhances TCG performance.
+> 
+> Signed-off-by: yechao-w <wang.yechao255@zte.com.cn>
+> ---
+>   target/riscv/helper.h                          | 2 +-
+>   target/riscv/insn_trans/trans_privileged.c.inc | 4 +++-
+>   target/riscv/insn_trans/trans_svinval.c.inc    | 4 +++-
+>   target/riscv/op_helper.c                       | 8 ++++++--
+>   4 files changed, 13 insertions(+), 5 deletions(-)
 
-Signed-off-by: yechao-w <wang.yechao255@zte.com.cn>
----
- target/riscv/helper.h                          | 2 +-
- target/riscv/insn_trans/trans_privileged.c.inc | 4 +++-
- target/riscv/insn_trans/trans_svinval.c.inc    | 4 +++-
- target/riscv/op_helper.c                       | 8 ++++++--
- 4 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index f712b1c368..de3757fa75 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -135,7 +135,7 @@ DEF_HELPER_1(mnret, tl, env)
- DEF_HELPER_1(ctr_clear, void, env)
- DEF_HELPER_1(wfi, void, env)
- DEF_HELPER_1(wrs_nto, void, env)
--DEF_HELPER_1(tlb_flush, void, env)
-+DEF_HELPER_2(tlb_flush, void, env, tl)
- DEF_HELPER_1(tlb_flush_all, void, env)
- DEF_HELPER_4(ctr_add_entry, void, env, tl, tl, tl)
- /* Native Debug */
-diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
-index 8a62b4cfcd..b6865f51b2 100644
---- a/target/riscv/insn_trans/trans_privileged.c.inc
-+++ b/target/riscv/insn_trans/trans_privileged.c.inc
-@@ -154,8 +154,10 @@ static bool trans_wfi(DisasContext *ctx, arg_wfi *a)
- static bool trans_sfence_vma(DisasContext *ctx, arg_sfence_vma *a)
- {
- #ifndef CONFIG_USER_ONLY
-+    TCGv addr = get_gpr(ctx, a->rs1, EXT_NONE);
-+
-     decode_save_opc(ctx, 0);
--    gen_helper_tlb_flush(tcg_env);
-+    gen_helper_tlb_flush(tcg_env, addr);
-     return true;
- #endif
-     return false;
-diff --git a/target/riscv/insn_trans/trans_svinval.c.inc b/target/riscv/insn_trans/trans_svinval.c.inc
-index a06c3b214f..1b1b932ac6 100644
---- a/target/riscv/insn_trans/trans_svinval.c.inc
-+++ b/target/riscv/insn_trans/trans_svinval.c.inc
-@@ -24,12 +24,14 @@
+> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+> index 110292e84d..0fe5fcb3ac 100644
+> --- a/target/riscv/op_helper.c
+> +++ b/target/riscv/op_helper.c
+> @@ -555,7 +555,7 @@ void helper_wrs_nto(CPURISCVState *env)
+>       }
+>   }
+> 
+> -void helper_tlb_flush(CPURISCVState *env)
+> +void helper_tlb_flush(CPURISCVState *env, target_ulong addr)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       if (!env->virt_enabled &&
+> @@ -566,7 +566,11 @@ void helper_tlb_flush(CPURISCVState *env)
+>                  (env->priv == PRV_U || get_field(env->hstatus, HSTATUS_VTVM))) {
+>           riscv_raise_exception(env, RISCV_EXCP_VIRT_INSTRUCTION_FAULT, GETPC());
+>       } else {
+> -        tlb_flush(cs);
+> +        if (addr) {
+> +            tlb_flush_page(cs, addr);
 
- static bool trans_sinval_vma(DisasContext *ctx, arg_sinval_vma *a)
- {
-+    TCGv addr = get_gpr(ctx, a->rs1, EXT_NONE);
-+
-     REQUIRE_SVINVAL(ctx);
-     /* Do the same as sfence.vma currently */
-     REQUIRE_EXT(ctx, RVS);
- #ifndef CONFIG_USER_ONLY
-     decode_save_opc(ctx, 0);
--    gen_helper_tlb_flush(tcg_env);
-+    gen_helper_tlb_flush(tcg_env, addr);
-     return true;
- #endif
-     return false;
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 110292e84d..0fe5fcb3ac 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -555,7 +555,7 @@ void helper_wrs_nto(CPURISCVState *env)
-     }
- }
+I suspect tlb_flush_page(cs, addr) is the right thing to do,
+even for addr=0.
 
--void helper_tlb_flush(CPURISCVState *env)
-+void helper_tlb_flush(CPURISCVState *env, target_ulong addr)
- {
-     CPUState *cs = env_cpu(env);
-     if (!env->virt_enabled &&
-@@ -566,7 +566,11 @@ void helper_tlb_flush(CPURISCVState *env)
-                (env->priv == PRV_U || get_field(env->hstatus, HSTATUS_VTVM))) {
-         riscv_raise_exception(env, RISCV_EXCP_VIRT_INSTRUCTION_FAULT, GETPC());
-     } else {
--        tlb_flush(cs);
-+        if (addr) {
-+            tlb_flush_page(cs, addr);
-+        } else {
-+            tlb_flush(cs);
-+        }
-     }
- }
+Can you point at the doc?
 
--- 
-2.27.0
+> +        } else {
+> +            tlb_flush(cs);
+> +        }
+>       }
+>   }
+> 
 
