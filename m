@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D10FBB14B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 18:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2BFBB14BF
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 18:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3zyg-0004Sx-Kb; Wed, 01 Oct 2025 12:46:56 -0400
+	id 1v3zyy-0004nd-1H; Wed, 01 Oct 2025 12:47:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3zxU-00042d-De
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 12:45:44 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3zxm-0004DE-Cm
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 12:46:01 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3zxG-0008ED-7D
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 12:45:31 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3ee12a63af1so6967f8f.1
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 09:45:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3zxU-0008Ew-R8
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 12:45:57 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-46e42fa08e4so53595e9.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 09:45:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759337113; x=1759941913; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759337119; x=1759941919; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZF0/7NKHmGsxltQLUgG2+GyvAElBS9/WQenlIVcQwVI=;
- b=ZYM/xCt7ESJxgNIt/WwH6eaOExdi2w4LSG7mSl4iDpZMClKxNFTEmw3EyO4vNkD+9u
- v4rbt3V4TfY9Ve0tNChnbZuuQObjPfjrhVuYdkw6eNNmaG9ceuKxztm2xoV5tyhk1Cmb
- 3Nn3+POdP4HqjagkiOSxaVTT0QWhwJpV5Tt0T/qYP84Iy7otWOAOP0HL1U8Bz67chOFL
- gB5nK5j2AsWOgEnzMWJWGmIvbFQS5b7+Gtfd+6zPwbS3KBAxG5+SSn5bDER33NCTgPsy
- HYVudaBLELx2uCxvqxiYT+pVk2Po5jEbmW8xjlHvGwcvxQF4oVpfi82N4YreVI9KHvmn
- kKig==
+ bh=6EDum+dhl1CD52KcXkjkndmne+c8mAKnL24q1elV6zA=;
+ b=j59rIdTvWsxLQGP18v3lVk/OoexH9PILwXP60OPVZ6Mx/80/E0i/TQd4BEARSCivBs
+ 65FdkFFaFs3P6hrJbzGS9dCCiaXah4cf2hqybx+F2hor0V4pqu6f1a4JPQ62PGg0nOrM
+ kX62h9Hr49JPB7BNKeJSYKon7bvzp6Y4tgueVwouKPom5KNXvULpqFzYdLP1V0Tga0CO
+ YwKN+usvBZ9mehtJLNULl8+0Ou4wQQRUtrm9NOMM6HfuE1Q9HX4NfC5OmORMgu9fsTqO
+ dRalRe70IKZWC0I4IzWvShlg64cn8lVjGzybBspdcNEn9lR3rjKOb+fQzM5MPxYYp38j
+ zXDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759337113; x=1759941913;
+ d=1e100.net; s=20230601; t=1759337119; x=1759941919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZF0/7NKHmGsxltQLUgG2+GyvAElBS9/WQenlIVcQwVI=;
- b=KaatQWN9xYpyRTYmTi43jnhLvFXO8sX+MvjV/7bpi2zrNo8gi1K48WohYM+OOCVc9t
- Re5pglTjt2Ph4vVFZ7fLSYziE2fYemKW4J274KPuh0ubzmRZsOFNNdTfT4Vi+b/sH24o
- 3xSrno3FUJDsjuR/j5Ujri0YUd3XzO0ueOSikqO7sghgtph1NZlJdiYsXnAEQxr84jI2
- hu9t8oNK2O3TMkk7tpjgvloqyYvt+YLpyc+eTysRNtvzk7fgnFyow3+2PkQDXa26uPim
- 68kLtaaUqkDJFt5Zm6EgOqu3Ec7MgsNUMv8HjCM6H2AFfIyGffe3LunG3WK7jIX6YeKO
- glOA==
-X-Gm-Message-State: AOJu0YyKG2tFXiZdFOwBEURFWJ1ga+alufYW5M0765PYlCqPVRlQ8M6H
- SyY7PMMCvhdT7W80glPYMp/mYTw3QQI4Glla0BHhwsEHVKWZRl55noggxI9jPkY85lP+wjReaf5
- VTXdNlHYv6Q==
-X-Gm-Gg: ASbGncvgdjqoeL59vT0JwYGR5xCBbWU77oEUiSnx1wHs/6WLQDMemUSSaF1Gv4lr+UX
- CBjH7wdAvh5KRPsAN6U88ZYod+urzOhPyCblDu2CD/J+fxqhY7q2a+8P/WI/ol8dew0+inDSSys
- ZFAEMIIhLKrqQEQJeoGF7o3tTqrvJ1D4gx3pfEUi932wj2bBd+ohAFe7f489CJHS+0QsER/8/7s
- 3kJmOK0IvEIoB8UH3rQXC9lSNH+LaWaFF9wxACcarW5YF9ITbbQ7s90DMPR5DZHZ7vFhgMljPup
- qDaHIPP6g3OTLwOT3njx/BVXuzFQenQFKNfw/l965fJu9qPlyfs96+txf6U1U1zHT13PCo+VPKt
- oDu/QGRTCydRL2FJeQhZCdbESR3fEPgRrMYBPn/+8/Qob2rFjqtPJB3+ZK3nnWcMJjlh1+g0tD5
- Ig5CByc+jKi2fEmvies0if
-X-Google-Smtp-Source: AGHT+IFnPvn/75MQHEavymTCcU+aMgCbscZUZr4f9pa21JdkbQhKSiJMn9TY1QMBoMpVPn0VhJXgoQ==
-X-Received: by 2002:a05:6000:2890:b0:413:473f:5515 with SMTP id
- ffacd0b85a97d-4255781b8c5mr3187923f8f.48.1759337113221; 
- Wed, 01 Oct 2025 09:45:13 -0700 (PDT)
+ bh=6EDum+dhl1CD52KcXkjkndmne+c8mAKnL24q1elV6zA=;
+ b=UsksA6WxH7nQ8nZjpZDORmMQHIKRaFyKgqAALOurNsoHu2fQmm0laVzd1LI1mKKa+N
+ 4IN1Id+XoRk2wlNo/NMMfdDRpJDqvFYk96M+lNIJrntvfUbKkM39Hs/HObJvZw2zFc6R
+ TaSkYqx3Yck1u40WqjexfkNH6imoLXsxGGeWV4oa53413B/YutCy0EJpUAqSsHFewE7g
+ bLBZ7d9PEh9Qr2+km3Zy1pa/dioKHp4O32iRgpZpXt09aEjIrSTXKff7hyFGX09tU6Oh
+ 09ZZfU0E1GPbZ+qX6MTX/hrnn6cVW94kS75nvgUuSB30VptOekTqHiCzUFTkDrc61V31
+ Q14w==
+X-Gm-Message-State: AOJu0Yx5hNeiZqJNReqQquhemCiG4DDUImvzwL7smOQUVziVqdUo4cAp
+ vnrC2w/oJ9Sb8tgnwiPHBjYwvDeqn9/rL9kB06O0lQscwdIyadmKAgnTV+jewmhFItSU6ssddWL
+ iHvv4df+yJA==
+X-Gm-Gg: ASbGncuEVzes6iCwbNwma98D+x2x88ZBfl3T+rd4r+3tSk2Wc27LZR5dcxWoN28A2Cn
+ FpI4toBRoiJYNaaiVhuC88qHLgXNggSpdi3keiDt1l8x5dKGiYrFzHkyLFcb/D2qfrzrlnOLuMu
+ B5zoNKMI7nxKzQKiYUu0O1iCQBuEowkxrtI1Jn951OKST1hvZvnq+AAST2PW2VxjH0de9/48RnD
+ UfEfEmlscqakdrrUfzentO99Ms5FlSbXx0Ttt5r76tfLXECuc3167AuS+IzAUOy/G2pFl0Gfj45
+ JJP0RcxlxIhDWgUuZ6mqD7IvdP/vuutL6R/lKS+uD8jhsvqBuQO5995ajvhdh8LxzeFFFVa7cG2
+ HFWm/isTv7zcbNjLTRLK7exL18GJOAUZyGIlPAzynoMarlCc6L/WtAeR6ieOEcJk3h+0yiatetx
+ osFlmffObb7R7dsv6LE4d6
+X-Google-Smtp-Source: AGHT+IFuoJIVwwuSQuz/IALkeQo4mbooTvN92OPoQ5bAMU1DhLeX3idgzhWXiJutaq+0+/Xb8si8zQ==
+X-Received: by 2002:a05:600c:4f91:b0:46e:4a30:2b0f with SMTP id
+ 5b1f17b1804b1-46e612dd093mr36263585e9.29.1759337118163; 
+ Wed, 01 Oct 2025 09:45:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-41f00aebdb7sm15112856f8f.57.2025.10.01.09.45.12
+ ffacd0b85a97d-40fc6921bcfsm30183370f8f.43.2025.10.01.09.45.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 09:45:12 -0700 (PDT)
+ Wed, 01 Oct 2025 09:45:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,25 +71,24 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/6] system/ramblock: Move ram_block_discard_*_range()
- declarations
-Date: Wed,  1 Oct 2025 18:44:53 +0200
-Message-ID: <20251001164456.3230-4-philmd@linaro.org>
+Subject: [PATCH v2 4/6] system/ramblock: Use ram_addr_t in
+ ram_block_discard_guest_memfd_range
+Date: Wed,  1 Oct 2025 18:44:54 +0200
+Message-ID: <20251001164456.3230-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001164456.3230-1-philmd@linaro.org>
 References: <20251001164456.3230-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,95 +104,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep RAM blocks API in the same header: "system/ramblock.h".
+Rename @start as @offset, since it express an offset within a RAMBlock.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cpu-common.h                 | 3 ---
- include/system/ramblock.h                 | 4 ++++
- accel/kvm/kvm-all.c                       | 1 +
- hw/hyperv/hv-balloon-our_range_memslots.c | 1 +
- hw/virtio/virtio-balloon.c                | 1 +
- hw/virtio/virtio-mem.c                    | 1 +
- 6 files changed, 8 insertions(+), 3 deletions(-)
+ include/system/ramblock.h | 3 ++-
+ system/physmem.c          | 8 ++++----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index f373781ae07..e413d8b3079 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -163,9 +163,6 @@ void cpu_flush_icache_range(hwaddr start, hwaddr len);
- typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
- 
- int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
--int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
--int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
--                                        size_t length);
- 
- /* Returns: 0 on success, -1 on error */
- int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
 diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-index 7059b20d919..530c5a2e4c2 100644
+index 530c5a2e4c2..839d8a070c1 100644
 --- a/include/system/ramblock.h
 +++ b/include/system/ramblock.h
-@@ -103,6 +103,10 @@ struct RamBlockAttributes {
-     QLIST_HEAD(, RamDiscardListener) rdl_list;
+@@ -104,7 +104,8 @@ struct RamBlockAttributes {
  };
  
-+int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
-+int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-+                                        size_t length);
-+
- RamBlockAttributes *ram_block_attributes_create(RAMBlock *ram_block);
- void ram_block_attributes_destroy(RamBlockAttributes *attr);
- int ram_block_attributes_state_change(RamBlockAttributes *attr, uint64_t offset,
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 9060599cd73..e3c84723406 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -32,6 +32,7 @@
- #include "system/runstate.h"
- #include "system/cpus.h"
- #include "system/accel-blocker.h"
-+#include "system/ramblock.h"
- #include "accel/accel-ops.h"
- #include "qemu/bswap.h"
- #include "exec/tswap.h"
-diff --git a/hw/hyperv/hv-balloon-our_range_memslots.c b/hw/hyperv/hv-balloon-our_range_memslots.c
-index 1505a395cf7..1fc95e16480 100644
---- a/hw/hyperv/hv-balloon-our_range_memslots.c
-+++ b/hw/hyperv/hv-balloon-our_range_memslots.c
-@@ -8,6 +8,7 @@
-  */
+ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
+-int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
++/* @offset: the offset within the RAMBlock */
++int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t offset,
+                                         size_t length);
  
- #include "qemu/osdep.h"
-+#include "system/ramblock.h"
- #include "hv-balloon-internal.h"
- #include "hv-balloon-our_range_memslots.h"
- #include "trace.h"
-diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index db787d00b31..02cdd807d77 100644
---- a/hw/virtio/virtio-balloon.c
-+++ b/hw/virtio/virtio-balloon.c
-@@ -23,6 +23,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/boards.h"
- #include "system/balloon.h"
-+#include "system/ramblock.h"
- #include "hw/virtio/virtio-balloon.h"
- #include "system/address-spaces.h"
- #include "qapi/error.h"
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index c46f6f9c3e2..1de2d3de521 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -17,6 +17,7 @@
- #include "qemu/units.h"
- #include "system/numa.h"
- #include "system/system.h"
-+#include "system/ramblock.h"
- #include "system/reset.h"
- #include "system/runstate.h"
- #include "hw/virtio/virtio.h"
+ RamBlockAttributes *ram_block_attributes_create(RAMBlock *ram_block);
+diff --git a/system/physmem.c b/system/physmem.c
+index 3766fae0aba..2bfddb3db52 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3920,7 +3920,7 @@ err:
+     return ret;
+ }
+ 
+-int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
++int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t offset,
+                                         size_t length)
+ {
+     int ret = -1;
+@@ -3928,17 +3928,17 @@ int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
+ #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+     /* ignore fd_offset with guest_memfd */
+     ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+-                    start, length);
++                    offset, length);
+ 
+     if (ret) {
+         ret = -errno;
+         error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
+-                     __func__, rb->idstr, start, length, ret);
++                     __func__, rb->idstr, offset, length, ret);
+     }
+ #else
+     ret = -ENOSYS;
+     error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
+-                 __func__, rb->idstr, start, length, ret);
++                 __func__, rb->idstr, offset, length, ret);
+ #endif
+ 
+     return ret;
 -- 
 2.51.0
 
