@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CA2BB153E
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 19:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C2EBB1531
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 19:13:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v40LX-0007sC-9I; Wed, 01 Oct 2025 13:10:32 -0400
+	id 1v40M6-0008FX-6L; Wed, 01 Oct 2025 13:11:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v40LM-0007p9-3i
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:10:20 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1v40Lw-0008DO-Gh
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:10:56 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v40L1-000353-Tw
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:10:19 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3b9edf4cf6cso27656f8f.3
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 10:09:54 -0700 (PDT)
+ id 1v40LA-00035k-Dj
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:10:55 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3ecdf2b1751so42190f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 10:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759338592; x=1759943392; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759338595; x=1759943395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TEJm4wFcOou8aAv0mfkgr1uH/LFSQt1dKK+lk8G8z8g=;
- b=EawRu151i0sdHZvcJ2QboORosxAPnJNWNdvfD3SD0qgUTqQG1G4S6+ezhUVfE/WAI0
- MlnBJo3lx3szjH2eFtNdh2czlI3gG1ki+/3hQuxMfOqFHnXrbj6K9kAGShI/s+Yg5zdj
- jWH76EIMGUL2rN5uqVCrLaPAHVTCV3JsVFtfSoTKVdyHdVICv77hbP8z/reFAlZ2njpU
- s4yBN1L8g3smek4j2duvN7G9kgqKlFuZYz8R/+uyBnb20IVajHCuXJ3kv8Hp6OxemjNP
- CLFN4Q23sOhKTyACk7Cipv2g7sHOAMKZF4xbTT65BmAXtf6tqEehQcoKsHqQTAddBQ/9
- GZXA==
+ bh=/US0p2hhA2GvxAL6/BREQXqwUIjr3fUWylgL4CnUZcc=;
+ b=R52ARPOD82L238lSqAmTx3ToqVh7gaMruRLxUebKrJSSnWHGDrUgtu1TJkwF4K/RKV
+ CdqUDSRhldVpLRbunujJYJUvi0Blx3J9ap00t7Tsl2DSlaShlhGKmVIXIggsAwn7MVWk
+ GKp6av7ryN+IscxH/GWTUJyEDl4628n4GTyqIF9fbkj9ohvii3yarxlar4wSmL/mhzWj
+ 7eEcy8Y/On4wHpCjYKy3KLsku8mZHuH4EzM0RuMhHDkdpLKohSlwX2TPGD+CEVq1pRJv
+ tkYjdo3UdNCAuZy2Bqh+Dci77apHk4jQamdbejhvYaSja+54bWWlOj7M4yXNAQxN9f53
+ XO5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759338593; x=1759943393;
+ d=1e100.net; s=20230601; t=1759338595; x=1759943395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TEJm4wFcOou8aAv0mfkgr1uH/LFSQt1dKK+lk8G8z8g=;
- b=VYEJeZ2hubr63edb1ROppxscArMO+YKhkRlGvYY9NKeiswb01edBIjdRB/3qN/eZV1
- T2iJ13TPMCIpBrL6KXIKC2oFozW5Nvmiz27kPjpT2QHw2iGVDOXvhXnxjZ1jOsN4tG+D
- dt+pPEmRetT99rNttgQE8pDJ6AbzU8mvwB4765Y/Byy8TSCdQF3fOKorjkcbh7agP6qX
- WyMiiqvreYqPW+oHkOUofi6X1h/6aMfBjJSPqYtlwsc6ZoTixNdPsohp7XTqR/+NMfjw
- ZaVvLRmcRgddwsHPkjsBzhY3GwLc4GGtgw3VWh7z/jTZw6UUP8t19qGNNh8D8UIeX5Vb
- Ykxg==
-X-Gm-Message-State: AOJu0YwP2SSV2IUPEB7jqGzhAm0o6qCZm7tJ+LgEaxUir6K6Ju7f12MU
- BMUCX4VJg9XfCGQ+l9kq43PTX3RrJVgww4fzKz0SXdKTTONrufOBrob2QQwHcEvDjxc=
-X-Gm-Gg: ASbGncv028GeD74S244BEq9569JYZow2uWnXN5sBJkBPnDBBJch54TCbirbMhGebR10
- f6iVXXSFENkFBgtNF/nE77SS2mcH0Ya4v1AysO81Smrk6rKXl2z+ZhY/TARHIv2bP9C6n1R2flC
- 9QSlVkZRREwxyOUF0UkD+gZ4thZDW9N5qTSWVnMVMT0GHDCnqCaT3yN3tjBKHA94zNFCdD67KTc
- dMfPS4LDWvHbq7i2q/IDxUcbK9CisDGRI+SxID46oADC+DOlBKxEvFGOQippWR5GyEQfnpXATwi
- JnRCZLi6zTEmFpqH4xjeJIY0hwfu2zeZwxpTCX8gCBu80lvt9J7+mIJBG1JUd3O/p7Q9GxpgHc+
- u+jjf4OwTVZtOTf/calU7BPYiHeh9raQzVV6fIbjt/R2bPsrXOOdXKW5COg==
-X-Google-Smtp-Source: AGHT+IH+eGQvfq0dd09/abXjKeyHmIGTJLHNNe2W+UZDsQPn8A9XSJ1PMINbgePAFnEzgBb0zEtmLw==
-X-Received: by 2002:a05:6000:24c9:b0:3eb:df84:62e with SMTP id
- ffacd0b85a97d-425577ed5f5mr3673161f8f.3.1759338592576; 
- Wed, 01 Oct 2025 10:09:52 -0700 (PDT)
+ bh=/US0p2hhA2GvxAL6/BREQXqwUIjr3fUWylgL4CnUZcc=;
+ b=NedYP6VHbah1xmJKPyxUKgysfGm5cmOV0jLD5rn9CNEcirNyDJfNzZeFVZgQPtO6O8
+ q968FN2YYNKtGgzlCRk24Qxom+8KoIOnDLiYLhtOpipMdxjwOGf3aXl30j11fzhfegK4
+ ATgaEn+t45uMJjMxOzeTyf1fyfvlQO7LatG5/jcpr9j7cvQ83X8N2HNc2or6CfLcdLs6
+ hTMcWIiOlrieLsKlHYRtbemf7KaLwRILFdGLtZmSGsHetUkFTiam8GUJ9ANf9BdFkshq
+ /+SyLuHA7vb7LW3liMaXJtBoYomOyQN7nfC3WafN5seHTrCuEvb4lzGLvFg/FV1pzE5U
+ nnIg==
+X-Gm-Message-State: AOJu0YwGG3BYLP212uCSXfMF6BWr8JIy1ShPN0HEfmnwSreENzavdFn6
+ 41oVv7whouQrZtqxfFD8EnDR4MGiRhBqqTq07z9ln8fAB4fYpMeRsur3aE+Hgw0/ZsU=
+X-Gm-Gg: ASbGnct9yVAZr+Hh3GBeX696B3pAMHopAMP2LTzwVretq0iuZLaNCFo6nsiUZTMseVD
+ RUL2aXo0KiTkfQALRzHv2dwmmaksryus/QFGue5t8Z5b/cFdiUhDksFstBf4XvNJuPxd/qzc4El
+ bGt5+rixkQQEtWkWlu1JimOBO+HJcvVZdQmhG/wC8NZRBFM/k3pTE65qriyHsvNgigH15KaXE2F
+ Zj5X/hPU2RfEew3nrS9OEZuxU/tdrcV7cnCqLZyGwwFI//MNzxHg+167t+L9Stdlz2rCmsdN3hn
+ i/TgYcq70JvhlQvYa+Z0b3S9rCC1U3zgGLZIz7/wLvXoPKh5IgpSYDfLhkZ3axaGJBVtCg4Ors/
+ 6wQi/5NEmjCnFjoFKCj3T50vbbtDp56qPCJDoVfd1zOYpo7piaX/SP7hQEA==
+X-Google-Smtp-Source: AGHT+IEPB12wlU5H0rXR2dSO0LE7UwFkkLBX5oStLNiCYTsZmdsOUFA5p3xKqed5/q7UJ6WNDP34qw==
+X-Received: by 2002:a05:6000:240a:b0:3e7:6197:9947 with SMTP id
+ ffacd0b85a97d-42557a15b6fmr3397315f8f.53.1759338594596; 
+ Wed, 01 Oct 2025 10:09:54 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e691820c3sm16705e9.7.2025.10.01.10.09.48
+ 5b1f17b1804b1-46e675c67f7sm9045965e9.2.2025.10.01.10.09.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 10:09:48 -0700 (PDT)
+ Wed, 01 Oct 2025 10:09:52 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D049D5F809;
+ by draig.lan (Postfix) with ESMTP id EC0C15F80B;
  Wed, 01 Oct 2025 18:09:47 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,24 +72,24 @@ Cc: qemu-s390x@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Thomas Huth <thuth@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 4/7] tests/lcitool: drop 64 bit guests from i686 cross build
-Date: Wed,  1 Oct 2025 18:09:44 +0100
-Message-ID: <20251001170947.2769296-5-alex.bennee@linaro.org>
+Subject: [PATCH 5/7] tests/lcitool: bump custom runner packages to Ubuntu 24.04
+Date: Wed,  1 Oct 2025 18:09:45 +0100
+Message-ID: <20251001170947.2769296-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251001170947.2769296-1-alex.bennee@linaro.org>
 References: <20251001170947.2769296-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,42 +105,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With only TCG available we can't support 64 bit guests on a 32 bit
-host.
+In anticipation of new runners lets move to a newer Ubuntu LTS.
 
-Fixes: 5c27baf9519 (docs/about/deprecated: Deprecate 32-bit x86 hosts for system emulation)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/docker/dockerfiles/debian-i686-cross.docker | 2 +-
- tests/lcitool/refresh                             | 2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ scripts/ci/setup/gitlab-runner.yml                   |  2 +-
+ scripts/ci/setup/ubuntu/build-environment.yml        | 12 ++++++------
+ ...tu-2204-aarch64.yaml => ubuntu-2404-aarch64.yaml} |  4 +++-
+ ...ubuntu-2204-s390x.yaml => ubuntu-2404-s390x.yaml} |  4 +++-
+ tests/lcitool/refresh                                |  4 ++--
+ 5 files changed, 15 insertions(+), 11 deletions(-)
+ rename scripts/ci/setup/ubuntu/{ubuntu-2204-aarch64.yaml => ubuntu-2404-aarch64.yaml} (96%)
+ rename scripts/ci/setup/ubuntu/{ubuntu-2204-s390x.yaml => ubuntu-2404-s390x.yaml} (96%)
 
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index 4e8b3a8293d..2998764065f 100644
---- a/tests/docker/dockerfiles/debian-i686-cross.docker
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -178,7 +178,7 @@ ENV ABI "i686-linux-gnu"
- ENV MESON_OPTS "--cross-file=i686-linux-gnu"
- ENV RUST_TARGET "i686-unknown-linux-gnu"
- ENV QEMU_CONFIGURE_OPTS --cross-prefix=i686-linux-gnu-
--ENV DEF_TARGET_LIST x86_64-softmmu,x86_64-linux-user,i386-softmmu,i386-linux-user
-+ENV DEF_TARGET_LIST i386-softmmu,i386-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
+diff --git a/scripts/ci/setup/gitlab-runner.yml b/scripts/ci/setup/gitlab-runner.yml
+index 57e7faebf10..7350f6cff4a 100644
+--- a/scripts/ci/setup/gitlab-runner.yml
++++ b/scripts/ci/setup/gitlab-runner.yml
+@@ -103,7 +103,7 @@
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['architecture'] == 'aarch64'
+-        - ansible_facts['distribution_version'] == '22.04'
++        - ansible_facts['distribution_version'] == '24.04'
+ 
+     - name: Install the gitlab-runner service using its own functionality
+       command: "/usr/bin/gitlab-runner install --user gitlab-runner --working-directory /home/gitlab-runner"
+diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
+index 56b51609e38..6042750cb4d 100644
+--- a/scripts/ci/setup/ubuntu/build-environment.yml
++++ b/scripts/ci/setup/ubuntu/build-environment.yml
+@@ -35,19 +35,19 @@
+     # the package lists are updated by "make lcitool-refresh"
+     - name: Include package lists based on OS and architecture
+       include_vars:
+-        file: "ubuntu-2204-{{ ansible_facts['architecture'] }}.yaml"
++        file: "ubuntu-2404-{{ ansible_facts['architecture'] }}.yaml"
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+-        - ansible_facts['distribution_version'] == '22.04'
++        - ansible_facts['distribution_version'] == '24.04'
+ 
+-    - name: Install packages for QEMU on Ubuntu 22.04
++    - name: Install packages for QEMU on Ubuntu 24.04
+       package:
+         name: "{{ packages }}"
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+-        - ansible_facts['distribution_version'] == '22.04'
++        - ansible_facts['distribution_version'] == '24.04'
+ 
+-    - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 22.04
++    - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 24.04
+       package:
+         name:
+           - binutils-arm-linux-gnueabihf
+@@ -62,6 +62,6 @@
+           - zlib1g-dev:armhf
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+-        - ansible_facts['distribution_version'] == '22.04'
++        - ansible_facts['distribution_version'] == '24.04'
+         - ansible_facts['architecture'] == 'aarch64'
+ 
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+similarity index 96%
+rename from scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+rename to scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+index 2ca4a5392f5..ce632d97108 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-aarch64.yaml
+@@ -1,12 +1,13 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool variables --host-arch aarch64 ubuntu-2204 qemu
++#  $ lcitool variables --host-arch aarch64 ubuntu-2404 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+ packages:
+   - bash
+   - bc
++  - bindgen
+   - bison
+   - bsdextrautils
+   - bzip2
+@@ -92,6 +93,7 @@ packages:
+   - libvdeplug-dev
+   - libvirglrenderer-dev
+   - libvte-2.91-dev
++  - libxdp-dev
+   - libxen-dev
+   - libzstd-dev
+   - llvm
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+similarity index 96%
+rename from scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+rename to scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+index 7198fbbcbb7..f45f75c9602 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-s390x.yaml
+@@ -1,12 +1,13 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool variables --host-arch s390x ubuntu-2204 qemu
++#  $ lcitool variables --host-arch s390x ubuntu-2404 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+ packages:
+   - bash
+   - bc
++  - bindgen
+   - bison
+   - bsdextrautils
+   - bzip2
+@@ -91,6 +92,7 @@ packages:
+   - libvdeplug-dev
+   - libvirglrenderer-dev
+   - libvte-2.91-dev
++  - libxdp-dev
+   - libzstd-dev
+   - llvm
+   - locales
 diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 645959318a3..185a47cebe6 100755
+index 185a47cebe6..056cfb6e9d7 100755
 --- a/tests/lcitool/refresh
 +++ b/tests/lcitool/refresh
-@@ -216,8 +216,6 @@ try:
-     generate_dockerfile("debian-i686-cross", "debian-13",
-                         cross="i686",
-                         trailer=cross_build("i686-linux-gnu-",
--                                            "x86_64-softmmu,"
--                                            "x86_64-linux-user,"
-                                             "i386-softmmu,i386-linux-user"))
+@@ -270,8 +270,8 @@ try:
+     #
+     # Ansible package lists
+     #
+-    generate_yaml("ubuntu", "ubuntu-2204", "aarch64")
+-    generate_yaml("ubuntu", "ubuntu-2204", "s390x")
++    generate_yaml("ubuntu", "ubuntu-2404", "aarch64")
++    generate_yaml("ubuntu", "ubuntu-2404", "s390x")
  
-     # mips no longer supported in debian-13
+ 
+     sys.exit(0)
 -- 
 2.47.3
 
