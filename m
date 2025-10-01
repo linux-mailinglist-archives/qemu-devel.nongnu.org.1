@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627B9BB0F46
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52039BB102D
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:16:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yQc-0001WL-Lo; Wed, 01 Oct 2025 11:07:39 -0400
+	id 1v3yQa-0001V1-LK; Wed, 01 Oct 2025 11:07:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yQX-0001QY-I6
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:07:33 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yQW-0001P2-Hv
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:07:32 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yPT-0000hX-KM
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:07:33 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3ed20bdfdffso6125268f8f.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:06:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yPS-0000iA-AN
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:07:32 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-46e3cdc1a6aso8995605e9.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759331168; x=1759935968; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759331173; x=1759935973; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g9kbDI6gt6dPazB+RCzdsNUL1mFGQ3AIw1PjA8Z/NCU=;
- b=fT0WXwIltjUw1UfAaiCfOfEc6RtWK4HmJNrbxxbTPhOIeq6yKrhdA18zvh7UUGeOXt
- wtbf8pOCXhDMME4fILwtV6CGyTCe82xtgA3CE+v40Q3gKBYq5PMgqq0w3L36L0Z+y7DL
- BzC6BVg1QuwuCm0SGD3JbRD4JSc0e/irFuVZoVizJ2X3LVjGX+ss+E+xVGQ0ngycUhiO
- A/Ct3ZBCIfyTA/Q5ZVC2Bp4g1GT+ax/3JxXF2ZbBDG7ruh4HGOUi/ezzNYjwWjInaTcw
- ZgIMX479Dr02Z/E++/SZAAcREWseZEVrbKg9OMIGLsc6prsYm0JcFXAdwsPgFUWPrbgn
- N4Dg==
+ bh=HlF0EsBCoNK14XGfky/iWN9CIlAKTNYjEeycOlfIXIg=;
+ b=dXr/95V0xfA5Vn28niOQYMma0oQ4EVePsCqhH+dKWk8Zx7RuuTllI1VS/eIK5fVu9d
+ UQF1R+P8P4MMwD9yVxxYMmuCh05J7gLJoMes+hYf7LeMH1XwL+8u5CtMlyaRbtAWDfq9
+ /vS+gdYYQ/k2lz0cQMNt6rxXZnSoFHlJWDkDWMQEthAa9r4+9H/UEM/UwxMVELFQguVH
+ 8fQVtJrTNXke53Tsys9ZeLjRXPA8Ho5bmOpmbNnktDUbPZa9k5bfgDTNh2Czf/ygKXXa
+ VYMLHZvxlRUro5d4FiejwsKg2SPYDDiob3ploSKN+qmc/Ahj3YrncL0k9Y2fzw6Q1X4B
+ ka+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759331168; x=1759935968;
+ d=1e100.net; s=20230601; t=1759331173; x=1759935973;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g9kbDI6gt6dPazB+RCzdsNUL1mFGQ3AIw1PjA8Z/NCU=;
- b=uHMXzCyhf9dSNaSlW0gsxSKcB/cTz+qdcmg+Y3hnR0uJTwxPCkWF731uvDeuEx5h5M
- 6O8s6pk6Z+FYvwVGJwrihW61kJFK1k8LcbyXKhq2jpkl59TFyzP9RFacg5q6I5nTuq70
- bRpq1hZwFP0dR9ljqtX7y9TOC/YIuwdjOB3H+ZQlVkD5jy+UmhZS7g4TcC9HSsF1qBgC
- eY0QZoA24fwQclritiMzxWw9n6LvCEjRey92ZKrrwlY60zIWDcSl3ADsofeK2ndwjduF
- hKqH217GLmHROd4id5oirfxSfZcHJ7jrraV9NZliO49K/kxpkEmD+CHunwEBmZotCQDi
- j22g==
-X-Gm-Message-State: AOJu0YwmzjCs448VWz1MkvoJT0fsE0Mshy5H9skT8bwISjq9nasf5dje
- w1kJ1jx3SrTcLocju1+IxVQ/NPKR3jQBDWVuQT2lqzijvz+TbUrQ4O7UP7hD4avYuwZTaT8GJ23
- xVt9wtv6vwQ==
-X-Gm-Gg: ASbGncto4zTwzy/DqlWwn8ijeWfsv/zuZ/ROFzgNpFtOpk53E8AJtqN/xSiR9MaNk9H
- OexQnrwcNo/6DWdxD3Xbl0GwCxMWgmCohBRT9T/O4dfBuImg+u5YI5b6gC8IvqdeS8e8f2pRVCm
- cN4qSe1qN+LG8dq9f9BhLbEqymPRBV2gy6GLkJbNatcZFkeddVHZn+EnBo6qEXVFiQUqixeBsI4
- 2B8ZEN7TGHjbt2fczF01yILU07smmBPed8wRXZpcYNnk7FCJ/wRuSqB8kg35Pt21FWRJftVak8C
- WGyL5cQIWk2EA/rGDQb2CujffGfiQ+GeJQKTgnVKCSyNAeosETDoO3Da0mJA37cz+55OAj4d39N
- Wrpk+fEmDuZgFk1Wv475HSQeorJ9fYHG94UD/yuYQ0LBdpzXVUUV7Xd6hdPmMku03rgG6GkxpJ8
- dRC0sCrcjsZigkUQkCjgrZ
-X-Google-Smtp-Source: AGHT+IFG7MuDuZJFDFbAIRDXd/Qu078WvgZ2+fJk49zovMAfy5ixIcVr4nN1V3C3tTz01soo0R8NEQ==
-X-Received: by 2002:a05:6000:1889:b0:3f7:b7ac:f3aa with SMTP id
- ffacd0b85a97d-4255780b83bmr2820427f8f.29.1759331167788; 
- Wed, 01 Oct 2025 08:06:07 -0700 (PDT)
+ bh=HlF0EsBCoNK14XGfky/iWN9CIlAKTNYjEeycOlfIXIg=;
+ b=M3HfASfwKnzCaDPujeOJoujbM5YO/ZY1Up1DzssqbTBYFFxtLlCOB8yTUTB7vZSLGz
+ kjuFI3fDY9iH06ASQhUMp8/m7MCwJyGrgAjk2svEczzwXPkCYqFvDzoFsl+Zgf1+BumH
+ BvHbDHIgltZ+4P0J7nUislwoqcpjcVa+c/k/0myb0JRi1GJDewOLn5dItHfLmzvVXsDL
+ pDS1zATiQDjNKdKOz13FGGGJ0aRuFDfkZ5uQE6+agOjTy8jLGiUtDxqYRF0WEYDd6Aan
+ dnb5walvbO23u8x6kNPqyoL/4KwTIcqWWlqaRZ98BMgwxae6lyDmTZadm5TYoCP4tNdO
+ B33A==
+X-Gm-Message-State: AOJu0YztI+mBJGytYIQ7XipwSiTl2ycUK5edim8YJHvYthK5RoQY2pYS
+ 5DBfKeIGrbFSPYitU10xbPXL+DAxs94o5D/Y571rQjpreW5s175P7245PjyXLbmwF3/XZzNcDQb
+ CDG03aYavTg==
+X-Gm-Gg: ASbGncvk19koiLDeJSz2fAvbXIAB0MjzqnJ1N0NOnV9kaM21kpT453z+dWoSAru5q3S
+ WDPLoLI9TShZJ+dg+8kuCWnPa2RPiCD+l8IebAXL97bABK4AOe58DRlUNObxHpzKuEqI2R1SSvx
+ j6BN+bzPff+u8t8YWqVOMBdVtjegRnapyf9Pj8n9xVaps6VNJdsk1QiIq/KOMBA7+iJf4OtttjB
+ 2fcc71JKbr3k7UOlcMmHkFKmAlv0b6HMOawC+S3jOVRdYuv9ELyaFsAqEy2oQvcxnNrFpu6W9Ci
+ rEpvL7RL08MW99twL13ROJokSCx1wKcp62Y3IOpTg0bHWqK/Pz2zU/MMJmyIxoeTg7hoGYQK0jv
+ YmoyBiVLpuoPeH0oKdROTEQq2rRe9mMbV5BoyA7LjlVh8flUKQGEwCO8zuqzE4zoT3MYSpGUkEl
+ 1LBYqXmYWCR5tNvM9GtxS3
+X-Google-Smtp-Source: AGHT+IFTNHfjgnNa+RWfDs8UzIIDSSUm0wBbmygGptOGYKsRpIMIBY+62JNxNRiOmnEMBtsmysqGsA==
+X-Received: by 2002:a05:600c:c117:b0:46e:6339:79c5 with SMTP id
+ 5b1f17b1804b1-46e63397a8bmr19297135e9.5.1759331172869; 
+ Wed, 01 Oct 2025 08:06:12 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc82f2ff6sm27282833f8f.56.2025.10.01.08.06.06
+ 5b1f17b1804b1-46e6199f589sm43899835e9.10.2025.10.01.08.06.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 08:06:07 -0700 (PDT)
+ Wed, 01 Oct 2025 08:06:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
@@ -71,19 +71,23 @@ Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 07/22] target/xtensa: Get cpu first addr space with
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH 08/22] target/riscv: Get cpu first addr space with
  cpu_get_address_space()
-Date: Wed,  1 Oct 2025 17:05:12 +0200
-Message-ID: <20251001150529.14122-8-philmd@linaro.org>
+Date: Wed,  1 Oct 2025 17:05:13 +0200
+Message-ID: <20251001150529.14122-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001150529.14122-1-philmd@linaro.org>
 References: <20251001150529.14122-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,25 +116,42 @@ helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/xtensa/mmu_helper.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/riscv/cpu_helper.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
-index 71330fc84b9..9c868ec3cde 100644
---- a/target/xtensa/mmu_helper.c
-+++ b/target/xtensa/mmu_helper.c
-@@ -889,9 +889,10 @@ static bool get_pte(CPUXtensaState *env, uint32_t vaddr, uint32_t *pte)
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 3479a62cc7f..d28230d12ea 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1282,6 +1282,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
      }
  
-     if (ret == 0) {
-+        AddressSpace *as = cpu_get_address_space(cs, 0);
-         MemTxResult result;
+     CPUState *cs = env_cpu(env);
++    AddressSpace *as = cpu_get_address_space(cs, 0);
+     int va_bits = PGSHIFT + levels * ptidxbits + widened;
+     int sxlen = 16 << riscv_cpu_sxl(env);
+     int sxlen_bytes = sxlen / 8;
+@@ -1365,9 +1366,9 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+         }
  
--        *pte = address_space_ldl(cs->as, paddr, MEMTXATTRS_UNSPECIFIED,
-+        *pte = address_space_ldl(as, paddr, MEMTXATTRS_UNSPECIFIED,
-                                  &result);
-         if (result != MEMTX_OK) {
-             qemu_log_mask(CPU_LOG_MMU,
+         if (riscv_cpu_mxl(env) == MXL_RV32) {
+-            pte = address_space_ldl(cs->as, pte_addr, attrs, &res);
++            pte = address_space_ldl(as, pte_addr, attrs, &res);
+         } else {
+-            pte = address_space_ldq(cs->as, pte_addr, attrs, &res);
++            pte = address_space_ldq(as, pte_addr, attrs, &res);
+         }
+ 
+         if (res != MEMTX_OK) {
+@@ -1561,7 +1562,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+          */
+         MemoryRegion *mr;
+         hwaddr l = sxlen_bytes, addr1;
+-        mr = address_space_translate(cs->as, pte_addr, &addr1, &l,
++        mr = address_space_translate(as, pte_addr, &addr1, &l,
+                                      false, MEMTXATTRS_UNSPECIFIED);
+         if (memory_region_is_ram(mr)) {
+             target_ulong *pte_pa = qemu_map_ram_ptr(mr->ram_block, addr1);
 -- 
 2.51.0
 
