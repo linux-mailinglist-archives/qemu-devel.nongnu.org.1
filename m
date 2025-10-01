@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8737BB11E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:40:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBEFBB12B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yrw-0006Lo-4v; Wed, 01 Oct 2025 11:35:52 -0400
+	id 1v3ysU-0006k4-N4; Wed, 01 Oct 2025 11:36:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1v3yrZ-0005bl-HR; Wed, 01 Oct 2025 11:35:33 -0400
+ id 1v3ys8-0006Z5-Gn; Wed, 01 Oct 2025 11:36:06 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1v3yr9-0006SL-OJ; Wed, 01 Oct 2025 11:35:25 -0400
+ id 1v3yrt-0006pL-QY; Wed, 01 Oct 2025 11:36:00 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5588D56F2FF;
- Wed, 01 Oct 2025 17:34:25 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B240356FC02;
+ Wed, 01 Oct 2025 17:35:23 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id l6Eqi0KpxAaJ; Wed,  1 Oct 2025 17:34:23 +0200 (CEST)
+ id v17iwLDMpHUJ; Wed,  1 Oct 2025 17:35:21 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4E6F456FD27; Wed, 01 Oct 2025 17:34:23 +0200 (CEST)
+ id 9D57656F327; Wed, 01 Oct 2025 17:35:21 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4C91656FD26;
- Wed, 01 Oct 2025 17:34:23 +0200 (CEST)
-Date: Wed, 1 Oct 2025 17:34:23 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9B44E56F320;
+ Wed, 01 Oct 2025 17:35:21 +0200 (CEST)
+Date: Wed, 1 Oct 2025 17:35:21 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
 cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org, 
@@ -36,23 +36,23 @@ cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org, 
  Paolo Bonzini <pbonzini@redhat.com>, 
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 02/22] disas/disas-mon: Get cpu first addr space with
+ Peter Xu <peterx@redhat.com>, "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH 03/22] monitor/hmp-cmds: Get cpu first addr space with
  cpu_get_address_space()
-In-Reply-To: <20251001150529.14122-3-philmd@linaro.org>
-Message-ID: <543b8aa4-0fc4-7988-943c-55c3a462d07a@eik.bme.hu>
+In-Reply-To: <20251001150529.14122-4-philmd@linaro.org>
+Message-ID: <2b87c3ee-2b25-bea5-3f73-bd089848d19e@eik.bme.hu>
 References: <20251001150529.14122-1-philmd@linaro.org>
- <20251001150529.14122-3-philmd@linaro.org>
+ <20251001150529.14122-4-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- boundary="3866299591-462952728-1759332863=:37311"
+ boundary="3866299591-943157711-1759332921=:37311"
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,7 +71,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-462952728-1759332863=:37311
+--3866299591-943157711-1759332921=:37311
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
 
@@ -82,31 +82,35 @@ On Wed, 1 Oct 2025, Philippe Mathieu-Daudé wrote:
 >
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-> disas/disas-mon.c | 3 ++-
+> monitor/hmp-cmds-target.c | 3 ++-
 > 1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/disas/disas-mon.c b/disas/disas-mon.c
-> index 9c693618c27..f2e45d16021 100644
-> --- a/disas/disas-mon.c
-> +++ b/disas/disas-mon.c
-> @@ -29,9 +29,10 @@ physical_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
->                      struct disassemble_info *info)
-> {
->     CPUDebug *s = container_of(info, CPUDebug, info);
-> +    AddressSpace *as = cpu_get_address_space(s->cpu, 0);
->     MemTxResult res;
->
-> -    res = address_space_read(s->cpu->as, memaddr, MEMTXATTRS_UNSPECIFIED,
-> +    res = address_space_read(as, memaddr, MEMTXATTRS_UNSPECIFIED,
->                              myaddr, length);
+> diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+> index e9820611466..602af851328 100644
+> --- a/monitor/hmp-cmds-target.c
+> +++ b/monitor/hmp-cmds-target.c
+> @@ -128,6 +128,8 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+>     uint8_t buf[16];
+>     uint64_t v;
+>     CPUState *cs = mon_get_cpu(mon);
+> +    AddressSpace *as = cs ? cpu_get_address_space(cs, 0)
+> +                          : &address_space_memory;
 
-Does this now fit on one line?
+Why move from local scope to an upper level?
 
 Regards,
 BALATON Zoltan
 
->     return res == MEMTX_OK ? 0 : EIO;
-> }
+>     if (!cs && (format == 'i' || !is_physical)) {
+>         monitor_printf(mon, "Can not dump without CPU\n");
+> @@ -174,7 +176,6 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+>         if (l > line_size)
+>             l = line_size;
+>         if (is_physical) {
+> -            AddressSpace *as = cs ? cs->as : &address_space_memory;
+>             MemTxResult r = address_space_read(as, addr,
+>                                                MEMTXATTRS_UNSPECIFIED, buf, l);
+>             if (r != MEMTX_OK) {
 >
---3866299591-462952728-1759332863=:37311--
+--3866299591-943157711-1759332921=:37311--
 
