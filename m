@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3508CBB12A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA71BB11CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yrM-0005MS-LF; Wed, 01 Oct 2025 11:35:16 -0400
+	id 1v3yrN-0005LF-1V; Wed, 01 Oct 2025 11:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1v3yrD-0005FT-As
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:35:08 -0400
+ id 1v3yrG-0005Hd-8l
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:35:10 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1v3yqq-0006SB-Qd
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:35:05 -0400
+ id 1v3yqo-0006Se-B2
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:35:07 -0400
 Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591FMkbd018422;
- Wed, 1 Oct 2025 15:34:24 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591FMxQP018985;
+ Wed, 1 Oct 2025 15:34:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=UYKz8fe0ki4zWq5OQKsWokyeI0WdugQL825zVbg4P3Q=; b=
- fOBSY6KboeuR1r+6VcUpmpIbizS++OBDduEl8KgBpWbX3SqvNf+akrRtF6W7Yq/s
- oESK99vTUbtG+yK9g4rg8UpOubayp5t0gfdPe1RHWkq2M2YzxIEi743Th+x85l+K
- h8Mtc0bpwk5TK4BO8T6pJFyXXlINX83WvUXBkv8uDdBc9dd+QD5FLzhvJ5NRPK9P
- ruNkkNZ6cWx3zeWlmEgRjsXxvHO6WLCjXlOoj5SgrxbbwiQZGxmBsrO4/FXd7SE4
- m0F9h8DAlHygflE1Uvi5LLd15MMc31ou/glOVpiZKbzOo3gkDUMhH56peXzj585V
- cHeYzyRdYb8KtovdMdyxKw==
+ corp-2025-04-25; bh=V9trtFnBvuxZBqvBBLkQIWBRqyPjw7v9ew/4Le6jJJs=; b=
+ TQ5takVmrVdodXFBetnixUfQ4O7Ulhgx6p7z2+klcuo1Fa5z5XBc9Oy5hFX70+21
+ xCUb7b0j0SDCjqm7j4HTHRIie19Zs2DJarc3Tl2U5VjkDZgPZ0e+2rm6q+To8ubB
+ vRiNf+CUpPFXSk6xlhupHnUffO8X+blfi1K6hbeyrQ3jrzbpskw6vc7oAmtI87Cl
+ gzezFDD3bsXBMGq8QMRkkqcBmVdJnUL+tTHM7Ae3uToRa9quAnzp8WE4sLwPu9B8
+ b8mpruApVstvQUEulU9Y4IoEHMqI8+0HfCddHfcycY3378mVtGM74gzHsBx6QM9m
+ rF3TWyrV/9YdOcsXMmGJWQ==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gmrfsmk0-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gmrfsmk1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 01 Oct 2025 15:34:24 +0000 (GMT)
+ Wed, 01 Oct 2025 15:34:25 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 591Ep1PV023324; Wed, 1 Oct 2025 15:34:23 GMT
+ with ESMTP id 591EkvJ2023209; Wed, 1 Oct 2025 15:34:23 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 49e6caaw8w-1
+ 49e6caaw96-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 01 Oct 2025 15:34:23 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 591FYCr6014790;
- Wed, 1 Oct 2025 15:34:22 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 591FYCr8014790;
+ Wed, 1 Oct 2025 15:34:23 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 49e6caaw0k-15; Wed, 01 Oct 2025 15:34:22 +0000
+ ESMTP id 49e6caaw0k-16; Wed, 01 Oct 2025 15:34:23 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
@@ -60,9 +60,9 @@ Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Cedric Le Goater <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 14/19] migration-test: only_source option
-Date: Wed,  1 Oct 2025 08:34:06 -0700
-Message-Id: <1759332851-370353-15-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 15/19] migration-test: shm path accessor
+Date: Wed,  1 Oct 2025 08:34:07 -0700
+Message-Id: <1759332851-370353-16-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1759332851-370353-1-git-send-email-steven.sistare@oracle.com>
 References: <1759332851-370353-1-git-send-email-steven.sistare@oracle.com>
@@ -74,30 +74,29 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2509150000 definitions=main-2510010134
-X-Proofpoint-ORIG-GUID: ZP0uu2uRG3eT6vw59DEosQgSpJJnsvoc
-X-Proofpoint-GUID: ZP0uu2uRG3eT6vw59DEosQgSpJJnsvoc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE3MCBTYWx0ZWRfX2EjUu/pHJHeL
- sFJqkPzWoWSbzLb+pj2TJWjFkdSMLldcJSzfirY2hWFnRspz8Jo/vp/izLeHjXXrZMU1V9hmJTw
- 8RYuoDWNWI0t+5KlX3NdaTf74CPJ4bx2rr84/uzGd/LgMQYQD09D13pbtxC88B6lK9brgOPuNnk
- 0PnWYzUzJUQTKGNwxNOdTYwbVI9LVJ4JJ/ypN4EHyhtElDCYzeHdyhBxK8IRZSkpW4TNlxgXl7X
- 4zbe3VQ4FGp1xhOhr6YRtnqETZvJM9DsBzxGKrwKQyn96oXLHJo0EPENCDC4Gwi29RekBPeXcrn
- Kv6rL+JeoBQb09Dh00BgT6Jj6oQ6QncNcrXPPd9ksomSe4ENTz+GeV4rITRg/ltlYggPXXEzmmr
- 9CKH/yrmvKQ2QPAQtKbuKRYn0nXvug==
-X-Authority-Analysis: v=2.4 cv=VpMuwu2n c=1 sm=1 tr=0 ts=68dd4a00 b=1 cx=c_pps
+X-Proofpoint-ORIG-GUID: R3-ySa7UbA2uYH7VyXbQk8mhqtcCNKKo
+X-Proofpoint-GUID: R3-ySa7UbA2uYH7VyXbQk8mhqtcCNKKo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE3MCBTYWx0ZWRfXymJOgaJsEkoV
+ jyKG7Wh0S6wB5AvDoJm/PRcKXxyH+tV4RibF6MSitHxUidVxqHiGlU8XcSOaoZGAsi4JJ+rQw65
+ DRWsOIEUYp0hllFj7FnKEziTpJnhZAr9yAJNzxiCdTAXqgEQH2ul3DE4XPF1jpeM1DCMsgsDTfg
+ YSH58TkfIfead0qonOn3MF96djlymopXxJG0DqmwKRYLsKTX9oc6/Kt0jxxMrf+RyFiqnYV6Dlm
+ KgOIxk+8MG9xiSZcix6c4PRYDlnqSViesRav+vuwRQFJLlXDQodU0Ct/M/7Oc0v+Oz8wbqSNaJb
+ ZpeZzrswCOmyxqBRnkbHuOcvMqI9CHZcaOlTIX6NOZ6g7NKdhV/zcxxftXe3gY11Sx0lSxefssr
+ k1f9sipZJJv9/OXmX5wz/so4/li1CQ==
+X-Authority-Analysis: v=2.4 cv=VpMuwu2n c=1 sm=1 tr=0 ts=68dd4a01 b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117
  a=WeWmnZmh0fydH62SvGsd2A==:17
- a=x6icFKpwvdMA:10 a=yPCof4ZbAAAA:8 a=JlHfyRBGxHf9ofkGAE4A:9
- a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19
+ a=x6icFKpwvdMA:10 a=yPCof4ZbAAAA:8 a=mXoANcZEXaB-ueEzDlQA:9
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,84 +112,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the only_source option, analogous to only_target.
+Define an accessor for the shm path.  It will be referenced from
+multiple sites in a subsequent patch.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.h |  2 ++
- tests/qtest/migration/framework.c | 24 +++++++++++++++---------
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ tests/qtest/migration/framework.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 01e425e..f1bb9d4 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -103,6 +103,8 @@ typedef struct {
-      */
-     bool hide_stderr;
-     bool use_shmem;
-+    /* only launch the source process */
-+    bool only_source;
-     /* only launch the target process */
-     bool only_target;
-     /* Use dirty ring if true; dirty logging otherwise */
 diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 407c902..9564293 100644
+index 9564293..9d04f36 100644
 --- a/tests/qtest/migration/framework.c
 +++ b/tests/qtest/migration/framework.c
-@@ -234,7 +234,7 @@ static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
-      * to mimic as closer as that.
-      */
-     migrate_set_capability(from, "events", true);
--    if (!args->defer_target_connect) {
-+    if (!args->defer_target_connect && to) {
-         migrate_set_capability(to, "events", true);
-     }
- 
-@@ -246,8 +246,10 @@ static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
-     if (args->caps[MIGRATION_CAPABILITY_MULTIFD]) {
-         migrate_set_parameter_int(from, "multifd-channels",
-                                   MULTIFD_TEST_CHANNELS);
--        migrate_set_parameter_int(to, "multifd-channels",
--                                  MULTIFD_TEST_CHANNELS);
-+        if (to) {
-+            migrate_set_parameter_int(to, "multifd-channels",
-+                                      MULTIFD_TEST_CHANNELS);
-+        }
-     }
- 
+@@ -255,6 +255,11 @@ static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
      return;
-@@ -410,11 +412,13 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-                                  shmem_opts ? shmem_opts : "",
-                                  args->opts_target ? args->opts_target : "",
-                                  ignore_stderr);
--    *to = qtest_init_ext(QEMU_ENV_DST, cmd_target, capabilities,
--                         !args->defer_target_connect);
--    qtest_qmp_set_event_callback(*to,
--                                 migrate_watch_for_events,
--                                 &dst_state);
-+    if (!args->only_source) {
-+        *to = qtest_init_ext(QEMU_ENV_DST, cmd_target, capabilities,
-+                             !args->defer_target_connect);
-+        qtest_qmp_set_event_callback(*to,
-+                                     migrate_watch_for_events,
-+                                     &dst_state);
-+    }
+ }
  
-     /*
-      * Remove shmem file immediately to avoid memory leak in test failed case.
-@@ -424,7 +428,9 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         unlink(shmem_path);
++static char *test_shmem_path(void)
++{
++    return g_strdup_printf("/dev/shm/qemu-%d", getpid());
++}
++
+ int migrate_start(QTestState **from, QTestState **to, const char *uri,
+                   MigrateStart *args)
+ {
+@@ -342,7 +347,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
      }
  
--    migrate_start_set_capabilities(*from, *to, args);
-+    migrate_start_set_capabilities(*from,
-+                                   args->only_source ? NULL : *to,
-+                                   args);
- 
-     return 0;
- }
+     if (args->use_shmem) {
+-        shmem_path = g_strdup_printf("/dev/shm/qemu-%d", getpid());
++        shmem_path = test_shmem_path();
+         shmem_opts = g_strdup_printf(
+             "-object memory-backend-file,id=mem0,size=%s"
+             ",mem-path=%s,share=on -numa node,memdev=mem0",
 -- 
 1.8.3.1
 
