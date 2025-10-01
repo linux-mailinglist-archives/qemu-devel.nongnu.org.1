@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215A4BB109A
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2577ABB0FD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3ySB-0003wG-Hk; Wed, 01 Oct 2025 11:09:15 -0400
+	id 1v3ySG-00044D-PV; Wed, 01 Oct 2025 11:09:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yRt-0003Ne-75
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:08:57 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3ySB-0003zM-2y
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:09:16 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yQA-0000og-IO
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:08:56 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-46e491a5b96so34181635e9.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:07:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yQB-0000pB-Qf
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:09:13 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3ee1221ceaaso5882462f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:07:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759331218; x=1759936018; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759331224; x=1759936024; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2Cha6BobeeEvO84twHa/r09MXWbfgCJBUQ9S+PNpAf0=;
- b=qJs7IdgzTa0OJrelUSpWJtIPycjtWUcTYM6pRjbu+j7PI6DsBd3hWqFgPghlEgzWie
- SLlDazUXQMaorGY6pb6cOa+qnzQdLMqFKU0a9/uaa5NeuL/XOIzLdj+GHYVrcbw6YYrK
- bfsTYbKMA02rtYyBqESfLEtWBrGskColkBVJplP6q6zi2w/PAbTuioVgJBNkpw3RuPHo
- KrT6pqFN4Y9LLZzac969mPL6D+9CEoCGM/KXRdb7WDboOstHrOKKwHlSmSap+iDLGQd9
- 6WkfMhGEkn3dJxfiV0GGnMM6IXrAPjW/FYIXzc+THNgd0ytuMnP7li94dVeJ+WNHbBO7
- VJIA==
+ bh=vgQ08Zha+dXWvHaKOFenolXy22Pp5EZeas9Q+KB02QI=;
+ b=ekzFgUUrd7+S3S5edsupqlcrD2zz6ZIr4Lf2Qfmxb2J566SY6IxX8Uy/B2vCyCAt+P
+ jSPTEN53sY+Z3D+v1YDIoG2F9MyCvG6ThVcVYxXLbJvtljFR4oGyBg6SJg0n8Hluks8u
+ IwLEH2Tk6AvSi6nPww5vJb1UQdSfWeZoCnSQJ6TuSs6L0EGwOHeP14mDUVn649xxFFo5
+ 8Dlj6nWsNZ6gphdHwWK3d4Mj78I5Equm4UelAMB7zaOSNHO2YfEx1BLmi/c8o2A0vu4r
+ 6j78EP1JYAZkW0Z6SygXnPZxbJUDUd5ffaTLa1vUlmnCthod7YmBvgRy7gokucOQZFPc
+ Xe/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759331218; x=1759936018;
+ d=1e100.net; s=20230601; t=1759331224; x=1759936024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2Cha6BobeeEvO84twHa/r09MXWbfgCJBUQ9S+PNpAf0=;
- b=enntmno+mCJ312m3Y9RH6km2m2r2rfyY+0vC+ZZzSuyO7E9tUCT6xJUAWAl0eRWtav
- dFFYBqVP0k8UzZkgQ2Pvz7Ebuyxf/eO6CO2zD/pjGP6KbUQeIRoC0xBKzj3iAzcuZgLx
- tDDPaKbwZGgK10pjiH6eE5Xpp89M7gUmiD/c0RD9qH+gxM7Jh8BuGoR9MyJqseLwsO6T
- PoxWD651czpK9gCs1DLRxsvklM+8OeMbc+WYEoU/Nrts/TUmbD/iDqQQ85Ouu+eCKdW3
- y+lkPrzfI0x/QxCW8i8S+c4aa4Nq7QHHWC4oCR3OMN81Tu0k0zeB6q3ze9dvgMswJzpx
- nFVA==
-X-Gm-Message-State: AOJu0YyzQnruKQ1LuddY5h3z0F5FXUqap5n2ZfBxObnVEspN+GBJNeNq
- q7RgVkTwu13Pu3poM1ya0W+Wni10hKgbn8K98vsCCMDAf3DZGHbCZKdi27qrtLbxvYCb8xAF445
- XRQU+TqlaPg==
-X-Gm-Gg: ASbGncsKGE7NB7zXYZQUFtlz/6SY4eKk6iYpDfJrWkkheuxURJ3S6v1n0nARtSHmcTl
- ZzSW6F0cyjbhAhV7mufzqBmqv7yMyqdxLGdY1s2XixXW2pftmWoVPREnYclKrg7L7XcUJFBDzha
- tCQaZxf6ZTzoXj1re45l+F8K/glwRDlLO7PXXfykzax22lpwh/HbClFgVb6xGPcAbXOKAH/6xJ7
- 0FDt/xupWuYULhVsYBEOhyd47MKmLCtRdUENYnexL9Y9efi9XDlpDlAOBcV67RjgkWXdX+HVQ2b
- UgHQNqJjPt4sYnT87lIKFf/4NW0TDcML8QqTgbmV1kJdNOT1ywIBX8Vsbpl/zO7ZdaZUgnWAWP6
- r4Bm+9XETdAP8j1RudW19kUhFmtZTSsw5ImKPxEirdVJQ5MbU9tsX84uhNrFBD+yPBkQDXbuHLG
- 22ZDXW5xHapZOZJL/Bpo+C
-X-Google-Smtp-Source: AGHT+IGyX6YG9K3D8lnZdA71B4doqPBCrOtsRmBp+8y4mgQ4gGP996AMbZIBt6ekeeChINDFG7LGcA==
-X-Received: by 2002:a05:600c:a088:b0:45c:b53f:ad9 with SMTP id
- 5b1f17b1804b1-46e612e3f62mr31048985e9.33.1759331218357; 
- Wed, 01 Oct 2025 08:06:58 -0700 (PDT)
+ bh=vgQ08Zha+dXWvHaKOFenolXy22Pp5EZeas9Q+KB02QI=;
+ b=RFzMqHOjoLIqM6EDFxERKdob8DD0CAaNWX87qSQDGg7c4MFUu1JnIWUWxNmTXy9H00
+ OoQlWyecC6kZHunTaGk+ZmDBthWybloA2AGUJCknJQAf+3/DmlCaSBF464WEVH5tTHCR
+ nCbeP/G+/nJpIxUjOuxTengHYih7Pm7mz5hyH+1MzWWyDLCoFjRkaY+ktzIwCjeQiz2k
+ mkDLhHhzpzgj66zGFR611wNqc7p0GfzmOLffn8tO3ENFQbs2U3yN5Ib4EpKxa0qOuRhF
+ R4cKUlWoXpRURgGDXsiW5hgM+xlR6RZ0i1O5FjOq3Ob2wqNfSIUbkoDx8e0Bv9mHql8y
+ 0oKg==
+X-Gm-Message-State: AOJu0Yxol2f2syjuu/i1cg9gmpUMFe9FXdifilMjf1t19zQ/I0jkvJht
+ iNavgZzCDcSqkzVt8yR7DZbKuYdax1afQV8mx6ahbtwCs3VuOlNps3eATQNByN+7jJwc1kXNzS9
+ XXzsw8bskOQ==
+X-Gm-Gg: ASbGncvuZXU9K5nzkTRp9j1rBHzco/XcxDU/ooSBAbGROOvkiwHKqoH1FmKS2iXF2sw
+ +QCJIqQQShoOSCx217JCa/z14wwt8VpBmoYYVEYUGNPZnFebUwHAlF8QCr4vPuLG1QYkzPcQHQx
+ sffXGWal9nl2unxz5j40130qcj3fUnhukAqYISfjPi6ZNXwB2KWiosK460kaDKMDxx2uA8+0RLS
+ dgGdwYxOQkLVJEoXg24GdL9DTUa/hwqzWSxtgkYbhljzhdrWlLaZSZU8uG+728ovQR+yOtDpROp
+ H3IWuRutuEvhHLS0XMgiw8xi1mGYB5+9r9JeLiqbXcEGu7Wf0ndTLFsnvkJ1l2/sAQRu88rhXqG
+ sQlYAn7CwxiLiO6U5o9KDDXj3qwL4/5013ReagwYHL5je39g/RmWAz4go2hdq6jEQ6p1Z6GERkn
+ 79YjudK5wiFCbs0QwbiQGI
+X-Google-Smtp-Source: AGHT+IEjdpZ2834rluXf5iwDh+H9vUyraYk5BuB0JLOoL1WZYeHIRGIrzHWJ1PTFW3scGqxOi3KLVQ==
+X-Received: by 2002:a05:6000:2306:b0:3ec:42ad:597 with SMTP id
+ ffacd0b85a97d-42557816db8mr2563412f8f.37.1759331223476; 
+ Wed, 01 Oct 2025 08:07:03 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e619a6fc8sm42919905e9.13.2025.10.01.08.06.57
+ ffacd0b85a97d-40fb72facf9sm28220004f8f.13.2025.10.01.08.07.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 08:06:57 -0700 (PDT)
+ Wed, 01 Oct 2025 08:07:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
@@ -71,19 +71,20 @@ Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH 17/22] target/ppc: Get cpu first addr space with
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 18/22] target/s390x: Get cpu first addr space with
  cpu_get_address_space()
-Date: Wed,  1 Oct 2025 17:05:22 +0200
-Message-ID: <20251001150529.14122-18-philmd@linaro.org>
+Date: Wed,  1 Oct 2025 17:05:23 +0200
+Message-ID: <20251001150529.14122-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001150529.14122-1-philmd@linaro.org>
 References: <20251001150529.14122-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,260 +113,120 @@ helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/mmu-hash32.h    | 12 ++++++++----
- target/ppc/excp_helper.c   |  4 ++--
- target/ppc/mmu-book3s-v3.c |  5 +++--
- target/ppc/mmu-hash32.c    |  6 ++++--
- target/ppc/mmu-hash64.c    | 12 ++++++++----
- target/ppc/mmu-radix64.c   | 13 +++++++------
- 6 files changed, 32 insertions(+), 20 deletions(-)
+ target/s390x/cpu-system.c      |  4 +++-
+ target/s390x/mmu_helper.c      |  9 +++++----
+ target/s390x/tcg/excp_helper.c | 10 ++++++----
+ target/s390x/tcg/mem_helper.c  |  6 ++++--
+ 4 files changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
-index 04c23ea75ed..f49991e8651 100644
---- a/target/ppc/mmu-hash32.h
-+++ b/target/ppc/mmu-hash32.h
-@@ -74,33 +74,37 @@ static inline hwaddr ppc_hash32_hpt_mask(PowerPCCPU *cpu)
- static inline target_ulong ppc_hash32_load_hpte0(PowerPCCPU *cpu,
-                                                  hwaddr pte_offset)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     target_ulong base = ppc_hash32_hpt_base(cpu);
+diff --git a/target/s390x/cpu-system.c b/target/s390x/cpu-system.c
+index f3a9ffb2a27..948dd7bc133 100644
+--- a/target/s390x/cpu-system.c
++++ b/target/s390x/cpu-system.c
+@@ -63,7 +63,9 @@ static void s390_cpu_load_normal(CPUState *s)
+     uint64_t spsw;
  
--    return ldl_phys(CPU(cpu)->as, base + pte_offset);
-+    return ldl_phys(as, base + pte_offset);
- }
- 
- static inline target_ulong ppc_hash32_load_hpte1(PowerPCCPU *cpu,
-                                                  hwaddr pte_offset)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     target_ulong base = ppc_hash32_hpt_base(cpu);
- 
--    return ldl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
-+    return ldl_phys(as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
- }
- 
- static inline void ppc_hash32_store_hpte0(PowerPCCPU *cpu,
-                                           hwaddr pte_offset, target_ulong pte0)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     target_ulong base = ppc_hash32_hpt_base(cpu);
- 
--    stl_phys(CPU(cpu)->as, base + pte_offset, pte0);
-+    stl_phys(as, base + pte_offset, pte0);
- }
- 
- static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
-                                           hwaddr pte_offset, target_ulong pte1)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     target_ulong base = ppc_hash32_hpt_base(cpu);
- 
--    stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
-+    stl_phys(as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
- }
- 
- static inline hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 1efdc4066eb..6dbcf4dae10 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1012,9 +1012,9 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_EXTERNAL:  /* External input                           */
-         if (env->mpic_proxy) {
--            CPUState *cs = env_cpu(env);
-+            AddressSpace *as = cpu_get_address_space(env_cpu(env), 0);
-             /* IACK the IRQ on delivery */
--            env->spr[SPR_BOOKE_EPR] = ldl_phys(cs->as, env->mpic_iack);
-+            env->spr[SPR_BOOKE_EPR] = ldl_phys(as, env->mpic_iack);
-         }
-         break;
-     case POWERPC_EXCP_ALIGN:     /* Alignment exception                      */
-diff --git a/target/ppc/mmu-book3s-v3.c b/target/ppc/mmu-book3s-v3.c
-index 38655563105..fb8dd3df8c4 100644
---- a/target/ppc/mmu-book3s-v3.c
-+++ b/target/ppc/mmu-book3s-v3.c
-@@ -25,6 +25,7 @@
- 
- bool ppc64_v3_get_pate(PowerPCCPU *cpu, target_ulong lpid, ppc_v3_pate_t *entry)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     uint64_t patb = cpu->env.spr[SPR_PTCR] & PTCR_PATB;
-     uint64_t pats = cpu->env.spr[SPR_PTCR] & PTCR_PATS;
- 
-@@ -41,7 +42,7 @@ bool ppc64_v3_get_pate(PowerPCCPU *cpu, target_ulong lpid, ppc_v3_pate_t *entry)
- 
-     /* Grab entry */
-     patb += 16 * lpid;
--    entry->dw0 = ldq_phys(CPU(cpu)->as, patb);
--    entry->dw1 = ldq_phys(CPU(cpu)->as, patb + 8);
-+    entry->dw0 = ldq_phys(as, patb);
-+    entry->dw1 = ldq_phys(as, patb + 8);
-     return true;
- }
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 8b980a5aa90..957184fd2e9 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -235,20 +235,22 @@ static hwaddr ppc_hash32_pteg_search(PowerPCCPU *cpu, hwaddr pteg_off,
- 
- static void ppc_hash32_set_r(PowerPCCPU *cpu, hwaddr pte_offset, uint32_t pte1)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     target_ulong base = ppc_hash32_hpt_base(cpu);
-     hwaddr offset = pte_offset + 6;
- 
-     /* The HW performs a non-atomic byte update */
--    stb_phys(CPU(cpu)->as, base + offset, ((pte1 >> 8) & 0xff) | 0x01);
-+    stb_phys(as, base + offset, ((pte1 >> 8) & 0xff) | 0x01);
- }
- 
- static void ppc_hash32_set_c(PowerPCCPU *cpu, hwaddr pte_offset, uint64_t pte1)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     target_ulong base = ppc_hash32_hpt_base(cpu);
-     hwaddr offset = pte_offset + 7;
- 
-     /* The HW performs a non-atomic byte update */
--    stb_phys(CPU(cpu)->as, base + offset, (pte1 & 0xff) | 0x80);
-+    stb_phys(as, base + offset, (pte1 & 0xff) | 0x80);
- }
- 
- static hwaddr ppc_hash32_htab_lookup(PowerPCCPU *cpu,
-diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-index dd337558aa6..52db16ded5b 100644
---- a/target/ppc/mmu-hash64.c
-+++ b/target/ppc/mmu-hash64.c
-@@ -552,6 +552,7 @@ static hwaddr ppc_hash64_hpt_mask(PowerPCCPU *cpu)
- const ppc_hash_pte64_t *ppc_hash64_map_hptes(PowerPCCPU *cpu,
-                                              hwaddr ptex, int n)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     hwaddr pte_offset = ptex * HASH_PTE_SIZE_64;
-     hwaddr base;
-     hwaddr plen = n * HASH_PTE_SIZE_64;
-@@ -566,7 +567,7 @@ const ppc_hash_pte64_t *ppc_hash64_map_hptes(PowerPCCPU *cpu,
-         return NULL;
-     }
- 
--    hptes = address_space_map(CPU(cpu)->as, base + pte_offset, &plen, false,
-+    hptes = address_space_map(as, base + pte_offset, &plen, false,
-                               MEMTXATTRS_UNSPECIFIED);
-     if (plen < (n * HASH_PTE_SIZE_64)) {
-         hw_error("%s: Unable to map all requested HPTEs\n", __func__);
-@@ -577,12 +578,13 @@ const ppc_hash_pte64_t *ppc_hash64_map_hptes(PowerPCCPU *cpu,
- void ppc_hash64_unmap_hptes(PowerPCCPU *cpu, const ppc_hash_pte64_t *hptes,
-                             hwaddr ptex, int n)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     if (cpu->vhyp) {
-         cpu->vhyp_class->unmap_hptes(cpu->vhyp, hptes, ptex, n);
-         return;
-     }
- 
--    address_space_unmap(CPU(cpu)->as, (void *)hptes, n * HASH_PTE_SIZE_64,
-+    address_space_unmap(as, (void *)hptes, n * HASH_PTE_SIZE_64,
-                         false, n * HASH_PTE_SIZE_64);
- }
- 
-@@ -864,6 +866,7 @@ static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
- 
- static void ppc_hash64_set_r(PowerPCCPU *cpu, hwaddr ptex, uint64_t pte1)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     hwaddr base, offset = ptex * HASH_PTE_SIZE_64 + HPTE64_DW1_R;
- 
-     if (cpu->vhyp) {
-@@ -874,11 +877,12 @@ static void ppc_hash64_set_r(PowerPCCPU *cpu, hwaddr ptex, uint64_t pte1)
- 
- 
-     /* The HW performs a non-atomic byte update */
--    stb_phys(CPU(cpu)->as, base + offset, ((pte1 >> 8) & 0xff) | 0x01);
-+    stb_phys(as, base + offset, ((pte1 >> 8) & 0xff) | 0x01);
- }
- 
- static void ppc_hash64_set_c(PowerPCCPU *cpu, hwaddr ptex, uint64_t pte1)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     hwaddr base, offset = ptex * HASH_PTE_SIZE_64 + HPTE64_DW1_C;
- 
-     if (cpu->vhyp) {
-@@ -888,7 +892,7 @@ static void ppc_hash64_set_c(PowerPCCPU *cpu, hwaddr ptex, uint64_t pte1)
-     base = ppc_hash64_hpt_base(cpu);
- 
-     /* The HW performs a non-atomic byte update */
--    stb_phys(CPU(cpu)->as, base + offset, (pte1 & 0xff) | 0x80);
-+    stb_phys(as, base + offset, (pte1 & 0xff) | 0x80);
- }
- 
- static target_ulong rmls_limit(PowerPCCPU *cpu)
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index 33ac3412901..c381a833ebd 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -431,6 +431,7 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
-                                               int mmu_idx, uint64_t lpid,
-                                               bool guest_visible)
- {
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     MMUAccessType access_type = orig_access_type;
-     int fault_cause = 0;
-     hwaddr pte_addr;
-@@ -451,7 +452,7 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
- 
-     *h_page_size = PRTBE_R_GET_RTS(pate.dw0);
-     /* No valid pte or access denied due to protection */
--    if (ppc_radix64_walk_tree(CPU(cpu)->as, g_raddr, pate.dw0 & PRTBE_R_RPDB,
-+    if (ppc_radix64_walk_tree(as, g_raddr, pate.dw0 & PRTBE_R_RPDB,
-                               pate.dw0 & PRTBE_R_RPDS, h_raddr, h_page_size,
-                               &pte, &fault_cause, &pte_addr) ||
-         ppc_radix64_check_prot(cpu, access_type, pte,
-@@ -516,7 +517,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-                                             int mmu_idx, uint64_t lpid,
-                                             bool guest_visible)
- {
--    CPUState *cs = CPU(cpu);
-+    AddressSpace *as = cpu_get_address_space(CPU(cpu), 0);
-     CPUPPCState *env = &cpu->env;
-     uint64_t offset, size, prtb, prtbe_addr, prtbe0, base_addr, nls, index, pte;
-     int fault_cause = 0, h_page_size, h_prot;
-@@ -550,7 +551,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-     prtbe_addr = prtb + offset;
- 
-     if (vhyp_flat_addressing(cpu)) {
--        prtbe0 = ldq_phys(cs->as, prtbe_addr);
-+        prtbe0 = ldq_phys(as, prtbe_addr);
-     } else {
+     if (!s390_is_pv()) {
+-        spsw = ldq_phys(s->as, 0);
++        AddressSpace *as = cpu_get_address_space(s, 0);
++
++        spsw = ldq_phys(as, 0);
+         cpu->env.psw.mask = spsw & PSW_MASK_SHORT_CTRL;
          /*
-          * Process table addresses are subject to partition-scoped
-@@ -568,7 +569,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-         if (ret) {
-             return ret;
+          * Invert short psw indication, so SIE will report a specification
+diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
+index 4e2f31dc763..358d5463a0a 100644
+--- a/target/s390x/mmu_helper.c
++++ b/target/s390x/mmu_helper.c
+@@ -42,9 +42,10 @@ static void trigger_access_exception(CPUS390XState *env, uint32_t type,
+     if (kvm_enabled()) {
+         kvm_s390_access_exception(cpu, type, tec);
+     } else {
+-        CPUState *cs = env_cpu(env);
+         if (type != PGM_ADDRESSING) {
+-            stq_phys(cs->as, env->psa + offsetof(LowCore, trans_exc_code), tec);
++            AddressSpace *as = cpu_get_address_space(env_cpu(env), 0);
++
++            stq_phys(as, env->psa + offsetof(LowCore, trans_exc_code), tec);
          }
--        prtbe0 = ldq_phys(cs->as, h_raddr);
-+        prtbe0 = ldq_phys(as, h_raddr);
+         trigger_pgm_exception(env, type);
      }
+@@ -106,7 +107,7 @@ bool mmu_absolute_addr_valid(target_ulong addr, bool is_write)
+ static inline bool read_table_entry(CPUS390XState *env, hwaddr gaddr,
+                                     uint64_t *entry)
+ {
+-    CPUState *cs = env_cpu(env);
++    AddressSpace *as = cpu_get_address_space(env_cpu(env), 0);
  
      /*
-@@ -593,7 +594,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-         /*
-          * Can treat process table addresses as real addresses
-          */
--        ret = ppc_radix64_walk_tree(cs->as, eaddr & R_EADDR_MASK, base_addr,
-+        ret = ppc_radix64_walk_tree(as, eaddr & R_EADDR_MASK, base_addr,
-                                     nls, g_raddr, g_page_size, &pte,
-                                     &fault_cause, &pte_addr);
-         if (ret) {
-@@ -630,7 +631,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-                 fault_cause |= DSISR_R_BADCONFIG;
-                 ret = 1;
-             } else {
--                ret = ppc_radix64_next_level(cs->as, eaddr & R_EADDR_MASK,
-+                ret = ppc_radix64_next_level(as, eaddr & R_EADDR_MASK,
-                                              &h_raddr, &nls, g_page_size,
-                                              &pte, &fault_cause);
-             }
+      * According to the PoP, these table addresses are "unpredictably real
+@@ -115,7 +116,7 @@ static inline bool read_table_entry(CPUS390XState *env, hwaddr gaddr,
+      *
+      * We treat them as absolute addresses and don't wrap them.
+      */
+-    if (unlikely(address_space_read(cs->as, gaddr, MEMTXATTRS_UNSPECIFIED,
++    if (unlikely(address_space_read(as, gaddr, MEMTXATTRS_UNSPECIFIED,
+                                     entry, sizeof(*entry)) !=
+                  MEMTX_OK)) {
+         return false;
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index 4c7faeee82b..1db159be131 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -53,7 +53,7 @@ G_NORETURN void tcg_s390_data_exception(CPUS390XState *env, uint32_t dxc,
+     g_assert(dxc <= 0xff);
+ #if !defined(CONFIG_USER_ONLY)
+     /* Store the DXC into the lowcore */
+-    stl_phys(env_cpu(env)->as,
++    stl_phys(cpu_get_address_space(env_cpu(env), 0),
+              env->psa + offsetof(LowCore, data_exc_code), dxc);
+ #endif
+ 
+@@ -70,7 +70,7 @@ G_NORETURN void tcg_s390_vector_exception(CPUS390XState *env, uint32_t vxc,
+     g_assert(vxc <= 0xff);
+ #if !defined(CONFIG_USER_ONLY)
+     /* Always store the VXC into the lowcore, without AFP it is undefined */
+-    stl_phys(env_cpu(env)->as,
++    stl_phys(cpu_get_address_space(env_cpu(env), 0),
+              env->psa + offsetof(LowCore, data_exc_code), vxc);
+ #endif
+ 
+@@ -639,10 +639,12 @@ void monitor_event(CPUS390XState *env,
+                    uint64_t monitor_code,
+                    uint8_t monitor_class, uintptr_t ra)
+ {
++    AddressSpace *as = cpu_get_address_space(env_cpu(env), 0);
++
+     /* Store the Monitor Code and the Monitor Class Number into the lowcore */
+-    stq_phys(env_cpu(env)->as,
++    stq_phys(as,
+              env->psa + offsetof(LowCore, monitor_code), monitor_code);
+-    stw_phys(env_cpu(env)->as,
++    stw_phys(as,
+              env->psa + offsetof(LowCore, mon_class_num), monitor_class);
+ 
+     tcg_s390_program_interrupt(env, PGM_MONITOR, ra);
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index f1acb1618f7..962f31d4cdb 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -957,12 +957,14 @@ uint32_t HELPER(mvpg)(CPUS390XState *env, uint64_t r0, uint32_t r1, uint32_t r2)
+     return 0; /* data moved */
+ inject_exc:
+ #if !defined(CONFIG_USER_ONLY)
++    AddressSpace *as = cpu_get_address_space(env_cpu(env), 0);
++
+     if (exc != PGM_ADDRESSING) {
+-        stq_phys(env_cpu(env)->as, env->psa + offsetof(LowCore, trans_exc_code),
++        stq_phys(as, env->psa + offsetof(LowCore, trans_exc_code),
+                  env->tlb_fill_tec);
+     }
+     if (exc == PGM_PAGE_TRANS) {
+-        stb_phys(env_cpu(env)->as, env->psa + offsetof(LowCore, op_access_id),
++        stb_phys(as, env->psa + offsetof(LowCore, op_access_id),
+                  r1 << 4 | r2);
+     }
+ #endif
 -- 
 2.51.0
 
