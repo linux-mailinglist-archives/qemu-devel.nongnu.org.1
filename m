@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08D2BAF771
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7389BBAF77D
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:45:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rTe-0002jh-RP; Wed, 01 Oct 2025 03:42:18 -0400
+	id 1v3rVS-00050W-DN; Wed, 01 Oct 2025 03:44:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rTb-0002hu-1m
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:42:15 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rVF-0004w2-NJ
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:43:58 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rTU-00085f-BF
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:42:14 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-421b93ee372so1619901f8f.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:42:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rV8-0008Mp-30
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:43:57 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-46e2562e8cbso52616985e9.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:43:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759304524; x=1759909324; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759304622; x=1759909422; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=eQsZV97Yqr+12QmKkeTixQF0XVzCcc8sdkR3KRVf3yw=;
- b=GKeueHcrP+/Xw5hQm3SAAGvteKs3tPIveBEhzj5avlr3WttR4WyGyaNJwkkZbcGV/6
- FXe55T5I/M8Hp3CWxOvYFtqg7V9oA5uY/iZFWGpdhkqEieHiqPrCkj9MgPY0oYDMkV30
- RUKW7T73s6/mPHcr7V+G186+A9n8HTotMl84Z2Yc2bOCArJnYq2UgAmIroHn9XiF6WGx
- krm70gb9u8uH2lsua50Xodggi+EOe/cIkvA2ssZVASpOXc06fF8IcV1XLPvcaEsll2Cd
- pywWedx4xp+rh9YXlC+4zFAim9cl2zYhqQZ4/Quz+BN+skprGGAWSQDYRCydxBzzQ/xH
- uggA==
+ bh=C16I1I8Cue92gBYxb9oNGtCo9TW4jHCo+KWKhtf8xgo=;
+ b=tctm8BrU0SlDnurzzzwDWaiK1tU6bQr0UOTb0ST0veWynBDdXwu0cGKBljF5oPDudY
+ bEM3BRMx76VGuDE3xFadlFoSTReVQ1SLbAphViIudaod1gPFaMLXmJuRuyeYzZ5ufQHf
+ 4SN4qcIcWGMCUaFH4zslIgPsqRz7J8kJU0p5IgVwpReRT8O6NkfzcB1veClDXYFYvFZU
+ 2pxe2j1DcwsWCYue+QFgROa9c1wq/ClFyXlcveMmHVTLMHUqKb49N0qNRWtl665IYbh4
+ QmATq0LFTCXitb+rOpVFqjG+D+sbdc5GE/WwX0SxxryN4ODVqbRQwaMkYkxRPS8abMLE
+ ilHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759304524; x=1759909324;
+ d=1e100.net; s=20230601; t=1759304622; x=1759909422;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eQsZV97Yqr+12QmKkeTixQF0XVzCcc8sdkR3KRVf3yw=;
- b=RAvohMHEGm2M8VIAWJHz37o9QPjlaWfa53f3DHhtVE4lM2FDBiBTt3UpKHGDJI9AH6
- YQsjwtNv5H6FA1WFPlbqTMM8hRjfio1+sBDFctJq+z4sx4LL1t8TTVfthpRs21CMnXEk
- XB9XWVb07BJKvnQTwN3mbAg4/6sOiDx1FXdQUZOpxwRxiYNPupaQc7uCpmNDkaGLir4j
- vc2gwXsx2eugQdVY46HJAYR/s3WnaGjucvfHsoZZ6enVgLVZ3Ye0y6/WaOwBCLCdzorC
- +0/aClkp+veoPJRP7TX6H0DnYm7H0XTZ2a8v06aOiw1LvhaAftQZ+rQ2afJkGcjJ/7E6
- geXA==
+ bh=C16I1I8Cue92gBYxb9oNGtCo9TW4jHCo+KWKhtf8xgo=;
+ b=WCMO+62n7Ki7zGCe6jdknOLQlxWmz82h9JMZ5ZtI8xV0/ZE5qfUofLLARCrw1J3FJq
+ +gVJnG63zPNmSraFA4Xc8LhwDMBgvI/e1boJr5CbYfXKY45YnQsyy67BvuHnymluV5bk
+ iEr2zWdUEnkriUDA9XtcC6xvFSLaB0+EvkbtCfYFnm/RGH7rW5N7sBOk9JyN25mQ9J5P
+ HsSkRuWIHBweQOEPxNQow74PMLB07XIhDHHUDn190C3EJK4X6/SKrINZ3nYZtbdJSTON
+ cBcAzQ9ZuI4Vw5Mrf0GCv4Yhs7ii84Q1xszAhveXfvTBZk9Spe7TUiZSroM+NSCRHvW0
+ z9KQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVrp25NNVau/o3G5cvyC+0YedWO3lPxeJp2pKb9WWxskjFqc16XhTRj98u5z6O+JNs7Mou4eR+C/rDR@nongnu.org
-X-Gm-Message-State: AOJu0YxP2brSKYKe7Bk9xsA3dXWCeszU1FMtYexDzhcT2z+sv4d2jMWM
- ZcMt35PUBxmkYaHp4UYquXtam/SSz5pBZZGddJK3iqoaRyxsj0iwmRpApqxvPz43ZQ892EcjZ0x
- qdtsl82k/qA==
-X-Gm-Gg: ASbGncvZeUghZuIB8Ttotfz2+T2whLvzk5phKtMzPg89Gfg+No54jI9m9BPVuh11O9o
- VFio4p2qxsuJZ/t/jfrN8/HzH6O2hfHcwaYC4WY4tA7u/qG6+z4hctZikZZ/X2vBGORz7ttLvtY
- kgPaS8bGe8ZkYPWVOJ2rCeFmST34Ia9cvr13idMaSm3Qi2i4vP98bZ3fiMqDsKk1UfGSSqu8BVI
- 3pz/jXaRgDxLx8VPV64NUx0IAKliLjn/tHBNhT5yJ4iLrA3rSM4Xhxpng9w/dtw2Fo3KKg8t3n2
- 9JlvpLj5cPDPsq8BeWlm1qR5jWJysaiiJSOfOLt413meiwLtXSoFGg1yEVYPB9n2v5v7xF1xYFu
- 54MHWFf5Y8il3NXiwnWFQoYDVXMM0ITOk6h4dbdpz8Afm8jvfmeG1A9cny9dUqcw+XEkJtkFnaD
- 5+aetW4sLTB+I8UA==
-X-Google-Smtp-Source: AGHT+IFb/cJ8olbpNG9BNJ3lgyVcP5PtyrYC7lemURbomq1mB9/RsSrougkPG3vJ0b3qfprsPk+ItQ==
-X-Received: by 2002:a5d:5d85:0:b0:3b9:148b:e78 with SMTP id
- ffacd0b85a97d-4255781c7b6mr2008782f8f.53.1759304523754; 
- Wed, 01 Oct 2025 00:42:03 -0700 (PDT)
+ AJvYcCX3lGRNQBcUz79T1SM3UqoOduUITzG8cOEGISUv3syOokHU4S2U6KgGAR2PSBy0JqV21VnJPUcpyaky@nongnu.org
+X-Gm-Message-State: AOJu0YyigkmgeHak+z9lq3aKq5IGxe6AOM2kMx44KuBngbLlOR1lG9JS
+ yVpZrKcmhT4qkSYq6yM8BiHrO3WHAhGYh0vii/ewu8frCsu5He58gSSYRpFs45WHYSZqoKbSCyJ
+ dQIuodEVC0Q==
+X-Gm-Gg: ASbGncum1aIbErxpRTlIHRDsRsBnpvzQnYw8DgQLCW/G0p0BPHhvEElDgDLMD02GYux
+ 7ncWhkDVBdlPhYYDGqq0xBQj69SA15jgj9hazcfSbeKK2jQOw6Azweq4BTQ4mCH3R2rs+iqG7b8
+ sAKXrI1SP3msFclvqVWZL0sYditdFjbX/Z3JwJvYVIW+Dv1jPeNENV01TMjPhWk3dKSflu6D1yB
+ b/BzjnBxnB6aYQeGsEVeE/8lVOIVvhNEVd9+w56iMOXWAJxb6Adtip7mlAHQiObOc/mg0jmOfL4
+ RS2Yoff6vTx69KHx11pVRddducj5dTQjAmeRcxRFsenpSHYjWX0nrLi+l91VA+XYfp/74cr6541
+ TS2MzbfCkjkQiD7SuI+RIdAB342NS/j6pgbVaPHSDbufcD/xQvTetC2PISa6t/Qv7HVF2Jl3IyQ
+ mVIVo7KfbviK/8DQ==
+X-Google-Smtp-Source: AGHT+IGlczMASVkgaTlXecge7zTMziecktEyTeNUNEpefBHUar2eF94zhomezrZseRlY4g0Zv9RDXg==
+X-Received: by 2002:a05:600c:8b42:b0:46e:3d41:5fe6 with SMTP id
+ 5b1f17b1804b1-46e6127a545mr18715755e9.9.1759304621838; 
+ Wed, 01 Oct 2025 00:43:41 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb89fb19fsm26277548f8f.21.2025.10.01.00.42.02
+ 5b1f17b1804b1-46e5b6d81f2sm29284235e9.5.2025.10.01.00.43.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Oct 2025 00:42:03 -0700 (PDT)
-Message-ID: <ce7616cd-54cb-4c8b-8c34-8ef795d34eef@linaro.org>
-Date: Wed, 1 Oct 2025 09:42:02 +0200
+ Wed, 01 Oct 2025 00:43:41 -0700 (PDT)
+Message-ID: <b4ef4193-5e9b-4912-8f1e-5f0edd2ea238@linaro.org>
+Date: Wed, 1 Oct 2025 09:43:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/33] target/riscv: Fix size of gpr and gprh
+Subject: Re: [PATCH v2 25/33] target/riscv: Indent PMUFixedCtrState correctly
 Content-Language: en-US
 To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, richard.henderson@linaro.org,
  alistair.francis@wdc.com, palmer@dabbelt.com
 References: <20251001073306.28573-1-anjo@rev.ng>
- <20251001073306.28573-10-anjo@rev.ng>
+ <20251001073306.28573-26-anjo@rev.ng>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251001073306.28573-10-anjo@rev.ng>
+In-Reply-To: <20251001073306.28573-26-anjo@rev.ng>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,42 +104,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/10/25 09:32, Anton Johansson wrote:
-> gprh is only needed for TARGET_RISCV64 when modeling 128-bit registers,
-> fixing their size to 64 bits makes sense.
-> 
-> gpr is also fixed to 64 bits since all direct uses of env->gpr
-> correctly zero extend/truncate to/from target_ulong, meaning
-> !TARGET_RISCV64 will behave as expected.
-> 
-> We do however need to be a bit careful when mapping 64-bit fields to
-> 32-bit TCGv globals on big endian hosts.
-> 
-> Note, the cpu/rv128 VMSTATE version is bumped, breaking migration from
-> older versions.
-> 
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
 > ---
->   target/riscv/cpu.h       |  4 ++--
->   target/riscv/cpu.c       |  2 +-
->   target/riscv/machine.c   |  8 ++++----
->   target/riscv/translate.c | 17 +++++++++++++++--
->   4 files changed, 22 insertions(+), 9 deletions(-)
+>   target/riscv/cpu.h | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index d055ddf462..3c910e44cd 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -584,7 +584,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
->   
->       for (i = 0; i < 32; i++) {
->           qemu_fprintf(f, " %-8s " TARGET_FMT_lx,
-> -                     riscv_int_regnames[i], env->gpr[i]);
-> +                     riscv_int_regnames[i], (target_ulong) env->gpr[i]);
-
-Rebase mistake?
-
->           if ((i & 3) == 3) {
->               qemu_fprintf(f, "\n");
->           }
 
