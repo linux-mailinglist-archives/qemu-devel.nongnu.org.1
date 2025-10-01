@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C26BAEF09
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 554A8BAEEF4
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:14:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3lEr-0005C7-9D; Tue, 30 Sep 2025 21:02:37 -0400
+	id 1v3lFG-0005H3-Lb; Tue, 30 Sep 2025 21:03:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lEi-0005Bw-77
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:02:28 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1v3lEz-0005EM-Eh
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:02:46 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lEa-0007xW-F3
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:02:27 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-46e47cca387so47362895e9.3
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:02:18 -0700 (PDT)
+ id 1v3lEe-0007yE-Vt
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:02:45 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e42deffa8so58161975e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:02:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1759280536; x=1759885336; darn=nongnu.org;
+ d=opnsrc.net; s=google; t=1759280538; x=1759885338; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E95z1LitnEsQAC+IDKkKPOZh6LcS9ALCsacoPjved+U=;
- b=DhnrnXn4Tc0q4q2rZjfCzaLGWLVay6+CVDzrSaJNYV4VX9586P0PjrYaFAu/aOjBXM
- fzULzfBw02hFDU3sNYjvRCuQ4pMWonFpUF3SfrsWmRmbs8PcSuPbAiEDZ/7CkvN7ZPqE
- iPNDTGGuEukcnMJ4CwWcqIRaigC6C+pFI+GF/oXUxxXgXQlLgale+BLANvFVDywXfxtn
- KqeA5S+xbo5i18hO30fo/Cr3OQV8YCUAhBdI4rch2yyyinEP3ZCvuwAHqXdVUffEBIbJ
- P04vOvdwswppwCIMS38Q50jv2KAXHrSRTp5xW4U9uEy5F6RAIaHrd+XbHpQwbY9PTdtR
- lyaA==
+ bh=OLSc1BapDuUxqkydDnJRDwQehgAHt3T/lFBNPXooIC8=;
+ b=aKivOOSbNG1XL/3YT4EcSWRoc1Yqo0AOe0GDdaJIZvZAHMktR/i8XryyMKejEpfBU8
+ 4nXPHEl3OmWIAHt39pLQvJKKALWedL7gIjIpWxZG8orrMYQ6pv2ncKkXJhjR4KUb2NAw
+ wzf87zZ9B/go6lfANpAM7I8HKNykcRM894o5WXHmXQjRYMwblNSc87bgtfJDcMpOzEB6
+ /t5DHZEN1nPBJS/6Qdd5KwNylEnSv1+nMhjA7s3HGRTCig+DxmXVyPCAnIfbSAyBogXL
+ ipJJTd6BuOIdYikpKBrV5bDfvqd8y4hM8dnYiCVqExYADiUh1xWGxe11qaYu+HAVXbrK
+ T2Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759280536; x=1759885336;
+ d=1e100.net; s=20230601; t=1759280538; x=1759885338;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E95z1LitnEsQAC+IDKkKPOZh6LcS9ALCsacoPjved+U=;
- b=Vb7mQWyi2/bTvB1CB1ayzCXSIbXH6sVHhoF42gOv69EGzO74SqzSFRRPhQhZByTPBT
- j/NO0dr4HW3T8L4snXKPxnKcvx6RbQvnojFuSAlz69IrO5qv9Kdgfky9D3KMyWrj++0y
- 8Sq9LuWOzy2CioxVtfmkLrSpRNXwlKC/0sa3Ti4UZ5LSGiL8Bcp79A8n4Kralqdv5TjU
- eNtxSXJHcwTR50wL4K9q6Z9GUcZmo6Qo9ClYLHf4RQe5KWkK1QuG3Qv1MkME5InqHwRu
- gr85BG3QxyN4iS+KoeuTMv7GP/V20MLXfpyQoKuqe//juDeGQwUzhRub5x6FEvS6+u85
- 6hMQ==
-X-Gm-Message-State: AOJu0Yw9xy0E/iC/olNveUEsEjl9EoY8G8gH0JFNDNU3L1WXxcmbX6d7
- yT9wDWBtI1Z3t2XwglW04kKXnp55HuUeYpxtw9lBrGFGQ4yYID/3LTrxMmS4U75IVugYqo1tAV2
- z8mtpTpRUNw==
-X-Gm-Gg: ASbGncuwjtUElM5GteH1ReXhM4v2MoxqXZmIFfvYYjbYdTa/vlS0n91Q5NRtBcbFJ3L
- r6Dg1F5FquOtrspR2dbszONy6CXM/O87+ojyxlkanP+/STsN5nupDuR3i6R0a78alZLvpu9szaH
- dF3FxTzHL69S4BGXQO8eqggQKc3DYxdeKFWFSfNMf96srZDhHgER5NRmUnHy27GFZ/Pc8gq+AZM
- NZB+ZSUFH/mDa2033mUHR1nhPPBEh1BxI1J18HAgr9CqsEmHP+hwDUO5UTvjxRnLqMsibhz6/3j
- y0gRbRBxyH9+FZTdAiP8cPu+/mQfUkWQa/mcvPIxvkvLcDcsR1s/lat/BX2hLsdBfBZMriAyIZB
- /k7BPL/8IIvhXlj8q6ddzxheyUfGrN6Qjew8w9rh/inthxH8m5BmthkD/rCPZxhPdFz1YGJCbZ+
- z74aZIUADD7mzssGDvJfkFbQ3S2hHpTIZlaKhLs7yhPqmoZrxK4lbyIw==
-X-Google-Smtp-Source: AGHT+IH40O7EwScL5QaCUo3bATKbMaaGb/W4QizlO/YTtsqCqCReWYP7rh5t8KrEv01hrhpIzc8IZQ==
-X-Received: by 2002:a05:600c:4748:b0:46e:5df3:190d with SMTP id
- 5b1f17b1804b1-46e61285eb1mr11032815e9.11.1759280536078; 
- Tue, 30 Sep 2025 18:02:16 -0700 (PDT)
+ bh=OLSc1BapDuUxqkydDnJRDwQehgAHt3T/lFBNPXooIC8=;
+ b=D0eShl5J2pAvIRarQQ/7iUffFbNhiiuaOEgxPtRp6IfBObX81idHfComBR34iP/6/5
+ aFZZVP6hfBT3JT1pAjOeAA+BbMKPYuABg2LVD/3Bl03umC3XWxTdpPUelZRQuOptaQRW
+ cc9zed8Nrta6voIpkNt9VHaBPTpLYucZI63ZbPuFyM2v+2NUf5J/ESvwtvI86ODKG8bu
+ mpjyKOq3A3PFOsombEgOZxJhnYZ8/URkfYHAeRt1hFP8C+06YPok/iRRE1CpgZUu9tN8
+ vN+g/389gvsXw0Ip28sFTgiKLCiL0eSsuOpI5U0uah/b7QvMbi6yO8AZEuAXf4uoOy/H
+ bFPw==
+X-Gm-Message-State: AOJu0YzTbVHKCO2KNyJ0oj9eXrW0cyI9X8JQGr8a/0yRoUYy05C6LRdM
+ 6tfTJ0Iio6GgZEV9l2xeypA5zthcFtHLWahqE8VeeyikVXE02EPd/5GuSQ+kfzFdQwFMlF4dnDo
+ 4f9dghv9z9g==
+X-Gm-Gg: ASbGnct1snAuekAx65xXsZr/fWHbhRdLqCaA9Y73HHaB8xNzqlD5Gpu/LWqDCRFkbhU
+ +PvhJ/3k7jKM5kJU2JJ8nDARGzZuN1s4SXlfvev4A0+Ybn1OCgdsOUkhk0xyoLdk7fOjXM9pcM6
+ oRxVekslOsHvGXwvnNQ+X6+VSj1Y0t9rH97GuMmRCOy5ofMYy6WP3mdu737C+DYm+F4i0lwvQCk
+ KlmfdagUvWm/d1dYdzxpmb+eREQQf3rEBeIbI6BiNkArRSQQBenCIgl0dJKA6K6sN0f2xYaLuzv
+ A8PYYoSG/oMfF/zyD7gSfZh2DSFyi+lxIMmkHZXk9QlT2Hvdw/ibb9eQMDNChKOPiED0yCbJO+k
+ qpcDwYWKDzUu5R1U0B/sgXQDSOQ+j+gGTDUMHLRIFD2lbYXAweaE8idT+TeyAk+2U3xS85l6R3T
+ 9Tb0qwEP66MSB5QEvjMlVpyD9K20iHweic5u9fl3GUavg=
+X-Google-Smtp-Source: AGHT+IGe4rGnkaCPkwTQQa5FttkzRVljkl57WR6TySYlUl9rhfMQBCUrtG4XD1ivmQN+nX3/6v41dQ==
+X-Received: by 2002:a05:6000:25c6:b0:3fd:bf1d:15ac with SMTP id
+ ffacd0b85a97d-425577f3639mr1328524f8f.20.1759280537838; 
+ Tue, 30 Sep 2025 18:02:17 -0700 (PDT)
 Received: from localhost.localdomain ([90.209.204.182])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.02.14
+ ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.02.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 18:02:15 -0700 (PDT)
+ Tue, 30 Sep 2025 18:02:17 -0700 (PDT)
 From: salil.mehta@opnsrc.net
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -84,25 +84,25 @@ Cc: salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, wangzhou1@hisilicon.com,
  linuxarm@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
  lixianglai@loongson.cn, shahuang@redhat.com, zhao1.liu@intel.com
-Subject: [PATCH RFC V6 01/24] hw/core: Introduce administrative power-state
- property and its accessors
-Date: Wed,  1 Oct 2025 01:01:04 +0000
-Message-Id: <20251001010127.3092631-2-salil.mehta@opnsrc.net>
+Subject: [PATCH RFC V6 02/24] hw/core,
+ qemu-options.hx: Introduce 'disabledcpus' SMP parameter
+Date: Wed,  1 Oct 2025 01:01:05 +0000
+Message-Id: <20251001010127.3092631-3-salil.mehta@opnsrc.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
 References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=salil.mehta@opnsrc.net; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,236 +120,273 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Salil Mehta <salil.mehta@huawei.com>
 
-Some devices cannot be hot-unplugged, either because removal is not meaningful
-(e.g. on-board devices) or not supported (e.g. certain PCIe devices). Others,
-such as CPUs on architectures like ARM, lack native hotplug support but can
-still have their availability controlled through host policy. In all these
-cases, a mechanism is needed to track and control a device’s *administrative*
-power state — independent of its runtime operational state — so QEMU can:
+Add support for a new SMP configuration parameter, 'disabledcpus', which
+specifies the number of additional CPUs that are present in the virtual
+machine but administratively disabled at boot. These CPUs are visible in
+firmware (e.g. ACPI tables) yet unavailable to the guest until explicitly
+enabled via QMP/HMP, or via the 'device_set' API (introduced in later
+patches).
 
-  - Disable a device while keeping it described in firmware, ACPI, or other
-    configuration.
-  - Prevent guest use until explicitly re-enabled.
-  - Coordinate transitions with platform-specific power handlers and migration
-    logic.
+This feature is intended for architectures that lack native CPU hotplug
+support but can change the administrative power state of present CPUs.
+It allows simulating CPU hot-add–like scenarios while all CPUs remain
+physically present in the topology at boot time.
 
-This patch introduces the core qdev support for administrative power state —
-defining the property, enum, and accessors — without yet applying it to any
-device. Later patches in this series integrate it with helper APIs
-(qdev_disable(), qdev_enable(), etc.) and specific device types such as CPUs,
-completing the flow with platform-specific handlers.
+Note: ARM is the first architecture to support this concept.
 
-Key additions:
-  - New enum DeviceAdminPowerState with ENABLED, DISABLED, and REMOVED states,
-    defaulting to ENABLED.
-  - New DeviceClass flag admin_power_state_supported to advertise support for
-    administrative transitions.
-  - New QOM property "admin_power_state" to query or set the state on supported
-    devices.
-  - Internal accessors device_get_admin_power_state() and
-    device_set_admin_power_state() to manage state changes, including safe
-    handling when the device is not yet realized.
-
-The enum models *policy* rather than electrical or functional power state, and
-is distinct from runtime mechanisms (e.g. PSCI for ARM CPUs). The actual
-operational state of a device is maintained by platform-specific or device-
-specific code, which enforces runtime behaviour based on the administrative
-setting. Every device starts administratively ENABLED by default. A DISABLED
-device remains logically present but blocked from operation; a REMOVED device
-is logically absent.
+Changes include:
+ - Extend CpuTopology with a 'disabledcpus' field.
+ - Update machine_parse_smp_config() to account for disabled CPUs when
+   computing 'cpus' and 'maxcpus'.
+ - Update SMPConfiguration in QAPI to accept 'disabledcpus'.
+ - Extend -smp option documentation to describe 'disabledcpus' usage and
+   behavior.
 
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/core/qdev.c         | 62 ++++++++++++++++++++++++++++++++++++++++++
- include/hw/qdev-core.h | 54 ++++++++++++++++++++++++++++++++++++
- target/arm/cpu.c       |  1 +
- 3 files changed, 117 insertions(+)
+ hw/core/machine-smp.c | 24 +++++++-----
+ include/hw/boards.h   |  2 +
+ qapi/machine.json     |  3 ++
+ qemu-options.hx       | 86 +++++++++++++++++++++++++++++++++----------
+ system/vl.c           |  3 ++
+ 5 files changed, 89 insertions(+), 29 deletions(-)
 
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index f600226176..8502d6216f 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -633,6 +633,53 @@ static bool device_get_hotplugged(Object *obj, Error **errp)
-     return dev->hotplugged;
- }
- 
-+static int device_get_admin_power_state(Object *obj, Error **errp)
-+{
-+    DeviceState *dev = DEVICE(obj);
-+
-+    return dev->admin_power_state;
-+}
-+
-+static void
-+device_set_admin_power_state(Object *obj, int new_state, Error **errp)
-+{
-+    DeviceState *dev = DEVICE(obj);
-+    DeviceClass *dc = DEVICE_GET_CLASS(dev);
-+
-+    if (!dc->admin_power_state_supported) {
-+        error_setg(errp, "Device '%s' admin power state change not supported",
-+                   object_get_typename(obj));
-+        return;
-+    }
-+
-+    switch (new_state) {
-+    case DEVICE_ADMIN_POWER_STATE_DISABLED: {
-+        /*
-+         * TODO: Operational state transition triggered by administrative action
-+         * Powering off the realized device either synchronously or via OSPM.
-+         */
-+
-+        qatomic_set(&dev->admin_power_state, DEVICE_ADMIN_POWER_STATE_DISABLED);
-+        smp_wmb();
-+        break;
-+    }
-+    case DEVICE_ADMIN_POWER_STATE_ENABLED: {
-+        /*
-+         * TODO: Operational state transition triggered by administrative action
-+         * Powering on the device and restoring migration registration.
-+         */
-+
-+        qatomic_set(&dev->admin_power_state, DEVICE_ADMIN_POWER_STATE_ENABLED);
-+        smp_wmb();
-+        break;
-+    }
-+    default:
-+        error_setg(errp, "Invalid admin power state %d for device '%s'",
-+                   new_state, dev->id);
-+        break;
-+    }
-+}
-+
- static void device_initfn(Object *obj)
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index 0be0ac044c..c1a09fdc3f 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -87,6 +87,7 @@ void machine_parse_smp_config(MachineState *ms,
  {
-     DeviceState *dev = DEVICE(obj);
-@@ -644,6 +691,7 @@ static void device_initfn(Object *obj)
- 
-     dev->instance_id_alias = -1;
-     dev->realized = false;
-+    dev->admin_power_state = DEVICE_ADMIN_POWER_STATE_ENABLED;
-     dev->allow_unplug_during_migration = false;
- 
-     QLIST_INIT(&dev->gpios);
-@@ -731,6 +779,15 @@ device_vmstate_if_get_id(VMStateIf *obj)
-     return qdev_get_dev_path(dev);
- }
- 
-+static const QEnumLookup device_admin_power_state_lookup = {
-+    .array = (const char *const[]) {
-+        [DEVICE_ADMIN_POWER_STATE_ENABLED]  = "enabled",
-+        [DEVICE_ADMIN_POWER_STATE_REMOVED]  = "removed",
-+        [DEVICE_ADMIN_POWER_STATE_DISABLED] = "disabled",
-+    },
-+    .size = DEVICE_ADMIN_POWER_STATE_MAX,
-+};
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+     unsigned cpus    = config->has_cpus ? config->cpus : 0;
++    unsigned disabledcpus = config->has_disabledcpus ? config->disabledcpus : 0;
+     unsigned drawers = config->has_drawers ? config->drawers : 0;
+     unsigned books   = config->has_books ? config->books : 0;
+     unsigned sockets = config->has_sockets ? config->sockets : 0;
+@@ -166,8 +167,13 @@ void machine_parse_smp_config(MachineState *ms,
+         sockets = sockets > 0 ? sockets : 1;
+         cores = cores > 0 ? cores : 1;
+         threads = threads > 0 ? threads : 1;
 +
- static void device_class_init(ObjectClass *class, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(class);
-@@ -765,6 +822,11 @@ static void device_class_init(ObjectClass *class, const void *data)
-                                    device_get_hotpluggable, NULL);
-     object_class_property_add_bool(class, "hotplugged",
-                                    device_get_hotplugged, NULL);
-+    object_class_property_add_enum(class, "admin_power_state",
-+                                   "DeviceAdminPowerState",
-+                                   &device_admin_power_state_lookup,
-+                                   device_get_admin_power_state,
-+                                   device_set_admin_power_state);
-     object_class_property_add_link(class, "parent_bus", TYPE_BUS,
-                                    offsetof(DeviceState, parent_bus), NULL, 0);
- }
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 530f3da702..3bc212ab3a 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -159,6 +159,7 @@ struct DeviceClass {
-      */
-     bool user_creatable;
-     bool hotpluggable;
-+    bool admin_power_state_supported;
++        maxcpus = drawers * books * sockets * dies * clusters *
++                    modules * cores * threads;
++        cpus = maxcpus - disabledcpus;
+     } else {
+-        maxcpus = maxcpus > 0 ? maxcpus : cpus;
++        maxcpus = maxcpus > 0 ? maxcpus : cpus + disabledcpus;
++        cpus = cpus > 0 ? cpus : maxcpus - disabledcpus;
  
-     /* callbacks */
-     /**
-@@ -217,6 +218,55 @@ typedef QLIST_HEAD(, NamedGPIOList) NamedGPIOListHead;
- typedef QLIST_HEAD(, NamedClockList) NamedClockListHead;
- typedef QLIST_HEAD(, BusState) BusStateHead;
+         if (mc->smp_props.prefer_sockets) {
+             /* prefer sockets over cores before 6.2 */
+@@ -207,12 +213,8 @@ void machine_parse_smp_config(MachineState *ms,
+         }
+     }
  
-+/**
-+ * enum DeviceAdminPowerState - Administrative control states for a device
-+ *
-+ * This enum defines abstract administrative states used by QEMU to enable,
-+ * disable, or logically remove a device from the virtual machine. These
-+ * states reflect administrative control over a device's power availability
-+ * and presence in the system. These administrative states are distinct from
-+ * runtime operational power states (e.g., PSCI states for ARM CPUs). They
-+ * represent administrative *policy* rather than physical, electrical, or
-+ * functional state.
-+ *
-+ * Administrative state is managed externally "via QMP, firmware, or other
-+ * host-side policy agents" and acts as a gating policy that determines
-+ * whether guest software is permitted to interact with the device. Most
-+ * devices default to the ENABLED state unless explicitly disabled or removed.
-+ *
-+ * Changing a device administrative state may directly or indirectly affect
-+ * its operational behavior. For example, a DISABLED device will reject guest
-+ * attempts to power it on or transition it out of a suspended state. Not all
-+ * devices support dynamic transitions between administrative states.
-+ *
-+ * - DEVICE_ADMIN_POWER_STATE_ENABLED:
-+ *     The device is administratively enabled (i.e., logically present and
-+ *     permitted to operate). Guest software may change its operational state
-+ *     (e.g., activate, deactivate, suspend) within allowed architectural
-+ *     semantics. This is the default state for most devices unless explicitly
-+ *     disabled or unplugged.
-+ *
-+ * - DEVICE_ADMIN_POWER_STATE_DISABLED:
-+ *     The device is administratively disabled. It remains logically present
-+ *     but is blocked from functional operation. Guest-initiated transitions
-+ *     are either suppressed or ignored. This is typically used to enforce
-+ *     shutdown, deny execution, or offline the device without removing it.
-+ *
-+ * - DEVICE_ADMIN_POWER_STATE_REMOVED:
-+ *     The device has been logically removed (e.g., via hot-unplug). It is no
-+ *     longer considered present or visible to the guest. This state exists
-+ *     for representational or transitional purposes only. In most cases,
-+ *     once removed, the corresponding DeviceState object is destroyed and
-+ *     no longer tracked. This concept may not apply to some devices as
-+ *     architectural limitations might make unplug not meaningful.
-+ */
-+typedef enum DeviceAdminPowerState {
-+    DEVICE_ADMIN_POWER_STATE_ENABLED = 0,
-+    DEVICE_ADMIN_POWER_STATE_DISABLED,
-+    DEVICE_ADMIN_POWER_STATE_REMOVED,
-+    DEVICE_ADMIN_POWER_STATE_MAX
-+} DeviceAdminPowerState;
-+
+-    total_cpus = drawers * books * sockets * dies *
+-                 clusters * modules * cores * threads;
+-    maxcpus = maxcpus > 0 ? maxcpus : total_cpus;
+-    cpus = cpus > 0 ? cpus : maxcpus;
+-
+     ms->smp.cpus = cpus;
++    ms->smp.disabledcpus = disabledcpus;
+     ms->smp.drawers = drawers;
+     ms->smp.books = books;
+     ms->smp.sockets = sockets;
+@@ -226,6 +228,8 @@ void machine_parse_smp_config(MachineState *ms,
+     mc->smp_props.has_clusters = config->has_clusters;
+ 
+     /* sanity-check of the computed topology */
++    total_cpus = maxcpus = drawers * books * sockets * dies * clusters *
++                modules * cores * threads;
+     if (total_cpus != maxcpus) {
+         g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
+         error_setg(errp, "Invalid CPU topology: "
+@@ -235,12 +239,12 @@ void machine_parse_smp_config(MachineState *ms,
+         return;
+     }
+ 
+-    if (maxcpus < cpus) {
++    if (maxcpus < (cpus + disabledcpus)) {
+         g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
+         error_setg(errp, "Invalid CPU topology: "
+-                   "maxcpus must be equal to or greater than smp: "
+-                   "%s == maxcpus (%u) < smp_cpus (%u)",
+-                   topo_msg, maxcpus, cpus);
++                   "maxcpus must be equal to or greater than smp[+disabledcpus]:"
++                   "%s == maxcpus (%u) < smp_cpus (%u) [+ offline cpus (%u)]",
++                   topo_msg, maxcpus, cpus, disabledcpus);
+         return;
+     }
+ 
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index f94713e6e2..2b182d7817 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -361,6 +361,7 @@ typedef struct DeviceMemoryState {
  /**
-  * struct DeviceState - common device state, accessed with qdev helpers
-  *
-@@ -240,6 +290,10 @@ struct DeviceState {
-      * @realized: has device been realized?
-      */
-     bool realized;
-+    /**
-+     * @admin_power_state: device administrative power state
-+     */
-+    DeviceAdminPowerState admin_power_state;
-     /**
-      * @pending_deleted_event: track pending deletion events during unplug
-      */
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index e2b2337399..0c9a2e7ea4 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2765,6 +2765,7 @@ static void arm_cpu_class_init(ObjectClass *oc, const void *data)
-     cc->gdb_get_core_xml_file = arm_gdb_get_core_xml_file;
-     cc->gdb_stop_before_watchpoint = true;
-     cc->disas_set_info = arm_disas_set_info;
-+    dc->admin_power_state_supported = true;
+  * CpuTopology:
+  * @cpus: the number of present logical processors on the machine
++ * @disabledcpus: the number additional present but admin disabled cpus
+  * @drawers: the number of drawers on the machine
+  * @books: the number of books in one drawer
+  * @sockets: the number of sockets in one book
+@@ -373,6 +374,7 @@ typedef struct DeviceMemoryState {
+  */
+ typedef struct CpuTopology {
+     unsigned int cpus;
++    unsigned int disabledcpus;
+     unsigned int drawers;
+     unsigned int books;
+     unsigned int sockets;
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 038eab281c..e45740da33 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1634,6 +1634,8 @@
+ #
+ # @cpus: number of virtual CPUs in the virtual machine
+ #
++# @disabledcpus: number of additional present but disabled(or offline) CPUs
++#
+ # @maxcpus: maximum number of hotpluggable virtual CPUs in the virtual
+ #     machine
+ #
+@@ -1657,6 +1659,7 @@
+ ##
+ { 'struct': 'SMPConfiguration', 'data': {
+      '*cpus': 'int',
++     '*disabledcpus': 'int',
+      '*drawers': 'int',
+      '*books': 'int',
+      '*sockets': 'int',
+diff --git a/qemu-options.hx b/qemu-options.hx
+index ab23f14d21..83ccde341b 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -326,12 +326,15 @@ SRST
+ ERST
  
- #ifdef CONFIG_TCG
-     cc->tcg_ops = &arm_tcg_ops;
+ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+-    "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
+-    "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
+-    "               [,threads=threads]\n"
+-    "                set the number of initial CPUs to 'n' [default=1]\n"
+-    "                maxcpus= maximum number of total CPUs, including\n"
+-    "                offline CPUs for hotplug, etc\n"
++    "-smp [[cpus=]n][,disabledcpus=disabledcpus][,maxcpus=maxcpus][,drawers=drawers][,books=books]\n"
++    "               [,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules]\n"
++    "               [,cores=cores][,threads=threads]\n"
++    "                set the initial number of CPUs present and\n"
++    "                  administratively enabled at boot time to 'n' [default=1]\n"
++    "                disabledcpus= number of present but administratively\n"
++    "                  disabled CPUs (unavailable to the guest at boot)\n"
++    "                maxcpus= maximum total CPUs (present + hotpluggable)\n"
++    "                  on machines without CPU hotplug, defaults to n + disabledcpus\n"
+     "                drawers= number of drawers on the machine board\n"
+     "                books= number of books in one drawer\n"
+     "                sockets= number of sockets in one book\n"
+@@ -351,22 +354,49 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "      For a particular machine type board, an expected CPU topology hierarchy\n"
+     "      can be defined through the supported sub-option. Unsupported parameters\n"
+     "      can also be provided in addition to the sub-option, but their values\n"
+-    "      must be set as 1 in the purpose of correct parsing.\n",
++    "      must be set as 1 in the purpose of correct parsing.\n"
++    "                                                          \n"
++    "      Administratively disabled CPUs: Some machine types do not support vCPU\n"
++    "      hotplug but their CPUs can be marked disabled (powered off) and kept\n"
++    "      unavailable to the guest. Later, such CPUs can be enabled via QMP/HMP\n"
++    "      (e.g., 'device_set ... admin-state=enable'). This is similar to hotplug,\n"
++    "      except all disabled CPUs are already present at boot. Useful on\n"
++    "      architectures that lack architectural CPU hotplug.\n",
+     QEMU_ARCH_ALL)
+ SRST
+-``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
+-    Simulate a SMP system with '\ ``n``\ ' CPUs initially present on
+-    the machine type board. On boards supporting CPU hotplug, the optional
+-    '\ ``maxcpus``\ ' parameter can be set to enable further CPUs to be
+-    added at runtime. When both parameters are omitted, the maximum number
++``-smp [[cpus=]n][,disabledcpus=disabledcpus][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
++    Simulate a SMP system with '\ ``n``\ ' CPUs initially present & enabled on
++    the machine type board. Furthermore, on architectures that support changing
++    the administrative power state of CPUs, optional '\ ``disabledcpus``\ '
++    parameter specifies *additional* CPUs that are present in firmware (e.g.,
++    ACPI) but are administratively disabled (i.e., not usable by the guest at
++    boot time).
++
++    This is different from CPU hotplug where additional CPUs are not even
++    present in the system description. Administratively disabled CPUs appear in
++    ACPI tables i.e. are provisioned, but cannot be used until explicitly
++    enabled via QMP/HMP or the deviceset API.
++
++    On boards supporting CPU hotplug, the optional '\ ``maxcpus``\ ' parameter
++    can be set to enable further CPUs to be added at runtime. When both
++    '\ ``n``\ ' & '\ ``maxcpus``\ ' parameters are omitted, the maximum number
+     of CPUs will be calculated from the provided topology members and the
+-    initial CPU count will match the maximum number. When only one of them
+-    is given then the omitted one will be set to its counterpart's value.
+-    Both parameters may be specified, but the maximum number of CPUs must
+-    be equal to or greater than the initial CPU count. Product of the
+-    CPU topology hierarchy must be equal to the maximum number of CPUs.
+-    Both parameters are subject to an upper limit that is determined by
+-    the specific machine type chosen.
++    initial CPU count will match the maximum number. When only one of them is
++    given then the omitted one will be set to its counterpart's value. Both
++    parameters may be specified, but the maximum number of CPUs must be equal
++    to or greater than the initial CPU count. Product of the CPU topology
++    hierarchy must be equal to the maximum number of CPUs. Both parameters are
++    subject to an upper limit that is determined by the specific machine type
++    chosen. Boards that support administratively disabled CPUs but do *not*
++    support CPU hotplug derive the maximum number of CPUs implicitly:
++    '\ ``maxcpus``\ ' is treated as '\ ``n + disabledcpus``\ ' (the total CPUs
++    present in firmware). If '\ ``maxcpus``\ ' is provided, it must equal
++    '\ ``n + disabledcpus``\ '. The topology product must equal this derived
++    maximum as well.
++
++    Note: Administratively disabled CPUs will appear to the guest as
++    unavailable, and any attempt to bring them online must go through QMP/HMP
++    commands like 'device_set'.
+ 
+     To control reporting of CPU topology information, values of the topology
+     parameters can be specified. Machines may only support a subset of the
+@@ -425,6 +455,24 @@ SRST
+ 
+         -smp 2
+ 
++    Examples using 'disabledcpus':
++
++    For a board without CPU hotplug, enable 4 CPUs at boot and provision
++    2 additional administratively disabled CPUs (maximum is derived
++    implicitly as 6 = 4 + 2):
++
++    ::
++
++        -smp cpus=4,disabledcpus=2
++
++    For a board that supports CPU hotplug and 'disabledcpus', enable 4 CPUs
++    at boot, provision 2 administratively disabled CPUs, and allow hotplug of
++    2 more CPUs (for a maximum of 8):
++
++    ::
++
++        -smp cpus=4,disabledcpus=2,maxcpus=8
++
+     Note: The cluster topology will only be generated in ACPI and exposed
+     to guest if it's explicitly specified in -smp.
+ ERST
+diff --git a/system/vl.c b/system/vl.c
+index 3b7057e6c6..2f0fd21a1f 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -736,6 +736,9 @@ static QemuOptsList qemu_smp_opts = {
+         {
+             .name = "cpus",
+             .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "disabledcpus",
++            .type = QEMU_OPT_NUMBER,
+         }, {
+             .name = "drawers",
+             .type = QEMU_OPT_NUMBER,
 -- 
 2.34.1
 
