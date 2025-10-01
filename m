@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42574BAF780
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD008BAF753
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rRa-0007HS-Iv; Wed, 01 Oct 2025 03:40:11 -0400
+	id 1v3rS3-00087N-FL; Wed, 01 Oct 2025 03:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rR3-0007Bp-Ca
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:39:40 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rRp-0007w3-FU
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:40:25 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rQU-0006tp-Cr
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:39:36 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46e326e4e99so3300585e9.1
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:38:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rRW-0007GT-Ej
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:40:23 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3ece1102998so4655303f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759304331; x=1759909131; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759304395; x=1759909195; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f+dfwnFRSg8jlAAmaCnMvAsR7G4WxJUSpKPLskfagp0=;
- b=dn9l+/mh83O5C3pGZHt1yNFM/wSQzAwsfVVHE3v2QKuVk1j+jjLPAgNA+K470PqWTm
- xMMHo396lAJvpJxa800KAjxOr7I7NO1UBhZiIJTtxf/cPiPLjctIT9Eqae0QHd1xvYYZ
- bSLMUzKC6int/z65LDQdJRI8smfCCvVQPh+pogs59Tt8Ny50OdwtZoMCJBTbYRA3Ztpk
- 8rEdarHal82lf3FIL6UA43gWabDViFk+/2TaS8DYzRo55IChh0fZO3pg47autamIxZRu
- gndPHyZGx6zfUZmRaFAT81rmHG+5FGadBL6p2/PPsZQ9+ldAw/OWJYqcnwEE7pfk0UdM
- uvjQ==
+ bh=1/PqkHiitfwGnP7fyZ0sCwBuwXOLvqqLRPDt5G2B5qM=;
+ b=RytgUlwAWH6PPZVkrsBhA61Wh5rJTpvsJkgn5DLk2RtLgEuaU5ni0o/UcwIgPlEgB8
+ aH9+eK04b9PUs+7c+Fb+OHx1hwbLw//DD/9rBe0L49gMpCzQKrucOT3WyIVAPEKy1F/z
+ Wb7gSkN8aADtKB/yLll3WgO2N+T95k7640OuR5ORsKjo4QgFVXASwlBJhfbtxn8ONPeB
+ lC20nwf8l5S+JGzQ8JiBbJjy9LCSqQdP1mQaegcmiMyRyJcuaU1TIktMsSZu/JphmXpT
+ 009IFqGBGP0yjr2l2jvATTdlWKqvFd8BKrr8BOasBH7Tf7y8hzl7Xrwcy5lI5DVaFJ9X
+ h1LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759304331; x=1759909131;
+ d=1e100.net; s=20230601; t=1759304395; x=1759909195;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f+dfwnFRSg8jlAAmaCnMvAsR7G4WxJUSpKPLskfagp0=;
- b=SLFqcOBubVJEOakjiSYsv7wG+Yol4hfecLoNo57tk0f68QF9FGZ6rNFQ3v8CMDJYg7
- 7GmU7NmipbCKqHRka2fi1G8QAY1ct6DwFDuUsRmrOEg9jbGYbuS7L38I1PlF14nvHdQt
- ccakv81eIUFzXRvlOKeHLpeH3hWsycMnC+pPTNVwZKOpfLqfsm7HGWR0ZvO/c23w/sbD
- lFQrTRitSnaTQdeyHBm5qp67rPj3cZQjMvbrNbx1dl0ijpylA929YHQN3qlUUv/bgzYy
- wr6LIWCvm0ea4XzfaKreHMwiul8rwSBoJ45J7y2iiVBFYLsu1L0BA2hPUpb2c3oPNeaB
- VqNg==
+ bh=1/PqkHiitfwGnP7fyZ0sCwBuwXOLvqqLRPDt5G2B5qM=;
+ b=Y8FdhmYhHaQ96Hi1cMavm8DvYj4+oS2+Ux1IhO+ihJicX+MkmDXvnSP/+5Ogryp1DR
+ HGwkSnfsJoeGRX4Iv+WbawbeD9UOitQ8H4m+5D7Og4n1Vo0oZdgnVFfxo6faLNwNywn3
+ dPCO59nHyhf6GGlx3qtvedrd1Sw3HGpmVc9tWR1i9D+QIo7Cj5x3+cCIDPPecoGocQT9
+ 7B8Uu6nRZ+PjVWtZNh3YXOyCeX2Eb4kH8bqnBN60lAOeLtVMHq0mWlDoF+YWM9BSaFAn
+ J07laFm3KQa9IYeG7wc7Y+te7QjerTpsWuf6oWhc70vAQjW+47JpZYqNJKjMS0aY+j5h
+ ac3Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVC85DSAwhSxwbjg20kKO0mKAPeMqcAA6THVORHp+GQV06PSYqGqSgqzN1Z9TylpGqFxyWfFZNz1xJP@nongnu.org
-X-Gm-Message-State: AOJu0YwfhpiniQezf/rEYPKkxJgJIO49v3HDUaVJf6AQX8mfWx7RIdHD
- aPywlNPhxPEgYWjiEhJ+Fc5zluITT7KF6al5jIPyYRu5ehyY2ycAZBNVsp2JOxN/B10=
-X-Gm-Gg: ASbGncttC8ObQDw4hqzXOpvQuKBK7Ms9MXs1JAUD8uPv7Gtpg81hPfP2FPa1MNA3MTu
- jpwkAHokBERfi7d24awkywYw1G13otW37jMWzaquTND/gGBwIclBqN8pewgNPScs2fQpArcu877
- BLGm6XnYFxdw88uWAVTFuXtew+01Far2hf8m/VMaXwwKEhsDNVfB5nyyImMa6BOiPAMXIh6wUjo
- tR4xnvPhKk7aGyjRMQiFQhrtjymttCV4X3xz17jWPtk/kq47YPQrQbhGyLmzVu3Y+c4PN7CSKVw
- +gwAK6e9WRy2eBCqURBXQIx5WCriuQFEfhIEkPX7zhrPsxUnc1o0TAAumUu/IIj3c5BfCfz2Jwv
- mNMkR/LzEUtdu42UXIcNNHqZfQpEdlzfM80XnmLFqiXyrHCJL3KPF/OBDpzPHhIQZsjBksVQDFe
- pIlwZ0QJeh/czyqw==
-X-Google-Smtp-Source: AGHT+IFZwXTRaSC2i1avWXk0Mv/VmfsjN5R8HRSOWi4x9Y96NR0qL7AptuzQ4uqUX6tmWuiJMUMW1w==
-X-Received: by 2002:a05:600c:3f07:b0:45d:f7df:2735 with SMTP id
- 5b1f17b1804b1-46e612c983dmr19823585e9.16.1759304331461; 
- Wed, 01 Oct 2025 00:38:51 -0700 (PDT)
+ AJvYcCXaox0l3qe1ypW/z7RcQ78+ikg5QBzuZ4qGNbL8WcgQ8bui/nSX4vcTuGhRzFBkVB+ImRfbJFTh4ImW@nongnu.org
+X-Gm-Message-State: AOJu0YySMkaAzDzHOWI9jqlb0RPAGIq7aDLDnuJkU3BOLPD41AjSzAUm
+ 0aHTesF63Jc3AjVucwo0megLgK3nnCzrWs5evg4ryrWjgxjdG2q/n6gF/YaSyYeL0AA=
+X-Gm-Gg: ASbGncvfW02R+BZd1aHKrg0w+F8ZTuhX8hSBzjoOJuEWPhFF/19A9cifnLtgH8yCYkI
+ SjkYHmKaWaI12QV/XaqxoFrX1Zc+WevokOKz/qSut72oGE2bDBuC4gxmubGyS4Xb2VpsziEab/g
+ m+4sv8nSbnrrcBV/vwTqcCWzYQ2K1hit5/NmXM2Oik16jQpdhSPbaEVYmIsasu0eedhPzkEOaUa
+ D8ZXUWToh3yMLjsBR2z8SQGRXkfLdeT1jpL98M7x0TY1LXAFiMd47Dg5rjNc2ihUpPY53PkLJne
+ GyU7bJSv/4j5al3y+1xbTjLFGOzdNaZj6B31ZItrk9n4lSTN9vhiRj1CHEEoyFV67ji/q/nZDBN
+ slxYCVDjolRQlxPUXTb/3XaKurd7crVtDDGBddHdk6/S+SwvriQpyY4RWbdUoKQ0Nz7BGMXAtOc
+ y15AzLAvIagGbKXg2wfUck+Pan
+X-Google-Smtp-Source: AGHT+IHqVfwmzofqwCB8DhD2FfptrnPA3enxurI1OGfpMBse/0S0Ko61boREs4WQwPWlyzGg/UF9eA==
+X-Received: by 2002:a05:6000:3105:b0:3ec:3d75:1330 with SMTP id
+ ffacd0b85a97d-4255781b091mr1625344f8f.52.1759304395417; 
+ Wed, 01 Oct 2025 00:39:55 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e5c4c0321sm28255545e9.8.2025.10.01.00.38.50
+ ffacd0b85a97d-40fc72b0aeesm26433589f8f.49.2025.10.01.00.39.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Oct 2025 00:38:51 -0700 (PDT)
-Message-ID: <ed12dc41-afcb-410b-91dd-73ce4c958b02@linaro.org>
-Date: Wed, 1 Oct 2025 09:38:50 +0200
+ Wed, 01 Oct 2025 00:39:54 -0700 (PDT)
+Message-ID: <84c9b930-5f93-4175-9605-a67054187079@linaro.org>
+Date: Wed, 1 Oct 2025 09:39:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/33] target/riscv: Fix size of mhartid
+Subject: Re: [PATCH v2 05/33] target/riscv: Combine mhpmevent and mhpmeventh
 Content-Language: en-US
 To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, richard.henderson@linaro.org,
  alistair.francis@wdc.com, palmer@dabbelt.com
 References: <20251001073306.28573-1-anjo@rev.ng>
- <20251001073306.28573-4-anjo@rev.ng>
+ <20251001073306.28573-6-anjo@rev.ng>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251001073306.28573-4-anjo@rev.ng>
+In-Reply-To: <20251001073306.28573-6-anjo@rev.ng>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,45 +103,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/10/25 09:32, Anton Johansson wrote:
-> and update formatting in log.
+> According to version 20250508 of the privileged specification,
+> mhpmeventn is 64 bits in size and mhpmeventnh is only ever used
+> when XLEN == 32 and accesses the top 32 bits of the 64-bit
+> mhpmeventn registers. Combine the two arrays of target_ulong
+> mhpmeventh[] and mhpmevent[] to a single array of uint64_t.
+> 
+> This also allows for some minor code simplification where branches
+> handling either mhpmeventh[] or mhpmevent[] could be combined.
 > 
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
 > ---
->   target/riscv/cpu.h         | 2 +-
->   target/riscv/cpu_helper.c  | 2 +-
->   target/riscv/machine.c     | 2 +-
->   target/riscv/tcg/tcg-cpu.c | 2 +-
->   4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 736e4f6daa..3235108112 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -279,7 +279,7 @@ struct CPUArchState {
->       target_ulong geilen;
->       uint64_t resetvec;
->   
-> -    target_ulong mhartid;
-> +    uint64_t mhartid;
->       /*
->        * For RV32 this is 32-bit mstatus and 32-bit mstatush.
->        * For RV64 this is a 64-bit mstatus.
+>   target/riscv/cpu.h     | 10 +++----
+>   target/riscv/csr.c     | 67 +++++++++++++++---------------------------
+>   target/riscv/machine.c |  3 +-
+>   target/riscv/pmu.c     | 53 ++++++++-------------------------
+>   4 files changed, 42 insertions(+), 91 deletions(-)
 
 
 > diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> index 99e46c3136..328fb674e1 100644
+> index 328fb674e1..d9939489e1 100644
 > --- a/target/riscv/machine.c
 > +++ b/target/riscv/machine.c
-> @@ -425,7 +425,7 @@ const VMStateDescription vmstate_riscv_cpu = {
->           VMSTATE_UINTTL(env.priv, RISCVCPU),
->           VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
->           VMSTATE_UINT64(env.resetvec, RISCVCPU),
-> -        VMSTATE_UINTTL(env.mhartid, RISCVCPU),
-> +        VMSTATE_UINT64(env.mhartid, RISCVCPU),
+> @@ -452,8 +452,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+>           VMSTATE_UINT32(env.mcountinhibit, RISCVCPU),
+>           VMSTATE_STRUCT_ARRAY(env.pmu_ctrs, RISCVCPU, RV_MAX_MHPMCOUNTERS, 0,
+>                                vmstate_pmu_ctr_state, PMUCTRState),
+> -        VMSTATE_UINTTL_ARRAY(env.mhpmevent_val, RISCVCPU, RV_MAX_MHPMEVENTS),
+> -        VMSTATE_UINTTL_ARRAY(env.mhpmeventh_val, RISCVCPU, RV_MAX_MHPMEVENTS),
+> +        VMSTATE_UINT64_ARRAY(env.mhpmevent_val, RISCVCPU, RV_MAX_MHPMEVENTS),
 
-The problem is you break the migration stream again. Maybe simpler to
-just squash with previous patch?
-
-Thay said, IIUC mhartid is only set once in riscv_hart_realize().
-I suspect it is pointless to migrate it.
+Each time you change a VMStateDescription structure you need to bump its
+version.
 
