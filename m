@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5965DBB0F40
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E618FBB0F91
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:10:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yPU-0000ru-Ge; Wed, 01 Oct 2025 11:06:28 -0400
+	id 1v3yQG-00015u-S8; Wed, 01 Oct 2025 11:07:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yP7-0000cZ-Pr
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:06:07 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yPR-0000re-Cl
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:06:25 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yOs-0000dL-MO
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:06:05 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3f0134ccc0cso4997976f8f.1
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:05:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yP0-0000eI-4Q
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:06:23 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45b4d89217aso49632785e9.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:05:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759331142; x=1759935942; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759331147; x=1759935947; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W7EaccUYpMBC4mwWEA7DiP8JsC9fbJvUiR/uXxT1ZC0=;
- b=cLwO4bRUZEovAHh9p54a+1hXkXrlBUYlhN2MHyG39Bey6/sbXg6W0YSVnOmqGFRzKh
- DnzI7qLAxQ8sm1tyxdh2MXq5WfwEYH9RRZTAzmlr7sSOZTl5h/w83VF2fB0jExb2wCMi
- +pLvlFvTaPuB5NCK8lzXRxBWfvBvFdnsp7R1yMlJjjhrOz5r7U+jxvpBC2iFhsNambz8
- hLUBY6T/ebCnwD7ZYEQQ6MqDE9YiUMu4zt67HU2sYF0fsKDOF0CSiv0CP7HKzJrG7msc
- v+KwWOamNT8+Eo8BhkBHoNKkgKo9CAtf3Ylob4rvMiWs8M8peSQme4ueJl95DtXuXfS4
- bBjw==
+ bh=DLGQVBAj1rcgUspN9zx226A8KWyP7OIjQQo0oxF48cU=;
+ b=xjSGLFp0nFTZwfMteRih/6OdBfiSGkQ7W8LnftadynpMQ8H7LgvnFGkFwQFizg/070
+ s1EmKcWkrgNgRlpnmpzFff+VuEJWgX+LKz94b75veoj6sVspuEYB9wj/7Jr9iiCmwzzZ
+ 1SSXuJbx3HvZzawGsfvQb77FTZrqehGoJaPZHd8qk53q2gGGZSGSgmY/CarrIt7NzIxl
+ ulo7LAyi1AKchVIPfjutaWvkjWSvJVeA6bUOJ0HRy8WMSGM6fvPRgklibv09jUbLcFQq
+ weABXPNGK/ceEJgqy7bq0G3xDWYEVrhn/0av9n6I1Vue+Le6MWGyNrQ6BTHM3kRcY2at
+ BD0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759331142; x=1759935942;
+ d=1e100.net; s=20230601; t=1759331147; x=1759935947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W7EaccUYpMBC4mwWEA7DiP8JsC9fbJvUiR/uXxT1ZC0=;
- b=RfIgkhLtNsnNqY1Yj23VUTEFzPNCrltbYXnCVV2gzI9ku32q8xdyd4sy4lGYN7LwIB
- 5nZC/WwIhzWbYEXVNa/pDpRbIM7AtflFLY/7ioGPmhBphfNtKcR4zn40+4ZBKV+aSN6i
- UmBvsq7ssGUpxGTRklkZQnJvuaSw/7IQtUzFi8hDwi1flk8OMfaDOeeOrP1QbjEd6k6f
- Q1FRvHoH2FShxBiUvzPiq39eEZ0OQmQYxo/MRi7yfHeNYIyqcbsPwfAonV5bmWfqYLFh
- hzH22IwH/f6CkT/fgwlon7y4V4oDnJoed/uF4Z9lhd7r0Ya36+Bk2maPxlwXkvgUqhFS
- 6XPA==
-X-Gm-Message-State: AOJu0YyTziRgaWMkt7fJt+EKbRYV39kkkoGm9KfuBLfKy5idTDmUZ7MY
- WcobqqOKhwYsSx4dNcOPCygF1StyaK/f7LkSpjhEzjlDiK9jfpLRBcAWWz77gpKZBqFGBuZZiCO
- phXyKa1DZkg==
-X-Gm-Gg: ASbGncu/nmcrkSkgpEVKOboLhalm0XJ4P38QqS7cqz8oIOB+8hKmBSQFNGIr58TSR4b
- k6zOGwFcCdC7RhkViZvjPbTkFgaYWLzHelApdz8mgOQ+0LNN8cL1buEfdbOWOcfsr8eeuG4p+hU
- GTEtAat/BdWw8oBLu2k78kf95dZA271RyKPPx/xJJIATcRIeCnCkLZp4g+94fyLFjdDm2YRoRA6
- Hfx1JS1HGFhZn6AR1f37GlffjUy64WiFa0M+uhM6/M6VSQpbTMTtW3PUgxwlA2IvuXzoxak5S3Q
- eI5+xUzXq4BtCZRwF2GlUlutyftEFLey4PKA3mnoE5dmttGYKZmuqbf18nm6V/NhzOT51u8CxJl
- Qt0z8Hx1vZHCnPGQbzJlSGNzWJgM1rx88mOj91myAEYabN9zAQwqUveqh6Ak/df4t9L/PUtg7Ub
- 9RDi0Sa+f+SkHBMHzBEscC
-X-Google-Smtp-Source: AGHT+IGEFbG5PZrRkWb+dAGLcwVbtYn5/zpuQRrUQpMe+vLSrEUuj1Qqi8Tvl0sgCyq8N0wMWsvaVw==
-X-Received: by 2002:a5d:588f:0:b0:3ee:15b4:174c with SMTP id
- ffacd0b85a97d-425577ed71cmr3251338f8f.3.1759331141623; 
- Wed, 01 Oct 2025 08:05:41 -0700 (PDT)
+ bh=DLGQVBAj1rcgUspN9zx226A8KWyP7OIjQQo0oxF48cU=;
+ b=VMSTfWtq4dc85Nv7Y6fZ2BEFhXGm7gyf+oltx/xrXKPfONlgZYqRABUMmZs5Ag6zZR
+ YM9CCkr9FlyUepOKheuuO6ATeaRuEPIAJdH8nPpoYIdFTXMkBqyMhFExdod5dLsUcQeB
+ D6VHG3m5QB68XpnSUP8SPmN5u8fYxpjXI/+V2TAfeLxuNrwinlA0L4sIQ3FS53HGH2ns
+ jQ3J7I5Kkgu8b849nyPEtiZSthxdKcMEenS/H5Oyq+k+mAez2FBvMvxA1cpcybzkIp8r
+ TP7EZ4osfLPnrWCPpfDEDxzPnbanSLvv36098106ccmjJ8f0Op23lkzvq76DuCO4sYEX
+ 1qzg==
+X-Gm-Message-State: AOJu0YzAFfoPLVyVU3nW36jO0kuMFDPT83u+YmFthAYA3PDSUE9XqS51
+ B4FVjI3Uac+bUz8U+itHhZuu80Y0RXFZoDJjg+0OrjlLvUzDH5S2y4UWU4dXRtc5NwSW/ymEz9k
+ Kawv4OrwByg==
+X-Gm-Gg: ASbGnct0HFyncfJHuiz7Bqf5pfJcVhAwgJ1zgjVv8cYDx4cgv/2BfwaTEyP1kt8PQOd
+ 3EFVGLUcBvHJVqRFZOPDr8DdCgBO4ebVp1W6TZdr51q1U67gxokHv93P+awpZUPlkUMY+7LfZp+
+ bRQxjDHe/DWfptO7EWVbTP0CliRkXp300W1TTxbBcSlH1DrWud41gekjpZgDs/KIZlO8FtwmJ8s
+ nhVL/Hnf9G55Uls3X/RzAT3HDbVF3SxIdXqEd4V1kuMB2B7ZZBb3cPfcxVCyE1i3d/TvolBkGoI
+ b+IS9WToKi6re6MN5N9LpGuHfTBtUtHJ/Mv27eR+BBNsdqhwDCPtJgucxtl2duFx7jsxb1EQNoX
+ 2SPxXKcamd7lwYDUNu6fKe6usWj/NjV3+LmTiBP8ZRBc+N1PNyjoh/MTPFxCo9YZa0fGbS6Mk+E
+ FYNYO3WAkx1M6gyWr1AdlN
+X-Google-Smtp-Source: AGHT+IEw/I3t/hR+beu96KQ4fixPA/nLDOj6cWuw5ZTikLMncMzZdCbTPA0H/HICehs2+NTOrJVv1g==
+X-Received: by 2002:a05:6000:1842:b0:3ee:1586:6c85 with SMTP id
+ ffacd0b85a97d-42557a1be4emr2862405f8f.57.1759331146611; 
+ Wed, 01 Oct 2025 08:05:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc7e2c6b3sm29412235f8f.54.2025.10.01.08.05.40
+ ffacd0b85a97d-40fc5603365sm28488541f8f.37.2025.10.01.08.05.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 08:05:41 -0700 (PDT)
+ Wed, 01 Oct 2025 08:05:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
@@ -70,19 +70,20 @@ Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 02/22] disas/disas-mon: Get cpu first addr space with
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH 03/22] monitor/hmp-cmds: Get cpu first addr space with
  cpu_get_address_space()
-Date: Wed,  1 Oct 2025 17:05:07 +0200
-Message-ID: <20251001150529.14122-3-philmd@linaro.org>
+Date: Wed,  1 Oct 2025 17:05:08 +0200
+Message-ID: <20251001150529.14122-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001150529.14122-1-philmd@linaro.org>
 References: <20251001150529.14122-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,25 +112,30 @@ helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- disas/disas-mon.c | 3 ++-
+ monitor/hmp-cmds-target.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/disas/disas-mon.c b/disas/disas-mon.c
-index 9c693618c27..f2e45d16021 100644
---- a/disas/disas-mon.c
-+++ b/disas/disas-mon.c
-@@ -29,9 +29,10 @@ physical_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
-                      struct disassemble_info *info)
- {
-     CPUDebug *s = container_of(info, CPUDebug, info);
-+    AddressSpace *as = cpu_get_address_space(s->cpu, 0);
-     MemTxResult res;
+diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+index e9820611466..602af851328 100644
+--- a/monitor/hmp-cmds-target.c
++++ b/monitor/hmp-cmds-target.c
+@@ -128,6 +128,8 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+     uint8_t buf[16];
+     uint64_t v;
+     CPUState *cs = mon_get_cpu(mon);
++    AddressSpace *as = cs ? cpu_get_address_space(cs, 0)
++                          : &address_space_memory;
  
--    res = address_space_read(s->cpu->as, memaddr, MEMTXATTRS_UNSPECIFIED,
-+    res = address_space_read(as, memaddr, MEMTXATTRS_UNSPECIFIED,
-                              myaddr, length);
-     return res == MEMTX_OK ? 0 : EIO;
- }
+     if (!cs && (format == 'i' || !is_physical)) {
+         monitor_printf(mon, "Can not dump without CPU\n");
+@@ -174,7 +176,6 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+         if (l > line_size)
+             l = line_size;
+         if (is_physical) {
+-            AddressSpace *as = cs ? cs->as : &address_space_memory;
+             MemTxResult r = address_space_read(as, addr,
+                                                MEMTXATTRS_UNSPECIFIED, buf, l);
+             if (r != MEMTX_OK) {
 -- 
 2.51.0
 
