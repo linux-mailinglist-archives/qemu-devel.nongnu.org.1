@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2CBBB1094
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A85ABB10BE
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:22:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yT1-0004pD-Dy; Wed, 01 Oct 2025 11:10:07 -0400
+	id 1v3yTt-0005Ph-Jb; Wed, 01 Oct 2025 11:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3ySv-0004kq-D6
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:10:01 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yTM-00058N-Sa
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:10:33 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3yQx-0000vP-6f
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:10:00 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-b551b040930so4926580a12.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:07:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yRN-000106-Ha
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:10:23 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-46e3cdc1a6aso9018635e9.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:08:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759331267; x=1759936067; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=lV8RNQ++v7c1oOQ5Jt+EgzxKPMz0iuJCb5RvvPAFXjI=;
- b=FClKisEJ+eqUqxecBub8h0sO8bvJwRgKKWJCiK6a0ru70krgHOvV7uUXh1TDBfS6JR
- ibjSO3aDcxSfyHXHRG6H68+jkXcl3rWW1zut+yGMcBpkZdJni1r4Kb01329mH0ZDjgRS
- DURGZuLXQkIBMenCfYsgAJuYafXTX4OcjpI/E0mPcauSNNFwt7YsqbKKG020WWA+J+Hq
- LGXms924aZHqdeQ3i1+wNtYhm4BNLqHE1EAJM6OrTtJNBBnpgM55t0guFp99NrTF+zq2
- ICXDN+W8uEESEOl/IEptxg5u8BA0c4ZQBZIBDaUxmzAgBZ4b6aHmlOMy/Dl3PYOV6DD0
- 6tNg==
+ d=linaro.org; s=google; t=1759331297; x=1759936097; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AIzO+so5KPpKzYj7ZNyXWUr3LlH8ilSE/g0AxNVpzLk=;
+ b=frX/pU08FU3nH0HNXJNevCrdIKND5TwEvt4g/ZLwm6F/axJCF8831FIDag2g6BqnTw
+ XWc4EbXNoHROVeaCcnFxBsQBGZMU6oomNTHesmXBPY+rAilcJ5JMR1TO+KWkJMHcLkt2
+ vV90WZIywuyW1Rpg1EydMjJi2L5w89DJu911O/5bwBU/mT6jRlabNDDdjZ6GMtyKBzlG
+ gB9aCNWbVf4TGyL2aaZYir2S1gYgarv1lS7eZs2bd/Plcwr6O8BnPiU+qTcjsK11heC0
+ CFpeIlpazO+NCLMjqPKHMjTE7oSG2MWr33/N6HIJIQc9ubKdtU1lnrMGRmru/V2A+gac
+ GzTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759331267; x=1759936067;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1759331297; x=1759936097;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lV8RNQ++v7c1oOQ5Jt+EgzxKPMz0iuJCb5RvvPAFXjI=;
- b=BT7NmqWSNWucNdBpkdT5ncadb1bRQ8XyIzVxDOLLVoflsT8YxNorhP2u3VAHttSJJ9
- D6Ug4Vzk/Tb9JpH8p2xdlr2w9OO770U2UnIpwE1LwP7Jv1bflsesJ80qBjsDMxMSFHX9
- T0Ewheu4q6RKt225lcQTUXMmWIR57frLCeUwGZW0e/KH+0MVGcX1WS6yrbA8ABEVALbD
- 8FW1qVKHXIOi24clilhlfzdo2ShD2XFlKuYmzi26cdf02c6ibxiT495uw57Wa6CtHZr+
- qAgK9RQcAKW8MJYWDpwVf9L88CUJ4LegWUjpS9ybBrHX+SfuMFlvBHSOH6FmTagjw+qr
- Jb8g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXIUerGJgH98VefC3T1aNOX/2Nc8p9EpOWu51fby95oqx0yH2p4aeowgBrL2o5XM8hQwD9WyTjGu8wh@nongnu.org
-X-Gm-Message-State: AOJu0YySBmevbkZE7jy0qSESA23pJDl6cnI2Cce8CiAYaxtki/Rwx0Oc
- Hnz9GV94/APj6P5UPD24S3SS5Y8Mc2R0/GeLdRgjO2W1V+X1ZbHx3SU/Ag+7U1QQSg4=
-X-Gm-Gg: ASbGnctl0zxGep2oTl5lWPx2pRAeVWEsBoJjFDFlaRgKuHxrASMY9R+FUBOVjD0Nq3v
- sZUHBo5yR8VGN1dP9UqVBHkRbDt7GEFLlNSVATlaGHSUg3nP8K77lTToqpzQFNpBNROidP/cMU0
- ULh3EAQ8ONmQvTEU/Uhs2ngAgD0yld2L7x+DAmPbH01RbroltDlSocRb2budTzObrVrvq8/yujY
- bACFYBTUvId3j2yWF1EL9m1103CJVCocQS1FExgOhs6/mFnP/LqeKFnmTBMv2yMMwyejX2+3WuA
- bg+Eg5kY6IH/JF0r8XJHhhMvPlo6VWXrYtj7iJbTmfE6eHtCiE2GpKaiGUyPVaufFLNN19B1Xyl
- I6NGAjCEi7Yh2HDdrR3FkaFHoEYgHIXsWxwRQN5MiTz9Y2JJM0qglUR5pRxM2e9dNj6QKBxSjDH
- fVsCE16Gc2A/tF5bVLk2PiLCgecgKrj18=
-X-Google-Smtp-Source: AGHT+IHsj3LfL1OZ6MVjCk9NFYryHQqrNJYfMBizfOgQvVA128KboxttFRoVzP5J9XDQ/W5Y7O9jEQ==
-X-Received: by 2002:a17:903:11c7:b0:269:8407:5ae3 with SMTP id
- d9443c01a7336-28e7f4b6843mr51178595ad.54.1759331266582; 
- Wed, 01 Oct 2025 08:07:46 -0700 (PDT)
-Received: from ?IPV6:2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345?
- ([2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-27ed66cf181sm189688935ad.28.2025.10.01.08.07.45
+ bh=AIzO+so5KPpKzYj7ZNyXWUr3LlH8ilSE/g0AxNVpzLk=;
+ b=U5XYtbh2tG1MFTaUleMYLcTmd24DtSiHR7c3wCXr7zK/aiP07InzL/sY9wuIp1aaXd
+ AijJvBUFhJCAjin79CFEcQNnnV56E+u+2TLKyDSG0v9s+4FqwoP9i0Sp6gbhKbYbeXn1
+ 6nupuG13fsNcE5UTTE2vgvVhPbVAekwgyOdObW0ecsWLlbaDVjskaJwsLuMnsOeGFx1I
+ 0an1vUG/SY0Ft/MiJELx7f49UzUdgGiAGwXZF74JOCGAR8WnB3SBBvCm2STTV+mNCQK8
+ aNBBROydzRKHsqkvQLbGpPRJR7z7Z28NlFhTIjr9L1RkJziV87Wbn8zs7g8L8srwv+J3
+ U/gA==
+X-Gm-Message-State: AOJu0YznyMRi12MBpawUHCY/UaTk90Owg9MyXiSY2vM9RvkO2j2d5LGx
+ 9pci4ZhztuTlNsXGx8UdtzmixPKCC1R7knGXK6vtjF7Or4LqkwxTsHVetWNYjRKpfg3++iwj+lR
+ XI4zmK+FrqA==
+X-Gm-Gg: ASbGncsgaWef0/JivIiosTfIt+cH416LeLMT+fp+u6PW08bTvGvumnO0cSHWA87chef
+ bMgxYuO5ElRBkWnXkszKYsVGQ3nt2Ni5QttdAcxsOPRf4gNBidf/vBIy703Q9MdkQxXUhQa0s+D
+ wdOOXPPD/3pLADd3lJYAZZuL+PkjYMiW1alxOGF0v1CsDkbpciAxahZHlpCSBy1awQrYtRqYqp2
+ T2TKnWLlDE69Jw9NyL8z5amJ47SjwCbD0aXqgQQvdCpnMvUjNatKZoB34pGFZ35Qx8c0Bv6Mzdz
+ FUAg9WQPMYb/tBXl/9woiuKwlpKnVbZ9g16sWDgf3+Ijdf65w5VgjjumeiL5aVFBtPlVe6bgdcn
+ MyyzNGUVIdTB+R0uVkLtDShaANthpKJxL+aNm/YM5mHfV8qpzXG9wjW2q6o9x7E6GrsAL3vUUrG
+ 9fKYjcSGKaInBEtw==
+X-Google-Smtp-Source: AGHT+IF8lK0vCB6Jq0ASp5XON3vV1O5ddVDMpb/bh1bTP5csPrsFSBh6gHEnoWssD9AA1CELhwJX3Q==
+X-Received: by 2002:a05:600c:8414:b0:45b:8ac2:9761 with SMTP id
+ 5b1f17b1804b1-46e612c8a6fmr34590585e9.13.1759331297205; 
+ Wed, 01 Oct 2025 08:08:17 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fb9768bdesm27674817f8f.23.2025.10.01.08.08.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Oct 2025 08:07:45 -0700 (PDT)
-Message-ID: <997bf266-1dc3-49b6-96b2-44088f5fd75f@linaro.org>
-Date: Wed, 1 Oct 2025 08:07:42 -0700
+ Wed, 01 Oct 2025 08:08:16 -0700 (PDT)
+Message-ID: <755adcfb-95eb-46f4-8c73-34c43e6b85ab@linaro.org>
+Date: Wed, 1 Oct 2025 17:08:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/25] system/physmem: Un-inline
- cpu_physical_memory_get_dirty_flag()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20251001082127.65741-1-philmd@linaro.org>
- <20251001082127.65741-11-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 04/22] hw/core/loader: Get cpu first addr space with
+ cpu_get_address_space()
 Content-Language: en-US
-In-Reply-To: <20251001082127.65741-11-philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Peter Xu
+ <peterx@redhat.com>, Alistair Francis <alistair@alistair23.me>
+References: <20251001150529.14122-1-philmd@linaro.org>
+ <20251001150529.14122-5-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251001150529.14122-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,20 +105,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/25 01:21, Philippe Mathieu-Daudé wrote:
-> Avoid maintaining large functions in header, rely on the
-> linker to optimize at linking time.
+On 1/10/25 17:05, Philippe Mathieu-Daudé wrote:
+> In order to remove the convenient CPUState::as field, access
+> the vcpu first address space using the cpu_get_address_space()
+> helper.
 > 
-> cpu_physical_memory_get_dirty() doesn't involve any CPU,
-> remove the 'cpu_' prefix.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/system/ram_addr.h | 46 +--------------------------------------
->   system/physmem.c          | 44 +++++++++++++++++++++++++++++++++++++
->   2 files changed, 45 insertions(+), 45 deletions(-)
+>   hw/core/generic-loader.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-r~
+> @@ -130,7 +131,7 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
+>       }
+>   
+>       if (s->file) {
+> -        AddressSpace *as = s->cpu ? s->cpu->as :  NULL;
+> +        AddressSpace *as = cpu_get_address_space(s->cpu, 0);
+
+Oops, I missed the NULL check.
+
+>   
+>           if (!s->force_raw) {
+>               size = load_elf_as(s->file, NULL, NULL, NULL, &entry, NULL, NULL,
+
 
