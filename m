@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258EABB11BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD31BB11AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:38:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yoL-0001ek-2a; Wed, 01 Oct 2025 11:32:09 -0400
+	id 1v3yoN-0001g4-JC; Wed, 01 Oct 2025 11:32:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v3yo9-0001bl-C0
+ id 1v3yoD-0001cZ-NR
  for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:32:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v3yni-0005t0-En
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:31:56 -0400
+ id 1v3yni-0005tc-T8
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:32:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759332680;
+ s=mimecast20190719; t=1759332682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6Ncp7kRBTgfzSNkIaSIwFpMsSRlZh4u1D08dEz4tlJs=;
- b=GDl9ATwf6T2sIMl69YY6w0N8ZDkMhl89y09Pnv++B7ZrmudMp55Kn6mUPu7z14RXFt8qnd
- LL3vsIRHhj3JHrVH4Xs8ZVVOgQp+OPRP2gXxi6M+5A1YOMx+3GHTl+SJACifJ/pQ/lux/a
- 9u0R7BRD4rcoSR3uGgV6bjDQxHopIkA=
+ bh=1NFPRZMGKA5GojK2Eiqgk5lbbAa5XUzJpyJEOYxBKkU=;
+ b=WL+MK7f5oJWDTFwFdmqccaKS/PsSN/A+9m3NzJnk9TtJPOpd0p7bwCGMns4XmXhAtimACQ
+ KwfFln0kEM/9SszWe5lCWhb8ixZJhAI56wI5gMSGDs91j2z7Mj92+mdTWbOD75/wtrlMHo
+ tEKu/xRHOSivjgDYApLGCPH+2yvjUoo=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-bKnSZ7X4OnGkUlaV4EG5KA-1; Wed,
- 01 Oct 2025 11:31:16 -0400
-X-MC-Unique: bKnSZ7X4OnGkUlaV4EG5KA-1
-X-Mimecast-MFC-AGG-ID: bKnSZ7X4OnGkUlaV4EG5KA_1759332674
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-231-utd9tpf9P5CccIbo7YdTQQ-1; Wed,
+ 01 Oct 2025 11:31:19 -0400
+X-MC-Unique: utd9tpf9P5CccIbo7YdTQQ-1
+X-Mimecast-MFC-AGG-ID: utd9tpf9P5CccIbo7YdTQQ_1759332676
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3BCFF1800294; Wed,  1 Oct 2025 15:31:14 +0000 (UTC)
+ id B4D54180057B; Wed,  1 Oct 2025 15:31:16 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.112])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C5828180047F; Wed,  1 Oct 2025 15:31:13 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 88D501955F1A; Wed,  1 Oct 2025 15:31:15 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -63,27 +63,27 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Mads Ynddal <mads@ynddal.dk>,
  Alexandre Iooss <erdnaxe@crans.org>, John Snow <jsnow@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- Zhao Liu <zhao1.liu@intel.com>,
+ Tanish Desai <tanishdesai37@gmail.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 05/16] trace/ftrace: move snprintf+write from tracepoints to
- ftrace.c
-Date: Wed,  1 Oct 2025 11:30:48 -0400
-Message-ID: <20251001153059.194991-6-stefanha@redhat.com>
+Subject: [PULL 06/16] tracetool: add CHECK_TRACE_EVENT_GET_STATE
+Date: Wed,  1 Oct 2025 11:30:49 -0400
+Message-ID: <20251001153059.194991-7-stefanha@redhat.com>
 In-Reply-To: <20251001153059.194991-1-stefanha@redhat.com>
 References: <20251001153059.194991-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,134 +99,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Tanish Desai <tanishdesai37@gmail.com>
 
-This simplifies the Python code and reduces the size of the tracepoints.
+Add a new attribute CHECK_TRACE_EVENT_GET_STATE to the backends.
+When present and True, the code generated by the generate function
+is wrapped in a conditional that checks whether the event is enabled;
+this removes the need for repeating the same conditional in multiple
+backends.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250929154938.594389-6-pbonzini@redhat.com>
+Message-ID: <20250929154938.594389-7-pbonzini@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- tests/tracetool/ftrace.h            | 28 ++++++----------------------
- trace/ftrace.h                      |  1 +
- trace/ftrace.c                      | 15 +++++++++++++++
- scripts/tracetool/backend/ftrace.py | 12 ++----------
- 4 files changed, 24 insertions(+), 32 deletions(-)
+ scripts/tracetool/backend/__init__.py | 39 ++++++++++++++++++---------
+ scripts/tracetool/format/h.py         | 11 +++++---
+ 2 files changed, 35 insertions(+), 15 deletions(-)
 
-diff --git a/tests/tracetool/ftrace.h b/tests/tracetool/ftrace.h
-index fe22ea0f09..1dfe423941 100644
---- a/tests/tracetool/ftrace.h
-+++ b/tests/tracetool/ftrace.h
-@@ -21,18 +21,10 @@ extern uint16_t _TRACE_TEST_WIBBLE_DSTATE;
+diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
+index bf91e443e9..9109a783c7 100644
+--- a/scripts/tracetool/backend/__init__.py
++++ b/scripts/tracetool/backend/__init__.py
+@@ -19,11 +19,15 @@
+ Backend attributes
+ ------------------
  
- static inline void trace_test_blah(void *context, const char *filename)
- {
--    {
--        char ftrace_buf[MAX_TRACE_STRLEN];
--        int unused __attribute__ ((unused));
--        int trlen;
--        if (trace_event_get_state(TRACE_TEST_BLAH)) {
-+    if (trace_event_get_state(TRACE_TEST_BLAH)) {
- #line 4 "trace-events"
--            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
--                             "test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
--#line 33 "ftrace.h"
--            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
--            unused = write(trace_marker_fd, ftrace_buf, trlen);
--        }
-+        ftrace_write("test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
-+#line 28 "ftrace.h"
-     }
- }
+-========= ====================================================================
+-Attribute Description
+-========= ====================================================================
+-PUBLIC    If exists and is set to 'True', the backend is considered "public".
+-========= ====================================================================
++=========================== ====================================================
++Attribute                   Description
++=========================== ====================================================
++PUBLIC                      If exists and is set to 'True', the backend is
++                            considered "public".
++CHECK_TRACE_EVENT_GET_STATE If exists and is set to 'True', the backend-specific
++                            code inside the tracepoint is emitted within an
++                            ``if trace_event_get_state()`` conditional.
++=========================== ====================================================
  
-@@ -42,18 +34,10 @@ static inline void trace_test_blah(void *context, const char *filename)
  
- static inline void trace_test_wibble(void *context, int value)
- {
--    {
--        char ftrace_buf[MAX_TRACE_STRLEN];
--        int unused __attribute__ ((unused));
--        int trlen;
--        if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
-+    if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
- #line 5 "trace-events"
--            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
--                             "test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
--#line 54 "ftrace.h"
--            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
--            unused = write(trace_marker_fd, ftrace_buf, trlen);
--        }
-+        ftrace_write("test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
-+#line 41 "ftrace.h"
-     }
- }
- #endif /* TRACE_TESTSUITE_GENERATED_TRACERS_H */
-diff --git a/trace/ftrace.h b/trace/ftrace.h
-index cb5e35d217..16c122816d 100644
---- a/trace/ftrace.h
-+++ b/trace/ftrace.h
-@@ -8,5 +8,6 @@
- extern int trace_marker_fd;
+ Backend functions
+@@ -101,22 +105,33 @@ class Wrapper:
+     def __init__(self, backends, format):
+         self._backends = [backend.replace("-", "_") for backend in backends]
+         self._format = format.replace("-", "_")
++        self.check_trace_event_get_state = False
+         for backend in self._backends:
+             assert exists(backend)
+         assert tracetool.format.exists(self._format)
++        for backend in self.backend_modules():
++            check_trace_event_get_state = getattr(backend, "CHECK_TRACE_EVENT_GET_STATE", False)
++            self.check_trace_event_get_state = self.check_trace_event_get_state or check_trace_event_get_state
  
- bool ftrace_init(void);
-+G_GNUC_PRINTF(1, 2) void ftrace_write(const char *fmt, ...);
- 
- #endif /* TRACE_FTRACE_H */
-diff --git a/trace/ftrace.c b/trace/ftrace.c
-index 9749543d9b..6875faedb9 100644
---- a/trace/ftrace.c
-+++ b/trace/ftrace.c
-@@ -38,6 +38,21 @@ static int find_mount(char *mount_point, const char *fstype)
-     return ret;
- }
- 
-+void ftrace_write(const char *fmt, ...)
-+{
-+    char ftrace_buf[MAX_TRACE_STRLEN];
-+    int unused __attribute__ ((unused));
-+    int trlen;
-+    va_list ap;
+-    def _run_function(self, name, *args, **kwargs):
++    def backend_modules(self):
+         for backend in self._backends:
+-            func = tracetool.try_import("tracetool.backend." + backend,
+-                                        name % self._format, None)[1]
+-            if func is not None:
+-                func(*args, **kwargs)
++             module = tracetool.try_import("tracetool.backend." + backend)[1]
++             if module is not None:
++                 yield module
 +
-+    va_start(ap, fmt);
-+    trlen = vsnprintf(ftrace_buf, MAX_TRACE_STRLEN, fmt, ap);
-+    va_end(ap);
-+
-+    trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
-+    unused = write(trace_marker_fd, ftrace_buf, trlen);
-+}
-+
- bool ftrace_init(void)
- {
-     char mount_point[PATH_MAX];
-diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index a14aafcee6..8c0ce3f23a 100644
---- a/scripts/tracetool/backend/ftrace.py
-+++ b/scripts/tracetool/backend/ftrace.py
-@@ -28,18 +28,10 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
++    def _run_function(self, name, *args, check_trace_event_get_state=None, **kwargs):
++        for backend in self.backend_modules():
++            func = getattr(backend, name % self._format, None)
++            if func is not None and \
++                (check_trace_event_get_state is None or
++                 check_trace_event_get_state == getattr(backend, 'CHECK_TRACE_EVENT_GET_STATE', False)):
++                    func(*args, **kwargs)
  
--    out('    {',
--        '        char ftrace_buf[MAX_TRACE_STRLEN];',
--        '        int unused __attribute__ ((unused));',
--        '        int trlen;',
--        '        if (trace_event_get_state(%(event_id)s)) {',
-+    out('    if (trace_event_get_state(%(event_id)s)) {',
-         '#line %(event_lineno)d "%(event_filename)s"',
--        '            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
--        '                             "%(name)s " %(fmt)s "\\n" %(argnames)s);',
-+        '        ftrace_write("%(name)s " %(fmt)s "\\n" %(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);',
--        '            unused = write(trace_marker_fd, ftrace_buf, trlen);',
--        '        }',
-         '    }',
-         name=event.name,
-         args=event.args,
+     def generate_begin(self, events, group):
+         self._run_function("generate_%s_begin", events, group)
+ 
+-    def generate(self, event, group):
+-        self._run_function("generate_%s", event, group)
++    def generate(self, event, group, check_trace_event_get_state=None):
++        self._run_function("generate_%s", event, group, check_trace_event_get_state=check_trace_event_get_state)
+ 
+     def generate_backend_dstate(self, event, group):
+         self._run_function("generate_%s_backend_dstate", event, group)
+diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
+index be7f32e67b..dd58713a15 100644
+--- a/scripts/tracetool/format/h.py
++++ b/scripts/tracetool/format/h.py
+@@ -55,7 +55,6 @@ def generate(events, backend, group):
+ 
+         out('    false)')
+ 
+-        # tracer without checks
+         out('',
+             'static inline void %(api)s(%(args)s)',
+             '{',
+@@ -63,11 +62,17 @@ def generate(events, backend, group):
+             args=e.args)
+ 
+         if "disable" not in e.properties:
+-            backend.generate(e, group)
++            backend.generate(e, group, check_trace_event_get_state=False)
+ 
++            if backend.check_trace_event_get_state:
++                event_id = 'TRACE_' + e.name.upper()
++                cond = "trace_event_get_state(%s)" % event_id
++                out('    if (%(cond)s) {',
++                        cond=cond)
++                backend.generate(e, group, check_trace_event_get_state=True)
++                out('    }')
+         out('}')
+ 
+-
+     backend.generate_end(events, group)
+ 
+     out('#endif /* TRACE_%s_GENERATED_TRACERS_H */' % group.upper())
 -- 
 2.51.0
 
