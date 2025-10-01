@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC716BAF9A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03195BAF98B
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:24:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3s66-0000X6-J5; Wed, 01 Oct 2025 04:22:03 -0400
+	id 1v3s61-0000VU-52; Wed, 01 Oct 2025 04:21:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s62-0000WN-TC
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:58 -0400
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5x-0000V0-3R
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:53 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5l-0005E9-QD
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:58 -0400
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-3f0308469a4so3883486f8f.0
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:21:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5l-0005Gb-El
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:51 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e48d6b95fso42881035e9.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:21:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759306890; x=1759911690; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UYQLfS3wHinTh/qC50pdHFAAD2+v7Vtk7mze5MUxp5E=;
- b=m8DBcgSqy5iKPr0jgb08yr1FAKc89RUTK2Se0PZI/BgV7swMhx36gscid2tE5E2BJ3
- /Q4GHI7Csc69lmt2My4dY9helUQ81MqZp3CGimyPyTL6BHjsheWPtCGLnWTnTddzhpgZ
- ODGHNgicG0mEXe8iTYf2vLM1IAUBBNNMq5T7JEcLqNXJM8aFempU/wgOwk5hrRvpTJew
- azfHRJkgPEIxydhTW9Plov2FY9OX+5WpMsaiMfLkLaoWABMgJaevDld8RbNp05PKbTAs
- e18eGdKQunAx0eQuLMmHNGBYtmTRXAQ4O9MC2hABtb9BVvlcEwe/dqcem5nKiLem97bA
- UOAA==
+ d=linaro.org; s=google; t=1759306895; x=1759911695; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9FXrBC5DT5H2U+KHBH/fTo7fOpyh9XDm8ZSBZ4mpCC0=;
+ b=a497poM6mPsCiYfvZOZH5Fcel/pZkYzjndJ7R7r9AvL0YXwUuCivkWoAm40qZWgGL2
+ q57Dh9cPzSDle/1ijZYSuMhCLRvYb2WZ2B6P3clbUD2yCfXMQh1G2ynE8m7/0cjzLyNy
+ aJBjJ55LrM3XfUopXmtTFjATLb4GZ+sJiKRYecWthvwn4LdYpFDiDiJKCl3aYKL67e2X
+ C2il9VHR0rw14Gd3f3usfmoG9Tzl5VXnIMvIqzXeCZcsiGHXUJ3Eho1BT/fcaUU3hjDP
+ o8TuB44FvpeEx3eEL+ee2OcntJ6bVlVVQ9+7rrptpZ1h68C0DJOEAADCVxYmSVcM1jj6
+ X1Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759306890; x=1759911690;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UYQLfS3wHinTh/qC50pdHFAAD2+v7Vtk7mze5MUxp5E=;
- b=nDO006wcF/cHfWGn9kuZAXJH2wQg1DPQTJ5HrSaP2RF0pfTSXwi+A0WXFmc8ykKUbG
- yZhT6TFJVmrn+/aCU3eplXV4DKevM/vtkEme4W7JivASOgdd57v0m8QlCtcyBRNpJlJ2
- 1/M769nnc5V8Ek3RBdk0iKcBhxUfOxU7DaPBjrgM7N2ILq41DswFIyGsIxxHmsAufXvF
- gjuwleGCEe9jKiEMgtWzfI4dkywT33gTWplQusYX20rSDoV6zhP4GXETz2vn/5c2wI9u
- Y4znyfJVRHg7Zdd31OA2VJMzxZ6UhUZtzpewpum1caX2WbKWdzDUSCiJucjZzmhyLl9M
- ANbg==
-X-Gm-Message-State: AOJu0Ywrlf5KdtNPHAlmepDKlcEQmhyLPB/FRpTldybhaOp3mDYccpxT
- Pabwc3pN76kljYm419kJZ5h/cGd9VXD1nNdwupz2tPMhLV6yi2AD0kFWt5BHusozce7Kb6du10R
- t9dyBsrzjALWX
-X-Gm-Gg: ASbGncun3W0J6Y4G3ExijxcU7vxPL7qY487PTV1o/mFrxRmrxdbNeZW+iw0DRzy1YNq
- kTWp5Hv+7sumSiO6iWmuaoqrRypwZk42eJNI3g4NxUDxJews/wz4Z6JitQvBUsusN9vAygO270x
- jlbRHU6MoPtQbs90JyUfDlY2QQW3hBoBZug9VDP3MNmOPeQYl3CIgLS+ZZZlBDXgcNNcDG/xVAT
- oTbyF5VkJTx1U9mEe/BDKprQZBaZUqhDleB8T+rLix107OiPMfzoFxZ9kPYZQiMyJslowZq3GJs
- gbrgdtehqYKFHjxkUclxYaAImYlWfu1E1OT9jfZblhp9wjKALi5jP735/0mMW65eivFYga+qs/b
- +VkF9vHhk0PNlenCOmUoK4rbP99RVu4tk5m9FfyWSNUZQhhP1qd7K1AclrjfXhrR8I5Ubz94czL
- 6ww0g2znvayOyNxEjJNhAy
-X-Google-Smtp-Source: AGHT+IHKt/ivTsoC6PZcZTjZzL5LDs95xiGR88ZSKusdRALPX64xSrvTFt9lt4nGAnJGd8G2pFxftQ==
-X-Received: by 2002:a05:6000:310d:b0:3ee:af89:a68 with SMTP id
- ffacd0b85a97d-425577f321dmr1791557f8f.22.1759306889640; 
- Wed, 01 Oct 2025 01:21:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759306895; x=1759911695;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9FXrBC5DT5H2U+KHBH/fTo7fOpyh9XDm8ZSBZ4mpCC0=;
+ b=S8BYVqGdJU2vR3jm0UzcAiw2l5TYwMAdDxjV73nzCXHiAdMCTUCKjXyrlYU1pzXqG2
+ FAfaBn/IIGkKPEruoVvhIwXuAJaJZClvVAA0L1dVOlJzFSahub2fcu0gDk+ddEKHAT+P
+ tePsoAf1eNBvFwNr2FdaqCYrS1ouayiDld9EINOtodz3pddrDoycrLA1kXKE4OQykMjK
+ KPyfsb1EueYf0hPg3ptd22KY834H5LLiRTXlEflbajyUa2u8g6Mld+EANm9goyADnjZj
+ miueY1Wo0K36u4ZZ4qK77Ilf8pUDGq3xU/3UQQmWWLoiLJQ1Ozhz0s+fk3eJii9rWHND
+ 1oSA==
+X-Gm-Message-State: AOJu0YyP49MHpKeRn9cL79mC3iYR2PfZBvgjzrZGO065+edsnMvbkLlX
+ ZOoir3Cb4j5GNZgnD0qM1rATYRS/J77UhAcXG0h9yW14wBKgmFHGPBPX1xEQ/3gBNzWKPU5WSWZ
+ J82TEN/OKBg==
+X-Gm-Gg: ASbGnctjLUC3c2anMGhmCrnMTrir61yqdliYT17X+gNAYh6GRKRwgvjRfJ6nC9EE0lO
+ 1F74243VbvP2iQCvnknvCVVS8nqTPNDnNjxxZn1ktUkEJIgaQI/QaybtdRIhw21DcKcxBHUqYqN
+ p08D6t2ez3SQqc34RMiRuku2mUAvOb3biOWkKt28B1sh9r+kKGwLIXaYoUq/lGtM28G9j35itse
+ FKmbEuX2RjLFu1/PwTbgW9pjRT2sacoItZks9pnIFbggwON8jH9UIGYmeuwBrR64ZjNwsamug1F
+ iDmSEF0pyLhb94ONTO0LyrLGRg8iD9vNIotR/rxNT0MV04OaMj8KbR5vcgkovN1O8aiIr1IW/Ng
+ e7tUDKfCBu58MkZ92ULGdiTPR7N7v8TeZ4LsmZXQfYQgVLz1XlPQyUb7yY++iTwgSiHjkW9BlVV
+ ey/mFRnziInk0Qvy65Ke6R
+X-Google-Smtp-Source: AGHT+IEVW+a7ZQahLwvXdewpnTcuAcck+Pbu7pXQ3XgPa8cMZnL3kzmIaMWIdBuRBFM46G6yblRD1A==
+X-Received: by 2002:a05:600c:698c:b0:46e:4783:1a7a with SMTP id
+ 5b1f17b1804b1-46e61201fb4mr19588005e9.3.1759306895019; 
+ Wed, 01 Oct 2025 01:21:35 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc8aa0078sm25842872f8f.59.2025.10.01.01.21.28
+ ffacd0b85a97d-40fc72b0aeesm26590514f8f.49.2025.10.01.01.21.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 01:21:29 -0700 (PDT)
+ Wed, 01 Oct 2025 01:21:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
@@ -81,23 +82,24 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH 00/25] system/physmem: Extract API out of 'system/ram_addr.h'
+Subject: [PATCH 01/25] system/ram_addr: Remove unnecessary 'exec/cpu-common.h'
  header
-Date: Wed,  1 Oct 2025 10:21:00 +0200
-Message-ID: <20251001082127.65741-1-philmd@linaro.org>
+Date: Wed,  1 Oct 2025 10:21:01 +0200
+Message-ID: <20251001082127.65741-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251001082127.65741-1-philmd@linaro.org>
+References: <20251001082127.65741-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,75 +115,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following a previous comment from Richard in [*],
-reduce "system/ram_addr.h" size by un-inlining a
-lot of huge functions that aren't really justified,
-and extract the API to the hew "system/physmem.h"
-header, after renaming the functions (removing the
-confusing 'cpu_' prefix).
+Nothing in "system/ram_addr.h" requires definitions fromi
+"exec/cpu-common.h", remove it.
 
-(I plan to eventually merge this myself due to the
-likelyness of conflicts).
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/system/ram_addr.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-[*] https://lore.kernel.org/qemu-devel/9151205a-13d3-401e-b403-f9195cdb1a45@linaro.org/
-
-Philippe Mathieu-Daudé (25):
-  system/ram_addr: Remove unnecessary 'exec/cpu-common.h' header
-  accel/kvm: Include missing 'exec/target_page.h' header
-  hw/s390x/s390-stattrib: Include missing 'exec/target_page.h' header
-  hw/vfio/listener: Include missing 'exec/target_page.h' header
-  target/arm/tcg/mte: Include missing 'exec/target_page.h' header
-  hw: Remove unnecessary 'system/ram_addr.h' header
-  accel/tcg: Document rcu_read_lock is held when calling
-    tlb_reset_dirty()
-  accel/tcg: Rename @start argument of tlb_reset_dirty*()
-  system/physmem: Rename @start argument of physical_memory_get_dirty()
-  system/physmem: Un-inline cpu_physical_memory_get_dirty_flag()
-  system/physmem: Un-inline cpu_physical_memory_is_clean()
-  system/physmem: Rename @start argument of physical_memory_all_dirty()
-  system/physmem: Rename @start argument of physical_memory_range*()
-  system/physmem: Un-inline cpu_physical_memory_range_includes_clean()
-  system/physmem: Un-inline cpu_physical_memory_set_dirty_flag()
-  system/physmem: Rename @start argument of physical_memory_*range()
-  system/physmem: Un-inline cpu_physical_memory_set_dirty_range()
-  system/physmem: Un-inline cpu_physical_memory_set_dirty_lebitmap()
-  system/physmem: Rename @start argument of physmem_dirty_bits_cleared()
-  system/physmem: Un-inline cpu_physical_memory_dirty_bits_cleared()
-  system/physmem: Rename @start argument of
-    physmem_test_and_clear_dirty()
-  system/physmem: Reduce cpu_physical_memory_clear_dirty_range() scope
-  system/physmem: Reduce cpu_physical_memory_sync_dirty_bitmap() scope
-  system/physmem: Drop 'cpu_' prefix in Physical Memory API
-  system/physmem: Extract API out of 'system/ram_addr.h' header
-
- MAINTAINERS                       |   1 +
- include/exec/cputlb.h             |   5 +-
- include/system/physmem.h          |  56 ++++
- include/system/ram_addr.h         | 413 ------------------------------
- accel/kvm/kvm-all.c               |   5 +-
- accel/tcg/cputlb.c                |  19 +-
- hw/ppc/spapr.c                    |   1 -
- hw/ppc/spapr_caps.c               |   1 -
- hw/ppc/spapr_pci.c                |   1 -
- hw/remote/memory.c                |   1 -
- hw/remote/proxy-memory-listener.c |   1 -
- hw/s390x/s390-stattrib-kvm.c      |   2 +-
- hw/s390x/s390-stattrib.c          |   2 +-
- hw/s390x/s390-virtio-ccw.c        |   1 -
- hw/vfio/container-legacy.c        |  10 +-
- hw/vfio/container.c               |   5 +-
- hw/vfio/listener.c                |   2 +-
- hw/vfio/spapr.c                   |   1 -
- hw/virtio/virtio-mem.c            |   1 -
- migration/ram.c                   |  79 +++++-
- system/memory.c                   |   9 +-
- system/physmem.c                  | 342 +++++++++++++++++++++++--
- target/arm/tcg/mte_helper.c       |   5 +-
- system/memory_ldst.c.inc          |   2 +-
- tests/tsan/ignore.tsan            |   4 +-
- 25 files changed, 495 insertions(+), 474 deletions(-)
- create mode 100644 include/system/physmem.h
-
+diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
+index 6b528338efc..f74a0ecee56 100644
+--- a/include/system/ram_addr.h
++++ b/include/system/ram_addr.h
+@@ -29,7 +29,6 @@
+ #include "qemu/rcu.h"
+ 
+ #include "exec/hwaddr.h"
+-#include "exec/cpu-common.h"
+ 
+ extern uint64_t total_dirty_pages;
+ 
 -- 
 2.51.0
 
