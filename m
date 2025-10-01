@@ -2,90 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E826BAF666
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A87BAF6DB
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:35:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rB4-0003XI-LO; Wed, 01 Oct 2025 03:23:07 -0400
+	id 1v3rKb-0006OU-19; Wed, 01 Oct 2025 03:32:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3rAs-0003Wy-28
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:22:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v3rKU-0006NH-Bk
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:32:51 -0400
+Received: from 4.mo548.mail-out.ovh.net ([188.165.42.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v3rAh-0008Qy-0S
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:22:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759303344;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KJZd+y0MD3WFZlpxdkG5JTA8NzD8q/fJR2eZ5tX//Hk=;
- b=BQbIXauUlfCAJbRIIKGjRxfRvsLvIF+WwK/6qqzY4cQqbZ+lNlcUhBeYhq9qb/as0m6NiG
- 3BUfqrYmchzWHFNWoySbfUks8uXnoYDKiagu0/zSSIg2wPgc1KixCcHbM1cbAR629KjtDp
- yvViYjhdxxEka6TEMzgGWKPNus4Y6Ek=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-TkcO3nBWMRWPx2mV4O9zjA-1; Wed, 01 Oct 2025 03:22:23 -0400
-X-MC-Unique: TkcO3nBWMRWPx2mV4O9zjA-1
-X-Mimecast-MFC-AGG-ID: TkcO3nBWMRWPx2mV4O9zjA_1759303342
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3ee1365964cso4816287f8f.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:22:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759303342; x=1759908142;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KJZd+y0MD3WFZlpxdkG5JTA8NzD8q/fJR2eZ5tX//Hk=;
- b=C2+12GXfEaqtyh792YTcoy3i1MXf9zoG2cmcyaDGFSB3XXVVT3MfhcGZXgunpIcFrG
- cits2mFzjgsMIs+qsxmjkGxOJms3vnzyv4lcDoBXwVjijP6llsCrqi3C+pE/B5yo0mIv
- 9nvRDKS77Wb8QG/TEUK+0k6kdJOSinGP5OhHw0G81OMbgRFsxFPYTJd7OU3g6Opxl1tm
- n/xUgnVzlDRKV0IOQPlXAsRzfGy7Pk+8LGLb1RZk521bhnaIM3iFCcdLCN1dGkQtoUOw
- eAacOjBnvsy9PppC12mnvBfIFr1NSOZmwyp73K2gd0UeKZ471wJ5dKNq/rOrC9+3GQ2C
- +s4g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVEY7WSP2OOLyHQMWhAlP5Os8WHp5dqYLfhhuhqu08Ju8nzOnX/I8thB1ufmP5wPIjyDt0Tij+rPO1y@nongnu.org
-X-Gm-Message-State: AOJu0YzS2evKwTGZvn4eUNAaNSn4a19UsfQskR+99Da0z8f9jyd28ut9
- iXOaKCteoERdwqZY2eVp8rliBe9B9ybGuJ4HTU8vKlm0H0ljjjfRdiIuxeDNF55vcohaF8Iw6En
- +9wVPcYTAyPFNpR4EvdiHXfmYb4SvroXfMXY9T0LNLf8J95sTNWyIJsBi
-X-Gm-Gg: ASbGncuGXRp/C5I9792N+jIDNN3WttDNsKkViSzoxYFYtRs+cIsgePserQT6Vknx5Sl
- zLuVC2T6zn4EVddbuUqAI3gebA9rph/WkDNUVzna9LBPOxAHxYG6idMc20mPaISe9BMchC/5lBi
- 31iXO/PrSECwyE7mgm4SuPG3dvcFH+MyJvtz0MYwyCTzWIzDjsnU5HTVuVdZCmCxTbMick39bhx
- 49AKhlQSSxEBsCsH3Y1uNNWHW9KhmBgnCN5JnL8ATU5aHgyooxBBHpEzWs2VAeOnqI08cRFVCvz
- VSTVNMwEYJ4lpHufzhA6fGTv/ukS1ooM46Q2vqpSWh29qalDvxOJqAFHRnvNdiInznftB1c9J6Z
- yqRnHjtMa
-X-Received: by 2002:a05:6000:22c8:b0:3ee:1296:d9e6 with SMTP id
- ffacd0b85a97d-42557820038mr1858105f8f.61.1759303341959; 
- Wed, 01 Oct 2025 00:22:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHm76nSlk6fTgxJMjkKEV4pGRwObbWLuK9HDsKj3m2pUy2XWZhAalO4orG73GjBjwDnqsK+dw==
-X-Received: by 2002:a05:6000:22c8:b0:3ee:1296:d9e6 with SMTP id
- ffacd0b85a97d-42557820038mr1858086f8f.61.1759303341527; 
- Wed, 01 Oct 2025 00:22:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc6921b7dsm25523599f8f.42.2025.10.01.00.22.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Oct 2025 00:22:21 -0700 (PDT)
-Message-ID: <a87df072-82a9-4913-a385-0458c3d0994a@redhat.com>
-Date: Wed, 1 Oct 2025 09:22:19 +0200
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v3rKK-0003xH-CT
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:32:49 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.249.165])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cc68834m5z6V80;
+ Wed,  1 Oct 2025 07:32:24 +0000 (UTC)
+Received: from kaod.org (37.59.142.107) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 1 Oct
+ 2025 09:32:23 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-107S0010ed1f93f-d162-4d58-8294-20d146db9700,
+ D9D4E9C7278927B1F3584C3B5B4DCE3027F8E762) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <3e2c8210-9e99-438b-aa9b-13479d59f6c9@kaod.org>
+Date: Wed, 1 Oct 2025 09:32:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] pci: Fix wrong parameter passing to
- pci_device_get_iommu_bus_devfn()
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
- jasowang@redhat.com, yi.l.liu@intel.com, clement.mathieu--drif@eviden.com
-References: <20250929034206.439266-1-zhenzhong.duan@intel.com>
- <20250929034206.439266-4-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Subject: Re: [PATCH v4 3/3] tests/functional/aarch64/test_aspeed_ast2700fc:
+ Add vbootrom test
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>
+References: <20251001064625.1058680-1-jamin_lin@aspeedtech.com>
+ <20251001064625.1058680-4-jamin_lin@aspeedtech.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
+Autocrypt: addr=clg@kaod.org; keydata=
  xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
  8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
  yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
@@ -95,52 +53,67 @@ Autocrypt: addr=clg@redhat.com; keydata=
  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
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250929034206.439266-4-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ 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
+In-Reply-To: <20251001064625.1058680-4-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-Originating-IP: [37.59.142.107]
+X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: 491be42e-ca6c-4e18-bef9-e7bcf6e91bd1
+X-Ovh-Tracer-Id: 15638749707240901423
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFFHsoyT19AXg5MrYVxkXFyuf1d5s4g2ab0YH72gaNP8mxVoaO13u2nZRhv9V/aGXOpVFmmNP7PzcW2HAvho0FXUcji+gOL66fjXHmoBhRIN0g79Wuv34XOZ8YiHzTLsubq3sR5J5z58vHImZRGnBsL0DM29LfNxa/fOHtuif4GS0jK7lc+jq4psCOYmbg9057ri3qs65aHwez6uPx1gkK4D5mifA3YBwiqtYveFJ35pfRy7DnxMDpxA5IovhiWnBSe8DQ+kbnYl6pc7eNTZAGiyUdGOwJEy6OWqsJoCzHsBp6u+9oX7kPNdwvw+4f7tG2LylOdWsf5kxPlijYa6c25rIRjHnt2+GC2ulS3+xij1dObR38WW4NjiPpBFMFHN1/79bNZ7UgtHr8wcfmxNJoNY4AZtoseiKQe5qHKGhDDQ3g8129zXJnJCQTpFEFCTZCeEJXjqTZ+AVAE9+HsWg6RIO/+d49Qln0fWStLGfOaE1MLjCZ4CVfS3vEtDhr51xOevm4q4jGniMunrrocHzUPbZod09oQ8UyoIdGdOk1w4U7621PwWLJFbjFWilmC76jp2ECfS0m2Te+j8rkhTe7s9N5QkHFJd2GMt+PLTSmAAVi6w5qemADJUBLKcY6/bR+QF7aEE2cbHZB1hQHOBeq4SU1NzZb/4ndnvL/yke2VvQ
+DKIM-Signature: a=rsa-sha256; bh=difMR18pWO4rh8BX/wSxiBSjQuqUkia5f6GmVbOeTKY=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1759303945; v=1;
+ b=sVTWtY+cP9Xe2szB92lGQvvTYljsOj5vOeISECMjh3zjbLr1Q3pCycXWIiho1IK/9wvg/LDx
+ 6RnaHqzpnTqLDGqrnVjBW10yEje40p3zLsVN4edENYqyxJ7eupHku28GRrPBBB4oBnXm5pHHpuh
+ ARfhU7KD7hQlpgZRwKVZhetik0gG8dBQ1j+tT6PvSwuqQw4iBzC+mxfiQe/SGt1xZoPMK5/xOw2
+ jJuw21S40MLEDZWOEawiWtOErY4wLZx7eZ/BJUurlVdD+Ap09mrNa8ACkSZZjOXWeoliXWXXjPo
+ TGGMU4J0mkdiieIhT049nwW1uNkAN990cPqucXYQg+x7A==
+Received-SPF: pass client-ip=188.165.42.229; envelope-from=clg@kaod.org;
+ helo=4.mo548.mail-out.ovh.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,110 +129,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/29/25 05:42, Zhenzhong Duan wrote:
-> The 2nd parameter of pci_device_get_iommu_bus_devfn() about root PCIBus
-> backed by an IOMMU for the PCI device, the 3rd is about aliased PCIBus
-> of the PCI device.
+Hello,
+
+On 10/1/25 08:46, Jamin Lin wrote:
+> Introduce load_ast2700fc_coprocessor() to load the SSP/TSP ELF images
+> via -device loader. Use this helper in start_ast2700fc_test() to remove
+> duplicated code.
+
+Ideally, this should be an extra patch. Minor.
+
 > 
-> Meanwhile the 3rd and 4th parameters are optional, pass NULL if they
-> are not needed.
+> Add start_ast2700fc_test_vbootrom() which boots the ast2700fc machine
+> with -bios ast27x0_bootrom.bin and reuses the coprocessor loader.
 > 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Add test_aarch64_ast2700fc_sdk_vbootrom_v09_06() to test the vbootrom
+> with ast2700fc machine.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   .../aarch64/test_aspeed_ast2700fc.py          | 37 ++++++++++++++-----
+>   1 file changed, 28 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/functional/aarch64/test_aspeed_ast2700fc.py b/tests/functional/aarch64/test_aspeed_ast2700fc.py
+> index 28b66614d9..c0458e47b2 100755
+> --- a/tests/functional/aarch64/test_aspeed_ast2700fc.py
+> +++ b/tests/functional/aarch64/test_aspeed_ast2700fc.py
+> @@ -83,6 +83,17 @@ def do_ast2700fc_tsp_test(self):
+>           exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
+>                                             '[72c02000] 06010103')
+>   
+> +    def load_ast2700fc_coprocessor(self, name):
+> +        load_elf_list = {
+> +            'ssp': self.scratch_file(name, 'zephyr-aspeed-ssp.elf'),
+> +            'tsp': self.scratch_file(name, 'zephyr-aspeed-tsp.elf')
+> +        }
+> +
+> +        for cpu_num, key in enumerate(load_elf_list, start=4):
+> +            file = load_elf_list[key]
+> +            self.vm.add_args('-device',
+> +                             f'loader,file={file},cpu-num={cpu_num}')
+> +
+>       def start_ast2700fc_test(self, name):
+>           ca35_core = 4
+>           uboot_size = os.path.getsize(self.scratch_file(name,
+> @@ -120,16 +131,13 @@ def start_ast2700fc_test(self, name):
+>               self.vm.add_args('-device',
+>                                f'loader,addr=0x430000000,cpu-num={i}')
+>   
+> -        load_elf_list = {
+> -            'ssp': self.scratch_file(name, 'zephyr-aspeed-ssp.elf'),
+> -            'tsp': self.scratch_file(name, 'zephyr-aspeed-tsp.elf')
+> -        }
+> -
+> -        for cpu_num, key in enumerate(load_elf_list, start=4):
+> -            file = load_elf_list[key]
+> -            self.vm.add_args('-device',
+> -                             f'loader,file={file},cpu-num={cpu_num}')
+> +        self.load_ast2700fc_coprocessor(name)
+> +        self.do_test_aarch64_aspeed_sdk_start(
+> +                self.scratch_file(name, 'image-bmc'))
+>   
+> +    def start_ast2700fc_test_vbootrom(self, name):
+> +        self.vm.add_args('-bios', 'ast27x0_bootrom.bin')
+> +        self.load_ast2700fc_coprocessor(name)
+>           self.do_test_aarch64_aspeed_sdk_start(
+>                   self.scratch_file(name, 'image-bmc'))
+>   
+> @@ -144,5 +152,16 @@ def test_aarch64_ast2700fc_sdk_v09_06(self):
+>           self.do_ast2700fc_ssp_test()
+>           self.do_ast2700fc_tsp_test()
+>   
+> +    def test_aarch64_ast2700fc_sdk_vbootrom_v09_06(self):
+> +        self.set_machine('ast2700fc')
+> +
+> +        self.archive_extract(self.ASSET_SDK_V906_AST2700)
 
-The commit log should mention potential consequences of this change.
-
-Will this fix need to be backported ? up to ~9.1
-
+Could we update all tests to use the latest SDK v09.08 [1] which
+was released ?
 
 Thanks,
 
 C.
 
+[1]  https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.08ed
 
-
-> ---
->   hw/pci/pci.c | 18 ++++++++----------
->   1 file changed, 8 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index c3df9d6656..d5ed89aab7 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -2967,7 +2967,7 @@ int pci_iommu_init_iotlb_notifier(PCIDevice *dev, IOMMUNotifier *n,
->       PCIBus *iommu_bus;
->       int devfn;
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->init_iotlb_notifier) {
->           iommu_bus->iommu_ops->init_iotlb_notifier(bus, iommu_bus->iommu_opaque,
->                                                     devfn, n, fn, opaque);
-> @@ -3025,7 +3025,7 @@ int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
->           return -EPERM;
->       }
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->pri_request_page) {
->           return iommu_bus->iommu_ops->pri_request_page(bus,
->                                                        iommu_bus->iommu_opaque,
-> @@ -3049,7 +3049,7 @@ int pci_pri_register_notifier(PCIDevice *dev, uint32_t pasid,
->           return -EPERM;
->       }
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->pri_register_notifier) {
->           iommu_bus->iommu_ops->pri_register_notifier(bus,
->                                                       iommu_bus->iommu_opaque,
-> @@ -3066,7 +3066,7 @@ void pci_pri_unregister_notifier(PCIDevice *dev, uint32_t pasid)
->       PCIBus *iommu_bus;
->       int devfn;
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->pri_unregister_notifier) {
->           iommu_bus->iommu_ops->pri_unregister_notifier(bus,
->                                                         iommu_bus->iommu_opaque,
-> @@ -3098,7 +3098,7 @@ ssize_t pci_ats_request_translation(PCIDevice *dev, uint32_t pasid,
->           return -EPERM;
->       }
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->ats_request_translation) {
->           return iommu_bus->iommu_ops->ats_request_translation(bus,
->                                                        iommu_bus->iommu_opaque,
-> @@ -3122,7 +3122,7 @@ int pci_iommu_register_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
->           return -EPERM;
->       }
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->register_iotlb_notifier) {
->           iommu_bus->iommu_ops->register_iotlb_notifier(bus,
->                                              iommu_bus->iommu_opaque, devfn,
-> @@ -3144,7 +3144,7 @@ int pci_iommu_unregister_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
->           return -EPERM;
->       }
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
->       if (iommu_bus && iommu_bus->iommu_ops->unregister_iotlb_notifier) {
->           iommu_bus->iommu_ops->unregister_iotlb_notifier(bus,
->                                                           iommu_bus->iommu_opaque,
-> @@ -3158,11 +3158,9 @@ int pci_iommu_unregister_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
->   int pci_iommu_get_iotlb_info(PCIDevice *dev, uint8_t *addr_width,
->                                uint32_t *min_page_size)
->   {
-> -    PCIBus *bus;
->       PCIBus *iommu_bus;
-> -    int devfn;
->   
-> -    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
->       if (iommu_bus && iommu_bus->iommu_ops->get_iotlb_info) {
->           iommu_bus->iommu_ops->get_iotlb_info(iommu_bus->iommu_opaque,
->                                                addr_width, min_page_size);
+> +        self.start_ast2700fc_test_vbootrom('ast2700-default')
+> +        self.verify_openbmc_boot_and_login('ast2700-default')
+> +        self.do_ast2700_i2c_test()
+> +        self.do_ast2700_pcie_test()
+> +        self.do_ast2700fc_ssp_test()
+> +        self.do_ast2700fc_tsp_test()
+> +
+>   if __name__ == '__main__':
+>       QemuSystemTest.main()
 
 
