@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC67BB16E8
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 20:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFE3BB16C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 19:58:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v414H-0003Cx-TI; Wed, 01 Oct 2025 13:56:46 -0400
+	id 1v414k-0003qj-BN; Wed, 01 Oct 2025 13:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v414A-00036s-HY
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:56:40 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v414N-0003Mn-3s
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:56:51 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v413Z-0001AZ-T0
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:56:37 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-46e42fa08e4so801915e9.3
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 10:55:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v413g-0001Bj-NI
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 13:56:49 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-46e48d6b95fso565625e9.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 10:56:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759341356; x=1759946156; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759341361; x=1759946161; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DlChLU8Sv66u34cuVfj2m981SsQ1riJ99O+cWJLK7Og=;
- b=RQeWcW61Zr447L8khS+L2dNr9h0CbH7PLQ4QtHDIMcb0PloHleY/6WEBSmX0a+fuAm
- xCN/3JIIbezfaNd3TCboNOHzFVOZctLZPwJRWnUoJcy62Lonp1vkCqESMAmwkQaXwLAk
- WOjrxs5j70OVxLewm4Mt950Sfkf7Ca0DOFDEOzsizp+fbCnjvJXP0UVTWplI8TTYAa7H
- Ta8WSzz+YOXxwPjkxdEKJZQyGbfLUtxn10hSjswpWHyD8NPPja/PIER4wOb4wJ+1ZwZQ
- Hla/qriNBdKz+RQExYIb8UbV8hWJSoHr+RUSJDeUeQoZj1jLPaWHA6iuMr94kGbajVO2
- XfKA==
+ bh=1mkNvNweP1pxd0bnKscXA4YxA7b00HLHFCf5l8AtEj4=;
+ b=nzBr+v/KNiY7FEh05RZlSrWuk3iR3+cXStRFRO8RrTuQzfmmSx/03jqNtTOKuABAtr
+ cahCivcccr4XfpSpLPpG0IztrlP0ZJZAH9QKRvgH3+qhlQMJZ675OdVnHQGUhs1c1FUv
+ fkALax7MmpEvYwgQ4344EbnDz0JoeQgw9ZddOquYWwXLsW3O4hRa6/6D7ydfRX2DdmFF
+ L8JsP31gER3VX+350bpv3/panJ/0mH6D6iADLkG+Otnuzk6KeOGdJIcop/wmGt2YBqNr
+ 52QMtIHXv9OcxMHpvRPJkogHmfrso5vd/MadgQKyNV7+hOAO+Nj2xJLhfUkHb8/z+5zx
+ 3g/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759341356; x=1759946156;
+ d=1e100.net; s=20230601; t=1759341361; x=1759946161;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DlChLU8Sv66u34cuVfj2m981SsQ1riJ99O+cWJLK7Og=;
- b=ByMeWQ8vfKuGeWNasxNI1Q28OpgjU7ojs9s5RgNFNepYGt4c/Jj27N/7kv1RUz9ef2
- Nle7HZD7dKz0cS4nSBHcofXQcWP9XMk8F79KdO6b6RlMH5uo8KPej+oEGsLmEhO8fRmM
- s+gxA1ERsh66lLgPjW6ax5GAlEFuX0UcGYk23Rmn/b+toLrM9HhWyEZRmlednEo9teM9
- Tb6e070xLNPY/+udzGFSj62h/JY+OgjAcMHKhL7z8zI187xCmc3vpWO7Q7hU9c3j7MEf
- EgVpbJDelZ3jsVsORBml7KDrm47ZA9qQoER5K6G3O190MTpudNa0NqtBiTUYMfhVzCmf
- 8j5w==
-X-Gm-Message-State: AOJu0Yypr16NlSqBKiVfh7CgYS+Z3vlnIifezC0UoMe03SShn8wztUR2
- HMtG7/U+y/p4JLSSscH4TxIxjDchBqi5uVK7xwqSK+GFG5JHzPSnZy8Hyq3xs20CyHtWK4eysLh
- HMAOgyC0IKw==
-X-Gm-Gg: ASbGncsEh4IwupjDevwu77t/T0VJFiQdGrOtRfb1VTdsS4yw0ipuAoVSaYEtPUYwZEB
- 7LQxHlMjww9f6qSGwr/6zBJj15pAq95xtrFNpnBnFnE8HM1ewxnXoHUKZNMn3jFykt0P/qbKjZa
- +MxnJkeJ1fib14/GipYETzMWSS/9R8OLP8eAlnvoIR5vVCGF0N0a6tatFM7+FRtxyPoxGIyd73Z
- B9glZa1uRmubNZAXsZQGsWpVmYfKn/I7wJ18Dst4L+jp2lMqUc64yShgU31ZBiJgLXqLkPeKBPh
- a3PftChuYPsNj02WQTzJbssuSWlczNqyjrzZa2whXhPHi3DI3sgOuYyjk1TGcqO2DNCSCK1LorG
- qEHSSKcPX+HvwS3Nfj7ZU6omItK0SjdO9w6R617KX1jH2BDrtV54AVVr7XXfb1i30B/z3dEfpfN
- riT3xzmPXeHBoWdMzwS8LvNEdnBA==
-X-Google-Smtp-Source: AGHT+IHfeO7OH/QdtcggUnA5uGklDQpIabKZxQPr/EBAMEwVNTVFueen9PGLslG1prHgPOf0O5ib5g==
-X-Received: by 2002:a05:6000:288b:b0:3e0:e23f:c6d9 with SMTP id
- ffacd0b85a97d-425577f3550mr2999587f8f.17.1759341355760; 
- Wed, 01 Oct 2025 10:55:55 -0700 (PDT)
+ bh=1mkNvNweP1pxd0bnKscXA4YxA7b00HLHFCf5l8AtEj4=;
+ b=uHN/PSzEyK10B6snKsQnpzWngTfUT4Jjp1AjDKqhutGxd0lqMzXRu8QagFmUXEZqCJ
+ pSU9shtXq67J6peLXF9YMJWlUq4D2gdZgVivIXpjzUjlU0bzNJDKvTA5DpKZbTu+d4+P
+ XAg4kOkB9wCPA6yqCZV1oPZMB081Bkt+qwmoNsrtpq1FvCdaOS6tzx3FBl99a+nzjM1W
+ 9gULp0iU/Chko6BmVaO4SG5QbiKrs4hrDli0NHzYK1fhk5WzzMTiwrmY/fAMX61zutNX
+ 10lbPwaHVurIS4UNyRVFcHgLDcihRNhW3a8pm+8tSOBmcZdH0NkBPGHNJ3RFsDnNdl0N
+ uqig==
+X-Gm-Message-State: AOJu0YyiFl5gUUFTeI6LU8Zpri9fcsK5JqHSBSJd2tQRsvpBP2J7jXr3
+ Y9LUMdX9XbQAaMNboNIr2m+Rb9EwL173ITE5+5maXaVTeJQKAYnlKs3iIa0lObdXnO2GtjCNRYR
+ hHLYmYgOnAw==
+X-Gm-Gg: ASbGncvJ1bytXK7pGOo4hXlRQK/AwAT24b0LvoEuSvvCWXFk6HchiSHf6BrKQz8hYpf
+ udzGTjOIJmAwnHIqVM12Wgi0lqpT52Gn1gaVgKMGGNc9n3n2FSRh7Gpn22RcnDUM21GkMcLy7fW
+ n2ZPJfT1Z8EQF0nu+G716lBpLb/eJh9cN8HEDMZ/HIhWkki2A188WIR1Rl0gMJkcHDfU2y8XtjG
+ P0slbeRbQTRiqdmb9m9h7aOzFSuQofoR8wWAMduuz6gmUj8NGwFMe/LfdPIXF4zWpUHn6uNldwE
+ 5iTE1MVMV5pbZp46jyFmh8QD+Bw1oQ7yIflNoTQMXmP5o2Fyoz7gvj7QNKf65yTjBTHRRDlDNUr
+ nvBojGZ3aNF6Ok9xBot8QGS4nCUtzb5BxGM15iufRLIhInAsykAD63nuVaYErg35ELP6MqRLWXi
+ C78EchlzhjxWILD6vunuf1Hvoiuw==
+X-Google-Smtp-Source: AGHT+IHq9VNc9JggIDZKso6cjA0ZuxmHGfw+jg4YC7/WYfBxvvIDxxthg/1nTg2Nzka46BbMEMaitw==
+X-Received: by 2002:a05:600c:6692:b0:46e:502c:8d6a with SMTP id
+ 5b1f17b1804b1-46e64641e65mr26102255e9.25.1759341361449; 
+ Wed, 01 Oct 2025 10:56:01 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8a6e1bsm144312f8f.8.2025.10.01.10.55.54
+ 5b1f17b1804b1-46e6917a867sm1316275e9.5.2025.10.01.10.55.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 10:55:55 -0700 (PDT)
+ Wed, 01 Oct 2025 10:56:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -81,24 +81,25 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  David Hildenbrand <david@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 12/18] system/physmem: Remove _WIN32 #ifdef'ry
-Date: Wed,  1 Oct 2025 19:54:41 +0200
-Message-ID: <20251001175448.18933-13-philmd@linaro.org>
+Subject: [PATCH v2 13/18] system/physmem: Un-inline
+ cpu_physical_memory_set_dirty_lebitmap()
+Date: Wed,  1 Oct 2025 19:54:42 +0200
+Message-ID: <20251001175448.18933-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001175448.18933-1-philmd@linaro.org>
 References: <20251001175448.18933-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,39 +115,254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit fb3ecb7ea40 ("exec: Exclude non portable function for
-MinGW") guarded cpu_physical_memory_set_dirty_lebitmap() within
-_WIN32 #ifdef'ry because of the non-portable ffsl() call, which
-was later replaced for the same reason by commit 7224f66ec3c
-("exec: replace ffsl with ctzl"); we don't need that anymore.
+Avoid maintaining large functions in header, rely on the
+linker to optimize at linking time.
 
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Remove the now unneeded "system/xen.h" header.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/ram_addr.h | 3 ---
- 1 file changed, 3 deletions(-)
+ include/system/ram_addr.h | 102 +------------------------------------
+ system/physmem.c          | 103 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 104 insertions(+), 101 deletions(-)
 
 diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-index ca5ae842442..fbf57a05b2a 100644
+index fbf57a05b2a..49e9a9c66d8 100644
 --- a/include/system/ram_addr.h
 +++ b/include/system/ram_addr.h
-@@ -155,8 +155,6 @@ void cpu_physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
- void cpu_physical_memory_set_dirty_range(ram_addr_t start, ram_addr_t length,
-                                          uint8_t mask);
+@@ -19,7 +19,6 @@
+ #ifndef SYSTEM_RAM_ADDR_H
+ #define SYSTEM_RAM_ADDR_H
  
--#if !defined(_WIN32)
+-#include "system/xen.h"
+ #include "system/tcg.h"
+ #include "exec/cputlb.h"
+ #include "exec/ramlist.h"
+@@ -161,108 +160,9 @@ void cpu_physical_memory_set_dirty_range(ram_addr_t start, ram_addr_t length,
+  * cpu_physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
+  * weren't set in the global migration bitmap.
+  */
+-static inline
+ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+                                                 ram_addr_t start,
+-                                                ram_addr_t pages)
+-{
+-    unsigned long i, j;
+-    unsigned long page_number, c, nbits;
+-    hwaddr addr;
+-    ram_addr_t ram_addr;
+-    uint64_t num_dirty = 0;
+-    unsigned long len = (pages + HOST_LONG_BITS - 1) / HOST_LONG_BITS;
+-    unsigned long hpratio = qemu_real_host_page_size() / TARGET_PAGE_SIZE;
+-    unsigned long page = BIT_WORD(start >> TARGET_PAGE_BITS);
 -
- /*
-  * Contrary to cpu_physical_memory_sync_dirty_bitmap() this function returns
-  * the number of dirty pages in @bitmap passed as argument. On the other hand,
-@@ -265,7 +263,6 @@ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
- 
-     return num_dirty;
- }
--#endif /* not _WIN32 */
+-    /* start address is aligned at the start of a word? */
+-    if ((((page * BITS_PER_LONG) << TARGET_PAGE_BITS) == start) &&
+-        (hpratio == 1)) {
+-        unsigned long **blocks[DIRTY_MEMORY_NUM];
+-        unsigned long idx;
+-        unsigned long offset;
+-        long k;
+-        long nr = BITS_TO_LONGS(pages);
+-
+-        idx = (start >> TARGET_PAGE_BITS) / DIRTY_MEMORY_BLOCK_SIZE;
+-        offset = BIT_WORD((start >> TARGET_PAGE_BITS) %
+-                          DIRTY_MEMORY_BLOCK_SIZE);
+-
+-        WITH_RCU_READ_LOCK_GUARD() {
+-            for (i = 0; i < DIRTY_MEMORY_NUM; i++) {
+-                blocks[i] =
+-                    qatomic_rcu_read(&ram_list.dirty_memory[i])->blocks;
+-            }
+-
+-            for (k = 0; k < nr; k++) {
+-                if (bitmap[k]) {
+-                    unsigned long temp = leul_to_cpu(bitmap[k]);
+-
+-                    nbits = ctpopl(temp);
+-                    qatomic_or(&blocks[DIRTY_MEMORY_VGA][idx][offset], temp);
+-
+-                    if (global_dirty_tracking) {
+-                        qatomic_or(
+-                                &blocks[DIRTY_MEMORY_MIGRATION][idx][offset],
+-                                temp);
+-                        if (unlikely(
+-                            global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
+-                            total_dirty_pages += nbits;
+-                        }
+-                    }
+-
+-                    num_dirty += nbits;
+-
+-                    if (tcg_enabled()) {
+-                        qatomic_or(&blocks[DIRTY_MEMORY_CODE][idx][offset],
+-                                   temp);
+-                    }
+-                }
+-
+-                if (++offset >= BITS_TO_LONGS(DIRTY_MEMORY_BLOCK_SIZE)) {
+-                    offset = 0;
+-                    idx++;
+-                }
+-            }
+-        }
+-
+-        if (xen_enabled()) {
+-            xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
+-        }
+-    } else {
+-        uint8_t clients = tcg_enabled() ? DIRTY_CLIENTS_ALL : DIRTY_CLIENTS_NOCODE;
+-
+-        if (!global_dirty_tracking) {
+-            clients &= ~(1 << DIRTY_MEMORY_MIGRATION);
+-        }
+-
+-        /*
+-         * bitmap-traveling is faster than memory-traveling (for addr...)
+-         * especially when most of the memory is not dirty.
+-         */
+-        for (i = 0; i < len; i++) {
+-            if (bitmap[i] != 0) {
+-                c = leul_to_cpu(bitmap[i]);
+-                nbits = ctpopl(c);
+-                if (unlikely(global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
+-                    total_dirty_pages += nbits;
+-                }
+-                num_dirty += nbits;
+-                do {
+-                    j = ctzl(c);
+-                    c &= ~(1ul << j);
+-                    page_number = (i * HOST_LONG_BITS + j) * hpratio;
+-                    addr = page_number * TARGET_PAGE_SIZE;
+-                    ram_addr = start + addr;
+-                    cpu_physical_memory_set_dirty_range(ram_addr,
+-                                       TARGET_PAGE_SIZE * hpratio, clients);
+-                } while (c != 0);
+-            }
+-        }
+-    }
+-
+-    return num_dirty;
+-}
++                                                ram_addr_t pages);
  
  static inline void cpu_physical_memory_dirty_bits_cleared(ram_addr_t start,
                                                            ram_addr_t length)
+diff --git a/system/physmem.c b/system/physmem.c
+index 8e6c6dddc3c..e01b27ac252 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1207,6 +1207,109 @@ bool cpu_physical_memory_snapshot_get_dirty(DirtyBitmapSnapshot *snap,
+     return false;
+ }
+ 
++uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
++                                                ram_addr_t start,
++                                                ram_addr_t pages)
++{
++    unsigned long i, j;
++    unsigned long page_number, c, nbits;
++    hwaddr addr;
++    ram_addr_t ram_addr;
++    uint64_t num_dirty = 0;
++    unsigned long len = (pages + HOST_LONG_BITS - 1) / HOST_LONG_BITS;
++    unsigned long hpratio = qemu_real_host_page_size() / TARGET_PAGE_SIZE;
++    unsigned long page = BIT_WORD(start >> TARGET_PAGE_BITS);
++
++    /* start address is aligned at the start of a word? */
++    if ((((page * BITS_PER_LONG) << TARGET_PAGE_BITS) == start) &&
++        (hpratio == 1)) {
++        unsigned long **blocks[DIRTY_MEMORY_NUM];
++        unsigned long idx;
++        unsigned long offset;
++        long k;
++        long nr = BITS_TO_LONGS(pages);
++
++        idx = (start >> TARGET_PAGE_BITS) / DIRTY_MEMORY_BLOCK_SIZE;
++        offset = BIT_WORD((start >> TARGET_PAGE_BITS) %
++                          DIRTY_MEMORY_BLOCK_SIZE);
++
++        WITH_RCU_READ_LOCK_GUARD() {
++            for (i = 0; i < DIRTY_MEMORY_NUM; i++) {
++                blocks[i] =
++                    qatomic_rcu_read(&ram_list.dirty_memory[i])->blocks;
++            }
++
++            for (k = 0; k < nr; k++) {
++                if (bitmap[k]) {
++                    unsigned long temp = leul_to_cpu(bitmap[k]);
++
++                    nbits = ctpopl(temp);
++                    qatomic_or(&blocks[DIRTY_MEMORY_VGA][idx][offset], temp);
++
++                    if (global_dirty_tracking) {
++                        qatomic_or(
++                                &blocks[DIRTY_MEMORY_MIGRATION][idx][offset],
++                                temp);
++                        if (unlikely(
++                            global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
++                            total_dirty_pages += nbits;
++                        }
++                    }
++
++                    num_dirty += nbits;
++
++                    if (tcg_enabled()) {
++                        qatomic_or(&blocks[DIRTY_MEMORY_CODE][idx][offset],
++                                   temp);
++                    }
++                }
++
++                if (++offset >= BITS_TO_LONGS(DIRTY_MEMORY_BLOCK_SIZE)) {
++                    offset = 0;
++                    idx++;
++                }
++            }
++        }
++
++        if (xen_enabled()) {
++            xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        }
++    } else {
++        uint8_t clients = tcg_enabled() ? DIRTY_CLIENTS_ALL
++                                        : DIRTY_CLIENTS_NOCODE;
++
++        if (!global_dirty_tracking) {
++            clients &= ~(1 << DIRTY_MEMORY_MIGRATION);
++        }
++
++        /*
++         * bitmap-traveling is faster than memory-traveling (for addr...)
++         * especially when most of the memory is not dirty.
++         */
++        for (i = 0; i < len; i++) {
++            if (bitmap[i] != 0) {
++                c = leul_to_cpu(bitmap[i]);
++                nbits = ctpopl(c);
++                if (unlikely(global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
++                    total_dirty_pages += nbits;
++                }
++                num_dirty += nbits;
++                do {
++                    j = ctzl(c);
++                    c &= ~(1ul << j);
++                    page_number = (i * HOST_LONG_BITS + j) * hpratio;
++                    addr = page_number * TARGET_PAGE_SIZE;
++                    ram_addr = start + addr;
++                    cpu_physical_memory_set_dirty_range(ram_addr,
++                                       TARGET_PAGE_SIZE * hpratio, clients);
++                } while (c != 0);
++            }
++        }
++    }
++
++    return num_dirty;
++}
++
+ static int subpage_register(subpage_t *mmio, uint32_t start, uint32_t end,
+                             uint16_t section);
+ static subpage_t *subpage_init(FlatView *fv, hwaddr base);
 -- 
 2.51.0
 
