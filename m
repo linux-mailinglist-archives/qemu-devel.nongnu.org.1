@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6E9BAFA42
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05183BAF9B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3s7n-0001RD-Vv; Wed, 01 Oct 2025 04:23:48 -0400
+	id 1v3s8B-0001lv-Ll; Wed, 01 Oct 2025 04:24:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s7h-0001Pe-7H
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:23:41 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s7x-0001br-AD
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:23:57 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s6y-00066i-PS
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:23:40 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3f0ae439b56so3952536f8f.3
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:22:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s76-0006Ax-SB
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:23:56 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e37d6c21eso46992505e9.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:22:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759306970; x=1759911770; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759306976; x=1759911776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bS0AsgoYLx5zmqVgHt+NhBtygpQInsuKcPvgvZX3Bjg=;
- b=S2DxneVXM6sGcmFCAK8nyZyxJhG43axt9/cX1TN7kEWIWtQOQS+hToT7/q8y4SgQJW
- 4wqNPG+dnbu+YHgSZ4ZFWWjTd8xNx7nFD5pXRXBPg8CWaxGHG4h8QD2flDYStGTFg4kl
- Bt0EvVunW14dVF+eMa3JnBqI/RgH4EXTfHDFJbEsa2IPlsDs1RFr3r39A2b5cJ83/fMA
- e2TulO7up/iziQ17HzwlTobVPx3ppU4FoBz2SO5/XKUQQCw7hCuEkbK8Sj6hfbiGvUxz
- XJD2nX1rsYYq8RCnEYvh+GRulGu8rqkQmkfmqB328axSzflzUu1rYx+NdgywBB0l0wHN
- iYZg==
+ bh=Fn2TjoRESSlrNJjOER4d6gpZrt35+AGo12EpGqjkW1I=;
+ b=WMJORzKbWQinwJlWgOGmr2Ob2FURGzE7QVjCPlSrDSjFH5QUxp3+nsOq7ZIWsr3FQr
+ XfCmjG36S5LL2aTgZqqD6gINAVeBPgI4+jRvGovyQeaLyYGgBzmGFTwI2ZwQoEp5M/mB
+ R1FJs4RKEZkarsVTbmLmsKf8HWlGU/zHXvf19GSKyTrxAZk2tBNqe+2pjUSawMimoDYO
+ Q1prXBFBprGB2Uv3ZZlGBxNvbfMBV5x4giqjCh9ReZAPJ+y7lzQPAJLG8UGTFBXtgiFf
+ yCvKgNy1HghmXWYvHGZRD1s7oTuPftwp3bvePG6rUKB5hyukt6PnxSmZCML+b3rbveiP
+ unnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759306970; x=1759911770;
+ d=1e100.net; s=20230601; t=1759306976; x=1759911776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bS0AsgoYLx5zmqVgHt+NhBtygpQInsuKcPvgvZX3Bjg=;
- b=HoMdbZ7aakFCnwIu4sVxgD0r0E7LYctznSQgsVDUZTnfwY/pYtDAOd01bHyG2NGMuF
- wjPACMs2uPjfv9MQ9pHWaZhIICfpWJMIkreW/hBpn/E1ggpMB9b63wFCLkkPC3aZUnSy
- LWvlHsDub282EBrHk4d9HEJlKphWvpHPWnogkxbWg9QozibHZi03DM3a4NAwz+aENu3d
- iQO745KcMRPNIFvy5DkgOtCB4X9i3heZ5co+wEGkcZSoj5XpukAkQFGMrtqspeW3nIm7
- ZpyEJctfLnm/52rJdOSPvBu5Ygxmv/asxfWltZ2+qnw4H6Mfj6FkvnZCyM3ChIZcaYO/
- e1Dg==
-X-Gm-Message-State: AOJu0YwR3zV3aQo9MbazeK8tw5WjyaDXSQvI4NYu+yRk9XZtjA+DdIRN
- dUuHiJdv7ZojxWPA5NpPEI5xEVUjhf6z9IKuEorSUSCM523LSR5PLEZh264P9sorf+dfCkBj8u5
- rIgspeemYIw==
-X-Gm-Gg: ASbGncvvqVzTQ+4HM4su/NHXLuywTUGASklmEac2b4ICGDTLTEGC+baXPl1JYSbhXej
- iytYZzYCgWI6OSMg5fwj8YDiEmC0KKul7PuM/19+GEkL+gWGKC9HBVPsZQjQmYHJzUpJgp+/G6z
- JeDyqlAW3FfwYMzQrUtf+BJGVdh/U4//IYqqw6dbBv7X0P23fJgJ6ENi7+W9OviaL7M4iMRcxlb
- grGNbHw9OFSQ8p4JJaKC/igPHMSiO3JLC1CpdZwT+0vo/+eTvkbZpdCPZWYsbUfuHZ1pd75OSWd
- LGHuuMFSYEr24RTFh7Oi9wX6EWoaQyRLtD2cZ1QkIOU/B0/vklOC+lvlIGu9ImFuSjPeChpUTnO
- 0bxN56M/nrpMsLBmKCXb5vkrC9K4y9nUglhcRfLz5uszESnsbGujI4vICJUUCov54NNVbbk88C9
- Yv8eiapxhahfVOSPzlHn82
-X-Google-Smtp-Source: AGHT+IELRO2S115j4kOaHozbeuDB7zNDQhho1vpx/wRXV7Li514LzRMsEuYYyG6n31n8p/YE2pMIzg==
-X-Received: by 2002:a05:6000:2510:b0:3f8:e016:41b5 with SMTP id
- ffacd0b85a97d-425577f0ab9mr1753806f8f.14.1759306970313; 
- Wed, 01 Oct 2025 01:22:50 -0700 (PDT)
+ bh=Fn2TjoRESSlrNJjOER4d6gpZrt35+AGo12EpGqjkW1I=;
+ b=nSXqZ9Uwlkk91P1tLu9VI9znnf2/TLwxEP4MKHVUEK8cGY+4CPHpfhj19518GNaSJP
+ 0GOd7TkZyK29pHIpZ4+rqB6pFqj0HjFjdcv3FX3AeNM9SStRy+tWO5hfXrzIXwMEgMsu
+ obu4oDNHB4J04IF+cmXaaowSvlMRc6HvMeVMjC6tqxtXkeGfANce7rfBG4ibjKg+uAu3
+ uRd4t6lBRr3ntCloGq/UNDLUXRwV0nEJVcDV/xS/rzk8u68w1EqxB6QParGh/1xKiq3i
+ gMCOH1aiT42Wt2Y2gv3clyy1tHcvKp2+H92FHiWo/ap8+fU6dzGZ+oYLARO5gPlevQlp
+ DaQQ==
+X-Gm-Message-State: AOJu0YzAYso5skfDAJnm/nNdlRKawrOCuwR1XUcIBxF4QXez7R5pCyPV
+ WnpnV9tIyf78vFJOn2vcujaMUoThlrN4npgt3780Wh1tAttegWgMMKguhjEFHPeIvn5OMHMTtlA
+ Smv6F1DbKcg==
+X-Gm-Gg: ASbGncv2ukNpuIqtwmSg4xE1WaL+dcY6HfepLVaq0NpIrh8JqwENcoqEFUvRrZcP4a1
+ 5U8PGYLhQHM6CoQTpN4PjtijMkjicgbuCInmmPKw+B5KUJFZ9oqpmY4WaNimFCF3revs0wOJI+K
+ 16dSQ4pjva5Weqov4b+KWZAk1Xv2cIDZsFL/y2TyB4WUgUZJYux4ojO8IOA0Bzyp4ip3DRY9NeM
+ D4WIBAW4Ug00qHDbDVfQDT9esbyxov6DWpGcYmpVkWdCjcl1lp8HFoYnkRaxH+cP8eXYejWVzH9
+ 5h//6RCv+HWsVVWx9U6Pjbx279tgMTaS6Wy10tguChRnO+LjlhQkfkW0+/5CKkfHLb78pVyX/on
+ t+S8pgPqBxBJlNsnVRggFSzy3RfNledMKuBVZxsyZvI9a2YvjYYH0bFqOZgQdAmNhRwn9gqlGZt
+ WXBmeHkuBE/QukFmhAHfXg
+X-Google-Smtp-Source: AGHT+IGa971mXhZ9J5c8QC/V145CuXilY9sHAaHNYsxw+frSzKFCefeHYCbSr6kcPeg6FkecemzV3g==
+X-Received: by 2002:a05:600c:8414:b0:46e:206a:78cc with SMTP id
+ 5b1f17b1804b1-46e612c9042mr20995395e9.28.1759306975822; 
+ Wed, 01 Oct 2025 01:22:55 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb74e46bcsm26245714f8f.8.2025.10.01.01.22.48
+ 5b1f17b1804b1-46e61a25dbcsm28397185e9.19.2025.10.01.01.22.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 01:22:49 -0700 (PDT)
+ Wed, 01 Oct 2025 01:22:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
@@ -82,25 +82,24 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH 15/25] system/physmem: Un-inline
- cpu_physical_memory_set_dirty_flag()
-Date: Wed,  1 Oct 2025 10:21:15 +0200
-Message-ID: <20251001082127.65741-16-philmd@linaro.org>
+Subject: [PATCH 16/25] system/physmem: Rename @start argument of
+ physical_memory_*range()
+Date: Wed,  1 Oct 2025 10:21:16 +0200
+Message-ID: <20251001082127.65741-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001082127.65741-1-philmd@linaro.org>
 References: <20251001082127.65741-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,74 +115,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid maintaining large functions in header, rely on the
-linker to optimize at linking time.
+Generally we want to clarify terminology and avoid confusions,
+prefering @start with (exclusive) @end, and base @addr with
+@length (for inclusive range).
+
+Here as cpu_physical_memory_set_dirty_range() operates on a
+range, rename @start as @addr.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/ram_addr.h | 19 +------------------
- system/physmem.c          | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ include/system/ram_addr.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-index 809169b9903..6ed17b455b4 100644
+index 6ed17b455b4..84a8b5c003d 100644
 --- a/include/system/ram_addr.h
 +++ b/include/system/ram_addr.h
-@@ -150,24 +150,7 @@ uint8_t cpu_physical_memory_range_includes_clean(ram_addr_t addr,
-                                                  ram_addr_t length,
-                                                  uint8_t mask);
+@@ -152,7 +152,7 @@ uint8_t cpu_physical_memory_range_includes_clean(ram_addr_t addr,
  
--static inline void cpu_physical_memory_set_dirty_flag(ram_addr_t addr,
--                                                      unsigned client)
--{
--    unsigned long page, idx, offset;
--    DirtyMemoryBlocks *blocks;
--
--    assert(client < DIRTY_MEMORY_NUM);
--
--    page = addr >> TARGET_PAGE_BITS;
--    idx = page / DIRTY_MEMORY_BLOCK_SIZE;
--    offset = page % DIRTY_MEMORY_BLOCK_SIZE;
--
--    RCU_READ_LOCK_GUARD();
--
--    blocks = qatomic_rcu_read(&ram_list.dirty_memory[client]);
--
--    set_bit_atomic(offset, blocks->blocks[idx]);
--}
-+void cpu_physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
+ void cpu_physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
  
- static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+-static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
++static inline void cpu_physical_memory_set_dirty_range(ram_addr_t addr,
                                                         ram_addr_t length,
-diff --git a/system/physmem.c b/system/physmem.c
-index 11b08570b62..cb0efbeabb2 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1015,6 +1015,24 @@ uint8_t cpu_physical_memory_range_includes_clean(ram_addr_t addr,
-     return ret;
+                                                        uint8_t mask)
+ {
+@@ -165,8 +165,8 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+         return;
+     }
+ 
+-    end = TARGET_PAGE_ALIGN(start + length) >> TARGET_PAGE_BITS;
+-    page = start >> TARGET_PAGE_BITS;
++    end = TARGET_PAGE_ALIGN(addr + length) >> TARGET_PAGE_BITS;
++    page = addr >> TARGET_PAGE_BITS;
+ 
+     WITH_RCU_READ_LOCK_GUARD() {
+         for (i = 0; i < DIRTY_MEMORY_NUM; i++) {
+@@ -200,7 +200,7 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+     }
+ 
+     if (xen_enabled()) {
+-        xen_hvm_modified_memory(start, length);
++        xen_hvm_modified_memory(addr, length);
+     }
  }
  
-+void cpu_physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client)
-+{
-+    unsigned long page, idx, offset;
-+    DirtyMemoryBlocks *blocks;
-+
-+    assert(client < DIRTY_MEMORY_NUM);
-+
-+    page = addr >> TARGET_PAGE_BITS;
-+    idx = page / DIRTY_MEMORY_BLOCK_SIZE;
-+    offset = page % DIRTY_MEMORY_BLOCK_SIZE;
-+
-+    RCU_READ_LOCK_GUARD();
-+
-+    blocks = qatomic_rcu_read(&ram_list.dirty_memory[client]);
-+
-+    set_bit_atomic(offset, blocks->blocks[idx]);
-+}
-+
- /* Note: start and end must be within the same ram block.  */
- bool cpu_physical_memory_test_and_clear_dirty(ram_addr_t start,
-                                               ram_addr_t length,
 -- 
 2.51.0
 
