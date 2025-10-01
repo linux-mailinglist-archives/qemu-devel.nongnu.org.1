@@ -2,91 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFE2BB082E
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 15:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653EFBB0831
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 15:32:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3wuK-0000yp-Le; Wed, 01 Oct 2025 09:30:12 -0400
+	id 1v3wvh-0001a9-Pp; Wed, 01 Oct 2025 09:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3wuF-0000wg-Nm
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 09:30:08 -0400
-Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v3wu8-00081s-Px
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 09:30:07 -0400
-Received: by mail-qk1-x734.google.com with SMTP id
- af79cd13be357-85630d17586so978976685a.1
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 06:29:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759325393; x=1759930193; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=xBolGonv+ycL9uEP1rZTH1ZIE3XHVJ+twISiule58Qo=;
- b=mTWozw6VGBOEY18oRSfgV6D0EuCxqOJtT90KlZOlWrWscpQb3wr0BBrJyBJ2Sh1P9q
- i82I9L+mIKPSY7OR57RUN3Bztf41pdfa9sIK18LiaNtCRyceP3Q8lu45f8gME+ZtsrO5
- 8gXboJt0r2OrHfpXicMGb2K1ilAhBDFWt3NboRpVvfLqAD3swdURNNdkBzvsnWpf+354
- M28BEiqMa7/QgOsnNKnQfVk0WJwoUtVtyrJ4LTkFdaYbCRcv7LHA1Di9HIj0Dg0gjtaH
- 2DWV6/ESn7ujnekd6We/FBvtVvNBTqzckkmoM+kGkqeLvnVkWIPU6v/rX4NpkhBPctl8
- Wepg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759325393; x=1759930193;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xBolGonv+ycL9uEP1rZTH1ZIE3XHVJ+twISiule58Qo=;
- b=bZJkZehpoyMTXxKYOWl57SOs2fCarzozC/r4TpgwP7IDauouitxeHw0+Nb+FcFL4WS
- hdnOmHutURTwtZOICdtMGn4yYxYVvCCY4TMC/GMhCc72T2kjgUfjUUB0CrsgQSie0zGE
- Qo+5FOlyRwl6wiGdMhqPEIXFKZ2NQkoqJWl55CHbsE7+jEhBNpuuhnmZGoI6Jk2+rxg0
- +8/Y8NsZD+vCt3jJI+KBU/ckdhoA2V8b1QFsdZlBdSvqyDW2nA4EA0AqcxBhgKIEUyLj
- pI/dPQEdZ73iLhX6BFex4WCDodxvfM5PNlkhvVnSv5n3twvbIi7N+nN/88MIer1SnkSX
- xNrw==
-X-Gm-Message-State: AOJu0YyPBrt7DDxXQ+E0Lo72hiaRrdORzCyXMhNVIaYPl+Phwu4tv3jU
- pKZT0b9t06w/RUOb9sQ09BPgxQxAEor+vWZdJ+ybRrzjoBvQmwjZT7Bvevm6OqBoqc/oXNWruj2
- jq4nO
-X-Gm-Gg: ASbGncsca9ICT+GtlsH5mmwWXHmWlJbw6BqNQz3//8WqHhYNaTHwMREHoWuUQzqdXmU
- 1p7JpgLO+q9IdrSFOLNeELTd0Sw1xyk6CoY0tAepzhN0Z1VhgkzBVZ1Er0PvyPhfNzh6WKflk9W
- 6+12Gk0RFBL6OpXHVc6vzy8mfE1v2cBkVMtaQ94g14vjLncV0T//ZPdVaexbZeBfcIrvhlO40Ri
- 0SKeOGM8V3bhcv7HqvLWFATK/GJwbyyiWA6Eac0BTR8P2gcDsD+S76nYdODeb0tMPaVjA9zc/ks
- nhEyUV/KWIh3jIzNIldWMwdzCZaV/4ARaeYDRB4Mrz8+J6OgPBe4zF14IGUDv6IrwhWqqf/Vn+N
- VJ4pC8Tdqp2eB3m+/Az6AOWyXNNY6WWd8yLPOZzPZ86yXC4LWsINPDCpNv4Ycs8W047DL4a4iZW
- tGi/yhlZRgMqjkzZq6K7x2OTPBhlHIuQ8=
-X-Google-Smtp-Source: AGHT+IHVA+8gdPP1URAW1arMuS40ZON5szvLkOnBVm0h8wUieTspmMtRmA9oJ+cQjj5UQnG164/x+w==
-X-Received: by 2002:a05:620a:4112:b0:856:95cc:705a with SMTP id
- af79cd13be357-8736ff3c7a0mr470012785a.9.1759325389963; 
- Wed, 01 Oct 2025 06:29:49 -0700 (PDT)
-Received: from ?IPV6:2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345?
- ([2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8756643def8sm76164385a.16.2025.10.01.06.29.49
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Oct 2025 06:29:49 -0700 (PDT)
-Message-ID: <3993cd1b-6179-48e7-88c1-c161bb448c5a@linaro.org>
-Date: Wed, 1 Oct 2025 06:29:46 -0700
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1v3wvM-0001Nd-7N; Wed, 01 Oct 2025 09:31:25 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1v3wv4-0008Qn-6p; Wed, 01 Oct 2025 09:31:12 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ccG5H3xR7z6K5sM;
+ Wed,  1 Oct 2025 21:30:27 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+ by mail.maildlp.com (Postfix) with ESMTPS id D3ECB1402FD;
+ Wed,  1 Oct 2025 21:30:44 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 1 Oct
+ 2025 14:30:43 +0100
+Date: Wed, 1 Oct 2025 14:30:42 +0100
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
+ <peter.maydell@linaro.org>, <jgg@nvidia.com>, <nicolinc@nvidia.com>,
+ <ddutile@redhat.com>, <berrange@redhat.com>, <nathanc@nvidia.com>,
+ <mochs@nvidia.com>, <smostafa@google.com>, <wangzhou1@hisilicon.com>,
+ <jiangkunkun@huawei.com>, <zhangfei.gao@linaro.org>,
+ <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <shameerkolothum@gmail.com>
+Subject: Re: [PATCH v4 18/27] hw/arm/virt-acpi-build: Add IORT RMR regions
+ to handle MSI nested binding
+Message-ID: <20251001143042.0000435b@huawei.com>
+In-Reply-To: <20250929133643.38961-19-skolothumtho@nvidia.com>
+References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+ <20250929133643.38961-19-skolothumtho@nvidia.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/23] Rust ci patches
-To: qemu-devel@nongnu.org
-References: <20250930153746.573875-1-marcandre.lureau@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250930153746.573875-1-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x734.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,31 +69,165 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/30/25 08:37, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau<marcandre.lureau@redhat.com>
+On Mon, 29 Sep 2025 14:36:34 +0100
+Shameer Kolothum <skolothumtho@nvidia.com> wrote:
+
+> From: Eric Auger <eric.auger@redhat.com>
 > 
-> The following changes since commit 85a3fd1c4cb3ba7a9eb291c1e222f935e922d1f7:
+> To handle SMMUv3 nested stage support it is practical to expose the guest
+> with reserved memory regions (RMRs) covering the IOVAs used by the host
+> kernel to map physical MSI doorbells.
 > 
->    Merge tag 'pull-aspeed-20250929' ofhttps://github.com/legoater/qemu into staging (2025-09-29 10:52:48 -0700)
+> Those IOVAs belong to [0x8000000, 0x8100000] matching MSI_IOVA_BASE and
+> MSI_IOVA_LENGTH definitions in kernel arm-smmu-v3 driver. This is the
+> window used to allocate IOVAs matching physical MSI doorbells.
 > 
-> are available in the Git repository at:
+> With those RMRs, the guest is forced to use a flat mapping for this range.
+> Hence the assigned device is programmed with one IOVA from this range.
+> Stage 1, owned by the guest has a flat mapping for this IOVA. Stage2,
+> owned by the VMM then enforces a mapping from this IOVA to the physical
+> MSI doorbell.
 > 
->    https://gitlab.com/marcandre.lureau/qemu.git tags/rust-ci-pull-request
+> The creation of those RMR nodes is only relevant if nested stage SMMU is
+> in use, along with VFIO. As VFIO devices can be hotplugged, all RMRs need
+> to be created in advance.
 > 
-> for you to fetch changes up to 582a39beea414c092dbd8c178f3eff3a718eee77:
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Suggested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Various comments inline on references and making the code a little more resilient
+and obvious wrt to the things that there happen to be 1 of but which the spec
+allows for multiples of.
+
+> ---
+>  hw/arm/virt-acpi-build.c | 75 ++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 68 insertions(+), 7 deletions(-)
 > 
->    build-sys: pass -fvisibility=default for wasm bindgen (2025-09-30 19:33:25 +0400)
-> 
-> ----------------------------------------------------------------
-> CI/build-sys fixes for Rust
-> 
-> Collect CI/build-sys patches related to Rust.
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index fd03b7f6a9..d0c1e10019 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
 
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
+> @@ -447,6 +450,56 @@ static void create_rc_its_idmaps(GArray *its_idmaps, GArray *smmuv3_devs)
+>      }
+>  }
+>  
+> +static void
+> +build_iort_rmr_nodes(GArray *table_data, GArray *smmuv3_devices, uint32_t *id)
+> +{
+> +    AcpiIortSMMUv3Dev *sdev;
+> +    AcpiIortIdMapping *idmap;
+> +    int i;
+> +
+> +    for (i = 0; i < smmuv3_devices->len; i++) {
+> +        sdev = &g_array_index(smmuv3_devices, AcpiIortSMMUv3Dev, i);
+> +        idmap = &g_array_index(sdev->rc_smmu_idmaps, AcpiIortIdMapping, 0);
+> +        int bdf = idmap->input_base;
+> +
+> +        if (!sdev->accel) {
+> +            continue;
+> +        }
+> +
+> +        /* Table 18 Reserved Memory Range Node */
 
-r~
+Reference a spec version somewhere.  Table numbers tend to change over time.
+Table 18 in E.g version of spec is Root Complex Node for example. This is now
+table 19.
+
+
+> +        build_append_int_noprefix(table_data, 6 /* RMR */, 1); /* Type */
+> +        /* Length */
+> +        build_append_int_noprefix(table_data, 28 + ID_MAPPING_ENTRY_SIZE + 20,
+
+Add something to justify that + 20 (which I think is size of the Memory Range descriptors?)
+The +28 is to start of bit after RMR specific data so that is kind of fine. As below
+I'd add a constant for the number of ID mapping entries.
+
+
+> +                                  2);
+> +        build_append_int_noprefix(table_data, 3, 1); /* Revision */
+> +        build_append_int_noprefix(table_data, *id, 4); /* Identifier */
+> +        /* Number of ID mappings */
+> +        build_append_int_noprefix(table_data, 1, 4);
+
+I'd define a constant for the number of these and use it to help build the size.
+Sure it is 1, but even so that would make the logic of placement simpler I think.
+
+> +        /* Reference to ID Array */
+> +        build_append_int_noprefix(table_data, 28, 4);
+> +
+> +        /* RMR specific data */
+> +
+> +        /* Flags */
+> +        build_append_int_noprefix(table_data, 0 /* Disallow remapping */, 4);
+
+Whilst we are disallowing remapping as this says, we are also saying a few
+other things as there are more things in this flags field. Such as that it's
+nGnRnE
+
+> +        /* Number of Memory Range Descriptors */
+> +        build_append_int_noprefix(table_data, 1 , 4);
+
+I'd use a constant for this as well so that can use it in the size generation
+and here.
+
+> +        /* Reference to Memory Range Descriptors */
+> +        build_append_int_noprefix(table_data, 28 + ID_MAPPING_ENTRY_SIZE, 4);
+> +        build_iort_id_mapping(table_data, bdf, idmap->id_count, sdev->offset,
+> +                              1);
+> +
+> +        /* Table 19 Memory Range Descriptor */
+
+As above numbers changed, so specific spec version in the references.
+It's 20 in the spec I downloaded today.
+
+
+> +
+> +        /* Physical Range offset */
+> +        build_append_int_noprefix(table_data, 0x8000000, 8);
+
+Can we get these from any defines?  Feels like make these values match in a number
+of places is necessary so we shouldn't really hard code them here.
+
+> +        /* Physical Range length */
+> +        build_append_int_noprefix(table_data, 0x100000, 8);
+> +        build_append_int_noprefix(table_data, 0, 4); /* Reserved */
+> +        *id += 1;
+
+Trivial but why not 
+	   *id++;
+better yet, do it where it's used rather than leaving it down here.
+That way if in future multiple IDs are added for some reason then the increments
+will go with them calls to add them.
+
+
+> +    }
+> +}
+> +
+>  /*
+>   * Input Output Remapping Table (IORT)
+>   * Conforms to "IO Remapping Table System Software on ARM Platforms",
+> @@ -464,7 +517,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>      GArray *smmuv3_devs = g_array_new(false, true, sizeof(AcpiIortSMMUv3Dev));
+>      GArray *rc_its_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
+>  
+> -    AcpiTable table = { .sig = "IORT", .rev = 3, .oem_id = vms->oem_id,
+> +    AcpiTable table = { .sig = "IORT", .rev = 5, .oem_id = vms->oem_id,
+>                          .oem_table_id = vms->oem_table_id };
+
+Seem to be missing the bios table test updates that will break with that version uptick.
+Probably add a doc reference here so we can keep aligned.  The spec E.g has reached revision 7
+whilst this work has been ongoing.
+
+
+Jonathan
+
 
