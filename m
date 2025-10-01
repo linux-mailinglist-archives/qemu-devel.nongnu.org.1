@@ -2,104 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B41BB1262
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B73BB12E9
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3ywi-0003QV-KD; Wed, 01 Oct 2025 11:40:49 -0400
+	id 1v3z73-0006Rp-LB; Wed, 01 Oct 2025 11:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1v3ywV-0003NK-NQ; Wed, 01 Oct 2025 11:40:36 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1v3ywI-0007Zt-US; Wed, 01 Oct 2025 11:40:34 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591F7MYW020525;
- Wed, 1 Oct 2025 15:40:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=z9Un1s6m4Mvu0bPYYaSfMhmYHBTg9RLCwlTgHDwgU
- Ko=; b=Vppt2qwBAKg1ZUvsaCdFOeUmJn5sOfWg8STIJrkxuGHj2y/U5tBUtGsTY
- bE9HAb1THLEYH2RBNwJ8nOf/2ioFrYMucAAbnVFyEGvCOoX2WCL04ZwvNW6yu9NI
- 8LEKp18B+GfZ41DZowN1WhUe9F8UzUIefgL21qnIj5EiM1iCe6SQ3nP45XSVtzBt
- pyQWR4Imj5wuAidYHI4tI8vw7JYkIVRju1njDwVRPVkYBKHgS1fTpEzH65chzM97
- vh53E9bt6EIuJLRjctEOP3JmLwb/K2Hsr0A4GKFN1yLBpsJEGttdK6VP9bTEL9th
- mx1uEQEwP8g2MKdEs3mnUdPPPk4Iw==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7jwqebs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Oct 2025 15:40:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 591D74Cl026752;
- Wed, 1 Oct 2025 15:40:07 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49eu8n1hk6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Oct 2025 15:40:07 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 591Fe6DX51183978
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Oct 2025 15:40:06 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F2C6458052;
- Wed,  1 Oct 2025 15:40:05 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4E6058069;
- Wed,  1 Oct 2025 15:40:05 +0000 (GMT)
-Received: from IBM-GLTZVH3.austin.ibm.com (unknown [9.24.20.98])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  1 Oct 2025 15:40:05 +0000 (GMT)
-From: Jaehoon Kim <jhkim@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: mjrosato@linux.ibm.com, farman@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, thuth@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- Jaehoon Kim <jhkim@linux.ibm.com>
-Subject: [PATCH v1] s390x/pci: fix interrupt blocking by returning only the
- device's summary bit
-Date: Wed,  1 Oct 2025 10:39:38 -0500
-Message-ID: <20251001154004.71917-1-jhkim@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v3z6b-0006Po-QU
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:51:02 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v3z69-0000rK-Mu
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:50:45 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-76e6cbb991aso68135b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759333821; x=1759938621; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=YfyB2A3RB3jVRV3yy3Pk0+tJLe1Mxz+E+eSv5P5PxQs=;
+ b=rCgOUK5Z2eWAHnaTd+Ng5mpF+WY7JtsNAw2o6cOW6u/O/QqvQLc3HolZGFADiX5ZJr
+ oPm+AvDJC+Iwwwzc00u96jNQCgSvX79DY5qz1NxbV3RjZ/NOUSDeg/US8LcI3fqBaN0m
+ owBKqMCZ/s7kbHzcnxmgqVgBbKz/mpv59/Q5iQgQjUTcy3qKuX4tC2hRcCQFd0sZy6tW
+ 6aTOrrN3lQUTLl6CGAIly59QLqb97JpXIJP5molKGauArOtab0g2hD5iLEt8987SKj1e
+ MQyrh9olerq/mLncsf03X8EINo6UXgKDJ12hJbClCtlF6T8y5rC4sh+Pp5u1z0BHYKcg
+ jsQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759333821; x=1759938621;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YfyB2A3RB3jVRV3yy3Pk0+tJLe1Mxz+E+eSv5P5PxQs=;
+ b=vqBWEu/3klDm3d7wf+Wr7Zn2jHSIkXBAh9Wdjn/BTcI+xrqmTST0p7FQ6pgKGLEJL5
+ 3utJV1e/nOeRZeY4XHPaXc+p8srM2X73T6wWAF0DynBcSJSeixXWFLuyi6VVIjOTLUSd
+ inLieUW0/yJBzhGsSB24F64tt4i2irTQDhQO1ZfWbL/yxXFfbG0CLurcGxyr8gvqWZG9
+ pTN3lnF8dE5+8RXQ44psJaWX0/oxSBKAo6zTP2hHwMVHdmS7bwxooDe00bO60x8y0hMo
+ 1fTGVOBo2orjU0vJPkAZ/oRVivgwC8F/02M8ObTAHnDgzFFOrtOdQNqi3mmG7IRWVktF
+ h7yA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVHEkdTsVnVww0e0EoV8l7DvrFKQLOEv++T7c9rDrfErRmoI0Uqv+iH02jyvYheOjM6xaaZaGb1IrYr@nongnu.org
+X-Gm-Message-State: AOJu0YxUdNtHf+e+VHq3GSo+6GKfQFS7M2jIcahzZBx8O7pJnJ0eXW1z
+ i2seGe+MojwIvHTVvj79GmdfpZTrKqnUreRK0PkNIGcc7y8/wTkpZI50pzeFknq1bRU=
+X-Gm-Gg: ASbGncuSuQv+pkGxfV9n10SR34qMsk3X7W23DmZ9ZJzaoxKLENRpFzwL9IMVJhKWS5O
+ a3uFZaNnxTfEYXV5SE4A7JY6Ogqz8WuTNbJpak6+2gI6wTXQU3cWcE2ArjOS4YluWO8u/2R+Q0Y
+ Y/9KRhbdTNCJk0PPcBHA7pJGCSvzIf1D+FCMcXR6TIlqx4SmUpTKSzFaXjIW8ZqZy9V2NMBq9ae
+ QYCr2z8G+x7i0QJyqJwEpjkugnMv8yqtopxM5AP+DZQm52Yzc9AgCjr0S17S/8hbQ25+R/y5jfl
+ TnrpKUbRSVU3pyLIdc4R2sTJWqqKyVmh50n3oWwMjwZlmkMxSu9LBTq6S2EuEP+pYlzWasHffdC
+ T1tA985aFG9on5OjGz7i1Z4UMB+91o4QnsjJ1XrqfDIGFjoaGRwE8Eif1O1zMPp/pgKEM0hDWJx
+ UXH1xzo9l2caRbga/WE9HUHyIqI7V5swM=
+X-Google-Smtp-Source: AGHT+IHl0NZFcm8n/l80eKzWzlUhLKTrqrukSb8xjkwRO7CHi5KIxAEZAED8rl4yALtmv1EQCd8yvA==
+X-Received: by 2002:a05:6a20:a11e:b0:2e1:5870:ffb4 with SMTP id
+ adf61e73a8af0-321d8452cddmr5746364637.5.1759333820878; 
+ Wed, 01 Oct 2025 08:50:20 -0700 (PDT)
+Received: from ?IPV6:2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345?
+ ([2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-78b01fb280dsm92227b3a.34.2025.10.01.08.50.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Oct 2025 08:50:20 -0700 (PDT)
+Message-ID: <64d8f612-059c-4171-b721-62f84e88bde9@linaro.org>
+Date: Wed, 1 Oct 2025 08:50:17 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 20/25] system/physmem: Un-inline
+ cpu_physical_memory_dirty_bits_cleared()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20251001082127.65741-1-philmd@linaro.org>
+ <20251001082127.65741-21-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251001082127.65741-21-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfXwpzYyoRWk1OE
- PVXi5SiZ0/SbLfIXPeoxbk0EMVQT0oRGogpSIVRnQdBdo+E4lXmXXiNaIMSvdXePQ2/dkFafLNo
- wbRN3/tl9HrwRThFm+m3xj7yhOBf/KseF72bhyk5n5U6rILGRFdMCJORpecO9KDxG2MN3+vczKB
- Ec6Bs4B/v7mSGiaKK2qzdKIYgOzQThE8jL4ERLT7VoY5S+nL+EsjHC2BeqC1qlBzMT0BRlQHxXI
- 4KTF6g/+U2iN63M2oP2GHLTSreu08uJiux0qUNzA4TCdHR8dOzua3Y9vaKXzxEeMO6sHe5xDZsL
- ik6f2zlj2f3N/xm8LC7mvXpYSKos0BH/c8PHgssYYrPBCLwhDNl22hTVFDdvjMA+93T95sAnSm9
- N8jNIi6QhS5DkU6mRdDIfTqT222VBA==
-X-Proofpoint-ORIG-GUID: Ou7hkLN23_xcYud0A5Y8xcv7HSE-M5uP
-X-Proofpoint-GUID: Ou7hkLN23_xcYud0A5Y8xcv7HSE-M5uP
-X-Authority-Analysis: v=2.4 cv=GdUaXAXL c=1 sm=1 tr=0 ts=68dd4b57 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=eREyYmBtXGGudL_Iqe0A:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-01_04,2025-09-29_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 phishscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jhkim@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,79 +104,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previously, set_ind_atomic() returned the entire byte containing
-multiple summary bits. This meant that if any other summary bit in the
-byte was set, interrupt injection could be incorrectly blocked, even
-when the current device's summary bit was not set. As a result, the
-guest could remain blocked after I/O completion during FIO tests.
+On 10/1/25 01:21, Philippe Mathieu-Daudé wrote:
+> Avoid maintaining large functions in header, rely on the
+> linker to optimize at linking time.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/system/ram_addr.h | 11 ++---------
+>   system/physmem.c          |  7 +++++++
+>   2 files changed, 9 insertions(+), 9 deletions(-)
 
-This patch replaces set_ind_atomic() with set_ind_bit_atomic(), which
-returns true if the bit was set by this function, and false if it was
-already set or mapping failed. Interrupts are now blocked only when
-the device's own summary bit was not previously set, avoiding
-unintended blocking when multiple PCI summary bits exist within the
-same byte.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
----
- hw/s390x/s390-pci-bus.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index f87d2748b6..e8e41c8a9a 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -652,7 +652,16 @@ static const PCIIOMMUOps s390_iommu_ops = {
-     .get_address_space = s390_pci_dma_iommu,
- };
- 
--static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
-+/**
-+ * set_ind_bit_atomic - Atomically set a bit in an indicator
-+ *
-+ * @ind_loc:   Address of the indicator
-+ * @to_be_set: Bit to set
-+ *
-+ * Returns true if the bit was set by this function, false if it was
-+ * already set or mapping failed.
-+ */
-+static bool set_ind_bit_atomic(uint64_t ind_loc, uint8_t to_be_set)
- {
-     uint8_t expected, actual;
-     hwaddr len = 1;
-@@ -662,7 +671,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
-     ind_addr = cpu_physical_memory_map(ind_loc, &len, true);
-     if (!ind_addr) {
-         s390_pci_generate_error_event(ERR_EVENT_AIRERR, 0, 0, 0, 0);
--        return -1;
-+        return false;
-     }
-     actual = *ind_addr;
-     do {
-@@ -671,7 +680,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
-     } while (actual != expected);
-     cpu_physical_memory_unmap((void *)ind_addr, len, 1, len);
- 
--    return actual;
-+    return (actual & to_be_set) ? false : true;
- }
- 
- static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
-@@ -693,10 +702,10 @@ static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
-     ind_bit = pbdev->routes.adapter.ind_offset;
-     sum_bit = pbdev->routes.adapter.summary_offset;
- 
--    set_ind_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
-+    set_ind_bit_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
-                    0x80 >> ((ind_bit + vec) % 8));
--    if (!set_ind_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
--                                       0x80 >> (sum_bit % 8))) {
-+    if (set_ind_bit_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
-+                   0x80 >> (sum_bit % 8))) {
-         css_adapter_interrupt(CSS_IO_ADAPTER_PCI, pbdev->isc);
-     }
- }
--- 
-2.43.0
-
+r~
 
