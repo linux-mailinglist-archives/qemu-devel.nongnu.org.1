@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6BFBAF698
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE08CBAF72A
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:39:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rJB-0005XE-Vv; Wed, 01 Oct 2025 03:31:30 -0400
+	id 1v3rIi-0005Km-16; Wed, 01 Oct 2025 03:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rIn-0005No-Mx
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:31:05 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rIb-0005KO-E0
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:30:53 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rIW-0003Qu-4f
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:31:05 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rIU-0003RU-Gt
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:30:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=GEWNFhGKe8bX29w4np/041m+yKBZEmJhkOsVFMdByTE=; b=obQf6o+DH7CBooH
- EpeHZMAfKloUx9rFFCj5SkNbgRcK3QMwO2hszi8Pz+POHl5c1tiy2BFJBXL9HXt3BxnZnkKpwk5ay
- IqgGQ4wtM7zhx2yt4H7maAl8vwkf+5fNW4Ht2MUwlKPUQDswCflNW/f8/3GxxOV5GC/+RHUw2hoxL
- Qo=;
+ List-Help; bh=fD+d4xMHP1K3jVD7TLyUDXmHaaSzUNt6ptYAnz+DLx8=; b=dNZ/zDd9v5goRrz
+ uP2WhzRsyuhIBPQSR+c/xTxS9q000md/9S3y/3YyXA09a7fvnKL0H//agU01ZWzbeqbQQs7irpNF2
+ Z8GIlcn4Kx69XAPTxowEVCQ+f4cw6YBZwmxyv1tmTQScwH6Z+FduGDIvnJ7x3MRuQSL3ocE9L26Hh
+ Dk=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org,
  richard.henderson@linaro.org, alistair.francis@wdc.com, palmer@dabbelt.com
-Subject: [PATCH v2 06/33] target/riscv: Combine mcyclecfg and mcyclecfgh
-Date: Wed,  1 Oct 2025 09:32:39 +0200
-Message-ID: <20251001073306.28573-7-anjo@rev.ng>
+Subject: [PATCH v2 07/33] target/riscv: Combine minstretcfg and minstretcfgh
+Date: Wed,  1 Oct 2025 09:32:40 +0200
+Message-ID: <20251001073306.28573-8-anjo@rev.ng>
 In-Reply-To: <20251001073306.28573-1-anjo@rev.ng>
 References: <20251001073306.28573-1-anjo@rev.ng>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,124 +62,92 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to version 20250508 of the privileged specification, mcyclecfg
-is a 64-bit register and mcyclecfgh refers to the top 32 bits of this
-register when XLEN == 32.  No real advantage is gained by keeping
-them separate, and combining them allows for slight simplification.
+According to version 20250508 of the privileged specification,
+minstretcfg is a 64-bit register and minstretcfgh refers to the top
+32 bits of this register when XLEN == 32.  No real advantage is
+gained by keeping them separate, and combining them allows for slight
+simplification.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
  target/riscv/cpu.h |  3 +--
- target/riscv/csr.c | 28 +++++++++++++++++-----------
- 2 files changed, 18 insertions(+), 13 deletions(-)
+ target/riscv/csr.c | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 64b9964028..60f7611c00 100644
+index 60f7611c00..d8f0818b08 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -419,8 +419,7 @@ struct CPUArchState {
-     uint32_t mcountinhibit;
+@@ -420,8 +420,7 @@ struct CPUArchState {
  
      /* PMU cycle & instret privilege mode filtering */
--    target_ulong mcyclecfg;
--    target_ulong mcyclecfgh;
-+    uint64_t mcyclecfg;
-     target_ulong minstretcfg;
-     target_ulong minstretcfgh;
+     uint64_t mcyclecfg;
+-    target_ulong minstretcfg;
+-    target_ulong minstretcfgh;
++    uint64_t minstretcfg;
  
+     /* PMU counter state */
+     PMUCTRState pmu_ctrs[RV_MAX_MHPMCOUNTERS];
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 2d8916ee40..77d0bd7bca 100644
+index 77d0bd7bca..83f6526723 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -1060,7 +1060,8 @@ static RISCVException read_hpmcounterh(CPURISCVState *env, int csrno,
- static RISCVException read_mcyclecfg(CPURISCVState *env, int csrno,
-                                      target_ulong *val)
+@@ -1115,7 +1115,8 @@ static RISCVException write_mcyclecfgh(CPURISCVState *env, int csrno,
+ static RISCVException read_minstretcfg(CPURISCVState *env, int csrno,
+                                        target_ulong *val)
  {
--    *val = env->mcyclecfg;
+-    *val = env->minstretcfg;
 +    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
-+    *val = extract64(env->mcyclecfg, 0, rv32 ? 32 : 64);
++    *val = extract64(env->minstretcfg, 0, rv32 ? 32 : 64);
      return RISCV_EXCP_NONE;
  }
  
-@@ -1070,7 +1071,7 @@ static RISCVException write_mcyclecfg(CPURISCVState *env, int csrno,
-     uint64_t inh_avail_mask;
- 
-     if (riscv_cpu_mxl(env) == MXL_RV32) {
--        env->mcyclecfg = val;
-+        env->mcyclecfg = deposit64(env->mcyclecfg, 0, 32, val);
-     } else {
-         /* Set xINH fields if priv mode supported */
-         inh_avail_mask = ~MHPMEVENT_FILTER_MASK | MCYCLECFG_BIT_MINH;
-@@ -1089,7 +1090,7 @@ static RISCVException write_mcyclecfg(CPURISCVState *env, int csrno,
- static RISCVException read_mcyclecfgh(CPURISCVState *env, int csrno,
-                                       target_ulong *val)
+@@ -1142,7 +1143,7 @@ static RISCVException write_minstretcfg(CPURISCVState *env, int csrno,
+ static RISCVException read_minstretcfgh(CPURISCVState *env, int csrno,
+                                         target_ulong *val)
  {
--    *val = env->mcyclecfgh;
-+    *val = extract64(env->mcyclecfg, 32, 32);
+-    *val = env->minstretcfgh;
++    *val = extract64(env->minstretcfg, 32, 32);
      return RISCV_EXCP_NONE;
  }
  
-@@ -1107,7 +1108,7 @@ static RISCVException write_mcyclecfgh(CPURISCVState *env, int csrno,
+@@ -1159,7 +1160,8 @@ static RISCVException write_minstretcfgh(CPURISCVState *env, int csrno,
      inh_avail_mask |= (riscv_has_ext(env, RVH) &&
-                        riscv_has_ext(env, RVS)) ? MCYCLECFGH_BIT_VSINH : 0;
+                        riscv_has_ext(env, RVS)) ? MINSTRETCFGH_BIT_VSINH : 0;
  
--    env->mcyclecfgh = val & inh_avail_mask;
-+    env->mcyclecfg = deposit64(env->mcyclecfg, 32, 32, val & inh_avail_mask);
+-    env->minstretcfgh = val & inh_avail_mask;
++    env->minstretcfg = deposit64(env->minstretcfg, 32, 32,
++                                 val & inh_avail_mask);
      return RISCV_EXCP_NONE;
  }
  
-@@ -1246,8 +1247,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
-     g_assert(rv32 || !upper_half);
- 
+@@ -1249,8 +1251,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
      if (counter_idx == 0) {
--        cfg_val = rv32 ? ((uint64_t)env->mcyclecfgh << 32) :
--                  env->mcyclecfg;
-+        cfg_val = env->mcyclecfg;
+         cfg_val = env->mcyclecfg;
      } else if (counter_idx == 2) {
-         cfg_val = rv32 ? ((uint64_t)env->minstretcfgh << 32) :
-                   env->minstretcfg;
-@@ -1521,8 +1521,12 @@ static int rmw_cd_mhpmeventh(CPURISCVState *env, int evt_index,
- }
- 
- static int rmw_cd_ctr_cfg(CPURISCVState *env, int cfg_index, target_ulong *val,
--                            target_ulong new_val, target_ulong wr_mask)
-+                          target_ulong new_val, uint64_t wr_mask)
- {
-+    /*
-+     * wr_mask is 64-bit so upper 32 bits of mcyclecfg and minstretcfg
-+     * are retained.
-+     */
-     switch (cfg_index) {
-     case 0:             /* CYCLECFG */
-         if (wr_mask) {
-@@ -1548,8 +1552,9 @@ static int rmw_cd_ctr_cfg(CPURISCVState *env, int cfg_index, target_ulong *val,
- }
- 
- static int rmw_cd_ctr_cfgh(CPURISCVState *env, int cfg_index, target_ulong *val,
--                            target_ulong new_val, target_ulong wr_mask)
-+                           target_ulong new_val, target_ulong wr_mask)
- {
-+    uint64_t cfgh;
- 
-     if (riscv_cpu_mxl(env) != MXL_RV32) {
-         return RISCV_EXCP_ILLEGAL_INST;
-@@ -1557,12 +1562,13 @@ static int rmw_cd_ctr_cfgh(CPURISCVState *env, int cfg_index, target_ulong *val,
- 
-     switch (cfg_index) {
-     case 0:         /* CYCLECFGH */
-+        cfgh = extract64(env->mcyclecfg, 32, 32);
-         if (wr_mask) {
-             wr_mask &= ~MCYCLECFGH_BIT_MINH;
--            env->mcyclecfgh = (new_val & wr_mask) |
--                              (env->mcyclecfgh & ~wr_mask);
-+            cfgh = (new_val & wr_mask) | (cfgh & ~wr_mask);
-+            env->mcyclecfg = deposit64(env->mcyclecfg, 32, 32, cfgh);
-         } else {
--            *val = env->mcyclecfgh;
-+            *val = cfgh;
+-        cfg_val = rv32 ? ((uint64_t)env->minstretcfgh << 32) :
+-                  env->minstretcfg;
++        cfg_val = env->minstretcfg;
+     } else {
+         cfg_val = env->mhpmevent_val[counter_idx];
+         cfg_val &= MHPMEVENT_FILTER_MASK;
+@@ -1572,12 +1573,13 @@ static int rmw_cd_ctr_cfgh(CPURISCVState *env, int cfg_index, target_ulong *val,
          }
          break;
      case 2:          /* INSTRETCFGH */
++        cfgh = extract64(env->minstretcfg, 32, 32);
+         if (wr_mask) {
+             wr_mask &= ~MINSTRETCFGH_BIT_MINH;
+-            env->minstretcfgh = (new_val & wr_mask) |
+-                                (env->minstretcfgh & ~wr_mask);
++            cfgh = (new_val & wr_mask) | (cfgh & ~wr_mask);
++            env->minstretcfg = deposit64(env->minstretcfg, 32, 32, cfgh);
+         } else {
+-            *val = env->minstretcfgh;
++            *val = cfgh;
+         }
+         break;
+     default:
 -- 
 2.51.0
 
