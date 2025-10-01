@@ -2,55 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9E9BB126B
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B41BB1262
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yvr-0002UO-5p; Wed, 01 Oct 2025 11:39:56 -0400
+	id 1v3ywi-0003QV-KD; Wed, 01 Oct 2025 11:40:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1v3yvp-0002T0-2A; Wed, 01 Oct 2025 11:39:53 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
+ id 1v3ywV-0003NK-NQ; Wed, 01 Oct 2025 11:40:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1v3yva-0007Ck-IJ; Wed, 01 Oct 2025 11:39:49 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4009F56F320;
- Wed, 01 Oct 2025 17:39:07 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id 9ZthWBj0VZB0; Wed,  1 Oct 2025 17:39:05 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2D7FD56F30C; Wed, 01 Oct 2025 17:39:05 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2810256F298;
- Wed, 01 Oct 2025 17:39:05 +0200 (CEST)
-Date: Wed, 1 Oct 2025 17:39:05 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 00/22] hw/core/cpu: Remove @CPUState::as field
-In-Reply-To: <20251001150529.14122-1-philmd@linaro.org>
-Message-ID: <be95d6c7-2d1e-98cb-8235-9a1aac05fb50@eik.bme.hu>
-References: <20251001150529.14122-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
+ id 1v3ywI-0007Zt-US; Wed, 01 Oct 2025 11:40:34 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591F7MYW020525;
+ Wed, 1 Oct 2025 15:40:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=z9Un1s6m4Mvu0bPYYaSfMhmYHBTg9RLCwlTgHDwgU
+ Ko=; b=Vppt2qwBAKg1ZUvsaCdFOeUmJn5sOfWg8STIJrkxuGHj2y/U5tBUtGsTY
+ bE9HAb1THLEYH2RBNwJ8nOf/2ioFrYMucAAbnVFyEGvCOoX2WCL04ZwvNW6yu9NI
+ 8LEKp18B+GfZ41DZowN1WhUe9F8UzUIefgL21qnIj5EiM1iCe6SQ3nP45XSVtzBt
+ pyQWR4Imj5wuAidYHI4tI8vw7JYkIVRju1njDwVRPVkYBKHgS1fTpEzH65chzM97
+ vh53E9bt6EIuJLRjctEOP3JmLwb/K2Hsr0A4GKFN1yLBpsJEGttdK6VP9bTEL9th
+ mx1uEQEwP8g2MKdEs3mnUdPPPk4Iw==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7jwqebs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Oct 2025 15:40:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 591D74Cl026752;
+ Wed, 1 Oct 2025 15:40:07 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49eu8n1hk6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Oct 2025 15:40:07 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 591Fe6DX51183978
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 Oct 2025 15:40:06 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F2C6458052;
+ Wed,  1 Oct 2025 15:40:05 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4E6058069;
+ Wed,  1 Oct 2025 15:40:05 +0000 (GMT)
+Received: from IBM-GLTZVH3.austin.ibm.com (unknown [9.24.20.98])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  1 Oct 2025 15:40:05 +0000 (GMT)
+From: Jaehoon Kim <jhkim@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: mjrosato@linux.ibm.com, farman@linux.ibm.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, thuth@redhat.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ Jaehoon Kim <jhkim@linux.ibm.com>
+Subject: [PATCH v1] s390x/pci: fix interrupt blocking by returning only the
+ device's summary bit
+Date: Wed,  1 Oct 2025 10:39:38 -0500
+Message-ID: <20251001154004.71917-1-jhkim@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1200896199-1759333145=:37311"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfXwpzYyoRWk1OE
+ PVXi5SiZ0/SbLfIXPeoxbk0EMVQT0oRGogpSIVRnQdBdo+E4lXmXXiNaIMSvdXePQ2/dkFafLNo
+ wbRN3/tl9HrwRThFm+m3xj7yhOBf/KseF72bhyk5n5U6rILGRFdMCJORpecO9KDxG2MN3+vczKB
+ Ec6Bs4B/v7mSGiaKK2qzdKIYgOzQThE8jL4ERLT7VoY5S+nL+EsjHC2BeqC1qlBzMT0BRlQHxXI
+ 4KTF6g/+U2iN63M2oP2GHLTSreu08uJiux0qUNzA4TCdHR8dOzua3Y9vaKXzxEeMO6sHe5xDZsL
+ ik6f2zlj2f3N/xm8LC7mvXpYSKos0BH/c8PHgssYYrPBCLwhDNl22hTVFDdvjMA+93T95sAnSm9
+ N8jNIi6QhS5DkU6mRdDIfTqT222VBA==
+X-Proofpoint-ORIG-GUID: Ou7hkLN23_xcYud0A5Y8xcv7HSE-M5uP
+X-Proofpoint-GUID: Ou7hkLN23_xcYud0A5Y8xcv7HSE-M5uP
+X-Authority-Analysis: v=2.4 cv=GdUaXAXL c=1 sm=1 tr=0 ts=68dd4b57 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=eREyYmBtXGGudL_Iqe0A:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-01_04,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1011 phishscore=0 adultscore=0 priorityscore=1501
+ malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jhkim@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,112 +115,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Previously, set_ind_atomic() returned the entire byte containing
+multiple summary bits. This meant that if any other summary bit in the
+byte was set, interrupt injection could be incorrectly blocked, even
+when the current device's summary bit was not set. As a result, the
+guest could remain blocked after I/O completion during FIO tests.
 
---3866299591-1200896199-1759333145=:37311
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+This patch replaces set_ind_atomic() with set_ind_bit_atomic(), which
+returns true if the bit was set by this function, and false if it was
+already set or mapping failed. Interrupts are now blocked only when
+the device's own summary bit was not previously set, avoiding
+unintended blocking when multiple PCI summary bits exist within the
+same byte.
 
-On Wed, 1 Oct 2025, Philippe Mathieu-Daudé wrote:
-> Instead of using the convenient @CPUState::as shortcut, use
+Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
+---
+ hw/s390x/s390-pci-bus.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-I'm not sure convenient in English means what you meant here at least it's 
-not clear to me what you mean. Does this make it more inconvenient? Maybe 
-you need a different word here.
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index f87d2748b6..e8e41c8a9a 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -652,7 +652,16 @@ static const PCIIOMMUOps s390_iommu_ops = {
+     .get_address_space = s390_pci_dma_iommu,
+ };
+ 
+-static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
++/**
++ * set_ind_bit_atomic - Atomically set a bit in an indicator
++ *
++ * @ind_loc:   Address of the indicator
++ * @to_be_set: Bit to set
++ *
++ * Returns true if the bit was set by this function, false if it was
++ * already set or mapping failed.
++ */
++static bool set_ind_bit_atomic(uint64_t ind_loc, uint8_t to_be_set)
+ {
+     uint8_t expected, actual;
+     hwaddr len = 1;
+@@ -662,7 +671,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
+     ind_addr = cpu_physical_memory_map(ind_loc, &len, true);
+     if (!ind_addr) {
+         s390_pci_generate_error_event(ERR_EVENT_AIRERR, 0, 0, 0, 0);
+-        return -1;
++        return false;
+     }
+     actual = *ind_addr;
+     do {
+@@ -671,7 +680,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
+     } while (actual != expected);
+     cpu_physical_memory_unmap((void *)ind_addr, len, 1, len);
+ 
+-    return actual;
++    return (actual & to_be_set) ? false : true;
+ }
+ 
+ static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
+@@ -693,10 +702,10 @@ static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
+     ind_bit = pbdev->routes.adapter.ind_offset;
+     sum_bit = pbdev->routes.adapter.summary_offset;
+ 
+-    set_ind_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
++    set_ind_bit_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
+                    0x80 >> ((ind_bit + vec) % 8));
+-    if (!set_ind_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
+-                                       0x80 >> (sum_bit % 8))) {
++    if (set_ind_bit_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
++                   0x80 >> (sum_bit % 8))) {
+         css_adapter_interrupt(CSS_IO_ADAPTER_PCI, pbdev->isc);
+     }
+ }
+-- 
+2.43.0
 
-> cpu_get_address_space(asidx=0) to get the vCPU first address
-
-Could you move cpu_get_address_space() to the header and make it inline? I 
-know you had another series to reduce inline functions but this is just 
-one line and won't be inlined by the compiler unless it's defined in the 
-header. I don't know if this is relevant but it keeps closer to the 
-current behaviour.
-
-Regards,
-BALATON Zoltan
-
-> space.
->
-> The goal is to reduce the risk of AS mis-use for targets
-> that uses multiple ASes per vCPU.
->
-> Based-on: <20251001082127.65741-1-philmd@linaro.org>
->
-> Philippe Mathieu-Daudé (22):
->  system/qtest: Use &address_space_memory for first vCPU address space
->  disas/disas-mon: Get cpu first addr space with cpu_get_address_space()
->  monitor/hmp-cmds: Get cpu first addr space with
->    cpu_get_address_space()
->  hw/core/loader: Get cpu first addr space with cpu_get_address_space()
->  hw/ppc: Get cpu first addr space with cpu_get_address_space()
->  hw/m86k: Get cpu first addr space with cpu_get_address_space()
->  target/xtensa: Get cpu first addr space with cpu_get_address_space()
->  target/riscv: Get cpu first addr space with cpu_get_address_space()
->  semihosting: Get cpu first addr space with cpu_get_address_space()
->  target/alpha: Get cpu first addr space with cpu_get_address_space()
->  target/arm: Get cpu first addr space with cpu_get_address_space()
->  target/hppa: Get cpu first addr space with cpu_get_address_space()
->  target/i386: Get cpu first addr space with cpu_get_address_space()
->  target/loongarch: Get cpu first addr space with
->    cpu_get_address_space()
->  target/m68k: Get cpu first addr space with cpu_get_address_space()
->  target/microblaze: Get cpu first addr space with
->    cpu_get_address_space()
->  target/ppc: Get cpu first addr space with cpu_get_address_space()
->  target/s390x: Get cpu first addr space with cpu_get_address_space()
->  target/sparc: Get cpu first addr space with cpu_get_address_space()
->  hw/core/cpu: Remove @CPUState::as field
->  exec/cpu: Declare cpu_memory_rw_debug() in 'hw/core/cpu.h' and
->    document
->  target/sparc: Reduce inclusions of 'exec/cpu-common.h'
->
-> include/exec/cpu-common.h         |  4 ---
-> include/hw/core/cpu.h             | 23 +++++++++++--
-> target/ppc/mmu-hash32.h           | 12 ++++---
-> target/sparc/cpu.h                |  1 -
-> disas/disas-mon.c                 |  3 +-
-> hw/core/cpu-common.c              |  1 -
-> hw/core/generic-loader.c          |  5 +--
-> hw/intc/spapr_xive.c              |  5 +--
-> hw/m68k/mcf5208.c                 |  6 ++--
-> hw/m68k/q800.c                    | 17 ++++++----
-> hw/m68k/virt.c                    |  5 +--
-> hw/ppc/pegasos2.c                 |  2 +-
-> hw/ppc/spapr.c                    | 12 +++----
-> hw/ppc/spapr_hcall.c              | 55 ++++++++++++++++---------------
-> hw/ppc/spapr_iommu.c              |  4 +--
-> hw/ppc/spapr_nested.c             | 43 +++++++++++++-----------
-> monitor/hmp-cmds-target.c         |  3 +-
-> semihosting/arm-compat-semi.c     |  4 ++-
-> system/cpus.c                     |  2 +-
-> system/physmem.c                  | 10 ------
-> system/qtest.c                    | 27 +++++++--------
-> target/alpha/helper.c             |  8 +++--
-> target/arm/cpu.c                  |  7 ++--
-> target/hppa/int_helper.c          |  3 +-
-> target/i386/arch_memory_mapping.c | 10 +++---
-> target/loongarch/cpu_helper.c     |  5 +--
-> target/loongarch/tcg/tlb_helper.c |  7 ++--
-> target/m68k/helper.c              | 28 ++++++++--------
-> target/microblaze/op_helper.c     |  6 ++--
-> target/ppc/excp_helper.c          |  4 +--
-> target/ppc/mmu-book3s-v3.c        |  5 +--
-> target/ppc/mmu-hash32.c           |  6 ++--
-> target/ppc/mmu-hash64.c           | 12 ++++---
-> target/ppc/mmu-radix64.c          | 13 ++++----
-> target/riscv/cpu_helper.c         |  7 ++--
-> target/s390x/cpu-system.c         |  4 ++-
-> target/s390x/mmu_helper.c         |  9 ++---
-> target/s390x/tcg/excp_helper.c    | 10 +++---
-> target/s390x/tcg/mem_helper.c     |  6 ++--
-> target/sparc/helper.c             |  1 +
-> target/sparc/int64_helper.c       |  1 +
-> target/sparc/ldst_helper.c        | 22 +++++++------
-> target/sparc/mmu_helper.c         | 21 +++++++-----
-> target/xtensa/mmu_helper.c        |  3 +-
-> 44 files changed, 253 insertions(+), 189 deletions(-)
->
->
---3866299591-1200896199-1759333145=:37311--
 
