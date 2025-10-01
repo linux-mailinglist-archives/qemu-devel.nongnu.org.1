@@ -2,98 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E8BBAF889
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C61BBAF899
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:04:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rmU-0005jG-4q; Wed, 01 Oct 2025 04:01:47 -0400
+	id 1v3rmV-0005kC-1c; Wed, 01 Oct 2025 04:01:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rmH-0005hA-6m
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:01:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v3rmK-0005iH-LY
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:01:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rlw-00061I-Rg
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:01:31 -0400
+ id 1v3rlw-00061r-T3
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:01:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759305665;
+ s=mimecast20190719; t=1759305666;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=siQmyM+WRkJFh0csNHWp9mRD1uFWOtvlTB1cv598DCM=;
- b=WOUcBJDA4HM8SRvjIcs4jtW7PNGgomot8KnroSbbleiBiKuyZAh9lsDc9uxVkzxoAKTRx0
- c61p4zMOxdSJ+GWamNcYwbaE51DqJD6KI+y/tp1GF7IoMPAXzbu8Q8UQ7nkKNuj9fWNfVi
- 12F9pKfoVCxVlfmAHT1Dh2/i/+A2RGs=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=A9PF9wocpKr4tHKqTOJUmRJZPPDhEGhAo4xKIzRERVo=;
+ b=OQituGhqwIQVoupjPY+v1mM9UkyPn44vxH1VFe/Ox48PmfhGVgOltW2dPeZ7aW5jbleAAu
+ 8vf4IQfRIhP8zM7Vg1+nGXfFOxv4rVIkhvxeBdKDx9g6xdZbHOaA6Mol0OIZL3LeOOWA8e
+ aOUCcBDDVUXuTSE/sVc6+6wufcRkbSM=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-TlJACe5nNwmc-qysxFHOKA-1; Wed, 01 Oct 2025 04:01:02 -0400
-X-MC-Unique: TlJACe5nNwmc-qysxFHOKA-1
-X-Mimecast-MFC-AGG-ID: TlJACe5nNwmc-qysxFHOKA_1759305661
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-63049fca047so9047348a12.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:01:01 -0700 (PDT)
+ us-mta-599-CBQX29wjPEeA6JQ2blxyUw-1; Wed, 01 Oct 2025 04:01:05 -0400
+X-MC-Unique: CBQX29wjPEeA6JQ2blxyUw-1
+X-Mimecast-MFC-AGG-ID: CBQX29wjPEeA6JQ2blxyUw_1759305664
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-afcb7338319so567320766b.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:01:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759305660; x=1759910460;
+ d=1e100.net; s=20230601; t=1759305663; x=1759910463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=siQmyM+WRkJFh0csNHWp9mRD1uFWOtvlTB1cv598DCM=;
- b=DDC1g/Wxjk5t1xWS6qQaK8FeDH2yuwJmuEP8pmdQRZiWCYCJR/TTb2Js1QHg4ZfKG6
- PNA2Dq9pxtqCPRgYt0j6Bor9YKaHcFBGfiEAspEXRV8vC2KGaV5xLZGYZ2R2ZOfQggUT
- e0nXfKssJ7o4Ha4PBgNy2zltfI3vElZLQzdHkyZ34h8PzXNrpJIXyOLOkYeVDTLE3ajl
- mAhfuVknTc6noK6dyRbRD6L7lZMtBTb0+qMN1652jx2V9anflusRdpfhpsnaNILN+s/Z
- jdQyC0QAGfr7siWHjlJhmEcyRZER6+0pqmgHMS2IHOE+Doezena6TpyRAtmRm+m861xv
- SVYg==
-X-Gm-Message-State: AOJu0YzHxT+YS33TNMi4OqvQa8L8CYQdbDs+S+NYu+vxLrd+dYq6MZtu
- CmwtBsqOzZ+OkyYmZfcfSI89+GtClHV+6BujgqEF3xveYrSBIkLWbRoc/owwSXg2H55m9N27wK6
- 8NeK7PMCHyxPPVbgoo17akRLkT2Q7MCfm8XBdloQFKZXux8LGgnpnmQwzKStXq7C3CZ8qD2iy8r
- RLVa9/lxeB8CbolJRGcWhJavNQsbzMFpwGJvyXHg7A
-X-Gm-Gg: ASbGncsSVVypurIj+G2oR/TX+qPMrxJ7AIuqrdTZGfV0DA7vXl+Onfx5c01wsQlYVwo
- BvzW61esPUpnc+zxrm9YLQW9By+SEBTJ5ZfkHubl19kWO+dw/daVM9px/g2iKUr9+HYWDaaotZg
- cnu+UPb4kqIo3/MxgaaQBH6eiDg21sRw5WT/gnyWkK/FwSyT285MIbpsaY41ixC/+HcfHlYLdOt
- rY7BBmr0M4/7nXBHQUTnYbsDn3/mJV2QI6elYg/NRZ0C0t5eXIxqYyotpA3q7Jlog12T4x8ZXc0
- wGgt/Nsc7JGH2gv/FQspHxt9N732LDWO4eHz2ejQVT+dLNqNiA+azgaqXQW6m2hr5H8ttWwWdaK
- xVLVAL5OGzrC9sBMAMNtzggLaYOf+YwAodmT/FTI93U0yCRzsXAU=
-X-Received: by 2002:a05:6402:2812:b0:634:a8fb:b91d with SMTP id
- 4fb4d7f45d1cf-63678a9a5damr3089593a12.0.1759305659376; 
- Wed, 01 Oct 2025 01:00:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEUAp3qPfbIVXRNP2hxJ9E9d1om2PBgiK/gUZP5wZU8/9Z5Cm4rx5hEEi+UhStgzIDdBxWPQ==
-X-Received: by 2002:a05:6402:2812:b0:634:a8fb:b91d with SMTP id
- 4fb4d7f45d1cf-63678a9a5damr3089545a12.0.1759305658737; 
- Wed, 01 Oct 2025 01:00:58 -0700 (PDT)
+ bh=A9PF9wocpKr4tHKqTOJUmRJZPPDhEGhAo4xKIzRERVo=;
+ b=YQT4RV+ompjVRQFS5Vj+yuuNCbPEaIT0ThPlsMvtojvST5I1PGZb/twdprrJuwZ4bt
+ 6bTFN5njNI8pWjfPUVuTX8441nHdWAFDJ4xApr2PHn4lIdqi6zPbk0TF0RqTC+ZHvgsN
+ 8BpKRSStUQw2DGXWz1UBMxDcc5Fape6bwtnWtGC9y4ctd9HE3tX3rwu43fNHE6zohERP
+ nPy8E+7IPe5nkx5Ytuic0kWJmBZ5Oqv1jYFlMO98Kph5q6N5mIRAkTK1IJWb+aysDQUI
+ N9MOeBOS1uw3TJzkagSzU/eZZk+NAf+yOgk2lZZX4ca+4mhvFcnycmOp+UJmQ0vtuv4x
+ M/iA==
+X-Gm-Message-State: AOJu0Yx9nEJrK28+Ed8N/OsfuhhL3GesTVzrkjpqDBkHt3nUqyipGofT
+ bfdxMU1f6c20pbJNorKiz2UfYdoBFqJ8z4cdh8H1QlRpS7I5Jb8OctGNswl3tIacXNsVrmNZzIY
+ 6Aa3dFfOFWcH3hqMPbgJbkoxGjpLci89QXKwx0M4LJfIIcLYSxBse6FZgFozx/6PcETzzUI+j6p
+ u2BIS9tQ0Co49FdHu0DmR2pR6b+Ib9XiJ9CulVJOKh
+X-Gm-Gg: ASbGncsp+YF4BCfRCF1O30GVjeXEI1VCAUHL4fPd0IVk6O5HVaWrVkWCkA+L8OqJEPT
+ U4C29XN7jK7wb1Wr6u/FWKrPVfCpT9VqBkZwmvoAGZWMLIQhuZepDtTGTnn9jbihsCyBiUA3QMo
+ Mn1XMjLZvo7AhcpZhtu688GTcev58VqI0I/2JGk1bjC1x06wyyvSrKE71l6Aj/shlSsa124BtMX
+ 1D7dTASi8iVmeeVmvW4M6eXSc+jsX7uiwPpH77vcAv12ERzNiA73mr3iPpOxcaSyo3GPcXO7imi
+ LuGs1bPM2CGCgnOKkjLN8PmXXPBmaun2V00Pw/zzW5VC2Uuo/P2hWVjoTLaOyIiU0RBSiu2W0Pc
+ 4hSSKpxu7FamVDXWMxhHanMsPjD9a1Qi822DJoD+MXZetW19AylQ=
+X-Received: by 2002:a17:907:3f8c:b0:b3d:7e5c:8578 with SMTP id
+ a640c23a62f3a-b46e2436403mr365285566b.12.1759305662686; 
+ Wed, 01 Oct 2025 01:01:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQR/t5nVKKRvg8n/5/D4brEMuY3YFvkcqcZ+wqR2v0RBFywUc4mJ2X2bMo4BAfneyqVCHerw==
+X-Received: by 2002:a17:907:3f8c:b0:b3d:7e5c:8578 with SMTP id
+ a640c23a62f3a-b46e2436403mr365273566b.12.1759305661546; 
+ Wed, 01 Oct 2025 01:01:01 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634a3339b63sm11082944a12.0.2025.10.01.01.00.57
+ a640c23a62f3a-b3ed414ec70sm575065266b.42.2025.10.01.01.00.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 01:00:58 -0700 (PDT)
+ Wed, 01 Oct 2025 01:00:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
 	armbru@redhat.com,
 	marcandre.lureau@redhat.com
-Subject: [PATCH 03/14] subprojects: add serde
-Date: Wed,  1 Oct 2025 10:00:40 +0200
-Message-ID: <20251001080051.1043944-4-pbonzini@redhat.com>
+Subject: [PATCH 04/14] rust: add Serialize implementation for QObject
+Date: Wed,  1 Oct 2025 10:00:41 +0200
+Message-ID: <20251001080051.1043944-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001075005.1041833-1-pbonzini@redhat.com>
 References: <20251001075005.1041833-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,332 +109,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This allows QObject to be converted to other formats, for example
+JSON via serde_json.
+
+This is not too useful, since QObjects are consumed by
+C code or deserialized into structs, but it can be used for testing
+and it is part of the full implementation of a serde format.
+
+Co-authored-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/Cargo.toml                               |  2 ++
- rust/meson.build                              |  2 ++
- scripts/archive-source.sh                     |  3 ++
- scripts/make-release                          |  2 +-
- subprojects/.gitignore                        |  3 ++
- .../packagefiles/serde-1-rs/meson.build       | 36 +++++++++++++++++++
- .../packagefiles/serde-1.0.226-include.patch  | 16 +++++++++
- .../packagefiles/serde_core-1-rs/meson.build  | 25 +++++++++++++
- .../serde_core-1.0.226-include.patch          | 15 ++++++++
- .../serde_derive-1-rs/meson.build             | 35 ++++++++++++++++++
- .../serde_derive-1.0.226-include.patch        | 11 ++++++
- subprojects/serde-1-rs.wrap                   | 11 ++++++
- subprojects/serde_core-1-rs.wrap              | 11 ++++++
- subprojects/serde_derive-1-rs.wrap            | 11 ++++++
- 14 files changed, 182 insertions(+), 1 deletion(-)
- create mode 100644 subprojects/packagefiles/serde-1-rs/meson.build
- create mode 100644 subprojects/packagefiles/serde-1.0.226-include.patch
- create mode 100644 subprojects/packagefiles/serde_core-1-rs/meson.build
- create mode 100644 subprojects/packagefiles/serde_core-1.0.226-include.patch
- create mode 100644 subprojects/packagefiles/serde_derive-1-rs/meson.build
- create mode 100644 subprojects/packagefiles/serde_derive-1.0.226-include.patch
- create mode 100644 subprojects/serde-1-rs.wrap
- create mode 100644 subprojects/serde_core-1-rs.wrap
- create mode 100644 subprojects/serde_derive-1-rs.wrap
+ rust/Cargo.lock                    |  1 +
+ rust/util/Cargo.toml               |  1 +
+ rust/util/meson.build              |  3 +-
+ rust/util/src/qobject/mod.rs       |  4 +-
+ rust/util/src/qobject/serialize.rs | 59 ++++++++++++++++++++++++++++++
+ 5 files changed, 65 insertions(+), 3 deletions(-)
+ create mode 100644 rust/util/src/qobject/serialize.rs
 
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index 783e626802c..a512fb142e2 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -30,6 +30,8 @@ anyhow = "~1.0"
- foreign = "~0.3.1"
- libc = "0.2.162"
- glib-sys = { version = "0.21.2", features = ["v2_66"] }
-+serde = "1.0.226"
-+serde_derive = "1.0.226"
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index 0c1df625df1..c1075e11d6c 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -446,6 +446,7 @@ dependencies = [
+  "foreign",
+  "glib-sys",
+  "libc",
++ "serde",
+ ]
  
- [workspace.lints.rust]
- unexpected_cfgs = { level = "deny", check-cfg = ['cfg(MESON)'] }
-diff --git a/rust/meson.build b/rust/meson.build
-index 76e10699b37..fd2ca40ef90 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -4,6 +4,7 @@ subproject('bilge-impl-0.2-rs', required: true)
- subproject('foreign-0.3-rs', required: true)
- subproject('glib-sys-0.21-rs', required: true)
- subproject('libc-0.2-rs', required: true)
-+subproject('serde-1-rs', required: true)
+ [[package]]
+diff --git a/rust/util/Cargo.toml b/rust/util/Cargo.toml
+index 85f91436545..554004816eb 100644
+--- a/rust/util/Cargo.toml
++++ b/rust/util/Cargo.toml
+@@ -17,6 +17,7 @@ anyhow = { workspace = true }
+ foreign = { workspace = true }
+ glib-sys = { workspace = true }
+ libc = { workspace = true }
++serde = { workspace = true }
+ common = { path = "../common" }
  
- anyhow_rs = dependency('anyhow-1-rs')
- bilge_rs = dependency('bilge-0.2-rs')
-@@ -11,6 +12,7 @@ bilge_impl_rs = dependency('bilge-impl-0.2-rs')
- foreign_rs = dependency('foreign-0.3-rs')
- glib_sys_rs = dependency('glib-sys-0.21-rs')
- libc_rs = dependency('libc-0.2-rs')
-+serde_rs = dependency('serde-1-rs')
- 
- subproject('proc-macro2-1-rs', required: true)
- subproject('quote-1-rs', required: true)
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index 8f97b19a088..3ed0429d806 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -45,6 +45,9 @@ subprojects=(
-   proc-macro-error-attr-1-rs
-   proc-macro2-1-rs
-   quote-1-rs
-+  serde-1-rs
-+  serde_core-1-rs
-+  serde_derive-1-rs
-   syn-2-rs
-   unicode-ident-1-rs
+ [lints]
+diff --git a/rust/util/meson.build b/rust/util/meson.build
+index 38da1ba8cd1..5b99d38c903 100644
+--- a/rust/util/meson.build
++++ b/rust/util/meson.build
+@@ -39,10 +39,11 @@ _util_rs = static_library(
+     {'.': _util_bindings_inc_rs,
+     'qobject': [
+       'src/qobject/mod.rs',
++      'src/qobject/serialize.rs',
+     ]}),
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+-  dependencies: [anyhow_rs, libc_rs, foreign_rs, glib_sys_rs, common_rs, qom, qemuutil],
++  dependencies: [anyhow_rs, libc_rs, foreign_rs, glib_sys_rs, common_rs, serde_rs, qom, qemuutil],
  )
-diff --git a/scripts/make-release b/scripts/make-release
-index bc1b43caa25..eb5808b83ec 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -44,7 +44,7 @@ SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
-   bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-   libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
--  syn-2-rs unicode-ident-1-rs"
-+  serde-1-rs serde_core-1-rs serde_derive-1-rs syn-2-rs unicode-ident-1-rs"
  
- src="$1"
- version="$2"
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index c00c8478372..697d1ef3bdb 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -20,6 +20,9 @@
- /proc-macro-error-attr-*
- /proc-macro*
- /quote-*
-+/serde-*
-+/serde_core-*
-+/serde_derive-*
- /syn-*
- /unicode-ident-*
+ util_rs = declare_dependency(link_with: [_util_rs], dependencies: [qemuutil, qom])
+diff --git a/rust/util/src/qobject/mod.rs b/rust/util/src/qobject/mod.rs
+index f43d87a3b66..2e3cb247b27 100644
+--- a/rust/util/src/qobject/mod.rs
++++ b/rust/util/src/qobject/mod.rs
+@@ -6,6 +6,8 @@
  
-diff --git a/subprojects/packagefiles/serde-1-rs/meson.build b/subprojects/packagefiles/serde-1-rs/meson.build
+ #![deny(clippy::unwrap_used)]
+ 
++mod serialize;
++
+ use std::{
+     cell::UnsafeCell,
+     ffi::{c_char, CString},
+@@ -222,7 +224,6 @@ fn drop(&mut self) {
+     }
+ }
+ 
+-#[allow(unused)]
+ macro_rules! match_qobject {
+     (@internal ($qobj:expr) =>
+         $(() => $unit:expr,)?
+@@ -305,5 +306,4 @@ macro_rules! match_qobject {
+                 $($type $(($val))? => $code,)+)
+     };
+ }
+-#[allow(unused_imports)]
+ use match_qobject;
+diff --git a/rust/util/src/qobject/serialize.rs b/rust/util/src/qobject/serialize.rs
 new file mode 100644
-index 00000000000..6cb2b59a147
+index 00000000000..34ec3847c1d
 --- /dev/null
-+++ b/subprojects/packagefiles/serde-1-rs/meson.build
-@@ -0,0 +1,36 @@
-+project('serde-1-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '1.0.226',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
++++ b/rust/util/src/qobject/serialize.rs
+@@ -0,0 +1,59 @@
++//! `QObject` serialization
++//!
++//! This module implements the [`Serialize`] trait for `QObject`,
++//! allowing it to be converted to other formats, for example
++//! JSON.
 +
-+subproject('serde_core-1-rs', required: true)
-+subproject('serde_derive-1-rs', required: true)
++use std::{ffi::CStr, mem::ManuallyDrop, ptr::addr_of};
 +
-+serde_core_dep = dependency('serde_core-1-rs')
-+serde_derive_dep = dependency('serde_derive-1-rs')
++use serde::ser::{self, Serialize, SerializeMap, SerializeSeq};
 +
-+_serde_rs = static_library(
-+  'serde',
-+  files('src/lib.rs'),
-+  gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  rust_args: [
-+    '--cap-lints', 'allow',
-+    '--cfg', 'feature="alloc"',
-+    '--cfg', 'feature="std"',
-+    '--cfg', 'feature="derive"',
-+  ],
-+  dependencies: [
-+    serde_core_dep,
-+    serde_derive_dep,
-+  ]
-+)
++use super::{match_qobject, QObject};
++use crate::bindings;
 +
-+serde_dep = declare_dependency(
-+  link_with: _serde_rs,
-+  dependencies: serde_derive_dep,
-+)
-+
-+meson.override_dependency('serde-1-rs', serde_dep, native: true)
-diff --git a/subprojects/packagefiles/serde-1.0.226-include.patch b/subprojects/packagefiles/serde-1.0.226-include.patch
-new file mode 100644
-index 00000000000..92878136878
---- /dev/null
-+++ b/subprojects/packagefiles/serde-1.0.226-include.patch
-@@ -0,0 +1,16 @@
-+--- a/src/lib.rs	2025-09-23 13:41:09.327582205 +0200
-++++ b/src/lib.rs	2025-09-23 13:41:23.043271856 +0200
-+@@ -241,7 +241,12 @@
-+ #[doc(hidden)]
-+ mod private;
-+ 
-+-include!(concat!(env!("OUT_DIR"), "/private.rs"));
-++#[doc(hidden)]
-++pub mod __private_MESON {
-++    #[doc(hidden)]
-++    pub use crate::private::*;
-++}
-++use serde_core::__private_MESON as serde_core_private;
-+ 
-+ // Re-export #[derive(Serialize, Deserialize)].
-+ //
-diff --git a/subprojects/packagefiles/serde_core-1-rs/meson.build b/subprojects/packagefiles/serde_core-1-rs/meson.build
-new file mode 100644
-index 00000000000..e917d9337f6
---- /dev/null
-+++ b/subprojects/packagefiles/serde_core-1-rs/meson.build
-@@ -0,0 +1,25 @@
-+project('serde_core-1-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '1.0.226',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
-+
-+_serde_core_rs = static_library(
-+  'serde_core',
-+  files('src/lib.rs'),
-+  gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  rust_args: [
-+    '--cap-lints', 'allow',
-+    '--cfg', 'feature="alloc"',
-+    '--cfg', 'feature="result"',
-+    '--cfg', 'feature="std"',
-+  ],
-+)
-+
-+serde_core_dep = declare_dependency(
-+  link_with: _serde_core_rs,
-+)
-+
-+meson.override_dependency('serde_core-1-rs', serde_core_dep, native: true)
-diff --git a/subprojects/packagefiles/serde_core-1.0.226-include.patch b/subprojects/packagefiles/serde_core-1.0.226-include.patch
-new file mode 100644
-index 00000000000..d1321dfe272
---- /dev/null
-+++ b/subprojects/packagefiles/serde_core-1.0.226-include.patch
-@@ -0,0 +1,15 @@
-+--- a/src/lib.rs	2025-09-23 13:32:40.872421170 +0200
-++++ b/src/lib.rs	2025-09-23 13:32:52.181098856 +0200
-+@@ -263,7 +263,11 @@
-+     pub use core::result::Result;
-+ }
-+ 
-+-include!(concat!(env!("OUT_DIR"), "/private.rs"));
-++#[doc(hidden)]
-++pub mod __private_MESON {
-++    #[doc(hidden)]
-++    pub use crate::private::*;
-++}
-+ 
-+ #[cfg(all(not(feature = "std"), no_core_error))]
-+ mod std_error;
-diff --git a/subprojects/packagefiles/serde_derive-1-rs/meson.build b/subprojects/packagefiles/serde_derive-1-rs/meson.build
-new file mode 100644
-index 00000000000..6c1001a844a
---- /dev/null
-+++ b/subprojects/packagefiles/serde_derive-1-rs/meson.build
-@@ -0,0 +1,35 @@
-+project('serde_derive-1-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '1.0.226',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
-+
-+subproject('quote-1-rs', required: true)
-+subproject('syn-2-rs', required: true)
-+subproject('proc-macro2-1-rs', required: true)
-+
-+quote_dep = dependency('quote-1-rs', native: true)
-+syn_dep = dependency('syn-2-rs', native: true)
-+proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
-+
-+rust = import('rust')
-+
-+_serde_derive_rs = rust.proc_macro(
-+  'serde_derive',
-+  files('src/lib.rs'),
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_args: [
-+    '--cap-lints', 'allow',
-+  ],
-+  dependencies: [
-+    quote_dep,
-+    syn_dep,
-+    proc_macro2_dep,
-+  ],
-+)
-+
-+serde_derive_dep = declare_dependency(
-+  link_with: _serde_derive_rs,
-+)
-+
-+meson.override_dependency('serde_derive-1-rs', serde_derive_dep)
-diff --git a/subprojects/packagefiles/serde_derive-1.0.226-include.patch b/subprojects/packagefiles/serde_derive-1.0.226-include.patch
-new file mode 100644
-index 00000000000..81d65564d29
---- /dev/null
-+++ b/subprojects/packagefiles/serde_derive-1.0.226-include.patch
-@@ -0,0 +1,11 @@
-+--- a/src/lib.rs	2025-09-23 13:51:51.540191923 +0200
-++++ b/src/lib.rs	2025-09-23 13:52:07.690060195 +0200
-+@@ -98,7 +98,7 @@
-+ impl private {
-+     fn ident(&self) -> Ident {
-+         Ident::new(
-+-            concat!("__private", env!("CARGO_PKG_VERSION_PATCH")),
-++            "__private_MESON",
-+             Span::call_site(),
-+         )
-+     }
-diff --git a/subprojects/serde-1-rs.wrap b/subprojects/serde-1-rs.wrap
-new file mode 100644
-index 00000000000..56746dd0f43
---- /dev/null
-+++ b/subprojects/serde-1-rs.wrap
-@@ -0,0 +1,11 @@
-+[wrap-file]
-+directory = serde-1.0.226
-+source_url = https://crates.io/api/v1/crates/serde/1.0.226/download
-+source_filename = serde-1.0.226.0.tar.gz
-+source_hash = 0dca6411025b24b60bfa7ec1fe1f8e710ac09782dca409ee8237ba74b51295fd
-+#method = cargo
-+diff_files = serde-1.0.226-include.patch
-+patch_directory = serde-1-rs
-+
-+# bump this version number on every change to meson.build or the patches:
-+# v1
-diff --git a/subprojects/serde_core-1-rs.wrap b/subprojects/serde_core-1-rs.wrap
-new file mode 100644
-index 00000000000..3692e754935
---- /dev/null
-+++ b/subprojects/serde_core-1-rs.wrap
-@@ -0,0 +1,11 @@
-+[wrap-file]
-+directory = serde_core-1.0.226
-+source_url = https://crates.io/api/v1/crates/serde_core/1.0.226/download
-+source_filename = serde_core-1.0.226.0.tar.gz
-+source_hash = ba2ba63999edb9dac981fb34b3e5c0d111a69b0924e253ed29d83f7c99e966a4
-+#method = cargo
-+diff_files = serde_core-1.0.226-include.patch
-+patch_directory = serde_core-1-rs
-+
-+# bump this version number on every change to meson.build or the patches:
-+# v1
-diff --git a/subprojects/serde_derive-1-rs.wrap b/subprojects/serde_derive-1-rs.wrap
-new file mode 100644
-index 00000000000..00c92dc79cf
---- /dev/null
-+++ b/subprojects/serde_derive-1-rs.wrap
-@@ -0,0 +1,11 @@
-+[wrap-file]
-+directory = serde_derive-1.0.226
-+source_url = https://crates.io/api/v1/crates/serde_derive/1.0.226/download
-+source_filename = serde_derive-1.0.226.0.tar.gz
-+source_hash = 8db53ae22f34573731bafa1db20f04027b2d25e02d8205921b569171699cdb33
-+#method = cargo
-+diff_files = serde_derive-1.0.226-include.patch
-+patch_directory = serde_derive-1-rs
-+
-+# bump this version number on every change to meson.build or the patches:
-+# v1
++impl Serialize for QObject {
++    #[inline]
++    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
++    where
++        S: ::serde::Serializer,
++    {
++        match_qobject! { (self) =>
++            () => serializer.serialize_unit(),
++            bool(b) => serializer.serialize_bool(b),
++            i64(i) => serializer.serialize_i64(i),
++            u64(u) => serializer.serialize_u64(u),
++            f64(f) => serializer.serialize_f64(f),
++            CStr(cstr) => cstr.to_str().map_or_else(
++                |_| Err(ser::Error::custom("invalid UTF-8 in QString")),
++                |s| serializer.serialize_str(s),
++            ),
++            QList(l) => {
++                let mut node_ptr = unsafe { l.head.tqh_first };
++                let mut state = serializer.serialize_seq(None)?;
++                while !node_ptr.is_null() {
++                    let node = unsafe { &*node_ptr };
++                    let elem = unsafe { ManuallyDrop::new(QObject::from_raw(addr_of!(*node.value))) };
++                    state.serialize_element(&*elem)?;
++                    node_ptr = unsafe { node.next.tqe_next };
++                }
++                state.end()
++            },
++            QDict(d) => {
++                let mut state = serializer.serialize_map(Some(d.size))?;
++                let mut e_ptr = unsafe { bindings::qdict_first(d) };
++                while !e_ptr.is_null() {
++                    let e = unsafe { &*e_ptr };
++                    let key = unsafe { CStr::from_ptr(e.key) };
++                    key.to_str().map_or_else(
++                        |_| Err(ser::Error::custom("invalid UTF-8 in key")),
++                        |k| state.serialize_key(k),
++                    )?;
++                    let value = unsafe { ManuallyDrop::new(QObject::from_raw(addr_of!(*e.value))) };
++                    state.serialize_value(&*value)?;
++                    e_ptr = unsafe { bindings::qdict_next(d, e) };
++                }
++                state.end()
++            }
++        }
++    }
++}
 -- 
 2.51.0
 
