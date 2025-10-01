@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CE5BAF6F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78453BAF75C
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:42:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rJg-0005sJ-QY; Wed, 01 Oct 2025 03:32:01 -0400
+	id 1v3rJm-0005vG-Tw; Wed, 01 Oct 2025 03:32:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rJc-0005q4-5M
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rJc-0005qo-Pf
  for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:31:56 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rJ7-0003Z6-9c
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:31:54 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rJ9-0003Zq-91
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:31:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=bsysCdSHnWhI7zTpfnCVRtQj83H+eWgEE059Ugnl8r4=; b=xLcAEkSh1wSVcb6
- u1K1BZrFDFRci31YTK8zcZWUs08DmW1WFx9hHAM1Ykzc1lVa2Kt4ob5gyV7R5CYZgIUO6RcByAe36
- 3a5WVE51bR//t/6qgt/NgtwClrn6WQ4HfCdm7lb7KALmx3cM04Mk6fIEXyf3dkY/YvpYS7LxSkd9z
- B8=;
+ List-Help; bh=JRkbdPiP3dpnkZ74mZxcDs2fSC6lavTjIReGJbOf02g=; b=IdHNiMVm52Z16ph
+ rv7vZB0iFLXh4vad5zRAxMK7FWSVY3MF9J3/USe3dHHLiUnyC+f+Sw9SNWr4I8KWJOt9Sld0+3a4k
+ o2Hyi+L7QpvR1MAacfNX9u9ZOgXH1/9ku+aH0IKklC6W8tNt0ONPlIP9Eh9ObqIRFT4+3Ko2NmK5X
+ SM=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org,
  richard.henderson@linaro.org, alistair.francis@wdc.com, palmer@dabbelt.com
-Subject: [PATCH v2 25/33] target/riscv: Indent PMUFixedCtrState correctly
-Date: Wed,  1 Oct 2025 09:32:58 +0200
-Message-ID: <20251001073306.28573-26-anjo@rev.ng>
+Subject: [PATCH v2 26/33] target/riscv: Replace target_ulong in
+ riscv_cpu_get_trap_name()
+Date: Wed,  1 Oct 2025 09:32:59 +0200
+Message-ID: <20251001073306.28573-27-anjo@rev.ng>
 In-Reply-To: <20251001073306.28573-1-anjo@rev.ng>
 References: <20251001073306.28573-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,34 +63,40 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fix cause argument to 64 bit to match env->mcause.
+
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/cpu.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/riscv/cpu.h | 2 +-
+ target/riscv/cpu.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index cf7710c695..d264c87e32 100644
+index d264c87e32..c1fbb67b08 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -221,12 +221,12 @@ typedef struct PMUCTRState {
- } PMUCTRState;
+@@ -593,7 +593,7 @@ extern const char * const riscv_int_regnames[];
+ extern const char * const riscv_int_regnamesh[];
+ extern const char * const riscv_fpr_regnames[];
  
- typedef struct PMUFixedCtrState {
--        /* Track cycle and icount for each privilege mode */
--        uint64_t counter[4];
--        uint64_t counter_prev[4];
--        /* Track cycle and icount for each privilege mode when V = 1*/
--        uint64_t counter_virt[2];
--        uint64_t counter_virt_prev[2];
-+    /* Track cycle and icount for each privilege mode */
-+    uint64_t counter[4];
-+    uint64_t counter_prev[4];
-+    /* Track cycle and icount for each privilege mode when V = 1*/
-+    uint64_t counter_virt[2];
-+    uint64_t counter_virt_prev[2];
- } PMUFixedCtrState;
+-const char *riscv_cpu_get_trap_name(target_ulong cause, bool async);
++const char *riscv_cpu_get_trap_name(uint64_t cause, bool async);
+ int riscv_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+                                int cpuid, DumpState *s);
+ int riscv_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 4e38487dca..5206abe640 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -348,7 +348,7 @@ static const char * const riscv_intr_names[] = {
+     "reserved"
+ };
  
- struct CPUArchState {
+-const char *riscv_cpu_get_trap_name(target_ulong cause, bool async)
++const char *riscv_cpu_get_trap_name(uint64_t cause, bool async)
+ {
+     if (async) {
+         return (cause < ARRAY_SIZE(riscv_intr_names)) ?
 -- 
 2.51.0
 
