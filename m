@@ -2,80 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD92CBB101B
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE38BB1097
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:20:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yUS-0006aX-TK; Wed, 01 Oct 2025 11:11:37 -0400
+	id 1v3yZP-0002qN-Ne; Wed, 01 Oct 2025 11:16:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v3yUN-0006U1-2T
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:11:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v3yU3-0001ee-Op
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:11:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759331455;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=63Z6b/EH/N5G+8Nwqkl2CrTapG8XTez3aMv5q68Pqus=;
- b=jAiOO4rSHAkSsavQF0lngnk9WgN4Os/it0hwsGgP6sw6uTBXOV9CQ+a0N+TAF25Etwv68F
- faiZgQSjLCtbMeXRmSiCa7p3yag6sRrGL5T14z6Hzvud4+xWCDtrWJ4ioRC0oTOwv6XYyn
- WSMw/VCy5ANY0ZefwLk0zLGKykvg7XQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-tk2OTQMdNxm-kezCAcUBVg-1; Wed,
- 01 Oct 2025 11:10:52 -0400
-X-MC-Unique: tk2OTQMdNxm-kezCAcUBVg-1
-X-Mimecast-MFC-AGG-ID: tk2OTQMdNxm-kezCAcUBVg_1759331451
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D122918002C3; Wed,  1 Oct 2025 15:10:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.187])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A4310180035E; Wed,  1 Oct 2025 15:10:48 +0000 (UTC)
-Date: Wed, 1 Oct 2025 16:10:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: =?utf-8?B?SmnFmcOt?= Denemark <jdenemar@redhat.com>,
- Peter Xu <peterx@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
- qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 4/4] migration: Introduce POSTCOPY_DEVICE state
-Message-ID: <aN1EdMGbLxE10NOp@redhat.com>
-References: <20250915115918.3520735-1-jmarcin@redhat.com>
- <20250915115918.3520735-5-jmarcin@redhat.com>
- <aNUtgHsiQwR12jPs@orkuz.int.mamuti.net> <aNWITu36f_DlhZo1@x1.local>
- <aNuMe0GD0mzFbD-K@orkuz.int.mamuti.net> <aNw35iWaNDnYXOz7@x1.local>
- <aNzpxr7N420TUIIf@orkuz.int.mamuti.net>
- <aN0LFzHSyF7dMtZ1@gallifrey>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v3yYt-0002bM-RJ
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:16:12 -0400
+Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v3yYh-0002OX-LF
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:16:11 -0400
+Received: by mail-qk1-x730.google.com with SMTP id
+ af79cd13be357-85a4ceb4c3dso786863885a.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:15:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759331750; x=1759936550; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=5X2sHTae7EzauVPR3/adAtfYAFCNdeMFKBurJR2VdlA=;
+ b=xrbQljAfJC3IL0dQOyookujx9JJWPSD8nbaTcyE42WIEJDJaIUvTs1MhcqdfKMgkXI
+ hi9SMvqR1WS8Dk4o2GrREw460GIMb56UbwLp80mBo+riEWqogkGmdeq0oXU0jdEfIdSw
+ FEUYiMb7wI+kdag5kv2A0IdND4z1XW3QH0ysZA/LWZf64+KbeXplcd4q8uC8rKoQGg37
+ 6uYjissC/4hDWQGAXTrFs82SmuHQ9eyB5ufeFbche18gijz0a61TeU+tvo/ynv1o6O6s
+ 4Y1Q248WK4n/SeHuqpiBUPryCRewv2ym+Mc60dg5Yu/q8l89oXjZ75CkJg3+1iD88CS2
+ SCLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759331750; x=1759936550;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5X2sHTae7EzauVPR3/adAtfYAFCNdeMFKBurJR2VdlA=;
+ b=RpiC+m8O7rXpA2hPsZ5908G1hRyCMUqjxnK2fKjXGnQyHTrDqC7wjH9IbZTKflZKYo
+ 8oueSx6O/wWNJc7p0+H60se2m14T6fadESzufdzH/W42/4HuhDHKUyQHop2wEVgvp9mh
+ EbWjUY7/OmKXz05xmaZRFy+A5l2VNhD+I2HplqPa36XiCsT5atcWqAK69JKe4o/+J4r4
+ fzssf3DeE2TCklZsuz3UZ5PSIJOuWnv7Iz6yhHOTgcp78xkc5UUIkOumh1Q9e2/t7Q/t
+ 5WIu040+C7idTbw0tt7pMNzIbmDAlGun4ozXQDYAGLlHukG6BNMyWL6NJjoPTcO8SdQl
+ bZPw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXvy4/Gvq2jdPrePRCIN/tFb4rzutylE2MCsVYTyuVIdMLQiIfD31ywC4vTAO54OFKWqYxqMYLqF0a+@nongnu.org
+X-Gm-Message-State: AOJu0Ywg6sI/bCKAt3eYPZBb6nhDrHMWY7P2pLewftgG2VNJj3S+i341
+ Tzj9VKzZ+ymuDtx/6nlJoq6DLRhX81bh1A3B/uZ9ZYdE709izf7ybo2s1awz9zERsLs=
+X-Gm-Gg: ASbGnctwGnrE60INdS3m4yN9d9FuZtZ4Dtuev1oozkEA4SFFKsanlsLjeHa1xM4Lic1
+ a1cmlNmnK4kqvoeCQcRgf/RGvN8gtLe/2GxEZe2Gz2chX0ZkqqqlFKJsiiFJFa3K/BadGbhyEw3
+ go9Rd8/3sk3xq8vFJlUEHVDGcpORVLXsZNCiuK4N/oa0rEq32/cYgB85Y7qHTmw4r/f1kysUCZQ
+ qh8bcIsW/ZxQl7vEBbh7zqxj5IXNkP+tH0mzJ1Vl7m9fHXdnKAj6RhHAAGDMdH8GUQt49nQEqR4
+ EPG0RM/4vdEngpku2KGBw5C1iZzlkyJWIwsTgxodq8Vp3CnLHfQ/gsAfH5OGs0a9Qejr1fZKFn8
+ s/AxSqx2oXwVNmAy+/wdgDxOveeCyRaZ6Gei+8Mwjxqp8NFvuC/dMxyMxTTZXfw80t9zwqey9/4
+ ICrm3cAwH+VZ8WhXsipC18IbPGib2J9wQ=
+X-Google-Smtp-Source: AGHT+IGUiIH+6+EHRabGOIIK0KZ/J/xKO6sad1dcN7erlsa6Hbn4/5Fs/ns7fX1xzUS0nOMzDAL1+Q==
+X-Received: by 2002:a05:620a:2681:b0:86e:ce58:1d5a with SMTP id
+ af79cd13be357-8737b489e8dmr404465285a.83.1759331749940; 
+ Wed, 01 Oct 2025 08:15:49 -0700 (PDT)
+Received: from ?IPV6:2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345?
+ ([2607:fb91:1ec5:27b9:1bec:2e21:cc45:2345])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-85c306b5f64sm1241896585a.32.2025.10.01.08.15.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Oct 2025 08:15:49 -0700 (PDT)
+Message-ID: <8279b314-cadf-420d-a5bd-b225b1bcff6b@linaro.org>
+Date: Wed, 1 Oct 2025 08:15:46 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/25] system/physmem: Un-inline
+ cpu_physical_memory_range_includes_clean()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20251001082127.65741-1-philmd@linaro.org>
+ <20251001082127.65741-15-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251001082127.65741-15-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aN0LFzHSyF7dMtZ1@gallifrey>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x730.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,87 +102,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 01, 2025 at 11:05:59AM +0000, Dr. David Alan Gilbert wrote:
-> * Jiří Denemark (jdenemar@redhat.com) wrote:
-> > On Tue, Sep 30, 2025 at 16:04:54 -0400, Peter Xu wrote:
-> > > On Tue, Sep 30, 2025 at 09:53:31AM +0200, Jiří Denemark wrote:
-> > > > On Thu, Sep 25, 2025 at 14:22:06 -0400, Peter Xu wrote:
-> > > > > On Thu, Sep 25, 2025 at 01:54:40PM +0200, Jiří Denemark wrote:
-> > > > > > On Mon, Sep 15, 2025 at 13:59:15 +0200, Juraj Marcin wrote:
-> > > > > So far, dest QEMU will try to resume the VM after getting RUN command, that
-> > > > > is what loadvm_postcopy_handle_run_bh() does, and it will (when autostart=1
-> > > > > set): (1) firstly try to activate all block devices, iff it succeeded, (2)
-> > > > > do vm_start(), at the end of which RESUME event will be generated.  So
-> > > > > RESUME currently implies both disk activation success, and vm start worked.
-> > > > > 
-> > > > > > may still fail when locking disks fails (not sure if this is the only
-> > > > > > way cont may fail). In this case we cannot cancel the migration on the
-> > > > > 
-> > > > > Is there any known issue with locking disks that dest would fail?  This
-> > > > > really sound like we should have the admin taking a look.
-> > > > 
-> > > > Oh definitely, it would be some kind of an storage access issue on the
-> > > > destination. But we'd like to give the admin an option to actually do
-> > > > anything else than just killing the VM :-) Either by automatically
-> > > > canceling the migration or allowing recovery once storage issues are
-> > > > solved.
-> > > 
-> > > The problem is, if the storage locking stopped working properly, then how
-> > > to guarantee the shared storage itself is working properly?
-> > > 
-> > > When I was replying previously, I was expecting the admin taking a look to
-> > > fix the storage, I didn't expect the VM can still be recovered anymore if
-> > > there's no confidence that the block devices will work all fine.  The
-> > > locking errors to me may imply a block corruption already, or should I not
-> > > see it like that?
-> > 
-> > If the storage itself is broken, there's clearly nothing we can do. But
-> > the thing is we're accessing it from two distinct hosts. So while it may
-> > work on the source, it can be broken on the destination. For example,
-> > connection between the destination host and the storage may be broken.
-> > Not sure how often this can happen in real life, but we have a bug
-> > report that (artificially) breaking storage access on the destination
-> > results in paused VM on the source which can only be killed.
+On 10/1/25 01:21, Philippe Mathieu-Daudé wrote:
+> Avoid maintaining large functions in header, rely on the
+> linker to optimize at linking time.
 > 
-> I've got a vague memory that a tricky case is when some of your storage
-> devices are broken on the destination, but not all.
-> So you tell the block layer you want to take them on the destination
-> some take their lock, one fails;  now what state are you in?
-> I'm not sure if the block layer had a way of telling you what state
-> you were in when I was last involved in that.
+> cpu_physical_memory_all_dirty() doesn't involve any CPU,
+> remove the 'cpu_' prefix.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   include/system/ram_addr.h | 62 ++-------------------------------------
+>   system/physmem.c          | 60 +++++++++++++++++++++++++++++++++++++
+>   2 files changed, 63 insertions(+), 59 deletions(-)
 
-As long as the target QEMU CPUs have NOT started running, then
-no I/O writes should have been sent to the storage, so the storage
-should still be in a consistent state, and thus we can still try
-to fail back to the source QEMU.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-The "fun" problem here is that just because we /try/ to fail back
-to the source QEMU, does not imply the source QEMU will now succeed
-in re-acquiring the locks it just released a short time ago.
-
-Consider the classic dead NFS server problem. The target may have
-acquired 1 lock and failed on another lock because of a service
-interruption to the NFS server. Well the target can't neccessarily
-release the lock that it did successfully acquire now. So if we
-fail back to the source, it'll be unable to reacquire the lock as
-the target still holds it.
-
-This doesn't mean we shouldn't try to fail back, but there will
-always be some failures scenarios we'll struggle to recover from.
-
-The "migration paused" state is our last chance, as that leaves
-both QEMU's present while the admin tries to fix the underlying
-problems.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+r~
 
