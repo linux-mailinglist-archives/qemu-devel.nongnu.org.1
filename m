@@ -2,73 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6DBBB1112
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC54BB0F3A
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:08:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yhS-0005PR-DZ; Wed, 01 Oct 2025 11:25:03 -0400
+	id 1v3yPP-0000cy-H4; Wed, 01 Oct 2025 11:06:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v3yhA-00059l-TQ
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:24:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v3ygn-0004Iz-3H
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:24:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759332250;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nnf9f3wQ1KjvUlRbvsmzC1Pg7xl6tn4yh36ROAXVrtc=;
- b=XSlsJV2OJNPUSEkPTUFAQIoH7W4GFPb/khzgzxgFfsuMtTwmZYIan5Q/kX8Xt8N/yy/g/W
- MFigtUnXbLdUHX6X23XwTBsK0V/0YNdnTgutFAw9uN2y++MbnL3s+hcrNdAjK5S73dxGVw
- 97PPnTuwHgtHCD4zzxwn91FGmeomdTM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-y0gjCV2ZNx2lvU-OPlpPDw-1; Wed,
- 01 Oct 2025 11:24:07 -0400
-X-MC-Unique: y0gjCV2ZNx2lvU-OPlpPDw-1
-X-Mimecast-MFC-AGG-ID: y0gjCV2ZNx2lvU-OPlpPDw_1759332246
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4EDC5195608A; Wed,  1 Oct 2025 15:24:06 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.112])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D9D89195608E; Wed,  1 Oct 2025 15:24:05 +0000 (UTC)
-Date: Wed, 1 Oct 2025 11:00:10 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yOy-0000aw-Tp
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:05:56 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3yOk-0000cB-SM
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:05:55 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3ee13baf2e1so5553170f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 08:05:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759331131; x=1759935931; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bX1keC/9mpclBrFaOQD5CnQBdOGk2TIdIpvuGAEFtoQ=;
+ b=k5Apk4xEkTwwA2nCV6pB7+qn/5PfgsI/a4KeiB/FBMHpv7aaP4gRyXPVGvMoKm73dc
+ KzysThC6B7r6EIgBumVHhGqW2JjPwZbViAz/6kkiRLzXGU0rS0IRK4yCJCx8Quq+R/4q
+ JGJlTbwZS5Hrvdjic641q1xXZfP/Bau0HwDa2CH7hFYGKo7DzhQAJPnwtwnOE50wa/2X
+ Utjs9oF0LC1Q0H9wXyMAJ0KME3kKruDcEp+3BOAQCdkPBKuCJIaMAnbZ9RHreyGcFjDB
+ DytSkNtj+cs6WBXib/fDvoDxhAh4GjHApsfk/6vKc2jOu2BaXj0vjGZ7DAkraA6yh2FK
+ 4H1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759331131; x=1759935931;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bX1keC/9mpclBrFaOQD5CnQBdOGk2TIdIpvuGAEFtoQ=;
+ b=T1B3ghGh2+32iepjZxDr2+hp3OVQGG0SkSpBobqoHy4kB5rqG2odBz4Vy3j0rdpZfl
+ 7jyeeoPiqDam1+JOBzupLJfjAzPhntCpWD8KnaXhYh3UFgXQ7sjmLYTzxT5NImGGxPBO
+ pDHoQYeB9shJP0crVXR3nxLOkWVC9r0G/bG+xb3WlXBVZ7vcUdftEA2r+pQl3Aohu16t
+ ZHa9kiy5CV5H2w7k0+aQ3FC7bd3GBGBCjrRyY9xdUFIybChTSKbfOFHiA1AA2y4+MCnL
+ KZwCOxsRNJ6fh2if8iQO+BhKDgklB23yem7go/+7IpTUUdwQeAiaimoKDmBBXAXYJHJ5
+ fwIQ==
+X-Gm-Message-State: AOJu0YzX2xtnas3AbhNz5MwcRznBy60mZtFhTIV7khPU+EPO4Ju2PIXb
+ yPN1AUKAD6sL6y5VUcHgONmNfYwXtkomxcV2t/oIl/30TlrukFiZp8IesSbBAwEnPak2Y0rWDP2
+ hBwMNgsXNDg==
+X-Gm-Gg: ASbGncs7WF6u6e30l8nHhGCIzENIO1zMyW3y+h7cVXvodUl81J8EWtHYPLHxfC8nzP3
+ eRZvUH2deH8wRbkp+z7gtcNBw4h313FQR3Atpls7984CnlbLaeHpG46tuCYyYBxzDQQrnUVLkMb
+ p4kUBNm2Cai3ZdaScVdlMbLFpo4bfG7gXq36cGxeBeslXAqR9tGs7bYu38Dl2JBQsH+BRYgNwFu
+ c4XD+7T0KQsgIsogtsAgeO1VfbjwwRxmBxAnQ2sKdLZJUhtBULZJpZ74Ycv2vz/CeRSTGMhlOQd
+ O/VeuyOcXWS5MWmYrKRkukCl6ydSO8vqxVioSxJYGmEquMjUxrzrRigaFN9QDTlZkq/J56ExjPK
+ 8QIXB+Ro2+j8QRqP1KfhcZseAdxY8bHjbGvCcCWWFQMVmKE94tvcTyu91vIT+pJyp/+9dyQg9U7
+ Unoh5qwfgoQNWTDfIBaVXS8/EpwXlhnNE=
+X-Google-Smtp-Source: AGHT+IE5bhum517hVkgU+gzfCFhPtdaNIrGi0XfxSJacAGZiwEMZLs8k8e8gb1GkqoMBBwDEaDIpdA==
+X-Received: by 2002:a05:6000:200d:b0:400:1bbb:d279 with SMTP id
+ ffacd0b85a97d-4255780b23dmr2887842f8f.39.1759331131328; 
+ Wed, 01 Oct 2025 08:05:31 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fb89fb2fcsm29386920f8f.22.2025.10.01.08.05.30
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 01 Oct 2025 08:05:30 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 0/4] block: update inserted/removed nodes from
- BlockRAMRegistrar
-Message-ID: <20251001150010.GA183984@fedora>
-References: <20250930204555.162133-1-stefanha@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/22] hw/core/cpu: Remove @CPUState::as field
+Date: Wed,  1 Oct 2025 17:05:05 +0200
+Message-ID: <20251001150529.14122-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="pkjnU8mzbDeJGYDK"
-Content-Disposition: inline
-In-Reply-To: <20250930204555.162133-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,55 +101,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Instead of using the convenient @CPUState::as shortcut, use
+cpu_get_address_space(asidx=0) to get the vCPU first address
+space.
 
---pkjnU8mzbDeJGYDK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The goal is to reduce the risk of AS mis-use for targets
+that uses multiple ASes per vCPU.
 
-On Tue, Sep 30, 2025 at 04:45:51PM -0400, Stefan Hajnoczi wrote:
-> This patch series fixes a bug in BlockRAMRegistrar: it currently doesn't =
-react
-> to block graph changes and newly inserted nodes lack RAMBlock information
-> needed to map I/O buffers. This is important for vdpa-blk devices because=
- they
-> rely on the ability to map I/O buffers.
->=20
-> Stefan Hajnoczi (4):
->   block: add BdrvChildClass->propagate_attach/detach() callbacks
->   block: add blk_add_attach/detach_notifier() APIs
->   block: rename RAMBlockRegistrar->notifier field
->   block: update inserted/removed nodes from BlockRAMRegistrar
->=20
->  include/block/block_int-common.h            |  11 ++
->  include/system/block-backend-global-state.h |   9 ++
->  include/system/block-ram-registrar.h        |   4 +-
->  block.c                                     |  56 +++++--
->  block/block-backend.c                       |  44 ++++++
->  block/block-ram-registrar.c                 |  75 ++++++++-
->  tests/unit/test-block-backend.c             | 164 ++++++++++++++++++++
->  7 files changed, 344 insertions(+), 19 deletions(-)
+Based-on: <20251001082127.65741-1-philmd@linaro.org>
 
-I need to send a v2 because I forgot to squash in a compiler warning
-fix.
+Philippe Mathieu-Daudé (22):
+  system/qtest: Use &address_space_memory for first vCPU address space
+  disas/disas-mon: Get cpu first addr space with cpu_get_address_space()
+  monitor/hmp-cmds: Get cpu first addr space with
+    cpu_get_address_space()
+  hw/core/loader: Get cpu first addr space with cpu_get_address_space()
+  hw/ppc: Get cpu first addr space with cpu_get_address_space()
+  hw/m86k: Get cpu first addr space with cpu_get_address_space()
+  target/xtensa: Get cpu first addr space with cpu_get_address_space()
+  target/riscv: Get cpu first addr space with cpu_get_address_space()
+  semihosting: Get cpu first addr space with cpu_get_address_space()
+  target/alpha: Get cpu first addr space with cpu_get_address_space()
+  target/arm: Get cpu first addr space with cpu_get_address_space()
+  target/hppa: Get cpu first addr space with cpu_get_address_space()
+  target/i386: Get cpu first addr space with cpu_get_address_space()
+  target/loongarch: Get cpu first addr space with
+    cpu_get_address_space()
+  target/m68k: Get cpu first addr space with cpu_get_address_space()
+  target/microblaze: Get cpu first addr space with
+    cpu_get_address_space()
+  target/ppc: Get cpu first addr space with cpu_get_address_space()
+  target/s390x: Get cpu first addr space with cpu_get_address_space()
+  target/sparc: Get cpu first addr space with cpu_get_address_space()
+  hw/core/cpu: Remove @CPUState::as field
+  exec/cpu: Declare cpu_memory_rw_debug() in 'hw/core/cpu.h' and
+    document
+  target/sparc: Reduce inclusions of 'exec/cpu-common.h'
 
-Stefan
+ include/exec/cpu-common.h         |  4 ---
+ include/hw/core/cpu.h             | 23 +++++++++++--
+ target/ppc/mmu-hash32.h           | 12 ++++---
+ target/sparc/cpu.h                |  1 -
+ disas/disas-mon.c                 |  3 +-
+ hw/core/cpu-common.c              |  1 -
+ hw/core/generic-loader.c          |  5 +--
+ hw/intc/spapr_xive.c              |  5 +--
+ hw/m68k/mcf5208.c                 |  6 ++--
+ hw/m68k/q800.c                    | 17 ++++++----
+ hw/m68k/virt.c                    |  5 +--
+ hw/ppc/pegasos2.c                 |  2 +-
+ hw/ppc/spapr.c                    | 12 +++----
+ hw/ppc/spapr_hcall.c              | 55 ++++++++++++++++---------------
+ hw/ppc/spapr_iommu.c              |  4 +--
+ hw/ppc/spapr_nested.c             | 43 +++++++++++++-----------
+ monitor/hmp-cmds-target.c         |  3 +-
+ semihosting/arm-compat-semi.c     |  4 ++-
+ system/cpus.c                     |  2 +-
+ system/physmem.c                  | 10 ------
+ system/qtest.c                    | 27 +++++++--------
+ target/alpha/helper.c             |  8 +++--
+ target/arm/cpu.c                  |  7 ++--
+ target/hppa/int_helper.c          |  3 +-
+ target/i386/arch_memory_mapping.c | 10 +++---
+ target/loongarch/cpu_helper.c     |  5 +--
+ target/loongarch/tcg/tlb_helper.c |  7 ++--
+ target/m68k/helper.c              | 28 ++++++++--------
+ target/microblaze/op_helper.c     |  6 ++--
+ target/ppc/excp_helper.c          |  4 +--
+ target/ppc/mmu-book3s-v3.c        |  5 +--
+ target/ppc/mmu-hash32.c           |  6 ++--
+ target/ppc/mmu-hash64.c           | 12 ++++---
+ target/ppc/mmu-radix64.c          | 13 ++++----
+ target/riscv/cpu_helper.c         |  7 ++--
+ target/s390x/cpu-system.c         |  4 ++-
+ target/s390x/mmu_helper.c         |  9 ++---
+ target/s390x/tcg/excp_helper.c    | 10 +++---
+ target/s390x/tcg/mem_helper.c     |  6 ++--
+ target/sparc/helper.c             |  1 +
+ target/sparc/int64_helper.c       |  1 +
+ target/sparc/ldst_helper.c        | 22 +++++++------
+ target/sparc/mmu_helper.c         | 21 +++++++-----
+ target/xtensa/mmu_helper.c        |  3 +-
+ 44 files changed, 253 insertions(+), 189 deletions(-)
 
---pkjnU8mzbDeJGYDK
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjdQfoACgkQnKSrs4Gr
-c8hOqgf+JwNYGrl6cHke293+F3/RAXl2vge/LdmGo6rXH2+a/A4BrWbMiTyNb6QW
-v1bAm2ZrM0MmxC6QGG2MNoZoypFWxGhJ6IPgSTtX/CoI9TnCjwyMWpddU3mAv0Da
-MEG6yP3JhcJqCSvUv7sQtBG/bxgyyY0Oos6KPsP4iLhR32VXf63yhul4frPDDFPj
-0LfAUQscwISoxyilwAyyswHMD0P3WUx+U6Yky4sJ0qwVev2vtP5nWRR5kay2Zc+K
-8UznZOvGAo+V8/j4FEqZSiRtNfUDML/69r+UZNOmjunfOsMrmXAxL7WeUm8m4jdD
-2szEGjwRDCQuaXCKU8mNBdNeAYQctQ==
-=jFyv
------END PGP SIGNATURE-----
-
---pkjnU8mzbDeJGYDK--
+-- 
+2.51.0
 
 
