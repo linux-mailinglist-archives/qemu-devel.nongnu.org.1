@@ -2,99 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8227BAF8BE
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC716BAF9A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rmu-0005ux-Rs; Wed, 01 Oct 2025 04:02:12 -0400
+	id 1v3s66-0000X6-J5; Wed, 01 Oct 2025 04:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rmn-0005uF-VT
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:02:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rmI-0006Bj-BR
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:02:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759305691;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7VTQDRhx35WZbHde5Mr6+wFWJHKfg1tDAJgNYHuAiso=;
- b=Te1k8Lnr6rDb1MYo+pDpL+B0Ux1OPpgzLIi2ihQBD9c8o3drKxwR7JRHucreSQe6QF3zkV
- +sIL7hiAozIj/w+4fTIlij6NzObnMDxNVoEp433ctDbyTgWJTFQrpTgl2uuWK8fbsPm9US
- Uh4x4yp6ZW12dV5F4ESn1kC58tkSDYQ=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-J8i3-LaDPCaNvOS_nH9sYQ-1; Wed, 01 Oct 2025 04:01:30 -0400
-X-MC-Unique: J8i3-LaDPCaNvOS_nH9sYQ-1
-X-Mimecast-MFC-AGG-ID: J8i3-LaDPCaNvOS_nH9sYQ_1759305689
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-634b661347bso6676446a12.3
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:01:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s62-0000WN-TC
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:58 -0400
+Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5l-0005E9-QD
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:58 -0400
+Received: by mail-wr1-x442.google.com with SMTP id
+ ffacd0b85a97d-3f0308469a4so3883486f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:21:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759306890; x=1759911690; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UYQLfS3wHinTh/qC50pdHFAAD2+v7Vtk7mze5MUxp5E=;
+ b=m8DBcgSqy5iKPr0jgb08yr1FAKc89RUTK2Se0PZI/BgV7swMhx36gscid2tE5E2BJ3
+ /Q4GHI7Csc69lmt2My4dY9helUQ81MqZp3CGimyPyTL6BHjsheWPtCGLnWTnTddzhpgZ
+ ODGHNgicG0mEXe8iTYf2vLM1IAUBBNNMq5T7JEcLqNXJM8aFempU/wgOwk5hrRvpTJew
+ azfHRJkgPEIxydhTW9Plov2FY9OX+5WpMsaiMfLkLaoWABMgJaevDld8RbNp05PKbTAs
+ e18eGdKQunAx0eQuLMmHNGBYtmTRXAQ4O9MC2hABtb9BVvlcEwe/dqcem5nKiLem97bA
+ UOAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759305688; x=1759910488;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7VTQDRhx35WZbHde5Mr6+wFWJHKfg1tDAJgNYHuAiso=;
- b=QFsrZct2Qwz10TEsRkGDsFqevPcOHIHdqzSgUh2pmDnQc3avThF6gCrq6faPVdSqsy
- 7m+4v/HMCnpWX9c2qnqwRCi4+h/3mEhsjvnJvCijnjbXcb5R/umbcJlcRWcaYJcuLq4Z
- WACEGQJz55qVPkQxqAh2iyWQ9hElSprwbVf/rhen1I1WqJ5cx3SC2Cih+0OO9/yECW4C
- CkXE54jkTMsTyApA+wlDuzIOol0AK0XpYdxdRxxb98M3+T7Nn5K9wy7oA+gRD7XjDvGd
- h7J2U1bhN0XI+2OzQNee/GiLDrDsOLrHjRObb27u64zeGw6yILfj9gUHXMXQ7YV/B+UJ
- wXMA==
-X-Gm-Message-State: AOJu0Yzs+WWggNqActJjszt4t/nOrijRJ1zxL5DMnum4wZ/bry1E/Cku
- hQk11+1FCCj+qa94O9BnICbhTj0M1unRSFma3HWXeF/6UjgDrqVsx01BrU/6X/pHzz3DQt+Du/B
- dDdscAKCeaULwXFqvq3HQJ1VwZWJ9jsw9FfqagWyIyY2OowGWyowfwIjaZ7/BzpjwW6XZy+drRF
- RD5y1mauyii+JJiAjE7gnJwDGuq1q5Nz3jkeKlxSw+
-X-Gm-Gg: ASbGnctg7xrkCj+ZKXb3CG68BbUm/M9zwz5P0iywwHC/9iz/TtrpP9YFYcz2QnDd0YX
- ivJlPjUYQ9x1SWUs9TNiR74fI2GzoUL+XRw7Bnl3J1chD/q0oIdFRTIDPMMwsDs2KY89xVVeyOL
- Aa19n3JM+3CKzoCUbPvMbwwiLBqEjW5dtSYk2Q2xHNY5nV8zkQICTURYlIA+G9odGDyRPh6vrOA
- RaOIWlkBiRCCp+E2IP8Jwbvt0NjsNBrHCnFwNZ5rMfqvfb+zpK/cgS9vFQ5on8oDmqkH8I4NkKw
- awzPh9fPwKQEiPTTRf7FQYiPH/hoglgzrMnFE9M82e6BE1GDwK/WPdlkQAfF+9Dv+8RDs1EZhQA
- svPZIdWZL6VbNVWvXDoHMBdxHemcoC8AO/mUXKZna1m6pfu6D7NU=
-X-Received: by 2002:a05:6402:d0e:b0:62f:5b56:423d with SMTP id
- 4fb4d7f45d1cf-63678c35d1amr3061439a12.14.1759305687703; 
- Wed, 01 Oct 2025 01:01:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBhZUoyzAoLafyKGpv93i4OVNhbldjJJXNhr57MNWxJilswEObaVoYuu296FmUVSxVfOEgDA==
-X-Received: by 2002:a05:6402:d0e:b0:62f:5b56:423d with SMTP id
- 4fb4d7f45d1cf-63678c35d1amr3061396a12.14.1759305687221; 
- Wed, 01 Oct 2025 01:01:27 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.127.188])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634a3ae3080sm11534670a12.34.2025.10.01.01.01.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 01:01:25 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1759306890; x=1759911690;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UYQLfS3wHinTh/qC50pdHFAAD2+v7Vtk7mze5MUxp5E=;
+ b=nDO006wcF/cHfWGn9kuZAXJH2wQg1DPQTJ5HrSaP2RF0pfTSXwi+A0WXFmc8ykKUbG
+ yZhT6TFJVmrn+/aCU3eplXV4DKevM/vtkEme4W7JivASOgdd57v0m8QlCtcyBRNpJlJ2
+ 1/M769nnc5V8Ek3RBdk0iKcBhxUfOxU7DaPBjrgM7N2ILq41DswFIyGsIxxHmsAufXvF
+ gjuwleGCEe9jKiEMgtWzfI4dkywT33gTWplQusYX20rSDoV6zhP4GXETz2vn/5c2wI9u
+ Y4znyfJVRHg7Zdd31OA2VJMzxZ6UhUZtzpewpum1caX2WbKWdzDUSCiJucjZzmhyLl9M
+ ANbg==
+X-Gm-Message-State: AOJu0Ywrlf5KdtNPHAlmepDKlcEQmhyLPB/FRpTldybhaOp3mDYccpxT
+ Pabwc3pN76kljYm419kJZ5h/cGd9VXD1nNdwupz2tPMhLV6yi2AD0kFWt5BHusozce7Kb6du10R
+ t9dyBsrzjALWX
+X-Gm-Gg: ASbGncun3W0J6Y4G3ExijxcU7vxPL7qY487PTV1o/mFrxRmrxdbNeZW+iw0DRzy1YNq
+ kTWp5Hv+7sumSiO6iWmuaoqrRypwZk42eJNI3g4NxUDxJews/wz4Z6JitQvBUsusN9vAygO270x
+ jlbRHU6MoPtQbs90JyUfDlY2QQW3hBoBZug9VDP3MNmOPeQYl3CIgLS+ZZZlBDXgcNNcDG/xVAT
+ oTbyF5VkJTx1U9mEe/BDKprQZBaZUqhDleB8T+rLix107OiPMfzoFxZ9kPYZQiMyJslowZq3GJs
+ gbrgdtehqYKFHjxkUclxYaAImYlWfu1E1OT9jfZblhp9wjKALi5jP735/0mMW65eivFYga+qs/b
+ +VkF9vHhk0PNlenCOmUoK4rbP99RVu4tk5m9FfyWSNUZQhhP1qd7K1AclrjfXhrR8I5Ubz94czL
+ 6ww0g2znvayOyNxEjJNhAy
+X-Google-Smtp-Source: AGHT+IHKt/ivTsoC6PZcZTjZzL5LDs95xiGR88ZSKusdRALPX64xSrvTFt9lt4nGAnJGd8G2pFxftQ==
+X-Received: by 2002:a05:6000:310d:b0:3ee:af89:a68 with SMTP id
+ ffacd0b85a97d-425577f321dmr1791557f8f.22.1759306889640; 
+ Wed, 01 Oct 2025 01:21:29 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fc8aa0078sm25842872f8f.59.2025.10.01.01.21.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 01 Oct 2025 01:21:29 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org,
-	armbru@redhat.com,
-	marcandre.lureau@redhat.com
-Subject: [PATCH 14/14] rust: start qapi tests
-Date: Wed,  1 Oct 2025 10:00:51 +0200
-Message-ID: <20251001080051.1043944-15-pbonzini@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>, qemu-arm@nongnu.org,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ kvm@vger.kernel.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH 00/25] system/physmem: Extract API out of 'system/ram_addr.h'
+ header
+Date: Wed,  1 Oct 2025 10:21:00 +0200
+Message-ID: <20251001082127.65741-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251001075005.1041833-1-pbonzini@redhat.com>
-References: <20251001075005.1041833-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::442;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,90 +113,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Following a previous comment from Richard in [*],
+reduce "system/ram_addr.h" size by un-inlining a
+lot of huge functions that aren't really justified,
+and extract the API to the hew "system/physmem.h"
+header, after renaming the functions (removing the
+confusing 'cpu_' prefix).
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/tests/meson.build          | 10 +++++++---
- rust/tests/tests/integration.rs |  2 ++
- rust/tests/tests/qapi.rs        | 35 +++++++++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+), 3 deletions(-)
- create mode 100644 rust/tests/tests/integration.rs
- create mode 100644 rust/tests/tests/qapi.rs
+(I plan to eventually merge this myself due to the
+likelyness of conflicts).
 
-diff --git a/rust/tests/meson.build b/rust/tests/meson.build
-index 00688c66fb1..c36cab1886e 100644
---- a/rust/tests/meson.build
-+++ b/rust/tests/meson.build
-@@ -1,11 +1,15 @@
- test('rust-integration',
-     executable(
-         'rust-integration',
--        files('tests/vmstate_tests.rs'),
-+        files(
-+            'tests/integration.rs',
-+            'tests/vmstate_tests.rs',
-+            'tests/qapi.rs',
-+        ),
-         override_options: ['rust_std=2021', 'build.rust_std=2021'],
--        rust_args: ['--test'],
-+        rust_args: ['--test'] + _qapi_cfg,
-         install: false,
--        dependencies: [bql_rs, common_rs, util_rs, migration_rs, qom_rs]),
-+        dependencies: [bql_rs, common_rs, util_rs, migration_rs, qom_rs, qapi_rs]),
-     args: [
-         '--test', '--test-threads', '1',
-         '--format', 'pretty',
-diff --git a/rust/tests/tests/integration.rs b/rust/tests/tests/integration.rs
-new file mode 100644
-index 00000000000..ebc17cb5550
---- /dev/null
-+++ b/rust/tests/tests/integration.rs
-@@ -0,0 +1,2 @@
-+mod qapi;
-+mod vmstate_tests;
-diff --git a/rust/tests/tests/qapi.rs b/rust/tests/tests/qapi.rs
-new file mode 100644
-index 00000000000..3a54d37edaa
---- /dev/null
-+++ b/rust/tests/tests/qapi.rs
-@@ -0,0 +1,35 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#![allow(unexpected_cfgs)]
-+
-+use qapi;
-+use util::qobject::{from_qobject, to_qobject};
-+
-+#[test]
-+fn test_qapi() {
-+    let sa = qapi::InetSocketAddress {
-+        host: "host-val".to_string(),
-+        port: "port-val".to_string(),
-+        numeric: None,
-+        to: None,
-+        ipv4: None,
-+        ipv6: None,
-+        keep_alive: None,
-+        #[cfg(HAVE_TCP_KEEPCNT)]
-+        keep_alive_count: None,
-+        #[cfg(HAVE_TCP_KEEPIDLE)]
-+        keep_alive_idle: Some(42),
-+        #[cfg(HAVE_TCP_KEEPINTVL)]
-+        keep_alive_interval: None,
-+        #[cfg(HAVE_IPPROTO_MPTCP)]
-+        mptcp: None,
-+    };
-+
-+    // let qi: QObject = 32.into();
-+    // dbg!(&qi);
-+
-+    let qsa = to_qobject(&sa).unwrap();
-+    let _json = qsa.to_json();
-+    let sa: qapi::InetSocketAddress = from_qobject(qsa).unwrap();
-+    dbg!(sa);
-+}
+[*] https://lore.kernel.org/qemu-devel/9151205a-13d3-401e-b403-f9195cdb1a45@linaro.org/
+
+Philippe Mathieu-Daudé (25):
+  system/ram_addr: Remove unnecessary 'exec/cpu-common.h' header
+  accel/kvm: Include missing 'exec/target_page.h' header
+  hw/s390x/s390-stattrib: Include missing 'exec/target_page.h' header
+  hw/vfio/listener: Include missing 'exec/target_page.h' header
+  target/arm/tcg/mte: Include missing 'exec/target_page.h' header
+  hw: Remove unnecessary 'system/ram_addr.h' header
+  accel/tcg: Document rcu_read_lock is held when calling
+    tlb_reset_dirty()
+  accel/tcg: Rename @start argument of tlb_reset_dirty*()
+  system/physmem: Rename @start argument of physical_memory_get_dirty()
+  system/physmem: Un-inline cpu_physical_memory_get_dirty_flag()
+  system/physmem: Un-inline cpu_physical_memory_is_clean()
+  system/physmem: Rename @start argument of physical_memory_all_dirty()
+  system/physmem: Rename @start argument of physical_memory_range*()
+  system/physmem: Un-inline cpu_physical_memory_range_includes_clean()
+  system/physmem: Un-inline cpu_physical_memory_set_dirty_flag()
+  system/physmem: Rename @start argument of physical_memory_*range()
+  system/physmem: Un-inline cpu_physical_memory_set_dirty_range()
+  system/physmem: Un-inline cpu_physical_memory_set_dirty_lebitmap()
+  system/physmem: Rename @start argument of physmem_dirty_bits_cleared()
+  system/physmem: Un-inline cpu_physical_memory_dirty_bits_cleared()
+  system/physmem: Rename @start argument of
+    physmem_test_and_clear_dirty()
+  system/physmem: Reduce cpu_physical_memory_clear_dirty_range() scope
+  system/physmem: Reduce cpu_physical_memory_sync_dirty_bitmap() scope
+  system/physmem: Drop 'cpu_' prefix in Physical Memory API
+  system/physmem: Extract API out of 'system/ram_addr.h' header
+
+ MAINTAINERS                       |   1 +
+ include/exec/cputlb.h             |   5 +-
+ include/system/physmem.h          |  56 ++++
+ include/system/ram_addr.h         | 413 ------------------------------
+ accel/kvm/kvm-all.c               |   5 +-
+ accel/tcg/cputlb.c                |  19 +-
+ hw/ppc/spapr.c                    |   1 -
+ hw/ppc/spapr_caps.c               |   1 -
+ hw/ppc/spapr_pci.c                |   1 -
+ hw/remote/memory.c                |   1 -
+ hw/remote/proxy-memory-listener.c |   1 -
+ hw/s390x/s390-stattrib-kvm.c      |   2 +-
+ hw/s390x/s390-stattrib.c          |   2 +-
+ hw/s390x/s390-virtio-ccw.c        |   1 -
+ hw/vfio/container-legacy.c        |  10 +-
+ hw/vfio/container.c               |   5 +-
+ hw/vfio/listener.c                |   2 +-
+ hw/vfio/spapr.c                   |   1 -
+ hw/virtio/virtio-mem.c            |   1 -
+ migration/ram.c                   |  79 +++++-
+ system/memory.c                   |   9 +-
+ system/physmem.c                  | 342 +++++++++++++++++++++++--
+ target/arm/tcg/mte_helper.c       |   5 +-
+ system/memory_ldst.c.inc          |   2 +-
+ tests/tsan/ignore.tsan            |   4 +-
+ 25 files changed, 495 insertions(+), 474 deletions(-)
+ create mode 100644 include/system/physmem.h
+
 -- 
 2.51.0
 
