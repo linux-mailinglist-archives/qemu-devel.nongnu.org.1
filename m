@@ -2,106 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D55BAEF0A
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8A7BAF026
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 04:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3lH6-00065T-4m; Tue, 30 Sep 2025 21:04:56 -0400
+	id 1v3mSi-0003rb-68; Tue, 30 Sep 2025 22:21:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lGU-0005kQ-E0
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:04:18 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lFV-0008Fk-L8
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:04:18 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3ee12a63af1so4310323f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:03:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1759280587; x=1759885387; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=A8WcCIp7AW8otz3wOJdViBKtHh2ab6qkb/xOpXEIFFU=;
- b=YqMa/7f+/5G/wVlrBQdSoL049gw7GfGzw+lLHRsHeHeiTbBZTz3q0AgmyaJfbc3q82
- 25hxREWkDYgqzRCpHUtLwko0bweO/nFDNVxsSGX0qAICYwpypP3ggCEeFeJDJtbMOapo
- qfkO+2d/79q/v2cX0CSZOhehxo1P3EAaUJ7dOgmGY3bFZEGihoiV8ss3hO5fKx/Tdc7b
- /kN3dNS6uU2TGXM5wei8vtEFnVkClzXIF+dAoBfe4dD6nebVXWnnTqGd2LVYSLC6YQta
- bdnTeiM6RITY4HQwLjcimMtjxhtw3guLL7xuP8K+WhFfXn5Jb81tCxyy9PGBiK72s6mg
- yc6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759280587; x=1759885387;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A8WcCIp7AW8otz3wOJdViBKtHh2ab6qkb/xOpXEIFFU=;
- b=DwaSrDzqgJAusGmbxlBTS9CgKb3IXdBesjkbaFNxsROQoKViwf28s/U1kTBq0GpHjS
- DO0aO7JjsOCKuozAcbGBzbOdH74Um7mJHt0X81Y5oz5MLtq7q6KWBwBiQf6+dfsQshNR
- V953/OpSGHUqAc9zUuogO1HhU+fAW72hKrP8fiAz7762y7BV7rE8uzAcz+RsqMdbma4I
- br/RcwMf8u4wJNdWFIBYE1rJbf+noc3dQ+i+m1DcI80qJxtW6kcnsWd01im8/liyFic+
- YrniunTsS5WHGZ64ISiLWF+ght5Gg5GiTrWICMfBwpsLau7LcCfM4V6feMnFG4vie2+Y
- Y1hA==
-X-Gm-Message-State: AOJu0YxXpxaUXA/WHQ4MbOKe/RaqOBuTuNUCWtmL0pT81s9iEglhWYue
- poJAjwvLf/0r+YMKbg7xHpGuKrNpfzihkoXMHi5PBIDrWTaD+lXm2DjESTwpV4jAmZ/CgPtGfQI
- I6NheM+CHNw==
-X-Gm-Gg: ASbGncvJoOR3d/WtUyAX+rY8I3ipaDSs5bR8JgRuEKj+esJRxIFYTQCwz9sWhyEsLVG
- phUIedn1sy8jq2AYCEd+bVDk2R5kUiQ/sUYR7B0cx3ycdvNtwPmsOQ5YO4UxYuD//67KWQx4ccD
- z83GO2jiMx6qRGVBl7rHq5BXF9tctk5w3rHjOqFJTiZOqub1n6eIugSZ8s1hnS69HKnYc+JR4ec
- bPkeew7JWTB3XIkmCYmjnHtmdbOJ9L7/n5GlOjL5srU6rrPjBgIwwcmGQ1BxjjMph1R247N4IqU
- 9i4uVYDAwVPiSoOYChYyvMw7ZvXEvU9TgxLn70OlXmul0GftCV0DbtXNy6gvTQhjOeJ3AbGHSmT
- lqishKyPAd6A6gebdaf7Czo9gZp8rEEUh7E84W0mLjWQ2/egwAbwLNKQDQU2H7wSMNKB+5NHvMu
- OEjb78sNHPxDjDzs8jydiTkELP0/iCbDl2+xSlpmgGdqw=
-X-Google-Smtp-Source: AGHT+IGlokWyuAQ2aOYDbWjfOqnwWRIkap8UzDam0XIevWPLN9f+zE+7RFoc9UfCTkN4Aj3PvVw+Vw==
-X-Received: by 2002:a05:6000:2407:b0:3ec:db87:e8fa with SMTP id
- ffacd0b85a97d-425577fe66bmr1211377f8f.26.1759280586676; 
- Tue, 30 Sep 2025 18:03:06 -0700 (PDT)
-Received: from localhost.localdomain ([90.209.204.182])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.03.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 18:03:06 -0700 (PDT)
-From: salil.mehta@opnsrc.net
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org,
-	mst@redhat.com
-Cc: salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
- jonathan.cameron@huawei.com, lpieralisi@kernel.org,
- peter.maydell@linaro.org, richard.henderson@linaro.org,
- imammedo@redhat.com, armbru@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- will@kernel.org, ardb@kernel.org, oliver.upton@linux.dev,
- pbonzini@redhat.com, gshan@redhat.com, rafael@kernel.org,
- borntraeger@linux.ibm.com, alex.bennee@linaro.org,
- gustavo.romero@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- gankulkarni@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, wangzhou1@hisilicon.com,
- linuxarm@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
- lixianglai@loongson.cn, shahuang@redhat.com, zhao1.liu@intel.com
-Subject: [PATCH RFC V6 24/24] tcg: Defer TB flush for 'lazy realized' vCPUs on
- first region alloc
-Date: Wed,  1 Oct 2025 01:01:27 +0000
-Message-Id: <20251001010127.3092631-25-salil.mehta@opnsrc.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
-References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1v3mSa-0003qy-Jp; Tue, 30 Sep 2025 22:20:53 -0400
+Received: from mail-japaneastazlp170120005.outbound.protection.outlook.com
+ ([2a01:111:f403:c405::5] helo=TYPPR03CU001.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1v3mSM-000877-98; Tue, 30 Sep 2025 22:20:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UxK3oJMeVtJFXHTJIf9z4uy3X04OjkIGJW80iVpak7QC+03L+GmfFSi3+uB77lyQHJZ4pEYSDGwICEDAT74RIBjoHfN+0xKZfUhxj8UQ+qH4hMv8cv9LEcw5tzhs0AVGw0GQzBKuiYuYwRllJT4sGQ1FvqgSuvJPiJx8SnBAUenvjnaLfw98BstmQadDqX40n1vj7PN/4ukI2eq80cSgGWsCFvDObelmLdaQUrHnpH8B0x5Op3c5w1AKrgB6zgWMG72aSLpz/Mnoxza7qwyqPEgJLT+5kIAH0nxiK7GgKF/9ruecEWEeJAyrZgug7uLh2VJ6o8+50NG4szlIs0umaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/QAUZf3upvqq2uGPxdKF9lB/A8buvKKKYKlxwFXtSQs=;
+ b=bKWSUs6vEg6bkCvF/twwCWHpaAcxdj5Hw9CZmtZKMsxG5FlIB2zCZkgT9fwZAGrR8paL6qCezlRAyADh526SB8sAyLU6B3ZerI3fuXXgo/g7SMx00t0Hx1fx2zH2ZFumJfi2c3028k3rL3805IyNWywJTQTtmUa7RzgTcEKjvp8qP7OtFKdj2PvAGe+AqG3DhXwUSbcDAU0oofBuNC7irIwV4MqoHvQDUojgNOTwhJqOfhXGaii3v9mRwLC14HCVmsg7Ewl2x1VgtkQFvh8AtgfveiovtJHDAv1MF8D3c8/FBjTKtKteELulpFtcyZ0LKv1b8x7ncdcu7Vlf+TyL4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/QAUZf3upvqq2uGPxdKF9lB/A8buvKKKYKlxwFXtSQs=;
+ b=ppEEoHcTaZEPaeH66vri/uzuJ+JbWMUawm+be9onaxH+2ZqrItrtZTqFlLYE5xpkqsJz2sv3QNcOTQPnLn9nUE0UbjirsEbNMT+Sq6TNm7qAaW1V7PhgWpld5OQE/ZD95fM9wy0MGgR6qvR9vP3LAmOsQbylqe0Psi1inWlEUGhCNC7ZVqJFL74m0fLPM1qAgTyZRvWDAOPQ00Dph/qcV0X0UXnpwiMSmk0OdophXgGrgHMqxGI5XWCBMpnT5+rIDsfdFeY/g2Z9RM22JGdE3gF4IcIti4pQcBVlcTB8pMez9JwyMnR1b6LXwm6MyocTSCpUmgp+0FxTRzwXQiM31Q==
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
+ TYQPR06MB8044.apcprd06.prod.outlook.com (2603:1096:405:2fb::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9160.17; Wed, 1 Oct 2025 02:20:20 +0000
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56%3]) with mapi id 15.20.9160.015; Wed, 1 Oct 2025
+ 02:20:18 +0000
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, "open list:All patches CC
+ here" <qemu-devel@nongnu.org>
+CC: Troy Lee <troy_lee@aspeedtech.com>, "nabihestefan@google.com"
+ <nabihestefan@google.com>, "wuhaotsh@google.com" <wuhaotsh@google.com>,
+ "titusr@google.com" <titusr@google.com>
+Subject: RE: [SPAM] [PATCH v5 00/14] Support PCIe RC to AST2600 and AST2700
+Thread-Topic: [SPAM] [PATCH v5 00/14] Support PCIe RC to AST2600 and AST2700
+Thread-Index: AQHcKUgHgxOv8TAKAUSHKItPZwoT8rSaQ6IAgBJcrvA=
+Date: Wed, 1 Oct 2025 02:20:18 +0000
+Message-ID: <SI2PR06MB50411B9E75AA4EEEF40A31CFFCE6A@SI2PR06MB5041.apcprd06.prod.outlook.com>
+References: <20250919093017.338309-1-jamin_lin@aspeedtech.com>
+ <12fb1c21-d53d-4418-8782-791ea97dd54d@redhat.com>
+In-Reply-To: <12fb1c21-d53d-4418-8782-791ea97dd54d@redhat.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|TYQPR06MB8044:EE_
+x-ms-office365-filtering-correlation-id: 69f6ec22-c555-4ddc-72c2-08de009110fd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|7416014|921020|38070700021|217643003; 
+x-microsoft-antispam-message-info: =?utf-8?B?VlF4M1I1TjZZd3FpNlFRcmtPWSthYlNhK01XbGFzdVlOSDlldmZHQU80SzdO?=
+ =?utf-8?B?TGxWZlhVTDVuZjBiV3Rtb0dBNUZJaThxT01WbklZZ0lPRnU4Q1lXTmdyUDF5?=
+ =?utf-8?B?WWtsSzloSlhEYnFoUWtaa1ZiZm1SSU9OVnpha204WnFVNHJmYmxGNG80bVZ0?=
+ =?utf-8?B?R2FtS1ROcTk4L05BRzdJT01XT2creFpBeGc1VCt4Z2FSS1ZPemNweFpwTWRR?=
+ =?utf-8?B?RjJhQzB2UFZrSzcrWmdCSU5Ia2M2UVpJZ21xaWt6UFNRaGs1S0ZJSzEwbTJy?=
+ =?utf-8?B?T09EdzNGT0VaRGpxOU40SkkxVXZjN01EbUZxTzloald4Sy9ScWJiZjE0WDdo?=
+ =?utf-8?B?TXVwUVV4Y1M1Rzg1K2Z0QTFGSlN0Qyt4NytiNlRKeUgyZGN5cEJOM3Blcldr?=
+ =?utf-8?B?YVBWYUUya01keHJaZENtcndXTjJhbG9Nek9GRjBiTG1vdS9DR2x2YnRVYUx5?=
+ =?utf-8?B?QU54M2xkeis1WjlEdUd5LzczalZmWEVCZDliQ0pNRXV1L1pRdTNoeEJlQS9X?=
+ =?utf-8?B?N3U1eUdPS3NNUXZwMjluVUZhMGg1cFc0aWUxN3hMc3NzbEJROEY0RjFJUm9W?=
+ =?utf-8?B?MTRLeHBOdDM0SlFRcUZHVUVEZzFldG00Z0FSeWMvdmlDeHhDMzg2RmNLRXBw?=
+ =?utf-8?B?NUtSbFF4eEkweGxqUmZSTlRSYXJlQ2E3NDVxWTA1ejRmN3dKU1EwSHhHWjFS?=
+ =?utf-8?B?QWFGZXY0L2ZGb1JiNmNTY0U0SFl1aWs5WEN5T0t3Mkxlakd4ek51M1RZTHZF?=
+ =?utf-8?B?b2hkeUdZYmRWNHBrQStKUlpzQ2dNTlUreG5rTno0RU5QWDRVcmVlNW1kMmFD?=
+ =?utf-8?B?eDM5b3VCQU94bWcrbkV5dFpVeFRTeXNZQlNJOFB1WjMvNGxpZ3huakNoQkxM?=
+ =?utf-8?B?dG56eFBlSU1EKzhGdEZZaWMvbGFvNVVhVC80Wlc3MHdSSDhDUi81WXE5QjFX?=
+ =?utf-8?B?c01nWUlXSEpsU3hkZDVETzBQc3lBNGRRZkord0VkdnN4OXBGU0psWHhmYXhK?=
+ =?utf-8?B?dmxvWVRZbWdhSU1MOCt6T0dlbm8vTGRWWGpldHhCOW5tRThMdmxGaFVNNmI2?=
+ =?utf-8?B?RElXYXJDeFlMYnlaekFCUG9OemNaNUtZRzEyM0dtYkJyNFh5VXdZN1oyMFUy?=
+ =?utf-8?B?d0pQQ0JTTzVUVkdjejhMeVQyRkVSQWJUQTJwdXlJNGZkdEpyWGM1T0dXei96?=
+ =?utf-8?B?c0VCbTlsV0ptbFJUZFVwbXVYY2ozeml1aVQ0dmxEaDVtVFpBTDRxY1RZMitF?=
+ =?utf-8?B?TFJyRzBxUGtNZGNJWUg3ZzRydG1qaSsybmJpZ21lM044TVlvVWFCbjlOWkhM?=
+ =?utf-8?B?cHJHcmltRUR2R0dpdk9YV0E3SmlBbnlocXBhdDhFc0tidFF0cW1uY3BsTHdD?=
+ =?utf-8?B?bElnYWR3aGNSb1RmSW0xK0V0aWNTZjFleDRkRGQ1UzM0MEFQQ3gzZGNYNi9T?=
+ =?utf-8?B?VHhtV09lR1R4SEE4UEZQOCthOE5wVHRWZ3AySzdxNlJHc014RUlVUE9kc3hu?=
+ =?utf-8?B?cHd4cWhMRTVRUExMUGVHN1QrSDA5T2wyNHB4SFFrUEFBd0ZmNWQwUEN6a3JT?=
+ =?utf-8?B?aTA3UHlZMTc0dmkzY3lZMU5UbFdJTWp4d2lJaGpkckZqOGVJcHUwZU5mWEcr?=
+ =?utf-8?B?MVo1ZUdoQUVHV1I1SXU2cGNVR0NManNuTFZKcEZoL0RPZXJmdDdSamNvQ1pl?=
+ =?utf-8?B?Zkh2RVkxMmxsZm81NUk4YlNabGRuVWRuTXR3OVk2cWVZY3BOTit0TXhCZDRy?=
+ =?utf-8?B?WnJoT2ZvZ3FhcXQ1b3FrR0NMVkI1UmthMS8zM2kwQk1JN0htclRnY20yMDhO?=
+ =?utf-8?B?bjg0SjBoV3BRSDZVS3BVNnc1SEZrSjVuWHZzMXpRdDA1WGIrQ1FDeURuZitT?=
+ =?utf-8?B?SG9UK1BySDlJdjVnRGx5RGRRSjQ1RjMzZmQwck52em5tcEQ4TDZ3QVI4L1Fm?=
+ =?utf-8?B?R1RLMlNEUkw4MU1ZKzFZbUZJNmV3d0NTY2F6MmIwKyswVy9mWHQrNzJYZEdj?=
+ =?utf-8?B?MW9pTkY0Wk5Id3BTQ1ZMSVJDRU9yL0UvOXBadWJ1cy92bVZMdlZPenkrajNt?=
+ =?utf-8?Q?D3Ihpx?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
+ SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
+ CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020)(38070700021)(217643003);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cjZBOWl4clplT05vZk5JNDJkZ3FnblliZVZiWTdhS09sWjNvTnFmekcxeWY1?=
+ =?utf-8?B?LzFQSXpMSnN5MTM0WUwyZUtlaFk0R0V0ejNtUjB3OFZqcUpGT0p5ekdUYWsr?=
+ =?utf-8?B?UE5xVk5vRGNPY29DRnNiU2NuTG5OZGtuUDkvbzJuemVWemE5UFA2Q3JyZU01?=
+ =?utf-8?B?b1hnMVRrM3owaVhOcWJKZDZqd3R3a1BlcnNNZ2Z4ZlBaRVJCZSt0U29WR2RV?=
+ =?utf-8?B?S2pzUENrNldrUXF5eTFkQzRETys3eU1XT3d0MitYamhJbUpHMHFaV3BwUmMy?=
+ =?utf-8?B?Rjk3Z1kzTkdUdnkxaGwzdFZPbjA3WllQZFJ1a1BKUWcwdHppRTRXc2dObytm?=
+ =?utf-8?B?bi9RMVhoYW50ZjBIK2VoNW55WDNENythRXIwUm54OXBKM0tQOVJpcjVrS25S?=
+ =?utf-8?B?ZFBmcGZtMlZ6VnVNZis4VmZBQzVKaGF6ZHlvL252WWxoWFd0Zk1ablhGSnYw?=
+ =?utf-8?B?aGVsU2MrMXpvTUVnMFBFR2s4V0YrM0F3V095ZWozclgvM3ROM2MwdVdzOEtX?=
+ =?utf-8?B?RGRtNlhoZDNkWjExQnRnSmlzRThrSnpoMEljVDJSaUNrMVJ6VnF5U2k5dmRB?=
+ =?utf-8?B?c3ZaMXh5UG5SWmpEa2lFbWNyNGMrVTVZVGhLa2lJNGdla1BQUWNBSFdBQ0V4?=
+ =?utf-8?B?bTVMQkJaUXFHbi81Mm43MUc3UUpxenduSWczb3JNVGNmTnVZNmRocDY0WktF?=
+ =?utf-8?B?MVBaN28vVjNqVUo5U3J0aFZESm1STXFCYVd2bmhLVmpwbkgzMjd5ZUJ2NDkz?=
+ =?utf-8?B?Z2dzS0pLVWVjNWN5WW5EVWNRRzhwbUdVVXlZVFh3OG12cW4vVzdaMXU5ZmUv?=
+ =?utf-8?B?OWFXWGFRbFRXT3gybjlhWjcvMTVTSlgyQjJqUldrOGJUMlVYNHBQTk1QY1pk?=
+ =?utf-8?B?UjgyeEhEM09mZFkzOXRDMzFSVzdodHo0TEtrMDEzc1JWVk94Q3k1TFJ4enBB?=
+ =?utf-8?B?ai94WkJlcnZ2MEJLcTZ2MzJPNHNKaGp2Q3V6V3FVMmU2QkFaNjVWUURUb0w5?=
+ =?utf-8?B?NGlxTHlHbUVHN25RVytOTGVEbWpsaktLL0tVTVpqRDR3RE5QV0NjY0ltVTgz?=
+ =?utf-8?B?a2MxcmgwVDF1dGFUSVY5TVdBZ3RKWlRoelJkK3VuYzc2N2o0VGdMenlkU1Zu?=
+ =?utf-8?B?dDJPc0Y1bkZ5eCsxdWk1alh3ZEEvMWhHVlhmU0MvMW91d2llNWJWWVZEZDhO?=
+ =?utf-8?B?Mk5mQ25EYmIyUFZab3ArQWgzRm01Y1NpbUx2NmxsRTRUc1phL1hGNHl3RXBV?=
+ =?utf-8?B?Zlo1Y3lkZ3JJbHZCMWJYTVllQnNTT3AycXo2QVhDS2cvOVpEQndldHpyNDd1?=
+ =?utf-8?B?OVduVGxkRUw0VVNmbVdmckZmaWRsSTlXSjcrc3hiVG9WZk9kOWYwLytraUow?=
+ =?utf-8?B?RXVQa3gyUk9ycXM1RytxaXcrTGN1T1NMdEpkejlWTXpFa3l5ODdWb2pQT2dQ?=
+ =?utf-8?B?RXlYSTJoaldEamxKSVh5R2w0d3dXZmNsNmo0NEY0andROVowNitzN3NZWExv?=
+ =?utf-8?B?eTlsYTZnUFZOUXdNYnYydlE3RXp2Z01QeVBYK0lUNjRqcXQ3bzdxMnNLOXFK?=
+ =?utf-8?B?dmwvZ2k0UTg5UkVqNDNVTThoYzVyZngvY1ZvYmlhbU9OaTJGd1JHSWtnMk9k?=
+ =?utf-8?B?cmZIKzhBOHJSQTF1K2xSSkE0ckMvY2hOSUhCc0M3eVBSVDdMSFdCelJIenRo?=
+ =?utf-8?B?Z2JMLy9GcUVJMVpGVTJBRmxkZHpoUE5aTGFMUWEwRmJDeGhmanZYL3ZXcllN?=
+ =?utf-8?B?dktva1puNDNvZVJlYjJ6Y3k0QmpLTyt2WlMxVUM1azRnNmFpY0JIZytJc2VT?=
+ =?utf-8?B?aVhuL0RZVUs4anFVQmc3dHlHOG5EOERpUVlUTEsyRG9tLzRjb3dNMkZoZ1hL?=
+ =?utf-8?B?S1VuK1hCUjlYSENYcm5wV3dNLzNTM3lLekpqNVpuUlJSTmwweU0vTy8vbGUw?=
+ =?utf-8?B?RWVKL2p6b1hwZjI4NUhzYStkV2F6L1FWQ2YwRUZMQ1VrVFhLZVFJcU4zNkZW?=
+ =?utf-8?B?bXVzQnZkUXNwSlgzeWpkMHViT1ZKR1NobTYwSG91dzhEYkRLcG9lajB3Q1VQ?=
+ =?utf-8?B?dTBmb2JRR0JuZjdWT29Eb0JVa2Z2bnRpeEpIeHJRWHlwNWkwTldkcXkxRVBO?=
+ =?utf-8?Q?7gDA8mdHkl8SeDelf9r8b88BG?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x432.google.com
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69f6ec22-c555-4ddc-72c2-08de009110fd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2025 02:20:18.8083 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jBlOCWKi7k3CKjypqQghYL7domlpmWp+b3JxmsfGYCCev58sqS5hP+OKKGnVL+Mu1CL/yg7RwQY0Ia1dryLMHS9mCscBnH7v0l7G5lv4k3E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYQPR06MB8044
+Received-SPF: pass client-ip=2a01:111:f403:c405::5;
+ envelope-from=jamin_lin@aspeedtech.com;
+ helo=TYPPR03CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,210 +187,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Salil Mehta <salil.mehta@huawei.com>
-
-The TCG code cache is split into regions shared by vCPUs under MTTCG. For
-cold-boot (early realized) vCPUs, regions are sized/allocated during bring-up.
-However, when a vCPU is *lazy_realized* (administratively "disabled" at boot
-and realized later on demand), its TCGContext may fail the very first code
-region allocation if the shared TB cache is saturated by already-running
-vCPUs.
-
-Flushing the TB cache is the right remediation, but `tb_flush()` must be
-performed from the safe execution context (cpu_exec_loop()/tb_gen_code()).
-This patch wires a deferred flush:
-
-  * In `tcg_region_initial_alloc__locked()`, treat an initial allocation
-    failure for a lazily realized vCPU as non-fatal: set `s->tbflush_pend`
-    and return.
-
-  * In `tcg_tb_alloc()`, if `s->tbflush_pend` is observed, clear it and
-    return NULL so the caller performs a synchronous `tb_flush()` and then
-    retries allocation.
-
-This avoids hangs observed when a newly realized vCPU cannot obtain its first
-region under TB-cache pressure, while keeping the flush at a safe point.
-
-No change for cold-boot vCPUs and when accel ops is KVM.
-
-In earlier series, this patch was with below named,
-'tcg: Update tcg_register_thread() leg to handle region alloc for hotplugged vCPU'
-
-Reported-by: Miguel Luis <miguel.luis@oracle.com>
-Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
----
- accel/tcg/tcg-accel-ops-mttcg.c |  2 +-
- accel/tcg/tcg-accel-ops-rr.c    |  2 +-
- hw/arm/virt.c                   |  5 +++++
- include/hw/core/cpu.h           |  1 +
- include/tcg/startup.h           |  6 ++++++
- include/tcg/tcg.h               |  1 +
- tcg/region.c                    | 16 ++++++++++++++++
- tcg/tcg.c                       | 19 ++++++++++++++++++-
- 8 files changed, 49 insertions(+), 3 deletions(-)
-
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index 337b993d3d..cdb7345340 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.c
-+++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -73,7 +73,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
-     force_rcu.notifier.notify = mttcg_force_rcu;
-     force_rcu.cpu = cpu;
-     rcu_add_force_rcu_notifier(&force_rcu.notifier);
--    tcg_register_thread();
-+    tcg_register_thread(cpu);
- 
-     bql_lock();
-     qemu_thread_get_self(cpu->thread);
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 6eec5c9eee..18e713cada 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -186,7 +186,7 @@ static void *rr_cpu_thread_fn(void *arg)
-     rcu_register_thread();
-     force_rcu.notify = rr_force_rcu;
-     rcu_add_force_rcu_notifier(&force_rcu);
--    tcg_register_thread();
-+    tcg_register_thread(cpu);
- 
-     bql_lock();
-     qemu_thread_get_self(cpu->thread);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 5e02d6749d..254303727b 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2482,6 +2482,11 @@ virt_setup_lazy_vcpu_realization(Object *cpuobj, VirtMachineState *vms)
-     if (kvm_enabled()) {
-         kvm_arm_create_host_vcpu(ARM_CPU(cpuobj));
-     }
-+
-+    /* we may have to nuke the TB cache */
-+    if (tcg_enabled()) {
-+        CPU(cpuobj)->lazy_realized = true;
-+    }
- }
- 
- static void machvirt_init(MachineState *machine)
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index c9ce9bbdaf..c2d45fb494 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -486,6 +486,7 @@ struct CPUState {
-     bool stop;
-     bool stopped;
-     bool parked;
-+    bool lazy_realized; /* realized after machine init (lazy realization) */
- 
-     /* Should CPU start in powered-off state? */
-     bool start_powered_off;
-diff --git a/include/tcg/startup.h b/include/tcg/startup.h
-index 95f574af2b..f9126bb0bd 100644
---- a/include/tcg/startup.h
-+++ b/include/tcg/startup.h
-@@ -25,6 +25,8 @@
- #ifndef TCG_STARTUP_H
- #define TCG_STARTUP_H
- 
-+#include "hw/core/cpu.h"
-+
- /**
-  * tcg_init: Initialize the TCG runtime
-  * @tb_size: translation buffer size
-@@ -43,7 +45,11 @@ void tcg_init(size_t tb_size, int splitwx, unsigned max_threads);
-  * accelerator's init_machine() method) must register with this
-  * function before initiating translation.
-  */
-+#ifdef CONFIG_USER_ONLY
- void tcg_register_thread(void);
-+#else
-+void tcg_register_thread(CPUState *cpu);
-+#endif
- 
- /**
-  * tcg_prologue_init(): Generate the code for the TCG prologue
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index a6d9aa50d4..e197ee03c0 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -396,6 +396,7 @@ struct TCGContext {
- 
-     /* Track which vCPU triggers events */
-     CPUState *cpu;                      /* *_trans */
-+    bool tbflush_pend; /* TB flush pending due to lazy vCPU realization */
- 
-     /* These structures are private to tcg-target.c.inc.  */
-     QSIMPLEQ_HEAD(, TCGLabelQemuLdst) ldst_labels;
-diff --git a/tcg/region.c b/tcg/region.c
-index 7ea0b37a84..23635e0194 100644
---- a/tcg/region.c
-+++ b/tcg/region.c
-@@ -393,6 +393,22 @@ bool tcg_region_alloc(TCGContext *s)
- static void tcg_region_initial_alloc__locked(TCGContext *s)
- {
-     bool err = tcg_region_alloc__locked(s);
-+
-+    /*
-+     * Lazily realized vCPUs (administratively "disabled" at boot and realized
-+     * later on demand) may initially fail to obtain even a single code region
-+     * if the shared TB cache is under pressure from already running vCPUs.
-+     *
-+     * Treat this first-allocation failure as non-fatal: mark this TCGContext
-+     * to request a TB cache flush and return. The flush is performed later,
-+     * synchronously in the vCPU execution path (cpu_exec_loop()/tb_gen_code()),
-+     * which is the safe place for tb_flush().
-+     */
-+    if (err && s->cpu && s->cpu->lazy_realized) {
-+        s->tbflush_pend = true;
-+        return;
-+    }
-+
-     g_assert(!err);
- }
- 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index afac55a203..5867952ae7 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1285,12 +1285,14 @@ void tcg_register_thread(void)
-     tcg_ctx = &tcg_init_ctx;
- }
- #else
--void tcg_register_thread(void)
-+void tcg_register_thread(CPUState *cpu)
- {
-     TCGContext *s = g_malloc(sizeof(*s));
-     unsigned int i, n;
- 
-     *s = tcg_init_ctx;
-+     s->cpu = cpu;
-+     s->tbflush_pend = false;
- 
-     /* Relink mem_base.  */
-     for (i = 0, n = tcg_init_ctx.nb_globals; i < n; ++i) {
-@@ -1871,6 +1873,21 @@ TranslationBlock *tcg_tb_alloc(TCGContext *s)
-     TranslationBlock *tb;
-     void *next;
- 
-+    /*
-+     * Lazy realization:
-+     * A vCPU that was realized after machine init may have failed its first
-+     * code-region allocation (see tcg_region_initial_alloc__locked()) and
-+     * requested a deferred TB-cache flush by setting s->tbflush_pend.
-+     *
-+     * If the flag is set, do not attempt allocation here. Clear the flag and
-+     * return NULL so the caller (tb_gen_code()/cpu_exec_loop()) can perform a
-+     * safe tb_flush() and then retry TB allocation.
-+     */
-+    if (s->tbflush_pend) {
-+        s->tbflush_pend = false;
-+        return NULL;
-+    }
-+
-  retry:
-     tb = (void *)ROUND_UP((uintptr_t)s->code_gen_ptr, align);
-     next = (void *)ROUND_UP((uintptr_t)(tb + 1), align);
--- 
-2.34.1
-
+SGkgQ8OpZHJpYw0KDQo+IFN1YmplY3Q6IFJlOiBbU1BBTV0gW1BBVENIIHY1IDAwLzE0XSBTdXBw
+b3J0IFBDSWUgUkMgdG8gQVNUMjYwMCBhbmQNCj4gQVNUMjcwMA0KPiANCj4gT24gOS8xOS8yNSAx
+MToyOSwgSmFtaW4gTGluIHdyb3RlOg0KPiA+IHYxOg0KPiA+ICAgMS4gQWRkIFBDSWUgUEhZLCBD
+RkcsIGFuZCBNTUlPIHdpbmRvdyBzdXBwb3J0IGZvciBBU1QyNjAwLg0KPiA+ICAgICAgTm90ZTog
+T25seSBzdXBwb3J0cyBSQ19ILg0KPiA+ICAgMi4gQWRkIFBDSWUgUEhZLCBDRkcsIGFuZCBNTUlP
+IHdpbmRvdyBzdXBwb3J0IGZvciBBU1QyNzAwLg0KPiA+ICAgICAgTm90ZTogU3VwcG9ydHMgMyBS
+Q3MuDQo+ID4NCj4gPiB2MjoNCj4gPiAgICAxLiBJbnRyb2R1Y2UgYSBuZXcgcm9vdCBwb3J0IGRl
+dmljZS4NCj4gPiAgICAyLiBGb3IgQVNUMjYwMCBSQ19ILCBhZGQgdGhlIHJvb3QgZGV2aWNlIGF0
+IDgwOjAwLjAgYW5kIGEgcm9vdCBwb3J0IGF0DQo+IDgwLjA4LjANCj4gPiAgICAgICB0byBtYXRj
+aCB0aGUgcmVhbCBoYXJkd2FyZSB0b3BvbG9neSwgYWxsb3dpbmcgdXNlcnMgdG8gYXR0YWNoIFBD
+SWUNCj4gZGV2aWNlcw0KPiA+ICAgICAgIGF0IHRoZSByb290IHBvcnQuDQo+ID4gICAgMy4gRm9y
+IEFTVDI3MDAsIGFkZCBhIHJvb3QgcG9ydCBhdCAwMC4wMC4wIGZvciBlYWNoIFBDSWUgcm9vdCBj
+b21wbGV4IHRvDQo+IG1hdGNoDQo+ID4gICAgICAgdGhlIHJlYWwgaGFyZHdhcmUgdG9wb2xvZ3ks
+IGFsbG93aW5nIHVzZXJzIHRvIGF0dGFjaCBQQ0llIGRldmljZXMgYXQNCj4gdGhlDQo+ID4gICAg
+ICAgcm9vdCBwb3J0Lg0KPiA+DQo+ID4gdjM6DQo+ID4gICAgMS4gRml4IHJldmlldyBpc3N1ZXMu
+DQo+ID4gICAgMi4gdXBkYXRlIGZ1bmN0aW9uYWwgdGVzdCBmb3IgdGhlIGUxMDAwZSBuZXR3b3Jr
+IGNhcmQuDQo+ID4gICAgMy4gdXBkYXRlIGxpY2Vuc2UgaGVhZGVyDQo+ID4gICAgNC4gQWRkaW5n
+ICJCYXNlZCBvbiBwcmV2aW91cyB3b3JrIGZyb20gQ2VkcmljIExlIEdvYXRlciwgd2l0aCBKYW1p
+bidzDQo+IHN1bW1hcnkNCj4gPiAgICAgICBpbXBsZW1lbnRhdGlvbi4NCj4gPg0KPiA+IHY0Og0K
+PiA+ICAgIDEuIEluaXRpYWxpemUgcG9pbnRlcnMgdG8gTlVMTCB3aGVuIGRlY2xhcmluZyB0aGVt
+Lg0KPiA+ICAgIDIuIFVzZSBkaXN0aW5jdCB2YXJpYWJsZSBuYW1lcyB0byByZXNvbHZlIG1lbW9y
+eSBsZWFrIGlzc3Vlcy4NCj4gPiAgICAzLiBVcGRhdGUgZnVuY3Rpb25hbCB0ZXN0cyB0byB2ZXJp
+ZnkgYXNzaWduZWQgSVAgYWRkcmVzc2VzIGZyb20NCj4gPiAgICAgICBJbnRlbCBOSUMgRXRoZXJu
+ZXQgaW50ZXJmYWNlcy4NCj4gPiAgICA0LiBJbnRyb2R1Y2UgcGNpZV9tbWlvX2FsaWFzIGluIEFz
+cGVlZFNvQ1N0YXRlIGluc3RlYWQgb2YgZHluYW1pY2FsbHkNCj4gPiAgICAgICBhbGxvY2F0aW5n
+IG1lbW9yeS4NCj4gPg0KPiA+IHY1Og0KPiA+ICAgIDEuIGZpeCBtZW1vcnkgbGVhayBpc3N1ZS4g
+UmVwbGFjZSBnX2F1dG9mcmVlIHdpdGggYXJyYXkuDQo+ID4NCj4gQXBwbGllZCB0byBhc3BlZWQt
+bmV4dC4NCj4gDQoNCkkgc2F3IHRoYXQgdGhpcyBwYXRjaCBzZXJpZXMgaGFzIGJlZW4gbWVyZ2Vk
+IGludG8gbWFzdGVyLCBidXQgaXQgbG9va3MgbGlrZSB0aGlzIHBhcnRpY3VsYXIgcGF0Y2ggd2Fz
+IG1pc3NlZDoNCmh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9xZW11LWRldmVs
+L3BhdGNoLzIwMjUwOTE5MDkzMDE3LjMzODMwOS0xNS1qYW1pbl9saW5AYXNwZWVkdGVjaC5jb20v
+IA0KW3Y1LDE0LzE0XSB0ZXN0cy9mdW5jdGlvbmFsL2FhcmNoNjQvYXNwZWVkX2FzdDI3MDA6IEFk
+ZCBQQ0llIGFuZCBuZXR3b3JrIHRlc3RzDQoNCkNvdWxkIHlvdSBwbGVhc2UgaGVscCBjaGVjayBv
+biB0aGlzPw0KVGhhbmtzLA0KSmFtaW4NCg0KPiBUaGFua3MsDQo+IA0KPiBDLg0KPiANCg0K
 
