@@ -2,49 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D372BAF741
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E8BBAF73E
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:41:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rJy-00060i-FP; Wed, 01 Oct 2025 03:32:18 -0400
+	id 1v3rMM-0001MO-Dq; Wed, 01 Oct 2025 03:34:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rJj-0005vx-PO
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:32:05 -0400
-Received: from rev.ng ([94.130.142.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v3rJE-0003du-Tr
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:32:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=Ul0C2a/hJLKF/gidGN+nOYSzrLT+OLY7P5tEI0N3Hgk=; b=VVyGL/IJ3AyPkIR
- 4kDeDH1mclnKoKRXMdxmLGRUFVxF9QPFDTIwHzPa9mpxi0GIRJbiz1N81y+H4DmT3DqLO9xDMKwmM
- wR8dOEZ7JAvqZ+rODTe4RC9a1iIScW9RDib8psUAuWedRAZeOInmhE25J5RDMNF++2IqPB9P0yrp/
- v8=;
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org, philmd@linaro.org,
- richard.henderson@linaro.org, alistair.francis@wdc.com, palmer@dabbelt.com
-Subject: [PATCH v2 33/33] target/riscv: Make pmp.h target_ulong agnostic
-Date: Wed,  1 Oct 2025 09:33:06 +0200
-Message-ID: <20251001073306.28573-34-anjo@rev.ng>
-In-Reply-To: <20251001073306.28573-1-anjo@rev.ng>
-References: <20251001073306.28573-1-anjo@rev.ng>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rM7-00015Z-1s
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:34:35 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3rLy-0004Vs-MM
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:34:30 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3fa528f127fso534597f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:34:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759304052; x=1759908852; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H1jX1v0kE55pVH5xtZ0Hx48WSxu4mu4vGlj+7h9M5Co=;
+ b=EWw7sh1t7MmTY8IKfmOBnCApCQM772eQ+tnbGnZBjkuAPA2Mq4APJYucWH6soCaT0f
+ FYFvNghOPnM83QotPp83N+OHi2uiD2o2GBKwdRQjCA863XajHyZNc8NkFu956KBo0lJs
+ X4dLaZqPUMtKrFotVF0J7BaHOSX6pMpvrP7NGSK9R1o7TtQKUTHqQG2xgiw+Q8vy3IVz
+ S+QWewNvaEv1ZoU7H3gOA6iejvGe50d0xDruVU7RvEKZSJZk1pX7fP+ehSzs2X2ELmAx
+ SNlWvqUj3flTjrMvMR5NwEo64zQ+cDQ10a8cmMVze72IIQA3fX12DZA/zj65supiyHvH
+ ClyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759304052; x=1759908852;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H1jX1v0kE55pVH5xtZ0Hx48WSxu4mu4vGlj+7h9M5Co=;
+ b=t5ugho11bSUend2nmxwCSLNfXdyeEKJnWu7zhWr3zof+vVPfeI1RdhvMPANe37WNPi
+ zwmpLeaeNONxlchpbj03w6zVCVa5yPajMSBHM050I2zMhqnvtcg3QvFUIRTqwSwk/VYS
+ LAa1/WObjGg3FnSYtuO6Lf97Al3dXtJsUDCsUnsFKrZ51zY/4eH70M8Ef2QAszFaqkGC
+ WeF1TYDteaTCoADl8Vn3g74OzzqThoOOxvh5ihC10kV6lnNAFq5xvQsCD0A5OpF+5APi
+ fn3Py4Y37fBzWKJiUrN/AfcilBaGF44wgbzeighpGZQvG1T5hyhT58GeUUHSUQ0rBKNL
+ 7HYw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVUf1PnlnIMFCgxgV5g2IYYYQLF3rQv5MhzL2KdJNsLtbid6QsENG1/jieSWe3rOWO5rauEJ9CO7Vl7@nongnu.org
+X-Gm-Message-State: AOJu0YzUoYiXGQZ5EWqKSXjiN6EEpabXz95Pvm+Ebu94wO0VcyMFGePy
+ TDgtDV0bZ/lTbhF8Y+cOYyAPc8rAnL7aw6nY6S5ymbFNSYB98zrQ+nFovsNX1/YIQoI=
+X-Gm-Gg: ASbGnctu9gEBALVlwBnGVy0ya0atI+xPBAPjPfhjGg/vgwj8bfjRr/mMrDElftRvnUg
+ KJq4dKIQF+TZav2IIph0ewvCHItO+cM3qns1f5x+OabBs6NSfElZXrvgBFKw4XtBaYVczzZuTpJ
+ mlJKEQOTErL/i72pIHdjhg0KG3kEX+TdgQrF8cHVpkldxvBM3atRXw74o6xgZKaRVC4uSmwgZFA
+ vJUxOnJDF3A4+a3uVb+bqilMIAmFiwT6kIkmACvSHiFMAa6/TtypyE85jFeb7vh0YQkpeyZJoQl
+ syat1jkTovOQe/h/AU1Xja7/5+O696+CZbZyt+n+621ajK9Sb2vwkt4EMYZRz4l6kMpXSIBPoT1
+ QSwDDU8lsepCODevuv49JbPZ6fmcjTOYDhNJmr3/kdtukvpvV6T4Zsd7tW++YM2yGAZcwevRc8V
+ RTqhTYPkcaNEKFNg==
+X-Google-Smtp-Source: AGHT+IHRkZ3Zm9MvwTAkm960GVt5/Uk1xWi1ka76tRKsAhT0rTDVyaX+XtUu/R1LCl564JI9x6qZRQ==
+X-Received: by 2002:a5d:64e4:0:b0:3eb:ad27:9802 with SMTP id
+ ffacd0b85a97d-4240f26156amr6148993f8f.2.1759304051884; 
+ Wed, 01 Oct 2025 00:34:11 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-40fc5602eccsm27257726f8f.40.2025.10.01.00.34.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Oct 2025 00:34:11 -0700 (PDT)
+Message-ID: <1fe86257-45c2-4fa5-8f1e-d1c4c29af70c@linaro.org>
+Date: Wed, 1 Oct 2025 09:34:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/33] target/riscv: Use 32 bits for misa extensions
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org, richard.henderson@linaro.org,
+ alistair.francis@wdc.com, palmer@dabbelt.com
+References: <20251001073306.28573-1-anjo@rev.ng>
+ <20251001073306.28573-2-anjo@rev.ng>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251001073306.28573-2-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,167 +99,20 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pmp.h header is exposed through cpu.h.  pmp_table_t is also used in
-CPUArchState.  CSR declaraions are only used in target/ and are moved to
-csr.h.  In pmp.h, addr_reg is widened to 64 bits and the privilege mode
-parameter is fixed to 8 bits, similar to previous commits.
+On 1/10/25 09:32, Anton Johansson wrote:
+> uint32_t is already in use in most places storing misa extensions such
+> as CPUArchState::misa_exts, RISCVCPUProfile::misa_exts,
+> RISCVImpliedExtsRule::implied_misa_exts.  Additionally. the field is
+> already migrated as uint32_t.
+> 
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   target/riscv/cpu.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Note, the cpu/pmp/entry and cpu/pmp VMSTATE versions are bumped, breaking
-migration from older versions.
-
-Signed-off-by: Anton Johansson <anjo@rev.ng>
----
- target/riscv/csr.h     | 12 ++++++++++++
- target/riscv/pmp.h     | 20 +++++---------------
- target/riscv/machine.c | 10 +++++-----
- target/riscv/pmp.c     |  9 +++++----
- 4 files changed, 27 insertions(+), 24 deletions(-)
-
-diff --git a/target/riscv/csr.h b/target/riscv/csr.h
-index 552e6c5de5..3752a0ef43 100644
---- a/target/riscv/csr.h
-+++ b/target/riscv/csr.h
-@@ -78,4 +78,16 @@ void riscv_set_csr_ops(int csrno, const riscv_csr_operations *ops);
- /* In th_csr.c */
- extern const RISCVCSR th_csr_list[];
- 
-+/* PMP CSRs, defined in pmp.c */
-+void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
-+                      target_ulong val);
-+target_ulong pmpcfg_csr_read(CPURISCVState *env, uint32_t reg_index);
-+
-+void mseccfg_csr_write(CPURISCVState *env, uint64_t val);
-+uint64_t mseccfg_csr_read(CPURISCVState *env);
-+
-+void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-+                       target_ulong val);
-+target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
-+
- #endif /* RISCV_CSR_H */
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index e322904637..c9b0ee6c58 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -22,8 +22,6 @@
- #ifndef RISCV_PMP_H
- #define RISCV_PMP_H
- 
--#include "cpu.h"
--
- typedef enum {
-     PMP_READ  = 1 << 0,
-     PMP_WRITE = 1 << 1,
-@@ -50,7 +48,7 @@ typedef enum {
- } mseccfg_field_t;
- 
- typedef struct {
--    target_ulong addr_reg;
-+    uint64_t addr_reg;
-     uint8_t  cfg_reg;
- } pmp_entry_t;
- 
-@@ -65,21 +63,13 @@ typedef struct {
-     uint32_t num_rules;
- } pmp_table_t;
- 
--void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
--                      target_ulong val);
--target_ulong pmpcfg_csr_read(CPURISCVState *env, uint32_t reg_index);
--
--void mseccfg_csr_write(CPURISCVState *env, uint64_t val);
--uint64_t mseccfg_csr_read(CPURISCVState *env);
-+typedef struct CPUArchState CPURISCVState;
- 
--void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
--                       target_ulong val);
--target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
- bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
--                        target_ulong size, pmp_priv_t privs,
-+                        int size, pmp_priv_t privs,
-                         pmp_priv_t *allowed_privs,
--                        target_ulong mode);
--target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr);
-+                        uint8_t mode);
-+uint64_t pmp_get_tlb_size(CPURISCVState *env, hwaddr addr);
- void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
- void pmp_update_rule_nums(CPURISCVState *env);
- uint32_t pmp_get_num_rules(CPURISCVState *env);
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index aa71aa6eb1..6b92ac02b3 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -48,10 +48,10 @@ static int pmp_post_load(void *opaque, int version_id)
- 
- static const VMStateDescription vmstate_pmp_entry = {
-     .name = "cpu/pmp/entry",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINTTL(addr_reg, pmp_entry_t),
-+        VMSTATE_UINT64(addr_reg, pmp_entry_t),
-         VMSTATE_UINT8(cfg_reg, pmp_entry_t),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -59,8 +59,8 @@ static const VMStateDescription vmstate_pmp_entry = {
- 
- static const VMStateDescription vmstate_pmp = {
-     .name = "cpu/pmp",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .needed = pmp_needed,
-     .post_load = pmp_post_load,
-     .fields = (const VMStateField[]) {
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 85199c7387..6089e2730e 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -23,6 +23,7 @@
- #include "qemu/log.h"
- #include "qapi/error.h"
- #include "cpu.h"
-+#include "csr.h"
- #include "trace.h"
- #include "exec/cputlb.h"
- #include "exec/page-protection.h"
-@@ -272,7 +273,7 @@ static int pmp_is_in_range(CPURISCVState *env, int pmp_index, hwaddr addr)
-  */
- static bool pmp_hart_has_privs_default(CPURISCVState *env, pmp_priv_t privs,
-                                        pmp_priv_t *allowed_privs,
--                                       target_ulong mode)
-+                                       uint8_t mode)
- {
-     bool ret;
- 
-@@ -331,8 +332,8 @@ static bool pmp_hart_has_privs_default(CPURISCVState *env, pmp_priv_t privs,
-  * Return false if no match
-  */
- bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
--                        target_ulong size, pmp_priv_t privs,
--                        pmp_priv_t *allowed_privs, target_ulong mode)
-+                        int size, pmp_priv_t privs,
-+                        pmp_priv_t *allowed_privs, uint8_t mode)
- {
-     int i = 0;
-     int pmp_size = 0;
-@@ -662,7 +663,7 @@ uint64_t mseccfg_csr_read(CPURISCVState *env)
-  * To avoid this we return a size of 1 (which means no caching) if the PMP
-  * region only covers partial of the TLB page.
-  */
--target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr)
-+uint64_t pmp_get_tlb_size(CPURISCVState *env, hwaddr addr)
- {
-     hwaddr pmp_sa;
-     hwaddr pmp_ea;
--- 
-2.51.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
