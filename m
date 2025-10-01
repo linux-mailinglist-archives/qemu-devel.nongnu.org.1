@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED07EBAEF06
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFC2BAEEC6
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3lFW-0005Kv-Bn; Tue, 30 Sep 2025 21:03:18 -0400
+	id 1v3lFv-0005Pk-LO; Tue, 30 Sep 2025 21:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lFM-0005JI-D9
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:08 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1v3lFY-0005Me-B1
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:20 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lEv-00083i-CR
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:07 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3f44000626bso3995492f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:02:38 -0700 (PDT)
+ id 1v3lEy-00084U-UV
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:20 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3ece0e4c5faso5385960f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:02:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1759280556; x=1759885356; darn=nongnu.org;
+ d=opnsrc.net; s=google; t=1759280558; x=1759885358; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=a+LKVy+uEs1gyTpMUsvOiaFbfXh40S7aK551rrhdKmI=;
- b=hbhbNi2PG29T2NPRYvevo83wjbDO1Hz663MrMOE9MausRRdXvMNWrW+PySIhEeMybs
- EpeFLu9g0GpZPQtyn0WcM0WDkwu+3II8ecFyq9rKnJqxPdDacVFAruiqLqFDIaEfhA9N
- ITy1udYdaP0k6BaRf8puJHuWGUwryvcRUOtjskcR3RbaFJ0T49/qr04geZ4OGd+1/Bj3
- /uRjU//bkpwUoBZAP+hQvwWnVsCmSIhQXIuoGi/3m5RDm1u/7wpbeaKPo/+BoKsUMTtb
- dZ1TqyWA6hg5xIAiZdOxVj1oM8mYEAr1rEZPo3yUPD5k7glkB4kLxxZ5zNW/iABu1BcU
- SGmQ==
+ bh=AIp1fTDpYUODV+o3H7vcfIGfQr/6T5pDk40yx4w9U+c=;
+ b=QZno1tdt4viyyeratTyfGlK0oYCqKDssUHCNjoA88f80xrm2HA4Y/zXw1mjqFaCIch
+ 2zg/wBOAU+29e5A8FR/0MpyvkSSHkovTV2POe8xQfWYkLbxG2oY8rdb9D016+aTy9h9m
+ ywdhyeeg5BS4utJ3ZmFS69xaiEsOpTCWhXflCqo9f61ViXRg2kvrT+S0DwymhgpcBm/p
+ 2161sUt8KwwQDCQserGUqN3fWjDtYtMyFBm0WxTc9JU3BpX9W1XQshP7Aq6UeKPlj/Cy
+ AXkNozTA6+5Vh2m4t22SDR7Z/EZsnPkzmQntjFmK/te6SuVuJ7lvIXH8oME15nLkTc1B
+ GOdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759280556; x=1759885356;
+ d=1e100.net; s=20230601; t=1759280558; x=1759885358;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a+LKVy+uEs1gyTpMUsvOiaFbfXh40S7aK551rrhdKmI=;
- b=NtekZKZFa3cNMo0kDic8jmZbvVd3LapW/rLqzoVVaQfjnnlsnFZv/jrz+rKmHqixH9
- XwyB+RSekYxRmYeKLMTkg1WXGVQ+T28sGPTigsim6VyBIcIyGwTL8n08ztfNgNkcdZWV
- ereayy9yL7mqaKEcBTH9P4UzdEl/apwYnKGBwIgvxQJJq4BwtHr7zb1tFpiE/HWMPcwo
- MRj1XKR6rjGmc/BTSTDGRsO3n6+n0Fg034McwV0x/RcbDSeml8gJSmSfwsVLnOufWOcb
- i6SbB4z3W0HGSOSFxFTe0WtjsV08tjZkfjEuluKx3eHREqwyi3+2xpAGOMJQVoMDh0m2
- U3Aw==
-X-Gm-Message-State: AOJu0YzIBs2NpyEB7UkdlShT1/Gty2A5rifDW9llNM19MCajSWwK6/hG
- hsugMpDn5P9u3VJIa7q68FHttaehZCioQvS/cedm/tsl9fwNkkCUiqjtJDuPhR4SGWYjRNSv/g/
- e4iniT4RslA==
-X-Gm-Gg: ASbGncsLvOBLor/6ZfcfPRfF0fOUfqoNx5xTUyqhcyGPmYjyiB7FMJtkqwYu/NACRiv
- WzmXm0ey1lCDeGF+nMOmm0BaeJGqpdshGDS+M6FBSs/VS5kTYiB3zmc6Z62neJP3KiEBz/13SvK
- Ehiob034fKjRDu6i0o0trb0UeaqEMFyKGgB4FpT5LpFTCn7uqxV5QSDq3aiKarqPv4KrudyOYqE
- EmbNeAZ8DjmEXzwDeB/vdGrU4lFkwTyT0CbivAS5bzIbGUjI6dVFresuiARHeXhmg0GZLXO8thp
- lxskY1zTyGm9QPK0JOQS1FIMe1WtcBtkl5fXT1EitkK2dJW4sDSu4lpZtqToTDv0lvuPxBCUUuU
- dD+Yorkv1VpMg10rSe/LN1KNiDVbf12l3xAwfPCwSO+WetD4g6rdKxqPxA8fWVboPbNJ/Pqol7g
- BszgMB6USTtwb4PqJz0MrkLZ6hRPetBA5KgUKiSzeKhc0=
-X-Google-Smtp-Source: AGHT+IGIOt/MFONJUAOMgOm5H0GxVTM3YTOfkE8m8l8GQdsR9nUtBneNaBYLZrxSvSmST42T3XP8Aw==
-X-Received: by 2002:a05:6000:430a:b0:3eb:f3de:1a87 with SMTP id
- ffacd0b85a97d-42557820cbdmr1157560f8f.56.1759280555752; 
- Tue, 30 Sep 2025 18:02:35 -0700 (PDT)
+ bh=AIp1fTDpYUODV+o3H7vcfIGfQr/6T5pDk40yx4w9U+c=;
+ b=BHqnv3S6MCyRoEvC5xBETr/PfXf0uiN1Uc4utFVosnCxZuknWdELWo4dk25Dco6Z16
+ PDV65CQZ2oddC99Az4YpIpcmlRNjzsROj1/RaBgtdaoFZIPepu7WZkxV6CQJD3mspACg
+ 7hPW762rcf+15IrO4ze+pvJjR8EXBjmOAdwVvlPPaOlHXM0wkCzsvmSg07E/tNnHeral
+ SIt3hgoZ3s5eXk37FDR0S2mGUBkpsAMCo2lKASHHEn94lqgYL2TgVnCONYLWeAI5gmxS
+ ngAMCTHVEbzQvnup2xEIxfKGE7zlCqXQ60WpoWsN6HgI2GwBxs+oWK9iMG2YXnIgJjkt
+ SDmg==
+X-Gm-Message-State: AOJu0YwmnACFDTnaX8oGJASGiIpsfg9DWoF1kqxkWPwK7cLao+FurEj4
+ 84cIOPxRTkEvQSPjwBQ3BBhEK7hg8cCP5Qa2tKB6kdYM/9QqyJOMzeclOv7a6piIwTacf4zua1j
+ QNFHbsRVRhA==
+X-Gm-Gg: ASbGncvNBiqZAEaUWsWR3qwN3thtRVt5B3sdSetjWgWDnAdD17GbyQs/dokalhoy8gf
+ bQyb8kHVQydePF29M+xaifwlYVjaYNjEA7PR196nDb4YUU18m8xlS3U4gKIutnt3ugAweR65Nhs
+ bSgWL/3tyJ6Dmpl4ckoPCBGVKszMqgIRxu9WstgVYU638xx0NiDvJqRUA+EUFLAoUfnmS0L+QJQ
+ Bw2cE1a+0rop2ijgcz95oY7kodVNTJSmiOUpXJrPmf/U8Jn893EQQAdqQiUX9gh9k5JoWZEGyBr
+ oiG+zNQgS8r9RE2BszOVBvXCbDWc8/w2srx/8oICYDgbNG9J/8JV/KrfJkKu0tximsMOJGwNIag
+ SjgvPq6JZaCFDJPHv9P57vt/WZeAwNqiQlgRkzorU9xP2GG6gdFr8as4KBq8dMXp2ZYIrUOu0My
+ VO9++w7PMCN7+YN12JomCU63lVhcv7RJvyb1giEVRix84=
+X-Google-Smtp-Source: AGHT+IHFSLI7/UdL6eC6mrr3Se5gLK2/8fPG8GzP/SKGovwybfxzCRv6ENVVmMVAr4Fr3OU7PXKjdQ==
+X-Received: by 2002:a05:6000:22c3:b0:3ee:114f:f88f with SMTP id
+ ffacd0b85a97d-4255782044bmr1069193f8f.59.1759280558171; 
+ Tue, 30 Sep 2025 18:02:38 -0700 (PDT)
 Received: from localhost.localdomain ([90.209.204.182])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.02.34
+ ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.02.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 18:02:35 -0700 (PDT)
+ Tue, 30 Sep 2025 18:02:37 -0700 (PDT)
 From: salil.mehta@opnsrc.net
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -84,24 +84,24 @@ Cc: salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, wangzhou1@hisilicon.com,
  linuxarm@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
  lixianglai@loongson.cn, shahuang@redhat.com, zhao1.liu@intel.com
-Subject: [PATCH RFC V6 10/24] arm/virt: Init PMU at host for all present vCPUs
-Date: Wed,  1 Oct 2025 01:01:13 +0000
-Message-Id: <20251001010127.3092631-11-salil.mehta@opnsrc.net>
+Subject: [PATCH RFC V6 11/24] hw/arm/acpi: MADT change to size the guest with
+ possible vCPUs
+Date: Wed,  1 Oct 2025 01:01:14 +0000
+Message-Id: <20251001010127.3092631-12-salil.mehta@opnsrc.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
 References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,145 +119,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Salil Mehta <salil.mehta@huawei.com>
 
-ARM architecture requires that all CPUs which form part of the VM must
-expose identical feature sets and consistent system components at creation
-time. This includes the Performance Monitoring Unit (PMU). If only the boot
-CPUs had their PMU state initialized, the remaining CPUs defined by
-`smp.disabled_cpus` would not match this architectural requirement, leading
-to inconsistencies and guest misbehavior.
+When QEMU builds the MADT table, modifications are needed to include information
+about possible vCPUs that are exposed as ACPI-disabled (i.e., `_STA.Enabled=0`).
+This new information will help the guest kernel pre-size its resources during
+boot time. Pre-sizing based on possible vCPUs will facilitate the future
+hot-plugging of the currently disabled vCPUs.
 
-To comply with this constraint, PMU initialization must cover the entire set
-of present vCPUs:
+Additionally, this change addresses updates to the ACPI MADT GIC CPU interface
+flags, as introduced in the UEFI ACPI 6.5 specification [1]. These updates
+enable deferred virtual CPU onlining in the guest kernel.
 
-    present = smp.cpus + smp.disabled_cpus
-
-CPUs outside this set (`smp.max_cpus - present`) are not considered part of
-the machine at creation and are therefore not initialized.
+Reference:
+[1] 5.2.12.14. GIC CPU Interface (GICC) Structure (Table 5.37 GICC CPU Interface Flags)
+    Link: https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#gic-cpu-interface-gicc-structure
 
 Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/arm/virt.c         | 13 +++++++---
- include/hw/arm/virt.h |  1 +
- include/hw/core/cpu.h | 57 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 67 insertions(+), 4 deletions(-)
+ hw/arm/virt-acpi-build.c | 40 ++++++++++++++++++++++++++++++++++------
+ hw/core/machine.c        | 14 ++++++++++++++
+ include/hw/boards.h      | 20 ++++++++++++++++++++
+ 3 files changed, 68 insertions(+), 6 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index ee09aa19bd..3980f553db 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2087,12 +2087,13 @@ static void finalize_gic_version(VirtMachineState *vms)
- static void virt_post_cpus_gic_realized(VirtMachineState *vms,
-                                         MemoryRegion *sysmem)
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index b01fc4f8ef..7c24dd6369 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -760,6 +760,32 @@ static void build_append_gicr(GArray *table_data, uint64_t base, uint32_t size)
+     build_append_int_noprefix(table_data, size, 4); /* Discovery Range Length */
+ }
+ 
++static uint32_t virt_acpi_get_gicc_flags(CPUState *cpu)
++{
++    MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
++    const uint32_t GICC_FLAG_ENABLED = BIT(0);
++    const uint32_t GICC_FLAG_ONLINE_CAPABLE = BIT(3);
++
++    /* ARM architecture does not support vCPU hotplug yet */
++    if (!cpu) {
++        return 0;
++    }
++
++    /*
++     * If the machine does not support online-capable CPUs, report the GICC as
++     * 'enabled' only.
++     */
++    if (!mc->has_online_capable_cpus) {
++        return GICC_FLAG_ENABLED;
++    }
++
++    /*
++     * ACPI 6.5, 5.2.12.14 (GICC): mark the boot CPU 'enabled' and all others
++     * 'online-capable'.
++     */
++    return (cpu == first_cpu) ? GICC_FLAG_ENABLED : GICC_FLAG_ONLINE_CAPABLE;
++}
++
+ static void
+ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
  {
-+    CPUArchIdList *possible_cpus = vms->parent.possible_cpus;
-     int max_cpus = MACHINE(vms)->smp.max_cpus;
--    bool aarch64, pmu, steal_time;
-+    bool aarch64, steal_time;
-     CPUState *cpu;
+@@ -785,12 +811,14 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     build_append_int_noprefix(table_data, vms->gic_version, 1);
+     build_append_int_noprefix(table_data, 0, 3);   /* Reserved */
  
-     aarch64 = object_property_get_bool(OBJECT(first_cpu), "aarch64", NULL);
--    pmu = object_property_get_bool(OBJECT(first_cpu), "pmu", NULL);
-+    vms->pmu = object_property_get_bool(OBJECT(first_cpu), "pmu", NULL);
-     steal_time = object_property_get_bool(OBJECT(first_cpu),
-                                           "kvm-steal-time", NULL);
+-    for (i = 0; i < MACHINE(vms)->smp.cpus; i++) {
+-        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(i));
++    for (i = 0; i < MACHINE(vms)->smp.max_cpus; i++) {
++        CPUState *cpu = machine_get_possible_cpu(i);
+         uint64_t physical_base_address = 0, gich = 0, gicv = 0;
+         uint32_t vgic_interrupt = vms->virt ? ARCH_GIC_MAINT_IRQ : 0;
+-        uint32_t pmu_interrupt = arm_feature(&armcpu->env, ARM_FEATURE_PMU) ?
+-                                             VIRTUAL_PMU_IRQ : 0;
++        uint32_t pmu_interrupt = vms->pmu ? VIRTUAL_PMU_IRQ : 0;
++        CPUArchId *archid = machine_get_possible_cpu_arch_id(i);
++        uint32_t flags = virt_acpi_get_gicc_flags(cpu);
++        uint64_t mpidr = archid->arch_id;
  
-@@ -2123,8 +2124,12 @@ static void virt_post_cpus_gic_realized(VirtMachineState *vms,
-             exit(1);
-         }
+         if (vms->gic_version == VIRT_GIC_VERSION_2) {
+             physical_base_address = memmap[VIRT_GIC_CPU].base;
+@@ -805,7 +833,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         build_append_int_noprefix(table_data, i, 4);    /* GIC ID */
+         build_append_int_noprefix(table_data, i, 4);    /* ACPI Processor UID */
+         /* Flags */
+-        build_append_int_noprefix(table_data, 1, 4);    /* Enabled */
++        build_append_int_noprefix(table_data, flags, 4);
+         /* Parking Protocol Version */
+         build_append_int_noprefix(table_data, 0, 4);
+         /* Performance Interrupt GSIV */
+@@ -819,7 +847,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         build_append_int_noprefix(table_data, vgic_interrupt, 4);
+         build_append_int_noprefix(table_data, 0, 8);    /* GICR Base Address*/
+         /* MPIDR */
+-        build_append_int_noprefix(table_data, arm_cpu_mp_affinity(armcpu), 8);
++        build_append_int_noprefix(table_data, mpidr, 8);
+         /* Processor Power Efficiency Class */
+         build_append_int_noprefix(table_data, 0, 1);
+         /* Reserved */
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 69d5632464..65388d859a 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1383,6 +1383,20 @@ CPUState *machine_get_possible_cpu(int64_t cpu_index)
+     return NULL;
+ }
  
--        CPU_FOREACH(cpu) {
--            if (pmu) {
-+        CPU_FOREACH_POSSIBLE(cpu, possible_cpus) {
-+            if (!cpu) {
-+                continue;
-+            }
++CPUArchId *machine_get_possible_cpu_arch_id(int64_t cpu_index)
++{
++    MachineState *ms = MACHINE(qdev_get_machine());
++    CPUArchIdList *possible_cpus = ms->possible_cpus;
 +
-+            if (vms->pmu) {
-                 assert(arm_feature(&ARM_CPU(cpu)->env, ARM_FEATURE_PMU));
-                 if (kvm_irqchip_in_kernel()) {
-                     kvm_arm_pmu_set_irq(ARM_CPU(cpu), VIRTUAL_PMU_IRQ);
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index ace4154cc6..02cc311452 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -154,6 +154,7 @@ struct VirtMachineState {
-     bool mte;
-     bool dtb_randomness;
-     bool second_ns_uart_present;
-+    bool pmu;
-     OnOffAuto acpi;
-     VirtGICType gic_version;
-     VirtIOMMUType iommu;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5eaf41a566..2ee202a8a5 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -602,6 +602,63 @@ extern CPUTailQ cpus_queue;
- #define CPU_FOREACH_SAFE(cpu, next_cpu) \
-     QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus_queue, node, next_cpu)
- 
++    for (int i = 0; i < possible_cpus->len; i++) {
++        if (possible_cpus->cpus[i].cpu &&
++            possible_cpus->cpus[i].cpu->cpu_index == cpu_index) {
++            return &possible_cpus->cpus[i];
++        }
++    }
++    return NULL;
++}
 +
-+/**
-+ * CPU_FOREACH_POSSIBLE(cpu_, archid_list_)
+ static char *cpu_slot_to_string(const CPUArchId *cpu)
+ {
+     GString *s = g_string_new(NULL);
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 3ff77a8b3a..fe51ca58bf 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -461,6 +461,26 @@ struct MachineState {
+     bool acpi_spcr_enabled;
+ };
+ 
++/*
++ * machine_get_possible_cpu_arch_id:
++ * @cpu_index: logical cpu_index to search for
 + *
-+ * Iterate over all entries in a CPUArchIdList, assigning each entry’s
-+ * CPUState* to @cpu_. This hides the loop index and reads like a normal
-+ * C for-loop.
++ * Return a pointer to the CPUArchId entry matching the given @cpu_index
++ * in the current machine's MachineState. The possible_cpus array holds
++ * the full set of CPUs that the machine could support, including those
++ * that may be created as disabled or taken offline.
 + *
-+ * A CPUArchIdList represents the set of *possible* CPUs for a machine.
-+ * Each entry contains:
-+ *   - @cpu:        CPUState pointer, or NULL if not realized yet
-+ *   - @arch_id:    architecture-specific identifier (e.g. MPIDR)
-+ *   - @vcpus_count: number of vCPUs represented (usually 1)
++ * The slot index in ms->possible_cpus[] is always sequential, but the
++ * logical cpu_index values are assigned by QEMU and may or may not be
++ * sequential depending on the implementation of a particular machine.
++ * Direct indexing by cpu_index is therefore unsafe in general. This
++ * helper performs a linear search of the possible_cpus array to find
++ * the matching entry.
 + *
-+ * The list models *possible* CPUs: it includes (a) currently plugged vCPUs
-+ * made available through hotplug, (b) present (and perhaps visible to OSPM)
-+ * but kept ACPI-disabled vCPUs, and (c) reserved slots for CPUs that may be
-+ * created in the future. This supports co-existence of hotpluggable and
-+ * admin-disabled vCPUs if architectures permit.
-+ *
-+ * Example:
-+ *
-+ *   CPUArchIdList *alist = machine_possible_cpus(ms);
-+ *   CPUState *cpu;
-+ *
-+ *   CPU_FOREACH_POSSIBLE(cpu, alist) {
-+ *       if (!cpu) {
-+ *           continue; // reserved slot for hotplug case
-+ *       }
-+ *
-+ *       < Do Something >
-+ *   }
-+ *
-+ * Expanded equivalent:
-+ *
-+ *   for (int __cpu_idx = 0; alist && __cpu_idx < alist->len; __cpu_idx++) {
-+ *       if ((cpu = alist->cpus[__cpu_idx].cpu, 1)) {
-+ *           if (!cpu) {
-+ *               continue;
-+ *           }
-+ *
-+ *           < Do Something >
-+ *       }
-+ *   }
-+ *
-+ * Notes:
-+ *   - Callers must check @cpu for NULL when filtering unplugged CPUs.
-+ *   - Mirrors the style of CPU_FOREACH(), but iterates all *possible* CPUs
-+ *     (plugged, ACPI-disabled, and reserved slots) rather than only present
-+ *     and enabled vCPUs.
++ * Returns: pointer to the matching CPUArchId, or NULL if not found.
 + */
-+#define CPU_FOREACH_POSSIBLE(cpu_, archid_list_) \
-+    for (int __cpu_idx = 0; \
-+         (archid_list_) && __cpu_idx < (archid_list_)->len; \
-+         __cpu_idx++) \
-+        if (((cpu_) = (archid_list_)->cpus[__cpu_idx].cpu, 1))
++CPUArchId *machine_get_possible_cpu_arch_id(int64_t cpu_index);
 +
- extern __thread CPUState *current_cpu;
- 
- /**
+ /*
+  * The macros which follow are intended to facilitate the
+  * definition of versioned machine types, using a somewhat
 -- 
 2.34.1
 
