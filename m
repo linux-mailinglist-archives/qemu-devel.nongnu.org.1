@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03195BAF98B
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A608EBAFA81
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 10:34:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3s61-0000VU-52; Wed, 01 Oct 2025 04:21:57 -0400
+	id 1v3s6I-0000av-JD; Wed, 01 Oct 2025 04:22:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5x-0000V0-3R
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:53 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s6E-0000Zh-67
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:22:11 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5l-0005Gb-El
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:21:51 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-46e48d6b95fso42881035e9.3
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:21:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v3s5s-0005Lh-PL
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 04:22:09 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46b303f7469so47399705e9.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 01:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759306895; x=1759911695; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759306900; x=1759911700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9FXrBC5DT5H2U+KHBH/fTo7fOpyh9XDm8ZSBZ4mpCC0=;
- b=a497poM6mPsCiYfvZOZH5Fcel/pZkYzjndJ7R7r9AvL0YXwUuCivkWoAm40qZWgGL2
- q57Dh9cPzSDle/1ijZYSuMhCLRvYb2WZ2B6P3clbUD2yCfXMQh1G2ynE8m7/0cjzLyNy
- aJBjJ55LrM3XfUopXmtTFjATLb4GZ+sJiKRYecWthvwn4LdYpFDiDiJKCl3aYKL67e2X
- C2il9VHR0rw14Gd3f3usfmoG9Tzl5VXnIMvIqzXeCZcsiGHXUJ3Eho1BT/fcaUU3hjDP
- o8TuB44FvpeEx3eEL+ee2OcntJ6bVlVVQ9+7rrptpZ1h68C0DJOEAADCVxYmSVcM1jj6
- X1Kg==
+ bh=+C5CzLMaPwDa1iB060vEOK+Ww+NfWXh/VYhisUdBYCs=;
+ b=xS4+INqkvrOyo0VDk7EdrzA97R4H3E06nazlYJqUUGT+SdLdO9IawwxTPISovEhjIj
+ cwf7W25cbcpHOkttjEmjU3BCmZ3Dcl0QskG96Mps+YD6zbyv0s3fBHw7lWCm2ztCLEML
+ ltDwSlX9tLvy0kF7Y5/IhQmoFPVlmxRJMuWyPkhF/7IO37osNWdU0NQb3HhxYcHQu3GT
+ ZW9xVK/EFXW+96lt6OJWHCERnBJFN4fKoxNBYRCQv2wYu42oIJxBRqYMf8JiRbvSdP7W
+ 4lTaCgETezKtvywCUgI3b7/hnbniaU6mLa/EGUmSoQZDrjOsvNsZPI9TL6aHJFyNQHLZ
+ KAyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759306895; x=1759911695;
+ d=1e100.net; s=20230601; t=1759306900; x=1759911700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9FXrBC5DT5H2U+KHBH/fTo7fOpyh9XDm8ZSBZ4mpCC0=;
- b=S8BYVqGdJU2vR3jm0UzcAiw2l5TYwMAdDxjV73nzCXHiAdMCTUCKjXyrlYU1pzXqG2
- FAfaBn/IIGkKPEruoVvhIwXuAJaJZClvVAA0L1dVOlJzFSahub2fcu0gDk+ddEKHAT+P
- tePsoAf1eNBvFwNr2FdaqCYrS1ouayiDld9EINOtodz3pddrDoycrLA1kXKE4OQykMjK
- KPyfsb1EueYf0hPg3ptd22KY834H5LLiRTXlEflbajyUa2u8g6Mld+EANm9goyADnjZj
- miueY1Wo0K36u4ZZ4qK77Ilf8pUDGq3xU/3UQQmWWLoiLJQ1Ozhz0s+fk3eJii9rWHND
- 1oSA==
-X-Gm-Message-State: AOJu0YyP49MHpKeRn9cL79mC3iYR2PfZBvgjzrZGO065+edsnMvbkLlX
- ZOoir3Cb4j5GNZgnD0qM1rATYRS/J77UhAcXG0h9yW14wBKgmFHGPBPX1xEQ/3gBNzWKPU5WSWZ
- J82TEN/OKBg==
-X-Gm-Gg: ASbGnctjLUC3c2anMGhmCrnMTrir61yqdliYT17X+gNAYh6GRKRwgvjRfJ6nC9EE0lO
- 1F74243VbvP2iQCvnknvCVVS8nqTPNDnNjxxZn1ktUkEJIgaQI/QaybtdRIhw21DcKcxBHUqYqN
- p08D6t2ez3SQqc34RMiRuku2mUAvOb3biOWkKt28B1sh9r+kKGwLIXaYoUq/lGtM28G9j35itse
- FKmbEuX2RjLFu1/PwTbgW9pjRT2sacoItZks9pnIFbggwON8jH9UIGYmeuwBrR64ZjNwsamug1F
- iDmSEF0pyLhb94ONTO0LyrLGRg8iD9vNIotR/rxNT0MV04OaMj8KbR5vcgkovN1O8aiIr1IW/Ng
- e7tUDKfCBu58MkZ92ULGdiTPR7N7v8TeZ4LsmZXQfYQgVLz1XlPQyUb7yY++iTwgSiHjkW9BlVV
- ey/mFRnziInk0Qvy65Ke6R
-X-Google-Smtp-Source: AGHT+IEVW+a7ZQahLwvXdewpnTcuAcck+Pbu7pXQ3XgPa8cMZnL3kzmIaMWIdBuRBFM46G6yblRD1A==
-X-Received: by 2002:a05:600c:698c:b0:46e:4783:1a7a with SMTP id
- 5b1f17b1804b1-46e61201fb4mr19588005e9.3.1759306895019; 
- Wed, 01 Oct 2025 01:21:35 -0700 (PDT)
+ bh=+C5CzLMaPwDa1iB060vEOK+Ww+NfWXh/VYhisUdBYCs=;
+ b=Jb0UrmTmxwcSL5ZHcZgpuixm2Pg0pElA/NUNf2a6Xkg+NkOj9f+HK1srq7bo3zGpPA
+ nF/9oUl0qZYpMQC4GAAM/0y4R4JgJb2y77koPVD486FWg7n8WD83yQV4+6Q6MUq+JVCx
+ MExYPet9jShAqG48itl4n6N52gJlfx62kRnIv+Ypeh2zJ1n9kw7VJn1hT7xsujgUyBpQ
+ eP4w5dXlUe9a3CCKHh4mS9HGAkp0BUBdRE+oCxY6h97sb/1W5T7uXUDFa5wIa/bfQa2B
+ I8+fH4vuCleE/x9xbbn4trwTS0qbGcB/+9hDQAj+7F0APZTZ+Ho0BKm5TdzYk3scL4cU
+ 6Rnw==
+X-Gm-Message-State: AOJu0YzE029/AhTMrUuCakgkOHXxtxjY42bT3ommnz72Rkg3BEmUKkof
+ CYZduFdy90yvrISjzo6a5LDWwMBZs9GQfAPohtaos9m0B4vCUgav6tsTVkRVgTmrX+jFFaujw2T
+ 3RKeNHghJ6w==
+X-Gm-Gg: ASbGnctzRVqlDfy9UkmUbdNjPZaesFfX/e0jlWHdHVFdvrAplRoPR1JU6W0KOBrUlwA
+ In5GGsU7AiS/eTXigsYUoQgx2mIgCjfyeD61SrtG7M1+vV9ldgDAv51tKoN0oTfCyjctP5Zh/qx
+ 7crNGEx5JoIZX/ng4DWhbotMuj51rr6peVzXcFdnbhZEBLZ/XvgpAf66qQ57BAnHVqU5lLe9RVC
+ +GNSxqnlgc1czo/powxXg9wWZSqp7V01KxcMFjfbQT6y2P0fRgzk+Y7J+ETv2Af7wgrKn4bBp8f
+ JCkyZu6p2rTmM8EY23FYyg4vNEKdkN0ucSnV54nQdgbuKPPWufSJbp/NgF4ZDUzvFv5OcLyydOn
+ B3yU2migYbxxdA9TkHgWYfFx1Nos1Sr6JXkT4ADc8rgFVTcmQnyfSM5j+PUvIPPiOWG9VO3fhz1
+ CF8LrOEw1TrNYif9Q/e7dW
+X-Google-Smtp-Source: AGHT+IG+BsZmZhn5AVBasoM2tJ9zzxKe+EhfCA1OHPGY/VYR6bdoCD06Y50Qg9jsUtcYDIRS/+ZYRA==
+X-Received: by 2002:a5d:64e6:0:b0:3f7:ce62:ce17 with SMTP id
+ ffacd0b85a97d-4255780b1admr2121501f8f.38.1759306900546; 
+ Wed, 01 Oct 2025 01:21:40 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fc72b0aeesm26590514f8f.49.2025.10.01.01.21.33
+ ffacd0b85a97d-40fc6921b7dsm25730046f8f.42.2025.10.01.01.21.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 01 Oct 2025 01:21:34 -0700 (PDT)
+ Wed, 01 Oct 2025 01:21:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
@@ -82,24 +82,23 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH 01/25] system/ram_addr: Remove unnecessary 'exec/cpu-common.h'
- header
-Date: Wed,  1 Oct 2025 10:21:01 +0200
-Message-ID: <20251001082127.65741-2-philmd@linaro.org>
+Subject: [PATCH 02/25] accel/kvm: Include missing 'exec/target_page.h' header
+Date: Wed,  1 Oct 2025 10:21:02 +0200
+Message-ID: <20251001082127.65741-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001082127.65741-1-philmd@linaro.org>
 References: <20251001082127.65741-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,26 +114,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nothing in "system/ram_addr.h" requires definitions fromi
-"exec/cpu-common.h", remove it.
+The "exec/target_page.h" header is indirectly pulled from
+"system/ram_addr.h". Include it explicitly, in order to
+avoid unrelated issues when refactoring "system/ram_addr.h":
+
+  accel/kvm/kvm-all.c: In function ‘kvm_init’:
+  accel/kvm/kvm-all.c:2636:12: error: ‘TARGET_PAGE_SIZE’ undeclared (first use in this function); did you mean ‘TARGET_PAGE_BITS’?
+   2636 |     assert(TARGET_PAGE_SIZE <= qemu_real_host_page_size());
+        |            ^~~~~~~~~~~~~~~~
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/ram_addr.h | 1 -
- 1 file changed, 1 deletion(-)
+ accel/kvm/kvm-all.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-index 6b528338efc..f74a0ecee56 100644
---- a/include/system/ram_addr.h
-+++ b/include/system/ram_addr.h
-@@ -29,7 +29,6 @@
- #include "qemu/rcu.h"
- 
- #include "exec/hwaddr.h"
--#include "exec/cpu-common.h"
- 
- extern uint64_t total_dirty_pages;
- 
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index e3c84723406..08b2b5a371c 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -36,6 +36,7 @@
+ #include "accel/accel-ops.h"
+ #include "qemu/bswap.h"
+ #include "exec/tswap.h"
++#include "exec/target_page.h"
+ #include "system/memory.h"
+ #include "system/ram_addr.h"
+ #include "qemu/event_notifier.h"
 -- 
 2.51.0
 
