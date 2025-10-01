@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12ECCBAF825
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E03BAF837
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:55:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3re9-0006tu-46; Wed, 01 Oct 2025 03:53:09 -0400
+	id 1v3reE-0006xC-0W; Wed, 01 Oct 2025 03:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rdu-0006cr-0w
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:55 -0400
+ id 1v3rdr-0006c8-ES
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rdj-0003AE-2B
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:53 -0400
+ id 1v3rdm-0003B7-Jj
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759305157;
+ s=mimecast20190719; t=1759305159;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9M+JXFjjYaGik7uRmhhb/Emdc0Kj2h52R5hWa4pUnpw=;
- b=CLbaX2KzI0tgBmjs0MLYahkiJ/nApZ4ODrc0wyRqyR+zVl+ibiBBrf+Hu3nH/4RN3RknzP
- mc+JKj2XEsDTcrI7VJ2lOHC6mrw76VVDxm3uFBOBU+gCfpULTErM2MWZ0eAPZ0gimqeY3X
- 6btfp2YMQA4QniDUVjpq19SCbgjIv88=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wkmJmPrqH3IoM0HBrMlgVGI5gpDbA3okoWc8ks14C1w=;
+ b=NUazE15Nsj8RxekEvK/dJoLk4QmHBSsxBjiprZ0QjMLBDNgVeO2Oe6HoGEUQdhzyFLLpkH
+ Qx+N8WBiNDFN7So8jjCVyP6ej90tElhoUMgIkOPRYhz8tw1yopCpwczOr6cenO/ZxWYnrV
+ sxdceJPelk9tBJQDV+s5izg5bdn6NWw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-VJlWji_6MhauCCr_677HtA-1; Wed, 01 Oct 2025 03:52:36 -0400
-X-MC-Unique: VJlWji_6MhauCCr_677HtA-1
-X-Mimecast-MFC-AGG-ID: VJlWji_6MhauCCr_677HtA_1759305155
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-b4635c413a7so82878766b.1
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:52:35 -0700 (PDT)
+ us-mta-213-a8N7uEwzMXK9n3FuEJ4NTw-1; Wed, 01 Oct 2025 03:52:37 -0400
+X-MC-Unique: a8N7uEwzMXK9n3FuEJ4NTw-1
+X-Mimecast-MFC-AGG-ID: a8N7uEwzMXK9n3FuEJ4NTw_1759305156
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b04a8ae1409so963012866b.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:52:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759305154; x=1759909954;
+ d=1e100.net; s=20230601; t=1759305156; x=1759909956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9M+JXFjjYaGik7uRmhhb/Emdc0Kj2h52R5hWa4pUnpw=;
- b=wKE4qBDm7viC5B9tkoWxq7I8+CyPQUFUqwPYutsV8i8BiPqwNrsNgX/Cikn2K9SZzA
- v60YnYYUsUW5Pl8Y8GnCtmQj9euFVlrMaPWpZmChkusr3g22sxDcgvPYlO+2iz4iMtlW
- d9knChRbU+ClHSk/XjtOqRUq7quoGpEOF1H3v63X/7YB39St6c0pJ8t3ncb0e6bS1RJq
- MJ3mBcIKS5QXtaXc8ds9wR1/saeRcOktBKC7fFUudFLNThJIW8G9cCVwqtsNMH9HPdZZ
- AFvV5kT//NhTOKoQstVti1NI4Ejdco1F369yI8/mBLjysZH3GJJg0ecuh4ZipxOrBHR/
- 3YLw==
-X-Gm-Message-State: AOJu0YwGP+c8cuPnGFxKd8Vh9K9yqDqWiky51GN/EiKkYZNZOWTeE2CV
- MzImbeuG8g4v8ztZuXy8yJDJGOgYRsOu+PsRBRvmoNOR6JKbciDxfKXg/H4rL287oxbOoND+MRP
- nTimJvQV/jY1Iz6vdvCKDwv9tlyt1kokN7jOv7A2EbNQWKnVRAq5KVlQ0j60JB5ioNaPRPJGZml
- yFlv73qjzeCiNe+vR9kuGw06Sc/i7CXE1R5l84i33v
-X-Gm-Gg: ASbGnctqt416paLw4+IDj3/riGB2hLyY7e8CD+7UuKZRM5NwIUNSphkrSYSiJo46/Zz
- KTRKv4LGdPU81RzrfDFWwyZmxQZpbGa3Os1r6j4oc/cW9x7hil+9jFK2s036Otlq5qecw2a5Eqg
- UueZACPVBH7HWn37y+ZQWEVwLdUzn6wm41YgCzICZDRSRCw9gVS1msMIcdiiqIe/BaHocx42uMR
- QeS6tnON0mKgqeXZLWgejG3v2zdXfrElUiVQAGkRrZHAF942OT8YmzeZrttgOnQypH3RJl9qKf2
- ii3hqrhEgmmqQrPGD1ihttqpTs0qTmJUUew9Z7cYd1T7M7PXuoeE/SGQywtAg+hHb2NvVHnebAN
- DbWfFHft7O/O0Hea/YspP/FkAX3Tb2SS4cce4lnpglXOI6MdvZvY=
-X-Received: by 2002:a17:907:1b29:b0:b40:a71b:152e with SMTP id
- a640c23a62f3a-b46e8894987mr299772366b.40.1759305153913; 
- Wed, 01 Oct 2025 00:52:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6WP6hJ6UkCJTgM7/xWFgRIC7iT5TLWIGuL8x6esCRYsMDqsRILHgMiO6b/08bnE8KXdV6Fw==
-X-Received: by 2002:a17:907:1b29:b0:b40:a71b:152e with SMTP id
- a640c23a62f3a-b46e8894987mr299769366b.40.1759305153459; 
- Wed, 01 Oct 2025 00:52:33 -0700 (PDT)
+ bh=wkmJmPrqH3IoM0HBrMlgVGI5gpDbA3okoWc8ks14C1w=;
+ b=BaPtQ+txvl3euxsv3zMjb3JT7OgttJzT33rw3QqXF2917TrYR7i/ST3r01s8QCoiRy
+ HZAS2xb0zuaDSodv2JSFaYcg64nCExaSm7bDPvyAlm9esl58ZSde/fXY3gO4u/Yjk7GI
+ eT85Ins5Ka4GG4gKIMe/Oa4y2GoETT01XTvFQxzeMF2P5c0Gbe9czF+RInlRx56HmElH
+ sMAI3zXKUjzQBR8KgJAIM71PuEJHGrtq8zOlAAXRa39dDqNmu2AORjDkJ/uFQ/GPgUXt
+ Zz7Bzd4Bd9Nk/g+6SGwUjG2L6dfqlwwdpYh1L2xeHCDys7BO6nHQ81//tvsDRn3hNbeM
+ UiTw==
+X-Gm-Message-State: AOJu0YyABfrjnmGhZepo8aWDHMXCPRHoqqWFN7Gg/ZVe3rEYWdiHx6GM
+ Djk0vyan6atMzkp6N/6wtX+WvVSGFMsJLnwEDlI1HdrXib77xJwG3JZ+5NjbZUaYB/OwyCuyRO2
+ h0rwSDijxGSmLEY8mqbXI31bwgJYlOsJSQD67PiEAd+tQ/TPjwWszTjdv1nXxW8Wcf7B4B4C3VA
+ azed5+M5O0+rwQo9XGpPbVzGLzvFZ87LloLSClgRMN
+X-Gm-Gg: ASbGncsa9Ga/d/hvLRvBA6ALAhfDo+1qiwHXy5kGYFV5WAR0EESAiLwwZ3+jUu3V9NK
+ UCOZRnI/JUOfARHTrKB4psw/0Y7/P6+aLVuvtCUoOV2syZYOUr1onn4o0pMZ/weLapnpX4rUnfn
+ Klh1kMgzEaExDW6SgiExSlH+U5rWxv+fc8igOQ3Ai/AOnPQy+l0ReDNqEI+XEG8XoS7sjw3vQch
+ Bh9GM3KI0JZeD1HP/7w1x9t0IdDhu3Fbr14OEw7U9SoLkAvpPvvSZb5617MgANWlWlnY4ezR63T
+ 24wzIhEkoqjf7V2LkfJhJux+6nTA1VqESVwiruzqrebTlgBRotidPvK+XppmNxaHop4FJfbd96t
+ XJy3xRp0X5VmQqmA2V2Fb1Qgvxtu1RpeNk2SmFTCW/2GwowpcuHw=
+X-Received: by 2002:a17:907:6d0b:b0:b3e:151b:849e with SMTP id
+ a640c23a62f3a-b46e43aae78mr336804866b.10.1759305156145; 
+ Wed, 01 Oct 2025 00:52:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcPAsowgyBe0WjwQd5OdqeYzVwW2rSbqDmeQPQmmj3PUB1ZmokupnLMBQ7kDlgs31x+K1UXQ==
+X-Received: by 2002:a17:907:6d0b:b0:b3e:151b:849e with SMTP id
+ a640c23a62f3a-b46e43aae78mr336800266b.10.1759305155694; 
+ Wed, 01 Oct 2025 00:52:35 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b3c9ab5d70esm720656366b.21.2025.10.01.00.52.31
+ a640c23a62f3a-b3f575aa694sm549217966b.54.2025.10.01.00.52.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 00:52:31 -0700 (PDT)
+ Wed, 01 Oct 2025 00:52:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 10/11] rust: migration: implement ToMigrationState for Timer
-Date: Wed,  1 Oct 2025 09:52:09 +0200
-Message-ID: <20251001075210.1042479-10-pbonzini@redhat.com>
+Subject: [PATCH 11/11] rust: migration: implement ToMigrationState as part of
+ impl_vmstate_bitsized
+Date: Wed,  1 Oct 2025 09:52:10 +0200
+Message-ID: <20251001075210.1042479-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001075005.1041833-1-pbonzini@redhat.com>
 References: <20251001075005.1041833-1-pbonzini@redhat.com>
@@ -89,9 +90,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,97 +108,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Timer is a complex struct, allow adding it to a struct that
-uses #[derive(ToMigrationState)]; similar to vmstate_timer, only
-the expiration time has to be preserved.
-
-In fact, because it is thread-safe, ToMigrationStateShared can
-also be implemented without needing a cell or mutex that wraps
-the timer.
+This is most likely desirable, and is the easiest way to migrate
+a bit-sized value without peeking at the innards of the bilge crate.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/migration/src/migratable.rs | 31 +++++++++++++++++++++++++++++++
- rust/util/src/timer.rs           | 10 +++++++++-
- 2 files changed, 40 insertions(+), 1 deletion(-)
+ rust/migration/src/vmstate.rs | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
-index ded6fe8f4a6..e85ef810efc 100644
---- a/rust/migration/src/migratable.rs
-+++ b/rust/migration/src/migratable.rs
-@@ -140,6 +140,26 @@ fn restore_migrated_state_mut(
- 
- impl_for_primitive!(u8, u16, u32, u64, i8, i16, i32, i64, bool);
- 
-+impl ToMigrationState for util::timer::Timer {
-+    type Migrated = i64;
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index 2a29aff7cd6..c95f8ece776 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -295,6 +295,25 @@ unsafe impl $crate::vmstate::VMState for $type {
+                                           as ::bilge::prelude::Number>::UnderlyingType
+                                          as $crate::vmstate::VMState>::VARRAY_FLAG;
+         }
 +
-+    fn snapshot_migration_state(&self, target: &mut i64) -> Result<(), InvalidError> {
-+        // SAFETY: as_ptr() is unsafe to ensure that the caller reasons about
-+        // the pinning of the data inside the Opaque<>.  Here all we do is
-+        // access a field.
-+        *target = self.expire_time_ns().unwrap_or(-1);
-+        Ok(())
-+    }
++        impl $crate::migratable::ToMigrationState for $type {
++            type Migrated = <<$type as ::bilge::prelude::Bitsized>::ArbitraryInt
++                                          as ::bilge::prelude::Number>::UnderlyingType;
 +
-+    fn restore_migrated_state_mut(
-+        &mut self,
-+        source: Self::Migrated,
-+        version_id: u8,
-+    ) -> Result<(), InvalidError> {
-+        self.restore_migrated_state(source, version_id)
-+    }
-+}
++            fn snapshot_migration_state(&self, target: &mut Self::Migrated) -> Result<(), $crate::InvalidError> {
++                *target = Self::Migrated::from(*self);
++                Ok(())
++            }
 +
- impl<T: ToMigrationState, const N: usize> ToMigrationState for [T; N]
- where
-     [T::Migrated; N]: Default,
-@@ -237,6 +257,17 @@ fn restore_migrated_state(
-     ) -> Result<(), InvalidError>;
++            fn restore_migrated_state_mut(
++                &mut self,
++                source: Self::Migrated,
++                version_id: u8,
++            ) -> Result<(), $crate::InvalidError> {
++                *self = Self::from(source);
++                Ok(())
++            }
++        }
+     };
  }
  
-+impl ToMigrationStateShared for util::timer::Timer {
-+    fn restore_migrated_state(&self, source: i64, _version_id: u8) -> Result<(), InvalidError> {
-+        if source >= 0 {
-+            self.modify(source as u64);
-+        } else {
-+            self.delete();
-+        }
-+        Ok(())
-+    }
-+}
-+
- impl<T: ToMigrationStateShared, const N: usize> ToMigrationStateShared for [T; N]
- where
-     [T::Migrated; N]: Default,
-diff --git a/rust/util/src/timer.rs b/rust/util/src/timer.rs
-index c6b3e4088ec..a99ff5e7ef7 100644
---- a/rust/util/src/timer.rs
-+++ b/rust/util/src/timer.rs
-@@ -10,7 +10,8 @@
- use common::{callbacks::FnCall, Opaque};
- 
- use crate::bindings::{
--    self, qemu_clock_get_ns, timer_del, timer_init_full, timer_mod, QEMUClockType,
-+    self, qemu_clock_get_ns, timer_del, timer_expire_time_ns, timer_init_full, timer_mod,
-+    QEMUClockType,
- };
- 
- /// A safe wrapper around [`bindings::QEMUTimer`].
-@@ -86,6 +87,13 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
-         }
-     }
- 
-+    pub fn expire_time_ns(&self) -> Option<i64> {
-+        // SAFETY: the only way to obtain a Timer safely is via methods that
-+        // take a Pin<&mut Self>, therefore the timer is pinned
-+        let ret = unsafe { timer_expire_time_ns(self.as_ptr()) };
-+        i64::try_from(ret).ok()
-+    }
-+
-     pub fn modify(&self, expire_time: u64) {
-         // SAFETY: the only way to obtain a Timer safely is via methods that
-         // take a Pin<&mut Self>, therefore the timer is pinned
 -- 
 2.51.0
 
