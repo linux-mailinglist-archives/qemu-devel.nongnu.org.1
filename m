@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D283BBAF82B
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB89BAF811
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 09:54:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3rdt-0006Zw-Rk; Wed, 01 Oct 2025 03:52:54 -0400
+	id 1v3rdi-0006Wi-ST; Wed, 01 Oct 2025 03:52:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rdd-0006Vh-AL
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:38 -0400
+ id 1v3rdY-0006UB-W3
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v3rdQ-00032P-JF
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:34 -0400
+ id 1v3rdR-000342-If
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 03:52:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759305135;
+ s=mimecast20190719; t=1759305138;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kBi6nmZqJdl0va4wx3o6PVk2Le5zxB7N8Bp43lI1p0c=;
- b=VwEuUVNWJTlcoJMxz2BaalPnV480a54MIemHR2uumypcj5jO7EKr4YXoiKsobRimx0uMhD
- YL2z0iXaaxLEHTHdKWtUDqRVjYdT9GBVoozGsSIQ9kd/M4Oy/hMXEuoHsKvET3+mtIaKZY
- RjncVuUtNLz0KwKwVMMUjEPRzL1ntsM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zqplbETHKN8kfYff5lMiilXZJxaDojc2q2HQziOrxgI=;
+ b=DEv0lsgwPMeFyeiT8jDy0wbBJdzgPgmzEHzAs1htofvSrDdZ61zu+wmQ1YQtmgDD6qycAl
+ +7yCfzo4rYl6qW6gh7rIGGdIHLcT7HHYKvIYYYgAmtAMC6aeUKLcWGRLeOxWknwykT0DZr
+ qiWs96ZgHY1uBgB9HU0e53jHIVbFhgc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-275-zi8j1mjBNO2BeU7LoPPbqA-1; Wed, 01 Oct 2025 03:52:14 -0400
-X-MC-Unique: zi8j1mjBNO2BeU7LoPPbqA-1
-X-Mimecast-MFC-AGG-ID: zi8j1mjBNO2BeU7LoPPbqA_1759305133
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-634ab12955bso9653761a12.1
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:52:14 -0700 (PDT)
+ us-mta-395-VDWh8bSzNxGfebzkFtY1Lw-1; Wed, 01 Oct 2025 03:52:17 -0400
+X-MC-Unique: VDWh8bSzNxGfebzkFtY1Lw-1
+X-Mimecast-MFC-AGG-ID: VDWh8bSzNxGfebzkFtY1Lw_1759305136
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b3d6645acd3so258483766b.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 00:52:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759305132; x=1759909932;
+ d=1e100.net; s=20230601; t=1759305135; x=1759909935;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kBi6nmZqJdl0va4wx3o6PVk2Le5zxB7N8Bp43lI1p0c=;
- b=HTXiu1MzjztU5qa/7zQM5J3NPv060b7OFR8/6irKd6owpSFABixTFXCw7/liUXuqKO
- 90dCGlaxRDSKY3moQOIkrQoNbXktH8hukzVS/6L8e1wVaHJ2VtF2jqbbc42X9vQzYX/H
- ICLTw9GYVM4p+esrI1MfyRXcE2ESvNQIqg9kjOwwOcvTzlXA3DedaXPe92WZYZmMqywg
- xDghiuVgePDJL8WZcrC6+yMXcaOxIh5tCqadRXsdo2QsvwouMShAmtlJiuoEfJithxBB
- SxDGupbmdhySAgy6PAatHiMXscmVa4Dac0nq+u7rF3oQ8KSoblPp46HcSe7OoL7ylJ79
- 8ceg==
-X-Gm-Message-State: AOJu0YyqgJPipqBzfWnn+NtuF9tB3fm7v7q/XYMSyt05tl5dMTC4oXWJ
- omuSj9qlUDMPxIFInkqeoAkkE9vC//Q6Hvax8V8nGtXpMbmGly9y5G2mFYnofvim1jL3DNtLpOt
- vhxKCwdLj1t/cjDTdh43Otr40qsEJ8fU7LKAGpGsaESg5/fhJ6U5T8FzcLpZOxhqaQ/UqMJIf25
- dlYKtm9+EXLrGJb8skYYD0iknuqAK1KL1t8Sqlr7hi
-X-Gm-Gg: ASbGncs4oBhgkiOxTIL0+J0OZNtGisAg/bzBesqcvu0vCrojvIHF6TL+Kf7LXNhL32G
- dmBtblC5QiGnavt8LAq8HqQ8Ft+VrbjHkkg4IfRghQtDoW7yiFYWgFnzTWKqSDjWFdgJfiv4h71
- 9as1ADMwu8aJmadnCvrEIHa8sEN7RxaJf3kB0yqOzmkhlTEcMEQvAC/GDeamA6D1LnYhJDZKV/r
- Cdw8nL3wS9fVt1ApYZWHaOrwYXxqRTX4cwOuicfauE3VSP9s2Fdd7YHeyKtDN/9xFq8zzmhNAWj
- 0xlQHT0F8+/GfMIWExpAVMBE/IZ0XFZE17nwYYokXUa7753hyh+2Emk2oIkr66q0ibqHW00+xdZ
- lg/VMUigbpEoauejEeopQ/o92Ar6kfs4E+ERtSMQAoDZ893YDkdA=
-X-Received: by 2002:a05:6402:27d2:b0:632:115b:6e72 with SMTP id
- 4fb4d7f45d1cf-63678bfdad5mr2868588a12.9.1759305132467; 
- Wed, 01 Oct 2025 00:52:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE8uR1LMAX/n9oJusHP1izwUZ/hRBF5IEI7+TdqgLCWp+fLkOTuPotp0hjgjhCERuGWPjZzbQ==
-X-Received: by 2002:a05:6402:27d2:b0:632:115b:6e72 with SMTP id
- 4fb4d7f45d1cf-63678bfdad5mr2868565a12.9.1759305132025; 
- Wed, 01 Oct 2025 00:52:12 -0700 (PDT)
+ bh=zqplbETHKN8kfYff5lMiilXZJxaDojc2q2HQziOrxgI=;
+ b=l03B9R0V0osI/UVFgMu/BoPpySjf+QuuiMv96AE06TyuhBmFyZpoTKXC321nZpBfeA
+ 5K+C+eo+qIWgs6b9BpCAaacXA+r9+smaPk2Yx6BLnIvq9wU1Iqga1fMA+kaBTC4RFN+B
+ jCJTlJGXdnG/Opr5U5NE9k1mcnKBzxwY7pQaTy5Lc0D5ARPG7g3umJiQBi0zqBIOykL7
+ etUuAh4lUidaOGChmVCctE6fbkEblaDXYegWiUpYvdJtyCu8aBtN5PUaFR5E+qrRzZOh
+ yEG85zjatiMsNiKFg2dNTlbh0hX4iBAN1mm7WuiCw7ICs1E2TINrI8nmYOMafgksqUrZ
+ 2wqA==
+X-Gm-Message-State: AOJu0Yzk7PjgIpDCquOJY5K4Y8A0SYGHkG0EpCVMPUweADmMscHNsLc5
+ s5fnSLqr5fP28/90BvlIgBBgXQGJTjsb/l+gzmTOrfj2gO0tsIZVZkKrSG+fXcKEpD326k9FXY9
+ wA4jxX4izugm6pULku+SBSmyKv5RYW0lWxmiJ7wczHVhcN1aP6acOKwQp/MScv2OVEpAyR3e4xQ
+ 3khLYlLXsjYcgqqElN14tDj4206JAAYqdSIlYjKiCW
+X-Gm-Gg: ASbGncszMe9TcKWittLkbYCuY+C7TqgZrsDFNwhj067u2WuapNdSoT+SK2XT75b7Zgu
+ BnChR7Z3gjbAa1gDxc4zkY1tslgM2+t1aQ6rdg8nO8BC07tLSNwz5+RC6bX12xBc/3IoXIBT7mO
+ kFvOotB+jmAZ2HkvDhc9dQQ9Bc0sDbuJQQm3B3UkyJFmFSrlOPvMr++royCcsAfi4riTfMcZaJb
+ +1MezUwu88vbeEZ3SjTIDJJIkhEYxFkpvN7U3yLGy7dFtmTToXNLOUtv9/96N8t3FvdZ4FaxLCZ
+ N6tNCudryjlREHDE7PXWpSX0CYWVdSEcmwk4I2XsIpL2Yau410N3MhtWDil1ggD0bQwl5+SeBbP
+ eNXZMxINQHrsfyVJO1VGHEoXAJH6kOjCd2vJ5RmKqPF+b46ZPovo=
+X-Received: by 2002:a17:907:7204:b0:b3e:8252:cd53 with SMTP id
+ a640c23a62f3a-b46e3ae17admr308088766b.27.1759305135627; 
+ Wed, 01 Oct 2025 00:52:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqoEC2AE+R1M82d+ZR1bGz6Vn7PPxnGVVucI2x8ftqesW0Wt0IyM3m72rgXXjW7M+MfZR5Sw==
+X-Received: by 2002:a17:907:7204:b0:b3e:8252:cd53 with SMTP id
+ a640c23a62f3a-b46e3ae17admr308086066b.27.1759305135141; 
+ Wed, 01 Oct 2025 00:52:15 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-634d8beedf1sm7868571a12.26.2025.10.01.00.52.11
+ 4fb4d7f45d1cf-634d8beedf1sm7868602a12.26.2025.10.01.00.52.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 00:52:11 -0700 (PDT)
+ Wed, 01 Oct 2025 00:52:12 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 01/11] rust: bql: add BqlRefCell::get_mut()
-Date: Wed,  1 Oct 2025 09:52:00 +0200
-Message-ID: <20251001075210.1042479-1-pbonzini@redhat.com>
+Subject: [PATCH 02/11] rust: migration: do not pass raw pointer to
+ VMStateDescription::fields
+Date: Wed,  1 Oct 2025 09:52:01 +0200
+Message-ID: <20251001075210.1042479-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251001075005.1041833-1-pbonzini@redhat.com>
 References: <20251001075005.1041833-1-pbonzini@redhat.com>
@@ -107,42 +108,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This method is rarely useful in QEMU due to the pervasiveness of
-shared references, but add it for when a &mut BqlRefCell<> is used.
+Pass a slice instead; a function that accepts a raw pointer should
+arguably be declared as unsafe.
 
+But since it is now much easier to forget vmstate_fields!, validate the
+value (at least to some extent) before passing it to C.  (Unfortunately,
+doing the same for subsections would require const ptr::is_null(), which
+is only stable in Rust 1.84).
+
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/bql/src/cell.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ rust/migration/src/vmstate.rs | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
-index 24ab294b60d..54cfe6145c5 100644
---- a/rust/bql/src/cell.rs
-+++ b/rust/bql/src/cell.rs
-@@ -580,6 +580,23 @@ pub fn borrow_mut(&self) -> BqlRefMut<'_, T> {
-         }
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index e04b19b3c9f..319d353c311 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -424,7 +424,7 @@ macro_rules! vmstate_fields {
+                 ..::common::zeroable::Zeroable::ZERO
+             }
+         ];
+-        _FIELDS.as_ptr()
++        _FIELDS
+     }}
+ }
+ 
+@@ -676,8 +676,11 @@ pub const fn unplug_pending<F: for<'a> FnCall<(&'a T,), bool>>(mut self, _f: &F)
      }
  
-+    /// Returns a mutable reference to the underlying data in this cell,
-+    /// while the owner already has a mutable reference to the cell.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use bql::BqlRefCell;
-+    ///
-+    /// let mut c = BqlRefCell::new(5);
-+    ///
-+    /// *c.get_mut() = 10;
-+    /// ```
-+    #[inline]
-+    pub const fn get_mut(&mut self) -> &mut T {
-+        self.value.get_mut()
-+    }
-+
-     /// Returns a raw pointer to the underlying data in this cell.
-     ///
-     /// # Examples
+     #[must_use]
+-    pub const fn fields(mut self, fields: *const VMStateField) -> Self {
+-        self.0.fields = fields;
++    pub const fn fields(mut self, fields: &'static [VMStateField]) -> Self {
++        if fields[fields.len() - 1].flags.0 != VMStateFlags::VMS_END.0 {
++            panic!("fields are not terminated, use vmstate_fields!");
++        }
++        self.0.fields = fields.as_ptr();
+         self
+     }
+ 
 -- 
 2.51.0
 
