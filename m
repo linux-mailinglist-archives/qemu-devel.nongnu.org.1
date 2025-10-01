@@ -2,95 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B9DBB1E20
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 23:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E975BB1E32
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 23:57:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v44mK-0001As-7N; Wed, 01 Oct 2025 17:54:28 -0400
+	id 1v44nm-0001wq-BY; Wed, 01 Oct 2025 17:55:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v44mH-00018x-6d
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 17:54:25 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v44nR-0001p0-Rh
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 17:55:42 -0400
 Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v44m5-0005gF-R8
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 17:54:24 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v44mz-0006C0-GG
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 17:55:34 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id BA9603372E;
- Wed,  1 Oct 2025 21:53:01 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 7B76833773;
+ Wed,  1 Oct 2025 21:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1759355581; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1759355583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=To6xMRqb8yYay6YxoHR5rSGf6MY01GT1/0EJLQKKqpE=;
- b=zs54vFAWghVQH+4m7fArnxZwmV1Jy7s7LgzXGJeUtrTM4dY+0y5fAF3cV7YyH/ANpUstEM
- Z0a4tKZUujwF9tSlm83IFafX2DBWWZpwToKoOm3rURTQznApwoUNdtM3WMNfp9U+wp11WY
- iul9Lu4rTGbDiH344xE5zUJzjjGivM0=
+ bh=gdTuOYpkm1F8Joh6I2XE/u3MBbP+kNvzRGqOQSgAM3Y=;
+ b=KyRfaelWmOAfcfVx9XjP161WnKRUOrq2SMS0zxDDv+k9vwvj7M3xMbzmlSDhDaLWCJY8xv
+ 45dBpXNpKtxgE2Olrt4klGqRAzyPNL3gcSDGzqzM9y5Eu4IJyjl1GivU76Jpz1Th1ab5Gi
+ W8MMi9pcm5Y+M3YbcCxGmfF5qW4GPDg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1759355581;
+ s=susede2_ed25519; t=1759355583;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=To6xMRqb8yYay6YxoHR5rSGf6MY01GT1/0EJLQKKqpE=;
- b=805X8KMJlcltDK0Fo72266hRPcISyJdlbl/jXXvlRd5n8kuoqJipkyDwd3pCymZnZwRME6
- jVOlOdbXzaAYm/DQ==
+ bh=gdTuOYpkm1F8Joh6I2XE/u3MBbP+kNvzRGqOQSgAM3Y=;
+ b=YaC3DcsfNn24tcQWrpR+5p8+dG6L/We2re81koJhHn++IxoLb+y1RDTRUkBvBWXdb4PVYw
+ JIOSfbc4T+vHw4Ag==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zs54vFAW;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=805X8KMJ
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KyRfaelW;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YaC3Dcsf
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1759355581; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1759355583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=To6xMRqb8yYay6YxoHR5rSGf6MY01GT1/0EJLQKKqpE=;
- b=zs54vFAWghVQH+4m7fArnxZwmV1Jy7s7LgzXGJeUtrTM4dY+0y5fAF3cV7YyH/ANpUstEM
- Z0a4tKZUujwF9tSlm83IFafX2DBWWZpwToKoOm3rURTQznApwoUNdtM3WMNfp9U+wp11WY
- iul9Lu4rTGbDiH344xE5zUJzjjGivM0=
+ bh=gdTuOYpkm1F8Joh6I2XE/u3MBbP+kNvzRGqOQSgAM3Y=;
+ b=KyRfaelWmOAfcfVx9XjP161WnKRUOrq2SMS0zxDDv+k9vwvj7M3xMbzmlSDhDaLWCJY8xv
+ 45dBpXNpKtxgE2Olrt4klGqRAzyPNL3gcSDGzqzM9y5Eu4IJyjl1GivU76Jpz1Th1ab5Gi
+ W8MMi9pcm5Y+M3YbcCxGmfF5qW4GPDg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1759355581;
+ s=susede2_ed25519; t=1759355583;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=To6xMRqb8yYay6YxoHR5rSGf6MY01GT1/0EJLQKKqpE=;
- b=805X8KMJlcltDK0Fo72266hRPcISyJdlbl/jXXvlRd5n8kuoqJipkyDwd3pCymZnZwRME6
- jVOlOdbXzaAYm/DQ==
+ bh=gdTuOYpkm1F8Joh6I2XE/u3MBbP+kNvzRGqOQSgAM3Y=;
+ b=YaC3DcsfNn24tcQWrpR+5p8+dG6L/We2re81koJhHn++IxoLb+y1RDTRUkBvBWXdb4PVYw
+ JIOSfbc4T+vHw4Ag==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6DCE513A3F;
- Wed,  1 Oct 2025 21:53:00 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36A4F13A3F;
+ Wed,  1 Oct 2025 21:53:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id WF8ADLyi3WhrJgAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 01 Oct 2025 21:53:00 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kMdkOb2i3WhrJgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 01 Oct 2025 21:53:01 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 02/13] tests/qtest/migration: Fix cpr-tests in case the machine
- is not available
-Date: Wed,  1 Oct 2025 18:52:43 -0300
-Message-Id: <20251001215254.2863-3-farosas@suse.de>
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PULL 03/13] tests/qtest: optimize qtest_get_machines
+Date: Wed,  1 Oct 2025 18:52:44 -0300
+Message-Id: <20251001215254.2863-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20251001215254.2863-1-farosas@suse.de>
 References: <20251001215254.2863-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 7B76833773
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
  MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
  ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
@@ -99,9 +101,6 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  FUZZY_RATELIMITED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
  DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: BA9603372E
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
 X-Spam-Score: -3.01
 Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
@@ -112,7 +111,7 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,83 +127,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-When QEMU has been compiled with "--without-default-devices", the
-migration cpr-tests are currently failing since the first test leaves
-a socket file behind that avoids that the second test can be initialized
-correctly. Make sure that we delete the socket file in case that the
-migrate_start() failed due to the missing machine.
+qtest_get_machines returns the machines supported by the QEMU binary
+described by an environment variable and caches the result.  If the
+next call to qtest_get_machines passes the same variable name, the cached
+result is returned, but if the name changes, the caching is defeated.
+To make caching more effective, remember the path of the QEMU binary
+instead.  Different env vars, eg QTEST_QEMU_BINARY_SRC and
+QTEST_QEMU_BINARY_DST, usually resolve to the same path.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250930090932.235151-1-thuth@redhat.com
+Before the optimization, the test /x86_64/migration/precopy/unix/plain
+exec's QEMU and calls query-machines 3 times.  After optimization, that
+only happens once.  This does not significantly speed up the tests, but
+it reduces QTEST_LOG output, and launches fewer QEMU instances, making
+it easier to debug problems.
+
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <87h5ymdzrf.fsf@pond.sub.org>
+Link: https://lore.kernel.org/qemu-devel/1758290310-349623-1-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/cpr-tests.c | 5 ++++-
- tests/qtest/migration/framework.c | 6 ++++--
- tests/qtest/migration/framework.h | 2 +-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ tests/qtest/libqtest.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 5e764a6787..c4ce60ff66 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -97,7 +97,10 @@ static void test_mode_transfer_common(bool incoming_defer)
-         .start_hook = test_mode_transfer_start,
-     };
- 
--    test_precopy_common(&args);
-+    if (test_precopy_common(&args) < 0) {
-+        close(cpr_sockfd);
-+        unlink(cpr_path);
-+    }
- }
- 
- static void test_mode_transfer(void)
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 407c9023c0..a044b35465 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -736,7 +736,7 @@ void test_postcopy_recovery_common(MigrateCommon *args)
-     migrate_postcopy_complete(from, to, args);
- }
- 
--void test_precopy_common(MigrateCommon *args)
-+int test_precopy_common(MigrateCommon *args)
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index 94526b7f9c..f3d4e0829a 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -1630,7 +1630,8 @@ static void qtest_free_machine_list(struct MachInfo *machines)
+ static struct MachInfo *qtest_get_machines(const char *var)
  {
-     QTestState *from, *to;
-     void *data_hook = NULL;
-@@ -746,7 +746,7 @@ void test_precopy_common(MigrateCommon *args)
-     g_assert(!args->cpr_channel || args->connect_channels);
+     static struct MachInfo *machines;
+-    static char *qemu_var;
++    static char *qemu_bin;
++    const char *new_qemu_bin;
+     QDict *response, *minfo;
+     QList *list;
+     const QListEntry *p;
+@@ -1639,9 +1640,10 @@ static struct MachInfo *qtest_get_machines(const char *var)
+     QTestState *qts;
+     int idx;
  
-     if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
--        return;
-+        return -1;
-     }
+-    if (g_strcmp0(qemu_var, var)) {
+-        g_free(qemu_var);
+-        qemu_var = g_strdup(var);
++    new_qemu_bin = qtest_qemu_binary(var);
++    if (g_strcmp0(qemu_bin, new_qemu_bin)) {
++        g_free(qemu_bin);
++        qemu_bin = g_strdup(new_qemu_bin);
  
-     if (args->start_hook) {
-@@ -869,6 +869,8 @@ finish:
-     }
+         /* new qemu, clear the cache */
+         qtest_free_machine_list(machines);
+@@ -1654,7 +1656,7 @@ static struct MachInfo *qtest_get_machines(const char *var)
  
-     migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
-+
-+    return 0;
- }
+     silence_spawn_log = !g_test_verbose();
  
- static void file_dirty_offset_region(void)
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 01e425e64e..744040d53a 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -227,7 +227,7 @@ void migrate_end(QTestState *from, QTestState *to, bool test_dest);
- 
- void test_postcopy_common(MigrateCommon *args);
- void test_postcopy_recovery_common(MigrateCommon *args);
--void test_precopy_common(MigrateCommon *args);
-+int test_precopy_common(MigrateCommon *args);
- void test_file_common(MigrateCommon *args, bool stop_src);
- void *migrate_hook_start_precopy_tcp_multifd_common(QTestState *from,
-                                                     QTestState *to,
+-    qts = qtest_init_ext(qemu_var, "-machine none", NULL, true);
++    qts = qtest_init_ext(var, "-machine none", NULL, true);
+     response = qtest_qmp(qts, "{ 'execute': 'query-machines' }");
+     g_assert(response);
+     list = qdict_get_qlist(response, "return");
 -- 
 2.35.3
 
