@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB92BAEECF
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D8EBAEF0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 03:16:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3lGS-0005iv-Ce; Tue, 30 Sep 2025 21:04:16 -0400
+	id 1v3lGa-0005ij-FU; Tue, 30 Sep 2025 21:04:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lG0-0005VB-PY
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:49 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1v3lFw-0005Tt-40
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:44 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1v3lFD-0008AE-5H
- for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:48 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-414f48bd5a7so4359823f8f.2
- for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:02:56 -0700 (PDT)
+ id 1v3lFF-0008Bc-2T
+ for qemu-devel@nongnu.org; Tue, 30 Sep 2025 21:03:43 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46e34052bb7so65872745e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Sep 2025 18:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1759280573; x=1759885373; darn=nongnu.org;
+ d=opnsrc.net; s=google; t=1759280575; x=1759885375; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=riMmSmFMW9DU05Ls6u53RzcUxCDMOS/nOG/ia4hBxSM=;
- b=fSdVlBkHwuIfLyB9mzyq8Npdm5k7CFChluDY5nwfo46RF2fJxMnzQdDjuwVqcTb0J5
- UexUe0gB7H9odjvd+CnpFOFZAMXJUgRK4h1rvNfqi6CblRNnXX5CTVjaZZKZvxntewkB
- 0VldUVPYndC+xeEUw0z/Edl8F5r9GwmHNfiZLFNQfeBS02vPfCIu++Q9tY3WYbZmXvXj
- 63Y0DISlZA67EuyPCirY4NBmn/Xt+eBM13Vk3ARMzkGay6+HJyiAg89eVX8awFtt8VmN
- sOvkUFv9eDgT1vG8b1EEbdmC4Da++HovGMA7drQX5oho7+uyajAWPNAM9I+vPwdxoGi4
- 7ooQ==
+ bh=7h307QOx44Ki9SH92ohHJPER/ZS3m1zJos18uaOTvw0=;
+ b=C6QyghUrCxfJ+KRNmYgHfY+dcYHY7SAjydkStHZg5q7TQJWhfaKqBJUZkCk2+jqemb
+ xWONMyeZMz8np6A2l6cHc9y2kc3vhARRLm02uk/z9/g1eJm0xe7gPuairKURQUWEqqj8
+ Ui4ujIa2StkQweL/OVzKtkxSQOUlY9vGC6RWEA4thzgiBmgvvDX+S5OrZbQ1FlsAGpt5
+ EaT7ToL+KGnV8bCUmxoZD17DzE7pxlpqntl2ouSvb8lIMByyh4xQANZStIg7wOIB8TBd
+ CgaJ8kK8UM7DKhBt31oiwxg4ArtbS8UW3YsTtGxtUpg/NLg7Fx7vj8BXwKrMqmKv37yL
+ f4Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759280573; x=1759885373;
+ d=1e100.net; s=20230601; t=1759280575; x=1759885375;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=riMmSmFMW9DU05Ls6u53RzcUxCDMOS/nOG/ia4hBxSM=;
- b=gAz05tAlawOwSis4lL8Xc26oavwIZQBqZtkpCL7PF/B8RrJTaCeshriwF4FBMBs7NR
- M2qydFewSVeXzF5vNdiCcgwTfdaoG4gECFdeTbEvGFgzL++nXK9wajDwAMEe7+dEJhND
- IWY4pTzPm6bZohFaJw82zKR2Ml1HlcznFzwpqr3tSRl8he1V/cUCA8AsXoLQKOE30nXC
- WAvKD6PZliPsW6XcGQGmoHbkXc2k30JecPIBWQ4+kiJ/wvVxWE2SXUyupoN7f8bWZQhw
- URM74e2xzkZ8Kozt0bzFekWwnaNFSFibZBUCy6cj9YjTgdZeKli0ralMtFxSyjQkjF+D
- 3/1A==
-X-Gm-Message-State: AOJu0YzA1IJ+zdoyR68mGzXaXyd92UGJjO36efBVv4DdfV1INHWh9mi8
- JDlW+xV9ZdpZRvyehXSB8ni5lJ39GRXwyOLqFR4H2kpfIpqAksFy22HmukkLzAxHp9imluI7g69
- d4hJO0iya2A==
-X-Gm-Gg: ASbGncuuTm+CLVHVM905WvpPo3S0g6MXHEGkixtlinoiGrPqz+lswH20grYgBaVgb81
- QUdx5BOPyLWHdWIKRZ2MSVeOQNzl4lKWPoqsYZmRy1I5FZ8Tpp2eOZC82zfW7RDUuFZ6nc/AQkX
- DclyMkjU1tFU9Uiwu3h99NeV2/SORp/HKzYue8U0O3DbEwQITJYqQEFBXYQROjGAqNaUlWFLWVX
- uXhz1+4vFlrP2/UJYZ6IG+3VwJoMVxKjqbx3GGNjLFdJsvvbi/MslI2DPSCaxFYxmIOEK2DHXOb
- AMc3IPPU3zYFCPe8Agewj48bS8kx18qif03mCeywbX6RakysnuPcww2DXXKeZpvrRVXspm1aNGW
- 38BbVGoWgBWRjwS/KDd9FT9/9PfZDWXEMVbbSZKDhtUkUbC2dSCWerxWqySpacbWj1I/xxgrXR6
- 2alCBn8pi9HjuWmbRnF6e0Z99d43vguOtPjwVA2JVCZ+k=
-X-Google-Smtp-Source: AGHT+IEeV6YRYEjIM1tPPHAaCG+k1453yOkfUWb6kpDdBDoPwpEYmXNOWuISxfXZE6pxJiI/dnNzaw==
-X-Received: by 2002:a05:6000:18a3:b0:3ec:dfe5:17d0 with SMTP id
- ffacd0b85a97d-425577edd2dmr869712f8f.9.1759280572888; 
- Tue, 30 Sep 2025 18:02:52 -0700 (PDT)
+ bh=7h307QOx44Ki9SH92ohHJPER/ZS3m1zJos18uaOTvw0=;
+ b=kqoL4aMSgHSMC+YYMBFWv4KxIB5qCCwv25FFKLC1P61tnNMUVoLT8I8QegHNusI/t7
+ wVc87Q+/o2xQYDXQfzpGvpD5R30KfNKDXgZQ55/CM7XAP5jBH7pz3XsQUhDvk9lLalhY
+ IDJ1EIW076qQRkxrkaWTDp+w/D91gKbuwWJaWlwqRrI5vP6Qp1Ij6bLLzTVxZQuxXiVX
+ dD1j26fq5hS9V5LFHcVAEAle8B0osfouaBK8tjZQYYVdoP1F3jNu22hSK9UOgr7iSqWJ
+ kWly3WIcZiitryzUziQp6bnaMoljhkknhAvo4mJ93oA/YKLKhYKkGe74yurrpvFH7kYQ
+ gwMA==
+X-Gm-Message-State: AOJu0YzYCsrQn6wXodafiYSgmtsN0x6I0KsZ+ie5aPD67KIH+1i6KjWd
+ S0gCb6e0LMtxIDgHMPrChJMRYwJtvdmpnIY7RD5FqENu8SCYu2Dd6lukmOW0MOnYRIOSmBNjhNr
+ obvlJF/TMcg==
+X-Gm-Gg: ASbGnct1kFxyWLfbbA2X34frtKftbJ+W7kx9H5orjB4VZm9mm3fwBa0ZLBJ03LDEpOA
+ piiyoKh2cosWIcP9v6PyMPZLijxFZWnpMEk69X+DyPcKsAOpOU9/mZMHr40jvxKkdKiLujgpXln
+ LNmVjuJDktu8caETZTsGjrXQHxSabI6iwXshVPjvQPH2dy4e7Gy2yeVmNzDs2BfbFBZUUsl03uT
+ FIMQ5+u3mLoBxuZNfE9RzWC2lgam3sgNqsP1OV0koSPRO19Ty3LbTvLt6uZZwW6TvCVBD8+nvrk
+ oFE3l5kkYD4fsoccp25mV1548trODb06rBVlbTWJR7PIUyB6xOYlta5Vo2Ab7/DjthCtpSKsdrF
+ pnSPD4BLJDZkmNSSf6oCFXcBVAWBBlYR1rWcLV1Bhx+5FNIwaqbzyFoHH8rCMrh+2VW0pryVsyl
+ dQaJX8aj2gNGYZY5uVQ21Go2pA8MX/mh++BOcvXeeEsfM=
+X-Google-Smtp-Source: AGHT+IEnY0uugUJqIG/xkP/LpPRxljbK0+8Z0BcVIT+7ekPwlS5/mNaj9Fu6cCj6dxs1BSLKaSxR2g==
+X-Received: by 2002:a05:6000:26c3:b0:3eb:5e99:cbd3 with SMTP id
+ ffacd0b85a97d-425577ed539mr1014530f8f.2.1759280574636; 
+ Tue, 30 Sep 2025 18:02:54 -0700 (PDT)
 Received: from localhost.localdomain ([90.209.204.182])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.02.51
+ ffacd0b85a97d-40fb985e080sm24587426f8f.24.2025.09.30.18.02.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Sep 2025 18:02:52 -0700 (PDT)
+ Tue, 30 Sep 2025 18:02:54 -0700 (PDT)
 From: salil.mehta@opnsrc.net
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -84,24 +84,24 @@ Cc: salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, wangzhou1@hisilicon.com,
  linuxarm@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
  lixianglai@loongson.cn, shahuang@redhat.com, zhao1.liu@intel.com
-Subject: [PATCH RFC V6 17/24] hw/arm/virt,
- acpi/ged: Add PowerStateHandler hooks for runtime CPU state changes
-Date: Wed,  1 Oct 2025 01:01:20 +0000
-Message-Id: <20251001010127.3092631-18-salil.mehta@opnsrc.net>
+Subject: [PATCH RFC V6 18/24] target/arm/kvm,
+ tcg: Handle SMCCC hypercall exits in VMM during PSCI_CPU_{ON, OFF}
+Date: Wed,  1 Oct 2025 01:01:21 +0000
+Message-Id: <20251001010127.3092631-19-salil.mehta@opnsrc.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
 References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=salil.mehta@opnsrc.net; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,463 +117,344 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Salil Mehta <salil.mehta@huawei.com>
+From: Author Salil Mehta <salil.mehta@huawei.com>
 
-Administrative power state property has been recently introduced as part of this
-patch-set, and QEMU currently lacks a way for platforms to react to such control
-(e.g. 'device_set ... admin-state=disable'). These host-driven changes must
-drive corresponding operational transitions and involve OSPM where appropriate.
+To support vCPU hotplug-like feature, we must trap any `HVC`/`SMC`
+`PSCI_CPU_{ON,OFF}` hypercalls from the host KVM to QEMU for policy checks. This
+ensures the following when a vCPU is brought online:
 
-Summary of Handling:
-===================
+1. The vCPU is actually plugged in (i.e., present).
+2. The vCPU is not administratively disabled. (Policy Checks)
 
-Since vCPUs are always enumerated as present, administrative enable must ensure
-they also become operationally usable. This requires realizing the vCPU (if
-enabled for the first time) or unparking it otherwise, re-registering it with
-the VMState handler, adding it back to the active vCPU list, and kicking its
-sleeping thread into KVM so it can transition to the guest runnable state once
-the kernel issues CPU_ON. The GICC interface must also be marked accessible, and
-OSPM must be notified through a Device Check event so that _EVT/_STA evaluation
-can identify the CPU, register it with the Linux device model, enable it in the
-guest kernel, and make it available to the scheduler.
+Implement the registration and handling of `HVC`/`SMC` hypercall exits within
+the VMM, ensuring that proper policy checks and control flow are enforced during
+the vCPU onlining and offlining processes.
 
-When a CPU is administratively disabled, the virt machine invokes its
-PowerStateHandler callbacks to request powering off the vCPU. As a consequence,
-GED raises an Eject Request event so OSPM can invoke _EJ0 to offload tasks and
-shut down state before removal. The vCPU is then quiesced, unregistered from
-VMState, removed from the active vCPU list, its sleeping vCPU thread is kicked
-from KVM, re-blocked inside QEMU, and the vCPU is parked in userspace. This
-helps reduce locking contention inside the kernel.
-
-The callbacks introduced as part of this patch-set handle the above flows and
-avoid forceful removal without kernel coordination, keep firmware and GIC access
-in sync, and integrate with existing ACPI GED-based signaling.
-
+Co-developed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- cpu-common.c                       |   4 +-
- hw/arm/virt.c                      | 233 ++++++++++++++++++++++++++++-
- include/hw/arm/virt.h              |   1 +
- include/hw/core/cpu.h              |   2 +
- include/hw/intc/arm_gicv3_common.h |  30 ++++
- system/cpus.c                      |   4 +-
- target/arm/cpu.c                   |   1 +
- 7 files changed, 271 insertions(+), 4 deletions(-)
+ target/arm/arm-powerctl.c   | 27 ++++++++---
+ target/arm/helper.c         |  2 +-
+ target/arm/internals.h      |  2 +-
+ target/arm/kvm.c            | 93 +++++++++++++++++++++++++++++++++++++
+ target/arm/kvm_arm.h        | 14 ++++++
+ target/arm/meson.build      |  1 +
+ target/arm/{tcg => }/psci.c |  9 ++++
+ target/arm/tcg/meson.build  |  4 --
+ 8 files changed, 139 insertions(+), 13 deletions(-)
+ rename target/arm/{tcg => }/psci.c (96%)
 
-diff --git a/cpu-common.c b/cpu-common.c
-index ef5757d23b..7eced58434 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -103,7 +103,9 @@ void cpu_list_remove(CPUState *cpu)
+diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
+index 20c70c7d6b..ab4422b261 100644
+--- a/target/arm/arm-powerctl.c
++++ b/target/arm/arm-powerctl.c
+@@ -17,6 +17,7 @@
+ #include "qemu/main-loop.h"
+ #include "system/tcg.h"
+ #include "target/arm/multiprocessing.h"
++#include "hw/boards.h"
+ 
+ #ifndef DEBUG_ARM_POWERCTL
+ #define DEBUG_ARM_POWERCTL 0
+@@ -31,14 +32,17 @@
+ 
+ CPUState *arm_get_cpu_by_id(uint64_t id)
+ {
++    MachineState *ms = MACHINE(qdev_get_machine());
+     CPUState *cpu;
+ 
+     DPRINTF("cpu %" PRId64 "\n", id);
+ 
+-    CPU_FOREACH(cpu) {
+-        ARMCPU *armcpu = ARM_CPU(cpu);
+-
+-        if (arm_cpu_mp_affinity(armcpu) == id) {
++    /*
++     * with vCPU standy/hotplug support, we must now check for all
++     * possible vCPUs
++     */
++    CPU_FOREACH_POSSIBLE(cpu, ms->possible_cpus) {
++        if (cpu && (arm_cpu_mp_affinity(ARM_CPU(cpu)) == id)) {
+             return cpu;
+         }
+     }
+@@ -119,9 +123,18 @@ int arm_set_cpu_on(uint64_t cpuid, uint64_t entry, uint64_t context_id,
+ 
+     /* Retrieve the cpu we are powering up */
+     target_cpu_state = arm_get_cpu_by_id(cpuid);
+-    if (!target_cpu_state) {
+-        /* The cpu was not found */
+-        return QEMU_ARM_POWERCTL_INVALID_PARAM;
++
++    /* Policy check: verify 'administrative' power state of target CPU */
++    if (!target_cpu_state || !qdev_check_enabled(DEVICE(target_cpu_state))) {
++        /*
++         * The cpu is not plugged in or disabled. We should return appropriate
++         * value as introduced in DEN0022E PSCI 1.2 issue E
++         */
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "[ARM]%s: Denying attempt to online ACPI disabled"
++                      "(_STA.Ena=0)CPU%" PRId64", needs admin action first!\n",
++                      __func__, cpuid);
++        return QEMU_ARM_POWERCTL_IS_OFF;
      }
  
-     QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
--    cpu->cpu_index = UNASSIGNED_CPU_INDEX;
-+    if (!cpu->preserve_assigned_cpu_index) {
-+        cpu->cpu_index = UNASSIGNED_CPU_INDEX;
-+    }
-     cpu_list_generation_id++;
- }
+     target_cpu = ARM_CPU(target_cpu_state);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 0c1299ff84..814fe719da 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9110,7 +9110,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
+                       env->exception.syndrome);
+     }
  
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 8d498708ab..9a41a0682b 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -45,6 +45,7 @@
- #include "system/device_tree.h"
- #include "system/numa.h"
- #include "system/runstate.h"
-+#include "system/reset.h"
- #include "system/tpm.h"
- #include "system/tcg.h"
- #include "system/kvm.h"
-@@ -91,6 +92,8 @@
- #include "hw/cxl/cxl.h"
- #include "hw/cxl/cxl_host.h"
- #include "qemu/guest-random.h"
-+#include "hw/powerstate.h"
-+#include "arm-powerctl.h"
+-    if (tcg_enabled() && arm_is_psci_call(cpu, cs->exception_index)) {
++    if (arm_is_psci_call(cpu, cs->exception_index)) {
+         arm_handle_psci_call(cpu);
+         qemu_log_mask(CPU_LOG_INT, "...handled as PSCI call\n");
+         return;
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 1b3d0244fd..ffd82a7ace 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -645,7 +645,7 @@ vaddr arm_adjust_watchpoint_address(CPUState *cs, vaddr addr, int len);
+ /* Callback function for when a watchpoint or breakpoint triggers. */
+ void arm_debug_excp_handler(CPUState *cs);
  
- static GlobalProperty arm_virt_compat[] = {
-     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "48" },
-@@ -1400,7 +1403,7 @@ static FWCfgState *create_fw_cfg(const VirtMachineState *vms, AddressSpace *as)
-     char *nodename;
- 
-     fw_cfg = fw_cfg_init_mem_wide(base + 8, base, 8, base + 16, as);
--    fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)ms->smp.cpus);
-+    fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, vms->boot_cpus);
- 
-     nodename = g_strdup_printf("/fw-cfg@%" PRIx64, base);
-     qemu_fdt_add_subnode(ms->fdt, nodename);
-@@ -1821,6 +1824,179 @@ void virt_machine_done(Notifier *notifier, void *data)
-     virt_build_smbios(vms);
- }
- 
-+static void virt_park_cpu_in_userspace(CPUState *cs)
-+{
-+    /* we don't want to migrate 'disabled' vCPU state(even if realized) */
-+    cpu_vmstate_unregister(cs);
-+    /* remove from 'present' and 'enabled' list of active vCPUs */
-+    cpu_list_remove(cs);
-+    /* ensure that other context do not kick us out of the parked state */
-+    cs->parked = true;
-+    /* this will kick the sleeping KVM vCPUs to Qemu; releasing vCPU mutex */
-+    cpu_pause(cs);
-+}
-+
-+static void virt_unpark_cpu_in_userspace(CPUState *cs)
-+{
-+    /* disabled vCPUs lack a VMStateDescription; re-register */
-+    cpu_vmstate_register(cs);
-+    /* add back to 'present' and 'enabled' list of active vCPUs */
-+    cpu_list_add(cs);
-+    /*
-+     * kick back the vCPU into action; operational power-on will happen in
-+     * context to PSCI CPU_ON executed by the Guest. We are just enabling the
-+     * infrastructre here and making it available to the Guest.
-+     */
-+    cs->parked = false;
-+    cpu_resume(cs);
-+}
-+
-+static void
-+virt_cpu_pre_poweron(PowerStateHandler *handler, DeviceState *dev, Error **errp)
-+{
-+    VirtMachineState *vms = VIRT_MACHINE(handler);
-+    PowerStateHandlerClass *pshc;
-+    CPUState *cs = CPU(dev);
-+
-+    /*
-+     * Lazy realization path: bring the CPU to a realized state the first time
-+     * it is powered on. Saves boot time; later power-ons skips this.
-+     */
-+    if (!dev->realized) {
-+        qdev_realize(dev, NULL, errp);
-+    } else {
-+        /* Realized but parked 'disabled' vCPUs */
-+        virt_unpark_cpu_in_userspace(cs);
-+    }
-+
-+    gicv3_mark_gicc_accessible(OBJECT(vms->gic), cs->cpu_index, errp);
-+    if (*errp) {
-+        error_setg(errp, "couldn't mark GICC accessibile for CPU %d",
-+                   cs->cpu_index);
-+        return;
-+    }
-+
-+    /* update the firmware information for the next boot. */
-+    vms->boot_cpus++;
-+    if (vms->fw_cfg) {
-+        fw_cfg_modify_i16(vms->fw_cfg, FW_CFG_NB_CPUS, vms->boot_cpus);
-+    }
-+
-+    /*
-+     * Notify the guest that a CPU is powered-on(_STA.Ena = 1), triggering a
-+     * Device Check (Notify(..., 0x80)) via GED. This prompts OSPM to
-+     * re-evaluate ACPI _STA method.
-+     *
-+     * Only notify after the VM is ready i.e., the guest kernel is initialized.
-+     * For example, during boot-time '-deviceset' usage, the kernel isn't ready,
-+     * so sending a notification is pointless.
-+     */
-+    if (phase_check(PHASE_MACHINE_READY) &&
-+        !runstate_check(RUN_STATE_INMIGRATE)) {
-+        pshc = POWERSTATE_HANDLER_GET_CLASS(vms->acpi_dev);
-+        pshc->pre_poweron(POWERSTATE_HANDLER(vms->acpi_dev), dev, errp);
-+        if (*errp) {
-+            error_setg(errp, "failed to notify OSPM about CPU %d power-on",
-+                       cs->cpu_index);
-+            return;
-+        }
-+    }
-+
-+    /*
-+     * Guest Kernel/OSPM will issue PSCI CPU_ON, which performs the cold start
-+     * (reset + entry state) for this CPU
-+     */
-+}
-+
-+static void
-+virt_cpu_request_poweroff(PowerStateHandler *handler, DeviceState *dev,
-+                          Error **errp)
-+{
-+    VirtMachineState *vms = VIRT_MACHINE(handler);
-+    PowerStateHandlerClass *pshc;
-+    ARMCPU *cpu = ARM_CPU(dev);
-+    CPUState *cs = CPU(dev);
-+
-+    if (cs->cpu_index == first_cpu->cpu_index) {
-+        error_setg(errp, "can't power-off  boot CPU (id=%d [%d:%d:%d:%d])",
-+                   first_cpu->cpu_index, cpu->socket_id, cpu->cluster_id,
-+                   cpu->core_id, cpu->thread_id);
-+        return;
-+    }
-+
-+    /*
-+     * Check that we are not tearing down too early when no live state exists.
-+     * This can happen in:
-+     *  1. Lazy device realization
-+     *  2. Use of '-device-set' at qemu prompt
-+     *  3. Post-migration on the destination VM
-+     */
-+    if (!dev->realized) {
-+        return;
-+    }
-+
-+    if (!phase_check(PHASE_MACHINE_READY) ||
-+        runstate_check(RUN_STATE_INMIGRATE)) {
-+        virt_park_cpu_in_userspace(cs);
-+        return;
-+    }
-+
-+    /*
-+     * powering-off a CPU triggers an Eject Request (Notify(..., 0x03))
-+     * via GED, prompting the OSPM to invoke _EJ0 for device removal handling.
-+     */
-+    pshc = POWERSTATE_HANDLER_GET_CLASS(vms->acpi_dev);
-+    pshc->request_poweroff(POWERSTATE_HANDLER(vms->acpi_dev), dev, errp);
-+    if (*errp) {
-+        error_setg(errp, "request failed to power-off CPU %d", cs->cpu_index);
-+        return;
-+    }
-+}
-+
-+static void
-+virt_cpu_post_poweroff(PowerStateHandler *handler, DeviceState *dev,
-+                       Error **errp)
-+{
-+    VirtMachineState *vms = VIRT_MACHINE(handler);
-+    PowerStateHandlerClass *pshc;
-+    CPUState *cs = CPU(dev);
-+
-+    /*
-+     * Just in case we are here too early. Ignore admin power-off before
-+     * realize; no live state to tear down.
-+     */
-+    if (!dev->realized) {
-+        return;
-+    }
-+
-+    /* we are here because OSPM has already offline'd CPU and issued EJ0 */
-+    pshc = POWERSTATE_HANDLER_GET_CLASS(vms->acpi_dev);
-+    pshc->post_poweroff(POWERSTATE_HANDLER(vms->acpi_dev), dev, errp);
-+    if (*errp) {
-+        error_setg(errp, "failed to complete CPU %d power-off", cs->cpu_index);
-+        return;
-+    }
-+
-+    vms->boot_cpus--;
-+    if (vms->fw_cfg) {
-+        fw_cfg_modify_i16(vms->fw_cfg, FW_CFG_NB_CPUS, vms->boot_cpus);
-+    }
-+
-+    gicv3_mark_gicc_inaccessible(OBJECT(vms->gic), cs->cpu_index, errp);
-+    if (*errp) {
-+        error_setg(errp, "couldn't mark GICC inaccessibile for CPU %d",
-+                   cs->cpu_index);
-+        return;
-+    }
-+
-+    /*
-+     * A 'disabled' vCPU is quiesced; now park it in userspace. For KVM,
-+     * this unblocks the sleeping vCPU thread and re-blocks it inside QEMU,
-+     * reducing KVM vCPU lock contention.
-+     */
-+    virt_park_cpu_in_userspace(cs);
-+}
-+
- static uint64_t virt_cpu_mp_affinity(VirtMachineState *vms, int idx)
+-#if defined(CONFIG_USER_ONLY) || !defined(CONFIG_TCG)
++#if defined(CONFIG_USER_ONLY)
+ static inline bool arm_is_psci_call(ARMCPU *cpu, int excp_type)
  {
-     uint8_t clustersz;
-@@ -3218,6 +3394,53 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
-     return NULL;
+     return false;
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 1962eb29b2..98eb6db9ed 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -529,9 +529,51 @@ int kvm_arch_get_default_type(MachineState *ms)
+     return fixed_ipa ? 0 : size;
  }
  
-+static void
-+virt_machine_device_request_poweroff(PowerStateHandler *handler,
-+                                     DeviceState *dev,
-+                                     Error **errp)
++static bool kvm_arm_set_vm_attr(struct kvm_device_attr *attr, const char *name)
 +{
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-+        virt_cpu_request_poweroff(handler, dev, errp);
-+    } else {
-+        error_setg(errp, "power-off request for unsupported device-type: %s",
-+                   object_get_typename(OBJECT(dev)));
-+    }
-+}
++    int err;
 +
-+static void
-+virt_machine_device_post_poweroff(PowerStateHandler *handler, DeviceState *dev,
-+                                  Error **errp)
-+{
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-+        virt_cpu_post_poweroff(handler, dev, errp);
-+    } else {
-+        error_setg(errp, "can't complete power-off, unsupported device-type %s",
-+                   object_get_typename(OBJECT(dev)));
-+    }
-+}
-+
-+static void
-+virt_machine_device_pre_poweron(PowerStateHandler *handler, DeviceState *dev,
-+                                Error **errp)
-+{
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-+        virt_cpu_pre_poweron(handler, dev, errp);
-+    } else {
-+        error_setg(errp, "can't prepare power-on, unsupported device-type %s",
-+                   object_get_typename(OBJECT(dev)));
-+    }
-+}
-+
-+static void *
-+virt_machine_powerstate_handler(MachineState *machine, DeviceState *dev)
-+{
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-+        return (void *)POWERSTATE_HANDLER(machine);
++    err = kvm_vm_ioctl(kvm_state, KVM_HAS_DEVICE_ATTR, attr);
++    if (err != 0) {
++        error_report("%s: KVM_HAS_DEVICE_ATTR: %s", name, strerror(-err));
++        return false;
 +    }
 +
-+    return NULL;
++    err = kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, attr);
++    if (err != 0) {
++        error_report("%s: KVM_SET_DEVICE_ATTR: %s", name, strerror(-err));
++        return false;
++    }
++
++    return true;
 +}
 +
- /*
-  * for arm64 kvm_type [7-0] encodes the requested number of bits
-  * in the IPA address space
-@@ -3294,6 +3517,7 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
++int kvm_arm_set_smccc_filter(uint64_t func, uint8_t faction)
++{
++    struct kvm_smccc_filter filter = {
++        .base = func,
++        .nr_functions = 1,
++        .action = faction,
++    };
++    struct kvm_device_attr attr = {
++        .group = KVM_ARM_VM_SMCCC_CTRL,
++        .attr = KVM_ARM_VM_SMCCC_FILTER,
++        .flags = 0,
++        .addr = (uintptr_t)&filter,
++    };
++
++    if (!kvm_arm_set_vm_attr(&attr, "SMCCC Filter")) {
++        error_report("failed to set SMCCC filter in KVM Host");
++        return -1;
++    }
++
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
-+    PowerStateHandlerClass *pshc = POWERSTATE_HANDLER_CLASS(oc);
-     static const char * const valid_cpu_types[] = {
- #ifdef CONFIG_TCG
-         ARM_CPU_TYPE_NAME("cortex-a7"),
-@@ -3358,7 +3582,13 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
-     hc->unplug_request = virt_machine_device_unplug_request_cb;
-     hc->unplug = virt_machine_device_unplug_cb;
+     int ret = 0;
++
+     /* For ARM interrupt delivery is always asynchronous,
+      * whether we are using an in-kernel VGIC or not.
+      */
+@@ -594,6 +636,22 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+     hw_breakpoints = g_array_sized_new(true, true,
+                                        sizeof(HWBreakpoint), max_hw_bps);
  
-+    /* virt machine device powerstate handlers & callbacks */
-+    assert(!mc->get_powerstate_handler);
-     mc->has_online_capable_cpus = true;
-+    mc->get_powerstate_handler = virt_machine_powerstate_handler;
-+    pshc->request_poweroff = virt_machine_device_request_poweroff;
-+    pshc->post_poweroff = virt_machine_device_post_poweroff;
-+    pshc->pre_poweron = virt_machine_device_pre_poweron;
- 
-     mc->nvdimm_supported = true;
-     mc->smp_props.clusters_supported = true;
-@@ -3560,6 +3790,7 @@ static const TypeInfo virt_machine_info = {
-     .instance_init = virt_instance_init,
-     .interfaces = (const InterfaceInfo[]) {
-          { TYPE_HOTPLUG_HANDLER },
-+         { TYPE_POWERSTATE_HANDLER },
-          { }
-     },
- };
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 68081b79bb..0898e8eed3 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -166,6 +166,7 @@ struct VirtMachineState {
-     MemMapEntry *memmap;
-     char *pciehb_nodename;
-     const int *irqmap;
-+    uint16_t boot_cpus;
-     int fdt_size;
-     uint32_t clock_phandle;
-     uint32_t gic_phandle;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 2ee202a8a5..ccf5588011 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -485,6 +485,7 @@ struct CPUState {
-     bool created;
-     bool stop;
-     bool stopped;
-+    bool parked;
- 
-     /* Should CPU start in powered-off state? */
-     bool start_powered_off;
-@@ -549,6 +550,7 @@ struct CPUState {
- 
-     /* TODO Move common fields from CPUArchState here. */
-     int cpu_index;
-+    bool preserve_assigned_cpu_index;
-     int cluster_index;
-     uint32_t tcg_cflags;
-     uint32_t halted;
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index bbf899184e..a8a84c4687 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -353,4 +353,34 @@ static inline bool gicv3_gicc_accessible(Object *obj, int cpu)
- 
-     return value;
++    /*
++     * To be able to handle PSCI CPU ON calls in QEMU, we need to install SMCCC
++     * filter in the Host KVM. This is required to support features like
++     * virtual CPU Hotplug on ARM platforms.
++     */
++    if (kvm_arm_set_smccc_filter(PSCI_0_2_FN64_CPU_ON,
++                                 KVM_SMCCC_FILTER_FWD_TO_USER)) {
++        error_report("CPU On PSCI-to-user-space fwd filter install failed");
++        abort();
++    }
++    if (kvm_arm_set_smccc_filter(PSCI_0_2_FN_CPU_OFF,
++                                 KVM_SMCCC_FILTER_FWD_TO_USER)) {
++        error_report("CPU Off PSCI-to-user-space fwd filter install failed");
++        abort();
++    }
++
+     return ret;
  }
+ 
+@@ -1440,6 +1498,38 @@ static bool kvm_arm_handle_debug(ARMCPU *cpu,
+     return false;
+ }
+ 
++static int kvm_arm_handle_hypercall(CPUState *cs, struct kvm_run *run)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    kvm_cpu_synchronize_state(cs);
++
++    /*
++     * hard coding immediate to 0 as we dont expect non-zero value as of now
++     * This might change in future versions. Hence, KVM_GET_ONE_REG  could be
++     * used in such cases but it must be enhanced then only synchronize will
++     * also fetch ESR_EL2 value.
++     */
++    if (run->hypercall.flags == KVM_HYPERCALL_EXIT_SMC) {
++        cs->exception_index = EXCP_SMC;
++        env->exception.syndrome = syn_aa64_smc(0);
++    } else {
++        cs->exception_index = EXCP_HVC;
++        env->exception.syndrome = syn_aa64_hvc(0);
++    }
++    env->exception.target_el = 1;
++    bql_lock();
++    arm_cpu_do_interrupt(cs);
++    bql_unlock();
++
++    /*
++     * For PSCI, exit the kvm_run loop and process the work. Especially
++     * important if this was a CPU_OFF command and we can't return to the guest.
++     */
++    return EXCP_INTERRUPT;
++}
++
+ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+@@ -1456,6 +1546,9 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+         ret = kvm_arm_handle_dabt_nisv(cpu, run->arm_nisv.esr_iss,
+                                        run->arm_nisv.fault_ipa);
+         break;
++    case KVM_EXIT_HYPERCALL:
++          ret = kvm_arm_handle_hypercall(cs, run);
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: un-handled exit reason %d\n",
+                       __func__, run->exit_reason);
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index ec9dc95ee8..bb2dfde3af 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -216,6 +216,15 @@ bool kvm_arm_mte_supported(void);
+  * Returns true if KVM can enable EL2 and false otherwise.
+  */
+ bool kvm_arm_el2_supported(void);
 +
 +/**
-+ * gicv3_mark_gicc_accessible:
-+ * @obj: QOM object implementing the GICv3 device
-+ * @cpu: Index of the vCPU to mark as GICC-accessible
-+ * @errp: Pointer to an Error* for reporting failures
++ * kvm_arm_set_smccc_filter
++ * @func: funcion
++ * @faction: SMCCC filter action(handle, deny, fwd-to-user) to be deployed
 + *
-+ * Marks GICv3CPUState::gicc_accessible as accessible and available for use.
++ * Sets the ARMs SMC-CC filter in KVM Host for selective hypercall exits
 + */
-+static inline void
-+gicv3_mark_gicc_accessible(Object *obj, int cpu, Error **errp)
-+{
-+    g_autofree gchar *propname = g_strdup_printf("gicc-accessible[%d]", cpu);
-+    object_property_set_bool(obj, propname, true, errp);
-+}
++int kvm_arm_set_smccc_filter(uint64_t func, uint8_t faction);
+ #else
+ 
+ static inline bool kvm_arm_aarch32_supported(void)
+@@ -242,6 +251,11 @@ static inline bool kvm_arm_el2_supported(void)
+ {
+     return false;
+ }
 +
-+/**
-+ * gicv3_mark_gicc_inaccessible:
-+ * @obj: QOM object implementing the GICv3 device
-+ * @cpu: Index of the vCPU to mark as GICC-inaccessible
-+ * @errp: Pointer to an Error* for reporting failures
-+ *
-+ * Marks GICv3CPUState::gicc_accessible as inaccessible and unavailable for use.
-+ */
-+static inline void
-+gicv3_mark_gicc_inaccessible(Object *obj, int cpu, Error **errp)
++static inline int kvm_arm_set_smccc_filter(uint64_t func, uint8_t faction)
 +{
-+    g_autofree gchar *propname = g_strdup_printf("gicc-accessible[%d]", cpu);
-+    object_property_set_bool(obj, propname, false, errp);
++    g_assert_not_reached();
 +}
  #endif
-diff --git a/system/cpus.c b/system/cpus.c
-index 256723558d..0545aaaa0f 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -89,7 +89,7 @@ bool cpu_thread_is_idle(CPUState *cpu)
-     if (cpu->stop || !cpu_work_list_empty(cpu)) {
-         return false;
-     }
--    if (cpu_is_stopped(cpu)) {
-+    if (cpu_is_stopped(cpu) || cpu->parked) {
-         return true;
-     }
-     if (!cpu->halted || cpu_has_work(cpu)) {
-@@ -327,7 +327,7 @@ bool cpu_can_run(CPUState *cpu)
-     if (cpu->stop) {
-         return false;
-     }
--    if (cpu_is_stopped(cpu)) {
-+    if (cpu_is_stopped(cpu) || cpu->parked) {
-         return false;
-     }
-     return true;
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index a5906d1672..0ceaf69092 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1502,6 +1502,7 @@ static void arm_cpu_initfn(Object *obj)
-     }
  
-     CPU(obj)->thread_id = 0;
-+    CPU(obj)->preserve_assigned_cpu_index = true;
- }
+ /**
+diff --git a/target/arm/meson.build b/target/arm/meson.build
+index 07d9271aa4..ae4e75c4a9 100644
+--- a/target/arm/meson.build
++++ b/target/arm/meson.build
+@@ -15,6 +15,7 @@ arm_system_ss.add(files(
+ ))
+ arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
+ arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
++arm_system_ss.add(files('psci.c'))
  
- /*
+ arm_user_ss = ss.source_set()
+ arm_user_ss.add(files('cpu.c'))
+diff --git a/target/arm/tcg/psci.c b/target/arm/psci.c
+similarity index 96%
+rename from target/arm/tcg/psci.c
+rename to target/arm/psci.c
+index cabed43e8a..fbd2bd2d6f 100644
+--- a/target/arm/tcg/psci.c
++++ b/target/arm/psci.c
+@@ -21,10 +21,13 @@
+ #include "exec/helper-proto.h"
+ #include "kvm-consts.h"
+ #include "qemu/main-loop.h"
++#include "qemu/error-report.h"
+ #include "system/runstate.h"
++#include "system/tcg.h"
+ #include "internals.h"
+ #include "arm-powerctl.h"
+ #include "target/arm/multiprocessing.h"
++#include "exec/target_long.h"
+ 
+ bool arm_is_psci_call(ARMCPU *cpu, int excp_type)
+ {
+@@ -158,6 +161,11 @@ void arm_handle_psci_call(ARMCPU *cpu)
+     case QEMU_PSCI_0_1_FN_CPU_SUSPEND:
+     case QEMU_PSCI_0_2_FN_CPU_SUSPEND:
+     case QEMU_PSCI_0_2_FN64_CPU_SUSPEND:
++       if (!tcg_enabled()) {
++            warn_report("CPU suspend not supported in non-tcg mode");
++            break;
++       }
++#ifdef CONFIG_TCG
+         /* Affinity levels are not supported in QEMU */
+         if (param[1] & 0xfffe0000) {
+             ret = QEMU_PSCI_RET_INVALID_PARAMS;
+@@ -170,6 +178,7 @@ void arm_handle_psci_call(ARMCPU *cpu)
+             env->regs[0] = 0;
+         }
+         helper_wfi(env, 4);
++#endif
+         break;
+     case QEMU_PSCI_1_0_FN_PSCI_FEATURES:
+         switch (param[1]) {
+diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
+index 895facdc30..f4d8db0f79 100644
+--- a/target/arm/tcg/meson.build
++++ b/target/arm/tcg/meson.build
+@@ -49,10 +49,6 @@ arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
+   'sve_helper.c',
+ ))
+ 
+-arm_system_ss.add(files(
+-  'psci.c',
+-))
+-
+ arm_system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('cpu-v7m.c'))
+ arm_user_ss.add(when: 'TARGET_AARCH64', if_false: files('cpu-v7m.c'))
+ 
 -- 
 2.34.1
 
