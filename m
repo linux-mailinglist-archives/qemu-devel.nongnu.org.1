@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A7EBB12AD
-	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0336BB1283
+	for <lists+qemu-devel@lfdr.de>; Wed, 01 Oct 2025 17:44:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v3yrA-0005BH-37; Wed, 01 Oct 2025 11:35:06 -0400
+	id 1v3yqy-0004UY-0Y; Wed, 01 Oct 2025 11:34:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1v3yqx-0004oA-1z
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:34:52 -0400
+ id 1v3yql-0004IS-St
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:34:43 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1v3yqb-0006Pn-BJ
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:34:49 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591FMj7k022680;
- Wed, 1 Oct 2025 15:34:17 GMT
+ id 1v3yqZ-0006Ps-KB
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 11:34:39 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591FN0ru011640;
+ Wed, 1 Oct 2025 15:34:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=VggucWXHRsV9x5Cmy/z6Zo3PNEb1fQUeyB+8KnvYUxE=; b=
- ma2L6ULOtLiZU8q5Ibtk5r4omaoQgf8vnSzXU8k2GgTYsKFWrSNB2fWGQFo3x3Bn
- 8mubleMjk98Zk1w+JPAvX5G6EKxCOS7CwJVlKil+YidIFCWFwj+lz629rO2g8r/v
- 5880senUpDXHoDU7niERTWvOzaZklmD7+6e0hF/bW27K0y9pE29iJPf7uv4g4WrP
- fkMN9DHrQagryOJm4+PZPNJssX8Nwuislrx+Z1rCUk1UMOYq46kGDLPQh/j0ii6e
- dL8vHO4TFP/APTBOLTJfBrPZK4gOIvX5zdWNNVclbHVKlxgK8zibSv70ot0gfxgQ
- ncCv4sTejZqz0QfvJ7Tzcw==
+ corp-2025-04-25; bh=HOUVyH/K5ivY35ieQZAsBir5jT9lYuqM07KxnT9Ynlc=; b=
+ rXcwpH6u5Q2Y6v/FHQrgq/J3f8FjUOb+rpOKzyn0JhplaBesm4HEjgFbcOlaaSpQ
+ sqNhF7UEOzKdP0LMWAsTcxeuVUqMUNZ3r3P7zWDVej1MCn7QlP1DTh3jeX1HQ4+x
+ wZWOWvPSAHlmompgYhi6mbXouhgcJARJolwtQJW+gUB5q8gavNPqcOwWKALokLh+
+ fVJKfgHN/TYPX9W0LhqV4KbaPBu6CbVdHHVF7fpsfnw6kqcPTMnLiavViDcLrKz3
+ WG80A4RGYzp3KYWafIGLgI4JkDdldtA9P18Xxw0e4d3/8ZQsx82VLt22Z8f6wcC4
+ I9ckBgfU7CEgkNYPHjCINQ==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gm3bhqvf-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gmacspwd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 01 Oct 2025 15:34:16 +0000 (GMT)
+ Wed, 01 Oct 2025 15:34:17 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 591EmvLZ023181; Wed, 1 Oct 2025 15:34:15 GMT
+ with ESMTP id 591Engvg023121; Wed, 1 Oct 2025 15:34:16 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 49e6caaw36-1
+ 49e6caaw3n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 01 Oct 2025 15:34:15 +0000
+ Wed, 01 Oct 2025 15:34:16 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 591FYCqk014790;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 591FYCqm014790;
  Wed, 1 Oct 2025 15:34:15 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 49e6caaw0k-5; Wed, 01 Oct 2025 15:34:15 +0000
+ ESMTP id 49e6caaw0k-6; Wed, 01 Oct 2025 15:34:15 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
@@ -60,9 +60,9 @@ Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Cedric Le Goater <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 04/19] migration: cpr-exec-command parameter
-Date: Wed,  1 Oct 2025 08:33:56 -0700
-Message-Id: <1759332851-370353-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 05/19] migration: cpr-exec save and load
+Date: Wed,  1 Oct 2025 08:33:57 -0700
+Message-Id: <1759332851-370353-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1759332851-370353-1-git-send-email-steven.sistare@oracle.com>
 References: <1759332851-370353-1-git-send-email-steven.sistare@oracle.com>
@@ -74,19 +74,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2509150000 definitions=main-2510010134
-X-Proofpoint-GUID: fAEKO64blpHXeXEjfCONTFYI_6ysoSlL
-X-Authority-Analysis: v=2.4 cv=GsJPO01C c=1 sm=1 tr=0 ts=68dd49f9 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=P5I3RyAu c=1 sm=1 tr=0 ts=68dd49f9 b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117
  a=WeWmnZmh0fydH62SvGsd2A==:17
- a=x6icFKpwvdMA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=MKfdV2AELyQW9RJxCdwA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE2MiBTYWx0ZWRfXyZOmLYuP99tp
- QRy2KShkoedXrtevW5JV+SQPLKUFG8KTZB/iepx3OQOirSnOC63TLJOZEHCujllIg50l5SwbtBe
- fSUaIQaMrxHbixkrBtuftmndkapGAG/1p1fTdrR1p/i1U6R8i8RMW/1uNOMEMXjTlPEAXP7IcXj
- dOaXl7OuWJc59Dr5RQbKqom3yNqL9SyZnlbT6WNpmLSAlsNLopUGzJX7fJfQ6+q0i9ySHuOLneu
- 0HkQ7mc2GSzeGG09v+K8pXk8DdUdgnqewczSW+bAXEOM/7DLQ1BekCSLBU+aJuaNEL3yzUC7A4h
- QhkvWceznaaz9bw+pl9nF76sYzWpryeBKiFmFOYnuIl5nUF7z9UjCjJW3m+zsUIaBEjRpaASQ4E
- scyR44TONEa1QDRRQ/ylg+WGW2J+gw==
-X-Proofpoint-ORIG-GUID: fAEKO64blpHXeXEjfCONTFYI_6ysoSlL
+ a=x6icFKpwvdMA:10 a=yPCof4ZbAAAA:8 a=mt9KrOKPv6uyc6Gi5S4A:9
+X-Proofpoint-ORIG-GUID: uwWYlsmfI19036yMU9g-JaBqWAC2nKiP
+X-Proofpoint-GUID: uwWYlsmfI19036yMU9g-JaBqWAC2nKiP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE2NSBTYWx0ZWRfXxELEOfhNwulK
+ gmTWZTMnS5LHIBjQVyMA1o2zfYMTTw5AeuJ5z7fA44X8LpWAbjgfOEBD0ODbkeY0KsmtUmQqY7U
+ mNor+d/syaCopciT6GhzbGuwf636RhlOa4C3E7Eu2yQ7r3AQkwqbsuOQ4ih9pYqZ/tQ3JXL+Pqw
+ VAK/nJnLdX1Q9U7DhxCCCWUWLIKoF4qrsGzrAw2O/FItgozM90SPVhp0Rv4mxWtGGzvAuGTnEcA
+ 9WNexqS3kHiKUa+Mx9Ld2I0RwuvMR6K6AaMadyOYdrqOrX+fLGgE4vRUIhECX3xYGU+CkOQ6t6d
+ stD2iQU3ZHVVXe6LHoRHtiDKxyH0M9ZQJHIU5sOYymrrh4J90J2QjOhp+Kn0RcPmnaszx90dTuF
+ W15UHQSuR0VaQWflsWIQVcaj3tG7Uw==
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -23
@@ -112,204 +112,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create the cpr-exec-command migration parameter, defined as a list of
-strings.  It will be used for cpr-exec migration mode in a subsequent
-patch, and contains forward references to cpr-exec mode in the qapi
-doc.
+To preserve CPR state across exec, create a QEMUFile based on a memfd, and
+keep the memfd open across exec.  Save the value of the memfd in an
+environment variable so post-exec QEMU can find it.
 
-No functional change, except that cpr-exec-command is shown by the
-'info migrate' command.
+These new functions are called in a subsequent patch.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/migration.json            | 21 ++++++++++++++++++---
- migration/migration-hmp-cmds.c | 30 ++++++++++++++++++++++++++++++
- migration/options.c            | 14 ++++++++++++++
- hmp-commands.hx                |  2 +-
- 4 files changed, 63 insertions(+), 4 deletions(-)
+ include/migration/cpr.h |  5 +++
+ migration/cpr-exec.c    | 93 +++++++++++++++++++++++++++++++++++++++++++++++++
+ migration/meson.build   |  1 +
+ 3 files changed, 99 insertions(+)
+ create mode 100644 migration/cpr-exec.c
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 2387c21..2be8fa1 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -924,6 +924,10 @@
- #     only has effect if the @mapped-ram capability is enabled.
- #     (Since 9.1)
- #
-+# @cpr-exec-command: Command to start the new QEMU process when @mode
-+#     is @cpr-exec.  The first list element is the program's filename,
-+#     the remainder its arguments.  (Since 10.2)
-+#
- # Features:
- #
- # @unstable: Members @x-checkpoint-delay and
-@@ -950,7 +954,8 @@
-            'vcpu-dirty-limit',
-            'mode',
-            'zero-page-detection',
--           'direct-io'] }
-+           'direct-io',
-+           'cpr-exec-command'] }
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+index 2b074d7..b84389f 100644
+--- a/include/migration/cpr.h
++++ b/include/migration/cpr.h
+@@ -53,4 +53,9 @@ int cpr_get_fd_param(const char *name, const char *fdname, int index,
+ QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
+ QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
  
- ##
- # @MigrateSetParameters:
-@@ -1105,6 +1110,10 @@
- #     only has effect if the @mapped-ram capability is enabled.
- #     (Since 9.1)
- #
-+# @cpr-exec-command: Command to start the new QEMU process when @mode
-+#     is @cpr-exec.  The first list element is the program's filename,
-+#     the remainder its arguments.  (Since 10.2)
-+#
- # Features:
- #
- # @unstable: Members @x-checkpoint-delay and
-@@ -1146,7 +1155,8 @@
-             '*vcpu-dirty-limit': 'uint64',
-             '*mode': 'MigMode',
-             '*zero-page-detection': 'ZeroPageDetection',
--            '*direct-io': 'bool' } }
-+            '*direct-io': 'bool',
-+            '*cpr-exec-command': [ 'str' ]} }
- 
- ##
- # @migrate-set-parameters:
-@@ -1315,6 +1325,10 @@
- #     only has effect if the @mapped-ram capability is enabled.
- #     (Since 9.1)
- #
-+# @cpr-exec-command: Command to start the new QEMU process when @mode
-+#     is @cpr-exec.  The first list element is the program's filename,
-+#     the remainder its arguments.  (Since 10.2)
-+#
- # Features:
- #
- # @unstable: Members @x-checkpoint-delay and
-@@ -1353,7 +1367,8 @@
-             '*vcpu-dirty-limit': 'uint64',
-             '*mode': 'MigMode',
-             '*zero-page-detection': 'ZeroPageDetection',
--            '*direct-io': 'bool' } }
-+            '*direct-io': 'bool',
-+            '*cpr-exec-command': [ 'str' ]} }
- 
- ##
- # @query-migrate-parameters:
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 0fc21f0..54df615 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -306,6 +306,18 @@ void hmp_info_migrate_capabilities(Monitor *mon, const QDict *qdict)
-     qapi_free_MigrationCapabilityStatusList(caps);
- }
- 
-+static void monitor_print_cpr_exec_command(Monitor *mon, strList *args)
-+{
-+    monitor_printf(mon, "%s:",
-+        MigrationParameter_str(MIGRATION_PARAMETER_CPR_EXEC_COMMAND));
++QEMUFile *cpr_exec_output(Error **errp);
++QEMUFile *cpr_exec_input(Error **errp);
++void cpr_exec_persist_state(QEMUFile *f);
++bool cpr_exec_has_state(void);
++void cpr_exec_unpersist_state(void);
+ #endif
+diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
+new file mode 100644
+index 0000000..9b54eab
+--- /dev/null
++++ b/migration/cpr-exec.c
+@@ -0,0 +1,93 @@
++/*
++ * Copyright (c) 2021-2025 Oracle and/or its affiliates.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+    while (args) {
-+        monitor_printf(mon, " %s", args->value);
-+        args = args->next;
-+    }
-+    monitor_printf(mon, "\n");
++#include "qemu/osdep.h"
++#include "qemu/cutils.h"
++#include "qemu/memfd.h"
++#include "qapi/error.h"
++#include "io/channel-file.h"
++#include "io/channel-socket.h"
++#include "migration/cpr.h"
++#include "migration/qemu-file.h"
++#include "migration/misc.h"
++#include "migration/vmstate.h"
++#include "system/runstate.h"
++
++#define CPR_EXEC_STATE_NAME "QEMU_CPR_EXEC_STATE"
++
++static QEMUFile *qemu_file_new_fd_input(int fd, const char *name)
++{
++    g_autoptr(QIOChannelFile) fioc = qio_channel_file_new_fd(fd);
++    QIOChannel *ioc = QIO_CHANNEL(fioc);
++    qio_channel_set_name(ioc, name);
++    return qemu_file_new_input(ioc);
 +}
 +
- void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
- {
-     MigrationParameters *params;
-@@ -435,6 +447,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-                                MIGRATION_PARAMETER_DIRECT_IO),
-                            params->direct_io ? "on" : "off");
-         }
++static QEMUFile *qemu_file_new_fd_output(int fd, const char *name)
++{
++    g_autoptr(QIOChannelFile) fioc = qio_channel_file_new_fd(fd);
++    QIOChannel *ioc = QIO_CHANNEL(fioc);
++    qio_channel_set_name(ioc, name);
++    return qemu_file_new_output(ioc);
++}
 +
-+        assert(params->has_cpr_exec_command);
-+        monitor_print_cpr_exec_command(mon, params->cpr_exec_command);
-     }
- 
-     qapi_free_MigrationParameters(params);
-@@ -716,6 +731,21 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         p->has_direct_io = true;
-         visit_type_bool(v, param, &p->direct_io, &err);
-         break;
-+    case MIGRATION_PARAMETER_CPR_EXEC_COMMAND: {
-+        g_autofree char **strv = NULL;
-+        g_autoptr(GError) gerr = NULL;
-+        strList **tail = &p->cpr_exec_command;
++void cpr_exec_persist_state(QEMUFile *f)
++{
++    QIOChannelFile *fioc = QIO_CHANNEL_FILE(qemu_file_get_ioc(f));
++    int mfd = dup(fioc->fd);
++    char val[16];
 +
-+        if (!g_shell_parse_argv(valuestr, NULL, &strv, &gerr)) {
-+            error_setg(&err, "%s", gerr->message);
-+            break;
-+        }
-+        for (int i = 0; strv[i]; i++) {
-+            QAPI_LIST_APPEND(tail, strv[i]);
-+        }
-+        p->has_cpr_exec_command = true;
-+        break;
++    /* Remember mfd in environment for post-exec load */
++    qemu_clear_cloexec(mfd);
++    snprintf(val, sizeof(val), "%d", mfd);
++    g_setenv(CPR_EXEC_STATE_NAME, val, 1);
++}
++
++static int cpr_exec_find_state(void)
++{
++    const char *val = g_getenv(CPR_EXEC_STATE_NAME);
++    int mfd;
++
++    assert(val);
++    g_unsetenv(CPR_EXEC_STATE_NAME);
++    assert(!qemu_strtoi(val, NULL, 10, &mfd));
++    return mfd;
++}
++
++bool cpr_exec_has_state(void)
++{
++    return g_getenv(CPR_EXEC_STATE_NAME) != NULL;
++}
++
++void cpr_exec_unpersist_state(void)
++{
++    int mfd;
++    const char *val = g_getenv(CPR_EXEC_STATE_NAME);
++
++    g_unsetenv(CPR_EXEC_STATE_NAME);
++    assert(val);
++    assert(!qemu_strtoi(val, NULL, 10, &mfd));
++    close(mfd);
++}
++
++QEMUFile *cpr_exec_output(Error **errp)
++{
++    int mfd = qemu_memfd_create(CPR_EXEC_STATE_NAME, 0, false, 0, 0, errp);
++
++    if (mfd < 0) {
++        return NULL;
 +    }
-     default:
-         g_assert_not_reached();
-     }
-diff --git a/migration/options.c b/migration/options.c
-index 4e923a2..5183112 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -959,6 +959,9 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->zero_page_detection = s->parameters.zero_page_detection;
-     params->has_direct_io = true;
-     params->direct_io = s->parameters.direct_io;
-+    params->has_cpr_exec_command = true;
-+    params->cpr_exec_command = QAPI_CLONE(strList,
-+                                          s->parameters.cpr_exec_command);
- 
-     return params;
- }
-@@ -993,6 +996,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_mode = true;
-     params->has_zero_page_detection = true;
-     params->has_direct_io = true;
-+    params->has_cpr_exec_command = true;
- }
- 
- /*
-@@ -1297,6 +1301,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_direct_io) {
-         dest->direct_io = params->direct_io;
-     }
 +
-+    if (params->has_cpr_exec_command) {
-+        dest->cpr_exec_command = params->cpr_exec_command;
-+    }
- }
- 
- static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-@@ -1429,6 +1437,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_direct_io) {
-         s->parameters.direct_io = params->direct_io;
-     }
++    return qemu_file_new_fd_output(mfd, CPR_EXEC_STATE_NAME);
++}
 +
-+    if (params->has_cpr_exec_command) {
-+        qapi_free_strList(s->parameters.cpr_exec_command);
-+        s->parameters.cpr_exec_command =
-+            QAPI_CLONE(strList, params->cpr_exec_command);
-+    }
- }
- 
- void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index d0e4f35..3cace8f 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -1009,7 +1009,7 @@ ERST
- 
-     {
-         .name       = "migrate_set_parameter",
--        .args_type  = "parameter:s,value:s",
-+        .args_type  = "parameter:s,value:S",
-         .params     = "parameter value",
-         .help       = "Set the parameter for migration",
-         .cmd        = hmp_migrate_set_parameter,
++QEMUFile *cpr_exec_input(Error **errp)
++{
++    int mfd = cpr_exec_find_state();
++
++    lseek(mfd, 0, SEEK_SET);
++    return qemu_file_new_fd_input(mfd, CPR_EXEC_STATE_NAME);
++}
+diff --git a/migration/meson.build b/migration/meson.build
+index 0f71544..16909d5 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -16,6 +16,7 @@ system_ss.add(files(
+   'channel-block.c',
+   'cpr.c',
+   'cpr-transfer.c',
++  'cpr-exec.c',
+   'cpu-throttle.c',
+   'dirtyrate.c',
+   'exec.c',
 -- 
 1.8.3.1
 
