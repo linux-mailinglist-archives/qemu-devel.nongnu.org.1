@@ -2,92 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF0DBB4F16
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 20:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DC5BB4F54
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 21:01:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4OOp-0002tZ-6m; Thu, 02 Oct 2025 14:51:31 -0400
+	id 1v4OWj-0006mD-2o; Thu, 02 Oct 2025 14:59:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v4OOe-0002rN-3s
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 14:51:20 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v4OWe-0006lb-D7
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 14:59:37 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v4OOR-0002pm-UF
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 14:51:18 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-b523fb676efso1221812a12.3
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 11:51:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v4OWN-0004Ry-SS
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 14:59:36 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-27d3540a43fso12513325ad.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 11:59:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759431060; x=1760035860; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VmNib9EeX4PyZSsSsBWFiciPyLily6/1sfNGlhuz4Sk=;
- b=CxVh+HDQjUnHEqqDMWVn3Fo2AU0RWxMLOkonPz/D7vuV4QK1nH37QaEuxQAarwFUyq
- uyCStYIGPf0oumQZRpeBo5BOfgKdgo4SblySJ+SGLUs3G9zpb1eA7PAq048f3jqmmlym
- nqwsRzXfmmtfvVRnulYa0ZjfjVTZ+sFo7Ke0dB5J2mPN3hQOSQFD2PjjHrQzbIQa61Ue
- m645X6DVf640oG5ph8K9gK6bI32Kp4mw2R5qzaZ7y2jZPYGLZdGFJRiYMBrnK28HTAK4
- 39EhBI4OVqv72YcKoJDCU7wj/y8QzLXDF7k1PXnDBzdOFfN6eqjPg+S51NQddwRn146p
- 2U4Q==
+ d=linaro.org; s=google; t=1759431551; x=1760036351; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rb+uTkpC4v1xiKTcsQSyCoWatFkegGz4XMRmDBJH9tA=;
+ b=sX4MCM4RHwaE2MxzYK7fxuzqGvO4KfnTquwW20yE+sO7ueoVxoaf4/fR5tK39GuN1m
+ /q+2QjpMSIRoC9zEsFzu7P6uuwkxleGPtrgNwL7lecSiZWYlNec0dEZzJ9dfNmeF6aWH
+ iceMDsHXPzDMpfSouXOX42TZDNBaKT1UWODD1yb4vuH49WfE4LNWiMUbW0+jXDevEf+W
+ KV5Xf+NvPuXs9cBxulSiYxzzby3ak6DMnTKhqbhED/p/QkSxu/qpObir3JhNRV0MdCF8
+ AYxqCCNkPlC3JjwGLapu53luVWd+e/6w6k90youNFlZxVE3hqLu6g5RUuuKQ37LNa3dV
+ x8TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759431060; x=1760035860;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VmNib9EeX4PyZSsSsBWFiciPyLily6/1sfNGlhuz4Sk=;
- b=Ob+FiRS1i73xuJku/+o3mOCghdy7rWV8ngb4wkV3RConynmkae/rcmWO431AY8MsEg
- /+VXbWLKEZ0X5ewRZvo1HL6FG8dvuaRJrjZJZ3ZQjmRkrlxQYWpcLalkfe7qucCjtiwQ
- o2owVDotZZcEeWackIg19eNjcmhEcqR0fgvWXSvq31O8iztu8+MzqgsOOAXfCpBA5Y/g
- AAzebT2DSPOGcz/DDSLyZ5R5Qhs0lc2qhWuiLnBec4S44EEeCpDWeituHxuR9wyDFjk5
- KOJj1vKrVWVKfatN0WIHFAl2AeP/HiR+krKoqoRGpfCPXLmKdyBpzuZayLWB+o59xJAo
- 1/8w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXuauIGWIX/DCoCt6KIlO5kWLbE5QSqqrG8ks0Hdzy+Wn4Oo5Br6FZnnN/49Rm6y7wHOYF2VhPVDrij@nongnu.org
-X-Gm-Message-State: AOJu0YwIe/jh0rYSWRO9PnUgFYVmeQZor69pS3bxGB2O30QYnq0A/Gd3
- mv9rQptM26boQ/Aws+r1F96WMU/9C4cqhN+5fpUnVeIhcL3RucATBRFZtZoqkVpmfeQ=
-X-Gm-Gg: ASbGncvIstv8RuYseSej44D/HYWLZZki4Xgv8oflGaiURhOzTluKeTj/lFJwHNKRKEQ
- wQM0yFlSCx68GeFhvk4FWJHLFki7DAWGhOdjVHB+8vvZgdwc1fvvLWVXQdM9runVaqHm55qxqYE
- iYZ4h++PBZYAJPEdH37UakwXTzT8TQBFboM3al43JlTg51ttlbTGeAo8evSktNKHazG2Ak7MVfj
- 3Te4Zqcsy2Pv3wj50ax06wmGXHU3LM5ltSAMR02qaJJhhABOgxYqvBehqX08gPRH2jhE1OaNfvb
- JjJKPbxJ9pAESg/yXmxSApDEZE5Hkk7JEE8yIH2fiyguXX7f7P6U8v6VjmdHL9ajjN6yUFvF7Aj
- I6eXsEjenEaRkTTCSSSOyhFHs5gk3NTkcnyBPxnJEbVS6ps/fBCU33sJnOra4WYk=
-X-Google-Smtp-Source: AGHT+IHLELYniSAM7Tfau0ZUR5epOVz/DJAMojd7Nopg5l/LVdGFdEDAtg6bqwV7D/sqbkinIDLCpg==
-X-Received: by 2002:a17:903:2c7:b0:269:96ee:17d3 with SMTP id
- d9443c01a7336-28e9a6fd7c4mr2536935ad.51.1759431060375; 
- Thu, 02 Oct 2025 11:51:00 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1b88fcsm27978945ad.84.2025.10.02.11.50.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Oct 2025 11:51:00 -0700 (PDT)
-Message-ID: <481ff726-7970-4e75-a6d5-8430ed004943@linaro.org>
-Date: Thu, 2 Oct 2025 11:50:59 -0700
+ d=1e100.net; s=20230601; t=1759431551; x=1760036351;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Rb+uTkpC4v1xiKTcsQSyCoWatFkegGz4XMRmDBJH9tA=;
+ b=ILJQ6D27O7k4fv/fZ9HdOAwpJGHqqbgKpbirD/HkjN+qWgIHu2iukKPzn6EzJBsVKU
+ mmMODJTZ14HWT4q6jbkqPvi9zIHzDVOgBoGV6Y9XX4Xux5SjLNhthUsktruT8+ZA6Nsg
+ Qtat1BBJkxTYdW+KZ0CnRYdMps0uiMugezzh5m81Wj08Nu8vgSqrs0C+HCDZE3eMkscD
+ XEWLabO6QA/qTLqm7UOAWavwsKRgGqYdU2yUuy+Iuh05WDN2FXqA339FULCHleaWd6Y0
+ W4aKn0ybNY2X/Ym8l8hb4dSb0RrtND1X7u2L/e+J64NSLgy2Xm5ko7KHaTw3DDoB2LFg
+ bYag==
+X-Gm-Message-State: AOJu0YxY7xW2+j8hDjkSaE5aw3pRiENtFdxQSCeuZihLUtxWRiCyovey
+ /e7x+I/DWZ5tg+kdLlNr6iIz3Lbh2vAitY1QJDb56M8g9AX/OJowIjBasmT6FMAAxH0+CWpBvIS
+ dMdMETjY=
+X-Gm-Gg: ASbGncuj4rFAr6J6kUHCAx4hOR3lB+4asQn2JSXL/AEkxWMaK2iC7bSuLobypyX+dWX
+ V9pePFX6GGDr4mFYfRmqJrLqSLpFuw7ijOiguloyCkYOwHrvGmLuys4fmCLJ6wVVAtpi9PuS5Mg
+ Pk6tzKSy0jfR1ksAdC4jWHAbS3XLiqlFYwcjreARG30O25bbzoIOy41hS02Q0toVs+/NEW6xmDe
+ dyVsntFG0uZa1Pkjyg+oj3cT1M5LCMn9ICw5aKPWHMN5NPxrxE39VHmgSkvqBNNPJEPEb9WQcZy
+ KXGmqPkaQ8e3rKw6YBOQ+6OPrq2Sen+NpUrQ+XbwM9YyW1oAGA7U0/rPkKx9OjK7/iyRAipJ6OP
+ FsXhzUvfASSsO/XoVd1i+2BickXHLpb/IUFBuyinFOSo7bni7NhdN8plB9VsW8tRsm0o=
+X-Google-Smtp-Source: AGHT+IFYrZOtZsU2u/Beqmlg7UuuIOj7JSi8x7dNjCRy6pEr+ghlsNk7oEqh2Boe9BgfQoZTy7ay+g==
+X-Received: by 2002:a17:903:3c70:b0:269:ae5a:e32b with SMTP id
+ d9443c01a7336-28e9a5668e1mr3892505ad.13.1759431551542; 
+ Thu, 02 Oct 2025 11:59:11 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-28e8d1d31c8sm28047335ad.95.2025.10.02.11.59.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Oct 2025 11:59:11 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org
+Subject: [PATCH 0/2] FEAT_GCS firmware update for test_rme_*
+Date: Thu,  2 Oct 2025 11:59:07 -0700
+Message-ID: <20251002185910.584990-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/33] target/riscv: Bugfix
- riscv_pmu_ctr_get_fixed_counters_val()
-Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, richard.henderson@linaro.org,
- alistair.francis@wdc.com, palmer@dabbelt.com
-References: <20251001073306.28573-1-anjo@rev.ng>
- <20251001073306.28573-5-anjo@rev.ng>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251001073306.28573-5-anjo@rev.ng>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,23 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/25 12:32 AM, Anton Johansson wrote:
->  From my understanding the upper_half argument only indicates whether the
-> upper or lower 32 bits should be returned, and upper_half will only ever
-> be set when MXLEN == 32.  However, the function also uses upper_half to
-> determine whether the inhibit flags are located in mcyclecfgh or
-> mcyclecfg, but this misses the case where MXLEN == 32, upper_half == false
-> for TARGET_RISCV32 where we would also need to read the upper half field.
-> 
-> Minor simplifications are also made along with some formatting fixes.
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> ---
->   target/riscv/csr.c | 22 ++++++++++------------
->   1 file changed, 10 insertions(+), 12 deletions(-)
+Hi Pierrick,
 
-Looks good.
-write_mhpmcounterh is indeed available only for riscv32.
+Here's what I need to run our RME test with FEAT_GCS enabled,
+based on your
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+  https://github.com/pbo-linaro/qemu-linux-stack rme_release
+
+If your can run what's needed to update the functional artifacts,
+I can re-spin my FEAT_GCS series with that included.
+
+Thanks,
+
+
+r~
+
+
+Richard Henderson (2):
+  Update tf-rmm to support FEAT_S1PIE
+  Enable firmware support for PIE and GCS
+
+ build_arm_trusted_firmware.sh                 |  1 +
+ build_tf_rmm.sh                               | 10 ++---
+ ...arm-trusted-firmware-support-PIE-GCS.patch | 30 +++++++++++++
+ patches/rmm-support-lower-pmu-versions.patch  | 44 -------------------
+ 4 files changed, 36 insertions(+), 49 deletions(-)
+ create mode 100644 patches/arm-trusted-firmware-support-PIE-GCS.patch
+ delete mode 100644 patches/rmm-support-lower-pmu-versions.patch
+
+-- 
+2.43.0
+
 
