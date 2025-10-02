@@ -2,89 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BA9BB258F
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 04:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCB2BB25BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 04:25:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v48hl-0006uX-Jt; Wed, 01 Oct 2025 22:06:02 -0400
+	id 1v48xY-0007Z6-W6; Wed, 01 Oct 2025 22:22:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v48hf-0006tL-E8
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:57 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v48h6-0004vG-PM
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:55 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-27c369f8986so4588245ad.3
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 19:05:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759370713; x=1759975513; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2jPSIPajWmCSdEgDckhGxRC3Fx6a7Y2qPrhYAvCWPhk=;
- b=gEwLULUZXgFrTVi8hb6fWvAq8nw3Vnnz2elNvjEhr7Ci+BUCr/aU4o/SoD7BfS7Vv4
- cTy2RplZiIXH+zNoewXNCpptVj+pABToVO24B0wtQDZmnacmBuHmh5/SpklIFbMrRwG0
- gvYAQdZcsSgj3XheqK8uO5RsWtjfsvqt0NZ6ydC4nYd+dXYrqSOj7POu3N2NamU7Hgck
- +9jj5aKxqOV5IsfZR7V4cz+fEAnPE0BnUYd2P+ks6zIK6rSHwRcJx4PYIEFaRy93g1zx
- nwqX2MPlICDQRHW/obHnzmV2sn5Xxo6yRTG7l1YOgj1z9E86+xae4KKR/UV5C3jbEtFR
- pt8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759370713; x=1759975513;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2jPSIPajWmCSdEgDckhGxRC3Fx6a7Y2qPrhYAvCWPhk=;
- b=DIK287J8hb5hOjO+IVaKoK6yFYqIWuG+zk/B/inu9Gs/Iqvx7Y5M3LRqOpiKh19EHw
- OJniCsycw8tLwBLTUN2AAFn6w74p1FAcxW3adazHLJIBdDAOZBBPJMKmCEsEOhv8vCVx
- wUe/r5M3ujdOikcvyFn9DkIxsHhzezQ0g4Bds+4dUPftK7W4Jgjk8KTja9gfBTfi0yeS
- bavlmnNebzoGNDaraoWC6QSLWfvDKMpTTK7LzAEyeykCA5bHeBg4htyfJbJuT7uq+k76
- klLmg1+Qv9TotTYWNza6ghGPGCeUshlB1A03ELofVdtdP8RmGY2MuAGV2eMdvVyYIpp4
- Uycw==
-X-Gm-Message-State: AOJu0Yy0dn+HVRZTHYLE+LKqbkGECtvtGMZSNV1yt/o6I1mAL7eusbik
- H9GKp/AsWQ2bw6XO9DuandkdTf1znPgnkvsShd3PSeckcXX9FYrO4f1kZJEsxhCFii7uyU0C6EB
- Zndbe
-X-Gm-Gg: ASbGnctwzgcw0h2RaG/FWa/EkbaQWO3MiAmOkzSu4NSZh6ZW4XzA0ZwQR2CUjQBoG7Z
- PiRh89XJz7IbqhW50xyE8CbXN3z0V4d+DU4pvWy77Tg7iBYUfYiIeRs8CZSeUxPCWhYhsW0al3y
- 10el76+J1dV9EFjyY0wHAZ5XFmaa4dx1RaAVf+V4825UZw8qzeRh66524wo/2cyTpez9zcbKZOg
- lyPZ7fjJLsjdY7VfGQWQn8UIqdB4tZLUCYA+JOqI4si8ej5+edm+bC5iRlEeDZarC7IerugwQ6X
- 4Krl+2H87up8FQdMleQAlAnSjKSeJJ1iEjBeZv9VmTsCd0JWOvP/9tjp35kQEmp3+D5gWd9PMiZ
- g1HHnOr7HxEuGZgeX8FnBcT4tW/4Kl74sEBDah+IlA66C46hdeWwI94xE
-X-Google-Smtp-Source: AGHT+IFpqWT1vfLJovisGQpKLFOIn7qFlLRUeGtt/NJdFm/6KtvMuYiXVsnwNgDpH7ypv53tJkCh6Q==
-X-Received: by 2002:a17:903:288:b0:275:1833:96e5 with SMTP id
- d9443c01a7336-28e7f2b6018mr73891845ad.24.1759370712623; 
- Wed, 01 Oct 2025 19:05:12 -0700 (PDT)
-Received: from gromero0.. ([186.215.59.111]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1d95bdsm9476735ad.119.2025.10.01.19.05.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 19:05:12 -0700 (PDT)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
- berrange@redhat.com
-Cc: qemu-arm@nongnu.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH v5 8/9] tests/functional: Adapt reverse_debugging to run w/o
- Avocado
-Date: Thu,  2 Oct 2025 02:04:31 +0000
-Message-Id: <20251002020432.54443-9-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251002020432.54443-1-gustavo.romero@linaro.org>
-References: <20251002020432.54443-1-gustavo.romero@linaro.org>
+ (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
+ id 1v48xQ-0007WT-HW; Wed, 01 Oct 2025 22:22:12 -0400
+Received: from fout-b2-smtp.messagingengine.com ([202.12.124.145])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
+ id 1v48xH-0001EQ-D8; Wed, 01 Oct 2025 22:22:09 -0400
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+ by mailfout.stl.internal (Postfix) with ESMTP id 390B01D007F7;
+ Wed,  1 Oct 2025 22:21:45 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-02.internal (MEProxy); Wed, 01 Oct 2025 22:21:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm1; t=1759371705; x=1759458105; bh=j+30Y+qcrT
+ Ic2Yi220jrPi+ylUldv4RrtBJEEKaXUgY=; b=vF+5VDwLlneOlxX5dKS+tabeiv
+ 8XlgFElZJb/jv+HuPtGq0MWmKRKp6YUEqmFhMRYd4bi6gWA7hokWs3xsyoyZ9/US
+ Z6KeH8Y40aOHBxCi2VyTf+cQd9xrfzoKbeSsW9UB6ZMRGrMoFV9KH424+Mg5E7sz
+ 3FbAc/WEmMQYb8hfTYPRwtPDtef9dtj8E8rGTqADD1ngNiLDyK+4wkrQIlT6fqUU
+ 0McL6S9G+MoRtpw3U96dKpIG+K5nbPnv7YaKoQIxMusTcRrtEvlWUtuD7lGwJCnn
+ kVD4lAfbQwbXdmggYMlHh08cTu/Gf0m9aMZsvSb2nYi/+5ZvAwNXfRIbfeQg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+ 1759371705; x=1759458105; bh=j+30Y+qcrTIc2Yi220jrPi+ylUldv4RrtBJ
+ EEKaXUgY=; b=rrxVIgeLE/0jtbOwGcYVicz9zQJTF87bjmQkWTk1S2mp7n7nDGp
+ w9pKzBsO54F9ie9LS2s1gcb1rjbMpyNuSyH+CRGvVYQYtWQ9JigdhMFOnvtX6zQS
+ sBQdWk3dcH9BQ9W31rOQAaGFBOHhD+eMbIkqBDEJX3OvF5boeYpENxfTVskoYKP7
+ X/jCOLIq9VlxXKvA1neo0RbDJQ4MGsbFBFCSkuY+d/HxiMJD12pWz6O1cI9xkz5W
+ NnqICPx5OaZKY4L59T9RHhMzphPmcm4QK25Cvb3th1UKfIZ9jD+idQNevpCM/zqq
+ Tj2IOapMtt+4/HwzAVG+MAUubwJNsvA2Yug==
+X-ME-Sender: <xms:uOHdaNdOnrBnfvrE5HsT3pwp1snHcuXJ9Rtu6zIfLbTSqYnxzcEhwg>
+ <xme:uOHdaOS85b4TbU85jAN63iu0vzYugCivotW3jizuIwC4NSKyk6SqZSUaARuaWgXMI
+ awOmHkBBGFGHoxvs7xW-Tnp-H3Z_kIf6BSHeEDl6nn-MM1Lzlu4NzA>
+X-ME-Received: <xmr:uOHdaBId1OWwTGFKvVsnnAJZbBqXYeCQ6A8wzdhQqBQSEuz2c6Clh0nlZ5o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekgeekudcutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+ ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
+ cuvffnffculdejtddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtuden
+ ucfhrhhomheprfgrthhrihgtkhcuhghilhhlihgrmhhsuceophgrthhrihgtkhesshhtfi
+ gtgidrgiihiieqnecuggftrfgrthhtvghrnheptdejjefgudeghfetvddugffhjeefjeef
+ hffffeefleegudevjeellefffedvffelnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+ hrrghmpehmrghilhhfrhhomhepphgrthhrihgtkhesshhtfigtgidrgiihiidpnhgspghr
+ tghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegtlhhgsehkrg
+ hougdrohhrghdprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdr
+ ohhrghdprhgtphhtthhopegrnhgurhgvfiesrghjrdhiugdrrghupdhrtghpthhtoheprg
+ hmihhthhgrshhhsehfsgdrtghomhdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhho
+ nhhgnhhurdhorhhgpdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrgh
+ dprhgtphhtthhopehvihhjrgihkhhhvghmkhgrsehfsgdrtghomhdprhgtphhtthhopehj
+ ohgvlhesjhhmshdrihgurdgruhdprhgtphhtthhopehpkhgrrhhthhhikhgvhigrnhduhe
+ dtleesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:uOHdaDIECa8kooUPER_z2Z7uPErY9G06v2cBjUR3P1dA-fYGa9wgvA>
+ <xmx:uOHdaEgedG5c1yPiGpmV4aN2StELrB1nCKloIEsnqoBfOZqCXl9uqw>
+ <xmx:uOHdaFOld3cwauZCQq9ZExFS6X2e6SNh7Ul8Bi5vR76L1PLBCjmpkQ>
+ <xmx:uOHdaHq4eEiIosdkR7gfNJ4ehoV3oOfQK8Loeve_-arEpkF7R0z2JA>
+ <xmx:ueHdaAutdUwG8PRrbkQjV1wS3N2Xlf_uTLeREPZOjVqdfx4E8IuIzlga>
+Feedback-ID: i68a1478a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Oct 2025 22:21:43 -0400 (EDT)
+Date: Wed, 1 Oct 2025 22:21:43 -0400
+From: Patrick Williams <patrick@stwcx.xyz>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Amithash Prasad <amithash@fb.com>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ Vijay Khemka <vijaykhemka@fb.com>, Joel Stanley <joel@jms.id.au>,
+ Karthikeyan Pasupathi <pkarthikeyan1509@gmail.com>,
+ Peter Delevoryas <pdel@fb.com>
+Subject: Re: [PATCH v3] aspeed: Add support for the sonorapass-bmc board
+Message-ID: <aN3ht1MdFppiDcPz@heinlein>
+References: <20200506173035.2154053-1-patrick@stwcx.xyz>
+ <20200506183219.2166987-1-patrick@stwcx.xyz>
+ <0165086d-3ab4-4986-84ff-452984d16153@kaod.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="XNcrLs6Jc4wQQXFC"
+Content-Disposition: inline
+In-Reply-To: <0165086d-3ab4-4986-84ff-452984d16153@kaod.org>
+Received-SPF: pass client-ip=202.12.124.145; envelope-from=patrick@stwcx.xyz;
+ helo=fout-b2-smtp.messagingengine.com
+X-Spam_score_int: -2
+X-Spam_score: -0.3
+X-Spam_bar: /
+X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FROM_SUSPICIOUS_NTLD=0.498, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,259 +117,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit removes Avocado as a dependency for running the
-reverse_debugging test.
 
-The main benefit, beyond eliminating an extra dependency, is that there
-is no longer any need to handle GDB packets manually. This removes the
-need for ad-hoc functions dealing with endianness and arch-specific
-register numbers, making the test easier to read. The timeout variable
-is also removed, since Meson now manages timeouts automatically.
+--XNcrLs6Jc4wQQXFC
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-reverse_debugging now uses the pygdbmi module to interact with GDB, if
-it's available in the test environment, otherwise the test is skipped.
-GDB is detect via the QEMU_TEST_GDB env. variable.
+On Tue, Sep 30, 2025 at 07:51:15AM +0200, C=E9dric Le Goater wrote:
+> Hello Patrick
+>=20
+> Would it be possible to contribute a functional test for this
+> machine ?
+>=20
+> The request applies to these Facebook machines :
+>=20
+>    sonorapass-bmc
 
-This commit also significantly improves the output for the test and
-now prints all the GDB commands used in sequence. It also adds
-some clarifications to existing comments, for example, clarifying that
-once the replay-break is reached, a SIGINT is captured in GDB.
+This machine type is deprecated and never went to production.
 
-reverse_debugging is kept "skipped" for aarch64, ppc64, and x86_64, so
-won't run unless QEMU_TEST_FLAKY_TESTS=1 is set in the test environment,
-before running 'make check-functional' or 'meson test [...]'.
+>    yosemitev2-bmc
+>    tiogapass-bmc
+>    fuji-bmc
+>    fby35-bmc
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- tests/functional/reverse_debugging.py | 138 ++++++++++++++------------
- 1 file changed, 74 insertions(+), 64 deletions(-)
+All of these are used by OpenBMC and/or Meta for QEMU validation of
+new BMC images.  I can get you an image for these if necessary.
 
-diff --git a/tests/functional/reverse_debugging.py b/tests/functional/reverse_debugging.py
-index 7fd8c7607f..f06996089a 100644
---- a/tests/functional/reverse_debugging.py
-+++ b/tests/functional/reverse_debugging.py
-@@ -1,19 +1,22 @@
--# Reverse debugging test
--#
- # SPDX-License-Identifier: GPL-2.0-or-later
- #
-+# Reverse debugging test
-+#
- # Copyright (c) 2020 ISP RAS
-+# Copyright (c) 2025 Linaro Limited
- #
- # Author:
- #  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-+#  Gustavo Romero <gustavo.romero@linaro.org> (Run without Avocado)
- #
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
--import os
-+
- import logging
-+import os
- from subprocess import check_output
- 
--from qemu_test import LinuxKernelTest, get_qemu_img
-+from qemu_test import LinuxKernelTest, get_qemu_img, GDB, skipIfMissingEnv, skipIfMissingImports
- from qemu_test.ports import Ports
- 
- 
-@@ -29,9 +32,7 @@ class ReverseDebugging(LinuxKernelTest):
-     that the execution is stopped at the last of them.
-     """
- 
--    timeout = 10
-     STEPS = 10
--    endian_is_le = True
- 
-     def run_vm(self, record, shift, args, replay_path, image_path, port):
-         logger = logging.getLogger('replay')
-@@ -54,47 +55,16 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
-         return vm
- 
-     @staticmethod
--    def get_reg_le(g, reg):
--        res = g.cmd(b'p%x' % reg)
--        num = 0
--        for i in range(len(res))[-2::-2]:
--            num = 0x100 * num + int(res[i:i + 2], 16)
--        return num
--
--    @staticmethod
--    def get_reg_be(g, reg):
--        res = g.cmd(b'p%x' % reg)
--        return int(res, 16)
--
--    def get_reg(self, g, reg):
--        # value may be encoded in BE or LE order
--        if self.endian_is_le:
--            return self.get_reg_le(g, reg)
--        else:
--            return self.get_reg_be(g, reg)
--
--    def get_pc(self, g):
--        return self.get_reg(g, self.REG_PC)
--
--    def check_pc(self, g, addr):
--        pc = self.get_pc(g)
--        if pc != addr:
--            self.fail('Invalid PC (read %x instead of %x)' % (pc, addr))
--
--    @staticmethod
--    def gdb_step(g):
--        g.cmd(b's', b'T05thread:01;')
--
--    @staticmethod
--    def gdb_bstep(g):
--        g.cmd(b'bs', b'T05thread:01;')
-+    def get_pc(gdb: GDB):
-+        return gdb.cli("print $pc").get_addr()
- 
-     @staticmethod
-     def vm_get_icount(vm):
-         return vm.qmp('query-replay')['return']['icount']
- 
--    def reverse_debugging(self, shift=7, args=None):
--        from avocado.utils import gdb
-+    @skipIfMissingImports("pygdbmi") # Required by GDB class
-+    def reverse_debugging(self, gdb_arch, shift=7, args=None):
-+        from qemu_test import GDB
- 
-         logger = logging.getLogger('replay')
- 
-@@ -124,68 +94,108 @@ def reverse_debugging(self, shift=7, args=None):
-         with Ports() as ports:
-             port = ports.find_free_port()
-             vm = self.run_vm(False, shift, args, replay_path, image_path, port)
--        logger.info('connecting to gdbstub')
--        g = gdb.GDBRemote('127.0.0.1', port, False, False)
--        g.connect()
--        r = g.cmd(b'qSupported')
--        if b'qXfer:features:read+' in r:
--            g.cmd(b'qXfer:features:read:target.xml:0,ffb')
--        if b'ReverseStep+' not in r:
-+
-+        try:
-+            logger.info('Connecting to gdbstub...')
-+            self.reverse_debugging_run(vm, port, gdb_arch, last_icount)
-+            logger.info('Test passed.')
-+        except GDB.TimeoutError:
-+            # Convert a GDB timeout exception into a unittest failure exception.
-+            raise self.failureException("Timeout while connecting to or "
-+                                        "communicating with gdbstub...") from None
-+        except Exception:
-+            # Re-throw exceptions from unittest, like the ones caused by fail(),
-+            # skipTest(), etc.
-+            raise
-+
-+    @skipIfMissingEnv("QEMU_TEST_GDB")
-+    def reverse_debugging_run(self, vm, port, gdb_arch, last_icount):
-+        logger = logging.getLogger('replay')
-+
-+        gdb_cmd = os.getenv('QEMU_TEST_GDB')
-+        gdb = GDB(gdb_cmd)
-+
-+        r = gdb.cli("set architecture").get_log()
-+        if gdb_arch not in r:
-+            self.skipTest(f"GDB does not support arch '{gdb_arch}'")
-+
-+        gdb.cli("set debug remote 1")
-+
-+        c = gdb.cli(f"target remote localhost:{port}").get_console()
-+        if not f"Remote debugging using localhost:{port}" in c:
-+            self.fail("Could not connect to gdbstub!")
-+
-+        # Remote debug messages are in 'log' payloads.
-+        r = gdb.get_log()
-+        if 'ReverseStep+' not in r:
-             self.fail('Reverse step is not supported by QEMU')
--        if b'ReverseContinue+' not in r:
-+        if 'ReverseContinue+' not in r:
-             self.fail('Reverse continue is not supported by QEMU')
- 
-+        gdb.cli("set debug remote 0")
-+
-         logger.info('stepping forward')
-         steps = []
-         # record first instruction addresses
-         for _ in range(self.STEPS):
--            pc = self.get_pc(g)
-+            pc = self.get_pc(gdb)
-             logger.info('saving position %x' % pc)
-             steps.append(pc)
--            self.gdb_step(g)
-+            gdb.cli("stepi")
- 
-         # visit the recorded instruction in reverse order
-         logger.info('stepping backward')
-         for addr in steps[::-1]:
--            self.gdb_bstep(g)
--            self.check_pc(g, addr)
-             logger.info('found position %x' % addr)
-+            gdb.cli("reverse-stepi")
-+            pc = self.get_pc(gdb)
-+            if pc != addr:
-+                logger.info('Invalid PC (read %x instead of %x)' % (pc, addr))
-+                self.fail('Reverse stepping failed!')
- 
-         # visit the recorded instruction in forward order
-         logger.info('stepping forward')
-         for addr in steps:
--            self.check_pc(g, addr)
--            self.gdb_step(g)
-             logger.info('found position %x' % addr)
-+            pc = self.get_pc(gdb)
-+            if pc != addr:
-+                logger.info('Invalid PC (read %x instead of %x)' % (pc, addr))
-+                self.fail('Forward stepping failed!')
-+            gdb.cli("stepi")
- 
-         # set breakpoints for the instructions just stepped over
-         logger.info('setting breakpoints')
-         for addr in steps:
--            # hardware breakpoint at addr with len=1
--            g.cmd(b'Z1,%x,1' % addr, b'OK')
-+            gdb.cli(f"break *{hex(addr)}")
- 
-         # this may hit a breakpoint if first instructions are executed
-         # again
-         logger.info('continuing execution')
-         vm.qmp('replay-break', icount=last_icount - 1)
-         # continue - will return after pausing
--        # This could stop at the end and get a T02 return, or by
--        # re-executing one of the breakpoints and get a T05 return.
--        g.cmd(b'c')
-+        # This can stop at the end of the replay-break and gdb gets a SIGINT,
-+        # or by re-executing one of the breakpoints and gdb stops at a
-+        # breakpoint.
-+        gdb.cli("continue")
-+
-         if self.vm_get_icount(vm) == last_icount - 1:
-             logger.info('reached the end (icount %s)' % (last_icount - 1))
-         else:
-             logger.info('hit a breakpoint again at %x (icount %s)' %
--                        (self.get_pc(g), self.vm_get_icount(vm)))
-+                        (self.get_pc(gdb), self.vm_get_icount(vm)))
- 
-         logger.info('running reverse continue to reach %x' % steps[-1])
-         # reverse continue - will return after stopping at the breakpoint
--        g.cmd(b'bc', b'T05thread:01;')
-+        gdb.cli("reverse-continue")
- 
-         # assume that none of the first instructions is executed again
-         # breaking the order of the breakpoints
--        self.check_pc(g, steps[-1])
-+        pc = self.get_pc(gdb)
-+        if pc != steps[-1]:
-+            self.fail("'reverse-continue' did not hit the first PC in reverse order!")
-+
-         logger.info('successfully reached %x' % steps[-1])
- 
-         logger.info('exiting gdb and qemu')
-+        gdb.exit()
-         vm.shutdown()
--- 
-2.34.1
+>=20
+> Since these machines contribute little to the Aspeed models,
+> their value lies in the firmware they can run to exercise the
+> models. Without functional tests, I plan to schedule their
+> removal in the QEMU 10.2 cycle.
 
+I don't understand this statement.  What does "little value to the
+Aspeed models" have to do with keeping machines in place.  If we are
+only going to have support for machines that you deem as "valuable" why
+would anyone contribute a new machine?  Is this a new policy that QEMU
+only wants specific machine models for any particular SOC?
+
+> The fby35-bmc value is in its multisoc nature. We now have the
+> ast2700fc available as its replacement
+
+We actually don't use the multisoc aspect of this machine.  I'd be fine
+if we drop those pieces specifically but the general "can the BMC image
+boot" is regularly used.
+
+
+--=20
+Patrick Williams
+
+--XNcrLs6Jc4wQQXFC
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEBGD9ii4LE9cNbqJBqwNHzC0AwRkFAmjd4bUACgkQqwNHzC0A
+wRnZYw/+NrLkjuYUl73xo7q438D0K0dBioy4mMnSU2h1WDi4xT2Zu89n0dI62Kus
+4JcSutRKtwoXNC7/6Ky731tsyfzjdg7h+GvcT0IKfbOtDZu78qQJW/j8Lo8TkXqU
+EChgMJq+8n/8zVJMbE1gOEcHhgBlSWFB+QJOtbNzgaFgcCwi42D6S0P2M5E5ne+R
+cvNbJHTCPSa8W0yNV2j6FFyO00bH8xRDitM6O8WHDDbSLrkqtVfnh50KzG26nSuL
+BZcVWfgdIv/KLAbdf+yhKRt+WfBIPDZan3gcN9EgK6vqL6doKnRCl5bAVMH3hVTJ
+ad2IGBVICa33rPPiqcfjDir3ISHPgmrHnUGkRfM3tF7zvW6LV/3YX/qEeNELCgpx
+a2xcUHtIKAreygwYLPr2I78B1crfpJ6sUQPv66j9Ppa2Djf+iHy/wyojpskO1U+m
+4D36+VCqfhU6tz3qsInyoFu7zyP5+z8GdEqOglcT5q7DKLorXTeEsDihIlGoPdCB
++aVmAMA2c0rUnNmqbWI4gYWh1B/V9v1J+5S9tFudgKcqRz8ZkHj/NQiZEaPah9yl
+DB/ACgpTvDK6+XT1rSu7Up2R71N5L2eqg/F29/qMx716kenQj/Vi8meMRFwra/jO
+t5uaoGhQl7KpJy49Zpm36dANKovU8H43kgmDYJEDEzAOTLd3B0U=
+=DtZQ
+-----END PGP SIGNATURE-----
+
+--XNcrLs6Jc4wQQXFC--
 
