@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B04BB3221
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 10:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC79BB33A1
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 10:41:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4Ejt-0001NI-W5; Thu, 02 Oct 2025 04:32:38 -0400
+	id 1v4EpW-0004UR-9S; Thu, 02 Oct 2025 04:38:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v4Eje-0001IM-EQ
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:32:22 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v4EpQ-0004Sq-MN
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:38:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v4EjS-0004PR-HA
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:32:21 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v4EpB-0007f3-W2
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:38:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759393923;
+ s=mimecast20190719; t=1759394277;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=L/fw0LS6GQgD/pBxmw7g8YNJYQq+ReOzriwQrYjo3/k=;
- b=MzTNK8M2nUoTj9J0FenkYgX8OyYTV96JibGxIQKlkYfkRjAhMO+Owo57zr0GGTsjRUNmi+
- 8jfvb0lH7vdIsqYRuSaas+0IiKb2vwkmHHyMVSUnKa31COchqzgHoyg1/l02dJ46ot1D2L
- iqjLig5YepSp6brdmnkyuiC65uo96Mc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YyDjUxGRKsPzfGAYceZ9RYEBLC/JEBT1uj2//VuWo4o=;
+ b=e5gi0DIhq4HGn0c2oG5Zmv/8xwz9vywi4su2Q2r4gs0a4anA8Dpe8rLfhTdE6XlP/G0wkD
+ 2pf/T4OasRxlD3h2/6N169ulWDx7NTHdwlE+LGIIVdE8QkRlbFXTA0vZNnnkfy2omiJQiO
+ BySnH+MhDTixO82TqHA7+DMOppViZXE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-sNCJE-IkOAmWivaHYyTrSg-1; Thu, 02 Oct 2025 04:32:01 -0400
-X-MC-Unique: sNCJE-IkOAmWivaHYyTrSg-1
-X-Mimecast-MFC-AGG-ID: sNCJE-IkOAmWivaHYyTrSg_1759393920
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3f030846a41so376600f8f.2
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 01:32:01 -0700 (PDT)
+ us-mta-627-j66YtSfzM9OgH_4EtKLIKg-1; Thu, 02 Oct 2025 04:37:56 -0400
+X-MC-Unique: j66YtSfzM9OgH_4EtKLIKg-1
+X-Mimecast-MFC-AGG-ID: j66YtSfzM9OgH_4EtKLIKg_1759394275
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e5bcf38dfso13880155e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 01:37:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759393920; x=1759998720;
+ d=1e100.net; s=20230601; t=1759394275; x=1759999075;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=L/fw0LS6GQgD/pBxmw7g8YNJYQq+ReOzriwQrYjo3/k=;
- b=UkHf11UOYZO+VDn3K2ayERNGtAT8aaKu7GWQa++jq+CCHKKhptOO7ZlQe6w7gjs2JE
- T/dUdp8xkp44K8h90LGp1duq7k87UocSmWheAO/bLZQuT5xJTAQ8t9QSm8VoAfzFCnUX
- O7qc3fHoLSiGCUNJnw8adDLeSQD0UoIJ2ASMmv/5LE3SNE4g2Jfao0qa33+5o6OHyKHT
- PUzvx2L/bxzvRF/DF44N65ktEx/D1B9k+1Ni1/gIrMLU8K5n96Ky4ooAlsRJFwLZp/oi
- WeOH9C7oSGxRtIWRQmI0OPxuQ1mUBSw6WaJANLdbotdcj1lbHQvQcYijekyZkpYF8Gut
- 4vJQ==
+ bh=YyDjUxGRKsPzfGAYceZ9RYEBLC/JEBT1uj2//VuWo4o=;
+ b=eVjvPjRu9b0Kl/gNbueWSuCHcvVmsYbszHLLe/awkz+ets3s9v+D1UONPqMT/qvVMG
+ 5FzTEDz0N8rrspzigCYOdyxh+hYpzDG4FHuHuJCzXn+m3q2x9kYR14dV9G3jJiJeRuno
+ eTevVbERMmh1SKxHilYob4umZnzcl2ruyNgIh5kGE4Hc6oBZjLl26cLD/8x22/bLiTBv
+ WD2QWTVznGqVhSSZ9+TR09BT/EwHx2UVd2NAtIuPGnT3nOaeEWIv+TXzXp95gWA7dRPJ
+ JLuPiGNYcIB1Joabw17XULvHyPwxt5fzQykw4/TmS0VnIkUXAqQh5p0C40Tm/F5lNtz1
+ wSBQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVj7fyeBwOf50onn9fIFDEA/fG+SdhRbA3XQfAcPHvdNw4oXC+G8W6D8HMNKdpe+6+kGxu2fuMMruqp@nongnu.org
-X-Gm-Message-State: AOJu0YwSFmUNP55j6W1Ps+TmVf2pR0K/r3L/oLdeIVAbyXmj+2wi1t4K
- 7fgxsNMPRPbrfXkvd/2eZFaDsms5NEChMHb9IXpXlZdgs60wac0OuBqIMKEEOHUAk37yi1BUId6
- DNPcYWVxfcYfw9Hz5mHK5w0M0Mm448X+5L15cdGgdLO0G5hyKkEGdb4iMRljwfPD0
-X-Gm-Gg: ASbGncs8aAlWVJbChV+aONdspmX6qlcwJO3tPLGhUKigPxcsKpS7qBWHDTk4qbL8J3c
- o3/ESV6JsQX7NM8rQ/wFkZmOuQs0a+kC1hJybJ/eHJ+/eYYwpM8eYiKDc5q7U1dSPX4YTeGofi8
- G8Mkd+zu/sVYJROs1tl5+UJfhALyeP7QrPDHu8mWNMtpSDdZxOiFvkV7Xm3uefQknytwHaPxMOw
- krLfXBm24xqYxdigub0i1L3OBmTQK7Ur0/HDETJIB+Fi2ryahw57rZ8KfgcxMb6W3yBZ813Uhoz
- hDJ+rvlSGzWUsfq9+3d/wknlttPFsGhoS+IsDN/ry4mUvZgXmtLiW5FNpyFD+NMcyHJhiLVfsO/
- VM5H4ySP2
-X-Received: by 2002:a05:6000:4007:b0:3dd:981d:43a5 with SMTP id
- ffacd0b85a97d-4255781905cmr4337376f8f.47.1759393920084; 
- Thu, 02 Oct 2025 01:32:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHboYzge1XMjYqiKlN33LAQQN3W8eLKsHEs3w26cnAhajVG0zFzOu5mus9Ra3W1NTjD6VNh0w==
-X-Received: by 2002:a05:6000:4007:b0:3dd:981d:43a5 with SMTP id
- ffacd0b85a97d-4255781905cmr4337342f8f.47.1759393919544; 
- Thu, 02 Oct 2025 01:31:59 -0700 (PDT)
+ AJvYcCW0d9fDxamDTpKAAGvD/Fj9wUKLavXdHzcYxZ6GZbHjrEMIxdv/kd1K6yCOrabkqNuOb6i/jzSI7nGj@nongnu.org
+X-Gm-Message-State: AOJu0YxW89Rl9bCK7yKocwDesoG9IOIFDgkktFep8YY05WEyBZXd3PNY
+ 366xNGzetKiKqajq0D+yLnPQmjedVbA/Kb7dDAGAu4MprTcnyiYnAudzhkb4oUEDKJL6tAqu5FR
+ 2Z80v8zVWgvXAtD1kwX/pH5koUSVN/ebwbfNPfrp1BqT3fTbBn+XzAw0R
+X-Gm-Gg: ASbGncvlZpPk5mk90ldmjv3rI7S7YhtFy5UU5598OypSCkJigSe8eQNExnMUSHUvTbl
+ jGg1rTifiBR17KiC8MXQP41J9JYv/5IlHomMViSinvw2h+R+y4bmoBTNUNFReh5zvy/fRwVrnFv
+ Q+jmmtdWCqM+X9pe2/tPIfI9W+YDWUGYmMlojDo3bM7M0M92PSHqQXUMSLzJnTQ77jg9xKMjG2P
+ iOD5P1MMBpMJ9JIPaU9ruiFwdwq6qfbHgB8SMd/umkvzPuXTpvOc/F7iC3EzgTnTWymt0jEnpXz
+ ErfP5Rdx4/GqpFKjQo5VB8OQYFxJJ1sHJiqA0WfkJqUQHeFEUfGoRguZIcKeWP/FAjw0RVmaerq
+ m88DRQ9do
+X-Received: by 2002:a05:600c:b90:b0:46e:477a:f3e3 with SMTP id
+ 5b1f17b1804b1-46e68c035f8mr15971635e9.18.1759394274847; 
+ Thu, 02 Oct 2025 01:37:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwkyYRxZG0Hs/i0ds7NGPuUkvnB0Qw51yDFMUWSTkR6fnrfx38zXSUxziMCY7mlOcvW8l+Rg==
+X-Received: by 2002:a05:600c:b90:b0:46e:477a:f3e3 with SMTP id
+ 5b1f17b1804b1-46e68c035f8mr15971325e9.18.1759394274399; 
+ Thu, 02 Oct 2025 01:37:54 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8abf38sm2606840f8f.20.2025.10.02.01.31.58
+ ffacd0b85a97d-4255d8a6b5csm2657741f8f.5.2025.10.02.01.37.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Oct 2025 01:31:59 -0700 (PDT)
-Message-ID: <9d328a5e-119b-494b-9f9e-9a2fe2da4cfe@redhat.com>
-Date: Thu, 2 Oct 2025 10:31:57 +0200
+ Thu, 02 Oct 2025 01:37:53 -0700 (PDT)
+Message-ID: <d7733dd6-bb06-4756-b09a-4dae4c3db227@redhat.com>
+Date: Thu, 2 Oct 2025 10:37:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 18/18] system/physmem: Extract API out of
- 'system/ram_addr.h' header
+Subject: Re: [PATCH v2 06/18] hw: Remove unnecessary 'system/ram_addr.h' header
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -95,7 +94,7 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>
 References: <20251001175448.18933-1-philmd@linaro.org>
- <20251001175448.18933-19-philmd@linaro.org>
+ <20251001175448.18933-7-philmd@linaro.org>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -141,20 +140,19 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251001175448.18933-19-philmd@linaro.org>
+In-Reply-To: <20251001175448.18933-7-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.518,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -171,282 +169,128 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/1/25 19:54, Philippe Mathieu-Daudé wrote:
-> Very few files use the Physical Memory API. Declare its
-> methods in their own header: "system/physmem.h".
+> None of these files require definition exposed by "system/ram_addr.h",
+> remove its inclusion.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   MAINTAINERS                 |  1 +
->   include/system/physmem.h    | 54 +++++++++++++++++++++++++++++++++++++
->   include/system/ram_addr.h   | 40 ---------------------------
->   accel/kvm/kvm-all.c         |  2 +-
->   accel/tcg/cputlb.c          |  1 +
->   hw/vfio/container-legacy.c  |  2 +-
->   hw/vfio/container.c         |  1 +
->   hw/vfio/listener.c          |  1 -
->   migration/ram.c             |  1 +
->   system/memory.c             |  1 +
->   system/physmem.c            |  1 +
->   target/arm/tcg/mte_helper.c |  2 +-
->   12 files changed, 63 insertions(+), 44 deletions(-)
->   create mode 100644 include/system/physmem.h
+>   hw/ppc/spapr.c                    | 1 -
+>   hw/ppc/spapr_caps.c               | 1 -
+>   hw/ppc/spapr_pci.c                | 1 -
+>   hw/remote/memory.c                | 1 -
+>   hw/remote/proxy-memory-listener.c | 1 -
+>   hw/s390x/s390-virtio-ccw.c        | 1 -
+>   hw/vfio/spapr.c                   | 1 -
+>   hw/virtio/virtio-mem.c            | 1 -
+>   8 files changed, 8 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 406cef88f0c..9632eb7b440 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3213,6 +3213,7 @@ S: Supported
->   F: include/system/ioport.h
->   F: include/exec/memop.h
->   F: include/system/memory.h
-> +F: include/system/physmem.h
->   F: include/system/ram_addr.h
->   F: include/system/ramblock.h
->   F: include/system/memory_mapping.h
-> diff --git a/include/system/physmem.h b/include/system/physmem.h
-> new file mode 100644
-> index 00000000000..879f6eae38b
-> --- /dev/null
-> +++ b/include/system/physmem.h
-> @@ -0,0 +1,54 @@
-> +/*
-> + * QEMU physical memory interfaces (target independent).
-> + *
-> + *  Copyright (c) 2003 Fabrice Bellard
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +#ifndef QEMU_SYSTEM_PHYSMEM_H
-> +#define QEMU_SYSTEM_PHYSMEM_H
-> +
-> +#include "exec/hwaddr.h"
-> +#include "exec/ramlist.h"
-> +
-> +#define DIRTY_CLIENTS_ALL     ((1 << DIRTY_MEMORY_NUM) - 1)
-> +#define DIRTY_CLIENTS_NOCODE  (DIRTY_CLIENTS_ALL & ~(1 << DIRTY_MEMORY_CODE))
-> +
-> +bool physical_memory_get_dirty_flag(ram_addr_t addr, unsigned client);
-> +
-> +bool physical_memory_is_clean(ram_addr_t addr);
-> +
-> +uint8_t physical_memory_range_includes_clean(ram_addr_t start,
-> +                                             ram_addr_t length,
-> +                                             uint8_t mask);
-> +
-> +void physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
-> +
-> +void physical_memory_set_dirty_range(ram_addr_t start, ram_addr_t length,
-> +                                     uint8_t mask);
-> +
-> +/*
-> + * Contrary to physical_memory_sync_dirty_bitmap() this function returns
-> + * the number of dirty pages in @bitmap passed as argument. On the other hand,
-> + * physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
-> + * weren't set in the global migration bitmap.
-> + */
-> +uint64_t physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
-> +                                            ram_addr_t start,
-> +                                            ram_addr_t pages);
-> +
-> +void physical_memory_dirty_bits_cleared(ram_addr_t start, ram_addr_t length);
-> +
-> +bool physical_memory_test_and_clear_dirty(ram_addr_t start,
-> +                                          ram_addr_t length,
-> +                                          unsigned client);
-> +
-> +DirtyBitmapSnapshot *
-> +physical_memory_snapshot_and_clear_dirty(MemoryRegion *mr, hwaddr offset,
-> +                                         hwaddr length, unsigned client);
-> +
-> +bool physical_memory_snapshot_get_dirty(DirtyBitmapSnapshot *snap,
-> +                                        ram_addr_t start,
-> +                                        ram_addr_t length);
-> +
-> +#endif
-> diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-> index 3894a84fb9c..683485980ce 100644
-> --- a/include/system/ram_addr.h
-> +++ b/include/system/ram_addr.h
-> @@ -19,7 +19,6 @@
->   #ifndef SYSTEM_RAM_ADDR_H
->   #define SYSTEM_RAM_ADDR_H
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index 82fb23beaa8..97ab6bebd25 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -77,7 +77,6 @@
+>   #include "hw/virtio/virtio-scsi.h"
+>   #include "hw/virtio/vhost-scsi-common.h"
 >   
-> -#include "exec/ramlist.h"
->   #include "system/ramblock.h"
->   #include "exec/target_page.h"
->   #include "exec/hwaddr.h"
-> @@ -133,43 +132,4 @@ static inline void qemu_ram_block_writeback(RAMBlock *block)
->       qemu_ram_msync(block, 0, block->used_length);
->   }
->   
-> -#define DIRTY_CLIENTS_ALL     ((1 << DIRTY_MEMORY_NUM) - 1)
-> -#define DIRTY_CLIENTS_NOCODE  (DIRTY_CLIENTS_ALL & ~(1 << DIRTY_MEMORY_CODE))
-> -
-> -bool physical_memory_get_dirty_flag(ram_addr_t addr, unsigned client);
-> -
-> -bool physical_memory_is_clean(ram_addr_t addr);
-> -
-> -uint8_t physical_memory_range_includes_clean(ram_addr_t start,
-> -                                                 ram_addr_t length,
-> -                                                 uint8_t mask);
-> -
-> -void physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
-> -
-> -void physical_memory_set_dirty_range(ram_addr_t start, ram_addr_t length,
-> -                                         uint8_t mask);
-> -
-> -/*
-> - * Contrary to physical_memory_sync_dirty_bitmap() this function returns
-> - * the number of dirty pages in @bitmap passed as argument. On the other hand,
-> - * physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
-> - * weren't set in the global migration bitmap.
-> - */
-> -uint64_t physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
-> -                                                ram_addr_t start,
-> -                                                ram_addr_t pages);
-> -
-> -void physical_memory_dirty_bits_cleared(ram_addr_t start, ram_addr_t length);
-> -
-> -bool physical_memory_test_and_clear_dirty(ram_addr_t start,
-> -                                              ram_addr_t length,
-> -                                              unsigned client);
-> -
-> -DirtyBitmapSnapshot *physical_memory_snapshot_and_clear_dirty
-> -    (MemoryRegion *mr, hwaddr offset, hwaddr length, unsigned client);
-> -
-> -bool physical_memory_snapshot_get_dirty(DirtyBitmapSnapshot *snap,
-> -                                            ram_addr_t start,
-> -                                            ram_addr_t length);
-> -
->   #endif
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index a7ece7db964..58802f7c3cc 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -32,13 +32,13 @@
->   #include "system/runstate.h"
->   #include "system/cpus.h"
->   #include "system/accel-blocker.h"
-> +#include "system/physmem.h"
->   #include "system/ramblock.h"
->   #include "accel/accel-ops.h"
->   #include "qemu/bswap.h"
->   #include "exec/tswap.h"
->   #include "exec/target_page.h"
->   #include "system/memory.h"
 > -#include "system/ram_addr.h"
->   #include "qemu/event_notifier.h"
->   #include "qemu/main-loop.h"
+>   #include "system/confidential-guest-support.h"
+>   #include "hw/usb.h"
+>   #include "qemu/config-file.h"
+> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+> index f2f5722d8ad..0f94c192fd4 100644
+> --- a/hw/ppc/spapr_caps.c
+> +++ b/hw/ppc/spapr_caps.c
+> @@ -27,7 +27,6 @@
+>   #include "qapi/error.h"
+>   #include "qapi/visitor.h"
+>   #include "system/hw_accel.h"
+> -#include "system/ram_addr.h"
+>   #include "target/ppc/cpu.h"
+>   #include "target/ppc/mmu-hash64.h"
+>   #include "cpu-models.h"
+> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+> index 1ac1185825e..f9095552e86 100644
+> --- a/hw/ppc/spapr_pci.c
+> +++ b/hw/ppc/spapr_pci.c
+> @@ -34,7 +34,6 @@
+>   #include "hw/pci/pci_host.h"
+>   #include "hw/ppc/spapr.h"
+>   #include "hw/pci-host/spapr.h"
+> -#include "system/ram_addr.h"
+>   #include <libfdt.h>
+>   #include "trace.h"
+>   #include "qemu/error-report.h"
+> diff --git a/hw/remote/memory.c b/hw/remote/memory.c
+> index 00193a552fa..8195aa5fb83 100644
+> --- a/hw/remote/memory.c
+> +++ b/hw/remote/memory.c
+> @@ -11,7 +11,6 @@
+>   #include "qemu/osdep.h"
+>   
+>   #include "hw/remote/memory.h"
+> -#include "system/ram_addr.h"
+>   #include "qapi/error.h"
+>   
+>   static void remote_sysmem_reset(void)
+> diff --git a/hw/remote/proxy-memory-listener.c b/hw/remote/proxy-memory-listener.c
+> index 30ac74961dd..e1a52d24f0b 100644
+> --- a/hw/remote/proxy-memory-listener.c
+> +++ b/hw/remote/proxy-memory-listener.c
+> @@ -12,7 +12,6 @@
+>   #include "qemu/range.h"
+>   #include "system/memory.h"
+>   #include "exec/cpu-common.h"
+> -#include "system/ram_addr.h"
+>   #include "qapi/error.h"
+>   #include "qemu/error-report.h"
+>   #include "hw/remote/mpqemu-link.h"
+> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+> index d0c6e80cb05..ad2c48188a8 100644
+> --- a/hw/s390x/s390-virtio-ccw.c
+> +++ b/hw/s390x/s390-virtio-ccw.c
+> @@ -13,7 +13,6 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "qapi/error.h"
+> -#include "system/ram_addr.h"
+>   #include "system/confidential-guest-support.h"
+>   #include "hw/boards.h"
+>   #include "hw/s390x/sclp.h"
+> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+> index 8d9d68da4ec..0f23681a3f9 100644
+> --- a/hw/vfio/spapr.c
+> +++ b/hw/vfio/spapr.c
+> @@ -17,7 +17,6 @@
+>   
+>   #include "hw/vfio/vfio-container-legacy.h"
+>   #include "hw/hw.h"
+> -#include "system/ram_addr.h"
+>   #include "qemu/error-report.h"
+>   #include "qapi/error.h"
 >   #include "trace.h"
 
-hmm, I am seeing build errors :
+For vfio,
 
-../accel/kvm/kvm-all.c:1596:41: error: invalid use of incomplete typedef ‘RAMBlock’
-  1596 |         mem->guest_memfd = mr->ram_block->guest_memfd;
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-
-May be this is my tree. Can you check ?
+Thanks,
 
 C.
 
-> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> index a721235dea6..7214d41cb5d 100644
-> --- a/accel/tcg/cputlb.c
-> +++ b/accel/tcg/cputlb.c
-> @@ -25,6 +25,7 @@
->   #include "accel/tcg/probe.h"
->   #include "exec/page-protection.h"
->   #include "system/memory.h"
-> +#include "system/physmem.h"
->   #include "accel/tcg/cpu-ldst-common.h"
->   #include "accel/tcg/cpu-mmu-index.h"
->   #include "exec/cputlb.h"
-> diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
-> index eb9911eaeaf..755a407f3e7 100644
-> --- a/hw/vfio/container-legacy.c
-> +++ b/hw/vfio/container-legacy.c
-> @@ -25,7 +25,7 @@
->   #include "hw/vfio/vfio-device.h"
->   #include "system/address-spaces.h"
->   #include "system/memory.h"
+
+
+> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+> index 1de2d3de521..15ba6799f22 100644
+> --- a/hw/virtio/virtio-mem.c
+> +++ b/hw/virtio/virtio-mem.c
+> @@ -25,7 +25,6 @@
+>   #include "hw/virtio/virtio-mem.h"
+>   #include "qapi/error.h"
+>   #include "qapi/visitor.h"
 > -#include "system/ram_addr.h"
-> +#include "system/physmem.h"
->   #include "qemu/error-report.h"
->   #include "qemu/range.h"
->   #include "system/reset.h"
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 3fb19a1c8ad..9ddec300e35 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -20,6 +20,7 @@
->   #include "qemu/error-report.h"
->   #include "hw/vfio/vfio-container.h"
->   #include "hw/vfio/vfio-device.h" /* vfio_device_reset_handler */
-> +#include "system/physmem.h"
->   #include "system/reset.h"
->   #include "vfio-helpers.h"
->   
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index b5cefc9395c..c6bb58f5209 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -30,7 +30,6 @@
->   #include "hw/vfio/pci.h"
->   #include "system/address-spaces.h"
->   #include "system/memory.h"
-> -#include "system/ram_addr.h"
->   #include "hw/hw.h"
->   #include "qemu/error-report.h"
->   #include "qemu/main-loop.h"
-> diff --git a/migration/ram.c b/migration/ram.c
-> index d09591c0600..12122dda685 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -53,6 +53,7 @@
->   #include "qemu/rcu_queue.h"
->   #include "migration/colo.h"
->   #include "system/cpu-throttle.h"
-> +#include "system/physmem.h"
->   #include "system/ramblock.h"
->   #include "savevm.h"
->   #include "qemu/iov.h"
-> diff --git a/system/memory.c b/system/memory.c
-> index dd045da60c0..80656c69568 100644
-> --- a/system/memory.c
-> +++ b/system/memory.c
-> @@ -25,6 +25,7 @@
->   #include "qemu/target-info.h"
->   #include "qom/object.h"
->   #include "trace.h"
-> +#include "system/physmem.h"
->   #include "system/ram_addr.h"
->   #include "system/kvm.h"
->   #include "system/runstate.h"
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 1a075da2bdd..ec3d8027e86 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -43,6 +43,7 @@
->   #include "system/kvm.h"
->   #include "system/tcg.h"
->   #include "system/qtest.h"
-> +#include "system/physmem.h"
->   #include "system/ramblock.h"
->   #include "qemu/timer.h"
->   #include "qemu/config-file.h"
-> diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-> index 077ff4b2b2c..b96c953f809 100644
-> --- a/target/arm/tcg/mte_helper.c
-> +++ b/target/arm/tcg/mte_helper.c
-> @@ -27,7 +27,7 @@
->   #include "user/cpu_loop.h"
->   #include "user/page-protection.h"
->   #else
-> -#include "system/ram_addr.h"
-> +#include "system/physmem.h"
->   #endif
->   #include "accel/tcg/cpu-ldst.h"
->   #include "accel/tcg/probe.h"
+>   #include "migration/misc.h"
+>   #include "hw/boards.h"
+>   #include "hw/qdev-properties.h"
 
 
