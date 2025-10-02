@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D86BB2592
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 04:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAECBB2595
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 04:10:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v48hb-0006rq-GR; Wed, 01 Oct 2025 22:05:51 -0400
+	id 1v48hb-0006rb-7p; Wed, 01 Oct 2025 22:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v48hU-0006rC-Jz
+ id 1v48hV-0006rF-H4
  for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:45 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v48gz-0004hx-8h
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:43 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-b556284db11so497299a12.0
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 19:05:07 -0700 (PDT)
+ id 1v48h0-0004ri-O6
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:45 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-279e2554b5fso3540185ad.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 19:05:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759370701; x=1759975501; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759370704; x=1759975504; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Knh+dOfLjacsTDZZt9NezpnCzhWm4W386c3sZeiF8sE=;
- b=v3uyYZZwNFEwoUYItjhO/gOxU/TM5EFmdRmUxcwu65HybFYswyKrRzDR8Hg8FgAzN6
- k98ToJZOUWXVdY48Lv5AU7GzcqwCZ+F4/8ib4VPj3qPuAH2IdThQN9ZGaCVZnSfsq+Eq
- 50V2jW2cF1WV5n0MA07IVghemODvUxuMXvl7Qp6HmuqpPBqLPNldJd7x7lOdVt2OP5si
- SHJmrwwvs2etDNC3urUk6ve1PLKCb75Lzt2z8+3fQWWRL6CbjwX9gvDK14hygFb4owEE
- ip3Wrbq4RaPeCbj58hV/VmjWLCetx51NvynaLP/tS44gJMv9tEZmHqT1PJ3/g4O0EYzA
- voyg==
+ bh=5uAT3E/Kg+tLMQ6sh6TKZYgCxOSeXpVcn46MFwOuYCs=;
+ b=p7R9eEeuaKNOo9pHAeomS81x3KQNAum4TDRrzIxO+WUgotJ5y3epdI4FoI5cAKk3Lu
+ +x+e6LmAdFsjKNpOdOSPg9y+fN8l/TECyv7M3WWLaR2I6h2tdd1LmDvx6IrBdmWp5oHB
+ rbxRWCZ5zDv+qngBKkSYE7tk/sotS9gfGfI9vgJ59Ax+ajcXUETkMNlDHKylnos5tfn8
+ nsEaSKB84aD2mh0ZcfCPaufI5ip8fCQ3sTpX/+fL312W8/863++liyewzEvKkWcotD/I
+ lzlACm2NyUyZMpbCuBE6RlAoXeHm4IeYyXKe1FFfvMkc5XvJ9RtYV57rLPldwLAVSfkg
+ /0Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759370701; x=1759975501;
+ d=1e100.net; s=20230601; t=1759370704; x=1759975504;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Knh+dOfLjacsTDZZt9NezpnCzhWm4W386c3sZeiF8sE=;
- b=N6q2+Wgx+Ml+wl55rGiAuQyNsWnEFAVWUm0nbGKlMSnc3kVC1syefJLZDlZHXI7JMI
- 3bzTGPtGCftMy7NQZVRNC9ALtJFh9W+NKu414lGSfwf2YTpqcsZKlMwi0UOGcetBXlFA
- 6zWIabi3p/Pftf2RpEnzU7lxVPxnglo/UJMKAZ6A7IadR+lWQtoPfD+TPIhh00kNSPHU
- nJ3thmI8pTLvIH/xGn8HY+7xtOREuFi8a+s9ox9j8JMo8rXcF7DlDCB/XgESaGkOmjWA
- QelYo+OgOyaqS+uPpK3IUT+xUES70CM1UIr+3DkuHPBUWycefdutjk6HKxVGB0GWriIB
- erbg==
-X-Gm-Message-State: AOJu0YzbdeuE+c9yTDeNtsRQA7TzncxV3w+ZghBUCabOX1S0D32dcvo2
- rOnMAcVURoDGmGbwQrE38/vLKBFe5wtqqniPLDryMb8+LDJa0wc50IqRfCCmGGZrm502KvQjKg5
- /tWDL
-X-Gm-Gg: ASbGnct4NSzZRVeY6F5vw/ytN9DVowK+DDIMsv2rR1DImqHAYwtqwGiLctRUtOTgwit
- gOrgD5vN2qwtaeS2OgywgcLrdwo7v6iGiuAD0pOJo4xmvWzwlVNrqDfNzqrAAUKqzYY/RysgMKM
- v1QIGqUPxBYK877qIsIrEYpSPZ3h2xuNf4uO1XrcSlmyGuXp9E3eQxO47q/vwuQLhvzBrO1WztJ
- xw0+0kezLVWH8HlQg9AVjAK77WVqmSaS6BHLZ6r++ubGBqI1ufVaMCtnv0HQpokomHU6C0WaBEo
- rvrMprvkv9xOmu8CbZaclfCBr3xKPp+GKrKXfSxJLKAsQMOlK4bYWAKTKpl7ZrIm7JQZGEqoOZd
- TiEFkKrTziwezr+7yr285MsVRmO298sVtuPNxqdjpjpQSKKYuGlTNl7fTEBxjUsKt2ck=
-X-Google-Smtp-Source: AGHT+IHpIm8sX48sV9VHyMtAiBK8uZbM3UvO5gh/NBT0mKmcCfo5CPQaeahBX6iY3qrkqenwJLW4ng==
-X-Received: by 2002:a17:902:db07:b0:24e:95bb:88b1 with SMTP id
- d9443c01a7336-28e7f2eec89mr77298595ad.34.1759370701140; 
- Wed, 01 Oct 2025 19:05:01 -0700 (PDT)
+ bh=5uAT3E/Kg+tLMQ6sh6TKZYgCxOSeXpVcn46MFwOuYCs=;
+ b=F9NEeVeHsAxp+8LzBjERJ/f6Qof/95TUL0mn+XSQJ19dz6sOvhz5F83k2s5cH6ptVF
+ XZSa4sJHGc6+G8y7MOaTHFMloXKbA6iBQBgQ8klzRRO8hQvvXpBcJrjUwIO/CuKurHv/
+ pNGIKwU/A40xc0MWVpSi2NJNVo7RUOF5QXX12jyUNMijP2Q2hrQCwylk+axvubwPU8f+
+ E4GgPfvyK06S/S24LIRv7s9NX78srZYCFDRYmsDEqo6LmAwZDA845Qr8mUclC+hQWuj3
+ smIZSfPC8UgTdHeZoY2XNb1WTc6duav08agZcmjMxJPd+9TyQpgtWZK83peN8ncpUKOn
+ MNpg==
+X-Gm-Message-State: AOJu0YzV1f7/KAeVDa/xfieone0cgcAsGzocaTzbJ/z3IxFXIfRxaLvA
+ NyXumkbKzVUM++tWwgFnrJX91k7bAvpnzX8It/Kk/Mf2lcCId9/T4Gn46+M23VP9rA71xWx/fQq
+ cFHLQ
+X-Gm-Gg: ASbGncsWW8N5mLC1VhmYVYiwDhJuB4Y1hrAFy3GqvAjo23arqNvO6w2A81couDBuhte
+ KSzUQJa0OeSiB/v8UXRYUtQUThOCnlnaqrdVjFB3fGoCMrvlZrHyVfWAWakgfEArhghFXWDO0OF
+ nAw7A1gKNqyaw0b6cCIHvacl2uItxOqTZVQMbtNLb4ZRqKe7UAOPYgkuaWPgr2QwzSutJNfiUWS
+ gNcMbljWW9JFL14ps2CmJ0P/lo/cRBQjKyZk9WuJd9RLpA/bXT+ZDZl+hqb4+Q7Banevbyok0ar
+ h8COaq2L9stRtZu0TW77HfFrKJ18MKFef1RzTYrDQe61Z3mv5hFB1MKRvvOZhIvCjc2skeFV7cA
+ U8WFxJS0nFE4n3Hqoial23y4LbybpS9LHlqykCFeQuZQn7pdpCvR/VJF3TX7S20ArYOo=
+X-Google-Smtp-Source: AGHT+IEKosOT0oxwORek+RzgMxvBeBwXw7xTc63LUvRgecNlDLdEXpxVa9SLa1xiQO6IYkGfw/CQxg==
+X-Received: by 2002:a17:903:3d05:b0:262:f975:fcba with SMTP id
+ d9443c01a7336-28e8d040b78mr15780655ad.9.1759370703536; 
+ Wed, 01 Oct 2025 19:05:03 -0700 (PDT)
 Received: from gromero0.. ([186.215.59.111]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1d95bdsm9476735ad.119.2025.10.01.19.04.59
+ d9443c01a7336-28e8d1d95bdsm9476735ad.119.2025.10.01.19.05.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 19:05:00 -0700 (PDT)
+ Wed, 01 Oct 2025 19:05:03 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
  berrange@redhat.com
 Cc: qemu-arm@nongnu.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v5 3/9] tests/functional: Provide GDB to the functional tests
-Date: Thu,  2 Oct 2025 02:04:26 +0000
-Message-Id: <20251002020432.54443-4-gustavo.romero@linaro.org>
+Subject: [PATCH v5 4/9] tests/functional: Add GDB class
+Date: Thu,  2 Oct 2025 02:04:27 +0000
+Message-Id: <20251002020432.54443-5-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251002020432.54443-1-gustavo.romero@linaro.org>
 References: <20251002020432.54443-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -99,85 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The probe of GDB is done in 'configure' and the full path is passed to
-meson.build via the -Dgdb=option.
+Add GDB class, which provides methods to run GDB commands and capture
+their output. The GDB class is a wrapper around the pygdbmi module and
+interacts with GDB via GDB's machine interface (MI).
 
-Meson then can pass the location of GDB to the functional tests via an
-environment variable: QEMU_TEST_GDB.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure                     | 2 ++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 2 ++
- tests/functional/meson.build  | 6 ++++++
- 4 files changed, 12 insertions(+)
+ tests/functional/qemu_test/__init__.py |  1 +
+ tests/functional/qemu_test/gdb.py      | 88 ++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+ create mode 100644 tests/functional/qemu_test/gdb.py
 
-diff --git a/configure b/configure
-index 0f7eb95586..7226ddd589 100755
---- a/configure
-+++ b/configure
-@@ -1984,6 +1984,8 @@ if test "$skip_meson" = no; then
-   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
-   test "$plugins" = yes && meson_option_add "-Dplugins=true"
-   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
-+  test -n "$gdb_bin" && meson_option_add "-Dgdb=$gdb_bin"
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index 6e666a059f..60d19891bf 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -18,3 +18,4 @@
+     skipIfMissingImports, skipIfOperatingSystem, skipLockedMemoryTest
+ from .archive import archive_extract
+ from .uncompress import uncompress
++from .gdb import GDB
+diff --git a/tests/functional/qemu_test/gdb.py b/tests/functional/qemu_test/gdb.py
+new file mode 100644
+index 0000000000..05e4c29c2a
+--- /dev/null
++++ b/tests/functional/qemu_test/gdb.py
+@@ -0,0 +1,88 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# A simple interface module built around pygdbmi for handling GDB commands.
++#
++# Copyright (c) 2025 Linaro Limited
++#
++# Author:
++#  Gustavo Romero <gustavo.romero@linaro.org>
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
 +
-   run_meson() {
-     NINJA=$ninja $meson setup "$@" "$PWD" "$source_path"
-   }
-diff --git a/meson_options.txt b/meson_options.txt
-index fff1521e58..5bb41bcbc4 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -36,6 +36,8 @@ option('trace_file', type: 'string', value: 'trace',
- option('coroutine_backend', type: 'combo',
-        choices: ['ucontext', 'sigaltstack', 'windows', 'wasm', 'auto'],
-        value: 'auto', description: 'coroutine backend to use')
-+option('gdb', type: 'string', value: '',
-+       description: 'Path to GDB')
- 
- # Everything else can be set via --enable/--disable-* option
- # on the configure script command line.  After adding an option
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 0ebe6bc52a..f4bd21220e 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -58,6 +58,7 @@ meson_options_help() {
-   printf "%s\n" '  --enable-ubsan           enable undefined behaviour sanitizer'
-   printf "%s\n" '  --firmwarepath=VALUES    search PATH for firmware files [share/qemu-'
-   printf "%s\n" '                           firmware]'
-+  printf "%s\n" '  --gdb=VALUE              Path to GDB'
-   printf "%s\n" '  --iasl=VALUE             Path to ACPI disassembler'
-   printf "%s\n" '  --includedir=VALUE       Header file directory [include]'
-   printf "%s\n" '  --interp-prefix=VALUE    where to find shared libraries etc., use %M for'
-@@ -323,6 +324,7 @@ _meson_option_parse() {
-     --disable-fuzzing) printf "%s" -Dfuzzing=false ;;
-     --enable-gcrypt) printf "%s" -Dgcrypt=enabled ;;
-     --disable-gcrypt) printf "%s" -Dgcrypt=disabled ;;
-+    --gdb=*) quote_sh "-Dgdb=$2" ;;
-     --enable-gettext) printf "%s" -Dgettext=enabled ;;
-     --disable-gettext) printf "%s" -Dgettext=disabled ;;
-     --enable-gio) printf "%s" -Dgio=enabled ;;
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 2a0c5aa141..725630d308 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -77,6 +77,12 @@ foreach speed : ['quick', 'thorough']
-     test_env.set('PYTHONPATH', meson.project_source_root() / 'python:' +
-                                meson.current_source_dir())
- 
-+    # Define the GDB environment variable if gdb is available.
-+    gdb = get_option('gdb')
-+    if gdb != ''
-+      test_env.set('QEMU_TEST_GDB', gdb)
-+    endif
++import re
 +
-     foreach test : target_tests
-       testname = '@0@-@1@'.format(target_base, test)
-       if fs.exists('generic' / 'test_' + test + '.py')
++
++class GDB:
++    """Provides methods to run and capture GDB command output."""
++
++
++    def __init__(self, gdb_path, echo=True, suffix='# ', prompt="$ "):
++        from pygdbmi.gdbcontroller import GdbController
++        from pygdbmi.constants import GdbTimeoutError
++        type(self).TimeoutError = GdbTimeoutError
++
++        gdb_cmd = [gdb_path, "-q", "--interpreter=mi2"]
++        self.gdbmi = GdbController(gdb_cmd)
++        self.echo = echo
++        self.suffix = suffix
++        self.prompt = prompt
++        self.response = None
++        self.cmd_output = None
++
++
++    def get_payload(self, response, kind):
++        output = []
++        for o in response:
++            # Unpack payloads of the same type.
++            _type, _, payload, *_ = o.values()
++            if _type == kind:
++                output += [payload]
++
++        # Some output lines do not end with \n but begin with it,
++        # so remove the leading \n and merge them with the next line
++        # that ends with \n.
++        lines = [line.lstrip('\n') for line in output]
++        lines = "".join(lines)
++        lines = lines.splitlines(keepends=True)
++
++        return lines
++
++
++    def cli(self, cmd, timeout=32.0):
++        self.response = self.gdbmi.write(cmd, timeout_sec=timeout)
++        self.cmd_output = self.get_payload(self.response, kind="console")
++        if self.echo:
++            print(self.suffix + self.prompt + cmd)
++
++            if len(self.cmd_output) > 0:
++                cmd_output = self.suffix.join(self.cmd_output)
++                print(self.suffix + cmd_output, end="")
++
++        return self
++
++
++    def get_addr(self):
++        address_pattern = r"0x[0-9A-Fa-f]+"
++        cmd_output = "".join(self.cmd_output) # Concat output lines.
++
++        match = re.search(address_pattern, cmd_output)
++
++        return int(match[0], 16) if match else None
++
++
++    def get_log(self):
++        r = self.get_payload(self.response, kind="log")
++        r = "".join(r)
++
++        return r
++
++
++    def get_console(self):
++        r = "".join(self.cmd_output)
++
++        return r
++
++
++    def exit(self):
++        self.gdbmi.exit()
 -- 
 2.34.1
 
