@@ -2,114 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1E7BB425E
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 16:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFF9BB426A
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 16:14:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4K07-0008To-Oa; Thu, 02 Oct 2025 10:09:44 -0400
+	id 1v4K2f-0001na-5U; Thu, 02 Oct 2025 10:12:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1v4Jzv-0008LT-7t; Thu, 02 Oct 2025 10:09:31 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1v4K2W-0001jV-Oh
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 10:12:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1v4Jzl-0007Lr-LE; Thu, 02 Oct 2025 10:09:29 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 592DcqA9018505;
- Thu, 2 Oct 2025 14:09:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=IvLoj8
- f/uaT6vb3usKUYhawAOTd750whQ4Az1PbiH24=; b=rk6T7knnIq2lEBmbBAJw2c
- 9ck6wOX6+dSAZ1mz/eTDesKeIKXTvI5A6X016FABrEMYVM5AzO82QHkOJIB1tVn4
- hJDhNp2mmsWPF7Dz4PpyWjaZ37aaxztfrVgKY3BgC8NN0UExGZLzoxc3Zw+Bxhrt
- 0T5woftfwoqzR/8O44JKDVltvwY0KvgnWiPDvLp8jv5vgGL9A149BkPScFQCrXS6
- 5fpNhluH7QuUN9KaEhV6d+IouTBBQYoMhcTpqsNpmf/w+B063B5qLUeqpos8EpRJ
- Iezb8bpcSR7MkaUmfyRVZ+eXjJQxMs3U4UNAH3ThezmBZM4EbGZ0jlP/6tu+8IHA
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e6bhvx26-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Oct 2025 14:09:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5929m9CD007292;
- Thu, 2 Oct 2025 14:09:08 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49eurk66sx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Oct 2025 14:09:08 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 592E97FB23855854
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Oct 2025 14:09:07 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A14AC58053;
- Thu,  2 Oct 2025 14:09:07 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1371158043;
- Thu,  2 Oct 2025 14:09:06 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.134.141]) by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  2 Oct 2025 14:09:05 +0000 (GMT)
-Message-ID: <00c873bc92ebbc13413c8f236ed3eaa0bd7c98bb.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 07/17] hw/s390x/sclp: Replace [cpu_physical_memory ->
- address_space]_r/w()
-From: Eric Farman <farman@linux.ibm.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thomas Huth <thuth@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Halil Pasic	
- <pasic@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, Matthew Rosato
- <mjrosato@linux.ibm.com>, David Hildenbrand	 <david@redhat.com>, Ilya
- Leoshkevich <iii@linux.ibm.com>
-Date: Thu, 02 Oct 2025 10:09:05 -0400
-In-Reply-To: <20251002084203.63899-8-philmd@linaro.org>
-References: <20251002084203.63899-1-philmd@linaro.org>
- <20251002084203.63899-8-philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1v4K2I-0001Gs-TV
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 10:12:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759414307;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4sGRdRuOyyivfnn+8H0fkWxGsTPt5iOxzHuw6hrltic=;
+ b=cnJVlFY2npzPCtii917wLh4EG4Qft/vjfzQwckKbU4Vb2HhcLgPeLimE/7bdvnc1pwzg7T
+ ibOYDIkwxe8lkwgAm8KnVoBIPY24fJzYRxupPx1e+654/qMYIjMAaxDMqgEjK2Nub0kILR
+ OXVm7Xy5DlV1Zth3aI6G2bkejQlVPVU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-571-qt-pyCKqNVWVvyDfcNqvFw-1; Thu, 02 Oct 2025 10:11:46 -0400
+X-MC-Unique: qt-pyCKqNVWVvyDfcNqvFw-1
+X-Mimecast-MFC-AGG-ID: qt-pyCKqNVWVvyDfcNqvFw_1759414305
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e375dab7dso4562865e9.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 07:11:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759414305; x=1760019105;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4sGRdRuOyyivfnn+8H0fkWxGsTPt5iOxzHuw6hrltic=;
+ b=w7ywuHkfzU6oWOzKy/iadriHJcll5588GB+BCjTc8lJ2iLTBRBNECHhu0HGfiyiQ0p
+ NljwujTVfPcJvdK9NgC1LsPoF0FHpiMNbEiYAmpYeeF5PiERH2Elutmc9lz+ZYEhwbZy
+ 3tDcBjCrsHYhU7v+bka1G6rfWuarpBws9gkPw7p5IEwbF3pyHB8/6VdErIWIzDdSrBtp
+ G9SzPsi869tlvabc4BIAjJ7yCB8bk5YL/JlmggEibMjx/r4ccFZoaKSrGhXpcvM4DbY1
+ Z1SJBhushBtSv6lxRGuWy+5ohg6kuPAP8j/+L3ZnlVDWw2lxC6QcsqwIHr+3+ybsHQQ7
+ WEuw==
+X-Gm-Message-State: AOJu0YwIte/hhQS8/xbBo6RYBRBEFAGiqdkD4wneSHOrNI4i5UwzCj/l
+ mtCN88CEKAo+z7ho/TbkMreThMX+8S9RHMBOznW5mh3saP6d1Qj7CoIHlbtjmBrgGjSh1vbjsmU
+ dJLdCvwP38V3PqZcxr8WvEPvz2t7X1ED+PNSs8lFLw+R2zqXdvXA02ric
+X-Gm-Gg: ASbGncsWyqY5wyYcql5DvR5rBDYaEJ93ljx9ndT7TXTBACd9KkdjM507I9t/2PY0fnL
+ ljgynD0RNUocrwI0ZmvELViQTtm8VavWGKwu0Mew/ui/qiQve/9K7PjCOFQzyMfoK4ffh2+Bhn7
+ idw8Q172+BESRyOwz6QaXh2//2q36QBq6wiw2cWfrG0sFreTRlWkyB2Ph4CcMrGMbt4eL85Ib2M
+ xvDWFtIPFhoPOkvjCiYPI2A5/cOHRdqih5KcoiSI4pS1ZMUG4kWr62whFcTajNRdJYgU96NBHAT
+ Wv/RhwBlPHvkGH8QE4MaqdC+VGqYqGRABq0o
+X-Received: by 2002:a05:600c:83c7:b0:46e:27fb:17f0 with SMTP id
+ 5b1f17b1804b1-46e612195bcmr58072435e9.9.1759414304751; 
+ Thu, 02 Oct 2025 07:11:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQ4qoXVKaHjD95KV660c4M6u1LSb8CMqCkFmjg6QE44YncZ5rWYcOj+BvTV+L/c5nFpi3J/A==
+X-Received: by 2002:a05:600c:83c7:b0:46e:27fb:17f0 with SMTP id
+ 5b1f17b1804b1-46e612195bcmr58072175e9.9.1759414304277; 
+ Thu, 02 Oct 2025 07:11:44 -0700 (PDT)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e6917a577sm36898845e9.1.2025.10.02.07.11.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Oct 2025 07:11:43 -0700 (PDT)
+Date: Thu, 2 Oct 2025 16:11:40 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: fanhuang <FangSheng.Huang@amd.com>
+Cc: <qemu-devel@nongnu.org>, <david@redhat.com>, <Zhigang.Luo@amd.com>,
+ <Lianjie.Shi@amd.com>
+Subject: Re: [PATCH] numa: add 'spm' option for special purpose memory
+Message-ID: <20251002161140.5b908e06@fedora>
+In-Reply-To: <20250924103324.2074819-1-FangSheng.Huang@amd.com>
+References: <20250924103324.2074819-1-FangSheng.Huang@amd.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Se/6t/Ru c=1 sm=1 tr=0 ts=68de8785 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=KKAkSRfTAAAA:8 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=nq8n1J83xunWhl9p0hoA:9 a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAxMCBTYWx0ZWRfX39RhvSZB/gEw
- fSRHuBwOdxuPFd7OlaeTzHF/Nb+cKAR9udZB/zGx2iD4cQnpJQcXJQBQWGuia/xZvDJ9pxgerqG
- eFJ03+dNfvdgD9SrzbhneaThs1kybjmf2X8pvLccB2gqCFj2cpNn50xzs3YcTVZ53mzFMycFi13
- w3f5l8sQ4vGjMxiA3tDur41+reA/5qbD/wQL86ZGeofjlyUfva9IUPjwNJajtg+S3A4Nesa1VrV
- iTeVKLL6/U42HyhWqMDLEfwyMbB2H0MG00wwNQ3T8oiwnQjHyax8s5d6P1hHCA5X1RksMgmbbBF
- F6EpivV6k015dMg+arrtgZwFW9b100QiL5fZh1C2vswTWV5ABQfH1uBbkK4ySENU+94O9KAHACJ
- m9XEmZTAubBVaAVQJAhB1GgJrWI+mA==
-X-Proofpoint-GUID: uZbYcs5fD30pLPjF7MCuOSROuWpRsdRB
-X-Proofpoint-ORIG-GUID: uZbYcs5fD30pLPjF7MCuOSROuWpRsdRB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-02_05,2025-10-02_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- clxscore=1011 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270010
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.451,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,17 +106,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2025-10-02 at 10:41 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> cpu_physical_memory_read() and cpu_physical_memory_write() are
-> legacy (see commit b7ecba0f6f6), replace by address_space_read()
-> and address_space_write().
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  hw/s390x/sclp.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+On Wed, 24 Sep 2025 18:33:23 +0800
+fanhuang <FangSheng.Huang@amd.com> wrote:
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+> Hi David,
+> 
+> I hope this email finds you well. It's been several months since Zhigang last discussion about the Special Purpose Memory (SPM) implementation in QEMU with you, and I wanted to provide some background context before presenting the new patch based on your valuable suggestions.
+> 
+> Previous Discussion Summary
+> ===========================
+> Back in December 2024, we had an extensive discussion regarding my original patch that added the `hmem` option to `memory-backend-file`. During that conversation, you raised several important concerns about the design approach:
+> 
+> Original Approach (December 2024)
+> ----------------------------------
+> - Zhigang's patch: Added `hmem=on` option to `memory-backend-file`
+> - QEMU cmdline example:
+>   -object memory-backend-file,size=16G,id=m1,mem-path=/dev/dax0.0,prealloc=on,align=1G,hmem=on
+>   -numa node,nodeid=1,memdev=m1
+> 
+> Your Concerns and Suggestions
+> -----------------------------
+> You correctly identified some issues with the original approach:
+> - Configuration Safety: Users could create problematic configurations like:
+>    -object memory-backend-file,size=16G,id=unused,mem-path=whatever,hmem=on
+> 
+> - Your Recommendation: You proposed a cleaner approach using NUMA node configuration:
+>    -numa node,nodeid=1,memdev=m1,spm=on
+
+that seems to me a bit backwards,
+aka it's just a particular case where node would have SPM memory only,
+which (spm) is not a property of numa node, but rather of memory device attached to it.
+ 
+> Project Context
+> ===============
+> To refresh your memory on the use case:
+> - Objective: Pass `EFI_MEMORY_SP` (Special Purpose Memory) type memory from host to QEMU virtual machine
+> - Application: Memory reserved for specific PCI devices (e.g., VFIO-PCI devices)
+
+could you elaborate on this some more /maybe with examples (assume I know nothing about it)?
+
+> - Guest Behavior: The SPM memory should be recognized by the guest OS and claimed by hmem-dax driver
+> 
+> Complete QEMU Configuration Example:
+> -object memory-backend-ram,size=8G,id=m0
+> -object memory-backend-file,size=16G,id=m1,mem-path=/dev/dax0.0,prealloc=on,align=1G
+> -numa node,nodeid=0,memdev=m0
+> -numa node,nodeid=1,memdev=m1,spm=on  # <-- New approach based on your suggestion
+> 
+> New Patch Implementation
+> ========================
+> Following your recommendations, I have completely redesigned the implementation:
+> 
+> Key Changes:
+> 1. Removed `hmem` option from `memory-backend-file`
+> 2. Added `spm` (special-purpose) option to NUMA node configuration
+> 
+> I would appreciate your review of the new patch implementation. The design now follows your suggested approach of using NUMA node configuration rather than memory backend options, which should resolve the safety and scope issues we discussed.
+> Thank you for your time and valuable guidance on this implementation.
+> 
+> Please note that I'm located in UTC+8 timezone, so there might be some delay in my responses to your emails due to the time difference. I appreciate your patience and understanding.
+> 
+> Best regards,
+> FangSheng Huang
+> 
+> 
+
 
