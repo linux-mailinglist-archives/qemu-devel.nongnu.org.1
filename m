@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486F7BB5626
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 23:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DD4BB585B
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 00:04:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4QPU-0004J8-Ol; Thu, 02 Oct 2025 17:00:20 -0400
+	id 1v4RN5-0006vQ-7U; Thu, 02 Oct 2025 18:01:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v4QPQ-0004Hy-CU
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 17:00:16 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1v4RMy-0006uo-9F
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 18:01:48 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v4QPG-0002f1-W1
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 17:00:14 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-27c369f8986so14447175ad.3
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 14:00:04 -0700 (PDT)
+ id 1v4RMo-0004Xt-C8
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 18:01:46 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-3327f8ed081so1890788a91.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 15:01:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759438798; x=1760043598; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZgaG6L7w/32t1z5NHsy7W/Ry/MRI+p/rGm6RDRjO0Ok=;
- b=nGt9cRcd9Ge7dDUWl7rDo2hvjhokfis+3wcZ4bqWDvWjGOQWpK5W5jiLvHBjMzMRWn
- scT7DlGgm2s+u9xiKJ6F0aYIGBpzEAHOHS2vontw58KDo6jnCP0RGvnQg0rZ5F0HER+M
- 6FW8SUKCY6jGRut8fztZPK3at6Mm6OvAolaVYFLa9IyArqGLpLzK5oy5X+9M7HhdGMHr
- +mhTRm0QRhPhyt2/k/BOuLZebvzHAgd63cE4wXLznT1vuAyDGdBL2RNZkflo9rHsAexC
- Ghw3GeSkTOBneACH9furOp3i1ZWhcHDwrRUAaQ7Jmy8g42ZVFNWXbANsUDWYK/kM2p58
- R7pg==
+ d=linaro.org; s=google; t=1759442489; x=1760047289; darn=nongnu.org;
+ h=in-reply-to:from:references:to:content-language:subject:user-agent
+ :mime-version:date:message-id:from:to:cc:subject:date:message-id
+ :reply-to; bh=+tC5ZBsGLjaO+hy+yiAyxAKCk4029nhONroAV4EWu+E=;
+ b=JIxo6NqMhQAJH5XaRNtf+vZ8wTQ357hy1O7A453em832B8iJVEUIcN5uiUfDdZYQ+n
+ AujAYICkxoT2v2Nm89uM5rn7b1FSm2JypdMsdUfG5K25fqZaCfMK/5CABBl1NF/jAyij
+ RgQ+bee03X1og8+/1g+HIKjsGK5VmoMfSF9WHDdrxUyDM0lr+0vIoYye+LHGDEdsfuHf
+ GeB7s3b+OV+uuM0e6q2GjazzBg+pECt+gv5jEJVUtJTP7pcpDHrHszSQ2AXoydAMf0GD
+ YTjz0jZQZdSgnYggGMS+FTKl7kdaXJQMi+QInXuiFWUWXd5vaFmUn+4Nk1REDYxHQ3ZS
+ Xz6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759438798; x=1760043598;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZgaG6L7w/32t1z5NHsy7W/Ry/MRI+p/rGm6RDRjO0Ok=;
- b=lb0vcjPWGJUWud/I3ypz7ePPsvCtzBnraOAYicU493vd+Bb919JpNZswYNvneghZz6
- 9wfjRyEWVodabagoeoen3x6v9ABFm851lwovKK6gYYijIS1yA9f8eAYmJj2/a4Y29Ldu
- RcYwd5ge8yxzC6BNuvvzyULHF3O4UsZ72pO7RI4xV+lH2X23tDWOYF8lz128XscZ/tQx
- qEOFSsIdtd+OWZ0MZLKuoi6LwwvnrlQsXWv+HZwEUTZo7iaIkuyyOdH0W9TtyVYSBi3n
- D+ylYpe8ZXsGMhdSrMvqdUqGR2fvVWDoVMeDBAz0+ikPZhdlW39ThhQPjdetnJM6O5ro
- 3Uug==
+ d=1e100.net; s=20230601; t=1759442489; x=1760047289;
+ h=in-reply-to:from:references:to:content-language:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=+tC5ZBsGLjaO+hy+yiAyxAKCk4029nhONroAV4EWu+E=;
+ b=pU/RaxBRHXQYF52qaFnHDFcUg3LGk9GhhAS9MCi6cMwQPzTJFAJF62QCGmYJ82OEdV
+ a5ie8WffdE7nO0516DEc0f+U1qPXHLFSAl55rNUn3mVPnd727uH3eYwC6ihuj5u49gPC
+ g3QjW5+UbrCT5oWTdkSBw30fs/6yeWR5MtP72bacGVD1aO/U9JGoqXzR5ArOj9WwXNR/
+ moqoUty0nt+KTqjra0UQU3NTt3mKJODav7C+HOSx2S87/zIiSfnxWX3Sd6jGuCuUv/Bq
+ VlxhP1JwhaJO+UoGYjMdMfMRcdSucTejZPt8XGtIdM9pk9o3G3k4saiE5paYYcyqHDWi
+ s6KQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXU3IaSzgLT5JuL+6/lowP52NqcJcnTiMMlYcXVGkNxKIC1dVs9TzeMR2UOegECU3C2SffzaRG+XM1o@nongnu.org
-X-Gm-Message-State: AOJu0YwQjF3VS+eyRKnidxjKkYJpM+moEZmlGS+mCHmqimB66hVdTesV
- YTDn3OGPe4I0szryaISWKKZ514jo0IXAm0ycDtfEoLi4D+X5fubc+TAd1trJUaPJTMk=
-X-Gm-Gg: ASbGncuMBBDqQxZxA/gMVMFakMDQbH2SwApkMzZwrsDNVDZZ5QDe3Yo9wTjuebwVMdt
- +F2qmRi71mIN3TaDbbOQsN+ZqDR2mcBjJMFegDqJT7865M+UmCC8IDbGirl/YOeVw+HCzD7YSU1
- uHo2/QN8pWV1mqv0uw4VJMa1BBjTipD02H3qw72V7pCd7UPyP1Pc+lopguAQaF38GT7CRIrz981
- KnQxDyP2o6GSt4LngwSF/IWTFWXVsiqOhbJBs8AMx3Js51Tp74Sco6F4ZJO+W5i6/IZFGrGsYVW
- Ppkm1cR0wEiOzml86Zwy+j26K/hp3Gap80B+1t/cS9ovn/AKJJ48cPg9+RUSbbASWre4YtvfjPW
- znL4Po/DDTN74ObUX1ZxbkEhPvxoNzq/33KOg3yLvVwJNoGJBZufIDMEJKLrrGyA=
-X-Google-Smtp-Source: AGHT+IEUzgIXqptPmhG2+RG7AUHp/NureYwrzhBce1JpE5n32P+Ql8KgZMZwW8dK0Ac8H8cUM2hPWg==
-X-Received: by 2002:a17:903:240c:b0:28e:9a74:7b58 with SMTP id
- d9443c01a7336-28e9a747d94mr5139055ad.31.1759438798343; 
- Thu, 02 Oct 2025 13:59:58 -0700 (PDT)
+ AJvYcCVMDOUc1sAUcQ4ap1E2+cm6+5NOzKInQ0PmgbbE7h2l/SAW7JmuiJdxXdxJB7tu80KwWKNxzqd7ctnQ@nongnu.org
+X-Gm-Message-State: AOJu0Yy1P+ieGxmmmyxQIcNASvxVSf5hr2M/UnTknmi7p1zyXasAc1/0
+ o291BuNOXH+4dcdMrIGn49E8xH/FZrmsxGCAo+mnjhlIh79wiLWU0LPjkEud/OiXMLM=
+X-Gm-Gg: ASbGncu2HJ+L4FKHN1zZ/i0cnjlrJqO6zo9JWQLqGHRzFXk+pnjFnrSEOqF/3nVI3I7
+ wIsGNzNvCAz/FbJxVfSrRzsLBbcS07gCRiQF/a1zz9fN9omQv+E8xMI3+KakoOmAcD1ZjeK1wdX
+ +hRNPhzHZQaPqALetsGoRTLBZsqrxo+qwDKKfZ/5u/8PLuP2QZTNLsQriGcy5dQbqXa+mGN4QXb
+ Ivm3nhtycgk1fAOWtm8e4pJ9jL9cSIL01Fksc6tIh5q7JgGaGSq55VXJ1zBFVvH/tdvowViN4Fq
+ +hG1bHS5+zqren+1psptUTkjbwDNAoUB3HoQb5EV/DMopshLpsJ23q54EPUprTkf/enDGbaGL3Q
+ vVT47nOWzoUjJPfR7LC8lHJ+GSYxHhQNYv3M9zdZn5dvmxxIv+D/qkeQW1cB9PZs6PL0Mi2/lXg
+ ==
+X-Google-Smtp-Source: AGHT+IFY06GuRFF3OOsp/kJURW7T1Jej5C4bRyNRtM4J3YODV8g8FL1uly27PJrakmcW6FN6Gg64Tg==
+X-Received: by 2002:a17:90b:3ec3:b0:330:6f13:53fc with SMTP id
+ 98e67ed59e1d1-339c279e68bmr881448a91.27.1759442487695; 
+ Thu, 02 Oct 2025 15:01:27 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d12bc5asm29698295ad.55.2025.10.02.13.59.57
+ 98e67ed59e1d1-3399cd8013dsm4158741a91.4.2025.10.02.15.01.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Oct 2025 13:59:57 -0700 (PDT)
-Message-ID: <7199d49a-e643-4c20-9938-2b72beedc237@linaro.org>
-Date: Thu, 2 Oct 2025 13:59:57 -0700
+ Thu, 02 Oct 2025 15:01:26 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------EhDkpkNyU8ZiUnFFo06yC5JY"
+Message-ID: <926591c0-a5bc-462b-acba-49c8842b8f0a@linaro.org>
+Date: Thu, 2 Oct 2025 15:01:25 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Enable firmware support for PIE and GCS
+Subject: Re: [PATCH 0/2] FEAT_GCS firmware update for test_rme_*
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20251002185910.584990-1-richard.henderson@linaro.org>
- <20251002185910.584990-3-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251002185910.584990-3-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
+In-Reply-To: <20251002185910.584990-1-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,61 +99,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/2/25 11:59 AM, Richard Henderson wrote:
-> ---
->   build_arm_trusted_firmware.sh                 |  1 +
->   ...arm-trusted-firmware-support-PIE-GCS.patch | 30 +++++++++++++++++++
->   2 files changed, 31 insertions(+)
->   create mode 100644 patches/arm-trusted-firmware-support-PIE-GCS.patch
-> 
-> diff --git a/build_arm_trusted_firmware.sh b/build_arm_trusted_firmware.sh
-> index d223142..0b148ef 100755
-> --- a/build_arm_trusted_firmware.sh
-> +++ b/build_arm_trusted_firmware.sh
-> @@ -18,6 +18,7 @@ clone()
->           git clone $url --single-branch --branch $version --depth 1 $src
->           pushd $src
->           git am ../patches/arm-trusted-firmware-support-FEAT_TCR2-and-FEAT-SCTLR2.patch
-> +        git am ../patches/arm-trusted-firmware-support-PIE-GCS.patch
->           popd
->       fi
->       ln -s $src arm-trusted-firmware
-> diff --git a/patches/arm-trusted-firmware-support-PIE-GCS.patch b/patches/arm-trusted-firmware-support-PIE-GCS.patch
-> new file mode 100644
-> index 0000000..132e939
-> --- /dev/null
-> +++ b/patches/arm-trusted-firmware-support-PIE-GCS.patch
-> @@ -0,0 +1,30 @@
-> +From 0925eadf8922bbe811ec41fb983347928f3bc63b Mon Sep 17 00:00:00 2001
-> +From: Richard Henderson <richard.henderson@linaro.org>
-> +Date: Thu, 2 Oct 2025 11:43:11 -0700
-> +Subject: [PATCH] plat/qemu/common/: add support for FEAT_{S1PIE,S2PIE,GCS}
-> +
-> +---
-> + plat/qemu/common/common.mk | 7 +++++++
-> + 1 file changed, 7 insertions(+)
-> +
-> +diff --git a/plat/qemu/common/common.mk b/plat/qemu/common/common.mk
-> +index 6bc1084..2c344b6 100644
-> +--- a/plat/qemu/common/common.mk
-> ++++ b/plat/qemu/common/common.mk
-> +@@ -126,6 +126,13 @@ ENABLE_FEAT_HCX		:=	2
-> + ENABLE_FEAT_TCR2	:=	2
-> + ENABLE_FEAT_SCTLR2	:=	2
-> +
-> ++# 8.9
-> ++ENABLE_FEAT_S1PIE	:=	2
-> ++ENABLE_FEAT_S2PIE	:=	2
-> ++
-> ++# 9.4
-> ++ENABLE_FEAT_GCS		=	2
-> ++
-> + # SPM_MM is not compatible with ENABLE_SVE_FOR_NS (build breaks)
-> + ifeq (${SPM_MM},1)
-> + 	ENABLE_SVE_FOR_NS	:= 0
-> +--
-> +2.43.0
-> +
+This is a multi-part message in MIME format.
+--------------EhDkpkNyU8ZiUnFFo06yC5JY
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Good for me.
+On 10/2/25 11:59 AM, Richard Henderson wrote:
+> Hi Pierrick,
+> 
+> Here's what I need to run our RME test with FEAT_GCS enabled,
+> based on your
+> 
+>    https://github.com/pbo-linaro/qemu-linux-stack rme_release
+> 
+> If your can run what's needed to update the functional artifacts,
+> I can re-spin my FEAT_GCS series with that included.
+> 
+> Thanks,
+>
+
+Thanks for the patches Richard.
+
+You can update concerned QEMU tests with attached patch using new artifacts.
+Let me know if everything works on your side.
+
+Regards,
+Pierrick
+
+
+--------------EhDkpkNyU8ZiUnFFo06yC5JY
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-tests-functional-update-tests-using-TF-A-TF-RMM-to-s.patch"
+Content-Disposition: attachment;
+ filename*0="0001-tests-functional-update-tests-using-TF-A-TF-RMM-to-s.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBiN2NjZWI3ODE1YmU1YmIzZmY2MzYzMjk0ZjJiYzg3YzI2ODFkNzE4IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2
+aWVyQGxpbmFyby5vcmc+CkRhdGU6IFRodSwgMiBPY3QgMjAyNSAxNDo1OToxOSAtMDcwMApT
+dWJqZWN0OiBbUEFUQ0hdIHRlc3RzL2Z1bmN0aW9uYWw6IHVwZGF0ZSB0ZXN0cyB1c2luZyBU
+Ri1BL1RGLVJNTSB0byBzdXBwb3J0CiBGRUFUX0dDUwoKU2lnbmVkLW9mZi1ieTogUGllcnJp
+Y2sgQm91dmllciA8cGllcnJpY2suYm91dmllckBsaW5hcm8ub3JnPgotLS0KIHRlc3RzL2Z1
+bmN0aW9uYWwvYWFyY2g2NC90ZXN0X2RldmljZV9wYXNzdGhyb3VnaC5weSB8IDQgKystLQog
+dGVzdHMvZnVuY3Rpb25hbC9hYXJjaDY0L3Rlc3Rfcm1lX3Nic2FyZWYucHkgICAgICAgIHwg
+NCArKy0tCiB0ZXN0cy9mdW5jdGlvbmFsL2FhcmNoNjQvdGVzdF9ybWVfdmlydC5weSAgICAg
+ICAgICAgfCA0ICsrLS0KIDMgZmlsZXMgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCA2IGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2Z1bmN0aW9uYWwvYWFyY2g2NC90ZXN0
+X2RldmljZV9wYXNzdGhyb3VnaC5weSBiL3Rlc3RzL2Z1bmN0aW9uYWwvYWFyY2g2NC90ZXN0
+X2RldmljZV9wYXNzdGhyb3VnaC5weQppbmRleCAxNzQzNzc4NGJiZS4uMDVhM2Y1MmQ1ZTIg
+MTAwNzU1Ci0tLSBhL3Rlc3RzL2Z1bmN0aW9uYWwvYWFyY2g2NC90ZXN0X2RldmljZV9wYXNz
+dGhyb3VnaC5weQorKysgYi90ZXN0cy9mdW5jdGlvbmFsL2FhcmNoNjQvdGVzdF9kZXZpY2Vf
+cGFzc3Rocm91Z2gucHkKQEAgLTg1LDggKzg1LDggQEAgY2xhc3MgQWFyY2g2NERldmljZVBh
+c3N0aHJvdWdoKFFlbXVTeXN0ZW1UZXN0KToKICAgICAjIGh0dHBzOi8vZG9jcy5rZXJuZWwu
+b3JnL2RyaXZlci1hcGkvdmZpby5odG1sI3ZmaW8tZGV2aWNlLWNkZQogICAgIEFTU0VUX0RF
+VklDRV9QQVNTVEhST1VHSF9TVEFDSyA9IEFzc2V0KAogICAgICAgICAoJ2h0dHBzOi8vZ2l0
+aHViLmNvbS9wYm8tbGluYXJvL3FlbXUtbGludXgtc3RhY2svJwotICAgICAgICAgJ3JlbGVh
+c2VzL2Rvd25sb2FkL2J1aWxkL2RldmljZV9wYXNzdGhyb3VnaC1jM2ZiODRhLnRhci54eicp
+LAotICAgICAgICAgJzE1YWMyYjAyYmVkMGMwZWE4ZTNlMDA3ZGUwYmNmZGFmNmZkNTFjMWJh
+OTgyMTNmODQxZGM3ZDAxZDZmNzJmMDQnKQorICAgICAgICAgJ3JlbGVhc2VzL2Rvd25sb2Fk
+L2J1aWxkL2RldmljZV9wYXNzdGhyb3VnaC1hOTYxMmEyLnRhci54eicpLAorICAgICAgICAg
+J2Y3ZDJmNzA5MTJlNzIzMTk4NmU2ZTI5M2UxYTJjNDc4NmRkMDJiZWMxMTNhN2FjYjZiZmM2
+MTllOTYxNTU0NTUnKQogCiAgICAgIyBUaGlzIHRlc3RzIHRoZSBkZXZpY2UgcGFzc3Rocm91
+Z2ggaW1wbGVtZW50YXRpb24sIGJ5IGJvb3RpbmcgYSBWTQogICAgICMgc3VwcG9ydGluZyBp
+dCB3aXRoIHR3byBudm1lIGRpc2tzIGF0dGFjaGVkLCBhbmQgbGF1bmNoaW5nIGEgbmVzdGVk
+IFZNCmRpZmYgLS1naXQgYS90ZXN0cy9mdW5jdGlvbmFsL2FhcmNoNjQvdGVzdF9ybWVfc2Jz
+YXJlZi5weSBiL3Rlc3RzL2Z1bmN0aW9uYWwvYWFyY2g2NC90ZXN0X3JtZV9zYnNhcmVmLnB5
+CmluZGV4IGNhODkyZTBhOGM5Li42ZjkyODU4Mzk3YSAxMDA3NTUKLS0tIGEvdGVzdHMvZnVu
+Y3Rpb25hbC9hYXJjaDY0L3Rlc3Rfcm1lX3Nic2FyZWYucHkKKysrIGIvdGVzdHMvZnVuY3Rp
+b25hbC9hYXJjaDY0L3Rlc3Rfcm1lX3Nic2FyZWYucHkKQEAgLTI1LDggKzI1LDggQEAgY2xh
+c3MgQWFyY2g2NFJNRVNic2FSZWZNYWNoaW5lKFFlbXVTeXN0ZW1UZXN0KToKICAgICAjIC4v
+YnVpbGQuc2ggJiYgLi9hcmNoaXZlX2FydGlmYWN0cy5zaCBvdXQudGFyLnh6CiAgICAgQVNT
+RVRfUk1FX1NUQUNLX1NCU0EgPSBBc3NldCgKICAgICAgICAgKCdodHRwczovL2dpdGh1Yi5j
+b20vcGJvLWxpbmFyby9xZW11LWxpbnV4LXN0YWNrLycKLSAgICAgICAgICdyZWxlYXNlcy9k
+b3dubG9hZC9idWlsZC9ybWVfc2JzYV9yZWxlYXNlLWE3ZjAyY2YudGFyLnh6JyksCi0gICAg
+ICAgICAnMjdkODQwMGIxMWJlZmI4MjhkNmRiMGNhYjk3ZTdhZTEwMmQwOTkyYzkyOGQzZGZi
+ZjM4YjI0YjZjZjZjMzI0YycpCisgICAgICAgICAncmVsZWFzZXMvZG93bmxvYWQvYnVpbGQv
+cm1lX3Nic2FfcmVsZWFzZS02YTJkZmM1LnRhci54eicpLAorICAgICAgICAgJzVhZGJhNDgy
+YWEwNjk5MTIyOTJhOGRhNzQ2YzZiMjEyNjgyMjRkOWQ4MWM5N2ZlN2MwYmVkNjkwNTc5ZWJk
+Y2InKQogCiAgICAgIyBUaGlzIHRlc3RzIHRoZSBGRUFUX1JNRSBjcHUgaW1wbGVtZW50YXRp
+b24sIGJ5IGJvb3RpbmcgYSBWTSBzdXBwb3J0aW5nIGl0LAogICAgICMgYW5kIGxhdW5jaGlu
+ZyBhIG5lc3RlZCBWTSB1c2luZyBpdC4KZGlmZiAtLWdpdCBhL3Rlc3RzL2Z1bmN0aW9uYWwv
+YWFyY2g2NC90ZXN0X3JtZV92aXJ0LnB5IGIvdGVzdHMvZnVuY3Rpb25hbC9hYXJjaDY0L3Rl
+c3Rfcm1lX3ZpcnQucHkKaW5kZXggYmI2MDNhYWEyNmMuLjVlMjM3NzNmOTNkIDEwMDc1NQot
+LS0gYS90ZXN0cy9mdW5jdGlvbmFsL2FhcmNoNjQvdGVzdF9ybWVfdmlydC5weQorKysgYi90
+ZXN0cy9mdW5jdGlvbmFsL2FhcmNoNjQvdGVzdF9ybWVfdmlydC5weQpAQCAtMjMsOCArMjMs
+OCBAQCBjbGFzcyBBYXJjaDY0Uk1FVmlydE1hY2hpbmUoUWVtdVN5c3RlbVRlc3QpOgogICAg
+ICMgLi9idWlsZC5zaCAmJiAuL2FyY2hpdmVfYXJ0aWZhY3RzLnNoIG91dC50YXIueHoKICAg
+ICBBU1NFVF9STUVfU1RBQ0tfVklSVCA9IEFzc2V0KAogICAgICAgICAoJ2h0dHBzOi8vZ2l0
+aHViLmNvbS9wYm8tbGluYXJvL3FlbXUtbGludXgtc3RhY2svJwotICAgICAgICAgJ3JlbGVh
+c2VzL2Rvd25sb2FkL2J1aWxkL3JtZV9yZWxlYXNlLTg2MTAxZTUudGFyLnh6JyksCi0gICAg
+ICAgICAnZTQyZmVmODQzOWJhZGI1MmEwNzFhYzQ0NmZjMzNjZmY0Y2I3ZDYxMzE0YzdhMjhm
+ZGJlNjFhMTFlMWZhYWQzYScpCisgICAgICAgICAncmVsZWFzZXMvZG93bmxvYWQvYnVpbGQv
+cm1lX3JlbGVhc2UtNTZiYzk5ZS50YXIueHonKSwKKyAgICAgICAgICcwZTNkYzZiOGE0Yjgy
+OGRiYWUwOWM5NTFhNDBkY2I3MTBlZGVkMDg0YjMyNDMyYjUwYzY5Y2Y0MTczZmZhNGJlJykK
+IAogICAgICMgVGhpcyB0ZXN0cyB0aGUgRkVBVF9STUUgY3B1IGltcGxlbWVudGF0aW9uLCBi
+eSBib290aW5nIGEgVk0gc3VwcG9ydGluZyBpdCwKICAgICAjIGFuZCBsYXVuY2hpbmcgYSBu
+ZXN0ZWQgVk0gdXNpbmcgaXQuCi0tIAoyLjQ3LjMKCg==
+
+--------------EhDkpkNyU8ZiUnFFo06yC5JY--
 
