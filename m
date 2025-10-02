@@ -2,99 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E49BBB4A70
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 19:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D29ABB4ADC
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 19:25:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4Mvw-0001Ij-Lj; Thu, 02 Oct 2025 13:17:36 -0400
+	id 1v4Mw2-0001Kw-VH; Thu, 02 Oct 2025 13:17:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v4MvW-00012g-P0
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:17:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v4Mvc-00013z-2s
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:17:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v4MvM-0005sc-2C
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:17:08 -0400
+ id 1v4MvQ-0005tE-Uf
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:17:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759425414;
+ s=mimecast20190719; t=1759425419;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xo7/waLBB+eaxCnywl7D9abhJb3gDRPAUFE9UsF2G9Q=;
- b=JBNXtkZ0SiLP0cBttUQjbTsnQO6b1lox779T67lukgALjnF4Fnl5KVL2gb+DEMDgzzJLac
- Svb6FVybryBCDXH+37xX4eqB8CVfNKvWMCyGGSAGfQBV7Q2sObba/zpoaH+U9S6BTL9k6M
- I69hmErsDwPe8FYkrRYhK6rDlKcD/CY=
+ bh=+wOqIA00+2P30PgO3MjOrt5nn3whgZt6cWLk1eUimlA=;
+ b=TRMKMJmJwwgHDplCXi9QJxXR37fN/54n6MOaKrK1KzSnNePtyfRExRbwB5UcprIitug4Hy
+ IHU7ifEAwSZXczeFaFEp6Q3ghXhqkrmkRPnbE7sZXxQZv55E7rvyHWROY6UMGZKb1PCXYS
+ yx8oOgUclQh2soJ7MvVndXbD2c0LL/A=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-jUg_GH8sMJCWDLarebZ2PA-1; Thu, 02 Oct 2025 13:16:53 -0400
-X-MC-Unique: jUg_GH8sMJCWDLarebZ2PA-1
-X-Mimecast-MFC-AGG-ID: jUg_GH8sMJCWDLarebZ2PA_1759425412
+ us-mta-81--CH9qluKMz6wP0P746wCyQ-1; Thu, 02 Oct 2025 13:16:57 -0400
+X-MC-Unique: -CH9qluKMz6wP0P746wCyQ-1
+X-Mimecast-MFC-AGG-ID: -CH9qluKMz6wP0P746wCyQ_1759425416
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b04a8ae1409so154862466b.2
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 10:16:53 -0700 (PDT)
+ a640c23a62f3a-b4068ff9c19so117481266b.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 10:16:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759425411; x=1760030211;
+ d=1e100.net; s=20230601; t=1759425415; x=1760030215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xo7/waLBB+eaxCnywl7D9abhJb3gDRPAUFE9UsF2G9Q=;
- b=vKjATBjWanUO5SSAYdHYvFYQNQ/4RTMwqauXWpSZ4wcl86zxv/giRsXykVjPcb0b+m
- ypE4ys/X0dBKT0wFi6UwQ+MSthT7WsDARmfCQ+rwJASCnpdeGnKZQ7yQmseUNnz7UzKB
- NLdA7CkmYTKQC28iFBYcPXmxGDhQ1mYDyrIAa80cJiabVLf5r1yCSFb5gZY+G4I8Ho3l
- ZQjRU3iIwUQ3s+yUIEN0YcfTo9aTVVgzaYQrDR+6PdXLSiK4kn/j6PsBO2OjRNx81EbC
- bqt/f2chrMILuB5hVpiWMXf0JtWWIcKBlmy0l4/gwOXJyQfoZ6oX1KRBF0qJtws5ulyg
- bKwQ==
-X-Gm-Message-State: AOJu0YxGrQ4qqDJlOccUuoMic9T08lRfAQDHAcuJu2lrTI22I8MRCx4X
- UgQ3caFoZdeqg2JqtZb9D6m4Cn4qUu1EfxYH8ZZsTBScvLgLgq8tgeuVjopbeNHm5bgcIYZz7jn
- mMihnoG0588l2VSrga4hmXoBkdE+E8n5m+J+4S/E29ieqhph31LFV2PXy2DZl+DKq2qVPG+EjqS
- 7S8PIWQ3ixzS5euub8nWA/Syw7/CZGWphrJIbU0iOj
-X-Gm-Gg: ASbGnct3d41ysbyD+j696fXRHEPKvHYtEXGsHXZ5DTj7/pcL4o3fkinrvyMXESlsI40
- /AWB6ml0nCzrkvON5H+2jHpbP027YPSgWqc0QcP7Khe01eAe3MDuVPB+iVvrTtjOQn8TpQdKtrc
- W6Rl3ojbdgya+gc9hvKCjokGinafmv5P5hYC95ibloXS3FwB9zuPUOVb6t25tYpjggDFzbLvHDK
- PEcT39d+s28xR3svlF+0s2ZN8/COXCkbdwTumkpjKsj0lAiEO1Qg8f8Y1A0Q4SywclchXmFcYvp
- 8hwXnMeNwIjYORl24s736XO+GMGM2iTNgwmh5t85TUJuYxoxK1/wq/1be2qCzfCGk8N1mnVRl5M
- 2TtdEs/2fxC9KHq27zWhCwtsd2B20m5lvAIBjkNXzAbSBTciH
-X-Received: by 2002:a17:907:7213:b0:b0b:f228:25a with SMTP id
- a640c23a62f3a-b49c449b9bdmr20771266b.64.1759425411102; 
- Thu, 02 Oct 2025 10:16:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHL7XO6APmH1KKpcwuiDsFrhG9lCEZnTSQYXxO/Kcf5x1vM8VezzT+NA+3gcpGLtzfJe/3E0g==
-X-Received: by 2002:a17:907:7213:b0:b0b:f228:25a with SMTP id
- a640c23a62f3a-b49c449b9bdmr20765866b.64.1759425410436; 
- Thu, 02 Oct 2025 10:16:50 -0700 (PDT)
+ bh=+wOqIA00+2P30PgO3MjOrt5nn3whgZt6cWLk1eUimlA=;
+ b=RyilzGUOO15UZUsKt5IjbxGjZ/jl6tFdbo73KdbH/tc30z+j96KCf9SNNYhgQ8vhRc
+ fQiMcsI11D5F8ORQcioiRF2bvTquj/JM8EWp2t5TGT3x0wFE/NWXLE/S5JWAaSMuigVa
+ 92Y1Eh1fN+Fy4c1R/FXlOfdsj12m6oQBHdxqCQkfVzEIPhTQQmzFR9G56Gy0z+5wpP2r
+ EPC/a5SsZsXg98XF226SMiCiVyT3NIpfD2j6Xtu7wZBXxRbXM9HUEJXboIgu0dQKFXrc
+ v8kwjboZszHOdy265NsMcK73/oJmuuDUE/9AUa8C1MBgxrTPc2qLxzVoyNhc9Rux57hl
+ 9cIg==
+X-Gm-Message-State: AOJu0YysC3uio9RcZR4fUbIe5kdkFps21zxW2ITjQabD+gBmo9Oz7HWH
+ 3K+NhFZEeJYcDsmKscebBgDmXtw1JAqJqZfKQIO9Qzr45ZV1qHXLkEJkbkcTgZ4Q6SBqOjYfdla
+ LKJTvcH5vEyOMIFwN/pCa7hQHqfHcFDWxkN9p0Si5hS+hacMta6k8mohflput3wx82gizRzGqU5
+ m8ymhqNfgQAEh5vWJpSXXeitziAuR7jQ5pv5Vmg9DZ
+X-Gm-Gg: ASbGncvHwkFaImReZXrOFZmzKiG7c0iC5NaMP7SPWQh7QD+hDq5ZsjSasAMekUR9qUA
+ 6fqUbjMbr2MNeap0motkQzXVD47nIRNoKlAqBBbCHBDhpEShPAisu+1nedrEQlWHUllZQ55ao+Y
+ 8tsCidZGNpdws/eSImD98fluQiCEf9kg1jMErai97o7Hq6+29qXAuTFPfFCWaMsAAoSO9thrk7s
+ YVQUao2WlfPW3fVsNBilETszaFKWEgNf7WC8krJlm7RZEnWleEXvi2KcZJmnu4l/uTF6ARa+165
+ mAWh84Y1WqltZYgPIdTedW2JzfVnjxltpk5V2YdfVLmK8uJT2l0iVjBW1xMRgUXa3qgeomKydYf
+ foXVCrBrBuyIooAarACU7aGfLjvcSKcDCfnpT4tIOR4z+Owxb
+X-Received: by 2002:a17:906:f5a0:b0:b30:ead5:56d0 with SMTP id
+ a640c23a62f3a-b49c334efbbmr20781066b.61.1759425415201; 
+ Thu, 02 Oct 2025 10:16:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFui8qKDfhbQ2hqhn8HwvV2oObkmMyrkiILLVA5hWGVsdqEvwb6/plNuEWLFXNd5chYIx/Mg==
+X-Received: by 2002:a17:906:f5a0:b0:b30:ead5:56d0 with SMTP id
+ a640c23a62f3a-b49c334efbbmr20777466b.61.1759425414703; 
+ Thu, 02 Oct 2025 10:16:54 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.91.106])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b48652a9ea1sm246020966b.16.2025.10.02.10.16.47
+ a640c23a62f3a-b48628a6d90sm244898866b.0.2025.10.02.10.16.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 10:16:47 -0700 (PDT)
+ Thu, 02 Oct 2025 10:16:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, magnus.kulke@linux.microsoft.com, wei.liu@kernel.org,
- Praveen K Paladugu <prapal@microsoft.com>,
- Magnus Kulke <magnuskulke@linux.microsoft.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 24/27] qapi/accel: Allow to query mshv capabilities
-Date: Thu,  2 Oct 2025 19:15:33 +0200
-Message-ID: <20251002171536.1460049-25-pbonzini@redhat.com>
+ Magnus Kulke <magnuskulke@linux.microsoft.com>
+Subject: [PATCH 25/27] target/i386/mshv: Use preallocated page for hvcall
+Date: Thu,  2 Oct 2025 19:15:34 +0200
+Message-ID: <20251002171536.1460049-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251002171536.1460049-1-pbonzini@redhat.com>
 References: <20251002171536.1460049-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.451,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,160 +108,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Praveen K Paladugu <prapal@microsoft.com>
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 
-Allow to query mshv capabilities via query-mshv QMP and info mshv HMP commands.
+There are hvcalls that are invoked during MMIO exits, the payload is of
+dynamic size. To avoid heap allocations we can use preallocated pages as
+in/out buffer for those calls. A page is reserved per vCPU and used for
+set/get register hv calls.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
-Link: https://lore.kernel.org/r/20250916164847.77883-25-magnuskulke@linux.microsoft.com
-[Fix "since" version. - Paolo]
+Link: https://lore.kernel.org/r/20250916164847.77883-26-magnuskulke@linux.microsoft.com
+[Use standard MAX_CONST macro; mshv.h/mshv_int.h split. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qapi/accelerator.json      | 29 +++++++++++++++++++++++++++++
- include/monitor/hmp.h      |  1 +
- include/system/hw_accel.h  |  1 +
- hw/core/machine-hmp-cmds.c | 15 +++++++++++++++
- hw/core/machine-qmp-cmds.c | 14 ++++++++++++++
- hmp-commands-info.hx       | 13 +++++++++++++
- 6 files changed, 73 insertions(+)
+ include/system/mshv_int.h   |  7 +++++++
+ accel/mshv/mshv-all.c       |  2 +-
+ target/i386/mshv/mshv-cpu.c | 38 +++++++++++++++++++++++++------------
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
-diff --git a/qapi/accelerator.json b/qapi/accelerator.json
-index fb28c8d920a..664e0272465 100644
---- a/qapi/accelerator.json
-+++ b/qapi/accelerator.json
-@@ -54,3 +54,32 @@
- { 'command': 'x-accel-stats',
-   'returns': 'HumanReadableText',
-   'features': [ 'unstable' ] }
-+
-+##
-+# @MshvInfo:
-+#
-+# Information about support for MSHV acceleration
-+#
-+# @enabled: true if MSHV acceleration is active
-+#
-+# @present: true if MSHV acceleration is built into this executable
-+#
-+# Since: 10.2.0
-+##
-+{ 'struct': 'MshvInfo', 'data': {'enabled': 'bool', 'present': 'bool'} }
-+
-+##
-+# @query-mshv:
-+#
-+# Return information about MSHV acceleration
-+#
-+# Returns: @MshvInfo
-+#
-+# Since: 10.0.92
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "query-mshv" }
-+#     <- { "return": { "enabled": true, "present": true } }
-+##
-+{ 'command': 'query-mshv', 'returns': 'MshvInfo' }
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index ae116d9804a..31bd812e5f4 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -24,6 +24,7 @@ strList *hmp_split_at_comma(const char *str);
- void hmp_info_name(Monitor *mon, const QDict *qdict);
- void hmp_info_version(Monitor *mon, const QDict *qdict);
- void hmp_info_kvm(Monitor *mon, const QDict *qdict);
-+void hmp_info_mshv(Monitor *mon, const QDict *qdict);
- void hmp_info_status(Monitor *mon, const QDict *qdict);
- void hmp_info_uuid(Monitor *mon, const QDict *qdict);
- void hmp_info_chardev(Monitor *mon, const QDict *qdict);
-diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
-index fa9228d5d2d..55497edc293 100644
---- a/include/system/hw_accel.h
-+++ b/include/system/hw_accel.h
-@@ -14,6 +14,7 @@
- #include "hw/core/cpu.h"
- #include "system/kvm.h"
- #include "system/hvf.h"
-+#include "system/mshv.h"
- #include "system/whpx.h"
- #include "system/nvmm.h"
+diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
+index 6350c69e9d3..490563c1ab2 100644
+--- a/include/system/mshv_int.h
++++ b/include/system/mshv_int.h
+@@ -20,9 +20,16 @@
  
-diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-index 3a612e2232d..682ed9f49b8 100644
---- a/hw/core/machine-hmp-cmds.c
-+++ b/hw/core/machine-hmp-cmds.c
-@@ -163,6 +163,21 @@ void hmp_info_kvm(Monitor *mon, const QDict *qdict)
-     qapi_free_KvmInfo(info);
+ typedef struct hyperv_message hv_message;
+ 
++typedef struct MshvHvCallArgs {
++    void *base;
++    void *input_page;
++    void *output_page;
++} MshvHvCallArgs;
++
+ struct AccelCPUState {
+     int cpufd;
+     bool dirty;
++    MshvHvCallArgs hvcall_args;
+ };
+ 
+ typedef struct MshvMemoryListener {
+diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+index 5edfcbad9d2..45174f7c4eb 100644
+--- a/accel/mshv/mshv-all.c
++++ b/accel/mshv/mshv-all.c
+@@ -399,8 +399,8 @@ static int mshv_init_vcpu(CPUState *cpu)
+     uint8_t vp_index = cpu->cpu_index;
+     int ret;
+ 
+-    mshv_arch_init_vcpu(cpu);
+     cpu->accel = g_new0(AccelCPUState, 1);
++    mshv_arch_init_vcpu(cpu);
+ 
+     ret = mshv_create_vcpu(vm_fd, vp_index, &cpu->accel->cpufd);
+     if (ret < 0) {
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index de87142bffc..1f7b9cb37ec 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -34,6 +34,10 @@
+ 
+ #include <sys/ioctl.h>
+ 
++#define MAX_REGISTER_COUNT (MAX_CONST(ARRAY_SIZE(STANDARD_REGISTER_NAMES), \
++                            MAX_CONST(ARRAY_SIZE(SPECIAL_REGISTER_NAMES), \
++                                      ARRAY_SIZE(FPU_REGISTER_NAMES))))
++
+ static enum hv_register_name STANDARD_REGISTER_NAMES[18] = {
+     HV_X64_REGISTER_RAX,
+     HV_X64_REGISTER_RBX,
+@@ -151,7 +155,7 @@ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
+     int cpu_fd = mshv_vcpufd(cpu);
+     int vp_index = cpu->cpu_index;
+     size_t in_sz, assocs_sz;
+-    hv_input_set_vp_registers *in;
++    hv_input_set_vp_registers *in = cpu->accel->hvcall_args.input_page;
+     struct mshv_root_hvcall args = {0};
+     int ret;
+ 
+@@ -160,7 +164,7 @@ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
+     in_sz = sizeof(hv_input_set_vp_registers) + assocs_sz;
+ 
+     /* fill the input struct */
+-    in = g_malloc0(in_sz);
++    memset(in, 0, sizeof(hv_input_set_vp_registers));
+     in->vp_index = vp_index;
+     memcpy(in->elements, assocs, assocs_sz);
+ 
+@@ -172,7 +176,6 @@ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
+ 
+     /* perform the call */
+     ret = mshv_hvcall(cpu_fd, &args);
+-    g_free(in);
+     if (ret < 0) {
+         error_report("Failed to set registers");
+         return -1;
+@@ -193,8 +196,8 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
+ {
+     int cpu_fd = mshv_vcpufd(cpu);
+     int vp_index = cpu->cpu_index;
+-    hv_input_get_vp_registers *in;
+-    hv_register_value *values;
++    hv_input_get_vp_registers *in = cpu->accel->hvcall_args.input_page;
++    hv_register_value *values = cpu->accel->hvcall_args.output_page;
+     size_t in_sz, names_sz, values_sz;
+     int i, ret;
+     struct mshv_root_hvcall args = {0};
+@@ -204,15 +207,14 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
+     in_sz = sizeof(hv_input_get_vp_registers) + names_sz;
+ 
+     /* fill the input struct */
+-    in = g_malloc0(in_sz);
++    memset(in, 0, sizeof(hv_input_get_vp_registers));
+     in->vp_index = vp_index;
+     for (i = 0; i < n_regs; i++) {
+         in->names[i] = assocs[i].name;
+     }
+ 
+-    /* allocate value output buffer */
++    /* determine size of value output buffer */
+     values_sz = n_regs * sizeof(union hv_register_value);
+-    values = g_malloc0(values_sz);
+ 
+     /* create the hvcall envelope */
+     args.code = HVCALL_GET_VP_REGISTERS;
+@@ -224,16 +226,13 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
+ 
+     /* perform the call */
+     ret = mshv_hvcall(cpu_fd, &args);
+-    g_free(in);
+     if (ret < 0) {
+-        g_free(values);
+         error_report("Failed to retrieve registers");
+         return -1;
+     }
+ 
+     /* assert we got all registers */
+     if (args.reps != n_regs) {
+-        g_free(values);
+         error_report("Failed to retrieve registers: expected %zu elements"
+                      ", got %u", n_regs, args.reps);
+         return -1;
+@@ -243,7 +242,6 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
+     for (i = 0; i < n_regs; i++) {
+         assocs[i].value = values[i];
+     }
+-    g_free(values);
+ 
+     return 0;
+ }
+@@ -1696,6 +1694,19 @@ void mshv_arch_init_vcpu(CPUState *cpu)
+ {
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     CPUX86State *env = &x86_cpu->env;
++    AccelCPUState *state = cpu->accel;
++    size_t page = HV_HYP_PAGE_SIZE;
++    void *mem = qemu_memalign(page, 2 * page);
++
++    /* sanity check, to make sure we don't overflow the page */
++    QEMU_BUILD_BUG_ON((MAX_REGISTER_COUNT
++                      * sizeof(hv_register_assoc)
++                      + sizeof(hv_input_get_vp_registers)
++                      > HV_HYP_PAGE_SIZE));
++
++    state->hvcall_args.base = mem;
++    state->hvcall_args.input_page = mem;
++    state->hvcall_args.output_page = (uint8_t *)mem + page;
+ 
+     env->emu_mmio_buf = g_new(char, 4096);
+ }
+@@ -1704,7 +1715,10 @@ void mshv_arch_destroy_vcpu(CPUState *cpu)
+ {
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     CPUX86State *env = &x86_cpu->env;
++    AccelCPUState *state = cpu->accel;
+ 
++    g_free(state->hvcall_args.base);
++    state->hvcall_args = (MshvHvCallArgs){0};
+     g_clear_pointer(&env->emu_mmio_buf, g_free);
  }
  
-+void hmp_info_mshv(Monitor *mon, const QDict *qdict)
-+{
-+    MshvInfo *info;
-+
-+    info = qmp_query_mshv(NULL);
-+    monitor_printf(mon, "mshv support: ");
-+    if (info->present) {
-+        monitor_printf(mon, "%s\n", info->enabled ? "enabled" : "disabled");
-+    } else {
-+        monitor_printf(mon, "not compiled\n");
-+    }
-+
-+    qapi_free_MshvInfo(info);
-+}
-+
- void hmp_info_uuid(Monitor *mon, const QDict *qdict)
- {
-     UuidInfo *info;
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 6aca1a626e6..e24bf0d97bf 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -28,6 +28,20 @@
- #include "system/runstate.h"
- #include "system/system.h"
- #include "hw/s390x/storage-keys.h"
-+#include <sys/stat.h>
-+
-+/*
-+ * QMP query for MSHV
-+ */
-+MshvInfo *qmp_query_mshv(Error **errp)
-+{
-+    MshvInfo *info = g_malloc0(sizeof(*info));
-+
-+    info->enabled = mshv_enabled();
-+    info->present = accel_find("mshv");
-+
-+    return info;
-+}
- 
- /*
-  * fast means: we NEVER interrupt vCPU threads to retrieve
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 6142f60e7b1..eaaa880c1b3 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -307,6 +307,19 @@ SRST
-     Show KVM information.
- ERST
- 
-+    {
-+        .name       = "mshv",
-+        .args_type  = "",
-+        .params     = "",
-+        .help       = "show MSHV information",
-+        .cmd        = hmp_info_mshv,
-+    },
-+
-+SRST
-+  ``info mshv``
-+    Show MSHV information.
-+ERST
-+
-     {
-         .name       = "numa",
-         .args_type  = "",
 -- 
 2.51.0
 
