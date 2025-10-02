@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CF0BB51F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 22:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1F1BB5624
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 23:02:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4PrY-0000HN-Dk; Thu, 02 Oct 2025 16:25:17 -0400
+	id 1v4QPA-0004AQ-P9; Thu, 02 Oct 2025 17:00:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v4PrK-0008U5-Q4
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 16:25:05 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1v4QP7-00049k-GA
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 16:59:58 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v4Pr4-00087T-Qs
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 16:25:01 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-782023ca359so1547083b3a.2
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 13:24:39 -0700 (PDT)
+ id 1v4QOz-0002R7-LO
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 16:59:55 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-27d3540a43fso13583365ad.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 13:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759436675; x=1760041475; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1759438779; x=1760043579; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Boor/c93Uw/375YCAmBTFeEORfD7BuHyNdLHU4k1tcs=;
- b=FjFOl1L2qp8MMWZD+iOPO52nG6cDjIl5zR5+cHsg/O6s2PNbv9Xhw8Bzp8MndM3ona
- vRAli/wqN4HAmJwtBJVwkPDGfV/wDRBg89UYsk+2q3vxcSpoAozFXohzvgjhu/D99Qim
- 4GLTlxz7hN73RzlStzzUUY8QRf1yWb6hczsdwLt0EKZX6ynogM2twdaHUKakP4FD4Ma3
- P6mW0bwCAi4+Scu2Q8VGESNzvhsdZjGVAHP5F6Ue29MCsv2rDzKhHGOjWvX+Z7nbunxX
- ehS8FPRVGVjtbrQPHgW++n3MlC9S2SQmJ40VjzQtnpfb+ZnV7418DAQzaEjtpz+k+gqw
- hCCA==
+ bh=UTOxIzTP+BQAaBPTpPJZVfyMCXreeqVAdciU9zNX6g8=;
+ b=b//izObPWgMQGP5gdINqdO7qwZUrQY5OgWTIslCvQNxfRl52sSSshlce2ksIExJ0AD
+ szq47cPo+P0fR5ADKhzSixCZLp4UZE3uDLlYBjSBnfoanm3XqYFW4hbUyhjowM4h0TTe
+ 7wlqeqkNcCQs2TS3JO/AMLsNoPHdSwQE8GoyccpTdpKFf9dd3SYS4B45PoXkMz1bjlD4
+ Jwd5y6A15ycPu+YUYvQkn2gRlVhU6FI0TuHPyN6hu2bHSe2SMZT3b9ynfO+qyzJsEluK
+ 3wnlBUtLa1fXeVm34wwWTR6YY2dtbCrg6IZ6I+QedzDlPrp2v8351sMP+5DWE/yKe0NW
+ Rrtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759436675; x=1760041475;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1759438779; x=1760043579;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Boor/c93Uw/375YCAmBTFeEORfD7BuHyNdLHU4k1tcs=;
- b=Rak9+lIJv4TVx1KZc55JrWqP/7DnAEwm7LZQVFv6ofJcg729gPzzXEdLJqoa0/q1Bs
- HaC3J7JAA/IXITnqe9t2kilm3ND1CfjgdEErGfvE5NxCx8LpZeIR0qojg4J9cztNbtIx
- lnn2g0maG3JsbB4SEzFc8Ri3zY8D8++NMqKngww6PlKtlLdfymgK4MmsbUjeNiv0q9Ru
- XnLljKjmuw3MO8YQquON3wk0H6tuG5nHg8MJtgNDUaJ0V3SwhGxWU8j8b1vwuWqM9Opb
- aYx32wx32j/Ft8PWAUdJsqHQljfDMUEwf0kUYwoadkjNDfetiVPDHoQ8L5emIwvaRY5f
- DloA==
+ bh=UTOxIzTP+BQAaBPTpPJZVfyMCXreeqVAdciU9zNX6g8=;
+ b=Q0jYonPFgQaj/VEbeAXPtHKyp5o5fPRDDQ5sNOgocr8EYg5jQ0yQBI9oVWZnKm5Dno
+ UvFC5FQdhYpLT/IUeKjLOAnRVfHNU2o2HNiScYdFkvtxopHJsEgo5fQsKmZajgJvekf6
+ PyBUhkLOT+IoHPMAJg+K0wvxkwOrBTzZHGCXafc2buCYTxNzP92I5rd02guU+uoSC9sM
+ qCUPaVHST9St6yyWa5iXtu/vW/5uMlHjAz1k3CnqRVm+fsNkU7aTExYvDsgFmsf9D304
+ dMwQ1gF+O/mthnZORIkgaUWypZB71Q705pcJQihO+8QJCCydLreuLwzmEb5YOy1QrsEg
+ z40w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVVKfR+0HrqRXcVGlw3j4xsgmb5IS+T8n0hXHRmh8HEtpEcvdCioUPS5bw+9rVwWxpWqARHDcNI6HP6@nongnu.org
-X-Gm-Message-State: AOJu0Ywg6/trCIeBBo8PgruTTpdOowSj9FGM2WjGUHiXkLUJxhs8ETZU
- I/PphnL7cEhWASKjMjuG6DZOulwIb22YOHI2XgG3ZgrewGsTVaNpFyL+vR/QtmE/grA=
-X-Gm-Gg: ASbGncuo/0PEe6+OUqp9cEbw/6BB0ozNCnSU+ctA8GjSKBNA9qQCblAi69CvKBQamBZ
- KwiyOrzLiBBGz09LVVFFB1QGDuF/W8VsaLxAE2ngzMKhInV/sPuP+sMIRcBRLtHnZL8mUTIMReD
- K6hbZaiQMo0zhFADGBhLEmG/7vuaWfoBnCBewTGUwvcQv+yCauWeLqeIiRal9I0cmR4eJFox9ut
- xdn0eiLaN0AYCDc24uAb+ngwqAYI0QBqgUJvhyTgUV29/UgFBgIFYOIC1sFDWtD0JRzGQxVbvBp
- akmMksmX5wZd20x29jp2pRBqNusxZHSA3kn09KH9bCLBGPI+eCwJtYYesWy2sV73BNrovlBcVlX
- zscNMA/fWAW86ETDQXlLAinCTNpMdUsvOcQoSjCJqIIV5q5d66Tq1AbqChuu7wvTNRGpsh6ADiA
- ==
-X-Google-Smtp-Source: AGHT+IFfppH2wAiW9f8yDPWqGagsNO3EmZ5E/yrhR7plS6asvXIyz+qaIf/adbqNJsMh02MxgV9IQw==
-X-Received: by 2002:a05:6a00:8c4:b0:781:18dd:31de with SMTP id
- d2e1a72fcca58-78c98a77c8cmr975956b3a.12.1759436675244; 
- Thu, 02 Oct 2025 13:24:35 -0700 (PDT)
+ AJvYcCU6oTMrgCGJW5cpXJD2C/m1RQZ4S82GL9G2f8j7v8IQFn8Uouk6GuSaJDyIiuUeIX0XH9E0L3pRqNiJ@nongnu.org
+X-Gm-Message-State: AOJu0YxJEGqXqQD0T/cmF9PfbZMLXohlUmUmN09t2hmphDnIgFLlUZs7
+ 6vnfe1n3vAPzi7krMcVRTCYPzL+7ITcGwuVbmf3hyYzcCgylcOoz7tQuWFNTiZbM3eE=
+X-Gm-Gg: ASbGncsaxwueVzPaDkCfyisWE/HdNpD+xicFW3FINUKnCUg+n3DVnugDuEatq0H7cK6
+ BM9ninn3eRVt0RyBeB65tXeFPZXbBcjODkj236WBJWAhASFunPf5HF1aQlRLIJYvg0gRa7X8gBd
+ 8ErOfe/tadyKazfVQb/mwqdGG9rtwN1JGGidji1dbcFrwWEYFmtl1UumcQ1VWx0LYZ/wArxCE+X
+ pzZ1zoiopf9oxOw1X8ZDLo3DwxlzbpGVMjV/iVpRJ3TyA0qmUwUOZW7Bd0OU3v1p+qCefidBhVt
+ fQOhsg7camdEMFps9PO4flicN1tmh5NecgonMTB657O/IPWcDQx9yiIJNX1Y66Nw1xuq1zRzl/d
+ RyxpnQBdWJXdauxJH1zmmOkGR9QcxB6Zx9PnIP5VZQy3amHVZXRgpmekRJxjmrJU=
+X-Google-Smtp-Source: AGHT+IFkd6hPOCdgOkXjbtDL/remZd1SyI8NHK7JioMLWIsDW+XXdAN7axwHvFQJJt6z1Ups7vWJ4A==
+X-Received: by 2002:a17:902:cf42:b0:260:3c5d:9c2 with SMTP id
+ d9443c01a7336-28e9a65c737mr5752815ad.48.1759438779370; 
+ Thu, 02 Oct 2025 13:59:39 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-78b01fb28adsm2926576b3a.35.2025.10.02.13.24.34
+ d9443c01a7336-28e8d1b88f1sm29823135ad.78.2025.10.02.13.59.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Oct 2025 13:24:34 -0700 (PDT)
-Message-ID: <47bb0bff-9690-4a7b-991b-c58b38568810@linaro.org>
-Date: Thu, 2 Oct 2025 13:24:34 -0700
+ Thu, 02 Oct 2025 13:59:38 -0700 (PDT)
+Message-ID: <fbd75cad-a1d3-4d5d-be46-434ece81b8b5@linaro.org>
+Date: Thu, 2 Oct 2025 13:59:38 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 32/33] target/riscv: Introduce externally facing CSR
- access functions
+Subject: Re: [PATCH 1/2] Update tf-rmm to support FEAT_S1PIE
 Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, richard.henderson@linaro.org,
- alistair.francis@wdc.com, palmer@dabbelt.com
-References: <20251001073306.28573-1-anjo@rev.ng>
- <20251001073306.28573-33-anjo@rev.ng>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20251002185910.584990-1-richard.henderson@linaro.org>
+ <20251002185910.584990-2-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251001073306.28573-33-anjo@rev.ng>
+In-Reply-To: <20251002185910.584990-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,20 +101,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/25 12:33 AM, Anton Johansson wrote:
-> Convert riscv_csr_[read|write]() into target_ulong angnostic CSR access
-> functions that can be safely used from outside of target/ without
-> knowledge of the target register size.  Replace the 4 existing CSR
-> accesses in hw/ and linux-user/.
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> ---
->   target/riscv/cpu.h        |  7 ++++++-
->   target/riscv/csr.h        | 13 -------------
->   hw/riscv/riscv_hart.c     |  7 +++----
->   linux-user/riscv/signal.c |  5 +++--
->   target/riscv/csr.c        | 17 +++++++++++++++++
->   5 files changed, 29 insertions(+), 20 deletions(-)
+On 10/2/25 11:59 AM, Richard Henderson wrote:
+> There appears to be no tagged release with FEAT_S1PIE, but
+> it is upstream.  As is the PMU patch we were carrying.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+I didn't find the PMU patch upstream, so keeping it locally.
 
