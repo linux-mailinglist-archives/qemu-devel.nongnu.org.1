@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB25BB3691
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 11:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6ACBB36BB
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 11:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4FMU-0005oi-5n; Thu, 02 Oct 2025 05:12:30 -0400
+	id 1v4FMa-0005qi-OL; Thu, 02 Oct 2025 05:12:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4FMG-0005mp-3j
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 05:12:16 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4FMS-0005pO-8a
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 05:12:29 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4FLv-0002S5-N1
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 05:12:15 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-46e42deffa8so7969675e9.0
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 02:11:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4FLw-0002Sm-LM
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 05:12:25 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46e34052bb7so7614935e9.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 02:11:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759396304; x=1760001104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759396309; x=1760001109; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CQ2rCnIwrmK/IRH54N+833E/dWEkz+wW5RLLkGk+ncY=;
- b=BoM+0BIINjOPC1NCDxDLMPJtn1INMIZoWZMtH9es2qf/pnf1lB3WX3MN9ifl189UXU
- JIyhVPSIsK2HV29/IE1szQxzssP/GUGkPHZmWMpNPvE2W4FmFRNQEaQyjjTmMkoM5bwZ
- eaBlsZwRBX/nBxpo6gbKgs02fVCV/3pBziYgAoOEZQmGgJDbZw3RGavxVXp9uhrwgF1L
- yRVomCiLwYqIwcPl+TTfDg7xOQ2kSWEimN0hWbMScBUnDmqfpBX6DxKPndUj2+x4npeg
- SZ4Qcu3oOmdh2rktTYclpIysiajDCG/XzDMK1SIliTakz2T8K8YctC2nKdKjsXkDsN//
- a+PQ==
+ bh=D0OOi5PWQwc+RAyjJdTkSiYcNQtHuqBBPJ63KqRE1kw=;
+ b=vnqYG9uKAYY9I3shL8DBmgrG+70SLWWj4rz53t64CQGH8avt0TlAbYW13+d6C3iAEy
+ CAWKcu+i7fNbfnX4HXrcQbO2G0pjYtJ2fp2zhP9az+TayonZcv8BzYgdLhx9xO1/XtVT
+ 6jFFjSvVPdWX3NeMGfqcmuPaxRwNo2xeXF26daRLGf4QjokRZKugdzUhJggIZYSSR5aG
+ 72/HQ1/IYYnwVqDWcbad/Tk31lSveSQOsbj0m4XpzEj3tBUsPsu5yfOo5s5GUP9xWWg9
+ yTkpXhMOvDtZEzv07unPZaJRrk4REDRHXe9WdehK99OHUMku5Klet/rsPiwwBchRZ1BQ
+ sh+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759396304; x=1760001104;
+ d=1e100.net; s=20230601; t=1759396309; x=1760001109;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CQ2rCnIwrmK/IRH54N+833E/dWEkz+wW5RLLkGk+ncY=;
- b=QGiPRUbywe8bmqFPr2Ci09/ZoOAEeX7tG0+vn+QUXRfrIxeRzZMh5TQ2vS31WOoaG4
- ubXvrd8o6b3ndpqkfocgbHJhPxEPhruxGG4Ar+/KPYhp337WrU9de8eLY+bCSj9I43YA
- wKQroGuaFXz4hGlEEJYemA/hNDruMM+ViV+N3HFj5CbvycYXZI16aT+BZBaDjj13p/xL
- /impWVIuz5QlvszeTF30wEpGd/b10Gdng2vU/kgUq2UXSsK04GhyCHHrzCzQLkuOGMTk
- Tql8FBo6Snw6bFLXOsZFOka6XgUWYl+2i27nvgJ53Ndv5L5BBXZwlk9e72f0v/Lz/DXU
- PhtA==
-X-Gm-Message-State: AOJu0YyInpKSDXxUTSN08ZICBTmxXQoLsEgihgOypTsAFehgNSGoK5uO
- Yogps89QiKF79JnXx0nQz/5bqtw1pPVZSXAHll1nYv47tAMq0nCDjB5+h0q+XX8OLqOUibJ+tSw
- F7tg0Y94zPg==
-X-Gm-Gg: ASbGncs974YZAKUS5rWFaSUWt+j7Nz/46AYvtQaXIaIBOTotnJHJ+N404JeuKiNaBGx
- Qelue4QBZg9QkLTQunkZs2nVtwvVf6qSzykMw7AwC27Jqg8YfoJVVbMXfwPUNXMfEZZS9QWQEFj
- mctytK1TFCDjKuToHEG6Iq00ACm1MB4Iz4e6w4mnSycuqIATVngKF3Lfm5sH1ks5vnqV9rebrjg
- QU/VFAZJRYepO4m4xNUoX1CpaTAJJFsbwsbLloOeOtJDm3nMuO3K1NE16xGl563CNmx5sf1yluO
- 5RC5Qob26Was3LjEnMpivhLuPGPFKMbuQiLg82WTSgRUHC4TPbHOr6c/runx/CydoQ2LNK/EaXO
- 5NZpo6SzeUn5wNweI8NdhbHLWDiEhWlACHyPd7xrRqG7Ddnv3JNJvY/MviXdfeWaf29G48xS4H9
- DoVf/wY5bfQxuouGSuiDTUrNzmkTe6zQ==
-X-Google-Smtp-Source: AGHT+IHKyGUFPb0EXyDX1plut2vO1MLBa9dzXlEhiI4ZTeHa9WfKWyGpEBK28lBZOXWHPHtXS86j6Q==
-X-Received: by 2002:a05:6000:25c4:b0:3e2:c41c:bfe3 with SMTP id
- ffacd0b85a97d-4255780b8f6mr5293138f8f.38.1759396304167; 
- Thu, 02 Oct 2025 02:11:44 -0700 (PDT)
+ bh=D0OOi5PWQwc+RAyjJdTkSiYcNQtHuqBBPJ63KqRE1kw=;
+ b=rUG+9ud4n3IGuC62JLQ4dpmtKUMwMWIzrnksJMyAaQeGzsZ3/Net5rgx0Mzab8bhF2
+ LZZ35IO0voMEli0ukB3x5oR1SsER7hqI9j8GNMJEqNFNs/RMqhAh/tqZquAP0zhIPv+i
+ jjtmLFa5d+o97QISH6o8zhXJqkpAFlsQ59VmBanaJlHYUL/0Im6SSrBLruauvrm4mP+J
+ HyuIBo2lZjOgY0ZlPMBLQ9vxaxmVuTLwyN8nwG4zzixGT8ilM3RSlid+m+0k7GLiGG6H
+ vPwIk5IdVyhHYqM9J13KwZUpdFfnuNCwdBdnM0hOdJdiLIRdoS89kYTonY9ltcNPqKK/
+ 01Gw==
+X-Gm-Message-State: AOJu0YxBzkxivlQfEGq0RenVX2813q48+MvWSdacSkzu+nHJsuIfsU2Y
+ KyqeWB9dzYbIZRd9OhTgif562E93S0mNvTQSdsSARytgKZiMhDGAdzJSxYlRn+aDAacpxIFQd0q
+ QBBTG/UH12Q==
+X-Gm-Gg: ASbGncu6yIV6tdRWazuJI7CSdJHq5m7II+OKvnlSG6ZuExz1Q1aCDiJ4nZBFxfeAY4O
+ RmUcf/gV7US42sfwqlCHw6gTrYPC2BEgrF0IxEiYvxUcx+vouSwFwmRQ2FInNOmk3aoUC2urGPf
+ XMWETbFEwnTmnzMSut03AIek5pt8nBrTimPI8Hest6UJ1NzeH8+xUGRTPJI5JrdDq1gqA5C3XNR
+ cAkbniU/9wI7nY147tcEFII8uEBQ8bSZ9jQlpvOzGc/V674dWCt0laUcQ/UfFN5jLDImdDzGAyA
+ sATbUn+z8riJxRljp6DLs7N3DRWzCik4QPdkoSQmjh0xB+XTIyn2XmDEROPwTS3hU37LBuWKJe5
+ SF/8P4svifh5yFrfkcVoaIeH2i8eUz1zxPVzsTalkMCMoVyOXI2XWYJIVpU8raPEWMaTKibapUj
+ A3NzxXfdlyEmhPOR4o+t3ZllT7jgnkOg==
+X-Google-Smtp-Source: AGHT+IHcvJj/gv2RYh5NmhDINjyudNsnJes9cDSftxEKKhBI4UmmAeoUYxna2qXg3W0vxZLHmRpHPg==
+X-Received: by 2002:a05:6000:288a:b0:3cd:ef83:a9a1 with SMTP id
+ ffacd0b85a97d-425577f1c50mr4875026f8f.20.1759396308960; 
+ Thu, 02 Oct 2025 02:11:48 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e97f0sm2768064f8f.27.2025.10.02.02.11.43
+ ffacd0b85a97d-4255d8efffasm2723263f8f.41.2025.10.02.02.11.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 02 Oct 2025 02:11:43 -0700 (PDT)
+ Thu, 02 Oct 2025 02:11:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
@@ -71,24 +71,24 @@ Cc: David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/9] target/s390x: Factor diag_iplb_read() out
-Date: Thu,  2 Oct 2025 11:11:25 +0200
-Message-ID: <20251002091132.65703-3-philmd@linaro.org>
+Subject: [PATCH 3/9] target/s390x: Replace legacy
+ cpu_physical_memory_read/write() calls
+Date: Thu,  2 Oct 2025 11:11:26 +0200
+Message-ID: <20251002091132.65703-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251002091132.65703-1-philmd@linaro.org>
 References: <20251002091132.65703-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,65 +104,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+cpu_physical_memory_read() and cpu_physical_memory_write() are
+legacy (see commit b7ecba0f6f6), replace by address_space_read()
+and address_space_write() respectively.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/diag.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ target/s390x/diag.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-index ed320fc0c1f..c2fedc55213 100644
+index c2fedc55213..737c3bbc5be 100644
 --- a/target/s390x/diag.c
 +++ b/target/s390x/diag.c
-@@ -73,6 +73,24 @@ static int diag308_parm_check(CPUS390XState *env, uint64_t r1, uint64_t addr,
-     return 0;
+@@ -17,6 +17,7 @@
+ #include "s390x-internal.h"
+ #include "hw/watchdog/wdt_diag288.h"
+ #include "system/cpus.h"
++#include "system/memory.h"
+ #include "hw/s390x/ipl.h"
+ #include "hw/s390x/s390-virtio-ccw.h"
+ #include "system/kvm.h"
+@@ -82,11 +83,14 @@ static bool diag_iplb_read(IplParameterBlock *iplb, S390CPU *cpu, uint64_t addr)
+         }
+         s390_cpu_pv_mem_read(cpu, 0, iplb, be32_to_cpu(iplb->len));
+     } else {
+-        cpu_physical_memory_read(addr, iplb, sizeof(iplb->len));
++        const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
++        AddressSpace *as = CPU(cpu)->as;
++
++        address_space_read(as, addr, attrs, iplb, sizeof(iplb->len));
+         if (!iplb_valid_len(iplb)) {
+             return false;
+         }
+-        cpu_physical_memory_read(addr, iplb, be32_to_cpu(iplb->len));
++        address_space_read(as, addr, attrs, iplb, be32_to_cpu(iplb->len));
+     }
+     return true;
+ }
+@@ -98,7 +102,10 @@ static void diag_iplb_write(IplParameterBlock *iplb, S390CPU *cpu, uint64_t addr
+     if (s390_is_pv()) {
+         s390_cpu_pv_mem_write(cpu, 0, iplb, iplb_len);
+     } else {
+-        cpu_physical_memory_write(addr, iplb, iplb_len);
++        const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
++        AddressSpace *as = CPU(cpu)->as;
++
++        address_space_write(as, addr, attrs, iplb, iplb_len);
+     }
  }
  
-+static bool diag_iplb_read(IplParameterBlock *iplb, S390CPU *cpu, uint64_t addr)
-+{
-+    if (s390_is_pv()) {
-+        s390_cpu_pv_mem_read(cpu, 0, iplb, sizeof(iplb->len));
-+        if (!iplb_valid_len(iplb)) {
-+            return false;
-+        }
-+        s390_cpu_pv_mem_read(cpu, 0, iplb, be32_to_cpu(iplb->len));
-+    } else {
-+        cpu_physical_memory_read(addr, iplb, sizeof(iplb->len));
-+        if (!iplb_valid_len(iplb)) {
-+            return false;
-+        }
-+        cpu_physical_memory_read(addr, iplb, be32_to_cpu(iplb->len));
-+    }
-+    return true;
-+}
-+
- static void diag_iplb_write(IplParameterBlock *iplb, S390CPU *cpu, uint64_t addr)
- {
-     const size_t iplb_len = be32_to_cpu(iplb->len);
-@@ -125,23 +143,12 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
-             return;
-         }
-         iplb = g_new0(IplParameterBlock, 1);
--        if (!s390_is_pv()) {
--            cpu_physical_memory_read(addr, iplb, sizeof(iplb->len));
--        } else {
--            s390_cpu_pv_mem_read(cpu, 0, iplb, sizeof(iplb->len));
--        }
- 
--        if (!iplb_valid_len(iplb)) {
-+        if (!diag_iplb_read(iplb, cpu, addr)) {
-             env->regs[r1 + 1] = DIAG_308_RC_INVALID;
-             goto out;
-         }
- 
--        if (!s390_is_pv()) {
--            cpu_physical_memory_read(addr, iplb, be32_to_cpu(iplb->len));
--        } else {
--            s390_cpu_pv_mem_read(cpu, 0, iplb, be32_to_cpu(iplb->len));
--        }
--
-         valid = subcode == DIAG308_PV_SET ? iplb_valid_pv(iplb) : iplb_valid(iplb);
-         if (!valid) {
-             if (subcode == DIAG308_SET && iplb->pbt == S390_IPL_TYPE_QEMU_SCSI) {
 -- 
 2.51.0
 
