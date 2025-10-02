@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB97BB5062
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 21:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E295BB505F
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 21:39:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4P7x-0007NN-TX; Thu, 02 Oct 2025 15:38:09 -0400
+	id 1v4P7s-0007KI-OI; Thu, 02 Oct 2025 15:38:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v4P7q-0007Lc-Q4
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 15:38:03 -0400
+ id 1v4P7f-0007HJ-S6
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 15:37:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v4P7X-0000Yn-24
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 15:38:02 -0400
+ id 1v4P7W-0000VS-4A
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 15:37:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759433856;
+ s=mimecast20190719; t=1759433852;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=2N7TxRwqPqrfZN4JT6cRtHTIeTswLRGkUOZOj8Gn1n4=;
- b=HnkRJiVyC4LbD7mES4L8k+33DlCIuFrOvw2hI8wtriGtJT/PTYm6TeCzNfoOSLkGu0WsNX
- XgakOPfdHv4ugiaXcD1QvbNgCa5ukyZX6SARlt77VBKioKuBGTVuzkyeUVkUWQzUFtPHJz
- 7rZj6XYf/cH6TWzqEfe1/BMhTU8eK0I=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fwA6DUIpDuQdN2DKjqQ6RYybUyt5n+aG35dPOMYS/kM=;
+ b=XpcmAyEhD+c5qnWgPhQRuhvMddRqnXxtRM+RPDg+krUbUnQUwFY3pFPXbUyBfpK2tyMerY
+ yaFeP8j0izn+owRkScRvVzXuwgF3tpQ3J0zI7bv00B5Z8vl0WVPOtIW9CNFG9LeHAOnMIG
+ hprKeNwqtT/hnVilGN3OHtt/3A60oWo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-n7EmqgGYNSCkvn1z5wd7Rw-1; Thu,
- 02 Oct 2025 15:37:33 -0400
-X-MC-Unique: n7EmqgGYNSCkvn1z5wd7Rw-1
-X-Mimecast-MFC-AGG-ID: n7EmqgGYNSCkvn1z5wd7Rw_1759433852
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-2tU7LgS6MJiFhx2lFTZMtQ-1; Thu,
+ 02 Oct 2025 15:37:30 -0400
+X-MC-Unique: 2tU7LgS6MJiFhx2lFTZMtQ-1
+X-Mimecast-MFC-AGG-ID: 2tU7LgS6MJiFhx2lFTZMtQ_1759433849
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9BCE71800366; Thu,  2 Oct 2025 19:37:32 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 197CC18004D4; Thu,  2 Oct 2025 19:37:29 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.139])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F292E18004D8; Thu,  2 Oct 2025 19:37:31 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1EA2D1800452; Thu,  2 Oct 2025 19:37:27 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
  Jean-Louis Dupond <jean-louis@dupond.be>, Hanna Reitz <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 0/3] block: use pwrite_zeroes_alignment when writing first
- sector
-Date: Thu,  2 Oct 2025 14:39:57 -0400
-Message-ID: <20251002184000.410486-1-stefanha@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/3] file-posix: populate pwrite_zeroes_alignment
+Date: Thu,  2 Oct 2025 14:39:58 -0400
+Message-ID: <20251002184000.410486-2-stefanha@redhat.com>
+In-Reply-To: <20251002184000.410486-1-stefanha@redhat.com>
+References: <20251002184000.410486-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -82,37 +83,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series fixes a bug I introduced in commit 5634622bcb33 ("file-posix: allow
-BLKZEROOUT with -t writeback"). The Linux fallocate(2) and ioctl(BLKZEROOUT)
-syscalls require logical block size alignment of the offset and length, even
-when the file is opened in buffered I/O mode where read/write operations do not
-require alignment.
+Linux block devices require write zeroes alignment whereas files do not.
 
-The fix is to populate the pwrite_zeroes_alignment block limits field and to
-use that limit in create_file_fallback_zero_first_sector().
+It may come as a surprise that block devices opened in buffered I/O mode
+require the alignment although regular read/write requests do not.
 
-One issue I want to raise is that pwrite_zeroes_alignment is an "optimal
-alignment" hint. Hence create_file_fallback_zero_first_sector() had to be
-modified to honor the limit explicitly. The block layer doesn't automatically
-apply padding in order to align requests. This is different from how QEMU's
-block layer pwrite/pread works, where it does automatically apply padding and
-read/modify/write as necessary. If you want consistency, please let me know.
+Therefore it is necessary to populate the pwrite_zeroes_alignment field.
 
-Stefan Hajnoczi (3):
-  file-posix: populate pwrite_zeroes_alignment
-  block: use pwrite_zeroes_alignment when writing first sector
-  iotests: add Linux loop device image creation test
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ block/file-posix.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
- include/system/block-backend-io.h             |  1 +
- block.c                                       |  3 +-
- block/block-backend.c                         | 11 ++++
- block/file-posix.c                            | 17 ++++++
- tests/qemu-iotests/tests/loop-create-file     | 59 +++++++++++++++++++
- tests/qemu-iotests/tests/loop-create-file.out |  8 +++
- 6 files changed, 98 insertions(+), 1 deletion(-)
- create mode 100755 tests/qemu-iotests/tests/loop-create-file
- create mode 100644 tests/qemu-iotests/tests/loop-create-file.out
-
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 8c738674ce..05c92c824d 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -1602,6 +1602,23 @@ static void raw_refresh_limits(BlockDriverState *bs, Error **errp)
+ 
+             bs->bl.pdiscard_alignment = dalign;
+         }
++
++#ifdef __linux__
++        /*
++         * When request_alignment > 1, pwrite_zeroes_alignment does not need to
++         * be set explicitly. When request_alignment == 1, it must be set
++         * explicitly because Linux requires logical block size alignment.
++         */
++        if (bs->bl.request_alignment == 1) {
++            ret = probe_logical_blocksize(s->fd,
++                                          &bs->bl.pwrite_zeroes_alignment);
++            if (ret < 0) {
++                error_setg_errno(errp, -ret,
++                                 "Failed to probe logical block size");
++                return;
++            }
++        }
++#endif /* __linux__ */
+     }
+ 
+     raw_refresh_zoned_limits(bs, &st, errp);
 -- 
 2.51.0
 
