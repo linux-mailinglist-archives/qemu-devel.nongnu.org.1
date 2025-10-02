@@ -2,109 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8A9BB41EC
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 16:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9394BB4240
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 16:08:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4Jq8-0003eL-SC; Thu, 02 Oct 2025 09:59:27 -0400
+	id 1v4Jw2-0006ao-3d; Thu, 02 Oct 2025 10:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1v4Jpq-0003XI-3P; Thu, 02 Oct 2025 09:59:07 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v4Jvv-0006aS-J1
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 10:05:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1v4Jpc-0004DD-7D; Thu, 02 Oct 2025 09:59:04 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 592ARNMX004212;
- Thu, 2 Oct 2025 13:58:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=azPaSz
- 4JhiYlR1sbBhza5U8L0F2Pnw++GO2toOuqNHE=; b=HD1m9rA+WGhRkvGUYjUSa0
- rOuJuouS96xLqe3fej+FEHMdMyCjc99ddoAFvCJ6N7K2bz5ci/ZR0EMOBCfyWfT/
- oVel2uTgQbGVL4KYkn4laPlhAuBgO+HDaKSlZxP/DoWKQJJQCedopOerW0VBVXZu
- EjhG5YGhjO6RScCxJWCyFb25CaIAI/GHXzrTZMIVf9/b3g3s9OlB7Z+O/W2Kb4CB
- q2fVfBu0bIoOLLpBxUiqhmGq9nyU6ogkg8hUekjYGYFQr7oDEhwNOWwn7MZ6ATy8
- xL7UnNB1jglPKqy+Wk7bsCo2dQUkKrR58eT2UBi+s0NaM10arlsIZJ0+YiXT681g
- ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e6bhvvfm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Oct 2025 13:58:39 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 592D6O3O003599;
- Thu, 2 Oct 2025 13:58:38 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49etmy6cd9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Oct 2025 13:58:38 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 592Dwb6s32244434
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Oct 2025 13:58:37 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2EAEF5804E;
- Thu,  2 Oct 2025 13:58:37 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8ADA5803F;
- Thu,  2 Oct 2025 13:58:35 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.134.141]) by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  2 Oct 2025 13:58:35 +0000 (GMT)
-Message-ID: <8d8ad6d2aee64a3c9db7a0096c4712d70860fa59.camel@linux.ibm.com>
-Subject: Re: [PATCH v1] s390x/pci: fix interrupt blocking by returning only
- the device's summary bit
-From: Eric Farman <farman@linux.ibm.com>
-To: Jaehoon Kim <jhkim@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: mjrosato@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
- iii@linux.ibm.com
-Date: Thu, 02 Oct 2025 09:58:35 -0400
-In-Reply-To: <20251001154004.71917-1-jhkim@linux.ibm.com>
-References: <20251001154004.71917-1-jhkim@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v4Jvj-0005hD-0B
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 10:05:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759413898;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=n9amMnUU8RVSypkHnAn8Mvq6+kyn+DhLsN7tI6WR4t0=;
+ b=eBG/XpKpP8vzRAYlbuVhkoCAWv/EgVYHeXSR7lg+GiJ63FEjEuVveGxIiD9a+DXLxsNkfI
+ U9g56dYmYqxzQKQjWbT6IeqlcT+j5pOxDXygllWCq8p1mAwdm+KryS0fnLph6aKU80Bkf6
+ yXe1uRMFP/X2AZ5Pq0358l1US+JQKRc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-M3LkeQKtMPKCvY2hifG18Q-1; Thu,
+ 02 Oct 2025 10:04:51 -0400
+X-MC-Unique: M3LkeQKtMPKCvY2hifG18Q-1
+X-Mimecast-MFC-AGG-ID: M3LkeQKtMPKCvY2hifG18Q_1759413890
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92F0D1956053; Thu,  2 Oct 2025 14:04:49 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.225.182])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E4AAC19560B8; Thu,  2 Oct 2025 14:04:47 +0000 (UTC)
+Date: Thu, 2 Oct 2025 16:04:45 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-block@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/3] tests/qemu-iotests: Improve the dry run list to
+ speed up thorough testing
+Message-ID: <aN6GfX8js5f_nS_o@redhat.com>
+References: <20250910153727.226217-1-thuth@redhat.com>
+ <20250910153727.226217-3-thuth@redhat.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Se/6t/Ru c=1 sm=1 tr=0 ts=68de850f cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=zDjPMwzhIzfscW9YWh8A:9
- a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAxMCBTYWx0ZWRfXwTapjVs7oaIn
- Lmgtrh6vrCDEX7B10GYcNwM+VW3+KndPMxuSeQCH/h57ayLLIqG+alRZvou5zUB9aUrUKVvpijP
- vi8qFT3/xzWSnEHBXxcNQYX6JlCQD90ycGYvPGM5srQfPSUOgoGKEDsl7mMCGx3blobp05NQ1Z5
- wrL6ZlPlWm6r987zj1jR/rkUc8g9q+CxBNokEzmJcakMlE1PLSZvnCN1xzRDXXBZHYTVZGWk4vq
- 0DR8RaNy2SotEDHYeBZnClrEdvnrmkqO43wuR1OImGi2TIfMag6S4fevy5w42a5tGbW8msESBrV
- CcPlZ4u/SZU5f9WgOf2qfAExn6PNVRNNfJzhwNYL2AvnzZoxKUvXrvfurK3lHoisheWFLPFRPLr
- gMijytyIBYDNyWIqLSWpLgHLSXMLsQ==
-X-Proofpoint-GUID: fQ8kkrgBTb8gLcqyBi56QBgbR9RGHi3J
-X-Proofpoint-ORIG-GUID: fQ8kkrgBTb8gLcqyBi56QBgbR9RGHi3J
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-02_05,2025-10-02_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- clxscore=1015 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270010
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910153727.226217-3-thuth@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.451,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,24 +83,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2025-10-01 at 10:39 -0500, Jaehoon Kim wrote:
-> Previously, set_ind_atomic() returned the entire byte containing
-> multiple summary bits. This meant that if any other summary bit in the
-> byte was set, interrupt injection could be incorrectly blocked, even
-> when the current device's summary bit was not set. As a result, the
-> guest could remain blocked after I/O completion during FIO tests.
->=20
-> This patch replaces set_ind_atomic() with set_ind_bit_atomic(), which
-> returns true if the bit was set by this function, and false if it was
-> already set or mapping failed. Interrupts are now blocked only when
-> the device's own summary bit was not previously set, avoiding
-> unintended blocking when multiple PCI summary bits exist within the
-> same byte.
->=20
-> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
+Am 10.09.2025 um 17:37 hat Thomas Huth geschrieben:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> When running the tests in thorough mode, e.g. with:
+> 
+>  make -j$(nproc) check SPEED=thorough
+> 
+> we currently always get a huge amount of total tests that the test
+> runner tries to execute (2457 in my case), but a big bunch of them are
+> only skipped (1099 in my case, meaning that only 1358 got executed).
+> This happens because we try to run the whole set of iotests for multiple
+> image formats while a lot of the tests can only run with one certain
+> format only and thus are marked as SKIP during execution. This is quite a
+> waste of time during each test run, and also unnecessarily blows up the
+> displayed list of executed tests in the console output.
+> 
+> Thus let's try to be a little bit smarter: If the "check" script is run
+> with "-n" and an image format switch (like "-qed") at the same time (which
+> is what we do already for discovering the tests for the meson test runner),
+> only report the tests that likely support the given format instead of
+> providing the whole list of all tests. We can determine whether a test
+> supports a format or not by looking at the lines in the file that contain
+> a "supported_fmt" or "unsupported_fmt" statement. This is only heuristics,
+> of course, but it is good enough for running the iotests via "make
+> check-block" - I double-checked that the list of executed tests does not
+> get changed by this patch, it's only the tests that are skipped anyway that
+> are now not run anymore.
+> 
+> This way the amount of total tests drops from 2457 to 1432 for me, and
+> the amount of skipped tests drops from 1099 to just 74 (meaning that we
+> still properly run 1432 - 74 = 1358 tests as we did before).
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  hw/s390x/s390-pci-bus.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
+>  tests/qemu-iotests/check | 35 ++++++++++++++++++++++++++++++++---
+>  1 file changed, 32 insertions(+), 3 deletions(-)
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+> +def dry_run_list(test_dir, imgfmt, testlist):
+> +    for t in testlist:
+> +        if not imgfmt:
+> +            print('\n'.join([os.path.basename(t)]))
+> +            continue
+> +        # If a format has been given, we look for the "supported_fmt"
+> +        # and the "unsupported_fmt" lines in the test and try to find out
+> +        # whether the format is supported or not. This is only heuristics,
+> +        # but it should be good enough for "make check-block"
+
+I'm not completely sure if this is a good idea at all, but I think we
+should at least mention the possible surprising cases where the
+heuristics fails in this comment.
+
+One thing is that '_unsupported_fmt qcow' will also disable the test
+case for qcow2. 181 would almost run into this, but because it has
+'_supported_fmt generic' first (which is an order not required by
+anything else) and you stop after seeing this line, the test as written
+currently is still returned (for both qcow and qcow2).
+
+Actually, I suspect that the '_supported_fmt generic' tests that are
+then followed by an '_unsupported_fmt' line are the majority of the
+still skipped cases you see. (We don't have to do anything about it,
+just an observation.)
+
+There are other theoretical scenarios, like multiple options on a single
+line in Python, but I think in practice you'll never combine block
+driver names that this would skip something it shouldn't skip (apart
+from the same 'qcow2' and 'qcow' problem).
+
+Kevin
+
 
