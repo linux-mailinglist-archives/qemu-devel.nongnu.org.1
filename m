@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCD9BB4F53
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 21:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1D4BB4F71
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 21:11:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4OWl-0006mx-2g; Thu, 02 Oct 2025 14:59:43 -0400
+	id 1v4Og6-0002GO-Jb; Thu, 02 Oct 2025 15:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4OWh-0006lk-3w
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 14:59:39 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1v4Og4-0002Ey-5Z
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 15:09:20 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4OWP-0004SJ-4d
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 14:59:36 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-b593def09e3so997435a12.2
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 11:59:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1v4Ofp-0000am-RS
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 15:09:19 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-789fb76b466so1402465b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 12:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759431553; x=1760036353; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MRoVXTbEiZRq0NCvolopAwrC29j8t8c/HT4EC4PwfXU=;
- b=Ug6un8drqHyPpNTZ+KFRTXx47CCEVPB0HFzuMb70Q5FZ9Ow+1rR3hqGZGh3SPTBal/
- ziSHj+MyBvLIOUQycJb2Wve8KSM72d1DNJVesOG5lLNHSUu7WyKHSBTkiFEt/vMAMfIc
- xMev9qyrUZ/EGW90mFDhlhreQC+nla+UzvI4321qchfqWyyZ/ItComqEzONCBOAYIDwT
- 7keqizfpYUtQ1jPJ9ePCxeuiO0vOGBc26GBC7W9f33FtDxXdIOYczXmeP6uBs9zj+ACX
- Yewpw3V5Bh4n+9so4Khk1Fn2czT4gFdj6pQlkFiUNW8Wgv2Fp1kXRxVbJDAZ9J1s4biS
- N0PA==
+ d=linaro.org; s=google; t=1759432139; x=1760036939; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Zk/o9LUvOzAWwmwHoIlGagcTwKIaPR7VIu5I5om5JhQ=;
+ b=WNnPq0dI3HbeQeY4pPB2Rae1wEvbfnkXccRy0UkMQWDB71a+QJjwwxkGMmTmtAcA10
+ i7/JinTAl2rGoo5qspoq4/I8AI1QDQN8jOYAhPJZ0bZVaoQ77XyKv8AaczhxMRN9KZ9X
+ xlBPxT6V6+/OIAWD0H/8xqdsMZpRTuR6D0qgGUlC0BkFCi6k3zRYCI5Klzmf3w+BvHNQ
+ 4vsgdbdvBXd76zZIWOq4XGqyMn7koc7FpCw0hSLeYGaHSp258h5z7HsGkXKODunrVeMk
+ Y34AM2wT7yfjs9EbSwLqWGz/IPw9Zdi/pkk4mUuUJinXmYi8p8GvIfBbu2BsON5bXb0X
+ ZkRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759431553; x=1760036353;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MRoVXTbEiZRq0NCvolopAwrC29j8t8c/HT4EC4PwfXU=;
- b=dCPLeD7GGCnyn5vhwZhvenmPD6o6blRCmPpZVwH7CUJSUco4sMVpCC9JAzkPjzevQn
- kdY4EY+/QWL++dSaQ7IMdkDKv4XTuavQX0EWFnAapWCQhz9XP4kT3oBTwpIyEPkm2sV1
- FPpcC45FSJzYRjpbqYlOMF6JCw3K2Pst59Cy9/ABGLmOA7xwTQ90vb8Xzn1cpgx/xnh/
- hISgNIeUkp2FHNyhy17z1c5Xt/ACqAT3CuBTQiW0ReAQx5GPeAW1pSW3Scargk3Ap6yL
- gChAoZIQrFv4rSGAy42xfH0eD/OwRgrmuty+P9miex5Dey/Y95FcWbUgr2HTQK7GARTx
- ay5g==
-X-Gm-Message-State: AOJu0Yx1v0DV5Dj+Jog3MQYmxXGAUvYUIcvxQdwh+bJgvZbng6TMsYUS
- muTubRLvG94B14yaBZwnHnOswO0kAq2/QC7rcvEemAkrlHr+1ba75wSLgWDaR75OgrLXx47c7r0
- KtSiIh60=
-X-Gm-Gg: ASbGncsIhL194Ue50h1ZGxkeHcW3Hdrz1doWXhzQv346lTddG9JG3O2qBeedceqZRJU
- HVzr7UhUFKAVMB4AuVgRNeWXnePAy4VlCn8A/LO3oMz6GpTFg6OD2DJ+uMpA8ZySdkuPAq3hfhN
- pfB1YMa2Wo7pvPb/2c+CgDSmMhw8McA3r+hEA3nn2Evy/d1AzYXvJ6OrugDpAl93rJYCzJQ++Gc
- yG6iJpOiPbTTJXERcCSaiqCH0z6wQHI2PzFAR6egmD6RLoSZbi76h+gETlWzD3ZhwPkqGSjqKQT
- u0bW3gGLw/NxNJBGe42sygDaAh/50S0c/g8R6YIL1raZTEl8ESTrpgfPvo0/H2JNlGClphhFslC
- huDCjRdgfTNjR5cTEt7/C/pOiKAag46d0XPo85NeCF1FykBnyx2GGvsk9HY2fiVmykWo=
-X-Google-Smtp-Source: AGHT+IErqJ3btz+SPzLv+/aaDPLlL6d/QVekQfG7I+jlXmt7sSoEp/MH5YTuHK3FLYgrm41RaIobJQ==
-X-Received: by 2002:a17:903:3c70:b0:25c:46cd:1dc1 with SMTP id
- d9443c01a7336-28e9a6aa297mr3215785ad.33.1759431553066; 
- Thu, 02 Oct 2025 11:59:13 -0700 (PDT)
-Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1d31c8sm28047335ad.95.2025.10.02.11.59.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 11:59:12 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org
-Subject: [PATCH 2/2] Enable firmware support for PIE and GCS
-Date: Thu,  2 Oct 2025 11:59:09 -0700
-Message-ID: <20251002185910.584990-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251002185910.584990-1-richard.henderson@linaro.org>
-References: <20251002185910.584990-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1759432139; x=1760036939;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Zk/o9LUvOzAWwmwHoIlGagcTwKIaPR7VIu5I5om5JhQ=;
+ b=vAOeeBBZ5ZoIH6DF06xE4oJLl+B3krUpeOBJGstzG3pkYD3C6ndmGPyV+HaknsC2Dr
+ /BCEus3ZYasAnWPc6NClwomOxmTA902lZFgKgLpFrYsy1MgZzr1AXTH8sJxxdplGpoc9
+ lDkfkJkehxPmtHPi+bA9BVxBik8P8UB1sEZpSn5STSQ0s0Tdrds4rhkE+9SNYsWLu+H7
+ D6uSySkMz4i7I6SEpQwbQCtVZX7UgPUqDdvPXI1qZf9T6SpS+xRr3NjJaXb7gXJR3YwS
+ t/mAvsb1a0wAyvpDqgH4F7/HL4wpRpFAqAYS031h47SEoXLQ8vjkEO6LDU5UFiq65KXh
+ gJVQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCURxJ70l24xDzv/dJGI/u/L8+K2CF1Zwm5h6cow+S7Bc177Q/LiAp/c7bhCRHXZ8sA185dsA422c5F2@nongnu.org
+X-Gm-Message-State: AOJu0Yx+qakBYuaKh80CNyMzaow+9GZ3DVNuhqUsYThNHwS3oUJvTePr
+ lDhZYBC4pOuJ5+30hFDSoEkHYgG7JkuFzA0dMg6CNkdWNf7j1pzwMLkz/MiLoWb8NTY=
+X-Gm-Gg: ASbGncss1L0SgXCNfXccQ2iY5OBkqiXVmvDozW//1ps7X6TTb7kptug5vQP4xaVYZQ7
+ RfJBIT8ilt4QrQ6gGSHG57VjkWNolJU/m1prqVvDsnBH273Bnkyu6n0i0FEeTcW5XcIslYqRoKy
+ djqap9SmSpvLlTG80bCIgYUQa3TH0uSTC2iu/L3ITsDlCUN2ER3wHDKtHhwRn7nNyO4NXUbFwY9
+ jd30EIHgqkuCpjJK4ZO6LEo0p0jr05vA9jL4VPRIrEGkp9nqtfUK02a4Ykg9dbu4BhI3MNA5PeT
+ vKAOXD3KCXwxd6xNEqk6T6vM+jCsjlS+lahMTK+tu0cQQIaVXrb+9LlX2H2+IwrGDsO4TYIUJsZ
+ SCedHpuS2OrrIn4qGqWU08vQbb58lkUKias7YPhYMfIcu73Xn2D5K3lZDSkW3Mw0=
+X-Google-Smtp-Source: AGHT+IEnnq6Y8OvXL2dB+a3XafD5lwjoV4Xo+sAbphAZJKY1D30TVh0XlhNXjawhOqTkQWIyXri1wg==
+X-Received: by 2002:a17:90b:4d0b:b0:336:bfce:3b48 with SMTP id
+ 98e67ed59e1d1-339c271e937mr555141a91.9.1759432138612; 
+ Thu, 02 Oct 2025 12:08:58 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-339a6e9d2d4sm5819029a91.2.2025.10.02.12.08.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Oct 2025 12:08:58 -0700 (PDT)
+Message-ID: <e1748ad3-3475-4cce-8add-2a1d76994f0b@linaro.org>
+Date: Thu, 2 Oct 2025 12:08:57 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/33] target/riscv: Combine mhpmevent and mhpmeventh
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, richard.henderson@linaro.org,
+ alistair.francis@wdc.com, palmer@dabbelt.com
+References: <20251001073306.28573-1-anjo@rev.ng>
+ <20251001073306.28573-6-anjo@rev.ng>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20251001073306.28573-6-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,61 +103,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
----
- build_arm_trusted_firmware.sh                 |  1 +
- ...arm-trusted-firmware-support-PIE-GCS.patch | 30 +++++++++++++++++++
- 2 files changed, 31 insertions(+)
- create mode 100644 patches/arm-trusted-firmware-support-PIE-GCS.patch
+On 10/1/25 12:32 AM, Anton Johansson wrote:
+> According to version 20250508 of the privileged specification,
+> mhpmeventn is 64 bits in size and mhpmeventnh is only ever used
+> when XLEN == 32 and accesses the top 32 bits of the 64-bit
+> mhpmeventn registers. Combine the two arrays of target_ulong
+> mhpmeventh[] and mhpmevent[] to a single array of uint64_t.
+> 
+> This also allows for some minor code simplification where branches
+> handling either mhpmeventh[] or mhpmevent[] could be combined.
+> 
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   target/riscv/cpu.h     | 10 +++----
+>   target/riscv/csr.c     | 67 +++++++++++++++---------------------------
+>   target/riscv/machine.c |  3 +-
+>   target/riscv/pmu.c     | 53 ++++++++-------------------------
+>   4 files changed, 42 insertions(+), 91 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 3235108112..64b9964028 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -427,11 +427,11 @@ struct CPUArchState {
+>       /* PMU counter state */
+>       PMUCTRState pmu_ctrs[RV_MAX_MHPMCOUNTERS];
+>   
+> -    /* PMU event selector configured values. First three are unused */
+> -    target_ulong mhpmevent_val[RV_MAX_MHPMEVENTS];
+> -
+> -    /* PMU event selector configured values for RV32 */
+> -    target_ulong mhpmeventh_val[RV_MAX_MHPMEVENTS];
+> +    /*
+> +     * PMU event selector configured values. First three are unused.
+> +     * For RV32 top 32 bits are accessed via the mhpmeventh CSR.
+> +     */
+> +    uint64_t mhpmevent_val[RV_MAX_MHPMEVENTS];
+>   
+>       PMUFixedCtrState pmu_fixed_ctrs[2];
+>   
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 859f89aedd..2d8916ee40 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -1166,8 +1166,9 @@ static RISCVException read_mhpmevent(CPURISCVState *env, int csrno,
+>                                        target_ulong *val)
+>   {
+>       int evt_index = csrno - CSR_MCOUNTINHIBIT;
+> +    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
+>   
+> -    *val = env->mhpmevent_val[evt_index];
+> +    *val = extract64(env->mhpmevent_val[evt_index], 0, rv32 ? 32 : 64);
+>   
+>       return RISCV_EXCP_NONE;
+>   }
+> @@ -1176,13 +1177,11 @@ static RISCVException write_mhpmevent(CPURISCVState *env, int csrno,
+>                                         target_ulong val, uintptr_t ra)
+>   {
+>       int evt_index = csrno - CSR_MCOUNTINHIBIT;
+> -    uint64_t mhpmevt_val = val;
+> +    uint64_t mhpmevt_val;
+>       uint64_t inh_avail_mask;
+>   
+>       if (riscv_cpu_mxl(env) == MXL_RV32) {
+> -        env->mhpmevent_val[evt_index] = val;
+> -        mhpmevt_val = mhpmevt_val |
+> -                      ((uint64_t)env->mhpmeventh_val[evt_index] << 32);
+> +        mhpmevt_val = deposit64(env->mhpmevent_val[evt_index], 0, 32, val);
 
-diff --git a/build_arm_trusted_firmware.sh b/build_arm_trusted_firmware.sh
-index d223142..0b148ef 100755
---- a/build_arm_trusted_firmware.sh
-+++ b/build_arm_trusted_firmware.sh
-@@ -18,6 +18,7 @@ clone()
-         git clone $url --single-branch --branch $version --depth 1 $src
-         pushd $src
-         git am ../patches/arm-trusted-firmware-support-FEAT_TCR2-and-FEAT-SCTLR2.patch
-+        git am ../patches/arm-trusted-firmware-support-PIE-GCS.patch
-         popd
-     fi
-     ln -s $src arm-trusted-firmware
-diff --git a/patches/arm-trusted-firmware-support-PIE-GCS.patch b/patches/arm-trusted-firmware-support-PIE-GCS.patch
-new file mode 100644
-index 0000000..132e939
---- /dev/null
-+++ b/patches/arm-trusted-firmware-support-PIE-GCS.patch
-@@ -0,0 +1,30 @@
-+From 0925eadf8922bbe811ec41fb983347928f3bc63b Mon Sep 17 00:00:00 2001
-+From: Richard Henderson <richard.henderson@linaro.org>
-+Date: Thu, 2 Oct 2025 11:43:11 -0700
-+Subject: [PATCH] plat/qemu/common/: add support for FEAT_{S1PIE,S2PIE,GCS}
-+
-+---
-+ plat/qemu/common/common.mk | 7 +++++++
-+ 1 file changed, 7 insertions(+)
-+
-+diff --git a/plat/qemu/common/common.mk b/plat/qemu/common/common.mk
-+index 6bc1084..2c344b6 100644
-+--- a/plat/qemu/common/common.mk
-++++ b/plat/qemu/common/common.mk
-+@@ -126,6 +126,13 @@ ENABLE_FEAT_HCX		:=	2
-+ ENABLE_FEAT_TCR2	:=	2
-+ ENABLE_FEAT_SCTLR2	:=	2
-+ 
-++# 8.9
-++ENABLE_FEAT_S1PIE	:=	2
-++ENABLE_FEAT_S2PIE	:=	2
-++
-++# 9.4
-++ENABLE_FEAT_GCS		=	2
-++
-+ # SPM_MM is not compatible with ENABLE_SVE_FOR_NS (build breaks)
-+ ifeq (${SPM_MM},1)
-+ 	ENABLE_SVE_FOR_NS	:= 0
-+-- 
-+2.43.0
-+
--- 
-2.43.0
+Maybe I missed something, but should it be:
+deposit64(env->mhpmevent_val[evt_index], 32, 32, val)
+instead?
 
+Reading the rest of the patch, I'm a bit confused about which bits are 
+supposed to be used in 32/64 mode.
 
