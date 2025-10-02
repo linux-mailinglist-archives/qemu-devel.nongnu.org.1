@@ -2,105 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAAC3BB3008
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 10:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77277BB31FD
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 10:33:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4Ec2-0007Fs-5k; Thu, 02 Oct 2025 04:24:30 -0400
+	id 1v4EiG-0000uT-91; Thu, 02 Oct 2025 04:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4Ebx-0007FE-CK
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:24:25 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v4EiA-0000tc-3D
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:30:50 -0400
+Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4Ebe-0008DJ-Nk
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:24:23 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3fa528f127fso493624f8f.1
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 01:23:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v4Ehy-0003Kc-FA
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 04:30:47 -0400
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-74625f748a0so9090197b3.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 01:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759393419; x=1759998219; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=20LDNmFwkfiVk61jWphsVdiDgC6U6aBSpattiB/Wm98=;
- b=cR92IIqyMoi3Kexa/z7BHXSLtLMoBqNLysfkkv36zaKsO+Tr4LocZUtMQaivOzYQ0O
- LH0qE4+793zXl732WAUWqNiqzeTQU5ssHhGV20R8XWTuwIUnt1GQKLVvMiOEeAPXVWZu
- BCVZeJO8VCR8iR/6slnPak4d4SbwsjGKPrKAnVLosRCirT5KJp2tF5IufhsqzLOFjjpd
- cLFJfJ1yLbX2y9d55lOSIEXQNOowj0CmRHPiFVJi0gRkTg8WkDJPgb+z2jb8SIEMISwu
- peB2JpM5pSdL2tKDyps8RCQW3ZGk4G995g0C4V1IxtrncEyUpBJ6qOfMxA+oqQEhW7i7
- KJww==
+ d=linaro.org; s=google; t=1759393827; x=1759998627; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=thJUyunQ1DRYZHJorhfZ5XxGZExCOn/F+KmYxfOiRK0=;
+ b=Lg+RjRifI9eatLuDiObabkzM2EEWSjjAlxix0tsy3oNTQQLlQCYekMvsOShcKZ3Gcq
+ qn9Kb7Ma9Pr0/5e8J9RpGW3eKZ9iVC5vS0KMtfdIkSfU9T/z00wCoRuksLLfip+lsZ/4
+ VBzOVRCKGm8dR3QBadl9wDqCWilwhnboAnKo05GvxdTcbykqRq5/JjbMHDMY0ahSL3Hh
+ 5b71dCKpJrv2VTRjHPT/yl9meT0hL/3lEXcSaDm7I/mCPK5YARE6S17oGlOah43UiaK4
+ ar9UaXYQ12XtCfP0at2hqs1rYeO7Xv+Kn58gk4xoHAtrO6H/s+bFRDKNiKhcy+iS0bn7
+ n4lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759393419; x=1759998219;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=20LDNmFwkfiVk61jWphsVdiDgC6U6aBSpattiB/Wm98=;
- b=Qo8tlhWlJgZsx8faln1gJFRijIE0uhrne2SNgbNZLya/faq2i7ZsGMTcki73Ybezm6
- 2gU+vjBLSG1Tktqdi5H56gJEP4PSF2+DJKPntrs1aoRvre/BefZWxSu8np84Ft1ULlQP
- WXMgaqWj0RQ7yJY4hnp4/tGTlPFobmb0g/jTzy0MaJLNAfthbdJL7f9D2oyu/DUTs+h1
- mS9DBCQ9u/DHp2G9jIefIQs5xRRbvzqYsuHl0N2pt5s/IqHPzT8y4gGfNgGhlUAjuYSN
- fYI/itvAEPBBJNeKUyR6HP3j3DkYTlj/MplPRh0qLgbDkThVTaShT9T1LWy2V3hyncSk
- gaIQ==
+ d=1e100.net; s=20230601; t=1759393827; x=1759998627;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=thJUyunQ1DRYZHJorhfZ5XxGZExCOn/F+KmYxfOiRK0=;
+ b=Gh7k0Fhc+JmtMM7UBwtXFPJfdCJX++dYPdx7RJKOV7yRvoTLwExP1KBa7L90qRsp0C
+ 41SQYkv9NiWrPM/o8DK37e78gqQ0suyj9Cvl71k6giyK+Ka4gA0x6P4r186YK9PLsSbZ
+ r4047gAHPCOT1MRRK+ny22xjGp702fTI1TqjTXg47Owkff4vcVaSeSug4z7Z84bQelpX
+ FLqwywvyh4alF1lUxduQ30P1YH/yx/BSWLdHjVwEUefFADRVdewvIiVHqOWt5Z65FxlD
+ 7GMjio7BZm6cPE5ZJCaUsRw6BC6GACyY2XW6cntBoj1fOQQ2BOiNMo+XsGbv/E1PiAiz
+ C4nw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX31+H8svs5dfvN+l3p8LgPkUsjQXgKu+005cIb/BwOR/PvlTLmVb8FG2fmPDgwK7dn+hOo1xdrDujj@nongnu.org
-X-Gm-Message-State: AOJu0YxqguUanPFuiz8rQr55bpYlKf3xZbnso3GWSkm3ozcPXYWF6jla
- SjBEXy35s7BA9JvRI9dy/KduxCdHOHLPMBHsNG03ww8yqb0vQ9K0ZErg4uG1OspJcTQ=
-X-Gm-Gg: ASbGncvRnp1SD0q29MLoFmzjS3Qh2Uq4N+1o2eD3Kjd3NC98UcTnE0MQcKWeikvGlzT
- zF/GgmzMht7OA9DzCpEhMAQEoaLslQJat8aKBafDQAWQnPG6xdbfgPaIU2brEbGfyv+AQvWxDHb
- pv+gKZrVVplp4o6mwm0nUb5n/m6RikE80x3JqEVLfZXEyN/gQN9tPHBOU6m+tdg224zpQP930qZ
- A7EIOrC4xPrkppOADUaawMTeYAJiT3+vmvt/hA3RHrOg52oiGPrgNbtIJ8XmyspPuOfEX+ADZWj
- 3AWIj1Nwxp01cOB7e17emjDXrb44j6OZg9ZIK+ciZpTATMbI3J4qTxazB2X76pjYEB1XM74C1u6
- b4E1Pf5Ndb10WZryOFCye7GmxUQeGJISZZFZfuRZqgaKcjWLh0wsloL5zjtJsBtmKwp/C1g1ZBx
- HHhsTlxc+nv/hWhpOVqg==
-X-Google-Smtp-Source: AGHT+IHYGMTEcSwLrD3/d0AnwhXckt6mkAPLz1q7/xpYZkUGtMMnsJP/2oWwUfXPWK6xW0Jvy8bHXw==
-X-Received: by 2002:a05:6000:250e:b0:3fc:cbfc:fbee with SMTP id
- ffacd0b85a97d-4255d2ba6ebmr1387460f8f.19.1759393419362; 
- Thu, 02 Oct 2025 01:23:39 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f027csm2528397f8f.40.2025.10.02.01.23.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Oct 2025 01:23:38 -0700 (PDT)
-Message-ID: <e132baba-6d75-4263-9203-65d7d7c7f739@linaro.org>
-Date: Thu, 2 Oct 2025 10:23:37 +0200
+ AJvYcCUzx2aGTVtBCQB4VgGUxzUAdEMr3CDFRREhtQIq1zPQFwrnQT2kE8EpJSoU3C/eAIJP9LVbNzWQH94q@nongnu.org
+X-Gm-Message-State: AOJu0YxDaZVlzhf53ABWro4ChJ3wO4zDi15UUonCffR+wiSC2sA0xAhx
+ GTWUL4OqmdrXNY4mH6lxqcOiGinKoN9dy9i+90wjw0uj3KWOUOSG0mhkBdIjESf7yLwu/oOtq9C
+ HbtdV8SeQ4agee+I8KdyOoJsh+/v3rQWPqUmGVPpWig==
+X-Gm-Gg: ASbGnctv7nCb/Vj4M1yA8o5Xu81iJgmIu+WFjs8g3aQlqBD0th9uiUVWUD58WhxjCkO
+ 9N7JlQWGw+dEezxLIHhijP6gnSotbA43juqzaUyNMHgvJDC9wwV13OimhKPAmGaKXadrjLPyfeH
+ 7HyF99qkD9du2TI7djofKG/E3lfr4crP7UxN66fiSxBFS2Nz3RdP3IxNTKnfj6w1620dti/UacN
+ hJH8ZrpDEAMtKJZwnKAugB6YC0Hgho2Gate
+X-Google-Smtp-Source: AGHT+IGo72mvg3XBwKIi6JWLiy9gBXhMpFUHDXEtKnDemqolAUv403Y/vZ1n/d6Wovfh+zt9OXD728Y3XnXT6zgADno=
+X-Received: by 2002:a53:bf10:0:b0:635:2cdd:4ba9 with SMTP id
+ 956f58d0204a3-63b6ff7e83emr6501848d50.34.1759393827059; Thu, 02 Oct 2025
+ 01:30:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/27] accel: Add Meson and config support for MSHV
- accelerator
-Content-Language: en-US
-To: Magnus Kulke <magnuskulke@linux.microsoft.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Cameron Esfahani
- <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wei Liu <liuwe@microsoft.com>, Cornelia Huck <cohuck@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
- <phil@philjordan.eu>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Magnus Kulke <magnuskulke@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
- <20250916164847.77883-2-magnuskulke@linux.microsoft.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250916164847.77883-2-magnuskulke@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+References: <20250929144228.1994037-1-peter.maydell@linaro.org>
+ <1c567b4a-4966-4374-8851-81c9b1393d8a@linaro.org> <aN2fKu6wfPSQx05S@x1.local>
+ <98ec5131-8468-4484-800d-36439c6b5ae9@linaro.org>
+In-Reply-To: <98ec5131-8468-4484-800d-36439c6b5ae9@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 2 Oct 2025 09:30:15 +0100
+X-Gm-Features: AS18NWBmvu3-3LfJGe_EU-mXOt4ll0MGbb3LEKxPRKyrXt2gt2FUTDbI_2hWUsE
+Message-ID: <CAFEAcA9HjmseQhxaMCLeuYvFwQeMgc506EEVeooQZ-VYOnbFHA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] system: Don't leak CPU AddressSpaces
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ Eduardo Habkost <ehabkost@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,40 +99,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/9/25 18:48, Magnus Kulke wrote:
-> Introduce a Meson feature option and default-config entry to allow
-> building QEMU with MSHV (Microsoft Hypervisor) acceleration support.
-> 
-> This is the first step toward implementing an MSHV backend in QEMU.
-> 
-> Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-> ---
->   accel/Kconfig                 |  3 +++
->   meson.build                   | 10 ++++++++++
->   meson_options.txt             |  2 ++
->   scripts/meson-buildoptions.sh |  3 +++
->   4 files changed, 18 insertions(+)
+On Wed, 1 Oct 2025 at 22:59, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 10/1/25 14:37, Peter Xu wrote:
+> > I only have a very preliminary understanding on this, so please bare with
+> > me if I'll make silly mistakes...
+> >
+> > I was expecting QEMU provides both the global view (address_space_memory),
+> > and the per-vcpu view.
+>
+> My hypothesis is that separate views for each cpu doesn't make sense.
+>
+> In the true symmetric multiprocessor case, which is the vast majority of everything we
+> emulate in QEMU, each processor has the exact same view(s).
 
+This is not the case in general. Some CPUs have per-CPU
+devices which show up only for that CPU. Examples include
+the A9's per-CPU peripherals (which we don't currently model
+that way, but perhaps ought to) and some stuff in one of the
+M-profile boards.
 
-> diff --git a/meson.build b/meson.build
-> index 3d73873356..6bd1d897e3 100644
-> --- a/meson.build
-> +++ b/meson.build
+TCG registers its CPU listener with every AS because
+the information that TCG is caching that is stale is
+something it cares about for every AS the CPU has to
+deal with.
 
+HVF and KVM register their CPU listener only with
+address_space_memory because the information that those
+accelerators are caching is the details of RAM layout in
+the system, which in both cases the kernel imposes
+the limitation of being the same for every CPU.
+Similarly in target/arm's kvm_arm_register_device()
+we listen on address_space_memory because the thing
+we're listening for is "where has this device's
+MemoryRegion been put", and again the kernel imposes
+the requirement that the GIC (or whatever) is at the
+same location for all CPUs.
 
-> +if get_option('mshv').allowed() and host_os == 'linux'
-> +  if get_option('mshv').enabled() and host_machine.cpu() != 'x86_64'
-> +    error('mshv accelerator requires x64_64 host')
+The "global" view of address_space_memory and
+system_memory is a bit theoretically dubious because
+there's nothing saying all CPUs have to have some
+underlying mostly-the-same view of things. But in
+practice almost all systems do, plus KVM and HVF impose
+that world-model, so it's easier to retain this than try
+to think about how we would eliminate it.
 
-Either:
+> In the rare asymmetric multiprocessor case, of which we have a few, we have a couple of
+> clusters and within each cluster all cpus share the exact same view(s).
+>
+> Thus access to address spaces on a per-cpu basis makes sense, but allocating them on a
+> per-cpu basis does not.
 
-        error('MSHV accelerator requires x86_64 host')
+Also, in general, per-CPU address spaces fits the rest of
+how we model memory-transaction-capable devices. The
+device (e.g. a DMA controller or similar) has a QOM
+property which takes a pointer to a MemoryRegion describing
+the view of the world that that device has; it then internally
+creates an AddressSpace whose purpose is to provide the
+APIs for making memory transactions into that MemoryRegion.
 
-Or simply:
+cpu_address_space_init() is just some convenience wrapping
+around that.
 
-        error('MSHV accelerator requires 64-bit host')
-
-> +  endif
-> +  accelerators += 'CONFIG_MSHV'
-> +endif
+thanks
+-- PMM
 
