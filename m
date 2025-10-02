@@ -2,97 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C57BB4AD9
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 19:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C01BB4B87
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 19:42:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4Mw2-0001Jk-NX; Thu, 02 Oct 2025 13:17:44 -0400
+	id 1v4NGz-00033t-Td; Thu, 02 Oct 2025 13:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v4Mvm-0001CE-8V
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:17:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v4MvY-0005tr-Ar
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:17:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759425424;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GCIypnBTJ7P0E1vJ2ddzLDxhkc/ok8N9/TfPhtZrrjQ=;
- b=JljbVaDGNJzR2WF623S5mb/Owy4zRNUcC33ygaPcesihvnwB+YcXEIVCjbsQFQYNhYglYS
- Yp991jU8V+GK26Gj0SH0E1s7VZRIYUgd60NtY3FT19UsDyJSWCfJzZGq5MPgY2XCl8mC/h
- s6GDDL5RWaYo8v4hgQZiZYAgXO7lu5Y=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-_dStS86TMqKTmoVtG_NsTg-1; Thu, 02 Oct 2025 13:17:03 -0400
-X-MC-Unique: _dStS86TMqKTmoVtG_NsTg-1
-X-Mimecast-MFC-AGG-ID: _dStS86TMqKTmoVtG_NsTg_1759425422
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b4544f46392so119496166b.0
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 10:17:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4NGo-0002zj-38
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:39:14 -0400
+Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4NGd-0003oY-HC
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 13:39:09 -0400
+Received: by mail-wm1-x341.google.com with SMTP id
+ 5b1f17b1804b1-46e4f2696bdso16284295e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 10:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759426730; x=1760031530; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+V2wPuGfCio4QUFBc5XwSn82EF99kzO0rV5pMclAj8k=;
+ b=I2grl3zJ8szvU4iwcLU3fAeVOtPrUzoVBzSyjCkieVPTmFMgrfXK1VBe2usyV4+uZL
+ XS3hjB/TixcoA3GMdraJTEROTCi3WezMUKik8WztsQJ5KhFOpLr/6vNxxioyhbc0yr8P
+ O3nMhfvAP03OwvQWVxThQWI+SD3mZzKmynLt0k9f7b8/GjuBJSItQAbkTS59vLx0Z2pn
+ EzI101IzlrbqvPmf1LV0TLxCdCOxYF8b0qcrE3T+KlcIXhcRClT9YpGumdCe+D9TecHa
+ PGBfVKKaPfr+Iybjry4bNMAefjSaIZ5HTDnRIveX+vFin/DJ/OoAAyOvxuAY0/ERIBXQ
+ SYiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759425421; x=1760030221;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GCIypnBTJ7P0E1vJ2ddzLDxhkc/ok8N9/TfPhtZrrjQ=;
- b=LhqE0XuYzXb0v4cn2DV46zuHihgRpj+g30Uu+MZ6qZThmUFVxE27X5F18hnz8lBop2
- rML4rfY2+kKjcEZ51veGsGUsALn7EVBf4IH8pSxC/7ZktdmES2mNMWpkJl18t8Ykhjfk
- soCB3kARJaBRBVtSa0KpxzUkmSZXsOuudHFM+ywIH1B+ECGP7Rk3k2Y8XmWDHJRS4lB/
- kp4B9EQCe6AyfpQ6PXJMo/vnonOe5Ci21MYUn+gh6AzOztuOx5r+BjdMsVk628GG+XBf
- LKySpEYz58KERhnDnNd0/WlsA6CpAk1z6Hv6z7VqDgJaIWmOwz997jR+xPQuRqml6Wud
- 43PA==
-X-Gm-Message-State: AOJu0Yx5QymE2pqwUK+WwG6HvjkRIFjlqbR/1jj9KW+EozXphZrg5fIb
- 64V/Iga/1bDu2EXhFE69i8dpJmFYderAikilnMW3ALBIp659SE9t/67uO+oHCBN6TWxCuM1eqIr
- jRhk1tS3uUFcDuZZ/1YYAYvflrh7LwED5a/4vCIZpZ5QCf852xD7o9tfN0p9bVR0XgKM+vGeUpe
- mzmRIGvVXjMrDEG1ddl0w8JGl2DrmoPzt8gNOesrEt
-X-Gm-Gg: ASbGncs5KaqO344e++tIfgNzOp9RmGpAtJcqkcOoQC/K2p5ZlPDvfU3t9BFHVdCzEE4
- bfQgKJ9kGma2Hbu8RcIaLT/vYOugYmreEH6G6dO242TZPh0IZJ5vpEuXdfbzrDpHle2S1WWem3e
- 4K70wfsTaPN0a7PZrApaZVV2FJ1i/VOLxIAstuSKPmiWJwvwCPAf1ghFcnpYamVCItQdAgPxmE9
- pACG2pyyPQWZs1//YZGHUkUOMpEgjft6qN5rR/rIaK9liTkGAP6UVexmpEqPCEVpnRj6gSXQNnU
- cxELBFL90R1IKYoVcw3UeEvXkUoOORgnQ9CAcsMJCsd5L5wujhljerJJlt9o/z5dzmRjZjf1hCk
- +2/mnrdjFbNefbaJY/OwcqYBJIelzqbIIUuNvWtTUmphNaRI0
-X-Received: by 2002:a17:906:4fd1:b0:b3d:9c3c:9ab6 with SMTP id
- a640c23a62f3a-b49c20531bbmr23355366b.29.1759425421144; 
- Thu, 02 Oct 2025 10:17:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpY7XUM8SR5e1qXFw/6oaxaEAP7KUtjjNkgbwfTEcQxGl5AS9GINDNmuD5bEZTkD71WSV9FQ==
-X-Received: by 2002:a17:906:4fd1:b0:b3d:9c3c:9ab6 with SMTP id
- a640c23a62f3a-b49c20531bbmr23352366b.29.1759425420721; 
- Thu, 02 Oct 2025 10:17:00 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.91.106])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b486a173a5dsm232992166b.85.2025.10.02.10.16.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 10:16:57 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, magnus.kulke@linux.microsoft.com, wei.liu@kernel.org,
- Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PATCH 27/27] MAINTAINERS: Add maintainers for mshv accelerator
-Date: Thu,  2 Oct 2025 19:15:36 +0200
-Message-ID: <20251002171536.1460049-28-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251002171536.1460049-1-pbonzini@redhat.com>
-References: <20251002171536.1460049-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1759426730; x=1760031530;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+V2wPuGfCio4QUFBc5XwSn82EF99kzO0rV5pMclAj8k=;
+ b=ajWmUGVf0J8x6OCboPGjB0/20/FUJ/6i6XoAWewrFHjBAfY8NmglG1bl3FXJdQksyh
+ SzZbOVAkvyBf4cpYsNYtSb2Wps0e5H0jTkGoby+gCixUI3ai7NyVjgtI7ZMa/X5jY0nr
+ dn1330YZ1LMFthTiMH6y/ecCzHHUMAYvdpzMacQrsIT4uFLbTCT7ArYaUbIV+9dSiGS6
+ Tssn0KGiz+cNBwO3NVZGBgrNsldKdBbDMuuMvLutqtk2751OHLqvtbeywz8rW6Nhs8b/
+ d3JkH7W0QbK1IjtEZnfvklWp5bG4RlTN1tpXVD7rwmwil31vVvzvLGOqTRrCmOtTW5nj
+ cNBQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU/IUoYb4vBRthivN0xRAw2BDjrC4C1jzd19F4mg0aqa9SiYn3v/O97nN6dv0yjd1JjnRAJ63pwdj9T@nongnu.org
+X-Gm-Message-State: AOJu0Yyvv2xwGOnT7FajPeCFOC1bTDyYFCqmIVec2p+13PblAhn58QLj
+ CUv6dD5+J8L6lcQe89vhRmSaRMBnUAvgMdDmCjk41ypI5jZzvLTii364y9A5kPYdaOc=
+X-Gm-Gg: ASbGnctCtlRgyYTf/mC3fHKnkoIdLcGs3j/bbZxOtSI+6mymXoqDInrq4yGVk7khtco
+ fx+eGqGXG0L+0Ph9hCGqDPACLmnuosxrYscH24PD+cXudFguM0jVmVSPyQFEY41ws9a708V/BhX
+ monIk7LncbHANMrOMeng1Ki9Y+ffE+HPr4NACWb82VSnE0oattdms9fNOJ47tkg5fi4BfBI+ysy
+ g5wK2gDNiyUmFRPRB8bHxirNAv9CEIxPznDjMB61I5StsUdRr0hYqGXXyQqWdBFrUaJErsNNjXz
+ SN3oV4PIa3GOh4WFMCkX/B5yir7ShK4gP3Q2X9TxXsaXsTAWMEH9LyQakQKQeZlD4Ta62sn55nK
+ XLg86gQDQTqWARaUjAylemns6KlevG9Znzpp/VILKj+eWlvgJEu4ThMgGC8oyMi8dO9lZlCop5j
+ HgOdbbpIBeDxFV7yoacw==
+X-Google-Smtp-Source: AGHT+IEzLXvjBFsflezIs0tpM1/mJV+Aj4RSV5J6Itd4MVihCEh67jQ9oba/kdfrPT1zTJ0LBEFfLg==
+X-Received: by 2002:a05:6000:2203:b0:40f:288e:9990 with SMTP id
+ ffacd0b85a97d-425671abae4mr77123f8f.48.1759426730275; 
+ Thu, 02 Oct 2025 10:38:50 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4255d8e97fbsm4401347f8f.34.2025.10.02.10.38.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Oct 2025 10:38:49 -0700 (PDT)
+Message-ID: <cb828163-d23f-4a1c-b312-4ff24c4e02f1@linaro.org>
+Date: Thu, 2 Oct 2025 19:38:48 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/18] hw: Remove unnecessary 'system/ram_addr.h' header
+Content-Language: en-US
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jagannathan Raman <jag.raman@oracle.com>, qemu-ppc@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Jason Herne <jjherne@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, kvm@vger.kernel.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Eric Farman <farman@linux.ibm.com>,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ David Hildenbrand <david@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20251001175448.18933-1-philmd@linaro.org>
+ <20251001175448.18933-7-philmd@linaro.org>
+ <a8be844e-5f9d-478a-a96e-b76bfed9c764@linux.ibm.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <a8be844e-5f9d-478a-a96e-b76bfed9c764@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::341;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x341.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.451,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,46 +115,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+On 2/10/25 17:59, Harsh Prateek Bora wrote:
+> 
+> 
+> On 10/1/25 23:24, Philippe Mathieu-Daudé wrote:
+>> None of these files require definition exposed by "system/ram_addr.h",
+>> remove its inclusion.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   hw/ppc/spapr.c                    | 1 -
+>>   hw/ppc/spapr_caps.c               | 1 -
+>>   hw/ppc/spapr_pci.c                | 1 -
+>>   hw/remote/memory.c                | 1 -
+>>   hw/remote/proxy-memory-listener.c | 1 -
+>>   hw/s390x/s390-virtio-ccw.c        | 1 -
+>>   hw/vfio/spapr.c                   | 1 -
+>>   hw/virtio/virtio-mem.c            | 1 -
+>>   8 files changed, 8 deletions(-)
+>>
+>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>> index 82fb23beaa8..97ab6bebd25 100644
+>> --- a/hw/ppc/spapr.c
+>> +++ b/hw/ppc/spapr.c
+>> @@ -77,7 +77,6 @@
+>>   #include "hw/virtio/virtio-scsi.h"
+>>   #include "hw/virtio/vhost-scsi-common.h"
+>> -#include "system/ram_addr.h"
+>>   #include "system/confidential-guest-support.h"
+>>   #include "hw/usb.h"
+>>   #include "qemu/config-file.h"
+>> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+>> index f2f5722d8ad..0f94c192fd4 100644
+>> --- a/hw/ppc/spapr_caps.c
+>> +++ b/hw/ppc/spapr_caps.c
+>> @@ -27,7 +27,6 @@
+>>   #include "qapi/error.h"
+>>   #include "qapi/visitor.h"
+>>   #include "system/hw_accel.h"
+>> -#include "system/ram_addr.h"
+>>   #include "target/ppc/cpu.h"
+>>   #include "target/ppc/mmu-hash64.h"
+>>   #include "cpu-models.h"
+>> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+>> index 1ac1185825e..f9095552e86 100644
+>> --- a/hw/ppc/spapr_pci.c
+>> +++ b/hw/ppc/spapr_pci.c
+>> @@ -34,7 +34,6 @@
+>>   #include "hw/pci/pci_host.h"
+>>   #include "hw/ppc/spapr.h"
+>>   #include "hw/pci-host/spapr.h"
+>> -#include "system/ram_addr.h"
+>>   #include <libfdt.h>
+>>   #include "trace.h"
+>>   #include "qemu/error-report.h"
+> 
+> I am seeing error while applying patch series:
+> 
+> harshpb:patches$ git log --oneline -n1
+> 29b77c1a2d (HEAD -> review-20251002, upstream/master, master) Merge tag 
+> 'rust-ci-pull-request' of https://gitlab.com/marcandre.lureau/qemu into 
+> staging
+> harshpb:patches$ git am ./ 
+> v2_20251001_philmd_system_physmem_extract_api_out_of_system_ram_addr_h_header.mbx
+> 
+> 
+> Applying: system/ram_addr: Remove unnecessary 'exec/cpu-common.h' header
+> Applying: accel/kvm: Include missing 'exec/target_page.h' header
+> Applying: hw/s390x/s390-stattrib: Include missing 'exec/target_page.h' 
+> header
+> Applying: hw/vfio/listener: Include missing 'exec/target_page.h' header
+> Applying: target/arm/tcg/mte: Include missing 'exec/target_page.h' header
+> Applying: hw: Remove unnecessary 'system/ram_addr.h' header
+> Applying: system/physmem: Un-inline cpu_physical_memory_get_dirty_flag()
+> Applying: system/physmem: Un-inline cpu_physical_memory_is_clean()
+> Applying: system/physmem: Un-inline 
+> cpu_physical_memory_range_includes_clean()
+> Applying: system/physmem: Un-inline cpu_physical_memory_set_dirty_flag()
+> Applying: system/physmem: Un-inline cpu_physical_memory_set_dirty_range()
+> Applying: system/physmem: Remove _WIN32 #ifdef'ry
+> Applying: system/physmem: Un-inline 
+> cpu_physical_memory_set_dirty_lebitmap()
+> Applying: system/physmem: Un-inline 
+> cpu_physical_memory_dirty_bits_cleared()
+> Applying: system/physmem: Reduce cpu_physical_memory_clear_dirty_range() 
+> scope
+> Applying: system/physmem: Reduce cpu_physical_memory_sync_dirty_bitmap() 
+> scope
+> Applying: system/physmem: Drop 'cpu_' prefix in Physical Memory API
+> error: patch failed: hw/vfio/container.c:255
+> error: hw/vfio/container.c: patch does not apply
+> Patch failed at 0017 system/physmem: Drop 'cpu_' prefix in Physical 
+> Memory API
+> hint: Use 'git am --show-current-patch=diff' to see the failed patch
+> When you have resolved this problem, run "git am --continue".
+> If you prefer to skip this patch, run "git am --skip" instead.
+> To restore the original branch and stop patching, run "git am --abort".
+> harshpb:patches$
+> 
+> However, changes for ppc/spapr looks fine to me.
 
-Adding Magnus Kulke and Wei Liu to the maintainers file for the
-respective folders/files.
+Sorry, I forgot the 'Based-on' tag on v1 and added it separately:
+https://lore.kernel.org/qemu-devel/ef4baceb-671f-4afe-8a41-cafb89ea1707@linaro.org/
+then forgot to add it again on v2 :/
 
-Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250916164847.77883-28-magnuskulke@linux.microsoft.com
-[Rename "MSHV CPUs" to mention x86. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- MAINTAINERS | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+> 
+> Thanks
+> Harsh
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 406cef88f0c..645344c4faf 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -551,6 +551,21 @@ F: target/i386/whpx/
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
- 
-+MSHV
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: accel/mshv/
-+F: include/system/mshv.h
-+F: include/hw/hyperv/hvgdk*.h
-+F: include/hw/hyperv/hvhdk*.h
-+
-+X86 MSHV CPUs
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: target/i386/mshv/
-+
- X86 Instruction Emulator
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
--- 
-2.51.0
 
 
