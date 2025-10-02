@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF87FBB2586
-	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 04:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84180BB2589
+	for <lists+qemu-devel@lfdr.de>; Thu, 02 Oct 2025 04:08:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v48hB-0006nX-Ff; Wed, 01 Oct 2025 22:05:25 -0400
+	id 1v48h7-0006nT-UX; Wed, 01 Oct 2025 22:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v48h3-0006nK-Pw
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:18 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1v48h1-0006m7-Lv
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:15 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v48gs-0004fV-Dk
- for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:16 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-269639879c3so3985655ad.2
- for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 19:04:57 -0700 (PDT)
+ id 1v48gp-0004gH-9N
+ for qemu-devel@nongnu.org; Wed, 01 Oct 2025 22:05:15 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b609a32a9b6so298886a12.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Oct 2025 19:04:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759370694; x=1759975494; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FivvktU0jbEhjj/HTdgr6u5hVHc6MYuV57Fgxg1uJks=;
- b=H5yROKi1bk3lWOM5wTY+t/kNm/LG3GtzUh6rLTYeF/2kxMXWPoHMVVKOhdLCbv79cV
- PH7s/o63oHv+TG4+LRpge4e2IuB9Hxr71f4YFKfKFvmPLSmTV13BVhNRN2WcfuefjOBU
- E8+1tekgoEZjyhKEgIyyBNhzz5gOZKan0GHT3/JNS2E/oYKC4pgwd+mngbynzK+KLkzM
- zVlsVndvz0Gz0+8cZrJJzgGc5Klv4sTkhxNTM6S+P20KGZR8xnSXK5VIa1q1k/620TmE
- pj4wEDey8nI0OkwHfbN9TS5Jd9hrFO3TMaA7FH1rI/nnxgh2qVo3Pocx3mUbDEoGhDq0
- Br3w==
+ d=linaro.org; s=google; t=1759370696; x=1759975496; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RuyHjwseD2/webFaCEvZMus3te6QjmI6epiQChOk2KM=;
+ b=kN57Vc2OgniOm7M0ExI1GQ+jP/KsN+Uo3lmTFlZ0JWkFmjj6mcJLpDO9K8Hz5QfVVQ
+ KX+lqWGTrIJll8JugrF/uqRwe/M8Ol4qb1Wn3Xz17V7pn/EqSIHW+Ukby8tf+626joHg
+ 2TuuH9hp5A5wVGUcjJgl2WR3wN8fW03uPmCwoYznjQ/C39cSXJekDq0UtOtraar6F2TA
+ QpxGf3Yq8M5HzUpe0ZEPOJXo4yfXiBUwCWrbUUgnCVruQh/txaoqCO8/9JatJa1eThIX
+ SnsncZp0Icot1js0mz/sl36ZTTabR41TSBTq1Fhu1GCIxUnpYDXzdo5DbyOFI9xQOV51
+ R/dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759370694; x=1759975494;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FivvktU0jbEhjj/HTdgr6u5hVHc6MYuV57Fgxg1uJks=;
- b=YKtGHgsh1GAHvJYxe6m+n7nkxtsda7rI+3L0Jjngt/5SLsCxY2THMMiev/zCxWFzBu
- GIDXz9WmfQCiGyFLKrcC25lXFT+9Pdda+tSogAm4JZDgKXNGlhGARjCngn//NWiZgIB1
- EPHM1CU/IsxV2405vfMGKyQ3BLqd+GP8k1co5kc/bId8VUmRYkc9aKWKFEvrXj2HcdA+
- zs19VBz9OLOnjVPmCJkJiQm4mdWD0iPdrWbJncaSOqFwVNa3zkmAdMfMUbvDBXbVoMOB
- IJc1TvNhqhoF6Q9wdGONQvuWmnlQ5O4Sn+okwWTZoPU/v9a+AVgJ4//ItuEfZ4s5uPDN
- vM/w==
-X-Gm-Message-State: AOJu0YwNEqZDHlkmKJVsR0rZh53MZel6W0TOLsuCysuT5E0TgZSW1mOY
- PxLBjKUZVhHiV4tY+A3u53X5zcB8tdOkTO69QLnsRW9mwNjZvGkiJdtqVXOHv43adoqzRjdfMqb
- MtV7l
-X-Gm-Gg: ASbGncspMUOjnBpcCYleWH9b4rSWXpt6pYVaZ4+IJzkL0HFIeRlBPwnitKUQOmD1yXl
- RE4CfGZfsMDefMFgYkYjas6CuV2g/ks9liX9KB0HM48L4s4KYPwVGoF/PdErWa01ZyeJOF7DTls
- eo8IVBkw9tCvO78UmhBEwemN0KBIeyydJbIV/xDQ08zY1cpnCLsMscVZ3N3PJlHImcH+SZfazxk
- oW3RE0vYmXa9DO5gq/pZnOesIROkVUb9BI5YLm8HslZR9csVIqtuxQvIfze4t4I+6boDMyygGC9
- s3trG6HRYquiznrOPp6U8vVyQNCdiCFuSBURrDBWak/hEgNaHSg9QWH2SmVGKtZsrt15g1vtHq7
- 5ZRtRg1yaZFncTnuRr58dvu5UjJ2Zy1/YKIHA5HRJ/oz1CS/KLBh+uK0X
-X-Google-Smtp-Source: AGHT+IGVgOgOR4ddg0P5T4pwf/rinS24E0pt8DH8l7WBbsNeh5GVp10Utv8yBtG5q5o2P5/L+Lx6tQ==
-X-Received: by 2002:a17:902:82c6:b0:269:a8a8:4029 with SMTP id
- d9443c01a7336-28e7f16792bmr55380585ad.5.1759370694018; 
- Wed, 01 Oct 2025 19:04:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759370696; x=1759975496;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RuyHjwseD2/webFaCEvZMus3te6QjmI6epiQChOk2KM=;
+ b=CkchOQsFA3Ex+vzkbrkav/URZa0bUXZDZ0Ikk5RT8Jv/+CXvYb78PwO8UDjBR+zj1i
+ wTt2JewaYjV3oF4YreMtxs+GexRQKAtqiym9PJh2acWdIMDkghB6cCzLHVanYJ4Fpb28
+ Fo/NptMTOYe3JvDqP2/ZuAFnNDF/gEdo8QovtfFAG4p4tWvQHIf1Fb25qArPO8qwhGZG
+ Tj8x/fPoeX4OrBpbFmTkeispwBfpYUVFSXhE6aJH4H9u5HzVVc41dhYKPY6wCMeU47Zs
+ +FJd0nCMdP0shaeTTist/6Z8Xa3yCMEpmxqb5bO7tYWnerP1EvOncE32VpiNkbcM2SWL
+ 03pw==
+X-Gm-Message-State: AOJu0YxeUKHqOGIMM/A7Ojmis+ZWhsDGfAwOCDNOR6GV80DEoIC4+OQm
+ ehMZi8iofl5lx4gCvs7s5DL2kjVdyxObpLBST/q8GPwSBlOd4eTS9JQQJtlMsSDE/ivaNj/1+4L
+ 1Jmzb
+X-Gm-Gg: ASbGncsS6LXBYcXIM6WxTr4YS6k0MB/af6YIkwfDsLzOboUPRuSgTIaabHIdCqnd3vU
+ F6Nxfui7IhUMfdDPb6jPfD6ujH8rn2WTxxV6t6T/hCUqo5T3rMW1ss2LdgVVIXOhDka60PD+Y79
+ MMszGzXDjgn5+m+jdD1cgArJUgSKcuteD4LK1j2utmvTP4ea2ViWQOhgsgdGSIJ6wDpuE2hqwho
+ pWmE6KtyZ0Xt6bbwRoyOKn8OKogB0rkTToY4P3LYK06KqvRTUQcZ9/paw9M3+WrcQ+pyOE5ka90
+ /NvYKX1lPniBoUffQoSBaOwDRoLsaP4elKswZzxgZo3pogKzousDjH1cMTalEODgcQU0uN1Svkw
+ cRuI/YvektNOgR9w3zSZ8zw6dnvTo9ReTXk5eF4Z9GXlSCFzzgCJu2ODq
+X-Google-Smtp-Source: AGHT+IHPxQ4/j6ljkaWyQ75GYLD3b1nqQ5q6TOdMh5Xzn06EsW6kPtx+D4u57o7FuVamTZhA71vUFg==
+X-Received: by 2002:a17:903:320a:b0:267:99bf:6724 with SMTP id
+ d9443c01a7336-28e7f330032mr63742645ad.31.1759370696370; 
+ Wed, 01 Oct 2025 19:04:56 -0700 (PDT)
 Received: from gromero0.. ([186.215.59.111]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1d95bdsm9476735ad.119.2025.10.01.19.04.51
+ d9443c01a7336-28e8d1d95bdsm9476735ad.119.2025.10.01.19.04.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Oct 2025 19:04:53 -0700 (PDT)
+ Wed, 01 Oct 2025 19:04:55 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
  berrange@redhat.com
 Cc: qemu-arm@nongnu.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v5 0/9] tests/functional: Adapt reverse_debugging to run w/o
- Avocado
-Date: Thu,  2 Oct 2025 02:04:23 +0000
-Message-Id: <20251002020432.54443-1-gustavo.romero@linaro.org>
+Subject: [PATCH v5 1/9] tests/functional: Re-activate the check-venv target
+Date: Thu,  2 Oct 2025 02:04:24 +0000
+Message-Id: <20251002020432.54443-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251002020432.54443-1-gustavo.romero@linaro.org>
+References: <20251002020432.54443-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,120 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The goal of this series is to remove Avocado as a dependency for running
-the reverse_debugging functional test.
+Add check-venv target as a dependency for the functional tests. This
+causes Python modules listed in pythondeps.toml, under the testdeps
+group, to be installed when 'make check-functional{-<ARCH>}' is executed
+to prepare and run the functional tests.
 
-After several rounds of discussions about v1 and v2, and experiments
-done by Daniel and Thomas (thanks for all the experiments and comments
-so far), I've taken a new approach and moved away from using a runner
-for GDB. The changes, I believe, are much simpler now.
+Suggested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+---
+ tests/Makefile.include | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This new series uses GDB's machine interface (MI) via the pygdbmi module
-(thanks Manos and Peter for the inputs). pygdbmi provides a controller
-to start GDB and communicate with it through MI, so there is no longer a
-risk of version clashes between libpython in GDB and Python modules in
-the pyvenv, as it could, in theory, happen when GDB executes the test
-script via -x option.
-
-Also, as Daniel pointed out, the overall test output is pretty bad and
-currently does not allow one to easily follow the sequence of GDB
-commands used in the test. I took this opportunity to improve the output
-and it now prints the sequence in a format that can be copied and pasted
-directly into GDB.
-
-The TAP protocol is respected, and Meson correctly displays GDB's test
-output in testlog-thorough.txt.
-
-Because the pygdbmi "shim" is so thin, I had to write a trivial GDB
-class around it to easily capture and print the payloads returned by its
-write() method. The GDB class allows clean, single-line commands to be
-used in the tests through method chaining, making them easier to follow,
-for example:
-
-pc = gdb.cli("print $pc").get_add()
-
-The test is kept “skipped” for aarch64, ppc64, and x86_64, so it is
-necessary to set QEMU_TEST_FLAKY_TESTS=1 in the test environment to
-effectively run the test on these archs.
-
-On aarch64, the test is flaky, but there is a fix that I’ve tested while
-writing this series [0] that resolves it. On ppc64 and x86_64, the test
-always fails: on ppc64, GDB gets a bogus PC, and on x86_64, the last
-part of the test (reverse-continue) does not hit the last executed PC
-(as it should happen) but instead jumps to the beginning of the code
-(first PC in forward order).
-
-Thus, to effectively run the reverse_debugging test on aarch64:
-
-$ export QEMU_TEST_FLAKY_TESTS=1
-$ make check-functional
-
-or:
-$ make check-functional-aarch64
-
-or even, to run only the reverse_debug test after 'make check-functional':
-$ ./pyvenv/bin/meson test --verbose --no-rebuild -t 1 --setup thorough --suite func-thorough func-aarch64-reverse_debug
-
-
-Cheers,
-Gustavo
-
-v1:
-https://patchew.org/QEMU/20250819143916.4138035-1-gustavo.romero@linaro.org/
-
-v2:
-https://patchew.org/QEMU/20250904154640.52687-1-gustavo.romero@linaro.org/
-
-v3:
-https://patchew.org/QEMU/20250922054351.14289-1-gustavo.romero@linaro.org/
-
-v4:
-https://patchew.org/QEMU/20250926051542.104432-1-gustavo.romero@linaro.org/
-
-v5:
-- Fixed installation of "pygdbmi" in the test env for
-  "make check-functional-<ARCH>" (thuth)
-- Increased GDB command timeout from 4 to 32 seconds (thuth)
-- Reverted use of get_pc() in reverse_debugging.py (thuth)
-- Removed $gdb_arches from configure and checked if GDB supports the
-  arch to be tested in reverse_debugging.py instead. If the arch is not
-  supported by GDB the test is skipped (thuth)
-- Corrected grammar in GDB timeout message (thuth)
-- Skipped test if "pygdbmi" is not installed in the test environment
-  (thuth, danpb)
-- Improved error handling in try: block when GDB commands fail, time out,
-  or when the test fails, so there is no "double exception"
-
-
-Daniel P. Berrangé (2):
-  tests/functional: replace avocado process with subprocess
-  tests/functional: drop datadrainer class in reverse debugging
-
-Gustavo Romero (7):
-  tests/functional: Re-activate the check-venv target
-  python: Install pygdbmi in meson's venv
-  tests/functional: Provide GDB to the functional tests
-  tests/functional: Add GDB class
-  tests/functional: Add decorator to skip test on missing env vars
-  tests/functional: Adapt reverse_debugging to run w/o Avocado
-  tests/functional: Adapt arches to reverse_debugging w/o Avocado
-
- configure                                     |   2 +
- meson_options.txt                             |   2 +
- pythondeps.toml                               |   1 +
- scripts/meson-buildoptions.sh                 |   2 +
- tests/Makefile.include                        |   4 +-
- .../functional/aarch64/test_reverse_debug.py  |  11 +-
- tests/functional/meson.build                  |   6 +
- tests/functional/ppc64/test_reverse_debug.py  |  15 +-
- tests/functional/qemu_test/__init__.py        |   4 +-
- tests/functional/qemu_test/decorators.py      |  18 +++
- tests/functional/qemu_test/gdb.py             |  88 ++++++++++
- tests/functional/reverse_debugging.py         | 151 +++++++++---------
- tests/functional/x86_64/test_reverse_debug.py |  15 +-
- 13 files changed, 218 insertions(+), 101 deletions(-)
- create mode 100644 tests/functional/qemu_test/gdb.py
-
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index 62a4fc8ed3..e47ef4d45c 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -105,11 +105,11 @@ check-venv: $(TESTS_VENV_TOKEN)
+ 
+ FUNCTIONAL_TARGETS=$(patsubst %-softmmu,check-functional-%, $(filter %-softmmu,$(TARGETS)))
+ .PHONY: $(FUNCTIONAL_TARGETS)
+-$(FUNCTIONAL_TARGETS):
++$(FUNCTIONAL_TARGETS): check-venv
+ 	@$(MAKE) SPEED=thorough $(subst -functional,-func,$@)
+ 
+ .PHONY: check-functional
+-check-functional:
++check-functional: check-venv
+ 	@$(NINJA) precache-functional
+ 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
+ 
 -- 
 2.34.1
 
