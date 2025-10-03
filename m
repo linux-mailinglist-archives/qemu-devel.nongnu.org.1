@@ -2,56 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03363BB5EDE
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 06:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01711BB62DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 09:33:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4XbT-0004Hb-7p; Fri, 03 Oct 2025 00:41:11 -0400
+	id 1v4aGl-0004kD-EI; Fri, 03 Oct 2025 03:31:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1v4XbN-0004GX-7P
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 00:41:05 -0400
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ id 1v4aGc-0004jf-69
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 03:31:50 -0400
+Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1v4XbF-00064y-DI
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 00:41:04 -0400
+ id 1v4aGP-0003ww-IG
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 03:31:48 -0400
 Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 9D40D45805
- for <qemu-devel@nongnu.org>; Fri,  3 Oct 2025 04:40:45 +0000 (UTC)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id A212C3F902
+ for <qemu-devel@nongnu.org>; Fri,  3 Oct 2025 07:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1759466445;
- bh=SPaUl/vFtGiA5cEo1lAj+yIcM2cfNTmVFuW3WGeZqXE=;
+ s=20210803; t=1759476690;
+ bh=nSpc6DUlH9fjuJKz0fybhzBmVXx0Ub1c8qYAEyvbu44=;
  h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
  Message-Id:Subject;
- b=rn0SREHCW/EgXDCjoV7OXpKHJVlHs4kwYoNoas9ctLLCEO+vqaVKTeEwnX9Y8gY6m
- M4fAq4okcomUTrIsn19YAHcFj87mlZTrJHBLzuMHMVOKS8su0DadCm/BmgY7Zny6nI
- I5pEFJ9T8lz8PNVQLvJcOmGrByJILcQ2ePjBziLe5EK+fFG+MyAR67pn89RqbhGnfc
- 5NJ6lBqZZM2Z0LrNjUVgFBJ6Sqe797Q+MG9fJybUbypms4eSzu7qZ8wyY4dz0atEQS
- 4HmJ3mi+EgptieWfOTW5Lrwh8qNjMyCBkumDepwdFFY/jMtgimxC5yfZpXqJNYTKOo
- JIK7DtIdVbKTw==
+ b=UP6LADLmrDVaAlDQlKaKYAqpnuPXHfVwNro3ZBIx7q/A8Bbe/8OQlMSZmZcnxAG1r
+ 9/9ADTci9jaLrjcjZcLH0UaZb232UEspzszJVdEuwjs7c1xGN6A0Y7QrChtYpSWojH
+ 6Npk7cy6tdBnO/lJBpq9kMxv6R/PMrQZjuqb1elfT6YQC9HDCWmssuYn0ZkKhcZxfk
+ eTZAu40ed6aHH2dlEwKqeRUNCQi+ELedURMttJDFy7Q6u/sV1i0mrK+uZVOqCsN8KV
+ be2TNg+pxQr1Niwgw7QaF3pTf4lQRytByhKxRW69szkPwhq+mygIXA5eBQPLZO++Gp
+ EdOv4KhzsXRVw==
 Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 8C6C67EB16
- for <qemu-devel@nongnu.org>; Fri,  3 Oct 2025 04:40:45 +0000 (UTC)
+ by scripts.lp.internal (Postfix) with ESMTP id 834E17EA3E
+ for <qemu-devel@nongnu.org>; Fri,  3 Oct 2025 07:31:30 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Oct 2025 04:31:47 -0000
-From: Heinrich Schuchardt <2123828@bugs.launchpad.net>
+Date: Fri, 03 Oct 2025 07:19:51 -0000
+From: Valentin Haudiquet <2123828@bugs.launchpad.net>
 To: qemu-devel@nongnu.org
 X-Launchpad-Notification-Type: bug
 X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=gcc-15; component=main;
- status=Invalid; importance=Undecided; assignee=None; 
 X-Launchpad-Bug: distribution=ubuntu; sourcepackage=glibc; component=main;
  status=Invalid; importance=Undecided; assignee=None; 
 X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
  status=Confirmed; importance=Undecided;
+ assignee=valentin.haudiquet@canonical.com; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=gcc-15;
+ component=None; status=New; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=glibc;
+ component=main; status=New; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
+ component=main; status=New; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=gcc-15;
+ component=main; status=New; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=glibc;
+ component=main; status=New; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
+ component=main; status=New; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing;
+ sourcepackage=gcc-15; component=main; status=Invalid; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing;
+ sourcepackage=glibc; component=main; status=Invalid; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Undecided;
  assignee=valentin.haudiquet@canonical.com; 
 X-Launchpad-Bug-Tags: dcr-incoming update-excuse
 X-Launchpad-Bug-Information-Type: Public
@@ -59,9 +78,9 @@ X-Launchpad-Bug-Private: no
 X-Launchpad-Bug-Security-Vulnerability: no
 X-Launchpad-Bug-Commenters: schopin slyon vhaudiquet xypron
 X-Launchpad-Bug-Reporter: =?utf-8?q?Lukas_M=C3=A4rdian_=28slyon=29?=
-X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
+X-Launchpad-Bug-Modifier: Valentin Haudiquet (vhaudiquet)
 References: <175793222278.1250191.6568998309826575823.malonedeb@juju-98d295-prod-launchpad-2>
-Message-Id: <175946590722.2191978.12158934380455868990.malone@juju-98d295-prod-launchpad-3>
+Message-Id: <175947599275.3344131.10829090097163139227.launchpad@juju-98d295-prod-launchpad-2>
 Subject: [Bug 2123828] Re: RISC-V: incorrect emulation of load and store on
  big-endian systems
 X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
@@ -70,9 +89,9 @@ Precedence: bulk
 X-Generated-By: Launchpad (canonical.com);
  Revision="8f35df7956d277b113de8d286a4ca280c7b8ebdf";
  Instance="launchpad-scripts"
-X-Launchpad-Hash: a9509c54162240aad6ae83ade85e5d73a14f22e4
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Launchpad-Hash: 4c45fcb2ef31e3a10f8b569f442b9dc8f6e9c35f
+Received-SPF: pass client-ip=185.125.188.250;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -95,11 +114,44 @@ Reply-To: Bug 2123828 <2123828@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Valentin's patch=20
-target/riscv: Fix endianness swap on compressed instructions
-https://lore.kernel.org/qemu-devel/20250929115543.1648157-1-valentin.haudiq=
-uet@canonical.com/
-has been accepted by the upstream maintainer and included in a pull request.
+** Also affects: glibc (Ubuntu Plucky)
+   Importance: Undecided
+       Status: New
+
+** Also affects: qemu (Ubuntu Plucky)
+   Importance: Undecided
+       Status: New
+
+** Also affects: gcc-15 (Ubuntu Plucky)
+   Importance: Undecided
+       Status: New
+
+** Also affects: glibc (Ubuntu Questing)
+   Importance: Undecided
+       Status: Invalid
+
+** Also affects: qemu (Ubuntu Questing)
+   Importance: Undecided
+     Assignee: Valentin Haudiquet (vhaudiquet)
+       Status: Confirmed
+
+** Also affects: gcc-15 (Ubuntu Questing)
+   Importance: Undecided
+       Status: Invalid
+
+** Also affects: glibc (Ubuntu Noble)
+   Importance: Undecided
+       Status: New
+
+** Also affects: qemu (Ubuntu Noble)
+   Importance: Undecided
+       Status: New
+
+** Also affects: gcc-15 (Ubuntu Noble)
+   Importance: Undecided
+       Status: New
+
+** No longer affects: gcc-15 (Ubuntu)
 
 --=20
 You received this bug notification because you are a member of qemu-
@@ -111,11 +163,27 @@ Title:
 
 Status in QEMU:
   New
-Status in gcc-15 package in Ubuntu:
-  Invalid
 Status in glibc package in Ubuntu:
   Invalid
 Status in qemu package in Ubuntu:
+  Confirmed
+Status in gcc-15 source package in Noble:
+  New
+Status in glibc source package in Noble:
+  New
+Status in qemu source package in Noble:
+  New
+Status in gcc-15 source package in Plucky:
+  New
+Status in glibc source package in Plucky:
+  New
+Status in qemu source package in Plucky:
+  New
+Status in gcc-15 source package in Questing:
+  Invalid
+Status in glibc source package in Questing:
+  Invalid
+Status in qemu source package in Questing:
   Confirmed
 
 Bug description:
