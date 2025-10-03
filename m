@@ -2,90 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD819BB6929
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 13:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4636FBB6ACF
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 14:44:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4eO6-00014H-AG; Fri, 03 Oct 2025 07:55:50 -0400
+	id 1v4f6A-0002yX-DK; Fri, 03 Oct 2025 08:41:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4eNy-00012g-RM
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 07:55:43 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4eNr-00025H-K9
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 07:55:42 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b551350adfaso1965738a12.3
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 04:55:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759492526; x=1760097326; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=p0jbnFaCbMDHIZMwpuk0zUD4EsGJsCI8NfQtsqavRCA=;
- b=GyTylTBF2cVkC4A/J8l+mbHvoDD7usmRJURNTPohVx1RmeSv4ZRhiU1xqosOxR8W/5
- smGz0D9d7VRMxOkR0hrmq39qBGzKCRUr2EFVIZ0vsVPxYmcPNidGN7aOxdyary4tYHc6
- PC2H2Fiww4VuRs7NfF7PdiyORvXAmmvZ6YOStJV2CwrtWAq60GkjOkEkuC9+H1dKU5T6
- iV+VJR6LekrBStB7dwo4FyAf11b6zxJbKYhDIfuHgQjt8CpK6cmIU0OsnLal6tRkNpk3
- DUvSsA9FHd3sW4CcibD39jR6stjRWuOVvRJfigDu6Nx4y3eISEBSYGCqo59oflhX5e2G
- 8PVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759492526; x=1760097326;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p0jbnFaCbMDHIZMwpuk0zUD4EsGJsCI8NfQtsqavRCA=;
- b=Z3C6cuTM7JndHzyyJbbGrpDA/u71FAnYXJ/jBxBBAkuZCZ2CG8zPkAesGgabjmNTFX
- +g7OE8iqV4AQmkltHpFlUyBRdV2mOZSnc/NdKopBlt96Koe0/kvYI0ZLDq+8yarWD0yP
- IuE3eTfh/uU+MubagrnLQ1FSJx6Fmu4H0Eze3f9g7MbJT6Ku8s76sRP/isPw1r2KE4hk
- HsVY4Jsp2dnqpv8WTTtf1YS/NmeLYHG390iyR5K4nk2wB6XtPJOJc9a6CghpP4iBqkUD
- q152Thf0AuKF5zeSl23S/rf8OAJcDd/mfeTKFUKgrxN7hT5wQm48GG1pEF6trjJjgnOr
- 5dXg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXU7T0lDoTOOEtp1OM+2b810HFJ/ddOROT1y1kcjWCcPHbW3xpzH4Q37icokLFfq0oFKtjZy6Qvbmze@nongnu.org
-X-Gm-Message-State: AOJu0YyEUIp3ZCKdDLAiYfGabRh54Hme/G+p7FSwRfaRqNfwBilNwfkL
- dNmsEz2K35MUx//J9Qg62ulfoI5y6pEMYTDHVhZg/FBCYdLSp6LyETa0RW0l2GLPHOnwRCJjW8h
- ZULUrdsU=
-X-Gm-Gg: ASbGnctdSfSvzqKNvD7SMCDhg5SO/3wfN29yP3Kr8oDkc5DVmJzB4DVA3asFobHSIS5
- tmUZM4Iazr4zooSoaGRJaCUMNG2FUOD1Uddt/W2E9a5BRVaMXz++9izj6fnHHIY7z8iVyf8IiUx
- D3GLsVU46X+7d/3Hok3XRXK4nsGZTxs+fMTebxNBOXvEFRgI+eiR0SV21O3OPnzqEuJu1XsoeaD
- ZzA+aP6v94dINnrJcqaOBHW2rUz8ZqH6RQhlMPrAiqrFjW7qE8CTzu1PuBYYCPO70L6omUhMHS6
- hZazJ6G2dqulubsMYp1ElMphYopjT0rWMgwezKbkqikcn0kthwPK+Bangse2aSxujdu+mqBzcqk
- ZbjU5fAiWnpdhw1j3cZ3NRDxSA/8Pnj015eHpaiysdmcOGD5BI68MWFpKtjQZedAfT/xYPMtLKO
- I=
-X-Google-Smtp-Source: AGHT+IFBM+RbXh19ynnCR6F3Z6XF68LguzwXbe68md1ZV7gqEx/+3iWzJNFg2ORGKY6A4Evwv7RN4w==
-X-Received: by 2002:a17:903:3c24:b0:263:b8f:77dd with SMTP id
- d9443c01a7336-28e9a6b1caemr32052015ad.57.1759492526272; 
- Fri, 03 Oct 2025 04:55:26 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d126204sm48679865ad.40.2025.10.03.04.55.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Oct 2025 04:55:25 -0700 (PDT)
-Message-ID: <49533199-6585-4da3-b164-70e1570f9d82@linaro.org>
-Date: Fri, 3 Oct 2025 04:55:24 -0700
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v4f5p-0002vh-NI
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 08:41:02 -0400
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v4f5i-0005wg-D6
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 08:41:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
+ :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=wHNy9GCiqX4OOTvf36QyMM7/U4C8gF101nhL5xFuDhM=; b=Ih0fiqgHxdVSrdx
+ v3uqTN1XkGm8PoTGpkjlJWh2xAISnow1M20OlnvIFKw+/iIT7/78uB1L1PGPykWZT/Q5nS4hYaE8W
+ GusbgoIS4E/zGzo+piloDNdSUR/WiRS4dndMsUuW/7SjZRl1X1yrrXvAbvMN9ZQwI8xo71DhN+Xuj
+ lo=;
+Date: Fri, 3 Oct 2025 14:43:19 +0200
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, richard.henderson@linaro.org, 
+ alistair.francis@wdc.com, palmer@dabbelt.com
+Subject: Re: [PATCH v2 11/33] target/riscv: Fix size of pc, load_[val|res]
+Message-ID: <5awovsvugga5stmdkkfn2sg4ueabgboa3s3dsrkfpfsx2h53pw@j4s3t3zd2mzu>
+References: <20251001073306.28573-1-anjo@rev.ng>
+ <20251001073306.28573-12-anjo@rev.ng>
+ <645487b6-d98a-454b-9e73-aaca6fe9fb3b@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/13] QTest patches for 2025-10-01
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-References: <20251001215254.2863-1-farosas@suse.de>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251001215254.2863-1-farosas@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <645487b6-d98a-454b-9e73-aaca6fe9fb3b@linaro.org>
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,30 +60,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/25 14:52, Fabiano Rosas wrote:
-> The following changes since commit 29b77c1a2db2d796bc3847852a5c8dc2a1e6e83b:
+On 02/10/25, Pierrick Bouvier wrote:
+> On 10/1/25 12:32 AM, Anton Johansson wrote:
+> > Fix to 64 bits in size and as these are mapped to TCG globals, be
+> > careful with host endianness when allocating globals.  Casts are
+> > added to logging expressions to retain the correct size for
+> > TARGET_RISCV32.
+> > 
+> > Signed-off-by: Anton Johansson <anjo@rev.ng>
+> > ---
+> >   target/riscv/cpu.h        |  6 +++---
+> >   target/riscv/cpu.c        |  3 ++-
+> >   target/riscv/cpu_helper.c |  4 ++--
+> >   target/riscv/machine.c    |  6 +++---
+> >   target/riscv/translate.c  | 12 +++++++-----
+> >   5 files changed, 17 insertions(+), 14 deletions(-)
+> I guess you'll update string formats later when really getting rid of
+> target_ulong. For now it's good.
 > 
->    Merge tag 'rust-ci-pull-request' ofhttps://gitlab.com/marcandre.lureau/qemu into staging (2025-09-30 09:29:38 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/farosas/qemu.git tags/qtest-20251001-pull-request
-> 
-> for you to fetch changes up to ca5be51a51fc6b6402838310ae8d0162fc03ecef:
-> 
->    migration-test: strv parameter (2025-10-01 17:09:23 -0300)
-> 
-> ----------------------------------------------------------------
-> Qtest pull request
-> 
-> - Fix for qtest_get_machines QEMU var caching
-> - Fixes for migration-test in --without-default-devices build
-> - Preparation patches for cpr-exec test
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
-
-r~
+Thanks!:) Yes exactly follow up patchsets will get rid of target_ulong,
+the goal of this one is to simply fix the size of CPUArchState and
+retain all behaviour.
 
