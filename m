@@ -2,59 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35E4BB86DC
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 01:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3165BB86E6
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 01:45:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4pRe-0005CQ-AA; Fri, 03 Oct 2025 19:44:14 -0400
+	id 1v4pRj-0005DS-77; Fri, 03 Oct 2025 19:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1v4pRT-0005Bg-SR
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 19:44:03 -0400
+ id 1v4pRa-0005Cn-FH
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 19:44:11 -0400
 Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1v4pRO-0001SP-TE
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 19:44:03 -0400
+ id 1v4pRS-0001RK-Cu
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 19:44:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759535039; x=1791071039;
+ t=1759535042; x=1791071042;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9bqaUsWa3QbbmlyhD5WfWA5wuCxJhAlSjQHGJk486Wc=;
- b=RnacmVi5MV1cZ8QVKVGlbj+cR7LOIWDUBxmdw0AiE4lpB7FTFIIOf3nv
- HrQ4uHvWWHLiWSN7yd2hau9MSxeX5f57lcdlGTtHaIxTobCdvbbw01N/e
- 9uiqkvYXyw32WkQrJiAQ5KHbkrDfNUZzzuvvaPj4Q5NAcbnOguf4R/Jec
- x63Wn42jVH6kvS63UdpGoSde0Pw3iaYOoX9SZcgzaN50cIxt8TyFZIArH
- 2JQRHlFvbcYwdiKhXLOZImxBqjoe15ZjhHz/5BRaxcv2mEH/FXyNnFxyL
- Ett0XpdToyJsjTuWEnjRNCpv2GEBJKOhXzrAiplxSAex7+tXEvYwnffE2 A==;
-X-CSE-ConnectionGUID: trBtUU/OQ4KgVezztA7Etw==
-X-CSE-MsgGUID: FDRJvPvcTIKkwEWtxr+YMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11571"; a="61705042"
-X-IronPort-AV: E=Sophos;i="6.18,314,1751266800"; d="scan'208";a="61705042"
+ bh=GeDdKKWqMTcPJkOapTJo3+W0NvWSQWWmDbYaowesSRw=;
+ b=NV7rIuM2p8xP8X6oUedsBjHZLz33fneVBwyhQ9BzFBDRy9fjj9DULe3E
+ uRbjZjwlRCsYJADOihjoKTwVZi6rp5E7EQj+8mf8W0MC+xYIXSIrgU+9E
+ IFPMefskfwmA5WlEw0/DA0i7xl4h6u73/QklQu3tX9fDslVGaF+hV2xPG
+ OUWVkzbZ+tUmSiudav6DJ+udR8YXZIY8AGAStuD6NTTeTP6Suckx8Vaad
+ IK2tuhJ8tKhFLjqirgcHV9eNTVpNDThGmy2JHhuKarvXUBiJLrMvM3Qj7
+ 0bnNffXtl9sIsRjurdlSl6f+Ak02K3hRSUt6J28jJSbNqsp9hpKTj8aV5 A==;
+X-CSE-ConnectionGUID: zZ1ubLUvSaOtt2nS82/ivA==
+X-CSE-MsgGUID: HX/5lzMIT7WiRbR4ojIEiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11571"; a="61705043"
+X-IronPort-AV: E=Sophos;i="6.18,314,1751266800"; d="scan'208";a="61705043"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Oct 2025 16:43:39 -0700
-X-CSE-ConnectionGUID: MjlfTFPhR/SaDjOskSbbeA==
-X-CSE-MsgGUID: FShdKA38REimdiXGHVQSCg==
+X-CSE-ConnectionGUID: doDc5s1pS+eHHfrgl1IgHA==
+X-CSE-MsgGUID: hPQ1h9d3R/CJz6qzyND+mw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,314,1751266800"; d="scan'208";a="179428155"
+X-IronPort-AV: E=Sophos;i="6.18,314,1751266800"; d="scan'208";a="179428158"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2025 16:43:38 -0700
+ 03 Oct 2025 16:43:39 -0700
 From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 To: qemu-devel@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH v1 5/7] linux-headers: Update vfio.h to include
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v1 6/7] vfio/device: Add support for
  VFIO_DEVICE_FEATURE_DMA_BUF
-Date: Fri,  3 Oct 2025 16:35:58 -0700
-Message-ID: <20251003234138.85820-6-vivek.kasireddy@intel.com>
+Date: Fri,  3 Oct 2025 16:35:59 -0700
+Message-ID: <20251003234138.85820-7-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251003234138.85820-1-vivek.kasireddy@intel.com>
 References: <20251003234138.85820-1-vivek.kasireddy@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.19;
  envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
@@ -81,47 +84,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In order to implement VFIO_DEVICE_FEATURE_DMA_BUF, we first need
+to identify the VFIO region and index the buffer (represented by
+iovec) belongs to and then translate its addresses to offsets
+within that region.
+
+The qemu_ram_block_from_host() API gives us both the region and the
+offset info we need to populate the dma ranges in order to invoke
+this feature.
+
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 ---
- linux-headers/linux/vfio.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ hw/vfio/device.c              | 43 +++++++++++++++++++++++++++++++++++
+ include/hw/vfio/vfio-device.h |  3 +++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
-index 79bf8c0cc5..d2177c9cba 100644
---- a/linux-headers/linux/vfio.h
-+++ b/linux-headers/linux/vfio.h
-@@ -1468,6 +1468,31 @@ struct vfio_device_feature_bus_master {
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 64f8750389..49070929ac 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -21,6 +21,7 @@
+ #include "qemu/osdep.h"
+ #include <sys/ioctl.h>
+ 
++#include "system/ramblock.h"
+ #include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/pci.h"
+ #include "hw/hw.h"
+@@ -592,3 +593,45 @@ static VFIODeviceIOOps vfio_device_io_ops_ioctl = {
+     .region_read = vfio_device_io_region_read,
+     .region_write = vfio_device_io_region_write,
  };
- #define VFIO_DEVICE_FEATURE_BUS_MASTER 10
++
++int vfio_device_create_dmabuf(VFIODevice *vdev,
++                              struct iovec *iov, unsigned int iov_cnt)
++{
++    g_autofree struct vfio_device_feature *feature;
++    struct vfio_device_feature_dma_buf *dma_buf;
++    ram_addr_t offset;
++    RAMBlock *rb;
++    size_t argsz;
++    int i, index;
++
++    argsz = sizeof(*feature) + sizeof (*dma_buf) +
++            sizeof(struct vfio_region_dma_range) * iov_cnt;
++    feature = g_malloc0(argsz);
++    dma_buf = (struct vfio_device_feature_dma_buf *)feature->data;
++
++    for (i = 0; i < iov_cnt; i++) {
++        rcu_read_lock();
++        rb = qemu_ram_block_from_host(iov[i].iov_base, false, &offset);
++        rcu_read_unlock();
++
++        if (!rb) {
++            return -1;
++        }
++
++        index = vfio_get_region_index_from_mr(rb->mr);
++        if (index < 0) {
++            return -1;
++        }
++
++        dma_buf->region_index = index;
++        dma_buf->dma_ranges[i].offset = offset;
++        dma_buf->dma_ranges[i].length = iov[i].iov_len;
++    }
++
++    dma_buf->nr_ranges = iov_cnt;
++    dma_buf->open_flags = O_RDONLY | O_CLOEXEC;
++    feature->argsz = argsz;
++    feature->flags = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_DMA_BUF;
++
++    return ioctl(vdev->fd, VFIO_DEVICE_FEATURE, feature);
++}
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index bdb106c937..74b3c4eef7 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -279,6 +279,9 @@ int vfio_device_get_irq_info(VFIODevice *vbasedev, int index,
+                                 struct vfio_irq_info *info);
  
-+/**
-+ * Upon VFIO_DEVICE_FEATURE_GET create a dma_buf fd for the
-+ * regions selected.
-+ *
-+ * open_flags are the typical flags passed to open(2), eg O_RDWR, O_CLOEXEC,
-+ * etc. offset/length specify a slice of the region to create the dmabuf from.
-+ * nr_ranges is the total number of (P2P DMA) ranges that comprise the dmabuf.
-+ *
-+ * Return: The fd number on success, -1 and errno is set on failure.
-+ */
-+#define VFIO_DEVICE_FEATURE_DMA_BUF 11
+ int vfio_get_region_index_from_mr(MemoryRegion *mr);
 +
-+struct vfio_region_dma_range {
-+	__u64 offset;
-+	__u64 length;
-+};
-+
-+struct vfio_device_feature_dma_buf {
-+	__u32	region_index;
-+	__u32	open_flags;
-+	__u32   flags;
-+	__u32   nr_ranges;
-+	struct vfio_region_dma_range dma_ranges[];
-+};
-+
- /* -------- API for Type1 VFIO IOMMU -------- */
++int vfio_device_create_dmabuf(VFIODevice *vbasedev,
++                              struct iovec *iov, unsigned int iov_cnt);
+ #endif
  
- /**
+ /* Returns 0 on success, or a negative errno. */
 -- 
 2.50.1
 
