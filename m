@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4422DBB7C56
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7FDBB7C6C
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:37:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4jI1-00026P-Bg; Fri, 03 Oct 2025 13:09:53 -0400
+	id 1v4jJv-0004At-I2; Fri, 03 Oct 2025 13:11:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jHt-00025k-Ts
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:09:45 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1v4jIB-0002Ny-2S
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:10:05 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jGh-0006I2-Ki
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:09:45 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-27eceb38eb1so24690475ad.3
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:08:24 -0700 (PDT)
+ id 1v4jGl-0006IT-9o
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:10:02 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b58445361e8so3181213a12.0
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:08:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759511302; x=1760116102; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759511303; x=1760116103; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9Iqxxu0hxAy5QkLRBDQYG0trbPoBDKRADO1DvLD8JqU=;
- b=amtDuLG7nVoHUWFAU3LT+sKc8WswkyvCDUVGW15k2qeMMb1Wb9BpHwib7iE/WWPOQf
- 7y2U0haY5EiSnyxA3fxNTaU+6L2HIS2r/xKz+tZq8qQiNnjVWqd6sf13zW3VCeiBaeNL
- sbIXspsr6nDnl5HJtiEBoc6nchwR04Hgj/HXetBBSXBC4AkINoeI3v3k7r21MjWaNMkj
- CjnD66sq6wQm7qFLETH5/NRzo/2tjh2IRq4/yA8n5Ke7npRdJk0DDugtyyRLXz/kU4nO
- 1VB9P/xyC1N4k4smNBl7PK7DGbRLC0vcbx6+Adk0ZC/gpGV/aLQyJjCaBXPiJf32hDKF
- MKww==
+ bh=ufbIAsiBDfbdyvsFouOClRyF47XEv9v24R99qbCOlJw=;
+ b=mFMXkZe1obcUCpBaC3NVa7ad/S6MBJ7jc8/bQtGY0eTWk7/ZfhKyCrcdkz+YBMhOI0
+ ZPp4jbiVcKcMfTR09uMSyhB1+Dj4KXPu7nXNMO7koN8UGHsM/G0XqGBcJxiT9OJLdk0O
+ yii+lwoFHIuMfEgQ7BsBi37ZUMw+DjHNQf5WrttNfay15/BimNmKxoU94RYQ2+srC7wE
+ UyEAdUjxR408gm5dkzBlj0PzczakgMSSKX330vxnxPbblx2FCfer2tuEMF83oEdOT65i
+ IHY7N4LQ4uByUOxHx30/R2Cl/Bk+aDUyPoLfJQWHtLfzZAhuK26GKNDtdhykPq08/NK3
+ Jffw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759511302; x=1760116102;
+ d=1e100.net; s=20230601; t=1759511303; x=1760116103;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9Iqxxu0hxAy5QkLRBDQYG0trbPoBDKRADO1DvLD8JqU=;
- b=hndW8ZDmWg+uaxiSEA4kfbXXsKLXNFT/Wq5gBU8MZTCvijqIEu6khAiaYxwPV+dbey
- cK2XulEnLv8DKILpZ2zcgigCm02rZpFSOz1dAWhCAHmeR6rDc609aJBYY5iwYOc+MPCd
- IYaiT6qZ/R+vIcG2g21vIMtLSDjvMl08MeDBbywT7MHay9og/pDduzzdXdW8Cow5vOOI
- CqAHAnKJjOiCHMYkNNh3ZmP4lfok6dbpGxXxzNp6udMbTQ4gAGORubz7JDzT1IZ6J7dN
- g9T68awmktF2Ta9Eaui0qeQ2q39BediMLPeUPSyJ1Gb0evxdTU1lxdgcwVBhhOvYkG0p
- jbpw==
-X-Gm-Message-State: AOJu0Yz0rtnCt0Lf+9gfAcVlfv/nAXTmt47/fLPB6sV+i5tAayCVYtaE
- xJyMJvvwzAGzQQt6EElJHfT4fa9rpwum51FgYcMzJrkRGMATGSrxaW8HB4ri6q2N4gyGYWogzTM
- QFa4U9Yo=
-X-Gm-Gg: ASbGnctuGSmA9ABSBUb2u96kly8YzjbTqwJGVh8uzjAW4U2JENZwA7q+ndz3fUev98O
- 7BgJ7VbOR7Z/Own+3DK5FtojtQEcI8OoimtptEekl2bePbkaePrv9xRFmytb9S4B5W+5dAFWPko
- 03YxHeBMhHxh1+Mp2MhmivY48GJ7+U187a10/KhdFRwIeJYkXq2JbuZBlvZzFTNPXxV+DbGF4Ng
- P7rbOV+sHGkmCC7UPnBU73SU/HIfqu6JRjVpsSpdSMSIBvnOkR6cVnz8bD2b7gr63PCzWIZVn89
- iifWR4Rg8YC2DFKhp+XUi3jwWrS/S2xb3UNjgmW0L4jbhPjWeE8eLq+DXfa8idDHp/NrwCzlRrH
- Ai9uBBPpb80TaQQPCfxkAz0179x5MyNnn6zeUV908rk971U+FMROevq7o
-X-Google-Smtp-Source: AGHT+IE+24Q0R6hhEApY7e7jSMh9vQJFwmEnVr+gmxPO9ML8YwEbITlRjGLmJF/8xOYChGn9MzNmEA==
-X-Received: by 2002:a17:902:f68c:b0:25c:b1d6:c41a with SMTP id
- d9443c01a7336-28e9a513489mr41840205ad.11.1759511302469; 
- Fri, 03 Oct 2025 10:08:22 -0700 (PDT)
+ bh=ufbIAsiBDfbdyvsFouOClRyF47XEv9v24R99qbCOlJw=;
+ b=G/hzaSVgbxUF45TTAD1wpLPGDO88guXoWaoroxp6ozT9czqwooHUnYGRkNqY0qNc6B
+ a+shbvyjuFUeirmwBSQKykDvFNYvJgdYp1Pr2lsCJuF3CjtloUulq+kIeinLPzbZ1IWe
+ a/kaWVKCAX45dLPUf5WcH2Ob18bCcDdIFCp4aefxnOy/fM0Z9hN0EwBAGJQ+Ouo6sCyG
+ WbjqCupZ1radC48KkRy3A1dfL0C9U/xCU0QNBFB2XMzW30CK8vaEoMDq0LJ6R1FXpiAH
+ mIkfSVjKb6vkTe9+ek/WGxLWs7S3zRmw8wyUT4TpHrVTvLqjdntEbVDoiiEXAWJpXUQ3
+ RTZw==
+X-Gm-Message-State: AOJu0YyTx/krHNfcWXFZp61ghVK0wps3ztLO1gsm9Y/4b8v/pKClhSqz
+ elEkciFaAta05bnK+O6rSiU21XgzrbDn1Bd0LZQv1uprLjQeemNFVDE3g8gkDYx0C3GOkBpeq+c
+ o2wtPgRE=
+X-Gm-Gg: ASbGnctIJtAmG8bJ/XksJL1ZU2gP8GzznzLNfG40NusH04lPwjTbN4NzRIvI1PDWGPA
+ h7lhYCenBP5YaeRppdF9Sv8bNKM8GrQ090NEIRJ7osd4G+q5qmsW9AcFsO/j/bhflI4Gh8H+vOG
+ wQA30hO/qpaEjlYI7pd7iPSgUDFqv9Nl5q7IMl/ssCDDrEEeBqTA5VZzVakZy8S+fiE0GJRm7V3
+ JHGqLYzEjW/Y41fcNHpKCYIJTbEEV2GIn9lfsJ5Gjk8/ucR9m4ePuuZPX9CE5dZOt04/7Uaae0t
+ FD3sF0Q8c43T8E7XbH6fMg7Or9cHpO4UUD8nNxLmz0UmShTxG5HICChjr+JoyIL2jff5mX7nVs8
+ KCUEd638miYl5Ywy9EBiYf5KxJnJN7Ymvvgf6VmuwFwc1I0S2i7g9ZaA4
+X-Google-Smtp-Source: AGHT+IHpurz7hA0kfG1xy7x3YKfQemf9khC0RS6zpUKQYv3fbbxdCPtZyyIAuNHvPrBdYYLvxRKZeQ==
+X-Received: by 2002:a17:903:190:b0:271:9b0e:54ca with SMTP id
+ d9443c01a7336-28e8d04f303mr106268585ad.13.1759511303313; 
+ Fri, 03 Oct 2025 10:08:23 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d110d86sm55327115ad.6.2025.10.03.10.08.21
+ d9443c01a7336-28e8d110d86sm55327115ad.6.2025.10.03.10.08.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 03 Oct 2025 10:08:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
@@ -67,18 +67,18 @@ To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 23/73] target/arm: Remove unused env argument from
- regime_is_user
-Date: Fri,  3 Oct 2025 10:07:10 -0700
-Message-ID: <20251003170800.997167-24-richard.henderson@linaro.org>
+Subject: [PATCH v6 24/73] target/arm: Convert regime_is_user from switch to
+ table
+Date: Fri,  3 Oct 2025 10:07:11 -0700
+Message-ID: <20251003170800.997167-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251003170800.997167-1-richard.henderson@linaro.org>
 References: <20251003170800.997167-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,113 +105,94 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h |  2 +-
- target/arm/helper.c    |  2 +-
- target/arm/ptw.c       | 16 ++++++++--------
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ target/arm/internals.h       | 17 -----------------
+ target/arm/mmuidx-internal.h | 12 ++++++++++++
+ target/arm/mmuidx.c          |  6 ++++--
+ 3 files changed, 16 insertions(+), 19 deletions(-)
 
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 819ada7a5d..d0d976cbb0 100644
+index d0d976cbb0..c4aef8b50e 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -1032,7 +1032,7 @@ static inline bool regime_is_stage2(ARMMMUIdx mmu_idx)
+@@ -1032,23 +1032,6 @@ static inline bool regime_is_stage2(ARMMMUIdx mmu_idx)
      return mmu_idx == ARMMMUIdx_Stage2 || mmu_idx == ARMMMUIdx_Stage2_S;
  }
  
--static inline bool regime_is_user(CPUARMState *env, ARMMMUIdx mmu_idx)
-+static inline bool regime_is_user(ARMMMUIdx mmu_idx)
+-static inline bool regime_is_user(ARMMMUIdx mmu_idx)
+-{
+-    switch (mmu_idx) {
+-    case ARMMMUIdx_E10_0:
+-    case ARMMMUIdx_E20_0:
+-    case ARMMMUIdx_E30_0:
+-    case ARMMMUIdx_Stage1_E0:
+-    case ARMMMUIdx_MUser:
+-    case ARMMMUIdx_MSUser:
+-    case ARMMMUIdx_MUserNegPri:
+-    case ARMMMUIdx_MSUserNegPri:
+-        return true;
+-    default:
+-        return false;
+-    }
+-}
+-
+ /* Return the SCTLR value which controls this address translation regime */
+ static inline uint64_t regime_sctlr(CPUARMState *env, ARMMMUIdx mmu_idx)
  {
-     switch (mmu_idx) {
-     case ARMMMUIdx_E10_0:
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index b540f4dd36..861fd3c57a 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9444,7 +9444,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-         ds = extract64(tcr, 59, 1);
+diff --git a/target/arm/mmuidx-internal.h b/target/arm/mmuidx-internal.h
+index 41baf1a003..3e51c0f579 100644
+--- a/target/arm/mmuidx-internal.h
++++ b/target/arm/mmuidx-internal.h
+@@ -17,6 +17,7 @@ FIELD(MMUIDXINFO, REL, 3, 2)
+ FIELD(MMUIDXINFO, RELVALID, 5, 1)
+ FIELD(MMUIDXINFO, 2RANGES, 6, 1)
+ FIELD(MMUIDXINFO, PAN, 7, 1)
++FIELD(MMUIDXINFO, USER, 8, 1)
  
-         if (e0pd && cpu_isar_feature(aa64_e0pd, cpu) &&
--            regime_is_user(env, mmu_idx)) {
-+            regime_is_user(mmu_idx)) {
-             epd = true;
-         }
+ extern const uint32_t arm_mmuidx_table[ARM_MMU_IDX_M + 8];
  
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index db51e55cd2..b72c1fc348 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -964,7 +964,7 @@ static int ap_to_rw_prot(CPUARMState *env, ARMMMUIdx mmu_idx,
-                          int ap, int domain_prot)
- {
-    return ap_to_rw_prot_is_user(env, mmu_idx, ap, domain_prot,
--                                regime_is_user(env, mmu_idx));
-+                                regime_is_user(mmu_idx));
+@@ -64,4 +65,15 @@ static inline bool regime_is_pan(ARMMMUIdx idx)
+     return FIELD_EX32(arm_mmuidx_table[idx], MMUIDXINFO, PAN);
  }
  
- /*
-@@ -990,7 +990,7 @@ static int simple_ap_to_rw_prot_is_user(int ap, bool is_user)
++/*
++ * Return true if the exception level associated with this mmu index is 0.
++ * Differs from arm_mmu_idx_to_el(idx) == 0 in that this allows querying
++ * Stage1 and Stage2 mmu indexes.
++ */
++static inline bool regime_is_user(ARMMMUIdx idx)
++{
++    tcg_debug_assert(arm_mmuidx_is_valid(idx));
++    return FIELD_EX32(arm_mmuidx_table[idx], MMUIDXINFO, USER);
++}
++
+ #endif /* TARGET_ARM_MMUIDX_INTERNAL_H */
+diff --git a/target/arm/mmuidx.c b/target/arm/mmuidx.c
+index 98db02b8e5..1c1e062bfe 100644
+--- a/target/arm/mmuidx.c
++++ b/target/arm/mmuidx.c
+@@ -7,10 +7,12 @@
+ #include "mmuidx-internal.h"
  
- static int simple_ap_to_rw_prot(CPUARMState *env, ARMMMUIdx mmu_idx, int ap)
- {
--    return simple_ap_to_rw_prot_is_user(ap, regime_is_user(env, mmu_idx));
-+    return simple_ap_to_rw_prot_is_user(ap, regime_is_user(mmu_idx));
- }
  
- static bool get_phys_addr_v5(CPUARMState *env, S1Translate *ptw,
-@@ -1376,7 +1376,7 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
-                       ARMSecuritySpace in_pa, ARMSecuritySpace out_pa)
- {
-     ARMCPU *cpu = env_archcpu(env);
--    bool is_user = regime_is_user(env, mmu_idx);
-+    bool is_user = regime_is_user(mmu_idx);
-     bool have_wxn;
-     int wxn = 0;
+-#define EL(X)  ((X << R_MMUIDXINFO_EL_SHIFT) | R_MMUIDXINFO_ELVALID_MASK)
++#define EL(X)  ((X << R_MMUIDXINFO_EL_SHIFT) | R_MMUIDXINFO_ELVALID_MASK | \
++                ((X == 0) << R_MMUIDXINFO_USER_SHIFT))
+ #define REL(X) ((X << R_MMUIDXINFO_REL_SHIFT) | R_MMUIDXINFO_RELVALID_MASK)
+ #define R2     R_MMUIDXINFO_2RANGES_MASK
+ #define PAN    R_MMUIDXINFO_PAN_MASK
++#define USER   R_MMUIDXINFO_USER_MASK
  
-@@ -1538,7 +1538,7 @@ static int get_S1prot_indirect(CPUARMState *env, S1Translate *ptw,
-         if ((u_perm & (PAGE_RWX | PAGE_GCS)) && regime_is_pan(mmu_idx)) {
-             p_perm &= ~(PAGE_READ | PAGE_WRITE);
-         }
--        perm = regime_is_user(env, mmu_idx) ? u_perm : p_perm;
-+        perm = regime_is_user(mmu_idx) ? u_perm : p_perm;
-     }
- 
-     if (in_pa != out_pa) {
-@@ -2389,7 +2389,7 @@ static bool get_phys_addr_pmsav5(CPUARMState *env,
-     uint32_t mask;
-     uint32_t base;
-     ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
--    bool is_user = regime_is_user(env, mmu_idx);
-+    bool is_user = regime_is_user(mmu_idx);
- 
-     if (regime_translation_disabled(env, mmu_idx, ptw->in_space)) {
-         /* MPU disabled.  */
-@@ -2556,7 +2556,7 @@ static bool get_phys_addr_pmsav7(CPUARMState *env,
-     ARMCPU *cpu = env_archcpu(env);
-     int n;
-     ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
--    bool is_user = regime_is_user(env, mmu_idx);
-+    bool is_user = regime_is_user(mmu_idx);
-     bool secure = arm_space_is_secure(ptw->in_space);
- 
-     result->f.phys_addr = address;
-@@ -2776,7 +2776,7 @@ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
-      * memory system to use a subpage.
-      */
-     ARMCPU *cpu = env_archcpu(env);
--    bool is_user = regime_is_user(env, mmu_idx);
-+    bool is_user = regime_is_user(mmu_idx);
-     int n;
-     int matchregion = -1;
-     bool hit = false;
-@@ -3656,7 +3656,7 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
-         break;
-     }
- 
--    result->f.attrs.user = regime_is_user(env, mmu_idx);
-+    result->f.attrs.user = regime_is_user(mmu_idx);
- 
+ const uint32_t arm_mmuidx_table[ARM_MMU_IDX_M + 8] = {
      /*
-      * Fast Context Switch Extension. This doesn't exist at all in v8.
+@@ -33,7 +35,7 @@ const uint32_t arm_mmuidx_table[ARM_MMU_IDX_M + 8] = {
+     [ARMMMUIdx_Stage2_S]        = REL(2),
+     [ARMMMUIdx_Stage2]          = REL(2),
+ 
+-    [ARMMMUIdx_Stage1_E0]       = REL(1) | R2,
++    [ARMMMUIdx_Stage1_E0]       = REL(1) | R2 | USER,
+     [ARMMMUIdx_Stage1_E1]       = REL(1) | R2,
+     [ARMMMUIdx_Stage1_E1_PAN]   = REL(1) | R2 | PAN,
+ 
 -- 
 2.43.0
 
