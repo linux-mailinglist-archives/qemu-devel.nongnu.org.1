@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC385BB5DD7
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C83BBB5DAD
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:30:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4WTA-00073a-GC; Thu, 02 Oct 2025 23:28:32 -0400
+	id 1v4WTD-00076J-LC; Thu, 02 Oct 2025 23:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WSz-00072H-EL
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:21 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1v4WT5-00073Y-VY
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:29 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WSq-0001Cn-NB
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:20 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-33274fcf5c1so1847646a91.1
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:07 -0700 (PDT)
+ id 1v4WSs-0001DF-MC
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:27 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-77c1814ca1dso1305847b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759462084; x=1760066884; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1759462087; x=1760066887; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bzgt9NMsG+zsoSzpM68SGiuLVbfJh0cCb3ctQE5Gzr8=;
- b=Elop+4vRmKKo5jiYsQ+2pe4h1d2yK47qZgskTX9WFygz3Tk0/gmyswHKuDb1GytUfb
- pbkjcKx9FW7gymPZUc5fMsMuhqChyH614zqCgsWzsAnuXYiMjG9GVPmWN6S2Rgb5JoDw
- URaxvdeqexBTFZEiJlfTW1x3j/1SpNsZDV62Rqk/oRC2Zwe8fzCKeZUoXHbdC7qnzaLm
- u1/pFOyMHrzyqUxfzlXTzklkuNJH5vpGRiKe/dwe4i9KpZtOmswppT9WClkoZXXmwR2l
- /wx4YV+WUxV2h36Z5TAOFAnB/gYW4jrBSSJf8fgad52oHsrr82/peX+P9+BOMc5i1pKc
- 5obg==
+ bh=uVHDxeuFLHNMsQQgp4hcMXnofXDcnErbdO9hDFAxj1Q=;
+ b=JfJtBdf56i4Ek6Uf86SW+v7zDqC9NEAAEf4sGr9X1WDEmj1lxMRA0h+HyTevB+oOJI
+ haRM6kiq1I/qjtqiZMhIu9PT4ILRGda9d4yBbAVrjJKHpcz+rdrCBN2ZeeFH+j7d0dJk
+ e0v5sjoiQjbg4vVrJNZD1AwVKl2NDFfjS9wS3ki0xVOLehS2az202ouyWz4zzscS/6UH
+ 9gCp7wuiW/TWvXL9Y2+zGrVx6K5yke1BtP8RXokE/wzH5dlSOrwsj1neG4TItMXRNJIV
+ 8u/sr83nEN+lq0tW0c9Trk/ojZEtGUEOrwJm2khHrExJWesTYXS7tpSZewLFWuhemqLW
+ Zh4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759462084; x=1760066884;
+ d=1e100.net; s=20230601; t=1759462087; x=1760066887;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bzgt9NMsG+zsoSzpM68SGiuLVbfJh0cCb3ctQE5Gzr8=;
- b=vMyWSvCzKqZtfC4/ANTAAXuKOgi+xVdNpKxbU4N9ztEbcZSFHbO42QzLNHozhOpT4a
- K5q1R1i/jAP/uYM3M/Nt/1q87wOL6DqMQJXqdliwi+OPQVoaXWbU3uXs9wtAb1J4TB1Z
- ewjAVmhRkohmF+v4NLLpE63Jin+cC8W/ItwR/Ib/S/9DFvcmVT6qPvmJvAMlP+iO8u9c
- Tj6yfJS2EwmRSiYBTFUC7D+4OEvLMJunPBjEGFAGcc/6TGudUAc45afAnJyfMtMA1FMd
- X5gSZlG1uUc1h9m7hNsTwKRmoDYm2M8Q1pZ+vVCncUxF3jpjMP6nO8JavOfEk3NP2gdh
- Vt0A==
-X-Gm-Message-State: AOJu0YyrrmjXuQAO7q3g8N1FRnj9qUtSdSGI3opVTuv+lW+79Sm4IR1H
- +KUVUPphskjqoLC9bwO7bHCxiikG3C2XPSLL0bp8AyLBmKXASxHrznbqWgaU7g==
-X-Gm-Gg: ASbGncs9Jut4hrDYrNlvH8DcBL6PkgCZqeGUWrPxRqBVSLuhXw8WOWhD8Pwu5A8pYLT
- J0JGPpimYLGDJ98vJbCB5JH2BGXW//HYk7xMtd76eW9cR8C0Cml+zIuc5FKZsByyuRHyIubMaeL
- //aK40e2WLeLZflz3ij91xGYJ0Qf2WjkYzk71xMG/VNOdwvd/PVNjRiwgUSzuwewNvBZ6Ayrt/D
- sIsOxsT73HIuYhT7SWgRU2h2uhC1f37VCXOuztOB3M0qTTwnrkx3BNCeDFt8ALqo7Le5F8gmkob
- Mx4pG9CU6YRZ1EdFOGYOV/9F7O1jufTD18SAvlrfMecpdSbXnMte62s3JtecyD8X987yc8qtYff
- 64jZoZXa2gxtRh9twwy9XQ0QFP21HNu948zbxj4moO2ZHZyjL3Xylc/YtEiDRNNVFg6ycKhRw8T
- kbhgNe0oeuu53yym8OpGZnHYBH9o0eWkkN+7I4dJgv/9K1SPQsZwZi
-X-Google-Smtp-Source: AGHT+IFCrhFlfX0dY5qYuBN2wY9afvbdyT2wTJ7F9eqcIYjm2SXNVsbY+5VMtg4Nq6ldX9sByQpr1g==
-X-Received: by 2002:a17:90b:3509:b0:32e:7270:94a1 with SMTP id
- 98e67ed59e1d1-339c278e605mr1887820a91.17.1759462084133; 
- Thu, 02 Oct 2025 20:28:04 -0700 (PDT)
+ bh=uVHDxeuFLHNMsQQgp4hcMXnofXDcnErbdO9hDFAxj1Q=;
+ b=GiUryjxZ9UlY0DhmBXtu4chU29qUKw8JxnXBSxFL/D8F0ee+G9a3mibZK9grYIXZF1
+ Gw7V4gQNaJDPId+pn3t7WaydKj/Zx8tbXXYH3HbF6w+CXaXDqAqoqyJe1v8z5hYDQnXk
+ PKb8zRcIAgIOLWQEwWTPo9jKS47QyTa9a85EbaDJTIgq37TCxtvXDwq5RpftxqQQbLfO
+ kFPvLUewOzg+hsHrW2RtUAtS0jcSyiQ3YvBxFN5gBaNyfE9FAKjfoDqEg0ksi5G0+KYk
+ xFDQKX0IqFsps6yglelNdxaYenH+ja60mJ1BXt7/gH+SlpPR2ma49iDrmTjFSSGm8wd5
+ jE2w==
+X-Gm-Message-State: AOJu0YxynXXrluhW4vYKNG/vOh/OYHqXcvYjl2h9rw2TJB26Sf8b9/RJ
+ sEuL+wO27pNEVd22VtFBw/47V7hsXneAn6yTK+tSqdfC7yt7iHeyzTgiVotELA==
+X-Gm-Gg: ASbGnctNHLwWTS9vnE/x3w1i8yBAQyZYvuBW6d/5rw1mQNn+mHaZ3XvXPUBPWevBoLd
+ swd3fsFVGyUy6AECKeynkNjQxLSePntBS/4FScs7MKpgxhWKlSfpGVt35yvkls5870Bv8sKNVKk
+ Q9f7EfsGkz6DH4ejQv6AOIaUD/0vGOuXC3syxE1Sgtr5yScoblHwFVQS0v2H/TN7eNFf0warVEo
+ NafqKL2rf8SjSgDWjR83322dS2T6USQ2uzCS3xVGBaFsbPgpupbYz89WzqgfOW2URJC494xFJGr
+ oXSGB/MwVlA22i8HMdbKueeDfMMnNeNUyb7c3asWZYEqg7caqQzI+uYaSJw75nqLLaYr98ewBdo
+ uFvZXSFIymNeKMN/wOut1fV713xLsWdEXmxwtxqmzS9u3HEhrjoc8sI3QoSMJ/M8NPQd2E0FE+J
+ 8So1gGlLyzF/ESidfihIUTEYQjoVrkKnVbgxX9X9Tq1FaAsM4ueD9p
+X-Google-Smtp-Source: AGHT+IExk5KR0ASl7qsjTc3S/Az6BLTjgZU2FBq0uedVA6BFSKqYS6d8x/HWPIpkcXUoUF54od8hNw==
+X-Received: by 2002:a05:6a20:7354:b0:300:f598:915e with SMTP id
+ adf61e73a8af0-32b61e6b99bmr1989849637.15.1759462087062; 
+ Thu, 02 Oct 2025 20:28:07 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.01
+ 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 20:28:03 -0700 (PDT)
+ Thu, 02 Oct 2025 20:28:06 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 08/26] hw/char: sifive_uart: Remove outdated comment about Tx
- FIFO
-Date: Fri,  3 Oct 2025 13:27:00 +1000
-Message-ID: <20251003032718.1324734-9-alistair.francis@wdc.com>
+Subject: [PULL 09/26] hw/char: sifive_uart: Add newline to error message
+Date: Fri,  3 Oct 2025 13:27:01 +1000
+Message-ID: <20251003032718.1324734-10-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
 X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,34 +105,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frank Chang <frank.chang@sifive.com>
 
-Since Tx FIFO is now implemented using "qemu/fifo8.h", remove the comment
-that no longer reflects the current implementation.
+Adds a missing newline character to the error message.
 
 Signed-off-by: Frank Chang <frank.chang@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250911160647.5710-4-frank.chang@sifive.com>
+Message-ID: <20250911160647.5710-5-frank.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/char/sifive_uart.c | 6 ------
- 1 file changed, 6 deletions(-)
+ hw/char/sifive_uart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
-index 401f869680..baef0bd9c2 100644
+index baef0bd9c2..e7357d585a 100644
 --- a/hw/char/sifive_uart.c
 +++ b/hw/char/sifive_uart.c
-@@ -28,12 +28,6 @@
+@@ -113,7 +113,7 @@ static void sifive_uart_write_tx_fifo(SiFiveUARTState *s, const uint8_t *buf,
  
- #define TX_INTERRUPT_TRIGGER_DELAY_NS 100
+     if (size > fifo8_num_free(&s->tx_fifo)) {
+         size = fifo8_num_free(&s->tx_fifo);
+-        qemu_log_mask(LOG_GUEST_ERROR, "sifive_uart: TX FIFO overflow");
++        qemu_log_mask(LOG_GUEST_ERROR, "sifive_uart: TX FIFO overflow.\n");
+     }
  
--/*
-- * Not yet implemented:
-- *
-- * Transmit FIFO using "qemu/fifo8.h"
-- */
--
- /* Returns the state of the IP (interrupt pending) register */
- static uint32_t sifive_uart_ip(SiFiveUARTState *s)
- {
+     if (size > 0) {
 -- 
 2.51.0
 
