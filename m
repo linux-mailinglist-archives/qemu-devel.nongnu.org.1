@@ -2,97 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDDABB768A
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 17:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0D5BB76BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 17:58:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4hua-0005CT-29; Fri, 03 Oct 2025 11:41:39 -0400
+	id 1v4huy-0005SW-Gr; Fri, 03 Oct 2025 11:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4huE-0004vb-Sc
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:41:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4huI-0004yL-N7
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:41:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4hte-0007hK-Lp
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:41:10 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4htj-0007hU-Eq
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:41:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759506035;
+ s=mimecast20190719; t=1759506036;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TCI9CdtrtAK9b9qerBVVa1i7zrINFcMpCM++VkEP7CE=;
- b=ZwDOgpmanrUqk819VII78ilCXlQrOuFaDMpmG415Kf8yiHUJdSMedgnUZziWZX+GaLj9dP
- e8sux4GF+LbL9D1SYZgVH969n+4mK0WurtYZdwZ4aR3dC01M2XMuNC1+z2zHs7QczpcEIc
- MgmIdoHyZTiP3Q2onlDZNVoUXKPl/Kg=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5eBNLmWbsAxeJ9A3hl/lSDxEzseLn9pvSToGPnHoiaA=;
+ b=A4udMetuhmTDKsC8Zvgoox5kXJH2dIcBQvbXq68LUJ+ANQDWmVTjcrx9iQfM+o43qVO4kA
+ bVaUR6Ch1dLA7vAeXwW2be2RViYeuMlya9SY7kUsdjEb+W5sdLbrTvBxEjQNFz1DLflzvP
+ 6Cm+krEp42Ir6mlTuAJmruS77+pkxOc=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-ML7bn3GlMZ2bp0qr_PQmlw-1; Fri, 03 Oct 2025 11:40:33 -0400
-X-MC-Unique: ML7bn3GlMZ2bp0qr_PQmlw-1
-X-Mimecast-MFC-AGG-ID: ML7bn3GlMZ2bp0qr_PQmlw_1759506033
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-79538b281cdso43983766d6.0
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 08:40:33 -0700 (PDT)
+ us-mta-328-KUZjD359P_aLJtme3yWe6w-1; Fri, 03 Oct 2025 11:40:34 -0400
+X-MC-Unique: KUZjD359P_aLJtme3yWe6w-1
+X-Mimecast-MFC-AGG-ID: KUZjD359P_aLJtme3yWe6w_1759506034
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-78e30eaca8eso74442516d6.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 08:40:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759506032; x=1760110832;
+ d=1e100.net; s=20230601; t=1759506034; x=1760110834;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TCI9CdtrtAK9b9qerBVVa1i7zrINFcMpCM++VkEP7CE=;
- b=iEqsDiwfRT9h1T9cpCNmadG5VBp5HenKP+iYuCZw8vbK8LzHFD076Z8bWfwxZQb4f/
- WspzxBcW3iTUbvw+G6tLskCQ0RozcUL4z3snFq2frD7AjbjfkKAY9nsDluafpsagspJk
- i88dhuo20siTfQzjeyC9sGrym0gsHhdMayQjYj2iHw2ekEO+O4X4OBcOgN0BLOhKixis
- /5RopdZ0VT3DJLCPPi48NqwdhzL771CBRedadYUNHgxMbpO4lydjspV1cwWaLWZ9jqpy
- +L7K1DE9LpZj8/7ZJSwQT88r5HsuNqKKe5CQyxyp8wfi/SJXivJLlJrTrdWm5jxg9bp4
- ntCA==
+ bh=5eBNLmWbsAxeJ9A3hl/lSDxEzseLn9pvSToGPnHoiaA=;
+ b=KCooflwEGdL0GijH7Gt6nL+//noPyu0jlVLB7Yal20e00g1LsaIN0nQuNUg38hVNQq
+ /44uTb8tlHGZ9WjmMBxs5MRl/b2SPnQ18pT44389YZz4zI6ZvcgdexmD23Gi2Kr90Ktu
+ GDoFtXaBMM0BoobYFUAWUhJNQfj2Md5Qn4C0GSEy/CZTVp9lMGYvdRlTYrD4E8Kj5Mnf
+ pzsCiPeBOzGKKtIZDQ1kMZwGzW7PSGD54cbAPFBRphadpAYRvAeN0xwsCOw4j7+PVLve
+ v7ig/mgkHKp2KkMqk/+dhqLRTxcJdhdoJbiGD45lbJ7DeQTNVRM+s76AvuZ8H3AStMNv
+ qyIQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXh4mcKjlZABY+wKKuntM+RFH97x33479yMmUIaW5tH0TxPJkRQ0DLofYu7LkfcBgcD2MGzzc9BQVjA@nongnu.org
-X-Gm-Message-State: AOJu0Yx8NDVgJxMRQU57Uba7MCN8gC0Euudwf5rXlbIyYhEpiYxXVrzj
- BotMo/8Up9QcIH6/FT0OsMYv4iqbF0ifjzgZfwy+vn1mEh3AqzzU9wSMt2lpz3zhumlqqrvzmhS
- F0n5UzUXqAP1PrOdkKYoc66v/l58Q7f18TQepBV6T2TOIpTczXkuoD+JrDUsVsCLt
-X-Gm-Gg: ASbGncsnyvukmv8urR7MZWB9eV2Bps2XcbqI8yN8z6+txeWUMviY+G6/mjXDA9KMXkb
- yPauIkXAmGSyQGbAGrdU65legZWHKqucWP4/j4069noBwxNakmEgJ7VBUkupWFkxZG+FeR8f8xl
- i+CBqXTkfM+HWaK+DIeZIKYVVwdzsVJ7tmUBMQ2rqHZMnzgnAdRN3U3kOUoUxcWcnFQyfYyeFKy
- s8hJnjIi5CecfcvgF8oDoRjlGIWAP7WED0VlIdqMF93tm8U+w68Iq6fNNxH3vDkJ2HizqRY6e+e
- 8eBxAEarlcsqYEvYJdN5EmnFpw+7IBjwYhIx2g==
-X-Received: by 2002:a05:6214:2a87:b0:729:1a8e:bbc3 with SMTP id
- 6a1803df08f44-878bb82efb9mr97429856d6.16.1759506032507; 
- Fri, 03 Oct 2025 08:40:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkxLiejO1+JBu1pvttZY+1qDTJXzvp82GySxg64/h5zdAtRSB4Hj4itmnnjIGBPpoiRnhHRw==
-X-Received: by 2002:a05:6214:2a87:b0:729:1a8e:bbc3 with SMTP id
- 6a1803df08f44-878bb82efb9mr97429536d6.16.1759506032047; 
- Fri, 03 Oct 2025 08:40:32 -0700 (PDT)
+ AJvYcCU8AuGIC7D27tmBFIBM5sRXLeTBgwHe9KYbk5seVKmSWDc6pKbdaB3+q8YfOn8hZtQgCLISCLOElT/x@nongnu.org
+X-Gm-Message-State: AOJu0Yy7dHLqmufOD93UUQL943h9Z5vMFBZAIduigq1wcF4a1keOezb0
+ 57rJpVzfe1n2fkYuSpS4K60IquweIhEiludfMHyAv+9t5oX6CG9Kd0C/trWiwZWPIxFZg0eqsQO
+ rmwUKyNV2Q8I22GN1xxwdwy0JVjN2Nv+OZlGpLpRGyuacd90Az5FQPi2hhnPhjEn5
+X-Gm-Gg: ASbGncvCvV7hc6xWzVzRIRITmiU+5dgU8bWYSK89jd2Ln4UUT5fW9MpqOx2tL8ZSjtv
+ tFIYDIFg8iVYjLqF0WUyiRpQBvm1mzP2zyfsoGZuXM9oAMRotAJUEvJH6KcplggpHHQ2FKjxqVW
+ o7ZVwZhm6KuJ+e3Et9ORLkAmY3xAdOjpWgIvtNnBFILkp+S9gPptceERh+4zD0fvYaXwiTGo8x5
+ VrZ81EH/12jJ7ECCLxHuktJgaFONdjAI6a+h/usAx6J/kq+B/WZZm2tZQZU9bdN+xstgv9xf/Qr
+ 7R5fu2y8ndVRIglAZE9zI+JDmQN0NtZsvnCxxA==
+X-Received: by 2002:a05:6214:20c3:b0:790:3b37:8ec6 with SMTP id
+ 6a1803df08f44-879dc77bb05mr42056196d6.13.1759506033624; 
+ Fri, 03 Oct 2025 08:40:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFd4VA2qvnbzFaO22cJuyuRxlzQHKK1hgHhxKZXvW5VwbTM1fIdk0MrR1Zu+HSfvTWJZWHK/Q==
+X-Received: by 2002:a05:6214:20c3:b0:790:3b37:8ec6 with SMTP id
+ 6a1803df08f44-879dc77bb05mr42055696d6.13.1759506033120; 
+ Fri, 03 Oct 2025 08:40:33 -0700 (PDT)
 Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-878bb53d91fsm40656746d6.23.2025.10.03.08.40.31
+ 6a1803df08f44-878bb53d91fsm40656746d6.23.2025.10.03.08.40.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 08:40:31 -0700 (PDT)
+ Fri, 03 Oct 2025 08:40:32 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juraj Marcin <jmarcin@redhat.com>
-Subject: [PULL 28/45] migration: Make migration_has_failed() work even for
- CANCELLING
-Date: Fri,  3 Oct 2025 11:39:31 -0400
-Message-ID: <20251003153948.1304776-29-peterx@redhat.com>
+ Bin Guo <guobin@linux.alibaba.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PULL 29/45] migration: HMP: Adjust the order of output fields
+Date: Fri,  3 Oct 2025 11:39:32 -0400
+Message-ID: <20251003153948.1304776-30-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251003153948.1304776-1-peterx@redhat.com>
 References: <20251003153948.1304776-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.467,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,40 +108,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No issue I hit, the change is only from code observation when I am looking
-at a TLS premature termination issue.
+From: Bin Guo <guobin@linux.alibaba.com>
 
-We set CANCELLED very late, it means migration_has_failed() may not work
-correctly if it's invoked before updating CANCELLING to CANCELLED.
+Adjust the positions of 'tls-authz' and 'max-postcopy-bandwidth' in
+the fields output by the 'info migrate_parameters' command so that
+related fields are next to each other.
 
-Allow that state will make migration_has_failed() working as expected even
-if it's invoked slightly earlier.
+For clarity only, no functional changes.
 
-One current user is the multifd code for the TLS graceful termination,
-where it's before updating to CANCELLED.
+Sample output after this commit:
+(qemu) info migrate_parameters
+...
+max-cpu-throttle: 99
+tls-creds: ''
+tls-hostname: ''
+tls-authz: ''
+max-bandwidth: 134217728 bytes/second
+avail-switchover-bandwidth: 0 bytes/second
+max-postcopy-bandwidth: 0 bytes/second
+downtime-limit: 300 ms
+...
 
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250918203937.200833-3-peterx@redhat.com
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20250929021213.28369-1-guobin@linux.alibaba.com
+[peterx: move postcopy-bw before avail-switchover-bw]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ migration/migration-hmp-cmds.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 2f55f2784b..3ff85098d5 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1712,7 +1712,8 @@ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 0fc21f0647..814221b260 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -353,6 +353,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: '%s'\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_TLS_HOSTNAME),
+             params->tls_hostname);
++        assert(params->tls_authz);
++        monitor_printf(mon, "%s: '%s'\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
++            params->tls_authz);
+         assert(params->has_max_bandwidth);
+         monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_MAX_BANDWIDTH),
+@@ -361,6 +365,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_AVAIL_SWITCHOVER_BANDWIDTH),
+             params->avail_switchover_bandwidth);
++        assert(params->has_max_postcopy_bandwidth);
++        monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH),
++            params->max_postcopy_bandwidth);
+         assert(params->has_downtime_limit);
+         monitor_printf(mon, "%s: %" PRIu64 " ms\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_DOWNTIME_LIMIT),
+@@ -383,12 +391,6 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %" PRIu64 " bytes\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE),
+             params->xbzrle_cache_size);
+-        monitor_printf(mon, "%s: %" PRIu64 "\n",
+-            MigrationParameter_str(MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH),
+-            params->max_postcopy_bandwidth);
+-        monitor_printf(mon, "%s: '%s'\n",
+-            MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
+-            params->tls_authz);
  
- bool migration_has_failed(MigrationState *s)
- {
--    return (s->state == MIGRATION_STATUS_CANCELLED ||
-+    return (s->state == MIGRATION_STATUS_CANCELLING ||
-+            s->state == MIGRATION_STATUS_CANCELLED ||
-             s->state == MIGRATION_STATUS_FAILED);
- }
- 
+         if (params->has_block_bitmap_mapping) {
+             const BitmapMigrationNodeAliasList *bmnal;
 -- 
 2.50.1
 
