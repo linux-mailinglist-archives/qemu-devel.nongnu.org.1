@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174E4BB7AEA
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25281BB7BB4
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4jHY-0001s1-2G; Fri, 03 Oct 2025 13:09:24 -0400
+	id 1v4jHE-0001eu-Oi; Fri, 03 Oct 2025 13:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jHT-0001qe-GO
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:09:19 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1v4jHA-0001da-MD
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:09:00 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jGX-0006GG-EK
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:09:19 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b555ab7fabaso2414450a12.0
+ id 1v4jGU-0006GQ-SP
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:08:59 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b4fb8d3a2dbso1969600a12.3
  for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:08:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759511293; x=1760116093; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759511294; x=1760116094; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pjDdAknr01k7YxkbZX1BtFHr9eMT0hUzaWlnonFMe1U=;
- b=Gu4ff+GdR57q0bvm+ZrSbKFZLDkn8W14XHb6mkvNMyLAKBgnnDtmtmooHQroaR4WG9
- cUsphHz0cbOq12jCNU3438XO2IBU+nauQ5CD+vVQN7E5xNqMYyLoaYhiNzD1EqZ5Dhlv
- SUoitsmG1VXWnANkcyER300EfQG6gbaM0pyO6Mgt6PMsriEiKhuBQkNjx0xSEBF8g31S
- eIYwhdbDyPr3WrD7A79b+Qff+GHl753+vG+G2+hdK6JBRTqVS9DCBjXwy4ASxNy5EMVw
- sr9kCv7Lqujpry0xVFEK+P1/6LKKU/b8L9j3j666vITcBQpNvXJdpfzu1k3ijNJyVDcY
- 1veA==
+ bh=jHDom8RqSvFBhHj/9Q/rXAoVV+sGpC/X8GRYrjCGKNI=;
+ b=a7mbWGGsdyJTsjlPFi2qLfm5t/74Bb1Sb9hGvoTHGPEYJDKp61u27Fj+kplmFb1+AM
+ KBbkfaSzmbbZGW+LTomGFLeqZPS44fBWfIJqEu1ztj2phiLjgqpXdGjJAEeLDNhtKR89
+ WYNJktO3HbOkAbdTwzFGqiTomnoRIa0RVZI6DPleH2AuAP43iQpMROHny+rq1x02dzCn
+ 7WapQ1T1do/23A+TQ6SFnlaxNQ2dtCE6I+OkAsOb0oRKQwBbWZOoz08IE+xRvC7iXVM/
+ ewTDS02Z32XNvkOq2vHkh5M2EZajotHPZbgyl9diErt7h4r+8NaSl+klQ1NAR9J0gQCL
+ 7Z/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759511293; x=1760116093;
+ d=1e100.net; s=20230601; t=1759511294; x=1760116094;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pjDdAknr01k7YxkbZX1BtFHr9eMT0hUzaWlnonFMe1U=;
- b=eyQJRPl1L5fYpyw5PDYOeWEi2sWKHX+UdRWG2rhXpYfcoJyjNiBaFSBg/SZxOdZaVq
- d1u9F//dBd/v1CQDsjXIrVOQrfAieSQrrcVvoIQVVlrCidbqenygcc7Ct30yWBxmw+KP
- B9GBESaFv9/11XPVTFjW7i+oXix6OpV0FFbGg3mkgWa2tFtqIWB9d+nkuQA8i+AaMVyv
- XdEf+MFNVLXCOYRRWCHsA2db89ymJPkb76oljBOq8jjeg12NSoNlJQZ6OUh/z9WcwV20
- 2NRtEh5uVFZQcB6Q245+FUoTsjGdztXkw8rYKcpL5uQjRkyIjiwqzqDgiABqXz15/lDg
- ps8w==
-X-Gm-Message-State: AOJu0YzaosOxvN/RmZZdwqnrgzqz7fEkRtlC4i3q3bHJvrjQCxLKBjeP
- QFPWQYi1dm7F072UKzkBX0kzlhdgZTG4HhLT6ixbsQZn+RebD3CuWgVMK6tlfIZYi9swZVDX2YT
- +Qvee+8k=
-X-Gm-Gg: ASbGncsjHJCQb5G/QurDIiHirP+phBf/RA6slpEMjeTUzpU8b5NCGt3RY/5/BYQTbEM
- ZMrlKW0xbt3id0ctQ257VRuOQ8m9z/ad2kb65qUmplZyW73p7XH7lQMUU7ORh/YB5lmeZSn4GEO
- Q2A7m9xDJI793ee5zseWC4pptOdBNM6ezNkiuGEWxjMwP57AFdoWMD8d2y5Y0MZowDzloAiz7Hf
- W0XqGpBlyKuLdX+1ivIlA+kTL3XAtLhIkZs3o5OqpghxCOExkjA1VHm+qb6lyuvmT/q8K5T2cTW
- MXOxpXcxN41wZo+iPLAU4Lgu2Le15i3U8Z2pHjQDIIBwKWtU3JPjqDDxQM/JPirQO3qJsIUK/Cs
- jEMRnSBRrAg00jxZ3gF8yIZD8R/QH6pG6Jfi+adFjYgXbR/eEUhbYYYJO
-X-Google-Smtp-Source: AGHT+IGKXwgtMDLS5kT7nVwrbhWP9lenr3DICGBR/qIAz/T1BY5P8QQaP+TT0r6zZfyTLb+vMcGWmw==
-X-Received: by 2002:a17:903:3c24:b0:263:b8f:77dd with SMTP id
- d9443c01a7336-28e9a6b1caemr44484245ad.57.1759511293426; 
- Fri, 03 Oct 2025 10:08:13 -0700 (PDT)
+ bh=jHDom8RqSvFBhHj/9Q/rXAoVV+sGpC/X8GRYrjCGKNI=;
+ b=AQo5uBLlGnli86O7zpLvteelr+OuVNCXrixIkYFdtaPewQYGATKURMHFHqBq+np1xY
+ Hiu32NKyJgpxrTRndfxAttPK2B1RewuxHJqB0nhZZG5JsgJ87Xx63SXv/XgU2RHfcNgY
+ xudSpDvJL/uFDclMB89JgL17A4LQbiiM8y292kC+3BeDCBAos6q3SmvaOhfdhsl+eO4o
+ /dcVK3yHu+pfAR+JFBHDW4MndycdI1RmbbiOMnbVOG8HU3tXTyX52GOUjgbyTVDa5yfH
+ sQ0PTaMI92hXMSLWj86/di+TV095BayFO9OO9z3yJNGfoE26OrLrkTtAJ9U/CjAgWa9z
+ y6ug==
+X-Gm-Message-State: AOJu0Yy9+ZI/HniPif+dz0Rvj1FlBR/AamKFKSCSn1x+RSlNLPvs4OWP
+ VnvHRHydy5shcuG4auRfd72X9XsXIv2JzAiqofaHXYp/FsOePlaR5Rrcown1cl0CN50Xw75BPfv
+ ITKbkCw4=
+X-Gm-Gg: ASbGncs4/7t0hK0S5noQR4pmZPXMEDamQ80kEGbFH8Hfl9Va0fltRc7agSf0+E9aBg/
+ 83qh8rKF9oCQjnMaTZxneDW2w8s81zJD6hivCCD9afINJ1OvANfGBBuH5kcW60xFQB2uz78ODrH
+ 5vkG+ZkdPQ39mQ4bwaoJB2zUyHsgv+6n4hVWvLaKpgQNfW52oveIw169eo4Oo8bDZrZ+myDnrAN
+ u+p6COKPSHuasAL8Sho4poFCIPZq0heuvd8Wy16EjwaeXjcs+u7uT+vD5LZLar2l2yNa2VFahTx
+ 1x9OYUpo0E5Qr0dImT7hIOIfoKqiaQ4wU1qSIHoEFXqoG/z86GoALef2wLdQj0Na7P1PD7zE/2A
+ LxKoB7snk+dMqQNskuLEwFiMhIIamfYTNUQlRc/frB9rG412O59LvDQq7
+X-Google-Smtp-Source: AGHT+IELyLr+8U71+WNl4ytbdPdYdP/WxQOEiP3eHIBgGShvGnJjmPYxdK/TxLm0nI/MNO/jWrXbKQ==
+X-Received: by 2002:a17:902:ccc8:b0:28e:80bc:46b4 with SMTP id
+ d9443c01a7336-28e9a664f0dmr39901635ad.55.1759511294154; 
+ Fri, 03 Oct 2025 10:08:14 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d110d86sm55327115ad.6.2025.10.03.10.08.12
+ d9443c01a7336-28e8d110d86sm55327115ad.6.2025.10.03.10.08.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 10:08:12 -0700 (PDT)
+ Fri, 03 Oct 2025 10:08:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 13/73] target/arm: Enable FEAT_S1PIE and FEAT_S2PIE on -cpu
- max
-Date: Fri,  3 Oct 2025 10:07:00 -0700
-Message-ID: <20251003170800.997167-14-richard.henderson@linaro.org>
+Subject: [PATCH v6 14/73] include/exec/memopidx: Adjust for 32 mmu indexes
+Date: Fri,  3 Oct 2025 10:07:01 -0700
+Message-ID: <20251003170800.997167-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251003170800.997167-1-richard.henderson@linaro.org>
 References: <20251003170800.997167-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,36 +101,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/cpu64.c        | 2 ++
- docs/system/arm/emulation.rst | 2 ++
- 2 files changed, 4 insertions(+)
+ include/exec/memopidx.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index abef6a246e..76193826ce 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1253,6 +1253,8 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64MMFR3, TCRX, 1);       /* FEAT_TCR2 */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SCTLRX, 1);     /* FEAT_SCTLR2 */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SPEC_FPACC, 1); /* FEAT_FPACC_SPEC */
-+    t = FIELD_DP64(t, ID_AA64MMFR3, S1PIE, 1);    /* FEAT_S1PIE */
-+    t = FIELD_DP64(t, ID_AA64MMFR3, S2PIE, 1);    /* FEAT_S2PIE */
-     SET_IDREG(isar, ID_AA64MMFR3, t);
+diff --git a/include/exec/memopidx.h b/include/exec/memopidx.h
+index eb7f1591a3..66d9c58b3a 100644
+--- a/include/exec/memopidx.h
++++ b/include/exec/memopidx.h
+@@ -25,9 +25,10 @@ typedef uint32_t MemOpIdx;
+ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+-    assert(idx <= 15);
++    assert(idx <= 31);
++    assert(clz32(op) >= 5);
+ #endif
+-    return (op << 4) | idx;
++    return (op << 5) | idx;
+ }
  
-     t = GET_IDREG(isar, ID_AA64ZFR0);
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 6b04c96c8c..94a6192fa9 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -122,6 +122,8 @@ the following architecture extensions:
- - FEAT_RME (Realm Management Extension) (NB: support status in QEMU is experimental)
- - FEAT_RNG (Random number generator)
- - FEAT_RPRES (Increased precision of FRECPE and FRSQRTE)
-+- FEAT_S1PIE (Stage 1 permission indirections)
-+- FEAT_S2PIE (Stage 2 permission indirections)
- - FEAT_S2FWB (Stage 2 forced Write-Back)
- - FEAT_SB (Speculation Barrier)
- - FEAT_SCTLR2 (Extension to SCTLR_ELx)
+ /**
+@@ -38,7 +39,7 @@ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+  */
+ static inline MemOp get_memop(MemOpIdx oi)
+ {
+-    return oi >> 4;
++    return oi >> 5;
+ }
+ 
+ /**
+@@ -49,7 +50,7 @@ static inline MemOp get_memop(MemOpIdx oi)
+  */
+ static inline unsigned get_mmuidx(MemOpIdx oi)
+ {
+-    return oi & 15;
++    return oi & 31;
+ }
+ 
+ #endif
 -- 
 2.43.0
 
