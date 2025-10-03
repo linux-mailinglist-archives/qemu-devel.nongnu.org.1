@@ -2,96 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB08BB76B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 17:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B07B9BB7AD2
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:13:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4hvA-0005WM-BO; Fri, 03 Oct 2025 11:42:12 -0400
+	id 1v4jGZ-0001Lq-Av; Fri, 03 Oct 2025 13:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4huv-0005Ro-Sw
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:41:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4hu3-0007ll-Dt
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:41:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759506057;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iGEtJMiuoEi1cxg4DAPq5OvbXxKkcrQDI9UI1HPhzm8=;
- b=W+aL6K7bwnbwAgXX08GEaOVPeIu/MuuIswhO3WcGtnrMuW2nnei4PfCGog3nCCp3RKZMnp
- y1oqiip/7lm6fgMsNBKga3m9Z/jTaavMzsXCrx2v0q1bsKymQCdTUO7d/Y1ajcO7ftnsT3
- o40WwNDhow060sXOXAvBa6nT16bwEs4=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-eYWaebcmNlmARg7zUbDWTw-1; Fri, 03 Oct 2025 11:40:56 -0400
-X-MC-Unique: eYWaebcmNlmARg7zUbDWTw-1
-X-Mimecast-MFC-AGG-ID: eYWaebcmNlmARg7zUbDWTw_1759506055
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-70d7c7e972eso46669116d6.3
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 08:40:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v4jGW-0001Kc-1K
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:08:20 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v4jGM-0006EJ-Cj
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:08:18 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-26c209802c0so24756505ad.0
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:08:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759511283; x=1760116083; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BdP3drOvtaFk4mkg1BwqWmEpP/oyI5MKsSyjeDJfV24=;
+ b=Et0TlIRq2lw2eMorJT9RKxGiWuzX7ESw1wFhCZSuHMliVyAl6FtsEPTzSReq0A1uco
+ Y5I7lVYdXI0YQX/9Mlf6y3cj+giXXHe/lbZaQ1U+RqYAI/YJuF7lYlzOvEa+2odHs8O0
+ SVyTMyYF3JQ53+VBwKskG92Ebao82Pem26O8nIWF/3jNnSaq6GW6YpJpe5txavbGZRGn
+ oTSoLRIWGBOEDMyrl4GSmuJYTZnWlZ1m5Wqmv2Z7TDissL3IfCO/EP2si+c/7QilSBTV
+ Wy/wXNQyg0dCJptcSXU2qtz8ruEaYGw+8VD9Nq1AT84tfrLPaqG6OY9QEUWn6WINDjn/
+ 5zUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759506055; x=1760110855;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iGEtJMiuoEi1cxg4DAPq5OvbXxKkcrQDI9UI1HPhzm8=;
- b=CCWhsdMnUIX4nje2NeJFQguSDa4RBW7ibmibKWGdKUCPOsJJlRtakS/twfPw+RZorL
- 91S08Sb/XzYsmpwTk92SQnGBlWQHroc+aM7zY8GmDvwOPEq8Rdks52kw8p9FScIXWCao
- HnuBcI+VkzOcBd22hu9DYm8pIN6Rf7Q+IzTwgkbDotb5wvbe2O7tkNQl1LATuqqpxVVh
- wDDjx48V2zyX/SirnAoqBqTb6QLDni/1i3+Fnx5IwQco1v/eW5dbjOUutfrdgR51apj+
- J2d8wYHalhQJ5nopGPn2t0+2D29TzN4gDROhGf/4219Pfz6Qmppr9dQeOtHXpl0Y6rYa
- CCUQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW/Gi9qbyLAsBb1lxG1Fet2SvPCkHpFq/zaW0tEX7YPcHInpE7Yqne8Og3925YsRHRBnkctN81rrINW@nongnu.org
-X-Gm-Message-State: AOJu0YzBqXC1LNslYTa4eQZFGJ/6VFIqjdUv0uLduRBUmsRZObwf2uIP
- CPQZ0VZEnnjiaOQibCoj6qljK8HMN3o4r0Ia1FSQqVuxkMPVK0p7rORQN227og8pTsOVQB91jgM
- 2RwIJsmtogOolSPGgZpOsBSybrHPp8qUsRcce+OzMEIXZXsMnOfOG4T8U
-X-Gm-Gg: ASbGncspVwlSVQ/JRf7wQMwFb+FjAzDhYFzQbs1N5jrPrpRCsvfiIbAbMqRq+7uHryp
- 4qL1dPIuVnFsnbGuQBqfi4js1Fo5B1j78f+YrswujYrSpEoNEwVhph/roQf5rcW/kvWbIkS1AmD
- h6PlpROBCPQQIqr+1bxL3EA2TwW9BGok0BpAwxL6FrMYfNiRcK2DUsQNwBoVuQlgZL64FwMm5cn
- rW5Jb/ABxt9DlJJBmyaXjPP8ftwUtl5MK9+LAel2thqnudvSZi9q8g2ZZBIsYKnNIMhSkxnsqZE
- RCNOi/Vpu+VWtwqfrbTY1Pkn1Hb6arlxshkpcg==
-X-Received: by 2002:a05:6214:1245:b0:812:c072:db14 with SMTP id
- 6a1803df08f44-879dc8824f3mr49992656d6.50.1759506055318; 
- Fri, 03 Oct 2025 08:40:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9WQJ5edj76YIQhurQzJWjWnrVI4yEgqP19M3z77aTpbNnoiiERE2r/eoskaQ4RriiiLO3gg==
-X-Received: by 2002:a05:6214:1245:b0:812:c072:db14 with SMTP id
- 6a1803df08f44-879dc8824f3mr49992086d6.50.1759506054666; 
- Fri, 03 Oct 2025 08:40:54 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-878bb53d91fsm40656746d6.23.2025.10.03.08.40.53
+ d=1e100.net; s=20230601; t=1759511283; x=1760116083;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BdP3drOvtaFk4mkg1BwqWmEpP/oyI5MKsSyjeDJfV24=;
+ b=niTcL9aGLSuoOQE7Qn8lATsNGZdcG6EA7n0u7ke3Z6DKZf3b/1CJQq87S4OO946gVK
+ Tz+mU8npJCgRbi2l5xD0Rs7AkgNc+v8yECH0SwpZ81wf2S2v7C0pN1Q58MFxAesBm6gn
+ 723FKBqyAbB/Jffsyweydf8292spqmnUvvw6D63R5m5caZQFS/Zt2dyrO4c+9Z/Z3aCJ
+ SyPXAz7k7+2OcKnPHQ0IVyw+Osp7r7HoVouS8/hxf2f/7AqiVuAFXOH5BaW6gzisQUMT
+ 5hiyJ0yWggN+pmaxe86CfP060Pi4cA+joKTt6g92n9kGT/a2g07/uBLZ+V3jRuDx1WtV
+ 2Wxw==
+X-Gm-Message-State: AOJu0YzP9aGBcPMunr6Ltly7+ZgmZSKa8ypAtPLS/piDTPdE4Z6itC6v
+ LxYgoteI6jPfQIOYjh9BS4zSJKkNDS5tVrGC/6TQ4y3AN3liXO0tg7G5VbGH+kS/vONi3Kdx5Uz
+ BH7nE9Ew=
+X-Gm-Gg: ASbGnctsxXY58x6wHeEVIlm8lMlGVysufriXsxYa9cu4npRvz1XahR6miiLc9MElZDe
+ rINOnNTGLpaPHbVDEl+HAUDI72IHgC4vuTYsbVcJun9SDAz+4Z4QynGyXKr3VF7Hf2bdMuFWwj/
+ Nx0oWd9JeGISk9rKMcHTN55TnmDBjd5SpqGT6weH5adp6NxOTcwXZGwgQt31AtmbyA/Axp7R4Va
+ RviuPt2ArNUTNvfChhcvxTHEKsfLHhcQve7addOxsyeNT7xtUKrCe2GegYXN0ssQ5atA634u0Lm
+ bkvs9n5Jmwb2rwHN1vI+k61HkjvJ8x4dsIcis6NmcdpaWAQ86y9rIf56tsn4FexB5n39NWx8jaZ
+ Nky/ZnYS+/ZZqxNP+S62HrvrjuJyv4kMc25Qa+NvjUEWlHnSTyInSQvWo
+X-Google-Smtp-Source: AGHT+IE/stsZOUYyOJbpcb3EBmXpycRJGLy2IazHV1UYuoFoFLutYvVUX4PsDCNQf6eYvZO/9ia6VQ==
+X-Received: by 2002:a17:903:28f:b0:27e:ea82:5ce8 with SMTP id
+ d9443c01a7336-28e9a57468bmr42969615ad.14.1759511282267; 
+ Fri, 03 Oct 2025 10:08:02 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-28e8d110d86sm55327115ad.6.2025.10.03.10.08.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 08:40:54 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 45/45] migration-test: test cpr-exec
-Date: Fri,  3 Oct 2025 11:39:48 -0400
-Message-ID: <20251003153948.1304776-46-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251003153948.1304776-1-peterx@redhat.com>
-References: <20251003153948.1304776-1-peterx@redhat.com>
+ Fri, 03 Oct 2025 10:08:01 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v6 00/73] target/arm: Implement FEAT_GCS
+Date: Fri,  3 Oct 2025 10:06:47 -0700
+Message-ID: <20251003170800.997167-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.467,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,168 +95,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+Changes from v5:
+  - Master now includes the accel/tcg/ patches.
+  - Updated TF-A/TF-RMM tests for FEAT_S1PIE and FEAT_GCS.
 
-Add a test for the cpr-exec migration mode.
+Patches lacking review:
+  34-target-arm-Make-helper_exception_return-system-on.patch
+  35-target-arm-Export-cpsr_-read_for-write_from-_spsr.patch
+  38-target-arm-Add-arm_hcr_el2_nvx_eff.patch
+  39-target-arm-Use-arm_hcr_el2_nvx_eff-in-access_nv1.patch
+  40-target-arm-Split-out-access_nv1_with_nvx.patch
+  48-target-arm-Implement-GCSPUSHM.patch
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/r/1759332851-370353-20-git-send-email-steven.sistare@oracle.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- tests/qtest/migration/cpr-tests.c | 133 ++++++++++++++++++++++++++++++
- 1 file changed, 133 insertions(+)
 
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index c4ce60ff66..9388ad64be 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -113,6 +113,138 @@ static void test_mode_transfer_defer(void)
-     test_mode_transfer_common(true);
- }
- 
-+static void set_cpr_exec_args(QTestState *who, MigrateCommon *args)
-+{
-+    g_autofree char *qtest_from_args = NULL;
-+    g_autofree char *from_args = NULL;
-+    g_autofree char *to_args = NULL;
-+    g_autofree char *exec_args = NULL;
-+    g_auto(GStrv) argv = NULL;
-+    char *from_str, *src, *dst;
-+    int ret;
-+
-+    /*
-+     * hide_stderr appends "2>/dev/null" to the command line, but cpr-exec
-+     * passes the command-line words to execv, not to the shell, so suppress it
-+     * here.  fd 2 was already bound in the source VM, and execv preserves it.
-+     */
-+    g_assert(args->start.hide_stderr == false);
-+
-+    ret = migrate_args(&from_args, &to_args, args->listen_uri, &args->start);
-+    g_assert(!ret);
-+    qtest_from_args = qtest_qemu_args(from_args);
-+
-+    /*
-+     * The generated args may have been formatted using "%s %s" with empty
-+     * strings, which can produce consecutive spaces, which g_strsplit would
-+     * convert into empty strings.  Ditto for leading and trailing space.
-+     * De-dup spaces to avoid that.
-+     */
-+
-+    from_str = src = dst = g_strstrip(qtest_from_args);
-+    do {
-+        if (*src != ' ' || src[-1] != ' ') {
-+            *dst++ = *src;
-+        }
-+    } while (*src++);
-+
-+    exec_args = g_strconcat(qtest_qemu_binary(migration_get_env()->qemu_dst),
-+                            " -incoming defer ", from_str, NULL);
-+    argv = g_strsplit(exec_args, " ", -1);
-+    migrate_set_parameter_strv(who, "cpr-exec-command", argv);
-+}
-+
-+static void wait_for_migration_event(QTestState *who, const char *waitfor)
-+{
-+    QDict *rsp, *data;
-+    char *status;
-+    bool done = false;
-+
-+    while (!done) {
-+        rsp = qtest_qmp_eventwait_ref(who, "MIGRATION");
-+        g_assert(qdict_haskey(rsp, "data"));
-+        data = qdict_get_qdict(rsp, "data");
-+        g_assert(qdict_haskey(data, "status"));
-+        status = g_strdup(qdict_get_str(data, "status"));
-+        g_assert(strcmp(status, "failed"));
-+        done = !strcmp(status, waitfor);
-+        qobject_unref(rsp);
-+    }
-+}
-+
-+static void test_cpr_exec(MigrateCommon *args)
-+{
-+    QTestState *from, *to;
-+    void *data_hook = NULL;
-+    g_autofree char *connect_uri = g_strdup(args->connect_uri);
-+    g_autofree char *filename = g_strdup_printf("%s/%s", tmpfs,
-+                                                FILE_TEST_FILENAME);
-+
-+    if (migrate_start(&from, NULL, args->listen_uri, &args->start)) {
-+        return;
-+    }
-+
-+    /* Source and dest never run concurrently */
-+    g_assert_false(args->live);
-+
-+    if (args->start_hook) {
-+        data_hook = args->start_hook(from, NULL);
-+    }
-+
-+    wait_for_serial("src_serial");
-+    set_cpr_exec_args(from, args);
-+    migrate_set_capability(from, "events", true);
-+    migrate_qmp(from, NULL, connect_uri, NULL, "{}");
-+    wait_for_migration_event(from, "completed");
-+
-+    to = qtest_init_after_exec(from);
-+
-+    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
-+                             "  'arguments': { "
-+                             "      'channels': [ { 'channel-type': 'main',"
-+                             "      'addr': { 'transport': 'file',"
-+                             "                'filename': %s,"
-+                             "                'offset': 0  } } ] } }",
-+                             filename);
-+    wait_for_migration_complete(to);
-+
-+    wait_for_resume(to, get_dst());
-+    /* Device on target is still named src_serial because args do not change */
-+    wait_for_serial("src_serial");
-+
-+    if (args->end_hook) {
-+        args->end_hook(from, to, data_hook);
-+    }
-+
-+    migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
-+}
-+
-+static void *test_mode_exec_start(QTestState *from, QTestState *to)
-+{
-+    assert(!to);
-+    migrate_set_parameter_str(from, "mode", "cpr-exec");
-+    return NULL;
-+}
-+
-+static void test_mode_exec(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    g_autofree char *listen_uri = g_strdup_printf("defer");
-+
-+    MigrateCommon args = {
-+        .start.only_source = true,
-+        .start.opts_source = "-machine aux-ram-share=on -nodefaults",
-+        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
-+                                " -machine memory-backend=pc.ram",
-+        .connect_uri = uri,
-+        .listen_uri = listen_uri,
-+        .start_hook = test_mode_exec_start,
-+    };
-+
-+    test_cpr_exec(&args);
-+}
-+
- void migration_test_add_cpr(MigrationTestEnv *env)
- {
-     tmpfs = env->tmpfs;
-@@ -135,5 +267,6 @@ void migration_test_add_cpr(MigrationTestEnv *env)
-         migration_test_add("/migration/mode/transfer", test_mode_transfer);
-         migration_test_add("/migration/mode/transfer/defer",
-                            test_mode_transfer_defer);
-+        migration_test_add("/migration/mode/exec", test_mode_exec);
-     }
- }
+r~
+
+
+Pierrick Bouvier (1):
+  tests/functional: update tests using TF-A/TF-RMM to support FEAT_GCS
+
+Richard Henderson (72):
+  target/arm: Add isar feature test for FEAT_S1PIE, FEAT_S2PIE
+  target/arm: Enable TCR2_ELx.PIE
+  target/arm: Implement PIR_ELx, PIRE0_ELx, S2PIR_EL2 registers
+  target/arm: Force HPD for stage2 translations
+  target/arm: Cache NV1 early in get_phys_addr_lpae
+  target/arm: Populate PIE in aa64_va_parameters
+  target/arm: Implement get_S1prot_indirect
+  target/arm: Implement get_S2prot_indirect
+  target/arm: Expand CPUARMState.exception.syndrome to 64 bits
+  target/arm: Expand syndrome parameter to raise_exception*
+  target/arm: Implement dirtybit check for PIE
+  target/arm: Enable FEAT_S1PIE and FEAT_S2PIE on -cpu max
+  include/exec/memopidx: Adjust for 32 mmu indexes
+  include/hw/core/cpu: Widen MMUIdxMap
+  target/arm: Split out mmuidx.h from cpu.h
+  target/arm: Convert arm_mmu_idx_to_el from switch to table
+  target/arm: Remove unused env argument from regime_el
+  target/arm: Convert regime_el from switch to table
+  target/arm: Convert regime_has_2_ranges from switch to table
+  target/arm: Remove unused env argument from regime_is_pan
+  target/arm: Convert regime_is_pan from switch to table
+  target/arm: Remove unused env argument from regime_is_user
+  target/arm: Convert regime_is_user from switch to table
+  target/arm: Convert arm_mmu_idx_is_stage1_of_2 from switch to table
+  target/arm: Convert regime_is_stage2 to table
+  target/arm: Introduce mmu indexes for GCS
+  target/arm: Introduce regime_to_gcs
+  target/arm: Support page protections for GCS mmu indexes
+  target/arm: Implement gcs bit for data abort
+  target/arm: Add GCS cpregs
+  target/arm: Add GCS enable and trap levels to DisasContext
+  target/arm: Implement FEAT_CHK
+  target/arm: Make helper_exception_return system-only
+  target/arm: Export cpsr_{read_for,write_from}_spsr_elx
+  target/arm: Expand pstate to 64 bits
+  target/arm: Add syndrome data for EC_GCS
+  target/arm: Add arm_hcr_el2_nvx_eff
+  target/arm: Use arm_hcr_el2_nvx_eff in access_nv1
+  target/arm: Split out access_nv1_with_nvx
+  target/arm: Implement EXLOCKException for ELR_ELx and SPSR_ELx
+  target/arm: Split {full,core}_a64_user_mem_index
+  target/arm: Introduce delay_exception{_el}
+  target/arm: Emit HSTR trap exception out of line
+  target/arm: Emit v7m LTPSIZE exception out of line
+  target/arm: Implement GCSSTR, GCSSTTR
+  target/arm: Implement GCSB
+  target/arm: Implement GCSPUSHM
+  target/arm: Implement GCSPOPM
+  target/arm: Implement GCSPUSHX
+  target/arm: Implement GCSPOPX
+  target/arm: Implement GCSPOPCX
+  target/arm: Implement GCSSS1
+  target/arm: Implement GCSSS2
+  target/arm: Add gcs record for BL
+  target/arm: Add gcs record for BLR
+  target/arm: Add gcs record for BLR with PAuth
+  target/arm: Load gcs record for RET
+  target/arm: Load gcs record for RET with PAuth
+  target/arm: Copy EXLOCKEn to EXLOCK on exception to the same EL
+  target/arm: Implement EXLOCK check during exception return
+  target/arm: Enable FEAT_GCS with -cpu max
+  linux-user/aarch64: Implement prctls for GCS
+  linux-user/aarch64: Allocate new gcs stack on clone
+  linux-user/aarch64: Release gcs stack on thread exit
+  linux-user/aarch64: Implement map_shadow_stack syscall
+  target/arm: Enable GCSPR_EL0 for read in user-mode
+  linux-user/aarch64: Inject SIGSEGV for GCS faults
+  linux-user/aarch64: Generate GCS signal records
+  linux-user/aarch64: Enable GCS in HWCAP
+  tests/tcg/aarch64: Add gcsstr
+  tests/tcg/aarch64: Add gcspushm
+  tests/tcg/aarch64: Add gcsss
+
+ include/exec/memopidx.h                       |   9 +-
+ include/hw/core/cpu.h                         |   7 +-
+ linux-user/aarch64/gcs-internal.h             |  38 ++
+ linux-user/aarch64/target_prctl.h             |  96 ++++
+ linux-user/aarch64/target_signal.h            |   1 +
+ linux-user/qemu.h                             |   5 +
+ target/arm/cpregs.h                           |  22 +
+ target/arm/cpu-features.h                     |  15 +
+ target/arm/cpu.h                              | 243 ++--------
+ target/arm/internals.h                        | 148 +-----
+ target/arm/mmuidx-internal.h                  | 113 +++++
+ target/arm/mmuidx.h                           | 241 ++++++++++
+ target/arm/syndrome.h                         |  35 ++
+ target/arm/tcg/helper-a64.h                   |   5 +-
+ target/arm/tcg/translate.h                    |  46 +-
+ tests/tcg/aarch64/gcs.h                       |  80 ++++
+ accel/tcg/cputlb.c                            |   3 -
+ linux-user/aarch64/cpu_loop.c                 |   5 +
+ linux-user/aarch64/elfload.c                  |   1 +
+ linux-user/aarch64/signal.c                   | 138 +++++-
+ linux-user/syscall.c                          | 114 +++++
+ target/arm/cpregs-gcs.c                       | 156 +++++++
+ target/arm/cpu.c                              |  17 +-
+ target/arm/gdbstub64.c                        |   2 +
+ target/arm/helper.c                           | 283 ++++++++---
+ target/arm/machine.c                          | 113 ++++-
+ target/arm/mmuidx.c                           |  66 +++
+ target/arm/ptw.c                              | 373 +++++++++++----
+ target/arm/tcg-stubs.c                        |   2 +-
+ target/arm/tcg/cpu64.c                        |   3 +
+ target/arm/tcg/helper-a64.c                   |  35 +-
+ target/arm/tcg/hflags.c                       |  38 ++
+ target/arm/tcg/mte_helper.c                   |   2 +-
+ target/arm/tcg/op_helper.c                    |  11 +-
+ target/arm/tcg/tlb-insns.c                    |  47 +-
+ target/arm/tcg/tlb_helper.c                   |  18 +-
+ target/arm/tcg/translate-a64.c                | 438 ++++++++++++++++--
+ target/arm/tcg/translate.c                    |  78 +++-
+ tests/tcg/aarch64/gcspushm.c                  |  71 +++
+ tests/tcg/aarch64/gcsss.c                     |  74 +++
+ tests/tcg/aarch64/gcsstr.c                    |  48 ++
+ docs/system/arm/emulation.rst                 |   4 +
+ target/arm/meson.build                        |   9 +-
+ target/arm/tcg/a64.decode                     |   5 +
+ .../aarch64/test_device_passthrough.py        |   4 +-
+ tests/functional/aarch64/test_rme_sbsaref.py  |   4 +-
+ tests/functional/aarch64/test_rme_virt.py     |   4 +-
+ tests/tcg/aarch64/Makefile.target             |   5 +
+ 48 files changed, 2666 insertions(+), 609 deletions(-)
+ create mode 100644 linux-user/aarch64/gcs-internal.h
+ create mode 100644 target/arm/mmuidx-internal.h
+ create mode 100644 target/arm/mmuidx.h
+ create mode 100644 tests/tcg/aarch64/gcs.h
+ create mode 100644 target/arm/cpregs-gcs.c
+ create mode 100644 target/arm/mmuidx.c
+ create mode 100644 tests/tcg/aarch64/gcspushm.c
+ create mode 100644 tests/tcg/aarch64/gcsss.c
+ create mode 100644 tests/tcg/aarch64/gcsstr.c
+
 -- 
-2.50.1
+2.43.0
 
 
