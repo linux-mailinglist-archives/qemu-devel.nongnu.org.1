@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA964BB5DC8
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D96F1BB5DDA
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:34:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4WTi-0007Ko-E1; Thu, 02 Oct 2025 23:29:06 -0400
+	id 1v4WTm-0007RW-44; Thu, 02 Oct 2025 23:29:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WTb-0007Ic-OK
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:59 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1v4WTg-0007Md-6O
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:29:04 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WTU-0001Js-5b
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:59 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-78118e163e5so2456224b3a.0
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:49 -0700 (PDT)
+ id 1v4WTX-0001KA-7O
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:29:03 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-78af743c232so1557070b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759462127; x=1760066927; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1759462129; x=1760066929; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bhxBjl9dnV1s4sWgaM9fEYlOc+gZAvu50RmyzHsZFQ4=;
- b=OFC6a2QEcT3t41rGcrw8XLt44cfuQ0A8zuQl1jVmO4xMhwCvEvBb/tDUvIiPuboL42
- sHKw8Ux7kAIQnzix8Dve4xDJqNsIzYyddkMkL3YDr6PmK0uWscRnfGgV8Ru8fDMuVbPh
- 1ZrHlfr65sHviy8BVX8k07/YE741F8ERLw6K7NbQR3hdkGk/4M5dqeST9kVDI9qfD+x5
- tDmGGvZBY1inl57fF6FlceETllNr3bUgiN1ZXb5Sb8rKajePQ8RuAdyjumVUZFPtKSvO
- NiGVFLuE0TYycWbrKmZapUQc9uA1l9Y9/AE8pAXrESC3KsUYyR2YwTOAdd72MEyY0EbN
- DxRw==
+ bh=vlpWwSZsU0Dbu3VqGUqbPCpGrK5tg56q0sJG8Lc+Efw=;
+ b=YixLE2rz2DLGYt5Q3aj8NwgkGkEcKcTrBuZSF/XHG5w6ClD51i/68CurI3GC/DItRO
+ wgs1Aw0/wbYEI6lyKskWSkpgJUKLhAkavoiVyCi2u8ATb7XhIkdop/IyERHF95yyIS5t
+ qZxE3zHakKMx27BxTpRfMrOaBbzaLFxF18Qf1kMBAWfufGjzopuV5WCWWVMWcjr+fRrH
+ EX84iUiLm7PCcr2uLgx/Zf96u/ZUMOltIU4b86bPXj8ZnOGqtIALL8d3OSxptmlBFQr5
+ dqZvXW/9ivv52TKHMTP1fMl+d4kSa9KvS+cQqlThdslM8BbmuIo8QGczOsGthrF+s7yC
+ iYyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759462127; x=1760066927;
+ d=1e100.net; s=20230601; t=1759462129; x=1760066929;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bhxBjl9dnV1s4sWgaM9fEYlOc+gZAvu50RmyzHsZFQ4=;
- b=GMPYNAxtZ+7a3zFoP0F3RRHosGWSeftybPvQtjyy57qQy3cZywxo3gKGSM+doxjjbC
- l3+tn2fky31E2tJUkWWfww4xuuIWpPSQ3wT6DB598SnN2XIKXPLZgGW3KbfAe98WLcFW
- KDgF25zW9I04/4+40grdalYnkFFQE7pDGrLhkjy2KtxWY/9MwBH6Nbsl+ecFuq4e+f80
- k53Tgusr2GdzmcgSu+yTQ26wBJBOO2hRXMs7dnYRaFpzwnNvGQgJ2JRxXEz3A2QcREiy
- KBZbC6tA7anOwJ3nXj5U8VaU3RjKkqh8zXVAqGpH3NyBrtgiUXvf0yK89UfnmZe+THDb
- Lmkw==
-X-Gm-Message-State: AOJu0YwGORggL/OvKAmTUzFAgQ4cDJeJ4rl25ziv/A04MrigXAu7/s4N
- LDTuDqlWGc1TU4kZvvGSNbQTt5yWvSOvqRskPXvcci74RYpdBrW9w6G/qUEkrA==
-X-Gm-Gg: ASbGncvepiZEQeqIrvELtT5o+2ciJFIBkhf5TuJkBbK6PWiCIPvSc5h6Cyd7t4Wpgas
- etqzHVN6jpBRFu13f7jQ6Kl1iy2EL/Z7xjsPwq4lfRGMJLqxUbJ/JsuHC4ZwZnfxaIt6TZZn5y5
- +a+bEH7UroRENnF7M8KmRsuHxdobguOCOWJxRCvbcROAsjunfOlRMSD0FCB3/eHmb99QvUuFNjI
- GCuFZ6jOtoFbMuF+DzFE7ROVQ4U7miM5zJr3XSAaEplyK/RQw/23YoOlEUd1ofxLdOFfM5405DO
- 2Iiej3OtNmNmyloc7d/Z7NNTrcOdh85aphUDYBPlBukg/qUW6/i7C6HWY7MHo6bavEvim7DM6pB
- yfnGF0FQajukLCVUXF1ErmgBBmnXZKQFilOvgN+6PzbzVMe+aaaTFrNHhMkX0vQOyiSnZr5v3VQ
- UFSt02OddMp2oRvbQxDcVyUw5/NX3dfefxZiL91MYmSQb3669w2Hdl
-X-Google-Smtp-Source: AGHT+IGQ+dWxdlyOjGc/Mqvw3Y/FIbqUO4ta+pa2enjq2GROPh8iADP40Lf4gMe6cZVvWh/6ff3SVw==
-X-Received: by 2002:a05:6a21:e083:b0:2ac:7445:4947 with SMTP id
- adf61e73a8af0-32b61d6ffc7mr2021095637.19.1759462126528; 
- Thu, 02 Oct 2025 20:28:46 -0700 (PDT)
+ bh=vlpWwSZsU0Dbu3VqGUqbPCpGrK5tg56q0sJG8Lc+Efw=;
+ b=aCZqTowLxNGdeMYQ5ggeiOaFfsc0w9ELmgn094Fcr0ag/jN/zo+8+y46kdfq1m+NQC
+ relSbILdf8jqqLu1YwvDYSa3aKcOnrlmlvr5l9VQlyVGHVs1jK2yaBYW6UYZwiqJtalv
+ NUOJR0A1vFWP8pkh6hUdxc6ZyAt0OQpmnwlh3GsyOd0w7oBunso3Ed/Mx1CT14FzvKam
+ GeZV8BlhGTePgY+CgzMClsfZE35XFa+SMzjilUp3Yncx5IhT++kBVy0LFaS2jyk5Q4Cd
+ frdcoWAsU04yhlAYSs2yScPQcU+/0kGYUpQdo37B3cvBLyhvzOs1DLTSwdMTW+i9e1ua
+ QHvA==
+X-Gm-Message-State: AOJu0YzkbX4t80ozKjVoYy4dZo4C5EZIx3RkYWX20itWWVJPew3j/IvR
+ eES04oJphbzjw0DI2e4ovloeEnay4lNLTYxWTUcIvcrzx9XrfynRYls5zQq+0A==
+X-Gm-Gg: ASbGncsJi9aBXLIyK8O/5vD2U4Y3zNTYwhb8bSRWCxhIT9/oLUN9278VEui2LADxHIQ
+ N5QY3bSoB8CpUq5RZk/1Zfed8bIN8V5PIUEtGqoYkYUN4zFVmWF/al2O+z1Cd6IU6tU9xjcz+ia
+ JOzd/7pcuDXBiYRyCNB5w2Qr/6HGKR66IEMMOY4tVa5hj35TGa8WmZL4M1CpTfqSoQt4N5WJH+0
+ aLuaY+7ppGeXT0L7+iSREkG6Uk+fM7Y/NepPfX5cxZQSEGucfEhdE3B5Xxdw7nM8IIv+LT9P4Nb
+ 7O/wkJ1YG4N3f+X5PcMrRHIEkO+Ms1fOXDMdb7FM+Ija9k03ignI94mUc8OmmGgvPeo5dOuMgjn
+ R/R9UCFFnWVDab1unhgt35IQ3bpBHdhrcojGSmJC/dVWOUuF431liR+FzHwkJQ/gQ3+b8o78Y9/
+ pj7QdLt66Y+aGFjDnfsoewNSMtutkTmv/JDM8jK0exvccPfSiz/7ba
+X-Google-Smtp-Source: AGHT+IH5w1HcIStEoYDOycQTVaNElNdhaDfB85qmi/RsR3lm+2GZzFJhWxqx5AVlzJ/pS31ODQVYbw==
+X-Received: by 2002:a05:6a20:3b04:b0:32b:6e34:fce0 with SMTP id
+ adf61e73a8af0-32b6e351abdmr623975637.19.1759462129589; 
+ Thu, 02 Oct 2025 20:28:49 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.43
+ 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 20:28:45 -0700 (PDT)
+ Thu, 02 Oct 2025 20:28:48 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 21/26] target/riscv: rvv: Replace checking V by checking Zve32x
-Date: Fri,  3 Oct 2025 13:27:13 +1000
-Message-ID: <20251003032718.1324734-22-alistair.francis@wdc.com>
+Subject: [PULL 22/26] target/riscv: rvv: Modify minimum VLEN according to
+ enabled vector extensions
+Date: Fri,  3 Oct 2025 13:27:14 +1000
+Message-ID: <20251003032718.1324734-23-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,89 +106,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-The Zve32x extension will be applied by the V and Zve* extensions.
-Therefore we can replace the original V checking with Zve32x checking for both
-the V and Zve* extensions.
+According to the RISC-V unprivileged specification, the VLEN should be greater
+or equal to the ELEN. This commit modifies the minimum VLEN based on the vector
+extensions and introduces a check rule for VLEN and ELEN.
+
+  Extension     Minimum VLEN
+* V                      128
+* Zve64[d|f|x]            64
+* Zve32[f|x]              32
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250923090729.1887406-2-max.chou@sifive.com>
+Message-ID: <20250923090729.1887406-3-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c            | 2 +-
- target/riscv/csr.c            | 3 ++-
- target/riscv/machine.c        | 3 ++-
- target/riscv/riscv-qmp-cmds.c | 2 +-
- target/riscv/tcg/tcg-cpu.c    | 2 +-
- 5 files changed, 7 insertions(+), 5 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d055ddf462..a877018ab0 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -604,7 +604,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-             }
-         }
-     }
--    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
-+    if (riscv_cpu_cfg(env)->ext_zve32x && (flags & CPU_DUMP_VPU)) {
-         static const int dump_rvv_csrs[] = {
-                     CSR_VSTART,
-                     CSR_VXSAT,
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index ea36eccb3d..5c91658c3d 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -2005,7 +2005,8 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
-     if (riscv_has_ext(env, RVF)) {
-         mask |= MSTATUS_FS;
-     }
--    if (riscv_has_ext(env, RVV)) {
-+
-+    if (riscv_cpu_cfg(env)->ext_zve32x) {
-         mask |= MSTATUS_VS;
-     }
- 
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 51e0567ed3..18d790af0d 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -131,7 +131,8 @@ static bool vector_needed(void *opaque)
-     RISCVCPU *cpu = opaque;
-     CPURISCVState *env = &cpu->env;
- 
--    return riscv_has_ext(env, RVV);
-+    return kvm_enabled() ? riscv_has_ext(env, RVV) :
-+                           riscv_cpu_cfg(env)->ext_zve32x;
- }
- 
- static const VMStateDescription vmstate_vector = {
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index b63de8dd45..c499f9b9a7 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -342,7 +342,7 @@ int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval)
-     }
- 
-     if (reg_is_vreg(name)) {
--        if (!riscv_has_ext(env, RVV)) {
-+        if (!riscv_cpu_cfg(env)->ext_zve32x) {
-             return -EINVAL;
-         }
- 
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 143ab079d4..b3b7f14503 100644
+index b3b7f14503..1150bd1469 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -661,7 +661,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+@@ -417,12 +417,21 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
+ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+                                  Error **errp)
+ {
++    uint32_t min_vlen;
+     uint32_t vlen = cfg->vlenb << 3;
+ 
+-    if (vlen > RV_VLEN_MAX || vlen < 128) {
++    if (riscv_has_ext(env, RVV)) {
++        min_vlen = 128;
++    } else if (cfg->ext_zve64x) {
++        min_vlen = 64;
++    } else if (cfg->ext_zve32x) {
++        min_vlen = 32;
++    }
++
++    if (vlen > RV_VLEN_MAX || vlen < min_vlen) {
+         error_setg(errp,
+                    "Vector extension implementation only supports VLEN "
+-                   "in the range [128, %d]", RV_VLEN_MAX);
++                   "in the range [%d, %d]", min_vlen, RV_VLEN_MAX);
          return;
      }
  
--    if (riscv_has_ext(env, RVV)) {
-+    if (cpu->cfg.ext_zve32x) {
-         riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
-         if (local_err != NULL) {
-             error_propagate(errp, local_err);
+@@ -432,6 +441,12 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+                    "in the range [8, 64]");
+         return;
+     }
++
++    if (vlen < cfg->elen) {
++        error_setg(errp, "Vector extension implementation requires VLEN "
++                         "to be greater than or equal to ELEN");
++        return;
++    }
+ }
+ 
+ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
 -- 
 2.51.0
 
