@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8F3BB757A
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 17:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 482BEBB7585
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 17:42:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4huJ-0004yh-TM; Fri, 03 Oct 2025 11:41:23 -0400
+	id 1v4huC-0004qV-Mn; Fri, 03 Oct 2025 11:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4htP-0004ja-TW
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:40:29 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4htO-0004jL-6n
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:40:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4htC-0007Oc-Oy
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:40:23 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v4htA-0007a5-8m
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 11:40:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759506002;
+ s=mimecast20190719; t=1759506004;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+ex488mX5IGmS9jg+WlubJIlm7XHzVTBkhQfIVSjn4U=;
- b=Pc8xLpCmEt8ttiftKwzPjrJkdYZBJyTSBIidbsW2/1JrhGzxjxo5EAJMxOz3WRlSTJW2yh
- JQhy8FHvRNe3kSJmnkcwQLcTjmy/UEkSV5Ehk+hd2FaQgxeC9an79JfQ6HzPU/NbCbJbKb
- 8EE4IDMFq80fzo166+14Qcxijn4gKec=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pKCVQ3pZe2HNt0PqEVTV3Z1mxHwK6jBevkFo6zZP+M0=;
+ b=U1n10SL/go1pA4zDqlFFuo8hDzzfJzGSV2UxKR/YX6vh1/oPhPORUADv6n+W3Y70Ng9L0G
+ WLLXB9zr7PS5S11zOtHUo9A+oJFmL+IX/u5f/vd76HpUkR+cT6+4ljZfnq1ZK9Q+cqkjiC
+ F5VIDDJZETZzBtEw/nPi0rcQHeo70Ww=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-SThgoTNWOw6coG_K12vqsw-1; Fri, 03 Oct 2025 11:40:01 -0400
-X-MC-Unique: SThgoTNWOw6coG_K12vqsw-1
-X-Mimecast-MFC-AGG-ID: SThgoTNWOw6coG_K12vqsw_1759506001
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-876ee102b44so66391626d6.1
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 08:40:01 -0700 (PDT)
+ us-mta-156-x4wdz4OWOCS7T5mEjIV53g-1; Fri, 03 Oct 2025 11:40:03 -0400
+X-MC-Unique: x4wdz4OWOCS7T5mEjIV53g-1
+X-Mimecast-MFC-AGG-ID: x4wdz4OWOCS7T5mEjIV53g_1759506002
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-79e48b76f68so67121176d6.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 08:40:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759506001; x=1760110801;
+ d=1e100.net; s=20230601; t=1759506002; x=1760110802;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+ex488mX5IGmS9jg+WlubJIlm7XHzVTBkhQfIVSjn4U=;
- b=N0tx0gW0N2iq4YSXXD43ExFYqPkkp/1u7vvfoZDTZBt4jrnIzkOUQuW40xcLUN9RLX
- HLllVx7NCe3omGpabA1/+PLlQ1C7P6b6x99pj+XN1OdxbBQ484CNOXGGu5ywEv43ZvtV
- /zY6O9YuWuHEtAU/HaDTG2gJk5ZX0K94AU25VKoBCTFo/h/iXPmoG2Sw0VAD5MWnPs57
- ZpAG5EXVYIt92uFmApzpNWcKpZzd1hNJFw+HmXynp/cZVeEtE2lRoBIHuP1HeZYEojdK
- 6ixW6bS9nhmK7kxz0r+oO66Ap9wuytVa0Bfxbjmu2GeBBukhPDGowvoF6ZTrf2A7Y/p9
- ZkHQ==
+ bh=pKCVQ3pZe2HNt0PqEVTV3Z1mxHwK6jBevkFo6zZP+M0=;
+ b=Nd24Rp1aEKgSSyXxpCO+Q3fc7amQgKPgJ//O+7TOIoyFql3/M+TV2ncM6ZKLM2NgCz
+ aYTmOOqNzDB0IgzEGJrBq/ukPSRKzavtcSyhioW1OxZbiIBavIhOzKhDpPAK1MrV9OvP
+ T255gCzerS/m/41I8BjAoFqOrc0QaouofCZ2F7umjwrd0zL6p9Ox3gdyNKbYU0VzZNZt
+ xU6SSeGw4nank4L51kEIX86O8oU9IqcDI3GfcP1JEhRI5F/7DaqTMaznxr9+XrubibsP
+ +rG1DVgtD1oK4y8SDICgtJVpuf/29mpqdR1UrUpwnzSHH1aOwJC/wWtSN1RzRxn+8dki
+ fqSA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWYK5zg3C3P3gXbsVpC0Oqmob+N+sqFzsRVPpdSBG/YtdDiUWiGLyJ8N1t/cv0kRptR2yOAkAU21uY2@nongnu.org
-X-Gm-Message-State: AOJu0YzQYtwKV5gJknHKQ9m54E616znMAyEJ0nvCUx6BZRYTqsXPZnHv
- DWnACEXMnicRiQFpZHFGFhfFPT5fQ5tC2ofvTwWdNfcm1IoNPPvuT8KyT29Y8xzKJfjyxDQDSH4
- GTRVWgRenNyY5lnUPWpmnN2qxHABfptUUDmAAbxeHk97WW536XMINy7we
-X-Gm-Gg: ASbGnctV85d1DjTWU/IekrGJRDGar2+QkTXnzv8lNDU85wcfYrxeeRtCufoAshJV6zr
- uFVuVYUU1RTpWUfHrzsYsZSpOBoGUmZybmtQIpWrehoyqEs0SJ9PLzWmpWs+3V/CO7aBBJYjsyv
- FTiFaJPApdMBI/B+PhlcP/Dax56LQQlpGZn2q4jXE1Y/xLTs2d/b1+6PiDdnVaVZHBaUvmY2LBe
- TsJ6iIGNn37dpFdXt21vGkNN1NvLf4bDVIy5GNDluOROaTqIHJq1arzkVoisHXLNCW8YSUFc3W1
- Cs6W2CsfyRmw8qFzCqucijf4sMBEYv2McWvlVg==
-X-Received: by 2002:a05:6214:2428:b0:788:82e0:3a9 with SMTP id
- 6a1803df08f44-879dc443233mr39525456d6.21.1759506000555; 
- Fri, 03 Oct 2025 08:40:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOhwdZYy52hWmVhuexgSFQN1MS8FtD0GjuDVGw59J3VlD6Fpfhsw5KrphguH6hPFZlyFuEag==
-X-Received: by 2002:a05:6214:2428:b0:788:82e0:3a9 with SMTP id
- 6a1803df08f44-879dc443233mr39524956d6.21.1759505999902; 
- Fri, 03 Oct 2025 08:39:59 -0700 (PDT)
+ AJvYcCX6yVFEQ4sr7mf6bn6ThRT+JWyNHsKhkQWqXYPMg8y96WzZxp7dxhUVTn+BcsHIIJNKOt1T+xwB8u3p@nongnu.org
+X-Gm-Message-State: AOJu0YzKBeLQ3xxWXvI5j7e8Q/oBaQFu5sx06Dar8A77+3kHSjT8hhpt
+ gkpfFqctcYev8w2SWjIZU9btgYvXfXsPAEYfqwrq0UeZuAn743A7/Hy0A2kA+dzMqrsX8qEMg6d
+ XX0OsNM+zH+IkSxoeewOIHT/e2DagD90bSYXi0TG85fN3BFjJazAEjQYlQkKMz1CO
+X-Gm-Gg: ASbGncsNCsAP58IK93PZjlwdSihn71QksDu2uxBZEUbrdq34XaslED7nVWE3OsGxWl6
+ Sy9wi9KJ9nb+hnr/p6MoN4YWG2AnK4YE6Ufx91PqlRfgIzXNZ3UEibKkhqBlEx/zcQD9vlNCBir
+ QtySVpjssKdsXrZpKzphB/16tmqGSb27TVzv0s+hFLuZCNGQ1Eh7dbk1/vyCsrw8f7kz+x/W/Wk
+ B9nq5Pq7RetB/KhwFqMnq0FmlCFU6cU7xqyIIoG3fDCgHqUS5Lr6BNhgQKDYnxzpRTjZVDPK+xh
+ 9cQuqCRVGAjL/5E1CYvNAxZHa7u0W59ZzmRKSg==
+X-Received: by 2002:a05:6214:484:b0:81b:23d:55a8 with SMTP id
+ 6a1803df08f44-879dc87ee1amr42708646d6.59.1759506001702; 
+ Fri, 03 Oct 2025 08:40:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGY07Hgid9eWizq610OleJ8bKKinbJlufwNYIT077mYrNjAFCNUpFpj2WKRkPGslekRcPok0w==
+X-Received: by 2002:a05:6214:484:b0:81b:23d:55a8 with SMTP id
+ 6a1803df08f44-879dc87ee1amr42707876d6.59.1759506001203; 
+ Fri, 03 Oct 2025 08:40:01 -0700 (PDT)
 Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-878bb53d91fsm40656746d6.23.2025.10.03.08.39.58
+ 6a1803df08f44-878bb53d91fsm40656746d6.23.2025.10.03.08.40.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 08:39:59 -0700 (PDT)
+ Fri, 03 Oct 2025 08:40:00 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Arun Menon <armenon@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PULL 05/45] migration: push Error **errp into
- loadvm_process_command()
-Date: Fri,  3 Oct 2025 11:39:08 -0400
-Message-ID: <20251003153948.1304776-6-peterx@redhat.com>
+Subject: [PULL 06/45] migration: push Error **errp into
+ loadvm_handle_cmd_packaged()
+Date: Fri,  3 Oct 2025 11:39:09 -0400
+Message-ID: <20251003153948.1304776-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251003153948.1304776-1-peterx@redhat.com>
 References: <20251003153948.1304776-1-peterx@redhat.com>
@@ -94,8 +94,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.467,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,200 +116,76 @@ From: Arun Menon <armenon@redhat.com>
 This is an incremental step in converting vmstate loading
 code to report error via Error objects instead of directly
 printing it to console/monitor.
-It is ensured that loadvm_process_command() must report an error
+It is ensured that loadvm_handle_cmd_packaged() must report an error
 in errp, in case of failure.
 
-The errors are temporarily reported using error_report_err().
-This is removed in the subsequent patches in this series
-when we are actually able to propagate the error to the calling
-function.
-
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Arun Menon <armenon@redhat.com>
 Tested-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/20250918-propagate_tpm_error-v14-5-36f11a6fb9d3@redhat.com
+Link: https://lore.kernel.org/r/20250918-propagate_tpm_error-v14-6-36f11a6fb9d3@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/savevm.c | 86 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 63 insertions(+), 23 deletions(-)
+ migration/savevm.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/migration/savevm.c b/migration/savevm.c
-index fffea57cd9..d1ed2e1cde 100644
+index d1ed2e1cde..5e54651652 100644
 --- a/migration/savevm.c
 +++ b/migration/savevm.c
-@@ -2546,32 +2546,37 @@ static int loadvm_postcopy_handle_switchover_start(void)
-  * LOADVM_QUIT All good, but exit the loop
-  * <0          Error
+@@ -2405,7 +2405,7 @@ static int loadvm_postcopy_handle_resume(MigrationIncomingState *mis)
+  * Returns: Negative values on error
+  *
   */
--static int loadvm_process_command(QEMUFile *f)
-+static int loadvm_process_command(QEMUFile *f, Error **errp)
+-static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
++static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis, Error **errp)
  {
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     uint16_t cmd;
-     uint16_t len;
-     uint32_t tmp32;
-+    int ret;
+     int ret;
+     size_t length;
+@@ -2415,7 +2415,7 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
+     trace_loadvm_handle_cmd_packaged(length);
  
-     cmd = qemu_get_be16(f);
-     len = qemu_get_be16(f);
- 
-     /* Check validity before continue processing of cmds */
--    if (qemu_file_get_error(f)) {
--        return qemu_file_get_error(f);
-+    ret = qemu_file_get_error(f);
-+    if (ret) {
-+        error_setg(errp,
-+                   "Failed to load VM process command: stream error: %d",
-+                   ret);
-+        return ret;
+     if (length > MAX_VM_CMD_PACKAGED_SIZE) {
+-        error_report("Unreasonably large packaged state: %zu", length);
++        error_setg(errp, "Unreasonably large packaged state: %zu", length);
+         return -1;
      }
  
-     if (cmd >= MIG_CMD_MAX || cmd == MIG_CMD_INVALID) {
--        error_report("MIG_CMD 0x%x unknown (len 0x%x)", cmd, len);
-+        error_setg(errp, "MIG_CMD 0x%x unknown (len 0x%x)", cmd, len);
-         return -EINVAL;
+@@ -2426,8 +2426,8 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
+                           length);
+     if (ret != length) {
+         object_unref(OBJECT(bioc));
+-        error_report("CMD_PACKAGED: Buffer receive fail ret=%d length=%zu",
+-                     ret, length);
++        error_setg(errp, "CMD_PACKAGED: Buffer receive fail ret=%d length=%zu",
++                   ret, length);
+         return (ret < 0) ? ret : -EAGAIN;
      }
+     bioc->usage += length;
+@@ -2457,6 +2457,9 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
+     } while (1);
  
-     trace_loadvm_process_command(mig_cmd_args[cmd].name, len);
- 
-     if (mig_cmd_args[cmd].len != -1 && mig_cmd_args[cmd].len != len) {
--        error_report("%s received with bad length - expecting %zu, got %d",
--                     mig_cmd_args[cmd].name,
--                     (size_t)mig_cmd_args[cmd].len, len);
-+        error_setg(errp, "%s received with bad length - expecting %zu, got %d",
-+                   mig_cmd_args[cmd].name,
-+                   (size_t)mig_cmd_args[cmd].len, len);
-         return -ERANGE;
-     }
- 
-@@ -2584,7 +2589,7 @@ static int loadvm_process_command(QEMUFile *f)
-         }
-         mis->to_src_file = qemu_file_get_return_path(f);
-         if (!mis->to_src_file) {
--            error_report("CMD_OPEN_RETURN_PATH failed");
-+            error_setg(errp, "CMD_OPEN_RETURN_PATH failed");
-             return -1;
-         }
- 
-@@ -2594,11 +2599,10 @@ static int loadvm_process_command(QEMUFile *f)
-          * been created.
-          */
-         if (migrate_switchover_ack() && !mis->switchover_ack_pending_num) {
--            int ret = migrate_send_rp_switchover_ack(mis);
-+            ret = migrate_send_rp_switchover_ack(mis);
-             if (ret) {
--                error_report(
--                    "Could not send switchover ack RP MSG, err %d (%s)", ret,
--                    strerror(-ret));
-+                error_setg_errno(errp, -ret,
-+                                 "Could not send switchover ack RP MSG");
-                 return ret;
-             }
-         }
-@@ -2608,39 +2612,71 @@ static int loadvm_process_command(QEMUFile *f)
-         tmp32 = qemu_get_be32(f);
-         trace_loadvm_process_command_ping(tmp32);
-         if (!mis->to_src_file) {
--            error_report("CMD_PING (0x%x) received with no return path",
--                         tmp32);
-+            error_setg(errp, "CMD_PING (0x%x) received with no return path",
-+                       tmp32);
-             return -1;
-         }
-         migrate_send_rp_pong(mis, tmp32);
+     ret = qemu_loadvm_state_main(packf, mis);
++    if (ret < 0) {
++        error_setg(errp, "VM state load failed: %d", ret);
++    }
+     trace_loadvm_handle_cmd_packaged_main(ret);
+     qemu_fclose(packf);
+     object_unref(OBJECT(bioc));
+@@ -2620,11 +2623,7 @@ static int loadvm_process_command(QEMUFile *f, Error **errp)
          break;
  
      case MIG_CMD_PACKAGED:
--        return loadvm_handle_cmd_packaged(mis);
-+        ret = loadvm_handle_cmd_packaged(mis);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
+-        ret = loadvm_handle_cmd_packaged(mis);
+-        if (ret < 0) {
+-            error_setg(errp, "Failed to load device state command: %d", ret);
+-        }
+-        return ret;
++        return loadvm_handle_cmd_packaged(mis, errp);
  
      case MIG_CMD_POSTCOPY_ADVISE:
--        return loadvm_postcopy_handle_advise(mis, len);
-+        ret = loadvm_postcopy_handle_advise(mis, len);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
- 
-     case MIG_CMD_POSTCOPY_LISTEN:
--        return loadvm_postcopy_handle_listen(mis);
-+        ret = loadvm_postcopy_handle_listen(mis);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
- 
-     case MIG_CMD_POSTCOPY_RUN:
--        return loadvm_postcopy_handle_run(mis);
-+        ret = loadvm_postcopy_handle_run(mis);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
- 
-     case MIG_CMD_POSTCOPY_RAM_DISCARD:
--        return loadvm_postcopy_ram_handle_discard(mis, len);
-+        ret = loadvm_postcopy_ram_handle_discard(mis, len);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
- 
-     case MIG_CMD_POSTCOPY_RESUME:
-         return loadvm_postcopy_handle_resume(mis);
- 
-     case MIG_CMD_RECV_BITMAP:
--        return loadvm_handle_recv_bitmap(mis, len);
-+        ret = loadvm_handle_recv_bitmap(mis, len);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
- 
-     case MIG_CMD_ENABLE_COLO:
--        return loadvm_process_enable_colo(mis);
-+        ret = loadvm_process_enable_colo(mis);
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
- 
-     case MIG_CMD_SWITCHOVER_START:
--        return loadvm_postcopy_handle_switchover_start();
-+        ret = loadvm_postcopy_handle_switchover_start();
-+        if (ret < 0) {
-+            error_setg(errp, "Failed to load device state command: %d", ret);
-+        }
-+        return ret;
-     }
- 
-     return 0;
-@@ -3049,6 +3085,7 @@ int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis)
- {
-     uint8_t section_type;
-     int ret = 0;
-+    Error *local_err = NULL;
- 
- retry:
-     while (true) {
-@@ -3076,7 +3113,10 @@ retry:
-             }
-             break;
-         case QEMU_VM_COMMAND:
--            ret = loadvm_process_command(f);
-+            ret = loadvm_process_command(f, &local_err);
-+            if (ret < 0) {
-+                error_report_err(local_err);
-+            }
-             trace_qemu_loadvm_state_section_command(ret);
-             if ((ret < 0) || (ret == LOADVM_QUIT)) {
-                 goto out;
+         ret = loadvm_postcopy_handle_advise(mis, len);
 -- 
 2.50.1
 
