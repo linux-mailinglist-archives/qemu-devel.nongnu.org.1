@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362C9BB67B0
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 12:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9E0BB67AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 12:48:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4dJy-0003qf-AP; Fri, 03 Oct 2025 06:47:30 -0400
+	id 1v4dJg-0003oY-U4; Fri, 03 Oct 2025 06:47:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Djordje.Todorovic@htecgroup.com>)
- id 1v4dJe-0003pL-7V; Fri, 03 Oct 2025 06:47:11 -0400
-Received: from mail-francecentralazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c20a::7] helo=PA4PR04CU001.outbound.protection.outlook.com)
+ id 1v4dJV-0003o7-VS; Fri, 03 Oct 2025 06:47:02 -0400
+Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com
+ ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Djordje.Todorovic@htecgroup.com>)
- id 1v4dJP-0007P0-Pg; Fri, 03 Oct 2025 06:47:07 -0400
+ id 1v4dJL-0007NV-9X; Fri, 03 Oct 2025 06:47:01 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vJqSppW0lYsJxxQEYC8I6HUUTBSHJ1ztSbikJyEspymkvPvcNURLwMi5Ytprn46mSa+MUva9WHt4/eGgKgZtfMGG/c2LWh4sdcd6830YoVMFnkH/fMHSG5zcF5BZqIcBO1IbrG1LXTTiKZEdV/UKZtdm/59jOJX9pA0MuXQ0IqbZZnJ56YaPgAJ4Uj/Ab6iGEmnhGXj4aepY9oktNT+XFr/5ZLfwmNAqJqp0qTtiEY4RuOgKVKtE/lO1dacLisDsjkxvbNkTtNI4Z649PBMcCxSRFn1zQ90pp11zOGXD6IEqCTWUvB0JlOlcTmXBeA3otPxCleKt6rjDenl+lfRVyw==
+ b=jmnbQ0nXn8qHPUyKnR7UpGBrU1V+EJ33n0VTpp2yIoVjl6RNxQHCNlJs+8dEa0MFgTlWGwwWdfnbNeeqNZ9tjOhOUNGG6GjyNhoQtWCyjv7up5LHqUGzcjoCvuqTFNOe8rmh/M0Ttl8qnhMPzpHtowKspCtc6lMIbZKFOswxYE9JkbMFGh5tkFOWBK0sgd1+tyDrXbgVcewfhx2k05sTZaF15D7yXKTeoVsx8LUAwdFfadiuucBY7u4U2mtm0t4W71ACTzhi35+/aMGL8lsyq92Buwk6aszamC0R3eSpRJvK/AZcqSDDsJeOP1AKeDJoz3t2GtKsFFZW1ZSD5NFt3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dvWSndUPaVYQQkHsmo+vl8oRxpG9eJoh0LxPt4lJ8ik=;
- b=xTF8J+cFRhK1gX3ikFHMqH94SSt7sRAqC28SK+gVUDX//Phj8wBt+kk7zaBiR7ufWZB6WoL5ELSGhZH8USomSNHGOLPLMc/kHMdbIFvhkv0V/iC7SHk8lGtbxfLWFjObl6YviBILn2B5jVcemB53I0sJyDh+TVkU352gdKHaVMlbFnPKSMium1U18FoIki6LlNc/TM9MUbt08aHH75fpNE8n8mnDY2nnaExymhFBylwaCvkz3KCs3HPbDp4r+CjIGkr9JjvObdeGZBaYmSy8dl7fTZSAKuOhEdwNMytnICRPcvocjrn0yBtvVC772896lOMovG3SsdD5XfTlloXFPg==
+ bh=oyW3Q7ZQ6oaIBLODAOp8zDllh3sILwEUmncfhjuRgAc=;
+ b=FmAmMwghlN+kIvb9A+4+Oep7zPuPXWzAEUJG3puk+ZgEpuCYkaIn2NPpuoRhpeQy6az8VxtHeAO7ubUUKK18bKRIoF9ZBrwmRZTFyVqBdpyknK50hk5k++Y4c+wyLC/6V4UG2w47NO2un/sddm+WQb5/HQXhS+wLNp1skWDj9niwOieKW5Xl7BMlkhjP4lUHwq/gASsEQfraAdqNAaGB3TwbBsY+xdUkOcCwR08BM75keBfgKAZXqsdKWlg5RqA3D83QDuJTf6YbpHmeykKYfr9ZkXbxnqz5U4O1IPiBX2j8NbPnqzZkxYJFizSHZtCoc+ndiD2AsAP6leOJGoHdDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=htecgroup.com; dmarc=pass action=none
  header.from=htecgroup.com; dkim=pass header.d=htecgroup.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=htecgroup.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dvWSndUPaVYQQkHsmo+vl8oRxpG9eJoh0LxPt4lJ8ik=;
- b=SKxCbmwAupR/8Vk3sBeThlE79DfCfSw3ItGyQjob0e1Bb1uwLI78c+0BmD6+/LGydLtqVs6YInTzTfvLetRvAtfjuAVJRF87bDOH4wuhNLcNCY6KirEpadF+Foi70nI/Y3QWpEnDsSQaqp3yN/+mgn11/J1BStFqgxjqWIihWEos/ZSsNqvtuTvYQCDvNYbATPbrXuYxnVxg7wOt8HyLuKXqBUx7Qjrs9WwAJyJGOBZPTsNV4HO18WZvNw14iccxqEcT20VMrtVhKzw6s5e5OR54GtTNRidXDz0XTCzibxPLWpUqw24PjSKUH2vypYzTBrTnVh7EEwxQ3TvYKvXlcg==
+ bh=oyW3Q7ZQ6oaIBLODAOp8zDllh3sILwEUmncfhjuRgAc=;
+ b=SycKwgCqH82XI4nudqS6vLwMdOVA+ubSY3lSciS2QJaWwhn/fv4UEc4MuOa+ZoEqYARyVYDXO8TQ+XUO6qrgt6zHhZXR4FV+Ky+Pi2j6kEhOzQ6BP1Jkl+JJwq6t9/jX1ClalAFpxD7DjLVFIN82hECjbB5nQ5cN3ttRsWmxUKOoEfLtJ2RFBb00z4X5rXJGvJCStqJTanxHveEvOFRIgcwXNdPKrEMHlUf1W28RSZNLEA6kEC9bjY4GZOzxzDIKNXlmuzCbK30Yy1mRySVf5wnnyyUmYiwFhdoBD8mJ+wAjCezhAx9MpqpOQsWaeCU53kTJOXFX123PlA5jZ9vrYA==
 Received: from AS4PR09MB6518.eurprd09.prod.outlook.com (2603:10a6:20b:4fb::5)
  by PA2PR09MB7850.eurprd09.prod.outlook.com (2603:10a6:102:418::14)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.16; Fri, 3 Oct
- 2025 10:45:23 +0000
+ 2025 10:45:22 +0000
 Received: from AS4PR09MB6518.eurprd09.prod.outlook.com
  ([fe80::ad50:891a:847c:580a]) by AS4PR09MB6518.eurprd09.prod.outlook.com
  ([fe80::ad50:891a:847c:580a%4]) with mapi id 15.20.9160.017; Fri, 3 Oct 2025
@@ -50,11 +50,11 @@ CC: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>, "cfu@mips.com"
  <philmd@linaro.org>, "alistair23@gmail.com" <alistair23@gmail.com>,
  "thuth@redhat.com" <thuth@redhat.com>, Djordje Todorovic
  <Djordje.Todorovic@htecgroup.com>
-Subject: [PATCH v10 09/13] hw/misc: Add RISC-V CPC device implementation
-Thread-Topic: [PATCH v10 09/13] hw/misc: Add RISC-V CPC device implementation
-Thread-Index: AQHcNFLRKSi80ovsGkOL0tndmBoQ4g==
+Subject: [PATCH v10 08/13] hw/misc: Add RISC-V CMGCR device implementation
+Thread-Topic: [PATCH v10 08/13] hw/misc: Add RISC-V CMGCR device implementation
+Thread-Index: AQHcNFLRuTadANf8akmIBURPJ5rshw==
 Date: Fri, 3 Oct 2025 10:45:22 +0000
-Message-ID: <20251003104443.51501-10-djordje.todorovic@htecgroup.com>
+Message-ID: <20251003104443.51501-9-djordje.todorovic@htecgroup.com>
 References: <20251003104443.51501-1-djordje.todorovic@htecgroup.com>
 In-Reply-To: <20251003104443.51501-1-djordje.todorovic@htecgroup.com>
 Accept-Language: en-US
@@ -65,91 +65,91 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=htecgroup.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AS4PR09MB6518:EE_|PA2PR09MB7850:EE_
-x-ms-office365-filtering-correlation-id: e0437d7d-a4cc-40db-2907-08de0269f46a
+x-ms-office365-filtering-correlation-id: 79dca689-f93f-4f15-060b-08de0269f431
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700021;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?UsfucVeerMM8SvmsAHha2Cv6etXeCsEwvVxeh3BmVs6p/tGAWqvTBZr3Zb?=
- =?iso-8859-1?Q?4lShfPXuo8tYLFONEOXhzHLiGa7boJHm28bWRuiBirlfOe3udoIG9Z9VzW?=
- =?iso-8859-1?Q?FIMLNLwD2AE3AwgT0gB94HsLerHzQU67L2n5xeRSskJRmLUioOYXDsM+d5?=
- =?iso-8859-1?Q?RQqDBkiWxkZwT6Gj7/vLFrWPb60uJ/gPQyA8iEB+RF4jkdKs0J1w9qMacR?=
- =?iso-8859-1?Q?fIczBgI4EY87JJ26poCjxbpUuN4ZgWfPcUWarHD9H9+NNAPLw3aHcW6aHy?=
- =?iso-8859-1?Q?Kl60ptEGpW1HiXhs8Z1mtbjz6sU7F8zbNdYZuOthw7qJ3lWcT1I5+VcTrX?=
- =?iso-8859-1?Q?IAgydFfA6k3hOMxBnmxAyoJ+lzLXU/vadE4NrSoAFfmku7U27+4MvpgirU?=
- =?iso-8859-1?Q?G3mZ1R+8pQyLSS1AcDK/wPtcWPNfRvBVWKitCikIvEpOodYh6XjZ5BEK4J?=
- =?iso-8859-1?Q?jY9hTWjP9nsmBW/y++W3uQ9r8WTianEeafn/OUpbazzYue8/IXZjUlvqWn?=
- =?iso-8859-1?Q?4dtTkTVL+EqM1L/QWKbwwYLagggxrbMAsozv3+tkydzaePOi9gY2Bscx9y?=
- =?iso-8859-1?Q?xNDvO4yagdFQAtbZkvBkamMDNFACxOHKkUKed1akj04vS0siD1yneIQ2wu?=
- =?iso-8859-1?Q?M9DXR/Nvln/eQU6BxJ3lYs7WVwEzLHysIjPUkTP8gQa5iaoSMxlFW7NJgn?=
- =?iso-8859-1?Q?dPiyD9aVJs4GKX3zD4Tr8cdugUL3pPKUkjfpbyzKJweqvsGPyBoxjQobLP?=
- =?iso-8859-1?Q?lgJieS3gherhWT1wZKNHJwC94kj4LYRRZ7+BLZAIlxfAa1ORZsA58UP652?=
- =?iso-8859-1?Q?Syn7E6nfUkY0oltK/AyM+GHKtMXL0VZE9mCX0fLt9JsGJcQ/+nVMRrIMJd?=
- =?iso-8859-1?Q?0FETZg1S7eQ0emgWMxwVhkyu0OzZ7Q4wLHA7V820GdM69MS0mYwL/6UXUz?=
- =?iso-8859-1?Q?ojcfdGNyvcRejTezuTUlUtfe6zt0fsQcqd9gOR1zFTCP08I8jiGbiJIvNh?=
- =?iso-8859-1?Q?2QHTMwcAAccqtjf2qko/bG/5OnKhHN4Csmh7eO8hiVEZ7QvlWMPHkRly+a?=
- =?iso-8859-1?Q?EaMBR20VlAn83zm5odRGi1LDDfil0QQ83wq9PumxI17kzeoyGclStL/m5e?=
- =?iso-8859-1?Q?KdUhVP1kHwZn2W5U6rntiLyuq14SMQBxevx+WXhfeFRX1wVksXjY28HDTl?=
- =?iso-8859-1?Q?tWd7/vTsyMdbqB4mANokE84RBQFAsFOrbcaGfB9GL2A8CJVYe7DsK/nHaK?=
- =?iso-8859-1?Q?Z+URz9Ua4nWBny1pdZiJ+uc/yptvmqtxYT1/8u03ZxUOnpbKkfF0yAi5ZL?=
- =?iso-8859-1?Q?lo7zsUWrZx7450TfuzA4PFfVEAEgG8T3ob6Sjj5eOK237A/Sv1OfijfB+O?=
- =?iso-8859-1?Q?4VCdN/Sj3hUZYAAPI3QPVhhdpDrXBFGbSb7bCNkrqakvP4I1VoiCOAaLzw?=
- =?iso-8859-1?Q?x7dl1s+J4rf2fphVnQDcPTTbeg8E6BxbQnswy0Zcgf8bBY0o8ogDLTC4ci?=
- =?iso-8859-1?Q?H7Im8cz4xKYjMLFOi0LtcB9y699yFgF/0NJKta6uGsrQ=3D=3D?=
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?jbEvZ8PU3lvEB3DvthWxYQPUzCaHUB1r/PgNF2ShyWqAr3gUeEe81U124d?=
+ =?iso-8859-1?Q?xi+kRrtlV/KbYqz6iCo2b/fVqPYQKEO3hnm+HvXm1MieS+I0UfanZ4pza7?=
+ =?iso-8859-1?Q?K0IAoNWbsYhAj0W3CGtqt4V93mYuMwWYUXaMEa0ev8Olm3MAHObz2DsUUy?=
+ =?iso-8859-1?Q?kfaDW2qIQegf7ZAZsB9bECbCKutsQrPCaJmxzq/WrY/tamQKjtQEwnnefD?=
+ =?iso-8859-1?Q?nCRE0Gtgpb9Py4rahQTTJsYzdoTiybZ1c3GiMxYbghuTC6FM8i/Evj2UB5?=
+ =?iso-8859-1?Q?5Lo3Qj+aiar5gUgDIsmcvQrVYI72QY1H0ZMxudC8KY9ZR1NdHUNXp/Bth2?=
+ =?iso-8859-1?Q?Bwy2WR5yUjybRTW8/I46OS3AxkZSyCaYZLS309yCoaWBwsBdnHva1uzQzj?=
+ =?iso-8859-1?Q?Hamq+bqRXlffyRy+NRMmvcy3xEwCEno2KJVFE2HwQbBiVg/UUvC1WtnZHv?=
+ =?iso-8859-1?Q?at2HSu21JApHlaWmAsBWJl4GOLhCfsifo74MzhtUjCTBCGJt6IQyajUcMP?=
+ =?iso-8859-1?Q?3uQDSFXzp7uiwTOqb7mvxDZbGjn3978jkKOzKK9g0BLjOC/6NFfPJGrxqP?=
+ =?iso-8859-1?Q?GZDkkL8ZfgDVrRwebQoka9W5kXoAvCPP0CdteIJRuPoUCxP7exmGPA+DKL?=
+ =?iso-8859-1?Q?GD0W+CdhCpwIf/GKqtlQ2fmdn4aNQuY880/27iUlHfX9njjCYFdiuFaMTp?=
+ =?iso-8859-1?Q?aM+k4W5PunVeJsgUGRsA1fgGXQj4TlMMjlGSJgSO725LpBvzuElOkcF5ut?=
+ =?iso-8859-1?Q?qN9Fz5QDUohXzMsD8kJTfXma0zf4mRR/8CmqDDDnFBhfL2zqPF7rK/M8kT?=
+ =?iso-8859-1?Q?JkW5Kisb1GlOL0S6XfgjiQa4U6Qfx3+WdqeWQQCdn77wKq5hF9EH05Autb?=
+ =?iso-8859-1?Q?UiEbZ91ADFOoxbZH4jbmnIy+KfIMM/9VG1pTngz/3ORA3IRIrWsb2zN9Nr?=
+ =?iso-8859-1?Q?Vh/Hb3WavnY3CgTMy/tfGs6+ju2Bp75W15kxb6gwiOP1OboVBcyiLo009p?=
+ =?iso-8859-1?Q?tpH+LP8jYUCt5SX4yuiHdKdwRA9GE6S/rCpl9ArhxtNE8ExTpckgUjzJ+z?=
+ =?iso-8859-1?Q?ESFkYpHvfGWCfhJ5mF9ce/wRO8qn0gqZddZjwlw24ta9qThzwHUVBMMxLg?=
+ =?iso-8859-1?Q?SgMytUDLSzjve6UK4cf+Efwe5+GZ+39rawNBPgE76z733XFyOx0saxvS23?=
+ =?iso-8859-1?Q?wHct8QT2GzT9DdeiIS0Gala5yd3jHWzQcJY23Z90hJXIdu/4X7QRJftlFY?=
+ =?iso-8859-1?Q?j7rKoRt2v02kRlb5i6j5z6tyDdvl1kPkRcGMkJIML7oUKvVLwXlQetuEtE?=
+ =?iso-8859-1?Q?l27Eynw7qh0wQrVi91MTa8tjnWkfEYcqkrAtAoPwbIlN3loNhoZDXVMgd+?=
+ =?iso-8859-1?Q?YBRnzgx1ObC/N3PQugpVTtKfVFcS+eDgx98lTVbjuNyjJo6q5S2afwUtRE?=
+ =?iso-8859-1?Q?44xgACYaz0cfr4KSguV7oxq+mikzjhhrjg/nMPTJ/z5e1Cy13fNnToqa2T?=
+ =?iso-8859-1?Q?Z/e3gUwsoCgQ3WM5EGt2ZUEeX+3CVcrrWMmjTvY+paqA=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AS4PR09MB6518.eurprd09.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014)(38070700021); DIR:OUT; SFP:1102; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?qeY2gEhmhjiRB148XecoTG2rly0G3KHGeOdGZJ9A0zrr8I7lyWzeDnWHGP?=
- =?iso-8859-1?Q?UeohLM4H+eciNi9qJMC/+6vmBJRG1u8iK2uyDCT1jFk8Vk3Q6Xo0uXIHDL?=
- =?iso-8859-1?Q?0Z5lNfcFTVM25LjrZaSYdigzwuSCFVuJg6PXMIe9PdF9HdripVPs2dmha+?=
- =?iso-8859-1?Q?7L3+tVxaWi2hvKkVQTp1jTmU9EthUTCNTeNdT3yMkZPeyX4S0ono4lz8kK?=
- =?iso-8859-1?Q?gvdn7WTAwVhCw/lIcmjggo+WJ9f6EXkDfrDtb8Gg39PqDLcRdEmFLGtRUu?=
- =?iso-8859-1?Q?kDgWcrsecmWQ9VjNhkVGx418gtxrN3wzf3MPgfoSAtyNG3pDlXnAHpEjI9?=
- =?iso-8859-1?Q?xB0m60uKBmeQWeOwIHfdgFx8Smbq0E33odco8ZgY31dIyeIKKxv3qo2QKN?=
- =?iso-8859-1?Q?somDCOQQWedcVjhddP794yEmdTAqBKBIDFSLM22E5A1mivDrImPteiOkeh?=
- =?iso-8859-1?Q?TkMz6nPfH9FlsiMJF1VSFlFulLPn8vvffjUtpzhzHWzbT1cs+vevBDXWbv?=
- =?iso-8859-1?Q?tZgwfp03MdZvP+4FvHGZ+NLxiOtxWN1vqxpE3hpXacflCl+B18q2atk1mi?=
- =?iso-8859-1?Q?Cqt0WtQs04/bf5u7qTUQ5qpVLVu2Cexydk+E8pCJFDYYVjMc/bqD0jcdHp?=
- =?iso-8859-1?Q?aL0yGnF3uHU/wvbpvatVibADaDXcK0eU0XKns++W9oFQ263vMDczhH52fq?=
- =?iso-8859-1?Q?RvHWq8FA3gwktkz3w86upS1cfQ2FCoHuv2vskVQ4kunHgmMYOS6Bic/mIl?=
- =?iso-8859-1?Q?07dwdAKDlJ6gQR9VQdyRb5W6Eej8dpvEEKPJFki4nD38xZ2FIoEWqKA6ta?=
- =?iso-8859-1?Q?J6T+0AZRzbmg1Oa6lbMbm4RzrjbmVX2ft2IERnpTULG+WKBzfbUtzbifCX?=
- =?iso-8859-1?Q?zkPPW2nXnUJDEiPLEzcuUJ34flYO/phc+VEjIrxtVEo5Lg2sJHIGRGIUhZ?=
- =?iso-8859-1?Q?DzclBmW8+TFag5/OUbTXJiLnHxOQaopPDQQjG7pO1cyGcqtwTKdvJkWDYS?=
- =?iso-8859-1?Q?2lGtfcpkGsyxYzLJ0DALesobAUN2mCOVW7rVOt2xLizUfH3k47xAArn5DZ?=
- =?iso-8859-1?Q?xpm+sUMjMMhlmYG94DRTGIrHrqCmqGsld9Woagn6hkFcZmBAZGwq2atQhu?=
- =?iso-8859-1?Q?Ymh4gjHiJ50Kwcoh11PYjm0HXKZGzKin8EJW/1B9jFJPLOO7X8fseNA8gK?=
- =?iso-8859-1?Q?QRj+LKpJHQTe2iZwtvfjt/vxnotbGkYHtkQY17RiSlWmHpFH2DdlT0n/FM?=
- =?iso-8859-1?Q?mp2nCW+oD5+2N6LUTofUd/URKKkEniIoMKanroIx83m67JVmShUuHQQ+n5?=
- =?iso-8859-1?Q?/t64B4Celyu/W+FcHodzVbsd/Xi5sZgtuKSfX/TGqc5flv1yi4KZgxHh6Z?=
- =?iso-8859-1?Q?dZDPtckdpHNLQFUF1snNtHrCKBE9R7nZWss7GcReBD8UCs0SaY3AJVpqhr?=
- =?iso-8859-1?Q?LmK7/dUpvDOsQQz9vdcmo7PURrJcF+yzdt3PytX6sXGIogmlhC5SOSt4It?=
- =?iso-8859-1?Q?BOrYi94CdcqEMWoClCPyP5bbncPGshwD+6dl6AiRLQjZ+HkZflny8ITCip?=
- =?iso-8859-1?Q?KuB76Wlv2DGhR0ZDU4X2LM4qJwljSct+ER8Nvmr1C9u7pciyuVQG70l47O?=
- =?iso-8859-1?Q?GMQSndW8kCCd8iiRplGIFI1qni7Xvqt9BhZclC5KB955q4dbPBF8Vv3YdS?=
- =?iso-8859-1?Q?oy+OKmAYzGPHZerq/Yk=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?mq70YHojx0z88Eg9LCaTWoF2Hw2d5bGoywiykxpaDGquDzlNIxeky2KiN6?=
+ =?iso-8859-1?Q?rPnCY2S7AYBnewOLYcOWIXH+iKF0A8rIgDr/CxAPQvHhM6kecY9rJ3s1VZ?=
+ =?iso-8859-1?Q?ump/59GbyLKZ3guRLS/1BfPIsG+anStcPa20FlcBu+lyfTyYvI0g7Yxkcl?=
+ =?iso-8859-1?Q?Qz7tN8NhCANofvthQfHdSaRFalCTeIM1mVK/25az7EPrxjLOhCCPnmWJh7?=
+ =?iso-8859-1?Q?mljPX8tAesn8APdLyLYVnCLKj7fl+p1intHzvVevJa2vqPQsgSYT2AwXfC?=
+ =?iso-8859-1?Q?LYSoQEKQYIPs2xI7aqBxwcoIXKSV0LUm3BI6cryx/IahWbcZZLn88dnVn/?=
+ =?iso-8859-1?Q?ibMUpX0y3mSNyPCYRTCCDMea23tvbVxUfFWCJ700m7kPLHlPQ6IBhYg3kw?=
+ =?iso-8859-1?Q?ZJP9AmLT8TWh9/j7zUU64TcxnoY8roHMFOEc6oNzv4syuraxvkeGKBgSFI?=
+ =?iso-8859-1?Q?slSziv/cNfhFoQD+7Tfx/1jnazNY2oumiKz1EN/2Gn3rrNAQ4mCfqEHirp?=
+ =?iso-8859-1?Q?dJFcALObo/47K8qOA+d04CnzyZKvKgGGwPhzF7CeDJmq2BsQGzu5qJvIHd?=
+ =?iso-8859-1?Q?mynjNTJ7ZLVNmE6KcCHg1iW7WHsLssB29u/oZxkn4tIEtiauwCXCtbMQiV?=
+ =?iso-8859-1?Q?Tt+KwUHaC8DwaHgyVWVjUQoQwdQCIB4vkTEW7vspPaoIFsqfGZajD3M61w?=
+ =?iso-8859-1?Q?+rdbn2q60FG9/gKYCA60ISu6src7C8MXt3Eg4IiXn412xL9lsFgz5ipcbO?=
+ =?iso-8859-1?Q?eoC9/q9Ifj+XVvaRU7v+EIJu3OsOkbOvYxNPrVWUVu9IYELfZxCLxxvaaM?=
+ =?iso-8859-1?Q?dmlmf9tbG9prTmwvXyIvNM5e1vq0Y6KJbSWy8fZcQMpXfPnMNJAgFJYzYI?=
+ =?iso-8859-1?Q?q5qN1GK5hOAgtx44ZJoE8mxZtRkjmmgyS1oimq96WBcsqTL1X966trFU2H?=
+ =?iso-8859-1?Q?NdTjO7+ktTiIUX+aRabiKUqPjhyTmu4GGoy8Hil0JqB0IDd3PndQO260rv?=
+ =?iso-8859-1?Q?ZEkRuThMimU7S3Lf9+/MtgByZ6UZAE1wcI3ruNjz91SAFGi/K2gfgU/MRC?=
+ =?iso-8859-1?Q?qb09q8EiI+BbOl/0QQUayG6k5iMquloAb7lHUUmAZ5y8bO3eWRAqaREe4S?=
+ =?iso-8859-1?Q?kIic3Rp3b6/1pRxRSi5vqLtw99dijJRHQSwecqMUJqU43+8gn5NDl+CK6R?=
+ =?iso-8859-1?Q?I2vxbDGHUGUP0avIOaLA/pHTuJbPmmLtJFNPy9mPfSrEe/ykdLRy98AXpR?=
+ =?iso-8859-1?Q?4JLzmDQxz/IhT/cMH2PzvpSjodx2hyzEntLPssqst9R3afPNkj4R1KeNCj?=
+ =?iso-8859-1?Q?ZcoxwQVehuMuHawKUf44/6F7pcMsrtvsqGI4B1wE5jTZNjLMGnlt3YIDT2?=
+ =?iso-8859-1?Q?9dS326lsbzL4vCINgZ7PpOiPgbpJBjhQzIFSYqFwqe8n8XQlkC4JVFm2SZ?=
+ =?iso-8859-1?Q?9VRkpxJsRvgyIBsT5LsRu009n6rfYahk0jOBW88fGipsPMlB8lKNPUDhW+?=
+ =?iso-8859-1?Q?ysjlqnf8sZp+n+fLX2oTqouasyrvQaMzQWAocLrj4mWnVNM3NiGZ+iAQFz?=
+ =?iso-8859-1?Q?cZqdPWnXXMDWjmh4SVxGC/ZRhkDFV6pQ85JQdbwIzOeSJylJGV1Aa6ec5R?=
+ =?iso-8859-1?Q?NHJ7hD27kenaDebNeCk48z76ili0vggV3TLhbvQJhAFKQV+KNKa2f9rn1Z?=
+ =?iso-8859-1?Q?J5BFfuLpj6ozIS44wf8=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: htecgroup.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR09MB6518.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0437d7d-a4cc-40db-2907-08de0269f46a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2025 10:45:22.8402 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79dca689-f93f-4f15-060b-08de0269f431
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2025 10:45:22.4420 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9f85665b-7efd-4776-9dfe-b6bfda2565ee
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L4q4oCIylvV4qK8fsfuJjm2h3XbS5qSvw7/aF6cq2aYFoNHrZ47DNQbnmUzTKqiXwwR/eR3eavR9tDjQ6IfIkCjZdcxApKBeXRQew43t3jQ=
+X-MS-Exchange-CrossTenant-userprincipalname: 4A0Ruzfoos+oAaySXl9+slOgcR+Ebt8lVN8de1f/ZIxguMVz594h+8SUwfXScHmRpNRt9OKkDqFY7rqVuZ8iZzNfYF9eTF6ONCUlDaQXn54=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR09MB7850
-Received-SPF: pass client-ip=2a01:111:f403:c20a::7;
+Received-SPF: pass client-ip=2a01:111:f403:c200::5;
  envelope-from=Djordje.Todorovic@htecgroup.com;
- helo=PA4PR04CU001.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ helo=DUZPR83CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -165,12 +165,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add RISC-V implementation of the Cluster Power Controller (CPC) device.
-It is based on the existing MIPS CPC implementations but adapted for
-RISC-V systems.
+Add RISC-V implementation of the Coherent Manager Global Control
+Register (CMGCR) device. It is based on the existing MIPS CMGCR
+implementation but adapted for RISC-V systems.
 
-The CPC device manages power control for CPU clusters in RISC-V
-systems.
+The CMGCR device provides global system control for multi-core
+configurations in RISC-V systems.
 
 This is needed for the MIPS BOSTON AIA board.
 
@@ -178,61 +178,68 @@ Signed-off-by: Chao-ying Fu <cfu@mips.com>
 Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- hw/misc/Kconfig             |   4 +
- hw/misc/meson.build         |   1 +
- hw/misc/riscv_cpc.c         | 265 ++++++++++++++++++++++++++++++++++++
- include/hw/misc/riscv_cpc.h |  64 +++++++++
- 4 files changed, 334 insertions(+)
- create mode 100644 hw/misc/riscv_cpc.c
- create mode 100644 include/hw/misc/riscv_cpc.h
+ hw/misc/Kconfig               |   9 ++
+ hw/misc/meson.build           |   2 +
+ hw/misc/riscv_cmgcr.c         | 248 ++++++++++++++++++++++++++++++++++
+ include/hw/misc/riscv_cmgcr.h |  50 +++++++
+ 4 files changed, 309 insertions(+)
+ create mode 100644 hw/misc/riscv_cmgcr.c
+ create mode 100644 include/hw/misc/riscv_cmgcr.h
 
 diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 222efb12fb..2b308ec9b0 100644
+index 4e35657468..222efb12fb 100644
 --- a/hw/misc/Kconfig
 +++ b/hw/misc/Kconfig
-@@ -124,11 +124,15 @@ config MIPS_ITU
- config RISCV_MIPS_CMGCR
+@@ -121,6 +121,15 @@ config MIPS_ITU
      bool
+     depends on TCG
 =20
-+config RISCV_MIPS_CPC
++config RISCV_MIPS_CMGCR
 +    bool
 +
- config MIPS_BOSTON_AIA
-     bool
-     default y
-     depends on RISCV64
-     select RISCV_MIPS_CMGCR
-+    select RISCV_MIPS_CPC
-=20
++config MIPS_BOSTON_AIA
++    bool
++    default y
++    depends on RISCV64
++    select RISCV_MIPS_CMGCR
++
  config MPS2_FPGAIO
      bool
+     select LED
 diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 489f0f3319..32b878e035 100644
+index b1d8d8e5d2..489f0f3319 100644
 --- a/hw/misc/meson.build
 +++ b/hw/misc/meson.build
-@@ -158,6 +158,7 @@ specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files=
-('mips_cmgcr.c', 'mips_cp
+@@ -157,6 +157,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA', if_true: files(=
+'mac_via.c'))
+ specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_cmgcr.c', 'm=
+ips_cpc.c'))
  specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true: files('mips_itu.c'))
 =20
- specific_ss.add(when: 'CONFIG_RISCV_MIPS_CMGCR', if_true: files('riscv_cmg=
++specific_ss.add(when: 'CONFIG_RISCV_MIPS_CMGCR', if_true: files('riscv_cmg=
 cr.c'))
-+specific_ss.add(when: 'CONFIG_RISCV_MIPS_CPC', if_true: files('riscv_cpc.c=
-'))
-=20
++
  system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
 =20
-diff --git a/hw/misc/riscv_cpc.c b/hw/misc/riscv_cpc.c
+ # HPPA devices
+diff --git a/hw/misc/riscv_cmgcr.c b/hw/misc/riscv_cmgcr.c
 new file mode 100644
-index 0000000000..344f855847
+index 0000000000..8e7b86867a
 --- /dev/null
-+++ b/hw/misc/riscv_cpc.c
-@@ -0,0 +1,265 @@
++++ b/hw/misc/riscv_cmgcr.c
+@@ -0,0 +1,248 @@
 +/*
-+ * Cluster Power Controller emulation
++ * This file is subject to the terms and conditions of the GNU General Pub=
+lic
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * Copyright (c) 2016 Imagination Technologies
++ * Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
++ * Authors: Sanjay Lal <sanjayl@kymasys.com>
 + *
-+ * Copyright (c) 2025 MIPS
++ * Copyright (C) 2015 Imagination Technologies
++ *
++ * Copyright (C) 2025 MIPS
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
@@ -241,329 +248,301 @@ index 0000000000..344f855847
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "cpu.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "qemu/timer.h"
-+#include "qemu/bitops.h"
++#include "qapi/error.h"
 +#include "hw/sysbus.h"
 +#include "migration/vmstate.h"
-+
-+#include "hw/misc/riscv_cpc.h"
++#include "hw/misc/riscv_cmgcr.h"
 +#include "hw/qdev-properties.h"
-+#include "hw/intc/riscv_aclint.h"
-+#include "hw/resettable.h"
 +
-+static inline uint64_t cpc_vp_run_mask(RISCVCPCState *cpc)
++#include "cpu.h"
++
++#define CM_RESET_VEC 0x1FC00000
++#define GCR_ADDRSPACE_SZ        0x8000
++
++/* Offsets to register blocks */
++#define RISCV_GCB_OFS        0x0000 /* Global Control Block */
++#define RISCV_CLCB_OFS       0x2000 /* Core Control Block */
++#define RISCV_CORE_REG_STRIDE 0x100 /* Stride between core-specific regist=
+ers */
++
++/* Global Control Block Register Map */
++#define GCR_CONFIG_OFS      0x0000
++#define GCR_BASE_OFS        0x0008
++#define GCR_REV_OFS         0x0030
++#define GCR_CPC_STATUS_OFS  0x00F0
++#define GCR_L2_CONFIG_OFS   0x0130
++
++/* GCR_L2_CONFIG register fields */
++#define GCR_L2_CONFIG_BYPASS_SHF    20
++#define GCR_L2_CONFIG_BYPASS_MSK    ((0x1ULL) << GCR_L2_CONFIG_BYPASS_SHF)
++
++/* GCR_BASE register fields */
++#define GCR_BASE_GCRBASE_MSK     0xffffffff8000ULL
++
++/* GCR_CPC_BASE register fields */
++#define GCR_CPC_BASE_CPCEN_MSK   1
++#define GCR_CPC_BASE_CPCBASE_MSK 0xFFFFFFFF8000ULL
++#define GCR_CPC_BASE_MSK (GCR_CPC_BASE_CPCEN_MSK | GCR_CPC_BASE_CPCBASE_MS=
+K)
++
++/* GCR_CL_RESETBASE_OFS register fields */
++#define GCR_CL_RESET_BASE_RESETBASE_MSK 0xFFFFFFFFFFFFF000U
++#define GCR_CL_RESET_BASE_MSK GCR_CL_RESET_BASE_RESETBASE_MSK
++
++static inline bool is_cpc_connected(RISCVGCRState *s)
 +{
-+    return MAKE_64BIT_MASK(0, cpc->num_vp);
++    return s->cpc_mr !=3D NULL;
 +}
 +
-+static void riscv_cpu_reset_async_work(CPUState *cs, run_on_cpu_data data)
++static inline void update_cpc_base(RISCVGCRState *gcr, uint64_t val)
 +{
-+    RISCVCPCState *cpc =3D (RISCVCPCState *) data.host_ptr;
-+    int i;
-+
-+    cpu_reset(cs);
-+    cs->halted =3D 0;
-+
-+    /* Find this CPU's index in the CPC's CPU array */
-+    for (i =3D 0; i < cpc->num_vp; i++) {
-+        if (cpc->cpus[i] =3D=3D cs) {
-+            cpc->vps_running_mask |=3D BIT_ULL(i);
-+            break;
-+        }
++    if (is_cpc_connected(gcr)) {
++        gcr->cpc_base =3D val & GCR_CPC_BASE_MSK;
++        memory_region_transaction_begin();
++        memory_region_set_address(gcr->cpc_mr,
++                                  gcr->cpc_base & GCR_CPC_BASE_CPCBASE_MSK=
+);
++        memory_region_set_enabled(gcr->cpc_mr,
++                                  gcr->cpc_base & GCR_CPC_BASE_CPCEN_MSK);
++        memory_region_transaction_commit();
 +    }
 +}
 +
-+static void cpc_run_vp(RISCVCPCState *cpc, uint64_t vps_run_mask)
++static inline void update_gcr_base(RISCVGCRState *gcr, uint64_t val)
 +{
-+    int vp;
++    gcr->gcr_base =3D val & GCR_BASE_GCRBASE_MSK;
++    memory_region_set_address(&gcr->iomem, gcr->gcr_base);
 +
-+    for (vp =3D 0; vp < cpc->num_vp; vp++) {
-+        CPUState *cs =3D cpc->cpus[vp];
-+
-+        if (!extract64(vps_run_mask, vp, 1)) {
-+            continue;
-+        }
-+
-+        if (extract64(cpc->vps_running_mask, vp, 1)) {
-+            continue;
-+        }
-+
-+        /*
-+         * To avoid racing with a CPU we are just kicking off.
-+         * We do the final bit of preparation for the work in
-+         * the target CPUs context.
-+         */
-+        async_safe_run_on_cpu(cs, riscv_cpu_reset_async_work,
-+                              RUN_ON_CPU_HOST_PTR(cpc));
-+    }
++    /*
++     * For boston-aia, cpc_base is set to gcr_base + 0x8001 to enable
++     * cpc automatically.
++     */
++    update_cpc_base(gcr, val + 0x8001);
 +}
 +
-+static void cpc_stop_vp(RISCVCPCState *cpc, uint64_t vps_stop_mask)
++/* Read GCR registers */
++static uint64_t gcr_read(void *opaque, hwaddr addr, unsigned size)
 +{
-+    int vp;
++    RISCVGCRState *gcr =3D (RISCVGCRState *) opaque;
 +
-+    for (vp =3D 0; vp < cpc->num_vp; vp++) {
-+        CPUState *cs =3D cpc->cpus[vp];
-+
-+        if (!extract64(vps_stop_mask, vp, 1)) {
-+            continue;
-+        }
-+
-+        if (!extract64(cpc->vps_running_mask, vp, 1)) {
-+            continue;
-+        }
-+
-+        cpu_interrupt(cs, CPU_INTERRUPT_HALT);
-+        cpc->vps_running_mask &=3D ~BIT_ULL(vp);
-+    }
-+}
-+
-+static void cpc_write(void *opaque, hwaddr offset, uint64_t data,
-+                      unsigned size)
-+{
-+    RISCVCPCState *s =3D opaque;
-+    int cpu_index, c;
-+
-+    for (c =3D 0; c < s->num_core; c++) {
-+        cpu_index =3D c * s->num_hart +
-+                    s->cluster_id * s->num_core * s->num_hart;
-+        if (offset =3D=3D
-+            CPC_CL_BASE_OFS + CPC_VP_RUN_OFS + c * CPC_CORE_REG_STRIDE) {
-+            cpc_run_vp(s, (data << cpu_index) & cpc_vp_run_mask(s));
-+            return;
-+        }
-+        if (offset =3D=3D
-+            CPC_CL_BASE_OFS + CPC_VP_STOP_OFS + c * CPC_CORE_REG_STRIDE) {
-+            cpc_stop_vp(s, (data << cpu_index) & cpc_vp_run_mask(s));
-+            return;
-+        }
-+    }
-+
-+    switch (offset) {
++    switch (addr) {
++    /* Global Control Block Register */
++    case GCR_CONFIG_OFS:
++        /* Set PCORES to 0 */
++        return 0;
++    case GCR_BASE_OFS:
++        return gcr->gcr_base;
++    case GCR_REV_OFS:
++        return gcr->gcr_rev;
++    case GCR_CPC_STATUS_OFS:
++        return is_cpc_connected(gcr);
++    case GCR_L2_CONFIG_OFS:
++        /* L2 BYPASS */
++        return GCR_L2_CONFIG_BYPASS_MSK;
 +    default:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Bad offset 0x%x\n",  __func__, (int)offset);
++        qemu_log_mask(LOG_UNIMP, "Read %d bytes at GCR offset 0x%" HWADDR_=
+PRIx
++                      "\n", size, addr);
++    }
++    return 0;
++}
++
++static inline target_ulong get_exception_base(RISCVGCRVPState *vps)
++{
++    return vps->reset_base & GCR_CL_RESET_BASE_RESETBASE_MSK;
++}
++
++/* Write GCR registers */
++static void gcr_write(void *opaque, hwaddr addr, uint64_t data, unsigned s=
+ize)
++{
++    RISCVGCRState *gcr =3D (RISCVGCRState *)opaque;
++    RISCVGCRVPState *current_vps;
++    int cpu_index, c, h;
++
++    for (c =3D 0; c < gcr->num_core; c++) {
++        for (h =3D 0; h < gcr->num_hart; h++) {
++            if (addr =3D=3D RISCV_CLCB_OFS + c * RISCV_CORE_REG_STRIDE + h=
+ * 8) {
++                cpu_index =3D c * gcr->num_hart + h;
++                current_vps =3D &gcr->vps[cpu_index];
++                current_vps->reset_base =3D data & GCR_CL_RESET_BASE_MSK;
++                cpu_set_exception_base(cpu_index + gcr->cluster_id *
++                                       gcr->num_core * gcr->num_hart,
++                                       get_exception_base(current_vps));
++                return;
++            }
++        }
++    }
++
++    switch (addr) {
++    case GCR_BASE_OFS:
++        update_gcr_base(gcr, data);
++        break;
++    default:
++        qemu_log_mask(LOG_UNIMP, "Write %d bytes at GCR offset 0x%" HWADDR=
+_PRIx
++                      " 0x%" PRIx64 "\n", size, addr, data);
 +        break;
 +    }
-+
-+    return;
 +}
 +
-+static uint64_t cpc_read(void *opaque, hwaddr offset, unsigned size)
-+{
-+    RISCVCPCState *s =3D opaque;
-+    int c;
-+
-+    for (c =3D 0; c < s->num_core; c++) {
-+        if (offset =3D=3D
-+            CPC_CL_BASE_OFS + CPC_STAT_CONF_OFS + c * CPC_CORE_REG_STRIDE)=
- {
-+            /* Return the state as U6. */
-+            return CPC_Cx_STAT_CONF_SEQ_STATE_U6;
-+        }
-+    }
-+
-+    switch (offset) {
-+    case CPC_CM_STAT_CONF_OFS:
-+        return CPC_Cx_STAT_CONF_SEQ_STATE_U5;
-+    case CPC_MTIME_REG_OFS:
-+        return muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-+                        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ,
-+                        NANOSECONDS_PER_SECOND);
-+        return 0;
-+    default:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Bad offset 0x%x\n",  __func__, (int)offset);
-+        return 0;
-+    }
-+}
-+
-+static const MemoryRegionOps cpc_ops =3D {
-+    .read =3D cpc_read,
-+    .write =3D cpc_write,
-+    .endianness =3D DEVICE_LITTLE_ENDIAN,
++static const MemoryRegionOps gcr_ops =3D {
++    .read =3D gcr_read,
++    .write =3D gcr_write,
++    .endianness =3D DEVICE_NATIVE_ENDIAN,
 +    .impl =3D {
-+        .min_access_size =3D 8,
++        .max_access_size =3D 8,
 +    },
 +};
 +
-+static void riscv_cpc_init(Object *obj)
++static void riscv_gcr_init(Object *obj)
 +{
 +    SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);
-+    RISCVCPCState *s =3D RISCV_CPC(obj);
++    RISCVGCRState *s =3D RISCV_GCR(obj);
++
++    memory_region_init_io(&s->iomem, OBJECT(s), &gcr_ops, s,
++                          "riscv-gcr", GCR_ADDRSPACE_SZ);
++    sysbus_init_mmio(sbd, &s->iomem);
++}
++
++static void riscv_gcr_reset(DeviceState *dev)
++{
++    RISCVGCRState *s =3D RISCV_GCR(dev);
 +    int i;
 +
-+    memory_region_init_io(&s->mr, OBJECT(s), &cpc_ops, s, "xmips-cpc",
-+                          CPC_ADDRSPACE_SZ);
-+    sysbus_init_mmio(sbd, &s->mr);
++    /* Update cpc_base to gcr_base + 0x8001 to enable cpc automatically. *=
+/
++    update_cpc_base(s, s->gcr_base + 0x8001);
 +
-+    /* Allocate CPU array */
-+    s->cpus =3D g_new0(CPUState *, CPC_MAX_VPS);
-+
-+    /* Create link properties for each possible CPU slot */
-+    for (i =3D 0; i < CPC_MAX_VPS; i++) {
-+        char *propname =3D g_strdup_printf("cpu[%d]", i);
-+        object_property_add_link(obj, propname, TYPE_CPU,
-+                                 (Object **)&s->cpus[i],
-+                                 qdev_prop_allow_set_link_before_realize,
-+                                 OBJ_PROP_LINK_STRONG);
-+        g_free(propname);
++    for (i =3D 0; i < s->num_vps; i++) {
++        s->vps[i].reset_base =3D CM_RESET_VEC & GCR_CL_RESET_BASE_MSK;
++        cpu_set_exception_base(i, get_exception_base(&s->vps[i]));
 +    }
 +}
 +
-+static void riscv_cpc_realize(DeviceState *dev, Error **errp)
-+{
-+    RISCVCPCState *s =3D RISCV_CPC(dev);
-+    int i;
-+
-+    if (s->vps_start_running_mask & ~cpc_vp_run_mask(s)) {
-+        error_setg(errp,
-+                   "incorrect vps-start-running-mask 0x%" PRIx64
-+                   " for num_vp =3D %d",
-+                   s->vps_start_running_mask, s->num_vp);
-+        return;
-+    }
-+
-+    /* Verify that required CPUs have been linked */
-+    for (i =3D 0; i < s->num_vp; i++) {
-+        if (!s->cpus[i]) {
-+            error_setg(errp, "CPU %d has not been linked", i);
-+            return;
-+        }
-+    }
-+}
-+
-+static void riscv_cpc_reset_hold(Object *obj, ResetType type)
-+{
-+    RISCVCPCState *s =3D RISCV_CPC(obj);
-+
-+    /* Reflect the fact that all VPs are halted on reset */
-+    s->vps_running_mask =3D 0;
-+
-+    /* Put selected VPs into run state */
-+    cpc_run_vp(s, s->vps_start_running_mask);
-+}
-+
-+static const VMStateDescription vmstate_riscv_cpc =3D {
-+    .name =3D "xmips-cpc",
++static const VMStateDescription vmstate_riscv_gcr =3D {
++    .name =3D "riscv-gcr",
 +    .version_id =3D 0,
 +    .minimum_version_id =3D 0,
 +    .fields =3D (VMStateField[]) {
-+        VMSTATE_UINT64(vps_running_mask, RISCVCPCState),
++        VMSTATE_UINT64(cpc_base, RISCVGCRState),
 +        VMSTATE_END_OF_LIST()
 +    },
 +};
 +
-+static const Property riscv_cpc_properties[] =3D {
-+    DEFINE_PROP_UINT32("cluster-id", RISCVCPCState, cluster_id, 0x0),
-+    DEFINE_PROP_UINT32("num-vp", RISCVCPCState, num_vp, 0x1),
-+    DEFINE_PROP_UINT32("num-hart", RISCVCPCState, num_hart, 0x1),
-+    DEFINE_PROP_UINT32("num-core", RISCVCPCState, num_core, 0x1),
-+    DEFINE_PROP_UINT64("vps-start-running-mask", RISCVCPCState,
-+                       vps_start_running_mask, 0x1),
++static const Property riscv_gcr_properties[] =3D {
++    DEFINE_PROP_UINT32("cluster-id", RISCVGCRState, cluster_id, 0),
++    DEFINE_PROP_UINT32("num-vp", RISCVGCRState, num_vps, 1),
++    DEFINE_PROP_UINT32("num-hart", RISCVGCRState, num_hart, 1),
++    DEFINE_PROP_UINT32("num-core", RISCVGCRState, num_core, 1),
++    DEFINE_PROP_INT32("gcr-rev", RISCVGCRState, gcr_rev, 0xa00),
++    DEFINE_PROP_UINT64("gcr-base", RISCVGCRState, gcr_base, GCR_BASE_ADDR)=
+,
++    DEFINE_PROP_LINK("cpc", RISCVGCRState, cpc_mr, TYPE_MEMORY_REGION,
++                     MemoryRegion *),
 +};
 +
-+static void riscv_cpc_class_init(ObjectClass *klass, const void *data)
++static void riscv_gcr_realize(DeviceState *dev, Error **errp)
++{
++    RISCVGCRState *s =3D RISCV_GCR(dev);
++
++    /* Validate num_vps */
++    if (s->num_vps =3D=3D 0) {
++        error_setg(errp, "num-vp must be at least 1");
++        return;
++    }
++    if (s->num_vps > GCR_MAX_VPS) {
++        error_setg(errp, "num-vp cannot exceed %d", GCR_MAX_VPS);
++        return;
++    }
++
++    /* Create local set of registers for each VP */
++    s->vps =3D g_new(RISCVGCRVPState, s->num_vps);
++}
++
++static void riscv_gcr_class_init(ObjectClass *klass, const void *data)
 +{
 +    DeviceClass *dc =3D DEVICE_CLASS(klass);
-+    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
-+
-+    dc->realize =3D riscv_cpc_realize;
-+    rc->phases.hold =3D riscv_cpc_reset_hold;
-+    dc->vmsd =3D &vmstate_riscv_cpc;
-+    device_class_set_props(dc, riscv_cpc_properties);
-+    dc->user_creatable =3D false;
++    device_class_set_props(dc, riscv_gcr_properties);
++    dc->vmsd =3D &vmstate_riscv_gcr;
++    device_class_set_legacy_reset(dc, riscv_gcr_reset);
++    dc->realize =3D riscv_gcr_realize;
 +}
 +
-+static const TypeInfo riscv_cpc_info =3D {
-+    .name          =3D TYPE_RISCV_CPC,
++static const TypeInfo riscv_gcr_info =3D {
++    .name          =3D TYPE_RISCV_GCR,
 +    .parent        =3D TYPE_SYS_BUS_DEVICE,
-+    .instance_size =3D sizeof(RISCVCPCState),
-+    .instance_init =3D riscv_cpc_init,
-+    .class_init    =3D riscv_cpc_class_init,
++    .instance_size =3D sizeof(RISCVGCRState),
++    .instance_init =3D riscv_gcr_init,
++    .class_init    =3D riscv_gcr_class_init,
 +};
 +
-+static void riscv_cpc_register_types(void)
++static void riscv_gcr_register_types(void)
 +{
-+    type_register_static(&riscv_cpc_info);
++    type_register_static(&riscv_gcr_info);
 +}
 +
-+type_init(riscv_cpc_register_types)
-diff --git a/include/hw/misc/riscv_cpc.h b/include/hw/misc/riscv_cpc.h
++type_init(riscv_gcr_register_types)
+diff --git a/include/hw/misc/riscv_cmgcr.h b/include/hw/misc/riscv_cmgcr.h
 new file mode 100644
-index 0000000000..713455eb83
+index 0000000000..c57d4ada1c
 --- /dev/null
-+++ b/include/hw/misc/riscv_cpc.h
-@@ -0,0 +1,64 @@
++++ b/include/hw/misc/riscv_cmgcr.h
+@@ -0,0 +1,50 @@
 +/*
-+ * Cluster Power Controller emulation
++ * This file is subject to the terms and conditions of the GNU General Pub=
+lic
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * Copyright (c) 2016 Imagination Technologies
++ * Copyright (C) 2015 Imagination Technologies
 + *
-+ * Copyright (c) 2025 MIPS
++ * Copyright (C) 2025 MIPS
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
 + */
 +
-+#ifndef RISCV_CPC_H
-+#define RISCV_CPC_H
++#ifndef RISCV_CMGCR_H
++#define RISCV_CMGCR_H
 +
 +#include "hw/sysbus.h"
 +#include "qom/object.h"
 +
-+#define CPC_ADDRSPACE_SZ    0x6000
++#define TYPE_RISCV_GCR "riscv-gcr"
++OBJECT_DECLARE_SIMPLE_TYPE(RISCVGCRState, RISCV_GCR)
 +
-+/* CPC global register offsets relative to base address */
-+#define CPC_MTIME_REG_OFS   0x50
++#define GCR_BASE_ADDR           0x1fb80000ULL
++#define GCR_MAX_VPS             256
 +
-+#define CPC_CM_STAT_CONF_OFS   0x1008
++typedef struct RISCVGCRVPState RISCVGCRVPState;
++struct RISCVGCRVPState {
++    uint64_t reset_base;
++};
 +
-+/* CPC blocks offsets relative to base address */
-+#define CPC_CL_BASE_OFS     0x2000
-+#define CPC_CORE_REG_STRIDE 0x100 /* Stride between core-specific register=
-s */
-+
-+/* CPC register offsets relative to block offsets */
-+#define CPC_STAT_CONF_OFS   0x08
-+#define CPC_VP_STOP_OFS     0x20
-+#define CPC_VP_RUN_OFS      0x28
-+#define CPC_VP_RUNNING_OFS  0x30
-+
-+#define SEQ_STATE_BIT       19
-+#define SEQ_STATE_U5        0x6
-+#define SEQ_STATE_U6        0x7
-+#define CPC_Cx_STAT_CONF_SEQ_STATE_U5      (SEQ_STATE_U5 << SEQ_STATE_BIT)
-+#define CPC_Cx_STAT_CONF_SEQ_STATE_U6      (SEQ_STATE_U6 << SEQ_STATE_BIT)
-+
-+#define TYPE_RISCV_CPC "xmips-cpc"
-+OBJECT_DECLARE_SIMPLE_TYPE(RISCVCPCState, RISCV_CPC)
-+
-+typedef struct RISCVCPCState {
++typedef struct RISCVGCRState RISCVGCRState;
++struct RISCVGCRState {
 +    SysBusDevice parent_obj;
 +
++    int32_t gcr_rev;
 +    uint32_t cluster_id;
-+    uint32_t num_vp;
++    uint32_t num_vps;
 +    uint32_t num_hart;
 +    uint32_t num_core;
-+    /* VPs running from restart mask */
-+    uint64_t vps_start_running_mask;
++    hwaddr gcr_base;
++    MemoryRegion iomem;
++    MemoryRegion *cpc_mr;
 +
-+    MemoryRegion mr;
-+    /* Indicates which VPs are in the run state mask */
-+    uint64_t vps_running_mask;
++    uint64_t cpc_base;
 +
-+    /* Array of CPUs managed by this CPC */
-+    CPUState **cpus;
-+} RISCVCPCState;
++    /* VP Local/Other Registers */
++    RISCVGCRVPState *vps;
++};
 +
-+#define CPC_MAX_VPS 64  /* Maximum number of VPs supported */
-+
-+#endif /* RISCV_CPC_H */
++#endif /* RISCV_CMGCR_H */
 --=20
 2.34.1
 
