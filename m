@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96F1BB5DDA
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5C7BB5DE3
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:36:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4WTm-0007RW-44; Thu, 02 Oct 2025 23:29:11 -0400
+	id 1v4WTt-0007U1-Qd; Thu, 02 Oct 2025 23:29:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WTg-0007Md-6O
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:29:04 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1v4WTi-0007P0-DL
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:29:06 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WTX-0001KA-7O
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:29:03 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-78af743c232so1557070b3a.1
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:53 -0700 (PDT)
+ id 1v4WTY-0001My-6U
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:29:06 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-b555ab7fabaso1670433a12.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759462129; x=1760066929; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1759462133; x=1760066933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vlpWwSZsU0Dbu3VqGUqbPCpGrK5tg56q0sJG8Lc+Efw=;
- b=YixLE2rz2DLGYt5Q3aj8NwgkGkEcKcTrBuZSF/XHG5w6ClD51i/68CurI3GC/DItRO
- wgs1Aw0/wbYEI6lyKskWSkpgJUKLhAkavoiVyCi2u8ATb7XhIkdop/IyERHF95yyIS5t
- qZxE3zHakKMx27BxTpRfMrOaBbzaLFxF18Qf1kMBAWfufGjzopuV5WCWWVMWcjr+fRrH
- EX84iUiLm7PCcr2uLgx/Zf96u/ZUMOltIU4b86bPXj8ZnOGqtIALL8d3OSxptmlBFQr5
- dqZvXW/9ivv52TKHMTP1fMl+d4kSa9KvS+cQqlThdslM8BbmuIo8QGczOsGthrF+s7yC
- iYyA==
+ bh=jrYtjq67SLX3onjtinxyLh62+YNxAOIxYKTbQ6LotAs=;
+ b=LJAbEXzcDr/8nluuB8/jMz2FleYn9rLpXmiDwm6F/EwKWTJEP9NgPI28R9kL0v/uYt
+ IGLrqKz+yF703DkAB3KZmZKy2cYlTKB54uqj07vMv0XEe7q9+dE/icaJ/gmQnwdjMgkf
+ k02VqK7yJIw/7xUGgyeRr/pvRKC0V3e5K8gIN5L4c4Qz+Zrf+PbVe6frrDPAJ3j4TCGK
+ 0BasPWc+l26Bw2tYqWVBY3Zs8fZY3yQNmC7h0+57BXX2bhQGquzwkmGQGUE/aN0DyVEY
+ 9Nb48VaUi6Pvv1wenzdUBIQD9S2tffPSJi6WCVcjIzWMDuvRNpLX9caQ0FVm3PxE9XAe
+ SzLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759462129; x=1760066929;
+ d=1e100.net; s=20230601; t=1759462133; x=1760066933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vlpWwSZsU0Dbu3VqGUqbPCpGrK5tg56q0sJG8Lc+Efw=;
- b=aCZqTowLxNGdeMYQ5ggeiOaFfsc0w9ELmgn094Fcr0ag/jN/zo+8+y46kdfq1m+NQC
- relSbILdf8jqqLu1YwvDYSa3aKcOnrlmlvr5l9VQlyVGHVs1jK2yaBYW6UYZwiqJtalv
- NUOJR0A1vFWP8pkh6hUdxc6ZyAt0OQpmnwlh3GsyOd0w7oBunso3Ed/Mx1CT14FzvKam
- GeZV8BlhGTePgY+CgzMClsfZE35XFa+SMzjilUp3Yncx5IhT++kBVy0LFaS2jyk5Q4Cd
- frdcoWAsU04yhlAYSs2yScPQcU+/0kGYUpQdo37B3cvBLyhvzOs1DLTSwdMTW+i9e1ua
- QHvA==
-X-Gm-Message-State: AOJu0YzkbX4t80ozKjVoYy4dZo4C5EZIx3RkYWX20itWWVJPew3j/IvR
- eES04oJphbzjw0DI2e4ovloeEnay4lNLTYxWTUcIvcrzx9XrfynRYls5zQq+0A==
-X-Gm-Gg: ASbGncsJi9aBXLIyK8O/5vD2U4Y3zNTYwhb8bSRWCxhIT9/oLUN9278VEui2LADxHIQ
- N5QY3bSoB8CpUq5RZk/1Zfed8bIN8V5PIUEtGqoYkYUN4zFVmWF/al2O+z1Cd6IU6tU9xjcz+ia
- JOzd/7pcuDXBiYRyCNB5w2Qr/6HGKR66IEMMOY4tVa5hj35TGa8WmZL4M1CpTfqSoQt4N5WJH+0
- aLuaY+7ppGeXT0L7+iSREkG6Uk+fM7Y/NepPfX5cxZQSEGucfEhdE3B5Xxdw7nM8IIv+LT9P4Nb
- 7O/wkJ1YG4N3f+X5PcMrRHIEkO+Ms1fOXDMdb7FM+Ija9k03ignI94mUc8OmmGgvPeo5dOuMgjn
- R/R9UCFFnWVDab1unhgt35IQ3bpBHdhrcojGSmJC/dVWOUuF431liR+FzHwkJQ/gQ3+b8o78Y9/
- pj7QdLt66Y+aGFjDnfsoewNSMtutkTmv/JDM8jK0exvccPfSiz/7ba
-X-Google-Smtp-Source: AGHT+IH5w1HcIStEoYDOycQTVaNElNdhaDfB85qmi/RsR3lm+2GZzFJhWxqx5AVlzJ/pS31ODQVYbw==
-X-Received: by 2002:a05:6a20:3b04:b0:32b:6e34:fce0 with SMTP id
- adf61e73a8af0-32b6e351abdmr623975637.19.1759462129589; 
- Thu, 02 Oct 2025 20:28:49 -0700 (PDT)
+ bh=jrYtjq67SLX3onjtinxyLh62+YNxAOIxYKTbQ6LotAs=;
+ b=xRTOM1he7HECVB6Q4nlsoo5OdW+tj1hLVU1ukTBjTCZOdfwYxesPuM+ILaD4OcqwO0
+ 2RHx5PkTggZfwSGdTu55UhWaHQqI1CP9+7qnhi6P10brRJ+pHVFjjC7ciwaAoMEybyFI
+ Vp+a9T/WtqPgU5xxpBXeHIU05ixtfdNDrvZX2VJjwA1mKkf8ocnjrB8Lov1DG+SzT93j
+ OqazsjK8HGYYte8+CkP7P1oOR/Mmv7RpgIrPzbe/xqpoanfgZSilKzJDC8q+49Z4y4Is
+ 0RQrpyPBdbddnNTiqnB0lE65bVI3UK/Q/g0VimJ7etjhl8vp5cLqjyLCp1OgySBxqUVj
+ BeYg==
+X-Gm-Message-State: AOJu0YzDcy0cS7NjZRaATn3SMUQGugFvKiu3Cmcs6ld9X4Ic0XJAPOau
+ I5aBPtbGrRkqT+3VvBLt9Q9KXvqkJcCjkXmH77qMNuyNv2vUp9TFuoLAdZpDUg==
+X-Gm-Gg: ASbGncvxCZ33amCEm+b1ZNKheLVd07cTcKD9qKmZEyrDdpjdSVx+FQBdaUc0N9Edj0J
+ STtp5H6T+JAfUxyPiKOUmQzOCxlPJtjq0X7IkIiXZw8dPqDXL8BcP7OiUYLxhoZLxhKN/9XGjDF
+ C721atZoakdauqcJKh+VZSAi59IAY3XGp5Bay5AXvmXJTBTSLWhcH+66p608m88RilJCnnU9Y9r
+ NZon6D94Ng0bvqd6kDAenRWsvFyp72aN36IxI4nkEXv4GIGcOYTmZBz/1dC3MO8KSp2e3M4aXVa
+ q/8aC4Uk287Yt+0fLlefIkWVFq494EXBKmRHQgdv6duCr/b6ExxZPKR+mhGYb8gy6PnCKtcrrBt
+ 4nGwBQnGgkNVu3ZvV/EDHO7iWr0VHy4IOt47BKvdqDeIykC9hSY6UxGw64tDZ7nd0gZFv2ZWG1b
+ 3mkoaDBcMrFhu9t2uv2e8Efkg7FjZT4cBPkn5LRWszyutUazFxfbKuyhTOpWpC2IQ=
+X-Google-Smtp-Source: AGHT+IHygG5ApOfzBkT4je3e3AlSvIJIv6TG4SrrYZeLXedQ4Qa7Z8RUtvPccu1McCLlO73qqo5xCg==
+X-Received: by 2002:a05:6a20:9152:b0:248:4d59:93d5 with SMTP id
+ adf61e73a8af0-32b62107eafmr1920667637.55.1759462132622; 
+ Thu, 02 Oct 2025 20:28:52 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.46
+ 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 20:28:48 -0700 (PDT)
+ Thu, 02 Oct 2025 20:28:51 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 22/26] target/riscv: rvv: Modify minimum VLEN according to
- enabled vector extensions
-Date: Fri,  3 Oct 2025 13:27:14 +1000
-Message-ID: <20251003032718.1324734-23-alistair.francis@wdc.com>
+Subject: [PULL 23/26] target/riscv: rvv: Fix vslide1[up|down].vx unexpected
+ result when XLEN=32 and SEW=64
+Date: Fri,  3 Oct 2025 13:27:15 +1000
+Message-ID: <20251003032718.1324734-24-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -88,7 +88,7 @@ X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,64 +106,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-According to the RISC-V unprivileged specification, the VLEN should be greater
-or equal to the ELEN. This commit modifies the minimum VLEN based on the vector
-extensions and introduces a check rule for VLEN and ELEN.
+When XLEN is 32 and SEW is 64, the original implementation of
+vslide1up.vx and vslide1down.vx helper functions fills the 32-bit value
+of rs1 into the first element of the destination vector register (rd),
+which is a 64-bit element.
 
-  Extension     Minimum VLEN
-* V                      128
-* Zve64[d|f|x]            64
-* Zve32[f|x]              32
+This commit attempted to resolve the issue by extending the rs1 value
+to 64 bits during the TCG translation phase to ensure that the helper
+functions won't lost the higer 32 bits.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250923090729.1887406-3-max.chou@sifive.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250124073325.2467664-1-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ target/riscv/helper.h                   | 16 ++++----
+ target/riscv/vector_helper.c            | 20 +++++-----
+ target/riscv/insn_trans/trans_rvv.c.inc | 50 ++++++++++++++++++++++++-
+ 3 files changed, 66 insertions(+), 20 deletions(-)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index b3b7f14503..1150bd1469 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -417,12 +417,21 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
- static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-                                  Error **errp)
- {
-+    uint32_t min_vlen;
-     uint32_t vlen = cfg->vlenb << 3;
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index c82bacdc39..b785456ee0 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -1101,14 +1101,14 @@ DEF_HELPER_6(vslidedown_vx_b, void, ptr, ptr, tl, ptr, env, i32)
+ DEF_HELPER_6(vslidedown_vx_h, void, ptr, ptr, tl, ptr, env, i32)
+ DEF_HELPER_6(vslidedown_vx_w, void, ptr, ptr, tl, ptr, env, i32)
+ DEF_HELPER_6(vslidedown_vx_d, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1up_vx_b, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1up_vx_h, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1up_vx_w, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1up_vx_d, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1down_vx_b, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1down_vx_h, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1down_vx_w, void, ptr, ptr, tl, ptr, env, i32)
+-DEF_HELPER_6(vslide1down_vx_d, void, ptr, ptr, tl, ptr, env, i32)
++DEF_HELPER_6(vslide1up_vx_b, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1up_vx_h, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1up_vx_w, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1up_vx_d, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1down_vx_b, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1down_vx_h, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1down_vx_w, void, ptr, ptr, i64, ptr, env, i32)
++DEF_HELPER_6(vslide1down_vx_d, void, ptr, ptr, i64, ptr, env, i32)
  
--    if (vlen > RV_VLEN_MAX || vlen < 128) {
-+    if (riscv_has_ext(env, RVV)) {
-+        min_vlen = 128;
-+    } else if (cfg->ext_zve64x) {
-+        min_vlen = 64;
-+    } else if (cfg->ext_zve32x) {
-+        min_vlen = 32;
-+    }
-+
-+    if (vlen > RV_VLEN_MAX || vlen < min_vlen) {
-         error_setg(errp,
-                    "Vector extension implementation only supports VLEN "
--                   "in the range [128, %d]", RV_VLEN_MAX);
-+                   "in the range [%d, %d]", min_vlen, RV_VLEN_MAX);
-         return;
-     }
+ DEF_HELPER_6(vfslide1up_vf_h, void, ptr, ptr, i64, ptr, env, i32)
+ DEF_HELPER_6(vfslide1up_vf_w, void, ptr, ptr, i64, ptr, env, i32)
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 7c67d67a13..41ea223106 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -5198,11 +5198,11 @@ GEN_VEXT_VSLIE1UP(16, H2)
+ GEN_VEXT_VSLIE1UP(32, H4)
+ GEN_VEXT_VSLIE1UP(64, H8)
  
-@@ -432,6 +441,12 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-                    "in the range [8, 64]");
-         return;
-     }
-+
-+    if (vlen < cfg->elen) {
-+        error_setg(errp, "Vector extension implementation requires VLEN "
-+                         "to be greater than or equal to ELEN");
-+        return;
-+    }
+-#define GEN_VEXT_VSLIDE1UP_VX(NAME, BITWIDTH)                     \
+-void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2, \
+-                  CPURISCVState *env, uint32_t desc)              \
+-{                                                                 \
+-    vslide1up_##BITWIDTH(vd, v0, s1, vs2, env, desc);             \
++#define GEN_VEXT_VSLIDE1UP_VX(NAME, BITWIDTH)                   \
++void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,   \
++                  CPURISCVState *env, uint32_t desc)            \
++{                                                               \
++    vslide1up_##BITWIDTH(vd, v0, s1, vs2, env, desc);           \
  }
  
- static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+ /* vslide1up.vx vd, vs2, rs1, vm # vd[0]=x[rs1], vd[i+1] = vs2[i] */
+@@ -5249,11 +5249,11 @@ GEN_VEXT_VSLIDE1DOWN(16, H2)
+ GEN_VEXT_VSLIDE1DOWN(32, H4)
+ GEN_VEXT_VSLIDE1DOWN(64, H8)
+ 
+-#define GEN_VEXT_VSLIDE1DOWN_VX(NAME, BITWIDTH)                   \
+-void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2, \
+-                  CPURISCVState *env, uint32_t desc)              \
+-{                                                                 \
+-    vslide1down_##BITWIDTH(vd, v0, s1, vs2, env, desc);           \
++#define GEN_VEXT_VSLIDE1DOWN_VX(NAME, BITWIDTH)                 \
++void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,   \
++                  CPURISCVState *env, uint32_t desc)            \
++{                                                               \
++    vslide1down_##BITWIDTH(vd, v0, s1, vs2, env, desc);         \
+ }
+ 
+ /* vslide1down.vx vd, vs2, rs1, vm # vd[i] = vs2[i+1], vd[vl-1]=x[rs1] */
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 71f98fb350..f4b5460340 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -3561,7 +3561,6 @@ static bool slideup_check(DisasContext *s, arg_rmrr *a)
+ }
+ 
+ GEN_OPIVX_TRANS(vslideup_vx, slideup_check)
+-GEN_OPIVX_TRANS(vslide1up_vx, slideup_check)
+ GEN_OPIVI_TRANS(vslideup_vi, IMM_ZX, vslideup_vx, slideup_check)
+ 
+ static bool slidedown_check(DisasContext *s, arg_rmrr *a)
+@@ -3572,9 +3571,56 @@ static bool slidedown_check(DisasContext *s, arg_rmrr *a)
+ }
+ 
+ GEN_OPIVX_TRANS(vslidedown_vx, slidedown_check)
+-GEN_OPIVX_TRANS(vslide1down_vx, slidedown_check)
+ GEN_OPIVI_TRANS(vslidedown_vi, IMM_ZX, vslidedown_vx, slidedown_check)
+ 
++typedef void gen_helper_vslide1_vx(TCGv_ptr, TCGv_ptr, TCGv_i64, TCGv_ptr,
++                                TCGv_env, TCGv_i32);
++
++#define GEN_OPIVX_VSLIDE1_TRANS(NAME, CHECK)                            \
++static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                  \
++{                                                                       \
++    if (CHECK(s, a)) {                                                  \
++        static gen_helper_vslide1_vx * const fns[4] = {                 \
++            gen_helper_##NAME##_b, gen_helper_##NAME##_h,               \
++            gen_helper_##NAME##_w, gen_helper_##NAME##_d,               \
++        };                                                              \
++                                                                        \
++        TCGv_ptr dest, src2, mask;                                      \
++        TCGv_i64 src1;                                                  \
++        TCGv_i32 desc;                                                  \
++        uint32_t data = 0;                                              \
++                                                                        \
++        dest = tcg_temp_new_ptr();                                      \
++        mask = tcg_temp_new_ptr();                                      \
++        src2 = tcg_temp_new_ptr();                                      \
++        src1 = tcg_temp_new_i64();                                      \
++                                                                        \
++        data = FIELD_DP32(data, VDATA, VM, a->vm);                      \
++        data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                  \
++        data = FIELD_DP32(data, VDATA, VTA, s->vta);                    \
++        data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);  \
++        data = FIELD_DP32(data, VDATA, VMA, s->vma);                    \
++        desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,            \
++                                s->cfg_ptr->vlenb, data));              \
++                                                                        \
++        tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, a->rd));            \
++        tcg_gen_addi_ptr(src2, tcg_env, vreg_ofs(s, a->rs2));           \
++        tcg_gen_addi_ptr(mask, tcg_env, vreg_ofs(s, 0));                \
++        tcg_gen_ext_tl_i64(src1, get_gpr(s, a->rs1, EXT_SIGN));         \
++                                                                        \
++        fns[s->sew](dest, mask, src1, src2, tcg_env, desc);             \
++                                                                        \
++        tcg_gen_movi_tl(cpu_vstart, 0);                                 \
++        finalize_rvv_inst(s);                                           \
++                                                                        \
++        return true;                                                    \
++    }                                                                   \
++    return false;                                                       \
++}
++
++GEN_OPIVX_VSLIDE1_TRANS(vslide1up_vx, slideup_check)
++GEN_OPIVX_VSLIDE1_TRANS(vslide1down_vx, slidedown_check)
++
+ /* Vector Floating-Point Slide Instructions */
+ static bool fslideup_check(DisasContext *s, arg_rmrr *a)
+ {
 -- 
 2.51.0
 
