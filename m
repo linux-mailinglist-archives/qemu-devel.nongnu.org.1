@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2C9BB7CC2
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A441EBB7CE3
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:51:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4jfh-0001Tf-0e; Fri, 03 Oct 2025 13:34:21 -0400
+	id 1v4jqO-0007Im-Ty; Fri, 03 Oct 2025 13:45:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jfU-0001HH-00
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:34:08 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <lixiaoyan@google.com>)
+ id 1v4jq5-0006xz-47
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:45:11 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jfI-0003dg-6T
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:34:07 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-28832ad6f64so29793055ad.1
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:33:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lixiaoyan@google.com>)
+ id 1v4jpp-000779-RC
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:45:03 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-4e576fef9c6so37311cf.0
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:44:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759512832; x=1760117632; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=hSYnfkkF64orw/XjMq2TKkNJ1NbTYKuZnC2iwsA9byE=;
- b=Xqu54pQtX1224bwZWSCRrLtVEv4i5o86s9FzhHzZKKsgsIAYcm3Vr3cln06/5Ry7DJ
- ay575tfB+IO0EPGibd347XPXOEPo33CPOlXJZ7gvpRyD2wIuakxLXd772VdKXNcPFXwX
- hDibQANkSwTdhlHNJSuTpkStW5Gxy9hVR25viADXkdRbIl+F/gbRrxpwAO//k0bWktt7
- iV5yiGPlcqpB37FseqWXlu0nmhiWnhDRM2ueOrsgOaSEz7QWO5SzhM2rVMz7Rc1TrtQX
- LcKVfjYM1wogC+8YKPlGnzSUX1OsS89bBSIXahhjynDvpZ8ALRcrPv/7KfLiRnYmtkWm
- mrKw==
+ d=google.com; s=20230601; t=1759513482; x=1760118282; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ouzL6b3ma7uZ+1yon8bzp0WKYyNokwvTaK0TPZlUgk8=;
+ b=ajy+3/OOHSK5nMCeNNDdgb/Sbbdwrqz0+pzGieel0Osv5ScH+9e92xqqWf9fYkOTP5
+ iZBhvvuMHk/oLpqxTCukGP5k/VnGIWR2TOgNvK0T2tgRLtL/Si2Exv0VZZwKTAc9yu0m
+ QFF1Dp1T7OCi9iE7nbvwBnTXpJ22r12GTy7Yq+8eA4M5zz2knWQZs/yVz2m8XU2seyvC
+ eFKXCxkACCdiOy2TiuAsUJvfQ6GGsmvbnIHK7vTDRnK1koOGYZ1BnqCR2jswQqO/ZrOT
+ 9rtAtW5yuEzUM4R520RC99MH2PbIHsJFHfbqhHkViDzDlaMtGTutvi/3hZTec1AGaGG5
+ rOJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759512832; x=1760117632;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hSYnfkkF64orw/XjMq2TKkNJ1NbTYKuZnC2iwsA9byE=;
- b=UewvdKpP32GYG0dioATG2BHV/hMWJtHQY5JWJr57HZh5ldKhFMsv8qDOc+mEAyHNCq
- RxjiH76dgsO534iZ7LlfbDzfRpv6pulCASpufuVZaddVtMBCvxcOp7zn9aqiBHc87OtB
- AN+D0X1vaWf+AO2T4svlVRuZ319FYjN9gFto4cv1U7IFMThIxyAM4eXn0DIRCY4EBYvU
- oSdM2P5MBTSmcDt0AGguNFVaWQ+LMACDh9VwCo52o2CsJ0+nxPX2cOl9SNTUw0gmmCY1
- odBKoX2UPB8Mj72xkpgfHxhH3vpf082QNZzfkzVml9RgkTsUoD8gv4QkfJAiiKo+YL+G
- /btg==
-X-Gm-Message-State: AOJu0YzG7cZn1eeEQLDl2xX4dtQO9Apo/OpSPjLYgML/GCIdG0+aGltB
- ys02tmAx16AdHq4wDLqAXqALqiZMc1ZlhD5JS9+/Td99bLx0XfBfzF0dSamNmyyzycDF+XK2PNu
- t19P0MGs=
-X-Gm-Gg: ASbGncvw2hXUyCse1jz3dG/TebdzolA6/+rPNeKiktySerjxjzM9M0A2VtFSs33A0T4
- JqW5Af4xlTXAqvElKOV2kARW6v+xakU3dUfu+u6s7r6+MHAezDbUZ9SnjSsAtWYXwVMeRqSWesT
- 3SD5Qf4sSeZuOPQ6ADKxBtJmzoVEADLSesQEd2s/SQa9ddHC6ymMIwQlhe5vyhraYHu25OXnM/h
- DC5Kk8aNNMapAP8R3BXDTKAHGjb5rk4U/kqh3kNWhEA4wqsCTnTA3mbYo+/UsJ5rpMViYofpFVQ
- AfvsNYyMhSHCKGOExsNO8+70mOmy9lD2nFEeUGJpz0T9Gp+/O9gs/pUw9pSA/3a4B06Hg+TfVkK
- X6UiNwH8VW7d77BvFUYcKZWMbEJNsisazViSitjQjfgZyiHk9vZIOpo7jjRrAODaxDZvvoXjO3G
- 8=
-X-Google-Smtp-Source: AGHT+IG1kGzmGLuxcgDOxSH8ERMi3rwdYVJysG6VxDEqNnH8HSI5LrDTRaEfINP+3eBECq0l/9pELA==
-X-Received: by 2002:a17:903:2b0f:b0:28e:7f4e:d694 with SMTP id
- d9443c01a7336-28e9a61a8cfmr51395525ad.28.1759512832272; 
- Fri, 03 Oct 2025 10:33:52 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1233c1sm55923125ad.47.2025.10.03.10.33.51
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Oct 2025 10:33:51 -0700 (PDT)
-Message-ID: <98b20903-1dd3-4ea1-a84e-921f2ce54e0d@linaro.org>
-Date: Fri, 3 Oct 2025 10:33:49 -0700
+ d=1e100.net; s=20230601; t=1759513482; x=1760118282;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ouzL6b3ma7uZ+1yon8bzp0WKYyNokwvTaK0TPZlUgk8=;
+ b=Bzg2mty/hwNECbnNst0y1DD7XSqBH6o7qv8xsVXFckH2z77eN16kq+bObyhyQVddei
+ BDUPE5CCod4rPDAjxbYLB10RYAqNCrQ3JyF6jFw9ktDYCKd1y0utSr3DJ15LT7jogS9f
+ EqjszhynBN7AMZMQDEQahmrM3Idb1HRIc9OYxuFAcKVyrOfAVb6Fu6tcQDQYYV01tALP
+ 6eOo1WHelJuwq4iMxoFa8uAfLx354bCnkZz/p4rRDAUPEztngilGO4xG5+YVNLhn8AiO
+ YMyXRFeN1o/ZFCiFCbIQV8RE0h8hRiUvgvel635cGNRRIPhb/stbFlaQMD5DCctHn0Iw
+ LP1A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUJg0KKmBaKQEeS0tILGLZ+/Z8hC1Qh8IYNJ0VNhewe3XlfxzT/aSPRkeMX0o+878/Ipz1mBrdAlVJp@nongnu.org
+X-Gm-Message-State: AOJu0YxaIJtdjH8BjzZnl69L/ja4/j9rSGGk8uSEmyxpD1miXndsv0oT
+ NwG/LcIimGeop9tiJaEpv/KDBP3nLGB7+51Oa2X0gHagIm5PhMvO9sL/UmmtEEt3G8EHlzxslnP
+ bJxu4aUvcdYRhUOyiUM972hH72ElKLUNwahKSs3Q4
+X-Gm-Gg: ASbGnctRNsMmqW51yFak+86FJjFklrpXitPvRojbXNXv6H3S1Bt+AG0VrTHpSrP9qMM
+ w4kTQEsJaZ/Hn0+a6AwDjmkl/X15tdSqfWP7fqiHqc9g3ewnWYtC3PD9MVvng+nDVebu0fniRcv
+ +iK7G24y2j9yEzwydX/IEHAvt/XKTMtdG6ua/kopmolC3bw3Iom1s1kt75tAc5Iq6ISaMOo+PL4
+ e+cOL+4QD6CHGgsIiWBPvR3wb9ag/OgqsHuG0QxDlTVq2+DuSDVcDEAl0td2H+DrNy5+lC4n2YQ
+ qtpxZybzOrBBBKrsJCPG7TAo8JclKsGV7CUmnA==
+X-Google-Smtp-Source: AGHT+IGRtFY63kXj4PS9yermT3SftLbMgFoR+eGDqnkWAzxSAfwW9VE7N7h388IpoZINU9dnCRwSeXF2pmvG6dPsdJQ=
+X-Received: by 2002:a05:622a:311:b0:4b7:9b06:ca9f with SMTP id
+ d75a77b69052e-4e581f23eccmr340731cf.2.1759513481195; Fri, 03 Oct 2025
+ 10:44:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/26] riscv-to-apply queue
-To: qemu-devel@nongnu.org
-References: <20251003032718.1324734-1-alistair.francis@wdc.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20250925005832.3708492-1-lixiaoyan@google.com>
+ <20250925005832.3708492-2-lixiaoyan@google.com>
+ <b601f750adc19ea0fe8ec8f2c578f9f23d7259cc.camel@codeconstruct.com.au>
+In-Reply-To: <b601f750adc19ea0fe8ec8f2c578f9f23d7259cc.camel@codeconstruct.com.au>
+From: Coco Li <lixiaoyan@google.com>
+Date: Fri, 3 Oct 2025 10:44:27 -0700
+X-Gm-Features: AS18NWB1lZy_1CXrTQrf3ICdgwHTA-d7f9w_FRfL4FxnWxLqce5X-6W1p3zAEGI
+Message-ID: <CADjXwjguvA6tsAjc65Fc=6S+k=pz1xry6Gd=mz6093GozuWDDQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/5] hw/gpio: Add property for ASPEED GPIO in 32 bits
+ basis
+To: Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: clg@kaod.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org, flwu@google.com, 
+ Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=lixiaoyan@google.com; helo=mail-qt1-x82c.google.com
+X-Spam_score_int: -165
+X-Spam_score: -16.6
+X-Spam_bar: ----------------
+X-Spam_report: (-16.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,44 +100,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/2/25 20:26, alistair23@gmail.com wrote:
-> From: Alistair Francis<alistair.francis@wdc.com>
-> 
-> The following changes since commit 29b77c1a2db2d796bc3847852a5c8dc2a1e6e83b:
-> 
->    Merge tag 'rust-ci-pull-request' ofhttps://gitlab.com/marcandre.lureau/qemu into staging (2025-09-30 09:29:38 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20251003-3
-> 
-> for you to fetch changes up to ad2a0aa2824b1dac9f61bac33980e866e9a88856:
-> 
->    docs: riscv-iommu: Update status of kernel support (2025-10-03 13:17:04 +1000)
-> 
-> ----------------------------------------------------------------
-> First RISC-V PR for 10.2
-> 
-> * Fix MSI table size limit
-> * Add riscv64 to FirmwareArchitecture
-> * Sync RISC-V hwprobe with Linux
-> * Implement MonitorDef HMP API
-> * Update OpenSBI to v1.7
-> * Fix SiFive UART character drop issue and minor refactors
-> * Fix RISC-V timer migration issues
-> * Use riscv_cpu_is_32bit() when handling SBI_DBCN reg
-> * Use riscv_csrr in riscv_csr_read
-> * Align memory allocations to 2M on RISC-V
-> * Do not use translator_ldl in opcode_at
-> * Minor fixes of RISC-V CFI
-> * Modify minimum VLEN rule
-> * Fix vslide1[up|down].vx unexpected result when XLEN=32 and SEW=64
-> * Fixup IOMMU PDT Nested Walk
-> * Fix endianness swap on compressed instructions
-> * Update status of IOMMU kernel support
+On Wed, Oct 1, 2025 at 4:24=E2=80=AFPM Andrew Jeffery
+<andrew@codeconstruct.com.au> wrote:
+>
+> On Thu, 2025-09-25 at 00:58 +0000, Coco Li wrote:
+> > From: Felix Wu <flwu@google.com>
+> >
+> > Added 32 bits property for ASPEED GPIO. Previously it can only be acces=
+s in bitwise manner.
+> >
+> > This change gives ASPEED similar behavior as Nuvoton.
+>
+> I don't think this has adequately addressed my request on the prior
+> series:
+>
+> https://lore.kernel.org/all/e244fdb5d2d889674a583df8f8b9bc4bf8d476f4.came=
+l@codeconstruct.com.au/
+>
+> Can you please improve the commit message?
+>
+> I don't have any particular concern with the implementation, other than
+> understanding whether it's something that's reasonable to add to begin
+> with. The "sets" and their indexes are somewhat an implementation
+> detail. Exposing them might preclude a different implementation design,
+> though I'm also not sure why we'd change at this point.
+>
+> Andrew
+>
+
+Hello Andrew,
+
+To confirm that I understand your request, I should do the following:
+
+1) remove the reference to Nuvoton behavior in the ASPEED patches
+(will do in follow up)
+2) you asked for discussion of complex simulations, is the addition in
+the cover patch sufficient? Otherwise, could you elaborate on your
+comment here on what I can help provide please?
+
+Best,
+Coco
 
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
-
-r~
+> >
+> > Signed-off-by: Felix Wu <flwu@google.com>
+> > ---
+> >  hw/gpio/aspeed_gpio.c | 57 +++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 57 insertions(+)
+> >
+> > diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
+> > index 609a556908..2d78bf9515 100644
+> > --- a/hw/gpio/aspeed_gpio.c
+> > +++ b/hw/gpio/aspeed_gpio.c
+> > @@ -1308,6 +1308,57 @@ static void aspeed_gpio_2700_write(void *opaque,=
+ hwaddr offset,
+> >  }
+> >
+> >  /* Setup functions */
+> > +static void aspeed_gpio_set_set(Object *obj, Visitor *v,
+> > +                                        const char *name, void *opaque=
+,
+> > +                                        Error **errp)
+> > +{
+> > +    uint32_t set_val =3D 0;
+> > +    AspeedGPIOState *s =3D ASPEED_GPIO(obj);
+> > +    AspeedGPIOClass *agc =3D ASPEED_GPIO_GET_CLASS(s);
+> > +    int set_idx =3D 0;
+> > +
+> > +    if (!visit_type_uint32(v, name, &set_val, errp)) {
+> > +        return;
+> > +    }
+> > +
+> > +    if (sscanf(name, "gpio-set[%d]", &set_idx) !=3D 1) {
+> > +        error_setg(errp, "%s: error reading %s", __func__, name);
+> > +        return;
+> > +    }
+> > +
+> > +    if (set_idx >=3D agc->nr_gpio_sets || set_idx < 0) {
+> > +        error_setg(errp, "%s: invalid set_idx %s", __func__, name);
+> > +        return;
+> > +    }
+> > +
+> > +    aspeed_gpio_update(s, &s->sets[set_idx], set_val,
+> > +                       ~s->sets[set_idx].direction);
+> > +}
+> > +
+> > +static void aspeed_gpio_get_set(Object *obj, Visitor *v,
+> > +                                        const char *name, void *opaque=
+,
+> > +                                        Error **errp)
+> > +{
+> > +    uint32_t set_val =3D 0;
+> > +    AspeedGPIOState *s =3D ASPEED_GPIO(obj);
+> > +    AspeedGPIOClass *agc =3D ASPEED_GPIO_GET_CLASS(s);
+> > +    int set_idx =3D 0;
+> > +
+> > +    if (sscanf(name, "gpio-set[%d]", &set_idx) !=3D 1) {
+> > +        error_setg(errp, "%s: error reading %s", __func__, name);
+> > +        return;
+> > +    }
+> > +
+> > +    if (set_idx >=3D agc->nr_gpio_sets || set_idx < 0) {
+> > +        error_setg(errp, "%s: invalid set_idx %s", __func__, name);
+> > +        return;
+> > +    }
+> > +
+> > +    set_val =3D s->sets[set_idx].data_value;
+> > +    visit_type_uint32(v, name, &set_val, errp);
+> > +}
+> > +
+> > +/****************** Setup functions ******************/
+> >  static const GPIOSetProperties ast2400_set_props[ASPEED_GPIO_MAX_NR_SE=
+TS] =3D {
+> >      [0] =3D {0xffffffff,  0xffffffff,  {"A", "B", "C", "D"} },
+> >      [1] =3D {0xffffffff,  0xffffffff,  {"E", "F", "G", "H"} },
+> > @@ -1435,6 +1486,12 @@ static void aspeed_gpio_init(Object *obj)
+> >              g_free(name);
+> >          }
+> >      }
+> > +
+> > +    for (int i =3D 0; i < agc->nr_gpio_sets; i++) {
+> > +        char *name =3D g_strdup_printf("gpio-set[%d]", i);
+> > +        object_property_add(obj, name, "uint32", aspeed_gpio_get_set,
+> > +        aspeed_gpio_set_set, NULL, NULL);
+> > +    }
+> >  }
+> >
+> >  static const VMStateDescription vmstate_gpio_regs =3D {
 
