@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6ADBB5E0F
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCADDBB5DE5
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:36:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4WT3-00071H-QI; Thu, 02 Oct 2025 23:28:27 -0400
+	id 1v4WSy-00070k-5D; Thu, 02 Oct 2025 23:28:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WSq-00070G-Ri
+ id 1v4WSq-0006za-7J
  for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:12 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WSf-0001Bd-N1
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:12 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-782023ca359so1820349b3a.2
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:27:58 -0700 (PDT)
+ id 1v4WSk-0001C5-De
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:09 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-781010ff051so1353158b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759462074; x=1760066874; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1759462078; x=1760066878; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tj6EMm4pi/huEWSaJSUr8mgJHcpPYWaotsC2MhygF1w=;
- b=DE7sKyD+mjc9eAsO1B87RiVLZCWw9blySwrKD0hTKKxhgHurTfaEG9KGI/KGZUdEe+
- qYRgMZ1J00kdN7MN2YdmC4f7oW1kFtEcT1TlyPInS2r01i0haSIJLMoy2eALp+w4DGcG
- rdotPoVMuTjrrTHJNr7jNT8dKpAioVOLWWm/g9iDbPoy0MGXjmBsp2lAPBmSv0UHi5Hm
- LsSyBnXMgz5YiXk4HKCx+jicwdbkdSuE6rbtIAlu17Qm43GA/cvCXvAIhj7dKhQMv+tF
- S+19p4Yc/q+uZb0KJ8DU+IMbL6kBZUXxFD/l+oiSzacoyUa4kNG6Dk2gJypAFygfwAQF
- 2B2g==
+ bh=93uzLakLUkrq45soCsmN9r7xZFQg+5pzlt4I7pgvPUY=;
+ b=VsAPqjjC6mXvGpH5p9tnbgbcWy/+1/WBhjKjLbtTBXL9Se5VKjbtDvvbprZFCNPNUe
+ ai+hfyGmnpIN2sew0YM3EykQ71kDnpz4q9xfccLc2BU/8/12AdpXIWzs1LWSoI1ldufP
+ Ae4rfVp2zok2a3C+W9MRHPJ4nxne9uYsvJCxdlyk14PYZZL0G5z/CwqMTHw4j65TuVb8
+ aYR8wvIz6MX2CfNRt5QSToP5Ma8p9POgOx0WoAuHtjyOkBQkPFnIo+mOOWjaIfwOISbd
+ JNKLtqtqo2VNCMnCTRmj0GuO/Z6ZTk43o1SkJOua3pra0qNi1SU40Re0TDZXo9CmogEM
+ i2ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759462074; x=1760066874;
+ d=1e100.net; s=20230601; t=1759462078; x=1760066878;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tj6EMm4pi/huEWSaJSUr8mgJHcpPYWaotsC2MhygF1w=;
- b=CCjAEk0dqHjiHH0Ps0Wy3pQJPxmSyD2e9u2lm2MuVGMiUtPzwznM3EmADOJlkdfV1X
- BZF2i5UHwne0ksJGAXlr7vtFN+clS6gB1X8saFPYUu/hYrv7zOHKwpv4Hzo+hnQunfIB
- Pzb/IDYmIhIay2R0fal5MklpzZYVPYBWUvT7sxqRXIi7+w1WHGnx3r1490t//HQJzsoj
- QzDzGsNbXrP78U+QVQHOCATX9JbJAMnsnWaqwspJB3tRThOlius0sya3oFAX9urze1Zk
- mDHc6ElHSx7Yqz6IN0kp8+fgLGtJS3z/8FvLrkMCHjdv8beVbeILx4jLWv1a1dg8m4my
- 2HHQ==
-X-Gm-Message-State: AOJu0Yw7H60R8sg6UaTfJZh5XeuVDBGMObEU1D6Y7ZxDj62p2+bhcV/k
- fDgDditYEltGFrmuVjjLkdK8aMZ3a0bTY36HgoRGPecSpINGilXOUoqDdQYMqg==
-X-Gm-Gg: ASbGncunEmtcFsx4rm+xLp6o/byxfSrHpzW2nQS+brzEWu9fIeq+yOmxeBin1VT3AaZ
- Jg3dmMgAuv8wC1nXKXiy0cEilnqlv1m9nJcryHCEIfsKmD/AbUixm2/WfOlTrr2cu3jm/JExi9v
- En1cEu6lZXrtoUZ1pyzqxb0secF19Ww7WNlPHOQKSc1q51Z5/D24FkmLIvWqDnTIZ2/7bSpu5Fi
- /WQIbolOu7hixp727sFW53dVN8o1yLasL08iwSfkbflRqsaSsm6UWFCPW2pLHR/KCTq/AIhyIbF
- WG5AEjZ2Bu3iBSi5w4mbYAFBENG858hSlDvyVVu2aTf9AOt/kpz+R8RCb5RFLIqCezlc77CplK2
- M7kbbOcoYe3/kT91KRmhb2WUlmLsebsn6nyktZinP7CSsZzNNA4pc2mErpLfT8gmdbYpF6PC58V
- vhPmHimKNfvkdY+V7KhsL/yHOxQYh+sVimJa2FrP+3rCXaUS2GAnbk
-X-Google-Smtp-Source: AGHT+IGVBq7tIUHzGXUxqyTvTjsPGeOBi6vLtCgYFaC9DJ3OwK7k9m7xEr9OGquIKc80iYH4O8YgaA==
-X-Received: by 2002:a05:6a20:3c8d:b0:246:3a6:3e5e with SMTP id
- adf61e73a8af0-32b62108016mr2079462637.54.1759462074555; 
- Thu, 02 Oct 2025 20:27:54 -0700 (PDT)
+ bh=93uzLakLUkrq45soCsmN9r7xZFQg+5pzlt4I7pgvPUY=;
+ b=W1qoYuccxdCUm+OWScuil2nSZaOJlCdojxefM2PbPgicDpxN/DILipcdrjT7lPv2Bo
+ x8LBDP/6QxDWyb1QnSvWERKMRSR4DV/R0AEuUESH6xlkscl/VRBpHAKrdwXX3vuT4y2d
+ 55syiMmEQ2dy3vx8HZHapgxccnLmLfL1s/k5thYh593X/BN3aGBHmlOqKezUMyzYIrMN
+ v6hccxu77u3EGw0/KgRf+skrCHoK+sbTWil1IziV3fBp9brpdWPqPkAqv6fJucQeJsez
+ Hj/Fiw8JdR4mNsF7onxjwG9dokDvelFlUXf6w4lm5PrNTONJp/Bytc5XUOAdugFD9yKs
+ 26Ew==
+X-Gm-Message-State: AOJu0YxdryPRkv2zNk5OuYOEh47CFeYEvdjYi4s8jBYBATlZ/J3V/kDL
+ oaCCLFAhUMhWiMGSeOd8Iy9B9iIpGbUUNQoueRcTjX7Ju7UL8MWV5r/L+IQbHw==
+X-Gm-Gg: ASbGncuW7rsJn2+X5o4ED78d8yf8+ct5deZfDZIUXAFpf8NyBaOzcmshzFGZ0i67MRz
+ TJn4VpheGi9n39HBuF9gl6xNNjJy/vzR7rUJKxbck9lzw2LMVK0fyds22hp0sLU4YV3zLwexMeG
+ wliF5MBV0Rqnb/8XmDJrXC4k91hTME78U+qn8hJItfCYxL4S1d2FXb50TSYBlWbgclvBTOfbSVd
+ WTXE9xHeyYhInMFKZH3kw27DDtYWcJMlRq+z2yll+J4zAi1jtqLdr89MXgYS45mCdD3w4CNAfyd
+ NU9l2Ae0sFWx4yhmISNJ/t6QWp0UHCs39qWhwBmBeKxBmewIHwsN6ZCNyV3/xnvqBPrqwp2gqNR
+ dMLk9RW0CZFxfmYN7L2A4Cgt7K6Sl9bXySmIJVuVdxJD/GolP7D6Fpu+QBf/BPsbjVg9HiHrizg
+ 40tU3MIzyQbqbTWby4ptqZ8hsMH2rULAAwCQpKFkxtjIHsyB5VQ9UF
+X-Google-Smtp-Source: AGHT+IE1794/i8P9Nl5/JnEZoTmT483+ZE//dyCfsw9DLXKkX4x3GXKOlWcWhzTBHVnreVWsOIPFyw==
+X-Received: by 2002:a05:6a20:bfc7:b0:32b:727f:5fbb with SMTP id
+ adf61e73a8af0-32b727f60b9mr271982637.20.1759462077912; 
+ Thu, 02 Oct 2025 20:27:57 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.27.51
+ 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.27.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 20:27:53 -0700 (PDT)
+ Thu, 02 Oct 2025 20:27:57 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
+ Emmanuel Blot <emmanuel.blot@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/26] roms/opensbi: Update to v1.7
-Date: Fri,  3 Oct 2025 13:26:57 +1000
-Message-ID: <20251003032718.1324734-6-alistair.francis@wdc.com>
+Subject: [PULL 06/26] hw/char: sifive_uart: Raise IRQ according to the Tx/Rx
+ watermark thresholds
+Date: Fri,  3 Oct 2025 13:26:58 +1000
+Message-ID: <20251003032718.1324734-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,44 +105,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Frank Chang <frank.chang@sifive.com>
 
-Update OpenSBI and the pre-built opensbi32 and opensbi64 images to
-version 1.7.
+Currently, the SiFive UART raises an IRQ whenever:
 
-It has been almost an year since we last updated OpenSBI (at the time,
-up to v1.5.1) and we're missing a lot of good stuff from both v1.6 and
-v1.7, including SBI 3.0 and RPMI 1.0.
+  1. ie.txwm is enabled.
+  2. ie.rxwm is enabled and the Rx FIFO is not empty.
 
-The changelog is too large and tedious to post in the commit msg so I
-encourage refering to [1] and [2] to see the new features we're adding
-into the QEMU roms.
+It does not check the watermark thresholds set by software. However,
+since commit [1] changed the SiFive UART character printing from
+synchronous to asynchronous, Tx overflows may occur, causing characters
+to be dropped when running Linux because:
 
-[1] https://github.com/riscv-software-src/opensbi/releases/tag/v1.6
-[2] https://github.com/riscv-software-src/opensbi/releases/tag/v1.7
+  1. The Linux SiFive UART driver sets the transmit watermark level to 1
+     [2], meaning a transmit watermark interrupt is raised whenever a
+     character is enqueued into the Tx FIFO.
+  2. Upon receiving a transmit watermark interrupt, the Linux driver
+     transfers up to a full Tx FIFO's worth of characters from the Linux
+     serial transmit buffer [3], without checking the txdata.full flag
+     before transferring multiple characters [4].
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To fix this issue, we must honor the Tx/Rx watermark thresholds and
+raise interrupts only when the Tx threshold is exceeded or the Rx
+threshold is undercut.
+
+[1] 53c1557b230986ab6320a58e1b2c26216ecd86d5
+[2] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L1039
+[3] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L538
+[4] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L291
+
+Signed-off-by: Frank Chang <frank.chang@sifive.com>
+Signed-off-by: Emmanuel Blot <emmanuel.blot@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250911160647.5710-2-frank.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- .../opensbi-riscv32-generic-fw_dynamic.bin    | Bin 268312 -> 268752 bytes
- .../opensbi-riscv64-generic-fw_dynamic.bin    | Bin 272504 -> 273048 bytes
- roms/opensbi                                  |   2 +-
- 3 files changed, 1 insertion(+), 1 deletion(-)
+ hw/char/sifive_uart.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin b/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
-index b2e740010b..02be3a72a8 100644
-Binary files a/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin and b/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin differ
-diff --git a/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin b/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin
-index 018b4731a7..cce35c65c2 100644
-Binary files a/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin and b/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin differ
-diff --git a/roms/opensbi b/roms/opensbi
-index 43cace6c36..a32a910691 160000
---- a/roms/opensbi
-+++ b/roms/opensbi
-@@ -1 +1 @@
--Subproject commit 43cace6c3671e5172d0df0a8963e552bb04b7b20
-+Subproject commit a32a91069119e7a5aa31e6bc51d5e00860be3d80
+diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
+index 9bc697a67b..138c31fcab 100644
+--- a/hw/char/sifive_uart.c
++++ b/hw/char/sifive_uart.c
+@@ -35,16 +35,17 @@
+  */
+ 
+ /* Returns the state of the IP (interrupt pending) register */
+-static uint64_t sifive_uart_ip(SiFiveUARTState *s)
++static uint32_t sifive_uart_ip(SiFiveUARTState *s)
+ {
+-    uint64_t ret = 0;
++    uint32_t ret = 0;
+ 
+-    uint64_t txcnt = SIFIVE_UART_GET_TXCNT(s->txctrl);
+-    uint64_t rxcnt = SIFIVE_UART_GET_RXCNT(s->rxctrl);
++    uint32_t txcnt = SIFIVE_UART_GET_TXCNT(s->txctrl);
++    uint32_t rxcnt = SIFIVE_UART_GET_RXCNT(s->rxctrl);
+ 
+-    if (txcnt != 0) {
++    if (fifo8_num_used(&s->tx_fifo) < txcnt) {
+         ret |= SIFIVE_UART_IP_TXWM;
+     }
++
+     if (s->rx_fifo_len > rxcnt) {
+         ret |= SIFIVE_UART_IP_RXWM;
+     }
+@@ -55,15 +56,14 @@ static uint64_t sifive_uart_ip(SiFiveUARTState *s)
+ static void sifive_uart_update_irq(SiFiveUARTState *s)
+ {
+     int cond = 0;
+-    if ((s->ie & SIFIVE_UART_IE_TXWM) ||
+-        ((s->ie & SIFIVE_UART_IE_RXWM) && s->rx_fifo_len)) {
++    uint32_t ip = sifive_uart_ip(s);
++
++    if (((ip & SIFIVE_UART_IP_TXWM) && (s->ie & SIFIVE_UART_IE_TXWM)) ||
++        ((ip & SIFIVE_UART_IP_RXWM) && (s->ie & SIFIVE_UART_IE_RXWM))) {
+         cond = 1;
+     }
+-    if (cond) {
+-        qemu_irq_raise(s->irq);
+-    } else {
+-        qemu_irq_lower(s->irq);
+-    }
++
++    qemu_set_irq(s->irq, cond);
+ }
+ 
+ static gboolean sifive_uart_xmit(void *do_not_use, GIOCondition cond,
 -- 
 2.51.0
 
