@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22974BB7C53
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2C9BB7CC2
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4jfK-00017k-Ph; Fri, 03 Oct 2025 13:33:59 -0400
+	id 1v4jfh-0001Tf-0e; Fri, 03 Oct 2025 13:34:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jfB-0000z1-Qb
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:33:49 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1v4jfU-0001HH-00
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:34:08 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jf4-0003Vl-Ps
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:33:49 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-27ee41e0798so36025155ad.1
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:33:37 -0700 (PDT)
+ id 1v4jfI-0003dg-6T
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:34:07 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-28832ad6f64so29793055ad.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:33:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759512815; x=1760117615; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759512832; x=1760117632; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=vsdNPd5OVZsXgLR8AwRZ04kzplAwXB7GHTFWAbkKGlg=;
- b=Kgn6tYxRiUSxXt+OSN+mKifYKsc8fRLQ/TnO2GKvWtOYcdyG/Hl40KRqP8vPjgRL0B
- EPY0zGJT0dZVCRlGHPri+MS54/uR4axsbs67hY41h83/CpPj9Xzh7Je8ttVoHMq2z4dw
- IfFKC33hL9q59Xje1bkFSJYj80SaihGRnAlJRsbu3ajMtfan22wncP1Bzc9YezGbXxG+
- o+YIuf5bfVSr3tKGXD/gRHCxwX91SAVgdeAL56DUPj2K0QsVmEaerkgNFoRdR26OwHnI
- wxDp1dhHp/ImzEd5RC6sUYUlMfMVbIWadCyN6FlOcdse4bQ6y0Gns8MJqpmlnPrd/pG9
- U1Jg==
+ bh=hSYnfkkF64orw/XjMq2TKkNJ1NbTYKuZnC2iwsA9byE=;
+ b=Xqu54pQtX1224bwZWSCRrLtVEv4i5o86s9FzhHzZKKsgsIAYcm3Vr3cln06/5Ry7DJ
+ ay575tfB+IO0EPGibd347XPXOEPo33CPOlXJZ7gvpRyD2wIuakxLXd772VdKXNcPFXwX
+ hDibQANkSwTdhlHNJSuTpkStW5Gxy9hVR25viADXkdRbIl+F/gbRrxpwAO//k0bWktt7
+ iV5yiGPlcqpB37FseqWXlu0nmhiWnhDRM2ueOrsgOaSEz7QWO5SzhM2rVMz7Rc1TrtQX
+ LcKVfjYM1wogC+8YKPlGnzSUX1OsS89bBSIXahhjynDvpZ8ALRcrPv/7KfLiRnYmtkWm
+ mrKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759512815; x=1760117615;
+ d=1e100.net; s=20230601; t=1759512832; x=1760117632;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vsdNPd5OVZsXgLR8AwRZ04kzplAwXB7GHTFWAbkKGlg=;
- b=URciq+Lm/zkKM79SDM2iD2eKL/VgnDlnoM/L7EGivgatG2Q8a+QILxGORa9ubFb+gV
- FIj6V46mOxbJtjN5Kl4bQcIQOwWMCNM91AQOh19/z/AeFbeerYcKBBMjVqiUKTQI51hY
- xt+79YcrTMPIcy0uUdSni8PxS5vuV9mBon+OEJK5TxaqwEiTtRsdcBS9Rbk99RerfWvP
- xg3BBQLu+iyYU2pX7MSDmwRmDzseVFOFje4ZosqmH+9f1xyoYpGtvq7FT0EKbI/odRMk
- Ogo1jopYRvEk+PhA2DIPyx1M5s0BpLD9864s2+4BHW8I0wcrTr2zPKBupZJU0UUHgB6W
- KoSA==
-X-Gm-Message-State: AOJu0YxXoiiRBk0NVa8zAxhDjnVl+264Bli5Cj7aVBlcxykaY3LpqFfa
- uKsVKswtOhGnmbpBKONMJHVspA/e0BmI+voea6BQo6YEn6Wxj4AQ13BKbZ459U9tEM4ENwl2sW+
- 31I6V1IA=
-X-Gm-Gg: ASbGncuxtYpTOMpE5e/9qFuF15fT1RMOzdGBl0NjpXNp+pY/zHyVW6mSDheneUyk4pP
- hwYGLJuIJJ3AfZiQWSO0twFZrd8Flp2RPMVl+vuBD/xn8wHDoz0UAGTqufY2R/YY6LwKD6OGbP3
- 1wg0yk+3Le7A07KePuXngYsz0ZDPEu+O1p145EsUefFZqKUTyA3hwyE5I+DUFIFf7oab2lioc1I
- 7RcL3h7yaKVAsXpc5g4VKRQQQbizknA6YtCHrtk/fRb1HdFlb8RTwi1KDlxi0vs7WeFQZkQerqw
- 0X7Vq0vBK+CD0bvjeUUPh0wmCR6hQHIaJC52rRkI3ni9TjtZASobO9np/mAxk+lCS5PlbuV3+eG
- c9kSk5klsWwgw57Te+BMAxQtXeEYn1ePd5yztNRHtew9YSlxnhgV1kSgkJ9rq6kc3
-X-Google-Smtp-Source: AGHT+IEO3yTEneuGhWmmM+YmAnVmKJewcfMM7pO+Xa241wX/YY4hp4ZfX05rTU2bNyd94cXIDwx7mg==
-X-Received: by 2002:a17:903:290:b0:282:eea8:764d with SMTP id
- d9443c01a7336-28e9a6568f5mr44996665ad.35.1759512814927; 
- Fri, 03 Oct 2025 10:33:34 -0700 (PDT)
+ bh=hSYnfkkF64orw/XjMq2TKkNJ1NbTYKuZnC2iwsA9byE=;
+ b=UewvdKpP32GYG0dioATG2BHV/hMWJtHQY5JWJr57HZh5ldKhFMsv8qDOc+mEAyHNCq
+ RxjiH76dgsO534iZ7LlfbDzfRpv6pulCASpufuVZaddVtMBCvxcOp7zn9aqiBHc87OtB
+ AN+D0X1vaWf+AO2T4svlVRuZ319FYjN9gFto4cv1U7IFMThIxyAM4eXn0DIRCY4EBYvU
+ oSdM2P5MBTSmcDt0AGguNFVaWQ+LMACDh9VwCo52o2CsJ0+nxPX2cOl9SNTUw0gmmCY1
+ odBKoX2UPB8Mj72xkpgfHxhH3vpf082QNZzfkzVml9RgkTsUoD8gv4QkfJAiiKo+YL+G
+ /btg==
+X-Gm-Message-State: AOJu0YzG7cZn1eeEQLDl2xX4dtQO9Apo/OpSPjLYgML/GCIdG0+aGltB
+ ys02tmAx16AdHq4wDLqAXqALqiZMc1ZlhD5JS9+/Td99bLx0XfBfzF0dSamNmyyzycDF+XK2PNu
+ t19P0MGs=
+X-Gm-Gg: ASbGncvw2hXUyCse1jz3dG/TebdzolA6/+rPNeKiktySerjxjzM9M0A2VtFSs33A0T4
+ JqW5Af4xlTXAqvElKOV2kARW6v+xakU3dUfu+u6s7r6+MHAezDbUZ9SnjSsAtWYXwVMeRqSWesT
+ 3SD5Qf4sSeZuOPQ6ADKxBtJmzoVEADLSesQEd2s/SQa9ddHC6ymMIwQlhe5vyhraYHu25OXnM/h
+ DC5Kk8aNNMapAP8R3BXDTKAHGjb5rk4U/kqh3kNWhEA4wqsCTnTA3mbYo+/UsJ5rpMViYofpFVQ
+ AfvsNYyMhSHCKGOExsNO8+70mOmy9lD2nFEeUGJpz0T9Gp+/O9gs/pUw9pSA/3a4B06Hg+TfVkK
+ X6UiNwH8VW7d77BvFUYcKZWMbEJNsisazViSitjQjfgZyiHk9vZIOpo7jjRrAODaxDZvvoXjO3G
+ 8=
+X-Google-Smtp-Source: AGHT+IG1kGzmGLuxcgDOxSH8ERMi3rwdYVJysG6VxDEqNnH8HSI5LrDTRaEfINP+3eBECq0l/9pELA==
+X-Received: by 2002:a17:903:2b0f:b0:28e:7f4e:d694 with SMTP id
+ d9443c01a7336-28e9a61a8cfmr51395525ad.28.1759512832272; 
+ Fri, 03 Oct 2025 10:33:52 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.157.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1108b8sm55712225ad.26.2025.10.03.10.33.34
+ d9443c01a7336-28e8d1233c1sm55923125ad.47.2025.10.03.10.33.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Oct 2025 10:33:34 -0700 (PDT)
-Message-ID: <b78dda58-5ca2-47a7-9b5d-0f209a2fda8c@linaro.org>
-Date: Fri, 3 Oct 2025 10:33:33 -0700
+ Fri, 03 Oct 2025 10:33:51 -0700 (PDT)
+Message-ID: <98b20903-1dd3-4ea1-a84e-921f2ce54e0d@linaro.org>
+Date: Fri, 3 Oct 2025 10:33:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/5] vfio queue
+Subject: Re: [PULL 00/26] riscv-to-apply queue
 To: qemu-devel@nongnu.org
-References: <20251003103328.1864910-1-clg@redhat.com>
+References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251003103328.1864910-1-clg@redhat.com>
+In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,24 +100,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/25 03:33, Cédric Le Goater wrote:
+On 10/2/25 20:26, alistair23@gmail.com wrote:
+> From: Alistair Francis<alistair.francis@wdc.com>
+> 
 > The following changes since commit 29b77c1a2db2d796bc3847852a5c8dc2a1e6e83b:
 > 
 >    Merge tag 'rust-ci-pull-request' ofhttps://gitlab.com/marcandre.lureau/qemu into staging (2025-09-30 09:29:38 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/legoater/qemu/ tags/pull-vfio-20251003
+>    https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20251003-3
 > 
-> for you to fetch changes up to f0b52aa08ab0868c18d881381a8fda4b59b37517:
+> for you to fetch changes up to ad2a0aa2824b1dac9f61bac33980e866e9a88856:
 > 
->    hw/vfio: Use uint64_t for IOVA mapping size in vfio_container_dma_*map (2025-10-02 10:41:23 +0200)
+>    docs: riscv-iommu: Update status of kernel support (2025-10-03 13:17:04 +1000)
 > 
 > ----------------------------------------------------------------
-> vfio queue:
+> First RISC-V PR for 10.2
 > 
-> * Remove workaround for kernel DMA unmap overflow
-> * Remove invalid uses of ram_addr_t type
+> * Fix MSI table size limit
+> * Add riscv64 to FirmwareArchitecture
+> * Sync RISC-V hwprobe with Linux
+> * Implement MonitorDef HMP API
+> * Update OpenSBI to v1.7
+> * Fix SiFive UART character drop issue and minor refactors
+> * Fix RISC-V timer migration issues
+> * Use riscv_cpu_is_32bit() when handling SBI_DBCN reg
+> * Use riscv_csrr in riscv_csr_read
+> * Align memory allocations to 2M on RISC-V
+> * Do not use translator_ldl in opcode_at
+> * Minor fixes of RISC-V CFI
+> * Modify minimum VLEN rule
+> * Fix vslide1[up|down].vx unexpected result when XLEN=32 and SEW=64
+> * Fixup IOMMU PDT Nested Walk
+> * Fix endianness swap on compressed instructions
+> * Update status of IOMMU kernel support
 
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
