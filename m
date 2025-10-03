@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351EDBB7C3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B583BB7BBF
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:27:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4jPp-0003hv-Rt; Fri, 03 Oct 2025 13:17:58 -0400
+	id 1v4jPO-0002me-B0; Fri, 03 Oct 2025 13:17:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jLh-0007jG-Jw
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:13:42 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1v4jLY-0007YB-GQ
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:13:35 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jKD-0007sC-Vo
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:13:40 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-76e6cbb991aso2191854b3a.1
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:12:02 -0700 (PDT)
+ id 1v4jK9-0007sQ-El
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:13:32 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-781206cce18so2249606b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759511521; x=1760116321; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759511522; x=1760116322; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2fg3hYe5ZBoKGCyTXHH7nqIXtFZCRXYZH3UT8M9cUro=;
- b=seQHm9za02npjMODx721BpaooaVi68KrPzmMDW1uTds1tSYcJjh/1GMEsopf1ollpP
- 78Ym9GP0q2r98nRszqeK8PEh6YoWgdibJBQbVjeuzYtpjsEhereqCxGRfp1bX8cCWzEE
- 1fKDPPLtXTVbyDY+KOD/I9oMIjanwYDrov69WN8Fssubt33GcgBzttP83W/KX/3q2P3v
- OU5rvxI1lRY7F1eftxo19XdsVqQrwpuy9BiBwa3UgtMPfiykj6mJQ++fgA67Zpj1mFYJ
- aaRvVZYSVnYmgWguA4R7wCpBi/iiutw+Gi+5RtTUzHdLF56KOgqmIoBCqMNzG4AX+c+3
- Lb0Q==
+ bh=JF8VeHAMXnS+KlXHqFd9bhXPg9cRL1eKSmFQYNi3XjE=;
+ b=HqKRAUo/qb8YS8dXwX0r23ye7NfWcxu0Yiwi+HWKBHNemgcgNoo+9Pdq5ojIcQiutn
+ gF0ANBiWL7KgpoT2agaqf1xC3I+PdEqflkdfZlZOy9bq7jGXPoOWohLFsVk2QxBrj56Z
+ kwV/foNGHFBvoZD9uY6BSMQAT1V6imqSxtuDPYFKJt+tx1ayVWqTcrLXp9BOTvPDCbDR
+ nynWBNiwfDEC91Lx8R0lZmfXUthD1wenb43bZ3R2jgZhDQEBxTFAVpJV2hioD9cxL2fQ
+ tPq/y+snjhcttwrpxvODcSVitMQCM9NNq7t1Db4dBx4Fr3n1UW8clnJd2u7p70wFxzFT
+ vuRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759511521; x=1760116321;
+ d=1e100.net; s=20230601; t=1759511522; x=1760116322;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2fg3hYe5ZBoKGCyTXHH7nqIXtFZCRXYZH3UT8M9cUro=;
- b=AsrCurt3YDwBCrmxeR4TqrkHlRmEWjZ8fPShfuFF9KcmEw6uPXhoL/HcyFid0ZHm+c
- U/s0+gD9tajTNo6roTCpj7Mn/sLtfbFWZHpULzwKQ9ukmbT0Vrs54Phb4iX9X5aIHtAR
- UHvZFxSzyU2A58R4OYcWTtjudMANCdyzCo2frRyJHdrCwDl/384UwaJKNGetmzmSnSIY
- PZGUxTmmHsu7rB2FNCL0C2y/yTPNzrDGLB939LcO3lX98JjogpmoxoH5FaIZtjVH7vhz
- nn2PKD6sXTalVT2KEeY8cKQAA5Bof+uSW+yZE9l6YgJyWoPmu8Mpek12QHEPbMBAWGaq
- ORtA==
-X-Gm-Message-State: AOJu0YzWOKowXTlJMuA63R786xrmw6xiCdjNuusqiMW9whfGK9/BNVNj
- z+fkspgSV2GX8ofiq6qHnDLDZdYvypQGDJEzKo8bnfn2J1+bny3ieL4GnkPkAKSPPcFy+Obevub
- /S2bM0eg=
-X-Gm-Gg: ASbGncvJPf+SwXxGyUiHlevcuvxB/kmxwpwXJWJOa1LeuKhl3kFuJqY2QlizxqxtPIr
- z8GBZUmlRQDEDSzntWrkVjV6HA36JuTu3un9Ac0PQ2mvTUQ7jWFq9i/qx+xYVe0qrtzSvhjCMEQ
- piEbgdSU3q/acK+1ShV6tF20j1WcfZTlcPdw8V+CuAeRV5JyAk+CGIdGhEMgvLUiDJrsRvuPPoy
- IfgDYTPSZbveeveqGcEAWbmyaTUhoLrAGeJhoPbS6TybA8UvJThIz9WMHoHYYCkRyx0ryfClIfk
- T2ynIJJBVmkQFxBRvQi+CRlIg28yaTenNQJgXRla/y5kBE1RpOrII+UiYQaRIPV5ZxHmgGu5SwP
- RtPimObfZyECCXnQ4I/T3L9qOfz8wu2SbEcq6x78bvFhkUhosVKbMA/ma
-X-Google-Smtp-Source: AGHT+IFk+rwWqFlHj4idEdAMaeIZFhM/71k9ClmGdWkeDTKrsXYm2PBAw/W7WVKRAJ/HzXys161CUQ==
-X-Received: by 2002:a05:6a00:2d22:b0:781:eaa:9801 with SMTP id
- d2e1a72fcca58-78c98dd9351mr4947724b3a.24.1759511521031; 
- Fri, 03 Oct 2025 10:12:01 -0700 (PDT)
+ bh=JF8VeHAMXnS+KlXHqFd9bhXPg9cRL1eKSmFQYNi3XjE=;
+ b=PLSY4CRSJ58o1rnLokryt4nzpFm42hXDliEZjzotv+fGPtaG36XnpEEtb5NFAMnXvI
+ eZ7y1Z4aR2z2gJge5fOLTOZ2CEAN+3qN3hSdICEG8TAwddY876ySkrFcHE13rATHK+HS
+ 6V/xcNLv0kNJoTmwda3qjkp0R7+PHIqklqbQwsz1id3IlNH1a83knL2a/skNkpciX7bZ
+ A/QdXhVLKYRJKomTqHOLAhMC1Upl5++C+BxTFL39jRvTDEpVuuCkFZqzAeQtbpHNfiyE
+ Nf+TOzyamFojIqx9KJiTdAq3MMtDTzTrPKEE+e2/86+RFUkR3mOWhwV+MjQ13qs6djao
+ xceg==
+X-Gm-Message-State: AOJu0YxVW5fZePRCjJNP2ucCUoLG9zfXpgiC4k4m27cUu3MTfMd6ropE
+ SVwJHApPrQkIg/PFVoptdkQ8I+RSXqidsD6M1lOQiu5Ci33MPQv/rsS8aDTdYsPPelsMEHQDZ4n
+ kXVHlZrQ=
+X-Gm-Gg: ASbGncs+CjtTvwFDmdJfyzNz1MB0VEfIFE5jHK+Wp9iZ85kaFDdTqbljrkYsE+5z9sf
+ zOC/fGRzxgF60C957TiffbTHkQBLoyiUeXtp1hI7ERaqHoh1fE57lv1SAZWLmBTnVaodRMxrqOr
+ 8X2bSpZtoq0LIwaLy6zcNwzBbk1UPK2/pwTiIRx6gsiOVHm9foJdwe5HXxMGeTHWf7XAMmt3nZa
+ WulkkVvJ5hSJy6qERKT6zlk4KyUN8+ySLIV30p3S3fThZozruHSPioYxfpz6dVi7Sox00vsD6sZ
+ b/MFp7FcP4Xlz/akXhimz0g86zywxT42PM2DDrft5IuNIMO3YHXwPTdqyievrs0jSJNY5VMKKFB
+ JQgdae4pBtinZmkNF3Nnev92mPBJxY/96/nW9h3v4mE0RvdFz6cIMj7el
+X-Google-Smtp-Source: AGHT+IGKp6Udj4mRZD07nDWrecDrx/uFIoBJCo57u/1eSoZLBx/UjQYXES+FI2lasDrJ4FkjjiLGog==
+X-Received: by 2002:a05:6a00:6e9b:b0:781:1af:d3d9 with SMTP id
+ d2e1a72fcca58-78b02204bcdmr7109447b3a.4.1759511522057; 
+ Fri, 03 Oct 2025 10:12:02 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-78b02053a51sm5418769b3a.46.2025.10.03.10.12.00
+ d2e1a72fcca58-78b02053a51sm5418769b3a.46.2025.10.03.10.12.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 10:12:00 -0700 (PDT)
+ Fri, 03 Oct 2025 10:12:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 66/73] linux-user/aarch64: Implement map_shadow_stack
- syscall
-Date: Fri,  3 Oct 2025 10:07:53 -0700
-Message-ID: <20251003170800.997167-67-richard.henderson@linaro.org>
+Subject: [PATCH v6 67/73] target/arm: Enable GCSPR_EL0 for read in user-mode
+Date: Fri,  3 Oct 2025 10:07:54 -0700
+Message-ID: <20251003170800.997167-68-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251003170800.997167-1-richard.henderson@linaro.org>
 References: <20251003170800.997167-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,93 +101,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 59 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ target/arm/cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 39b139b0bf..7ae78d0715 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6358,6 +6358,12 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
- # define PR_SET_SHADOW_STACK_STATUS  75
- # define PR_LOCK_SHADOW_STACK_STATUS 76
- #endif
-+#ifndef SHADOW_STACK_SET_TOKEN
-+# define SHADOW_STACK_SET_TOKEN  (1u << 0)
-+#endif
-+#ifndef SHADOW_STACK_SET_MARKER
-+# define SHADOW_STACK_SET_MARKER (1u << 1)
-+#endif
- 
- #include "target_prctl.h"
- 
-@@ -6605,6 +6611,54 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-     }
- }
- 
-+#ifdef TARGET_AARCH64
-+static abi_long do_map_shadow_stack(CPUArchState *env, abi_ulong addr,
-+                                    abi_ulong size, abi_int flags)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+    abi_ulong alloc_size;
-+
-+    if (!cpu_isar_feature(aa64_gcs, cpu)) {
-+        return -TARGET_EOPNOTSUPP;
-+    }
-+    if (flags & ~(SHADOW_STACK_SET_TOKEN | SHADOW_STACK_SET_MARKER)) {
-+        return -TARGET_EINVAL;
-+    }
-+    if (addr & ~TARGET_PAGE_MASK) {
-+        return -TARGET_EINVAL;
-+    }
-+    if (size == 8 || !QEMU_IS_ALIGNED(size, 8)) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    alloc_size = TARGET_PAGE_ALIGN(size);
-+    if (alloc_size < size) {
-+        return -TARGET_EOVERFLOW;
-+    }
-+
-+    mmap_lock();
-+    addr = gcs_alloc(addr, alloc_size);
-+    if (addr != -1) {
-+        if (flags & SHADOW_STACK_SET_TOKEN) {
-+            abi_ptr cap_ptr = addr + size - 8;
-+            uint64_t cap_val;
-+
-+            if (flags & SHADOW_STACK_SET_MARKER) {
-+                /* Leave an extra empty frame at top-of-stack. */
-+                cap_ptr -= 8;
-+            }
-+            cap_val = (cap_ptr & TARGET_PAGE_MASK) | 1;
-+            if (put_user_u64(cap_val, cap_ptr)) {
-+                /* Allocation succeeded above. */
-+                g_assert_not_reached();
-+            }
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 8ecf8a5e4d..98da468313 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -311,6 +311,10 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
+         env->cp15.mdscr_el1 |= 1 << 12;
+         /* Enable FEAT_MOPS */
+         env->cp15.sctlr_el[1] |= SCTLR_MSCEN;
++        /* For Linux, GCSPR_EL0 is always readable. */
++        if (cpu_isar_feature(aa64_gcs, cpu)) {
++            env->cp15.gcscr_el[0] = GCSCRE0_NTR;
 +        }
-+    }
-+    mmap_unlock();
-+    return get_errno(addr);
-+}
-+#endif
-+
- #define NEW_STACK_SIZE 0x40000
- 
- 
-@@ -13976,6 +14030,11 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         return do_riscv_hwprobe(cpu_env, arg1, arg2, arg3, arg4, arg5);
- #endif
- 
-+#ifdef TARGET_AARCH64
-+    case TARGET_NR_map_shadow_stack:
-+        return do_map_shadow_stack(cpu_env, arg1, arg2, arg3);
-+#endif
-+
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
-         return -TARGET_ENOSYS;
+ #else
+         /* Reset into the highest available EL */
+         if (arm_feature(env, ARM_FEATURE_EL3)) {
 -- 
 2.43.0
 
