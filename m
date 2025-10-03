@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9056ABB5D9E
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99B0BB5DCB
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:32:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4WTF-000799-6d; Thu, 02 Oct 2025 23:28:37 -0400
+	id 1v4WTd-0007Iz-1e; Thu, 02 Oct 2025 23:29:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WTC-00077d-2M
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:34 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1v4WTW-0007GU-3Z
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:54 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WT7-0001FC-Ll
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:33 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-7811a5ec5b6so2299532b3a.1
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:24 -0700 (PDT)
+ id 1v4WTC-0001FU-2w
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:53 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-781db5068b8so1537190b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759462101; x=1760066901; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1759462104; x=1760066904; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mmlTMGL89aspc2tklgzVhhV32vk6hh7OAN16dHETuH0=;
- b=gEaK6OHTnd+X0LVC5gf6cL767b01FgNCyRqwSo8LTFLWr4qwSnHDudLcOgHWVZ79Pt
- nS76Ws2ty6+wX3jryVXbSRQHABV7jYnvck0vQMQ6zXvrpWJu5rYgbotk2dufaTknp/qY
- x1n+vH9rL97+EGOVQJz3ZrUP5pXpIkHGQ2nWx/cHkNvMEcrJ1w0v2qUst9KXchDAQZJX
- UvzWr+nRQWflnErZYXaNLHZc7qR8ERBYgJDyevRmmT/Ek8iDHVRabkv6MDgLdS+hnZLG
- UOFFiZUBYUj5qYmniij4+ghj4nILcRcjdLqiW2gWmZUyb9dQD1eyCD6lOhWYdh+AY6zx
- FWBQ==
+ bh=uKRPPU4A+nxrYrp6xl+CtDnJu5H7vR07oXy0I+YQ5Oo=;
+ b=RCu2RRoIfCJKfr6rIO7UxkIYppyrDXC+MT2uATY3NGJHAGg1HiMDhWRuSVX8jAREri
+ 2qKccHSNaJ+dqcFql7QTY40gmLJrWp7K7eeHce3f6+/hwMLiGyzWMnk6ljtOloZO3g3t
+ dEMubiJLiNODRMfEBhNk7KxeIqdRhVbUOsst2FrGuLnO9qYaUlCW2Jfq0AobyGDYZRp6
+ kapAci7QpfCPhR3+OxeZw4fNZw4OAJTZx7fY3z9c8b9tBJCyhRMpEs8V/EvL5T8SgybC
+ 6m2B9qxkxUrv2OB+6iC2pNIctIwZ/o4Qb2YDpH0No86sDuF8PO8G0Dg0+HoH7I60OM+Q
+ vx5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759462101; x=1760066901;
+ d=1e100.net; s=20230601; t=1759462104; x=1760066904;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mmlTMGL89aspc2tklgzVhhV32vk6hh7OAN16dHETuH0=;
- b=MNt/YSUe7O6WSSFV/sv+ozGNYl819Q8sM7zM3Abfnxkv0ATmW3h915y+ilgpb+9KU8
- 9krmETQlpOTqxBsLzjG9hdkVGpqy/aOANUwATLAGlzY9Oct5CxEm96mykKFZbUSRR8er
- LGdzUDhEkzB7DvNeArIgRTRE9SviSfsmU8p2p6yPMLq/TyKXUTsBnDqNrIYJZ92xXNLk
- fJgUKRp7BYn2p8ib91eLMwMga8ittzN74gmuXQHUOM5UH/LsiEm1x0q0uOsZ3+/pMGGw
- 8cmS+SmEa1gSZJ7VrtB4T75tsAqDg7Z7TOjdAR1wG9KH37gbXWOW4NMl/txE/yPjIAnr
- IkBA==
-X-Gm-Message-State: AOJu0YwkV7SgT7LKuZdrQXsQkL1A3ysjt6DP2DFaF2amp0mQqWMFhW76
- pr0TjvpA/mxpQyw42rPnSOMKTRWNSr7uoRA+HH8UnbaAsxKIVtnSEvQm3v3pWA==
-X-Gm-Gg: ASbGncvJr8J3E0RoUpD/Wnlaa8SnmEWfKHXDqYBNimwVIetyKdlTm4EP6eM1JR+aQyF
- OK3J9AVgJbTv+jpKVVnyHiX9Y121XRVTyDeWvcmoxS7Msjptc7Y9rDlVXivE+DXfE2qKm8r7Dfk
- aSukl2cHXVMxOS1NeorFWemJstMOEf9yEvRCyLdsCAzR8pPg8GfLKBkjSFS8GzvXZ041G40OFsq
- EkGe/L8JE3cDMpqgUyJFIjky7HjNykg8QSACOeWyEJ0BDgyfGNH5cKg4zK2hbDRyIPitJbPeFPd
- av3f5iX7N6pFTnMb2J4ydUT0UW6ZxzBgNxvWZRd08+UswopNZWSt32D40qAru4r8XZ77+ismoOo
- XLwiDlDV2cAwkqcCHJXIqk2T3osyiDOFxokRDKFyQOj9WVPSuXjtQYB7ilW2tTz+C0C83SBg2jo
- AecTGRBqgFiMmfyaLi+tNcSIQM8sSJ4plsIE82f/8rTLkbTkwgzm3L
-X-Google-Smtp-Source: AGHT+IGBMR4mXTu+hlV6iw1FWz8/WIqXoBjtfplG1zn+CltN/LnzrSY+tCw4H6oi/JJIH0JEuAM+KQ==
-X-Received: by 2002:a05:6a21:998b:b0:240:1e4a:64cc with SMTP id
- adf61e73a8af0-32a1f7276e2mr7975747637.12.1759462100960; 
- Thu, 02 Oct 2025 20:28:20 -0700 (PDT)
+ bh=uKRPPU4A+nxrYrp6xl+CtDnJu5H7vR07oXy0I+YQ5Oo=;
+ b=Gfs0cDliip+Aaead9aQZB0ARjeGbuDSRIshgzoge9iBTXVaWiWlKdM28Z23yF9clc9
+ NMrccY77yv8qHYELQUHD8GrVjM6dcRR1giUN4Q3Emj6hVSNqkzt6noOTLLn3CXyUGkgX
+ fBjlYPpfzoAPbvRoQIxIVBbGnkjozkFf16lu83bvMyAtZRpSmIJgOVoWJFKM8mf4dFfx
+ 44/fKXJOvgHjazQTF3X6NnjdNzFkD8ey5dS50CqtorFDU/rBrMdJKhvF1D55mHC+B1xs
+ +16CrjmQv5PvoZM3YmjioZBx8n8ABvV12X85bhmxGtqzVKuYkI33Kdtpkbdt5S+JBsGC
+ B9gg==
+X-Gm-Message-State: AOJu0YxIqJU7Eo4C2CQI7e/b1IlwYpdLCagDfotr2bZ8PDzKSZw8OLWh
+ 6cs6MeZAfPbluffBDMxdIavlXPZzncfthlpS6GuHtewWsHPUeL12iezsfq/0ZA==
+X-Gm-Gg: ASbGnctLss1u0AUze/thF10ZECx3ViERxEhK2+XFdF79ZCEiALP3KqpC0oFdISDJ4bE
+ AtM9fvI/OgG0iCuRGVTiipO8Z5AXnXiAmPDcg1YZEBrij3GP3T7qaoTbdOn9VtldXrNSlizbTWr
+ bgE2eAdhbENyCwEGwNxCmGGhYI0GBnDZCXBzyj6WUlUhdyW8NiISa9WwsjG86BuFQRYJmw19gtz
+ U1MgAzDoJSG23jcJBWEd0mkGUoXSQCasu7cMPZs4bbuVwDfZiyheK/z+3pXcaShzlMB8BREMHVY
+ +RKsZUcZB+Q0wAv0kPMoM8YdVRhtLUVaUApm+sxiX8FdqeIv896vVda/w6vL/cCS3VrjRA5Wt/x
+ mwLuPdeEdYl+8win9nyBDcq9ZbMoVgq8ScyDAJtBEbLPVoUvRmXlK90/XGa64QW5FTXPkANLPVW
+ IIDtzBVKwZl0q8Cmp9aYDkXM1lnlTkdJsqxB6ahSbt9PnzjRwySKGu
+X-Google-Smtp-Source: AGHT+IFKu+zwCUpMpv7zt3jMrJOjGKE0AHRYl4MXftXzn/oWw9L3V9oOWDhoJzJr4TbZ2pga4OwQkw==
+X-Received: by 2002:a05:6a20:7354:b0:2e2:3e68:6e59 with SMTP id
+ adf61e73a8af0-32b61e6cfe0mr2159191637.15.1759462104544; 
+ Thu, 02 Oct 2025 20:28:24 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.17
+ 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 20:28:20 -0700 (PDT)
+ Thu, 02 Oct 2025 20:28:23 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, TANG Tiancheng <lyndra@linux.alibaba.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 13/26] target/riscv: Save stimer and vstimer in CPU vmstate
-Date: Fri,  3 Oct 2025 13:27:05 +1000
-Message-ID: <20251003032718.1324734-14-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PULL 14/26] target/riscv/kvm: Use riscv_cpu_is_32bit() when handling
+ SBI_DBCN reg
+Date: Fri,  3 Oct 2025 13:27:06 +1000
+Message-ID: <20251003032718.1324734-15-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,67 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: TANG Tiancheng <lyndra@linux.alibaba.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-vmstate_riscv_cpu was missing env.stimer and env.vstimer.
-Without migrating these QEMUTimer fields, active S/VS-mode
-timer events are lost after snapshot or migration.
+Use the existing riscv_cpu_is_32bit() helper to check for 32-bit CPU.
 
-Add VMSTATE_TIMER_PTR() entries to save and restore them.
-
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250911-timers-v3-4-60508f640050@linux.alibaba.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Message-ID: <20250924164515.51782-1-philmd@linaro.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/machine.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ target/riscv/kvm/kvm-cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 1600ec44f0..51e0567ed3 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -400,6 +400,30 @@ static const VMStateDescription vmstate_ssp = {
-     }
- };
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 5c19062c19..187c2c9501 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1588,7 +1588,7 @@ static void kvm_riscv_handle_sbi_dbcn(CPUState *cs, struct kvm_run *run)
+          * Handle the case where a 32 bit CPU is running in a
+          * 64 bit addressing env.
+          */
+-        if (riscv_cpu_mxl(&cpu->env) == MXL_RV32) {
++        if (riscv_cpu_is_32bit(cpu)) {
+             addr |= (uint64_t)run->riscv_sbi.args[2] << 32;
+         }
  
-+static bool sstc_timer_needed(void *opaque)
-+{
-+    RISCVCPU *cpu = opaque;
-+    CPURISCVState *env = &cpu->env;
-+
-+    if (!cpu->cfg.ext_sstc) {
-+        return false;
-+    }
-+
-+    return env->stimer != NULL || env->vstimer != NULL;
-+}
-+
-+static const VMStateDescription vmstate_sstc = {
-+    .name = "cpu/timer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = sstc_timer_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_TIMER_PTR(env.stimer, RISCVCPU),
-+        VMSTATE_TIMER_PTR(env.vstimer, RISCVCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- const VMStateDescription vmstate_riscv_cpu = {
-     .name = "cpu",
-     .version_id = 10,
-@@ -476,6 +500,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         &vmstate_elp,
-         &vmstate_ssp,
-         &vmstate_ctr,
-+        &vmstate_sstc,
-         NULL
-     }
- };
 -- 
 2.51.0
 
