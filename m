@@ -2,80 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C182BB7C09
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22974BB7C53
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 19:35:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4jQQ-0005OG-BD; Fri, 03 Oct 2025 13:18:34 -0400
+	id 1v4jfK-00017k-Ph; Fri, 03 Oct 2025 13:33:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jMN-0000Fv-N8
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:14:29 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1v4jfB-0000z1-Qb
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:33:49 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v4jKI-0007x5-NZ
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:14:20 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-77f1f29a551so3464129b3a.3
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:12:09 -0700 (PDT)
+ id 1v4jf4-0003Vl-Ps
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 13:33:49 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-27ee41e0798so36025155ad.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 10:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759511528; x=1760116328; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3CvJSXdiWhbprsJzICEFPWeYtoNE9+mbwDhHlNPU7kM=;
- b=vHTTngC08Wz9eA2pA9HT4opgCc+fHAgjx9NAiCq1f2nPGTZcY/2zZUDHZhv1u3rKBI
- Y77VCs6tNM0oc42u8KUMp/5Z9gfHAh17wGPJKJ8NnXxRXfX9u/r6JetiFq1Kf65GtzXW
- xSE94aHVm4VKHxhv7Wz2QjhE4l6uwO3ZACotW7DNTg9zZPHtGGGvzasef8SsGycD0Ncz
- Nh3WiY9TtbFvWqzA+ihcAHePrpPbnOjd4kJQrrikU2JdsB8meygXLAeCCOWqQdvRUcy8
- w4oty/KKlarW7610tDpbBwr4doHRevLmWg1+26qBBn+E5AOVT1iz6nPKYL65kcudLK8A
- 0s3Q==
+ d=linaro.org; s=google; t=1759512815; x=1760117615; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=vsdNPd5OVZsXgLR8AwRZ04kzplAwXB7GHTFWAbkKGlg=;
+ b=Kgn6tYxRiUSxXt+OSN+mKifYKsc8fRLQ/TnO2GKvWtOYcdyG/Hl40KRqP8vPjgRL0B
+ EPY0zGJT0dZVCRlGHPri+MS54/uR4axsbs67hY41h83/CpPj9Xzh7Je8ttVoHMq2z4dw
+ IfFKC33hL9q59Xje1bkFSJYj80SaihGRnAlJRsbu3ajMtfan22wncP1Bzc9YezGbXxG+
+ o+YIuf5bfVSr3tKGXD/gRHCxwX91SAVgdeAL56DUPj2K0QsVmEaerkgNFoRdR26OwHnI
+ wxDp1dhHp/ImzEd5RC6sUYUlMfMVbIWadCyN6FlOcdse4bQ6y0Gns8MJqpmlnPrd/pG9
+ U1Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759511528; x=1760116328;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3CvJSXdiWhbprsJzICEFPWeYtoNE9+mbwDhHlNPU7kM=;
- b=Tz37S6/HYPvXl/gecriBy7p3bvIbe2UMcIVLSXDQJ+RLcyAOvH1DClvsi/40gLV0JY
- 3E3t2lFPDbx91SLTmX06mUXIgmAYfcBNZkksWoxQCceS4AAKXULiXlsg4s2OR6C0jJ4K
- 6NG+DaySMo6+3pSkUB/aPVn4RpCjJX6kU3eYtBWx2bK5Ahs7QlI3leWXJYF46WwR9i9j
- d6/4kOtvCYk+B2yjoqlFDOhRbRsbh4PkDGSn0mcKjYR38ZReZ2VkBl4IeXfebnofzr8r
- OJuHlSCHUKUPWRVkDuw1NHd+x7Rawt9UcuX6gKEjqGDSviNwYsaordvec7McAYGgeiYM
- UqjA==
-X-Gm-Message-State: AOJu0YyUQ+cu7dwsFipFSYmiRK1Ee238Ebq42FjjkzhZw/pHRvC9eM2t
- lUD07XOFYd3TodnSS7rwE5L6hgMp+ZK8KqIhCERBq+iJ+FgzrKF5+7pDL2c6e2BSPuTRJAZnYnu
- fP1229ZY=
-X-Gm-Gg: ASbGnctZBC7CtdRYhk6K16sTW8Mh1Fji2MqtKR67VEqaqsRAlQ77W9bvSZ/ltDXR1q5
- JQ83z5276+1w9lfvHrg8HC73yRBgvIj0hFqiJYeH251UuedUs5Pl2GBGnOyfq9rIHs9rkBbcnLe
- snv7jyq9ke5N7wJh4sy25lQuETUVi5Eo8W3ju51E/kSRd7rqjhbsfsqPLr2y2w8Z907uHrT4bGR
- 8Fr6NL/jvESYe6hWtwwm14sPA01X+4TA7jkb2+3LH+HHM0yRumJoK3ik4CWuHEUWVPoOqWVy8EV
- JQLwUz3eCpJJVmC5L0qsP4rP+2x1rO3dFxtDOa2IJXJ5HEDGIoW+8lBMx2wDtXNaGtMjKiMvorq
- Yw/avQFPZT08zOL5BRY7tlAcU98llLHi/5ENFXKHxghTvMEz1GGz8dODO
-X-Google-Smtp-Source: AGHT+IFIZC16UCijyCh9B7zChtX+PV0Q2oYCTm+SN5h0gsau+sPYqcG+3MRivcuQAD4wAjIe9oukww==
-X-Received: by 2002:a05:6a00:6c99:b0:78a:f784:e8cf with SMTP id
- d2e1a72fcca58-78c98cdf03bmr4633284b3a.27.1759511528030; 
- Fri, 03 Oct 2025 10:12:08 -0700 (PDT)
-Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-78b02053a51sm5418769b3a.46.2025.10.03.10.12.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 10:12:07 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 73/73] tests/tcg/aarch64: Add gcsss
-Date: Fri,  3 Oct 2025 10:08:00 -0700
-Message-ID: <20251003170800.997167-74-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251003170800.997167-1-richard.henderson@linaro.org>
-References: <20251003170800.997167-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1759512815; x=1760117615;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vsdNPd5OVZsXgLR8AwRZ04kzplAwXB7GHTFWAbkKGlg=;
+ b=URciq+Lm/zkKM79SDM2iD2eKL/VgnDlnoM/L7EGivgatG2Q8a+QILxGORa9ubFb+gV
+ FIj6V46mOxbJtjN5Kl4bQcIQOwWMCNM91AQOh19/z/AeFbeerYcKBBMjVqiUKTQI51hY
+ xt+79YcrTMPIcy0uUdSni8PxS5vuV9mBon+OEJK5TxaqwEiTtRsdcBS9Rbk99RerfWvP
+ xg3BBQLu+iyYU2pX7MSDmwRmDzseVFOFje4ZosqmH+9f1xyoYpGtvq7FT0EKbI/odRMk
+ Ogo1jopYRvEk+PhA2DIPyx1M5s0BpLD9864s2+4BHW8I0wcrTr2zPKBupZJU0UUHgB6W
+ KoSA==
+X-Gm-Message-State: AOJu0YxXoiiRBk0NVa8zAxhDjnVl+264Bli5Cj7aVBlcxykaY3LpqFfa
+ uKsVKswtOhGnmbpBKONMJHVspA/e0BmI+voea6BQo6YEn6Wxj4AQ13BKbZ459U9tEM4ENwl2sW+
+ 31I6V1IA=
+X-Gm-Gg: ASbGncuxtYpTOMpE5e/9qFuF15fT1RMOzdGBl0NjpXNp+pY/zHyVW6mSDheneUyk4pP
+ hwYGLJuIJJ3AfZiQWSO0twFZrd8Flp2RPMVl+vuBD/xn8wHDoz0UAGTqufY2R/YY6LwKD6OGbP3
+ 1wg0yk+3Le7A07KePuXngYsz0ZDPEu+O1p145EsUefFZqKUTyA3hwyE5I+DUFIFf7oab2lioc1I
+ 7RcL3h7yaKVAsXpc5g4VKRQQQbizknA6YtCHrtk/fRb1HdFlb8RTwi1KDlxi0vs7WeFQZkQerqw
+ 0X7Vq0vBK+CD0bvjeUUPh0wmCR6hQHIaJC52rRkI3ni9TjtZASobO9np/mAxk+lCS5PlbuV3+eG
+ c9kSk5klsWwgw57Te+BMAxQtXeEYn1ePd5yztNRHtew9YSlxnhgV1kSgkJ9rq6kc3
+X-Google-Smtp-Source: AGHT+IEO3yTEneuGhWmmM+YmAnVmKJewcfMM7pO+Xa241wX/YY4hp4ZfX05rTU2bNyd94cXIDwx7mg==
+X-Received: by 2002:a17:903:290:b0:282:eea8:764d with SMTP id
+ d9443c01a7336-28e9a6568f5mr44996665ad.35.1759512814927; 
+ Fri, 03 Oct 2025 10:33:34 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-28e8d1108b8sm55712225ad.26.2025.10.03.10.33.34
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Oct 2025 10:33:34 -0700 (PDT)
+Message-ID: <b78dda58-5ca2-47a7-9b5d-0f209a2fda8c@linaro.org>
+Date: Fri, 3 Oct 2025 10:33:33 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/5] vfio queue
+To: qemu-devel@nongnu.org
+References: <20251003103328.1864910-1-clg@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251003103328.1864910-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,128 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Validate stack switching and recursion depth.
+On 10/3/25 03:33, Cédric Le Goater wrote:
+> The following changes since commit 29b77c1a2db2d796bc3847852a5c8dc2a1e6e83b:
+> 
+>    Merge tag 'rust-ci-pull-request' ofhttps://gitlab.com/marcandre.lureau/qemu into staging (2025-09-30 09:29:38 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/legoater/qemu/ tags/pull-vfio-20251003
+> 
+> for you to fetch changes up to f0b52aa08ab0868c18d881381a8fda4b59b37517:
+> 
+>    hw/vfio: Use uint64_t for IOVA mapping size in vfio_container_dma_*map (2025-10-02 10:41:23 +0200)
+> 
+> ----------------------------------------------------------------
+> vfio queue:
+> 
+> * Remove workaround for kernel DMA unmap overflow
+> * Remove invalid uses of ram_addr_t type
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/tcg/aarch64/gcs.h           |  9 ++++
- tests/tcg/aarch64/gcsss.c         | 74 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  2 +-
- 3 files changed, 84 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/aarch64/gcsss.c
 
-diff --git a/tests/tcg/aarch64/gcs.h b/tests/tcg/aarch64/gcs.h
-index 99cb4d4e38..e821963cb8 100644
---- a/tests/tcg/aarch64/gcs.h
-+++ b/tests/tcg/aarch64/gcs.h
-@@ -69,3 +69,12 @@
- 
- #define gcspr() \
-     ({ uint64_t *r; asm volatile("mrs %0, s3_3_c2_c5_1" : "=r"(r)); r; })
-+
-+#define gcsss1(val) \
-+    do {                                                                     \
-+        asm volatile("sys #3, c7, c7, #2, %0" : : "r"(val) : "memory");      \
-+    } while (0)
-+
-+#define gcsss2() \
-+    ({ uint64_t *r;                                                          \
-+       asm volatile("sysl %0, #3, c7, c7, #3" : "=r"(r) : : "memory"); r; })
-diff --git a/tests/tcg/aarch64/gcsss.c b/tests/tcg/aarch64/gcsss.c
-new file mode 100644
-index 0000000000..9550c68e7e
---- /dev/null
-+++ b/tests/tcg/aarch64/gcsss.c
-@@ -0,0 +1,74 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "gcs.h"
-+
-+#define IN_PROGRESS(X)  ((uint64_t)(X) | 5)
-+#define CAP(X)          (((uint64_t)(X) & ~0xfff) + 1)
-+
-+static uint64_t * __attribute__((noinline)) recurse(size_t index)
-+{
-+    if (index == 0) {
-+        return gcspr();
-+    }
-+    return recurse(index - 1);
-+}
-+
-+int main()
-+{
-+    void *tmp;
-+    uint64_t *alt_stack, *alt_cap;
-+    uint64_t *orig_pr, *orig_cap;
-+    uint64_t *bottom;
-+    size_t pagesize = getpagesize();
-+    size_t words;
-+
-+    enable_gcs(0);
-+    orig_pr = gcspr();
-+
-+    /* Allocate a guard page before and after. */
-+    tmp = mmap(0, 3 * pagesize, PROT_NONE, MAP_ANON | MAP_PRIVATE, -1, 0);
-+    assert(tmp != MAP_FAILED);
-+
-+    /* map_shadow_stack won't replace existing mappings */
-+    munmap(tmp + pagesize, pagesize);
-+
-+    /* Allocate a new stack between the guards. */
-+    alt_stack = (uint64_t *)
-+        syscall(__NR_map_shadow_stack, tmp + pagesize, pagesize,
-+                SHADOW_STACK_SET_TOKEN);
-+    assert(alt_stack == tmp + pagesize);
-+
-+    words = pagesize / 8;
-+    alt_cap = alt_stack + words - 1;
-+
-+    /* SHADOW_STACK_SET_TOKEN set the cap. */
-+    assert(*alt_cap == CAP(alt_cap));
-+
-+    /* Swap to the alt stack, one step at a time. */
-+    gcsss1(alt_cap);
-+
-+    assert(gcspr() == alt_cap);
-+    assert(*alt_cap == IN_PROGRESS(orig_pr));
-+
-+    orig_cap = gcsss2();
-+
-+    assert(orig_cap == orig_pr - 1);
-+    assert(*orig_cap == CAP(orig_cap));
-+    assert(gcspr() == alt_stack + words);
-+
-+    /* We should be able to use the whole stack. */
-+    bottom = recurse(words - 1);
-+    assert(bottom == alt_stack);
-+
-+    /* We should be back where we started. */
-+    assert(gcspr() == alt_stack + words);
-+
-+    /* Swap back to the original stack. */
-+    gcsss1(orig_cap);
-+    tmp = gcsss2();
-+
-+    assert(gcspr() == orig_pr);
-+    assert(tmp == alt_cap);
-+
-+    exit(0);
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index fddb7bc9cd..55ce34e45e 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -76,7 +76,7 @@ $(SME_TESTS): CFLAGS += $(CROSS_AS_HAS_ARMV9_SME)
- endif
- 
- # GCS Tests
--GCS_TESTS += gcsstr gcspushm
-+GCS_TESTS += gcsstr gcspushm gcsss
- AARCH64_TESTS += $(GCS_TESTS)
- $(GCS_TESTS): gcs.h
- 
--- 
-2.43.0
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
 
+r~
 
