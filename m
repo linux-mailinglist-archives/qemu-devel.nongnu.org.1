@@ -2,155 +2,225 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9767BB67D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 12:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 540BABB68C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 13:40:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4dIv-0003av-BD; Fri, 03 Oct 2025 06:46:25 -0400
+	id 1v4e6N-0002Yn-UU; Fri, 03 Oct 2025 07:37:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Djordje.Todorovic@htecgroup.com>)
- id 1v4dIq-0003ZT-HB; Fri, 03 Oct 2025 06:46:20 -0400
-Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com
- ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v4e6H-0002Yf-9o
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 07:37:25 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Djordje.Todorovic@htecgroup.com>)
- id 1v4dIc-0007QF-VZ; Fri, 03 Oct 2025 06:46:20 -0400
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v4e63-0005vI-2Q
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 07:37:22 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5939Z9bF021136;
+ Fri, 3 Oct 2025 11:36:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=F0JZAWI5BMbaTos3t4pK+iCBY8AiTAtUROi0eR7Hh8w=; b=
+ Ve7uDZXOBeTXoMMIAAVfkqFxw1vLoEU0Il615sIctqE845lSx5ObnKp6+zP/Q/Ja
+ ODW9s/9WTSVog2MtuleP4yLOFDkaISAMl/cOVSbdIHQOl6MfUM04gQYoTBkAS/tI
+ 28w5cq0UEhAXjpQ+X3S6H7KHT9m9dTMoC+0pYAeLGLBD4Z981vvHJG95yPqivppa
+ bhG5A3fBAYbmQbL3MHiicOi7TdB2KXgG6vFQ8XT1yDZjdkulTjVch0QbaNEetomv
+ tfno8aBo0wYt1vLyFdMtvx0dyQ1R9en3/qgvoiVRyycRTamUrID/1Xxoa5wo2Cf7
+ yefzxdqQWrldB2uZdRJnBA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49jbykr5k0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 03 Oct 2025 11:36:58 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 593AK4EV021500; Fri, 3 Oct 2025 11:36:57 GMT
+Received: from dm5pr21cu001.outbound.protection.outlook.com
+ (mail-centralusazon11011010.outbound.protection.outlook.com [52.101.62.10])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49hw105f16-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 03 Oct 2025 11:36:57 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jvZy5QIP+sOFluqGQAlc/XHCndSjXQbych1FjuUUYlqTQCDms8QH9aKjWa0BxmKvKYI9bc/lxI65LwpZRlG2x7uGSp4WSuo0ZhZZLoLKHWH73EL/0lAHF+V8uRhG9comY3Sxt9p2NbR9BSpbUnDPW2xM/ht9bvnWCbmSufoRFhnPqR6OCXebFKEc8AXXH8Tb66gOB8mxR+3r+stYpxigA/Dd76WpdbomZi8sIeGCpbmS6sbXERiwxkykBc5v41s426BeCo2MNDW7tNJS+3Y8HTqS6RWoG9/i/K88iiED/GC9YGjXfJ99yPQ3gVwZ5fymCVv6HtytmuVCvhb+QKW6UQ==
+ b=MAI3q4EF6EEOm05U4qqU2OBlWX8ale0mBwmZ5KHgvLh2FMc3pa3JfmFkCIAyC9fj9ZRn5OnZB6ZYAF9LJdMLVgF5ixFc8ujmjFZLzjXqE4K/LAe9+pnIF3wh6Y5ikWWetBovMzArG+jpgnxfz7iitTnI0zBlM2bKf583Et4M/AhVyAO23+I7iT0aES5aBDCZ7DMgmwmhmXSo0fa/x1uK6BbroDUjMIFEVQ0d9rxx5oIjSlNVFK6F0rwop1ymYUC4xuCece1KQC8p9a/pAgiXPVjlQR52Zqz/YoSfSWqCDPxpZCu4WmfNoMVwkUX6hI+A40SyVBJWj7c4ruydcvpr5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RCM7SHSz+JAPNXlfy5Hk48bDSNl21hgGwNbV+YP12a8=;
- b=ACmk2n+zRZRZcWr1McIzsmHsyyR+YLkEmREeIlJGZXfc0shl3QRv31ux5ZhZ29jnlHk1jWApIQhy4hKBxgZDwTuQ57wscrGcbGXhbuA4rn6IOfvW8QslYPYI4zX02ljf2WqwdLutXCA2VS1Kv0KOFEFkwGDESQ7JxqhPeQ0DtQ/MjfVJyzAVwW7XgZXHxq7nXgqRNB/XOLUHT74sB/pEmm1NQA8rx0MSb6vQTYgKHxnWJXg2Emr+TfPIvGRXO8g/U+VamB85QZIp89Q5iyeCkcOhsKefy3BKAbK3APUSwDuSKWKGjkWYit/fDGLB5FKH0MvPzdxaGTM5+u+tqnyOvw==
+ bh=F0JZAWI5BMbaTos3t4pK+iCBY8AiTAtUROi0eR7Hh8w=;
+ b=SjF8Csx5xXdinlharlkOs1b4uifXzKaB8GgERIKAVoegfOzfrLIVe+ggInFJjhcDmzUVNBcPlieHkTqg0MdTFldgjYYcTFBGDCKgRMhP9LbVIQwcwJxt0c6k4CuYKg6IK4UNL6ceu0DMB+GSi+YB4Fmi2RcsBwf+ElRw/sJ3PVKps32QTZuzE9gL1ripRto1TVfMV2Wnlv3ZZQVvSDoKCTkuPpuUJdUzeKJZ8BhvLMkvnymgdFJmntFgpaKyRTe1cpwBVGwM2CvAcePVVQQOiBvWrsXsJX6ycesgf+BNbCuzPCQoluV5IzEsrDCZlRhpdjyf4zGLi06GyiyNdzyO6Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=htecgroup.com; dmarc=pass action=none
- header.from=htecgroup.com; dkim=pass header.d=htecgroup.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=htecgroup.com;
- s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RCM7SHSz+JAPNXlfy5Hk48bDSNl21hgGwNbV+YP12a8=;
- b=X/FYg85KEcbXIB63PjZqNAYj3cTDo4OoKImsYaGkGA7DO4L03aX2WMm7MGTAYXfi2b5WaQ29JLmF6ZSyfBAxn1ap/a1sG2PmIVL/W2Nyhku6M9SJOeHrDRXn8t0g3V5jIlkTUC5qnfKjWDLBNbqxHZUOtPC/anc9JRuT+UjisBgm0ZSkMWPXau7CfwW5z+fdoZiIbBY1t96HL2tzsroKr6NmGiswxp3MTfZLbyBMeDK7ymxuRx4mbWSO9Mu6M7SNANd4l+lSLJS/3zSfGGha1j7AO4KKY47u72wY8b6w0ptCTfGsUNmPw5wANICh5Ikfn7RzrjWQMGH98456Ov6pAQ==
-Received: from AS4PR09MB6518.eurprd09.prod.outlook.com (2603:10a6:20b:4fb::5)
- by DU7PR09MB7941.eurprd09.prod.outlook.com (2603:10a6:10:5b1::5) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=F0JZAWI5BMbaTos3t4pK+iCBY8AiTAtUROi0eR7Hh8w=;
+ b=dMAnBt0PO9l5mmFOnpyacAF11/VwQxxP4gWYACZSWNNZm68EqHtk8zzaV1ZbHyhBZ83EaoNq+E6F4VY/ZG4yfQnMfKEjgrqcXJm9mCtaU2Vb8Hz5ZejP2LiJbE32Q92Os585ULas2W4KqUwqO7wtSRReXEPRr3cbrCislGYkfv8=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by CY5PR10MB6047.namprd10.prod.outlook.com (2603:10b6:930:3c::15)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Fri, 3 Oct
- 2025 10:45:28 +0000
-Received: from AS4PR09MB6518.eurprd09.prod.outlook.com
- ([fe80::ad50:891a:847c:580a]) by AS4PR09MB6518.eurprd09.prod.outlook.com
- ([fe80::ad50:891a:847c:580a%4]) with mapi id 15.20.9160.017; Fri, 3 Oct 2025
- 10:45:28 +0000
-From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>, "cfu@mips.com"
- <cfu@mips.com>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>, "philmd@linaro.org"
- <philmd@linaro.org>, "alistair23@gmail.com" <alistair23@gmail.com>,
- "thuth@redhat.com" <thuth@redhat.com>, Djordje Todorovic
- <Djordje.Todorovic@htecgroup.com>
-Subject: [PATCH v10 13/13] test/functional: Add test for boston-aia board
-Thread-Topic: [PATCH v10 13/13] test/functional: Add test for boston-aia board
-Thread-Index: AQHcNFLS+A/v34Znr0SIuERPqPYGZw==
-Date: Fri, 3 Oct 2025 10:45:24 +0000
-Message-ID: <20251003104443.51501-14-djordje.todorovic@htecgroup.com>
-References: <20251003104443.51501-1-djordje.todorovic@htecgroup.com>
-In-Reply-To: <20251003104443.51501-1-djordje.todorovic@htecgroup.com>
-Accept-Language: en-US
+ 2025 11:36:54 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.9160.017; Fri, 3 Oct 2025
+ 11:36:54 +0000
+Message-ID: <24c7cf7d-8b7f-4341-8a47-e157c16a7cf4@oracle.com>
+Date: Fri, 3 Oct 2025 07:36:50 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 00/19] Live update: cpr-exec
+From: Steven Sistare <steven.sistare@oracle.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Cedric Le Goater <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+References: <1759332851-370353-1-git-send-email-steven.sistare@oracle.com>
+ <aN15cNEwH4HBt7NU@x1.local> <c7ae8d4a-05ee-48fe-8edd-77dffecf2c32@oracle.com>
+ <aN2JE0D44AdV-qK5@x1.local> <b01c7919-43ae-4bc6-97a3-6f739ec1ee34@oracle.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=htecgroup.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR09MB6518:EE_|DU7PR09MB7941:EE_
-x-ms-office365-filtering-correlation-id: c63e429c-b6a3-44a4-a114-08de0269f7e7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?CY1e7WMV1S2t2OgCaIu7E5hisVlHfLokYQlf5mm7WULapeYJEDGH7GwAcR?=
- =?iso-8859-1?Q?t5YRg8C+ptz2DN/fQNbBYNNpJNHCK4Zu46HTfOycMjYG95KEte2i0nX/FF?=
- =?iso-8859-1?Q?W2xf/nkmS+sACYbjqLsgrHHAPod3szh1m+I0Al3jh4frPTVqTzHyW3Y+1I?=
- =?iso-8859-1?Q?2bA0he8e/8opgZT08JREUfx6USGcM+U1DHD3oDSZ/y7sSQ3BbrACzkwYzU?=
- =?iso-8859-1?Q?s5UH+uQaHuDELXlQ7S6jbiS+qSQkk7tSrMAYyjZe6Tfn3s/I9e54OqbcE7?=
- =?iso-8859-1?Q?urhfsSJtw9zd4BjSr++IQlqZ/Ex0s/uBS51A5fSbwOHvZPkQ6INy84oROz?=
- =?iso-8859-1?Q?2fFc4EJkNALGTsaMUpDWTYeE3DmI1wOo8i9OWcCNEfUeNbmZeck8K37a7h?=
- =?iso-8859-1?Q?PMtl/ZX+jeyyjW9vehBDY3r7xSezNqXyPPFoMCDWW6PXgXUk1baRZy9IaS?=
- =?iso-8859-1?Q?8N0+10tEefs40HMwvgHBXPc1GQGvlVaTGBf4HYL6XJM0EaT84l8MIcNEDf?=
- =?iso-8859-1?Q?HcT+Gwvle9po73gbTuT7UM3hyYAKfoSa6+RyAeSZTA3L6PF+58MlQlFXvo?=
- =?iso-8859-1?Q?ztlFvrM7i4Fl8tas0FjGa5kzffJulvydc686ribGv9mM3c04wfS+5Nkjwc?=
- =?iso-8859-1?Q?INXGS0cN23S1jWt8GuJ9j14d2fl17aWnC9XSIG76QZbO6Y+faYlmZRynHE?=
- =?iso-8859-1?Q?Dc1+UfXiTwBRE0ssNLMZZsvSSAz8jLS0MTIA+7Ml+wpuKbzeAsShkiNkvM?=
- =?iso-8859-1?Q?mMNnd5g4AbhTNNaR7+tUFt11kxKvaug9hTFd1+EDe3w+dSIMf8/GEwif5E?=
- =?iso-8859-1?Q?PZUgJVZE3wMmrvTw3/Td+R8Gd2YejqjEz6zsk8xLKCcz7YQaROlwpJVVEL?=
- =?iso-8859-1?Q?jep1RUDmCaZZ0AMBS7Pdei886+GnVEgSMDMCISalJ86AlNytjS0RMEEbhp?=
- =?iso-8859-1?Q?VVFFfWZddVV2thI7rqYq3PVACfkT02hmNFut2utN0IV6hcgEDYdZ9+F7Fi?=
- =?iso-8859-1?Q?SIn6zDJz7GuV0DkckDQkSEh9nkH+jjIXy1aZZGT3E2AuVsrlWrD4hBZFru?=
- =?iso-8859-1?Q?y3Mu0uZJ6j7tuaGzb1wCrmO3EpoF6UHhjPqR/9Hj+O0RGJ+zRGJEqWaAKi?=
- =?iso-8859-1?Q?axQTrVXjQ5cKKEBw4SWg6yAnujua4oNO33jaUuneDYwiIlazWgwupzjjoo?=
- =?iso-8859-1?Q?CbhqfXqr9nB73/bNWSzTvbfkZY/BLD6IYMo5snlbp3PjQ+EtfvufZ++jOx?=
- =?iso-8859-1?Q?r6E0lbWKxlm2CqRrRxN6oWu7D14Y8T5FtF6TqwQBJSg9CUqMNuzkygE393?=
- =?iso-8859-1?Q?bkZjZvlLQooRrR1K9Ayjg+tWKbuKIlb1IyIEjfMT8Guh+vYaezBaKjWRrd?=
- =?iso-8859-1?Q?wpVXmzsCgWZl2M9r/qsesAbA1zK/Vz8kcFj7scL486c0sJmABYZLm538d/?=
- =?iso-8859-1?Q?fxe02cae/FQpVig9iXZYyoMMazjPxgu4wfT5cPA0WKuxLQq+DMLcZiYyIl?=
- =?iso-8859-1?Q?M5GG/Mm+0FCs2aKWXotygIZi0yxyn1H3Ubcvta8RzwjyOJfmdgwnXbGeNz?=
- =?iso-8859-1?Q?QOe7+2MdwN4VgctBjnu1+PW1lgBW?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AS4PR09MB6518.eurprd09.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700021); DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?iQ1Xg7wL8hmHL500V3oVQWZtjg7iq50afsXmsdjC9Y6q33HTvjVhWwsDMs?=
- =?iso-8859-1?Q?mm9U5EFID5K6+i87Ybwa4MS2yVHn9CWQxeLg/VNdh+fdb04KvSfLWO768D?=
- =?iso-8859-1?Q?bD0QKY0LsOkyXVHoT87fU6CcuGn9aQyovNwyB/Xm306VmmirHZ8pA1zESz?=
- =?iso-8859-1?Q?J8LPyCqz2kpX/114NDsGV1AaV7jd34j6taDgA+VsUjeD0XsIcZ0ShmO8ym?=
- =?iso-8859-1?Q?BcukuhadVKFf79UBzw2H+Thr1uIhadHCtWcQdXIa81JQB0LVzSrw3WkFBw?=
- =?iso-8859-1?Q?qMmk9cS3EeVC6LM4l0MWRAgPXAvOQVeBn0nO/c+5TKGBx7BOw+HrHibLQC?=
- =?iso-8859-1?Q?3q8v9/LnaJcIaGuGZxPY9wLgAxNCcWmpbW9ErsowiZHNqkxZocTMRzQLaF?=
- =?iso-8859-1?Q?dRjYWldvI2DyPxZJt+Abdkvw77g1TC1MS6aYsASTFoaSy0y2jdTX7ibdWQ?=
- =?iso-8859-1?Q?tW1QAEtQBC/KpbSpvPDl6+PO6p2hEl0r1zKRKOBPEA3gqvS4zFpLfeIGwF?=
- =?iso-8859-1?Q?/BKYdSSS9Up3xtEJx1o/3h6CIf7JVmGXUjr3RlWADgoSWvynEAhVF7M5Zf?=
- =?iso-8859-1?Q?XFm7X4zNIbypxRpCFZnkE+XO4jtpYkLN63GmXjPgwsK2aGVRWUuI9vkq3C?=
- =?iso-8859-1?Q?hbse0DdM6I7jQCv8kkMGwacyaOg6X4rBcRVVZuVNKrz5kzjrabAkxF/TuO?=
- =?iso-8859-1?Q?cSna0RhW65GOfwlZveXU4wwKFm6+4P6d6o/ixCOLEUWuat1E+gMoBZ3Ypt?=
- =?iso-8859-1?Q?+fNsZwlwyeFnZUzcBo4X+rK3zc9y45eSCyZkoQ4U9e20nj6yLpnZuEwCNo?=
- =?iso-8859-1?Q?hRGweBMdpubSdxmA1CMtKqrucWvJnZnC70h/IhrhvDA7PzatS4TNwrdDcS?=
- =?iso-8859-1?Q?p1NXx+BXnNVRe8JKcYVg2szM3AmiXWwy5W89uT81IUPDRVxiBjDvXLd+bk?=
- =?iso-8859-1?Q?3ij/GiUjLRFgZRfP3zNE0r6vBddG6Ra75pRi6UzNCl9HWwUZL3aFgrEAA3?=
- =?iso-8859-1?Q?8r7SP/GRPAs7vfHcOAkO0Oz23N1e6Ks5f7Yg8xm1Qtx7EZOKrTRc1VHyN/?=
- =?iso-8859-1?Q?+K78vMUicryrBqMLLwVFC5a9Os3FWTds1CKWJnt8MtZhydnqcABj1OJDa/?=
- =?iso-8859-1?Q?HMB9xiby5EVnNftl73zVTvR/3QkXceiXK0jrFgcIlbJGM1EnGNWwJziYWR?=
- =?iso-8859-1?Q?pV8BW1uSMmWMsIk1qaabPvtk7ooLZgbHLrUtRtP33/0GE85d9SdHFOXMjs?=
- =?iso-8859-1?Q?2xvgSPLAhrvlNrQKl2+8DZNUKK309Gxx+EFlL83rd5RVMLYGFf7tRJh9B9?=
- =?iso-8859-1?Q?PUW075JaC7pSUSVV40TLcXPUTJ2LEOrsd+EH5juWqgRx+ZeayzalZ8AChq?=
- =?iso-8859-1?Q?QZzAxLLQBZ9/5NiUdNghM5ub6UfgVhtrFwWpfghJ2iYGvSKyXLQOEEm1Kx?=
- =?iso-8859-1?Q?ZUC2hvvBR7fMu3+E9tyCm7BeD4YWmLNN5IygiBg2IHvHWGHYKLURyrYrMe?=
- =?iso-8859-1?Q?Y7vPDVfktWEILSgpvtglLc31GPCvLmBkowL78gwY2iJI4ryVfvpXeIGc8j?=
- =?iso-8859-1?Q?d4VZY+RqT4Rdq1oJTVn7tq/UfzhvwWvCa+3sfIbhSyLKA6mM9EnpeVg8uc?=
- =?iso-8859-1?Q?Oq0a1AG6wV7dlujH4/rcS7FdWfyvz3/SGfazcjLwWIJlQoXNMqPFFkxPAS?=
- =?iso-8859-1?Q?Bqo0gnezl+43d6SqjkA=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <b01c7919-43ae-4bc6-97a3-6f739ec1ee34@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR05CA0091.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::32) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
 MIME-Version: 1.0
-X-OriginatorOrg: htecgroup.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|CY5PR10MB6047:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e77cbfc-be2f-4a53-b2ea-08de02712712
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZFJtWkovOVVZZGpYUWNRTlVhZ0dWTE5CbEdqanF0azlmMjd6bmtaKzljbzVB?=
+ =?utf-8?B?ODJaa3NpMHFpS3liM2pmTmZwa2JSWkJXdnFGY21IZy9CQm1OamdhVDQwQWRU?=
+ =?utf-8?B?aXdQY2FIMUdRRjhaRHRRdmVONjBoSXNwQ05sLytIcFNEbnluVFdVSlBycExG?=
+ =?utf-8?B?V2JMVDlZMlBzcThRb3VmMTczTFJwZzd2YlBUTjdvUkxqcGYraEQ5enlyTk1W?=
+ =?utf-8?B?Z3BoUjVLRE4vM0hRWVNIdnhYTjRKbG41bjlabFRvTU9SdTR5djhqNjEvS21B?=
+ =?utf-8?B?UnY3VmNMbTZpenUxbk1zODFUNW1LNUNTOG10VS82bzdLZER3TjBTQk1OaWI2?=
+ =?utf-8?B?VzJRMm9lbzBwSk1OcjFHd0dQdVdMblhQNTBQekNnNktEQXUvb3R0Y0kwOVBu?=
+ =?utf-8?B?WWxDY05IZVhwaVVsb2k0M3MyeHI2YlN4NHNNMXZTSUpJaWF1MEtOcFphbzlM?=
+ =?utf-8?B?WFRHTElMN0Q0ditkcmlrZVVteWRQbFNkMlZPV0YzdXZtL1lnQ1NPNUd3dU1s?=
+ =?utf-8?B?TEE3R3FFOFA4NFBKZ3JYeTRScmlsNXdERXNTSXpzSUpYNWRPOUJycWo0OVhh?=
+ =?utf-8?B?QWZyMlg5SzRZM3A3VlBkeTRTbGlJYVJkNFQwd0NsYSsvU0Z4M0VpNHhscGZk?=
+ =?utf-8?B?dlZydjZqaDJYbVhROHh1Q01XR21raWRrUkFBd1R2QWlsOWhENzJ4b2JIYUFr?=
+ =?utf-8?B?OXFPMVIzZjhIemh4WGw0SmFkRHk1NC9yalBCK3poczdBcHIvN1Y3c3BPSDl1?=
+ =?utf-8?B?ZDVCVTZYdG9tcWpGTUhrMkQyVlhodHYwNkxPWVlJeUoxRGIrek5CRk8waXdu?=
+ =?utf-8?B?TVdKai9ZR1RNKzdSalBxRjkydTBJd0JOUGp2UmZxcEV2eFpUT1daY2M1cm5T?=
+ =?utf-8?B?WFk2bnVTVmpPU3htTm1xTjJUSk5MMWt4OWFsVlpBMk00UDB5UVREOEdoeE5R?=
+ =?utf-8?B?UCtocWZlNDJ5MDcxVkZwdHBZVThaTktGTmZUOHgxOUtzWHdydnFNWEpuamtJ?=
+ =?utf-8?B?R1dCSW96RUVxT0huVi9JS0dybm95RXlZRXlBRitKWktyQzVYOU0zUk9SdXJi?=
+ =?utf-8?B?Um5VenVwN09jUldCbVZRVmRvSm1DLzJSd2FjT0NLUllXdVUwc1pWSTVLRG13?=
+ =?utf-8?B?U3BGaDNneTBFZEtqcTFtaEpMYktyVld0d2VXLzRDT21weldFRjVmNHFKUzhr?=
+ =?utf-8?B?RGdXdVBTMjRXK0wvaVJROUVuOENYOVJwckRsQi9SempaZ1BhcGh1VHE1b2x6?=
+ =?utf-8?B?WUI5YkpGNFFRWWZqNzI0eUZ4MVgzM1IvaWxrYzdMUUZHN2dCNE1mM3RZdXNE?=
+ =?utf-8?B?dlRjdzlVQXQwY0xtKzlrZUQyWHA5N3pyYnloUUo1T09XQ1p3NStHY1h6VTlr?=
+ =?utf-8?B?cHhCS29jUVJOWlN0NHp1R2xQUmFyc0NNWGFmajN0blhBNC9ycmhBckZIQ1Ro?=
+ =?utf-8?B?UGtvdnpNbG1xOHRyMWxML3g1R1JrYjgxeThvd052L0Y4aVBYS3BvSThSa29Q?=
+ =?utf-8?B?NzdhQXY4ZGx5SHFEbnVJVi9YWXZaRGhzaEE4YTVnb0N4MjZKd04xMU91bEd2?=
+ =?utf-8?B?Y2NSeTJET1dhRWNWWFp6elNGOGphYTdBZXM0eUZpaDNkZW9ESzV2ZmdBQ3Mv?=
+ =?utf-8?B?QnBiaE5kMjhLUlpleEVpSEhuVFRWWitNeWZBbS9FOEZENlNTMjhtRWZqcDVp?=
+ =?utf-8?B?ek95b1JVYTd6Z1FPWmR6Zytrd1crYWovOG5LQmNrVmpFQnR5TmxpS3pSY3dq?=
+ =?utf-8?B?TzczSUxpSHRSS1ZwWklISkwvS1VJUVpadVhQSCs2RlE1WHdld2hIRG85b0pm?=
+ =?utf-8?B?R085cFJ1RmphZ3kvY3FCdlVKSGt5aHpJN2lDWXNPQmtHTVdMVDFWYVpnVmV2?=
+ =?utf-8?B?VmVkSm90SC84WmFKWFhSTGR6Zzdha2ppU01MQVFKc0VFdjI3c09FcDQzM2p6?=
+ =?utf-8?B?dU5oSzdxUUFYcmJSYm5DeFJYdmFERlRpR3VYWkFub096cDdsT2s3UkNtZWRR?=
+ =?utf-8?B?eG5jZi9mWE13PT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L2YzU1FzOWlWeGNJRzBSd042ZXc4Tk9HUjdFaEN3T0tHZ250WUhKdzVTNTI2?=
+ =?utf-8?B?N1JOZ0Y1NUh4NHpGajhRTXdCUVBrZXk1c2p6UG5RQnNnUm8xUGhhTEVaWGpa?=
+ =?utf-8?B?MnRYbk9UZVdWV3dSSXhjeHc3dGtrcXpaNUxWWFU0SFpSWGFuTXJaUElPck5s?=
+ =?utf-8?B?T1FpQVNJVG1kVlNHTU9GbGhLUzI0S1RrdDJzVDVsSWZqYnpDRDhFVTdZalQy?=
+ =?utf-8?B?djh6ZU1zb2h6b2x4V0xtUXk3OE5wWVdPTTk0aUt3dnlPTHl4c2FOUU9JRG9G?=
+ =?utf-8?B?aFcyM0o4dXNzSys3a01OSTUzV2pwWWFXSTVtZTZXYmxtNkJRdVc2c3BEM2pU?=
+ =?utf-8?B?QUNIa2RvWlBRSHlpd2RMSHFaUFFaN1BZeUczZEJhSmpMa0JTYmM4eWhoUVF3?=
+ =?utf-8?B?amdEOWFsRDJGaE5vV0huZ3IyOWNIR1Qydk9DcXcwdGJrUUFiS0g0RDBXL2Vz?=
+ =?utf-8?B?M1pxMTlCcVhYOExobjh3Q3NodHh4K1BjTGozbFhlSkVMTjQ5ZEhFSjFiNEky?=
+ =?utf-8?B?QWY3UnEvZTErZDVxRlRDaE9YU0NvQ05rMWdaWmRaQ1gwQnR2cUVPK1N6emtF?=
+ =?utf-8?B?MUhuV24reG4waXFpRmFNRXhMcWJOeFdKa0E3eWdWRWJWbm5hSFR3a3IrbTdI?=
+ =?utf-8?B?UFdFU3ZKWldGdjJjYkQwUEpsUStMaDBtSCtpbHFRMU1ZeE9ZeGJlNkhTYWVu?=
+ =?utf-8?B?RWRySkNVNFBSa0Jrb3g0K3pKdlc1RVNUT0JVZG5zWW1jeHhYTTVMTGxFZXdp?=
+ =?utf-8?B?c0JPcWNtbWdpQXBQaHRkSC9zZTM4MExlbXN5TW83V0hWbFJ4RnphVkdHQkEr?=
+ =?utf-8?B?cUduWXNWcHRCVVp3VVR1Wi9yVG9IdENXRjNYT1NVMXlkZDZnS1VnS1lzaGZF?=
+ =?utf-8?B?LzEzNHIxWDRLekh2UEdqNERHbklFVUhDVi9XLzVPa2kwUFBqRnNnZ3Y4YjhQ?=
+ =?utf-8?B?NUdleGI4M2x3ZjM1VHE0czZkZzJ1ZGNOdEMvY1A4L09GUDFTRms5Ym1XL0RO?=
+ =?utf-8?B?WVRjUXE4ZWkyV3hxb3BWVWtUOTBzaXphc2NteHRyMTlzM0RxYWR1aXhkOTV0?=
+ =?utf-8?B?ZmFtNDV2a1Jta01CNGM2K0N5L2NhcXBQQzd1WEdoUXBKWkNjM3pyRnlCUTYy?=
+ =?utf-8?B?NTg3cmIybE82dFJxd3VvempORWh5dVkvdFZDNnVRSWhvRFZ3WFExZlk3OTFk?=
+ =?utf-8?B?cmMrRGZ0eUlPeWF3Z0hsd1NQZWVseTBkL1N1ZHp2UzFIVHRIaVpLa0hkSzQ4?=
+ =?utf-8?B?MEZvcFhVRm1ETEtGaVUrRUpNM1JvZjNtU01pTGMvcHVEajMwamxrM05yVWtr?=
+ =?utf-8?B?YjI2RHhEM0o2SldHdWxBRE8wRFlKa04xZGEwL25mTkJ1RndBaGcxdXIyZ1lF?=
+ =?utf-8?B?a2N4akU2cWJNcGh2d2REZWplTjJMaXVtWXBpSWJDMVB1akMrNGVhMmFSbkl1?=
+ =?utf-8?B?Nll3ZEhnSnlzL1BLcFVGZFZjdTZYZGU3TjlLMHhEU3l0OEhFQ1VGMUQ2TXM5?=
+ =?utf-8?B?QzhYS1lKTS9vRGtmNWJORktNaUp6dCtZYlI3KzdYR1l6SFhSQzhmeU1XS0Jr?=
+ =?utf-8?B?OHg5SFoyYzZiVHZ3NHFVNGdpaG5VREwyM2pIS1RxOS9HM0NodGRNQ0t1L2hu?=
+ =?utf-8?B?QWhCM0FFaWZxNmY2UENhU0doV01jMEh5SU5idTFZSGRXNFlYdldnalM1b3Zv?=
+ =?utf-8?B?T09UWXljendCTTRTblFHb3dBRVE2ZG5QQ2pTV280eWFkY1N1RGxPY0tTZXZp?=
+ =?utf-8?B?UEtETDlQSUNzL0xlYUx2U0s1ZlRJeUNHeEhEckdpZU5UMFcxeTlEejdPUzBa?=
+ =?utf-8?B?N2dUOWtLUVNBMVY0VjFlNENPQjA2bjFKWkd0cTNuelpaVi80RmVSZ3pDd0lF?=
+ =?utf-8?B?T0d2cnhyWlhMU1FQdjkwdWJDeXpYcEl2eGZNSWxKQzc4TmVzSlRLWXdTWTdX?=
+ =?utf-8?B?TU9NZTNvSllwZGlJNjFXUGl2T2JTT3ZkNkllOFVpRlVUc1dLdHVWYU9jNk1P?=
+ =?utf-8?B?SFV2aGJnMjlaYVhOTWR0cWtBYVNOalZkVHdKbHRiWkJZdHZWN3JlejhsOHBE?=
+ =?utf-8?B?ZjE1RlA0SkNmTXJSNG5aN2huZ3VEQUVLUDVXQVdBREFJWnRaNkZSeENPWlYv?=
+ =?utf-8?B?SVM1Mmd0cmRzajkrQTdhY05ZS010OEFyMGJ5SFB3ek1LRWdtUEV2akFJcHRP?=
+ =?utf-8?B?ZkE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: nRY/3YNrpBkYF2P2OBY+Sqe1wNsheP1inqGTjRrP7lH2KwHP8yBIHKzRdIkDXE+LlKCfR03UlvEx+0SVYoN+iZLFV68nxhfwP+DsKGwaukD3XY8FVBrwoB3sljv1D+97pT6oN8dbxR8j0Ffv3bIuKGA2KlsdvJhoJeSUlSxjE30PWmljw4fxb8zsve71xBy2YGcVLe40P5xT89Qbag4NcS4w4eZsBmfr2jUcJhNH2124h7HLoCBM0VwJFdKfj06nLOu95gkUv8UuuNpIDE6XmGO8Gk3cbAMimKL+DeS7Vtx8lLQzJI0Lb2Mv5fjvJaTjMxORkcQCOgGgcmV7zq4xXAjtpOzj/sBFNx6ksoKWA5oMUnH/92kIWwHXuftsekxIdnWnDkKB403J7Wt2PslYneba+a2iPjXm7yLRdKkvwHzMXxYEwAeZQ6NJRY8Kd8SbR/kahAq4ZlhqnIpX1jupjt9jW5VMEiADJcGe/6E9B92nzlEYUT9CrEAQldOJlD+qkoxgqewUp2l9rXiXVSxMm25wjHHb3Pe+bIOWFUoP3ZcYzx5dq1MQ6aten8xhzB/snWbh1PocxOSDgVKul1asycBRtZCTpG2eAEUe/g0crc0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e77cbfc-be2f-4a53-b2ea-08de02712712
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR09MB6518.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c63e429c-b6a3-44a4-a114-08de0269f7e7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2025 10:45:24.3920 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9f85665b-7efd-4776-9dfe-b6bfda2565ee
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bVvlA/oD3g0WyIocVALrea8aEXv+3kSAxsqg0U60Nfqt7E0tW7hF/qQVZSYy31K/GIQa/FrmprPJJh/ZQZ0uFv6SPKkiIRjARKw70L73/24=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR09MB7941
-Received-SPF: pass client-ip=2a01:111:f403:c200::5;
- envelope-from=Djordje.Todorovic@htecgroup.com;
- helo=DUZPR83CU001.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2025 11:36:54.6638 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nU0krJgUt9UBHBLFsajjUueu2GRHqX95AvMl1bZMLLJ1NMekNqkK/UcqF0FBxsRBaaQD0GF2GAiKNTnXUwjO/A9cqyXjuVF8sCUJRAhN6VQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6047
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-03_03,2025-10-02_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ phishscore=0 mlxscore=0
+ bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2509150000
+ definitions=main-2510030093
+X-Authority-Analysis: v=2.4 cv=McZhep/f c=1 sm=1 tr=0 ts=68dfb55a cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=p0WdMEafAAAA:8 a=RZ4FCAUWAUYdEhQCNMsA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+ a=poXaRoVlC6wW9_mwW8W4:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=jd6J4Gguk5HxikPWLKER:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDAzMDA3NSBTYWx0ZWRfX1wfK9juzskMX
+ z7ur/TEJ8cozjdUjr4hp1xN9iUqhp6zHYPMdMEb0etCnmiD3TKRQOER7KN6tdrvKOvMZUQblAET
+ j2OGo7ILk2yu3iRg1j50LsGnD78SSd044/mMVr9Yqh/KLhSkYFdd0NSJ4KQtSVipqQ4EJ+y3hcc
+ MBpunIIA52WSoVjyxCNO7Md+1VItpS1Pq6X9eVw1zx3R/brO2wiAp4Kz3ZLH5vJQUHnyHkzTzmp
+ fj3s4rXUVJovdpsQsPYfPjcf+EUzh+0LNLxzvVLyzm7sFNc10QIt+UYSFm0d7CH1x7KobiEjfjo
+ TLvTKh0AmNy6BkWu/CnM9zOzJzMFHdmpki5666YQfw7vpI1CitFthgi4hbLwdCmvgd6G/SniBYP
+ bp0fWONDeHe8+22NIb2NyYtwhPPxkg==
+X-Proofpoint-GUID: aA8vFMf6yMznA4QrinKYl0SfftH10O9q
+X-Proofpoint-ORIG-GUID: aA8vFMf6yMznA4QrinKYl0SfftH10O9q
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,176 +236,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add functional test for Boston AIA board. The P8700 RISC-V based
-CPU by MIPS supports it at the moment.
+On 10/2/2025 9:44 AM, Steven Sistare wrote:
+> On 10/1/2025 4:03 PM, Peter Xu wrote:
+>> On Wed, Oct 01, 2025 at 03:07:23PM -0400, Steven Sistare wrote:
+>>> That does not make sense.  It already does that, which is why I used it:
+>>>
+>>> util/memfd.c
+>>>
+>>> int qemu_memfd_create(const char *name, size_t size, bool hugetlb,
+>>>                        uint64_t hugetlbsize, unsigned int seals, Error **errp)
+>>> {
+>>>      ...
+>>> #ifdef CONFIG_LINUX
+>>>      ...
+>>>      return mfd;
+>>> #else
+>>>      error_setg_errno(errp, ENOSYS, "failed to create memfd");
+>>> #endif
+>>>      return -1;
+>>> }
+>>>
+>>> Did the windows build fail due to a different error?
+>>
+>> https://gitlab.com/peterx/qemu/-/jobs/11566477462
+>>
+>> See util/meson.build:
+>>
+>> if host_os != 'windows'
+>>    ...
+>>    util_ss.add(files('memfd.c'))
+>>    ...
+> 
+> 
+> I see.  So you were suggesting, as the minimal fix, to add ifdef CONFIG_LINUX at
+> the call site, not inside qemu_memfd_create, eg:
+> 
+> QEMUFile *cpr_exec_output(Error **errp)
+> {
+> #ifndef CONFIG_LINUX
+>      error_setg(errp, "qemu_memfd_create requires CONFIG_LINUX");
+>      return NULL;
+> #endif
+> 
+>      int mfd = qemu_memfd_create(CPR_EXEC_STATE_NAME, 0, false, 0, 0, errp);
+> 
+>      if (mfd < 0) {
+>          return NULL;
+>      }
+> 
+>      return qemu_file_new_fd_output(mfd, CPR_EXEC_STATE_NAME);
+> }
+> 
+> Do you want me to re-submit a patch, or can you add the above to your tree?
+> If the latter, feel free to tweak it.
 
-Signed-off-by: Chao-ying Fu <cfu@mips.com>
-Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
----
- tests/functional/riscv64/meson.build          |   2 +
- .../functional/riscv64/test_riscv64_boston.py | 124 ++++++++++++++++++
- 2 files changed, 126 insertions(+)
- create mode 100755 tests/functional/riscv64/test_riscv64_boston.py
+Hi Peter, do you need anything more from me at this time?
+AFAIK I have addressed all current issues, with the snippet above, and
+with the new 0001-vfio-cpr-exec-mode.patch attached earlier in this thread.
 
-diff --git a/tests/functional/riscv64/meson.build b/tests/functional/riscv6=
-4/meson.build
-index c1704d9275..58d541f8c2 100644
---- a/tests/functional/riscv64/meson.build
-+++ b/tests/functional/riscv64/meson.build
-@@ -1,12 +1,14 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
-=20
- test_riscv64_timeouts =3D {
-+  'riscv64_boston' : 120,
-   'tuxrun' : 120,
- }
-=20
- tests_riscv64_system_quick =3D [
-   'migration',
-   'opensbi',
-+  'riscv64_boston',
- ]
-=20
- tests_riscv64_system_thorough =3D [
-diff --git a/tests/functional/riscv64/test_riscv64_boston.py b/tests/functi=
-onal/riscv64/test_riscv64_boston.py
-new file mode 100755
-index 0000000000..d450f7eaf5
---- /dev/null
-+++ b/tests/functional/riscv64/test_riscv64_boston.py
-@@ -0,0 +1,124 @@
-+#!/usr/bin/env python3
-+#
-+# Boston board test for RISC-V P8700 processor by MIPS
-+#
-+# Copyright (c) 2025 MIPS
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+
-+import os
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern
-+
-+
-+class RiscvBostonTest(QemuSystemTest):
-+    """
-+    Test the boston-aia board with P8700 processor
-+    """
-+
-+    ASSET_FW_PAYLOAD =3D Asset(
-+        'https://github.com/MIPS/linux-test-downloads/raw/main/p8700/fw_pa=
-yload.bin',
-+        'd6f4ae14d0c178c1d0bb38ddf64557536ca8602a588b220729a8aa17caa383aa'=
-)
-+
-+    ASSET_ROOTFS =3D Asset(
-+        'https://github.com/MIPS/linux-test-downloads/raw/main/p8700/rootf=
-s.ext2',
-+        'f937e21b588f0d1d17d10a063053979686897bbbbc5e9617a5582f7c1f48e565'=
-)
-+
-+    def _boot_linux_test(self, smp_count):
-+        """Common setup and boot test for Linux on Boston board
-+
-+        Args:
-+            smp_count: Number of CPUs to use for SMP
-+        """
-+        self.set_machine('boston-aia')
-+        fw_payload_path =3D self.ASSET_FW_PAYLOAD.fetch()
-+        rootfs_path =3D self.ASSET_ROOTFS.fetch()
-+
-+        self.vm.add_args('-cpu', 'mips-p8700')
-+        self.vm.add_args('-m', '2G')
-+        self.vm.add_args('-smp', str(smp_count))
-+        self.vm.add_args('-kernel', fw_payload_path)
-+        self.vm.add_args('-drive', f'file=3D{rootfs_path},format=3Draw,sna=
-pshot=3Don')
-+
-+        self.vm.set_console()
-+        self.vm.launch()
-+
-+        # Wait for OpenSBI
-+        wait_for_console_pattern(self, 'OpenSBI')
-+
-+        # Wait for Linux kernel boot
-+        wait_for_console_pattern(self, 'Linux version')
-+        wait_for_console_pattern(self, 'Machine model: MIPS P8700')
-+
-+        # Test e1000e network card functionality
-+        wait_for_console_pattern(self, 'e1000e')
-+        wait_for_console_pattern(self, 'Network Connection')
-+
-+        # Wait for boot to complete - system reaches login prompt
-+        wait_for_console_pattern(self, 'Run /sbin/init as init process')
-+
-+    def test_boston_boot_linux_min_cpus(self):
-+        """
-+        Test Linux kernel boot with minimum CPU count (2)
-+        """
-+        self._boot_linux_test(smp_count=3D2)
-+
-+    def test_boston_boot_linux_7_cpus(self):
-+        """
-+        Test Linux kernel boot with 7 CPUs
-+
-+        7 CPUs is a special configuration that tests odd CPU count
-+        handling and ensures proper core distribution across clusters.
-+        """
-+        self._boot_linux_test(smp_count=3D7)
-+
-+    def test_boston_boot_linux_35_cpus(self):
-+        """
-+        Test Linux kernel boot with 35 CPUs
-+
-+        35 CPUs is a special configuration that tests a non-power-of-2
-+        CPU count above 32, validating proper handling of larger
-+        asymmetric SMP configurations.
-+        """
-+        self._boot_linux_test(smp_count=3D35)
-+
-+    def test_boston_boot_linux_max_cpus(self):
-+        """
-+        Test Linux kernel boot with maximum supported CPU count (64)
-+        """
-+        self._boot_linux_test(smp_count=3D64)
-+
-+    def test_boston_invalid_cpu_count(self):
-+        """
-+        Test that 65 CPUs is rejected as invalid (negative test case)
-+        """
-+        from subprocess import run, PIPE
-+
-+        fw_payload_path =3D self.ASSET_FW_PAYLOAD.fetch()
-+        rootfs_path =3D self.ASSET_ROOTFS.fetch()
-+
-+        cmd =3D [
-+            self.qemu_bin,
-+            '-M', 'boston-aia',
-+            '-cpu', 'mips-p8700',
-+            '-m', '2G',
-+            '-smp', '65',
-+            '-kernel', fw_payload_path,
-+            '-drive', f'file=3D{rootfs_path},format=3Draw,snapshot=3Don',
-+            '-nographic'
-+        ]
-+
-+        # Run QEMU and expect it to fail immediately.
-+        result =3D run(cmd, capture_output=3DTrue, text=3DTrue, timeout=3D=
-5)
-+
-+        # Check that QEMU exited with error code 1
-+        self.assertEqual(result.returncode, 1,
-+                         "QEMU should exit with code 1 for invalid SMP cou=
-nt")
-+
-+        # Check error message
-+        self.assertIn('Invalid SMP CPUs 65', result.stderr,
-+                      "Error message should indicate invalid SMP CPU count=
-")
-+
-+if __name__ =3D=3D '__main__':
-+    QemuSystemTest.main()
---=20
-2.34.1
+- Steve
+
 
