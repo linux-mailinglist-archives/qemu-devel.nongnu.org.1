@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A21FBB5DB9
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC9FBB5DDD
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 05:34:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4WTD-00077S-I6; Thu, 02 Oct 2025 23:28:35 -0400
+	id 1v4WTE-00078O-FR; Thu, 02 Oct 2025 23:28:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WT4-000733-El
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:27 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1v4WTB-000763-54
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:33 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v4WSt-0001Da-UP
- for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:25 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-77f5d497692so2484633b3a.1
- for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:12 -0700 (PDT)
+ id 1v4WSx-0001EI-Tg
+ for qemu-devel@nongnu.org; Thu, 02 Oct 2025 23:28:29 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-279e2554b6fso11736015ad.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Oct 2025 20:28:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759462091; x=1760066891; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1759462094; x=1760066894; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y9e72oUIBV4vzVLXmEifMrDsgj+nHpDSwe09C+KGtro=;
- b=IxY/2aAcMBIduCK9POWooZOI3isaxbiY25LPDzRDwAjVjPqw2/Jpj2rK8FMPwDBNdZ
- q47X+hMlz0feRiKIj6L5poFleH3uayT9dd/ZyiqJksLMpEHifjxlFFem7zdCQUsXc//n
- G73V/8+NCcZVTMSrQIfLTFyztNq4eBPHFI0YArp0BhVf9md/KOfT48uYPFkzJ3POyWIj
- blNxxZifq/KeZL3TadqNgeEBvD9wFDBMW8YDyLej+3Is6QnUrPpESLnbk/aO1qNWjsCN
- ZJfnVYXt5vANEbTyDZ5h48UxAQwiZV0wHdldyAhCPz47enfIZ2zQaIErMrph/9xGFbq6
- n4rQ==
+ bh=4L1dP65ExrGrK+gLH5THctXyJB5NdQkz+xLUjnvqoQk=;
+ b=YwLaStVIaT4ljW60XsYDo4UDTgxFpnZiwUoIKN6T9FVsBeBbiOjCQbHsERslvikmbi
+ m1MTj/A8zuolvyftLaUibV4ttpNJR9y6f+2t3GaXOTmzgReu9+i1uemInwqb/9QOVB/Z
+ J0cl06poW2g9TXc2lpOuiAp8/5s4uOEMmDagyVEjP5ZRDKM8exZMN+pe5PPtfbT0ScqI
+ 9+0lqmzaecOx7mdOct98qMUZm/Shb+p1g3Oj51jkzD7mO7sGLFt+pt53OE3D+AlLN5s5
+ 7DeO58T+rigxeMbrx0qlrTJV938D5790njROvkdnk1VxQkfgkWMau5FYNLznxE3oi6SO
+ Hcaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759462091; x=1760066891;
+ d=1e100.net; s=20230601; t=1759462094; x=1760066894;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y9e72oUIBV4vzVLXmEifMrDsgj+nHpDSwe09C+KGtro=;
- b=SZytnSFEGZYb/JakxYR4680HIE5BefVLM+0ONk4EN/eG80QOCsfdmYh2K4AiLDZ42l
- 0+7m98OEQS2ZbuyCOrwB3ZR4Cz4ZBihpZ4rkJz3IpHqA8NgZlIcAWzLC8dR/ld3JsG2r
- eaZtL1DWI4wLdvUzzNfmdbeljNmzzMf9+ej/Ra38ykdkgzj+kuHzZZLpHCNNkyXs/45x
- T5U2CMacpGAESSJp220x16I5UB57CWKlUIaHnKe2cx9ID5t7gCRR7EziAOFW2bxjpxm3
- U+F5eGjrwmpj97dexIkTOc/r8vQkGo/Y7eat7n9617uwHhWC5O+79QSqHbyVoZGaC1gC
- Jtmw==
-X-Gm-Message-State: AOJu0YxqWLFD6iDkYe8yJ4KwFB8yij2ZewPAVid5VnIZDLlBCY8sQCc+
- L7Rt3Kk9etP5DASl8udhj+1Gl5xA0IAF6sZTdkiTjpcDxMu6nUhgdUQ0dNHXLg==
-X-Gm-Gg: ASbGncvg2mQJs+7arTEJpwmUitywO4Gw3usJOOSt7VcNj0Z87gL2/uNkqwZPxhP/3ki
- jTUD8zus96btkaQ+4bkjDp3r5ux6yET74piSrHZ1BRfze2S1/TTb2meVf+ZvgbQfGl/ZcZLa65U
- sHY94o0VEIRRLcvqw+XDYUojeL3yBLnZk61lC0D+Zf32JwZFLK8UkzQVMUEOX+hEtLsPPD14vJE
- gPXzKuvY+erSvDeJNuy3S8wzacBjk046PRkmbTucefqSuh3RvmEXbXjIAQokLzx+8r3Id1Ye7qF
- YPCmKfhHCdZQ1Lx4Mv8jP4zWENsHNYAxl8U2ERNg3GG3yp/bcsibNKYhTSAIsh2t0LhjoKI4aGP
- 2j0aaDdxpbVNRzSOCoiiRWkTMzVe4DzrcRwO+RC4+LX1Xr3v4G+BqmVygjWBurzAKuHDKjdCqGy
- TExZAbrGv/+3mhMy+nsF6l93fNNuOS6sVYg5p5xX8EJq/AuRaYZwOy
-X-Google-Smtp-Source: AGHT+IG3pnF1r84L4DG663uJSXqt9ylMDyCs8ERyZaJxPUiAd3kodRHObQ9+dccFVlY0Ey373IrDug==
-X-Received: by 2002:a05:6a20:3d95:b0:2e5:c9ee:96ee with SMTP id
- adf61e73a8af0-32b6208e887mr2003497637.37.1759462090648; 
- Thu, 02 Oct 2025 20:28:10 -0700 (PDT)
+ bh=4L1dP65ExrGrK+gLH5THctXyJB5NdQkz+xLUjnvqoQk=;
+ b=rR937MgJtYF0Ehi/mBSLM5UzAKFtV61p3/4981m0i3pPff4gBMGs8JyvxB3bXwlTF+
+ 2rgPENTqEIyl2kexuwhUGwHrAjsHHyZSHkAWSJNoOyvJNOndYYPLe1hgPCDMjiCW7rj4
+ sw28uSdGo7o+EQK8ZKtJLFJmrrrYcDaT5puNgmJBXBrxY6QIKMq6eB53Dd2EfW2OuLl8
+ gIIk7VUH1Anz8aMf+jrtpZZrvCbkJw5GshljbrpHGhEO84kz2AKJpzfgSSfSmmsYn/+1
+ C1sXtWJKMVBdMXVQQAGOc7pWXO5UEkMRNCwCP/+tsw739firPIiVGaXM3JAXBBB3GjE9
+ TDdA==
+X-Gm-Message-State: AOJu0YwwbxGEmvV0isObkMyVUQ9IbtRzodmTUJ/lHfbSXOnQfuZwIRTx
+ Mk8lDO06LrIqf1xHtos/ztEoY78Hy8dEUOHUPfd0LGms6RXWf0+7gtjuHxuePw==
+X-Gm-Gg: ASbGnctrjuAwsV4aQMaxs+JpVMAgmlQHIyPEpAjDk7B5oziYYzHQTpb8RTHqDktnlJQ
+ 6s+RI7lWvPXwjvBFaKeAR07LjKbbhodMwFnaOuCKMIWsoqOFUISxJ23I+i9S0D838b4dowa6ryV
+ I8kkF31oaLcuifHp+9UChlkhY70iKVpSVUrjPZMJkK2nZYfMcpwtuVO8mMKB/i6/KBI3LSaIqOq
+ oYUMeAIavdKNwOXf+bDN+sCcgfp+SASsraH/hbYVMA0V5u+cGi5K5mQJ511pY/DyObPoBcdQpKG
+ 5mTejWZ5zAB1LIcZIDvloRlzdvBxhd2pdik/8aaPEZnR2OID7wnKQGrzsFoCtVXHamf58HVejlc
+ a9GYPGt/tKwluCbcEOz+ggT3+PVXj0ZyhHCE1U6z/zQDr0ZcJr/4i62CJmKBTwYuQOC23zoYShk
+ bBRhenIJiQPb1MevkNRjuHJ4sgb7JBtr3ZPMLWP5Gdqa96Q6RNdIbk
+X-Google-Smtp-Source: AGHT+IGs9Ad7yrlRx0B5/kvHnDHE9Vr2d8KRPPqWeLZErAwUcV4HEVRMDkvCq6fofGjtOjkNP/FHcg==
+X-Received: by 2002:a17:902:d54d:b0:261:e1c0:1c44 with SMTP id
+ d9443c01a7336-28e9a61f1d4mr17293695ad.40.1759462094163; 
+ Thu, 02 Oct 2025 20:28:14 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.07
+ 41be03b00d2f7-b62ce55205csm844202a12.18.2025.10.02.20.28.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Oct 2025 20:28:09 -0700 (PDT)
+ Thu, 02 Oct 2025 20:28:13 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, TANG Tiancheng <lyndra@linux.alibaba.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, Peter Xu <peterx@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 10/26] hw/intc: Save time_delta in RISC-V mtimer VMState
-Date: Fri,  3 Oct 2025 13:27:02 +1000
-Message-ID: <20251003032718.1324734-11-alistair.francis@wdc.com>
+Subject: [PULL 11/26] migration: Add support for a variable-length array of
+ UINT32 pointers
+Date: Fri,  3 Oct 2025 13:27:03 +1000
+Message-ID: <20251003032718.1324734-12-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003032718.1324734-1-alistair.francis@wdc.com>
 References: <20251003032718.1324734-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,77 +106,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: TANG Tiancheng <lyndra@linux.alibaba.com>
 
-In QEMU's RISC-V ACLINT timer model, 'mtime' is not stored directly as a
-state variable. It is computed on demand as:
+Add support for defining a vmstate field which is a variable-length array
+of pointers, and use this to define a VMSTATE_TIMER_PTR_VARRAY() which allows
+a variable-length array of QEMUTimer* to be used by devices.
 
-    mtime = rtc_r + time_delta
-
-where:
-- 'rtc_r' is the current VM virtual time (in ticks) obtained via
-  cpu_riscv_read_rtc_raw() from QEMU_CLOCK_VIRTUAL.
-- 'time_delta' is an offset applied when the guest writes a new 'mtime'
-  value via riscv_aclint_mtimer_write():
-
-    time_delta = value - rtc_r
-
-Under this design, 'rtc_r' is assumed to be monotonically increasing
-during VM execution. Even if the guest writes an 'mtime' value smaller
-than the current one (making 'time_delta' negative in signed arithmetic,
-or underflow in unsigned arithmetic), the computed 'mtime' remains
-correct because 'rtc_r_new > rtc_r_old':
-
-    mtime_new = rtc_r_new + (value - rtc_r_old)
-
-However, this monotonicity assumption breaks on snapshot load.
-
-Before restoring a snapshot, QEMU resets the guest, which calls
-riscv_aclint_mtimer_reset_enter() to set 'mtime' to 0 and recompute
-'time_delta' as:
-
-    time_delta = 0 - rtc_r_reset
-
-Here, the time_delta differs from the value that was present when the
-snapshot was saved. As a result, subsequent reads produce a fixed offset
-from the true mtime.
-
-This can be observed with the 'date' command inside the guest: after loading
-a snapshot, the reported time appears "frozen" at the save point, and only
-resumes correctly after the guest has run long enough to compensate for the
-erroneous offset.
-
-The fix is to treat 'time_delta' as part of the device's migratable
-state and save/restore it via vmstate. This preserves the correct
-relation between 'rtc_r' and 'mtime' across snapshot save/load, ensuring
-'mtime' continues incrementing from the precise saved value after
-restore.
-
+Message-id: 20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250911-timers-v3-1-60508f640050@linux.alibaba.com>
+Message-ID: <20250911-timers-v3-2-60508f640050@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/intc/riscv_aclint.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/migration/vmstate.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-index 4623cfa029..318a9c8248 100644
---- a/hw/intc/riscv_aclint.c
-+++ b/hw/intc/riscv_aclint.c
-@@ -323,9 +323,10 @@ static void riscv_aclint_mtimer_reset_enter(Object *obj, ResetType type)
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 1ff7bd9ac4..1cfddf31b5 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -522,6 +522,16 @@ extern const VMStateInfo vmstate_info_qlist;
+     .offset     = vmstate_offset_array(_s, _f, _type*, _n),          \
+ }
  
- static const VMStateDescription vmstate_riscv_mtimer = {
-     .name = "riscv_mtimer",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
-+            VMSTATE_UINT64(time_delta, RISCVAclintMTimerState),
-             VMSTATE_VARRAY_UINT32(timecmp, RISCVAclintMTimerState,
-                                   num_harts, 0,
-                                   vmstate_info_uint64, uint64_t),
++#define VMSTATE_VARRAY_OF_POINTER_UINT32(_field, _state, _field_num, _version, _info, _type) { \
++    .name       = (stringify(_field)),                                    \
++    .version_id = (_version),                                             \
++    .num_offset = vmstate_offset_value(_state, _field_num, uint32_t),     \
++    .info       = &(_info),                                               \
++    .size       = sizeof(_type),                                          \
++    .flags      = VMS_VARRAY_UINT32 | VMS_ARRAY_OF_POINTER | VMS_POINTER, \
++    .offset     = vmstate_offset_pointer(_state, _field, _type),          \
++}
++
+ #define VMSTATE_STRUCT_SUB_ARRAY(_field, _state, _start, _num, _version, _vmsd, _type) { \
+     .name       = (stringify(_field)),                                     \
+     .version_id = (_version),                                              \
 -- 
 2.51.0
 
