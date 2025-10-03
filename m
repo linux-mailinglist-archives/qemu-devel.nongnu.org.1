@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB07BB7293
-	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 16:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F4BB72A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 03 Oct 2025 16:21:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4gcX-0004FJ-Dt; Fri, 03 Oct 2025 10:18:53 -0400
+	id 1v4gcr-0004Ks-UD; Fri, 03 Oct 2025 10:19:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v4gcV-0004Ew-3Q
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 10:18:51 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1v4gcm-0004Je-Jk
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 10:19:08 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v4gcO-0000Lw-8b
- for qemu-devel@nongnu.org; Fri, 03 Oct 2025 10:18:50 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-b55197907d1so1532500a12.0
- for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 07:18:36 -0700 (PDT)
+ id 1v4gcT-0000MN-Rs
+ for qemu-devel@nongnu.org; Fri, 03 Oct 2025 10:19:07 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b5506b28c98so1592088a12.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Oct 2025 07:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759501114; x=1760105914; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759501117; x=1760105917; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yQJ4n0yAnCwknqPTb+pduA+OkL6+8EPxAIGIZQxicPA=;
- b=QAe549CKhVom9FUNBsT3Tw6bf50l78qbm/TtErPI+VbPlk3l/b1TqAwo81dR/DtNjW
- 2NjLOnQvBQspqIdHuVaVhWjusgq9W2SZ+7nJ3Ac2+/RaOaM+o/7/GIDq/mlJVNsqyFZl
- n9CvUJJJrULtzjTUrZR+y13jnnjmz6Q77KBSzWgUF3ThGjk1UEnc9rlRozr6Zgm9XMFY
- gdps1QranTKtOhr7lRmrimdwZJj6Egcs/9eBBVIDRNrlLy79IgcwQ85ntBS1rT30eKE+
- bGCbFZzlq9rBf1Rk/9Og4iPx17jBdbLrU3Zb6xQ1fBfmsaqeF0lDMveWbnSUqZIkcKbL
- 5ryw==
+ bh=Av0b4w51KjBkrgO+Sf3v3FDDHs9Dpny2C0CPcpUwJwo=;
+ b=xp7Gy3ZVDpB5RPgEPNBuhspkUNFyz92G4ujt6Uoyj08nhO2pge1M4W4CJObtlYQ/Yp
+ CwT7Cxe3a6zZQu6ijM9H1E60zRMQL9QPDEC8OSTCjmGfEM4rJz3rYlNPhbyKvmK1ZE+X
+ hhfXCZI+EIKLwjRh07F+9N9meR2plV6lxMaBhE3sEYUkNe1WRo51V6TihJdPVT36bsZW
+ /vlvZbdYsYFreJ3fuDuPdpi5LjffqWFjmrQAudMK5Cbybe3UIQYPdaPdtXTfOJFSyPRY
+ M/lhjl21i6eyJEvr0lthbL3KG//cHhrEC5HGxWXvHiwRvWb6GeOBTjOwKeCsWRrxaEfb
+ eE/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759501114; x=1760105914;
+ d=1e100.net; s=20230601; t=1759501117; x=1760105917;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yQJ4n0yAnCwknqPTb+pduA+OkL6+8EPxAIGIZQxicPA=;
- b=rDDlYP0mtJvbO+Bzztx7xSd46iAiYHMF8tw4qutfolF/doYVF1hcL64p/dGYVaWes2
- ilPG7U4dPdXXIrC7qj79xb+0uPV0u9wJmBVF2wZqbAUScigaBvYyNsYZspKBTth7u8iT
- MPcaW5hJStyeKG8sck2WmB92G1+9JXKRQDe9R1C4Fp+KZfy7yPuu04EygdTrk6kHT8kc
- AxGxHfIvoNCvE+CUG8AgTnbMgCKtEZlOzALPtUK/NyO2LLRfSVMtMhiPn0+/3WxLGLuS
- 3efWEgaFjKA51L+K3KhkrktB6ypBAg9Xj16qvtgqzEr4dHV9njY5aw6ihz2VXY284k+G
- TI4A==
-X-Gm-Message-State: AOJu0Yyq1Qw9SeRo9gRlKYeAzYBqC5Zo2chsyjY6LNjL8q4w5Z/5PkJd
- ffbIEVr6JZkqznSpYllYwCCvWnXHHQLg9eIsulQjMrsp4Zc5VMsrF/tLNsDOXA9GBH/R9sU/QKl
- T1caZ
-X-Gm-Gg: ASbGncvbsIlN4Kj/ak6k6PtTy0SQZVpx4SEKIGhJ70AAbWWTedTFt/T+i+CbvvXhXxJ
- fULGT2uK3iFgPJ3BcwY9Aaj075oGWCyiAJVXJFPgWwv1MEt08eW88ptQablV+FIEg56A3UFv4uZ
- zZIbPjYy8yEziiR7mRXbsBo1vReYKfuZY7TXAWOmDRI5pU0V+wqeU/+snPgjTV91PNLwSJe8YVX
- FzO7Dx9W35JGRoKg1+DSaTT1rjjq3rDfk0ZPu4Vt77vCPMQfFWU747EzUe/WGaqskuh2lqxx5fM
- ZVWZcvZy0fd/T5DIr/qpVbLlICOFX+ZDqd0MvXJ2OAY2uu5Bq3FZDmoNLcn63f0UR+rstRfh0jU
- roOiSWKGKHVxMH8fnTRyG1gteArS5Oc/dA6a73Rm2bNE27Z+M40Y5qbtb0OUvK/aWImY=
-X-Google-Smtp-Source: AGHT+IGpP3y2vUX907I7c8V0i4Iy4V6/IjJSq3UH6RaDK4nWrUcxKZEIWt51H8Zjhr8cUrK6fAO9jQ==
-X-Received: by 2002:a17:903:2342:b0:283:c950:a783 with SMTP id
- d9443c01a7336-28e9a6541e0mr41281955ad.56.1759501114553; 
- Fri, 03 Oct 2025 07:18:34 -0700 (PDT)
+ bh=Av0b4w51KjBkrgO+Sf3v3FDDHs9Dpny2C0CPcpUwJwo=;
+ b=eCiI/r6cbVdKsf7yGroPzgM8bn6BCTwXqUWqb+VSGKgy2wDwaaih+SqSPPCfWEsm8s
+ ovaXj223KM3oLmDKkC8JTSAbiGmQiB+QjfPzZF2VxSgkhkua4xnqedW/4Yf76PUVopAM
+ MuPpCV1D5cS3HCYTFKjUcbodzY/8cpmKPxnRV5m48T+U1y3nWwLIYOLQzMnfsBBMY5dJ
+ azS1CedStoova0wvDnlLF5aDhf6jL0vnndZw9UvB3OYIQTKyJb+gMs0DkDU57WP6AJ6p
+ UANcKDSNSzEjqztN27Xfxb67grott+VzsQOPZSBGHqtHUGQ2RxMhzXKQpK9CLSkrDp3V
+ HNGg==
+X-Gm-Message-State: AOJu0YyxmaVUAFfv4JGEdkpOyp5pJb+eiocFF+N1OSCi04GsTQszbJeI
+ 8ZRK24vqFTLE1Medf/SMuCiZ77bwgvO4VThD7lj29EDsFy6bh3GCtvmBwEREEWyMfU+Lx2L5xPQ
+ J4WeI
+X-Gm-Gg: ASbGnctkg5gCmJmRooVJ6irbH/5ZcSzJpD75yCI+QLLdgQHVuifUOX+Yu7PoPcRwB3g
+ Grq0+JNvXnLaL3GcKvaGFdBeid3YjRrk7+qz318BEP8Uz+clatlYCIV672i/Kw74PehGqw8FxFJ
+ yLXiV1nX2tjIdXfOkjXKQ5P7ox7jJjyhe50IDhl+NwW5lMtFj3U2IglevGiQV4uVR/mkLVbTcto
+ 9vVntK13+u4wuc5sZEZC8PWligY41MJXa7HFYh9akW6lxzySZ9lfLBnie+LOhgrhZwLmX6oK7YW
+ pCAa804EfefX0U8evySxBolgo7A2iRs2ug0qkdYhUt7a4EFMwc/4wmQQxZBaVw//u/ChWs5/rCn
+ xNaXDpNf/eaNMMoSoUc1niwGYnODJAp53AqFtvhSzTU2hGPzH2NePB2o2VmPefzPt3WU=
+X-Google-Smtp-Source: AGHT+IEFK70Onc6rTTcd0gZl8vdEKB0vu7pZJRc7zPQ4F1RR7HmgY5MP1+l2uq1psPIAkBJnLvqhIg==
+X-Received: by 2002:a17:902:f612:b0:280:4b60:5570 with SMTP id
+ d9443c01a7336-28e9a65167emr38681875ad.52.1759501116947; 
+ Fri, 03 Oct 2025 07:18:36 -0700 (PDT)
 Received: from gromero0.. ([186.215.59.111]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28e8d1d5635sm51759645ad.102.2025.10.03.07.18.32
+ d9443c01a7336-28e8d1d5635sm51759645ad.102.2025.10.03.07.18.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Oct 2025 07:18:34 -0700 (PDT)
+ Fri, 03 Oct 2025 07:18:36 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
  berrange@redhat.com
 Cc: qemu-arm@nongnu.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v6 2/9] python: Install pygdbmi in meson's venv
-Date: Fri,  3 Oct 2025 14:18:13 +0000
-Message-Id: <20251003141820.85278-3-gustavo.romero@linaro.org>
+Subject: [PATCH v6 3/9] tests/functional: Provide GDB to the functional tests
+Date: Fri,  3 Oct 2025 14:18:14 +0000
+Message-Id: <20251003141820.85278-4-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251003141820.85278-1-gustavo.romero@linaro.org>
 References: <20251003141820.85278-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -99,26 +99,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The upcoming changes in the reverse_debugging functional test to remove
-Avocado as a dependency will require pygdbmi for interacting with GDB,
-so install it in meson's venv (located in the build dir's pyvenv/).
+The probe of GDB is done in 'configure' and the full path is passed to
+meson.build via the -Dgdb=option.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Meson then can pass the location of GDB to the functional tests via an
+environment variable: QEMU_TEST_GDB.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- pythondeps.toml | 1 +
- 1 file changed, 1 insertion(+)
+ configure                     | 2 ++
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 2 ++
+ tests/functional/meson.build  | 6 ++++++
+ 4 files changed, 12 insertions(+)
 
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 16fb2a989c..98e99e7900 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -33,3 +33,4 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
+diff --git a/configure b/configure
+index 78445cbb4b..21d1679f58 100755
+--- a/configure
++++ b/configure
+@@ -2003,6 +2003,8 @@ if test "$skip_meson" = no; then
+   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
+   test "$plugins" = yes && meson_option_add "-Dplugins=true"
+   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
++  test -n "$gdb_bin" && meson_option_add "-Dgdb=$gdb_bin"
++
+   run_meson() {
+     NINJA=$ninja $meson setup "$@" "$PWD" "$source_path"
+   }
+diff --git a/meson_options.txt b/meson_options.txt
+index fff1521e58..5bb41bcbc4 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -36,6 +36,8 @@ option('trace_file', type: 'string', value: 'trace',
+ option('coroutine_backend', type: 'combo',
+        choices: ['ucontext', 'sigaltstack', 'windows', 'wasm', 'auto'],
+        value: 'auto', description: 'coroutine backend to use')
++option('gdb', type: 'string', value: '',
++       description: 'Path to GDB')
  
- [testdeps]
- qemu.qmp = { accepted = ">=0.0.3", installed = "0.0.3" }
-+pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
+ # Everything else can be set via --enable/--disable-* option
+ # on the configure script command line.  After adding an option
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 0ebe6bc52a..f4bd21220e 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -58,6 +58,7 @@ meson_options_help() {
+   printf "%s\n" '  --enable-ubsan           enable undefined behaviour sanitizer'
+   printf "%s\n" '  --firmwarepath=VALUES    search PATH for firmware files [share/qemu-'
+   printf "%s\n" '                           firmware]'
++  printf "%s\n" '  --gdb=VALUE              Path to GDB'
+   printf "%s\n" '  --iasl=VALUE             Path to ACPI disassembler'
+   printf "%s\n" '  --includedir=VALUE       Header file directory [include]'
+   printf "%s\n" '  --interp-prefix=VALUE    where to find shared libraries etc., use %M for'
+@@ -323,6 +324,7 @@ _meson_option_parse() {
+     --disable-fuzzing) printf "%s" -Dfuzzing=false ;;
+     --enable-gcrypt) printf "%s" -Dgcrypt=enabled ;;
+     --disable-gcrypt) printf "%s" -Dgcrypt=disabled ;;
++    --gdb=*) quote_sh "-Dgdb=$2" ;;
+     --enable-gettext) printf "%s" -Dgettext=enabled ;;
+     --disable-gettext) printf "%s" -Dgettext=disabled ;;
+     --enable-gio) printf "%s" -Dgio=enabled ;;
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 2a0c5aa141..725630d308 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -77,6 +77,12 @@ foreach speed : ['quick', 'thorough']
+     test_env.set('PYTHONPATH', meson.project_source_root() / 'python:' +
+                                meson.current_source_dir())
+ 
++    # Define the GDB environment variable if gdb is available.
++    gdb = get_option('gdb')
++    if gdb != ''
++      test_env.set('QEMU_TEST_GDB', gdb)
++    endif
++
+     foreach test : target_tests
+       testname = '@0@-@1@'.format(target_base, test)
+       if fs.exists('generic' / 'test_' + test + '.py')
 -- 
 2.34.1
 
