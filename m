@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD45BB8A7B
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74938BB8A9A
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:16:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wSt-00049s-Ad; Sat, 04 Oct 2025 03:13:59 -0400
+	id 1v4wT7-0004zg-M1; Sat, 04 Oct 2025 03:14:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSr-00042Z-DX
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:57 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wT4-0004sO-8i
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:14:10 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSp-0004zB-5a
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:57 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-46e326e4e99so21275695e9.1
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSu-0004zL-6e
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:14:10 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3f0ae439b56so1937915f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759562033; x=1760166833; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759562037; x=1760166837; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rs5ktVxUhrsP4KqLrnYdRPZ+tvphc+EfryWZu4COmK0=;
- b=ZUXAg6cHNyOvjU0X1pPbVb4wpk8scGSd2HLE4B3EH/6rUMatYAUdKq2ZTFubbzm53H
- YkkmIYPpXW0ZQSMUhTQv0C91ThHA1do5sAyCD3j9R1+NCspNjFguW5bI1ekbnT0LsjRT
- 6d21ZYE10Xsbbhb5uFjBcx0kfGYLcIykvDZGaBoAQeJg9wQ+jx+AcJ+kzcMJNNpFqe5n
- zzUuWq1CbCAsmQQU3qN1MUmS+ii4W6Ek9hKTnS9GrEketcGaq4mT/04eAftUC5yEWnjV
- GH44QsNKCaQCdghgsQf9jTzLwV3BlPrsQaq9N/N1vM3KdGKBireJ2PC0FDZTppQhIHGC
- iqbA==
+ :reply-to; bh=gzuwMCz9UPXzqhkXzAOKf8DdtJjfzgyRW8DD8ME/+70=;
+ b=wVP+ZXsYVyeUXkQxThXCqXBX4P4Jonkad0WQV0dM+BfSl4sVCyzE6HZISW3NDFtlxW
+ HarOGMzpPpvkbeEVra5oi1ZxZHXWYEiIQwZwC6CX1x/Clqsu+T/cAwXMjnrDZxYxdiDN
+ gDnJIhPo8lxyYd/n8llJeGBvwTyXzz++hiQZzWnv2JA0AJNjyNdQhO0Y/sDwQiKXO4Sb
+ a60X/3gsZ7ln5GciMQAHaqyZmRXymw/zHZEPtK9fg/hjW+lWPaexm9El7cqpZdIxp/E9
+ Og5C+vMmfDOr7lRqZRci9OAyT+UtiDJMAPSt7/0CV9gYOf8JBiUZcYWr+U/chUfRQWRO
+ 2rag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759562033; x=1760166833;
+ d=1e100.net; s=20230601; t=1759562037; x=1760166837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rs5ktVxUhrsP4KqLrnYdRPZ+tvphc+EfryWZu4COmK0=;
- b=TN2ZqsjqwmDBTxU1j4fzzLy8ziNPvgj/wOMq32t9qGu7O6fMD0QJfyEc9JO/08QE2i
- mC+fTgIPKLgRFKtwSnCfxHE5Lz8dHEFMQJKisGnEnzXiU6CBJJ5oE/ahCFqH68EZ+h2e
- NF6rSNsL8UHW6wOtLsUuWCM2Lbm3NrO/O7eYIJfQI5WrZl8Z5VzO4zhpMukcYsEek4Ug
- qizeZH0gpLs/A7PT5nfXoG3XGwDciLhk6cWfKwlgw2HiRVcSWoea+9mtVN7pKdD4hsUn
- odQVex0iNM4BpDB55E9usCsyhdvTJfRtTsXlCDuXPqm4jb8X94AXEArU+lgR51yqFeG9
- JhZQ==
-X-Gm-Message-State: AOJu0YxeW53EkN+eCuyNQgdrcQy/TfejR60P7adpa94HVGKatI9K8X19
- 7iadZl3tcy2B0dmVrPGl6dDHwFtgFBzxWug9xkLf6XlPfvc+Bbu9k+QLqglPO0qpEc5ZsyYW/hW
- 7Cv4rvL+z3w==
-X-Gm-Gg: ASbGncsUAVTZRkdrCZs8Ks/GjlG4SsMzIlT/y722eJ3ANENfFIPAnG77c+i4ckVPys8
- 7uf9L0UvVtX+5y3KzCBwkzUBil5apOfg7swopF+C5F1tyJKLOrfYjayoviVY4VbSCvlWnEOOnGX
- cnvI+SqLZyUHNEWth3CAT7+1J4Ht9qUmxkErW1kWjgtcmbAMX4nD0a1nlZJntLdjwiO64V3j7Pp
- C9eO5/wwdSD0SOtXas1q8QeK4zT3is7LclQBByx8VQi4zKwbIYBWRMb0Y2ugG3cBGwamB2YliVg
- 4jFwj6kOF952GElveNNJTh7gY6oEtWlSWjKpEPVLB9vs1t8hdxvfJBDLiky65GBD6r6oppY99X0
- ryX5ZGobYKvCcB5N6cqWjESz8tJCXfO1gGF7EXpQSoU83HpEd/sYWo/GJd54yadnnkrTF+m/pF/
- 0vkoeCqOcxaBlKrAiNb6uX6+22sZ/CxVJdOWXlzVtOtb4AOA==
-X-Google-Smtp-Source: AGHT+IEcsjW9deqlM8zFJrMLRoh+qANkb0liTvrzgGTsnV7UIlDcYaXusJPfwf02/jOkDd9fTqZ6fQ==
-X-Received: by 2002:a05:600c:8a16:10b0:46e:6a3f:6c6 with SMTP id
- 5b1f17b1804b1-46e6a3f0734mr55258955e9.6.1759562032590; 
- Sat, 04 Oct 2025 00:13:52 -0700 (PDT)
+ bh=gzuwMCz9UPXzqhkXzAOKf8DdtJjfzgyRW8DD8ME/+70=;
+ b=FnVFguB2XSpPj0Pb/VyM6tGax+MFXOgxW8F6hae7QsCRBvamB2niWZ8j0QqV4gJTiF
+ a+keWrX0+Iupkt7GzbX312vNaHNpRLzG/+VqqK7hU7EpmCdQkW1c44GEAjwiptoFd7jU
+ ljObgFtJXuf/dY4ApDxufl4Mg0p9BTk1zP/aeMhcm3kWzUtGyiqW2rChqbw8QI/rQYKd
+ 9cY+Ix0zyBY3Aadw01RKMNrLCB8xvvoNToiyqk/XlYNP4CKIUccq1D8hIZTttvH17cdP
+ sSG/PgF+09bBGjaeFwLlDwQ/wqpfgzV1WTSpHHR4FuFjBWK+nkbrlvb/WVPYv2bc5m3e
+ 7Z5A==
+X-Gm-Message-State: AOJu0YxCYaBog/Kv8/OXdzQhS+lRryCishwyD2FToy0tYFdcytyk7y6Y
+ zMBLuMfQZP79rYXNzrB2hl2djbnokNIv6jsnKXJTeMaqaeek7I9Nyj65xeM3rU4BFasrRQowbxE
+ 67Wy50b5ocw==
+X-Gm-Gg: ASbGncshLXssLGz/Di+nSyDPovBAGO+ocwWdEtE+QNY7hmqIHQscivsCbKZIu62o1Vr
+ BIgwJU6xtKmSUHza4fk2HL2IIQ0/4MovWiaIak+Ehz7ygpXFGDRQ6WZvHkm0+e0xjSkyCLfZx+/
+ zRyG6K2qih/1jitcFnkNS+rItZzu/uWVtvTQj67lpIRPuL+tz9H0urgIOdnNMdWiztNmOfbm+0n
+ D4m8fgRV/YrNOTwSsOhRqyeEyME5dGbsz4urh/JiyeI1v/3k/JgTNBmNDNoTWS/rTLHzRw7m6CA
+ VnJjJtP+Yhk4a4gVlIkie3+QZxeCTt9qPNVeYeZrskGXLORLJL+V4LSHnepqjSXsndtVksLBxsy
+ PWm9P38C/liYgrbClRi6OI2CGb1qLRsObGVjUjv2CNwlMhFv9RgyCG8TypwLGoBNyDd2+NrUuAR
+ 0EwWSMobTLdXIZHsfti0zLm70PjXZ6yufME2k=
+X-Google-Smtp-Source: AGHT+IG1M7b0I4mzL1R+LBZ9HUi25J+zcFNUdAZFTUJSQe/OSQxuw3SlZujO9eE/hoYsuqOQWOGFPg==
+X-Received: by 2002:a05:6000:240c:b0:3f3:ba4:29d7 with SMTP id
+ ffacd0b85a97d-425671c706bmr3450198f8f.43.1759562036941; 
+ Sat, 04 Oct 2025 00:13:56 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e970esm10956715f8f.35.2025.10.04.00.13.51
+ ffacd0b85a97d-4255d8f0853sm11365036f8f.50.2025.10.04.00.13.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 04 Oct 2025 00:13:51 -0700 (PDT)
+ Sat, 04 Oct 2025 00:13:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/41] target/i386/arch_memory_mapping: Use
- address_space_memory_is_io()
-Date: Sat,  4 Oct 2025 09:12:35 +0200
-Message-ID: <20251004071307.37521-10-philmd@linaro.org>
+Subject: [PULL 10/41] hw/s390x/sclp: Use address_space_memory_is_io() in
+ sclp_service_call()
+Date: Sat,  4 Oct 2025 09:12:36 +0200
+Message-ID: <20251004071307.37521-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251004071307.37521-1-philmd@linaro.org>
 References: <20251004071307.37521-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,66 +98,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since all functions have an address space argument, it is
-trivial to replace cpu_physical_memory_is_io() by
-address_space_memory_is_io().
+When cpu_address_space_init() isn't called during vCPU creation,
+its single address space is the global &address_space_memory.
+
+As s390x boards don't call cpu_address_space_init(), cpu->as
+points to &address_space_memory.
+
+We can then replace cpu_physical_memory_is_io() by the semantically
+equivalent address_space_memory_is_io() call.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251002084203.63899-4-philmd@linaro.org>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Message-Id: <20251002084203.63899-5-philmd@linaro.org>
 ---
- target/i386/arch_memory_mapping.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/s390x/sclp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/arch_memory_mapping.c b/target/i386/arch_memory_mapping.c
-index a2398c21732..560f4689abc 100644
---- a/target/i386/arch_memory_mapping.c
-+++ b/target/i386/arch_memory_mapping.c
-@@ -35,7 +35,7 @@ static void walk_pte(MemoryMappingList *list, AddressSpace *as,
-         }
- 
-         start_paddr = (pte & ~0xfff) & ~(0x1ULL << 63);
--        if (cpu_physical_memory_is_io(start_paddr)) {
-+        if (address_space_is_io(as, start_paddr)) {
-             /* I/O region */
-             continue;
-         }
-@@ -65,7 +65,7 @@ static void walk_pte2(MemoryMappingList *list, AddressSpace *as,
-         }
- 
-         start_paddr = pte & ~0xfff;
--        if (cpu_physical_memory_is_io(start_paddr)) {
-+        if (address_space_is_io(as, start_paddr)) {
-             /* I/O region */
-             continue;
-         }
-@@ -100,7 +100,7 @@ static void walk_pde(MemoryMappingList *list, AddressSpace *as,
-         if (pde & PG_PSE_MASK) {
-             /* 2 MB page */
-             start_paddr = (pde & ~0x1fffff) & ~(0x1ULL << 63);
--            if (cpu_physical_memory_is_io(start_paddr)) {
-+            if (address_space_is_io(as, start_paddr)) {
-                 /* I/O region */
-                 continue;
-             }
-@@ -142,7 +142,7 @@ static void walk_pde2(MemoryMappingList *list, AddressSpace *as,
-              */
-             high_paddr = ((hwaddr)(pde & 0x1fe000) << 19);
-             start_paddr = (pde & ~0x3fffff) | high_paddr;
--            if (cpu_physical_memory_is_io(start_paddr)) {
-+            if (address_space_is_io(as, start_paddr)) {
-                 /* I/O region */
-                 continue;
-             }
-@@ -203,7 +203,7 @@ static void walk_pdpe(MemoryMappingList *list, AddressSpace *as,
-         if (pdpe & PG_PSE_MASK) {
-             /* 1 GB page */
-             start_paddr = (pdpe & ~0x3fffffff) & ~(0x1ULL << 63);
--            if (cpu_physical_memory_is_io(start_paddr)) {
-+            if (address_space_is_io(as, start_paddr)) {
-                 /* I/O region */
-                 continue;
-             }
+diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
+index 9718564fa42..16057356b11 100644
+--- a/hw/s390x/sclp.c
++++ b/hw/s390x/sclp.c
+@@ -16,6 +16,7 @@
+ #include "qemu/units.h"
+ #include "qapi/error.h"
+ #include "hw/boards.h"
++#include "system/memory.h"
+ #include "hw/s390x/sclp.h"
+ #include "hw/s390x/event-facility.h"
+ #include "hw/s390x/s390-pci-bus.h"
+@@ -308,7 +309,7 @@ int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code)
+     if (env->psw.mask & PSW_MASK_PSTATE) {
+         return -PGM_PRIVILEGED;
+     }
+-    if (cpu_physical_memory_is_io(sccb)) {
++    if (address_space_is_io(CPU(cpu)->as, sccb)) {
+         return -PGM_ADDRESSING;
+     }
+     if ((sccb & ~0x1fffUL) == 0 || (sccb & ~0x1fffUL) == env->psa
 -- 
 2.51.0
 
