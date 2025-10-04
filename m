@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0751ABB91A1
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BA6BB91A4
 	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 22:02:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v58RV-00010L-Py; Sat, 04 Oct 2025 16:01:21 -0400
+	id 1v58RX-00011R-9k; Sat, 04 Oct 2025 16:01:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1v58RM-0000tg-9J
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1v58RM-0000ti-9v
  for qemu-devel@nongnu.org; Sat, 04 Oct 2025 16:01:12 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1v58RF-0006D6-Ie
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 16:01:10 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-3306b83ebdaso3472256a91.3
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 13:01:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1v58RF-0006DI-Ie
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 16:01:11 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-782023ca359so3405273b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 13:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759608060; x=1760212860; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=Umtla3NytfKoUezBBfrxf8jHp6mLiJsfT6oOxEHYCmw=;
- b=PBNEuCymSUge7YJL7CUGfssftZ8FftVe2r91KHbbc7BjoQL3R2+3ph3N62s+2m01hm
- npz3z+ca/mzFI8YsKDBTl4BBr0drlRGIJfupy4EuDnCCwr9nHmQ7DLSiw453MGZMIgrU
- A4pTqrPm2f1PxFvfSHjt2RKK01sOZrJdGH/YUVn3+SGOXFW/5RqHsNvHV8KbnHzUIcQb
- vfcQzrMB3aM61CMauwdvFjd8hbtEdqGl5cNriusNdY5m84PYhtCJ7limpWb9irtnQ/03
- FmnT6eEb9hFArbqiS845isXV7BpnrKBy+9zU3B+IPywSSH4OBFyvHwpyfa1Eymn8INjk
- zysg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759608060; x=1760212860;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1759608062; x=1760212862; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Umtla3NytfKoUezBBfrxf8jHp6mLiJsfT6oOxEHYCmw=;
- b=rm9Ss9GyDaR0Avd8gj9C0Gfe6G9MJ/yygOyNdGr8895Q8zDQKc1Y2RSdEinLK2/X6p
- LjoxNyVxjgnlwUshNYmSANZA5yqnJOICcNANzRO65lQtRqTqDWbBJYt+8/BiinmKBJMX
- 6nMjWzbh6Zgk/wnumM7MndQT4Rx2UdroG1euQmZl0tCGinu5orkvEvXxox+FmEZmM0Tz
- y6DUVfSoJY7Dn71+LVoH/AbwZoBvrdsKZ/SM+s3nD4MdUuhY+W7m8REpcW6Z06rsf97O
- RmpBJfCxSFRXzQDCwRUnNH4TgsYFZ9FJsxWB25cRoawuIyJsH7n0Aq45s3fEeTL2CdHM
- AjiA==
+ bh=s89LU7o1ZyXNcRb/2leqwVIsfipruP3UJlVfpKF2qgY=;
+ b=Olyk0q1LofsYdRMAlI3eSQBZvPiN/MNrQrH1XzW2V1TxKuWmmgCibjcn0jZ5k+z305
+ 6s3ZzSpO/ZVmpSnYOJ7GLCIzbGONci7RjwZaKQDz+Js3mox64wtN94QdoI7L+I6Avlpq
+ EcEHYlUBF77M/s05PUVhzMN2NT5dao3fRjw6r4qlHdCA1/QimCE69WopFFKS0nVzXBzI
+ BSOk0SMHDJbBo8P/ukfIAWFKdHmf06//DTVUljUzJJdD+GFFPrXK/9EiLsqwh1yg4MU+
+ Gyxviupo1gDCZ3rFmGgINRFk/TX/QgKTe67zaNkOtn0gOLmMmEkCo19AyQPpzjXmRC4M
+ s/bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759608062; x=1760212862;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=s89LU7o1ZyXNcRb/2leqwVIsfipruP3UJlVfpKF2qgY=;
+ b=khYf68u2EgzU/MF+tMPUJB25ZI/RnmtUCJ3mVqozYRoB/gVLtK3nQXMONFA1MKf1h9
+ 1Qmwg1Ga2dKIWRC8od6sYsnHwzgPrVhUb2vYJzS4chSO2zaJ0McHOYGbdrnsJ4B/SeqY
+ Gh4mZ44E3MYXUmtZCfRGf5NFkAHmZSBRIpSPbC5773xp3uB8+1ry0jD3+IsygiTk2dxu
+ bKUKtUZ1ycosCnc9Dv5nF2Q+efNhCUFJXNGqD8X2kQYEOhbwHoUHTXUasoSl33caJkea
+ aKICAF/EoRjdnhBh1EeOmnzH5Vguu1fIdbuZBFiYP9Hoful64V3MnFOZaw837zv41NO5
+ tP7A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXKHjaCynaUOUspuVFc20PVzs5wN0hQ6DT11l/J2TIEiMaY4PXk5HmE4fFkMzwiSRwhooYopjb37iYU@nongnu.org
-X-Gm-Message-State: AOJu0Yyk1z0du3IpR7TcFBMFP0hdVCJ6UeeziVCbv/SOT0avULRH1lpM
- dJwmr7i62JalhS71vLFiXle2e/pgjBqVhgNebob6ibFivo0zLw2Ueli2
-X-Gm-Gg: ASbGncs17Y+sgFZKYT5BoTQxIj8gbBc3bOUpFNzWTEQN5kb/d4S1bGVcGca5xPoHHuB
- cbiZ2ZqP5oqzjwjWip5Qs+w+7Oo+G+64M0LRhbU5yP2SbrNrSyQTunL02Ty5xrPQs9amATZBl6H
- hR9iB48zzbib/Yse9SIawzzUlm5H78Z+OAeUCUGrT8q1BiTByqexbBDt8xeuoG5ACXipkEcLWjA
- MHfo9LuciWdCDeT6pCkkAdHwwxjzx+mNAYtOoCISPk/lp9xY0WqKhXHBKJMKAXkI2PjlCXNbdtl
- GfhOlH8MI6mW2Wg90JiBFRqzCnI1GMr8I0MVjwr2NqGXT6Ip+aT8Vy3rcYaytMQ3Ose3E0DTFHS
- bbAEAyDGzwVkCGwNaIIreuDcPe6F6krs3aYCZBtKSyx9K0qiHEJuHzXbnT2IiIXI4U+7m0NhsrV
- G0ta+S
-X-Google-Smtp-Source: AGHT+IHkvWg22yPAslH2f1Hgpxg9/CWuEhsimvAiLd7jyCSW8bnaPPPZsUWsPgw+yLtP9tSYIEKhDw==
-X-Received: by 2002:a17:90b:1c82:b0:339:bf9e:62a6 with SMTP id
- 98e67ed59e1d1-339c278225fmr8882511a91.11.1759608060288; 
- Sat, 04 Oct 2025 13:01:00 -0700 (PDT)
+ AJvYcCWbSZ64RXrAJq+SkgXxdAXzkJ5CrBB7EQwlc7lIEoTwqXraIM47JWxr1xwy9i2JXCZoU+8xsP7lY+K7@nongnu.org
+X-Gm-Message-State: AOJu0YwsAXCgJLkDerVRl/B9ovObouBh0URE6kjJIAmx5G5CLGP4ltI3
+ bDpAomb2LheX08hntI5VGk2YMWDXXzPe0OakguS9MYBzhFYNYA+yRiML
+X-Gm-Gg: ASbGncv13AiwCWxUU6D0jy0XKYekQMd4RKbjkxAENOjvh/8/pPQtN5BLMaN8a9JtCf6
+ JKc9masQxQKTRrVHKPy4b4PmOx7xYtXPS0Hfh4lJpJcE29jMH5qh5sK5n9zECo4nsoifhdBRhrY
+ nTkt35qMyVovfJkk79pCboklzYcJXYlVgOUNunxXs7m8A625qPgygfMU+OfbfJDKi6NHxJzcZx5
+ HmpgLNSEGMSnAclXZTByfdN8QI7o5TkIanLeFF8LBrKAV9mGBLkPh2U9ZGZIAJKIIzrnBFNwTKB
+ dF3Z2Fqn12kTm+YCx80878aC5rwplFXnIAvVl1/mdmiDItKClsIEZC5I+lomupdIKd3m9ge5MPl
+ PMUunpWxrDQ7OF4xTP8zxcv/DttmVDWOGuhYqsQ0c4roGyfnz6WVCUB2Hqfwg74OjUgQ1GRKOUM
+ hdk6S8
+X-Google-Smtp-Source: AGHT+IHw8v/+jlqZ+OZxtkzgJ8jrGBYKxC8Djf49qos3QDGh7kPSXGhr8DHaEVXrjgttf285zb6STg==
+X-Received: by 2002:a05:6a20:7d9e:b0:2e9:d6ce:e125 with SMTP id
+ adf61e73a8af0-32b61dedc3dmr9689123637.5.1759608061728; 
+ Sat, 04 Oct 2025 13:01:01 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3399c0b328csm6178779a91.3.2025.10.04.13.00.59
+ 41be03b00d2f7-b6099f3b819sm7998413a12.26.2025.10.04.13.01.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 04 Oct 2025 13:00:59 -0700 (PDT)
+ Sat, 04 Oct 2025 13:01:01 -0700 (PDT)
 From: Guenter Roeck <linux@roeck-us.net>
 To: "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
  Alistair Francis <alistair@alistair23.me>,
@@ -69,14 +70,17 @@ To: "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
 Cc: Jason Wang <jasowang@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
  Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 0/4] Fix Ethernet interface support for microchip-icicle-kit
-Date: Sat,  4 Oct 2025 13:00:45 -0700
-Message-ID: <20251004200049.871646-1-linux@roeck-us.net>
+Subject: [PATCH 1/4] hw/net/cadence_gem: Support two Ethernet interfaces
+ connected to single MDIO bus
+Date: Sat,  4 Oct 2025 13:00:46 -0700
+Message-ID: <20251004200049.871646-2-linux@roeck-us.net>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20251004200049.871646-1-linux@roeck-us.net>
+References: <20251004200049.871646-1-linux@roeck-us.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=groeck7@gmail.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=groeck7@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -102,24 +106,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The Microchip PolarFire SoC Icicle Kit supports two Ethernet interfaces.
 The PHY on each may be connected to separate MDIO busses, or both may be
-connected on the same MDIO bus using different PHY addresses. Add support
-for it to the Cadence GEM emulation.
+connected on the same MDIO bus using different PHY addresses.
 
-The Linux kernel checks the PCS disabled bit in the R_DESCONF register
-to determine if SGMII is supported. If the bit is set, SGMII support is
-disabled. Since the Microchip Icicle devicetree file configures SGMII
-interface mode, enabling the Ethernet interfaces fails when booting
-the Linux kernel. Add support for clearing the PCS disabled bit.
+To be able to support two PHY instances on a single MDIO bus, two properties
+are needed: First, there needs to be a flag indicating if the MDIO bus on
+a given Ethernet interface is connected. If not, attempts to read from this
+bus must always return 0xffff. Implement this property as phy-connected.
+Second, if the MDIO bus on an interface is active, it needs a link to the
+consumer interface to be able to provide PHY access for it. Implement this
+property as phy-consumer.
 
-----------------------------------------------------------------
-Guenter Roeck (4):
-      hw/net/cadence_gem: Support two Ethernet interfaces connected to single MDIO bus
-      hw/riscv: microchip_pfsoc: Connect Ethernet PHY channels
-      hw/net/cadence_gem: Add pcs-enabled property
-      microchip icicle: Enable PCS on Cadence Ethernet
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ hw/net/cadence_gem.c         | 24 ++++++++++++++++++------
+ include/hw/net/cadence_gem.h |  3 +++
+ 2 files changed, 21 insertions(+), 6 deletions(-)
 
- hw/net/cadence_gem.c         | 31 ++++++++++++++++++++++++-------
- hw/riscv/microchip_pfsoc.c   |  6 ++++++
- include/hw/net/cadence_gem.h |  4 ++++
- 3 files changed, 34 insertions(+), 7 deletions(-)
+diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
+index 44446666de..520324adfd 100644
+--- a/hw/net/cadence_gem.c
++++ b/hw/net/cadence_gem.c
+@@ -1541,12 +1541,20 @@ static void gem_handle_phy_access(CadenceGEMState *s)
+ {
+     uint32_t val = s->regs[R_PHYMNTNC];
+     uint32_t phy_addr, reg_num;
++    CadenceGEMState *ps = s;
++    uint32_t op;
+ 
+     phy_addr = FIELD_EX32(val, PHYMNTNC, PHY_ADDR);
++    op = FIELD_EX32(val, PHYMNTNC, OP);
+ 
+-    if (phy_addr != s->phy_addr) {
+-        /* no phy at this address */
+-        if (FIELD_EX32(val, PHYMNTNC, OP) == MDIO_OP_READ) {
++    /* Switch phy to consumer interface if there is an address match */
++    if (s->phy_consumer && phy_addr == s->phy_consumer->phy_addr) {
++        ps = s->phy_consumer;
++    }
++
++    if (!s->phy_connected || phy_addr != ps->phy_addr) {
++        /* phy not connected or no phy at this address */
++        if (op == MDIO_OP_READ) {
+             s->regs[R_PHYMNTNC] = FIELD_DP32(val, PHYMNTNC, DATA, 0xffff);
+         }
+         return;
+@@ -1554,14 +1562,14 @@ static void gem_handle_phy_access(CadenceGEMState *s)
+ 
+     reg_num = FIELD_EX32(val, PHYMNTNC, REG_ADDR);
+ 
+-    switch (FIELD_EX32(val, PHYMNTNC, OP)) {
++    switch (op) {
+     case MDIO_OP_READ:
+         s->regs[R_PHYMNTNC] = FIELD_DP32(val, PHYMNTNC, DATA,
+-                                         gem_phy_read(s, reg_num));
++                                         gem_phy_read(ps, reg_num));
+         break;
+ 
+     case MDIO_OP_WRITE:
+-        gem_phy_write(s, reg_num, val);
++        gem_phy_write(ps, reg_num, val);
+         break;
+ 
+     default:
+@@ -1813,6 +1821,10 @@ static const Property gem_properties[] = {
+                       num_type2_screeners, 4),
+     DEFINE_PROP_UINT16("jumbo-max-len", CadenceGEMState,
+                        jumbo_max_len, 10240),
++    DEFINE_PROP_BOOL("phy-connected", CadenceGEMState, phy_connected, true),
++    DEFINE_PROP_LINK("phy-consumer", CadenceGEMState, phy_consumer,
++                     TYPE_CADENCE_GEM, CadenceGEMState *),
++
+     DEFINE_PROP_LINK("dma", CadenceGEMState, dma_mr,
+                      TYPE_MEMORY_REGION, MemoryRegion *),
+ };
+diff --git a/include/hw/net/cadence_gem.h b/include/hw/net/cadence_gem.h
+index 91ebb5c8ae..21e7319f53 100644
+--- a/include/hw/net/cadence_gem.h
++++ b/include/hw/net/cadence_gem.h
+@@ -81,6 +81,9 @@ struct CadenceGEMState {
+ 
+     uint8_t phy_loop; /* Are we in phy loopback? */
+ 
++    bool phy_connected; /* true if connected */
++    struct CadenceGEMState *phy_consumer;
++
+     /* The current DMA descriptor pointers */
+     uint32_t rx_desc_addr[MAX_PRIORITY_QUEUES];
+     uint32_t tx_desc_addr[MAX_PRIORITY_QUEUES];
+-- 
+2.45.2
+
 
