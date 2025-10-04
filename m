@@ -2,96 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B013BB8A63
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB917BB8A69
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:13:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wPi-0002fi-Aa; Sat, 04 Oct 2025 03:10:42 -0400
+	id 1v4wSE-0003T1-47; Sat, 04 Oct 2025 03:13:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v4wPd-0002fI-DO; Sat, 04 Oct 2025 03:10:38 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v4wPb-0004RG-BJ; Sat, 04 Oct 2025 03:10:37 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C6E7015A5BF;
- Sat, 04 Oct 2025 10:10:28 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AFC98298662;
- Sat,  4 Oct 2025 10:10:29 +0300 (MSK)
-Message-ID: <37b2a118-823b-43b7-aaf4-0c855400aee4@tls.msk.ru>
-Date: Sat, 4 Oct 2025 10:10:28 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSD-0003Sk-0O
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:17 -0400
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wS8-0004rz-JR
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:16 -0400
+Received: by mail-wr1-x444.google.com with SMTP id
+ ffacd0b85a97d-3f44000626bso1835255f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759561990; x=1760166790; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=W01qdny4MY5IbBZwA2z0pOSCWsh0+a7JCMFgcrlOlGo=;
+ b=B1LB+QiG81s+94Kf3jQoIvN7SooP8XMdiQkZu1TTYLv+ANylAZTUZ3OPSwK3rY7Utg
+ hvNMU8090jrhznKDxR0STeeAVEH1lNRA7bS5vstjgMwX1C7E8nVOZ5qcUga70bMZUWmz
+ 34cw99gYKHluD4QurKmZvGe+3ln+MOoqBfSXaIpie5V2uHFAWKj5GPfs61GLWYv1Fn4N
+ 2t+gBkIYLVjSZhcl0Mi5Wz5AVxiKN5/dykO5TIYtyNe2qFPPqWtwS0Qe8nAlbQ5NUG7+
+ aoPTBotlplsWaneAG7qfKUE2awc535iunQB9H2bZFw5gY22Ph0wZnwmT9WxVBGxJzeH3
+ vXtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759561990; x=1760166790;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=W01qdny4MY5IbBZwA2z0pOSCWsh0+a7JCMFgcrlOlGo=;
+ b=BITkarBdjHxX2cLsPuSvVDjl7fTmuTqr7sjrggvst/+IldboG7l8FdhUDDrwZhhgUd
+ +CU6ejYYzhbp4OtPx7yaeFa8FG0MqpaLyz8BI7T9uECqbZ7Wg57nWjVuZwgYIbFrJnEP
+ 0X+Pi24ZcmxhSA7Z+Kytf9zZWqch2YN+3qskm82Fl540T8KU5Etm4UghscgxkSYevwIp
+ UZzJBF4DMYEcjPSoCZz9JSS/DqKqH5A6GnPVZyAPLk9UL8wHdi6sSGgKZ8/tRPOhZ8YF
+ awj3pCJ55egV992y8DlUdTrXddnGfc62EpOEx8ZT5fqMiVaqc2Ir4EbpA3LDyImLBPjb
+ sU4Q==
+X-Gm-Message-State: AOJu0YwWzzQCNeK4x9U08YRrwoysCo3XMhWTDM9C5duNmh1mU8bOaUFN
+ W9W3hCR3TbqEu4t+G9nhyeanbuxoou6w2KgHTXpc5+U5j7QRcOWKAFAVnaklqQ1r2DMjT6SLd8z
+ nnbZf7HXhpBig
+X-Gm-Gg: ASbGncuU83gcI9LdNw9Mcas3XD7M2UB8umiWRgNbHyHxsA6DeoikAEfRYlVlLQvUSJz
+ G4Ll9nvHg519Bv0vsgzg60QJOt/Hv0gxYfVbEAnD5R9FBbXAZgvHmeyrEH2i8mltVBonwB//xbd
+ +yFWPfi2+I8JVI6HOwghk75gWEapwbu8Ut8qpVNILKBc3bFCOCieMpYbjAUpl+CzCLWhgYDaoBd
+ RkUfSCEghef6bxpq/hMoFkZrTwnaczJYdr6uOQ+ySfljUseoNxWopryOHoodCrcsT61/ZUU5gyq
+ XGHtPvDmkP/BIfxfLjUCDOglt2Tn8kQR9IGBwfA+qmyrYzB3B79r88TaQR0YwipMWSPP3iQmOrl
+ 6loymjqwpm2E5iRDCU0G3Zt+FoVCEEoTO4u/I3FM/+qIViWm5OcI5BMHSRWUNYmPVO4hyaVp4h3
+ wOIdOD5dEI9E5AzZdlRX4eYAhBonm17cXGRSA=
+X-Google-Smtp-Source: AGHT+IFOitx4OR1wqlMgvTiHvb4AgZBYaRvpVcS1zMW1CU8yPhyJQz2Ehb409zOwP1fO8AYRbZ0hqA==
+X-Received: by 2002:a05:6000:2dc3:b0:425:58d0:483b with SMTP id
+ ffacd0b85a97d-425671ab837mr3626865f8f.45.1759561989504; 
+ Sat, 04 Oct 2025 00:13:09 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4255d8f02a8sm11194933f8f.39.2025.10.04.00.13.08
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sat, 04 Oct 2025 00:13:08 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/41] Memory patches for 2025-10-04
+Date: Sat,  4 Oct 2025 09:12:26 +0200
+Message-ID: <20251004071307.37521-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Fix SiFive UART character drop issue and minor
- refactors
-To: frank.chang@sifive.com, qemu-devel@nongnu.org
-Cc: Alistair Francis <Alistair.Francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:SiFive Machines" <qemu-riscv@nongnu.org>,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20250911160647.5710-1-frank.chang@sifive.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250911160647.5710-1-frank.chang@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::444;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x444.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,53 +94,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/11/25 19:06, frank.chang@sifive.com wrote:
-> From: Frank Chang <frank.chang@sifive.com>
-> 
-> This patch set fixes the SiFive UART character drop issue introduced
-> after commit [1], which changed character printing from synchronous to
-> asynchronous.
-> 
-> Since UART now transmits characters asynchronously, it is possible for
-> the Tx FIFO to become full, causing new characters to be ignored and
-> dropped when running Linux. This happens because:
-> 
->    1. The Linux SiFive UART driver sets the transmit watermark level to 1
->       [2], meaning a transmit watermark interrupt is raised whenever a
->       character is enqueued into the Tx FIFO.
->    2. Upon receiving a transmit watermark interrupt, the Linux driver
->       transfers up to a full Tx FIFO's worth of characters from the Linux
->       serial transmit buffer [3], without checking the txdata.full flag
->       before transferring multiple characters [4].
-> 
-> This patch set updates QEMU to honor the Tx/Rx watermark thresholds and
-> raise interrupts only when the Tx threshold is exceeded or the Rx
-> threshold is undercut.
+The following changes since commit 81e3121bef89bcd3ccb261899e5a36246199065d:
 
-This change seems to be worth picking up for qemu-stable series
-(10.0 & 10.1).  Please let me know if it is not.
+  Merge tag 'pull-vfio-20251003' of https://github.com/legoater/qemu into staging (2025-10-03 04:57:58 -0700)
 
-> The remaining patches contain minor refactors, including removing an
-> outdated comment about the Tx FIFO.
+are available in the Git repository at:
 
-> [1] 53c1557b230986ab6320a58e1b2c26216ecd86d5
-> [2] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L1039
-> [3] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L538
-> [4] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L291
-> 
-> Frank Chang (4):
->    hw/char: sifive_uart: Raise IRQ according to the Tx/Rx watermark
->      thresholds
->    hw/char: sifive_uart: Avoid pushing Tx FIFO when size is zero
->    hw/char: sifive_uart: Remove outdated comment about Tx FIFO
->    hw/char: sifive_uart: Add newline to error message
-> 
->   hw/char/sifive_uart.c | 36 ++++++++++++++++--------------------
->   1 file changed, 16 insertions(+), 20 deletions(-)
+  https://github.com/philmd/qemu.git tags/physmem-20251004
 
-Thanks,
+for you to fetch changes up to 56824af2724f1b6c1e6bf6190bc63682be68e3ea:
 
-/mjt
+  system/physmem: Extract API out of 'system/ram_addr.h' header (2025-10-03 22:48:31 +0200)
 
+----------------------------------------------------------------
+Memory patches
+
+- Cleanups on RAMBlock API
+- Cleanups on Physical Memory API
+- Remove cpu_physical_memory_is_io()
+- Remove cpu_physical_memory_rw()
+- Legacy conversion [cpu_physical_memory -> address_space]_[un]map()
+
+----------------------------------------------------------------
+
+Philippe Mathieu-Daudé (40):
+  system/ramblock: Remove obsolete comment
+  system/ramblock: Move ram_block_is_pmem() declaration
+  system/ramblock: Move ram_block_discard_*_range() declarations
+  system/ramblock: Rename @start -> @offset in ram_block_discard_range()
+  system/ramblock: Move RAMBlock helpers out of "system/ram_addr.h"
+  docs/devel/loads-stores: Stop mentioning
+    cpu_physical_memory_write_rom()
+  system/memory: Factor address_space_is_io() out
+  target/i386/arch_memory_mapping: Use address_space_memory_is_io()
+  hw/s390x/sclp: Use address_space_memory_is_io() in sclp_service_call()
+  system/physmem: Remove cpu_physical_memory_is_io()
+  system/physmem: Pass address space argument to
+    cpu_flush_icache_range()
+  hw/s390x/sclp: Replace [cpu_physical_memory -> address_space]_r/w()
+  target/s390x/mmu: Replace [cpu_physical_memory -> address_space]_rw()
+  target/i386/whpx: Replace legacy cpu_physical_memory_rw() call
+  target/i386/kvm: Replace legacy cpu_physical_memory_rw() call
+  target/i386/nvmm: Inline cpu_physical_memory_rw() in nvmm_mem_callback
+  hw/xen/hvm: Inline cpu_physical_memory_rw() in rw_phys_req_item()
+  system/physmem: Un-inline cpu_physical_memory_read/write()
+  system/physmem: Avoid cpu_physical_memory_rw when is_write is constant
+  system/physmem: Remove legacy cpu_physical_memory_rw()
+  hw/virtio/vhost: Replace legacy cpu_physical_memory_*map() calls
+  hw/virtio/virtio: Replace legacy cpu_physical_memory_map() call
+  system/ram_addr: Remove unnecessary 'exec/cpu-common.h' header
+  accel/kvm: Include missing 'exec/target_page.h' header
+  hw/s390x/s390-stattrib: Include missing 'exec/target_page.h' header
+  hw/vfio/listener: Include missing 'exec/target_page.h' header
+  target/arm/tcg/mte: Include missing 'exec/target_page.h' header
+  hw: Remove unnecessary 'system/ram_addr.h' header
+  system/physmem: Un-inline cpu_physical_memory_get_dirty_flag()
+  system/physmem: Un-inline cpu_physical_memory_is_clean()
+  system/physmem: Un-inline cpu_physical_memory_range_includes_clean()
+  system/physmem: Un-inline cpu_physical_memory_set_dirty_flag()
+  system/physmem: Un-inline cpu_physical_memory_set_dirty_range()
+  system/physmem: Remove _WIN32 #ifdef'ry
+  system/physmem: Un-inline cpu_physical_memory_set_dirty_lebitmap()
+  system/physmem: Un-inline cpu_physical_memory_dirty_bits_cleared()
+  system/physmem: Reduce cpu_physical_memory_clear_dirty_range() scope
+  system/physmem: Reduce cpu_physical_memory_sync_dirty_bitmap() scope
+  system/physmem: Drop 'cpu_' prefix in Physical Memory API
+  system/physmem: Extract API out of 'system/ram_addr.h' header
+
+Richard Henderson (1):
+  system/memory: Split address_space_write_rom_internal
+
+ MAINTAINERS                               |   1 +
+ docs/devel/loads-stores.rst               |   6 +-
+ scripts/coccinelle/exec_rw_const.cocci    |  22 -
+ include/exec/cpu-common.h                 |  21 +-
+ include/system/memory.h                   |  11 +
+ include/system/physmem.h                  |  54 +++
+ include/system/ram_addr.h                 | 426 -------------------
+ include/system/ramblock.h                 |  27 +-
+ accel/kvm/kvm-all.c                       |   6 +-
+ accel/tcg/cputlb.c                        |  13 +-
+ hw/core/loader.c                          |   2 +-
+ hw/hyperv/hv-balloon-our_range_memslots.c |   1 +
+ hw/ppc/spapr.c                            |   1 -
+ hw/ppc/spapr_caps.c                       |   1 -
+ hw/ppc/spapr_pci.c                        |   1 -
+ hw/remote/memory.c                        |   1 -
+ hw/remote/proxy-memory-listener.c         |   1 -
+ hw/s390x/s390-stattrib-kvm.c              |   2 +-
+ hw/s390x/s390-stattrib.c                  |   2 +-
+ hw/s390x/s390-virtio-ccw.c                |   1 -
+ hw/s390x/sclp.c                           |  14 +-
+ hw/vfio/container-legacy.c                |  10 +-
+ hw/vfio/container.c                       |   5 +-
+ hw/vfio/listener.c                        |   2 +-
+ hw/vfio/spapr.c                           |   1 -
+ hw/virtio/vhost.c                         |   7 +-
+ hw/virtio/virtio-balloon.c                |   1 +
+ hw/virtio/virtio-mem.c                    |   2 +-
+ hw/virtio/virtio.c                        |  10 +-
+ hw/xen/xen-hvm-common.c                   |   8 +-
+ migration/ram.c                           |  81 +++-
+ system/memory.c                           |   9 +-
+ system/physmem.c                          | 475 +++++++++++++++++-----
+ target/arm/tcg/mte_helper.c               |   5 +-
+ target/i386/arch_memory_mapping.c         |  10 +-
+ target/i386/kvm/xen-emu.c                 |   4 +-
+ target/i386/nvmm/nvmm-all.c               |   5 +-
+ target/i386/whpx/whpx-all.c               |   7 +-
+ target/s390x/mmu_helper.c                 |   7 +-
+ system/memory_ldst.c.inc                  |   2 +-
+ tests/tsan/ignore.tsan                    |   4 +-
+ 41 files changed, 636 insertions(+), 633 deletions(-)
+ create mode 100644 include/system/physmem.h
+
+-- 
+2.51.0
 
 
