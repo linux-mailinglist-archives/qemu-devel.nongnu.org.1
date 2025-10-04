@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C157BB8AEA
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94A9BB8AEF
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:21:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wWO-0003ai-MA; Sat, 04 Oct 2025 03:17:36 -0400
+	id 1v4wWO-0003Yn-Cs; Sat, 04 Oct 2025 03:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wVH-0002bT-He
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:16:33 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wVF-0005QH-8h
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:16:27 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-421851bcb25so1635455f8f.2
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759562183; x=1760166983; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nm8Yx2EiuRw/5T67i33mCsoc43NBkuyfDGJi6pCK1xk=;
- b=qRQun8WPJm2eT432JGt3SEKAS6Ri6I2MHzR88p6j7yd4IwgnMBspCsi3YLltMNwbLO
- gpm2fO0GJ36gk04vKscOABwiJgGp3GXikY5q2worLNTevvNStUqXCYMwYZoi8zwEd2/L
- IL/i9DiepLb0RPmb4lTRAkrHfueE27hy+OyzND6QmCsSVQ3fgaZhCpNgQUZNb5dDb+VX
- vGb6hH0ZBK4AFkWNzvGHPTwy8fnzyHWLcYzmk++IvEgLxbl0MfI7lMX2XyPoNlsjJkrz
- rlwBrrKjkMn5qfUKo0EhZx2iBZ1bWsZ0Th5sexctC6dST6qP6cx02noU+rqLKREAkTs2
- svzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759562183; x=1760166983;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nm8Yx2EiuRw/5T67i33mCsoc43NBkuyfDGJi6pCK1xk=;
- b=VKA+3E4s6/x1JxGNDYBxrdazJn9s49PYH2PA7mrIsbDY8IpG/vwJI8kAbGfhmrz3Mm
- xRFTNSPMr2hu+ewhvYImh9g8O1MtBPyS2gQx8uF0fjiF9ZquwvXqaQk6N4wJVBcf4kTr
- YQuf5T2gpOysl0an/h3ARxf2iOuPtoCUv2jtHW1/6F5LYByGdt0YD8NhXOdwhy1YeggJ
- 9ZM2AL5PTi8oyMJXzFXLBkMvtJZCkFdu9lTAf8rRJdfTuxq6hddGQykO6MRPMuA9NK7r
- CJssVc589s77xeEexwhqrWqGoXbcjL1p1iZMl0IT2p3z7RJOYLpdKW6F88PObmJ5eanJ
- r/VA==
-X-Gm-Message-State: AOJu0YwtQKPi5FE2x1gI6OU8c0c0RQhwvRIY7HCYmXK2w46JhiNPDVZQ
- pQfaR0/kxbaNqjoVnwOMPKq8u5h8ZRx7srFZUlBi3YFRikkjBav3/vbATl31RX3X+kkT49qDHTY
- bAhopt/k9PQ==
-X-Gm-Gg: ASbGnctkA6knUThx9oNMs9djcIrvL20CgTKVJDMpsGHUIvAGGU2WtdWdQ4CT9JkBUP5
- Be7YKI95QfANB3cokvNHE2WL3BSkBFpXXp09l7PKvGKRzA1n6twVQ/odBdXLAmuP0AY3pq/5q0F
- DWfCNNRE8zphafVWg75YPUDTBl8VctmzI9nmx9yoZO0r2gxvqyqGitlcx77MYEDBzz4/tsrg07C
- mD4Xh+ZL5MCH3Lukbbg92Zy3ZiW/2ik2uLYjVqE3E6yEJHcy6dTsjAeMklSiZzvZNLuGnGDeanf
- +bfA9PPv//sNSIoh6nNa4GmF2B23DTV5Q4jUmz5JXZNEGFBcr0A1VXJ0GPheXAinkSAYM1AoYvh
- qFOwB4hUdRjxSa0a3QzZfmb3Gf4iiG6ICJlETxwvrUJn5co3/zi1c1HobIeaEYc+Ef79f0w6QbE
- iHyo6G6ybcOB/VtZR+MNo+le2lo9KxahA85DA9WmOJpJ6+WA==
-X-Google-Smtp-Source: AGHT+IGyqyjrkLf/k+d5dIQu8JiKJrMgr/Y0d26G3JMnjASwY54n/oq7JmJEFvrWSMNS6rgh62V/+Q==
-X-Received: by 2002:a05:6000:2f87:b0:424:21d8:de30 with SMTP id
- ffacd0b85a97d-425671ab26amr3708957f8f.62.1759562182732; 
- Sat, 04 Oct 2025 00:16:22 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e97fbsm10937727f8f.34.2025.10.04.00.16.22
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 04 Oct 2025 00:16:22 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 41/41] system/physmem: Extract API out of 'system/ram_addr.h'
- header
-Date: Sat,  4 Oct 2025 09:13:07 +0200
-Message-ID: <20251004071307.37521-42-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251004071307.37521-1-philmd@linaro.org>
-References: <20251004071307.37521-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v4wVD-0002YL-Dq; Sat, 04 Oct 2025 03:16:26 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v4wVB-0005Pa-6i; Sat, 04 Oct 2025 03:16:23 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id E9AB815A5D3;
+ Sat, 04 Oct 2025 10:16:15 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 577D8298667;
+ Sat,  4 Oct 2025 10:16:16 +0300 (MSK)
+Message-ID: <8b282db4-b49b-4199-94e9-35d7cc296b8b@tls.msk.ru>
+Date: Sat, 4 Oct 2025 10:16:15 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] Fix RISC-V timer migration issues
+To: TANG Tiancheng <lyndra@linux.alibaba.com>, qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20250911-timers-v3-0-60508f640050@linux.alibaba.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250911-timers-v3-0-60508f640050@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,275 +106,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Very few files use the Physical Memory API. Declare its
-methods in their own header: "system/physmem.h".
+On 9/11/25 12:56, TANG Tiancheng wrote:
+> This patch set fixes several timer-related migration issues in QEMU's
+> RISC-V implementation that cause timer events to be lost or behave
+> incorrectly after snapshot save/restore or live migration.
+> 
+> The problems addressed are:
+> 
+> 1. ACLINT mtimer time_delta not migrated: The time_delta field in
+>     RISCVAclintMTimerState was missing from vmstate, causing incorrect
+>     mtime values after snapshot restore. This resulted in guest time
+>     appearing "frozen" until enough virtual time elapsed to compensate
+>     for the offset error.
+> 
+> 2. ACLINT mtimer timers array not migrated: Active timer events
+>     scheduled via riscv_aclint_mtimer_write_timecmp() were not being
+>     migrated, causing pending timer interrupts to be lost after restore.
+> 
+> 3. CPU stimer/vstimer not migrated: The S-mode and VS-mode timer
+>     pointers in CPURISCVState were missing from vmstate_riscv_cpu,
+>     causing supervisor-level timer events to be lost.
+> 
+> The patch set introduces a new VMSTATE_TIMER_PTR_VARRAY macro to handle
+> migration of variable-length timer pointer arrays, and adds the missing
+> timer fields to the appropriate vmstate structures.
+> 
+> Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
+> ---
+> Changes in v3:
+> - Remove 'include/' of the subject at patch v2 2/4.
+> - Added Reviewed-by from Peter Xu.
+> - Link to v2: https://lore.kernel.org/qemu-devel/20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com
+> 
+> Changes in v2:
+> - Split VMSTATE_VARRAY_OF_POINTER_UINT32() into a separate patch,
+>    and define VMSTATE_TIMER_PTR_VARRAY() in riscv_aclint.h.
+> - Added Reviewed-by from Daniel Henrique Barboza.
+> - Link to v1: https://lore.kernel.org/qemu-devel/20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com
+> 
+> ---
+> TANG Tiancheng (4):
+>        hw/intc: Save time_delta in RISC-V mtimer VMState
+>        migration: Add support for a variable-length array of UINT32 pointers
+>        hw/intc: Save timers array in RISC-V mtimer VMState
+>        target/riscv: Save stimer and vstimer in CPU vmstate
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-Id: <20251001175448.18933-19-philmd@linaro.org>
----
- MAINTAINERS                 |  1 +
- include/system/physmem.h    | 54 +++++++++++++++++++++++++++++++++++++
- include/system/ram_addr.h   | 40 ---------------------------
- accel/kvm/kvm-all.c         |  2 +-
- accel/tcg/cputlb.c          |  1 +
- hw/vfio/container-legacy.c  |  2 +-
- hw/vfio/container.c         |  1 +
- hw/vfio/listener.c          |  1 -
- migration/ram.c             |  1 +
- system/memory.c             |  1 +
- system/physmem.c            |  1 +
- target/arm/tcg/mte_helper.c |  2 +-
- 12 files changed, 63 insertions(+), 44 deletions(-)
- create mode 100644 include/system/physmem.h
+Am I right this stuff is not back-portable to previous qemu
+stable releases, as it introduces new fields into the migration
+stream which, which can't be picked up by these releases?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 406cef88f0c..9632eb7b440 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3213,6 +3213,7 @@ S: Supported
- F: include/system/ioport.h
- F: include/exec/memop.h
- F: include/system/memory.h
-+F: include/system/physmem.h
- F: include/system/ram_addr.h
- F: include/system/ramblock.h
- F: include/system/memory_mapping.h
-diff --git a/include/system/physmem.h b/include/system/physmem.h
-new file mode 100644
-index 00000000000..879f6eae38b
---- /dev/null
-+++ b/include/system/physmem.h
-@@ -0,0 +1,54 @@
-+/*
-+ * QEMU physical memory interfaces (target independent).
-+ *
-+ *  Copyright (c) 2003 Fabrice Bellard
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef QEMU_SYSTEM_PHYSMEM_H
-+#define QEMU_SYSTEM_PHYSMEM_H
-+
-+#include "exec/hwaddr.h"
-+#include "exec/ramlist.h"
-+
-+#define DIRTY_CLIENTS_ALL     ((1 << DIRTY_MEMORY_NUM) - 1)
-+#define DIRTY_CLIENTS_NOCODE  (DIRTY_CLIENTS_ALL & ~(1 << DIRTY_MEMORY_CODE))
-+
-+bool physical_memory_get_dirty_flag(ram_addr_t addr, unsigned client);
-+
-+bool physical_memory_is_clean(ram_addr_t addr);
-+
-+uint8_t physical_memory_range_includes_clean(ram_addr_t start,
-+                                             ram_addr_t length,
-+                                             uint8_t mask);
-+
-+void physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
-+
-+void physical_memory_set_dirty_range(ram_addr_t start, ram_addr_t length,
-+                                     uint8_t mask);
-+
-+/*
-+ * Contrary to physical_memory_sync_dirty_bitmap() this function returns
-+ * the number of dirty pages in @bitmap passed as argument. On the other hand,
-+ * physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
-+ * weren't set in the global migration bitmap.
-+ */
-+uint64_t physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
-+                                            ram_addr_t start,
-+                                            ram_addr_t pages);
-+
-+void physical_memory_dirty_bits_cleared(ram_addr_t start, ram_addr_t length);
-+
-+bool physical_memory_test_and_clear_dirty(ram_addr_t start,
-+                                          ram_addr_t length,
-+                                          unsigned client);
-+
-+DirtyBitmapSnapshot *
-+physical_memory_snapshot_and_clear_dirty(MemoryRegion *mr, hwaddr offset,
-+                                         hwaddr length, unsigned client);
-+
-+bool physical_memory_snapshot_get_dirty(DirtyBitmapSnapshot *snap,
-+                                        ram_addr_t start,
-+                                        ram_addr_t length);
-+
-+#endif
-diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-index 3894a84fb9c..683485980ce 100644
---- a/include/system/ram_addr.h
-+++ b/include/system/ram_addr.h
-@@ -19,7 +19,6 @@
- #ifndef SYSTEM_RAM_ADDR_H
- #define SYSTEM_RAM_ADDR_H
- 
--#include "exec/ramlist.h"
- #include "system/ramblock.h"
- #include "exec/target_page.h"
- #include "exec/hwaddr.h"
-@@ -133,43 +132,4 @@ static inline void qemu_ram_block_writeback(RAMBlock *block)
-     qemu_ram_msync(block, 0, block->used_length);
- }
- 
--#define DIRTY_CLIENTS_ALL     ((1 << DIRTY_MEMORY_NUM) - 1)
--#define DIRTY_CLIENTS_NOCODE  (DIRTY_CLIENTS_ALL & ~(1 << DIRTY_MEMORY_CODE))
--
--bool physical_memory_get_dirty_flag(ram_addr_t addr, unsigned client);
--
--bool physical_memory_is_clean(ram_addr_t addr);
--
--uint8_t physical_memory_range_includes_clean(ram_addr_t start,
--                                                 ram_addr_t length,
--                                                 uint8_t mask);
--
--void physical_memory_set_dirty_flag(ram_addr_t addr, unsigned client);
--
--void physical_memory_set_dirty_range(ram_addr_t start, ram_addr_t length,
--                                         uint8_t mask);
--
--/*
-- * Contrary to physical_memory_sync_dirty_bitmap() this function returns
-- * the number of dirty pages in @bitmap passed as argument. On the other hand,
-- * physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
-- * weren't set in the global migration bitmap.
-- */
--uint64_t physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
--                                                ram_addr_t start,
--                                                ram_addr_t pages);
--
--void physical_memory_dirty_bits_cleared(ram_addr_t start, ram_addr_t length);
--
--bool physical_memory_test_and_clear_dirty(ram_addr_t start,
--                                              ram_addr_t length,
--                                              unsigned client);
--
--DirtyBitmapSnapshot *physical_memory_snapshot_and_clear_dirty
--    (MemoryRegion *mr, hwaddr offset, hwaddr length, unsigned client);
--
--bool physical_memory_snapshot_get_dirty(DirtyBitmapSnapshot *snap,
--                                            ram_addr_t start,
--                                            ram_addr_t length);
--
- #endif
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index a7ece7db964..58802f7c3cc 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -32,13 +32,13 @@
- #include "system/runstate.h"
- #include "system/cpus.h"
- #include "system/accel-blocker.h"
-+#include "system/physmem.h"
- #include "system/ramblock.h"
- #include "accel/accel-ops.h"
- #include "qemu/bswap.h"
- #include "exec/tswap.h"
- #include "exec/target_page.h"
- #include "system/memory.h"
--#include "system/ram_addr.h"
- #include "qemu/event_notifier.h"
- #include "qemu/main-loop.h"
- #include "trace.h"
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index a721235dea6..7214d41cb5d 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -25,6 +25,7 @@
- #include "accel/tcg/probe.h"
- #include "exec/page-protection.h"
- #include "system/memory.h"
-+#include "system/physmem.h"
- #include "accel/tcg/cpu-ldst-common.h"
- #include "accel/tcg/cpu-mmu-index.h"
- #include "exec/cputlb.h"
-diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
-index 42a9203d8c2..f2f9450a5da 100644
---- a/hw/vfio/container-legacy.c
-+++ b/hw/vfio/container-legacy.c
-@@ -25,7 +25,7 @@
- #include "hw/vfio/vfio-device.h"
- #include "system/address-spaces.h"
- #include "system/memory.h"
--#include "system/ram_addr.h"
-+#include "system/physmem.h"
- #include "qemu/error-report.h"
- #include "qemu/range.h"
- #include "system/reset.h"
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 3fb19a1c8ad..9ddec300e35 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -20,6 +20,7 @@
- #include "qemu/error-report.h"
- #include "hw/vfio/vfio-container.h"
- #include "hw/vfio/vfio-device.h" /* vfio_device_reset_handler */
-+#include "system/physmem.h"
- #include "system/reset.h"
- #include "vfio-helpers.h"
- 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index b5cefc9395c..c6bb58f5209 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -30,7 +30,6 @@
- #include "hw/vfio/pci.h"
- #include "system/address-spaces.h"
- #include "system/memory.h"
--#include "system/ram_addr.h"
- #include "hw/hw.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
-diff --git a/migration/ram.c b/migration/ram.c
-index d09591c0600..12122dda685 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -53,6 +53,7 @@
- #include "qemu/rcu_queue.h"
- #include "migration/colo.h"
- #include "system/cpu-throttle.h"
-+#include "system/physmem.h"
- #include "system/ramblock.h"
- #include "savevm.h"
- #include "qemu/iov.h"
-diff --git a/system/memory.c b/system/memory.c
-index dd045da60c0..80656c69568 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -25,6 +25,7 @@
- #include "qemu/target-info.h"
- #include "qom/object.h"
- #include "trace.h"
-+#include "system/physmem.h"
- #include "system/ram_addr.h"
- #include "system/kvm.h"
- #include "system/runstate.h"
-diff --git a/system/physmem.c b/system/physmem.c
-index 1a075da2bdd..ec3d8027e86 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -43,6 +43,7 @@
- #include "system/kvm.h"
- #include "system/tcg.h"
- #include "system/qtest.h"
-+#include "system/physmem.h"
- #include "system/ramblock.h"
- #include "qemu/timer.h"
- #include "qemu/config-file.h"
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 077ff4b2b2c..b96c953f809 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -27,7 +27,7 @@
- #include "user/cpu_loop.h"
- #include "user/page-protection.h"
- #else
--#include "system/ram_addr.h"
-+#include "system/physmem.h"
- #endif
- #include "accel/tcg/cpu-ldst.h"
- #include "accel/tcg/probe.h"
--- 
-2.51.0
+ From the description it seems like all this stuff should be fixed
+in previous stable qemu releases too.
 
+Thanks,
+
+/mjt
 
