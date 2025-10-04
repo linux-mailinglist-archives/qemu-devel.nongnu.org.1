@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD73BB8AA7
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AD5BB8AAC
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wUc-0001Eu-W9; Sat, 04 Oct 2025 03:15:47 -0400
+	id 1v4wUh-0001bK-D7; Sat, 04 Oct 2025 03:15:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUD-00018c-KH
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:22 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUG-0001Dz-Tq
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:25 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUA-0005JW-Pe
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:21 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-46e6a689bd0so22725525e9.1
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:15:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUE-0005KQ-Mo
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:24 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46e6a689bd0so22725795e9.1
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:15:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759562116; x=1760166916; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759562121; x=1760166921; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ObimSgFdkUXq5Hleq+lD7TF64oYZAf0YcsClnFqO4Rc=;
- b=EO3ulMDTOGVaBpEorflpJ6CJKLNUT7VH1vAJSsy8Dh45CapUqMIUWpsmIsRzslTG9N
- FaJ5eWSSsjwmwZeZ8FhlYcNKWPDsN/GRe5yrSL7YnuitvmmugwnttbOz5eZzxtAJHfz5
- i+3VvsdV+mxqyzN5gaagbxGH5yttgStQ7pZ5gvpa/7sxGZv1o8jfuqP5oHHjHF2hVKxp
- cwILsRRoZV1qvksKooPYvPxqLs/8m6eiU7ar02Hlr+KrYpm9qZr1Mc08BNfFHsY9y56J
- GcR1D7rp3+I/5EH5C0xIQb2z7favUZJ00+C3U+CPgE3fCE+fkO276eZ8WtW0BvJeugvY
- HWyQ==
+ :reply-to; bh=d11jXMzNSLNsrMSr+ncGCM97av0F6CGJZ7JjKGpji38=;
+ b=hJh6bJ2nrQq4FyopJe775QOBb+oWBkwWh6MNkbhoSjc8MhSiHREaeZQ/O7UyOOabvw
+ DaYlsNFdcYXogds4pnk/Iuk+yQTKC1pq+ecUlDmryiJlSmGJSkeknVytiY4ZVWTqzp6d
+ 7Ddp+mdfOXIwpwqMHaIigcuysnlEBEBsTvUuf286XdvKs5svV+ooJxZrH41bISrmdx9U
+ b/0rXLehSHnIHowfH/t+smXalOUjCZ5+j2F4/mvQV6WeCVZiJhX4TwPrrkzc/r3NIqGZ
+ pzr6wcQsU8bUzRW42DJUGOma1DvjTQkHf6XqiaxtJpFm0+MNZ63X4YTwWHIeMp27LiWc
+ rF/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759562116; x=1760166916;
+ d=1e100.net; s=20230601; t=1759562121; x=1760166921;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ObimSgFdkUXq5Hleq+lD7TF64oYZAf0YcsClnFqO4Rc=;
- b=KUQ+Q+4Ox3kBlCIm+X/w3YHGVxgWcbByTs5lNj96xMBK9hXE+vyiJ04nj1HdgxkEZV
- qZFsGH8U75CI7F54teiKq+wW1rBfnX1738TcEJMrVPdPvcJC3AIrgKZ9xNqis8dAeNRA
- /oTfkq+P+zdROupo7uBsqQvZ2Q5bbLxmYcu/xoMeb8yVEKYizP29MM6EJuNhaZNQsdEg
- Fo45QwAx7JHnzQMLKRYrkzAp25sOAsYRXW7uvArIxPa7gt6A8J0tSSrvZZyu1HzvmoFd
- fU9xeAH4d3hx8XJLbBLYph/Y4IqAwETbC8CMbvXzqf98r1qIyEWAyXn7tWsiKifyPrfu
- /tUQ==
-X-Gm-Message-State: AOJu0YxJ7jDpNO3jvw3p22nyxfN1S7JlTgMO8EjSBXGXN4XknD2O+FZ3
- Qg37qqPzcuLQ+AIaWrIEOzpVJS1aWhs62aG5+nkN/zjHk9GOE3SwlEkvO4+Ado7Eg5K1Oa8mUbj
- i7PlHrWauBQ==
-X-Gm-Gg: ASbGnctmtu3sWv28vaHP129iGExxHFPpe0FZgwBCO+dUqABzBlPxUxrfXRnNbhprYjx
- bfjtKKlHpV3Gij2bBef9J0C6VG1qbTCpn6SSbtRfFRYM6u80+sQpZqgiGoqBJUkS84jypE0w4oK
- x/Lub+eER1gdRNHRVIhGpXP0YI0UMpxQVviQotlvVj1g88yGpuDwZnePxa/y4QHOtYvArm8fSPe
- iS3cuV3B5dmEAAjKOK4L9V3nfPxL27nJ4efOT7sfVUP5WaxBrwC4BKeEeI27toIpgyKzxGxRLvt
- zB/TTEExnuZQrqExe8ZV0f0ZgaAuIMsqmRS7PUU5RpXCd9CwRyPDwdG7ChvHBI6AhwByZTqZ8m2
- ELO93kJPXE64Sv9IOmqgh5Q/9E1Pe0gya08ivntV/oZwRhLvUqGXgMh7ofs0EupL3qwgqPp0jr7
- VcoXIDl5krindPy2T4yc2bBUkx8CCDIHl6xuU=
-X-Google-Smtp-Source: AGHT+IFqNs/OSSYr5+BcMpXjbdAmdweYbDhugu4vY7VaK6U4lebf8xpk7K8T7Uw/edP5NbpLlCExqA==
-X-Received: by 2002:a05:600c:19ce:b0:45f:2919:5e6c with SMTP id
- 5b1f17b1804b1-46e7110c3d5mr47066315e9.16.1759562116291; 
- Sat, 04 Oct 2025 00:15:16 -0700 (PDT)
+ bh=d11jXMzNSLNsrMSr+ncGCM97av0F6CGJZ7JjKGpji38=;
+ b=fdhRDTd6maFfdAiKp1X4LaFijuQ+uqoKHfh2dlQEHEAl7eBIrOpIb+5Dav2nvfSXf1
+ CQFcrus6kD7LIsDjUs9CHu+r5CzHs8Fd/4BaxfDNW2OoxC4rabiIPvq9XKWM7L6njfx3
+ 9F2K86PBU+LupmI+Y6sVzHeyutuf4V7Cv/L16lrTon6vffkCcM168pbkSqSRE8GgaOno
+ CehhYhDDlM9bg5st4PReFhrRtSKm/LDGe1gpiWPP278SKnE6BTOUMgxEQ73E4mqtPhqZ
+ FMjC/uYuXe+gZJ++QlPb9m9ekOUzOP4QqnXC0vMhJpyQ5oSEYUMZZ8Nuj+LiKpPMsIS1
+ gm2w==
+X-Gm-Message-State: AOJu0YxgQSEwzoTXFgCltutxcN9SAS0H4x2fTm9opQbRtwcdGaFFJMrl
+ fgBCjQV7DwvcbrLif2GkKFypcpyi7y/t4g7G3sPvJ/SBNX+MNDdDLclRxyszOTR6QCzNSpofs3B
+ UdaSTSwqDGQ==
+X-Gm-Gg: ASbGncuGRvTGDNDOHR4nWNXDBQ1AwCi77FlXafXiSMt5Hjtbr+nHvtxYri3HlY96sXN
+ D31GuCM/CRoHu6OHnb0TTFi1+FkCTFt6VJGMNNLOX2GA2nYW+SCHBO7Br9MTvKHDWHQqj8iIzfE
+ okUsirCqmW1gGVm68bTuPsQPDYYWm8DXppa/gPvlmpKB4k1tk2JJLA4SZzoR/uWNMZLLJIppeIy
+ osyuCq/As9KM5JpPejuh5O6yxJS8aU5cNIPdCnIe7Rejsll+eHBi9vItWOa2Uuc8+J2qcsY4kCt
+ aVdqSfI5vJL1BT//Cb446b9kAySFpaI+KFByPvexb+PjQktBp6Yeluti2hvsuXCiRJz767cDPah
+ fq3GM9ZPq/SoJzL9EyK2ZRcTfQEOLiEsfuVt4SI47c08CTlGy3Cw4My2zRxmy9uIwDUbuH5nvdL
+ HDrczG2weGZIXplQoPE04Am00A
+X-Google-Smtp-Source: AGHT+IHQ2EL+t+pPTz2EdewJiQA4o5o2AzMHcSW8ejRL1721W+mhwUxkvfvkzT3yKOBBo/k2K1i67A==
+X-Received: by 2002:a05:600c:1909:b0:46e:326e:4501 with SMTP id
+ 5b1f17b1804b1-46e7110aecfmr41625415e9.10.1759562120729; 
+ Sat, 04 Oct 2025 00:15:20 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e723437d8sm61310215e9.3.2025.10.04.00.15.15
+ ffacd0b85a97d-4255d8a6c49sm11132009f8f.3.2025.10.04.00.15.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 04 Oct 2025 00:15:15 -0700 (PDT)
+ Sat, 04 Oct 2025 00:15:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/41] hw/vfio/listener: Include missing 'exec/target_page.h'
+Subject: [PULL 28/41] target/arm/tcg/mte: Include missing 'exec/target_page.h'
  header
-Date: Sat,  4 Oct 2025 09:12:53 +0200
-Message-ID: <20251004071307.37521-28-philmd@linaro.org>
+Date: Sat,  4 Oct 2025 09:12:54 +0200
+Message-ID: <20251004071307.37521-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251004071307.37521-1-philmd@linaro.org>
 References: <20251004071307.37521-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,31 +102,32 @@ The "exec/target_page.h" header is indirectly pulled from
 "system/ram_addr.h". Include it explicitly, in order to
 avoid unrelated issues when refactoring "system/ram_addr.h":
 
-  hw/vfio/listener.c: In function ‘vfio_ram_discard_register_listener’:
-  hw/vfio/listener.c:258:28: error: implicit declaration of function ‘qemu_target_page_size’; did you mean ‘qemu_ram_pagesize’?
-    258 |     int target_page_size = qemu_target_page_size();
-        |                            ^~~~~~~~~~~~~~~~~~~~~
+  target/arm/tcg/mte_helper.c:815:23: error: use of undeclared identifier 'TARGET_PAGE_MASK'
+    815 |     prev_page = ptr & TARGET_PAGE_MASK;
+        |                       ^
+  target/arm/tcg/mte_helper.c:816:29: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
+    816 |     next_page = prev_page + TARGET_PAGE_SIZE;
+        |                             ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-Id: <20251001175448.18933-5-philmd@linaro.org>
+Message-Id: <20251001175448.18933-6-philmd@linaro.org>
 ---
- hw/vfio/listener.c | 1 +
+ target/arm/tcg/mte_helper.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index a2c19a3cec1..b5cefc9395c 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -25,6 +25,7 @@
- #endif
- #include <linux/vfio.h>
- 
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 302e899287c..7d80244788e 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -21,6 +21,7 @@
+ #include "qemu/log.h"
+ #include "cpu.h"
+ #include "internals.h"
 +#include "exec/target_page.h"
- #include "hw/vfio/vfio-device.h"
- #include "hw/vfio/pci.h"
- #include "system/address-spaces.h"
+ #include "exec/page-protection.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "user/cpu_loop.h"
 -- 
 2.51.0
 
