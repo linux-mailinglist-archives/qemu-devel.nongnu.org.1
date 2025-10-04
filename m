@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AD5BB8AAC
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62932BB8AC2
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:18:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wUh-0001bK-D7; Sat, 04 Oct 2025 03:15:51 -0400
+	id 1v4wV7-0001ug-1S; Sat, 04 Oct 2025 03:16:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUG-0001Dz-Tq
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:25 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUL-0001G5-6r
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:30 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUE-0005KQ-Mo
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:24 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46e6a689bd0so22725795e9.1
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:15:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wUJ-0005L2-4Z
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:15:28 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-46e3a50bc0fso24495065e9.3
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:15:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759562121; x=1760166921; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759562125; x=1760166925; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=d11jXMzNSLNsrMSr+ncGCM97av0F6CGJZ7JjKGpji38=;
- b=hJh6bJ2nrQq4FyopJe775QOBb+oWBkwWh6MNkbhoSjc8MhSiHREaeZQ/O7UyOOabvw
- DaYlsNFdcYXogds4pnk/Iuk+yQTKC1pq+ecUlDmryiJlSmGJSkeknVytiY4ZVWTqzp6d
- 7Ddp+mdfOXIwpwqMHaIigcuysnlEBEBsTvUuf286XdvKs5svV+ooJxZrH41bISrmdx9U
- b/0rXLehSHnIHowfH/t+smXalOUjCZ5+j2F4/mvQV6WeCVZiJhX4TwPrrkzc/r3NIqGZ
- pzr6wcQsU8bUzRW42DJUGOma1DvjTQkHf6XqiaxtJpFm0+MNZ63X4YTwWHIeMp27LiWc
- rF/A==
+ :reply-to; bh=7S2h4CcSSUNF/Kbr6xAuWXkdgK7luzPuydLNP0syMy8=;
+ b=nLGzUsQvWHBbX4G8CXF6Elhja5OkNu75PCWBHv1keqi/OHpZUckStc5lgtD3iMlECQ
+ mUTqxl80VUioQ/qWMWa5ylptoHujUefQZQIXa49HD5U9GUOWPOC5YgqQ907GfkwhBv+S
+ 2ROPkvZ9+PH9Rk7Zd7NwymGZ6Iyp/ahfoekNHcgQXaAiRYLs9jRnqHqerMy1z4tce1Br
+ jYXoYXEOGLiMy7/dvp+pU0pZ6vh9J87qonacZflrgj3EA7mOIGFQKJsQvtk2qTSeHFuC
+ duuOh72RSZh6IhIUXnikwtIYOGC0I+A6ipsptFC6O66MTCnnjwSA9H2tgu80cZPplk1/
+ 5DTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759562121; x=1760166921;
+ d=1e100.net; s=20230601; t=1759562125; x=1760166925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d11jXMzNSLNsrMSr+ncGCM97av0F6CGJZ7JjKGpji38=;
- b=fdhRDTd6maFfdAiKp1X4LaFijuQ+uqoKHfh2dlQEHEAl7eBIrOpIb+5Dav2nvfSXf1
- CQFcrus6kD7LIsDjUs9CHu+r5CzHs8Fd/4BaxfDNW2OoxC4rabiIPvq9XKWM7L6njfx3
- 9F2K86PBU+LupmI+Y6sVzHeyutuf4V7Cv/L16lrTon6vffkCcM168pbkSqSRE8GgaOno
- CehhYhDDlM9bg5st4PReFhrRtSKm/LDGe1gpiWPP278SKnE6BTOUMgxEQ73E4mqtPhqZ
- FMjC/uYuXe+gZJ++QlPb9m9ekOUzOP4QqnXC0vMhJpyQ5oSEYUMZZ8Nuj+LiKpPMsIS1
- gm2w==
-X-Gm-Message-State: AOJu0YxgQSEwzoTXFgCltutxcN9SAS0H4x2fTm9opQbRtwcdGaFFJMrl
- fgBCjQV7DwvcbrLif2GkKFypcpyi7y/t4g7G3sPvJ/SBNX+MNDdDLclRxyszOTR6QCzNSpofs3B
- UdaSTSwqDGQ==
-X-Gm-Gg: ASbGncuGRvTGDNDOHR4nWNXDBQ1AwCi77FlXafXiSMt5Hjtbr+nHvtxYri3HlY96sXN
- D31GuCM/CRoHu6OHnb0TTFi1+FkCTFt6VJGMNNLOX2GA2nYW+SCHBO7Br9MTvKHDWHQqj8iIzfE
- okUsirCqmW1gGVm68bTuPsQPDYYWm8DXppa/gPvlmpKB4k1tk2JJLA4SZzoR/uWNMZLLJIppeIy
- osyuCq/As9KM5JpPejuh5O6yxJS8aU5cNIPdCnIe7Rejsll+eHBi9vItWOa2Uuc8+J2qcsY4kCt
- aVdqSfI5vJL1BT//Cb446b9kAySFpaI+KFByPvexb+PjQktBp6Yeluti2hvsuXCiRJz767cDPah
- fq3GM9ZPq/SoJzL9EyK2ZRcTfQEOLiEsfuVt4SI47c08CTlGy3Cw4My2zRxmy9uIwDUbuH5nvdL
- HDrczG2weGZIXplQoPE04Am00A
-X-Google-Smtp-Source: AGHT+IHQ2EL+t+pPTz2EdewJiQA4o5o2AzMHcSW8ejRL1721W+mhwUxkvfvkzT3yKOBBo/k2K1i67A==
-X-Received: by 2002:a05:600c:1909:b0:46e:326e:4501 with SMTP id
- 5b1f17b1804b1-46e7110aecfmr41625415e9.10.1759562120729; 
- Sat, 04 Oct 2025 00:15:20 -0700 (PDT)
+ bh=7S2h4CcSSUNF/Kbr6xAuWXkdgK7luzPuydLNP0syMy8=;
+ b=ZXaqcIeBpEt1fnNcTFA+ij4jZK6mqY2lbSVyZNv0ZCZdRrOb/1+Q4A7tiWVDnb+XKf
+ 4YacaLv8kluNXDXOrzUFTzdiM8Rhi3cCRCTDa3vIt8Ci7g22cR74tGKudEHC6zwZoGfh
+ yOksadiHw/ZY3Zbibsf3YHNiajz30g/8u86krwgiCPdl21Z1IubSlIlAC5uG/DmdE24X
+ 7R/BDmWGruZXiABKvvAjoldhRvVOLjwYW8Tmz5GRqkel2PtChZl7XR0heU+cH3OnNhpH
+ tCRzblHq19nVMsDANuq0KOPTXsm0xQopZ9QBFx1wmVd34U1GIb7oV/3BW+KecbrMV75A
+ J3cw==
+X-Gm-Message-State: AOJu0YwGR2C1WBVv2776Lep1Ta1xLL2/HMm0plzaI+Ww5T0ieTZRKFLd
+ NfxRtp1iAGfGqK4OwoSsed+XT6RLxdPYM8CnBqo9h3LOC4nTDDBKxr4XAmR6ofTxJWEM8fe7Fyu
+ bjRzvvmQdZg==
+X-Gm-Gg: ASbGncsHZGmlHZGQFaDmNACFt73PNWXyNWBffhlf9W8RsyUVij1eBQRB0RGJxUXEY3Z
+ SUAxFg1laSdFXWVcpnYni2x8CEbl0W5LptCVHUlf5CB0vLLlHAKAXZJi1lpXz7n+Fha11DpJtEu
+ X9H8vquURJ6sCkUpvuv5D/vVWFEvhNiiv851F7EIoXRjjqW5BH25fO/oOi1dYli1iukioFCph+x
+ wyUOGEF6ExYRB+cQCEsiRZWl1m9fENJnVtGgLh0u6EIWVOt16x3jYAmbTrQxMzP+5E+U2n9rtHq
+ /u2j6US1qLT3osptwrKEWvPf3ojZuHqq+E1yU8LGPabG2oqhhyJjZXme1iRZfG3xK8Jch+0nbdB
+ 7mefmKQMSnAoRAZDpJ7FzWVfNPbril4IFFHUl4U/CjniQ4xdD2D3CGrw20gEpWXZ7JfkatRcQSV
+ /9q049H76keSXZzQ81RZvOUEmw
+X-Google-Smtp-Source: AGHT+IEVX67uU3FpW4nxzjvfU0oenQ6NQBjeE6BIgWaK4SXfI8zsKMTPwXpkGGDPzcPayEUNxdHj5w==
+X-Received: by 2002:a05:600c:3b08:b0:46e:396b:f5ae with SMTP id
+ 5b1f17b1804b1-46e7110cf6fmr42051875e9.16.1759562125089; 
+ Sat, 04 Oct 2025 00:15:25 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8a6c49sm11132009f8f.3.2025.10.04.00.15.20
+ 5b1f17b1804b1-46e723432c9sm61114855e9.1.2025.10.04.00.15.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 04 Oct 2025 00:15:20 -0700 (PDT)
+ Sat, 04 Oct 2025 00:15:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/41] target/arm/tcg/mte: Include missing 'exec/target_page.h'
- header
-Date: Sat,  4 Oct 2025 09:12:54 +0200
-Message-ID: <20251004071307.37521-29-philmd@linaro.org>
+Subject: [PULL 29/41] hw: Remove unnecessary 'system/ram_addr.h' header
+Date: Sat,  4 Oct 2025 09:12:55 +0200
+Message-ID: <20251004071307.37521-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251004071307.37521-1-philmd@linaro.org>
 References: <20251004071307.37521-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +97,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "exec/target_page.h" header is indirectly pulled from
-"system/ram_addr.h". Include it explicitly, in order to
-avoid unrelated issues when refactoring "system/ram_addr.h":
-
-  target/arm/tcg/mte_helper.c:815:23: error: use of undeclared identifier 'TARGET_PAGE_MASK'
-    815 |     prev_page = ptr & TARGET_PAGE_MASK;
-        |                       ^
-  target/arm/tcg/mte_helper.c:816:29: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
-    816 |     next_page = prev_page + TARGET_PAGE_SIZE;
-        |                             ^
+None of these files require definition exposed by "system/ram_addr.h",
+remove its inclusion.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251001175448.18933-6-philmd@linaro.org>
+Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Message-Id: <20251001175448.18933-7-philmd@linaro.org>
 ---
- target/arm/tcg/mte_helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/ppc/spapr.c                    | 1 -
+ hw/ppc/spapr_caps.c               | 1 -
+ hw/ppc/spapr_pci.c                | 1 -
+ hw/remote/memory.c                | 1 -
+ hw/remote/proxy-memory-listener.c | 1 -
+ hw/s390x/s390-virtio-ccw.c        | 1 -
+ hw/vfio/spapr.c                   | 1 -
+ hw/virtio/virtio-mem.c            | 1 -
+ 8 files changed, 8 deletions(-)
 
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 302e899287c..7d80244788e 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -21,6 +21,7 @@
- #include "qemu/log.h"
- #include "cpu.h"
- #include "internals.h"
-+#include "exec/target_page.h"
- #include "exec/page-protection.h"
- #ifdef CONFIG_USER_ONLY
- #include "user/cpu_loop.h"
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 82fb23beaa8..97ab6bebd25 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -77,7 +77,6 @@
+ #include "hw/virtio/virtio-scsi.h"
+ #include "hw/virtio/vhost-scsi-common.h"
+ 
+-#include "system/ram_addr.h"
+ #include "system/confidential-guest-support.h"
+ #include "hw/usb.h"
+ #include "qemu/config-file.h"
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index f2f5722d8ad..0f94c192fd4 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -27,7 +27,6 @@
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+ #include "system/hw_accel.h"
+-#include "system/ram_addr.h"
+ #include "target/ppc/cpu.h"
+ #include "target/ppc/mmu-hash64.h"
+ #include "cpu-models.h"
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 1ac1185825e..f9095552e86 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -34,7 +34,6 @@
+ #include "hw/pci/pci_host.h"
+ #include "hw/ppc/spapr.h"
+ #include "hw/pci-host/spapr.h"
+-#include "system/ram_addr.h"
+ #include <libfdt.h>
+ #include "trace.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/remote/memory.c b/hw/remote/memory.c
+index 00193a552fa..8195aa5fb83 100644
+--- a/hw/remote/memory.c
++++ b/hw/remote/memory.c
+@@ -11,7 +11,6 @@
+ #include "qemu/osdep.h"
+ 
+ #include "hw/remote/memory.h"
+-#include "system/ram_addr.h"
+ #include "qapi/error.h"
+ 
+ static void remote_sysmem_reset(void)
+diff --git a/hw/remote/proxy-memory-listener.c b/hw/remote/proxy-memory-listener.c
+index 30ac74961dd..e1a52d24f0b 100644
+--- a/hw/remote/proxy-memory-listener.c
++++ b/hw/remote/proxy-memory-listener.c
+@@ -12,7 +12,6 @@
+ #include "qemu/range.h"
+ #include "system/memory.h"
+ #include "exec/cpu-common.h"
+-#include "system/ram_addr.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "hw/remote/mpqemu-link.h"
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index d0c6e80cb05..ad2c48188a8 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -13,7 +13,6 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "system/ram_addr.h"
+ #include "system/confidential-guest-support.h"
+ #include "hw/boards.h"
+ #include "hw/s390x/sclp.h"
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index 8d9d68da4ec..0f23681a3f9 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -17,7 +17,6 @@
+ 
+ #include "hw/vfio/vfio-container-legacy.h"
+ #include "hw/hw.h"
+-#include "system/ram_addr.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "trace.h"
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 1de2d3de521..15ba6799f22 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -25,7 +25,6 @@
+ #include "hw/virtio/virtio-mem.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+-#include "system/ram_addr.h"
+ #include "migration/misc.h"
+ #include "hw/boards.h"
+ #include "hw/qdev-properties.h"
 -- 
 2.51.0
 
