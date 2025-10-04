@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B28BBB8ABC
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EA2BB8A72
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:14:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wSZ-0003Xu-RL; Sat, 04 Oct 2025 03:13:39 -0400
+	id 1v4wSe-0003Zd-GX; Sat, 04 Oct 2025 03:13:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSY-0003Xm-Lq
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:38 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSc-0003ZM-Db
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:42 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSV-0004th-Go
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:37 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-46e491a5b96so18352685e9.2
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSa-0004uC-GJ
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:42 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3ee1381b835so2597722f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759562013; x=1760166813; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759562018; x=1760166818; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xCQrduo7/+iK4zpfNHJPTgsOKa5mIO1xtZ1NhBqYm1g=;
- b=ncEpo0FZHCZnEDIgsiPWUTduSCr40zdS0LWNtF3LogYxoH8QsjsTnNERpV/Yta9tbN
- rjgz9S2ztBDTq80avrJjJclN8nClhUA00XO58pWKJ4paclURAAkiIHmUSGwva0uEHYxx
- kfbL0SuOjxOBzltdX0TLCDHmK7tu5hGaOyQc60GA/0D3cHczCcuHD5ssRXvfbexbve5B
- 29axZEbuiQ5bLn+He21xVBneXo1jKj8mltVhKD34p8dR5eanCjED1mxeMJBM9r6ewcsF
- U8rhfOz50+g9BYECW6yXsE+NUyXATl527uv9WII1CSMZdBwheo7EJ9nx1nAMpYfxvtxv
- a89A==
+ :reply-to; bh=yTtblsbYPy8BN/aXoznRFWlya17ZOEEH5hAU3DSuYl4=;
+ b=zsl/IZwATa7bqOOqF7aJuzg09Bg7Q9Bh1TYg9ctQKjE5BkbJxMvgwZ4AJaaSZJKM5s
+ HYwKuP7pzX7EkLCTYImSIjTIv5azOPx/42quCTYnb8jBC+LjC00cscUqJWc5tyNRv1a/
+ ujw3f80tpd4npT2feZ3I+J04q37mSqoK2ybVzqoc1+sCjUhFGDvxZEwppxLpuAQFBVUJ
+ j32P+1JcsGwwmPzUoqvuzcXue/wBBtlb/vpI9KLCqRVfE9nOTjmeubA9COinhheebxnx
+ iJJUQ8ifk9VVitavtgXLyXi8AJ4Tgr02vDQajXTgyF6jCqrYob8d6vBCUTkfI8eF1J7P
+ gvNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759562013; x=1760166813;
+ d=1e100.net; s=20230601; t=1759562018; x=1760166818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xCQrduo7/+iK4zpfNHJPTgsOKa5mIO1xtZ1NhBqYm1g=;
- b=nsAIBDkOAQUVx747Wukd8nCqKl0I1Cs+lxC5y1qtsfB40TIHfq0zKYXtOYSD2hGkpN
- MOvqe4HlXKHiYz2wjssEHFh3Ezv9HnWxD7Jk1r9hTExAN29UubfVmbSZ1I5hG76M4za9
- uZRQm5/ins99ef2hwrhAFGwcd7rmu2KhNysjKE7SjtCMsBxLUycIge1ENJGNt/gnknIC
- SvkQN1n0ugFkE2CA1iET9YrTD+x6aYe3UXJg5blBtACvgYWevAzOSiiQE9Kxg20LkmVd
- kDg9rTgBgpaO54DL7TcXzVPotnq7+zareXh5zxfYL9i1D4GPOkqerAtILjqWacjoIMQt
- pnRw==
-X-Gm-Message-State: AOJu0Yx0MZaNbRM506MEvB7OcTpP+SFHQKI+GwUWjKRwMyrnTT5MzMuL
- urg8gi865cXTaEK74OjRkbNWlLh0C/IY6Lb4bnC9SeUucrh6PyJd1KH8rxghoij99PqT/8AP4ZP
- rtjV0MZu9Tw==
-X-Gm-Gg: ASbGncueJxFGQAGHvtUCxYIA3YmelUvjDPg1smVifSRMHNljFMUmgzoDNSEj7MxndWN
- 68fH58KBOFqKzKL+3GyJhs6MtlBXzbcDQARc7GSxb9tYxPVouvEfZ4emkoHk3/2sMqpcirhmYBG
- TBZi5kbRV9szMnrnY57U/rVDvXERqj1jbBUy0JYNUoRlG/9u2ygyintcAIW9eWd7h5EOSnY7Avf
- MrEFAtzgl6VaeLu2eyDAaAfNfzUToT4fNoQMTjCBnuZd/oOC738sAd0/l8BbPb5IupeOb+yHjUJ
- 0jiZA7fmjakTdunAIeeNT/ymtiDWhm0uCamAMogEhLsl03tzlp5kLqheSZytw4sM9nxL4SCjZLA
- i0Ftgubui7Nj4F05vqvr51eUxA3fGdVge9wok4G6lMS9znLvpEHWBXhmSi5yM8+W9i6eYr/Yo4e
- 9TxWBchDyoWYbNs4pQwWLZ3S28
-X-Google-Smtp-Source: AGHT+IEgSRprfVNuZPy9H0U6WThriOYfmpywBAg40cUEuoFbpHUmEbKV6plVWksFLQwR6L5sXzYfSw==
-X-Received: by 2002:a05:600c:8b71:b0:46e:36fa:6b40 with SMTP id
- 5b1f17b1804b1-46e7113d33fmr38794235e9.24.1759562013162; 
- Sat, 04 Oct 2025 00:13:33 -0700 (PDT)
+ bh=yTtblsbYPy8BN/aXoznRFWlya17ZOEEH5hAU3DSuYl4=;
+ b=SnsDrGzcTkkjRj5nN7jYUn/laLl5hWkclHgzXYyZpKUvwC6sqqbLd7lL0Am8RWTcUk
+ dvi6wh98b283auUzZUnYvbiPPdU9dPAIbpu+0Jge5M4WUjPK++5vKdSmE+ktf8DjWKpQ
+ JlYJQzPHpXgHwZ99NSH0sAeOs72cgH9Wc/OFgE90UCy9NLvDLnixBO1/WpQyZX2+bZ5N
+ Axu5xixNX/oNidAbg34qYoqmESbTr83nuIIrheyvuWlVU7zjSoCYMZeJ9oh+T3u+H4lo
+ 5L6L2K2p19+Pwj+8LJT+fWfm93tXbmjVcsYBzJ4EHnb4wJcjPuDOxbs+RSCuKVdlSqgq
+ q+fA==
+X-Gm-Message-State: AOJu0Ywojjw2U7AszsGQo4RKUMroe+hprTvVLGA3iyfFwhcwkeO8860K
+ 48SFapgaNjIOoFvrlDghHKgTvEgZ2JMCSPIgtnIpJu+4Nz6pWm6wLWRP0r1Y8Z3+WEH2MmKPtdi
+ G7JbroX+BHw==
+X-Gm-Gg: ASbGncsLouoaW4QpvU4uyM0+pDz72smU3Vhd+qXZGhX3eqdG2x0ue4t+2Z9lYZ2zkBO
+ VPHrSPgLCGrDV3qmEeYOQtdXfCmk5NkM3ODKsbE7J+/OL21Dz0CDl4j83U7l57d3V0yqFgvcxQi
+ brNzo+chxHED1dn7QFQaMeI0qGYqz9K382XRh+a8oLvRDBjUOjJ+f3ZGCYPYrf1Mlu+aJH88vlZ
+ gvGIe5ywWPkxfbKJ+LvpxGiCUjSORkEmi2AtJb6CCabD9rUvBNGvdoBqHYmrDVsfbACCeh9R2Fv
+ Gp6wTbVty+uY9q9SRZOYuMAfPxq4LYu2ofq7opGLDCH4sTR2rNWXIROVQpsmofKiwf6vKpWsjbo
+ ls+sooLfHqAzqto092OxPJXOkg+jpZRj4DKN6SO+cIU8RFDY5RaGslkNaaUoOAiOaCioEe9m4iR
+ 8ehh5mtmsxAyuplpSR1loC89N1
+X-Google-Smtp-Source: AGHT+IHNrxSZUfCkMvjCwKT1ziqarvrRRnwcYcxmKDWIoWbCnSCYzQe4RXKg2/RYyrB1vxt6TTqyRA==
+X-Received: by 2002:a5d:64e5:0:b0:3ee:1125:fb6d with SMTP id
+ ffacd0b85a97d-425671351ecmr2793758f8f.9.1759562018385; 
+ Sat, 04 Oct 2025 00:13:38 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8ab909sm10880945f8f.19.2025.10.04.00.13.32
+ ffacd0b85a97d-4255d8f0846sm11157936f8f.45.2025.10.04.00.13.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 04 Oct 2025 00:13:32 -0700 (PDT)
+ Sat, 04 Oct 2025 00:13:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/41] system/ramblock: Move RAMBlock helpers out of
- "system/ram_addr.h"
-Date: Sat,  4 Oct 2025 09:12:31 +0200
-Message-ID: <20251004071307.37521-6-philmd@linaro.org>
+Subject: [PULL 06/41] system/memory: Split address_space_write_rom_internal
+Date: Sat,  4 Oct 2025 09:12:32 +0200
+Message-ID: <20251004071307.37521-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251004071307.37521-1-philmd@linaro.org>
 References: <20251004071307.37521-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,57 +97,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20251002032812.26069-6-philmd@linaro.org>
----
- include/system/ram_addr.h | 11 -----------
- include/system/ramblock.h | 11 +++++++++++
- 2 files changed, 11 insertions(+), 11 deletions(-)
+From: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
-index 53c0c8c3856..6b528338efc 100644
---- a/include/system/ram_addr.h
-+++ b/include/system/ram_addr.h
-@@ -80,17 +80,6 @@ static inline bool clear_bmap_test_and_clear(RAMBlock *rb, uint64_t page)
-     return bitmap_test_and_clear(rb->clear_bmap, page >> shift, 1);
+In 2dbaf58bbe7 we conditionally skipped the increment
+of buf because ubsan warns incrementing NULL, and buf
+is always NULL for FLUSH_CACHE.  However, the existence
+of the test for NULL caused Coverity to warn that the
+memcpy in the WRITE_DATA case lacked a test for NULL.
+
+Duplicate address_space_write_rom_internal into the two
+callers, dropping enum write_rom_type, and simplify.
+This eliminates buf in the flush case, and eliminates
+the conditional increment of buf in the write case.
+
+Coverity: CID 1621220
+Fixes: 2dbaf58bbe7 ("system/physmem: Silence warning from ubsan")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250922192940.2908002-1-richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ system/physmem.c | 90 ++++++++++++++++++++----------------------------
+ 1 file changed, 37 insertions(+), 53 deletions(-)
+
+diff --git a/system/physmem.c b/system/physmem.c
+index 1a74e48157b..225ab817883 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3188,63 +3188,33 @@ void cpu_physical_memory_rw(hwaddr addr, void *buf,
+                      buf, len, is_write);
  }
  
--static inline bool offset_in_ramblock(RAMBlock *b, ram_addr_t offset)
+-enum write_rom_type {
+-    WRITE_DATA,
+-    FLUSH_CACHE,
+-};
+-
+-static inline MemTxResult address_space_write_rom_internal(AddressSpace *as,
+-                                                           hwaddr addr,
+-                                                           MemTxAttrs attrs,
+-                                                           const void *ptr,
+-                                                           hwaddr len,
+-                                                           enum write_rom_type type)
 -{
--    return (b && b->host && offset < b->used_length) ? true : false;
+-    hwaddr l;
+-    uint8_t *ram_ptr;
+-    hwaddr addr1;
+-    MemoryRegion *mr;
+-    const uint8_t *buf = ptr;
+-
+-    RCU_READ_LOCK_GUARD();
+-    while (len > 0) {
+-        l = len;
+-        mr = address_space_translate(as, addr, &addr1, &l, true, attrs);
+-
+-        if (!memory_region_supports_direct_access(mr)) {
+-            l = memory_access_size(mr, l, addr1);
+-        } else {
+-            /* ROM/RAM case */
+-            ram_ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
+-            switch (type) {
+-            case WRITE_DATA:
+-                memcpy(ram_ptr, buf, l);
+-                invalidate_and_set_dirty(mr, addr1, l);
+-                break;
+-            case FLUSH_CACHE:
+-                flush_idcache_range((uintptr_t)ram_ptr, (uintptr_t)ram_ptr, l);
+-                break;
+-            }
+-        }
+-        len -= l;
+-        addr += l;
+-        if (buf) {
+-            buf += l;
+-        }
+-    }
+-    return MEMTX_OK;
 -}
 -
--static inline void *ramblock_ptr(RAMBlock *block, ram_addr_t offset)
--{
--    assert(offset_in_ramblock(block, offset));
--    return (char *)block->host + offset;
--}
--
- static inline unsigned long int ramblock_recv_bitmap_offset(void *host_addr,
-                                                             RAMBlock *rb)
+ /* used for ROM loading : can write in RAM and ROM */
+ MemTxResult address_space_write_rom(AddressSpace *as, hwaddr addr,
+                                     MemTxAttrs attrs,
+                                     const void *buf, hwaddr len)
  {
-diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-index 85cceff6bce..76694fe1b5b 100644
---- a/include/system/ramblock.h
-+++ b/include/system/ramblock.h
-@@ -119,4 +119,15 @@ int ram_block_attributes_state_change(RamBlockAttributes *attr, uint64_t offset,
-  */
- bool ram_block_is_pmem(RAMBlock *rb);
+-    return address_space_write_rom_internal(as, addr, attrs,
+-                                            buf, len, WRITE_DATA);
++    RCU_READ_LOCK_GUARD();
++    while (len > 0) {
++        hwaddr addr1, l = len;
++        MemoryRegion *mr = address_space_translate(as, addr, &addr1, &l,
++                                                   true, attrs);
++
++        if (!memory_region_supports_direct_access(mr)) {
++            l = memory_access_size(mr, l, addr1);
++        } else {
++            /* ROM/RAM case */
++            void *ram_ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
++            memcpy(ram_ptr, buf, l);
++            invalidate_and_set_dirty(mr, addr1, l);
++        }
++        len -= l;
++        addr += l;
++        buf += l;
++    }
++    return MEMTX_OK;
+ }
  
-+static inline bool offset_in_ramblock(RAMBlock *b, ram_addr_t offset)
-+{
-+    return b && b->host && (offset < b->used_length);
-+}
+-void cpu_flush_icache_range(hwaddr start, hwaddr len)
++void cpu_flush_icache_range(hwaddr addr, hwaddr len)
+ {
+     /*
+      * This function should do the same thing as an icache flush that was
+@@ -3256,9 +3226,23 @@ void cpu_flush_icache_range(hwaddr start, hwaddr len)
+         return;
+     }
+ 
+-    address_space_write_rom_internal(&address_space_memory,
+-                                     start, MEMTXATTRS_UNSPECIFIED,
+-                                     NULL, len, FLUSH_CACHE);
++    RCU_READ_LOCK_GUARD();
++    while (len > 0) {
++        hwaddr addr1, l = len;
++        MemoryRegion *mr = address_space_translate(&address_space_memory,
++                                                   addr, &addr1, &l, true,
++                                                   MEMTXATTRS_UNSPECIFIED);
 +
-+static inline void *ramblock_ptr(RAMBlock *block, ram_addr_t offset)
-+{
-+    assert(offset_in_ramblock(block, offset));
-+    return (char *)block->host + offset;
-+}
-+
- #endif
++        if (!memory_region_supports_direct_access(mr)) {
++            l = memory_access_size(mr, l, addr1);
++        } else {
++            /* ROM/RAM case */
++            void *ram_ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
++            flush_idcache_range((uintptr_t)ram_ptr, (uintptr_t)ram_ptr, l);
++        }
++        len -= l;
++        addr += l;
++    }
+ }
+ 
+ /*
 -- 
 2.51.0
 
