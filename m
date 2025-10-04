@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F49EBB8A78
-	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B28BBB8ABC
+	for <lists+qemu-devel@lfdr.de>; Sat, 04 Oct 2025 09:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v4wSV-0003WZ-N1; Sat, 04 Oct 2025 03:13:35 -0400
+	id 1v4wSZ-0003Xu-RL; Sat, 04 Oct 2025 03:13:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSS-0003VO-Ur
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:32 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSY-0003Xm-Lq
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:38 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSQ-0004tV-VW
- for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:32 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3ecdf2b1751so1997188f8f.0
- for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v4wSV-0004th-Go
+ for qemu-devel@nongnu.org; Sat, 04 Oct 2025 03:13:37 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e491a5b96so18352685e9.2
+ for <qemu-devel@nongnu.org>; Sat, 04 Oct 2025 00:13:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759562008; x=1760166808; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759562013; x=1760166813; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VQy9CRNq59Jgxjrk3bVqa+dLyrw0C83SnQUkRzrgfa4=;
- b=pNReBg2SPiDB8RwhMV3B+pyYR7Occ0gK2kr55wYf7HfQt/0zKtxeGyXbd3badlSIxJ
- g4heRpraqvI6DJR51xvb2+CeqNJsN7jF+NABJQ3v6s+EkeKdSWxEG2fH0fRzzXpMM7UP
- 3w4pY3F8nR56nMMI/o0vNwhYGvwbW2guFyxeQSwPdebcBFaRFhBLLZ7cQVycBJMlX1uB
- 9kKHxBJPVp4yDZsQRNXCBANnsFS+nOABT6XloLmW6vxqQGQBTM4KvWI4P95ISrhjimKl
- RioWEZgfO7/+RssVoCY+drBp2/RLUzyqgppU8mI0yC4oDmITtrcfFbMFrsn+CpUo7AEu
- 4tlg==
+ :reply-to; bh=xCQrduo7/+iK4zpfNHJPTgsOKa5mIO1xtZ1NhBqYm1g=;
+ b=ncEpo0FZHCZnEDIgsiPWUTduSCr40zdS0LWNtF3LogYxoH8QsjsTnNERpV/Yta9tbN
+ rjgz9S2ztBDTq80avrJjJclN8nClhUA00XO58pWKJ4paclURAAkiIHmUSGwva0uEHYxx
+ kfbL0SuOjxOBzltdX0TLCDHmK7tu5hGaOyQc60GA/0D3cHczCcuHD5ssRXvfbexbve5B
+ 29axZEbuiQ5bLn+He21xVBneXo1jKj8mltVhKD34p8dR5eanCjED1mxeMJBM9r6ewcsF
+ U8rhfOz50+g9BYECW6yXsE+NUyXATl527uv9WII1CSMZdBwheo7EJ9nx1nAMpYfxvtxv
+ a89A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759562008; x=1760166808;
+ d=1e100.net; s=20230601; t=1759562013; x=1760166813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VQy9CRNq59Jgxjrk3bVqa+dLyrw0C83SnQUkRzrgfa4=;
- b=tTDjVUl+86+jUrpIAD6uoLGBaHnOVYkt+udzyNVDTV33VphoRgnPrCPRcPmZeYZCHq
- KTtC7PoVZEWQsk9dco8NtVXMTe8QtuXsUTCUhNjl17cpT4WMbPUsdun7ApM9alzNnGxq
- 6QUGbcYK0QhcAVyenctBdx12B8Z+zcFMm2ZLgWv5ooeqfevxic2PnB3v9ylHz3ZmG8Ne
- gNX41qQ/gTC/+Qqa0x+AuyxY+DdlX3kFDqdg8bQw99lWRUVeCR7qCLcXavwYNaQAMnXE
- QsAONdb65FpAfxy6UKDNn+mTYxT2zZvFB8pp7Li0VKuagkPUssBAwDUOl3QBH5ezj8bi
- v4Ig==
-X-Gm-Message-State: AOJu0Yw9SgsumZiG4BEoaom8W1ZbvMeMbv20sT2mNgtUyRVSC2W9qspB
- 1vQtQNjZpG+beg42fV76dAJ+JJW1QasBZ35paMPizFkj4yaIzSP/YIKqJr81mfWDoOLe+nKTIY8
- 0kzGoLGuQlA==
-X-Gm-Gg: ASbGncv1QbA0Fg4ZjXMSXPrYKIvyYC2t+skkuArQuIHRU4Y9NSjSgUQsLQtM9MvAUIj
- BlcXEhLhY7VbfJXckAVd2XisxEs25zT7+jT9pnWQMgiSi2IlXj4PGVk6pgdULTyVXXBKT+yFZy8
- bD2i9NnzUwcn56uLpILuPrOgiEPwXG1aC4pMyYpXxRqk3AKn/hKYNUaJT9ImykCCqnXTQ6AAyik
- B/MVZ2iLMcSJpSCyoo4eA4HpuCn9671s2CGjlGU3OB5BLvbSX68a4o5WNrlTF3CFt/DmrWoBp5D
- n9WUvYFk9bHmVeJyuLfhAN0Czf9VIw4KuqUDssSXMU69nTgEyh9Ye7WNBOWTjNTLC3JMk9LQ266
- vOhyoazntF60CmL2RthLuUY0dZH8jfaGufckYfHPefGtWY784nvYW1wJWMGeNd2YjDtUP6RB1pj
- 1nF/v3h8gJD/9pcXvyfSgyAMniZP8Dz2WsuV2NVnf1YB5c/w==
-X-Google-Smtp-Source: AGHT+IHDt+rpxmEqQ44ij80r2/UWX/WHHmUY10q+V3TAFOE3mjOK4JFbT7slD6c4JwFEM4ZkNEjQjg==
-X-Received: by 2002:a05:6000:603:b0:3ee:3dce:f672 with SMTP id
- ffacd0b85a97d-4256712a5dcmr2934706f8f.4.1759562008505; 
- Sat, 04 Oct 2025 00:13:28 -0700 (PDT)
+ bh=xCQrduo7/+iK4zpfNHJPTgsOKa5mIO1xtZ1NhBqYm1g=;
+ b=nsAIBDkOAQUVx747Wukd8nCqKl0I1Cs+lxC5y1qtsfB40TIHfq0zKYXtOYSD2hGkpN
+ MOvqe4HlXKHiYz2wjssEHFh3Ezv9HnWxD7Jk1r9hTExAN29UubfVmbSZ1I5hG76M4za9
+ uZRQm5/ins99ef2hwrhAFGwcd7rmu2KhNysjKE7SjtCMsBxLUycIge1ENJGNt/gnknIC
+ SvkQN1n0ugFkE2CA1iET9YrTD+x6aYe3UXJg5blBtACvgYWevAzOSiiQE9Kxg20LkmVd
+ kDg9rTgBgpaO54DL7TcXzVPotnq7+zareXh5zxfYL9i1D4GPOkqerAtILjqWacjoIMQt
+ pnRw==
+X-Gm-Message-State: AOJu0Yx0MZaNbRM506MEvB7OcTpP+SFHQKI+GwUWjKRwMyrnTT5MzMuL
+ urg8gi865cXTaEK74OjRkbNWlLh0C/IY6Lb4bnC9SeUucrh6PyJd1KH8rxghoij99PqT/8AP4ZP
+ rtjV0MZu9Tw==
+X-Gm-Gg: ASbGncueJxFGQAGHvtUCxYIA3YmelUvjDPg1smVifSRMHNljFMUmgzoDNSEj7MxndWN
+ 68fH58KBOFqKzKL+3GyJhs6MtlBXzbcDQARc7GSxb9tYxPVouvEfZ4emkoHk3/2sMqpcirhmYBG
+ TBZi5kbRV9szMnrnY57U/rVDvXERqj1jbBUy0JYNUoRlG/9u2ygyintcAIW9eWd7h5EOSnY7Avf
+ MrEFAtzgl6VaeLu2eyDAaAfNfzUToT4fNoQMTjCBnuZd/oOC738sAd0/l8BbPb5IupeOb+yHjUJ
+ 0jiZA7fmjakTdunAIeeNT/ymtiDWhm0uCamAMogEhLsl03tzlp5kLqheSZytw4sM9nxL4SCjZLA
+ i0Ftgubui7Nj4F05vqvr51eUxA3fGdVge9wok4G6lMS9znLvpEHWBXhmSi5yM8+W9i6eYr/Yo4e
+ 9TxWBchDyoWYbNs4pQwWLZ3S28
+X-Google-Smtp-Source: AGHT+IEgSRprfVNuZPy9H0U6WThriOYfmpywBAg40cUEuoFbpHUmEbKV6plVWksFLQwR6L5sXzYfSw==
+X-Received: by 2002:a05:600c:8b71:b0:46e:36fa:6b40 with SMTP id
+ 5b1f17b1804b1-46e7113d33fmr38794235e9.24.1759562013162; 
+ Sat, 04 Oct 2025 00:13:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f01a0sm11093046f8f.48.2025.10.04.00.13.27
+ ffacd0b85a97d-4255d8ab909sm10880945f8f.19.2025.10.04.00.13.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 04 Oct 2025 00:13:27 -0700 (PDT)
+ Sat, 04 Oct 2025 00:13:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/41] system/ramblock: Rename @start -> @offset in
- ram_block_discard_range()
-Date: Sat,  4 Oct 2025 09:12:30 +0200
-Message-ID: <20251004071307.37521-5-philmd@linaro.org>
+Subject: [PULL 05/41] system/ramblock: Move RAMBlock helpers out of
+ "system/ram_addr.h"
+Date: Sat,  4 Oct 2025 09:12:31 +0200
+Message-ID: <20251004071307.37521-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251004071307.37521-1-philmd@linaro.org>
 References: <20251004071307.37521-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,146 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename @start as @offset, since it express an offset within a RAMBlock.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Acked-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20251002032812.26069-5-philmd@linaro.org>
+Message-Id: <20251002032812.26069-6-philmd@linaro.org>
 ---
- include/system/ramblock.h |  6 ++++--
- system/physmem.c          | 28 ++++++++++++++--------------
- 2 files changed, 18 insertions(+), 16 deletions(-)
+ include/system/ram_addr.h | 11 -----------
+ include/system/ramblock.h | 11 +++++++++++
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
+diff --git a/include/system/ram_addr.h b/include/system/ram_addr.h
+index 53c0c8c3856..6b528338efc 100644
+--- a/include/system/ram_addr.h
++++ b/include/system/ram_addr.h
+@@ -80,17 +80,6 @@ static inline bool clear_bmap_test_and_clear(RAMBlock *rb, uint64_t page)
+     return bitmap_test_and_clear(rb->clear_bmap, page >> shift, 1);
+ }
+ 
+-static inline bool offset_in_ramblock(RAMBlock *b, ram_addr_t offset)
+-{
+-    return (b && b->host && offset < b->used_length) ? true : false;
+-}
+-
+-static inline void *ramblock_ptr(RAMBlock *block, ram_addr_t offset)
+-{
+-    assert(offset_in_ramblock(block, offset));
+-    return (char *)block->host + offset;
+-}
+-
+ static inline unsigned long int ramblock_recv_bitmap_offset(void *host_addr,
+                                                             RAMBlock *rb)
+ {
 diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-index 530c5a2e4c2..85cceff6bce 100644
+index 85cceff6bce..76694fe1b5b 100644
 --- a/include/system/ramblock.h
 +++ b/include/system/ramblock.h
-@@ -103,8 +103,10 @@ struct RamBlockAttributes {
-     QLIST_HEAD(, RamDiscardListener) rdl_list;
- };
- 
--int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
--int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-+/* @offset: the offset within the RAMBlock */
-+int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length);
-+/* @offset: the offset within the RAMBlock */
-+int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t offset,
-                                         size_t length);
- 
- RamBlockAttributes *ram_block_attributes_create(RAMBlock *ram_block);
-diff --git a/system/physmem.c b/system/physmem.c
-index 3766fae0aba..1a74e48157b 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3797,18 +3797,18 @@ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque)
- }
- 
- /*
-- * Unmap pages of memory from start to start+length such that
-+ * Unmap pages of memory from offset to offset+length such that
-  * they a) read as 0, b) Trigger whatever fault mechanism
-  * the OS provides for postcopy.
-  * The pages must be unmapped by the end of the function.
-  * Returns: 0 on success, none-0 on failure
-  *
+@@ -119,4 +119,15 @@ int ram_block_attributes_state_change(RamBlockAttributes *attr, uint64_t offset,
   */
--int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-+int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length)
- {
-     int ret = -1;
+ bool ram_block_is_pmem(RAMBlock *rb);
  
--    uint8_t *host_startaddr = rb->host + start;
-+    uint8_t *host_startaddr = rb->host + offset;
- 
-     if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
-         error_report("%s: Unaligned start address: %p",
-@@ -3816,7 +3816,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-         goto err;
-     }
- 
--    if ((start + length) <= rb->max_length) {
-+    if ((offset + length) <= rb->max_length) {
-         bool need_madvise, need_fallocate;
-         if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
-             error_report("%s: Unaligned length: %zx", __func__, length);
-@@ -3867,11 +3867,11 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-             }
- 
-             ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
--                            start + rb->fd_offset, length);
-+                            offset + rb->fd_offset, length);
-             if (ret) {
-                 ret = -errno;
-                 error_report("%s: Failed to fallocate %s:%" PRIx64 "+%" PRIx64
--                             " +%zx (%d)", __func__, rb->idstr, start,
-+                             " +%zx (%d)", __func__, rb->idstr, offset,
-                              rb->fd_offset, length, ret);
-                 goto err;
-             }
-@@ -3879,7 +3879,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-             ret = -ENOSYS;
-             error_report("%s: fallocate not available/file"
-                          "%s:%" PRIx64 "+%" PRIx64 " +%zx (%d)", __func__,
--                         rb->idstr, start, rb->fd_offset, length, ret);
-+                         rb->idstr, offset, rb->fd_offset, length, ret);
-             goto err;
++static inline bool offset_in_ramblock(RAMBlock *b, ram_addr_t offset)
++{
++    return b && b->host && (offset < b->used_length);
++}
++
++static inline void *ramblock_ptr(RAMBlock *block, ram_addr_t offset)
++{
++    assert(offset_in_ramblock(block, offset));
++    return (char *)block->host + offset;
++}
++
  #endif
-         }
-@@ -3899,13 +3899,13 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-                 ret = -errno;
-                 error_report("%s: Failed to discard range "
-                              "%s:%" PRIx64 " +%zx (%d)",
--                             __func__, rb->idstr, start, length, ret);
-+                             __func__, rb->idstr, offset, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
-             error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
--                         __func__, rb->idstr, start, length, ret);
-+                         __func__, rb->idstr, offset, length, ret);
-             goto err;
- #endif
-         }
-@@ -3913,14 +3913,14 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-                                       need_madvise, need_fallocate, ret);
-     } else {
-         error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
--                     __func__, rb->idstr, start, length, rb->max_length);
-+                     __func__, rb->idstr, offset, length, rb->max_length);
-     }
- 
- err:
-     return ret;
- }
- 
--int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-+int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t offset,
-                                         size_t length)
- {
-     int ret = -1;
-@@ -3928,17 +3928,17 @@ int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
- #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
-     /* ignore fd_offset with guest_memfd */
-     ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
--                    start, length);
-+                    offset, length);
- 
-     if (ret) {
-         ret = -errno;
-         error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
--                     __func__, rb->idstr, start, length, ret);
-+                     __func__, rb->idstr, offset, length, ret);
-     }
- #else
-     ret = -ENOSYS;
-     error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
--                 __func__, rb->idstr, start, length, ret);
-+                 __func__, rb->idstr, offset, length, ret);
- #endif
- 
-     return ret;
 -- 
 2.51.0
 
