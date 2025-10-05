@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B3DBB945D
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 08:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23498BB944D
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 08:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5If4-0004m9-Iq; Sun, 05 Oct 2025 02:56:02 -0400
+	id 1v5If9-0004nu-DQ; Sun, 05 Oct 2025 02:56:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Iex-0004lS-8k; Sun, 05 Oct 2025 02:55:56 -0400
+ id 1v5If1-0004lp-6g; Sun, 05 Oct 2025 02:56:00 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Iev-0007vs-4U; Sun, 05 Oct 2025 02:55:55 -0400
+ id 1v5Iez-0007wN-2c; Sun, 05 Oct 2025 02:55:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C108915A8E6;
- Sun, 05 Oct 2025 09:55:36 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id C901615A8E7;
+ Sun, 05 Oct 2025 09:55:37 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3719B29947B;
- Sun,  5 Oct 2025 09:55:40 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3A22829947C;
+ Sun,  5 Oct 2025 09:55:41 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Filip Hejsek <filip.hejsek@gmail.com>, qemu-trivial@nongnu.org,
+Cc: SillyZ <1357816113@qq.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 1/8] ui/gtk: Fix callback function signature
-Date: Sun,  5 Oct 2025 09:55:29 +0300
-Message-ID: <20251005065538.436862-2-mjt@tls.msk.ru>
+Subject: [PULL 2/8] hw/net/can: Remove redundant status bit setting in
+ can_sja1000
+Date: Sun,  5 Oct 2025 09:55:30 +0300
+Message-ID: <20251005065538.436862-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251005065538.436862-1-mjt@tls.msk.ru>
 References: <20251005065538.436862-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,35 +58,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Filip Hejsek <filip.hejsek@gmail.com>
+From: SillyZ <1357816113@qq.com>
 
-The correct type for opaque pointer is gpointer,
-not gpointer * (which is a pointer to a pointer).
+In PeliCAN mode reception, the RBS (Receive Buffer Status) bit
+is set twice at line 842 and 845 with identical operations:
+  s->status_pel |= 0x01;
+  s->status_pel |= (1 << 0);
 
-Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Between these two operations, only interrupt_pel is modified and
+status_pel bit 4 is cleared, neither affecting bit 0. The second
+operation is redundant.
+
+This cleanup aligns PeliCAN mode with BasicCAN mode, which correctly
+sets this bit only once (line 883).
+
+Signed-off-by: SillyZ <1357816113@qq.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- ui/gtk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/net/can/can_sja1000.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 9a08cadc88..48571bedbf 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -766,9 +766,9 @@ static gboolean gd_render_event(GtkGLArea *area, GdkGLContext *context,
- }
+diff --git a/hw/net/can/can_sja1000.c b/hw/net/can/can_sja1000.c
+index 5b6ba9df6c..6b08e977a1 100644
+--- a/hw/net/can/can_sja1000.c
++++ b/hw/net/can/can_sja1000.c
+@@ -842,7 +842,6 @@ ssize_t can_sja_receive(CanBusClientState *client, const qemu_can_frame *frames,
+         s->status_pel |= 0x01; /* Set the Receive Buffer Status. DS-p23 */
+         s->interrupt_pel |= 0x01;
+         s->status_pel &= ~(1 << 4);
+-        s->status_pel |= (1 << 0);
+         can_sja_update_pel_irq(s);
+     } else { /* BasicCAN mode */
  
- static void gd_resize_event(GtkGLArea *area,
--                            gint width, gint height, gpointer *opaque)
-+                            gint width, gint height, gpointer opaque)
- {
--    VirtualConsole *vc = (void *)opaque;
-+    VirtualConsole *vc = opaque;
-     double pw = width, ph = height;
-     double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
-     GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(area));
 -- 
 2.47.3
 
