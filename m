@@ -2,93 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31476BB9C57
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B5DBB9C1F
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:23:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFK-0002AO-NQ; Sun, 05 Oct 2025 15:18:14 -0400
+	id 1v5UFb-000328-PK; Sun, 05 Oct 2025 15:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEw-0000b6-GB
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFB-0000uA-4M
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEv-0006ZV-1X
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEx-0006Zn-3t
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691868;
+ s=mimecast20190719; t=1759691870;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fsCkkNSHYfcaJuM2hlwVcv/fUH7NdmQE3XTFVuuNZ8Y=;
- b=YMyuopKWMNnnWZTU8LFB1VLpipQGjz9grLvWU2BmkqVoEMlfU9+HJNxIW0+Cyr/Ak8/HjG
- j8pRIzrSr/R1Jj+NaVtE0d/zCs0merwUojl0rBKuzlegaQH1RsOyTSB5dgvLwko5lKN/CC
- tn0ihiW1eYllten0wQKhhbLwI8s6vco=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aUkGCRfY+3KGS8RLvcJBTE15uJQeumysIiIS7R/VTY4=;
+ b=ZAsjjbbKvft5+9qBQjfkxCO6Ad38mRPnrpu0gPKsC/Xdh/TIN7cVumr/G7u/99LKLWOfhZ
+ xZof/kgRSBo797eTqRdw2Y2RMq6iZ0PIXHY324bqKjZaIkQU9lC4VGUbA30q7SL/Z8UtKs
+ zomIE+qTKWyNjTJttebjf8kNyCIjgLw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-0hl0lmFlNVWrbxgpBFgBcA-1; Sun, 05 Oct 2025 15:17:47 -0400
-X-MC-Unique: 0hl0lmFlNVWrbxgpBFgBcA-1
-X-Mimecast-MFC-AGG-ID: 0hl0lmFlNVWrbxgpBFgBcA_1759691866
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3ecdc9dbc5fso2219232f8f.1
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:46 -0700 (PDT)
+ us-mta-589-vq57Lx3pMpq19lJ0ffWJrQ-1; Sun, 05 Oct 2025 15:17:49 -0400
+X-MC-Unique: vq57Lx3pMpq19lJ0ffWJrQ-1
+X-Mimecast-MFC-AGG-ID: vq57Lx3pMpq19lJ0ffWJrQ_1759691868
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3ecdfe971abso3387895f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691865; x=1760296665;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fsCkkNSHYfcaJuM2hlwVcv/fUH7NdmQE3XTFVuuNZ8Y=;
- b=aSSlTkE8YfbTXZ81UbdOFbHdlzq4h0ECEg8AtLtM8epY0F11HXNj8BLgUQ1BJbxD3W
- a+IpSFRcCO1Fs6kY80WkY1WBQOOsSRxR2cLZUyuOj0YclBnzvytsgEVg5JLBgvzikbBu
- y6/fUSuPJ+JcfqTAUsobBcTZfiZnTLtK4Nt9QqlfnDpGlIQd8tB1xIxi2emAXskgsH1M
- FzB4s2VXJyiLfUFV4RK6XCoDeeIJQZvSW7zp7l7g0Hh259TMvSXbKt2UV+ifh77uIx+L
- X6V4d2DsbIqbxAzO5n5+y5p0vC6LROkEPPlEmRrGPQ/8X8eDOhvoYygKXnNJj2GHQse2
- PhbA==
-X-Gm-Message-State: AOJu0YyGeCrIr9IsyoihBYKjvoRlrgILxoTwTzjTwKJcRt35nkl8sl2u
- Dx1Su/2luvZdq/pvJ78C2FGZZ4yA7A+Wu6Q6rsAmi+moPwzsIYUJm2fepQ2mowRhrUdGtS/g4y2
- XPPh1/ClOQI29OVbG7QNLDu1Cly4fZxrHr7cuuPtsTXHIUZL+9j6tyztZH0gZaqtLl6cDrLJ7Y9
- OEUgfIoiRTQl4vfov6UdkYrqDEiNbjz/0gkg==
-X-Gm-Gg: ASbGnctxS2vUV35KmpRi65vHHKeOAeVfLmlUvjspmyysmAREn/GXBffZlsaZyIiwdSN
- prabgVg2BZDJGSG8Ks41bU0l4DhIq+k6FayZ5q5J6UauZmsbzAXYgSF36p2tq+GdFtiyc4ut5I/
- BNFZuu1K9FohccxO0tI68CKx4CALbOISjx56Tqp6MsRsskVWtIoxUFVoGxzGjq7GzZYarHHxbZT
- neGchzXnt55VuKbQe6AozIhZ/teb+3qyGWaeq8gW4z9gz3CqgnAL9wf1KMsmeHiuPik03Tjdf/l
- NcQWRjPUIz6X8m0Q7cgEZvx+6wXi8Yf2NRGUOrw=
-X-Received: by 2002:a05:600c:354d:b0:46e:6a6a:5cf7 with SMTP id
- 5b1f17b1804b1-46e711026c4mr71744945e9.12.1759691865532; 
- Sun, 05 Oct 2025 12:17:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+NAHvSkvlMe7/e4a6hPO+bRAmn2Zl5nlJ0yUDRL1Nkcoz3/GKwi0PM6Ss0UYqSVkOQOK9DQ==
-X-Received: by 2002:a05:600c:354d:b0:46e:6a6a:5cf7 with SMTP id
- 5b1f17b1804b1-46e711026c4mr71744845e9.12.1759691865112; 
- Sun, 05 Oct 2025 12:17:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759691867; x=1760296667;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aUkGCRfY+3KGS8RLvcJBTE15uJQeumysIiIS7R/VTY4=;
+ b=jMkE1Wq+rP9u5btwey7Gh7pQZjJIqb1ZYfxixFmKCbwfoVOsbocPx2/Uwb88ofNzjC
+ Yi/QVI163wz0Y6dm8atQH3B9UtWgl35IfNULiSpf1eqOTz4t8HCYC9KrRm4YL2HEnxz/
+ ZcPny7p0cP0qfviL6on7iM2iqgno7q2foP4ri2vcR817hK0mB7bj+nmCGstUP5TVKMQP
+ qF/EO5ml3fZGXC826F6YRLD1wPr8SiU6uLuVNXAdkS5O/pIbz4NqU+JpTI3W+edProfm
+ 4VC0Mfj5I+TvuZXwb9UXbzbouygbNgjb2thRdz481yREIModSeP9zzlmopFHUEpG9WL3
+ fJuA==
+X-Gm-Message-State: AOJu0YxtP+tr0M2MlzH41mh1CxrxqWCY3aQUEaPPE4jJAprNLC/cEzQh
+ b5zbl2Vz5DPZ5di0rXpD2W1ixYFkJyAznHt9N0AUVsnm16B+uDJ8CrOuhdlU58D5EKIPN40c3GA
+ PzpWtj/buX8n7ZBo1aBBiqnwDW7ZdRdJ+A+Dn5QKufcbE8ov9m+Y5RGUwOGe46oi6hCL4u1dXq3
+ bBcjslWBHhwzJ5cR1wMxu8xq2Uz3ISiDR+BA==
+X-Gm-Gg: ASbGncuJjrYwHfZgnSOMCmSlR6V/45wHmSIpqcXhd3KkQPQEt0u+qMID+GGwXCSuXEi
+ v0na+Gm2nzFYraoqFCvGjqKyYWSJ1nU9D26TpScfSOmtGAzkz7xHDxt7W6+2QlMy6cCVPmJMqxY
+ n3VTCYV5qdxi9hPd/PfW18a3LB0q5mjVpCY42eVjW4qFuoD7TNnHNE5TxM34A/1wXZoQK2zFmow
+ LwQm9McJw1bT+EIAmjbqsMGeHTv9FZDK2d/6rNYzePuglWcsVYdJet32Vgc9LQ2XH1GLxqClFE6
+ 1kkVVNRiCNheS53ekMVjA0vsMMnUUNF77jM9GFw=
+X-Received: by 2002:a05:6000:43d4:20b0:425:75bd:7748 with SMTP id
+ ffacd0b85a97d-42575bd77b6mr2050085f8f.58.1759691867570; 
+ Sun, 05 Oct 2025 12:17:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESWqAM17weSRz6tNkuFOcXoHoGAXaaXqYqFFeWKQ+3m4H3+KLBOo1qy5v5MbtlXDYpBvGvFA==
+X-Received: by 2002:a05:6000:43d4:20b0:425:75bd:7748 with SMTP id
+ ffacd0b85a97d-42575bd77b6mr2050076f8f.58.1759691867058; 
+ Sun, 05 Oct 2025 12:17:47 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e61a022d8sm212110245e9.12.2025.10.05.12.17.43
+ ffacd0b85a97d-4255d8acc4csm17211783f8f.16.2025.10.05.12.17.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:44 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:42 -0400
+ Sun, 05 Oct 2025 12:17:46 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:45 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 45/75] virtio: support irqfd in virtio_notify_config()
-Message-ID: <3b11003fa67b3f055637ff52e1fe8327f7590ee1.1759691708.git.mst@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 46/75] tests/libqos: extract qvirtqueue_set_avail_idx()
+Message-ID: <e06d96d5a9f81608ede08576445ac20ac2e73dcc.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,40 +112,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-virtio_error() calls virtio_notify_config() to inject a VIRTIO
-Configuration Change Notification. This doesn't work from IOThreads
-because the BQL is not held and the interrupt code path requires the
-BQL.
-
-Follow the same approach as virtio_notify() and use ->config_notifier
-(an irqfd) when called from the IOThread.
+Setting the vring's avail.idx can be useful for low-level VIRTIO tests,
+especially for testing error scenarios with invalid vrings. Extract it
+into a new function so that the next commit can add a test that uses
+this new test API.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Acked-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250922220149.498967-4-stefanha@redhat.com>
+Message-ID: <20250922220149.498967-5-stefanha@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/qtest/libqos/virtio.h |  2 ++
+ tests/qtest/libqos/virtio.c | 16 ++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 6ce5823898..de89e8104a 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2706,7 +2706,12 @@ void virtio_notify_config(VirtIODevice *vdev)
+diff --git a/tests/qtest/libqos/virtio.h b/tests/qtest/libqos/virtio.h
+index 7adc7cbd10..e238f1726f 100644
+--- a/tests/qtest/libqos/virtio.h
++++ b/tests/qtest/libqos/virtio.h
+@@ -143,6 +143,8 @@ uint32_t qvirtqueue_add(QTestState *qts, QVirtQueue *vq, uint64_t data,
+                         uint32_t len, bool write, bool next);
+ uint32_t qvirtqueue_add_indirect(QTestState *qts, QVirtQueue *vq,
+                                  QVRingIndirectDesc *indirect);
++void qvirtqueue_set_avail_idx(QTestState *qts, QVirtioDevice *d,
++                              QVirtQueue *vq, uint16_t idx);
+ void qvirtqueue_kick(QTestState *qts, QVirtioDevice *d, QVirtQueue *vq,
+                      uint32_t free_head);
+ bool qvirtqueue_get_buf(QTestState *qts, QVirtQueue *vq, uint32_t *desc_idx,
+diff --git a/tests/qtest/libqos/virtio.c b/tests/qtest/libqos/virtio.c
+index 5a709d0bc5..010ff40834 100644
+--- a/tests/qtest/libqos/virtio.c
++++ b/tests/qtest/libqos/virtio.c
+@@ -265,8 +265,9 @@ void qvring_init(QTestState *qts, const QGuestAllocator *alloc, QVirtQueue *vq,
  
-     virtio_set_isr(vdev, 0x3);
-     vdev->generation++;
--    virtio_notify_vector(vdev, vdev->config_vector);
+     /* vq->avail->flags */
+     qvirtio_writew(vq->vdev, qts, vq->avail, 0);
+-    /* vq->avail->idx */
+-    qvirtio_writew(vq->vdev, qts, vq->avail + 2, 0);
 +
-+    if (qemu_in_iothread()) {
-+        defer_call(virtio_notify_irqfd_deferred_fn, &vdev->config_notifier);
-+    } else {
-+        virtio_notify_vector(vdev, vdev->config_vector);
-+    }
++    qvirtqueue_set_avail_idx(qts, vq->vdev, vq, 0);
++
+     /* vq->avail->used_event */
+     qvirtio_writew(vq->vdev, qts, vq->avail + 4 + (2 * vq->size), 0);
+ 
+@@ -388,6 +389,13 @@ uint32_t qvirtqueue_add_indirect(QTestState *qts, QVirtQueue *vq,
+     return vq->free_head++; /* Return and increase, in this order */
  }
  
- static bool virtio_device_endian_needed(void *opaque)
++void qvirtqueue_set_avail_idx(QTestState *qts, QVirtioDevice *d,
++                              QVirtQueue *vq, uint16_t idx)
++{
++    /* vq->avail->idx */
++    qvirtio_writew(d, qts, vq->avail + 2, idx);
++}
++
+ void qvirtqueue_kick(QTestState *qts, QVirtioDevice *d, QVirtQueue *vq,
+                      uint32_t free_head)
+ {
+@@ -400,8 +408,8 @@ void qvirtqueue_kick(QTestState *qts, QVirtioDevice *d, QVirtQueue *vq,
+ 
+     /* vq->avail->ring[idx % vq->size] */
+     qvirtio_writew(d, qts, vq->avail + 4 + (2 * (idx % vq->size)), free_head);
+-    /* vq->avail->idx */
+-    qvirtio_writew(d, qts, vq->avail + 2, idx + 1);
++
++    qvirtqueue_set_avail_idx(qts, d, vq, idx + 1);
+ 
+     /* Must read after idx is updated */
+     flags = qvirtio_readw(d, qts, vq->used);
 -- 
 MST
 
