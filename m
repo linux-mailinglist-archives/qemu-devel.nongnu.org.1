@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176E0BB9BA0
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A65BB9BFE
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:21:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFJ-00022P-F3; Sun, 05 Oct 2025 15:18:13 -0400
+	id 1v5UFV-0002IZ-4f; Sun, 05 Oct 2025 15:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEp-0000Lc-VE
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEs-0000Ux-SW
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEo-0006YA-12
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEq-0006YY-JK
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691861;
+ s=mimecast20190719; t=1759691863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ml2pFyRHG+5Bce2r6KPnxhJb7q8qJwL1Tv/Mz3Zw5Ls=;
- b=T9HPp4m5UV8eG7PSON/9yYUwZEadOjNhrMhWKwiAeF809pUMXKeHPkiC27yaQYWS9phGgS
- dpVDDg7an3UxvvL735bx69rCs2Rx4jBKXrqMX3Yae4eNg9FXqi38hzADo/wmBhO/LUW4pF
- xcEwfavaoPH6Lp1tDIeaoix1KPi7vu8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qaaiPsY2w5X1nM8WzdUOv5p6rMVvIWhXGJwIV0z7Nm0=;
+ b=G37fLBIz3CwVEs+afwETqFgyPdgvoEkVxbtAzVQ7CQGMzESUeS+DO6vozEj8HSDqWQD/p0
+ RW4rIYMrpU8E660OljKV6gq/lMckP74E7qQG6uepi2bE7cnpULN26AzpiPZEwEfo+xLJ0M
+ X72TY62sl6B+cYZEe1TGKyUaSU9r7BQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-HKJN_48YO4WlCkbFmeOOqA-1; Sun, 05 Oct 2025 15:17:40 -0400
-X-MC-Unique: HKJN_48YO4WlCkbFmeOOqA-1
-X-Mimecast-MFC-AGG-ID: HKJN_48YO4WlCkbFmeOOqA_1759691859
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3efa77de998so2422407f8f.0
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:40 -0700 (PDT)
+ us-mta-267-NL3s316JM_6O4lxWQfAn1g-1; Sun, 05 Oct 2025 15:17:42 -0400
+X-MC-Unique: NL3s316JM_6O4lxWQfAn1g-1
+X-Mimecast-MFC-AGG-ID: NL3s316JM_6O4lxWQfAn1g_1759691861
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e46486972so11981475e9.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691859; x=1760296659;
+ d=1e100.net; s=20230601; t=1759691861; x=1760296661;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ml2pFyRHG+5Bce2r6KPnxhJb7q8qJwL1Tv/Mz3Zw5Ls=;
- b=rTquNMCF8HFHp/wkHetit+ZgIQywc34cWGd83e/DA7kLHF8DbJkqF2l46BF8ZIwAhw
- vFnFZOy+4TYU2oh4Vrzw7UvTrwiows5a/DhJDWOcwuM8wzLNY2u5WI60UwlSmSDzKf4V
- wOb+AgnkrzQs+QqrOAQ16FDI/Xj8x8rxH4gaCZwamP0KaeLyaUCzZur6Fi1SHf39lfco
- Pafz8ONUFkTeNhBeRqjZqelVB62X/Zc5wLNeH5CWzmRfwJPhdPOdMZ2CJo8gHcQTfNMR
- spjPbzSjeqMuA8RycAGTYU7uSoS70nLyD+8AZhN3kPO60xlFpbgQ+mmYYhQ7K1eHtnLA
- k3ag==
-X-Gm-Message-State: AOJu0YwxGvxLolAhDTLMlt+4sFNG/v2ZCXOvFpMXzG9UPpCCucRlmc1i
- WAMvfanyhb4GOfG1dulnpOtrvamzmZMh/cgyGDaEG+Llr66cQMEbwjsmyoVxgLQ0aceGnqe/NXj
- 6orlfk7PL0Ss8fSAo1xpmWmWYkAnVUff24uk+LKInYNGhADZ/7P+zXypkB5sQdci8BqDExWMreV
- SKMsfHGEWz8UFdw4ooQ1FYbLxWAZjNTdRv2A==
-X-Gm-Gg: ASbGncuRegTth6YnBUC7GJ3yp6UN0bA4rl49Cr5n5X4NPm244rmKxojZz3jvbNdPgcn
- 9E7jLji59riHp4mZtkplhtqLzB/702DHrdrHAnRCQ+CDttpdH65jqofyIRqaAlQ00BCd5MNvZdN
- r5HCBNB4BuLxmHZInqkkssaPWItSc3u1AxTDlPHJh3T86TsuBmrZf4u14IbQcCY8EjG4nflEYjk
- uxmbxJ+xNtwvklsjtiuSV421LjgvcUATrodmkfNuaTqHoqMIHwkiwqlimO1Qo6Igt1uBEFlunP7
- GncAxplOpIV1kMn2DsTLX9xCxWmxxiC+Grl/QD0=
-X-Received: by 2002:a05:600c:628b:b0:46e:4883:27d with SMTP id
- 5b1f17b1804b1-46e71147470mr70617265e9.30.1759691858955; 
- Sun, 05 Oct 2025 12:17:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHEocTYVD3Zo4TaQuwGW2gr/V5ZX8yY3DnPRKTTtMy4X0M78zGcVL/zOtaT54s2UT+a6t9zig==
-X-Received: by 2002:a05:600c:628b:b0:46e:4883:27d with SMTP id
- 5b1f17b1804b1-46e71147470mr70617115e9.30.1759691858416; 
- Sun, 05 Oct 2025 12:17:38 -0700 (PDT)
+ bh=qaaiPsY2w5X1nM8WzdUOv5p6rMVvIWhXGJwIV0z7Nm0=;
+ b=KYZDq9HqaP6IZj/nCwJize6HhYvTa55hTe1SKVsHDEXqiXyBPAxxWAsL4YF3MmI0ic
+ siBcB5cqSZMeI22CC7co6mR30sZwz/7X3fqMofB6mzPwS8B01PNdUCWI5Kia3VSs4PI0
+ dv+ZwhvgekiNAYPu2k9Q9kEOcPw09L3qGK7jlQrX8O/Bb7gVqZrvxCTyq+KdZ7YNHczx
+ Ln2gxSXj590N/i7ts4UkyRUiIUZPF+DkwSW7Hspt2WEp7RVnZvFDSldWz7FUFucd7483
+ l3XQ9kt85w2jLfsWSQqjFEU18eixEOOlwXIfZfTqK+pWH1rPvNgctKo6q+GGpuTFmWDi
+ CH1A==
+X-Gm-Message-State: AOJu0YwpI39Vz9q0dCzyQjyGYOekH+yUSD7yo9Dg5UftlZ4dSlVZLDkK
+ lgX7h2r/ECaTcZfr12svOrVYytktSe50QBtJ06WM/DzjhJkDBum0q9ruYwEJhrmK/riDi+tbva4
+ 2PGOwX+flwlnRSohlcOrwCN+4DX2Yz/szaYPB2xEKx4i80Apc03vucarbZrr3HSgsVIqYvLSmNY
+ 9PmyDrCxQ0BXUbOHIl24Kz3f9OBiVdv0ihug==
+X-Gm-Gg: ASbGncvsKYlgyUBcqkxH7O2j3DB68hZYE+l6Aj2aXZF2RKJFwuSQDa60TsMHa2VfRGD
+ he6HNMrBBU0tUG+lf0ssZYJ/FdEJtwaSeioFhs/4qS6lyJ0wE9/cFbKtAHvWsF3rQAPn2hMYS/6
+ z7DKzltlEl4nzqFYKXY8BYx4IqmXY04nqGtlMDbMUFct6jy0qALFzdEuPuG88FlG9Rgqig8zrCJ
+ yKo9YWH84+aCbiGK8Do9dWMVaiVGUpHQ+Na3/4K2Ya/a0dWvICxr/d4xdOXkXBZ0aDlCSp/y9nV
+ evvh9LFPoIHseiEvVu6K/GY0Zgu4rsBwt/RIHYs=
+X-Received: by 2002:a05:600c:348b:b0:46e:37fc:def0 with SMTP id
+ 5b1f17b1804b1-46e71109e9bmr73743435e9.9.1759691861184; 
+ Sun, 05 Oct 2025 12:17:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7MG29ead6ZhiEZE+wFOJBGbwp4ZdkzxVyFIDonZ1hd485L+ZqXS/rKLyM/HEIehckecG8bg==
+X-Received: by 2002:a05:600c:348b:b0:46e:37fc:def0 with SMTP id
+ 5b1f17b1804b1-46e71109e9bmr73743235e9.9.1759691860609; 
+ Sun, 05 Oct 2025 12:17:40 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8a6c49sm17544030f8f.3.2025.10.05.12.17.37
+ ffacd0b85a97d-4255d8f011bsm17778306f8f.46.2025.10.05.12.17.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:37 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:36 -0400
+ Sun, 05 Oct 2025 12:17:40 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:38 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 42/75] x86: ich9: fix default value of 'No Reboot' bit in GCS
-Message-ID: <b10166b104fad54d5d79024beafe1bcfe8a35c4a.1759691708.git.mst@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PULL 43/75] vhost: use virtio_config_get_guest_notifier()
+Message-ID: <2e41580328a9cdfffce3ee496857c1b2d6ed365e.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -110,77 +110,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-[2] initialized 'No Reboot' bit to 1 by default. And due to quirk it happened
-to work with linux iTCO_wdt driver (which clears it on module load).
+There is a getter function so avoid accessing the ->config_notifier
+field directly.
 
-However spec [1] states:
-"
-R/W. This bit is set when the “No Reboot” strap (SPKR pin on
-ICH9) is sampled high on PWROK.
-"
-
-So it should be set only when  '-global ICH9-LPC.noreboot=true' and cleared
-when it's false (which should be default).
-
-Fix it to behave according to spec and set 'No Reboot' bit only when
-'-global ICH9-LPC.noreboot=true'.
-
-1)
-Intel I/O Controller Hub 9 (ICH9) Family Datasheet (rev: 004)
-2)
-
-Fixes: 920557971b6 (ich9: add TCO interface emulation)
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Tested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250922132600.562193-1-imammedo@redhat.com>
+Message-ID: <20250922220149.498967-2-stefanha@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/southbridge/ich9.h | 2 +-
- hw/isa/lpc_ich9.c             | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ hw/virtio/vhost.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-index 1e231e89c9..2c35dd0484 100644
---- a/include/hw/southbridge/ich9.h
-+++ b/include/hw/southbridge/ich9.h
-@@ -95,7 +95,7 @@ struct ICH9LPCState {
- #define ICH9_CC_OIC                             0x31FF
- #define ICH9_CC_OIC_AEN                         0x1
- #define ICH9_CC_GCS                             0x3410
--#define ICH9_CC_GCS_DEFAULT                     0x00000020
-+#define ICH9_CC_GCS_DEFAULT                     0x00000000
- #define ICH9_CC_GCS_NO_REBOOT                   (1 << 5)
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 5f485ad6cb..c120ef38b9 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1846,7 +1846,7 @@ void vhost_config_mask(struct vhost_dev *hdev, VirtIODevice *vdev, bool mask)
+     int r;
+     EventNotifier *notifier =
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier;
+-    EventNotifier *config_notifier = &vdev->config_notifier;
++    EventNotifier *config_notifier = virtio_config_get_guest_notifier(vdev);
+     assert(hdev->vhost_ops);
  
- /* D28:F[0-5] */
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index 304dffac32..c9cb8f7779 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -132,6 +132,11 @@ static void ich9_cc_init(ICH9LPCState *lpc)
- static void ich9_cc_reset(ICH9LPCState *lpc)
+     if ((hdev->started == false) ||
+@@ -1877,13 +1877,15 @@ static void vhost_stop_config_intr(struct vhost_dev *dev)
+ static void vhost_start_config_intr(struct vhost_dev *dev)
  {
-     uint8_t *c = lpc->chip_config;
-+    uint32_t gcs = ICH9_CC_GCS_DEFAULT;
-+
-+    if (lpc->pin_strap.spkr_hi) {
-+        gcs |= ICH9_CC_GCS_NO_REBOOT;
-+    }
+     int r;
++    EventNotifier *config_notifier =
++        virtio_config_get_guest_notifier(dev->vdev);
  
-     memset(lpc->chip_config, 0, sizeof(lpc->chip_config));
- 
-@@ -142,7 +147,7 @@ static void ich9_cc_reset(ICH9LPCState *lpc)
-     pci_set_long(c + ICH9_CC_D27IR, ICH9_CC_DIR_DEFAULT);
-     pci_set_long(c + ICH9_CC_D26IR, ICH9_CC_DIR_DEFAULT);
-     pci_set_long(c + ICH9_CC_D25IR, ICH9_CC_DIR_DEFAULT);
--    pci_set_long(c + ICH9_CC_GCS, ICH9_CC_GCS_DEFAULT);
-+    pci_set_long(c + ICH9_CC_GCS, gcs);
- 
-     ich9_cc_update(lpc);
+     assert(dev->vhost_ops);
+-    int fd = event_notifier_get_fd(&dev->vdev->config_notifier);
++    int fd = event_notifier_get_fd(config_notifier);
+     if (dev->vhost_ops->vhost_set_config_call) {
+         r = dev->vhost_ops->vhost_set_config_call(dev, fd);
+         if (!r) {
+-            event_notifier_set(&dev->vdev->config_notifier);
++            event_notifier_set(config_notifier);
+         }
+     }
  }
+@@ -2167,12 +2169,13 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
+ {
+     int i;
+     int rc = 0;
++    EventNotifier *config_notifier = virtio_config_get_guest_notifier(vdev);
+ 
+     /* should only be called after backend is connected */
+     assert(hdev->vhost_ops);
+     event_notifier_test_and_clear(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+-    event_notifier_test_and_clear(&vdev->config_notifier);
++    event_notifier_test_and_clear(config_notifier);
+     event_notifier_cleanup(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+ 
 -- 
 MST
 
