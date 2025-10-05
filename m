@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D625BB9995
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F5CDBB99AC
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5RuV-0008Uo-35; Sun, 05 Oct 2025 12:48:35 -0400
+	id 1v5Rub-00005l-Pe; Sun, 05 Oct 2025 12:48:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5RuR-0008UF-H7; Sun, 05 Oct 2025 12:48:31 -0400
+ id 1v5RuV-0008WU-IF; Sun, 05 Oct 2025 12:48:36 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5RuO-000713-VN; Sun, 05 Oct 2025 12:48:31 -0400
+ id 1v5RuT-00071e-2j; Sun, 05 Oct 2025 12:48:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CFEFB15AA28;
- Sun, 05 Oct 2025 19:48:18 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3676415AA29;
+ Sun, 05 Oct 2025 19:48:20 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 05D252996E6;
- Sun,  5 Oct 2025 19:48:22 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 065B22996E7;
+ Sun,  5 Oct 2025 19:48:23 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 61/81] hw/usb/hcd-uhci: don't assert for SETUP to
- non-0 endpoint
-Date: Sun,  5 Oct 2025 19:47:41 +0300
-Message-ID: <20251005164822.442861-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 62/81] net/passt: Fix build failure due to missing GIO
+ dependency
+Date: Sun,  5 Oct 2025 19:47:42 +0300
+Message-ID: <20251005164822.442861-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,71 +61,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Laurent Vivier <lvivier@redhat.com>
 
-If the guest feeds invalid data to the UHCI controller, we
-can assert:
-qemu-system-x86_64: ../../hw/usb/core.c:744: usb_ep_get: Assertion `pid == USB_TOKEN_IN || pid == USB_TOKEN_OUT' failed.
+The passt networking backend uses functions from the GIO library,
+such as g_subprocess_launcher_new(), to manage its daemon process.
+So, building with passt enabled requires GIO to be available.
 
-(see issue 2548 for the repro case).  This happens because the guest
-attempts USB_TOKEN_SETUP to an endpoint other than 0, which is not
-valid.  The controller code doesn't catch this guest error, so
-instead we hit the assertion in the USB core code.
+If we enable passt and disable gio the build fails during linkage with
+undefined reference errors:
 
-Catch the case of SETUP to non-zero endpoint, and treat it as a fatal
-error in the TD, in the same way we do for an invalid PID value in
-the TD.
+  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `net_passt_start_daemon':
+  net/passt.c:250: undefined reference to `g_subprocess_launcher_new'
+  /usr/bin/ld: net/passt.c:251: undefined reference to `g_subprocess_launcher_take_fd'
+  /usr/bin/ld: net/passt.c:253: undefined reference to `g_subprocess_launcher_spawnv'
+  /usr/bin/ld: net/passt.c:256: undefined reference to `g_object_unref'
+  /usr/bin/ld: net/passt.c:263: undefined reference to `g_subprocess_wait'
+  /usr/bin/ld: net/passt.c:268: undefined reference to `g_subprocess_get_if_exited'
+  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `glib_autoptr_clear_GSubprocess':
+  /usr/include/glib-2.0/gio/gio-autocleanups.h:132: undefined reference to `g_object_unref'
+  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `net_passt_start_daemon':
+  net/passt.c:269: undefined reference to `g_subprocess_get_exit_status'
 
-This is the UHCI equivalent of the same bug in OHCI that we fixed in
-commit 3c3c233677 ("hw/usb/hcd-ohci: Fix #1510, #303: pid not IN or
-OUT").
-
-This bug has been tracked as CVE-2024-8354.
+Fix this by adding an explicit weson dependency on GIO for the passt
+option.
+The existing dependency on linux is kept because passt is only available
+on this OS.
 
 Cc: qemu-stable@nongnu.org
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2548
+Fixes: 854ee02b222 ("net: Add passt network backend")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3121
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit d0af3cd0274e265435170a583c72b9f0a4100dff)
+(cherry picked from commit 4ccca2cc05a2d904d1e25365accf3bcbe553c8b0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
-index 4822c704f6..e207d0587a 100644
---- a/hw/usb/hcd-uhci.c
-+++ b/hw/usb/hcd-uhci.c
-@@ -735,6 +735,7 @@ static int uhci_handle_td(UHCIState *s, UHCIQueue *q, uint32_t qh_addr,
-     bool spd;
-     bool queuing = (q != NULL);
-     uint8_t pid = td->token & 0xff;
-+    uint8_t ep_id = (td->token >> 15) & 0xf;
-     UHCIAsync *async;
+diff --git a/meson.build b/meson.build
+index 50c774a195..b7db736bbf 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1287,6 +1287,7 @@ endif
  
-     async = uhci_async_find_td(s, td_addr);
-@@ -778,9 +779,14 @@ static int uhci_handle_td(UHCIState *s, UHCIQueue *q, uint32_t qh_addr,
+ enable_passt = get_option('passt') \
+   .require(host_os == 'linux', error_message: 'passt is supported only on Linux') \
++  .require(gio.found(), error_message: 'passt requires gio') \
+   .allowed()
  
-     switch (pid) {
-     case USB_TOKEN_OUT:
--    case USB_TOKEN_SETUP:
-     case USB_TOKEN_IN:
-         break;
-+    case USB_TOKEN_SETUP:
-+        /* SETUP is only valid to endpoint 0 */
-+        if (ep_id == 0) {
-+            break;
-+        }
-+        /* fallthrough */
-     default:
-         /* invalid pid : frame interrupted */
-         s->status |= UHCI_STS_HCPERR;
-@@ -829,7 +835,7 @@ static int uhci_handle_td(UHCIState *s, UHCIQueue *q, uint32_t qh_addr,
-             return uhci_handle_td_error(s, td, td_addr, USB_RET_NODEV,
-                                         int_mask);
-         }
--        ep = usb_ep_get(dev, pid, (td->token >> 15) & 0xf);
-+        ep = usb_ep_get(dev, pid, ep_id);
-         q = uhci_queue_new(s, qh_addr, td, ep);
-     }
-     async = uhci_async_alloc(q, td_addr);
+ vde = not_found
 -- 
 2.47.3
 
