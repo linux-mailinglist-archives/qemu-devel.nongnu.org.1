@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC2ABB99D0
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8D5BB99A3
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5Ruq-0000Bs-16; Sun, 05 Oct 2025 12:48:56 -0400
+	id 1v5Ruv-0000FT-5Z; Sun, 05 Oct 2025 12:49:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Run-0000Al-VJ; Sun, 05 Oct 2025 12:48:53 -0400
+ id 1v5Rur-0000Dh-6g; Sun, 05 Oct 2025 12:48:57 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Rum-000745-A2; Sun, 05 Oct 2025 12:48:53 -0400
+ id 1v5Rup-00074X-D2; Sun, 05 Oct 2025 12:48:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E31FF15AA30;
- Sun, 05 Oct 2025 19:48:43 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 09A7615AA32;
+ Sun, 05 Oct 2025 19:48:48 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D25472996EE;
- Sun,  5 Oct 2025 19:48:47 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id C8F432996EF;
+ Sun,  5 Oct 2025 19:48:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Andrea Bolognani <abologna@redhat.com>,
- Kashyap Chamarthy <kchamart@redhat.com>,
+Cc: qemu-stable@nongnu.org, Frank Chang <frank.chang@sifive.com>,
+ Emmanuel Blot <emmanuel.blot@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 69/81] docs/interop/firmware: Add riscv64 to
- FirmwareArchitecture
-Date: Sun,  5 Oct 2025 19:47:49 +0300
-Message-ID: <20251005164822.442861-9-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 70/81] hw/char: sifive_uart: Raise IRQ according to
+ the Tx/Rx watermark thresholds
+Date: Sun,  5 Oct 2025 19:47:50 +0300
+Message-ID: <20251005164822.442861-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
@@ -60,39 +60,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrea Bolognani <abologna@redhat.com>
+From: Frank Chang <frank.chang@sifive.com>
 
-Descriptors using this value have been shipped for years
-by distros, so we just need to update the spec to match
-reality.
+Currently, the SiFive UART raises an IRQ whenever:
 
-Signed-off-by: Andrea Bolognani <abologna@redhat.com>
-Reviewed-by: Kashyap Chamarthy <kchamart@redhat.com>
-Message-ID: <20250910121501.676219-1-abologna@redhat.com>
+  1. ie.txwm is enabled.
+  2. ie.rxwm is enabled and the Rx FIFO is not empty.
+
+It does not check the watermark thresholds set by software. However,
+since commit [1] changed the SiFive UART character printing from
+synchronous to asynchronous, Tx overflows may occur, causing characters
+to be dropped when running Linux because:
+
+  1. The Linux SiFive UART driver sets the transmit watermark level to 1
+     [2], meaning a transmit watermark interrupt is raised whenever a
+     character is enqueued into the Tx FIFO.
+  2. Upon receiving a transmit watermark interrupt, the Linux driver
+     transfers up to a full Tx FIFO's worth of characters from the Linux
+     serial transmit buffer [3], without checking the txdata.full flag
+     before transferring multiple characters [4].
+
+To fix this issue, we must honor the Tx/Rx watermark thresholds and
+raise interrupts only when the Tx threshold is exceeded or the Rx
+threshold is undercut.
+
+[1] 53c1557b230986ab6320a58e1b2c26216ecd86d5
+[2] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L1039
+[3] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L538
+[4] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L291
+
+Signed-off-by: Frank Chang <frank.chang@sifive.com>
+Signed-off-by: Emmanuel Blot <emmanuel.blot@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250911160647.5710-2-frank.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit da14767b356c2342197708a997eeb0da053262a0)
+(cherry picked from commit 191df346175283af013f414375f4be59fb850120)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index 6bbe2cce0a..ccbfaf828d 100644
---- a/docs/interop/firmware.json
-+++ b/docs/interop/firmware.json
-@@ -85,12 +85,14 @@
- #
- # @loongarch64: 64-bit LoongArch. (since: 7.1)
- #
-+# @riscv64: 64-bit RISC-V.
-+#
- # @x86_64: 64-bit x86.
- #
- # Since: 3.0
- ##
- { 'enum' : 'FirmwareArchitecture',
--  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'x86_64' ] }
-+  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'riscv64', 'x86_64' ] }
+diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
+index 9bc697a67b..138c31fcab 100644
+--- a/hw/char/sifive_uart.c
++++ b/hw/char/sifive_uart.c
+@@ -35,16 +35,17 @@
+  */
  
- ##
- # @FirmwareTarget:
+ /* Returns the state of the IP (interrupt pending) register */
+-static uint64_t sifive_uart_ip(SiFiveUARTState *s)
++static uint32_t sifive_uart_ip(SiFiveUARTState *s)
+ {
+-    uint64_t ret = 0;
++    uint32_t ret = 0;
+ 
+-    uint64_t txcnt = SIFIVE_UART_GET_TXCNT(s->txctrl);
+-    uint64_t rxcnt = SIFIVE_UART_GET_RXCNT(s->rxctrl);
++    uint32_t txcnt = SIFIVE_UART_GET_TXCNT(s->txctrl);
++    uint32_t rxcnt = SIFIVE_UART_GET_RXCNT(s->rxctrl);
+ 
+-    if (txcnt != 0) {
++    if (fifo8_num_used(&s->tx_fifo) < txcnt) {
+         ret |= SIFIVE_UART_IP_TXWM;
+     }
++
+     if (s->rx_fifo_len > rxcnt) {
+         ret |= SIFIVE_UART_IP_RXWM;
+     }
+@@ -55,15 +56,14 @@ static uint64_t sifive_uart_ip(SiFiveUARTState *s)
+ static void sifive_uart_update_irq(SiFiveUARTState *s)
+ {
+     int cond = 0;
+-    if ((s->ie & SIFIVE_UART_IE_TXWM) ||
+-        ((s->ie & SIFIVE_UART_IE_RXWM) && s->rx_fifo_len)) {
++    uint32_t ip = sifive_uart_ip(s);
++
++    if (((ip & SIFIVE_UART_IP_TXWM) && (s->ie & SIFIVE_UART_IE_TXWM)) ||
++        ((ip & SIFIVE_UART_IP_RXWM) && (s->ie & SIFIVE_UART_IE_RXWM))) {
+         cond = 1;
+     }
+-    if (cond) {
+-        qemu_irq_raise(s->irq);
+-    } else {
+-        qemu_irq_lower(s->irq);
+-    }
++
++    qemu_set_irq(s->irq, cond);
+ }
+ 
+ static gboolean sifive_uart_xmit(void *do_not_use, GIOCondition cond,
 -- 
 2.47.3
 
