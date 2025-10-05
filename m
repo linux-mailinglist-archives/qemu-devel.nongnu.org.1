@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5C3BB9C6F
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684D1BB9BCE
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:21:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UEv-00009R-KO; Sun, 05 Oct 2025 15:17:51 -0400
+	id 1v5UFE-0001KQ-LI; Sun, 05 Oct 2025 15:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEe-00089v-CW
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEc-00085c-MZ
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEa-0006VM-Mm
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEa-0006VX-ML
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691845;
+ s=mimecast20190719; t=1759691848;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mfKdz/3nMvjpW+z6FeaL4DezlsHzfdVMCcRVA0zYnAA=;
- b=cKDAsiFkXAvBSauY7NukK7KXanLoQ0J/kv6WVwChaZDI18BDMh3hWX/Wax5IMRsHuJYe77
- +yVJPCcZaik/J9V+5elo/C7DSydwmdQQm47qC1rm+r5lcDhsMypOZJ+9iTDsSsrFGWd0Xp
- oyzTFGROvsmdUJKpFvSzRJPEQ+UC3qU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3aFxoIeUx803jBt31fbg+H6tlPcEQbGoaOIOlfDZlQk=;
+ b=fjIG2gi60r2L912QkI0PaDuzZDULQT97Y0MZyDj9SIjQ3OBzMZV6tukgyAyVrq9spxfFmP
+ c0GKpKNbewkLNS39btKh0rIh6lsTIr5iG3N74XI57dcZPCUKYG46p6NnyicB4GjvKKr98m
+ G3H+3AymS8TqiDEVMGhbst/n7C0svoQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-4ydYZVfFPM6FRql5mRipXQ-1; Sun, 05 Oct 2025 15:17:24 -0400
-X-MC-Unique: 4ydYZVfFPM6FRql5mRipXQ-1
-X-Mimecast-MFC-AGG-ID: 4ydYZVfFPM6FRql5mRipXQ_1759691843
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-46e31191379so26933245e9.3
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:24 -0700 (PDT)
+ us-mta-532-uq1zFbmuMPOy2kHo9jclLw-1; Sun, 05 Oct 2025 15:17:26 -0400
+X-MC-Unique: uq1zFbmuMPOy2kHo9jclLw-1
+X-Mimecast-MFC-AGG-ID: uq1zFbmuMPOy2kHo9jclLw_1759691845
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3ece0fd841cso2209893f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691843; x=1760296643;
+ d=1e100.net; s=20230601; t=1759691845; x=1760296645;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mfKdz/3nMvjpW+z6FeaL4DezlsHzfdVMCcRVA0zYnAA=;
- b=frp1CMPhHJdVp5yfFWYAt7sPftTEjaz0xJH2VrPi/0BwPMVWBeB6myvldZOKmrF/FW
- mZr/hTNVMc3M4M7K76m8tJlYB8B8fbmATG7W+4Wv3Bz9uZUsVkSCl55VJDwAFXxFnFRX
- A4BjVmILGie0UWmjZFVEqAlbAAea+wGqV1vk+T0762IGr44I4SNiUNjva14EE3gu2cng
- Va8bwUKIqCJu73jQQ+VBW9X04iumDTqZB3fsxOblhkjiensNInL8AeTYezL8NRNNj40d
- Rz1Icq8/0DQxXAQrvqq5TPT40338z0xvksI6bGjJBX5QTTKmULM9MiyPwRTH9LnWLp40
- d1vg==
-X-Gm-Message-State: AOJu0YzvkO+oXxIf31MLwSlPj1NDUR9KPUIvZRLbIUm4VqMZGsIpoOxf
- znxxSXmrHzq2htXB/gv6nDzqvzu6TJq1Gc6LokWXYU1cxtPZKZmzPw1w8DCPhxH1pq31AVNEBLp
- pd9q5TwZt3dbDepI2GIt3w1fWkICKqS/F9dgj/4YWsO7hedDyOm9QHk/mgrVcQDEBVcDl4u6C4N
- 7IY8JelvB5cos4gZBrbe5Ewu3Pk+fvZzz/tQ==
-X-Gm-Gg: ASbGncuM0FrAO82NM6hGJN/dzb416MrRB5ADL3t1+wI3UMNFh7tdUaS7FyQ0ThRl1Rt
- hkCodLMXkTl7uzQB2JYZwAjdA3S2HtF4ct+pNyAYDJa8k+IcNeiAg3P9jsqLib5pDNjVQzciIoy
- qvB2BkW7EM5mtY+s/pCtUAdqDNZt1jxkMQhPD9IJmW+WhRoZ6fLh9l3Ln15VN+vQLiKvc86KeRz
- Z+K7RphcP2ajwhlHzA+UhsfxkMto3yUyNIMUdWbJpv1zMf9gQeavPFeY3T7onzCNwk29MbVs/61
- oWhuRsb8Fyg7FQNS2hJTVLi53vKB7RMY+zCPeY8=
-X-Received: by 2002:a05:600c:a103:b0:46e:731b:db0f with SMTP id
- 5b1f17b1804b1-46e731bdd23mr38825605e9.28.1759691842626; 
- Sun, 05 Oct 2025 12:17:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/V5c7E9+JjAlIc9G9YdonWDZA0/PtZBjw04TKhvrfr2K5/2RKowjcleGT+zF8K6V2Mg16RA==
-X-Received: by 2002:a05:600c:a103:b0:46e:731b:db0f with SMTP id
- 5b1f17b1804b1-46e731bdd23mr38825445e9.28.1759691841958; 
- Sun, 05 Oct 2025 12:17:21 -0700 (PDT)
+ bh=3aFxoIeUx803jBt31fbg+H6tlPcEQbGoaOIOlfDZlQk=;
+ b=bFvcGl4gKWQwytSAU576pKYgG0ZHFppiJHFg8B6KY139VP5UV//jy+8n6LqekUMZfI
+ N7rGniOvk5rYMPysuMSfLBiF3w2fB7yG4Duh/AAQ9FdGYqZx5CJj9sFMotsvqzprVAqu
+ xdLpIpJHitWjY9Ofj9XGKuib4YdJBIc4RS0NReidvg7R01G8eUBEGf9BovHGXfR2SmtU
+ Xb4dHdtPLOYffYjodE29csaPz2DUiLqnKrh+KbNRu7EOUzRnacjC8drii0wZumMrpr73
+ DMX+V5ipbXFsrRMU938SQAxr+2obOfOBBrwzRYvmTm6xZ75cpop4+fkhTgurdggQxN0r
+ u2Gg==
+X-Gm-Message-State: AOJu0Yx1RJ71PlXnHea/XDXD4h0N1+ssTNdAp50c0KctuI3WCO1JDaMw
+ aMwFlG1F515F54a0NCIdeOKfqnPjRummhwckK83mKV0c/yVzS4VakM7GYRes5mRZG9JCnRgQ9Gn
+ 6oxVU72VdW1j3xuiTUzxuA0P3wDTj4zZAsCgruPJdBh/b2VUTTRT9eE67NBtpBlbagVeqbAKGNB
+ /iClwPl13ThJdtx0pWZ5OdkhotsnwZYQJuWQ==
+X-Gm-Gg: ASbGncvupvXngvhqb6sX97XOIsZudKfLAgqDwE7iUiwGA6W+SLjJafyQGdfKoLVixi7
+ eIZbKieXROMl0d4tGa4JyS+HfQxhNKV9XLyvHrCQwzD3K/cDDD4pGZL4B5VITJgyYrBlktd+W/9
+ 3ePfl8gNEWY/8qUiUTp4SGMHHM+6NKVCDjT/Rl2qHrYX4MlGFS5HAut7997DzzsJ8bqrXG9OthW
+ hOBLJ9/fkcVZ+gaXGp3T6dTHsOKsuIyp2WJ6vyXNtam5H6gCUwcLsuIY1eAztBUE1uJWPcPRVtq
+ ira009Hky8cnKspwlzfeJ4xWpxoxfx6cwX13qNc=
+X-Received: by 2002:a05:600c:8b45:b0:46e:3dc2:ebac with SMTP id
+ 5b1f17b1804b1-46e71168aa1mr67453965e9.27.1759691844971; 
+ Sun, 05 Oct 2025 12:17:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtSfa6Jgje5/BQ9bLxLZ5mbImqTOeqLt2mPARjKRMASsh58YgMsenlfLpaeNGUrpDk1crB/g==
+X-Received: by 2002:a05:600c:8b45:b0:46e:3dc2:ebac with SMTP id
+ 5b1f17b1804b1-46e71168aa1mr67453745e9.27.1759691844328; 
+ Sun, 05 Oct 2025 12:17:24 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8a8542sm17438120f8f.9.2025.10.05.12.17.20
+ ffacd0b85a97d-4255d8a6b77sm17443982f8f.6.2025.10.05.12.17.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:21 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:20 -0400
+ Sun, 05 Oct 2025 12:17:23 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:22 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 35/75] hw/virtio: rename vhost-user-device and make user
- creatable
-Message-ID: <722e9022a0b6db175209bad75aa52b24033249e3.1759691708.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
+Subject: [PULL 36/75] smbios: cap DIMM size to 2Tb as workaround for broken
+ Windows
+Message-ID: <fa82ce2ddee8208c83a5a10bf3ab7348ad3d334a.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -112,214 +114,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Igor Mammedov <imammedo@redhat.com>
 
-We didn't make the device user creatable in the first place because we
-were worried users might get confused. Rename the device to make its
-nature as a test device even more explicit. While we are at it add a
-Kconfig variable so it can be skipped for those that want to thin out
-their build configuration even further.
+With current limit set to match max spec size (2PTb),
+Windows fails to parse type 17 records when DIMM size reaches 4Tb+.
+Failure happens in GetPhysicallyInstalledSystemMemory() function,
+and fails "Check SMBIOS System Memory Tables" SVVP test.
+Though not fatal, it might cause issues for userspace apps,
+something like [1].
 
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250820195632.1956795-1-alex.bennee@linaro.org>
+Lets cap default DIMM size to 2Tb for now, until MS fixes it.
+
+1) https://issues.redhat.com/browse/RHEL-81999?focusedId=27731200&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-27731200
+
+PS: It's obvious 32 int overflow math somewhere in Windows,
+    MS admitted that it's Windows bug and in a process of fixing it.
+    However it's unclear if W10 and earlier would get the fix.
+    So however I dislike changing defaults, we heed to work around
+    the issue (it looks like QEMU regression while not being it).
+    Hopefully 2Tb/DIMM split will last longer until VM memory size
+    will become large enough to cause to many type 17 records issue
+    again.
+PPS:
+    Alternatively, instead of messing with defaults, we can create
+    a dedicated knob to ask for desired DIMM size cap explicitly
+    on CLI. That will let users to enable workaround when they
+    hit this corner case. Downside is that knob has to be propagated
+    up all mgmt stack, which might be not desirable.
+PPPS:
+    Yet alternatively, users can configure initial RAM to be less
+    than 4Tb and all additional RAM add as DIMMs on QEMU CLI.
+    (however it's the job to be done by mgmt which could know
+    Windows version and total amount of RAM)
+
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Fixes: 62f182c97b ("smbios: make memory device size configurable per Machine")
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250901105948.982583-1-alex.bennee@linaro.org>
+Message-ID: <20250901084915.2607632-1-imammedo@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/vhost-user-base.h           |  2 +-
- ...ice-pci.c => vhost-user-test-device-pci.c} | 17 +++++++---------
- ...user-device.c => vhost-user-test-device.c} |  9 +++------
- docs/system/devices/vhost-user.rst            | 20 +++++++------------
- hw/virtio/Kconfig                             |  5 +++++
- hw/virtio/meson.build                         |  5 +++--
- 6 files changed, 26 insertions(+), 32 deletions(-)
- rename hw/virtio/{vhost-user-device-pci.c => vhost-user-test-device-pci.c} (77%)
- rename hw/virtio/{vhost-user-device.c => vhost-user-test-device.c} (87%)
+ hw/arm/virt.c     | 1 +
+ hw/core/machine.c | 5 ++++-
+ hw/i386/pc_piix.c | 1 +
+ hw/i386/pc_q35.c  | 1 +
+ 4 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/vhost-user-base.h b/include/hw/virtio/vhost-user-base.h
-index 51d0968b89..387e434b80 100644
---- a/include/hw/virtio/vhost-user-base.h
-+++ b/include/hw/virtio/vhost-user-base.h
-@@ -44,6 +44,6 @@ struct VHostUserBaseClass {
- };
- 
- 
--#define TYPE_VHOST_USER_DEVICE "vhost-user-device"
-+#define TYPE_VHOST_USER_TEST_DEVICE "vhost-user-test-device"
- 
- #endif /* QEMU_VHOST_USER_BASE_H */
-diff --git a/hw/virtio/vhost-user-device-pci.c b/hw/virtio/vhost-user-test-device-pci.c
-similarity index 77%
-rename from hw/virtio/vhost-user-device-pci.c
-rename to hw/virtio/vhost-user-test-device-pci.c
-index f10bac874e..b4ed0efb50 100644
---- a/hw/virtio/vhost-user-device-pci.c
-+++ b/hw/virtio/vhost-user-test-device-pci.c
-@@ -18,13 +18,13 @@ struct VHostUserDevicePCI {
-     VHostUserBase vub;
- };
- 
--#define TYPE_VHOST_USER_DEVICE_PCI "vhost-user-device-pci-base"
-+#define TYPE_VHOST_USER_TEST_DEVICE_PCI "vhost-user-test-device-pci-base"
- 
--OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_DEVICE_PCI)
-+OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_TEST_DEVICE_PCI)
- 
- static void vhost_user_device_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index aad557be1a..175023897a 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3537,6 +3537,7 @@ DEFINE_VIRT_MACHINE_AS_LATEST(10, 2)
+ static void virt_machine_10_1_options(MachineClass *mc)
  {
--    VHostUserDevicePCI *dev = VHOST_USER_DEVICE_PCI(vpci_dev);
-+    VHostUserDevicePCI *dev = VHOST_USER_TEST_DEVICE_PCI(vpci_dev);
-     DeviceState *vdev = DEVICE(&dev->vub);
- 
-     vpci_dev->nvectors = 1;
-@@ -38,9 +38,6 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass,
-     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
-     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
- 
--    /* Reason: stop users confusing themselves */
--    dc->user_creatable = false;
--
-     k->realize = vhost_user_device_pci_realize;
-     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
-     pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
-@@ -51,15 +48,15 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass,
- 
- static void vhost_user_device_pci_instance_init(Object *obj)
- {
--    VHostUserDevicePCI *dev = VHOST_USER_DEVICE_PCI(obj);
-+    VHostUserDevicePCI *dev = VHOST_USER_TEST_DEVICE_PCI(obj);
- 
-     virtio_instance_init_common(obj, &dev->vub, sizeof(dev->vub),
--                                TYPE_VHOST_USER_DEVICE);
-+                                TYPE_VHOST_USER_TEST_DEVICE);
+     virt_machine_10_2_options(mc);
++    mc->smbios_memory_device_size = 2047 * TiB;
+     compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
  }
+ DEFINE_VIRT_MACHINE(10, 1)
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 7b7a381b0a..681adbb7ac 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1118,8 +1118,11 @@ static void machine_class_init(ObjectClass *oc, const void *data)
+      * SMBIOS 3.1.0 7.18.5 Memory Device — Extended Size
+      * use max possible value that could be encoded into
+      * 'Extended Size' field (2047Tb).
++     *
++     * Unfortunately (current) Windows Server 2025 and earlier do not handle
++     * 4Tb+ DIMM size.
+      */
+-    mc->smbios_memory_device_size = 2047 * TiB;
++    mc->smbios_memory_device_size = 2 * TiB;
  
- static const VirtioPCIDeviceTypeInfo vhost_user_device_pci_info = {
--    .base_name = TYPE_VHOST_USER_DEVICE_PCI,
--    .non_transitional_name = "vhost-user-device-pci",
-+    .base_name = TYPE_VHOST_USER_TEST_DEVICE_PCI,
-+    .non_transitional_name = "vhost-user-test-device-pci",
-     .instance_size = sizeof(VHostUserDevicePCI),
-     .instance_init = vhost_user_device_pci_instance_init,
-     .class_init = vhost_user_device_pci_class_init,
-diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-test-device.c
-similarity index 87%
-rename from hw/virtio/vhost-user-device.c
-rename to hw/virtio/vhost-user-test-device.c
-index 3939bdf755..1b98ea3e48 100644
---- a/hw/virtio/vhost-user-device.c
-+++ b/hw/virtio/vhost-user-test-device.c
-@@ -1,5 +1,5 @@
- /*
-- * Generic vhost-user-device implementation for any vhost-user-backend
-+ * Generic vhost-user-test-device implementation for any vhost-user-backend
-  *
-  * This is a concrete implementation of vhost-user-base which can be
-  * configured via properties. It is useful for development and
-@@ -25,7 +25,7 @@
-  */
- 
- static const VMStateDescription vud_vmstate = {
--    .name = "vhost-user-device",
-+    .name = "vhost-user-test-device",
-     .unmigratable = 1,
- };
- 
-@@ -41,16 +41,13 @@ static void vud_class_init(ObjectClass *klass, const void *data)
+     /* numa node memory size aligned on 8MB by default.
+      * On Linux, each node's border has to be 8MB aligned
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index caf8bab68e..7b3611e973 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -448,6 +448,7 @@ DEFINE_I440FX_MACHINE_AS_LATEST(10, 2);
+ static void pc_i440fx_machine_10_1_options(MachineClass *m)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
--    /* Reason: stop inexperienced users confusing themselves */
--    dc->user_creatable = false;
--
-     device_class_set_props(dc, vud_properties);
-     dc->vmsd = &vud_vmstate;
-     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+     pc_i440fx_machine_10_2_options(m);
++    m->smbios_memory_device_size = 2047 * TiB;
+     compat_props_add(m->compat_props, hw_compat_10_1, hw_compat_10_1_len);
+     compat_props_add(m->compat_props, pc_compat_10_1, pc_compat_10_1_len);
  }
- 
- static const TypeInfo vud_info = {
--    .name = TYPE_VHOST_USER_DEVICE,
-+    .name = TYPE_VHOST_USER_TEST_DEVICE,
-     .parent = TYPE_VHOST_USER_BASE,
-     .class_init = vud_class_init,
- };
-diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
-index 35259d8ec7..bddf8df5ed 100644
---- a/docs/system/devices/vhost-user.rst
-+++ b/docs/system/devices/vhost-user.rst
-@@ -62,26 +62,20 @@ platform details for what sort of virtio bus to use.
- The referenced *daemons* are not exhaustive, any conforming backend
- implementing the device and using the vhost-user protocol should work.
- 
--vhost-user-device
--^^^^^^^^^^^^^^^^^
-+vhost-user-test-device
-+^^^^^^^^^^^^^^^^^^^^^^
- 
--The vhost-user-device is a generic development device intended for
--expert use while developing new backends. The user needs to specify
--all the required parameters including:
-+The vhost-user-test-device is a generic development device intended
-+for expert use while developing new backends. The user needs to
-+specify all the required parameters including:
- 
-   - Device ``virtio-id``
-   - The ``num_vqs`` it needs and their ``vq_size``
-   - The ``config_size`` if needed
- 
- .. note::
--  To prevent user confusion you cannot currently instantiate
--  vhost-user-device without first patching out::
--
--    /* Reason: stop inexperienced users confusing themselves */
--    dc->user_creatable = false;
--
--  in ``vhost-user-device.c`` and ``vhost-user-device-pci.c`` file and
--  rebuilding.
-+  While this is a useful device for development it is not recommended
-+  for production use.
- 
- vhost-user daemon
- =================
-diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
-index 7648a2d68d..10f5c53ac0 100644
---- a/hw/virtio/Kconfig
-+++ b/hw/virtio/Kconfig
-@@ -126,3 +126,8 @@ config VHOST_USER_SCMI
-     bool
-     default y
-     depends on VIRTIO && VHOST_USER && ARM
-+
-+config VHOST_USER_TEST
-+    bool
-+    default y
-+    depends on VIRTIO && VHOST_USER
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 3ea7b3cec8..48b9fedfa5 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -22,7 +22,7 @@ if have_vhost
-     system_virtio_ss.add(files('vhost-user-base.c'))
- 
-     # MMIO Stubs
--    system_virtio_ss.add(files('vhost-user-device.c'))
-+    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_TEST', if_true: files('vhost-user-test-device.c'))
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
-@@ -30,7 +30,8 @@ if have_vhost
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input.c'))
- 
-     # PCI Stubs
--    system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
-+    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_TEST'],
-+                         if_true: files('vhost-user-test-device-pci.c'))
-     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'],
-                          if_true: files('vhost-user-gpio-pci.c'))
-     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_I2C'],
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index e89951285e..6015e639d7 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -384,6 +384,7 @@ DEFINE_Q35_MACHINE_AS_LATEST(10, 2);
+ static void pc_q35_machine_10_1_options(MachineClass *m)
+ {
+     pc_q35_machine_10_2_options(m);
++    m->smbios_memory_device_size = 2047 * TiB;
+     compat_props_add(m->compat_props, hw_compat_10_1, hw_compat_10_1_len);
+     compat_props_add(m->compat_props, pc_compat_10_1, pc_compat_10_1_len);
+ }
 -- 
 MST
 
