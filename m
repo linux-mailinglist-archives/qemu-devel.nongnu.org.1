@@ -2,84 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8A8BB99DC
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECB0BB9A58
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5S1O-00022D-5k; Sun, 05 Oct 2025 12:55:42 -0400
+	id 1v5Sfn-00009b-VI; Sun, 05 Oct 2025 13:37:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1v5S1G-0001wS-EN
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 12:55:34 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1v5S1B-0007rL-0D
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 12:55:31 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46e5980471eso19521485e9.2
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 09:55:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=livius-net.20230601.gappssmtp.com; s=20230601; t=1759683326; x=1760288126;
- darn=nongnu.org; 
- h=to:date:message-id:subject:mime-version:content-transfer-encoding
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=cb25B5eY+zXxsw9NK/ZgdrE5wA39gJzOi2flC+t/2Xg=;
- b=cdZV2yPA0l3PPYGDVwmXUjLDzY+b6ai25WPwBVZV3hazh2lQ5ePTrVOX72ofE1jhM2
- qUANFODBvMzNFLmIWP2nnJf1LgmXrry2HyQP+ixFc4Shcs61FmMWKr2C+TcZ4DYH78KX
- mmpQmCnqZRaUuaVybsetDL3r/aGHmyeoxPcVRTRaqhMtt3sw9WlzKC+aMDSwsNwk05r9
- 6mQX4duEwdUsNLixG+FO5NILNtBaaCwp2qNQSNjmgeT8HXZ9yJYgj6UcfmBaQcxtRbtB
- fQC1t+rHA8jQnSfCjoukM2G5W67sVPt+hnZITVCfGn3VriOkDDTOoWhKTnbDuXoHOVMV
- OyaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759683326; x=1760288126;
- h=to:date:message-id:subject:mime-version:content-transfer-encoding
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cb25B5eY+zXxsw9NK/ZgdrE5wA39gJzOi2flC+t/2Xg=;
- b=LdJzHyxRjcyOcwKrFACmwq0QCkyAC2YFGEOaakPnF5NwBysr58mysv2HEwM6jBVbSE
- pLEDk/lHBiEtJAXgSNun4Q/A3qBejiwO9+V4mvvHYRDBT42mahQwmVKhzfmB6o5DMVw0
- kgiLgPeD1nKvnAIzvYCLnGnKamOvBfGN2IonO/1GBhyAIYgpjWiGQqxG9Y0lnCEOg5EV
- UpL81ec9qIn1tOCtVyk1sSapaTnbCRnB0SSxOWLdP4Bf0esF+Xgy1/aA97IA9Cg0lqh1
- KCnPBJY6dR41thf8YaIUuOD+juF0zYeFHmw67WYsyVEmhmdf2m+zW8SamMBLNzDLoOcQ
- eU+Q==
-X-Gm-Message-State: AOJu0Yzgvw7mRDRebVyjRrU2Oy93EDg/38qoTbQ5QWdxc3B894pXBYr5
- WBJ9PVFZDlfwBwRMrIO8B4Z+AnTRXyIahdCocRnPw+uDCS7VFa22JgCys59Xz9iYywjzHtGaUBa
- 6k+D6P2w=
-X-Gm-Gg: ASbGncvQnJoQ8cUCf1WqiS3s5gMklUIc0W+voFlcdEngFp0WXrE0ULEwp6807HsJMNN
- 1AE2vUsI/WnOAS0/oLyx5H5k1wyyNWX0lfD0VhQArFB7bYXYAE44RfXps4VqAwhGj2AhKxm3eD8
- LUCPpDAMx1WSc3+P3nRZjeQxiQ3kUan35Cfjb0J3zurWl51IRIuELMYGaNlUUsxyRTwu46i1e6Q
- b4kMkahdV7JaRHWIaslhqav20dJKNCg/yaycts/8hIiuW3ARDxLfldA8q0CKCe1gJFnCwKdIJIk
- YVRo6644YUiN8ads1KPhTmK1Rjmvs7vaXz6hyyBar6IhFpX990/hC81V9ExySEJtgtzXA3LU9ne
- u/C+grDXZDsVAvKQTovFpRqFiNgjeXi4Xe3Ns3mqM1zoSZHt4yWuafcHq9Gw3sVS1fjT1WynyKU
- ivdg==
-X-Google-Smtp-Source: AGHT+IGjXNOskYVnsyvBNP/ISSUaMV6Ohjzuh4HWOtJsQNFhSl9bhR3p5iqrt4OjB431+UDygDLAEw==
-X-Received: by 2002:a05:600c:19d0:b0:46e:3709:d88a with SMTP id
- 5b1f17b1804b1-46e7115b0bcmr62630795e9.33.1759683325454; 
- Sun, 05 Oct 2025 09:55:25 -0700 (PDT)
-Received: from smtpclient.apple ([188.25.252.134])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8abe90sm16963967f8f.23.2025.10.05.09.55.24
- for <qemu-devel@nongnu.org>
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 05 Oct 2025 09:55:25 -0700 (PDT)
-From: Liviu Ionescu <ilg@livius.net>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: qemu-system-aarch64 hangs in a cortex-a72 test
-Message-Id: <9EF1806D-4C25-4980-B1CA-16616FA8E32F@livius.net>
-Date: Sun, 5 Oct 2025 19:55:14 +0300
-To: QEMU Developers <qemu-devel@nongnu.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-Received-SPF: none client-ip=2a00:1450:4864:20::32f;
- envelope-from=ilg@livius.net; helo=mail-wm1-x32f.google.com
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v5Sfh-00008l-7p; Sun, 05 Oct 2025 13:37:21 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v5Sfd-0004aU-VG; Sun, 05 Oct 2025 13:37:20 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 041F415AA80;
+ Sun, 05 Oct 2025 20:37:07 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3869A29972D;
+ Sun,  5 Oct 2025 20:37:11 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 v2 00/58] Patch Round-up for stable 10.0.5,
+ freeze on 2025-10-06 (frozen)
+Date: Sun,  5 Oct 2025 20:36:47 +0300
+Message-ID: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,47 +57,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi!
+The following patches are queued for QEMU stable v10.0.5:
 
-I have a small semihosted test that I use to test the xPack QEMU =
-releases.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
-The test worked just fine up to 8.2.9, but hangs with 9.0.0 or later, =
-including 10.0.0.
+Patch freeze is 2025-10-06 (frozen), and the release is planned for 2025-10-08:
 
-The test is invoked with:
+  https://wiki.qemu.org/Planning/10.0
 
-```
-$ qemu-system-aarch64 --machine virt --cpu cortex-a72 --kernel =
-hello-world-cortex-a72.elf --nographic -smp 1 -d unimp,guest_errors =
---semihosting-config enable=3Don,target=3Dnative,arg=3Dhello-world,arg=3DA=
-7
-^C
-$
-```
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-The test binary is available from:
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-- =
-https://github.com/xpack-dev-tools/qemu-arm-xpack/tree/xpack/build-assets/=
-test-assets
+Thanks!
 
+/mjt
 
-I tested on macOS with 9.0.0, 9.0.4, 9.2.4 compiled from sources, and =
-with 10.0.0 from the official Manjaro distribution. The 9.2.4 tests were =
-also performed on Linux, with the same result.
+--------------------------------------
+01* 256df51e7272 WANG Rui:
+   target/loongarch: Add CRC feature flag and use it to gate CRC instructions
+02* 96e7448c1f82 WANG Rui:
+   target/loongarch: Guard 64-bit-only insn translation with TRANS64 macro
+03* 38dd513263d8 Thomas Huth:
+   ui/vnc: Fix crash when specifying [vnc] without id in the config file
+04* 1e343714bfc0 John Snow:
+   python: backport 'kick event queue on legacy event_pull()'
+05* f9d2e0a3bd7b John Snow:
+   python: backport 'drop Python3.6 workarounds'
+06* 0408b8d7a086 John Snow:
+   python: backport 'Use @asynciocontextmanager'
+07* fcaeeb7653d2 John Snow:
+   python: backport 'qmp-shell-wrap: handle missing binary gracefully'
+08* fd0ed46d4eff John Snow:
+   python: backport 'qmp-tui: Do not crash if optional dependencies are not met'
+09* 5d99044d09db John Snow:
+   python: backport 'Remove deprecated get_event_loop calls'
+10* 85f223e5b031 John Snow:
+   python: backport 'avoid creating additional event loops per thread'
+11* 82c7cb93c750 Daniel P. Berrangé:
+   iotests: drop compat for old version context manager
+12* 6ccb48ffc19f Daniel P. Berrangé:
+   python: ensure QEMUQtestProtocol closes its socket
+13* d4d0ebfcc926 Daniel P. Berrangé:
+   iotests/147: ensure temporary sockets are closed before exiting
+14* 2b2fb25c2aaf Daniel P. Berrangé:
+   iotests/151: ensure subprocesses are cleaned up
+15* 9a494d835386 Daniel P. Berrangé:
+   iotests/check: always enable all python warnings
+16* a11d1847d5ef Alex Bennée:
+   .gitmodules: move u-boot mirrors to qemu-project-mirrors
+17* 8b182b6600 Michael Tokarev:
+   tests/docker/dockerfiles/python.docker: pull fedora:40 image instead of 
+   fedora:latest
+18* eb8f7292e131 Paolo Bonzini:
+   ci: run RISC-V cross jobs by default
+19* 6b3fad084fc4 Paolo Bonzini:
+   rust: hpet: fix new warning
+20* aaf042299acf Stéphane Graber:
+   hw/usb/network: Remove hardcoded 0x40 prefix in STRING_ETHADDR response
+21* 0516f4b70264 Xiaoyao Li:
+   i386/cpu: Enable SMM cpu address space under KVM
+22* 591f817d819f Xiaoyao Li:
+   target/i386: Define enum X86ASIdx for x86's address spaces
+23* 4c8f69b94839 Xiaoyao Li:
+   multiboot: Fix the split lock
+24* db05b0d21ec1 Paolo Bonzini:
+   linux-user: avoid -Werror=int-in-bool-context
+25* b7cd0a1821ad Richard Henderson:
+   target/sparc: Allow TRANS macro with no extra arguments
+26* b6cdd6c60505 Richard Henderson:
+   target/sparc: Loosen decode of STBAR for v8
+27* 49d669ccf33a Richard Henderson:
+   target/sparc: Loosen decode of RDY for v7
+28* a0345f628394 Richard Henderson:
+   target/sparc: Loosen decode of RDPSR for v7
+29* dc9678cc9725 Richard Henderson:
+   target/sparc: Loosen decode of RDWIM for v7
+30* 6ff52f9dee06 Richard Henderson:
+   target/sparc: Loosen decode of RDTBR for v7
+31* df663ac0a4e5 Richard Henderson:
+   target/sparc: Relax decode of rs2_or_imm for v7
+32* e4a1b308b27c Peter Maydell:
+   hw/pci-host/dino: Don't call pci_register_root_bus() in init
+33* 76d2b8d42adb Peter Maydell:
+   hw/pci-host/astro: Don't call pci_regsiter_root_bus() in init
+34* a50347a4145f WANG Rui:
+   tcg/optimize: Fix folding of vector bitsel
+35* fd34f56fe886 Peter Maydell:
+   .gitlab-ci.d/buildtest.yml: Unset CI_COMMIT_DESCRIPTION for htags
+36* 4f1ebc7712a7 Thomas Huth:
+   tests: Fix "make check-functional" for targets without thorough tests
+37* 03fe6659803f Richard Henderson:
+   accel/tcg: Properly unlink a TB linked to itself
+38* e13e1195db8a Richard Henderson:
+   tests/tcg/multiarch: Add tb-link test
+39 d0af3cd0274e Peter Maydell:
+   hw/usb/hcd-uhci: don't assert for SETUP to non-0 endpoint
+40 f5738aedc217 Fabian Vogt:
+   hw/intc/xics: Add missing call to register vmstate_icp_server
+41 6285eebd3a5f Harsh Prateek Bora:
+   ppc/spapr: init lrdr-capapcity phys with ram size if maxmem not provided
+42 e7ecb533ee0d Mohamed Akram:
+   ui/spice: Fix abort on macOS
+43 9163424c5098 Thomas Huth:
+   ui/icons/qemu.svg: Add metadata information (author, license) to the logo
+44 4f7528295b3e Andrew Jones:
+   hw/riscv/riscv-iommu: Fix MSI table size limit
+45 da14767b356c Andrea Bolognani:
+   docs/interop/firmware: Add riscv64 to FirmwareArchitecture
+46 191df3461752 Frank Chang:
+   hw/char: sifive_uart: Raise IRQ according to the Tx/Rx watermark thresholds
+47 cebaf7434b4a stove:
+   target/riscv: use riscv_csrr in riscv_csr_read
+48 a86d3352ab70 Vladimir Isaev:
+   target/riscv: do not use translator_ldl in opcode_at
+49 15abfced8039 Guo Ren (Alibaba DAMO Academy):
+   hw/riscv/riscv-iommu: Fixup PDT Nested Walk
+50 b25133d38fe6 vhaudiquet:
+   target/riscv: Fix endianness swap on compressed instructions
+51 ae4a37f57818 Max Chou:
+   target/riscv: rvv: Replace checking V by checking Zve32x
+52 be50ff3a7385 Max Chou:
+   target/riscv: rvv: Modify minimum VLEN according to enabled vector 
+   extensions
+53 725a9e5f7885 Juraj Marcin:
+   migration: Fix state transition in postcopy_start() error handling
+54 9e7bfda4909c Peter Maydell:
+   include/system/memory.h: Clarify address_space_destroy() behaviour
+55 041600e23f2f Peter Xu:
+   memory: New AS helper to serialize destroy+free
+56 300a87c502c4 Peter Maydell:
+   physmem: Destroy all CPU AddressSpaces on unrealize
+57 3b1cf40dd665 Thomas Huth:
+   tests/functional/test_ppc_bamboo: Replace broken link with working assets
+58 01e2b1bc27ba Thomas Huth:
+   tests/functional/test_aarch64_sbsaref_freebsd: Fix the URL of the ISO image
 
-The binary was compiled from sources; I don't have the sources at hand =
-but I can reconstruct them. I do not have a physical board to validate =
-that the test code is functional, I always ran it on QEMU. The test =
-might very well have a problem that was not detected by pre-9.x QEMU, =
-but I'm not familiar enough with A72 to diagnose it.=20
-
-Any ideas what changed from 8.x to 9.0 to cause this?
-
-Thank you,
-
-Liviu
-
-
+(commit(s) marked with * were in previous series and are not resent)
 
