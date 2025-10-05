@@ -2,87 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A5BBB9908
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 17:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AEABB9994
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5Qtf-0006zs-6f; Sun, 05 Oct 2025 11:43:39 -0400
+	id 1v5RuW-0008VC-IQ; Sun, 05 Oct 2025 12:48:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1v5Qtc-0006zj-6W
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 11:43:36 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1v5QtZ-00088h-R4
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 11:43:35 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-26983b5411aso26340065ad.1
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 08:43:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759679012; x=1760283812; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:sender
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Pbx5TxDrhospeg3mAe1q2oaZh1OL3jT6kMymIr0TxRw=;
- b=mqKWrI/O02Rbf/15UhrTc0sgKhThXCOaW9/ZI6hfkT+a2sNlLgzqx1SCDK+lsg2Qgt
- 1M62y52l80qH5tBq+JE/Uh595mDasTXycNlJkPBJlIXFM5YBj2Wc4Aa563niPkz1n7ch
- OtTew4Xwcq5K+vVoURShPJZtcTXaPYwhMztyMBEnLHyiCYVxuX/crCYtT6IK8FNw1Yud
- HJlC/FcfFCrmFkRshLouaBFm9XbNO0HZo13JFYcQVTkp59mYrLm4bsMT8nXfVQBTA1S6
- oAlPbXETlvOzwUvK5gX5jZNzIGJp2YxOP46LmVLG4YRLyBAaP5ziCC0RB8I7cMPbaQYr
- LlSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759679012; x=1760283812;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:sender
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pbx5TxDrhospeg3mAe1q2oaZh1OL3jT6kMymIr0TxRw=;
- b=DI0TY5DpM4kHhmq4p3inmdMqFN0PfZoRjSzIvW07FoleFnYLnlAYBxyIoyac4XmX2q
- Sy4wiElGcW4m8rChKUg1xVwFa4gMN27dV2fAyh8jm1/LuUoK5Qj39tNj0CBXVNdqPXJ1
- aeoLJSSWcwXmt8JNsPy9ICFHZXSDLEfFHjsaGXSUTmSSNVCx+w4S/JnF1L90dssEk+/x
- DrONecJXoMUDTiGbozwFEtgXaBjvk3HC2eOeWnXfSxSfT+ZY36KPeVKtQPD0f6x7/xlL
- NsPLuh7YuzYZywmT1RmGsSr5IraIP/y5JOfxdYbpbJDBPoUxxBz1FppHA1p0UOqEVGhu
- c35A==
-X-Gm-Message-State: AOJu0Yx0/A7dgvrvp9Lxn3mKNywbQPNes/fOCJR2uoNf8r8OUxWbjQ+F
- SjYqx6xTO+dRkeRDFiZkNDN18RpJAjiVvF4VTCFu5TTcoI31S3oyWMs0
-X-Gm-Gg: ASbGncuvTc4sgVEukbGpYZKonQJE9riR/yvIt1Yumq4SJ45wovLgYvbCoC8C0xrougj
- x/wCkdIjpwXGHtbOeWP756TwnDI352s2COo5avc7EYAqCH+mbdoOQeZBVMgIrn/yeluKyrpC251
- i8iHGSckeaxrrsZU2+pFYV86iSy1MkhTBv66SgOrY13cZ8RreQfxAgqWOIwMIAWL6czShekWnvC
- qmfGIRgVo8xDDvdsDKOqlLVltYVWDRfIvGOw3AxElV+hkhhES0Ukr58JZQdEPrZksDfklqWTHfY
- Gdd0OdZ1N1pa96GUHUri2+op+z2SvPg8NHVvUzRLDWX4QY+1vWpVIcwGv7ccnpbvHP8be11agni
- kyg0Q/E6iHziv0ifNa+af/Mcs++r3MBo8YVbHRWU+wEAMyVzrOuf44bGKa7g=
-X-Google-Smtp-Source: AGHT+IHaLKMtLOLbQvScGeB8e0npEJtp2patMOnVa7dTUH76DAu3LThFv0GwIh6Unp1VfJKM0QaMUA==
-X-Received: by 2002:a17:903:28f:b0:27e:ea82:5ce8 with SMTP id
- d9443c01a7336-28e9a57468bmr114263715ad.14.1759679012077; 
- Sun, 05 Oct 2025 08:43:32 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-28ea1d99ab1sm67912675ad.9.2025.10.05.08.43.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 08:43:31 -0700 (PDT)
-Date: Sun, 5 Oct 2025 08:43:29 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, ysato@users.sourceforge.jp
-Subject: Re: [PATCH] target/sh4: Use MO_ALIGN for system UNALIGN()
-Message-ID: <6c23f546-c135-4345-93a4-25d75a038902@roeck-us.net>
-References: <20250503212708.3235806-1-richard.henderson@linaro.org>
- <46ea9b87-cc73-4408-82c4-2de96dddca0a@roeck-us.net>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v5RuR-0008UH-Lf; Sun, 05 Oct 2025 12:48:31 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v5RuO-00070g-VV; Sun, 05 Oct 2025 12:48:31 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D299415AA27;
+ Sun, 05 Oct 2025 19:48:17 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 347092996E5;
+ Sun,  5 Oct 2025 19:48:18 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 v2 00/81] Patch Round-up for stable 10.1.1,
+ freeze on 2025-10-06 
+Date: Sun,  5 Oct 2025 19:47:40 +0300
+Message-ID: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <46ea9b87-cc73-4408-82c4-2de96dddca0a@roeck-us.net>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=groeck7@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,34 +57,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 04, 2025 at 05:14:45PM -0700, Guenter Roeck wrote:
-> Hi,
-> 
-> On Sat, May 03, 2025 at 02:27:08PM -0700, Richard Henderson wrote:
-> > This should have been done before removing TARGET_ALIGNED_ONLY,
-> > as we did for hppa and alpha.
-> > 
-> > Fixes: 8244189419f9 ("target/sh4: Remove TARGET_ALIGNED_ONLY")
-> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> > Reviewed-by: Philippe Mathieu-Daud� <philmd@linaro.org>
-> 
-> When trying to run sh4 emulations with qemu 10.1.0, I get quite interesting
-> error messages. Bisect points to this patch, and reverting it fixes the
-> problem.
+The following patches are queued for QEMU stable v10.1.1:
 
-Actually, it is worse: Commit a4027ed7d4 ("target: Use cpu_pointer_wrap_notreached
-for strict align targets")  claims that "Alpha, HPPA, and SH4 always use aligned
-addresses" which just is not true. At least sh4 generates an unaligned trap and
-handles the problem in the trap handler. Result is
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.1
 
-ERROR:../accel/tcg/cputlb.c:2944:cpu_pointer_wrap_notreached: code should not be reached
-Bail out! ERROR:../accel/tcg/cputlb.c:2944:cpu_pointer_wrap_notreached: code should not be reached
+Patch freeze is 2025-10-06 (frozen), and the release is planned for 2025-10-08:
 
-after reverting this patch. Also, hppa64 has the same problem, meaning
-the hppa64 (parisc64) emulation no longer works with qemu 10.1.
+  https://wiki.qemu.org/Planning/10.1
 
-I thought I can revert a couple of patches, but the problem is too deep
-for me to track down. I'll have to give up on using 10.1 for the time being.
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Guenter
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01* ab85146ac4c6 Paolo Bonzini:
+   python: mkvenv: fix messages printed by mkvenv
+02* c12cbaa007c9 Zero Tang:
+   i386/tcg/svm: fix incorrect canonicalization
+03* f91563d011a0 Joel Stanley:
+   linux-user: Add strace for rseq
+04* 36fb9796662e Gustavo Romero:
+   tests/functional: Fix reverse_debugging asset precaching
+05* 376cdd7e9c94 Steve Sistare:
+   hw/intc/arm_gicv3_kvm: preserve pending interrupts during cpr
+06* 186db6a73bc5 Smail AIDER:
+   target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+07* 5ffd387e9e0f Peter Maydell:
+   scripts/kernel-doc: Avoid new Perl precedence warning
+08* 1748c0d59228 Richard Henderson:
+   qemu/atomic: Finish renaming atomic128-cas.h headers
+09* 2e27650bddd3 Peter Maydell:
+   hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ objects
+10* 85ff0e956bf2 Kostiantyn Kostiuk:
+   qga/installer: Remove QGA VSS if QGA installation failed
+11* edf3780a7dad Kostiantyn Kostiuk:
+   qga-vss: Write hex value of error in log
+12* 28c5d27dd4dc minglei.liu:
+   qga: Fix truncated output handling in guest-exec status reporting
+13* b2e4534a2c9c Markus Armbruster:
+   i386/kvm/vmsr_energy: Plug memory leak on failure to connect socket
+14* ec14a3de622a Markus Armbruster:
+   vfio scsi ui: Error-check qio_channel_socket_connect_sync() the same way
+15* c9a1ea9c52e6 Markus Armbruster:
+   Revert "tests/qtest: use qos_printf instead of g_test_message"
+16* 8e4649cac9bc Laurent Vivier:
+   e1000e: Prevent crash from legacy interrupt firing after MSI-X enable
+17* 14ab44b96d5b Philippe Mathieu-Daudé:
+   elf: Add EF_MIPS_ARCH_ASE definitions
+18* 7a09b3cc70ab Philippe Mathieu-Daudé:
+   linux-user/mips: Select 74Kf CPU to run MIPS16e binaries
+19* 51c3aebfda64 Philippe Mathieu-Daudé:
+   linux-user/mips: Select M14Kc CPU to run microMIPS binaries
+20* 1f82ca723478 Denis Rastyogin:
+   target/mips: fix TLB huge page check to use 64-bit shift
+21* 46d03bb23dde Aditya Gupta:
+   hw/ppc: Fix build error with CONFIG_POWERNV disabled
+22* 3284d1c07cfd Peter Maydell:
+   hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
+23* ac6b124180f7 Peter Maydell:
+   hw/char/max78000_uart: Destroy FIFO on deinit
+24* 606978500c3d Michael Tokarev:
+   block/curl: fix curl internal handles handling
+25* 96e7448c1f82 WANG Rui:
+   target/loongarch: Guard 64-bit-only insn translation with TRANS64 macro
+26* 86bca4040231 Thomas Huth:
+   hw/intc/loongarch_pch_pic: Fix ubsan warning and endianness issue
+27* 1b5062188124 John Levon:
+   hw/vfio-user: add x-pci-class-code
+28* 38dd513263d8 Thomas Huth:
+   ui/vnc: Fix crash when specifying [vnc] without id in the config file
+29* 1e343714bfc0 John Snow:
+   python: backport 'kick event queue on legacy event_pull()'
+30* f9d2e0a3bd7b John Snow:
+   python: backport 'drop Python3.6 workarounds'
+31* 0408b8d7a086 John Snow:
+   python: backport 'Use @asynciocontextmanager'
+32* fcaeeb7653d2 John Snow:
+   python: backport 'qmp-shell-wrap: handle missing binary gracefully'
+33* fd0ed46d4eff John Snow:
+   python: backport 'qmp-tui: Do not crash if optional dependencies are not 
+   met'
+34* 5d99044d09db John Snow:
+   python: backport 'Remove deprecated get_event_loop calls'
+35* 85f223e5b031 John Snow:
+   python: backport 'avoid creating additional event loops per thread'
+36* 82c7cb93c750 Daniel P. Berrangé:
+   iotests: drop compat for old version context manager
+37* 6ccb48ffc19f Daniel P. Berrangé:
+   python: ensure QEMUQtestProtocol closes its socket
+38* d4d0ebfcc926 Daniel P. Berrangé:
+   iotests/147: ensure temporary sockets are closed before exiting
+39* 2b2fb25c2aaf Daniel P. Berrangé:
+   iotests/151: ensure subprocesses are cleaned up
+40* 9a494d835386 Daniel P. Berrangé:
+   iotests/check: always enable all python warnings
+41* a11d1847d5ef Alex Bennée:
+   .gitmodules: move u-boot mirrors to qemu-project-mirrors
+42* aaf042299acf Stéphane Graber:
+   hw/usb/network: Remove hardcoded 0x40 prefix in STRING_ETHADDR response
+43* 0516f4b70264 Xiaoyao Li:
+   i386/cpu: Enable SMM cpu address space under KVM
+44* 591f817d819f Xiaoyao Li:
+   target/i386: Define enum X86ASIdx for x86's address spaces
+45* 4c8f69b94839 Xiaoyao Li:
+   multiboot: Fix the split lock
+46* db05b0d21ec1 Paolo Bonzini:
+   linux-user: avoid -Werror=int-in-bool-context
+47* b7cd0a1821ad Richard Henderson:
+   target/sparc: Allow TRANS macro with no extra arguments
+48* b6cdd6c60505 Richard Henderson:
+   target/sparc: Loosen decode of STBAR for v8
+49* 49d669ccf33a Richard Henderson:
+   target/sparc: Loosen decode of RDY for v7
+50* a0345f628394 Richard Henderson:
+   target/sparc: Loosen decode of RDPSR for v7
+51* dc9678cc9725 Richard Henderson:
+   target/sparc: Loosen decode of RDWIM for v7
+52* 6ff52f9dee06 Richard Henderson:
+   target/sparc: Loosen decode of RDTBR for v7
+53* df663ac0a4e5 Richard Henderson:
+   target/sparc: Relax decode of rs2_or_imm for v7
+54* e4a1b308b27c Peter Maydell:
+   hw/pci-host/dino: Don't call pci_register_root_bus() in init
+55* 76d2b8d42adb Peter Maydell:
+   hw/pci-host/astro: Don't call pci_regsiter_root_bus() in init
+56* a50347a4145f WANG Rui:
+   tcg/optimize: Fix folding of vector bitsel
+57* fd34f56fe886 Peter Maydell:
+   .gitlab-ci.d/buildtest.yml: Unset CI_COMMIT_DESCRIPTION for htags
+58* 4f1ebc7712a7 Thomas Huth:
+   tests: Fix "make check-functional" for targets without thorough tests
+59* 03fe6659803f Richard Henderson:
+   accel/tcg: Properly unlink a TB linked to itself
+60* e13e1195db8a Richard Henderson:
+   tests/tcg/multiarch: Add tb-link test
+61 d0af3cd0274e Peter Maydell:
+   hw/usb/hcd-uhci: don't assert for SETUP to non-0 endpoint
+62 4ccca2cc05a2 Laurent Vivier:
+   net/passt: Fix build failure due to missing GIO dependency
+63 f5738aedc217 Fabian Vogt:
+   hw/intc/xics: Add missing call to register vmstate_icp_server
+64 6285eebd3a5f Harsh Prateek Bora:
+   ppc/spapr: init lrdr-capapcity phys with ram size if maxmem not provided
+65 e7ecb533ee0d Mohamed Akram:
+   ui/spice: Fix abort on macOS
+66 62fd247a2429 Marc-André Lureau:
+   ui/spice: fix crash when disabling GL scanout on
+67 9163424c5098 Thomas Huth:
+   ui/icons/qemu.svg: Add metadata information (author, license) to the logo
+68 4f7528295b3e Andrew Jones:
+   hw/riscv/riscv-iommu: Fix MSI table size limit
+69 da14767b356c Andrea Bolognani:
+   docs/interop/firmware: Add riscv64 to FirmwareArchitecture
+70 191df3461752 Frank Chang:
+   hw/char: sifive_uart: Raise IRQ according to the Tx/Rx watermark thresholds
+71 cebaf7434b4a stove:
+   target/riscv: use riscv_csrr in riscv_csr_read
+72 a86d3352ab70 Vladimir Isaev:
+   target/riscv: do not use translator_ldl in opcode_at
+73 15abfced8039 Guo Ren (Alibaba DAMO Academy):
+   hw/riscv/riscv-iommu: Fixup PDT Nested Walk
+74 b25133d38fe6 vhaudiquet:
+   target/riscv: Fix endianness swap on compressed instructions
+75 ae4a37f57818 Max Chou:
+   target/riscv: rvv: Replace checking V by checking Zve32x
+76 be50ff3a7385 Max Chou:
+   target/riscv: rvv: Modify minimum VLEN according to enabled vector 
+   extensions
+77 725a9e5f7885 Juraj Marcin:
+   migration: Fix state transition in postcopy_start() error handling
+78 9e7bfda4909c Peter Maydell:
+   include/system/memory.h: Clarify address_space_destroy() behaviour
+79 041600e23f2f Peter Xu:
+   memory: New AS helper to serialize destroy+free
+80 300a87c502c4 Peter Maydell:
+   physmem: Destroy all CPU AddressSpaces on unrealize
+81 769acb2a1e47 Thomas Huth:
+   tests/functional/aarch64: Fix assets of test_hotplug_pci
+
+(commit(s) marked with * were in previous series and are not resent)
 
