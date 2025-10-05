@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C3FBB9C04
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DEABB9C19
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:23:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UGT-00064X-Vp; Sun, 05 Oct 2025 15:19:26 -0400
+	id 1v5UGY-0006Ka-2n; Sun, 05 Oct 2025 15:19:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFr-0004pT-7P
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFs-0004pl-DT
  for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFo-0006fv-K9
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:46 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFq-0006g6-0o
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691922;
+ s=mimecast20190719; t=1759691925;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7wcSMblAe0qmcWCzx3l/Hyp9U03Fel/2vgGIAfTWdPY=;
- b=XD7s6vrGNz0LtZP1r6R5EEI38NnCo1rfafiAPeFWnqtGniorL5SpmtaBzER/gIwD++XA2N
- VGBjHfHAkl6Fl7FUHfQ4ZC2QUyK0thSHVCzpNbO3809mtXRyk9rvzLSm0uFQseeHKh/9Id
- sxYUKODAWtmk682QzyTKeBpNZbgxXkw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VxCiyHKYD9YBF6shEy7T0nbq5E2EJ5X5H7ThZ32/yVY=;
+ b=bTcRG6qc7Dw5kruvysFY9myP7S+XBFhcSlx5KJq+LD9ie3txZGT/iKoZPI3U71Iyw3hzHx
+ cY0JE0XXbWMYWKY7qkedqglpIPMonQu/NWN19PAZC6FC96Ny9XZKkBx0E0ItFmBwgW4ACK
+ ViuGv9RYhF2nyR2Oci4ci31yXYhK9Xc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-6iy2ltsuMpy46sDuA0B0lA-1; Sun, 05 Oct 2025 15:18:41 -0400
-X-MC-Unique: 6iy2ltsuMpy46sDuA0B0lA-1
-X-Mimecast-MFC-AGG-ID: 6iy2ltsuMpy46sDuA0B0lA_1759691920
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-42557bdbe50so2379229f8f.1
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:40 -0700 (PDT)
+ us-mta-296-XmYMgiZVPZmKwPb_oKh32Q-1; Sun, 05 Oct 2025 15:18:43 -0400
+X-MC-Unique: XmYMgiZVPZmKwPb_oKh32Q-1
+X-Mimecast-MFC-AGG-ID: XmYMgiZVPZmKwPb_oKh32Q_1759691922
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e473e577eso21448925e9.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691919; x=1760296719;
+ d=1e100.net; s=20230601; t=1759691922; x=1760296722;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7wcSMblAe0qmcWCzx3l/Hyp9U03Fel/2vgGIAfTWdPY=;
- b=D2qcGmU1w8j6U97+n44eXYs1pvCKHJikzYo9mJL8WUVUy+1XI65RW6suG/LeudoOb2
- VUs4gO7UgP02KyaWWfdN9LaWOQIqPLcfAZ9CjjDglLFDEEPo0I0+fGBzhiLOz+YkTyse
- c/h8tg3wMrWSwTYipgnxNsTvWOIW19hhm2UEAL+ike1vgW1mXq2aHEWi7kfgrWVQrumS
- shaXQ84I6xNhqoBOzNlQ1lEKYygLT3v5f8m9ICjz4ni+4XpcIkIvVq333QSPXNCofPYN
- sfmIb50Wo+CA/n3pdhb75IETgMxdu0deLi6Ee95TmqqxzUlkgCF5mlIUEiCKzwAp7YXV
- DOqQ==
-X-Gm-Message-State: AOJu0Ywio7jt2zIxbnBgK/18wbEZCvo3YXzi2jAu7X63CHMl0y5DH/Zs
- rTbCqLkblfBVgORjit/xVuIOHzBeN0L792NVffhJh/mBVfry4PydP6RaUTcJF3atdhd7Gmu+/2w
- cDevXDusUQltECIRf91rm+UCtDn/W13M9VsmmBMkDV6VuJeA8SPh7aBSyGTPTVEYoVQGfhYRSI0
- DjHuCAJNv3WIw18VJJw7f1UkjkYPHZXJBK9w==
-X-Gm-Gg: ASbGncub81sgCxh6IocRlnkTOVHa0AKaatsPVIoIv+UGG0HApPbA/ECPCQUpUdm8MFW
- 4OvuKB3ZtJiZ7ybodBmFRzIDL7ip1eOYngkxcQinxCIJobpwnYlAFMD9AFOxV8lLo6uCU+eqkl8
- wRxtFK3a5GXTH69+cpy5kPMucTpEWjsUEemI0DzYknIgvrn/tQ4hD0ephNYz2Q50RrvCs10pv1p
- HBn2ISTv+kSq9YaOnI1h69NudDX4kws3Fqcue+xL5j/vrRZE8otyyywMA9xnzcCJF9yei6kuIQV
- GqcRbYQch67TN8SFpD0JvRPcMZ2eOkSDxjI1EYs=
-X-Received: by 2002:a05:6000:1447:b0:3ee:1494:27f5 with SMTP id
- ffacd0b85a97d-42566c15e15mr6548180f8f.13.1759691919477; 
- Sun, 05 Oct 2025 12:18:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4uNtgg2AwLFdm3cJ6XB1v5j+gYjK1t8WZjtoQY9LBGhEia7czDX3JWPNW8v6pW3q7K3uXsQ==
-X-Received: by 2002:a05:6000:1447:b0:3ee:1494:27f5 with SMTP id
- ffacd0b85a97d-42566c15e15mr6548155f8f.13.1759691918854; 
- Sun, 05 Oct 2025 12:18:38 -0700 (PDT)
+ bh=VxCiyHKYD9YBF6shEy7T0nbq5E2EJ5X5H7ThZ32/yVY=;
+ b=IeT3hvgngl8C387jiHsvAZp+ILH5ohFwAeLTQmh2leC3R82/pk0/RWqMpuxvbFl/M+
+ HuWSth1f3ecqlj5pkBp2pGvVIoumGhFXWoTcTRk7TC09YFuJNCJc7HuD6ja7MOd7kVfL
+ XqhKnYUuiO3Pz75pHv6bEq8hWm94jbY2FfVy+viu4uYwy9Gf87X3+VTLKeFQBTIhn5Ot
+ +nUts+BsFvKmj9gEOzfUvEAdwSHAgPG973pZO2Ib0szo1hcgBKTPjRXF+HENo22gARfA
+ +bS6gr9cFts+Qe52+uuXgDfEWklO83L28XiZV1QLu1DYUSib62+IgSClLLK/TNqGAYGE
+ SvTg==
+X-Gm-Message-State: AOJu0YyFG3/mPIyoc52Pgg6rnUo3Fz3dSBYqM7rcm1eP0mkGt8Q69OpM
+ UD8GtohMETl2NNPFdbN6sZH1coxuOYeyJ+I9QShqBNcCLewuMHpwJOTZcva/BtgiRBgEmik27nx
+ PHUYQG2LHRhe+phlo1dtjPpJVnKBXpCOsygD3mrQRSjtW+DqiQI76yqgiX2OubJx872NdzXEGam
+ 7zM+CUZRy0Grm2kK2PgE4saKWua9XQKw6QLQ==
+X-Gm-Gg: ASbGncuX+gQRARk4+gcHXaxWxkWyM7jBA1loNGv/5tya48A6xeSfb5mjeac6cs5Tqny
+ q0k/hhdEOlr0A4o+ViFvquqrgkFG9qaMfoWmXKB1ikEnXrxrP6lAnbx3SxOR0RUtUVrIsgqr8aG
+ Z7Ga1/bX97cbQfdya6Oy0EyKKwObazP6hO7yZFFd3ZpfW2vGgH0Zxdg4CHJ0zT1k45wxPNshEfF
+ Olzyx3A6VMND5gqLO2jjrxXSlP9wrruPMCuhSilM967udL75F0qB3F/8DOXmC7Q2Y8I38Vr3ywY
+ tO6dejz+CF7v8d7l14HQWE/1odrYWW3YQ961hjA=
+X-Received: by 2002:a05:6000:2f88:b0:425:7c14:e2e8 with SMTP id
+ ffacd0b85a97d-4257c14e303mr945356f8f.37.1759691921737; 
+ Sun, 05 Oct 2025 12:18:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG18Sjsh/St6MarFIFB7eEahBZg+EIzwimmYVYNVr0A5Sq9c+ET7pzNSNhkSFf+Q8qUAcB2jw==
+X-Received: by 2002:a05:6000:2f88:b0:425:7c14:e2e8 with SMTP id
+ ffacd0b85a97d-4257c14e303mr945329f8f.37.1759691921014; 
+ Sun, 05 Oct 2025 12:18:41 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f02a8sm17684257f8f.39.2025.10.05.12.18.37
+ ffacd0b85a97d-4255d8e960asm17345713f8f.37.2025.10.05.12.18.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:18:38 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:18:36 -0400
+ Sun, 05 Oct 2025 12:18:40 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:18:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Joao Martins <joao.m.martins@oracle.com>,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 70/75] intel-iommu: Move dma_translation to x86-iommu
-Message-ID: <5ad0a139c307e0ac5c9c961fd7d810d7cf78e7b5.1759691708.git.mst@redhat.com>
+Subject: [PULL 71/75] amd_iommu: HATDis/HATS=11 support
+Message-ID: <51da445f5322952e6fb26b286e8aebe464c14176.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -115,73 +114,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Joao Martins <joao.m.martins@oracle.com>
 
-To be later reused by AMD, now that it shares similar property.
+Add a way to disable DMA translation support in AMD IOMMU by
+allowing to set IVHD HATDis to 1, and exposing HATS (Host Address
+Translation Size) as Reserved value.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-22-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-23-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/i386/x86-iommu.h | 1 +
- hw/i386/intel_iommu.c       | 5 ++---
- hw/i386/x86-iommu.c         | 1 +
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ hw/i386/amd_iommu.h  |  1 +
+ hw/i386/acpi-build.c |  6 +++++-
+ hw/i386/amd_iommu.c  | 19 +++++++++++++++++++
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/i386/x86-iommu.h b/include/hw/i386/x86-iommu.h
-index bfd21649d0..e89f55a5c2 100644
---- a/include/hw/i386/x86-iommu.h
-+++ b/include/hw/i386/x86-iommu.h
-@@ -64,6 +64,7 @@ struct X86IOMMUState {
-     OnOffAuto intr_supported;   /* Whether vIOMMU supports IR */
-     bool dt_supported;          /* Whether vIOMMU supports DT */
-     bool pt_supported;          /* Whether vIOMMU supports pass-through */
-+    bool dma_translation;       /* Whether vIOMMU supports DMA translation */
-     QLIST_HEAD(, IEC_Notifier) iec_notifiers; /* IEC notify list */
- };
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index e1354686b6..daf82fc85f 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -177,6 +177,7 @@
+ /* AMDVI paging mode */
+ #define AMDVI_GATS_MODE                 (2ULL <<  12)
+ #define AMDVI_HATS_MODE                 (2ULL <<  10)
++#define AMDVI_HATS_MODE_RESERVED        (3ULL <<  10)
  
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 2cc9bd5e45..fa2ad9c2eb 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -2704,7 +2704,7 @@ static void vtd_handle_gcmd_write(IntelIOMMUState *s)
-     uint32_t changed = status ^ val;
+ /* Page Table format */
  
-     trace_vtd_reg_write_gcmd(status, val);
--    if ((changed & VTD_GCMD_TE) && s->dma_translation) {
-+    if ((changed & VTD_GCMD_TE) && x86_iommu->dma_translation) {
-         /* Translation enable/disable */
-         vtd_handle_gcmd_te(s, val & VTD_GCMD_TE);
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 423c4959fe..9446a9f862 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1863,7 +1863,11 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
+     /* IOMMU info */
+     build_append_int_noprefix(table_data, 0, 2);
+     /* IOMMU Attributes */
+-    build_append_int_noprefix(table_data, 0, 4);
++    if (!s->iommu.dma_translation) {
++        build_append_int_noprefix(table_data, (1UL << 0) /* HATDis */, 4);
++    } else {
++        build_append_int_noprefix(table_data, 0, 4);
++    }
+     /* EFR Register Image */
+     build_append_int_noprefix(table_data,
+                               amdvi_extended_feature_register(s),
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index b6851784fb..378e0cb55e 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -107,6 +107,9 @@ uint64_t amdvi_extended_feature_register(AMDVIState *s)
+     if (s->xtsup) {
+         feature |= AMDVI_FEATURE_XT;
      }
-@@ -3947,7 +3947,6 @@ static const Property vtd_properties[] = {
-     DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, false),
-     DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
-     DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
--    DEFINE_PROP_BOOL("dma-translation", IntelIOMMUState, dma_translation, true),
-     DEFINE_PROP_BOOL("stale-tm", IntelIOMMUState, stale_tm, false),
-     DEFINE_PROP_BOOL("fs1gp", IntelIOMMUState, fs1gp, true),
- };
-@@ -4665,7 +4664,7 @@ static void vtd_cap_init(IntelIOMMUState *s)
-     if (s->dma_drain) {
-         s->cap |= VTD_CAP_DRAIN;
-     }
--    if (s->dma_translation) {
-+    if (x86_iommu->dma_translation) {
-             if (s->aw_bits >= VTD_HOST_AW_39BIT) {
-                     s->cap |= VTD_CAP_SAGAW_39bit;
-             }
-diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
-index d34a6849f4..c127a44bb4 100644
---- a/hw/i386/x86-iommu.c
-+++ b/hw/i386/x86-iommu.c
-@@ -130,6 +130,7 @@ static const Property x86_iommu_properties[] = {
-                             intr_supported, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BOOL("device-iotlb", X86IOMMUState, dt_supported, false),
-     DEFINE_PROP_BOOL("pt", X86IOMMUState, pt_supported, true),
-+    DEFINE_PROP_BOOL("dma-translation", X86IOMMUState, dma_translation, true),
- };
++    if (!s->iommu.dma_translation) {
++        feature |= AMDVI_HATS_MODE_RESERVED;
++    }
  
- static void x86_iommu_class_init(ObjectClass *klass, const void *data)
+     return feature;
+ }
+@@ -472,6 +475,9 @@ static inline uint64_t amdvi_get_perms(uint64_t entry)
+ static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
+                                uint64_t *dte)
+ {
++
++    uint64_t root;
++
+     if ((dte[0] & AMDVI_DTE_QUAD0_RESERVED) ||
+         (dte[1] & AMDVI_DTE_QUAD1_RESERVED) ||
+         (dte[2] & AMDVI_DTE_QUAD2_RESERVED) ||
+@@ -482,6 +488,19 @@ static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
+         return false;
+     }
+ 
++    /*
++     * 1 = Host Address Translation is not supported. Value in MMIO Offset
++     * 0030h[HATS] is not meaningful. A non-zero host page table root pointer
++     * in the DTE would result in an ILLEGAL_DEV_TABLE_ENTRY event.
++     */
++    root = (dte[0] & AMDVI_DEV_PT_ROOT_MASK) >> 12;
++    if (root && !s->iommu.dma_translation) {
++        amdvi_log_illegaldevtab_error(s, devid,
++                                      s->devtab +
++                                      devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
++        return false;
++    }
++
+     return true;
+ }
+ 
 -- 
 MST
 
