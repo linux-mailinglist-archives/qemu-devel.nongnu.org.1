@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667F4BB9B8D
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A3EBB9C23
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UEe-0007ly-Fo; Sun, 05 Oct 2025 15:17:32 -0400
+	id 1v5UEf-00084q-Eu; Sun, 05 Oct 2025 15:17:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE6-0007h0-TB
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEA-0007hC-9i
  for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE4-0006RR-DI
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:16:57 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE6-0006Rp-Pr
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691815;
+ s=mimecast20190719; t=1759691817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=NIhiW5u2eQoMFtkoyQrTpDhwvgeVrThMS4HUlP2TBEA=;
- b=GRBJu6RmddsPFxaGInyw/lCoxvXQZN//4SnO5CmvLjCuG0jngID8fkDtAgTelus4R69COI
- dyhiL25myA277cRPonorKFsJ+7ZvjV4FlVr7UTIBePZkG4J6snXsafLK2PVxDOepei2y42
- GgSDNLit+6iU7wMLki3UL8Q6Ninqpy4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xavtbsO28Ury7dy3GVu2kZqo6kk8GLRJLz1jzaO4qT4=;
+ b=GZT7I4CBzZn50goRAoNn6WTJk2A1g/ElWPT1QM8217u/iY2H756H5B1c6Tr+SkcWSgckU/
+ LHACx6Q222qDgsCJVCV64mwwTaXkhg5IMaDZivqz69z7XRb2NXMJ2SMu4sfzQNUnxQ6DY/
+ zRdROxM/u/1AfoBBBRd1Ts0Nt87yXIs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-JERAcVWfP82WSeucE2IXRg-1; Sun, 05 Oct 2025 15:16:54 -0400
-X-MC-Unique: JERAcVWfP82WSeucE2IXRg-1
-X-Mimecast-MFC-AGG-ID: JERAcVWfP82WSeucE2IXRg_1759691813
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3f42b54d159so3228473f8f.2
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:16:54 -0700 (PDT)
+ us-mta-277-Ra0R3UedN7ee0Pg8blQt6Q-1; Sun, 05 Oct 2025 15:16:56 -0400
+X-MC-Unique: Ra0R3UedN7ee0Pg8blQt6Q-1
+X-Mimecast-MFC-AGG-ID: Ra0R3UedN7ee0Pg8blQt6Q_1759691816
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e31191379so26931965e9.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:16:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691813; x=1760296613;
+ d=1e100.net; s=20230601; t=1759691815; x=1760296615;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NIhiW5u2eQoMFtkoyQrTpDhwvgeVrThMS4HUlP2TBEA=;
- b=P+mCTboIPJNAS/HNx1b2xhDHxXdBZ63UvpVFprTGbgeTSv5W18zSJptUP2a/HIjWRn
- tv7Lcl3esC9tZGUNNmMVTp4l3EQngDlvPgwjmKDRSK4q2zC6+4ckIQaKmTV9XDNi+krb
- I95l2CxACiBgPdtAJwxMqqgal1wZxSwIGveHdocsefeW3joSKBgaEkWG7i6f4X7vlway
- miYom/HljCmIkz3LGEm0QMSabRxwQYVg1gVIRtm/OGNprIXPjeLgOnlpzYt0ociWTkr7
- a7KyRobdsYgN3cOiw4FV27OQP4do0nmXV3ZIjlhNODOvOHqu8O2+HbrD5eOxqdqmhu0U
- dJsg==
-X-Gm-Message-State: AOJu0YyoCISkB88+VShcxrdTBbT4rjwAUWsMpumRlQTJMLCE06hZFER+
- ZYNIyLhMUhH6i9IB3uyK6xhCgFEO2TqrX6YOc2/twgJIYeSoPkzeW3xaPkYYN6DIH4OiaAOdOlW
- wRvAtOA42XTEGPyO3eyl90q/ide0qv0OYt0rfxt/GGWciQWBE1FvMpguITWcpsJIy2yWEtat/wU
- wUgrqZze8AErRBL4eXM0zDW0y9rQyHmGkmRg==
-X-Gm-Gg: ASbGncsKBdHmvCI9Nqpu54+IZ5XPedjaV71zvPTBCT7TaVuZ2dSRWWnmaprC0MpSzji
- eHYkVcNeyRbaIHWgAc9QQx/QU4A5jnhdQiPyLVDqg7kyilBBovx5/cD6O5d7ehgxTKgpAynDHa3
- onGjq7klXwyY1wDv9EAgu4zwkN/yYpTAxcybS9kjEBr/0FjnS3HZFXs9T0Z8S1U1u+Xdwc5ynDi
- C0H0RTxO9Z025fwb9scR/hys88kfh09u0CVj3zMu6N0CsjyPkaDTbuZMKKdgp5bsaq26MMvC+Zq
- NCjiajq2hJMYPJNIHPC2JWBKHDRU/oqOTGYb8SU=
-X-Received: by 2002:a05:6000:4013:b0:425:58d0:4834 with SMTP id
- ffacd0b85a97d-425671948cfmr6288978f8f.39.1759691812924; 
- Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsWN4zgw9e6n7Hk6GjBt1nA+9NTwZM/bYi3euHzHf3qQ7aiwEhTw9R7RDdL7iOv+R0g435wA==
-X-Received: by 2002:a05:6000:4013:b0:425:58d0:4834 with SMTP id
- ffacd0b85a97d-425671948cfmr6288960f8f.39.1759691812370; 
- Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
+ bh=xavtbsO28Ury7dy3GVu2kZqo6kk8GLRJLz1jzaO4qT4=;
+ b=Vhzka+QrtWpHOXsZaqG31EIlrGqh16gFbHx1F4wlaWO7z2Y8qZgYXTSkiO7RUASBQf
+ FTioCCVBgOQmj+jodBoFHjazX+Z1z0XyZDAVbpby0HrvSBJUzb5OH3nDSDZvHEb5Pbhy
+ K0I8AZ8Aq0GIYZE60scM3brSjAxoB4xXd8JuxBoN0OpYLGcRNmKDHAkFOtMPNHDbWB2m
+ k1Sv4RfsGypRpYp0qEHOTQzyzqIj0WV3WwrpOD695sim0bExLO2KG7xp1S7+WJt3/DB8
+ HdgObmHKfVWcvsS+4jwgK/tj41+wKuQEoSei9NtuXd3cp2RxNuqHOYlAhCY04rzI2CGu
+ EELA==
+X-Gm-Message-State: AOJu0YwDBgiSUzqWLsncULd6uphfJWrJYMLiszVPf72r6MPa433aTv9v
+ W/7H0VPhZm5CioGDT/ew2HBAgQf32Vs5hdGMgyUMjmz61N1KFAOYaWqIYyDl4PXZeGnVG17bDrE
+ J/0XnPvFSw543MYQkhgn0PErU0RWNr05az/pMkPDbV+W+1KJCDrXj3nQC8xLxoZK1qgIp4wA1yb
+ ps1Qs8JQXR8oPMmOkBwjq1D9xhAZi/oNh/sw==
+X-Gm-Gg: ASbGncvoPPDfgULm9yR/ri9UEpJAFHkTF20t6O+IXE3XOOeEqXnUQPLiWq8zpWJRkaz
+ EFZNbIhHbyPjHeDbKVz+XWWQTT6oOZiUEGxpOyXB9ejg0PJPvqY9GRr/fX4jF/+mv8yVs9MWfXG
+ TcYhRJIfHHiC5g9I8pXjPONO7yTygqRVDEd4dGCPhbwZ9BLpxyVWl7bcTl3ZmN0zz0wENlu6spg
+ 1flEaoFlG9q7bPdEyWHP930bElc8VNafTui52KPlT+KXJj7DtxIeNx9RkXiMHmsKwG4/jEM80f4
+ MVAFjxhasgJNeRB66JllNzymhOI5Wn192X3z6lM=
+X-Received: by 2002:a05:600c:154a:b0:46e:45d3:82fa with SMTP id
+ 5b1f17b1804b1-46e7226ec1amr71530395e9.10.1759691815276; 
+ Sun, 05 Oct 2025 12:16:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEgwK2V48bBV5m648z4rnqwwnHr2PY/NKOjrKUyPg13UZLzoeVoUF8y4L8b9Nzty4+OleOLMA==
+X-Received: by 2002:a05:600c:154a:b0:46e:45d3:82fa with SMTP id
+ 5b1f17b1804b1-46e7226ec1amr71530125e9.10.1759691814751; 
+ Sun, 05 Oct 2025 12:16:54 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e970esm17357225f8f.35.2025.10.05.12.16.51
+ 5b1f17b1804b1-46e61a0241bsm215815915e9.11.2025.10.05.12.16.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:16:50 -0400
+ Sun, 05 Oct 2025 12:16:54 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:16:52 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 22/75] acpi/generic_event_device: Update GHES migration to
- cover hest addr
-Message-ID: <d238dedae699a924c92228cb8b3bb8dc861008b5.1759691708.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ qemu-arm@nongnu.org
+Subject: [PULL 23/75] acpi/generic_event_device: add logic to detect if HEST
+ addr is available
+Message-ID: <f3f747ddcfc9af2c2c58f70a68723b99db82f778.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -93,7 +99,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,65 +117,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The GHES migration logic should now support HEST table location too.
+Create a new property (x-has-hest-addr) and use it to detect if
+the GHES table offsets can be calculated from the HEST address
+(qemu 10.0 and upper) or via the legacy way via an offset obtained
+from the hardware_errors firmware file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <ede7ddf4b10f34094a4327dc458d630ad319bd1c.1758610789.git.mchehab+huawei@kernel.org>
+Message-ID: <c4eb3cf32a3f158ae62dac29e866ac3f373956c3.1758610789.git.mchehab+huawei@kernel.org>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/acpi/generic_event_device.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ hw/acpi/generic_event_device.c |  2 ++
+ hw/arm/virt-acpi-build.c       | 18 ++++++++++++++++--
+ hw/core/machine.c              |  5 ++++-
+ 3 files changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 95682b79a2..55998303c2 100644
+index 55998303c2..b1ff6ab74d 100644
 --- a/hw/acpi/generic_event_device.c
 +++ b/hw/acpi/generic_event_device.c
-@@ -436,6 +436,34 @@ static const VMStateDescription vmstate_pcihp_state = {
-     }
+@@ -349,6 +349,8 @@ static const Property acpi_ged_properties[] = {
+                      pcihp_state.use_acpi_hotplug_bridge, 0),
+     DEFINE_PROP_LINK("bus", AcpiGedState, pcihp_state.root,
+                      TYPE_PCI_BUS, PCIBus *),
++    DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState,
++                     ghes_state.use_hest_addr, false),
  };
  
-+static const VMStateDescription vmstate_hest = {
-+    .name = "acpi-hest",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(hest_addr_le, AcpiGhesState),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static bool hest_needed(void *opaque)
-+{
-+    AcpiGedState *s = opaque;
-+    return s->ghes_state.hest_addr_le;
-+}
-+
-+static const VMStateDescription vmstate_hest_state = {
-+    .name = "acpi-ged/hest",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = hest_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
-+                       vmstate_hest, AcpiGhesState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static const VMStateDescription vmstate_acpi_ged = {
-     .name = "acpi-ged",
-     .version_id = 1,
-@@ -449,6 +477,7 @@ static const VMStateDescription vmstate_acpi_ged = {
-         &vmstate_cpuhp_state,
-         &vmstate_ghes_state,
-         &vmstate_pcihp_state,
-+        &vmstate_hest_state,
-         NULL
-     }
+ static const VMStateDescription vmstate_memhp_state = {
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index c856d293c6..ff3b7a794b 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -1129,6 +1129,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
+     { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
  };
+ 
++static const AcpiNotificationSourceId hest_ghes_notify_10_0[] = {
++    { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
++};
++
+ static
+ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+ {
+@@ -1186,15 +1190,25 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+ 
+     if (vms->ras) {
+         AcpiGedState *acpi_ged_state;
++        static const AcpiNotificationSourceId *notify;
++        unsigned int notify_sz;
+         AcpiGhesState *ags;
+ 
+         acpi_ged_state = ACPI_GED(vms->acpi_dev);
+         ags = &acpi_ged_state->ghes_state;
+         if (ags) {
+             acpi_add_table(table_offsets, tables_blob);
++
++            if (!ags->use_hest_addr) {
++                notify = hest_ghes_notify_10_0;
++                notify_sz = ARRAY_SIZE(hest_ghes_notify_10_0);
++            } else {
++                notify = hest_ghes_notify;
++                notify_sz = ARRAY_SIZE(hest_ghes_notify);
++            }
++
+             acpi_build_hest(ags, tables_blob, tables->hardware_errors,
+-                            tables->linker, hest_ghes_notify,
+-                            ARRAY_SIZE(hest_ghes_notify),
++                            tables->linker, notify, notify_sz,
+                             vms->oem_id, vms->oem_table_id);
+         }
+     }
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 38c949c4f2..7b7a381b0a 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -35,9 +35,12 @@
+ #include "hw/virtio/virtio-pci.h"
+ #include "hw/virtio/virtio-net.h"
+ #include "hw/virtio/virtio-iommu.h"
++#include "hw/acpi/generic_event_device.h"
+ #include "audio/audio.h"
+ 
+-GlobalProperty hw_compat_10_1[] = {};
++GlobalProperty hw_compat_10_1[] = {
++    { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
++};
+ const size_t hw_compat_10_1_len = G_N_ELEMENTS(hw_compat_10_1);
+ 
+ GlobalProperty hw_compat_10_0[] = {
 -- 
 MST
 
