@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7399EBB9C8A
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6853BB9C6C
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFa-0002s6-BQ; Sun, 05 Oct 2025 15:18:30 -0400
+	id 1v5UFi-0003jm-7M; Sun, 05 Oct 2025 15:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFP-0002RU-79
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFS-0002a3-Qo
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFL-0006ay-KD
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFQ-0006cU-HM
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691890;
+ s=mimecast20190719; t=1759691899;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=qi2c6v9N5AmCZh3R8EnHA/KH3jdmBYOZ9DKao79FqjE=;
- b=XRzyR8I7JBmyU8JscS4unSRIZFdCXRYj5bHg4zARHptRrYbHquQ+wcKOeFWgjlwXh9II2+
- Nxj+b+wi19ZANNu7FCzvWS6qPpOGmjipLE3Ks6cg8hYCHTy4vn0sHYa4sXjKyXFxtSq89p
- 0GBFu4dNnCvFCSTu37bBpeyWHAq3c6I=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QUvenOCO68kLl2GvX+LSUfN8U9FY9cK3kWYV0GrRBjw=;
+ b=UVH3git7/ueaFJVbkIXGFFlrcoQ7TtZ30WdwsT/g3/jNS3YIp2yUFa54OmsWrf4vCXJXSV
+ Vty33tsZKt7J4piySwc/FHJo1K7SzkEsawrpD6LXr7Sm28KfHlth/9qd7ohsaxfAYNrWDm
+ hE4jxFDG5qqmV+IwNZ3FVsX6TEEHcto=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-2cFvU7-kM7aARIUlbLU0cw-1; Sun, 05 Oct 2025 15:18:07 -0400
-X-MC-Unique: 2cFvU7-kM7aARIUlbLU0cw-1
-X-Mimecast-MFC-AGG-ID: 2cFvU7-kM7aARIUlbLU0cw_1759691886
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3ee10a24246so2032869f8f.3
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:07 -0700 (PDT)
+ us-mta-608-FulVQ9JCNhqSn2Rr01hjMA-1; Sun, 05 Oct 2025 15:18:13 -0400
+X-MC-Unique: FulVQ9JCNhqSn2Rr01hjMA-1
+X-Mimecast-MFC-AGG-ID: FulVQ9JCNhqSn2Rr01hjMA_1759691892
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3ee10a24246so2032873f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691886; x=1760296686;
+ d=1e100.net; s=20230601; t=1759691888; x=1760296688;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qi2c6v9N5AmCZh3R8EnHA/KH3jdmBYOZ9DKao79FqjE=;
- b=jCF2aeuf+ruFSbnAyYVtlAq9pP92Sg+0wwH2r3w1YHfl0l2jsb9PzVlLCxPm+VHf28
- /9VxZ6e0oRoPcQ90OXkOAHmZM31cP0D7jwwI09CK9xxicCmXTioActQWpZZaxOAKoF6D
- FFZRkSU78yZNcZVlof4oKUp9bRp6TPB49dKFxBAXQ+2NS/8rUlOxDDiOj/fWRc05ggq1
- XHoSSq4brHoyLGbZ2gq/GVrWJA/WgFbvJqslMtUrAmM6xhi4FlcnK0FbeIfVZhfGPKoM
- q/CxSkESAl+a0N2wf9G+N3QxHbxoEKSQmGGownhZG85YK/HuXFWoNMEeCup4X8ZA5E8E
- QjlQ==
-X-Gm-Message-State: AOJu0Yz8El5AFQUxQuOxLfOzwCNrDcnZaSe5m1uN1GAeZmDFLDCOGSyC
- SDo6j+bD4YmXzC63hfC1KfyoYcpvMR6tjWibQOR4yfqezIHkSWMPnCJ7s1iHSf30qxlnkXsrZMR
- Pw7wy+KQ8eQSkYqJixCuuuaElRBOQlq9IEtr/Y7RP0k/ZM7yUHoQhhhYh2OZSXD8bP79rpcK+ET
- bmm5xV97xn57xBT5FoyjzUBUX9ZKZP/KnNyg==
-X-Gm-Gg: ASbGncu/tlZAhlE4/I38YIRmoxyAG11ExXtZAVc6Z9vuGrMj3vQxzHTYjKC831x1CTq
- +GN9kegz6FFIfeT7XNCWBmcOluyC5JCQLlkChx/Majvjzsj2W6cG9g4QX2nLij9tP0sNK2+5uU7
- vGiZKuzavebacFpFD24a3diHBFFPp86Q6v0XLpff7SJAKQBvif3VJVXuFaM8NLPeOhXoEjCtCK9
- pxP0kBuRgsUOUpRLW3B50ekeJM7fWXx6PP0wX7cRS3iqdiAnC8cJAavFAZSb7PMncoI8IH4PVil
- hhdMvDB/nhdiyAY+bJdY0GAr3VrrQqLRxcSBPi4=
-X-Received: by 2002:a05:600c:4e09:b0:45f:2cf9:c229 with SMTP id
- 5b1f17b1804b1-46e710aec2dmr72682585e9.0.1759691886183; 
- Sun, 05 Oct 2025 12:18:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHep4BPcVEfCzoBqhT/DZHq8Cnwa8tVa3o9UiW2501ooZkE8V3acfn8TwmOUaZEJtjRYeIUoQ==
-X-Received: by 2002:a05:600c:4e09:b0:45f:2cf9:c229 with SMTP id
- 5b1f17b1804b1-46e710aec2dmr72682435e9.0.1759691885704; 
- Sun, 05 Oct 2025 12:18:05 -0700 (PDT)
+ bh=QUvenOCO68kLl2GvX+LSUfN8U9FY9cK3kWYV0GrRBjw=;
+ b=FJAUZ4/D9+VALfdanCluUbIVi29dZe8z46u20Y1469IdfgmZBo00IeW+LCO/x/c789
+ OiWLSzCsyriDNMpb0kjJA4Sy+M2sUw+upCZo+feqa/Dk7gsZWI5Q57BOYcDdb+P2cLVz
+ FeXghZOYXuajJzhKb6b1pwdoq9+PQtPLSuiyhh7LkJ4duhuKU04zg8edGRPCJcYxDYj5
+ ybKAJAfiZkyfB4LdZ1UbSaoVtv9fpWrDmasAOFAfoZ0wX1+9mfaFDhulv5DTIqeGn0a/
+ mJlzjFnB3MnIZvtxhZDcBTW5St30/uwFP7SlHLQ7tIz4ycJyetLVT/OQq7ESkijFud5u
+ OoFw==
+X-Gm-Message-State: AOJu0YzkWR7+QRvqmXBNYr1JHgzfh5Oi3qTTWRfl3KMiC9fsTwkp+xvV
+ UAiE1v9RXmuQ13J18RvQTr3jejX2Rf/FzcpYxixCbCFn5HAia2O9No8QD6/BN6VNwrmMwieUf4A
+ W+Q+T9jaPXs0Imci6opGRfp5cysFe31rT+DiVF0daHGAmvZpDhvfVazvgiz2gHHcOubmpioJ3VY
+ NaR7J4DdgVjIvReP5PLrHdQhRFQZXF038LQA==
+X-Gm-Gg: ASbGnct+wvEOeqokzXuAMCefuQsBysft8adLwhYYsMENxLNcfHGa1dOjEJqjqo768jI
+ sBDWGlYcQMqp2kcgKVLFbq0pI3UHGOztc+f0wwVjIZANFmH3YDmVIf5oHKtsu+kD6qCogaR5sZC
+ 9Cx3TXRd+1l/J6Cx/PCg5DqH6YP3RFHS3dLbcIa55jc0fvEIDVzuYwgjsLAJ79xW0JtYSdtIwfz
+ 6cR6+6ZWeOZMuHROCatlXCurg0el8f7S0oxH3T4eC6HCvZhfBEFy9GgpIaRTzP0d4n4/0GzzWob
+ o8QrHiCK3+r/fcnFFlg35pVc0WiqJkjzbHL6fks=
+X-Received: by 2002:a05:6000:2401:b0:3ea:e0fd:28e8 with SMTP id
+ ffacd0b85a97d-4256719e9c6mr5919195f8f.32.1759691888227; 
+ Sun, 05 Oct 2025 12:18:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtPM52Nj0JoCGtTCSnIYRGdunYIGeK2hexqu9nVPxW031A7jShUqMCt4B1cRrLU3+3LCgzRw==
+X-Received: by 2002:a05:6000:2401:b0:3ea:e0fd:28e8 with SMTP id
+ ffacd0b85a97d-4256719e9c6mr5919177f8f.32.1759691887605; 
+ Sun, 05 Oct 2025 12:18:07 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8ab960sm17428614f8f.13.2025.10.05.12.18.04
+ ffacd0b85a97d-4255d8f02a8sm17682605f8f.39.2025.10.05.12.18.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:18:05 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:18:03 -0400
+ Sun, 05 Oct 2025 12:18:07 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:18:05 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -76,9 +76,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 55/75] amd_iommu: Return an error when unable to read PTE from
- guest memory
-Message-ID: <55d06ef8c9568761e2c92f4fa2b12e5b9465900d.1759691708.git.mst@redhat.com>
+Subject: [PULL 56/75] amd_iommu: Add helpers to walk AMD v1 Page Table format
+Message-ID: <39789107398c5c554efe0ff3726b3b3671dfb376.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -86,14 +85,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -113,44 +112,211 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Make amdvi_get_pte_entry() return an error value (-1) in cases where the
-memory read fails, versus the current return of 0 to indicate failure.
-The reason is that 0 is also a valid value to have stored in the PTE in
-guest memory i.e. the guest does not have a mapping. Before this change,
-amdvi_get_pte_entry() returned 0 for both an error and for empty PTEs, but
-the page walker implementation that will be introduced in upcoming changes
-needs a method to differentiate between the two scenarios.
+The current amdvi_page_walk() is designed to be called by the replay()
+method. Rather than drastically altering it, introduce helpers to fetch
+guest PTEs that will be used by a page walker implementation.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-7-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-8-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/i386/amd_iommu.h |  40 ++++++++++++++
+ hw/i386/amd_iommu.c | 123 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 163 insertions(+)
 
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index c1170a8202..9f833b297d 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -178,6 +178,46 @@
+ #define AMDVI_GATS_MODE                 (2ULL <<  12)
+ #define AMDVI_HATS_MODE                 (2ULL <<  10)
+ 
++/* Page Table format */
++
++#define AMDVI_PTE_PR                    (1ULL << 0)
++#define AMDVI_PTE_NEXT_LEVEL_MASK       GENMASK64(11, 9)
++
++#define IOMMU_PTE_PRESENT(pte)          ((pte) & AMDVI_PTE_PR)
++
++/* Using level=0 for leaf PTE at 4K page size */
++#define PT_LEVEL_SHIFT(level)           (12 + ((level) * 9))
++
++/* Return IOVA bit group used to index the Page Table at specific level */
++#define PT_LEVEL_INDEX(level, iova)     (((iova) >> PT_LEVEL_SHIFT(level)) & \
++                                        GENMASK64(8, 0))
++
++/* Return the max address for a specified level i.e. max_oaddr */
++#define PT_LEVEL_MAX_ADDR(x)    (((x) < 5) ? \
++                                ((1ULL << PT_LEVEL_SHIFT((x + 1))) - 1) : \
++                                (~(0ULL)))
++
++/* Extract the NextLevel field from PTE/PDE */
++#define PTE_NEXT_LEVEL(pte)     (((pte) & AMDVI_PTE_NEXT_LEVEL_MASK) >> 9)
++
++/* Take page table level and return default pagetable size for level */
++#define PTE_LEVEL_PAGE_SIZE(level)      (1ULL << (PT_LEVEL_SHIFT(level)))
++
++/*
++ * Return address of lower level page table encoded in PTE and specified by
++ * current level and corresponding IOVA bit group at such level.
++ */
++#define NEXT_PTE_ADDR(pte, level, iova) (((pte) & AMDVI_DEV_PT_ROOT_MASK) + \
++                                        (PT_LEVEL_INDEX(level, iova) * 8))
++
++/*
++ * Take a PTE value with mode=0x07 and return the page size it encodes.
++ */
++#define PTE_LARGE_PAGE_SIZE(pte)    (1ULL << (1 + cto64(((pte) | 0xfffULL))))
++
++/* Return number of PTEs to use for a given page size (expected power of 2) */
++#define PAGE_SIZE_PTE_COUNT(pgsz)       (1ULL << ((ctz64(pgsz) - 12) % 9))
++
+ /* IOTLB */
+ #define AMDVI_IOTLB_MAX_SIZE 1024
+ #define AMDVI_DEVID_SHIFT    36
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index dc7531fd4a..29ed3f0ef2 100644
+index 29ed3f0ef2..c25981ff93 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -528,7 +528,7 @@ static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
-                         &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
-         trace_amdvi_get_pte_hwerror(pte_addr);
-         amdvi_log_pagetab_error(s, devid, pte_addr, 0);
--        pte = 0;
-+        pte = (uint64_t)-1;
-         return pte;
-     }
+@@ -87,6 +87,8 @@ typedef enum AMDVIFaultReason {
+     AMDVI_FR_DTE_RTR_ERR = 1,   /* Failure to retrieve DTE */
+     AMDVI_FR_DTE_V,             /* DTE[V] = 0 */
+     AMDVI_FR_DTE_TV,            /* DTE[TV] = 0 */
++    AMDVI_FR_PT_ROOT_INV,       /* Page Table Root ptr invalid */
++    AMDVI_FR_PT_ENTRY_INV,      /* Failure to read PTE from guest memory */
+ } AMDVIFaultReason;
  
-@@ -1081,7 +1081,7 @@ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
-             /* add offset and load pte */
-             pte_addr += ((addr >> (3 + 9 * level)) & 0x1FF) << 3;
-             pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
--            if (!pte) {
-+            if (!pte || (pte == (uint64_t)-1)) {
-                 return;
-             }
-             oldlevel = level;
+ uint64_t amdvi_extended_feature_register(AMDVIState *s)
+@@ -558,6 +560,127 @@ static int amdvi_as_to_dte(AMDVIAddressSpace *as, uint64_t *dte)
+     return 0;
+ }
+ 
++/*
++ * For a PTE encoding a large page, return the page size it encodes as described
++ * by the AMD IOMMU Specification Table 14: Example Page Size Encodings.
++ * No need to adjust the value of the PTE to point to the first PTE in the large
++ * page since the encoding guarantees all "base" PTEs in the large page are the
++ * same.
++ */
++static uint64_t large_pte_page_size(uint64_t pte)
++{
++    assert(PTE_NEXT_LEVEL(pte) == 7);
++
++    /* Determine size of the large/contiguous page encoded in the PTE */
++    return PTE_LARGE_PAGE_SIZE(pte);
++}
++
++/*
++ * Helper function to fetch a PTE using AMD v1 pgtable format.
++ * On successful page walk, returns 0 and pte parameter points to a valid PTE.
++ * On failure, returns:
++ * -AMDVI_FR_PT_ROOT_INV: A page walk is not possible due to conditions like DTE
++ *      with invalid permissions, Page Table Root can not be read from DTE, or a
++ *      larger IOVA than supported by page table level encoded in DTE[Mode].
++ * -AMDVI_FR_PT_ENTRY_INV: A PTE could not be read from guest memory during a
++ *      page table walk. This means that the DTE has valid data, but one of the
++ *      lower level entries in the Page Table could not be read.
++ */
++static int __attribute__((unused))
++fetch_pte(AMDVIAddressSpace *as, hwaddr address, uint64_t dte, uint64_t *pte,
++          hwaddr *page_size)
++{
++    IOMMUAccessFlags perms = amdvi_get_perms(dte);
++
++    uint8_t level, mode;
++    uint64_t pte_addr;
++
++    *pte = dte;
++    *page_size = 0;
++
++    if (perms == IOMMU_NONE) {
++        return -AMDVI_FR_PT_ROOT_INV;
++    }
++
++    /*
++     * The Linux kernel driver initializes the default mode to 3, corresponding
++     * to a 39-bit GPA space, where each entry in the pagetable translates to a
++     * 1GB (2^30) page size.
++     */
++    level = mode = get_pte_translation_mode(dte);
++    assert(mode > 0 && mode < 7);
++
++    /*
++     * If IOVA is larger than the max supported by the current pgtable level,
++     * there is nothing to do.
++     */
++    if (address > PT_LEVEL_MAX_ADDR(mode - 1)) {
++        /* IOVA too large for the current DTE */
++        return -AMDVI_FR_PT_ROOT_INV;
++    }
++
++    do {
++        level -= 1;
++
++        /* Update the page_size */
++        *page_size = PTE_LEVEL_PAGE_SIZE(level);
++
++        /* Permission bits are ANDed at every level, including the DTE */
++        perms &= amdvi_get_perms(*pte);
++        if (perms == IOMMU_NONE) {
++            return 0;
++        }
++
++        /* Not Present */
++        if (!IOMMU_PTE_PRESENT(*pte)) {
++            return 0;
++        }
++
++        /* Large or Leaf PTE found */
++        if (PTE_NEXT_LEVEL(*pte) == 7 || PTE_NEXT_LEVEL(*pte) == 0) {
++            /* Leaf PTE found */
++            break;
++        }
++
++        /*
++         * Index the pgtable using the IOVA bits corresponding to current level
++         * and walk down to the lower level.
++         */
++        pte_addr = NEXT_PTE_ADDR(*pte, level, address);
++        *pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
++
++        if (*pte == (uint64_t)-1) {
++            /*
++             * A returned PTE of -1 indicates a failure to read the page table
++             * entry from guest memory.
++             */
++            if (level == mode - 1) {
++                /* Failure to retrieve the Page Table from Root Pointer */
++                *page_size = 0;
++                return -AMDVI_FR_PT_ROOT_INV;
++            } else {
++                /* Failure to read PTE. Page walk skips a page_size chunk */
++                return -AMDVI_FR_PT_ENTRY_INV;
++            }
++        }
++    } while (level > 0);
++
++    assert(PTE_NEXT_LEVEL(*pte) == 0 || PTE_NEXT_LEVEL(*pte) == 7 ||
++           level == 0);
++    /*
++     * Page walk ends when Next Level field on PTE shows that either a leaf PTE
++     * or a series of large PTEs have been reached. In the latter case, even if
++     * the range starts in the middle of a contiguous page, the returned PTE
++     * must be the first PTE of the series.
++     */
++    if (PTE_NEXT_LEVEL(*pte) == 7) {
++        /* Update page_size with the large PTE page size */
++        *page_size = large_pte_page_size(*pte);
++    }
++
++    return 0;
++}
++
+ /* log error without aborting since linux seems to be using reserved bits */
+ static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
+ {
 -- 
 MST
 
