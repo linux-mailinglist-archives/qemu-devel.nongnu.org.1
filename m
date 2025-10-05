@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738C5BB9BEF
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A52BB9C10
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:23:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFk-00043W-8d; Sun, 05 Oct 2025 15:18:40 -0400
+	id 1v5UFf-0003To-Mz; Sun, 05 Oct 2025 15:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFN-0002OX-Se
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFO-0002RS-Su
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFB-0006aM-LN
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFL-0006b7-7F
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691879;
+ s=mimecast20190719; t=1759691893;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=BsiJ9Y13upyZ0kSNDp9aMBJN8UvV+sDrJuDdQ0y5Q0M=;
- b=UkayjyA7GT/+6KHLIrqMx8NHqTIEEk3Cmku93wT3/MqwvEqQMFNf9LEFZ6nOUJY/LLSL9B
- mw5qLQmFaQHJd5bpNdvtQnpaKiiPC4mLL9bBN0ueGuDAXFLiMnQRgUF10nGXkkGZQcXrWy
- 5EiDJqbmYoI8xjqWGD6cSVkOBBy8PEo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oGAY834jKYfbFDJ68UHHIZdDsuzgPXz3Cw6hb0ar51o=;
+ b=JcfZcsqHX3AeGEaYwyDWrM0RhxqorXn6KhXDBodfW4+Jsn2C4WNYWdxyHSvMMe907Lv4ZN
+ 09oH+YlVAI+wFBZ0XOSJCimrIuzaWHS/PboxYPTCUi657XCnF63T3haHw9IKVl3+D1qQYq
+ Uz5DZSG32u5/fElybhPDVINVmiQHQZ0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-102-A4K6x0YhPbCdOKgSdd7-4A-1; Sun, 05 Oct 2025 15:17:57 -0400
-X-MC-Unique: A4K6x0YhPbCdOKgSdd7-4A-1
-X-Mimecast-MFC-AGG-ID: A4K6x0YhPbCdOKgSdd7-4A_1759691876
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-41066f050a4so1555366f8f.1
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:57 -0700 (PDT)
+ us-mta-623-y2r6h5l6MPSfVotsXLKhMw-1; Sun, 05 Oct 2025 15:18:09 -0400
+X-MC-Unique: y2r6h5l6MPSfVotsXLKhMw-1
+X-Mimecast-MFC-AGG-ID: y2r6h5l6MPSfVotsXLKhMw_1759691878
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e375dab7dso18415455e9.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691876; x=1760296676;
+ d=1e100.net; s=20230601; t=1759691878; x=1760296678;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BsiJ9Y13upyZ0kSNDp9aMBJN8UvV+sDrJuDdQ0y5Q0M=;
- b=romOGwCG8HPObLoO/R2vwFxAMtvAG7NuqyB+wfc5GY96vrR2R6a6g2gUQ6CjYMG+0f
- y5sGF/xWdka/+T4ZnbxSDvUpMm4yETBBRQMWyLLDSyNcvgsyldn09X2vP+aFMfn1pJPz
- CsCt/6o2CyZyW3zWQ4ooJRaWGvFftNqlpJJ26m9kcUyOabbfqsYbVswOioZp+O3oZMHa
- oz3XIQfsjVlIhyR6AoV9j2Gxaf2vSMuhFiBZ9rZg1LObYlHezUhj1YH9teJeNmw5oRvo
- 59NiBSiSLFK24dKNhbpfMfml9GLiPyuwzfnXj8rFEQUTtv2suKMh8V7xY+S48lf37af8
- f/YA==
-X-Gm-Message-State: AOJu0YxTtu5+0f0dS9kpnxIJaIcXlu9DFDJGmCc1/TIYWMqHHtkfeB79
- 8wiqYI2I9SHoqzkyhs1Q728yFjhUx17HO57bHgj0AzXMU7/kTZC+xyFyOp2/flcVFN1Lq7+kWIQ
- OMiz+1++RGGIBxbZFD45p+wnUaEiJMXvsBgFp8RI6CdIdziPwOTv9YPksK+tLpfz+HQRfQOucBN
- gdCAeNHemDtYLsFxvwig83Qg0kRRLhN8JWDQ==
-X-Gm-Gg: ASbGncvaOe6uYyFnuaNRjxAtXQT2rC0oNv7z9TPDBJ7g9lgCOU4AazeDQhpeM8j6tUP
- l6lA2Xjch/BDYE3JzPtMpYBejJ3pvUKzDNLDaMIzBFRwaz5B6BFpcpDmkJhTb2mzUf+4hKCTV7L
- pMjet6BJBIvSywEOzNkVdlkqqEQzFCekP7rxcx8I9u/BIUgcphjkasudCMSDkXyhA75bBgEwRZB
- 2i6XaGCzIe60mn68mJrY3E79b5XvC8SVba5QqnssJI9IBAcEU78OBMgRRCPwHrJFVEjjaIbgCx6
- +z+dtZNY63y+GmbGaFA00GTWoT86oHp7KCsEfU4=
-X-Received: by 2002:a5d:64e8:0:b0:3e2:da00:44af with SMTP id
- ffacd0b85a97d-42567176bd3mr6732613f8f.36.1759691876213; 
- Sun, 05 Oct 2025 12:17:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJ5rjni9bo30IHHcLhTA82S275kGX4b/FUvcD9MP6/vucT6O956k7TyKlugPcWM1NKXuR/6A==
-X-Received: by 2002:a5d:64e8:0:b0:3e2:da00:44af with SMTP id
- ffacd0b85a97d-42567176bd3mr6732596f8f.36.1759691875588; 
- Sun, 05 Oct 2025 12:17:55 -0700 (PDT)
+ bh=oGAY834jKYfbFDJ68UHHIZdDsuzgPXz3Cw6hb0ar51o=;
+ b=q2faXsG70DbKNHQz6AfvLRTgSA1b21uXxkr+dI1uywqNjfiqfKosIKzsNQXrWCM583
+ y2NB4EOTjky9NsMGO8FcBzzzpYyiqxPcoI5Rlz6J3VguTh9wjDLAcA16ZylxocV8iosr
+ Rh60/YTWnliItQ9Rn1MFdpC+n5J6BXniDy2H2s/Iuxko4T5eya896tF8+nOAAvMWaKXr
+ jQMyNf6noJit+oYVDyCPYG7+FZmOSJcjDB4v/73fT/qCAhNl2C9Xoq4QRwSQVlRkf1w7
+ XfuEowRy2CBnlVd3FH0tGPxtDZP/mOoVVHEiqxRP5luv16QbgeTfyVTcMWVCAB/iev8p
+ ybQg==
+X-Gm-Message-State: AOJu0YzZNVJc22qaCb4M5s4euqhkgQtrAqxEYFv/HsGHih8qCqWP612t
+ 5tSlgIPL/BeYmxmV+jEr2jgc9pw6gHV27U4A5++ssO7g/7aoFn+5H6504elxwcoHvb7qkAsmpwb
+ xcKxAyhPSrY0r3k3ozjt48DTiZxjfEWbqwARBCFRBTGK75MncjGQmpG17TTaH6C56I4/w5QDTQz
+ n0nblBS7QSuKsECsecJV4KI2ameVBlYV4jyQ==
+X-Gm-Gg: ASbGncuElzCFglWf82mTvmbOHEEAFnAOmSAV4Yv5OhCotnatMk8zzoCf/VjURXF6FSN
+ va8NUe0kg/3CqE8dwvdwlLvmEKWZOgWANR+TEa/flSZzZKRtQmVNN3SwLbQJgEplMXwJBLwZll8
+ 5fubNkbfbXoPGKcTLinj+6cMCrKDV6f/pPx6foQgpH0haF2jxeJ2KnBQHr1wZowK5zBVQYtRGpu
+ m7MxCK8gb2AP8q9t500zT5z9vKf/qjcaoghgoNAizqj/RVemVsYlyuDmqn3pzUwC1dR+rUQ0z5H
+ TgMr231CAD3LMVFAQfdg2q7z2UcwaoHPzkwe6L0=
+X-Received: by 2002:a05:600c:a319:b0:46e:74cc:42b8 with SMTP id
+ 5b1f17b1804b1-46e74cc4609mr51030425e9.17.1759691878156; 
+ Sun, 05 Oct 2025 12:17:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2Rx4DnBOal6t//z0yM/sD+4kOgczG33Pu07EYw0/ix+ith9EWVS0PcJ7lVfH5jiZme8Yf8g==
+X-Received: by 2002:a05:600c:a319:b0:46e:74cc:42b8 with SMTP id
+ 5b1f17b1804b1-46e74cc4609mr51030315e9.17.1759691877627; 
+ Sun, 05 Oct 2025 12:17:57 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f0853sm17787138f8f.50.2025.10.05.12.17.54
+ 5b1f17b1804b1-46e723593d8sm135637725e9.11.2025.10.05.12.17.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:55 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:53 -0400
+ Sun, 05 Oct 2025 12:17:57 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:55 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 50/75] memory: Adjust event ranges to fit within notifier
- boundaries
-Message-ID: <2e4d32f0af7eaf87f556fb1fe802874c1b0a0799.1759691708.git.mst@redhat.com>
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 51/75] amd_iommu: Document '-device amd-iommu' common options
+Message-ID: <0888c071ff8370f118ce22c0fe873b13e11d319a.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -85,14 +83,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,54 +110,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Invalidating the entire address space (i.e. range of [0, ~0ULL]) is a
-valid and required operation by vIOMMU implementations. However, such
-invalidations currently trigger an assertion unless they originate from
-device IOTLB invalidations.
-
-Although in recent Linux guests this case is not exercised by the VTD
-implementation due to various optimizations, the assertion will be hit
-by upcoming AMD vIOMMU changes to support DMA address translation. More
-specifically, when running a Linux guest with VFIO passthrough device,
-and a kernel that does not contain commmit 3f2571fed2fa ("iommu/amd:
-Remove redundant domain flush from attach_device()").
-
-Remove the assertion altogether and adjust the range to ensure it does
-not cross notifier boundaries.
+Document the common parameters used when emulating AMD vIOMMU.
+Besides the two amd-iommu specific options: 'xtsup' and 'dma-remap', the
+the generic x86 IOMMU option 'intremap' is also included, since it is
+typically specified in QEMU command line examples and mailing list threads.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20201116165506.31315-6-eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-2-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-3-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- system/memory.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ qemu-options.hx | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/system/memory.c b/system/memory.c
-index cf8cad6961..5c6ccc5c57 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2044,13 +2044,9 @@ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
-         return;
-     }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 3ff10ec09d..9b4e870350 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -1238,6 +1238,29 @@ SRST
+         Accepts either the default root complex (pcie.0) or a
+         pxb-pcie based root complex.
  
--    if (notifier->notifier_flags & IOMMU_NOTIFIER_DEVIOTLB_UNMAP) {
--        /* Crop (iova, addr_mask) to range */
--        tmp.iova = MAX(tmp.iova, notifier->start);
--        tmp.addr_mask = MIN(entry_end, notifier->end) - tmp.iova;
--    } else {
--        assert(entry->iova >= notifier->start && entry_end <= notifier->end);
--    }
-+    /* Crop (iova, addr_mask) to range */
-+    tmp.iova = MAX(tmp.iova, notifier->start);
-+    tmp.addr_mask = MIN(entry_end, notifier->end) - tmp.iova;
++``-device amd-iommu[,option=...]``
++    Enables emulation of an AMD-Vi I/O Memory Management Unit (IOMMU).
++    Only available with ``-machine q35``, it supports the following options:
++
++    ``dma-remap=on|off`` (default: off)
++        Support for DMA address translation and access permission checking for
++        guests attaching passthrough devices to paging domains, using the AMD v1
++        I/O Page Table format. This enables ``-device vfio-pci,...`` to work
++        correctly with a guest using the DMA remapping feature of the vIOMMU.
++
++    ``intremap=on|off`` (default: auto)
++        Generic x86 IOMMU functionality implemented by ``amd-iommu`` device.
++        Enables interrupt remapping feature in guests, which is also required to
++        enable x2apic support.
++        Currently only available with ``kernel-irqchip=off|split``, it is
++        automatically enabled when either of those modes is in use, and disabled
++        with ``kernel-irqchip=on``.
++
++    ``xtsup=on|off`` (default: off)
++        Interrupt remapping table supports x2apic mode, enabling the use of
++        128-bit IRTE format with 32-bit destination field by the guest. Required
++        to support routing interrupts to vCPUs with APIC IDs larger than 0xff.
++
+ ERST
  
-     if (event->type & notifier->notifier_flags) {
-         notifier->notify(notifier, &tmp);
+ DEF("name", HAS_ARG, QEMU_OPTION_name,
 -- 
 MST
 
