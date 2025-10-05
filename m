@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8360EBB9A52
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C1FBB9A4C
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:42:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5Sg1-0000Fq-Pi; Sun, 05 Oct 2025 13:37:41 -0400
+	id 1v5Sg4-0000Hb-Fc; Sun, 05 Oct 2025 13:37:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Sfq-0000Br-QR; Sun, 05 Oct 2025 13:37:31 -0400
+ id 1v5Sfr-0000C8-Tv; Sun, 05 Oct 2025 13:37:34 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Sfp-0004bw-5M; Sun, 05 Oct 2025 13:37:30 -0400
+ id 1v5Sfq-0004c8-1s; Sun, 05 Oct 2025 13:37:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0208E15AA86;
- Sun, 05 Oct 2025 20:37:15 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 8857F15AA87;
+ Sun, 05 Oct 2025 20:37:16 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E85E9299733;
- Sun,  5 Oct 2025 20:37:18 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 430AD299734;
+ Sun,  5 Oct 2025 20:37:20 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Andrew Jones <ajones@ventanamicro.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Andrea Bolognani <abologna@redhat.com>,
+ Kashyap Chamarthy <kchamart@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 44/58] hw/riscv/riscv-iommu: Fix MSI table size limit
-Date: Sun,  5 Oct 2025 20:36:53 +0300
-Message-ID: <20251005173712.445160-6-mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 45/58] docs/interop/firmware: Add riscv64 to
+ FirmwareArchitecture
+Date: Sun,  5 Oct 2025 20:36:54 +0300
+Message-ID: <20251005173712.445160-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
 References: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
@@ -59,56 +60,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Andrea Bolognani <abologna@redhat.com>
 
-The MSI table is not limited to 4k. The only constraint the table has
-is that its base address must be aligned to its size, ensuring no
-offsets of the table size will overrun when added to the base address
-(see "8.5. MSI page tables" of the AIA spec).
+Descriptors using this value have been shipped for years
+by distros, so we just need to update the spec to match
+reality.
 
-Fixes: 0c54acb8243d ("hw/riscv: add RISC-V IOMMU base emulation")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250904132723.614507-2-ajones@ventanamicro.com>
+Signed-off-by: Andrea Bolognani <abologna@redhat.com>
+Reviewed-by: Kashyap Chamarthy <kchamart@redhat.com>
+Message-ID: <20250910121501.676219-1-abologna@redhat.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 4f7528295b3e6dfe1189f660fa7865ad972d82e7)
+(cherry picked from commit da14767b356c2342197708a997eeb0da053262a0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index 76e0fcd873..a4f62c89e2 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -557,6 +557,7 @@ static MemTxResult riscv_iommu_msi_write(RISCVIOMMUState *s,
-     MemTxResult res;
-     dma_addr_t addr;
-     uint64_t intn;
-+    size_t offset;
-     uint32_t n190;
-     uint64_t pte[2];
-     int fault_type = RISCV_IOMMU_FQ_TTYPE_UADDR_WR;
-@@ -564,16 +565,18 @@ static MemTxResult riscv_iommu_msi_write(RISCVIOMMUState *s,
+diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+index 745d21d822..ea88da0fec 100644
+--- a/docs/interop/firmware.json
++++ b/docs/interop/firmware.json
+@@ -76,12 +76,14 @@
+ #
+ # @loongarch64: 64-bit LoongArch. (since: 7.1)
+ #
++# @riscv64: 64-bit RISC-V.
++#
+ # @x86_64: 64-bit x86.
+ #
+ # Since: 3.0
+ ##
+ { 'enum' : 'FirmwareArchitecture',
+-  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'x86_64' ] }
++  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'riscv64', 'x86_64' ] }
  
-     /* Interrupt File Number */
-     intn = riscv_iommu_pext_u64(PPN_DOWN(gpa), ctx->msi_addr_mask);
--    if (intn >= 256) {
-+    offset = intn * sizeof(pte);
-+
-+    /* fetch MSI PTE */
-+    addr = PPN_PHYS(get_field(ctx->msiptp, RISCV_IOMMU_DC_MSIPTP_PPN));
-+    if (addr & offset) {
-         /* Interrupt file number out of range */
-         res = MEMTX_ACCESS_ERROR;
-         cause = RISCV_IOMMU_FQ_CAUSE_MSI_LOAD_FAULT;
-         goto err;
-     }
- 
--    /* fetch MSI PTE */
--    addr = PPN_PHYS(get_field(ctx->msiptp, RISCV_IOMMU_DC_MSIPTP_PPN));
--    addr = addr | (intn * sizeof(pte));
-+    addr |= offset;
-     res = dma_memory_read(s->target_as, addr, &pte, sizeof(pte),
-             MEMTXATTRS_UNSPECIFIED);
-     if (res != MEMTX_OK) {
+ ##
+ # @FirmwareTarget:
 -- 
 2.47.3
 
