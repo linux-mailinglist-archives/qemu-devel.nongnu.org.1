@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28FDBB9C4C
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09278BB9C54
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFg-0003ZY-VH; Sun, 05 Oct 2025 15:18:37 -0400
+	id 1v5UFe-0003HR-C6; Sun, 05 Oct 2025 15:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFK-0002ER-Ge
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFN-0002OT-Qq
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UF7-0006Zx-Nd
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFA-0006a7-Ub
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691873;
+ s=mimecast20190719; t=1759691875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6Ac5t+5JamsSWpgaQ7u9WqC+NkNvtLKNGeD6nXQRzw8=;
- b=E2CiT5nmAxrVEBh57CCt0vMk0lLJzy8KhO6BI1e+sdeH8Xy1c90cp0qR3hd0IwA/9b7tEy
- SNOrxrQk4KNaQXHHO83vZ6y6dK965fgmMTE1oxqEKYibHifLwAjp7GHjI12tM2wf4j58S/
- nLOCH5HLtWiB6UuGgwUBufaO6tLZ1Mo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4PrhgJgfyKAMoMVpOpkddsOkrdYd1EBxIW2i7TwGfmI=;
+ b=ZIiDeCzQwlLIyneOgm1bB4aaTZT+CJHUmwOvC9b1utYoJXkuONDAjF9gS42dMewwNiJ0N9
+ AWO2uDIDsXIy0QxIqZGvg+ahu4rdQe5UQlo7aBmh08stV7mDb+zV8fuZmGI0AQfnrTybJ8
+ wtTu5f/diuX0mEsCqCnZ4PZ5pDEpl4M=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-N8_govmGP9iWREAWctUTMw-1; Sun, 05 Oct 2025 15:17:51 -0400
-X-MC-Unique: N8_govmGP9iWREAWctUTMw-1
-X-Mimecast-MFC-AGG-ID: N8_govmGP9iWREAWctUTMw_1759691871
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3ece14b9231so2278353f8f.0
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:51 -0700 (PDT)
+ us-mta-436-_FK2ETdZN8qVoIO6mnxGmw-1; Sun, 05 Oct 2025 15:17:54 -0400
+X-MC-Unique: _FK2ETdZN8qVoIO6mnxGmw-1
+X-Mimecast-MFC-AGG-ID: _FK2ETdZN8qVoIO6mnxGmw_1759691873
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e3a049abaso22007825e9.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691870; x=1760296670;
+ d=1e100.net; s=20230601; t=1759691872; x=1760296672;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6Ac5t+5JamsSWpgaQ7u9WqC+NkNvtLKNGeD6nXQRzw8=;
- b=GybXkun7YWV+9atMZg3ci3t1HTrZ2IBjYF8TmUuhBhxFkpaaagqPrcyWc6TxhtfNOt
- lGOPGMdX/Tud3WYO0Sg1Du06/PKhlCvh1l2cSIBeMGsnD2dptirIf+r8OOPHWuQ5tJ6S
- bQtGdJydg1IT7WHHShW73LYvMhj0Gbzde2FfInSPCi+tzd6AEvKKlDZhUgTkUXggC0ZJ
- 4EY+R4gK1CJO194XhJ+4FpbTKb/zfnSbT4FEfVUKmYzrzhv9PLD9JVBeky2KJn/lYik2
- htfGotvwsNgV3KVLwhfBJ3mvVNu4z0F3aV669NkbtwRLmvgm2AzYX4mnMVl/LkYeqX32
- b9qA==
-X-Gm-Message-State: AOJu0YwDME7PjgJTplHdgJKruxLIH1VDUPaWdCJiZmzwclO0NUuKput4
- XtfC6LYNJNOzIy7ElseFyz2zWGbzzB0WtM7PhsTB3KeT8u/BawN9M4hSFf3UBVzeyxOkEM4O/AK
- IuMimnM+9anVORPJSxk2yYgjS241ttnSbHdTJkYVcOaoIROwp6Gp4xTIfkoRsjzxnFrlcnDuHTt
- OxZfiw0rnAcNJ3Yz0LjrQ/curJXi07mHRGXw==
-X-Gm-Gg: ASbGncs4b+CSIyvZOZlmWI8qin09ZfBF2gIsha9ueheg/f8ct/fPMbd6uNA1IHOS5ZV
- TZ/QBBuisZX5jtEESzIb5ROdZcsVqaBKjplfbwk+yx5nc05WTcTbb+smp3bbpVOUg7cPSrn4sxQ
- uQECe0V2az+2/i+BRbvkuaHbyO7Gy9L9NvcikH+c7S3TZhpiyx1OGSqcsCizKehpGtQOFuNC7Af
- /3Bfsg+3yB6i+5hKtwWdOAz11xFpgZUghpT/YJr7qYFoxujRzwPmkptSzQuNWnKRPMgXI40ERsO
- 5Y1EEGAVa2Oh/miywhAC7pojv9N76DfCSPhH9qY=
-X-Received: by 2002:a05:6000:402a:b0:3f3:c137:680e with SMTP id
- ffacd0b85a97d-4256719354fmr5656793f8f.43.1759691870344; 
- Sun, 05 Oct 2025 12:17:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1KeyiuZfKkYNFK4IKbC0ym6867jjDbIELzz9isSUNo4h97AFbIkPHNpAYD239sW3kK4owRQ==
-X-Received: by 2002:a05:6000:402a:b0:3f3:c137:680e with SMTP id
- ffacd0b85a97d-4256719354fmr5656778f8f.43.1759691869745; 
- Sun, 05 Oct 2025 12:17:49 -0700 (PDT)
+ bh=4PrhgJgfyKAMoMVpOpkddsOkrdYd1EBxIW2i7TwGfmI=;
+ b=o8rd1GN7Ue6isFfWRoUzZFKGtS1ARMgFBPhwSv/PF1pRSxGlcKaZR0G2E2xWzCCpnP
+ Qttwy2iKl+s+CkErvhY/KIBKZugLCfxE7xUKc+8WD5sKA4ig4xppCXfEb5DJXMlZnQS7
+ ah5jhZ7+QpPYW+gumS6GNGp4QJJL7JZhZpIT4vdwKQV7Nc3w36apG2WKfEazj6laaM96
+ Tfdr5KVwgKcGbLdYlXcFITMTos49XNRrWbB8LI7YtcyJw7Us64iwDTddiYDfwViE70jk
+ a9G01V13TZZIxqW0rNB/pN0yxujaOaSvS9+QOATCO8Sbo0h/iMPJwvK9nGN8DU5O7FDS
+ Rbuw==
+X-Gm-Message-State: AOJu0YyBKTbUbBFUfQgujNg1PC6kFqaszOLbVn4d0D3bebrOyunwLnxW
+ NB+I6BF2fDhjshbl7+C5Y1mmGvmcD38/zK8RYk0yyML7YTWjrXJlgMHW8WMt0e4d+nm8goECYlF
+ QUdTB7uFX43D0hiQ/+isJLdRRV3BgHGrSeouZ8hCizZI2fOgYLRozPklXHjDy+YwK0erULsd3Bc
+ 8zyrvHH8zV8gExkpp48/1u4aYLXGuAJTuWdw==
+X-Gm-Gg: ASbGncscunrFYiu+8EP4hb0KdziM+jTU93NJut8havkuZGxk7bF3xwddciek/rmXZ7M
+ W14T+AakWfWkDPr9Et7YuqOSJz5npu9MaN0cJRHUDmh9An2/6K847v+vd07L4sxtyYajNAFBgBK
+ J10ktHDPOYkoTQY9Yucp3KDVCJhHc5etX6Zo49T/UVVb0eSMxmfk8lBrFEgAnHx5eZj+tXe7geo
+ buKzDMwLbEsMADOgRrmvHx678MTbYe2bC3lRzpPASA8R6mDnlLfg//w5J4/8AmKU+dw34V+WRnS
+ oyEKyTxETTN0NBBivxOJYW9ohrBT10wZpl21n3U=
+X-Received: by 2002:a05:600c:37cd:b0:46e:23d3:6413 with SMTP id
+ 5b1f17b1804b1-46e710b23cfmr67730565e9.0.1759691872260; 
+ Sun, 05 Oct 2025 12:17:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqEbPnwAdt5mPeiOyYDSdCtDK1mFh+oYhWuPgIJumCYpLg8tW5pa7kMyZkWTn6L4dyd0sHuw==
+X-Received: by 2002:a05:600c:37cd:b0:46e:23d3:6413 with SMTP id
+ 5b1f17b1804b1-46e710b23cfmr67730375e9.0.1759691871667; 
+ Sun, 05 Oct 2025 12:17:51 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8b0068sm17489436f8f.26.2025.10.05.12.17.47
+ 5b1f17b1804b1-46e5b5f3015sm130169035e9.1.2025.10.05.12.17.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:49 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:47 -0400
+ Sun, 05 Oct 2025 12:17:51 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:49 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 47/75] tests/virtio-scsi: add a virtio_error() IOThread test
-Message-ID: <acaa3be3f7f73d9aafeb2454c01fe50eb8b4a807.1759691708.git.mst@redhat.com>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Qing Wang <qinwang@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 48/75] pcie_sriov: make pcie_sriov_pf_exit() safe on
+ non-SR-IOV devices
+Message-ID: <bab681f752048c3bc22d561b1d314c7ec16419c9.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -83,16 +85,16 @@ Content-Disposition: inline
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,67 +112,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Now that virtio_error() calls should work in an IOThread, add a
-virtio-scsi IOThread test cases that triggers virtio_error().
+Commit 3f9cfaa92c96 ("virtio-pci: Implement SR-IOV PF") added an
+unconditional call from virtio_pci_exit() to pcie_sriov_pf_exit().
 
+pcie_sriov_pf_exit() reads from the SR-IOV Capability in Configuration
+Space:
+
+  uint8_t *cfg = dev->config + dev->exp.sriov_cap;
+  ...
+  unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This results in undefined behavior when dev->exp.sriov_cap is 0 because
+this is not an SR-IOV device. For example, unparent_vfs() segfaults when
+total_vfs happens to be non-zero.
+
+Fix this by returning early from pcie_sriov_pf_exit() when
+dev->exp.sriov_cap is 0 because this is not an SR-IOV device.
+
+Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Reported-by: Qing Wang <qinwang@redhat.com>
+Buglink: https://issues.redhat.com/browse/RHEL-116443
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250922220149.498967-6-stefanha@redhat.com>
+Message-ID: <20250924155153.579495-1-stefanha@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/virtio-scsi-test.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ hw/pci/pcie_sriov.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/virtio-scsi-test.c b/tests/qtest/virtio-scsi-test.c
-index db10d572d0..e2350c52f6 100644
---- a/tests/qtest/virtio-scsi-test.c
-+++ b/tests/qtest/virtio-scsi-test.c
-@@ -311,6 +311,31 @@ fail:
-     unlink(tmp_path);
- }
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index 29474d749a..c4f88f0975 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -195,7 +195,9 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
  
-+static void test_iothread_virtio_error(void *obj, void *data,
-+                                       QGuestAllocator *t_alloc)
-+{
-+    QVirtioSCSIPCI *scsi_pci = obj;
-+    QVirtioSCSI *scsi = &scsi_pci->scsi;
-+    QVirtioSCSIQueues *vs;
-+    QVirtQueue *vq;
-+
-+    alloc = t_alloc;
-+    vs = qvirtio_scsi_init(scsi->vdev);
-+    vq = vs->vq[2];
-+
-+    /* Move avail.idx out of bounds to trigger virtio_error() */
-+    qvirtqueue_set_avail_idx(global_qtest, scsi->vdev, vq, vq->size * 2);
-+    scsi->vdev->bus->virtqueue_kick(scsi->vdev, vq);
-+
-+    /*
-+     * Reset the device out of the error state. If QEMU hangs or crashes then
-+     * this will fail.
-+     */
-+    qvirtio_reset(scsi->vdev);
-+
-+    qvirtio_scsi_pci_free(vs);
-+}
-+
- static void *virtio_scsi_hotplug_setup(GString *cmd_line, void *arg)
+ void pcie_sriov_pf_exit(PCIDevice *dev)
  {
-     g_string_append(cmd_line,
-@@ -383,6 +408,13 @@ static void register_virtio_scsi_test(void)
-     };
-     qos_add_test("iothread-attach-node", "virtio-scsi-pci",
-                  test_iothread_attach_node, &opts);
-+
-+    opts.before = virtio_scsi_setup_iothread;
-+    opts.edge = (QOSGraphEdgeOptions) {
-+        .extra_device_opts = "iothread=thread0",
-+    };
-+    qos_add_test("iothread-virtio-error", "virtio-scsi-pci",
-+                 test_iothread_virtio_error, &opts);
- }
+-    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
++    if (dev->exp.sriov_cap == 0) {
++        return;
++    }
  
- libqos_init(register_virtio_scsi_test);
+     if (dev->exp.sriov_pf.vf_user_created) {
+         uint16_t ven_id = pci_get_word(dev->config + PCI_VENDOR_ID);
+@@ -211,6 +213,8 @@ void pcie_sriov_pf_exit(PCIDevice *dev)
+             pci_config_set_device_id(dev->exp.sriov_pf.vf[i]->config, vf_dev_id);
+         }
+     } else {
++        uint8_t *cfg = dev->config + dev->exp.sriov_cap;
++
+         unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+     }
+ }
 -- 
 MST
 
