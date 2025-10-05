@@ -2,40 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB13CBB9A2E
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7C6BB9A55
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:42:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5Sg6-0000Im-56; Sun, 05 Oct 2025 13:37:46 -0400
+	id 1v5SgK-0000Mf-N8; Sun, 05 Oct 2025 13:38:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Sfy-0000FA-RH; Sun, 05 Oct 2025 13:37:39 -0400
+ id 1v5SgI-0000MP-BA; Sun, 05 Oct 2025 13:37:58 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Sfw-0004d2-0e; Sun, 05 Oct 2025 13:37:37 -0400
+ id 1v5SgG-0004dA-CN; Sun, 05 Oct 2025 13:37:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E0C0B15AA8B;
- Sun, 05 Oct 2025 20:37:20 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B6C2915AA8C;
+ Sun, 05 Oct 2025 20:37:22 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 888FA299737;
- Sun,  5 Oct 2025 20:37:24 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 257CA299738;
+ Sun,  5 Oct 2025 20:37:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Vladimir Isaev <vladimir.isaev@syntacore.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org,
+ "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
+ Sebastien Boeuf <seb@rivosinc.com>, Tomasz Jeznach <tjeznach@rivosinc.com>,
+ Weiwei Li <liwei1518@gmail.com>, Nutty Liu <liujingqi@lanxincomputing.com>,
+ Chen Pei <cp0613@linux.alibaba.com>,
+ =?UTF-8?q?Fangyu=20Yu=C2=A0?= <fangyu.yu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 48/58] target/riscv: do not use translator_ldl in
- opcode_at
-Date: Sun,  5 Oct 2025 20:36:57 +0300
-Message-ID: <20251005173712.445160-10-mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 49/58] hw/riscv/riscv-iommu: Fixup PDT Nested Walk
+Date: Sun,  5 Oct 2025 20:36:58 +0300
+Message-ID: <20251005173712.445160-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
 References: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,47 +64,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Isaev <vladimir.isaev@syntacore.com>
+From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-opcode_at is used only in semihosting checks to match opcodes with expected
-pattern.
+Current implementation is wrong when iohgatp != bare. The RISC-V
+IOMMU specification has defined that the PDT is based on GPA, not
+SPA. So this patch fixes the problem, making PDT walk correctly
+when the G-stage table walk is enabled.
 
-This is not a translator and if we got following assert if page is not in TLB:
-qemu-system-riscv64: ../accel/tcg/translator.c:363: record_save: Assertion
-`offset == db->record_start + db->record_len' failed.
-
-Fixes: 1f9c4462334f ("target/riscv: Use translator_ld* for everything")
-Signed-off-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250815140633.86920-1-vladimir.isaev@syntacore.com>
+Fixes: 0c54acb8243d ("hw/riscv: add RISC-V IOMMU base emulation")
+Cc: qemu-stable@nongnu.org
+Cc: Sebastien Boeuf <seb@rivosinc.com>
+Cc: Tomasz Jeznach <tjeznach@rivosinc.com>
+Reviewed-by: Weiwei Li <liwei1518@gmail.com>
+Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
+Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Tested-by: Chen Pei <cp0613@linux.alibaba.com>
+Tested-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Message-ID: <20250913041233.972870-1-guoren@kernel.org>
 [ Changes by AF:
- - Fixup header includes after rebase
+ - Add braces to if statements
 ]
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit a86d3352ab70f33f5feabbf9bad9450d3c19d0bf)
+(cherry picked from commit 15abfced803929f935bb59a0e1b02558bd8325c4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index d6651f244f..fc31b21f29 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -25,6 +25,7 @@
- #include "exec/helper-gen.h"
- 
- #include "exec/translator.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/translation-block.h"
- #include "exec/log.h"
- #include "semihosting/semihost.h"
-@@ -1167,7 +1168,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
-     CPUState *cpu = ctx->cs;
-     CPURISCVState *env = cpu_env(cpu);
- 
--    return translator_ldl(env, &ctx->base, pc);
-+    return cpu_ldl_code(env, pc);
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index a4f62c89e2..92ba45bed7 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -868,6 +868,145 @@ static bool riscv_iommu_validate_process_ctx(RISCVIOMMUState *s,
+     return true;
  }
  
- #define SS_MMU_INDEX(ctx) (ctx->mem_idx | MMU_IDX_SS_WRITE)
++/**
++ * pdt_memory_read: PDT wrapper of dma_memory_read.
++ *
++ * @s: IOMMU Device State
++ * @ctx: Device Translation Context with devid and pasid set
++ * @addr: address within that address space
++ * @buf: buffer with the data transferred
++ * @len: length of the data transferred
++ * @attrs: memory transaction attributes
++ */
++static MemTxResult pdt_memory_read(RISCVIOMMUState *s,
++                                   RISCVIOMMUContext *ctx,
++                                   dma_addr_t addr,
++                                   void *buf, dma_addr_t len,
++                                   MemTxAttrs attrs)
++{
++    uint64_t gatp_mode, pte;
++    struct {
++        unsigned char step;
++        unsigned char levels;
++        unsigned char ptidxbits;
++        unsigned char ptesize;
++    } sc;
++    MemTxResult ret;
++    dma_addr_t base = addr;
++
++    /* G stages translation mode */
++    gatp_mode = get_field(ctx->gatp, RISCV_IOMMU_ATP_MODE_FIELD);
++    if (gatp_mode == RISCV_IOMMU_DC_IOHGATP_MODE_BARE) {
++        goto out;
++    }
++
++    /* G stages translation tables root pointer */
++    base = PPN_PHYS(get_field(ctx->gatp, RISCV_IOMMU_ATP_PPN_FIELD));
++
++    /* Start at step 0 */
++    sc.step = 0;
++
++    if (s->fctl & RISCV_IOMMU_FCTL_GXL) {
++        /* 32bit mode for GXL == 1 */
++        switch (gatp_mode) {
++        case RISCV_IOMMU_DC_IOHGATP_MODE_SV32X4:
++            if (!(s->cap & RISCV_IOMMU_CAP_SV32X4)) {
++                return MEMTX_ACCESS_ERROR;
++            }
++            sc.levels    = 2;
++            sc.ptidxbits = 10;
++            sc.ptesize   = 4;
++            break;
++        default:
++            return MEMTX_ACCESS_ERROR;
++        }
++    } else {
++        /* 64bit mode for GXL == 0 */
++        switch (gatp_mode) {
++        case RISCV_IOMMU_DC_IOHGATP_MODE_SV39X4:
++            if (!(s->cap & RISCV_IOMMU_CAP_SV39X4)) {
++                return MEMTX_ACCESS_ERROR;
++            }
++            sc.levels    = 3;
++            sc.ptidxbits = 9;
++            sc.ptesize   = 8;
++            break;
++        case RISCV_IOMMU_DC_IOHGATP_MODE_SV48X4:
++            if (!(s->cap & RISCV_IOMMU_CAP_SV48X4)) {
++                return MEMTX_ACCESS_ERROR;
++            }
++            sc.levels    = 4;
++            sc.ptidxbits = 9;
++            sc.ptesize   = 8;
++            break;
++        case RISCV_IOMMU_DC_IOHGATP_MODE_SV57X4:
++            if (!(s->cap & RISCV_IOMMU_CAP_SV57X4)) {
++                return MEMTX_ACCESS_ERROR;
++            }
++            sc.levels    = 5;
++            sc.ptidxbits = 9;
++            sc.ptesize   = 8;
++            break;
++        default:
++            return MEMTX_ACCESS_ERROR;
++        }
++    }
++
++    do {
++        const unsigned va_bits = (sc.step ? 0 : 2) + sc.ptidxbits;
++        const unsigned va_skip = TARGET_PAGE_BITS + sc.ptidxbits *
++                                 (sc.levels - 1 - sc.step);
++        const unsigned idx = (addr >> va_skip) & ((1 << va_bits) - 1);
++        const dma_addr_t pte_addr = base + idx * sc.ptesize;
++
++        /* Address range check before first level lookup */
++        if (!sc.step) {
++            const uint64_t va_mask = (1ULL << (va_skip + va_bits)) - 1;
++            if ((addr & va_mask) != addr) {
++                return MEMTX_ACCESS_ERROR;
++            }
++        }
++
++        /* Read page table entry */
++        if (sc.ptesize == 4) {
++            uint32_t pte32 = 0;
++            ret = ldl_le_dma(s->target_as, pte_addr, &pte32, attrs);
++            pte = pte32;
++        } else {
++            ret = ldq_le_dma(s->target_as, pte_addr, &pte, attrs);
++        }
++        if (ret != MEMTX_OK) {
++            return ret;
++        }
++
++        sc.step++;
++        hwaddr ppn = pte >> PTE_PPN_SHIFT;
++
++        if (!(pte & PTE_V)) {
++            return MEMTX_ACCESS_ERROR; /* Invalid PTE */
++        } else if (!(pte & (PTE_R | PTE_W | PTE_X))) {
++            base = PPN_PHYS(ppn); /* Inner PTE, continue walking */
++        } else if ((pte & (PTE_R | PTE_W | PTE_X)) == PTE_W) {
++            return MEMTX_ACCESS_ERROR; /* Reserved leaf PTE flags: PTE_W */
++        } else if ((pte & (PTE_R | PTE_W | PTE_X)) == (PTE_W | PTE_X)) {
++            return MEMTX_ACCESS_ERROR; /* Reserved leaf PTE flags: PTE_W + PTE_X */
++        } else if (ppn & ((1ULL << (va_skip - TARGET_PAGE_BITS)) - 1)) {
++            return MEMTX_ACCESS_ERROR; /* Misaligned PPN */
++        } else {
++            /* Leaf PTE, translation completed. */
++            base = PPN_PHYS(ppn) | (addr & ((1ULL << va_skip) - 1));
++            break;
++        }
++
++        if (sc.step == sc.levels) {
++            return MEMTX_ACCESS_ERROR; /* Can't find leaf PTE */
++        }
++    } while (1);
++
++out:
++    return dma_memory_read(s->target_as, base, buf, len, attrs);
++}
++
+ /*
+  * RISC-V IOMMU Device Context Loopkup - Device Directory Tree Walk
+  *
+@@ -1040,7 +1179,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+          */
+         const int split = depth * 9 + 8;
+         addr |= ((ctx->process_id >> split) << 3) & ~TARGET_PAGE_MASK;
+-        if (dma_memory_read(s->target_as, addr, &de, sizeof(de),
++        if (pdt_memory_read(s, ctx, addr, &de, sizeof(de),
+                             MEMTXATTRS_UNSPECIFIED) != MEMTX_OK) {
+             return RISCV_IOMMU_FQ_CAUSE_PDT_LOAD_FAULT;
+         }
+@@ -1055,7 +1194,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx)
+ 
+     /* Leaf entry in PDT */
+     addr |= (ctx->process_id << 4) & ~TARGET_PAGE_MASK;
+-    if (dma_memory_read(s->target_as, addr, &dc.ta, sizeof(uint64_t) * 2,
++    if (pdt_memory_read(s, ctx, addr, &dc.ta, sizeof(uint64_t) * 2,
+                         MEMTXATTRS_UNSPECIFIED) != MEMTX_OK) {
+         return RISCV_IOMMU_FQ_CAUSE_PDT_LOAD_FAULT;
+     }
 -- 
 2.47.3
 
