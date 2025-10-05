@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F16BB9C13
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8E9BB9C45
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:25:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UGY-0006Kb-2m; Sun, 05 Oct 2025 15:19:30 -0400
+	id 1v5UGR-0005qm-P5; Sun, 05 Oct 2025 15:19:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFi-00042y-QS
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:38 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFl-0004UC-FD
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFe-0006f0-Lv
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:38 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFi-0006fJ-1R
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691913;
+ s=mimecast20190719; t=1759691916;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9vjWwtD4aooS8gd5dv5Dc5knrdpDrnJ6iJ12o3b9lhw=;
- b=cfyupdR/q/+WYyTsg2lzdcpg6l49gNYlzoWG5QNRWNR2UuONPVLilF2IDyLJImEvICP9Pm
- hwmgzZEYbjiNMHBVDV214zylp/5uQVz7EFvwIJOxZKadqE6FxfpdG65kX2PSebs2Sk4sxt
- NuKLSDelymitXYEL5k0aVngu/N8oHGw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=r7Zh1GmB+h9beTPga1Sxsa0PNr++51jOf+TUxOiKSc0=;
+ b=SUZL3n8Jo4anVZXZj0BAlt7JPgxsCEcPxbuqI8Uk08M2yQAnwlaOiyfYqHMMLntP93Tyom
+ KXb2WPUSg7+muyzB9dHjTUZ+PjpvHr/eJ2mqgmO8BWXlVygIl5jgKiuGsRM2RBPEGWbtYg
+ tInJuIHrYaUJf7NRBoQsItC1WTwrxDg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-Pojk_GhzMKOhBj9UcLsb0w-1; Sun, 05 Oct 2025 15:18:32 -0400
-X-MC-Unique: Pojk_GhzMKOhBj9UcLsb0w-1
-X-Mimecast-MFC-AGG-ID: Pojk_GhzMKOhBj9UcLsb0w_1759691911
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-46e4fa584e7so16710975e9.0
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:31 -0700 (PDT)
+ us-mta-333-Wvxl2j1oPkGF_yLDZ3oNAQ-1; Sun, 05 Oct 2025 15:18:34 -0400
+X-MC-Unique: Wvxl2j1oPkGF_yLDZ3oNAQ-1
+X-Mimecast-MFC-AGG-ID: Wvxl2j1oPkGF_yLDZ3oNAQ_1759691914
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3f93db57449so1943986f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691911; x=1760296711;
+ d=1e100.net; s=20230601; t=1759691913; x=1760296713;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9vjWwtD4aooS8gd5dv5Dc5knrdpDrnJ6iJ12o3b9lhw=;
- b=BGgDlJr1/mySpOldiHZyowE/hAAg1+IJn9PGKLzqJk7au28S8diQcNIUl+xF8lqXfA
- bdh3bUm3xTQP+jkbGAg1Rr6xwKGYzQQbRjSh23Hl0xM/2N4nJPOtNEsLDFilK3+VYf32
- wmQ+K4Q+TeP6QcfP7QmeE9Q4cEXWOB4w7daMOzZ8vh0NmtX6dT9wLzpndpvDbDmmFHeS
- E39Tm8puJMXqz0IBXcUi41jDBUR4uO5GpSjTNE4fRs6VLoNwwWBf0CiP4sw248tbZKde
- blKTbAZxX1gyirvStTIvG/O3lb9maUefRr7GRxrMRCX4siZDkVI1CJu9WKWzpy4pTPSO
- Ztlg==
-X-Gm-Message-State: AOJu0YxUOdtcTJYM5dm/gQoqa2jiSxM38ihlpo/gtsufy6UT3DakNNsc
- 9hf8S07HrOGUTmOG5CkG6QGMsvRHRn8IVD+qj0A/YltPLhNSkiGjv0GS4AwnYwO3kKm8M8QXQ/m
- 1e0VloXESmT6eLwliwypiIRWacJ8lIbVJpvVhUryeHNNC9Aq5O8GJTd12HGbg5zeAfZiABx2P09
- RQBpyfQGnYl+KIsnBQG+8ZnyCKDhkomyrhow==
-X-Gm-Gg: ASbGnctpp20CluGYQKjF4r7416vvCQs0bjHt6PwORIYXkezOdLXVZWWNruATvSM5Ttr
- FWEeKYSyPdot+RI5p5RgyHIpanun8XBKZrSQEJK/sfDmFWpt5QcQW2hS8eXZQoCk8uj31fDRA/I
- 75KYTnNTQckFYbS925m32t2wSEjkMXoY4IGV2KwUJ3d0gofP4ZIBN+AqLR4goa+RxT+I0hua/4A
- eGizSN4T7zXvaOCk5iroBQfC+0UZ+gWFWQZmYI6Hbhf2k0AtSAAdjKFVCi4unVUQFxhE4DP+BzF
- ZA8zqWAvT8U0EThIdsObXqIS1WYvZmiy6nQiY6Y=
-X-Received: by 2002:a05:600c:8284:b0:46e:3d50:360e with SMTP id
- 5b1f17b1804b1-46e7113f799mr72600075e9.18.1759691910559; 
- Sun, 05 Oct 2025 12:18:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbWRKR6YeXJCG6P0qO56u3m3wTUshuNv9AD2x7fZveX9Hb3spIE2rfYB9wZySbcODm9Zr2lg==
-X-Received: by 2002:a05:600c:8284:b0:46e:3d50:360e with SMTP id
- 5b1f17b1804b1-46e7113f799mr72599875e9.18.1759691909961; 
- Sun, 05 Oct 2025 12:18:29 -0700 (PDT)
+ bh=r7Zh1GmB+h9beTPga1Sxsa0PNr++51jOf+TUxOiKSc0=;
+ b=i+zuuwqaMMDDahK/UFNtgxgFv3Wv43UU59KCwyEDv0hmdnPqFjJ2T/6AA784h5rOEH
+ 4sFkINtGDCfd4Xt0J4J8L+Ge+ygIaYV59VLHvBQGpVbhLCEOQiuFUopupXJKgz1C6vSF
+ qktTqDJg+bUX0lQdMH7sAk7/q2kdjYM4UnqZ0mL+uyrG7bp1rMyJIAaCNnrgWCulRuqL
+ j/Xcoe2vP01BEScOWuxhzo2I+F70U+btrnrmjOi+sud6ngJPn0kkfrrDsitTe2UfVfsQ
+ 7SJ4aFpvsu8axNDEJqB9pElYPAZg85fBGc3Hd/ZSf5px+DNcpa7YieKUlZXo42tB51i0
+ N20w==
+X-Gm-Message-State: AOJu0YzvaqEEwb7Xi2CimDMS5JhV1us0KmNoM+NtkMmr75dsZwc9eMR/
+ x4vs50C7EsqBo3ozXUGdxcjkAoFiuErdjv6YuAEUNJ400m3Xjv4ULwoEpBuUPGxtPDz8gruBKJu
+ b/FAOpIyJcyaOb43UsSIGKh+/Bm3DlSVyXsPw/7X+PB8X2rbdud70H3a/+9Q+79gn9BOF4gx3xV
+ QnD3mBqnH8uDPAn0ASPeZTvqBedEanp/Wf1A==
+X-Gm-Gg: ASbGnctgmSrdkkz1yCxGh8kHFQJdExeUtaHLpihu4K96hxxwi0Ywfoa0F5W4cn1QR6g
+ p9xikTM9MaL9cDumJYfZsCPqicCfihpDwvYOkjV6ub5MgAQTDvA5pyc55N7UzTx/IfPsseUd9B8
+ dxw4u27PObtLOeYak7gM3lk3setPs6ET5nCHv9CJQA1qYQmAaiW4pjKG4rfEHOykjqGNtoOjYIG
+ DVvajpA+9LK829qTRfvgwM9vuBhCg1RE3lZvni2z5eWKE/H4rRo8BaYqqeK56j1QbeyM2a2sTRN
+ KmkEaXW+clfRkyZEMHSuVMSKn/WPkV4h6bOJQjo=
+X-Received: by 2002:a05:6000:2204:b0:408:5363:8266 with SMTP id
+ ffacd0b85a97d-425671b07c1mr6599710f8f.44.1759691913227; 
+ Sun, 05 Oct 2025 12:18:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG8cxAq4obRj8OFJxz7gB7jh0hMkedXPXfzEp4BqapU+YwJSQpNhn/5MQ4NMlydgu6dcYmpxw==
+X-Received: by 2002:a05:6000:2204:b0:408:5363:8266 with SMTP id
+ ffacd0b85a97d-425671b07c1mr6599684f8f.44.1759691912604; 
+ Sun, 05 Oct 2025 12:18:32 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e7234f547sm131260915e9.9.2025.10.05.12.18.28
+ ffacd0b85a97d-4255d8f0392sm17629852f8f.42.2025.10.05.12.18.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:18:29 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:18:28 -0400
+ Sun, 05 Oct 2025 12:18:31 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:18:30 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 66/75] amd_iommu: Add dma-remap property to AMD vIOMMU device
-Message-ID: <8a8837f903230919459c2df3c9584372fbe65312.1759691708.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 67/75] amd_iommu: Toggle address translation mode on devtab
+ entry invalidation
+Message-ID: <5670069df966ac146cc404011af23c257380368d.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -112,94 +113,163 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-In order to enable device assignment with IOMMU protection and guest DMA
-address translation, IOMMU MAP notifier support is necessary to allow users
-like VFIO to synchronize the shadow page tables i.e. to receive
-notifications when the guest updates its I/O page tables and replay the
-mappings onto host I/O page tables.
-
-Provide a new dma-remap property to govern the ability to register for MAP
-notifications, effectively providing global control over the DMA address
-translation functionality that was implemented in previous changes.
-
-Note that DMA remapping support also requires the vIOMMU is configured with
-the NpCache capability, so a guest driver issues IOMMU invalidations for
-both map() and unmap() operations. This capability is already set by default
-and written to the configuration in amdvi_pci_realize() as part of
-AMDVI_CAPAB_FEATURES.
+A guest must issue an INVALIDATE_DEVTAB_ENTRY command after changing a
+Device Table entry (DTE) e.g. after attaching a device and setting up its
+DTE. When intercepting this event, determine if the DTE has been configured
+for paging or not, and toggle the appropriate memory regions to allow DMA
+address translation for the address space if needed. Requires dma-remap=on.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-18-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-19-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.h |  3 +++
- hw/i386/amd_iommu.c | 24 +++++++++++++++++-------
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ hw/i386/amd_iommu.c | 122 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 120 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index b51aa74368..e1354686b6 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -418,6 +418,9 @@ struct AMDVIState {
-     /* Interrupt remapping */
-     bool ga_enabled;
-     bool xtsup;
-+
-+    /* DMA address translation */
-+    bool dma_remap;
- };
- 
- uint64_t amdvi_extended_feature_register(AMDVIState *s);
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index e9ce7b46e8..ce5d4c3662 100644
+index ce5d4c3662..e916dcb2be 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -990,7 +990,9 @@ static void amdvi_iommu_address_space_sync_all(AMDVIState *s)
-  */
- static void amdvi_switch_address_space(AMDVIAddressSpace *amdvi_as)
- {
--    if (amdvi_as->addr_translation) {
-+    AMDVIState *s = amdvi_as->iommu_state;
-+
-+    if (s->dma_remap && amdvi_as->addr_translation) {
-         /* Enabling DMA region */
-         memory_region_set_enabled(&amdvi_as->iommu_nodma, false);
-         memory_region_set_enabled(MEMORY_REGION(&amdvi_as->iommu), true);
-@@ -2193,12 +2195,19 @@ static int amdvi_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
-     AMDVIAddressSpace *as = container_of(iommu, AMDVIAddressSpace, iommu);
-     AMDVIState *s = as->iommu_state;
- 
--    if (new & IOMMU_NOTIFIER_MAP) {
--        error_setg(errp,
--                   "device %02x.%02x.%x requires iommu notifier which is not "
--                   "currently supported", as->bus_num, PCI_SLOT(as->devfn),
--                   PCI_FUNC(as->devfn));
--        return -EINVAL;
-+    /*
-+     * Accurate synchronization of the vIOMMU page tables required to support
-+     * MAP notifiers is provided by the dma-remap feature. In addition, this
-+     * also requires that the vIOMMU presents the NpCache capability, so a guest
-+     * driver issues invalidations for both map() and unmap() operations. The
-+     * capability is already set by default as part of AMDVI_CAPAB_FEATURES and
-+     * written to the configuration in amdvi_pci_realize().
-+     */
-+    if (!s->dma_remap && (new & IOMMU_NOTIFIER_MAP)) {
-+        error_setg_errno(errp, ENOTSUP,
-+            "device %02x.%02x.%x requires dma-remap=1",
-+            as->bus_num, PCI_SLOT(as->devfn), PCI_FUNC(as->devfn));
-+        return -ENOTSUP;
+@@ -1032,18 +1032,136 @@ static void amdvi_reset_address_translation_all(AMDVIState *s)
      }
+ }
  
-     /*
-@@ -2423,6 +2432,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
- static const Property amdvi_properties[] = {
-     DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
-     DEFINE_PROP_STRING("pci-id", AMDVIState, pci_id),
-+    DEFINE_PROP_BOOL("dma-remap", AMDVIState, dma_remap, false),
- };
++static void enable_dma_mode(AMDVIAddressSpace *as, bool inval_current)
++{
++    /*
++     * When enabling DMA mode for the purpose of isolating guest devices on
++     * a failure to retrieve or invalid DTE, all existing mappings must be
++     * dropped.
++     */
++    if (inval_current) {
++        IOMMUNotifier *n;
++        IOMMU_NOTIFIER_FOREACH(n, &as->iommu) {
++            amdvi_address_space_unmap(as, n);
++        }
++    }
++
++    if (as->addr_translation) {
++        return;
++    }
++
++    /* Installing DTE enabling translation, activate region */
++    as->addr_translation = true;
++    amdvi_switch_address_space(as);
++    /* Sync shadow page tables */
++    amdvi_address_space_sync(as);
++}
++
++/*
++ * If paging was previously in use in the address space
++ * - invalidate all existing mappings
++ * - switch to no_dma memory region
++ */
++static void enable_nodma_mode(AMDVIAddressSpace *as)
++{
++    IOMMUNotifier *n;
++
++    if (!as->addr_translation) {
++        /* passthrough is already active, nothing to do */
++        return;
++    }
++
++    as->addr_translation = false;
++    IOMMU_NOTIFIER_FOREACH(n, &as->iommu) {
++        /* Drop all mappings for the address space */
++        amdvi_address_space_unmap(as, n);
++    }
++    amdvi_switch_address_space(as);
++}
++
++/*
++ * A guest driver must issue the INVALIDATE_DEVTAB_ENTRY command to the IOMMU
++ * after changing a Device Table entry. We can use this fact to detect when a
++ * Device Table entry is created for a device attached to a paging domain and
++ * enable the corresponding IOMMU memory region to allow for DMA translation if
++ * appropriate.
++ */
++static void amdvi_update_addr_translation_mode(AMDVIState *s, uint16_t devid)
++{
++    uint8_t bus_num, devfn, dte_mode;
++    AMDVIAddressSpace *as;
++    uint64_t dte[4] = { 0 };
++    int ret;
++
++    /*
++     * Convert the devid encoded in the command to a bus and devfn in
++     * order to retrieve the corresponding address space.
++     */
++    bus_num = PCI_BUS_NUM(devid);
++    devfn = devid & 0xff;
++
++    /*
++     * The main buffer of size (AMDVIAddressSpace *) * (PCI_BUS_MAX) has already
++     * been allocated within AMDVIState, but must be careful to not access
++     * unallocated devfn.
++     */
++    if (!s->address_spaces[bus_num] || !s->address_spaces[bus_num][devfn]) {
++        return;
++    }
++    as = s->address_spaces[bus_num][devfn];
++
++    ret = amdvi_as_to_dte(as, dte);
++
++    if (!ret) {
++        dte_mode = (dte[0] >> AMDVI_DEV_MODE_RSHIFT) & AMDVI_DEV_MODE_MASK;
++    }
++
++    switch (ret) {
++    case 0:
++        /* DTE was successfully retrieved */
++        if (!dte_mode) {
++            enable_nodma_mode(as); /* DTE[V]=1 && DTE[Mode]=0 => passthrough */
++        } else {
++            enable_dma_mode(as, false); /* Enable DMA translation */
++        }
++        break;
++    case -AMDVI_FR_DTE_V:
++        /* DTE[V]=0, address is passed untranslated */
++        enable_nodma_mode(as);
++        break;
++    case -AMDVI_FR_DTE_RTR_ERR:
++    case -AMDVI_FR_DTE_TV:
++        /*
++         * Enforce isolation by using DMA in rare scenarios where the DTE cannot
++         * be retrieved or DTE[TV]=0. Existing mappings are dropped.
++         */
++        enable_dma_mode(as, true);
++        break;
++    }
++}
++
+ /* log error without aborting since linux seems to be using reserved bits */
+ static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
+ {
+     uint16_t devid = cpu_to_le16((uint16_t)extract64(cmd[0], 0, 16));
  
- static const VMStateDescription vmstate_amdvi_sysbus = {
++    trace_amdvi_devtab_inval(PCI_BUS_NUM(devid), PCI_SLOT(devid),
++                             PCI_FUNC(devid));
++
+     /* This command should invalidate internal caches of which there isn't */
+     if (extract64(cmd[0], 16, 44) || cmd[1]) {
+         amdvi_log_illegalcom_error(s, extract64(cmd[0], 60, 4),
+                                    s->cmdbuf + s->cmdbuf_head);
++        return;
++    }
++
++    /*
++     * When DMA remapping capability is enabled, check if updated DTE is setup
++     * for paging or not, and configure the corresponding memory regions.
++     */
++    if (s->dma_remap) {
++        amdvi_update_addr_translation_mode(s, devid);
+     }
+-    trace_amdvi_devtab_inval(PCI_BUS_NUM(devid), PCI_SLOT(devid),
+-                             PCI_FUNC(devid));
+ }
+ 
+ static void amdvi_complete_ppr(AMDVIState *s, uint64_t *cmd)
 -- 
 MST
 
