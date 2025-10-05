@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DA8BB99AF
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD60BB99D6
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:54:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5Rvq-0001l8-Kv; Sun, 05 Oct 2025 12:49:58 -0400
+	id 1v5Rvs-0001nk-HQ; Sun, 05 Oct 2025 12:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Rvm-0001hJ-Oq; Sun, 05 Oct 2025 12:49:54 -0400
+ id 1v5Rvo-0001lq-Vv; Sun, 05 Oct 2025 12:49:57 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Rvl-00077x-0z; Sun, 05 Oct 2025 12:49:54 -0400
+ id 1v5Rvm-00078K-SY; Sun, 05 Oct 2025 12:49:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E1F3E15AA3E;
- Sun, 05 Oct 2025 19:49:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1029A15AA3F;
+ Sun, 05 Oct 2025 19:49:27 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E918E2996F6;
- Sun,  5 Oct 2025 19:49:29 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 154EC2996F7;
+ Sun,  5 Oct 2025 19:49:30 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 77/81] migration: Fix state transition in
- postcopy_start() error handling
-Date: Sun,  5 Oct 2025 19:47:57 +0300
-Message-ID: <20251005164822.442861-17-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 78/81] include/system/memory.h: Clarify
+ address_space_destroy() behaviour
+Date: Sun,  5 Oct 2025 19:47:58 +0300
+Message-ID: <20251005164822.442861-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
@@ -59,47 +59,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juraj Marcin <jmarcin@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Commit 48814111366b ("migration: Always set DEVICE state") introduced
-DEVICE state to postcopy, which moved the actual state transition that
-leads to POSTCOPY_ACTIVE.
+address_space_destroy() doesn't actually immediately destroy the AS;
+it queues it to be destroyed via RCU. This means you can't g_free()
+the memory the AS struct is in until that has happened.
 
-However, the error handling part of the postcopy_start() function still
-expects the state POSTCOPY_ACTIVE, but depending on where an error
-happens, now the state can be either ACTIVE, DEVICE or CANCELLING, but
-never POSTCOPY_ACTIVE, as this transition now happens just before a
-successful return from the function.
+Clarify this in the documentation.
 
-Instead, accept any state except CANCELLING when transitioning to FAILED
-state.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 48814111366b ("migration: Always set DEVICE state")
-Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250826115145.871272-1-jmarcin@redhat.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20250929144228.1994037-2-peter.maydell@linaro.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 725a9e5f7885a3c0d0cd82022d6eb5a758ac9d47)
+(cherry picked from commit 9e7bfda4909cc688dd0327e17985019f08a78d5d)
+(Mjt: this is just a comment fix, but it makes subsequent changes to apply c
+leanly)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 10c216d25d..32b8ce5613 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2872,8 +2872,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- fail_closefb:
-     qemu_fclose(fb);
- fail:
--    migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
--                          MIGRATION_STATUS_FAILED);
-+    if (ms->state != MIGRATION_STATUS_CANCELLING) {
-+        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
-+    }
-     migration_block_activate(NULL);
-     migration_call_notifiers(ms, MIG_EVENT_PRECOPY_FAILED, NULL);
-     bql_unlock();
+diff --git a/include/system/memory.h b/include/system/memory.h
+index e2cd6ed126..30888daaeb 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -2715,9 +2715,14 @@ void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name);
+ /**
+  * address_space_destroy: destroy an address space
+  *
+- * Releases all resources associated with an address space.  After an address space
+- * is destroyed, its root memory region (given by address_space_init()) may be destroyed
+- * as well.
++ * Releases all resources associated with an address space.  After an
++ * address space is destroyed, the reference the AddressSpace had to
++ * its root memory region is dropped, which may result in the
++ * destruction of that memory region as well.
++ *
++ * Note that destruction of the AddressSpace is done via RCU;
++ * it is therefore not valid to free the memory the AddressSpace
++ * struct is in until after that RCU callback has completed.
+  *
+  * @as: address space to be destroyed
+  */
 -- 
 2.47.3
 
