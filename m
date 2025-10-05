@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319DEBB9C60
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 236DABB9C0D
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:22:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UGD-00053i-6p; Sun, 05 Oct 2025 15:19:09 -0400
+	id 1v5UG8-0004wf-9J; Sun, 05 Oct 2025 15:19:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFT-0002ao-3y
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFQ-0002Rv-OC
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFL-0006bQ-O6
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:22 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFN-0006bh-FN
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691894;
+ s=mimecast20190719; t=1759691896;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=VRpFNHgPPbK5fpFtNVbPj3sQYNUpsLNHYrc3Cj0nCsg=;
- b=LGtL+nFSnnZLUr0fLxMbinCBtc1uuXeGSWNjw8RAvKbvtO7+SvkH/8p6m7XXbRN5AtIN72
- D9F8mWDOM20EJK2uCeQO4WycZnqIlLZ94ETuP/S7+BSb9rZ0QkyV4+ULVVmn36qv+mEuND
- zBZkW8cteh7GcUGBBYotSrwmCe6yQH8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+0h9FTrsqm/g/IFQsQ8t5vQ0TqkRAGX49Oc6QIoc2zU=;
+ b=fFfKuH7W0+gApFj/LUDzNq7IA3l6vngQ5AhxD/rXUH2SgTWxivR2TPD1Ajf0leDLzhfM2I
+ wQC4SokUXHI1zWSXqQplubFrspRAlIEgR2Ryb0zsyIOref5if96g8C01us5K0Tr15YuMtH
+ 61rnNYDLI3F1mNyBrC0aGkKC9+6gaRs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-0ZS5dOcAP_Kwj4TSD2nzLg-1; Sun, 05 Oct 2025 15:18:13 -0400
-X-MC-Unique: 0ZS5dOcAP_Kwj4TSD2nzLg-1
-X-Mimecast-MFC-AGG-ID: 0ZS5dOcAP_Kwj4TSD2nzLg_1759691892
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-46e3dcb36a1so24953165e9.2
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:12 -0700 (PDT)
+ us-mta-55-wwPX6j4dO0G7fy4ypblObQ-1; Sun, 05 Oct 2025 15:18:15 -0400
+X-MC-Unique: wwPX6j4dO0G7fy4ypblObQ-1
+X-Mimecast-MFC-AGG-ID: wwPX6j4dO0G7fy4ypblObQ_1759691894
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3ee12ab7f33so2159564f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691892; x=1760296692;
+ d=1e100.net; s=20230601; t=1759691894; x=1760296694;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VRpFNHgPPbK5fpFtNVbPj3sQYNUpsLNHYrc3Cj0nCsg=;
- b=GOnOrSTuZxTQXmRMo/grkXrl8fUR428DpPZtHoPGxN+4Li1CPTm615NxqyZv4cIaQV
- 8IW+tRAVUmQHcf/WDUn9hXMD/t5blEaM2hKHyjtMdi9tExMUxIYWTt6mssq0T3UzTs9v
- JwgnDSsnwLGdqjhjf0ymX3BZi1Y3quPXUhvvnb/iZSYFiG0BWoig6D03XxEOfEMkwus0
- fy6fcFUPJNqrg31YuMkpdF5cqHYVcJDnCqQo6kSUfpS6M0z7ZpmzLwtOul+BpadyEhK4
- 1bRkfXAuwiakUxObrjBpmnbMdjNWW8SaxfkwsFQFl1GgHJyRkwZdp5YI+Uk/psKIaDzG
- bZPQ==
-X-Gm-Message-State: AOJu0YxFKD0SD2vIHSs5vv/2pHUtJAQ247hQFlnG+MdXK4/+m4cpvsJ0
- AP4rOx3Z7k/IhftH7Tfi/T5GDeDlndp0CfOJXd/9WDfogM7jgPJUR4eTkHTc4ngiJ3WNmoAm/6O
- TB31nP1iiD19dHCytKmXBUM84YHrFOec0A+xLhwFwhS9EBi1JkX1PloX1Yf2Z4iANaBH0/MaRmV
- S08URrhkyvhMv8VeMYCyluMJOXnTw8AIz1uw==
-X-Gm-Gg: ASbGncsAKejOKgDiu/mN1XC0Ui0caVLL+CJc18YOJF0sykhtuT2pYTZmh7SfD6BUEVu
- M6eOBRudNs0MXuoxHf8bWf28XAaAnCJFGXm0LT+3AGmaMXTyjZgzf9YO7KviyXWEYPxZlAgVbqV
- TlNSVWO3Q5SXp6ZPOe8VeZOTiCEeuujzBb1g7wzjValOeqRx7h+HrDO3SPW6yBDsxKP9R9TTrIN
- QXui0MXiQm97pWAgrUwqtfAwSAhS3U4Oj+pzxttsmehbqwaZSzylamVI1N3Vq7M8F9LGxC613KS
- xlGDYgBTQpFBIBYzCeow8ELKz15ONllXgON0yiI=
-X-Received: by 2002:a05:600c:c111:b0:46e:1b89:77f1 with SMTP id
- 5b1f17b1804b1-46e793feb40mr30967525e9.9.1759691891486; 
- Sun, 05 Oct 2025 12:18:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHl3ZecWmg6mZlVpPSyYDkX74MDKqzRZ1HNJ0XHkecduebYpDX4xkqUVMX9nClZ1xreciYFrw==
-X-Received: by 2002:a05:600c:c111:b0:46e:1b89:77f1 with SMTP id
- 5b1f17b1804b1-46e793feb40mr30967395e9.9.1759691890929; 
- Sun, 05 Oct 2025 12:18:10 -0700 (PDT)
+ bh=+0h9FTrsqm/g/IFQsQ8t5vQ0TqkRAGX49Oc6QIoc2zU=;
+ b=aLwoQWS5PHjv+rTatCrn0d7QbGeEAw25A8L6QmPF3oNI/EQQOYNduLzSUdGV5WU0kR
+ 962Kml8lNKOBkbjOKEEcAW4Jcg/+c5J/O9Mkniyq6/4p2awl7tRGIa29FvjESmidyDSC
+ Tq9EGuPZ81+ml4chU2INbTLiGG3UVpLlWq5kWl7vd54zJRpAIPqYicfEQ7ciIVRuNFxD
+ VnpALdr9TlAtHVjL8tsTfMzTBA9DqoBXaKXXhq7VJmM9bUxv8eYRbq2FaynvhLfZvrfu
+ hmTAuZmUDUJQD/4GIxWGOOM01LAZvOU0g4ePxtlfNNKN/cK1u+9Cgjf37mcJXyFInmYf
+ y2aQ==
+X-Gm-Message-State: AOJu0Yxrw7OST51Y8AsB9pPoQTjd/Hoqr8Pr/+d+omtaQqKEs8sScQ/h
+ DBSmPqMfIUbVUtUeaGgVksepwDDyYUffkeY1UrNPSYLUgFokQHf+bfsdBKMZdmkxxWjiyBYlFQ8
+ l/ynLH0kRSVVYYQd2dLwtVcOw4EDj8OY/+a2ysrbA+TcPiH87l0IISgTB12NdoDAy667vgOfeBN
+ hO+V9Ed0L4KoAZ1SWEe4GWp9cmJt6TQojeZQ==
+X-Gm-Gg: ASbGncsgoQ+CBRhXwpHq/OztJzlX7gS73FiCPK/EkJMsNPJY8pgSvKhWcGHVSYHM12s
+ oK0QuEBfEUu/SAAHR1LnsVzE4FhossBT0j+W0zdi4NAgxfGuqQ+kFeEUpOKqAvmqagOEWcNccWc
+ G6Cod1QkYVqOKNaxUD6+1gqYLT9SmMKRBurnkYyu/R8A8TgbWsAGpFDDRdII1FhIF1nP2VHMuRf
+ 1OLpUtGWMfS0Wo+rF+FKOn/VtdjiW8RZuRKVrV6a+ps6Pl98tzb9HIx5lDYln0CPhWbyOKW6uW/
+ vQfrNloECKmdx6RRHjYTDqd3QA1Sv6TgklLGj7U=
+X-Received: by 2002:a05:6000:2287:b0:3ec:dc9d:bfcd with SMTP id
+ ffacd0b85a97d-425671c8e29mr6571893f8f.63.1759691893529; 
+ Sun, 05 Oct 2025 12:18:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGL2HBwSu01KsmCEmh/1Yz/m4hN2iR8zjs/od1K9bPylvxZTcm+UyNQRCkNCBAoCoj1hnK/RQ==
+X-Received: by 2002:a05:6000:2287:b0:3ec:dc9d:bfcd with SMTP id
+ ffacd0b85a97d-425671c8e29mr6571876f8f.63.1759691892936; 
+ Sun, 05 Oct 2025 12:18:12 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e97fbsm17251517f8f.34.2025.10.05.12.18.08
+ 5b1f17b1804b1-46e619b86e1sm216945195e9.5.2025.10.05.12.18.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:18:09 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:18:07 -0400
+ Sun, 05 Oct 2025 12:18:12 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:18:11 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -76,9 +76,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 57/75] amd_iommu: Add a page walker to sync shadow page tables
- on invalidation
-Message-ID: <a513b8ef6c7679449ac9bc6fe7c98e6664a6c9f5.1759691708.git.mst@redhat.com>
+Subject: [PULL 58/75] amd_iommu: Add basic structure to support IOMMU
+ notifier updates
+Message-ID: <325b2562600e0c25e4fe172d1a1e9499fc854250.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -113,109 +113,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-For the specified address range, walk the page table identifying regions
-as mapped or unmapped and invoke registered notifiers with the
-corresponding event type.
+Add the minimal data structures required to maintain a list of address
+spaces (i.e. devices) with registered notifiers, and to update the type of
+events that require notifications.
+Note that the ability to register for MAP notifications is not available.
+It will be unblocked by following changes that enable the synchronization of
+guest I/O page tables with host IOMMU state, at which point an amd-iommu
+device property will be introduced to control this capability.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-9-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-10-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 80 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 80 insertions(+)
+ hw/i386/amd_iommu.h |  3 +++
+ hw/i386/amd_iommu.c | 20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 9f833b297d..b51aa74368 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -409,6 +409,9 @@ struct AMDVIState {
+     /* for each served device */
+     AMDVIAddressSpace **address_spaces[PCI_BUS_MAX];
+ 
++    /* list of address spaces with registered notifiers */
++    QLIST_HEAD(, AMDVIAddressSpace) amdvi_as_with_notifiers;
++
+     /* IOTLB */
+     GHashTable *iotlb;
+ 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index c25981ff93..0e45435c77 100644
+index 0e45435c77..d8a451b3a5 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -681,6 +681,86 @@ fetch_pte(AMDVIAddressSpace *as, hwaddr address, uint64_t dte, uint64_t *pte,
+@@ -66,6 +66,11 @@ struct AMDVIAddressSpace {
+     MemoryRegion iommu_nodma;   /* Alias of shared nodma memory region  */
+     MemoryRegion iommu_ir;      /* Device's interrupt remapping region  */
+     AddressSpace as;            /* device's corresponding address space */
++
++    /* DMA address translation support */
++    IOMMUNotifierFlag notifier_flags;
++    /* entry in list of Address spaces with registered notifiers */
++    QLIST_ENTRY(AMDVIAddressSpace) next;
+ };
+ 
+ /* AMDVI cache entry */
+@@ -1773,6 +1778,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+         iommu_as[devfn]->bus_num = (uint8_t)bus_num;
+         iommu_as[devfn]->devfn = (uint8_t)devfn;
+         iommu_as[devfn]->iommu_state = s;
++        iommu_as[devfn]->notifier_flags = IOMMU_NOTIFIER_NONE;
+ 
+         amdvi_dev_as = iommu_as[devfn];
+ 
+@@ -1846,6 +1852,7 @@ static int amdvi_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
+                                            Error **errp)
+ {
+     AMDVIAddressSpace *as = container_of(iommu, AMDVIAddressSpace, iommu);
++    AMDVIState *s = as->iommu_state;
+ 
+     if (new & IOMMU_NOTIFIER_MAP) {
+         error_setg(errp,
+@@ -1854,6 +1861,19 @@ static int amdvi_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
+                    PCI_FUNC(as->devfn));
+         return -EINVAL;
+     }
++
++    /*
++     * Update notifier flags for address space and the list of address spaces
++     * with registered notifiers.
++     */
++    as->notifier_flags = new;
++
++    if (old == IOMMU_NOTIFIER_NONE) {
++        QLIST_INSERT_HEAD(&s->amdvi_as_with_notifiers, as, next);
++    } else if (new == IOMMU_NOTIFIER_NONE) {
++        QLIST_REMOVE(as, next);
++    }
++
      return 0;
  }
  
-+/*
-+ * Walk the guest page table for an IOVA and range and signal the registered
-+ * notifiers to sync the shadow page tables in the host.
-+ * Must be called with a valid DTE for DMA remapping i.e. V=1,TV=1
-+ */
-+static void __attribute__((unused))
-+amdvi_sync_shadow_page_table_range(AMDVIAddressSpace *as, uint64_t *dte,
-+                                   hwaddr addr, uint64_t size, bool send_unmap)
-+{
-+    IOMMUTLBEvent event;
-+
-+    hwaddr iova_next, page_mask, pagesize;
-+    hwaddr iova = addr;
-+    hwaddr end = iova + size - 1;
-+
-+    uint64_t pte;
-+    int ret;
-+
-+    while (iova < end) {
-+
-+        ret = fetch_pte(as, iova, dte[0], &pte, &pagesize);
-+
-+        if (ret == -AMDVI_FR_PT_ROOT_INV) {
-+            /*
-+             * Invalid conditions such as the IOVA being larger than supported
-+             * by current page table mode as configured in the DTE, or a failure
-+             * to fetch the Page Table from the Page Table Root Pointer in DTE.
-+             */
-+            assert(pagesize == 0);
-+            return;
-+        }
-+        /* PTE has been validated for major errors and pagesize is set */
-+        assert(pagesize);
-+        page_mask = ~(pagesize - 1);
-+        iova_next = (iova & page_mask) + pagesize;
-+
-+        if (ret == -AMDVI_FR_PT_ENTRY_INV) {
-+            /*
-+             * Failure to read PTE from memory, the pagesize matches the current
-+             * level. Unable to determine the region type, so a safe strategy is
-+             * to skip the range and continue the page walk.
-+             */
-+            goto next;
-+        }
-+
-+        event.entry.target_as = &address_space_memory;
-+        event.entry.iova = iova & page_mask;
-+        /* translated_addr is irrelevant for the unmap case */
-+        event.entry.translated_addr = (pte & AMDVI_DEV_PT_ROOT_MASK) &
-+                                      page_mask;
-+        event.entry.addr_mask = ~page_mask;
-+        event.entry.perm = amdvi_get_perms(pte);
-+
-+        /*
-+         * In cases where the leaf PTE is not found, or it has invalid
-+         * permissions, an UNMAP type notification is sent, but only if the
-+         * caller requested it.
-+         */
-+        if (!IOMMU_PTE_PRESENT(pte) || (event.entry.perm == IOMMU_NONE)) {
-+            if (!send_unmap) {
-+                goto next;
-+            }
-+            event.type = IOMMU_NOTIFIER_UNMAP;
-+        } else {
-+            event.type = IOMMU_NOTIFIER_MAP;
-+        }
-+
-+        /* Invoke the notifiers registered for this address space */
-+        memory_region_notify_iommu(&as->iommu, 0, event);
-+
-+next:
-+        /* Check for 64-bit overflow and terminate walk in such cases */
-+        if (iova_next < iova) {
-+            break;
-+        } else {
-+            iova = iova_next;
-+        }
-+    }
-+}
-+
- /* log error without aborting since linux seems to be using reserved bits */
- static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
- {
 -- 
 MST
 
