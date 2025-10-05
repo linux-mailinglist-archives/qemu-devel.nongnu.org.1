@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D727BB9C7E
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABA4BB9C2E
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:24:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFh-0003hD-WB; Sun, 05 Oct 2025 15:18:38 -0400
+	id 1v5UGG-0005D3-NZ; Sun, 05 Oct 2025 15:19:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFa-00036k-Fc
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFc-0003J0-AW
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFX-0006e1-G4
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFa-0006ea-40
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691906;
+ s=mimecast20190719; t=1759691909;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7VfnG8rVkzTSwB5pyBpyj7JN89vPRfbgI61K8aW5ts8=;
- b=T6c2mqjvh/ZlvSfAPKkKmVTckjTEM9qlnfPhI67h12r091ez+nI8sdjNdTDMjcu5hY1dJz
- Y93W0xCHpCqDXtMwHD3XFmcmd2hO9XrTWjSiAUudojlGj2NHS2VVFj6ouFWPlHPoY3S9zq
- qpBlaXdGG/eEhdFOzEnUPZ0zacBFMuo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GAfEAfK1eJRI4y+l49JKxdN48bM3wTU5KpeG8sWwPz0=;
+ b=K6kxiPsL+Owij3wb/iYmeZ9wLEBUizuqm3kczLbpNk6D84oQJ43I0cuqCm+bfsa8jo1/m6
+ FXPiyniXvqG24Q4a9Ki9oPLvLnoQdX5PNa4TyjiloaaetnLWoANF2KpWQk7YjBtfgB1Z4f
+ Axt0d8Q/7PhTeiYhbRUXMYrZdr+syLA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-KiecCtItOUumD0y_oIvSlg-1; Sun, 05 Oct 2025 15:18:25 -0400
-X-MC-Unique: KiecCtItOUumD0y_oIvSlg-1
-X-Mimecast-MFC-AGG-ID: KiecCtItOUumD0y_oIvSlg_1759691904
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-4256fae4b46so848999f8f.0
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:25 -0700 (PDT)
+ us-mta-665-1YW-cOrWOca1WXvQZoLvNQ-1; Sun, 05 Oct 2025 15:18:28 -0400
+X-MC-Unique: 1YW-cOrWOca1WXvQZoLvNQ-1
+X-Mimecast-MFC-AGG-ID: 1YW-cOrWOca1WXvQZoLvNQ_1759691907
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46e3e177893so22926425e9.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691904; x=1760296704;
+ d=1e100.net; s=20230601; t=1759691907; x=1760296707;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7VfnG8rVkzTSwB5pyBpyj7JN89vPRfbgI61K8aW5ts8=;
- b=J6aSoA5fhIBVhTsnhUhNN3xDslUwDBrDMwBcvH6Q5g/ppmntGC3wWXGEEfEnKduMN3
- NkXeQYw9PGVcUD7SXDIFE/JaLo1k5Bq4mKphr2oMqJdoBfMVBHpX8o+cmYQzfNw3wjTi
- dchj+dKAFeJHn69T00/p0Qa0KeGVDd7n3lLwdqpduuUcPSzaaCq1KpjpesS4BR3soA1m
- HFRe5aL9b6cRouPDu5spIUJLrFmV3XwsfRVyxbctgxx3f9kkiou3JHa8LguVLCl1hpNI
- EdBHanBMsk0qz6J+226OED+aLJzecG8P4v2MCyDku/qP9QSw89fMdpGYcJebtVJ1gd3s
- u2Hw==
-X-Gm-Message-State: AOJu0YyG9JriEOslw7J5am32JBNHxZezoYCpBJNVqXdWdflIODwaUasI
- DMbpJtL085/aTU4Zypyi7bmSjedFbFR/Tj1VxBeUK5RBo1yuR0hIGXj6BtfWNalb+hRRz6OmzTD
- pvdZYKXV+VIe/0pqLAkWIIbi5rvYls6YVd6nF/jJUaXmz5sWz0R3TIDr9QGG9DvEz64AgRs7pWt
- CiZlqQn/Nzma8pi/IeElWKbf7wT3leG++rnQ==
-X-Gm-Gg: ASbGncuMXg4qYZxiH1fSuf9jr4hJ/6ABkf/HqVt7/uZz3FWnrGl+AnTzIRrYUlCl4rC
- p2XfZfHkVmQCnSANmQXdV1bZLS3EPiMi/1Mi1n2sLP8Iz8dw/rHX1x3ysNu8+FAgtbjppt9IP1v
- pWaQCtwENTx6Jg2kSqVjJGgCKzqFHKHmvq/czwasA0slbs8uyLtaPEK1gZMq3RJ7RfN0xBsisFV
- 32SdQkH/rPdh34PX6TtsFoVIvY0oMzou5Ere0/dePWN3seLcxIEHoXxILn8reo4ysVMWJ3+yy57
- 6pE6QOMBaNGKeNSEy2kF7usDRzDhSctH6oxT+5M=
-X-Received: by 2002:a05:600c:64c4:b0:46d:45e:3514 with SMTP id
- 5b1f17b1804b1-46e7114310amr81618325e9.17.1759691903992; 
- Sun, 05 Oct 2025 12:18:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYy9J2pPqOK7HUQemuxKAFiedY9kKOHYQvCRO2hjIuJOlpQcg9wOAEEzEGXZMHC62Z6SL8Zw==
-X-Received: by 2002:a05:600c:64c4:b0:46d:45e:3514 with SMTP id
- 5b1f17b1804b1-46e7114310amr81618115e9.17.1759691903388; 
- Sun, 05 Oct 2025 12:18:23 -0700 (PDT)
+ bh=GAfEAfK1eJRI4y+l49JKxdN48bM3wTU5KpeG8sWwPz0=;
+ b=WuVGEwkQIPxkAWsIs81wnzSFdTufh5E5XK75BGi5NoHNcTh0tb3Xd6XPuO7YgSnWMu
+ 1L9n1jb6nTjUxezyC7kBwRVcEFzE9rCXlyZ3fpC0+9kcxYyhRuM/5YZgP/0MKBGqGIfQ
+ uM0BZrEoheenSGNnaowLe9bBroQL8CjWhRpd3xEPFMrRAf2OKtFaWEwtL2/W1/tRGuyq
+ FYlzsNCD+ibLI2742/ivUvZIDBWqrBI4tNj/HRaNrxn6FabhctPa13BzIh+bOqAVS6Im
+ tvp2zZCdcG3xqE1QbdHJ5nRRWsjL7b2QhmpQAy1RXWFG0WYU/mLUEIXpZl5IK3zEXjxy
+ ZPKw==
+X-Gm-Message-State: AOJu0YzS8K5xed/2KMarbLWZM3h6CibWK7+ws3Uso6u7yzH3O2LIVs6l
+ PQ1ZmJ8sqUsQhoyibaSaQiCNvVz37n2T7CaXQ3M3lGok+Smp8KmBsuiK+pPvV3JXZ8Xg41haMr+
+ JEh21ChFwieBdFg71ftpmAl9FeIyegvNlZY8bCdjAUW9LicK9owB7nI8PztnOjb+7x9rE+OhC0g
+ zvHtDNXOlPuVoi3RcH12Xd+kbMVuv5KmTceA==
+X-Gm-Gg: ASbGncsC52uyjYl82Q7ABg+T2SqI848lm1YGjVOKhjFUXeXECaPJZsIVRegjpugzGdW
+ qHNBviHXmXDk8Bwqrfds+/dCR8ygmr/KjMEeWrPAlsw6VJjdjf/poRCTYcmWxK91MhfYFH0fTbP
+ s31DAq0qQ2Pjo0tETIlkYfdGm2pA3tc0kHnkNFKyXd6xS+yyTxC/kFRA0BoFkIGAfBVhWxiHK8b
+ QDNVbj+OPsLy87y7LuyzTRpCfT+EmCxo+fHFFifOGxu5Cbzcji1i2A1NsMlO5SW7mG9FseESM2+
+ L0BwMH4VPRtWlwFw5+Qv9iWsiu6wx3L3/LwV4k0=
+X-Received: by 2002:a05:600c:4e0e:b0:46e:5df3:190d with SMTP id
+ 5b1f17b1804b1-46f9d694446mr4446805e9.11.1759691906550; 
+ Sun, 05 Oct 2025 12:18:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwAiE/GhgIC5s9WAyAruzTtPbjdNa4Zo+puE0+Wr3p5V9yqU3sznEJbYynSmdoE4ZP5H6F5g==
+X-Received: by 2002:a05:600c:4e0e:b0:46e:5df3:190d with SMTP id
+ 5b1f17b1804b1-46f9d694446mr4446655e9.11.1759691906014; 
+ Sun, 05 Oct 2025 12:18:26 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e61a4161bsm234336385e9.16.2025.10.05.12.18.22
+ ffacd0b85a97d-4255d8f45e9sm17826290f8f.51.2025.10.05.12.18.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:18:22 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:18:21 -0400
+ Sun, 05 Oct 2025 12:18:25 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:18:23 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 63/75] amd_iommu: Invalidate address translations on
- INVALIDATE_IOMMU_ALL
-Message-ID: <560e604db9d55a1d7fde5a8b6de001367b8376f8.1759691708.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 64/75] amd_iommu: Toggle memory regions based on address
+ translation mode
+Message-ID: <75fd28e3a754487a675a094cf9990a60437d8167.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -86,14 +86,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -113,86 +113,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-When the kernel IOMMU driver issues an INVALIDATE_IOMMU_ALL, the address
-translation and interrupt remapping information must be cleared for all
-Device IDs and all domains. Introduce a helper to sync the shadow page table
-for all the address spaces with registered notifiers, which replays both MAP
-and UNMAP events.
+Enable the appropriate memory region for an address space depending on the
+address translation mode selected for it. This is currently based on a
+generic x86 IOMMU property, and only done during the address space
+initialization. Extract the code into a helper and toggle the regions based
+on whether the specific address space is using address translation (via the
+newly introduced addr_translation field). Later, region activation will also
+be controlled by availability of DMA remapping capability (via dma-remap
+property to be introduced in follow up changes).
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-15-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-16-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 48 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ hw/i386/amd_iommu.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9027f7c054..d74d42b3dd 100644
+index d74d42b3dd..67a26f5247 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -941,6 +941,47 @@ static void amdvi_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
-     amdvi_sync_shadow_page_table_range(as, &dte[0], 0, UINT64_MAX, false);
+@@ -74,6 +74,8 @@ struct AMDVIAddressSpace {
+     QLIST_ENTRY(AMDVIAddressSpace) next;
+     /* Record DMA translation ranges */
+     IOVATree *iova_tree;
++    /* DMA address translation active */
++    bool addr_translation;
+ };
+ 
+ /* AMDVI cache entry */
+@@ -982,6 +984,23 @@ static void amdvi_iommu_address_space_sync_all(AMDVIState *s)
+     }
  }
  
-+static void amdvi_address_space_sync(AMDVIAddressSpace *as)
-+{
-+    IOMMUNotifier *n;
-+    uint64_t dte[4] = { 0 };
-+
-+    /* If only UNMAP notifiers are registered, drop all existing mappings */
-+    if (!(as->notifier_flags & IOMMU_NOTIFIER_MAP)) {
-+        IOMMU_NOTIFIER_FOREACH(n, &as->iommu) {
-+            /*
-+             * Directly calling memory_region_unmap_iommu_notifier_range() does
-+             * not guarantee that the addr_mask eventually passed as parameter
-+             * to the notifier is valid. Use amdvi_address_space_unmap() which
-+             * ensures the notifier range is divided into properly aligned
-+             * regions, and issues notifications for each one.
-+             */
-+            amdvi_address_space_unmap(as, n);
-+        }
-+        return;
-+    }
-+
-+    if (amdvi_as_to_dte(as, dte)) {
-+        return;
-+    }
-+
-+    amdvi_sync_shadow_page_table_range(as, &dte[0], 0, UINT64_MAX, true);
-+}
-+
 +/*
-+ * This differs from the replay() method in that it issues both MAP and UNMAP
-+ * notifications since it is called after global invalidation events in order to
-+ * re-sync all address spaces.
++ * Toggle between address translation and passthrough modes by enabling the
++ * corresponding memory regions.
 + */
-+static void amdvi_iommu_address_space_sync_all(AMDVIState *s)
++static void amdvi_switch_address_space(AMDVIAddressSpace *amdvi_as)
 +{
-+    AMDVIAddressSpace *as;
-+
-+    QLIST_FOREACH(as, &s->amdvi_as_with_notifiers, next) {
-+        amdvi_address_space_sync(as);
++    if (amdvi_as->addr_translation) {
++        /* Enabling DMA region */
++        memory_region_set_enabled(&amdvi_as->iommu_nodma, false);
++        memory_region_set_enabled(MEMORY_REGION(&amdvi_as->iommu), true);
++    } else {
++        /* Disabling DMA region, using passthrough */
++        memory_region_set_enabled(MEMORY_REGION(&amdvi_as->iommu), false);
++        memory_region_set_enabled(&amdvi_as->iommu_nodma, true);
 +    }
 +}
 +
  /* log error without aborting since linux seems to be using reserved bits */
  static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
  {
-@@ -983,6 +1024,13 @@ static void amdvi_inval_all(AMDVIState *s, uint64_t *cmd)
-     amdvi_intremap_inval_notify_all(s, true, 0, 0);
+@@ -2070,6 +2089,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+         iommu_as[devfn]->iommu_state = s;
+         iommu_as[devfn]->notifier_flags = IOMMU_NOTIFIER_NONE;
+         iommu_as[devfn]->iova_tree = iova_tree_new();
++        iommu_as[devfn]->addr_translation = false;
  
-     amdvi_iotlb_reset(s);
-+
-+    /*
-+     * Fully replay the address space i.e. send both UNMAP and MAP events in
-+     * order to synchronize guest and host IO page tables tables.
-+     */
-+    amdvi_iommu_address_space_sync_all(s);
-+
-     trace_amdvi_all_inval();
+         amdvi_dev_as = iommu_as[devfn];
+ 
+@@ -2112,8 +2132,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                             AMDVI_INT_ADDR_FIRST,
+                                             &amdvi_dev_as->iommu_ir, 1);
+ 
+-        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
+-        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
++        amdvi_switch_address_space(amdvi_dev_as);
+     }
+     return &iommu_as[devfn]->as;
  }
- 
 -- 
 MST
 
