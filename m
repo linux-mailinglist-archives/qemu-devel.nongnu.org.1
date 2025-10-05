@@ -2,40 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854FFBB9A01
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD777BB9A31
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:40:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5SgP-0000O2-Tg; Sun, 05 Oct 2025 13:38:07 -0400
+	id 1v5SgO-0000Nk-DD; Sun, 05 Oct 2025 13:38:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5SgM-0000NT-1G; Sun, 05 Oct 2025 13:38:02 -0400
+ id 1v5SgL-0000NJ-Pq; Sun, 05 Oct 2025 13:38:01 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5SgK-0004dQ-BA; Sun, 05 Oct 2025 13:38:01 -0400
+ id 1v5SgJ-0004eD-Py; Sun, 05 Oct 2025 13:38:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 77FE715AA8D;
- Sun, 05 Oct 2025 20:37:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 8E6C915AA8E;
+ Sun, 05 Oct 2025 20:37:25 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F1835299739;
- Sun,  5 Oct 2025 20:37:27 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id B223A29973A;
+ Sun,  5 Oct 2025 20:37:29 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, vhaudiquet <vhaudiquet343@hotmail.fr>,
- Valentin Haudiquet <valentin.haudiquet@canonical.com>,
- Anton Johansson <anjo@rev.ng>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 50/58] target/riscv: Fix endianness swap on compressed
- instructions
-Date: Sun,  5 Oct 2025 20:36:59 +0300
-Message-ID: <20251005173712.445160-12-mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 51/58] target/riscv: rvv: Replace checking V by
+ checking Zve32x
+Date: Sun,  5 Oct 2025 20:37:00 +0300
+Message-ID: <20251005173712.445160-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
 References: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
@@ -64,54 +59,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: vhaudiquet <vhaudiquet343@hotmail.fr>
+From: Max Chou <max.chou@sifive.com>
 
-Three instructions were not using the endianness swap flag, which resulted in a bug on big-endian architectures.
+The Zve32x extension will be applied by the V and Zve* extensions.
+Therefore we can replace the original V checking with Zve32x checking for both
+the V and Zve* extensions.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3131
-Buglink: https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/2123828
-
-Fixes: e0a3054f18e ("target/riscv: add support for Zcb extension")
-Signed-off-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250929115543.1648157-1-valentin.haudiquet@canonical.com>
+Signed-off-by: Max Chou <max.chou@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250923090729.1887406-2-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit b25133d38fe693589cf695b85968caa0724bfafd)
+(cherry picked from commit ae4a37f57818e47e212272821a5a86ad54620eb8)
+(Mjt: drop the MonitorDef change due to missing v10.1.0-850-ge06d209aa6 "target/riscv: implement MonitorDef HMP API")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/insn_trans/trans_rvzce.c.inc
-index c77c2b927b..dd15af0f54 100644
---- a/target/riscv/insn_trans/trans_rvzce.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzce.c.inc
-@@ -88,13 +88,13 @@ static bool trans_c_lbu(DisasContext *ctx, arg_c_lbu *a)
- static bool trans_c_lhu(DisasContext *ctx, arg_c_lhu *a)
- {
-     REQUIRE_ZCB(ctx);
--    return gen_load(ctx, a, MO_UW);
-+    return gen_load(ctx, a, MO_TEUW);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 09ded6829a..2ff56bd017 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -945,7 +945,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+             }
+         }
+     }
+-    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
++    if (riscv_cpu_cfg(env)->ext_zve32x && (flags & CPU_DUMP_VPU)) {
+         static const int dump_rvv_csrs[] = {
+                     CSR_VSTART,
+                     CSR_VXSAT,
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 66d572af1f..76e2f7e1d5 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -1990,7 +1990,8 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
+     if (riscv_has_ext(env, RVF)) {
+         mask |= MSTATUS_FS;
+     }
+-    if (riscv_has_ext(env, RVV)) {
++
++    if (riscv_cpu_cfg(env)->ext_zve32x) {
+         mask |= MSTATUS_VS;
+     }
+ 
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index 889e2b6570..0697d813b7 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -130,7 +130,8 @@ static bool vector_needed(void *opaque)
+     RISCVCPU *cpu = opaque;
+     CPURISCVState *env = &cpu->env;
+ 
+-    return riscv_has_ext(env, RVV);
++    return kvm_enabled() ? riscv_has_ext(env, RVV) :
++                           riscv_cpu_cfg(env)->ext_zve32x;
  }
  
- static bool trans_c_lh(DisasContext *ctx, arg_c_lh *a)
- {
-     REQUIRE_ZCB(ctx);
--    return gen_load(ctx, a, MO_SW);
-+    return gen_load(ctx, a, MO_TESW);
- }
+ static const VMStateDescription vmstate_vector = {
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 5aef9eef36..2b21580ef7 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -515,7 +515,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         return;
+     }
  
- static bool trans_c_sb(DisasContext *ctx, arg_c_sb *a)
-@@ -106,7 +106,7 @@ static bool trans_c_sb(DisasContext *ctx, arg_c_sb *a)
- static bool trans_c_sh(DisasContext *ctx, arg_c_sh *a)
- {
-     REQUIRE_ZCB(ctx);
--    return gen_store(ctx, a, MO_UW);
-+    return gen_store(ctx, a, MO_TEUW);
- }
- 
- #define X_S0    8
+-    if (riscv_has_ext(env, RVV)) {
++    if (cpu->cfg.ext_zve32x) {
+         riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
+         if (local_err != NULL) {
+             error_propagate(errp, local_err);
 -- 
 2.47.3
 
