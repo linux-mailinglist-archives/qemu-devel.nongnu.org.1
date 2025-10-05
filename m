@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38E9BB9B98
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA108BB9C73
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UF9-0000O8-Mg; Sun, 05 Oct 2025 15:18:04 -0400
+	id 1v5UFH-0001yb-Nq; Sun, 05 Oct 2025 15:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEh-0008TX-6t
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEj-00005Q-De
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEc-0006Vi-Fl
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEe-0006WA-Sz
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691849;
+ s=mimecast20190719; t=1759691851;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=MyvBGvCg5pKlLTnNdcKGwoTb8nQEpmQV3fi/odf1v+M=;
- b=gYVBDav8EWPWF88A7R81gY+s4BLc1brIzWOBmpDkLbw0yAAGuTyjZoQpNPNzlGD7UQUOxX
- lh4aaRSdwLVJuesidMRVSuOVIz7cN0vVdVRiJ6IDF5xnUOyi6+JTg3587Ambq9kxnusER4
- yby8TH+l4yPFBHEgW1/zzLgDa/vT12M=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OKnItQYBTrXiPTFJBSTJGUjxT2lE7EF9Yn/LDwcOwGM=;
+ b=Tyuz/SLbHQcpJCJEkmVOFZ3OlO4ckM/0VkuCxytT2YhOGKXCVTRCFgKZtvZt0giVptDfdf
+ frAzqeTGPbRualiTQ+UyXOeEpfuTw05AmVCcJ5IxHKBbdSjUFuENgncQI6t1zRecrB+t9M
+ G0i3hBKx8EnhXMkXJ56HPYy8E45iUqg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-QpO14XHxPoyqJZ_OTpQr5A-1; Sun, 05 Oct 2025 15:17:28 -0400
-X-MC-Unique: QpO14XHxPoyqJZ_OTpQr5A-1
-X-Mimecast-MFC-AGG-ID: QpO14XHxPoyqJZ_OTpQr5A_1759691847
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3f42b54d159so3228678f8f.2
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:28 -0700 (PDT)
+ us-mta-341-o6sV5EoXNGmpEI4kbzyHmQ-1; Sun, 05 Oct 2025 15:17:30 -0400
+X-MC-Unique: o6sV5EoXNGmpEI4kbzyHmQ-1
+X-Mimecast-MFC-AGG-ID: o6sV5EoXNGmpEI4kbzyHmQ_1759691849
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e35baddc1so22645465e9.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691847; x=1760296647;
+ d=1e100.net; s=20230601; t=1759691849; x=1760296649;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MyvBGvCg5pKlLTnNdcKGwoTb8nQEpmQV3fi/odf1v+M=;
- b=bCdmTdml5G6q0TGovz3PA/+MQx5a099WJrPIqpOCqBanPBpUDCRJJZBjoBHQmaoOeB
- Urr9+qHd+71O6WKns5CqenuxpUtLBAB8itfatFsZlNh+xu5umuNuOzpiKgawp7sVMigR
- bKs2jXHDQlg0kVyZI4ip8LgtFsGNsITuaYleI3MQ2skJJhjDxhhrGAgHBqiGOnx2oLgH
- IN4VXHO/bL/j5pL/9zbq7oxPQE/iOnULsLhzW2iB6u80O2Kyw2ho3yLFsQveLXibxIJk
- kmJhtHSChVrn3fvMmijHDPu27Mpc+PtpMPfGR85WcLptnRNADq+f5ZQznc2tsLHZv5II
- x2OA==
-X-Gm-Message-State: AOJu0YwK2I+gBgVhu46vv+GO0R3swAqzEKyCcuWBQ/WdXSL5q/XKQIZ3
- m+tYUphRunbw0EcsQhY59VmxfHUoqmMFCF02foETpRxtuKOQw+KXiMTd0IImF8kbsXKMW0zCqF1
- rxNi8I4aBPdYsbAAjihMFFkUr5Lgt4wyeZktQeB5R24lebM9DaSEmn53yoisASJnpU5xuLBqXe+
- vG1nozym+w7YB/cBv7Oc5WKJichezn0yCuFg==
-X-Gm-Gg: ASbGncugk6mk6gnZWRvlidjjNWl3Juw9sT2kY92e5In6Alm7MyYiDMdKsyAru+NQBb3
- ABVTuE5BkCPaS9VqpIN5HXj+hheanmNrkxFri0h6YKjJzDjH+ySHdfyXGg4kGOvSDmNCimWrBmd
- qs4e4/epjO5ibJLCmEoyFQg3oT4dfed1XMiUnbJ4NV3VNkpJeMqBXWgzs+7xLNTV44QNQNozAYs
- Zbjo0tY0nPjHJs732NPXok8ZnOPlIfXVrA+lZerQiRLmbNmN1OOBbEkd+ydJb0EnllY1nsCPAEd
- qFA63RPYw6luamb480TwEPisaV4RnEc4ntS7AyA=
-X-Received: by 2002:a05:6000:2dc3:b0:3f7:b7ac:f3d2 with SMTP id
- ffacd0b85a97d-425671ab145mr6411636f8f.43.1759691846940; 
- Sun, 05 Oct 2025 12:17:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAKyTMToGPV/1BWGvkojDp3/sLUXg8J7hMSRVG4xXSiZ/2ZkWU0rdhU2Aey3ssz3wIgWRVNg==
-X-Received: by 2002:a05:6000:2dc3:b0:3f7:b7ac:f3d2 with SMTP id
- ffacd0b85a97d-425671ab145mr6411620f8f.43.1759691846410; 
- Sun, 05 Oct 2025 12:17:26 -0700 (PDT)
+ bh=OKnItQYBTrXiPTFJBSTJGUjxT2lE7EF9Yn/LDwcOwGM=;
+ b=CaVYb5nmP2VMtvdVPYg6FFgMLSPFjNgQqndFuT3EHZ31GQUwbCj/B63pgDQgEhvsxI
+ kfjlWTf9ny9c7atz1OvLV1ns3s+kGeZpNr+B2AIEsTAqAoIXkErOh40ztQyiWodeK/nt
+ iHvt5mhsVKDugW+kKdB+H+s4uHAPmUXIFWQHMm1qPWDAudwfBSzuv5L2zDTGkmAmJT0z
+ zTArQbodV11mwg7Dea3rmFW8r1RWobcnJJVchne385BXrYxvRNugCw+WeOwa5ol4L5w5
+ A42ibZH1kLkVCaWicsyd/m8mDH83NW1CF/SZhpGuuC8MnuyjQxVaYdPsFTAOlGKFmZrY
+ IsZg==
+X-Gm-Message-State: AOJu0Ywbz9uQhHSxYbxjn1+g88vIXz3JsSaAEjmfHdFKfehcLeDWMy7U
+ ZIS7aJC1gCrL2eb/e5qKlaZvvnPc1l8VkELuI0LsjtkPuEJxb//FSLt3Owhn3sZuevhG+c8vg/C
+ TPZH3erJjDqiTjs6U4Fb3l7zxkrp88VJpAHu5iEqp4HbxJyT48XR6rO8hzBPSSn71xIq/807pYs
+ RJtkUuy4bmh7USfhcuJ+LNwvpHfB8jctfbPw==
+X-Gm-Gg: ASbGncvqxWllN2BiIQAdhzELbuMUwTWBDWPvt4Ivxda+mjE17kaH8qpOwkQ2T+591AG
+ d6Gxuvwh7SpPMyHByseQvGWMogYs3+0dhP3NaNHE37Pxycw6cZSzP86u5+PGvkR/my1+VR50rYs
+ 6JLY5g1FG0MuFj38oDc9o6Te9iNaXU81Mi4iBipGKdE0rUh6k3COplQnyZbzof7X4OziScDZ0Qt
+ wE//ml7JunbO/BYG0NufaSMy6tuajtJr98yKsHyfclq/bdJBz0Qn+WwDUd3J/qjzINeIqB2w5XM
+ iHtwM8qJ05nV56LWNVoI6ILM4HOTqVwv/tpm0IU=
+X-Received: by 2002:a05:600c:3149:b0:46e:33b2:c8da with SMTP id
+ 5b1f17b1804b1-46e7114829cmr57999995e9.32.1759691849154; 
+ Sun, 05 Oct 2025 12:17:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4zTTH+d2bFR3+JzNmfeNs4T4/TmnBfZKwwYWYRt/p7obGkXFfF7XAkN+1Ryi6fd+ey1+9jA==
+X-Received: by 2002:a05:600c:3149:b0:46e:33b2:c8da with SMTP id
+ 5b1f17b1804b1-46e7114829cmr57999785e9.32.1759691848535; 
+ Sun, 05 Oct 2025 12:17:28 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e619b86e1sm216921485e9.5.2025.10.05.12.17.25
+ ffacd0b85a97d-4255d8ab8fdsm17343552f8f.15.2025.10.05.12.17.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:25 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:24 -0400
+ Sun, 05 Oct 2025 12:17:28 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
+ Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 37/75] pcie: Add a way to get the outstanding page request
- allocation (pri) from the config space.
-Message-ID: <ec450d185e4c885396a8e9b9bd2a435c9e0c118f.1759691708.git.mst@redhat.com>
+Subject: [PULL 38/75] intel_iommu: Bypass barrier wait descriptor
+Message-ID: <57ac646a2ecb2967c46febcfd0f40d396868b4dc.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,46 +113,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
+wait_desc with SW=0,IF=0,FN=1 must not be considered as an
+invalid descriptor as it is used to implement section 7.10 of
+the VT-d spec.
+
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250901111630.1018573-2-clement.mathieu--drif@eviden.com>
+Message-ID: <20250901111630.1018573-3-clement.mathieu--drif@eviden.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pcie.h | 1 +
- hw/pci/pcie.c         | 8 ++++++++
- 2 files changed, 9 insertions(+)
+ hw/i386/intel_iommu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-index ff6ce08e13..42cebcd033 100644
---- a/include/hw/pci/pcie.h
-+++ b/include/hw/pci/pcie.h
-@@ -158,6 +158,7 @@ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
- void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
-                    bool prg_response_pasid_req);
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 83c5e44413..4e7ad3a290 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2857,7 +2857,13 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+         vtd_generate_completion_event(s);
+     }
  
-+uint32_t pcie_pri_get_req_alloc(const PCIDevice *dev);
- bool pcie_pri_enabled(const PCIDevice *dev);
- bool pcie_pasid_enabled(const PCIDevice *dev);
- bool pcie_ats_enabled(const PCIDevice *dev);
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index eaeb68894e..b302de6419 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1266,6 +1266,14 @@ void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
-     dev->exp.pri_cap = offset;
- }
- 
-+uint32_t pcie_pri_get_req_alloc(const PCIDevice *dev)
-+{
-+    if (!pcie_pri_enabled(dev)) {
-+        return 0;
-+    }
-+    return pci_get_long(dev->config + dev->exp.pri_cap + PCI_PRI_ALLOC_REQ);
-+}
+-    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF | VTD_INV_DESC_WAIT_SW))) {
++    /*
++     * SW=0, IF=0, FN=1 is also a valid descriptor (VT-d 7.10)
++     * Nothing to do as we process the descriptors in order
++     */
 +
- bool pcie_pri_enabled(const PCIDevice *dev)
- {
-     if (!pci_is_express(dev) || !dev->exp.pri_cap) {
++    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF | VTD_INV_DESC_WAIT_SW |
++                                                 VTD_INV_DESC_WAIT_FN))) {
+         error_report_once("%s: invalid wait desc: hi=%"PRIx64", lo=%"PRIx64
+                           " (unknown type)", __func__, inv_desc->hi,
+                           inv_desc->lo);
 -- 
 MST
 
