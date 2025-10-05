@@ -2,100 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7004BBB9B9A
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5C3BB9C6F
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFB-0000iA-Ju; Sun, 05 Oct 2025 15:18:05 -0400
+	id 1v5UEv-00009R-KO; Sun, 05 Oct 2025 15:17:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEe-000891-3E
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEe-00089v-CW
  for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEa-0006Uw-Mx
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEa-0006VM-Mm
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691843;
+ s=mimecast20190719; t=1759691845;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n5WvGc63Ugvtn6YJdDflpDJWvjGDbZWJM3c/1ewQ4RE=;
- b=ZroAUGUzXWqsXKrjOPAM0S4LX4giC5XfW5Snm9hemrkNQ9qxsZajfia31eIvy3B2D4tFR9
- MGZ2V68EHw5/uBJrj1Hj0llwSOVOv/KkPwTgxEwzTbgvUUC/61FiUbvvbL5WEuAsf4TISj
- VsjKzLx0C7KqqI5XQt6qu2i0/F90uNE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mfKdz/3nMvjpW+z6FeaL4DezlsHzfdVMCcRVA0zYnAA=;
+ b=cKDAsiFkXAvBSauY7NukK7KXanLoQ0J/kv6WVwChaZDI18BDMh3hWX/Wax5IMRsHuJYe77
+ +yVJPCcZaik/J9V+5elo/C7DSydwmdQQm47qC1rm+r5lcDhsMypOZJ+9iTDsSsrFGWd0Xp
+ oyzTFGROvsmdUJKpFvSzRJPEQ+UC3qU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-3M6dB2fxNvq-Z3OeXYfx3A-1; Sun, 05 Oct 2025 15:17:22 -0400
-X-MC-Unique: 3M6dB2fxNvq-Z3OeXYfx3A-1
-X-Mimecast-MFC-AGG-ID: 3M6dB2fxNvq-Z3OeXYfx3A_1759691841
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3ed9557f976so2674309f8f.3
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:22 -0700 (PDT)
+ us-mta-350-4ydYZVfFPM6FRql5mRipXQ-1; Sun, 05 Oct 2025 15:17:24 -0400
+X-MC-Unique: 4ydYZVfFPM6FRql5mRipXQ-1
+X-Mimecast-MFC-AGG-ID: 4ydYZVfFPM6FRql5mRipXQ_1759691843
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e31191379so26933245e9.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691841; x=1760296641;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=n5WvGc63Ugvtn6YJdDflpDJWvjGDbZWJM3c/1ewQ4RE=;
- b=gxp5Es/pD5Fu3g9i8h60YQpwPPiM+fhPsWVW9JpHxRt+ErXcodar39380PYuDl+kc7
- corFHpDCK6fKLFvJW48vTitZR+uq9e40BoZj42M/deSOwld1DrZSW+QuLxd2UkFy7PoE
- Y78r7MLfEKrg9DB62BYi+fwwW2vUmwcxSZG2wLJXZtFmlxaB/NiWcfSnGtWZb5IhOCTw
- oGcyrHRQDValz7tBY4aUPtpcYM+VGOmzwjgb6/Fr+04Uce7Uv/HRbCEB8EVYuUyvni9d
- EAsnITPAouxYC2Iuzlpd94sez+L0fxoTVYXqR2hh0N8a9OD4cbqTpvoyrkQZ8qrezgOC
- K/1w==
-X-Gm-Message-State: AOJu0YxI6TamIHFPC5adCOOh7mA8DBHSCgbZyQgMY/sTS0RDV/KwOqAn
- MhIWXDTzJSaucr7tIuzl/inncMnJ6jZoz3vC68SJFwnToPQJbTmj2h15vTWi9G+gidm2xYI1nxy
- Cxzs2Cm6Njra245yCIYW3qt46XjrdLf+BLh4hcK6nVlyU/cWqIQfUp0VO+3n33xjoWdxj5wMyO5
- 1Kg3Bzc/9Sz7Gus+kTvXMzSoCRJxjs151Y8w==
-X-Gm-Gg: ASbGncuqynYMmpTAj2ICokBKz1qfe4lgK/uqREAJazKkEuOuMXtZqRB2JKpLPkibJ9b
- lh3QZQ6b/A5Sp0vED9Za+1LZyczdIMQdzoI/tLzoKFqcgQkaKILOZQJoDWZVZOlgQlflIuUySqy
- TpxmWlWv7Wrmuor/k0c8e8y2n2KOhwKAp0NEosNyLm+XXjy/b2LSPOkLm8/BMK/1w6x6FfZvojT
- vO3mJWISz9gDPUcawW3vHHiDZdnMY9YgXm3xOldlA6PTZ4HinSe4q6GnBd216uzBpwlJJLGblvq
- 42XdwzSTO0ZQDc+D2k98cXk94ui0/n2kf66xMyM=
-X-Received: by 2002:a05:6000:2289:b0:411:3c14:3aac with SMTP id
- ffacd0b85a97d-4256713be79mr5871227f8f.7.1759691840608; 
- Sun, 05 Oct 2025 12:17:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE27CTVi53eXQm7AWxxDMWA9CZFQp5U0Lv8gyfXCy4U7U2VzH60ccOncgr7hbITZIZ3ACyHmw==
-X-Received: by 2002:a05:6000:2289:b0:411:3c14:3aac with SMTP id
- ffacd0b85a97d-4256713be79mr5871203f8f.7.1759691839805; 
- Sun, 05 Oct 2025 12:17:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759691843; x=1760296643;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mfKdz/3nMvjpW+z6FeaL4DezlsHzfdVMCcRVA0zYnAA=;
+ b=frp1CMPhHJdVp5yfFWYAt7sPftTEjaz0xJH2VrPi/0BwPMVWBeB6myvldZOKmrF/FW
+ mZr/hTNVMc3M4M7K76m8tJlYB8B8fbmATG7W+4Wv3Bz9uZUsVkSCl55VJDwAFXxFnFRX
+ A4BjVmILGie0UWmjZFVEqAlbAAea+wGqV1vk+T0762IGr44I4SNiUNjva14EE3gu2cng
+ Va8bwUKIqCJu73jQQ+VBW9X04iumDTqZB3fsxOblhkjiensNInL8AeTYezL8NRNNj40d
+ Rz1Icq8/0DQxXAQrvqq5TPT40338z0xvksI6bGjJBX5QTTKmULM9MiyPwRTH9LnWLp40
+ d1vg==
+X-Gm-Message-State: AOJu0YzvkO+oXxIf31MLwSlPj1NDUR9KPUIvZRLbIUm4VqMZGsIpoOxf
+ znxxSXmrHzq2htXB/gv6nDzqvzu6TJq1Gc6LokWXYU1cxtPZKZmzPw1w8DCPhxH1pq31AVNEBLp
+ pd9q5TwZt3dbDepI2GIt3w1fWkICKqS/F9dgj/4YWsO7hedDyOm9QHk/mgrVcQDEBVcDl4u6C4N
+ 7IY8JelvB5cos4gZBrbe5Ewu3Pk+fvZzz/tQ==
+X-Gm-Gg: ASbGncuM0FrAO82NM6hGJN/dzb416MrRB5ADL3t1+wI3UMNFh7tdUaS7FyQ0ThRl1Rt
+ hkCodLMXkTl7uzQB2JYZwAjdA3S2HtF4ct+pNyAYDJa8k+IcNeiAg3P9jsqLib5pDNjVQzciIoy
+ qvB2BkW7EM5mtY+s/pCtUAdqDNZt1jxkMQhPD9IJmW+WhRoZ6fLh9l3Ln15VN+vQLiKvc86KeRz
+ Z+K7RphcP2ajwhlHzA+UhsfxkMto3yUyNIMUdWbJpv1zMf9gQeavPFeY3T7onzCNwk29MbVs/61
+ oWhuRsb8Fyg7FQNS2hJTVLi53vKB7RMY+zCPeY8=
+X-Received: by 2002:a05:600c:a103:b0:46e:731b:db0f with SMTP id
+ 5b1f17b1804b1-46e731bdd23mr38825605e9.28.1759691842626; 
+ Sun, 05 Oct 2025 12:17:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/V5c7E9+JjAlIc9G9YdonWDZA0/PtZBjw04TKhvrfr2K5/2RKowjcleGT+zF8K6V2Mg16RA==
+X-Received: by 2002:a05:600c:a103:b0:46e:731b:db0f with SMTP id
+ 5b1f17b1804b1-46e731bdd23mr38825445e9.28.1759691841958; 
+ Sun, 05 Oct 2025 12:17:21 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f45e9sm17822998f8f.51.2025.10.05.12.17.18
+ ffacd0b85a97d-4255d8a8542sm17438120f8f.9.2025.10.05.12.17.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:19 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:17 -0400
+ Sun, 05 Oct 2025 12:17:21 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:20 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Damien Bergamini <damien.bergamini@eviden.com>,
- Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org
-Subject: [PULL 34/75] pcie_sriov: Fix broken MMIO accesses from SR-IOV VFs
-Message-ID: <2e54e5fda779a7ba45578884276dca62462f7a06.1759691708.git.mst@redhat.com>
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 35/75] hw/virtio: rename vhost-user-device and make user
+ creatable
+Message-ID: <722e9022a0b6db175209bad75aa52b24033249e3.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -113,163 +112,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Damien Bergamini <damien.bergamini@eviden.com>
+From: Alex Bennée <alex.bennee@linaro.org>
 
-Starting with commit cab1398a60eb, SR-IOV VFs are realized as soon as
-pcie_sriov_pf_init() is called.  Because pcie_sriov_pf_init() must be
-called before pcie_sriov_pf_init_vf_bar(), the VF BARs types won't be
-known when the VF realize function calls pcie_sriov_vf_register_bar().
+We didn't make the device user creatable in the first place because we
+were worried users might get confused. Rename the device to make its
+nature as a test device even more explicit. While we are at it add a
+Kconfig variable so it can be skipped for those that want to thin out
+their build configuration even further.
 
-This breaks the memory regions of the VFs (for instance with igbvf):
-
-$ lspci
-...
-    Region 0: Memory at 281a00000 (64-bit, prefetchable) [virtual] [size=16K]
-    Region 3: Memory at 281a20000 (64-bit, prefetchable) [virtual] [size=16K]
-
-$ info mtree
-...
-address-space: pci_bridge_pci_mem
-  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
-    0000000081a00000-0000000081a03fff (prio 1, i/o): igbvf-mmio
-    0000000081a20000-0000000081a23fff (prio 1, i/o): igbvf-msix
-
-and causes MMIO accesses to fail:
-
-    Invalid write at addr 0x281A01520, size 4, region '(null)', reason: rejected
-    Invalid read at addr 0x281A00C40, size 4, region '(null)', reason: rejected
-
-To fix this, VF BARs are now registered with pci_register_bar() which
-has a type parameter and pcie_sriov_vf_register_bar() is removed.
-
-Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")
-Signed-off-by: Damien Bergamini <damien.bergamini@eviden.com>
-Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250820195632.1956795-1-alex.bennee@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250901151314.1038020-1-clement.mathieu--drif@eviden.com>
+Message-ID: <20250901105948.982583-1-alex.bennee@linaro.org>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- docs/pcie_sriov.txt         |  5 ++---
- include/hw/pci/pcie_sriov.h |  4 ----
- hw/net/igbvf.c              |  6 ++++--
- hw/nvme/ctrl.c              |  8 ++------
- hw/pci/pci.c                |  3 ---
- hw/pci/pcie_sriov.c         | 11 -----------
- 6 files changed, 8 insertions(+), 29 deletions(-)
+ include/hw/virtio/vhost-user-base.h           |  2 +-
+ ...ice-pci.c => vhost-user-test-device-pci.c} | 17 +++++++---------
+ ...user-device.c => vhost-user-test-device.c} |  9 +++------
+ docs/system/devices/vhost-user.rst            | 20 +++++++------------
+ hw/virtio/Kconfig                             |  5 +++++
+ hw/virtio/meson.build                         |  5 +++--
+ 6 files changed, 26 insertions(+), 32 deletions(-)
+ rename hw/virtio/{vhost-user-device-pci.c => vhost-user-test-device-pci.c} (77%)
+ rename hw/virtio/{vhost-user-device.c => vhost-user-test-device.c} (87%)
 
-diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
-index ab2142807f..00d7bd93fd 100644
---- a/docs/pcie_sriov.txt
-+++ b/docs/pcie_sriov.txt
-@@ -72,8 +72,7 @@ setting up a BAR for a VF.
- 2) Similarly in the implementation of the virtual function, you need to
-    make it a PCI Express device and add a similar set of capabilities
-    except for the SR/IOV capability. Then you need to set up the VF BARs as
--   subregions of the PFs SR/IOV VF BARs by calling
--   pcie_sriov_vf_register_bar() instead of the normal pci_register_bar() call:
-+   subregions of the PFs SR/IOV VF BARs by calling pci_register_bar():
+diff --git a/include/hw/virtio/vhost-user-base.h b/include/hw/virtio/vhost-user-base.h
+index 51d0968b89..387e434b80 100644
+--- a/include/hw/virtio/vhost-user-base.h
++++ b/include/hw/virtio/vhost-user-base.h
+@@ -44,6 +44,6 @@ struct VHostUserBaseClass {
+ };
  
-    pci_your_vf_dev_realize( ... )
-    {
-@@ -83,7 +82,7 @@ setting up a BAR for a VF.
-       pcie_ari_init(d, 0x100);
-       ...
-       memory_region_init(mr, ... )
--      pcie_sriov_vf_register_bar(d, bar_nr, mr);
-+      pci_register_bar(d, bar_nr, bar_type, mr);
-       ...
-    }
  
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index aeaa38cf34..b0ea6a62c7 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -37,10 +37,6 @@ void pcie_sriov_pf_exit(PCIDevice *dev);
- void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
-                                uint8_t type, dma_addr_t size);
+-#define TYPE_VHOST_USER_DEVICE "vhost-user-device"
++#define TYPE_VHOST_USER_TEST_DEVICE "vhost-user-test-device"
  
--/* Instantiate a bar for a VF */
--void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
--                                MemoryRegion *memory);
+ #endif /* QEMU_VHOST_USER_BASE_H */
+diff --git a/hw/virtio/vhost-user-device-pci.c b/hw/virtio/vhost-user-test-device-pci.c
+similarity index 77%
+rename from hw/virtio/vhost-user-device-pci.c
+rename to hw/virtio/vhost-user-test-device-pci.c
+index f10bac874e..b4ed0efb50 100644
+--- a/hw/virtio/vhost-user-device-pci.c
++++ b/hw/virtio/vhost-user-test-device-pci.c
+@@ -18,13 +18,13 @@ struct VHostUserDevicePCI {
+     VHostUserBase vub;
+ };
+ 
+-#define TYPE_VHOST_USER_DEVICE_PCI "vhost-user-device-pci-base"
++#define TYPE_VHOST_USER_TEST_DEVICE_PCI "vhost-user-test-device-pci-base"
+ 
+-OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_DEVICE_PCI)
++OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_TEST_DEVICE_PCI)
+ 
+ static void vhost_user_device_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+ {
+-    VHostUserDevicePCI *dev = VHOST_USER_DEVICE_PCI(vpci_dev);
++    VHostUserDevicePCI *dev = VHOST_USER_TEST_DEVICE_PCI(vpci_dev);
+     DeviceState *vdev = DEVICE(&dev->vub);
+ 
+     vpci_dev->nvectors = 1;
+@@ -38,9 +38,6 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass,
+     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
+     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+ 
+-    /* Reason: stop users confusing themselves */
+-    dc->user_creatable = false;
 -
- /**
-  * pcie_sriov_pf_init_from_user_created_vfs() - Initialize PF with user-created
-  *                                              VFs, adding ARI to PF
-diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
-index 31d72c4977..9b0db8f841 100644
---- a/hw/net/igbvf.c
-+++ b/hw/net/igbvf.c
-@@ -251,10 +251,12 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
+     k->realize = vhost_user_device_pci_realize;
+     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+     pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
+@@ -51,15 +48,15 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass,
  
-     memory_region_init_io(&s->mmio, OBJECT(dev), &mmio_ops, s, "igbvf-mmio",
-         IGBVF_MMIO_SIZE);
--    pcie_sriov_vf_register_bar(dev, IGBVF_MMIO_BAR_IDX, &s->mmio);
-+    pci_register_bar(dev, IGBVF_MMIO_BAR_IDX, PCI_BASE_ADDRESS_MEM_TYPE_64 |
-+                     PCI_BASE_ADDRESS_MEM_PREFETCH, &s->mmio);
+ static void vhost_user_device_pci_instance_init(Object *obj)
+ {
+-    VHostUserDevicePCI *dev = VHOST_USER_DEVICE_PCI(obj);
++    VHostUserDevicePCI *dev = VHOST_USER_TEST_DEVICE_PCI(obj);
  
-     memory_region_init(&s->msix, OBJECT(dev), "igbvf-msix", IGBVF_MSIX_SIZE);
--    pcie_sriov_vf_register_bar(dev, IGBVF_MSIX_BAR_IDX, &s->msix);
-+    pci_register_bar(dev, IGBVF_MSIX_BAR_IDX, PCI_BASE_ADDRESS_MEM_TYPE_64 |
-+                     PCI_BASE_ADDRESS_MEM_PREFETCH, &s->msix);
- 
-     ret = msix_init(dev, IGBVF_MSIX_VEC_NUM, &s->msix, IGBVF_MSIX_BAR_IDX, 0,
-         &s->msix, IGBVF_MSIX_BAR_IDX, 0x2000, 0x70, errp);
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f5ee6bf260..cd81f73997 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8708,12 +8708,8 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-                               msix_table_offset);
-         memory_region_add_subregion(&n->bar0, 0, &n->iomem);
- 
--        if (pci_is_vf(pci_dev)) {
--            pcie_sriov_vf_register_bar(pci_dev, 0, &n->bar0);
--        } else {
--            pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
--                             PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
--        }
-+        pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
-+                         PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
- 
-         ret = msix_init(pci_dev, nr_vectors,
-                         &n->bar0, 0, msix_table_offset,
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index c3df9d6656..4854d3d618 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1491,9 +1491,6 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
-                         : pci_get_bus(pci_dev)->address_space_mem;
- 
-     if (pci_is_vf(pci_dev)) {
--        PCIDevice *pf = pci_dev->exp.sriov_vf.pf;
--        assert(!pf || type == pf->exp.sriov_pf.vf_bar_type[region_num]);
--
-         r->addr = pci_bar_address(pci_dev, region_num, r->type, r->size);
-         if (r->addr != PCI_BAR_UNMAPPED) {
-             memory_region_add_subregion_overlap(r->address_space,
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 8a4bf0d6f7..29474d749a 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -242,17 +242,6 @@ void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
-     dev->exp.sriov_pf.vf_bar_type[region_num] = type;
+     virtio_instance_init_common(obj, &dev->vub, sizeof(dev->vub),
+-                                TYPE_VHOST_USER_DEVICE);
++                                TYPE_VHOST_USER_TEST_DEVICE);
  }
  
--void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
--                                MemoryRegion *memory)
--{
--    uint8_t type;
--
--    assert(dev->exp.sriov_vf.pf);
--    type = dev->exp.sriov_vf.pf->exp.sriov_pf.vf_bar_type[region_num];
--
--    return pci_register_bar(dev, region_num, type, memory);
--}
--
- static gint compare_vf_devfns(gconstpointer a, gconstpointer b)
+ static const VirtioPCIDeviceTypeInfo vhost_user_device_pci_info = {
+-    .base_name = TYPE_VHOST_USER_DEVICE_PCI,
+-    .non_transitional_name = "vhost-user-device-pci",
++    .base_name = TYPE_VHOST_USER_TEST_DEVICE_PCI,
++    .non_transitional_name = "vhost-user-test-device-pci",
+     .instance_size = sizeof(VHostUserDevicePCI),
+     .instance_init = vhost_user_device_pci_instance_init,
+     .class_init = vhost_user_device_pci_class_init,
+diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-test-device.c
+similarity index 87%
+rename from hw/virtio/vhost-user-device.c
+rename to hw/virtio/vhost-user-test-device.c
+index 3939bdf755..1b98ea3e48 100644
+--- a/hw/virtio/vhost-user-device.c
++++ b/hw/virtio/vhost-user-test-device.c
+@@ -1,5 +1,5 @@
+ /*
+- * Generic vhost-user-device implementation for any vhost-user-backend
++ * Generic vhost-user-test-device implementation for any vhost-user-backend
+  *
+  * This is a concrete implementation of vhost-user-base which can be
+  * configured via properties. It is useful for development and
+@@ -25,7 +25,7 @@
+  */
+ 
+ static const VMStateDescription vud_vmstate = {
+-    .name = "vhost-user-device",
++    .name = "vhost-user-test-device",
+     .unmigratable = 1,
+ };
+ 
+@@ -41,16 +41,13 @@ static void vud_class_init(ObjectClass *klass, const void *data)
  {
-     return (*(PCIDevice **)a)->devfn - (*(PCIDevice **)b)->devfn;
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+-    /* Reason: stop inexperienced users confusing themselves */
+-    dc->user_creatable = false;
+-
+     device_class_set_props(dc, vud_properties);
+     dc->vmsd = &vud_vmstate;
+     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+ }
+ 
+ static const TypeInfo vud_info = {
+-    .name = TYPE_VHOST_USER_DEVICE,
++    .name = TYPE_VHOST_USER_TEST_DEVICE,
+     .parent = TYPE_VHOST_USER_BASE,
+     .class_init = vud_class_init,
+ };
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+index 35259d8ec7..bddf8df5ed 100644
+--- a/docs/system/devices/vhost-user.rst
++++ b/docs/system/devices/vhost-user.rst
+@@ -62,26 +62,20 @@ platform details for what sort of virtio bus to use.
+ The referenced *daemons* are not exhaustive, any conforming backend
+ implementing the device and using the vhost-user protocol should work.
+ 
+-vhost-user-device
+-^^^^^^^^^^^^^^^^^
++vhost-user-test-device
++^^^^^^^^^^^^^^^^^^^^^^
+ 
+-The vhost-user-device is a generic development device intended for
+-expert use while developing new backends. The user needs to specify
+-all the required parameters including:
++The vhost-user-test-device is a generic development device intended
++for expert use while developing new backends. The user needs to
++specify all the required parameters including:
+ 
+   - Device ``virtio-id``
+   - The ``num_vqs`` it needs and their ``vq_size``
+   - The ``config_size`` if needed
+ 
+ .. note::
+-  To prevent user confusion you cannot currently instantiate
+-  vhost-user-device without first patching out::
+-
+-    /* Reason: stop inexperienced users confusing themselves */
+-    dc->user_creatable = false;
+-
+-  in ``vhost-user-device.c`` and ``vhost-user-device-pci.c`` file and
+-  rebuilding.
++  While this is a useful device for development it is not recommended
++  for production use.
+ 
+ vhost-user daemon
+ =================
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index 7648a2d68d..10f5c53ac0 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -126,3 +126,8 @@ config VHOST_USER_SCMI
+     bool
+     default y
+     depends on VIRTIO && VHOST_USER && ARM
++
++config VHOST_USER_TEST
++    bool
++    default y
++    depends on VIRTIO && VHOST_USER
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index 3ea7b3cec8..48b9fedfa5 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -22,7 +22,7 @@ if have_vhost
+     system_virtio_ss.add(files('vhost-user-base.c'))
+ 
+     # MMIO Stubs
+-    system_virtio_ss.add(files('vhost-user-device.c'))
++    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_TEST', if_true: files('vhost-user-test-device.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
+@@ -30,7 +30,8 @@ if have_vhost
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input.c'))
+ 
+     # PCI Stubs
+-    system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
++    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_TEST'],
++                         if_true: files('vhost-user-test-device-pci.c'))
+     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'],
+                          if_true: files('vhost-user-gpio-pci.c'))
+     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_I2C'],
 -- 
 MST
 
