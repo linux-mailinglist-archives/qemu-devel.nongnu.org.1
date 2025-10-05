@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F65BB9BCB
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C250BB9C8D
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:28:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFm-0004Ja-3X; Sun, 05 Oct 2025 15:18:42 -0400
+	id 1v5UFa-00030Q-So; Sun, 05 Oct 2025 15:18:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFU-0002iF-EA
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFX-0002mV-4p
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFR-0006cn-Aw
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFU-0006dP-8y
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691900;
+ s=mimecast20190719; t=1759691902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=CUXH9jflyEfZRN7jKCMdE7m/FyRWJE2tZCWeRtqscZ0=;
- b=LNlpb24t9P/VYXvSazp4RVckYnnkQXrAlzZ0/t4V6VD6SolhyAhD9gBhzOLWfrxnCHUtrS
- 5ZYay0Rl0irA3SlBw2kxDSqIChqz2dKWG0zjmuDhQnr75AWB8WMeI5GdfpF5qESDDOMOTr
- 9hLn2jgkfvtmGrAi5iLZqOra4HEBMGA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=23LWX8Qf1h5uWc6TSJ5v/9otVvLkJLt+t300V2hS7WI=;
+ b=Bgn4n+9QhzhQLKueqb0IPqMXBDcUj+h0euq8/SUUstK0A9TLwHc/TmK1VBfXmY4qx37zXW
+ Hqb4oh0b1gNLkT5Fmdnreg9wVofbpTsVX8iRpailPMeKlhAUpockuxdANvF6MQFa2eiQeI
+ m9z+yhXT6RsY5UpKB06m59SyaVM9Qb4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-kLz9QBIgOa-MZFZR5jFpGA-1; Sun, 05 Oct 2025 15:18:19 -0400
-X-MC-Unique: kLz9QBIgOa-MZFZR5jFpGA-1
-X-Mimecast-MFC-AGG-ID: kLz9QBIgOa-MZFZR5jFpGA_1759691898
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-46eee58d405so1672535e9.1
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:19 -0700 (PDT)
+ us-mta-655-DxQnO7wQPlWEFaN7QzBe0A-1; Sun, 05 Oct 2025 15:18:21 -0400
+X-MC-Unique: DxQnO7wQPlWEFaN7QzBe0A-1
+X-Mimecast-MFC-AGG-ID: DxQnO7wQPlWEFaN7QzBe0A_1759691900
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e31191379so26935165e9.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:18:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691898; x=1760296698;
+ d=1e100.net; s=20230601; t=1759691900; x=1760296700;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CUXH9jflyEfZRN7jKCMdE7m/FyRWJE2tZCWeRtqscZ0=;
- b=c0hvVmaDwIAzV8DysZQX4fqGKHldvTgQ5zhI+0dQkgoAEXE4TjXd507msFNQsWKcET
- 24wlyZyn0y0nYbPX17AKMCkbNyowmPorpvaVjc+Vut7H8ehr5dDSz6uqSZySWp2burSN
- 5KqOJA2UmtU9RnRIMVEyUAOu+GPHV7e+lJPabc3rvorA3JyuLTQTa6PsKOkh3RiTxMrI
- dPj9LOLK1iVMRGfQqQIRuTE9zHvxapqI7+U/awkPUy5QCPxqD6Gv4Yeh0O0eAVAlU2B3
- kyPKHe1MTyy8AJpPX6dwzqcn4vwecqzJDbbZgAJM5SS7fkl/C5ZuRc1cpEpug4fzxk6s
- 5Teg==
-X-Gm-Message-State: AOJu0YxR6LDLNw/Up8kJkHyX+e3yhdkHG51Xp+tzpJMqT/I8rRud65H9
- gEpKtp5nqj0Zt/5tBuSbFoAp9GFrOWzgxqqArDQOws88F8j3fRnzTFvnUp7ty+YwsOX4Yuc+x5v
- Sk994ZkdQ+zIv3RDU8arJF+AbdNUKJHW/bJLMhzvESC7xpw1Hsy8o9xzO/SFhYg3UFm9Iozx7uC
- lv7TvAdD8wRyyL9XN5jFLCs0sAajHAEK8lzA==
-X-Gm-Gg: ASbGncv955C/jVdSH4e+5gSyyNnw1HXcJMzgpQ7IidgWaAdBX60+DgWovpVqCaD5+Xf
- jSzu5kPdErnIuEM1q0OSzamn3+vw6d7TOOvGyUUFKp6lTFo+ySqv0VmBxomEC2DBXzBCObSGfCk
- nDGzaeXdoeE+2yZGuP+lGn4DrEn3u6DRh60cC8VYwoudxs51Oud62sPlwnFP1ZPrzJssgsOaUAK
- nG90AVBaZcUUJU4k/NlMgdeYpTF/JI2yfEii3Sf90CxIrFOgwUrbTYtYUROksRFuJM5GyrtQ8fq
- AaOc99lytGPNWv8JtA5w5v4YipbRCs3RF2SoQZI=
-X-Received: by 2002:a05:600c:3b27:b0:46e:42aa:75b5 with SMTP id
- 5b1f17b1804b1-46e71101b0cmr73278055e9.4.1759691897899; 
- Sun, 05 Oct 2025 12:18:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEtfpA5hhxEWDmlp5HokQo5GHK1ZtQNkdLE5uMaEZaw22Hzea9y3hl4qkbsYRR/KUPL93V3A==
-X-Received: by 2002:a05:600c:3b27:b0:46e:42aa:75b5 with SMTP id
- 5b1f17b1804b1-46e71101b0cmr73277845e9.4.1759691897283; 
- Sun, 05 Oct 2025 12:18:17 -0700 (PDT)
+ bh=23LWX8Qf1h5uWc6TSJ5v/9otVvLkJLt+t300V2hS7WI=;
+ b=X0e3JY8IyBCKOWdATyKmQ7JNQp/CpMPiijppL90Lgl/yYYTCYI08y4LargkiynDtO1
+ codSYR+E1o6FdRhWN++0QBZxQY7q0zgi1VauAVNJj7WqJmBdJb0g/WS3thX0kkypOXGL
+ IT+EdFmZLAk50gmPHbrCHhAuKGLO1zPpyx/S/eDafLWIPJlDRA6UuAlLnw9Sldl1iiz7
+ PjOQwswEW6a2XQlJyoEooAgI6/e7xshsEv84lDnGChB9X8D3oYwA3zZaAyhyugD7mFp9
+ Nei9Mvf76m1mfH1a9d7H6brvXmgJRt1ztFUqz78JqpUs/sBEsTzp7HLYuAs9NcGEZ/b+
+ lkHw==
+X-Gm-Message-State: AOJu0YzGnpPXdfqsP0zN30T8HgLlQPZnrfKrf7SZREHUb0pzsZwLt8b/
+ 0zJFGITfD2pK0vzm9O/VdVSM5Gr5bwKqDTES4nrq/gbInJp4cjkqC/Du9WysnwxzHnD588+K02z
+ 02PMigJmFHTxvHS63X2WlJeH8p3c2zvWTA8/4Incu8j/kvWkOh571RvC+XbHbvGxWxNV1cWMd33
+ BK7ehoLBGltZhHlPzcIjXiX51KaNGPGxq/uQ==
+X-Gm-Gg: ASbGnctr4tSTIeBSBIkzmkBOAS78YbHrplG5KF8ZXltwkMdHZHVNsaLFf/3K1uCpUJ+
+ bzRWWTFzOdK9tA8SqpKmm7SgTwCzwT9cVZdopLp78llQHDO2D0aXxb9EFC5K+Br/2KWjvcmxsVa
+ 0LvIbpQzgQHXeFYo3TTfE3BVnU0LKMadzfD6kam+X2mGMGG+/NGPX5JM1E1WVtcUy7Y5K38mxij
+ zfAdlGX2P5xO0g3Oo9rh7p4QyqVEqcnfRdZJsqiRjtOfQU5nj2O3ErG1XGDc7oy0/+1e9X2qxs+
+ EQWB5NA6mam14UZjCaEBcCuanCqNBxXhmBp1GMU=
+X-Received: by 2002:a05:600c:8506:b0:46e:1fb9:5497 with SMTP id
+ 5b1f17b1804b1-46e7113f6e2mr72103915e9.18.1759691899831; 
+ Sun, 05 Oct 2025 12:18:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7+wSypRsjnnvOqhBiK7Zp4NlVB8/bPJEr1L6RKBqSEZRxSa16BQiei4vXxjYNkxZ913eWcw==
+X-Received: by 2002:a05:600c:8506:b0:46e:1fb9:5497 with SMTP id
+ 5b1f17b1804b1-46e7113f6e2mr72103755e9.18.1759691899285; 
+ Sun, 05 Oct 2025 12:18:19 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e72343260sm123314755e9.4.2025.10.05.12.18.16
+ ffacd0b85a97d-4255d8e9780sm17261149f8f.29.2025.10.05.12.18.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:18:16 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:18:15 -0400
+ Sun, 05 Oct 2025 12:18:18 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:18:17 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 60/75] amd_iommu: Use iova_tree records to determine large
- page size on UNMAP
-Message-ID: <95bc772592eb5560e9c78d313b118788ea6a3826.1759691708.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 61/75] amd_iommu: Unmap all address spaces under the AMD IOMMU
+ on reset
+Message-ID: <53fb70ad6219bd2b3ed17e2b87ceab722e69d5b9.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -113,181 +113,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Keep a record of mapped IOVA ranges per address space, using the iova_tree
-implementation. Besides enabling optimizations like avoiding unnecessary
-notifications, a record of existing <IOVA, size> mappings makes it possible
-to determine if a specific IOVA is mapped by the guest using a large page,
-and adjust the size when notifying UNMAP events.
-
-When unmapping a large page, the information in the guest PTE encoding the
-page size is lost, since the guest clears the PTE before issuing the
-invalidation command to the IOMMU. In such case, the size of the original
-mapping can be retrieved from the iova_tree and used to issue the UNMAP
-notification. Using the correct size is essential since the VFIO IOMMU
-Type1v2 driver in the host kernel will reject unmap requests that do not
-fully cover previous mappings.
+Support dropping all existing mappings on reset. When the guest kernel
+reboots it will create new ones, but other components that run before
+the kernel (e.g. OVMF) should not be able to use existing mappings from
+the previous boot.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250919213515.917111-12-alejandro.j.jimenez@oracle.com>
+Message-ID: <20250919213515.917111-13-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 95 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 89 insertions(+), 6 deletions(-)
+ hw/i386/amd_iommu.c | 74 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index caae65c4b3..4376e977f8 100644
+index 4376e977f8..497f18c540 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -33,6 +33,7 @@
- #include "hw/i386/apic-msidef.h"
- #include "hw/qdev-properties.h"
- #include "kvm/kvm_i386.h"
-+#include "qemu/iova-tree.h"
- 
- /* used AMD-Vi MMIO registers */
- const char *amdvi_mmio_low[] = {
-@@ -71,6 +72,8 @@ struct AMDVIAddressSpace {
-     IOMMUNotifierFlag notifier_flags;
-     /* entry in list of Address spaces with registered notifiers */
-     QLIST_ENTRY(AMDVIAddressSpace) next;
-+    /* Record DMA translation ranges */
-+    IOVATree *iova_tree;
- };
- 
- /* AMDVI cache entry */
-@@ -685,6 +688,75 @@ static uint64_t fetch_pte(AMDVIAddressSpace *as, hwaddr address, uint64_t dte,
-     return 0;
+@@ -847,6 +847,77 @@ next:
+     }
  }
  
 +/*
-+ * Invoke notifiers registered for the address space. Update record of mapped
-+ * ranges in IOVA Tree.
++ * Unmap entire range that the notifier registered for i.e. the full AS.
++ *
++ * This is seemingly technically equivalent to directly calling
++ * memory_region_unmap_iommu_notifier_range(), but it allows to check for
++ * notifier boundaries and issue notifications with ranges within those bounds.
 + */
-+static void amdvi_notify_iommu(AMDVIAddressSpace *as, IOMMUTLBEvent *event)
++static void amdvi_address_space_unmap(AMDVIAddressSpace *as, IOMMUNotifier *n)
 +{
-+    IOMMUTLBEntry *entry = &event->entry;
 +
-+    DMAMap target = {
-+        .iova = entry->iova,
-+        .size = entry->addr_mask,
-+        .translated_addr = entry->translated_addr,
-+        .perm = entry->perm,
-+    };
++    hwaddr start = n->start;
++    hwaddr end = n->end;
++    hwaddr remain;
++    DMAMap map;
++
++    assert(start <= end);
++    remain = end - start + 1;
 +
 +    /*
-+     * Search the IOVA Tree for an existing translation for the target, and skip
-+     * the notification if the mapping is already recorded.
-+     * When the guest uses large pages, comparing against the record makes it
-+     * possible to determine the size of the original MAP and adjust the UNMAP
-+     * request to match it. This avoids failed checks against the mappings kept
-+     * by the VFIO kernel driver.
++     * Divide the notifier range into chunks that are aligned and do not exceed
++     * the notifier boundaries.
 +     */
-+    const DMAMap *mapped = iova_tree_find(as->iova_tree, &target);
++    while (remain >= AMDVI_PAGE_SIZE) {
 +
-+    if (event->type == IOMMU_NOTIFIER_UNMAP) {
-+        if (!mapped) {
-+            /* No record exists of this mapping, nothing to do */
-+            return;
-+        }
-+        /*
-+         * Adjust the size based on the original record. This is essential to
-+         * determine when large/contiguous pages are used, since the guest has
-+         * already cleared the PTE (erasing the pagesize encoded on it) before
-+         * issuing the invalidation command.
-+         */
-+        if (mapped->size != target.size) {
-+            assert(mapped->size > target.size);
-+            target.size = mapped->size;
-+            /* Adjust event to invoke notifier with correct range */
-+            entry->addr_mask = mapped->size;
-+        }
-+        iova_tree_remove(as->iova_tree, target);
-+    } else { /* IOMMU_NOTIFIER_MAP */
-+        if (mapped) {
-+            /*
-+             * If a mapping is present and matches the request, skip the
-+             * notification.
-+             */
-+            if (!memcmp(mapped, &target, sizeof(DMAMap))) {
-+                return;
-+            } else {
-+                /*
-+                 * This should never happen unless a buggy guest OS omits or
-+                 * sends incorrect invalidation(s). Report an error in the event
-+                 * it does happen.
-+                 */
-+                error_report("Found conflicting translation. This could be due "
-+                             "to an incorrect or missing invalidation command");
-+            }
-+        }
-+        /* Record the new mapping */
-+        iova_tree_insert(as->iova_tree, &target);
++        IOMMUTLBEvent event;
++
++        uint64_t mask = dma_aligned_pow2_mask(start, end, 64);
++
++        event.type = IOMMU_NOTIFIER_UNMAP;
++
++        IOMMUTLBEntry entry = {
++            .target_as = &address_space_memory,
++            .iova = start,
++            .translated_addr = 0,   /* irrelevant for unmap case */
++            .addr_mask = mask,
++            .perm = IOMMU_NONE,
++        };
++        event.entry = entry;
++
++        /* Call notifier registered for updates on this address space */
++        memory_region_notify_iommu_one(n, &event);
++
++        start += mask + 1;
++        remain -= mask + 1;
 +    }
 +
-+    /* Invoke the notifiers registered for this address space */
-+    memory_region_notify_iommu(&as->iommu, 0, *event);
++    assert(!remain);
++
++    map.iova = n->start;
++    map.size = n->end - n->start;
++
++    iova_tree_remove(as->iova_tree, map);
 +}
 +
- /*
-  * Walk the guest page table for an IOVA and range and signal the registered
-  * notifiers to sync the shadow page tables in the host.
-@@ -696,7 +768,7 @@ static void amdvi_sync_shadow_page_table_range(AMDVIAddressSpace *as,
- {
-     IOMMUTLBEvent event;
- 
--    hwaddr iova_next, page_mask, pagesize;
-+    hwaddr page_mask, pagesize;
-     hwaddr iova = addr;
-     hwaddr end = iova + size - 1;
- 
-@@ -719,7 +791,6 @@ static void amdvi_sync_shadow_page_table_range(AMDVIAddressSpace *as,
-         /* PTE has been validated for major errors and pagesize is set */
-         assert(pagesize);
-         page_mask = ~(pagesize - 1);
--        iova_next = (iova & page_mask) + pagesize;
- 
-         if (ret == -AMDVI_FR_PT_ENTRY_INV) {
-             /*
-@@ -752,15 +823,26 @@ static void amdvi_sync_shadow_page_table_range(AMDVIAddressSpace *as,
-             event.type = IOMMU_NOTIFIER_MAP;
-         }
- 
--        /* Invoke the notifiers registered for this address space */
--        memory_region_notify_iommu(&as->iommu, 0, event);
-+        /*
-+         * The following call might need to adjust event.entry.size in cases
-+         * where the guest unmapped a series of large pages.
-+         */
-+        amdvi_notify_iommu(as, &event);
-+        /*
-+         * In the special scenario where the guest is unmapping a large page,
-+         * addr_mask has been adjusted before sending the notification. Update
-+         * pagesize accordingly in order to correctly compute the next IOVA.
-+         */
-+        pagesize = event.entry.addr_mask + 1;
- 
- next:
-+        iova &= ~(pagesize - 1);
++/*
++ * For all the address spaces with notifiers registered, unmap the entire range
++ * the notifier registered for i.e. clear all the address spaces managed by the
++ * IOMMU.
++ */
++static void amdvi_address_space_unmap_all(AMDVIState *s)
++{
++    AMDVIAddressSpace *as;
++    IOMMUNotifier *n;
 +
-         /* Check for 64-bit overflow and terminate walk in such cases */
--        if (iova_next < iova) {
-+        if ((iova + pagesize) < iova) {
-             break;
-         } else {
--            iova = iova_next;
-+            iova += pagesize;
-         }
-     }
++    QLIST_FOREACH(as, &s->amdvi_as_with_notifiers, next) {
++        IOMMU_NOTIFIER_FOREACH(n, &as->iommu) {
++            amdvi_address_space_unmap(as, n);
++        }
++    }
++}
++
+ /* log error without aborting since linux seems to be using reserved bits */
+ static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
+ {
+@@ -2099,6 +2170,9 @@ static void amdvi_sysbus_reset(DeviceState *dev)
+ 
+     msi_reset(&s->pci->dev);
+     amdvi_init(s);
++
++    /* Discard all mappings on device reset */
++    amdvi_address_space_unmap_all(s);
  }
-@@ -1845,6 +1927,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-         iommu_as[devfn]->devfn = (uint8_t)devfn;
-         iommu_as[devfn]->iommu_state = s;
-         iommu_as[devfn]->notifier_flags = IOMMU_NOTIFIER_NONE;
-+        iommu_as[devfn]->iova_tree = iova_tree_new();
  
-         amdvi_dev_as = iommu_as[devfn];
- 
+ static const VMStateDescription vmstate_amdvi_sysbus_migratable = {
 -- 
 MST
 
