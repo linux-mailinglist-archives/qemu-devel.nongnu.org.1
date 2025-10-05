@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A61B9BB9A22
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F360BBB9A28
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 19:39:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5ShG-0000ac-It; Sun, 05 Oct 2025 13:39:01 -0400
+	id 1v5Si9-0001O8-3Z; Sun, 05 Oct 2025 13:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Sge-0000TX-Gl; Sun, 05 Oct 2025 13:38:20 -0400
+ id 1v5Sge-0000WJ-SI; Sun, 05 Oct 2025 13:38:22 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5Sgb-0004fl-Sd; Sun, 05 Oct 2025 13:38:20 -0400
+ id 1v5Sgc-0004g1-4s; Sun, 05 Oct 2025 13:38:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4676C15AA91;
- Sun, 05 Oct 2025 20:37:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 7936F15AA93;
+ Sun, 05 Oct 2025 20:37:30 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2EE4329973D;
- Sun,  5 Oct 2025 20:37:33 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8117829973E;
+ Sun,  5 Oct 2025 20:37:34 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.5 54/58] include/system/memory.h: Clarify
- address_space_destroy() behaviour
-Date: Sun,  5 Oct 2025 20:37:03 +0300
-Message-ID: <20251005173712.445160-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.5 55/58] memory: New AS helper to serialize destroy+free
+Date: Sun,  5 Oct 2025 20:37:04 +0300
+Message-ID: <20251005173712.445160-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
 References: <qemu-stable-10.0.5-20251005203554@cover.tls.msk.ru>
@@ -59,44 +58,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Peter Xu <peterx@redhat.com>
 
-address_space_destroy() doesn't actually immediately destroy the AS;
-it queues it to be destroyed via RCU. This means you can't g_free()
-the memory the AS struct is in until that has happened.
+If an AddressSpace has been created in its own allocated
+memory, cleaning it up requires first destroying the AS
+and then freeing the memory. Doing this doesn't work:
 
-Clarify this in the documentation.
+    address_space_destroy(as);
+    g_free_rcu(as, rcu);
 
+because both address_space_destroy() and g_free_rcu()
+try to use the same 'rcu' node in the AddressSpace struct
+and the address_space_destroy hook gets overwritten.
+
+Provide a new address_space_destroy_free() function which
+will destroy the AS and then free the memory it uses, all
+in one RCU callback.
+
+(CC to stable because the next commit needs this function.)
+
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20250929144228.1994037-2-peter.maydell@linaro.org
+Link: https://lore.kernel.org/r/20250929144228.1994037-3-peter.maydell@linaro.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 9e7bfda4909cc688dd0327e17985019f08a78d5d)
-(Mjt: this is just a comment fix, but it makes subsequent changes to apply cleanly)
+(cherry picked from commit 041600e23f2fe2a9c252c9a8b26c7d147bedf982)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index e1c196a0c2..2ad3f93344 100644
+index 2ad3f93344..ef6af5caee 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -2627,9 +2627,14 @@ void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name);
- /**
-  * address_space_destroy: destroy an address space
-  *
-- * Releases all resources associated with an address space.  After an address space
-- * is destroyed, its root memory region (given by address_space_init()) may be destroyed
-- * as well.
-+ * Releases all resources associated with an address space.  After an
-+ * address space is destroyed, the reference the AddressSpace had to
-+ * its root memory region is dropped, which may result in the
-+ * destruction of that memory region as well.
-+ *
-+ * Note that destruction of the AddressSpace is done via RCU;
-+ * it is therefore not valid to free the memory the AddressSpace
-+ * struct is in until after that RCU callback has completed.
+@@ -2635,11 +2635,24 @@ void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name);
+  * Note that destruction of the AddressSpace is done via RCU;
+  * it is therefore not valid to free the memory the AddressSpace
+  * struct is in until after that RCU callback has completed.
++ * If you want to g_free() the AddressSpace after destruction you
++ * can do that with address_space_destroy_free().
   *
   * @as: address space to be destroyed
   */
+ void address_space_destroy(AddressSpace *as);
+ 
++/**
++ * address_space_destroy_free: destroy an address space and free it
++ *
++ * This does the same thing as address_space_destroy(), and then also
++ * frees (via g_free()) the AddressSpace itself once the destruction
++ * is complete.
++ *
++ * @as: address space to be destroyed
++ */
++void address_space_destroy_free(AddressSpace *as);
++
+ /**
+  * address_space_remove_listeners: unregister all listeners of an address space
+  *
+diff --git a/system/memory.c b/system/memory.c
+index 4c829793a0..94cb60c83b 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -3254,7 +3254,14 @@ static void do_address_space_destroy(AddressSpace *as)
+     memory_region_unref(as->root);
+ }
+ 
+-void address_space_destroy(AddressSpace *as)
++static void do_address_space_destroy_free(AddressSpace *as)
++{
++    do_address_space_destroy(as);
++    g_free(as);
++}
++
++/* Detach address space from global view, notify all listeners */
++static void address_space_detach(AddressSpace *as)
+ {
+     MemoryRegion *root = as->root;
+ 
+@@ -3269,9 +3276,20 @@ void address_space_destroy(AddressSpace *as)
+      * values to expire before freeing the data.
+      */
+     as->root = root;
++}
++
++void address_space_destroy(AddressSpace *as)
++{
++    address_space_detach(as);
+     call_rcu(as, do_address_space_destroy, rcu);
+ }
+ 
++void address_space_destroy_free(AddressSpace *as)
++{
++    address_space_detach(as);
++    call_rcu(as, do_address_space_destroy_free, rcu);
++}
++
+ static const char *memory_region_type(MemoryRegion *mr)
+ {
+     if (mr->alias) {
 -- 
 2.47.3
 
