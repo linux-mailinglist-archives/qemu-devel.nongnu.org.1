@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93593BB9C84
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC54BB9C87
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UEH-0007lK-Cm; Sun, 05 Oct 2025 15:17:09 -0400
+	id 1v5UEH-0007l3-5T; Sun, 05 Oct 2025 15:17:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEC-0007hk-CO
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UED-0007jj-Mr
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEA-0006Ry-AZ
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UEB-0006SH-JD
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691820;
+ s=mimecast20190719; t=1759691822;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=wo4k0+GpbcFPiJ6gl4bLvcB2+0oAKyd5LRGZIg/TJvM=;
- b=d3DUCYu7l8nxBEZdMmp3Yd2b0om3BeFSxXQYoV5j4/p7spU3jsRpzpQa5XNQqW1LEGBIJ2
- Mp/CVQQoiT8W2feLXoKcNZtt8e0WUM/QVcZqNyBpe91aDS/YjAsjJH42ilsVXE7Z62yIod
- OCdeI4/aVy4ThtZduPHXxwtSPhuTNBo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mQccCBnzaI2vbnXja20gty2VSpVTUvCQbKMpL53IPwk=;
+ b=NssznSHdTm8jraZGctwD4vXzmQH88spgfsjIDrDij8wanuhe24R6DQjgIUL1Hr0lLzmyeY
+ h1ibTxuSIj3YmbxJuYmqqQBRveUu+PtnRBe04im1QM1Iwx5WN7fdyquzgDyPVMc+ggLxdf
+ DT5t/1g/b+rF6k1ND3yNdLDZJvRN/wQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-lYG2sRL6Ovi7aWDvU2_X9A-1; Sun, 05 Oct 2025 15:16:59 -0400
-X-MC-Unique: lYG2sRL6Ovi7aWDvU2_X9A-1
-X-Mimecast-MFC-AGG-ID: lYG2sRL6Ovi7aWDvU2_X9A_1759691818
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-46e375dab7dso18414165e9.3
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:16:59 -0700 (PDT)
+ us-mta-228-tHv4QRhoNgWgppWrKYPzew-1; Sun, 05 Oct 2025 15:17:01 -0400
+X-MC-Unique: tHv4QRhoNgWgppWrKYPzew-1
+X-Mimecast-MFC-AGG-ID: tHv4QRhoNgWgppWrKYPzew_1759691820
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e47d14dceso17543905e9.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691818; x=1760296618;
+ d=1e100.net; s=20230601; t=1759691820; x=1760296620;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wo4k0+GpbcFPiJ6gl4bLvcB2+0oAKyd5LRGZIg/TJvM=;
- b=i60w+u4TPvJQyO0/KJIBiNtfjScAmktxGT/NxalTfo76BtrTYoODr9o6qdthlfeH5C
- z+KzFy6/DQBYFGlsyamaGYkIulpZIJ5xvJxm3+tV+RF6wPlXckLR793Kg07CiVl3BNP7
- UsE4MTRr8uHujDZgUBj7nFXpazaqGzAWypK47lAmaZhJUX8YpFnC+9sLFx0l0NxHFayc
- XtUIYFdLbxpOTOLqvhYWjTI+EHMuEILA3344Uv+1KmJEM+/8Zcu8STa8pMaJDYojNihP
- yrS1CCTvpWlmT6lHcyFdcc5LRS5PgnqQaITY373dov1mLp2ax4vlsgibtVv1aGO9Yoep
- jyUg==
-X-Gm-Message-State: AOJu0YwiTjYnVz3b6LyKdvlIyQlj3T+2CfxdsbVd/8L0nRtv8Jrzspe1
- 4M3+bivL4auhszQ3rPk0VXoIH2uD76i9T7cKmcmKLklzsttbq+FIhShwzyw5czWdWLCs4JzhyYH
- 2S2pRH6+PQ2/n347btGrhixJpg/DagS+iBCkuocX4Ztxv61kEECtn13pZeamGr61W5GCKnm6MLv
- ihREVfXWpLZdJnEuHSQR4/mi3noHGQf7A/JQ==
-X-Gm-Gg: ASbGnct2IC3zpfnl7M9trCNI2WGFZO6TcitVx5MNRI/JrxcQpUnr+XDr2TIa1YeHVGZ
- j3uLf5sl5OaTtp4ZPdP5VcvMXgRZkTRzenjyN4KGqPMxBkBvWfzFURM+NNHYyk0XLL/BlsSaJ7k
- aQPmYiOiBrGslEKAOk7o7Jl4w4OUfLGqXyVL9vNfCCcJRMkF6vye9G9R4mt4VZ7HlfXeII+3O9S
- 3AeRO2fxj6c6AchHvgLiQt1XdME6cHJB4LE/9Bn456L35f3RNfDecpXMflerpjkfyzHOMkrXxFe
- uvbF8drtMcWn2/8u/lMw2/fx8grosRv56HZ/mUI=
-X-Received: by 2002:a05:600c:a085:b0:45d:d609:1199 with SMTP id
- 5b1f17b1804b1-46e71151c24mr72241735e9.30.1759691817736; 
- Sun, 05 Oct 2025 12:16:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkzDFi6nuyZGqMEwB9zdBqGx2j8fNsTRjslP3j3HYYpHUK0tMFl+PbY0uvSFypJ6Eh8F2qrQ==
-X-Received: by 2002:a05:600c:a085:b0:45d:d609:1199 with SMTP id
- 5b1f17b1804b1-46e71151c24mr72241535e9.30.1759691817138; 
- Sun, 05 Oct 2025 12:16:57 -0700 (PDT)
+ bh=mQccCBnzaI2vbnXja20gty2VSpVTUvCQbKMpL53IPwk=;
+ b=lMertB5lEijbcle5yK9RrH85bG518wuQAGecrm8TyvK0RW4Q/pr7izIwz57KgPxoBH
+ pT8Yvxy2o9gUS6wbDY+PQu9jOf2U1c5kMTn+erjlkMprcAOQBbm/f1juurRjFp+N8VEN
+ Ez3Fy5mwzCnHgYn9QyCISoz4/ke3VLrvJeRoIp89046QP/GyVCcIemwtqchNhUO6/LeQ
+ vhjPo9Fcz7MujmDYL2rJA9tve6exVIv1dd2u+UBnWL0fsYqHpXAB82YhK+RMMZFscP8G
+ 5B6Vp1MH9eAxtjUpWMDInXZ7ZL5jRSyMGIPltAZpHm+CI7Q9odc4XWv2g/vLPukQCUBA
+ TCQA==
+X-Gm-Message-State: AOJu0YwT0zYl8AKIRlXCA4Ek2hQwgOcIJQmiaEgcVXm87AYYvMhc5TQX
+ 74EtqEt8/iLn19hTaTiV3+0zJCtL/aLZk2KZnGjwjLwzNsUmd6MbfTAoj0V6Glm7c6vhTcD83sL
+ nTSJbnjOD2TjHQv7X0fgQ+9Pm1+R0QOKz+zA4aH1Vsgwm6Hdy12YuTPIh3rg/61qAkhm+1052L7
+ Wl1TmYxJbBW7VDXU6hNs8g1/MboKuWLKB9jw==
+X-Gm-Gg: ASbGncuh0OS/gDFppOQzrMTRJtIcCh8sLCY1hXoJ+UL/fWscu13hS/auYnbbYXWHcg+
+ BHP2/Wn9inArzxCRal6MCD5jt80sArdTxjMmkgApchkMOfCLiCuYTZTUtJlYk2mKZ4i9OSa//6b
+ Y9GG31UP6ClJSOFIFWvrnfXh2AJ72s1ZnVGQOm6v01fOpXi4YDQmL+mimCQVvQCb5sUNfU5xso2
+ XihSNaYIP31kcFm4N3LavEgbxXqch7ldcQ5Q4GhaVaJpK//R5CgXLsd87T5X117M1Yap6ZmZMK0
+ QTCdk8IpPCcl6CWX5BDFk4t1F9ajLXRbqySdjPo=
+X-Received: by 2002:a05:600c:468e:b0:43c:ec4c:25b4 with SMTP id
+ 5b1f17b1804b1-46e71102467mr68691045e9.10.1759691819681; 
+ Sun, 05 Oct 2025 12:16:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGbCnpofifWPAe5hJdopMskr+0e13LIxhzNteStsJu5IOJLR3rNy/zKd/DT6uVpHyMUMissA==
+X-Received: by 2002:a05:600c:468e:b0:43c:ec4c:25b4 with SMTP id
+ 5b1f17b1804b1-46e71102467mr68690895e9.10.1759691819139; 
+ Sun, 05 Oct 2025 12:16:59 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e5b56c792sm126382675e9.0.2025.10.05.12.16.55
+ ffacd0b85a97d-4255d8f01a0sm17392040f8f.48.2025.10.05.12.16.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:16:56 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:16:54 -0400
+ Sun, 05 Oct 2025 12:16:58 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:16:57 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Igor Mammedov <imammedo@redhat.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 24/75] acpi/generic_event_device: add an APEI error device
-Message-ID: <c498a36bcb59d1f96faf4771efe8f655ff5faa20.1759691708.git.mst@redhat.com>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 25/75] tests/acpi: virt: allow acpi table changes at DSDT and
+ HEST tables
+Message-ID: <79b10b6639456d244118cf564214495637494931.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -83,14 +85,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,130 +112,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Adds a generic error device to handle generic hardware error
-events as specified at ACPI 6.5 specification at 18.3.2.7.2:
-https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#event-notification-for-generic-error-sources
-using HID PNP0C33.
+We'll be adding a new GED device for HEST GPIO notification and
+increasing the number of entries at the HEST table.
 
-The PNP0C33 device is used to report hardware errors to
-the guest via ACPI APEI Generic Hardware Error Source (GHES).
+Blocklist testing HEST and DSDT tables until such changes
+are completed.
 
-Co-authored-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Co-authored-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <2790f664c849d53de0ce3049fa8c7950c1de1f86.1758610789.git.mchehab+huawei@kernel.org>
+Message-ID: <7fca7eb9b801f1b196210f66538234b94bd31c23.1758610789.git.mchehab+huawei@kernel.org>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/acpi/acpi_dev_interface.h   |  1 +
- include/hw/acpi/aml-build.h            |  2 ++
- include/hw/acpi/generic_event_device.h |  1 +
- hw/acpi/aml-build.c                    | 10 ++++++++++
- hw/acpi/generic_event_device.c         | 13 +++++++++++++
- 5 files changed, 27 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index 68d9d15f50..8294f8f0cc 100644
---- a/include/hw/acpi/acpi_dev_interface.h
-+++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -13,6 +13,7 @@ typedef enum {
-     ACPI_NVDIMM_HOTPLUG_STATUS = 16,
-     ACPI_VMGENID_CHANGE_STATUS = 32,
-     ACPI_POWER_DOWN_STATUS = 64,
-+    ACPI_GENERIC_ERROR = 128,
- } AcpiEventStatusBits;
- 
- #define TYPE_ACPI_DEVICE_IF "acpi-device-interface"
-diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
-index c18f681342..f38e129719 100644
---- a/include/hw/acpi/aml-build.h
-+++ b/include/hw/acpi/aml-build.h
-@@ -252,6 +252,7 @@ struct CrsRangeSet {
- /* Consumer/Producer */
- #define AML_SERIAL_BUS_FLAG_CONSUME_ONLY        (1 << 1)
- 
-+#define ACPI_APEI_ERROR_DEVICE   "GEDD"
- /**
-  * init_aml_allocator:
-  *
-@@ -382,6 +383,7 @@ Aml *aml_dma(AmlDmaType typ, AmlDmaBusMaster bm, AmlTransferSize sz,
-              uint8_t channel);
- Aml *aml_sleep(uint64_t msec);
- Aml *aml_i2c_serial_bus_device(uint16_t address, const char *resource_source);
-+Aml *aml_error_device(void);
- 
- /* Block AML object primitives */
- Aml *aml_scope(const char *name_format, ...) G_GNUC_PRINTF(1, 2);
-diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-index 2c5b055327..130c014d3f 100644
---- a/include/hw/acpi/generic_event_device.h
-+++ b/include/hw/acpi/generic_event_device.h
-@@ -103,6 +103,7 @@ OBJECT_DECLARE_TYPE(AcpiGedState, AcpiGedClass, ACPI_GED)
- #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
- #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
- #define ACPI_GED_PCI_HOTPLUG_EVT    0x10
-+#define ACPI_GED_ERROR_EVT          0x20
- 
- typedef struct GEDState {
-     MemoryRegion evt;
-diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-index 1e685f982f..2d5826a8f1 100644
---- a/hw/acpi/aml-build.c
-+++ b/hw/acpi/aml-build.c
-@@ -2629,3 +2629,13 @@ Aml *aml_i2c_serial_bus_device(uint16_t address, const char *resource_source)
- 
-     return var;
- }
-+
-+/* ACPI 5.0b: 18.3.2.6.2 Event Notification For Generic Error Sources */
-+Aml *aml_error_device(void)
-+{
-+    Aml *dev = aml_device(ACPI_APEI_ERROR_DEVICE);
-+    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0C33")));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    return dev;
-+}
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index b1ff6ab74d..e575b9404b 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -30,6 +30,7 @@ static const uint32_t ged_supported_events[] = {
-     ACPI_GED_NVDIMM_HOTPLUG_EVT,
-     ACPI_GED_CPU_HOTPLUG_EVT,
-     ACPI_GED_PCI_HOTPLUG_EVT,
-+    ACPI_GED_ERROR_EVT,
- };
- 
- /*
-@@ -120,6 +121,16 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
-                            aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
-                                       aml_int(0x80)));
-                 break;
-+            case ACPI_GED_ERROR_EVT:
-+                /*
-+                 * ACPI 5.0b: 5.6.6 Device Object Notifications
-+                 * Table 5-135 Error Device Notification Values
-+                 * Defines 0x80 as the value to be used on notifications
-+                 */
-+                aml_append(if_ctx,
-+                           aml_notify(aml_name(ACPI_APEI_ERROR_DEVICE),
-+                                      aml_int(0x80)));
-+                break;
-             case ACPI_GED_NVDIMM_HOTPLUG_EVT:
-                 aml_append(if_ctx,
-                            aml_notify(aml_name("\\_SB.NVDR"),
-@@ -320,6 +331,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
-         sel = ACPI_GED_MEM_HOTPLUG_EVT;
-     } else if (ev & ACPI_POWER_DOWN_STATUS) {
-         sel = ACPI_GED_PWR_DOWN_EVT;
-+    } else if (ev & ACPI_GENERIC_ERROR) {
-+        sel = ACPI_GED_ERROR_EVT;
-     } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
-         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
-     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..cb4b0a9469 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,12 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/HEST",
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
++"tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
++"tests/data/acpi/aarch64/virt/DSDT.viot",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
 -- 
 MST
 
