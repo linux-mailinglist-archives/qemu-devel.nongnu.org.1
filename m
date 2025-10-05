@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F222BB9C1C
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 667F4BB9B8D
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:17:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UEG-0007ke-77; Sun, 05 Oct 2025 15:17:08 -0400
+	id 1v5UEe-0007ly-Fo; Sun, 05 Oct 2025 15:17:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE4-0007gd-KR
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:16:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE6-0007h0-TB
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:17:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE3-0006RI-1I
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:16:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UE4-0006RR-DI
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:16:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691814;
+ s=mimecast20190719; t=1759691815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Wxyrzlql11ovDqHJOPESJRe20F5QdV3aNELPdKJF3K8=;
- b=FbeLPEIPnCSYNSs+I1ve1J/3Brui14+IvbEjj52iS1qQz81J3ieSaA3FoYy3kFWXdelCMl
- 8cRTz+fadm3ucFgUR0i66OQ4hCQiZ8iaqcnJplQkfU/eAocumuF/Ui8aIqnt+3mukt2Vey
- GHE2cg+h88EbZtRBrd6YsxulZIje1/k=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NIhiW5u2eQoMFtkoyQrTpDhwvgeVrThMS4HUlP2TBEA=;
+ b=GRBJu6RmddsPFxaGInyw/lCoxvXQZN//4SnO5CmvLjCuG0jngID8fkDtAgTelus4R69COI
+ dyhiL25myA277cRPonorKFsJ+7ZvjV4FlVr7UTIBePZkG4J6snXsafLK2PVxDOepei2y42
+ GgSDNLit+6iU7wMLki3UL8Q6Ninqpy4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-_ztXAuh4OEi-IzWr1fcloA-1; Sun, 05 Oct 2025 15:16:52 -0400
-X-MC-Unique: _ztXAuh4OEi-IzWr1fcloA-1
-X-Mimecast-MFC-AGG-ID: _ztXAuh4OEi-IzWr1fcloA_1759691811
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3ecdd80ea44so2979773f8f.1
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
+ us-mta-597-JERAcVWfP82WSeucE2IXRg-1; Sun, 05 Oct 2025 15:16:54 -0400
+X-MC-Unique: JERAcVWfP82WSeucE2IXRg-1
+X-Mimecast-MFC-AGG-ID: JERAcVWfP82WSeucE2IXRg_1759691813
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3f42b54d159so3228473f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:16:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691811; x=1760296611;
+ d=1e100.net; s=20230601; t=1759691813; x=1760296613;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wxyrzlql11ovDqHJOPESJRe20F5QdV3aNELPdKJF3K8=;
- b=r9d6TB2oQAYNL+wXm7B6aNAFwaVfaMHQI8qY1o87n80j5cqV7SH/E1hnCayCU58+g0
- 0zO9IFjZz8io1JByiHc8pTtgmuN6hQ2K4TT/kzXOmvtIcOLCTu9+vmmfEsYhZEX42mCi
- aNS0BW8ewbbFnBVUp4q8P148SBO9PxA3z3RBA23XAzssVsdWTPkHdUObK+yi2EcB4SHM
- EjrPawLA7vtLtdahttQa2k3DksD5PZUzpvK4lXicJUhFSogHgtVC+iRXVVNEKUH6dk5k
- dAjg8ZTTEJpWN5LhU1MlMeUgjD+OKxXL4yZm5rXmQOPuHgviSsqi/g80je/HTx0VSHi6
- 6YXg==
-X-Gm-Message-State: AOJu0YzRJ5bQWHFYfwOrVp8QmSU8Z1vpaOGc1JyfwUwzm1O607WT+nMQ
- oaWB2ICaUgVantSAAcVl7Otqs8FXyOeRbAXaB95QjS3rgwWox37AxPwufluE46x+DGtkmj3exIE
- BkECYHI7EflGMFnIIPR31JAQUjWQSJJLkUO/M+YKuloBhWXHJhkcZdnXGmDVbIRGCM1dv94YW2Z
- QTdRKEJUf52ruPDuGjT5zii9SHQShHNkSmFw==
-X-Gm-Gg: ASbGnctCk2UbdCitkrbD65eBILbMTrP9OG91mH/fn457Abyo972iAEdZ0m4SxCoScqt
- 4SUugXmejH1JqjeqfLontMyc0P64Xi7gWxUmuzAK3FeMS9zLvWUeoD1Pec6B9nxzl6annyqJXaE
- sVEqx7QJTDLOZN/DICXePWcDGB1prCeXTriD2K3L9WJRxchVfV1WbMPtY2N/FmKLw6RR+giit4i
- hdfwyqTOl++U9txZ1Dszd/Os7YP8m/K0RXyHfEcRUkxULNEXTe1RihOUQQGz4tR9N0Gq1qkwwjY
- o+tWVV1mb8HlfBdnCw1YlPou4JGsGY6mpwBhVuQ=
-X-Received: by 2002:a05:6000:2681:b0:407:d776:4434 with SMTP id
- ffacd0b85a97d-4255d2d2212mr10039359f8f.30.1759691811072; 
- Sun, 05 Oct 2025 12:16:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHIHvQFTEUNq8I64/Tv83iJGs0Xg0f5n4V/HJfGx/NZltIXQrQLLbWxy26p+lnaZrn0NgdfGg==
-X-Received: by 2002:a05:6000:2681:b0:407:d776:4434 with SMTP id
- ffacd0b85a97d-4255d2d2212mr10039334f8f.30.1759691810475; 
- Sun, 05 Oct 2025 12:16:50 -0700 (PDT)
+ bh=NIhiW5u2eQoMFtkoyQrTpDhwvgeVrThMS4HUlP2TBEA=;
+ b=P+mCTboIPJNAS/HNx1b2xhDHxXdBZ63UvpVFprTGbgeTSv5W18zSJptUP2a/HIjWRn
+ tv7Lcl3esC9tZGUNNmMVTp4l3EQngDlvPgwjmKDRSK4q2zC6+4ckIQaKmTV9XDNi+krb
+ I95l2CxACiBgPdtAJwxMqqgal1wZxSwIGveHdocsefeW3joSKBgaEkWG7i6f4X7vlway
+ miYom/HljCmIkz3LGEm0QMSabRxwQYVg1gVIRtm/OGNprIXPjeLgOnlpzYt0ociWTkr7
+ a7KyRobdsYgN3cOiw4FV27OQP4do0nmXV3ZIjlhNODOvOHqu8O2+HbrD5eOxqdqmhu0U
+ dJsg==
+X-Gm-Message-State: AOJu0YyoCISkB88+VShcxrdTBbT4rjwAUWsMpumRlQTJMLCE06hZFER+
+ ZYNIyLhMUhH6i9IB3uyK6xhCgFEO2TqrX6YOc2/twgJIYeSoPkzeW3xaPkYYN6DIH4OiaAOdOlW
+ wRvAtOA42XTEGPyO3eyl90q/ide0qv0OYt0rfxt/GGWciQWBE1FvMpguITWcpsJIy2yWEtat/wU
+ wUgrqZze8AErRBL4eXM0zDW0y9rQyHmGkmRg==
+X-Gm-Gg: ASbGncsKBdHmvCI9Nqpu54+IZ5XPedjaV71zvPTBCT7TaVuZ2dSRWWnmaprC0MpSzji
+ eHYkVcNeyRbaIHWgAc9QQx/QU4A5jnhdQiPyLVDqg7kyilBBovx5/cD6O5d7ehgxTKgpAynDHa3
+ onGjq7klXwyY1wDv9EAgu4zwkN/yYpTAxcybS9kjEBr/0FjnS3HZFXs9T0Z8S1U1u+Xdwc5ynDi
+ C0H0RTxO9Z025fwb9scR/hys88kfh09u0CVj3zMu6N0CsjyPkaDTbuZMKKdgp5bsaq26MMvC+Zq
+ NCjiajq2hJMYPJNIHPC2JWBKHDRU/oqOTGYb8SU=
+X-Received: by 2002:a05:6000:4013:b0:425:58d0:4834 with SMTP id
+ ffacd0b85a97d-425671948cfmr6288978f8f.39.1759691812924; 
+ Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsWN4zgw9e6n7Hk6GjBt1nA+9NTwZM/bYi3euHzHf3qQ7aiwEhTw9R7RDdL7iOv+R0g435wA==
+X-Received: by 2002:a05:6000:4013:b0:425:58d0:4834 with SMTP id
+ ffacd0b85a97d-425671948cfmr6288960f8f.39.1759691812370; 
+ Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8a6daasm17721522f8f.7.2025.10.05.12.16.49
+ ffacd0b85a97d-4255d8e970esm17357225f8f.35.2025.10.05.12.16.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:16:50 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:16:48 -0400
+ Sun, 05 Oct 2025 12:16:52 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:16:50 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
-Subject: [PULL 21/75] acpi/ghes: add a notifier to notify when error data is
- ready
-Message-ID: <7a857a8933e073d6e0c5ae2c09ff6c45751be3d7.1759691708.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 22/75] acpi/generic_event_device: Update GHES migration to
+ cover hest addr
+Message-ID: <d238dedae699a924c92228cb8b3bb8dc861008b5.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -112,58 +111,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Some error injection notify methods are async, like GPIO
-notify. Add a notifier to be used when the error record is
-ready to be sent to the guest OS.
+The GHES migration logic should now support HEST table location too.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <edf9c6e5b80dc57e3443893bf9e1eb25cb9d266b.1758610789.git.mchehab+huawei@kernel.org>
+Message-ID: <ede7ddf4b10f34094a4327dc458d630ad319bd1c.1758610789.git.mchehab+huawei@kernel.org>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/acpi/ghes.h | 3 +++
- hw/acpi/ghes.c         | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/acpi/generic_event_device.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 8c4b084337..390943e46d 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -24,6 +24,9 @@
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 95682b79a2..55998303c2 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -436,6 +436,34 @@ static const VMStateDescription vmstate_pcihp_state = {
+     }
+ };
  
- #include "hw/acpi/bios-linker-loader.h"
- #include "qapi/error.h"
-+#include "qemu/notify.h"
++static const VMStateDescription vmstate_hest = {
++    .name = "acpi-hest",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(hest_addr_le, AcpiGhesState),
++        VMSTATE_END_OF_LIST()
++    },
++};
 +
-+extern NotifierList acpi_generic_error_notifiers;
- 
- /*
-  * Values for Hardware Error Notification Type field
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index f49d0d628f..d666f1b10b 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -510,6 +510,9 @@ static void get_ghes_source_offsets(uint16_t source_id,
-     *read_ack_start_addr = le64_to_cpu(*read_ack_start_addr);
- }
- 
-+NotifierList acpi_generic_error_notifiers =
-+    NOTIFIER_LIST_INITIALIZER(acpi_generic_error_notifiers);
++static bool hest_needed(void *opaque)
++{
++    AcpiGedState *s = opaque;
++    return s->ghes_state.hest_addr_le;
++}
 +
- void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-                              uint16_t source_id, Error **errp)
- {
-@@ -550,7 +553,7 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-     /* Write the generic error data entry into guest memory */
-     cpu_physical_memory_write(cper_addr, cper, len);
- 
--    return;
-+    notifier_list_notify(&acpi_generic_error_notifiers, NULL);
- }
- 
- int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
++static const VMStateDescription vmstate_hest_state = {
++    .name = "acpi-ged/hest",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = hest_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
++                       vmstate_hest, AcpiGhesState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_acpi_ged = {
+     .name = "acpi-ged",
+     .version_id = 1,
+@@ -449,6 +477,7 @@ static const VMStateDescription vmstate_acpi_ged = {
+         &vmstate_cpuhp_state,
+         &vmstate_ghes_state,
+         &vmstate_pcihp_state,
++        &vmstate_hest_state,
+         NULL
+     }
+ };
 -- 
 MST
 
