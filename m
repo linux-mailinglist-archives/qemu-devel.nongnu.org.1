@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46016BB9457
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 08:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6D3BB9463
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 08:58:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5If8-0004n5-PK; Sun, 05 Oct 2025 02:56:06 -0400
+	id 1v5IfA-0004pH-U3; Sun, 05 Oct 2025 02:56:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5If2-0004lt-P9; Sun, 05 Oct 2025 02:56:00 -0400
+ id 1v5If4-0004mt-Kr; Sun, 05 Oct 2025 02:56:02 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5If0-0007wc-WA; Sun, 05 Oct 2025 02:56:00 -0400
+ id 1v5If2-0007x4-Qw; Sun, 05 Oct 2025 02:56:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B3A5015A8E8;
- Sun, 05 Oct 2025 09:55:38 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id DA85815A8E9;
+ Sun, 05 Oct 2025 09:55:39 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 40F9329947D;
- Sun,  5 Oct 2025 09:55:42 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 41DFB29947E;
+ Sun,  5 Oct 2025 09:55:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 3/8] vhost-user-test: remove trailing newlines in
- g_test_message() calls
-Date: Sun,  5 Oct 2025 09:55:31 +0300
-Message-ID: <20251005065538.436862-4-mjt@tls.msk.ru>
+Cc: ShengYi Hung <aokblast@FreeBSD.org>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 4/8] hid: fix incorrect return value for hid
+Date: Sun,  5 Oct 2025 09:55:32 +0300
+Message-ID: <20251005065538.436862-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251005065538.436862-1-mjt@tls.msk.ru>
 References: <20251005065538.436862-1-mjt@tls.msk.ru>
@@ -58,74 +57,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: c9a1ea9c52 Revert "tests/qtest: use qos_printf instead of g_test_message"
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+From: ShengYi Hung <aokblast@FreeBSD.org>
+
+The return value of hid_keyboard_write is used to set the packet's actual_length
+and pass to xhci directly to allow guest know how many byte actually processed.
+Therefore, return 1 to indicate a successful transfer or it will be
+considered as a wrong xfer.
+
+Signed-off-by: ShengYi Hung <aokblast@FreeBSD.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/qtest/vhost-user-test.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ hw/input/hid.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 6ec4ec2d5a..609ff24059 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -391,7 +391,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-          * We don't need to do anything here, the remote is just
-          * letting us know it is in charge. Just log it.
-          */
--        g_test_message("set_owner: start of session\n");
-+        g_test_message("set_owner: start of session");
-         break;
- 
-     case VHOST_USER_GET_PROTOCOL_FEATURES:
-@@ -417,7 +417,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-          * the remote end to send this. There is no handshake reply so
-          * just log the details for debugging.
-          */
--        g_test_message("set_protocol_features: 0x%"PRIx64 "\n", msg.payload.u64);
-+        g_test_message("set_protocol_features: 0x%"PRIx64, msg.payload.u64);
-         break;
- 
-         /*
-@@ -425,11 +425,11 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-          * address of the vrings but we can simply report them.
-          */
-     case VHOST_USER_SET_VRING_NUM:
--        g_test_message("set_vring_num: %d/%d\n",
-+        g_test_message("set_vring_num: %d/%d",
-                    msg.payload.state.index, msg.payload.state.num);
-         break;
-     case VHOST_USER_SET_VRING_ADDR:
--        g_test_message("set_vring_addr: 0x%"PRIx64"/0x%"PRIx64"/0x%"PRIx64"\n",
-+        g_test_message("set_vring_addr: 0x%"PRIx64"/0x%"PRIx64"/0x%"PRIx64,
-                    msg.payload.addr.avail_user_addr,
-                    msg.payload.addr.desc_user_addr,
-                    msg.payload.addr.used_user_addr);
-@@ -462,7 +462,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-     case VHOST_USER_SET_VRING_CALL:
-         /* consume the fd */
-         if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
--            g_test_message("call fd: %d, do not set non-blocking\n", fd);
-+            g_test_message("call fd: %d, do not set non-blocking", fd);
-             break;
+diff --git a/hw/input/hid.c b/hw/input/hid.c
+index 76bedc1844..de24cd0ef0 100644
+--- a/hw/input/hid.c
++++ b/hw/input/hid.c
+@@ -478,6 +478,7 @@ int hid_keyboard_write(HIDState *hs, uint8_t *buf, int len)
+             ledstate |= QEMU_CAPS_LOCK_LED;
          }
-         /*
-@@ -507,12 +507,12 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-          * fully functioning vhost-user we would enable/disable the
-          * vring monitoring.
-          */
--        g_test_message("set_vring(%d)=%s\n", msg.payload.state.index,
-+        g_test_message("set_vring(%d)=%s", msg.payload.state.index,
-                    msg.payload.state.num ? "enabled" : "disabled");
-         break;
- 
-     default:
--        g_test_message("vhost-user: un-handled message: %d\n", msg.request);
-+        g_test_message("vhost-user: un-handled message: %d", msg.request);
-         break;
+         kbd_put_ledstate(ledstate);
++        return 1;
      }
- 
+     return 0;
+ }
 -- 
 2.47.3
 
