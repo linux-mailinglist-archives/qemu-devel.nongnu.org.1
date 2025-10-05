@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB27BB99C7
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DA8BB99AF
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 18:50:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5RvX-0000Us-73; Sun, 05 Oct 2025 12:49:39 -0400
+	id 1v5Rvq-0001l8-Kv; Sun, 05 Oct 2025 12:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5RvR-0000Sl-4r; Sun, 05 Oct 2025 12:49:33 -0400
+ id 1v5Rvm-0001hJ-Oq; Sun, 05 Oct 2025 12:49:54 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v5RvP-00077g-Is; Sun, 05 Oct 2025 12:49:32 -0400
+ id 1v5Rvl-00077x-0z; Sun, 05 Oct 2025 12:49:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C02C015AA3D;
- Sun, 05 Oct 2025 19:49:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id E1F3E15AA3E;
+ Sun, 05 Oct 2025 19:49:25 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E07952996F5;
- Sun,  5 Oct 2025 19:49:28 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id E918E2996F6;
+ Sun,  5 Oct 2025 19:49:29 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.1 76/81] target/riscv: rvv: Modify minimum VLEN
- according to enabled vector extensions
-Date: Sun,  5 Oct 2025 19:47:56 +0300
-Message-ID: <20251005164822.442861-16-mjt@tls.msk.ru>
+Subject: [Stable-10.1.1 77/81] migration: Fix state transition in
+ postcopy_start() error handling
+Date: Sun,  5 Oct 2025 19:47:57 +0300
+Message-ID: <20251005164822.442861-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
 References: <qemu-stable-10.1.1-20251005194607@cover.tls.msk.ru>
@@ -59,65 +59,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Juraj Marcin <jmarcin@redhat.com>
 
-According to the RISC-V unprivileged specification, the VLEN should be greater
-or equal to the ELEN. This commit modifies the minimum VLEN based on the vector
-extensions and introduces a check rule for VLEN and ELEN.
+Commit 48814111366b ("migration: Always set DEVICE state") introduced
+DEVICE state to postcopy, which moved the actual state transition that
+leads to POSTCOPY_ACTIVE.
 
-  Extension     Minimum VLEN
-* V                      128
-* Zve64[d|f|x]            64
-* Zve32[f|x]              32
+However, the error handling part of the postcopy_start() function still
+expects the state POSTCOPY_ACTIVE, but depending on where an error
+happens, now the state can be either ACTIVE, DEVICE or CANCELLING, but
+never POSTCOPY_ACTIVE, as this transition now happens just before a
+successful return from the function.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250923090729.1887406-3-max.chou@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit be50ff3a73859ebbbdc0e6f704793062b1743d93)
+Instead, accept any state except CANCELLING when transitioning to FAILED
+state.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 48814111366b ("migration: Always set DEVICE state")
+Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20250826115145.871272-1-jmarcin@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit 725a9e5f7885a3c0d0cd82022d6eb5a758ac9d47)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index a6f60f55ce..02d99bb0ae 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -416,12 +416,21 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
- static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-                                  Error **errp)
- {
-+    uint32_t min_vlen;
-     uint32_t vlen = cfg->vlenb << 3;
- 
--    if (vlen > RV_VLEN_MAX || vlen < 128) {
-+    if (riscv_has_ext(env, RVV)) {
-+        min_vlen = 128;
-+    } else if (cfg->ext_zve64x) {
-+        min_vlen = 64;
-+    } else if (cfg->ext_zve32x) {
-+        min_vlen = 32;
+diff --git a/migration/migration.c b/migration/migration.c
+index 10c216d25d..32b8ce5613 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2872,8 +2872,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+ fail_closefb:
+     qemu_fclose(fb);
+ fail:
+-    migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+-                          MIGRATION_STATUS_FAILED);
++    if (ms->state != MIGRATION_STATUS_CANCELLING) {
++        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
 +    }
-+
-+    if (vlen > RV_VLEN_MAX || vlen < min_vlen) {
-         error_setg(errp,
-                    "Vector extension implementation only supports VLEN "
--                   "in the range [128, %d]", RV_VLEN_MAX);
-+                   "in the range [%d, %d]", min_vlen, RV_VLEN_MAX);
-         return;
-     }
- 
-@@ -431,6 +440,12 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-                    "in the range [8, 64]");
-         return;
-     }
-+
-+    if (vlen < cfg->elen) {
-+        error_setg(errp, "Vector extension implementation requires VLEN "
-+                         "to be greater than or equal to ELEN");
-+        return;
-+    }
- }
- 
- static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+     migration_block_activate(NULL);
+     migration_call_notifiers(ms, MIG_EVENT_PRECOPY_FAILED, NULL);
+     bql_unlock();
 -- 
 2.47.3
 
