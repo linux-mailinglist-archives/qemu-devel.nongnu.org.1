@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8D4BB9C42
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 738C5BB9BEF
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFi-0003q7-MV; Sun, 05 Oct 2025 15:18:38 -0400
+	id 1v5UFk-00043W-8d; Sun, 05 Oct 2025 15:18:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFK-0002ET-LE
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFN-0002OX-Se
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFA-0006aG-U9
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFB-0006aM-LN
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691876;
+ s=mimecast20190719; t=1759691879;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V41Pc7wPc/h125DbvUzzUxYHsFmka0IFpApuuOm1N4U=;
- b=V84VjRMCWozokdnWuuw6jdhR10KhsZUyVw/uVyxxNQ1vLxPGiB8dxNW7rKu8rHmjPaRWd1
- /mjQmtrYQUcG6+d53eDOIAVvuC2O3QxaG7U9C/5+at7XP8x5H44/dVddQkyh3X0tzUnanK
- 3Ic5qzOvhMj4tIQCnDNC7Vpx1SUYFgg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BsiJ9Y13upyZ0kSNDp9aMBJN8UvV+sDrJuDdQ0y5Q0M=;
+ b=UkayjyA7GT/+6KHLIrqMx8NHqTIEEk3Cmku93wT3/MqwvEqQMFNf9LEFZ6nOUJY/LLSL9B
+ mw5qLQmFaQHJd5bpNdvtQnpaKiiPC4mLL9bBN0ueGuDAXFLiMnQRgUF10nGXkkGZQcXrWy
+ 5EiDJqbmYoI8xjqWGD6cSVkOBBy8PEo=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-496-ugGbudLiMTavVOHn-MuuXw-1; Sun, 05 Oct 2025 15:17:55 -0400
-X-MC-Unique: ugGbudLiMTavVOHn-MuuXw-1
-X-Mimecast-MFC-AGG-ID: ugGbudLiMTavVOHn-MuuXw_1759691874
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3e997eb7232so1744325f8f.3
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:55 -0700 (PDT)
+ us-mta-102-A4K6x0YhPbCdOKgSdd7-4A-1; Sun, 05 Oct 2025 15:17:57 -0400
+X-MC-Unique: A4K6x0YhPbCdOKgSdd7-4A-1
+X-Mimecast-MFC-AGG-ID: A4K6x0YhPbCdOKgSdd7-4A_1759691876
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-41066f050a4so1555366f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691874; x=1760296674;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V41Pc7wPc/h125DbvUzzUxYHsFmka0IFpApuuOm1N4U=;
- b=dpvW9XMRHML7Ykxbd2RkSUlDMAfw1KCWWysMy0Aaqg+5jBctm2ypqo0LnH/hvroDu1
- QODBq5lbbcvKjcgz/WlYk5J7kHePkhUpM8czfl4wSS0LTOfyevFvbrpjMbdpU/3lXXwl
- BnerLJw7Hxdy0CjBM3jwswpPRmCkpObStuyM06TBRzhRNhrmbnjcOtxJ0bVFagZiGWx/
- f/0zOTetZY2vSP35P73kwDWuFObIb1fz8Z4J9szZmvSHFRR0S2NnBI7yCta3YTnngTz+
- Q+iqqost0gfP2UvnTQKlUsy9Z9crLMZyjm7+XVUShk3dzaW1LrzL+Uv4QP4/xplxuV1Z
- DD8g==
-X-Gm-Message-State: AOJu0YwzXOvHvwzoVle91XNfE2OXZBV2EFjSGEFLG6Y5/OO74WmQpiO2
- /0yRNBlLrrdEYLCFBsmifOhsFy2KDHenHey3mvxKzixmAmyHqAt8nnDPuIqmIyriHB7DEWPG1kF
- SMc99I1jE05zqhIQ8nlub9jgnETO5WHig6sv2KOcZaQ/RQRoQrIjhdfN2/GDPTqoOnxlxnwdBl8
- /+J7BZopdOE5bkIJEz3BqWh+dIYZGaBC4Tng==
-X-Gm-Gg: ASbGncs/L6Z/mZIbk+WAbWx4/YLyDIBRqEOAzIiDKfKHd9vjyqD533KYyGuJmhezNDP
- tVMdCbs6a9iYiYZEH0VHrTHXA2MW7i4VJyxbkUTTY3GV+H6xdwp/a8ij+UjWk3z6w1EPvOAyD4J
- dgV0VPeYlC3BTiBMiaRQOARkDIZlR6rYH/x/hRFWLjorWc7fMbwBooic8FYZp+nYWOMz6PqjwI0
- TtHgpH/HQc39n1bJOA5w1vDble4A1o3OKvtG4cv701dSqliLkC98w12KV7A3SOjqUGGCZ9cS5Sm
- ULlqWpV6UrZQtLKPEb7BYVhcbr+xmrnORDsL3AY=
-X-Received: by 2002:a05:600c:1d1c:b0:45b:8a0e:cda9 with SMTP id
- 5b1f17b1804b1-46e71111c47mr59682655e9.2.1759691874025; 
- Sun, 05 Oct 2025 12:17:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFGzex29tHDkjGvIUtPCv211VFdOMqX8odJvw1GLdsqOdrJsVU0+KBCad2lbwWPJN2LkXXkPA==
-X-Received: by 2002:a05:600c:1d1c:b0:45b:8a0e:cda9 with SMTP id
- 5b1f17b1804b1-46e71111c47mr59682515e9.2.1759691873501; 
- Sun, 05 Oct 2025 12:17:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759691876; x=1760296676;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BsiJ9Y13upyZ0kSNDp9aMBJN8UvV+sDrJuDdQ0y5Q0M=;
+ b=romOGwCG8HPObLoO/R2vwFxAMtvAG7NuqyB+wfc5GY96vrR2R6a6g2gUQ6CjYMG+0f
+ y5sGF/xWdka/+T4ZnbxSDvUpMm4yETBBRQMWyLLDSyNcvgsyldn09X2vP+aFMfn1pJPz
+ CsCt/6o2CyZyW3zWQ4ooJRaWGvFftNqlpJJ26m9kcUyOabbfqsYbVswOioZp+O3oZMHa
+ oz3XIQfsjVlIhyR6AoV9j2Gxaf2vSMuhFiBZ9rZg1LObYlHezUhj1YH9teJeNmw5oRvo
+ 59NiBSiSLFK24dKNhbpfMfml9GLiPyuwzfnXj8rFEQUTtv2suKMh8V7xY+S48lf37af8
+ f/YA==
+X-Gm-Message-State: AOJu0YxTtu5+0f0dS9kpnxIJaIcXlu9DFDJGmCc1/TIYWMqHHtkfeB79
+ 8wiqYI2I9SHoqzkyhs1Q728yFjhUx17HO57bHgj0AzXMU7/kTZC+xyFyOp2/flcVFN1Lq7+kWIQ
+ OMiz+1++RGGIBxbZFD45p+wnUaEiJMXvsBgFp8RI6CdIdziPwOTv9YPksK+tLpfz+HQRfQOucBN
+ gdCAeNHemDtYLsFxvwig83Qg0kRRLhN8JWDQ==
+X-Gm-Gg: ASbGncvaOe6uYyFnuaNRjxAtXQT2rC0oNv7z9TPDBJ7g9lgCOU4AazeDQhpeM8j6tUP
+ l6lA2Xjch/BDYE3JzPtMpYBejJ3pvUKzDNLDaMIzBFRwaz5B6BFpcpDmkJhTb2mzUf+4hKCTV7L
+ pMjet6BJBIvSywEOzNkVdlkqqEQzFCekP7rxcx8I9u/BIUgcphjkasudCMSDkXyhA75bBgEwRZB
+ 2i6XaGCzIe60mn68mJrY3E79b5XvC8SVba5QqnssJI9IBAcEU78OBMgRRCPwHrJFVEjjaIbgCx6
+ +z+dtZNY63y+GmbGaFA00GTWoT86oHp7KCsEfU4=
+X-Received: by 2002:a5d:64e8:0:b0:3e2:da00:44af with SMTP id
+ ffacd0b85a97d-42567176bd3mr6732613f8f.36.1759691876213; 
+ Sun, 05 Oct 2025 12:17:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJ5rjni9bo30IHHcLhTA82S275kGX4b/FUvcD9MP6/vucT6O956k7TyKlugPcWM1NKXuR/6A==
+X-Received: by 2002:a5d:64e8:0:b0:3e2:da00:44af with SMTP id
+ ffacd0b85a97d-42567176bd3mr6732596f8f.36.1759691875588; 
+ Sun, 05 Oct 2025 12:17:55 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e72374b8dsm137218675e9.19.2025.10.05.12.17.52
+ ffacd0b85a97d-4255d8f0853sm17787138f8f.50.2025.10.05.12.17.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:53 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:51 -0400
+ Sun, 05 Oct 2025 12:17:55 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:53 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Alessandro Ratti <alessandro@0x65c.net>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Subject: [PULL 49/75] virtio: Add function name to error messages
-Message-ID: <a9324cdecb0d9f7ae7db7f4120251b50cc768d7c.1759691708.git.mst@redhat.com>
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 50/75] memory: Adjust event ranges to fit within notifier
+ boundaries
+Message-ID: <2e4d32f0af7eaf87f556fb1fe802874c1b0a0799.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -110,78 +110,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alessandro Ratti <alessandro@0x65c.net>
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Replace virtio_error() with a macro that automatically prepends the
-calling function name to error messages. This provides better context
-for debugging virtio issues by showing exactly which function
-encountered the error.
+Invalidating the entire address space (i.e. range of [0, ~0ULL]) is a
+valid and required operation by vIOMMU implementations. However, such
+invalidations currently trigger an assertion unless they originate from
+device IOTLB invalidations.
 
-Before: "Invalid queue size: 1024"
-After:  "virtio_queue_set_num: Invalid queue size: 1024"
+Although in recent Linux guests this case is not exercised by the VTD
+implementation due to various optimizations, the assertion will be hit
+by upcoming AMD vIOMMU changes to support DMA address translation. More
+specifically, when running a Linux guest with VFIO passthrough device,
+and a kernel that does not contain commmit 3f2571fed2fa ("iommu/amd:
+Remove redundant domain flush from attach_device()").
 
-The implementation uses a macro to insert __func__ at compile time,
-avoiding any runtime overhead while providing more specific error
-context than a generic "virtio:" prefix.
+Remove the assertion altogether and adjust the range to ensure it does
+not cross notifier boundaries.
 
-Also remove manual __func__ usage in virtio-balloon to avoid duplicate
-function names in error messages.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/230
-Buglink: https://bugs.launchpad.net/qemu/+bug/1919021
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
+Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20201116165506.31315-6-eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250915162643.44716-2-alessandro@0x65c.net>
+Message-ID: <20250919213515.917111-2-alejandro.j.jimenez@oracle.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio.h | 4 +++-
- hw/virtio/virtio-balloon.c | 2 +-
- hw/virtio/virtio.c         | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ system/memory.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index d97529c3f1..695bb56186 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -253,7 +253,9 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size);
- 
- void virtio_cleanup(VirtIODevice *vdev);
- 
--void virtio_error(VirtIODevice *vdev, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
-+#define virtio_error(vdev, fmt, ...) \
-+    virtio_error_impl(vdev, "%s: " fmt, __func__, ##__VA_ARGS__)
-+void virtio_error_impl(VirtIODevice *, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
- 
- /* Set the child bus name. */
- void virtio_device_set_child_bus_name(VirtIODevice *vdev, char *bus_name);
-diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index db787d00b3..e443f71c01 100644
---- a/hw/virtio/virtio-balloon.c
-+++ b/hw/virtio/virtio-balloon.c
-@@ -697,7 +697,7 @@ virtio_balloon_free_page_hint_notify(NotifierWithReturn *n, void *data,
-     case PRECOPY_NOTIFY_COMPLETE:
-         break;
-     default:
--        virtio_error(vdev, "%s: %d reason unknown", __func__, pnd->reason);
-+        virtio_error(vdev, "%d reason unknown", pnd->reason);
+diff --git a/system/memory.c b/system/memory.c
+index cf8cad6961..5c6ccc5c57 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2044,13 +2044,9 @@ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
+         return;
      }
  
-     return 0;
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index de89e8104a..0f33ca5d90 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3968,7 +3968,8 @@ void virtio_device_set_child_bus_name(VirtIODevice *vdev, char *bus_name)
-     vdev->bus_name = g_strdup(bus_name);
- }
+-    if (notifier->notifier_flags & IOMMU_NOTIFIER_DEVIOTLB_UNMAP) {
+-        /* Crop (iova, addr_mask) to range */
+-        tmp.iova = MAX(tmp.iova, notifier->start);
+-        tmp.addr_mask = MIN(entry_end, notifier->end) - tmp.iova;
+-    } else {
+-        assert(entry->iova >= notifier->start && entry_end <= notifier->end);
+-    }
++    /* Crop (iova, addr_mask) to range */
++    tmp.iova = MAX(tmp.iova, notifier->start);
++    tmp.addr_mask = MIN(entry_end, notifier->end) - tmp.iova;
  
--void G_GNUC_PRINTF(2, 3) virtio_error(VirtIODevice *vdev, const char *fmt, ...)
-+void G_GNUC_PRINTF(2, 3)
-+virtio_error_impl(VirtIODevice *vdev, const char *fmt, ...)
- {
-     va_list ap;
- 
+     if (event->type & notifier->notifier_flags) {
+         notifier->notify(notifier, &tmp);
 -- 
 MST
 
