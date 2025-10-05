@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09278BB9C54
-	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8D4BB9C42
+	for <lists+qemu-devel@lfdr.de>; Sun, 05 Oct 2025 21:25:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5UFe-0003HR-C6; Sun, 05 Oct 2025 15:18:34 -0400
+	id 1v5UFi-0003q7-MV; Sun, 05 Oct 2025 15:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFN-0002OT-Qq
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFK-0002ET-LE
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFA-0006a7-Ub
- for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1v5UFA-0006aG-U9
+ for qemu-devel@nongnu.org; Sun, 05 Oct 2025 15:18:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759691875;
+ s=mimecast20190719; t=1759691876;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4PrhgJgfyKAMoMVpOpkddsOkrdYd1EBxIW2i7TwGfmI=;
- b=ZIiDeCzQwlLIyneOgm1bB4aaTZT+CJHUmwOvC9b1utYoJXkuONDAjF9gS42dMewwNiJ0N9
- AWO2uDIDsXIy0QxIqZGvg+ahu4rdQe5UQlo7aBmh08stV7mDb+zV8fuZmGI0AQfnrTybJ8
- wtTu5f/diuX0mEsCqCnZ4PZ5pDEpl4M=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V41Pc7wPc/h125DbvUzzUxYHsFmka0IFpApuuOm1N4U=;
+ b=V84VjRMCWozokdnWuuw6jdhR10KhsZUyVw/uVyxxNQ1vLxPGiB8dxNW7rKu8rHmjPaRWd1
+ /mjQmtrYQUcG6+d53eDOIAVvuC2O3QxaG7U9C/5+at7XP8x5H44/dVddQkyh3X0tzUnanK
+ 3Ic5qzOvhMj4tIQCnDNC7Vpx1SUYFgg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-_FK2ETdZN8qVoIO6mnxGmw-1; Sun, 05 Oct 2025 15:17:54 -0400
-X-MC-Unique: _FK2ETdZN8qVoIO6mnxGmw-1
-X-Mimecast-MFC-AGG-ID: _FK2ETdZN8qVoIO6mnxGmw_1759691873
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-46e3a049abaso22007825e9.0
- for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:53 -0700 (PDT)
+ us-mta-496-ugGbudLiMTavVOHn-MuuXw-1; Sun, 05 Oct 2025 15:17:55 -0400
+X-MC-Unique: ugGbudLiMTavVOHn-MuuXw-1
+X-Mimecast-MFC-AGG-ID: ugGbudLiMTavVOHn-MuuXw_1759691874
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3e997eb7232so1744325f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Oct 2025 12:17:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759691872; x=1760296672;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4PrhgJgfyKAMoMVpOpkddsOkrdYd1EBxIW2i7TwGfmI=;
- b=o8rd1GN7Ue6isFfWRoUzZFKGtS1ARMgFBPhwSv/PF1pRSxGlcKaZR0G2E2xWzCCpnP
- Qttwy2iKl+s+CkErvhY/KIBKZugLCfxE7xUKc+8WD5sKA4ig4xppCXfEb5DJXMlZnQS7
- ah5jhZ7+QpPYW+gumS6GNGp4QJJL7JZhZpIT4vdwKQV7Nc3w36apG2WKfEazj6laaM96
- Tfdr5KVwgKcGbLdYlXcFITMTos49XNRrWbB8LI7YtcyJw7Us64iwDTddiYDfwViE70jk
- a9G01V13TZZIxqW0rNB/pN0yxujaOaSvS9+QOATCO8Sbo0h/iMPJwvK9nGN8DU5O7FDS
- Rbuw==
-X-Gm-Message-State: AOJu0YyBKTbUbBFUfQgujNg1PC6kFqaszOLbVn4d0D3bebrOyunwLnxW
- NB+I6BF2fDhjshbl7+C5Y1mmGvmcD38/zK8RYk0yyML7YTWjrXJlgMHW8WMt0e4d+nm8goECYlF
- QUdTB7uFX43D0hiQ/+isJLdRRV3BgHGrSeouZ8hCizZI2fOgYLRozPklXHjDy+YwK0erULsd3Bc
- 8zyrvHH8zV8gExkpp48/1u4aYLXGuAJTuWdw==
-X-Gm-Gg: ASbGncscunrFYiu+8EP4hb0KdziM+jTU93NJut8havkuZGxk7bF3xwddciek/rmXZ7M
- W14T+AakWfWkDPr9Et7YuqOSJz5npu9MaN0cJRHUDmh9An2/6K847v+vd07L4sxtyYajNAFBgBK
- J10ktHDPOYkoTQY9Yucp3KDVCJhHc5etX6Zo49T/UVVb0eSMxmfk8lBrFEgAnHx5eZj+tXe7geo
- buKzDMwLbEsMADOgRrmvHx678MTbYe2bC3lRzpPASA8R6mDnlLfg//w5J4/8AmKU+dw34V+WRnS
- oyEKyTxETTN0NBBivxOJYW9ohrBT10wZpl21n3U=
-X-Received: by 2002:a05:600c:37cd:b0:46e:23d3:6413 with SMTP id
- 5b1f17b1804b1-46e710b23cfmr67730565e9.0.1759691872260; 
- Sun, 05 Oct 2025 12:17:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqEbPnwAdt5mPeiOyYDSdCtDK1mFh+oYhWuPgIJumCYpLg8tW5pa7kMyZkWTn6L4dyd0sHuw==
-X-Received: by 2002:a05:600c:37cd:b0:46e:23d3:6413 with SMTP id
- 5b1f17b1804b1-46e710b23cfmr67730375e9.0.1759691871667; 
- Sun, 05 Oct 2025 12:17:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759691874; x=1760296674;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=V41Pc7wPc/h125DbvUzzUxYHsFmka0IFpApuuOm1N4U=;
+ b=dpvW9XMRHML7Ykxbd2RkSUlDMAfw1KCWWysMy0Aaqg+5jBctm2ypqo0LnH/hvroDu1
+ QODBq5lbbcvKjcgz/WlYk5J7kHePkhUpM8czfl4wSS0LTOfyevFvbrpjMbdpU/3lXXwl
+ BnerLJw7Hxdy0CjBM3jwswpPRmCkpObStuyM06TBRzhRNhrmbnjcOtxJ0bVFagZiGWx/
+ f/0zOTetZY2vSP35P73kwDWuFObIb1fz8Z4J9szZmvSHFRR0S2NnBI7yCta3YTnngTz+
+ Q+iqqost0gfP2UvnTQKlUsy9Z9crLMZyjm7+XVUShk3dzaW1LrzL+Uv4QP4/xplxuV1Z
+ DD8g==
+X-Gm-Message-State: AOJu0YwzXOvHvwzoVle91XNfE2OXZBV2EFjSGEFLG6Y5/OO74WmQpiO2
+ /0yRNBlLrrdEYLCFBsmifOhsFy2KDHenHey3mvxKzixmAmyHqAt8nnDPuIqmIyriHB7DEWPG1kF
+ SMc99I1jE05zqhIQ8nlub9jgnETO5WHig6sv2KOcZaQ/RQRoQrIjhdfN2/GDPTqoOnxlxnwdBl8
+ /+J7BZopdOE5bkIJEz3BqWh+dIYZGaBC4Tng==
+X-Gm-Gg: ASbGncs/L6Z/mZIbk+WAbWx4/YLyDIBRqEOAzIiDKfKHd9vjyqD533KYyGuJmhezNDP
+ tVMdCbs6a9iYiYZEH0VHrTHXA2MW7i4VJyxbkUTTY3GV+H6xdwp/a8ij+UjWk3z6w1EPvOAyD4J
+ dgV0VPeYlC3BTiBMiaRQOARkDIZlR6rYH/x/hRFWLjorWc7fMbwBooic8FYZp+nYWOMz6PqjwI0
+ TtHgpH/HQc39n1bJOA5w1vDble4A1o3OKvtG4cv701dSqliLkC98w12KV7A3SOjqUGGCZ9cS5Sm
+ ULlqWpV6UrZQtLKPEb7BYVhcbr+xmrnORDsL3AY=
+X-Received: by 2002:a05:600c:1d1c:b0:45b:8a0e:cda9 with SMTP id
+ 5b1f17b1804b1-46e71111c47mr59682655e9.2.1759691874025; 
+ Sun, 05 Oct 2025 12:17:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGzex29tHDkjGvIUtPCv211VFdOMqX8odJvw1GLdsqOdrJsVU0+KBCad2lbwWPJN2LkXXkPA==
+X-Received: by 2002:a05:600c:1d1c:b0:45b:8a0e:cda9 with SMTP id
+ 5b1f17b1804b1-46e71111c47mr59682515e9.2.1759691873501; 
+ Sun, 05 Oct 2025 12:17:53 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e5b5f3015sm130169035e9.1.2025.10.05.12.17.50
+ 5b1f17b1804b1-46e72374b8dsm137218675e9.19.2025.10.05.12.17.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Oct 2025 12:17:51 -0700 (PDT)
-Date: Sun, 5 Oct 2025 15:17:49 -0400
+ Sun, 05 Oct 2025 12:17:53 -0700 (PDT)
+Date: Sun, 5 Oct 2025 15:17:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Qing Wang <qinwang@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 48/75] pcie_sriov: make pcie_sriov_pf_exit() safe on
- non-SR-IOV devices
-Message-ID: <bab681f752048c3bc22d561b1d314c7ec16419c9.1759691708.git.mst@redhat.com>
+ Alessandro Ratti <alessandro@0x65c.net>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 49/75] virtio: Add function name to error messages
+Message-ID: <a9324cdecb0d9f7ae7db7f4120251b50cc768d7c.1759691708.git.mst@redhat.com>
 References: <cover.1759691708.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1759691708.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -110,64 +110,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Alessandro Ratti <alessandro@0x65c.net>
 
-Commit 3f9cfaa92c96 ("virtio-pci: Implement SR-IOV PF") added an
-unconditional call from virtio_pci_exit() to pcie_sriov_pf_exit().
+Replace virtio_error() with a macro that automatically prepends the
+calling function name to error messages. This provides better context
+for debugging virtio issues by showing exactly which function
+encountered the error.
 
-pcie_sriov_pf_exit() reads from the SR-IOV Capability in Configuration
-Space:
+Before: "Invalid queue size: 1024"
+After:  "virtio_queue_set_num: Invalid queue size: 1024"
 
-  uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-  ...
-  unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The implementation uses a macro to insert __func__ at compile time,
+avoiding any runtime overhead while providing more specific error
+context than a generic "virtio:" prefix.
 
-This results in undefined behavior when dev->exp.sriov_cap is 0 because
-this is not an SR-IOV device. For example, unparent_vfs() segfaults when
-total_vfs happens to be non-zero.
+Also remove manual __func__ usage in virtio-balloon to avoid duplicate
+function names in error messages.
 
-Fix this by returning early from pcie_sriov_pf_exit() when
-dev->exp.sriov_cap is 0 because this is not an SR-IOV device.
-
-Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Reported-by: Qing Wang <qinwang@redhat.com>
-Buglink: https://issues.redhat.com/browse/RHEL-116443
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/230
+Buglink: https://bugs.launchpad.net/qemu/+bug/1919021
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250924155153.579495-1-stefanha@redhat.com>
+Message-ID: <20250915162643.44716-2-alessandro@0x65c.net>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci/pcie_sriov.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/hw/virtio/virtio.h | 4 +++-
+ hw/virtio/virtio-balloon.c | 2 +-
+ hw/virtio/virtio.c         | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 29474d749a..c4f88f0975 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -195,7 +195,9 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index d97529c3f1..695bb56186 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -253,7 +253,9 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size);
  
- void pcie_sriov_pf_exit(PCIDevice *dev)
- {
--    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-+    if (dev->exp.sriov_cap == 0) {
-+        return;
-+    }
+ void virtio_cleanup(VirtIODevice *vdev);
  
-     if (dev->exp.sriov_pf.vf_user_created) {
-         uint16_t ven_id = pci_get_word(dev->config + PCI_VENDOR_ID);
-@@ -211,6 +213,8 @@ void pcie_sriov_pf_exit(PCIDevice *dev)
-             pci_config_set_device_id(dev->exp.sriov_pf.vf[i]->config, vf_dev_id);
-         }
-     } else {
-+        uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-+
-         unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+-void virtio_error(VirtIODevice *vdev, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
++#define virtio_error(vdev, fmt, ...) \
++    virtio_error_impl(vdev, "%s: " fmt, __func__, ##__VA_ARGS__)
++void virtio_error_impl(VirtIODevice *, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
+ 
+ /* Set the child bus name. */
+ void virtio_device_set_child_bus_name(VirtIODevice *vdev, char *bus_name);
+diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+index db787d00b3..e443f71c01 100644
+--- a/hw/virtio/virtio-balloon.c
++++ b/hw/virtio/virtio-balloon.c
+@@ -697,7 +697,7 @@ virtio_balloon_free_page_hint_notify(NotifierWithReturn *n, void *data,
+     case PRECOPY_NOTIFY_COMPLETE:
+         break;
+     default:
+-        virtio_error(vdev, "%s: %d reason unknown", __func__, pnd->reason);
++        virtio_error(vdev, "%d reason unknown", pnd->reason);
      }
+ 
+     return 0;
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index de89e8104a..0f33ca5d90 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3968,7 +3968,8 @@ void virtio_device_set_child_bus_name(VirtIODevice *vdev, char *bus_name)
+     vdev->bus_name = g_strdup(bus_name);
  }
+ 
+-void G_GNUC_PRINTF(2, 3) virtio_error(VirtIODevice *vdev, const char *fmt, ...)
++void G_GNUC_PRINTF(2, 3)
++virtio_error_impl(VirtIODevice *vdev, const char *fmt, ...)
+ {
+     va_list ap;
+ 
 -- 
 MST
 
