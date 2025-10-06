@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D624BBD8F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 12:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E89BBD8E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 11:59:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5hyg-0006O8-2e; Mon, 06 Oct 2025 05:57:58 -0400
+	id 1v5hyp-0006X5-9F; Mon, 06 Oct 2025 05:58:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyc-0006M7-3N
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:54 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hym-0006SQ-Ey
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:58:04 -0400
 Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyZ-0003pV-Tf
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:53 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyk-0003q6-RV
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:58:04 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 5BCFE60BAC
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 9896060BAB
  for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:57:41 +0200 (CEST)
-Received: (qmail 18810 invoked by uid 990); 6 Oct 2025 09:57:41 -0000
+Received: (qmail 18825 invoked by uid 990); 6 Oct 2025 09:57:41 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,37 +28,32 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH v7 13/25] target/mips: call plugin trap callbacks
-Date: Mon,  6 Oct 2025 11:57:08 +0200
-Message-ID: <01114d79e7ad2c9a8824a417f3869bdf0f0293e7.1759744337.git.neither@nut.email>
+	Stafford Horne <shorne@gmail.com>
+Subject: [PATCH v7 14/25] target/openrisc: call plugin trap callbacks
+Date: Mon,  6 Oct 2025 11:57:09 +0200
+Message-ID: <5628d04291d8d77c3548bd3bf0856a5154970850.1759744337.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1759744337.git.neither@nut.email>
 References: <cover.1759744337.git.neither@nut.email>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: ------
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.988632) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1)
-X-Rspamd-Score: -6.088632
+X-Rspamd-Bar: -----
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.983381) MID_CONTAINS_FROM(1)
+ MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -5.583381
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=4QCLeRlIzG5ENUNvx1SoYVdpQIbTNKVldgdxK9RZn7c=;
- b=GWGTzzhPS5BW3tUOnoTERjTtfOqsaynRMzDNtHGWXnmHSQOvDsNRuMESDX6P7AfAxxXbBrtaJe
- 7q1jTK8HNroCEQ+9vRthHH5owWKPQ2lK8VzN0jkfi23/f8CV+LeRyc1Hojw/r52AM46YlVO0sMIk
- g33Z8ji+m04Zmf2U+37FBrx/zV/nKMMl9xWcLChL6O+u5FNMlOJxeSqKlVNgvUNSGPPxzpGMWejb
- URADMOq3RMa95/FGpsrLMyGICf6xpjq+dEpZOJ/MFpLgCAHDaSRbJXpZTwupP/5JWtdy8UdGMk8/
- wQVgX0R4gg2iX6sH7XZW9rYxda+JMQJLnb8zwcU7ExJrUK3Mq3h0xObDzrJFjsixilbNnrlwhxLA
- PG79EvI/qpkxk5llBqY1zc16kJsvX7iWM8RVlQETmWa+gQK0md4K7pPldYKh5w5Kccs3l86dDuk5
- SjoUDpBQYtJwCQis0/vyBYmpxcTawgEiVAXjWN0GtIMibhJQdnBthnnARhC6o+z/XPKhd3YYWu8r
- Lzg4omSdZNmBvRi9TUDHtL4OOVIo7aNGl4lpNdGmmrn/aOPw1mdsgXbpjlu5OW/ySgAxfUOjOdrI
- VspAUYcHnnzpnKViisnEuoT/uqMfbujk9ObYMayeOfec/e9ZaB4ylA1TWdnZxtfFk4JmwbI+YxEJ
- U=
+ bh=6By6W6p63fDAcZVupcavoMH8cQUKrNcCRvR5J3edyUo=;
+ b=qcn/yWWou/29XoGg1aRkCjTIpTlqHz1uyld30Pf7I86ckf5DZdW0w75SpbnboH+aXcFaDyO+D6
+ 5kRWHnwg2zg1XhxcO5RJj2MmexgIz8hbJiBs4Va2CRsHoLuEikYTs6KR22ZxmiQj8wgE4ckkNTM9
+ a6LxcW/1U2dNaoiEKDZoO2iuVn61C90WQ6Tv9RwNk4D8IOYTtPmrNqMxfTWp/4gMRxEMifE6VZid
+ kHebdz6nlVLj8wsGIVgzpNIaRFbi7wARW3ReKvKYpZIaHUmhBxTLlV47IqO77CxtDp27w5XVdl27
+ Ym9XznL8RC55fAnH/Qw/Rflsm8s+lZZ+eDAwk8QCUcm4ei7CncnYfnlN0uIOUOS2janm9XMEdrnt
+ 7QAPV7Zja6EsBUGc5bJCVTQZAJV7E4hdI9OExDzVPD7eolSqaDBZcy6rBeZGJn9OS+x7cA2lHTd1
+ SaGXYPQLBTUecUR/gnqD/ucDIECrstthyGldwlui1/+3jZYOAmwH1rMv5cFQB0X5EebQUVK2GD7L
+ 9CvVBEbVMJKwPq6zAbEvejTNuZ6O1uSxcbZKLBz7ylC6lkBQmN6sDNvNiNghs4AjoQ9euyCbPJoM
+ NkHsYcHNlhhAQ7m+4wtUFy/srJagcwHzzYyQDWn0zuBaHy7GBQ3o3pqu4C34s3RsXNmApSr0jTti
+ w=
 Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
  envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
@@ -87,58 +82,50 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for MIPS targets. We consider the exceptions
-NMI and EXT_INTERRUPT to be asynchronous interrupts rather than
-exceptions.
+This change places hooks for OpenRISC targets. We treat anything other
+than resets, timer and device interrupts as exceptions.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/mips/tcg/system/tlb_helper.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ target/openrisc/interrupt.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
-index 1e8901556d..566924b079 100644
---- a/target/mips/tcg/system/tlb_helper.c
-+++ b/target/mips/tcg/system/tlb_helper.c
-@@ -18,6 +18,7 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/bitops.h"
+diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
+index 486823094c..d357aaa7da 100644
+--- a/target/openrisc/interrupt.c
++++ b/target/openrisc/interrupt.c
+@@ -25,11 +25,13 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/loader.h"
+ #endif
 +#include "qemu/plugin.h"
  
- #include "cpu.h"
- #include "internal.h"
-@@ -1034,6 +1035,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
-     bool update_badinstr = 0;
-     target_ulong offset;
-     int cause = -1;
-+    uint64_t last_pc = env->active_tc.PC;
+ void openrisc_cpu_do_interrupt(CPUState *cs)
+ {
+     CPUOpenRISCState *env = cpu_env(cs);
+     int exception = cs->exception_index;
++    uint64_t last_pc = env->pc;
  
-     if (qemu_loglevel_mask(CPU_LOG_INT)
-         && cs->exception_index != EXCP_EXT_INTERRUPT) {
-@@ -1052,6 +1054,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
-         cs->exception_index = EXCP_NONE;
-         mips_semihosting(env);
-         env->active_tc.PC += env->error_code;
-+        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
-         return;
-     case EXCP_DSS:
-         env->CP0_Debug |= 1 << CP0DB_DSS;
-@@ -1336,6 +1339,14 @@ void mips_cpu_do_interrupt(CPUState *cs)
-                  env->CP0_Status, env->CP0_Cause, env->CP0_BadVAddr,
-                  env->CP0_DEPC);
+     env->epcr = env->pc;
+ 
+@@ -98,6 +100,19 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+         cpu_abort(cs, "Unhandled exception 0x%x\n", exception);
      }
-+    switch (cs->exception_index) {
-+    case EXCP_NMI:
-+    case EXCP_EXT_INTERRUPT:
+ 
++    switch (exception) {
++    case EXCP_RESET:
++        /* Resets are already exposed to plugins through a dedicated callback */
++        break;
++    case EXCP_TICK:
++    case EXCP_INT:
 +        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
 +        break;
 +    default:
 +        qemu_plugin_vcpu_exception_cb(cs, last_pc);
++        break;
 +    }
-     cs->exception_index = EXCP_NONE;
++
+     cs->exception_index = -1;
  }
  
 -- 
