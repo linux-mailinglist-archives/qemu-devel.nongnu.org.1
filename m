@@ -2,84 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60871BBFB6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 00:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0935FBBFB25
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 00:35:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5tu2-0003xs-PT; Mon, 06 Oct 2025 18:41:59 -0400
+	id 1v5tlG-0002L2-F3; Mon, 06 Oct 2025 18:32:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3NkLkaAcKCpkG3OB67F9HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--navidem.bounces.google.com>)
- id 1v5tfk-0001rl-Uc
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 18:27:13 -0400
-Received: from mail-pf1-x449.google.com ([2607:f8b0:4864:20::449])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v5tlE-0002Kf-KW
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 18:32:52 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3NkLkaAcKCpkG3OB67F9HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--navidem.bounces.google.com>)
- id 1v5tfg-0003lm-LV
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 18:27:11 -0400
-Received: by mail-pf1-x449.google.com with SMTP id
- d2e1a72fcca58-77b73bddbdcso5147461b3a.1
- for <qemu-devel@nongnu.org>; Mon, 06 Oct 2025 15:27:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v5tlC-0004Gg-1Z
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 18:32:52 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-77f605f22easo4675143b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Oct 2025 15:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1759789623; x=1760394423; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=B1cXNv96lcACiX7KRO44PZdVnnzKGIL857R1BiKOs20=;
- b=XkBR29xuegrdhs4px/cm2zNQPhNZqQbdcJSn9UtgBKYEabNUbOpjPa7sgbQouJ6sdk
- 6MAn7LL3jRCxZDYVJs21gFajRLTMgl5YYEgb0F9JlIHPN0UxDyj25OwMrZt6T1l3S36P
- /Q7ZlaHpGDA3yiu2ft2AWpB44Bzd9cigsaGr4KCMBUQX55cK6OPfJ84+4XI/qNo+/Djg
- Zp/abr/OMe88aYq2pyffD9gzwcZb4fXq3VhOM06lwBCS79f83svO5RzwY1+S1PwIqJcG
- gR3sGCarY9wUb6pzkPNzlXIqc8a+8jHjJHFv4J4OfsKF8KdT2PqbwV2hybeyZ6rx27oV
- 1L0Q==
+ d=linaro.org; s=google; t=1759789966; x=1760394766; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=rsqxsMd1l8+UL9H+YYEB1wAuagtWs0JQPr64WA5Asbg=;
+ b=QUiTmOMqcVoxpNcIqjLf8W8bkYh40gCJ3IJt/B4By+heAEP7h6s5oP2etReV/6XqCC
+ P+stfwDOVfHCiOuolA27/LXBv+qTruEfaGkTDFTbzT7Wr9xUSJMJRbrRhOkQyyFXtJTI
+ lPta7RhISXvA+MkbSvuwgmztOcOL39t5SqLVMuZJeZWco9XnrzPkyaCnXNufqscmfnGp
+ 6O66x6TEzeVKTJI0yUTXO6n2rnJ0C1hUFVAwiDcX2kbgBgT2jqEHmvPkqcrLnkGLshi0
+ vVwbdYvPRZOESJ3ZNpoKgldp80YR2/2rWnr+1cHFP4wkj+rK2f08bqrFDWtRacaFETZD
+ k/ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759789623; x=1760394423;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=B1cXNv96lcACiX7KRO44PZdVnnzKGIL857R1BiKOs20=;
- b=Roe5i8qnXAz8zyJyfi9hS9O38JPGLGW9DL1BjPKqZoiGHm+YMfN9yfptw2hVT4k+4J
- mMx2vZoU5tTWEbU5uvZeWH0jmBN0WQNtYQ+9qhZ8YERUp3zQftTsz+ar4PaqlSOX6Nrq
- 4tKRBGWU6IRRVatbFMRNZIMrszHkcZGxVtSCn2uU9NKor53LtOlJ4FUBH51mXoA90cJb
- bLFQsfIqdzrRXdWb49NyHiYhwJ8YJ1Te/XQ3GLHxHEbOAYImySRV4SomeX4QiyCxOX0Z
- DAePNG8K42yXrTMrY++Dn9GiHnqa39twLQN1DYnYQW/n0eY9xXEBJf7KBHy0Dwm8Cpr2
- G8pA==
-X-Gm-Message-State: AOJu0YwLyjEC70Tc5OIRt3wzlJ827p+Vkss8Hb4fdPsmf8cb6qUsWHEE
- wFYWqAYx9akil0qaABaZOe0VZlmrVcTAcCVDYXYpkb5K4NXQM5zjV3fq3YZmPfHRjHm2aHkBRQB
- N/ZkDVhCZR94Pt/URkrdjUlW6kB4feJYI/2XnxOyNKC6XmDw1MDEtdzQRx/J2eOpD29rM5Xl9E/
- 5hViwVH7QxlB1y1Snyz2zRNmf3ZMWuJnMFJBKxYOwL
-X-Google-Smtp-Source: AGHT+IEkpb2p+/PFysoyC55IHtwzNRQsCkjQHs+at9LcQJ9t6I+1hufmzrVf7dmnTYKvfF4XnFBDXrBvyZV9
-X-Received: from pfhq23.prod.google.com ([2002:a62:e117:0:b0:77d:4a42:1179])
- (user=navidem job=prod-delivery.src-stubby-dispatcher) by
- 2002:a62:fb1a:0:b0:78a:f579:15bb
- with SMTP id d2e1a72fcca58-7922fab21edmr940098b3a.3.1759789622991; Mon, 06
- Oct 2025 15:27:02 -0700 (PDT)
-Date: Mon,  6 Oct 2025 22:26:42 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
-Message-ID: <20251006222642.691067-1-navidem@google.com>
-Subject: [PATCH] tests/qtest/fuzz: Add generic fuzzer for pcie-root-port
-From: Navid Emamdoost <navidem@google.com>
+ d=1e100.net; s=20230601; t=1759789966; x=1760394766;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rsqxsMd1l8+UL9H+YYEB1wAuagtWs0JQPr64WA5Asbg=;
+ b=SS83g8sDCvyG5wpwQ4H0/PzoqJxGFsAcEsDB76LJ3eAAp+l5DUNHiM7W+ELaBAtZcj
+ iMcFZB+HFUrCtJxLR27WRK01ZFu289dJlTpq9Serk/H4pQx2w/TovqQzU1eZ6+aJvqC5
+ 2QczLQShc4t/4+1B1ZhsD6bsPFDnYw26zQV+SCDqqTaupTDz4HAe3kseDCfRSfb7D6Yn
+ zDiWPVV/BZ3VYkH26X2QgJskEJFBKckiC54GMukmsK1Q1qCv9ChZscgh8IDWjiTmYFZU
+ sUvfiKgVC2tjrwJN+QcqFfNfWD6tD/UPuBmaBAbizdcsAQwA5Q3TmoJY9zHTmcVxYG9R
+ b07Q==
+X-Gm-Message-State: AOJu0YwFa+Z0b8QWa2lDXTbKlyWy6GNhO3dv4nbdMKRdcNkwOULHEC4c
+ yacxWRx2LTj1ghS1Sczfwr27W/m3OKHxyDCbi4xow1LEr67h4hnpuCKKInFZ7lnCmWs8ljM1M18
+ 5F9fp7so=
+X-Gm-Gg: ASbGncvZkBdM7yLVNP//NlBRy1iLbUYUPx2i8SChmth24tV24/BwEZF5IfZRcpuiAaF
+ iDkV+s6Kd3G1GZE372our6NPEMA+Uq8M+hzbepKBd+J8EiafGHMsf4U2J1Osme9ACP07rEJYY1S
+ 5ivKWTnh7G5sEfU6Z437S9l1jSd9xu5GJe6IU37M6GUfbcFFaJTKZnws/Vz4mubypA2ISny2amR
+ lm9n8qwNYqqClQ0go3ieuwqYbSyW8DJU/jMqv1hE82UMynaWvuq9ucPgqkQZTFGjchAQaoh9b3q
+ IBQBWXFRvyh4EGyrFOc9Uv4XqONDeds9En4cPkAU1V58zcRBQnwwiBkKoAYfUcIq9Qun/fkEVWE
+ E8W9uN7VZghoHVW/TksvhDlF4yJIeKyVRf2HH+nRAt6kp/kF38ES44HxlG9gg4xWL
+X-Google-Smtp-Source: AGHT+IFCgxvbVpGWC4CbhNNSQzEVEr8kXUzi3KJckX3cAMf0WDi5E3HKvIK9RSZZ8nKpbl77gd20Xg==
+X-Received: by 2002:a05:6a20:6a26:b0:2bd:2798:7ae7 with SMTP id
+ adf61e73a8af0-32b620be0e3mr16965814637.31.1759789966366; 
+ Mon, 06 Oct 2025 15:32:46 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-78b01faf086sm13704556b3a.23.2025.10.06.15.32.45
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Oct 2025 15:32:45 -0700 (PDT)
+Message-ID: <438dd065-8edc-49d7-922f-29719f17d02b@linaro.org>
+Date: Mon, 6 Oct 2025 15:32:44 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 06/25] target/arm: call plugin trap callbacks
 To: qemu-devel@nongnu.org
-Cc: navidem@google.com, zsm@google.com, Alexander Bulekov <alxndr@bu.edu>, 
- Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>, 
- Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::449;
- envelope-from=3NkLkaAcKCpkG3OB67F9HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--navidem.bounces.google.com;
- helo=mail-pf1-x449.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+References: <cover.1759744337.git.neither@nut.email>
+ <77e01129000585067c2f89d4c1a1efe027e6b0d9.1759744337.git.neither@nut.email>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <77e01129000585067c2f89d4c1a1efe027e6b0d9.1759744337.git.neither@nut.email>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 06 Oct 2025 18:41:55 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,42 +101,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new generic fuzz target for the 'pcie-root-port' device. This
-allows the generic fuzzer to directly target the device's interfaces,
-which is not sufficiently covered by existing fuzz targets.
+On 10/6/25 02:57, Julian Ganz wrote:
+> We recently introduced API for registering callbacks for trap related
+> events as well as the corresponding hook functions. Due to differences
+> between architectures, the latter need to be called from target specific
+> code.
+> 
+> This change places hooks for ARM (and Aarch64) targets. We decided to
+> treat the (V)IRQ, (VI/VF)NMI, (V)FIQ and VSERR exceptions as interrupts
+> since they are, presumably, async in nature.
+> 
+> Signed-off-by: Julian Ganz<neither@nut.email>
+> ---
+>   target/arm/helper.c       | 24 ++++++++++++++++++++++++
+>   target/arm/internals.h    |  1 +
+>   target/arm/tcg/m_helper.c |  5 +++++
+>   3 files changed, 30 insertions(+)
 
----
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-This new target significantly improves code coverage for the PCIe Root
-Port implementation. The baseline coverage shown below was generated by
-running all existing fuzz targets with the oss-fuzz corpus.
-
-File                     New Target      Baseline       Change
------------------------------------------------------------------
-pcie_root_port.c         67.7% (86/127)  10.2% (13/127)  +73 lines
-gen_pcie_root_port.c     68.2% (45/66)   28.8% (19/66)   +26 lines
-
-Signed-off-by: Navid Emamdoost <navidem@google.com>
----
- tests/qtest/fuzz/generic_fuzz_configs.h | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/tests/qtest/fuzz/generic_fuzz_configs.h b/tests/qtest/fuzz/generic_fuzz_configs.h
-index ef0ad95712..fd2ae47ca4 100644
---- a/tests/qtest/fuzz/generic_fuzz_configs.h
-+++ b/tests/qtest/fuzz/generic_fuzz_configs.h
-@@ -247,6 +247,10 @@ const generic_fuzz_config predefined_configs[] = {
-         .args = "-machine q35 -nodefaults "
-         "-parallel file:/dev/null",
-         .objects = "parallel*",
-+    },{
-+        .name = "pcie-root-port",
-+        .args = "-machine q35 -nodefaults -device pcie-root-port",
-+        .objects = "pcie-root*",
-     }
- };
- 
--- 
-2.51.0.618.g983fd99d29-goog
-
+r~
 
