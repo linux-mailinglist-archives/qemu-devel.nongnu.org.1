@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261E9BBD8EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 11:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D3EBBD8BA
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 11:58:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5hym-0006RM-0n; Mon, 06 Oct 2025 05:58:04 -0400
+	id 1v5hyl-0006Qf-Qu; Mon, 06 Oct 2025 05:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyc-0006Mr-KE
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyc-0006N0-Tv
  for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:54 -0400
 Received: from mailgate01.uberspace.is ([95.143.172.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyZ-0003pW-Tf
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyZ-0003pb-VZ
  for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:54 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 7CEDC60B7E
- for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:57:40 +0200 (CEST)
-Received: (qmail 18762 invoked by uid 990); 6 Oct 2025 09:57:40 -0000
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 018B560BAE
+ for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:57:41 +0200 (CEST)
+Received: (qmail 18790 invoked by uid 990); 6 Oct 2025 09:57:40 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,33 +28,32 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PATCH v7 10/25] target/loongarch: call plugin trap callbacks
-Date: Mon,  6 Oct 2025 11:57:05 +0200
-Message-ID: <21a5bf2e810e2c1a3d278ba3ed98f4d4491763cb.1759744337.git.neither@nut.email>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH v7 12/25] target/microblaze: call plugin trap callbacks
+Date: Mon,  6 Oct 2025 11:57:07 +0200
+Message-ID: <4c5496cbe92eb59503352e26968d183ee6272581.1759744337.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1759744337.git.neither@nut.email>
 References: <cover.1759744337.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.996214) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.997498) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.596214
+X-Rspamd-Score: -5.597498
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=T8phxctkNXHnTgk9Nb6JHfuj2CnAEADFPzUwA2KJPGI=;
- b=YNKff1zv9VfVWwBRIcECEbxwxaqQoyErVYWQ0R96/rjStO8wgLvxiR5skQv5ucyYYSId+GbqM2
- f1PoFmZ/ETaMqOqO2UzKPV8Djf2x/vQtQCSPjkdpVvbWaRAgqy/IFVCIlYswfwhk7msni8mPBIBO
- aAITPgXleWaJQCrW6mRn+ByT8T2gSsuL4p6fMDc3z3zyH8q7e4zl1EuR26JEZzJp9iQwD3muKjig
- dEPJBOIYnxsJuTQWZMBoCjMnVs64EY3qls01U6C9mRhEo0z1xKPl6jivXHtwRjg0R/JLWEOCWC7p
- gNKm9YhTH0FR1SoMhMQQuuhsXOVHAFKrX+eszDULmvwUEkAIbnMy+dPJaF4YkitSz7jbDvuIpYGb
- LBk2P1YAFbN/4jWb+IhM38/UKG3HBWVO8BQNOHdKfH4JLepLAemJ2J23cjVay0stQrAoegOc2DIs
- FmUouPJmTUzFsN9pbYaKtC5r2/Ff8qbB9BUu1BWWYHbwqwh1O1CnzL/sPKtVmkRSYUQS0ZA5MLVX
- NqBRxBLGe0CA6LgPh6HYecU8rQoRTyUFhyv36wzhItWeLtmurPsBetJcWwvGrOxEUVROSytYwmFU
- Wem23pGgVew4ByyhS2g1CSs+mN0t4qDGO0xb2zQsLL7OgY4tiH7+wqPMQk8TSaVg+EBw203sPLeH
- M=
+ bh=rM5JX9zlQ9WGxAYK3Aunbsrp/Za/oYwP9iC2VqK2Yd4=;
+ b=AoTi29uvqH5RlKyI7bmlGRGxOCUyPypkqZFbp9923HNaiPN/1bTBniKmdh4+CRZl8k1jF/Nhzr
+ 3bCYwVxBqEC5ErfV1cYr0KrxLaRHgRkf44dxqq9ARUFVMV/KidKdi95cDtk95ytetAhUCw0i3K2d
+ Cmvl3rGSUptCNScNZAmXi0F5DV1b85NiMcxdWw7Kw2/0XebLK9l9Rq/T/SIs14+APSBnfM+jzqRW
+ dDJeZuSPtjPlPQDdq1o0zzh0SPAF/fA7YZRwE+/b4aRnsE28n4YpXKZtfxiD6W+BAK/FwJuTtS6W
+ ReJGlQfZ1juOmdpC9MyfK7XbOb2IaZzpuB3y+UV9gJyaHoke1/7QlF9fdqC5AAAAx5LA8iapY5mU
+ /i93muEhsi9hpbhjFUPlhzpTlsca0Sf6iQgS8aqo90+IH+QxEUUOlugeAsSJHVK64SKBMTH0dq+W
+ Vic1bdjvhMbObK00MKagjR3c4g+L0nsro3pv0VYquLL6v9E3hbuFznKXNf7PuyVNgkvLzHb/ViUt
+ RuW7z8wA2/6fH4WEk5c7Z1XkI/9s6gQgjP3VpWVKThTlK2jYAas0QIUTxlcFQOKLfXEDwxFbqd0o
+ oLh+he8tuCJ8acjMsBL5SdhPubi6WHcVSoLXrD8ewsqweQdgJ9K27barxPzf6KCPVEemEF+corZ3
+ E=
 Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
  helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
@@ -84,51 +83,63 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for loongarch targets. This architecture
+This change places the hook for MicroBlaze targets. This architecture
 has one special "exception" for interrupts and no host calls.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/loongarch/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/microblaze/helper.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 993602fb8c..a8299dfee6 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -32,6 +32,7 @@
- #include "accel/tcg/cpu-ldst.h"
- #include "accel/tcg/cpu-ops.h"
- #include "tcg/tcg.h"
+diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+index ef0e2f973f..d66eab6e4b 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/helper.c
+@@ -27,6 +27,7 @@
+ #include "qemu/host-utils.h"
+ #include "exec/log.h"
+ #include "exec/helper-proto.h"
 +#include "qemu/plugin.h"
- #endif
- #include "tcg/tcg_loongarch.h"
  
-@@ -172,6 +173,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     int cause = -1;
-     bool tlbfill = FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR);
-     uint32_t vec_size = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, VS);
+ 
+ G_NORETURN
+@@ -35,6 +36,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
+ {
+     CPUMBState *env = cpu_env(cs);
+     uint32_t esr, iflags;
 +    uint64_t last_pc = env->pc;
  
-     if (cs->exception_index != EXCCODE_INT) {
-         qemu_log_mask(CPU_LOG_INT,
-@@ -282,6 +284,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-                       __func__, env->pc, env->CSR_ERA,
-                       cause, env->CSR_BADV, env->CSR_DERA, vector,
-                       env->CSR_ECFG, env->CSR_ESTAT);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-     } else {
-         if (tlbfill) {
-             set_pc(env, env->CSR_TLBRENTRY);
-@@ -300,6 +303,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-                       tlbfill ? env->CSR_TLBRBADV : env->CSR_BADV,
-                       env->CSR_BADI, env->gpr[11], cs->cpu_index,
-                       env->CSR_ASID);
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-     }
-     cs->exception_index = -1;
+     /* Recover the pc and iflags from the corresponding insn_start.  */
+     cpu_restore_state(cs, retaddr);
+@@ -54,6 +56,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
+     env->ear = addr;
+     env->esr = esr;
+     cs->exception_index = EXCP_HW_EXCP;
++    qemu_plugin_vcpu_exception_cb(cs, last_pc);
+     cpu_loop_exit(cs);
  }
+ 
+@@ -152,6 +155,7 @@ void mb_cpu_do_interrupt(CPUState *cs)
+     CPUMBState *env = &cpu->env;
+     uint32_t t, msr = mb_cpu_read_msr(env);
+     bool set_esr;
++    uint64_t last_pc = env->pc;
+ 
+     /* IMM flag cannot propagate across a branch and into the dslot.  */
+     assert((env->iflags & (D_FLAG | IMM_FLAG)) != (D_FLAG | IMM_FLAG));
+@@ -256,6 +260,12 @@ void mb_cpu_do_interrupt(CPUState *cs)
+     env->res_addr = RES_ADDR_NONE;
+     env->iflags = 0;
+ 
++    if (cs->exception_index == EXCP_IRQ) {
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
++    } else {
++        qemu_plugin_vcpu_exception_cb(cs, last_pc);
++    }
++
+     if (!set_esr) {
+         qemu_log_mask(CPU_LOG_INT,
+                       "         to pc=%08x msr=%08x\n", env->pc, msr);
 -- 
 2.49.1
 
