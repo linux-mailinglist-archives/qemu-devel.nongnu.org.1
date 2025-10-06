@@ -2,67 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D3EBBD8BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 11:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D624BBD8F4
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 12:00:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5hyl-0006Qf-Qu; Mon, 06 Oct 2025 05:58:03 -0400
+	id 1v5hyg-0006O8-2e; Mon, 06 Oct 2025 05:57:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyc-0006N0-Tv
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyc-0006M7-3N
  for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:54 -0400
-Received: from mailgate01.uberspace.is ([95.143.172.20])
+Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyZ-0003pb-VZ
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:54 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyZ-0003pV-Tf
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:57:53 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 018B560BAE
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 5BCFE60BAC
  for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:57:41 +0200 (CEST)
-Received: (qmail 18790 invoked by uid 990); 6 Oct 2025 09:57:40 -0000
+Received: (qmail 18810 invoked by uid 990); 6 Oct 2025 09:57:41 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Mon, 06 Oct 2025 11:57:40 +0200
+ Mon, 06 Oct 2025 11:57:41 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v7 12/25] target/microblaze: call plugin trap callbacks
-Date: Mon,  6 Oct 2025 11:57:07 +0200
-Message-ID: <4c5496cbe92eb59503352e26968d183ee6272581.1759744337.git.neither@nut.email>
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>
+Subject: [PATCH v7 13/25] target/mips: call plugin trap callbacks
+Date: Mon,  6 Oct 2025 11:57:08 +0200
+Message-ID: <01114d79e7ad2c9a8824a417f3869bdf0f0293e7.1759744337.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1759744337.git.neither@nut.email>
 References: <cover.1759744337.git.neither@nut.email>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.997498) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.597498
+X-Rspamd-Bar: ------
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.988632) MID_CONTAINS_FROM(1)
+ MIME_GOOD(-0.1)
+X-Rspamd-Score: -6.088632
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=rM5JX9zlQ9WGxAYK3Aunbsrp/Za/oYwP9iC2VqK2Yd4=;
- b=AoTi29uvqH5RlKyI7bmlGRGxOCUyPypkqZFbp9923HNaiPN/1bTBniKmdh4+CRZl8k1jF/Nhzr
- 3bCYwVxBqEC5ErfV1cYr0KrxLaRHgRkf44dxqq9ARUFVMV/KidKdi95cDtk95ytetAhUCw0i3K2d
- Cmvl3rGSUptCNScNZAmXi0F5DV1b85NiMcxdWw7Kw2/0XebLK9l9Rq/T/SIs14+APSBnfM+jzqRW
- dDJeZuSPtjPlPQDdq1o0zzh0SPAF/fA7YZRwE+/b4aRnsE28n4YpXKZtfxiD6W+BAK/FwJuTtS6W
- ReJGlQfZ1juOmdpC9MyfK7XbOb2IaZzpuB3y+UV9gJyaHoke1/7QlF9fdqC5AAAAx5LA8iapY5mU
- /i93muEhsi9hpbhjFUPlhzpTlsca0Sf6iQgS8aqo90+IH+QxEUUOlugeAsSJHVK64SKBMTH0dq+W
- Vic1bdjvhMbObK00MKagjR3c4g+L0nsro3pv0VYquLL6v9E3hbuFznKXNf7PuyVNgkvLzHb/ViUt
- RuW7z8wA2/6fH4WEk5c7Z1XkI/9s6gQgjP3VpWVKThTlK2jYAas0QIUTxlcFQOKLfXEDwxFbqd0o
- oLh+he8tuCJ8acjMsBL5SdhPubi6WHcVSoLXrD8ewsqweQdgJ9K27barxPzf6KCPVEemEF+corZ3
- E=
-Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
- helo=mailgate01.uberspace.is
+ bh=4QCLeRlIzG5ENUNvx1SoYVdpQIbTNKVldgdxK9RZn7c=;
+ b=GWGTzzhPS5BW3tUOnoTERjTtfOqsaynRMzDNtHGWXnmHSQOvDsNRuMESDX6P7AfAxxXbBrtaJe
+ 7q1jTK8HNroCEQ+9vRthHH5owWKPQ2lK8VzN0jkfi23/f8CV+LeRyc1Hojw/r52AM46YlVO0sMIk
+ g33Z8ji+m04Zmf2U+37FBrx/zV/nKMMl9xWcLChL6O+u5FNMlOJxeSqKlVNgvUNSGPPxzpGMWejb
+ URADMOq3RMa95/FGpsrLMyGICf6xpjq+dEpZOJ/MFpLgCAHDaSRbJXpZTwupP/5JWtdy8UdGMk8/
+ wQVgX0R4gg2iX6sH7XZW9rYxda+JMQJLnb8zwcU7ExJrUK3Mq3h0xObDzrJFjsixilbNnrlwhxLA
+ PG79EvI/qpkxk5llBqY1zc16kJsvX7iWM8RVlQETmWa+gQK0md4K7pPldYKh5w5Kccs3l86dDuk5
+ SjoUDpBQYtJwCQis0/vyBYmpxcTawgEiVAXjWN0GtIMibhJQdnBthnnARhC6o+z/XPKhd3YYWu8r
+ Lzg4omSdZNmBvRi9TUDHtL4OOVIo7aNGl4lpNdGmmrn/aOPw1mdsgXbpjlu5OW/ySgAxfUOjOdrI
+ VspAUYcHnnzpnKViisnEuoT/uqMfbujk9ObYMayeOfec/e9ZaB4ylA1TWdnZxtfFk4JmwbI+YxEJ
+ U=
+Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
+ envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,63 +87,60 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places the hook for MicroBlaze targets. This architecture
-has one special "exception" for interrupts and no host calls.
+This change places hooks for MIPS targets. We consider the exceptions
+NMI and EXT_INTERRUPT to be asynchronous interrupts rather than
+exceptions.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/microblaze/helper.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/mips/tcg/system/tlb_helper.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
-index ef0e2f973f..d66eab6e4b 100644
---- a/target/microblaze/helper.c
-+++ b/target/microblaze/helper.c
-@@ -27,6 +27,7 @@
- #include "qemu/host-utils.h"
- #include "exec/log.h"
- #include "exec/helper-proto.h"
+diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
+index 1e8901556d..566924b079 100644
+--- a/target/mips/tcg/system/tlb_helper.c
++++ b/target/mips/tcg/system/tlb_helper.c
+@@ -18,6 +18,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "qemu/bitops.h"
 +#include "qemu/plugin.h"
  
+ #include "cpu.h"
+ #include "internal.h"
+@@ -1034,6 +1035,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
+     bool update_badinstr = 0;
+     target_ulong offset;
+     int cause = -1;
++    uint64_t last_pc = env->active_tc.PC;
  
- G_NORETURN
-@@ -35,6 +36,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
- {
-     CPUMBState *env = cpu_env(cs);
-     uint32_t esr, iflags;
-+    uint64_t last_pc = env->pc;
- 
-     /* Recover the pc and iflags from the corresponding insn_start.  */
-     cpu_restore_state(cs, retaddr);
-@@ -54,6 +56,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
-     env->ear = addr;
-     env->esr = esr;
-     cs->exception_index = EXCP_HW_EXCP;
-+    qemu_plugin_vcpu_exception_cb(cs, last_pc);
-     cpu_loop_exit(cs);
- }
- 
-@@ -152,6 +155,7 @@ void mb_cpu_do_interrupt(CPUState *cs)
-     CPUMBState *env = &cpu->env;
-     uint32_t t, msr = mb_cpu_read_msr(env);
-     bool set_esr;
-+    uint64_t last_pc = env->pc;
- 
-     /* IMM flag cannot propagate across a branch and into the dslot.  */
-     assert((env->iflags & (D_FLAG | IMM_FLAG)) != (D_FLAG | IMM_FLAG));
-@@ -256,6 +260,12 @@ void mb_cpu_do_interrupt(CPUState *cs)
-     env->res_addr = RES_ADDR_NONE;
-     env->iflags = 0;
- 
-+    if (cs->exception_index == EXCP_IRQ) {
+     if (qemu_loglevel_mask(CPU_LOG_INT)
+         && cs->exception_index != EXCP_EXT_INTERRUPT) {
+@@ -1052,6 +1054,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
+         cs->exception_index = EXCP_NONE;
+         mips_semihosting(env);
+         env->active_tc.PC += env->error_code;
++        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
+         return;
+     case EXCP_DSS:
+         env->CP0_Debug |= 1 << CP0DB_DSS;
+@@ -1336,6 +1339,14 @@ void mips_cpu_do_interrupt(CPUState *cs)
+                  env->CP0_Status, env->CP0_Cause, env->CP0_BadVAddr,
+                  env->CP0_DEPC);
+     }
++    switch (cs->exception_index) {
++    case EXCP_NMI:
++    case EXCP_EXT_INTERRUPT:
 +        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+    } else {
++        break;
++    default:
 +        qemu_plugin_vcpu_exception_cb(cs, last_pc);
 +    }
-+
-     if (!set_esr) {
-         qemu_log_mask(CPU_LOG_INT,
-                       "         to pc=%08x msr=%08x\n", env->pc, msr);
+     cs->exception_index = EXCP_NONE;
+ }
+ 
 -- 
 2.49.1
 
