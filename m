@@ -2,68 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9485ABBD96C
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 12:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF86BBD960
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 12:04:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5hyr-0006ae-CR; Mon, 06 Oct 2025 05:58:09 -0400
+	id 1v5i1F-00023J-ML; Mon, 06 Oct 2025 06:00:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hyp-0006Z0-CA
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:58:07 -0400
-Received: from mailgate01.uberspace.is ([95.143.172.20])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5i0P-0001WB-Rz
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:59:46 -0400
+Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5hym-0003r0-IV
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:58:07 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5i0N-000412-Qn
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:59:45 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 0C6B260BF6
- for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:57:43 +0200 (CEST)
-Received: (qmail 18903 invoked by uid 990); 6 Oct 2025 09:57:42 -0000
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 3DD6060B8E
+ for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:59:42 +0200 (CEST)
+Received: (qmail 20993 invoked by uid 990); 6 Oct 2025 09:59:42 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Mon, 06 Oct 2025 11:57:42 +0200
+ Mon, 06 Oct 2025 11:59:42 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yoshinori Sato <yoshinori.sato@nifty.com>
-Subject: [PATCH v7 19/25] target/sh4: call plugin trap callbacks
-Date: Mon,  6 Oct 2025 11:57:14 +0200
-Message-ID: <105995a312c0d20f0b5a816bdfc2ddfc5ceecd50.1759744337.git.neither@nut.email>
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH v7 22/25] target/xtensa: call plugin trap callbacks
+Date: Mon,  6 Oct 2025 11:59:17 +0200
+Message-ID: <1ea18c5c484ca0c1fc11738a3033cdacff3296e3.1759744337.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1759744337.git.neither@nut.email>
 References: <cover.1759744337.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.998048) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999997) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.598048
+X-Rspamd-Score: -5.599997
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=SordwaBTTHwBeWWY9UP8KbtbiTHsyrq+7lo4143sRLc=;
- b=xsA8JYnyR4cPmMOPfhh7Z/UQzW3Amni5aYBE7qjlZBujFyU68Nm0AbXMo1dyy1CNOgkHTQK4+M
- 5VtPG3V68rHb5cfwVJ3FTGlVeAgT+izCNCGMqYoJJgs5O+uk/3xDm1FEXDaX2Xi2yeW6wvuZqnsH
- wxpJ3q+BM/4chH3lN4lBRyyYlH6DpWmLEXazqLCTj94n7l0UCytk/E2/0h8yJBF1/trTTgTwjW04
- oVPgTTb/i2MI8wp6SYusbQu8H1hc7TeVdUr7UjPltZbW8BN8EIXaguvrw6jpqiMnBVT2DJ+IREbt
- hjjQNgvlnNWflAT2bjfdbq6AGrYGLHKKiXiTtrz+UPkPc8mxSZVRzflqjE9gLO99ZgyYCZbU75LY
- 7wNYvGWawN2n6NaDdD9YnEiUJdyNjZDHzfOoW4ICRCBRVgH8sK3p7ESz3mnT8MHqnO7GVLqcc6YS
- +VnbfAkkXJ7kNwguLNExcsHeFII7yF2lYzZ2WEu6H8p2CLtDJn5B6qIFvqkvHb7r874SiM63GqYZ
- Lg3ZLmDgdVflletodUo1qfYyrpuRRbnAQmUueBSyuU8nbT6cxTRcmbhMunJ5Pt1rNuWPK5gp6Wyp
- +lkkVO/7hGdR1EZXIXeBCF7fL4BcW0KPvUidte7ThVaUSefdt6AdYNp7e3DOj2xC95ifJ+OLHW+n
- k=
-Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
- helo=mailgate01.uberspace.is
+ bh=4qMKxbL61NUaVuIspdY/J81NXPxh6lWuOHZ6cGQg8/w=;
+ b=oe6i21s71975NDLuIwPvsELwPmDgk7DbtCxZimmROzXHgDeoDa/mJFfCWrgE6L81cLiVqAgtpB
+ zFbWIuib7HVXvg1aCkc18jnSsWDpWPJEXgEoSI5NWKYqEu844xUs+dEiCief8kpNQfevvWAYPc67
+ LxOaFq+T1mmvf4coqwxyimSubWfQuoTTF2WK1MoKD/vW5K0kGExiBZprWfrPRRN4wFuIpBNSosu0
+ 3bmiIbJ98nHaexUYNa5hTz6laK2h6RKJ2juUA+Cw0S3e+VUALYb7ygbgamqJmcm/UrvdejFZRPd1
+ H88gb66AP0Fcv6hBQnlmprB73b/VUqZlALFk4kLRn1j2JMR5sK7mgCLrSLLNkSjZcPm/mYUSDA2w
+ 4vpYTzOs7lh4z/WnmNXkzrtBVD+bevJsHFKikUboGMbvJkT7T/KKPkuaw67yzZBIxxP3hoXajv1u
+ uUHlQEobQsGULH41GGLgiWnICkuPW4Mb9C447Aia10Kt5jt+ex1g2l2FvIHJU+XWcDp/Tg6nBG1b
+ zJdFOTf+BZH9gnx7CFuo6qqPOEJuyd1eQO2iWElwsIdTMVB2Co4vSPKM3ZaHfYxx97zZc7geLdbA
+ +MYvrPu1f1xevIUfFOx/p8G9btgVojyaDN3o0SnxVbJQj+zhr3wUD3ft5gX4NWvePHbWhsQ+F8NT
+ w=
+Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
+ envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,49 +82,81 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for SuperH targets.
+This change places hooks for xtensa targets.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Yoshinori Sato <yoshinori.sato@nifty.com>
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/sh4/helper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/xtensa/exc_helper.c  | 6 ++++++
+ target/xtensa/xtensa-semi.c | 3 +++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/target/sh4/helper.c b/target/sh4/helper.c
-index 1744ef0e6d..fb26d5c35d 100644
---- a/target/sh4/helper.c
-+++ b/target/sh4/helper.c
-@@ -24,6 +24,7 @@
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
- #include "exec/log.h"
+diff --git a/target/xtensa/exc_helper.c b/target/xtensa/exc_helper.c
+index b611c9bf97..fdc522698d 100644
+--- a/target/xtensa/exc_helper.c
++++ b/target/xtensa/exc_helper.c
+@@ -32,6 +32,7 @@
+ #include "exec/helper-proto.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/atomic.h"
 +#include "qemu/plugin.h"
  
- #if !defined(CONFIG_USER_ONLY)
- #include "hw/sh4/sh_intc.h"
-@@ -60,6 +61,7 @@ void superh_cpu_do_interrupt(CPUState *cs)
-     CPUSH4State *env = cpu_env(cs);
-     int do_irq = cpu_test_interrupt(cs, CPU_INTERRUPT_HARD);
-     int do_exp, irq_vector = cs->exception_index;
+ void HELPER(exception)(CPUXtensaState *env, uint32_t excp)
+ {
+@@ -207,6 +208,8 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+     CPUXtensaState *env = cpu_env(cs);
+ 
+     if (cs->exception_index == EXC_IRQ) {
++        uint64_t last_pc = env->pc;
++
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s(EXC_IRQ) level = %d, cintlevel = %d, "
+                       "pc = %08x, a0 = %08x, ps = %08x, "
+@@ -218,6 +221,7 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+                       env->sregs[INTSET], env->sregs[INTENABLE],
+                       env->sregs[CCOUNT]);
+         handle_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+     }
+ 
+     switch (cs->exception_index) {
+@@ -238,9 +242,11 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+                       env->sregs[CCOUNT]);
+         if (env->config->exception_vector[cs->exception_index]) {
+             uint32_t vector;
++            uint64_t last_pc = env->pc;
+ 
+             vector = env->config->exception_vector[cs->exception_index];
+             env->pc = relocated_vector(env, vector);
++            qemu_plugin_vcpu_exception_cb(cs, last_pc);
+         } else {
+             qemu_log_mask(CPU_LOG_INT,
+                           "%s(pc = %08x) bad exception_index: %d\n",
+diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
+index 636f421da2..129749c92d 100644
+--- a/target/xtensa/xtensa-semi.c
++++ b/target/xtensa/xtensa-semi.c
+@@ -34,6 +34,7 @@
+ #include "semihosting/uaccess.h"
+ #include "qapi/error.h"
+ #include "qemu/log.h"
++#include "qemu/plugin.h"
+ 
+ enum {
+     TARGET_SYS_exit = 1,
+@@ -194,6 +195,7 @@ void HELPER(simcall)(CPUXtensaState *env)
+ {
+     CPUState *cs = env_cpu(env);
+     uint32_t *regs = env->regs;
 +    uint64_t last_pc = env->pc;
  
-     /* prioritize exceptions over interrupts */
- 
-@@ -176,12 +178,14 @@ void superh_cpu_do_interrupt(CPUState *cs)
-             env->pc = env->vbr + 0x100;
-             break;
-         }
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-         return;
+     switch (regs[2]) {
+     case TARGET_SYS_exit:
+@@ -430,4 +432,5 @@ void HELPER(simcall)(CPUXtensaState *env)
+         regs[3] = TARGET_ENOSYS;
+         break;
      }
- 
-     if (do_irq) {
-         env->intevt = irq_vector;
-         env->pc = env->vbr + 0x600;
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-         return;
-     }
++    qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
  }
 -- 
 2.49.1
