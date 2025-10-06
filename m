@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C2BBBD966
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 12:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2540EBBD981
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 12:05:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5i1O-0002XE-Ho; Mon, 06 Oct 2025 06:00:46 -0400
+	id 1v5i5k-00030T-Rg; Mon, 06 Oct 2025 06:05:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5i0S-0001Y1-8k
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:59:49 -0400
-Received: from mailgate01.uberspace.is ([95.143.172.20])
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1v5i5h-0002wz-Cy
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 06:05:13 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v5i0Q-00041U-Gz
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 05:59:48 -0400
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 4A9CD60B91
- for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 11:59:45 +0200 (CEST)
-Received: (qmail 21069 invoked by uid 990); 6 Oct 2025 09:59:45 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Mon, 06 Oct 2025 11:59:45 +0200
-From: Julian Ganz <neither@nut.email>
-To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v7 25/25] tests: add test with interrupted memory accesses on
- rv64
-Date: Mon,  6 Oct 2025 11:59:20 +0200
-Message-ID: <729c8db0f4b61033f5a460747ea50fced9dabc1e.1759744337.git.neither@nut.email>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <cover.1759744337.git.neither@nut.email>
-References: <cover.1759744337.git.neither@nut.email>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: ----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.214157) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -4.814157
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=mVLyiyy1HWjSWhu1/Q5w+icoVuven8S3d7VhRcdbntg=;
- b=ns2lwxA4B0p8ltBmZnDMEHNw0Bq5Ga6Y1QM+vbpm/5XynLaOFk2vRdl0z3AgZ0Stw+7b+/F/XH
- M68z3dtDsNwwfxZQ0Z6Mp1UzWu2eygtlTiPkCrIq9YHO2vtMdiv9HaVRd/hGJuoH9shb9xDPRE0g
- 0nEUonUD4B3KaRyVeZWIlI60J208FwcZalZHqWxcO0vDKX2mm4TgPS4s2kRTD6XgabwuXNM8BDld
- hGhjp11tFyBks+F9BHHoKGownnqcPohMYxbp85Vx9OnIdEcKyw8VsP5EIeJQvWOPQGbMxXLU48Ma
- /zNwBH5ytJE/8FsWNZCWo+MKrDE7i/1LEpr1W7YgP+fUI2wMN9TurOgK/UyIBDSLJ3tc7BlczeNp
- r6d4zcGt6AVve4FwvqmmbdaoPrt7BkkxvHXnqiz0bhtQxxJ7lPoHbMGZDsjrIIeCoW2GYy9KJO2m
- Vpj0reCAd4zAizhzLlny7qo5eNNnDsri8J8ZZZ8FxstKy3NFHygsesJEfobv9+biXzDzoWbHjfjh
- iqInSOPHfDv8khneqkrRZFEMnc+5cSdtdHuSPDCtVt2QNN47Iso5GQaIhUnmzaQGwJ+WQFJXIJXn
- Nt94ahfTZndbW6MbGi4YKsDEPKqPOuELNFf+Q2rcx/XwgpPYiRyJgwJzdhoTInMwibneeEDBY9mg
- w=
-Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
- helo=mailgate01.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1v5i5f-00056x-16
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 06:05:13 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-42420c7de22so2606454f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Oct 2025 03:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=livius-net.20230601.gappssmtp.com; s=20230601; t=1759745108; x=1760349908;
+ darn=nongnu.org; 
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8RpjllKbLo8qaaDf2tjapMYvimhTJcElqNmiDIkjl/o=;
+ b=B0IOSpdNhRel4CPRRrmlRxXOM3cduUE2MNhR+JvzN9sJzNVtpp874VOJGFzqhJpvf3
+ ep/QBXF1HOyfGi0a/sJ3fNPhlpFXj8lTM6gW/wII4hsZ/ULn6gOiAboDSn5P+4rU3iYD
+ rQIut2sW2D0b7cg4pcr1VCYJRi5ozBZTa/MVbVWzbt4QgfDXnx40347MN8pe8IkJucgi
+ qIcjavBdbvPwKv+9o4iwMXFiCu0EViAwvEaYH3smSvuvde9kf63MXVatdLQQ3TlQPaMf
+ 1z1bnx9KdxqLL/WcjTU7Vf4Tx5mt3PTTxXtoZCPqNAnhYYg5NAy2y6TLO2omEHO+NsTu
+ ZdkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759745108; x=1760349908;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8RpjllKbLo8qaaDf2tjapMYvimhTJcElqNmiDIkjl/o=;
+ b=oFBI4/Zv1LryADPcQqL2ArDsVSdzz1sVoeRvwu60ITIBTxnpcKUsuvyM3nSogwmO1m
+ aaDgqUXrHsYVe+UGQUpFbFxm/k17urDoF/JEgoZ8N4hInHumofjFoInvXtTLFLD0aXcL
+ QF6VAtli1Yevnf/UUwuH1T6HoS7SsBHVM7zbxBa6HElFxnxI8cLdK9nxIhdwmXQYd9s5
+ Qyk5NhvButQ+UmarnONZ0zE2cojEhoeeBSbDKqNPUsguFKMQqC8/7msFX86B5lc/0oSW
+ 4icQ6hn2uFor+HqWK0r8o5tsGh1yqoBUkcCrLbtljgF67NUiPEMiibE3OgBk/GP6iCVi
+ uvUQ==
+X-Gm-Message-State: AOJu0YxYNu6B+6K0CAjmZdEeTy1a5e4aLZgifUqeCQ2p7VT5hRv6wzLv
+ 9PjugUN88D+76vvq7UgKTP/lxnuQSZr3TnQpKwTvSovUC1joHXewPlzzvPdeb1KVUiY=
+X-Gm-Gg: ASbGnct56ntsYqslPvYP1zDyiE1wGx+55A5VyH4tfwHrnoguQ28Ncq93/u+nQXnNK2h
+ GJkCW6XK9ayEKHY+lIGv8USGoJXT1imL2IxlBzgXczTrqqwMpHXPrUU0+kODucHD54R3RtjhJIb
+ aJQYVJzflwz9aSObBe/4JU5Gl+a9yaRvx2kEqfgf9jxJbsqVSEZ8AcjEMHFfcIIfAy+0meOpSr1
+ 5s/cNpGn98oZHOM4Ty8CPpTh+mQujV9dXcQupq5WqMUcC2t4v8VNCsbz5gx+BuLoUUKlhEOn/Gu
+ w+TKk9s5ObLVnSBOstRSzKwJZ6WW/wLUj/1A7D0U0qXpx6ikdpoztd9YIMOZvDjAoLJQhSq6Xxz
+ EAj3q8gquTa9W0upVe/zZYjpEnSRvZPsCXs41gHjzQTdnW16p0O+3lNgPAMyuwcPIfKk=
+X-Google-Smtp-Source: AGHT+IEenVYHLqv7WB18pd7gWMDR+ei7FwI96DOtAn5GR0QTEJNSpEKwSxWyJ8ordITUHAyd6bKomQ==
+X-Received: by 2002:a05:6000:184e:b0:3b7:9c79:32bb with SMTP id
+ ffacd0b85a97d-4256719357bmr7636238f8f.44.1759745107987; 
+ Mon, 06 Oct 2025 03:05:07 -0700 (PDT)
+Received: from smtpclient.apple ([188.25.252.134])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e78c5d290sm111334185e9.0.2025.10.06.03.05.07
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 06 Oct 2025 03:05:07 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: qemu-system-aarch64 hangs in a cortex-a72 test
+From: Liviu Ionescu <ilg@livius.net>
+In-Reply-To: <CAFEAcA_h3-iWubDg++jcO6_S_o_Z1-Xm4RMHqLYq8T=1naADug@mail.gmail.com>
+Date: Mon, 6 Oct 2025 13:04:56 +0300
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <84A761E5-6FF2-45AC-883B-AB441E3894A0@livius.net>
+References: <9EF1806D-4C25-4980-B1CA-16616FA8E32F@livius.net>
+ <CAFEAcA_h3-iWubDg++jcO6_S_o_Z1-Xm4RMHqLYq8T=1naADug@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+Received-SPF: none client-ip=2a00:1450:4864:20::431;
+ envelope-from=ilg@livius.net; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,117 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This test aims at catching API misbehaviour w.r.t. the interaction
-between interrupts and memory accesses, such as the bug fixed in
 
-    27f347e6a1d269c533633c812321cabb249eada8
 
-Because the condition for triggering misbehaviour may not be
-deterministic and the cross-section between memory accesses and
-interrupt handlers may be small, we have to place our trust in large
-numbers. Instead of guessing/trying an arbitrary, fixed loop-bound, we
-decided to loop for a fixed amount of real-time. This avoids the test
-running into a time-out on slower machines while enabling a high number
-of possible interactions on faster machines.
+> On 6 Oct 2025, at 12:55, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+>=20
+> Notably 9.0 is the first release which included
+> commit 59754f85ed, which enforces the architectural
+> requirement that when the MMU is disabled unaligned
+> loads and stores must fault.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Julian Ganz <neither@nut.email>
----
- tests/tcg/riscv64/Makefile.softmmu-target |  6 ++
- tests/tcg/riscv64/interruptedmemory.S     | 67 +++++++++++++++++++++++
- 2 files changed, 73 insertions(+)
- create mode 100644 tests/tcg/riscv64/interruptedmemory.S
+Ok, this is a good hint, a loop in an exception handler is a very likely =
+cause of the program hanging.
 
-diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 1a71a78653..d8f92b8e61 100644
---- a/tests/tcg/riscv64/Makefile.softmmu-target
-+++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -30,5 +30,11 @@ run-plugin-doubletrap: doubletrap
- 	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
- 	  $(QEMU_OPTS)$<)
- 
-+EXTRA_RUNS += run-plugin-interruptedmemory
-+run-plugin-interruptedmemory: interruptedmemory
-+	$(call run-test, $<, \
-+	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
-+	  $(QEMU_OPTS)$<)
-+
- # We don't currently support the multiarch system tests
- undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/interruptedmemory.S b/tests/tcg/riscv64/interruptedmemory.S
-new file mode 100644
-index 0000000000..a32d672849
---- /dev/null
-+++ b/tests/tcg/riscv64/interruptedmemory.S
-@@ -0,0 +1,67 @@
-+	.option norvc
-+
-+	.text
-+	.global _start
-+_start:
-+	# Set up trap vector
-+	lla	t0, trap
-+	csrw	mtvec, t0
-+
-+	# Set up timer
-+	lui	t1, 0x02004
-+	sd	zero, 0(t1) # MTIMECMP0
-+
-+	# Enable timer interrupts
-+	li	t0, 0x80
-+	csrrs	zero, mie, t0
-+	csrrsi	zero, mstatus, 0x8
-+
-+	# Find out when to stop
-+	call	rtc_get
-+	li	t0, 60
-+	slli	t0, t0, 30 # Approx. 10e9 ns
-+	add	t0, t0, a0
-+
-+	# Loop with memory accesses
-+	la	t1, semiargs
-+0:
-+	ld	t2, 0(t1)
-+	sd	t2, 0(t1)
-+	call	rtc_get
-+	bltu	a0, t0, 0b
-+
-+	li	a0, 0
-+	lla	a1, semiargs
-+	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
-+	sd	t0, 0(a1)
-+	sd	a0, 8(a1)
-+	li	a0, 0x20	# TARGET_SYS_EXIT_EXTENDED
-+
-+	# Semihosting call sequence
-+	.balign	16
-+	slli	zero, zero, 0x1f
-+	ebreak
-+	srai	zero, zero, 0x7
-+	j	.
-+
-+rtc_get:
-+	# Get current time from the goldfish RTC
-+	lui	t3, 0x0101
-+	lw	a0, 0(t3)
-+	lw	t3, 4(t3)
-+	slli	t3, t3, 32
-+	add	a0, a0, t3
-+	ret
-+
-+trap:
-+	lui	t5, 0x0200c
-+	ld	t6, -0x8(t5) # MTIME
-+	addi	t6, t6, 100
-+	lui	t5, 0x02004
-+	sd	t6, 0(t5) # MTIMECMP
-+	mret
-+
-+	.data
-+	.balign	16
-+semiargs:
-+	.space	16
--- 
-2.49.1
+> ... (You should be able
+> to see that in the -d debug logs if it's happening,
+> or via gdbstub if you put a breakpoint on the exception
+> entry point.)
+
+I'll try to run a debug session and see if this is the case, and fix it.
+
+> If it doesn't look like that's what it's falling over on,
+> you could try a git bisect of QEMU to pinpoint the
+> commit where it stopped working.
+
+Right. Hopefully this will not be necessary, it must be some small =
+stupid mistake in my code, not detected before.
+
+
+Thank you,
+
+Liviu
 
 
