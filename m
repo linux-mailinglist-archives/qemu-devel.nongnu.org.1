@@ -2,144 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D57BBEF82
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 20:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A972BBF03C
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 20:46:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5pze-0002Dn-D6; Mon, 06 Oct 2025 14:31:30 -0400
+	id 1v5qDa-0005QU-0p; Mon, 06 Oct 2025 14:45:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1v5pzZ-0002DX-PO; Mon, 06 Oct 2025 14:31:25 -0400
-Received: from mail-westcentralusazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c112::7] helo=CY3PR05CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1v5qDW-0005P9-Dy
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 14:45:50 -0400
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1v5pzX-0003B8-KM; Mon, 06 Oct 2025 14:31:25 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ik12bln1dfHgwKmS9NZh6rlSSOQPkSroXwgxfXFIqIuo2bcEXXYieWHNlzhF/8F2RRmMIGDPnITcmMfM7dy/yKuldJFP/40gX5DERkWHy7aXeDVTYgq1kJOkEoA7HX6zGBgGGBT7BW9ioeql6eQUoWGcG57WNY652HRUrKEme0oxnj1b6ik4d/32stdkuYmU6GuKvk1/yy1uLP/mngd43HIOtFoZjDGtPMxU+YVJxhyK/zKcnS/zuSnHxZtQTJ3ZtLblA4zYHGlW6moRRVPdJXYncNwOzpN6iSYJB8Q2+H2NeZ+tkoXJIZRd/cE+xLxbH5zj39sxRQTNMrLhs1KP/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6pWpqTH6QPxkLbSgzKihJgC1BNSU5TJX2l541CL+/Oc=;
- b=iwxAm9ktREKyqekie2wY2L6M9FmIC5H8O+ebOfMZOD4QeOnoPb1rDJYz7QNiFCXnfvXJnjkMXnAGlMG4hNXJ4+TcLi6XhDRU6mA2okrbEZhr0iCYrdTwG1cBal7w1Za5mlGE38AB821RfnhSPhYJ3Wk5qglWrIcplUFxTfdNmsE0AWC5IQB4kWZ106CKutC+zw7HIYgihBTmRFPoQoWJ2bd4ipAPijLLBb+cC1IrFaFtKTGDiwQhvBDY4KP15XHQBRXmLV5W3Gd6GA/aDw1pF17lZafH5bzaXdfZyWrbuptM/i8VQBmY9tAT2SLTrCVHRUiNXins24zb6owy283PmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6pWpqTH6QPxkLbSgzKihJgC1BNSU5TJX2l541CL+/Oc=;
- b=GBjlC86vZE/cYhrI89Xcl2qpjKfZRyd+L+c8k2cTCi/7dJP1x640qVKSzbnQSjUWkGju1yA5vp7FJ2Q83achYidBia8ZWXrybU4nzRwginOid2w0IW2D0zhV2DGEpMLF9xibTgeHlVfprGxdr7IAB7jOHVnityeV3Y5WkB0hKvOGoT9JflUWUUyrykw9b8QIbH5bOfsU5aaLOcIKiptlhss4qA3kUUJTW1KSOacxNz/M5o8MvsFBKKxjuya9hihejWV7gecJWLmix6xzfHSFJ1ZQL9zJl8V23aBWLuo7JQygxf78QmaX4E2ulT2AhbJq1oKNT/ZzEidalUellLDQWg==
-Received: from CH5PR04CA0005.namprd04.prod.outlook.com (2603:10b6:610:1f4::22)
- by MW4PR12MB6779.namprd12.prod.outlook.com (2603:10b6:303:20f::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.16; Mon, 6 Oct
- 2025 18:31:10 +0000
-Received: from CH1PEPF0000AD7D.namprd04.prod.outlook.com
- (2603:10b6:610:1f4:cafe::d4) by CH5PR04CA0005.outlook.office365.com
- (2603:10b6:610:1f4::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.20 via Frontend Transport; Mon,
- 6 Oct 2025 18:31:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH1PEPF0000AD7D.mail.protection.outlook.com (10.167.244.86) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9203.9 via Frontend Transport; Mon, 6 Oct 2025 18:31:09 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Mon, 6 Oct
- 2025 11:30:45 -0700
-Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 6 Oct
- 2025 11:30:42 -0700
-From: Shameer Kolothum <skolothumtho@nvidia.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>,
- <nicolinc@nvidia.com>, <ddutile@redhat.com>, <nathanc@nvidia.com>,
- <mochs@nvidia.com>, <jonathan.cameron@huawei.com>
-Subject: [PATCH] docs/system/arm/virt: Document user-creatable SMMUv3
-Date: Mon, 6 Oct 2025 19:29:00 +0100
-Message-ID: <20251006182900.100580-1-skolothumtho@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1v5qDT-0004o0-To
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 14:45:50 -0400
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id C9DF843261
+ for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 18:45:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1759776345;
+ bh=YB+aBPPd0S+NmqdnqFrEtJK6KCGqTkh1jIvDIbq+Jq0=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=k93OS4IydV/rn5WRaLy7uVRnLS8rjiid6dlwTJmbrW8IUQP3nOpwbHz4SRlg3hu3a
+ AaZvY0RwC9nm6+8IBr1vwrljru9llV/FFDwCJhHA+W3/mPbgMJCAE3SQrrXdbfjunK
+ ft+v8D9eVV582tmmKOdYqPfuGd2HZCHjB3OzQ5F1u1s3FaBsbEZujtK6Wh0uG0EIiB
+ /xadF1Kxdtkog8hGY6Bm2YD4ClNhw6TESnR4gX52FL2kcAq0uBisWP6nc0a1T6R7by
+ eM95WhCqxaXaVLyQQoIKFZ241V13cqntDkiAn81ZyHooRe8FJed0jKWakwU9vC2bJe
+ eqqdeIUWdxdZA==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id BD4287EAC3
+ for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 18:45:45 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.126.231.35]
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7D:EE_|MW4PR12MB6779:EE_
-X-MS-Office365-Filtering-Correlation-Id: be649c42-5f0c-4a47-2783-08de0506852f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|36860700013|376014|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?oda6scgDqI1FeCwXXq1pVy6LUXzUpzZgxWvg8eJTPjcUzDG5WZAZIUC5V9+O?=
- =?us-ascii?Q?y3f91loRFjpPK7xzqV27H12dkJKn7CsHnSHWpKtIiMiJ47wnPyg06ey20bya?=
- =?us-ascii?Q?wYdm6VHwoi1BU4dajP98zJi2fXOTk+X7pr/VNlMyYpbQ92UutfwASx+HVWSq?=
- =?us-ascii?Q?xfrXMSvzXWKtp5dJdQ0uK4nDgHuDFZF3VA+uDEz/S12N39KixZ2pyQXFp+M/?=
- =?us-ascii?Q?oailI4mTm/7YTgticJ9EmZ3vkLnccsQ0yfa04EfAFfu3WFhgDW3ENvi9ThVb?=
- =?us-ascii?Q?kbPttCR0eyqLR6A6JdU8opogCVqNI+Pw/JQ9YjY6AoaYbODVIl5j7NbxQ/4R?=
- =?us-ascii?Q?pqLZa17Ph3lVzzGcRCpmMHwOdhbKNj5oVuok39A0jKqbZIYUFuC+4m6/tYoM?=
- =?us-ascii?Q?6hv/seuvLiBF3tPrEOP15nnNjZ3ygtUnleumPbK/Qgg3Pp92oVITVQDEhxyP?=
- =?us-ascii?Q?I/6i/TGkybLk7XR1gZ+Tx3MgFh622dLCHsxWMnoqnkkj4nePIfM4WPq4VYO/?=
- =?us-ascii?Q?/IehMkByUUOZZqmAVuRwKQhmaFKWqBRFeStmpv11V5zfg9RRUsGi3xvjoyCl?=
- =?us-ascii?Q?CCnC8ZLLb8E7dwV1Lems6/ADFinOGDD4GZelXbwMOMYpZ05IsvMfVWUVSobe?=
- =?us-ascii?Q?ug7f/l34KjZ8IXEUmMSvLcV3QrZk6a9UuJxjGXWy53MMpQk6HxebA4ifMZRw?=
- =?us-ascii?Q?1UdjbiLJHXhDBTz+kitzWU6ZMIrGnI3u81BooWgIZtdPnUs06EwrOV4WKgR3?=
- =?us-ascii?Q?Ec/nj/uUhT8WxkYBoZLwkH+4RkQDzYHc0IFdPHwZXZMFftQV+22ev6utgfqh?=
- =?us-ascii?Q?qGBPHSxny/cu/52xbKN0YCzPeyXlhsFBHvPR5TJTjhqoS/hR+iiUyovGEqyx?=
- =?us-ascii?Q?ZaXsz9zhI3bLOs19jG4YBQ4i7Jsz/F+GS6ay2umv0yTIN7OkDrpolhOiULVM?=
- =?us-ascii?Q?H+ymDCfTMjxDQ39VktFhXucpbC9ens1vy6ll+86D1BGZUoe4YfwJIy0t9Eas?=
- =?us-ascii?Q?H757eGGBeysJ3KJUlzdLQ7qNXR+W5lDPueAk5yK40tMEm3zrhV6pxmCQUGmt?=
- =?us-ascii?Q?YZFlchgoZ5Sdxgsz+4DuGU1tf5Z1hGIFNUdcrzDoxr4yKu9By0D5Bon3LJ5K?=
- =?us-ascii?Q?idjBGvffxCDygMeviVREOlEjOF03SqBI8SfIBYCfBY+F57cousv7BhDsITJZ?=
- =?us-ascii?Q?h3Rjnw0Al/MO0OulADAFGHvCn696wTu83GLz8VCcnMyzmSEzAJTBD6swEH7a?=
- =?us-ascii?Q?5lGe7T6J9Z/aEQ9JzpwnRemFns/MWQDjZiQwwZBFFY97ENWfViAeCFXp5RMn?=
- =?us-ascii?Q?t0CYBFBQ2QAUSh+vDxqLGr+XiMPYVUHysl3XnKrt0SGf+V2v5TnNYsr8Vzb7?=
- =?us-ascii?Q?xh7fwo98G+UOLjhkOqlAxqNODk7KoLiHT+oPMha79ExxcGKaBlzdztq1MVkQ?=
- =?us-ascii?Q?uwQxIP11/MeTAkce6Jsj2YOvzm+QFqDIM02Gx32YtCkc3ZCyGYjzQaqUXQFs?=
- =?us-ascii?Q?woWtwCwAFaixZE2gi/juRGR6Wfrn3ZBHShhikAz+UgldncBDSOh5RT3E5fRc?=
- =?us-ascii?Q?cLWmN7qLzuGpY/GgvD0=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2025 18:31:09.3977 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: be649c42-5f0c-4a47-2783-08de0506852f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD7D.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6779
-Received-SPF: permerror client-ip=2a01:111:f403:c112::7;
- envelope-from=skolothumtho@nvidia.com;
- helo=CY3PR05CU001.outbound.protection.outlook.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 06 Oct 2025 18:38:46 -0000
+From: Bug Watch Updater <2126951@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
+ status=Confirmed; importance=Medium; assignee=wesley.hershberger@canonical.com;
+X-Launchpad-Bug: distribution=ubuntu; distroseries=jammy; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium;
+ assignee=wesley.hershberger@canonical.com; 
+X-Launchpad-Bug-Tags: sts
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: whershberger
+X-Launchpad-Bug-Reporter: Wesley Hershberger (whershberger)
+X-Launchpad-Bug-Modifier: Bug Watch Updater (bug-watch-updater)
+References: <175977079933.1446079.11908449148472830395.malonedeb@juju-98d295-prod-launchpad-3>
+Message-Id: <175977592701.3159908.8224640361254246007.launchpad@scripts.lp.internal>
+Subject: [Bug 2126951] Re: `block-stream` segfault with concurrent
+ `query-named-block-nodes`
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="8f35df7956d277b113de8d286a4ca280c7b8ebdf";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: 638bc6009386aa87eda6dc8c6be664d598298b52
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -148,55 +95,189 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 2126951 <2126951@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virt machine now supports creating multiple SMMUv3 instances, each
-associated with a separate PCIe root complex.
+** Changed in: qemu
+       Status: Unknown =3D> New
 
-Update the documentation with an example.
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/2126951
 
-Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
----
- docs/system/arm/virt.rst | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+Title:
+  `block-stream` segfault with concurrent `query-named-block-nodes`
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 10cbffc8a7..2e0e8196be 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -37,7 +37,19 @@ The virt board supports:
- - An RTC
- - The fw_cfg device that allows a guest to obtain data from QEMU
- - A PL061 GPIO controller
--- An optional SMMUv3 IOMMU
-+- An optional machine-wide SMMUv3 IOMMU
-+- User-creatable SMMUv3 devices
-+
-+  Allows instantiating multiple SMMUv3 devices, each associated with
-+  a separate PCIe root complex. This is only allowed if the machine-wide
-+  SMMUv3(``iommu=smmuv3``) is not used.
-+
-+  Example::
-+
-+      -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.0
-+      ...
-+      -device pxb-pcie,id=pcie.1
-+      -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.1
- - hotpluggable DIMMs
- - hotpluggable NVDIMMs
- - An MSI controller (GICv2M or ITS). GICv2M is selected by default along
-@@ -176,7 +188,8 @@ iommu
-   ``none``
-     Don't create an IOMMU (the default)
-   ``smmuv3``
--    Create an SMMUv3
-+    Create a machine-wide SMMUv3. Alternatively, SMMUv3 devices can be
-+    instantiated directly using the ``-device`` option (see example above).
- 
- default-bus-bypass-iommu
-   Set ``on``/``off`` to enable/disable `bypass_iommu
--- 
-2.43.0
+Status in QEMU:
+  New
+Status in qemu package in Ubuntu:
+  Confirmed
+Status in qemu source package in Jammy:
+  Confirmed
+Status in qemu source package in Noble:
+  Confirmed
+Status in qemu source package in Plucky:
+  Confirmed
+Status in qemu source package in Questing:
+  Confirmed
+
+Bug description:
+  [ Impact ]
+
+  When running `block-stream` and `query-named-block-nodes`
+  concurrently, a null-pointer dereference causes QEMU to segfault.
+
+  This occurs in every version of QEMU shipped with Ubuntu, 22.04 thru
+  25.10. I have not yet reproduced the bug using an upstream build.
+
+  I will link the upstream bug report here as soon as I've written it.
+
+  [ Reproducer ]
+
+  In `query-named-block-nodes.sh`:
+  ```sh
+  #!/bin/bash
+
+  while true; do
+      virsh qemu-monitor-command "$1" query-named-block-nodes > /dev/null
+  done
+  ```
+
+  In `blockrebase-crash.sh`:
+  ```sh
+  #!/bin/bash
+
+  set -ex
+
+  domain=3D"$1"
+
+  if [ -z "${domain}" ]; then
+      echo "Missing domain name"
+      exit 1
+  fi
+
+  ./query_named_block_nodes.sh "${domain}" &
+  query_pid=3D$!
+
+  while [ -n "$(virsh list --uuid)" ]; do
+      snap=3D"snap0-$(uuidgen)"
+
+      virsh snapshot-create-as "${domain}" \
+          --name "${snap}" \
+          --disk-only file=3D \
+          --diskspec vda,snapshot=3Dno \
+          --diskspec "vdb,stype=3Dfile,file=3D/var/lib/libvirt/images/n0-bl=
+k0_${snap}.qcow2" \
+          --atomic \
+          --no-metadata
+
+      virsh blockpull "${domain}" vdb
+
+      while bjr=3D$(virsh blockjob "$domain" vdb); do
+          if [[ "$bjr" =3D=3D *"No current block job for"* ]] ; then
+              break;
+          fi;
+      done;
+  done
+
+  kill "${query_pid}"
+  ```
+
+  Provision (`Ctrl + ]` after boot):
+  ```sh
+  wget https://cloud-images.ubuntu.com/daily/server/noble/current/noble-ser=
+ver-cloudimg-amd64.img
+
+  sudo cp noble-server-cloudimg-amd64.img /var/lib/libvirt/images/n0-root.q=
+cow2
+  sudo qemu-img create -f qcow2 /var/lib/libvirt/images/n0-blk0.qcow2 10G
+
+  touch network-config
+  touch meta-data
+  touch user-data
+
+  virt-install \
+    -n n0 \
+    --description "Test noble minimal" \
+    --os-variant=3Dubuntu24.04 \
+    --ram=3D1024 --vcpus=3D2 \
+    --import \
+    --disk path=3D/var/lib/libvirt/images/n0-root.qcow2,bus=3Dvirtio,cache=
+=3Dwritethrough,size=3D10 \
+    --disk path=3D/var/lib/libvirt/images/n0-blk0.qcow2,bus=3Dvirtio,cache=
+=3Dwritethrough,size=3D10 \
+    --graphics none \
+    --network network=3Ddefault \
+    --cloud-init user-data=3D"user-data,meta-data=3Dmeta-data,network-confi=
+g=3Dnetwork-config"
+  ```
+
+  And run the script to cause the crash (you may need to manually kill
+  query-named-block-jobs.sh):
+  ```sh
+  ./blockrebase-crash n0
+  ```
+
+  [ Details ]
+
+  Backtrace from the coredump (source at [1]):
+  ```
+  #0  bdrv_refresh_filename (bs=3D0x5efed72f8350) at /usr/src/qemu-1:10.1.0=
++ds-5ubuntu2/b/qemu/block.c:8082
+  #1  0x00005efea73cf9dc in bdrv_block_device_info (blk=3D0x0, bs=3D0x5efed=
+72f8350, flat=3Dtrue, errp=3D0x7ffeb829ebd8)
+      at block/qapi.c:62
+  #2  0x00005efea7391ed3 in bdrv_named_nodes_list (flat=3D<optimized out>, =
+errp=3D0x7ffeb829ebd8)
+      at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:6275
+  #3  0x00005efea7471993 in qmp_query_named_block_nodes (has_flat=3D<optimi=
+zed out>, flat=3D<optimized out>,
+      errp=3D0x7ffeb829ebd8) at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/b=
+lockdev.c:2834
+  #4  qmp_marshal_query_named_block_nodes (args=3D<optimized out>, ret=3D0x=
+7f2b753beec0, errp=3D0x7f2b753beec8)
+      at qapi/qapi-commands-block-core.c:553
+  #5  0x00005efea74f03a5 in do_qmp_dispatch_bh (opaque=3D0x7f2b753beed0) at=
+ qapi/qmp-dispatch.c:128
+  #6  0x00005efea75108e6 in aio_bh_poll (ctx=3D0x5efed6f3f430) at util/asyn=
+c.c:219
+  #7  0x00005efea74ffdb2 in aio_dispatch (ctx=3D0x5efed6f3f430) at util/aio=
+-posix.c:436
+  #8  0x00005efea7512846 in aio_ctx_dispatch (source=3D<optimized out>, cal=
+lback=3D<optimized out>,
+      user_data=3D<optimized out>) at util/async.c:361
+  #9  0x00007f2b77809bfb in ?? () from /lib/x86_64-linux-gnu/libglib-2.0.so=
+.0
+  #10 0x00007f2b77809e70 in g_main_context_dispatch () from /lib/x86_64-lin=
+ux-gnu/libglib-2.0.so.0
+  #11 0x00005efea7517228 in glib_pollfds_poll () at util/main-loop.c:287
+  #12 os_host_main_loop_wait (timeout=3D0) at util/main-loop.c:310
+  #13 main_loop_wait (nonblocking=3D<optimized out>) at util/main-loop.c:589
+  #14 0x00005efea7140482 in qemu_main_loop () at system/runstate.c:905
+  #15 0x00005efea744e4e8 in qemu_default_main (opaque=3Dopaque@entry=3D0x0)=
+ at system/main.c:50
+  #16 0x00005efea6e76319 in main (argc=3D<optimized out>, argv=3D<optimized=
+ out>) at system/main.c:93
+  ```
+
+  The libvirt logs suggest that the crash occurs right at the end of the bl=
+ockjob, since it reaches "concluded" state before crashing. I assume that t=
+his is one of:
+  - `stream_clean` is freeing/modifying the `cor_filter_bs` without holding=
+ a lock that it needs to [2][3]
+  - `bdrv_refresh_filename` needs to handle the possibility that the QLIST =
+of children for a filter bs could be NULL [1]
+
+  [1] https://git.launchpad.net/ubuntu/+source/qemu/tree/block.c?h=3Dubuntu=
+/questing-devel#n8071
+  [2] https://git.launchpad.net/ubuntu/+source/qemu/tree/block/stream.c?h=
+=3Dubuntu/questing-devel#n131
+  [3] https://git.launchpad.net/ubuntu/+source/qemu/tree/block/stream.c?h=
+=3Dubuntu/questing-devel#n340
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/2126951/+subscriptions
 
 
