@@ -2,109 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21F3BBD4A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 09:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E27BBD4F0
+	for <lists+qemu-devel@lfdr.de>; Mon, 06 Oct 2025 10:10:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v5g4k-0001It-OZ; Mon, 06 Oct 2025 03:56:06 -0400
+	id 1v5gHH-0004Ft-DW; Mon, 06 Oct 2025 04:09:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1v5g4h-0001IP-MD
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 03:56:03 -0400
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1v5gHC-0004FR-DG
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 04:08:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1v5g4d-0005sD-G5
- for qemu-devel@nongnu.org; Mon, 06 Oct 2025 03:56:03 -0400
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id CBD303F5FA
- for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 07:55:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1759737355;
- bh=ApGpDuIS5FcTeJdB49/iWHKpvZojBfKS6MSv7NSGxAc=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=Fg4FAJ9o2BqbSB1XxaajdCKroQSg3oFUO16zomZCjiolfq5gqj07tv2sunn3lMdnj
- l77eAcdeGx/G+0Rw7E1/KLsld7ZQ3YSngrddZzK9eSV0daLzadF41vONS9ZKg1FR9Z
- 7Myp6JmhwW9TDNCoQ1fKBOtEU0MHAP/gkKpcuubekas/lmGCvoqkxYeX7wKSpC95nZ
- p3rljKPr2ypAa9LXXtAN5SCzqvTDEkduGMIBAkoWrINtD1e8gHA1yXIG2gqb8UTuAm
- ZwCuUMUlWyZqONtRKuNKCcXnl2WSv3XvYo9c7UnW0wvbq6XTRe8QLmnPQukHLAJbT9
- c6tHClxmtpSoQ==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id B0D557E9FE
- for <qemu-devel@nongnu.org>; Mon,  6 Oct 2025 07:55:55 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1v5gH9-0007MS-Bm
+ for qemu-devel@nongnu.org; Mon, 06 Oct 2025 04:08:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759738132;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=iBAKB/WMDUohDrw8hUiKctvrSeJ2P8HJbxYH7OJO0Ds=;
+ b=grQ3jkfCNAe/4oomPezEXUuxpW74TQcEzRaXU5oDPqN/I7mQH1RdAKknnBDFHQcFhxbR0G
+ jS/5M/C/J65YLwO0aZTRuKxAjWhOOAzCjKcivaVL5tu1k+BE7uOp40CciVw618+Ss8Mufu
+ 7u/hE25F2EKmk2ip8y9e3EYmOQ8kxGY=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-ScjDW1X8P7iVHsjLMXfisw-1; Mon, 06 Oct 2025 04:08:51 -0400
+X-MC-Unique: ScjDW1X8P7iVHsjLMXfisw-1
+X-Mimecast-MFC-AGG-ID: ScjDW1X8P7iVHsjLMXfisw_1759738131
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4e0fcbf8eb0so113127001cf.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Oct 2025 01:08:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759738131; x=1760342931;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iBAKB/WMDUohDrw8hUiKctvrSeJ2P8HJbxYH7OJO0Ds=;
+ b=Tm3yqSEGnm3kjrHfpwQhfmu0Ipq7U4EqpE7SQMa7UVQQIRpfraLq2u/CGG/rfxTO0l
+ S1V8nS3BglDhzp152sfZtYSDf03pMnAU+YsHl7Am7x9xudT8wGU7Mshi2h+Sz17407k4
+ tbZ5umHqKRllvJYTHIQLzhDy9DSlg6wHaRkcJSY3uAbY2LsFO4aE5+dJ/lTYmyozVjvm
+ d1fQzQ+13cDwx/7v5qGSXdU/21bTO2VlPWSI6hhErUwukKK438y7KXqLxXKwuWpBe2Wq
+ lig4uWMZXCPAepq0hIhrNCRQFRxEMQOmgWY05ntiVwcVSiFRvH1FVEGmdCdqHt8sd5WY
+ On0w==
+X-Gm-Message-State: AOJu0Ywr65mTYD5nNjdSUcOF+b0yKHVCo1IbkOvEP2Ld+VdiYW9eksK6
+ p+Iek8YKCu6smKbDPKtxIU1YHMvRbJY1uC1X7g8C/0W+SZxdZ9SKpBC75CUsra2IEGWlEparlws
+ n06o0FlhIrU7gZJ9+B2kBI5YqJvPdf6tebZPwAUUKMkEyBESk7jj+xJb3WVjQcRPg0P3gwMPN5z
+ GZZwpA7dqjW9QjnYchIAXQLasFaDoxi5A=
+X-Gm-Gg: ASbGncslX+MQCPONY3kNdqtnCscmOFnBTMs4nYeHFUWMk2693S0SHMnumw9GsUHqb1m
+ Dr+69hHP7D7thL+QUEnu4DTWrqT2fAkReEWCZgAfs1HoYPT8Z0icXG/ojksguTmVKHr3Y6utGaq
+ fyQj2XXM5eZ2SxhmwfVuDfQUyS5Tw=
+X-Received: by 2002:a05:622a:1346:b0:4b1:103b:bb6b with SMTP id
+ d75a77b69052e-4e576b14ec2mr128332631cf.61.1759738130581; 
+ Mon, 06 Oct 2025 01:08:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGM29w/6KFD9lmju+CoIPYqKNM5J0mquGfrseDCFKYS0WshCURDZshgMP5eOxjKeIQpO7J7zYgYoj7pvkeY0UY=
+X-Received: by 2002:a05:622a:1346:b0:4b1:103b:bb6b with SMTP id
+ d75a77b69052e-4e576b14ec2mr128332341cf.61.1759738129759; Mon, 06 Oct 2025
+ 01:08:49 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Oct 2025 01:08:48 -0700
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Oct 2025 01:08:48 -0700
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20250910121501.676219-1-abologna@redhat.com>
+ <5893cfcf-a23b-41f9-a8db-dbd2c5e15fcb@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Oct 2025 07:45:29 -0000
-From: Valentin Haudiquet <2123828@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Unknown;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=glibc; component=main;
- status=Invalid; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- status=In Progress; importance=Undecided;
- assignee=valentin.haudiquet@canonical.com; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=gcc-15;
- component=None; status=Invalid; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=glibc;
- component=main; status=Invalid; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
- component=main; status=In Progress; importance=Undecided;
- assignee=valentin.haudiquet@canonical.com; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=gcc-15;
- component=main; status=Invalid; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=glibc;
- component=main; status=Invalid; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
- component=main; status=In Progress; importance=Undecided;
- assignee=valentin.haudiquet@canonical.com; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=questing;
- sourcepackage=gcc-15; component=main; status=Invalid; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=questing;
- sourcepackage=glibc; component=main; status=Invalid; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
- component=main; status=In Progress; importance=Undecided;
- assignee=valentin.haudiquet@canonical.com; 
-X-Launchpad-Bug-Tags: dcr-incoming update-excuse
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: schopin slyon vhaudiquet xypron
-X-Launchpad-Bug-Reporter: =?utf-8?q?Lukas_M=C3=A4rdian_=28slyon=29?=
-X-Launchpad-Bug-Modifier: Valentin Haudiquet (vhaudiquet)
-References: <175793222278.1250191.6568998309826575823.malonedeb@juju-98d295-prod-launchpad-2>
-Message-Id: <175973673088.399710.7341239258459857973.launchpad@juju-98d295-prod-launchpad-3>
-Subject: [Bug 2123828] Re: [SRU] RISC-V: incorrect emulation of load and store
- on big-endian systems
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="8f35df7956d277b113de8d286a4ca280c7b8ebdf";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 7380b042f7d57165ebd06cea344f5f0e1bf0b6d2
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+In-Reply-To: <5893cfcf-a23b-41f9-a8db-dbd2c5e15fcb@tls.msk.ru>
+Date: Mon, 6 Oct 2025 01:08:48 -0700
+X-Gm-Features: AS18NWAX1cjlwKcw7P2_U0nbuRTcUaD48zboipLq626FTydZ0Gd9X9lv4qM2F70
+Message-ID: <CABJz62OFH4YjpxuHrS8SBjz9Ts03WH7foy_E4+o0SwW77OkQyw@mail.gmail.com>
+Subject: Re: [PATCH] docs/interop/firmware: Add riscv64 to FirmwareArchitecture
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Kashyap Chamarthy <kchamart@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-stable <qemu-stable@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.43,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -113,166 +103,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2123828 <2123828@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-** Changed in: qemu (Ubuntu Questing)
-       Status: Confirmed =3D> In Progress
+On Sat, Oct 04, 2025 at 10:03:45AM +0300, Michael Tokarev wrote:
+> On 9/10/25 15:15, Andrea Bolognani wrote:
+> > Descriptors using this value have been shipped for years
+> > by distros, so we just need to update the spec to match
+> > reality.
+>
+> Hm.  Probably to my shame, I never shipped this file in
+> debian/ubuntu - neither the updated one nor the original,
+> and have no idea what it is used for :)
+>
+> What's the context where it's used?
 
-** Changed in: qemu (Ubuntu Plucky)
-       Status: New =3D> In Progress
+I don't think the file is used directly. It just defines what
+firmware descriptors (shipped by edk2 and other firmware packages)
+should look like.
 
-** Changed in: qemu (Ubuntu Noble)
-       Status: New =3D> In Progress
+> BTW, should I perhaps pick this change up to qemu-stable
+> too?
 
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2123828
+No harm in doing that, but I would say it's unnecessary.
 
-Title:
-  [SRU] RISC-V: incorrect emulation of load and store on big-endian
-  systems
-
-Status in QEMU:
-  Fix Released
-Status in glibc package in Ubuntu:
-  Invalid
-Status in qemu package in Ubuntu:
-  In Progress
-Status in gcc-15 source package in Noble:
-  Invalid
-Status in glibc source package in Noble:
-  Invalid
-Status in qemu source package in Noble:
-  In Progress
-Status in gcc-15 source package in Plucky:
-  Invalid
-Status in glibc source package in Plucky:
-  Invalid
-Status in qemu source package in Plucky:
-  In Progress
-Status in gcc-15 source package in Questing:
-  Invalid
-Status in glibc source package in Questing:
-  Invalid
-Status in qemu source package in Questing:
-  In Progress
-
-Bug description:
-  [ Impact ]
-
-  On s390x architecture, qemu cannot emulate riscv64 well because of an
-  endianess error. Original bug report :
-
-  QEMU's DEP-8 test fails on s390x, due to warning output on stderr
-  about "unsupported version 256 of Verdef record", which is blocking
-  migration of glibc 2.42-0ubuntu3.
-
-  DEP-8 logs:
-  """
-  323s =3D=3D=3D Checking if /usr/bin/qemu-riscv64 can run executables:
-  323s glob with sh: /usr/bin/qemu-riscv64 /bin/busybox ash -c "/usr/bin/qe=
-mu-riscv64 /bin/busybox ls -dCFl debian/*[t]*":
-  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libresolv.so.2: unsupported ver=
-sion 256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
-256 of Verdef record
-  323s
-  323s Reading package lists.../bin/busybox: /lib/riscv64-linux-gnu/libc.so=
-.6: unsupported version 256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/riscv64-linux-gnu/libc.so.6: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
-256 of Verdef record
-  323s /bin/busybox: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version =
-256 of Verdef record
-  323s Expected output not found
-  [...]
-  328s autopkgtest [22:14:52]: @@@@@@@@@@@@@@@@@@@@ summary
-  328s test-qemu-img.sh     PASS (superficial)
-  328s test-qemu-system.sh  PASS (superficial)
-  328s test-qemu-user.sh    FAIL stderr: /bin/busybox: /lib/ld-linux-riscv6=
-4-lp64d.so.1: unsupported version 256 of Verdef record
-  """
-
-  Patched by flagging the faulty instructions with the endianness swap
-  marker.
-
-  [ Test Plan ]
-
-  Minimal reproducer: (after booting up an s390x vm)
-  ```
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo apt update && su=
-do apt install qemu-user
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ dpkg -l | grep libc6
-  ii  libc6:s390x                           2.42-0ubuntu3
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ dpkg -l | grep qemu-u=
-ser
-  ii  qemu-user                             1:10.1.0+ds-5ubuntu1
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ dpkg --print-architec=
-ture
-  s390x
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo dpkg --add-archi=
-tecture riscv64
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo apt update
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ sudo apt install hell=
-o:riscv64
-  ubuntu@slyon-lp-2123828-slyon-glibc-qemu-riscv64:~$ /usr/bin/qemu-riscv64=
- /usr/bin/hello
-  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
- of Verdef record
-  /usr/bin/hello: /lib/riscv64-linux-gnu/libc.so.6: unsupported version 256=
- of Verdef record
-  /usr/bin/hello: /lib/riscv64-linux-gnu/libc.so.6: unsupported version 256=
- of Verdef record
-  /usr/bin/hello: /lib/riscv64-linux-gnu/libc.so.6: unsupported version 256=
- of Verdef record
-  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
- of Verdef record
-  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
- of Verdef record
-  /usr/bin/hello: /lib/ld-linux-riscv64-lp64d.so.1: unsupported version 256=
- of Verdef record
-  ```
-
-  The same thing with the patch shows "Hello, world !".
-
-  [ Where problems could occur ]
-
-  This change is really small (3 lines), and only affects riscv64
-  emulation from QEMU. If the fix was entirely wrong, riscv64 emulation
-  of compressed instruction could be affected. It can be easily tested.
-
-  The patch was accepted upstream, so such tests are conducted upstream
-  as well, which reduces the amount of possible problems and work to do
-  to fix those.
-
-  [ Other Info ]
-
-  Patch sent upstream: https://lore.kernel.org/qemu-devel/20250929115543.16=
-48157-1-valentin.haudiquet@canonical.com/
-  Patch available on ppa: https://launchpad.net/~vhaudiquet/+archive/ubuntu=
-/qemu-fix-lp2123828/+packages
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2123828/+subscriptions
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
