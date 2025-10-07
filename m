@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB83BC1B89
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7AFBC1B5F
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Q5-0005fP-Bk; Tue, 07 Oct 2025 10:12:01 -0400
+	id 1v68Q4-0005fK-SS; Tue, 07 Oct 2025 10:12:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Q0-0005f3-Td
+ id 1v68Q0-0005f2-M8
  for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:57 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Pm-000288-Fl
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:56 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e2c3b6d4cso51248955e9.3
+ id 1v68Pm-00028N-No
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:55 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-46e2e6a708fso41809495e9.0
  for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:11:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846297; x=1760451097; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846298; x=1760451098; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=J41c/R0G8V7brEPhzE5k1w0NOA32agVYBgiUvBtPkYA=;
- b=fBHEw8FFfJPoga/FUBcj6aTR6HtwX5GkPI8D35kQYZywPmsUzsQWpL5ZqXgTV/4skB
- bmRdbcg6Hv1Bd4ZxrGM1xHlDjcSjRt3xhVkbWVcPeKh1Zvhpn47KGevPHIJDK8Y+DmNx
- wFzCtGqlMy4kz8OjnlkbO5bu24k2h6UVh42I0/xCFQc1Fzr8Fd1JFUro01g46oP8P95S
- /eRn8HjTS66gFADFosNNIdtk+fwedIyePoQMf45sO+lIPcx+NP7tHD3HLbmU2ezuJp1Z
- bTifb2qr0zVlu/HQSKnFhqI0Udd+lfMxzA+scXqQu01e0BzwRuU8lLtl+kvAYnU2Y6/O
- u1eA==
+ :reply-to; bh=REExaYDHINLR9Ktzyks9N8RWTaQZTmAlLbGW7Aj7d6c=;
+ b=rAhbtBEXo6hH7+/wf77cIth4RxX3TNiOKUwB4x3salhvQBiImrNmFoVaPfcgfJzBbQ
+ SrY3XzzdVttpgPO1oMRERONAsP8v4+APYtbRCqE8zJLv7JJvxC+xYB1AkMwYpzHNVG0m
+ s09hnWMPMie0iJvgdPoyPbJULVV83sJFiNX7vf+xj1ILh5svirF8P9HIwo0w3ydfE9ak
+ /pVeEOuD3AHWz/1aXZwZz79h4jqtGlO03YT8EhB3DJF2rw2y7BrY7HYuUB+NfRTLbesq
+ k1GFIvKAIwAzr2PJtbg6GHvOSkNDb0YvGGbaBxL2Esdv5mdcSqpMTUBME6HWzfI6XXco
+ CCKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846297; x=1760451097;
+ d=1e100.net; s=20230601; t=1759846298; x=1760451098;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J41c/R0G8V7brEPhzE5k1w0NOA32agVYBgiUvBtPkYA=;
- b=WWkVCwMditwaGXq5EsCbDLfNmaeNIiflrkWUQ3KYmYVTF7qydiGNUcUNBUSlyd4aGP
- W+u5b/0iM0q1StiKe7U4mAyCKOR23e8wi/gIA2/vyc5lOHZH6b6Z6LcMBKVAz0KlSc/x
- bTGCP3T471W/FM5CHY25MQiFVFuN0+X/3LJSgXg5wWLg4dGRcHwctbXMf5RKqq6M7XGr
- wB1S/b1GVa2Oz4Im0YTILA0ZSASkrs3r72+5Tu/xRqc8189Mcwbs6xfxsWPXxFQlH+xZ
- /JNEIPTyGmmdjK72HBtFOS7WA6Yn82BZ5YEEQKNsUxqD+x3r/cz9t2BhfCE9s3yAC04u
- uuLQ==
-X-Gm-Message-State: AOJu0Yw9JCC+LmHUk4MLeFhcmckOs1gXAiDk5HDfh5GfAdgK/nimTWG6
- 1wqWte0pRikwU+4XKGsw4rXBhfEudeckVG/eZwa4qBPUPyypxthYkvJ5Dii2wL/RFUjzDWl8Ilw
- F1Nu6
-X-Gm-Gg: ASbGncs7vwtraRbqdIIYLxm5pZoU05fovcdQAcqmOVa/PMEiDlsjlr4OD4FZk9uPR4G
- HRuD7P+8iFrtceEeQJx5+MNqy1fWX/5tHSMr1EEEPFIasqjClZg7w2twx6AiP4es18w+sTtZ66E
- cLsya4vHCx+aH19SgovxHhwKiwC0wJ/rS5JyyZ3F4IgfdpgodR/l6Dgm4x6ffi/VHPcJ83j1q7q
- gU1IpntnYR7BNb/7WdVh0vTcLnyIEl+6+aUfJjSJU8N9K/Az+6fp8UtfuGcv8nlm/OpuHAc21SX
- 7+SWyYRI36ZDaPZPqrA4k7h9yy9CwUyOWc2tilh7msDuyFZO8w/opRSwZLbwEUr1dhsF4fhgl1r
- RIqC9wcstjGwM+rPK8iQuspiQr5FpbVwxg3vB/NGiiTYwQkomatt6WOWl
-X-Google-Smtp-Source: AGHT+IGBA/p1hLgIpxQPnW1L9MuXzYxxuqSfCu17WNLGwJ0afbIKzWn3tViCCRtdrpSrc02YE4cYpw==
-X-Received: by 2002:a05:600c:4081:b0:46e:72df:a812 with SMTP id
- 5b1f17b1804b1-46e72dfa86fmr69571865e9.4.1759846296613; 
- Tue, 07 Oct 2025 07:11:36 -0700 (PDT)
+ bh=REExaYDHINLR9Ktzyks9N8RWTaQZTmAlLbGW7Aj7d6c=;
+ b=tyfaEI26Ww/zXQVMcRfdNxjtQZrhs61i272rav2Mr8KZt5uzGLCiqIb7PWwX0E62tC
+ XchAMjCw0P4RD1UXJT3Lr4MdYBEsNgsNYyB6ABg3TJznzCG/w98HWa5M6ncm4mD2Tot1
+ iYG2i0ilhcMBbH5fwPk0pKq/5mY8uHQeVEdxVdIgjLz79MC74oWuzhoJMWYTQESAdG4V
+ YD41wMQJSPpUMJjzbHSfhT5fvLNUvYTvJwxHQg9+LzwSV/5dREdzLPVVJkHLPXv21OJr
+ HioeynbqE30zuSJCfMzyJAaHRfWy8HoVDfAr3qzL4hTlZ4t0w8J7O5I433+W1xtTRSDr
+ duzA==
+X-Gm-Message-State: AOJu0YyflGU2EV56bkrpb6xeZruKOI3sldT8j0blLyZc7bFMIkmyIa/o
+ AG9U7Zl5oyz945BSRyQrBr7tydWabAUhRca3+R2dxp/fMYCP39IjpackUcXOTRo3GS51m5h70xl
+ wmzjA
+X-Gm-Gg: ASbGnctxokSh8QDOYrF44cqCWtzwdgWJjV3IoRNuNgLngDtKRKTQSOBnd8jPFtpJup1
+ 7Zg37Os/mXBgqB+dgTtW9Hgt/6Lf05YK9EVNzN1ctRuHay4ZJNI4TTC8MuPxqJkmnMsoMmuDbM4
+ RbHK0R/VUz6wZsT/xbbZuGDbYOenu6MKjKLq7A8z8+Gdgvgz9+gpY9O129KuQSnAsWxMsYS1wEE
+ z2dSN3pHi6X4VOHRGFTcU5LEYdQhtB9wBAMuOPaBwYZbaihH2Pf2dk6ybWjdK4fB+H184YUCkU7
+ 1yDlnZB9iV5t3yIzy1CoOeqcELwwT4Hn9LCjfOZAm1E3aEpg74L9ZaPyrKshl5tpv7YEge5iE0i
+ A4TYpjisyeHHEsHG5CuuPUCixB7rSx9pEetfiai6QDN4QLstA0L0euKNG
+X-Google-Smtp-Source: AGHT+IHByTDVX/2r1rmfjq2BXfQBPdXHytKjlL75jMDUEyjuGvasdEXxzigsTPSRrkudWKOfeSfkbw==
+X-Received: by 2002:a05:600c:a118:b0:46e:4784:cdf5 with SMTP id
+ 5b1f17b1804b1-46e7227f720mr85535355e9.15.1759846297723; 
+ Tue, 07 Oct 2025 07:11:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.35
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:11:35 -0700 (PDT)
+ Tue, 07 Oct 2025 07:11:36 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/62] hw/arm/xlnx-versal: usb: refactor creation
-Date: Tue,  7 Oct 2025 15:10:30 +0100
-Message-ID: <20251007141123.3239867-11-peter.maydell@linaro.org>
+Subject: [PULL 11/62] hw/arm/xlnx-versal: efuse: refactor creation
+Date: Tue,  7 Oct 2025 15:10:31 +0100
+Message-ID: <20251007141123.3239867-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,276 +100,273 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-Refactor the USB controller creation using the VersalMap structure.
+Refactore the eFuse devices creation using the VersalMap structure.
 
-Note that the connection to the CRL is removed for now and will be
-re-added by next commits.
+Note that the corresponding FDT nodes are removed. They do not
+correspond to any real node in standard Versal DTBs. No matching drivers
+exist for them.
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250926070806.292065-10-luc.michel@amd.com
+Message-id: 20250926070806.292065-11-luc.michel@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/xlnx-versal.h |  5 ---
- hw/arm/xlnx-versal-virt.c    | 56 +--------------------------
- hw/arm/xlnx-versal.c         | 74 +++++++++++++++++++++++++++++-------
- 3 files changed, 62 insertions(+), 73 deletions(-)
+ include/hw/arm/xlnx-versal.h |  5 +--
+ hw/arm/xlnx-versal-virt.c    | 43 ++------------------
+ hw/arm/xlnx-versal.c         | 78 +++++++++++++++++++++++-------------
+ 3 files changed, 54 insertions(+), 72 deletions(-)
 
 diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
-index 71c3314b8b4..5d4b30f0ff9 100644
+index 5d4b30f0ff9..79ca9b13321 100644
 --- a/include/hw/arm/xlnx-versal.h
 +++ b/include/hw/arm/xlnx-versal.h
-@@ -19,7 +19,6 @@
- #include "hw/intc/arm_gicv3.h"
+@@ -20,7 +20,6 @@
  #include "hw/rtc/xlnx-zynqmp-rtc.h"
  #include "qom/object.h"
--#include "hw/usb/xlnx-usb-subsystem.h"
  #include "hw/nvram/xlnx-bbram.h"
- #include "hw/nvram/xlnx-versal-efuse.h"
+-#include "hw/nvram/xlnx-versal-efuse.h"
  #include "hw/ssi/xlnx-versal-ospi.h"
-@@ -74,10 +73,6 @@ struct Versal {
-     struct {
-         MemoryRegion mr_ocm;
- 
--        struct {
--            VersalUsb2 usb;
--        } iou;
--
-         /* Real-time Processing Unit.  */
-         struct {
-             MemoryRegion mr;
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index 418e4c6e983..5801598da7c 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -14,6 +14,7 @@
- #include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "system/device_tree.h"
-+#include "system/address-spaces.h"
- #include "hw/block/flash.h"
- #include "hw/boards.h"
- #include "hw/sysbus.h"
-@@ -40,8 +41,6 @@ struct VersalVirt {
-         uint32_t gic;
-         uint32_t clk_125Mhz;
-         uint32_t clk_25Mhz;
--        uint32_t usb;
--        uint32_t dwc;
-     } phandle;
-     struct arm_boot_info binfo;
- 
-@@ -68,8 +67,6 @@ static void fdt_create(VersalVirt *s)
-     s->phandle.clk_25Mhz = qemu_fdt_alloc_phandle(s->fdt);
-     s->phandle.clk_125Mhz = qemu_fdt_alloc_phandle(s->fdt);
- 
--    s->phandle.usb = qemu_fdt_alloc_phandle(s->fdt);
--    s->phandle.dwc = qemu_fdt_alloc_phandle(s->fdt);
-     /* Create /chosen node for load_dtb.  */
-     qemu_fdt_add_subnode(s->fdt, "/chosen");
-     qemu_fdt_add_subnode(s->fdt, "/aliases");
-@@ -154,56 +151,6 @@ static void fdt_add_timer_nodes(VersalVirt *s)
-                      compat, sizeof(compat));
+ #include "hw/dma/xlnx_csu_dma.h"
+ #include "hw/misc/xlnx-versal-crl.h"
+@@ -102,9 +101,6 @@ struct Versal {
+         XlnxZynqMPRTC rtc;
+         XlnxVersalTRng trng;
+         XlnxBBRam bbram;
+-        XlnxEFuse efuse;
+-        XlnxVersalEFuseCtrl efuse_ctrl;
+-        XlnxVersalEFuseCache efuse_cache;
+         XlnxVersalCFUAPB cfu_apb;
+         XlnxVersalCFUFDRO cfu_fdro;
+         XlnxVersalCFUSFR cfu_sfr;
+@@ -139,6 +135,7 @@ static inline void versal_set_fdt(Versal *s, void *fdt)
  }
  
--static void fdt_add_usb_xhci_nodes(VersalVirt *s)
+ void versal_sdhci_plug_card(Versal *s, int sd_idx, BlockBackend *blk);
++void versal_efuse_attach_drive(Versal *s, BlockBackend *blk);
+ 
+ int versal_get_num_can(VersalVersion version);
+ int versal_get_num_sdhci(VersalVersion version);
+diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+index 5801598da7c..b6c49dafe09 100644
+--- a/hw/arm/xlnx-versal-virt.c
++++ b/hw/arm/xlnx-versal-virt.c
+@@ -192,41 +192,6 @@ static void fdt_add_bbram_node(VersalVirt *s)
+     g_free(name);
+ }
+ 
+-static void fdt_add_efuse_ctrl_node(VersalVirt *s)
 -{
--    const char clocknames[] = "bus_clk\0ref_clk";
--    const char irq_name[] = "dwc_usb3";
--    const char compatVersalDWC3[] = "xlnx,versal-dwc3";
--    const char compatDWC3[] = "snps,dwc3";
--    char *name = g_strdup_printf("/usb@%" PRIx32, MM_USB2_CTRL_REGS);
+-    const char compat[] = TYPE_XLNX_VERSAL_EFUSE_CTRL;
+-    const char interrupt_names[] = "pmc_efuse";
+-    char *name = g_strdup_printf("/pmc_efuse@%x", MM_PMC_EFUSE_CTRL);
 -
 -    qemu_fdt_add_subnode(s->fdt, name);
--    qemu_fdt_setprop(s->fdt, name, "compatible",
--                         compatVersalDWC3, sizeof(compatVersalDWC3));
--    qemu_fdt_setprop_sized_cells(s->fdt, name, "reg",
--                                 2, MM_USB2_CTRL_REGS,
--                                 2, MM_USB2_CTRL_REGS_SIZE);
--    qemu_fdt_setprop(s->fdt, name, "clock-names",
--                         clocknames, sizeof(clocknames));
--    qemu_fdt_setprop_cells(s->fdt, name, "clocks",
--                               s->phandle.clk_25Mhz, s->phandle.clk_125Mhz);
--    qemu_fdt_setprop(s->fdt, name, "ranges", NULL, 0);
--    qemu_fdt_setprop_cell(s->fdt, name, "#address-cells", 2);
--    qemu_fdt_setprop_cell(s->fdt, name, "#size-cells", 2);
--    qemu_fdt_setprop_cell(s->fdt, name, "phandle", s->phandle.usb);
--    g_free(name);
 -
--    name = g_strdup_printf("/usb@%" PRIx32 "/dwc3@%" PRIx32,
--                           MM_USB2_CTRL_REGS, MM_USB_0);
--    qemu_fdt_add_subnode(s->fdt, name);
--    qemu_fdt_setprop(s->fdt, name, "compatible",
--                     compatDWC3, sizeof(compatDWC3));
--    qemu_fdt_setprop_sized_cells(s->fdt, name, "reg",
--                                 2, MM_USB_0, 2, MM_USB_0_SIZE);
--    qemu_fdt_setprop(s->fdt, name, "interrupt-names",
--                     irq_name, sizeof(irq_name));
 -    qemu_fdt_setprop_cells(s->fdt, name, "interrupts",
--                               GIC_FDT_IRQ_TYPE_SPI, VERSAL_USB0_IRQ_0,
--                               GIC_FDT_IRQ_FLAGS_LEVEL_HI);
--    qemu_fdt_setprop_cell(s->fdt, name,
--                          "snps,quirk-frame-length-adjustment", 0x20);
--    qemu_fdt_setprop_cells(s->fdt, name, "#stream-id-cells", 1);
--    qemu_fdt_setprop_string(s->fdt, name, "dr_mode", "host");
--    qemu_fdt_setprop_string(s->fdt, name, "phy-names", "usb3-phy");
--    qemu_fdt_setprop(s->fdt, name, "snps,dis_u2_susphy_quirk", NULL, 0);
--    qemu_fdt_setprop(s->fdt, name, "snps,dis_u3_susphy_quirk", NULL, 0);
--    qemu_fdt_setprop(s->fdt, name, "snps,refclk_fladj", NULL, 0);
--    qemu_fdt_setprop(s->fdt, name, "snps,mask_phy_reset", NULL, 0);
--    qemu_fdt_setprop_cell(s->fdt, name, "phandle", s->phandle.dwc);
--    qemu_fdt_setprop_string(s->fdt, name, "maximum-speed", "high-speed");
+-                           GIC_FDT_IRQ_TYPE_SPI, VERSAL_EFUSE_IRQ,
+-                           GIC_FDT_IRQ_FLAGS_LEVEL_HI);
+-    qemu_fdt_setprop(s->fdt, name, "interrupt-names",
+-                     interrupt_names, sizeof(interrupt_names));
+-    qemu_fdt_setprop_sized_cells(s->fdt, name, "reg",
+-                                 2, MM_PMC_EFUSE_CTRL,
+-                                 2, MM_PMC_EFUSE_CTRL_SIZE);
+-    qemu_fdt_setprop(s->fdt, name, "compatible", compat, sizeof(compat));
 -    g_free(name);
 -}
 -
- static void fdt_add_rtc_node(VersalVirt *s)
+-static void fdt_add_efuse_cache_node(VersalVirt *s)
+-{
+-    const char compat[] = TYPE_XLNX_VERSAL_EFUSE_CACHE;
+-    char *name = g_strdup_printf("/xlnx_pmc_efuse_cache@%x",
+-                                 MM_PMC_EFUSE_CACHE);
+-
+-    qemu_fdt_add_subnode(s->fdt, name);
+-
+-    qemu_fdt_setprop_sized_cells(s->fdt, name, "reg",
+-                                 2, MM_PMC_EFUSE_CACHE,
+-                                 2, MM_PMC_EFUSE_CACHE_SIZE);
+-    qemu_fdt_setprop(s->fdt, name, "compatible", compat, sizeof(compat));
+-    g_free(name);
+-}
+-
+ static void fdt_nop_memory_nodes(void *fdt, Error **errp)
  {
-     const char compat[] = "xlnx,zynqmp-rtc";
-@@ -534,7 +481,6 @@ static void versal_virt_init(MachineState *machine)
+     Error *err = NULL;
+@@ -393,7 +358,7 @@ static void bbram_attach_drive(XlnxBBRam *dev)
+     }
+ }
  
-     fdt_add_gic_nodes(s);
+-static void efuse_attach_drive(XlnxEFuse *dev)
++static void efuse_attach_drive(VersalVirt *s)
+ {
+     DriveInfo *dinfo;
+     BlockBackend *blk;
+@@ -401,7 +366,7 @@ static void efuse_attach_drive(XlnxEFuse *dev)
+     dinfo = drive_get_by_index(IF_PFLASH, 1);
+     blk = dinfo ? blk_by_legacy_dinfo(dinfo) : NULL;
+     if (blk) {
+-        qdev_prop_set_drive(DEVICE(dev), "drive", blk);
++        versal_efuse_attach_drive(&s->soc, blk);
+     }
+ }
+ 
+@@ -483,8 +448,6 @@ static void versal_virt_init(MachineState *machine)
      fdt_add_timer_nodes(s);
--    fdt_add_usb_xhci_nodes(s);
      fdt_add_rtc_node(s);
      fdt_add_bbram_node(s);
-     fdt_add_efuse_ctrl_node(s);
+-    fdt_add_efuse_ctrl_node(s);
+-    fdt_add_efuse_cache_node(s);
+     fdt_add_cpu_nodes(s, psci_conduit);
+     fdt_add_clk_node(s, "/old-clk125", 125000000, s->phandle.clk_125Mhz);
+     fdt_add_clk_node(s, "/old-clk25", 25000000, s->phandle.clk_25Mhz);
+@@ -498,7 +461,7 @@ static void versal_virt_init(MachineState *machine)
+     bbram_attach_drive(&s->soc.pmc.bbram);
+ 
+     /* Attach efuse backend, if given */
+-    efuse_attach_drive(&s->soc.pmc.efuse);
++    efuse_attach_drive(s);
+ 
+     /* Plug SD cards */
+     for (i = 0; i < versal_get_num_sdhci(VERSAL_VER_VERSAL); i++) {
 diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index 295fca3d60d..946c0170674 100644
+index 946c0170674..f8291ac614b 100644
 --- a/hw/arm/xlnx-versal.c
 +++ b/hw/arm/xlnx-versal.c
-@@ -32,6 +32,7 @@
- #include "hw/net/cadence_gem.h"
+@@ -33,6 +33,7 @@
  #include "hw/dma/xlnx-zdma.h"
  #include "hw/misc/xlnx-versal-xramc.h"
-+#include "hw/usb/xlnx-usb-subsystem.h"
+ #include "hw/usb/xlnx-usb-subsystem.h"
++#include "hw/nvram/xlnx-versal-efuse.h"
  
  #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
  #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
-@@ -80,6 +81,13 @@ typedef struct VersalMap {
+@@ -88,6 +89,12 @@ typedef struct VersalMap {
          int irq;
-         size_t num;
-     } xram;
+     } usb[2];
+     size_t num_usb;
 +
-+    struct VersalUsbMap {
-+        uint64_t xhci;
++    struct VersalEfuseMap {
 +        uint64_t ctrl;
++        uint64_t cache;
 +        int irq;
-+    } usb[2];
-+    size_t num_usb;
++    } efuse;
  } VersalMap;
  
  static const VersalMap VERSAL_MAP = {
-@@ -108,6 +116,9 @@ static const VersalMap VERSAL_MAP = {
-         .ctrl = 0xff8e0000, .ctrl_stride = 0x10000,
-         .irq = 79,
-     },
+@@ -119,6 +126,8 @@ static const VersalMap VERSAL_MAP = {
+ 
+     .usb[0] = { .xhci = 0xfe200000, .ctrl = 0xff9d0000, .irq = 22 },
+     .num_usb = 1,
 +
-+    .usb[0] = { .xhci = 0xfe200000, .ctrl = 0xff9d0000, .irq = 22 },
-+    .num_usb = 1,
++    .efuse = { .ctrl = 0xf1240000, .cache = 0xf1250000, .irq = 139 },
  };
  
  static const VersalMap *VERSION_TO_MAP[] = {
-@@ -422,29 +433,67 @@ static void versal_create_canfd(Versal *s, const VersalSimplePeriphMap *map,
-                            GIC_FDT_IRQ_FLAGS_LEVEL_HI);
+@@ -752,42 +761,41 @@ static void versal_create_bbram(Versal *s, qemu_irq *pic)
+                        qdev_get_gpio_in(DEVICE(&s->pmc.apb_irq_orgate), 1));
  }
  
--static void versal_create_usbs(Versal *s, qemu_irq *pic)
-+static void versal_create_usb(Versal *s,
-+                              const struct VersalUsbMap *map)
+-static void versal_realize_efuse_part(Versal *s, Object *dev, hwaddr base)
++static void versal_create_efuse(Versal *s,
++                                const struct VersalEfuseMap *map)
  {
-     DeviceState *dev;
-     MemoryRegion *mr;
-+    g_autofree char *node, *subnode;
-+    const char clocknames[] = "bus_clk\0ref_clk";
-+    const char irq_name[] = "dwc_usb3";
-+    const char compat_versal_dwc3[] = "xlnx,versal-dwc3";
-+    const char compat_dwc3[] = "snps,dwc3";
+-    SysBusDevice *part = SYS_BUS_DEVICE(dev);
++    DeviceState *bits;
++    DeviceState *ctrl;
++    DeviceState *cache;
  
--    object_initialize_child(OBJECT(s), "usb2", &s->lpd.iou.usb,
--                            TYPE_XILINX_VERSAL_USB2);
--    dev = DEVICE(&s->lpd.iou.usb);
-+    dev = qdev_new(TYPE_XILINX_VERSAL_USB2);
-+    object_property_add_child(OBJECT(s), "usb[*]", OBJECT(dev));
+-    object_property_set_link(OBJECT(part), "efuse",
+-                             OBJECT(&s->pmc.efuse), &error_abort);
++    ctrl = qdev_new(TYPE_XLNX_VERSAL_EFUSE_CTRL);
++    cache = qdev_new(TYPE_XLNX_VERSAL_EFUSE_CACHE);
++    bits = qdev_new(TYPE_XLNX_EFUSE);
  
-     object_property_set_link(OBJECT(dev), "dma", OBJECT(&s->mr_ps),
-                              &error_abort);
-     qdev_prop_set_uint32(dev, "intrs", 1);
-     qdev_prop_set_uint32(dev, "slots", 2);
+-    sysbus_realize(part, &error_abort);
+-    memory_region_add_subregion(&s->mr_ps, base,
+-                                sysbus_mmio_get_region(part, 0));
+-}
++    qdev_prop_set_uint32(bits, "efuse-nr", 3);
++    qdev_prop_set_uint32(bits, "efuse-size", 8192);
  
--    sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-static void versal_create_efuse(Versal *s, qemu_irq *pic)
+-{
+-    Object *bits = OBJECT(&s->pmc.efuse);
+-    Object *ctrl = OBJECT(&s->pmc.efuse_ctrl);
+-    Object *cache = OBJECT(&s->pmc.efuse_cache);
++    object_property_add_child(OBJECT(s), "efuse", OBJECT(bits));
++    qdev_realize_and_unref(bits, NULL, &error_abort);
  
-     mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
--    memory_region_add_subregion(&s->mr_ps, MM_USB_0, mr);
-+    memory_region_add_subregion(&s->mr_ps, map->xhci, mr);
+-    object_initialize_child(OBJECT(s), "efuse-ctrl", &s->pmc.efuse_ctrl,
+-                            TYPE_XLNX_VERSAL_EFUSE_CTRL);
++    object_property_set_link(OBJECT(ctrl), "efuse", OBJECT(bits), &error_abort);
  
--    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[VERSAL_USB0_IRQ_0]);
-+    versal_sysbus_connect_irq(s, SYS_BUS_DEVICE(dev), 0, map->irq);
+-    object_initialize_child(OBJECT(s), "efuse-cache", &s->pmc.efuse_cache,
+-                            TYPE_XLNX_VERSAL_EFUSE_CACHE);
++    object_property_set_link(OBJECT(cache), "efuse", OBJECT(bits),
++                             &error_abort);
  
-     mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
--    memory_region_add_subregion(&s->mr_ps, MM_USB2_CTRL_REGS, mr);
-+    memory_region_add_subregion(&s->mr_ps, map->ctrl, mr);
-+
-+    node = versal_fdt_add_simple_subnode(s, "/usb", map->ctrl, 0x10000,
-+                                         compat_versal_dwc3,
-+                                         sizeof(compat_versal_dwc3));
-+    qemu_fdt_setprop(s->cfg.fdt, node, "clock-names",
-+                         clocknames, sizeof(clocknames));
-+    qemu_fdt_setprop_cells(s->cfg.fdt, node, "clocks",
-+                               s->phandle.clk_25mhz, s->phandle.clk_125mhz);
-+    qemu_fdt_setprop(s->cfg.fdt, node, "ranges", NULL, 0);
-+    qemu_fdt_setprop_cell(s->cfg.fdt, node, "#address-cells", 2);
-+    qemu_fdt_setprop_cell(s->cfg.fdt, node, "#size-cells", 2);
-+
-+    subnode = g_strdup_printf("/%s/dwc3", node);
-+    g_free(node);
-+
-+    node = versal_fdt_add_simple_subnode(s, subnode, map->xhci, 0x10000,
-+                                         compat_dwc3,
-+                                         sizeof(compat_dwc3));
-+    qemu_fdt_setprop(s->cfg.fdt, node, "interrupt-names",
-+                     irq_name, sizeof(irq_name));
-+    qemu_fdt_setprop_cells(s->cfg.fdt, node, "interrupts",
-+                               GIC_FDT_IRQ_TYPE_SPI, map->irq,
-+                               GIC_FDT_IRQ_FLAGS_LEVEL_HI);
-+    qemu_fdt_setprop_cell(s->cfg.fdt, node,
-+                          "snps,quirk-frame-length-adjustment", 0x20);
-+    qemu_fdt_setprop_cells(s->cfg.fdt, node, "#stream-id-cells", 1);
-+    qemu_fdt_setprop_string(s->cfg.fdt, node, "dr_mode", "host");
-+    qemu_fdt_setprop_string(s->cfg.fdt, node, "phy-names", "usb3-phy");
-+    qemu_fdt_setprop(s->cfg.fdt, node, "snps,dis_u2_susphy_quirk", NULL, 0);
-+    qemu_fdt_setprop(s->cfg.fdt, node, "snps,dis_u3_susphy_quirk", NULL, 0);
-+    qemu_fdt_setprop(s->cfg.fdt, node, "snps,refclk_fladj", NULL, 0);
-+    qemu_fdt_setprop(s->cfg.fdt, node, "snps,mask_phy_reset", NULL, 0);
-+    qemu_fdt_setprop_string(s->cfg.fdt, node, "maximum-speed", "high-speed");
+-    object_initialize_child_with_props(ctrl, "xlnx-efuse@0", bits,
+-                                       sizeof(s->pmc.efuse),
+-                                       TYPE_XLNX_EFUSE, &error_abort,
+-                                       "efuse-nr", "3",
+-                                       "efuse-size", "8192",
+-                                       NULL);
++    object_property_add_child(OBJECT(s), "efuse-cache", OBJECT(cache));
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(cache), &error_abort);
+ 
+-    qdev_realize(DEVICE(bits), NULL, &error_abort);
+-    versal_realize_efuse_part(s, ctrl, MM_PMC_EFUSE_CTRL);
+-    versal_realize_efuse_part(s, cache, MM_PMC_EFUSE_CACHE);
++    object_property_add_child(OBJECT(s), "efuse-ctrl", OBJECT(ctrl));
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(ctrl), &error_abort);
+ 
+-    sysbus_connect_irq(SYS_BUS_DEVICE(ctrl), 0, pic[VERSAL_EFUSE_IRQ]);
++    memory_region_add_subregion(&s->mr_ps, map->ctrl,
++                                sysbus_mmio_get_region(SYS_BUS_DEVICE(ctrl),
++                                                       0));
++    memory_region_add_subregion(&s->mr_ps, map->cache,
++                                sysbus_mmio_get_region(SYS_BUS_DEVICE(cache),
++                                                       0));
++    versal_sysbus_connect_irq(s, SYS_BUS_DEVICE(ctrl), 0, map->irq);
  }
  
- static void versal_create_gem(Versal *s,
-@@ -1017,10 +1066,6 @@ static void versal_create_crl(Versal *s, qemu_irq *pic)
-                                  &error_abort);
+ static void versal_create_pmc_iou_slcr(Versal *s, qemu_irq *pic)
+@@ -1257,11 +1265,12 @@ static void versal_realize(DeviceState *dev, Error **errp)
+         versal_create_usb(s, &map->usb[i]);
      }
  
--    object_property_set_link(OBJECT(&s->lpd.crl),
--                             "usb", OBJECT(&s->lpd.iou.usb),
--                             &error_abort);
--
-     sysbus_realize(sbd, &error_fatal);
-     memory_region_add_subregion(&s->mr_ps, MM_CRL,
-                                 sysbus_mmio_get_region(sbd, 0));
-@@ -1208,7 +1253,10 @@ static void versal_realize(DeviceState *dev, Error **errp)
- 
-     versal_create_xrams(s, &map->xram);
- 
--    versal_create_usbs(s, pic);
-+    for (i = 0; i < map->num_usb; i++) {
-+        versal_create_usb(s, &map->usb[i]);
-+    }
++    versal_create_efuse(s, &map->efuse);
 +
      versal_create_pmc_apb_irq_orgate(s, pic);
      versal_create_rtc(s, pic);
      versal_create_trng(s, pic);
+     versal_create_bbram(s, pic);
+-    versal_create_efuse(s, pic);
+     versal_create_pmc_iou_slcr(s, pic);
+     versal_create_ospi(s, pic);
+     versal_create_crl(s, pic);
+@@ -1296,6 +1305,19 @@ void versal_sdhci_plug_card(Versal *s, int sd_idx, BlockBackend *blk)
+                            &error_fatal);
+ }
+ 
++void versal_efuse_attach_drive(Versal *s, BlockBackend *blk)
++{
++    DeviceState *efuse;
++
++    efuse = DEVICE(versal_get_child(s, "efuse"));
++
++    if (efuse == NULL) {
++        return;
++    }
++
++    qdev_prop_set_drive(efuse, "drive", blk);
++}
++
+ int versal_get_num_can(VersalVersion version)
+ {
+     const VersalMap *map = VERSION_TO_MAP[version];
 -- 
 2.43.0
 
