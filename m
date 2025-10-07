@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76693BC1BBD
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0050BBC1AB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Pv-0005bQ-1V; Tue, 07 Oct 2025 10:11:51 -0400
+	id 1v68Pq-0005ae-7K; Tue, 07 Oct 2025 10:11:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Pp-0005ax-Bz
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:45 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1v68Pm-0005ZO-7O
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:42 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Ph-00026p-82
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:44 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-46e6ba26c50so38027165e9.2
+ id 1v68Pf-000274-82
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:41 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e34bd8eb2so70682985e9.3
  for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846290; x=1760451090; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846291; x=1760451091; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=C9h8WM4gxi2sTa+iZ6czhn/Kjg3vyz44CeCkzLnEM/U=;
- b=qyOq77TJU95ax4nkzkrtQg5IkyP4wNp9A5aMueqpTUUjCGiT5NmWxZespDMqahucWz
- eAlMvUqMWmukcbwnoFLoGyPgSSUsmj0ot2RPTFxPOFGO+6p3o6Xp3NEHSw3OZ6Gb2AVx
- 26j8OrqNfKqWasDdZlUib625Yh8+yuIxCk+hppOERRMeV5WstUsomTlM4hQw3hJ35Mmk
- rEUhq6MC33Iz1/E/zJTrcVYcM2sDamhcXEtK71210YhTXgQ4Pvo9o+a9a99fi7x2qPol
- kbLnsC2qt4cOdlup54X3HqPsv3BH82iApMYVm9qk6qWGadBB0UDxW3YmK2NX0T983SNV
- dxDw==
+ :reply-to; bh=jArA7Esvg64NrfHlt/LBEhrn290ZO8SS+I/X/+Cb/CI=;
+ b=wfb4kbFQOoD+uP3LEpQcatLHI+msG1gB8PT38pXLAluDm9gyMzcuih91Ei0I7BmF5+
+ M+7p5fZGGbZiRHZppn+e+qJUPek2RvGB18may4r+3vLbu2tQKS7/tDpXSU5aE1cMOXaP
+ d3jfbDj4fvq3DwDgqht1/h4v8/D8lsU9rr7qMqg+7n45I0w5ithoiZt9Y2pOQGrUpSTc
+ bykyAOdSv26lwnMKZ2i5DZ5yR7wbr/o2tBIWWCjy9brCQL538zCUkCYxcsv7gktq+/gI
+ 8t/dQBRnWJBiqNgEHc0ORFNofQpsV59y7wFTnM0LFkIxEjvbb5PuM9NFfhbZToQGiwa3
+ uK5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846290; x=1760451090;
+ d=1e100.net; s=20230601; t=1759846291; x=1760451091;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C9h8WM4gxi2sTa+iZ6czhn/Kjg3vyz44CeCkzLnEM/U=;
- b=DFfk4e6RitWeuI3gXt8SIvK4Hx+rR51MV0hBEU9/x+9xFO3Csq4zDhV+DAoMons5Fg
- VyBZFLHgsEYQtaFWwsp77rclLD1k2n8DPELq5o1aUMdAEh1N3KfYioQurEeb0YcdraBy
- +fZX48QTCWBkXlfjDR1eWgsyxH6PPUtNXnOjOFk+HSJkXwwSZPejXYo9ijwPo1y1N/SA
- KWM3WOYfVJHdHrGaXlGwvlrvhf/h2DnTsMqvhReALazjUM1JSbZNDgUyDq9hdG6DZ00S
- 5QqneV01FxFwusdZrwTHElZSbSUSFap0vQcRYAe3fmOdcXvpia4C4lQqiT50yfUcEuOt
- 4bsw==
-X-Gm-Message-State: AOJu0Yw+pxifJIcwN/rRrtuv1daNXWOl4hPLkG5mBiFXc0sOEqLJKFm/
- 4U1+ITRrdAQzcGEv7PfYITOpLmyIQ76pyYAzpnVRibTGyg20w6tQmA3ZbCoPZkImIyG2r1rjpBC
- RJvsL
-X-Gm-Gg: ASbGnctq+Asg1AbJ5kSthEYgJpg0JGIi34/3lUYbQ3j+kcaSzWWr8c0Ln49fJq/yats
- PZ9CviwBlNqfTF0Qtvemx6s7edhhirB8aRIYuOwwtX0N8YCJ93B1U8gSaOwxhE+iV20B79q6nAJ
- ValTuCj/boJrIk1ja3aoQvBluzEV0fH3vRJzmw/OsP2dwhBIz+CSnmEEkUnPAHVUTk33B4vvVij
- aOpULLzGAFJDiLJvehKyU2E3z3OZcRREgXT1HFrgmhT9BW7PWMLJUG2VIJVfTnUQAz0O2ZjX4/J
- 8IF56UhSaEdhauwUg7Nb9vciCHCZhhRXsHM5toTkzCnG0PP27RHQjWosx3gk8eexhRg2IXuU7uX
- inTrXIQ59kbT2G2+J0Uk0rtidrcY2E/Y2xYoep/ke6G/Bdfq1/DaMtsrF
-X-Google-Smtp-Source: AGHT+IE/rpGjAUHFt8v/f1f1RboB9iN7wHuCf1RSgO8xZnfit1h2qBSnablpEncWfQBrNeLt8w30lw==
-X-Received: by 2002:a05:600c:529a:b0:46d:9d28:fb5e with SMTP id
- 5b1f17b1804b1-46e710ffb36mr115555445e9.5.1759846289997; 
- Tue, 07 Oct 2025 07:11:29 -0700 (PDT)
+ bh=jArA7Esvg64NrfHlt/LBEhrn290ZO8SS+I/X/+Cb/CI=;
+ b=JFQ6CpU143lLWBNj6cwJZqlTEJ/irQxR2oUPFC95RLnHBtx3fEIks6cKp6B0igTV6i
+ ELjxQIH03f/lEc0u2LmOY8RcBU59Qtj/OPbWDQjFaDVzoxwRcbF/opVNeLT/BsH3RKb5
+ OQQvF8jW2fxJsspPoHTVV8FmrbjltkCQ/5JdbnMfybfCO5XMt4CduH75qefjGzw3aE4M
+ tg7zNiM8XpR88We26nCo9QzZaaLWa4G8fxIw+0FICfcWiLB/KYm1frdRjdVSygTDyunB
+ sb3Q0SImUN+dTVcf8tjc4PtMiSYzYN+pVizOC8SPkVyhkBisN9BYHmLtcv5kFSY/pJzv
+ +k0w==
+X-Gm-Message-State: AOJu0YzpyTHr6eOYWOnY4O5T+qpg47Ve81wvtf6QmSSZNCZkJonCP5an
+ UxfWiAnGIT45l9+aCjCOXiSpsHim8xjx1wnXxDYsM1Ce14pevaG6JF0WmOZT2VKe0g8iMxXp124
+ A6Sxb
+X-Gm-Gg: ASbGncsvelLvM5EuKcB3qTvwSue3oX+czt4R4S7NQC3NWjbgj0vBQX4IMtw0ihRoaeL
+ cMLkvfwgpEVg1yiyG66qaOy1onQtXmJ/bQLEbaKmaHfpJMdawyJurMBbvPSULQeyav8ft77jV+m
+ pbQKi24sLzSYLJsv6KVfb+I4U5YHEelO0AVmu6jl1ItVA5uVUvtk4IYfbb2iFfN+Pe1RjzyFm9W
+ 8tlMN6hKoW/GaH//TPp4ohddpbg6E1BqzKzgv10syzlU9bgPGxACMCPR4adaoQYbaALuHeyNxXw
+ ax6Zj9ZLzgMQU7h3Sps8NRkvuecRHmO7ZDv/UyaaInStPag3iaNZGLXU1b2qtNFgqJIPczXU/lH
+ KC8/VAoC/1NSawzdtXirESdwUpOagKfmjUnYdQEpAc2SkQvKbxuj9bWuO
+X-Google-Smtp-Source: AGHT+IEPcAJ29SK6Yai68K+KE6boAnBeYfIEC96nVANzWPNCsckjBUBCE6Pkl9IORpLure14G/yn/Q==
+X-Received: by 2002:a05:600c:3b0f:b0:46e:59dd:1b4d with SMTP id
+ 5b1f17b1804b1-46e7110a268mr150212375e9.16.1759846291063; 
+ Tue, 07 Oct 2025 07:11:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.29
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:11:29 -0700 (PDT)
+ Tue, 07 Oct 2025 07:11:30 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/62] hw/arm/xlnx-versal: uart: refactor creation
-Date: Tue,  7 Oct 2025 15:10:24 +0100
-Message-ID: <20251007141123.3239867-5-peter.maydell@linaro.org>
+Subject: [PULL 05/62] hw/arm/xlnx-versal: canfd: refactor creation
+Date: Tue,  7 Oct 2025 15:10:25 +0100
+Message-ID: <20251007141123.3239867-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,307 +100,360 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-Refactor the UARTs creations. The VersalMap struct is now used to
-describe the SoC and its peripherals. For now it contains the two UARTs
-mapping information. The creation function now embeds the FDT creation
-logic as well. The devices are now created dynamically using qdev_new
-and (qdev|sysbus)_realize_and_unref.
-
-This will allow to rely entirely on the VersalMap structure to create
-the SoC and allow easy addition of new SoCs of the same family (like
-versal2 coming with next commits).
+Refactor the CAN controllers creation using the VersalMap structure.
 
 Note that the connection to the CRL is removed for now and will be
 re-added by next commits.
 
+The xlnx-versal-virt machine now dynamically creates the correct amount
+of CAN bus link properties based on the number of CAN controller
+advertised by the SoC.
+
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250926070806.292065-4-luc.michel@amd.com
+Message-id: 20250926070806.292065-5-luc.michel@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/xlnx-versal.h |   2 -
- hw/arm/xlnx-versal-virt.c    |  36 +--------
- hw/arm/xlnx-versal.c         | 144 ++++++++++++++++++++++++++++-------
- 3 files changed, 119 insertions(+), 63 deletions(-)
+ include/hw/arm/xlnx-versal.h |  7 +--
+ hw/arm/xlnx-versal-virt.c    | 73 +++++++++-------------------
+ hw/arm/xlnx-versal.c         | 94 +++++++++++++++++++++++++-----------
+ 3 files changed, 95 insertions(+), 79 deletions(-)
 
 diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
-index f2a62b43552..b01ddeb1423 100644
+index b01ddeb1423..007c91b596e 100644
 --- a/include/hw/arm/xlnx-versal.h
 +++ b/include/hw/arm/xlnx-versal.h
-@@ -18,7 +18,6 @@
- #include "hw/or-irq.h"
- #include "hw/sd/sdhci.h"
- #include "hw/intc/arm_gicv3.h"
--#include "hw/char/pl011.h"
- #include "hw/dma/xlnx-zdma.h"
- #include "hw/net/cadence_gem.h"
- #include "hw/rtc/xlnx-zynqmp-rtc.h"
-@@ -80,7 +79,6 @@ struct Versal {
-         MemoryRegion mr_ocm;
- 
-         struct {
--            PL011State uart[XLNX_VERSAL_NR_UARTS];
-             CadenceGEMState gem[XLNX_VERSAL_NR_GEMS];
+@@ -31,7 +31,7 @@
+ #include "hw/misc/xlnx-versal-crl.h"
+ #include "hw/misc/xlnx-versal-pmc-iou-slcr.h"
+ #include "hw/misc/xlnx-versal-trng.h"
+-#include "hw/net/xlnx-versal-canfd.h"
++#include "net/can_emu.h"
+ #include "hw/misc/xlnx-versal-cfu.h"
+ #include "hw/misc/xlnx-versal-cframe-reg.h"
+ #include "target/arm/cpu.h"
+@@ -83,8 +83,6 @@ struct Versal {
              OrIRQState gem_irq_orgate[XLNX_VERSAL_NR_GEMS];
              XlnxZDMA adma[XLNX_VERSAL_NR_ADMAS];
+             VersalUsb2 usb;
+-            CanBusState *canbus[XLNX_VERSAL_NR_CANFD];
+-            XlnxVersalCANFDState canfd[XLNX_VERSAL_NR_CANFD];
+         } iou;
+ 
+         /* Real-time Processing Unit.  */
+@@ -141,6 +139,7 @@ struct Versal {
+ 
+     struct {
+         MemoryRegion *mr_ddr;
++        CanBusState **canbus;
+         void *fdt;
+     } cfg;
+ };
+@@ -157,6 +156,8 @@ static inline void versal_set_fdt(Versal *s, void *fdt)
+     s->cfg.fdt = fdt;
+ }
+ 
++int versal_get_num_can(VersalVersion version);
++
+ /* Memory-map and IRQ definitions. Copied a subset from
+  * auto-generated files.  */
+ 
 diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index d1c65afa2ac..e1deae11317 100644
+index e1deae11317..334252564be 100644
 --- a/hw/arm/xlnx-versal-virt.c
 +++ b/hw/arm/xlnx-versal-virt.c
-@@ -77,6 +77,7 @@ static void fdt_create(VersalVirt *s)
-     s->phandle.dwc = qemu_fdt_alloc_phandle(s->fdt);
-     /* Create /chosen node for load_dtb.  */
-     qemu_fdt_add_subnode(s->fdt, "/chosen");
-+    qemu_fdt_add_subnode(s->fdt, "/aliases");
+@@ -43,11 +43,11 @@ struct VersalVirt {
+         uint32_t clk_25Mhz;
+         uint32_t usb;
+         uint32_t dwc;
+-        uint32_t canfd[2];
+     } phandle;
+     struct arm_boot_info binfo;
  
-     /* Header */
-     qemu_fdt_setprop_cell(s->fdt, "/", "interrupt-parent", s->phandle.gic);
-@@ -208,40 +209,6 @@ static void fdt_add_usb_xhci_nodes(VersalVirt *s)
+-    CanBusState *canbus[XLNX_VERSAL_NR_CANFD];
++    CanBusState **canbus;
++
+     struct {
+         bool secure;
+     } cfg;
+@@ -209,38 +209,6 @@ static void fdt_add_usb_xhci_nodes(VersalVirt *s)
      g_free(name);
  }
  
--static void fdt_add_uart_nodes(VersalVirt *s)
+-static void fdt_add_canfd_nodes(VersalVirt *s)
 -{
--    uint64_t addrs[] = { MM_UART1, MM_UART0 };
--    unsigned int irqs[] = { VERSAL_UART1_IRQ_0, VERSAL_UART0_IRQ_0 };
--    const char compat[] = "arm,pl011\0arm,sbsa-uart";
--    const char clocknames[] = "uartclk\0apb_pclk";
+-    uint64_t addrs[] = { MM_CANFD1, MM_CANFD0 };
+-    uint32_t size[] = { MM_CANFD1_SIZE, MM_CANFD0_SIZE };
+-    unsigned int irqs[] = { VERSAL_CANFD1_IRQ_0, VERSAL_CANFD0_IRQ_0 };
+-    const char clocknames[] = "can_clk\0s_axi_aclk";
 -    int i;
 -
+-    /* Create and connect CANFD0 and CANFD1 nodes to canbus0. */
 -    for (i = 0; i < ARRAY_SIZE(addrs); i++) {
--        char *name = g_strdup_printf("/uart@%" PRIx64, addrs[i]);
+-        char *name = g_strdup_printf("/canfd@%" PRIx64, addrs[i]);
 -        qemu_fdt_add_subnode(s->fdt, name);
--        qemu_fdt_setprop_cell(s->fdt, name, "current-speed", 115200);
+-
+-        qemu_fdt_setprop_cell(s->fdt, name, "rx-fifo-depth", 0x40);
+-        qemu_fdt_setprop_cell(s->fdt, name, "tx-mailbox-count", 0x20);
+-
 -        qemu_fdt_setprop_cells(s->fdt, name, "clocks",
--                               s->phandle.clk_125Mhz, s->phandle.clk_125Mhz);
+-                               s->phandle.clk_25Mhz, s->phandle.clk_25Mhz);
 -        qemu_fdt_setprop(s->fdt, name, "clock-names",
 -                         clocknames, sizeof(clocknames));
--
 -        qemu_fdt_setprop_cells(s->fdt, name, "interrupts",
 -                               GIC_FDT_IRQ_TYPE_SPI, irqs[i],
 -                               GIC_FDT_IRQ_FLAGS_LEVEL_HI);
 -        qemu_fdt_setprop_sized_cells(s->fdt, name, "reg",
--                                     2, addrs[i], 2, 0x1000);
--        qemu_fdt_setprop(s->fdt, name, "compatible",
--                         compat, sizeof(compat));
--        qemu_fdt_setprop(s->fdt, name, "u-boot,dm-pre-reloc", NULL, 0);
+-                                     2, addrs[i], 2, size[i]);
+-        qemu_fdt_setprop_string(s->fdt, name, "compatible",
+-                                "xlnx,canfd-2.0");
 -
--        if (addrs[i] == MM_UART0) {
--            /* Select UART0.  */
--            qemu_fdt_setprop_string(s->fdt, "/chosen", "stdout-path", name);
--        }
 -        g_free(name);
 -    }
 -}
 -
- static void fdt_add_canfd_nodes(VersalVirt *s)
+ static void fdt_add_fixed_link_nodes(VersalVirt *s, char *gemname,
+                                      uint32_t phandle)
  {
-     uint64_t addrs[] = { MM_CANFD1, MM_CANFD0 };
-@@ -705,7 +672,6 @@ static void versal_virt_init(MachineState *machine)
+@@ -661,10 +629,14 @@ static void versal_virt_init(MachineState *machine)
+                             TYPE_XLNX_VERSAL);
+     object_property_set_link(OBJECT(&s->soc), "ddr", OBJECT(machine->ram),
+                              &error_abort);
+-    object_property_set_link(OBJECT(&s->soc), "canbus0", OBJECT(s->canbus[0]),
+-                             &error_abort);
+-    object_property_set_link(OBJECT(&s->soc), "canbus1", OBJECT(s->canbus[1]),
+-                             &error_abort);
++
++    for (i = 0; i < versal_get_num_can(VERSAL_VER_VERSAL); i++) {
++        g_autofree char *prop_name = g_strdup_printf("canbus%d", i);
++
++        object_property_set_link(OBJECT(&s->soc), prop_name,
++                                 OBJECT(s->canbus[i]),
++                                 &error_abort);
++    }
+ 
+     fdt_create(s);
+     versal_set_fdt(&s->soc, s->fdt);
+@@ -672,7 +644,6 @@ static void versal_virt_init(MachineState *machine)
      create_virtio_regions(s);
  
      fdt_add_gem_nodes(s);
--    fdt_add_uart_nodes(s);
-     fdt_add_canfd_nodes(s);
+-    fdt_add_canfd_nodes(s);
      fdt_add_gic_nodes(s);
      fdt_add_timer_nodes(s);
+     fdt_add_zdma_nodes(s);
+@@ -755,19 +726,22 @@ static void versal_virt_init(MachineState *machine)
+ static void versal_virt_machine_instance_init(Object *obj)
+ {
+     VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
++    size_t i, num_can;
++
++    num_can = versal_get_num_can(VERSAL_VER_VERSAL);
++    s->canbus = g_new0(CanBusState *, num_can);
+ 
+     /*
+-     * User can set canbus0 and canbus1 properties to can-bus object and connect
+-     * to socketcan(optional) interface via command line.
++     * User can set canbusx properties to can-bus object and optionally connect
++     * to socketcan interface via command line.
+      */
+-    object_property_add_link(obj, "canbus0", TYPE_CAN_BUS,
+-                             (Object **)&s->canbus[0],
+-                             object_property_allow_set_link,
+-                             0);
+-    object_property_add_link(obj, "canbus1", TYPE_CAN_BUS,
+-                             (Object **)&s->canbus[1],
+-                             object_property_allow_set_link,
+-                             0);
++    for (i = 0; i < num_can; i++) {
++        g_autofree char *prop_name = g_strdup_printf("canbus%zu", i);
++
++        object_property_add_link(obj, prop_name, TYPE_CAN_BUS,
++                                 (Object **) &s->canbus[i],
++                                 object_property_allow_set_link, 0);
++    }
+ }
+ 
+ static void versal_virt_machine_finalize(Object *obj)
+@@ -775,6 +749,7 @@ static void versal_virt_machine_finalize(Object *obj)
+     VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
+ 
+     g_free(s->ospi_model);
++    g_free(s->canbus);
+ }
+ 
+ static void versal_virt_machine_class_init(ObjectClass *oc, const void *data)
 diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index 3b596219561..b16af79e8a9 100644
+index b16af79e8a9..3d2e33d3dac 100644
 --- a/hw/arm/xlnx-versal.c
 +++ b/hw/arm/xlnx-versal.c
-@@ -26,6 +26,7 @@
- #include "target/arm/gtimer.h"
+@@ -27,6 +27,7 @@
  #include "system/device_tree.h"
  #include "hw/arm/fdt.h"
-+#include "hw/char/pl011.h"
+ #include "hw/char/pl011.h"
++#include "hw/net/xlnx-versal-canfd.h"
  
  #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
  #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
-@@ -34,6 +35,83 @@
- #define VERSAL_NUM_PMC_APB_IRQS 18
- #define NUM_OSPI_IRQ_LINES 3
+@@ -43,12 +44,19 @@ typedef struct VersalSimplePeriphMap {
+ typedef struct VersalMap {
+     VersalSimplePeriphMap uart[2];
+     size_t num_uart;
++
++    VersalSimplePeriphMap canfd[4];
++    size_t num_canfd;
+ } VersalMap;
  
-+typedef struct VersalSimplePeriphMap {
-+    uint64_t addr;
-+    int irq;
-+} VersalSimplePeriphMap;
+ static const VersalMap VERSAL_MAP = {
+     .uart[0] = { 0xff000000, 18 },
+     .uart[1] = { 0xff010000, 19 },
+     .num_uart = 2,
 +
-+typedef struct VersalMap {
-+    VersalSimplePeriphMap uart[2];
-+    size_t num_uart;
-+} VersalMap;
-+
-+static const VersalMap VERSAL_MAP = {
-+    .uart[0] = { 0xff000000, 18 },
-+    .uart[1] = { 0xff010000, 19 },
-+    .num_uart = 2,
-+};
-+
-+static const VersalMap *VERSION_TO_MAP[] = {
-+    [VERSAL_VER_VERSAL] = &VERSAL_MAP,
-+};
-+
-+static inline VersalVersion versal_get_version(Versal *s)
-+{
-+    return XLNX_VERSAL_BASE_GET_CLASS(s)->version;
-+}
-+
-+static inline const VersalMap *versal_get_map(Versal *s)
-+{
-+    return VERSION_TO_MAP[versal_get_version(s)];
-+}
-+
-+
-+static qemu_irq versal_get_irq(Versal *s, int irq_idx)
-+{
-+    return qdev_get_gpio_in(DEVICE(&s->fpd.apu.gic), irq_idx);
-+}
-+
-+static void versal_sysbus_connect_irq(Versal *s, SysBusDevice *sbd,
-+                                      int sbd_idx, int irq_idx)
-+{
-+    qemu_irq irq = versal_get_irq(s, irq_idx);
-+
-+    if (irq == NULL) {
-+        return;
-+    }
-+
-+    sysbus_connect_irq(sbd, sbd_idx, irq);
-+}
-+
-+static inline char *versal_fdt_add_subnode(Versal *s, const char *path,
-+                                           uint64_t at, const char *compat,
-+                                           size_t compat_sz)
-+{
-+    char *p;
-+
-+    p = g_strdup_printf("%s@%" PRIx64, path, at);
-+    qemu_fdt_add_subnode(s->cfg.fdt, p);
-+
-+    if (!strncmp(compat, "memory", compat_sz)) {
-+        qemu_fdt_setprop(s->cfg.fdt, p, "device_type", compat, compat_sz);
-+    } else {
-+        qemu_fdt_setprop(s->cfg.fdt, p, "compatible", compat, compat_sz);
-+    }
-+
-+    return p;
-+}
-+
-+static inline char *versal_fdt_add_simple_subnode(Versal *s, const char *path,
-+                                                  uint64_t addr, uint64_t len,
-+                                                  const char *compat,
-+                                                  size_t compat_sz)
-+{
-+    char *p = versal_fdt_add_subnode(s, path, addr, compat, compat_sz);
-+
-+    qemu_fdt_setprop_sized_cells(s->cfg.fdt, p, "reg", 2, addr, 2, len);
-+    return p;
-+}
-+
- static void versal_create_apu_cpus(Versal *s)
- {
-     int i;
-@@ -167,28 +245,44 @@ static void versal_create_rpu_cpus(Versal *s)
-     qdev_realize(DEVICE(&s->lpd.rpu.cluster), NULL, &error_fatal);
++    .canfd[0] = { 0xff060000, 20 },
++    .canfd[1] = { 0xff070000, 21 },
++    .num_canfd = 2,
+ };
+ 
+ static const VersalMap *VERSION_TO_MAP[] = {
+@@ -286,36 +294,42 @@ static void versal_create_uart(Versal *s,
+     }
  }
  
--static void versal_create_uarts(Versal *s, qemu_irq *pic)
-+static void versal_create_uart(Versal *s,
-+                               const VersalSimplePeriphMap *map,
-+                               int chardev_idx)
+-static void versal_create_canfds(Versal *s, qemu_irq *pic)
++static void versal_create_canfd(Versal *s, const VersalSimplePeriphMap *map,
++                                CanBusState *bus)
  {
 -    int i;
-+    DeviceState *dev;
+-    uint32_t irqs[] = { VERSAL_CANFD0_IRQ_0, VERSAL_CANFD1_IRQ_0};
+-    uint64_t addrs[] = { MM_CANFD0, MM_CANFD1 };
++    SysBusDevice *sbd;
 +    MemoryRegion *mr;
 +    g_autofree char *node;
-+    g_autofree char *alias;
-+    const char compatible[] = "arm,pl011\0arm,sbsa-uart";
-+    const char clocknames[] = "uartclk\0apb_pclk";
++    const char compatible[] = "xlnx,canfd-2.0";
++    const char clocknames[] = "can_clk\0s_axi_aclk";
  
--    for (i = 0; i < ARRAY_SIZE(s->lpd.iou.uart); i++) {
--        static const int irqs[] = { VERSAL_UART0_IRQ_0, VERSAL_UART1_IRQ_0};
--        static const uint64_t addrs[] = { MM_UART0, MM_UART1 };
--        char *name = g_strdup_printf("uart%d", i);
--        DeviceState *dev;
+-    for (i = 0; i < ARRAY_SIZE(s->lpd.iou.canfd); i++) {
+-        char *name = g_strdup_printf("canfd%d", i);
+-        SysBusDevice *sbd;
 -        MemoryRegion *mr;
-+    dev = qdev_new(TYPE_PL011);
-+    object_property_add_child(OBJECT(s), "uart[*]", OBJECT(dev));
-+    qdev_prop_set_chr(dev, "chardev", serial_hd(chardev_idx));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sbd = SYS_BUS_DEVICE(qdev_new(TYPE_XILINX_CANFD));
++    object_property_add_child(OBJECT(s), "canfd[*]", OBJECT(sbd));
  
--        object_initialize_child(OBJECT(s), name, &s->lpd.iou.uart[i],
--                                TYPE_PL011);
--        dev = DEVICE(&s->lpd.iou.uart[i]);
--        qdev_prop_set_chr(dev, "chardev", serial_hd(i));
--        sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-+    mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
+-        object_initialize_child(OBJECT(s), name, &s->lpd.iou.canfd[i],
+-                                TYPE_XILINX_CANFD);
+-        sbd = SYS_BUS_DEVICE(&s->lpd.iou.canfd[i]);
++    object_property_set_int(OBJECT(sbd), "ext_clk_freq",
++                            25 * 1000 * 1000 , &error_abort);
+ 
+-        object_property_set_int(OBJECT(&s->lpd.iou.canfd[i]), "ext_clk_freq",
+-                                XLNX_VERSAL_CANFD_REF_CLK , &error_abort);
++    object_property_set_link(OBJECT(sbd), "canfdbus", OBJECT(bus),
++                             &error_abort);
+ 
+-        object_property_set_link(OBJECT(&s->lpd.iou.canfd[i]), "canfdbus",
+-                                 OBJECT(s->lpd.iou.canbus[i]),
+-                                 &error_abort);
++    sysbus_realize_and_unref(sbd, &error_fatal);
+ 
+-        sysbus_realize(sbd, &error_fatal);
++    mr = sysbus_mmio_get_region(sbd, 0);
 +    memory_region_add_subregion(&s->mr_ps, map->addr, mr);
  
--        mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
+-        mr = sysbus_mmio_get_region(sbd, 0);
 -        memory_region_add_subregion(&s->mr_ps, addrs[i], mr);
-+    versal_sysbus_connect_irq(s, SYS_BUS_DEVICE(dev), 0, map->irq);
++    versal_sysbus_connect_irq(s, sbd, 0, map->irq);
  
--        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[irqs[i]]);
+-        sysbus_connect_irq(sbd, 0, pic[irqs[i]]);
 -        g_free(name);
-+    node = versal_fdt_add_simple_subnode(s, "/uart", map->addr, 0x1000,
+-    }
++    node = versal_fdt_add_simple_subnode(s, "/canfd", map->addr, 0x10000,
 +                                         compatible, sizeof(compatible));
-+    qemu_fdt_setprop_cell(s->cfg.fdt, node, "current-speed", 115200);
++    qemu_fdt_setprop_cell(s->cfg.fdt, node, "rx-fifo-depth", 0x40);
++    qemu_fdt_setprop_cell(s->cfg.fdt, node, "tx-mailbox-count", 0x20);
 +    qemu_fdt_setprop_cells(s->cfg.fdt, node, "clocks",
-+                           s->phandle.clk_125mhz, s->phandle.clk_125mhz);
-+    qemu_fdt_setprop(s->cfg.fdt, node, "clock-names", clocknames,
-+                     sizeof(clocknames));
++                           s->phandle.clk_25mhz, s->phandle.clk_25mhz);
++    qemu_fdt_setprop(s->cfg.fdt, node, "clock-names",
++                     clocknames, sizeof(clocknames));
 +    qemu_fdt_setprop_cells(s->cfg.fdt, node, "interrupts",
 +                           GIC_FDT_IRQ_TYPE_SPI, map->irq,
 +                           GIC_FDT_IRQ_FLAGS_LEVEL_HI);
-+    qemu_fdt_setprop(s->cfg.fdt, node, "u-boot,dm-pre-reloc", NULL, 0);
-+
-+    alias = g_strdup_printf("serial%d", chardev_idx);
-+    qemu_fdt_setprop_string(s->cfg.fdt, "/aliases", alias, node);
-+
-+    if (chardev_idx == 0) {
-+        qemu_fdt_setprop_string(s->cfg.fdt, "/chosen", "stdout-path", node);
-     }
  }
  
-@@ -783,14 +877,6 @@ static void versal_create_crl(Versal *s, qemu_irq *pic)
-                                  &error_abort);
+ static void versal_create_usbs(Versal *s, qemu_irq *pic)
+@@ -1044,7 +1058,10 @@ static void versal_realize(DeviceState *dev, Error **errp)
+         versal_create_uart(s, &map->uart[i], i);
      }
  
--    for (i = 0; i < ARRAY_SIZE(s->lpd.iou.uart); i++) {
--        g_autofree gchar *name = g_strdup_printf("uart[%d]", i);
--
--        object_property_set_link(OBJECT(&s->lpd.crl),
--                                 name, OBJECT(&s->lpd.iou.uart[i]),
--                                 &error_abort);
--    }
--
-     object_property_set_link(OBJECT(&s->lpd.crl),
-                              "usb", OBJECT(&s->lpd.iou.usb),
-                              &error_abort);
-@@ -942,6 +1028,8 @@ static void versal_realize(DeviceState *dev, Error **errp)
- {
-     Versal *s = XLNX_VERSAL_BASE(dev);
-     qemu_irq pic[XLNX_VERSAL_NR_IRQS];
-+    const VersalMap *map = versal_get_map(s);
-+    size_t i;
- 
-     g_assert(s->cfg.fdt != NULL);
- 
-@@ -951,7 +1039,11 @@ static void versal_realize(DeviceState *dev, Error **errp)
-     versal_create_apu_cpus(s);
-     versal_create_apu_gic(s, pic);
-     versal_create_rpu_cpus(s);
--    versal_create_uarts(s, pic);
-+
-+    for (i = 0; i < map->num_uart; i++) {
-+        versal_create_uart(s, &map->uart[i], i);
+-    versal_create_canfds(s, pic);
++    for (i = 0; i < map->num_canfd; i++) {
++        versal_create_canfd(s, &map->canfd[i], s->cfg.canbus[i]);
 +    }
 +
-     versal_create_canfds(s, pic);
      versal_create_usbs(s, pic);
      versal_create_gems(s, pic);
+     versal_create_admas(s, pic);
+@@ -1072,24 +1089,46 @@ static void versal_realize(DeviceState *dev, Error **errp)
+                                         &s->lpd.rpu.mr_ps_alias, 0);
+ }
+ 
++int versal_get_num_can(VersalVersion version)
++{
++    const VersalMap *map = VERSION_TO_MAP[version];
++
++    return map->num_canfd;
++}
++
+ static void versal_base_init(Object *obj)
+ {
+     Versal *s = XLNX_VERSAL_BASE(obj);
++    size_t i, num_can;
+ 
+     memory_region_init(&s->fpd.apu.mr, obj, "mr-apu", UINT64_MAX);
+     memory_region_init(&s->lpd.rpu.mr, obj, "mr-rpu", UINT64_MAX);
+     memory_region_init(&s->mr_ps, obj, "mr-ps-switch", UINT64_MAX);
+     memory_region_init_alias(&s->lpd.rpu.mr_ps_alias, OBJECT(s),
+                              "mr-rpu-ps-alias", &s->mr_ps, 0, UINT64_MAX);
++
++    num_can = versal_get_map(s)->num_canfd;
++    s->cfg.canbus = g_new0(CanBusState *, num_can);
++
++    for (i = 0; i < num_can; i++) {
++        g_autofree char *prop_name = g_strdup_printf("canbus%zu", i);
++
++        object_property_add_link(obj, prop_name, TYPE_CAN_BUS,
++                                 (Object **) &s->cfg.canbus[i],
++                                 object_property_allow_set_link, 0);
++    }
++}
++
++static void versal_base_finalize(Object *obj)
++{
++    Versal *s = XLNX_VERSAL_BASE(obj);
++
++    g_free(s->cfg.canbus);
+ }
+ 
+ static const Property versal_properties[] = {
+     DEFINE_PROP_LINK("ddr", Versal, cfg.mr_ddr, TYPE_MEMORY_REGION,
+                      MemoryRegion *),
+-    DEFINE_PROP_LINK("canbus0", Versal, lpd.iou.canbus[0],
+-                      TYPE_CAN_BUS, CanBusState *),
+-    DEFINE_PROP_LINK("canbus1", Versal, lpd.iou.canbus[1],
+-                      TYPE_CAN_BUS, CanBusState *),
+ };
+ 
+ static void versal_base_class_init(ObjectClass *klass, const void *data)
+@@ -1113,6 +1152,7 @@ static const TypeInfo versal_base_info = {
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(Versal),
+     .instance_init = versal_base_init,
++    .instance_finalize = versal_base_finalize,
+     .class_init = versal_base_class_init,
+     .class_size = sizeof(VersalClass),
+     .abstract = true,
 -- 
 2.43.0
 
