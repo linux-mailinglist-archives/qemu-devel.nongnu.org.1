@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76611BC2EA5
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 01:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB30BC315B
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 02:48:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6Gdy-0002ze-Dl; Tue, 07 Oct 2025 18:58:54 -0400
+	id 1v6IK6-0001d0-0o; Tue, 07 Oct 2025 20:46:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6Gdv-0002zK-Dr
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 18:58:51 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from
+ <3PXPlaAMKCggvz6owwotm.kwuymu2-lm3mtvwvov2.wzo@flex--nry.bounces.google.com>)
+ id 1v6Dz8-0003ht-Se
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 16:08:35 -0400
+Received: from mail-pl1-x64a.google.com ([2607:f8b0:4864:20::64a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6Gdq-0000eA-Lx
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 18:58:51 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-26a0a694ea8so55064595ad.3
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 15:58:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <3PXPlaAMKCggvz6owwotm.kwuymu2-lm3mtvwvov2.wzo@flex--nry.bounces.google.com>)
+ id 1v6Dz6-0005x1-Nj
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 16:08:34 -0400
+Received: by mail-pl1-x64a.google.com with SMTP id
+ d9443c01a7336-2699ed6d43dso66279475ad.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 13:08:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759877921; x=1760482721; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=SrmeYGn0k2HFDZF25sFpfNEoTlMsX7/qy2OU40vRj3M=;
- b=NGvUw4m7CnHTCHHOgntk1Myd0CQDbWVydQdGd6H3Mcszl8G8gbNyYGy73nlFC4jdcs
- pakZO7cGRGotbOvzUlrIwtkt2oJvwKtbfc0V61Hy+NXg0u9dJiISX8bvSAHHUgienyVN
- 0vvznQnYjdKBNuqv+Sl6y6hK7dsqo/bc7wbiCS8G2uMZYdQ/HRXmWFYfBvQoecoRQGCX
- lSLRl8Fnha5yxcxSLilDgGxTzYX7Upi2DRE3vP4ynbZPIGls1WUOZQUuUvJi802RtaGL
- BB+7bxtv9ymHKcKi//1SAZqibD9MZxlPGZ+aGh2euR0yoCzU+m14TJkwb3olcNQkxo0b
- ZgmA==
+ d=google.com; s=20230601; t=1759867710; x=1760472510; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=DbgmcHP15QKvcQQOt72wI53/ywscnVQHdytOVGUxB/s=;
+ b=RhOtTPuRO4pF3JsBetsQNFcI6grk8LRH8//TsAOHfumSYS9kHN0HfnUwALYrcuVLXI
+ Ndu/8+3AjRXThGJnnBbfwo30U+EsLSU+5YvqAl36ABidM6Cq1tVZh1jyQ8j0yGcG46ZV
+ L89RzfR4o1Mv/zlHoWjXY9lKFfvq5xeiQiWukxFGYYItRz1OXO7zoFYu0XjWrGMVVsah
+ ye+Px2bx6uQDs9/jBqVv/XtInvySxgLncRzj7jdu0/l5aHHI/TEhhNdWodWlr2pJk6nd
+ ISHHS9lOqgQzCARUqsrDYNkza+HWejiF9HXKidFa/mue4N4SPxgwrIYk3J8wbyED3AsE
+ DWow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759877921; x=1760482721;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SrmeYGn0k2HFDZF25sFpfNEoTlMsX7/qy2OU40vRj3M=;
- b=FQSoC4TwmY9yIUxjGeoiqFD4r2EC8ARw2KK/7bDM5xOe1CrAhmTFwRtbcNq11ZBa+v
- Vmj6+C0ZtJkGglwepB7nIzjVf9ElKi8K8N2a67jsH8TTnbFXVI1NjaOnizcdePZdKIVm
- GMWPy0BY1u0wcTkqNVzxvmyFwesO4H8AD94NRkZyAaH2hHchQxFaagUta/MDSdy1YZvd
- 9n5QkcNod6HpN/i8h4yq9N8+PnWH7a/43kebRIC5/FB3TnLEb0L4aHHYu+QFkV28SZaN
- CpDctqtANjouJGfHhwhXV74XNAYyDxiYXI8/N5+VPqzfDUDWSLgBFqCCBSjTWLxEpgET
- AeLg==
-X-Gm-Message-State: AOJu0Ywb68Yh9iQYkfg9tOl0HGb678i1G0GplQP10d7iFlyaJdX0F/L8
- vZgHzboCMz0gYCEHnlaYU2++n5zmUP5mIzpHYUwh2qO1WIjB1mLdFBG5jK6B1pbaayI+Vc+X48G
- 1zg4J
-X-Gm-Gg: ASbGncsu57+ZFci6/ApZP14t/vArs1co+5N59ZEUxPnWkcEnEicWSNctsCwvIWJrOrC
- 9VKYudDe6zHfOwt3l+yPUbjCQzVBPo+/VNXonfYpfbVz+S1SzjEKSW5irEwOLF5y03/1FxxkVye
- 7ciLyczWDp5Wd8OLrVuARsntT0qWwJx04hIihwQNybPyllZVl1z2yXlrHYLlxHz0ifqEQE+5WQF
- LsKTtyffif0wBqo7mvsooy0ZarpFTCUXCo0XP31XeBC3F76Fxw8Yjp3oTtBFuzHEjF4vAFEJVSk
- JFnudU80jlXHs8dcf5tuZqYrp70koNtXMbUuRQ8pIW89likBij6UIeqaOqGa8+AFBfIwgd+kvzu
- 8nAnADgtP+0+nVD5Rr9CWuRFsqCso7MguEkWPklctzihmbTwkzGPE+6pRvFLmZ7aKssw36g==
-X-Google-Smtp-Source: AGHT+IHZt0jmBcgw0vKUx+jxQ7+H9U6GCOihlObLISc1z+VGVSvJOSYahLbyvRxAKZNPeVpAt+nxag==
-X-Received: by 2002:a17:903:1aa3:b0:269:9adf:839 with SMTP id
- d9443c01a7336-290272b3357mr15128135ad.19.1759877921323; 
- Tue, 07 Oct 2025 15:58:41 -0700 (PDT)
-Received: from [192.168.1.10] ([172.56.105.179])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b6099adbcbesm15557748a12.4.2025.10.07.15.58.40
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Oct 2025 15:58:40 -0700 (PDT)
-Message-ID: <da71e188-2742-4ec2-87e3-8ec905f45b21@linaro.org>
-Date: Tue, 7 Oct 2025 15:58:38 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/62] target-arm queue
+ d=1e100.net; s=20230601; t=1759867710; x=1760472510;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DbgmcHP15QKvcQQOt72wI53/ywscnVQHdytOVGUxB/s=;
+ b=ETcQE5p9bbOVUHn4Ukn3miTwaAZ9lQXAJAak6G1wPbc7T2ZJ9gKs9md1X9Xrgr/euU
+ 2UIG1WzmIMprhpWIMqbuJ7gcFKdB0dNOrxygI4cqV5BM7+4rziqxK7jR25bPqaBZe2ck
+ tSRxdV+C/Zly4W91krkCy6otb7mmArasqHmEOY12rz4JEQULO+ikA43NL+1BFpEUqASg
+ gnB7aVG0tEnf5z7PezV7KOSRY3o7lATqSdIurhpkwpeVBhDu4Ui0pDBAUXbcyzCg4UZV
+ Jt9YOUwukBtkM3N3ImohoBw8LzFjxvM2JdFj5fb0NxQWlQto0fq8qGx8d5TFED/kPE/2
+ hcGg==
+X-Gm-Message-State: AOJu0YxmRXlxe7FePabIXsfcCiREu3eDl7t4AVgf/iAC0buYg4IWFGvW
+ 7SP7NWyWB8Xkadv91oEniVKQuO0JpjctTMQwPOP8lSAAaCQ0Lfs2zVSzcRDSrOhocV9vQMCzaUb
+ on0cse4G4QUpCgQ3DCBr5eIPP8/58fFe2IwdZ64nwa/g6ncKvcqoh/LevY5zz2w/nx5pVp7UeBx
+ 454vq38z6jyKqXWKTALjY=
+X-Google-Smtp-Source: AGHT+IGnN+zO4NthvHf4D/OqYn/cKrk6g2XLKQkRrZmyDYyoLuL1a5pbyhZzk/qWoQ7htdDZgRW6128=
+X-Received: from plblv11.prod.google.com ([2002:a17:903:2a8b:b0:234:c104:43f1])
+ (user=nry job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:380d:b0:26d:e984:8157
+ with SMTP id d9443c01a7336-29027356ab2mr11301575ad.8.1759867709666; Tue, 07
+ Oct 2025 13:08:29 -0700 (PDT)
+Date: Tue, 07 Oct 2025 20:08:22 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADVz5WgC/x3MSQqAMAxA0atI1gbqUKeriIvaJpqNllZFEO9uc
+ fkW/z8QKQhFGLIHAl0SZd8SijwDu5ptIRSXDKUqdaFUi8Y59Nb0uq4wnt7v4cCe26ZjnmvHFaT
+ SB2K5/+s4ve8HKpDFB2UAAAA=
+X-Change-Id: 20251007-add-pca9543-support-9f768ffb4df3
+X-Mailer: b4 0.14.2
+Message-ID: <20251007-add-pca9543-support-v1-1-905de56ab741@google.com>
+Subject: [PATCH] Signed-off-by: Henry Tsai <nry@google.com>
+From: Henry Tsai <nry@google.com>
 To: qemu-devel@nongnu.org
-References: <20251007141123.3239867-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Cc: Patrick Leis <venture@google.com>, Henry Tsai <nry@google.com>
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::64a;
+ envelope-from=3PXPlaAMKCggvz6owwotm.kwuymu2-lm3mtvwvov2.wzo@flex--nry.bounces.google.com;
+ helo=mail-pl1-x64a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 07 Oct 2025 20:46:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,34 +94,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/7/25 07:10, Peter Maydell wrote:
-> Hi; here's the target-arm queue. This is a little bigger than
-> I prefer, but the bulk of it is Luc's versal2 series.
-> 
-> thanks
-> -- PMM
-> 
-> The following changes since commit eb7abb4a719f93ddd56571bf91681044b4159399:
-> 
->    hw/intc/loongarch_dintc: Set class_size for LoongArchDINTCClass (2025-10-06 13:54:50 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20251007
-> 
-> for you to fetch changes up to 932cac41ca633f24f192a69770bf91b55c4d27bb:
-> 
->    target/arm: Enable FEAT_RME_GPC2 for -cpu max with x-rme (2025-10-07 11:26:10 +0100)
-> 
-> ----------------------------------------------------------------
-> target-arm queue:
->   * target/arm: Don't set HCR.RW for AArch32 only CPUs
->   * new board model: amd-versal2-virt
->   * xlnx-zynqmp: model the GIC for the Cortex-R5 RPU cluster
->   * hw/arm: Remove sl_bootparam_write() and 'hw/arm/sharpsl.h' header
->   * Emulate FEAT_RME_GPC2
+This commit adds support for the pca9543.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
+---
+This adds pca9543 support to mux.
 
-r~
+Signed-off-by: Henry Tsai <nry@google.com>
+---
+ hw/i2c/i2c_mux_pca954x.c         | 12 ++++++++++++
+ include/hw/i2c/i2c_mux_pca954x.h |  1 +
+ 2 files changed, 13 insertions(+)
+
+diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
+index a8ef640cd2575ac627cdc23b1860a8a3fce8a932..05360b2ac4c095309df261094b368a5b7a2a4c26 100644
+--- a/hw/i2c/i2c_mux_pca954x.c
++++ b/hw/i2c/i2c_mux_pca954x.c
+@@ -30,6 +30,7 @@
+ 
+ #define PCA9548_CHANNEL_COUNT 8
+ #define PCA9546_CHANNEL_COUNT 4
++#define PCA9543_CHANNEL_COUNT 2
+ 
+ /*
+  * struct Pca954xState - The pca954x state object.
+@@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t channel)
+     return pca954x->bus[channel];
+ }
+ 
++static void pca9543_class_init(ObjectClass *klass, void *data)
++{
++    Pca954xClass *s = PCA954X_CLASS(klass);
++    s->nchans = PCA9543_CHANNEL_COUNT;
++}
++
+ static void pca9546_class_init(ObjectClass *klass, const void *data)
+ {
+     Pca954xClass *s = PCA954X_CLASS(klass);
+@@ -245,6 +252,11 @@ static const TypeInfo pca954x_info[] = {
+         .class_init    = pca954x_class_init,
+         .abstract      = true,
+     },
++    {
++        .name          = TYPE_PCA9543,
++        .parent        = TYPE_PCA954X,
++        .class_init    = pca9543_class_init,
++    },
+     {
+         .name          = TYPE_PCA9546,
+         .parent        = TYPE_PCA954X,
+diff --git a/include/hw/i2c/i2c_mux_pca954x.h b/include/hw/i2c/i2c_mux_pca954x.h
+index 3dd25ec98309d3203200933b7b48f8d9b0b6249b..1da5508ed51a878640e50c4941a07315edcbc187 100644
+--- a/include/hw/i2c/i2c_mux_pca954x.h
++++ b/include/hw/i2c/i2c_mux_pca954x.h
+@@ -3,6 +3,7 @@
+ 
+ #include "hw/i2c/i2c.h"
+ 
++#define TYPE_PCA9543 "pca9543"
+ #define TYPE_PCA9546 "pca9546"
+ #define TYPE_PCA9548 "pca9548"
+ 
+
+---
+base-commit: eb7abb4a719f93ddd56571bf91681044b4159399
+change-id: 20251007-add-pca9543-support-9f768ffb4df3
+
+Best regards,
+-- 
+Henry Tsai <nry@google.com>
+
 
