@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F900BC0DF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 11:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D247EBC0E6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 11:46:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v64AB-0002HF-FI; Tue, 07 Oct 2025 05:39:19 -0400
+	id 1v64Ge-0004Z2-QK; Tue, 07 Oct 2025 05:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v64A9-0002Gv-8h
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:39:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1v64Gc-0004Yh-GZ
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:45:58 -0400
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v64A7-0001vE-1S
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:39:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759829952;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=gZi2Lee67V4qSUzY1HqLVYRPZJMF1+OpXlxag+nvq5g=;
- b=dqWIeQwXosSYJ01oTTSZaPCRiaYNGNqEyAoL0v+bMRVO4plI42AUuhqYWRwUYICTZ6ffz0
- CgLgH64i8dH/z1eBUIpUiOBwd6+6gqnzvDxQNjnbmyVp08KubUfKmQZ+zMbYgBMwhFmBvy
- USoUQfoEJvnQETwlcl0ubgselbTdLYM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-hPp3eVInMRS5JmULnRVvJA-1; Tue,
- 07 Oct 2025 05:39:09 -0400
-X-MC-Unique: hPp3eVInMRS5JmULnRVvJA-1
-X-Mimecast-MFC-AGG-ID: hPp3eVInMRS5JmULnRVvJA_1759829947
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1v64GZ-0002iI-Uc
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:45:58 -0400
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 67A78180057E; Tue,  7 Oct 2025 09:39:07 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.83])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9BBCF1800282; Tue,  7 Oct 2025 09:38:33 +0000 (UTC)
-Date: Tue, 7 Oct 2025 10:38:13 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Zhuoying Cai <zycai@linux.ibm.com>, richard.henderson@linaro.org,
- david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, walling@linux.ibm.com, jjherne@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com,
- eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
-Subject: Re: [PATCH v6 08/28] crypto/x509-utils: Add helper functions for
- DIAG 320 subcode 2
-Message-ID: <aOTfhXQHQ69eG5yF@redhat.com>
-References: <20250917232131.495848-1-zycai@linux.ibm.com>
- <20250917232131.495848-9-zycai@linux.ibm.com>
- <dd3ebdf4-3d80-475b-8739-65b6b771a0b6@redhat.com>
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id E95AE404A0
+ for <qemu-devel@nongnu.org>; Tue,  7 Oct 2025 09:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1759830351;
+ bh=i66i5lLrtMqQbC3pLDz77jFEetLJPtKNTBgR2enmkHY=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=BXBg9Jh2kLGxSS2N1ipPUliHfpCncR+Jup1h3WlEeDUEUpbWDsE/3rBNI8s2L3w+/
+ ubVmvEtisimurD8nHF8FKo8Xz8gsiKjNEGdQ0LMxmN8NJStTPPvZaOSo09x5LsboPu
+ KD/Z1zTjrUy5c6tsli9VXlQADQ5S/OGwMQ6g12A4QCmE0i/zJuydxl369Kcoqe/IfX
+ oQvfQxp0kPKpbKsBQRNWTEUYvIvoHZb6v3yckNfqZa/AZsI1w/BEbeARsSDHiVygz2
+ uvJO6sje7knQxoDZQ7cEycgRoQ/uLcAgo47R2qIUJNOpJkmMvV17Xf91TtO9aKQmwY
+ iltnmUhNPHHOA==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id C76437F200
+ for <qemu-devel@nongnu.org>; Tue,  7 Oct 2025 09:45:51 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <dd3ebdf4-3d80-475b-8739-65b6b771a0b6@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 07 Oct 2025 09:38:23 -0000
+From: Jonas Jelten <2126951@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
+ status=Confirmed; importance=Medium; assignee=wesley.hershberger@canonical.com;
+X-Launchpad-Bug: distribution=ubuntu; distroseries=jammy; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium;
+ assignee=wesley.hershberger@canonical.com; 
+X-Launchpad-Bug-Tags: server-todo sts
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: whershberger
+X-Launchpad-Bug-Reporter: Wesley Hershberger (whershberger)
+X-Launchpad-Bug-Modifier: Jonas Jelten (jj)
+References: <175977079933.1446079.11908449148472830395.malonedeb@juju-98d295-prod-launchpad-3>
+Message-Id: <175982990429.3355215.12292012113319905763.launchpad@juju-98d295-prod-launchpad-2>
+Subject: [Bug 2126951] Re: `block-stream` segfault with concurrent
+ `query-named-block-nodes`
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="8f35df7956d277b113de8d286a4ca280c7b8ebdf";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: b4b1d62579d5efd24773ddf57e476a54078e15df
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -87,165 +95,188 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: Bug 2126951 <2126951@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 07, 2025 at 11:34:29AM +0200, Thomas Huth wrote:
-> On 18/09/2025 01.21, Zhuoying Cai wrote:
-> > Introduce new helper functions to extract certificate metadata needed for
-> > DIAG 320 subcode 2:
-> > 
-> > qcrypto_x509_check_cert_times() - validates the certificate's validity period against the current time
-> > qcrypto_x509_get_pk_algorithm() - returns the public key algorithm used in the certificate
-> > qcrypto_x509_get_cert_key_id() - extracts the key ID from the certificate
-> > qcrypto_x509_is_ecc_curve_p521() - determines the ECC public key algorithm uses P-521 curve
-> > 
-> > These functions provide support for metadata extraction and validity checking
-> > for X.509 certificates.
-> > 
-> > Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> > ---
-> ...
-> > +int qcrypto_x509_get_pk_algorithm(uint8_t *cert, size_t size, Error **errp)
-> > +{
-> > +    int rc;
-> > +    int ret = -1;
-> > +    unsigned int bits;
-> > +    gnutls_x509_crt_t crt;
-> > +    gnutls_datum_t datum = {.data = cert, .size = size};
-> > +
-> > +    rc = gnutls_x509_crt_init(&crt);
-> > +    if (rc < 0) {
-> > +        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
-> > +        return ret;
-> > +    }
-> > +
-> > +    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
-> > +    if (rc != 0) {
-> > +        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
-> > +        goto cleanup;
-> > +    }
-> > +
-> > +    rc = gnutls_x509_crt_get_pk_algorithm(crt, &bits);
-> > +    if (rc >= G_N_ELEMENTS(gnutls_to_qcrypto_pk_alg_map)) {
-> 
-> gnutls_x509_crt_get_pk_algorithm can also return a negative value according
-> to the documentation, so I think you should also check for "rc < 0" in
-> addition here.
-> 
-> > +        error_setg(errp, "Unknown public key algorithm %d", rc);
-> > +        goto cleanup;
-> > +    }
-> > +
-> > +    ret = gnutls_to_qcrypto_pk_alg_map[rc];
-> > +
-> > +cleanup:
-> > +    gnutls_x509_crt_deinit(crt);
-> > +    return ret;
-> > +}
-> > +
-> > +int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
-> > +                                 QCryptoHashAlgo hash_alg,
-> > +                                 uint8_t **result,
-> > +                                 size_t *resultlen,
-> > +                                 Error **errp)
-> > +{
-> > +    int rc;
-> > +    int ret = -1;
-> > +    gnutls_x509_crt_t crt;
-> > +    gnutls_datum_t datum = {.data = cert, .size = size};
-> > +
-> > +    if (hash_alg >= G_N_ELEMENTS(qcrypto_to_gnutls_hash_alg_map)) {
-> > +        error_setg(errp, "Unknown hash algorithm %d", hash_alg);
-> > +        return ret;
-> > +    }
-> > +
-> > +    if (qcrypto_to_gnutls_keyid_flags_map[hash_alg] == -1 ||
-> > +        hash_alg >= G_N_ELEMENTS(qcrypto_to_gnutls_keyid_flags_map)) {
-> 
-> Since "||" conditions are evaluated from left to right, please check for the
-> boundary first before using hash_alg as index into the array (i.e. swapt the
-> two sides of the "||").
-> 
-> > +        error_setg(errp, "Unsupported key id flag %d", hash_alg);
-> > +        return ret;
-> > +    }
-> > +
-> > +    rc = gnutls_x509_crt_init(&crt);
-> > +    if (rc < 0) {
-> > +        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
-> > +        return ret;
-> > +    }
-> > +
-> > +    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
-> > +    if (rc != 0) {
-> > +        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
-> > +        goto cleanup;
-> > +    }
-> > +
-> > +    *resultlen = gnutls_hash_get_len(qcrypto_to_gnutls_hash_alg_map[hash_alg]);
-> > +    if (*resultlen == 0) {
-> > +        error_setg(errp, "Failed to get hash algorithn length: %s", gnutls_strerror(rc));
-> > +        goto cleanup;
-> > +    }
-> > +
-> > +    *result = g_malloc0(*resultlen);
-> > +    if (gnutls_x509_crt_get_key_id(crt,
-> > +                                   qcrypto_to_gnutls_keyid_flags_map[hash_alg],
-> > +                                   *result, resultlen) != 0) {
-> > +        error_setg(errp, "Failed to get key ID from certificate");
-> > +        g_clear_pointer(result, g_free);
-> > +        goto cleanup;
-> > +    }
-> > +
-> > +    ret = 0;
-> > +
-> > +cleanup:
-> > +    gnutls_x509_crt_deinit(crt);
-> > +    return ret;
-> > +}
-> ...
-> > +int qcrypto_x509_is_ecc_curve_p521(uint8_t *cert, size_t size, Error **errp)
-> > +{
-> > +    int curve_id;
-> > +
-> > +    curve_id = qcrypto_x509_get_ecc_curve(cert, size, errp);
-> > +    if (curve_id == -1) {
-> > +        return -1;
-> > +    }
-> > +
-> > +    if (curve_id == GNUTLS_ECC_CURVE_INVALID) {
-> > +        error_setg(errp, "Invalid ECC curve");
-> > +        return -1;
-> > +    }
-> > +
-> > +    if (curve_id == GNUTLS_ECC_CURVE_SECP521R1) {
-> > +        return 1;
-> > +    }
-> > +
-> > +    return 0;
-> > +}
-> 
-> Bikeshedding, but IMHO, if you name a function "..._is_something", I'd
-> prefer if it returns a bool, and not an "int". Otherwise this might get
-> confusing if you read something like this later in the code:
-> 
->    if (qcrypto_x509_is_ecc_curve_p521(...)) {
->    }
-> 
-> The caller could use errp to distinguish between the error case and a
-> simple "false" as answer to the question.
+** Tags added: server-todo
 
-Overloading one 'false' return value to mean both success & failure
-is an anti-pattern IMHO. We have 3 separate return values we need
-for this function, so using -1/0/1 is the right approach.
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/2126951
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Title:
+  `block-stream` segfault with concurrent `query-named-block-nodes`
+
+Status in QEMU:
+  New
+Status in qemu package in Ubuntu:
+  Confirmed
+Status in qemu source package in Jammy:
+  Confirmed
+Status in qemu source package in Noble:
+  Confirmed
+Status in qemu source package in Plucky:
+  Confirmed
+Status in qemu source package in Questing:
+  Confirmed
+
+Bug description:
+  [ Impact ]
+
+  When running `block-stream` and `query-named-block-nodes`
+  concurrently, a null-pointer dereference causes QEMU to segfault.
+
+  This occurs in every version of QEMU shipped with Ubuntu, 22.04 thru
+  25.10. I have not yet reproduced the bug using an upstream build.
+
+  I will link the upstream bug report here as soon as I've written it.
+
+  [ Reproducer ]
+
+  In `query-named-block-nodes.sh`:
+  ```sh
+  #!/bin/bash
+
+  while true; do
+      virsh qemu-monitor-command "$1" query-named-block-nodes > /dev/null
+  done
+  ```
+
+  In `blockrebase-crash.sh`:
+  ```sh
+  #!/bin/bash
+
+  set -ex
+
+  domain=3D"$1"
+
+  if [ -z "${domain}" ]; then
+      echo "Missing domain name"
+      exit 1
+  fi
+
+  ./query_named_block_nodes.sh "${domain}" &
+  query_pid=3D$!
+
+  while [ -n "$(virsh list --uuid)" ]; do
+      snap=3D"snap0-$(uuidgen)"
+
+      virsh snapshot-create-as "${domain}" \
+          --name "${snap}" \
+          --disk-only file=3D \
+          --diskspec vda,snapshot=3Dno \
+          --diskspec "vdb,stype=3Dfile,file=3D/var/lib/libvirt/images/n0-bl=
+k0_${snap}.qcow2" \
+          --atomic \
+          --no-metadata
+
+      virsh blockpull "${domain}" vdb
+
+      while bjr=3D$(virsh blockjob "$domain" vdb); do
+          if [[ "$bjr" =3D=3D *"No current block job for"* ]] ; then
+              break;
+          fi;
+      done;
+  done
+
+  kill "${query_pid}"
+  ```
+
+  Provision (`Ctrl + ]` after boot):
+  ```sh
+  wget https://cloud-images.ubuntu.com/daily/server/noble/current/noble-ser=
+ver-cloudimg-amd64.img
+
+  sudo cp noble-server-cloudimg-amd64.img /var/lib/libvirt/images/n0-root.q=
+cow2
+  sudo qemu-img create -f qcow2 /var/lib/libvirt/images/n0-blk0.qcow2 10G
+
+  touch network-config
+  touch meta-data
+  touch user-data
+
+  virt-install \
+    -n n0 \
+    --description "Test noble minimal" \
+    --os-variant=3Dubuntu24.04 \
+    --ram=3D1024 --vcpus=3D2 \
+    --import \
+    --disk path=3D/var/lib/libvirt/images/n0-root.qcow2,bus=3Dvirtio,cache=
+=3Dwritethrough,size=3D10 \
+    --disk path=3D/var/lib/libvirt/images/n0-blk0.qcow2,bus=3Dvirtio,cache=
+=3Dwritethrough,size=3D10 \
+    --graphics none \
+    --network network=3Ddefault \
+    --cloud-init user-data=3D"user-data,meta-data=3Dmeta-data,network-confi=
+g=3Dnetwork-config"
+  ```
+
+  And run the script to cause the crash (you may need to manually kill
+  query-named-block-jobs.sh):
+  ```sh
+  ./blockrebase-crash n0
+  ```
+
+  [ Details ]
+
+  Backtrace from the coredump (source at [1]):
+  ```
+  #0  bdrv_refresh_filename (bs=3D0x5efed72f8350) at /usr/src/qemu-1:10.1.0=
++ds-5ubuntu2/b/qemu/block.c:8082
+  #1  0x00005efea73cf9dc in bdrv_block_device_info (blk=3D0x0, bs=3D0x5efed=
+72f8350, flat=3Dtrue, errp=3D0x7ffeb829ebd8)
+      at block/qapi.c:62
+  #2  0x00005efea7391ed3 in bdrv_named_nodes_list (flat=3D<optimized out>, =
+errp=3D0x7ffeb829ebd8)
+      at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:6275
+  #3  0x00005efea7471993 in qmp_query_named_block_nodes (has_flat=3D<optimi=
+zed out>, flat=3D<optimized out>,
+      errp=3D0x7ffeb829ebd8) at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/b=
+lockdev.c:2834
+  #4  qmp_marshal_query_named_block_nodes (args=3D<optimized out>, ret=3D0x=
+7f2b753beec0, errp=3D0x7f2b753beec8)
+      at qapi/qapi-commands-block-core.c:553
+  #5  0x00005efea74f03a5 in do_qmp_dispatch_bh (opaque=3D0x7f2b753beed0) at=
+ qapi/qmp-dispatch.c:128
+  #6  0x00005efea75108e6 in aio_bh_poll (ctx=3D0x5efed6f3f430) at util/asyn=
+c.c:219
+  #7  0x00005efea74ffdb2 in aio_dispatch (ctx=3D0x5efed6f3f430) at util/aio=
+-posix.c:436
+  #8  0x00005efea7512846 in aio_ctx_dispatch (source=3D<optimized out>, cal=
+lback=3D<optimized out>,
+      user_data=3D<optimized out>) at util/async.c:361
+  #9  0x00007f2b77809bfb in ?? () from /lib/x86_64-linux-gnu/libglib-2.0.so=
+.0
+  #10 0x00007f2b77809e70 in g_main_context_dispatch () from /lib/x86_64-lin=
+ux-gnu/libglib-2.0.so.0
+  #11 0x00005efea7517228 in glib_pollfds_poll () at util/main-loop.c:287
+  #12 os_host_main_loop_wait (timeout=3D0) at util/main-loop.c:310
+  #13 main_loop_wait (nonblocking=3D<optimized out>) at util/main-loop.c:589
+  #14 0x00005efea7140482 in qemu_main_loop () at system/runstate.c:905
+  #15 0x00005efea744e4e8 in qemu_default_main (opaque=3Dopaque@entry=3D0x0)=
+ at system/main.c:50
+  #16 0x00005efea6e76319 in main (argc=3D<optimized out>, argv=3D<optimized=
+ out>) at system/main.c:93
+  ```
+
+  The libvirt logs suggest that the crash occurs right at the end of the bl=
+ockjob, since it reaches "concluded" state before crashing. I assume that t=
+his is one of:
+  - `stream_clean` is freeing/modifying the `cor_filter_bs` without holding=
+ a lock that it needs to [2][3]
+  - `bdrv_refresh_filename` needs to handle the possibility that the QLIST =
+of children for a filter bs could be NULL [1]
+
+  [1] https://git.launchpad.net/ubuntu/+source/qemu/tree/block.c?h=3Dubuntu=
+/questing-devel#n8071
+  [2] https://git.launchpad.net/ubuntu/+source/qemu/tree/block/stream.c?h=
+=3Dubuntu/questing-devel#n131
+  [3] https://git.launchpad.net/ubuntu/+source/qemu/tree/block/stream.c?h=
+=3Dubuntu/questing-devel#n340
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/2126951/+subscriptions
 
 
