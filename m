@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C57BC2E9F
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 01:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8588BBC2EA2
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 01:01:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6GdN-0002xQ-B1; Tue, 07 Oct 2025 18:58:17 -0400
+	id 1v6Gdx-0002yq-Vp; Tue, 07 Oct 2025 18:58:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6GdL-0002x2-Ea
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 18:58:15 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1v6Gdn-0002yS-IK
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 18:58:44 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6GdH-0000Z5-5s
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 18:58:14 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-78af743c232so5734200b3a.1
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 15:58:06 -0700 (PDT)
+ id 1v6Gdg-0000do-Bt
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 18:58:43 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-b5507d3ccd8so5572410a12.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 15:58:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759877883; x=1760482683; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759877908; x=1760482708; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=M8R5zpo/GpKkU6pkx65jXcQWBpgTjkCoMw2o0txe2Vc=;
- b=tn7nbVMCFHBAtDlnT6ucV+V2xmY0MLsLHEfeAAg8MgKvPA2PO1gSqedRUeqGhWHcgC
- wwJvEri13WfPk2C9Cq89jRx4vSkholpV+pfDyVY48AYP03vxkQaNvVVWF61NsGw3gAEE
- +MxOtfS5enI0zhhGsBGUzlRiC3OQImHWmvIhqo0q3jIV0ndRQ7VyH7eLM/lH1JQSC0Gc
- LXWMhcHNu7Ox2WAlWYBTed4TRGZECrpZpNkmVZ9Q1bis3d/Ibqcr62rcUF1Nc3MAHZcp
- YagT54d6R5Tr90GvD2TI0jLdLxfQrOEcItZerlqT8w2lveefhcIjDBHqqPRDB+oWKbhe
- 2omA==
+ bh=kEjEmTrg9TRN6I0WIxmlrpHVf2AhqAuPdkgv9TzyxqA=;
+ b=XCDNaCCPngLGeMT2lKopwXyBSllB9pdnTeFJzMHYc97tUjGX6M47rLKUBGYh0APWzM
+ G+z3ze2VqYtmm74NT+Y+32Z3yY4wZwfF48H77Zf8EbxW7QGdoLWXiIVOWb0I0HemI7t+
+ w6X/PqbjS1Afh0eJh/HeSQb0c0p+njIJyh8SHUyQXAU+Jz7nr2214GH7krZTjfWJAGo+
+ rr/ZKppmvDWuZP7xaaNnUC5kskp9JG0khgyVeAL1kgh5sx3EPpEqFzU87JpDMsyb1YCb
+ D13yd4tLo5uJtLlwDlcS1HoyYeXfYMWzhwgmomcXAXoaapPk1IfqXDk2bwtJV8NnMnHq
+ Ipzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759877883; x=1760482683;
+ d=1e100.net; s=20230601; t=1759877908; x=1760482708;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M8R5zpo/GpKkU6pkx65jXcQWBpgTjkCoMw2o0txe2Vc=;
- b=h3TqXOXOKPGE64NP1YvhviGD6SY9hpKv3AdNbZlLQiQQhTX4C2MeFsncl7wIqjMzDt
- Z3X6Lmr5HMvnt8sztkhrVNQjYyXKnnoMd0jWYnC9fjnlXuHMYXlj7vFBvYUhgmhtMnL6
- EpRUwnLyRimbeEetSsSFIpWR5tFn5kRVzcAFg/RaKNHXtlLs5wIA9MWwnHXxh3ijcZ0p
- hndKmAcEcJGB11i+27liGRUX5qPx3A4YngWiU/lUFeHzJMNKGZ8SocwsKoC9hveDzFuV
- q9ewVkT0YnoMjWyVYkKNp/YUOhmT8I1Axkju9pRqVGpo1F3Vx8zpMmFscvJK4oyjCP1n
- xGaA==
-X-Gm-Message-State: AOJu0Yz/0KSLCpMcQfYc5eTHq+9M8GctxSZbg88506ck/Sf6LKAHG6Ks
- K0z9KaLB4wphv4sSft9MUvfYhKP5RmyqD81Ps8PQmXnlQ+QO/TCZFpA3doM926+8waBuqPllJCQ
- c1THR
-X-Gm-Gg: ASbGncteTuef5npTWRMYHoEFStf881p1ojPAgZ8oq5BUVqazo0Hj78LlyfhNlawD1py
- u1755iqDO+9gfwSyeR4L84nidN1f4ZQRZyPwc9GCTjN9cfAHvGQYxJCB1cROtrigADjC7P8mRwp
- Im7T0ygiGEY9jlGnSASHtOiLZE2eQ12v0TNfWcYvTlToaYRXPv/P6BpmvT3oY3KtsmbfVCT1xyF
- YRbF8RoHj4TDmOTqpkrWRMIGLTVX6uVzSWfR9gitxBr/kHLOSRwTUE9UVNgAN2FcTRu+HRzUJRj
- QQHrNu7OgMAZdfmlkypzhoWfvu5jWe7UPzXZl1qX9LDYe6WH6DknJOiOyO+Asx+e+DBjiTnSkle
- 2NxH7KnB6B8jMpXuI/4P9vTFeZXAYKoW3YDa2+JgMzcrARhgtRnpZFqjL06GZVVKhYqwre+qPuC
- wMeA5X
-X-Google-Smtp-Source: AGHT+IFhyyoaL9NbBx4p9GeD+2VPvMldxLwtH06Il0ZAd/WG2kr8AWl0swl2MTtq/uoE5ltR5s6/dg==
-X-Received: by 2002:a05:6a00:2d8f:b0:781:16de:cc0c with SMTP id
- d2e1a72fcca58-793870524bamr1343381b3a.19.1759877883100; 
- Tue, 07 Oct 2025 15:58:03 -0700 (PDT)
+ bh=kEjEmTrg9TRN6I0WIxmlrpHVf2AhqAuPdkgv9TzyxqA=;
+ b=wKsd3YL1YH0qb1FwKQoRrEm0cu7vWl0Re5BpdkH6HvL/G7hzh70tTPlYVZJiv5bMae
+ QQztiPJhA+6V/2Tunz9uLhPr24VkH9nky+10L7nFqMyf8o2uBe/f5nR5BKJru/p/VqC3
+ Bdb61bK5Fz0iA9k0kla2KQC320YxfgVjhh6EcIenIThL0Z6YLSLC6G7WsrYYm1u4cU4O
+ 5kl97YjK0P1Pxhn6GdrBb2XaRdw6lZQesfnJZg8XsJ+FDc5PoEnQAFcKfXQb7TLHuY23
+ dDtLK6gNFUj8v1D/Qh3YBK7l78gLB7mqf7g/50MX5nlJS0friWz1kffTuaJoVT05SVUS
+ iQCA==
+X-Gm-Message-State: AOJu0Yy+ch3ZFwvrZoqs4l9VONTRv3PDJFTXsQP33rm5IuEfYjLm/aAf
+ sWb6lgB+3IO8WJoaPqfenkCJLOWnvwBs3DcMKDW1Q9ABmZxt9tm/HruVJ/rseqokhS1qDj4eOOh
+ CuFP1
+X-Gm-Gg: ASbGncsMmijMXAhtmqFqRO7n6f7uWc7zR/+PWdaVKLWBySzVfPKYjk7Ti4hPgfpsczg
+ ZijXYirww7s1wxPT9yZ+z/8Pev6aQldXaFCE0CeKCaPFqpfiAlkCxGj2YerkBtftatg4N0+Byo1
+ fegyQt4FY0R/G7RDlPAB+jgRMH3K/7SnrophpVkNMjJuMbhLtUoPDvX/aymzcLJX/SBiTG/Urxi
+ 3+6frayXAwNYAs2DF1WvsHlTc8sjrUc1BnjGLVUGhgnFTgISRVNgBO8ANLiAbDLiH3WmyUrfF6c
+ yqo62R4D2Mh+1Ozfx1rfW8rfVUeyaH6686RDrLtpkMnnAqTRzdBoXxtWx6zRYmIBJneah7Mf2xC
+ 6DNow9bSfwO1J78o2nJ5lowdYIZc9/UMmY1zuw1sIWnLMIAZQ3G6781OE6xkyEswRMfSrdA==
+X-Google-Smtp-Source: AGHT+IEnY8dqpM/UVhDLpMsmRkb/3v2b8fbEo5aCYvnrYg7jq29PYB+9dHSuIdpA2aKT2zflbuVOqQ==
+X-Received: by 2002:a05:6a20:7287:b0:32d:a476:7075 with SMTP id
+ adf61e73a8af0-32da8139470mr1471442637.23.1759877907716; 
+ Tue, 07 Oct 2025 15:58:27 -0700 (PDT)
 Received: from [192.168.1.10] ([172.56.105.179])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-78b81760e58sm15043053b3a.24.2025.10.07.15.58.01
+ 41be03b00d2f7-b6099ad9573sm15841748a12.9.2025.10.07.15.58.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Oct 2025 15:58:02 -0700 (PDT)
-Message-ID: <aa3e777b-507f-4942-b830-082746242c26@linaro.org>
-Date: Tue, 7 Oct 2025 15:58:00 -0700
+ Tue, 07 Oct 2025 15:58:27 -0700 (PDT)
+Message-ID: <38fccd90-57c9-4566-88bb-8f5e0232b34f@linaro.org>
+Date: Tue, 7 Oct 2025 15:58:25 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/41] Memory patches for 2025-10-07
+Subject: Re: [PULL 00/17] testing updates
 To: qemu-devel@nongnu.org
-References: <20251007014958.19086-1-philmd@linaro.org>
+References: <20251007115525.1998643-1-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251007014958.19086-1-philmd@linaro.org>
+In-Reply-To: <20251007115525.1998643-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -101,28 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/25 18:49, Philippe Mathieu-Daudé wrote:
+On 10/7/25 04:55, Alex Bennée wrote:
 > The following changes since commit eb7abb4a719f93ddd56571bf91681044b4159399:
 > 
 >    hw/intc/loongarch_dintc: Set class_size for LoongArchDINTCClass (2025-10-06 13:54:50 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/philmd/qemu.git tags/physmem-20251007
+>    https://gitlab.com/stsquad/qemu.git tags/pull-10.2-maintainer-071025-1
 > 
-> for you to fetch changes up to 9ccfde942d8b4e66eb012cf975dac16913875a2c:
+> for you to fetch changes up to 41f8f2be27736192bab29aa38380c9ebaae810fa:
 > 
->    system/physmem: Extract API out of 'system/ram_addr.h' header (2025-10-07 03:37:40 +0200)
+>    record/replay: fix race condition on test_aarch64_reverse_debug (2025-10-07 09:15:45 +0100)
 > 
 > ----------------------------------------------------------------
-> Memory patches
+> testing updates
 > 
-> - Cleanups on RAMBlock API
-> - Cleanups on Physical Memory API
-> - Remove cpu_physical_memory_is_io()
-> - Remove cpu_physical_memory_rw()
-> - Legacy conversion [cpu_physical_memory -> address_space]_[un]map()
-
+>   - tweak .gitpublish base to origin/master
+>   - restore .gitmodules to qemu-project hosts
+>   - drop 64 bits guests from i686
+>   - update aarch64/s390x custom runners to 24.04
+>   - tweak gitlab-runner registration method
+>   - make check-venv dependency for functional tests
+>   - replace avocado's gdb support with pygdbmi
+>   - remove avocado dependencies from reverse_debug tests
+>   - ensure replay.bin doesn't loose events after SHUTDOWN_HOST_QMP
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
 
