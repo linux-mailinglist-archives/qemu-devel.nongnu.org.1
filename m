@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDB7BC315E
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 02:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42948BC3161
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 02:48:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6IK0-0001bd-B5; Tue, 07 Oct 2025 20:46:25 -0400
+	id 1v6IK1-0001bo-4Q; Tue, 07 Oct 2025 20:46:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <agraf@csgraf.de>)
- id 1v6EzD-0004XA-Mj; Tue, 07 Oct 2025 17:12:43 -0400
+ id 1v6F0J-0004yr-2y; Tue, 07 Oct 2025 17:13:51 -0400
 Received: from mail.csgraf.de ([85.25.223.15] helo=zulu616.server4you.de)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <agraf@csgraf.de>)
- id 1v6EzA-0005sc-7d; Tue, 07 Oct 2025 17:12:43 -0400
+ id 1v6F0H-0005zv-Fz; Tue, 07 Oct 2025 17:13:50 -0400
 Received: from [0.0.0.0] (ec2-3-122-114-9.eu-central-1.compute.amazonaws.com
- [3.122.114.9]) by csgraf.de (Postfix) with ESMTPSA id 8DC596080403;
- Tue,  7 Oct 2025 23:12:23 +0200 (CEST)
-Message-ID: <184ed096-60d1-41d7-a0af-c1af75cfd014@csgraf.de>
-Date: Tue, 7 Oct 2025 23:12:22 +0200
+ [3.122.114.9]) by csgraf.de (Postfix) with ESMTPSA id 4AC526080403;
+ Tue,  7 Oct 2025 23:13:47 +0200 (CEST)
+Message-ID: <2b6c0bf1-3451-4f95-8316-90041da30a43@csgraf.de>
+Date: Tue, 7 Oct 2025 23:13:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 2/4] hvf: arm64: add workaround for Apple M4 to run older
- macOS versions
+Subject: Re: [RFC v2 4/4] Revert "hw/arm: Do not build VMapple machine by
+ default"
 To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
 Cc: Mads Ynddal <mads@ynddal.dk>, qemu-arm@nongnu.org,
  Cameron Esfahani <dirty@apple.com>, Peter Maydell
  <peter.maydell@linaro.org>, Roman Bolshakov <rbolshakov@ddn.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>
 References: <20251007203153.30136-1-mohamed@unpredictable.fr>
- <20251007203153.30136-3-mohamed@unpredictable.fr>
+ <20251007203153.30136-5-mohamed@unpredictable.fr>
 Content-Language: en-US
 From: Alexander Graf <agraf@csgraf.de>
-In-Reply-To: <20251007203153.30136-3-mohamed@unpredictable.fr>
+In-Reply-To: <20251007203153.30136-5-mohamed@unpredictable.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=85.25.223.15; envelope-from=agraf@csgraf.de;
@@ -63,17 +63,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 07.10.25 22:31, Mohamed Mediouni wrote:
-> Apple M4 removes FEAT_SSBS. However, older macOS releases
-> do misbehave in such a configuration and do not boot.
->
-> Use private API to trap SCTLR_EL1 accesses through FGT.
->
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> This reverts commit 49551752e860f5e403cdacac11ee1d218141fd3d.
 
 
-These old macOS versions did not include M4 support, correct? So 
-wouldn't it make more sense to make more recent macOS work instead?
+The commit was there for a reason. What is the rationale to revert? Is 
+it safe to do so now?
 
 Alex
 
+
+>
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> ---
+>   configs/devices/aarch64-softmmu/default.mak | 1 -
+>   1 file changed, 1 deletion(-)
+>
+> diff --git a/configs/devices/aarch64-softmmu/default.mak b/configs/devices/aarch64-softmmu/default.mak
+> index ad8028cfd4..93f4022ad6 100644
+> --- a/configs/devices/aarch64-softmmu/default.mak
+> +++ b/configs/devices/aarch64-softmmu/default.mak
+> @@ -9,4 +9,3 @@ include ../arm-softmmu/default.mak
+>   # CONFIG_XLNX_VERSAL=n
+>   # CONFIG_SBSA_REF=n
+>   # CONFIG_NPCM8XX=n
+> -CONFIG_VMAPPLE=n
 
