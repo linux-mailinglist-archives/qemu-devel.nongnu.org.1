@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABC2BC1B8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC338BC1BC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:28:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Qv-00061i-8k; Tue, 07 Oct 2025 10:12:53 -0400
+	id 1v68R4-00068m-Vr; Tue, 07 Oct 2025 10:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Qc-0005q8-DK
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:34 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1v68Ql-0005vE-O9
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:43 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68QM-0002Jx-0O
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:34 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46e384dfde0so70063455e9.2
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:17 -0700 (PDT)
+ id 1v68QM-0002Ka-2a
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:43 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-46f53f88e0bso18541725e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846333; x=1760451133; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846334; x=1760451134; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=64bm6zQUNNcbqTI3Im3LQpuyvcJOm+Jr9r6z2jplxD0=;
- b=z2R8s6E+d6n1/GLW8GgbDYfr0jsIFTOVSEFDXBx2PpK1TqW37v1kzRxqoM8QRNVXWu
- 5mGnQSuGpUy74uSOhhcyAVKh8YCNWRkYyAY12Q/MPFf0c8OeAz9jV1XI/34Cxz7MvAnu
- VAFeg6EY7pPcsZs4DT6+fns3lirJvOKEOhQVWfO1o6JUZm6lN12tMLQyJJS9bu33KHxw
- GheIUWIhOfp4lpMhu6neQHB+zRQp/Vus8ioqXTruLc+8NplX2UusV1LbKkJamXWyI8ET
- 4f6tB8LEl/dDO2WYiiTQ0crFoH5nmmOht8diiT36sZno0fjW9yOWgDPiZ90TnfuBDTwD
- JdIg==
+ :reply-to; bh=VGPgMMlCVRnRjuzbPKqc0kAA2T5wiZUCBp+W8rMaiIk=;
+ b=fNmft2nUUrfr4ZA2Z4sr0/86ga2CXg3ISGj7bvn0yEWRTPUZZJ7kGNffLuUsiOQMuh
+ mmBC/mE3Zpn8i2HOqWUBh9ELn7rKugZMN6Jg0mce6ZBEQ/SKu7GwKfzPR858h0hPeUy3
+ U4pNsfk5YgDWqFcT5nogsNUpPP9nx/pf8bdNXX+//eOJoUN61V6GfW5EBxwCRsF9ZMOh
+ yGPPddVwFtJj9B6i95O7sC1udk2BvpXS+GIWly9Gc2fvmLRakyCRVhQdIPzAOM4UHw5u
+ Qz7XrW94M3s4ni+NFrvj29pKYUybPAq4NkFeYkJobe4iLqaYv1zCJUSy2x7WUdMHh3TN
+ Wbkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846333; x=1760451133;
+ d=1e100.net; s=20230601; t=1759846334; x=1760451134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=64bm6zQUNNcbqTI3Im3LQpuyvcJOm+Jr9r6z2jplxD0=;
- b=TaiSb9iTirFYWvbXazWXAkQdiedHkX5bT495L8oYNLjgssXuzIJwBDG2yowEfMfV1G
- NnzTXqsAb7I7L6sYiiQwdI+XPyCGAeO/Dk03wg+7qh1K/FIORhTU7QQjk4OuQWNq4XzN
- +4wBnQb7xQhLH2DcvcED17tW8q1M2HZODn+z2jg+JcPmMCudLbQtiPJzZaXppe2KKbKP
- OSsO0xhT2vrYjSnyuENUbjE7L4vnccbZ1rz3MsjVMl7I3uaSU/gPD+2xTDkFoGDr52bI
- A1ZHF8zpN13XwBZqx8iYYW1mgncvESN0uHU+9AvJD2Fa8vZs/jqH3N+whQ+KiXWYFrCs
- Vrng==
-X-Gm-Message-State: AOJu0YzEM70dSLWe0VwG2FJc8GZoQFQ/Em27jWTwOxpkPUDdLUh8m+ZE
- x/+7Cmw1G5rYOjnq85BDN7a754yJk9f3dFzxxVdyLUPrPAnnn5UX6rMiiQ60qo2+DJYi/aTcXOI
- uoN3s
-X-Gm-Gg: ASbGncu1bYa6q2HgEVJfEsluklVj302b1sEwD81nFUNVQ0xCOlDdf/tumYNSoH8fg2u
- VcOqro5rj14KySCDknEFEaeeyIefOYHjCaZqZWxYcZLMhHEczfPz518PGoAPDYMsLopC5/PQpDZ
- 8NuoBpk/8j99alBeLgEry02l+AFJ7A0pG18ywfumWA51BcjZBHqamajE+bUkpTfKuEhE5pesO6r
- Ie3L/p5HQeZR4BK5q1bPbsMV0E/VMj0MtyJBHP+5d/c1rlPPMTDIk3G9D+t3GA/7YcyO50DcwVr
- 9dFZuz2mjTQxvtdp5Bwj87qIgSJU9G0ZUEJ9EGoCOHUqm8qkjy/skXMNBqbMX4L/8jdx8fsvPUw
- JPJgLw4tStMmPrhHakTKLMCzK/dKI/WavmIkWffS7XsbfPTEacFmFW3ZN
-X-Google-Smtp-Source: AGHT+IGUiwf4odeZjl8tOHx00qJcN0rBlU7n8l0igSk21qsl34TLZb2PC8eWCPWfsGto9IT4uUWOvg==
-X-Received: by 2002:a05:600c:64c4:b0:46d:45e:3514 with SMTP id
- 5b1f17b1804b1-46e7114310amr132482525e9.17.1759846332576; 
- Tue, 07 Oct 2025 07:12:12 -0700 (PDT)
+ bh=VGPgMMlCVRnRjuzbPKqc0kAA2T5wiZUCBp+W8rMaiIk=;
+ b=O3CnoOqODbzOa4wJfof7/ICZF2wjaVCm9dPUXAacQaXmq3AVAxggCQrTw4ndEbcXVG
+ UOgvNcc1KeQCGmEk2gX6hD4ZvZhNpDOiFJQAXghKTbheVCNXqKlcO36v8qe0zaugiPyB
+ w4HZIELnQKdCaGykE1VaJG+g/lIMxYVa42ZdRmjgDwbMPtl/XhDDmfZlKMxLUAINTdsJ
+ 2tL9TWa1prnbSq6p3mDX/DzVt69ycijmJdFpuk/zG3MLWzS5dNu+Qn6Ak8jHfjbbuMbM
+ DF3o8oMns07LKGkD4gmqTYf8CeVk1Krvr+PlrY+SJjdBv2hvrulxqSxgsaKIKtnFvv9m
+ I4Bw==
+X-Gm-Message-State: AOJu0Yx5mG5z7foqb00CvIFPaVBlzUPAqx4uXQ2DgRGv8Lh6v6PqhVWK
+ H78YA7bE6+pgnqaVBXjFgfUR1P+q43MPomJVTgjuBtjpLCdmttvor54jnnt/O9mHkrWCPrw2t4z
+ dh0sm
+X-Gm-Gg: ASbGncso4mFx0ScAr3j9fMfN3H8jXMHFgGJhS+y8ia61DttvNkE9WT7BhJSNSVt/PBr
+ S6WI8+HdOFvTmtiseDNDW8QXDh+4UHiT+rQzFNVn3STQ0QWb6p9K1l2uV/o7faBWHrypRoPUgqT
+ Cm2DhR+eBCqoa8Gr9b/SP0atiD7cI9jSM0jkKHVaeRfV0HHMqXh5silNwDw5wnRpgcuOKCuQCbY
+ 5rCoJBUkv+/Tfx4e131XZcI02w85KxYx4Tn5ktkqClREsSs5uPf7+FEo4LYbnbKMEyH+lB6yoc9
+ HPGq/ZC34UaarAB+fWOqGSoosXW5gqW9MAxXyioDDizVCFvbzflQRokugTD5Ww0/h+KitNmZLaj
+ magB+mxtY0/dyDezgtWb/T2KV3gxmeg6oi7l5QM3haYL+WUkEhpGCYMtR
+X-Google-Smtp-Source: AGHT+IHYkUvMIMvpEBgOxn3sCAyJrutPHbD6UDwWlCw/pzgvE7lGYbScWPXNVwN9FKEKDykLv+CfrQ==
+X-Received: by 2002:a05:600c:a319:b0:46e:74cc:42b8 with SMTP id
+ 5b1f17b1804b1-46e74cc4609mr86519385e9.17.1759846334234; 
+ Tue, 07 Oct 2025 07:12:14 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.11
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:12:11 -0700 (PDT)
+ Tue, 07 Oct 2025 07:12:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 44/62] hw/arm/xlnx-versal-virt: tidy up
-Date: Tue,  7 Oct 2025 15:11:04 +0100
-Message-ID: <20251007141123.3239867-45-peter.maydell@linaro.org>
+Subject: [PULL 45/62] docs/system/arm/xlnx-versal-virt: update supported
+ devices
+Date: Tue,  7 Oct 2025 15:11:05 +0100
+Message-ID: <20251007141123.3239867-46-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,91 +100,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-Remove now unused clock nodes. They have been replaced by the ones
-created in the SoC. Remove the unused cfg.secure VersalVirt field.
-Remove unecessary include directives.
+Update the list of supported devices in the Versal SoCs.
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250926070806.292065-44-luc.michel@amd.com
+Message-id: 20250926070806.292065-45-luc.michel@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xlnx-versal-virt.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ docs/system/arm/xlnx-versal-virt.rst | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index f9abb9ed639..14c2d5cc924 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -19,10 +19,8 @@
- #include "hw/boards.h"
- #include "hw/sysbus.h"
- #include "hw/arm/fdt.h"
--#include "hw/qdev-properties.h"
- #include "hw/arm/xlnx-versal.h"
- #include "hw/arm/boot.h"
--#include "target/arm/multiprocessing.h"
- #include "qom/object.h"
- #include "target/arm/cpu.h"
+diff --git a/docs/system/arm/xlnx-versal-virt.rst b/docs/system/arm/xlnx-versal-virt.rst
+index 2c63fbf519f..94c8bacf61a 100644
+--- a/docs/system/arm/xlnx-versal-virt.rst
++++ b/docs/system/arm/xlnx-versal-virt.rst
+@@ -23,11 +23,11 @@ limitations. Currently, we support the following cores and devices:
  
-@@ -41,16 +39,11 @@ struct VersalVirt {
+ Implemented CPU cores:
  
-     void *fdt;
-     int fdt_size;
--    struct {
--        uint32_t clk_125Mhz;
--        uint32_t clk_25Mhz;
--    } phandle;
-     struct arm_boot_info binfo;
+-- 2 ACPUs (ARM Cortex-A72)
++- 2 ACPUs (ARM Cortex-A72) with their GICv3 and ITS
++- 2 RCPUs (ARM Cortex-R5F) with their GICv2
  
-     CanBusState **canbus;
+ Implemented devices:
  
-     struct {
--        bool secure;
-         char *ospi_model;
-     } cfg;
- };
-@@ -72,10 +65,6 @@ static void fdt_create(VersalVirt *s)
-         exit(1);
-     }
+-- Interrupt controller (ARM GICv3)
+ - 2 UARTs (ARM PL011)
+ - An RTC (Versal built-in)
+ - 2 GEMs (Cadence MACB Ethernet MACs)
+@@ -39,6 +39,9 @@ Implemented devices:
+ - BBRAM (36 bytes of Battery-backed RAM)
+ - eFUSE (3072 bytes of one-time field-programmable bit array)
+ - 2 CANFDs
++- USB controller
++- OSPI controller
++- TRNG controller
  
--    /* Allocate all phandles.  */
--    s->phandle.clk_25Mhz = qemu_fdt_alloc_phandle(s->fdt);
--    s->phandle.clk_125Mhz = qemu_fdt_alloc_phandle(s->fdt);
--
-     /* Create /chosen node for load_dtb.  */
-     qemu_fdt_add_subnode(s->fdt, "/chosen");
-     qemu_fdt_add_subnode(s->fdt, "/aliases");
-@@ -86,17 +75,6 @@ static void fdt_create(VersalVirt *s)
-                      sizeof(versal_compat));
- }
+ QEMU does not yet model any other devices, including the PL and the AI Engine.
  
--static void fdt_add_clk_node(VersalVirt *s, const char *name,
--                             unsigned int freq_hz, uint32_t phandle)
--{
--    qemu_fdt_add_subnode(s->fdt, name);
--    qemu_fdt_setprop_cell(s->fdt, name, "phandle", phandle);
--    qemu_fdt_setprop_cell(s->fdt, name, "clock-frequency", freq_hz);
--    qemu_fdt_setprop_cell(s->fdt, name, "#clock-cells", 0x0);
--    qemu_fdt_setprop_string(s->fdt, name, "compatible", "fixed-clock");
--    qemu_fdt_setprop(s->fdt, name, "u-boot,dm-pre-reloc", NULL, 0);
--}
--
- static void fdt_nop_memory_nodes(void *fdt, Error **errp)
- {
-     Error *err = NULL;
-@@ -268,9 +246,6 @@ static void versal_virt_init(MachineState *machine)
-     sysbus_realize(SYS_BUS_DEVICE(&s->soc), &error_fatal);
-     create_virtio_regions(s);
- 
--    fdt_add_clk_node(s, "/old-clk125", 125000000, s->phandle.clk_125Mhz);
--    fdt_add_clk_node(s, "/old-clk25", 25000000, s->phandle.clk_25Mhz);
--
-     /*
-      * Map the SoC address space onto system memory. This will allow virtio and
-      * other modules unaware of multiple address-spaces to work.
 -- 
 2.43.0
 
