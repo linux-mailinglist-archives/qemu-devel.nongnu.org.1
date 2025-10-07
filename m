@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F80CBC1488
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 13:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B33BC1460
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 13:57:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v66Im-0002dQ-5h; Tue, 07 Oct 2025 07:56:20 -0400
+	id 1v66Ik-0002a1-NM; Tue, 07 Oct 2025 07:56:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v66IE-0002WA-HQ
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:55:48 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1v66IN-0002XU-Aa
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:55:55 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v66I6-0001JI-8p
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:55:46 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3f42b54d1b9so1009740f8f.0
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 04:55:35 -0700 (PDT)
+ id 1v66I9-0001JG-25
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:55:55 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-46e326e4e99so37079475e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 04:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759838134; x=1760442934; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759838133; x=1760442933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7hh5wO1RfL5KSdXJKuGPnKWIJ/aE4KakJ9tCubA8v3Y=;
- b=OhTbI8Ke7WF7W1pDYjTXJC4QSZJb85D0txKjZuK9ePdJ/TFoEzNwLVWX1Q+qr0U9KW
- 9mabtHE4o7TatMNyUhL8+pOFqIzJ7Rpc8o2l9J8rL40pMY8KkiRwQr2+P+aghV8/rzsk
- yZVx5CUJAXbVw+3Drp/P7f7Kx//SOuGVkgtjADOXZjfQSR72TZ/R39Gb7+B46Q/eibWS
- f8biATCe+x0mr6mY5YtQUUY2cD/1sH3A4irKbqiyjW+x0+MLXAVhz5raPtV6RRC53d4J
- K+LjKXgS7DPRmq9gzPSebqLIpHUUbit1ngyI4v1I9ru7GljpLLAuuEep7BpFRs1RGjfu
- bTzA==
+ bh=67l9jRuNrudg5KXPcmgxsYYNncfTr9vIbBY0RDskrEE=;
+ b=FBicFG/MbkOvA93rKeT3MPxENlgNldAkjU3X8DTWhLTwoV782xzWacm6BICurDIC4B
+ viKDlYkdsnNDGt20mWPiSCZtyr32LT3JSoazAuwx2Svn0L7vp+vQzx870C2lOf/wMwfp
+ VraipEVbmyFt3NKpYzwOca4XXcAqStgMPrMzFchBQNSa8mpYg5HBhdML7n4MLgEJIL6G
+ VDQG9xq/OHKtLpvYCsXt1e8r7gdE2vj1vwj/bDASRc8oaF31Y24yegLmUNKDSL3RsWrM
+ icX5PYv9gYFnoJ5Bn4ryNCUdCPBsLKUpSP7LeQOiQZ+nGkPxlXL9QHzZoYFPv8TdDl82
+ DS+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759838134; x=1760442934;
+ d=1e100.net; s=20230601; t=1759838133; x=1760442933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7hh5wO1RfL5KSdXJKuGPnKWIJ/aE4KakJ9tCubA8v3Y=;
- b=nZhvPgiFk1StaxR+z5ooxk3HqZ9OL2AsloCJ4bE5NNgHdUFBhe1PQsX3kBVXmitiod
- DLnlutECA8ksd24dPiCHJ/CzZ9g4gLImEoU5IdyeRR0RVmIyIly++rvjbCf1kmr+K0Bi
- 6p2vz4PBCR9B/WTB0p/atj5krANlEnk/umaR8ApfDk66fka/RPQR8xBK+tlP/nmCgTCG
- YzVwLrUpjf92ovsGqc0sWVCmkDhDArGTR/83I7e4MfYmXv7IhomTq20voY3UfROYQPPF
- e/50j+kCeE0bnIxJfKikJxvIiLzHMN3sNvJB2kWrKMW3WVOSBlYPjE6dYzqPrSm7m2HC
- c8TA==
-X-Gm-Message-State: AOJu0YwSVtgPyCC7pEZ1sPmNts/fU7EsojOcYXUTCkG1k8XBXbX00mk4
- a3ekdZLcLsVm4a1CvCj+oskyZAoW4XS6w+hA9Z6pVkEopKlcTjzr44oTQqO4BMGM1U8=
-X-Gm-Gg: ASbGncvG++DZR3EBP4V/VCAa1di0Slc09V7hrbjUEgVhZk2lZnWD9RyI51QfDx7t2rp
- zxm81uCZIQEuI1SZPVcbGMGK5oePT1uiSAmRLD85U1w8nz4ALVzEKUzEauPvW3tMmyjmTKjoi1T
- 3QOBITFFUdQ6LOV9PAwizD9RHMJEoHzOFUuqJHpfuqargAbWvNSw4n/HDeef2/IhUon6y7eddK0
- UbjBuRJUUScPTDWGlMbU2DtfJclfBKYbKJAq57y5PDsY2sYsXUpfWs/HyDmjLOl2KYGBefQmik8
- Pn3kAeln0ok22TJOuzJCoze9Gsd6fdBHVCW2Yp8TOnfSXbStUCARah3erE5wsPUX7GhJXtDRm6z
- ZYKQ7aUXtou9HimvENCEdYTnu90aNl/yT3DHsj+ZzoLF9C3rsdcZI6TqV/GyVkw==
-X-Google-Smtp-Source: AGHT+IHElV+OAvLnVoNxqZ0u9sz1OZL7ZULJNRCFoQWSm3lF8kgAKLIipIKW/JTh89J9PQaBmQA3lg==
-X-Received: by 2002:a5d:5f94:0:b0:3fa:2316:c21 with SMTP id
- ffacd0b85a97d-425671520a9mr9597353f8f.17.1759838133615; 
- Tue, 07 Oct 2025 04:55:33 -0700 (PDT)
+ bh=67l9jRuNrudg5KXPcmgxsYYNncfTr9vIbBY0RDskrEE=;
+ b=h3YMmbw1mhXisQsYE5w8+da+HY8Stno+yUquHSk/ahBZAn0tfReiaL2iBz/Bg/F8Lj
+ wV5JsdQefuQvX9v/rr3COU8oQo07fV/B76XRSEEg17i9XeOpx5HFc+tvo5VSIBLT+qNV
+ d54b2hZJe+O17pzGdjUuMB8xoPVTKsJfNo2cKMUk1bbANrNVKWfE7Qrg6SWnQ7lZy1yv
+ DjGVVH1CD7xWqD6r407pCVRQgNHQlcMaGJg+5IprCyiPH6y6LHYmU1y20JnoSNdUy6+V
+ d28NTQsI4nszZM28anJi0Ewp8HBAI4oNO/4YVm71cRGWXz93qtea1Ky6IUQdb3Yri1SZ
+ y8ag==
+X-Gm-Message-State: AOJu0YwUCP2MuzVB0awlaiPaX/D7L84LMECJdviuf3BT0lHw0yrB7vCv
+ wP3w29ex7dgIdM5N4vFUFLzV2OQezI4qkVfcNJb2ovV63T5TfqY9lwrqqCctcMV4zjc=
+X-Gm-Gg: ASbGncuRpNIfMruw4Lj6kpaJk6vOWDe63zmb56XE30mUbEbvd5uRls+/vgPNQfE5nZP
+ Uyjb7Efl93BXirLgw+WUDBWUTrFMQIdMbTeqlBpHtGBJxDxqibkZVdQGaX/C4kDfr1Qz7Yo6LY0
+ RsjABbLi5br057CzzUsBpLekHcryR8o5+BbwvvmTCOlAyDy3Tk8OnsmkXx6vA1+RDEn3DDkbrOv
+ JaqhOqo3a+RirLt++SosJyMQ0U4yXSoq4j5BQ3GZ2enILlsqe0sDfiHGpwofY6QSvSFzM/WhOs9
+ t+oLOp3UNZ7mizBUdOBf/n3Y9+tyWFmX5cKlcxG39OWTU8/2tT42ORJ1ZeYI8KaUHaQIF97X949
+ zIgqapSmynV4Awaxaai+jWFB+6x6qxDxHzRYQgX6bMWRHuHLyMls=
+X-Google-Smtp-Source: AGHT+IFlSTLpFcRaPLzUpyplfbzLbXpxeTm4Q+xMBMnWtSaiO9LF0LcL6Smo9f3eCn+ci15UcPV4Iw==
+X-Received: by 2002:a05:600c:c0d6:b0:46e:1b9d:ac6c with SMTP id
+ 5b1f17b1804b1-46fa29ffeebmr15317475e9.17.1759838132816; 
+ Tue, 07 Oct 2025 04:55:32 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e72362344sm205743565e9.15.2025.10.07.04.55.28
+ 5b1f17b1804b1-46e723593d8sm228422255e9.11.2025.10.07.04.55.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 07 Oct 2025 04:55:31 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A9F8B5FCE6;
+ by draig.lan (Postfix) with ESMTP id BDDF560031;
  Tue, 07 Oct 2025 12:55:26 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,24 +70,23 @@ Cc: Gustavo Romero <gustavo.romero@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 08/17] tests/functional: Re-activate the check-venv target
-Date: Tue,  7 Oct 2025 12:55:16 +0100
-Message-ID: <20251007115525.1998643-9-alex.bennee@linaro.org>
+Subject: [PULL 09/17] python: Install pygdbmi in meson's venv
+Date: Tue,  7 Oct 2025 12:55:17 +0100
+Message-ID: <20251007115525.1998643-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251007115525.1998643-1-alex.bennee@linaro.org>
 References: <20251007115525.1998643-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,36 +104,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Add check-venv target as a dependency for the functional tests. This
-causes Python modules listed in pythondeps.toml, under the testdeps
-group, to be installed when 'make check-functional{-<ARCH>}' is executed
-to prepare and run the functional tests.
+The upcoming changes in the reverse_debugging functional test to remove
+Avocado as a dependency will require pygdbmi for interacting with GDB,
+so install it in meson's venv (located in the build dir's pyvenv/).
 
-Suggested-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-ID: <20251003141820.85278-2-gustavo.romero@linaro.org>
+Message-ID: <20251003141820.85278-3-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 62a4fc8ed31..e47ef4d45c9 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -105,11 +105,11 @@ check-venv: $(TESTS_VENV_TOKEN)
+diff --git a/pythondeps.toml b/pythondeps.toml
+index 16fb2a989cf..98e99e79005 100644
+--- a/pythondeps.toml
++++ b/pythondeps.toml
+@@ -33,3 +33,4 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
  
- FUNCTIONAL_TARGETS=$(patsubst %-softmmu,check-functional-%, $(filter %-softmmu,$(TARGETS)))
- .PHONY: $(FUNCTIONAL_TARGETS)
--$(FUNCTIONAL_TARGETS):
-+$(FUNCTIONAL_TARGETS): check-venv
- 	@$(MAKE) SPEED=thorough $(subst -functional,-func,$@)
- 
- .PHONY: check-functional
--check-functional:
-+check-functional: check-venv
- 	@$(NINJA) precache-functional
- 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
- 
+ [testdeps]
+ qemu.qmp = { accepted = ">=0.0.3", installed = "0.0.3" }
++pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
 -- 
 2.47.3
 
