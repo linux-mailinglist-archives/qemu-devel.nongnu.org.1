@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F71FBC0E19
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 11:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA207BC0E85
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 11:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v64D2-0003Nu-35; Tue, 07 Oct 2025 05:42:16 -0400
+	id 1v64I3-0005Us-7t; Tue, 07 Oct 2025 05:47:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v64Cv-0003NF-6r
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:42:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v64I2-0005UP-5C
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:47:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v64Cr-0002FA-5C
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:42:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v64I0-0002ug-I6
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 05:47:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759830119;
+ s=mimecast20190719; t=1759830443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=LyUlZAHBQdxHwuRgX9JUkiyiUdNvG5bdVu2wcBpt6a0=;
- b=OcJpHP8llomLqXeLWZGVHRdm6FEGQ6DjJqcbePU/VBEtoBAkOyJvNrzxWH8ntLRn8Vqify
- y/MYecZRmkauQYq0BenuuzHlRi1cjjKrNl/E2VYt+2PgRKwJmGhbjTz4Gilh4FGFyLzq6v
- q+LZkDFX/fO2t3FgiDoDcq5PIH5x5OA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=19gi+9qB+yJilMywPzFl79bNvPomxA5cHIXFvhphP2k=;
+ b=GQxWbFJl9XvwhOW3RDq7sRcNc+oXn3aKdG6ub2fltnb81tvLCbzWqhGnpZRBqSiPxRHlhn
+ C2yOjoBYfY+9sTPQAUHUmHhXZiJl5W51f543F3WWMcPVwLIE6N3UmRk0mWs49AzxOOite4
+ sRyWJYJ5jccaidVMdI8aEzvKwLDn9mc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-opya6JVxOESBRuzr23ZtIg-1; Tue, 07 Oct 2025 05:41:58 -0400
-X-MC-Unique: opya6JVxOESBRuzr23ZtIg-1
-X-Mimecast-MFC-AGG-ID: opya6JVxOESBRuzr23ZtIg_1759830117
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3f384f10762so3078112f8f.3
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 02:41:57 -0700 (PDT)
+ us-mta-86-an3aQDRIM4WcVLgIzIyanA-1; Tue, 07 Oct 2025 05:47:21 -0400
+X-MC-Unique: an3aQDRIM4WcVLgIzIyanA-1
+X-Mimecast-MFC-AGG-ID: an3aQDRIM4WcVLgIzIyanA_1759830440
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3f3787688b0so3196576f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 02:47:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759830117; x=1760434917;
+ d=1e100.net; s=20230601; t=1759830440; x=1760435240;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=LyUlZAHBQdxHwuRgX9JUkiyiUdNvG5bdVu2wcBpt6a0=;
- b=oD+qB1Jn8i3KN3G3xFiW7GEH90hUnyCwiiwG1UOO8gvM0sUpf0uG79YM8Z6gPWYmqE
- eLS/N5xWSahqGf3RqwUirci+vce8NtppOBU5NqA94igrUu1IwFEF2qj/h7vcYnpbXL6z
- SMBQdmQU9vNOR29xtdZXkLB0BkTUwNEcl5mlmeWTe8IwNbY5zd03ivMelzTgeIRXQtVg
- k2y0RVH7QiE30k6oYjIJaL7oCCp34bD8W6vgCmy10avSVChDCLOLkfOyCm0OuzF0OnOs
- t+0UQKH6tVHqKAsrltvePRFPnZ7g/jkafIzrIUUY4Y45HekVFtiANpbchTuLGg7g9oCH
- DfTw==
+ bh=19gi+9qB+yJilMywPzFl79bNvPomxA5cHIXFvhphP2k=;
+ b=r72b3q2h35If3Nf6a9J7/U6T4B9hCn8eGBN86urVe3mx0JHTOoDxf2zLT5x+OYrG7L
+ fOU8R0vxIKT6z1Y5g1tm3ycLPQBY2P2CBqdy3mx09PbpltUHpTPx/syRbJW1V3AVBeqk
+ MEVlFXKw7162AwR/npzoyfjiLHIiLXtuaYbovd7D4Et5++H4bhMlcYGT1n392rzIvxSz
+ sjCESPLJwnRBd0mThKheqTvT/IoKF+il57qZYQXZLvLHn6p3Y30TL56ORn2yrFMsIUUh
+ CYb4Egsc2/eOVYAKTfMrslZQ0Kls+gV6+lXjRK6Cy0Q0Htt+rCzZiryDXDMVFUgO5Zs9
+ 8AKQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW+GdpL8fFJRs2tl+h01r+JqRPenXqsbsk7zE4dj/+M7mz8Qh2kQANzOEBeI2AhBI06VJQD5IbalSgn@nongnu.org
-X-Gm-Message-State: AOJu0Ywc56pack/deKp+N17UnjZ+Pu3ZWFZ55TRPkdaDhPYjSAFa9lMO
- HXYf41Rgab+NC60tL5sdL3DNojdVtUN0IzL/3nLr/ZGfXiYjKOAiPa3POUCxxEk7/EPQdI9Lhuw
- czeDJIN+kCV5rcBG7vovMFO5oBQUa9K3hNGCgDGx8KJ4/9ZPR4uH/LIzk
-X-Gm-Gg: ASbGncs/kYvxv+VOCYmD1W0yVZFlVNzC9gYmiyW+nq9MRHmeGJtme672TMh36Y1hPqw
- ZNL8YiGWaXhT4HMU52v73fst0Fx5VVlBlbQ2jgJtrpBPNJtkwtHAiIaIEDcGb7ISMgxMxFbMwjh
- 1Lehe+mT3cIIBo2c81ix7WtVcpXlMh6al0m/06AUf8TRDviKqjtFk500BRyW4cSGq+NALMTYZAI
- yK2yAUp76zeHPGCCG2p4ZZ7dunsWaVx2cehFFgap4fKrH38s9AnucFef78v737q83+pea7LD/Ap
- ZOLS/pnb2tBswd8/S8T9wEgUpO5jbgATTMYHaJMqM5MWZaMNnVbZ+mw6JDFvilyxZZIY3es=
-X-Received: by 2002:a05:6000:420e:b0:425:8bd1:fbb4 with SMTP id
- ffacd0b85a97d-4258bd1fc6amr40893f8f.50.1759830116721; 
- Tue, 07 Oct 2025 02:41:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAeCkJ7dj26F89nnjhbSQ34FzLtPakywdHbf+WB5BGuWdFWT6YqybEHmrNZ6Y9FivU2cZETA==
-X-Received: by 2002:a05:6000:420e:b0:425:8bd1:fbb4 with SMTP id
- ffacd0b85a97d-4258bd1fc6amr40870f8f.50.1759830116293; 
- Tue, 07 Oct 2025 02:41:56 -0700 (PDT)
+ AJvYcCUlX8QuJ8QkVqxzDDgN1HeWBHiPTOCGOLvAe3qIqHnAClkCEhmVbW3aWpvODUM9qYxjtVsSZ3jvvztB@nongnu.org
+X-Gm-Message-State: AOJu0Yw+fV0GfDtT3FrfPIhcvhexcRJXcQUtv9NEIjbls9+f0nzlnUqR
+ sdwA1b+1hH475X8Pa/mWMhDdOao38y67xyi2E1HYpHER7BeLe2iPCG4VA0P1UGeaY245oBhfV/r
+ 2lFH5a0vsXgFoXRpjZ7iGE+mM6u/HPhm1L/02GeeLdX5/pVqHJRFil1cU
+X-Gm-Gg: ASbGncv/svKlYdHQrSM2EpbHnSC1QQz0YgUakun5m1WpJ58TT/+iJ5EXYpCcHMdhkW6
+ MmQlFUXXbcp+jJqsVBjbF7BuXleWLf+AkOkRWSf2RVj4XEwl8bbM6583QS6nqy8xJZyFcMbsQ7T
+ yq55/+RfWcOs3OwdHihQg4zgItTFkBUq0pm7AoFOQ32hbjS0SMsENwq21sJ9MHAgPBz+TQ//XVB
+ kSsz8uBlskFh7piF12V04WMLtERyj1pAsFvMqktvAVKmxwWcohEKYahMBuyICk8KnrrKplYcWY8
+ 52ispFofWss6Jxd7Xx+ejt3S5RmYkGvmgu9z12ej4Hzl9yJ6LwUGUPa5k6U7MViu7YJT4DA=
+X-Received: by 2002:a05:6000:2509:b0:3de:78c8:120e with SMTP id
+ ffacd0b85a97d-42567136297mr8883794f8f.6.1759830440173; 
+ Tue, 07 Oct 2025 02:47:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IELyS5WGSTxEXv5m5nUI7f0sbYCWHfK+Wse22P1Oawa6ZLzi/NxP/lsJbeGghUX/t3vOqcr6g==
+X-Received: by 2002:a05:6000:2509:b0:3de:78c8:120e with SMTP id
+ ffacd0b85a97d-42567136297mr8883777f8f.6.1759830439703; 
+ Tue, 07 Oct 2025 02:47:19 -0700 (PDT)
 Received: from [10.33.192.176] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f011bsm25106664f8f.46.2025.10.07.02.41.55
+ 5b1f17b1804b1-46e7234e5fdsm200019325e9.6.2025.10.07.02.47.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Oct 2025 02:41:55 -0700 (PDT)
-Message-ID: <e4054bc7-e496-4be3-a218-42714b1ef9e8@redhat.com>
-Date: Tue, 7 Oct 2025 11:41:55 +0200
+ Tue, 07 Oct 2025 02:47:19 -0700 (PDT)
+Message-ID: <45084e29-1d7d-4922-8bf3-25ead6236549@redhat.com>
+Date: Tue, 7 Oct 2025 11:47:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/28] crypto/x509-utils: Add helper functions for DIAG
- 320 subcode 2
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Zhuoying Cai <zycai@linux.ibm.com>, richard.henderson@linaro.org,
- david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, walling@linux.ibm.com, jjherne@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, farman@linux.ibm.com,
- mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
- armbru@redhat.com, alifm@linux.ibm.com
+Subject: Re: [PATCH v6 10/28] s390x/diag: Introduce DIAG 508 for secure IPL
+ operations
+To: Zhuoying Cai <zycai@linux.ibm.com>, berrange@redhat.com,
+ richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
+ qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
+ iii@linux.ibm.com, eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
 References: <20250917232131.495848-1-zycai@linux.ibm.com>
- <20250917232131.495848-9-zycai@linux.ibm.com>
- <dd3ebdf4-3d80-475b-8739-65b6b771a0b6@redhat.com>
- <aOTfhXQHQ69eG5yF@redhat.com>
+ <20250917232131.495848-11-zycai@linux.ibm.com>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -131,10 +128,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <aOTfhXQHQ69eG5yF@redhat.com>
+In-Reply-To: <20250917232131.495848-11-zycai@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -159,160 +156,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/10/2025 11.38, Daniel P. Berrangé wrote:
-> On Tue, Oct 07, 2025 at 11:34:29AM +0200, Thomas Huth wrote:
->> On 18/09/2025 01.21, Zhuoying Cai wrote:
->>> Introduce new helper functions to extract certificate metadata needed for
->>> DIAG 320 subcode 2:
->>>
->>> qcrypto_x509_check_cert_times() - validates the certificate's validity period against the current time
->>> qcrypto_x509_get_pk_algorithm() - returns the public key algorithm used in the certificate
->>> qcrypto_x509_get_cert_key_id() - extracts the key ID from the certificate
->>> qcrypto_x509_is_ecc_curve_p521() - determines the ECC public key algorithm uses P-521 curve
->>>
->>> These functions provide support for metadata extraction and validity checking
->>> for X.509 certificates.
->>>
->>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
->>> ---
->> ...
->>> +int qcrypto_x509_get_pk_algorithm(uint8_t *cert, size_t size, Error **errp)
->>> +{
->>> +    int rc;
->>> +    int ret = -1;
->>> +    unsigned int bits;
->>> +    gnutls_x509_crt_t crt;
->>> +    gnutls_datum_t datum = {.data = cert, .size = size};
->>> +
->>> +    rc = gnutls_x509_crt_init(&crt);
->>> +    if (rc < 0) {
->>> +        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
->>> +        return ret;
->>> +    }
->>> +
->>> +    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
->>> +    if (rc != 0) {
->>> +        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
->>> +        goto cleanup;
->>> +    }
->>> +
->>> +    rc = gnutls_x509_crt_get_pk_algorithm(crt, &bits);
->>> +    if (rc >= G_N_ELEMENTS(gnutls_to_qcrypto_pk_alg_map)) {
->>
->> gnutls_x509_crt_get_pk_algorithm can also return a negative value according
->> to the documentation, so I think you should also check for "rc < 0" in
->> addition here.
->>
->>> +        error_setg(errp, "Unknown public key algorithm %d", rc);
->>> +        goto cleanup;
->>> +    }
->>> +
->>> +    ret = gnutls_to_qcrypto_pk_alg_map[rc];
->>> +
->>> +cleanup:
->>> +    gnutls_x509_crt_deinit(crt);
->>> +    return ret;
->>> +}
->>> +
->>> +int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
->>> +                                 QCryptoHashAlgo hash_alg,
->>> +                                 uint8_t **result,
->>> +                                 size_t *resultlen,
->>> +                                 Error **errp)
->>> +{
->>> +    int rc;
->>> +    int ret = -1;
->>> +    gnutls_x509_crt_t crt;
->>> +    gnutls_datum_t datum = {.data = cert, .size = size};
->>> +
->>> +    if (hash_alg >= G_N_ELEMENTS(qcrypto_to_gnutls_hash_alg_map)) {
->>> +        error_setg(errp, "Unknown hash algorithm %d", hash_alg);
->>> +        return ret;
->>> +    }
->>> +
->>> +    if (qcrypto_to_gnutls_keyid_flags_map[hash_alg] == -1 ||
->>> +        hash_alg >= G_N_ELEMENTS(qcrypto_to_gnutls_keyid_flags_map)) {
->>
->> Since "||" conditions are evaluated from left to right, please check for the
->> boundary first before using hash_alg as index into the array (i.e. swapt the
->> two sides of the "||").
->>
->>> +        error_setg(errp, "Unsupported key id flag %d", hash_alg);
->>> +        return ret;
->>> +    }
->>> +
->>> +    rc = gnutls_x509_crt_init(&crt);
->>> +    if (rc < 0) {
->>> +        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
->>> +        return ret;
->>> +    }
->>> +
->>> +    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
->>> +    if (rc != 0) {
->>> +        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
->>> +        goto cleanup;
->>> +    }
->>> +
->>> +    *resultlen = gnutls_hash_get_len(qcrypto_to_gnutls_hash_alg_map[hash_alg]);
->>> +    if (*resultlen == 0) {
->>> +        error_setg(errp, "Failed to get hash algorithn length: %s", gnutls_strerror(rc));
->>> +        goto cleanup;
->>> +    }
->>> +
->>> +    *result = g_malloc0(*resultlen);
->>> +    if (gnutls_x509_crt_get_key_id(crt,
->>> +                                   qcrypto_to_gnutls_keyid_flags_map[hash_alg],
->>> +                                   *result, resultlen) != 0) {
->>> +        error_setg(errp, "Failed to get key ID from certificate");
->>> +        g_clear_pointer(result, g_free);
->>> +        goto cleanup;
->>> +    }
->>> +
->>> +    ret = 0;
->>> +
->>> +cleanup:
->>> +    gnutls_x509_crt_deinit(crt);
->>> +    return ret;
->>> +}
->> ...
->>> +int qcrypto_x509_is_ecc_curve_p521(uint8_t *cert, size_t size, Error **errp)
->>> +{
->>> +    int curve_id;
->>> +
->>> +    curve_id = qcrypto_x509_get_ecc_curve(cert, size, errp);
->>> +    if (curve_id == -1) {
->>> +        return -1;
->>> +    }
->>> +
->>> +    if (curve_id == GNUTLS_ECC_CURVE_INVALID) {
->>> +        error_setg(errp, "Invalid ECC curve");
->>> +        return -1;
->>> +    }
->>> +
->>> +    if (curve_id == GNUTLS_ECC_CURVE_SECP521R1) {
->>> +        return 1;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>
->> Bikeshedding, but IMHO, if you name a function "..._is_something", I'd
->> prefer if it returns a bool, and not an "int". Otherwise this might get
->> confusing if you read something like this later in the code:
->>
->>     if (qcrypto_x509_is_ecc_curve_p521(...)) {
->>     }
->>
->> The caller could use errp to distinguish between the error case and a
->> simple "false" as answer to the question.
+On 18/09/2025 01.21, Zhuoying Cai wrote:
+> From: Collin Walling <walling@linux.ibm.com>
 > 
-> Overloading one 'false' return value to mean both success & failure
-> is an anti-pattern IMHO. We have 3 separate return values we need
-> for this function, so using -1/0/1 is the right approach.
+> In order to support secure IPL (aka secure boot) for the s390-ccw BIOS,
+> a new s390 DIAGNOSE instruction is introduced to leverage QEMU for
+> handling operations such as signature verification and certificate
+> retrieval.
+> 
+> Currently, only subcode 0 is supported with this patch, which is used to
+> query a bitmap of which subcodes are supported.
+> 
+> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+> ---
+>   docs/specs/s390x-secure-ipl.rst | 18 ++++++++++++++++++
+>   include/hw/s390x/ipl/diag508.h  | 15 +++++++++++++++
+>   target/s390x/diag.c             | 27 +++++++++++++++++++++++++++
+>   target/s390x/kvm/kvm.c          | 14 ++++++++++++++
+>   target/s390x/s390x-internal.h   |  2 ++
+>   target/s390x/tcg/misc_helper.c  |  7 +++++++
+>   6 files changed, 83 insertions(+)
+>   create mode 100644 include/hw/s390x/ipl/diag508.h
+> 
+> diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure-ipl.rst
+> index e28f0b40d7..0919425e9a 100644
+> --- a/docs/specs/s390x-secure-ipl.rst
+> +++ b/docs/specs/s390x-secure-ipl.rst
+> @@ -48,3 +48,21 @@ Subcode 2 - store verification certificates
+>       storage specified in the VCB input length field.
+>   
+>       VCE contains various information of a VC from the CS.
+> +
+> +
+> +Secure IPL Data Structures, Facilities, and Functions
+> +=====================================================
+> +
+> +DIAGNOSE function code 'X'508' - KVM IPL extensions
+> +---------------------------------------------------
+> +
+> +DIAGNOSE 'X'508' is reserved for KVM guest use in order to facilitate
+> +communication of additional IPL operations that cannot be handled by userspace,
+> +such as signature verification for secure IPL.
+> +
+> +If the function code specifies 0x508, KVM IPL extension functions are performed.
+> +These functions are meant to provide extended functionality for s390 guest boot
+> +that requires assistance from QEMU.
+> +
+> +Subcode 0 - query installed subcodes
+> +    Returns a 64-bit mask indicating which subcodes are supported.
 
-In that case, please rename the function to something like 
-"qcrypto_x509_check_ecc_curve_p521" or so ... it's IMHO getting
-too confusing otherwise.
+Technically, this works also without KVM, right? In that case, I'd maybe 
+avoid the term "KVM" here, and just talk about "IPL extensions" and "guest", 
+to avoid the confusion about whether this feature can be used with TCG, too, 
+or not.
 
   Thomas
 
