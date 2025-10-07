@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61317BC1B35
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9673BBC1B5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:24:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Qw-00061u-JE; Tue, 07 Oct 2025 10:12:54 -0400
+	id 1v68Qy-00062u-KD; Tue, 07 Oct 2025 10:12:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Qp-0005xt-PF
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:47 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1v68Qi-0005s2-IR
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:45 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68QW-0002NE-RO
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:46 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e384dfde0so70065795e9.2
+ id 1v68QU-0002NC-Cy
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:40 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46f53f88e0bso18543435e9.1
  for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846343; x=1760451143; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846344; x=1760451144; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=obeXY0oM+RvnNeVW9ans/XMLJrizgVMLKOkNMjRO3Fc=;
- b=ZnHY0yxkXPnvh9kkpMoP1v9Elrd2HzJ0e7X2SBCgEDRJfPfBAfu/aEleCfxhCq4/4U
- 27oxQalYtHTooGcrdD3cEgm1QGxfoejX/xGw3NnWgtDSUZKgITGuFFuQJIkzFp8px2qi
- GwfzriEdRASMILMoGWb3c3+zY1hkUDDAIPgs0PDsk/TlfMg5OxnNTY9DLdrKkklusHiV
- tCIozHheS5w/FFpwX+apenyPMwEIG6pv6KLAvfEFawNVXYoTUYUI8GxmXzUfzDQuuSG/
- Py0K4T+KxUZhvuC9L41JFr9AhnlgpPfB7L42CsHiVcMwdZACCC3QhTVaNDcpjS9Z8F7c
- J5/w==
+ :reply-to; bh=6nKj99KdmBR33nuMOThvE6JAKFc6l5qFA/gSXuXJhag=;
+ b=yJ/Z5GDRuLS2J0U2zupXvEj+E/3yosiFZxJcHrdJ0KZ4zeWpu/fClFd8M5vkUr4E0B
+ hDTqAqGn/m6MhwjiIwEO/y4POa4va59RMFCa412mR7Tm9FGrwpQteFov3RdH/1+Gxp/d
+ CcvhQgFj3rbmfPjVI6pp/Xuvwr7J5U5lp+KECJo6CHRMEGjWjMTaSBmebByDt4BPW437
+ tnTC34aCSG1EW+kJEEXSXQlryQJ+BRyrcr0U5HUrdjettaKhIyVK3b3XJgMRS740UJ8N
+ 6IwFNaiBOhIjTVI+AZkpRbr2sMaze3+Vh+99UqhhR9pV3RMChoVbfPw2n1pdmlzYnkUN
+ 1YAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846343; x=1760451143;
+ d=1e100.net; s=20230601; t=1759846344; x=1760451144;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=obeXY0oM+RvnNeVW9ans/XMLJrizgVMLKOkNMjRO3Fc=;
- b=A5MFuobNdyiFkdAr2mLJumq1v5CbPqWF4WiJ+c9POi9JzSNJSfJodQYd+UNFVShjRE
- pwZfj0RTSXYs6CiAOhY5SDI2UAOZcHOu4drzEOHazjpm3/J/93gTyDcRiT/C+tr7p560
- 9L5S0IivJ4H3HT5d767QB5kN1GRl/blLeo8QBGLqS3LV/xXA3WdMuq9/RuOJVtWux54Q
- tMckETdf3dWSK7EvhQKGd3dXJEYmI7Ph2DEnPSp+o9+RbgVY45r5x0hDiR7fnsYubaz+
- 0UBbgSiQpwgd0yQdMXAnqjnnigbIS9oiVpua2+8bAzSgG6Ssat4CBMp60B+xJI/aQdx/
- vBkg==
-X-Gm-Message-State: AOJu0Yxl7aJNmZv2RLThyR5c//ycTa4dBH+ycuBe9C6hMgC7mxD/B8HW
- KTz+vKMaF9BzXh77SQsfHN6HDDkbdinUcqkFMsNkfTaiacocq6E0gZpc8LJmuKoXJy5dqvwWucK
- m1zfR
-X-Gm-Gg: ASbGncsGYumHPunkeO2IKf7PUPF8x68uPxF5/o5arcURwJx4FYwtijF20WFXBPRQOnZ
- dx0UnNezctgZkuLpRG+MlXRVseAtCpogWcwuIw7E+pihCvI9mHEi/prg8uuqi1k1pS5X80g/sIz
- krf6QDNcFgeeWiuqixPKJmzO1Dw/eWKU6PCdchtygPj8BJVbBH/Ih2Yhs6UF5MBN8Y66eu755rT
- phpPhaMybNqKKvJRQGLRqrd5KdxgmlZqQcFcSsSIjK8FiHNpUTd0BmwDAbSEkHqQJB+4zEUYwXb
- ANiOwAdBR09WYG5f/msJhGt2RkyYkm2wIOOSi4YgBxA45sUGCeJeVORtmBKkyj2Cs+QJdfQbeRD
- KKSi/ZewnAIev9+EL8yz0kbRzdle4pY91FR7rcjwdefOiWAkjeB2vduK7
-X-Google-Smtp-Source: AGHT+IHHifXGLw1BxiL/KLjFRt5E33iKZ0810MCJ8pQdSpSJYjzwqLjfwm8aVtejEUQ6PbVDO+wHuQ==
-X-Received: by 2002:a05:600c:19ce:b0:45f:2919:5e6c with SMTP id
- 5b1f17b1804b1-46e7110c3d5mr144127995e9.16.1759846342747; 
- Tue, 07 Oct 2025 07:12:22 -0700 (PDT)
+ bh=6nKj99KdmBR33nuMOThvE6JAKFc6l5qFA/gSXuXJhag=;
+ b=m/UNP10HCMyU/FUjxrcBcNQaReEtq48CXwC0/x4Sv03LdYis1SJEMo39hVvZq1n+2H
+ jtywOO/DZPDcFCk57CeIse4HhO3yj2rPBYWJqfYKIEuR4GP3CsUFthTd0wWne3XkoiAV
+ EhDYO47HtyeEjq98b1BpnDAzIndZ9MLdX8ukmaw44mDLwsANXXrIdI5Pg1P6EMmOeOBL
+ D4ayOy5zduGGL8I82Tl7pRW/CkGO1xkNGxiHf9BRbZMzuncHGnJBLNoEMGwKOT6I1HHI
+ LKgErT5R/Ir9dHeBE33RGgf4XbNPSGUjYK7te6RolKu3ol3I9PsBivDbrf2Kx3XNkB6y
+ vhgQ==
+X-Gm-Message-State: AOJu0Yz3Dkh5pudN6PL9wN9EmyCsIqpFeGHk5RYgYL1NRSvNGObpOuQF
+ 8ELGIkva0ad/nC/bA82TLaCxjo+A18UZsklCM34Z+0IuwCBGCrAKssXGYk4S5ZbGcWK2w9PHYb1
+ RSMHK
+X-Gm-Gg: ASbGncuBvjLSuRkibsPPdC2iJNoh22gsLgSUCM842FymeperMmeiNW8sRO+sG8t3vIj
+ ajEM7MVDR7wlMGJhZ2Skk/iHoCtFwlLwYYJd4sc2zfBbAjIno275IjthoKGdr3vPV9ueAM9Aqqj
+ S8HfPUN3EFeDj9SuRr7kskFDGnkdGGk3bf2jz59T5G0MXfk4w4EcAhOjG1sA1hXTvDq79EcxzTI
+ DewO9j1gpGwf1AsevC6UIpv2X0GviBs0c0qSRI6BIDM1A5wvXvlHlo4gqVhYk2YCDPKFM9t0mTF
+ HNXpXmJmPFzRBR57RTgXXxgoTE8FgC1/L3Nxh78w3QAEeoFkE7rqi+MEg7/1+D0SMIj7EoLNIZ2
+ kMOvLjwqct84mYptLzaYhZrU72PQBOmtT4gi6Y4GxTp3V5Gdb1xGvLXn6gBS5DH4TAW0=
+X-Google-Smtp-Source: AGHT+IHr14AJZLG8/JQvR8FZxKhzEpsQAPh+tTTsCmLavXFe5lPxntlRuGUJHpNmBRRE4e70tRxzMg==
+X-Received: by 2002:a05:600c:a101:b0:46f:a95d:e9e7 with SMTP id
+ 5b1f17b1804b1-46fa95dec1amr1275735e9.0.1759846343736; 
+ Tue, 07 Oct 2025 07:12:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.21
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:12:22 -0700 (PDT)
+ Tue, 07 Oct 2025 07:12:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 52/62] hw/arm: Remove sl_bootparam_write() and
- 'hw/arm/sharpsl.h' header
-Date: Tue,  7 Oct 2025 15:11:12 +0100
-Message-ID: <20251007141123.3239867-53-peter.maydell@linaro.org>
+Subject: [PULL 53/62] target/arm: Add isar feature test for FEAT_RME_GPC2
+Date: Tue,  7 Oct 2025 15:11:13 +0100
+Message-ID: <20251007141123.3239867-54-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,116 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-When removing the spitz and tosa board, commit b62151489ae
-("hw/arm: Remove deprecated akita, borzoi spitz, terrier,
-tosa boards") removed the last calls to sl_bootparam_write().
-Remove it, along with the "hw/arm/sharpsl.h" header.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251001084047.67423-1-philmd@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20250926001134.295547-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS              |  1 -
- include/hw/arm/sharpsl.h | 17 ----------------
- hw/gpio/zaurus.c         | 42 ----------------------------------------
- 3 files changed, 60 deletions(-)
- delete mode 100644 include/hw/arm/sharpsl.h
+ target/arm/cpu-features.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 75e1fa5c307..bb7fa76c324 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1006,7 +1006,6 @@ S: Odd Fixes
- F: hw/arm/collie.c
- F: hw/arm/strongarm*
- F: hw/gpio/zaurus.c
--F: include/hw/arm/sharpsl.h
- F: docs/system/arm/collie.rst
- F: tests/functional/arm/test_collie.py
- 
-diff --git a/include/hw/arm/sharpsl.h b/include/hw/arm/sharpsl.h
-deleted file mode 100644
-index 1e3992fcd00..00000000000
---- a/include/hw/arm/sharpsl.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/*
-- * Common declarations for the Zaurii.
-- *
-- * This file is licensed under the GNU GPL.
-- */
--
--#ifndef QEMU_SHARPSL_H
--#define QEMU_SHARPSL_H
--
--#include "exec/hwaddr.h"
--
--/* zaurus.c */
--
--#define SL_PXA_PARAM_BASE   0xa0000a00
--void sl_bootparam_write(hwaddr ptr);
--
--#endif
-diff --git a/hw/gpio/zaurus.c b/hw/gpio/zaurus.c
-index b8d27f59738..590ffde89d1 100644
---- a/hw/gpio/zaurus.c
-+++ b/hw/gpio/zaurus.c
-@@ -18,7 +18,6 @@
- 
- #include "qemu/osdep.h"
- #include "hw/irq.h"
--#include "hw/arm/sharpsl.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
-@@ -265,44 +264,3 @@ static void scoop_register_types(void)
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 602f6a88e53..f59c18b6ef6 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -1091,6 +1091,11 @@ static inline bool isar_feature_aa64_rme(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64PFR0, RME) != 0;
  }
  
- type_init(scoop_register_types)
--
--/* Write the bootloader parameters memory area.  */
--
--#define MAGIC_CHG(a, b, c, d)   ((d << 24) | (c << 16) | (b << 8) | a)
--
--static struct QEMU_PACKED sl_param_info {
--    uint32_t comadj_keyword;
--    int32_t comadj;
--
--    uint32_t uuid_keyword;
--    char uuid[16];
--
--    uint32_t touch_keyword;
--    int32_t touch_xp;
--    int32_t touch_yp;
--    int32_t touch_xd;
--    int32_t touch_yd;
--
--    uint32_t adadj_keyword;
--    int32_t adadj;
--
--    uint32_t phad_keyword;
--    int32_t phadadj;
--} zaurus_bootparam = {
--    .comadj_keyword     = MAGIC_CHG('C', 'M', 'A', 'D'),
--    .comadj             = 125,
--    .uuid_keyword       = MAGIC_CHG('U', 'U', 'I', 'D'),
--    .uuid               = { -1 },
--    .touch_keyword      = MAGIC_CHG('T', 'U', 'C', 'H'),
--    .touch_xp           = -1,
--    .adadj_keyword      = MAGIC_CHG('B', 'V', 'A', 'D'),
--    .adadj              = -1,
--    .phad_keyword       = MAGIC_CHG('P', 'H', 'A', 'D'),
--    .phadadj            = 0x01,
--};
--
--void sl_bootparam_write(hwaddr ptr)
--{
--    cpu_physical_memory_write(ptr, &zaurus_bootparam,
--                              sizeof(struct sl_param_info));
--}
++static inline bool isar_feature_aa64_rme_gpc2(const ARMISARegisters *id)
++{
++    return FIELD_EX64_IDREG(id, ID_AA64PFR0, RME) >= 2;
++}
++
+ static inline bool isar_feature_aa64_dit(const ARMISARegisters *id)
+ {
+     return FIELD_EX64_IDREG(id, ID_AA64PFR0, DIT) != 0;
 -- 
 2.43.0
 
