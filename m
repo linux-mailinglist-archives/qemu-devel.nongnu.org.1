@@ -2,72 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70EDBC2665
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 20:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57ADEBC26D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 20:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6CXI-0005yn-3m; Tue, 07 Oct 2025 14:35:44 -0400
+	id 1v6Cds-0002aJ-1g; Tue, 07 Oct 2025 14:42:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v6CWi-0005oB-GG
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 14:35:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v6CWf-0002qF-GI
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 14:35:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759862104;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=05ZWYAXl5ZwTZ0FtrkUAUoGr1gQfXaB5RyM4Ta7fz84=;
- b=Y5OGIG9GaQDiTbl4mWkNRIxsCCGID95264lBD8+yXg8B2su2Grrqi9yI1CoTRKTzRWs0Cu
- pQNYiZL731PhPzMyjNSprHU/gf8pBKEPqLtGN0CeCZ6A8ejSOQkM9HbI7YMzXVArc55BU0
- wNSIE3aJwlW0GxbkyOIaks3Toy+5uzI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-68-kldb1I1zN8SxpSlsCacXHg-1; Tue,
- 07 Oct 2025 14:35:02 -0400
-X-MC-Unique: kldb1I1zN8SxpSlsCacXHg-1
-X-Mimecast-MFC-AGG-ID: kldb1I1zN8SxpSlsCacXHg_1759862101
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v6Cdm-0002Zu-Th
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 14:42:27 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v6Cdk-0003cc-DV
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 14:42:26 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B346F1956096; Tue,  7 Oct 2025 18:35:01 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.87])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E3F31956056; Tue,  7 Oct 2025 18:35:01 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 702D91F7EF;
+ Tue,  7 Oct 2025 18:42:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1759862537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=4xy2rq8k0KPm7HUAY4Gz4yN1sW557wyEG99y0avL/Vs=;
+ b=g5ePCysUHshKqSUpiZeVXmhuxdN1YtcTbKDidsPtYfObY0qhD3aX01/9qD1AUc1DcgGt0Z
+ IIvDXn4kNuWoS2Z3u+9a3e6i4cZ02mSb78259eOklyfhP4D7YlrTeqqpe2yCAxYtLjO4A+
+ n6081SfE2S6b1FMCz5ABIC/2I6XPPlo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1759862537;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=4xy2rq8k0KPm7HUAY4Gz4yN1sW557wyEG99y0avL/Vs=;
+ b=TTg9qghx7swBp+EqBF6sWjlhGhdOU3+f6lOnngbVYF1GVg0vVa3vrHaJbEkdsy1U+WRliU
+ sKIzXPsMRIaI2LDg==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=g5ePCysU;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TTg9qghx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1759862537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=4xy2rq8k0KPm7HUAY4Gz4yN1sW557wyEG99y0avL/Vs=;
+ b=g5ePCysUHshKqSUpiZeVXmhuxdN1YtcTbKDidsPtYfObY0qhD3aX01/9qD1AUc1DcgGt0Z
+ IIvDXn4kNuWoS2Z3u+9a3e6i4cZ02mSb78259eOklyfhP4D7YlrTeqqpe2yCAxYtLjO4A+
+ n6081SfE2S6b1FMCz5ABIC/2I6XPPlo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1759862537;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=4xy2rq8k0KPm7HUAY4Gz4yN1sW557wyEG99y0avL/Vs=;
+ b=TTg9qghx7swBp+EqBF6sWjlhGhdOU3+f6lOnngbVYF1GVg0vVa3vrHaJbEkdsy1U+WRliU
+ sKIzXPsMRIaI2LDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2180313AAC;
+ Tue,  7 Oct 2025 18:42:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KBHeMwdf5WjGCQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 07 Oct 2025 18:42:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v2 5/5] tests/functional: add vdpa-blk blockdev-mirror test
-Date: Tue,  7 Oct 2025 14:34:47 -0400
-Message-ID: <20251007183447.93120-6-stefanha@redhat.com>
-In-Reply-To: <20251007183447.93120-1-stefanha@redhat.com>
-References: <20251007183447.93120-1-stefanha@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>,
+	Marco Cavenati <Marco.Cavenati@eurecom.fr>
+Subject: [RESEND] migration/savevm: Add a compatibility check for capabilities
+Date: Tue,  7 Oct 2025 15:42:13 -0300
+Message-Id: <20251007184213.5990-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-Rspamd-Queue-Id: 702D91F7EF
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCPT_COUNT_THREE(0.00)[3];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:mid, suse.de:email,
+ imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,157 +119,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test case that reproduces
-https://issues.redhat.com/browse/RHEL-88175.
+It has always been possible to enable arbitrary migration capabilities
+and attempt to take a snapshot of the VM with the savevm/loadvm
+commands as well as their QMP counterparts
+snapshot-save/snapshot-load.
 
-When the mirror blockjob completes, it replaces the original vdpa-blk
-blockdev node with a new vdpa-blk blockdev. This will only work if the
-BlockRAMRegistrar populates memory mappings (see the previous commit).
+Most migration capabilities are not meant to be used with snapshots
+and there's a risk of crashing QEMU or producing incorrect
+behavior. Ideally, every migration capability would either be
+implemented for savevm or explicitly rejected.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Add a compatibility check routine and reject the snapshot command if
+an incompatible capability is enabled. For now only act on the the two
+that actually cause a crash: multifd and mapped-ram.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2881
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/functional/x86_64/meson.build           |   1 +
- .../functional/x86_64/test_vdpa_blk_mirror.py | 118 ++++++++++++++++++
- 2 files changed, 119 insertions(+)
- create mode 100755 tests/functional/x86_64/test_vdpa_blk_mirror.py
+ migration/options.c | 27 +++++++++++++++++++++++++++
+ migration/options.h |  1 +
+ migration/savevm.c  |  8 ++++++++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/tests/functional/x86_64/meson.build b/tests/functional/x86_64/meson.build
-index f78eec5e6c..dfe0e00190 100644
---- a/tests/functional/x86_64/meson.build
-+++ b/tests/functional/x86_64/meson.build
-@@ -33,6 +33,7 @@ tests_x86_64_system_thorough = [
-   'replay',
-   'reverse_debug',
-   'tuxrun',
-+  'vdpa_blk_mirror',
-   'vfio_user_client',
-   'virtio_balloon',
-   'virtio_gpu',
-diff --git a/tests/functional/x86_64/test_vdpa_blk_mirror.py b/tests/functional/x86_64/test_vdpa_blk_mirror.py
-new file mode 100755
-index 0000000000..7d52836920
---- /dev/null
-+++ b/tests/functional/x86_64/test_vdpa_blk_mirror.py
-@@ -0,0 +1,118 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# Copyright Red Hat, Inc.
-+#
-+# vdpa-blk mirror blockjob tests
+diff --git a/migration/options.c b/migration/options.c
+index 5183112775..d9227809d7 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -445,11 +445,38 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
+     MIGRATION_CAPABILITY_VALIDATE_UUID,
+     MIGRATION_CAPABILITY_ZERO_COPY_SEND);
+ 
++/* Snapshot compatibility check list */
++static const
++INITIALIZE_MIGRATE_CAPS_SET(check_caps_savevm,
++                            MIGRATION_CAPABILITY_MULTIFD,
++                            MIGRATION_CAPABILITY_MAPPED_RAM,
++);
++
+ static bool migrate_incoming_started(void)
+ {
+     return !!migration_incoming_get_current()->transport_data;
+ }
+ 
++bool migrate_can_snapshot(Error **errp)
++{
++    MigrationState *s = migrate_get_current();
++    int i;
++
++    for (i = 0; i < check_caps_savevm.size; i++) {
++        int incomp_cap = check_caps_savevm.caps[i];
++
++        if (s->capabilities[incomp_cap]) {
++            error_setg(errp,
++                       "Snapshots are not compatible with %s",
++                       MigrationCapability_str(incomp_cap));
++            return false;
++        }
++    }
++
++    return true;
++}
 +
 +
-+import glob
-+import os
-+import subprocess
-+from qemu_test import LinuxKernelTest, Asset
-+from qemu_test import exec_command_and_wait_for_pattern
+ bool migrate_rdma_caps_check(bool *caps, Error **errp)
+ {
+     if (caps[MIGRATION_CAPABILITY_XBZRLE]) {
+diff --git a/migration/options.h b/migration/options.h
+index 82d839709e..a7b3262d1e 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -59,6 +59,7 @@ bool migrate_tls(void);
+ 
+ bool migrate_rdma_caps_check(bool *caps, Error **errp);
+ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
++bool migrate_can_snapshot(Error **errp);
+ 
+ /* parameters */
+ 
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 7b35ec4dd0..aafa40d779 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -3322,6 +3322,10 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
+ 
+     GLOBAL_STATE_CODE();
+ 
++    if (!migrate_can_snapshot(errp)) {
++        return false;
++    }
 +
+     if (migration_is_blocked(errp)) {
+         return false;
+     }
+@@ -3507,6 +3511,10 @@ bool load_snapshot(const char *name, const char *vmstate,
+     int ret;
+     MigrationIncomingState *mis = migration_incoming_get_current();
+ 
++    if (!migrate_can_snapshot(errp)) {
++        return false;
++    }
 +
-+def run(cmd: str) -> None:
-+    '''
-+    Run a shell command without capturing stdout/stderr and raise
-+    subprocess.CalledProcessError on failure.
-+    '''
-+    subprocess.check_call(cmd, shell=True,
-+                          stdout=subprocess.DEVNULL,
-+                          stderr=subprocess.DEVNULL)
-+
-+
-+class VdpaBlk(LinuxKernelTest):
-+
-+    KERNEL_COMMAND_LINE = 'printk.time=0 console=ttyS0 rd.rescue'
-+    ASSET_KERNEL = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
-+         '/31/Server/x86_64/os/images/pxeboot/vmlinuz'),
-+        'd4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129')
-+    ASSET_INITRD = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
-+         '/31/Server/x86_64/os/images/pxeboot/initrd.img'),
-+        '277cd6c7adf77c7e63d73bbb2cded8ef9e2d3a2f100000e92ff1f8396513cd8b')
-+    VDPA_DEV_1 = f'vdpa-{os.getpid()}-1'
-+    VDPA_DEV_2 = f'vdpa-{os.getpid()}-2'
-+
-+    def setUp(self) -> None:
-+        def create_vdpa_dev(name):
-+            '''
-+            Create a new vdpasim_blk device and return its vhost_vdpa device
-+            path.
-+            '''
-+            run(f'sudo -n vdpa dev add mgmtdev vdpasim_blk name {name}')
-+            sysfs_vhost_vdpa_dev_dir = \
-+                glob.glob(f'/sys/bus/vdpa/devices/{name}/vhost-vdpa-*')[0]
-+            vhost_dev_basename = os.path.basename(sysfs_vhost_vdpa_dev_dir)
-+            vhost_dev_path = f'/dev/{vhost_dev_basename}'
-+            run(f'sudo -n chown {os.getuid()}:{os.getgid()} {vhost_dev_path}')
-+            return vhost_dev_path
-+
-+        try:
-+            run('sudo -n modprobe vhost_vdpa')
-+            run('sudo -n modprobe vdpa_sim_blk')
-+
-+            self.vhost_dev_1_path = create_vdpa_dev(self.VDPA_DEV_1)
-+            self.vhost_dev_2_path = create_vdpa_dev(self.VDPA_DEV_2)
-+        except subprocess.CalledProcessError:
-+            self.skipTest('Failed to set up vdpa_blk device')
-+
-+        super().setUp()
-+
-+    def tearDown(self) -> None:
-+        super().tearDown()
-+
-+        try:
-+            run(f'sudo -n vdpa dev del {self.VDPA_DEV_2}')
-+            run(f'sudo -n vdpa dev del {self.VDPA_DEV_1}')
-+            run('sudo -n modprobe --remove vdpa_sim_blk')
-+            run('sudo -n modprobe --remove vhost_vdpa')
-+        except subprocess.CalledProcessError:
-+            pass # ignore failures
-+
-+    def test_mirror(self) -> None:
-+        '''
-+        Check that I/O works after a mirror blockjob pivots. See
-+        https://issues.redhat.com/browse/RHEL-88175.
-+        '''
-+        kernel_path = self.ASSET_KERNEL.fetch()
-+        initrd_path = self.ASSET_INITRD.fetch()
-+
-+        self.vm.add_args('-m', '1G')
-+        self.vm.add_args('-object', 'memory-backend-memfd,id=mem,size=1G')
-+        self.vm.add_args('-machine', 'pc,accel=kvm:tcg,memory-backend=mem')
-+        self.vm.add_args('-append', self.KERNEL_COMMAND_LINE)
-+        self.vm.add_args('-blockdev',
-+            'virtio-blk-vhost-vdpa,node-name=vdpa-blk-0,' +
-+            f'path={self.vhost_dev_1_path},cache.direct=on')
-+        self.vm.add_args('-device', 'virtio-blk-pci,drive=vdpa-blk-0')
-+
-+        self.launch_kernel(kernel_path, initrd_path,
-+                           wait_for='# ')
-+
-+        self.vm.cmd('blockdev-add',
-+                    driver='virtio-blk-vhost-vdpa',
-+                    node_name='vdpa-blk-1',
-+                    path=self.vhost_dev_2_path,
-+                    cache={'direct': True})
-+        self.vm.cmd('blockdev-mirror',
-+                    device='vdpa-blk-0',
-+                    job_id='mirror0',
-+                    target='vdpa-blk-1',
-+                    sync='full',
-+                    target_is_zero=True)
-+        self.vm.event_wait('BLOCK_JOB_READY')
-+        self.vm.cmd('block-job-complete',
-+                    device='mirror0')
-+
-+        exec_command_and_wait_for_pattern(self,
-+            'dd if=/dev/vda of=/dev/null iflag=direct bs=4k count=1',
-+            '4096 bytes (4.1 kB, 4.0 KiB) copied')
-+
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
+     if (!bdrv_all_can_snapshot(has_devices, devices, errp)) {
+         return false;
+     }
 -- 
-2.51.0
+2.35.3
 
 
