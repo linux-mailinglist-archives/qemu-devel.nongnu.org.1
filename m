@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573C1BC1B86
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 079CFBC1C04
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:32:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Qz-00063C-1E; Tue, 07 Oct 2025 10:12:57 -0400
+	id 1v68Qu-00060q-IH; Tue, 07 Oct 2025 10:12:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68QV-0005ow-Hc
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:29 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1v68QR-0005om-NY
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:25 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68QA-0002Ez-Qu
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:26 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-46e2826d5c6so49128015e9.1
+ id 1v68QA-0002F2-TT
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:22 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-46e2826d5c6so49128405e9.1
  for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846320; x=1760451120; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846321; x=1760451121; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=m81jBq+TZRGnncpvfOYaW8BHhoN2W0VmjCta5UEVW9g=;
- b=lVHYY8S1zRT9oOfnNTp+goQXc6pdB94yIbv4zIVzTcDg2eGWSn02pFzL+33bh7EUcN
- zwbTCje0H0pLUm7r5TiJEDaZ+mE/ptaColX1NdLXdunDam+z8hOE87MOf67COIgM43ZY
- 3WvFugMTHkewAo50Hsq18gWhtlL2Bp/y5G9r6+Hr71CYHqcJsaXO8zUJsaMm9FGMJ+09
- UXOwleohLLEdLo+Sbo+COfBX4CeejIk48kt5q2BwJW+zexWXGXtMYUzCxwTxkC/vxdQh
- DZ7RAYRxhIoU+7ZDXblWr7/TKCmAOn5wj7yutUSc6VryJABksgvltMN9zKUymoz16p41
- 1U7Q==
+ :reply-to; bh=6K1r/UXmoqTTIwRgeNIErMtpaMXoLBqHoCdPYTCanlM=;
+ b=yT2InjFgbLob4s9aSmxVjB0TC7jsOCv8lEHFJwgl1HHhzIrAKTQGRY7NOAe3Nd3TNg
+ d6EFcJZs0vAMD9ITKLs+9tdm4zpDKNTosuLEuvLJHp6oAdBwOdtCV3Sr3HRsKWh7Ssf8
+ RgUVhA2aHJkemBASFcSQ3W21ue1BRV9bHJ/j1iWt/RRPHy3B4Jq84eOQYN9CF2qO5zat
+ U7iP0hi9G01nT4C3LXGCTpY71lj1Lk0s+6XD8yFfRXF52kuQltiH2gLhcnLiJnWon7Ac
+ 3uUoZ85+aakOv0gpqvBUY8yWafMpoAnHgh1fcT0RcuXTvNSD5vTEbhSrHp7hWyC+c13e
+ OBjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846320; x=1760451120;
+ d=1e100.net; s=20230601; t=1759846321; x=1760451121;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m81jBq+TZRGnncpvfOYaW8BHhoN2W0VmjCta5UEVW9g=;
- b=i3qUL9zulatCD5QdQxss2rraDUggmOeQgU5Geq5IqsF3n86gJv3kYx8aKUpT2vi4qa
- yxHHdwU0tcdFvthk7sAZ88/dQ7EreVATRio7Q5yKBDfwrjEy5C/Scrqxjr7iCimOmRWd
- 8J47iwbdGVByr/x2Yk+/mOQo+QygkjRuUJn6QrTeTgyKdWt4ACWRFA1ZMzML1TOM0Ac7
- rshAj1saa3FKZoOxjbezjVNwLcoEb8AOASfgvGp6kqe7Q+L2JdHX+TPhLiE0BQ5VcFbd
- 0cP7jOlBwmuSQg2SICS+M4tXkGsi9tRDpMHjvmJMRJbQRK7+GnEeZD1cl/YKH82gTDbb
- qqYw==
-X-Gm-Message-State: AOJu0Yzr9maUjQ0CWHZsXxRkfPPPJa2h3XMV7s8a1f8abLNTzWk8VqMY
- jFzJvJhuYA15TvpPV5Q4A/UiJCht5e2WE9LKfBtisnY1We597Jne+197F8C/oPM5KA2t7k0eNj1
- TNrLY
-X-Gm-Gg: ASbGncurZxPrP7DXu46zUqDWjUB/UP6SdeTimQ1/GtjIqVv3WLHq6GQnxU12QH6GHY/
- iVKp2SEhokCN0/sFuThxB8vLCpntHv1gCHnfKzhOxRh3nRB0ntban8F89+npZLmF7N06H9EHcTh
- Oa6AmJj5BA6HqdRvNfnq53qhZbRfyqC8pDAzKx/MOkHy2AxMKFqL7xlP8GQ6TW4qBJ6NJogYqKM
- LADmZ+wBQ3/bWu4/q8kCWgU55eg++jhx9XXm6qT3loLJ5fAfEwxStBETYfBPDYr8J/zCloqSdQZ
- okCdTmpXkVhfYhiwBWuky+Tiu8Q7GafVgQ9U5sNdMH0hcU+cFElRXvljFHIdVh89NQyvs75m79k
- FNuLVZu+Sz8OrpkX7PoFhLH6YFiEE6YR+DU7s9vxBoGBhNZwDEGZvbfFzaUebFYDuGfk=
-X-Google-Smtp-Source: AGHT+IHW18lvoUCiObbQD7xp+GDZZd9cK6JT5FY914p71hs3Sp4rMM8sybeqGl9U7zBD+z4zfKGLZQ==
-X-Received: by 2002:a05:600d:41f3:b0:46e:3e63:9a8e with SMTP id
- 5b1f17b1804b1-46e7114735amr105744285e9.26.1759846319755; 
- Tue, 07 Oct 2025 07:11:59 -0700 (PDT)
+ bh=6K1r/UXmoqTTIwRgeNIErMtpaMXoLBqHoCdPYTCanlM=;
+ b=gVQmcOQX1LO55liy0sAljY4Obk7hbG9daD+gWABl43jUk22pQKl8t+xxgfC1hNi16Q
+ Ok9e31gJy3Ez5mh2qzTCkpVnUnVaxj2ywg6F+PWh0om8Txs031K4pPtwCByevIGzt0Er
+ MOYHBL9Ozwf4LxL7EdcCxagDjCr5WJRejzUoMV2eXwQLg/1GIU2Az85DFyRfZWUZA1lW
+ FfHDpcl++mrZRKT+pRdtACyDqNuoGDeTROMryD/3wSfM75no14BSKQAnz6FZSF3o05oV
+ dXN9qts3Sm3N2rgfZUjhKBdOv4sXnzoImKmkLfNyO5yHyTAdCXN8dypwleS2ZRXCMQTK
+ eRVw==
+X-Gm-Message-State: AOJu0YwbG5BZicW/9E4BA0vJu2NHVoxC+gaKzbqHyYYFplKi0oKNNA0X
+ 2yVXYl5+opj4eDcTVT6S2Fy28Y6rDChQkXVljmWTNxxLsgMeC1jywggcxWefGS3VrlHAvz8u4Gg
+ 3G1k7
+X-Gm-Gg: ASbGncvaNYD+qLmM1xf43RAOgI6VWpJ2pNDqv7KeJDZ++xMRQAjUfwsLl+DAUnNaFaK
+ z8S3JIK5Ee5ULxIYEGTbnUHAwqfljwNrpy9gmYWTayUWHFghcZeDrtyagbF3eIiIPGM04CDDoM4
+ DHpnMgx6YhXRNCMK6PWvi9y/mD75ExjPYeGyistQteEroc5WHX9LCsFm+J1iWKnB9nqYMPrVByV
+ 6PABeVGRyTY5eeg/nDENpOHTeKUhvt5Noz38g+Y0Q85+HEYWGbZLGaB6WQA5OT0feRSUVgVOjWk
+ ySWeYDB3GS62kUwQYj4C9wfz2K2PhSL4y27K/ZQ/7ZHLSzTSTztTyEN36C9+TV22ZHsluzttzOn
+ EhXilfEG+qJUndHLjTuMg/ItdJHrdfEKejct3UI9COZ6Yqds0whIEOIKB
+X-Google-Smtp-Source: AGHT+IH8h4eCg6GVh0cTAwM7KanAx3+R/ofGaEiPb40z3q2hICTj/WciHESDapeVdU6gu00qtw9k/A==
+X-Received: by 2002:a05:600c:4510:b0:46e:59bb:63cf with SMTP id
+ 5b1f17b1804b1-46e71140be1mr130191695e9.24.1759846320785; 
+ Tue, 07 Oct 2025 07:12:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.58
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:11:59 -0700 (PDT)
+ Tue, 07 Oct 2025 07:12:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/62] hw/misc/xlnx-versal-crl: split into base/concrete classes
-Date: Tue,  7 Oct 2025 15:10:52 +0100
-Message-ID: <20251007141123.3239867-33-peter.maydell@linaro.org>
+Subject: [PULL 33/62] hw/misc/xlnx-versal-crl: refactor device reset logic
+Date: Tue,  7 Oct 2025 15:10:53 +0100
+Message-ID: <20251007141123.3239867-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,199 +100,307 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-Split the TYPE_XLNX_VERSAL_CRL type into base and concrete classes. This
-is in preparation for the versal2 version of the CRL.
+Refactor the device reset logic to have a common register write callback
+for all the devices. This uses a decode function to map the register
+address to the actual peripheral to reset. This refactoring changes the
+CPU property name from cpu_r5[*] to rpu[*] to ease with the connections
+in the Versal SoC. It also fixes a bug where the gem device pointer
+was mapped to the usb link property.
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250926070806.292065-32-luc.michel@amd.com
+Message-id: 20250926070806.292065-33-luc.michel@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/misc/xlnx-versal-crl.h | 31 ++++++++++++++++++--
- hw/misc/xlnx-versal-crl.c         | 48 +++++++++++++++++++------------
- 2 files changed, 58 insertions(+), 21 deletions(-)
+ include/hw/misc/xlnx-versal-crl.h |   8 +-
+ hw/misc/xlnx-versal-crl.c         | 169 ++++++++++++++++--------------
+ 2 files changed, 95 insertions(+), 82 deletions(-)
 
 diff --git a/include/hw/misc/xlnx-versal-crl.h b/include/hw/misc/xlnx-versal-crl.h
-index dba6d3585d1..2b39d203a67 100644
+index 2b39d203a67..7e50a95ad3c 100644
 --- a/include/hw/misc/xlnx-versal-crl.h
 +++ b/include/hw/misc/xlnx-versal-crl.h
-@@ -2,6 +2,7 @@
-  * QEMU model of the Clock-Reset-LPD (CRL).
-  *
-  * Copyright (c) 2022 Xilinx Inc.
-+ * Copyright (c) 2025 Advanced Micro Devices, Inc.
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  *
-  * Written by Edgar E. Iglesias <edgar.iglesias@xilinx.com>
-@@ -12,8 +13,13 @@
- #include "hw/sysbus.h"
- #include "hw/register.h"
- #include "target/arm/cpu-qom.h"
-+#include "hw/arm/xlnx-versal-version.h"
+@@ -220,8 +220,6 @@ REG32(PSM_RST_MODE, 0x370)
  
-+#define TYPE_XLNX_VERSAL_CRL_BASE "xlnx-versal-crl-base"
- #define TYPE_XLNX_VERSAL_CRL "xlnx-versal-crl"
-+
-+OBJECT_DECLARE_TYPE(XlnxVersalCRLBase, XlnxVersalCRLBaseClass,
-+                    XLNX_VERSAL_CRL_BASE)
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCRL, XLNX_VERSAL_CRL)
+ #define CRL_R_MAX (R_PSM_RST_MODE + 1)
  
- REG32(ERR_CTRL, 0x0)
-@@ -216,8 +222,19 @@ REG32(PSM_RST_MODE, 0x370)
- 
- #define RPU_MAX_CPU 2
- 
--struct XlnxVersalCRL {
-+struct XlnxVersalCRLBase {
+-#define RPU_MAX_CPU 2
+-
+ struct XlnxVersalCRLBase {
      SysBusDevice parent_obj;
+ 
+@@ -231,6 +229,8 @@ struct XlnxVersalCRLBase {
+ 
+ struct XlnxVersalCRLBaseClass {
+     SysBusDeviceClass parent_class;
 +
-+    RegisterInfoArray *reg_array;
-+    uint32_t *regs;
-+};
-+
-+struct XlnxVersalCRLBaseClass {
-+    SysBusDeviceClass parent_class;
-+};
-+
-+struct XlnxVersalCRL {
-+    XlnxVersalCRLBase parent_obj;
++    DeviceState ** (*decode_periph_rst)(XlnxVersalCRLBase *s, hwaddr, size_t *);
+ };
+ 
+ struct XlnxVersalCRL {
+@@ -238,11 +238,11 @@ struct XlnxVersalCRL {
      qemu_irq irq;
  
      struct {
-@@ -228,8 +245,18 @@ struct XlnxVersalCRL {
-         DeviceState *usb;
+-        ARMCPU *cpu_r5[RPU_MAX_CPU];
++        DeviceState *rpu[2];
+         DeviceState *adma[8];
+         DeviceState *uart[2];
+         DeviceState *gem[2];
+-        DeviceState *usb;
++        DeviceState *usb[1];
      } cfg;
  
--    RegisterInfoArray *reg_array;
      uint32_t regs[CRL_R_MAX];
-     RegisterInfo regs_info[CRL_R_MAX];
- };
-+
-+static inline const char *xlnx_versal_crl_class_name(VersalVersion ver)
-+{
-+    switch (ver) {
-+    case VERSAL_VER_VERSAL:
-+        return TYPE_XLNX_VERSAL_CRL;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
- #endif
 diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
-index f288545967a..be89e0da40d 100644
+index be89e0da40d..6225a92e0bd 100644
 --- a/hw/misc/xlnx-versal-crl.c
 +++ b/hw/misc/xlnx-versal-crl.c
-@@ -298,7 +298,7 @@ static const RegisterAccessInfo crl_regs_info[] = {
-     }
- };
+@@ -55,90 +55,99 @@ static uint64_t crl_disable_prew(RegisterInfo *reg, uint64_t val64)
+     return 0;
+ }
  
--static void crl_reset_enter(Object *obj, ResetType type)
-+static void versal_crl_reset_enter(Object *obj, ResetType type)
+-static void crl_reset_dev(XlnxVersalCRL *s, DeviceState *dev,
+-                          bool rst_old, bool rst_new)
++static DeviceState **versal_decode_periph_rst(XlnxVersalCRLBase *s,
++                                              hwaddr addr, size_t *count)
  {
-     XlnxVersalCRL *s = XLNX_VERSAL_CRL(obj);
-     unsigned int i;
-@@ -308,7 +308,7 @@ static void crl_reset_enter(Object *obj, ResetType type)
+-    device_cold_reset(dev);
+-}
++    size_t idx;
++    XlnxVersalCRL *xvc = XLNX_VERSAL_CRL(s);
+ 
+-static void crl_reset_cpu(XlnxVersalCRL *s, ARMCPU *armcpu,
+-                          bool rst_old, bool rst_new)
+-{
+-    if (rst_new) {
+-        arm_set_cpu_off(arm_cpu_mp_affinity(armcpu));
+-    } else {
+-        arm_set_cpu_on_and_reset(arm_cpu_mp_affinity(armcpu));
++    *count = 1;
++
++    switch (addr) {
++    case A_RST_CPU_R5:
++        return xvc->cfg.rpu;
++
++    case A_RST_ADMA:
++        /* A single register fans out to all DMA reset inputs */
++        *count = ARRAY_SIZE(xvc->cfg.adma);
++        return xvc->cfg.adma;
++
++    case A_RST_UART0 ... A_RST_UART1:
++        idx = (addr - A_RST_UART0) / sizeof(uint32_t);
++        return xvc->cfg.uart + idx;
++
++    case A_RST_GEM0 ... A_RST_GEM1:
++        idx = (addr - A_RST_GEM0) / sizeof(uint32_t);
++        return xvc->cfg.gem + idx;
++
++    case A_RST_USB0:
++        return xvc->cfg.usb;
++
++    default:
++        /* invalid or unimplemented */
++        return NULL;
      }
  }
  
--static void crl_reset_hold(Object *obj, ResetType type)
-+static void versal_crl_reset_hold(Object *obj, ResetType type)
+-#define REGFIELD_RESET(type, s, reg, f, new_val, dev) {     \
+-    bool old_f = ARRAY_FIELD_EX32((s)->regs, reg, f);       \
+-    bool new_f = FIELD_EX32(new_val, reg, f);               \
+-                                                            \
+-    /* Detect edges.  */                                    \
+-    if (dev && old_f != new_f) {                            \
+-        crl_reset_ ## type(s, dev, old_f, new_f);           \
+-    }                                                       \
+-}
+-
+-static uint64_t crl_rst_r5_prew(RegisterInfo *reg, uint64_t val64)
++static uint64_t crl_rst_cpu_prew(RegisterInfo *reg, uint64_t val64)
  {
-     XlnxVersalCRL *s = XLNX_VERSAL_CRL(obj);
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
++    XlnxVersalCRLBase *s = XLNX_VERSAL_CRL_BASE(reg->opaque);
++    XlnxVersalCRLBaseClass *xvcbc = XLNX_VERSAL_CRL_BASE_GET_CLASS(s);
++    DeviceState **dev;
++    size_t i, count;
  
-@@ -325,20 +325,22 @@ static const MemoryRegionOps crl_ops = {
-     },
- };
+-    REGFIELD_RESET(cpu, s, RST_CPU_R5, RESET_CPU0, val64, s->cfg.cpu_r5[0]);
+-    REGFIELD_RESET(cpu, s, RST_CPU_R5, RESET_CPU1, val64, s->cfg.cpu_r5[1]);
+-    return val64;
+-}
++    dev = xvcbc->decode_periph_rst(s, reg->access->addr, &count);
  
--static void crl_init(Object *obj)
-+static void versal_crl_init(Object *obj)
+-static uint64_t crl_rst_adma_prew(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
+-    int i;
++    for (i = 0; i < 2; i++) {
++        bool prev, new;
++        uint64_t aff;
+ 
+-    /* A single register fans out to all ADMA reset inputs.  */
+-    for (i = 0; i < ARRAY_SIZE(s->cfg.adma); i++) {
+-        REGFIELD_RESET(dev, s, RST_ADMA, RESET, val64, s->cfg.adma[i]);
++        prev = extract32(s->regs[reg->access->addr / 4], i, 1);
++        new = extract32(val64, i, 1);
++
++        if (prev == new) {
++            continue;
++        }
++
++        aff = arm_cpu_mp_affinity(ARM_CPU(dev[i]));
++
++        if (new) {
++            arm_set_cpu_off(aff);
++        } else {
++            arm_set_cpu_on_and_reset(aff);
++        }
+     }
++
+     return val64;
+ }
+ 
+-static uint64_t crl_rst_uart0_prew(RegisterInfo *reg, uint64_t val64)
++static uint64_t crl_rst_dev_prew(RegisterInfo *reg, uint64_t val64)
  {
-     XlnxVersalCRL *s = XLNX_VERSAL_CRL(obj);
-+    XlnxVersalCRLBase *xvcb = XLNX_VERSAL_CRL_BASE(obj);
-     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-     int i;
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
++    XlnxVersalCRLBase *s = XLNX_VERSAL_CRL_BASE(reg->opaque);
++    XlnxVersalCRLBaseClass *xvcbc = XLNX_VERSAL_CRL_BASE_GET_CLASS(s);
++    DeviceState **dev;
++    bool prev, new;
++    size_t i, count;
  
--    s->reg_array =
-+    xvcb->reg_array =
-         register_init_block32(DEVICE(obj), crl_regs_info,
-                               ARRAY_SIZE(crl_regs_info),
-                               s->regs_info, s->regs,
-                               &crl_ops,
-                               XLNX_VERSAL_CRL_ERR_DEBUG,
-                               CRL_R_MAX * 4);
--    sysbus_init_mmio(sbd, &s->reg_array->mem);
-+    xvcb->regs = s->regs;
-+    sysbus_init_mmio(sbd, &xvcb->reg_array->mem);
+-    REGFIELD_RESET(dev, s, RST_UART0, RESET, val64, s->cfg.uart[0]);
+-    return val64;
+-}
++    dev = xvcbc->decode_periph_rst(s, reg->access->addr, &count);
+ 
+-static uint64_t crl_rst_uart1_prew(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
++    if (dev == NULL) {
++        return val64;
++    }
+ 
+-    REGFIELD_RESET(dev, s, RST_UART1, RESET, val64, s->cfg.uart[1]);
+-    return val64;
+-}
++    prev = s->regs[reg->access->addr / 4] & 0x1;
++    new = val64 & 0x1;
+ 
+-static uint64_t crl_rst_gem0_prew(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
++    if (prev == new) {
++        return val64;
++    }
+ 
+-    REGFIELD_RESET(dev, s, RST_GEM0, RESET, val64, s->cfg.gem[0]);
+-    return val64;
+-}
++    for (i = 0; i < count; i++) {
++        if (dev[i]) {
++            device_cold_reset(dev[i]);
++        }
++    }
+ 
+-static uint64_t crl_rst_gem1_prew(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
+-
+-    REGFIELD_RESET(dev, s, RST_GEM1, RESET, val64, s->cfg.gem[1]);
+-    return val64;
+-}
+-
+-static uint64_t crl_rst_usb_prew(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCRL *s = XLNX_VERSAL_CRL(reg->opaque);
+-
+-    REGFIELD_RESET(dev, s, RST_USB0, RESET, val64, s->cfg.usb);
+     return val64;
+ }
+ 
+@@ -244,27 +253,27 @@ static const RegisterAccessInfo crl_regs_info[] = {
+     },{ .name = "RST_CPU_R5",  .addr = A_RST_CPU_R5,
+         .reset = 0x17,
+         .rsvd = 0x8,
+-        .pre_write = crl_rst_r5_prew,
++        .pre_write = crl_rst_cpu_prew,
+     },{ .name = "RST_ADMA",  .addr = A_RST_ADMA,
+         .reset = 0x1,
+-        .pre_write = crl_rst_adma_prew,
++        .pre_write = crl_rst_dev_prew,
+     },{ .name = "RST_GEM0",  .addr = A_RST_GEM0,
+         .reset = 0x1,
+-        .pre_write = crl_rst_gem0_prew,
++        .pre_write = crl_rst_dev_prew,
+     },{ .name = "RST_GEM1",  .addr = A_RST_GEM1,
+         .reset = 0x1,
+-        .pre_write = crl_rst_gem1_prew,
++        .pre_write = crl_rst_dev_prew,
+     },{ .name = "RST_SPARE",  .addr = A_RST_SPARE,
+         .reset = 0x1,
+     },{ .name = "RST_USB0",  .addr = A_RST_USB0,
+         .reset = 0x1,
+-        .pre_write = crl_rst_usb_prew,
++        .pre_write = crl_rst_dev_prew,
+     },{ .name = "RST_UART0",  .addr = A_RST_UART0,
+         .reset = 0x1,
+-        .pre_write = crl_rst_uart0_prew,
++        .pre_write = crl_rst_dev_prew,
+     },{ .name = "RST_UART1",  .addr = A_RST_UART1,
+         .reset = 0x1,
+-        .pre_write = crl_rst_uart1_prew,
++        .pre_write = crl_rst_dev_prew,
+     },{ .name = "RST_SPI0",  .addr = A_RST_SPI0,
+         .reset = 0x1,
+     },{ .name = "RST_SPI1",  .addr = A_RST_SPI1,
+@@ -343,9 +352,9 @@ static void versal_crl_init(Object *obj)
+     sysbus_init_mmio(sbd, &xvcb->reg_array->mem);
      sysbus_init_irq(sbd, &s->irq);
  
-     for (i = 0; i < ARRAY_SIZE(s->cfg.cpu_r5); ++i) {
-@@ -377,11 +379,11 @@ static void crl_init(Object *obj)
+-    for (i = 0; i < ARRAY_SIZE(s->cfg.cpu_r5); ++i) {
+-        object_property_add_link(obj, "cpu_r5[*]", TYPE_ARM_CPU,
+-                                 (Object **)&s->cfg.cpu_r5[i],
++    for (i = 0; i < ARRAY_SIZE(s->cfg.rpu); ++i) {
++        object_property_add_link(obj, "rpu[*]", TYPE_ARM_CPU,
++                                 (Object **)&s->cfg.rpu[i],
+                                  qdev_prop_allow_set_link_before_realize,
+                                  OBJ_PROP_LINK_STRONG);
+     }
+@@ -371,10 +380,12 @@ static void versal_crl_init(Object *obj)
+                                  OBJ_PROP_LINK_STRONG);
+     }
+ 
+-    object_property_add_link(obj, "usb", TYPE_DEVICE,
+-                             (Object **)&s->cfg.gem[i],
+-                             qdev_prop_allow_set_link_before_realize,
+-                             OBJ_PROP_LINK_STRONG);
++    for (i = 0; i < ARRAY_SIZE(s->cfg.usb); ++i) {
++        object_property_add_link(obj, "usb[*]", TYPE_DEVICE,
++                                 (Object **)&s->cfg.usb[i],
++                                 qdev_prop_allow_set_link_before_realize,
++                                 OBJ_PROP_LINK_STRONG);
++    }
+ }
  
  static void crl_finalize(Object *obj)
+@@ -396,11 +407,13 @@ static const VMStateDescription vmstate_versal_crl = {
+ static void versal_crl_class_init(ObjectClass *klass, const void *data)
  {
--    XlnxVersalCRL *s = XLNX_VERSAL_CRL(obj);
-+    XlnxVersalCRLBase *s = XLNX_VERSAL_CRL_BASE(obj);
-     register_finalize_block(s->reg_array);
- }
- 
--static const VMStateDescription vmstate_crl = {
-+static const VMStateDescription vmstate_versal_crl = {
-     .name = TYPE_XLNX_VERSAL_CRL,
-     .version_id = 1,
-     .minimum_version_id = 1,
-@@ -391,29 +393,37 @@ static const VMStateDescription vmstate_crl = {
-     }
- };
- 
--static void crl_class_init(ObjectClass *klass, const void *data)
-+static void versal_crl_class_init(ObjectClass *klass, const void *data)
- {
--    ResettableClass *rc = RESETTABLE_CLASS(klass);
      DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
++    XlnxVersalCRLBaseClass *xvcc = XLNX_VERSAL_CRL_BASE_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
  
--    dc->vmsd = &vmstate_crl;
--
--    rc->phases.enter = crl_reset_enter;
--    rc->phases.hold = crl_reset_hold;
-+    dc->vmsd = &vmstate_versal_crl;
-+    rc->phases.enter = versal_crl_reset_enter;
-+    rc->phases.hold = versal_crl_reset_hold;
+     dc->vmsd = &vmstate_versal_crl;
+     rc->phases.enter = versal_crl_reset_enter;
+     rc->phases.hold = versal_crl_reset_hold;
++    xvcc->decode_periph_rst = versal_decode_periph_rst;
  }
  
--static const TypeInfo crl_info = {
--    .name          = TYPE_XLNX_VERSAL_CRL,
-+static const TypeInfo crl_base_info = {
-+    .name          = TYPE_XLNX_VERSAL_CRL_BASE,
-     .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(XlnxVersalCRL),
--    .class_init    = crl_class_init,
--    .instance_init = crl_init,
-+    .instance_size = sizeof(XlnxVersalCRLBase),
-+    .class_size    = sizeof(XlnxVersalCRLBaseClass),
-     .instance_finalize = crl_finalize,
-+    .abstract      = true,
-+};
-+
-+static const TypeInfo versal_crl_info = {
-+    .name          = TYPE_XLNX_VERSAL_CRL,
-+    .parent        = TYPE_XLNX_VERSAL_CRL_BASE,
-+    .instance_size = sizeof(XlnxVersalCRL),
-+    .instance_init = versal_crl_init,
-+    .class_init    = versal_crl_class_init,
- };
- 
- static void crl_register_types(void)
- {
--    type_register_static(&crl_info);
-+    type_register_static(&crl_base_info);
-+    type_register_static(&versal_crl_info);
- }
- 
- type_init(crl_register_types)
+ static const TypeInfo crl_base_info = {
 -- 
 2.43.0
 
