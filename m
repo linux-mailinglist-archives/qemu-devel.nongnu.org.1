@@ -2,109 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D64CBC16D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 15:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38943BC14E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 14:07:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v67Fz-0004M6-4E; Tue, 07 Oct 2025 08:57:31 -0400
+	id 1v66R7-00043k-Fz; Tue, 07 Oct 2025 08:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1v63kd-000612-OL; Tue, 07 Oct 2025 05:12:55 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1v63kb-0007pU-Hd; Tue, 07 Oct 2025 05:12:55 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5978JsGc022980;
- Tue, 7 Oct 2025 09:12:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=CmklnRSGrSW3rgBlejfIWpgbOBYTBFkJjF/Zay4eV
- jQ=; b=RZSFv1DoNGJFvjueUxTWo4lQ6JMHZnog8qw4yRjER4MaElJ6EG9ghsXRn
- 9PtNyXrec68vJaUiYvcYMG/M6Al0/BI3Mkox/av44mUeOVW3cw8ZL5aRv/yoCtpR
- uyB7SU8IeundkQLkdNR2bVeZZvD1pEAMs+oVwvb+hJcO8u406wOnAGNaxltsprrT
- QrI+vfhtyuPlKUMFHzZVjpwQPN0BGytlMYzmXDv16vfCiOKn8xjci8aYamVQtvUf
- YfX6glfhKoxgCIikuSFp7YY3Nc6vNe0zju1x3ih5uonqZCG4z31dq0ox20gOXLIb
- dotUUti3Q8wgxSBFQTbWvS6y34tbA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju3gx90h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Oct 2025 09:12:49 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5979Cjbr000893;
- Tue, 7 Oct 2025 09:12:49 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju3gx90e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Oct 2025 09:12:49 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5975hrUo028443;
- Tue, 7 Oct 2025 09:12:48 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49kewn2fk0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Oct 2025 09:12:47 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5979CijR58720658
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Oct 2025 09:12:44 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 08A422004B;
- Tue,  7 Oct 2025 09:12:44 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7B85820043;
- Tue,  7 Oct 2025 09:12:42 +0000 (GMT)
-Received: from vishalc-ibm.ibm.com (unknown [9.39.19.130])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  7 Oct 2025 09:12:42 +0000 (GMT)
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: npiggin@gmail.com, adityag@linux.ibm.com, milesg@linux.ibm.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: Vishal Chourasia <vishalc@linux.ibm.com>
-Subject: [PATCH] hw/ppc/pnv: Improve kernel/initrd load failure error messages
-Date: Tue,  7 Oct 2025 14:42:15 +0530
-Message-ID: <20251007091214.403430-2-vishalc@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v66R2-00043T-CF
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 08:04:52 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v66Qr-0002NK-RM
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 08:04:51 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-42421b1514fso2907241f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 05:04:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759838677; x=1760443477; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M7Mgd7EkPdKSfhCjuk7ndXTip3GHUcWefr6E/eQKgoA=;
+ b=ylSzixdF6MlYWsraeByrLgC48M4NjjOliXloVejhx+HHLSyftFLfzUK1O0cyWv3qix
+ mmWBeUNfN/l1Vj+WRnvp/mKR+BwxAet+kt3cYO83m8tFNDYB7aDuFJuhqvicYicDhuif
+ ASWQ6agmd0/qb1zFMsvGVJ5c+dqf4PAYvDlx9nvtDX1lsB3Mp51jh6u7R3J6Vu+MII2x
+ G2CDFm1lJEUE8FW1knBIgRwdE+GJSlD2AXlnch319h8SkflHe7RSJVjW9SLab0L0ZHxz
+ xJlaJbmZkqQIqhb98k+zzP+7zpY2fJXzJMlKJpJsJHzrjljXTYgmXfOOcJEa0zX1fdaF
+ mbGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759838677; x=1760443477;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M7Mgd7EkPdKSfhCjuk7ndXTip3GHUcWefr6E/eQKgoA=;
+ b=iIYx6s3it6k91KzErXo77aRmaBpDtQKypfokygM+EXDn1ZRi1gB+QyvQdIqF1TYfrK
+ uzlsutNiyBJ2dtVrF1w0FU41wqwvSu5si3w83rNpPBwyXxx8gnGlJe16eZJmnbJhZU5F
+ oG8vaTprmaa7mDMqC1JsrCGp8EEODtfgoq8ycF4XeqjeNU8LIb5xB/uFLG0BpHoA566+
+ UrkCm5Cw4sTle+5k5CWnJKS2GGKMhrDWotXsrd+MYeBqTqyF5w4Tc+46nu6R29CNEAW6
+ Hn17iHlIt2ynuQjIEFj/AJ/99OllLJEvwkCCg6u54jG1c2yQKy/3ygninx0xYcEst/NZ
+ YTmw==
+X-Gm-Message-State: AOJu0YyRUxgbZN0Np7oBtz+qz/bcdfnFf0+ZZns242Y2YwAg4zk9LNKG
+ DaGv+aDzT4h4Y8yFpMf77Yy0p9onDFmxljdjKFen8HhGvl1/Qh+irFC2Id1bSVU/+Fc=
+X-Gm-Gg: ASbGncto9mzlXYWNp6f2RxbmdPl/kkuntY4wXeNdmGHJWknL6Sq81jLTcYwhcyRodOU
+ ULZAT3TQotpIbC9ASnAFY9RGFBwjn8USB0wkCYbq/4imhS/VlPMYpszHln10dn+OY73jPLtQYeb
+ P7E7Aj/JiH7jy4+2BXvaJEJajn/W6NNcOAhZZEDJ27flWBBgzXXpPF2Kpn5iycBcoid6H+MQJcE
+ 448S9qQax0pATr4R9IitXj5iPDSupLLUFalIL2Lnc2gecH7D9888hbK94L2xNSne13+jIHtNCpD
+ lt8oR0KSNcG1sqtyDqvXPAdUsvbjWLMAXW/BgNkCSaYtdBx8TDmm4pPcD2p8LWiCqBL682U0V9R
+ Ld/zegJnkbnXP5CIvGEbm1QZfPXHhzqFm/Vr89SOLn1mIqE6hyLETCN0cZm+92A==
+X-Google-Smtp-Source: AGHT+IH4BiMrNErjv+gRrlQf6aUqwG3bGP+pBNdEfeHaYTAoXmejcUG6PyGlgOIDiHGMj4T7s+R82w==
+X-Received: by 2002:a05:6000:603:b0:3ea:6680:8fc4 with SMTP id
+ ffacd0b85a97d-42567139e59mr8727394f8f.8.1759838676767; 
+ Tue, 07 Oct 2025 05:04:36 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4255d8a6c49sm25357882f8f.3.2025.10.07.05.04.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Oct 2025 05:04:35 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 7DE0E605F4;
+ Tue, 07 Oct 2025 12:55:27 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Vladimir Lukianov <1844144@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 17/17] record/replay: fix race condition on
+ test_aarch64_reverse_debug
+Date: Tue,  7 Oct 2025 12:55:25 +0100
+Message-ID: <20251007115525.1998643-18-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251007115525.1998643-1-alex.bennee@linaro.org>
+References: <20251007115525.1998643-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAxOCBTYWx0ZWRfX+7oQIj/h66Fm
- kPjY0pzCc3kuuB/BZu5HQKjTJ009J4+Y+FYUAfyg/YFQliS8//XmXys0WxuMf4qh/0vT5X3ULED
- Pj6hJgYc0DuA2SNcdIxQG5FMflqYn1c+8myz+AIa0oTtwoXmIgW3/a+mMeSTzd7aMtrUBXrOR31
- CogFI9rbnzJFQbt4GbeJ78eOHtzW9OAkvAbbG8WzkbQIgHIRAEnldUl57kC/3COWQpkQfNROfTj
- C0xKOgFkGATQo3Fvr7l7HSH57CFmmw+afyjMVmPIqi8jhUie/yMLygSQ/tL5RSYeCXaNdVPc4gd
- pURUTzGagAZmZOID5OOHzotIF20eb+HJyaUOY2ZGv/fD58lc+cGrM7eKl40faDjC9DIrKsr1GY3
- VJpvmIo9gWaa8e0KHnaS+9PEBKdd9A==
-X-Authority-Analysis: v=2.4 cv=I4dohdgg c=1 sm=1 tr=0 ts=68e4d991 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=xOXCjFplVI8foJ9e8lsA:9
-X-Proofpoint-GUID: x9gxwmHsDYIBASOTquFEFz72KA19gcbr
-X-Proofpoint-ORIG-GUID: XeGaJVXY9hcx-yeJagLrTWXjZwU8w9bF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-06_07,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 suspectscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040018
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=vishalc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 07 Oct 2025 08:57:25 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,50 +103,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When QEMU fails to load the kernel or initrd image, it previously emitted
-a generic error message such as:
+From: Vladimir Lukianov <1844144@gmail.com>
 
-  qemu-system-ppc64: Could not load kernel 'vmlinux'
+Ensures EVENT_INSTRUCTION written to replay.bin before EVENT_SHUTDOWN_HOST_QMP
 
-This provides little context on why the failure occurred, which can make
-debugging difficult, especially for new users or when dealing with large
-images.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2921
+Signed-off-by: Vladimir Lukianov <1844144@gmail.com>
+Message-ID: <20250603125459.17688-1-1844144@gmail.com>
+[AJB: fix re-base file mode]
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-The new messages also include the configured size limits (in MiB) to help
-users verify that their image files are within acceptable bounds.
-
-Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
----
- hw/ppc/pnv.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index f0469cdb8b..dbecb721c1 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1084,6 +1084,10 @@ static void pnv_init(MachineState *machine)
-         if (kernel_size < 0) {
-             error_report("Could not load kernel '%s'",
-                          machine->kernel_filename);
-+            error_report(
-+                "Possible reasons: file not found, permission denied, or size "
-+                "exceeds the maximum supported limit (%ld MiB).",
-+                KERNEL_MAX_SIZE / 1024 / 1024);
-             exit(1);
-         }
-     }
-@@ -1096,6 +1100,10 @@ static void pnv_init(MachineState *machine)
-         if (pnv->initrd_size < 0) {
-             error_report("Could not load initial ram disk '%s'",
-                          machine->initrd_filename);
-+            error_report(
-+                "Possible reasons: file not found, permission denied, or size "
-+                "exceeds the maximum supported limit (%ld MiB).",
-+                INITRD_MAX_SIZE / 1024 / 1024);
-             exit(1);
-         }
-     }
+diff --git a/replay/replay.c b/replay/replay.c
+index a3e24c967ae..b2121788c1d 100644
+--- a/replay/replay.c
++++ b/replay/replay.c
+@@ -263,6 +263,8 @@ bool replay_has_interrupt(void)
+ 
+ void replay_shutdown_request(ShutdownCause cause)
+ {
++    replay_save_instructions();
++
+     if (replay_mode == REPLAY_MODE_RECORD) {
+         g_assert(replay_mutex_locked());
+         replay_put_event(EVENT_SHUTDOWN + cause);
+diff --git a/tests/functional/aarch64/test_reverse_debug.py b/tests/functional/aarch64/test_reverse_debug.py
+index 906f10aec55..ec3348c96d8 100755
+--- a/tests/functional/aarch64/test_reverse_debug.py
++++ b/tests/functional/aarch64/test_reverse_debug.py
+@@ -25,7 +25,6 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
+         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
+ 
+-    @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/2921")
+     def test_aarch64_virt(self):
+         self.set_machine('virt')
+         self.cpu = 'cortex-a53'
 -- 
-2.51.0
+2.47.3
 
 
