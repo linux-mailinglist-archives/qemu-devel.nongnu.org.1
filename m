@@ -2,59 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781FCBC0645
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 08:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A821BC081E
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 09:44:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v61Yr-0005rw-Vm; Tue, 07 Oct 2025 02:52:38 -0400
+	id 1v62Ly-0006eL-Jd; Tue, 07 Oct 2025 03:43:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1v61Yo-0005r8-5k; Tue, 07 Oct 2025 02:52:34 -0400
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1v61Ym-0001pN-3G; Tue, 07 Oct 2025 02:52:33 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 0C5BB61236;
- Tue,  7 Oct 2025 06:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EBBC4CEF7;
- Tue,  7 Oct 2025 06:52:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1759819945;
- bh=ljRIZcXVDsulZu38rOR6Abg5SbUHTniYuTY+SzLZI8g=;
- h=From:To:Cc:Subject:Date:From;
- b=iejNTuY4GggfYpfh21eBR5X5L1Qy0kK8hjhzrUyo7ePAhd0zZd7hC0GrwC2dG//Id
- GYQGREtX+98qKZbJROSjIRJ33PwVZIF56/5k0uGgjCDs7rAWBXziMrIvO5vwntJ8Qf
- dqX+/D/7WNHepyBxPSp0UnfU9zd6nec9FFdzDM+63gMq17pt51ovC/hS63I/0Lpmz/
- cHYBLjxL1/Ipkg5LVjVeAef0fRjE2VzT7M33pPCJY43OnK6iBUSkNNvp4pSQ86EH9P
- aLTvZzKA7UEQg4n0yIu7paPpLxNoHtkzXQR2lS5EM8riDVw/65NTp6mUw3Kcy6XLy+
- cg3d9Kx7pfCQg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1v61Yd-0000000H0MH-2HA0; Tue, 07 Oct 2025 08:52:23 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] scripts/ghes_inject.py: avoid long lines inside the script
-Date: Tue,  7 Oct 2025 08:52:11 +0200
-Message-ID: <5d75e5f2a9584d4c9235d5111b6402291ec8f616.1759819931.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.51.0
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1v62Lx-0006dy-6k
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 03:43:21 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1v62Lv-0006fU-7m
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 03:43:20 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-62f24b7be4fso10741343a12.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 00:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adacore.com; s=google; t=1759822997; x=1760427797; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Hi2+vqVRE+fas/Ib6/fubveYjHYqVt/mgNpODWXzoYc=;
+ b=XRqiFzFRoOVX6XpLKKCypgH0uqSHN2fbyBpn7nG3GPE43tWZTap8q9ct9MdM8vBwas
+ W/c7b4gfgATKXA5Go0fsbDodle+j1OlEpeyuGGafX7/vfUIsb+0xPwsHLULuoI+jHVfi
+ JaJRzaZ0XTjOzGij2/QeROvgUVmmRCiVAZAcF3wdlVk76C8hnbrvLLHgxIyoHpCrMZom
+ 9fHY3zH9MhF/5k+UhH93uEB5j2dTbJEgjo66y3S43MfT6E7t+gY0dM06QI1pqxy0k+/9
+ dEE7w5+4c/TIGV/KmjdNxqZExOeMQXPl2weZkF/cvbpksZgV0EaWG8k1rICEEKC1rS8k
+ UhfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759822997; x=1760427797;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Hi2+vqVRE+fas/Ib6/fubveYjHYqVt/mgNpODWXzoYc=;
+ b=v7f93MEeYBJ+9CBquUgE2skTwwgQUcijugelb5PuwVpCWPEzyfB5k+QhjXTNbA+sOU
+ P4NAg3NTeaPce9I/vFjEoCRvXG+pAcTS+y774DneFADhDM9pEbyuOvyHDartYfxNQ6HZ
+ idCsOhWvFSl6S4WhO9QJZufOap89W3Pkx4xGPD3XRg8DgDyzPqEHxkN/ACmi1KTeaDQH
+ j9webF/yS7SbMaZlVqg63GqRvEQc/PVuvt1+PDGIEULXbmIQfoswEpypofqwmNGujZXn
+ BKKUnr1UhQ8HQWeCXLKb9aW3uu09pZaHhxsqDb8mPZ2onL4Zu6uG6INy16v0CFJ4Wnun
+ LN2g==
+X-Gm-Message-State: AOJu0YyMtQY6i/0WgEv1C//FfkMtL+e3XkxPA1iGB6OqevprLvYzm+w8
+ uGaPf5CvkIWNBMET7vLIaIa9mbm4/tfmAeXw4KhMVh8kUQhxA+y3lFG93D0tAPrnf2FSYd09vb/
+ LfUeoCpXqjqmqmiwt/QwMKIMXSgdtk5aB7gYP7TMJpxeu7iBbvgIO6g==
+X-Gm-Gg: ASbGncv/TyJReaywaeWDyrDnj5ji+1xp8HBFRp4UJYxgLDaW93DDAMCwBpTu2SlXGiC
+ IvdxS7kW+rUXzC2BSoifarTtJb3vUv9tpR0rkhRpJvjJZFtZIYkWpiY7tOptPNZ8jP02dlKdcDz
+ oOh8zfqvNx+nFdV9Dg0j2S0xdWYuMTA6Q7lY/FMG16t9jm/EK2tUjlni1eUJLUZxUcrRbDE2+nk
+ jXvUn2XLs5CTN2PrD9UhgqH2IfJLUaWT5SuYn7rkg==
+X-Google-Smtp-Source: AGHT+IHcrS2SNeoodeVY/JoRFgr5GJopciR2XxRuFsWQyrQeDcNHG/pqpXCoYGwbI0bE3+R5uPtemg9IquU/7H6SHvQ=
+X-Received: by 2002:a05:6402:2110:b0:636:66f8:77f6 with SMTP id
+ 4fb4d7f45d1cf-639348cb71emr15821792a12.5.1759822996592; Tue, 07 Oct 2025
+ 00:43:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
- envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20250903075721.77623-1-chigot@adacore.com>
+In-Reply-To: <20250903075721.77623-1-chigot@adacore.com>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Tue, 7 Oct 2025 09:43:05 +0200
+X-Gm-Features: AS18NWAuGQ1z_57zbiqkVav3OdMubM9Y1F6fmtOgRMULYsU5g7pBLeRKiKGBL8k
+Message-ID: <CAJ307EgN_3MUsnQfCsS9C3ioKUNQSDM5hjXzUYxbn1ewLRv-6w@mail.gmail.com>
+Subject: Re: [PATCH 0/5] block/vvfat: introduce "size" option
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, qemu-block@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=chigot@adacore.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,200 +92,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are some lines that are too long, mostly at argparse,
-causing checkpatch warnings, plus a couple pylint disable
-lines.
+On Wed, Sep 3, 2025 at 9:57=E2=80=AFAM Cl=C3=A9ment Chigot <chigot@adacore.=
+com> wrote:
+>
+> The main goal of this series is to introduce a new option "size" within
+> the vvfat backend (patch 5). It allows more control over SD cards' size.
+> The value for "Number of Heads" and "Sectors per track" are based on SD
+> specifications Part 2.
+>
+> This series also includes minor patches:
+>  - patch 1 introduces another option to remove the Master Boot Record
+>    (this is mandatory for QNX)
+>  - patch 2-4 are minor improvements easing the introducing of "size"
+>    option
+>
+> This was tested on with a aarch64-linux kernel taken from
+> functional/aarch64/test-virt and on aarch64-qnx over raspi4b with a
+> workaround, not included here (the SD bus must be associated to the EMMC2
+> port instead of through GPIOs).
 
-Make them honor 80 columns limit.
+Gentle ping for this series.
 
-No functional changes.
+TIA
+Cl=C3=A9ment
 
-While here, add a space after comma on help lines displaying
-possible alternatives.
-
-Requested-by: "Michael S. Tsirkin" <mst@redhat.com>
-Closes: https://lore.kernel.org/qemu-devel/20251005082027-mutt-send-email-mst@kernel.org/
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- scripts/arm_processor_error.py | 35 +++++++++++++++++++++-------------
- scripts/ghes_inject.py         |  8 ++++----
- scripts/qmp_helper.py          | 23 +++++++++++++---------
- 3 files changed, 40 insertions(+), 26 deletions(-)
-
-diff --git a/scripts/arm_processor_error.py b/scripts/arm_processor_error.py
-index 73d069f070d4..e4b6e11822af 100644
---- a/scripts/arm_processor_error.py
-+++ b/scripts/arm_processor_error.py
-@@ -80,12 +80,14 @@
- [Hardware Error]:    error_type: 0x08: bus error
- [Hardware Error]:    error_info: 0x00000080d6460fff
- [Hardware Error]:     transaction type: Generic
--[Hardware Error]:     bus error, operation type: Generic read (type of instruction or data request cannot be determined)
-+[Hardware Error]:     bus error, operation type: Generic read
-+                      (type of instruction or data request cannot be determined)
- [Hardware Error]:     affinity level at which the bus error occurred: 1
- [Hardware Error]:     processor context corrupted
- [Hardware Error]:     the error has been corrected
- [Hardware Error]:     PC is imprecise
--[Hardware Error]:     Program execution can be restarted reliably at the PC associated with the error.
-+[Hardware Error]:     Program execution can be restarted reliably at the PC
-+                      associated with the error.
- [Hardware Error]:     participation type: Local processor observed
- [Hardware Error]:     request timed out
- [Hardware Error]:     address space: External Memory Access
-@@ -102,12 +104,14 @@
- [Hardware Error]:    register context type: AArch64 EL1 context registers
- [Hardware Error]:    00000000: 00000000 00000000
- [Hardware Error]:   Vendor specific error info has 5 bytes:
--[Hardware Error]:    00000000: 13 7b 04 05 01                                   .{...
-+[Hardware Error]:    00000000: 13 7b 04 05 01                             .{...
- [Firmware Warn]: GHES: Unhandled processor error type 0x02: cache error
- [Firmware Warn]: GHES: Unhandled processor error type 0x04: TLB error
- [Firmware Warn]: GHES: Unhandled processor error type 0x08: bus error
--[Firmware Warn]: GHES: Unhandled processor error type 0x10: micro-architectural error
--[Firmware Warn]: GHES: Unhandled processor error type 0x14: TLB error|micro-architectural error
-+[Firmware Warn]: GHES: Unhandled processor error type 0x10:
-+                 micro-architectural error
-+[Firmware Warn]: GHES: Unhandled processor error type 0x14:
-+                 TLB error|micro-architectural error
- """
- 
- import argparse
-@@ -171,10 +175,10 @@ def __init__(self, subparsers):
- 
-         parser = subparsers.add_parser("arm", description=self.DESC)
- 
--        arm_valid_bits = ",".join(self.arm_valid_bits.keys())
--        flags = ",".join(self.pei_flags.keys())
--        error_types = ",".join(self.pei_error_types.keys())
--        pei_valid_bits = ",".join(self.pei_valid_bits.keys())
-+        arm_valid_bits = ", ".join(self.arm_valid_bits.keys())
-+        flags = ", ".join(self.pei_flags.keys())
-+        error_types = ", ".join(self.pei_error_types.keys())
-+        pei_valid_bits = ", ".join(self.pei_valid_bits.keys())
- 
-         # UEFI N.16 ARM Validation bits
-         g_arm = parser.add_argument_group("ARM processor")
-@@ -193,7 +197,7 @@ def __init__(self, subparsers):
-                            help="Indicates if the processor is running or not")
-         g_arm.add_argument("--psci", "--psci-state",
-                            type=lambda x: int(x, 0),
--                           help="Power State Coordination Interface - PSCI state")
-+                           help="Power State Coordination Interface state")
- 
-         # TODO: Add vendor-specific support
- 
-@@ -208,9 +212,12 @@ def __init__(self, subparsers):
- 
-         # UEFI N.17 Integer values
-         g_pei.add_argument("-m", "--multiple-error", nargs="+",
--                        help="Number of errors: 0: Single error, 1: Multiple errors, 2-65535: Error count if known")
-+                        help="Number of errors: "
-+                             "0: Single error, 1: Multiple errors, "
-+                             "2-65535: Error count if known")
-         g_pei.add_argument("-e", "--error-info", nargs="+",
--                        help="Error information (UEFI 2.10 tables N.18 to N.20)")
-+                        help="Error information "
-+                             "(UEFI 2.10 tables N.18 to N.20)")
-         g_pei.add_argument("-p", "--physical-address",  nargs="+",
-                         help="Physical address")
-         g_pei.add_argument("-v", "--virtual-address",  nargs="+",
-@@ -219,7 +226,9 @@ def __init__(self, subparsers):
-         # UEFI N.21 Context
-         g_ctx = parser.add_argument_group("Processor Context")
-         g_ctx.add_argument("--ctx-type", "--context-type", nargs="*",
--                        help="Type of the context (0=ARM32 GPR, 5=ARM64 EL1, other values supported)")
-+                        help="Type of the context "
-+                             "(0=ARM32 GPR, 5=ARM64 EL1, "
-+                             "other values supported)")
-         g_ctx.add_argument("--ctx-size", "--context-size", nargs="*",
-                         help="Minimal size of the context")
-         g_ctx.add_argument("--ctx-array", "--context-array", nargs="*",
-diff --git a/scripts/ghes_inject.py b/scripts/ghes_inject.py
-index 9a235201418b..1a2d60e9e16f 100755
---- a/scripts/ghes_inject.py
-+++ b/scripts/ghes_inject.py
-@@ -8,7 +8,7 @@
- Handle ACPI GHESv2 error injection logic QEMU QMP interface.
- """
- 
--import argparse
-+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
- import sys
- 
- from arm_processor_error import ArmProcessorEinj
-@@ -26,9 +26,9 @@ def main():
-     """Main program"""
- 
-     # Main parser - handle generic args like QEMU QMP TCP socket options
--    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
--                                     usage="%(prog)s [options]",
--                                     description=EINJ_DESC)
-+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter,
-+                            usage="%(prog)s [options]",
-+                            description=EINJ_DESC)
- 
-     g_options = parser.add_argument_group("QEMU QMP socket options")
-     g_options.add_argument("-H", "--host", default="localhost", type=str,
-diff --git a/scripts/qmp_helper.py b/scripts/qmp_helper.py
-index c1e7e0fd80ce..18b99c01cd79 100755
---- a/scripts/qmp_helper.py
-+++ b/scripts/qmp_helper.py
-@@ -198,7 +198,8 @@ def bit(b):
-     def data_add(data, value, num_bytes):
-         """Adds bytes from value inside a bitarray"""
- 
--        data.extend(value.to_bytes(num_bytes, byteorder="little"))  # pylint: disable=E1101
-+        # pylint: disable=E1101
-+        data.extend(value.to_bytes(num_bytes, byteorder="little"))
- 
-     def dump_bytearray(name, data):
-         """Does an hexdump of a byte array, grouping in bytes"""
-@@ -416,12 +417,14 @@ def _connect(self):
-     def argparse(parser):
-         """Prepare a parser group to query generic error data"""
- 
--        block_status_bits = ",".join(qmp.BLOCK_STATUS_BITS.keys())
--        error_severity_enum = ",".join(qmp.ERROR_SEVERITY.keys())
--        validation_bits = ",".join(qmp.VALIDATION_BITS.keys())
--        gedb_flags_bits = ",".join(qmp.GEDB_FLAGS_BITS.keys())
-+        block_status_bits = ", ".join(qmp.BLOCK_STATUS_BITS.keys())
-+        error_severity_enum = ", ".join(qmp.ERROR_SEVERITY.keys())
-+        validation_bits = ", ".join(qmp.VALIDATION_BITS.keys())
-+        gedb_flags_bits = ", ".join(qmp.GEDB_FLAGS_BITS.keys())
-+
-+        # pylint: disable=E1101
-+        g_gen = parser.add_argument_group("Generic Error Data")
- 
--        g_gen = parser.add_argument_group("Generic Error Data")  # pylint: disable=E1101
-         g_gen.add_argument("--block-status",
-                            help=f"block status bits: {block_status_bits}")
-         g_gen.add_argument("--raw-data", nargs="+",
-@@ -439,9 +442,10 @@ def argparse(parser):
-                            help="Time when the error info was collected")
-         g_gen.add_argument("--precise", "--precise-timestamp",
-                            action='store_true',
--                           help="Marks the timestamp as precise if --timestamp is used")
-+                           help="if --timestamp is used, timestamp is precise")
-         g_gen.add_argument("--gedb-flags",
--                           help=f"General Error Data Block flags: {gedb_flags_bits}")
-+                           help="General Error Data Block flags: "
-+                                f"{gedb_flags_bits}")
- 
-     def set_args(self, args):
-         """Set the arguments optionally defined via self.argparse()"""
-@@ -501,8 +505,9 @@ def set_args(self, args):
-                 self.validation_bits |= self.VALIDATION_BITS["timestamp"]
- 
-         if args.gen_err_valid_bits:
-+            gen_err_valid_bits = args.gen_err_valid_bits
-             self.validation_bits = util.get_choice(name="validation",
--                                                   value=args.gen_err_valid_bits,
-+                                                   value=gen_err_valid_bits,
-                                                    choices=self.VALIDATION_BITS)
- 
-     def __init__(self, host, port, debug=False):
--- 
-2.51.0
-
+> Cl=C3=A9ment Chigot (5):
+>   vvfat: introduce no-mbr option
+>   vvfat: move fat_type check prior to size setup
+>   vvfat: add a define for SECTOR_SIZE
+>   vvfat: move size parameters within driver structure
+>   vvfat: add support for "size" options
+>
+>  block/vvfat.c | 279 ++++++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 213 insertions(+), 66 deletions(-)
+>
+> --
+> 2.34.1
+>
 
