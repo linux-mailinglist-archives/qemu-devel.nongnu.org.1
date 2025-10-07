@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A83FBC1B92
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D082BC1AF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:19:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Pl-0005YJ-CD; Tue, 07 Oct 2025 10:11:42 -0400
+	id 1v68Pt-0005bP-Jn; Tue, 07 Oct 2025 10:11:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Pj-0005Xe-5x
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:39 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1v68Po-0005ai-Ld
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:44 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68PZ-00026D-Jp
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:37 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3ee64bc6b85so4910281f8f.3
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:11:28 -0700 (PDT)
+ id 1v68Pd-00026R-8j
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:44 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-46e4ad36541so68178785e9.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846287; x=1760451087; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846288; x=1760451088; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7zJ9Hjqexkc3PQ97BESrWYieFpkrh4kVSJJTaYltMT4=;
- b=Xk4o0RzHe4t+IghTsUUpOxyun6IuJzo7EPs64WTVKJ99rjywWxIhAyZ3gya/odDAAO
- 0iJbo+9b+BG6wZpXgGvt4t/cjNkB7pdxGUzArjlVAgLWVjwvRRQvy6tkWsczvrT62dsk
- MlOxSOG4uVU5kuuQREWLsPZB9G3tVc73PniMAGo5m7WjsIkjZSed1JcX7tHLdO100Pwr
- 0Hn4yqY+eP6zd5dflhArKTVE0kJeVSHI7a0xlMq/rfx0+Snar7u9vxS/6CgkXC0jOClj
- zSaxZCi/L/z46jM6frOxhOuw7KLhyPR9wEpxGO3VmvDa6KAGnBhepJR34lWztcfeuyo6
- /dZQ==
+ :reply-to; bh=oX2FCvIB4I7ri29/FyaOfLvbFk1Cxz3ulaGtZkX8IS8=;
+ b=MxT7ICH3iFBIwWfEvYy4A1Z6P5JlWx7adplQMGAclQVkUWr1O3B859geX16hTU+QM7
+ 0TpIEwqhW0BKCmWwYRbBqqKuEsbVs8ORAqiFpv4Ey40aI+mEWtb8jb6tTvqP8Ze8nWSR
+ 7eumgRxcoe1cmI+Wd9O0PSMrXHsXfQ3DPx+XEijs6MtCs8+YUpAY5hwp4nlLXX5p1ci6
+ OM/rErsJAPr8WHTOfNWnikmAVwZH8RHoskPub7Cm7s6l251Hx/JkjNfV0EqxGpFa96cL
+ qmJKe/bcbpCmCCJsNuEQkA+3c2nn2Oa+qR5udxiu3DsdvmalfM7T/2f3/Ti1sYe5kPIA
+ kjqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846287; x=1760451087;
+ d=1e100.net; s=20230601; t=1759846288; x=1760451088;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7zJ9Hjqexkc3PQ97BESrWYieFpkrh4kVSJJTaYltMT4=;
- b=Yzs/nutJ2rS1nCe4t4GLhFy8YriJfBl3l+EomXTVo2DW41Blxbhzch6mFenxZY4+IH
- yS/57WKyz5awKLZL++KE3kJnTsUKVSFQcOgO7zbnqT1s3Q7biUcy6S1qJ9QXHyXe/ag1
- 9Pby+SXDMO3VaRZ+I3tqFkK3Mj3fAbQp36LfCdTg8Gm+y+On6j1aZA6UCMrN181V2aKj
- 0sG7M7g8eYykGROQNdglqnrXT4YmzYPGNj9OjOtwpBSLhg4ldwbpD5KndId/0C9UEk+B
- jMwMmvHtuvT/IjDavc5FzSH+S6Ol3cIbc0MpTlZqmLRRyEvbfrcg87uukljU8bK03Nik
- 5mFA==
-X-Gm-Message-State: AOJu0Yz4asDaxfQ+AhgpX0EAc5OfkzW59kq8al+RDQ4MuF/XWIIN+y48
- bx7OrTrscZx3K3pXh3Zxl3025VG1yN0ZR2LkA6o44ikCG8W4+/h88HTFUv1dSKJFqfjFLiFCwXr
- Xqh4k
-X-Gm-Gg: ASbGncv6SpNVqs17C/g9bMPsbQ3jT11oUfaixTAbxOMjVPOs/TRTS8pVA6IL8NRnJNZ
- cukJf27zvv6lcqcQaJtwI1PEuYyj67PQhmU8+IfUkg7sSB9GyJL1gm5MczbAylQsvZiUp5G8RlP
- 3Jo59EcbNlucjVEoyTh8HILq2yhJrAdUzKJ8yazS23ZZEm2IHsNy3sR+4YdM0kND4xCOaTkSwQN
- PZ98T+YAC7+unJ14ixQHawapLfVh2uHel6FadSzaVXrFpn8ylQ66ehElqMkOZJJfdH1WcY1BU+l
- jtkIk7zaD0pL3F4mH/NaaHTtQ3ZCZvKDLy51+8LMVt+g2zFwNhiQSLyziBIvkgVo8F4o5zvhxMH
- lhdQO+M5js1w0osT1ka5hm42TYxR0N88C/kVJhfA7OmVkk88IQpQ6ldNHHkFZcRp6nuo=
-X-Google-Smtp-Source: AGHT+IE+tQLHRS57fSmzAgzshH4ytNxuKQPIJOnZcp6B0UP6bGlhfe7yBgC/UbBubxzf9rG/rwKqfQ==
-X-Received: by 2002:a05:6000:310a:b0:425:7f11:3159 with SMTP id
- ffacd0b85a97d-4257f113337mr4455839f8f.63.1759846286671; 
- Tue, 07 Oct 2025 07:11:26 -0700 (PDT)
+ bh=oX2FCvIB4I7ri29/FyaOfLvbFk1Cxz3ulaGtZkX8IS8=;
+ b=g3+aHSREK357/FiqbHZTjkfhH9V6b143JqQnwzhphqg2HxnFXXu5sBQ1qocLZQxSbJ
+ vcQWLbjPNta/I2O7UIW3gzxkKed9sP1r1JRKTQDN9flendliwVKNnzcdDc8iZE3AVA8C
+ HwEFtoWWh6LCgob4mwryQRFUB0X8Z5IBivqkkg1ntzXKf212bLJLb+nh7SBIdFJTifVG
+ M2XX8JyZ7BQJejMbHn/W04wdf8aJ4dC/IVHpiI35dem4sHnYIozV0UJUi/NE0fwDQ/qf
+ oVwe34KmncsSEpkGL5DvToaDqJTOaTGfJ3aC3Agnddq50jsrTo46cXRrsbLtLVXuufJv
+ UuTw==
+X-Gm-Message-State: AOJu0YzU+q/xwivYzeCftMFUjzYVqmwEqnbSWWJBKt9ONrfv+TDbmhc9
+ 4jRpIJE1JU8dTWqavLwEjQPBxoLxFYfXwr8pMrbDFUs7DYQ8g/cMFCCArgTADeKFDGTAnS09tyR
+ 5nF1F
+X-Gm-Gg: ASbGnctFPG4P0AgkfNCC33Nbc9H58sGJ+ryXlNuxIuj7Llg6MprRzqft1A8zXcpeRJ8
+ G4xjCws3hcjUl1clsqkAOWtbDvmJ4Bn9oSCzmV200x1lYMDl9d/AhahT0K3OseHQl72IXnY8tSE
+ 6nqT+Ev7Tv7aa5SEzFgGP8As+gLkD5sA+FEaW5JXKUkmMu7dFQmlEc1NKqpoKvFkO4If61XGN3P
+ lH0H4p9vNxqajrjujcY3Pt0pWYtFEauOLTQoJ/CP6S0j9CNZN+niQP6g9CTRIn3QI8UV+lUwjjS
+ xjEckY6VRW9EVo2TvrDZyylUxmMelORmXEgQSneJbNMzbIPJ72Q2jguJinvYW7b/oBXXhjalMgn
+ JeeqlkNh4HnRXRFA8sn0b78aIF10t1pGV6NI0ZLvyOjqWBXQKtKiHuePa
+X-Google-Smtp-Source: AGHT+IFO9sYj0iJIOkTbH5ZUnYWrBPt7MVtPkfd7jkiS09x3M/ybUg6EPQKUSZd/QTXP8/c8ol6zxg==
+X-Received: by 2002:a05:600c:4e0e:b0:46e:5df3:190d with SMTP id
+ 5b1f17b1804b1-46f9d694446mr47402235e9.11.1759846287886; 
+ Tue, 07 Oct 2025 07:11:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.25
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:11:25 -0700 (PDT)
+ Tue, 07 Oct 2025 07:11:26 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/62] target/arm: Don't set HCR.RW for AArch32 only CPUs
-Date: Tue,  7 Oct 2025 15:10:21 +0100
-Message-ID: <20251007141123.3239867-2-peter.maydell@linaro.org>
+Subject: [PULL 02/62] hw/arm/xlnx-versal: split the xlnx-versal type
+Date: Tue,  7 Oct 2025 15:10:22 +0100
+Message-ID: <20251007141123.3239867-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,38 +98,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 39ec3fc0301 we fixed a bug where we were not implementing
-HCR_EL2.RW as RAO/WI for CPUs where EL1 doesn't support AArch32.
-However, we got the condition wrong, so we now set this bit even on
-CPUs which have no AArch64 support at all.  This is wrong because the
-AArch32 HCR register defines this bit as RES0.
+From: Luc Michel <luc.michel@amd.com>
 
-Correct the condition we use for forcing HCR_RW to be set.
+Split the xlnx-versal device into two classes, a base, abstract class
+and the existing concrete one. Introduce a VersalVersion type that will
+be used across several device models when versal2 implementation is
+added.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3128
-Fixes: 39ec3fc0301 ("target/arm: HCR_EL2.RW should be RAO/WI if EL1 doesn't support AArch32")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+This is in preparation for versal2 implementation.
+
+Signed-off-by: Luc Michel <luc.michel@amd.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250925115723.1293233-1-peter.maydell@linaro.org
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250926070806.292065-2-luc.michel@amd.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/hw/arm/xlnx-versal-version.h | 15 ++++++++++++++
+ include/hw/arm/xlnx-versal.h         | 12 ++++++++++-
+ hw/arm/xlnx-versal.c                 | 31 +++++++++++++++++++++-------
+ 3 files changed, 50 insertions(+), 8 deletions(-)
+ create mode 100644 include/hw/arm/xlnx-versal-version.h
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index aa730addf2f..792a47a9c50 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3742,7 +3742,8 @@ static void do_hcr_write(CPUARMState *env, uint64_t value, uint64_t valid_mask)
-     value &= valid_mask;
+diff --git a/include/hw/arm/xlnx-versal-version.h b/include/hw/arm/xlnx-versal-version.h
+new file mode 100644
+index 00000000000..c4307d1304a
+--- /dev/null
++++ b/include/hw/arm/xlnx-versal-version.h
+@@ -0,0 +1,15 @@
++/*
++ * AMD Versal versions
++ *
++ * Copyright (c) 2025 Advanced Micro Devices, Inc.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_ARM_XLNX_VERSAL_VERSION_H
++#define HW_ARM_XLNX_VERSAL_VERSION_H
++
++typedef enum VersalVersion {
++    VERSAL_VER_VERSAL,
++} VersalVersion;
++
++#endif
+diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+index 05ed641b6b6..1f92e314d6c 100644
+--- a/include/hw/arm/xlnx-versal.h
++++ b/include/hw/arm/xlnx-versal.h
+@@ -2,6 +2,7 @@
+  * Model of the Xilinx Versal
+  *
+  * Copyright (c) 2018 Xilinx Inc.
++ * Copyright (c) 2025 Advanced Micro Devices, Inc.
+  * Written by Edgar E. Iglesias
+  *
+  * This program is free software; you can redistribute it and/or modify
+@@ -35,9 +36,12 @@
+ #include "hw/misc/xlnx-versal-cfu.h"
+ #include "hw/misc/xlnx-versal-cframe-reg.h"
+ #include "target/arm/cpu.h"
++#include "hw/arm/xlnx-versal-version.h"
++
++#define TYPE_XLNX_VERSAL_BASE "xlnx-versal-base"
++OBJECT_DECLARE_TYPE(Versal, VersalClass, XLNX_VERSAL_BASE)
  
-     /* RW is RAO/WI if EL1 is AArch64 only */
--    if (!cpu_isar_feature(aa64_aa32_el1, cpu)) {
-+    if (arm_feature(env, ARM_FEATURE_AARCH64) &&
-+        !cpu_isar_feature(aa64_aa32_el1, cpu)) {
-         value |= HCR_RW;
-     }
+ #define TYPE_XLNX_VERSAL "xlnx-versal"
+-OBJECT_DECLARE_SIMPLE_TYPE(Versal, XLNX_VERSAL)
+ 
+ #define XLNX_VERSAL_NR_ACPUS   2
+ #define XLNX_VERSAL_NR_RCPUS   2
+@@ -137,6 +141,12 @@ struct Versal {
+     } cfg;
+ };
+ 
++struct VersalClass {
++    SysBusDeviceClass parent;
++
++    VersalVersion version;
++};
++
+ /* Memory-map and IRQ definitions. Copied a subset from
+  * auto-generated files.  */
+ 
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index a42b9e7140b..4da656318f6 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -2,6 +2,7 @@
+  * Xilinx Versal SoC model.
+  *
+  * Copyright (c) 2018 Xilinx Inc.
++ * Copyright (c) 2025 Advanced Micro Devices, Inc.
+  * Written by Edgar E. Iglesias
+  *
+  * This program is free software; you can redistribute it and/or modify
+@@ -920,7 +921,7 @@ static void versal_unimp(Versal *s)
+ 
+ static void versal_realize(DeviceState *dev, Error **errp)
+ {
+-    Versal *s = XLNX_VERSAL(dev);
++    Versal *s = XLNX_VERSAL_BASE(dev);
+     qemu_irq pic[XLNX_VERSAL_NR_IRQS];
+ 
+     versal_create_apu_cpus(s);
+@@ -955,9 +956,9 @@ static void versal_realize(DeviceState *dev, Error **errp)
+                                         &s->lpd.rpu.mr_ps_alias, 0);
+ }
+ 
+-static void versal_init(Object *obj)
++static void versal_base_init(Object *obj)
+ {
+-    Versal *s = XLNX_VERSAL(obj);
++    Versal *s = XLNX_VERSAL_BASE(obj);
+ 
+     memory_region_init(&s->fpd.apu.mr, obj, "mr-apu", UINT64_MAX);
+     memory_region_init(&s->lpd.rpu.mr, obj, "mr-rpu", UINT64_MAX);
+@@ -975,7 +976,7 @@ static const Property versal_properties[] = {
+                       TYPE_CAN_BUS, CanBusState *),
+ };
+ 
+-static void versal_class_init(ObjectClass *klass, const void *data)
++static void versal_base_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+@@ -984,16 +985,32 @@ static void versal_class_init(ObjectClass *klass, const void *data)
+     /* No VMSD since we haven't got any top-level SoC state to save.  */
+ }
+ 
+-static const TypeInfo versal_info = {
+-    .name = TYPE_XLNX_VERSAL,
++static void versal_class_init(ObjectClass *klass, const void *data)
++{
++    VersalClass *vc = XLNX_VERSAL_BASE_CLASS(klass);
++
++    vc->version = VERSAL_VER_VERSAL;
++}
++
++static const TypeInfo versal_base_info = {
++    .name = TYPE_XLNX_VERSAL_BASE,
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(Versal),
+-    .instance_init = versal_init,
++    .instance_init = versal_base_init,
++    .class_init = versal_base_class_init,
++    .class_size = sizeof(VersalClass),
++    .abstract = true,
++};
++
++static const TypeInfo versal_info = {
++    .name = TYPE_XLNX_VERSAL,
++    .parent = TYPE_XLNX_VERSAL_BASE,
+     .class_init = versal_class_init,
+ };
+ 
+ static void versal_register_types(void)
+ {
++    type_register_static(&versal_base_info);
+     type_register_static(&versal_info);
+ }
  
 -- 
 2.43.0
