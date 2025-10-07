@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557A1BC1ABC
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A3CBC1BE0
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:30:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Qt-0005zs-7E; Tue, 07 Oct 2025 10:12:51 -0400
+	id 1v68Qr-0005yL-La; Tue, 07 Oct 2025 10:12:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68QO-0005oC-UC
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:21 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1v68QO-0005oB-DY
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:20 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Q7-0002Dr-Ci
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:20 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-46e3af7889fso39182075e9.2
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:00 -0700 (PDT)
+ id 1v68Q8-0002EF-S4
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:19 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46e33b260b9so60038915e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846318; x=1760451118; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846319; x=1760451119; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BnQEngb+xMAbIiQWnWTFC1lI0X2a1vA1Y0cyG5j8dEU=;
- b=mHT1kPp2Ou4qU/dwqh/nS4OBNa+jYAZ22dY2dtepocPtUFJQkZ/3hnL4hdP6p+l6Hs
- Lqltd+r1gEPzH+hmdY6uA75HvtvIbEhtw2Pho1QZvwEBnRsLkJUbv9ZcZ6b1xDVJlSTu
- MB/tqJqbKpou1+SEkHrfHeRh9sXxR3NekvfiAudHBeZnGhd0jfCpxZS0i7oA6BoKNGjN
- ZX+/NRkKCLzJXV/IDGYx4/ZEgljhvQiHxavkqlZbXhQtd0lQ65dCEU4gJPG+HhI7Vzy7
- 28Yd2/jn/IfQvbV/fMgp356pmEHtRoLQ7ZjQA5RqyJHRzjq8Iz1mpTfmdM+H7tcf1DTU
- oBrg==
+ :reply-to; bh=XkB6uDpGjX9Nw8CrYgllpEhXvBnPXYlsb/ScNLCSbdo=;
+ b=rhn7A/6Dyoe5zB6CVyXSpDXcs9GR91iZQ7fmtDzSSH+Kgw18Zg0fhraDDjdZc+mmwR
+ xGUEBk6J8WJZSnkhUp7BNwbyi7o9ZSsH/DVFeH69AuPifzN9h62U/iJTBg+P9o6mhOX9
+ pvOTsjHGdUH8ARbLn+UR/hkmmvQjHdZFy6sxvlyvjlFw1ylqk7DPJLQHMTJdh70y142H
+ 831haz+MJNQA2E3wKNESWM/HF1Wl/8zCBrz9eYS69Iy5V2Z78s5swe6r+4kiAo80+GUF
+ WIT61vVgPEAA9ZDqPI/P4gT4tf5xogilaARyd6EdqvMOYt36sLzM5fmGnZ6mrinwGTT9
+ 4zqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846318; x=1760451118;
+ d=1e100.net; s=20230601; t=1759846319; x=1760451119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BnQEngb+xMAbIiQWnWTFC1lI0X2a1vA1Y0cyG5j8dEU=;
- b=kbW8vpDrpGozAEiccSGX6J36tGeMlOwkQe/ugPoA/LvQJTezdztucFAVmK0vFNLjR8
- K2CCvheFk5wNCU2JU8sq3qvz9CTn6zfFP9Ci1GDWvZH+wZJSoXaZ9Y4wPaND3yl84nqH
- DTkPXPyZ90Pg96UUO/9BgEks9jiacYqaH/5VF2MgAygl47LoWy7gADXffP2+5mbWsd94
- F+sanU3auT6jOC55zmWfhnFNCVq9/Ty4l+oK0nqzgPC1Q8zMSt1CAKikR16ac8AlHv+w
- psdA+WapplYFAjrvpx6F4wNEi4jhAqY6gmbnRTO+g7ejKPZl+RM6sTwtdoIEQk35VkMq
- aNyw==
-X-Gm-Message-State: AOJu0YyBAvTZTR8Sq1MU3uI6mGEs2kk5hwn2NtoAOCK9Nk0gM1pyGRp9
- iKcFX6QbRsFk8QrjVoypsLCvPLeZdZpCjIPw7C+6Irhqlwo6wIyr/kt+uoak06GN7TTSzXZ0KMT
- vk0oM
-X-Gm-Gg: ASbGncs4UcRoW4qGencPzxWbLUXNEGuqv0e/DQmwxp9TEgvXmV87a/r/lkHaBItO/D6
- J/eRg3HXWc4i65xrHXFTzSkoIyYJq35bywfGGwhMAY82Hj3cRoLi1qd95Dwd6ogSb6DNrGHxiDQ
- 1slriS9YjwGBqfySxxO24Qp09kaeNuMx20drYZUYO0okGMFXx52BV5l28OiJTJcE1dRrutQAxki
- NJZx83l2IKt7H6gpelVksG3YDKPn4kC15P2/KZXceqNzAisEfN4ZXX5fNbvRMK9og31clel29Fy
- Lnc+oa35ylIepZfnlPQrbpZ0q/kJbWLnsBiag/ihC9dNO5I28PNF29e8CpQMvgHiGohPsJj1sCE
- CeCHSO4RN+9PRY9U1nP4KeXl3D9Un409Il5hPGFSMfNrSXuheT23fgeMM
-X-Google-Smtp-Source: AGHT+IGpnhwxktCIRDyXwHARcfsZQ4ZUHkymeJpoTNcuDW4JymWumkpkU7++iVEMUSolW1oebpRscw==
-X-Received: by 2002:a05:600c:540c:b0:458:c094:8ba5 with SMTP id
- 5b1f17b1804b1-46e71124468mr111965285e9.12.1759846317693; 
- Tue, 07 Oct 2025 07:11:57 -0700 (PDT)
+ bh=XkB6uDpGjX9Nw8CrYgllpEhXvBnPXYlsb/ScNLCSbdo=;
+ b=GLTe64M/HWPetgl2LyJ3S2eQmIY5RwNNOCcwFt3jpuLt3p7z9WRn8f1wToPaptx/XE
+ Njn3m4njt6YbzmZ4HN1Cf6zqlHgRGW60ZKvZzUdT4RViX1OR7hjxXJJChenGPr60GED9
+ 6RwyQrwJdgUB0axRtz2qe/w2rlJTeG/RVAoSunClzZ/SSdjE/1lEoleYXQRnB8HXpXeA
+ MMP/qeaotk5S9vE3b8acaqhqU1mK6vXOyTbSZTboMLmpp03JMtwSlNSFNSCN0l9ozylC
+ egvBg4b49gzuRkBZEFPkFwvSm2bfgi5IQDzVa+aJILGfNRpmiXBOxFtN/n634yPQ2SoB
+ bGDA==
+X-Gm-Message-State: AOJu0Yy+40y7/yBRPP5xtXoyD9/CVJSEZhbHl90/ggLcofsvzN5ZZRa9
+ c0qgcZhAJPS8zlDQkrXopmpZhqXzlUvRVSWzI0QHQ2Xi8MrKwX12uIZ8pWYMjC9x1W3bd6fnReS
+ ZmoTa
+X-Gm-Gg: ASbGncuaaTMElo2t8bbgH6paDqJpxA/e/s/yqWrdqk5cAunNAVltd8sQCPc4tBkM0XF
+ zV4p4Kq/W5W79IKKnxV1+ycQ/br2mnfebTKhvG6sWFBqJKrwgcU52/dKUjEjg9/CnpodytbR+LK
+ F0wi4tqCqryky3KNt+bTQy1aS7CYNnKts0ai4Vd+2azLieiwQ2Q9GWnNcCQNqeakGpnrH9qgohy
+ /TugZNOBy2ScQhDdk0QTtGPHt6XnZNUjzhV8mjJQ8uUYpHex4YaXpf83HGdBcx3VxoSa79KUB36
+ 6k4t91dRh0Ti4metHIbm2QdnMnJx+sTSXv2UV220e71kPOtC7AufF23akAEz5Urm7V/zJNEsiSq
+ XMRAEw0upOkynkeAjlGBtinojc+W9oN5FY3h460CHmO+ojtQJ0NuBlVl0
+X-Google-Smtp-Source: AGHT+IGM3o0PjzPmKOIS+x0cdjzl/QrDe8zYhz0Ixs0QxDucwnZHzxtnRhNbBOJuLFqOevh3iKOi0g==
+X-Received: by 2002:a05:600c:8506:b0:46e:1fb9:5497 with SMTP id
+ 5b1f17b1804b1-46e7113f6e2mr119672595e9.18.1759846318678; 
+ Tue, 07 Oct 2025 07:11:58 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.56
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:11:56 -0700 (PDT)
+ Tue, 07 Oct 2025 07:11:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/62] hw/arm/xlnx-versal: add the versal_get_num_cpu accessor
-Date: Tue,  7 Oct 2025 15:10:50 +0100
-Message-ID: <20251007141123.3239867-31-peter.maydell@linaro.org>
+Subject: [PULL 31/62] hw/misc/xlnx-versal-crl: remove unnecessary include
+ directives
+Date: Tue,  7 Oct 2025 15:10:51 +0100
+Message-ID: <20251007141123.3239867-32-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,73 +101,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-Add the versal_get_num_cpu accessor to the Versal SoC to retrieve the
-number of CPUs in the SoC. Use it in the xlnx-versal-virt machine.
+Drop unused include directives from xlnx-versal-crl.c
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250926070806.292065-30-luc.michel@amd.com
+Message-id: 20250926070806.292065-31-luc.michel@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/xlnx-versal.h | 1 +
- hw/arm/xlnx-versal-virt.c    | 7 ++++---
- hw/arm/xlnx-versal.c         | 8 ++++++++
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ hw/misc/xlnx-versal-crl.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
-index 39bc414c85c..7bdf6dab629 100644
---- a/include/hw/arm/xlnx-versal.h
-+++ b/include/hw/arm/xlnx-versal.h
-@@ -80,6 +80,7 @@ void versal_ospi_create_flash(Versal *s, int flash_idx, const char *flash_mdl,
- qemu_irq versal_get_reserved_irq(Versal *s, int idx, int *dtb_idx);
- hwaddr versal_get_reserved_mmio_addr(Versal *s);
+diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
+index 08ff2fcc24f..f288545967a 100644
+--- a/hw/misc/xlnx-versal-crl.c
++++ b/hw/misc/xlnx-versal-crl.c
+@@ -1,16 +1,13 @@
+ /*
+  * QEMU model of the Clock-Reset-LPD (CRL).
+  *
+- * Copyright (c) 2022 Advanced Micro Devices, Inc.
++ * Copyright (c) 2022-2025 Advanced Micro Devices, Inc.
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  *
+  * Written by Edgar E. Iglesias <edgar.iglesias@amd.com>
+  */
  
-+int versal_get_num_cpu(VersalVersion version);
- int versal_get_num_can(VersalVersion version);
- int versal_get_num_sdhci(VersalVersion version);
- 
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index ad7b3135a67..274a7ef9889 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -346,12 +346,13 @@ static void versal_virt_machine_finalize(Object *obj)
- static void versal_virt_machine_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-+    int num_cpu = versal_get_num_cpu(VERSAL_VER_VERSAL);
- 
-     mc->desc = "Xilinx Versal Virtual development board";
-     mc->init = versal_virt_init;
--    mc->min_cpus = XLNX_VERSAL_NR_ACPUS + XLNX_VERSAL_NR_RCPUS;
--    mc->max_cpus = XLNX_VERSAL_NR_ACPUS + XLNX_VERSAL_NR_RCPUS;
--    mc->default_cpus = XLNX_VERSAL_NR_ACPUS + XLNX_VERSAL_NR_RCPUS;
-+    mc->min_cpus = num_cpu;
-+    mc->max_cpus = num_cpu;
-+    mc->default_cpus = num_cpu;
-     mc->no_cdrom = true;
-     mc->auto_create_sdcard = true;
-     mc->default_ram_id = "ddr";
-diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index f1b704175ff..2e28b807d71 100644
---- a/hw/arm/xlnx-versal.c
-+++ b/hw/arm/xlnx-versal.c
-@@ -1815,6 +1815,14 @@ hwaddr versal_get_reserved_mmio_addr(Versal *s)
-     return map->reserved.mmio_start;
- }
- 
-+int versal_get_num_cpu(VersalVersion version)
-+{
-+    const VersalMap *map = VERSION_TO_MAP[version];
-+
-+    return map->apu.num_cluster * map->apu.num_core
-+        + map->rpu.num_cluster * map->rpu.num_core;
-+}
-+
- int versal_get_num_can(VersalVersion version)
- {
-     const VersalMap *map = VERSION_TO_MAP[version];
+ #include "qemu/osdep.h"
+-#include "qapi/error.h"
+-#include "qemu/log.h"
+-#include "qemu/bitops.h"
+ #include "migration/vmstate.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/sysbus.h"
 -- 
 2.43.0
 
