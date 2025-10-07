@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBEEBC1B83
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C540BC1BFB
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:31:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68WR-0004Mq-Qf; Tue, 07 Oct 2025 10:18:35 -0400
+	id 1v68VL-0002VB-U6; Tue, 07 Oct 2025 10:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v68UP-0001xf-MR
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:16:34 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v68Uf-000249-Gv
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:16:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v68UK-0003Nt-VF
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:16:29 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v68Ua-0003PN-KP
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:16:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759846580;
+ s=mimecast20190719; t=1759846598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=5pxsBLHftUJ/CuLmv0yWEDHTmId9lPM0aAdADtsX+Bc=;
- b=TRFcMjmd1feP0aBigWeJ09gsd6B4vk89lypB3mVomuTpVhKKNmPzI65MDhAHpcbiZCtI1j
- 0xSHcKysZYEsWE2q47HheIiiDBYt9WYyqoE8O3oCGVGHsQJRFymNdbOmNVV+gbMAVtEVEB
- HnKO5vdw3kGGwxWGNxTG2CxyjJ0ef8g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=s3quiFgIla2njN+Wx4krX3jwOSMURvXmNv4PTCmYN6E=;
+ b=Jo3bGBHNsvSzIhNI9wniEd7wiQBP52xnlBDVF9quZNoQOMockEwOlrHYlDYm+W+Rev/dIN
+ 7mOevdtTKbquPz0LY04tVC6tYkj5AJczo69JgcuWP3w14y7nSvOGehQEsngRdlTB/sDP1z
+ oZl5oRZyVnG9rjZpnM8UZnHZKz4NHmE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-YCmRkvUoMdS6DBckZ88vrg-1; Tue,
- 07 Oct 2025 10:16:16 -0400
-X-MC-Unique: YCmRkvUoMdS6DBckZ88vrg-1
-X-Mimecast-MFC-AGG-ID: YCmRkvUoMdS6DBckZ88vrg_1759846573
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-9oI0KsKQMHC0ZdDHT8IQfg-1; Tue,
+ 07 Oct 2025 10:16:27 -0400
+X-MC-Unique: 9oI0KsKQMHC0ZdDHT8IQfg-1
+X-Mimecast-MFC-AGG-ID: 9oI0KsKQMHC0ZdDHT8IQfg_1759846577
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 97E07180034A; Tue,  7 Oct 2025 14:16:11 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 67A001800583; Tue,  7 Oct 2025 14:16:16 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.108])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 575BE19560A2; Tue,  7 Oct 2025 14:16:06 +0000 (UTC)
+ id 4EA9419560B1; Tue,  7 Oct 2025 14:16:11 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org
@@ -50,21 +51,24 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jamin Lin <jamin_lin@aspeedtech.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
  Joel Stanley <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 0/5] aspeed: machine deprecations and test improvements
-Date: Tue,  7 Oct 2025 16:15:59 +0200
-Message-ID: <20251007141604.761686-1-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Patrick Williams <patrick@stwcx.xyz>
+Subject: [PATCH 1/5] aspeed: Deprecate the sonorapass-bmc machine
+Date: Tue,  7 Oct 2025 16:16:00 +0200
+Message-ID: <20251007141604.761686-2-clg@redhat.com>
+In-Reply-To: <20251007141604.761686-1-clg@redhat.com>
+References: <20251007141604.761686-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -83,32 +87,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The 'sonorapass-bmc' machine represents a lab server that never
+entered production. There are no functional tests for this machine
+which makes harder to determine when something becomes deprecated or
+unused.
 
-The first three patches deprecate machines that have no functional
-tests and can be replaced by more generic machines (evbs) with
-command-line options for I2C device.
+Since the machine does not rely on any specific device models, it can
+be replaced by the 'ast2500-evb' machine using the 'fmc-model' option
+to specify the flash type. The I2C devices connected to the board can
+be defined via the QEMU command line.
 
-The last two patches improve the functional tests for the ast2700
-machines to save CI resources.
+Cc: Patrick Williams <patrick@stwcx.xyz>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ docs/about/deprecated.rst | 9 +++++++++
+ hw/arm/aspeed.c           | 1 +
+ 2 files changed, 10 insertions(+)
 
-Thanks,
-
-C.
-
-Cédric Le Goater (5):
-  aspeed: Deprecate the sonorapass-bmc machine
-  aspeed: Deprecate the qcom-dc-scm-v1-bmc and qcom-firework-bmc
-    machines
-  aspeed: Deprecate the fp5280g2-bmc machine
-  test/functional/aarch64: Remove test for the ast2700a0-evb machine
-  test/functional/aarch64: Split the ast2700a1-evb OpenBMC boot test
-
- docs/about/deprecated.rst                     | 27 +++++++++++++++++++
- hw/arm/aspeed.c                               |  4 +++
- .../functional/aarch64/test_aspeed_ast2700.py | 21 ++++-----------
- 3 files changed, 36 insertions(+), 16 deletions(-)
-
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 67e527740c0e..ce8fe9ac1be7 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -285,6 +285,15 @@ and serves as the initial engineering sample rather than a production version.
+ A newer revision, A1, is now supported, and the ``ast2700a1-evb`` should
+ replace the older A0 version.
+ 
++Arm ``sonorapass-bmc`` machine (since 10.2)
++'''''''''''''''''''''''''''''''''''''''''''
++
++The ``sonorapass-bmc`` machine represents a lab server that never
++entered production. Since it does not rely on any specific device
++models, it can be replaced by the ``ast2500-evb`` machine using the
++``fmc-model`` option to specify the flash type. The I2C devices
++connected to the board can be defined via the QEMU command line.
++
+ RISC-V default machine option (since 10.0)
+ ''''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 58cfbc713794..d3a0c81f454f 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1552,6 +1552,7 @@ static void aspeed_machine_sonorapass_class_init(ObjectClass *oc,
+     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+ 
+     mc->desc       = "OCP SonoraPass BMC (ARM1176)";
++    mc->deprecation_reason = "use 'ast2500-evb' instead";
+     amc->soc_name  = "ast2500-a1";
+     amc->hw_strap1 = SONORAPASS_BMC_HW_STRAP1;
+     amc->fmc_model = "mx66l1g45g";
 -- 
 2.51.0
 
