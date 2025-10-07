@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D9DBC1BB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EF7BC1B59
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:24:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68R4-00068r-7o; Tue, 07 Oct 2025 10:13:03 -0400
+	id 1v68RH-0006Ow-Vj; Tue, 07 Oct 2025 10:13:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Qu-00061k-SY
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:52 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1v68Qx-00063i-FU
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:55 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Qe-0002Pk-Il
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:52 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-46e6674caa5so32553755e9.0
+ id 1v68Qe-0002Q2-50
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:55 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-46e2e363118so57814125e9.0
  for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846351; x=1760451151; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846352; x=1760451152; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=atUnk8Przy2b+arpo+tXXmWSEKJkyumG1wRWNZoP8OE=;
- b=fIrQMsZ7B+VWI8aiq7Jz7vfsuAZ/NdZ4TsrhKCz+GQKLr50B4Sc1AOV230GZJ3W/ya
- AbP0EWHe/uvH/jedfSEmIPOq12i6BIgOnFpObj2vaTgAGh5sY/O1jZjtDF42wCWhOwgd
- yA0wFGuAYyVykRhbLoHgulBqVyawTfHokgl1WZbPnU7IYr9n40PW6C1NYMoxRK0Qd6c8
- mhvW6mELK+ehyZKcr43b7sajHMLT2JJKg7aHUxdCzFNxt/5wv9++bithByeD/TyALc4V
- 1biP3LjIhMcmL4jTN/BI+4mRYoipk9WpIZpB2xI7DXxa6VctZUrLbYae6eTHhFHVQnlA
- kgjw==
+ :reply-to; bh=OVtMeI/FVDsMoa56+s5FLsgV/tUeeQKVrnHYRfnwDuw=;
+ b=ktyWOyQgDFSv7fG7Whh1jQnTQBE4oBxXPN4tPLU3tGpMPmPbSrrMOHpF3Cfvn49SxS
+ Ij29x1T38On1oJtwfyiA2ocWzSQ4UpqW3zDaLPG2JSVBVWKcdiedemjKtm66m15REO+M
+ zRYhemD6SMwHl8GT5MBGuYRzkL8/c2qTBPaetbjUAt5qHwXtqCLy1/9+koO5zpkLAoEa
+ UezfzeEfaaYJZ9ZE55VuRGScbihAcYsCiGUWDbhJlJyVVIDIAJUg33oJ+/mc8bdlpDca
+ 0Dl1WJi9lgluPzMbG/X7Iig1gunsV/oWxMY7QZ9j4hmvP3bgSMCawNBdgCXbR5bPpAFd
+ /U+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846351; x=1760451151;
+ d=1e100.net; s=20230601; t=1759846352; x=1760451152;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=atUnk8Przy2b+arpo+tXXmWSEKJkyumG1wRWNZoP8OE=;
- b=p00vqHY8AftTXHPBueuOm5vfNr2Cz4aaJZFGUPLJBlr5rxXinbQfAnbog4diJ0Wirv
- 3AbYlJrVqqKikBDbkoB32AzKr1SDEyIT8SK1c3V8vubNkP0cnADJrwDPXWrsaLVuITbu
- UB1vxeHhWIC50reqVag2Eu/OKl4WDfqgLACi/+lXyTl6ShdU3wcJd2vITJZRj6TSz2u6
- DGzgwO/R1revTCSVZLqkZM1oY4gUoPuz4LF7rVsbyo01GkcptiE0Ap/EcQvAzRSYpIg/
- MdMtG7vTVUuP2IGFnqb04+rgrNds2bzEFBDukS/YNHR5vr0I17Gt6Qmnt12hTV8qB6vQ
- wKhQ==
-X-Gm-Message-State: AOJu0YxTjN+WhXefqTxmTb6ZuS5PQe/qf8YgPcWQD/B3sP4grZ/kDaK/
- lGtqWpPdaGCGU6cV49StTUReqOdMYsra5tbUcMvDE/p41rMPe37gaQmWroKgxWu3d6NZY3Q9gAd
- DAKhZ
-X-Gm-Gg: ASbGncsxPYBtdnp6duppBLajKCNBoMzcBsORg2q1pQGoquz9ptniFwxlnmT/q2lwktI
- ftLNSQojw363KTQE7yejaqIU7qxL3GstYScAb+u5zZAaxje6wxQ/VGvcvzWZp42Ou9fTK+Y+TFM
- B37mrMxj/g7GzGmM92qQc6lMYjcmQU9NMQkjkOhvv3fy0bRAW/3xSs1rihAROyRdUc6Sl7C6XI6
- CUj3LsT+9ynUSpgd0ztaHRdVxM5NBD3zW54a2cq6t83vWxidNY/KQdcTNXxjmHoHQ2fOm+iCpJC
- 9W6ZRIAk9YtIvP+KbAdRNPs1zer7EP2CddwbB7HjczGFE6SGlpaMzLLKajx6b9CnITP0+1YI+pz
- 2mMpF1iYN8PiXdgiQJ+7PAyTQH81pakD9p6kGUBz3fQqe9jTaUG3RUbCu
-X-Google-Smtp-Source: AGHT+IEOPWv3oJj22F8on6skrvRXwY16CItP4EJDC6+qlZMFzk/44Z5dotgiF37NjRo8b7xl6Neyzg==
-X-Received: by 2002:a7b:cc06:0:b0:46e:7dbf:6cc2 with SMTP id
- 5b1f17b1804b1-46fa296e763mr16273705e9.8.1759846351428; 
- Tue, 07 Oct 2025 07:12:31 -0700 (PDT)
+ bh=OVtMeI/FVDsMoa56+s5FLsgV/tUeeQKVrnHYRfnwDuw=;
+ b=THJrkctgKtWc8+xKQ/YCMN5dhFboxzWRfCp7p8FR1sqBbtlCF7ShFvwNBTDrC3+xrm
+ 7Tmu+mkfeo0hhu0BXoSndKcQ195gOmIhb+xhmLhwrV+glfy1gbU7Nj8WhPCAnfNCwf7e
+ iJvdDLjFdamVRaIsbaGcC0u5iYcTO2keqGAIpKWh0HqbcguHwE6DAjryUSiAxNNWzuSJ
+ sy1ntC4L9bVCZIrqysFW9c5sYcZQNRsu94gVdVz4u4i4EasoaL40T676Sk119+aKn0oQ
+ vfC8IugvQSJdzEE0zvwvYuFgSeubFWPiqX4j+Ojgy/ikQZZUaGAV7pDokRTu//iId8vi
+ yzeQ==
+X-Gm-Message-State: AOJu0YwoDwwFeSAGvsIQ6xO6EQA2LPvlMyeIS5SExLh+hCIPMWCxTnf+
+ MVGWv/VeBnY+RvhVl4nFjYsRcKzXlXMo3S8nqdF4h2byi2otuB7QCSAmwUJqksRksU1L8th0wb2
+ LakG5
+X-Gm-Gg: ASbGncvcQDmoXNxkFpbm8YZ/ZyO88W60JcVOZzMNiIIAfHdd0OHBgDXxiT5Q2EsnDto
+ ZYGIjURl8evkkl5cn4MqZDEa/GWdzJm2NUR27c8kF2swVsheZvSlpfKmU2i7942h0Roig78bKSb
+ 54ln25t7OyZAa7/HH/ndhTo0nL9ZUEkFwLColHxA4J4nCXXOtSckO8xCK6LzIbLVipphBaaj2dF
+ eRvLw8QHwTrTxOSW2FRn6RyBXwN0186Yuyx34FqB7sjtobNKIAP+gxcHlJZrShkfNY7DU8jf+he
+ rwfeh0pA58fjhKhL5h2bjX8C5qMB7Ad2m4ghQtdPXXT5AjGzC8T77n5PlanOdb0B9VdwwFsEhnq
+ O3j6WjldavqfMDQzAeegSh1/XhogSOg9OFrCb6pF1b+NWRbxuwUOmgmmX+oudH8mlxCM=
+X-Google-Smtp-Source: AGHT+IGPChO3zUgyERnDqITOyfwu41DlyKmV0Gwkofj4cBJ1zn/P/vrMW/e6MdLks8SsU5HgtbPKow==
+X-Received: by 2002:a05:600c:540c:b0:458:c094:8ba5 with SMTP id
+ 5b1f17b1804b1-46e71124468mr111984995e9.12.1759846352318; 
+ Tue, 07 Oct 2025 07:12:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.30
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:12:30 -0700 (PDT)
+ Tue, 07 Oct 2025 07:12:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 61/62] target/arm: Implement APPSAA
-Date: Tue,  7 Oct 2025 15:11:21 +0100
-Message-ID: <20251007141123.3239867-62-peter.maydell@linaro.org>
+Subject: [PULL 62/62] target/arm: Enable FEAT_RME_GPC2 for -cpu max with x-rme
+Date: Tue,  7 Oct 2025 15:11:22 +0100
+Message-ID: <20251007141123.3239867-63-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,32 +99,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This bit allows all spaces to access memory above PPS.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250926001134.295547-10-richard.henderson@linaro.org
+Message-id: 20250926001134.295547-11-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/ptw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/tcg/cpu64.c        | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 236c3a9569b..e03657f309e 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -408,9 +408,10 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
-      * GPC Priority 3: Secure, Realm or Root address exceeds PPS.
-      * R_CPDSB: A NonSecure physical address input exceeding PPS
-      * does not experience any fault.
-+     * R_PBPSH: Other address spaces have fault suppressed by APPSAA.
-      */
-     if (paddress & ~pps_mask) {
--        if (pspace == ARMSS_NonSecure) {
-+        if (pspace == ARMSS_NonSecure || FIELD_EX64(gpccr, GPCCR, APPSAA)) {
-             return true;
-         }
-         goto fault_fail;
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 6b04c96c8c4..1aa0a6e4c39 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -120,6 +120,7 @@ the following architecture extensions:
+ - FEAT_RASv1p1 (RAS Extension v1.1)
+ - FEAT_RDM (Advanced SIMD rounding double multiply accumulate instructions)
+ - FEAT_RME (Realm Management Extension) (NB: support status in QEMU is experimental)
++- FEAT_RME_GPC2 (RME Granule Protection Check 2 Extension)
+ - FEAT_RNG (Random number generator)
+ - FEAT_RPRES (Increased precision of FRECPE and FRSQRTE)
+ - FEAT_S2FWB (Stage 2 forced Write-Back)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 90b6c0ebb0e..8c617fe37b2 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -159,7 +159,8 @@ static void cpu_arm_set_rme(Object *obj, bool value, Error **errp)
+ {
+     ARMCPU *cpu = ARM_CPU(obj);
+ 
+-    FIELD_DP64_IDREG(&cpu->isar, ID_AA64PFR0, RME, value);
++    /* Enable FEAT_RME_GPC2 */
++    FIELD_DP64_IDREG(&cpu->isar, ID_AA64PFR0, RME, value ? 2 : 0);
+ }
+ 
+ static void cpu_max_set_l0gptsz(Object *obj, Visitor *v, const char *name,
 -- 
 2.43.0
 
