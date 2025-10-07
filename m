@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C28BC1AD6
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A725DBC1BAA
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:27:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68R8-00069p-Pw; Tue, 07 Oct 2025 10:13:06 -0400
+	id 1v68R3-00068h-7E; Tue, 07 Oct 2025 10:13:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68R1-000685-4G
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:59 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1v68Qt-00060w-Ly
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:51 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Qg-0002Of-1g
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:58 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-46e4f2696bdso76077955e9.0
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:33 -0700 (PDT)
+ id 1v68Qc-0002P0-9U
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:51 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e3a50bc0fso51605195e9.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846348; x=1760451148; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846349; x=1760451149; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=N9YvFJw1BE7TLxHV/uM9H0ZKT4t2vSS9XAmGq0QeqZQ=;
- b=gHELE98e8CW99EXgZd63l+bo5MPShYtoe6H9LzjoGJdYp1DDqfbYNKABZMvz2PCWxf
- h8nzmW54lcKNEwZvZ1pVxjtszra5RdDt/rtxrY0m8Ho79mLsi1dMkGI7t8hdjtGa4JqF
- TU3bnm/O48RnDERKNm11tJhDSpMGR0eDMHzqBbdwUUueLLw50LyO9Zmg0euLkJlpRdSa
- NooWHs1OyeWHcHKL09gJoCD0FSNJBk75KNzj5SBGUtKNXqUERGuThwAz3LGlLI6R+dNM
- 3Hw2kVLVZlejOBTrJ7ktc8+5snsy/jrSgAkf3lpUp3uYrWhDAbR4/TP+KymwUmX4gF1H
- 8eqQ==
+ :reply-to; bh=C37HhRfgSBySWdsamOj7MZINphxZR6Xh1rWMZf7fW/Q=;
+ b=B7QJHG3x5h6waKMhtH/SO9Bsv341uLYCQ5OcvegXVkPY2h9vUp/dsWPt+sRxj6R1XJ
+ 9txAcXOLdSngRcRPtfPwMDRdBmvYlT08/1rUvIAqULHeqq6Jl+EUSKFjp1UCHmZ3Oht1
+ xxjvFMfmfsJu42OQIYEJHvS8JK47Eir95hAB4qZ+Wt6/8bX02IPyi46hMP8FjBbB0zGi
+ ND4kyuDYw9iDsJuuleQHj8cnA2SmFDMVRLk03Un50VgXG5nGYEYDy3GXynH3xH2SEI4G
+ kX+pHzMvrj4KtIUtFaQ0/FWbngoN/sHack1/0TMooeK9V03c/9EZyZevMDydyIz5gu8w
+ jauw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846348; x=1760451148;
+ d=1e100.net; s=20230601; t=1759846349; x=1760451149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N9YvFJw1BE7TLxHV/uM9H0ZKT4t2vSS9XAmGq0QeqZQ=;
- b=DgSXhYRh319EnUjT89WfspKNlMgGJeoMjdwXvl+H1jkDylTFQlqygdsHlUnuiWfEwp
- RJ3Fn3eVbXzLsjCoFODdlasJIsXST118qgOD80jcgD8R0cADuuK9TmHyVTfoptJR6Dwv
- jPK5mkMXcO7yujyXhfKUgD+h5FJbe1kL0h27x4mlkQF8gemh2Mstt3QCGx9OwJMSixDi
- qLT5uhGIySiJM18LnUvqkSR5gurePOCpfmvNYfmhth9WqtkmQW3ypGWseRpTWEOwyvAs
- vIjNfOWv8JYRnohnw9gKuonwGCj6nYZa5oT+zZysy3VV1SkyfcJ4YVyPIALH1td3u6H6
- Cpfg==
-X-Gm-Message-State: AOJu0Ywrxv2xVI4gZ+6G1JACEpRaxCegJ3MdwMSwzSaASNmCC3PfqcRD
- wpdfgONPuubaNczBA/oV0XMXyGT1OhlvF8bHXex0ItapG/tx2z8gHmDeHIMLgh7CA9d88HEVo5s
- CP4FI
-X-Gm-Gg: ASbGncs2jQ2RTGFcScY6PFd3FVE1OSUxYuW9NMGO37yfv8MJ+cY2P4NMGnMSQNn0chu
- ApmwtWQBztvh1/2Q6xHfx4FoWQ+SauWez+KiDVRw2evBywZYMF5AnLhAulehr7iDIBqAcHQTXnm
- 2iXe+u0zTCBv5BazmgMXc+SOoIzS4baCuyvXVDcH4UDz/J86MEocewjZPvABp6pIWMFxnMiqsKe
- +necIqamGB0wkinGkcYw8H2rdE2Az8Wb4so73JUGsD/Ira7Kl6zRTchwEIK6Ja1ijzCldBMR/Pi
- iBJSyI1gNnVFzygo479xQgykj238+LHVToLqS/yvPdrtidRcbCKMcp76B2XTrvN6tCS7Xan2COC
- VF8QbjrAjEPmXeVkKoXvm3vNkw95qBAQtzYr4KWonqau0RsYD3YyMBY+2
-X-Google-Smtp-Source: AGHT+IEgAuJ/94BqGnKnWob05mGXwKVoMbqedG/jCpJQJNfef7ZTg2xWX7SwI/J/qkcpi9v/KVik5w==
-X-Received: by 2002:a05:600c:8409:b0:46e:5aac:54f9 with SMTP id
- 5b1f17b1804b1-46e7115c89fmr120915525e9.37.1759846347723; 
- Tue, 07 Oct 2025 07:12:27 -0700 (PDT)
+ bh=C37HhRfgSBySWdsamOj7MZINphxZR6Xh1rWMZf7fW/Q=;
+ b=EldvkRyZ0r4vzHOfHwX3TuMGKH0j6Fr5Q3RhlzTlHM3QfZLEyX8e7DDKtpnwfYSWTz
+ BymymHTbAAKiO0fQpXrV5nMtUh4QT4qk1/+uExkIcduqgQuX0oZv762RyPspbDXI6V89
+ EIQTLyUyDQLgFKU8Zxv56ZnfPHuymyxAID2vby+W+2LfLbox82QglxLu9O4R/DJGvmiy
+ 3qfvb8Jbnvp/4OtOOtwMufubeQHAE/mV/qjGHwnklLqKs9rthcIEQAwJ6zcxDeG3v4cp
+ bAY9iQawg1J+pe8ULB08yCtK3nnuX8C2X7Re35T8HRkD4kDBv3PPcSULUT51tPYhTh1f
+ +NaQ==
+X-Gm-Message-State: AOJu0YygFc9a4uBWVkB2mMVzKqRfbAlLXl6lPmqkrG5yfHjoOeCS9BoJ
+ pcGivNotsd/jxejrto6ZJbrogt6eOWhwvlIUlSd1jHwI1II+eU+DKknxLvSrsVPfpx4HpVt5s1h
+ yEOfs
+X-Gm-Gg: ASbGncsoGWh0IhzQzj0ed+AnbEyDVQnUgD6V8mlSKXwQxKjlzfmmah+MTaPSt4rb/yh
+ 7xCxoDOeTMyz+KWdqlBJQneECnF92/5132O4Dr5jLNTM9a9DlTD8A8pr415Qqa4uQSLByvhUzYN
+ ir8FwVnK2N6eIcKhwFlvR04UACmEZTgHB3De44SAtAFm3E6WXi8cWvd1/E9I0Ly/P+G5shszOdk
+ dr9y/f8PrxnU7uJwqkTE1U5n5Ziy+8snKbe4F8MukpK/ijQey0L7sTFRszgGQbNO1KUNPQnBmfO
+ Qhg9SSXipcB0Q3hJg+JfUtgbqitVzfhctKaJ5Jd+jcsgRz8NJ52eLMhVguA0lwUP+4Ni/dv58fG
+ VL+ChKv4vaPDuhu3lXZPS3bBKK6A07TTNhLkAsAk0tcppLJYpZ0IOGo56
+X-Google-Smtp-Source: AGHT+IFy20/v/FzP09YGcvhqe3bHwWx8t/xf+34fq2J7EVNrA++QIbePsDsgDEAkJrD/5ERDrrD02A==
+X-Received: by 2002:a05:600c:4fd3:b0:46e:32dd:1b1a with SMTP id
+ 5b1f17b1804b1-46e710f6d02mr117267845e9.7.1759846348688; 
+ Tue, 07 Oct 2025 07:12:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.26
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:12:27 -0700 (PDT)
+ Tue, 07 Oct 2025 07:12:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 57/62] target/arm: GPT_Secure is reserved without FEAT_SEL2
-Date: Tue,  7 Oct 2025 15:11:17 +0100
-Message-ID: <20251007141123.3239867-58-peter.maydell@linaro.org>
+Subject: [PULL 58/62] target/arm: Implement GPT_NonSecureOnly
+Date: Tue,  7 Oct 2025 15:11:18 +0100
+Message-ID: <20251007141123.3239867-59-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,39 +99,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-For GPT_Secure, if SEL2 is not enabled, raise a GPCF_Walk exception.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250926001134.295547-6-richard.henderson@linaro.org
+Message-id: 20250926001134.295547-7-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/ptw.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ target/arm/ptw.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 1cafe8f4f7b..3df5d4da12f 100644
+index 3df5d4da12f..56a3cd8fa0f 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -478,10 +478,14 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
-         break;
-     case 0b1111: /* all access */
-         return true;
--    case 0b1000:
--    case 0b1001:
--    case 0b1010:
--    case 0b1011:
-+    case 0b1000: /* secure */
-+        if (!cpu_isar_feature(aa64_sel2, cpu)) {
-+            goto fault_walk;
-+        }
-+        /* fall through */
-+    case 0b1001: /* non-secure */
-+    case 0b1010: /* root */
-+    case 0b1011: /* realm */
-         if (pspace == (gpi & 3)) {
+@@ -318,6 +318,7 @@ static bool regime_translation_disabled(CPUARMState *env, ARMMMUIdx mmu_idx,
+ 
+ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
+                                      ARMSecuritySpace pspace,
++                                     ARMSecuritySpace ss,
+                                      ARMMMUFaultInfo *fi)
+ {
+     MemTxAttrs attrs = {
+@@ -490,6 +491,13 @@ static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
              return true;
          }
+         break;
++    case 0b1101: /* non-secure only */
++        /* aa64_rme_gpc2 was checked in gpccr_write */
++        if (FIELD_EX64(gpccr, GPCCR, NSO)) {
++            return (pspace == ARMSS_NonSecure &&
++                    (ss == ARMSS_NonSecure || ss == ARMSS_Root));
++        }
++        goto fault_walk;
+     default:
+         goto fault_walk; /* reserved */
+     }
+@@ -3553,7 +3561,7 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+         return true;
+     }
+     if (!granule_protection_check(env, result->f.phys_addr,
+-                                  result->f.attrs.space, fi)) {
++                                  result->f.attrs.space, ptw->in_space, fi)) {
+         fi->type = ARMFault_GPCFOnOutput;
+         return true;
+     }
 -- 
 2.43.0
 
