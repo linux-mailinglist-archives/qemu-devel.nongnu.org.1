@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FF8BC1AC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5EBBC1AF9
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68Q6-0005gp-NC; Tue, 07 Oct 2025 10:12:02 -0400
+	id 1v68Q5-0005gI-GF; Tue, 07 Oct 2025 10:12:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Q3-0005fx-C7
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:59 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1v68Q2-0005fJ-JW
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:58 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Pp-00028s-GI
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:59 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-46f53f88e0bso18535425e9.1
+ id 1v68Po-000293-SP
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:11:57 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e47cca387so66612265e9.3
  for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:11:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846300; x=1760451100; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846301; x=1760451101; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9O/hfrpW4QDwWWLEbTcsULJfyn/JGHUsRKFKhzij6oc=;
- b=f3zZAKbjSQnd/eAE+yWLwRT60K0tXNyQBey/6dZIaSKWOnCsA4YJcwqS3RGpb7Ukhd
- a7TX9SAaIRKI3kdcE1gJb8rv4JjEIdM9sN4KZnHkrzW62x6mcSaa11yCIdfnZFiMWIZw
- mLb6pWgoYVDVmRCHhEFzPyaOig4mmokT7LzdHkNAp4yLJwp1VdusBKH0CrwlaNAZ5+uj
- OsiTjHbjV2tQqXPqclWg4ml4dvRmfGnD4CQZQUyCvFesTZu22s6G1UPVZSi4WetmZcpm
- 5Zv0Dzvy0rCNHYEMNQu+j6AUzPdpHtmXqRJNp34yEs2JUVywY6z5PaM+4iZmp412nMSy
- JtIw==
+ :reply-to; bh=XvGfX+mVa3O6gDu3cmy3CeWTMPWFcZ3+R6tHUaiLbSs=;
+ b=z1Je3k3dprtteKgvzqiloh8z9AAgRmjCRKmyS2lFB++mzuedvrzocFYPAuU6ZLaGbH
+ mJplGTJVuvu/W8WdUZKkFa6mWnkIlsgrkE3ydYl6dqWlBK9j6676CztJ4h3z1w5XdNSn
+ NoHxULagEjZ2jOk/GzxHmsvZllw8UNScfstwOe8qKLAyZnElhGCD4bxd8Ho9pJv4SAmS
+ akfQnyrmhWCuAycAGoe0Am6cpY1gBkYxg6N/IrjUUI6cVu0+W5FHyfo383+mTBXwhWKM
+ fspGD7wBcwQGbm7V4M+CAlHIUstYQv6+qM8Nzkts2q0L2ArA5nWOymGSdmr5LCaTG7S3
+ Nd0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846300; x=1760451100;
+ d=1e100.net; s=20230601; t=1759846301; x=1760451101;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9O/hfrpW4QDwWWLEbTcsULJfyn/JGHUsRKFKhzij6oc=;
- b=FKlplfFUhQFSMuC3RHu188VSm0UvKRyhpJlwNqsdzLFbMk/rZKEnep7ek87AOKdE81
- kNkBWAXVeOp1YYdKTsmXWI6nkEGUhVLoChU3oylVv12jwNTQhcZPgwPMl1T45VHstaju
- urZ4e0ZysUj5Oac+SvmDsBdsqIOBXRETIqBsC1n6sEVxzX/PHRAQd40rqNouIQQQsuB6
- eH00PM91jWYdblC54rs3H3XiU2R0/ilggBXVmNy2LufKSpxouRztWsmCVo2jTJpc0z/k
- xIh5M2Ce8wn8lKueAVWIeHYirsmEvBBTHNiXJFkVnQBoiHPgxP0cpgsZkh8ThGzEbX9j
- Md+A==
-X-Gm-Message-State: AOJu0YzFGK6411PzkZYqg476OEMVHt+kRojOuv4ZwhCH06trmc1jECbY
- vYof809gu1RwJN/04sxcQ0d3fmeNA+2NwSsWuGm2Wisw0WPw7PmYxwlfXiNyjiJOnMvc9NzD8ev
- TpRQA
-X-Gm-Gg: ASbGnctfw1WMZkbQdFwZqERgnFMpYqJnLkTP9fxH6FFeQkYwCFQj+6z9UeZDqFEB+ez
- /THO2Gwq4cDs93sR5rF+4heGQ4OAgnGwXKxNilM8hbuoN6K9hIwMqylowPQaLoGJXK1mk/zEbhI
- YGfaetnzGwlQmOf1AlRso2vbGpSe/XY8ea/bGT52menVwRxG3PGooGQC+JXU4Xh4l4Dj7QEXjX4
- cwF9ZulRdydXYyDvyRvMQog0ki37jYKPFH56ZlKdgz+i/WYPGbLj/0S7EuaoI8XZo8jDY2S35QR
- +zHagTUPOUu4tx9puesMLX4lqr1Bdwv/xig9gwRqwh3ZAs353Z/WJaAIZrGP/Mjw6UdYHvnAjBB
- K4uYDPsV7DJECcn4XjZv2fUI26pNkq5As/RsvqBfD6dkcaUmfW5T78TJP
-X-Google-Smtp-Source: AGHT+IGHEQ8TCf3Xm7HVwDxMnXvQGVvghYzznZjpggAnwnO43HlpUw/7AO1yQ9koJ0SZSkyDPPAd5w==
-X-Received: by 2002:a05:600c:4f93:b0:46e:5cb5:20df with SMTP id
- 5b1f17b1804b1-46e7110f0famr153759155e9.16.1759846299827; 
- Tue, 07 Oct 2025 07:11:39 -0700 (PDT)
+ bh=XvGfX+mVa3O6gDu3cmy3CeWTMPWFcZ3+R6tHUaiLbSs=;
+ b=OwGA820ITAzMPoUj4R3xzbHe21GccGZ4RHkFjbKxfDR4bMvwKWK91FsSdMSALUimeE
+ ePAasKtJCPUZPuV12ZaoAB76rdIpzfMcHfIOO3FdFM0OKfCTiEYNV058kXw6TvH1Jsej
+ mvcg6/NuBq1izd+RsWhal244ueeYJS1ZJH1WkUE0UGsdxMpwIjnJk9t4m4fKde7upv+S
+ J8Tfloa47/36Zmc1sZGU2tTdBxm2fS1vl5Dw547UpbkLZObbMWH4cOGfu6tSyHzEfprM
+ Xji2YHGyEpWIEhd2xYFYDS79UKRz3YMNgqwy0jM8TNvPeueFeRLQL56pDUz8ervjlVp8
+ B/ow==
+X-Gm-Message-State: AOJu0Yw4eKEjIrt4L9BlZbnzVu9w54FQl4mzoDFdpZEMAwa0kjDbO2Hs
+ z/1+m6ELPUcAzfnEjGmNofagQgAZiq1VqMTkqfC2zMM4YA3uMbo8FSyoWkfJSHuZZ8lFpiF+Mwk
+ c6juh
+X-Gm-Gg: ASbGnctZroEk7f9xTXgCtjIMFhBQoSSZXGNw8NOO42Vq9LJGmfvBvRSKspri6MVSwV8
+ uvK31m2S0xxplqPGrLUxu+rsxmk/X/yG1Y2/IndXRMTC/G0jcwtFe0hs+4BFndeuUXuN5Dmvo7P
+ 7XSktfWgZyNfmkyO1z6PKXu5kCWjS1bU3EGuA31bohO/vfSX5v1cKdH7Tx+m6LepmxF+H0NbKKg
+ xYOH12bJ2bTFmgu6VK+9nRdb24L2cHOLZdlNDDJhMjQv8oxjYNPAHbKkAcWXnib2uITpv6SDqMl
+ v4BD5PTiuDCtVnBCLG3FdJTP+1ZnnXnn0J7DuFyMA3nOuaEncoDv9I2g2hquFbSZw/0iSk5QTew
+ Rygb7RerL2Q2Z98j23VdVoiu0HNR9nxRzVYYffOR7NjpiEqkXTERbEgWB+jPLZNJKTlI=
+X-Google-Smtp-Source: AGHT+IF7orwAreTm0DMqDK3XDnHBrSE5BJntiZF7qxuwCpI5z3oEE4WYZT0WFi4jpV15h0N8NbbOrA==
+X-Received: by 2002:a05:600c:8b6e:b0:46e:4499:ba30 with SMTP id
+ 5b1f17b1804b1-46e71153ad0mr129421265e9.30.1759846300838; 
+ Tue, 07 Oct 2025 07:11:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.38
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.11.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:11:39 -0700 (PDT)
+ Tue, 07 Oct 2025 07:11:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/62] hw/arm/xlnx-versal: VersalMap: add support for OR'ed IRQs
-Date: Tue,  7 Oct 2025 15:10:33 +0100
-Message-ID: <20251007141123.3239867-14-peter.maydell@linaro.org>
+Subject: [PULL 14/62] hw/arm/xlnx-versal: PMC IOU SCLR: refactor creation
+Date: Tue,  7 Oct 2025 15:10:34 +0100
+Message-ID: <20251007141123.3239867-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,123 +100,171 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-Improve the IRQ index in the VersalMap structure to turn it into a
-descriptor:
-   - the lower 16 bits still represent the IRQ index
-   - bit 18 is used to indicate a shared IRQ connected to a OR gate
-   - bits 19 to 22 indicate the index on the OR gate.
-
-This allows to share an IRQ among multiple devices. An OR gate is
-created to connect the devices to the actual IRQ pin.
+Refactor the PMC IOU SLCR device creation using the VersalMap structure.
+This is the first user of a shared IRQ using an OR gate. The OSPI
+controller is reconnected to the SLCR.
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250926070806.292065-13-luc.michel@amd.com
+Message-id: 20250926070806.292065-14-luc.michel@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xlnx-versal.c | 63 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 62 insertions(+), 1 deletion(-)
+ include/hw/arm/xlnx-versal.h |  5 ----
+ hw/arm/xlnx-versal.c         | 48 +++++++++++++++++++++---------------
+ 2 files changed, 28 insertions(+), 25 deletions(-)
 
+diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+index b7ef255d6fd..78442e6c2c5 100644
+--- a/include/hw/arm/xlnx-versal.h
++++ b/include/hw/arm/xlnx-versal.h
+@@ -21,7 +21,6 @@
+ #include "qom/object.h"
+ #include "hw/nvram/xlnx-bbram.h"
+ #include "hw/misc/xlnx-versal-crl.h"
+-#include "hw/misc/xlnx-versal-pmc-iou-slcr.h"
+ #include "hw/misc/xlnx-versal-trng.h"
+ #include "net/can_emu.h"
+ #include "hw/misc/xlnx-versal-cfu.h"
+@@ -84,10 +83,6 @@ struct Versal {
+ 
+     /* The Platform Management Controller subsystem.  */
+     struct {
+-        struct {
+-            XlnxVersalPmcIouSlcr slcr;
+-        } iou;
+-
+         XlnxZynqMPRTC rtc;
+         XlnxVersalTRng trng;
+         XlnxBBRam bbram;
 diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index 964250bf151..d3a084a0639 100644
+index d3a084a0639..e71c774e72e 100644
 --- a/hw/arm/xlnx-versal.c
 +++ b/hw/arm/xlnx-versal.c
-@@ -43,6 +43,17 @@
- #define VERSAL_NUM_PMC_APB_IRQS 18
- #define NUM_OSPI_IRQ_LINES 3
+@@ -35,6 +35,7 @@
+ #include "hw/usb/xlnx-usb-subsystem.h"
+ #include "hw/nvram/xlnx-versal-efuse.h"
+ #include "hw/ssi/xlnx-versal-ospi.h"
++#include "hw/misc/xlnx-versal-pmc-iou-slcr.h"
  
-+/*
-+ * IRQ descriptor to catch the following cases:
-+ *   - Multiple devices can connect to the same IRQ. They are OR'ed together.
-+ */
-+FIELD(VERSAL_IRQ, IRQ, 0, 16)
-+FIELD(VERSAL_IRQ, ORED, 18, 1)
-+FIELD(VERSAL_IRQ, OR_IDX, 19, 4) /* input index on the IRQ OR gate */
+ #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
+ #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
+@@ -116,6 +117,8 @@ typedef struct VersalMap {
+         uint64_t dma_dst;
+         int irq;
+     } ospi;
 +
-+#define OR_IRQ(irq, or_idx) \
-+    (R_VERSAL_IRQ_ORED_MASK | ((or_idx) << R_VERSAL_IRQ_OR_IDX_SHIFT) | (irq))
++    VersalSimplePeriphMap pmc_iou_slcr;
+ } VersalMap;
+ 
+ static const VersalMap VERSAL_MAP = {
+@@ -156,6 +159,8 @@ static const VersalMap VERSAL_MAP = {
+         .dma_src = 0xf1011000, .dma_dst = 0xf1011800,
+         .irq = 124,
+     },
 +
- typedef struct VersalSimplePeriphMap {
-     uint64_t addr;
-     int irq;
-@@ -174,9 +185,53 @@ static inline Object *versal_get_child_idx(Versal *s, const char *child,
-     return versal_get_child(s, n);
++    .pmc_iou_slcr = { 0xf1060000, OR_IRQ(121, 0) },
+ };
+ 
+ static const VersalMap *VERSION_TO_MAP[] = {
+@@ -870,21 +875,24 @@ static void versal_create_efuse(Versal *s,
+     versal_sysbus_connect_irq(s, SYS_BUS_DEVICE(ctrl), 0, map->irq);
  }
  
-+/*
-+ * When the R_VERSAL_IRQ_ORED flag is set on an IRQ descriptor, this function is
-+ * used to return the corresponding or gate input IRQ. The or gate is created if
-+ * not already existant.
-+ *
-+ * Or gates are placed under the /soc/irq-or-gates QOM container.
-+ */
-+static qemu_irq versal_get_irq_or_gate_in(Versal *s, int irq_idx,
-+                                          qemu_irq target_irq)
-+{
-+    Object *container = versal_get_child(s, "irq-or-gates");
-+    DeviceState *dev;
-+    g_autofree char *name;
-+    int idx, or_idx;
-+
-+    idx = FIELD_EX32(irq_idx, VERSAL_IRQ, IRQ);
-+    or_idx = FIELD_EX32(irq_idx, VERSAL_IRQ, OR_IDX);
-+
-+    name = g_strdup_printf("irq[%d]", idx);
-+    dev = DEVICE(object_resolve_path_at(container, name));
-+
-+    if (dev == NULL) {
-+        dev = qdev_new(TYPE_OR_IRQ);
-+        object_property_add_child(container, name, OBJECT(dev));
-+        qdev_prop_set_uint16(dev, "num-lines", 1 << R_VERSAL_IRQ_OR_IDX_LENGTH);
-+        qdev_realize_and_unref(dev, NULL, &error_abort);
-+        qdev_connect_gpio_out(dev, 0, target_irq);
-+    }
-+
-+    return qdev_get_gpio_in(dev, or_idx);
-+}
-+
- static qemu_irq versal_get_irq(Versal *s, int irq_idx)
+-static void versal_create_pmc_iou_slcr(Versal *s, qemu_irq *pic)
++static DeviceState *versal_create_pmc_iou_slcr(Versal *s,
++                                               const VersalSimplePeriphMap *map)
  {
--    return qdev_get_gpio_in(DEVICE(&s->fpd.apu.gic), irq_idx);
-+    qemu_irq irq;
-+    bool ored;
+     SysBusDevice *sbd;
++    DeviceState *dev;
+ 
+-    object_initialize_child(OBJECT(s), "versal-pmc-iou-slcr", &s->pmc.iou.slcr,
+-                            TYPE_XILINX_VERSAL_PMC_IOU_SLCR);
++    dev = qdev_new(TYPE_XILINX_VERSAL_PMC_IOU_SLCR);
++    object_property_add_child(OBJECT(s), "pmc-iou-slcr", OBJECT(dev));
+ 
+-    sbd = SYS_BUS_DEVICE(&s->pmc.iou.slcr);
+-    sysbus_realize(sbd, &error_fatal);
++    sbd = SYS_BUS_DEVICE(dev);
++    sysbus_realize_and_unref(sbd, &error_fatal);
+ 
+-    memory_region_add_subregion(&s->mr_ps, MM_PMC_PMC_IOU_SLCR,
++    memory_region_add_subregion(&s->mr_ps, map->addr,
+                                 sysbus_mmio_get_region(sbd, 0));
+ 
+-    sysbus_connect_irq(sbd, 0,
+-                       qdev_get_gpio_in(DEVICE(&s->pmc.apb_irq_orgate), 2));
++    versal_sysbus_connect_irq(s, sbd, 0, map->irq);
 +
-+    ored = FIELD_EX32(irq_idx, VERSAL_IRQ, ORED);
-+
-+    irq = qdev_get_gpio_in(DEVICE(&s->fpd.apu.gic),
-+                           FIELD_EX32(irq_idx, VERSAL_IRQ, IRQ));
-+
-+    if (ored) {
-+        irq = versal_get_irq_or_gate_in(s, irq_idx, irq);
-+    }
-+
-+    return irq;
++    return dev;
  }
  
- static void versal_sysbus_connect_irq(Versal *s, SysBusDevice *sbd,
-@@ -1217,6 +1272,7 @@ static void versal_realize(DeviceState *dev, Error **errp)
+ static DeviceState *versal_create_ospi(Versal *s,
+@@ -1210,6 +1218,7 @@ static void versal_unimp_irq_parity_imr(void *opaque, int n, int level)
+ 
+ static void versal_unimp(Versal *s)
+ {
++    DeviceState *slcr;
+     qemu_irq gpio_in;
+ 
+     versal_unimp_area(s, "psm", &s->mr_ps,
+@@ -1232,23 +1241,18 @@ static void versal_unimp(Versal *s)
+     qdev_init_gpio_in_named(DEVICE(s), versal_unimp_irq_parity_imr,
+                             "irq-parity-imr-dummy", 1);
+ 
++    slcr = DEVICE(versal_get_child(s, "pmc-iou-slcr"));
+     gpio_in = qdev_get_gpio_in_named(DEVICE(s), "sd-emmc-sel-dummy", 0);
+-    qdev_connect_gpio_out_named(DEVICE(&s->pmc.iou.slcr), "sd-emmc-sel", 0,
+-                                gpio_in);
++    qdev_connect_gpio_out_named(slcr, "sd-emmc-sel", 0, gpio_in);
+ 
+     gpio_in = qdev_get_gpio_in_named(DEVICE(s), "sd-emmc-sel-dummy", 1);
+-    qdev_connect_gpio_out_named(DEVICE(&s->pmc.iou.slcr), "sd-emmc-sel", 1,
+-                                gpio_in);
++    qdev_connect_gpio_out_named(slcr, "sd-emmc-sel", 1, gpio_in);
+ 
+     gpio_in = qdev_get_gpio_in_named(DEVICE(s), "qspi-ospi-mux-sel-dummy", 0);
+-    qdev_connect_gpio_out_named(DEVICE(&s->pmc.iou.slcr),
+-                                "qspi-ospi-mux-sel", 0,
+-                                gpio_in);
++    qdev_connect_gpio_out_named(slcr, "qspi-ospi-mux-sel", 0, gpio_in);
+ 
+     gpio_in = qdev_get_gpio_in_named(DEVICE(s), "irq-parity-imr-dummy", 0);
+-    qdev_connect_gpio_out_named(DEVICE(&s->pmc.iou.slcr),
+-                                SYSBUS_DEVICE_GPIO_IRQ, 0,
+-                                gpio_in);
++    qdev_connect_gpio_out_named(slcr, SYSBUS_DEVICE_GPIO_IRQ, 0, gpio_in);
+ }
+ 
+ static uint32_t fdt_add_clk_node(Versal *s, const char *name,
+@@ -1271,6 +1275,7 @@ static uint32_t fdt_add_clk_node(Versal *s, const char *name,
+ static void versal_realize(DeviceState *dev, Error **errp)
  {
      Versal *s = XLNX_VERSAL_BASE(dev);
++    DeviceState *slcr, *ospi;
      qemu_irq pic[XLNX_VERSAL_NR_IRQS];
-+    Object *container;
+     Object *container;
      const VersalMap *map = versal_get_map(s);
-     size_t i;
+@@ -1323,13 +1328,16 @@ static void versal_realize(DeviceState *dev, Error **errp)
+     }
  
-@@ -1227,6 +1283,11 @@ static void versal_realize(DeviceState *dev, Error **errp)
+     versal_create_efuse(s, &map->efuse);
+-    versal_create_ospi(s, &map->ospi);
++    ospi = versal_create_ospi(s, &map->ospi);
++    slcr = versal_create_pmc_iou_slcr(s, &map->pmc_iou_slcr);
  
-     versal_create_apu_cpus(s);
-     versal_create_apu_gic(s, pic);
-+
-+    container = object_new(TYPE_CONTAINER);
-+    object_property_add_child(OBJECT(s), "irq-or-gates", container);
-+    object_unref(container);
-+
-     versal_create_rpu_cpus(s);
- 
-     for (i = 0; i < map->num_uart; i++) {
++    qdev_connect_gpio_out_named(slcr, "ospi-mux-sel", 0,
++                                qdev_get_gpio_in_named(ospi,
++                                                       "ospi-mux-sel", 0));
+     versal_create_pmc_apb_irq_orgate(s, pic);
+     versal_create_rtc(s, pic);
+     versal_create_trng(s, pic);
+     versal_create_bbram(s, pic);
+-    versal_create_pmc_iou_slcr(s, pic);
+     versal_create_crl(s, pic);
+     versal_create_cfu(s, pic);
+     versal_map_ddr(s);
 -- 
 2.43.0
 
