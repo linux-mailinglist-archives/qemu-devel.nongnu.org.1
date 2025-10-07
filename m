@@ -2,92 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95E6BC145D
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 13:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF6DBC14BE
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 14:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v66Ix-0002oX-Ur; Tue, 07 Oct 2025 07:56:32 -0400
+	id 1v66MA-0001GV-4e; Tue, 07 Oct 2025 07:59:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v66Ic-0002ZG-4Y
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:56:11 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v66M3-00017W-W8
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:59:44 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v66IF-0001K9-5l
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:56:07 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-46e6c8bc46eso40257465e9.3
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 04:55:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v66Ln-0001Y5-E7
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 07:59:40 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-46e47cca387so65023095e9.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 04:59:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759838141; x=1760442941; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RWkzNTNhVeSRuf8nBb9rMnj6+r8fAqh97An6MdGnAFU=;
- b=ZZESFUXNEthZ8mMAxRYjQ9SKEB/5TmxzzTA24nf8ap6RBiMZoL3tCpE2HeiWAkSEKp
- khy3d5/Cxl14GsCtPajaIc9rKzo6PJtd3VyPikytq0EKuq+Dpxe5Lhj13GCPD5ZAhDt7
- 0QqjiQ1kQA/vGpUh2XiQdZlIA/TMNesoQqW0ZRFKeOv8bZawfpmkm7oxZPQ6ha6/Ysf/
- Uqe6H84YqssRw9MeG/mcJkhAn08M18XD7c4bhBGF/l5QXBfyzXzEjPSEwNDGxNlcJnMR
- 61hsND4bCBVIdCaoDCsPc5BgpE/8d623VR5AMAw3n/NkMsgfZsjNn1KSz/aJm1E0hkIE
- OUFA==
+ d=linaro.org; s=google; t=1759838361; x=1760443161; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hO9yGaxXzTG2gwFjTYZH03NNYv5TSgIxXzEY1Xo45ks=;
+ b=RvNFBd86ZcPlQQ6769TeV8wOtQtYDbtK5HhwcDNdeyEZ/lgEWUfYUoG/gzpEm1H8KH
+ w3n6FYwRVst1agl9tfFyL8ww2YT0Rjf2y2NPl6yB0mMJjqnFrb0aVAWmoUXLoelTnOu+
+ Rh8EXRVB4+vG2wiuK7Yu2AaaEySLxrPl+B/8mg5ipN5cnJ89z3+jnRnxsMf2l8s5qyMB
+ LZVydkyb5VyCeUHh8WZ25Owt4GYw5qSW+MTs0/qJRuqHwOz2nrr+N+w2HcQEYHciABMF
+ Jg4N6nOcQU14Q0EnKWEHGwxCagCQw0lsJN1mIKmLgUgqbT4IpKYPGujkJmwFvEw0O4MY
+ CdXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759838141; x=1760442941;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RWkzNTNhVeSRuf8nBb9rMnj6+r8fAqh97An6MdGnAFU=;
- b=oQ0LkRmh1l5ivq+Gd2TFtzCgsFKvLgLsra6V5jQxOvTNmpdy8Jks7lEhLl+po/+6+i
- QdNZzPfOXTexmVlwgDMO/yWnd1tYW/Z6BYgcv6skYOsJY0KjDk4U1GgaqJZY8OuZZ+yW
- 40POUn+tBGWQVBzejZLvzp+6Zedoj4AuD9+QHDhj51uLU/YsKKNs7nkAqlJXBPGt48Md
- UbzncXERABOryXDGglwz8TCJRQbrMKSN/KPwIDHdsAe86O99/A4hkjYJkOqpNQtItlNY
- eptrh+yBdaO/KEavmZoMKBpKaKI2uQ8J2/JKpx3miiPzbXmjIYPkaHCkXCN0E6nImzD/
- ISAA==
-X-Gm-Message-State: AOJu0YyuJpMZcFDfGKAwYsBBKFZfkUUxOMrnZEQVN0G33ZtJ4wvPeXBQ
- mOQISzQ7CL/14r/D6v/FlQyjj2HlTz7hOvQQr4kt4hEY7v7SfAsaGQh1eiCQU2bLXPs=
-X-Gm-Gg: ASbGncu1buNOWrOnAyhhhjQ6JcpiIJ5ifizAQ9TUtONXxEESF3MEy2UXmYbNbYFhMN5
- 4NS88ENnXWUrpwE4KIksTelqKZ3yHMpSK4pK5tzWybo7yiO5RZQGEckmTrWMAsorNmysxxq1bGf
- 5RuB0mjCDpGU1ZAIkxnYG7/ZOzRyZShyyhknaYFGegPpm24xMQ3/ICl5EF+O6trojSBHUxKONqn
- SalEOmGFRX8dE7lvsOhEfG9XZJ/CyVzQhNh5EN3vSMs5Mr5WXUCXuZT3q/U92dHEVymiNHMUgPO
- EE508WbKpQpvmSqtsHbWFD7CWjl14Yw1WwYUe1K11zdeJjysWbR423g4U3C5ph5+QeR8GxbMcmZ
- vgHaNGbXslDAdKBFeDI4PdoEgRIQ05ALkxV9xrUKZt5MPDOaoNrw=
-X-Google-Smtp-Source: AGHT+IHuCRbDcyWjPmwNVhULKnB7gPUyp+OW3faylGNmCCTJcVnlBMByEE5B9XBoGZPgvGw+YCwW/Q==
-X-Received: by 2002:a05:600c:538e:b0:46c:a569:71a0 with SMTP id
- 5b1f17b1804b1-46e711510efmr111328225e9.26.1759838140636; 
- Tue, 07 Oct 2025 04:55:40 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e61a0241bsm291502615e9.11.2025.10.07.04.55.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 04:55:37 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 645AD605F0;
- Tue, 07 Oct 2025 12:55:27 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gustavo Romero <gustavo.romero@linaro.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 16/17] tests/functional: Adapt arches to reverse_debugging w/o
- Avocado
-Date: Tue,  7 Oct 2025 12:55:24 +0100
-Message-ID: <20251007115525.1998643-17-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251007115525.1998643-1-alex.bennee@linaro.org>
-References: <20251007115525.1998643-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1759838361; x=1760443161;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hO9yGaxXzTG2gwFjTYZH03NNYv5TSgIxXzEY1Xo45ks=;
+ b=gRYj3s1gqat6G/obeVV5I4dpRAHilC+suzEkw8H4k5E8sqfiIx2lEGqaaKAXIOi0d1
+ geMot1mNimYETB3t7zaIYvbYiUUzSVSxl4W/GKf1Jwt8JGyq2H38TPBmfxhMbxQ938uT
+ 8MMss2IOFX9TaB9kMLzfdo7INsokuwcLihGSBRVMPqrKYW1Owporlua1lHykpKTWOL80
+ scqsnM0ZnqsUvVMnQ0co+ztrCPsBsovvdImCgBXAZUvl1WDw8BRtpZ/3m/u3rSDtJ9Ac
+ ug+sqXtAUpQH0kkSxz7ILPgbMxaWgWwGG5GNR7bUOQVr9h5Pb8d8BMALD/APoJG7R3WW
+ BTCg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXYmRbulDGVNwdhLiyUxwDBP7Ubb6zIk6FOyCT/f90CVTA6zB8qXLoQX2MvN2txvcc/q0JbolO3r7dt@nongnu.org
+X-Gm-Message-State: AOJu0YxyOLCpjPqum+YlRKiVpXm8atTQYiXKGogiSWhiTr2UBJkM+K7P
+ zy7VcJZH75PJTl3ypiDRt0y1av5OuP22Fb2+ClQKnTjnZZOPOFakleDae0VOEykakf8=
+X-Gm-Gg: ASbGncu3xKJMyjwkPtD2ug4douynJ+8DsulRh/4Tu+K/XHARMFKEkWalM/ELCYmZqHf
+ Lx6/AybCvZ3ENnGa0MlWrzBjbppeqEL2ts/esLb64L3OM2VmHsgN9Yk1yjsQ6qUsO475EsZglO+
+ fRWmwnvtgMECeaPwuWluUOxTuHGEuR1Z4J+eEDKgh+LhtJDLOik8CgvokRLU3GWCrhu6Ojr9KRT
+ LH2deL/SOyjYpx05zofE1cciToFkz3SsFF66KnzY1lwnQf1vSsyhoUYofrqM0iSbf2/mYiOEDjE
+ bN3muO5vZTZTJzFfDUrsSvVQnbXSwPPjv2KVovsdLCsdDwN+FXfpexeckTmcb64dunFjzU69BnF
+ JQD37EtUGhyH1z6YyMlkDo5wJPeByJxhhQgPSZ5ALh6sy2fTJHPkG6k31FOWaIgWpijUuYryTrX
+ kRtIwWApd0VaMIfwFNr1RUrTHAjPBp
+X-Google-Smtp-Source: AGHT+IHJ7ghWfb92B3+cRjdyjhwLYhJ4hlUkwDOw5pZ1L1AUvuhHIGaELKT/HaCGjHvdo5JgC4nrIQ==
+X-Received: by 2002:a05:600c:1f8d:b0:46e:1fb7:a1b3 with SMTP id
+ 5b1f17b1804b1-46e711457f8mr113826505e9.23.1759838361589; 
+ Tue, 07 Oct 2025 04:59:21 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46f9c8873f1sm100260185e9.8.2025.10.07.04.59.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Oct 2025 04:59:21 -0700 (PDT)
+Message-ID: <52e5ccab-7855-44b5-9035-eae463ac06cf@linaro.org>
+Date: Tue, 7 Oct 2025 13:59:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 22/25] target/xtensa: call plugin trap callbacks
+Content-Language: en-US
+To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+References: <cover.1759744337.git.neither@nut.email>
+ <1ea18c5c484ca0c1fc11738a3033cdacff3296e3.1759744337.git.neither@nut.email>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <1ea18c5c484ca0c1fc11738a3033cdacff3296e3.1759744337.git.neither@nut.email>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,157 +100,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+On 6/10/25 11:59, Julian Ganz wrote:
+> We recently introduced API for registering callbacks for trap related
+> events as well as the corresponding hook functions. Due to differences
+> between architectures, the latter need to be called from target specific
+> code.
+> 
+> This change places hooks for xtensa targets.
+> 
+> Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
+> Signed-off-by: Julian Ganz <neither@nut.email>
+> ---
+>   target/xtensa/exc_helper.c  | 6 ++++++
+>   target/xtensa/xtensa-semi.c | 3 +++
+>   2 files changed, 9 insertions(+)
 
-reverse_debugging no longer depends on Avocado, so remove the import
-checks for Avocado, the per-arch endianness tweaks, and the per-arch
-register settings. All of these are now handled in the ReverseDebugging
-class, automatically.
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-ID: <20251003141820.85278-10-gustavo.romero@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
-diff --git a/tests/functional/aarch64/test_reverse_debug.py b/tests/functional/aarch64/test_reverse_debug.py
-index 8bc91ccfde7..906f10aec55 100755
---- a/tests/functional/aarch64/test_reverse_debug.py
-+++ b/tests/functional/aarch64/test_reverse_debug.py
-@@ -2,25 +2,24 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- #
--# Reverse debugging test
-+# Reverse debugging test for aarch64
- #
- # Copyright (c) 2020 ISP RAS
-+# Copyright (c) 2025 Linaro Limited
- #
- # Author:
- #  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-+#  Gustavo Romero <gustavo.romero@linaro.org> (Run without Avocado)
- #
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
--from qemu_test import Asset, skipIfMissingImports, skipFlakyTest
-+from qemu_test import Asset, skipFlakyTest
- from reverse_debugging import ReverseDebugging
- 
- 
--@skipIfMissingImports('avocado.utils')
- class ReverseDebugging_AArch64(ReverseDebugging):
- 
--    REG_PC = 32
--
-     ASSET_KERNEL = Asset(
-         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-@@ -31,7 +30,7 @@ def test_aarch64_virt(self):
-         self.set_machine('virt')
-         self.cpu = 'cortex-a53'
-         kernel_path = self.ASSET_KERNEL.fetch()
--        self.reverse_debugging(args=('-kernel', kernel_path))
-+        self.reverse_debugging(gdb_arch='aarch64', args=('-kernel', kernel_path))
- 
- 
- if __name__ == '__main__':
-diff --git a/tests/functional/ppc64/test_reverse_debug.py b/tests/functional/ppc64/test_reverse_debug.py
-index 5931adef5a9..69551fb84df 100755
---- a/tests/functional/ppc64/test_reverse_debug.py
-+++ b/tests/functional/ppc64/test_reverse_debug.py
-@@ -2,39 +2,36 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- #
--# Reverse debugging test
-+# Reverse debugging test for ppc64
- #
- # Copyright (c) 2020 ISP RAS
-+# Copyright (c) 2025 Linaro Limited
- #
- # Author:
- #  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-+#  Gustavo Romero <gustavo.romero@linaro.org> (Run without Avocado)
- #
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
--from qemu_test import skipIfMissingImports, skipFlakyTest
-+from qemu_test import skipFlakyTest
- from reverse_debugging import ReverseDebugging
- 
- 
--@skipIfMissingImports('avocado.utils')
- class ReverseDebugging_ppc64(ReverseDebugging):
- 
--    REG_PC = 0x40
--
-     @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/1992")
-     def test_ppc64_pseries(self):
-         self.set_machine('pseries')
-         # SLOF branches back to its entry point, which causes this test
-         # to take the 'hit a breakpoint again' path. That's not a problem,
-         # just slightly different than the other machines.
--        self.endian_is_le = False
--        self.reverse_debugging()
-+        self.reverse_debugging(gdb_arch='powerpc:common64')
- 
-     @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/1992")
-     def test_ppc64_powernv(self):
-         self.set_machine('powernv')
--        self.endian_is_le = False
--        self.reverse_debugging()
-+        self.reverse_debugging(gdb_arch='powerpc:common64')
- 
- 
- if __name__ == '__main__':
-diff --git a/tests/functional/x86_64/test_reverse_debug.py b/tests/functional/x86_64/test_reverse_debug.py
-index d713e91e144..2b31ae87243 100755
---- a/tests/functional/x86_64/test_reverse_debug.py
-+++ b/tests/functional/x86_64/test_reverse_debug.py
-@@ -2,34 +2,29 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- #
--# Reverse debugging test
-+# Reverse debugging test for x86_64
- #
- # Copyright (c) 2020 ISP RAS
-+# Copyright (c) 2025 Linaro Limited
- #
- # Author:
- #  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-+#  Gustavo Romero <gustavo.romero@linaro.org> (Run without Avocado)
- #
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
--from qemu_test import skipIfMissingImports, skipFlakyTest
-+from qemu_test import skipFlakyTest
- from reverse_debugging import ReverseDebugging
- 
- 
--@skipIfMissingImports('avocado.utils')
- class ReverseDebugging_X86_64(ReverseDebugging):
- 
--    REG_PC = 0x10
--    REG_CS = 0x12
--    def get_pc(self, g):
--        return self.get_reg_le(g, self.REG_PC) \
--            + self.get_reg_le(g, self.REG_CS) * 0x10
--
-     @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/2922")
-     def test_x86_64_pc(self):
-         self.set_machine('pc')
-         # start with BIOS only
--        self.reverse_debugging()
-+        self.reverse_debugging(gdb_arch='x86-64')
- 
- 
- if __name__ == '__main__':
--- 
-2.47.3
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
