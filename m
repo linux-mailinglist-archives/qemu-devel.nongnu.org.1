@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0513BC1BDD
-	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B17BC1B4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 07 Oct 2025 16:23:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v68R5-00069M-Lv; Tue, 07 Oct 2025 10:13:03 -0400
+	id 1v68RD-0006Ab-FD; Tue, 07 Oct 2025 10:13:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68Qk-0005tG-Qk
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:43 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1v68Qn-0005wE-Pc
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:46 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v68QU-0002Lr-HW
- for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:40 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3ece0e4c5faso4892513f8f.1
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:21 -0700 (PDT)
+ id 1v68QU-0002Mc-No
+ for qemu-devel@nongnu.org; Tue, 07 Oct 2025 10:12:44 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-46e34052bb7so68785075e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 07:12:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759846338; x=1760451138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759846341; x=1760451141; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Zw5KMxceB9NmKCgbX8APAj8IVt3ga1wC/nI26rLINp0=;
- b=RBv2D9Uj1fgIVR11ObkBkMJRm+A/2KtI2c5Ifjdn+1qdwdmAvxOj1n39pRnUq9dQEZ
- Ao3DoAdbKssjnvaRYAn4jUiVODcnTSxTvdBw4aCCSrYh3iUtD0+SVfw4ZsdYQWRo89E3
- RM6s5gvZ8bv8PuSLPeAwov9t79/C+0ZBOQvrtGa/Mzf87ZHhlEYmlNTwzieXdBrFD4ZI
- eh/Y1ToPT7QfjgVRTdcyGUaIt33gyNAnpFAr7N2Shgoz+QHge/NhS65RPx6b2P+RUpTH
- qEccUCe8u3XHjUBbwEU+ea2N3mGgSphM2UFv/QzIfWiCZdgAo3hMfZdd1IM7ycZCeaKP
- VWdw==
+ :reply-to; bh=SkslV1yaMtt0NINKDoLOHpZl/KR79AU0Um8mFMWwiMQ=;
+ b=QIUHacq8OVckniQRcXc8woW+JYLZQMZYMs8cdvyeeuidjXHmxM2CYzoDxtDhDa5gzB
+ Ux3XxB85AHF3UVfAG4AQIEo9nNCnIpDPEXgI1ls7uv6/kbzF2u6EvcSYCzsrgiun+bUq
+ a42W/tzuVGBre0Pks2FCVu1IrW8yTNyp/pNJrobldzNu/yhrg0j0kGRdgvjAD5Ujwu1M
+ pgb/ia9FyjEAASaebEnTFsrHlXWIrPlVEmbMoeJKm5rPYr1fCdkwtD7uBb9kYTJjLucB
+ OAWBKXfi/LDwADLq9uXPolTAorjAgnJXiR4G5VCjnRc2q3W1u5tJJmoMqcQH4qzCHCTI
+ 6/Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759846338; x=1760451138;
+ d=1e100.net; s=20230601; t=1759846341; x=1760451141;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zw5KMxceB9NmKCgbX8APAj8IVt3ga1wC/nI26rLINp0=;
- b=ndRwjUjQN0qGH19i9Ad7+1alAwHKp7Lsln9HmFcOZRW7FcHn8yzpjhBlilU1oA0URL
- rv0Z5K8Qm+rWD28mzLIgcBTLBs0CQgU6L9o2VeXn3r4lJmuX29s2Tc359i2gfbDFJ6V2
- wBKEN41IKKuynPjax4Fo/RweaYtbrfrCQ/etvwIq8xdrPwc0gCLj52T7xTF6KV+fwUtk
- 2tqh4BsFS5TTRiT7p7rhcj0MqYDtvLW/Zq6KZDk6HAZaf4gibAOu1KpUemZEhPuXYevB
- MGC+U45HbLSK1vZaqZ716EqF0wEB3zltTVjz5QaJj5VVR+xqEPHGAsxye3AUy1zA0kPy
- nuCw==
-X-Gm-Message-State: AOJu0Yzpcy1KjnVCxSGIamzLw+Nr2zDKY2BPPD4rOp4ZxsgyhHLhMNkg
- dQ40bM4w90W6ScrKtyJT6R7XsN03ElmxiDgYmZeJBItWn7SrpKmsPjg2U7fal57qQy7KPN1/3I2
- 6kXp9
-X-Gm-Gg: ASbGncs+jWFRUqsWPhGbP1phks6EaX3B0vBCQBx+J7edLy0PiU9J4NUUP7ldtDA0TD8
- PbTEaxa+8nVvkCbHEGNIxSY4hXJfIvKooncnOCBQldivhdXgvDIWx6G1+mYZTameapQu2uGDMw+
- +EVVdiLvn4mFKgh6Yta30eyMQKrsH76qzw0ORTZY/4QMwV3ROpnVFc4iyheyZZ6xx6QbZ+K3dru
- uzzqW1/IUUtTLLEYpUKVEPl9TbearrSGZ2Z+Ig5WahYX2PhKgb1+7PKZhx4IW1nlUeAKF+bHqFH
- Ihs3JCW8hAL8WDMXGxOt1SQOwwAilp7ybdTIma9tva2nqT4/u4qJXqkhOIk9kFvgaqIoDpEaxVL
- unR60AVmtKs8r93Sk3WguIUwotKH09W7oJ+TxmLPv2YxzSmMmpIuwC7Y2
-X-Google-Smtp-Source: AGHT+IFLO9HiqM0xoS+SEuvUqgSGcisvp3xLuPD33qVzQKzRw1TkoObGIrPSkVr2gnCgv6ZtRRTcrQ==
-X-Received: by 2002:a05:6000:2dc9:b0:3ec:dbcc:8104 with SMTP id
- ffacd0b85a97d-425671aa874mr11644847f8f.36.1759846338202; 
- Tue, 07 Oct 2025 07:12:18 -0700 (PDT)
+ bh=SkslV1yaMtt0NINKDoLOHpZl/KR79AU0Um8mFMWwiMQ=;
+ b=PCOXkU6ra3Sc5T1zQ+a/JhFt3EM0yQ5TsW5pO6vryuz3AbZgvBgqtvUMDZApPe25zV
+ wm8ado+0nbgXLvrIb1kJFgLSwyubYTTWVWsKCzsv6viz/Wd8N/rEiP+E0cbBjSOmedZ8
+ c5uXXY3KttYFFGGRyS2LYdai9DCbFu+4QAHsYGmioHWvv/UZ3WWtryT6g6eYXt/Ih9qu
+ 5XKXB2U1ENIyWlhuxexRoR5lKXZzw4oVs9T60YCZxVYzC0bUDMo+b8+QqXWQz1ECLlcw
+ F9pstNPPzdkVs4UgRq6h8EbwkRTDooYAZpmI3V6oTH5fKPtdqOdLSvME66Mk+OtXqbVA
+ JsKg==
+X-Gm-Message-State: AOJu0YxMAXyKCI6lUca097ryeWxK8Af/2JdSeqrT6oCpMA+SZCDExuCZ
+ 3V9KpBCsoN8b81f0Q4vpBs0DbPio3rhW1ZEldqozjesL/nQtK3mmz+94BGaP41gfiYqPVOexLQR
+ m+SVF
+X-Gm-Gg: ASbGnctcJ4lXO9sdKCo4Bva3XVYSY1teYqyUxTMCUYvqUHXGlHv5FkJ+jMP4pK/HSMh
+ ZWb/53rYDgfd3VJwTI/ri7KMOtjp8DM83fTbdyc54en8Snfs9Gv16fauoHiutZmM4EtLO2R8IeL
+ eQy/rijEzue0KVhEv8cJo7ns7FayCU3x3NcNc2VKQYN750daLfjxkcpB2QH9+qruHppqAugAyEq
+ BH3qas91muJ/+Yakd2MOye8EqvLxUPmXlS/AzCmc+f4CWxPtsDSOk6mi+JxFwRClkSmo87oQays
+ T9MCSO0Ob2hmyrd0PVBIrCvisEyRWsEFF4vb2vuzVf4luJeY9erRWoVJtAmJqTxqVkUqNf/K9Q8
+ NC3ezskkCJWBNZ4A1lG1HXRz2U4tTM5b9bYYw04K60U3B7lGJzXELiZDLa8OVgDaw58Q=
+X-Google-Smtp-Source: AGHT+IGolDlbRhT6QPyq4Cgp0QifFfrsGrrakuToeRVi39amWEVWlAzUFGZvwe1ZuSI+ucxCJ8kvXw==
+X-Received: by 2002:a05:600c:1389:b0:45f:27fb:8016 with SMTP id
+ 5b1f17b1804b1-46e711043b1mr88268245e9.1.1759846339178; 
+ Tue, 07 Oct 2025 07:12:19 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.17
+ 5b1f17b1804b1-46e78c5d290sm167037135e9.0.2025.10.07.07.12.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Oct 2025 07:12:17 -0700 (PDT)
+ Tue, 07 Oct 2025 07:12:18 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 49/62] hw/arm/xlnx-zynqmp: move GIC_NUM_SPI_INTR define in
- header
-Date: Tue,  7 Oct 2025 15:11:09 +0100
-Message-ID: <20251007141123.3239867-50-peter.maydell@linaro.org>
+Subject: [PULL 50/62] hw/arm/xlnx-zynqmp: introduce helper to compute RPU
+ number
+Date: Tue,  7 Oct 2025 15:11:10 +0100
+Message-ID: <20251007141123.3239867-51-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007141123.3239867-1-peter.maydell@linaro.org>
 References: <20251007141123.3239867-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,82 +101,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clément Chigot <chigot@adacore.com>
 
-This define will be needed in a later patch in XlnxZynqMPState
-structure, hence move it within xlnx-zynqmp header.
-
-Add XLXN_ZYNQMP prefix as it's now public.
+This helper will avoid repeating the MIN/MAX formula everytime the
+number of RPUs available is requested.
 
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Message-id: 20250930115718.437100-2-chigot@adacore.com
+Message-id: 20250930115718.437100-3-chigot@adacore.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/xlnx-zynqmp.h |  1 +
- hw/arm/xlnx-zynqmp.c         | 11 +++++------
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ hw/arm/xlnx-zynqmp.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/arm/xlnx-zynqmp.h b/include/hw/arm/xlnx-zynqmp.h
-index c137ac59e85..6a407c29624 100644
---- a/include/hw/arm/xlnx-zynqmp.h
-+++ b/include/hw/arm/xlnx-zynqmp.h
-@@ -67,6 +67,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(XlnxZynqMPState, XLNX_ZYNQMP)
- #define XLNX_ZYNQMP_OCM_RAM_SIZE 0x10000
- 
- #define XLNX_ZYNQMP_GIC_REGIONS 6
-+#define XLNX_ZYNQMP_GIC_NUM_SPI_INTR 160
- 
- /*
-  * ZynqMP maps the ARM GIC regions (GICC, GICD ...) at consecutive 64k offsets
 diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-index ec96a46eec3..d7adc070f8b 100644
+index d7adc070f8b..3d8c46986eb 100644
 --- a/hw/arm/xlnx-zynqmp.c
 +++ b/hw/arm/xlnx-zynqmp.c
-@@ -26,8 +26,6 @@
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
- 
--#define GIC_NUM_SPI_INTR 160
--
- #define ARM_PHYS_TIMER_PPI  30
- #define ARM_VIRT_TIMER_PPI  27
- #define ARM_HYP_TIMER_PPI   26
-@@ -206,7 +204,7 @@ static const XlnxZynqMPGICRegion xlnx_zynqmp_gic_regions[] = {
- 
- static inline int arm_gic_ppi_index(int cpu_nr, int ppi_index)
- {
--    return GIC_NUM_SPI_INTR + cpu_nr * GIC_INTERNAL + ppi_index;
-+    return XLNX_ZYNQMP_GIC_NUM_SPI_INTR + cpu_nr * GIC_INTERNAL + ppi_index;
+@@ -207,14 +207,23 @@ static inline int arm_gic_ppi_index(int cpu_nr, int ppi_index)
+     return XLNX_ZYNQMP_GIC_NUM_SPI_INTR + cpu_nr * GIC_INTERNAL + ppi_index;
  }
  
++static unsigned int xlnx_zynqmp_get_rpu_number(MachineState *ms)
++{
++    /*
++     * RPUs will be created only if "-smp" is higher than the maximum
++     * of APUs. Round it up to 0 to avoid dealing with negative values.
++     */
++    return MAX(0, MIN((int)(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS),
++                      XLNX_ZYNQMP_NUM_RPU_CPUS));
++}
++
  static void xlnx_zynqmp_create_rpu(MachineState *ms, XlnxZynqMPState *s,
-@@ -454,7 +452,7 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-     int num_apus = MIN(ms->smp.cpus, XLNX_ZYNQMP_NUM_APU_CPUS);
-     const char *boot_cpu = s->boot_cpu ? s->boot_cpu : "apu-cpu[0]";
-     ram_addr_t ddr_low_size, ddr_high_size;
--    qemu_irq gic_spi[GIC_NUM_SPI_INTR];
-+    qemu_irq gic_spi[XLNX_ZYNQMP_GIC_NUM_SPI_INTR];
-     Error *err = NULL;
+                                    const char *boot_cpu, Error **errp)
+ {
+     int i;
+-    int num_rpus = MIN((int)(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS),
+-                       XLNX_ZYNQMP_NUM_RPU_CPUS);
++    int num_rpus = xlnx_zynqmp_get_rpu_number(ms);
  
-     ram_size = memory_region_size(s->ddr_ram);
-@@ -502,7 +500,8 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
-         g_free(ocm_name);
-     }
- 
--    qdev_prop_set_uint32(DEVICE(&s->gic), "num-irq", GIC_NUM_SPI_INTR + 32);
-+    qdev_prop_set_uint32(DEVICE(&s->gic), "num-irq",
-+                         XLNX_ZYNQMP_GIC_NUM_SPI_INTR + 32);
-     qdev_prop_set_uint32(DEVICE(&s->gic), "revision", 2);
-     qdev_prop_set_uint32(DEVICE(&s->gic), "num-cpu", num_apus);
-     qdev_prop_set_bit(DEVICE(&s->gic), "has-security-extensions", s->secure);
-@@ -613,7 +612,7 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
+-    if (num_rpus <= 0) {
++    if (!num_rpus) {
+         /* Don't create rpu-cluster object if there's nothing to put in it */
          return;
      }
- 
--    for (i = 0; i < GIC_NUM_SPI_INTR; i++) {
-+    for (i = 0; i < XLNX_ZYNQMP_GIC_NUM_SPI_INTR; i++) {
-         gic_spi[i] = qdev_get_gpio_in(DEVICE(&s->gic), i);
-     }
- 
 -- 
 2.43.0
 
