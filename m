@@ -2,88 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E9DBC6C58
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9965BC6D6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 01:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6cEy-0002zc-Un; Wed, 08 Oct 2025 18:02:32 -0400
+	id 1v6dIN-0006oA-Mz; Wed, 08 Oct 2025 19:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6cDj-0001UX-Rx
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 18:01:19 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6cCf-0007bb-Jj
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 18:01:14 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7810289cd4bso283792b3a.2
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 15:00:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960804; x=1760565604; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3CvJSXdiWhbprsJzICEFPWeYtoNE9+mbwDhHlNPU7kM=;
- b=aD7bzi01aXBjrXFeLw51y66oPSO2EzoPY7lUmI0QLXFkizvirvMLMxfuHG+8oJuoeT
- LrRWRnDsmigwx4Ikke+gBnlB7bg2v/PBytVTrx+gkn2evJow58AlR4gZIK1zJUTmscFM
- nSxpfS7nNqMwKnY8uABWps2a0JITNyy8DGFsccEiG073Co2HWpIh2pRhcLJs2X7v1gpw
- MBtKPEO6r9wcJUzrPQVibb34I6R79YpI6v/FN000rZ1VcGQQlkEESWFCxv7qXi3xfuon
- bLK6vXCEqRKAGsI259+0L1q/NPVzVDqJ3mdh1PZISgwbwnOFZ+J56Nmfdf6IHzH3O31G
- iFdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960804; x=1760565604;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3CvJSXdiWhbprsJzICEFPWeYtoNE9+mbwDhHlNPU7kM=;
- b=WQu2sCXop1iDFhdVRbwY+9ckKTshT7++dn94ZHpcrtJYUa3QBnzWLHDZkAdI3OXcTl
- T/2CZro9Yk/xiSJKATaHHLzadj5OGttZjKm0+h0DcJ7PS9IC00In2h9jHCEizFImqKmi
- s9egGPa63QBJ4AZ6KWI6BT/oyHGWH4d+NC9UGU+ozkLwXK4F46040ADIR3si+h3CcaEU
- EdYazs2wEPtBK7cEV1qM6E8fzi9aULdNSNazM11m7m1JBHKhQvW15+AaVIZ/s1sDKaTP
- 6sVp/BrVFakfjr9IOy1TF3RKHjmN2cbALrEiUNfhgomINo2gOHhQ8HwgdKcQGICa3Vsm
- 8O7w==
-X-Gm-Message-State: AOJu0YygfRzbDLmtJCC7JmXDVR4AQQ1Pgz/a0SyQ6OYSpOyYsQXDbvv3
- lxiAl0qF1btq2x84nHCpVyI2flUrvpjj2Gx0/XvHwtxKnGgux9c9xcRtbbHNyzibvFC5O3xb1o7
- rSDD4aWc=
-X-Gm-Gg: ASbGncsULyKH1Sb4XpHr+evbmojfPWMSqBINE1QVBbRblNSU1DLAhNEAbl3dVFW1mgk
- Je+nt+utaFvBCgFcsLDmHTS7Op4o82kIH6jAPexq5isYLMK9bSHeR/Y4Zqlzp9mi/ck/CYrJsj+
- 0DAzkeNKr5Iv91i0ufRAHs5S5anMwu2whLGtxbjeP+LCm3PUrh8YdMzrpD32zNgWdegHeCseVua
- DqrUhTfqnpg6PUX/yQC/OAbT3RpIXOhq+DY/7jgNLNTQLbsFDldthDixKdGwrDHttw7aUPm/fgf
- G3CCrKzuJEcgG4KrneKoINR62FAo2bRVyqg7lZVB7VfnZ/R55+lPWmaq18EJPz/Vp/Ng4Nhy9cN
- vgSa9K7lDck2irttZT2iwpqWIztUzXnlGVLGww1dXScsIdTERUXtkskZStQ4DgIKdYVg=
-X-Google-Smtp-Source: AGHT+IELqBILhiNNSAYEg7skJqPvx1cysn7hLWyS6Ddye7mrhPWqikP9shQUPzDMT2jwAoKZdqirqA==
-X-Received: by 2002:a05:6a20:6a1d:b0:2ff:1132:8c39 with SMTP id
- adf61e73a8af0-32da80da6c9mr6219620637.4.1759960803547; 
- Wed, 08 Oct 2025 15:00:03 -0700 (PDT)
-Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-794e1fc9db6sm740724b3a.66.2025.10.08.15.00.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Oct 2025 15:00:03 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 73/73] tests/tcg/aarch64: Add gcsss
-Date: Wed,  8 Oct 2025 14:56:13 -0700
-Message-ID: <20251008215613.300150-74-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
-References: <20251008215613.300150-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
+ id 1v6dII-0006np-NY
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 19:10:03 -0400
+Received: from fencepost.gnu.org ([2001:470:142:3::e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
+ id 1v6dIH-0006pi-So; Wed, 08 Oct 2025 19:10:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
+ s=fencepost-gnu-org; h=In-Reply-To:MIME-Version:References:Subject:To:From:
+ Date; bh=M5+IE6DcahKWRu9wp1b4WotabiNdUSlwhJQvvvdFXYQ=; b=U0+W+sLfcva78H5oQItW
+ A9wGGjE0zF6E9vy4OAY4tXytvllJVP8lSsF9Ax7I4DsGfE1l+I5S5KgS9sQLbsSpva0Xi913pf/zC
+ 5j9aVxSf/WIJAMFg/2tqTK94b/RSWDzgT1Dpfzmz35QXNUzVU5oE+ZLIo93eT+Cg/0Ooe8+B1ki6n
+ kPBHmxsYLSLxdcl6fZN7vjTxUA6lyyRQ0vGEpzPAuiclrpxkmcXbZcYvJ1X7T2B11rvP1F2TNf6k8
+ OoC3wzAChiTIgT8eJ8mfoMDTXJCrsIy/hKpuGr0u0On8GQi3Vvbq+R8l4PmakxPJ/Xlu/Y6mPMTZf
+ Pg3VYltDPPzhbg==;
+Date: Thu, 9 Oct 2025 01:09:54 +0200
+From: Samuel Thibault <samuel.thibault@gnu.org>
+To: Murloc Knight <murlockkinght@gmail.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v5] Add a feature for mapping a host unix socket to a
+ guest tcp socket
+Message-ID: <aObvQoYbYSNoH_XS@begin>
+References: <20250808143904.363907-1-murlockkinght@gmail.com>
+ <aJhLpNUHVMkIkp3N@begin>
+ <CACX7FLR66AZzWvtf0KU-BEKpgx7bj+S8VG7c1aR_8=rBAgPedw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+In-Reply-To: <CACX7FLR66AZzWvtf0KU-BEKpgx7bj+S8VG7c1aR_8=rBAgPedw@mail.gmail.com>
+Organization: I am not organized
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,128 +55,276 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Validate stack switching and recursion depth.
+Hello,
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/tcg/aarch64/gcs.h           |  9 ++++
- tests/tcg/aarch64/gcsss.c         | 74 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  2 +-
- 3 files changed, 84 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/aarch64/gcsss.c
+Murloc Knight, le ven. 03 oct. 2025 21:49:12 +0700, a ecrit:
+> Hello, I wanted to remind you about my patch. Do I need to make any
+> further changes?
 
-diff --git a/tests/tcg/aarch64/gcs.h b/tests/tcg/aarch64/gcs.h
-index 99cb4d4e38..e821963cb8 100644
---- a/tests/tcg/aarch64/gcs.h
-+++ b/tests/tcg/aarch64/gcs.h
-@@ -69,3 +69,12 @@
- 
- #define gcspr() \
-     ({ uint64_t *r; asm volatile("mrs %0, s3_3_c2_c5_1" : "=r"(r)); r; })
-+
-+#define gcsss1(val) \
-+    do {                                                                     \
-+        asm volatile("sys #3, c7, c7, #2, %0" : : "r"(val) : "memory");      \
-+    } while (0)
-+
-+#define gcsss2() \
-+    ({ uint64_t *r;                                                          \
-+       asm volatile("sysl %0, #3, c7, c7, #3" : "=r"(r) : : "memory"); r; })
-diff --git a/tests/tcg/aarch64/gcsss.c b/tests/tcg/aarch64/gcsss.c
-new file mode 100644
-index 0000000000..9550c68e7e
---- /dev/null
-+++ b/tests/tcg/aarch64/gcsss.c
-@@ -0,0 +1,74 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "gcs.h"
-+
-+#define IN_PROGRESS(X)  ((uint64_t)(X) | 5)
-+#define CAP(X)          (((uint64_t)(X) & ~0xfff) + 1)
-+
-+static uint64_t * __attribute__((noinline)) recurse(size_t index)
-+{
-+    if (index == 0) {
-+        return gcspr();
-+    }
-+    return recurse(index - 1);
-+}
-+
-+int main()
-+{
-+    void *tmp;
-+    uint64_t *alt_stack, *alt_cap;
-+    uint64_t *orig_pr, *orig_cap;
-+    uint64_t *bottom;
-+    size_t pagesize = getpagesize();
-+    size_t words;
-+
-+    enable_gcs(0);
-+    orig_pr = gcspr();
-+
-+    /* Allocate a guard page before and after. */
-+    tmp = mmap(0, 3 * pagesize, PROT_NONE, MAP_ANON | MAP_PRIVATE, -1, 0);
-+    assert(tmp != MAP_FAILED);
-+
-+    /* map_shadow_stack won't replace existing mappings */
-+    munmap(tmp + pagesize, pagesize);
-+
-+    /* Allocate a new stack between the guards. */
-+    alt_stack = (uint64_t *)
-+        syscall(__NR_map_shadow_stack, tmp + pagesize, pagesize,
-+                SHADOW_STACK_SET_TOKEN);
-+    assert(alt_stack == tmp + pagesize);
-+
-+    words = pagesize / 8;
-+    alt_cap = alt_stack + words - 1;
-+
-+    /* SHADOW_STACK_SET_TOKEN set the cap. */
-+    assert(*alt_cap == CAP(alt_cap));
-+
-+    /* Swap to the alt stack, one step at a time. */
-+    gcsss1(alt_cap);
-+
-+    assert(gcspr() == alt_cap);
-+    assert(*alt_cap == IN_PROGRESS(orig_pr));
-+
-+    orig_cap = gcsss2();
-+
-+    assert(orig_cap == orig_pr - 1);
-+    assert(*orig_cap == CAP(orig_cap));
-+    assert(gcspr() == alt_stack + words);
-+
-+    /* We should be able to use the whole stack. */
-+    bottom = recurse(words - 1);
-+    assert(bottom == alt_stack);
-+
-+    /* We should be back where we started. */
-+    assert(gcspr() == alt_stack + words);
-+
-+    /* Swap back to the original stack. */
-+    gcsss1(orig_cap);
-+    tmp = gcsss2();
-+
-+    assert(gcspr() == orig_pr);
-+    assert(tmp == alt_cap);
-+
-+    exit(0);
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index fddb7bc9cd..55ce34e45e 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -76,7 +76,7 @@ $(SME_TESTS): CFLAGS += $(CROSS_AS_HAS_ARMV9_SME)
- endif
- 
- # GCS Tests
--GCS_TESTS += gcsstr gcspushm
-+GCS_TESTS += gcsstr gcspushm gcsss
- AARCH64_TESTS += $(GCS_TESTS)
- $(GCS_TESTS): gcs.h
- 
+It's now merged in.
+
+Thanks for your contribution!
+Samuel
+
+> вс, 10 авг. 2025 г. в 14:35, Samuel Thibault <samuel.thibault@gnu.org>:
+> >
+> > Viktor Kurilko, le ven. 08 août 2025 21:29:25 +0700, a ecrit:
+> > > This patch adds the ability to map a host unix socket to a guest tcp socket when
+> > > using the slirp backend. This feature was added in libslirp version 4.7.0.
+> > >
+> > > A new syntax for unix socket: -hostfwd=unix:hostpath-[guestaddr]:guestport
+> > >
+> > > Signed-off-by: Viktor Kurilko <murlockkinght@gmail.com>
+> >
+> > Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+> >
+> > Thanks!
+> >
+> > > ---
+> > > Separator parsing has been moved to protocol-specific blocks.
+> > > Fixed overwriting of sin_addr.
+> > > `
+> > >  docs/system/devices/net.rst |   2 +-
+> > >  hmp-commands.hx             |   4 +-
+> > >  net/slirp.c                 | 110 +++++++++++++++++++++++++++---------
+> > >  qapi/net.json               |   2 +-
+> > >  qemu-options.hx             |  11 +++-
+> > >  5 files changed, 97 insertions(+), 32 deletions(-)
+> > >
+> > > diff --git a/docs/system/devices/net.rst b/docs/system/devices/net.rst
+> > > index 7d76fe88c4..13199a44fd 100644
+> > > --- a/docs/system/devices/net.rst
+> > > +++ b/docs/system/devices/net.rst
+> > > @@ -79,7 +79,7 @@ those sockets. To allow ping for GID 100 (usually users group)::
+> > >
+> > >  When using the built-in TFTP server, the router is also the TFTP server.
+> > >
+> > > -When using the ``'-netdev user,hostfwd=...'`` option, TCP or UDP
+> > > +When using the ``'-netdev user,hostfwd=...'`` option, TCP, UDP or UNIX
+> > >  connections can be redirected from the host to the guest. It allows for
+> > >  example to redirect X11, telnet or SSH connections.
+> > >
+> > > diff --git a/hmp-commands.hx b/hmp-commands.hx
+> > > index d0e4f35a30..64a463b15b 100644
+> > > --- a/hmp-commands.hx
+> > > +++ b/hmp-commands.hx
+> > > @@ -1357,8 +1357,8 @@ ERST
+> > >      {
+> > >          .name       = "hostfwd_add",
+> > >          .args_type  = "arg1:s,arg2:s?",
+> > > -        .params     = "[netdev_id] [tcp|udp]:[hostaddr]:hostport-[guestaddr]:guestport",
+> > > -        .help       = "redirect TCP or UDP connections from host to guest (requires -net user)",
+> > > +        .params     = "[netdev_id] [tcp|udp|unix]:[[hostaddr]:hostport|hostpath]-[guestaddr]:guestport",
+> > > +        .help       = "redirect TCP, UDP or UNIX connections from host to guest (requires -net user)",
+> > >          .cmd        = hmp_hostfwd_add,
+> > >      },
+> > >  #endif
+> > > diff --git a/net/slirp.c b/net/slirp.c
+> > > index 9657e86a84..1b5e67f9d1 100644
+> > > --- a/net/slirp.c
+> > > +++ b/net/slirp.c
+> > > @@ -795,12 +795,13 @@ void hmp_hostfwd_remove(Monitor *mon, const QDict *qdict)
+> > >
+> > >  static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+> > >  {
+> > > -    struct sockaddr_in host_addr = {
+> > > -        .sin_family = AF_INET,
+> > > -        .sin_addr = {
+> > > -            .s_addr = INADDR_ANY,
+> > > -        },
+> > > -    };
+> > > +    union {
+> > > +        struct sockaddr_in in;
+> > > +#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
+> > > +        struct sockaddr_un un;
+> > > +#endif
+> > > +    } host_addr = {0};
+> > > +
+> > >      struct sockaddr_in guest_addr = {
+> > >          .sin_family = AF_INET,
+> > >          .sin_addr = {
+> > > @@ -811,9 +812,13 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+> > >      int host_port, guest_port;
+> > >      const char *p;
+> > >      char buf[256];
+> > > -    int is_udp;
+> > > +    int is_udp = 0;
+> > > +#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
+> > > +    int is_unix = 0;
+> > > +#endif
+> > >      const char *end;
+> > >      const char *fail_reason = "Unknown reason";
+> > > +    socklen_t host_addr_size;
+> > >
+> > >      p = redir_str;
+> > >      if (!p || get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+> > > @@ -824,30 +829,83 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+> > >          is_udp = 0;
+> > >      } else if (!strcmp(buf, "udp")) {
+> > >          is_udp = 1;
+> > > -    } else {
+> > > -        fail_reason = "Bad protocol name";
+> > > -        goto fail_syntax;
+> > >      }
+> > > -
+> > > -    if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+> > > -        fail_reason = "Missing : separator";
+> > > -        goto fail_syntax;
+> > > +#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
+> > > +    else if (!strcmp(buf, "unix")) {
+> > > +        is_unix = 1;
+> > >      }
+> > > -    if (buf[0] != '\0' && !inet_aton(buf, &host_addr.sin_addr)) {
+> > > -        fail_reason = "Bad host address";
+> > > +#endif
+> > > +    else {
+> > > +        fail_reason = "Bad protocol name";
+> > >          goto fail_syntax;
+> > >      }
+> > >
+> > > -    if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
+> > > -        fail_reason = "Bad host port separator";
+> > > -        goto fail_syntax;
+> > > -    }
+> > > -    err = qemu_strtoi(buf, &end, 0, &host_port);
+> > > -    if (err || host_port < 0 || host_port > 65535) {
+> > > -        fail_reason = "Bad host port";
+> > > -        goto fail_syntax;
+> > > +#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
+> > > +    if (is_unix) {
+> > > +        if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
+> > > +            fail_reason = "Missing - separator";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +        if (buf[0] == '\0') {
+> > > +            fail_reason = "Missing unix socket path";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +        if (buf[0] != '/') {
+> > > +            fail_reason = "unix socket path must be absolute";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +
+> > > +        size_t path_len = strlen(buf);
+> > > +        if (path_len > sizeof(host_addr.un.sun_path) - 1) {
+> > > +            fail_reason = "Unix socket path is too long";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +
+> > > +        struct stat st;
+> > > +        if (stat(buf, &st) == 0) {
+> > > +            if (!S_ISSOCK(st.st_mode)) {
+> > > +                fail_reason = "file exists and it's not unix socket";
+> > > +                goto fail_syntax;
+> > > +            }
+> > > +
+> > > +            if (unlink(buf) < 0) {
+> > > +                error_setg_errno(errp, errno, "Failed to unlink '%s'", buf);
+> > > +                goto fail_syntax;
+> > > +            }
+> > > +        }
+> > > +        host_addr.un.sun_family = AF_UNIX;
+> > > +        memcpy(host_addr.un.sun_path, buf, path_len);
+> > > +        host_addr_size = sizeof(host_addr.un);
+> > > +    } else
+> > > +#endif
+> > > +    {
+> > > +        host_addr.in.sin_family = AF_INET;
+> > > +        host_addr.in.sin_addr.s_addr = INADDR_ANY;
+> > > +
+> > > +        if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+> > > +            fail_reason = "Missing : separator";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +
+> > > +        if (buf[0] != '\0' && !inet_aton(buf, &host_addr.in.sin_addr)) {
+> > > +            fail_reason = "Bad host address";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +
+> > > +        if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
+> > > +            fail_reason = "Bad host port separator";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +
+> > > +        err = qemu_strtoi(buf, &end, 0, &host_port);
+> > > +        if (err || host_port < 0 || host_port > 65535) {
+> > > +            fail_reason = "Bad host port";
+> > > +            goto fail_syntax;
+> > > +        }
+> > > +
+> > > +        host_addr.in.sin_port = htons(host_port);
+> > > +        host_addr_size = sizeof(host_addr.in);
+> > >      }
+> > > -    host_addr.sin_port = htons(host_port);
+> > >
+> > >      if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+> > >          fail_reason = "Missing guest address";
+> > > @@ -867,7 +925,7 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+> > >
+> > >  #if SLIRP_CHECK_VERSION(4, 5, 0)
+> > >      err = slirp_add_hostxfwd(s->slirp,
+> > > -            (struct sockaddr *) &host_addr, sizeof(host_addr),
+> > > +            (struct sockaddr *) &host_addr, host_addr_size,
+> > >              (struct sockaddr *) &guest_addr, sizeof(guest_addr),
+> > >              is_udp ? SLIRP_HOSTFWD_UDP : 0);
+> > >  #else
+> > > diff --git a/qapi/net.json b/qapi/net.json
+> > > index 78bcc9871e..60d196afe5 100644
+> > > --- a/qapi/net.json
+> > > +++ b/qapi/net.json
+> > > @@ -281,7 +281,7 @@
+> > >  #
+> > >  # @smbserver: IP address of the built-in SMB server
+> > >  #
+> > > -# @hostfwd: redirect incoming TCP or UDP host connections to guest
+> > > +# @hostfwd: redirect incoming TCP, UDP or UNIX host connections to guest
+> > >  #     endpoints
+> > >  #
+> > >  # @guestfwd: forward guest TCP connections
+> > > diff --git a/qemu-options.hx b/qemu-options.hx
+> > > index ab23f14d21..86a70e0315 100644
+> > > --- a/qemu-options.hx
+> > > +++ b/qemu-options.hx
+> > > @@ -3317,8 +3317,8 @@ SRST
+> > >
+> > >          Note that a SAMBA server must be installed on the host OS.
+> > >
+> > > -    ``hostfwd=[tcp|udp]:[hostaddr]:hostport-[guestaddr]:guestport``
+> > > -        Redirect incoming TCP or UDP connections to the host port
+> > > +    ``hostfwd=[tcp|udp|unix]:[[hostaddr]:hostport|hostpath]-[guestaddr]:guestport``
+> > > +        Redirect incoming TCP, UDP or UNIX connections to the host port
+> > >          hostport to the guest IP address guestaddr on guest port
+> > >          guestport. If guestaddr is not specified, its value is x.x.x.15
+> > >          (default first address given by the built-in DHCP server). By
+> > > @@ -3348,6 +3348,13 @@ SRST
+> > >          Then when you use on the host ``telnet localhost 5555``, you
+> > >          connect to the guest telnet server.
+> > >
+> > > +        To redirect host unix socket /tmp/vm to guest tcp socket 23 use
+> > > +        following:
+> > > +
+> > > +        .. parsed-literal::
+> > > +            # on the host
+> > > +            |qemu_system| -nic user,hostfwd=unix:/tmp/vm-:23
+> > > +
+> > >      ``guestfwd=[tcp]:server:port-dev``; \ ``guestfwd=[tcp]:server:port-cmd:command``
+> > >          Forward guest TCP connections to the IP address server on port
+> > >          port to the character device dev or to a program executed by
+> > > --
+> > > 2.50.1
+> > >
+> >
+> > --
+> > Samuel
+> > <i8b4uUnderground> d-_-b
+> > <BonyNoMore> how u make that inverted b?
+> > <BonyNoMore> wait
+> > <BonyNoMore> never mind
+> 
+
 -- 
-2.43.0
-
+Samuel
+I am the "ILOVEGNU" signature virus. Just copy me to your signature.
+This email was infected under the terms of the GNU General Public License.
 
