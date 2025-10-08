@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F57EBC63B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 20:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55BD8BC63DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 20:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6YQu-0006IC-FI; Wed, 08 Oct 2025 13:58:36 -0400
+	id 1v6YYj-0007aK-Mp; Wed, 08 Oct 2025 14:06:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v6YQr-0006Hy-EL
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:58:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v6YYZ-0007Zr-II
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 14:06:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v6YQl-0006yk-GD
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:58:32 -0400
+ id 1v6YYR-00081y-9i
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 14:06:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759946300;
+ s=mimecast20190719; t=1759946775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uIJ0WH06wT9OxHP9tl3dANlNqe64TRPcBIAfDX4ExrQ=;
- b=KQpyW5nmGNZLro/sOCFx3Az9CFusN/i0N8CtB3E8Tfu7Gt0QHZxdsuPQPhTsX4AiFSwKfM
- zgBTo5o1rf+xi31dcaCCt+nhEfiuWQiB+F3H3MnGvxcrElQ8QlTOb/bznZVm/yPw6k9pTe
- 5Gnfw2efvLDI94/sYmxM6rAUKES1MYA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=bBCgC1Ap4fol/JWZcFp6h0saBjXFyMIzcDO/pFtWzMg=;
+ b=XhGeK9VjqvjtCv5ZR8mi4gOweMzFKPM3Y415WM9n1XohacY9ygk5BATVt1whN9TvlHo2uX
+ uhMrTmEmhszADd+rGIDIdDrD+5BudL9L90DQ5EGu1DKlly4NwiQL9WLegsvXlOol2s5Gda
+ TdcaC4hBiTKkXPJlUfrYHvqsiScuQJY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-n9yqeFrEPtyrSe25paRA8w-1; Wed,
- 08 Oct 2025 13:58:17 -0400
-X-MC-Unique: n9yqeFrEPtyrSe25paRA8w-1
-X-Mimecast-MFC-AGG-ID: n9yqeFrEPtyrSe25paRA8w_1759946295
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-3-Ie0_K6U4PDG221lYPTPLRg-1; Wed,
+ 08 Oct 2025 14:06:10 -0400
+X-MC-Unique: Ie0_K6U4PDG221lYPTPLRg-1
+X-Mimecast-MFC-AGG-ID: Ie0_K6U4PDG221lYPTPLRg_1759946769
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C310F1800366; Wed,  8 Oct 2025 17:58:14 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1F69519560B0; Wed,  8 Oct 2025 18:06:09 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.157])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0E32C1800576; Wed,  8 Oct 2025 17:58:13 +0000 (UTC)
-Date: Wed, 8 Oct 2025 13:58:11 -0400
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9159E1956056; Wed,  8 Oct 2025 18:06:08 +0000 (UTC)
+Date: Wed, 8 Oct 2025 14:06:07 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org,
@@ -53,17 +53,17 @@ Cc: qemu-devel@nongnu.org,
  John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH 2/6] tracetool: apply isort and add check
-Message-ID: <20251008175811.GB181748@fedora>
+Subject: Re: [PATCH 1/6] tracetool: rename variable with conflicting types
+Message-ID: <20251008180607.GC181748@fedora>
 References: <20251008063546.376603-1-pbonzini@redhat.com>
- <20251008063546.376603-3-pbonzini@redhat.com>
+ <20251008063546.376603-2-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="+m0AKT1t4welzCRE"
+ protocol="application/pgp-signature"; boundary="Rxzx/uAuRN+dnOwB"
 Content-Disposition: inline
-In-Reply-To: <20251008063546.376603-3-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20251008063546.376603-2-pbonzini@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -89,66 +89,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---+m0AKT1t4welzCRE
+--Rxzx/uAuRN+dnOwB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 08, 2025 at 08:35:41AM +0200, Paolo Bonzini wrote:
-> Sort imports automatically, to keep the coding style more uniform.
+On Wed, Oct 08, 2025 at 08:35:40AM +0200, Paolo Bonzini wrote:
+> "backend" is used as both a string and a backend.Wrapper.  In preparation
+> for adding type annotations, use different names.
 >=20
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  python/tests/tracetool-isort.sh      | 4 ++++
->  scripts/tracetool.py                 | 5 ++---
->  scripts/tracetool/backend/dtrace.py  | 1 -
->  scripts/tracetool/backend/ftrace.py  | 3 +--
->  scripts/tracetool/backend/log.py     | 3 +--
->  scripts/tracetool/backend/simple.py  | 1 -
->  scripts/tracetool/backend/syslog.py  | 3 +--
->  scripts/tracetool/backend/ust.py     | 1 -
->  scripts/tracetool/format/d.py        | 2 +-
->  scripts/tracetool/format/log_stap.py | 1 -
->  scripts/tracetool/format/stap.py     | 1 -
->  11 files changed, 10 insertions(+), 15 deletions(-)
->  create mode 100755 python/tests/tracetool-isort.sh
->=20
-> diff --git a/python/tests/tracetool-isort.sh b/python/tests/tracetool-iso=
-rt.sh
-> new file mode 100755
-> index 00000000000..b23f3d48448
-> --- /dev/null
-> +++ b/python/tests/tracetool-isort.sh
-> @@ -0,0 +1,4 @@
-> +#!/bin/sh -e
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +python3 -m isort --sp . -c ../scripts/tracetool/
+>  scripts/tracetool/__init__.py | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
-I wonder why python/tests/isort.sh doesn't already cover this with its
-`python3 -m isort -c scripts/` line?
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Also, why the --settings-path (--sp) option that python/tests/isort.sh
-doesn't use?
-
-It would be great to have just 1 script that runs isort on all Python
-code in QEMU.
-
---+m0AKT1t4welzCRE
+--Rxzx/uAuRN+dnOwB
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjmpjIACgkQnKSrs4Gr
-c8gN5Af/cj9bdReZ5Js3LOJ37zVJFZRYJTghv8FEk/nQCGXudV6htUsYKDrKYspZ
-oaBd899Qwo6TzQ2lzs9TuUXUl1UolXwLi7ziArhs5/QrqJN5tAVO+zwRL38uPZUf
-Oifuja3j0T+fSZ+Rg8d41vDVjY4G1djYJ06+rD2pxeYvCjSQj8MuBeFo1wTmiapY
-SFLoOVOhH15ne7kFsm03CKDPYCay24ck+IvZOLoGk4F8tkXazlYwpsi5sxLQ+qe+
-agKd4Gr/XNHQC7vjUKz3Cicx1dyKHc8Fp+rOU13NAE2sroRvoytPBZrmNhytkFA/
-TMfz9q1lS4y/woIGee5T4BQmUn4t2w==
-=mK1d
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjmqA8ACgkQnKSrs4Gr
+c8hVPggAjihrvvNE9jCqImQbz9Lt5R3IaAmzOHUZUGvpRMxPAiyOURqGblfINpeX
+w9OtYkhOEJMwacxNbVJfKRQE/pkAZa08H3NSYr6a6GNN79fSi86C8GIp15PiY6ry
++YfDRpa/nXoCTx6BYmZnjCaxVs5Ovj4jYKAqYE8XrGH26X3gLNkAXxeeoHgHoPLH
+2zw15meNNF8UvXQS9Y2Y+08rMwMc4jws0l5TZp5KEGQywsIWgJHrOK4FY8BU8DRo
+T/5uAKOTE0bpH1DbwgUGdBLuVTj4L+PG+2znayc2GNEpjdk40pQew84eJNq+awJO
+JH7UTFlquHDj5wKVYqPTKWXr+Bnw4Q==
+=6ZV6
 -----END PGP SIGNATURE-----
 
---+m0AKT1t4welzCRE--
+--Rxzx/uAuRN+dnOwB--
 
 
