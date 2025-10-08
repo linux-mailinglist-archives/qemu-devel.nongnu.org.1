@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED0CBC5E84
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 17:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71479BC5E93
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 17:59:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6WYA-0007zF-0k; Wed, 08 Oct 2025 11:57:59 -0400
+	id 1v6WYy-00089x-NI; Wed, 08 Oct 2025 11:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v6WY5-0007yX-5E; Wed, 08 Oct 2025 11:57:53 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ id 1v6WYo-00086i-QA; Wed, 08 Oct 2025 11:58:41 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v6WXx-0001Jk-Qx; Wed, 08 Oct 2025 11:57:52 -0400
+ id 1v6WYh-0001V7-Oq; Wed, 08 Oct 2025 11:58:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759939066; x=1791475066;
+ t=1759939111; x=1791475111;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=SL9ZIanH4daLtDHkAxvTE4hpVJPEL03brhWGLFT3rRs=;
- b=H7OPV8almis3SPAHP9jkcqLLNV+SY3XAC6sfabmW2l++od/t7K1JOw0V
- ErN8peAPDYkz0OofFYj5uKeBkYw4aR/dLZUiOctKvjcwKZTuMTsTiD1Ma
- 2apiGB1lYTiOk9DurN1RS69SeqkuPd6cXj67P/8IRPyWhcAIYbApayusH
- y0YhNuQEx1309KnAvqtAKfOviOBxTRu71Pww7KX0P3njQ/YT3MvkY6zCw
- QGiV2jskokBmilVb497MBELIxvHzv18YXxi4lkFOpFOTDnlojCFJvYly9
- /9ZtjqJguaqXhCNwZWgH4ALReA1Fj70lVGZM3uTYCkbD94uzDtOqJaMkx g==;
-X-CSE-ConnectionGUID: OyaJvq8pTDu0lR5T+Alkxg==
-X-CSE-MsgGUID: 6RYvDiAeTNG2SpfK/DW/Ow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="73240728"
-X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="73240728"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 08:57:37 -0700
-X-CSE-ConnectionGUID: HdrRK16eRtWnOkROb0v1og==
-X-CSE-MsgGUID: IAv3gJJYQICMGPKD8mFH4w==
+ bh=1BouwLaDdnUKXtsovcRtz7AKvj03mAL2ND+hoCcpCdw=;
+ b=HAgmNnJ8sG389o1dnGqZqCkOcCLTacUrTThCBJ7OMoNbD3vmVlZtQUxD
+ qD49EDVudJxEcPOyUgfBs5y1OM3yDvlP0ikTo6YyqgfCtnB6lqUKDbfRT
+ K07l/jlp31JzoXjMFoJfw9DFl/QUfoFLSCz3eE78bsr8R7jCYcu555y/q
+ yFGKGp7tXD0Omn10B/MdrGQ8SHuwH7Bvu7RUGu9XBwqImVDpClVjU1Jvh
+ yRB5mrauGw6xFxHTtejHI1p7O8N/bNYFCMG5VDrt4weykph52gkUQui7u
+ YUWW1rCq5PG7rlv84KINuEwzrkFoPMotc/MSRZY1aKpeKl5DImPX0f2kh Q==;
+X-CSE-ConnectionGUID: kQMDFUcmQ4y3vQgIUcxMhg==
+X-CSE-MsgGUID: hMHhScHFTSGjEgL05uk/AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="79574800"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="79574800"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2025 08:58:24 -0700
+X-CSE-ConnectionGUID: kj/JBHdVTO60oM9Exep1+A==
+X-CSE-MsgGUID: xs+Ut2d8RqihU9+DtpGDwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="211128389"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="180886281"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 08 Oct 2025 08:57:36 -0700
-Date: Thu, 9 Oct 2025 00:19:38 +0800
+ by fmviesa009.fm.intel.com with ESMTP; 08 Oct 2025 08:58:23 -0700
+Date: Thu, 9 Oct 2025 00:20:26 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH for-10.0.x] Revert "i386/cpu: Move adjustment of
- CPUID_EXT_PDCM before feature_dependencies[] check"
-Message-ID: <aOaPGqqCsrSP1GAA@intel.com>
-References: <20251008134716.528025-1-mjt@tls.msk.ru>
+ Paolo Bonzini <pbonzini@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH for-10.0.x] Revert "target/i386: do not expose
+ ARCH_CAPABILITIES on AMD CPU"
+Message-ID: <aOaPSlnBg3rCMLbW@intel.com>
+References: <20251008134112.527650-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251008134716.528025-1-mjt@tls.msk.ru>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20251008134112.527650-1-mjt@tls.msk.ru>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
@@ -80,24 +80,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 08, 2025 at 04:47:14PM +0300, Michael Tokarev wrote:
-> Date: Wed, 8 Oct 2025 16:47:14 +0300
+On Wed, Oct 08, 2025 at 04:41:10PM +0300, Michael Tokarev wrote:
+> Date: Wed, 8 Oct 2025 16:41:10 +0300
 > From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: [PATCH for-10.0.x] Revert "i386/cpu: Move adjustment of
->  CPUID_EXT_PDCM before feature_dependencies[] check"
+> Subject: [PATCH for-10.0.x] Revert "target/i386: do not expose
+>  ARCH_CAPABILITIES on AMD CPU"
 > X-Mailer: git-send-email 2.47.3
 > 
-> This reverts commit 3d26cb65c27190e57637644ecf6c96b8c3d246a3
-> (v10.0.3-34-g3d26cb65c271) from 10.0.x branch.
+> This reverts commit 24778b1c7ee7aca9721ed4757b0e0df0c16390f7
+> (v10.0.2-66-g24778b1c7ee7) from the 10.0.x branch.
 > 
 > The problem is that the change makes qemu 10.0.x non-migratable
 > to subsequent qemu versions, since it requires introducing a new
 > machine type.
 > 
+> This revert re-introduces the problem with windows guests (which
+> is already fixed in windows but not in prior versions).
+> Details: https://gitlab.com/qemu-project/qemu/-/issues/3001
+> 
 > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->  target/i386/cpu.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  target/i386/kvm/kvm.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
