@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71212BC6C02
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF90BC6BEB
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:07:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6cCO-0008FH-RR; Wed, 08 Oct 2025 17:59:52 -0400
+	id 1v6cCp-0000Pf-Be; Wed, 08 Oct 2025 18:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6cCL-0007uL-1S
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:59:49 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1v6cCZ-00008Q-PB
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 18:00:05 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6cCH-0007M4-BQ
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:59:48 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-76e2ea933b7so333331b3a.1
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:59:43 -0700 (PDT)
+ id 1v6cCK-0007MH-3C
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 18:00:03 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-77f67ba775aso409294b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960782; x=1760565582; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759960783; x=1760565583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZunbW8zrXRCzDcEAaVX1Pev0CRMsCYpGOAhWGA2DZnI=;
- b=hrdA4pGpnKyHtliXzmrigJ9et6oxQwvFXKX0NnmKcaniUFb5IgQiZG6rhl/ddhqyNj
- SU9pRd6NQ1PTxhJmmr5fLVaA1yb5nSVL4Rm8NBa5xOKb3jshUeKCxncw2nf+e7OCa5BQ
- QqxHqYFKxgzNM3vghu0Wz62Vvq0/wY3WTPIIbSuG6Na3csMlLszBeDICTMymZJE76s28
- F6+H1Qw7aTGuz9IOVYSWwbl0+8v5+segE2YeMIZgREz5up8ym1vTX31ourqB/UD9I7GW
- 5plbOpD+mp9GGSnIfOj/AbuhzxEz6U/DORXVls5LDuqGFdZuHOlAkVy49J+zvHFtPLMC
- kVzg==
+ bh=TRMGkSahDRDIyhY1Pf+KcfrLPaCj+CJxCc4+NBDjs/c=;
+ b=j5lBAWN7GC+HFcNI2x90h4rDUtLs6G09/KgLUPpkRpdHPhNbb5oG1f3QA9WY/qnM1x
+ F5EmBEuxDf6sukMB8Tdn98Jx+DT9VagNSkLcVa3iTjcc3Gk8lItsYfa0Uu2CgHN2S8ky
+ pXWd/WZXGZvgQzqrP6n8RrhJUM9a1QdxHJutAavp964RoBBSoGDW7qIM44wledohkw+C
+ dE9RhksodOhPlHi9W+WYXnxjdVH4v7Vp5rM9DPFnsaKzjANjlAy2L5eUbYRNkPmPDvHv
+ N9PLt0UHbOXk7zZYU3e1g/9CCubKDDHPqvtRSfnaGcawX20A/CPk0VYdoCWSaPzMEs9b
+ KxwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960782; x=1760565582;
+ d=1e100.net; s=20230601; t=1759960783; x=1760565583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZunbW8zrXRCzDcEAaVX1Pev0CRMsCYpGOAhWGA2DZnI=;
- b=WgONK2mfMEl7ytHhqSfnewgfu0F92aYqvkvtRcRJXQCjrZ1tyHvCCiKEvzo3JReSrF
- mDIcWQbUUUMFQw0quBffaV2FEC8HOSG81s6Jgl+bwhCRxqd8dRMxE+3jABNaiDme/0vO
- sNVqUbnU5SzHY0wwozuU7CbnVqOGOUAUscHgLB32mM1gB+Va7wryX6Ti/vgNrAuDHyRR
- QPDPdTg9d+lIv5uwmO4XIoH4vY6rjw+Xg+CQpE/LAMEEx+zHBcXCz3KZoNPtEatbk2iu
- odITRN+z0jDGQ0blSKmYmP3LenKTuGjGDZpLVEnu6E+8fuomTT6W4QCCuLgnf0S7EvKv
- NZkg==
-X-Gm-Message-State: AOJu0YwTzrASk2xUfkZt/M1XwsHX1bNB9/Kgfz5P+DW+XySCChV0yx2C
- +ENhwgiZQvJlGgFBaFXUpVsLeU2aYE7PVaq3wg5wXNLaeLRh4td6wwdLhLfrUafR20N758LXhgU
- q8wZXrz8=
-X-Gm-Gg: ASbGncusimMy46zCziRHGfeDJhTRLHaIf0JeqyO1uYjs8wKsnZS0XMnKvyGJ9XaCUgb
- 8OY9PaHgxfYWY5DBtJMCRZuCReGd0QcdZqcuJq6KB7v3TKcQVUZJQyWGI3gGaceTdAE41MO2SDs
- 6gqwd6htF4894nGQqSwZQe9KRi1vpVrTwy2ypjSrcsAXj3R5sJOcPE8SdbuCogkgCPwuTz3Nro0
- MI+CAMR61jbrAUBvUYZ5uYaBEsTVKtKrx11yYM07KpuTofbOdl5BTIHjJ2rQBLOPXazS9JSJVrM
- ZXKGi124jnj3FmX5ZPnxNPcMPr4/WS2E+L/6VHin+pfeH+/IRexDkatPYtwj84ZPGklt9sPHsXi
- FilBWWpJKUEv7jm1lkQ8Wee4+cCuVIDZEd4ifyUangmwd06FlsyGbwAn7yTazEffKa9A=
-X-Google-Smtp-Source: AGHT+IFN59dQieInBzNalgtp2BYJ/+3z7Tkgl3+fgj+Fd52eB3IuE9CFRdxhorA2sjvD9d2Rew3pjQ==
-X-Received: by 2002:a05:6a00:a15:b0:76b:ecf2:7ece with SMTP id
- d2e1a72fcca58-79231df6680mr9457172b3a.12.1759960782075; 
- Wed, 08 Oct 2025 14:59:42 -0700 (PDT)
+ bh=TRMGkSahDRDIyhY1Pf+KcfrLPaCj+CJxCc4+NBDjs/c=;
+ b=MxMRd+DgCIOYS7DWkaNhwKVN+bSE9kQYHV0xlDDxoCJREUTMoX3DXC1oGqgXD3242C
+ sP3nffkVXAAemLFx+7MmGRZAKhegGdeSYOh7DnMqgGsSWGXaLlTzGK7GaZio27moFGJU
+ +wbx6/30R4FnS3Wosd5gJ2Uz6hIy0WdDJFWuje0+V+GVS2Pladb7eSMHKy/1vERYofrm
+ Mx6GEYM99MN7aGXUBd51Cw9Xq5e1UKTlPEOCa2sr+8RGjjZjepGyse88dZ0cPe/eQdIs
+ 46WnElFZ720u6ZNVpzmOaDU9zlFntSobpnlhbV6BeKOSsUDltXKlaGQrxBhLdAbfQe+z
+ ia0w==
+X-Gm-Message-State: AOJu0Yz2abPE/ikuOPZW4FUTdnJFdDEvqt+RgdFjk0PMl5x2QyD+qUCM
+ HIIN+HG99sNK+b5Fj2X6vBXtsfG3ZwY4zPNN8DnWY0lUTdkez9oV7NEckTlPLnwsSgpz4GtL76p
+ yJtpV4Q4=
+X-Gm-Gg: ASbGncszs3ERpguML5o29y/lbAtxTHLOWoqE0+QFj9BPAgE3YChB+cQhoPjXZJcouFe
+ s2ud5JTnJ24ep8p6jj5bznq/cmP1AMjsU5R8LLmSf6jcck8hqQ4UD+lfqW9BYCs5PJgSh1bvc+S
+ 3HvkhV11RdQ6nNFNJhmLe182aiRwzLTJgAKwhIbBxLTxpPo9NEpPCpgti93ohdYA/mj9VKOHz0r
+ c+TBahoTgOdPlK3pe3msDEeXUpAW3+yoj0p5onugRfECcWK9OaUpyikG/sNk4L4kemgYWEjG8bx
+ EM2RoVMRgXpj8LkkdV85zwh8GomdQ7xiiHJPo+mmtQIyaBoaOR3bJco2dLS1lyJTVZZCEhYM6NQ
+ SjR+xu8WPmE9T5A/Pdyb8bVDY0vpCvbMtQtM7Pd8++OT97BqO+5IPFyCu
+X-Google-Smtp-Source: AGHT+IHW/SwPEbLKhMILzadeCRHrcFvtoUFhuYMlcp4OACdN4ujarSVbpcjsMmn23pPjKBm9Hzpn4w==
+X-Received: by 2002:a05:6a20:3ca8:b0:2fa:26fb:4a7b with SMTP id
+ adf61e73a8af0-32da84ed64emr6062110637.57.1759960783370; 
+ Wed, 08 Oct 2025 14:59:43 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-794e1fc9db6sm740724b3a.66.2025.10.08.14.59.41
+ d2e1a72fcca58-794e1fc9db6sm740724b3a.66.2025.10.08.14.59.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Oct 2025 14:59:41 -0700 (PDT)
+ Wed, 08 Oct 2025 14:59:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 42/73] target/arm: Split {full,core}_a64_user_mem_index
-Date: Wed,  8 Oct 2025 14:55:42 -0700
-Message-ID: <20251008215613.300150-43-richard.henderson@linaro.org>
+Subject: [PATCH v7 44/73] target/arm: Emit HSTR trap exception out of line
+Date: Wed,  8 Oct 2025 14:55:44 -0700
+Message-ID: <20251008215613.300150-45-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
 References: <20251008215613.300150-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,99 +98,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Separate get_a64_user_mem_index into two separate functions, one which
-returns the full ARMMMUIdx and one which returns the core mmu_idx.
+Use delay_exception_el to move the exception out of line.
+Use TCG_COND_TSTNE instead of separate AND+NE.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ target/arm/tcg/translate.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 43c9bfef93..1337e16a96 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -93,7 +93,7 @@ void a64_translate_init(void)
- }
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 78d26aac04..57bc8ea4c5 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -1774,21 +1774,11 @@ static void do_coproc_insn(DisasContext *s, int cpnum, int is64,
  
- /*
-- * Return the core mmu_idx to use for A64 load/store insns which
-+ * Return the full arm mmu_idx to use for A64 load/store insns which
-  * have a "unprivileged load/store" variant. Those insns access
-  * EL0 if executed from an EL which has control over EL0 (usually
-  * EL1) but behave like normal loads and stores if executed from
-@@ -103,7 +103,7 @@ void a64_translate_init(void)
-  *           normal encoding (in which case we will return the same
-  *           thing as get_mem_index().
-  */
--static int get_a64_user_mem_index(DisasContext *s, bool unpriv)
-+static ARMMMUIdx full_a64_user_mem_index(DisasContext *s, bool unpriv)
- {
-     /*
-      * If AccType_UNPRIV is not used, the insn uses AccType_NORMAL,
-@@ -130,7 +130,13 @@ static int get_a64_user_mem_index(DisasContext *s, bool unpriv)
-             g_assert_not_reached();
+         if (maskbit != 4 && maskbit != 14) {
+             /* T4 and T14 are RES0 so never cause traps */
+-            TCGv_i32 t;
+-            DisasLabel over = gen_disas_label(s);
++            TCGLabel *fail = delay_exception_el(s, EXCP_UDEF, syndrome, 2);
++            TCGv_i32 t =
++                load_cpu_offset(offsetoflow32(CPUARMState, cp15.hstr_el2));
+ 
+-            t = load_cpu_offset(offsetoflow32(CPUARMState, cp15.hstr_el2));
+-            tcg_gen_andi_i32(t, t, 1u << maskbit);
+-            tcg_gen_brcondi_i32(TCG_COND_EQ, t, 0, over.label);
+-
+-            gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
+-            /*
+-             * gen_exception_insn() will set is_jmp to DISAS_NORETURN,
+-             * but since we're conditionally branching over it, we want
+-             * to assume continue-to-next-instruction.
+-             */
+-            s->base.is_jmp = DISAS_NEXT;
+-            set_disas_label(s, over);
++            tcg_gen_brcondi_i32(TCG_COND_TSTNE, t, 1u << maskbit, fail);
          }
      }
--    return arm_to_core_mmu_idx(useridx);
-+    return useridx;
-+}
-+
-+/* Return the core mmu_idx per above. */
-+static int core_a64_user_mem_index(DisasContext *s, bool unpriv)
-+{
-+    return arm_to_core_mmu_idx(full_a64_user_mem_index(s, unpriv));
- }
  
- static void set_btype_raw(int val)
-@@ -3577,7 +3583,7 @@ static void op_addr_ldst_imm_pre(DisasContext *s, arg_ldst_imm *a,
-     if (!a->p) {
-         tcg_gen_addi_i64(*dirty_addr, *dirty_addr, offset);
-     }
--    memidx = get_a64_user_mem_index(s, a->unpriv);
-+    memidx = core_a64_user_mem_index(s, a->unpriv);
-     *clean_addr = gen_mte_check1_mmuidx(s, *dirty_addr, is_store,
-                                         a->w || a->rn != 31,
-                                         mop, a->unpriv, memidx);
-@@ -3598,7 +3604,7 @@ static bool trans_STR_i(DisasContext *s, arg_ldst_imm *a)
- {
-     bool iss_sf, iss_valid = !a->w;
-     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
--    int memidx = get_a64_user_mem_index(s, a->unpriv);
-+    int memidx = core_a64_user_mem_index(s, a->unpriv);
-     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
- 
-     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, true, mop);
-@@ -3616,7 +3622,7 @@ static bool trans_LDR_i(DisasContext *s, arg_ldst_imm *a)
- {
-     bool iss_sf, iss_valid = !a->w;
-     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
--    int memidx = get_a64_user_mem_index(s, a->unpriv);
-+    int memidx = core_a64_user_mem_index(s, a->unpriv);
-     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
- 
-     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, false, mop);
-@@ -4514,7 +4520,7 @@ static bool do_SET(DisasContext *s, arg_set *a, bool is_epilogue,
-         return false;
-     }
- 
--    memidx = get_a64_user_mem_index(s, a->unpriv);
-+    memidx = core_a64_user_mem_index(s, a->unpriv);
- 
-     /*
-      * We pass option_a == true, matching our implementation;
-@@ -4568,8 +4574,8 @@ static bool do_CPY(DisasContext *s, arg_cpy *a, bool is_epilogue, CpyFn fn)
-         return false;
-     }
- 
--    rmemidx = get_a64_user_mem_index(s, runpriv);
--    wmemidx = get_a64_user_mem_index(s, wunpriv);
-+    rmemidx = core_a64_user_mem_index(s, runpriv);
-+    wmemidx = core_a64_user_mem_index(s, wunpriv);
- 
-     /*
-      * We pass option_a == true, matching our implementation;
 -- 
 2.43.0
 
