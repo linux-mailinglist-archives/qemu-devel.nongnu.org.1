@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDBCBC44AB
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 12:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65B2BC451A
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 12:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6RIU-0005BJ-TU; Wed, 08 Oct 2025 06:21:27 -0400
+	id 1v6ROQ-0007as-Ek; Wed, 08 Oct 2025 06:27:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6RIO-00057f-MJ
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 06:21:21 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6ROM-0007ag-Sc
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 06:27:30 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6RIN-0004gV-0O
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 06:21:20 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6ROK-0005ov-Py
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 06:27:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=PIrYwyO+5a3p7rSna32VsesDGAC7Iq+/dfYm+sIKTKw=; b=BswUVSaHuyeJ73w
- HbCsgIL+RJJl8CDvuTvHsO3aXVOFalfOQdhCg2iQirinClnjiH2yQuHDBORugictvON7ZapYM1k/i
- EfawGEhlOOK+h/DEYVEx8b9ISTNc0WAEOw3JBerT0Mfk3WQOq9wy7WOqg+GS1fwzPhRYPeJJyU9If
- 8A=;
-Date: Wed, 8 Oct 2025 12:23:55 +0200
+ List-Help; bh=XHFG94DckZ9vq5vBYm6gSAT1IGfeffrxED3LTc0DCcQ=; b=LrUPyW/YPioKj6f
+ bU8Df1G60aD4fllEkLi08qlqh4w9RAMqqrQ+T8lKl8wX7tuhig6i4nohAQW78fhYdZzHCR2aIw0XY
+ v7K5SyA5bIFyEV1tUHfGwpbJWlig6nvZnDGlCi4I95+eG5W7HePKhU1xZclweXhz0IlF++WAhCmT9
+ 3U=;
+Date: Wed, 8 Oct 2025 12:30:07 +0200
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: Re: [PATCH 5/5] target/microblaze: Convert CPUMBState::res_addr
- field to uint32_t type
-Message-ID: <jqr6mtczdindkud27o5dcc2brvn54lmg474gtugvtgrngfuj7m@myh2el6ttido>
-References: <20251008060129.87579-1-philmd@linaro.org>
- <20251008060129.87579-6-philmd@linaro.org>
+ Max Filippov <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 1/2] target/xtensa: Remove target_ulong use in
+ xtensa_tr_translate_insn()
+Message-ID: <e2cnnkl35jy3gf3yahudvbxit6v33d342rszhknfagd72pukzh@ew3vfmfswnsc>
+References: <20251008051529.86378-1-philmd@linaro.org>
+ <20251008051529.86378-2-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251008060129.87579-6-philmd@linaro.org>
+In-Reply-To: <20251008051529.86378-2-philmd@linaro.org>
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
 X-Spam_score_int: -20
@@ -68,17 +67,31 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 08/10/25, Philippe Mathieu-Daudé wrote:
-> CPUMBState::@res_addr field is used as u32 since commit
-> cfeea807e5a ("target-microblaze: Tighten up TCGv_i32 vs
-> TCGv type usage"). Convert it as such, bumping the migration
-> version. Use the RES_ADDR_NONE definition when appropriate.
+> Since commit 85c19af63e7 ("include/exec: Use vaddr in DisasContextBase
+> for virtual addresses") the DisasContextBase::pc_first field is a
+> vaddr type.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  target/microblaze/cpu.h       |  2 +-
->  target/microblaze/machine.c   |  6 +++---
->  target/microblaze/translate.c | 17 +++++++++--------
->  3 files changed, 13 insertions(+), 12 deletions(-)
+>  target/xtensa/translate.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
+> index 34ae2f4e162..bb8d2ed86cf 100644
+> --- a/target/xtensa/translate.c
+> +++ b/target/xtensa/translate.c
+> @@ -1166,7 +1166,7 @@ static void xtensa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+>  {
+>      DisasContext *dc = container_of(dcbase, DisasContext, base);
+>      CPUXtensaState *env = cpu_env(cpu);
+> -    target_ulong page_start;
+> +    vaddr page_start;
+>  
+>      /* These two conditions only apply to the first insn in the TB,
+>         but this is the first TranslateOps hook that allows exiting.  */
+> -- 
+> 2.51.0
+> 
 
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 
