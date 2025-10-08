@@ -2,98 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB67BC6B5F
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 23:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12205BC6BC4
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6c4y-00036P-61; Wed, 08 Oct 2025 17:52:12 -0400
+	id 1v6c9M-0003vI-E3; Wed, 08 Oct 2025 17:56:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1v6c4u-00036F-Rc
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:52:09 -0400
-Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v6c9G-0003tc-SJ
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:38 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1v6c4o-00068v-Vv
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:52:08 -0400
-Received: by mail-io1-xd32.google.com with SMTP id
- ca18e2360f4ac-92cebee95a8so11994139f.0
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:52:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v6c8x-0006cP-AR
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:38 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-27eec33b737so4614605ad.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759960320; x=1760565120; darn=nongnu.org;
- h=thread-index:content-language:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=6Ej1mRa0WTK5Czq03i2hmIzUcLd8bsZ4MlR+Rgsd0ew=;
- b=R11c2dxse3Cgk6X2+Hz6zeiz0YUiuMv2zXE2ZlBaAZlpBqhZ8ys/BXMi6+Dvr6ZmCR
- O6AxODX2+h+Vyst5sifMf4zsr495sMYvGAuhv7ppETtvz/SiGzh39zI0cqAUcslNvmMW
- m7tT/RfhHkj9siYnV9gH9Xtl9d8lhlhyai2J5p8x0rBoih5ilo8YkqpBdw4I1xUwV869
- ugtfZEEMc6cWn+uqbGePeXiskPx2KVn2rG4Ni1ghsTuDfZQ3jhOdWR1u9T0Qggsjrozh
- btLdsRYI2plh9BERSW7gyt9sfKQixzUhDzhPCoZXsVMm1jHHGX2vm4F5wyvI4m9S4JvI
- Siag==
+ d=linaro.org; s=google; t=1759960575; x=1760565375; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qKAGfZs2aUn7WyuimaFd4lNQuJHE6KaST0vvQSal6OY=;
+ b=KolnlsBOqe7oIlW+BvMDVaV2tX29HSY8HvzGDczXYmf2iU8Q+C2jb+FTY6h5QWHpDS
+ w6OVZ9QdNXTvtz4ugQIcLdQ4XmWyrZHj6M4MOc6gEpCt0Q9Al266LDmgLdPgFImeBvIr
+ sMN6OCwJ9Yrn+C/1NJdRBJ8wy4wOk+lWlAVlgRi3cAcX1bT1rtqgRLUJbVcHII20dhAq
+ Yb4ZzcCZgFAdZ88y7Mp2HmE6ONw8TmeJEigMJbCU02/zeixo+pRy53J4Dp93DlomjDZ1
+ ysCzfXc8UB39Tq4I+HUC0opGXvFHR4gb1ImEcJ/rfKmvg465u6MDvRtaQG3nTNlSbovs
+ PzTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960320; x=1760565120;
- h=thread-index:content-language:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6Ej1mRa0WTK5Czq03i2hmIzUcLd8bsZ4MlR+Rgsd0ew=;
- b=dxurWwtDiyGr/z/OsM0P+g9uXgVaHUOHIjB9SmbWNQwBFMqffp7iHWG8Qf5JyKNMUo
- mLMNkgw6Z0cDXkC5Mpnmntj4btVdrCc6UyBhNLK8tfhNJEhtXIJ1yMYDYMPD11hoIFDG
- h6D4/xKDxnjMOTyZEqu4J59U/qd1fdWp9M/moznC43/9fYKA0U4b53UJ4JaNwaa2243t
- Yp5QtZH5y3P2Hlatgy/EZMVbgP522+Sn6rwxLOLssyZGe30kf31onGXUiHI6NfoRNWd/
- 3NqAkvtvHH96ohOrpeeVbR1p07x6qQ3zazSPwwxmPhNNH18PJ4vAYzY8z+f+zvPzW7xl
- aKfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWvOmhvuzkKSwVpfiZawdIo3PtTikS++lkvUgEYw5MNcGdlxTiAjAHNgvyK6LzTNRIdMnsz3Op2So4C@nongnu.org
-X-Gm-Message-State: AOJu0YzBHeZdLsMYvqW6Tv3yWkhS12ygXJi1g0ya6Gw7p1dZo10ve9eh
- LESTi2dJ8FdFwviAshEfaUEMOZFXWBJvz1dUBja529oRqNOYizeDyTDu
-X-Gm-Gg: ASbGncu4kyISMWHr+c5DLJU4xQLy6BLKKW8kt3tPwG+vLqry+FpE0e6XwOtYZ6/A6gb
- ZPFvFeIztdroV8viWufMrT0ldXEAsFGUYfy7WVlIlEjKJn3teXntm0KkUvsHfPMnevG71JnUAN9
- K5g9Es6hoU4J8umG1C5pTxIOuBbluzGZllBlKrh582DkIByVrOsqj+3CeaEEZ72jla9jbK/8NAe
- aK2sWL5KdCRS7hqWc6kQny9OTaVcpKmE1YxiDkETm3bCbs99Shvc1tAa21mWTlHKbewWGgjwU1o
- iJrRWNQHq+8ZYh9NP3Wm0JHApymWNY2xO1zy/dBiRBWUKZQk6gSXTVaGYcLq08vdH2yNXgtcyqA
- HpcRjSnyJjeaD95WX24b0oPp9rdkdIy3ImNdWVgtmJeDRi/T9vnOuYrATskhheLsZh17fU3i5uA
- ==
-X-Google-Smtp-Source: AGHT+IHMadnzCds/UrirTqmKh4iCnzmrCl2uNMKzPjzJ+ifa8/ldkFCsIPalRu4z2uCwqBsQmjGJhQ==
-X-Received: by 2002:a05:6e02:1a22:b0:424:bec:4a01 with SMTP id
- e9e14a558f8ab-42f873d6985mr41329645ab.16.1759960320351; 
- Wed, 08 Oct 2025 14:52:00 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2601:281:881:bb90:7176:1e71:15fd:4673])
- by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-57b5ebc84dbsm7282787173.35.2025.10.08.14.51.58
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 08 Oct 2025 14:51:59 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
-	<qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- <matheus.bernardino@oss.qualcomm.com>, <ale@rev.ng>, <anjo@rev.ng>,
- <marco.liebel@oss.qualcomm.com>, <alex.bennee@linaro.org>,
- <quic_mburton@quicinc.com>, <sid.manning@oss.qualcomm.com>
-References: <20251008014754.3565553-1-brian.cain@oss.qualcomm.com>
- <20251008014754.3565553-2-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20251008014754.3565553-2-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 2/2] tests/tcg/hexagon: Add cs{0,1} coverage
-Date: Wed, 8 Oct 2025 15:51:58 -0600
-Message-ID: <024001dc389d$c5f5bf30$51e13d90$@gmail.com>
+ d=1e100.net; s=20230601; t=1759960575; x=1760565375;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qKAGfZs2aUn7WyuimaFd4lNQuJHE6KaST0vvQSal6OY=;
+ b=cTa0W3r6F8JlgL/jrm66pY9BfqsHx/fMu+nFTBaURdR3g0nE5g4VkVrrZ5qBEpcJ6J
+ FOEs8fRBBhKbdBHL5Vr4f0etH4tK4YvbtBlbXUlmfsd+gfHjePXzwPzx7IptnxNzaT0K
+ AEWMWJWd2P095Eqh0RPRoVZK+69stabeImaW4zidzyBlYDqoFsWvjw3+QbBDl54JF+Y4
+ SCT3yjBNL+dLCnuBmYx1qq+hvjkHaSbJ/yTar5c+GCC5F++vDC2ios6hRGp38GgiF0lW
+ IWccHAFi6aEJsgWCquEW519kaGlyKsYACcOR/sWye1D2PBspWT+HZTUeERD5pL7Qri5+
+ LC0Q==
+X-Gm-Message-State: AOJu0YyzVHRiSxZOqbF+pCjAUnCstz0WPnJ82NY08jO2AAR8AkbTLEmp
+ DVM2BpaO8ZNldW2/BFZNvd5/ckC8sRnLH9IsDVR8G7iuzApilARuRqHW2Zw1m7bBLxCapHjsOhH
+ l+1IHlCk=
+X-Gm-Gg: ASbGnctx1RoKEOQIU7pfA+Hsr/whvS52LkI5p96oczBMij3xxkqmwQf9myKeEe4tA+Q
+ WDYhREv+nTzStX0hwEEI1+AZDcFjlVduuH0utSoewxKVqYb+7yoAESMvggzU3+J8KdmE6Xm9leT
+ MN0ktEbGABDVN8nwxGZa/nfkeA3PU/4xCkLWUYzZSMrvAGjtGVh+Y55XTRBLBi7GtpL4rBbV9mD
+ me9w1ds3s4Lc8QJcvRI6V8CaTpuHwWkOU2HeKUn1tBdQcO6NKDm0DDpMqVFNmtKUWs415n7V5tB
+ 225CgBodeMveD5jOde5sCwjiewcAb+YHfR12llNuGi5z947PSRDRmtQrlzDda0jpQ4vAcIcsWjh
+ Cu+CWwqb3q6V5UNEu9L+s5oWGje8qNG4q9JRl6kX/izNBYntNYu2ydQOF
+X-Google-Smtp-Source: AGHT+IEi4ndwlg8/dfO34ERJz1qGEiG5DKmWz1edUyAE0RlDMpD33nKkzhV6S+DZ4xjN0WZ/9XlUxw==
+X-Received: by 2002:a17:903:2343:b0:25c:b543:2da7 with SMTP id
+ d9443c01a7336-290272159e7mr51517395ad.9.1759960575258; 
+ Wed, 08 Oct 2025 14:56:15 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Oct 2025 14:56:14 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v7 01/73] tests/functional: update tests using TF-A/TF-RMM to
+ support FEAT_GCS
+Date: Wed,  8 Oct 2025 14:55:01 -0700
+Message-ID: <20251008215613.300150-2-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
+References: <20251008215613.300150-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-us
-Thread-Index: AQHus+aLkVWMPesY8ig/bcBi9wF1CAIgp0qQtILNCQA=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd32.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,90 +99,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tests/functional/aarch64/test_device_passthrough.py | 4 ++--
+ tests/functional/aarch64/test_rme_sbsaref.py        | 4 ++--
+ tests/functional/aarch64/test_rme_virt.py           | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-> -----Original Message-----
-> From: Brian Cain <brian.cain@oss.qualcomm.com>
-> Sent: Tuesday, October 7, 2025 7:48 PM
-> To: qemu-devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
-> philmd@linaro.org; matheus.bernardino@oss.qualcomm.com; ale@rev.ng;
-> anjo@rev.ng; marco.liebel@oss.qualcomm.com; ltaylorsimpson@gmail.com;
-> alex.bennee@linaro.org; quic_mburton@quicinc.com;
-> sid.manning@oss.qualcomm.com
-> Subject: [PATCH 2/2] tests/tcg/hexagon: Add cs{0,1} coverage
->=20
-> Cover cs0,1 register corruption in the signal_context test case.
->=20
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-> ---
->  tests/tcg/hexagon/signal_context.c | 22 +++++++++++++++++++---
->  1 file changed, 19 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/tcg/hexagon/signal_context.c
-> b/tests/tcg/hexagon/signal_context.c
-> index 7202fa64b6..00bbb3efc7 100644
-> --- a/tests/tcg/hexagon/signal_context.c
-> +++ b/tests/tcg/hexagon/signal_context.c
-> @@ -26,7 +26,11 @@ void sig_user(int sig, siginfo_t *info, void *puc)
->          "p1 =3D r7\n\t"
->          "p2 =3D r7\n\t"
->          "p3 =3D r7\n\t"
-> -        : : : "r7", "p0", "p1", "p2", "p3");
-> +        "r6 =3D #0x12345678\n\t"
-> +        "cs0 =3D r6\n\t"
-> +        "r6 =3D #0x87654321\n\t"
-> +        "cs1 =3D r6\n\t"
-> +        : : : "r6", "r7", "p0", "p1", "p2", "p3");
-
-Add cs0, cs1 to the clobber list.
-
->  }
->=20
->  int main()
-> @@ -52,7 +56,11 @@ int main()
->      it.it_value.tv_nsec =3D 100000;
->      timer_settime(tid, 0, &it, NULL);
->=20
-> -    asm("loop0(1f, %1)\n\t"
-> +    asm("r9 =3D #0xdeadbeef\n\t"
-> +        "   cs0 =3D r9\n\t"
-> +        "   r9 =3D #0xbadc0fee\n\t"
-> +        "   cs1 =3D r9\n\t"
-
-Should these be inside the loop?
-
-> +        "   loop0(1f, %1)\n\t"
->          "1: r8 =3D #0xff\n\t"
->          "   p0 =3D r8\n\t"
->          "   p1 =3D r8\n\t"
-> @@ -74,10 +82,18 @@ int main()
->          "   r8 =3D p3\n\t"
->          "   p0 =3D cmp.eq(r8, #0xff)\n\t"
->          "   if (!p0) jump 2b\n\t"
-> +        "   r8 =3D cs0\n\t"
-> +        "   r9 =3D #0xdeadbeef\n\t"
-> +        "   p0 =3D cmp.eq(r8, r9)\n\t"
-> +        "   if (!p0) jump 2b\n\t"
-> +        "   r8 =3D cs1\n\t"
-> +        "   r9 =3D #0xbadc0fee\n\t"
-> +        "   p0 =3D cmp.eq(r8, r9)\n\t"
-> +        "   if (!p0) jump 2b\n\t"
->          "4: {}: endloop0\n\t"
->          :
->          : "r"(&err), "r"(i)
-> -        : "memory", "r8", "p0", "p1", "p2", "p3");
-> +        : "memory", "r8", "r9", "p0", "p1", "p2", "p3");
-
-Add cs0, cs1 to the clobber list.  Also, add sa0, lc0 due to the loop0 =
-instruction.
-
-
->=20
->      puts(err ? "FAIL" : "PASS");
->      return err;
-> --
-> 2.34.1
-
+diff --git a/tests/functional/aarch64/test_device_passthrough.py b/tests/functional/aarch64/test_device_passthrough.py
+index 17437784bb..05a3f52d5e 100755
+--- a/tests/functional/aarch64/test_device_passthrough.py
++++ b/tests/functional/aarch64/test_device_passthrough.py
+@@ -85,8 +85,8 @@ class Aarch64DevicePassthrough(QemuSystemTest):
+     # https://docs.kernel.org/driver-api/vfio.html#vfio-device-cde
+     ASSET_DEVICE_PASSTHROUGH_STACK = Asset(
+         ('https://github.com/pbo-linaro/qemu-linux-stack/'
+-         'releases/download/build/device_passthrough-c3fb84a.tar.xz'),
+-         '15ac2b02bed0c0ea8e3e007de0bcfdaf6fd51c1ba98213f841dc7d01d6f72f04')
++         'releases/download/build/device_passthrough-a9612a2.tar.xz'),
++         'f7d2f70912e7231986e6e293e1a2c4786dd02bec113a7acb6bfc619e96155455')
+ 
+     # This tests the device passthrough implementation, by booting a VM
+     # supporting it with two nvme disks attached, and launching a nested VM
+diff --git a/tests/functional/aarch64/test_rme_sbsaref.py b/tests/functional/aarch64/test_rme_sbsaref.py
+index ca892e0a8c..6f92858397 100755
+--- a/tests/functional/aarch64/test_rme_sbsaref.py
++++ b/tests/functional/aarch64/test_rme_sbsaref.py
+@@ -25,8 +25,8 @@ class Aarch64RMESbsaRefMachine(QemuSystemTest):
+     # ./build.sh && ./archive_artifacts.sh out.tar.xz
+     ASSET_RME_STACK_SBSA = Asset(
+         ('https://github.com/pbo-linaro/qemu-linux-stack/'
+-         'releases/download/build/rme_sbsa_release-a7f02cf.tar.xz'),
+-         '27d8400b11befb828d6db0cab97e7ae102d0992c928d3dfbf38b24b6cf6c324c')
++         'releases/download/build/rme_sbsa_release-6a2dfc5.tar.xz'),
++         '5adba482aa069912292a8da746c6b21268224d9d81c97fe7c0bed690579ebdcb')
+ 
+     # This tests the FEAT_RME cpu implementation, by booting a VM supporting it,
+     # and launching a nested VM using it.
+diff --git a/tests/functional/aarch64/test_rme_virt.py b/tests/functional/aarch64/test_rme_virt.py
+index bb603aaa26..5e23773f93 100755
+--- a/tests/functional/aarch64/test_rme_virt.py
++++ b/tests/functional/aarch64/test_rme_virt.py
+@@ -23,8 +23,8 @@ class Aarch64RMEVirtMachine(QemuSystemTest):
+     # ./build.sh && ./archive_artifacts.sh out.tar.xz
+     ASSET_RME_STACK_VIRT = Asset(
+         ('https://github.com/pbo-linaro/qemu-linux-stack/'
+-         'releases/download/build/rme_release-86101e5.tar.xz'),
+-         'e42fef8439badb52a071ac446fc33cff4cb7d61314c7a28fdbe61a11e1faad3a')
++         'releases/download/build/rme_release-56bc99e.tar.xz'),
++         '0e3dc6b8a4b828dbae09c951a40dcb710eded084b32432b50c69cf4173ffa4be')
+ 
+     # This tests the FEAT_RME cpu implementation, by booting a VM supporting it,
+     # and launching a nested VM using it.
+-- 
+2.43.0
 
 
