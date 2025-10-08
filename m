@@ -2,32 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9243BC559C
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 16:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6400DBC55A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 16:05:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6Ule-0004Q4-PF; Wed, 08 Oct 2025 10:03:47 -0400
+	id 1v6Ult-0004T8-Eq; Wed, 08 Oct 2025 10:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
- id 1v6UOH-000453-Qv
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 09:39:37 -0400
+ id 1v6UQi-0004yg-Ao
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 09:42:09 -0400
 Received: from smtp233.sjtu.edu.cn ([202.120.2.233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
- id 1v6UOA-00073Z-KR
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 09:39:37 -0400
-Received: from mta90.sjtu.edu.cn (unknown [10.118.0.90])
- by smtp233.sjtu.edu.cn (Postfix) with ESMTPS id E236511A81068;
- Wed,  8 Oct 2025 21:39:12 +0800 (CST)
+ id 1v6UQa-0007Vo-MZ
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 09:42:07 -0400
+Received: from mta91.sjtu.edu.cn (unknown [10.118.0.91])
+ by smtp233.sjtu.edu.cn (Postfix) with ESMTPS id F050211A81069;
+ Wed,  8 Oct 2025 21:41:51 +0800 (CST)
 Received: from mstore136.sjtu.edu.cn (unknown [10.118.0.136])
- by mta90.sjtu.edu.cn (Postfix) with ESMTP id AE54437C878;
- Wed,  8 Oct 2025 21:39:04 +0800 (CST)
-Date: Wed, 8 Oct 2025 21:39:12 +0800 (CST)
+ by mta91.sjtu.edu.cn (Postfix) with ESMTP id C096A37C9CC;
+ Wed,  8 Oct 2025 21:41:51 +0800 (CST)
+Date: Wed, 8 Oct 2025 21:41:44 +0800 (CST)
 From: Ziyang Zhang <functioner@sjtu.edu.cn>
-To: qemu-devel <qemu-devel@nongnu.org>, trueful <trueful@163.com>
-Message-ID: <625873322.3277896.1759930752814.JavaMail.zimbra@sjtu.edu.cn>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: alex bennee <alex.bennee@linaro.org>, 
+ richard henderson <richard.henderson@linaro.org>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, trueful <trueful@163.com>
+Message-ID: <386568240.3278044.1759930904927.JavaMail.zimbra@sjtu.edu.cn>
+In-Reply-To: <625873322.3277896.1759930752814.JavaMail.zimbra@sjtu.edu.cn>
+References: <625873322.3277896.1759930752814.JavaMail.zimbra@sjtu.edu.cn>
 Subject: [RFC PATCH] linux-user: add syscall-filter and fork-cpu-loop in
  plugin interfaces
 MIME-Version: 1.0
@@ -36,9 +41,9 @@ Content-Transfer-Encoding: 7bit
 X-Originating-IP: [203.198.248.168]
 X-Mailer: Zimbra 10.0.14_GA_4767 (ZimbraModernWebClient - GC140
  (Windows)/10.0.14_GA_4767)
-Thread-Index: TCaCJWub/iGAGJ09OZss4qINLCPfqA==
 Thread-Topic: linux-user: add syscall-filter and fork-cpu-loop in plugin
  interfaces
+Thread-Index: TCaCJWub/iGAGJ09OZss4qINLCPfqFkrKYvt
 Received-SPF: pass client-ip=202.120.2.233;
  envelope-from=functioner@sjtu.edu.cn; helo=smtp233.sjtu.edu.cn
 X-Spam_score_int: -18
