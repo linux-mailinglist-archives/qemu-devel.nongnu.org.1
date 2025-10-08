@@ -2,62 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475B8BC5DA6
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 17:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED0CBC5E84
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 17:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6WMm-0005JZ-Pn; Wed, 08 Oct 2025 11:46:12 -0400
+	id 1v6WYA-0007zF-0k; Wed, 08 Oct 2025 11:57:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v6WMb-0005J7-3z; Wed, 08 Oct 2025 11:46:03 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ id 1v6WY5-0007yX-5E; Wed, 08 Oct 2025 11:57:53 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v6WMS-0008Eb-Qy; Wed, 08 Oct 2025 11:46:00 -0400
+ id 1v6WXx-0001Jk-Qx; Wed, 08 Oct 2025 11:57:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759938353; x=1791474353;
+ t=1759939066; x=1791475066;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=roZY+39itQRbkIpjQ8uQn0VVrly44G8m51c/qvakQnI=;
- b=nkG+5iLo/mO8ms+O7nczKYV7fvYAjWa4mcCikrGGOluCAzXD3wywe18/
- 4Fh+dh0PMwv6EhKCxOTzUAMcJUbjhpNdyNgeGnBUvpQae7VDDfnYNavo1
- m764WTVVyQl0tbnGDnrIN9jlfPo9pKKSnE85o2dOXMdHgUIGsZkSzh5px
- 96jKilstBDx9vtlVv6UKwLl5CNTxe9rSNubt4sZk8pEvCuWVJZYVH7ZM4
- vY7b0/f/z9If1HxMngQjYMNQTBT4TNm4A7AoXVSpEG5Vbc5Cqf70KOyFv
- VtkUzBZ4ke4CH5g25bNPEhuOPRAQ3tBn2rXUjL/SdRzldopzNCjU64Lpv A==;
-X-CSE-ConnectionGUID: DJCwrBkIT+Kucrb2X9/CjQ==
-X-CSE-MsgGUID: wl4o/4V0QEa6Z53U2tJ2eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="84753707"
-X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="84753707"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 08:45:42 -0700
-X-CSE-ConnectionGUID: VHq4QfpCQASQtJRTQrNCyw==
-X-CSE-MsgGUID: jAwdlRFmSyeF/j9AGqxM7A==
+ mime-version:in-reply-to;
+ bh=SL9ZIanH4daLtDHkAxvTE4hpVJPEL03brhWGLFT3rRs=;
+ b=H7OPV8almis3SPAHP9jkcqLLNV+SY3XAC6sfabmW2l++od/t7K1JOw0V
+ ErN8peAPDYkz0OofFYj5uKeBkYw4aR/dLZUiOctKvjcwKZTuMTsTiD1Ma
+ 2apiGB1lYTiOk9DurN1RS69SeqkuPd6cXj67P/8IRPyWhcAIYbApayusH
+ y0YhNuQEx1309KnAvqtAKfOviOBxTRu71Pww7KX0P3njQ/YT3MvkY6zCw
+ QGiV2jskokBmilVb497MBELIxvHzv18YXxi4lkFOpFOTDnlojCFJvYly9
+ /9ZtjqJguaqXhCNwZWgH4ALReA1Fj70lVGZM3uTYCkbD94uzDtOqJaMkx g==;
+X-CSE-ConnectionGUID: OyaJvq8pTDu0lR5T+Alkxg==
+X-CSE-MsgGUID: 6RYvDiAeTNG2SpfK/DW/Ow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="73240728"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="73240728"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2025 08:57:37 -0700
+X-CSE-ConnectionGUID: HdrRK16eRtWnOkROb0v1og==
+X-CSE-MsgGUID: IAv3gJJYQICMGPKD8mFH4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="179716773"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="211128389"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 08 Oct 2025 08:45:40 -0700
-Date: Thu, 9 Oct 2025 00:07:42 +0800
+ by orviesa002.jf.intel.com with ESMTP; 08 Oct 2025 08:57:36 -0700
+Date: Thu, 9 Oct 2025 00:19:38 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH] subprojects: Remove version number from .gitignore
-Message-ID: <aOaMTqpsbcbazzUf@intel.com>
-References: <20250930120008.700432-1-pbonzini@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH for-10.0.x] Revert "i386/cpu: Move adjustment of
+ CPUID_EXT_PDCM before feature_dependencies[] check"
+Message-ID: <aOaPGqqCsrSP1GAA@intel.com>
+References: <20251008134716.528025-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250930120008.700432-1-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20251008134716.528025-1-mjt@tls.msk.ru>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
@@ -82,22 +80,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 30, 2025 at 02:00:08PM +0200, Paolo Bonzini wrote:
-> Date: Tue, 30 Sep 2025 14:00:08 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH] subprojects: Remove version number from .gitignore
-> X-Mailer: git-send-email 2.51.0
+On Wed, Oct 08, 2025 at 04:47:14PM +0300, Michael Tokarev wrote:
+> Date: Wed, 8 Oct 2025 16:47:14 +0300
+> From: Michael Tokarev <mjt@tls.msk.ru>
+> Subject: [PATCH for-10.0.x] Revert "i386/cpu: Move adjustment of
+>  CPUID_EXT_PDCM before feature_dependencies[] check"
+> X-Mailer: git-send-email 2.47.3
 > 
-> Get rid of all the version numbers, and use wildcard matches instead,
-> because peopl will repeatedly forgot to change these versions.
+> This reverts commit 3d26cb65c27190e57637644ecf6c96b8c3d246a3
+> (v10.0.3-34-g3d26cb65c271) from 10.0.x branch.
 > 
-> Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> The problem is that the change makes qemu 10.0.x non-migratable
+> to subsequent qemu versions, since it requires introducing a new
+> machine type.
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->  subprojects/.gitignore | 30 +++++++++++++++---------------
->  1 file changed, 15 insertions(+), 15 deletions(-)
+>  target/i386/cpu.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
