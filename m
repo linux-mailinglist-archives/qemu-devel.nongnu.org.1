@@ -2,78 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735AEBC6070
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 18:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CED7BC5F37
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 18:07:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6X29-0007Rt-Vd; Wed, 08 Oct 2025 12:28:58 -0400
+	id 1v6Wh8-0006ZE-P8; Wed, 08 Oct 2025 12:07:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v6X23-0007RU-BQ
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 12:28:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v6Wgz-0006TH-SG; Wed, 08 Oct 2025 12:07:06 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v6X1q-0007Nb-8o
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 12:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759940912;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rmb1/+k2ieg5sZebGl7x/NmTsZC2vdm7lt3z6ZHDvpw=;
- b=Q3cjZJiWvsShL/Zs03Gh+podq905kKCFaHAOz2AZrUxu4qdEDBM1IAbsCBgW5ojbCfqIm2
- crAhRKDCF4dRPm75ZaCR1gF40QEe3ESzNyHh4iMafK6XQcekXRTjAxSOaUkL+Y78d35qdl
- uM+0Ldw9ooNwRCvRlWpJQqr3Ts3AB4A=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-0JMZbgTkMUCBJlgmOiKPoA-1; Wed,
- 08 Oct 2025 12:28:28 -0400
-X-MC-Unique: 0JMZbgTkMUCBJlgmOiKPoA-1
-X-Mimecast-MFC-AGG-ID: 0JMZbgTkMUCBJlgmOiKPoA_1759940907
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9A5B318002C1; Wed,  8 Oct 2025 16:28:27 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.74])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D884E1800452; Wed,  8 Oct 2025 16:28:23 +0000 (UTC)
-Date: Wed, 8 Oct 2025 17:28:19 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH 0/4] tests: do more testing of block drivers in CI
-Message-ID: <aOaRI6XdgeHlMyrB@redhat.com>
-References: <20251008113552.747002-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v6Wgu-0003Yl-I5; Wed, 08 Oct 2025 12:07:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759939622; x=1791475622;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=NqnKVblzgHh4rHu/Zi6n6SF2/RxYHjTM6wJwcL6baeo=;
+ b=bqd3c5fcVESL3oynnPQj+e87elMeOMiSZl/Mp12cBSP57rNjX5u1uTUr
+ m6ixJxtVKSdfFLVI2tq+VH+SXkZABewbF9zpFEpv+xZ6GhSzFlP9ij1fQ
+ ky1Mf30nLnNfVFMSEXyNZyiW1Z71zvRVZ2+DCLJ+lVZFbA/hfoBzWy7ZY
+ 4+WVTdB/pmjCsTVoEVnyfsQcRxprrXTwwxkmGFA6sERPnqeY5ONnAayP9
+ YPbx0Bvo6tCE6GsmX2L0yAPQs5Ib6HX80EJE0nwlIbYDHxIE/q1TOTTxD
+ du0+sSXQ0ijKnTT4Pfw2hXeOZ4mMcJKrYi5+9Q8YqafQWZsx2Xj4Vx3Bo Q==;
+X-CSE-ConnectionGUID: rh0OGaTKRuqu8BsPv2/D7g==
+X-CSE-MsgGUID: SjCNG4v8RA+7w8bSGrCvKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="87601273"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="87601273"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2025 09:06:52 -0700
+X-CSE-ConnectionGUID: zyMPlym6QVqo4IxncZ5QUA==
+X-CSE-MsgGUID: RePIAqwLTZeWOOH5ahE6fA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="217577075"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa001.jf.intel.com with ESMTP; 08 Oct 2025 09:06:50 -0700
+Date: Thu, 9 Oct 2025 00:28:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH] rust: fix path to rust_root_crate.sh
+Message-ID: <aOaRRH5VBQkSVmUB@intel.com>
+References: <20251007194427.118871-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251008113552.747002-1-berrange@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+In-Reply-To: <20251007194427.118871-1-stefanha@redhat.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,120 +76,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 08, 2025 at 12:35:48PM +0100, Daniel P. Berrangé wrote:
-> The recent set of regressions identified in the LUKS block driver
-> re-inforced that despite having a hugely useful set of I/O tests,
-> our CI coverage is still letting through too many bugs.
+On Tue, Oct 07, 2025 at 03:44:27PM -0400, Stefan Hajnoczi wrote:
+> Date: Tue,  7 Oct 2025 15:44:27 -0400
+> From: Stefan Hajnoczi <stefanha@redhat.com>
+> Subject: [PATCH] rust: fix path to rust_root_crate.sh
 > 
-> This series expands the meson suites / make targets for running
-> I/O tests for more drivers, and then creates a CI job for each.
+> Generated Rust root crate source files contain the wrong path to the
+> rust_root_crate.sh script.
 > 
-> While the first three patches are functionally usable as is, the
-> last patch for gitlab is very much an RFC. A test pipeline
-> 
->   https://gitlab.com/berrange/qemu/-/pipelines/2085907042
-> 
-> shows passes for qcow2, qed, vmdk & vpc, but failures for luks,
-> nbd and raw.
-> 
-> The luks failures all have patchs floating around pending merge.
-> 
-> The nbd failures are problems with non-deterministic output
-> ordering, or warnings from python deprecations that need
-> addressing.
-> 
-> The raw failures are problems with python deprecations, and
-> insufficient permissions checks wrt device mapper acess.
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  scripts/rust/rust_root_crate.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-The raw / nbd deprecations are:
-
-/usr/lib64/python3.9/asyncio/trsock.py:20: DeprecationWarning: Using sendmsg() method on sockets returned from get_extra_info('socket') will be prohibited in asyncio 3.9. Please report your use case to bugs.python.org.
-  warnings.warn(
-DeprecationWarning: Enable tracemalloc to get the object allocation traceback
-
-
-This comes from send_fd_scm in qmp_client.py where it does
-
-        sock = self._writer.transport.get_extra_info('socket')
-
-        if sock.family != socket.AF_UNIX:
-            raise QMPError("Sending file descriptors requires a UNIX socket.")
-
-        if not hasattr(sock, 'sendmsg'):
-            # We need to void the warranty sticker.
-            # Access to sendmsg is scheduled for removal in Python 3.11.
-            # Find the real backing socket to use it anyway.
-            sock = sock._sock  # pylint: disable=protected-access
-
-        sock.sendmsg(
-            [b' '],
-            [(socket.SOL_SOCKET, socket.SCM_RIGHTS, struct.pack('@i', fd))]
-        )
-
-
-As that comment says, the 'sendmsg' method has been removed
-from the TransportSock object returned by 'get_extra_info',
-with asyncio offering no replacement. The code above grabs
-the private sock._sock handle, which is rather gross, but
-we lack better options.
-
-The problem in CI is that I picked CentOS 9 which has py 3.9
-which still has the 'sendmsg' method. On newer distros
-'sendmsg' is gone, so we grab the private sock._sock and
-so dno't see a deprecation message.
-
-IMHO we need to revert this previous change, so we avoid
-calling the deprecated method at all:
-
-  commit a57cb3e23d5ac918a69d0aab918470ff0b429ff9
-  Author: John Snow <jsnow@redhat.com>
-  Date:   Thu Nov 18 15:46:20 2021 -0500
-
-    python/aqmp: fix send_fd_scm for python 3.6.x
-    
-    3.6 doesn't play keepaway with the socket object, so we don't need to go
-    fishing for it on this version. In fact, so long as 'sendmsg' is still
-    available, it's probably preferable to just use that method and only go
-    fishing for forbidden details when we absolutely have to.
-    
-    Reported-by: Thomas Huth <thuth@redhat.com>
-    Signed-off-by: John Snow <jsnow@redhat.com>
-    Reviewed-by: Willian Rampazzo <willianr@redhat.com>
-    Message-id: 20211118204620.1897674-8-jsnow@redhat.com
-    Signed-off-by: John Snow <jsnow@redhat.com>
-
-  diff --git a/python/qemu/aqmp/qmp_client.py b/python/qemu/aqmp/qmp_client.py
-  index f987da02eb..8105e29fa8 100644
-  --- a/python/qemu/aqmp/qmp_client.py
-  +++ b/python/qemu/aqmp/qmp_client.py
-  @@ -639,9 +639,12 @@ def send_fd_scm(self, fd: int) -> None:
-           if sock.family != socket.AF_UNIX:
-               raise AQMPError("Sending file descriptors requires a UNIX socket.")
- 
-  -        # Void the warranty sticker.
-  -        # Access to sendmsg in asyncio is scheduled for removal in Python 3.11.
-  -        sock = sock._sock  # pylint: disable=protected-access
-  +        if not hasattr(sock, 'sendmsg'):
-  +            # We need to void the warranty sticker.
-  +            # Access to sendmsg is scheduled for removal in Python 3.11.
-  +            # Find the real backing socket to use it anyway.
-  +            sock = sock._sock  # pylint: disable=protected-access
-  +
-
-The need for 3.6 compat no longer exists since we bumped
-min python, so that justification for that original
-commit is now obsolete.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
