@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C76BC569B
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 16:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC4ABC5695
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 16:16:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6Uw4-0002Ee-OG; Wed, 08 Oct 2025 10:14:33 -0400
+	id 1v6UwH-0002HF-H2; Wed, 08 Oct 2025 10:14:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6Uw1-0002Cv-EP
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 10:14:29 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6Uw9-0002Gt-S5
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 10:14:37 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6Uvr-0004TA-DV
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 10:14:29 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46e2c3b6d4cso60517235e9.3
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 07:14:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6Uw0-0004Ty-JP
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 10:14:37 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-46e4f2696bdso90466625e9.0
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 07:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759932852; x=1760537652; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HMtJ9Bh3gq0ohWVQj4zIGGKICthhP+e2lHMmVOlS6Lg=;
- b=tO2YRzSAL2oSpiJceBV9vc/CmMdqQ/aDh0BgEnCiuw8EYevQ9mLVuhAWETlC6N+5YI
- pIJPBvGmhhroisiBYIC6+TbCzOKMh/2JFnBLcW+b4QC+7slwOZnxLm/bmNe+6Zv+6zxa
- W0d/bjiKyPSIHvS3w/fPjVcTsPwt3fpoWg4oJixfv5/Gch2aubT43MsPRaYktLHCn1hm
- RvW74fAy/pjGfpZBAFPJezBp+XVIc58hn2uupclPZp/1LTUYPur5TPg2PjvSXR2HhmGk
- U/4j3P4K6f2laBzPt0LIZX0uCNpvA1W9cuLk2GaTm5/Q6BB9jfmjEcjVYVW7oM8ZxZZQ
- viUg==
+ d=linaro.org; s=google; t=1759932857; x=1760537657; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Szppyz1YU92aBnsnHh7hqhpHfCekPYvzL9kvHX4gcP4=;
+ b=BP/aaij1BxgB3ppkxks5MuFHl+yOxvHUiYRkkQwUJkE92SNSN9lY/T0n2hgkyrM79m
+ Fk9G4tI+Q/x90uImqBNPK9dcwc1iHTP6l0HeGox+u96+/u4D+JirTV9kNr7BygXdWJm/
+ JW1+sIaEy41JBgQGgSW03RyW240exqZQLlD7SP8Gn+uB7clw+KHUOHZJ3oieqE3mSUUq
+ o4yskqnNY/bQowNK013nMfmV79Z+G017tRtbQKHuxxXbGp4HI/2U+5BrvsXmk6sv55Ko
+ RFFYhUgSro1l6yEN/k2igUTfCVf8Mf4LDFCOkURkngbObD6oBE80El/YXN59XBZuUmTv
+ 97Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759932852; x=1760537652;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HMtJ9Bh3gq0ohWVQj4zIGGKICthhP+e2lHMmVOlS6Lg=;
- b=Oqzd3VUzSa2HtlsS5MtdMMVal8Z8P7efB5Q7NsPIC31kAp4XDlZ23JXn3rVlQyqKyF
- 6EoycZ30LL813fnes9G1SbCqGUPRfv0FEqqW3/nmZjM+OeVlRT2lAHDB2FO4QT3rY/2k
- eFmH/Ma451CPp1YI6ahzHN5kntIgvRIOKv80hjsPPZ1uyshobP8gJlubhLlSWOl6PGyr
- NrTSZfdcxqR6xF/kIzJ/bItvkwMxk0Jv/IWr7YRTkVGIoKk64/u9uctyO0r/6fkfO3uL
- ih+9r9YdXlk/g5sve523HyesUTgdiDd93jNx1r1YchEWEDWuRVaBBktyqTJzV39kPH3F
- SXww==
-X-Gm-Message-State: AOJu0YypGAaSTn8W8KMgL3FYcW162rh5OCU8dfsIYQQehrv8M0b0VhXe
- jk6o1fGnZc14K+c0XN75miP6SoGv8gQojfORdogwjXzEyJyz0BBJYDhs8OYf2uXERvSIKqTm7Cx
- rIIUlAopzmg==
-X-Gm-Gg: ASbGncv3boz7ROP1++tv8M8N1H38mrH/ys1L6yCFLYR2Mdg0FTf1eHvbr4alSZajFdg
- 0HRcVgPDzd57jfA00HgYti4qXsyLGH+iPBgYdI9+axSjFqrFZSRyerCbvItH6e0+vrX9JQMCbCj
- 3v2OLKr00BK+Nr1X+QNm7UFax4AKqYvdzG/AdwEl0GSx+ibXQMCv6LraL0eXGBR/GI3GBK6xJF7
- FfQGKGw/O4tU93wqjYEZFPisy66SfjVusCAh1qCaUiPCYkY40nsZFPhtkGZuU9vRoQv4qGzQHj9
- GiG1jvGPG7sI7NSNpF5Re8dMgAs3AemtJxPZv3dc5Gh26qoW5HDZXyEHG+TSpAyCJzrUzRAyo+9
- kxk11DEv4X60DginK9+IEwGWUL57/2BbZp32ynqSM1G+1BfWOrQV08Y9KbhkAYJaibd7/CYZSVO
- GLm2k/22bvewLCtg60Er2N1PTG
-X-Google-Smtp-Source: AGHT+IHUCSpBMFPqbcq7SkdE3XP9sPVbkUUFggbr2OUQ9ALvV4dDmq/NFngapaFsAphRXDgbVLknAw==
-X-Received: by 2002:a05:600d:41f2:b0:46e:456e:ada5 with SMTP id
- 5b1f17b1804b1-46fa9b01934mr22776195e9.28.1759932851921; 
- Wed, 08 Oct 2025 07:14:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759932857; x=1760537657;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Szppyz1YU92aBnsnHh7hqhpHfCekPYvzL9kvHX4gcP4=;
+ b=kykCOvl2dWC5M7TTgz4biu+/1kyEu3D65jCLt2kJ32CVvIWkCppbbZ5NpEQZiZ28Ym
+ mGuizNVjyZq4X/88g12KKkfULVcrenO1+GudVy43UOYRKQQxpkdc6O2UaaId5zHgw4Ic
+ I7Y6TowPaqi8WhjO9yABLvySS53FY2GCdImY9zLXZwwdlbEmYrwSm4jOxUr31HKSBl9s
+ V97SrbnJCZwwOzXfKbl4fj36j1JigcN7hDcUMxKTl+AypbnPxAzptnFirUeGHikTXe01
+ vn24Ee+F+bJ8S03NtDg/7CNF5NkXYBKb2MpLlLBSqCeDimfqaxkhZxRnweuc/tTIhXWQ
+ YXMw==
+X-Gm-Message-State: AOJu0YwzbZB937eS+rEwxQkhfnY0RIjSIslELpayhzP9nVDGhpcS47Kw
+ 4pZoXsbmFhRusBujPiX6mvo87Xr+yQW7O0sUbbT0nGMSMNa4rW0jvcTXTZjkOPMknA9wshCiOqG
+ GiGSrkOLrUg==
+X-Gm-Gg: ASbGncuRjM7Z8hFx5I1atY5pvIob2Przp9D1nB4bI4BP2nrxpsdvGzLbCwtyfM1xRn8
+ q7FA8arKib+LQT6ufTyXDXq8SHXxC8GmdXYrvzqIInITN/RBkQ1xqrwMOjD7GzxQlW6lF8X2o9x
+ C+J726VpVT9OKpOTeIZy5I+2K4/FrV1QHPJNhLFzY35oo/6sx2rBR8zlc9SIpzUw6yRztqtwcI0
+ yjSXjxyxcWUB6c2WxQG922lfoIb0/fhIODplXb1jqGA2Xh5+il1pFao8Ttof7DxmTpBZoqzXLZU
+ esjtumpRgGfDZgzz5TfEx+DboA/BGMzse+2K2LZdfstfTI293mJM+3DqkLnx5izxevsZgm0ByOq
+ WR+i5+Og3P0TB9k1GcjZ4VqiJDedwfrDw+pl0BvqrbN9Et/ssdlPSeaWDnjC1cGjosBjJJCw3gF
+ rfPA5bZXS1LEpDph5xwCM6aKBJ
+X-Google-Smtp-Source: AGHT+IH/Au06/fgW2rLyDS0S298GyKPkoh5iIRGSqZrfOJcRPrhqgTurKnm9lpg87gHYoyMyeGodFg==
+X-Received: by 2002:a05:600c:3f10:b0:46e:5cb6:b904 with SMTP id
+ 5b1f17b1804b1-46fa9b079f7mr22962925e9.28.1759932856710; 
+ Wed, 08 Oct 2025 07:14:16 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fa9c0e35dsm40839755e9.8.2025.10.08.07.14.10
+ 5b1f17b1804b1-46faf18bbe7sm1270705e9.20.2025.10.08.07.14.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 Oct 2025 07:14:11 -0700 (PDT)
+ Wed, 08 Oct 2025 07:14:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/2] target/s390x/mmu_helper: Do not ignore
- address_space_rw() errors
-Date: Wed,  8 Oct 2025 16:14:07 +0200
-Message-ID: <20251008141410.99865-1-philmd@linaro.org>
+Subject: [PATCH v2 1/2] target/s390x/mmu_helper: Simplify
+ s390_cpu_virt_mem_rw() logic
+Date: Wed,  8 Oct 2025 16:14:08 +0200
+Message-ID: <20251008141410.99865-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251008141410.99865-1-philmd@linaro.org>
+References: <20251008141410.99865-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,15 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: Addressed Thomas' review comment
+In order to simplify the next commit, move the
+trigger_access_exception() call after the address_space_rw()
+calls. No logical change intended.
 
-Philippe Mathieu-Daudé (2):
-  target/s390x/mmu_helper: Simplify s390_cpu_virt_mem_rw() logic
-  target/s390x/mmu_helper: Do not ignore address_space_rw() errors
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/s390x/mmu_helper.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
- target/s390x/mmu_helper.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
+diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
+index 487c41bf933..22d3d4a97df 100644
+--- a/target/s390x/mmu_helper.c
++++ b/target/s390x/mmu_helper.c
+@@ -541,9 +541,7 @@ int s390_cpu_virt_mem_rw(S390CPU *cpu, vaddr laddr, uint8_t ar, void *hostbuf,
+     pages = g_malloc(nr_pages * sizeof(*pages));
+ 
+     ret = translate_pages(cpu, laddr, nr_pages, pages, is_write, &tec);
+-    if (ret) {
+-        trigger_access_exception(&cpu->env, ret, tec);
+-    } else if (hostbuf != NULL) {
++    if (ret == 0 && hostbuf != NULL) {
+         AddressSpace *as = CPU(cpu)->as;
+ 
+         /* Copy data by stepping through the area page by page */
+@@ -556,6 +554,9 @@ int s390_cpu_virt_mem_rw(S390CPU *cpu, vaddr laddr, uint8_t ar, void *hostbuf,
+             len -= currlen;
+         }
+     }
++    if (ret) {
++        trigger_access_exception(&cpu->env, ret, tec);
++    }
+ 
+     g_free(pages);
+     return ret;
 -- 
 2.51.0
 
