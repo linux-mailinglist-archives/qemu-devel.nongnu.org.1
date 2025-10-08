@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51926BC3454
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 06:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69737BC3457
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 06:08:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6LSc-0007Du-Tp; Wed, 08 Oct 2025 00:07:31 -0400
+	id 1v6LSh-0007Ff-IU; Wed, 08 Oct 2025 00:07:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSV-0007CM-Br
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:23 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSZ-0007Dk-HX
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:28 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSR-0005q1-Lc
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:22 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-46e37d10f3eso46702835e9.0
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 21:07:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSW-0005qp-RX
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:27 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-46b303f7469so44805015e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 21:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759896438; x=1760501238; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=XK3NTl2B3zTpPA8Q4QoS/MR0UKSoTctc+BHX4wlh/xE=;
- b=y3Ly6edlKSn2M9uMZJdGNuWrN91LLZl/CVZhsqJ3INSOwsdc7Zced+srjeSDVPBC1u
- 0jbahycA2SdDgC2GyvHt9o8kTZXntDGTr82pJGgZCzg0SCgy7cO9rhWQ2vZNtzh07UZD
- 4FySgPKwcBXra+0MGMiejAbliu5MEBSmV9FzunwRjrmNCAuGFY5ZnRn86xgvpdqs+gnJ
- fkHRyGyI7Hqsp+v/dskMYjaheUzScaoqDLfe+egLQfQ2GtkVCzhoAJAH+an5hWWcqR4B
- D7VNeFkk81gRz6thO/8RPY+rhxczENgt76eiUXe0H8VBs5BPbXyNHLSgo6GHdlEftBBW
- HvKw==
+ d=linaro.org; s=google; t=1759896443; x=1760501243; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FxAtWtmejX8FeMeLelhLJTDbTvi6ib8BE8g2ZB3OGV0=;
+ b=viUDSEY0wtTcE7JQg/pmTRdcC7OWhtapT4MBQgDYEp1Ry8XlcF/X3lEFfcbDRMdOei
+ 1Os+G8+6/1W5e1zqe12mtKOkJfcp5cCHM5SCrcI5Bnd+rpZhMMHKwYlF96snNeRpJ0eq
+ mAkvUbC3vT0n5ljON9l7CM1uUIcXDFuCObgvhAehSeGMbW0XdtkLijPMHYb8skFZHfck
+ xl4OHnmNjBu4TsrkWqIaoOmktR2daj3+oWc0R9yXdvvc5S4b57X/GaEbawRDcru1g71g
+ g+GszYR2dqrlW8vi/yD2nYTvmzSeRqWIpNcDcO4hpkb6zrf8/wtxZ8JuTo6NSpqTsbK0
+ p/og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759896438; x=1760501238;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XK3NTl2B3zTpPA8Q4QoS/MR0UKSoTctc+BHX4wlh/xE=;
- b=vAlpzi4hKo9Z2oMKm0VHkYgwZY+YAgO/iD99RI8e+dludCJkfhblaJNJWpf3jbNIWo
- wpOLkAcGpzv0Z6GYfCeIbPRme4GVuT0yPXrCE4bQfPsb3TLQlKwPDrk/j7Pmscaw2Ta4
- PNX3/OP9nSVEK8VO3S08Mtc+6FAjceIf7VYGB4jC3OtlaT2ARMavuz9z4yI8hAPQ3gUo
- /Tf6smaTZp9m8AJylnCfhRrBZP5IwdLMvpfDtEw+pJ3FHOtjl0vLzyUfUuRjVvS0xFQB
- +92f/WYrAD0NlOx4wiV9jdGz2hh0Jc7X/E+DEafKEpnRw/Bc0xEgVb0uu1kxnE9kAwlJ
- W2XQ==
-X-Gm-Message-State: AOJu0YwMoS5xksHKBs67HGWn2uFAPjJS+faI08Et8fvk6Iv+qTutR6AF
- Rx4gpCeoXUGJShT+UUNU2KYypTKOERNkWULG9a+1FFqlwiy9Yb52sIaNZDGpMFSvxTL2q4T2Kmh
- Xa7aLy2b5zw==
-X-Gm-Gg: ASbGncvCJggSHv88G2ZH+ic0wuWFcsUa9nYQSt8XIyD/C4zwNxwvKRHaFrWDEEW2XIG
- NnfE74csWDBiWuAPCgrv9aNSKQyhFMrv4e1XXcq5UKqLmcDTQJl/Bxr1dYtfExfmdKfkvOqqARF
- BKLXOVNhYme1y4QajRWYzu5/L81AJmr5SJPJ+uwWGxEQVS4CEhHo0+iU1c5iwT/Cl4R2bO1aXDK
- ySinAbTZ2tjaC5c394oBUZk7Wu8J4+XafYmIuM8WsgbG6SziqQSFqmoQtF5rsyC91z6XPGF+9qZ
- seHx75JHfPpi2F8uA0TrqdYdA0Cfxo+vgV+BGBMl5oojotbHisSE7EUG+p1Yzx01ESEVj9Tgy2Q
- cb4j8bNz6l12yTrIlzdbSvPYIjks7/7UZw6zsKHX8PhFeHGvgnw7qXNTrN2FldOUdl/eUZ4r9PC
- ryM8wjdn95Fxf1jV2DBb6yKDRfpGQUa+10QPQ=
-X-Google-Smtp-Source: AGHT+IEIXGL3P8t0oTh1p1V3NI6++BW+3/EMw0SpDKt32lyYUyJmhP1y1qCj6ZQSEiMdg1THa01ESw==
-X-Received: by 2002:a05:600c:3b07:b0:45d:d97c:236c with SMTP id
- 5b1f17b1804b1-46fa9af80aemr10434825e9.21.1759896437672; 
- Tue, 07 Oct 2025 21:07:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759896443; x=1760501243;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FxAtWtmejX8FeMeLelhLJTDbTvi6ib8BE8g2ZB3OGV0=;
+ b=AOIG8d4Q0FxtNVaQ6S9qhbXXdmfoT14eHZ/951t6iXPW4/Y2V73ercTiblq85nYSOH
+ LJntnn1FAETPGlgTzduoo1Hr+4YCsvLEjTpeoJ94BLxrpSKSHeAXxq/nCwbcVNOcpyPI
+ +zvLAuk0Ab8G1CZ4ZxHiWbiFAT98fZxNpSjEPnPwyShnBZUTernllP08QgCgdXVFtG8t
+ 11zprWqCZMfr16fGb1SjJyV6pWk7U6R5rMdt7xjxKoHba0wdTbc2AojktpmOPVrU12yW
+ BauZgvyaUN7G+lxSW43WiGJO3lyYubIOSeZgEF/DEonBbzd5nOX7FoGRzXciRmR/zfVE
+ cwcA==
+X-Gm-Message-State: AOJu0YzUDGKofEiXEc+GQhSTWo9MX1XKh81dNCxhTMDLs0R+6HG3g+al
+ rWDkUKIgQpw7bR9l0pa8HMYdx14dMoBmZ6l5zLiyLJkDai2926gy3wyn4oeNciUWgXiyBOEbPqU
+ 0Q0006KJ5PQ==
+X-Gm-Gg: ASbGncvFUMQYGUWPWffmO9K1KfxW+tvPctgTJKCIXMrZGzprghxAityu0+pzTtKU1qL
+ HYPMBQQM3W4OBMYKaeVneNIGcNQSDiZ+VH3P9CDClwYZ1HVIJLsD8DTFUQ2x8DqYLzlxcuDDWk3
+ 11udjEFIK0lkCelgNGu5iDd8aIR1Ib5+h9uYp/ZqBkH4xC73LUdm4Pv88REvWrPZSjEWKNNi9bj
+ RL7HRsCj+bLAv4jRRHAsheWCeVgoK/9kTVia6pY4akIGULZo00U9deKrSPOJtlyU/OEbU1gHj5P
+ nGLKhjIoXriWUX/iRUJh/syjRNnMHyX0pHyXuGlGKKN84dhdM9xPy4Iy9OJjPHmxGgK5i/vLl6u
+ UZLlBON/s9OY7wIFKFgW0futrN7WfnE8EGxxv0xKspY5gr8FwoAouqt7qbPP6TbRrm/l2fyKmDr
+ q1YH+qGRuLX7eB46Mys+RJKTqZ
+X-Google-Smtp-Source: AGHT+IExiobNOfGSPWTb7L2l3odsWU/Eo27joKAv0sBZvTrPNsL9nZk7Rb2MQW0Mia20pwxgoKA8RQ==
+X-Received: by 2002:a05:600c:3b1f:b0:46e:42cb:d93f with SMTP id
+ 5b1f17b1804b1-46fa9a98ef7mr11946895e9.15.1759896442997; 
+ Tue, 07 Oct 2025 21:07:22 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fa9bf6c64sm19154605e9.4.2025.10.07.21.07.16
+ 5b1f17b1804b1-46fa9d7f91esm18486965e9.20.2025.10.07.21.07.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Oct 2025 21:07:17 -0700 (PDT)
+ Tue, 07 Oct 2025 21:07:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, kvm@vger.kernel.org,
@@ -83,15 +84,17 @@ Cc: qemu-riscv@nongnu.org, kvm@vger.kernel.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Huacai Chen <chenhuacai@kernel.org>, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v2 0/3] accel/kvm: Cleanups around kvm_arch_put_registers()
-Date: Wed,  8 Oct 2025 06:07:11 +0200
-Message-ID: <20251008040715.81513-1-philmd@linaro.org>
+Subject: [PATCH v2 1/3] accel/kvm: Do not expect more then KVM_PUT_FULL_STATE
+Date: Wed,  8 Oct 2025 06:07:12 +0200
+Message-ID: <20251008040715.81513-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251008040715.81513-1-philmd@linaro.org>
+References: <20251008040715.81513-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,27 +117,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extracted from a bigger series aiming to make accelerator
-synchronization of vcpu state slightly clearer. Here KVM
-patches around kvm_arch_put_registers():
-- Move KVM_PUT_[RESET|RUNTIME|FULL]_STATE to an enum
-- Factor common code out of kvm_cpu_synchronize_post_*()
+KVM_PUT_FULL_STATE is the highest level defined so far in
+"system/kvm.h"; do not check for more.
 
-Philippe Mathieu-Daudé (3):
-  accel/kvm: Do not expect more then KVM_PUT_FULL_STATE
-  accel/kvm: Introduce KvmPutState enum
-  accel/kvm: Factor kvm_cpu_synchronize_put() out
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+---
+ target/loongarch/kvm/kvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- include/system/kvm.h       | 16 +++++++------
- accel/kvm/kvm-all.c        | 47 +++++++++++++++-----------------------
- target/i386/kvm/kvm.c      |  6 ++---
- target/loongarch/kvm/kvm.c |  8 +++----
- target/mips/kvm.c          |  6 ++---
- target/ppc/kvm.c           |  2 +-
- target/riscv/kvm/kvm-cpu.c |  2 +-
- target/s390x/kvm/kvm.c     |  2 +-
- 8 files changed, 41 insertions(+), 48 deletions(-)
-
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index e5ea2dba9da..45292edcb1c 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -397,7 +397,7 @@ static int kvm_loongarch_put_csr(CPUState *cs, int level)
+                            &env->CSR_RVACFG);
+ 
+     /* CPUID is constant after poweron, it should be set only once */
+-    if (level >= KVM_PUT_FULL_STATE) {
++    if (level == KVM_PUT_FULL_STATE) {
+         ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CPUID),
+                            &env->CSR_CPUID);
+     }
+@@ -801,7 +801,7 @@ int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
+         once = 1;
+     }
+ 
+-    if (level >= KVM_PUT_FULL_STATE) {
++    if (level == KVM_PUT_FULL_STATE) {
+         /*
+          * only KVM_PUT_FULL_STATE is required, kvm kernel will clear
+          * guest_addr for KVM_PUT_RESET_STATE
 -- 
 2.51.0
 
