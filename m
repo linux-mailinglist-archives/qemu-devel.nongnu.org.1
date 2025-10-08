@@ -2,95 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDF8BC6B7D
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 23:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F17ABC6C55
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:13:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6c9I-0003u6-Fj; Wed, 08 Oct 2025 17:56:40 -0400
+	id 1v6c9P-0003wS-CM; Wed, 08 Oct 2025 17:56:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v6c9G-0003tE-HL
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:38 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v6c9M-0003vG-6Y
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:44 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v6c90-0006cz-9G
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:37 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-267f0fe72a1so2081665ad.2
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v6c90-0006cJ-TC
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:41 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b55517e74e3so282983a12.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960577; x=1760565377; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KVxOCYBSERnvDNnscForixI/p5oI5Usra4lNAQl+xMs=;
- b=k7kiDlkOC+mWtkMjeUP3bD/qnrEBXFgMUhgDrklGuoyeIHeqwizkwvqVGMM1hIdV21
- LRs5l8MxEMVAmAVOq/RlS9CrWUBrBaRSrkdWGr0INLcmboymbJyBFWcYi8TnlaG3gTGz
- WmtJyZ21LkEp+OHfoG0KB16qxy30mSX4mf9Egl+2XwCJYBqoeCVVIp7vjNGLDJOc6jzr
- 0rw+OzUphKAKBXynECYa+jUEH8RcNbq0hEia94622E+Xt37YleAsJBBGGoY4voYtn2em
- dU/r4hMGbiGr8UAFxOljPSzMVcygs2KL6B1Ff8qaVPEAUZR5IHUn05UpzVlrICVqbxO4
- L71w==
+ d=linaro.org; s=google; t=1759960575; x=1760565375; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SfcXr5UWt0SadCwReY9na2q03gghzKTQ+9WscMeEZpg=;
+ b=CgGOnqL4cFJtDNn/yhFWzSXZpOUmGn8XqmYhhQSbiUoBkd0PcpaF5OkxkmofdSCitq
+ ZPU9Cf47W9s5eZHOdvMyEcZhV6p0baEZNYknAVGOdcRohwJ9wAnYo1p9TrsBy1ro9tIh
+ SsR0bugZZRI1iVA7qdpTR/w8b7t0mVRBWTJcxUNJh4l8TUJmkzS6TeRFVJ1Do267yL2E
+ FYEQUHrzxDy2s2pQaWjS8KbH52/cmX+3Gnm7rA2+fOd4j6oWr5K/yUBtykNdjhntT8hK
+ GmqQay3aEfo1bx8rVL+aixyX9XSpPxmsANJ1ZovmJRkorNNZ6XOq5nvu70Y5/E96EIOG
+ +FeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960577; x=1760565377;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KVxOCYBSERnvDNnscForixI/p5oI5Usra4lNAQl+xMs=;
- b=gJo3VDPp2RP8luhEddRa5RGLTt8y1eVwwBrlb/krlW/0J/+w3Ju0FHUPjhH95yIWml
- 63uS0iVWAuye+LG6Az53Pl9pbNeXi/fSKWLcPVJjk2OjZ9IevNIsEMj9wrc4Vxf7NKr3
- 2yrkhxL+cHXjDZMGJzwQU61+lX7ddOEN5pJA3cSn/WQMoAGtbfTPZKrIs9MnmahjVXeI
- XveeeyYrOObdYRgIVpY6uvbrMensn3YuQ2ZXp3Qdoqam/ZabazSfszFN9t2voUnIBZlP
- JKFiX1olMr9pEhxHgXqXuKG+7IzsoyTvuGfSUPiyqfPA1AaMio74aGWEttH2YoiGeqMM
- HBwQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyLgxqHEd1kmZcc5227mOnJQ7ryeJ3oBUMJS8GY5bwbCxQZZYmxm56m4GJnQpQyfs/JL6dywWSid1m@nongnu.org
-X-Gm-Message-State: AOJu0YytCQ28ymt7QIAIlc/SV1We/J1RQGiv+Id+WUAPWjdFFPPmPywW
- imnWakfmNXc8YAhF+8I1c2uUWrZ0w6fvbv+FfhBwPY7NzJDFGqM/1d7RIURFcy0OrpE=
-X-Gm-Gg: ASbGncut3M96JPncvM942s+u7vcIvDqrw1CabeB+DPS/TgmG2pHPNOog4QWs3pnmQOO
- mtLo+koc4JHPtfc6QaKLx/KtH8jlFLS0t088rKqKV+Yxj7OLGJO9GJvuftho5+Yyt9t/cHMC3KY
- IpuneY2CwnK/iVBjxgIaCP0s1jtNVLCcqttqeaEaB2e5fLBXwWty1qz4OQLbMtHcRKj/b05DsX8
- aUfFxo2w7fxGBgX7kavOX/2mX9nxDpp8lJw2SoVo1SA7/OftEimll8uiReRY8aTjjDh0142UYLK
- p1ImeD27pYMTfc99jQ+pQdTktyn2xLWQ6XnDi0EbejZL0dpW2E2JGRQij0Tb++uDdjEZoNkHr6A
- wi+K2l3LYqVGdPXCklG3LCFm13zIjijA2ckIxWuTHMG0oeLbNAlbnQ4xS+pVeYIKDS2JJdosZbA
- ==
-X-Google-Smtp-Source: AGHT+IFNZLorrZhN1IcrDc4gzBFPXQPq/0kgfCK3RgJEtGw+w30A5vLco7Clx0W1ozMwr4M+WFQZ9Q==
-X-Received: by 2002:a17:903:2343:b0:248:fc2d:3a21 with SMTP id
- d9443c01a7336-29027290194mr51330675ad.4.1759960577401; 
- Wed, 08 Oct 2025 14:56:17 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034e2062fsm7462605ad.48.2025.10.08.14.56.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Oct 2025 14:56:16 -0700 (PDT)
-Message-ID: <eb6f8f7b-b636-41dc-9612-a204939ff905@linaro.org>
-Date: Wed, 8 Oct 2025 14:56:16 -0700
+ d=1e100.net; s=20230601; t=1759960575; x=1760565375;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SfcXr5UWt0SadCwReY9na2q03gghzKTQ+9WscMeEZpg=;
+ b=xFg/BBIJTHZ4gVkcRUXPRQuKobUUShQzm2gUWf6kdeCkBaW4YYdbsFEOUds+WU7iuN
+ bCvD37QHrBjaXfj9Rbjr0P6w13jNT2vcbwapWwBc2On+f/+6TnUhINUwmSaPs+FxloPn
+ tnoQcBd/qqcpE3oqAVPZE8bgYW+yUigdm94mX1tzQLqSlBw+oe7doaZdLOiDZ6bktlaR
+ V6IkfoA2TEqRUDn4O6teGFytxpoyfEjIctu/OXzIpCkFFzZoUVsU6Kq4ZAXDVD3yaM79
+ t5J/1RicrXFGnX6kV4rI16zA77tVlVjwMjW9do731l3PRiTLzDdop6bzq/DcO3Fa3YDK
+ tFeQ==
+X-Gm-Message-State: AOJu0YyBdvoWCjNyEi6pfyyYBnxxBIzQpPgg2jS1fvn+8UKoae2tqhqq
+ l+dkQOzZjwuL1eBlgTX4FUASGh4yJAE9ViyUHHxxevDmOjdox5O2oP5QYaS0KdztocLbpmz0L2O
+ xbmtRsTQ=
+X-Gm-Gg: ASbGncsPFBCOo1hZ3u5IIGHaB9dBGWAXfEeSFsDZQIWHSXtgk27v1NYCK2MnFuUJHrd
+ 4SBjtv7DBVxUXXXJf0po2iMsVDsfcs+BhGltEUIqCVFvZadX+O5tlLywa2Cf+BSEk3mdP25/d1e
+ b58aFoy/JCd3PxlAqr1OhYXRneDWmqQ1ja4sNFq+FEd/HKsLFovNNrmqwYeZ/Ynhkp+XI0IIOFP
+ lm0tfJDhL+1cDpr3LZz+gkTdWlVUGg6nFJS+VmI9cPB6BQGi9KcP+m8JiIp+UIxJZlIAvj6c+ZP
+ /u96jTf4DXhMdtXpCKcPlj6rt/s/os7icECSkxokLPb3cOrCWY9LfukKqM4Isb1zMaeXFFwPRMw
+ BIQ3wEyttXRUkcx92uzcB0DkXgCeY/OKi/JjJpXPYD7RPDjUKe2mvcUV6
+X-Google-Smtp-Source: AGHT+IEqOkBusYa9vJQSgd/uQIFbwD/J8wfgj4ZSJ5Ris2RDH/JQNYgwHEziMaoHBs5XzTo/0Um93w==
+X-Received: by 2002:a17:903:3c6e:b0:267:ed5e:c902 with SMTP id
+ d9443c01a7336-29027374b4fmr66808035ad.20.1759960574617; 
+ Wed, 08 Oct 2025 14:56:14 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Oct 2025 14:56:14 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v7 00/73] target/arm: Implement FEAT_GCS
+Date: Wed,  8 Oct 2025 14:55:00 -0700
+Message-ID: <20251008215613.300150-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] linux-user: add syscall-filter and fork-cpu-loop in
- plugin interfaces
-Content-Language: en-US
-To: Ziyang Zhang <functioner@sjtu.edu.cn>, qemu-devel <qemu-devel@nongnu.org>
-Cc: alex bennee <alex.bennee@linaro.org>,
- richard henderson <richard.henderson@linaro.org>, trueful <trueful@163.com>,
- Florian Hofhammer <florian.hofhammer@epfl.ch>
-References: <625873322.3277896.1759930752814.JavaMail.zimbra@sjtu.edu.cn>
- <386568240.3278044.1759930904927.JavaMail.zimbra@sjtu.edu.cn>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <386568240.3278044.1759930904927.JavaMail.zimbra@sjtu.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,104 +95,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Ziyang,
+Changes from v6:
+  - Resolve conflicts with master.
+  - Fix size of TCGv cpu_gcssp[]
+  - All patches now reviewed.
 
-On 10/8/25 6:41 AM, Ziyang Zhang wrote:
-> This commit introduces a syscall filtering mechanism for user-mode
-> emulation, allowing plugins to intercept and handle system calls.
-> 
-> Key features:
-> - New API functions: qemu_plugin_set_syscall_filter() and
->    qemu_plugin_fork_cpu_loop()
-> - A new enum qemu_plugin_syscall_filter_ret to represent filter results
-> - Integration into the cpu loop for i386 and x86_64
-> - A new header file include/user/syscall-filter.h
-> 
-> The filtering mechanism works by allowing a plugin to register a
-> callback that is invoked before each system call. The callback can
-> decide whether to pass, skip, or exit the current cpu loop. When
-> skipping, the plugin can provide a value to be returned to the guest.
-> 
-> Additionally, a new function qemu_plugin_fork_cpu_loop() is provided to
-> allow plugins to fork a new cpu loop, which is useful for temporarily
-> resuming guest emulation (e.g., for executing callbacks) during the
-> first system call.
-> 
-> The implementation inserts the filter checks in the cpu loop for both
-> the int $0x80 (i386) and syscall (x86_64) paths.
-> 
-> At KVM Forum 2025, we presented Lorelei, a system designed to enable
-> guest programs executed by the QEMU user-mode emulator to accelerate
-> performance by invoking natively compiled host libraries via syscalls.
-> We have successfully supported libraries such as SDL, OpenGL, and
-> Vulkan, allowing QEMU user-mode to emulate GPU-dependent games.
-> 
-> Following an invitation from Mr. Bouvier to upstream Lorelei to QEMU, we
-> refined its architecture to load the Lorelei module as a TCG plugin.
-> 
-> Since host libraries may execute guest function pointers (callbacks),
-> Lorelei implements a novel nested execution model:
-> 
-> - During syscall filtering, Lorelei triggers a temporary cpu_loop when a
->    host library begins executing a guest callback
-> - This temporarily reverts to full emulation mode to execute the guest
->    callback
-> - The guest code then issues a magic syscall to exit the temporary
->    cpu_loop
-> - Control returns to the host library's original execution context
-> 
-> 
-> Slides: https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/Slides_DQPMaZE.pdf
-> Video: https://www.youtube.com/watch?v=_jioQFm7wyU&list=PLW3ep1uCIRfxwmllXTOA2txfDWN6vUOHp&index=22
-> 
-> Signed-off-by: Ziyang Zhang <functioner@sjtu.edu.cn>
-> ---
->   include/qemu/plugin.h         | 28 +++++++++++++++++++
->   include/qemu/qemu-plugin.h    | 44 +++++++++++++++++++++++++++++
->   include/user/syscall-filter.h | 36 ++++++++++++++++++++++++
->   linux-user/i386/cpu_loop.c    | 52 +++++++++++++++++++++++++++++++++--
->   linux-user/main.c             |  1 +
->   linux-user/user-internals.h   |  1 +
->   plugins/api.c                 | 14 ++++++++++
->   plugins/core.c                | 31 +++++++++++++++++++++
->   plugins/plugin.h              |  8 ++++++
->   9 files changed, 213 insertions(+), 2 deletions(-)
->   create mode 100644 include/user/syscall-filter.h
-> 
+r~
 
-Thanks for sharing this on the mailing list.
+Pierrick Bouvier (1):
+  tests/functional: update tests using TF-A/TF-RMM to support FEAT_GCS
 
-To add more context for Alex and Richard, the goal is indeed to support 
-Lorelei by enhancing plugin interface.
-By having a "magic syscall", control can be sent back to plugin.
-This idea could be extended later similarly in system mode, by defining 
-an hypercall mechanism.
+Richard Henderson (72):
+  target/arm: Add isar feature test for FEAT_S1PIE, FEAT_S2PIE
+  target/arm: Enable TCR2_ELx.PIE
+  target/arm: Implement PIR_ELx, PIRE0_ELx, S2PIR_EL2 registers
+  target/arm: Force HPD for stage2 translations
+  target/arm: Cache NV1 early in get_phys_addr_lpae
+  target/arm: Populate PIE in aa64_va_parameters
+  target/arm: Implement get_S1prot_indirect
+  target/arm: Implement get_S2prot_indirect
+  target/arm: Expand CPUARMState.exception.syndrome to 64 bits
+  target/arm: Expand syndrome parameter to raise_exception*
+  target/arm: Implement dirtybit check for PIE
+  target/arm: Enable FEAT_S1PIE and FEAT_S2PIE on -cpu max
+  include/exec/memopidx: Adjust for 32 mmu indexes
+  include/hw/core/cpu: Widen MMUIdxMap
+  target/arm: Split out mmuidx.h from cpu.h
+  target/arm: Convert arm_mmu_idx_to_el from switch to table
+  target/arm: Remove unused env argument from regime_el
+  target/arm: Convert regime_el from switch to table
+  target/arm: Convert regime_has_2_ranges from switch to table
+  target/arm: Remove unused env argument from regime_is_pan
+  target/arm: Convert regime_is_pan from switch to table
+  target/arm: Remove unused env argument from regime_is_user
+  target/arm: Convert regime_is_user from switch to table
+  target/arm: Convert arm_mmu_idx_is_stage1_of_2 from switch to table
+  target/arm: Convert regime_is_stage2 to table
+  target/arm: Introduce mmu indexes for GCS
+  target/arm: Introduce regime_to_gcs
+  target/arm: Support page protections for GCS mmu indexes
+  target/arm: Implement gcs bit for data abort
+  target/arm: Add GCS cpregs
+  target/arm: Add GCS enable and trap levels to DisasContext
+  target/arm: Implement FEAT_CHK
+  target/arm: Make helper_exception_return system-only
+  target/arm: Export cpsr_{read_for,write_from}_spsr_elx
+  target/arm: Expand pstate to 64 bits
+  target/arm: Add syndrome data for EC_GCS
+  target/arm: Add arm_hcr_el2_nvx_eff
+  target/arm: Use arm_hcr_el2_nvx_eff in access_nv1
+  target/arm: Split out access_nv1_with_nvx
+  target/arm: Implement EXLOCKException for ELR_ELx and SPSR_ELx
+  target/arm: Split {full,core}_a64_user_mem_index
+  target/arm: Introduce delay_exception{_el}
+  target/arm: Emit HSTR trap exception out of line
+  target/arm: Emit v7m LTPSIZE exception out of line
+  target/arm: Implement GCSSTR, GCSSTTR
+  target/arm: Implement GCSB
+  target/arm: Implement GCSPUSHM
+  target/arm: Implement GCSPOPM
+  target/arm: Implement GCSPUSHX
+  target/arm: Implement GCSPOPX
+  target/arm: Implement GCSPOPCX
+  target/arm: Implement GCSSS1
+  target/arm: Implement GCSSS2
+  target/arm: Add gcs record for BL
+  target/arm: Add gcs record for BLR
+  target/arm: Add gcs record for BLR with PAuth
+  target/arm: Load gcs record for RET
+  target/arm: Load gcs record for RET with PAuth
+  target/arm: Copy EXLOCKEn to EXLOCK on exception to the same EL
+  target/arm: Implement EXLOCK check during exception return
+  target/arm: Enable FEAT_GCS with -cpu max
+  linux-user/aarch64: Implement prctls for GCS
+  linux-user/aarch64: Allocate new gcs stack on clone
+  linux-user/aarch64: Release gcs stack on thread exit
+  linux-user/aarch64: Implement map_shadow_stack syscall
+  target/arm: Enable GCSPR_EL0 for read in user-mode
+  linux-user/aarch64: Inject SIGSEGV for GCS faults
+  linux-user/aarch64: Generate GCS signal records
+  linux-user/aarch64: Enable GCS in HWCAP
+  tests/tcg/aarch64: Add gcsstr
+  tests/tcg/aarch64: Add gcspushm
+  tests/tcg/aarch64: Add gcsss
 
-All Lorelei libraries will be out of QEMU tree, but we need a way to 
-connect this to existing QEMU, and that's the goal here.
-There is a great potential to accelerate QEMU user mode by leveraging 
-native libraries, so it's worth taking a look.
+ include/exec/memopidx.h                       |   9 +-
+ include/hw/core/cpu.h                         |   7 +-
+ linux-user/aarch64/gcs-internal.h             |  38 ++
+ linux-user/aarch64/target_prctl.h             |  96 ++++
+ linux-user/aarch64/target_signal.h            |   1 +
+ linux-user/qemu.h                             |   5 +
+ target/arm/cpregs.h                           |  22 +
+ target/arm/cpu-features.h                     |  15 +
+ target/arm/cpu.h                              | 243 ++--------
+ target/arm/internals.h                        | 148 +-----
+ target/arm/mmuidx-internal.h                  | 113 +++++
+ target/arm/mmuidx.h                           | 241 ++++++++++
+ target/arm/syndrome.h                         |  35 ++
+ target/arm/tcg/helper-a64.h                   |   5 +-
+ target/arm/tcg/translate.h                    |  46 +-
+ tests/tcg/aarch64/gcs.h                       |  80 ++++
+ accel/tcg/cputlb.c                            |   3 -
+ linux-user/aarch64/cpu_loop.c                 |   5 +
+ linux-user/aarch64/elfload.c                  |   1 +
+ linux-user/aarch64/signal.c                   | 138 +++++-
+ linux-user/syscall.c                          | 114 +++++
+ target/arm/cpregs-gcs.c                       | 156 +++++++
+ target/arm/cpu.c                              |  17 +-
+ target/arm/gdbstub64.c                        |   2 +
+ target/arm/helper.c                           | 283 ++++++++---
+ target/arm/machine.c                          | 113 ++++-
+ target/arm/mmuidx.c                           |  66 +++
+ target/arm/ptw.c                              | 365 ++++++++++++---
+ target/arm/tcg-stubs.c                        |   2 +-
+ target/arm/tcg/cpu64.c                        |   3 +
+ target/arm/tcg/helper-a64.c                   |  35 +-
+ target/arm/tcg/hflags.c                       |  38 ++
+ target/arm/tcg/mte_helper.c                   |   2 +-
+ target/arm/tcg/op_helper.c                    |  11 +-
+ target/arm/tcg/tlb-insns.c                    |  47 +-
+ target/arm/tcg/tlb_helper.c                   |  18 +-
+ target/arm/tcg/translate-a64.c                | 438 ++++++++++++++++--
+ target/arm/tcg/translate.c                    |  78 +++-
+ tests/tcg/aarch64/gcspushm.c                  |  71 +++
+ tests/tcg/aarch64/gcsss.c                     |  74 +++
+ tests/tcg/aarch64/gcsstr.c                    |  48 ++
+ docs/system/arm/emulation.rst                 |   4 +
+ target/arm/meson.build                        |   9 +-
+ target/arm/tcg/a64.decode                     |   5 +
+ .../aarch64/test_device_passthrough.py        |   4 +-
+ tests/functional/aarch64/test_rme_sbsaref.py  |   4 +-
+ tests/functional/aarch64/test_rme_virt.py     |   4 +-
+ tests/tcg/aarch64/Makefile.target             |   5 +
+ 48 files changed, 2662 insertions(+), 605 deletions(-)
+ create mode 100644 linux-user/aarch64/gcs-internal.h
+ create mode 100644 target/arm/mmuidx-internal.h
+ create mode 100644 target/arm/mmuidx.h
+ create mode 100644 tests/tcg/aarch64/gcs.h
+ create mode 100644 target/arm/cpregs-gcs.c
+ create mode 100644 target/arm/mmuidx.c
+ create mode 100644 tests/tcg/aarch64/gcspushm.c
+ create mode 100644 tests/tcg/aarch64/gcsss.c
+ create mode 100644 tests/tcg/aarch64/gcsstr.c
 
-The idea to filter syscalls has been recently brought too by Florian 
-[1]. In the end, it has been preferred to provide a set_pc interface 
-[2]. While it could work, I think it's not the right direction.
+-- 
+2.43.0
 
-Offering a syscall based interface allows to have something architecture 
-independent for this kind of use case, while set_pc approach implies you 
-need to find next instruction, and manually read all parameters through 
-registers. As well, since syscall filtering seems to fix two different 
-use cases, I would really be in favor of having such an interface 
-available upstream.
-
-Finally, there are some additional needs for Lorelei, but we can start 
-talking about this syscall interface first.
-
-Alex and Richard, what are your thoughts about this?
-
-[1] https://lists.nongnu.org/archive/html/qemu-devel/2025-08/msg00656.html
-[2] 
-https://lore.kernel.org/qemu-devel/e9bcd7c7-2d67-469e-b2f3-d1a68e456b2b@epfl.ch/
-
-Regards,
-Pierrick
 
