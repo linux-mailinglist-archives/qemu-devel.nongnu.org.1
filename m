@@ -2,92 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF7DBC36D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 08:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB783BC375C
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 08:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6NFe-0000xP-H5; Wed, 08 Oct 2025 02:02:14 -0400
+	id 1v6NWu-0000at-3X; Wed, 08 Oct 2025 02:20:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6NFP-0000tg-Q0
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 02:02:02 -0400
-Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1v6NWq-0000a4-Ay
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 02:20:00 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6NFN-0000eW-DE
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 02:01:59 -0400
-Received: by mail-wr1-x444.google.com with SMTP id
- ffacd0b85a97d-3ee12807d97so6084535f8f.0
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 23:01:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1v6NWm-0002nS-Mw
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 02:20:00 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-639e34ffa69so199723a12.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 23:19:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759903315; x=1760508115; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=sifive.com; s=google; t=1759904394; x=1760509194; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IQsmpoPeW153QfGVuuE1WH9+2W3pcJi50GVTjfdpbVs=;
- b=coeOLRatdeTb6EP9cSvVIuo/nYgePOeZmTW9ba75wIm6gVa2z8w22mMdlvgTdou7Tt
- ztmQ8VIDGudoHK8Is4c87u3RWxyWWhmRcXoMEY3VkUb+3jtUmQKb8haxLpXzgF2huhuU
- EryHyikm0Cj87Hj5pmB8XkU1ro+JL68YynHzraenpRCjsE5tzOKxovAf+D9aie2MRbdX
- LpC4Qf0xSfNRf5xPd8wS7JVY/ORP7m2r+nafIIcvdTh6ugsn4obZoCLAlC231UfibTRx
- X1LG1I/FLKAmJWPsN3nlzXmhYePO1EzAQu73u+mk3rgFnBtOPGz7TdnL7YZBH8IgcLEf
- FMzQ==
+ bh=ezIllkPDOWek3gY0yXtjvcY07Vsmuqc1hgf6X1qZDp0=;
+ b=h2GEkYXeWwNBf6uH3OOYL+GqXS8p/HgrCG2ANJ7ea0tnSTMoboq2rkEHPIE1acFLLO
+ qJQWPH2p+PxGEwxFQKew+qo8DQmNrhzOAaBymAKtcH4HU3RGDTQ7OpiuFgTI+2TSkxEp
+ nrp9puVUOQRLXrEL/1KzubvsBPb3+EJ0BZGcBT5KiVYsL4SbLgxprZI7QmONKOEp7r+j
+ IoMzWiOb+o915MUwN/42rJgsa+f4pLA2taWcpuqUFnc6Q1rF/Bn3I8Sx0SWF8dynrDqD
+ uoKKcmBOBuKX0+nveHdHLjmrhlSAXapZCU3Dtj0I66gUv2MVEJd2O7iupHJZNB/oxuOQ
+ e/Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759903315; x=1760508115;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1759904394; x=1760509194;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IQsmpoPeW153QfGVuuE1WH9+2W3pcJi50GVTjfdpbVs=;
- b=qEuUWMWj3OQmGScD8JJPfvlG8oOucOD1IoN3/oon9p2L8DvXArlaZ8g2vy4YhX4d51
- S4nvOudfCV03KJh7bKcCf7dCG9+15DG4KBbhqRGCQ+muoK7zaHPQBp5Dm55R4aGqrTnK
- zSlrJrUltk47BSBlQ7Kjzin55stFeGTiMLJ00hClbMLSJ0bRYgc72zvraLYaKuRhDK/R
- ov+1GuXZRiXegXWjx4RywMoCbjCNMIyXMpH8apTEy4dyZiI1BJpmhilAFo12VTHYubXr
- 7gX1+ixyTYCfKe314APyI25BfV0sP5d9uxo4yf2k9xdAhXhAMq7GWZoeiuTzvB70gkAu
- cvpw==
-X-Gm-Message-State: AOJu0YwGDl0qL77hbWBqdF3cf0n/evXUqBISEhyH3lCaTgRtTg1nTgKN
- /v79Q//cQm4UHWaeAvFs/Eu3qnaM5TTe1Yq1jiCcqbId+MAYWAAtPkZhDQDJXezhD6PDwGNtjXr
- 3pkpFF0D7yODX
-X-Gm-Gg: ASbGncs85E09TDbPrjoXzqIjYHEfexj0ojl3cyliZf4LgE0ZdXLhAR7z3cG4MR3Azdg
- /FGLsPK4Kx2GxTAFIYNRc8d/F/BjUKQbFV73/p6Lp6Km5ykW7uPxD05ZUxaq9hC20a7p1klX5t3
- WZpTVHEUQYeSOXJjH2jYk755wbVETOAGCzHSFBfX5LYtBFT3Iz5TQ4k9HTHDiFIoVlp+8BOontt
- 3x9enKH68ew785JDpVYGyZvrVvwN+x2RA2OmHBR6IH7TQmOV18yKASVlJM53+JlLNoYbQZjkKBa
- TEp37R2PGXLB7SYI0XVV1DZptu47ocXP8NIh/m9uCng47hjb7f8cotu32AKQuCQDbLlbaXI0z0X
- e/BAPQlaz5hhUOCXKiBYKdTYgqzn1i+3bc3FyHo7sOjs58RHMA2qrDok0y6tqv5sKygrpzmDmLP
- oeTgP0w26IBctm2Dj/pFeYHfa3
-X-Google-Smtp-Source: AGHT+IHkllW7Co1meslhNQIl9ob6K+Ub1q0nI7YMNqutZGBiOShVAOxGquX4cji9hRQ9unqJ3cHesg==
-X-Received: by 2002:a05:6000:4205:b0:3f7:b7ac:f3d2 with SMTP id
- ffacd0b85a97d-4266f752fb9mr1037761f8f.43.1759903315173; 
- Tue, 07 Oct 2025 23:01:55 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f4cc3sm28196503f8f.55.2025.10.07.23.01.54
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Oct 2025 23:01:54 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] target/microblaze: Convert CPUMBState::res_addr field to
- uint32_t type
-Date: Wed,  8 Oct 2025 08:01:29 +0200
-Message-ID: <20251008060129.87579-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251008060129.87579-1-philmd@linaro.org>
-References: <20251008060129.87579-1-philmd@linaro.org>
+ bh=ezIllkPDOWek3gY0yXtjvcY07Vsmuqc1hgf6X1qZDp0=;
+ b=hzOXBZLHb47sG5PFPlUNo0288S8iUq6iAq9voU1ulnvbgBAd5yW8sMl4UuI+q3SWwP
+ 6c1f+e+C5g0rON7EcmGzZbqZ15NafFKRnrGTB6nB/42vpYmg7gY9YJY3nZ2FiRQ8gMLg
+ By/afJgcmOIYo4kNzUO7X6MkeLlzwQIOMQxn/YSJONXkAyHxGcsUr7clc6mh06PbxwBA
+ DC5VVX7wRYnCHmdnx74gEOREHyuA2xsWpfRxGLcvD63b5T0DPXt64hmKvRIC6SpCnJan
+ Cy5jDn6No07mBP7AjN7kTTJeVEl0gPExE7ZwFShSCtSTfaPg3UfDuFCUySGlKXddRRev
+ aQBw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUvGUEPesOCbk4oZSSKAa46M5abc4OG2LcJGM9hTcFomDhSrzTjfwjicUu35dUvPUM44Aph7h3p/dbC@nongnu.org
+X-Gm-Message-State: AOJu0YwSv4Hbpfbw3ZC2vbK/rZ08jPcPjiB3puNrqGS9W4EE52S1mgaV
+ 1s5VoDg7OMaRhDo9Ehsz+o6B24//UBbOdbCp0YzW/gq49UxpJiI6R12LEwbzaYG2KjsvPAjxzdd
+ hywjaDGPRdqDkZSqC0Uyx3HuKJC/tn7JKqhzL0VJCPA==
+X-Gm-Gg: ASbGnct7Mm7r6ihP09TSPjfPOAo2YM7o84UDsI992uSKkUd9Tdxm9oSQYS3iS8Z51I2
+ 4y1da64+mNWfk7KSl7Izn6LHlZGsLQPQgX3hEs94Tb2bMaPCjeyVY99YR1fU0qm19f/4Pf6X6tQ
+ /ISIjduaTFJuUyEQvDRuHCVDtnpwbpjVAbYT8+CWYDE3XmQs83xbXh1fD3bLZqvkoZVJALw6vaA
+ ApM9KDoQr4INurvyxaZYSINUv/t4yVp5g==
+X-Google-Smtp-Source: AGHT+IGI2BO1iE0QzavqmaPr3PO53oOHjjqp0bgk1Ru5uEr5wfBPZDovA3NiNfCSyxMPa46eTNirZ0bNyzTS3I01X9s=
+X-Received: by 2002:a05:6402:34c6:b0:634:4e0:836f with SMTP id
+ 4fb4d7f45d1cf-639d5b57a88mr1956076a12.1.1759904394488; Tue, 07 Oct 2025
+ 23:19:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::444;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x444.google.com
+References: <20701dc8-d156-4ad9-8945-282321c15527@ventanamicro.com>
+ <4d658cff-d8ab-4d95-b340-c6b7b5375395@yeah.net>
+In-Reply-To: <4d658cff-d8ab-4d95-b340-c6b7b5375395@yeah.net>
+From: Jim Shu <jim.shu@sifive.com>
+Date: Wed, 8 Oct 2025 14:19:42 +0800
+X-Gm-Features: AS18NWCIS5O1I1BtYGVAvnrquVBQfb4fSNAzaZVeZk8Cm5VqiJ1WKZ6CtJKrwQU
+Message-ID: <CALw707r3tBUGbZqYXbPc2B+so6AVhYqUr7ccYYjVidDqqAWemw@mail.gmail.com>
+Subject: Re: [PATCH v2 13/18] hw/misc: riscv_worldguard: Add API to enable WG
+ extension of CPU
+To: Chao Liu <chao.liu@yeah.net>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: alistair.francis@wdc.com, arikalo@gmail.com, atar4qemu@gmail.com, 
+ aurelien@aurel32.net, david@redhat.com, deller@gmx.de, 
+ edgar.iglesias@gmail.com, eduardo@habkost.net, gaosong@loongson.cn, 
+ iii@linux.ibm.com, jcmvbkbc@gmail.com, jiaxun.yang@flygoat.com, 
+ kbastian@mail.uni-paderborn.de, laurent@vivier.eu, liwei1518@gmail.com, 
+ marcel.apfelbaum@gmail.com, mark.cave-ayland@ilande.co.uk, mrolnik@gmail.com, 
+ npiggin@gmail.com, palmer@dabbelt.com, pbonzini@redhat.com, peterx@redhat.com, 
+ philmd@linaro.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, richard.henderson@linaro.org, 
+ shorne@gmail.com, thuth@redhat.com, wangyanan55@huawei.com, 
+ zhao1.liu@intel.com, zhiwei_liu@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=jim.shu@sifive.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,124 +107,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUMBState::@res_addr field is used as u32 since commit
-cfeea807e5a ("target-microblaze: Tighten up TCGv_i32 vs
-TCGv type usage"). Convert it as such, bumping the migration
-version. Use the RES_ADDR_NONE definition when appropriate.
+Hi Daniel and Chao,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/microblaze/cpu.h       |  2 +-
- target/microblaze/machine.c   |  6 +++---
- target/microblaze/translate.c | 17 +++++++++--------
- 3 files changed, 13 insertions(+), 12 deletions(-)
+I will replace qemu_get_cpu() with cpu_by_arch_id().
+However, cpu_by_arch_id() can still return NULL if the hartid is
+invalid, so I will handle that case with a clean exit.
 
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index 3ce28b302fe..14b107876a4 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -259,7 +259,7 @@ struct CPUArchState {
- 
-     /* lwx/swx reserved address */
- #define RES_ADDR_NONE 0xffffffff /* Use 0xffffffff to indicate no reservation */
--    target_ulong res_addr;
-+    uint32_t res_addr;
-     uint32_t res_val;
- 
-     /* Internal flags.  */
-diff --git a/target/microblaze/machine.c b/target/microblaze/machine.c
-index a4cf38dc891..48efa546d39 100644
---- a/target/microblaze/machine.c
-+++ b/target/microblaze/machine.c
-@@ -78,7 +78,7 @@ static const VMStateField vmstate_env_fields[] = {
-     VMSTATE_UINT32(iflags, CPUMBState),
- 
-     VMSTATE_UINT32(res_val, CPUMBState),
--    VMSTATE_UINTTL(res_addr, CPUMBState),
-+    VMSTATE_UINT32(res_addr, CPUMBState),
- 
-     VMSTATE_STRUCT(mmu, CPUMBState, 0, vmstate_mmu, MicroBlazeMMU),
- 
-@@ -87,8 +87,8 @@ static const VMStateField vmstate_env_fields[] = {
- 
- static const VMStateDescription vmstate_env = {
-     .name = "env",
--    .version_id = 0,
--    .minimum_version_id = 0,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-     .fields = vmstate_env_fields,
- };
- 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index ff33e64a710..04fbd4fe17f 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -55,7 +55,7 @@ static TCGv_i32 cpu_imm;
- static TCGv_i32 cpu_bvalue;
- static TCGv_i32 cpu_btarget;
- static TCGv_i32 cpu_iflags;
--static TCGv cpu_res_addr;
-+static TCGv_i32 cpu_res_addr;
- static TCGv_i32 cpu_res_val;
- 
- /* This is the state at translation time.  */
-@@ -857,7 +857,7 @@ static bool trans_lwx(DisasContext *dc, arg_typea *arg)
- 
-     tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index,
-                         mo_endian(dc) | MO_UL);
--    tcg_gen_mov_tl(cpu_res_addr, addr);
-+    tcg_gen_mov_i32(cpu_res_addr, addr);
- 
-     if (arg->rd) {
-         tcg_gen_mov_i32(cpu_R[arg->rd], cpu_res_val);
-@@ -1024,7 +1024,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
-      * branch, but we know we can use the equal version in the global.
-      * In either case, addr is no longer needed.
-      */
--    tcg_gen_brcond_tl(TCG_COND_NE, cpu_res_addr, addr, swx_fail);
-+    tcg_gen_brcond_i32(TCG_COND_NE, cpu_res_addr, addr, swx_fail);
- 
-     /*
-      * Compare the value loaded during lwx with current contents of
-@@ -1052,7 +1052,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
-      * Prevent the saved address from working again without another ldx.
-      * Akin to the pseudocode setting reservation = 0.
-      */
--    tcg_gen_movi_tl(cpu_res_addr, -1);
-+    tcg_gen_movi_i32(cpu_res_addr, RES_ADDR_NONE);
-     return true;
- }
- 
-@@ -1173,7 +1173,7 @@ static bool trans_brk(DisasContext *dc, arg_typea_br *arg)
-         tcg_gen_movi_i32(cpu_R[arg->rd], dc->base.pc_next);
-     }
-     tcg_gen_ori_i32(cpu_msr, cpu_msr, MSR_BIP);
--    tcg_gen_movi_tl(cpu_res_addr, -1);
-+    tcg_gen_movi_i32(cpu_res_addr, RES_ADDR_NONE);
- 
-     dc->base.is_jmp = DISAS_EXIT;
-     return true;
-@@ -1194,7 +1194,7 @@ static bool trans_brki(DisasContext *dc, arg_typeb_br *arg)
-     if (arg->rd) {
-         tcg_gen_movi_i32(cpu_R[arg->rd], dc->base.pc_next);
-     }
--    tcg_gen_movi_tl(cpu_res_addr, -1);
-+    tcg_gen_movi_i32(cpu_res_addr, RES_ADDR_NONE);
- 
- #ifdef CONFIG_USER_ONLY
-     switch (imm) {
-@@ -1885,6 +1885,7 @@ void mb_tcg_init(void)
-           tcg_global_mem_new_i32(tcg_env, i32s[i].ofs, i32s[i].name);
-     }
- 
--    cpu_res_addr =
--        tcg_global_mem_new(tcg_env, offsetof(CPUMBState, res_addr), "res_addr");
-+    cpu_res_addr = tcg_global_mem_new_i32(tcg_env,
-+                                          offsetof(CPUMBState, res_addr),
-+                                          "res_addr");
- }
--- 
-2.51.0
+I will fix these in the v3 patch.
 
+
+Thanks,
+Jim
+
+On Wed, Aug 13, 2025 at 11:10=E2=80=AFAM Chao Liu <chao.liu@yeah.net> wrote=
+:
+>
+> > On 4/17/25 7:52 AM, Jim Shu wrote:
+> > > riscv_worldguard_apply_cpu() could enable WG CPU extension and set WG
+> > > callback to CPUs. It is used by machine code after realizing global W=
+G
+> > > device.
+> > >
+> > > Signed-off-by: Jim Shu <jim.shu@sifive.com>
+> > > ---
+> > >   hw/misc/riscv_worldguard.c         | 87 +++++++++++++++++++++++++++=
++++
+> > >   include/hw/misc/riscv_worldguard.h |  1 +
+> > >   2 files changed, 88 insertions(+)
+> > >
+> > > diff --git a/hw/misc/riscv_worldguard.c b/hw/misc/riscv_worldguard.c
+> > > index b02bd28d02..1a910f4cf3 100644
+> > > --- a/hw/misc/riscv_worldguard.c
+> > > +++ b/hw/misc/riscv_worldguard.c
+> > > @@ -92,6 +92,93 @@ uint32_t mem_attrs_to_wid(MemTxAttrs attrs)
+> > >       }
+> > >   }
+> > >
+> > > +static void riscv_cpu_wg_reset(CPURISCVState *env)
+> > > +{
+> > > +    CPUState *cs =3D env_cpu(env);
+> > > +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> > > +    uint32_t mlwid, slwid, mwiddeleg;
+> > > +    uint32_t trustedwid;
+> > > +
+> > > +    if (!riscv_cpu_cfg(env)->ext_smwg) {
+> > > +        return;
+> > > +    }
+> > > +
+> > > +    if (worldguard_config =3D=3D NULL) {
+> > > +        /*
+> > > +         * Note: This reset is dummy now and WG CSRs will be reset a=
+gain
+> > > +         * after worldguard_config is realized.
+> > > +         */
+> > > +        return;
+> > > +    }
+> > > +
+> > > +    trustedwid =3D worldguard_config->trustedwid;
+> > > +    if (trustedwid =3D=3D NO_TRUSTEDWID) {
+> > > +        trustedwid =3D worldguard_config->nworlds - 1;
+> > > +    }
+> > > +
+> > > +    /* Reset mlwid, slwid, mwiddeleg CSRs */
+> > > +    if (worldguard_config->hw_bypass) {
+> > > +        /* HW bypass mode */
+> > > +        mlwid =3D trustedwid;
+> > > +    } else {
+> > > +        mlwid =3D 0;
+> > > +    }
+> > > +    slwid =3D 0;
+> > > +    mwiddeleg =3D 0;
+> > > +
+> > > +    env->mlwid =3D mlwid;
+> > > +    if (riscv_cpu_cfg(env)->ext_sswg) {
+> > > +        env->slwid =3D slwid;
+> > > +        env->mwiddeleg =3D mwiddeleg;
+> > > +    }
+> > > +
+> > > +    /* Check mwid, mwidlist config */
+> > > +    if (worldguard_config !=3D NULL) {
+> > > +        uint32_t valid_widlist =3D MAKE_64BIT_MASK(0, worldguard_con=
+fig->nworlds);
+> > > +
+> > > +        /* CPU use default mwid / mwidlist config if not set */
+> > > +        if (cpu->cfg.mwidlist =3D=3D UINT32_MAX) {
+> > > +            /* mwidlist contains all WIDs */
+> > > +            cpu->cfg.mwidlist =3D valid_widlist;
+> > > +        }
+> > > +        if (cpu->cfg.mwid =3D=3D UINT32_MAX) {
+> > > +            cpu->cfg.mwid =3D trustedwid;
+> > > +        }
+> > > +
+> > > +        /* Check if mwid/mwidlist HW config is valid in NWorld. */
+> > > +        g_assert((cpu->cfg.mwidlist & ~valid_widlist) =3D=3D 0);
+> > > +        g_assert(cpu->cfg.mwid < worldguard_config->nworlds);
+> > > +    }
+> > > +}
+> > > +
+> > > +/*
+> > > + * riscv_worldguard_apply_cpu - Enable WG extension of CPU
+> > > + *
+> > > + * Note: This API should be used after global WG device is created
+> > > + * (riscv_worldguard_realize()).
+> > > + */
+> > > +void riscv_worldguard_apply_cpu(uint32_t hartid)
+> > > +{
+> > > +    /* WG global config should exist */
+> > > +    g_assert(worldguard_config);
+> >
+> > We usually add g_asserts() after the variable declarations.
+> >
+> > > +
+> > > +    CPUState *cpu =3D qemu_get_cpu(hartid);
+>
+> arm_get_cpu() uses CPUState::cpu_index to obtain the corresponding CPUSta=
+te pointer.
+>
+> However, CPUState::cpu_index and the RISC-V HART index are not necessaril=
+y strictly
+> one-to-one (for instance, when the hartid base is non-zero or when hartid=
+s are
+> discontinuous).
+>
+> Typically, we use arm_get_cpu() at the accelerators, rather than in hw/co=
+de.
+>
+> A better approach is to use cpu_by_arch_id() instead of qemu_get_cpu(),
+> in RISC-V cpu_by_arch_id() uses the hartid.
+>
+> e.g.
+>
+>      CPUState *cpu =3D cpu_by_arch_id(hartid);
+>
+>
+> Thanks,
+>
+> Chao
+>
+> > > +    RISCVCPU *rcpu =3D RISCV_CPU(cpu);
+> > > +    CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
+> > > +
+> > > +    rcpu->cfg.ext_smwg =3D true;
+> > > +    if (riscv_has_ext(env, RVS) && riscv_has_ext(env, RVU)) {
+> > > +        rcpu->cfg.ext_sswg =3D true;
+> > > +    }
+> >
+> > riscv_has_ext() will segfault if env =3D=3D NULL, and you're creating a=
+ code
+> > path where this might happen:
+> >
+> > > +    CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
+> >
+> > In fact, cpu =3D=3D NULL will explode on you earlier via this macro:
+> >
+> > > +    RISCVCPU *rcpu =3D RISCV_CPU(cpu);
+> >
+> > You can either handle cpu =3D=3D NULL with a clean exit before using 'c=
+pu' to assign
+> > stuff or g_assert(cpu !=3D NULL) for a more rude exit. But with this co=
+de as is
+> > you're gambling with segfaults.
+> >
+> >
+> > Thanks,
+> >
+> > Daniel
+> >
+> >
+> > > +
+> > > +    /* Set machine specific WorldGuard callback */
+> > > +    env->wg_reset =3D riscv_cpu_wg_reset;
+> > > +    env->wid_to_mem_attrs =3D wid_to_mem_attrs;
+> > > +
+> > > +    /* Reset WG CSRs in CPU */
+> > > +    env->wg_reset(env);
+> > > +}
+> > > +
+> > >   bool could_access_wgblocks(MemTxAttrs attrs, const char *wgblock)
+> > >   {
+> > >       uint32_t wid =3D mem_attrs_to_wid(attrs);
+> > > diff --git a/include/hw/misc/riscv_worldguard.h b/include/hw/misc/ris=
+cv_worldguard.h
+> > > index 8a533a0517..211a72e438 100644
+> > > --- a/include/hw/misc/riscv_worldguard.h
+> > > +++ b/include/hw/misc/riscv_worldguard.h
+> > > @@ -48,6 +48,7 @@ extern struct RISCVWorldGuardState *worldguard_conf=
+ig;
+> > >
+> > >   DeviceState *riscv_worldguard_create(uint32_t nworlds, uint32_t tru=
+stedwid,
+> > >                                        bool hw_bypass, bool tz_compat=
+);
+> > > +void riscv_worldguard_apply_cpu(uint32_t hartid);
+> > >
+> > >   uint32_t mem_attrs_to_wid(MemTxAttrs attrs);
+> > >   bool could_access_wgblocks(MemTxAttrs attrs, const char *wgblock);
+> >
+>
 
