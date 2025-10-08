@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB13FBC6BB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C96BC6B9A
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:00:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6c9p-0004A7-8v; Wed, 08 Oct 2025 17:57:13 -0400
+	id 1v6c9k-00045d-Br; Wed, 08 Oct 2025 17:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6c9m-00049R-Pv
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:10 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1v6c9g-00043d-Iw
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:04 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6c95-0006eV-UA
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:10 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-3304dd2f119so294997a91.2
+ id 1v6c95-0006ep-IZ
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:03 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b6093f8f71dso156933a12.3
  for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960583; x=1760565383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759960584; x=1760565384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZNEq7tf22h55P79weG8h1uGDuCjZ7MVsDsPwVEVDLf8=;
- b=hujiBAkp0I72H0T77fDmgHpVDYvgoAr7zs/1z41bx6f5WUtGIwmlTK1gC4RPpWXrLC
- fQDwIL8YgvMrFVnELnP5pOBQTc4FfS7RONs+/Bp+oYCrrbE3qsZ630faL+xnrlplukJ4
- c8ucHvnOEjopewmkRkxaTxcj3OgEQA0Jf54xRc4NIHc+xoh5k5n7QVf+l5FoTdrl/sfV
- XHRdqzlWFzeHs8OOHQWRZWfYUb++tUNWO4Ggaza1U5ELQ+1pHMVRzNaKL4dpJZE+cUot
- LeBRii9pB8TN+cg1zDZF2kiLD89hl5BvlVR8UDb7zbk4I+0IlsRouXEyeICw2ZRZvJvp
- F7FQ==
+ bh=jHDom8RqSvFBhHj/9Q/rXAoVV+sGpC/X8GRYrjCGKNI=;
+ b=y5GICm7YjWuLVFzNDqZE3wNbcZS9BUmDQcjzbBLiBbxZqVcqog/mXdDApVz7MA5aqa
+ 37X8AlQiM0IfhEWeoyvV9YYf7v8QNRoULD+PT0rA0D6T9T+qlp6J3PLE1DeDjskNNubg
+ vKBuQfm5TmUwOsLUxnMGT5HkSGz7gYUIiiK29zJwkLyfhBXs0yBKfbym1y2Oo4HnOQzH
+ My4iiBwa3+jwlngBLvNw0Zj30H3bZvUXFv1gCQuoCKk3l6ZzSSk9PyT2vjuSMTmt1WFU
+ 88CLqRTRsQ4LRsAZMg5+eWpHgs3PlkYdFjkOGVFXP6vApG/MPO7NXS8A6zCD3EKKxgRW
+ 58mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960583; x=1760565383;
+ d=1e100.net; s=20230601; t=1759960584; x=1760565384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZNEq7tf22h55P79weG8h1uGDuCjZ7MVsDsPwVEVDLf8=;
- b=Sk+vTGJfJC0d6ZdhhZBjYahxWKxPVUSlT3Jxh6ZCpCQM7wyXZ5cPBk5HOBoU2+ek/e
- +1qHwI1WILWkXXpLPlfMZhBEA/WezXAujh+UK5DMw4s7jJ7sJGuH2D7jzrDLri2juspf
- zSIAQAKeBVVZF6WgUijryTMWKqm1lVIhCOmuM9ZXTUVTVXYF5gHEen8UuRj8LuMboClN
- /DHTHtsR4MIAUJtAwlWTUsV+l/WVlbO+qFR7JrXt453SCSzAkP29AbNnFO6dxWgFlg6d
- 21Bepq1KVMkX+TJWoBmLS1t4hVV3WXMuE03TCUS5rWr/ODDOfGeJSQcZFqXGZyUoocAf
- 7jGg==
-X-Gm-Message-State: AOJu0YykmLpObbc3dDPuNZMvsRy6Mly/jwJl2QOq4yx/oIWsv2Lxn108
- wiWAOfi7tlNyF9mYPNnteyP8OcRGvY9szjTovQ3+RKOM429+ubCrn430bL3hmJs+kf4B6GLJHB1
- /hw+ikgI=
-X-Gm-Gg: ASbGncvtK3DscvYgGXlLPw871OL4k6LYY0rqTzlhav3y48WlPGzEfs7aPOMovLAMcR+
- rbbfi72p4swT5xcKxlQbZfMOn/htXtXRs5PwDjYZC0UplMsWR9aMK1y1lPPHen0S9/pQC09AhXM
- vS6l91gS4rN+nFoZ+sKxjK0cRNPjDT7paMQARwgiu6pGId5oLMOiBUSd0dfBs+vkDXwA6HsTrXb
- UTEKuMu4M8kQiWbizjO7IYGeCVJydqu18yV9rw9DnRChTK2eKOzaO1OLmHH66xYVeIyl5Mfjd+Q
- MHv7ZABmnWduijslnndp+/QVW/Tf8KIHNkhPziGQU6RPVp6ayDC44jNv6mdIUwNjVNxMP6SYx7D
- uz0jnqcxBy8EZDLqe0vQzP7QU7iTEfjaGZtUjUGxkwyKe0d/wpMDqBHqGhuF89JY4koY=
-X-Google-Smtp-Source: AGHT+IHnSxXlu4kFisQfT2vMCInjCaTQ93M3a7q+wK22gggnRpU71GiqBfCx1Y9IbzvqLAkhaqyhTg==
-X-Received: by 2002:a17:902:f612:b0:269:8072:5be7 with SMTP id
- d9443c01a7336-29027303931mr68312465ad.56.1759960582854; 
- Wed, 08 Oct 2025 14:56:22 -0700 (PDT)
+ bh=jHDom8RqSvFBhHj/9Q/rXAoVV+sGpC/X8GRYrjCGKNI=;
+ b=WgJamBkEQBHICATszWQcwgMIDlU4rqLfTxrVEdVuMJhPX2NA7/DRoEhrvFbIMpyExS
+ Avu6sRJlepaPB+TXXV+i1beZ/vNXaCLT7vnvbfjYzowTsnYfrJHJOHyk0w9BO5WB98Cs
+ gdVQyXzN5sgIH5C0BhBcDcg8Zu/cYlzgOZsjlRvjzLFJLnJHdJZBg8Nf5Ies5c+jl6PT
+ Ms/lFKhXXUWZHE/teYIrUp4oqdO7cQA8ufqJhBgufZZC9pWTXqQRh06lvdhHVZ39pTrF
+ D5jtC98VCqLMY2isaucZquyukvEGfPtslNjS7N+MR5YDRatuWENR+tbmqcGk/PWRt2T0
+ KNhg==
+X-Gm-Message-State: AOJu0Yz6ZPsP1kkeSIajSDDSZ/3IMFR8RgdO3A+FUCnv4v9YfLximVOs
+ 4GNLrEQoNCv0QjKm2Pisp6IhTVyyHVohk44KnKbg0EnItEgugc1JDBjKJzLP8Ys3BIooArGa/pR
+ p21lBmZU=
+X-Gm-Gg: ASbGncudVLsrl5kwWiM6ljDS1raZmdajyrtfn7/bZnZJOgRsrGrIxgGw0BbnLtjSZHH
+ vEXQ4gYbSFAxJmKMAnEpBRdXqezhoredp20+jnrI26RJjVLr3lkRuKYhJgNE0SG+snNRZSlRgly
+ +tZ+wy1JMwdvCBGssO5oUSfBuk/yhsEsCh6kjriglMYXQQHQaKrg7nXc+sJvNSbXGNeX3C4eahg
+ 52NSWKmX35CX6PClcojqi+mWXqMhQu6DkHHWjakXZxkAZMgc6rY1ACKvXNbLZq6rJbk2Y5z7B2D
+ VL7vC44oNuwrU92WwAA4SUc3nd401GXYg28iyagyPST3ThQKIi07/RpKCh2ujz1DJJuazK1Sy0h
+ pP5UmKjpUFBIPrFeyWCuC5/2ws6XeQsMWR5/CwtrFGJBPOPPoxMgW7qwqBZHQ/+zo1/o=
+X-Google-Smtp-Source: AGHT+IHZUNxr5tyFMX/LVvuxMwWa8eNnPnV1fPRZuNPVG/xlk1ZDyJuYtBvPVWcvjyu6UvgO8ISt8A==
+X-Received: by 2002:a17:903:1670:b0:28e:cb51:122f with SMTP id
+ d9443c01a7336-290274191d9mr66167255ad.52.1759960584167; 
+ Wed, 08 Oct 2025 14:56:24 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.22
+ d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Oct 2025 14:56:22 -0700 (PDT)
+ Wed, 08 Oct 2025 14:56:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 12/73] target/arm: Implement dirtybit check for PIE
-Date: Wed,  8 Oct 2025 14:55:12 -0700
-Message-ID: <20251008215613.300150-13-richard.henderson@linaro.org>
+Subject: [PATCH v7 14/73] include/exec/memopidx: Adjust for 32 mmu indexes
+Date: Wed,  8 Oct 2025 14:55:14 -0700
+Message-ID: <20251008215613.300150-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
 References: <20251008215613.300150-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,98 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both S1PIE and S2PIE have a bit to make software tracking
-of dirty pages easier.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h      |  1 +
- target/arm/ptw.c            | 16 ++++++++++++++++
- target/arm/tcg/tlb_helper.c | 12 +++++++++---
- 3 files changed, 26 insertions(+), 3 deletions(-)
+ include/exec/memopidx.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index b59650959e..69eb1df617 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -752,6 +752,7 @@ struct ARMMMUFaultInfo {
-     bool s1ptw;
-     bool s1ns;
-     bool ea;
-+    bool dirtybit;  /* FEAT_S1PIE, FEAT_S2PIE */
- };
+diff --git a/include/exec/memopidx.h b/include/exec/memopidx.h
+index eb7f1591a3..66d9c58b3a 100644
+--- a/include/exec/memopidx.h
++++ b/include/exec/memopidx.h
+@@ -25,9 +25,10 @@ typedef uint32_t MemOpIdx;
+ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+-    assert(idx <= 15);
++    assert(idx <= 31);
++    assert(clz32(op) >= 5);
+ #endif
+-    return (op << 4) | idx;
++    return (op << 5) | idx;
+ }
  
  /**
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 2e026a7c59..21540a1ec3 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -2343,6 +2343,22 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         goto do_fault;
-     }
- 
-+    /* S1PIE and S2PIE both have a bit for software dirty page tracking. */
-+    if (access_type == MMU_DATA_STORE && param.pie) {
-+        /*
-+         * For S1PIE, bit 7 is nDirty and both HA and HD are checked.
-+         * For S2PIE, bit 7 is Dirty and only HD is checked.
-+         */
-+        bool bit7 = extract64(attrs, 7, 1);
-+        if (regime_is_stage2(mmu_idx)
-+            ? !bit7 && !param.hd
-+            : bit7 && !(param.ha && param.hd)) {
-+            fi->type = ARMFault_Permission;
-+            fi->dirtybit = true;
-+            goto do_fault;
-+        }
-+    }
-+
-     /* If FEAT_HAFDBS has made changes, update the PTE. */
-     if (new_descriptor != descriptor) {
-         new_descriptor = arm_casq_ptw(env, descriptor, new_descriptor, ptw, fi);
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 23c72a99f5..ae2acd6727 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -24,13 +24,13 @@ bool arm_s1_regime_using_lpae_format(CPUARMState *env, ARMMMUIdx mmu_idx)
-     return regime_using_lpae_format(env, mmu_idx);
- }
- 
--static inline uint32_t merge_syn_data_abort(uint32_t template_syn,
-+static inline uint64_t merge_syn_data_abort(uint32_t template_syn,
-                                             ARMMMUFaultInfo *fi,
-                                             unsigned int target_el,
-                                             bool same_el, bool is_write,
-                                             int fsc)
+@@ -38,7 +39,7 @@ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+  */
+ static inline MemOp get_memop(MemOpIdx oi)
  {
--    uint32_t syn;
-+    uint64_t syn;
- 
-     /*
-      * ISV is only set for stage-2 data aborts routed to EL2 and
-@@ -75,6 +75,10 @@ static inline uint32_t merge_syn_data_abort(uint32_t template_syn,
-         /* Merge the runtime syndrome with the template syndrome.  */
-         syn |= template_syn;
-     }
-+
-+    /* Form ISS2 at the top of the syndrome. */
-+    syn |= (uint64_t)fi->dirtybit << 37;
-+
-     return syn;
+-    return oi >> 4;
++    return oi >> 5;
  }
  
-@@ -176,7 +180,9 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
-     int target_el = exception_target_el(env);
-     int current_el = arm_current_el(env);
-     bool same_el;
--    uint32_t syn, exc, fsr, fsc;
-+    uint32_t exc, fsr, fsc;
-+    uint64_t syn;
-+
-     /*
-      * We know this must be a data or insn abort, and that
-      * env->exception.syndrome contains the template syndrome set
+ /**
+@@ -49,7 +50,7 @@ static inline MemOp get_memop(MemOpIdx oi)
+  */
+ static inline unsigned get_mmuidx(MemOpIdx oi)
+ {
+-    return oi & 15;
++    return oi & 31;
+ }
+ 
+ #endif
 -- 
 2.43.0
 
