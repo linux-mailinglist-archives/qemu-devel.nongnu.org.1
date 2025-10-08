@@ -2,106 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07532BC345D
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 06:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A8EBC349B
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 06:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6LSm-0007IY-6I; Wed, 08 Oct 2025 00:07:40 -0400
+	id 1v6Lgl-00036p-AJ; Wed, 08 Oct 2025 00:22:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSj-0007Hf-SF
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:37 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6Lgi-00036V-7J
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:22:04 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSi-0005sW-2y
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:37 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-46e542196c7so2607605e9.0
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 21:07:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6Lgf-0007SJ-4G
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:22:02 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-46e34bd8eb2so77201465e9.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 21:21:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759896454; x=1760501254; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ocgs0Ja+xiwuPd8e/woUF/Yw02CcYFns8xQ4ykIqIlg=;
- b=Q3BJ/C6XHDeFoqei5fyOpgbUq4aAeTQvG7vId0T5GPmgGErdgvOsMPa+fXM6a+rjtj
- 8mNYuxdFvhpwfuk90dwpQvoSXwVidQLqXtz4MPhRbzz+7apo8//rpHy7ckdexn+oq1sU
- +VL8NGQC8gAZNJbngxqUzlLpCBkBn089rSdljduW1vyfaZhIsmLa2z0aNlbSORtFmIP/
- MwKJc2p5ynnGzkV144Lwg9CXOYPzhSN7GkRpk1d9mxcj5fyssKdi9BvPk/eQYfu6BHO0
- PgMmNwu05ROkffLBKzjIE4TBMxlzjLzd4TkYNx0PhLUi3+IOerxU5fUI7DgK066MBmJ1
- QYuA==
+ d=linaro.org; s=google; t=1759897317; x=1760502117; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=u2ajPmm+eRUp61Y6Id+fOTEnJlRwOUyL/tHC3b6C1Fg=;
+ b=Eh/X9Y0lQ4jrAAfmh15/4snByFs9zSihcRYN7E1AIlGDUW/T0bYAL5ce1KS+p9rpsC
+ pZ0ezbotTlKEymrjk6u2QHGw8qPQvmuevfdxNB0Rw3b8bAkrtmYtz8XATfHq1IX5E0Yz
+ w2IoRowtyhKJAWxLfnf26I0Nk5bPu27p4DJTrEIeLdeXnyWh4Y1NHvyYmkiz+WDTPqks
+ J+0EXZpPNJxE9wN9dv6HDWntLNV6vMLH9mYYwj2u/GmWW80tY68etACpzCaW4OEl+cZL
+ BmWzt4Ew6UzZ3xs7M9yDywgz2XO2AdyhfvhkH0Zw/8UefVMWojW6QjUp2nHqVrHrhB7a
+ alYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759896454; x=1760501254;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ocgs0Ja+xiwuPd8e/woUF/Yw02CcYFns8xQ4ykIqIlg=;
- b=wXwDX74ZuTm6KTH8jL0Xt6xYF0nSCkOJBBT5bp3pfZnbfF7p46a9it9hz7ViX3nSzy
- TMbAeOux0stzHfbpH+bqcp+vwhMC1RC25UMntTdAW74gBziSzwJAAc0oP8xjoizFgSjh
- aimn45JtxjRyW+QAbPZCZhOGBoBbQ97iYjTKAbch4lRHpXHqy4giIxKsM3bUw1pfnZzv
- K0EbeXmjWH7AugsXs05vq2fvtF76F0104pD36Mc+0hAsUDaLTNylFe4yYdgYGxmL1JYK
- O9APAYczFC5xI2kplKTDZacc8IebieEEbDIslhRc2lg44PWhWW8JHjvIWA96YsEdUeUu
- E3tg==
-X-Gm-Message-State: AOJu0YzDInbZd8ZD+QJDu9oHz0ukI2bxd6SOiop1fWKatVRAdlt2XIlH
- H9dMR+wrM/SR2oPLZS67SlfRf4IO3AO6T7AXGF4D4WbTy4uDA/9Oc/t9xW1qoarvT/93CwDYMXU
- dkaGSQ22mKA==
-X-Gm-Gg: ASbGncvz1iEm/hiYodOqJgO5fOexodPXxbEaR4J+9pwrYS+uXlFLrfodd68kqFy7+OW
- IH4xO+fnsZ7MYzAlgENYcgP13rLppEx3HVzY61E68xRzVjrwXPfZxjyFTQrTc2JYL8+aYfnOOc0
- QsU5KwO255G2VPK5Vbnz3LT9nKKlgFD81bO7NYnse/ECnlBmRAVpMJg52xY0FQtLf2yG53wWj50
- L9+g4RpAHVr0OthtubHjIe5ZriNcpDdSoAShUar1dgWdxd57pxVajVT1T76kzVCMJdm/jiMv6HM
- aufbibcucnL8m9Qz9kOf7zcsjbEhNEvWbJ7v12q07xR38FzBoUQYmhWcbhOeKmSHFm1mb2nyJci
- vlvUGHzqYR94UXQjTqO+J8L9q6JBWWFPe3iqjp/6pJzSGPsQOok/FsSgGifQQ0iSPwBUPDSSF5E
- 8Bb2DP4rgEk5Yb4FJ9kh7A5cxk
-X-Google-Smtp-Source: AGHT+IHZFS8T1I/ZV9bUVDRHuknpw5/lllydyyhBKp58Zgvdd1J6n7PoUdc39F+bAmKfqLUaH6pXJQ==
-X-Received: by 2002:a05:600c:8a8:b0:46d:38c4:1ac9 with SMTP id
- 5b1f17b1804b1-46fa2952c99mr23685225e9.2.1759896454357; 
- Tue, 07 Oct 2025 21:07:34 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1759897317; x=1760502117;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=u2ajPmm+eRUp61Y6Id+fOTEnJlRwOUyL/tHC3b6C1Fg=;
+ b=aKHQNcljeMDWrtepYLCxsnGISOEFOK9vYa3arSyCEyFU6o/aG9aqTQiTBwrHq04DBe
+ el7oI7i8CN44s7o5ULPOGMV6t7j+bQnzNMJc6UvSgpqHl6tGpy1VtcjLsHwt0rl0PrfE
+ L37pIH2tvq/oVspoYazdRRchS5Sv/Y38DccmLPZM1N6GGW6JvtoZFc4FVmwnRjbvAOmy
+ a4VCHe/nGztNWf1A7QlrfYoJF8nAHzyfdlqusdZ3QaPuS7nIUw6EEe2bekQjXcI+hh3p
+ doAdBH2hmu4M1DwJwJ75WqF6+RoTGzN4LgnlyC6jCDYDh9p5TC6cTwxVLRcCG7anVIRs
+ HnKg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWgMbiZuRk34qaEOg6WFHah46VKCgtyDVqhKT+gDoP86B3SU1aUdCd+sKeRd7uTUHFmi7D6UX7jFdqE@nongnu.org
+X-Gm-Message-State: AOJu0Yya5WQK84um2zsnmRsWW/dhJdduFYWMux57QZLqcpZfQdmImK68
+ 5DSv4gn/Fp2ETXkaAmw1g9K9Ea8lp2dWa3yLBewhlBLy9tviuHfNMXz2xVjZQnvvSZE=
+X-Gm-Gg: ASbGncv4H+wRoWm4RK+2X+U7FHz1og5coEknFn5mAV4sbEc5kpDqTgSByA7PJioNnJO
+ NjaXRQRTMi/oy5HA/9JmS1NT1twZkyk3hoHD11DCCDMFLhdY2sZTUuwZFjHCSwY86Zrjg3eq2hI
+ KUqZP8GURWtiC4iO0ygZUDkqhY3mQPnrRguPPW5YylTRavaJ85ToF+9fESRX7tRRFVeChl8ed5u
+ tke5glH1H435DhU0HazXtqeMcWaDgPOaw0psiZFFnXmZCPR9AtsLvO5mOH7v/vUwlzmMQqB1VEf
+ y6uswJMndzmPDuHl+/5zRGZNzQcA6VBvRdR6hOyGBa16PxDFSJlV76K7H8KKdYg8UhwUdOHnXIo
+ cLRf8UD/o246PjXNnh+UNwDvHjkk36fuxLwdfySKjlSrkD6BG2JsWvta2I23oDlOBREQJQlJO2L
+ VL6P5wIA2UT8rWYdVQSA==
+X-Google-Smtp-Source: AGHT+IHZSQLZkkNaeWB4/oBFuJ2t0364K6H4BCVVUmclQQZtKBubym6NBZtTAzcWraw8jE4k2lrnnw==
+X-Received: by 2002:a05:600c:3b11:b0:46e:4c7c:515c with SMTP id
+ 5b1f17b1804b1-46fa9b182e2mr11776665e9.34.1759897317395; 
+ Tue, 07 Oct 2025 21:21:57 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f4bdcsm28015265f8f.54.2025.10.07.21.07.32
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Oct 2025 21:07:33 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, kvm@vger.kernel.org,
- Aleksandar Rikalo <arikalo@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-s390x@nongnu.org,
- David Hildenbrand <david@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Song Gao <gaosong@loongson.cn>, Weiwei Li <liwei1518@gmail.com>,
- qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v2 3/3] accel/kvm: Factor kvm_cpu_synchronize_put() out
-Date: Wed,  8 Oct 2025 06:07:14 +0200
-Message-ID: <20251008040715.81513-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251008040715.81513-1-philmd@linaro.org>
-References: <20251008040715.81513-1-philmd@linaro.org>
+ ffacd0b85a97d-4255d8f01absm27804078f8f.44.2025.10.07.21.21.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Oct 2025 21:21:56 -0700 (PDT)
+Message-ID: <7beffd85-5800-4935-a95c-cd9a4c831b53@linaro.org>
+Date: Wed, 8 Oct 2025 06:21:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 3/4] vmapple: apple-gfx: make it work on the latest macOS
+ release
+Content-Language: en-US
+To: Alexander Graf <agraf@csgraf.de>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
+Cc: Mads Ynddal <mads@ynddal.dk>, qemu-arm@nongnu.org,
+ Cameron Esfahani <dirty@apple.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+References: <20251007203153.30136-1-mohamed@unpredictable.fr>
+ <20251007203153.30136-4-mohamed@unpredictable.fr>
+ <1e873f0c-3e1f-4d78-b61b-909443510191@csgraf.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <1e873f0c-3e1f-4d78-b61b-909443510191@csgraf.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,102 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The same code is duplicated 3 times: factor a common method.
+On 7/10/25 23:19, Alexander Graf wrote:
+> 
+> On 07.10.25 22:31, Mohamed Mediouni wrote:
+>> Follow changes in memory management, and enable process isolation for 
+>> a sandboxed GPU process when on a new OS.
+> 
+> 
+> Please detail here why this is necessary.
+> 
+> 
+>>
+>> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+>> ---
+>>   hw/display/apple-gfx-mmio.m | 56 +++++++++++++++++++++++++++----------
+>>   hw/display/apple-gfx.h      | 13 +++++++++
+>>   hw/display/apple-gfx.m      | 42 +++++++++++++++++++++++++++-
+>>   3 files changed, 95 insertions(+), 16 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/kvm/kvm-all.c | 47 ++++++++++++++++++---------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 58802f7c3cc..56031925c4e 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2937,22 +2937,32 @@ void kvm_cpu_synchronize_state(CPUState *cpu)
-     }
- }
- 
--static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
-+static bool kvm_cpu_synchronize_put(CPUState *cpu, KvmPutState state,
-+                                    const char *desc)
- {
-     Error *err = NULL;
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_RESET_STATE, &err);
-+    int ret = kvm_arch_put_registers(cpu, state, &err);
-     if (ret) {
-         if (err) {
--            error_reportf_err(err, "Restoring resisters after reset: ");
-+            error_reportf_err(err, "Restoring resisters %s: ", desc);
-         } else {
--            error_report("Failed to put registers after reset: %s",
-+            error_report("Failed to put registers %s: %s", desc,
-                          strerror(-ret));
-         }
--        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
--        vm_stop(RUN_STATE_INTERNAL_ERROR);
-+        return false;
-     }
- 
-     cpu->vcpu_dirty = false;
-+
-+    return true;
-+}
-+
-+static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
-+{
-+    if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RESET_STATE, "after reset")) {
-+        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
-+        vm_stop(RUN_STATE_INTERNAL_ERROR);
-+    }
- }
- 
- void kvm_cpu_synchronize_post_reset(CPUState *cpu)
-@@ -2966,19 +2976,9 @@ void kvm_cpu_synchronize_post_reset(CPUState *cpu)
- 
- static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
- {
--    Error *err = NULL;
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_FULL_STATE, &err);
--    if (ret) {
--        if (err) {
--            error_reportf_err(err, "Putting registers after init: ");
--        } else {
--            error_report("Failed to put registers after init: %s",
--                         strerror(-ret));
--        }
-+    if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_FULL_STATE, "after init")) {
-         exit(1);
-     }
--
--    cpu->vcpu_dirty = false;
- }
- 
- void kvm_cpu_synchronize_post_init(CPUState *cpu)
-@@ -3168,20 +3168,11 @@ int kvm_cpu_exec(CPUState *cpu)
-         MemTxAttrs attrs;
- 
-         if (cpu->vcpu_dirty) {
--            Error *err = NULL;
--            ret = kvm_arch_put_registers(cpu, KVM_PUT_RUNTIME_STATE, &err);
--            if (ret) {
--                if (err) {
--                    error_reportf_err(err, "Putting registers after init: ");
--                } else {
--                    error_report("Failed to put registers after init: %s",
--                                 strerror(-ret));
--                }
-+            if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RUNTIME_STATE,
-+                                         "at runtime")) {
-                 ret = -1;
-                 break;
-             }
--
--            cpu->vcpu_dirty = false;
-         }
- 
-         kvm_arch_pre_run(cpu, run);
--- 
-2.51.0
+>> +        FlatView* fv = address_space_to_flatview(&address_space_memory);
+>> +        flatview_for_each_range(fv, apple_gfx_register_memory_cb, 
+>> memoryMapDescriptor);
+>> +        iosfc_desc.mmioLength = 0x10000;
+> 
+> 
+> Why 0x10000?
 
+Maybe we want qemu_real_host_page_size() here?
 
