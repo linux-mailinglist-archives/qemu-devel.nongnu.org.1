@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F17ABC6C55
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22334BC6BDC
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:06:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6c9P-0003wS-CM; Wed, 08 Oct 2025 17:56:47 -0400
+	id 1v6c9E-0003t5-SQ; Wed, 08 Oct 2025 17:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6c9M-0003vG-6Y
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:44 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1v6c9B-0003sJ-3G
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:33 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6c90-0006cJ-TC
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:41 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-b55517e74e3so282983a12.2
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:17 -0700 (PDT)
+ id 1v6c8z-0006cY-SE
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:56:32 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-27eec33b737so4614915ad.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960575; x=1760565375; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SfcXr5UWt0SadCwReY9na2q03gghzKTQ+9WscMeEZpg=;
- b=CgGOnqL4cFJtDNn/yhFWzSXZpOUmGn8XqmYhhQSbiUoBkd0PcpaF5OkxkmofdSCitq
- ZPU9Cf47W9s5eZHOdvMyEcZhV6p0baEZNYknAVGOdcRohwJ9wAnYo1p9TrsBy1ro9tIh
- SsR0bugZZRI1iVA7qdpTR/w8b7t0mVRBWTJcxUNJh4l8TUJmkzS6TeRFVJ1Do267yL2E
- FYEQUHrzxDy2s2pQaWjS8KbH52/cmX+3Gnm7rA2+fOd4j6oWr5K/yUBtykNdjhntT8hK
- GmqQay3aEfo1bx8rVL+aixyX9XSpPxmsANJ1ZovmJRkorNNZ6XOq5nvu70Y5/E96EIOG
- +FeQ==
+ d=linaro.org; s=google; t=1759960577; x=1760565377; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rWJOhjURiEbCRYa8c3KW2+y29uA+cSYlWdH7crvrg6I=;
+ b=M8X7xigI4FTNliIB0bgQh3e/hgdGybTSEzm7sEv0PheIWAVpVnpdHs2Qc0XYEkNDsV
+ LM2obklonWW0p1lDiARAXCgKKNn3wXypXbOx09wCMYr009nidCQL0wQIthyiT4Iif1BL
+ AzI9SaKJIs5p8qAcbFJMokirVsYvd3D1YuxUAwcJU3vztsry0e5zuqD0oLWbpDVBqabJ
+ qVtr6MyQ4pupWudap7joeWkY+Ri7sSyH5rjtvBzhVkbMLZ1oGLUsB/8sq0/BCQ/a3tTq
+ OgbH7RelunCKkQzBfRE8eDcUd3Bct8oHlvoE3hbL3IEkwhGh7I1Bwy8VxLORe6kJOaf9
+ AorA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960575; x=1760565375;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SfcXr5UWt0SadCwReY9na2q03gghzKTQ+9WscMeEZpg=;
- b=xFg/BBIJTHZ4gVkcRUXPRQuKobUUShQzm2gUWf6kdeCkBaW4YYdbsFEOUds+WU7iuN
- bCvD37QHrBjaXfj9Rbjr0P6w13jNT2vcbwapWwBc2On+f/+6TnUhINUwmSaPs+FxloPn
- tnoQcBd/qqcpE3oqAVPZE8bgYW+yUigdm94mX1tzQLqSlBw+oe7doaZdLOiDZ6bktlaR
- V6IkfoA2TEqRUDn4O6teGFytxpoyfEjIctu/OXzIpCkFFzZoUVsU6Kq4ZAXDVD3yaM79
- t5J/1RicrXFGnX6kV4rI16zA77tVlVjwMjW9do731l3PRiTLzDdop6bzq/DcO3Fa3YDK
- tFeQ==
-X-Gm-Message-State: AOJu0YyBdvoWCjNyEi6pfyyYBnxxBIzQpPgg2jS1fvn+8UKoae2tqhqq
- l+dkQOzZjwuL1eBlgTX4FUASGh4yJAE9ViyUHHxxevDmOjdox5O2oP5QYaS0KdztocLbpmz0L2O
- xbmtRsTQ=
-X-Gm-Gg: ASbGncsPFBCOo1hZ3u5IIGHaB9dBGWAXfEeSFsDZQIWHSXtgk27v1NYCK2MnFuUJHrd
- 4SBjtv7DBVxUXXXJf0po2iMsVDsfcs+BhGltEUIqCVFvZadX+O5tlLywa2Cf+BSEk3mdP25/d1e
- b58aFoy/JCd3PxlAqr1OhYXRneDWmqQ1ja4sNFq+FEd/HKsLFovNNrmqwYeZ/Ynhkp+XI0IIOFP
- lm0tfJDhL+1cDpr3LZz+gkTdWlVUGg6nFJS+VmI9cPB6BQGi9KcP+m8JiIp+UIxJZlIAvj6c+ZP
- /u96jTf4DXhMdtXpCKcPlj6rt/s/os7icECSkxokLPb3cOrCWY9LfukKqM4Isb1zMaeXFFwPRMw
- BIQ3wEyttXRUkcx92uzcB0DkXgCeY/OKi/JjJpXPYD7RPDjUKe2mvcUV6
-X-Google-Smtp-Source: AGHT+IEqOkBusYa9vJQSgd/uQIFbwD/J8wfgj4ZSJ5Ris2RDH/JQNYgwHEziMaoHBs5XzTo/0Um93w==
-X-Received: by 2002:a17:903:3c6e:b0:267:ed5e:c902 with SMTP id
- d9443c01a7336-29027374b4fmr66808035ad.20.1759960574617; 
- Wed, 08 Oct 2025 14:56:14 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1759960577; x=1760565377;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rWJOhjURiEbCRYa8c3KW2+y29uA+cSYlWdH7crvrg6I=;
+ b=DtwzOD+ZfcS90E8vnmAGPGrNvlkHJxbdehdpaBGrhAhK0kWfzYROrH/q1Yb8e/CW6u
+ WCTQwZZojtlhxQP3jlhCap7T/ihTfsFWR4hyWNd0BynTn4NWPbK00yWc80tG8JWifgvh
+ bwVPDwK9bModdNhIFwK9Al0GSW51Kbq6yJz12MVTF//Llhrk9zYOOqdulgIpBqibQsF2
+ +rWR0eUldZigIgSQRSczxRMmgTJjUMlB1NOuPumJts1NzJ2DJQ4qt37xvks4bpXqZiak
+ HvDk6XOra/O9goxHtOJQYEj9Svxov+FcdM8pMMRLY/7oUC2Nm+Pnq14StXVzq9bu46zN
+ +9QA==
+X-Gm-Message-State: AOJu0YxVrORrXHqPsUXO+3AceykAmVdjDOnwi8rD1+ywNsltBJtMAoa1
+ t8pXI18CNp2DYOAFk6DhBZall1XXDDGdiE9ztHskCD4Ddi8zog0zAghqTvd+aCOt8tVmog4SJX5
+ IprGSWCw=
+X-Gm-Gg: ASbGnct+oxcn3tjkZ6RFhisp5AfExVFbaZYmoLDFpczIzJrfMzO8K0xsGdPdDPsFgd+
+ PM9jNZclWSJwZuln+8BxsB+AAilosGbAjZoem0K/ICMtVmIIQYgl3AEkGO9AhAZy5WBG74IbXB2
+ nNeJ9uHhZjwKeDgSYd5K6NYPS1W8PoVuuZM3QYJbf4SUA4LVBzeiIij54MW/CJiiqNDslnpOIXw
+ PQmrqwbyxSIZGkQZh4q1Eft3DXeobuf8kTlkSJQc4vO9na/4ZxLdd5nc8rnfe28haxPHNQKfpqH
+ LRMFKWp35UQnXuqsFvcpjIIImaAWQpkkmR1R7/690nYneaWnjSpYIxRp3U8bImZEi1Wzm8FJKAO
+ sPPv4UfDh+xh6ESpeLwvkjliW3IrfG43cMLOD6yBn3K8BKszHBkjWhib5
+X-Google-Smtp-Source: AGHT+IEgurIOkx0WpZz/bZ8oRZg00njRa41uQsTCAmc35sWDU2EHECKuywkmLiBDYmWWlR5EGZkmDQ==
+X-Received: by 2002:a17:902:ce81:b0:266:f01a:98c4 with SMTP id
+ d9443c01a7336-2902723e35cmr65703875ad.13.1759960576617; 
+ Wed, 08 Oct 2025 14:56:16 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.14
+ d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Oct 2025 14:56:14 -0700 (PDT)
+ Wed, 08 Oct 2025 14:56:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v7 00/73] target/arm: Implement FEAT_GCS
-Date: Wed,  8 Oct 2025 14:55:00 -0700
-Message-ID: <20251008215613.300150-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v7 03/73] target/arm: Enable TCR2_ELx.PIE
+Date: Wed,  8 Oct 2025 14:55:03 -0700
+Message-ID: <20251008215613.300150-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
+References: <20251008215613.300150-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,149 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes from v6:
-  - Resolve conflicts with master.
-  - Fix size of TCGv cpu_gcssp[]
-  - All patches now reviewed.
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/helper.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-r~
-
-Pierrick Bouvier (1):
-  tests/functional: update tests using TF-A/TF-RMM to support FEAT_GCS
-
-Richard Henderson (72):
-  target/arm: Add isar feature test for FEAT_S1PIE, FEAT_S2PIE
-  target/arm: Enable TCR2_ELx.PIE
-  target/arm: Implement PIR_ELx, PIRE0_ELx, S2PIR_EL2 registers
-  target/arm: Force HPD for stage2 translations
-  target/arm: Cache NV1 early in get_phys_addr_lpae
-  target/arm: Populate PIE in aa64_va_parameters
-  target/arm: Implement get_S1prot_indirect
-  target/arm: Implement get_S2prot_indirect
-  target/arm: Expand CPUARMState.exception.syndrome to 64 bits
-  target/arm: Expand syndrome parameter to raise_exception*
-  target/arm: Implement dirtybit check for PIE
-  target/arm: Enable FEAT_S1PIE and FEAT_S2PIE on -cpu max
-  include/exec/memopidx: Adjust for 32 mmu indexes
-  include/hw/core/cpu: Widen MMUIdxMap
-  target/arm: Split out mmuidx.h from cpu.h
-  target/arm: Convert arm_mmu_idx_to_el from switch to table
-  target/arm: Remove unused env argument from regime_el
-  target/arm: Convert regime_el from switch to table
-  target/arm: Convert regime_has_2_ranges from switch to table
-  target/arm: Remove unused env argument from regime_is_pan
-  target/arm: Convert regime_is_pan from switch to table
-  target/arm: Remove unused env argument from regime_is_user
-  target/arm: Convert regime_is_user from switch to table
-  target/arm: Convert arm_mmu_idx_is_stage1_of_2 from switch to table
-  target/arm: Convert regime_is_stage2 to table
-  target/arm: Introduce mmu indexes for GCS
-  target/arm: Introduce regime_to_gcs
-  target/arm: Support page protections for GCS mmu indexes
-  target/arm: Implement gcs bit for data abort
-  target/arm: Add GCS cpregs
-  target/arm: Add GCS enable and trap levels to DisasContext
-  target/arm: Implement FEAT_CHK
-  target/arm: Make helper_exception_return system-only
-  target/arm: Export cpsr_{read_for,write_from}_spsr_elx
-  target/arm: Expand pstate to 64 bits
-  target/arm: Add syndrome data for EC_GCS
-  target/arm: Add arm_hcr_el2_nvx_eff
-  target/arm: Use arm_hcr_el2_nvx_eff in access_nv1
-  target/arm: Split out access_nv1_with_nvx
-  target/arm: Implement EXLOCKException for ELR_ELx and SPSR_ELx
-  target/arm: Split {full,core}_a64_user_mem_index
-  target/arm: Introduce delay_exception{_el}
-  target/arm: Emit HSTR trap exception out of line
-  target/arm: Emit v7m LTPSIZE exception out of line
-  target/arm: Implement GCSSTR, GCSSTTR
-  target/arm: Implement GCSB
-  target/arm: Implement GCSPUSHM
-  target/arm: Implement GCSPOPM
-  target/arm: Implement GCSPUSHX
-  target/arm: Implement GCSPOPX
-  target/arm: Implement GCSPOPCX
-  target/arm: Implement GCSSS1
-  target/arm: Implement GCSSS2
-  target/arm: Add gcs record for BL
-  target/arm: Add gcs record for BLR
-  target/arm: Add gcs record for BLR with PAuth
-  target/arm: Load gcs record for RET
-  target/arm: Load gcs record for RET with PAuth
-  target/arm: Copy EXLOCKEn to EXLOCK on exception to the same EL
-  target/arm: Implement EXLOCK check during exception return
-  target/arm: Enable FEAT_GCS with -cpu max
-  linux-user/aarch64: Implement prctls for GCS
-  linux-user/aarch64: Allocate new gcs stack on clone
-  linux-user/aarch64: Release gcs stack on thread exit
-  linux-user/aarch64: Implement map_shadow_stack syscall
-  target/arm: Enable GCSPR_EL0 for read in user-mode
-  linux-user/aarch64: Inject SIGSEGV for GCS faults
-  linux-user/aarch64: Generate GCS signal records
-  linux-user/aarch64: Enable GCS in HWCAP
-  tests/tcg/aarch64: Add gcsstr
-  tests/tcg/aarch64: Add gcspushm
-  tests/tcg/aarch64: Add gcsss
-
- include/exec/memopidx.h                       |   9 +-
- include/hw/core/cpu.h                         |   7 +-
- linux-user/aarch64/gcs-internal.h             |  38 ++
- linux-user/aarch64/target_prctl.h             |  96 ++++
- linux-user/aarch64/target_signal.h            |   1 +
- linux-user/qemu.h                             |   5 +
- target/arm/cpregs.h                           |  22 +
- target/arm/cpu-features.h                     |  15 +
- target/arm/cpu.h                              | 243 ++--------
- target/arm/internals.h                        | 148 +-----
- target/arm/mmuidx-internal.h                  | 113 +++++
- target/arm/mmuidx.h                           | 241 ++++++++++
- target/arm/syndrome.h                         |  35 ++
- target/arm/tcg/helper-a64.h                   |   5 +-
- target/arm/tcg/translate.h                    |  46 +-
- tests/tcg/aarch64/gcs.h                       |  80 ++++
- accel/tcg/cputlb.c                            |   3 -
- linux-user/aarch64/cpu_loop.c                 |   5 +
- linux-user/aarch64/elfload.c                  |   1 +
- linux-user/aarch64/signal.c                   | 138 +++++-
- linux-user/syscall.c                          | 114 +++++
- target/arm/cpregs-gcs.c                       | 156 +++++++
- target/arm/cpu.c                              |  17 +-
- target/arm/gdbstub64.c                        |   2 +
- target/arm/helper.c                           | 283 ++++++++---
- target/arm/machine.c                          | 113 ++++-
- target/arm/mmuidx.c                           |  66 +++
- target/arm/ptw.c                              | 365 ++++++++++++---
- target/arm/tcg-stubs.c                        |   2 +-
- target/arm/tcg/cpu64.c                        |   3 +
- target/arm/tcg/helper-a64.c                   |  35 +-
- target/arm/tcg/hflags.c                       |  38 ++
- target/arm/tcg/mte_helper.c                   |   2 +-
- target/arm/tcg/op_helper.c                    |  11 +-
- target/arm/tcg/tlb-insns.c                    |  47 +-
- target/arm/tcg/tlb_helper.c                   |  18 +-
- target/arm/tcg/translate-a64.c                | 438 ++++++++++++++++--
- target/arm/tcg/translate.c                    |  78 +++-
- tests/tcg/aarch64/gcspushm.c                  |  71 +++
- tests/tcg/aarch64/gcsss.c                     |  74 +++
- tests/tcg/aarch64/gcsstr.c                    |  48 ++
- docs/system/arm/emulation.rst                 |   4 +
- target/arm/meson.build                        |   9 +-
- target/arm/tcg/a64.decode                     |   5 +
- .../aarch64/test_device_passthrough.py        |   4 +-
- tests/functional/aarch64/test_rme_sbsaref.py  |   4 +-
- tests/functional/aarch64/test_rme_virt.py     |   4 +-
- tests/tcg/aarch64/Makefile.target             |   5 +
- 48 files changed, 2662 insertions(+), 605 deletions(-)
- create mode 100644 linux-user/aarch64/gcs-internal.h
- create mode 100644 target/arm/mmuidx-internal.h
- create mode 100644 target/arm/mmuidx.h
- create mode 100644 tests/tcg/aarch64/gcs.h
- create mode 100644 target/arm/cpregs-gcs.c
- create mode 100644 target/arm/mmuidx.c
- create mode 100644 tests/tcg/aarch64/gcspushm.c
- create mode 100644 tests/tcg/aarch64/gcsss.c
- create mode 100644 tests/tcg/aarch64/gcsstr.c
-
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index b7bf45afc1..c9ebdf144e 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -5902,8 +5902,12 @@ static CPAccessResult tcr2_el1_access(CPUARMState *env, const ARMCPRegInfo *ri,
+ static void tcr2_el1_write(CPUARMState *env, const ARMCPRegInfo *ri,
+                            uint64_t value)
+ {
++    ARMCPU *cpu = env_archcpu(env);
+     uint64_t valid_mask = 0;
+ 
++    if (cpu_isar_feature(aa64_s1pie, cpu)) {
++        valid_mask |= TCR2_PIE;
++    }
+     value &= valid_mask;
+     raw_write(env, ri, value);
+ }
+@@ -5911,8 +5915,12 @@ static void tcr2_el1_write(CPUARMState *env, const ARMCPRegInfo *ri,
+ static void tcr2_el2_write(CPUARMState *env, const ARMCPRegInfo *ri,
+                            uint64_t value)
+ {
++    ARMCPU *cpu = env_archcpu(env);
+     uint64_t valid_mask = 0;
+ 
++    if (cpu_isar_feature(aa64_s1pie, cpu)) {
++        valid_mask |= TCR2_PIE;
++    }
+     value &= valid_mask;
+     raw_write(env, ri, value);
+ }
 -- 
 2.43.0
 
