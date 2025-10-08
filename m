@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B780BC6BA6
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06295BC6B9E
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:00:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6cBH-00055z-Bu; Wed, 08 Oct 2025 17:58:43 -0400
+	id 1v6cCJ-0007PY-IJ; Wed, 08 Oct 2025 17:59:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6cAI-0004Nl-T2
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:47 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1v6cAW-0004TH-Fc
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:58 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6c9G-0006jJ-LM
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:41 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-26e68904f0eso3118735ad.0
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:36 -0700 (PDT)
+ id 1v6c9L-0006kE-30
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:56 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-b57d93ae3b0so165726a12.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960593; x=1760565393; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759960596; x=1760565396; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cpkzy3bVx6ucXbODXlPEH+NEBtm/T2sk9FDoLQjAyaU=;
- b=x4oEekLcjqYYsh0BACDvS08ldio7YNif7Ecm6Ydmvg2tuI6GUcMlLxpq/ygNAmRjbv
- FuKauLmzugGUPrkR1plIvCb1qWIgyo2lwJE5N0niwz12ZSqX8kFU4wOFDxfkC8udQ20t
- 3aQZCOz7kx+bGorXCOh7qlMyiia8UMAaxP1L3Fc6nBhHJBf9DDVimE1yR2IzG/GfBkgI
- 4s8tKQgVCwlngXyq7/pzA+pbTr/3/9hnrwIk5E+tskrpU+CDhofnGxOgWe5VEoqoO8qy
- RQyNWQfI/tRlebD2S2BEuNFFDS6QkA5Gwe3p+i8AkAXkLoP7V+FhXnePFja7HT7WYMy0
- LViw==
+ bh=pbP0PhacBN6OOtL0crNE7p92W9z6GBnRnTHJYePdcJk=;
+ b=AYmAyn1KTWLLBD67Ug//GiyMbYSa6Z6BMNbDxmOhWbF+KgVu9v0iMUlrBbqA8v1rGd
+ cbt6pzI8p4QTvkVnlbOB5vo1kUyKHXjCGKQf/urSq0sV3t4qcjsC/wHRDdkWJif2ifpU
+ UAf+uUMaeSuztcaTdbwnRC+oFnY1hSTlSt2X6fhORaxLeMRKIkFWDdwy0kVZNgqL9Kvb
+ i0Q8/eq1Atx582e8mJcBbnIBukSWbdDIjyMbD+N921Tk/VhxQxlfA+w/VblTOQIMA4LO
+ pL9tG4lzVouu3evi/ikvZMDTjlRMCHhzxJqz5ZPhI8D3d8bYRe7Pu7UMGj/0YzNwgmW3
+ mbHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960593; x=1760565393;
+ d=1e100.net; s=20230601; t=1759960596; x=1760565396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cpkzy3bVx6ucXbODXlPEH+NEBtm/T2sk9FDoLQjAyaU=;
- b=tAO936IUL0DZu1XwG6GXMYQIZ+imjiDr98HlyRgWD0WTZmuWDpXDW3hItgVVjm7Y96
- Mm7Rr9Qyf0f8+MtRoaz3lj6DFA3W5jjt+vMQsAUIYlTHa1KHGUNaIOVMEzdS7wjlCh7p
- Wm+kniZIzDR2fFR/KPIP/f4AQBD6zJd2a0JBhuXx1YW/ItcaPxHTlCacaUwtFJ/13gq6
- Utb757g0GkEZEzOkNwgiQnN1SyYOSK8t1SrFSu7ZT6Bz6lvn4nwQYSuHveV8uGtLmrLy
- M1FZrnVcFqcNBn1iBxG1PVZbZLZPvaA1J4o9h3T8JSvaPWePMj/FMMpiz2vOrIa1t1kl
- VL1w==
-X-Gm-Message-State: AOJu0Yz0rXMni9vferBP7EkutMQjG4enRBE8ExmnsH5YmW2Nsm1qcnmX
- WDZr55+8XBmXjtfgpTVd75JyOYBe8D/Z9/ACiaBOBv4wTDyRyMCIsHR/moKDHi4fMwLz/4IiZys
- M0VahV2g=
-X-Gm-Gg: ASbGncvQ4RNg61yd0YYHe5r4beOoRkPjv+o2SkM4nEZBbr0ROAZWnEsKtR95Qk4v22a
- 45xnGJLEzMogBf9qmq5AZ9gMR4EDg26N8OtxnHJzebPtpN5KKfgXZ5M7lReEOD2tnn2rSgb9/Mo
- 2RhO+N0nPLXvrQTg539Kxkxe7xCH7vVIrCH4DWec3nkdx7+Tht6vUKkP+Ftrn0xpJ06F3oUf7qX
- F7cXNV+O1MNaSC/aNG2U58sElrqHeO0yHI7nZXuz7eEdTM+c+mC6F47ouuBGl1tip0kN/Huh9uJ
- Xc++dWAAMFSfdpFPHjWL783qANRWDald8vyRAGiBd7duCpfDS65xtfJarkbtEY85Q2ljI9dLMMF
- GzVbSakQE+TVccnl19M0FNtPtjovVLldM795QdTrmnbtCdH5yGeV/JOChcNrpFyQg+0o=
-X-Google-Smtp-Source: AGHT+IHy6fHPrlzldAiRH9eQVfcpNc5mA87s1dYlKjVLIUiTHoqBkp9wMW7l/sd7b7Vm0dB2/ERSuQ==
-X-Received: by 2002:a17:902:ebc5:b0:26e:e6ab:66fe with SMTP id
- d9443c01a7336-2902720f560mr64279895ad.5.1759960593373; 
- Wed, 08 Oct 2025 14:56:33 -0700 (PDT)
+ bh=pbP0PhacBN6OOtL0crNE7p92W9z6GBnRnTHJYePdcJk=;
+ b=GTCKUNLk9L6aZrr6ypquKBR3Lt2lZDw2PKxr3T7PGbbBSRCTmqAecH259SpwUt/47n
+ W7LDTJ+2dpTCCmHlUsLGjOUVmI7jDuRlpXnkY+wmVfNPW16xE0tf8C+1YaJrpRePOPLr
+ 0bAx/B1jErDkTUu8uhKkFHajFb+Bw1D1aZb8JBMkz98zJooaV+IQywDEpqoaR3gLc9Fg
+ 6x8wub6//zknBQ8D/uUBaibPGxVo+lukTK8dKLAbK3qs0E4U5iZvwZUAX8Hv2v1FszuF
+ m+3ZXVPVKtktLF1tgNPS2eFkWPMN/TWWldI22H8vrxjZa/8aIqYuJ90PtAGqNpXh0vrb
+ YerA==
+X-Gm-Message-State: AOJu0YxwASySe7hIkTaHZo+siw9zOw0hIZPt001aqRLma2/W55voucox
+ o6VWeZPFnwOHeh0GIX87TP7JZLNHGWt+ngxxsxVPQIbTr0oPwyLRRPlVOU/cfNpOoUdfZpQUrY8
+ VPFBz2o4=
+X-Gm-Gg: ASbGncs5E0gsoW9/ShW2lweKbyL9h7E68mULLEiDdVoY54TuRsRKFkBr4MRA3mK6OfX
+ ZxJK9KOLOZOA0o/aCO8bdgp0MF0897iaHVSjMETpSOCshdMWP4hD7tRZV6x9ZnPpXJZ/dgis1PF
+ Ms8VZId0Lxo+LZott0g1xofXGZ345fY39z7liQ+HaZsCCzpUJpIIIaj2Et1O0tclH4c0BlBmkVI
+ uLDSjvI1WmpdyqG4CrqTkhLXo0ROmh3OZLgMEhmLgirROpUlQOocuoc/FG+npX5CsuoIkR6KVI3
+ e156Rf3NJ8RMERMEBgx+VtxiIqzdtmLGc6TMiH6iKaxrFB3LUFSvSQ3HN5z11qcB4gooHdAf/wH
+ 5onoX1YXe2T8q+D7KsoZTcrXSIgJh9mXWKepZhN3wXeKTcTAzLbnQmv1M
+X-Google-Smtp-Source: AGHT+IEwSFGYKhI8k1o3/DKsm6yR54T04FqKgfCf0ZH43eTwtIpuxmPFY3WBV9oNcwUbrgi1WkGgqg==
+X-Received: by 2002:a17:903:37c7:b0:269:8edf:67f8 with SMTP id
+ d9443c01a7336-290272ff5b0mr65857895ad.52.1759960595839; 
+ Wed, 08 Oct 2025 14:56:35 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.32
+ d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Oct 2025 14:56:33 -0700 (PDT)
+ Wed, 08 Oct 2025 14:56:35 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 29/73] target/arm: Support page protections for GCS mmu
- indexes
-Date: Wed,  8 Oct 2025 14:55:29 -0700
-Message-ID: <20251008215613.300150-30-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v7 33/73] target/arm: Implement FEAT_CHK
+Date: Wed,  8 Oct 2025 14:55:33 -0700
+Message-ID: <20251008215613.300150-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
 References: <20251008215613.300150-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,53 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Take read and write from the s1perms.gcs bit computed
-by the Arm pseudocode.
+This feature contains only the CHKFEAT instruction.  It has
+no ID enable, being back-allocated into the hint nop space.
 
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ target/arm/tcg/translate-a64.c | 14 ++++++++++++++
+ docs/system/arm/emulation.rst  |  1 +
+ target/arm/tcg/a64.decode      |  1 +
+ 3 files changed, 16 insertions(+)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 6c52ed1ad0..d4386ede73 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -1619,12 +1619,16 @@ static int get_S1prot_indirect(CPUARMState *env, S1Translate *ptw,
-         }
-     }
- 
--    if (perm & PAGE_WXN) {
-+    if (regime_is_gcs(mmu_idx)) {
-+        /*
-+         * Note that the one s1perms.gcs bit controls both read and write
-+         * access via AccessType_GCS.  See AArch64.S1CheckPermissions.
-+         */
-+        perm = (perm & PAGE_GCS ? PAGE_READ | PAGE_WRITE : 0);
-+    } else if (perm & PAGE_WXN) {
-         perm &= ~PAGE_EXEC;
-     }
- 
--    /* TODO: FEAT_GCS */
--
-     return perm & PAGE_RWX;
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 693eab1c01..78b2881a15 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -2124,6 +2124,20 @@ static bool trans_AUTIBSP(DisasContext *s, arg_AUTIBSP *a)
+     return true;
  }
  
-@@ -2277,6 +2281,13 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-              */
-             prot = get_S1prot_indirect(env, ptw, mmu_idx, pi, po,
-                                        result->f.attrs.space, out_space);
-+        } else if (regime_is_gcs(mmu_idx)) {
-+            /*
-+             * While one must use indirect permissions to successfully
-+             * use GCS instructions, AArch64.S1DirectBasePermissions
-+             * faithfully supplies s1perms.gcs = 0, Just In Case.
-+             */
-+            prot = 0;
-         } else {
-             int xn = extract64(attrs, 54, 1);
-             int pxn = extract64(attrs, 53, 1);
++static bool trans_CHKFEAT(DisasContext *s, arg_CHKFEAT *a)
++{
++    uint64_t feat_en = 0;
++
++    if (s->gcs_en) {
++        feat_en |= 1 << 0;
++    }
++    if (feat_en) {
++        TCGv_i64 x16 = cpu_reg(s, 16);
++        tcg_gen_andi_i64(x16, x16, ~feat_en);
++    }
++    return true;
++}
++
+ static bool trans_CLREX(DisasContext *s, arg_CLREX *a)
+ {
+     tcg_gen_movi_i64(cpu_exclusive_addr, -1);
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index c779a50570..68d9a4e734 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -28,6 +28,7 @@ the following architecture extensions:
+ - FEAT_BF16 (AArch64 BFloat16 instructions)
+ - FEAT_BTI (Branch Target Identification)
+ - FEAT_CCIDX (Extended cache index)
++- FEAT_CHK (Check Feature Status)
+ - FEAT_CMOW (Control for cache maintenance permission)
+ - FEAT_CRC32 (CRC32 instructions)
+ - FEAT_Crypto (Cryptographic Extension)
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 55ff6c504f..8283a9c83d 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -256,6 +256,7 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
+     AUTIASP     1101 0101 0000 0011 0010 0011 101 11111
+     AUTIBZ      1101 0101 0000 0011 0010 0011 110 11111
+     AUTIBSP     1101 0101 0000 0011 0010 0011 111 11111
++    CHKFEAT     1101 0101 0000 0011 0010 0101 000 11111
+   ]
+   # The canonical NOP has CRm == op2 == 0, but all of the space
+   # that isn't specifically allocated to an instruction must NOP
 -- 
 2.43.0
 
