@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38508BC6261
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 19:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B9BBC6264
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 19:32:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6Xzr-00050j-2M; Wed, 08 Oct 2025 13:30:39 -0400
+	id 1v6Y0b-0005Cc-TP; Wed, 08 Oct 2025 13:31:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v6Xzo-00050Z-HC
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:30:36 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1v6Y0X-0005BW-G3
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:31:21 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v6Xzh-0003FC-Q3
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:30:35 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2698d47e776so504955ad.1
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 10:30:28 -0700 (PDT)
+ id 1v6Y0P-0003KM-Hf
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:31:21 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-781ea2cee3fso78146b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 10:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759944627; x=1760549427; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759944668; x=1760549468; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QIBkZsGvAJtxs9YFkGzECCgqwjzAG37XZgIO63acsys=;
- b=SrcTI/0nuzT4Uvw8aK8EW6oW2LjpObvQVBSGYWWdmdjj01rdAJYNfzvhh+frd4nkxY
- IXKsLmVlxa39p5jmaIygi2zoB5lmdVpUif9kYWwvIKU/X30kyAYovm9LKadwoUwdur61
- nzLvt0v9NwLOoIbdP8zN/MmIhJSy2TcpoWw4WxymMwDd0iaP91b0Lt+BQp8fFgSaR/3l
- rat/adDhCTOxLoTvLHS0AFndOaRVw1MgUxV2u8zyD0rWaARLJhAiDOMWpTFvok8Sxr83
- 5dgkCFJSa29FyMIVLB4ceAWJjcHhrOt2VjRHQuqFJRv5Ok08uhobOy32uJwVYoIOWLwU
- Yfdg==
+ bh=pxnCFCBudtDODB23ss7bR/+MC7Me2ifwO0zlSvqntmo=;
+ b=h4MyIHeMvf2Wr2P16WFEOK+3jXF67liG1bvfOqEpwHPjwJvs6NR803yOA8e8M8/DuR
+ v99UgvtL13uAKvmoj76lzFO/6tbrEtg424O0mbMY1FTlj2jf/gc70qHDqN/k4pgPF8B3
+ 7f3gcs0bq906n5HKiZo7zW+PCtRMXpo7H1f1+wd+QUnQMzVmbfYocreIEy7wBLMuykMM
+ 1ruEWvsHdKI+iq6u2TI0LJdr5Oz4gwdKtNe/Rfs9OdNh86tMGpSnFS/nYBbr4M5H+IhO
+ XjhumdyfnV8c3+7cqsIQ3FxmVJLUaLPaPO9GE02uUPHTqrVv6cIKqNAjgszuq9CJWa75
+ ZCpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759944627; x=1760549427;
+ d=1e100.net; s=20230601; t=1759944668; x=1760549468;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QIBkZsGvAJtxs9YFkGzECCgqwjzAG37XZgIO63acsys=;
- b=qouFO9J3ILSnvp6fnS/l0jY59SJPT/RaIdUrWPAH6AUH11aMKcruy3eH+tO+gHT+//
- M/oQnMsXjWLY2+gNQ6TazlbzWHHjHDdkunFyC05DSV9jH24ru00esyzFs58J5RI6+Hhj
- q6qmbxhm4cMPkJYzeYhjl69biO3akSDkOwjjIhRk5yVorM2fPymETIZ6HTlPSML1qyGp
- OIDdijAv7u1VGMOYijgEneMj7x7y/h+3gP0uIqIzncBxtoUGJW/G1Fz3iP973zo3e7mf
- Le1rjptMLc+jW2ulIMNUHH/w7Cme0cAoAX33EPS52LaDme5NOdcOR5CDTNTJ4J01Y9zF
- 6XLQ==
+ bh=pxnCFCBudtDODB23ss7bR/+MC7Me2ifwO0zlSvqntmo=;
+ b=OA95bqNSQ+nk+AY3jBfb2XJqwi4fmj6z+FSZ756X09Inmtd/q5Iq4N465oW6sND42m
+ RI5yQOra9SuvCKERGMxJebqOSvQI9ukCx6qNTdfd679RrU35T9TqBlGjVLZGGIIJMQPw
+ f9sK0HFjpK3Y5hQkWKrXsjsjqDHeuGVfro+m8cgpDe2rC+t3ulOhRtNvSTR4qLld+kQe
+ 2fcT7du5FCb3/U+zG3MUx0fca8Unx9kASkJkf38aUsMLK2oTFz7eBuqHi+Tp+5DMnnlq
+ ZMvtGpiwVVLFd4KBwYJx9cjeqJCsIYQ9DErzj0G+pq6fwOOgfU8EHETkjK8bFI1ezPmC
+ pf1Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXOpBEoVyrAzZ5IazWrZZ4XpV9lW52NDEo72aRlSrylzJYcZta8MK5AN6erD6UGLyr/PqnJqXa85j+A@nongnu.org
-X-Gm-Message-State: AOJu0YwjQJ75msfXbqHqx0xBDf1/2NuA17CAlwqKTWsOGut+rB6A4WMC
- ucNF2XtXrpT5Sgiye9X1WwjJeGKPxsCyNf4T/ot3yT2zQixaW2VJyO3hI4qTTodWTrA=
-X-Gm-Gg: ASbGncvP5Oww6hkg+MQsYVtaOF96zqVtv0477vixnulGKnZ02kSPJC4FDFoFbouZoOR
- lvk8GgmdJyc+Arb8fb1w6pPouuO+ycVzHoQQXm8+mNPwh/jhMulzwe9QM6H8prurMRpmfpex7iT
- ko/Cs1deDT/20lV6L0u5uI8aADj4NI+rKVI28l1mvkjNPigxXn06j+NwiNxMxTQxXH85Hw68wV8
- gzmIuwjES04vOk6vQfn6dYMxBsauNBX36T2qdIJmf11MqYip8JQ3T7/mRADYC9LIw/OGzazrSXo
- 5eQ1WJCFD/zXQgz+pCe2GfChqIKm+jBDHHr1E/TcWYuUqWKJODIP9O0YYslks0P1qUX1aknoqdp
- A3RqCexc+uVOkAL6bEszc4JhvC7L2EsK2zoq8+FtUJ5iSQDomTbG8Zp5zCOzSWoCA5E/Me//DaQ
- ==
-X-Google-Smtp-Source: AGHT+IH9VSptggUt0j4KWNrO/JSQRuGONzH7mmukrsjB4IINyx67tiFLJ/vjokukm4Axm2Z0kAxovA==
-X-Received: by 2002:a17:902:ea0d:b0:267:44e6:11b3 with SMTP id
- d9443c01a7336-2902737494amr58614875ad.45.1759944626677; 
- Wed, 08 Oct 2025 10:30:26 -0700 (PDT)
+ AJvYcCUEoyHXUh+9wFheGFIoeouRcIssyseuzH/UCDPftDsXk+D/4BOEh/0Qe2PIgMuoOXAAzSXZSCFe8H0o@nongnu.org
+X-Gm-Message-State: AOJu0YwXaB07EIVxFPzMKMAxLg26xtJz6cD4nsClg7VaVjbkyrmlbkBj
+ 72EHHt5pzuETnbn6tSi3UOLo0ib2Z7BASv6WjgkpYCjcBrFxm30CBrC32PtEKy0YJ8psTsOwsoH
+ NqFegTeE=
+X-Gm-Gg: ASbGnctrL17/j+AWXVD1kDWr/YF3ioiRklI5oX/YcoaaD3blwULw2B/oTT8aVjy8YOm
+ bb76jWpz5WMeXXTxaNxL7WPSC1+9WwlsyKoWWGU3Z+xIq/3ZLrb8us2AIPTKChEpqV69ijnxkjG
+ AnqkJIpqtmduRZEc0m998wUbOjNsvFvtpz8O8YUhVU2Wo2/wVPYblMzKUSKTYltl70W6dCJ9WWE
+ pvk2Yd30xdeEZRIpUrQCceDv2189c9TIzV5U3U7t2+ix/3lkbMGttkUjieCfLv8VC3fAYKCRpfK
+ 8xUfdbRfgigJeVMKTcwbz4j1+zDVbNIPJTDD8r0SI54K3hiMviAZl7vJ3dku1mdSAsKIGGXomKi
+ qDxDxShnmrmxD1xRj5S8jf/pydSs5aBWHx4eTOhefAWyATYjBqol1A5Ie2P5uRDw=
+X-Google-Smtp-Source: AGHT+IH/+nyZogA3xLWgyglyQrEd6s7JdTzliGz6Fosf4Y3yIuihYLFH8+rtg5qZ0cjOUHBOZdByfA==
+X-Received: by 2002:a05:6a21:328c:b0:24a:1b2d:6414 with SMTP id
+ adf61e73a8af0-32da8154248mr5545983637.18.1759944667680; 
+ Wed, 08 Oct 2025 10:31:07 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034f961c5sm2775625ad.129.2025.10.08.10.30.25
+ 98e67ed59e1d1-33b5137dea8sm4079473a91.13.2025.10.08.10.31.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Oct 2025 10:30:26 -0700 (PDT)
-Message-ID: <7d705ff4-587f-41d1-8f39-e8190ce8547c@linaro.org>
-Date: Wed, 8 Oct 2025 10:30:25 -0700
+ Wed, 08 Oct 2025 10:31:07 -0700 (PDT)
+Message-ID: <5b420362-f067-4e11-b732-c8a2b9b998e7@linaro.org>
+Date: Wed, 8 Oct 2025 10:31:06 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] target/microblaze: Remove target_ulong uses in
- get_phys_page_attrs_debug
+Subject: Re: [PATCH 3/5] target/microblaze: Remove target_ulong use in
+ gen_goto_tb()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>, Alistair Francis <alistair@alistair23.me>, 
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 References: <20251008060129.87579-1-philmd@linaro.org>
- <20251008060129.87579-3-philmd@linaro.org>
+ <20251008060129.87579-4-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251008060129.87579-3-philmd@linaro.org>
+In-Reply-To: <20251008060129.87579-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,29 +107,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/7/25 11:01 PM, Philippe Mathieu-Daudé wrote:
-> The CPUClass::get_phys_page_debug() handler takes a 'vaddr' address
-> and return a 'hwaddr' type since commit 00b941e581b ("cpu: Turn
-> cpu_get_phys_page_debug() into a CPUClass hook").
+> translator_use_goto_tb() expects a vaddr type since commit
+> b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
+> translator_*()").
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/microblaze/helper.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   target/microblaze/translate.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
-> index ef0e2f973fa..cf577a72268 100644
-> --- a/target/microblaze/helper.c
-> +++ b/target/microblaze/helper.c
-> @@ -274,7 +274,8 @@ hwaddr mb_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr,
->                                           MemTxAttrs *attrs)
+> diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+> index 5098a1db4dc..ff33e64a710 100644
+> --- a/target/microblaze/translate.c
+> +++ b/target/microblaze/translate.c
+> @@ -116,7 +116,7 @@ static void gen_raise_hw_excp(DisasContext *dc, uint32_t esr_ec)
+>       gen_raise_exception_sync(dc, EXCP_HW_EXCP);
+>   }
+>   
+> -static void gen_goto_tb(DisasContext *dc, int n, target_ulong dest)
+> +static void gen_goto_tb(DisasContext *dc, int n, vaddr dest)
 >   {
->       MicroBlazeCPU *cpu = MICROBLAZE_CPU(cs);
-> -    target_ulong vaddr, paddr = 0;
-> +    vaddr vaddr;
-> +    hwaddr paddr = 0;
->       MicroBlazeMMULookup lu;
->       int mmu_idx = cpu_mmu_index(cs, false);
->       unsigned int hit;
+>       if (translator_use_goto_tb(&dc->base, dest)) {
+>           tcg_gen_goto_tb(n);
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
