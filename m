@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01CCBC47DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 13:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5DFBC4810
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 13:07:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6Rus-0008VI-11; Wed, 08 Oct 2025 07:01:07 -0400
+	id 1v6Rzq-0001zI-Tk; Wed, 08 Oct 2025 07:06:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6RuQ-0008QL-QN
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 07:00:44 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6Rzp-0001z2-Fk
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 07:06:13 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6RuO-0001AU-T3
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 07:00:38 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6Rzn-00022O-MW
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 07:06:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=A/fGiWPMbgMbPh0LNzCyFklXS+ZpdAS3R5IDH+clByM=; b=olP0gFPaJN9W8be
- ZOI3EwOHmkFyrsdxi9JcmeCuRuMMK2MwECL6B3sKkrzPgnB+lnR25lh6GffOtcHKOJfH2PrbFi5hh
- TkCjtZDVhOvLInGx6augKmoQDzu+LdRy5PUHQMyoBdnLowCqQNeZ0JOxB43zv0TxnEL85jWp9Fm73
- /Q=;
-Date: Wed, 8 Oct 2025 13:03:14 +0200
+ List-Help; bh=jleg9Y6wKi+fLCj26RPuA1y6JMEGdx2+VeBTjiIoB9E=; b=hPYPNvr79PoXpQQ
+ P6InY7l5nikxRTSTpY7NUk1IpkE0O+TBaQGydOdjycTTW/2zN1tYV+KjnR0qKSTdyCE6IYUwb1J2C
+ oI4+nlpTo7u/4B2WQdecBiJFVdGNFIYUCZs0pHHnRLLwNK2WqMBKJJsDnyX6yOoliYv7R/wJz2tWA
+ P0=;
+Date: Wed, 8 Oct 2025 13:08:52 +0200
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>
-Subject: Re: [PATCH 6/6] target/sh4: Remove target_ulong use in gen_goto_tb()
-Message-ID: <qqv2xuyizicsfap5ostzxprdxor2yfaxmelm6uugx5jd64j2eo@snpwi5pj63co>
-References: <20251008064814.90520-1-philmd@linaro.org>
- <20251008064814.90520-7-philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Stafford Horne <shorne@gmail.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH 2/7] target/openrisc: Do not use target_ulong for @mr in
+ MTSPR helper
+Message-ID: <hwmryh6zdimvsyb4ir3msa2z74e7ii4sqgx4ww2jwbxrznlcue@tbnfmvsjwvdu>
+References: <20251008075612.94193-1-philmd@linaro.org>
+ <20251008075612.94193-3-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251008064814.90520-7-philmd@linaro.org>
+In-Reply-To: <20251008075612.94193-3-philmd@linaro.org>
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
 X-Spam_score_int: -20
@@ -66,14 +67,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 08/10/25, Philippe Mathieu-Daudé wrote:
-> translator_use_goto_tb() expects a vaddr type since commit
-> b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
-> translator_*()").
+> OpenRISCTLBEntry::@mr field is a uint32_t type since its
+> introduction in commit 726fe045720 ("target-or32: Add MMU support").
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  target/sh4/translate.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  target/openrisc/sys_helper.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
+> index b091a9c6685..ad59939db3b 100644
+> --- a/target/openrisc/sys_helper.c
+> +++ b/target/openrisc/sys_helper.c
+> @@ -45,7 +45,7 @@ void HELPER(mtspr)(CPUOpenRISCState *env, target_ulong spr, target_ulong rb)
+>      OpenRISCCPU *cpu = env_archcpu(env);
+>  #ifndef CONFIG_USER_ONLY
+>      CPUState *cs = env_cpu(env);
+> -    target_ulong mr;
+> +    uint32_t mr;
+>      int idx;
+>  #endif
+>  
+> -- 
+> 2.51.0
+> 
 
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 
