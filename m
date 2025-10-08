@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870E9BC6C82
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BDDBC6C5B
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 00:14:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6cBr-000605-9G; Wed, 08 Oct 2025 17:59:19 -0400
+	id 1v6cBX-0005kM-UJ; Wed, 08 Oct 2025 17:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6cAO-0004Pl-EI
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:50 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1v6cAY-0004Tf-Rx
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:59 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6c9H-0006kS-89
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:48 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-781ea2cee3fso306466b3a.0
- for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:37 -0700 (PDT)
+ id 1v6c9K-0006kh-CI
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 17:57:56 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2897522a1dfso3039475ad.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 14:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759960596; x=1760565396; darn=nongnu.org;
+ d=linaro.org; s=google; t=1759960597; x=1760565397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9TlVHZpayQS/myvCVeAjxeyWQxv6D3ZZ+dMoMBNlFQc=;
- b=B0TtU5gZXVA4ReBA/hrI7UWMLvNkqAHHXIlgLk+ugEXTw0BrRlON7u4HM9zTzFklXi
- YaxOjE6hG7OaAGsvwjBUxP5Wajk8tZK/GgC7NIS1jvOHH3bSACY0F6U5J5mVImKmFqbP
- 8bn5vQlfvWNGlqu/HKMD3ZNtG9ccyRzqMUZSUk3+z6xE30bZqLmQ59gCJwGN2icoGCcM
- 2tczL5Nu0MHO0qtjNMiZD/PS1d37GNYYvGDZ6D8xOWRNLVVWK6VChOTxsY+0rSC9bZRm
- n7QW0ZdEo3Mm/IFKcib6s6FPGRix2CsYRbKGFG1sXPJ1XwwN5vNQZXUDEvz7VAbOUooW
- lL6A==
+ bh=bp0yhTPHMN/nvPJ//sZfWUdhLP1BkYQ3HbuDh6ZDRyE=;
+ b=P7YRzzW6fcSIWs8GJPbT+CdUSdbWgRlz8KNxUoBsUGQiQnSZgKbIBauFuJOP2sxN/o
+ 4FC6Fmmzx7NpSE5x81x9WWXSZnUAA6H+Oc0eeTohQfn0KMEquGYeNHOhiJEJg8iShCYP
+ 4FQM7HAxrrKb44K8HyYpSCUanU1fwAdIjGh6xehAuDaYX4Dr9fDVBus95hPSJlYqGPty
+ CmWiav9Y0sq9Cmm5zUmp7qPeMajKOunSwe/bvKss5GUvhDw2u9txcvWFZisEU2C0x+/R
+ 6cVi351sKOWKq4Foyksa0Ah03XNlGMKFBZe8cHEBEr8Sqb+JLLcfTMhlNCnmZAx66fp6
+ ImiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759960596; x=1760565396;
+ d=1e100.net; s=20230601; t=1759960597; x=1760565397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9TlVHZpayQS/myvCVeAjxeyWQxv6D3ZZ+dMoMBNlFQc=;
- b=S3CmQYYIMgGnWv4QHfJfVYtuUaN5uFRxh4oQvteuj1PXZJDAp8kdb6mCL4nh/bmDih
- 3ZOnuEJD2ZiXYspgFvE463hOv1xqiyDJBNoU5JTB1oSIEV9k8oz7ebTEgf6UnXQW3MuJ
- 0xfUkdbsLnDk2c9XshDJG+DmVLzYuolIc4m5DFzXzgaNFoTw3r33bqc9RJG/b00xtnaz
- kljnT7vCQnMqHztH94dBkOP78fEBgAHul+5EZXBWKAdeb/IkwEwRirUxqEv/c4KRSwok
- RTwrvMesyQgfB5vBNGcNuHeA1+FVRvSHmQa4xu4W8nc5D5C6cNTf2b5ta3Y/9psrrPjz
- sVaA==
-X-Gm-Message-State: AOJu0YzM9a6KO/X88SkpvO+C3Wvj+K/7rgc7I/oVHrPDJiZTUuuUY+bh
- e4G7QJP5j5cWon+f9jmue3tksUeN+0zuRrCFs4rt8Ul5EnOXjqs1S5WdeeOduTpKDiiIEByUw4t
- jBilMDmE=
-X-Gm-Gg: ASbGncu18vP7366NHNJ4A+ci+L7gbQ7ZQX5HMrx3UrMLfEihF5N7uCvCpCua+Bj1FSl
- Eqo2Tn/z3Yq+EoJPrrTylHokCOcYtSXQLsSF+qYmwnpUOE4J7Hz+A5M+r0yCDmbEbx/v/X5PQe6
- SdNKHQZmS0I2u4hwfNhMxjlP2+5xmAJkzryHoQsbl0a5PWhdBEQc3T+9xklMm4XYyZjCMiHNxOI
- 8OhcucLVrKICccR95ngrxz1DHElhVPeTMhSjbdeCXmu3j4sVTTV8RHDIMR0SDvm0UsW2tDOhJeU
- fIgpJe56vJSTmuULlL7J8b9b58oWYqT4IZthipZU+lfi1Hbk/q0eaz6otTCvryP3DBHUgU1ssxE
- dYFcOFm8U6ii7DrqJ5J/WzuKpYhK5vYLAUbwA/PUOcW7fC3ezpbRQGe/X
-X-Google-Smtp-Source: AGHT+IE0p8RUt69UVrY3m+ydEzkfC65aZWzrgJQ6t+dvNsP8c96qXcbMKX7L8EG9pyyaowt36WsPmA==
-X-Received: by 2002:a17:902:8a89:b0:27e:ec72:f67 with SMTP id
- d9443c01a7336-29027356abdmr47862115ad.6.1759960596465; 
- Wed, 08 Oct 2025 14:56:36 -0700 (PDT)
+ bh=bp0yhTPHMN/nvPJ//sZfWUdhLP1BkYQ3HbuDh6ZDRyE=;
+ b=GKh+A8utrzM6ACiQ+akiM/azxh7Dux3ycaVN59ZedyK3ZWlOhqc+Blq64ngHKqaEC9
+ NDMKj/KnOOcQuKMtY4MeIxofrscBqEfLLZFVGInLkDTZRud6/0GOWjFzsXL2I1KpqSXX
+ jPR25zZz3CqosskTEFG3cpyxooAj+0V6acIEtszYNsGKT/cotojwpGLVGgHOrrm3iCJW
+ DypJX1bccb3S7a/08vXdPKGowEhINzQDfW9EwroReGDFhJciAsTv3Y1YtYlEWnYKewmi
+ dzeQSyRynsNkVcGL0juPmnmwQD4PZoBD6Wl+MjnwRaxaThzIji04kfKRPaCr40EkLNp6
+ EkPw==
+X-Gm-Message-State: AOJu0Yw7z1yKQWg8g+Q/LmwdzeoFGzcFWfPpKw0Gwa1m4fpcS/E7PzhM
+ c8eBFPGJ8Tm/Ph4CTA9wJO+dMGuvbGFZPQvGacyo2ui07UhihS03u0fNaaJT5SxvMGFc0bG3avt
+ pnqmJlL4=
+X-Gm-Gg: ASbGncv+bghjrTrIxLwmr5PeQl1o8EDKfOpITPfwMSNvxMYOlE8vD+9gV83ig7iQ3fS
+ vbqFEAV9l0QpATJh/MG3rXvoay61Z+GT86Ff4L8383kSNqnHA1KPOLB1bHCyLPFo/DLBfQSPI8x
+ BWsB8wxKLTINZKO4L7V9IR2ScFnRimx5V61GHaWdQqKUjTy7N38pJdB4PNcajEnQtY9u/rA7Alb
+ 2K56cbTLAltZiXyKMj25EiM7su1+2cG4wIfJEXOWDtdcM2oogEo/QDfLcvGr0AW4NAhVd03TFDL
+ xvSBQvgTt/GmemKsbu//biVE4s36JAl3PGEVIKToRQC9n8mZXxJ5oQIdUnwtH9f+7m+SFKgwayb
+ 9KRMpAPoTfOUm4H9uQ9l1887EUAFsiS09rR5qWe7TasEonoPSVEIp4+Of
+X-Google-Smtp-Source: AGHT+IE4QKW7MbO77KJ56cf6yQDVAV0EIsHKOZ3PKTApQMupj3yiOspMxd9q4dwNf0HlhYGsC7JS5Q==
+X-Received: by 2002:a17:902:ce81:b0:288:ea7a:56b5 with SMTP id
+ d9443c01a7336-2902723b882mr67882945ad.15.1759960597087; 
+ Wed, 08 Oct 2025 14:56:37 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-29034e44ef9sm7354285ad.52.2025.10.08.14.56.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -66,23 +66,24 @@ From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v7 34/73] target/arm: Make helper_exception_return system-only
-Date: Wed,  8 Oct 2025 14:55:34 -0700
-Message-ID: <20251008215613.300150-35-richard.henderson@linaro.org>
+Subject: [PATCH v7 35/73] target/arm: Export cpsr_{read_for,
+ write_from}_spsr_elx
+Date: Wed,  8 Oct 2025 14:55:35 -0700
+Message-ID: <20251008215613.300150-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251008215613.300150-1-richard.henderson@linaro.org>
 References: <20251008215613.300150-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,91 +99,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Move cpsr_write_from_spsr_elx from tcg/helper-a64.c to
+helper.c, so that it's present with --disable-tcg.
+Declare both in internals.h.
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-a64.h    | 5 ++++-
- target/arm/tcg/helper-a64.c    | 2 ++
- target/arm/tcg/translate-a64.c | 8 ++++++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ target/arm/internals.h      |  2 ++
+ target/arm/helper.c         | 20 +++++++++++++++++++-
+ target/arm/tcg/helper-a64.c | 20 --------------------
+ 3 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index 85023465b7..b6008b5a3a 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -80,7 +80,6 @@ DEF_HELPER_3(vfp_ah_maxh, f16, f16, f16, fpst)
- DEF_HELPER_3(vfp_ah_maxs, f32, f32, f32, fpst)
- DEF_HELPER_3(vfp_ah_maxd, f64, f64, f64, fpst)
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 109aa104bf..2a85ab762d 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1897,6 +1897,8 @@ void vfp_clear_float_status_exc_flags(CPUARMState *env);
+  */
+ void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask);
+ bool arm_pan_enabled(CPUARMState *env);
++uint32_t cpsr_read_for_spsr_elx(CPUARMState *env);
++void cpsr_write_from_spsr_elx(CPUARMState *env, uint32_t val);
  
--DEF_HELPER_2(exception_return, void, env, i64)
- DEF_HELPER_FLAGS_2(dc_zva, TCG_CALL_NO_WG, void, env, i64)
+ /* Compare uint64_t for qsort and bsearch. */
+ int compare_u64(const void *a, const void *b);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 64b6c21aef..def4edf808 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -8896,7 +8896,7 @@ static int aarch64_regnum(CPUARMState *env, int aarch32_reg)
+     }
+ }
  
- DEF_HELPER_FLAGS_3(pacia, TCG_CALL_NO_WG, i64, env, i64, i64)
-@@ -145,3 +144,7 @@ DEF_HELPER_FLAGS_5(gvec_fmulx_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32
- DEF_HELPER_FLAGS_5(gvec_fmulx_idx_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fmulx_idx_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fmulx_idx_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+
-+#ifndef CONFIG_USER_ONLY
-+DEF_HELPER_2(exception_return, void, env, i64)
-+#endif
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 71c6c44ee8..6d77fd0113 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -576,6 +576,7 @@ uint32_t HELPER(advsimd_rinth)(uint32_t x, float_status *fp_status)
+-static uint32_t cpsr_read_for_spsr_elx(CPUARMState *env)
++uint32_t cpsr_read_for_spsr_elx(CPUARMState *env)
+ {
+     uint32_t ret = cpsr_read(env);
+ 
+@@ -8911,6 +8911,24 @@ static uint32_t cpsr_read_for_spsr_elx(CPUARMState *env)
      return ret;
  }
  
-+#ifndef CONFIG_USER_ONLY
- static int el_from_spsr(uint32_t spsr)
++void cpsr_write_from_spsr_elx(CPUARMState *env, uint32_t val)
++{
++    uint32_t mask;
++
++    /* Save SPSR_ELx.SS into PSTATE. */
++    env->pstate = (env->pstate & ~PSTATE_SS) | (val & PSTATE_SS);
++    val &= ~PSTATE_SS;
++
++    /* Move DIT to the correct location for CPSR */
++    if (val & PSTATE_DIT) {
++        val &= ~PSTATE_DIT;
++        val |= CPSR_DIT;
++    }
++
++    mask = aarch32_cpsr_valid_mask(env->features, &env_archcpu(env)->isar);
++    cpsr_write(env, val, mask, CPSRWriteRaw);
++}
++
+ static bool syndrome_is_sync_extabt(uint32_t syndrome)
  {
-     /* Return the exception level that this SPSR is requesting a return to,
-@@ -787,6 +788,7 @@ illegal_return:
-     qemu_log_mask(LOG_GUEST_ERROR, "Illegal exception return at EL%d: "
-                   "resuming execution at 0x%" PRIx64 "\n", cur_el, env->pc);
- }
-+#endif /* !CONFIG_USER_ONLY */
- 
- void HELPER(dc_zva)(CPUARMState *env, uint64_t vaddr_in)
- {
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 78b2881a15..43c9bfef93 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1870,6 +1870,9 @@ static bool trans_BLRA(DisasContext *s, arg_bra *a)
- 
- static bool trans_ERET(DisasContext *s, arg_ERET *a)
- {
-+#ifdef CONFIG_USER_ONLY
-+    return false;
-+#else
-     TCGv_i64 dst;
- 
-     if (s->current_el == 0) {
-@@ -1889,10 +1892,14 @@ static bool trans_ERET(DisasContext *s, arg_ERET *a)
-     /* Must exit loop to check un-masked IRQs */
-     s->base.is_jmp = DISAS_EXIT;
-     return true;
-+#endif
+     /* Return true if this syndrome value is a synchronous external abort */
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 6d77fd0113..eaea7859d3 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -615,26 +615,6 @@ static int el_from_spsr(uint32_t spsr)
+     }
  }
  
- static bool trans_ERETA(DisasContext *s, arg_reta *a)
+-static void cpsr_write_from_spsr_elx(CPUARMState *env,
+-                                     uint32_t val)
+-{
+-    uint32_t mask;
+-
+-    /* Save SPSR_ELx.SS into PSTATE. */
+-    env->pstate = (env->pstate & ~PSTATE_SS) | (val & PSTATE_SS);
+-    val &= ~PSTATE_SS;
+-
+-    /* Move DIT to the correct location for CPSR */
+-    if (val & PSTATE_DIT) {
+-        val &= ~PSTATE_DIT;
+-        val |= CPSR_DIT;
+-    }
+-
+-    mask = aarch32_cpsr_valid_mask(env->features, \
+-        &env_archcpu(env)->isar);
+-    cpsr_write(env, val, mask, CPSRWriteRaw);
+-}
+-
+ void HELPER(exception_return)(CPUARMState *env, uint64_t new_pc)
  {
-+#ifdef CONFIG_USER_ONLY
-+    return false;
-+#else
-     TCGv_i64 dst;
- 
-     if (!dc_isar_feature(aa64_pauth, s)) {
-@@ -1918,6 +1925,7 @@ static bool trans_ERETA(DisasContext *s, arg_reta *a)
-     /* Must exit loop to check un-masked IRQs */
-     s->base.is_jmp = DISAS_EXIT;
-     return true;
-+#endif
- }
- 
- static bool trans_NOP(DisasContext *s, arg_NOP *a)
+     ARMCPU *cpu = env_archcpu(env);
 -- 
 2.43.0
 
