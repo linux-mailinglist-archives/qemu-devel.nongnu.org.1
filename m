@@ -2,89 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9E6BC343F
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 06:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51926BC3454
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 06:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6LPG-0006Md-6S; Wed, 08 Oct 2025 00:04:02 -0400
+	id 1v6LSc-0007Du-Tp; Wed, 08 Oct 2025 00:07:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LPD-0006M3-IV
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:03:59 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSV-0007CM-Br
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:23 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LPB-0005Wb-Od
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:03:59 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-46e47cca387so72605845e9.3
- for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 21:03:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6LSR-0005q1-Lc
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 00:07:22 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-46e37d10f3eso46702835e9.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Oct 2025 21:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759896235; x=1760501035; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pDxokV8dHp4k5TvHdeMKKP9EAWhnhvNQGRW6Dz2Bgi0=;
- b=fMzC4wwYyhA9y+9YjECxNszUVoG1fLjwKr31+NULxhzpbvpKa6SQLy8uBNrNb3FXhr
- 5+O5udh5dogYnvq6cOlMr9OPkxLj27LepjFp4LSNenX7XSW0Y4NP0rnb+RP89gsz1r4H
- N48JqHU8+amWqr2bl99jt8ziUHeSPox2c/M+k3K3jhKuajq1N/umF6As0Wvn0UbOz87F
- t5kZoTFu0dXJBSKIA7hANPs3fJGMI7sK7zJ/UO7/4XWmMf+9cv8nNBhOOucDfgfMaWBi
- qdunFQCwPK0iO7rEUldsHGbfOHHNQKEkBBKtoH7JbxFOYiz8KG5wwm57lpyysjUveTi+
- 4M1w==
+ d=linaro.org; s=google; t=1759896438; x=1760501238; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XK3NTl2B3zTpPA8Q4QoS/MR0UKSoTctc+BHX4wlh/xE=;
+ b=y3Ly6edlKSn2M9uMZJdGNuWrN91LLZl/CVZhsqJ3INSOwsdc7Zced+srjeSDVPBC1u
+ 0jbahycA2SdDgC2GyvHt9o8kTZXntDGTr82pJGgZCzg0SCgy7cO9rhWQ2vZNtzh07UZD
+ 4FySgPKwcBXra+0MGMiejAbliu5MEBSmV9FzunwRjrmNCAuGFY5ZnRn86xgvpdqs+gnJ
+ fkHRyGyI7Hqsp+v/dskMYjaheUzScaoqDLfe+egLQfQ2GtkVCzhoAJAH+an5hWWcqR4B
+ D7VNeFkk81gRz6thO/8RPY+rhxczENgt76eiUXe0H8VBs5BPbXyNHLSgo6GHdlEftBBW
+ HvKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759896235; x=1760501035;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pDxokV8dHp4k5TvHdeMKKP9EAWhnhvNQGRW6Dz2Bgi0=;
- b=HIG+5qs6+ODBmNkxsb6JX02+SIeBMbsYDh8mkdZ+7KkWWSzO5u1DP+6fIJL2anVoz4
- k2fP0jmdMQ7F0gxQ9XVfW2SYnbr9HZrJcYNew3FyoUsHEUlnSrFmcHNHDWYT9qjXnOjN
- 86ARASkW8rLyPO6cqPhTW7CijbyaVnyiDzpa72vrAyRvSfkXoMLtKxK5xk2g6Qc8MO1M
- rC3UI3R88X+rgccxGb/VS/nvxmQHrhwzc/G6bvVqWDm7jCkSYBRShz9kuiSA7xH3JLI1
- E6ZiAKizEvZ0fXZe6CLO3JGTENelrW/NqRWBO7no1qINpgY/MRDIO1WmQmStXDV+Kc9I
- JyUw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX2BQlHejUQW/edopoJFwKIZ2w27z8Ac5OzjpQRuYmqv21c105mMdnIPUHE/wxLa31Vl6fu0oxnKWuR@nongnu.org
-X-Gm-Message-State: AOJu0YzATsTJUZxn0Q594wMA4RvKO/naBwaAXIxu6Qsh6g4FwK1YLrmx
- F0CTwtKlNv9QH21MFD7tfYZWPv2Yod1deouOFnlkk3dLrADgdpcOqdhbKvfTBQMm54U=
-X-Gm-Gg: ASbGncskmafyphr/Q6lHeIaYEKJsiD5nP4AZiupgkVx1s5Jf6LCVF/eDRgl7KK5YD9C
- h8wEYI2uPR9WSo+0889FIozGAWqPsJgGAdBxUMmWJeJt6UtDxMuT7mWBOudkm1tmWBL4ObM3s3+
- BgHRGchOsaDYPEdiG1j63gl7AqULpUE+X3yWSPcrdcVpqENcqoPjdJ2E84zaXzOfrVlrmXOLNZd
- TiY7P1boCqY/QClG4oSQwYtLLBEbx/rNOMWuBrI0B+LoERZveEF/K6b/SIhBWUDilx1jA+DTziY
- WrK6OCApc7cno6tUtNuhT7RXYuEQULmWDIfI6/KSHrSWPB72X0wRiA/0J4dUf/PEVTKJCiJW+ZO
- ki4JJUuSPXPtqUM5Gj/7E1BHuNbj7Mm/Qkm2cxAErm1cbeNpihz20KJugJcTbk+LUlhRP8MQyAR
- xSDA1kO3Squ2lzbXhGJg==
-X-Google-Smtp-Source: AGHT+IFLpFYJZ7f91YsjDOeznZPw9lkkoySKt0IpXaGIH3+gXMaFPfCUNJZq4J0uszMlbZkeYgioMA==
-X-Received: by 2002:a05:600c:8b42:b0:45d:e6b6:55fe with SMTP id
- 5b1f17b1804b1-46fa9b16607mr10581765e9.34.1759896235631; 
- Tue, 07 Oct 2025 21:03:55 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1759896438; x=1760501238;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XK3NTl2B3zTpPA8Q4QoS/MR0UKSoTctc+BHX4wlh/xE=;
+ b=vAlpzi4hKo9Z2oMKm0VHkYgwZY+YAgO/iD99RI8e+dludCJkfhblaJNJWpf3jbNIWo
+ wpOLkAcGpzv0Z6GYfCeIbPRme4GVuT0yPXrCE4bQfPsb3TLQlKwPDrk/j7Pmscaw2Ta4
+ PNX3/OP9nSVEK8VO3S08Mtc+6FAjceIf7VYGB4jC3OtlaT2ARMavuz9z4yI8hAPQ3gUo
+ /Tf6smaTZp9m8AJylnCfhRrBZP5IwdLMvpfDtEw+pJ3FHOtjl0vLzyUfUuRjVvS0xFQB
+ +92f/WYrAD0NlOx4wiV9jdGz2hh0Jc7X/E+DEafKEpnRw/Bc0xEgVb0uu1kxnE9kAwlJ
+ W2XQ==
+X-Gm-Message-State: AOJu0YwMoS5xksHKBs67HGWn2uFAPjJS+faI08Et8fvk6Iv+qTutR6AF
+ Rx4gpCeoXUGJShT+UUNU2KYypTKOERNkWULG9a+1FFqlwiy9Yb52sIaNZDGpMFSvxTL2q4T2Kmh
+ Xa7aLy2b5zw==
+X-Gm-Gg: ASbGncvCJggSHv88G2ZH+ic0wuWFcsUa9nYQSt8XIyD/C4zwNxwvKRHaFrWDEEW2XIG
+ NnfE74csWDBiWuAPCgrv9aNSKQyhFMrv4e1XXcq5UKqLmcDTQJl/Bxr1dYtfExfmdKfkvOqqARF
+ BKLXOVNhYme1y4QajRWYzu5/L81AJmr5SJPJ+uwWGxEQVS4CEhHo0+iU1c5iwT/Cl4R2bO1aXDK
+ ySinAbTZ2tjaC5c394oBUZk7Wu8J4+XafYmIuM8WsgbG6SziqQSFqmoQtF5rsyC91z6XPGF+9qZ
+ seHx75JHfPpi2F8uA0TrqdYdA0Cfxo+vgV+BGBMl5oojotbHisSE7EUG+p1Yzx01ESEVj9Tgy2Q
+ cb4j8bNz6l12yTrIlzdbSvPYIjks7/7UZw6zsKHX8PhFeHGvgnw7qXNTrN2FldOUdl/eUZ4r9PC
+ ryM8wjdn95Fxf1jV2DBb6yKDRfpGQUa+10QPQ=
+X-Google-Smtp-Source: AGHT+IEIXGL3P8t0oTh1p1V3NI6++BW+3/EMw0SpDKt32lyYUyJmhP1y1qCj6ZQSEiMdg1THa01ESw==
+X-Received: by 2002:a05:600c:3b07:b0:45d:d97c:236c with SMTP id
+ 5b1f17b1804b1-46fa9af80aemr10434825e9.21.1759896437672; 
+ Tue, 07 Oct 2025 21:07:17 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e97fbsm27753043f8f.34.2025.10.07.21.03.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Oct 2025 21:03:54 -0700 (PDT)
-Message-ID: <f09b71ea-7402-4e41-8071-5ff45555c128@linaro.org>
-Date: Wed, 8 Oct 2025 06:03:52 +0200
+ 5b1f17b1804b1-46fa9bf6c64sm19154605e9.4.2025.10.07.21.07.16
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 07 Oct 2025 21:07:17 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, kvm@vger.kernel.org,
+ Aleksandar Rikalo <arikalo@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-s390x@nongnu.org,
+ David Hildenbrand <david@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Song Gao <gaosong@loongson.cn>, Weiwei Li <liwei1518@gmail.com>,
+ qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Huacai Chen <chenhuacai@kernel.org>, Eric Farman <farman@linux.ibm.com>
+Subject: [PATCH v2 0/3] accel/kvm: Cleanups around kvm_arch_put_registers()
+Date: Wed,  8 Oct 2025 06:07:11 +0200
+Message-ID: <20251008040715.81513-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: fix path to rust_root_crate.sh
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20251007194427.118871-1-stefanha@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251007194427.118871-1-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,15 +114,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/25 21:44, Stefan Hajnoczi wrote:
-> Generated Rust root crate source files contain the wrong path to the
-> rust_root_crate.sh script.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->   scripts/rust/rust_root_crate.sh | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Extracted from a bigger series aiming to make accelerator
+synchronization of vcpu state slightly clearer. Here KVM
+patches around kvm_arch_put_registers():
+- Move KVM_PUT_[RESET|RUNTIME|FULL]_STATE to an enum
+- Factor common code out of kvm_cpu_synchronize_post_*()
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Philippe Mathieu-Daudé (3):
+  accel/kvm: Do not expect more then KVM_PUT_FULL_STATE
+  accel/kvm: Introduce KvmPutState enum
+  accel/kvm: Factor kvm_cpu_synchronize_put() out
+
+ include/system/kvm.h       | 16 +++++++------
+ accel/kvm/kvm-all.c        | 47 +++++++++++++++-----------------------
+ target/i386/kvm/kvm.c      |  6 ++---
+ target/loongarch/kvm/kvm.c |  8 +++----
+ target/mips/kvm.c          |  6 ++---
+ target/ppc/kvm.c           |  2 +-
+ target/riscv/kvm/kvm-cpu.c |  2 +-
+ target/s390x/kvm/kvm.c     |  2 +-
+ 8 files changed, 41 insertions(+), 48 deletions(-)
+
+-- 
+2.51.0
 
 
