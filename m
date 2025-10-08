@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE767BC6246
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 19:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB935BC6267
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 19:32:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6XtE-0003Zk-PE; Wed, 08 Oct 2025 13:23:48 -0400
+	id 1v6Xzm-00050K-KK; Wed, 08 Oct 2025 13:30:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v6XtB-0003ZQ-Fx
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:23:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v6Xt3-0001xy-Nm
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:23:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759944210;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1s14lP7x/DCfMMjy1DR0mcaE7DDk+B3XLcHJubEnWEg=;
- b=FY1Bk2nYh47rv7foL0Y0UaCn7rHuEr/hzqmCEotwIMyd76r6Q317swrCEHCOUUy2VaPmaa
- z+acEF2rFz1/UqyTJjUNj8u1KLb7M/IszVKV907g+7n/W1XknTcGxGX1hONfSPWcPYyAfw
- ormv7pNHbueKo3qrZveNAjtIkZMvE2k=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-Wb_qg3rqOMWCbvDYxXASmg-1; Wed,
- 08 Oct 2025 13:23:29 -0400
-X-MC-Unique: Wb_qg3rqOMWCbvDYxXASmg-1
-X-Mimecast-MFC-AGG-ID: Wb_qg3rqOMWCbvDYxXASmg_1759944208
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BCE2E18002C1; Wed,  8 Oct 2025 17:23:27 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.157])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E49BB19560BC; Wed,  8 Oct 2025 17:23:26 +0000 (UTC)
-Date: Wed, 8 Oct 2025 13:23:25 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH 0/6] tracetool: add mypy --strict checking [AI discussion
- ahead!]
-Message-ID: <20251008172325.GA181748@fedora>
-References: <20251008063546.376603-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1v6Xzg-0004zx-Hl
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:30:30 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1v6Xza-0003Cv-LI
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 13:30:28 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-78115430134so45225b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 10:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1759944615; x=1760549415; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VC+JF1M2c2xK9KG8bsGM7ffQ7M0ZXfULJetBUt8H/+g=;
+ b=BKGCcbn2Qg10thUc2jfYhasBLcd0ZlNKKtPsxDOIr1Flbjj7gmvOIUR4jax/HGN580
+ TAFBOJL45w56B/PWCde29mrvVvRfjM+tQ0v1BLdk1qpJXMsnatbuU+sFYvV8WayM5JOT
+ Pu3I+xZoXnbntwClYPb6Vb7fk1qBomGm2MUbZSGMdDeLZsEt0wG0P6jetCuqR/Gl7G+X
+ tdOMBKdkoxaUkxQu11CfARLaogEun+8UyI4fp4Fz2hUOK9JKrGkFssCVZxmyf8n4SS2I
+ RfQ4e0wqCBF36AgMQV4vmBkg83TD4F8uo4tWlVMzaS/gv0nNfyYD9yqkD4ehw0g/RyRy
+ eQUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759944615; x=1760549415;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VC+JF1M2c2xK9KG8bsGM7ffQ7M0ZXfULJetBUt8H/+g=;
+ b=TB0BlO23mNLCSx6UVT+AsPEZiP5tiBVxuIf4oUvvQOVz94ZcPQ5fIkqzoOjKjN69Mo
+ LlRkQtFj05oTjbDk9ZW+TAZfZ5VqTUsw/pxxMfNQ6yiI3SFfZUCPrKR4lMJE5QAG4K9C
+ dd5qMdAIBEh7PGiDwqJ4hzbXb0clLi4O4N31E+H589kZRvIm/WSZDhkSu17MMnNftmTR
+ hwRuZD5VoHnypUV6QmYG1i2cancAbkzevcUgDhVZVlK2mjAN72TYSpCAmqKdXADYZj15
+ OobJyVwea40TpMWOuWogoOlXSMAFDS5yQBKvDCTmUyHi7swm81pTlK++wiKp9qFkggK8
+ Y33g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVtwdsHq9pAZQGNzRapnM0nEWLmdQEqSKv/m2jJal05uyZZjbXaGDqYomsCZPQ25JspF8XxD702qzE6@nongnu.org
+X-Gm-Message-State: AOJu0YwwsQrFc1r9EXclkGU3M1WWyXzDaE4W2D8/zEnH6idKU62jBXoT
+ byPOEstVWddsJgAK8t2NZ2C9RmjYNSVrdn2gi8BxcEEhVosuKht5QV3n/C3uurzOsrE=
+X-Gm-Gg: ASbGncsS3eB3CI3t1sWUPv2RP+60Vwrx/BjlFvr+GRj1RZY/svh+aLPVqI3cHCsDVxu
+ lZC+AMN3F1lM58nOOtnSf/gWeNZJT8y2SPbk5cCMB/6EMYTppMYMtqZ9PIxNksYo2GxSlNIboY0
+ qsVOGkEEiNZXRELV9PE5cjzA+Bk7yYRhMar+Bu/LYMjrrZv5apHgk6eXr8Gg1uPfJD63OUnpC0E
+ WyRd6fXxuV4WSqfjLn/07YggQgINaRiKX3kQtu9nYDQzMwRFUtdc7AYbR4PZ74NYkZn5NvYLHBr
+ PfAgB5PUUr+0gkVvbfnCtgfYr/lFIHyMh97SLvX3VjEMbuY52qC4wEOQYO0KfZ6NqY4pZzZ1AS4
+ LqlRPSMFkO1s5J3ZAJfKp/Ew3Qwmu9Ey7y50zxN+S1TCO6cuF1QAO8unFDp0KOhI=
+X-Google-Smtp-Source: AGHT+IGl7OvfYF/xmA/ZaBWdA0VWZfJl7gA/n4fJNF+/liQzH46XYzOdZbagRmJzGfgCRHALuicPpw==
+X-Received: by 2002:a05:6a20:7d8b:b0:2f0:4f71:c478 with SMTP id
+ adf61e73a8af0-32da83e5e86mr5868967637.46.1759944615666; 
+ Wed, 08 Oct 2025 10:30:15 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-794d510f628sm304893b3a.29.2025.10.08.10.30.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Oct 2025 10:30:15 -0700 (PDT)
+Message-ID: <89ee9c5b-7938-422b-a371-74b9a4e2df5c@linaro.org>
+Date: Wed, 8 Oct 2025 10:30:14 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="3PagkpawiRdYagkh"
-Content-Disposition: inline
-In-Reply-To: <20251008063546.376603-1-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] target/microblaze: Remove target_ulong use in
+ cpu_handle_mmu_fault()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, Alistair Francis <alistair@alistair23.me>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20251008060129.87579-1-philmd@linaro.org>
+ <20251008060129.87579-2-philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20251008060129.87579-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,72 +105,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 10/7/25 11:01 PM, Philippe Mathieu-Daudé wrote:
+> cpu_handle_mmu_fault() -- renamed in commit f429d607c71 -- expects
+> a vaddr type for its address argument since commit 7510454e3e7
+> ("cpu: Turn cpu_handle_mmu_fault() into a CPUClass hook").
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/microblaze/mmu.h | 2 +-
+>   target/microblaze/mmu.c | 4 ++--
+>   2 files changed, 3 insertions(+), 3 deletions(-)
 
---3PagkpawiRdYagkh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Oct 08, 2025 at 08:35:39AM +0200, Paolo Bonzini wrote:
-> In this version, the types were added mostly with the RightTyper tool
-> (https://github.com/RightTyper/RightTyper), which uses profiling to detect
-> the types of arguments and return types at run time.  However, because
-> adding type annotations is such a narrow and verifiable task, I also deve=
-loped
-> a parallel version using an LLM, to provide some data on topics such as:
->=20
-> - how much choice/creativity is there in writing type annotations?
->   Is it closer to writing functional code or to refactoring?
->=20
-> - how does AI output for such mechanical transformations compare to other
->   automated tools, whose output is known not to be copyrightable?=20
->=20
-> - what is the kind of time saving that the tool can provide?
->=20
-> - how effective is an LLM for this task?  Is the required human help a
->   pain to provide, or can the human keep the fun part for itself?
-
-Here are my thoughts:
-
-- Type annotations are probably not copyrightable. Although I think AI
-  output contributions should be allowed for non-copyrightable work, I
-  understand the slippery slope argument. Also, at QEMU Summit the
-  consensus was to give it some time and then revisit the AI policy next
-  year. I think we should stick to that so that the QEMU community has
-  time to consider other scenarios involving AI. Then we can make a
-  policy change next year that combines the new items that have come up
-  rather than making a series of shifting policy changes over the coming
-  months. That will make it simpler for everyone to understand and
-  follow the policy correctly.
-
-- Markus pointed out why generating them automatically may not result in
-  the same quality as manually-written annotations because the AI
-  doesn't have the context that is missing from the code itself. It's
-  the same reason why generating API docs using AI produces something
-  resembling documentation, but it consists of obvious stuff apparent
-  from the code itself and not the context that only the author can
-  communicate about the intended use of the API. The difference between
-  manually-written type hints and AI-generated ones is probably less
-  significant than with API documentation though, so I think they are
-  sufficiently valuable and high quality enough to merge.
-
-Stefan
-
---3PagkpawiRdYagkh
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjmng0ACgkQnKSrs4Gr
-c8jyKAgAqD+7kDA3JumyUrTWgRKHsXGcOFxUTzaIVUwQOea8T+gMDkRg2GzyfDv2
-WsEtoOm/lHDBB6VA/V9011yVQBgylh9p9SXqRgJ6PQpdUZgb//IQ/UV+qJ4Hv1TC
-lobrK3V56JmEXOR+Ae03SKwc1wtH6+zfMis6FLlwmwBr2Zhdt/bHias5xERjkC9/
-vr2rqkk5Ftc0WJ6cTDsPKFWp6pwyaijWAsDMY0zFz4tct1xp+x1qfgNzzuzuqCRs
-10P6bfBnlIxiRbMatR0hsW77R/X3Pw2hWsoGTTCQDuDs830Y4Vv2zAeUYg/fuhon
-qpstcExz5K5Kr1XDF2w1ZuuoLoIrxA==
-=OuG4
------END PGP SIGNATURE-----
-
---3PagkpawiRdYagkh--
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
