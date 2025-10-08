@@ -2,55 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA55DBC5916
-	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 17:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DED89BC5B50
+	for <lists+qemu-devel@lfdr.de>; Wed, 08 Oct 2025 17:38:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6W2i-000277-6q; Wed, 08 Oct 2025 11:25:28 -0400
+	id 1v6WDG-0004BQ-4n; Wed, 08 Oct 2025 11:36:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6W2f-00026z-Ub
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 11:25:25 -0400
-Received: from rev.ng ([94.130.142.21])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v6WDA-00049w-KC
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 11:36:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v6W2X-0005vh-L2
- for qemu-devel@nongnu.org; Wed, 08 Oct 2025 11:25:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=0Ni+PhFQ3dKEOeIyg5QLHtPh5He/YOdqZaeeboir4AM=; b=mf878khqLtjYKdY
- 03ltqNelV37MuFRBKklDNy5XlPalwFOgee9ff5nax9UYSz3nKOVSZILOd+tbq+JTQcZda47FTpyUZ
- M0FrZ1rUBSnFLvW4+10MXRZ8EChZERQpuXDGZTzRsHHBiYJ59Wkn+4AFeCt4heR4V3unR6mcVIhPP
- RA=;
-Date: Wed, 8 Oct 2025 17:27:49 +0200
-To: Brian Cain <brian.cain@oss.qualcomm.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, philmd@linaro.org, 
- matheus.bernardino@oss.qualcomm.com, ale@rev.ng, marco.liebel@oss.qualcomm.com,
- ltaylorsimpson@gmail.com, alex.bennee@linaro.org, quic_mburton@quicinc.com, 
- sid.manning@oss.qualcomm.com,
- Alex =?utf-8?B?UsO4bm5l?= Petersen <alex@alexrp.com>, 
- Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH 1/2] linux-user/hexagon: Fix sigcontext
-Message-ID: <37cyiiwd6ktmjvfue7t6ifw727p4pdl52wfpbuyll7aqsocxk7@6wro7hlwb6mc>
-References: <20251008014754.3565553-1-brian.cain@oss.qualcomm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v6WD3-0007JR-Jr
+ for qemu-devel@nongnu.org; Wed, 08 Oct 2025 11:36:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1759937763;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MezzK3irIPwwezulJQCI55e/Ye15lkL77Yp9Mf88s1w=;
+ b=cNiVirfQo7dsVP6/3EYOhwpge4yazej8iFK6d4LSZZEX9B24Uxj3vFGQmmvXUXYxuSbj9q
+ TNVDwzHc7yeOdwstaK4KUfU+gax9qs+yeFU5tzRUDv8bzYM3RSLc12tpixmtUrUAswktjW
+ fRMsybrx9xYHMgNQs+UgM6+Nb1A+0Aw=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-KwV7o6T3ML-igD4C_Z1uyw-1; Wed, 08 Oct 2025 11:36:02 -0400
+X-MC-Unique: KwV7o6T3ML-igD4C_Z1uyw-1
+X-Mimecast-MFC-AGG-ID: KwV7o6T3ML-igD4C_Z1uyw_1759937762
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4e0fcbf8eb0so198139031cf.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Oct 2025 08:36:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759937762; x=1760542562;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MezzK3irIPwwezulJQCI55e/Ye15lkL77Yp9Mf88s1w=;
+ b=uEtTU13TMGhMPUCPjpzMv52Ftrt8LV6XMfy3fo7meSN75rPhqE1O+uhHlZr3O3juH7
+ 0gJIP6TaK1oNvMO9NDJjaVOsXgU5hn32y8Kfr1vtr+xViV4tWhVQjQqTuqjIRv/1Pu2M
+ HSvO4OfmyjKIMe5UgIPQa+dFHpIffz68PjFh2lKKSMChAUi5bUlP3MCS8bQKXcekLZe1
+ Co4d+/KZbo+KizbNgbxVzA4AMSk2GZIEoFg11/HghULKfcL1Y962pXHPJ7VUZXr3vVNR
+ tCLvHnger+t2hYdnOZqE0gBJfoX0r+XF0uBleAQighIs7ndFFzKlvz5SG3dhTCqOtSIl
+ A3mw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWYraCI+yjc8j8p+PyHAkoYH1JOyoIvOO1eoRLRhBpBJ8yxVrwg4LzLtyyzYCWNFu38BHkiStkak3Lw@nongnu.org
+X-Gm-Message-State: AOJu0YxJ6+CVgzEtUpZwXGzgbGwpdmsas3PV1EHpYDM1Hs/r/lG+GlUG
+ VJDRAOGa+LvUCpcFqhH3LR7PPp0OAkEF/SvfxzVAP04bl8uZK7lu2m7nHwjgTRoEWy9I1OAOJw7
+ hS3cv9bMe0k/Boq3T3PevDEDnOgEPJVgC3TMFJ5ak/sQh5Ra2zl86k4pC
+X-Gm-Gg: ASbGncucj1H+ajKOYuwMnljf2KOKMs1Ju0uuCVO8OGCh17UWRkYfPUgQzy8ZRQl6GA2
+ CYDzl0h1Rl8XUfX1rtJsYpmdkEzBlDp6+9Ra2ll/NICkOZw2YwSZFnB1FNw+oC7m1jcVOBKpKGB
+ IJ83lrBuQAEjpgRa/p3cS1+4Psj1gYczVLeRt7HnZu9Qs0XEIZmFNEHXas1cgoE2q+MPT48WH3h
+ SfgdmGiHMCsqiEAPTe5y6i7QCOsXVcWf6WsfEBVg1oN4BmEtPS7LCKRQcnL5SHcwdZ2+/x3w0Lm
+ hR6HYqKdy7u7oh8GxaSewL36q4u3CYrnXXzQng==
+X-Received: by 2002:a05:622a:2cf:b0:4b4:9522:67a with SMTP id
+ d75a77b69052e-4e6ead12f0amr56661561cf.33.1759937761617; 
+ Wed, 08 Oct 2025 08:36:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESo/YtINgRPB2VgJJenYFGSNcEHDVXfPeWAN8BQG4MnNfVi8VzdP6HaD6z3gZw3eRx2b9fGA==
+X-Received: by 2002:a05:622a:2cf:b0:4b4:9522:67a with SMTP id
+ d75a77b69052e-4e6ead12f0amr56660861cf.33.1759937760979; 
+ Wed, 08 Oct 2025 08:36:00 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4e55a34c706sm167855561cf.8.2025.10.08.08.35.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Oct 2025 08:36:00 -0700 (PDT)
+Date: Wed, 8 Oct 2025 11:35:59 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/2] migration/vmstate: remove
+ VMSTATE_BUFFER_POINTER_UNSAFE macro
+Message-ID: <aOaE3_qs8N24b-UN@x1.local>
+References: <20250802142115.41638-1-mjt@tls.msk.ru>
+ <20250802142115.41638-2-mjt@tls.msk.ru> <aNqsXPt3LGJv4F1O@x1.local>
+ <78e722ee-cd01-43f4-abfe-efc019cce48f@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251008014754.3565553-1-brian.cain@oss.qualcomm.com>
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <78e722ee-cd01-43f4-abfe-efc019cce48f@tls.msk.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,135 +104,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/10/25, Brian Cain wrote:
-> In order to correspond with the kernel, we've now (1) moved the
-> preds[] to the right offset and combined the representation as a single
-> ulong "p3_0", (2), added the cs{0,1} registers, (3) added a pad for 48
-> words, (4) added the user regs structure to an 8-byte aligned
-> target_sigcontext structure.
+On Wed, Oct 08, 2025 at 11:10:19AM +0300, Michael Tokarev wrote:
+> On 9/29/25 18:57, Peter Xu wrote:
+> > On Sat, Aug 02, 2025 at 05:21:09PM +0300, Michael Tokarev wrote:
+> > > The only user of this macro was VirtIONet.vlans, which has been
+> > > converted to regular VMSTATE_BUFFER.
+> ..
+> > I'm scanning over lost patches on the list.  I suspect this is lost when
+> > you sent v2 replying to v1.
 > 
-> Co-authored-by: Alex Rønne Petersen <alex@alexrp.com>
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-> ---
->  linux-user/hexagon/signal.c | 199 ++++++++++++++++++++----------------
->  1 file changed, 111 insertions(+), 88 deletions(-)
+> This hasn't been lost due to v2 vs v1, - the reason was that the first
+> patch in the series was trivial, while the second (this one) is a bit
+> more than trivial, - so the first patch went through qemu-trivial, and
+> the second went nowhere :)
 > 
-> diff --git a/linux-user/hexagon/signal.c b/linux-user/hexagon/signal.c
-> index 492b51f155..6c3dbf91fa 100644
-> --- a/linux-user/hexagon/signal.c
-> +++ b/linux-user/hexagon/signal.c
-> @@ -23,7 +23,7 @@
->  #include "signal-common.h"
->  #include "linux-user/trace.h"
->  
-> -struct target_sigcontext {
-> +struct target_user_regs_struct {
->      target_ulong r0,  r1,  r2,  r3;
->      target_ulong r4,  r5,  r6,  r7;
->      target_ulong r8,  r9, r10, r11;
-> @@ -39,14 +39,21 @@ struct target_sigcontext {
->      target_ulong m0;
->      target_ulong m1;
->      target_ulong usr;
-> +    target_ulong p3_0;
->      target_ulong gp;
->      target_ulong ugp;
->      target_ulong pc;
->      target_ulong cause;
->      target_ulong badva;
-> -    target_ulong pred[NUM_PREGS];
-> +    target_ulong cs0;
-> +    target_ulong cs1;
-> +    target_ulong pad1;
->  };
-
-struct layout looks good assuming it must correspond to
-`arch/hexagon/include/uapi/asm/user.h`.  Add a `/* pad to 48 words */`
-comment to pad1, and static assert following the struct definition
-
-  QEMU_BUILD_BUG_ON(sizeof(struct target_user_regs_struct) != 48*4);
-
->  
-> +struct target_sigcontext {
-> +    struct target_user_regs_struct sc_regs;
-> +} __attribute__((aligned(8)));
-
-Use QEMU_ALIGNED(8)
-
-> +
->  struct target_ucontext {
->      unsigned long uc_flags;
->      target_ulong uc_link; /* target pointer */
-> @@ -76,53 +83,63 @@ static abi_ulong get_sigframe(struct target_sigaction *ka,
->  
->  static void setup_sigcontext(struct target_sigcontext *sc, CPUHexagonState *env)
->  {
-> -    __put_user(env->gpr[HEX_REG_R00], &sc->r0);
-
-[...]
-
-> +    __put_user(env->gpr[HEX_REG_PC], &sc->sc_regs.pc);
->  
-> +    /* Consolidate predicates into p3_0 */
-> +    target_ulong preds = 0;
-
-Declare `preds` at the top of the function.
-
->      int i;
->      for (i = 0; i < NUM_PREGS; i++) {
-
-int i = 0 inside the for loop is fine
-
-> -        __put_user(env->pred[i], &(sc->pred[i]));
-> +        preds |= (env->pred[i] & 0xff) << (i * 8);
->      }
-> +    __put_user(preds, &sc->sc_regs.p3_0);
-> +
-> +    /* Set cause and badva to 0 - these are set by kernel on exceptions */
-> +    __put_user(0, &sc->sc_regs.cause);
-> +    __put_user(0, &sc->sc_regs.badva);
-> +
-> +    __put_user(env->gpr[HEX_REG_CS0], &sc->sc_regs.cs0);
-> +    __put_user(env->gpr[HEX_REG_CS1], &sc->sc_regs.cs1);
->  }
->  
->  static void setup_ucontext(struct target_ucontext *uc,
-> @@ -192,53 +209,59 @@ badframe:
->  static void restore_sigcontext(CPUHexagonState *env,
->                                 struct target_sigcontext *sc)
->  {
-
-[...]
-
->  
-> +    /* Restore predicates from p3_0 */
-> +    target_ulong preds;
-> +    __get_user(preds, &sc->sc_regs.p3_0);
->      int i;
->      for (i = 0; i < NUM_PREGS; i++) {
-> -        __get_user(env->pred[i], &(sc->pred[i]));
-> +        env->pred[i] = (preds >> (i * 8)) & 0xff;
->      }
-
-Same here with preds at the top of the function and i declared in the
-for statement.
-
-> +
-> +    __get_user(env->gpr[HEX_REG_CS0], &sc->sc_regs.cs0);
-> +    __get_user(env->gpr[HEX_REG_CS1], &sc->sc_regs.cs1);
->  }
->  
->  static void restore_ucontext(CPUHexagonState *env, struct target_ucontext *uc)
-> -- 
-> 2.34.1
+> > Wanna repost with a full v2 to catch Michael's attention once more?  I also
+> > always would suggest a cover letter..
+> Yeah, re-sending it is ok.  Dunno what's the reason for the cover letter
+> though, for a single patch.
 > 
+> Thank you for your attention - I'd lost it myself without you ;)
 
-Other than that
+We might have lost each other somehow.. :)
 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+I am looking at this series that contains patch 1+2 on v1:
+
+https://lore.kernel.org/all/20250802142115.41638-1-mjt@tls.msk.ru/
+
+v2 of patch 1 was sent in a reply here:
+
+https://lore.kernel.org/all/20250803085443.318611-1-mjt@tls.msk.ru/
+
+As of today's git master branch (commit 37ad0e48e9), I still didn't see
+patch 1 (v1 or v2) lands..
+
+Thanks,
+
+-- 
+Peter Xu
+
 
