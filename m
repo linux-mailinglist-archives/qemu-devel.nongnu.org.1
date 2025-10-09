@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBEEBCAC96
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 22:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E71BCACB1
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 22:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6x7L-0003RA-4s; Thu, 09 Oct 2025 16:20:03 -0400
+	id 1v6x7M-0003TW-Nh; Thu, 09 Oct 2025 16:20:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6x7H-0003Qx-FM
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 16:19:59 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6x7L-0003SJ-8C
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 16:20:03 -0400
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6x7F-0007L7-Cc
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 16:19:59 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-46e2e363118so11685605e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 13:19:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6x7J-0007LP-Aq
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 16:20:02 -0400
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-46e61ebddd6so14154815e9.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 13:20:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760041194; x=1760645994; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760041199; x=1760645999; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SgE+KmUu+8asGstagQ07U/gni/InJ2CL8fkkZbDftqg=;
- b=fJpTHzHy4zPcEf6W1gu8JJyYDZTZokGUiFRjfGQ2HIbqOoT23poj8iJLZgdmEO1Hko
- lPYRPHA58dQoz57hyZG6rtHco8FSNmoXC4Uxz/UGxFsUKB5Ff+WeT5GNXsr4xnlNCiSe
- l7kEjW2Lq0DbgznU+Is/NfN/lfJuNE0Aq+zdCbsaLhSbllso33sPW19pxCvqY2jiQpmb
- 1BkDNysNtvQ6TCuL/qPNShGTOCs5jyNBopyWvRcpURO/gSYLGKFbXh/MU1EripOYnUqM
- iiVg4FP8Tp968OtHDKFyYgF6+ddRVXdHfyZnEwe7CClKp8kJNWvibxWV8qK+X1UW15Da
- eXVg==
+ bh=fQwRiMQlPXUBJScc/1n8fo7QZtEsIzXFcrqxQqdhbYA=;
+ b=G/tmeFpb8sOgv1/A9Sjb7tMhR1PYlUQkKqwU3axGQKOalu/XfrdZjdhQZ44BqU+oUG
+ /NkX2hiCXyAjfEPBwFC+GeqY4VkCLZPoJljAWjQoeNxFBjl75hh9kQRnP7x7+7tEy5te
+ 5hpztWd7vjhcZeK59AVPFT3tc/v0S7v93Jilt4xgd5o1eYjoD00F6BQIM4FzQxZZGZaX
+ 5Je4d55U0GvKXz6qgxnwjp12Z6R3SRZMlsRjTAwXN1TdQc7RSTm4skEGTPTvPgZbsAP6
+ V86BjRzYg5F1hJWCPA+fHJJ329QPQDJipu4S/ZY6/vb33VegZvUMGlzRoTSvsEi365s/
+ K4TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760041194; x=1760645994;
+ d=1e100.net; s=20230601; t=1760041199; x=1760645999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SgE+KmUu+8asGstagQ07U/gni/InJ2CL8fkkZbDftqg=;
- b=Wmg0nZTiLWyECpRcj3/UKGVzFYw8J+0Sbv46M5ORJ2BNUzMo5o9Kdye6zT7lDmqkmX
- GaY29g2tlYA2Yxm3mMUPKDg+pdTiHkCpuCLAcbdxH8XwuNopXoK0LF3B3ztuSzp/k6pz
- WDsJ4JZzjtEyYN6CJc66BixX0MgWR0wXwNUE80+x6qGNrlbGR9D6bwxe2Cx0OJ36Js8x
- tp+GuZHpI0gIU7Iy7d50ODxCUTDxEzU91DWrBUfqoqbHv9DHonWwfPDq2oLkhPI0lFaD
- MaEZVSKm4nzCAmmjnQ2bFLZWPTYGyIQNLdvr0v78yr1nA/zEQ/o/IesOSA6yYrmr+TFQ
- +zHQ==
-X-Gm-Message-State: AOJu0Yx+o9bsAxtuwJq2JgrN95qbhrb0J7EP+KC6mAxTaasp48sntwjZ
- EVtAJRfy+v2PonPb9usuoFHGrM1WzbIGfgW0mi4FCh258WjnZQc5DVI1ea4+Hw7SqC4+tAj5WXK
- +YOqarIa+Xw==
-X-Gm-Gg: ASbGnctAGOw9YcNpzRNqa4uanehTaFtqVkR9zqagArB/CElqraU2OzXzunGaY2lENUI
- o/HHP++rkANRzt5qXp/XFvIn7VjY6thXbUgmOKvUFExa4J7uDNbwMkmaJvDCiQ7eyylnjGz474/
- pIJZhroZj9GcFrJ6U9HVQZVqgbOFyXfz0fMdwlMDIMmL/mPh5uLY5cBNfy/22YKSKFKzLOMPhaY
- e0H5wUaRQADmkBRYFtvu4QQ/3qlPGjsKCeLIDiiIpONon4fw65aMEtP/brEpEIFMlDdqriwNWcC
- doUef47UaBiGO8QNNgvYTgBgQg/p/lnMF4MAmGlgZaq4JPMN8wzjqtrd3HeemIOCidnRossprdd
- RPXl+B/zWMt7z19zr83SFx/FIZgK6y20JStRHbNGigzGbGUE/EasStWRvpKuYjaMly8MTGWgLwd
- gIHwC8YtvktREOJrNNfdxTE7mH/mK3Pei+v84=
-X-Google-Smtp-Source: AGHT+IGue7uS7sTV8x13qSPKyfphTzUmnM0o0QXbckQ/prbU8hrPG7OYIZ91unywxyngz/q4JXvZQA==
-X-Received: by 2002:a05:600c:1d18:b0:46e:3901:4a25 with SMTP id
- 5b1f17b1804b1-46fa9aef67bmr62823645e9.20.1760041194545; 
- Thu, 09 Oct 2025 13:19:54 -0700 (PDT)
+ bh=fQwRiMQlPXUBJScc/1n8fo7QZtEsIzXFcrqxQqdhbYA=;
+ b=oZlVakgI+qYS8io/rfDRr4MWj5ddgsMJlaP/hd4Q+yLGbnda8dFLZ4fnN9AR7wk2vG
+ i+I0J6zFMHWtrtue1Hr1/DKzd8zX2dLoRVq1FwmX8nvUwDreX9wea3ywtCisYfuEGtMY
+ Od32er/YpA+kO25nJ3nlnYuhhaTbVF4V9HeN4FYt2MW2qOJJGMHfo6rVYyfTjH3awqws
+ Lat9e7KfckD1sHtoszAHtqsl6QDbG9skCQCVc3GGbss62lnRIyvuDnfYKiE7nX6P677b
+ w0DgeHHrgZcG+KsQTKIejlTNCSMImyv59PZvnag+3dOPBzIdxvQ6vnE3x5yits3EAqRO
+ rUOw==
+X-Gm-Message-State: AOJu0YwZl4pyoILh+RJpip3Y8B52SJdXBxk8Ehd3jCie4SSsG0zwRq/u
+ IHbffFPI5CjaEgNMiWP13BjB20aEg8hqt/l0asgNewTkWfdgLWwfsnMwRiZMbfwzckQNnVnpD1r
+ 2IZou4FMzpqfz
+X-Gm-Gg: ASbGnctSgBLvuCxgNmmXgbgQcQrS5ZLop9foPKihsWsFzNCg9RZDh8Epv8SD+07ynbO
+ tGXGkuZLkPRSUd3OMkPDmKPTLjzFxY42kHvSZTT7pJqfVZEMB3tfRYKPn7Ib06p+7BhamYeJQBm
+ srcHfjANOxpTnK1nvMATrhvZ7Ang1EOTDIas/se2RklWmEjqpAOyQP/IK7XwLBIEBPmoMKlCuxY
+ tHkfehomxZ2Vwp7OBU+k6MIExtw/2Bs/NCwm3kOo11tFiH0BsEj4Zau53NksyVZ7OoFmQQx/zuM
+ 2yxWPXNb8aQp4wXLwyORtUqlU4p/aFb6w1fCbxWxFCTtNrqpfq/3PBajTQFfYBuCs3AObUVclhY
+ M36pTCCvxQK7nbVFd6eJQpMRO+GvfItitVCSnjaOuHUXSBvoVL6nS+Xj72f2oyM3L8OZOFe5Y0N
+ gZUC5HY3d528v2P5FUAjB40vBw
+X-Google-Smtp-Source: AGHT+IFXKsu5pzLfCBmRSubmIm43hu1B7WO54z+puUtt0sRU7uyo3T+H6ASZo6vvngwXsrdskTfi6A==
+X-Received: by 2002:a05:600d:41f3:b0:45b:7be1:be1f with SMTP id
+ 5b1f17b1804b1-46fa9b092ddmr59467665e9.32.1760041199211; 
+ Thu, 09 Oct 2025 13:19:59 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb49be017sm10448765e9.13.2025.10.09.13.19.53
+ 5b1f17b1804b1-46fb4982b30sm10937515e9.6.2025.10.09.13.19.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 13:19:54 -0700 (PDT)
+ Thu, 09 Oct 2025 13:19:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/4] hw/loongarch/boot: Remove unnecessary cast to target_ulong
-Date: Thu,  9 Oct 2025 22:19:43 +0200
-Message-ID: <20251009201947.34643-2-philmd@linaro.org>
+Subject: [PATCH 2/4] target/loongarch: Remove target_ulong use in gen_goto_tb()
+Date: Thu,  9 Oct 2025 22:19:44 +0200
+Message-ID: <20251009201947.34643-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009201947.34643-1-philmd@linaro.org>
 References: <20251009201947.34643-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,46 +101,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reduce initrd_size scope. It is already of signed type (ssize_t),
-no need to cast to unsigned for the comparison.
+translator_use_goto_tb() expects a vaddr type since commit
+b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
+translator*()").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/loongarch/boot.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ target/loongarch/tcg/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index a516415822d..3dd48cb8aab 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -306,7 +306,7 @@ static ram_addr_t alloc_initrd_memory(struct loongarch_boot_info *info,
- static int64_t load_kernel_info(struct loongarch_boot_info *info)
+diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
+index 53a0b4c3ce9..e30b64c0e05 100644
+--- a/target/loongarch/tcg/translate.c
++++ b/target/loongarch/tcg/translate.c
+@@ -99,7 +99,7 @@ void generate_exception(DisasContext *ctx, int excp)
+     ctx->base.is_jmp = DISAS_NORETURN;
+ }
+ 
+-static inline void gen_goto_tb(DisasContext *ctx, int n, target_ulong dest)
++static inline void gen_goto_tb(DisasContext *ctx, int n, vaddr dest)
  {
-     uint64_t kernel_entry, kernel_low, kernel_high, initrd_offset = 0;
--    ssize_t kernel_size, initrd_size;
-+    ssize_t kernel_size;
- 
-     kernel_size = load_elf(info->kernel_filename, NULL,
-                            cpu_loongarch_virt_to_phys, NULL,
-@@ -328,7 +328,8 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-     }
- 
-     if (info->initrd_filename) {
--        initrd_size = get_image_size(info->initrd_filename);
-+        ssize_t initrd_size = get_image_size(info->initrd_filename);
-+
-         if (initrd_size > 0) {
-             initrd_offset = ROUND_UP(kernel_high + 4 * kernel_size, 64 * KiB);
-             initrd_offset = alloc_initrd_memory(info, initrd_offset,
-@@ -337,7 +338,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-                                               initrd_offset, initrd_size);
-         }
- 
--        if (initrd_size == (target_ulong)-1) {
-+        if (initrd_size == -1) {
-             error_report("could not load initial ram disk '%s'",
-                          info->initrd_filename);
-             exit(1);
+     if (ctx->va32) {
+         dest = (uint32_t) dest;
 -- 
 2.51.0
 
