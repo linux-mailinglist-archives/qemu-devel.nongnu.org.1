@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02456BC7D4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B4EBC7CCF
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:53:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lQa-0008Fw-5t; Thu, 09 Oct 2025 03:51:08 -0400
+	id 1v6lQe-0008Gq-DO; Thu, 09 Oct 2025 03:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQY-0008Fg-7h
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:06 -0400
+ id 1v6lQd-0008GX-4F
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQT-0004Og-UG
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:05 -0400
+ id 1v6lQW-0004P1-Vu
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996260;
+ s=mimecast20190719; t=1759996263;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BW2WJxOS4xr7mxNzCkKr1ZJuFLGZN8Iw793SnaBQLK8=;
- b=H98usYd4pFZU+8QKqStPAARX+6JfyqU1hPCsvFgJVWKjVN0evq4IzAkQ7eKnqbYxKhcNMO
- ExVnjexQfljbNFfaZi0w9sJXgEqcK8yhlj5afQmg+bcI6PqAap2ajKg6ZITZvRRMqa6dnO
- dUkFpsnLCIZ+xd7drvgRJXgyf2ccXO8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kRttI8LqJE5R4/hPKUJbIz7mchb821txk/PsshPhKrE=;
+ b=FFZAubCbD5Zk9Yg3wntR4XVT+8VDtg0FrlngLSmZcEZxELJc5kGF9O6Ko6ZeccKu71nwgA
+ TL38m5FKbllBX6YJvF0nIpmI3V0YByUJpuWIzspo8k5CqiQ6Q/FHR/273T+8YxhW0KOahF
+ ne2s+0IP4o24DgOAMobG21xk9DQmElc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-rWOkIMncO8S-bk2RMLGxpQ-1; Thu, 09 Oct 2025 03:50:58 -0400
-X-MC-Unique: rWOkIMncO8S-bk2RMLGxpQ-1
-X-Mimecast-MFC-AGG-ID: rWOkIMncO8S-bk2RMLGxpQ_1759996258
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-46fb328a60eso569085e9.1
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:58 -0700 (PDT)
+ us-mta-622-s4BmvBT6NimWYR7-U_7w7w-1; Thu, 09 Oct 2025 03:51:01 -0400
+X-MC-Unique: s4BmvBT6NimWYR7-U_7w7w-1
+X-Mimecast-MFC-AGG-ID: s4BmvBT6NimWYR7-U_7w7w_1759996260
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3ecdfe971abso787889f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996256; x=1760601056;
+ d=1e100.net; s=20230601; t=1759996259; x=1760601059;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BW2WJxOS4xr7mxNzCkKr1ZJuFLGZN8Iw793SnaBQLK8=;
- b=IA30PoYimcFXhGdVouYKYMbVTsoad6XAQS1M/JMpXnmcYT2wYm1XuyuUbWxgKkXhj3
- 3f6gSBbV3Bi3v+gvmKxc1mi39ZVh2O1H1UabeGck21YeTuY+mUgW2iQwG8PkkgPGPJ4k
- OepX2dExqCzGZHyM3XdfJ4n1SSHZPyghspW/6hsBFU8Z/miYMU8hHmw6ko68WkjWrSTM
- Pxu3NbHfEyEa80izSpz0ckTxu+/NCGwtgmp/Zd0SRCPpENVa0phL3KNc/mAkQsq/E9/L
- UxEKmgYEhEtO5RP6r2SZnhmuhgJJHK7khODkOYvvZBU91fGwWv/jUA7LvLG9D0CNyTIv
- O4EQ==
-X-Gm-Message-State: AOJu0YzuwhLZulqRdCP690a3PErD3wR0F3T0QB09z+TFcIKksjqFIOWW
- GRdtzTVe9EnpH2SOnqMG+FlabUPFZoyQK3X1oiqUoo5NwTaW3yGmhvzrgy/HmJRrR+T/UWYd5Ll
- YTfpHE+SbJMGxQasjWu4MWK3RNZMelX2jeCyHSzWCMZj+DzgBX52aQvCZ2GzAWxWuCdTKr8unhA
- 0V2+punCgtHTMNSWlGH0RTX3fFbCptoVF1MFfz7ey3XKU=
-X-Gm-Gg: ASbGncsvzucIQYN8LXiLaN133r/5KGJ3hw9G7+IbrwiZ9lFqJ34EtWjpX7k9geOYp/I
- NTxqTMidIE8wNJi3v3N1hkqNfjAzQwPHjfmBf+Q9CW5QaBI9dyP8MNEzCjHLnX2rGuPBbvnpb3X
- duBqEp1Ayiy1P5kV3q3sG7e/ZHRSkopLXP0txTgAY5fEZNeLCqTvtT7j57LoI3QoCd6HPYRjLrz
- Qwujf3lNOK71/hTzRC+v/fRiNusa+rCkL4Dg4W64JiFg2DxgJpYaiMDPWcjka2APoTfo2wG81LD
- Bqn8+kGbiJ9cutVc5mAyhrNNSwhZYLs7LSJ9l3sJvrhs5QZdbwWr/YTYXa4mzpsrOAmIXEph7Oa
- MKhSXB6LOoBeEvTUaGi2QdLq2iksZabEGsiIWkfFfz9j67Eer
-X-Received: by 2002:a05:600d:41f3:b0:45b:7be1:be1f with SMTP id
- 5b1f17b1804b1-46fa9b092ddmr39467895e9.32.1759996256413; 
- Thu, 09 Oct 2025 00:50:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH0tg9xZoBoCQCZPtnXLx5EbmCPRivrDCwXTqh5lDdlWM3Ls/jihUcrTrjIwONfXuhEua7iww==
-X-Received: by 2002:a05:600d:41f3:b0:45b:7be1:be1f with SMTP id
- 5b1f17b1804b1-46fa9b092ddmr39467665e9.32.1759996255877; 
- Thu, 09 Oct 2025 00:50:55 -0700 (PDT)
+ bh=kRttI8LqJE5R4/hPKUJbIz7mchb821txk/PsshPhKrE=;
+ b=I0dALN4NVSpnMWpwqHZFiabH0NTSY8VmvCKMOG/Lwg77/dyKFZV0938ajHsEvh1q9z
+ QZzqXDfx7vFnAG4+bgNNr6uGALUuv9JrSDM/Oo7USpydYamU1mQ3KqtbdM8sYM9U3Jmb
+ gF65nZbucn84FDpP1P4W7Uw8sQPjcUFpQ1kw11VlG/8vCKL55s0cqdpYd2TbqR+7K4Fu
+ VVkuzZvW8FWMSifQt8gCCnTAbmZmizztfEvW8KlTXVcS7VVZ3uR0W+6F1JJQ1uLmp0ry
+ pwMmUIWyzAwXQqX7/NXORzcdm/ZBQaqTosA4KYL1ez5/Vpz7XQWjuO4F4QKsYg2+Pooh
+ qJFw==
+X-Gm-Message-State: AOJu0YwnnD7y6ltd9HaYwVLGDTRk4ZEds0ogx5bnQxg2H1dnxwTalThc
+ 5zZ+wYVtAdku0+rO+kL5+wLRwdoPKyBwYWQ/UcvYLAKmgrERfv5PmxXFhxb7x7/TGJs6YrlIV+7
+ zOX+8EpMBJccSla0lgmHm3V/tuRCS3jb4EXGUBASUT4aeyE5f2Hv1iuyTn0A/7QlRiWNVgSZStc
+ XpRGVCcDQeif7m10AB7HoVbwqmpUmT2K9GJcG+7xXfH30=
+X-Gm-Gg: ASbGncuaiUsBeGe9GsjQguEnHUnJ25cfVkOPgYYGLc/qEKhyRO+dt6U/CL5LIogeyyB
+ doLpW4o2wCgUx2whDU/hrV/c2JyVnDGwVlMu2xobx9bQWbDLY7ys4NfhQ6VaaSjCMaqwhuaRuv2
+ GdXj647h9n1uDtQ0Ujn/mhMx7CkXV/tBaolrA5OzzIlwwrB4o0iSXMnCYJvqYMC5XMVyxKZTR05
+ 957f5dbMGipmF07nZ+yQsoxm839VCfA3cO1ntCf0HRzMJjYUFg79xOTdBkwWLTw/N1cUu8MbgKn
+ yc6DYWbugKlXmyR/Ve0H4cKC49DCJnrfIOgDE8BlKBpsJgGa2/Y0PHGyzhFC3F9d+9g5w3VCKRs
+ PsqhV0uW+K2BcgsTuozdhtBo2ARyAtWWDb3q9aLRndBc3Efys
+X-Received: by 2002:a05:600c:198f:b0:46e:3b1a:20d7 with SMTP id
+ 5b1f17b1804b1-46fa9af8595mr49298145e9.19.1759996259232; 
+ Thu, 09 Oct 2025 00:50:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFlJJXmpR5YD6BvCj/ybtiU85WhsDEKc+ocnEN6V2cY2/HsI0wq17W9qQfES5qw3K5nu9v24g==
+X-Received: by 2002:a05:600c:198f:b0:46e:3b1a:20d7 with SMTP id
+ 5b1f17b1804b1-46fa9af8595mr49297955e9.19.1759996258791; 
+ Thu, 09 Oct 2025 00:50:58 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fab5250ddsm30255615e9.6.2025.10.09.00.50.53
+ 5b1f17b1804b1-46fa9d62890sm69282035e9.14.2025.10.09.00.50.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:50:53 -0700 (PDT)
+ Thu, 09 Oct 2025 00:50:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PULL 13/35] accel/mshv: Add accelerator skeleton
-Date: Thu,  9 Oct 2025 09:50:03 +0200
-Message-ID: <20251009075026.505715-14-pbonzini@redhat.com>
+Subject: [PULL 14/35] accel/mshv: Register memory region listeners
+Date: Thu,  9 Oct 2025 09:50:04 +0200
+Message-ID: <20251009075026.505715-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
@@ -109,280 +109,161 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 
-Introduce the initial scaffold for the MSHV (Microsoft Hypervisor)
-accelerator backend. This includes the basic directory structure and
-stub implementations needed to integrate with QEMU's accelerator
-framework.
+Add memory listener hooks for the MSHV accelerator to track guest
+memory regions. This enables the backend to respond to region
+additions, removals and will be used to manage guest memory mappings
+inside the hypervisor.
+
+Actually registering physical memory in the hypervisor is still stubbed
+out.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250916164847.77883-8-magnuskulke@linux.microsoft.com
-[Move include of linux/mshv.h in the per-target section; create
- include/system/mshv_int.h. - Paolo]
+Link: https://lore.kernel.org/r/20250916164847.77883-9-magnuskulke@linux.microsoft.com
+[mshv.h/mshv_int.h split. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/system/mshv.h     |  12 ++++
- include/system/mshv_int.h |  41 +++++++++++
- accel/mshv/mshv-all.c     | 144 ++++++++++++++++++++++++++++++++++++++
- accel/meson.build         |   1 +
- accel/mshv/meson.build    |   6 ++
- 5 files changed, 204 insertions(+)
- create mode 100644 include/system/mshv_int.h
- create mode 100644 accel/mshv/mshv-all.c
- create mode 100644 accel/mshv/meson.build
+ include/system/mshv_int.h |  4 +++
+ accel/mshv/mem.c          | 25 +++++++++++++++
+ accel/mshv/mshv-all.c     | 67 +++++++++++++++++++++++++++++++++++++--
+ accel/mshv/meson.build    |  1 +
+ 4 files changed, 95 insertions(+), 2 deletions(-)
+ create mode 100644 accel/mshv/mem.c
 
-diff --git a/include/system/mshv.h b/include/system/mshv.h
-index 2a504ed81f2..434ea9682e1 100644
---- a/include/system/mshv.h
-+++ b/include/system/mshv.h
-@@ -14,8 +14,17 @@
- #ifndef QEMU_MSHV_H
- #define QEMU_MSHV_H
- 
-+#include "qemu/osdep.h"
-+#include "qemu/accel.h"
-+#include "hw/hyperv/hyperv-proto.h"
-+#include "hw/hyperv/hvhdk.h"
-+#include "qapi/qapi-types-common.h"
-+#include "system/memory.h"
-+#include "accel/accel-ops.h"
-+
- #ifdef COMPILING_PER_TARGET
- #ifdef CONFIG_MSHV
-+#include <linux/mshv.h>
- #define CONFIG_MSHV_IS_POSSIBLE
- #endif
- #else
-@@ -30,6 +39,9 @@ extern bool mshv_allowed;
- #endif
- #define mshv_msi_via_irqfd_enabled() false
- 
-+typedef struct MshvState MshvState;
-+extern MshvState *mshv_state;
-+
- /* interrupt */
- int mshv_irqchip_add_msi_route(int vector, PCIDevice *dev);
- int mshv_irqchip_update_msi_route(int virq, MSIMessage msg, PCIDevice *dev);
 diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
-new file mode 100644
-index 00000000000..132491b599d
---- /dev/null
+index 132491b599d..cfa177ff72f 100644
+--- a/include/system/mshv_int.h
 +++ b/include/system/mshv_int.h
-@@ -0,0 +1,41 @@
-+/*
-+ * QEMU MSHV support
-+ *
-+ * Copyright Microsoft, Corp. 2025
-+ *
-+ * Authors: Ziqiao Zhou  <ziqiaozhou@microsoft.com>
-+ *          Magnus Kulke <magnuskulke@microsoft.com>
-+ *          Jinank Jain  <jinankjain@microsoft.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
+@@ -38,4 +38,8 @@ struct MshvState {
+     MshvAddressSpace *as;
+ };
+ 
++/* memory */
++void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
++                       bool add);
 +
-+#ifndef QEMU_MSHV_INT_H
-+#define QEMU_MSHV_INT_H
-+
-+struct AccelCPUState {
-+    int cpufd;
-+    bool dirty;
-+};
-+
-+typedef struct MshvMemoryListener {
-+    MemoryListener listener;
-+    int as_id;
-+} MshvMemoryListener;
-+
-+typedef struct MshvAddressSpace {
-+    MshvMemoryListener *ml;
-+    AddressSpace *as;
-+} MshvAddressSpace;
-+
-+struct MshvState {
-+    AccelState parent_obj;
-+    int vm;
-+    MshvMemoryListener memory_listener;
-+    /* number of listeners */
-+    int nr_as;
-+    MshvAddressSpace *as;
-+};
-+
-+#endif
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+ #endif
+diff --git a/accel/mshv/mem.c b/accel/mshv/mem.c
 new file mode 100644
-index 00000000000..ae12f0f58b9
+index 00000000000..9889918c31f
 --- /dev/null
-+++ b/accel/mshv/mshv-all.c
-@@ -0,0 +1,144 @@
++++ b/accel/mshv/mem.c
+@@ -0,0 +1,25 @@
 +/*
 + * QEMU MSHV support
 + *
 + * Copyright Microsoft, Corp. 2025
 + *
 + * Authors:
-+ *  Ziqiao Zhou       <ziqiaozhou@microsoft.com>
 + *  Magnus Kulke      <magnuskulke@microsoft.com>
-+ *  Jinank Jain       <jinankjain@microsoft.com>
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qapi/error.h"
 +#include "qemu/error-report.h"
-+#include "qemu/event_notifier.h"
-+#include "qemu/module.h"
-+#include "qemu/main-loop.h"
-+#include "hw/boards.h"
-+
-+#include "hw/hyperv/hvhdk.h"
-+#include "hw/hyperv/hvhdk_mini.h"
-+#include "hw/hyperv/hvgdk.h"
-+#include "linux/mshv.h"
-+
-+#include "qemu/accel.h"
-+#include "qemu/guest-random.h"
-+#include "accel/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
-+#include "system/cpus.h"
-+#include "system/runstate.h"
-+#include "system/accel-blocker.h"
 +#include "system/address-spaces.h"
 +#include "system/mshv.h"
 +#include "system/mshv_int.h"
-+#include "system/reset.h"
-+#include "trace.h"
-+#include <err.h>
-+#include <stdint.h>
-+#include <sys/ioctl.h>
 +
-+#define TYPE_MSHV_ACCEL ACCEL_CLASS_NAME("mshv")
-+
-+DECLARE_INSTANCE_CHECKER(MshvState, MSHV_STATE, TYPE_MSHV_ACCEL)
-+
-+bool mshv_allowed;
-+
-+MshvState *mshv_state;
-+
-+static int mshv_init(AccelState *as, MachineState *ms)
++void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
++                       bool add)
 +{
 +    error_report("unimplemented");
 +    abort();
 +}
 +
-+static void mshv_start_vcpu_thread(CPUState *cpu)
+diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+index ae12f0f58b9..a684a366775 100644
+--- a/accel/mshv/mshv-all.c
++++ b/accel/mshv/mshv-all.c
+@@ -49,10 +49,73 @@ bool mshv_allowed;
+ 
+ MshvState *mshv_state;
+ 
++static void mem_region_add(MemoryListener *listener,
++                           MemoryRegionSection *section)
 +{
-+    error_report("unimplemented");
-+    abort();
++    MshvMemoryListener *mml;
++    mml = container_of(listener, MshvMemoryListener, listener);
++    memory_region_ref(section->mr);
++    mshv_set_phys_mem(mml, section, true);
 +}
 +
-+static void mshv_cpu_synchronize_post_init(CPUState *cpu)
++static void mem_region_del(MemoryListener *listener,
++                           MemoryRegionSection *section)
 +{
-+    error_report("unimplemented");
-+    abort();
++    MshvMemoryListener *mml;
++    mml = container_of(listener, MshvMemoryListener, listener);
++    mshv_set_phys_mem(mml, section, false);
++    memory_region_unref(section->mr);
 +}
 +
-+static void mshv_cpu_synchronize_post_reset(CPUState *cpu)
++static MemoryListener mshv_memory_listener = {
++    .name = "mshv",
++    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
++    .region_add = mem_region_add,
++    .region_del = mem_region_del,
++};
++
++static MemoryListener mshv_io_listener = {
++    .name = "mshv", .priority = MEMORY_LISTENER_PRIORITY_DEV_BACKEND,
++    /* MSHV does not support PIO eventfd */
++};
++
++static void register_mshv_memory_listener(MshvState *s, MshvMemoryListener *mml,
++                                          AddressSpace *as, int as_id,
++                                          const char *name)
 +{
-+    error_report("unimplemented");
-+    abort();
++    int i;
++
++    mml->listener = mshv_memory_listener;
++    mml->listener.name = name;
++    memory_listener_register(&mml->listener, as);
++    for (i = 0; i < s->nr_as; ++i) {
++        if (!s->as[i].as) {
++            s->as[i].as = as;
++            s->as[i].ml = mml;
++            break;
++        }
++    }
 +}
 +
-+static void mshv_cpu_synchronize_pre_loadvm(CPUState *cpu)
-+{
-+    error_report("unimplemented");
-+    abort();
-+}
+ static int mshv_init(AccelState *as, MachineState *ms)
+ {
+-    error_report("unimplemented");
+-    abort();
++    MshvState *s;
++    s = MSHV_STATE(as);
 +
-+static void mshv_cpu_synchronize(CPUState *cpu)
-+{
-+    error_report("unimplemented");
-+    abort();
-+}
-+
-+static bool mshv_cpus_are_resettable(void)
-+{
-+    error_report("unimplemented");
-+    abort();
-+}
-+
-+static void mshv_accel_class_init(ObjectClass *oc, const void *data)
-+{
-+    AccelClass *ac = ACCEL_CLASS(oc);
-+
-+    ac->name = "MSHV";
-+    ac->init_machine = mshv_init;
-+    ac->allowed = &mshv_allowed;
-+}
-+
-+static void mshv_accel_instance_init(Object *obj)
-+{
-+    MshvState *s = MSHV_STATE(obj);
++    accel_blocker_init();
 +
 +    s->vm = 0;
-+}
 +
-+static const TypeInfo mshv_accel_type = {
-+    .name = TYPE_MSHV_ACCEL,
-+    .parent = TYPE_ACCEL,
-+    .instance_init = mshv_accel_instance_init,
-+    .class_init = mshv_accel_class_init,
-+    .instance_size = sizeof(MshvState),
-+};
++    s->nr_as = 1;
++    s->as = g_new0(MshvAddressSpace, s->nr_as);
 +
-+static void mshv_accel_ops_class_init(ObjectClass *oc, const void *data)
-+{
-+    AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
++    mshv_state = s;
 +
-+    ops->create_vcpu_thread = mshv_start_vcpu_thread;
-+    ops->synchronize_post_init = mshv_cpu_synchronize_post_init;
-+    ops->synchronize_post_reset = mshv_cpu_synchronize_post_reset;
-+    ops->synchronize_state = mshv_cpu_synchronize;
-+    ops->synchronize_pre_loadvm = mshv_cpu_synchronize_pre_loadvm;
-+    ops->cpus_are_resettable = mshv_cpus_are_resettable;
-+    ops->handle_interrupt = generic_handle_interrupt;
-+}
++    register_mshv_memory_listener(s, &s->memory_listener, &address_space_memory,
++                                  0, "mshv-memory");
++    memory_listener_register(&mshv_io_listener, &address_space_io);
 +
-+static const TypeInfo mshv_accel_ops_type = {
-+    .name = ACCEL_OPS_NAME("mshv"),
-+    .parent = TYPE_ACCEL_OPS,
-+    .class_init = mshv_accel_ops_class_init,
-+    .abstract = true,
-+};
-+
-+static void mshv_type_init(void)
-+{
-+    type_register_static(&mshv_accel_type);
-+    type_register_static(&mshv_accel_ops_type);
-+}
-+
-+type_init(mshv_type_init);
-diff --git a/accel/meson.build b/accel/meson.build
-index 6349efe682f..983dfd0bd55 100644
---- a/accel/meson.build
-+++ b/accel/meson.build
-@@ -10,6 +10,7 @@ if have_system
-   subdir('kvm')
-   subdir('xen')
-   subdir('stubs')
-+  subdir('mshv')
- endif
++    return 0;
+ }
  
- # qtest
+ static void mshv_start_vcpu_thread(CPUState *cpu)
 diff --git a/accel/mshv/meson.build b/accel/mshv/meson.build
-new file mode 100644
-index 00000000000..4c03ac79219
---- /dev/null
+index 4c03ac79219..8a6beb3fb1e 100644
+--- a/accel/mshv/meson.build
 +++ b/accel/mshv/meson.build
-@@ -0,0 +1,6 @@
-+mshv_ss = ss.source_set()
-+mshv_ss.add(if_true: files(
-+  'mshv-all.c'
-+))
-+
-+specific_ss.add_all(when: 'CONFIG_MSHV', if_true: mshv_ss)
+@@ -1,5 +1,6 @@
+ mshv_ss = ss.source_set()
+ mshv_ss.add(if_true: files(
++  'mem.c',
+   'mshv-all.c'
+ ))
+ 
 -- 
 2.51.0
 
