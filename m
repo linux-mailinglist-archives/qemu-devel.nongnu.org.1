@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD32FBC7CF9
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0226BC7D08
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:55:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lQG-0008B1-MK; Thu, 09 Oct 2025 03:50:48 -0400
+	id 1v6lQW-0008EZ-1T; Thu, 09 Oct 2025 03:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQF-0008Aj-3J
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:47 -0400
+ id 1v6lQS-0008EL-Ha
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQ9-0004KM-11
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:45 -0400
+ id 1v6lQE-0004LB-Tc
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996239;
+ s=mimecast20190719; t=1759996241;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q7iCef+6xuKmyGyRbd91CCrgKoZW7PCNqJldcVjWmVI=;
- b=cYKXyulHFBlbzG3W9E9sww6WurgynsXh+aeeONrR1SgN5AYMoBCCHwNo6k4xyWaOR+PXA0
- RP/h1nNAy6JwkNva7csybOokBSHbeClu2HT/ncggq+TmrEOk6SICjLRx5C1GeQg3QK7/3e
- XrUwa8n+IoO//OOBRZADdulusYV1J1o=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8o0W7CirxOV3+oFb65slTdKr/gut3Tw1MOGBhnjU1JQ=;
+ b=E1C1IJU0ZNLegUGeMZK933rBSMjk/Z3bawLB45fX/hKk9imj4eFtsNIohHb5+I6yIFuexN
+ ZsIiwIMNJX9nG3KA0VCrY3tsfONA3N9Tk4INzBbSyQRRTJk6F0/6pL6wiTDZsKI5gbRH7w
+ OR+JX9/vAkHrATcNnshF6VkvUzKe+0o=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-284-mixsM9F0P_Kg6pa_LtgDuQ-1; Thu, 09 Oct 2025 03:50:37 -0400
-X-MC-Unique: mixsM9F0P_Kg6pa_LtgDuQ-1
-X-Mimecast-MFC-AGG-ID: mixsM9F0P_Kg6pa_LtgDuQ_1759996237
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3efe4fcc9ccso558433f8f.3
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:37 -0700 (PDT)
+ us-mta-176-hZxwfpmcPImg8eYuGuLUXw-1; Thu, 09 Oct 2025 03:50:40 -0400
+X-MC-Unique: hZxwfpmcPImg8eYuGuLUXw-1
+X-Mimecast-MFC-AGG-ID: hZxwfpmcPImg8eYuGuLUXw_1759996239
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3f384f10762so512103f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996235; x=1760601035;
+ d=1e100.net; s=20230601; t=1759996238; x=1760601038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q7iCef+6xuKmyGyRbd91CCrgKoZW7PCNqJldcVjWmVI=;
- b=q2iz4Z4/jKii4LEjEpDZkbVBgN8PNoLSLL0XNOWVN7lUYt2QHr0xt4FaSngo9eWwdV
- njwHeprOEsLOsd/8hrakIp0xEUkqx12ieoI2maFYl++7TAup8n4KhnqC5Axc9BYH8UNJ
- NPit1Ma07fCPrga8Tn64rQCjQcBVqfbHqIwQGNta+BlcoDoO+qZzk7YYGWUttNbTpq6E
- jG4AcgxThGHZzyESw3aFZOvVcEQNbsWJr7gCZCNrwcPn1jdG/B7E5DrVf76jPiM7eoI3
- qRk8da9H2xTkq5rNPVY81mDLL4Fx72RwERc7Bzasmfq3+V332dE2pFZBsTaLGolOxFQW
- TGRw==
-X-Gm-Message-State: AOJu0YxiSGcU78nr/mKFHXLa+FZxHl1E6ySe6IXQZ1d8SHGhbo8zrxF9
- 0OY8cZ62EJr0urKH/7Y9g+HPi5Bk4ge8Ohep11mC2rFlQQ5l1xUWrRB7CJUcxyD4qyWJtvrP1Yd
- StUU9bcJYaFwVtvVkII9aqH4w2+3pIsEgfTw/t9tXZb0xd0C0Wmr49Hii+0RMzgbyFT5XIrsK25
- lCv0PkcEKD7XfccRFHrnRZQeEU5yyWTseE7tytNVDZEqQ=
-X-Gm-Gg: ASbGncsntvxUtk1xnbm06xVDcI2skwF+hmqsmw9VmR0fCmvrbZZK2paDqeK1yxABgtW
- 7g5NmQXuSEkrVYpiNi669bZqhTUbWA+rQ32UHfwVsZqECqHGRn8exBSN38CHGxt0d/wHdwfcQr4
- kmLGwsba4D8LrR48TuckYkynittwH81PRK+82rVGTyeAdpvqqV90254XXwuz1GD+2HsjE9Ya+EO
- 6NUoIaj+kauwpcQbf3zcI1dB8tuhDb57geIaplBR1NacRWpYGW1fkCUAZ7czJxcvvMX2vYT2djT
- vNwEkqEG4yZMrWrT+HjLbC76hu9LgXkhd/NOUWoeqI6nRAfxfaOVpcwxgEbomTZGUr9leclk7c9
- exNEyqZSQmHua6oSudN7hossYSWiORLM8bC8rwqmcCevZrV6p
-X-Received: by 2002:a05:600c:154a:b0:46e:5cb5:20df with SMTP id
- 5b1f17b1804b1-46fa9aa6985mr62371495e9.16.1759996235232; 
- Thu, 09 Oct 2025 00:50:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHic47KYD6Lyd7imfahdStKHrOl4RrBSc2ujZXUCYrnTqHN+svz2j61oAH7RXpjSmkDqNLmA==
-X-Received: by 2002:a05:600c:154a:b0:46e:5cb5:20df with SMTP id
- 5b1f17b1804b1-46fa9aa6985mr62371125e9.16.1759996234701; 
- Thu, 09 Oct 2025 00:50:34 -0700 (PDT)
+ bh=8o0W7CirxOV3+oFb65slTdKr/gut3Tw1MOGBhnjU1JQ=;
+ b=LQ0JH4WDyXEHpJ4eIhPJd5ySHnCpg/vVVJnMyYZ2o8BMJenoxXLIf3Zx2j0UTJ/zA+
+ ZzEBZy64RKy5j9MrBCMVxJ+KS/hx/lJdIizhEzVJVFpSxCb8+TlwnUk7J6vmSlwaStqE
+ S+oMS2ByZOQiXBH8dx6+SfDmXXumZ9Or2YamTx25JLr+72mNlOyX3qffS3+1WZX9OyFO
+ AFcRaMq6EuLp+yNxVabEMYEkxMJ95w+BbgEmPn00escPNaZa21UN4iKv2rZxNi96mMbG
+ 08Y0S5W/OMvkF+CDDl+C0RP/wTNOFTIxRiMBXyAlmPRg9NixT+POYFz0bE/hiDo/3q7B
+ qukw==
+X-Gm-Message-State: AOJu0YyzH5z9Mgzwui9HmhXFTSF3k/UQkfJOq3XA8xoKZOfwPAD475sD
+ YkH5PQYS9ozS2rKS3ZR3DgR7U3Xdblxy8Pi8m9+gdq+YIn+d+e/oENY595nYQY4t1GP+Fq/ih5v
+ sjnij72HXStxSqt3IxxXqUCE4LtIXuuAjxSSQ9YkAM/w1/77ZEwU7zrp3nmnvRwAiSrelAi3kY3
+ Ip/S+6i9jWat2zpX3ah7Scqu8L149m05Lh9OjQLaLGroQ=
+X-Gm-Gg: ASbGnct0z/w+kocDBPTAnxku4tNUPffqnrkI4d0a8iboiYFnT5CXwXBNna8MoMr8VIC
+ bpzWiXJg8WsRMiWgvIvoJEl+PUxXdfqlgt8PKMOjn1oQFd+4WVSphM0MHUhizfwSGz8P2EAQSCI
+ EC6OD7MEAv8lIQzMZjFlj2L3jMPRBSLMWlTxBYkZRQO8p0fgwvMT+nyUZGeNe56yCQJoCXtBRPA
+ 3M0eKF4wkpa87DOwSR6A628SlJyZspLsbLGRYP+aAygyBvAcfRMXOG8qWmJvLKBDR7lL9eN39Xq
+ eU3YqrDR69Ta9dyVU/di8jkcn3Uu9ZxyOdzuWB6mDGzut6veYPLTUDoNwpEawd3ZlFCIH0u39Eb
+ TY9FFp9O3KSJLU7qFExD1wfeS2aL5sHCKkGbD5zDm+dsP/rrS
+X-Received: by 2002:a05:600c:4f08:b0:45b:9afe:ad48 with SMTP id
+ 5b1f17b1804b1-46fa9a98ecfmr52774395e9.16.1759996237841; 
+ Thu, 09 Oct 2025 00:50:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtkUjIRFugK6gTmJCjoVK477SWfAiaLlNvGvuxxivoj+tBOFqJX/W4mbl1F7M9YDrLEAbm3A==
+X-Received: by 2002:a05:600c:4f08:b0:45b:9afe:ad48 with SMTP id
+ 5b1f17b1804b1-46fa9a98ecfmr52774075e9.16.1759996237308; 
+ Thu, 09 Oct 2025 00:50:37 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb1e0f019sm13829315e9.10.2025.10.09.00.50.33
+ 5b1f17b1804b1-46fa9bf81a3sm73199805e9.4.2025.10.09.00.50.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:50:34 -0700 (PDT)
+ Thu, 09 Oct 2025 00:50:35 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 04/35] build-sys: default to host vendor for rust target triple
-Date: Thu,  9 Oct 2025 09:49:54 +0200
-Message-ID: <20251009075026.505715-5-pbonzini@redhat.com>
+Cc: Hector Cao <hector.cao@canonical.com>
+Subject: [PULL 05/35] target/i386: add compatibility property for
+ arch_capabilities
+Date: Thu,  9 Oct 2025 09:49:55 +0200
+Message-ID: <20251009075026.505715-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -92,7 +92,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,75 +108,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Prior to v10.1, if requested by user, arch-capabilities is always on
+despite the fact that CPUID advertises it to be off/unvailable.
+This causes a migration issue for VMs that are run on a machine
+without arch-capabilities and expect this feature to be present
+on the destination host with QEMU 10.1.
 
-This fixes docker-test@alpine, which uses "alpine" vendor.
+Add a compatibility property to restore the legacy behavior for all
+machines with version prior to 10.1.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Link: https://lore.kernel.org/r/20251007134558.251670-1-marcandre.lureau@redhat.com
+To preserve the functionality (added by 10.1) of turning off
+ARCH_CAPABILITIES where Windows does not like it, use directly
+the guest CPU vendor: x86_cpu_get_supported_feature_word is not
+KVM-specific and therefore should not necessarily use the host
+CPUID.
+
+Co-authored-by: Hector Cao <hector.cao@canonical.com>
+Signed-off-by: Hector Cao <hector.cao@canonical.com>
+Fixes: d3a24134e37 ("target/i386: do not expose ARCH_CAPABILITIES on AMD CPU", 2025-07-17)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ target/i386/cpu.h     |  6 ++++++
+ hw/i386/pc.c          |  1 +
+ target/i386/cpu.c     | 17 +++++++++++++++++
+ target/i386/kvm/kvm.c |  6 +-----
+ 4 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/configure b/configure
-index 78445cbb4b3..a467f3a2e05 100755
---- a/configure
-+++ b/configure
-@@ -1216,8 +1216,9 @@ fi
- if test "$rust" != disabled && test -z "$rust_target_triple"; then
-   # arch and os generally matches between meson and rust
-   rust_arch=$host_arch
-+  # default to host vendor
-+  rust_vendor=$(echo "$rust_host_triple" | cut -d'-' -f2)
-   rust_os=$host_os
--  rust_machine=unknown
-   rust_osvariant=
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e0be7a74068..414ca968e84 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2314,6 +2314,12 @@ struct ArchCPU {
+     /* Forcefully disable KVM PV features not exposed in guest CPUIDs */
+     bool kvm_pv_enforce_cpuid;
  
-   # tweak rust_os if needed; also, machine and variant depend on the OS
-@@ -1225,7 +1226,7 @@ if test "$rust" != disabled && test -z "$rust_target_triple"; then
-   case "$host_os" in
-   darwin)
-     # e.g. aarch64-apple-darwin
--    rust_machine=apple
-+    rust_vendor=apple
-     ;;
++    /*
++     * Expose arch-capabilities unconditionally even on AMD models, for backwards
++     * compatibility with QEMU <10.1.
++     */
++    bool arch_cap_always_on;
++
+     /* Number of physical address bits supported */
+     uint32_t phys_bits;
  
-   linux)
-@@ -1273,13 +1274,13 @@ EOF
-     ;;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index bc048a6d137..d7f48150fdd 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -87,6 +87,7 @@ const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
+ GlobalProperty pc_compat_10_0[] = {
+     { TYPE_X86_CPU, "x-consistent-cache", "false" },
+     { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
++    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
+ };
+ const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
  
-   sunos)
--    rust_machine=pc
-+    rust_vendor=pc
-     rust_os=solaris
-     ;;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 6d85149e6e1..fe369bb1284 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7539,6 +7539,20 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
+ #endif
+         break;
  
-   windows)
-     # e.g. aarch64-pc-windows-gnullvm, x86_64-pc-windows-gnu (MSVC not supported)
--    rust_machine=pc
-+    rust_vendor=pc
-     if test "$host_arch" = aarch64; then
-       rust_osvariant=gnullvm
-     else
-@@ -1310,7 +1311,7 @@ EOF
-   sparc64)
-     if test "$rust_os" = solaris; then
-       rust_arch=sparcv9
--      rust_machine=sun
-+      rust_vendor=sun
-     fi
-     ;;
++    case FEAT_7_0_EDX:
++        /*
++         * Windows does not like ARCH_CAPABILITIES on AMD machines at all.
++         * Do not show the fake ARCH_CAPABILITIES MSR that KVM sets up,
++         * except if needed for migration.
++         *
++         * When arch_cap_always_on is removed, this tweak can move to
++         * kvm_arch_get_supported_cpuid.
++         */
++        if (cpu && IS_AMD_CPU(&cpu->env) && !cpu->arch_cap_always_on) {
++            unavail = CPUID_7_0_EDX_ARCH_CAPABILITIES;
++        }
++        break;
++
+     default:
+         break;
+     }
+@@ -10004,6 +10018,9 @@ static const Property x86_cpu_properties[] = {
+                      true),
+     DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
+     DEFINE_PROP_BOOL("x-force-cpuid-0x1f", X86CPU, force_cpuid_0x1f, false),
++
++    DEFINE_PROP_BOOL("x-arch-cap-always-on", X86CPU,
++                     arch_cap_always_on, false),
+ };
  
-@@ -1324,7 +1325,7 @@ EOF
-     # e.g. aarch64-linux-android
-     rust_target_triple=$rust_arch-$rust_os-$rust_osvariant
-   else
--    rust_target_triple=$rust_arch-$rust_machine-$rust_os${rust_osvariant:+-$rust_osvariant}
-+    rust_target_triple=$rust_arch-$rust_vendor-$rust_os${rust_osvariant:+-$rust_osvariant}
-   fi
- fi
- 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 6a3a1c1ed8e..db40caa3412 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -503,12 +503,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+          * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
+          * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
+          * returned by KVM_GET_MSR_INDEX_LIST.
+-         *
+-         * But also, because Windows does not like ARCH_CAPABILITIES on AMD
+-         * mcahines at all, do not show the fake ARCH_CAPABILITIES MSR that
+-         * KVM sets up.
+          */
+-        if (!has_msr_arch_capabs || !(edx & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
++        if (!has_msr_arch_capabs) {
+             ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+         }
+     } else if (function == 7 && index == 1 && reg == R_EAX) {
 -- 
 2.51.0
 
