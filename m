@@ -2,91 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D06BBC865F
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 12:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E10BC8547
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 11:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6nSf-000116-QM; Thu, 09 Oct 2025 06:01:25 -0400
+	id 1v6n2c-0005rF-P6; Thu, 09 Oct 2025 05:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6nSO-0000tY-4F
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 06:01:08 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6nSI-0005fu-5f
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 06:01:07 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-46e542196c7so10333355e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 03:01:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760004059; x=1760608859; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9RG89XrDFBbwVSS1mzn7nIux6+M1k+HOgEdjwqshi6E=;
- b=wyfJyTU+dltzDJy3XYQYl7HvcH6wPs2MYaJjF3gFQSiujlfipY6WvsraxAIs8AE1jZ
- rnD7jKimyjnoCaKmgLF1Bx/eaUd0+Dh1KrVob7p0BP0cpLJhxaVqzIZXYXUPkSdyrs/D
- 622s/ENKfly+cDSNqnGVB0a3TCT2OC9HKcL8MrSmoisibupGS8r62cuL2NTKrFAg7+Eb
- 5O0Dy24ihNZNnr62CqjEoc9h+9Z/bjMM2yupL6XbLwawciCaehjWW8gWLxk749jFRkds
- P+FDRCyy9sQRJh3wEj7+u1496bvp56wEozLNJNLDPtJ+EDrPMVY7WbIG8BJ3FtnbLNi3
- y+cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760004059; x=1760608859;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9RG89XrDFBbwVSS1mzn7nIux6+M1k+HOgEdjwqshi6E=;
- b=FHHwRgtoVUdAQ0mEJHKGguFXjDAP4zduieLuJE/U/Qglm/8hKzLlrdbadGwcHX0HLp
- E5jhWNkOMGkXz9Rwna6CdbiNal21LSEs+bXt8hFsR7RM81fAdLvTJE+2lcwgeG5WK43P
- mG5ZlkLxqmow8Qrv/5TzM1C3OonqQoMJAtY4ZhupjVbh5N+82uLssR2GBBZxMjbWqV3k
- B1G1J6wb0EerfE1OLU6gMaCDsDhCAMjhJNLXm1ssMgYewxItLtCf5xoI4HuI+ZtIfJ8T
- Q+oKmPGIHQ1ABSbCJXGrO8gfrxeIL8AgHjJrQhevtRTXplWPdhL2/CJ3udP0N6OzIpf4
- VBGg==
-X-Gm-Message-State: AOJu0YxmvccZxI+4t9me5JC+koHZ2q3nPFFuYuSwRaxubQspBTPZW419
- lcSgs0xE8n+/Huurr9aaxYSPN2CO8xeAHuMENw+vXzrm5UmmBRtJDNeXrd1zJTlOqq0=
-X-Gm-Gg: ASbGncv5/bEV6AoOHKoOpAaT8Itx0f5jFRDny4XoI380+GFJrB8srKlRu5M8Eu/IDeS
- Dp+PiGsiNuMAMw7QeWzXqB/t+aFlcLpIMECvDZ7eBNVvCNG3jllzW+7DBmgFfIjlGsq3JviuNOG
- SlT2WmNestnuAqDTDSI1uBGPIDeBzQh6B6ZjN5Ecoo47bLzXFmqpBWoz0Blo7K91tZ+2IAkw9bw
- 8HV/BKYMCGFsrBtH+nOtReUy7U64/VswRwvruikrJLma6ZSwl7CC8+fWR+4p54VltfxWBui4qqk
- c2988jZnZ6cz4weS9k0FhWDcRdXcOf9oJHr+Ygro/B1dtqo4QXcnHwhI9Rrk8c5mtAK+5YprASh
- Fyt72PHbPH5qxw0NQJ415bVoW/gpWX5a+P+B/c0GigOfrLWDjxrAvkUOvrEM/RQOpw/sh1qnMSa
- Wu8pExdB/UPk7ShTUHxQ==
-X-Google-Smtp-Source: AGHT+IFqkYnn1gSK8NqNOMLy1N/yJEooJgYKi9U6nNwDgyjYjQIGtHr0Px8W4LKWJjvUgTMK+7y0Yg==
-X-Received: by 2002:a5d:64e8:0:b0:3e9:4fe4:2621 with SMTP id
- ffacd0b85a97d-42666aa6354mr5077430f8f.7.1760004059479; 
- Thu, 09 Oct 2025 03:00:59 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f4cc3sm33893324f8f.55.2025.10.09.03.00.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Oct 2025 03:00:58 -0700 (PDT)
-Message-ID: <a843f99c-f5d7-43d5-beae-1ac17261cd3c@linaro.org>
-Date: Thu, 9 Oct 2025 12:00:58 +0200
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1v6n2Z-0005qL-5J; Thu, 09 Oct 2025 05:34:27 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1v6n2O-0001hq-Oq; Thu, 09 Oct 2025 05:34:25 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59967VsB031169;
+ Thu, 9 Oct 2025 09:34:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=zuW07I+yx18N6MVfeO+4GGoSMWOq
+ 0FE4C3ArMXZaGmY=; b=mt5/Rf4HM4rSRpnJ4WJjY3G48n8OOGHsGDjUqjNp/g0S
+ OH/euZmg/YNIzWO8O4VE+tc5i1aBczqsvtrHBL5620zb+jhl6x7JkkF+4bVYnag6
+ oUUq5saLvTKknc7HH68D3qq2OE58JND5VBR5eGq91yXgwoszeBRquE3Q0rDisFRe
+ aR8HU26pr/+86tDPLXTMeOUQQyQ7C8SrJkxG9+QJUfJWSFjFg9HRKeHrH/8MNZ6N
+ W1Ddv8k1ffNeh6aq2S4ObUeN1Ey4E6oX1kH0qShOE3PMkbJ3lQZwMUM/hhR12i/c
+ +ayQeVv2AEybJ5SwWYWvYVXfk8tCTNKjGReDj0M1EA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv81kugb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Oct 2025 09:34:09 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5999LHV8027599;
+ Thu, 9 Oct 2025 09:34:09 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv81kug7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Oct 2025 09:34:09 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5998Ev3B026053;
+ Thu, 9 Oct 2025 09:34:08 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49nvamksbk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Oct 2025 09:34:08 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5999Y5Jk26280274
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Oct 2025 09:34:05 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C66DB20084;
+ Thu,  9 Oct 2025 09:34:05 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A9BCA20082;
+ Thu,  9 Oct 2025 09:34:04 +0000 (GMT)
+Received: from ltcfuji9aw-lp7.ltc.tadn.ibm.com (unknown [9.5.7.39])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Oct 2025 09:34:04 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, clg@kaod.org, philmd@linaro.org
+Cc: npiggin@gmail.com
+Subject: [PATCH v2 0/5] ppc/spapr: remove deprecated machines till pseries-4.2
+Date: Thu,  9 Oct 2025 14:40:52 -0400
+Message-ID: <20251009184057.19973-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 7/7] target/openrisc: Replace target_ulong -> uint32_t
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Anton Johansson <anjo@rev.ng>
-Cc: qemu-devel@nongnu.org, Stafford Horne <shorne@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20251008075612.94193-1-philmd@linaro.org>
- <20251008075612.94193-8-philmd@linaro.org>
- <fowsbt2ovqpl5mzizniyqx6xhlnvu7lc2po3jbi2cslwrpu5ew@dkcvbphrov6u>
- <1b81d317-6c1a-42ca-8aba-7e71cfece3a5@linaro.org>
-In-Reply-To: <1b81d317-6c1a-42ca-8aba-7e71cfece3a5@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OOfuQRGycExLZVJhPq_-GjXKrIXPdzGt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX5/RMUe+EMZ8T
+ xeuzpcrm6xYWWfYLnrlhE/xNyUm+S8VJZCVMYEg1mtsIwD3JE6GVlJChYcq+6wY+K0qyd9C9d6Z
+ sXr2N87AhCm06yEQBrsgmKFicMhAt74hAcROfaxrVsh2nrFc/lx5dWZAiB9NF7jvbOMFN0qdfR2
+ LprkYHx85pkRD39eaNq+wrn7YdujFFDcbnyEhpJ1MXMnt9/ZMmbiFy+oxItaT9vTQVHQ8CElglG
+ bS47FoIoXtK3ccGnQsc2H2mas7qFd5Z4TzhYtffKkoVbh0HoRztcs0LR7+UtS10j91T3FxsgIhr
+ 2CxIvVhiwSX2c3uJq/AFw9pmwKcGOSf4m8btvFdShRSAZLbrWOz4DkYEtNKAn9W73lt1wlCf2JY
+ U+UkEOWVgYZAXfr/3BtX9ZerNs3xCg==
+X-Authority-Analysis: v=2.4 cv=cKntc1eN c=1 sm=1 tr=0 ts=68e78191 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10 a=VnNF1IyMAAAA:8
+ a=SEs2kGhiNhXlQSMHockA:9 a=QEXdDO2ut3YA:10 a=oH34dK2VZjykjzsv8OSz:22
+ a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-GUID: guyF3SxWMjg1hMsoYovMM4LLjLyF8iQJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_03,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 bulkscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_06_12=1.947,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,65 +120,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/10/25 10:17, Philippe Mathieu-Daudé wrote:
-> On 8/10/25 14:16, Anton Johansson wrote:
->> On 08/10/25, Philippe Mathieu-Daudé wrote:
->>> The OpenRISC targets are only built as 32-bit, therefore
->>> target_ulong always expands to uint32_t. Replace and adapt
->>> the API uses mechanically:
->>>
->>>    target_ulong -> uint32_t
->>>    target_long -> int32_t
->>>    tl -> i32
->>>    TCGv -> TCGv_i32
->>>    tcg_global_mem_new -> tcg_global_mem_new_i32
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>> RFC: not sure how to split to ease review :|
->>> ---
->>>   target/openrisc/cpu.h        |  22 +--
->>>   target/openrisc/helper.h     |   8 +-
->>>   target/openrisc/fpu_helper.c |   8 +-
->>>   target/openrisc/machine.c    |  16 +-
->>>   target/openrisc/sys_helper.c |   5 +-
->>>   target/openrisc/translate.c  | 374 +++++++++++++++++------------------
->>>   6 files changed, 216 insertions(+), 217 deletions(-)
->>
->> [...]
->>
->>> -static void gen_add(DisasContext *dc, TCGv dest, TCGv srca, TCGv srcb)
->>> +static void gen_add(DisasContext *dc, TCGv_i32 dest, TCGv_i32 srca, 
->>> TCGv_i32 srcb)
->>>   {
->>> -    TCGv t0 = tcg_temp_new();
->>> -    TCGv res = tcg_temp_new();
->>> +    TCGv_i32 t0 = tcg_temp_new();
->>> +    TCGv_i32 res = tcg_temp_new();
->>
->> I think you missed transforming tcg_temp_new -> tcg_temp_new_i32.
->>
->>>   static bool trans_l_lwa(DisasContext *dc, arg_load *a)
->>>   {
->>> -    TCGv ea;
->>> +    TCGv_i32 ea;
->>>       check_r0_write(dc, a->d);
->>>       ea = tcg_temp_new();
->>> -    tcg_gen_addi_tl(ea, cpu_R(dc, a->a), a->i);
->>> -    tcg_gen_qemu_ld_tl(cpu_R(dc, a->d), ea, dc->mem_idx, MO_TEUL);
->>> -    tcg_gen_mov_tl(cpu_lock_addr, ea);
->>> -    tcg_gen_mov_tl(cpu_lock_value, cpu_R(dc, a->d));
->>> +    tcg_gen_addi_i32(ea, cpu_R(dc, a->a), a->i);
->>> +    tcg_gen_qemu_ld_i32(cpu_R(dc, a->d), ea, dc->mem_idx, MO_TEUL);
->>> +    tcg_gen_mov_i32(cpu_lock_addr, ea);
->>> +    tcg_gen_mov_i32(cpu_lock_value, cpu_R(dc, a->d));
->>>       return true;
->>>   }
->>
->> What about MO_TE -> MO_BE to handle MO_TE[SU][WL]?
-> 
-> I thought we already had that merged...
+pseries-3.x and 4.x had been deprecated and due for removal now.
+Removing the legacy machine specific logic in respective patches.
 
-Found it in a branch from March 17 of this year, but forgot to post,
-thanks for the reminder!
+v2: included pseries 4.1 and 4.2 due for removal now
+v1: inital patches to remove 3.0 till 4.0
+    <20250507052048.90559-1-harshpb@linux.ibm.com>
+
+Harsh Prateek Bora (5):
+  ppc/spapr: remove deprecated machine pseries-3.0
+  ppc/spapr: remove deprecated machine pseries-3.1
+  ppc/spapr: remove deprecated machine pseries-4.0
+  ppc/spapr: remove deprecated machine pseries-4.1
+  ppc/spapr: remove deprecated machine pseries-4.2
+
+ include/hw/ppc/spapr.h     |   8 --
+ include/hw/ppc/spapr_irq.h |   1 -
+ hw/ppc/spapr.c             | 182 ++-----------------------------------
+ hw/ppc/spapr_caps.c        |  12 +--
+ hw/ppc/spapr_events.c      |   8 --
+ hw/ppc/spapr_hcall.c       |   5 -
+ hw/ppc/spapr_irq.c         |  16 +---
+ hw/ppc/spapr_pci.c         |  32 +------
+ hw/ppc/spapr_vio.c         |   9 --
+ 9 files changed, 14 insertions(+), 259 deletions(-)
+
+-- 
+2.51.0
+
 
