@@ -2,68 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DC3BC7D35
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DE1BC7D6B
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:59:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lS2-0001he-9k; Thu, 09 Oct 2025 03:52:38 -0400
+	id 1v6lYA-0005Iy-0K; Thu, 09 Oct 2025 03:58:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v6lRw-0001a8-DJ
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:52:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v6lY6-0005Gy-JY
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:58:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v6lRm-0004XR-Bj
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:52:31 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v6lY1-0005Wd-SS
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:58:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996338;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=VD1r46vuc9kC8IfPD4CefpCuBck8ZhRo9cwZ+lPIvQQ=;
- b=Q8MWLCq9N3luIyYUM074MvGHG/IE7ey0Mpb6JKaJchfbwVQ9GJKPE4jMjSyHK/ey6pEJ7P
- R/qQdEuJ3PE9BqwbrcH/gIeiSlcCNWcb0Yz2Y11yvRARMtK0lYzO2Xqr6nky3PyimxEk1S
- huv9b9Ttn+GN3nnl0gbq+CsuGTMx/0A=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-422-5BloWSK0PUW0qIUko8y0Cg-1; Thu,
- 09 Oct 2025 03:52:13 -0400
-X-MC-Unique: 5BloWSK0PUW0qIUko8y0Cg-1
-X-Mimecast-MFC-AGG-ID: 5BloWSK0PUW0qIUko8y0Cg_1759996332
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B40C5180034A; Thu,  9 Oct 2025 07:52:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.63])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32506180035E; Thu,  9 Oct 2025 07:52:07 +0000 (UTC)
-Date: Thu, 9 Oct 2025 08:52:01 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH 2/6] tracetool: apply isort and add check
-Message-ID: <aOdpofyFVoYVQc3D@redhat.com>
+ s=mimecast20190719; t=1759996725;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uu7qRmbK+md35BhY3v2x9x/Lfhahdy4NEukKKu1ho/0=;
+ b=eS3Lha8QAn+My5XRfNbQVZxTHccVFdM/eH39oqUi8PG1keqIJDmvbZkIzYv10iW/hKA6ib
+ Hir8dpem3JhQyuS3BLt3Gl4CHGhUbucYU5P14NFfBG+XTK4dcPbv2c61p9xIATniToQuy3
+ OIOuxHsjtAMq28p8RleJdMDmF/H2KuE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-689-v3ccITqQMT-zanXCHa8_YA-1; Thu, 09 Oct 2025 03:58:43 -0400
+X-MC-Unique: v3ccITqQMT-zanXCHa8_YA-1
+X-Mimecast-MFC-AGG-ID: v3ccITqQMT-zanXCHa8_YA_1759996722
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e3ef2dd66so4534175e9.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:58:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759996722; x=1760601522;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uu7qRmbK+md35BhY3v2x9x/Lfhahdy4NEukKKu1ho/0=;
+ b=AOzO8jRTA6za5FYUp3Fsq+q0t2XL9m/G9bvOvTBzO/st6j3A2eUnuI/5IhbMY384rn
+ neBGnDlykE8Y7ZeEFGmG1sJZ3irZCGEDqssL1nc2yTVwbq/edWvqShrH7wWbnOFSDTZ7
+ WyRjjkKkclIwYX9js+Ji/rE8/YR905tOwlZzWOB0OML70isvWjDl2GCmz3mJFfrDIN2N
+ bzg9hgpTy2WjI7ChFY/1cSzZJcNJJGtkDrQd6TTUrVyTSOLQvLd6r0bf5GiW+3o2CXV7
+ AzbNac/D+oN5uq+t48h7+Ec/K3ou5DiSxHf+06oYhbu4ApGVn71aN0IxJPgAou4V3iU4
+ z1gA==
+X-Gm-Message-State: AOJu0YxJpLF55ySJ4BaDKZC7R02VbwVGgBnr95mtZQeRkpYW1EGYuSJc
+ eAm5CfXTxXhe+kg0XYveUIC7sbprgc26kmJetoVtB7ikFkxMR+yAs8lO0yfVR+uWff+UuiJX4A6
+ ouEK9t14LHUNmHJoo86j6nb6WZ9tnYgMDlXp6vnCLuqKT6Wuonzt/DVgzix2EgX/2XnUyb8116Q
+ YQzMxguDXNALriGR3cmrosAfuY2JUWG08=
+X-Gm-Gg: ASbGnct/5OForIdz1eVM8JLWLoSoEfCY2wlhPFqfCI+Ptg65UZDqkNaPRIUMfLExNOY
+ 6W7R0ePKLhRrTQfztwQYlTQm6WF2JhwkRrZiSOIn5Hid1ImSVGiBPgOqvpmQOEx6R5cPJ7rxspD
+ oRkCcGzBPuZCRkacsWOCFd/2Nho58aEtoJpqwgXGb+SlMcb2yCzuLuVusxyF2EYdnQYZRpvVO2M
+ 9nIH82tDBgqC2zy6UbR5YTMhOHdIQ==
+X-Received: by 2002:a05:600c:6592:b0:46f:a2ba:581f with SMTP id
+ 5b1f17b1804b1-46fa9ec796bmr46933985e9.16.1759996722378; 
+ Thu, 09 Oct 2025 00:58:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGR1GlHDJbfR+5wEajCOj/lmPCSsNZbIXeJKfsnl74VysO6/bxzsvSta71HrWm3/5dxbubX4JR11N34mhtqVSA=
+X-Received: by 2002:a05:600c:6592:b0:46f:a2ba:581f with SMTP id
+ 5b1f17b1804b1-46fa9ec796bmr46933765e9.16.1759996722016; Thu, 09 Oct 2025
+ 00:58:42 -0700 (PDT)
+MIME-Version: 1.0
 References: <20251008063546.376603-1-pbonzini@redhat.com>
  <20251008063546.376603-3-pbonzini@redhat.com>
  <20251008175811.GB181748@fedora>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 In-Reply-To: <20251008175811.GB181748@fedora>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 9 Oct 2025 09:58:28 +0200
+X-Gm-Features: AS18NWAb0NV7vJoHQURU90zPIptwX1KL3UFWrIcpdXxu7ZFid3prlA_P0TcT4wc
+Message-ID: <CABgObfYUa=8hp7sHm7STQMD6t5yJtdDPZ_corm++RRSm8v2=PA@mail.gmail.com>
+Subject: Re: [PATCH 2/6] tracetool: apply isort and add check
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Mads Ynddal <mads@ynddal.dk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -85,14 +105,15 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 08, 2025 at 01:58:11PM -0400, Stefan Hajnoczi wrote:
+On Wed, Oct 8, 2025 at 7:58=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.com=
+> wrote:
+>
 > On Wed, Oct 08, 2025 at 08:35:41AM +0200, Paolo Bonzini wrote:
 > > Sort imports automatically, to keep the coding style more uniform.
-> > 
+> >
 > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > > ---
 > >  python/tests/tracetool-isort.sh      | 4 ++++
@@ -108,8 +129,9 @@ On Wed, Oct 08, 2025 at 01:58:11PM -0400, Stefan Hajnoczi wrote:
 > >  scripts/tracetool/format/stap.py     | 1 -
 > >  11 files changed, 10 insertions(+), 15 deletions(-)
 > >  create mode 100755 python/tests/tracetool-isort.sh
-> > 
-> > diff --git a/python/tests/tracetool-isort.sh b/python/tests/tracetool-isort.sh
+> >
+> > diff --git a/python/tests/tracetool-isort.sh b/python/tests/tracetool-i=
+sort.sh
 > > new file mode 100755
 > > index 00000000000..b23f3d48448
 > > --- /dev/null
@@ -119,31 +141,26 @@ On Wed, Oct 08, 2025 at 01:58:11PM -0400, Stefan Hajnoczi wrote:
 > > +# SPDX-License-Identifier: GPL-2.0-or-later
 > > +
 > > +python3 -m isort --sp . -c ../scripts/tracetool/
-> 
+>
 > I wonder why python/tests/isort.sh doesn't already cover this with its
 > `python3 -m isort -c scripts/` line?
-> 
+
+Because that one is for python/scripts. Not sure why John placed
+mkvenv.py and venv.py in python/scripts, but the potential for
+confusion is real.
+
 > Also, why the --settings-path (--sp) option that python/tests/isort.sh
 > doesn't use?
-> 
+
+I honestly copied it from python/tests/qapi-isort.sh. I think it's
+because python/scripts/ is a subdirectory of where python/setup.cfg
+lives, but scripts/ is not.
+
 > It would be great to have just 1 script that runs isort on all Python
 > code in QEMU.
 
-IMHO all of the shell scripts should really just go away. They
-live in their own world outside the rest of our meson test setup
-which means developers rarely even know they exist, let alone run
-them on submissions.
+Yes, there's lots of room for cleanup there.
 
-I've proposed removing them in favour of meson rules earlier
-this year:
-
-  https://lists.gnu.org/archive/html/qemu-devel/2025-02/msg04920.html
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Paolo
 
 
