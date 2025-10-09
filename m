@@ -2,89 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D33BC79BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA4BBC7A64
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6kic-0001Ut-KS; Thu, 09 Oct 2025 03:05:42 -0400
+	id 1v6kpn-0005XC-Kr; Thu, 09 Oct 2025 03:13:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6kiZ-0001SD-IK
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:05:39 -0400
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6kiV-00079u-DV
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:05:39 -0400
-Received: by mail-wm1-x341.google.com with SMTP id
- 5b1f17b1804b1-46e4ad36541so6520845e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1759993528; x=1760598328; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vWVfgnQDdlivF5r+F/17HcoTWT231mXlExjzQEQ/pRM=;
- b=MP9s6HZwrNU+QrpwtFqEI6GVy4HEe2rIN7LNjrBxL8GhmLuJGhIMafEqKyUIoyDJJH
- WboZpdN8xJPwfp1/tn5BCnM+E7zQEs/JHW5ESHLYq0fNfTQhOAuIx9tGcXMgoG0rma2Q
- R+kE1ILrdfi/FSysN+gV1XEt74d0wPzgTZ1yCIK2pUtTZFOfRYqEAHh24b3PRo6A50sH
- +O3ElNvzpUvqROGwG3fdkjNVoVj9+0bqNg7zwLa74RPWhULeOheskx5M3cOcyWt8OUOv
- Jl1buiIft3/NKi8678Ke2b5CNA8H64Db9Dhrl9+jmo3d7KojzAGEx6WPedgwtcEUnbwA
- c6Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759993528; x=1760598328;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vWVfgnQDdlivF5r+F/17HcoTWT231mXlExjzQEQ/pRM=;
- b=oUAQf9/s+eA389ITVTOJGaJaEgCU4cKzfvSUezS5xlryVdTxffzdLXHBmJefbEsmBh
- ///qHxr05WrTd3h8NU/SOJsO9zJz/l8EIt3JFdXapqaab9PL3zDvu3SCNofGkQRAXkHq
- 3oZjZB/a8YBybrXw1RXGK6emfPoDtUqctMjl84PMPIHveZGNakiAc5NNZj7PQlbQ9Wu8
- atCvDtsXWz/E4n1nTCn5y2V+gZxDIwgR6DWL3ILWVodZ+5ojaTKKKMpqTkqgU7kvoI2S
- ogGW1ZDxWIPbHkrpA/NcrLorN6CFjXHf0c3awjiZ7sogE4zHrd9vLMD7KDgHy3Crwifa
- HY9Q==
-X-Gm-Message-State: AOJu0YxQX38PexSYPASDeEhipMRyBTpJgEk+pRwIVSZQPvQk+WyoE/Ja
- rweHoQ3Mc19rZt5QtkSj5fQb2hmpZZFzXJUFrQS0AutfZI0WKJHhOOQ+ndMTbLdbQWAoayKD83l
- /8pvRcmh5hIEM
-X-Gm-Gg: ASbGncuJhGL+JOO+qsE8O00V6JZfxAKffk8hm/u8rLxlruxF+ZNBUxLFJc6cWkIYGun
- b6Ckb2DlrJYkNwrI4Gdjw3pObzpGYGaF9I+ZEQbhrtJD7A9HES5ezr6dR0+76y08AUbcnEGuG1h
- kqz6wj3u9VtWa+hgpbsm87N2FkUSwiW+/3IgoLBKsZVj8MNis7Es9qOgU+xt0zaAhTdd0hQG9vv
- gCCf9+3tGPOIYwn205CXx1J522rPqCY5Ux4aB300AhJAYzfaahep6A+QP30I9PR3ClcRtsg+2pQ
- KYmq92jbLiZUOVdgNNzCccFrCzBcPL1cA6LY3f2hgumwI5MHkr7LKXPmj5+7vj27Wd4yCj6MyDt
- bIZgL6E2PaRKysIqF8NrzOHwtsXXKKk5wjRUrdZmG9QGgSJCZebTZcwUyF/vAIfm7pODJceRPGu
- 4rqe9tInMAfK6ITMhdM7XxMGd1
-X-Google-Smtp-Source: AGHT+IGMrHHDi4iheHoLRn+3cmvR7rsbUzpijbYUynTTgca9xeGgH0DNRQwHBICl+1ZmINr6gpb+5w==
-X-Received: by 2002:a05:6000:2087:b0:3cd:ef83:a9a1 with SMTP id
- ffacd0b85a97d-42666ac716dmr3992535f8f.20.1759993528401; 
- Thu, 09 Oct 2025 00:05:28 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46faf111a15sm31964245e9.7.2025.10.09.00.05.27
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 00:05:27 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 3/3] mailmap: Unify Richard Henderson addresses
-Date: Thu,  9 Oct 2025 09:05:12 +0200
-Message-ID: <20251009070512.8736-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251009070512.8736-1-philmd@linaro.org>
-References: <20251009070512.8736-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <pawan.kumar.gupta@linux.intel.com>)
+ id 1v6kph-0005X1-15
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:13:01 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pawan.kumar.gupta@linux.intel.com>)
+ id 1v6kpb-0008Bg-Rl
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:13:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759993976; x=1791529976;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=j8D6lhpn+DvzIQLbN0xjFG5MUcZv6Y4XKehAfbA8pDA=;
+ b=Kds5QxO7UgYZirOdtR5hbqg4w30leL50bt/yNfiRsK4nzoS/tkJNGqB/
+ Hydkp+8nKXjuyNaWAAdVCViTlJSKXXEQMJDL7aNKQXw5wkyynYg+eI2q+
+ ZqBxGoKfJ29ke4mvn+mT7dWS26pt5N3W6X0w06rnSVUqCzAm3UL1VYo4q
+ fpdI/RFGisUOc1lPikYB1Wsns9aDiaAf2Fng1PVpSBcxMaZZY23P8aZZa
+ DI26gT+XNwhx+aK3ApjCKQPlyJW8dRlvHvpy2biXLA8axtLwwjqH34g+R
+ AGQtiyRaCPgTLxsRP54hLNq/NyZNBrEw9PFYdo/PihVHFrgNH/Gnj0Yyg Q==;
+X-CSE-ConnectionGUID: D1z0uoZZSuS4YU/2fPlGEw==
+X-CSE-MsgGUID: eYwRDgydTfWXglfqdnqLqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="62228447"
+X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="62228447"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2025 00:12:47 -0700
+X-CSE-ConnectionGUID: +dq2x9SWSBuW0bGxn5PcRA==
+X-CSE-MsgGUID: 0WFjPuc6TUG7Aps4ldM5Ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="180582050"
+Received: from guptapa-dev.ostc.intel.com (HELO desk) ([10.54.69.136])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2025 00:12:47 -0700
+Date: Thu, 9 Oct 2025 00:12:39 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Jon Kohler <jon@nutanix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH] i386/kvm: Expose ARCH_CAP_FB_CLEAR when invulnerable to
+ MDS
+Message-ID: <upvij3mabr6bahxotydtuha6hsvfritx7bn3fqyptmk5ckga2k@gcl6mlol2wbx>
+References: <20251008202557.4141285-1-jon@nutanix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::341;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x341.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251008202557.4141285-1-jon@nutanix.com>
+Received-SPF: pass client-ip=192.198.163.14;
+ envelope-from=pawan.kumar.gupta@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,29 +82,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard toggled his email address in commit 336f744e148
-("MAINTAINERS: Replace my twiddle.net address").
+On Wed, Oct 08, 2025 at 01:25:57PM -0700, Jon Kohler wrote:
+> Newer Intel hardware (Sapphire Rapids and higher) sets multiple MDS
+> immunity bits in MSR_IA32_ARCH_CAPABILITIES but lacks the hardware-level
+> MSR_ARCH_CAP_FB_CLEAR (bit 17):
+>     ARCH_CAP_MDS_NO
+>     ARCH_CAP_TAA_NO
+>     ARCH_CAP_PSDP_NO
+>     ARCH_CAP_FBSDP_NO
+>     ARCH_CAP_SBDR_SSDP_NO
+> 
+> This prevents VMs with fb-clear=on from migrating from older hardware
+> (Cascade Lake, Ice Lake) to newer hardware, limiting live migration
+> capabilities. Note fb-clear was first introduced in v8.1.0 [1].
+> 
+> Expose MSR_ARCH_CAP_FB_CLEAR for MDS-invulnerable systems to enable
+> seamless migration between hardware generations.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Cc: Richard Henderson <richard.henderson@linaro.org>
----
- .mailmap | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/.mailmap b/.mailmap
-index a510b5d681f..43bfa46bcf5 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -105,6 +105,7 @@ Paul Burton <paulburton@kernel.org> <pburton@wavecomp.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <f4bug@amsat.org>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@redhat.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@fungible.com>
-+Richard Henderson <richard.henderson@linaro.org> <rth@twiddle.net>
- Roman Bolshakov <rbolshakov@ddn.com> <r.bolshakov@yadro.com>
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com> <sriram.yagnaraman@est.tech>
- Stefan Brankovic <stefan.brankovic@syrmia.com> <stefan.brankovic@rt-rk.com.com>
--- 
-2.51.0
-
+LGTM, thanks!
 
