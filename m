@@ -2,256 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3A8BC8D22
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 13:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75938BC8D1F
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 13:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6oqM-0001Tq-Lp; Thu, 09 Oct 2025 07:29:58 -0400
+	id 1v6oqD-0001Rw-Tr; Thu, 09 Oct 2025 07:29:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <miguel.luis@oracle.com>)
- id 1v6oqI-0001TE-PN; Thu, 09 Oct 2025 07:29:55 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1v6oq9-0001Rh-R9; Thu, 09 Oct 2025 07:29:45 -0400
+Received: from smtpout2.mo529.mail-out.ovh.net ([79.137.123.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <miguel.luis@oracle.com>)
- id 1v6oqD-0003i5-3O; Thu, 09 Oct 2025 07:29:54 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5997u3rq021335;
- Thu, 9 Oct 2025 11:28:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-id:content-transfer-encoding:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=xOpnn1cXyMPOxSKL3sBfSEFO7EhOO5hhZFFWbXi8V+0=; b=
- cIhuvvYRCaFxiFiSunSVPms7Pw28Xh/PeLcJ//USF87jM91UIl57/V+eZbmZJL4C
- rzeZe+bbAKYgZD6IOK/ci9IB7+ABHmugTO14jfMFfk9BZr5RW3lNYQ9zhXyrPqs6
- BD/CfxqBU/lp7GCpT6YiumormVFtg3BCSPn1Y7UVxbuGxffiXCe03Zn86xjQW/wO
- jzJ5Dxsh2kP3VBMkvyZQ/IH+X7Jk7qOD8IYJHj7qPo+4Du8CAj3Y5t9kEVZE0p4t
- zxHFbe4LboSZs/R3mqGgfRI1m7vpKdV+97nRkf5Ug12EvZHi5JHJLsP9//afsDlo
- jvGLw+0LTqMJ1kPJkgCscw==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49nv6d1dbm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 09 Oct 2025 11:28:52 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 599AMZb0037009; Thu, 9 Oct 2025 11:28:52 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com
- (mail-westus2azon11010006.outbound.protection.outlook.com [52.101.46.6])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 49nv63rute-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 09 Oct 2025 11:28:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AdyBbYobmZYzxPVuumzwi35eTkSbqeXw0f+5D0v4GWfb/E3AjbOOHv1YcfMUhx/oaFKg7R4O9N6Nr/2emAtwhRJf4JPHFDVZLmBkUiMtmkZMhQHMyXW87m8cgVisZ0iflzkFB2Y609cX6Mu95H2mBJF6lAGC/CPpy5QdP/UqDQ2UAyiG77mlb6NyLHgWUlDVsaeoAFL5ly/Q/jpAR/xrh15PJsFN+PMEKizmhtADrQTs/rpphsmrYAvtZR1epOyqWbNGwFBAGmuvnsTbBdrqjaagMSKNy3bADYzhq6lhzkpTXQ6iUi/PQYHSM8UI9B+cISsmo0C/4axZ8BXv5g159A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xOpnn1cXyMPOxSKL3sBfSEFO7EhOO5hhZFFWbXi8V+0=;
- b=WOQdtj5e6PbMTZBHHWmmKkId5heGPHvlUjOwsjLrdfIdF7htJogXxKFVAO0ebAM1Gq0veHX6FXIgoreWF5pddbp2wHg28I4Qo1mbWUvTJSEhuN97U3T5BPICZPJHf4TLbKGh+Xni8F1ZxxenAcSlbtI6VOdTuQK3/a5B3Y480ifATfxFpDd11WJU06IJWM75CqXQhf8hoRjJvP+P/gMT5VWdN6w3TvVNKCiCKJwr8a3Afrc6N9zd3CNql0kQ/mjermRiLB/wnrfDfnbqSWv9ocCVlYEYsz2Qc/28VIl9XXXpUVaGaGkIwia3XTylN6YvVq14+aAtwyt0kNDfiMO7AQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xOpnn1cXyMPOxSKL3sBfSEFO7EhOO5hhZFFWbXi8V+0=;
- b=VnfyQvhtCxHy2BuFRBBXExOLlkht85dxRWvMIG0DOUincNC9HZz9OEOgO6fgMDthrf/IsqCAL44dwYEol+idzrSWh4Itz8HMGpzbT0fR8B/nURVo14UpR3obQx8MkzXP5M3AywbGKvlSmFZHVmIfcjSoSz6HQFodoSIA0F3i6Rw=
-Received: from PH0PR10MB5894.namprd10.prod.outlook.com (2603:10b6:510:14b::22)
- by IA3PR10MB8274.namprd10.prod.outlook.com (2603:10b6:208:570::10)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1v6oq3-0003gn-9L; Thu, 09 Oct 2025 07:29:45 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.254.98])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4cj72247DTz5w0l;
+ Thu,  9 Oct 2025 11:29:30 +0000 (UTC)
+Received: from kaod.org (37.59.142.102) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Thu, 9 Oct
- 2025 11:28:41 +0000
-Received: from PH0PR10MB5894.namprd10.prod.outlook.com
- ([fe80::75ce:9a39:e0cc:96f7]) by PH0PR10MB5894.namprd10.prod.outlook.com
- ([fe80::75ce:9a39:e0cc:96f7%5]) with mapi id 15.20.9203.007; Thu, 9 Oct 2025
- 11:28:40 +0000
-From: Miguel Luis <miguel.luis@oracle.com>
-To: "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "mst@redhat.com" <mst@redhat.com>,
- "salil.mehta@huawei.com" <salil.mehta@huawei.com>, "maz@kernel.org"
- <maz@kernel.org>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>,
- "imammedo@redhat.com" <imammedo@redhat.com>,
- "armbru@redhat.com" <armbru@redhat.com>, "andrew.jones@linux.dev"
- <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "ardb@kernel.org" <ardb@kernel.org>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "gustavo.romero@linaro.org" <gustavo.romero@linaro.org>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "harshpb@linux.ibm.com" <harshpb@linux.ibm.com>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "gankulkarni@os.amperecomputing.com" <gankulkarni@os.amperecomputing.com>,
- Karl Heubaum <karl.heubaum@oracle.com>, "zhukeqian1@huawei.com"
- <zhukeqian1@huawei.com>, "wangxiongfeng2@huawei.com"
- <wangxiongfeng2@huawei.com>, "wangyanan55@huawei.com"
- <wangyanan55@huawei.com>, "wangzhou1@hisilicon.com"
- <wangzhou1@hisilicon.com>, "linuxarm@huawei.com" <linuxarm@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- "shahuang@redhat.com" <shahuang@redhat.com>, "zhao1.liu@intel.com"
- <zhao1.liu@intel.com>
-Subject: Re: [PATCH RFC V6 02/24] hw/core, qemu-options.hx: Introduce
- 'disabledcpus' SMP parameter
-Thread-Topic: [PATCH RFC V6 02/24] hw/core, qemu-options.hx: Introduce
- 'disabledcpus' SMP parameter
-Thread-Index: AQHcMm8NtOJ4M6FFEUSuoRPjtINsYLS5us2A
-Date: Thu, 9 Oct 2025 11:28:40 +0000
-Message-ID: <9143F5AE-967B-4499-8A12-E7A47A764E51@oracle.com>
-References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
- <20251001010127.3092631-3-salil.mehta@opnsrc.net>
-In-Reply-To: <20251001010127.3092631-3-salil.mehta@opnsrc.net>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR10MB5894:EE_|IA3PR10MB8274:EE_
-x-ms-office365-filtering-correlation-id: 63d2e250-8cbf-458c-7212-08de0726ff24
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|7416014|376014|366016|1800799024|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?utf-8?B?WGNLdmE1RWtncHg2NzBlNmY3MTFwOS9YcmtmTUY4d3drOE9nQms0bEt6Zm1Z?=
- =?utf-8?B?T3BsVW1WUFUvbzduNm1iSlJhNXNZZmJnSzVmbThQUDBGOEF4OExRd1JOaWR2?=
- =?utf-8?B?TXYxdWRiUGIydTF2SXNWMno0YWNwRWxjYUhGd3VlaGFoSU5UZFRKeHYyQTU4?=
- =?utf-8?B?TExHOVhFeXd6andpSHhpMWRqUlVWbkhZK3czc1VOOE5ZZWxVenFVQjY3MVBJ?=
- =?utf-8?B?OVA2T3ZsdzJDRUpEbVpTRlZLUk9DRDhGZVlrd051bUVxdWs2K21PMElrNUY1?=
- =?utf-8?B?TmM5T1F5MEJFS3p2M0R1eWZWcHVIOWNzVk9nTENpMW5ZOXU2eUhLUlRiVjBu?=
- =?utf-8?B?aVVHM0lMY0FJUnRONkRvL1h0Y2h6RXI3MVRlQUkzaDZWcEt1MC9DTW1GZjVU?=
- =?utf-8?B?WktQWElrZGxmTENENE4zMjFBdStkUlVrNWlUNjIxOVlVSXRhL2pCZXR0bmN5?=
- =?utf-8?B?eEJRWjBMWWZFencrdUhyOVJzb0lxclEvTFVVSFd5SVorWTg5SXlPdkR6K1NU?=
- =?utf-8?B?VEh5bjRZdHNleGhydDhiSTlZYXZVUHNjWDVFRmFJc0N2aDF1WjA0Y1FZK3VM?=
- =?utf-8?B?VE55aGlmRXdoMlhXT3g2eWZ0TEc1bnlCdzVKd3JIMlpDejBialRaZU1YV0Ir?=
- =?utf-8?B?QXNPYWk5bGZUbnQ4di92MHBTbHlUVDkzSEUrTk00dUVMSEx6Tk5tUmhGb2xo?=
- =?utf-8?B?N3U4cGd4dWppRVJFeWw0MkZRWGRzRStMalc4QjB5TzB1ZWtHTlhLOWxUbm9y?=
- =?utf-8?B?a281dXpESkNudGR6bG1BOXRMTW16NjBjdTZjOEF2QUd0aU8ycTY3RmowOTkv?=
- =?utf-8?B?R0xGRnZzSTFtTHU4ckdRck9NUDJwRGtDa2c0NjR4VWlkYkQ1ckovVjhkSWox?=
- =?utf-8?B?UlVYOFFZZTNKRkhZU3k3ank5cmt4Wko5M2x0Qm9UV0tkcnQrWUFrU1hWaEdr?=
- =?utf-8?B?VW1KZ1Rtb1diSklwaFBWczVib0FSa3QrSU9MRGMraVRrbkZtU1RZRlE0NVRZ?=
- =?utf-8?B?WlpFMnB2U3pWT3NGdCtGUTB0UzhUcmVCL0RqcmJIcERxSzNVYmdlNUFVVGFK?=
- =?utf-8?B?ZCsxZzBRRkFQQm9RZkVUNWZqUVhFZlRDM3JPbTdwRWdxMDZhMUhNcWpkN2NU?=
- =?utf-8?B?Z2YrcUsyZTNaVmM3TkVCNlRrbzZoblAvM3hBRi9Lb0t5NzRyK1JJcnBzVE1T?=
- =?utf-8?B?MjlRbVRVODZ3ZGM0ajVIWXNEaEhacVBqcmYrTFh4RjJ4OUJMUEgvMS85VTFt?=
- =?utf-8?B?enRuR1RISjRpdVZRbVEwK3g3VnpMZm1CMHMyeGZ5eHBMUGdnRGlTdldsUENa?=
- =?utf-8?B?UWpxVGt0SEVYN1JhbzErU0JDekdmQ3hBMVBlM0xBcVJrS2FIN0xqeWV4SlFD?=
- =?utf-8?B?L3BUK0ZyTVhmUG9PdG9jdmQ2d3RaL0NBR3dzVWJCWDE3WkF6RElwTDRTUVY0?=
- =?utf-8?B?YWsrOUU0eFFsNGE1ek8vQ25vc05PbEw0WTVwRHVWLzB1NGFsRTg4dDdrOWNR?=
- =?utf-8?B?K3RFOWRIakJCWDZiRGd4UlBaMUpEK1VYeEh0d3JXSmpFS1VjWVpTN1Z6L3Rl?=
- =?utf-8?B?WmlpZy9pTHFVNnBUSXo1eVJNRjhsYkJmVkpjV3pBdHlhSldtbXI5cHlkeU9R?=
- =?utf-8?B?ZFNDeFA5cUtpVEQwbW9KWFpOWERvODhRTUpHaHQ5SkptUmova3dHcm9XMTJE?=
- =?utf-8?B?b1g3ZVlRWkNoWXdveDRPS2RaQWFOcEg5Z0J1VzhTcUF6ZVFrcXZGcGwyd1FO?=
- =?utf-8?B?dGhTdTZ4eHdiUGNkRHVhcVhjbnJNcVJSMkJ1bUFJNWV2YXl5dXRtY1krakhJ?=
- =?utf-8?B?eVc0c085UDROU1F2SVdCS3llYlVkS0NRVm1zQ0o3R3dEMy9MbjZyRXBIeUdO?=
- =?utf-8?B?dTJRU0dkaUV0bU9vaHJXRmJEb1k2WEhvNFgrNSswMFZ0bWRkZUwrQ2RCZXV1?=
- =?utf-8?B?MmJxa29ZQW9SYllaRFBiSDVKOXFDbWVpeDVZaUhtZHorNWtYSHJ4QUVuTGMx?=
- =?utf-8?B?VnYvY0FtVVhDS3VjYk9JMW1ad0hneEhXQmpoMjlTaUsrY0xwNFVvWjVOUnh4?=
- =?utf-8?Q?i9OYtO?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5894.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007)(38070700021);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Ky9rVGF4Q0wvcXJEQS9xNU94NmtOV21BOHE0SFRaVm5rMFQrZ1kyTE1tNWUr?=
- =?utf-8?B?dUxlbW9KU3hZOSt5eUpzSm9SZDAvZFJvTXYwRnFWUW1oWGxEWDVBY2hLbHdL?=
- =?utf-8?B?eUpmZ0hNaDZIaW1EVVN3Q3VGT05sVENVeEZvM1IrVUFwakhIY2FMTnZJbys2?=
- =?utf-8?B?WE82b1pLUitHSGR1aU11enllZlpOaW9KVGNQWmxEMWlWejlJaGh3SFhaTElK?=
- =?utf-8?B?YlNZNXY0bUVZRFRwZXZ2VW9uQmdwOVIzdWsvdUhCS2JDbktmM3BmWmVnYVZq?=
- =?utf-8?B?NEVWRXZaZG1ZT1F1ZXorZUdHZ1dSODgrUndxdWc5cHdUaVYvTjZTcEttdUFh?=
- =?utf-8?B?cEl0SkcrTkFUcGpBZmJ0Q3FvK0ZIL1BpbktxbXJxZmdMT2FrUzJLYVRBdTVE?=
- =?utf-8?B?cyt0UFBqSTM1dEJOMFIySmFkYWF6NUpNOFdUbkltRm1FVE5Hdms3aS9ueEw4?=
- =?utf-8?B?N1JJZ0xSZHlnR2FSYllEVGdINTFiZkl4dk5XejlsTmVjWkRJRElaY21LdFZR?=
- =?utf-8?B?Zm5ZNEUxejkvT3llcmJLeDd5OWhadjZUeEs2emt5NExwTDlKbldOcHR5Q2c3?=
- =?utf-8?B?MUpKaC9raWR3QzcrTU4rUW92WTFEemlVWW1zZTBrMFNIL0QzTGhDc1hWTFVG?=
- =?utf-8?B?aS83VEZMcmV2ZG51Q1ppRFllUXN3N3l3U1ljbDhqS1Awc2lZN3A5aUVOUHBF?=
- =?utf-8?B?WENYbDY4RjhxTDBYWmZsZHBnQmpwWm5DdGRndGcyZUdwZVpKU1BIWGV0NGxj?=
- =?utf-8?B?WGRxUmprdU9oUVJaYTRZNmpZTW0zRlM5QWpPTjdUckNtRkV6Vk0wWHBXS1hw?=
- =?utf-8?B?b0xIK1JIeTRESXdwK3AvZWhYbE1tcndoQURka2NKdzVlOVQ5NjRSSTJXa01r?=
- =?utf-8?B?djVMS2lMZXlJdXV5Q2tIUTJuRmo5QnFOODBsQi9SREZab292WUtBUFVlaDYr?=
- =?utf-8?B?UnJESk1nRCtwbldITFRDSzRmdGx2QXozTVZpRkRyWExYRkZMTXIzc3J5d1Rn?=
- =?utf-8?B?TzJuc0ZZOUpHNGZIbjU1WW1MUzJaN0tRazNTVjRrUTJwandSNTZ4Y25YYWdO?=
- =?utf-8?B?alNXdUVPa3JPeXM2b0E3V25vZmk3elV1VW02a1IvL2lhLzN1R1ZmdEhOekRU?=
- =?utf-8?B?S1crQzdVRmJQUVF4RmoyVVFhNWExN2xMMG9ja21zQmFjWE00enFIOTJpWVNI?=
- =?utf-8?B?MUxDZURmS3V5WmRwT1pHNWRSOHd0RWs2b1dURS9wWTg2NGF5OXpERSs0S0w5?=
- =?utf-8?B?cUt0SklPNVl3RVR6dnJQcGg0Tk1sWU9GYlFwdzJRSHNZZ1A0TWhzSnJ2akFK?=
- =?utf-8?B?cUJ3YVpRajE0djlkU2VKNnJoYTdCRHhvV2s4TE9hdGhsQ3V6Y2E3R2RtdW90?=
- =?utf-8?B?dHl5YmZkamdabUZKRUxjVW1XM1Jwem9jaWVaRFJnN3V1cmthRk01ZDllemN5?=
- =?utf-8?B?dUR3RWVXUUZzbk5zY0hmL2NZYkZtbllOVXJBeU81bWl3K2c1eUZka0RacmN0?=
- =?utf-8?B?SW9TaG5LbHh6TENBcnpJTGkzcWlJRkh5eXVwTEFrVFNkVktDRXE1R2YxYjNM?=
- =?utf-8?B?eTJLTmdDQ2xVTzhlRGtRUGtPMStoa2RMU3FwZnVyZ0dwcjdtZ0JiQnFOQ2l6?=
- =?utf-8?B?KzZZZm12ZHRxZmxYYmF1akFneHgvV2NGMzRSS0ZCWkZ6RlBneHBzbWxaZ0FW?=
- =?utf-8?B?ZkZOdFl6b3lWelFGbkl0UE03cFVHWnpzcWF4THNYa1JGMnVhYVEvRFBwTFhv?=
- =?utf-8?B?UXBDVkd5VnV6Q1RaN3JOUUx4ODdtZFR6MnB2Y2FRNm50K1VickZyY0NqKzBY?=
- =?utf-8?B?Y3RDRW9ITnUyNUpzczJvU2RLcTk5WUhkWWZUU3djNHgwSStRNFNEUEdYc3RO?=
- =?utf-8?B?U1pJOXdLSGo1SFBITmVTcVI3TFMzb3g3UE5mUVNDbE0zZ1ZlR0JBUXl4UEpy?=
- =?utf-8?B?N29GS2VheG13aG4vT3NzTmVzaG4xUldqMnpnNEtyOE5EL0hpWFp5bW9jeDB0?=
- =?utf-8?B?a3dVVEFwRGNWbVRqT094bjh3clJYcXM0MVQ3amhJVEJMR3ZmaWRQVlZzYXB3?=
- =?utf-8?B?dHV2ODJ1NGV3eXowdXRFKzhkMVgxS21zUkxmT3M3bkIvV2U3ZVBhL0F2VjJt?=
- =?utf-8?B?NkV1QitKd00wL1p0YzhpakRPQ1Jtbmp1a0tXNkZtdWVUNE1Sa2xQM296RzUz?=
- =?utf-8?B?dVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <ADE9BA1B76E1194EA15E83792DD283B0@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Thu, 9 Oct
+ 2025 13:29:29 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-102R0043144a28e-7e7c-4a47-906f-5738171193c0,
+ 0ABBE769FBEA5341A3875E1E3E57BEA7B23E4658) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <b6695612-cc9d-4f33-b7e8-b82870eab973@kaod.org>
+Date: Thu, 9 Oct 2025 13:29:29 +0200
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: gsgLVZCUs7JETvLtkTYQnt4AdlCjkYBiy0aVugjD3XsCBuI67fO5xVeaTd8VWIudrCkPRvIbFc0ZR1TenWe4yGoSHDsV8t6FIPJGXTmSG0/KBfqCG/CeShAUc+Cdc06f0ZROoBqlT/CoCSBqjdxKyI+0K4whU+Fv1Ii1ceN2WN+8wucSykJjzVKY4u8Dx+icini2N13xdARSZJb7ijDOh/7sb0JvR/0JxTCF6G9k1qxzkCv+05pC07+pkkPNmJkPYgZF9k0DtUIPZKyO+hAT0GMMqwIkbNXfcZqsUGBlRfFT/04vJ9EYkEc65/wu/YjIyYGLFDMAqpzi37A1c3fvRsNwAAi/qFYGs22hLFFS8IZi0jDuRbC/NPo30c1arfIdqetuDVWIDND4xRVYqKxpfth1n0Pf6FeUfeHkI2ATI/5FXawWSHWcrGLfdWGXfB3GHXwhg6YiaMKZ7oZovfSKkglVuWXwbuSBtCNR2V+6g65DHt9t+dj+eOJnzfm8hsQUlUbqwAh5cHdT2K/8CdxglIyKxdNBKMKH0UZcFIjJmQyvHVKHmeIhBXzp1UGwESEP1UatnvLzRP1b51snwiVwpMJ1xcMAmpeWdMO+44yh8p8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5894.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63d2e250-8cbf-458c-7212-08de0726ff24
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2025 11:28:40.3608 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZbeCPmD6hQ75sZxM48uLR8j2M94saZhnfLIJro2odl5f+DPW3oX3LVIoqct7npwi7Q0qwyLfwclBVeRZSLaT8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8274
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-09_03,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- bulkscore=0 mlxlogscore=999
- phishscore=0 spamscore=0 adultscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
- definitions=main-2510090067
-X-Proofpoint-ORIG-GUID: Qu-AsBx_JXy5nIrsA-rwcAlByt8tadl1
-X-Authority-Analysis: v=2.4 cv=bK4b4f+Z c=1 sm=1 tr=0 ts=68e79c75 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117
- a=e1sVV491RgrpLwSTMOnk8w==:17
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10
- a=N4eUw1WxAAAA:8 a=i0EeH86SAAAA:8 a=Bwjkdp0VV-HiWN2BlhsA:9 a=QEXdDO2ut3YA:10
- a=TyhWUHtFaNKhBFvZzOnD:22 cc=ntf awl=host:13624
-X-Proofpoint-GUID: Qu-AsBx_JXy5nIrsA-rwcAlByt8tadl1
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX9/4HQoEbVC7f
- 6gMwJuXb0IGEEqXmuLVkMr/4XRxQ61cqTAaXdbOSnk3io1jVh4WK01Z32xd3hpM8OuzUhQSiH8X
- shI0SG+lH5AVWrHcn8IqydrKHm/Tz5Me41Rrpw7rb7Otcs8EVBqbZqJD3yX3empKNfE+x/g2EM0
- cpST9y+90/iNOw6ugFS1JDaMxwnNks7uJ5GCFIJYLuk8mWnvOie/z/Wpwv6Lj+xAWcJWIR62Qm9
- +fJcZdo+tbcvOcrh6tpcfk0DVy5kZ51RD3nZYwpwMEoPhrat4Qkbyn3ifhMa9ATSTFdhZwwLwn0
- XnEcVtZAJe/8wZDzGIZpoRTHWZGtv+m708NPEWeBGU9zuItnw6+VDIdJ0pszfTG4Y1mlJF7Ptep
- /GDvg2SfjziDfG9fg4lvIBzR0KmI0hEKgddKB6evnqhslnJmrN4=
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=miguel.luis@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [SPAM] [PATCH v2 07/16] hw/arm/aspeed: Remove AspeedSoCState
+ dependency from aspeed_soc_get_irq() API
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
+References: <20251009023301.4085829-1-jamin_lin@aspeedtech.com>
+ <20251009023301.4085829-8-jamin_lin@aspeedtech.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
+ 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
+ yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
+ 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
+ ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
+ RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
+ gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
+ 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
+ Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
+ tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSBDw6lkcmljIExl
+ IEdvYXRlciA8Y2xnQGthb2Qub3JnPsLBeAQTAQIAIgUCW7yjdQIbAwYLCQgHAwIGFQgCCQoL
+ BBYCAwECHgECF4AACgkQUaNDx8/77KGRSxAAuMJJMhJdj7acTcFtwof7CDSfoVX0owE2FJdd
+ M43hNeTwPWlV5oLCj1BOQo0MVilIpSd9Qu5wqRD8KnN2Bv/rllKPqK2+i8CXymi9hsuzF56m
+ 76wiPwbsX54jhv/VYY9Al7NBknh6iLYJiC/pgacRCHtSj/wofemSCM48s61s1OleSPSSvJE/
+ jYRa0jMXP98N5IEn8rEbkPua/yrm9ynHqi4dKEBCq/F7WDQ+FfUaFQb4ey47A/aSHstzpgsl
+ TSDTJDD+Ms8y9x2X5EPKXnI3GRLaCKXVNNtrvbUd9LsKymK3WSbADaX7i0gvMFq7j51P/8yj
+ neaUSKSkktHauJAtBNXHMghWm/xJXIVAW8xX5aEiSK7DNp5AM478rDXn9NZFUdLTAScVf7LZ
+ VzMFKR0jAVG786b/O5vbxklsww+YXJGvCUvHuysEsz5EEzThTJ6AC5JM2iBn9/63PKiS3ptJ
+ QAqzasT6KkZ9fKLdK3qtc6yPaSm22C5ROM3GS+yLy6iWBkJ/nEYh/L/du+TLw7YNbKejBr/J
+ ml+V3qZLfuhDjW0GbeJVPzsENuxiNiBbyzlSnAvKlzda/sBDvxmvWhC+nMRQCf47mFr8Xx3w
+ WtDSQavnz3zTa0XuEucpwfBuVdk4RlPzNPri6p2KTBhPEvRBdC9wNOdRBtsP9rAPjd52d73O
+ wU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhWpOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNL
+ SoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZKXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVU
+ cP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwpbV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+
+ S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc
+ 9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFUCSLB2AE4wXQkJbApye48qnZ09zc929df5gU6
+ hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iSYBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616d
+ tb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6gLxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/
+ t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1c
+ OY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0SdujWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475
+ KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/JxIqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8
+ o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoX
+ ywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjKyKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0
+ IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9jhQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Ta
+ d2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yops302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it
+ +OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/pLHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1n
+ HzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBUwYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVIS
+ l73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lUXOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY
+ 3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
+ ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
+ KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20251009023301.4085829-8-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.102]
+X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: d4618ece-badd-47fe-88b6-2cb858a6bc18
+X-Ovh-Tracer-Id: 11284331820077910962
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFiR9vaC7YXX12caLseZjm+nAcgZnAEDele9w3Yx2a4sJLtJIXY+L2PJf4mJQTsL3+52OM1l6ue5S2DHN+mtYrNqfN6lPbqbEVYbL7GbAc1Oxbg+YlOQtO6ZvxTll4PUocNbfhx+OUP456d8u3tAq/EQh/7D7E1sq4RwyvnfxUfaP7DSw6gPuV2e7BBTLRzY0F5dH0dRCFAe+ohLyU0MIg3dwNHc0cfWTJ5H21yM4sYGNVMth1LD+V67bcWWCTAyAA/VIg7x0yCxUFS3Xwx0PrXK2pPOY8Mo3uTfFoQKtcdJkQrlJGabZznW0W96Sxc53lewtyYcg0/jTzVFF9JsmFIscPzzWSayXJWxPxL3qIhuUO1vRnpJDp4y72cNVj/1lpEqHbbCrWGa21zi1gGdnGHvMxHyDmivyQDJMWSt9O+TbbT8yDwXM6u0yFBlm9ZBeJ2SSwkd2qWzZwhOZSMK+PDpt7JyfGQHNbtDdjm7Yyp0aj/L156ON6qmDZGzCDbfT6IQsTJYUPrdqSe/gMZyqUuz+wTxwJcYMkner9HSvZ+INsrnE9HkXPytuvox1LUeu/5NUtWvCcC4kTLES/1k5w1+dYDVXef1BnATupsY7SBNIXn0qbh3FSpUsQY/8gxROXyLwV1aEd3rYnx1CYWL3go8Fi39j4oKYUzA5yCsb4a7w
+DKIM-Signature: a=rsa-sha256; bh=Zb983iZcpcciDIYkAp15DVb9p819Y45JLpEr7y8SQQo=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1760009371; v=1;
+ b=KUQ+h/Afy36/ZRoKCfudWjza4FgPDZcY04lyR84qh0ckI1+PZF1/hNREHD7Z9xCurcTnW7DQ
+ otMDktsmF2kPmG4eJqWugtOf1BRasldC3xVn8RPZ5HsULodJJzpwx8iM/Tubexzc6ETLm91FwIC
+ 9YWE5z4Ck6vxD/83JYTaNQeUe/oDflu0Dd4ul74HjoYslT1Y0axh3FKva0UX5uOrBiNNBCd43AO
+ PP+bR1uI7H8/4wvB3ykVD7km5KGjIhHpS8lFX2cCKHxcXUvGqGoA45C+vRJ6mf31YYFb4XYksUL
+ ViR+0zRtRb6WdA/QWYWsazpWfhZfoRcjG0LT9LU5W3dFA==
+Received-SPF: pass client-ip=79.137.123.220; envelope-from=clg@kaod.org;
+ helo=smtpout2.mo529.mail-out.ovh.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -269,257 +129,610 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgU2FsaWwsDQoNCj4gT24gMSBPY3QgMjAyNSwgYXQgMDE6MDEsIHNhbGlsLm1laHRhQG9wbnNy
-Yy5uZXQgd3JvdGU6DQo+IA0KPiBGcm9tOiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2Vp
-LmNvbT4NCj4gDQo+IEFkZCBzdXBwb3J0IGZvciBhIG5ldyBTTVAgY29uZmlndXJhdGlvbiBwYXJh
-bWV0ZXIsICdkaXNhYmxlZGNwdXMnLCB3aGljaA0KPiBzcGVjaWZpZXMgdGhlIG51bWJlciBvZiBh
-ZGRpdGlvbmFsIENQVXMgdGhhdCBhcmUgcHJlc2VudCBpbiB0aGUgdmlydHVhbA0KPiBtYWNoaW5l
-IGJ1dCBhZG1pbmlzdHJhdGl2ZWx5IGRpc2FibGVkIGF0IGJvb3QuIFRoZXNlIENQVXMgYXJlIHZp
-c2libGUgaW4NCj4gZmlybXdhcmUgKGUuZy4gQUNQSSB0YWJsZXMpIHlldCB1bmF2YWlsYWJsZSB0
-byB0aGUgZ3Vlc3QgdW50aWwgZXhwbGljaXRseQ0KPiBlbmFibGVkIHZpYSBRTVAvSE1QLCBvciB2
-aWEgdGhlICdkZXZpY2Vfc2V0JyBBUEkgKGludHJvZHVjZWQgaW4gbGF0ZXINCj4gcGF0Y2hlcyku
-DQo+IA0KPiBUaGlzIGZlYXR1cmUgaXMgaW50ZW5kZWQgZm9yIGFyY2hpdGVjdHVyZXMgdGhhdCBs
-YWNrIG5hdGl2ZSBDUFUgaG90cGx1Zw0KPiBzdXBwb3J0IGJ1dCBjYW4gY2hhbmdlIHRoZSBhZG1p
-bmlzdHJhdGl2ZSBwb3dlciBzdGF0ZSBvZiBwcmVzZW50IENQVXMuDQo+IEl0IGFsbG93cyBzaW11
-bGF0aW5nIENQVSBob3QtYWRk4oCTbGlrZSBzY2VuYXJpb3Mgd2hpbGUgYWxsIENQVXMgcmVtYWlu
-DQo+IHBoeXNpY2FsbHkgcHJlc2VudCBpbiB0aGUgdG9wb2xvZ3kgYXQgYm9vdCB0aW1lLg0KPiAN
-Cj4gTm90ZTogQVJNIGlzIHRoZSBmaXJzdCBhcmNoaXRlY3R1cmUgdG8gc3VwcG9ydCB0aGlzIGNv
-bmNlcHQuDQo+IA0KPiBDaGFuZ2VzIGluY2x1ZGU6DQo+IC0gRXh0ZW5kIENwdVRvcG9sb2d5IHdp
-dGggYSAnZGlzYWJsZWRjcHVzJyBmaWVsZC4NCj4gLSBVcGRhdGUgbWFjaGluZV9wYXJzZV9zbXBf
-Y29uZmlnKCkgdG8gYWNjb3VudCBmb3IgZGlzYWJsZWQgQ1BVcyB3aGVuDQo+ICAgY29tcHV0aW5n
-ICdjcHVzJyBhbmQgJ21heGNwdXMnLg0KPiAtIFVwZGF0ZSBTTVBDb25maWd1cmF0aW9uIGluIFFB
-UEkgdG8gYWNjZXB0ICdkaXNhYmxlZGNwdXMnLg0KPiAtIEV4dGVuZCAtc21wIG9wdGlvbiBkb2N1
-bWVudGF0aW9uIHRvIGRlc2NyaWJlICdkaXNhYmxlZGNwdXMnIHVzYWdlIGFuZA0KPiAgIGJlaGF2
-aW9yLg0KPiANCg0KU3BlY2lmeWluZyBhIG5ldyBwYXJhbWV0ZXIgZm9yIHRoZSB1c2VyIHNlZW1z
-IHVubmVjZXNzYXJ5IHdoZW4gdGhlIHN5c3RlbSBjb3VsZA0KaW5mZXIgdGhlIG51bWJlciBvZiBw
-cmVzZW50IGFuZCBkaXNhYmxlZCBmcm9tIChtYXhjcHVzIC0gY3B1cykgYW5kIHRob3NlIHRoaXMN
-CnBhdGNoIGNhbGxzICJkaXNhYmxlZGNwdXMiIGNvdWxkIGJlIG9idGFpbmVkIHRoaXMgd2F5Lg0K
-DQpOYW1pbmcgaXMgaGFyZCBhbHRob3VnaCBpdCBpcyBvZiBteSBvcGluaW9uIHRoYXQgd2Ugc2hv
-dWxkbid0IGJlDQpjYWxsaW5nICdkaXNhYmxlZGNwdXMnIGhlcmU7IEkgdW5kZXJzdGFuZCB0aGF0
-IGdldHMgY2FycmllZCBieSBwcmV2aW91cw0KYWRtaW5pc3RyYXRpdmUgcG93ZXIgc3RhdGUgbWVh
-bmluZ3MgYnV0IG1hY2hpbmUtc21wIGxldmVsIGJlaW5nIGF0IGEgZGlmZmVyZW50DQphYnN0cmFj
-dGlvbiBsZXZlbCB0aGUgYWRtaW5pc3RyYXRpdmUgcG93ZXIgc3RhdGUgY29uY2VwdCBjb3VsZCBi
-ZQ0KZGVjb3VwbGVkIGZyb20gbWFjaGluZS1zbXAgcmVhbG0uDQoNCk15IHN1Z2dlc3Rpb24gd291
-bGQgYmUgY2FsbGluZyB0aG9zZSBjcHVzICdpbmFjdGl2ZScgYW5kIG5vdCBjYXJyeSBwcmV2aW91
-cw0KcGF0Y2gncyBub21lbmNsYXR1cmUuDQoNCkNQVXMgaW4gJ2luYWN0aXZlJyBzdGF0ZSBhcmUg
-c3RpbGwgcHJlc2VudCBpbiB0aGUgdmlydHVhbCBtYWNoaW5lIGFsdGhvdWdoIHRoaXMNCnByZS1j
-b25kaXRpb24gbWF5IHJlcXVpcmUgcG9zdCBhY3Rpb25zIGxpa2UgYmVpbmcgZXhwbGljaXRseSAn
-ZW5hYmxlZCcvYWN0aXZlIHZpYQ0KW1FIXU1QLg0KDQpPdmVyYWxsLCBJIGJlbGlldmUgdGhlIGFi
-b3ZlIHNob3VsZCBiZSBhbGwgaXQgdGFrZXMgdG8gc2ltcGxpZnkgYWNvbW1vZGF0aW9uIG9mDQpD
-UFVzIG5vdCB0byBiZSBicm91Z2h0IG9ubGluZSBhdCBib290IHRpbWUgd2l0aGluIHRoaXMgcGF0
-Y2gncyBjb250ZXh0Lg0KDQpUaGFua3MNCk1pZ3VlbA0KDQoNCj4gU2lnbmVkLW9mZi1ieTogU2Fs
-aWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+IC0tLQ0KPiBody9jb3JlL21hY2hp
-bmUtc21wLmMgfCAyNCArKysrKysrLS0tLS0NCj4gaW5jbHVkZS9ody9ib2FyZHMuaCAgIHwgIDIg
-Kw0KPiBxYXBpL21hY2hpbmUuanNvbiAgICAgfCAgMyArKw0KPiBxZW11LW9wdGlvbnMuaHggICAg
-ICAgfCA4NiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tDQo+IHN5
-c3RlbS92bC5jICAgICAgICAgICB8ICAzICsrDQo+IDUgZmlsZXMgY2hhbmdlZCwgODkgaW5zZXJ0
-aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaHcvY29yZS9tYWNo
-aW5lLXNtcC5jIGIvaHcvY29yZS9tYWNoaW5lLXNtcC5jDQo+IGluZGV4IDBiZTBhYzA0NGMuLmMx
-YTA5ZmRjM2YgMTAwNjQ0DQo+IC0tLSBhL2h3L2NvcmUvbWFjaGluZS1zbXAuYw0KPiArKysgYi9o
-dy9jb3JlL21hY2hpbmUtc21wLmMNCj4gQEAgLTg3LDYgKzg3LDcgQEAgdm9pZCBtYWNoaW5lX3Bh
-cnNlX3NtcF9jb25maWcoTWFjaGluZVN0YXRlICptcywNCj4gew0KPiAgICAgTWFjaGluZUNsYXNz
-ICptYyA9IE1BQ0hJTkVfR0VUX0NMQVNTKG1zKTsNCj4gICAgIHVuc2lnbmVkIGNwdXMgICAgPSBj
-b25maWctPmhhc19jcHVzID8gY29uZmlnLT5jcHVzIDogMDsNCj4gKyAgICB1bnNpZ25lZCBkaXNh
-YmxlZGNwdXMgPSBjb25maWctPmhhc19kaXNhYmxlZGNwdXMgPyBjb25maWctPmRpc2FibGVkY3B1
-cyA6IDA7DQo+ICAgICB1bnNpZ25lZCBkcmF3ZXJzID0gY29uZmlnLT5oYXNfZHJhd2VycyA/IGNv
-bmZpZy0+ZHJhd2VycyA6IDA7DQo+ICAgICB1bnNpZ25lZCBib29rcyAgID0gY29uZmlnLT5oYXNf
-Ym9va3MgPyBjb25maWctPmJvb2tzIDogMDsNCj4gICAgIHVuc2lnbmVkIHNvY2tldHMgPSBjb25m
-aWctPmhhc19zb2NrZXRzID8gY29uZmlnLT5zb2NrZXRzIDogMDsNCj4gQEAgLTE2Niw4ICsxNjcs
-MTMgQEAgdm9pZCBtYWNoaW5lX3BhcnNlX3NtcF9jb25maWcoTWFjaGluZVN0YXRlICptcywNCj4g
-ICAgICAgICBzb2NrZXRzID0gc29ja2V0cyA+IDAgPyBzb2NrZXRzIDogMTsNCj4gICAgICAgICBj
-b3JlcyA9IGNvcmVzID4gMCA/IGNvcmVzIDogMTsNCj4gICAgICAgICB0aHJlYWRzID0gdGhyZWFk
-cyA+IDAgPyB0aHJlYWRzIDogMTsNCj4gKw0KPiArICAgICAgICBtYXhjcHVzID0gZHJhd2VycyAq
-IGJvb2tzICogc29ja2V0cyAqIGRpZXMgKiBjbHVzdGVycyAqDQo+ICsgICAgICAgICAgICAgICAg
-ICAgIG1vZHVsZXMgKiBjb3JlcyAqIHRocmVhZHM7DQo+ICsgICAgICAgIGNwdXMgPSBtYXhjcHVz
-IC0gZGlzYWJsZWRjcHVzOw0KPiAgICAgfSBlbHNlIHsNCj4gLSAgICAgICAgbWF4Y3B1cyA9IG1h
-eGNwdXMgPiAwID8gbWF4Y3B1cyA6IGNwdXM7DQo+ICsgICAgICAgIG1heGNwdXMgPSBtYXhjcHVz
-ID4gMCA/IG1heGNwdXMgOiBjcHVzICsgZGlzYWJsZWRjcHVzOw0KPiArICAgICAgICBjcHVzID0g
-Y3B1cyA+IDAgPyBjcHVzIDogbWF4Y3B1cyAtIGRpc2FibGVkY3B1czsNCj4gDQo+ICAgICAgICAg
-aWYgKG1jLT5zbXBfcHJvcHMucHJlZmVyX3NvY2tldHMpIHsNCj4gICAgICAgICAgICAgLyogcHJl
-ZmVyIHNvY2tldHMgb3ZlciBjb3JlcyBiZWZvcmUgNi4yICovDQo+IEBAIC0yMDcsMTIgKzIxMyw4
-IEBAIHZvaWQgbWFjaGluZV9wYXJzZV9zbXBfY29uZmlnKE1hY2hpbmVTdGF0ZSAqbXMsDQo+ICAg
-ICAgICAgfQ0KPiAgICAgfQ0KPiANCj4gLSAgICB0b3RhbF9jcHVzID0gZHJhd2VycyAqIGJvb2tz
-ICogc29ja2V0cyAqIGRpZXMgKg0KPiAtICAgICAgICAgICAgICAgICBjbHVzdGVycyAqIG1vZHVs
-ZXMgKiBjb3JlcyAqIHRocmVhZHM7DQo+IC0gICAgbWF4Y3B1cyA9IG1heGNwdXMgPiAwID8gbWF4
-Y3B1cyA6IHRvdGFsX2NwdXM7DQo+IC0gICAgY3B1cyA9IGNwdXMgPiAwID8gY3B1cyA6IG1heGNw
-dXM7DQo+IC0NCj4gICAgIG1zLT5zbXAuY3B1cyA9IGNwdXM7DQo+ICsgICAgbXMtPnNtcC5kaXNh
-YmxlZGNwdXMgPSBkaXNhYmxlZGNwdXM7DQo+ICAgICBtcy0+c21wLmRyYXdlcnMgPSBkcmF3ZXJz
-Ow0KPiAgICAgbXMtPnNtcC5ib29rcyA9IGJvb2tzOw0KPiAgICAgbXMtPnNtcC5zb2NrZXRzID0g
-c29ja2V0czsNCj4gQEAgLTIyNiw2ICsyMjgsOCBAQCB2b2lkIG1hY2hpbmVfcGFyc2Vfc21wX2Nv
-bmZpZyhNYWNoaW5lU3RhdGUgKm1zLA0KPiAgICAgbWMtPnNtcF9wcm9wcy5oYXNfY2x1c3RlcnMg
-PSBjb25maWctPmhhc19jbHVzdGVyczsNCj4gDQo+ICAgICAvKiBzYW5pdHktY2hlY2sgb2YgdGhl
-IGNvbXB1dGVkIHRvcG9sb2d5ICovDQo+ICsgICAgdG90YWxfY3B1cyA9IG1heGNwdXMgPSBkcmF3
-ZXJzICogYm9va3MgKiBzb2NrZXRzICogZGllcyAqIGNsdXN0ZXJzICoNCj4gKyAgICAgICAgICAg
-ICAgICBtb2R1bGVzICogY29yZXMgKiB0aHJlYWRzOw0KPiAgICAgaWYgKHRvdGFsX2NwdXMgIT0g
-bWF4Y3B1cykgew0KPiAgICAgICAgIGdfYXV0b2ZyZWUgY2hhciAqdG9wb19tc2cgPSBjcHVfaGll
-cmFyY2h5X3RvX3N0cmluZyhtcyk7DQo+ICAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAiSW52YWxp
-ZCBDUFUgdG9wb2xvZ3k6ICINCj4gQEAgLTIzNSwxMiArMjM5LDEyIEBAIHZvaWQgbWFjaGluZV9w
-YXJzZV9zbXBfY29uZmlnKE1hY2hpbmVTdGF0ZSAqbXMsDQo+ICAgICAgICAgcmV0dXJuOw0KPiAg
-ICAgfQ0KPiANCj4gLSAgICBpZiAobWF4Y3B1cyA8IGNwdXMpIHsNCj4gKyAgICBpZiAobWF4Y3B1
-cyA8IChjcHVzICsgZGlzYWJsZWRjcHVzKSkgew0KPiAgICAgICAgIGdfYXV0b2ZyZWUgY2hhciAq
-dG9wb19tc2cgPSBjcHVfaGllcmFyY2h5X3RvX3N0cmluZyhtcyk7DQo+ICAgICAgICAgZXJyb3Jf
-c2V0ZyhlcnJwLCAiSW52YWxpZCBDUFUgdG9wb2xvZ3k6ICINCj4gLSAgICAgICAgICAgICAgICAg
-ICAibWF4Y3B1cyBtdXN0IGJlIGVxdWFsIHRvIG9yIGdyZWF0ZXIgdGhhbiBzbXA6ICINCj4gLSAg
-ICAgICAgICAgICAgICAgICAiJXMgPT0gbWF4Y3B1cyAoJXUpIDwgc21wX2NwdXMgKCV1KSIsDQo+
-IC0gICAgICAgICAgICAgICAgICAgdG9wb19tc2csIG1heGNwdXMsIGNwdXMpOw0KPiArICAgICAg
-ICAgICAgICAgICAgICJtYXhjcHVzIG11c3QgYmUgZXF1YWwgdG8gb3IgZ3JlYXRlciB0aGFuIHNt
-cFsrZGlzYWJsZWRjcHVzXToiDQo+ICsgICAgICAgICAgICAgICAgICAgIiVzID09IG1heGNwdXMg
-KCV1KSA8IHNtcF9jcHVzICgldSkgWysgb2ZmbGluZSBjcHVzICgldSldIiwNCj4gKyAgICAgICAg
-ICAgICAgICAgICB0b3BvX21zZywgbWF4Y3B1cywgY3B1cywgZGlzYWJsZWRjcHVzKTsNCj4gICAg
-ICAgICByZXR1cm47DQo+ICAgICB9DQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody9ib2Fy
-ZHMuaCBiL2luY2x1ZGUvaHcvYm9hcmRzLmgNCj4gaW5kZXggZjk0NzEzZTZlMi4uMmIxODJkNzgx
-NyAxMDA2NDQNCj4gLS0tIGEvaW5jbHVkZS9ody9ib2FyZHMuaA0KPiArKysgYi9pbmNsdWRlL2h3
-L2JvYXJkcy5oDQo+IEBAIC0zNjEsNiArMzYxLDcgQEAgdHlwZWRlZiBzdHJ1Y3QgRGV2aWNlTWVt
-b3J5U3RhdGUgew0KPiAvKioNCj4gICogQ3B1VG9wb2xvZ3k6DQo+ICAqIEBjcHVzOiB0aGUgbnVt
-YmVyIG9mIHByZXNlbnQgbG9naWNhbCBwcm9jZXNzb3JzIG9uIHRoZSBtYWNoaW5lDQo+ICsgKiBA
-ZGlzYWJsZWRjcHVzOiB0aGUgbnVtYmVyIGFkZGl0aW9uYWwgcHJlc2VudCBidXQgYWRtaW4gZGlz
-YWJsZWQgY3B1cw0KPiAgKiBAZHJhd2VyczogdGhlIG51bWJlciBvZiBkcmF3ZXJzIG9uIHRoZSBt
-YWNoaW5lDQo+ICAqIEBib29rczogdGhlIG51bWJlciBvZiBib29rcyBpbiBvbmUgZHJhd2VyDQo+
-ICAqIEBzb2NrZXRzOiB0aGUgbnVtYmVyIG9mIHNvY2tldHMgaW4gb25lIGJvb2sNCj4gQEAgLTM3
-Myw2ICszNzQsNyBAQCB0eXBlZGVmIHN0cnVjdCBEZXZpY2VNZW1vcnlTdGF0ZSB7DQo+ICAqLw0K
-PiB0eXBlZGVmIHN0cnVjdCBDcHVUb3BvbG9neSB7DQo+ICAgICB1bnNpZ25lZCBpbnQgY3B1czsN
-Cj4gKyAgICB1bnNpZ25lZCBpbnQgZGlzYWJsZWRjcHVzOw0KPiAgICAgdW5zaWduZWQgaW50IGRy
-YXdlcnM7DQo+ICAgICB1bnNpZ25lZCBpbnQgYm9va3M7DQo+ICAgICB1bnNpZ25lZCBpbnQgc29j
-a2V0czsNCj4gZGlmZiAtLWdpdCBhL3FhcGkvbWFjaGluZS5qc29uIGIvcWFwaS9tYWNoaW5lLmpz
-b24NCj4gaW5kZXggMDM4ZWFiMjgxYy4uZTQ1NzQwZGEzMyAxMDA2NDQNCj4gLS0tIGEvcWFwaS9t
-YWNoaW5lLmpzb24NCj4gKysrIGIvcWFwaS9tYWNoaW5lLmpzb24NCj4gQEAgLTE2MzQsNiArMTYz
-NCw4IEBADQo+ICMNCj4gIyBAY3B1czogbnVtYmVyIG9mIHZpcnR1YWwgQ1BVcyBpbiB0aGUgdmly
-dHVhbCBtYWNoaW5lDQo+ICMNCj4gKyMgQGRpc2FibGVkY3B1czogbnVtYmVyIG9mIGFkZGl0aW9u
-YWwgcHJlc2VudCBidXQgZGlzYWJsZWQob3Igb2ZmbGluZSkgQ1BVcw0KPiArIw0KPiAjIEBtYXhj
-cHVzOiBtYXhpbXVtIG51bWJlciBvZiBob3RwbHVnZ2FibGUgdmlydHVhbCBDUFVzIGluIHRoZSB2
-aXJ0dWFsDQo+ICMgICAgIG1hY2hpbmUNCj4gIw0KPiBAQCAtMTY1Nyw2ICsxNjU5LDcgQEANCj4g
-IyMNCj4geyAnc3RydWN0JzogJ1NNUENvbmZpZ3VyYXRpb24nLCAnZGF0YSc6IHsNCj4gICAgICAn
-KmNwdXMnOiAnaW50JywNCj4gKyAgICAgJypkaXNhYmxlZGNwdXMnOiAnaW50JywNCj4gICAgICAn
-KmRyYXdlcnMnOiAnaW50JywNCj4gICAgICAnKmJvb2tzJzogJ2ludCcsDQo+ICAgICAgJypzb2Nr
-ZXRzJzogJ2ludCcsDQo+IGRpZmYgLS1naXQgYS9xZW11LW9wdGlvbnMuaHggYi9xZW11LW9wdGlv
-bnMuaHgNCj4gaW5kZXggYWIyM2YxNGQyMS4uODNjY2RlMzQxYiAxMDA2NDQNCj4gLS0tIGEvcWVt
-dS1vcHRpb25zLmh4DQo+ICsrKyBiL3FlbXUtb3B0aW9ucy5oeA0KPiBAQCAtMzI2LDEyICszMjYs
-MTUgQEAgU1JTVA0KPiBFUlNUDQo+IA0KPiBERUYoInNtcCIsIEhBU19BUkcsIFFFTVVfT1BUSU9O
-X3NtcCwNCj4gLSAgICAiLXNtcCBbW2NwdXM9XW5dWyxtYXhjcHVzPW1heGNwdXNdWyxkcmF3ZXJz
-PWRyYXdlcnNdWyxib29rcz1ib29rc11bLHNvY2tldHM9c29ja2V0c11cbiINCj4gLSAgICAiICAg
-ICAgICAgICAgICAgWyxkaWVzPWRpZXNdWyxjbHVzdGVycz1jbHVzdGVyc11bLG1vZHVsZXM9bW9k
-dWxlc11bLGNvcmVzPWNvcmVzXVxuIg0KPiAtICAgICIgICAgICAgICAgICAgICBbLHRocmVhZHM9
-dGhyZWFkc11cbiINCj4gLSAgICAiICAgICAgICAgICAgICAgIHNldCB0aGUgbnVtYmVyIG9mIGlu
-aXRpYWwgQ1BVcyB0byAnbicgW2RlZmF1bHQ9MV1cbiINCj4gLSAgICAiICAgICAgICAgICAgICAg
-IG1heGNwdXM9IG1heGltdW0gbnVtYmVyIG9mIHRvdGFsIENQVXMsIGluY2x1ZGluZ1xuIg0KPiAt
-ICAgICIgICAgICAgICAgICAgICAgb2ZmbGluZSBDUFVzIGZvciBob3RwbHVnLCBldGNcbiINCj4g
-KyAgICAiLXNtcCBbW2NwdXM9XW5dWyxkaXNhYmxlZGNwdXM9ZGlzYWJsZWRjcHVzXVssbWF4Y3B1
-cz1tYXhjcHVzXVssZHJhd2Vycz1kcmF3ZXJzXVssYm9va3M9Ym9va3NdXG4iDQo+ICsgICAgIiAg
-ICAgICAgICAgICAgIFssc29ja2V0cz1zb2NrZXRzXVssZGllcz1kaWVzXVssY2x1c3RlcnM9Y2x1
-c3RlcnNdWyxtb2R1bGVzPW1vZHVsZXNdXG4iDQo+ICsgICAgIiAgICAgICAgICAgICAgIFssY29y
-ZXM9Y29yZXNdWyx0aHJlYWRzPXRocmVhZHNdXG4iDQo+ICsgICAgIiAgICAgICAgICAgICAgICBz
-ZXQgdGhlIGluaXRpYWwgbnVtYmVyIG9mIENQVXMgcHJlc2VudCBhbmRcbiINCj4gKyAgICAiICAg
-ICAgICAgICAgICAgICAgYWRtaW5pc3RyYXRpdmVseSBlbmFibGVkIGF0IGJvb3QgdGltZSB0byAn
-bicgW2RlZmF1bHQ9MV1cbiINCj4gKyAgICAiICAgICAgICAgICAgICAgIGRpc2FibGVkY3B1cz0g
-bnVtYmVyIG9mIHByZXNlbnQgYnV0IGFkbWluaXN0cmF0aXZlbHlcbiINCj4gKyAgICAiICAgICAg
-ICAgICAgICAgICAgZGlzYWJsZWQgQ1BVcyAodW5hdmFpbGFibGUgdG8gdGhlIGd1ZXN0IGF0IGJv
-b3QpXG4iDQo+ICsgICAgIiAgICAgICAgICAgICAgICBtYXhjcHVzPSBtYXhpbXVtIHRvdGFsIENQ
-VXMgKHByZXNlbnQgKyBob3RwbHVnZ2FibGUpXG4iDQo+ICsgICAgIiAgICAgICAgICAgICAgICAg
-IG9uIG1hY2hpbmVzIHdpdGhvdXQgQ1BVIGhvdHBsdWcsIGRlZmF1bHRzIHRvIG4gKyBkaXNhYmxl
-ZGNwdXNcbiINCj4gICAgICIgICAgICAgICAgICAgICAgZHJhd2Vycz0gbnVtYmVyIG9mIGRyYXdl
-cnMgb24gdGhlIG1hY2hpbmUgYm9hcmRcbiINCj4gICAgICIgICAgICAgICAgICAgICAgYm9va3M9
-IG51bWJlciBvZiBib29rcyBpbiBvbmUgZHJhd2VyXG4iDQo+ICAgICAiICAgICAgICAgICAgICAg
-IHNvY2tldHM9IG51bWJlciBvZiBzb2NrZXRzIGluIG9uZSBib29rXG4iDQo+IEBAIC0zNTEsMjIg
-KzM1NCw0OSBAQCBERUYoInNtcCIsIEhBU19BUkcsIFFFTVVfT1BUSU9OX3NtcCwNCj4gICAgICIg
-ICAgICBGb3IgYSBwYXJ0aWN1bGFyIG1hY2hpbmUgdHlwZSBib2FyZCwgYW4gZXhwZWN0ZWQgQ1BV
-IHRvcG9sb2d5IGhpZXJhcmNoeVxuIg0KPiAgICAgIiAgICAgIGNhbiBiZSBkZWZpbmVkIHRocm91
-Z2ggdGhlIHN1cHBvcnRlZCBzdWItb3B0aW9uLiBVbnN1cHBvcnRlZCBwYXJhbWV0ZXJzXG4iDQo+
-ICAgICAiICAgICAgY2FuIGFsc28gYmUgcHJvdmlkZWQgaW4gYWRkaXRpb24gdG8gdGhlIHN1Yi1v
-cHRpb24sIGJ1dCB0aGVpciB2YWx1ZXNcbiINCj4gLSAgICAiICAgICAgbXVzdCBiZSBzZXQgYXMg
-MSBpbiB0aGUgcHVycG9zZSBvZiBjb3JyZWN0IHBhcnNpbmcuXG4iLA0KPiArICAgICIgICAgICBt
-dXN0IGJlIHNldCBhcyAxIGluIHRoZSBwdXJwb3NlIG9mIGNvcnJlY3QgcGFyc2luZy5cbiINCj4g
-KyAgICAiICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIFxuIg0KPiArICAgICIgICAgICBBZG1pbmlzdHJhdGl2ZWx5IGRpc2FibGVkIENQVXM6
-IFNvbWUgbWFjaGluZSB0eXBlcyBkbyBub3Qgc3VwcG9ydCB2Q1BVXG4iDQo+ICsgICAgIiAgICAg
-IGhvdHBsdWcgYnV0IHRoZWlyIENQVXMgY2FuIGJlIG1hcmtlZCBkaXNhYmxlZCAocG93ZXJlZCBv
-ZmYpIGFuZCBrZXB0XG4iDQo+ICsgICAgIiAgICAgIHVuYXZhaWxhYmxlIHRvIHRoZSBndWVzdC4g
-TGF0ZXIsIHN1Y2ggQ1BVcyBjYW4gYmUgZW5hYmxlZCB2aWEgUU1QL0hNUFxuIg0KPiArICAgICIg
-ICAgICAoZS5nLiwgJ2RldmljZV9zZXQgLi4uIGFkbWluLXN0YXRlPWVuYWJsZScpLiBUaGlzIGlz
-IHNpbWlsYXIgdG8gaG90cGx1ZyxcbiINCj4gKyAgICAiICAgICAgZXhjZXB0IGFsbCBkaXNhYmxl
-ZCBDUFVzIGFyZSBhbHJlYWR5IHByZXNlbnQgYXQgYm9vdC4gVXNlZnVsIG9uXG4iDQo+ICsgICAg
-IiAgICAgIGFyY2hpdGVjdHVyZXMgdGhhdCBsYWNrIGFyY2hpdGVjdHVyYWwgQ1BVIGhvdHBsdWcu
-XG4iLA0KPiAgICAgUUVNVV9BUkNIX0FMTCkNCj4gU1JTVA0KPiAtYGAtc21wIFtbY3B1cz1dbl1b
-LG1heGNwdXM9bWF4Y3B1c11bLGRyYXdlcnM9ZHJhd2Vyc11bLGJvb2tzPWJvb2tzXVssc29ja2V0
-cz1zb2NrZXRzXVssZGllcz1kaWVzXVssY2x1c3RlcnM9Y2x1c3RlcnNdWyxtb2R1bGVzPW1vZHVs
-ZXNdWyxjb3Jlcz1jb3Jlc11bLHRocmVhZHM9dGhyZWFkc11gYA0KPiAtICAgIFNpbXVsYXRlIGEg
-U01QIHN5c3RlbSB3aXRoICdcIGBgbmBgXCAnIENQVXMgaW5pdGlhbGx5IHByZXNlbnQgb24NCj4g
-LSAgICB0aGUgbWFjaGluZSB0eXBlIGJvYXJkLiBPbiBib2FyZHMgc3VwcG9ydGluZyBDUFUgaG90
-cGx1ZywgdGhlIG9wdGlvbmFsDQo+IC0gICAgJ1wgYGBtYXhjcHVzYGBcICcgcGFyYW1ldGVyIGNh
-biBiZSBzZXQgdG8gZW5hYmxlIGZ1cnRoZXIgQ1BVcyB0byBiZQ0KPiAtICAgIGFkZGVkIGF0IHJ1
-bnRpbWUuIFdoZW4gYm90aCBwYXJhbWV0ZXJzIGFyZSBvbWl0dGVkLCB0aGUgbWF4aW11bSBudW1i
-ZXINCj4gK2BgLXNtcCBbW2NwdXM9XW5dWyxkaXNhYmxlZGNwdXM9ZGlzYWJsZWRjcHVzXVssbWF4
-Y3B1cz1tYXhjcHVzXVssZHJhd2Vycz1kcmF3ZXJzXVssYm9va3M9Ym9va3NdWyxzb2NrZXRzPXNv
-Y2tldHNdWyxkaWVzPWRpZXNdWyxjbHVzdGVycz1jbHVzdGVyc11bLG1vZHVsZXM9bW9kdWxlc11b
-LGNvcmVzPWNvcmVzXVssdGhyZWFkcz10aHJlYWRzXWBgDQo+ICsgICAgU2ltdWxhdGUgYSBTTVAg
-c3lzdGVtIHdpdGggJ1wgYGBuYGBcICcgQ1BVcyBpbml0aWFsbHkgcHJlc2VudCAmIGVuYWJsZWQg
-b24NCj4gKyAgICB0aGUgbWFjaGluZSB0eXBlIGJvYXJkLiBGdXJ0aGVybW9yZSwgb24gYXJjaGl0
-ZWN0dXJlcyB0aGF0IHN1cHBvcnQgY2hhbmdpbmcNCj4gKyAgICB0aGUgYWRtaW5pc3RyYXRpdmUg
-cG93ZXIgc3RhdGUgb2YgQ1BVcywgb3B0aW9uYWwgJ1wgYGBkaXNhYmxlZGNwdXNgYFwgJw0KPiAr
-ICAgIHBhcmFtZXRlciBzcGVjaWZpZXMgKmFkZGl0aW9uYWwqIENQVXMgdGhhdCBhcmUgcHJlc2Vu
-dCBpbiBmaXJtd2FyZSAoZS5nLiwNCj4gKyAgICBBQ1BJKSBidXQgYXJlIGFkbWluaXN0cmF0aXZl
-bHkgZGlzYWJsZWQgKGkuZS4sIG5vdCB1c2FibGUgYnkgdGhlIGd1ZXN0IGF0DQo+ICsgICAgYm9v
-dCB0aW1lKS4NCj4gKw0KPiArICAgIFRoaXMgaXMgZGlmZmVyZW50IGZyb20gQ1BVIGhvdHBsdWcg
-d2hlcmUgYWRkaXRpb25hbCBDUFVzIGFyZSBub3QgZXZlbg0KPiArICAgIHByZXNlbnQgaW4gdGhl
-IHN5c3RlbSBkZXNjcmlwdGlvbi4gQWRtaW5pc3RyYXRpdmVseSBkaXNhYmxlZCBDUFVzIGFwcGVh
-ciBpbg0KPiArICAgIEFDUEkgdGFibGVzIGkuZS4gYXJlIHByb3Zpc2lvbmVkLCBidXQgY2Fubm90
-IGJlIHVzZWQgdW50aWwgZXhwbGljaXRseQ0KPiArICAgIGVuYWJsZWQgdmlhIFFNUC9ITVAgb3Ig
-dGhlIGRldmljZXNldCBBUEkuDQo+ICsNCj4gKyAgICBPbiBib2FyZHMgc3VwcG9ydGluZyBDUFUg
-aG90cGx1ZywgdGhlIG9wdGlvbmFsICdcIGBgbWF4Y3B1c2BgXCAnIHBhcmFtZXRlcg0KPiArICAg
-IGNhbiBiZSBzZXQgdG8gZW5hYmxlIGZ1cnRoZXIgQ1BVcyB0byBiZSBhZGRlZCBhdCBydW50aW1l
-LiBXaGVuIGJvdGgNCj4gKyAgICAnXCBgYG5gYFwgJyAmICdcIGBgbWF4Y3B1c2BgXCAnIHBhcmFt
-ZXRlcnMgYXJlIG9taXR0ZWQsIHRoZSBtYXhpbXVtIG51bWJlcg0KPiAgICAgb2YgQ1BVcyB3aWxs
-IGJlIGNhbGN1bGF0ZWQgZnJvbSB0aGUgcHJvdmlkZWQgdG9wb2xvZ3kgbWVtYmVycyBhbmQgdGhl
-DQo+IC0gICAgaW5pdGlhbCBDUFUgY291bnQgd2lsbCBtYXRjaCB0aGUgbWF4aW11bSBudW1iZXIu
-IFdoZW4gb25seSBvbmUgb2YgdGhlbQ0KPiAtICAgIGlzIGdpdmVuIHRoZW4gdGhlIG9taXR0ZWQg
-b25lIHdpbGwgYmUgc2V0IHRvIGl0cyBjb3VudGVycGFydCdzIHZhbHVlLg0KPiAtICAgIEJvdGgg
-cGFyYW1ldGVycyBtYXkgYmUgc3BlY2lmaWVkLCBidXQgdGhlIG1heGltdW0gbnVtYmVyIG9mIENQ
-VXMgbXVzdA0KPiAtICAgIGJlIGVxdWFsIHRvIG9yIGdyZWF0ZXIgdGhhbiB0aGUgaW5pdGlhbCBD
-UFUgY291bnQuIFByb2R1Y3Qgb2YgdGhlDQo+IC0gICAgQ1BVIHRvcG9sb2d5IGhpZXJhcmNoeSBt
-dXN0IGJlIGVxdWFsIHRvIHRoZSBtYXhpbXVtIG51bWJlciBvZiBDUFVzLg0KPiAtICAgIEJvdGgg
-cGFyYW1ldGVycyBhcmUgc3ViamVjdCB0byBhbiB1cHBlciBsaW1pdCB0aGF0IGlzIGRldGVybWlu
-ZWQgYnkNCj4gLSAgICB0aGUgc3BlY2lmaWMgbWFjaGluZSB0eXBlIGNob3Nlbi4NCj4gKyAgICBp
-bml0aWFsIENQVSBjb3VudCB3aWxsIG1hdGNoIHRoZSBtYXhpbXVtIG51bWJlci4gV2hlbiBvbmx5
-IG9uZSBvZiB0aGVtIGlzDQo+ICsgICAgZ2l2ZW4gdGhlbiB0aGUgb21pdHRlZCBvbmUgd2lsbCBi
-ZSBzZXQgdG8gaXRzIGNvdW50ZXJwYXJ0J3MgdmFsdWUuIEJvdGgNCj4gKyAgICBwYXJhbWV0ZXJz
-IG1heSBiZSBzcGVjaWZpZWQsIGJ1dCB0aGUgbWF4aW11bSBudW1iZXIgb2YgQ1BVcyBtdXN0IGJl
-IGVxdWFsDQo+ICsgICAgdG8gb3IgZ3JlYXRlciB0aGFuIHRoZSBpbml0aWFsIENQVSBjb3VudC4g
-UHJvZHVjdCBvZiB0aGUgQ1BVIHRvcG9sb2d5DQo+ICsgICAgaGllcmFyY2h5IG11c3QgYmUgZXF1
-YWwgdG8gdGhlIG1heGltdW0gbnVtYmVyIG9mIENQVXMuIEJvdGggcGFyYW1ldGVycyBhcmUNCj4g
-KyAgICBzdWJqZWN0IHRvIGFuIHVwcGVyIGxpbWl0IHRoYXQgaXMgZGV0ZXJtaW5lZCBieSB0aGUg
-c3BlY2lmaWMgbWFjaGluZSB0eXBlDQo+ICsgICAgY2hvc2VuLiBCb2FyZHMgdGhhdCBzdXBwb3J0
-IGFkbWluaXN0cmF0aXZlbHkgZGlzYWJsZWQgQ1BVcyBidXQgZG8gKm5vdCoNCj4gKyAgICBzdXBw
-b3J0IENQVSBob3RwbHVnIGRlcml2ZSB0aGUgbWF4aW11bSBudW1iZXIgb2YgQ1BVcyBpbXBsaWNp
-dGx5Og0KPiArICAgICdcIGBgbWF4Y3B1c2BgXCAnIGlzIHRyZWF0ZWQgYXMgJ1wgYGBuICsgZGlz
-YWJsZWRjcHVzYGBcICcgKHRoZSB0b3RhbCBDUFVzDQo+ICsgICAgcHJlc2VudCBpbiBmaXJtd2Fy
-ZSkuIElmICdcIGBgbWF4Y3B1c2BgXCAnIGlzIHByb3ZpZGVkLCBpdCBtdXN0IGVxdWFsDQo+ICsg
-ICAgJ1wgYGBuICsgZGlzYWJsZWRjcHVzYGBcICcuIFRoZSB0b3BvbG9neSBwcm9kdWN0IG11c3Qg
-ZXF1YWwgdGhpcyBkZXJpdmVkDQo+ICsgICAgbWF4aW11bSBhcyB3ZWxsLg0KPiArDQo+ICsgICAg
-Tm90ZTogQWRtaW5pc3RyYXRpdmVseSBkaXNhYmxlZCBDUFVzIHdpbGwgYXBwZWFyIHRvIHRoZSBn
-dWVzdCBhcw0KPiArICAgIHVuYXZhaWxhYmxlLCBhbmQgYW55IGF0dGVtcHQgdG8gYnJpbmcgdGhl
-bSBvbmxpbmUgbXVzdCBnbyB0aHJvdWdoIFFNUC9ITVANCj4gKyAgICBjb21tYW5kcyBsaWtlICdk
-ZXZpY2Vfc2V0Jy4NCj4gDQo+ICAgICBUbyBjb250cm9sIHJlcG9ydGluZyBvZiBDUFUgdG9wb2xv
-Z3kgaW5mb3JtYXRpb24sIHZhbHVlcyBvZiB0aGUgdG9wb2xvZ3kNCj4gICAgIHBhcmFtZXRlcnMg
-Y2FuIGJlIHNwZWNpZmllZC4gTWFjaGluZXMgbWF5IG9ubHkgc3VwcG9ydCBhIHN1YnNldCBvZiB0
-aGUNCj4gQEAgLTQyNSw2ICs0NTUsMjQgQEAgU1JTVA0KPiANCj4gICAgICAgICAtc21wIDINCj4g
-DQo+ICsgICAgRXhhbXBsZXMgdXNpbmcgJ2Rpc2FibGVkY3B1cyc6DQo+ICsNCj4gKyAgICBGb3Ig
-YSBib2FyZCB3aXRob3V0IENQVSBob3RwbHVnLCBlbmFibGUgNCBDUFVzIGF0IGJvb3QgYW5kIHBy
-b3Zpc2lvbg0KPiArICAgIDIgYWRkaXRpb25hbCBhZG1pbmlzdHJhdGl2ZWx5IGRpc2FibGVkIENQ
-VXMgKG1heGltdW0gaXMgZGVyaXZlZA0KPiArICAgIGltcGxpY2l0bHkgYXMgNiA9IDQgKyAyKToN
-Cj4gKw0KPiArICAgIDo6DQo+ICsNCj4gKyAgICAgICAgLXNtcCBjcHVzPTQsZGlzYWJsZWRjcHVz
-PTINCj4gKw0KPiArICAgIEZvciBhIGJvYXJkIHRoYXQgc3VwcG9ydHMgQ1BVIGhvdHBsdWcgYW5k
-ICdkaXNhYmxlZGNwdXMnLCBlbmFibGUgNCBDUFVzDQo+ICsgICAgYXQgYm9vdCwgcHJvdmlzaW9u
-IDIgYWRtaW5pc3RyYXRpdmVseSBkaXNhYmxlZCBDUFVzLCBhbmQgYWxsb3cgaG90cGx1ZyBvZg0K
-PiArICAgIDIgbW9yZSBDUFVzIChmb3IgYSBtYXhpbXVtIG9mIDgpOg0KPiArDQo+ICsgICAgOjoN
-Cj4gKw0KPiArICAgICAgICAtc21wIGNwdXM9NCxkaXNhYmxlZGNwdXM9MixtYXhjcHVzPTgNCj4g
-Kw0KPiAgICAgTm90ZTogVGhlIGNsdXN0ZXIgdG9wb2xvZ3kgd2lsbCBvbmx5IGJlIGdlbmVyYXRl
-ZCBpbiBBQ1BJIGFuZCBleHBvc2VkDQo+ICAgICB0byBndWVzdCBpZiBpdCdzIGV4cGxpY2l0bHkg
-c3BlY2lmaWVkIGluIC1zbXAuDQo+IEVSU1QNCj4gZGlmZiAtLWdpdCBhL3N5c3RlbS92bC5jIGIv
-c3lzdGVtL3ZsLmMNCj4gaW5kZXggM2I3MDU3ZTZjNi4uMmYwZmQyMWExZiAxMDA2NDQNCj4gLS0t
-IGEvc3lzdGVtL3ZsLmMNCj4gKysrIGIvc3lzdGVtL3ZsLmMNCj4gQEAgLTczNiw2ICs3MzYsOSBA
-QCBzdGF0aWMgUWVtdU9wdHNMaXN0IHFlbXVfc21wX29wdHMgPSB7DQo+ICAgICAgICAgew0KPiAg
-ICAgICAgICAgICAubmFtZSA9ICJjcHVzIiwNCj4gICAgICAgICAgICAgLnR5cGUgPSBRRU1VX09Q
-VF9OVU1CRVIsDQo+ICsgICAgICAgIH0sIHsNCj4gKyAgICAgICAgICAgIC5uYW1lID0gImRpc2Fi
-bGVkY3B1cyIsDQo+ICsgICAgICAgICAgICAudHlwZSA9IFFFTVVfT1BUX05VTUJFUiwNCj4gICAg
-ICAgICB9LCB7DQo+ICAgICAgICAgICAgIC5uYW1lID0gImRyYXdlcnMiLA0KPiAgICAgICAgICAg
-ICAudHlwZSA9IFFFTVVfT1BUX05VTUJFUiwNCj4gLS0gDQo+IDIuMzQuMQ0KPiANCg0K
+On 10/9/25 04:32, Jamin Lin wrote:
+> Refactor IRQ helper to decouple from SoC state. The public
+> aspeed_soc_get_irq() now takes a function pointer and opaque context
+> (qemu_irq (*fn)(void *ctx, int dev), void *ctx, int dev) instead of an
+> AspeedSoCState *.
+> 
+> Update AspeedSoCClass::get_irq signature to (void *ctx, int dev) and
+> convert all SoC-specific implementations (AST1030/2400/2600/27x0 SSP/TSP
+> and AST2700) to accept void *ctx.
+> 
+> Adjust all call sites to pass sc->get_irq and s explicitly, and wire
+> through in aspeed_soc_uart_realize() and relevant realize paths.
+> 
+> This change removes a hard dependency on AspeedSoCState, enabling reuse
+> from other classes and simplifying future refactors.
+> 
+> No functional change.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   include/hw/arm/aspeed_soc.h |  5 +++--
+>   hw/arm/aspeed_ast10x0.c     | 18 ++++++++++--------
+>   hw/arm/aspeed_ast2400.c     | 32 ++++++++++++++++++--------------
+>   hw/arm/aspeed_ast2600.c     | 37 +++++++++++++++++++++----------------
+>   hw/arm/aspeed_ast27x0-ssp.c |  3 ++-
+>   hw/arm/aspeed_ast27x0-tsp.c |  3 ++-
+>   hw/arm/aspeed_ast27x0.c     | 27 +++++++++++++++------------
+>   hw/arm/aspeed_soc_common.c  |  8 +++++---
+>   8 files changed, 76 insertions(+), 57 deletions(-)
+> 
+> diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+> index 957362b88d..427708c087 100644
+> --- a/include/hw/arm/aspeed_soc.h
+> +++ b/include/hw/arm/aspeed_soc.h
+> @@ -198,7 +198,7 @@ struct AspeedSoCClass {
+>       const int *irqmap;
+>       const hwaddr *memmap;
+>       uint32_t num_cpus;
+> -    qemu_irq (*get_irq)(AspeedSoCState *s, int dev);
+> +    qemu_irq (*get_irq)(void *ctx, int dev);
+>       bool (*boot_from_emmc)(AspeedSoCState *s);
+>   };
+>   
+> @@ -303,7 +303,8 @@ enum {
+>   };
+>   
+>   const char *aspeed_soc_cpu_type(const char * const *valid_cpu_types);
+> -qemu_irq aspeed_soc_get_irq(AspeedSoCState *s, int dev);
+> +qemu_irq aspeed_soc_get_irq(qemu_irq (*fn)(void *ctx, int dev),
+> +                            void *ctx, int dev);
+>   bool aspeed_soc_uart_realize(AspeedSoCState *s, Error **errp);
+>   void aspeed_soc_uart_set_chr(SerialMM *uart, int dev, int uarts_base,
+>                                int uarts_num, Chardev *chr);
+> diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+> index e861b6dad6..3ce866c66a 100644
+> --- a/hw/arm/aspeed_ast10x0.c
+> +++ b/hw/arm/aspeed_ast10x0.c
+> @@ -99,8 +99,9 @@ static const int aspeed_soc_ast1030_irqmap[] = {
+>       [ASPEED_DEV_JTAG1]     = 53,
+>   };
+>   
+> -static qemu_irq aspeed_soc_ast1030_get_irq(AspeedSoCState *s, int dev)
+> +static qemu_irq aspeed_soc_ast1030_get_irq(void *ctx, int dev)
+>   {
+> +    AspeedSoCState *s = (AspeedSoCState *)ctx;
+>       Aspeed10x0SoCState *a = ASPEED10X0_SOC(s);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>   
+> @@ -283,7 +284,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->peci), 0,
+>                       sc->memmap[ASPEED_DEV_PECI]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->peci), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_PECI));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_PECI));
+
+Could we call directly aspeed_soc_ast1030_get_irq() instead ? same
+for all other SoC and remove aspeed_soc_get_irq().
+
+
+Thanks,
+
+C.
+
+
+
+>   
+>       /* LPC */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->lpc), errp)) {
+> @@ -294,7 +295,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>   
+>       /* Connect the LPC IRQ to the GIC. It is otherwise unused. */
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_LPC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_LPC));
+>   
+>       /*
+>        * On the AST1030 LPC subdevice IRQs are connected straight to the GIC.
+> @@ -329,7 +330,8 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->timerctrl), 0,
+>                       sc->memmap[ASPEED_DEV_TIMER1]);
+>       for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
+> -        qemu_irq irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+> +        qemu_irq irq = aspeed_soc_get_irq(sc->get_irq, s,
+> +                                          ASPEED_DEV_TIMER1 + i);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
+>       }
+>   
+> @@ -340,7 +342,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->adc), 0,
+>                       sc->memmap[ASPEED_DEV_ADC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_ADC));
+>   
+>       /* FMC, The number of CS is set at the board level */
+>       object_property_set_link(OBJECT(&s->fmc), "dram", OBJECT(&s->sram),
+> @@ -353,7 +355,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->fmc), 1,
+>                       ASPEED_SMC_GET_CLASS(&s->fmc)->flash_window_base);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->fmc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_FMC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_FMC));
+>   
+>       /* SPI */
+>       for (i = 0; i < sc->spis_num; i++) {
+> @@ -384,7 +386,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->hace), 0,
+>                       sc->memmap[ASPEED_DEV_HACE]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_HACE));
+>   
+>       /* Watch dog */
+>       for (i = 0; i < sc->wdts_num; i++) {
+> @@ -406,7 +408,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->gpio), 0,
+>                       sc->memmap[ASPEED_DEV_GPIO]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_GPIO));
+>   
+>       aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->pwm),
+>                                     "aspeed.pwm",
+> diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
+> index e0604851a5..2910c40807 100644
+> --- a/hw/arm/aspeed_ast2400.c
+> +++ b/hw/arm/aspeed_ast2400.c
+> @@ -134,8 +134,9 @@ static const int aspeed_soc_ast2400_irqmap[] = {
+>   
+>   #define aspeed_soc_ast2500_irqmap aspeed_soc_ast2400_irqmap
+>   
+> -static qemu_irq aspeed_soc_ast2400_get_irq(AspeedSoCState *s, int dev)
+> +static qemu_irq aspeed_soc_ast2400_get_irq(void *ctx, int dev)
+>   {
+> +    AspeedSoCState *s = (AspeedSoCState *)ctx;
+>       Aspeed2400SoCState *a = ASPEED2400_SOC(s);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>   
+> @@ -312,7 +313,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->rtc), 0,
+>                       sc->memmap[ASPEED_DEV_RTC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->rtc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_RTC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_RTC));
+>   
+>       /* Timer */
+>       object_property_set_link(OBJECT(&s->timerctrl), "scu", OBJECT(&s->scu),
+> @@ -323,7 +324,8 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->timerctrl), 0,
+>                       sc->memmap[ASPEED_DEV_TIMER1]);
+>       for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
+> -        qemu_irq irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+> +        qemu_irq irq = aspeed_soc_get_irq(sc->get_irq, s,
+> +                                          ASPEED_DEV_TIMER1 + i);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
+>       }
+>   
+> @@ -334,7 +336,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->adc), 0,
+>                       sc->memmap[ASPEED_DEV_ADC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_ADC));
+>   
+>       /* UART */
+>       if (!aspeed_soc_uart_realize(s, errp)) {
+> @@ -350,7 +352,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->i2c), 0,
+>                       sc->memmap[ASPEED_DEV_I2C]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_I2C));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_I2C));
+>   
+>       /* PECI */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->peci), errp)) {
+> @@ -359,7 +361,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->peci), 0,
+>                       sc->memmap[ASPEED_DEV_PECI]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->peci), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_PECI));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_PECI));
+>   
+>       /* FMC, The number of CS is set at the board level */
+>       object_property_set_link(OBJECT(&s->fmc), "dram", OBJECT(s->dram_mr),
+> @@ -372,7 +374,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->fmc), 1,
+>                       ASPEED_SMC_GET_CLASS(&s->fmc)->flash_window_base);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->fmc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_FMC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_FMC));
+>   
+>       /* Set up an alias on the FMC CE0 region (boot default) */
+>       MemoryRegion *fmc0_mmio = &s->fmc.flashes[0].mmio;
+> @@ -399,7 +401,8 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->ehci[i]), 0,
+>                           sc->memmap[ASPEED_DEV_EHCI1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_EHCI1 + i));
+>       }
+>   
+>       /* SDMC - SDRAM Memory Controller */
+> @@ -437,7 +440,8 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->ftgmac100[i]), 0,
+>                           sc->memmap[ASPEED_DEV_ETH1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->ftgmac100[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_ETH1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_ETH1 + i));
+>       }
+>   
+>       /* XDMA */
+> @@ -447,7 +451,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->xdma), 0,
+>                       sc->memmap[ASPEED_DEV_XDMA]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->xdma), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_XDMA));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_XDMA));
+>   
+>       /* GPIO */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
+> @@ -456,7 +460,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->gpio), 0,
+>                       sc->memmap[ASPEED_DEV_GPIO]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_GPIO));
+>   
+>       /* SDHCI */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdhci), errp)) {
+> @@ -465,7 +469,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->sdhci), 0,
+>                       sc->memmap[ASPEED_DEV_SDHCI]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdhci), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_SDHCI));
+>   
+>       /* LPC */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->lpc), errp)) {
+> @@ -476,7 +480,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>   
+>       /* Connect the LPC IRQ to the VIC */
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_LPC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_LPC));
+>   
+>       /*
+>        * On the AST2400 and AST2500 the one LPC IRQ is shared between all of the
+> @@ -508,7 +512,7 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->hace), 0,
+>                       sc->memmap[ASPEED_DEV_HACE]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_HACE));
+>   }
+>   
+>   static void aspeed_soc_ast2400_class_init(ObjectClass *oc, const void *data)
+> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+> index ed0985a16e..cd14dc95bb 100644
+> --- a/hw/arm/aspeed_ast2600.c
+> +++ b/hw/arm/aspeed_ast2600.c
+> @@ -144,8 +144,9 @@ static const int aspeed_soc_ast2600_irqmap[] = {
+>       [ASPEED_DEV_I3C]       = 102,   /* 102 -> 107 */
+>   };
+>   
+> -static qemu_irq aspeed_soc_ast2600_get_irq(AspeedSoCState *s, int dev)
+> +static qemu_irq aspeed_soc_ast2600_get_irq(void *ctx, int dev)
+>   {
+> +    AspeedSoCState *s = (AspeedSoCState *)ctx;
+>       Aspeed2600SoCState *a = ASPEED2600_SOC(s);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>   
+> @@ -463,7 +464,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->rtc), 0,
+>                       sc->memmap[ASPEED_DEV_RTC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->rtc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_RTC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_RTC));
+>   
+>       /* Timer */
+>       object_property_set_link(OBJECT(&s->timerctrl), "scu", OBJECT(&s->scu),
+> @@ -474,7 +475,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->timerctrl), 0,
+>                       sc->memmap[ASPEED_DEV_TIMER1]);
+>       for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
+> -        irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+> +        irq = aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_TIMER1 + i);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
+>       }
+>   
+> @@ -485,7 +486,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->adc), 0,
+>                       sc->memmap[ASPEED_DEV_ADC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_ADC));
+>   
+>       /* UART */
+>       if (!aspeed_soc_uart_realize(s, errp)) {
+> @@ -514,7 +515,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->peci), 0,
+>                       sc->memmap[ASPEED_DEV_PECI]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->peci), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_PECI));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_PECI));
+>   
+>       /* PCIe Root Complex (RC) */
+>       if (!aspeed_soc_ast2600_pcie_realize(dev, errp)) {
+> @@ -532,7 +533,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->fmc), 1,
+>                       ASPEED_SMC_GET_CLASS(&s->fmc)->flash_window_base);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->fmc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_FMC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_FMC));
+>   
+>       /* Set up an alias on the FMC CE0 region (boot default) */
+>       MemoryRegion *fmc0_mmio = &s->fmc.flashes[0].mmio;
+> @@ -561,7 +562,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->ehci[i]), 0,
+>                           sc->memmap[ASPEED_DEV_EHCI1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_EHCI1 + i));
+>       }
+>   
+>       /* SDMC - SDRAM Memory Controller */
+> @@ -599,7 +601,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->ftgmac100[i]), 0,
+>                           sc->memmap[ASPEED_DEV_ETH1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->ftgmac100[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_ETH1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_ETH1 + i));
+>   
+>           object_property_set_link(OBJECT(&s->mii[i]), "nic",
+>                                    OBJECT(&s->ftgmac100[i]), &error_abort);
+> @@ -618,7 +621,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->xdma), 0,
+>                       sc->memmap[ASPEED_DEV_XDMA]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->xdma), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_XDMA));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_XDMA));
+>   
+>       /* GPIO */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
+> @@ -627,7 +630,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->gpio), 0,
+>                       sc->memmap[ASPEED_DEV_GPIO]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_GPIO));
+>   
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio_1_8v), errp)) {
+>           return;
+> @@ -635,7 +638,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->gpio_1_8v), 0,
+>                       sc->memmap[ASPEED_DEV_GPIO_1_8V]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio_1_8v), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO_1_8V));
+> +                       aspeed_soc_get_irq(sc->get_irq, s,
+> +                                          ASPEED_DEV_GPIO_1_8V));
+>   
+>       /* SDHCI */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdhci), errp)) {
+> @@ -644,7 +648,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->sdhci), 0,
+>                       sc->memmap[ASPEED_DEV_SDHCI]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdhci), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_SDHCI));
+>   
+>       /* eMMC */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->emmc), errp)) {
+> @@ -653,7 +657,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->emmc), 0,
+>                       sc->memmap[ASPEED_DEV_EMMC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_EMMC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_EMMC));
+>   
+>       /* LPC */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->lpc), errp)) {
+> @@ -664,7 +668,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>   
+>       /* Connect the LPC IRQ to the GIC. It is otherwise unused. */
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_LPC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_LPC));
+>   
+>       /*
+>        * On the AST2600 LPC subdevice IRQs are connected straight to the GIC.
+> @@ -699,7 +703,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->hace), 0,
+>                       sc->memmap[ASPEED_DEV_HACE]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_HACE));
+>   
+>       /* I3C */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->i3c), errp)) {
+> @@ -729,7 +733,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->fsi[i]), 0,
+>                           sc->memmap[ASPEED_DEV_FSI1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->fsi[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_FSI1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_FSI1 + i));
+>       }
+>   }
+>   
+> diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
+> index 99a3de15b5..e63a4b3ad3 100644
+> --- a/hw/arm/aspeed_ast27x0-ssp.c
+> +++ b/hw/arm/aspeed_ast27x0-ssp.c
+> @@ -104,8 +104,9 @@ static struct nvic_intc_irq_info ast2700_ssp_intcmap[] = {
+>       {136, 0, 9, NULL},
+>   };
+>   
+> -static qemu_irq aspeed_soc_ast27x0ssp_get_irq(AspeedSoCState *s, int dev)
+> +static qemu_irq aspeed_soc_ast27x0ssp_get_irq(void *ctx, int dev)
+>   {
+> +    AspeedSoCState *s = (AspeedSoCState *)ctx;
+>       Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(s);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>   
+> diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
+> index 568d7555e2..9537ce121c 100644
+> --- a/hw/arm/aspeed_ast27x0-tsp.c
+> +++ b/hw/arm/aspeed_ast27x0-tsp.c
+> @@ -104,8 +104,9 @@ static struct nvic_intc_irq_info ast2700_tsp_intcmap[] = {
+>       {136, 0, 9, NULL},
+>   };
+>   
+> -static qemu_irq aspeed_soc_ast27x0tsp_get_irq(AspeedSoCState *s, int dev)
+> +static qemu_irq aspeed_soc_ast27x0tsp_get_irq(void *ctx, int dev)
+>   {
+> +    AspeedSoCState *s = (AspeedSoCState *)ctx;
+>       Aspeed27x0TSPSoCState *a = ASPEED27X0TSP_SOC(s);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>   
+> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+> index 9b645c6c55..9a53f51ec5 100644
+> --- a/hw/arm/aspeed_ast27x0.c
+> +++ b/hw/arm/aspeed_ast27x0.c
+> @@ -286,8 +286,9 @@ static const struct gic_intc_irq_info ast2700_gic_intcmap[] = {
+>       {136, 0, 9, NULL},
+>   };
+>   
+> -static qemu_irq aspeed_soc_ast2700_get_irq(AspeedSoCState *s, int dev)
+> +static qemu_irq aspeed_soc_ast2700_get_irq(void *ctx, int dev)
+>   {
+> +    AspeedSoCState *s = (AspeedSoCState *)ctx;
+>       Aspeed27x0SoCState *a = ASPEED27X0_SOC(s);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>       int or_idx;
+> @@ -660,7 +661,7 @@ static bool aspeed_soc_ast2700_pcie_realize(DeviceState *dev, Error **errp)
+>           }
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->pcie[i]), 0,
+>                           sc->memmap[ASPEED_DEV_PCIE0 + i]);
+> -        irq = aspeed_soc_get_irq(s, ASPEED_DEV_PCIE0 + i);
+> +        irq = aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_PCIE0 + i);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie[i].rc), 0, irq);
+>   
+>           mmio_mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->pcie[i].rc), 1);
+> @@ -806,7 +807,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->fmc), 1,
+>                       ASPEED_SMC_GET_CLASS(&s->fmc)->flash_window_base);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->fmc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_FMC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_FMC));
+>   
+>       /* Set up an alias on the FMC CE0 region (boot default) */
+>       MemoryRegion *fmc0_mmio = &s->fmc.flashes[0].mmio;
+> @@ -835,7 +836,8 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->ehci[i]), 0,
+>                           sc->memmap[ASPEED_DEV_EHCI1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_EHCI1 + i));
+>       }
+>   
+>       /*
+> @@ -870,7 +872,8 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->ftgmac100[i]), 0,
+>                           sc->memmap[ASPEED_DEV_ETH1 + i]);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->ftgmac100[i]), 0,
+> -                           aspeed_soc_get_irq(s, ASPEED_DEV_ETH1 + i));
+> +                           aspeed_soc_get_irq(sc->get_irq, s,
+> +                                              ASPEED_DEV_ETH1 + i));
+>   
+>           object_property_set_link(OBJECT(&s->mii[i]), "nic",
+>                                    OBJECT(&s->ftgmac100[i]), &error_abort);
+> @@ -915,7 +918,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->adc), 0,
+>                       sc->memmap[ASPEED_DEV_ADC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_ADC));
+>   
+>       /* I2C */
+>       object_property_set_link(OBJECT(&s->i2c), "dram", OBJECT(s->dram_mr),
+> @@ -956,7 +959,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->gpio), 0,
+>                       sc->memmap[ASPEED_DEV_GPIO]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_GPIO));
+>   
+>       /* RTC */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->rtc), errp)) {
+> @@ -965,7 +968,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->rtc), 0,
+>                       sc->memmap[ASPEED_DEV_RTC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->rtc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_RTC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_RTC));
+>   
+>       /* SDHCI */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdhci), errp)) {
+> @@ -974,7 +977,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->sdhci), 0,
+>                       sc->memmap[ASPEED_DEV_SDHCI]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdhci), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_SDHCI));
+>   
+>       /* eMMC */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->emmc), errp)) {
+> @@ -983,7 +986,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->emmc), 0,
+>                       sc->memmap[ASPEED_DEV_EMMC]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_EMMC));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_EMMC));
+>   
+>       /* Timer */
+>       object_property_set_link(OBJECT(&s->timerctrl), "scu", OBJECT(&s->scu),
+> @@ -994,7 +997,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->timerctrl), 0,
+>                       sc->memmap[ASPEED_DEV_TIMER1]);
+>       for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
+> -        irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+> +        irq = aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_TIMER1 + i);
+>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
+>       }
+>   
+> @@ -1007,7 +1010,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->hace), 0,
+>                       sc->memmap[ASPEED_DEV_HACE]);
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
+> -                       aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
+> +                       aspeed_soc_get_irq(sc->get_irq, s, ASPEED_DEV_HACE));
+>   
+>       /* PCIe Root Complex (RC) */
+>       if (!aspeed_soc_ast2700_pcie_realize(dev, errp)) {
+> diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
+> index e7d0a9c290..2bd872d9a6 100644
+> --- a/hw/arm/aspeed_soc_common.c
+> +++ b/hw/arm/aspeed_soc_common.c
+> @@ -30,9 +30,10 @@ const char *aspeed_soc_cpu_type(const char * const *valid_cpu_types)
+>       return valid_cpu_types[0];
+>   }
+>   
+> -qemu_irq aspeed_soc_get_irq(AspeedSoCState *s, int dev)
+> +qemu_irq aspeed_soc_get_irq(qemu_irq (*fn)(void *ctx, int dev),
+> +                            void *ctx, int dev)
+>   {
+> -    return ASPEED_SOC_GET_CLASS(s)->get_irq(s, dev);
+> +    return fn(ctx, dev);
+>   }
+>   
+>   bool aspeed_soc_uart_realize(AspeedSoCState *s, Error **errp)
+> @@ -52,7 +53,8 @@ bool aspeed_soc_uart_realize(AspeedSoCState *s, Error **errp)
+>               return false;
+>           }
+>   
+> -        sysbus_connect_irq(SYS_BUS_DEVICE(smm), 0, aspeed_soc_get_irq(s, uart));
+> +        sysbus_connect_irq(SYS_BUS_DEVICE(smm), 0,
+> +                           aspeed_soc_get_irq(sc->get_irq, s, uart));
+>           aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(smm), 0, sc->memmap[uart]);
+>       }
+>   
+
 
