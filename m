@@ -2,90 +2,225 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9307FBC972A
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 16:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED72BC9733
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 16:12:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6rLc-0006a6-24; Thu, 09 Oct 2025 10:10:24 -0400
+	id 1v6rN1-0007o9-IL; Thu, 09 Oct 2025 10:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1v6rLa-0006ZG-Gh
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:10:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v6rMt-0007bp-0C
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:11:44 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1v6rLR-0008MY-0R
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:10:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760019009;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=E6BR09Yo65cMNs+PZOzcZ9j0c+B+ewk+HhDTaTeH4g8=;
- b=Ansmfu0kxmPclolAkmob7tLfCDhB7VsoIUCrRmFQFsM83+lnqYEttwb7yiYNnDqxr73t7Q
- SMRVkSbxZTwlqEOXxgd0gYqtyXZA9eGFHbEp0R7S+W8RoE88CzytQULzF1MMBrDIFHXogq
- BKN8t9VQIR/SYCRk4b5fPRpvEwdTw5E=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-Zqlkbrr6PAaA5_Pol_S_jw-1; Thu, 09 Oct 2025 10:10:06 -0400
-X-MC-Unique: Zqlkbrr6PAaA5_Pol_S_jw-1
-X-Mimecast-MFC-AGG-ID: Zqlkbrr6PAaA5_Pol_S_jw_1760019005
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-b448c864d45so98401066b.2
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 07:10:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760019004; x=1760623804;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E6BR09Yo65cMNs+PZOzcZ9j0c+B+ewk+HhDTaTeH4g8=;
- b=gvflSszdDdb0mah2tYJiMi+uzEvgL7rst7x7TQr5oF0wdPVBqWsfs/P/jbY99Vw/0m
- ga0Nez79iTs2bYY6yW98OPeXaAT1I8vU7gT1EFIPb3IHkRDoNzOPA/gzXFsDjsA8T6Gs
- zwK3O/PSkp0gfowuBa7mGESt2Ho1j/0vD1bHhgCwlJoehgubELLQvvEAYDd0KlAjK2II
- r5i0/bB0/ydJGmT0ALSPtV329JcHTaGlCSHZkdM60jkGWZS+UPn7r4pFFkhCzciR3tSo
- qLK7uoc7L25w0YFfj4WRjngyWmuaycbXXMUpaguj57vwJzvBwMDIvG967mt9zwW8tbxq
- Fk9w==
-X-Gm-Message-State: AOJu0YzJ7s58PhxIqokrlUvQV43/p138uc3LT2N9tgKwAHtdCiroxkbE
- 08scb/naPPRZ8onO7HDEfJzr0pearHy5AxIyGjdJjgXSO/u0b/T7ffdH79qvlQEvkt1dJ5SF6tn
- Dcf7FM5nX8ZJf1Voxjw9Ska3Ct9TLbLhNFxjYp1CPkRpwLaQXUO86r9yojWD9ZKx53ooR9Bv83V
- ZEDy5lHc1btm5Y3MBeXWQgbulocEOBRiWH77U2hg0=
-X-Gm-Gg: ASbGncslX+p2+EoSinlzMKPTpLQHbTW7d2f8DtCei2JYtjrSVDpcKNog2MdevFoikIF
- R2uHKMtyrKTxrbuN72GE9SLlzOEzKKTXxcz1kHjK/6za6/6/lf4jeMx1gnADOdmWshnfU+fAcTO
- MstvH3chtCKGwk99+o5u/qBcMV5d4=
-X-Received: by 2002:a17:906:6a1f:b0:b41:660:13b8 with SMTP id
- a640c23a62f3a-b50aba9ebf7mr911870966b.31.1760019004488; 
- Thu, 09 Oct 2025 07:10:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjr4ePscFhYutahxTGsSG1imDV69Wi0QKDoBt0veW5oszI+xj0JC4DzudfiwqcNC9kE1OmGNLf8ULx8/qqY/g=
-X-Received: by 2002:a17:906:6a1f:b0:b41:660:13b8 with SMTP id
- a640c23a62f3a-b50aba9ebf7mr911864266b.31.1760019003924; Thu, 09 Oct 2025
- 07:10:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v6rMh-00005F-Vw
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:11:42 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 599DtxMB027721;
+ Thu, 9 Oct 2025 14:11:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=N6QypbdpR6p+9uDD6bZHHq5JpkZ18vgEReC1Oxr/5io=; b=
+ oKBLEHUmtz4HVzdqF+vxPz+PyF73VT2YlpPjF4U+5HQInWLBkFjdFRVMv93W9dKK
+ fkjkWjMbMsBtmYDsfz1G5fZMgc8+HHExxlrC6S/5LoGWnQpbPekbPHE2loEpBVtD
+ zVsMFLSjRNW4/rRDPgBjTE4PgbgYlUxygoK8XMwrE0PCXvrI5RBOEAsLhpa7HeHp
+ rjkaE6Bzk8vbCwfwyvgp3AGbHjBfFuTOF+Fx76uYgeOX0sONiu0+WDHXZeyGfRUK
+ ix5xOr8eP+xlQFjT1uEIGS1sNlrx+Waafvu5q4T7DCryDOiaa3/UdyeR8wgzBKX0
+ CCp3UIoiJe8CSs5+u+iMQg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49nv6bsq4b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 09 Oct 2025 14:11:24 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 599DfgYI010255; Thu, 9 Oct 2025 14:11:24 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com
+ (mail-westus3azon11011033.outbound.protection.outlook.com [40.107.208.33])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49nv66y6he-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 09 Oct 2025 14:11:24 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q9H+sh2vxPmOvQ5LOqvmpXBrwQjsTQRbADZFnGw4oglXOyZb88RXpTzOuDa9Lzhm2h5/dHVvH29QseFYZy8SeInpsOGVV2x4CJ02kwWbTT3zUXQrsvrPydsaONLpmBL67zHHVCTeJk1XsOcZHOTLzmJDYcwHqvJ3iSLsvt2CFuAkn0pS/ILIDB0fNv8FPYO9uyzdVncR5ctVqcbPGe8P7ct/HPhB8PQ7wF54f3cDfZpdLmUjcSxfJo1Ze2lWryw+pk7gbIdCR2CMzsoMsPmLqonEwGwy5Uo4NM80eeopKAlq/Je80TA58qVByEkkUW/ZE0LOwg0Jj/584NULvvLD0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N6QypbdpR6p+9uDD6bZHHq5JpkZ18vgEReC1Oxr/5io=;
+ b=kPYLFy5i/xIgV3gvf4XqflLGU8pKG2tvijLjRI9m79oMlnp0Z2SuycHKxvX8ugCNPXBFBed+0n7rN9zpPSnpmmtz6hmRn21fJRX2y0hj+PTMcxvp/uB3Cwja8RDGWGCNARw+z1ezHztu0IqU0B8O4phxvKoRFoAA+KWEAIyX+ua3Xp5jHxlZqY7jBt2HzlFz0KWHpFxiC+CKCoGTnQoeenzWw8wDo8+jrmGLVRJ4XkqTeYpu+xqGRNr5rMMdhXa2JFM6ephEN6StmtmgGUSS0rZ+9gVQTbiguqmUdUSTg4c7sbN2smTdjA7CP2da2hXrsfKHRLbhT8dzyTIECiROTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N6QypbdpR6p+9uDD6bZHHq5JpkZ18vgEReC1Oxr/5io=;
+ b=IWSTyPulUxWN959gBE7CEykVTWZ49/lDQlnKWs2WoTPl5xqPi2a0KB5S6JMla4G+woCcNEY045ij8uYBSQzi6STseyTNbTuWxBJ54lhzbViRKNajCKdisDBAhbqnByDGKn16FmK4ALSwPxvT1iJbjkevhXKLKag8xIdcrzRRWB0=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by PH7PR10MB6333.namprd10.prod.outlook.com (2603:10b6:510:1b0::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Thu, 9 Oct
+ 2025 14:11:21 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.9203.007; Thu, 9 Oct 2025
+ 14:11:21 +0000
+Message-ID: <ab688cce-283d-4541-b7ca-be651085979e@oracle.com>
+Date: Thu, 9 Oct 2025 10:11:17 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute
+ "query-balloon" after CPR transfer
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20250928085432.40107-1-zhenzhong.duan@intel.com>
+ <20250928085432.40107-7-zhenzhong.duan@intel.com>
+ <1ba0dbca-08b2-4f80-ba12-01884a25ef0d@oracle.com>
+ <IA3PR11MB913635F06F6522102D8FC15D921AA@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <78df77e2-43a6-48d6-b09e-fcc61a662b6e@oracle.com>
+ <IA3PR11MB9136EF2C01DAB2C2EA261CC092E1A@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Steven Sistare <steven.sistare@oracle.com>
+In-Reply-To: <IA3PR11MB9136EF2C01DAB2C2EA261CC092E1A@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PH7P220CA0035.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32b::30) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
 MIME-Version: 1.0
-References: <20250925023235.1899458-1-hzuo@redhat.com>
-In-Reply-To: <20250925023235.1899458-1-hzuo@redhat.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Thu, 9 Oct 2025 22:09:26 +0800
-X-Gm-Features: AS18NWCzDznW5XosC471PZwn5RbXAeM5s85C48m-sN733MeK2gikvLEWYNbYisU
-Message-ID: <CAPpAL=zmm+1qyy+MTs=7U+9NN5Q0juH2Je9idC+--z3MbrbvPA@mail.gmail.com>
-Subject: Re: [PATCH v4] net/tap-linux.c: avoid abort when setting invalid fd
-To: "Houqi (Nick) Zuo" <hzuo@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Cindy Lu <lulu@redhat.com>, Michael Tsirkin <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|PH7PR10MB6333:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30326baa-0165-4452-83b6-08de073db8cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aVhETWZVQWFYT2tqTC9mMmYrc1hIOUZhMWlKNEpXc25rcWJ4M0ZiaTdqbUtz?=
+ =?utf-8?B?dityZ1dCbVg2QXBaSGZnY1ZuWDZIbTArbHA3Z0dxSTJVTm5JMzdnY052V1FN?=
+ =?utf-8?B?WXAxdzM3UG8vdGtDSEFrN3JzRHlXQmU0NUlrbjh6OXR6dkRoZEZ1eUJLWGN1?=
+ =?utf-8?B?dDU5Mk8wbm5Ic2w1eUVnNWk3N2FDdG5NOElzSUFGeGRCNTlVZms1NUFZWUNG?=
+ =?utf-8?B?WXpzK3RaalgyU3FLb2cvM08xaFNGQVdmZzdiNTUvVGJhU2hQemxhemZnZ2xQ?=
+ =?utf-8?B?YkxUZWtFTjR4bG5vVWw0WGdFaktZUWtDUVpvQVl1UnRrTk41emFsb0NhSWY1?=
+ =?utf-8?B?TVBMNnNvckNtekJ1OVphdVkvSk1ZbDE2czhvektxUGU1VG5ZUzhqWHJYckU0?=
+ =?utf-8?B?YXU3c1IwdE1DOS9KcE0rVjdUNlAzZmVqeGR4NHZhYm1OQWttWWpuTXhlKzhH?=
+ =?utf-8?B?L01seFNGeENreU1vMTJwbmx2Mzd3Y1dja1F5bnltVEZHWXhPT0U0cFB0K2h4?=
+ =?utf-8?B?enpjYU1jRUxRL3RBTWRpNWo5cXZGbmJHVWFnWVRWb2dLdEdlNG5lS0RmV0ZV?=
+ =?utf-8?B?SEdGN0xWNUVEZUkvRlZGYzBhRHV0QWptN0ZhRUZpOHBQS28yNUNrbVBTV0w4?=
+ =?utf-8?B?WFhUK2JWUW5pb0NobE1aOTJDWkZ3UGhqRWpwWDhMV25BdllUb25BSjBHNDZR?=
+ =?utf-8?B?U3BUbnB4VkIraUlCVWRQZDh0QUdHTjUwMjgzNW5ndUN2N3lHblFjbHlQbWdr?=
+ =?utf-8?B?akc4a3hDVGRWV1B1eDhBazVQNmRTWk11WEJXTTdSdDlUYzAxTDRqYTFzMTcv?=
+ =?utf-8?B?UkFPN0xaaUhZRklhdW1EYitkUENjejEyTWJ4RVlVRUgrN09USjI1ZkNEcVYx?=
+ =?utf-8?B?UDk4MmswaGl4LytKcFA4ZVlyK3hXYTFUR1VzTStPVjVqbnArVktyRjE3ZytN?=
+ =?utf-8?B?NXRZU0FLRGpYamJrQ2o5Z1Q2aEU2bEs0c2s1bW14NWZKenVHSlA2amhscW9F?=
+ =?utf-8?B?bmlralBnRm14a0gxL3E5V0xDWFgxd3pVdVJrUXJJVnZGZzVPQ1FuZ3FFcDcy?=
+ =?utf-8?B?eUplT0tWYXN5d3RQWExXRG92UGxFR0d4TlNibHVVYWFWNDFBSmFqYUcxQmNP?=
+ =?utf-8?B?QjhVQ0VXdEFYdUZNdUNIVTcwYUFrUEVqaklqZzNPQVlJUEJUV0xZejdkUVFY?=
+ =?utf-8?B?TDBaTlBJTnNmU1ZVZmR0MEJheHFvbVQvbVFTUm9PSjExM1RhRFFvNnk0ZkNS?=
+ =?utf-8?B?V3VmaWxqVnV0Wm8zUkZqSmNsZ2k0VVVkNytIWEZiOWZua3ZBbktmcjc2VHZE?=
+ =?utf-8?B?KytFcXZwanBUZlZSL1FWM2ZlWkR0OHp2cDZFdjVudTN5V0MzSXFzOFJNOHFy?=
+ =?utf-8?B?NDFwU1FKMGNJREZQdVBRcVlXRXg1Yzk5Q0NvNDJPMGNRc3daS0x1bmNoM0c0?=
+ =?utf-8?B?M21Rbm9uakJyNEY5b3lHUWs5dWJGZEMwSGVPYVpFN29XT2VpMWZXZHJEUmwv?=
+ =?utf-8?B?akNNRkRvNHA5Q3dycjFjRFJIMFhSYTREWTVOVTRGY2FOQWpGMHc5YVo3Slpn?=
+ =?utf-8?B?bWEwcmd2WmwrY2FBNFZJcUczWHlTYmd3NkNLTUVwNXN2ZStnYmlpVHhhQjV6?=
+ =?utf-8?B?cERrNGNrTEhFb29LMWVQTDhKWndKaXpiQ3lPaXp5TWlMYjZFWkEzVWY5eWdJ?=
+ =?utf-8?B?Z3JpOGdhYy9tajVycTk0d2ZBTWVxYXgvcFN2L25FRkNzTFRqVHhSOFJqdnVQ?=
+ =?utf-8?B?VnRIQUZzT0NzUklaKzFnMXJnSlhlcm9pNFR0eGlwVmFxYUxsanNFeTJyUGR0?=
+ =?utf-8?B?cS9jTCtUa3Npb2J2alI1cndCWGJwOWhlZmxxSFNRbWsxL3grSy9aOXV0VGF3?=
+ =?utf-8?B?UFNKVFgrRjFOU3hUVkNYWmV2aEkzZ0doQkVzR0JNeFlHYndFQkpkVm1CRzAr?=
+ =?utf-8?Q?ipd2pm48mN1jyQEdz8Y/8oyUphnJb94V?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TnVYVUhmaERBdUdZUTRmbjZJam01SStZOTc1S0QvOGVXbzk2ZjVldVpmS0dn?=
+ =?utf-8?B?TVVpK1oyY3lXK3lINm1zR0FJTmNmTmlsRVJDdSt3VVVKR2M2dWl2NmFnWmZQ?=
+ =?utf-8?B?OFlFSmpxVHlySWxPVWdxNDJSaTRQNk4veHhaZjU3ZHV5bE84bzFlNGpVMzlx?=
+ =?utf-8?B?ajdVVlkzMkFaWVhWQzNxQkxTb05oUjNqSjhrbkZNUFcwRVAzakFTVkVhQUlN?=
+ =?utf-8?B?MVVDZGszWXdWeWZ6SFE5Y1dYQXQ1SklnUyt1YS9FQ3Q1MU51UGxHTWlxR0xy?=
+ =?utf-8?B?LzU5MmtEL2J2WncweGFxc0FxN0UvZnFoV01UU3hlMndRM2FrT2NBdi9KUHhz?=
+ =?utf-8?B?T3RtRVVqL3AyNC9zZkZyZ1pMQTkrbERNaVRYRExPT0pNdTVNM01ETHUrVlBo?=
+ =?utf-8?B?bFVYc3ZaZE9NUVBsTHJMcGZKbjlxWFlEQ0VvbmtUOG1ZRVQzZC81MVBuK0ZV?=
+ =?utf-8?B?QU1lMGRvcEZZamdlU1pOVHo1UzdMYmRqY0hXbk9IQWlNSCtHTEFGbk13SHBq?=
+ =?utf-8?B?RHNmb1FPdHQvbGNFTE5ic0JrcnRuc2pyY0ZEVDNneXVQOWZNdUJqcHQzRENm?=
+ =?utf-8?B?MitaOWFOR01pR0p5Kzc0cGJmd1RPcUM4MHVBNEwwTW5aQSt5Wng2SnJldlRU?=
+ =?utf-8?B?dUFjTjZrWEZvNm8zdnpUSHl2WHYrZExoMkxkSjUxalZNREJOSVhocTQzMm1j?=
+ =?utf-8?B?ZnVDZlpBUEdqekdtdUprZmlOTHNxazMybSsrWDZZYkh2T2E0TlRaMGlraVR4?=
+ =?utf-8?B?bUxERmtNT2MrWm1Kc3NvSDNpYW8zOEtoVG9SUnM4ZVgwb0ZBdUhUTS8yd1RN?=
+ =?utf-8?B?NTViVVpoNUJzczM0NjJUOE0zTVRNSFFTcFhjN3d3MStKRzVocC9uazNwTXVT?=
+ =?utf-8?B?Z1RBcGRVNXdGNEVvNy9wbGtmM3VaenZIaG9lZ2FoaUVTV0V6bjFzSzdqM2Vk?=
+ =?utf-8?B?L1BBY2IwNFcrR3hLa3drM0tGVWhFM05RSEdWblNvQ1BPem5QVUg2MWVXanpF?=
+ =?utf-8?B?T1lmRlZwVi9xRDN5YkpyeTN6eFRvVllSbXhySURuL3UvamxVWUFQS2hZdVVR?=
+ =?utf-8?B?OHg1Rm56aXpXNmNybzZVNU0ybkZkYSt2YTdPR0t1Vm9zcWJvK0ZqWTc5NitE?=
+ =?utf-8?B?Q1FJR1VRYmNONHVzKzZMNnd5MWJ1eGplWEZnN25MMGQxcFFQdjBBMWdRRlZE?=
+ =?utf-8?B?V2xTOVVZbmhyZHBhb1JncmdDQkdIS2RrNjhkRUtOTWc1cVVWQ0ZDZzhyVVB1?=
+ =?utf-8?B?SW1DZzNPYkJyU2trWTZ0dWU2WmVZY0JaMGUwcmcrZGZXQ2wxRkxkUVptaktM?=
+ =?utf-8?B?NnAxVUExMWUwMnV4RXA4YmhBdW1ibU9XZHJKUE85dUtYTUNnL2JWNmJ0dUpU?=
+ =?utf-8?B?WjFmbmlkMVFTYlZkVXVQYXJwdWlXbDRRTUdtTzNKa2c4M01ZSTMxZWlLQWtw?=
+ =?utf-8?B?UVJURmtXdjBwbUxwZFdtZWM4Z3FFWUJ0Sjh6TnFRM0tVZEEwUDhlMDFuR0t4?=
+ =?utf-8?B?WGQyRi9ObXRYbkp5Y1U1V0xHMEx6QU9tWnhTUVJpelQ5ZEJ2Vnord3Z5RW9W?=
+ =?utf-8?B?UzFMZHVCZXpGRUhCN2RMZXMrU21aOXB2ODdXZEQrTGpOaFlDYTRwcll1bTN4?=
+ =?utf-8?B?dllSN3pQU0NxZ0J5Yk80WURqd3Z0ZFVGNmFqSDVLRDUwbmYxaXJha3MrZjN3?=
+ =?utf-8?B?UzlDL25ZWGRuNTkvNnB3U29CbG5EcWRFWHlVYzNVUVZ5MDN4TjFJa1ZBMjJB?=
+ =?utf-8?B?WG9VUU9hNEczSHNHWTJCT0ZKbFFCSmJFSzArVzJheHJkbEszVENGdXljally?=
+ =?utf-8?B?ZmFBRWFEUzJlOHMzUmVicEdZdEhGVnVoekhGRUMzMms0bmsvaXpOVlJCYWsy?=
+ =?utf-8?B?TXhJU1UxbitlR1Y3dUlKZ0tHYmV3U25heFhMbFlMMWNpYVJrWStUa2FOWno3?=
+ =?utf-8?B?TXc2Ny9FaDNnbUtMZUJETzcrSE9URWdvc3FUQXhNR1FmeUp2dWN0aVhJZlV1?=
+ =?utf-8?B?SVhmcUhRRk14anBGMno5MTV6QWg0bENpeTFZR3NCQ1hFanAzWksrMU9nZGkr?=
+ =?utf-8?B?RTFOTzFpQzN2ZU5JcDZGV1BrK3lIMThscVZOQjlwVkxKK2RtMktJbldiVnUr?=
+ =?utf-8?B?VlNPL2ZkOU1QVGxMT2gxRzBOWC9UVVgreG9kZUJPY2RPd1dDYXI2UUJkVHlC?=
+ =?utf-8?B?WUE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 1V0XMvtvhwwTxqpADx3Ht+KAefacvbovMeV7OKiG71KhbB63ApLcximi8fPx51Fzz22M1zBtcQLr8sal1ErmLHnTn2RefkyMfz9uCBtGarVicRVJo8LZGodo7dRageG8Mcf3qgkzRByOAsiStoKRQfnfEUq7qn1NN5VhUancMmfLiXKFsBlGIYhbMvdUuR7dNZmZhvBdjq3fDHXZx7BwT9OPDVpq9oxxRbPRL+JSIDya9TOexcxBsxS3V8Nfz7rPWOhhFKs2mSOVgISR9UW1Eg+K/lGvqw8M+sMBtCrWGwM7Sh8BxyZi9SBjxPpA1TJE7QtYqsrkGWF69ZikyR0OjV9BOMq2cAwcL75QwtOJ7EfD0LGo60OnUoLCAMyZqhJ1tlNeaTC2wLCjIt75uxOobUUam4oPyAdE+npwWPO+o6uK58e5HVaAZMzxtKcvJNUol79KAoBEwkw/J+1wywrZGPK7TakgiLngUwuYm0zASsRJPa9Us5KNgf/YkaG5rEx8HpioKzkRFp9h+fog7ddO1vMdZBoEw8azDvlYC+DbDE39lpKv74ip5Tw8S30qMV4DVaSNYaqDjUSTGhwyY3PQlSW3jM00deTlmzp9GQmpsbA=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30326baa-0165-4452-83b6-08de073db8cb
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 14:11:21.1901 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kcYJDHytILUIbRDKmBQdk0zg861hPx+L7RLUcXrumJ5BGR2OlWcX8zo/b90yazi7kjWZH/RDGre02u3vDRtIdWCAwSSKk5t9znnpTy/5a0I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6333
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_04,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ suspectscore=0
+ spamscore=0 adultscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510020000 definitions=main-2510090084
+X-Authority-Analysis: v=2.4 cv=BLO+bVQG c=1 sm=1 tr=0 ts=68e7c28c cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=d_yPphG322nuGfjKXrgA:9
+ a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: u2B1TUYh4CFSZDQCWTL8JhHQeynvt0Pl
+X-Proofpoint-GUID: u2B1TUYh4CFSZDQCWTL8JhHQeynvt0Pl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX3eTF1e7hCIxR
+ UPbYdx4WP5k0QIrseIXdqzv1D1m6eCq6m1ztpU5MUGm9z38VV8ivjMKi1E3o3P8uymhvnUGIb4n
+ 3RXnW+GuZ+YAQ9YStkQNT+Im35GXiOzXkQKW41mx63rofecK/KHW3CfDTPnabMCsD0UZoNYv8sY
+ qG1ynaFHophclXcmtm3cqDaCZDYg137dSz0scDHOPPMsNy65cD4OHMcRcp/efgAxm2OXGs9K70e
+ v9yt+ZmfS0BevQUuj+oKhVRWsgkX44HzlWJBnP5kCQHT3phXvKOcxNk4TH5QPmMMxO8jTgKZnV+
+ XDBD2H2E5M8vrzK763HdfWAcPUb8dPIoS54qW/LriH9TPB+6FV67w0N+wvmhdDTY0WxeiBhVlsW
+ Nh/53Ap0jJEz9vl/LWHtI/sDmPUG+g==
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,229 +236,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested this patch with virtio-net regression tests and also tested
-reproducer for this problem, everything works fine.
+On 10/8/2025 6:22 AM, Duan, Zhenzhong wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Steven Sistare <steven.sistare@oracle.com>
+>> Subject: Re: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute
+>> "query-balloon" after CPR transfer
+>>
+>> On 9/30/2025 2:00 AM, Duan, Zhenzhong wrote:
+>>>> -----Original Message-----
+>>>> From: Steven Sistare <steven.sistare@oracle.com>
+>>>> Subject: Re: [PATCH v2 6/6] accel/kvm: Fix SIGSEGV when execute
+>>>> "query-balloon" after CPR transfer
+>>>>
+>>>> On 9/28/2025 4:54 AM, Zhenzhong Duan wrote:
+>>>>> After CPR transfer, source QEMU closes kvm fd and sets kvm_state to
+>>>> NULL,
+>>>>> "query-balloon" will check kvm_state->sync_mmu and trigger NULL
+>> pointer
+>>>>> reference.
+>>>>>
+>>>>> We don't need to NULL kvm_state as all states in kvm_state aren't
+>> released
+>>>>> actually. Just closing kvm fd is enough so we could still query states
+>>>>> through "query_*" qmp command.
+>>>>
+>>>> IMO this does not make sense.  Much of the state in kvm_state was
+>> derived
+>>> >from ioctl's on the descriptors, and closing them invalidates it.  Asking
+>>>> historical questions about what used to be makes no sense.
+>>>
+>>> You also have your valid point.
+>>>
+>>>>
+>>>> Clearing kvm_state and setting kvm_allowed=false would be a safer fix.
+>>
+>> Setting kvm_allowed=false causes kvm_enabled() to return false which should
+>> prevent kvm_state from being dereferenced anywhere:
+>>
+>>      #define kvm_enabled()           (kvm_allowed)
+>>
+>>    Eg for the balloon:
+>>
+>>      static bool have_balloon(Error **errp)
+>>      {
+>>          if (kvm_enabled() && !kvm_has_sync_mmu()) {
+> 
+> OK, will do, clearing kvm_allowed is a good idea.
+> 
+> Currently there are two qmp commands "query-balloon" and "query-cpu-definitions"
+> causing SIGSEGV after CPR-transfer, clearing kvm_allowed helps for both.
+> But clearing both kvm_allowed and kvm_state cause SIGSEGV on "query-cpu-definitions".
+> 
+> I'll send a patch to clearing only kvm_allowed if you are fine with it.
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+I still don't love the idea.  kvm_state is no longer valid.
 
-On Thu, Sep 25, 2025 at 10:35=E2=80=AFAM Houqi (Nick) Zuo <hzuo@redhat.com>=
- wrote:
->
-> When QEMU creates a tap device automatically and the tap device is
-> manually removed from the host while the guest is running, the tap
-> device file descriptor becomes invalid. Later, when the guest executes
-> shutdown, the tap_fd_set_vnet_hdr_len() function may be called and
-> abort QEMU with a core dump when attempting to use the invalid fd.
->
-> This patch removes many abort() calls in this file. If the fd is found
-> to be in a bad state (e.g., EBADFD or ENODEV), the related function
-> will print an error message.
->
-> The expected behavior for this negative test case is that QEMU should
-> report an error but continue running rather than aborting.
->
-> Testing:
-> - Start QEMU with automatically created tap device
-> - Manually remove the tap device on the host
-> - Execute shutdown in the guest
-> - Verify QEMU reports an error but does not abort
->
-> (gdb) bt full
-> #0  __pthread_kill_implementation (threadid=3D<optimized out>, signo=3Dsi=
-gno@entry=3D6, no_tid=3Dno_tid@entry=3D0) at pthread_kill.c:44
->         tid =3D <optimized out>
->         ret =3D 0
->         pd =3D <optimized out>
->         old_mask =3D {__val =3D {10}}
->         ret =3D <optimized out>
-> #1  0x00007f1710b6bff3 in __pthread_kill_internal (threadid=3D<optimized =
-out>, signo=3D6) at pthread_kill.c:78
-> #2  0x00007f1710b15f56 in __GI_raise (sig=3Dsig@entry=3D6) at ../sysdeps/=
-posix/raise.c:26
->         ret =3D <optimized out>
-> #3  0x00007f1710afd8fa in __GI_abort () at abort.c:79
->         save_stage =3D 1
->         act =3D {__sigaction_handler =3D {sa_handler =3D 0x20, sa_sigacti=
-on =3D 0x20}, sa_mask =3D {__val =3D {16929458408262392576, 184467440737095=
-50848, 139737042419943, 139737042419943, 0, 94049703655600, 139737042419943=
-, 139737042670528, 18446744073709550328, 77, 139705603579344, 1844674407370=
-9551615, 139737041472378, 139705595179568, 16929458408262392576, 9404967979=
-4864}}, sa_flags =3D 281695456, sa_restorer =3D 0xa}
-> #4  0x000055899a71de58 in tap_fd_set_vnet_hdr_len (fd=3D<optimized out>, =
-len=3D10) at ../net/tap-linux.c:204
-> #5  tap_set_vnet_hdr_len (nc=3D<optimized out>, len=3D10) at ../net/tap.c=
-:269
->         s =3D <optimized out>
-> #6  0x000055899a8be67f in qemu_set_vnet_hdr_len (nc=3D0x2956, len=3D10588=
-) at ../net/net.c:573
-> #7  virtio_net_set_mrg_rx_bufs (n=3D0x5589a72cfa10, mergeable_rx_bufs=3D<=
-optimized out>, version_1=3D<error reading variable: Incompatible types on =
-DWARF stack>, hash_report=3D<optimized out>) at ../hw/net/virtio-net.c:664
->         i =3D 0
->         nc =3D 0x5589a730ab28
-> #8  virtio_net_set_features (vdev=3D0x5589a72cfa10, features=3D0) at ../h=
-w/net/virtio-net.c:897
->         n =3D 0x5589a72cfa10
->         err =3D 0x0
->         i =3D 0
-> #9  0x000055899a8e4eaa in virtio_set_features_nocheck (vdev=3D0x5589a72cf=
-a10, val=3D0) at ../hw/virtio/virtio.c:3079
->         k =3D <optimized out>
->         bad =3D <optimized out>
-> #10 virtio_reset (opaque=3D0x5589a72cfa10) at ../hw/virtio/virtio.c:3184
->         vdev =3D 0x5589a72cfa10
->         k =3D 0x5589a5c162b0
->         i =3D 0
-> #11 0x000055899a630d2b in virtio_bus_reset (bus=3D0x5589a72cf990) at ../h=
-w/virtio/virtio-bus.c:109
->         vdev =3D <optimized out>
-> #12 virtio_pci_reset (qdev=3D0x5589a72c7470) at ../hw/virtio/virtio-pci.c=
-:2311
->         proxy =3D 0x5589a72c7470
->         i =3D 0
->         bus =3D 0x5589a72cf990
-> #13 0x000055899a686ded in memory_region_write_accessor (mr=3D<optimized o=
-ut>, addr=3D<optimized out>, value=3D<optimized out>, size=3D<optimized out=
->, shift=3D<optimized out>, mask=3D<optimized out>, attrs=3D...) at ../syst=
-em/memory.c:490
->         tmp =3D <optimized out>
-> #14 0x000055899a686cbc in access_with_adjusted_size (addr=3D20, value=3D0=
-x7f0fbedfde00, size=3D1, access_size_min=3D<optimized out>, access_size_max=
-=3D<optimized out>, access_fn=3D0x55899a686d30 <memory_region_write_accesso=
-r>, mr=3D0x5589a72c8040, attrs=3D...) at ../system/memory.c:566
->         print_once_ =3D false
->         access_mask =3D 255
->         access_size =3D 1
->         i =3D 0
->         r =3D 0
->         reentrancy_guard_applied =3D <optimized out>
-> #15 0x000055899a686ac5 in memory_region_dispatch_write (mr=3D<optimized o=
-ut>, addr=3D20, data=3D<optimized out>, op=3D<optimized out>, attrs=3D...) =
-at ../system/memory.c:1545
->         size =3D <optimized out>
-> #16 0x000055899a69f7da in flatview_write_continue_step (attrs=3D..., buf=
-=3D0x7f1711da6028 <error: Cannot access memory at address 0x7f1711da6028>, =
-len=3D<optimized out>, mr_addr=3D20, l=3D0x7f0fbedfde28, mr=3D0x5589a72c804=
-0) at ../system/physmem.c:2972
->         val =3D 6
->         result =3D 0
->         release_lock =3D <optimized out>
-> #17 0x000055899a697c15 in flatview_write_continue (fv=3D0x7f0f6c124d90, a=
-ddr=3D61675730370580, attrs=3D..., ptr=3D0x7f1711da6028, len=3D1, mr_addr=
-=3D6, l=3D1, mr=3D0x0) at ../system/physmem.c:3002
->         result =3D 0
->         buf =3D 0x7f1711da6028 <error: Cannot access memory at address 0x=
-7f1711da6028>
-> #18 flatview_write (fv=3D0x7f0f6c124d90, addr=3D61675730370580, attrs=3D.=
-.., buf=3D0x7f1711da6028, len=3D1) at ../system/physmem.c:3033
-> --Type <RET> for more, q to quit, c to continue without paging--
->         l =3D <optimized out>
->         mr_addr =3D 6
->         mr =3D 0x0
-> #19 0x000055899a697a91 in address_space_write (as=3D0x55899bceeba0 <addre=
-ss_space_memory>, addr=3D61675730370580, attrs=3D..., buf=3D0x7f1711da6028,=
- len=3D1) at ../system/physmem.c:3153
->         _rcu_read_auto =3D 0x1
->         result =3D 0
->         fv =3D 0x2956
-> #20 0x000055899a91159b in address_space_rw (addr=3D10588, attrs=3D..., bu=
-f=3D0x7f1711da6028, len=3D0, as=3D<optimized out>, is_write=3D<optimized ou=
-t>) at ../system/physmem.c:3163
-> #21 kvm_cpu_exec (cpu=3D0x5589a5d68b40) at ../accel/kvm/kvm-all.c:3255
->         attrs =3D {secure =3D 0, space =3D 0, user =3D 0, memory =3D 0, d=
-ebug =3D 0, requester_id =3D 0, pid =3D 0, address_type =3D 0, unspecified =
-=3D false, _reserved1 =3D 0 '\000', _reserved2 =3D 0}
->         run =3D 0x7f1711da6000
->         ret =3D <optimized out>
->         run_ret =3D <optimized out>
-> #22 0x000055899a9189ca in kvm_vcpu_thread_fn (arg=3D0x5589a5d68b40) at ..=
-/accel/kvm/kvm-accel-ops.c:51
->         r =3D <optimized out>
->         cpu =3D <optimized out>
-> #23 0x000055899aba817a in qemu_thread_start (args=3D0x5589a5d72580) at ..=
-/util/qemu-thread-posix.c:393
->         __clframe =3D {__cancel_routine =3D <optimized out>, __cancel_arg=
- =3D 0x0, __do_it =3D 1, __cancel_type =3D <optimized out>}
->         qemu_thread_args =3D 0x5589a5d72580
->         start_routine =3D 0x55899a918850 <kvm_vcpu_thread_fn>
->         arg =3D 0x5589a5d68b40
->         r =3D 0x0
-> #24 0x00007f1710b6a128 in start_thread (arg=3D<optimized out>) at pthread=
-_create.c:448
->         ret =3D <optimized out>
->         pd =3D <optimized out>
->         out =3D <optimized out>
->         unwind_buf =3D {cancel_jmp_buf =3D {{jmp_buf =3D {32, 88945440577=
-43421332, -1288, 0, 140726164742416, 140726164742679, -8831356496486092908,=
- -8844535456800460908}, mask_was_saved =3D 0}}, priv =3D {pad =3D {0x0, 0x0=
-, 0x0, 0x0}, data =3D {prev =3D 0x0, cleanup =3D 0x0, canceltype =3D 0}}}
->         not_first_call =3D <optimized out>
-> #25 0x00007f1710bda924 in clone () at ../sysdeps/unix/sysv/linux/x86_64/c=
-lone.S:100
->
-> Fixes: 0caed25cd171c611781589b5402161d27d57229c ("virtio: Call set_featur=
-es during reset")
->
-> Signed-off-by: Houqi (Nick) Zuo <hzuo@redhat.com>
-> ---
->  net/tap-linux.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/net/tap-linux.c b/net/tap-linux.c
-> index e832810665..24e63a0b54 100644
-> --- a/net/tap-linux.c
-> +++ b/net/tap-linux.c
-> @@ -206,15 +206,16 @@ void tap_fd_set_vnet_hdr_len(int fd, int len)
->      if (ioctl(fd, TUNSETVNETHDRSZ, &len) =3D=3D -1) {
->          fprintf(stderr, "TUNSETVNETHDRSZ ioctl() failed: %s. Exiting.\n"=
-,
->                  strerror(errno));
-> -        abort();
->      }
->  }
->
->  int tap_fd_set_vnet_le(int fd, int is_le)
->  {
->      int arg =3D is_le ? 1 : 0;
-> +    int ret;
->
-> -    if (!ioctl(fd, TUNSETVNETLE, &arg)) {
-> +    ret =3D ioctl(fd, TUNSETVNETLE, &arg);
-> +    if (!ret) {
->          return 0;
->      }
->
-> @@ -224,14 +225,16 @@ int tap_fd_set_vnet_le(int fd, int is_le)
->      }
->
->      error_report("TUNSETVNETLE ioctl() failed: %s.", strerror(errno));
-> -    abort();
-> +    return ret;
->  }
->
->  int tap_fd_set_vnet_be(int fd, int is_be)
->  {
->      int arg =3D is_be ? 1 : 0;
-> +    int ret;
->
-> -    if (!ioctl(fd, TUNSETVNETBE, &arg)) {
-> +    ret =3D ioctl(fd, TUNSETVNETBE, &arg);
-> +    if (!ret) {
->          return 0;
->      }
->
-> @@ -241,7 +244,7 @@ int tap_fd_set_vnet_be(int fd, int is_be)
->      }
->
->      error_report("TUNSETVNETBE ioctl() failed: %s.", strerror(errno));
-> -    abort();
-> +    return ret;
->  }
->
->  void tap_fd_set_offload(int fd, int csum, int tso4,
-> --
-> 2.47.3
->
->
+It sounds like "query-cpu-definitions" is missing a check for kvm_enabled().
+
+- Steve
 
 
