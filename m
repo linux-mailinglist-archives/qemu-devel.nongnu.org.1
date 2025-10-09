@@ -2,95 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2A0BCABAD
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E24BCABF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 22:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6whD-0007wr-Fp; Thu, 09 Oct 2025 15:53:03 -0400
+	id 1v6woQ-0003r8-Pr; Thu, 09 Oct 2025 16:00:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6whA-0007so-4I
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:53:00 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6wh3-0004XU-4i
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:52:59 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46e3cdc1a6aso10924275e9.1
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760039568; x=1760644368; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YnoVU9PkzxRhq273VX1ANT/1nCaEAcbS7E7sJHM05Mk=;
- b=aRKdZ1eOi1VQQyXTiYlbhVrNXL0W2le+z82Yb3zQvFtkhcSLID/OfCo48arxF/U0nd
- 3vuadWnzW0aGYC/PfrngIxetzHn5WnDMBUzxOTv5+44Y9cHdRjHjHUOIYKde/Ky6CpC6
- 7PD53W8pSkGgCRMZoHuBdy+TT7DjApJ4sgCzCHvGHuH8sQnnwwJJZzc1rEjr29AqPmAZ
- BgD4xZlf48U95yVhjcZJNMabQSz2ZO22o0C9WgIwmD7AfsBXoxX6Cvp8BCKgkaCfZC/0
- RbmzpBJ0lhX+AV9vjn6ZtX0sCMfuoQBasHBJAs0OMMFAo5i/YEN96lxM+tgGwj2e0skq
- q9rQ==
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1v6wnz-0003jI-Aw
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 16:00:04 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1v6wnt-0005BM-Uu
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 16:00:02 -0400
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 599Eq1pr005247
+ for <qemu-devel@nongnu.org>; Thu, 9 Oct 2025 19:59:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:content-type:date:from
+ :message-id:mime-version:subject:to; s=qcppdkim1; bh=9k2NTzuiRyd
+ ULBorjQcMlpF1jsBY7/L4I2SUrpaWH3o=; b=Fw+xZ+sKrq41WQdy46R8MOokQTv
+ TMAMu/UzpUPLBcjO40wuRwAl7dj8F+tA+uVjsZG2sGRzgV20DAQ4CyctyAWO3f1g
+ B6jKSjCvO6fJFHWNvQIeoMBs3pK1DDb2doTHvZ+NnzM/URvPsoNBLaqpZLTpF91S
+ aRPQuFT/5R0JWWgFJlGHhFvvHhAfLn8gOQcY8sVifAWkPw617W4z7tm5pIdEaJPL
+ qARk7bipVqOdCw3HdgplAtEt4oCxg64PEfVpqHwgXRBh6hly5M4yN3jNGQW7yfqH
+ V63yZm4p4ca6JgXiLTyZaHDmeWKbcLVzw4MpxrJj4QTNi34kANIm5FwaZ2g==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49nv4j45w9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 19:59:52 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-28e538b5f23so23409305ad.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:59:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760039568; x=1760644368;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YnoVU9PkzxRhq273VX1ANT/1nCaEAcbS7E7sJHM05Mk=;
- b=cK6R9qow3v6oAG/e0d5s1lWbexhHRlEI/q6vpB4+cq1xrEW6hiJKIDQzJAJghs3Bef
- u4YIBAjVwxfy3pRRBQAga4AJv/RBMAznDRcEV8C4PP9FUgt3Wxu5NbfylLeJc/BntRQJ
- rFrdBqpggCN2i1kj6nRDy6RWZTeC++nT1Cr8FyRG1fFoyJIQejm+da9Pp3A9bWrTIgh/
- KbSoIVMweFfKOGNbz6vlxScofmiWzN+pBoi49ENnCbxZQhRNJahnvr69Ht1k1KYip0Le
- I2ksQ2b0jARweZbG8QLM80ydArVSrhwd82k/S+Qrx3ag09nXglgWinLqomxv8uW4e+OE
- x8kg==
-X-Gm-Message-State: AOJu0YzHz3TkQT70j5sTMko4RwsrBHuwN9FyksGBo0+dly2uuztNXSeQ
- 0r+hErKcESzPLZq8Z5NUr05IwPQ5EBnkFK9DwaEzAXVZE6GEKZVAo0cczsCXXu9O4goyWAq2tGL
- EuaLWwqg5EA==
-X-Gm-Gg: ASbGnct5M1als7X9+FiGlW5tsHowbQpBHNyvPdWtPBfHPmGs96Uf+CL+cxaoEoMrvXc
- xndQvVz1EZEn0BItYFhPXlnfGu2ZjrC5tKh9fuO1RkXGHFNDTYwgtLTLjXTQdY+q3KBUt8HeYTY
- LjL2FuRKS19+Lve0URMuwIxtpXpExmXn+MaYnUVnaC4pnw6UL885wSbiQ/Xq9XLNGRLEy6ReZYq
- E1VNljTYdlB3uGDNTQQkdcoyxMI6ieUxWmiaydpzi+Ewu919ZyDha3daqxRmTqSZXhli/WH8bET
- PULYCNv9IPz7BulCdVawxUqHfZjbRazJvXkCuuFlQVTKJZO/ibaCD0kcLAei45yJ/C3+KLoWtLN
- Ln+XcuEQDvtz5eYqCF18K54r+cFczfX2h3vrSzAKX9hz7IPz6aRa3tGxlk4LBgD/nj/tjK/LByL
- ksSCM5AbZLxrs6RK/WTBTv+siR
-X-Google-Smtp-Source: AGHT+IHD05VI+VUxrgZGD7ltEMp4z3Ptia3651WqJPgf3dTLFn3O6SAG+249BZWyozBAvp0kuw5UwQ==
-X-Received: by 2002:a05:600c:a309:b0:46f:b42e:e390 with SMTP id
- 5b1f17b1804b1-46fb42ee4b8mr10771845e9.20.1760039567669; 
- Thu, 09 Oct 2025 12:52:47 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb49c4027sm9842925e9.17.2025.10.09.12.52.46
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 12:52:47 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1760039991; x=1760644791;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9k2NTzuiRydULBorjQcMlpF1jsBY7/L4I2SUrpaWH3o=;
+ b=rZuEKANEObusblNqA/msLj2KJnYzhpx5ywi8d3bJ/daH9Oee0A0049LUQbHBcMssr0
+ yB8t6SSCB2UyFxQb1miEvGoEJsmZ393fJHpftJOPiekEsamauMgXnmKn0mAPYCVw7YZY
+ pICyOpBLYZ3PZ1Nf3Y1FLGLPMKf9Hm9K2WEbk/VixBiFl5iEndxEaWYdSTvEsOw0/GHn
+ mWKbLvAHbjbAJzNr7hy4SVs02xGOk4gE8Lm2a0Z3KUWzM0qlRPxMMKFGsDb0fQNKYBE9
+ JqUoCIBEWR/nZSQfQaAMDiTAFv90rbzoByGA1jIchAIZV4YSo5f2+NJYFoMxHtmLNy29
+ 9/aQ==
+X-Gm-Message-State: AOJu0Ywr43/MrRBeeHzEHWaXtBriGhMSK5hLl6xQp4Ax2Xmm2IUQl5Eu
+ tVEcYJ8MAHKoDZm7s7wJfwdt0EDZFK/nkyYLKcT5eT9jHYnINnD87KYPnmERWPUjURCnKmSFRsx
+ zl6k2icLnGiswyOil0q7MMVyBueg50uf+TaoErLW5+Ya7M6H7UFDhF6+NwRgTZ/fxlA==
+X-Gm-Gg: ASbGncs1wwM/LoUTR62E7cD7qloZVFr2QRnfLEcgRXQ3IA49GzI71UIJ1NJCj8BeeEd
+ B33k4xh5FOb4mlAvpV07SFSusqvMuyNe4Ci5yRPDH3hDA3ihyXNFd3Ot4qCgWT7P6/REahRS9qr
+ jlNzXV6Zc4TbOU0j+bNVp6ZFOvSKH7Uh5i4MfTYiZa14ReNj5UFsi2AB2jKUynGQYpGgjefEPHj
+ mCjasGrq8eQ3fY60LO4zRpBhUl0TxOdeW4GmClVztETyl/YK8GKaxiH37PJz0Zt9R4yZ8QE1RDx
+ O6480cnwDogZKNEICG7GsvugK6dy7kP0KbkamhmRSjPxtvW6up706x7zPXMhpuimYc89SHxYBED
+ /r+mG3ufQfLcuTwD6pg==
+X-Received: by 2002:a17:903:1106:b0:264:567b:dd92 with SMTP id
+ d9443c01a7336-29027303325mr110290905ad.52.1760039990962; 
+ Thu, 09 Oct 2025 12:59:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMqlN+HD3jQ5/XDNQuNstoaoFqH4luFg07edI8dNBvP9tezgtI3GX8YNDuDDYptxzIb5qdGg==
+X-Received: by 2002:a17:903:1106:b0:264:567b:dd92 with SMTP id
+ d9443c01a7336-29027303325mr110290605ad.52.1760039990516; 
+ Thu, 09 Oct 2025 12:59:50 -0700 (PDT)
+Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
+ [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29034f32d6fsm36678805ad.96.2025.10.09.12.59.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Oct 2025 12:59:50 -0700 (PDT)
+From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- devel@lists.libvirt.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH v2 7/7] buildsys: Remove support for 32-bit MIPS hosts
-Date: Thu,  9 Oct 2025 21:52:10 +0200
-Message-ID: <20251009195210.33161-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251009195210.33161-1-philmd@linaro.org>
-References: <20251009195210.33161-1-philmd@linaro.org>
+Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
+ philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
+ anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
+ alex.bennee@linaro.org, quic_mburton@quicinc.com,
+ sid.manning@oss.qualcomm.com
+Subject: [PATCH v2 0/4] hexagon: Fixes to sigcontext
+Date: Thu,  9 Oct 2025 12:59:39 -0700
+Message-Id: <20251009195943.438454-1-brian.cain@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+X-Proofpoint-GUID: hUrktOrhTGzjKvVbjk2XnhLNIDWQoqoq
+X-Proofpoint-ORIG-GUID: hUrktOrhTGzjKvVbjk2XnhLNIDWQoqoq
+X-Authority-Analysis: v=2.4 cv=f91FxeyM c=1 sm=1 tr=0 ts=68e81438 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=jBgUiILNZ4taLe3DBhAA:9 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX5uWI80nygnPv
+ N9MSPgbrK93GUMP0mtbEIUY9+YRR32pnMphYMPYYzzeH2d7oHLuI38XM2KQCSZSALie/YuyVv82
+ zAusFGcFlWVgjqfNN7bL2DzKrXivdHRYLpBZZ2lrZLrxbRRMmiTH1UAnxji+OGbCNREcdZL/ror
+ 2ZM9sR9KypsytrVTSIGaArMzt2jTnlf52F80y3OqTPKeiia91t2Ei073Js0cxOwkpz8hZ9FDMg8
+ fT7PrBHvyla4EyGL3jZIbyj79CmpDc6xMNCXGZtI5v32DBB3M8pZod1Wu19wwNLdsvBuGoaWZ8U
+ zA+ZjtA9quK/GqrcQwWngTh/6vthMabKvSalEKzEcxV3yBi8K4jZfZaGB1IcQp5bUw3N+QonMWZ
+ jgSKNv7+w0VZmD2/omIoVMzoa/vDQw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_07,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 adultscore=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,86 +131,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stop detecting 32-bit MIPS host as supported, update the
-deprecation document. See previous commit for rationale.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/about/deprecated.rst       | 13 +++++--------
- docs/about/removed-features.rst |  6 ++++++
- configure                       |  7 -------
- 3 files changed, 11 insertions(+), 15 deletions(-)
-
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 67e527740c0..79cc34cfeb6 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -172,17 +172,14 @@ This argument has always been ignored.
- Host Architectures
- ------------------
- 
--Big endian MIPS since 7.2; 32-bit little endian MIPS since 9.2, MIPS since 11.0
--'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+MIPS (since 11.0)
-+'''''''''''''''''
- 
--As Debian 10 ("Buster") moved into LTS the big endian 32 bit version of
--MIPS moved out of support making it hard to maintain our
--cross-compilation CI tests of the architecture. As we no longer have
--CI coverage support may bitrot away before the deprecation process
-+MIPS is not supported by Debian 13 ("Trixie") and newer, making it hard to
-+maintain our cross-compilation CI tests of the architecture. As we no longer
-+have CI coverage support may bitrot away before the deprecation process
- completes.
- 
--Likewise, MIPS is not supported by Debian 13 ("Trixie") and newer.
--
- System emulation on 32-bit x86 hosts (since 8.0)
- ''''''''''''''''''''''''''''''''''''''''''''''''
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index a5338e44c24..53829f59e65 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -896,6 +896,12 @@ work around the atomicity issues in system mode by running all vCPUs
- in a single thread context; in user mode atomicity was simply broken.
- From 10.0, QEMU has disabled configuration of 64-bit guests on 32-bit hosts.
- 
-+32-bit MIPS (since 11.0)
-+''''''''''''''''''''''''
-+
-+Debian 12 "Bookworm" removed support for 32-bit MIPS, making it hard to
-+maintain our cross-compilation CI tests of the architecture.
-+
- Guest Emulator ISAs
- -------------------
- 
-diff --git a/configure b/configure
-index 6a633ac2b16..8236f43e8f9 100755
---- a/configure
-+++ b/configure
-@@ -404,8 +404,6 @@ elif check_define _ARCH_PPC ; then
- elif check_define __mips__ ; then
-   if check_define __mips64 ; then
-     cpu="mips64"
--  else
--    cpu="mips"
-   fi
- elif check_define __s390__ ; then
-   if check_define __s390x__ ; then
-@@ -473,11 +471,6 @@ case "$cpu" in
-     host_arch=mips
-     linux_arch=mips
-     ;;
--  mips*)
--    cpu=mips
--    host_arch=mips
--    linux_arch=mips
--    ;;
- 
-   ppc)
-     host_arch=ppc
--- 
-2.51.0
-
+UmV2aXNlZCBmcm9tIHRoZSBvcmlnaW5hbCBzZXJpZXMgYXQKaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
+cmcvcWVtdS1kZXZlbC8yMDI1MTAwODAxNDc1NC4zNTY1NTUzLTEtYnJpYW4uY2FpbkBvc3MucXVh
+bGNvbW0uY29tLwoKQnJpYW4gQ2FpbiAoNCk6CiAgbGludXgtdXNlci9oZXhhZ29uOiBGaXggc2ln
+Y29udGV4dAogIGxpbnV4LXVzZXIvaGV4YWdvbjogdXNlIGFiaV91bG9uZwogIGxpbnV4LXVzZXIv
+aGV4YWdvbjogVXNlIGFuIGFycmF5IGZvciBHUFJzCiAgdGVzdHMvdGNnL2hleGFnb246IEFkZCBj
+c3swLDF9IGNvdmVyYWdlCgogbGludXgtdXNlci9oZXhhZ29uL3NpZ25hbC5jICAgICAgICB8IDE4
+NCArKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLQogdGVzdHMvdGNnL2hleGFnb24vc2lnbmFs
+X2NvbnRleHQuYyB8ICAyMiArKystCiAyIGZpbGVzIGNoYW5nZWQsIDkxIGluc2VydGlvbnMoKyks
+IDExNSBkZWxldGlvbnMoLSkKCi0tCjIuMzQuMQoK
 
