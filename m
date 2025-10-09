@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3006BBC7D59
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0972BC7D71
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lRL-0000Cw-0L; Thu, 09 Oct 2025 03:51:55 -0400
+	id 1v6lRL-0000Dm-QP; Thu, 09 Oct 2025 03:51:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lRH-0000CD-Qk
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:51 -0400
+ id 1v6lRJ-0000Ce-CB
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lRE-0004Ue-Ko
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:51 -0400
+ id 1v6lRG-0004Ut-PJ
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996306;
+ s=mimecast20190719; t=1759996308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eHTeFILZi+U3w7nE87D0Nrp2o/VDEMaD0RN/V3cIXtw=;
- b=Q+wNl2wzksEgvUSOMl4/juwUk9P1AHWp0pyRM2VTFg3Z6+SlQ82FXnHL5Fym/GwZxVPoTZ
- ZvKOchpVooy3sfWgKwZRgwApFh+XZ/PuqChmcNd6NLFm4G7OtpUdxaxXyOKlSqpWrV8w12
- 4o3TbbvFFvdqqchoq6aOTHUFQ2MXOI4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hpLehWuVj/iTQMlAG5SBBBJrQjnUYuy4M749N9Qa2C8=;
+ b=esskA8Ism16xjV8qpDXANW9uN0wLN3xmRZtixHpiInwv6QYFoSiFt3PcgDEUy1WLSP/DEw
+ GvAfgcUDStkl1mjc4wkwO03dkBeXUF6/8jVaLp9FnK1A4CDk7n/vDuiBti3ZT1zk9zv34p
+ nBgxP42y6MwGscpcb6kv6AccZC6SLAE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-YDwSxAIsONChMSAAQLtP9g-1; Thu, 09 Oct 2025 03:51:45 -0400
-X-MC-Unique: YDwSxAIsONChMSAAQLtP9g-1
-X-Mimecast-MFC-AGG-ID: YDwSxAIsONChMSAAQLtP9g_1759996304
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-401dbafbcfaso495383f8f.1
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:45 -0700 (PDT)
+ us-mta-519-nwltMzyHNyS04xeH472pow-1; Thu, 09 Oct 2025 03:51:47 -0400
+X-MC-Unique: nwltMzyHNyS04xeH472pow-1
+X-Mimecast-MFC-AGG-ID: nwltMzyHNyS04xeH472pow_1759996306
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e3d43bbc7so3140895e9.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996303; x=1760601103;
+ d=1e100.net; s=20230601; t=1759996305; x=1760601105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eHTeFILZi+U3w7nE87D0Nrp2o/VDEMaD0RN/V3cIXtw=;
- b=twg219FtYuM/DLY6QtxW9hPFT62tVjp+n9Ii1zWZrSwiv30lD+9J/Itf9hrC/O/TdM
- waRF9grxWUEoRVx0wjWB2uN6z4FzjqaBaOmNXr1xMecilkvRIWpPocoCtp0wU3tvtrTN
- Hb2Pjas5XnzyKPNSODwJSaOMWRkuVvEioJ8ccXbULw0mVtbooY7kn40nQfYdbz49wR7W
- kpjeRy8ne1v8n6KHwFql/BtDIHTtwLvekSDmvb6+3LUd5YyfLuc8tm1vZVrt/zGN6k3E
- ayfwkGQW1ebtjCgxifI0HC3V5N3PpspUlLrAUy68Kc8to1IfaYTNKIqClK0591ptTX2J
- HIfg==
-X-Gm-Message-State: AOJu0Yx36oq+1fiaZvkI7dhuGO/9lQ8fQxVzZEMuPoVklI/xxbDMA0MF
- QgeGc9GGClhVBjD/Yp6g3j03rK6S87TIeS2lxSvXK5kO7vkxaWgZs5EA40Yf9FNhXAHBdf9atDV
- msVnqTvDublM9Ig6cJ6XpxOJ0ouZV0RQAG/bhSA3hFG5wgjU3cpN9aH+rjriJA9q+JQshnDB7gs
- /EEIvCLkYWjSH/O6W4/fpetQnKqXLa88V7bUBbj//KfYs=
-X-Gm-Gg: ASbGncuYHY0LIlIb0UlzGRzsM1ffagQPdLD2LfQ0V3g2LBY8jgq0xk/L22UiQeCe3rP
- lujXKgGeI0js3oTwWnvgCqfPSxCXLMdWSOwHgWDmBxPghG+VF3m2sHUJL258Hy2zPQ4eGTRKSeX
- QXfzm3f0f/f58uzURek7IaJSclaLpPSyUmFiINu5lrEhH0lJuUSktkGFVC1y99d4HBBSjz6t9FR
- y7ZlEseJxVe/Y8g/aBjUNPqwnhDctMiJmKE2MwcMkJC3sOKDVPqzbmScRk8VLXDIVoITCs2nXdD
- YdSjkgxf7rnhgCPXtbTU3PY8ZerKzsfyAyRaKqu3Y8ZDp0oZRMss/RglftgNvZVktGvoAHxhZct
- SLPa0fOIVaz8emN+ffgOitC3gptnatKMayG+EoQ/UYsODtZma
-X-Received: by 2002:a05:6000:2902:b0:3ec:3cac:7dfd with SMTP id
- ffacd0b85a97d-4266e7c4ac1mr4359749f8f.26.1759996303066; 
- Thu, 09 Oct 2025 00:51:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEny1Kb6+tcK1YO0ttNmDO6HJ2eqRlaka6CAZq/CWAjKE8xk3fiLpBJ5F8K3zf/hCG/LazV/w==
-X-Received: by 2002:a05:6000:2902:b0:3ec:3cac:7dfd with SMTP id
- ffacd0b85a97d-4266e7c4ac1mr4359737f8f.26.1759996302557; 
- Thu, 09 Oct 2025 00:51:42 -0700 (PDT)
+ bh=hpLehWuVj/iTQMlAG5SBBBJrQjnUYuy4M749N9Qa2C8=;
+ b=j6vn+UdfOm1B7o9WSw28TtJ7FT1dGQ3oOLSbXA93Wr1Cef1sTlMnwJmNH+z9+grEWt
+ kbAnXr+rAj7tYdPn6gyd3Rnonzn4z45ctzKu7kuouNFJiav7LJK04A74ELFUI1aYUW1a
+ ztBf4hyia7j3AdBuPyTkz+iNZRjfCBRUbiUAiN/gygGqfx3KIOb+/la/xkT8RW2Uvd4U
+ eFUqB2pzLnTDEJ/VhFbsxDqG9IV6WNPBYLjRPbkndS0uXQT3eVyIZ9Z7/TBjK1UdRuWB
+ Cox2DgEvb+LLLBpDpcdYB0oQZ0uUWoVNqVoozAbKXJt1D1D8SvQpXFLZ4OaMa1x5xzh1
+ M5MQ==
+X-Gm-Message-State: AOJu0Yz80/pTANhgQWq/vpVj5EzIsuZ/SK6KYEp53Phq0B3P5XGIZaUb
+ 6Pl1CUAEn7rdCe39Eo9EvkT+rxLgJFqheh4KusXXkqbSTjHibf85LcZ2LRFLIRd6JrFkck/dN04
+ zMtDaBFaqlP0oBPvnudH6JsVrbIr2gksos6no8DRhHSnaM4uHBs3MpM5lGT2RN1MAI3Bnf5ORlS
+ rrir3pMck3X/ioPXlmKHgm6YnT0cRNo+zFbYCz+fN/RmU=
+X-Gm-Gg: ASbGnctFWkd0FP70JE60gOE0z+LX1hutyfvsVqZowEwZfBQfA8aSEurVp9xTZT8v8g/
+ Vv5UUBvmPVviKb/24k6wGOFDAntreC5gyENgSvYixDBlW/t5yOYs1BXDtczKXB8I21rvDkX+1zV
+ DQvc5NyxsDNTSMu0ukMiE9i5thF/n3pWXxb81agy5CxgGyISKFgMYjqyFIyehI4o0DS+CjNMY1L
+ GwPSrpVYxdGQ9aD4eN7lNblYO02Aj+xhWSZAgjpLN8CUdacxyZCALI/4zpsBVp+S2KbmYHbqFMo
+ YjNMRlYwJqzih4/7QiF1hUs7w+i5xzSL8U4bmzWdFm3BDbrIflm0GYM6VFZg3Ts6LwlpEVypmqW
+ Oi06oyi59hJ/p5qXaXZgzchytYN7ZJaMkc354id1NMh3NKaTm
+X-Received: by 2002:a05:600c:19d2:b0:45d:84ca:8a7 with SMTP id
+ 5b1f17b1804b1-46fa9a96712mr42492515e9.14.1759996305656; 
+ Thu, 09 Oct 2025 00:51:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyRaTWhC2L8anr87OdCOfpThLQPuwvxVjYJArYTqPkUqCXCt0RIp90HT1BjwVOd/Lo49yEVw==
+X-Received: by 2002:a05:600c:19d2:b0:45d:84ca:8a7 with SMTP id
+ 5b1f17b1804b1-46fa9a96712mr42492325e9.14.1759996305188; 
+ Thu, 09 Oct 2025 00:51:45 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e9703sm33775035f8f.30.2025.10.09.00.51.39
+ 5b1f17b1804b1-46fb1e0f019sm13875935e9.10.2025.10.09.00.51.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:51:39 -0700 (PDT)
+ Thu, 09 Oct 2025 00:51:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PULL 33/35] MAINTAINERS: Add maintainers for mshv accelerator
-Date: Thu,  9 Oct 2025 09:50:23 +0200
-Message-ID: <20251009075026.505715-34-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 34/35] tests/docker: make --enable-rust overridable with
+ EXTRA_CONFIGURE_OPTS
+Date: Thu,  9 Oct 2025 09:50:24 +0200
+Message-ID: <20251009075026.505715-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,7 +93,8 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ TVD_SPACE_RATIO=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,45 +110,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Adding Magnus Kulke and Wei Liu to the maintainers file for the
-respective folders/files.
-
-Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250916164847.77883-28-magnuskulke@linux.microsoft.com
-[Rename "MAHV CPUs" to mention x86. - Paolo]
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Link: https://lore.kernel.org/r/20251007153406.421032-1-marcandre.lureau@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/docker/common.rc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 406cef88f0c..645344c4faf 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -551,6 +551,21 @@ F: target/i386/whpx/
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
- 
-+MSHV
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: accel/mshv/
-+F: include/system/mshv.h
-+F: include/hw/hyperv/hvgdk*.h
-+F: include/hw/hyperv/hvhdk*.h
-+
-+X86 MSHV CPUs
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: target/i386/mshv/
-+
- X86 Instruction Emulator
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
+diff --git a/tests/docker/common.rc b/tests/docker/common.rc
+index 752f4f3aed9..79d533ab2e5 100755
+--- a/tests/docker/common.rc
++++ b/tests/docker/common.rc
+@@ -53,8 +53,8 @@ configure_qemu()
+     config_opts="--enable-werror \
+                  ${TARGET_LIST:+--target-list=${TARGET_LIST}} \
+                  --prefix=$INSTALL_DIR \
+-                 $QEMU_CONFIGURE_OPTS $EXTRA_CONFIGURE_OPTS \
+                  $enable_rust \
++                 $QEMU_CONFIGURE_OPTS $EXTRA_CONFIGURE_OPTS \
+                  $@"
+     echo "Configure options:"
+     echo $config_opts
 -- 
 2.51.0
 
