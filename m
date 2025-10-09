@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BADEBCAA56
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B73BCAA59
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:08:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6vzH-0008PJ-SN; Thu, 09 Oct 2025 15:07:39 -0400
+	id 1v6vzj-0000gx-4w; Thu, 09 Oct 2025 15:08:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
- id 1v6vzG-0008NT-Jx
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:07:38 -0400
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+ id 1v6vzX-0000X9-Ap
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:07:58 -0400
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
- id 1v6vzB-0007FJ-4o
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:07:38 -0400
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-42d7ef9a402so9098735ab.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:07:32 -0700 (PDT)
+ id 1v6vzV-0007Gl-14
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:07:55 -0400
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-9032edd72c1so147535739f.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:07:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760036851; x=1760641651; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760036870; x=1760641670; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UKcEEHwFi9HmNoUBFRpCl1XRH/t4LsuWaRSjMtReov8=;
- b=BbE0FGLCtvt/X3yKqNQwz4/5KMfIRIr2JnhNe7RTbRAsMt4JQrLxDkegzCM3p4ABYJ
- liGj8hoBC1NlTso3LCyJk3zU4OO8xNlIuUYkY1ClRvlLWPUnJ/UyhqYADi1TttB4DrLh
- IXFc2p+bgUhN9xi+Hp7Khqk7NdOhJWEnxJ0nu/RbuEgwkVbdWKMmm040276Ck1qZSrg+
- WY3XUU00vyKW9XFl9IPRuQxr+AIhbmtm6NqnoQTFg6YXoUw90gnpyeW127GKsGNu5SbH
- AVnVCbRiBV8C4kmxFGLpg1uM9zuaoVgMaOCbDR+vQeVzPox0msNCnYdbMRQMVvF5IYar
- pyYw==
+ bh=QoqXzwBxGf9QQWk3WWhuB8rewsTlsm/0PyoJupoB3GA=;
+ b=OD0BW2ssb0HEtuZweFThUqSV9hMspkwZAy+BYKSK7HLmPhgRXBn9Sk+X8/q4jQhqCa
+ IQQf+QY4RJu7wnCUyi8lIJy/dIa4jyAtxOjoFFaPNl9Kjmlvp2ALm+Oo7Aouz7z1r34x
+ Rlck5I//IY/hgN1RT55HybzLnuZvkyxGH0wLhJvsFP+ie7Lmw9HR13kcRVeYAX9xO2w4
+ s8jRrAUcXuAG7MNq4fcOeiI0TpzM42NgXiJVoPxyPofDKbod2Zk9Kt/cbDSKJDYSrWI3
+ hjrfXNoY+IVmQb+IRVi3kI35aMkz7/zRtNRplAs6/l8+nEmT6pfJk5nTP97UxtD5xtrQ
+ ukNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760036851; x=1760641651;
+ d=1e100.net; s=20230601; t=1760036870; x=1760641670;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UKcEEHwFi9HmNoUBFRpCl1XRH/t4LsuWaRSjMtReov8=;
- b=Oqle/mpnyQZAsqN6qVvpjchPZoXE+5JFPOTn4MejkgqQJyp/fetHnlIhammKTuqPWw
- +++Zx2GekSouwSQCzaQNwqUm+hFNdLzVpSAigoYwM1se49JrTbKPm/01whumjgLLwncH
- KMQtZlJceryKHuMD2DCNf2KqMaKvaA9YYjaq3sk39Q0MU0ehtyR78VF3FjiBiYaH+RoF
- OCri71Avo4B84YRv8shOzCnXPUqq4qMsDeB2AliweH8XbwM6+bUKQxfIdHTF+W4F2+d0
- uccAPld2KDvRlu3dq3D5frnwhcToVBwfXmT214s+Oc/r/TpOhEg+X1IIb7QQLH3AIBem
- s0zQ==
+ bh=QoqXzwBxGf9QQWk3WWhuB8rewsTlsm/0PyoJupoB3GA=;
+ b=JaQCzDd0I5nuM6IlrPGcBqfClNlIKFyPfZbUu8u5TBdG2Am/ZJkWzKxFsEaQIE22MP
+ 62x7Lvw11NYlsY3loEJLSlGEED6TIJDFISOOZSvf9rQlo606y3ihGSzABSW0OFmmqzbR
+ V474D5ZbUyF4UBUkWTE6W/77gL4Y5/2sCR822k469f/h3qxKUsFaBnrEpZdoQXUyU+y0
+ /mTIMfFTEov4KkPFDNwdCL0dQiQXTA1c1W+fh+DEza3PjwE4WZFGytszJuIZ4Qrge0mV
+ BGhP1BfirEnmglYBBqOmjiZv2sZ7Fy+EoW67JWQfLOA5XsgUAXaYA/Hb8+dwtYWDtIGH
+ 0Riw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW5IbLYrGTpSPXeeMxYo/yCRvxnfBp6P2YMsTi4HMK8kKGp5uPRZFwXCzeuzLle4i2cN2dAqt0v8INP@nongnu.org
-X-Gm-Message-State: AOJu0YxLjyrNuyi7Ulirt4aw31ZUuOs6/51E+cWbbCQF6TqKuxICKmEN
- thu5AcaWmcvimpBxsjmgrYOGKHjwTzcrKPADBS8PRfqY62Fmvk9jfKqVHGB0kaH5Q1yuOHk+8I0
- oY2YEf+29ZVZZrf8A8nYLmVV6Avrw2S0=
-X-Gm-Gg: ASbGnctUHQpx58dmRvJL28kQYv1ID3Qq0l2iel52hOqnLmNj/GjA6VUXb970IaARep5
- laXYxEtchyHnoXeTKidabjil32hKFD6T67DxCCm5Ba+lN+zHK7fo1C+LHEFLu4U0fg6Qla/9r0D
- AsUfcVP1opvWoUt9HawLZnegnLnDimNlZDvSj7cCIxvOwrCkSAy7Ax0MOCjQYaNBjfwlD0a7+0t
- S+WqxVCIj9HDrBVIYglOKO+76GyMgsZmVMyRLUoGjCazDgjdJfi
-X-Google-Smtp-Source: AGHT+IFbK2pX8lftKs9t+PhqpjosJJz8V7Rq9B8MA/pPtbdP48UyV4YHd52/4xZsId+NgEX8LMff8tILvemYF8G7JaU=
-X-Received: by 2002:a05:6e02:3c04:b0:42f:9353:c798 with SMTP id
- e9e14a558f8ab-42f9353c81fmr36167645ab.3.1760036850859; Thu, 09 Oct 2025
- 12:07:30 -0700 (PDT)
+ AJvYcCWoNAI1WNuILgeXMDMsGdzh17QyqogVKBOlKcFYjovKAv9x2ZTzEP9nJ+WbulYTA40eZkwDZhjx9kRk@nongnu.org
+X-Gm-Message-State: AOJu0YzuoakcvNiGPqZPs2Yg+lLQiWQBHQUqnZd3XWRQvze0wZyMt3C/
+ roTpw6UqJFvsOR2HDAIy02ZxwHNHXueesT6OKGlw48ryLb67XxR++AX8gQ7QuWfnIMwQJ/I4sZX
+ qiiitt0+l2NcnIjynstBRFv22/ensRXk=
+X-Gm-Gg: ASbGncvP5/K4fc4fVQKUMVXcxrU5BOIiPVUma+hCNTNt4nysarGDuoqUdotwvJBH2aV
+ c/dOLTNZnfC0MzDM/GFZPxq5UYgCagGBdfm5hbWHQ3qoOCtneF20JpEYiAcqtjUPIst/gscc6qg
+ mOzD/jr1x9OxqyYd6HbtznCyuthMOGUeb5rdkeuMVCghjI4H4VOSwzL+2Vk/lEb36rdeTWrp30a
+ 6CRjt6L3objhmd0des5w28vCnbedC0T8NtlQuxHX+KCTDnkLrse
+X-Google-Smtp-Source: AGHT+IES1j7ozbgcTz9TD9ZLUJb968efEzWnLMtCGKKiOqyVzUuuig7ZFHEClJDu09qcx0HZwSX8lT3KQ/vwtuDwtkw=
+X-Received: by 2002:a05:6e02:2206:b0:42f:8ae9:27f1 with SMTP id
+ e9e14a558f8ab-42f8ae92abdmr74849155ab.28.1760036870193; Thu, 09 Oct 2025
+ 12:07:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
- <20250813164856.950363-21-vsementsov@yandex-team.ru>
-In-Reply-To: <20250813164856.950363-21-vsementsov@yandex-team.ru>
+ <20250813164856.950363-22-vsementsov@yandex-team.ru>
+In-Reply-To: <20250813164856.950363-22-vsementsov@yandex-team.ru>
 From: Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Date: Thu, 9 Oct 2025 15:07:18 -0400
-X-Gm-Features: AS18NWCB4CeEqC7DKQr58Ne3jDBs4omMFZJ5DutPA-gHOqTecmY4fBOzxT9Wfgk
-Message-ID: <CAFubqFvjrc+wn1dusOgeyhBr_W0V36=one-EBu2qCw=Hoy+T5Q@mail.gmail.com>
-Subject: Re: [PATCH 20/33] hw/virtio/virtio-bus: refactor
- virtio_bus_set_host_notifier()
+Date: Thu, 9 Oct 2025 15:07:38 -0400
+X-Gm-Features: AS18NWCGxNXsxrninkjHNZdve0J9UJSheuyBdoxrGvvkNusJfypKfG4iRClu6eY
+Message-ID: <CAFubqFsVsPnKvm8VR==zUmn1j6cq4TnKHaVKWpiG6pr6gbGW4A@mail.gmail.com>
+Subject: Re: [PATCH 21/33] vhost-user: make trace events more readable
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: mst@redhat.com, peterx@redhat.com, farosas@suse.de, raphael@enfabrica.net, 
  sgarzare@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com, 
@@ -76,15 +75,14 @@ Cc: mst@redhat.com, peterx@redhat.com, farosas@suse.de, raphael@enfabrica.net,
  steven.sistare@oracle.com, den-plotnikov@yandex-team.ru
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
- envelope-from=raphael.s.norwitz@gmail.com; helo=mail-il1-x135.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=raphael.s.norwitz@gmail.com; helo=mail-io1-xd36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,51 +100,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
 
-On Wed, Aug 13, 2025 at 12:52=E2=80=AFPM Vladimir Sementsov-Ogievskiy
+On Wed, Aug 13, 2025 at 12:57=E2=80=AFPM Vladimir Sementsov-Ogievskiy
 <vsementsov@yandex-team.ru> wrote:
->
-> The logic kept as is. Reaftor to simplify further changes.
 >
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  hw/virtio/virtio-bus.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
+>  hw/virtio/trace-events |  4 +-
+>  hw/virtio/vhost-user.c | 94 +++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 94 insertions(+), 4 deletions(-)
 >
-> diff --git a/hw/virtio/virtio-bus.c b/hw/virtio/virtio-bus.c
-> index 11adfbf3ab..c7e3941b1e 100644
-> --- a/hw/virtio/virtio-bus.c
-> +++ b/hw/virtio/virtio-bus.c
-> @@ -293,20 +293,18 @@ int virtio_bus_set_host_notifier(VirtioBusState *bu=
-s, int n, bool assign)
->                           __func__, strerror(-r), r);
->              return r;
->          }
-> -        r =3D k->ioeventfd_assign(proxy, notifier, n, true);
-> -        if (r < 0) {
-> -            error_report("%s: unable to assign ioeventfd: %d", __func__,=
- r);
-> -            virtio_bus_cleanup_host_notifier(bus, n);
-> -        }
-> -    } else {
-> -        k->ioeventfd_assign(proxy, notifier, n, false);
->      }
+> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+> index 76f0d458b2..e5142c27f9 100644
+> --- a/hw/virtio/trace-events
+> +++ b/hw/virtio/trace-events
+> @@ -25,8 +25,8 @@ vhost_user_set_mem_table_withfd(int index, const char *=
+name, uint64_t memory_siz
+>  vhost_user_postcopy_waker(const char *rb, uint64_t rb_offset) "%s + 0x%"=
+PRIx64
+>  vhost_user_postcopy_waker_found(uint64_t client_addr) "0x%"PRIx64
+>  vhost_user_postcopy_waker_nomatch(const char *rb, uint64_t rb_offset) "%=
+s + 0x%"PRIx64
+> -vhost_user_read(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
+> -vhost_user_write(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32"=
+"
+> +vhost_user_read(uint32_t req, const char *req_name, uint32_t flags) "req=
+:%d (%s) flags:0x%"PRIx32""
+> +vhost_user_write(uint32_t req, const char *req_name, uint32_t flags) "re=
+q:%d (%s) flags:0x%"PRIx32""
+>  vhost_user_create_notifier(int idx, void *n) "idx:%d n:%p"
 >
-> -    if (r =3D=3D 0) {
-> -        virtio_queue_set_host_notifier_enabled(vq, assign);
-> +    r =3D k->ioeventfd_assign(proxy, notifier, n, assign);
-> +    if (r < 0 && assign) {
-> +        error_report("%s: unable to assign ioeventfd: %d", __func__, r);
-> +        virtio_bus_cleanup_host_notifier(bus, n);
-> +        return r;
->      }
+>  # vhost-vdpa.c
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index fe9d91348d..3979582975 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -119,6 +119,94 @@ typedef enum VhostUserBackendRequest {
+>      VHOST_USER_BACKEND_MAX
+>  }  VhostUserBackendRequest;
 >
-> -    return r;
-> +    virtio_queue_set_host_notifier_enabled(vq, assign);
+> +static const char *vhost_req_name(VhostUserRequest req)
+> +{
+> +    switch (req) {
+> +    case VHOST_USER_NONE:
+> +        return "NONE";
+> +    case VHOST_USER_GET_FEATURES:
+> +        return "GET_FEATURES";
+> +    case VHOST_USER_SET_FEATURES:
+> +        return "SET_FEATURES";
+> +    case VHOST_USER_SET_OWNER:
+> +        return "SET_OWNER";
+> +    case VHOST_USER_RESET_OWNER:
+> +        return "RESET_OWNER";
+> +    case VHOST_USER_SET_MEM_TABLE:
+> +        return "SET_MEM_TABLE";
+> +    case VHOST_USER_SET_LOG_BASE:
+> +        return "SET_LOG_BASE";
+> +    case VHOST_USER_SET_LOG_FD:
+> +        return "SET_LOG_FD";
+> +    case VHOST_USER_SET_VRING_NUM:
+> +        return "SET_VRING_NUM";
+> +    case VHOST_USER_SET_VRING_ADDR:
+> +        return "SET_VRING_ADDR";
+> +    case VHOST_USER_SET_VRING_BASE:
+> +        return "SET_VRING_BASE";
+> +    case VHOST_USER_GET_VRING_BASE:
+> +        return "GET_VRING_BASE";
+> +    case VHOST_USER_SET_VRING_KICK:
+> +        return "SET_VRING_KICK";
+> +    case VHOST_USER_SET_VRING_CALL:
+> +        return "SET_VRING_CALL";
+> +    case VHOST_USER_SET_VRING_ERR:
+> +        return "SET_VRING_ERR";
+> +    case VHOST_USER_GET_PROTOCOL_FEATURES:
+> +        return "GET_PROTOCOL_FEATURES";
+> +    case VHOST_USER_SET_PROTOCOL_FEATURES:
+> +        return "SET_PROTOCOL_FEATURES";
+> +    case VHOST_USER_GET_QUEUE_NUM:
+> +        return "GET_QUEUE_NUM";
+> +    case VHOST_USER_SET_VRING_ENABLE:
+> +        return "SET_VRING_ENABLE";
+> +    case VHOST_USER_SEND_RARP:
+> +        return "SEND_RARP";
+> +    case VHOST_USER_NET_SET_MTU:
+> +        return "NET_SET_MTU";
+> +    case VHOST_USER_SET_BACKEND_REQ_FD:
+> +        return "SET_BACKEND_REQ_FD";
+> +    case VHOST_USER_IOTLB_MSG:
+> +        return "IOTLB_MSG";
+> +    case VHOST_USER_SET_VRING_ENDIAN:
+> +        return "SET_VRING_ENDIAN";
+> +    case VHOST_USER_GET_CONFIG:
+> +        return "GET_CONFIG";
+> +    case VHOST_USER_SET_CONFIG:
+> +        return "SET_CONFIG";
+> +    case VHOST_USER_CREATE_CRYPTO_SESSION:
+> +        return "CREATE_CRYPTO_SESSION";
+> +    case VHOST_USER_CLOSE_CRYPTO_SESSION:
+> +        return "CLOSE_CRYPTO_SESSION";
+> +    case VHOST_USER_POSTCOPY_ADVISE:
+> +        return "POSTCOPY_ADVISE";
+> +    case VHOST_USER_POSTCOPY_LISTEN:
+> +        return "POSTCOPY_LISTEN";
+> +    case VHOST_USER_POSTCOPY_END:
+> +        return "POSTCOPY_END";
+> +    case VHOST_USER_GET_INFLIGHT_FD:
+> +        return "GET_INFLIGHT_FD";
+> +    case VHOST_USER_SET_INFLIGHT_FD:
+> +        return "SET_INFLIGHT_FD";
+> +    case VHOST_USER_GPU_SET_SOCKET:
+> +        return "GPU_SET_SOCKET";
+> +    case VHOST_USER_RESET_DEVICE:
+> +        return "RESET_DEVICE";
+> +    case VHOST_USER_GET_MAX_MEM_SLOTS:
+> +        return "GET_MAX_MEM_SLOTS";
+> +    case VHOST_USER_ADD_MEM_REG:
+> +        return "ADD_MEM_REG";
+> +    case VHOST_USER_REM_MEM_REG:
+> +        return "REM_MEM_REG";
+> +    case VHOST_USER_SET_STATUS:
+> +        return "SET_STATUS";
+> +    case VHOST_USER_GET_STATUS:
+> +        return "GET_STATUS";
+> +    default:
+> +        return "<unknown>";
+> +    }
+> +}
 > +
-> +    return 0;
->  }
+>  typedef struct VhostUserMemoryRegion {
+>      uint64_t guest_phys_addr;
+>      uint64_t memory_size;
+> @@ -310,7 +398,8 @@ static int vhost_user_read_header(struct vhost_dev *d=
+ev, VhostUserMsg *msg)
+>          return -EPROTO;
+>      }
 >
->  void virtio_bus_cleanup_host_notifier(VirtioBusState *bus, int n)
+> -    trace_vhost_user_read(msg->hdr.request, msg->hdr.flags);
+> +    trace_vhost_user_read(msg->hdr.request,
+> +                          vhost_req_name(msg->hdr.request), msg->hdr.fla=
+gs);
+>
+>      return 0;
+>  }
+> @@ -430,7 +519,8 @@ static int vhost_user_write(struct vhost_dev *dev, Vh=
+ostUserMsg *msg,
+>          return ret < 0 ? -saved_errno : -EIO;
+>      }
+>
+> -    trace_vhost_user_write(msg->hdr.request, msg->hdr.flags);
+> +    trace_vhost_user_write(msg->hdr.request,
+> +                          vhost_req_name(msg->hdr.request), msg->hdr.fla=
+gs);
+>
+>      return 0;
+>  }
 > --
 > 2.48.1
 >
