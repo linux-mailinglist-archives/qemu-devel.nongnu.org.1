@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0B7BC7580
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 06:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E39BC7577
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 06:04:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6hrS-0005oL-7d; Thu, 09 Oct 2025 00:02:38 -0400
+	id 1v6hrV-0005pB-IP; Thu, 09 Oct 2025 00:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v6hrN-0005nY-O9
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:02:34 -0400
+ id 1v6hrR-0005on-Lw
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:02:37 -0400
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v6hrD-0002b2-7c
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:02:27 -0400
+ id 1v6hrO-0002b2-N6
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:02:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759982543; x=1791518543;
+ t=1759982554; x=1791518554;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=bCM8JqnsTf0uHErOG5tcVjKaa7+Cl/EZ1hBjD9sT9ks=;
- b=ccqYM7+AoInKZIxebHgkRPb5/i4TbLCElxTUkvJF2LbmlAIn0yMbfIVZ
- oY2sM3v4/cuxQ2zKSHVPNy0T2G1N44Pw9mT3amEuqf134BAnG5OIvRqtx
- kHnjolhBYj3R8NN5iBE7gQTw1C0B/TS+b+LgY11XnIZTqBjmWUC7Rs50X
- wvVcITdzUZlCGVfHyh3SEcSaDT3hTd7aWlxB/vc3muUhfCo1WGDwPwHjv
- F8w6tSYL3lyzqtf+FihTGH7Ti1P1mitwSzwEKvIb/f3SxNk2N92RrxmYP
- i+XQ/yw57s0LjA0N6TmWZQ/T0ElkYknLdMgzPXVu+F+d5298NMfCM4IoH Q==;
-X-CSE-ConnectionGUID: WabdLdWvQnWiiRDEcbXVRw==
-X-CSE-MsgGUID: POaZ8RMrR/+U5mwTRFNlUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="84804135"
-X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="84804135"
+ bh=TzkxlI9egdrmunNPSgwi9HKMSBaqWR2wtWxaRxMmwsQ=;
+ b=lj+dZJLKFGujPLWHPcidORvbT88abCeaLw9Vb+m0/bHOry6mO704jODf
+ sl7WVBE8GT7lxPlJt4qdtnPEnedG/MWretwr1aN8xeS7ip2Zn3sj3UZ/V
+ hXGLbXjGUUo9fNkHgKCzb8ZQ749JnpLDby/86kJQn+jXxmrl/Pt87yb8q
+ 12BXvOS+/FaNZLMmdXHjCHF95f1621wdIccTn44CVWgLwm6kYGg2VzoU1
+ N8B+RLhkNLKfheWF+npuRV5lpFHX9bLR+iGp/4PtM1eaafHditZEMcDDl
+ X4PcPhKnF0rx//nbPXrsS/84HjeSqKATDNt/6UgXGYlawE+oQ4Jsn5zrq w==;
+X-CSE-ConnectionGUID: 3rAKCaFtSNOattLRp4LMhw==
+X-CSE-MsgGUID: 2oUCAbUdSS++Znx9HfK3sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="84804140"
+X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="84804140"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 21:02:16 -0700
-X-CSE-ConnectionGUID: NTDe3AgXTLy1/i4THWbCyQ==
-X-CSE-MsgGUID: /nXASSMWSNqLMlCvYYJGcw==
+ 08 Oct 2025 21:02:19 -0700
+X-CSE-ConnectionGUID: REoNhCpSTrejJvw8ppHTlA==
+X-CSE-MsgGUID: ZZggSNDkRDGI8QpW0HPtaQ==
 X-ExtLoop1: 1
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 21:02:15 -0700
+ 08 Oct 2025 21:02:17 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  levon@movementarian.org, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 2/3] vfio/iommufd: Support unmap all in one ioctl()
-Date: Thu,  9 Oct 2025 00:01:33 -0400
-Message-ID: <20251009040134.334251-3-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 3/3] vfio/listener: Add an assertion for unmap_all
+Date: Thu,  9 Oct 2025 00:01:34 -0400
+Message-ID: <20251009040134.334251-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251009040134.334251-1-zhenzhong.duan@intel.com>
 References: <20251009040134.334251-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.9;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -80,42 +81,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IOMMUFD kernel uAPI supports unmapping whole address space in one call with
-[iova, size] set to [0, UINT64_MAX], this can simplify iommufd_cdev_unmap()
-a bit. See iommufd_ioas_unmap() in kernel for details.
+Currently the maximum of iommu address space is 64bit. So when a maximum
+iommu memory section is deleted, it's in scope [0, 2^64). Add a
+assertion for that.
 
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ hw/vfio/listener.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 68470d552e..336f8fdb04 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -62,21 +62,8 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
- {
-     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index c6bb58f520..62766d8c46 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -715,6 +715,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         bool unmap_all = false;
  
--    /* unmap in halves */
-     if (unmap_all) {
--        Int128 llsize = int128_rshift(int128_2_64(), 1);
--        int ret;
--
--        ret = iommufd_backend_unmap_dma(container->be, container->ioas_id,
--                                        0, int128_get64(llsize));
--
--        if (ret == 0) {
--            ret = iommufd_backend_unmap_dma(container->be, container->ioas_id,
--                                            int128_get64(llsize),
--                                            int128_get64(llsize));
--        }
--
--        return ret;
-+        size = UINT64_MAX;
-     }
- 
-     /* TODO: Handle dma_unmap_bitmap with iotlb args (migration) */
+         if (int128_eq(llsize, int128_2_64())) {
++            assert(!iova);
+             unmap_all = true;
+             llsize = int128_zero();
+         }
 -- 
 2.47.1
 
