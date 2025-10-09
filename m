@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62600BC984B
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 16:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DFFBC9842
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 16:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6rgB-0002Ja-2G; Thu, 09 Oct 2025 10:31:39 -0400
+	id 1v6rgI-0002M3-9L; Thu, 09 Oct 2025 10:31:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6rft-0002Cu-47
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:31:21 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6rfx-0002HC-3D
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:31:28 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6rfk-0002zf-Pd
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:31:20 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3f99ac9acc4so922935f8f.3
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 07:31:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6rfn-00030K-Vf
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 10:31:24 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b85so1142258f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 07:31:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760020268; x=1760625068; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cjPNevo2CNH0Pr/i8dAGnpuNpJKgjLopUkdNiXz8fvE=;
- b=JjmCxjj3qWWDvPGmiZ438nvWvitjhwURXDoNOFLQkeqc9XIaTNKoX/tiu5goVV5AEZ
- doY2saxbo8WuL3D9+wQDRSOJDjjQVRPsZzahuazm43dxe5DPMPzgGFVowmHulFUjeO2k
- 1kRhtVahSlLtTVWNtrsqqyMgMtGIimN8udWYk7ftYdgP37KsUtzwBwyOuF4wVyW2tzo2
- mnlMBJBvbPxl49BPpU/Uj78+ny1aperYlCw/HtXfu7sOEwrJ/EkPHuNZme+s7eJi5eS8
- Nbs6o7XBr2AvtE0P9ANNHQ08vi6paE/LgkDCvJJPRPszAGDz5Vr+2SdTdAB4iVGSmi+S
- yNGw==
+ d=linaro.org; s=google; t=1760020273; x=1760625073; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gnUlApX+7h7Kk05znUtWIMQVcOTxmH3EZMk7MU+Bn4g=;
+ b=fXPRJ6DJRyP5AO2+IcCWTwQTYcHl3CgqQdW70kF38alxorHnRaAuX1xS/l3iC/Sm5X
+ gqbaKU/Ks+svxkt0H+8C5+uwugAjZZTC1H0wKoSul4cMkezmnmYfAEQmwQaA5lpyM7Hn
+ vkx73ArWAUgjuC/Z/kk2Jd/YD9Y/I8V1DJHRGkW2jBruIkIt3pNFr6HYGi8FapP6ICyr
+ 31vOdwWPmVXg1qCqTW36FMCgfYL186jScpR37K/joCNhC5jL9kijnSyDkzxhJxZYz3M/
+ MhLjXSaH2c5n9BXSGZumn/9lXaYTc8+HGErsQy6E5JfpDgu/QvWPPvgCnuABhGarn1MZ
+ 8mmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760020268; x=1760625068;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cjPNevo2CNH0Pr/i8dAGnpuNpJKgjLopUkdNiXz8fvE=;
- b=MuqniFunvhQg6hYVIZkPzCw6CNv+5o+PDRkRZOiRj6iZbNXoKJp5kfVTFpieTO9/Ch
- AOPzdBSkjADraT461IHubF93kz5BIw8Mo+9jAQfx6vNTv9pqDC0mrYIC1umXzELGdsC6
- na38yZsOPzBTD9jnf9hdzkkFajYJlcAf/Bi8uTcbvtNrr/WNtr9H0uFnGQJbdPcJw+Td
- f6sUkYs+y7/7xASxAUeBfwoKsYyCKUhtJtA7OaynJ5JQk+2A4mUpnCLmZhTtoVt/ogqr
- BL+3OLMtWJlCvq0RRGToVZOPw+O8VIkpz7Rz6wRT2fHthu1riIGipkrWaBEnOa6+MHGo
- ndbQ==
-X-Gm-Message-State: AOJu0YyulTuTP/igNrtGF9ErthiUPYfdv2bCzJWWZ9qsRT87sfWY3F/3
- iSC+FQjxQQrQuNyzLj/u5Ga6dQWPsummnS5dpCgRyBdbiCEXD+tIGwSb8uS0oL54kyabn/2rror
- rtfusC3UnjQ==
-X-Gm-Gg: ASbGnctAzgi7wPQrHdFGlIiJnuj9eDMRJAGLmmLRa7piPYezGMZ9Yah8KpG/YxxF9Uv
- HL6BMVZPs4SsrOTTEVSlldpwMgU6gxVVBO8ew6W/IVKZGv6fw9rPCqKG+aEmy6iy9BbBLJjnDIC
- XWSP4i5vh5PcbgQYMHUZAO0bZtq3IUETvuMAgNLvtE+JM47GK3Jqz/ehhQ3vOAA6YbAv3hJx5B4
- 4OBm/Dvf/F4D49tA6M5M5i6qKQf3ovR1nb2aIF6BG+u91AHHNv9vwgV2BU01x030vfs6MTONqMp
- fB3vKi/SF0/DGFnW33mLqGz2+TqIHexFA1XcRJ5eI94GGHzqaoc1FOSI/r5P6UTgRRnL88hVGmh
- tT2SC63ARCdyveZQ+qM2UEOjLQWVFNv2pVLSJmboMSXP9JHlIQLy/xeznHUDPXzsZ18a6SraJqs
- q1Iw4shOUlwPDlktHwTlB7QN/7
-X-Google-Smtp-Source: AGHT+IErP/avI+wlvm88GNCuJ8NQKQdIjCy96DsnTjBGvBvNTQmWQoIQpK43SiMXQefyg26mmwXxJg==
-X-Received: by 2002:a05:6000:1861:b0:401:ae97:a1a6 with SMTP id
- ffacd0b85a97d-4266e3ecf0cmr5199730f8f.26.1760020268366; 
- Thu, 09 Oct 2025 07:31:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760020273; x=1760625073;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gnUlApX+7h7Kk05znUtWIMQVcOTxmH3EZMk7MU+Bn4g=;
+ b=LZEs/ztwvmPbI1RKMmBFmMUnoWMf0p+6kW1sqze1IBxx6iUSdLv/yBGhpBdXXQkJ3p
+ 3uzQ4izYt7VwKtp57jOl2LzbSOFoccakmDxe8UMDItlZki3O/Cmd4yFFtmUL4FsMivCk
+ mk8gmDajmwpZloICwtYcpDMkdl6Ftz71AgKnAXsr5ywlgZTB4iNlR3LHAi9KWeBHU7dd
+ mBsShPw659bzEY64Q84In7MCV1pLNxoZKxY4JopoLukvXnnW4BYvLYPUQtzctnZgMwTm
+ kNfEyKvr2tV41JYCyzE2q/BAuCDkeESs0eueOqBgwujac+s/LUF3lUJS1R9AizE+f0kW
+ oP9g==
+X-Gm-Message-State: AOJu0YyVJb2IwfUm6eQtrenK2S3ASQ8PMFlHNPQWtj7CPY+VRfIlAiKj
+ Dr4F1l2VsQ0/HIsK5m/m66MJObe9wY8Pcsp71YLTgD9cPbyDTDZrDogWyjYPDk6jf5j9R2zyWfV
+ U3lDg8zAhkQ==
+X-Gm-Gg: ASbGncs2xHuN6bibk94MJTVAtH4CcbxpSIbn2L0oXKf83eudINFUDByxAHnIFp3i/Mx
+ kB9Zr5T5Ub3fKvNRCSzglnLztotjtYwpcaqU+HLjO9dcBmkw671DGK8I+X8P+EXcbVN1q0epMfC
+ zsKIyc7F+h+mWreT/KuyhH//5qIZdyF2rdd7InELUETFlYSOPB5V7NkMZrKvrRHwE58WnOUYrkT
+ 5eWcS80ATm+ojgDww9G08puHGY1tJq4EqoD+0gtvdhaDcVv+wnhmqeaPzosDxjdqh0vNmQ2zd4D
+ oZ8G/IqQNBG8YKmvNmwuE8ul3lPSUNTCa9Pnfne8Wi/nGK7ziPOkd6xV6vz01++aFcY1VJd3sGd
+ jdwnAczBrJ8hg+FvfB6EKYxZMFnFuQdigr0qYWLyh9Lb9/fF1PcpmbqdVRoirUNwzYxDAHsZow2
+ /6/TFXRJdEed1RD1xT7NJhAjJj
+X-Google-Smtp-Source: AGHT+IFdAnyIk1GYu1RZARP9Y3YLUwJfJqGDexlvlnAAzrPXNCHgn4iio8tKbh8NSaokHBfxOypOyQ==
+X-Received: by 2002:a05:6000:2504:b0:3ee:141a:ede5 with SMTP id
+ ffacd0b85a97d-4266e8e66a4mr4804740f8f.57.1760020273143; 
+ Thu, 09 Oct 2025 07:31:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f0853sm35672426f8f.50.2025.10.09.07.31.07
+ 5b1f17b1804b1-46fb482624fsm396965e9.6.2025.10.09.07.31.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 07:31:07 -0700 (PDT)
+ Thu, 09 Oct 2025 07:31:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/6] hw/hppa: Clarify machine variables and move them out of
- CPUArchState
-Date: Thu,  9 Oct 2025 16:31:00 +0200
-Message-ID: <20251009143106.22724-1-philmd@linaro.org>
+Subject: [PATCH 1/6] hw/hppa: Use the machine default boot order at reset
+Date: Thu,  9 Oct 2025 16:31:01 +0200
+Message-ID: <20251009143106.22724-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251009143106.22724-1-philmd@linaro.org>
+References: <20251009143106.22724-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,25 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HPPA machines uses a pair of variables for distinct meanings,
-depending on kernel or firmware mode used. Replace by variables
-per mode, allowing to use the proper type. This helps reviewing
-the code. This cleanup allows removing unjustified target_ulong
-uses.
+Since new machines might be added with different boot order
+than 'c', take the machine default one at reset.
 
-Philippe Mathieu-Daudé (6):
-  hw/hppa: Use the machine default boot order at reset
-  hw/hppa: Convert type_init() -> DEFINE_TYPES()
-  hw/hppa: Factor QOM HPPA_COMMON_MACHINE out
-  hw/hppa: Introduce HppaMachineState::boot_info::firmware structure
-  hw/hppa: Introduce HppaMachineState::boot_info::kernel structure
-  hw/hppa: Move kernel addresses to HppaMachineState::boot_info
-    structure
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/hppa/machine.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- target/hppa/cpu.h |   4 --
- hw/hppa/machine.c | 162 +++++++++++++++++++++++++++-------------------
- 2 files changed, 94 insertions(+), 72 deletions(-)
-
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index dacedc5409c..1cce5c47b91 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -640,6 +640,7 @@ static void machine_HP_C3700_init(MachineState *machine)
+ 
+ static void hppa_machine_reset(MachineState *ms, ResetType type)
+ {
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
+     unsigned int smp_cpus = ms->smp.cpus;
+     int i;
+ 
+@@ -671,7 +672,7 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
+     cpu[0]->env.kernel_entry = 0;
+     cpu[0]->env.initrd_base = 0;
+     cpu[0]->env.initrd_end = 0;
+-    cpu[0]->env.cmdline_or_bootorder = 'c';
++    cpu[0]->env.cmdline_or_bootorder = mc->default_boot_order[0];
+ }
+ 
+ static void hppa_nmi(NMIState *n, int cpu_index, Error **errp)
 -- 
 2.51.0
 
