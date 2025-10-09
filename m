@@ -2,92 +2,222 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00A1BCA69C
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 19:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A07A0BCAB98
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6ugR-0004wz-Dv; Thu, 09 Oct 2025 13:44:07 -0400
+	id 1v6wdd-0006UN-PX; Thu, 09 Oct 2025 15:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6ugP-0004wg-EM
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 13:44:05 -0400
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6ugM-0005rl-A6
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 13:44:05 -0400
-Received: by mail-wm1-x344.google.com with SMTP id
- 5b1f17b1804b1-46b303f755aso10035305e9.1
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 10:44:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1v6wda-0006U6-Sd
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:49:19 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1v6wdT-00045L-2M
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:49:17 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 599GBx7P009295;
+ Thu, 9 Oct 2025 16:17:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=98ve4+19bDZmXQHRve8vXe36TdE9Ah5VEGk4hDApkcc=; b=
+ T7YL6HAgNPNBPc3DyUAoBIEdymtfDuNWvxp2M7qds5/QSGgYvxYwcgbFakUmoUmf
+ 5+tBTQ6eivYL7svAPOf6nF7fLzUI/h55dTt7MODDMKU7rfqKP3/lQ/v9rDvW1CuJ
+ ykEzzZL/3pzpOzNzHNWXUrZAvD8MS94R7NGKHPRNIsTBDcNtzBzgnv3cyl0H3Zoj
+ 8ZKEsNkL8pr29rDaRi1DiVdx914SsHzZ8ry9bS7wnKvG2ubdx7oc18CAruAvVLHM
+ d/Dt/ssojXoTmZokgvMqL7E4tUuCftWWk7ekmCP0D/ex7XEMCwGn7BBn081IMaCo
+ s3RleDCwa8oKXDzbXbF+OQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49nv8phya0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 09 Oct 2025 16:17:49 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 599FVt49036752; Thu, 9 Oct 2025 16:17:48 GMT
+Received: from byapr05cu005.outbound.protection.outlook.com
+ (mail-westusazon11010041.outbound.protection.outlook.com [52.101.85.41])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49nv67vvv8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 09 Oct 2025 16:17:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mn87Axs8/60GtIqvnPLMHOIwkaisPqvbxqhEdSDagwat8FngItNP7n1/vCl/G2iODfXMYf8M5rvHvsYBmqneB4fYmREdsjlslv/pc/U/TyB2vvuP6i26YJQTWRJbsKPfANUtNyB+OWNQgLEhXrmB5+11pCxsPe3WRVfFTClIzkF3GnQm/nOETItmAJ6dHfQ17lTdqpO0o2d/BW7yd2BuBYimDph52v3A0Q3Zso6MO/Ntb4UDursABi9D8ymGfIgF0CNmnXc5IgCPrNZHeCimIB/eWeGmQNdav0UJqfQ6xyqbgRK6Rkd7kYCWlqArNacOnhNKbHxULsyRABCKgxFerQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=98ve4+19bDZmXQHRve8vXe36TdE9Ah5VEGk4hDApkcc=;
+ b=nTkDYPcYpSmrWpHpZY4aYrgEHw4yiIuMn+5S0XAs6MsJl9CbCsVaQoceo9i4I58R/soR1w+BMaGuzQJ5e9qFXotYV3jps8drXTRz/Oa4f0WGhTCrsv0tboOX6iLTZrDQfcOvYR3Xk0CUC2wMqxbjAhJRUlZ7vxYWr6wh7EF85obO9+Es0zzFeq0DX4Gj1/XTUM8Bh7ZFoRAKJi4DkFl6lnWaOg8bHHCgBFzCV/eoGLW2bCjougCEtSbXbOpgwaPFssWchN5yvMd5aTSU28DENhGql6oAfsPhkfBk7/82Kq/byUweC5aRHceExOFvVI0fHbA/78wuks61epB9oKIOHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760031839; x=1760636639; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4yJjwJiN4Wu8yEEngc5Fjvek4J1FNJRvT4aV2R9EfdI=;
- b=HA1woxmHB53ZxKLhWeL1UxEpIZe1AHMwu3krJTcuMa+KDeyoNFjGueo2fZUjzGiXHF
- F9ETAjn3KYDCVVs0V0V6MSJ67bZAHLSl5D/HxbGtWh9SgQSq2Cp8MScamoVU6eZouYDQ
- H9NHues/SM/FusJvHgzFxpiyowwzEepv4fMbNpJOuvwcxilUhP8KXTH0B9iQWWxrVzip
- RMxqY9eqMdhYTjljdew5Ad+W9bAK+0cXmNylDplj1FwOOido6KOd7Jr5T6NyR18tAhHr
- VRzE5pL6QM44Ubs0Bf39InlxUBe5YzmmaXFi7IYVYySOUVvdkXXev2lVLrKLyMQ8aHY1
- QudA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760031839; x=1760636639;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4yJjwJiN4Wu8yEEngc5Fjvek4J1FNJRvT4aV2R9EfdI=;
- b=d/aq4jwKgmN8UyGNG3c6reMh6jXOAAcBTtciern54DBPXgQV9XrQq0FX25sTMBvfQn
- 2JAUyR2D3kcmCbXryBC6WlGP6h7+Je7hRw0DebeQo4eo+raRCYo/AtyRB874DFDTlzFw
- zjIgdjw4qKH22HZapMUQrSF0TL2p/mZ/EFlTlx/xgZD129hWe7oJoxKShC2+djjff0kS
- dOOuvVnpfgba4Fq8boRGlNL6l5aLLJ6XKG9AEIFvpqeJgtds/o38xVkdOTYRewk8gREZ
- Dk2Fko3g55ebu0HghgxzxuqZmbwaA1Pi0Cp21T1ynae3gkir83WSVJFJti0Uf45vwBcc
- 9ucA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUbFRXmnPzTzo94Yei//V+SxlMad/Y3R2cJ97ZzofCViIIojck9yocrmZNiexgvv2X/5kyk7Qjr/aKp@nongnu.org
-X-Gm-Message-State: AOJu0Yxa5UbFq/WMgHncxjVakmJQ+3YJsjs2BpRB0qXaaYHd7kqxZH6h
- 08RwjeEICpYtMvf/Feq52MYSnMnMkbqc8j0TCJ9p+RDzxRl3JCeFPv+r2Ps2xoLJmcw=
-X-Gm-Gg: ASbGnctNIsCTsr5/IJmnbvUeUzAAbXrkQHadMzdKUQFS6E6lJrgbOFr996kU5FNUw3A
- Ey8G4u9tUOdnPPKCfqgJihrnOde4m5YVdJvSF+S8K63aF1GhaKIxsjF8B2dY3ZgALGb99LbKNDN
- uvYJy57JnjnYxPTL3Qy1Rz75K8zmXnpXijIpCCIdtYpfguhswNtKwXpWO0bPJiBiwin+ue43G6R
- mWibIJMXAvnnVwlOK/SkJ2qrpy4giEFF18lF7umI/kDR8BTxhEwE5qag/fvgv0Kud0F0qvVNtd+
- LBlQA8Wbce9MJiFkBMma32AGfpuN+suE0Vwq7LVOeTJZ2wqODxF+RiZ/Ndi40vjC3A+G0lq8r40
- ljR6kSaL3mqz45Bqahz1NEAwnUnlwB00RxTPEaFJFysNTYiuHuG8FJLEJ5r1aDlZMmei8fKB5M4
- h5QQe5UW5rj9ZpNzhEAA==
-X-Google-Smtp-Source: AGHT+IGLF0LmbCnKzKmW8KiT6uNNXXtj28jyyOCp1LRQrXqKeBMdRqhNAEVjJv6HwV+h4EvPYOQyFA==
-X-Received: by 2002:a05:600c:8487:b0:45b:80ff:58f7 with SMTP id
- 5b1f17b1804b1-46fa9b16570mr65762765e9.36.1760031838927; 
- Thu, 09 Oct 2025 10:43:58 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e8309sm75196f8f.50.2025.10.09.10.43.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Oct 2025 10:43:58 -0700 (PDT)
-Message-ID: <c75dc27a-5c56-4010-a205-a8296a9ab1e0@linaro.org>
-Date: Thu, 9 Oct 2025 19:43:57 +0200
-MIME-Version: 1.0
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=98ve4+19bDZmXQHRve8vXe36TdE9Ah5VEGk4hDApkcc=;
+ b=FAuQmRCjJaYv33AoSR5TPiAe7hnYBnRFx6aybUCE698Fjd9yhX9K1rn6LmJ/Yq02S7lcxKo569htvgC4sS/l0ymuITU/ZnhpUtbc3PrSUWnlMfHIVHKnAWxK5Tb0v3MMBCb4pZEbMnVjihhXzdMyv0hTgyhNiu68os2CF7IA9zU=
+Received: from BLAPR10MB5041.namprd10.prod.outlook.com (2603:10b6:208:30e::6)
+ by MW4PR10MB5863.namprd10.prod.outlook.com (2603:10b6:303:18e::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Thu, 9 Oct
+ 2025 16:17:43 +0000
+Received: from BLAPR10MB5041.namprd10.prod.outlook.com
+ ([fe80::2c19:641c:14b9:b1b4]) by BLAPR10MB5041.namprd10.prod.outlook.com
+ ([fe80::2c19:641c:14b9:b1b4%4]) with mapi id 15.20.9203.009; Thu, 9 Oct 2025
+ 16:17:42 +0000
+Message-ID: <3756479a-aec6-4fee-ab8e-7629f9d87960@oracle.com>
+Date: Thu, 9 Oct 2025 12:17:37 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] tcg: Restrict qemu_ld2 and qemu_st2 opcodes to 32-bit
- hosts
+Subject: Re: [PATCH 1/2] hw/i386/amd_iommu: Fix handling device on buses != 0
+To: Sairaj Kodilkar <sarunkod@amd.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, suravee.suthikulpanit@amd.com, vasant.hegde@amd.com,
+ marcel.apfelbaum@gmail.com, eduardo@habkost.net,
+ santosh.shukla@amd.com, aik@amd.com
+References: <20251008164324.21553-1-sarunkod@amd.com>
+ <20251008164324.21553-2-sarunkod@amd.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20250820134937.45077-1-philmd@linaro.org>
- <226ab909-0482-493f-bacf-5d2930d07ad7@linaro.org>
- <f745f163-6bad-47ad-a1c0-4be96b604266@linaro.org>
-In-Reply-To: <f745f163-6bad-47ad-a1c0-4be96b604266@linaro.org>
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+In-Reply-To: <20251008164324.21553-2-sarunkod@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::344;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PH7PR13CA0001.namprd13.prod.outlook.com
+ (2603:10b6:510:174::7) To BLAPR10MB5041.namprd10.prod.outlook.com
+ (2603:10b6:208:30e::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB5041:EE_|MW4PR10MB5863:EE_
+X-MS-Office365-Filtering-Correlation-Id: d751cab0-a683-4776-1e9a-08de074f5f75
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|7416014|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Mjh1OTdQQWZXL1BYWGM0Vjlhak5oWUNlUjFKbzdQK24wNEJ2NDVpRjlpaFB4?=
+ =?utf-8?B?MkwyNkwxbTVtbkJxbnRpbExZeU1pWXdSMWVWOS83Yms2MFk1ZlkxRFRibDAz?=
+ =?utf-8?B?OUFrVXBsNGdYRHFpQVFzV3VCd2VmQlZJMHhXejIrWG9vckljUSs3S2oyZkJw?=
+ =?utf-8?B?ak4yVDB2bWFvT2x0ZUxieU5uaGZEOHNOZHE1bXZQWGlscUpGZU5RVlZVd2xt?=
+ =?utf-8?B?QzdDOEJPLzF2R1grdDBPWmFjNU9GcjlGajZOVVZsUXYrRnNkL2pZcmpjS2tG?=
+ =?utf-8?B?Z1hPSk9jemRKRWQwNFlrb2l5V1VQd1pIRVdPZ1JOZGphSHQ1UEthU2pDV3dC?=
+ =?utf-8?B?eEFyaTRLaGMyQWNkaDlkN21XT0tPWmlLbjFWMkVDc2FRNytZZlFuMWF6dldF?=
+ =?utf-8?B?aUdYM2RjY1MxWEFGZXUvTlIwQm14aEpQMC9yS2MvaSs5dUNHNnAxUm9SbWlt?=
+ =?utf-8?B?R0x2a0F4SHNWZldudlFDOW00RDEyWU9VREFZVFQwOEdDOUt3bjB2SjFnSnE5?=
+ =?utf-8?B?SnkrdnptSDZBd0E5TTMvZ0F6NHN3M3VkWmNTT0pZS0RYZ3hONW9MUzd4Ni8v?=
+ =?utf-8?B?UUpjckt1RllpbVFDendqbUtub1BWYUpUL1o4TGFNOHZrZ1FDNDJja0hSWGl4?=
+ =?utf-8?B?OTkyN21DUy93ZTBHaTd3MVFDNFFjbmVQRW9uSHowaFFOOFZVU3FnVmJqT1Bt?=
+ =?utf-8?B?NzV1a1pIRlVvVFJGY2wrSDhJZXNYQW1TSGYxM3o2ZnhnQ1V5KzdZNnJkK2M5?=
+ =?utf-8?B?TFdMMi9yRkQ0R1RnM0FiQy9MVXZ1ZkFZamQvUG1MTUs1ZmNTMC9McStnODNz?=
+ =?utf-8?B?Nk1yQm1wMjFtbHlyRngwUnlhQnlOOHJUOTBFcXJ1V2k3Ly9hcys3Q3ZoU3Fl?=
+ =?utf-8?B?YW1kcXdra0xnTDJjeUcreTBYamkrL095QlY5aTlQYUxwejNWekswaC91dmlr?=
+ =?utf-8?B?T2E5UVdGdmd2U1VNMitVVWRad2dmRFJWS0tobG9yVDZGZkJPczF2QkhEWitP?=
+ =?utf-8?B?d1NCY0FZOFlWZkdBSG45bytuMitmcnA5VzlUVTczRUhlQjNBbWc2WGpER2xN?=
+ =?utf-8?B?aVdYOWZmTG1lLzErK2JHbEVic1dMTGVlQmJkL01MUnZWblBtdU13TXRFbzlp?=
+ =?utf-8?B?Vkx4aU83c3pBWmsyRG5tTVFSM1FKd1VFWUIrOUVhUHRGbnU1NHY1REtYUGJ1?=
+ =?utf-8?B?bTQ2SER3RFZQeUFFYXBVbnhlSHFqV2xzcnE1emRwaVk0VzlUQnk3c1JpV3NY?=
+ =?utf-8?B?TDFWbGRPN25XbHhGTkdNS0ZwUERTQ3V2Rlp6Z0FQTi9JR0pGNkJxZWdWNmtm?=
+ =?utf-8?B?RFRRUFJSbURQTnJsbjMvUDNWby84cU4rRndkeGNyV2JsalNQRGUxeGRLRnRI?=
+ =?utf-8?B?Vmx6NzdaK0xmZzZSTHphSXJ2bXVmaGtNOHN0OVRUYXhuQ0pJV2dSS2NqaGRM?=
+ =?utf-8?B?MU9WSVlqRnhacmNXK3dJTUh5UWRtZjU4eTk2Sk5RNG1oZTJOcnpOZ2xLMUhU?=
+ =?utf-8?B?WDNxcG5KSnRDUGpnVEhJNHZKeXozSWt0RHl6RS9namE0QzFXVGtNSmZsN2NN?=
+ =?utf-8?B?VUszQzdaZy9OVmZTNHZZYnRIeTUxNFdWanVCRlEvR0JTamJES1VibXNjQ3Vk?=
+ =?utf-8?B?YVZtenRlMUVQRnJDVmhmYjZtR1BmemVzL2pJUVVpb1FwNDlsbnZid1dnc0hJ?=
+ =?utf-8?B?WmthTWlHbk80UWNiTFBwU1VPTGt0Y2grWVhlN0Z0ZVBISjFXcERmbjlOVGNs?=
+ =?utf-8?B?Nlh2b1R4aFc3NGNmRGlwOEx1N2NZL0NCa25pK3BtK015NmpOTDQwREhiMW5z?=
+ =?utf-8?B?L0tUbEhrS2V5ODViSnNacmNTaGplSG02bitwdFNPZERHSXZSb0JBTXN1SktD?=
+ =?utf-8?B?SlNMYnJ1SnpuRlprVE1UdmZIdzVnRnQzZFZROGhUc1lza0NpWkdhZGZPc2ov?=
+ =?utf-8?Q?EMByx5Qf81XPZElfWobhy/Qk+n8Hyxxm?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB5041.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(7416014)(7053199007); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Vloxck1XOEhKSGh0bVRMd3gwcjZxSWZ5NWl6VE1XME5ONVRkbFRrK1Q1QU1W?=
+ =?utf-8?B?ZkgvMTVjdXJyVitFUGFQdlBxeE1KT0VZbmlkVC9PajFjVHhwQUZWNnhiZy9N?=
+ =?utf-8?B?RHJCUnVnUDgwL2RKZGZRU3JML2ZoSUlLRWYwOUl1dHpQaGV4dmJhbEV6R29s?=
+ =?utf-8?B?QUlSa1VNVGVOVGxoNUprQlM4Uk5WZFh5QmI4ZVFjVjBQL0M3QnNISTV2L21W?=
+ =?utf-8?B?c05TRW9BdnBNdzN2cElqUlp1bk91Y0hhR2dQN3BtNEo2OWtqVis4NUg3QTQ3?=
+ =?utf-8?B?eE9DemEyMXcyRGxsTVNqdWw2YXZTVlBOejJMOWc1M1VZdkdOUEdKMExrQnhQ?=
+ =?utf-8?B?V2pQYlZXdzZrRFd0Vk92MkdSZ0ZyTDRvUWwvRGtvaWVWVXZ6THNxU1NRNHBm?=
+ =?utf-8?B?dGx2dFRmOUl4WTJLZktGVFZhYVJVaW5ncjZ3ZDNXMkU5K2dLZTN4WFR4Z0FV?=
+ =?utf-8?B?M0pUMGpsaTFwTk9HVEJIZEZia1h2eHQvQ2xVV3BSSFRXL2RqQVMvY203QU04?=
+ =?utf-8?B?dTlra0VBdzVlZzVqcHdsZ2dReVJLbXdzT2tsR0hFVVdsdWRGOXFWWFIzYk9k?=
+ =?utf-8?B?d0FxOFJYZXZHYlNpS2M4OTlOVUhmTmgwYzNJejM1U04rdW5ObjZDMDBmdEtR?=
+ =?utf-8?B?KzZNeDdWTWtwbnBsZUxwbnhvNTYvQk8xb2N4VDNWbWVNZm1CMkxQUml1YUht?=
+ =?utf-8?B?MjQ3RGRENmxvckRXaHV0QUtoOERWaHZQeE5LdCswUHY1L1V1TGZ0V3BYaU50?=
+ =?utf-8?B?VXNUZDQwbmlnWFMzUUl5MHh4TGlOYi9Cd0g1QU5jdUV3TVk0TzJ2RkNtTnNV?=
+ =?utf-8?B?QjNlRU9iVkFadGprYWVkeG80bk1xYnQ3MVFQdjNkcHEzT3R6WWpvbmU4bmM1?=
+ =?utf-8?B?K2ZBRkl4Q0RqNDdMQmYwbnMzcGZSaHNvTW1NbHMremVpanpqbzArSSt4S1oy?=
+ =?utf-8?B?ejdGdk1GZFd1dHZYOTRQaktzV0ZEQ2REQk9Ea3o1NWJKVFJob2hMaFAvVmI4?=
+ =?utf-8?B?ZFNHMU9mUTVSenpnazFwSHhzYjl2NUlzMjdzVzZ2WXdzZ1hTYjI2M0JmYWtB?=
+ =?utf-8?B?VzVKYzZ0Q1MwVVdwc0ZRWDdPNmpyNzQ4K1kzVW5WQnJUbEJsR3Roek4vcHdq?=
+ =?utf-8?B?aEVRM2FSc0duemduVmQxRkdUZnFhR2EyMStTNHhPYnNpYXBsdmhZRU9pVEVz?=
+ =?utf-8?B?MjdqbVVUbXVkLy9iemZVdXNRbE9xbDdabnNHVG9YN2FYaThUbFg3Y2JvQTlX?=
+ =?utf-8?B?dCt2R1BnbTdBZlhsY2k2WG94TXh0NjVtTC80ZnpGaHBubENiYVl6VWpPR2gx?=
+ =?utf-8?B?NThHMjhrMDlGOFUxdk9RQThybnBlU0QrNlAyK2xGRmhpalVSVjduTnFubWQ3?=
+ =?utf-8?B?WFBMMHhKZlh6cGtkU1BSekYyeVpHVmVmWTBTSlRkK0Y3bVhKZlg1NVljaXNN?=
+ =?utf-8?B?RWVZaXI4YkN3emQyQXpYUGpNalBVQWVMb1lIc05DYVJmVVFjaVJCbmRFdnhT?=
+ =?utf-8?B?LzByQ1dIQjVZN0JDbHFyUTI5N2xsRmd4WkRhbndMTUhHbDB5ZDR3QnByempa?=
+ =?utf-8?B?cEcwUW81d3l4cCtNVkU3dUdSR2Y3L2VHckpZM1lQa0hRa09PVnpIR1d6VVBF?=
+ =?utf-8?B?OUEyQi9VZFNRWWpuU1VyeURpaE82bHlJY29tLzZlT3Q5SDdIVDlLUjhkemds?=
+ =?utf-8?B?aFFyeVAxazcrQndKeWxRQ1BFWUxSdGNRaE1ldnpwNFVZOGZaSWlCa29paWhq?=
+ =?utf-8?B?ZllxbnREbkpFM0l4VkROVG41emM5ZmpEVzdPL2dMa3djVElZZnh0OEtjRlVr?=
+ =?utf-8?B?aXN0OVZFeGt5cGp6UEx1dVlwUzVvVVFLTzA2eXhRak9ldUJwSVpMMFVkRVkv?=
+ =?utf-8?B?eWZXWnNxM1o4Z2Frd0lBTi8xazRpWGlqR0VTM05BT0taTWJOb1RRa0dvOCtP?=
+ =?utf-8?B?c3poL29PWXlPTWxZdHMyQU1lMkdDOHNpWUlxZmdTRC9TNko4WnBaQU1PV0FU?=
+ =?utf-8?B?MjhiSGRKM2ZjTHhFVUlUSnJYb3NETVhKbFVFcDhsUkVXK1dLOFRKc1k3bFds?=
+ =?utf-8?B?SWJRNUdKWS9MUnRsaFJmL0V1NXhJeWhPWlc4Z2gxWTdNdjI2SUN5MXVzNzFV?=
+ =?utf-8?B?U21QZzAzK042Mk4ycEd0NlRrcE9CWVVjTVhlT282N1BybXVHOGtjRW04OUlE?=
+ =?utf-8?Q?eJcCsqvpdqVVP9HKwp4Fp0E=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: wOQ7sSEe9BaSzmqCvS3fx1urNSkhsv5ln3iIIDucYyMbF0XMe/l62mugPa4EdfnYqkaL//0TS+eh7SVP44jSAK/hooJDJfxm+xs9nYPQ8Qsozc9oElPlyhLmu6Ij9blqx57FESmskKBBMgXDAGoZ6a+pRiitvzJS9Gl0kvl9qIO5zrfXT/2YyvMEdeGQB+MncKhzRZ6hte8OB8YF4rdZtqZRn/4inm5sd8Gu6hBgDdfV1XVo17o0Q3G8yiCSCovPXAOmzFdhrcK9+NqCsAwlelYMQdlaJDHnyHczSqs8C4I8QfybqyDPDPkQEH0uFirOEvywjc9Po40jYWgaq96YW7nxVd8tuXAO9XByZcqojPqYiLOqrWma1kmIOerwCKN7JKYEGD2FQK71YojU6kzXG547p9j4SlCJ0SokZj1c5GNAkueOdDOiumY03YqO+GW2Og4Fnh0CnOU9mjsYLBuDyCA3/fsfcbf4Tcb6bByXwGVECANROwYgXsCfBUJjpPIZa4cfz89SyFyFC5sJ337fLVYIPYBy57rZz3wGItSDYJdBcOxfhw3PPlKrRbR9VZMNd4k4x8uWuaIYsRcrSkh2ZRvSTPfKp1rgQwiqGkGopec=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d751cab0-a683-4776-1e9a-08de074f5f75
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5041.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 16:17:42.0842 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z/a3OgqJSjUs1Q9oCZ2fqcqnmHSIIvNzZy68ueUnIqH3UgTL7I8UwUFVL8LNDSQlxKFR8oPwWyHy2buxLxEbDNepUybh0VxrHLfKp+LvElM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5863
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_05,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0
+ phishscore=0 spamscore=0 bulkscore=0 mlxscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510020000 definitions=main-2510090098
+X-Proofpoint-GUID: _W93K7TCfqn2mSAhhVmsDfdEi0Mx70Vf
+X-Authority-Analysis: v=2.4 cv=I4dohdgg c=1 sm=1 tr=0 ts=68e7e02d b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117
+ a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=zd2uoN0lAAAA:8 a=osJLeCJUdZNWNBklhwgA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: _W93K7TCfqn2mSAhhVmsDfdEi0Mx70Vf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMiBTYWx0ZWRfX6MbYAoh1iVIS
+ eteTwCNXaqeZbJ5CitM9+zlFufbTmMevz7/37F5OCjCqAaCCg7v9F9Hi4yfnAt8YjphFmoIfNA0
+ IIHR9z3+5FLLCraOE5vmOiibPQeM7b3AlZXjhWUNKGhxYqoqXW66RtdTUi+XV5yh5kjjBuSsPk7
+ IHBQcnzTtt7esEk2X+XEURvD9UGDMolunJHTrK6LmKaxirsM5sFByn7moGTYiPZ/NisKkOco5Yy
+ PoklhsPkMOE01T9lUVQULTG53hrG/zQRChVJg4wRcBErjtdyPsukuK7muZE3UA/qsuQJnnAJ8xI
+ mEDVfmPzU78KcB5Bwtm57Gv05KddyAiGyaLoXYsOlwuRZ2Eig+HSwuNWK2Bl0QgSwOB93uyejG7
+ 1rprY2AEEmTE7ipmJUl+MFzkrfLRcw==
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,106 +233,321 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/10/25 19:23, Philippe Mathieu-Daudé wrote:
-> On 21/8/25 22:27, Richard Henderson wrote:
->> On 8/20/25 23:49, Philippe Mathieu-Daudé wrote:
->>> qemu_ld2 and qemu_st2 opcodes are band-aid for 32-bit hosts
->>> and can't be reached on 64-bit ones. See in commit 3bedb9d3e28
->>> ("tcg: Convert qemu_ld{2} to TCGOutOpLoad{2}") and 86fe5c2597c
->>> ("tcg: Convert qemu_st{2} to TCGOutOpLdSt{2}") their constraint
->>> is C_NotImplemented.
->>
->> Not true: ld2/st2 are also used for 128-bit load store.
->>
->> See: aarch64, x86_64, loongarch64, ppc64, s390x.
+Hi Sairaj,
+
+Good catch. This issue makes my Linux guest unusable due to kernel 
+watchdog errors. This patch fixes the problem.
+I have a few comments, but nothing that would fundamentally alter the 
+current behavior. Please see below...
+
+On 10/8/25 12:43 PM, Sairaj Kodilkar wrote:
+> The AMD IOMMU is set up at boot time and uses PCI bus numbers + devfn
+> for indexing into DTE. The problem is that before the guest started,
+> all PCI bus numbers are 0 as no PCI discovery happened yet (BIOS or/and
+> kernel will do that later) so relying on the bus number is wrong.
+> The immediate effect is emulated devices cannot do DMA when places on
+> a bus other that 0.
 > 
-> OK. Hmm I guess I need to add a __attribute__((unused)) check like
-> you did in commit f408df587a0 ("tcg: Convert brcond2_i32 to
-> TCGOutOpBrcond2") to outop_qemu_ld2/st2 then.
+> Replace static array of address_space with hash table which uses devfn and
+> PCIBus* for key as it is not going to change after the guest is booted.
+> 
+> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+> ---
+>   hw/i386/amd_iommu.c | 127 ++++++++++++++++++++++++++------------------
+>   hw/i386/amd_iommu.h |   2 +-
+>   2 files changed, 77 insertions(+), 52 deletions(-)
+> 
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 378e0cb55eab..0a4b4d46d885 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -59,7 +59,7 @@ const char *amdvi_mmio_high[] = {
+>   };
+>   
+>   struct AMDVIAddressSpace {
+> -    uint8_t bus_num;            /* bus number                           */
+> +    PCIBus *bus;                /* PCIBus (for bus number)              */
+>       uint8_t devfn;              /* device function                      */
+>       AMDVIState *iommu_state;    /* AMDVI - one per machine              */
+>       MemoryRegion root;          /* AMDVI Root memory map region         */
+> @@ -101,6 +101,11 @@ typedef enum AMDVIFaultReason {
+>       AMDVI_FR_PT_ENTRY_INV,      /* Failure to read PTE from guest memory */
+>   } AMDVIFaultReason;
+>   
+> +typedef struct amdvi_as_key {
+> +    PCIBus *bus;
+> +    int devfn;
 
-OK I figured my issue, I shouldn't remove the following in the
-MIPS series [*]:
+I'd prefer to use fixed types i.e. uint8_t for devfn. Keeps it 
+consistent with same field in other local structs and existing casts in 
+the code (e.g amdvi_host_dma_iommu()).
 
--- >8 --
-diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index 3f4aca25b13..c519dfbf7d5 100644
---- a/tcg/mips/tcg-target.c.inc
-+++ b/tcg/mips/tcg-target.c.inc
-@@ -1311,2 +1311,34 @@ static const TCGOutOpQemuLdSt outop_qemu_ld = {
+> +} amdvi_as_key;
+> +
+>   uint64_t amdvi_extended_feature_register(AMDVIState *s)
+>   {
+>       uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
+> @@ -382,6 +387,42 @@ static guint amdvi_uint64_hash(gconstpointer v)
+>       return (guint)*(const uint64_t *)v;
+>   }
+>   
+> +static gboolean amdvi_as_equal(gconstpointer v1, gconstpointer v2)
+> +{
+> +    const struct amdvi_as_key *key1 = v1;
+> +    const struct amdvi_as_key *key2 = v2;
+> +
+> +    return key1->bus == key2->bus && key1->devfn == key2->devfn;
+> +}
+> +
+> +static guint amdvi_as_hash(gconstpointer v)
+> +{
+> +    const struct amdvi_as_key *key = v;
+> +    return (guint)((uint64_t)key->bus | (key->devfn << 24));
 
-+static void tgen_qemu_ld2(TCGContext *s, TCGType type, TCGReg datalo,
-+                          TCGReg datahi, TCGReg addr, MemOpIdx oi)
-+{
-+    MemOp opc = get_memop(oi);
-+    TCGLabelQemuLdst *ldst;
-+    HostAddress h;
-+
-+    tcg_debug_assert(TCG_TARGET_REG_BITS == 32);
-+    ldst = prepare_host_addr(s, &h, addr, oi, true);
-+
-+    if (use_mips32r6_instructions || h.aa.align >= (opc & MO_SIZE)) {
-+        tcg_out_qemu_ld_direct(s, datalo, datahi, h.base, opc, type);
-+    } else {
-+        tcg_out_qemu_ld_unalign(s, datalo, datahi, h.base, opc, type);
-+    }
-+
-+    if (ldst) {
-+        ldst->type = type;
-+        ldst->datalo_reg = datalo;
-+        ldst->datahi_reg = datahi;
-+        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
-+    }
-+}
-+
-+static const TCGOutOpQemuLdSt2 outop_qemu_ld2 = {
-+    /* Ensure that the mips32 code is compiled but discarded for mips64. */
-+    .base.static_constraint =
-+        TCG_TARGET_REG_BITS == 32 ? C_O2_I1(r, r, r) : C_NotImplemented,
-+    .out =
-+        TCG_TARGET_REG_BITS == 32 ? tgen_qemu_ld2 : NULL,
-+};
-+
-  static void tcg_out_qemu_st_direct(TCGContext *s, TCGReg lo, TCGReg hi,
-@@ -1390,2 +1422,34 @@ static const TCGOutOpQemuLdSt outop_qemu_st = {
+Any particular reason to build the hash in 'big endian' format?
+I don't see a problem as long it remains consistent, but it differs from 
+the encoding used by the PCI_* builder macros in pci.h, as well as the 
+vtd equivalent code.
 
-+static void tgen_qemu_st2(TCGContext *s, TCGType type, TCGReg datalo,
-+                          TCGReg datahi, TCGReg addr, MemOpIdx oi)
-+{
-+    MemOp opc = get_memop(oi);
-+    TCGLabelQemuLdst *ldst;
-+    HostAddress h;
-+
-+    tcg_debug_assert(TCG_TARGET_REG_BITS == 32);
-+    ldst = prepare_host_addr(s, &h, addr, oi, false);
-+
-+    if (use_mips32r6_instructions || h.aa.align >= (opc & MO_SIZE)) {
-+        tcg_out_qemu_st_direct(s, datalo, datahi, h.base, opc);
-+    } else {
-+        tcg_out_qemu_st_unalign(s, datalo, datahi, h.base, opc);
-+    }
-+
-+    if (ldst) {
-+        ldst->type = type;
-+        ldst->datalo_reg = datalo;
-+        ldst->datahi_reg = datahi;
-+        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
-+    }
-+}
-+
-+static const TCGOutOpQemuLdSt2 outop_qemu_st2 = {
-+    /* Ensure that the mips32 code is compiled but discarded for mips64. */
-+    .base.static_constraint =
-+        TCG_TARGET_REG_BITS == 32 ? C_O0_I3(rz, rz, r) : C_NotImplemented,
-+    .out =
-+        TCG_TARGET_REG_BITS == 32 ? tgen_qemu_st2 : NULL,
-+};
-+
-  static void tcg_out_mb(TCGContext *s, unsigned a0)
+Additionally, using uintptr_t instead of uint64_t when casting key->bus 
+is a good way to document that we are hashing the pointer value itself. 
+In practice I don't see any scenario where there would be a difference 
+in behavior (the result is truncated anyways when casting to guint), but
+technically/pedantically uintptr_t is correct choice to convert from a 
+data pointer.
 
----
 
-Let's ignore this bogus patch then :)
+> +}
+> +
+> +static AMDVIAddressSpace *amdvi_as_lookup(AMDVIState *s, PCIBus *bus,
+> +                                          int devfn)
+> +{
+> +    amdvi_as_key key = { .bus = bus, .devfn = devfn };
+> +    return g_hash_table_lookup(s->address_spaces, &key);
+> +}
+> +
+> +static int amdvi_find_as_by_devid(gpointer key, gpointer value,
 
-[*] 
-https://lore.kernel.org/qemu-devel/20250820142108.46639-1-philmd@linaro.org/
+this should return a gboolean to exactly match the signature of the 
+predicate argument used by g_hash_table_find().
+gboolean is ultimately an int, but I don't know if a strict type 
+checking tool might complain now or in the future, and since we are 
+already using glib defined types we might as well keep it consistent.
+
+
+> +                                  gpointer user_data)
+> +{
+> +    amdvi_as_key *as = (struct amdvi_as_key *)key;
+> +    uint16_t devid = *((uint16_t *)user_data);
+> +
+> +    return devid == PCI_BUILD_BDF(pci_bus_num(as->bus), as->devfn);
+> +}
+> +
+> +static AMDVIAddressSpace *amdvi_get_as_by_devid(AMDVIState *s, uint16_t devid)
+> +{
+> +    return g_hash_table_find(s->address_spaces,
+> +                             amdvi_find_as_by_devid, &devid);
+> +}
+> +
+>   static AMDVIIOTLBEntry *amdvi_iotlb_lookup(AMDVIState *s, hwaddr addr,
+>                                              uint64_t devid)
+>   {
+> @@ -551,7 +592,7 @@ static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
+>   
+>   static int amdvi_as_to_dte(AMDVIAddressSpace *as, uint64_t *dte)
+>   {
+> -    uint16_t devid = PCI_BUILD_BDF(as->bus_num, as->devfn);
+> +    uint16_t devid = PCI_BUILD_BDF(pci_bus_num(as->bus), as->devfn);
+>       AMDVIState *s = as->iommu_state;
+>   
+>       if (!amdvi_get_dte(s, devid, dte)) {
+> @@ -1011,25 +1052,14 @@ static void amdvi_switch_address_space(AMDVIAddressSpace *amdvi_as)
+>    */
+>   static void amdvi_reset_address_translation_all(AMDVIState *s)
+>   {
+> -    AMDVIAddressSpace **iommu_as;
+> -
+> -    for (int bus_num = 0; bus_num < PCI_BUS_MAX; bus_num++) {
+> -
+> -        /* Nothing to do if there are no devices on the current bus */
+> -        if (!s->address_spaces[bus_num]) {
+> -            continue;
+> -        }
+> -        iommu_as = s->address_spaces[bus_num];
+> +    AMDVIAddressSpace *iommu_as;
+> +    GHashTableIter as_it;
+>   
+> -        for (int devfn = 0; devfn < PCI_DEVFN_MAX; devfn++) {
+> +    g_hash_table_iter_init(&as_it, s->address_spaces);
+>   
+> -            if (!iommu_as[devfn]) {
+> -                continue;
+> -            }
+> -            /* Use passthrough as default mode after reset */
+> -            iommu_as[devfn]->addr_translation = false;
+> -            amdvi_switch_address_space(iommu_as[devfn]);
+> -        }
+> +    while (g_hash_table_iter_next(&as_it, NULL, (void **)&iommu_as)) {
+
+Lets keep the comment describing the behavior. This is something I want 
+to discuss in a separate thread...
+
+            /* Use passthrough as default mode after reset */
+
+> +        iommu_as->addr_translation = false;
+> +        amdvi_switch_address_space(iommu_as);
+>       }
+>   }
+>   
+> @@ -1089,27 +1119,21 @@ static void enable_nodma_mode(AMDVIAddressSpace *as)
+>    */
+>   static void amdvi_update_addr_translation_mode(AMDVIState *s, uint16_t devid)
+>   {
+> -    uint8_t bus_num, devfn, dte_mode;
+> +    uint8_t dte_mode;
+>       AMDVIAddressSpace *as;
+>       uint64_t dte[4] = { 0 };
+>       int ret;
+>   
+> -    /*
+> -     * Convert the devid encoded in the command to a bus and devfn in
+> -     * order to retrieve the corresponding address space.
+> -     */
+> -    bus_num = PCI_BUS_NUM(devid);
+> -    devfn = devid & 0xff;
+> -
+>       /*
+>        * The main buffer of size (AMDVIAddressSpace *) * (PCI_BUS_MAX) has already
+>        * been allocated within AMDVIState, but must be careful to not access
+>        * unallocated devfn.
+>        */
+
+I think this block comment can be removed now that we have a better 
+interface to retrieve the address space.
+
+> -    if (!s->address_spaces[bus_num] || !s->address_spaces[bus_num][devfn]) {
+> +
+> +    as = amdvi_get_as_by_devid(s, devid);
+> +    if (!as) {
+>           return;
+>       }
+> -    as = s->address_spaces[bus_num][devfn];
+>   
+>       ret = amdvi_as_to_dte(as, dte);
+>   
+> @@ -1783,7 +1807,7 @@ static void amdvi_do_translate(AMDVIAddressSpace *as, hwaddr addr,
+>                                  bool is_write, IOMMUTLBEntry *ret)
+>   {
+>       AMDVIState *s = as->iommu_state;
+> -    uint16_t devid = PCI_BUILD_BDF(as->bus_num, as->devfn);
+> +    uint16_t devid = PCI_BUILD_BDF(pci_bus_num(as->bus), as->devfn);
+>       AMDVIIOTLBEntry *iotlb_entry = amdvi_iotlb_lookup(s, addr, devid);
+>       uint64_t entry[4];
+>       int dte_ret;
+> @@ -1858,7 +1882,7 @@ static IOMMUTLBEntry amdvi_translate(IOMMUMemoryRegion *iommu, hwaddr addr,
+>       }
+>   
+>       amdvi_do_translate(as, addr, flag & IOMMU_WO, &ret);
+> -    trace_amdvi_translation_result(as->bus_num, PCI_SLOT(as->devfn),
+> +    trace_amdvi_translation_result(pci_bus_num(as->bus), PCI_SLOT(as->devfn),
+>               PCI_FUNC(as->devfn), addr, ret.translated_addr);
+>       return ret;
+>   }
+> @@ -2222,30 +2246,28 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+>   {
+>       char name[128];
+>       AMDVIState *s = opaque;
+> -    AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
+> -    int bus_num = pci_bus_num(bus);
+> +    AMDVIAddressSpace *amdvi_dev_as;
+> +    amdvi_as_key *key;
+>   
+> -    iommu_as = s->address_spaces[bus_num];
+> +    amdvi_dev_as = amdvi_as_lookup(s, bus, devfn);
+>   
+>       /* allocate memory during the first run */
+> -    if (!iommu_as) {
+> -        iommu_as = g_new0(AMDVIAddressSpace *, PCI_DEVFN_MAX);
+> -        s->address_spaces[bus_num] = iommu_as;
+> -    }
+> -
+> -    /* set up AMD-Vi region */
+> -    if (!iommu_as[devfn]) {
+> +    if (!amdvi_dev_as) {
+>           snprintf(name, sizeof(name), "amd_iommu_devfn_%d", devfn);
+>   
+> -        iommu_as[devfn] = g_new0(AMDVIAddressSpace, 1);
+> -        iommu_as[devfn]->bus_num = (uint8_t)bus_num;
+> -        iommu_as[devfn]->devfn = (uint8_t)devfn;
+> -        iommu_as[devfn]->iommu_state = s;
+> -        iommu_as[devfn]->notifier_flags = IOMMU_NOTIFIER_NONE;
+> -        iommu_as[devfn]->iova_tree = iova_tree_new();
+> -        iommu_as[devfn]->addr_translation = false;
+> +        amdvi_dev_as = g_new0(AMDVIAddressSpace, 1);
+> +        key = g_new0(amdvi_as_key, 1);
+>   
+> -        amdvi_dev_as = iommu_as[devfn];
+> +        amdvi_dev_as->bus = bus;
+> +        amdvi_dev_as->devfn = (uint8_t)devfn;
+> +        amdvi_dev_as->iommu_state = s;
+> +        amdvi_dev_as->notifier_flags = IOMMU_NONE;
+Keep IOMMU_NOTIFIER_NONE. It is the correct type, as you pointed out in 
+a previous patchset.
+
+Thank you,
+Alejandro
+
+> +        amdvi_dev_as->iova_tree = iova_tree_new();
+> +        amdvi_dev_as->addr_translation = false;
+> +        key->bus = bus;
+> +        key->devfn = devfn;
+> +
+> +        g_hash_table_insert(s->address_spaces, key, amdvi_dev_as);
+>   
+>           /*
+>            * Memory region relationships looks like (Address range shows
+> @@ -2288,7 +2310,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+>   
+>           amdvi_switch_address_space(amdvi_dev_as);
+>       }
+> -    return &iommu_as[devfn]->as;
+> +    return &amdvi_dev_as->as;
+>   }
+>   
+>   static const PCIIOMMUOps amdvi_iommu_ops = {
+> @@ -2329,7 +2351,7 @@ static int amdvi_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
+>       if (!s->dma_remap && (new & IOMMU_NOTIFIER_MAP)) {
+>           error_setg_errno(errp, ENOTSUP,
+>               "device %02x.%02x.%x requires dma-remap=1",
+> -            as->bus_num, PCI_SLOT(as->devfn), PCI_FUNC(as->devfn));
+> +            pci_bus_num(as->bus), PCI_SLOT(as->devfn), PCI_FUNC(as->devfn));
+>           return -ENOTSUP;
+>       }
+>   
+> @@ -2510,6 +2532,9 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+>       s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
+>                                        amdvi_uint64_equal, g_free, g_free);
+>   
+> +    s->address_spaces = g_hash_table_new_full(amdvi_as_hash,
+> +                                     amdvi_as_equal, g_free, g_free);
+> +
+>       /* set up MMIO */
+>       memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
+>                             "amdvi-mmio", AMDVI_MMIO_SIZE);
+> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+> index daf82fc85f96..38471b95d153 100644
+> --- a/hw/i386/amd_iommu.h
+> +++ b/hw/i386/amd_iommu.h
+> @@ -408,7 +408,7 @@ struct AMDVIState {
+>       bool mmio_enabled;
+>   
+>       /* for each served device */
+> -    AMDVIAddressSpace **address_spaces[PCI_BUS_MAX];
+> +    GHashTable *address_spaces;
+>   
+>       /* list of address spaces with registered notifiers */
+>       QLIST_HEAD(, AMDVIAddressSpace) amdvi_as_with_notifiers;
+
 
