@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490DDBCAA47
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116AFBCAA53
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:07:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6vwy-0006Rk-PL; Thu, 09 Oct 2025 15:05:16 -0400
+	id 1v6vyd-0007ul-LY; Thu, 09 Oct 2025 15:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
- id 1v6vwu-0006Oq-KK
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:05:12 -0400
-Received: from mail-io1-xd2b.google.com ([2607:f8b0:4864:20::d2b])
+ id 1v6vyb-0007uG-Ii
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:06:57 -0400
+Received: from mail-io1-xd2c.google.com ([2607:f8b0:4864:20::d2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
- id 1v6vws-000751-Eq
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:05:12 -0400
-Received: by mail-io1-xd2b.google.com with SMTP id
- ca18e2360f4ac-9335a918867so117104739f.2
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:05:09 -0700 (PDT)
+ id 1v6vyZ-0007Bn-CE
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:06:57 -0400
+Received: by mail-io1-xd2c.google.com with SMTP id
+ ca18e2360f4ac-92790f12293so58014239f.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:06:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760036707; x=1760641507; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760036813; x=1760641613; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h/3k6Doi+LQooUy6ZxAJHysDn76DGgRKPRrKMCxmTvI=;
- b=WoErFNidMSFwTMttbpKXjE88Ri8frRzobi5oV+HqeEk9yVGKweWBSu5sqOKlcJyQT5
- 0ckcAw7nDPsyaPMT1I2vrUTIkH6Z7DA7ZpCNshDJ+DA4rUvt06m2je9L2w00LPzPVEmf
- iug7UU5lFZkn19gLla+BT/Sv4rnEPZZvher45Om1YznhN5DXfXYWDkjjdjHVcySsVBLX
- rHzSHt8F7ZOkwvIvqdP2ozkG/wM/3etrzxRcvLE9bYI8nYYqWFL+WUq7WGs6OAch+lG9
- SfX7x5xUV52A2SvopS+cUv50pCb67+3D7QGrLmJg1XnyDIFYhqeGlMUK9s6ygfK/KA8R
- TJAw==
+ bh=rNvGh78jSALi+oq6g8hAjx+8CQBlAGd5faXm34Ccqvg=;
+ b=XDxV8KYuugGYgpUgCwVseyifccLLP4FkKTKmV5OLdgsv6MQs9+5INKJ6UqPd3sS7o7
+ xu4j2gppwcxyzC9CNln05XQjplz4e6LTISFytbLB57zNpwFJT9MXYHRr9x9gRTtQ+j4h
+ jWvn8k9NUh18U5UPRYY0/Y6SVgAj1smSHA4M1JCgg68QEKq/Jcp0qxKYs3l3O6GmSLZL
+ R8j9tkVVWAJynduRhYkM0oFpZ/8pYw4GmNbj0nZwdyW7O47tQxcqf1b+f4F4F5B+JFcD
+ zyFsh6tnObKIxYIERsGVH1gdkxJUSq1nd2ryP+/BcdzaOOJHX11KGFLdn2tBAmBd1qFO
+ KDAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760036707; x=1760641507;
+ d=1e100.net; s=20230601; t=1760036813; x=1760641613;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h/3k6Doi+LQooUy6ZxAJHysDn76DGgRKPRrKMCxmTvI=;
- b=pD1T4FGxUMj3NjHMc/2C/9BpAg8vQtJQrvw839cBgNV6TEM8wz1rU9JjR2e9Et3dNy
- 4XLWWaiUNfBEumRKBGIx39krIqo3vPJVUmJL76nkvMklDFDXobfNN6501zJm0QTmvgrw
- 4fXp8qd5YkZqldGu6VaMhMKr94LgpRydQ8olcjF8daWddDxVw19ysz7Sa8JQv7qoS/uI
- Ye57Ud6YtGm6CfOEBlwayWmd8z1uZtpUZpa8hYbRVOAhTXJtbIYVCN56u6gnU/Zwo5uO
- /0k9LrkW1+xhR9MREH0O977sFcGq4w4ZnO09u+9rBonFwm2yLfPtWgrBcO1rCMkFXFaS
- ZusA==
+ bh=rNvGh78jSALi+oq6g8hAjx+8CQBlAGd5faXm34Ccqvg=;
+ b=f2d5msT0XZWuuaSX/d079rXkta7r1IdvY2GS72Fmk+3DMVl1asSrGtPfncP83u6GkM
+ Pkfcnw5x6HlcbpgK2nnkJ5a8CrR/nBVPR+5sfMwLfLhMPYxvOImo6KL3usgCmaKu14YF
+ ERYWZX6VeUfUaPNbyqFPe9TwYTvABS+QuD0PhrETwqwYv8YlWHRgnKBUHMjI9+k87Cu8
+ ycxa/CC0QBbV5iPml0q3xogkuXUpJcqLCHv7HlVpqJLtIYd8cjMESEqQ3kgK04M2KF9z
+ 9ea/j+jgsa9oLpadInqlfIXHLpHqA9iFC3SRlhl9EXcb6rPbmJhmxqxJ4ijqBXzh/YeZ
+ QzfA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXRWUVw0Mt7K3XuEYdrrsePf17ohPH9cy6w6cSFH4gcEPXEaY+HYG6gO1d6unH+IFdfAT/3OMlac/YE@nongnu.org
-X-Gm-Message-State: AOJu0YxJfyX6RyhGFRagAwPO68pEObVwMpkAUrrmuj1ZIKYFOh2dCcUd
- y56huXjUwc2g10SDeNHjX3mL7VH68EtQT4gowLEnf+UR7zoIfER/SuUUv9RvEIVsvKZiCatquPl
- 4/OoV3Kvnph/TzMsTnW3z7rAiS2xs9tY=
-X-Gm-Gg: ASbGnctW91jx2uaX78PZ2GxV7y8MSNLsngVPXLRsLdB5iFtEmZRpX51XcoGbdfYxtJA
- nL6BCPeo1R5jEA4s6d3jEImpwRzJut/R8Oeg7EK2rgS23IZMjLGvkHVw3oG6f4bUY39ORUcWQFU
- xsbRjuT4U5E+HFLuG/qKHyGl97cM4H22FtlEPoaA4QWXJY1QKKclod9VxE/dfTQUODqNqEIJrBP
- 3njabRLcZahJVc9Z05HRIhc87ZBHN8jyfTb4K+DaA==
-X-Google-Smtp-Source: AGHT+IE8+RwUY2x8jBuOk/qTI0qc6BeKwqKCpxS79P+QmnfNWhIHJ/in4FWjOwnbEyd8SUlD8yGv9ab+8FfT/5wZiGQ=
-X-Received: by 2002:a05:6602:7418:b0:911:8848:62a3 with SMTP id
- ca18e2360f4ac-93bd19774d8mr903123639f.16.1760036707463; Thu, 09 Oct 2025
- 12:05:07 -0700 (PDT)
+ AJvYcCX0p5TRw3KtTcijoKjoc/RI3PIcYKYcSgOAt+p7D+U9Io/X9CBSCwMniuRwU84X2SFsmuDaBUdT+LGi@nongnu.org
+X-Gm-Message-State: AOJu0YzWek4GydhLYMr3a140zm+03u3xFqLL98RVa9dHerymrJmgZ+hB
+ 7BN1MxkLId7jfQsaQJccH5cl41TvdDx0ED8nqeAqXj/cn/m51kFaS5ptD6iK/OhjemrqHS2S8Dx
+ CA+W+9/ykc4gEWx5YzdBZwmjqjKQVhYI=
+X-Gm-Gg: ASbGncvbpguZoMka+cV/DTy13StB5UjXMFUTZI2BOhqwf4TeK+j7VwcnxiEpKNzY7sy
+ gjOVbawx4WW5lTNgPGh/66kHYZUEVZOcIJEorhBM98GvCMN9OLJx0kBvNvygqEh0pETwOm1XnhY
+ bYGKP5A2dHNN7coOpoJOOz8hZymQVHRXznscTPBY4FsOMU5FbxDvdrAuxZ10A6ZPRYjqvTnR3RV
+ 4ZrHk68l5e/YCNP2CrdBJ9GyGBCWN9KRGKa++sGxg==
+X-Google-Smtp-Source: AGHT+IEM/yCJZ4T2IfofqCvFqopclKW296P7ppZ7jMLCdqiegLx8lA9GnqkZUK0FrgNSIGs7rKWbl+g21fOvxMjEfxA=
+X-Received: by 2002:a05:6e02:1fef:b0:42e:72ee:4164 with SMTP id
+ e9e14a558f8ab-42f874215acmr70860995ab.23.1760036813405; Thu, 09 Oct 2025
+ 12:06:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
- <20250813164856.950363-18-vsementsov@yandex-team.ru>
-In-Reply-To: <20250813164856.950363-18-vsementsov@yandex-team.ru>
+ <20250813164856.950363-19-vsementsov@yandex-team.ru>
+In-Reply-To: <20250813164856.950363-19-vsementsov@yandex-team.ru>
 From: Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Date: Thu, 9 Oct 2025 15:04:55 -0400
-X-Gm-Features: AS18NWCmtQxhRJl4kMkIgmi8fHDwxQB3Cj8bSe-ea7ZBOAuiRj60qVrKujrw6Ns
-Message-ID: <CAFubqFtbc4ZRVa82SgGPNm0HAFsfgp6J=trOXo8zg9PtP-pTDg@mail.gmail.com>
-Subject: Re: [PATCH 17/33] vhost: move busyloop timeout initialization to
- vhost_virtqueue_init()
+Date: Thu, 9 Oct 2025 15:06:42 -0400
+X-Gm-Features: AS18NWBNZa0-3mZff43imxq8-1zSJXZtci60249hdoufGTBE0qqX7ABIoKMXoYw
+Message-ID: <CAFubqFsiqHoyMvh7OnD8yV8LX1ig0b32Us6nb=2ny_VdwJpW7g@mail.gmail.com>
+Subject: Re: [PATCH 18/33] vhost: introduce check_memslots() helper
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: mst@redhat.com, peterx@redhat.com, farosas@suse.de, raphael@enfabrica.net, 
  sgarzare@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com, 
@@ -76,8 +75,8 @@ Cc: mst@redhat.com, peterx@redhat.com, farosas@suse.de, raphael@enfabrica.net,
  steven.sistare@oracle.com, den-plotnikov@yandex-team.ru
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2b;
- envelope-from=raphael.s.norwitz@gmail.com; helo=mail-io1-xd2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2c;
+ envelope-from=raphael.s.norwitz@gmail.com; helo=mail-io1-xd2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,78 +104,123 @@ Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
 On Wed, Aug 13, 2025 at 12:56=E2=80=AFPM Vladimir Sementsov-Ogievskiy
 <vsementsov@yandex-team.ru> wrote:
 >
-> Let's all per-virtqueue initializations be in one place.
->
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  hw/virtio/vhost.c | 25 ++++++++++++-------------
->  1 file changed, 12 insertions(+), 13 deletions(-)
+>  hw/virtio/vhost.c | 71 ++++++++++++++++++++++++++---------------------
+>  1 file changed, 40 insertions(+), 31 deletions(-)
 >
 > diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index a3620c82d8..a8f8b85012 100644
+> index a8f8b85012..f9163ba895 100644
 > --- a/hw/virtio/vhost.c
 > +++ b/hw/virtio/vhost.c
-> @@ -1489,7 +1489,8 @@ static void vhost_virtqueue_error_notifier(EventNot=
-ifier *n)
+> @@ -1553,11 +1553,49 @@ static void vhost_virtqueue_cleanup(struct vhost_=
+virtqueue *vq)
+>      }
 >  }
 >
->  static int vhost_virtqueue_init(struct vhost_dev *dev,
-> -                                struct vhost_virtqueue *vq, int n)
-> +                                struct vhost_virtqueue *vq, int n,
-> +                                bool busyloop_timeout)
->  {
->      int vhost_vq_index =3D dev->vhost_ops->vhost_get_vq_index(dev, n);
->      struct vhost_vring_file file =3D {
-> @@ -1526,6 +1527,14 @@ static int vhost_virtqueue_init(struct vhost_dev *=
-dev,
->                                     vhost_virtqueue_error_notifier);
->      }
->
-> +    if (busyloop_timeout) {
-> +        r =3D vhost_virtqueue_set_busyloop_timeout(dev, n, busyloop_time=
-out);
-> +        if (r < 0) {
-> +            VHOST_OPS_DEBUG(r, "Failed to set busyloop timeout");
-> +            goto fail_err;
-> +        }
+> +static bool check_memslots(struct vhost_dev *hdev, Error **errp)
+> +{
+> +    unsigned int used, reserved, limit;
+> +
+> +    limit =3D hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
+> +    if (limit < MEMORY_DEVICES_SAFE_MAX_MEMSLOTS &&
+> +        memory_devices_memslot_auto_decision_active()) {
+> +        error_setg(errp, "some memory device (like virtio-mem)"
+> +            " decided how many memory slots to use based on the overall"
+> +            " number of memory slots; this vhost backend would further"
+> +            " restricts the overall number of memory slots");
+> +        error_append_hint(errp, "Try plugging this vhost backend before"
+> +            " plugging such memory devices.\n");
+> +        return false;
 > +    }
 > +
->      return 0;
+> +    /*
+> +     * The listener we registered properly setup the number of required
+> +     * memslots in vhost_commit().
+> +     */
+> +    used =3D hdev->mem->nregions;
+> +
+> +    /*
+> +     * We assume that all reserved memslots actually require a real mems=
+lot
+> +     * in our vhost backend. This might not be true, for example, if the
+> +     * memslot would be ROM. If ever relevant, we can optimize for that =
+--
+> +     * but we'll need additional information about the reservations.
+> +     */
+> +    reserved =3D memory_devices_get_reserved_memslots();
+> +    if (used + reserved > limit) {
+> +        error_setg(errp, "vhost backend memory slots limit (%d) is less"
+> +                   " than current number of used (%d) and reserved (%d)"
+> +                   " memory slots for memory devices.", limit, used, res=
+erved);
+> +        return false;
+> +    }
+> +
+> +    return true;
+> +}
+> +
+>  int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+>                     VhostBackendType backend_type, uint32_t busyloop_time=
+out,
+>                     Error **errp)
+>  {
+> -    unsigned int used, reserved, limit;
+>      uint64_t features;
+>      int i, r, n_initialized_vqs =3D 0;
 >
->  fail_err:
-> @@ -1589,24 +1598,14 @@ int vhost_dev_init(struct vhost_dev *hdev, void *=
-opaque,
+> @@ -1584,19 +1622,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *o=
+paque,
+>          goto fail;
 >      }
 >
->      for (i =3D 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
-> -        r =3D vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index +=
- i);
-> +        r =3D vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index +=
- i,
-> +                                 busyloop_timeout);
->          if (r < 0) {
->              error_setg_errno(errp, -r, "Failed to initialize virtqueue %=
-d", i);
->              goto fail;
->          }
->      }
->
-> -    if (busyloop_timeout) {
-> -        for (i =3D 0; i < hdev->nvqs; ++i) {
-> -            r =3D vhost_virtqueue_set_busyloop_timeout(hdev, hdev->vq_in=
-dex + i,
-> -                                                     busyloop_timeout);
-> -            if (r < 0) {
-> -                error_setg_errno(errp, -r, "Failed to set busyloop timeo=
-ut");
-> -                goto fail;
-> -            }
-> -        }
+> -    limit =3D hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
+> -    if (limit < MEMORY_DEVICES_SAFE_MAX_MEMSLOTS &&
+> -        memory_devices_memslot_auto_decision_active()) {
+> -        error_setg(errp, "some memory device (like virtio-mem)"
+> -            " decided how many memory slots to use based on the overall"
+> -            " number of memory slots; this vhost backend would further"
+> -            " restricts the overall number of memory slots");
+> -        error_append_hint(errp, "Try plugging this vhost backend before"
+> -            " plugging such memory devices.\n");
+> -        r =3D -EINVAL;
+> -        goto fail;
 > -    }
 > -
->      hdev->_features =3D features;
+>      for (i =3D 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+>          r =3D vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index +=
+ i,
+>                                   busyloop_timeout);
+> @@ -1655,23 +1680,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *o=
+paque,
+>      memory_listener_register(&hdev->memory_listener, &address_space_memo=
+ry);
+>      QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
 >
->      hdev->memory_listener =3D (MemoryListener) {
+> -    /*
+> -     * The listener we registered properly setup the number of required
+> -     * memslots in vhost_commit().
+> -     */
+> -    used =3D hdev->mem->nregions;
+> -
+> -    /*
+> -     * We assume that all reserved memslots actually require a real mems=
+lot
+> -     * in our vhost backend. This might not be true, for example, if the
+> -     * memslot would be ROM. If ever relevant, we can optimize for that =
+--
+> -     * but we'll need additional information about the reservations.
+> -     */
+> -    reserved =3D memory_devices_get_reserved_memslots();
+> -    if (used + reserved > limit) {
+> -        error_setg(errp, "vhost backend memory slots limit (%d) is less"
+> -                   " than current number of used (%d) and reserved (%d)"
+> -                   " memory slots for memory devices.", limit, used, res=
+erved);
+> +    if (!check_memslots(hdev, errp)) {
+>          r =3D -EINVAL;
+>          goto fail;
+>      }
 > --
 > 2.48.1
 >
