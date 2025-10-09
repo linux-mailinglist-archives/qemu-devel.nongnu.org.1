@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B843BC9BA6
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 17:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DABBC9B9D
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 17:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6sNU-00012S-IB; Thu, 09 Oct 2025 11:16:24 -0400
+	id 1v6sNc-000139-1w; Thu, 09 Oct 2025 11:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6sNR-00012C-S2
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 11:16:22 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6sNX-00012o-Pg
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 11:16:27 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6sNO-000127-BA
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 11:16:21 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46faa5b0372so7408115e9.1
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 08:16:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v6sNR-00012S-MA
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 11:16:27 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-46e4ad36541so12177605e9.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 08:16:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760022970; x=1760627770; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0oYHRVompW79UZ14f7k3659AY04Q+/HDwOgL3pRMdx8=;
- b=eAF338CO4yJJWhyPXsMgvGVFGHQjEtN1k3WzduLQzbGoPUnIHOUiLj7uyps6lcaBNq
- atDFIGCkJIJQSHhhxbqR9ONLLqy4596x+Hx8/Gzbg+dbzi0YUFZcGeRH0YsXeWsB9Aud
- B/f5u5nj47VXiGrbD87ngXw2gZKIobRxrv++0YyVRqKY2z6u6vzpYrb0fENXKbY4DscU
- uqZ+QWo0R3LoROKOxBFLxQTb5eqE/JhlrY764n+g9fmVAqLlelqAduXITGJrRU58HKcc
- 6RwAGTp7gmoywRbKXPJi391iHhpjC0g9aWwk93lmWcQbtJRQLmJh8u/LvHa6pHr4dHmy
- ktNg==
+ d=linaro.org; s=google; t=1760022974; x=1760627774; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=99wP1GCXE6k+TUtubvwH3eeZDturgfhg3YA/n7Fnf9U=;
+ b=ZmkV3iOOfhOk5Sh5Yqrspvj+s95LVT3TczsPnznQhW1EFOdWBI8L8lW4ZujHcWcYG0
+ 6LoiRM8dgfg+NP5KWnCv6I/1qXjS+x5XnnBqcEwpGVo4Gn3mEMPb3AdnVwdjfsv4Ph8w
+ JNqJ4sVClmroO+4ifNCoKL4o8pchrKu6YrlR8VI4L7bfc5FVv0xP4TL+XuFlrOM4nrp7
+ 6b/UiLBG23DDQIP/jAnyp1X5THEh5a/GtcQkikjByLknHfpL8Oa7uf6ak5Yn4coH6VL7
+ dH5iH/PDrCdTlyvHCyJxQyGoLkKh1/Ie90qhtHhkZmgoXOLKOEt99tIYzgAyadBh45dR
+ IBvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760022970; x=1760627770;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0oYHRVompW79UZ14f7k3659AY04Q+/HDwOgL3pRMdx8=;
- b=eYV/WBI1pDijI13oEvCBZXVamk+s3qI5k3uixV2YgHMprItoVd8QoyAcEfa+GkM9RF
- xi9SMg1D9hcuRS4aJDUkbBUl9Qlbi8X8l6J/Dwcbrsy4WxOR4CtfKQjqxWE4pue8F1mH
- 9TCz1L7Ai/enThceaVT5Za8+HE/YRPimM4BWvlOvsgGGiOXGc9nqGKncxccSvVwk3iqs
- GRNS8NlyB+Du6p9CRr/w9tKzdvt+OcA2UmvWYwPAQNRSgBWX/cp37pAAakaqqzo9WMnv
- biTUZ6BF6G/0gt9xwE2MC9697ceh7W2dWY6EnWkkcE8E63q8e4ZOo7QVH6/kKLgjjS91
- V8uQ==
-X-Gm-Message-State: AOJu0YytUSxxpmGfX0pfdWgQ36H3XQj4t4Ul2NtKTOKjYOZHIqpJVxGw
- 9VQkZm5DvcuWfFb+rSkHPVSyr5hJlXMsDvipC2bUCR1XnKmfRZLo1p9G1ercamnEBwhQLqnbsVD
- VEN2nTEz2SQ==
-X-Gm-Gg: ASbGncuyci7QcLxwFD1xaiB1fmbRRpEY42eY8LPUqzhMo2ppdR3uy4N0ZGkCONIES7F
- 4coCNM3/PvoQt07+kIQPUjVSTLouhntDBHyfEx/i4vrkBS1uzQeP5uhxm7dembLde4mdxnescQq
- WzsUWsTM1D69L1q3fnumLlf8xNJzOHIFXCeDn4U8vv+rLU8TpTQaZ4k1Zp9EjaazYpQbkrnBpiH
- bixDrm37G5xPjfqg7JD0pWIPHZ9ebcQ5Rf6ddKhJAdKsel3zGxv2SafYPpkW9zukNBR+n/uiQz6
- 7sVbAiIu2SH/bx7wHdL2lOatzj0P+6SbGNPOrvFNiUI0tiEUxA9awtFoPHQVu9yP5jzzmB5J2Sr
- NTluG0FknJ6ouMQkg12lSZLub7U46L/Q8+3kpRkNQ8ilwlsj0Y7O8TjHQ0zATDTIRAvRlVZwSG6
- aLOS7wkcs93h0dQuJprROdg6lu
-X-Google-Smtp-Source: AGHT+IGuY8v/C9K6V3mIH/xAyxP4dhcEp7aXH8FEM0UhOOVyX4TFGacOcF7jdVKLy2gDHCC1/qRUuA==
-X-Received: by 2002:a05:6000:18a3:b0:3e7:471c:1de3 with SMTP id
- ffacd0b85a97d-42666aca1dcmr4979707f8f.14.1760022969697; 
- Thu, 09 Oct 2025 08:16:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760022974; x=1760627774;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=99wP1GCXE6k+TUtubvwH3eeZDturgfhg3YA/n7Fnf9U=;
+ b=sXFZZl3hg3uDcMSeYpr+jnHh9XxMf3cVFUF9zOSvGgDsQv7SK4evvFEVcW7leCALpO
+ 0tOkz23k/BJ76HOSQKqX+e5J/PPQ7SFNyOZcBwSh52pooqdbmGxKXyZTheNgkL7K6BQp
+ 35ou2YVE4T9IPlIdKXVfKxEytCFAwScY3gTTuz8D1Tk+yPpBJGtPnqA4Xt/V+6HkZsLc
+ NWMRlakOXha9QR1ATEx14CcpS3HSXq0yctHmVK3rohH8JRGPaEBJn9cCFCB/x32xLzin
+ oBtPkI4/Z379vQIOVIjO/Mf8mHYKD0AejoEQEWLOY7/x3sBxvxXN0oUBe7ZYloYRu2B9
+ 2fdQ==
+X-Gm-Message-State: AOJu0YxLjjt1HrOh1O+Bu7IdDRBYm1ZHAWZ5NzKcK3l/E+cr+QJbUTEo
+ U7OO4ZZWkLdgN9SJPx0H+BXj0XMTLFLyF9AWLyZxX5nDCDGIaTzBRSu4ybRw2H3slnufC21v946
+ obf6oknrVew==
+X-Gm-Gg: ASbGncuZca7fksCYt44jBRpJ7XgYeX0YPHc1CnkuJSu4Hm4i+AcN+gpvK7TfAuXI0N5
+ sPvAGA0JhqrNgEd9TfyzZika/yDX/53d9KnEUC/jBazJV92mMEI9DUXHTjbRlF6sA8z5cZFk6ie
+ /or0DGi3J4nAKzQ+T8ptWM8lrtmNDEvs1u2PLw64JmfCka92K1novdG5mxCrEU/drVp29qSueAw
+ Dlkw8rfZiiYZEsChiGFYGwUu2+OTLNhJY7qdDEH9aLSlXpnp4uvj2Gfl0HAlaFd9LkkuG+2Lc3S
+ B0r19NmA/k4VJKp6w/7P5SptwX4NZaHBOttKIp3uGIF7LZfoEEjZIMl/kla3fgKhjhIOKt3KMQP
+ o8ddo6FJvzOLYWApNQirOSzBBrkdpKN+R0CqiZ0XJTjLy/UmA9wCuDN463vgqKqMulw/KZNXgo2
+ bEIIW/F/I5W/H2QYZD+8nzPMlC
+X-Google-Smtp-Source: AGHT+IFNutKQjVeeRRjwuHOy/jaPwY35cMHKM78r8gNHtHNjk/bmUFsA/jw1OsemQ5KJ1w9EYDD2rQ==
+X-Received: by 2002:a05:600c:6287:b0:46f:b42e:e397 with SMTP id
+ 5b1f17b1804b1-46fb42ee51fmr5439975e9.40.1760022974497; 
+ Thu, 09 Oct 2025 08:16:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8f01a0sm34970154f8f.48.2025.10.09.08.16.08
+ 5b1f17b1804b1-46fab633badsm40900905e9.3.2025.10.09.08.16.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 08:16:09 -0700 (PDT)
+ Thu, 09 Oct 2025 08:16:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yoshinori Sato <yoshinori.sato@nifty.com>, Anton Johansson <anjo@rev.ng>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/8] target/rx: Remove target_ulong and MO_TE uses
-Date: Thu,  9 Oct 2025 17:15:59 +0200
-Message-ID: <20251009151607.26278-1-philmd@linaro.org>
+Subject: [PATCH 1/8] target/rx: Replace target_ulong -> vaddr for translator
+ API uses
+Date: Thu,  9 Oct 2025 17:16:00 +0200
+Message-ID: <20251009151607.26278-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251009151607.26278-1-philmd@linaro.org>
+References: <20251009151607.26278-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,22 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The RX target is 32-bit / little endian only.
-Remove an invalid target_ulong use, then replace MO_TE -> MO_LE.
+Since commit b1c09220b4c ("accel/tcg: Replace target_ulong with
+vaddr in translator_*()") the API takes vaddr argument, not
+target_ulong. Update the 2 callers.
 
-Philippe Mathieu-Daudé (8):
-  target/rx: Replace target_ulong -> vaddr for translator API uses
-  target/rx: Use MemOp type in gen_ld[u]() and gen_st()
-  target/rx: Propagate DisasContext to generated helpers
-  target/rx: Propagate DisasContext to push() / pop()
-  target/rx: Propagate DisasContext to gen_ld[u]() and gen_st()
-  target/rx: Factor mo_endian() helper out
-  target/rx: Replace MO_TE -> MO_LE
-  target/rx: Expand TCG register definitions for 32-bit target
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/rx/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- target/rx/translate.c | 427 +++++++++++++++++++++---------------------
- 1 file changed, 216 insertions(+), 211 deletions(-)
-
+diff --git a/target/rx/translate.c b/target/rx/translate.c
+index 19a9584a829..c22ca78a055 100644
+--- a/target/rx/translate.c
++++ b/target/rx/translate.c
+@@ -85,7 +85,7 @@ static uint32_t decode_load_bytes(DisasContext *ctx, uint32_t insn,
+ 
+ static uint32_t li(DisasContext *ctx, int sz)
+ {
+-    target_ulong addr;
++    vaddr addr;
+     uint32_t tmp;
+     CPURXState *env = ctx->env;
+     addr = ctx->base.pc_next;
+@@ -147,7 +147,7 @@ void rx_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     }
+ }
+ 
+-static void gen_goto_tb(DisasContext *dc, int n, target_ulong dest)
++static void gen_goto_tb(DisasContext *dc, int n, vaddr dest)
+ {
+     if (translator_use_goto_tb(&dc->base, dest)) {
+         tcg_gen_goto_tb(n);
 -- 
 2.51.0
 
