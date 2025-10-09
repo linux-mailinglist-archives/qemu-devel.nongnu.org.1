@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A811CBC7CDE
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D0FBC7D3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:57:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lRK-0000Cs-NW; Thu, 09 Oct 2025 03:51:54 -0400
+	id 1v6lRP-0000F1-EW; Thu, 09 Oct 2025 03:51:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lRG-0000Bu-Nq
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v6lRN-0000EX-5O
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lRB-0004UA-0o
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:49 -0400
+ id 1v6lRA-0004UF-ND
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996302;
+ s=mimecast20190719; t=1759996303;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+wOqIA00+2P30PgO3MjOrt5nn3whgZt6cWLk1eUimlA=;
- b=BhHkXOYCiUnzsHDKREqy2IfdCKWUhwoVg7T/VsJ9W27IfkwifaaWw14JptIGtFQXxSul9s
- OgJXjrnx6i7acaBFkz9WvJqE71U7yngE8qbVo2eDx4f1Rz59puz4cZxkPMuhZ6a5e/ZqP9
- w+n6NC9nuhdxUCv+xDv8yMbteE04/5s=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=enfkQAB8afdi5HCkMd+8fUqs4ubojxDRXj46eZbewuM=;
+ b=P+eEIIPkvjoQhHeogfyysZgxCiZmxrlCLBg9xH6MrMP32X4XjOEbhqXagZFJXKiAIyQtam
+ wQL+Qkgpwkg7d14pUh0hYtxcPQiPEhjRKQ6/RjRFoA9WONk94Qb95sNoBQsY7fY5dmetLI
+ ySkGSmLSFVL2sE2TCRBTEDseDAdxT/c=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-FWhQntWAPdS2eET1d75xTQ-1; Thu, 09 Oct 2025 03:51:40 -0400
-X-MC-Unique: FWhQntWAPdS2eET1d75xTQ-1
-X-Mimecast-MFC-AGG-ID: FWhQntWAPdS2eET1d75xTQ_1759996300
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-46e7a2c3773so7859625e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:40 -0700 (PDT)
+ us-mta-331-WCy23cOUOTyf5dmPWK1_Pw-1; Thu, 09 Oct 2025 03:51:42 -0400
+X-MC-Unique: WCy23cOUOTyf5dmPWK1_Pw-1
+X-Mimecast-MFC-AGG-ID: WCy23cOUOTyf5dmPWK1_Pw_1759996301
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e44b9779eso2992405e9.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996298; x=1760601098;
+ d=1e100.net; s=20230601; t=1759996299; x=1760601099;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+wOqIA00+2P30PgO3MjOrt5nn3whgZt6cWLk1eUimlA=;
- b=Ti/RavlC/B/icaBKNtCTT/tXMGOvAEDH+ORq8dfCI8gv4t0ZzkRI1K29rVfIjd8PgJ
- mVC6nWnOtMTWQKzPvqkWm0YfYha1wi+4d/NeNdqVEcEZZ43Le8JVkV+vpZpb5bfbNwiP
- OBNPYviCzfSgSQzGLu0oUo6gV1C7YV3llcIlUB6BhMpg3aBkgH1mwANVac397av6/mNW
- nhnH4ygmznunW6dQ2vzzU0UfGiDCgbJ7NatNJPPPTSq4a24OWVujnosvAIm+BgN6nv6B
- OCO/+akM65VNQMpM2KJrwajSB9hOt5QnDBTFsio9NOFCLZv7LXu+jguISf0XgBHQFxSE
- 0X1w==
-X-Gm-Message-State: AOJu0YxE7oRD8biIEG7sY0ztY6x1ZBk+Rz7HIQNgCwEdyDg9liYxUVrU
- HuBIIlOY1J/0hZrTpWL6p0L2I0fM/Vt9P0z4a+nEFf/N9vcj1LpMnRGZleocn8vK32dww/yZ9DM
- VobcjyAY2AjA/AZx3GWiEF49IReuiVde8PTThpSHmXmHxcek5Y8wzkkdZiodpvErVSh93Vqdqkt
- wp6JbenOZ994TWcdkKn4QAVDhSRv6R2xyqq1E0DOHF5Qo=
-X-Gm-Gg: ASbGncs43A1r9QjEyI1/+d1nH52RJhfMsLt+eny4lTFJrbgsZH6SwWtrK+dSo+6cM+v
- V3k+jn3yPopjkbjqoHy8XQ/5UwZ/rGkSqQhaxauxcsSylFKBf4KJZOlmM6sSj/WvSrsft14Xdpz
- IV/mc0vFGafRukU6NBit9byHkkOxQ38p+Xf6S2E4q7aFoOmMN6JgVGUOLtEVvmc/1uOOv3LNQwr
- YTCsS+L1pRxa5fWc8iCUOJ1da4t+Ca+2j5qaqA4fk4giWKUpkwWUoDjVrqv+1+Ue0y+yjiQydiU
- DlogPCz1xngefEN7IsW2bROXFy5nxkCOkDKzdNYzJQ2D2F/pucuPK+OFeMtgYYCRKx+Y5XrFpof
- ItkNX2GeFjd/7z2wmSs/e8uNyjknW6hz9KVu2/tx6E5PSCoD+
-X-Received: by 2002:a05:600c:8a8:b0:46d:38c4:1ac9 with SMTP id
- 5b1f17b1804b1-46fa2952c99mr43879895e9.2.1759996298376; 
- Thu, 09 Oct 2025 00:51:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+yhF/3xtvAR9nF2QwTpmPEbmP/LRAts19mBJVnh2C3KgJojsjLH/l92YmUYziuTGFEa9+EA==
-X-Received: by 2002:a05:600c:8a8:b0:46d:38c4:1ac9 with SMTP id
- 5b1f17b1804b1-46fa2952c99mr43879725e9.2.1759996297841; 
- Thu, 09 Oct 2025 00:51:37 -0700 (PDT)
+ bh=enfkQAB8afdi5HCkMd+8fUqs4ubojxDRXj46eZbewuM=;
+ b=wwTO8RFqCYYRgB1N+GYXn86sre3xBK8YRdB+tWOukxdjkT7TmZGO2OOq7uvkfFS7cS
+ JJY8ezglojEezeFMGUYhy3aFJhK3/2Fm9lg9Ds5dRvplckdyTjdUKaS2cbGduKGNEPR8
+ 53adoivGekXqVlW/wzXU92gYp2pMIqeRLb7MkVDiBWmVM7ynDG6G/Jb0y6lle44pXOyd
+ 3hiktENA1umcBy4cDq8hrBIMFt+F/o63dxuhLEz9mR8PznFiI+rCjjY6K8AVT82yFJ9S
+ Y3xPQTDlSNr076I2PgSle0lWPYCQhTbQltuo0q0UuTx2kx4qwD+IMkN+vpQVSdJTneIh
+ tQLg==
+X-Gm-Message-State: AOJu0YwouEq2wENQ+8oIbs7xrTRjq4qfyLWiiZMFnqTwMb0Iln66eTgz
+ w4avKzXPMXRyggewHtvIlu/edLoZ0DUX1+/JO3PK4JEYeU4vZcUwtGCJl2JE1Bd4TX4vc9nTpYW
+ CUji0608SN+Y+6OGUekpDzJbOte/RNpdd0k+LaU7LZEn2yxW4ceCUxphDwy2eH4ucG9HJlJPykB
+ /do/lql/8QXiRm31loHSEx1vXWmR1KD2ICficWFXNwCUc=
+X-Gm-Gg: ASbGncuNleDgXnkXtO8wOTzwx3cb/pXs0N6rZ5xFLUpBv+ih81WMQ2kLjI3h5WwrXKI
+ FQdoOGqQAVe5mHoNNLrWwMiPgxwqE0KtRkCz/nupbGxD54YnzVud37jbwPCT6c5lbtfKgtbashL
+ fcPgYg2lUpVGROXlNC+1O5PYd8PBfjrL29B2OclQ+iVDq6z0zCjFt5PAYY6CEsqw50yIG8/+MtL
+ aPlzRC3zAG+TpjRtqDyhKyK5L2WlZFud03YjIn3hH9m1R6nSEJI+ZGeZ8Z694O4nFMQezvcV9cO
+ i59LSpUUEILmvyR9gp6UlFo485Pi0jgy4AC3bfs5LycsK/I/dpa9TvVYJA0tyeL/bDD1U9ZLBw6
+ PMAjRM9FGaz8HVyRvibltLjKu28mY1g4T4uY6/s8Q0Q0qgNCd
+X-Received: by 2002:a05:600c:350b:b0:46e:6603:2ab0 with SMTP id
+ 5b1f17b1804b1-46fa9aeff11mr49207175e9.24.1759996299524; 
+ Thu, 09 Oct 2025 00:51:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5NFNS7fTmrtKuMLaFbOaFqaWRkR64tkdDlWsWyHf+EX4GYm+0O095HCTakqMF2G1+M7x9Sw==
+X-Received: by 2002:a05:600c:350b:b0:46e:6603:2ab0 with SMTP id
+ 5b1f17b1804b1-46fa9aeff11mr49206885e9.24.1759996299039; 
+ Thu, 09 Oct 2025 00:51:39 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46faf105ad7sm33921625e9.4.2025.10.09.00.51.36
+ 5b1f17b1804b1-46faf112fdbsm34023845e9.8.2025.10.09.00.51.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:51:36 -0700 (PDT)
+ Thu, 09 Oct 2025 00:51:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PULL 31/35] target/i386/mshv: Use preallocated page for hvcall
-Date: Thu,  9 Oct 2025 09:50:21 +0200
-Message-ID: <20251009075026.505715-32-pbonzini@redhat.com>
+Subject: [PULL 32/35] docs: Add mshv to documentation
+Date: Thu,  9 Oct 2025 09:50:22 +0200
+Message-ID: <20251009075026.505715-33-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -91,7 +91,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,181 +109,131 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 
-There are hvcalls that are invoked during MMIO exits, the payload is of
-dynamic size. To avoid heap allocations we can use preallocated pages as
-in/out buffer for those calls. A page is reserved per vCPU and used for
-set/get register hv calls.
+Added mshv to the list of accelerators in doc text.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250916164847.77883-26-magnuskulke@linux.microsoft.com
-[Use standard MAX_CONST macro; mshv.h/mshv_int.h split. - Paolo]
+Link: https://lore.kernel.org/r/20250916164847.77883-27-magnuskulke@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/system/mshv_int.h   |  7 +++++++
- accel/mshv/mshv-all.c       |  2 +-
- target/i386/mshv/mshv-cpu.c | 38 +++++++++++++++++++++++++------------
- 3 files changed, 34 insertions(+), 13 deletions(-)
+ docs/about/build-platforms.rst |  2 +-
+ docs/devel/codebase.rst        |  2 +-
+ docs/glossary.rst              |  7 +++----
+ docs/system/introduction.rst   |  3 +++
+ qemu-options.hx                | 16 ++++++++--------
+ 5 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
-index 6350c69e9d3..490563c1ab2 100644
---- a/include/system/mshv_int.h
-+++ b/include/system/mshv_int.h
-@@ -20,9 +20,16 @@
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 798cb4631df..fc2743658d4 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -53,7 +53,7 @@ Those hosts are officially supported, with various accelerators:
+    * - SPARC
+      - tcg
+    * - x86
+-     - hvf (64 bit only), kvm, nvmm, tcg, whpx (64 bit only), xen
++     - hvf (64 bit only), mshv (64 bit only), kvm, nvmm, tcg, whpx (64 bit only), xen
  
- typedef struct hyperv_message hv_message;
+ Other host architectures are not supported. It is possible to build QEMU system
+ emulation on an unsupported host architecture using the configure
+diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
+index 2a3143787a6..69d88271178 100644
+--- a/docs/devel/codebase.rst
++++ b/docs/devel/codebase.rst
+@@ -48,7 +48,7 @@ yet, so sometimes the source code is all you have.
+ * `accel <https://gitlab.com/qemu-project/qemu/-/tree/master/accel>`_:
+   Infrastructure and architecture agnostic code related to the various
+   `accelerators <Accelerators>` supported by QEMU
+-  (TCG, KVM, hvf, whpx, xen, nvmm).
++  (TCG, KVM, hvf, whpx, xen, nvmm, mshv).
+   Contains interfaces for operations that will be implemented per
+   `target <https://gitlab.com/qemu-project/qemu/-/tree/master/target>`_.
+ * `audio <https://gitlab.com/qemu-project/qemu/-/tree/master/audio>`_:
+diff --git a/docs/glossary.rst b/docs/glossary.rst
+index 4fa044bfb6e..2857731bc44 100644
+--- a/docs/glossary.rst
++++ b/docs/glossary.rst
+@@ -12,7 +12,7 @@ Accelerator
  
-+typedef struct MshvHvCallArgs {
-+    void *base;
-+    void *input_page;
-+    void *output_page;
-+} MshvHvCallArgs;
-+
- struct AccelCPUState {
-     int cpufd;
-     bool dirty;
-+    MshvHvCallArgs hvcall_args;
- };
+ A specific API used to accelerate execution of guest instructions. It can be
+ hardware-based, through a virtualization API provided by the host OS (kvm, hvf,
+-whpx, ...), or software-based (tcg). See this description of `supported
++whpx, mshv, ...), or software-based (tcg). See this description of `supported
+ accelerators<Accelerators>`.
  
- typedef struct MshvMemoryListener {
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index 5edfcbad9d2..45174f7c4eb 100644
---- a/accel/mshv/mshv-all.c
-+++ b/accel/mshv/mshv-all.c
-@@ -399,8 +399,8 @@ static int mshv_init_vcpu(CPUState *cpu)
-     uint8_t vp_index = cpu->cpu_index;
-     int ret;
+ Board
+@@ -101,9 +101,8 @@ manage a virtual machine. QEMU is a virtualizer, that interacts with various
+ hypervisors.
  
--    mshv_arch_init_vcpu(cpu);
-     cpu->accel = g_new0(AccelCPUState, 1);
-+    mshv_arch_init_vcpu(cpu);
+ In the context of QEMU, an hypervisor is an API, provided by the Host OS,
+-allowing to execute virtual machines. Linux implementation is KVM (and supports
+-Xen as well). For MacOS, it's HVF. Windows defines WHPX. And NetBSD provides
+-NVMM.
++allowing to execute virtual machines.  Linux provides a choice of KVM, Xen
++or MSHV; MacOS provides HVF; Windows provides WHPX; NetBSD provides NVMM.
  
-     ret = mshv_create_vcpu(vm_fd, vp_index, &cpu->accel->cpufd);
-     if (ret < 0) {
-diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index de87142bffc..1f7b9cb37ec 100644
---- a/target/i386/mshv/mshv-cpu.c
-+++ b/target/i386/mshv/mshv-cpu.c
-@@ -34,6 +34,10 @@
+ .. _machine:
  
- #include <sys/ioctl.h>
+diff --git a/docs/system/introduction.rst b/docs/system/introduction.rst
+index 4cd46b5b8f9..9c57523b6c2 100644
+--- a/docs/system/introduction.rst
++++ b/docs/system/introduction.rst
+@@ -23,6 +23,9 @@ Tiny Code Generator (TCG) capable of emulating many CPUs.
+   * - Xen
+     - Linux (as dom0)
+     - Arm, x86
++  * - MSHV
++    - Linux (as dom0)
++    - x86
+   * - Hypervisor Framework (hvf)
+     - MacOS
+     - x86 (64 bit only), Arm (64 bit only)
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 075f4be2e3e..56db4bf9e5e 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -28,7 +28,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+     "-machine [type=]name[,prop[=value][,...]]\n"
+     "                selects emulated machine ('-machine help' for list)\n"
+     "                property accel=accel1[:accel2[:...]] selects accelerator\n"
+-    "                supported accelerators are kvm, xen, hvf, nvmm, whpx or tcg (default: tcg)\n"
++    "                supported accelerators are kvm, xen, hvf, nvmm, whpx, mshv or tcg (default: tcg)\n"
+     "                vmport=on|off|auto controls emulation of vmport (default: auto)\n"
+     "                dump-guest-core=on|off include guest memory in a core dump (default=on)\n"
+     "                mem-merge=on|off controls memory merge support (default: on)\n"
+@@ -66,10 +66,10 @@ SRST
  
-+#define MAX_REGISTER_COUNT (MAX_CONST(ARRAY_SIZE(STANDARD_REGISTER_NAMES), \
-+                            MAX_CONST(ARRAY_SIZE(SPECIAL_REGISTER_NAMES), \
-+                                      ARRAY_SIZE(FPU_REGISTER_NAMES))))
-+
- static enum hv_register_name STANDARD_REGISTER_NAMES[18] = {
-     HV_X64_REGISTER_RAX,
-     HV_X64_REGISTER_RBX,
-@@ -151,7 +155,7 @@ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
-     int cpu_fd = mshv_vcpufd(cpu);
-     int vp_index = cpu->cpu_index;
-     size_t in_sz, assocs_sz;
--    hv_input_set_vp_registers *in;
-+    hv_input_set_vp_registers *in = cpu->accel->hvcall_args.input_page;
-     struct mshv_root_hvcall args = {0};
-     int ret;
+     ``accel=accels1[:accels2[:...]]``
+         This is used to enable an accelerator. Depending on the target
+-        architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available.
+-        By default, tcg is used. If there is more than one accelerator
+-        specified, the next one is used if the previous one fails to
+-        initialize.
++        architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be
++        available. By default, tcg is used. If there is more than one
++        accelerator specified, the next one is used if the previous one
++        fails to initialize.
  
-@@ -160,7 +164,7 @@ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
-     in_sz = sizeof(hv_input_set_vp_registers) + assocs_sz;
+     ``vmport=on|off|auto``
+         Enables emulation of VMWare IO port, for vmmouse etc. auto says
+@@ -226,7 +226,7 @@ ERST
  
-     /* fill the input struct */
--    in = g_malloc0(in_sz);
-+    memset(in, 0, sizeof(hv_input_set_vp_registers));
-     in->vp_index = vp_index;
-     memcpy(in->elements, assocs, assocs_sz);
- 
-@@ -172,7 +176,6 @@ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
- 
-     /* perform the call */
-     ret = mshv_hvcall(cpu_fd, &args);
--    g_free(in);
-     if (ret < 0) {
-         error_report("Failed to set registers");
-         return -1;
-@@ -193,8 +196,8 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
- {
-     int cpu_fd = mshv_vcpufd(cpu);
-     int vp_index = cpu->cpu_index;
--    hv_input_get_vp_registers *in;
--    hv_register_value *values;
-+    hv_input_get_vp_registers *in = cpu->accel->hvcall_args.input_page;
-+    hv_register_value *values = cpu->accel->hvcall_args.output_page;
-     size_t in_sz, names_sz, values_sz;
-     int i, ret;
-     struct mshv_root_hvcall args = {0};
-@@ -204,15 +207,14 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
-     in_sz = sizeof(hv_input_get_vp_registers) + names_sz;
- 
-     /* fill the input struct */
--    in = g_malloc0(in_sz);
-+    memset(in, 0, sizeof(hv_input_get_vp_registers));
-     in->vp_index = vp_index;
-     for (i = 0; i < n_regs; i++) {
-         in->names[i] = assocs[i].name;
-     }
- 
--    /* allocate value output buffer */
-+    /* determine size of value output buffer */
-     values_sz = n_regs * sizeof(union hv_register_value);
--    values = g_malloc0(values_sz);
- 
-     /* create the hvcall envelope */
-     args.code = HVCALL_GET_VP_REGISTERS;
-@@ -224,16 +226,13 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
- 
-     /* perform the call */
-     ret = mshv_hvcall(cpu_fd, &args);
--    g_free(in);
-     if (ret < 0) {
--        g_free(values);
-         error_report("Failed to retrieve registers");
-         return -1;
-     }
- 
-     /* assert we got all registers */
-     if (args.reps != n_regs) {
--        g_free(values);
-         error_report("Failed to retrieve registers: expected %zu elements"
-                      ", got %u", n_regs, args.reps);
-         return -1;
-@@ -243,7 +242,6 @@ static int get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
-     for (i = 0; i < n_regs; i++) {
-         assocs[i].value = values[i];
-     }
--    g_free(values);
- 
-     return 0;
- }
-@@ -1696,6 +1694,19 @@ void mshv_arch_init_vcpu(CPUState *cpu)
- {
-     X86CPU *x86_cpu = X86_CPU(cpu);
-     CPUX86State *env = &x86_cpu->env;
-+    AccelCPUState *state = cpu->accel;
-+    size_t page = HV_HYP_PAGE_SIZE;
-+    void *mem = qemu_memalign(page, 2 * page);
-+
-+    /* sanity check, to make sure we don't overflow the page */
-+    QEMU_BUILD_BUG_ON((MAX_REGISTER_COUNT
-+                      * sizeof(hv_register_assoc)
-+                      + sizeof(hv_input_get_vp_registers)
-+                      > HV_HYP_PAGE_SIZE));
-+
-+    state->hvcall_args.base = mem;
-+    state->hvcall_args.input_page = mem;
-+    state->hvcall_args.output_page = (uint8_t *)mem + page;
- 
-     env->emu_mmio_buf = g_new(char, 4096);
- }
-@@ -1704,7 +1715,10 @@ void mshv_arch_destroy_vcpu(CPUState *cpu)
- {
-     X86CPU *x86_cpu = X86_CPU(cpu);
-     CPUX86State *env = &x86_cpu->env;
-+    AccelCPUState *state = cpu->accel;
- 
-+    g_free(state->hvcall_args.base);
-+    state->hvcall_args = (MshvHvCallArgs){0};
-     g_clear_pointer(&env->emu_mmio_buf, g_free);
- }
+ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+     "-accel [accel=]accelerator[,prop[=value][,...]]\n"
+-    "                select accelerator (kvm, xen, hvf, nvmm, whpx or tcg; use 'help' for a list)\n"
++    "                select accelerator (kvm, xen, hvf, nvmm, whpx, mshv or tcg; use 'help' for a list)\n"
+     "                igd-passthru=on|off (enable Xen integrated Intel graphics passthrough, default=off)\n"
+     "                kernel-irqchip=on|off|split controls accelerated irqchip support (default=on)\n"
+     "                kvm-shadow-mem=size of KVM shadow MMU in bytes\n"
+@@ -241,8 +241,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+ SRST
+ ``-accel name[,prop=value[,...]]``
+     This is used to enable an accelerator. Depending on the target
+-    architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available. By
+-    default, tcg is used. If there is more than one accelerator
++    architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be available.
++    By default, tcg is used. If there is more than one accelerator
+     specified, the next one is used if the previous one fails to
+     initialize.
  
 -- 
 2.51.0
