@@ -2,133 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18AD3BC7BB6
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5877BC7CA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:52:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lBO-0006Dh-OW; Thu, 09 Oct 2025 03:35:26 -0400
+	id 1v6lQC-0008AI-M7; Thu, 09 Oct 2025 03:50:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v6lBK-0006Ci-M1
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:35:22 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v6lQ9-00089m-Dg
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v6lBE-0002jk-94
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:35:22 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v6lQ4-0004JA-D3
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759995309;
+ s=mimecast20190719; t=1759996231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=7jkJKIyCQZUOUmliAFhrxent9CoMlBDIqbMogANMID4=;
- b=e5yAXhNSUwQWC2x7fcXaKePgLzD9+zHxpgUX1i0Mi1U6Xn9xOI7aFin2RUnIlhbE97ZYVx
- zht1L8T1AtuSqQcnM4VnXFBTnKADnFe5KvBEtnWn91zJ1DrEKSLbAH0CxLUg3+udy5UYZu
- 5u7WviHo9AsxBj1420OOE/R3iYONjo0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eGAQrIfPghrF8Y9k90GmQZxemesTKOLpHp39boAZMHo=;
+ b=WgDEFE/iiPol1JWkDtTVkk5osktu7Mr2R8wHfmCRG18zkVG+ITzi1QZFHae7DNYrbFOgu1
+ rC7OLkLLBFt7/MZh/h6U1/V3fAOXIJCIeENhOwcwE7EGb/ZDDXIp7sa4J8+fQfAxje0obt
+ JaXWPeRsCyFfGDJBY1Mu0k/5hDd2HKM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-103-E3gnG_lNNpuD0Kw8GU1m3g-1; Thu, 09 Oct 2025 03:35:07 -0400
-X-MC-Unique: E3gnG_lNNpuD0Kw8GU1m3g-1
-X-Mimecast-MFC-AGG-ID: E3gnG_lNNpuD0Kw8GU1m3g_1759995306
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-46e502a37cdso4364165e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:35:07 -0700 (PDT)
+ us-mta-373-V3Q40afcOsKyyF2uOkCZDw-1; Thu, 09 Oct 2025 03:50:29 -0400
+X-MC-Unique: V3Q40afcOsKyyF2uOkCZDw-1
+X-Mimecast-MFC-AGG-ID: V3Q40afcOsKyyF2uOkCZDw_1759996229
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3efe4fcc9ccso558296f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759995306; x=1760600106;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7jkJKIyCQZUOUmliAFhrxent9CoMlBDIqbMogANMID4=;
- b=XEA0BO7/Ed8ej4naDGREX4keod30B5cNwQA8MtHK/hTvHGbzCezPg/VzbwrvPNkCxe
- 8snl7u4xhBLUYRWTJZxtSbxOMMdli8bqRT1fsTGlwf8x5kLAqYR2+r3ylJPh61DW8GT8
- 4KBeGBDotTTTKlrPclSOLEAMB+0m7ZqMogohyrxMrAZkmHYh9kkqmAxw0dUU/jsNrVKt
- Rs6hrGiGFHcRQ60eDI+jpVVhTxzpKDXReB/63tYde61Jhlwf8pH4O9ZnBv+DHKO+udMg
- u1YplZ0ZXV9baHnw4nFyjT74enGGin8m83F5At/mnyH0HAKu79WtXvSF6Sdqojxb5WdG
- PMCA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyRnP6oH6hYp/PHMUo58zhCQen+IAEI4k0DdELcNOGxa9GSXlvraOTxvG4pxe9XYxJBpKasHemVxOL@nongnu.org
-X-Gm-Message-State: AOJu0YyvJd7cWUZNcyNRQ0jOvXFGwoM/NK1tOTQZRh0OLoDwtZZr95G9
- mlV6CD65NrJFeLMlXXICEFielOoR6BTGhId3Jn6V9x2oblUOQhqJsoYv0FhLQvX0LE2nna9Vv7c
- D/C9JdHqSfD3jhWSRqdn/RiH2ZuSh6eIp7N0zAxGaovjtamm6bpiByvwW
-X-Gm-Gg: ASbGncsu/rk2gk8pA2o/sY4ay55NUtVfpRJ+xxTwv2h2M2jclgGnC8Din+xA4cyYWlw
- +X3uCwJo/FlwhkBffgTfnMWPkkQW+HFuTc30QJHIY1dctpZcHNEPL40j41MJtKN+N7bu887mX7n
- 2JwQ5dAu9rp3SUDIDMgcbOqCH4HMIXuX8WAl1T//kaHAOumcesTMVVNcu7sW2Lxt4bwOKz2tJDD
- LnSqrZ1LrUnAPscqWw7jfotmdsuM1keHtpZf/XKNwGkpweWjfXZ6kAZ3RVxGVCtUgoV+hUPU2gM
- hUreVubnXnfBnVGNgK43D1BxrB/iE7S7Qr+1QNKMhf0SXCAxLUakOEbKGRGK49RlKd9QEQ8E6Gt
- VjmmsnXOf
-X-Received: by 2002:a05:600d:41f3:b0:45b:7be1:be1f with SMTP id
- 5b1f17b1804b1-46fa9b092ddmr39139165e9.32.1759995306281; 
- Thu, 09 Oct 2025 00:35:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGGzoiFjIO/UbHIE91l2EcsGBDJ3+YrCecv3PEHuLJAHr70B1yVD2s0sFEmGCesgtDx1CjPgQ==
-X-Received: by 2002:a05:600d:41f3:b0:45b:7be1:be1f with SMTP id
- 5b1f17b1804b1-46fa9b092ddmr39138995e9.32.1759995305858; 
- Thu, 09 Oct 2025 00:35:05 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ d=1e100.net; s=20230601; t=1759996228; x=1760601028;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eGAQrIfPghrF8Y9k90GmQZxemesTKOLpHp39boAZMHo=;
+ b=m7D+V+6kjAY9AHNwne3QVBYs1VAHXrQVUSR4YzBVH3Rpvm8khtgGxK3uiaMTncUe52
+ 6mUAj0MEkpX5P+QF+edqBrTS/YOt1/wjJRxq5SXpWPDPBvqdgssF6G/znUGEhnny4YC6
+ vubbeXOnIRnL0Hi6+Hlvxd7HxvuZ/sAsvTWQ0w7ElpnzCyJWjkTyfWVMZDU7XIsBuxs2
+ arZRVKqyGmw1KpLA5drxmtNkTrFNaPgZo4rqKP3rBBPfHeF9mTvtmknKRpLTcVz2SW2A
+ IO0wKYX5asp1fMsYGTg5/5Bqd2jBe7ubmPFJlBuuVt4+pcepKhahthzq8q89DlsVwna/
+ 3OhQ==
+X-Gm-Message-State: AOJu0Yx3GQhlJpWXMTuwbpLm5Y9NNblhPXJf/4Z8xzCTVp6HIV4BAYh1
+ 4B7flhDmkUCqje5J0MkSqHe/PQMcUm7nB9vgzfSRlilvn+O6kqATKjTN7raLN0kIcKkMuyfLhhe
+ bjz3icfdFxJhovbOO7fgKDtA1JMMQ13upGVF9aDahmeKqyqvL2+9tenC8Jx6cjJw1eu3yptzKyj
+ 3pGGv8Z6EyVWJ1afalqaDdiohtRFglCsscDLlaHQ8QeRs=
+X-Gm-Gg: ASbGncvF4CW0kfNC8C8LcZPrbMQ+HHyV/eEmDh/nKE6qOYTRcUFcrd3SGZ6l2g19Zij
+ i7eRIoWmWW+g0El1iRb2SZ/csmI9hECWsPppUcT8fUTuYMQrnBSDZUcAAif272g2Gcv9s0xMhuk
+ bqi7vjmzquEhKrYm6JSsz72ya4PdQWnXJcNKctS0VSQ+75xVTx+Br+/aoEtB/7h/YpdDSbM2HBd
+ uQs4dCfC9O6pJrU/bbTVKDpCl5NkILgfe6V4wXjKS8Q+MBw+9f2CHK16LCOL19y60FoG8Xs6i9v
+ TNyg554SVh62Pe5f4T5ZSiVppAl8C47xCwdGNYYUSEx9z3WPH9rQwsoqiAmnrYyRIF5wrmq6YxA
+ fWamSsiWUtLvqvDiqRphq74Kq0G8LJC7sjUT5wkvoXthU5k92
+X-Received: by 2002:a05:6000:4382:b0:424:21d8:de30 with SMTP id
+ ffacd0b85a97d-4266e8e90eamr4189718f8f.62.1759996227950; 
+ Thu, 09 Oct 2025 00:50:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJmnh6KrKnvtR/eS8VwMS4RF6RFnusGTZNqIhe0YnC0KGYZVZSseP6+qzm1pKhMKxZNqjlJg==
+X-Received: by 2002:a05:6000:4382:b0:424:21d8:de30 with SMTP id
+ ffacd0b85a97d-4266e8e90eamr4189696f8f.62.1759996227296; 
+ Thu, 09 Oct 2025 00:50:27 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46faf16abf6sm33606385e9.12.2025.10.09.00.35.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Oct 2025 00:35:05 -0700 (PDT)
-Message-ID: <43001ff8-b4d2-44ab-b4c4-c2cf6d5d99d8@redhat.com>
-Date: Thu, 9 Oct 2025 09:35:04 +0200
+ ffacd0b85a97d-4255d869d50sm34367739f8f.0.2025.10.09.00.50.26
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Oct 2025 00:50:26 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/35] i386 (MSHV, migration) and Rust changes for 2025-10-09
+Date: Thu,  9 Oct 2025 09:49:50 +0200
+Message-ID: <20251009075026.505715-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Optimize unmap_all with one ioctl()
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, levon@movementarian.org
-References: <20251009040134.334251-1-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251009040134.334251-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -153,52 +104,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/9/25 06:01, Zhenzhong Duan wrote:
-> Currently unmap_all is split into two ioctl() with each unmap half of
-> the whole iova space.
-> 
-> IOMMUFD supports unmap_all ioctl() from beginning, after kernel commit
-> c19650995374 ("vfio/type1: implement unmap all") added same support
-> for VFIO type1, the split becomes unnecessary.
-> 
-> So optimize the code to only do one ioctl() to unmap_all for both
-> backends.
-> 
-> Test:
-> In order to trigger unmap_all request, I have to fake a unmap_all request
-> on x86. Maybe it's easy to trigger unmap_all with other arch, e.g., arm smmu,
-> but for x86, iommu memory region is split by iommu_ir, unmap_all isn't
-> triggered by default. See
-> https://github.com/yiliu1765/qemu/commit/7afc7adac8fa601abd978b821c86e90e073d31ba
-> for details.
-> 
-> Thanks
-> Zhenzhong
-> 
-> Changelog:
-> v2:
-> - check unmap_all_supported instead of ioctl() for every unmap_all (John Levon)
-> - make assertion a separate patch (Cedric)
-> - pass VFIOLegacyContainer pointer in vfio_legacy_dma_unmap_one() (Cedric)
-> 
-> Zhenzhong Duan (3):
->    vfio/container: Support unmap all in one ioctl()
->    vfio/iommufd: Support unmap all in one ioctl()
->    vfio/listener: Add an assertion for unmap_all
-> 
->   include/hw/vfio/vfio-container-legacy.h |  1 +
->   hw/vfio/container-legacy.c              | 38 ++++++++++++++-----------
->   hw/vfio/iommufd.c                       | 15 +---------
->   hw/vfio/listener.c                      |  1 +
->   4 files changed, 25 insertions(+), 30 deletions(-)
-> 
+The following changes since commit 517e9b4862cc9798b7a24b1935d94c2f96787f12:
 
+  Merge tag 'qtest-20251001-pull-request' of https://gitlab.com/farosas/qemu into staging (2025-10-01 15:03:00 -0700)
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+are available in the Git repository at:
 
-Thanks,
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-C.
+for you to fetch changes up to b9ef6198d709f431d893d1b5525cdf7fd7a3e11b:
 
+  rust: fix path to rust_root_crate.sh (2025-10-09 09:48:35 +0200)
+
+----------------------------------------------------------------
+* i386: fix migration issues in 10.1
+* target/i386/mshv: new accelerator
+* rust: use glib-sys-rs
+* rust: fixes for docker tests
+
+----------------------------------------------------------------
+Hector Cao (1):
+      target/i386: add compatibility property for pdcm feature
+
+Magnus Kulke (26):
+      accel: Add Meson and config support for MSHV accelerator
+      target/i386/emulate: Allow instruction decoding from stream
+      target/i386/mshv: Add x86 decoder/emu implementation
+      hw/intc: Generalize APIC helper names from kvm_* to accel_*
+      include/hw/hyperv: Add MSHV ABI header definitions
+      linux-headers/linux: Add mshv.h headers
+      accel/mshv: Add accelerator skeleton
+      accel/mshv: Register memory region listeners
+      accel/mshv: Initialize VM partition
+      accel/mshv: Add vCPU creation and execution loop
+      accel/mshv: Add vCPU signal handling
+      target/i386/mshv: Add CPU create and remove logic
+      target/i386/mshv: Implement mshv_store_regs()
+      target/i386/mshv: Implement mshv_get_standard_regs()
+      target/i386/mshv: Implement mshv_get_special_regs()
+      target/i386/mshv: Implement mshv_arch_put_registers()
+      target/i386/mshv: Set local interrupt controller state
+      target/i386/mshv: Register CPUID entries with MSHV
+      target/i386/mshv: Register MSRs with MSHV
+      target/i386/mshv: Integrate x86 instruction decoder/emulator
+      target/i386/mshv: Write MSRs to the hypervisor
+      target/i386/mshv: Implement mshv_vcpu_run()
+      accel/mshv: Handle overlapping mem mappings
+      target/i386/mshv: Use preallocated page for hvcall
+      docs: Add mshv to documentation
+      MAINTAINERS: Add maintainers for mshv accelerator
+
+Marc-André Lureau (4):
+      subprojects: add glib-sys-rs
+      rust: use glib-sys
+      build-sys: default to host vendor for rust target triple
+      tests/docker: make --enable-rust overridable with EXTRA_CONFIGURE_OPTS
+
+Paolo Bonzini (2):
+      subprojects: Remove version number from .gitignore
+      target/i386: add compatibility property for arch_capabilities
+
+Praveen K Paladugu (1):
+      qapi/accel: Allow to query mshv capabilities
+
+Stefan Hajnoczi (1):
+      rust: fix path to rust_root_crate.sh
+
+ MAINTAINERS                                        |   15 +
+ docs/about/build-platforms.rst                     |    2 +-
+ docs/devel/codebase.rst                            |    2 +-
+ docs/glossary.rst                                  |    7 +-
+ docs/system/introduction.rst                       |    3 +
+ configure                                          |   13 +-
+ meson.build                                        |   15 +
+ qapi/accelerator.json                              |   29 +
+ accel/mshv/trace.h                                 |   14 +
+ include/hw/core/cpu.h                              |    2 +-
+ include/hw/hyperv/hvgdk.h                          |   20 +
+ include/hw/hyperv/hvgdk_mini.h                     |  817 +++++++++
+ include/hw/hyperv/hvhdk.h                          |  249 +++
+ include/hw/hyperv/hvhdk_mini.h                     |  102 ++
+ include/monitor/hmp.h                              |    1 +
+ include/system/accel-irq.h                         |   37 +
+ include/system/hw_accel.h                          |    1 +
+ include/system/mshv.h                              |   64 +
+ include/system/mshv_int.h                          |  155 ++
+ linux-headers/linux/mshv.h                         |  291 ++++
+ target/i386/cpu.h                                  |   16 +-
+ target/i386/emulate/x86_decode.h                   |    9 +
+ target/i386/emulate/x86_emu.h                      |    2 +
+ accel/accel-irq.c                                  |  106 ++
+ accel/mshv/irq.c                                   |  399 +++++
+ accel/mshv/mem.c                                   |  563 +++++++
+ accel/mshv/mshv-all.c                              |  727 ++++++++
+ accel/mshv/msr.c                                   |  375 +++++
+ accel/stubs/mshv-stub.c                            |   44 +
+ hw/core/machine-hmp-cmds.c                         |   15 +
+ hw/core/machine-qmp-cmds.c                         |   14 +
+ hw/i386/pc.c                                       |    2 +
+ hw/intc/apic.c                                     |    8 +
+ hw/intc/ioapic.c                                   |   20 +-
+ hw/virtio/virtio-pci.c                             |   21 +-
+ target/i386/cpu.c                                  |   32 +-
+ target/i386/emulate/x86_decode.c                   |   27 +-
+ target/i386/emulate/x86_emu.c                      |    3 +-
+ target/i386/kvm/kvm.c                              |    6 +-
+ target/i386/mshv/mshv-cpu.c                        | 1763 ++++++++++++++++++++
+ target/i386/mshv/x86.c                             |  297 ++++
+ accel/Kconfig                                      |    3 +
+ accel/meson.build                                  |    3 +-
+ accel/mshv/meson.build                             |    9 +
+ accel/mshv/trace-events                            |   33 +
+ accel/stubs/meson.build                            |    1 +
+ hmp-commands-info.hx                               |   13 +
+ meson_options.txt                                  |    2 +
+ qemu-options.hx                                    |   16 +-
+ rust/Cargo.lock                                    |  180 ++
+ rust/Cargo.toml                                    |    1 +
+ rust/bql/Cargo.toml                                |    1 +
+ rust/bql/meson.build                               |    1 +
+ rust/bql/src/bindings.rs                           |    4 +
+ rust/chardev/Cargo.toml                            |    1 +
+ rust/chardev/meson.build                           |    2 +-
+ rust/chardev/src/bindings.rs                       |    4 +
+ rust/hw/char/pl011/Cargo.toml                      |    1 +
+ rust/hw/char/pl011/meson.build                     |    1 +
+ rust/hw/char/pl011/src/bindings.rs                 |    5 +
+ rust/hw/core/Cargo.toml                            |    1 +
+ rust/hw/core/meson.build                           |    2 +-
+ rust/hw/core/src/bindings.rs                       |    3 +
+ rust/meson.build                                   |    2 +
+ rust/migration/Cargo.toml                          |    1 +
+ rust/migration/meson.build                         |    2 +-
+ rust/migration/src/bindings.rs                     |    1 +
+ rust/qom/Cargo.toml                                |    1 +
+ rust/qom/meson.build                               |    2 +-
+ rust/qom/src/bindings.rs                           |    2 +
+ rust/system/Cargo.toml                             |    1 +
+ rust/system/meson.build                            |    2 +-
+ rust/system/src/bindings.rs                        |    4 +
+ rust/util/Cargo.toml                               |    1 +
+ rust/util/meson.build                              |    2 +-
+ rust/util/src/bindings.rs                          |    2 +
+ scripts/archive-source.sh                          |    1 +
+ scripts/meson-buildoptions.sh                      |    3 +
+ scripts/rust/rust_root_crate.sh                    |    2 +-
+ scripts/update-linux-headers.sh                    |    2 +-
+ subprojects/.gitignore                             |   31 +-
+ subprojects/glib-sys-0.21-rs.wrap                  |    7 +
+ .../packagefiles/glib-sys-0.21-rs/meson.build      |   33 +
+ target/i386/emulate/meson.build                    |    7 +-
+ target/i386/meson.build                            |    2 +
+ target/i386/mshv/meson.build                       |    8 +
+ tests/docker/common.rc                             |    2 +-
+ 87 files changed, 6617 insertions(+), 79 deletions(-)
+ create mode 100644 accel/mshv/trace.h
+ create mode 100644 include/hw/hyperv/hvgdk.h
+ create mode 100644 include/hw/hyperv/hvgdk_mini.h
+ create mode 100644 include/hw/hyperv/hvhdk.h
+ create mode 100644 include/hw/hyperv/hvhdk_mini.h
+ create mode 100644 include/system/accel-irq.h
+ create mode 100644 include/system/mshv.h
+ create mode 100644 include/system/mshv_int.h
+ create mode 100644 linux-headers/linux/mshv.h
+ create mode 100644 accel/accel-irq.c
+ create mode 100644 accel/mshv/irq.c
+ create mode 100644 accel/mshv/mem.c
+ create mode 100644 accel/mshv/mshv-all.c
+ create mode 100644 accel/mshv/msr.c
+ create mode 100644 accel/stubs/mshv-stub.c
+ create mode 100644 target/i386/mshv/mshv-cpu.c
+ create mode 100644 target/i386/mshv/x86.c
+ create mode 100644 accel/mshv/meson.build
+ create mode 100644 accel/mshv/trace-events
+ create mode 100644 subprojects/glib-sys-0.21-rs.wrap
+ create mode 100644 subprojects/packagefiles/glib-sys-0.21-rs/meson.build
+ create mode 100644 target/i386/mshv/meson.build
+-- 
+2.51.0
 
 
