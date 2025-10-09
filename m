@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03089BC7CF0
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 101AFBC7CB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:52:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lQC-00089z-7a; Thu, 09 Oct 2025 03:50:44 -0400
+	id 1v6lQJ-0008BT-UR; Thu, 09 Oct 2025 03:50:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQ8-00089a-G2
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v6lQF-0008Ai-2C
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQ4-0004JG-Co
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:39 -0400
+ id 1v6lQ6-0004JQ-00
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996232;
+ s=mimecast20190719; t=1759996235;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9cRZKuLYf1PeX3kptJkawumw9y9xmtGwH/7o1mOtoO4=;
- b=SOclfsWJtNiKMp/YymH/n2MelCpcyxKycOapDyj9ug3/bXpauso4HDy2DhuAUsxZT3jWfe
- Quq9UD2n7psdYXSQYQriRWBdMrPS8N89KhXpZuABxXeTBvJzI/4h7e9MDEoshEGyuohfbN
- wOYPRTsDklrvlVdamGRqYw3GxMeR75E=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=q+W9mI2TEY8Vy131c26AX2u4Sj+/YtxNA/TPL0BdJ4c=;
+ b=WRut60cqKRqNGoQXrQ3wE8i6QEsUrsxgJOlPtjmoNh8W0Q+O/J+3BNp1yKMjrwofDTvSvp
+ m8q6fBogtPEGEWOUHzwBU/IiGF4EVMtQJPOrgLPa+idahrF46CHUc2wDzr3xegIozeBfZK
+ KgwMvpnEXyc/eQ1s6kzkdv9OOecm7Tw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-qUKCnBPrMCiCfb967RRbMg-1; Thu, 09 Oct 2025 03:50:31 -0400
-X-MC-Unique: qUKCnBPrMCiCfb967RRbMg-1
-X-Mimecast-MFC-AGG-ID: qUKCnBPrMCiCfb967RRbMg_1759996230
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3ece0fd841cso684956f8f.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:30 -0700 (PDT)
+ us-mta-150-IhnBmfLiMNqiBCmGbQ4hUQ-1; Thu, 09 Oct 2025 03:50:33 -0400
+X-MC-Unique: IhnBmfLiMNqiBCmGbQ4hUQ-1
+X-Mimecast-MFC-AGG-ID: IhnBmfLiMNqiBCmGbQ4hUQ_1759996232
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3efe4fcc9ccso558339f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996229; x=1760601029;
+ d=1e100.net; s=20230601; t=1759996232; x=1760601032;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9cRZKuLYf1PeX3kptJkawumw9y9xmtGwH/7o1mOtoO4=;
- b=fx+uuPTFHw6rv8g582ybYz1oi3TuNHbqIcz35HMA7dIHyriBQGH0GGUaaxEB0FswD+
- XDK/l6XuaAza5+hfMU/7H6w1IcR5Hgs/NmXQM3Nhm7b3Dya+El5klKbFAl6AVhDUdyu7
- EatnKksiQqpXn/ycsNmjLURIWxkfPyVWfVBjokUVLzeg5UYG2w5ro0tr2sfqgReNH0tI
- F7W/XnOzThjIqgWI3EWNKppFzAz8fyU6imghi45ss2/+YBn3zLZVuadcrIbq7jpvshl9
- m9nuN34C476PYCZBFM2di9cv3tACJor9SYBwjO/welvBkLVCqore0kwov8FYKMlEpvFH
- K29w==
-X-Gm-Message-State: AOJu0YyjP3SZRtQsCqo0gl8yPlgdbRnWzILuBMVDt7TH44uGRaXv1pBQ
- 5BkGvVxNR8S7+VG5snX6CAo5qCg6EsgkvQIY3l63tkBMmpUc6y5bcEAJFEoVkfgS/NCG31OBYSO
- 4iKuAf4DemOkpRff4bleGpxlAheaXC693rAGTw/NgK4UVHO3haJxoa6Muhe2JOS+As2ARWBKaQ6
- aKWE30eLXKEt14CWbfnyTZE3MDb1fM4H/yJa+ojVSNq7c=
-X-Gm-Gg: ASbGncvYS+lo33lYE9tUblrDipwvxidCat+y33xaYpLKNFwf7fIiB+xVB1/sHIjvbTL
- 9tZWKHZKYJOZeEcGgTyV+PslC1DcTWClTJs3AuK/wAs0Zv7FRtBG+o27v4Hia/t3W8nGgf+QY8+
- 8rYztyx6WMAJ4ApaIJd+l9wINf/vysWtUmYmKzahJ/aEkGdjdfTM+wvqupUw/Q+p9a2A+s9NUJC
- 3kjOyMQs8Fyov6m/Bfmf1tPBrkTwRTGGDH1wndN+PREcZ2V7OmP1LCIdhwzUeh+ks3E+in38OH2
- y3duK30Umt/+vTdMDdQFE7OgAdTAG9lJrNXUs19IaC0oz5rjE/1NODibxTRCqXUDxmJ82ycil/O
- J0ldxkqLynPZX+ps/OzrKMhDq++uPebvVBugaxAaXn7VIuGKE
-X-Received: by 2002:a05:6000:2c0e:b0:3df:c5e3:55fe with SMTP id
- ffacd0b85a97d-4266e7dff05mr4046067f8f.29.1759996228950; 
- Thu, 09 Oct 2025 00:50:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkyTYv6M1S+Be8mcKj6gGA7rEyjy70kpY0Kd4YeHH4v29SLgbSy/ofY0SsqMsMwBIheu2ZWg==
-X-Received: by 2002:a05:6000:2c0e:b0:3df:c5e3:55fe with SMTP id
- ffacd0b85a97d-4266e7dff05mr4046047f8f.29.1759996228534; 
- Thu, 09 Oct 2025 00:50:28 -0700 (PDT)
+ bh=q+W9mI2TEY8Vy131c26AX2u4Sj+/YtxNA/TPL0BdJ4c=;
+ b=t+9RSqQIKwzk8p++qMO3nllWhKlsZvV455sxxN1K6+xhyt68gKXShTDHZxcHlpawtn
+ HE30WtEM7XkgQMkivBvVNsSGCO+PLU6MvSywtzuDZsdXN+qY31iL2s5/p9PMUQaAMF5w
+ /c66S30nTAB9KInM5o8xb/LNyM4YqzMY32SqxUS86+6hakygFpOiRHJvKDKCL40xqJin
+ w9ebHdSraMt1uC25Rh6KL21d7Cd+pyNMcuhmenaBiW2gFW/jdWztWDNDVJK2xb6yVyoA
+ jpYTj7TAflLxoNzuLmxJB6tNOMUmz2rKayRLTOAJ33LCgj7XwDoQGncO6XVyr31iw8Tv
+ ORsQ==
+X-Gm-Message-State: AOJu0Yx7uc4Okws+DOoVa28Z+vn7w2EHhAHGTTAUcR1PqN1wIe6rAlG4
+ 3jVJqaE+ZH16RpQ7zzwSk1jquvaN5cmsuskAg+rZvq/bS0PQrTiZi0ROmcjdJIolMyL1VA7pm/q
+ /rICNfnOg2fVkqdvENg5SXigWFfnagUaKu+m4iyQ46BDA1jXiHGmplXOH0zYxOhUT0tNZ6cdAel
+ idP9aIhZ28O6h94mSd1xY8LTfXFZUoUb/RNbphZ0QKbTY=
+X-Gm-Gg: ASbGncs2RAaDXWdvu//GyeBjX0n6iOtl+KevtTAzC8aCRao8UzeKX9Xv6MFk5bIlOmt
+ kdzt/COycdEy9hws5Tt/gbm0ADwonZiWhDjFBjn4oqG07mPQYnDcepdAvn4oajeoEtDgUM9gwXy
+ 5/X3iJYUqJFG/kzxibX86xJUPxhnwU2w9sqORgEPFlB3d3XieHaFL+/seXo3mTj+/vrdhCjda4O
+ v5TAqu4wGDGxECzkIffv0qACU08U0rd+XvMq4wSqjhuRMkZYWCqmueBvTqnZ561R8r0cWVecR81
+ XCgJKrFYiYD4JivQ6W9LZ950e2ckxVBjaOpP3hdV7VSGmPQyNPt4zrhh7NzNENYmray9yjMUgQW
+ 5EPGeuv9IjsZOyRp8ISzUd4cUfHhGHvB2WzWqlFLz+gWBySIp
+X-Received: by 2002:a05:6000:4382:b0:424:21d8:de30 with SMTP id
+ ffacd0b85a97d-4266e8e90eamr4189856f8f.62.1759996231586; 
+ Thu, 09 Oct 2025 00:50:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBZhGy+5RcSO2LUdm0r+NLgSOcg/heS2pbzeCZ8Z8lMwtln/pj/fi2F0jU5nUXwExE6UvtPw==
+X-Received: by 2002:a05:6000:4382:b0:424:21d8:de30 with SMTP id
+ ffacd0b85a97d-4266e8e90eamr4189832f8f.62.1759996231083; 
+ Thu, 09 Oct 2025 00:50:31 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46faf09a0e8sm33914095e9.0.2025.10.09.00.50.27
+ ffacd0b85a97d-4255d8a6b8bsm33338305f8f.4.2025.10.09.00.50.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:50:28 -0700 (PDT)
+ Thu, 09 Oct 2025 00:50:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/35] subprojects: Remove version number from .gitignore
-Date: Thu,  9 Oct 2025 09:49:51 +0200
-Message-ID: <20251009075026.505715-2-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 02/35] subprojects: add glib-sys-rs
+Date: Thu,  9 Oct 2025 09:49:52 +0200
+Message-ID: <20251009075026.505715-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -94,7 +92,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,58 +108,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Get rid of all the version numbers, and use wildcard matches instead,
-because peopl will repeatedly forgot to change these versions.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- subprojects/.gitignore | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ rust/meson.build                              |  2 ++
+ scripts/archive-source.sh                     |  1 +
+ subprojects/.gitignore                        |  1 +
+ subprojects/glib-sys-0.21-rs.wrap             |  7 ++++
+ .../packagefiles/glib-sys-0.21-rs/meson.build | 33 +++++++++++++++++++
+ 5 files changed, 44 insertions(+)
+ create mode 100644 subprojects/glib-sys-0.21-rs.wrap
+ create mode 100644 subprojects/packagefiles/glib-sys-0.21-rs/meson.build
 
+diff --git a/rust/meson.build b/rust/meson.build
+index 695d5a62de9..6ba075c8c71 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -2,12 +2,14 @@ subproject('anyhow-1-rs', required: true)
+ subproject('bilge-0.2-rs', required: true)
+ subproject('bilge-impl-0.2-rs', required: true)
+ subproject('foreign-0.3-rs', required: true)
++subproject('glib-sys-0.21-rs', required: true)
+ subproject('libc-0.2-rs', required: true)
+ 
+ anyhow_rs = dependency('anyhow-1-rs')
+ bilge_rs = dependency('bilge-0.2-rs')
+ bilge_impl_rs = dependency('bilge-impl-0.2-rs')
+ foreign_rs = dependency('foreign-0.3-rs')
++glib_sys_rs = dependency('glib-sys-0.21-rs')
+ libc_rs = dependency('libc-0.2-rs')
+ 
+ subproject('proc-macro2-1-rs', required: true)
+diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
+index a725dd923dc..8f97b19a088 100755
+--- a/scripts/archive-source.sh
++++ b/scripts/archive-source.sh
+@@ -36,6 +36,7 @@ subprojects=(
+   bilge-impl-0.2-rs
+   either-1-rs
+   foreign-0.3-rs
++  glib-sys-0.21-rs
+   itertools-0.11-rs
+   keycodemapdb
+   libc-0.2-rs
 diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index 58a29f01204..0b5d9634094 100644
+index 0b5d9634094..c00c8478372 100644
 --- a/subprojects/.gitignore
 +++ b/subprojects/.gitignore
-@@ -6,21 +6,21 @@
- /keycodemapdb
- /libvfio-user
- /slirp
--/anyhow-1.0.98
--/arbitrary-int-1.2.7
--/attrs-0.2.9
--/bilge-0.2.0
--/bilge-impl-0.2.0
--/either-1.12.0
--/foreign-0.3.1
--/itertools-0.11.0
--/libc-0.2.162
--/proc-macro-error-1.0.4
--/proc-macro-error-attr-1.0.4
--/proc-macro2-1.0.95
--/quote-1.0.36
--/syn-2.0.66
--/unicode-ident-1.0.12
-+/anyhow-*
-+/arbitrary-int-*
-+/attrs-*
-+/bilge-*
-+/bilge-impl-*
-+/either-*
-+/foreign-*
-+/itertools-*
-+/libc-*
-+/proc-macro-error-*
-+/proc-macro-error-attr-*
-+/proc-macro*
-+/quote-*
-+/syn-*
-+/unicode-ident-*
- 
- # Workaround for Meson v1.9.0 https://github.com/mesonbuild/meson/issues/14948
- /.wraplock
+@@ -13,6 +13,7 @@
+ /bilge-impl-*
+ /either-*
+ /foreign-*
++/glib-sys-*
+ /itertools-*
+ /libc-*
+ /proc-macro-error-*
+diff --git a/subprojects/glib-sys-0.21-rs.wrap b/subprojects/glib-sys-0.21-rs.wrap
+new file mode 100644
+index 00000000000..313ced731ac
+--- /dev/null
++++ b/subprojects/glib-sys-0.21-rs.wrap
+@@ -0,0 +1,7 @@
++[wrap-file]
++directory = glib-sys-0.21.2
++source_url = https://crates.io/api/v1/crates/glib-sys/0.21.2/download
++source_filename = glib-sys-0.21.2.tar.gz
++source_hash = d09d3d0fddf7239521674e57b0465dfbd844632fec54f059f7f56112e3f927e1
++#method = cargo
++patch_directory = glib-sys-0.21-rs
+diff --git a/subprojects/packagefiles/glib-sys-0.21-rs/meson.build b/subprojects/packagefiles/glib-sys-0.21-rs/meson.build
+new file mode 100644
+index 00000000000..8c5483311ed
+--- /dev/null
++++ b/subprojects/packagefiles/glib-sys-0.21-rs/meson.build
+@@ -0,0 +1,33 @@
++project('glib-sys-0.21-rs', 'rust',
++  meson_version: '>=1.5.0',
++  version: '0.21.2',
++  license: 'MIT',
++  default_options: [])
++
++subproject('libc-0.2-rs', required: true)
++libc_rs = dependency('libc-0.2-rs')
++
++_glib_sys_rs = static_library(
++  'glib_sys',
++  files('src/lib.rs'),
++  gnu_symbol_visibility: 'hidden',
++  override_options: ['rust_std=2021', 'build.rust_std=2021'],
++  rust_abi: 'rust',
++  rust_args: [
++    '--cap-lints', 'allow',
++    '--cfg', 'feature="v2_66"',
++    '--cfg', 'feature="v2_64"',
++    '--cfg', 'feature="v2_62"',
++    '--cfg', 'feature="v2_60"',
++    '--cfg', 'feature="v2_58"',
++  ],
++  # should also link with glib; don't bother doing it here since all
++  # QEMU targets have it
++  dependencies: [libc_rs],
++)
++
++glib_sys_dep = declare_dependency(
++  link_with: _glib_sys_rs,
++)
++
++meson.override_dependency('glib-sys-0.21-rs', glib_sys_dep)
 -- 
 2.51.0
 
