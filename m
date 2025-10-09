@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D0FBC7D3B
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3006BBC7D59
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lRP-0000F1-EW; Thu, 09 Oct 2025 03:51:59 -0400
+	id 1v6lRL-0000Cw-0L; Thu, 09 Oct 2025 03:51:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lRN-0000EX-5O
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:57 -0400
+ id 1v6lRH-0000CD-Qk
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lRA-0004UF-ND
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:56 -0400
+ id 1v6lRE-0004Ue-Ko
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:51:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996303;
+ s=mimecast20190719; t=1759996306;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=enfkQAB8afdi5HCkMd+8fUqs4ubojxDRXj46eZbewuM=;
- b=P+eEIIPkvjoQhHeogfyysZgxCiZmxrlCLBg9xH6MrMP32X4XjOEbhqXagZFJXKiAIyQtam
- wQL+Qkgpwkg7d14pUh0hYtxcPQiPEhjRKQ6/RjRFoA9WONk94Qb95sNoBQsY7fY5dmetLI
- ySkGSmLSFVL2sE2TCRBTEDseDAdxT/c=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eHTeFILZi+U3w7nE87D0Nrp2o/VDEMaD0RN/V3cIXtw=;
+ b=Q+wNl2wzksEgvUSOMl4/juwUk9P1AHWp0pyRM2VTFg3Z6+SlQ82FXnHL5Fym/GwZxVPoTZ
+ ZvKOchpVooy3sfWgKwZRgwApFh+XZ/PuqChmcNd6NLFm4G7OtpUdxaxXyOKlSqpWrV8w12
+ 4o3TbbvFFvdqqchoq6aOTHUFQ2MXOI4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-WCy23cOUOTyf5dmPWK1_Pw-1; Thu, 09 Oct 2025 03:51:42 -0400
-X-MC-Unique: WCy23cOUOTyf5dmPWK1_Pw-1
-X-Mimecast-MFC-AGG-ID: WCy23cOUOTyf5dmPWK1_Pw_1759996301
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-46e44b9779eso2992405e9.1
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:41 -0700 (PDT)
+ us-mta-215-YDwSxAIsONChMSAAQLtP9g-1; Thu, 09 Oct 2025 03:51:45 -0400
+X-MC-Unique: YDwSxAIsONChMSAAQLtP9g-1
+X-Mimecast-MFC-AGG-ID: YDwSxAIsONChMSAAQLtP9g_1759996304
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-401dbafbcfaso495383f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:51:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996299; x=1760601099;
+ d=1e100.net; s=20230601; t=1759996303; x=1760601103;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=enfkQAB8afdi5HCkMd+8fUqs4ubojxDRXj46eZbewuM=;
- b=wwTO8RFqCYYRgB1N+GYXn86sre3xBK8YRdB+tWOukxdjkT7TmZGO2OOq7uvkfFS7cS
- JJY8ezglojEezeFMGUYhy3aFJhK3/2Fm9lg9Ds5dRvplckdyTjdUKaS2cbGduKGNEPR8
- 53adoivGekXqVlW/wzXU92gYp2pMIqeRLb7MkVDiBWmVM7ynDG6G/Jb0y6lle44pXOyd
- 3hiktENA1umcBy4cDq8hrBIMFt+F/o63dxuhLEz9mR8PznFiI+rCjjY6K8AVT82yFJ9S
- Y3xPQTDlSNr076I2PgSle0lWPYCQhTbQltuo0q0UuTx2kx4qwD+IMkN+vpQVSdJTneIh
- tQLg==
-X-Gm-Message-State: AOJu0YwouEq2wENQ+8oIbs7xrTRjq4qfyLWiiZMFnqTwMb0Iln66eTgz
- w4avKzXPMXRyggewHtvIlu/edLoZ0DUX1+/JO3PK4JEYeU4vZcUwtGCJl2JE1Bd4TX4vc9nTpYW
- CUji0608SN+Y+6OGUekpDzJbOte/RNpdd0k+LaU7LZEn2yxW4ceCUxphDwy2eH4ucG9HJlJPykB
- /do/lql/8QXiRm31loHSEx1vXWmR1KD2ICficWFXNwCUc=
-X-Gm-Gg: ASbGncuNleDgXnkXtO8wOTzwx3cb/pXs0N6rZ5xFLUpBv+ih81WMQ2kLjI3h5WwrXKI
- FQdoOGqQAVe5mHoNNLrWwMiPgxwqE0KtRkCz/nupbGxD54YnzVud37jbwPCT6c5lbtfKgtbashL
- fcPgYg2lUpVGROXlNC+1O5PYd8PBfjrL29B2OclQ+iVDq6z0zCjFt5PAYY6CEsqw50yIG8/+MtL
- aPlzRC3zAG+TpjRtqDyhKyK5L2WlZFud03YjIn3hH9m1R6nSEJI+ZGeZ8Z694O4nFMQezvcV9cO
- i59LSpUUEILmvyR9gp6UlFo485Pi0jgy4AC3bfs5LycsK/I/dpa9TvVYJA0tyeL/bDD1U9ZLBw6
- PMAjRM9FGaz8HVyRvibltLjKu28mY1g4T4uY6/s8Q0Q0qgNCd
-X-Received: by 2002:a05:600c:350b:b0:46e:6603:2ab0 with SMTP id
- 5b1f17b1804b1-46fa9aeff11mr49207175e9.24.1759996299524; 
- Thu, 09 Oct 2025 00:51:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5NFNS7fTmrtKuMLaFbOaFqaWRkR64tkdDlWsWyHf+EX4GYm+0O095HCTakqMF2G1+M7x9Sw==
-X-Received: by 2002:a05:600c:350b:b0:46e:6603:2ab0 with SMTP id
- 5b1f17b1804b1-46fa9aeff11mr49206885e9.24.1759996299039; 
- Thu, 09 Oct 2025 00:51:39 -0700 (PDT)
+ bh=eHTeFILZi+U3w7nE87D0Nrp2o/VDEMaD0RN/V3cIXtw=;
+ b=twg219FtYuM/DLY6QtxW9hPFT62tVjp+n9Ii1zWZrSwiv30lD+9J/Itf9hrC/O/TdM
+ waRF9grxWUEoRVx0wjWB2uN6z4FzjqaBaOmNXr1xMecilkvRIWpPocoCtp0wU3tvtrTN
+ Hb2Pjas5XnzyKPNSODwJSaOMWRkuVvEioJ8ccXbULw0mVtbooY7kn40nQfYdbz49wR7W
+ kpjeRy8ne1v8n6KHwFql/BtDIHTtwLvekSDmvb6+3LUd5YyfLuc8tm1vZVrt/zGN6k3E
+ ayfwkGQW1ebtjCgxifI0HC3V5N3PpspUlLrAUy68Kc8to1IfaYTNKIqClK0591ptTX2J
+ HIfg==
+X-Gm-Message-State: AOJu0Yx36oq+1fiaZvkI7dhuGO/9lQ8fQxVzZEMuPoVklI/xxbDMA0MF
+ QgeGc9GGClhVBjD/Yp6g3j03rK6S87TIeS2lxSvXK5kO7vkxaWgZs5EA40Yf9FNhXAHBdf9atDV
+ msVnqTvDublM9Ig6cJ6XpxOJ0ouZV0RQAG/bhSA3hFG5wgjU3cpN9aH+rjriJA9q+JQshnDB7gs
+ /EEIvCLkYWjSH/O6W4/fpetQnKqXLa88V7bUBbj//KfYs=
+X-Gm-Gg: ASbGncuYHY0LIlIb0UlzGRzsM1ffagQPdLD2LfQ0V3g2LBY8jgq0xk/L22UiQeCe3rP
+ lujXKgGeI0js3oTwWnvgCqfPSxCXLMdWSOwHgWDmBxPghG+VF3m2sHUJL258Hy2zPQ4eGTRKSeX
+ QXfzm3f0f/f58uzURek7IaJSclaLpPSyUmFiINu5lrEhH0lJuUSktkGFVC1y99d4HBBSjz6t9FR
+ y7ZlEseJxVe/Y8g/aBjUNPqwnhDctMiJmKE2MwcMkJC3sOKDVPqzbmScRk8VLXDIVoITCs2nXdD
+ YdSjkgxf7rnhgCPXtbTU3PY8ZerKzsfyAyRaKqu3Y8ZDp0oZRMss/RglftgNvZVktGvoAHxhZct
+ SLPa0fOIVaz8emN+ffgOitC3gptnatKMayG+EoQ/UYsODtZma
+X-Received: by 2002:a05:6000:2902:b0:3ec:3cac:7dfd with SMTP id
+ ffacd0b85a97d-4266e7c4ac1mr4359749f8f.26.1759996303066; 
+ Thu, 09 Oct 2025 00:51:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEny1Kb6+tcK1YO0ttNmDO6HJ2eqRlaka6CAZq/CWAjKE8xk3fiLpBJ5F8K3zf/hCG/LazV/w==
+X-Received: by 2002:a05:6000:2902:b0:3ec:3cac:7dfd with SMTP id
+ ffacd0b85a97d-4266e7c4ac1mr4359737f8f.26.1759996302557; 
+ Thu, 09 Oct 2025 00:51:42 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46faf112fdbsm34023845e9.8.2025.10.09.00.51.38
+ ffacd0b85a97d-4255d8e9703sm33775035f8f.30.2025.10.09.00.51.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:51:38 -0700 (PDT)
+ Thu, 09 Oct 2025 00:51:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PULL 32/35] docs: Add mshv to documentation
-Date: Thu,  9 Oct 2025 09:50:22 +0200
-Message-ID: <20251009075026.505715-33-pbonzini@redhat.com>
+Subject: [PULL 33/35] MAINTAINERS: Add maintainers for mshv accelerator
+Date: Thu,  9 Oct 2025 09:50:23 +0200
+Message-ID: <20251009075026.505715-34-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
@@ -91,7 +91,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,132 +109,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 
-Added mshv to the list of accelerators in doc text.
+Adding Magnus Kulke and Wei Liu to the maintainers file for the
+respective folders/files.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250916164847.77883-27-magnuskulke@linux.microsoft.com
+Link: https://lore.kernel.org/r/20250916164847.77883-28-magnuskulke@linux.microsoft.com
+[Rename "MAHV CPUs" to mention x86. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/about/build-platforms.rst |  2 +-
- docs/devel/codebase.rst        |  2 +-
- docs/glossary.rst              |  7 +++----
- docs/system/introduction.rst   |  3 +++
- qemu-options.hx                | 16 ++++++++--------
- 5 files changed, 16 insertions(+), 14 deletions(-)
+ MAINTAINERS | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
-index 798cb4631df..fc2743658d4 100644
---- a/docs/about/build-platforms.rst
-+++ b/docs/about/build-platforms.rst
-@@ -53,7 +53,7 @@ Those hosts are officially supported, with various accelerators:
-    * - SPARC
-      - tcg
-    * - x86
--     - hvf (64 bit only), kvm, nvmm, tcg, whpx (64 bit only), xen
-+     - hvf (64 bit only), mshv (64 bit only), kvm, nvmm, tcg, whpx (64 bit only), xen
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 406cef88f0c..645344c4faf 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -551,6 +551,21 @@ F: target/i386/whpx/
+ F: accel/stubs/whpx-stub.c
+ F: include/system/whpx.h
  
- Other host architectures are not supported. It is possible to build QEMU system
- emulation on an unsupported host architecture using the configure
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index 2a3143787a6..69d88271178 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -48,7 +48,7 @@ yet, so sometimes the source code is all you have.
- * `accel <https://gitlab.com/qemu-project/qemu/-/tree/master/accel>`_:
-   Infrastructure and architecture agnostic code related to the various
-   `accelerators <Accelerators>` supported by QEMU
--  (TCG, KVM, hvf, whpx, xen, nvmm).
-+  (TCG, KVM, hvf, whpx, xen, nvmm, mshv).
-   Contains interfaces for operations that will be implemented per
-   `target <https://gitlab.com/qemu-project/qemu/-/tree/master/target>`_.
- * `audio <https://gitlab.com/qemu-project/qemu/-/tree/master/audio>`_:
-diff --git a/docs/glossary.rst b/docs/glossary.rst
-index 4fa044bfb6e..2857731bc44 100644
---- a/docs/glossary.rst
-+++ b/docs/glossary.rst
-@@ -12,7 +12,7 @@ Accelerator
- 
- A specific API used to accelerate execution of guest instructions. It can be
- hardware-based, through a virtualization API provided by the host OS (kvm, hvf,
--whpx, ...), or software-based (tcg). See this description of `supported
-+whpx, mshv, ...), or software-based (tcg). See this description of `supported
- accelerators<Accelerators>`.
- 
- Board
-@@ -101,9 +101,8 @@ manage a virtual machine. QEMU is a virtualizer, that interacts with various
- hypervisors.
- 
- In the context of QEMU, an hypervisor is an API, provided by the Host OS,
--allowing to execute virtual machines. Linux implementation is KVM (and supports
--Xen as well). For MacOS, it's HVF. Windows defines WHPX. And NetBSD provides
--NVMM.
-+allowing to execute virtual machines.  Linux provides a choice of KVM, Xen
-+or MSHV; MacOS provides HVF; Windows provides WHPX; NetBSD provides NVMM.
- 
- .. _machine:
- 
-diff --git a/docs/system/introduction.rst b/docs/system/introduction.rst
-index 4cd46b5b8f9..9c57523b6c2 100644
---- a/docs/system/introduction.rst
-+++ b/docs/system/introduction.rst
-@@ -23,6 +23,9 @@ Tiny Code Generator (TCG) capable of emulating many CPUs.
-   * - Xen
-     - Linux (as dom0)
-     - Arm, x86
-+  * - MSHV
-+    - Linux (as dom0)
-+    - x86
-   * - Hypervisor Framework (hvf)
-     - MacOS
-     - x86 (64 bit only), Arm (64 bit only)
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 075f4be2e3e..56db4bf9e5e 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -28,7 +28,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "-machine [type=]name[,prop[=value][,...]]\n"
-     "                selects emulated machine ('-machine help' for list)\n"
-     "                property accel=accel1[:accel2[:...]] selects accelerator\n"
--    "                supported accelerators are kvm, xen, hvf, nvmm, whpx or tcg (default: tcg)\n"
-+    "                supported accelerators are kvm, xen, hvf, nvmm, whpx, mshv or tcg (default: tcg)\n"
-     "                vmport=on|off|auto controls emulation of vmport (default: auto)\n"
-     "                dump-guest-core=on|off include guest memory in a core dump (default=on)\n"
-     "                mem-merge=on|off controls memory merge support (default: on)\n"
-@@ -66,10 +66,10 @@ SRST
- 
-     ``accel=accels1[:accels2[:...]]``
-         This is used to enable an accelerator. Depending on the target
--        architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available.
--        By default, tcg is used. If there is more than one accelerator
--        specified, the next one is used if the previous one fails to
--        initialize.
-+        architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be
-+        available. By default, tcg is used. If there is more than one
-+        accelerator specified, the next one is used if the previous one
-+        fails to initialize.
- 
-     ``vmport=on|off|auto``
-         Enables emulation of VMWare IO port, for vmmouse etc. auto says
-@@ -226,7 +226,7 @@ ERST
- 
- DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-     "-accel [accel=]accelerator[,prop[=value][,...]]\n"
--    "                select accelerator (kvm, xen, hvf, nvmm, whpx or tcg; use 'help' for a list)\n"
-+    "                select accelerator (kvm, xen, hvf, nvmm, whpx, mshv or tcg; use 'help' for a list)\n"
-     "                igd-passthru=on|off (enable Xen integrated Intel graphics passthrough, default=off)\n"
-     "                kernel-irqchip=on|off|split controls accelerated irqchip support (default=on)\n"
-     "                kvm-shadow-mem=size of KVM shadow MMU in bytes\n"
-@@ -241,8 +241,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
- SRST
- ``-accel name[,prop=value[,...]]``
-     This is used to enable an accelerator. Depending on the target
--    architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available. By
--    default, tcg is used. If there is more than one accelerator
-+    architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be available.
-+    By default, tcg is used. If there is more than one accelerator
-     specified, the next one is used if the previous one fails to
-     initialize.
- 
++MSHV
++M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
++R: Wei Liu <wei.liu@kernel.org>
++S: Supported
++F: accel/mshv/
++F: include/system/mshv.h
++F: include/hw/hyperv/hvgdk*.h
++F: include/hw/hyperv/hvhdk*.h
++
++X86 MSHV CPUs
++M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
++R: Wei Liu <wei.liu@kernel.org>
++S: Supported
++F: target/i386/mshv/
++
+ X86 Instruction Emulator
+ M: Cameron Esfahani <dirty@apple.com>
+ M: Roman Bolshakov <rbolshakov@ddn.com>
 -- 
 2.51.0
 
