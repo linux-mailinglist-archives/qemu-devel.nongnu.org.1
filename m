@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F31BC7D23
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D2EBC7D5C
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 09:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6lQO-0008CF-CI; Thu, 09 Oct 2025 03:50:56 -0400
+	id 1v6lQT-0008Dr-6O; Thu, 09 Oct 2025 03:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQL-0008Bi-Nj
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:53 -0400
+ id 1v6lQP-0008DR-S3
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6lQE-0004LL-T8
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:53 -0400
+ id 1v6lQF-0004Lx-0m
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 03:50:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1759996243;
+ s=mimecast20190719; t=1759996245;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a375QZbeNwmaWpIoRvdNLtIS+2HVCnHIvRjrNsLKivI=;
- b=hiGqxAciF+Kt1lKz7GTdtdCrcg7ZItAsPRKjR12Qa7swFxQgcdauHkzIZM4F+ATzTgzuRG
- t7nCPUVV1Fzx5+ZOnV2noQk8Rz8S0y5skZHCh1ZGuup0/xf83kTJKzhHekL1h/4Vbo7Xpw
- Q+LlMV4N1UIUeJnu9wX20OF2D8rGDQ4=
+ bh=kyOnyEib+YgYPdGc4tRSKxU4ZzTsbMTZCc0XJuyrE4g=;
+ b=bgd73962BkZh7Wn6sF/4iXWLoaBuR3VUCjvK5csFW6r4IHklojBOn+lAO+Gs6AL+UDjs7Z
+ mtXWGj5ti0rCDvxwL/dxEufXld2V2ohM2a4nEyuQv2+S7N6QZxonvJD2Ft3PSY6aBcQcY8
+ hl+IQU/CfwiuZQ23sKnasLfw1V4Ae5E=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-209-DjIZF7ygPeKAVaxdAKIfjg-1; Thu, 09 Oct 2025 03:50:42 -0400
-X-MC-Unique: DjIZF7ygPeKAVaxdAKIfjg-1
-X-Mimecast-MFC-AGG-ID: DjIZF7ygPeKAVaxdAKIfjg_1759996241
+ us-mta-217-6qZ9DgQXOHS1YUApFfmWsA-1; Thu, 09 Oct 2025 03:50:44 -0400
+X-MC-Unique: 6qZ9DgQXOHS1YUApFfmWsA-1
+X-Mimecast-MFC-AGG-ID: 6qZ9DgQXOHS1YUApFfmWsA_1759996243
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-46e473e577eso4024165e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:41 -0700 (PDT)
+ 5b1f17b1804b1-46e41c32209so3394615e9.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 00:50:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759996239; x=1760601039;
+ d=1e100.net; s=20230601; t=1759996242; x=1760601042;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a375QZbeNwmaWpIoRvdNLtIS+2HVCnHIvRjrNsLKivI=;
- b=KrJ/xT/tpF4/qvtGQttJ+klFNTteya8KG8kCHb4Rp1iJ1PNEbmpi6wOZ4a89q27p7j
- TTKxvtmXEgmKB5mMyVfi5rhzYRv4EJxwoabva2/LH7ngFD4Nea2FDpwZxcDBzNeiRLti
- ECvuVhgofaIxcOZPyZHrrWLWYOwJDY93M2lCQT7WxX3Dp24stj7Aj11QxOWKDoKNHlwM
- K0917+XwTi2SYbjZfYWb3KbL7ypIcMzY0nkcOY8z4n9rM6/yuMNvGOAsuXVmUfzlslwR
- mPRCoH+W53QxxsuQ8fOnVD8wkzmo0sDtkfwEZHwSRcBZNTrINVcmGPaWQJen7mD/vS3Y
- 3MZA==
-X-Gm-Message-State: AOJu0YxwwzuyFtavnDNIqKJ7CvsVo7pbfWmFkWXz/GFpmlvauxA+nHoG
- ZFZUbYYkX9CsuvrJY+FkdUqJ45ks2GgYs2jlZc44A9FG5rsejmpaUmFpac1MoEdE9VJdsn8EpqM
- 5wnWyYERqVw2DR8gPSOQgrw2Pht+VPHxUd9DaItRnUz+FCSP6k0j0Et5+SWV24oITnbH8alel1Q
- LVixFRfZhALLrWGsDPFBlIOcDONaE9rPDGm+Y7VhaHqqM=
-X-Gm-Gg: ASbGnctA7brE8Ws4U7O9I8/pBgb/6j89B2EHP6kuMltFgJZfDtslceRU2LptaQW1otU
- GmzzP5x9pCuA/BK7hIY1oHK8BVEhjlSbaGN8qYWsBRYEz0ZZGe/5WQSba+btO6/Gc6fZdS/93Wh
- GiKz/gud1JgLgvmlpRFE3Tvxq9usF1zqbxd0kvtvNu0W3J/7Ld8Y6LaGYcqetbWDNtl08bsG0LP
- +7/+LA+2vJl9VvMO2BbR4r7hYqL1VSp8hpyTRS+1IqrGE++/mJuPQMK2mpzbOvpzQJK8wElpHhw
- ets28yWqmWzNkyFcWZ3YXgq4ykXMGrsXnjV7Rr/184ZgjCuIZxTOUHgV2E5WYUup4rQKUqVGZr2
- blOX0NE8QenBykXg6IQURAAt0Ttw9ul+CIv6AVFa3fOWoYxjC
-X-Received: by 2002:a05:600c:a02:b0:46e:4499:ba30 with SMTP id
- 5b1f17b1804b1-46fa9b052f2mr50291655e9.30.1759996239120; 
- Thu, 09 Oct 2025 00:50:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdy4xTp1dnf31EJIaH/MkeDuj3Q7LBkfE4v7fFCGEEjyhGfOtCVYCWiI305qefRNp4xGYuKA==
-X-Received: by 2002:a05:600c:a02:b0:46e:4499:ba30 with SMTP id
- 5b1f17b1804b1-46fa9b052f2mr50291415e9.30.1759996238513; 
- Thu, 09 Oct 2025 00:50:38 -0700 (PDT)
+ bh=kyOnyEib+YgYPdGc4tRSKxU4ZzTsbMTZCc0XJuyrE4g=;
+ b=E3y8v3th6x+xOFP87vl2l/bbgqAU9d0Yx+vB7u3MT7jb4BxvPpwij5MvHLPYwfVgx9
+ 6dIXPNmrSdhvZgdHAZAv1T99prdh3gmtAIb9226sxiuglbidgCP4vxLlFgn33GvHc2mm
+ 7MRVIXbKV5eV+OeViAcUgX6svzVwHVVXihL255Z67/+SkAHRThlL/2QQBG1CvHWZHh2w
+ YnlBJoEi60h4E97jaLK4O8fEUskV6Wb5jS4U7XTRODoFXBQyl9xS73rCfHpS3LI8KZk4
+ asSTaOYEhuhiPSNKqxtNJsjZB+f8osqatwUNC1TH0q9R5RMCay3h+M/HC6gcochL8p+o
+ 75rw==
+X-Gm-Message-State: AOJu0YyuJ8sza7P6KIP/iA9ihfejTCVDy5uEmbjR5xgjmWZjiHdkt7a9
+ xDIrhtQA1CBfuNUy8ap/AYIqqSICQiGZ/lJ8WXNNt14a2okqTHl3xuQf/UBAokARMmWQGJMLnow
+ kZsLhJ1kqIiwr4DTQKUkcwCBoHKzdopdTR+tZ6/NczK8UkkZKVm2cmsKnI8+7mYp15WNkSkz46s
+ qNSU/qDI5uoW0JSOaYP1VYRl5VLVktnfoAvlO3aFenqS8=
+X-Gm-Gg: ASbGnctVdZ2YUmInjZWnXvdXLsIuUsYBNL53yk7rtwrWu/PB3FUzTUKAUXh2P5wS6Ir
+ 1yGll0e62x3M8vluKEkLp5w6+MfJrWO7P14kvwtRj4qWxEF8m87VRjXO4MP1TAqwzUVvvXlK4Cy
+ VCDAMgKWz27TQwzgtW9jqvL1/EfUQIdukLkoBGv7I1sebFN7U7JctsTiO9ZZ5AiNXf8a/MxEqvc
+ sX3zu94XilnTE9Bro3Yj4CBwq1bnu6RWmNEfAU7LMNFJ2pz+8gv6ZTr7qFCcbqDpistflwvL2Me
+ jDnwp9dU/hnA6Hj0Bwj7RY2PR0LYwEj9P2cc9jXrnzXvEGUBdLQmM7G6Ek1jP3RUUbE2N5gUt0j
+ lEgRdTkKyG8NuIWXX37wPwnLGntrZWH+X6CEWcVqF+kVC2l9x
+X-Received: by 2002:a05:600c:468c:b0:46e:3287:57d6 with SMTP id
+ 5b1f17b1804b1-46fa9b0e7f0mr42688905e9.27.1759996242464; 
+ Thu, 09 Oct 2025 00:50:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaINTuXxeJWDodHMV5vHaG60InsNvuqmxKdkCA4dSOyf5hicp9f966vtQ7dgOW1n1WXNA0Rg==
+X-Received: by 2002:a05:600c:468c:b0:46e:3287:57d6 with SMTP id
+ 5b1f17b1804b1-46fa9b0e7f0mr42688655e9.27.1759996241973; 
+ Thu, 09 Oct 2025 00:50:41 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.36.217])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4255d8a6b8bsm33338863f8f.4.2025.10.09.00.50.37
+ ffacd0b85a97d-4255d8abe9bsm33586711f8f.22.2025.10.09.00.50.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Oct 2025 00:50:38 -0700 (PDT)
+ Thu, 09 Oct 2025 00:50:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Hector Cao <hector.cao@canonical.com>
-Subject: [PULL 06/35] target/i386: add compatibility property for pdcm feature
-Date: Thu,  9 Oct 2025 09:49:56 +0200
-Message-ID: <20251009075026.505715-7-pbonzini@redhat.com>
+Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 07/35] accel: Add Meson and config support for MSHV accelerator
+Date: Thu,  9 Oct 2025 09:49:57 +0200
+Message-ID: <20251009075026.505715-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009075026.505715-1-pbonzini@redhat.com>
 References: <20251009075026.505715-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -89,9 +91,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,97 +109,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hector Cao <hector.cao@canonical.com>
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 
-The pdcm feature is supposed to be disabled when PMU is not
-available. Up until v10.1, pdcm feature is enabled even when PMU
-is off. This behavior has been fixed but this change breaks the
-migration of VMs that are run with QEMU < 10.0 and expect the pdcm
-feature to be enabled on the destination host.
+Introduce a Meson feature option and default-config entry to allow
+building QEMU with MSHV (Microsoft Hypervisor) acceleration support.
 
-This commit restores the legacy behavior for machines with version
-prior to 10.1 to allow the migration from older QEMU to QEMU 10.1.
+This is the first step toward implementing an MSHV backend in QEMU.
 
-Signed-off-by: Hector Cao <hector.cao@canonical.com>
-Link: https://lore.kernel.org/r/20250910115733.21149-3-hector.cao@canonical.com
-Fixes: e68ec298090 ("i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check", 2025-06-20)
-[Move property from migration object to CPU. - Paolo]
+Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Link: https://lore.kernel.org/r/20250916164847.77883-2-magnuskulke@linux.microsoft.com
+[Add error for unavailable accelerator. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  6 ++++++
- hw/i386/pc.c      |  1 +
- target/i386/cpu.c | 15 ++++++++++++---
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ meson.build                   | 13 +++++++++++++
+ accel/Kconfig                 |  3 +++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 4 files changed, 21 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 414ca968e84..42168f1d6d8 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2320,6 +2320,12 @@ struct ArchCPU {
-      */
-     bool arch_cap_always_on;
+diff --git a/meson.build b/meson.build
+index 62766c0f19c..167021ed621 100644
+--- a/meson.build
++++ b/meson.build
+@@ -334,6 +334,7 @@ elif cpu == 'x86_64'
+     'CONFIG_HVF': ['x86_64-softmmu'],
+     'CONFIG_NVMM': ['i386-softmmu', 'x86_64-softmmu'],
+     'CONFIG_WHPX': ['i386-softmmu', 'x86_64-softmmu'],
++    'CONFIG_MSHV': ['x86_64-softmmu'],
+   }
+ endif
  
-+    /*
-+     * Backwards compatibility with QEMU <10.1. The PDCM feature is now disabled when
-+     * PMU is not available, but prior to 10.1 it was enabled even if PMU is off.
-+     */
-+    bool pdcm_on_even_without_pmu;
+@@ -883,6 +884,14 @@ accelerators = []
+ if get_option('kvm').allowed() and host_os == 'linux'
+   accelerators += 'CONFIG_KVM'
+ endif
 +
-     /* Number of physical address bits supported */
-     uint32_t phys_bits;
++if get_option('mshv').allowed() and host_os == 'linux'
++  if get_option('mshv').enabled() and host_machine.cpu() != 'x86_64'
++    error('mshv accelerator requires x64_64 host')
++  endif
++  accelerators += 'CONFIG_MSHV'
++endif
++
+ if get_option('whpx').allowed() and host_os == 'windows'
+   if get_option('whpx').enabled() and host_machine.cpu() != 'x86_64'
+     error('WHPX requires 64-bit host')
+@@ -952,6 +961,9 @@ endif
+ if 'CONFIG_WHPX' not in accelerators and get_option('whpx').enabled()
+   error('WHPX not available on this platform')
+ endif
++if 'CONFIG_MSHV' not in accelerators and get_option('mshv').enabled()
++  error('mshv not available on this platform')
++endif
  
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index d7f48150fdd..4668918746e 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -88,6 +88,7 @@ GlobalProperty pc_compat_10_0[] = {
-     { TYPE_X86_CPU, "x-consistent-cache", "false" },
-     { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
-     { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
-+    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
- };
- const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
+ xen = not_found
+ if get_option('xen').enabled() or (get_option('xen').auto() and have_system)
+@@ -4827,6 +4839,7 @@ if have_system
+   summary_info += {'HVF support':       config_all_accel.has_key('CONFIG_HVF')}
+   summary_info += {'WHPX support':      config_all_accel.has_key('CONFIG_WHPX')}
+   summary_info += {'NVMM support':      config_all_accel.has_key('CONFIG_NVMM')}
++  summary_info += {'MSHV support':      config_all_accel.has_key('CONFIG_MSHV')}
+   summary_info += {'Xen support':       xen.found()}
+   if xen.found()
+     summary_info += {'xen ctrl version':  xen.version()}
+diff --git a/accel/Kconfig b/accel/Kconfig
+index 4263cab7227..a60f1149238 100644
+--- a/accel/Kconfig
++++ b/accel/Kconfig
+@@ -13,6 +13,9 @@ config TCG
+ config KVM
+     bool
  
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index fe369bb1284..ab18de894e4 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7908,6 +7908,11 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             /* Fixup overflow: max value for bits 23-16 is 255. */
-             *ebx |= MIN(num, 255) << 16;
-         }
-+        if (cpu->pdcm_on_even_without_pmu) {
-+            if (!cpu->enable_pmu) {
-+                *ecx &= ~CPUID_EXT_PDCM;
-+            }
-+        }
-         break;
-     case 2: { /* cache info: needed for Pentium Pro compatibility */
-         const CPUCaches *caches;
-@@ -8958,9 +8963,11 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
++config MSHV
++    bool
++
+ config XEN
+     bool
+     select FSDEV_9P if VIRTFS
+diff --git a/meson_options.txt b/meson_options.txt
+index fff1521e580..1be7d61efdd 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -71,6 +71,8 @@ option('malloc', type : 'combo', choices : ['system', 'tcmalloc', 'jemalloc'],
  
--    /* PDCM is fixed1 bit for TDX */
--    if (!cpu->enable_pmu && !is_tdx_vm()) {
--        env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-+    if (!cpu->pdcm_on_even_without_pmu) {
-+        /* PDCM is fixed1 bit for TDX */
-+        if (!cpu->enable_pmu && !is_tdx_vm()) {
-+            env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-+        }
-     }
- 
-     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-@@ -10021,6 +10028,8 @@ static const Property x86_cpu_properties[] = {
- 
-     DEFINE_PROP_BOOL("x-arch-cap-always-on", X86CPU,
-                      arch_cap_always_on, false),
-+    DEFINE_PROP_BOOL("x-pdcm-on-even-without-pmu", X86CPU,
-+                     pdcm_on_even_without_pmu, false),
- };
- 
- #ifndef CONFIG_USER_ONLY
+ option('kvm', type: 'feature', value: 'auto',
+        description: 'KVM acceleration support')
++option('mshv', type: 'feature', value: 'auto',
++       description: 'MSHV acceleration support')
+ option('whpx', type: 'feature', value: 'auto',
+        description: 'WHPX acceleration support')
+ option('hvf', type: 'feature', value: 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 0ebe6bc52a6..d3d8f48bbbe 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -154,6 +154,7 @@ meson_options_help() {
+   printf "%s\n" '  membarrier      membarrier system call (for Linux 4.14+ or Windows'
+   printf "%s\n" '  modules         modules support (non Windows)'
+   printf "%s\n" '  mpath           Multipath persistent reservation passthrough'
++  printf "%s\n" '  mshv            MSHV acceleration support'
+   printf "%s\n" '  multiprocess    Out of process device emulation support'
+   printf "%s\n" '  netmap          netmap network backend support'
+   printf "%s\n" '  nettle          nettle cryptography support'
+@@ -408,6 +409,8 @@ _meson_option_parse() {
+     --disable-modules) printf "%s" -Dmodules=disabled ;;
+     --enable-mpath) printf "%s" -Dmpath=enabled ;;
+     --disable-mpath) printf "%s" -Dmpath=disabled ;;
++    --enable-mshv) printf "%s" -Dmshv=enabled ;;
++    --disable-mshv) printf "%s" -Dmshv=disabled ;;
+     --enable-multiprocess) printf "%s" -Dmultiprocess=enabled ;;
+     --disable-multiprocess) printf "%s" -Dmultiprocess=disabled ;;
+     --enable-netmap) printf "%s" -Dnetmap=enabled ;;
 -- 
 2.51.0
 
