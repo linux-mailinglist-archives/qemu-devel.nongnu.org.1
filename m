@@ -2,70 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E39BC7577
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 06:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D649EBC7583
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 06:04:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6hrV-0005pB-IP; Thu, 09 Oct 2025 00:02:41 -0400
+	id 1v6hsv-0006nO-Pc; Thu, 09 Oct 2025 00:04:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v6hrR-0005on-Lw
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:02:37 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1v6hss-0006bV-5p
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:04:06 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v6hrO-0002b2-N6
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:02:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759982554; x=1791518554;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=TzkxlI9egdrmunNPSgwi9HKMSBaqWR2wtWxaRxMmwsQ=;
- b=lj+dZJLKFGujPLWHPcidORvbT88abCeaLw9Vb+m0/bHOry6mO704jODf
- sl7WVBE8GT7lxPlJt4qdtnPEnedG/MWretwr1aN8xeS7ip2Zn3sj3UZ/V
- hXGLbXjGUUo9fNkHgKCzb8ZQ749JnpLDby/86kJQn+jXxmrl/Pt87yb8q
- 12BXvOS+/FaNZLMmdXHjCHF95f1621wdIccTn44CVWgLwm6kYGg2VzoU1
- N8B+RLhkNLKfheWF+npuRV5lpFHX9bLR+iGp/4PtM1eaafHditZEMcDDl
- X4PcPhKnF0rx//nbPXrsS/84HjeSqKATDNt/6UgXGYlawE+oQ4Jsn5zrq w==;
-X-CSE-ConnectionGUID: 3rAKCaFtSNOattLRp4LMhw==
-X-CSE-MsgGUID: 2oUCAbUdSS++Znx9HfK3sw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="84804140"
-X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="84804140"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 21:02:19 -0700
-X-CSE-ConnectionGUID: REoNhCpSTrejJvw8ppHTlA==
-X-CSE-MsgGUID: ZZggSNDkRDGI8QpW0HPtaQ==
-X-ExtLoop1: 1
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 21:02:17 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- levon@movementarian.org, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 3/3] vfio/listener: Add an assertion for unmap_all
-Date: Thu,  9 Oct 2025 00:01:34 -0400
-Message-ID: <20251009040134.334251-4-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20251009040134.334251-1-zhenzhong.duan@intel.com>
-References: <20251009040134.334251-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1v6hsi-0002fL-6X
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:04:05 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1759982622; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=QIa+YJiK5jgh1rCbe0RTvHLtUieZ8x3uijCxuxktAVjgyINx+LxrrLJf+cfRyYivGlV6MioI4bVRKYC09g2bZi3CWWYSz/llRCmpYdTsyISjDuHBbxzkVx+YgYmASVzHTZcLvxyk4vLgnrsHWELUwLynmBhgjTa/vZRdaabeiRE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1759982622;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=U9N5rlqsqVEHX3Y84j2Q5VI3LGKDhpLZF7hzux6rKlg=; 
+ b=iMCfu9OyL0ipjeZGunyFAx6KwFXsWI38M6oRN/Nwi3ImrPL3UovAJ9FWST48HTt1eKi5tqUUrZhdml326mInaSF/WSMRLzN1v9kuOyTZwlKbJoXSkiEYBrNmdMO5qdAMNDDgsLxIAo49BndrLipTlawqJEyX6nsYkIQCFXQaZoU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759982622; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=U9N5rlqsqVEHX3Y84j2Q5VI3LGKDhpLZF7hzux6rKlg=;
+ b=I6cFtytVRo2/+ntm7IGb2CxTLKFRkfynGjG/QeCb++VJwmtSEhuSN5xVuPdOU2hu
+ nytjNC696XGEfnWqyXQoaoe/1MlTzBW7Pvb11O8cIc4jXhd0xQtDVCUEx7fSjSJeF1q
+ NOtkVwvqJckV43gz4427Hypf1I9iZ0jm7vJlOEiI=
+Received: by mx.zohomail.com with SMTPS id 1759982620135279.8958862748982;
+ Wed, 8 Oct 2025 21:03:40 -0700 (PDT)
+Message-ID: <cf5f668c-7aff-4ec8-85cf-a5e53b02c953@collabora.com>
+Date: Thu, 9 Oct 2025 07:03:34 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH qemu v5 1/1] Honor guest PAT on x86, absent Bochs display
+To: ~myrslint <myrskylintu@proton.me>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+References: <175541013614.15277.14412479690071783636-1@git.sr.ht>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <175541013614.15277.14412479690071783636-1@git.sr.ht>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,29 +78,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the maximum of iommu address space is 64bit. So when a maximum
-iommu memory section is deleted, it's in scope [0, 2^64). Add a
-assertion for that.
+Hi,
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/vfio/listener.c | 1 +
- 1 file changed, 1 insertion(+)
+On 8/17/25 08:37, ~myrslint wrote:
+> From: myrslint <qemu.haziness801@passinbox.com>
+> 
+> On x86_64, where most CPUs support self-snoop, it is preferrable to
+> always honor guest PAT. Not doing so is a quirk. There is a default
+> enabled KVM quirk flag which enforces not doing so due to a former bug
+> in Bochs display driver.
+> 
+> The bug has been fixed but not enough has yet passed since so we only
+> disable said quirk flag if a Bochs display is not configured for the
+> virtual machine.
+> 
+> This commit also moves around a bit of code that would be called when
+> the initialization of a VM is done.
+> ---
+>  hw/display/bochs-display.c |  4 +++
+>  include/system/kvm.h       |  1 +
+>  target/i386/kvm/kvm.c      | 52 ++++++++++++++++++++++++++++++++------
+>  3 files changed, 49 insertions(+), 8 deletions(-)
+...
 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index c6bb58f520..62766d8c46 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -715,6 +715,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
-         bool unmap_all = false;
- 
-         if (int128_eq(llsize, int128_2_64())) {
-+            assert(!iova);
-             unmap_all = true;
-             llsize = int128_zero();
-         }
+> diff --git a/include/system/kvm.h b/include/system/kvm.h
+> index 3c7d314736..c6ba3905dc 100644
+> --- a/include/system/kvm.h
+> +++ b/include/system/kvm.h
+> @@ -208,6 +208,7 @@ void kvm_close(void);
+>   */
+>  bool kvm_arm_supports_user_irq(void);
+>  
+> +void kvm_hack_do_not_enable_guest_pat(void);
+
+This will fail to compile if KVM is disabled or if target != i386.
+AFAICT, you'll need to check whether KVM is available at build time and
+move common code to kvm-all.c.
+
+#if defined(CONFIG_KVM_IS_POSSIBLE)
+void kvm_hack_do_not_enable_guest_pat(void);
+#else
+static inline void kvm_hack_do_not_enable_guest_pat(void)
+{
+}
+#endif
+
 -- 
-2.47.1
-
+Best regards,
+Dmitry
 
