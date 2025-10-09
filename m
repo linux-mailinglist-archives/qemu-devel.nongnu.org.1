@@ -2,94 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DCEBCAA5F
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F12BCAA63
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 21:09:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6vzr-0000mn-6R; Thu, 09 Oct 2025 15:08:15 -0400
+	id 1v6w09-0001FY-8X; Thu, 09 Oct 2025 15:08:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6vzo-0000mR-9w
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:08:12 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
+ id 1v6w07-0001Ew-7O
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:08:31 -0400
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v6vzl-0007HZ-Ve
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:08:12 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-77f343231fcso1061982b3a.3
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:08:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
+ id 1v6w05-0007JC-7G
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 15:08:30 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-42f6e0bdcf7so10451685ab.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 12:08:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760036886; x=1760641686; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4TNG7ELvrSqB+9dOebhSoNp03ttXxYoXDXu1Ilb2x3M=;
- b=IJVQQ2yCv4IH+FpTysIU2kEq4Xe3GOiNy5bluZD9QLaA63IBuvi2HyQy9nOoEG4kcX
- 0EsF7DwR2Jj0L5s/7isyVeYDy/ktmuXlmRHYHGWBPUh7Tp1ahbiKSInAqPCqHqt9ah0l
- 7HSP7ADSDhsCeBxXkf2eQAmUpTrE+XHCV55h0z3hSKf2Qgsc2KDH1oe7JQVfMJUQwdQD
- TMloLzfmMg9wI33M3rg/y1fBdV+7NBS3xo3iETUvJqYedl8cUnfwzspt+5bVUgenpFWF
- 2osApSJz3/Z0MEasTBn73w71DT4V07hWwBNgy7hVbplB6yKdBxuH8D9wl5/Emxx7Ub9S
- Mw3Q==
+ d=gmail.com; s=20230601; t=1760036907; x=1760641707; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=B4aKrhybkNUZSFbfa/ql8Qx4iUIqSmaBTPli/nnEo/Y=;
+ b=P3WpqSHK7UTnrYfOHNsLXVZDmcQ8gle6x35a2n7UIHNQ06sciQrkN7xchfeZm/bfKQ
+ dGfjWvdcB+9iJGVB35Pb6m/Ysn2wYLlobw58xGkvhnbwl9LXIcz4q2ztS538BOHwhJOq
+ pwXpeGXnAC+1muNvRxASVSjE9QDzaT/jhxrjw4Qbxr5d/B25MKkLXY619sGGBgm03mi9
+ 7/f3ZdREbcWYB9Fx7i7b+UdtSP5QbWFM4ZQeU/HkBwbKwbCBdWj3iX+b4rO5/FBE0LZL
+ PzGj+bOwjKW2E04TqZRUyfU2FNHORunLeEDNUR/b79Y/U0cnUG9Z40z2Iya5etJnaC/m
+ 4q+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760036886; x=1760641686;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4TNG7ELvrSqB+9dOebhSoNp03ttXxYoXDXu1Ilb2x3M=;
- b=OkJGwMJjd6lTfPjgDYDtIN2Qw+828/ycGG38DF3NUsSZfwxNlq2oLEAf9Yb5mzixDt
- HgI7Bb6KveVJ5r8tId33F/gWa3+/gfSt4r9iTtEvOl2AbUASE56LNik+/J5P452bpQMc
- dTsjWsXxBDK+O7l2vp+hhZxli+1jcTo3RywKWEb4QOELJsIz4EZF535AspygFmKltfhw
- lzpR/bj7XK4yE6+uiNo1Q+W02Z8NUAa1rgEuNL3PmplwTWxzw9oNRGUb9w6UbrFuCLk6
- tnljE7T9Y7iAQ8AwH3Gny2g3od83NtGuDtEulgArNXM9993PxcDv21htJOkrbcqy21h7
- hjyg==
+ d=1e100.net; s=20230601; t=1760036907; x=1760641707;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=B4aKrhybkNUZSFbfa/ql8Qx4iUIqSmaBTPli/nnEo/Y=;
+ b=BJCTxirAYxv8Mrcqtif8E0PR+JUX5wBRXgKnlySCyBOZl7TYg5rqAWkZjE1T97IC1s
+ 5jyYgNB77gm91cq19pku9dWelRVNFkQItgxhCFTn+eynnbcRrXK4j1BqZVvlXQZjO5WA
+ IQHPSyITz4hgZEHi/Aqrmm1jwpwH9oHQ+DTdkcZamwZEWiWYGDRxBnkjvnni5S8BSCLp
+ vSkh5qg2+ZaWw46J79O9uunmguhUCQCuyMBhK2tdS7DzMCASpiLdtqbv2+TMh51qpyEp
+ IGLOca4oRqo7rw74egNZav4xJ89poaUUPVa5sNe8Fl7662fgeHu5LbxWXbR1Vdsho1Pz
+ bKQQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5WJtFiCi0Qu0oABTDxiJaijCFknys93iPVGHOD+xRr8e0to34D1QZ7S32KzSiatvcfMcuz8Ifbnpj@nongnu.org
-X-Gm-Message-State: AOJu0YyBiWFxOtLsoWBbM2Zn+vsSCRxrolFsdmdLvVXZX4MHNMh6xef3
- uNoi3O6M18UDMMjOYjOOpLP52l+ymfhlCyubfuDZbKLaaomzFnB2Mk6GfAd7/K+MZzg=
-X-Gm-Gg: ASbGncvLtWw2F+EWzHbLEFS1RNDAy3JxQCky7kzk8z7RilmMZvb/+28pA0YCRZyDv5H
- pPm2wkxqdUdNnE3PCJEgt21MRP67ryfod71g6vGOU2aAKDAZ2un9JGU6Y/TKPvf+dd8vWN98xan
- upWIL9rvOFc4f94b6iFiHTKZpKXQNr7ZMVKMj6aIhsKcOQMjRAO6y5M+8MbD9NI2xgFZbU/F+eS
- Fto39vub+Lsok42hP3TZI5hKyLALT/v3Qf2jbmVN98Sn9jqlNIpyNIptQ1gL3pxtf/J5/kiVAMG
- XS7w1vAJoWSW8wxMO4BkfYq9mc1Z8SuxjzcMpMpdLWctLSXwYHzIcLRWlwrgozetxHNCG3IvSur
- P+vQQtf9Vqyh24jvZ9OMUo44VlimVXHIairr6Vv7yrnDHaiSWRlRtTzDuBdLqu9M2dn9T6yeWzb
- U=
-X-Google-Smtp-Source: AGHT+IHabsmZFQGuh2CznvKavbwqpdXvtx1iz4C2ttNs6OSBlTYZboq5t/qQUffgfNn9Ji9uXiH6XA==
-X-Received: by 2002:a05:6a20:1591:b0:2f6:9592:907f with SMTP id
- adf61e73a8af0-32da83e39bemr10894144637.29.1760036886231; 
- Thu, 09 Oct 2025 12:08:06 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7992b06075fsm508250b3a.17.2025.10.09.12.08.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Oct 2025 12:08:05 -0700 (PDT)
-Message-ID: <9a2ce733-514d-497e-b885-7c7c551f34b3@linaro.org>
-Date: Thu, 9 Oct 2025 12:08:04 -0700
+ AJvYcCXGZAhS9Jy75EEXrQcWOnRvjgADcea6xHOZh4GHmei/xw3LYXQgxtlMLHlGMQVQENoqLSCWyxAY/0of@nongnu.org
+X-Gm-Message-State: AOJu0Yx4ssErvF4rmCmU7Qon8DqFKo+F4A+UJazJLjO6a9mNXLbRjLMv
+ tzeUvahqo+rteT7edEYT9N2EhKqzWRrJ2Ba0Zd/JESfUpdSYTnZh8xPYt4XP9SVd/F7hVi8ph0Y
+ l8sBhE+TAiSBrPgqdLKdH5fKmg3wN1F4=
+X-Gm-Gg: ASbGncty0OmXJz2xiYfL5MO8ZxbaMbFdXkpcGBurO9KHLCzJhUvc2+pPsOkXNzA7zrC
+ XzmAu7WL7O55zul9Dw3PqRKA5OxF7EcGUBTdOhAxvpRrueIXY8LvuawRT4viw48T+wP8zFRuDch
+ NCrqtaAYSUx13Ydqtb5auRvfTCrBdotZJ09hj/nny2Cs9EkC4Wj+Qo4G5pKZXKK9gSiCgSrQZQL
+ wdQsrfOd9Q+7M/xq76KvxMy9g6BH1UFKBxJcRX0CQ==
+X-Google-Smtp-Source: AGHT+IFenRA5i+XYQg79d7gJJLA2AOFLizmdrXdS1s337i0Ux3dKi/slzkZRoSNWzrgUwiPgrAnLYd7w/RhiKJzFUco=
+X-Received: by 2002:a92:c241:0:b0:424:85b0:e1cb with SMTP id
+ e9e14a558f8ab-42f8740330amr89660965ab.31.1760036907291; Thu, 09 Oct 2025
+ 12:08:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] tcg: Restrict qemu_ld2 and qemu_st2 opcodes to 32-bit
- hosts
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20250820134937.45077-1-philmd@linaro.org>
- <226ab909-0482-493f-bacf-5d2930d07ad7@linaro.org>
- <f745f163-6bad-47ad-a1c0-4be96b604266@linaro.org>
- <c75dc27a-5c56-4010-a205-a8296a9ab1e0@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <c75dc27a-5c56-4010-a205-a8296a9ab1e0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
+ <20250813164856.950363-24-vsementsov@yandex-team.ru>
+In-Reply-To: <20250813164856.950363-24-vsementsov@yandex-team.ru>
+From: Raphael Norwitz <raphael.s.norwitz@gmail.com>
+Date: Thu, 9 Oct 2025 15:08:16 -0400
+X-Gm-Features: AS18NWBSYY01bSRIBRc7CSCce_QFBRIkAXJBKpTVTXxkck18yNWAh5mKdoRCuzc
+Message-ID: <CAFubqFu+CPGKO_-wLLqXQaO5wLr2R6gykZ2ufrC0aHqjebVAmA@mail.gmail.com>
+Subject: Re: [PATCH 23/33] vhost: add some useful trace-points
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: mst@redhat.com, peterx@redhat.com, farosas@suse.de, raphael@enfabrica.net, 
+ sgarzare@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com, 
+ kwolf@redhat.com, hreitz@redhat.com, berrange@redhat.com, eblake@redhat.com, 
+ armbru@redhat.com, qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ steven.sistare@oracle.com, den-plotnikov@yandex-team.ru
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=raphael.s.norwitz@gmail.com; helo=mail-il1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,77 +99,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/9/25 10:43, Philippe Mathieu-Daudé wrote:
-> On 9/10/25 19:23, Philippe Mathieu-Daudé wrote:
->> On 21/8/25 22:27, Richard Henderson wrote:
->>> On 8/20/25 23:49, Philippe Mathieu-Daudé wrote:
->>>> qemu_ld2 and qemu_st2 opcodes are band-aid for 32-bit hosts
->>>> and can't be reached on 64-bit ones. See in commit 3bedb9d3e28
->>>> ("tcg: Convert qemu_ld{2} to TCGOutOpLoad{2}") and 86fe5c2597c
->>>> ("tcg: Convert qemu_st{2} to TCGOutOpLdSt{2}") their constraint
->>>> is C_NotImplemented.
->>>
->>> Not true: ld2/st2 are also used for 128-bit load store.
->>>
->>> See: aarch64, x86_64, loongarch64, ppc64, s390x.
->>
->> OK. Hmm I guess I need to add a __attribute__((unused)) check like
->> you did in commit f408df587a0 ("tcg: Convert brcond2_i32 to
->> TCGOutOpBrcond2") to outop_qemu_ld2/st2 then.
-> 
-> OK I figured my issue, I shouldn't remove the following in the
-> MIPS series [*]:
-> 
-> -- >8 --
-> diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-> index 3f4aca25b13..c519dfbf7d5 100644
-> --- a/tcg/mips/tcg-target.c.inc
-> +++ b/tcg/mips/tcg-target.c.inc
-> @@ -1311,2 +1311,34 @@ static const TCGOutOpQemuLdSt outop_qemu_ld = {
-> 
-> +static void tgen_qemu_ld2(TCGContext *s, TCGType type, TCGReg datalo,
-> +                          TCGReg datahi, TCGReg addr, MemOpIdx oi)
-> +{
-> +    MemOp opc = get_memop(oi);
-> +    TCGLabelQemuLdst *ldst;
-> +    HostAddress h;
+On Wed, Aug 13, 2025 at 12:58=E2=80=AFPM Vladimir Sementsov-Ogievskiy
+<vsementsov@yandex-team.ru> wrote:
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  hw/virtio/trace-events |  8 ++++++++
+>  hw/virtio/vhost.c      | 16 ++++++++++++++++
+>  2 files changed, 24 insertions(+)
+>
+> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+> index e5142c27f9..bd595fcd91 100644
+> --- a/hw/virtio/trace-events
+> +++ b/hw/virtio/trace-events
+> @@ -10,7 +10,15 @@ vhost_reject_section(const char *name, int d) "%s:%d"
+>  vhost_iotlb_miss(void *dev, int step) "%p step %d"
+>  vhost_dev_cleanup(void *dev) "%p"
+>  vhost_dev_start(void *dev, const char *name, bool vrings) "%p:%s vrings:=
+%d"
+> +vhost_dev_start_finish(const char *name) "%s"
+>  vhost_dev_stop(void *dev, const char *name, bool vrings) "%p:%s vrings:%=
+d"
+> +vhost_dev_stop_finish(const char *name) "%s"
+> +vhost_virtque_start(const char *name, int idx) "%s %d"
+> +vhost_virtque_start_finish(const char *name, int idx) "%s %d"
+> +vhost_virtque_stop(const char *name, int idx) "%s %d"
+> +vhost_virtque_stop_finish(const char *name, int idx) "%s %d"
+> +vhost_dev_init(void) ""
+> +vhost_dev_init_finish(void) ""
+
+Ditto here - I would think this should also have the VirtIODevice/vdev poin=
+ter.
+
+
+>
+>
+>  # vhost-user.c
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index e796ad347d..e7c809400b 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -1329,6 +1329,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+>      };
+>      struct VirtQueue *vvq =3D virtio_get_queue(vdev, idx);
+>
+> +    trace_vhost_virtque_start(vdev->name, idx);
 > +
-> +    tcg_debug_assert(TCG_TARGET_REG_BITS == 32);
-> +    ldst = prepare_host_addr(s, &h, addr, oi, true);
+>      r =3D vhost_vrings_map(dev, vdev, vq, idx);
+>      if (r <=3D 0) {
+>          return r;
+> @@ -1390,6 +1392,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+>          }
+>      }
+>
+> +    trace_vhost_virtque_start_finish(vdev->name, idx);
 > +
-> +    if (use_mips32r6_instructions || h.aa.align >= (opc & MO_SIZE)) {
-> +        tcg_out_qemu_ld_direct(s, datalo, datahi, h.base, opc, type);
-> +    } else {
-> +        tcg_out_qemu_ld_unalign(s, datalo, datahi, h.base, opc, type);
-> +    }
+>      return 0;
+>
+>  fail:
+> @@ -1408,6 +1412,8 @@ static int do_vhost_virtqueue_stop(struct vhost_dev=
+ *dev,
+>      };
+>      int r =3D 0;
+>
+> +    trace_vhost_virtque_stop(vdev->name, idx);
 > +
-> +    if (ldst) {
-> +        ldst->type = type;
-> +        ldst->datalo_reg = datalo;
-> +        ldst->datahi_reg = datahi;
-> +        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
-> +    }
-> +}
+>      if (virtio_queue_get_desc_addr(vdev, idx) =3D=3D 0) {
+>          /* Don't stop the virtqueue which might have not been started */
+>          return 0;
+> @@ -1441,6 +1447,8 @@ static int do_vhost_virtqueue_stop(struct vhost_dev=
+ *dev,
+>      }
+>
+>      vhost_vrings_unmap(dev, vq, true);
 > +
-> +static const TCGOutOpQemuLdSt2 outop_qemu_ld2 = {
-> +    /* Ensure that the mips32 code is compiled but discarded for mips64. */
-> +    .base.static_constraint =
-> +        TCG_TARGET_REG_BITS == 32 ? C_O2_I1(r, r, r) : C_NotImplemented,
-> +    .out =
-> +        TCG_TARGET_REG_BITS == 32 ? tgen_qemu_ld2 : NULL,
-> +};
-
-In the mips32 removal series, you should be removing the functions and simplifying this 
-structure to
-
-static const TCGOutOpQemuLdSt2 outop_qemu_ld2 = {
-     .base.static_constraint = C_NotImplemented,
-};
-
-> +static const TCGOutOpQemuLdSt2 outop_qemu_st2 = {
-
-Likewise.
-
-
-r~
+> +    trace_vhost_virtque_stop_finish(vdev->name, idx);
+>      return r;
+>  }
+>
+> @@ -1598,6 +1606,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *op=
+aque,
+>  {
+>      int i, r, n_initialized_vqs =3D 0;
+>
+> +    trace_vhost_dev_init();
+> +
+>      hdev->vdev =3D NULL;
+>      hdev->migration_blocker =3D NULL;
+>
+> @@ -1682,6 +1692,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *op=
+aque,
+>          goto fail;
+>      }
+>
+> +    trace_vhost_dev_init_finish();
+> +
+>      return 0;
+>
+>  fail:
+> @@ -2132,6 +2144,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIOD=
+evice *vdev, bool vrings)
+>          }
+>      }
+>      vhost_start_config_intr(hdev);
+> +
+> +    trace_vhost_dev_start_finish(vdev->name);
+>      return 0;
+>  fail_iotlb:
+>      if (vhost_dev_has_iommu(hdev) &&
+> @@ -2210,6 +2224,8 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev=
+, VirtIODevice *vdev,
+>      hdev->started =3D false;
+>      vdev->vhost_started =3D false;
+>      hdev->vdev =3D NULL;
+> +
+> +    trace_vhost_dev_stop_finish(vdev->name);
+>      return rc;
+>  }
+>
+> --
+> 2.48.1
+>
+>
 
