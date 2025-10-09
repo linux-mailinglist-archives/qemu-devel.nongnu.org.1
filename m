@@ -2,65 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D649EBC7583
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 06:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0293BC7657
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 07:04:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6hsv-0006nO-Pc; Thu, 09 Oct 2025 00:04:10 -0400
+	id 1v6inH-0007i8-Qr; Thu, 09 Oct 2025 01:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1v6hss-0006bV-5p
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:04:06 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v6in7-0007hO-4s; Thu, 09 Oct 2025 01:02:13 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1v6hsi-0002fL-6X
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 00:04:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1759982622; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=QIa+YJiK5jgh1rCbe0RTvHLtUieZ8x3uijCxuxktAVjgyINx+LxrrLJf+cfRyYivGlV6MioI4bVRKYC09g2bZi3CWWYSz/llRCmpYdTsyISjDuHBbxzkVx+YgYmASVzHTZcLvxyk4vLgnrsHWELUwLynmBhgjTa/vZRdaabeiRE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1759982622;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=U9N5rlqsqVEHX3Y84j2Q5VI3LGKDhpLZF7hzux6rKlg=; 
- b=iMCfu9OyL0ipjeZGunyFAx6KwFXsWI38M6oRN/Nwi3ImrPL3UovAJ9FWST48HTt1eKi5tqUUrZhdml326mInaSF/WSMRLzN1v9kuOyTZwlKbJoXSkiEYBrNmdMO5qdAMNDDgsLxIAo49BndrLipTlawqJEyX6nsYkIQCFXQaZoU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759982622; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=U9N5rlqsqVEHX3Y84j2Q5VI3LGKDhpLZF7hzux6rKlg=;
- b=I6cFtytVRo2/+ntm7IGb2CxTLKFRkfynGjG/QeCb++VJwmtSEhuSN5xVuPdOU2hu
- nytjNC696XGEfnWqyXQoaoe/1MlTzBW7Pvb11O8cIc4jXhd0xQtDVCUEx7fSjSJeF1q
- NOtkVwvqJckV43gz4427Hypf1I9iZ0jm7vJlOEiI=
-Received: by mx.zohomail.com with SMTPS id 1759982620135279.8958862748982;
- Wed, 8 Oct 2025 21:03:40 -0700 (PDT)
-Message-ID: <cf5f668c-7aff-4ec8-85cf-a5e53b02c953@collabora.com>
-Date: Thu, 9 Oct 2025 07:03:34 +0300
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v6in2-0000eG-Fe; Thu, 09 Oct 2025 01:02:12 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id E24CE15BBD9;
+ Thu, 09 Oct 2025 08:01:48 +0300 (MSK)
+Received: from tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with SMTP id 67A6029BF9D;
+ Thu,  9 Oct 2025 08:01:59 +0300 (MSK)
+Received: (nullmailer pid 643266 invoked by uid 1000);
+ Thu, 09 Oct 2025 05:01:57 -0000
+Subject: [ANNOUNCE] QEMU 10.1.1 Stable released
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH qemu v5 1/1] Honor guest PAT on x86, absent Bochs display
-To: ~myrslint <myrskylintu@proton.me>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-References: <175541013614.15277.14412479690071783636-1@git.sr.ht>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <175541013614.15277.14412479690071783636-1@git.sr.ht>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 09 Oct 2025 08:01:57 +0300
+Message-Id: <1759986117.949087.643264.nullmailer@tls.msk.ru>
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -78,52 +56,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Hi everyone,
 
-On 8/17/25 08:37, ~myrslint wrote:
-> From: myrslint <qemu.haziness801@passinbox.com>
-> 
-> On x86_64, where most CPUs support self-snoop, it is preferrable to
-> always honor guest PAT. Not doing so is a quirk. There is a default
-> enabled KVM quirk flag which enforces not doing so due to a former bug
-> in Bochs display driver.
-> 
-> The bug has been fixed but not enough has yet passed since so we only
-> disable said quirk flag if a Bochs display is not configured for the
-> virtual machine.
-> 
-> This commit also moves around a bit of code that would be called when
-> the initialization of a VM is done.
-> ---
->  hw/display/bochs-display.c |  4 +++
->  include/system/kvm.h       |  1 +
->  target/i386/kvm/kvm.c      | 52 ++++++++++++++++++++++++++++++++------
->  3 files changed, 49 insertions(+), 8 deletions(-)
-...
+The QEMU v10.1.1 stable release is now available.
 
-> diff --git a/include/system/kvm.h b/include/system/kvm.h
-> index 3c7d314736..c6ba3905dc 100644
-> --- a/include/system/kvm.h
-> +++ b/include/system/kvm.h
-> @@ -208,6 +208,7 @@ void kvm_close(void);
->   */
->  bool kvm_arm_supports_user_irq(void);
->  
-> +void kvm_hack_do_not_enable_guest_pat(void);
+You can grab the tarball from our download page here:
 
-This will fail to compile if KVM is disabled or if target != i386.
-AFAICT, you'll need to check whether KVM is available at build time and
-move common code to kvm-all.c.
+  https://www.qemu.org/download/#source
 
-#if defined(CONFIG_KVM_IS_POSSIBLE)
-void kvm_hack_do_not_enable_guest_pat(void);
-#else
-static inline void kvm_hack_do_not_enable_guest_pat(void)
-{
-}
-#endif
+  https://download.qemu.org/qemu-10.1.1.tar.xz
+  https://download.qemu.org/qemu-10.1.1.tar.xz.sig (signature)
 
--- 
-Best regards,
-Dmitry
+v10.1.1 is now tagged in the official qemu.git repository, and the
+stable-10.1 branch has been updated accordingly:
+
+  https://gitlab.com/qemu-project/qemu/-/commits/stable-10.1
+
+There are 81 changes since the previous v10.1.0 release.
+
+Thank you everyone who has been involved and helped with the stable series!
+
+/mjt
+
+Changelog (stable-10.1-hash master-hash Author Name: Commmit-Subject):
+
+339768517a Michael Tokarev:
+ Update version for 10.1.1 release
+677d73bde7 769acb2a1e Thomas Huth:
+ tests/functional/aarch64: Fix assets of test_hotplug_pci
+7bd98c65e0 300a87c502 Peter Maydell:
+ physmem: Destroy all CPU AddressSpaces on unrealize
+ded5c62454 041600e23f Peter Xu:
+ memory: New AS helper to serialize destroy+free
+977ffc7abc 9e7bfda490 Peter Maydell:
+ include/system/memory.h: Clarify address_space_destroy() behaviour
+109f336448 725a9e5f78 Juraj Marcin:
+ migration: Fix state transition in postcopy_start() error handling
+d7f661905b be50ff3a73 Max Chou:
+ target/riscv: rvv: Modify minimum VLEN according to enabled vector extensions
+8650b5597a ae4a37f578 Max Chou:
+ target/riscv: rvv: Replace checking V by checking Zve32x
+e3641f4ecf b25133d38f vhaudiquet:
+ target/riscv: Fix endianness swap on compressed instructions
+b01f2eccf2 15abfced80 Guo Ren (Alibaba DAMO Academy):
+ hw/riscv/riscv-iommu: Fixup PDT Nested Walk
+c65d1a6b13 a86d3352ab Vladimir Isaev:
+ target/riscv: do not use translator_ldl in opcode_at
+7c7694d73c cebaf7434b stove:
+ target/riscv: use riscv_csrr in riscv_csr_read
+0be25ffa79 191df34617 Frank Chang:
+ hw/char: sifive_uart: Raise IRQ according to the Tx/Rx watermark thresholds
+c25be2649c da14767b35 Andrea Bolognani:
+ docs/interop/firmware: Add riscv64 to FirmwareArchitecture
+e93d2c5fdd 4f7528295b Andrew Jones:
+ hw/riscv/riscv-iommu: Fix MSI table size limit
+f3b84ec247 9163424c50 Thomas Huth:
+ ui/icons/qemu.svg: Add metadata information (author, license) to the logo
+ecc1aef81e 62fd247a24 Marc-André Lureau:
+ ui/spice: fix crash when disabling GL scanout on
+daa07cbe01 e7ecb533ee Mohamed Akram:
+ ui/spice: Fix abort on macOS
+e60467febb 6285eebd3a Harsh Prateek Bora:
+ ppc/spapr: init lrdr-capapcity phys with ram size if maxmem not provided
+f906aa2e33 f5738aedc2 Fabian Vogt:
+ hw/intc/xics: Add missing call to register vmstate_icp_server
+2d1b1bad05 4ccca2cc05 Laurent Vivier:
+ net/passt: Fix build failure due to missing GIO dependency
+dfae27159d d0af3cd027 Peter Maydell:
+ hw/usb/hcd-uhci: don't assert for SETUP to non-0 endpoint
+562020faa2 e13e1195db Richard Henderson:
+ tests/tcg/multiarch: Add tb-link test
+daf8f84e74 03fe665980 Richard Henderson:
+ accel/tcg: Properly unlink a TB linked to itself
+ed37926cfb 4f1ebc7712 Thomas Huth:
+ tests: Fix "make check-functional" for targets without thorough tests
+f4eeb2f48d fd34f56fe8 Peter Maydell:
+ .gitlab-ci.d/buildtest.yml: Unset CI_COMMIT_DESCRIPTION for htags
+903045d724 a50347a414 WANG Rui:
+ tcg/optimize: Fix folding of vector bitsel
+bbb31acea9 76d2b8d42a Peter Maydell:
+ hw/pci-host/astro: Don't call pci_regsiter_root_bus() in init
+975d8f329e e4a1b308b2 Peter Maydell:
+ hw/pci-host/dino: Don't call pci_register_root_bus() in init
+431d064c8e df663ac0a4 Richard Henderson:
+ target/sparc: Relax decode of rs2_or_imm for v7
+5f51aa7f60 6ff52f9dee Richard Henderson:
+ target/sparc: Loosen decode of RDTBR for v7
+e574af4a5a dc9678cc97 Richard Henderson:
+ target/sparc: Loosen decode of RDWIM for v7
+ba5f5ae5b2 a0345f6283 Richard Henderson:
+ target/sparc: Loosen decode of RDPSR for v7
+7c48b47055 49d669ccf3 Richard Henderson:
+ target/sparc: Loosen decode of RDY for v7
+dd93f80d02 b6cdd6c605 Richard Henderson:
+ target/sparc: Loosen decode of STBAR for v8
+307f5bb43f b7cd0a1821 Richard Henderson:
+ target/sparc: Allow TRANS macro with no extra arguments
+4e95da0305 db05b0d21e Paolo Bonzini:
+ linux-user: avoid -Werror=int-in-bool-context
+e460ac0c14 4c8f69b948 Xiaoyao Li:
+ multiboot: Fix the split lock
+46cda5823b 591f817d81 Xiaoyao Li:
+ target/i386: Define enum X86ASIdx for x86's address spaces
+6130ab24d0 0516f4b702 Xiaoyao Li:
+ i386/cpu: Enable SMM cpu address space under KVM
+88006572b4 aaf042299a Stéphane Graber:
+ hw/usb/network: Remove hardcoded 0x40 prefix in STRING_ETHADDR response
+dfaeca306b a11d1847d5 Alex Bennée:
+ .gitmodules: move u-boot mirrors to qemu-project-mirrors
+dd6c96219c 9a494d8353 Daniel P. Berrangé:
+ iotests/check: always enable all python warnings
+a1e094db8b 2b2fb25c2a Daniel P. Berrangé:
+ iotests/151: ensure subprocesses are cleaned up
+de9b387a5b d4d0ebfcc9 Daniel P. Berrangé:
+ iotests/147: ensure temporary sockets are closed before exiting
+6a59e3c5b0 6ccb48ffc1 Daniel P. Berrangé:
+ python: ensure QEMUQtestProtocol closes its socket
+8d7385b2a7 82c7cb93c7 Daniel P. Berrangé:
+ iotests: drop compat for old version context manager
+7c9d65f9e4 85f223e5b0 John Snow:
+ python: backport 'avoid creating additional event loops per thread'
+1034cd169c 5d99044d09 John Snow:
+ python: backport 'Remove deprecated get_event_loop calls'
+67d9347194 fd0ed46d4e John Snow:
+ python: backport 'qmp-tui: Do not crash if optional dependencies are not met'
+677a4e9d54 fcaeeb7653 John Snow:
+ python: backport 'qmp-shell-wrap: handle missing binary gracefully'
+5f39565103 0408b8d7a0 John Snow:
+ python: backport 'Use @asynciocontextmanager'
+f246e6efc7 f9d2e0a3bd John Snow:
+ python: backport 'drop Python3.6 workarounds'
+e2826959a8 1e343714bf John Snow:
+ python: backport 'kick event queue on legacy event_pull()'
+571a7414e7 38dd513263 Thomas Huth:
+ ui/vnc: Fix crash when specifying [vnc] without id in the config file
+4709ca196f 1b50621881 John Levon:
+ hw/vfio-user: add x-pci-class-code
+c03d5e11ee 86bca40402 Thomas Huth:
+ hw/intc/loongarch_pch_pic: Fix ubsan warning and endianness issue
+95de88feac 96e7448c1f WANG Rui:
+ target/loongarch: Guard 64-bit-only insn translation with TRANS64 macro
+1b1d46fef8 606978500c Michael Tokarev:
+ block/curl: fix curl internal handles handling
+7527e29c06 ac6b124180 Peter Maydell:
+ hw/char/max78000_uart: Destroy FIFO on deinit
+d1d60d7588 3284d1c07c Peter Maydell:
+ hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
+4715a0e9e6 46d03bb23d Aditya Gupta:
+ hw/ppc: Fix build error with CONFIG_POWERNV disabled
+63bfc916de 1f82ca7234 Denis Rastyogin:
+ target/mips: fix TLB huge page check to use 64-bit shift
+046f1ae6fd 51c3aebfda Philippe Mathieu-Daudé:
+ linux-user/mips: Select M14Kc CPU to run microMIPS binaries
+a490b66ae4 7a09b3cc70 Philippe Mathieu-Daudé:
+ linux-user/mips: Select 74Kf CPU to run MIPS16e binaries
+0bb9ee4750 14ab44b96d Philippe Mathieu-Daudé:
+ elf: Add EF_MIPS_ARCH_ASE definitions
+a84e2e04e8 8e4649cac9 Laurent Vivier:
+ e1000e: Prevent crash from legacy interrupt firing after MSI-X enable
+b7f2bff3ff c9a1ea9c52 Markus Armbruster:
+ Revert "tests/qtest: use qos_printf instead of g_test_message"
+2dd52baff2 ec14a3de62 Markus Armbruster:
+ vfio scsi ui: Error-check qio_channel_socket_connect_sync() the same way
+2a2b6ae097 b2e4534a2c Markus Armbruster:
+ i386/kvm/vmsr_energy: Plug memory leak on failure to connect socket
+b4048a3d25 28c5d27dd4 minglei.liu:
+ qga: Fix truncated output handling in guest-exec status reporting
+7f730ad785 edf3780a7d Kostiantyn Kostiuk:
+ qga-vss: Write hex value of error in log
+f132112273 85ff0e956b Kostiantyn Kostiuk:
+ qga/installer: Remove QGA VSS if QGA installation failed
+b6fdef9c99 2e27650bdd Peter Maydell:
+ hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ objects
+28682949f2 1748c0d592 Richard Henderson:
+ qemu/atomic: Finish renaming atomic128-cas.h headers
+067af4f784 5ffd387e9e Peter Maydell:
+ scripts/kernel-doc: Avoid new Perl precedence warning
+a4f01a0878 186db6a73b Smail AIDER:
+ target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+9084479e3b 376cdd7e9c Steve Sistare:
+ hw/intc/arm_gicv3_kvm: preserve pending interrupts during cpr
+2cba99e9f8 36fb979666 Gustavo Romero:
+ tests/functional: Fix reverse_debugging asset precaching
+673d54cabf f91563d011 Joel Stanley:
+ linux-user: Add strace for rseq
+408eeeacb3 c12cbaa007 Zero Tang:
+ i386/tcg/svm: fix incorrect canonicalization
+a854320fde ab85146ac4 Paolo Bonzini:
+ python: mkvenv: fix messages printed by mkvenv
+
 
