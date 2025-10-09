@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B56BC8D37
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 13:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA86CBC8D40
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 13:31:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6oqd-0001cF-1r; Thu, 09 Oct 2025 07:30:15 -0400
+	id 1v6orD-00022k-MX; Thu, 09 Oct 2025 07:30:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6oqb-0001c3-4T
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 07:30:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v6orA-00021E-O9
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 07:30:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v6oqW-0003un-EJ
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 07:30:12 -0400
+ id 1v6or4-0003wt-SR
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 07:30:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760009405;
+ s=mimecast20190719; t=1760009440;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=anZnb7FGDnfo+uyqEej2Xh3gIZULvJpGNAIjXS0/XGc=;
- b=DsyATk8MGDZXtlyeNRM5MTV1mFd+J3mi2yOhcYRK3kdTMcfquOTa73cz0FYM5DulcTznH+
- i4ZEPv1os5hMmZ3Q7xePGk8sW5+PzvMSvur81b+Q63BI6SJ6JuU/TL2K6PiQEL2+5/PKfL
- WfykUjDYA5G25Dbe0PzGM2fP6U0D0xc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vehNq207aKynKEYYCVHxT4GQfQAO9JInkmFzUxjvzdQ=;
+ b=Q7p/XFWxg2B7yomH3xql7nF0Hn++0wNJlzK1v4NKnvkGfITcKKbqhYmfpu49yqEd8oB0iW
+ Hh0p9Zbl+TP0NUZbpP7qIHYC2PUQJP8XWvL0AQF/8cKsRsWDUFIW0t4UDAsQCxfg3bl5+X
+ IaPArKbEWr0N2X+/5BtLv6QK+QCdQ4I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-Dvi7edtBPieH-dpvda5Jhg-1; Thu, 09 Oct 2025 07:30:03 -0400
-X-MC-Unique: Dvi7edtBPieH-dpvda5Jhg-1
-X-Mimecast-MFC-AGG-ID: Dvi7edtBPieH-dpvda5Jhg_1760009402
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3ece0fd841cso875251f8f.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 04:30:03 -0700 (PDT)
+ us-mta-679-cImstnBJOAGmO9cZaEbnbA-1; Thu, 09 Oct 2025 07:30:39 -0400
+X-MC-Unique: cImstnBJOAGmO9cZaEbnbA-1
+X-Mimecast-MFC-AGG-ID: cImstnBJOAGmO9cZaEbnbA_1760009438
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3ece0fd841cso876407f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 04:30:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760009402; x=1760614202;
+ d=1e100.net; s=20230601; t=1760009438; x=1760614238;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=anZnb7FGDnfo+uyqEej2Xh3gIZULvJpGNAIjXS0/XGc=;
- b=gQkqRDZbst6vliJ9o0kwytR4oGNUlBM9X3ebzqKprcU3vdguNzCjbaonxq39UJULjp
- 7Yy+FoZi1J0lyscVBJqr4XlZy/giys7TJTUWBMto3HwF/ojUtjP7K/6CD9gcOMCa6A9W
- 1bnIFaKJB4+0ipwc43S+epBTHCgMDapNDRecwGtVssuFPn6QkV7ibodLZoo+TuivMbrL
- ZtXXlVOa2VM4pXWibVrP61UD6Gg9d9xoIoODLVOBQERE58u1184BQOdqQ5Z0BX4tlP/7
- KDTvBy+7hnuJzxlr2V+VUf/u5JdvGt4XMakOHoWMlBs4mrXGPzbLTETqPLQZH4/MlJoI
- XOGQ==
-X-Gm-Message-State: AOJu0Yy0qMaWSD7kFnfYM+Ghj1yfmv4LdIYyHyj+w4yam3YXuYYoJpck
- V8xm6J/lLsgVhgzmJYZOu3Kyz9AsFlzWqqyhmt2BUwEH6NealUIw/tOQhWl4VI7yVJxllITabt6
- zxd3aTTg88VYIFjbQY/K2xoNXxcQYNyQodRNnplHqqVcP3zTvXR59BHEy
-X-Gm-Gg: ASbGnctKap+M3GiL50KQeTjSwEUGSZjNCKwCgXBzx0CmVHxTYp7s/yCyCv6RJj0Qohv
- mIglQH4b3Ix/84B42i7/DkcU/qITajr24wdXd1L3we/vyOuMvveYfNIMYR3XoqRqjN08JHQSDgq
- NtFDBNyDQ8lpRi5THfxtx4TEbkPEaj613qkeTCfReU32XyQtlri7BF+me9NEyJOGHLW7XGULLFX
- /oOACy67aUq2kw0mNzQLH0BJ8EZkc/p8fWVcirjAkXq9yZiZRJ/9qRbHzt3Q5AujMPhsXM9c4Zv
- j7nWOVeFtd+C5M8lUyUmF+pjym7ag+a3y6FbNHgKR/TVMyRi4yC6YGc+y7sz9+r0nyxhOlVUJpD
- hK83osckoeuK86Ym9BaAbgsG+DFzLqsK8/WG2nWbIJy0LMp/UNg==
-X-Received: by 2002:a05:6000:2c0c:b0:405:3028:1bf0 with SMTP id
- ffacd0b85a97d-42666ac2d6dmr4468474f8f.10.1760009402190; 
- Thu, 09 Oct 2025 04:30:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERTxLYiMQ7fyg7AUq1KMTpPI33xEF9Jny9XfjxZSzAP1Uj6yPDkUrOygCRlA9GBVZ3SpMVsg==
-X-Received: by 2002:a05:6000:2c0c:b0:405:3028:1bf0 with SMTP id
- ffacd0b85a97d-42666ac2d6dmr4468452f8f.10.1760009401715; 
- Thu, 09 Oct 2025 04:30:01 -0700 (PDT)
+ bh=vehNq207aKynKEYYCVHxT4GQfQAO9JInkmFzUxjvzdQ=;
+ b=miMT0K0det4uAMVnbgOHrWL3osfLrcMVmhqSif+AFzUp1gPaofmEUeb5dhoL3ryB9m
+ JeC4FG1JvUR1ij05/FMTKzu+iEDI+yldRMJLgtbn+ZQtlolnTe2WWQs0emnGRohnfxXm
+ J2fU7qAh/UaF8X9kjAIH40OyY7Tuh9QzxyHL413TFXb8FRaMuyLn8cSd92AyyiB0dPzl
+ Ne3EzzgxqIFF5TAi+Cu764OmupwVR5uRr7m2I1bIrtYc1skGXsy9ErZaz58G0uQMFH4G
+ KBzu+kL3M9K/fTokunA4FeN0R5pvUuCtlGpk+3EXhKAOjpuBHgZJLvmGK0gK7+mrC66X
+ FqqA==
+X-Gm-Message-State: AOJu0Yw73unt3pQYW5EhsJu1eFhfehgSon+Bybc9xCFM73IAqz8BBR9F
+ 6FfVwpgN+KPt5qgpeH/mPdDwgO5yA816GhIpgLPzKPW0s6vBdecCSN+MpTie299jzwCxa31c0AX
+ 4t0GZ9++hRIOVL8ksOXFuTffT0iLWdAs1McPk46PyxnP+fMSelSf6mBDz
+X-Gm-Gg: ASbGncsuNzY+0Z0GJfDQylrj4GThC7hUlAmstUohL3P9GLBZ20Rioekl5vYEBsbggAM
+ 5VHp1EcqRjKRBJ0QJjG9fOrwDDfbl1nfsiynG2wClyZzoPPCzW9SnvyCEUqGS8XqpPnZio774G/
+ 2ROjihM+1kPWIGYEFNssLemRPH1887srVGyLNdEL577uEOtr1CpJETwUKIuvtGvFjbmIdWaEoin
+ /PpCIm4QCHCwoiQ7TzqtP2QLNdumndTNH3qpcFBNXfn4ODVOypdW+DHjHTzEwraq7QkAqsbXNx9
+ xap8PKH4iRNNyeRxSrwV0ZS63jOYdo1t8l3yy4TXRhnrAY52MMpuUlKXYsumZ+Tgy0CudDCCFTr
+ H8QFCKFlHtOneqW6/+4AdM6JKTQr2XC4bojAFZTHtbKOiLbWBkg==
+X-Received: by 2002:a05:6000:1ac8:b0:3f7:b7ac:f3d4 with SMTP id
+ ffacd0b85a97d-42666abbbc1mr5654673f8f.5.1760009438242; 
+ Thu, 09 Oct 2025 04:30:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFlP8l8EyfW7rcYqytt3jcelkFrNeuCHobP5tZUApaXWt6cy00Cg4gyA/v9+mAmCJ5tZDAP4g==
+X-Received: by 2002:a05:6000:1ac8:b0:3f7:b7ac:f3d4 with SMTP id
+ ffacd0b85a97d-42666abbbc1mr5654561f8f.5.1760009437420; 
+ Thu, 09 Oct 2025 04:30:37 -0700 (PDT)
 Received: from [192.168.10.81] ([151.49.231.162])
  by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-4255d8e980dsm37379027f8f.36.2025.10.09.04.30.00
+ ffacd0b85a97d-4255d8e9703sm34718441f8f.30.2025.10.09.04.30.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Oct 2025 04:30:01 -0700 (PDT)
-Message-ID: <86a16e8e-48ab-404f-9530-d21e5d30db4b@redhat.com>
-Date: Thu, 9 Oct 2025 13:30:00 +0200
+ Thu, 09 Oct 2025 04:30:36 -0700 (PDT)
+Message-ID: <9e9f5f0b-ad40-44c2-97a3-9845f2e1ac6f@redhat.com>
+Date: Thu, 9 Oct 2025 13:30:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] target/i386: Add TSA attack variants TSA-SQ and
- TSA-L1
+Subject: Re: [PATCH v2 2/2] target/i386: Add TSA feature flag verw-clear
 To: Babu Moger <babu.moger@amd.com>, zhao1.liu@intel.com, bp@alien8.de
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org
 References: <12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com>
+ <e6362672e3a67a9df661a8f46598335a1a2d2754.1752176771.git.babu.moger@amd.com>
 Content-Language: en-US
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -117,10 +117,10 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com>
+In-Reply-To: <e6362672e3a67a9df661a8f46598335a1a2d2754.1752176771.git.babu.moger@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -150,96 +150,56 @@ On 7/10/25 21:46, Babu Moger wrote:
 > related to the execution timing of instructions under specific
 > microarchitectural conditions. In some cases, an attacker may be able to
 > use this timing information to infer data from other contexts, resulting in
-> information leakage.
+> information leakage
 > 
-> AMD has identified two sub-variants two variants of TSA.
-> CPUID Fn8000_0021 ECX[1] (TSA_SQ_NO).
-> 	If this bit is 1, the CPU is not vulnerable to TSA-SQ.
-> 
-> CPUID Fn8000_0021 ECX[2] (TSA_L1_NO).
-> 	If this bit is 1, the CPU is not vulnerable to TSA-L1.
-> 
-> Add the new feature word FEAT_8000_0021_ECX and corresponding bits to
-> detect TSA variants.
-
-Applied, thanks.
-
-Paolo
-
+> CPUID Fn8000_0021 EAX[5] (VERW_CLEAR). If this bit is 1, the memory form of
+> the VERW instruction may be used to help mitigate TSA.
 > 
 > Link: https://www.amd.com/content/dam/amd/en/documents/resources/bulletin/technical-guidance-for-mitigating-transient-scheduler-attacks.pdf
 > Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
 > Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 > Signed-off-by: Babu Moger <babu.moger@amd.com>
+
+Applied, thanks.
+
+Paolo
+
 > ---
 > v2: Split the patches into two.
 >      Not adding the feature bit in CPU model now. Users can add the feature
->      bits by using the option "-cpu EPYC-Genoa,+tsa-sq-no,+tsa-l1-no".
+>      bits by using the option "-cpu EPYC-Genoa,+verw-clear".
 > 
 > v1: https://lore.kernel.org/qemu-devel/20250709104956.GAaG5JVO-74EF96hHO@fat_crate.local/
 > ---
->   target/i386/cpu.c | 17 +++++++++++++++++
->   target/i386/cpu.h |  6 ++++++
->   2 files changed, 23 insertions(+)
+>   target/i386/cpu.c | 2 +-
+>   target/i386/cpu.h | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
 > 
 > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 0d35e95430..2cd07b86b5 100644
+> index 2cd07b86b5..d46bc65e44 100644
 > --- a/target/i386/cpu.c
 > +++ b/target/i386/cpu.c
-> @@ -1292,6 +1292,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->           .tcg_features = 0,
->           .unmigratable_flags = 0,
->       },
-> +    [FEAT_8000_0021_ECX] = {
-> +        .type = CPUID_FEATURE_WORD,
-> +        .feat_names = {
-> +            NULL, "tsa-sq-no", "tsa-l1-no", NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +        },
-> +        .cpuid = { .eax = 0x80000021, .reg = R_ECX, },
-> +        .tcg_features = 0,
-> +        .unmigratable_flags = 0,
-> +    },
->       [FEAT_8000_0022_EAX] = {
+> @@ -1274,7 +1274,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
 >           .type = CPUID_FEATURE_WORD,
 >           .feat_names = {
-> @@ -7934,6 +7950,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->           *eax = *ebx = *ecx = *edx = 0;
->           *eax = env->features[FEAT_8000_0021_EAX];
->           *ebx = env->features[FEAT_8000_0021_EBX];
-> +        *ecx = env->features[FEAT_8000_0021_ECX];
->           break;
->       default:
->           /* reserved values: zero */
+>               "no-nested-data-bp", "fs-gs-base-ns", "lfence-always-serializing", NULL,
+> -            NULL, NULL, "null-sel-clr-base", NULL,
+> +            NULL, "verw-clear", "null-sel-clr-base", NULL,
+>               "auto-ibrs", NULL, NULL, NULL,
+>               NULL, NULL, NULL, NULL,
+>               NULL, NULL, NULL, NULL,
 > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 51e10139df..6a9eb2dbf7 100644
+> index 6a9eb2dbf7..4127acf1b1 100644
 > --- a/target/i386/cpu.h
 > +++ b/target/i386/cpu.h
-> @@ -641,6 +641,7 @@ typedef enum FeatureWord {
->       FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
->       FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
->       FEAT_8000_0021_EBX, /* CPUID[8000_0021].EBX */
-> +    FEAT_8000_0021_ECX, /* CPUID[8000_0021].ECX */
->       FEAT_8000_0022_EAX, /* CPUID[8000_0022].EAX */
->       FEAT_C000_0001_EDX, /* CPUID[C000_0001].EDX */
->       FEAT_KVM,           /* CPUID[4000_0001].EAX (KVM_CPUID_FEATURES) */
-> @@ -1124,6 +1125,11 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->    */
->   #define CPUID_8000_0021_EBX_RAPSIZE    (8U << 16)
->   
-> +/* CPU is not vulnerable TSA SA-SQ attack */
-> +#define CPUID_8000_0021_ECX_TSA_SQ_NO  (1U << 1)
-> +/* CPU is not vulnerable TSA SA-L1 attack */
-> +#define CPUID_8000_0021_ECX_TSA_L1_NO  (1U << 2)
-> +
->   /* Performance Monitoring Version 2 */
->   #define CPUID_8000_0022_EAX_PERFMON_V2  (1U << 0)
->   
+> @@ -1102,6 +1102,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+>   #define CPUID_8000_0021_EAX_FS_GS_BASE_NS                (1U << 1)
+>   /* LFENCE is always serializing */
+>   #define CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING    (1U << 2)
+> +/* Memory form of VERW mitigates TSA */
+> +#define CPUID_8000_0021_EAX_VERW_CLEAR                   (1U << 5)
+>   /* Null Selector Clears Base */
+>   #define CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE            (1U << 6)
+>   /* Automatic IBRS */
 
 
