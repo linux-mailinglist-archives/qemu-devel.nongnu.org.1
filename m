@@ -2,53 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801E3BC929C
-	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 15:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDFDBC9183
+	for <lists+qemu-devel@lfdr.de>; Thu, 09 Oct 2025 14:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v6qFx-0006aJ-Ba; Thu, 09 Oct 2025 09:00:30 -0400
+	id 1v6pyG-0007f4-Vy; Thu, 09 Oct 2025 08:42:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1v6qFj-0006UU-8x
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 09:00:15 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1v6qFV-0006gc-JX
- for qemu-devel@nongnu.org; Thu, 09 Oct 2025 09:00:14 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxLvDIsedorkkUAA--.43252S3;
- Thu, 09 Oct 2025 20:59:52 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJCxG8HCsedoBqnWAA--.42888S8;
- Thu, 09 Oct 2025 20:59:52 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 6/6] target/loongarch: Define loongarch_exception_name() as
- static
-Date: Thu,  9 Oct 2025 20:36:01 +0800
-Message-Id: <20251009123601.2380901-7-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20251009123601.2380901-1-gaosong@loongson.cn>
-References: <20251009123601.2380901-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1v6pyF-0007ev-6l
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 08:42:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1v6pyC-0004Pz-9E
+ for qemu-devel@nongnu.org; Thu, 09 Oct 2025 08:42:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760013720;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jxqyj94LXAHop+RDFm+TzxE98EwBIpyNVgbNx3H4Gf8=;
+ b=cwqRaW5hcNiUG+tRSmnCSUT8Mj4wmjnbwQ94E0qwIx5bUHDtth2e3RMYsB7v1FTIv3PPsx
+ WR+7DibiFaylTvUZp2GSFQfX5sVjhLawU7i0lzpbjNxwVkghwXOV8PQpHurlR3IfC9F6oV
+ T5pXc4hE7zDIzT6hkqn4cMulUeZxMIk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-zFHy1Ky7OhKleJzkukhtVQ-1; Thu,
+ 09 Oct 2025 08:41:57 -0400
+X-MC-Unique: zFHy1Ky7OhKleJzkukhtVQ-1
+X-Mimecast-MFC-AGG-ID: zFHy1Ky7OhKleJzkukhtVQ_1760013715
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 358B51800378; Thu,  9 Oct 2025 12:41:55 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.183])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 26FB518004D8; Thu,  9 Oct 2025 12:41:54 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id A50A0180009C; Thu, 09 Oct 2025 14:41:51 +0200 (CEST)
+Date: Thu, 9 Oct 2025 14:41:51 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-devel@nongnu.org, 
+ Laurent Vivier <lvivier@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Markus Armbruster <armbru@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2] hw/uefi: add "info ovmf-log" + "query-ovmf-log"
+ monitor commands
+Message-ID: <ef6m5kcsotrgshbtrj2jawjk7waq5ggrt42ugazkxs7u3jt2sq@ccef4acxnshv>
+References: <20251007135216.1687648-1-kraxel@redhat.com>
+ <aOcWOQJt-zLbiyUK@gallifrey> <aOdggKKyDtf3z57J@redhat.com>
+ <aOefUN5_bSKjWPLc@gallifrey> <aOejzqM74_NiOHJJ@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxG8HCsedoBqnWAA--.42888S8
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aOejzqM74_NiOHJJ@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,47 +91,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+  Hi,
 
-Function loongarch_exception_name() is only called in defined file
-target/loongarch/tcg/tcg_cpu.c, set this function as static.
+> > OK, what about sanitisation - if that text contains random binary what happens,
+> > or should we make sure it's sanitised?
+> 
+> As prior art, the QGA  'guest-exec' command will return stdout/stderr
+> of the command in base64 format.  The downside is that it is bloated
+> in size, but it is at least safe wrt JSON encoding.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250929035338.2320419-4-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/internals.h   | 2 --
- target/loongarch/tcg/tcg_cpu.c | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+In theory the log should just be text, but I've managed to f*ck up
+logging with broken patches in the past, with the result that random
+binary crap landed in the log.
 
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index e994f5a3d3..8793bd9df6 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -24,8 +24,6 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
-                                    uint32_t exception,
-                                    uintptr_t pc);
- 
--const char *loongarch_exception_name(int32_t exception);
--
- #ifdef CONFIG_TCG
- int ieee_ex_to_loongarch(int xcpt);
- void restore_fp_status(CPULoongArchState *env);
-diff --git a/target/loongarch/tcg/tcg_cpu.c b/target/loongarch/tcg/tcg_cpu.c
-index 59b5800ecf..82b54e6dc3 100644
---- a/target/loongarch/tcg/tcg_cpu.c
-+++ b/target/loongarch/tcg/tcg_cpu.c
-@@ -45,7 +45,7 @@ static const struct TypeExcp excp_names[] = {
-     {EXCP_HLT, "EXCP_HLT"},
- };
- 
--const char *loongarch_exception_name(int32_t exception)
-+static const char *loongarch_exception_name(int32_t exception)
- {
-     int i;
- 
--- 
-2.47.0
+So sending base64 in the json reply makes sense to me.  Do we have a
+qapi type for that?  Or should I use string?
+
+> The HMP command could still dump the raw data IMHO, as that's human
+> facing and base64 is horrible for human consumption.
+
+And probably a hmp implementation /not/ using the qmp command so we
+don't convert text -> base64 -> text ...
+
+take care,
+  Gerd
 
 
