@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44FCBCD12F
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 563FFBCD078
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:07:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7CpA-0006AF-JU; Fri, 10 Oct 2025 09:06:20 -0400
+	id 1v7CpC-0006An-30; Fri, 10 Oct 2025 09:06:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Coq-00067Q-HW
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:01 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1v7Cou-00068t-M3
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:04 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7CoZ-0003ll-Uh
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:00 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e37d10f3eso15327415e9.0
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:05:40 -0700 (PDT)
+ id 1v7Coe-0003m7-W0
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:04 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e4f2696bdso21970775e9.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:05:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760101538; x=1760706338; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760101539; x=1760706339; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ASyzth2+dJyh1MI3oXSuce6UC/YaXqBlkKj5sq9zv/8=;
- b=vrvhbYyCtdzT5BlYbsVWSGmBudnB4U+EilDevsHkuRwsmfbqtBGUsFauMZz/qEmB0F
- 30G6W1Wt+kbE+YYq8/ma5nXSSnjN7EK5hOFDz9uft4vrL/8Pc+ZkvJEM/Zx4PwK2a5bB
- iSiBWM7BvoT1o3oV3Wexc3QElfBAdqybwsiHbKRan9DebtttU9pX33ohPCWWC8pdce5Y
- Hph2L6tjknmu3WlYfix8u5YlgVdpr8dbQLRhZNkHotJgPWboXH7c4ULf8+WjgGVP9dfY
- 5L2WTqd4hr4ahZrvsir43WBkckSHrK0GT656AmRccPXNcpGrh7fWwz9wJeUrvaP7ii3P
- FpDA==
+ :reply-to; bh=Z/5RDRYORElPQjjMWsqBeVSyUnH9hIYqmfXN+6XAN/4=;
+ b=kBmtKjY4r8XSEvHm8izWEbqG6oK5hOufRer8vZwmNOuUM35EGbpCeMaymMciRLv3zt
+ oG8sRMiEKxQZCmsIlUZb3/5bXQPVd2N5SErGjuOp19zaM+ieSN/lOs01qMqW57C2f4cu
+ HMei9uwX9xlfXYTeRXnc6UANOSnlPDq5eP0RJHp45DrpCCGrW0PtoFQrUyu3l+GM1qlV
+ /1oDLgH9IIwnxhYCM7plPGdjD5P5gu1UbdvDUZPOLMMB64kU5qdK6Kc3PjXpUAN4z6rw
+ MvdX4DcnGrs5f2O2204o/TavTy5TNx9xzLSgNxbi/+h1tVGHvmdufgAMNztbgih0s+bL
+ xMJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760101538; x=1760706338;
+ d=1e100.net; s=20230601; t=1760101539; x=1760706339;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ASyzth2+dJyh1MI3oXSuce6UC/YaXqBlkKj5sq9zv/8=;
- b=fDCAQvx+Tam8/aAElDwEn8vJ9yKp2e1DVKAADeEocreHcGuHRVpuvo0j1X/1VLHdFL
- bpXpjCUi/wbLPlIKkCytWg/BEGz/MxrJNj9cKzMq9bwPHqY9kMc2tor1BuDOI/7dQtFX
- uynYZqItNErCkz1IEgMJhRx8dXeZsj+aIdoZk9w7gZ6lq3IMi8oCWDrVjQMX4t+BsO4I
- NszpeYRWl/D+qKMHUH3bsae6ibkWxcmaXR+wOc+efIjY2A4cU86i1a4Y/Ih7Q5AC2fWP
- mU8PhqdNbL3AwoZRDyYAwcxhtctKEfNcA8rBXE74xoYzhA3AjDvPLBNueeSp8RYIMfVC
- 3csQ==
-X-Gm-Message-State: AOJu0YyucSE8/WePYRbbd7QHKSvmHK19RYBQBvTIBCYKyYmkDT2LptMv
- /oeP0O+zE20pc5zTMPF1s+B+HDZWad0V3ZtkdSW02F1nQu52eWHeqFDQDGVzHa4b2FcHYFVQOdV
- K4njp
-X-Gm-Gg: ASbGnctU8yq2uo4mBnQFXRbep3SHTypJtr0Y/j8IUH6L7fiX/M76o3alTnkhVlHxtSJ
- 4gtTiakLKO1UqiB5Ot8Vdkbh60sdD+U1feARiLr3zuNCWtdTIW1vnJUkXDZA3+f5rhRgArMhDyK
- PVuGYOzxwX40RdF9eU30lGXHXR1k8ucZzlKHMwmwHc8MFx/cfbRYQ83UkQz6vUgARqC3mUEh6iZ
- tIc5VwaBrozzdoetICmc57ccQoXH5dyWy0UZntYvR6bsOxII7bVO/bBf1Zm0jlXDv9PQx1v0pU6
- kFYGGqtYJi+8BQxYWPza2xJ0wc4Sow+JV7XKPN4BsMPwICUd9Ov0ryekQ+IMlHhHckksXiL6+HE
- YcOd0i2+rHdigaQFhyz6klAePYZc0aYNG140cVeMWQleqQMTePjI=
-X-Google-Smtp-Source: AGHT+IEHPJyeEhNjV1tb8c4DcYPcjewmSjBQkHNYgjkSgLwFEsSCtcbmCT3fxi/vStiukbbl8Jualw==
-X-Received: by 2002:a05:600c:1d18:b0:45f:2869:c3b2 with SMTP id
- 5b1f17b1804b1-46fa9b1834dmr83842385e9.33.1760101537784; 
- Fri, 10 Oct 2025 06:05:37 -0700 (PDT)
+ bh=Z/5RDRYORElPQjjMWsqBeVSyUnH9hIYqmfXN+6XAN/4=;
+ b=htub+/9cPbiHn4MpDFu7lRk0wlNI6xV/tDdab6MoJ7uDomVf+ush4nKawhbZgBIDlv
+ bLaNhBgXMIhh0gCysGl1bOZN06MGojtCrQoPIAQzl/ItmQyN4TkxDPUhAWjma+4sMQ1a
+ aoy/DAPnv6I/2EMbaJ1l5KyS+YKlxuIi6Ve/pp6CrYCRffelpqWdr4uUCKO6GCY4uXEi
+ n+W9Rt+pRVKmJvltoGqdtwdskRatsuYqTd52DDPwj2h+yIUSXw0D8Mt2ToSwpafescPj
+ 5Dz/bp6IwDkfpfIGiMhioheCDy3cQEBXXu86L5h7fyPioo7QEwKNizVS9rRs44avhTuH
+ P/aw==
+X-Gm-Message-State: AOJu0YxFY+OzY6e2M3WJQhyZalC9jy6vdrutWGth1gUTtJZxioJSvnI2
+ NaYrKx+OdSFmAgHIT/QZiYYdaNVRWHDsBoB6CuodJZRQ7y8aCIU6n/8V1M0llAjErL1QpRKEl+v
+ xXBfn
+X-Gm-Gg: ASbGncsu+jobgjNNcYIOemviHxtwmqmpK7XdfkFHzPkXI3vbaxr6+Srh4Z/aRMmVR/X
+ CcFdt3f8BvFh5kx8DyjdLxcyBQAduHGCIlMoEQ6NmziSkevSf3EZlv8BtxVP5hGADqLuRg5aeA2
+ qyV+I3xw6vmya2r0xAzr8QY9gWhML/K8pIvcAwGLUY5FqxY0ucPNd1m1JscJF1Ss3KtufReWbKF
+ 0mjFJxuUPkwBDWnVNDFkWdnO9mL/BVjC2CUjA8JoCqLEFSGN0uJM7oW5oZjDY1Ak1rzS2S8zFsy
+ eEe/MTV0zgsWX8jZrsx4bfVuxm7AzSHwBOmsnjiA/3/LemgO5yc2DBW9wsX3atgjkFzGB4K41h7
+ wPjSPeVdagD7YjhPsz35K+UhnJw2xpmM9bGPDUQqIkRJRUpx2MNtAz77HOf/INw==
+X-Google-Smtp-Source: AGHT+IHxNaGRZlNCB4Ute8t6kaoRQAsfIFK4lHhSwygoOg3KSmjMo69EbKBXN5Q8iZb6ZIFtqT/+4Q==
+X-Received: by 2002:a05:600c:3b29:b0:46e:7e22:ff6a with SMTP id
+ 5b1f17b1804b1-46fa9aa1d79mr89302655e9.15.1760101538799; 
+ Fri, 10 Oct 2025 06:05:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.05.36
+ ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.05.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 06:05:37 -0700 (PDT)
+ Fri, 10 Oct 2025 06:05:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/76] target/arm: Populate PIE in aa64_va_parameters
-Date: Fri, 10 Oct 2025 14:04:18 +0100
-Message-ID: <20251010130527.3921602-8-peter.maydell@linaro.org>
+Subject: [PULL 08/76] target/arm: Implement get_S1prot_indirect
+Date: Fri, 10 Oct 2025 14:04:19 +0100
+Message-ID: <20251010130527.3921602-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251010130527.3921602-1-peter.maydell@linaro.org>
 References: <20251010130527.3921602-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,97 +99,221 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Select the PIE bit for the translation regime.
-With PIE, the PTE layout changes, forcing HPD.
+This approximately corresponds to AArch64.S1IndirectBasePermissions
+and the tail of AArch64.S1ComputePermissions which applies WXN.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251008215613.300150-8-richard.henderson@linaro.org
+Message-id: 20251008215613.300150-9-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/internals.h |  3 ++-
- target/arm/helper.c    | 19 ++++++++++++++++++-
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ target/arm/ptw.c | 161 ++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 139 insertions(+), 22 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 1d958dbf685..face1019f52 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1491,7 +1491,7 @@ static inline int arm_granule_bits(ARMGranuleSize gran)
- 
- /*
-  * Parameters of a given virtual address, as extracted from the
-- * translation control register (TCR) for a given regime.
-+ * translation controls for a given regime.
-  */
- typedef struct ARMVAParameters {
-     unsigned tsz    : 8;
-@@ -1506,6 +1506,7 @@ typedef struct ARMVAParameters {
-     bool ha         : 1;
-     bool hd         : 1;
-     ARMGranuleSize gran : 2;
-+    bool pie        : 1;
- } ARMVAParameters;
- 
- /**
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index b7bc27436f7..37865bf70eb 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9386,11 +9386,12 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-                                    bool el1_is_aa32)
- {
-     uint64_t tcr = regime_tcr(env, mmu_idx);
--    bool epd, hpd, tsz_oob, ds, ha, hd;
-+    bool epd, hpd, tsz_oob, ds, ha, hd, pie = false;
-     int select, tsz, tbi, max_tsz, min_tsz, ps, sh;
-     ARMGranuleSize gran;
-     ARMCPU *cpu = env_archcpu(env);
-     bool stage2 = regime_is_stage2(mmu_idx);
-+    int r_el = regime_el(env, mmu_idx);
- 
-     if (!regime_has_2_ranges(mmu_idx)) {
-         select = 0;
-@@ -9402,8 +9403,17 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-              * Thus disabling them makes things easier during ptw.
-              */
-             hpd = true;
-+            pie = extract64(tcr, 36, 1) && cpu_isar_feature(aa64_s2pie, cpu);
-         } else {
-             hpd = extract32(tcr, 24, 1);
-+            if (r_el == 3) {
-+                pie = (extract64(tcr, 35, 1)
-+                       && cpu_isar_feature(aa64_s1pie, cpu));
-+            } else {
-+                pie = ((env->cp15.tcr2_el[2] & TCR2_PIE)
-+                       && (!arm_feature(env, ARM_FEATURE_EL3)
-+                           || (env->cp15.scr_el3 & SCR_TCR2EN)));
-+            }
-         }
-         epd = false;
-         sh = extract32(tcr, 12, 2);
-@@ -9443,7 +9453,13 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-             regime_is_user(env, mmu_idx)) {
-             epd = true;
-         }
-+
-+        pie = ((env->cp15.tcr2_el[r_el] & TCR2_PIE)
-+               && (!arm_feature(env, ARM_FEATURE_EL3)
-+                   || (env->cp15.scr_el3 & SCR_TCR2EN))
-+               && (r_el == 2 || (arm_hcrx_el2_eff(env) & HCRX_TCR2EN)));
-     }
-+    hpd |= pie;
- 
-     gran = sanitize_gran_size(cpu, gran, stage2);
- 
-@@ -9522,6 +9538,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-         .ha = ha,
-         .hd = ha && hd,
-         .gran = gran,
-+        .pie = pie,
-     };
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index e1515675eb9..59135560776 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1484,6 +1484,106 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
+     return prot_rw | PAGE_EXEC;
  }
  
++/* Extra page permission bits, during get_S1prot_indirect only. */
++#define PAGE_GCS      (1 << 3)
++#define PAGE_WXN      (1 << 4)
++#define PAGE_OVERLAY  (1 << 5)
++QEMU_BUILD_BUG_ON(PAGE_RWX & (PAGE_GCS | PAGE_WXN | PAGE_OVERLAY));
++
++static int get_S1prot_indirect(CPUARMState *env, S1Translate *ptw,
++                               ARMMMUIdx mmu_idx, int pi_index, int po_index,
++                               ARMSecuritySpace in_pa, ARMSecuritySpace out_pa)
++{
++    static const uint8_t perm_table[16] = {
++        /* 0 */ PAGE_OVERLAY,  /* no access */
++        /* 1 */ PAGE_OVERLAY | PAGE_READ,
++        /* 2 */ PAGE_OVERLAY | PAGE_EXEC,
++        /* 3 */ PAGE_OVERLAY | PAGE_READ | PAGE_EXEC,
++        /* 4 */ PAGE_OVERLAY,  /* reserved */
++        /* 5 */ PAGE_OVERLAY | PAGE_READ | PAGE_WRITE,
++        /* 6 */ PAGE_OVERLAY | PAGE_READ | PAGE_WRITE | PAGE_EXEC | PAGE_WXN,
++        /* 7 */ PAGE_OVERLAY | PAGE_READ | PAGE_WRITE | PAGE_EXEC,
++        /* 8 */ PAGE_READ,
++        /* 9 */ PAGE_READ | PAGE_GCS,
++        /* A */ PAGE_READ | PAGE_EXEC,
++        /* B */ 0,             /* reserved */
++        /* C */ PAGE_READ | PAGE_WRITE,
++        /* D */ 0,             /* reserved */
++        /* E */ PAGE_READ | PAGE_WRITE | PAGE_EXEC,
++        /* F */ 0,             /* reserved */
++    };
++
++    uint32_t el = regime_el(env, mmu_idx);
++    uint64_t pir = env->cp15.pir_el[el];
++    uint64_t pire0 = 0;
++    int perm;
++
++    if (el < 3) {
++        if (arm_feature(env, ARM_FEATURE_EL3)
++            && !(env->cp15.scr_el3 & SCR_PIEN)) {
++            pir = 0;
++        } else if (el == 2) {
++            pire0 = env->cp15.pire0_el2;
++        } else if (!ptw->in_nv1) {
++            pire0 = env->cp15.pir_el[0];
++        }
++    }
++    perm = perm_table[extract64(pir, pi_index * 4, 4)];
++
++    if (regime_has_2_ranges(mmu_idx)) {
++        int p_perm = perm;
++        int u_perm = perm_table[extract64(pire0, pi_index * 4, 4)];
++
++        if ((p_perm & (PAGE_EXEC | PAGE_GCS)) &&
++            (u_perm & (PAGE_WRITE | PAGE_GCS))) {
++            p_perm &= ~(PAGE_RWX | PAGE_GCS);
++            u_perm &= ~(PAGE_RWX | PAGE_GCS);
++        }
++        if ((u_perm & (PAGE_RWX | PAGE_GCS)) && regime_is_pan(env, mmu_idx)) {
++            p_perm &= ~(PAGE_READ | PAGE_WRITE);
++        }
++        perm = regime_is_user(env, mmu_idx) ? u_perm : p_perm;
++    }
++
++    if (in_pa != out_pa) {
++        switch (in_pa) {
++        case ARMSS_Root:
++            /*
++             * R_ZWRVD: permission fault for insn fetched from non-Root,
++             * I_WWBFB: SIF has no effect in EL3.
++             */
++            perm &= ~(PAGE_EXEC | PAGE_GCS);
++            break;
++        case ARMSS_Realm:
++            /*
++             * R_PKTDS: permission fault for insn fetched from non-Realm,
++             * for Realm EL2 or EL2&0.  The corresponding fault for EL1&0
++             * happens during any stage2 translation.
++             */
++            if (el == 2) {
++                perm &= ~(PAGE_EXEC | PAGE_GCS);
++            }
++            break;
++        case ARMSS_Secure:
++            if (env->cp15.scr_el3 & SCR_SIF) {
++                perm &= ~(PAGE_EXEC | PAGE_GCS);
++            }
++            break;
++        default:
++            /* Input NonSecure must have output NonSecure. */
++            g_assert_not_reached();
++        }
++    }
++
++    if (perm & PAGE_WXN) {
++        perm &= ~PAGE_EXEC;
++    }
++
++    /* TODO: FEAT_GCS */
++
++    return perm & PAGE_RWX;
++}
++
+ static ARMVAParameters aa32_va_parameters(CPUARMState *env, uint32_t va,
+                                           ARMMMUIdx mmu_idx)
+ {
+@@ -1713,7 +1813,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     int32_t stride;
+     int addrsize, inputsize, outputsize;
+     uint64_t tcr = regime_tcr(env, mmu_idx);
+-    int ap, xn, pxn;
++    int ap;
+     uint32_t el = regime_el(env, mmu_idx);
+     uint64_t descaddrmask;
+     bool aarch64 = arm_el_is_aa64(env, el);
+@@ -2047,7 +2147,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+             out_space = ARMSS_NonSecure;
+             result->f.prot = get_S2prot_noexecute(ap);
+         } else {
+-            xn = extract64(attrs, 53, 2);
++            int xn = extract64(attrs, 53, 2);
+             result->f.prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
+         }
+ 
+@@ -2063,7 +2163,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         int nse, ns = extract32(attrs, 5, 1);
+         uint8_t attrindx;
+         uint64_t mair;
+-        int user_rw, prot_rw;
+ 
+         switch (out_space) {
+         case ARMSS_Root:
+@@ -2112,29 +2211,47 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         default:
+             g_assert_not_reached();
+         }
+-        xn = extract64(attrs, 54, 1);
+-        pxn = extract64(attrs, 53, 1);
+ 
+-        if (el == 1 && ptw->in_nv1) {
++        if (param.pie) {
++            int pi = extract64(attrs, 6, 1)
++                   | (extract64(attrs, 51, 1) << 1)
++                   | (extract64(attrs, 53, 2) << 2);
++            int po = extract64(attrs, 60, 3);
+             /*
+-             * With FEAT_NV, when HCR_EL2.{NV,NV1} == {1,1}, the block/page
+-             * descriptor bit 54 holds PXN, 53 is RES0, and the effective value
+-             * of UXN is 0. Similarly for bits 59 and 60 in table descriptors
+-             * (which we have already folded into bits 53 and 54 of attrs).
+-             * AP[1] (descriptor bit 6, our ap bit 0) is treated as 0.
+-             * Similarly, APTable[0] from the table descriptor is treated as 0;
+-             * we already folded this into AP[1] and squashing that to 0 does
+-             * the right thing.
++             * Note that we modified ptw->in_space earlier for NSTable, but
++             * result->f.attrs retains a copy of the original security space.
+              */
+-            pxn = xn;
+-            xn = 0;
+-            ap &= ~1;
+-        }
++            result->f.prot = get_S1prot_indirect(env, ptw, mmu_idx, pi, po,
++                                                 result->f.attrs.space,
++                                                 out_space);
++        } else {
++            int xn = extract64(attrs, 54, 1);
++            int pxn = extract64(attrs, 53, 1);
++            int user_rw, prot_rw;
+ 
+-        user_rw = simple_ap_to_rw_prot_is_user(ap, true);
+-        prot_rw = simple_ap_to_rw_prot_is_user(ap, false);
+-        result->f.prot = get_S1prot(env, mmu_idx, aarch64, user_rw, prot_rw,
+-                                    xn, pxn, ptw->in_space, out_space);
++            if (el == 1 && ptw->in_nv1) {
++                /*
++                 * With FEAT_NV, when HCR_EL2.{NV,NV1} == {1,1},
++                 * the block/page descriptor bit 54 holds PXN,
++                 * 53 is RES0, and the effective value of UXN is 0.
++                 * Similarly for bits 59 and 60 in table descriptors
++                 * (which we have already folded into bits 53 and 54 of attrs).
++                 * AP[1] (descriptor bit 6, our ap bit 0) is treated as 0.
++                 * Similarly, APTable[0] from the table descriptor is treated
++                 * as 0; we already folded this into AP[1] and squashing
++                 * that to 0 does the right thing.
++                 */
++                pxn = xn;
++                xn = 0;
++                ap &= ~1;
++            }
++
++            user_rw = simple_ap_to_rw_prot_is_user(ap, true);
++            prot_rw = simple_ap_to_rw_prot_is_user(ap, false);
++            result->f.prot = get_S1prot(env, mmu_idx, aarch64,
++                                        user_rw, prot_rw, xn, pxn,
++                                        ptw->in_space, out_space);
++        }
+ 
+         /* Index into MAIR registers for cache attributes */
+         attrindx = extract32(attrs, 2, 3);
 -- 
 2.43.0
 
