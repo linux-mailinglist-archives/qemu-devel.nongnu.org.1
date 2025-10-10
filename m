@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2D9BCE705
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 22:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF670BCE79D
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 22:21:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7JGE-0006EQ-Fd; Fri, 10 Oct 2025 15:58:43 -0400
+	id 1v7Jad-0000W0-8w; Fri, 10 Oct 2025 16:19:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v7JGB-0006Dz-04
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 15:58:39 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v7JaJ-0000PX-R2
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 16:19:29 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v7JG8-0003yX-1M
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 15:58:38 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-27c369f898fso32073935ad.3
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 12:58:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v7JaD-0002l6-JG
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 16:19:27 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-77f67ba775aso3664259b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 13:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760126311; x=1760731111; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ezQXHmK3CVnORIMCouSwK6LFYXNCn8yTI+4Kja1cVVw=;
- b=K3Yd5ReBe/cnaUlsczRxAY0ILbtzseNV3prx64kXa1jWKiiwFmhZw1ZmylLnLM8A4j
- aWFiQxWfwu01FgJ0njfNlyHePFeFIvAwc+Y4WNKOM2pz/vvKII/Po+M4/jfMR41A6+ge
- r6ZTjxWKcFfRWmJPzaYcM/VVfrcO9/NMb3eZz6rJpTwXKfRX9rhYnhQgAsRV9MKVxzgi
- jznlvBsAKYfiop2yPq1Jae5kKf235+MVkf+osFvN1psd+9j6uPOrEuLw7/PMm5uN3T/E
- 1U5V3HXPuHe6Poc4x8CuOJQkzILbBoedBQCA18Ud7mxF+0gdjid1S/tTN2rp7ly4ha+I
- NtKw==
+ d=linaro.org; s=google; t=1760127559; x=1760732359; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tH9GqwR+qr0m9WVewY/OnVPs0CJUBzEaBal5CzQgOi8=;
+ b=uIedGAuQ7+swakgXdtCc1tqCX1HMQKXVV9qeflsv4cUXcWwvCEkG2Z7i1Vo0m/O5gq
+ o/hKcoZSqIxDN6AnWOBrWi8SJmb+Tx25Wo8Kag28zqMClRzX1g5kWgIVMPbnoTNM7bxW
+ LaQxNkv6vbq1aKteeiEc3zdp11e1kdCt5v1BdKOJA9X2HebpMcKIk0L6xd49uSo4SwCU
+ 1gMLbhwSei30zrjE0ZeMSgQrnPd8m7bCOgtRvMkyqbBckUDYEQiGmVHYe6drvzSUAtId
+ s8PTgCQdfA3CZCnaq6LSip0Pu7fOuqYDkPt6nYpWqiHpVT44w9foblX0n+eZZfHGUxuq
+ q6Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760126311; x=1760731111;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ezQXHmK3CVnORIMCouSwK6LFYXNCn8yTI+4Kja1cVVw=;
- b=ox1E6QHrwztYMNaVD6PAgAj8CuANom6ttNf4EbJ6CNjhmJWM/8ed1vFL0fEujzXFPr
- 6+IGd+HLVrpONOul66HQRCc7/tIVht1H9cPCKCva7yZbRPjoUhTmlFQGM6NASUa1AUG5
- K71Upm1hwkj2Lz+1lg5UqFNfQLW8tS1tYdUKO8nCqt0qc7Iy4vkGEqJaKMPFyKgeCxAk
- Zg1BuoAFW1UFVFRUpaDtZhIiDYQKP6NQ77HCeCEs23Kh1gzpGdiVKguMvZDeu/kzMthy
- dTNYrzVkmPEjoXpM16YMZiU27eghC4vVrTwQMxvILbDamaQeHOGpO13C2dZrsTzeAuYu
- Xm3g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVXUPTawG9AIjnU9itum/3EUdNXg5b8rAWEpGCTdlAqkHa3g1MTifW0m7EmqPmHt6kdyKCIWa/5WdZQ@nongnu.org
-X-Gm-Message-State: AOJu0YxSGaWdkvbS23j+KFGoQGmje99b0eK2IyXT9rkZJPZauC8UUUeh
- 0kf7MRLwp5UyHt7c7Xeen3aHap3EesXYq0Kz04qnUcCG3UWD5ZOi3ZOvVMPgNrXJ7GM=
-X-Gm-Gg: ASbGncvw3DifnnW49NHtLHVkdMKmYZuZxLrziZLUvfs2mJI29vYtuze06TWH/BKw00q
- 7YySQ00Popft+TYqxasxWHi+GzmUq697nj8NcJg3lMQZ8cVa87bN14zyt9cDDgDqEy5rRNJLjKJ
- Z4w5xkUcalYbM70kANRK7k4s0VkJ8pBbMpmKPuLvwepW8KS5nanwiGWqGs4H/w80MIBf0GI9Mpu
- 0eQwh55GIt3e9Libbw/EuSpZ13lShYEJoq3RRzgDJEA9YBdv5R+HGY+oxoysiyoVd2ChUJxNUOV
- kmqTHhvttdun3c8ypHNNI4k0jotADqzhp8OfoNfgzTHYJF2Dbzop1EkJIMXSCE0oSc/5FRwmsaw
- LcnAly2bTXDRimh+vfcknZleqS6Wy7y6C1q6knptYqqFvWTEthYhVqN2LLaGRnTU4N5a7
-X-Google-Smtp-Source: AGHT+IHlKfZKFBqb1wDzo2j9//e6xI1ISE7ErzsRLniWbmBGhcP57FMpB8tWx0INnGb6cPJmbOORcA==
-X-Received: by 2002:a17:903:1585:b0:267:af07:6526 with SMTP id
- d9443c01a7336-29027303346mr167426485ad.55.1760126310986; 
- Fri, 10 Oct 2025 12:58:30 -0700 (PDT)
-Received: from [192.168.0.102] ([186.215.58.159])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034de54c7sm65682015ad.10.2025.10.10.12.58.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Oct 2025 12:58:30 -0700 (PDT)
-Message-ID: <e3314d25-dd8a-46a9-bbfc-44fba387099a@linaro.org>
-Date: Fri, 10 Oct 2025 16:58:27 -0300
+ d=1e100.net; s=20230601; t=1760127559; x=1760732359;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tH9GqwR+qr0m9WVewY/OnVPs0CJUBzEaBal5CzQgOi8=;
+ b=vmyT5mHxfUyEIXqXcpkYxSb7LnGkInjeQaedypohRc6WPZueA4kSAnjUu9xPZ/P/2Z
+ fyeqBH2P8+mp8FPLO541euu/qaX1EP/3rc7CfQ7EnGfFk8+uyEORCVEO28+eixIdyBcY
+ DwsWCF6hSQtNHR1/VDNVTireQBZto2kqffo1ug8/ICBFSq91+Wbk0NiN6YikEeVrUbsq
+ LvL38NY2LJfAAK/ukXP/huZnSPg93B8NrW8bJ/75Uc1VXZFztBHPTiRtU5GQJ1w/CfaH
+ Nb2uVF4bV9K5LmPx3LW8O3z0M81o0chSm2xzwuTM0C5hx0P12vhrS7WOmemQXan2UORH
+ yV5g==
+X-Gm-Message-State: AOJu0YyMpwcrCW+uWtVOnlAZPcsDVMx/UVAJvV27/+HAmOfecvHrDEGh
+ D17L6NyVPf2EsSL9Bk2Gov6v6FOSV4npQbd1hoAVqvRYaXmxzxvtJ5/pxk/gpWsVduCpvLtWapA
+ O160at4U=
+X-Gm-Gg: ASbGncvfIlXisyZIAE52TiHYPUh8mJzKNOcx1CMK43LYtUclFj5XKiykJ9U6QbvDrTy
+ mbgqmaxCShgLi1gl2YzAWwT//leeo61ey4HzPqVJyWaIrOjmqos0MbQLlIwX/dqCLu/bZ0E4Te+
+ Nty9NOlDO7SXLf6H5ge1b5WPW36obaEbN4vhpQLnikoKCAQTYvJHnB1xBeBrgz/w2PhxTdLVvmv
+ GqjvXyXBFn7aCQigsOYAAnSTb6fWkrYQS/y2aIgJyipeBhhV8u72ND8L8WsaSHBUNVlVkByT7FV
+ HkDccE/udRQkTXTWEXYlxl1xJFMeSMwYqX0y9OD7izCfmk6wfDl0Yr2LqWVKF++iJlM6S3H6UMG
+ /0rvr9YrLGSDfxi8ZFfkFZxxtImWirjBNc/AgFxMtGL4Ol3q9ur8=
+X-Google-Smtp-Source: AGHT+IGOTOVjZAG8K0+s1NeTd0suJH6tP99jgKSyN0SMjU7U+x/YG/bYVmZEGdslamQ5yU35tOCpEg==
+X-Received: by 2002:a05:6a20:12d6:b0:2b8:5f2d:9349 with SMTP id
+ adf61e73a8af0-32da8453c08mr16744614637.41.1760127558953; 
+ Fri, 10 Oct 2025 13:19:18 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7992dd7ee5bsm3764830b3a.85.2025.10.10.13.19.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Oct 2025 13:19:18 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH 0/7] target/arm: Implement FEAT_AIE
+Date: Fri, 10 Oct 2025 13:19:10 -0700
+Message-ID: <20251010201917.685716-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/76] target-arm queue
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20251010130527.3921602-1-peter.maydell@linaro.org>
- <35087274-df34-4528-88a2-d855768fb5af@linaro.org>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <35087274-df34-4528-88a2-d855768fb5af@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
-On 10/10/25 16:03, Richard Henderson wrote:
-> On 10/10/25 06:04, Peter Maydell wrote:
->> Hi; this is another target-arm pullreq. It's a big one but it's
->> only two series: FEAT_MEC and FEAT_GCS.
->>
->> thanks
->> -- PMM
->>
->> The following changes since commit 94474a7733a57365d5a27efc28c05462e90e8944:
->>
->>    Merge tag 'pull-loongarch-20251009' ofhttps://github.com/gaosong715/qemu into staging (2025-10-09 07:59:29 -0700)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20251010
->>
->> for you to fetch changes up to 00936783abf77ebb47a78312a2e6500c6a13d938:
->>
->>    target/arm: Enable FEAT_MEC in -cpu max (2025-10-10 13:22:05 +0100)
->>
->> ----------------------------------------------------------------
->> target-arm queue:
->>   * Implement FEAT_GCS
->>   * Implement FEAT_MEC
-> 
-> Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
-
-Could somebody give me access to https://wiki.qemu.org/ChangeLog/10.2, please?
+This feature adds new registers so that we can support 16 attribute
+indirection indexes.  It is a pre-requisite for FEAT_D128.
 
 
-Cheers,
-Gustavo
+r~
+
+
+Richard Henderson (7):
+  target/arm: Add isar feature test for FEAT_AIE
+  target/arm: Implement MAIR2_ELx and AMAIR2_ELx
+  target/arm: Add AIE to ARMVAParameters
+  target/arm: Drop trivial assert vs attrindx
+  target/arm: Use el local indexing mair_el
+  target/arm: Honor param.aie in get_phys_addr_lpae
+  target/arm: Enable FEAT_AIE for -cpu max
+
+ target/arm/cpregs.h           |  2 +
+ target/arm/cpu-features.h     |  5 ++
+ target/arm/cpu.h              |  5 +-
+ target/arm/internals.h        |  1 +
+ target/arm/helper.c           | 92 +++++++++++++++++++++++++++++++----
+ target/arm/ptw.c              |  5 +-
+ target/arm/tcg/cpu64.c        |  1 +
+ docs/system/arm/emulation.rst |  1 +
+ 8 files changed, 100 insertions(+), 12 deletions(-)
+
+-- 
+2.43.0
+
 
