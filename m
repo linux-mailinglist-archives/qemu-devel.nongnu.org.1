@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771A1BCD158
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB7FBCD50B
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:45:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7CrV-0001fT-Ua; Fri, 10 Oct 2025 09:08:45 -0400
+	id 1v7DOt-0002Cf-Ln; Fri, 10 Oct 2025 09:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Cqz-0008DB-Jn
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:08:14 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOk-00028l-IL
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:43:07 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Cpm-000451-3L
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:08:11 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3ece0e4c5faso2102466f8f.1
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOS-0007lK-Ko
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:42:55 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e326e4e99so15862295e9.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760101613; x=1760706413; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iY66G+dXvVwT2/23NgUCSTZGeIdhb8BRsuHUZ+x/2Yg=;
- b=r2z2PCQaoql4zIlvV7+OyWTkisBwEvShonDpE22jJo1bw5x1iR8sT65MQn9kPN39Vb
- 5SHQT0dMQrL9MCCn6fiG7gRyCPerH02GOD5cOaRsqi0hLUfSAseHhWSp9COH5es/B/2V
- CvG6jU7U3h0nbWXYXd86Bfx57JCHCC2TpCgljBzzTHOwJdiS8OTl7R587W/0XLb61T9J
- l2xKkTddG7dOa5wdQjAMQ8ovSDNYJqQTHpA4m9LRwwASQcdwYvf/hfFZFRUh+MjNFFQn
- HrMgNigBhvsDD8otPdHrTWfPMkd2wIbw3H3AbwS8eUqYE7Uk5XSmmNSFnvPRgMMVYKn5
- i5Qw==
+ d=linaro.org; s=google; t=1760103748; x=1760708548; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wOPl/nrAi0ixH4lZrdaPSGiz7HUM8lbVEHaB1k/Dl1M=;
+ b=eS/lSaRYaNKKaW8M/FhZGoZLyZJ8BSLKVtMsbzquuoJPqsGvW3BWjWTS1Bwrf7L2TR
+ MxRlh8bL9KR1Q/WysY53OFLCf3iREKX/hoe5Gpbh4SjLU8FBsaACLA/v5OE7MSp3ZX5/
+ q5/bfo5M57bnbq10WfStwRX2SPRJovXK4V2zANT0mfP69yIrHp+OMKkgqqPL9tEiYB7p
+ TOREqCQ67PVkYcvWNhQxNDGGSEujc3+agErI39BdRf2aARNJ19j4mW9uREqPjn88qgEY
+ DtOEOAgEQthJgkPKsIuGkq3S6FxfZKaq0wVsrRRwUYZ5etlMwY+wfNfrBGqPycMWP2EF
+ 5jqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760101613; x=1760706413;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iY66G+dXvVwT2/23NgUCSTZGeIdhb8BRsuHUZ+x/2Yg=;
- b=Nkg5pRqHNKPE4hubTVBj0xrdt3a3LYbL6c3crsfY3HwobjP/kbWpovlikGFSwV6K4D
- GNc7pAmYRXOKsZyWXmFubuh/bEoE3N4zSgVHnG1S/vy9NIeXDoPmQyZBUHmBOFX1pXu4
- oQFTypz0eLAv8uGhNkjgimjkwy3wZtTY/Vkj/fD7Y2EoSB/91sJSrvuzodNsE0rDYumA
- vjq15FgwsggFWOVAeum5Jyxf0h9BsePv5QFNA48WC7xankDturXYJuoGd/TE1pixkfYb
- z9LOTz+azv9XaWhtI2YxpM9ASCjz2gEcJZshvDAYJL+edYcKxmCIciURfXJcqE83q72G
- SVmg==
-X-Gm-Message-State: AOJu0Yxx81f4xdRXlN1xlUKbiALwJraFYnEiZgb2CSk6/2GvbneCsPm1
- g90A5kAp2lFhYulItaE5s3RiUmGD9zlwP4oBYQV9q6smY/MJvRRYxhQHl75fDIdWz/adDDrIjpS
- hiS4b
-X-Gm-Gg: ASbGncvVGVJe7Hx2n3K3SOoKhTCN/4QA+TX+ROXV1hqC+iQSYg8WY4MZBqtFEtinJpk
- nEl7f4tX5e5V891YyDo665vR2EWqClaD/KZUlii8R8ap7D2xV4IAkiBFT96+YJw6JOWIumOvT4W
- ZRVGRLi0dIkuxj51cLg4P85VDRwatJiZwbgngGV76oQ9uU2lLzAIs2X/iHG5+SWHDb3N87tW3WH
- gOF0jNZFryg0E32Qxt9ejq74BAe0daRrsNOYJj8aue3raEk2D67cPVT1n+vKUy7beilgmP2nTf8
- /W/YS1UrwsoF46LpQYXU2zkFNJ9w326m+vuSO2Ur7nHyofkwkbopSFmRYhhs58A8lWn8Bw1kdJp
- Lvqvl+KMa+8J4FYAg/fuGAg0+TeFrEytiOMSckhHp2aRCm8X5QgHb3kxlQF/1Qw==
-X-Google-Smtp-Source: AGHT+IGI1fzmmj8GRvBC0NP1eU9rQm2gr4Ow4sGvkoOf7WOsrBQmtgNrXU7MS909AH7RgoJAhuj+uA==
-X-Received: by 2002:a05:6000:24ca:b0:3ea:15cd:ac3b with SMTP id
- ffacd0b85a97d-4266e7e15eemr6682087f8f.30.1760101612818; 
- Fri, 10 Oct 2025 06:06:52 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.51
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 06:06:52 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1760103748; x=1760708548;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wOPl/nrAi0ixH4lZrdaPSGiz7HUM8lbVEHaB1k/Dl1M=;
+ b=VdLUr4gKf6p6cSq1ZZAzAbjsoccdqAKbIkVzElaCrn/MrNGBTfRaBdhdJ8Kmybbn5n
+ Blm5foBaE1w4nBQG66ORUb2KTTCYtJtmQ/DP5JzuaWuXfB1orjfTgru1WdiBgVETwwA8
+ pzxGUPDxL0ZZYpT8qOzTa7BLp0ig/bxQPwESKuRZOccs3diFwQAtcg6M50XLtmdEq96m
+ fz1f16PzeO+SJWouwKMYlcDMi6DATNvIp+udntXT0Z/kGaiJzeFaWbJ11fCIVkT5Jdbd
+ y8PCzh4UmmYJkn1hSTjaB8a+PfaByUeYmO3wsPhvtjj3P2+H/Hc6D8+t5crJ1unbiSOU
+ 6uMA==
+X-Gm-Message-State: AOJu0YzmSd9KXXWZmt8FupySKYAbJrcvMwwCcHZWmXz9GyeAKEm+hyCD
+ up8gIMPPc3tSlBH3ZVSm1mzZz5s2BIxA01Pmun0u1mIH/NcLpM3OKqtxsESYMAl7iwz/+OG5Toq
+ 7VmMMlY62hQ==
+X-Gm-Gg: ASbGncuVbR1NeWDrfMVOQK3M3/PaeQ+beIMGxVJyA2LmQxdKuJLl1jhTyhbK8+2rLmk
+ JZh1SrhYDqj045WabEG+bGoyKd5JmtqLb7ukcSFydBdX8GzwwO2Z+xhcm3adoVCwfrP1WdR4par
+ ZSyLysUy8AHi1Staf3NsftAOA7hMKApPk0Vf01rO6NYu55heFEM7B2vI4icckIwGFqinCWPSor2
+ AXaeoksdUsFZ2nbHAwmovfEpAzyR2kciZVdoQwS7+g1/ta309LFjsd9L7/VfFCqQc6Fv7gVynjH
+ 7hGOmHj9DIHV7TlcFxdfZb1s3+vLtrmmL/omXiPQjRsDT4m4GxWRjJK/4DKyojDk4XuxD7Tcpiq
+ v/gfvR4WANW9+aASgCeBSGRsCc3AlUZpo6jaNJh+MpfklsSilIHryr2XdgknXbBW63BMYmjIdQS
+ 1iIVAKcrExeyR9KRO0su0=
+X-Google-Smtp-Source: AGHT+IE9Xse/TMz9zXvsaEJIYNMbgxnXqwWpoHcfcvrcXhGLo97dN4HXchfSpA412NSEcUNe5pY/qA==
+X-Received: by 2002:a05:6000:4027:b0:401:2cbf:ccad with SMTP id
+ ffacd0b85a97d-425829e78e9mr11277587f8f.17.1760103748337; 
+ Fri, 10 Oct 2025 06:42:28 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-426ce5e83e1sm4395867f8f.51.2025.10.10.06.42.27
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 10 Oct 2025 06:42:27 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 76/76] target/arm: Enable FEAT_MEC in -cpu max
-Date: Fri, 10 Oct 2025 14:05:27 +0100
-Message-ID: <20251010130527.3921602-77-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251010130527.3921602-1-peter.maydell@linaro.org>
-References: <20251010130527.3921602-1-peter.maydell@linaro.org>
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/16] overall: Replace HOST_BIG_ENDIAN #ifdef with runtime
+ if() check
+Date: Fri, 10 Oct 2025 15:42:09 +0200
+Message-ID: <20251010134226.72221-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,61 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+Replace compile-time #ifdef with a runtime check to ensure all code
+paths are built and tested. This reduces build-time configuration
+complexity and improves maintainability.
 
-Advertise FEAT_MEC in AA64MMFR3 ID register for the Arm64 cpu max as a
-first step to fully support FEAT_MEC.
+No functional change intended.
 
-The FEAT_MEC is an extension to FEAT_RME that implements multiple
-Memory Encryption Contexts (MEC) so the memory in a realm can be
-encrypted and accessing it from the wrong encryption context is not
-possible. An encryption context allow the selection of a memory
-encryption engine.
+Philippe Mathieu-Daudé (16):
+  linux-user/arm: Checkpatch style cleanups
+  linux-user/arm: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  ui: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  net: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  disas: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  hw/core/loader: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  hw/display: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  hw/virtio: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/alpha: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/arm: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/mips: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/ppc: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/riscv: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/s390x: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  target/sparc: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
+  util/bitmap: Replace HOST_BIG_ENDIAN #ifdef with runtime if() check
 
-At this point, no real memory encryption is supported, but software
-stacks that rely on FEAT_MEC should work properly.
+ include/hw/virtio/virtio-access.h       |   6 +-
+ include/hw/virtio/virtio-gpu-bswap.h    |   6 +-
+ target/arm/cpu.h                        |   8 +-
+ target/arm/tcg/translate-a64.h          |   5 +-
+ disas/disas-host.c                      |   6 +-
+ hw/core/loader.c                        |   5 +-
+ hw/display/artist.c                     |  12 +-
+ hw/display/vga.c                        |  20 +-
+ hw/display/virtio-gpu-gl.c              |   8 +-
+ hw/display/virtio-gpu-rutabaga.c        |   8 +-
+ hw/virtio/vhost.c                       |   7 +-
+ linux-user/arm/nwfpe/double_cpdo.c      |  12 +-
+ linux-user/arm/nwfpe/fpa11_cpdt.c       |  77 +-
+ net/net.c                               |  14 +-
+ target/alpha/translate.c                |  11 +-
+ target/arm/tcg/sve_helper.c             |  10 +-
+ target/arm/tcg/translate-sve.c          |  22 +-
+ target/arm/tcg/translate-vfp.c          |   8 +-
+ target/arm/tcg/translate.c              |   6 +-
+ target/mips/tcg/msa_helper.c            | 889 ++++++++++++------------
+ target/ppc/arch_dump.c                  |   9 +-
+ target/ppc/int_helper.c                 |  28 +-
+ target/ppc/kvm.c                        |  25 +-
+ target/riscv/vector_helper.c            |  32 +-
+ target/s390x/tcg/translate.c            |   6 +-
+ target/sparc/vis_helper.c               |  18 +-
+ ui/vdagent.c                            |  16 +-
+ ui/vnc.c                                |   6 +-
+ util/bitmap.c                           |  19 +-
+ target/ppc/translate/vmx-impl.c.inc     |  14 +-
+ target/ppc/translate/vsx-impl.c.inc     |   6 +-
+ target/riscv/insn_trans/trans_rvv.c.inc |  16 +-
+ target/s390x/tcg/translate_vx.c.inc     |   6 +-
+ tcg/ppc/tcg-target.c.inc                |  24 +-
+ 34 files changed, 656 insertions(+), 709 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-id: 20251006001018.219756-4-gustavo.romero@linaro.org
-Message-ID: <20250711140828.1714666-7-gustavo.romero@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/emulation.rst | 3 +++
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 4 insertions(+)
-
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 4496178c48e..bf81da124a0 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -94,6 +94,9 @@ the following architecture extensions:
- - FEAT_LSE2 (Large System Extensions v2)
- - FEAT_LSE128 (128-bit Atomics)
- - FEAT_LVA (Large Virtual Address space)
-+- FEAT_MEC (Memory Encryption Contexts)
-+
-+  * This is a register-only implementation without encryption.
- - FEAT_MixedEnd (Mixed-endian support)
- - FEAT_MixedEndEL0 (Mixed-endian support at EL0)
- - FEAT_MOPS (Standardization of memory operations)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index cc42dfdf561..1bffe66e81c 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1327,6 +1327,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = GET_IDREG(isar, ID_AA64MMFR3);
-     t = FIELD_DP64(t, ID_AA64MMFR3, TCRX, 1);       /* FEAT_TCR2 */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SCTLRX, 1);     /* FEAT_SCTLR2 */
-+    t = FIELD_DP64(t, ID_AA64MMFR3, MEC, 1);        /* FEAT_MEC */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SPEC_FPACC, 1); /* FEAT_FPACC_SPEC */
-     t = FIELD_DP64(t, ID_AA64MMFR3, S1PIE, 1);    /* FEAT_S1PIE */
-     t = FIELD_DP64(t, ID_AA64MMFR3, S2PIE, 1);    /* FEAT_S2PIE */
 -- 
-2.43.0
+2.51.0
 
 
