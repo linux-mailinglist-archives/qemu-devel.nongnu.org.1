@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96D6BCC1BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E78BCC1D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:24:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v78OG-00028C-2v; Fri, 10 Oct 2025 04:22:16 -0400
+	id 1v78OI-00029K-OI; Fri, 10 Oct 2025 04:22:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OD-00027f-2s
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OF-00028E-2N
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O6-00016t-Sy
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O6-000182-UX
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760084522;
+ s=mimecast20190719; t=1760084524;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4qF2iQktUqaSYd6/UA/G6360wiPvRXYzYs4yJ69J+Yg=;
- b=bInZ87Q4vSc+4jkafT1TSSi3jbAErY7OKNqrTY4+kKkxd9laaaJdohyAUr4wHVhHzxzEJ6
- YSl1IYEZberCaFkPNAJazHGawhMG212wCpRDO3Av9LUMImoc0051xncuKSFuQYnmICvlhC
- WR2fGQGjMwcH+Bm1TM8SO6dli1peeAM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=2ifzQRiT3Skm5xCdzRm4x7W/pYp3IEbzx1NvAaNKLhE=;
+ b=M3/uk7bnRHp5m3V5kLxeAB6vTDNa9TBcWHPy3nkuTMC2NSLvnYaYg+qt3prepSTnhTCw7/
+ 1o0udJMMO82pHTMt7w2RaRkIIsZ4YI4m+sv3ynrwQdXRdS5zbE7LuEx/HwpjNqW56iBxUm
+ UtcVJQrVn5ugEKqAZXdbquhvKJAj0KM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-ebOyLaAHMTCNNoE7eEW_Kw-1; Fri,
- 10 Oct 2025 04:22:00 -0400
-X-MC-Unique: ebOyLaAHMTCNNoE7eEW_Kw-1
-X-Mimecast-MFC-AGG-ID: ebOyLaAHMTCNNoE7eEW_Kw_1760084519
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-XgTDX_7SNoKWLHOQpX4-LA-1; Fri,
+ 10 Oct 2025 04:22:02 -0400
+X-MC-Unique: XgTDX_7SNoKWLHOQpX4-LA-1
+X-Mimecast-MFC-AGG-ID: XgTDX_7SNoKWLHOQpX4-LA_1760084521
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A78D195608F; Fri, 10 Oct 2025 08:21:59 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92ECD1800451; Fri, 10 Oct 2025 08:22:01 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 285B01800452; Fri, 10 Oct 2025 08:21:57 +0000 (UTC)
+ id 204211800452; Fri, 10 Oct 2025 08:21:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 5/9] target/s390x: Replace legacy cpu_physical_memory_[un]map()
- calls (2/3)
-Date: Fri, 10 Oct 2025 10:21:40 +0200
-Message-ID: <20251010082145.576222-6-thuth@redhat.com>
+Subject: [PULL 6/9] target/s390x: Reduce s390_store_adtl_status() scope
+Date: Fri, 10 Oct 2025 10:21:41 +0200
+Message-ID: <20251010082145.576222-7-thuth@redhat.com>
 In-Reply-To: <20251010082145.576222-1-thuth@redhat.com>
 References: <20251010082145.576222-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -84,60 +83,131 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Commit b7ecba0f6f6 ("docs/devel/loads-stores.rst: Document our
-various load and store APIs") mentioned cpu_physical_memory_*()
-methods are legacy, the replacement being address_space_*().
-
-Replace the *_map() / *_unmap() methods in cpu_[un]map_lowcore().
-No behavioral change expected.
+s390_store_adtl_status() is only called within sigp.c,
+move it and the SigpAdtlSaveArea structure definition
+there where it belongs, with other SIGP handling code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251002091132.65703-7-philmd@linaro.org>
+Message-ID: <20251002091132.65703-8-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/helper.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ target/s390x/s390x-internal.h |  1 -
+ target/s390x/helper.c         | 40 -----------------------------------
+ target/s390x/sigp.c           | 40 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 40 insertions(+), 41 deletions(-)
 
+diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+index 1fb752aa1d6..a49dca94a75 100644
+--- a/target/s390x/s390x-internal.h
++++ b/target/s390x/s390x-internal.h
+@@ -325,7 +325,6 @@ hwaddr s390_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+ hwaddr s390_cpu_get_phys_addr_debug(CPUState *cpu, vaddr addr);
+ #define S390_STORE_STATUS_DEF_ADDR offsetof(LowCore, floating_pt_save_area)
+ int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch);
+-int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len);
+ LowCore *cpu_map_lowcore(CPUS390XState *env);
+ void cpu_unmap_lowcore(CPUS390XState *env, LowCore *lowcore);
+ #endif /* CONFIG_USER_ONLY */
 diff --git a/target/s390x/helper.c b/target/s390x/helper.c
-index a6d4a1ce05d..b01b7d9bbbf 100644
+index b01b7d9bbbf..84321e1d68e 100644
 --- a/target/s390x/helper.c
 +++ b/target/s390x/helper.c
-@@ -26,6 +26,7 @@
- #include "hw/s390x/ioinst.h"
- #include "target/s390x/kvm/pv.h"
- #include "system/hw_accel.h"
-+#include "system/memory.h"
- #include "system/runstate.h"
- #include "exec/target_page.h"
- #include "exec/watchpoint.h"
-@@ -107,11 +108,13 @@ LowCore *cpu_map_lowcore(CPUS390XState *env)
- {
-     LowCore *lowcore;
-     hwaddr len = sizeof(LowCore);
-+    CPUState *cs = env_cpu(env);
-+    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
+@@ -248,43 +248,3 @@ int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch)
  
--    lowcore = cpu_physical_memory_map(env->psa, &len, true);
-+    lowcore = address_space_map(cs->as, env->psa, &len, true, attrs);
- 
-     if (len < sizeof(LowCore)) {
--        cpu_abort(env_cpu(env), "Could not map lowcore\n");
-+        cpu_abort(cs, "Could not map lowcore\n");
-     }
- 
-     return lowcore;
-@@ -119,7 +122,9 @@ LowCore *cpu_map_lowcore(CPUS390XState *env)
- 
- void cpu_unmap_lowcore(CPUS390XState *env, LowCore *lowcore)
- {
--    cpu_physical_memory_unmap(lowcore, sizeof(LowCore), 1, sizeof(LowCore));
-+    AddressSpace *as = env_cpu(env)->as;
-+
-+    address_space_unmap(as, lowcore, sizeof(LowCore), true, sizeof(LowCore));
+     return 0;
+ }
+-
+-typedef struct SigpAdtlSaveArea {
+-    uint64_t    vregs[32][2];                     /* 0x0000 */
+-    uint8_t     pad_0x0200[0x0400 - 0x0200];      /* 0x0200 */
+-    uint64_t    gscb[4];                          /* 0x0400 */
+-    uint8_t     pad_0x0420[0x1000 - 0x0420];      /* 0x0420 */
+-} SigpAdtlSaveArea;
+-QEMU_BUILD_BUG_ON(sizeof(SigpAdtlSaveArea) != 4096);
+-
+-#define ADTL_GS_MIN_SIZE 2048 /* minimal size of adtl save area for GS */
+-int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len)
+-{
+-    SigpAdtlSaveArea *sa;
+-    hwaddr save = len;
+-    int i;
+-
+-    sa = cpu_physical_memory_map(addr, &save, true);
+-    if (!sa) {
+-        return -EFAULT;
+-    }
+-    if (save != len) {
+-        cpu_physical_memory_unmap(sa, len, 1, 0);
+-        return -EFAULT;
+-    }
+-
+-    if (s390_has_feat(S390_FEAT_VECTOR)) {
+-        for (i = 0; i < 32; i++) {
+-            sa->vregs[i][0] = cpu_to_be64(cpu->env.vregs[i][0]);
+-            sa->vregs[i][1] = cpu_to_be64(cpu->env.vregs[i][1]);
+-        }
+-    }
+-    if (s390_has_feat(S390_FEAT_GUARDED_STORAGE) && len >= ADTL_GS_MIN_SIZE) {
+-        for (i = 0; i < 4; i++) {
+-            sa->gscb[i] = cpu_to_be64(cpu->env.gscb[i]);
+-        }
+-    }
+-
+-    cpu_physical_memory_unmap(sa, len, 1, len);
+-    return 0;
+-}
+diff --git a/target/s390x/sigp.c b/target/s390x/sigp.c
+index 5e95c4978f9..1464be76983 100644
+--- a/target/s390x/sigp.c
++++ b/target/s390x/sigp.c
+@@ -172,6 +172,46 @@ static void sigp_store_status_at_address(CPUState *cs, run_on_cpu_data arg)
+     si->cc = SIGP_CC_ORDER_CODE_ACCEPTED;
  }
  
- void do_restart_interrupt(CPUS390XState *env)
++typedef struct SigpAdtlSaveArea {
++    uint64_t    vregs[32][2];                     /* 0x0000 */
++    uint8_t     pad_0x0200[0x0400 - 0x0200];      /* 0x0200 */
++    uint64_t    gscb[4];                          /* 0x0400 */
++    uint8_t     pad_0x0420[0x1000 - 0x0420];      /* 0x0420 */
++} SigpAdtlSaveArea;
++QEMU_BUILD_BUG_ON(sizeof(SigpAdtlSaveArea) != 4096);
++
++#define ADTL_GS_MIN_SIZE 2048 /* minimal size of adtl save area for GS */
++static int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len)
++{
++    SigpAdtlSaveArea *sa;
++    hwaddr save = len;
++    int i;
++
++    sa = cpu_physical_memory_map(addr, &save, true);
++    if (!sa) {
++        return -EFAULT;
++    }
++    if (save != len) {
++        cpu_physical_memory_unmap(sa, len, 1, 0);
++        return -EFAULT;
++    }
++
++    if (s390_has_feat(S390_FEAT_VECTOR)) {
++        for (i = 0; i < 32; i++) {
++            sa->vregs[i][0] = cpu_to_be64(cpu->env.vregs[i][0]);
++            sa->vregs[i][1] = cpu_to_be64(cpu->env.vregs[i][1]);
++        }
++    }
++    if (s390_has_feat(S390_FEAT_GUARDED_STORAGE) && len >= ADTL_GS_MIN_SIZE) {
++        for (i = 0; i < 4; i++) {
++            sa->gscb[i] = cpu_to_be64(cpu->env.gscb[i]);
++        }
++    }
++
++    cpu_physical_memory_unmap(sa, len, 1, len);
++    return 0;
++}
++
+ #define ADTL_SAVE_LC_MASK  0xfUL
+ static void sigp_store_adtl_status(CPUState *cs, run_on_cpu_data arg)
+ {
 -- 
 2.51.0
 
