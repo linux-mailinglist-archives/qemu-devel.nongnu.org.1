@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058BEBCBC3D
+	by mail.lfdr.de (Postfix) with ESMTPS id 7645EBCBC3E
 	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 08:20:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v76T5-0001jA-Oj; Fri, 10 Oct 2025 02:19:07 -0400
+	id 1v76TA-0001m1-CC; Fri, 10 Oct 2025 02:19:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v76T2-0001h0-AQ
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 02:19:04 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v76T8-0001lR-Db
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 02:19:10 -0400
 Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v76Sz-0001HJ-Oy
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 02:19:03 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v76T1-0001HX-Ua
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 02:19:10 -0400
 Received: by mail-wm1-x343.google.com with SMTP id
- 5b1f17b1804b1-46e6c8bc46eso9721875e9.3
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 23:18:59 -0700 (PDT)
+ 5b1f17b1804b1-46b303f755aso13170435e9.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 23:19:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760077137; x=1760681937; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760077142; x=1760681942; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=74/Rvt9xzTS9fCSsduCNSLfQP+B5/7nDG11bj0TrU+M=;
- b=a1iAUAgOhu+0ixKtLrUhpmPznQz+bRidXlnvAsRqaUS9UAnYHw5+hlXvoFe7L2cJWx
- ZfVVEP4JImENrFA4EfOqJSeFQQLQi3huMiLp4oyim398Bz0gKqSLssgSAVkEa0Oh5KjV
- h/x0bEFTgAnMLJTRpa7JblmBypSsMhI/ziVFbK/SICz6lSN+mx3lAOo9Bb0yLgX0Oj+p
- M9JcfdZas0YyEL87GHxRXSOJH+cIxTyyk/ivlRjIrSc6tY5T78u9HN7nl9qwCuAFtSEz
- kQh+RpcyMAlZgUEYRlB8O3WDr5gQtsTcyyqqmZk2L+A0bTu/AANNmjMu2sLssguir5aX
- +PvA==
+ bh=bVqaOgMWNzPQ72Xk8r5FC1qOKhB0mUP3ugx2Q83BZeI=;
+ b=oXiBUFywPGlAoBfhstq5vobRFG8n3jS7WPhR4F86YLHivxMdSsaPvutezFdzkR0jXA
+ 8+t2cdmiPzpUT83DBJk4Td1Hn/BPKb1vExR5BygIZzznrqRSyMvqbYHyQKVUgxIz55+v
+ Dk8f3p8KA8oq+T7je4bCs60wZZvcN1dnycKlnphgHyi2lfyDTFz8+jy/aTCrVocAKmmj
+ 2Rjr+wauy+JHJLzT+JiR/QqeLi5PYmiRstVxQ/gm2UGXY770+nJD/xNc+MU+7GdvUAkm
+ /1hwrnH19peHtCQ8rbC7qRR8H0LObwchPCF/XU+cI1zzNWBzQ8egGngRQ/wC08SBaXM8
+ XwAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760077137; x=1760681937;
+ d=1e100.net; s=20230601; t=1760077142; x=1760681942;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=74/Rvt9xzTS9fCSsduCNSLfQP+B5/7nDG11bj0TrU+M=;
- b=jyZFAj29nd0pPJe4c+D7pK9EuM22XDqvkJtIhPBWxutfuwmQi0tMPInYybuRp6pd2g
- Nr7g2hPxU5+0ZAcxWC+iCLr6Mb6Yh/J4SWI7O/kalGzyCfd5rhQKJFFB5k31HN42Sz/Y
- WxqqeRfFloafDmy9YVCr0uUltB92nG9HcYhYuR8IdW+SGPZ0sSVPPCAl+Wa4Dtb4rsx1
- 9p9anzJcnX15hCwa/RBWPUeb0RC5mAePaESDyH1Q4c51G2YMYsHhh4dSKGa47LgP2+Oy
- 26DgI75hjNTgLczqcg8BF1hqCO+dJkJHN6NqFeqDybAEplF8bzizEHFKmt0XFpHYxUtG
- vITw==
-X-Gm-Message-State: AOJu0YzbbaE5uo8JsjdSgMubULunZ4KxWDbY5KyOwYS8VhObUgIq7kgv
- e54WvUjPKlPdnfAu5CUxBA1zBD0MWJaglynnH7QbU7GEl5xZfanSONhuFl6WTPpP47qouDLGRJb
- z/3wGjeFst0MA
-X-Gm-Gg: ASbGncv4UHFKt/khuZ10K37fHAeBBphloD1YjhYhCfKkChc+JV2eFNqHM0AyVdfk4T1
- ruTWaj151wC+ffm2yESrNVl9bs3N5G8rJydgTDHg1BW6s6nJ7Rd0XE6MkM4LrVy6mTD09S1k1/d
- 1SS2WbjzPw564nt9AT0cAsWFMWKwNVrTErYq1BTmwdUT2yKvFI5L7lWo5CxduLrlvvwFKgxtYr4
- 9eksslMHY93Q0uQm5DTsKmh7pU9Nw8ek8kzfPNhahF8gQ1KVV319//elRwfxiWmtuuujwUVKQXG
- CgCNWXJ8dsW9HzHZY7lv/CWnpRTmqlYs1f83EpjDtN/4kp7n9htyrVVUfGyctAMNGvPX6kNSogC
- bORfdps1mlUNkPJflN9cqipnx3iR/Reuow9jdMDVihKP2Hml55HY8DHX5RAn2jfCIY93vMW9SMs
- iHpiOkfyn6+ZyPmYhQugmXGCzS
-X-Google-Smtp-Source: AGHT+IHbUXpWdQ/Sl4NeVsEe2ZoNLivsjOsukVXkPfl+2FWwOGiq6nhJUHxhxdgcY2XaTGRTrSZTKg==
-X-Received: by 2002:a05:600c:46c7:b0:46e:36f2:2a62 with SMTP id
- 5b1f17b1804b1-46fa9b08c22mr67037975e9.27.1760077137084; 
- Thu, 09 Oct 2025 23:18:57 -0700 (PDT)
+ bh=bVqaOgMWNzPQ72Xk8r5FC1qOKhB0mUP3ugx2Q83BZeI=;
+ b=JV18y9xTwFBjFLtHLpYPSqdwWAqwwFxhHRAOmCSy8WkRGykaf+avsC35Dyes97zhXM
+ 6VJthC6hMqHYqSc2MR2ujhGKv0AEDRvoKT7fya47qc+iMCr/aaH6pN3PpL2z8Imqi/bL
+ K03PPaWu4tcf4y2euoy6pWiuMQfPB2KplBHopdO/pfu5bgGU53B5Kuu+s1AhoKoXkDc5
+ MwpwaQZRa31KtX0AkyZ82nSMoTqhz2P2IQczoVeeNgjbfTBrbVPocCRYTRjh3QLcHCF8
+ /MRmaEH8KsZb15pvRfA2G9n4YP9V77A3jDdjLIB5MjKqQr+b5pUhdqfNwUhwKCM6E0S/
+ /3kw==
+X-Gm-Message-State: AOJu0YzH4y7zyxSVCbCeuzVyF9dvXuQ2ZuQCJOf36u9q4VkjNX1PQ5y8
+ xm8HmFrjvAR9mW3Beh160Y9UCEGy9Z+XYjtzhkqe3Yx8vv0bQyoOubeWYmkwEH7X8NKwQgqjnuA
+ GLrmaP25FlyGt
+X-Gm-Gg: ASbGnctIVQW957hYCXq5WQLgzkJvVhqMRAAJNaMjLjFqHpqfthBff4RKprGJRJ6WGGB
+ ffeTZ6XQ8e91X7J/ZdqDFG9M8od+yvG2C690uiAnTRHDiaAvdfVvG1VLhCAlstjxBQD7KzngGBj
+ J9Vvw6iJQDG1a2SpqJ6nO9B0nxC8LcLsiqxVIe+fzmColQ4C1DxmG9AeKxW18t5/mM2D/1Jt4qq
+ Ld1iduXw+77HL5DZcNBLlvgxEHOwlu5c/10sdcjda+JspE62SGAqQvvFQFvSXdJlaKa7gb62VLy
+ 1yZUMvyMvS1VNMUe3mKe2feF0q3ATVN9Z7ypC8P8FALxtIePFz3v0MfXPRlZBi/aRDebcwOzGDB
+ JvtayyLi43Hm+Lkt0Z/vdXkojYl5FW1LFOJUW9a1J69rsTi5OlztFowGNx+wz0O3XASJmqgCuxv
+ 5TVdrHt8AVlAarQZcOoqkzWQU0
+X-Google-Smtp-Source: AGHT+IHPiCYllZmN+Ue5R2/Xetr9YVQVRsuvluIfpH34oyRCZokvL1DKroCcEJg18/hTRSEhesZtgA==
+X-Received: by 2002:a05:600c:c083:b0:46f:b32e:5292 with SMTP id
+ 5b1f17b1804b1-46fb32e5338mr21753845e9.8.1760077141881; 
+ Thu, 09 Oct 2025 23:19:01 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb4989601sm27999805e9.9.2025.10.09.23.18.56
+ 5b1f17b1804b1-46fb489194dsm30421395e9.12.2025.10.09.23.19.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 23:18:56 -0700 (PDT)
+ Thu, 09 Oct 2025 23:19:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>, Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/6] hw/hppa: Move CPU::kernel_entry ->
- Machine::boot_info.gr25
-Date: Fri, 10 Oct 2025 08:18:34 +0200
-Message-ID: <20251010061836.45739-5-philmd@linaro.org>
+Subject: [PATCH v2 5/6] hw/hppa: Move CPU::cmdline_or_bootorder ->
+ Machine::boot_info.gr24
+Date: Fri, 10 Oct 2025 08:18:35 +0200
+Message-ID: <20251010061836.45739-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010061836.45739-1-philmd@linaro.org>
 References: <20251010061836.45739-1-philmd@linaro.org>
@@ -101,10 +101,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current code uses CPUHPPAState::@kernel_entry to hold either:
- - kernel entry virtual address
- - firmware interactive mode
-and CPUHPPAState::@cmdline_or_bootorder to either:
+Current code uses CPUHPPAState::@cmdline_or_bootorder to hold either:
  - kernel &cmdline physical address
  - firmware boot order
 
@@ -112,128 +109,85 @@ Besides, these variables don't belong to CPUHPPAState, they
 depend on how the machine is started, and only apply to the
 first CPU.
 
-The MachineReset handler initialize some registers of the
-first CPU. Hold these register reset values in the MachineState,
-initializing them once in machine_HP_common_init_tail().
-
-Start by addressing the kernel entry and firmware interactive
-mode values, stored in $GP25.
+Initialize the register value the reset handler needs ($GP24)
+once in machine_HP_common_init_tail().
 
 Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  target/hppa/cpu.h |  1 -
- hw/hppa/machine.c | 28 ++++++++++++++++------------
- 2 files changed, 16 insertions(+), 13 deletions(-)
+ hw/hppa/machine.c | 14 +++++++-------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index e14f238827b..f54634db7f1 100644
+index f54634db7f1..6c9bcbd9078 100644
 --- a/target/hppa/cpu.h
 +++ b/target/hppa/cpu.h
 @@ -272,7 +272,6 @@ typedef struct CPUArchState {
  
      bool is_pa20;
  
--    target_ulong kernel_entry; /* Linux kernel was loaded here */
-     target_ulong cmdline_or_bootorder;
+-    target_ulong cmdline_or_bootorder;
      target_ulong initrd_base, initrd_end;
  } CPUHPPAState;
+ 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index cddca69b938..7066f6d575c 100644
+index 7066f6d575c..b6f15bc61a3 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -41,6 +41,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(HppaMachineState, HPPA_COMMON_MACHINE)
- 
- struct HppaMachineState {
+@@ -43,6 +43,7 @@ struct HppaMachineState {
      MachineState parent_obj;
-+
-+    struct {
-+        uint64_t gr25;
-+    } boot_info;
+ 
+     struct {
++        uint64_t gr24;
+         uint64_t gr25;
+     } boot_info;
  };
- 
- #define MIN_SEABIOS_HPPA_VERSION 12 /* require at least this fw version */
-@@ -353,10 +357,10 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
- {
-     const char *kernel_filename = machine->kernel_filename;
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    HppaMachineState *hms = HPPA_COMMON_MACHINE(machine);
-     DeviceState *dev;
-     PCIDevice *pci_dev;
-     long size;
--    uint64_t kernel_entry = 0;
-     MemoryRegion *addr_space = get_system_memory();
-     MemoryRegion *rom_region;
-     SysBusDevice *s;
-@@ -468,7 +472,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     if (kernel_filename) {
-         const char *kernel_cmdline = machine->kernel_cmdline;
-         const char *initrd_filename = machine->initrd_filename;
--        uint64_t kernel_low, kernel_high;
-+        uint64_t kernel_entry, kernel_low, kernel_high;
- 
-         size = load_elf(kernel_filename, NULL, linux_kernel_virt_to_phys,
-                         NULL, &kernel_entry, &kernel_low, &kernel_high, NULL,
-@@ -484,6 +488,8 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-                       "-0x%08" PRIx64 ", entry at 0x%08" PRIx64
-                       ", size %" PRIu64 " kB\n",
-                       kernel_low, kernel_high, kernel_entry, size / KiB);
-+        /* Keep initial kernel_entry for first boot */
-+        hms->boot_info.gr25 = kernel_entry;
+@@ -492,8 +493,8 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+         hms->boot_info.gr25 = kernel_entry;
  
          if (kernel_cmdline) {
-             cpu[0]->env.cmdline_or_bootorder = 0x4000;
-@@ -520,19 +526,16 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-             cpu[0]->env.initrd_base = initrd_base;
-             cpu[0]->env.initrd_end  = initrd_base + initrd_size;
+-            cpu[0]->env.cmdline_or_bootorder = 0x4000;
+-            pstrcpy_targphys("cmdline", cpu[0]->env.cmdline_or_bootorder,
++            hms->boot_info.gr24 = 0x4000;
++            pstrcpy_targphys("cmdline", hms->boot_info.gr24,
+                              TARGET_PAGE_SIZE, kernel_cmdline);
          }
--    }
--
--    if (!kernel_entry) {
-+    } else {
+ 
+@@ -528,13 +529,13 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+         }
+     } else {
          /* When booting via firmware, tell firmware if we want interactive
--         * mode (kernel_entry=1), and to boot from CD (cmdline_or_bootorder='d')
-+         * mode (interactive_mode=1), and to boot from CD (cmdline_or_bootorder='d')
-          * or hard disc (cmdline_or_bootorder='c').
+-         * mode (interactive_mode=1), and to boot from CD (cmdline_or_bootorder='d')
+-         * or hard disc (cmdline_or_bootorder='c').
++         * mode (interactive_mode=1), and to boot from CD (bootorder='d')
++         * or hard disc (bootorder='c').
           */
--        kernel_entry = machine->boot_config.has_menu ? machine->boot_config.menu : 0;
-+        hms->boot_info.gr25 = machine->boot_config.has_menu
-+                            ? machine->boot_config.menu
-+                            : 0;
-         cpu[0]->env.cmdline_or_bootorder = machine->boot_config.order[0];
+         hms->boot_info.gr25 = machine->boot_config.has_menu
+                             ? machine->boot_config.menu
+                             : 0;
+-        cpu[0]->env.cmdline_or_bootorder = machine->boot_config.order[0];
++        hms->boot_info.gr24 = machine->boot_config.order[0];
      }
--
--    /* Keep initial kernel_entry for first boot */
--    cpu[0]->env.kernel_entry = kernel_entry;
  }
  
- /*
-@@ -650,6 +653,7 @@ static void machine_HP_C3700_init(MachineState *machine)
- 
- static void hppa_machine_reset(MachineState *ms, ResetType type)
- {
-+    HppaMachineState *hms = HPPA_COMMON_MACHINE(ms);
-     unsigned int smp_cpus = ms->smp.cpus;
-     int i;
- 
-@@ -670,7 +674,7 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
-     }
+@@ -675,7 +676,7 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
  
      cpu[0]->env.gr[26] = ms->ram_size;
--    cpu[0]->env.gr[25] = cpu[0]->env.kernel_entry;
-+    cpu[0]->env.gr[25] = hms->boot_info.gr25;
-     cpu[0]->env.gr[24] = cpu[0]->env.cmdline_or_bootorder;
+     cpu[0]->env.gr[25] = hms->boot_info.gr25;
+-    cpu[0]->env.gr[24] = cpu[0]->env.cmdline_or_bootorder;
++    cpu[0]->env.gr[24] = hms->boot_info.gr24;
      cpu[0]->env.gr[23] = cpu[0]->env.initrd_base;
      cpu[0]->env.gr[22] = cpu[0]->env.initrd_end;
-@@ -678,7 +682,7 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
-     cpu[0]->env.gr[19] = FW_CFG_IO_BASE;
- 
-     /* reset static fields to avoid starting Linux kernel & initrd on reboot */
--    cpu[0]->env.kernel_entry = 0;
-+    memset(&hms->boot_info, 0, sizeof(hms->boot_info));
+     cpu[0]->env.gr[21] = smp_cpus;
+@@ -685,7 +686,6 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
+     memset(&hms->boot_info, 0, sizeof(hms->boot_info));
      cpu[0]->env.initrd_base = 0;
      cpu[0]->env.initrd_end = 0;
-     cpu[0]->env.cmdline_or_bootorder = 'c';
+-    cpu[0]->env.cmdline_or_bootorder = 'c';
+ }
+ 
+ static void hppa_nmi(NMIState *n, int cpu_index, Error **errp)
 -- 
 2.51.0
 
