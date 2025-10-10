@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B252BCBB3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 07:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D78BCBB47
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 07:23:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v75Zn-0006br-Pu; Fri, 10 Oct 2025 01:22:01 -0400
+	id 1v75Zr-0006cV-C7; Fri, 10 Oct 2025 01:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v75Zk-0006bV-AF
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 01:21:56 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v75Zm-0006c3-V5
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 01:21:58 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v75Zc-0000IF-EZ
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 01:21:55 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-46e4ad36541so18020555e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 22:21:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v75Zf-0000MW-UY
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 01:21:58 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45b4d89217aso9136845e9.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 22:21:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760073703; x=1760678503; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cm5IP52hmTNiep90hMwNdUXCfCvr4M+nPyRTZ9Yd85Y=;
- b=drEALC/MRvNUUkrknhYurO5eFD1SXSg98URvjYFs+5+Pv5WHhaWNKPW3LELt7fTJCz
- QGtuYhjYzr/njoJyXwk2lpSJ0wopi0R7zbM4djZYbDyKKQCcjHmLnX6sHUrZ9snTcco0
- TmmuBe1lCuZYt3WUejfFJXJwQ1Oo3ZXADzFmxAyQGQEMfKWBPB30gKeREToYPtH3bqbO
- eDJctcNf+V0z3KjQ28ITNunsEbYMgNBGadU2u/nyXglM1t19jVV/4qnWFPpBu08SQI2n
- DzePbCPUhKJHFQvVOOHpG7xZRgziogtjVQ9/ADe+oHDIs1dUNrsZBqaRoyPtrWDswQVl
- G9lg==
+ d=linaro.org; s=google; t=1760073707; x=1760678507; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DbKb7a9+FDFFb7O3f6kDuhi6M8QfBjUl/fWMF4m1FM4=;
+ b=L2Rm7v2/laOPB1YrHMkyc+hXjCcWOG09NzRaZhlTsS4OMbX4vqfK+skKZcgRflidWO
+ nuaEb8quko0exIevZy93nctnN9sxREQhT48H9Y+fRnz3uKDoml2kWHQHA64q5JwWbwtC
+ rTk0FqA9B3KEd3HLax28v7MEU/wobF3JOtqudIgh2tE1iF9Jvdjy5KdReK9Igisd9C6R
+ vqwRHNpCNJ/kBnN1Ut8QV4AQnDLKLl2euriWkoLwUbgOFtw3Td9V5eTvclCSbgf8E3s+
+ QFBvlDgkO9DqsNOrHIr7RgngVuiFII+RU27tOhSH16tYNrSkB7sFrWZDiUog0vnXTcvY
+ UC5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760073703; x=1760678503;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cm5IP52hmTNiep90hMwNdUXCfCvr4M+nPyRTZ9Yd85Y=;
- b=Hu+UUl3zHdz6+DTjE7582VMPQFNFGjRcXNs4vAP7CPAYykkcWuK7fUEqJD8SfA4Abw
- 85geD7WKHb8lB9K79iZ0mAgLF/209JMLyLwc3lxHac8cDVr0G6EcQGldY0h7lP0PKGCr
- ZRwxqqNbnCw0UA8hhheXVRMi6VWp4Z8XM1qkA2y8Q1rLUqKZ2+ZuN7n2yTKisorU80xe
- 5LaFBczMHFdxFJu1DjHAw39Gtw+ruwKrFjJqas+J9P8J70/4Z0Rv0yi9zoEWY+LC7ELB
- PYJW4FQ8EqT9hTqFhOuFoioUZrK6sCOkNiWhoVdqqcV8PLxPxF9wqj15w9JmSHK0QgiD
- 9ErQ==
-X-Gm-Message-State: AOJu0YyLd0OOCvcbS98JJw6aGxHyNHvL46wa1d916HgZ/VuLJvELkzSI
- YtHzICMTVcJF3VPVTG+u6BpHaz9T9xg6vuUPunzzH9/XNcKDeW6Red5jqL6sicczFuUKBsEDMkL
- Js9xcTNNBiw==
-X-Gm-Gg: ASbGnct2Z0nflE/No2TyYLvBiCf//EH2xiR/lu7R1R7Dnj6vS0JEEuyj4Pyd7GQs++7
- jBct9hlNuFo8WeFZevyYHBBv3A66Ar79TwZzYdefrOtK/Pi4YrfBiTGQwfejyG9pZKkF5O2eKG0
- B5owPmj403a9GZKoBspFk+uXmmJ0YgEqki5kG0tcEs0N5WPKoB2wKKYhsRLgzieCwWxK+SrG2Zc
- GjdN6glyvbJY8CY5aNmdZbA9D9vuuTNvYC2opt6Pwm/6ypBw7m1QroHkFI4Gkmi0d21n/MdjxMH
- ddmZ5iDzfxe3oW2DXZGaojSmPR9pP0tzsZCyS/ija51OeVYkIjkk4pTAhNL2tn0EXqGCRwDctEY
- 4ub6OIpEJQXpalPMSai6QKnlz1Lc9OsJnNsgKcu+kRGZ01hbv3ZH5ApO+zxL55mpYXUDKbLRl77
- YuIycrvOSMtuheU/3oGV7CB9ul
-X-Google-Smtp-Source: AGHT+IHZje5sJ52iB7WPhUpcODNs8q5TtzwazZ+JU90X3EPvC4lADLARMKdi2xZev2MrAL3+GMcWBw==
-X-Received: by 2002:a05:600d:4264:b0:46f:b42e:e398 with SMTP id
- 5b1f17b1804b1-46fb42ee48cmr14480635e9.41.1760073702658; 
- Thu, 09 Oct 2025 22:21:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760073707; x=1760678507;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DbKb7a9+FDFFb7O3f6kDuhi6M8QfBjUl/fWMF4m1FM4=;
+ b=VGYmEF/jVDuTQ+NG+UlJR3w6I1gqsLOLd4p3KiS1PZCMl5syGaw6N7DLEbYRa23qNh
+ /5snU1tMQLzPWHFf7jq6cd5D5KRkaZMuNZ3JQ9g4ah077ca6ynk6OucEX+DkZuKBJV6/
+ G11fgwwIpC8hk98L6rqKCx2W6KGz3AEbP8/HYWWfuE7awvTJ9OLedV02qdqMEJahLXDX
+ v590S/CZXyURUGjBbXna8cwpwFkhwNNgqpEpdkRAo8c5jlgzWPz8gkQQoyw/aVR56UIL
+ Rb1Bd+nWGAH7ADYsTtNf0XCNG2EwINibrKNzsr/jeUGJ6UywHeFAoDeV+/e/GHpIBurp
+ cOvg==
+X-Gm-Message-State: AOJu0YydVwb8XPdjX5sXszY80HW6Sim0Du5F6+B+ruDNReXMBAFhcCCA
+ dO/XyATzo2GpSmy+olmlqlYXLLrIh5xNKGA9JNMXfTVrhUspjiOe85YQU2T0r0TvVWTTM2jtl44
+ qnoyxJjd3vg==
+X-Gm-Gg: ASbGnctVQMlM4nR+eUb8Z5sf98Elvy7CdIJWvzakDNx9hp1pAgHSKqOGEFYY1CPousJ
+ RiShCG6A8bVpupgflBkWA+GGTzAjkc9ZOJeGQVoFECi1aBJgHSKLLGTXi6bi1yxXzK1syugygaM
+ SCvbFpZrrtz6+v8mpkNnoHc+6No/lQtSAPeI0pWePeUJwVh1elo58RvSQkfy/IlqOY3D6HPx949
+ nCmX9pX5syLROBEShKET4U+QLUrsVL712V3QycKBoHtKsaS/DFZnImjriilqnSiDuIW8vM+dCyO
+ 2wqS+xtB3sMA57dlM8jk8AzNHFvk6B0B1yrVio0ambveWVoMpTRIdRI8BpjM4Vf8r/t94HZepOg
+ Vlg7/GDyPGHAlb0WYfMyFsbymVkL51Yk/j79JDodpW6TNlTnPDgFVNob64uHovIPsT0D01yemWK
+ qudzNJt7xYUP7IUIvGpqMikVS0
+X-Google-Smtp-Source: AGHT+IH0hoIb/YrY1gVVdRw8MTLHT7IgX5R9HEIh9VRR6rjN3Z50ve7lnapwafw6/4GV/aeHh8rCqA==
+X-Received: by 2002:a05:600c:46c7:b0:46e:36f2:2a62 with SMTP id
+ 5b1f17b1804b1-46fa9b08c22mr66061605e9.27.1760073707248; 
+ Thu, 09 Oct 2025 22:21:47 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb492e6ddsm30940045e9.0.2025.10.09.22.21.41
+ 5b1f17b1804b1-46fb497aea6sm27921015e9.4.2025.10.09.22.21.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Oct 2025 22:21:42 -0700 (PDT)
+ Thu, 09 Oct 2025 22:21:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/12] target/tricore: Remove all uses of target_ulong types
-Date: Fri, 10 Oct 2025 07:21:28 +0200
-Message-ID: <20251010052141.42460-1-philmd@linaro.org>
+Subject: [PATCH 01/12] target/tricore: Remove target_ulong use in gen_goto_tb()
+Date: Fri, 10 Oct 2025 07:21:29 +0200
+Message-ID: <20251010052141.42460-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251010052141.42460-1-philmd@linaro.org>
+References: <20251010052141.42460-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,35 +101,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove incorrect target_ulong uses, then for the rest
-mechanically convert:
+translator_use_goto_tb() expects a vaddr type since commit
+b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
+translator_*()").
 
- - target_ulong -> uint32_t
- - TCGv -> TCGv_i32
- - tcg_temp_new() -> tcg_temp_new_i32()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/tricore/translate.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Based-on: <20251010031745.37528-1-philmd@linaro.org>
-
-Philippe Mathieu-Daudé (12):
-  target/tricore: Remove target_ulong use in gen_goto_tb()
-  target/tricore: Replace target_ulong -> vaddr with tlb_fill() callees
-  target/tricore: Remove target_ulong use in translate_insn() handler
-  target/tricore: Remove target_ulong use in gen_addi_d()
-  target/tricore: Remove unnecessary cast to target_ulong
-  target/tricore: Replace target_ulong -> uint32_t in op_helper.c
-  target/tricore: Declare registers as TCGv_i32
-  target/tricore: Inline tcg_gen_ld32u_tl()
-  target/tricore: Expand TCG helpers for 32-bit target
-  target/tricore: Pass DisasContext as first argument
-  target/tricore: Un-inline various helpers
-  target/tricore: Expand TCGv type for 32-bit target
-
- target/tricore/cpu.c       |    2 +-
- target/tricore/helper.c    |    4 +-
- target/tricore/op_helper.c |  219 +-
- target/tricore/translate.c | 3969 ++++++++++++++++++------------------
- 4 files changed, 2107 insertions(+), 2087 deletions(-)
-
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 7c6e3095971..dd09f0651f5 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -72,7 +72,8 @@ static const char *regnames_d[] = {
+ 
+ typedef struct DisasContext {
+     DisasContextBase base;
+-    target_ulong pc_succ_insn;
++
++    vaddr pc_succ_insn;
+     uint32_t opcode;
+     /* Routine used to access memory */
+     int mem_idx;
+@@ -2811,13 +2812,12 @@ static void gen_calc_usb_mulr_h(TCGv arg)
+ 
+ /* helpers for generating program flow micro-ops */
+ 
+-static inline void gen_save_pc(target_ulong pc)
++static inline void gen_save_pc(vaddr pc)
+ {
+     tcg_gen_movi_tl(cpu_PC, pc);
+ }
+ 
+-static void gen_goto_tb(DisasContext *ctx, unsigned tb_slot_index,
+-                        target_ulong dest)
++static void gen_goto_tb(DisasContext *ctx, unsigned tb_slot_index, vaddr dest)
+ {
+     if (translator_use_goto_tb(&ctx->base, dest)) {
+         tcg_gen_goto_tb(tb_slot_index);
 -- 
 2.51.0
 
