@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1061ABCD0AB
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF19BCD2F9
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:23:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7Cpz-0006q1-9Q; Fri, 10 Oct 2025 09:07:11 -0400
+	id 1v7Cpt-0006e2-Ui; Fri, 10 Oct 2025 09:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Cps-0006cX-OL
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:05 -0400
+ id 1v7Cpn-0006TP-FL
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:01 -0400
 Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7CpB-0003wL-As
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:02 -0400
+ id 1v7Cp6-0003wU-0A
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:57 -0400
 Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3ece1102998so1237658f8f.2
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:14 -0700 (PDT)
+ ffacd0b85a97d-3ee64bc6b85so2230327f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760101572; x=1760706372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760101573; x=1760706373; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=F8deSxcO+Ly74Rq205FouZcpmRk2eTbvPunc2KKPDxI=;
- b=mFVjeOUPIbZodv8UGrZDfCwRF2Jv/DVX6EEQH8RncvQkLtUP9IGxDs6i3rAogecuZV
- 7JEmdXXVKHcjlmNBiMFl7YJu87RSM+VJ862ejkenhN10V1E52HebITOGTMKqskf9j2zj
- MVnjl2M51NzjP0PJO/09cKqZZXAe+o1iwYoErlEd5BjboZCHjcDB9KqRgDMbtF/fEl2l
- hHIBAZIzv8csA1Di9tEosjmedhklVfZHKgFn/2icWilmNmjj9nvxm6Ok1CEDHe3Tw408
- pP9jFL8CAt2dWXcSxqJYNy5IGUDue1x7TX765/QsgURSVXPwMuOHo6q5eUJ/inoQWa/y
- SuaA==
+ :reply-to; bh=yZ1ukoZcfL91EUHEhf8u5pzbtt8p50/QdMP7WRR0CUU=;
+ b=OUA1YT8vsLANCCzAam8tYqhWT1Pbr+pEO23wBnUOly4qyClwPbvikkUN2Dnt8ijEIN
+ p6dgzLGyci+MHmRX7Pq8e/q0DYzpSwJdCrCHk1th6S5dSVuDfisqdbzEMX7zgSMOZzkl
+ hwe8dLl+qd1rE9soa29uF0oGYrz7nxK5gbDrDJcvYh5s49jaFfPFjtNl1D9M7O6WvtHg
+ k0VdwLwYt39u63s71AJJq4YQTsHlapXYquf3/PzBDTNjhOo6dM4m8YEEMM490lVMQ7kf
+ XZOqjSi0DJoIkY/fjLGa9395gd8vW0Aipep0Ie7NJ2RI148dzFzJp/x/J/HHBZ1rRVPJ
+ 6pDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760101572; x=1760706372;
+ d=1e100.net; s=20230601; t=1760101573; x=1760706373;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F8deSxcO+Ly74Rq205FouZcpmRk2eTbvPunc2KKPDxI=;
- b=v3Tzyu3hCOHSeKwoHrXNo3/fRLKRr+A++YOtDiNUANKo81t0UDrv6+wbi796enGCTZ
- UhYBfQkfpBTGDWFt3fzBUp0SP5hX7B1LnYbX6vN7/YlS6R4HTBh5xC0Mw+GZMnHqAYnN
- CC+YghF5Aou2kzRQ4oRdlmtKfpvJ8fMomdG2o22tFGw6jaPjtIH9MU8cZ78R4CDXvnOS
- sK9Y/y1K8cEKZlSx9o4dEOSNw33LchD0Wr/IqeUTcJ2bU0nbmMz28JiyzXmzgV9q7KfQ
- CBcn8iH317y1Ulj+zf1yL9MOA6teJWGiG2rWd+sispeubI6wMNhjlOdtMH28D6WF2ull
- fTIQ==
-X-Gm-Message-State: AOJu0Yz5hS4wl35WO1wyiFVoYWeb5gQTAPWlajdyMeRbxF7tdn7ly3WA
- s/MlF8t2d6Z/QklFP8HeyO1SVYXmOYM4dY0KijwF1te80dF67hqgaVxv7JcQ9lPsa4zFK4DT8d6
- luW5m
-X-Gm-Gg: ASbGncvjlphiCm08BALkAndPLytIvAfAj6ScdyPA+PPBFKPhjbEHxKU8KBQUD52f5ST
- 7nXFrXf7sFwArodyBThH+4thfbE3URVKXlWkOQCkcjO4u4+9mV1GJSueVbhcRKNIF3bdOkdpsfs
- KskJua7esw0XegtwywKeBKLaB3P+vNEkZlPMwv5hsWyPmUZdRoAWv6GXMNvQuCje1LffYgUn2jf
- 4g1asiFvBPttpfmioZaHowYRAyvhakfPGmy4j9w8LhmUBCy/6GZsVpgUhieJemU6jQyeaDZ1+X1
- SdVAOaTiayLzmptjlFq/gRy0FIW3r2QHXMh6vFDrb+SzPFumjbVBZHkqm7P+ghdtiZZ6Rr//T50
- gEmtZv6EKb7wBwd3NhuAmaAkDxBjI9l7bFNz9eqZ/B+EWskcTKjj6EJnyaklreQ==
-X-Google-Smtp-Source: AGHT+IGVbc2ubU52zcSKaoqja05rMaGDvjSKi9BexLuJ86VitMosBSwRjEngYxw0RUlWTA/EGtecpA==
-X-Received: by 2002:a5d:5d03:0:b0:425:8539:ed8e with SMTP id
- ffacd0b85a97d-42667177e89mr6918645f8f.23.1760101571878; 
- Fri, 10 Oct 2025 06:06:11 -0700 (PDT)
+ bh=yZ1ukoZcfL91EUHEhf8u5pzbtt8p50/QdMP7WRR0CUU=;
+ b=VyYe7cyOZy/8NcKd0s3m0NsrrIv5gKxjS4Rx5+RIaQoMAg3O+hJEwvNKIwHmjtiIfB
+ z2kkD3/ypBCAGHB9rTsKGHZKBhRJUtt1Djba9oMGG3epB+A2FFwMI7Qlus7ouozEqcAS
+ 6oB1E7Kv8p/953qrkNr8D9voxUWkAHY3x/Bw8xkI73q4sTBKPjFPf7mq/lqScl9KXwfA
+ Nod0n2H+EUaHoVQQk+LC6dSMWGZxmBwuDsQCK1v0BHKz22cl3LqoKRbAIykZXt5Qmmb+
+ ELKv4hOr2Y0T8zmEW9aPPEvPc3/WlIkD39x/P6jJhqQv/PvS794XnhoZgNds6Zw6xJKk
+ wISw==
+X-Gm-Message-State: AOJu0YwgCfdp8OxW7A0wfHHQnV5/qbF51wrwKAC9f8TFkrJ8DfPwiv9M
+ /QDH6A95+wqcKti1JLPI22feHlU7WG1zqBEFoLnUtrZXa8qwEEkuoOFumKkyKEyZ4y8hRzvEaCZ
+ Rfpc8
+X-Gm-Gg: ASbGncsn9+Vti9nSPUWdpbMWgUzecaPRObAbRrsTHjq2jK1Mr82nT4c7KrcW7Jd3Ggm
+ LMBiEvINumJr9t5l7MtTPwGyDMe3lr4tCtQA+H8efrbwzP3wxJ8wsAxw5cc/Q+FBDt/I057hD9j
+ 9tFvHih5rT4DK5XuXCil9QLjrV5Wbcxbd50+oX95PoMVNRGeW1SnhW8uHqYb5iUTDFUzdMhceSL
+ dEM9pGzHfhQliWG60osDuqVsmPFz/ZdJe4r6nZXEI/hUoA6ySORSppJvC/O3oG6oUXITUYJaMe/
+ 2kZH+I2lQh6BVUwyhA/Gf78symMUjqPX1zDPTX4gAwIXI5kV129ap3/AYVcRF0n+3YCdcMQ/nDg
+ MGWt/0ArZcOKc594MENcvU8N7wrgyY2WZwBHp9nIoM8EYCBOWFuY=
+X-Google-Smtp-Source: AGHT+IHoZrz83o8mfyTN5B06D66bCAdQ1tFBlHaaieXALH+CcS05s7cmY0tWDbc/s8baKmTLmtclQQ==
+X-Received: by 2002:a05:6000:400f:b0:425:74bb:7c4d with SMTP id
+ ffacd0b85a97d-4266e8e68a5mr8048050f8f.61.1760101572853; 
+ Fri, 10 Oct 2025 06:06:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.10
+ ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 06:06:11 -0700 (PDT)
+ Fri, 10 Oct 2025 06:06:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 37/76] target/arm: Add syndrome data for EC_GCS
-Date: Fri, 10 Oct 2025 14:04:48 +0100
-Message-ID: <20251010130527.3921602-38-peter.maydell@linaro.org>
+Subject: [PULL 38/76] target/arm: Add arm_hcr_el2_nvx_eff
+Date: Fri, 10 Oct 2025 14:04:49 +0100
+Message-ID: <20251010130527.3921602-39-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251010130527.3921602-1-peter.maydell@linaro.org>
 References: <20251010130527.3921602-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::431;
  envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
@@ -99,74 +100,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Implement the pseudocode function EffectiveHCR_EL2_NVx.
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251008215613.300150-38-richard.henderson@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20251008215613.300150-39-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/syndrome.h | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ target/arm/cpu.h    |  1 +
+ target/arm/helper.c | 10 ++++++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index c48d3b85871..bff61f052cc 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -63,6 +63,7 @@ enum arm_exception_class {
-     EC_MOP                    = 0x27,
-     EC_AA32_FPTRAP            = 0x28,
-     EC_AA64_FPTRAP            = 0x2c,
-+    EC_GCS                    = 0x2d,
-     EC_SERROR                 = 0x2f,
-     EC_BREAKPOINT             = 0x30,
-     EC_BREAKPOINT_SAME_EL     = 0x31,
-@@ -83,6 +84,23 @@ typedef enum {
-     SME_ET_InaccessibleZT0,
- } SMEExceptionType;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index b8abfd82762..54f3d7b1cca 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -2235,6 +2235,7 @@ static inline bool arm_is_el2_enabled(CPUARMState *env)
+  */
+ uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, ARMSecuritySpace space);
+ uint64_t arm_hcr_el2_eff(CPUARMState *env);
++uint64_t arm_hcr_el2_nvx_eff(CPUARMState *env);
+ uint64_t arm_hcrx_el2_eff(CPUARMState *env);
  
-+typedef enum {
-+    GCS_ET_DataCheck,
-+    GCS_ET_EXLOCK,
-+    GCS_ET_GCSSTR_GCSSTTR,
-+} GCSExceptionType;
-+
-+typedef enum {
-+    GCS_IT_RET_nPauth = 0,
-+    GCS_IT_GCSPOPM = 1,
-+    GCS_IT_RET_PauthA = 2,
-+    GCS_IT_RET_PauthB = 3,
-+    GCS_IT_GCSSS1 = 4,
-+    GCS_IT_GCSSS2 = 5,
-+    GCS_IT_GCSPOPCX = 8,
-+    GCS_IT_GCSPOPX = 9,
-+} GCSInstructionType;
-+
- #define ARM_EL_EC_LENGTH 6
- #define ARM_EL_EC_SHIFT 26
- #define ARM_EL_IL_SHIFT 25
-@@ -351,6 +369,23 @@ static inline uint32_t syn_pcalignment(void)
-     return (EC_PCALIGNMENT << ARM_EL_EC_SHIFT) | ARM_EL_IL;
+ /*
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 8e342b08118..e397fe75bd1 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3904,6 +3904,16 @@ uint64_t arm_hcr_el2_eff(CPUARMState *env)
+     return arm_hcr_el2_eff_secstate(env, arm_security_space_below_el3(env));
  }
  
-+static inline uint32_t syn_gcs_data_check(GCSInstructionType it, int rn)
++uint64_t arm_hcr_el2_nvx_eff(CPUARMState *env)
 +{
-+    return ((EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+            (GCS_ET_DataCheck << 20) | (rn << 5) | it);
++    uint64_t hcr = arm_hcr_el2_eff(env);
++
++    if (!(hcr & HCR_NV)) {
++        return 0; /* CONSTRAINED UNPREDICTABLE wrt NV1 */
++    }
++    return hcr & (HCR_NV2 | HCR_NV1 | HCR_NV);
 +}
 +
-+static inline uint32_t syn_gcs_exlock(void)
-+{
-+    return (EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL | (GCS_ET_EXLOCK << 20);
-+}
-+
-+static inline uint32_t syn_gcs_gcsstr(int ra, int rn)
-+{
-+    return ((EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+            (GCS_ET_GCSSTR_GCSSTTR << 20) | (ra << 10) | (rn << 5));
-+}
-+
- static inline uint32_t syn_serror(uint32_t extra)
- {
-     return (EC_SERROR << ARM_EL_EC_SHIFT) | ARM_EL_IL | extra;
+ /*
+  * Corresponds to ARM pseudocode function ELIsInHost().
+  */
 -- 
 2.43.0
 
