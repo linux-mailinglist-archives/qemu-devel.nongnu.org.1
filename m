@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F02BCC1C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E42BCC1D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:24:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v78OJ-00029d-8d; Fri, 10 Oct 2025 04:22:19 -0400
+	id 1v78OL-0002Aa-Va; Fri, 10 Oct 2025 04:22:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OE-00028D-WA
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OI-00029N-DJ
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O9-000107-6K
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:14 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O6-00010a-OB
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760084514;
+ s=mimecast20190719; t=1760084519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zR9N58YTO83JkhU3KfFhan4WvyWnN7pZ0OHhHvlNLhI=;
- b=J6EDlhIG5zwsUHijjbQ2/fZ+67Q1sYr3r0yn/2DhTHasA1cmSnu2n6FIJK0q3UmkGfmefI
- 3dHddq2Qgdmohg9/T+6ruEuXHfVas4qDmEcHuVNIQscSVMhbonXc53/CGv4Y70lT5CRv2y
- KhRNNooGFguVE8W+M5B0Q7EAyl8XcxE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Fasr0vDcyU3Al2j8YMauSw32DE0/KtFTqpUjIgb7dME=;
+ b=ef8f7SafXfgKzSD0BwSGlbQHDRA6Xs9CQSlQgiodjMQaEgfvy9obFjh0qyJKJD2OFG032S
+ 3/PU6bJCuiD6j8sdLfmjEh9IRHHRZozKIxvuiTRg3YpbrURSFGnjsmOmUuIOxKwtcOwqAU
+ RCPCA6xEb+bpziznHZTnaymz8RNFYvA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-zjYJYCvUMOeQ1CTLtnoBRQ-1; Fri,
- 10 Oct 2025 04:21:51 -0400
-X-MC-Unique: zjYJYCvUMOeQ1CTLtnoBRQ-1
-X-Mimecast-MFC-AGG-ID: zjYJYCvUMOeQ1CTLtnoBRQ_1760084510
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-MtToXS--P_izpP5cVn9joQ-1; Fri,
+ 10 Oct 2025 04:21:54 -0400
+X-MC-Unique: MtToXS--P_izpP5cVn9joQ-1
+X-Mimecast-MFC-AGG-ID: MtToXS--P_izpP5cVn9joQ_1760084513
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 20BB019560AE; Fri, 10 Oct 2025 08:21:50 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 299E8180057E; Fri, 10 Oct 2025 08:21:53 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 963441800452; Fri, 10 Oct 2025 08:21:48 +0000 (UTC)
+ id 9F8C11800446; Fri, 10 Oct 2025 08:21:50 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 1/9] tests/functional: Drop the "Attempting to cache ..." log
- text
-Date: Fri, 10 Oct 2025 10:21:36 +0200
-Message-ID: <20251010082145.576222-2-thuth@redhat.com>
+ Jaehoon Kim <jhkim@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+Subject: [PULL 2/9] s390x/pci: fix interrupt blocking by returning only the
+ device's summary bit
+Date: Fri, 10 Oct 2025 10:21:37 +0200
+Message-ID: <20251010082145.576222-3-thuth@redhat.com>
 In-Reply-To: <20251010082145.576222-1-thuth@redhat.com>
 References: <20251010082145.576222-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -82,33 +84,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Jaehoon Kim <jhkim@linux.ibm.com>
 
-The fetch() function already either prints "Using cached asset ..."
-or "Downloading ... to ..." with the same file name to the log,
-so the "Attempting to cache ..." message does not provide any
-additional valuable information. Thus let's drop it to limit the
-length of the logging output to a more reasonable size.
+Previously, set_ind_atomic() returned the entire byte containing
+multiple summary bits. This meant that if any other summary bit in the
+byte was set, interrupt injection could be incorrectly blocked, even
+when the current device's summary bit was not set. As a result, the
+guest could remain blocked after I/O completion during FIO tests.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+This patch replaces set_ind_atomic() with set_ind_bit_atomic(), which
+returns true if the bit was set by this function, and false if it was
+already set or mapping failed. Interrupts are now blocked only when
+the device's own summary bit was not previously set, avoiding
+unintended blocking when multiple PCI summary bits exist within the
+same byte.
+
+Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Message-ID: <20251001154004.71917-1-jhkim@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251006170304.197387-1-thuth@redhat.com>
 ---
- tests/functional/qemu_test/asset.py | 1 -
- 1 file changed, 1 deletion(-)
+ hw/s390x/s390-pci-bus.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index 2971a989d1e..f666125bfaf 100644
---- a/tests/functional/qemu_test/asset.py
-+++ b/tests/functional/qemu_test/asset.py
-@@ -225,7 +225,6 @@ def precache_test(test):
-         log.addHandler(handler)
-         for name, asset in vars(test.__class__).items():
-             if name.startswith("ASSET_") and type(asset) == Asset:
--                log.info("Attempting to cache '%s'" % asset)
-                 try:
-                     asset.fetch()
-                 except AssetError as e:
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index f87d2748b63..e8e41c8a9a1 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -652,7 +652,16 @@ static const PCIIOMMUOps s390_iommu_ops = {
+     .get_address_space = s390_pci_dma_iommu,
+ };
+ 
+-static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
++/**
++ * set_ind_bit_atomic - Atomically set a bit in an indicator
++ *
++ * @ind_loc:   Address of the indicator
++ * @to_be_set: Bit to set
++ *
++ * Returns true if the bit was set by this function, false if it was
++ * already set or mapping failed.
++ */
++static bool set_ind_bit_atomic(uint64_t ind_loc, uint8_t to_be_set)
+ {
+     uint8_t expected, actual;
+     hwaddr len = 1;
+@@ -662,7 +671,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
+     ind_addr = cpu_physical_memory_map(ind_loc, &len, true);
+     if (!ind_addr) {
+         s390_pci_generate_error_event(ERR_EVENT_AIRERR, 0, 0, 0, 0);
+-        return -1;
++        return false;
+     }
+     actual = *ind_addr;
+     do {
+@@ -671,7 +680,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
+     } while (actual != expected);
+     cpu_physical_memory_unmap((void *)ind_addr, len, 1, len);
+ 
+-    return actual;
++    return (actual & to_be_set) ? false : true;
+ }
+ 
+ static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
+@@ -693,10 +702,10 @@ static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
+     ind_bit = pbdev->routes.adapter.ind_offset;
+     sum_bit = pbdev->routes.adapter.summary_offset;
+ 
+-    set_ind_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
++    set_ind_bit_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
+                    0x80 >> ((ind_bit + vec) % 8));
+-    if (!set_ind_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
+-                                       0x80 >> (sum_bit % 8))) {
++    if (set_ind_bit_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
++                   0x80 >> (sum_bit % 8))) {
+         css_adapter_interrupt(CSS_IO_ADAPTER_PCI, pbdev->isc);
+     }
+ }
 -- 
 2.51.0
 
