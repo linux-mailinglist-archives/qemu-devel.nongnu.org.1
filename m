@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DC0BCE7B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 22:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25319BCE79A
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 22:21:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7Jaa-0000TW-Hk; Fri, 10 Oct 2025 16:19:44 -0400
+	id 1v7Jad-0000Ui-EG; Fri, 10 Oct 2025 16:19:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v7JaO-0000RR-5L
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 16:19:33 -0400
+ id 1v7JaL-0000Qc-NA
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 16:19:29 -0400
 Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v7JaK-0002mL-KG
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 16:19:31 -0400
+ id 1v7JaH-0002mb-F3
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 16:19:29 -0400
 Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-782e93932ffso2351911b3a.3
+ d2e1a72fcca58-77f67ba775aso3664331b3a.3
  for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 13:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760127562; x=1760732362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760127563; x=1760732363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CP76C7oRmzrw27VCj+6uaBSxUKPZ5rYHiNDf93P0cFA=;
- b=VH8nnEqPePlElnzgDcJQKCfUlaISHRvOvN+ZjbrDbb/0ikPXHSwk1FBXNfEtV8SPZx
- 7yC5G727+KT2JmC1gZeaybEoVvsykvNZXeGLu3hSPl24a0sKMEPH6T3bTd6qF3y94x0f
- bjPhcRDFOxDIuq1uubmM7WbQ2iBKqESEbKv0UV0h6mJBbuD2OvFL7AzoHDB8Gc/dC/Bp
- wRxkrxZHSf1BO/oKbbKenroe1KE6N16EX1+ZLqoYbQ/vdtu3W+qQkCwfDsc2OoBPBj1T
- qT65xisdaqHOun6TQvbo5b8UdPhA4P/36XqsRgt1I/sLvUoHomjPsW3V9+gg1epPGe/I
- CJiQ==
+ bh=cu0j3u1EiPOo3ymLdtqAPpVdEyM8avmIgAx+FgTrQms=;
+ b=ykk6EedlP3l2SwEedfsAIo56u1YzSZu3GNjVHWUdqH96aNiQ5RIw8Lc/KvS4jim3a7
+ 1L2IpjmMJaLBoPd4WINEHGs0VdYnB+LoIwONoH0w2iF1Dy/WxCmm8TfpnLcnA864jxbf
+ n+QV6UcYhLq0jB1s2kI0PtX2AE9Lrc9qa0CM0lV6RLHtywoB3ZMZD8F19R+V54s2f0Zb
+ XbteTE9+f1OnC35SOnfjHJQdSftZC+cQ36zR4U19ATyT7I3fXhOTRbIScjh0rFPr9712
+ xwazInmPa/dwkFwZ21+rkLuTjyCs3VhNMPs4nkE1pKOeQY4ZlREYy1hn2pN/ZSi/12Lh
+ 7MjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760127562; x=1760732362;
+ d=1e100.net; s=20230601; t=1760127563; x=1760732363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CP76C7oRmzrw27VCj+6uaBSxUKPZ5rYHiNDf93P0cFA=;
- b=Xz7IIIdOOb5Yo5aHR9XtDNYSFIJPud8VMjqrknKiwFUGsBfI4hiS83MzPZcdgYkQS1
- ftd4lTsaUWeQgU5PTkfiOpH38Zn0YI2P1hnO0pxSvIcGUByvMnJJl1X4vb1jAFVl7nEg
- pcJX+pilpPVpEopFIZvrV47SAyUpH7CE+WIkGYR32dOr90nxthSFQoaf/Ei5rWywZxwQ
- jHLVC9OaXJtg6j1gFx5eN694jKa226+8+eYnKlmH6Rnw0K3zqrt4iIukSYVttOfG/3De
- 4VwAWutQAVAKhpQh8OrOCGPbAno6cIVrUGunN5mrzmnxPlQJRYWdjC45CP7GRFSDO0SQ
- BTDA==
-X-Gm-Message-State: AOJu0Yw5KV1SKJhNJxuiH7qLxj12hBIT5IXWUOjorTmQM7ACsubHwPAr
- VN3URezA5aGl+u0964+jA+tTXQHOu1SqbhoCEkuu8KJicKLqI92jwKO0Sr1cx36CfeVl0q3VyIf
- sI1IdOfU=
-X-Gm-Gg: ASbGncu0V0lSYLC0XRh+GdQnfLa6bC/LOyqFUPbPuRp4qC5rXxBcFjJebOa+t0GMiwf
- AYZhexDsmuy+OlLzANu7Q+HJH9mfSti4NzWD613Wo2Jp4Csg79BMRIRlr7SlzlTIEae7C8quq4r
- ljI0g0LuTG/dh2EpYsjB2LqveUB66vILxVbmSI7EmQsnXZQycmrZDanjLwklsRCLoom/rT2N/hF
- uxD6b9lpEjlEOXzGUB7wziZpEKoVNEsnQHoWdISUs96f8wwI3uQG3ETBsUFUSuizmFoXpHcu0IA
- m4ihjkndrMmPRMNJsLthL1gYa4GtYDPKed05HTw8lm+aUbvdWQf0hk6Zb6plwaId1RtnkpCBL7d
- AP133rrxhGhyKuL28DGSidbh1F7EnSUGxRm++APla37DVIcKcwwXQruNSdmIdqQ==
-X-Google-Smtp-Source: AGHT+IHrsSC0MB3bUEfGYxk95TRPMNyTgd7R8NwAEpXlWu4EDGq3kqy3NxGiL/E2+Va6qwJ+0wAQPg==
-X-Received: by 2002:a05:6a00:178e:b0:782:ec0f:d271 with SMTP id
- d2e1a72fcca58-79385ce0c44mr15849346b3a.8.1760127562040; 
+ bh=cu0j3u1EiPOo3ymLdtqAPpVdEyM8avmIgAx+FgTrQms=;
+ b=rVe7lCrW1Xig7j7pljf4bs6IDURYf5BJPcvylyA7EfXL+CcLitEDL9apmB/pePFAdH
+ +r1Nzazx3o02zAzNk5uWylDHuBaxdHAopD3knbvebrYgc4UqXxGZl2Z+0WKfrjEOtSnW
+ f82Qi4fhj3+XwJlx2DPeDVTj+F1R61OYOnEyGdx+zaD4xCjBLOwZTVo22OLRCVm7C2l2
+ iwihS3mQLgwHn5xtA0zlkpx+qdpzvNI42j5qsTOj4GdpLhUcua1yq/YPZpwQYdC9lWnZ
+ 8Ict4QTUxlk1PVXEw//x03JNNIPXJwms6qVfGrMx/HsB6R7Nocl5iC2Q9aBC1PaFMoUn
+ teMg==
+X-Gm-Message-State: AOJu0YwxLw9mXcYR/dGUKFVAZ+brInV0MqmO7YNVldoVhRPSoHE+gwsF
+ OO2EIismJfkaj0SfPGZpmyCGqjArFSihT21OCJwZUTw7l6DiWCZyhyk2IsYW1cIDX002gzQ1zFL
+ aeqIyxKU=
+X-Gm-Gg: ASbGnctaCsgq7ZxxUmBnvtMYk6L9xUIwyb41uXvV1jp+itbaT/nSM22AimE3yp5C6Hm
+ o4yN2/+BGgyspOx1eCzsNF8/UedKCcWuq0WEfFj0rWtgP3VCZ/6Ebjle7+uFT94GKcgJH1Ooq0A
+ tLC8/XUSU74zm8+Kz0ItPYp6CKeVPkbzCdMk4q0awBA9n3M4UwDXwW+AIu/xlON2i94kiq9VOH8
+ Z+vTVLK2x9pwNqn7gSICQ2zknu0eTqxWz6tDFrsT5hNhZOD94VMXn664ju6NcCGffAjj6orOrOq
+ bp/WFc/dAYXWgLry4qXDaZOceORz9yyn3eqAFCN+9jw6jTfEJ/OJTnY9tuWgMLPBmFlInQJfVIP
+ 1IHLoft9QLkBHP/Z4qECksM+ARHTuE1n9fMGf9ngMrJc173iBb9k=
+X-Google-Smtp-Source: AGHT+IF9/t8/V2aMRUwKhAPvTmYxObLcnN5Hqr9xyZf4qUVQgSWRtus/L7hsU99L9XECJo8wU7Vulw==
+X-Received: by 2002:a05:6a00:1146:b0:781:4ec:4ec4 with SMTP id
+ d2e1a72fcca58-79387a23c57mr17005819b3a.31.1760127562763; 
  Fri, 10 Oct 2025 13:19:22 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7992dd7ee5bsm3764830b3a.85.2025.10.10.13.19.21
+ d2e1a72fcca58-7992dd7ee5bsm3764830b3a.85.2025.10.10.13.19.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 13:19:21 -0700 (PDT)
+ Fri, 10 Oct 2025 13:19:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 5/7] target/arm: Use el local indexing mair_el
-Date: Fri, 10 Oct 2025 13:19:15 -0700
-Message-ID: <20251010201917.685716-6-richard.henderson@linaro.org>
+Subject: [PATCH 6/7] target/arm: Honor param.aie in get_phys_addr_lpae
+Date: Fri, 10 Oct 2025 13:19:16 -0700
+Message-ID: <20251010201917.685716-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251010201917.685716-1-richard.henderson@linaro.org>
 References: <20251010201917.685716-1-richard.henderson@linaro.org>
@@ -81,7 +81,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,23 +97,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already have regime_el() computed to a local.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/ptw.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 54c45fc9fe..5fcf104272 100644
+index 5fcf104272..23f6616811 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -2319,7 +2319,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+@@ -2319,7 +2319,9 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
  
          /* Index into MAIR registers for cache attributes */
          attrindx = extract32(attrs, 2, 3);
--        mair = env->cp15.mair_el[regime_el(mmu_idx)];
-+        mair = env->cp15.mair_el[el];
+-        mair = env->cp15.mair_el[el];
++        mair = (param.aie && extract64(attrs, 59, 1)
++                ? env->cp15.mair2_el[el]
++                : env->cp15.mair_el[el]);
          result->cacheattrs.is_s2_format = false;
          result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
  
