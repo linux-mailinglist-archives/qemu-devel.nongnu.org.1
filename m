@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6F8BCD8CE
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 16:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B68BCD904
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 16:40:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7ECD-0003kB-DI; Fri, 10 Oct 2025 10:34:13 -0400
+	id 1v7EGJ-0004o0-PM; Fri, 10 Oct 2025 10:38:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v7EC8-0003jf-52
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 10:34:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v7EC0-000163-7D
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 10:34:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760106836;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=t35fA8ZeSRwsdlcn75vwVy+0iI8tXDVz4Dw1USA2CUw=;
- b=OcO+W4Hw6/+I13STVJitFdGMqeaj0bqzybxfY+hSwUXRDoUN5r6xu9TXnjZIKw32SqyaI+
- Tvn0KA/lANH4ZVXgA3uRyMyI4kwAdLC4rYTRZOIomG86IyzAsJE8dnh7ZIDlg5FdQ/i9N5
- Ygib/1acykkamWraatDL3r3D7Xq3Ys4=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-173-UXlxmgQrMCqeRYM4Npc9-w-1; Fri, 10 Oct 2025 10:33:55 -0400
-X-MC-Unique: UXlxmgQrMCqeRYM4Npc9-w-1
-X-Mimecast-MFC-AGG-ID: UXlxmgQrMCqeRYM4Npc9-w_1760106834
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8715f5037beso691377685a.0
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 07:33:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7EG3-0004jC-Uh
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 10:38:12 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7EFv-0003gv-Vn
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 10:38:11 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-46e3cdc1a6aso16663955e9.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 07:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760107073; x=1760711873; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8quOKggH2MDngAZiD5kJOV1t5NoqB0UhD9/qU6D9F8s=;
+ b=a9nLam65UEt2Qj2rlrKBcOgbzZ3vGedHO0skYx48MZAQzULu8DmTGeFG0Zc/UuUHyt
+ PwKpLDw2YYJJIIrtEDpHDseyx8mwJOJlgyc0V9U3NZEKT0m/247O3W6gNQiNvmFgUSfp
+ YiECkGj11nak2Xig4TwofLJPKrUzWS7Kb07sFWWR9sJ7fy1Ed/9JNE2xQqUnctwY2JtK
+ pCdmW52D38VrT6mgxnyiIoAwoHEN1kEKfrPYBqdDFNeI5VuipUfiLr7J+BWlNYvg/ZwP
+ iX0l3nfpnwSgEow4IeYxsi4vCeieGofYF/dXXi7sUXEITjdyYoe/rNLWWfg/V9/OoTLC
+ jPEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760106834; x=1760711634;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t35fA8ZeSRwsdlcn75vwVy+0iI8tXDVz4Dw1USA2CUw=;
- b=ts9gzpezcMTHhd1Alv41oFw5quTLOEsw9gqFRPo9Vz+62W8A0kVlaxYs9qaRMS9V5S
- GQWN+LnfkA4yyxHMB2z2QrRq445BsnfppM2ONmEZKshN56dMmZsf4dvPt9VM/goSbq7q
- Io/wgSg4WYFizvBkDwLArq68Oc3KdSlWbmgu3A3UhNQt1XFicMVzGGFVYmUp1kXQQxM7
- dO5PPGxglE3+p+wekDYrqFH9coZTdicgAqN5ojEGp28R8nQJZm2VpAtQo3MhPtDXZIne
- OEmaBprqoWjyZwZmCCTjPV7MkNa3lnDBQzLgIFLrLcHWPHt6D+gdyPhvezSLY/B2HZAn
- SjrQ==
-X-Gm-Message-State: AOJu0YwJ2K/1xQBiJEvpbow07lhh/jlqDG6NyTHX9Mv5B6EoWY4rVQ8/
- TOS6R41RfiMT/WOhfghjlAC5z6L53YG6X2keAUYJPiw0G7AoQ10pQRhr7yYUmWb1xM5lThLq5R+
- Dh+KNtt8BDGQ0sUHwDLD/VZUJEYCXFdk9dBp6f5Gq82yp4AOa8TcOYk1r
-X-Gm-Gg: ASbGncuHEVgvHTnXXdYmNsS0N5uUeem9NDMLfwssWspi9kZkpptCy/j8w2LYLxXj6vB
- ypoY5lgtrcdrrmm4rg3N1VQm314QMhgwqGIRR8OfFbTZFH4F6CqwnOEO3sMckGUnrcC4rqcO671
- VAFQfW4uAg5VaritLPnyPf128XAUCEtYv74A7jR9FUYTdcRu7qnN+HXYWNyMljffsXpHKdWI6ID
- UxudCm8dBU0qhGojkushoq1Of5TeafGNp3yqV+OujgkBW5fI/L8RuE8UuPPA2HjOJo+3nMoRqH1
- 9QLTDQohi0QrWicaawJ2rRvrtS7Gkz26zw==
-X-Received: by 2002:a05:620a:1a20:b0:870:4652:4d19 with SMTP id
- af79cd13be357-88353846516mr1650144185a.28.1760106834143; 
- Fri, 10 Oct 2025 07:33:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBH4APTklRMOqVYm3oYN+k4bGeyZmkAx4AjEjqd9PIfh6hlbVaN3Bq0E13yPqSAvo/7ubAZA==
-X-Received: by 2002:a05:620a:1a20:b0:870:4652:4d19 with SMTP id
- af79cd13be357-88353846516mr1650137585a.28.1760106833480; 
- Fri, 10 Oct 2025 07:33:53 -0700 (PDT)
-Received: from x1.local ([2605:8d80:662:923a:17a7:8919:431a:e4f8])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8849f9ae48fsm419457385a.24.2025.10.10.07.33.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 07:33:52 -0700 (PDT)
-Date: Fri, 10 Oct 2025 10:33:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH] MAINTAINERS: update cpr reviewers
-Message-ID: <aOkZTWCVq-iDhggq@x1.local>
-References: <1760098600-399192-1-git-send-email-steven.sistare@oracle.com>
+ d=1e100.net; s=20230601; t=1760107073; x=1760711873;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8quOKggH2MDngAZiD5kJOV1t5NoqB0UhD9/qU6D9F8s=;
+ b=v36S2SjkfFckuYfnguoMoM3ppkeW/5i9xOqn9vaDkdHFJXU8KdP1buTiHirhyyai3+
+ vrChqDAiKzwfQ7BQVibvvy6SALa634YxfIc5KWtH79AbnvMtnCHs+L98fOkVBzIZqkYP
+ TDvhy/n+RdrZUZhX35UL/5k19jneTUiwCsNcMY2o/6JK04L+iiKlLCaw77VmIn2sHxx+
+ cdu6wIuVtGoBZQR0KUIv9q+B/FEL5K2ZJNiXnh7wTJ6nWPPM0V4P1n1lFt4Y8HA/DOnL
+ Zvud5m/pjxDerZRhQ8jZTdQ2H15sSvJhrTY0tyxYuHcOWtoFtj899EkycFs4nJWcuF99
+ sq3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX43EGSUCmhVHTI4XxDoILVLmlEWkCQCosnTxAnkTNR0ughzjrkI+y/cgGTWnqbnpzDtMqp5kCYWjAO@nongnu.org
+X-Gm-Message-State: AOJu0YyvqtDuol8NIVi+ROhtMKuL4lHhVdOnE12sHPxhuJf2LdkzExuu
+ uiUwCGyjmPg27Xvxuw6HSakeMZEPrJXNNORqzaP83Zb6JdRXhwy3tHVh6RUyL+ad0BY=
+X-Gm-Gg: ASbGncspejAx302ypttM7vo5h8CLCjcCWHJhKEEu22aIgFfx0qVLhes7j1Yr3ztT2Nn
+ eNcYGFyj1LGeNsjMF/qBmCY78FnoCmI01cpIz96X09cBakQWM17LL97ohQNiZSxj+Fr5y0TXgKk
+ w9/2GyZxq5HLGRuGmA176k9aeKilS/vnrRqT+LnUnqKY8Wmag2JylS/P3XpYCrP4tDS3qVBF9PX
+ 5ahH4JNDPwvNVNUcC1GtYNC65R+ruieF0EJNR9+7kWI3F6wQbKY6U9udjcgnwpxfr+Bg2olOfGd
+ 8wgsVn7cAIiQ9Qfj3YY3EcxWdMAUYiP57DpkD2EKR7PAF+hxaAWw+HGVk6U10d390Z2N4Yqtfec
+ GluMxACvLf7YPbqNXLSJ96abPIW0LK3x9OrJKhE8oHqhGtiHIpl1bQv8Xna1GgW0djLSuilpOxU
+ cPpuT27Np06cya
+X-Google-Smtp-Source: AGHT+IGO1e0SuQS25tGqDlkxLz4xhu3MmOqg0u8G4suXSWNF437Xcfw8L7dSkV5uasgUDNa2d8L1Ww==
+X-Received: by 2002:a05:600c:6592:b0:46f:a2ba:581f with SMTP id
+ 5b1f17b1804b1-46fa9ec796bmr87600855e9.16.1760107073294; 
+ Fri, 10 Oct 2025 07:37:53 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46fb49d0307sm47978965e9.18.2025.10.10.07.37.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Oct 2025 07:37:52 -0700 (PDT)
+Message-ID: <614c4af0-1fea-4d48-bb52-a1ef60302b9a@linaro.org>
+Date: Fri, 10 Oct 2025 16:37:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1760098600-399192-1-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/16] overall: Replace HOST_BIG_ENDIAN #ifdef with
+ runtime if() check
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20251010134226.72221-1-philmd@linaro.org>
+ <5e4d3a1a-ee13-40c3-b470-d68f5b6b4ad1@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <5e4d3a1a-ee13-40c3-b470-d68f5b6b4ad1@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,35 +103,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 10, 2025 at 05:16:40AM -0700, Steve Sistare wrote:
-> Update cpr reviewers.  Some of these files overlap with migration
-> files, but some do not.
+On 10/10/25 15:51, Paolo Bonzini wrote:
+> On 10/10/25 15:42, Philippe Mathieu-Daudé wrote:
+>> Replace compile-time #ifdef with a runtime check to ensure all code
+>> paths are built and tested. This reduces build-time configuration
+>> complexity and improves maintainability.
+>>
+>> No functional change intended.
 > 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  MAINTAINERS | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> No need to repost (and I didn't review), but please change throughout 
+> the commit message to mention a *compile-time* if() check.  The code for 
+> the wrong endianness will not make it past compilation, and mentioning 
+> runtime checks left me wondering if you had mistaken HOST for TARGET.
+
+I want HOST, and hope the changes are correct: I meant to express the
+code is elided by the compiler, indeed not at *runtime* 🤦 I'll reword
+the commit description. Thanks for catching this.
+
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 84cfd85..9a10bda 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3107,7 +3107,8 @@ T: git https://gitlab.com/jsnow/qemu.git jobs
->  T: git https://gitlab.com/vsementsov/qemu.git block
->  
->  CheckPoint and Restart (CPR)
-> -R: Steve Sistare <steven.sistare@oracle.com>
-> +R: Peter Xu <peterx@redhat.com>
-> +R: Fabiano Rosas <farosas@suse.de>
->  S: Supported
->  F: hw/vfio/cpr*
->  F: include/hw/vfio/vfio-cpr.h
-> -- 
-> 1.8.3.1
-
-Queued, thank you Steve.
-
--- 
-Peter Xu
+> Thanks,
+> 
+> Paolo
 
 
