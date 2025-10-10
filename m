@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A48BCBDF6
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 09:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 006B0BCBDC9
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 09:08:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v77ET-0001wY-Cq; Fri, 10 Oct 2025 03:08:05 -0400
+	id 1v77El-00028x-2f; Fri, 10 Oct 2025 03:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77EP-0001sE-H2
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:08:01 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77Eb-00021u-Ey
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:08:15 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77EN-00080H-GX
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:08:01 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-42557c5cedcso1020301f8f.0
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 00:07:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77EU-000818-3W
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:08:12 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-45b4d89217aso9515705e9.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 00:08:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760080076; x=1760684876; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760080081; x=1760684881; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R/S+AbO3mfIrfPCoYS8ALK2aseZFhvV+JaaLQc6aYmk=;
- b=F0nJQlIPljDbHhPxCggDPi8+A/p/3c8QVg1vLulHOq1kfvEiwTi+4Runfdk3X2d+uj
- LfkEVyRqF83qSjLjmCnX3YI/o4OdhFiE3YSmQSHSdTAqL+6HF3vIh5kqzJOKcRcjzrMa
- flfdaNyML3Rn7qSmMg5us8QGt7MV7uxlbMy18AAXDrhjZnVj/ytUb28MTNLbeOUh2kNg
- OyAUVYn3vcn3ZRz6/cmIB4Nt/7sD9z5RpWVc2bz8I54DgkBvtKsK7DQo0rFk2n+P2dDH
- cT7R4RsiWTScIbHHv3inzAsi5YHfIFz6hpWIZNwQrohprapQ0+VkLTTweGu+DdCs4Z7x
- oHKQ==
+ bh=0vS8HXyJHSXQcuzNI3sZRrJF0hK2dW0GVHTdSkTtKx4=;
+ b=HR/vUm5xrryMFm0Tyg2MzrxyB14SKiVNilydm5c9EzTiecwwsRtDHmPbmNwkdVIKX7
+ Tb8rwpP7l+nYHnXCk5fWa+/WAn6aHn6Yqe57p6FSycrgrERTFW+YUtpubN/PI9CFmGVD
+ Znt1eMSSFOt2tpWArzmiTOJx1E3c1z4M6zbXwia8sc/6N1Jck0wvyQmeohIIeCTkOyXC
+ DVkHR0cbuddeEUtlV3tsIBKUaTAHhNYm46wgsykbozZbEzeA2RXJktOGX1Fhzwe+QjR0
+ /wmxUtaQdLL+2FK/zxMmYK0M5mqHMMl8O13vaZZt2VbRfceIDp+e14FqDLM7NKCPKbhb
+ Rk3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760080076; x=1760684876;
+ d=1e100.net; s=20230601; t=1760080081; x=1760684881;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R/S+AbO3mfIrfPCoYS8ALK2aseZFhvV+JaaLQc6aYmk=;
- b=AU9J71dKEDimSHY+uRJFHAQ88I5APTKqmmtRsLjIddx+Y+eEOAbWyKD6aHuLrkomJk
- f/D6SQI30q/zcKoErnlEsVdaw7V1rguZVj3jUTNQCE8IqYJ2MzQvxJzXbxtjVWkwVdkk
- VXm+zbBk8Awv59pNRV8HDw4XsvfwUU1Q+PKxa7l8xNu+ckDXYh6ZhQl+v0m73QoO8171
- 51m5qqE15qgaPzqTnvFn05igK9t3RFjmTHGoe6G1XZ0pho20SPg5hfNZhddS2Hd0dOHZ
- wH91LZh1825uU885TqvRNc84Xkcaq+5FEtckKK56yd+nvaavlgwT+416Qp498gwvJgfG
- hQww==
-X-Gm-Message-State: AOJu0YzuMXI3XVDNnOTMLnmT6e84poWkI8qAuy7vNy1hV9Hn354Z+Zqg
- WsU7i8Unh/40UMeZqKpLaWvd4/B0KjU6SkbRMXZ8+yrxwuRwZhns01FX1o0U9TZpk0roq44NfQE
- eYFRQFv4gcg==
-X-Gm-Gg: ASbGncue8StGZCW05u1SPqio0Bx1g46d5Wf2VnsEMUMFVTpiDk3nGoz3/rULIQSlCph
- pOccU4sqUGE2dtDEUD9vwAlEdMAWtPmE5ol+VXWaX4b7HMn1RQWPIgLYkBvrO6ke82SZ1xB95lk
- lgWn4A1kw0Z+Meji1FY8V2ikXJtw5xlS6kx9O/ipJi+Wq3qGy7qEFNjT4WRammne7Z6ItPuCZBZ
- UcnolLR8Nj5JEzr4hB3h7h+ZIXeVQ5YFFJLb9BQqfQGP0OKfonTErzWhs9u8VFgZ1K17LAeiXKj
- 9eNO8A2cna/1WvpQ5uIqEW54wy71hAdJ+2g4id537FNvhgOv/kORfSElkx2n0WQnXYY4UGnJORs
- msp0PqS0Lbn60pQk9VplZnZPCFpGUcr7V5lUrsS8kRYVogCb/qKb4433yneqsbpWMSHlyTeSlH+
- krZdOpzREMsqePIGtnlf6uiUWl
-X-Google-Smtp-Source: AGHT+IFOdlv+y4H6NqzekUUY53ss87F4JWprk/Z9hxYayAo/wunItkuSlnJlxM5JZRW51pxbluYlRw==
-X-Received: by 2002:a5d:64e7:0:b0:425:769d:4426 with SMTP id
- ffacd0b85a97d-4266e7dfff1mr6111004f8f.34.1760080076250; 
- Fri, 10 Oct 2025 00:07:56 -0700 (PDT)
+ bh=0vS8HXyJHSXQcuzNI3sZRrJF0hK2dW0GVHTdSkTtKx4=;
+ b=RcLfeBMnIL8pWeFM1c9KUIrfGDLTfbLgONbeMJRzaWsajoLYlcxdQqEDBMNWF2A2tc
+ O7Tabx202wCWuKI6tDSWNAXmdh9lYzIkopJd6skib2sYHW4pGAe/d2rqKRl9bAxHHLfZ
+ WQ8xbbewdCOGlqZSJXHtbIoVSN656fg1ZxJGoRrqpxv48U/VXBDQg4d8K1Y7xLFEn2+7
+ DnydCq1jyti7WtYmEJ26yVW4pgrg/1LOkHi7EmSKgEIWq+pylprVJUEnw7r7nY3CJRjh
+ QtlukD1ToxJvdFMvufGhwQRdti1ye7HZO6gcPBomND/GQrL50ekUZE8dfvSQYUU0ujRU
+ PNSw==
+X-Gm-Message-State: AOJu0YwsjAuBJrDOkB55f/DF4b41SRzrLE91LwYZbN9XNTBcyiEJem1r
+ 5FZBwrIUCVNwpR5QZSVNJajCsODc1kIXuHM5zhEA+gLXrkPhKEoDJLdl4tJHZs39SDmyo9YESCx
+ sWxDIO+/lpw==
+X-Gm-Gg: ASbGnctCw44BDy+bNCz69mo6UVFTbA39P5Ql6OOT42BqvHZpak57znkT18wXwVTzjkJ
+ S4kWuQf4opx11k7eiPCqnFjdGGRKgSTC6Cwxqquw5dx1FHCoIFZtRDKVpvyGas5I9fGzk2wHlx8
+ Iz1fxETM6CobFBoSDRYU0O8pbk3r5i8VgWot3dbWtydCit2CFRPWkKic7SfomkR85X7jCph16G9
+ qp5rXD81BQHmY+rQpcytn7klD9syo1JytjYxMUaSoKALi9u0HCLhz754+kP6enXwM4h0Kj4fhKH
+ c+79BlkORC12urmVaS9k0dCjLRJT6VlCAVCk132TNC2Zgzc+iH6BVksJmkcrIty5fEETyQlamRN
+ FOadf/yWm6Jw2+2bggIk4wGKndOGx/mm6wkr/QfmNJly9glSOmde6/n6FC+UzZRebEk/jJ91SWV
+ x9oi1JyhamXzLhtca6gJukvn8rFFoPTv1mD+k=
+X-Google-Smtp-Source: AGHT+IHh9Jae/GALYkz3uEeop2ryJe5kfy2ItFJ1GYEW7ptDpY1JX1MWXx+hk4kg5mtNbpfVjjB/pg==
+X-Received: by 2002:a05:600c:1395:b0:46e:27fb:17f0 with SMTP id
+ 5b1f17b1804b1-46fa9aa204cmr71881635e9.9.1760080081038; 
+ Fri, 10 Oct 2025 00:08:01 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e81d2sm2685882f8f.49.2025.10.10.00.07.55
+ 5b1f17b1804b1-46fb482b99fsm33623005e9.3.2025.10.10.00.08.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 00:07:55 -0700 (PDT)
+ Fri, 10 Oct 2025 00:08:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Stafford Horne <shorne@gmail.com>, Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 11/13] target/openrisc: Replace MO_TE -> MO_BE
-Date: Fri, 10 Oct 2025 09:06:59 +0200
-Message-ID: <20251010070702.51484-12-philmd@linaro.org>
+Subject: [PATCH v3 12/13] target/openrisc: Inline tcg_gen_trunc_i64_tl()
+Date: Fri, 10 Oct 2025 09:07:00 +0200
+Message-ID: <20251010070702.51484-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010070702.51484-1-philmd@linaro.org>
 References: <20251010070702.51484-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,33 +100,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the OpenRISC targets using big endianness order:
-
-  $ git grep TARGET_BIG_ENDIAN configs/targets/or1k-*
-  configs/targets/or1k-linux-user.mak:2:TARGET_BIG_ENDIAN=y
-  configs/targets/or1k-softmmu.mak:2:TARGET_BIG_ENDIAN=y
-
-Therefore the MO_TE definition always expands to MO_BE. Use the
-latter to simplify.
+The OpenRISC targets are only built as 32-bit, so tcg_gen_trunc_i64_tl
+expands to tcg_gen_extrl_i64_i32(). Use the latter to simplify the
+next commit mechanical change.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/openrisc/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/openrisc/translate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index 6879a0cff80..a626ffaf25b 100644
+index a626ffaf25b..f33b9632d67 100644
 --- a/target/openrisc/translate.c
 +++ b/target/openrisc/translate.c
-@@ -61,7 +61,7 @@ typedef struct DisasContext {
+@@ -350,7 +350,7 @@ static void gen_macu(DisasContext *dc, TCGv srca, TCGv srcb)
+     /* Note that overflow is only computed during addition stage.  */
+     tcg_gen_add_i64(cpu_mac, cpu_mac, t1);
+     tcg_gen_setcond_i64(TCG_COND_LTU, t1, cpu_mac, t1);
+-    tcg_gen_trunc_i64_tl(cpu_sr_cy, t1);
++    tcg_gen_extrl_i64_i32(cpu_sr_cy, t1);
  
- static inline MemOp mo_endian(DisasContext *dc)
- {
--    return MO_TE;
-+    return MO_BE;
+     gen_ove_cy(dc);
  }
+@@ -391,7 +391,7 @@ static void gen_msbu(DisasContext *dc, TCGv srca, TCGv srcb)
+     /* Note that overflow is only computed during subtraction stage.  */
+     tcg_gen_setcond_i64(TCG_COND_LTU, t2, cpu_mac, t1);
+     tcg_gen_sub_i64(cpu_mac, cpu_mac, t1);
+-    tcg_gen_trunc_i64_tl(cpu_sr_cy, t2);
++    tcg_gen_extrl_i64_i32(cpu_sr_cy, t2);
  
- static inline bool is_user(DisasContext *dc)
+     gen_ove_cy(dc);
+ }
+@@ -914,7 +914,7 @@ static bool trans_l_movhi(DisasContext *dc, arg_l_movhi *a)
+ static bool trans_l_macrc(DisasContext *dc, arg_l_macrc *a)
+ {
+     check_r0_write(dc, a->d);
+-    tcg_gen_trunc_i64_tl(cpu_R(dc, a->d), cpu_mac);
++    tcg_gen_extrl_i64_i32(cpu_R(dc, a->d), cpu_mac);
+     tcg_gen_movi_i64(cpu_mac, 0);
+     return true;
+ }
 -- 
 2.51.0
 
