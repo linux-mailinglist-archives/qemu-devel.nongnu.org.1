@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E42BCC1D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B03BCC1C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:23:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v78OL-0002Aa-Va; Fri, 10 Oct 2025 04:22:22 -0400
+	id 1v78OG-00028u-SU; Fri, 10 Oct 2025 04:22:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OI-00029N-DJ
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OD-00027u-WB
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O6-00010a-OB
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:17 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O7-00010d-UV
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1760084519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Fasr0vDcyU3Al2j8YMauSw32DE0/KtFTqpUjIgb7dME=;
- b=ef8f7SafXfgKzSD0BwSGlbQHDRA6Xs9CQSlQgiodjMQaEgfvy9obFjh0qyJKJD2OFG032S
- 3/PU6bJCuiD6j8sdLfmjEh9IRHHRZozKIxvuiTRg3YpbrURSFGnjsmOmUuIOxKwtcOwqAU
- RCPCA6xEb+bpziznHZTnaymz8RNFYvA=
+ bh=JXv/Cu7q862t0pbzb6wi7PCL6APdP4WKt8M+wjFeRsc=;
+ b=bnelYJfPCQg4rZP4EirqfRGngk6V+67Ne7BMELnKH3e/rKxvb+VykJluntZKK31EBlHIHs
+ 8oodPMI73ovvJ1RZUI+rNuV5S8FGeHRqL/2VlxlkCxxA6TuItdQxymvGEWheAquxmqswzj
+ Cb8cxyvWEuxsK2Frbq9PGvj/QsaAthY=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-MtToXS--P_izpP5cVn9joQ-1; Fri,
- 10 Oct 2025 04:21:54 -0400
-X-MC-Unique: MtToXS--P_izpP5cVn9joQ-1
-X-Mimecast-MFC-AGG-ID: MtToXS--P_izpP5cVn9joQ_1760084513
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-115-hUrEdA6-N4aECN-afarWTA-1; Fri,
+ 10 Oct 2025 04:21:56 -0400
+X-MC-Unique: hUrEdA6-N4aECN-afarWTA-1
+X-Mimecast-MFC-AGG-ID: hUrEdA6-N4aECN-afarWTA_1760084515
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 299E8180057E; Fri, 10 Oct 2025 08:21:53 +0000 (UTC)
+ id 3D1D71800366; Fri, 10 Oct 2025 08:21:55 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9F8C11800446; Fri, 10 Oct 2025 08:21:50 +0000 (UTC)
+ id C0ABB1800446; Fri, 10 Oct 2025 08:21:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Jaehoon Kim <jhkim@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: [PULL 2/9] s390x/pci: fix interrupt blocking by returning only the
- device's summary bit
-Date: Fri, 10 Oct 2025 10:21:37 +0200
-Message-ID: <20251010082145.576222-3-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 3/9] target/s390x: Replace legacy cpu_physical_memory_[un]map()
+ calls (1/3)
+Date: Fri, 10 Oct 2025 10:21:38 +0200
+Message-ID: <20251010082145.576222-4-thuth@redhat.com>
 In-Reply-To: <20251010082145.576222-1-thuth@redhat.com>
 References: <20251010082145.576222-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -84,86 +82,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jaehoon Kim <jhkim@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Previously, set_ind_atomic() returned the entire byte containing
-multiple summary bits. This meant that if any other summary bit in the
-byte was set, interrupt injection could be incorrectly blocked, even
-when the current device's summary bit was not set. As a result, the
-guest could remain blocked after I/O completion during FIO tests.
+Commit b7ecba0f6f6 ("docs/devel/loads-stores.rst: Document our
+various load and store APIs") mentioned cpu_physical_memory_*()
+methods are legacy, the replacement being address_space_*().
 
-This patch replaces set_ind_atomic() with set_ind_bit_atomic(), which
-returns true if the bit was set by this function, and false if it was
-already set or mapping failed. Interrupts are now blocked only when
-the device's own summary bit was not previously set, avoiding
-unintended blocking when multiple PCI summary bits exist within the
-same byte.
+Replace the *_map() / *_unmap() methods in mchk_store_vregs().
+No behavioral change expected.
 
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Message-ID: <20251001154004.71917-1-jhkim@linux.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251002091132.65703-5-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-pci-bus.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ target/s390x/tcg/excp_helper.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index f87d2748b63..e8e41c8a9a1 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -652,7 +652,16 @@ static const PCIIOMMUOps s390_iommu_ops = {
-     .get_address_space = s390_pci_dma_iommu,
- };
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index 4c7faeee82b..5e1d4dc9583 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -30,6 +30,7 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "qemu/timer.h"
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ #include "hw/s390x/ioinst.h"
+ #include "hw/s390x/s390_flic.h"
+ #include "hw/boards.h"
+@@ -418,16 +419,18 @@ QEMU_BUILD_BUG_ON(sizeof(MchkExtSaveArea) != 1024);
  
--static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
-+/**
-+ * set_ind_bit_atomic - Atomically set a bit in an indicator
-+ *
-+ * @ind_loc:   Address of the indicator
-+ * @to_be_set: Bit to set
-+ *
-+ * Returns true if the bit was set by this function, false if it was
-+ * already set or mapping failed.
-+ */
-+static bool set_ind_bit_atomic(uint64_t ind_loc, uint8_t to_be_set)
+ static int mchk_store_vregs(CPUS390XState *env, uint64_t mcesao)
  {
-     uint8_t expected, actual;
-     hwaddr len = 1;
-@@ -662,7 +671,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
-     ind_addr = cpu_physical_memory_map(ind_loc, &len, true);
-     if (!ind_addr) {
-         s390_pci_generate_error_event(ERR_EVENT_AIRERR, 0, 0, 0, 0);
--        return -1;
-+        return false;
-     }
-     actual = *ind_addr;
-     do {
-@@ -671,7 +680,7 @@ static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
-     } while (actual != expected);
-     cpu_physical_memory_unmap((void *)ind_addr, len, 1, len);
++    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
++    AddressSpace *as = env_cpu(env)->as;
+     hwaddr len = sizeof(MchkExtSaveArea);
+     MchkExtSaveArea *sa;
+     int i;
  
--    return actual;
-+    return (actual & to_be_set) ? false : true;
+-    sa = cpu_physical_memory_map(mcesao, &len, true);
++    sa = address_space_map(as, mcesao, &len, true, attrs);
+     if (!sa) {
+         return -EFAULT;
+     }
+     if (len != sizeof(MchkExtSaveArea)) {
+-        cpu_physical_memory_unmap(sa, len, 1, 0);
++        address_space_unmap(as, sa, len, true, 0);
+         return -EFAULT;
+     }
+ 
+@@ -436,7 +439,7 @@ static int mchk_store_vregs(CPUS390XState *env, uint64_t mcesao)
+         sa->vregs[i][1] = cpu_to_be64(env->vregs[i][1]);
+     }
+ 
+-    cpu_physical_memory_unmap(sa, len, 1, len);
++    address_space_unmap(as, sa, len, true, len);
+     return 0;
  }
  
- static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
-@@ -693,10 +702,10 @@ static void s390_msi_ctrl_write(void *opaque, hwaddr addr, uint64_t data,
-     ind_bit = pbdev->routes.adapter.ind_offset;
-     sum_bit = pbdev->routes.adapter.summary_offset;
- 
--    set_ind_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
-+    set_ind_bit_atomic(pbdev->routes.adapter.ind_addr + (ind_bit + vec) / 8,
-                    0x80 >> ((ind_bit + vec) % 8));
--    if (!set_ind_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
--                                       0x80 >> (sum_bit % 8))) {
-+    if (set_ind_bit_atomic(pbdev->routes.adapter.summary_addr + sum_bit / 8,
-+                   0x80 >> (sum_bit % 8))) {
-         css_adapter_interrupt(CSS_IO_ADAPTER_PCI, pbdev->isc);
-     }
- }
 -- 
 2.51.0
 
