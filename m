@@ -2,78 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B161BCE225
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 19:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CF0BCE2C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 19:57:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7H9s-000421-1X; Fri, 10 Oct 2025 13:44:00 -0400
+	id 1v7HKU-0004K4-2p; Fri, 10 Oct 2025 13:54:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v7H9T-0003qu-2L
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 13:43:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v7H9M-0007mH-3T
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 13:43:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760118204;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/18YaFIQVuCbEF7pBmW9yAM6E4nzTXdGihiMT21Ls/U=;
- b=cSs7nQpvLMH79A/Er3nJqJ4UJ1jmhbetDd74KjPFNenAEuHMDLI5A8ZwBSIRu7SA8A/fIe
- cynBzgXFHRgoVGFyM1R0urbEPEk3muTc91K8IOU6cPMkpBcKf7wFrhInRzyadVoVMlpw59
- paO7DLI0Vxco0FfZLO4jzTzuAoh3Bq8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-uXcaowtXNsWqR4MkOckgNQ-1; Fri,
- 10 Oct 2025 13:43:20 -0400
-X-MC-Unique: uXcaowtXNsWqR4MkOckgNQ-1
-X-Mimecast-MFC-AGG-ID: uXcaowtXNsWqR4MkOckgNQ_1760118198
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A46831800366; Fri, 10 Oct 2025 17:43:18 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.177])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 066401955F22; Fri, 10 Oct 2025 17:43:15 +0000 (UTC)
-Date: Fri, 10 Oct 2025 18:43:12 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Yonggang Luo <luoyonggang@gmail.com>,
- Michael Tokarev <mjt@tls.msk.ru>, Thomas Huth <thuth@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH] gitlab: purge msys pacman cache
-Message-ID: <aOlFsILuVDwO_ISY@redhat.com>
-References: <20251010160545.144760-1-berrange@redhat.com>
- <CAFEAcA-9WfE_vNKewpe=05bLs+mi8tQSN-3cYnAWwC0ErfQBmA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v7HKR-0004Jp-KJ
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 13:54:55 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v7HKK-0002dR-6c
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 13:54:55 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-782023ca359so2393581b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 10:54:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760118882; x=1760723682; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+o62HiOBN0vfdNFdXALCbDGMgYdmZaceJz1TkhvtDXU=;
+ b=l+xMf/bklNdDsuOJ1GyXzhNgfInpIH9ceg886glRaM1x/trUkmpv4C+c1LgdGg6a+U
+ ZgbRHohE5SKtLvGKk+S0yjZvBGbIyhjknieOX8EmqhuQG+YgMsemf+p2K4Vj2miNTL2v
+ /nP7BfeuCiClB1FgGooBPwhPkNm4/XEBvk5Sx+HX7GxiRX8GncZnWRevDVJy4KVTzOtD
+ zGyqS1C4RuqGQxch/psR4odM6JJW49HKRXvhtAMdkYVCl0ieMuC+PEJaT56cjz8Bwn3l
+ BFhjKYJJRGRcysZ7t3QJxSu1cypqAuprK/GZ5ynSgJIMtYrbqYZjqt0N/YSfep8pSaen
+ UvjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760118882; x=1760723682;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+o62HiOBN0vfdNFdXALCbDGMgYdmZaceJz1TkhvtDXU=;
+ b=sWbhrxGb8VXmBCFqZ1bqWlvRJuQYf3uDbnAauGpUSEL5PC0NIcAXJlALOmFxT8pNxN
+ HtrYKL1zooNfpXnfaDLXMRWy9Tn9cmAZW9kTzWlNuwPDnEQWa4BJrMs3ZHDgr8fov3Ur
+ WrHgrZVy6ufdpfgJ+ZIr539+SBBn1TaxT1xsjfvF2frKW4toD4QQaCdutdt42136nM2h
+ AvvGsOweBlYkto7bOgmNi3IHcyvyoUQaOCD2B4LHy+sQZHBACuQYyyBF8EYT3uVvAWWW
+ ObMhzvRDY9wo+ZAENaPmZ5NF160jXInqsmZxuC1kq45LPpyVxX4jSuGjL7juUMKXhx+4
+ UW9w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUV3hHdmMOJ27BgLSUSbN/rEcpOR7fHg73Y62CM5/SJI2bM2lhhv6OXbE9UkmnWwg1ibIsCey6/XQPy@nongnu.org
+X-Gm-Message-State: AOJu0YwNfIoRVXleO5aU47QXdWZMBo5La2KP9vG3WP1xdea3dgyHLVuL
+ sqKYV/LnKZotSsvwn8zzYd8LCv4VCuRRIsVjREhKp/KPWJ/fmLeo7xPwV8Hs0ndGxasQorhRaWb
+ 6n85WRyc=
+X-Gm-Gg: ASbGncsV6Xl0AGyAAChQnDtJCS9PWGULV41sTRxtq3hvb+OHyR84pf15XO3JKS/dloP
+ drOHTU0yrRWgGfj1EXvT+InxNFhQKBCx51CE7/t8wSwOYWrFT2H44xP6Pg6fXhzmj5sHxN3lq0L
+ WRZkYTUDq1/vT5KCpTVmo6KZSfz8hTsOr2k2lejcsxnnykpJoWXGVJfo1Kc5sVPSybht75wbYCc
+ O/s9oH1OBpEOLuZw73bnaBFyQFUMqplpeSwp8Iq6B8MVXyR1D2rcj3V/MpMjK9qnsdlfypfba3T
+ IZbuLwYK9FQ9960OYw3S1iVDwBUtjcglZbV0yr6KW0s7rkzYEG1o1x4KZ28rDTJ8PTZXAIwaSQ8
+ CwWYZ3D9kQS/0OSyB+7WsjfKQRKC/WhWtn5hhzzSZAOGVwx9eB4HhzLvEMxU=
+X-Google-Smtp-Source: AGHT+IGe9SaOxmrCuZmAF110TO59X0rKrUibgQ4Iuju7dR9iLgUUjwybUqKjlIjlyBto9DSGaPKPYg==
+X-Received: by 2002:a05:6a21:3086:b0:307:a015:37ef with SMTP id
+ adf61e73a8af0-32da813c536mr17821405637.20.1760118882443; 
+ Fri, 10 Oct 2025 10:54:42 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b678df8b381sm2880140a12.41.2025.10.10.10.54.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Oct 2025 10:54:42 -0700 (PDT)
+Message-ID: <df6c8e6e-931b-4403-802f-50977ea6d3e5@linaro.org>
+Date: Fri, 10 Oct 2025 10:54:40 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/6] hw/hppa: Move CPU::kernel_entry ->
+ Machine::boot_info.gr25
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>, Anton Johansson <anjo@rev.ng>
+References: <20251010061836.45739-1-philmd@linaro.org>
+ <20251010061836.45739-5-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251010061836.45739-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA-9WfE_vNKewpe=05bLs+mi8tQSN-3cYnAWwC0ErfQBmA@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,76 +102,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 10, 2025 at 06:23:22PM +0100, Peter Maydell wrote:
-> On Fri, 10 Oct 2025 at 17:05, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > For the Windows msys2 CI job we install many packages using pacman
-> > and use the GitLab cache to preserve the pacman cache across CI
-> > runs. While metadata still needs downloading, this avoids pacman
-> > re-downloading packages from msys2 if they have not changed.
-> >
-> > The problem is that pacman never automatically purges anything
-> > from its package cache. Thus the GitLab cache is growing without
-> > bound and packing/unpacking the cache is consuming an increasing
-> > amount of time in the CI job.
-> >
-> > If we run 'pacman -Sc' /after/ installing our desired package set,
-> > it will purge any cached downloaded packages that are not matching
-> > any installed package.
-> >
-> > This will (currently) cap the pacman download cache at approx
-> > 256 MB.
-> >
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >  .gitlab-ci.d/windows.yml | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > See a test job with this change, plus a find across the msys
-> > pacman cache, showing the cleanup effects....
-> >
-> > Before cleanup:
-> >
-> >   https://gitlab.com/berrange/qemu/-/jobs/11679136531#L34
-> >
-> > After cleanup:
-> >
-> >   https://gitlab.com/berrange/qemu/-/jobs/11679136531#L1126
-> >
-> > diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-> > index 1e6a01bd9a..6e1135d8b8 100644
-> > --- a/.gitlab-ci.d/windows.yml
-> > +++ b/.gitlab-ci.d/windows.yml
-> > @@ -87,6 +87,7 @@ msys2-64bit:
-> >        mingw-w64-x86_64-pkgconf
-> >        mingw-w64-x86_64-python
-> >        mingw-w64-x86_64-zstd"
-> > +  - .\msys64\usr\bin\bash -lc "pacman -Sc --noconfirm"
-> >    - Write-Output "Running build at $(Get-Date -Format u)"
-> >    - $env:JOBS = $(.\msys64\usr\bin\bash -lc nproc)
-> >    - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
-> > --
+On 10/9/25 23:18, Philippe Mathieu-Daudé wrote:
+> Current code uses CPUHPPAState::@kernel_entry to hold either:
+>   - kernel entry virtual address
+>   - firmware interactive mode
+> and CPUHPPAState::@cmdline_or_bootorder to either:
+>   - kernel &cmdline physical address
+>   - firmware boot order
 > 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Besides, these variables don't belong to CPUHPPAState, they
+> depend on how the machine is started, and only apply to the
+> first CPU.
 > 
-> Hopefully this will make the CI job take less time (for the
-> record, currently in the main CI run it takes about 70 minutes,
-> of which 10 minutes is "unpack the cache" at the start and
-> 20 minutes is "repack the cache" at the end).
+> The MachineReset handler initialize some registers of the
+> first CPU. Hold these register reset values in the MachineState,
+> initializing them once in machine_HP_common_init_tail().
+> 
+> Start by addressing the kernel entry and firmware interactive
+> mode values, stored in $GP25.
+> 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/hppa/cpu.h |  1 -
+>   hw/hppa/machine.c | 28 ++++++++++++++++------------
+>   2 files changed, 16 insertions(+), 13 deletions(-)
 
-Based on how long it takes to pack/unpack the cache in my job, I'd
-be expecting approx a 25 minute win.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+> -    }
+> -
+> -    if (!kernel_entry) {
+> +    } else {
+>           /* When booting via firmware, tell firmware if we want interactive
+> -         * mode (kernel_entry=1), and to boot from CD (cmdline_or_bootorder='d')
+> +         * mode (interactive_mode=1), and to boot from CD (cmdline_or_bootorder='d')
+>            * or hard disc (cmdline_or_bootorder='c').
+>            */
+> -        kernel_entry = machine->boot_config.has_menu ? machine->boot_config.menu : 0;
+> +        hms->boot_info.gr25 = machine->boot_config.has_menu
+> +                            ? machine->boot_config.menu
+> +                            : 0;
+
+There is no interactive_mode variable, so the change to the comment isn't great.  Perhaps 
+just mention gr25.
+
+As an aside, the expression involves two booleans, so better written as
+
+   machine->boot_config.has_menu && machine->boot_config.menu
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+r~
 
