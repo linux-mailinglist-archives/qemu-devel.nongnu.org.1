@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F151BCD5BC
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 270E7BCD544
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:48:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7DQL-0002xb-Qv; Fri, 10 Oct 2025 09:44:45 -0400
+	id 1v7DQS-00039o-Ph; Fri, 10 Oct 2025 09:44:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DQA-0002pc-24
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:35 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DQ9-0002pN-JQ
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:34 -0400
+Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DPG-0008Es-Q3
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:32 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3ee12332f3dso704199f8f.2
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:43:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DPI-0008FQ-Fy
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:33 -0400
+Received: by mail-wm1-x342.google.com with SMTP id
+ 5b1f17b1804b1-46e42fa08e4so20768935e9.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760103809; x=1760708609; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760103814; x=1760708614; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=liEThv/wKJajj3nFHkBzaXuLPFXtT8t9IBEbSacuDCs=;
- b=QCIU+pIYZ9VtRxF2rpLrqEzAusYML0G/xx8WnZr0YK1g5khL4ThOOEBa5GKU/nSZAh
- oIgR0EatgdGjFB0WoA1sJlnD8efeucXdR7veT9qxwkQR/Wb2G6BIlmhRvHmt09wwoE/O
- 0LJC4ZRm4SLyeKkHAJjzXA2lgzcegn9NWu9AbWCeXT1KbuZE4/fjejWV8CIEiQjAHCni
- UPqNP3iudEzZF2rQTTWs/B8HSzm2mnPzes/YEGwgftWHCtsY4B9oyiYpf684e0MvECHZ
- Ygt14gmzhJNWa/SpTX2wbu8UAE7D8iQksW9aSuVnTICbTNJOwUgBN9+MdW3LTTKPLpTp
- Sjtg==
+ bh=sslmAmFx5Cxrr/elCIaZt4ybkrnljBL49HYxD0V3YF0=;
+ b=b5IKHz2fhYGFR5V+3HM5k3w4Tvaa4FVLVfGYQ9F7dUhBkGD5V+pbMcB8gMr14iVQPn
+ 06MXvUSkGnorJMC3XPHFzWzWE13+9al2p9/zV7vRakbMae20878f89U2Pt3wQ4CHYNZM
+ EhDZQxzq3BhJIdxBN0i6jzPmAWN9WMIKk4ih9jHwdGHMV0VZbnmF8Vm+zJ0kcAtEDYjY
+ Of14SZ1KkrNIXnL5E6Cwn54kKvZJE7FzwdOhfP7uAjJMFvQq3lY08beTJtmU89ufa6mq
+ HB+ksh3rEyTMccSRz9Xa9SuiqkLSS9edl/QcK05i3zQZ73UERF+Z8pqg9bjsGzdK22jW
+ /BdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760103809; x=1760708609;
+ d=1e100.net; s=20230601; t=1760103814; x=1760708614;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=liEThv/wKJajj3nFHkBzaXuLPFXtT8t9IBEbSacuDCs=;
- b=ni7RKP+Sjyy9qvsw2vTUmAR4jMIzh4hS7T+nNqFfLeYhrJhE7YlnNGeX4o4wSY4KkQ
- Q5XoohKvF+cwuxbvLh5ZwsMfG2Mue5tJV2NQbW5IQqNcBTFc+zJdVgvA1DJFSqFQ2Ta3
- PP2bW+aIF1jqGSE/x/0LQZTprksXf+zK4JZrM483/HAqFaTeXMElwC3WNIhdiz46bsnw
- 7TmiLpu9qXShdo1Kh0JEJDSWxoY5ylqsaP3hnN+Ey1ldEu9WVFrldfOMtP4L5dd/QNly
- 6T3ZpeH3xDEyPCRAf7Gy/1ogrizergtnbRu6QGIZQsLuPmk9DQUtU2F4fjCrTs3ILjvH
- ZOCA==
-X-Gm-Message-State: AOJu0Ywbt9SbZiypu3zSXBDhT9YzdlHeYrd09L9eP4W8ngPxkYU2cA4o
- I5LLJk3pT7KsSIIjjBiJSulX2FmQa4vlrRYsypGqjZsATzLkUjk5VF7r2/VEs0eh4/LJ3eb4vQ9
- GiNgpxAYFpA==
-X-Gm-Gg: ASbGncsrAnga38UF6grybUnYTDfLH85yQ1s+CAItj250RUnWitBShJuWX7rfIRUs0i8
- 0it370P7ADet5QN/1GusJuZ40HkohNO//aoaAqfBteOqO6ECvgfnptg501zB6B5a3kzITfnvsNh
- 9ZOrtJMeXa0uuGji/IigN1cRTia7AWSxHZA7cTw+zK/hpY7xnvEhyg/Nz5ttf4juXK4SkgQUkVS
- Q9Ljt/ZA+oXIQDHEkib7Ad1wB4nXhae30nZ9ovZhNlr/87PWBKx0dmwzaINu5LLRUpUoBhCupr/
- 0M675QQxYr9FPQImnjo/mqOn+5F2FsQygmNHcoMJ2nTl9PsnIYDPaFdnxKa2gaR+yTjJNYgG4Vb
- HrKESW4ZeW+d6HKajb+XSo1TH2XzbIc4DnSjmWx/Pj84FPziBMa85Vy6DbPEYhV9Yy7SBvCqmvQ
- MWmgh93ubHEL9st2LkAZc=
-X-Google-Smtp-Source: AGHT+IGW6g3IRBwrgQ64LIPxMU+Cxf303nlsOYFSMp0KSf39t5vruwxMoX+O6e9XrwP6KHumAdOWVQ==
-X-Received: by 2002:a5d:64e8:0:b0:425:855c:5879 with SMTP id
- ffacd0b85a97d-4266e7d63f2mr7779098f8f.15.1760103808517; 
- Fri, 10 Oct 2025 06:43:28 -0700 (PDT)
+ bh=sslmAmFx5Cxrr/elCIaZt4ybkrnljBL49HYxD0V3YF0=;
+ b=d1DJ89htUv92ZvOAUtxGp4fgov8/NvVwJ7IPYoqpc1paiB/mH7F2pP6NQde20i+Ize
+ pD2Zy/xQHxqFO9eCup3gF4w2etk16EJb49fk4he3ExDLJ/7eacHBLe7g710jya+mUi9Z
+ y4o1fqeGkoL+XU9rQ6WEw2zkizTIvEP6DImk+wncLoHQK1jNXANyqD38kd95tYmz1hgS
+ Bn1+SS83uzWJ3+CVQOigi3S0HDUjrb45nm95Pa5g9aihbJPQdSY1UJejhMI0dTOFAqxe
+ J8ZwQFmrZRbq4AHq4DvtfDoeZZIPmB6OE4R1UuXkAkg1kVT5RAjhSltaPBKj0VkWqWBA
+ wXBA==
+X-Gm-Message-State: AOJu0YyuNM9FbcEJNubR5/VM9sHaah41jJ1rgYvx3GdYcs0rdC+ANvmO
+ MdeSTRnhvJmfcSdZcYyVZTSDhbe0J0ltYHqLdQBBmwPFrZboxxCDzREWlyhkoYHgvsI5UiYbrwq
+ /MFlAM8uT84dl
+X-Gm-Gg: ASbGnct7WbMNgb2cndeOHxvrqXeUbhr7iWE6pV0fuxIRryHQcurrQrtCyTKVndhX/wb
+ 1oxsNiQTjmz8G5c+rwmu1+C5gWUxxOya+vXsylvO1a72TD/JQjLpkxA38slXP3J5sDXYqA5W5YW
+ e4eKYUQ29jjO5rLaB+H+H09iVMLdUaCDgE192ftUU+OPFVze8XaB5y32WHZ50hY8FapC8C/MROY
+ 3LjCpoNMU8KZ7gh4gd02WzHNi3cteGJD1R+zN+PFNrZ1K5bkkQxUA9JlJQLuhXFXKie9swDAlaK
+ waoD8RZCjk+tyU67v1+g+P5gE3t7vUXoev+/EFfxjLXLUJpMf50vRXrWRktKAKNY/QI/5YUqE90
+ jAXtOee5Ip7h3edQQq1KF9zEyNCBT+fRzKtnPzdLygewT7wOTzjIuTmQm2vCe/6/+ks/WBKNmHq
+ xtorOTfFbF3fTe6/Zh07M=
+X-Google-Smtp-Source: AGHT+IEq7PwzNWupra1NG1OBtrWiBM/xZ8ZbE2ssL1sNC/gPpkHqvpUEmnX8rktwHeIqbswn441T9g==
+X-Received: by 2002:a05:600c:a341:b0:46e:39da:1195 with SMTP id
+ 5b1f17b1804b1-46fa9a8b3a9mr84537105e9.3.1760103813909; 
+ Fri, 10 Oct 2025 06:43:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce57cce5sm4474174f8f.1.2025.10.10.06.43.27
+ 5b1f17b1804b1-46fab3cd658sm62396535e9.1.2025.10.10.06.43.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 06:43:27 -0700 (PDT)
+ Fri, 10 Oct 2025 06:43:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH 11/16] target/mips: Replace HOST_BIG_ENDIAN #ifdef with
- runtime if() check
-Date: Fri, 10 Oct 2025 15:42:20 +0200
-Message-ID: <20251010134226.72221-12-philmd@linaro.org>
+ Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org
+Subject: [PATCH 12/16] target/ppc: Replace HOST_BIG_ENDIAN #ifdef with runtime
+ if() check
+Date: Fri, 10 Oct 2025 15:42:21 +0200
+Message-ID: <20251010134226.72221-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010134226.72221-1-philmd@linaro.org>
 References: <20251010134226.72221-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::342;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x342.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,1100 +113,238 @@ No functional change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/msa_helper.c | 889 +++++++++++++++++------------------
- 1 file changed, 444 insertions(+), 445 deletions(-)
+ target/ppc/arch_dump.c              |  9 ++-------
+ target/ppc/int_helper.c             | 28 ++++++++++++++--------------
+ target/ppc/kvm.c                    | 25 +++++++++----------------
+ target/ppc/translate/vmx-impl.c.inc | 14 +++++++-------
+ target/ppc/translate/vsx-impl.c.inc |  6 +++---
+ tcg/ppc/tcg-target.c.inc            | 24 ++++++++++++------------
+ 6 files changed, 47 insertions(+), 59 deletions(-)
 
-diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
-index f554b3d10ee..9f2d2bd6adc 100644
---- a/target/mips/tcg/msa_helper.c
-+++ b/target/mips/tcg/msa_helper.c
-@@ -4148,41 +4148,41 @@ void helper_msa_ilvev_b(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
+diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
+index 80ac6c3e320..5cb8dbe9a6a 100644
+--- a/target/ppc/arch_dump.c
++++ b/target/ppc/arch_dump.c
+@@ -158,21 +158,16 @@ static void ppc_write_elf_vmxregset(NoteFuncArg *arg, PowerPCCPU *cpu, int id)
+     struct PPCElfVmxregset *vmxregset;
+     Note *note = &arg->note;
+     DumpState *s = arg->state;
++    const int host_data_order = HOST_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB;
++    const bool needs_byteswap = s->dump_info.d_endian == host_data_order;
+ 
+     note->hdr.n_type = cpu_to_dump32(s, NT_PPC_VMX);
+     vmxregset = &note->contents.vmxregset;
+     memset(vmxregset, 0, sizeof(*vmxregset));
+ 
+     for (i = 0; i < 32; i++) {
+-        bool needs_byteswap;
+         ppc_avr_t *avr = cpu_avr_ptr(&cpu->env, i);
  
 -#if HOST_BIG_ENDIAN
--    pwd->b[8]  = pws->b[9];
--    pwd->b[9]  = pwt->b[9];
--    pwd->b[10] = pws->b[11];
--    pwd->b[11] = pwt->b[11];
--    pwd->b[12] = pws->b[13];
--    pwd->b[13] = pwt->b[13];
--    pwd->b[14] = pws->b[15];
--    pwd->b[15] = pwt->b[15];
--    pwd->b[0]  = pws->b[1];
--    pwd->b[1]  = pwt->b[1];
--    pwd->b[2]  = pws->b[3];
--    pwd->b[3]  = pwt->b[3];
--    pwd->b[4]  = pws->b[5];
--    pwd->b[5]  = pwt->b[5];
--    pwd->b[6]  = pws->b[7];
--    pwd->b[7]  = pwt->b[7];
+-        needs_byteswap = s->dump_info.d_endian == ELFDATA2LSB;
 -#else
--    pwd->b[15] = pws->b[14];
--    pwd->b[14] = pwt->b[14];
--    pwd->b[13] = pws->b[12];
--    pwd->b[12] = pwt->b[12];
--    pwd->b[11] = pws->b[10];
--    pwd->b[10] = pwt->b[10];
--    pwd->b[9]  = pws->b[8];
--    pwd->b[8]  = pwt->b[8];
--    pwd->b[7]  = pws->b[6];
--    pwd->b[6]  = pwt->b[6];
--    pwd->b[5]  = pws->b[4];
--    pwd->b[4]  = pwt->b[4];
--    pwd->b[3]  = pws->b[2];
--    pwd->b[2]  = pwt->b[2];
--    pwd->b[1]  = pws->b[0];
--    pwd->b[0]  = pwt->b[0];
--#endif
-+if (HOST_BIG_ENDIAN) {
-+        pwd->b[8]  = pws->b[9];
-+        pwd->b[9]  = pwt->b[9];
-+        pwd->b[10] = pws->b[11];
-+        pwd->b[11] = pwt->b[11];
-+        pwd->b[12] = pws->b[13];
-+        pwd->b[13] = pwt->b[13];
-+        pwd->b[14] = pws->b[15];
-+        pwd->b[15] = pwt->b[15];
-+        pwd->b[0]  = pws->b[1];
-+        pwd->b[1]  = pwt->b[1];
-+        pwd->b[2]  = pws->b[3];
-+        pwd->b[3]  = pwt->b[3];
-+        pwd->b[4]  = pws->b[5];
-+        pwd->b[5]  = pwt->b[5];
-+        pwd->b[6]  = pws->b[7];
-+        pwd->b[7]  = pwt->b[7];
-+    } else {
-+        pwd->b[15] = pws->b[14];
-+        pwd->b[14] = pwt->b[14];
-+        pwd->b[13] = pws->b[12];
-+        pwd->b[12] = pwt->b[12];
-+        pwd->b[11] = pws->b[10];
-+        pwd->b[10] = pwt->b[10];
-+        pwd->b[9]  = pws->b[8];
-+        pwd->b[8]  = pwt->b[8];
-+        pwd->b[7]  = pws->b[6];
-+        pwd->b[6]  = pwt->b[6];
-+        pwd->b[5]  = pws->b[4];
-+        pwd->b[4]  = pwt->b[4];
-+        pwd->b[3]  = pws->b[2];
-+        pwd->b[2]  = pwt->b[2];
-+        pwd->b[1]  = pws->b[0];
-+        pwd->b[0]  = pwt->b[0];
-+    }
- }
- 
- void helper_msa_ilvev_h(CPUMIPSState *env,
-@@ -4192,25 +4192,25 @@ void helper_msa_ilvev_h(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->h[4] = pws->h[5];
--    pwd->h[5] = pwt->h[5];
--    pwd->h[6] = pws->h[7];
--    pwd->h[7] = pwt->h[7];
--    pwd->h[0] = pws->h[1];
--    pwd->h[1] = pwt->h[1];
--    pwd->h[2] = pws->h[3];
--    pwd->h[3] = pwt->h[3];
--#else
--    pwd->h[7] = pws->h[6];
--    pwd->h[6] = pwt->h[6];
--    pwd->h[5] = pws->h[4];
--    pwd->h[4] = pwt->h[4];
--    pwd->h[3] = pws->h[2];
--    pwd->h[2] = pwt->h[2];
--    pwd->h[1] = pws->h[0];
--    pwd->h[0] = pwt->h[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->h[4] = pws->h[5];
-+        pwd->h[5] = pwt->h[5];
-+        pwd->h[6] = pws->h[7];
-+        pwd->h[7] = pwt->h[7];
-+        pwd->h[0] = pws->h[1];
-+        pwd->h[1] = pwt->h[1];
-+        pwd->h[2] = pws->h[3];
-+        pwd->h[3] = pwt->h[3];
-+    } else {
-+        pwd->h[7] = pws->h[6];
-+        pwd->h[6] = pwt->h[6];
-+        pwd->h[5] = pws->h[4];
-+        pwd->h[4] = pwt->h[4];
-+        pwd->h[3] = pws->h[2];
-+        pwd->h[2] = pwt->h[2];
-+        pwd->h[1] = pws->h[0];
-+        pwd->h[0] = pwt->h[0];
-+    }
- }
- 
- void helper_msa_ilvev_w(CPUMIPSState *env,
-@@ -4220,17 +4220,17 @@ void helper_msa_ilvev_w(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->w[2] = pws->w[3];
--    pwd->w[3] = pwt->w[3];
--    pwd->w[0] = pws->w[1];
--    pwd->w[1] = pwt->w[1];
--#else
--    pwd->w[3] = pws->w[2];
--    pwd->w[2] = pwt->w[2];
--    pwd->w[1] = pws->w[0];
--    pwd->w[0] = pwt->w[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->w[2] = pws->w[3];
-+        pwd->w[3] = pwt->w[3];
-+        pwd->w[0] = pws->w[1];
-+        pwd->w[1] = pwt->w[1];
-+    } else {
-+        pwd->w[3] = pws->w[2];
-+        pwd->w[2] = pwt->w[2];
-+        pwd->w[1] = pws->w[0];
-+        pwd->w[0] = pwt->w[0];
-+    }
- }
- 
- void helper_msa_ilvev_d(CPUMIPSState *env,
-@@ -4252,41 +4252,41 @@ void helper_msa_ilvod_b(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->b[7]  = pwt->b[6];
--    pwd->b[6]  = pws->b[6];
--    pwd->b[5]  = pwt->b[4];
--    pwd->b[4]  = pws->b[4];
--    pwd->b[3]  = pwt->b[2];
--    pwd->b[2]  = pws->b[2];
--    pwd->b[1]  = pwt->b[0];
--    pwd->b[0]  = pws->b[0];
--    pwd->b[15] = pwt->b[14];
--    pwd->b[14] = pws->b[14];
--    pwd->b[13] = pwt->b[12];
--    pwd->b[12] = pws->b[12];
--    pwd->b[11] = pwt->b[10];
--    pwd->b[10] = pws->b[10];
--    pwd->b[9]  = pwt->b[8];
--    pwd->b[8]  = pws->b[8];
--#else
--    pwd->b[0]  = pwt->b[1];
--    pwd->b[1]  = pws->b[1];
--    pwd->b[2]  = pwt->b[3];
--    pwd->b[3]  = pws->b[3];
--    pwd->b[4]  = pwt->b[5];
--    pwd->b[5]  = pws->b[5];
--    pwd->b[6]  = pwt->b[7];
--    pwd->b[7]  = pws->b[7];
--    pwd->b[8]  = pwt->b[9];
--    pwd->b[9]  = pws->b[9];
--    pwd->b[10] = pwt->b[11];
--    pwd->b[11] = pws->b[11];
--    pwd->b[12] = pwt->b[13];
--    pwd->b[13] = pws->b[13];
--    pwd->b[14] = pwt->b[15];
--    pwd->b[15] = pws->b[15];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->b[7]  = pwt->b[6];
-+        pwd->b[6]  = pws->b[6];
-+        pwd->b[5]  = pwt->b[4];
-+        pwd->b[4]  = pws->b[4];
-+        pwd->b[3]  = pwt->b[2];
-+        pwd->b[2]  = pws->b[2];
-+        pwd->b[1]  = pwt->b[0];
-+        pwd->b[0]  = pws->b[0];
-+        pwd->b[15] = pwt->b[14];
-+        pwd->b[14] = pws->b[14];
-+        pwd->b[13] = pwt->b[12];
-+        pwd->b[12] = pws->b[12];
-+        pwd->b[11] = pwt->b[10];
-+        pwd->b[10] = pws->b[10];
-+        pwd->b[9]  = pwt->b[8];
-+        pwd->b[8]  = pws->b[8];
-+    } else {
-+        pwd->b[0]  = pwt->b[1];
-+        pwd->b[1]  = pws->b[1];
-+        pwd->b[2]  = pwt->b[3];
-+        pwd->b[3]  = pws->b[3];
-+        pwd->b[4]  = pwt->b[5];
-+        pwd->b[5]  = pws->b[5];
-+        pwd->b[6]  = pwt->b[7];
-+        pwd->b[7]  = pws->b[7];
-+        pwd->b[8]  = pwt->b[9];
-+        pwd->b[9]  = pws->b[9];
-+        pwd->b[10] = pwt->b[11];
-+        pwd->b[11] = pws->b[11];
-+        pwd->b[12] = pwt->b[13];
-+        pwd->b[13] = pws->b[13];
-+        pwd->b[14] = pwt->b[15];
-+        pwd->b[15] = pws->b[15];
-+    }
- }
- 
- void helper_msa_ilvod_h(CPUMIPSState *env,
-@@ -4296,25 +4296,25 @@ void helper_msa_ilvod_h(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->h[3] = pwt->h[2];
--    pwd->h[2] = pws->h[2];
--    pwd->h[1] = pwt->h[0];
--    pwd->h[0] = pws->h[0];
--    pwd->h[7] = pwt->h[6];
--    pwd->h[6] = pws->h[6];
--    pwd->h[5] = pwt->h[4];
--    pwd->h[4] = pws->h[4];
--#else
--    pwd->h[0] = pwt->h[1];
--    pwd->h[1] = pws->h[1];
--    pwd->h[2] = pwt->h[3];
--    pwd->h[3] = pws->h[3];
--    pwd->h[4] = pwt->h[5];
--    pwd->h[5] = pws->h[5];
--    pwd->h[6] = pwt->h[7];
--    pwd->h[7] = pws->h[7];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->h[3] = pwt->h[2];
-+        pwd->h[2] = pws->h[2];
-+        pwd->h[1] = pwt->h[0];
-+        pwd->h[0] = pws->h[0];
-+        pwd->h[7] = pwt->h[6];
-+        pwd->h[6] = pws->h[6];
-+        pwd->h[5] = pwt->h[4];
-+        pwd->h[4] = pws->h[4];
-+    } else {
-+        pwd->h[0] = pwt->h[1];
-+        pwd->h[1] = pws->h[1];
-+        pwd->h[2] = pwt->h[3];
-+        pwd->h[3] = pws->h[3];
-+        pwd->h[4] = pwt->h[5];
-+        pwd->h[5] = pws->h[5];
-+        pwd->h[6] = pwt->h[7];
-+        pwd->h[7] = pws->h[7];
-+    }
- }
- 
- void helper_msa_ilvod_w(CPUMIPSState *env,
-@@ -4324,17 +4324,17 @@ void helper_msa_ilvod_w(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->w[1] = pwt->w[0];
--    pwd->w[0] = pws->w[0];
--    pwd->w[3] = pwt->w[2];
--    pwd->w[2] = pws->w[2];
--#else
--    pwd->w[0] = pwt->w[1];
--    pwd->w[1] = pws->w[1];
--    pwd->w[2] = pwt->w[3];
--    pwd->w[3] = pws->w[3];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->w[1] = pwt->w[0];
-+        pwd->w[0] = pws->w[0];
-+        pwd->w[3] = pwt->w[2];
-+        pwd->w[2] = pws->w[2];
-+    } else {
-+        pwd->w[0] = pwt->w[1];
-+        pwd->w[1] = pws->w[1];
-+        pwd->w[2] = pwt->w[3];
-+        pwd->w[3] = pws->w[3];
-+    }
- }
- 
- void helper_msa_ilvod_d(CPUMIPSState *env,
-@@ -4356,41 +4356,41 @@ void helper_msa_ilvl_b(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->b[7]  = pwt->b[15];
--    pwd->b[6]  = pws->b[15];
--    pwd->b[5]  = pwt->b[14];
--    pwd->b[4]  = pws->b[14];
--    pwd->b[3]  = pwt->b[13];
--    pwd->b[2]  = pws->b[13];
--    pwd->b[1]  = pwt->b[12];
--    pwd->b[0]  = pws->b[12];
--    pwd->b[15] = pwt->b[11];
--    pwd->b[14] = pws->b[11];
--    pwd->b[13] = pwt->b[10];
--    pwd->b[12] = pws->b[10];
--    pwd->b[11] = pwt->b[9];
--    pwd->b[10] = pws->b[9];
--    pwd->b[9]  = pwt->b[8];
--    pwd->b[8]  = pws->b[8];
--#else
--    pwd->b[0]  = pwt->b[8];
--    pwd->b[1]  = pws->b[8];
--    pwd->b[2]  = pwt->b[9];
--    pwd->b[3]  = pws->b[9];
--    pwd->b[4]  = pwt->b[10];
--    pwd->b[5]  = pws->b[10];
--    pwd->b[6]  = pwt->b[11];
--    pwd->b[7]  = pws->b[11];
--    pwd->b[8]  = pwt->b[12];
--    pwd->b[9]  = pws->b[12];
--    pwd->b[10] = pwt->b[13];
--    pwd->b[11] = pws->b[13];
--    pwd->b[12] = pwt->b[14];
--    pwd->b[13] = pws->b[14];
--    pwd->b[14] = pwt->b[15];
--    pwd->b[15] = pws->b[15];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->b[7]  = pwt->b[15];
-+        pwd->b[6]  = pws->b[15];
-+        pwd->b[5]  = pwt->b[14];
-+        pwd->b[4]  = pws->b[14];
-+        pwd->b[3]  = pwt->b[13];
-+        pwd->b[2]  = pws->b[13];
-+        pwd->b[1]  = pwt->b[12];
-+        pwd->b[0]  = pws->b[12];
-+        pwd->b[15] = pwt->b[11];
-+        pwd->b[14] = pws->b[11];
-+        pwd->b[13] = pwt->b[10];
-+        pwd->b[12] = pws->b[10];
-+        pwd->b[11] = pwt->b[9];
-+        pwd->b[10] = pws->b[9];
-+        pwd->b[9]  = pwt->b[8];
-+        pwd->b[8]  = pws->b[8];
-+    } else {
-+        pwd->b[0]  = pwt->b[8];
-+        pwd->b[1]  = pws->b[8];
-+        pwd->b[2]  = pwt->b[9];
-+        pwd->b[3]  = pws->b[9];
-+        pwd->b[4]  = pwt->b[10];
-+        pwd->b[5]  = pws->b[10];
-+        pwd->b[6]  = pwt->b[11];
-+        pwd->b[7]  = pws->b[11];
-+        pwd->b[8]  = pwt->b[12];
-+        pwd->b[9]  = pws->b[12];
-+        pwd->b[10] = pwt->b[13];
-+        pwd->b[11] = pws->b[13];
-+        pwd->b[12] = pwt->b[14];
-+        pwd->b[13] = pws->b[14];
-+        pwd->b[14] = pwt->b[15];
-+        pwd->b[15] = pws->b[15];
-+    }
- }
- 
- void helper_msa_ilvl_h(CPUMIPSState *env,
-@@ -4400,25 +4400,25 @@ void helper_msa_ilvl_h(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->h[3] = pwt->h[7];
--    pwd->h[2] = pws->h[7];
--    pwd->h[1] = pwt->h[6];
--    pwd->h[0] = pws->h[6];
--    pwd->h[7] = pwt->h[5];
--    pwd->h[6] = pws->h[5];
--    pwd->h[5] = pwt->h[4];
--    pwd->h[4] = pws->h[4];
--#else
--    pwd->h[0] = pwt->h[4];
--    pwd->h[1] = pws->h[4];
--    pwd->h[2] = pwt->h[5];
--    pwd->h[3] = pws->h[5];
--    pwd->h[4] = pwt->h[6];
--    pwd->h[5] = pws->h[6];
--    pwd->h[6] = pwt->h[7];
--    pwd->h[7] = pws->h[7];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->h[3] = pwt->h[7];
-+        pwd->h[2] = pws->h[7];
-+        pwd->h[1] = pwt->h[6];
-+        pwd->h[0] = pws->h[6];
-+        pwd->h[7] = pwt->h[5];
-+        pwd->h[6] = pws->h[5];
-+        pwd->h[5] = pwt->h[4];
-+        pwd->h[4] = pws->h[4];
-+    } else {
-+        pwd->h[0] = pwt->h[4];
-+        pwd->h[1] = pws->h[4];
-+        pwd->h[2] = pwt->h[5];
-+        pwd->h[3] = pws->h[5];
-+        pwd->h[4] = pwt->h[6];
-+        pwd->h[5] = pws->h[6];
-+        pwd->h[6] = pwt->h[7];
-+        pwd->h[7] = pws->h[7];
-+    }
- }
- 
- void helper_msa_ilvl_w(CPUMIPSState *env,
-@@ -4428,17 +4428,17 @@ void helper_msa_ilvl_w(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->w[1] = pwt->w[3];
--    pwd->w[0] = pws->w[3];
--    pwd->w[3] = pwt->w[2];
--    pwd->w[2] = pws->w[2];
--#else
--    pwd->w[0] = pwt->w[2];
--    pwd->w[1] = pws->w[2];
--    pwd->w[2] = pwt->w[3];
--    pwd->w[3] = pws->w[3];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->w[1] = pwt->w[3];
-+        pwd->w[0] = pws->w[3];
-+        pwd->w[3] = pwt->w[2];
-+        pwd->w[2] = pws->w[2];
-+    } else {
-+        pwd->w[0] = pwt->w[2];
-+        pwd->w[1] = pws->w[2];
-+        pwd->w[2] = pwt->w[3];
-+        pwd->w[3] = pws->w[3];
-+    }
- }
- 
- void helper_msa_ilvl_d(CPUMIPSState *env,
-@@ -4460,41 +4460,41 @@ void helper_msa_ilvr_b(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->b[8]  = pws->b[0];
--    pwd->b[9]  = pwt->b[0];
--    pwd->b[10] = pws->b[1];
--    pwd->b[11] = pwt->b[1];
--    pwd->b[12] = pws->b[2];
--    pwd->b[13] = pwt->b[2];
--    pwd->b[14] = pws->b[3];
--    pwd->b[15] = pwt->b[3];
--    pwd->b[0]  = pws->b[4];
--    pwd->b[1]  = pwt->b[4];
--    pwd->b[2]  = pws->b[5];
--    pwd->b[3]  = pwt->b[5];
--    pwd->b[4]  = pws->b[6];
--    pwd->b[5]  = pwt->b[6];
--    pwd->b[6]  = pws->b[7];
--    pwd->b[7]  = pwt->b[7];
--#else
--    pwd->b[15] = pws->b[7];
--    pwd->b[14] = pwt->b[7];
--    pwd->b[13] = pws->b[6];
--    pwd->b[12] = pwt->b[6];
--    pwd->b[11] = pws->b[5];
--    pwd->b[10] = pwt->b[5];
--    pwd->b[9]  = pws->b[4];
--    pwd->b[8]  = pwt->b[4];
--    pwd->b[7]  = pws->b[3];
--    pwd->b[6]  = pwt->b[3];
--    pwd->b[5]  = pws->b[2];
--    pwd->b[4]  = pwt->b[2];
--    pwd->b[3]  = pws->b[1];
--    pwd->b[2]  = pwt->b[1];
--    pwd->b[1]  = pws->b[0];
--    pwd->b[0]  = pwt->b[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->b[8]  = pws->b[0];
-+        pwd->b[9]  = pwt->b[0];
-+        pwd->b[10] = pws->b[1];
-+        pwd->b[11] = pwt->b[1];
-+        pwd->b[12] = pws->b[2];
-+        pwd->b[13] = pwt->b[2];
-+        pwd->b[14] = pws->b[3];
-+        pwd->b[15] = pwt->b[3];
-+        pwd->b[0]  = pws->b[4];
-+        pwd->b[1]  = pwt->b[4];
-+        pwd->b[2]  = pws->b[5];
-+        pwd->b[3]  = pwt->b[5];
-+        pwd->b[4]  = pws->b[6];
-+        pwd->b[5]  = pwt->b[6];
-+        pwd->b[6]  = pws->b[7];
-+        pwd->b[7]  = pwt->b[7];
-+    } else {
-+        pwd->b[15] = pws->b[7];
-+        pwd->b[14] = pwt->b[7];
-+        pwd->b[13] = pws->b[6];
-+        pwd->b[12] = pwt->b[6];
-+        pwd->b[11] = pws->b[5];
-+        pwd->b[10] = pwt->b[5];
-+        pwd->b[9]  = pws->b[4];
-+        pwd->b[8]  = pwt->b[4];
-+        pwd->b[7]  = pws->b[3];
-+        pwd->b[6]  = pwt->b[3];
-+        pwd->b[5]  = pws->b[2];
-+        pwd->b[4]  = pwt->b[2];
-+        pwd->b[3]  = pws->b[1];
-+        pwd->b[2]  = pwt->b[1];
-+        pwd->b[1]  = pws->b[0];
-+        pwd->b[0]  = pwt->b[0];
-+    }
- }
- 
- void helper_msa_ilvr_h(CPUMIPSState *env,
-@@ -4504,25 +4504,25 @@ void helper_msa_ilvr_h(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->h[4] = pws->h[0];
--    pwd->h[5] = pwt->h[0];
--    pwd->h[6] = pws->h[1];
--    pwd->h[7] = pwt->h[1];
--    pwd->h[0] = pws->h[2];
--    pwd->h[1] = pwt->h[2];
--    pwd->h[2] = pws->h[3];
--    pwd->h[3] = pwt->h[3];
--#else
--    pwd->h[7] = pws->h[3];
--    pwd->h[6] = pwt->h[3];
--    pwd->h[5] = pws->h[2];
--    pwd->h[4] = pwt->h[2];
--    pwd->h[3] = pws->h[1];
--    pwd->h[2] = pwt->h[1];
--    pwd->h[1] = pws->h[0];
--    pwd->h[0] = pwt->h[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->h[4] = pws->h[0];
-+        pwd->h[5] = pwt->h[0];
-+        pwd->h[6] = pws->h[1];
-+        pwd->h[7] = pwt->h[1];
-+        pwd->h[0] = pws->h[2];
-+        pwd->h[1] = pwt->h[2];
-+        pwd->h[2] = pws->h[3];
-+        pwd->h[3] = pwt->h[3];
-+    } else {
-+        pwd->h[7] = pws->h[3];
-+        pwd->h[6] = pwt->h[3];
-+        pwd->h[5] = pws->h[2];
-+        pwd->h[4] = pwt->h[2];
-+        pwd->h[3] = pws->h[1];
-+        pwd->h[2] = pwt->h[1];
-+        pwd->h[1] = pws->h[0];
-+        pwd->h[0] = pwt->h[0];
-+    }
- }
- 
- void helper_msa_ilvr_w(CPUMIPSState *env,
-@@ -4532,17 +4532,17 @@ void helper_msa_ilvr_w(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->w[2] = pws->w[0];
--    pwd->w[3] = pwt->w[0];
--    pwd->w[0] = pws->w[1];
--    pwd->w[1] = pwt->w[1];
--#else
--    pwd->w[3] = pws->w[1];
--    pwd->w[2] = pwt->w[1];
--    pwd->w[1] = pws->w[0];
--    pwd->w[0] = pwt->w[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->w[2] = pws->w[0];
-+        pwd->w[3] = pwt->w[0];
-+        pwd->w[0] = pws->w[1];
-+        pwd->w[1] = pwt->w[1];
-+    } else {
-+        pwd->w[3] = pws->w[1];
-+        pwd->w[2] = pwt->w[1];
-+        pwd->w[1] = pws->w[0];
-+        pwd->w[0] = pwt->w[0];
-+    }
- }
- 
- void helper_msa_ilvr_d(CPUMIPSState *env,
-@@ -4663,41 +4663,41 @@ void helper_msa_pckev_b(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->b[8]  = pws->b[9];
--    pwd->b[10] = pws->b[13];
--    pwd->b[12] = pws->b[1];
--    pwd->b[14] = pws->b[5];
--    pwd->b[0]  = pwt->b[9];
--    pwd->b[2]  = pwt->b[13];
--    pwd->b[4]  = pwt->b[1];
--    pwd->b[6]  = pwt->b[5];
--    pwd->b[9]  = pws->b[11];
--    pwd->b[13] = pws->b[3];
--    pwd->b[1]  = pwt->b[11];
--    pwd->b[5]  = pwt->b[3];
--    pwd->b[11] = pws->b[15];
--    pwd->b[3]  = pwt->b[15];
--    pwd->b[15] = pws->b[7];
--    pwd->b[7]  = pwt->b[7];
--#else
--    pwd->b[15] = pws->b[14];
--    pwd->b[13] = pws->b[10];
--    pwd->b[11] = pws->b[6];
--    pwd->b[9]  = pws->b[2];
--    pwd->b[7]  = pwt->b[14];
--    pwd->b[5]  = pwt->b[10];
--    pwd->b[3]  = pwt->b[6];
--    pwd->b[1]  = pwt->b[2];
--    pwd->b[14] = pws->b[12];
--    pwd->b[10] = pws->b[4];
--    pwd->b[6]  = pwt->b[12];
--    pwd->b[2]  = pwt->b[4];
--    pwd->b[12] = pws->b[8];
--    pwd->b[4]  = pwt->b[8];
--    pwd->b[8]  = pws->b[0];
--    pwd->b[0]  = pwt->b[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->b[8]  = pws->b[9];
-+        pwd->b[10] = pws->b[13];
-+        pwd->b[12] = pws->b[1];
-+        pwd->b[14] = pws->b[5];
-+        pwd->b[0]  = pwt->b[9];
-+        pwd->b[2]  = pwt->b[13];
-+        pwd->b[4]  = pwt->b[1];
-+        pwd->b[6]  = pwt->b[5];
-+        pwd->b[9]  = pws->b[11];
-+        pwd->b[13] = pws->b[3];
-+        pwd->b[1]  = pwt->b[11];
-+        pwd->b[5]  = pwt->b[3];
-+        pwd->b[11] = pws->b[15];
-+        pwd->b[3]  = pwt->b[15];
-+        pwd->b[15] = pws->b[7];
-+        pwd->b[7]  = pwt->b[7];
-+    } else {
-+        pwd->b[15] = pws->b[14];
-+        pwd->b[13] = pws->b[10];
-+        pwd->b[11] = pws->b[6];
-+        pwd->b[9]  = pws->b[2];
-+        pwd->b[7]  = pwt->b[14];
-+        pwd->b[5]  = pwt->b[10];
-+        pwd->b[3]  = pwt->b[6];
-+        pwd->b[1]  = pwt->b[2];
-+        pwd->b[14] = pws->b[12];
-+        pwd->b[10] = pws->b[4];
-+        pwd->b[6]  = pwt->b[12];
-+        pwd->b[2]  = pwt->b[4];
-+        pwd->b[12] = pws->b[8];
-+        pwd->b[4]  = pwt->b[8];
-+        pwd->b[8]  = pws->b[0];
-+        pwd->b[0]  = pwt->b[0];
-+    }
- }
- 
- void helper_msa_pckev_h(CPUMIPSState *env,
-@@ -4707,25 +4707,25 @@ void helper_msa_pckev_h(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->h[4] = pws->h[5];
--    pwd->h[6] = pws->h[1];
--    pwd->h[0] = pwt->h[5];
--    pwd->h[2] = pwt->h[1];
--    pwd->h[5] = pws->h[7];
--    pwd->h[1] = pwt->h[7];
--    pwd->h[7] = pws->h[3];
--    pwd->h[3] = pwt->h[3];
--#else
--    pwd->h[7] = pws->h[6];
--    pwd->h[5] = pws->h[2];
--    pwd->h[3] = pwt->h[6];
--    pwd->h[1] = pwt->h[2];
--    pwd->h[6] = pws->h[4];
--    pwd->h[2] = pwt->h[4];
--    pwd->h[4] = pws->h[0];
--    pwd->h[0] = pwt->h[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->h[4] = pws->h[5];
-+        pwd->h[6] = pws->h[1];
-+        pwd->h[0] = pwt->h[5];
-+        pwd->h[2] = pwt->h[1];
-+        pwd->h[5] = pws->h[7];
-+        pwd->h[1] = pwt->h[7];
-+        pwd->h[7] = pws->h[3];
-+        pwd->h[3] = pwt->h[3];
-+    } else {
-+        pwd->h[7] = pws->h[6];
-+        pwd->h[5] = pws->h[2];
-+        pwd->h[3] = pwt->h[6];
-+        pwd->h[1] = pwt->h[2];
-+        pwd->h[6] = pws->h[4];
-+        pwd->h[2] = pwt->h[4];
-+        pwd->h[4] = pws->h[0];
-+        pwd->h[0] = pwt->h[0];
-+    }
- }
- 
- void helper_msa_pckev_w(CPUMIPSState *env,
-@@ -4735,17 +4735,17 @@ void helper_msa_pckev_w(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->w[2] = pws->w[3];
--    pwd->w[0] = pwt->w[3];
--    pwd->w[3] = pws->w[1];
--    pwd->w[1] = pwt->w[1];
--#else
--    pwd->w[3] = pws->w[2];
--    pwd->w[1] = pwt->w[2];
--    pwd->w[2] = pws->w[0];
--    pwd->w[0] = pwt->w[0];
--#endif
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->w[2] = pws->w[3];
-+        pwd->w[0] = pwt->w[3];
-+        pwd->w[3] = pws->w[1];
-+        pwd->w[1] = pwt->w[1];
-+    } else {
-+        pwd->w[3] = pws->w[2];
-+        pwd->w[1] = pwt->w[2];
-+        pwd->w[2] = pws->w[0];
-+        pwd->w[0] = pwt->w[0];
-+    }
- }
- 
- void helper_msa_pckev_d(CPUMIPSState *env,
-@@ -4767,42 +4767,41 @@ void helper_msa_pckod_b(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
- 
--#if HOST_BIG_ENDIAN
--    pwd->b[7]  = pwt->b[6];
--    pwd->b[5]  = pwt->b[2];
--    pwd->b[3]  = pwt->b[14];
--    pwd->b[1]  = pwt->b[10];
--    pwd->b[15] = pws->b[6];
--    pwd->b[13] = pws->b[2];
--    pwd->b[11] = pws->b[14];
--    pwd->b[9]  = pws->b[10];
--    pwd->b[6]  = pwt->b[4];
--    pwd->b[2]  = pwt->b[12];
--    pwd->b[14] = pws->b[4];
--    pwd->b[10] = pws->b[12];
--    pwd->b[4]  = pwt->b[0];
--    pwd->b[12] = pws->b[0];
--    pwd->b[0]  = pwt->b[8];
--    pwd->b[8]  = pws->b[8];
--#else
--    pwd->b[0]  = pwt->b[1];
--    pwd->b[2]  = pwt->b[5];
--    pwd->b[4]  = pwt->b[9];
--    pwd->b[6]  = pwt->b[13];
--    pwd->b[8]  = pws->b[1];
--    pwd->b[10] = pws->b[5];
--    pwd->b[12] = pws->b[9];
--    pwd->b[14] = pws->b[13];
--    pwd->b[1]  = pwt->b[3];
--    pwd->b[5]  = pwt->b[11];
--    pwd->b[9]  = pws->b[3];
--    pwd->b[13] = pws->b[11];
--    pwd->b[3]  = pwt->b[7];
--    pwd->b[11] = pws->b[7];
--    pwd->b[7]  = pwt->b[15];
--    pwd->b[15] = pws->b[15];
+-        needs_byteswap = s->dump_info.d_endian == ELFDATA2MSB;
 -#endif
 -
-+    if (HOST_BIG_ENDIAN) {
-+        pwd->b[7]  = pwt->b[6];
-+        pwd->b[5]  = pwt->b[2];
-+        pwd->b[3]  = pwt->b[14];
-+        pwd->b[1]  = pwt->b[10];
-+        pwd->b[15] = pws->b[6];
-+        pwd->b[13] = pws->b[2];
-+        pwd->b[11] = pws->b[14];
-+        pwd->b[9]  = pws->b[10];
-+        pwd->b[6]  = pwt->b[4];
-+        pwd->b[2]  = pwt->b[12];
-+        pwd->b[14] = pws->b[4];
-+        pwd->b[10] = pws->b[12];
-+        pwd->b[4]  = pwt->b[0];
-+        pwd->b[12] = pws->b[0];
-+        pwd->b[0]  = pwt->b[8];
-+        pwd->b[8]  = pws->b[8];
-+    } else {
-+        pwd->b[0]  = pwt->b[1];
-+        pwd->b[2]  = pwt->b[5];
-+        pwd->b[4]  = pwt->b[9];
-+        pwd->b[6]  = pwt->b[13];
-+        pwd->b[8]  = pws->b[1];
-+        pwd->b[10] = pws->b[5];
-+        pwd->b[12] = pws->b[9];
-+        pwd->b[14] = pws->b[13];
-+        pwd->b[1]  = pwt->b[3];
-+        pwd->b[5]  = pwt->b[11];
-+        pwd->b[9]  = pws->b[3];
-+        pwd->b[13] = pws->b[11];
-+        pwd->b[3]  = pwt->b[7];
-+        pwd->b[11] = pws->b[7];
-+        pwd->b[7]  = pwt->b[15];
-+        pwd->b[15] = pws->b[15];
-+    }
- }
- 
- void helper_msa_pckod_h(CPUMIPSState *env,
-@@ -4812,25 +4811,25 @@ void helper_msa_pckod_h(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
+         if (needs_byteswap) {
+             vmxregset->avr[i].u64[0] = bswap64(avr->u64[1]);
+             vmxregset->avr[i].u64[1] = bswap64(avr->u64[0]);
+diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
+index ef4b2e75d60..0c6f5b2e519 100644
+--- a/target/ppc/int_helper.c
++++ b/target/ppc/int_helper.c
+@@ -1678,13 +1678,13 @@ void helper_vslo(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+ {
+     int sh = (b->VsrB(0xf) >> 3) & 0xf;
  
 -#if HOST_BIG_ENDIAN
--    pwd->h[3] = pwt->h[2];
--    pwd->h[1] = pwt->h[6];
--    pwd->h[7] = pws->h[2];
--    pwd->h[5] = pws->h[6];
--    pwd->h[2] = pwt->h[0];
--    pwd->h[6] = pws->h[0];
--    pwd->h[0] = pwt->h[4];
--    pwd->h[4] = pws->h[4];
+-    memmove(&r->u8[0], &a->u8[sh], 16 - sh);
+-    memset(&r->u8[16 - sh], 0, sh);
 -#else
--    pwd->h[0] = pwt->h[1];
--    pwd->h[2] = pwt->h[5];
--    pwd->h[4] = pws->h[1];
--    pwd->h[6] = pws->h[5];
--    pwd->h[1] = pwt->h[3];
--    pwd->h[5] = pws->h[3];
--    pwd->h[3] = pwt->h[7];
--    pwd->h[7] = pws->h[7];
+-    memmove(&r->u8[sh], &a->u8[0], 16 - sh);
+-    memset(&r->u8[0], 0, sh);
 -#endif
 +    if (HOST_BIG_ENDIAN) {
-+        pwd->h[3] = pwt->h[2];
-+        pwd->h[1] = pwt->h[6];
-+        pwd->h[7] = pws->h[2];
-+        pwd->h[5] = pws->h[6];
-+        pwd->h[2] = pwt->h[0];
-+        pwd->h[6] = pws->h[0];
-+        pwd->h[0] = pwt->h[4];
-+        pwd->h[4] = pws->h[4];
++        memmove(&r->u8[0], &a->u8[sh], 16 - sh);
++        memset(&r->u8[16 - sh], 0, sh);
 +    } else {
-+        pwd->h[0] = pwt->h[1];
-+        pwd->h[2] = pwt->h[5];
-+        pwd->h[4] = pws->h[1];
-+        pwd->h[6] = pws->h[5];
-+        pwd->h[1] = pwt->h[3];
-+        pwd->h[5] = pws->h[3];
-+        pwd->h[3] = pwt->h[7];
-+        pwd->h[7] = pws->h[7];
++        memmove(&r->u8[sh], &a->u8[0], 16 - sh);
++        memset(&r->u8[0], 0, sh);
 +    }
  }
  
- void helper_msa_pckod_w(CPUMIPSState *env,
-@@ -4840,17 +4839,17 @@ void helper_msa_pckod_w(CPUMIPSState *env,
-     wr_t *pws = &(env->active_fpu.fpr[ws].wr);
-     wr_t *pwt = &(env->active_fpu.fpr[wt].wr);
+ #if HOST_BIG_ENDIAN
+@@ -1898,13 +1898,13 @@ void helper_vsro(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+ {
+     int sh = (b->VsrB(0xf) >> 3) & 0xf;
  
 -#if HOST_BIG_ENDIAN
--    pwd->w[1] = pwt->w[0];
--    pwd->w[3] = pws->w[0];
--    pwd->w[0] = pwt->w[2];
--    pwd->w[2] = pws->w[2];
+-    memmove(&r->u8[sh], &a->u8[0], 16 - sh);
+-    memset(&r->u8[0], 0, sh);
 -#else
--    pwd->w[0] = pwt->w[1];
--    pwd->w[2] = pws->w[1];
--    pwd->w[1] = pwt->w[3];
--    pwd->w[3] = pws->w[3];
+-    memmove(&r->u8[0], &a->u8[sh], 16 - sh);
+-    memset(&r->u8[16 - sh], 0, sh);
 -#endif
 +    if (HOST_BIG_ENDIAN) {
-+        pwd->w[1] = pwt->w[0];
-+        pwd->w[3] = pws->w[0];
-+        pwd->w[0] = pwt->w[2];
-+        pwd->w[2] = pws->w[2];
++        memmove(&r->u8[sh], &a->u8[0], 16 - sh);
++        memset(&r->u8[0], 0, sh);
 +    } else {
-+        pwd->w[0] = pwt->w[1];
-+        pwd->w[2] = pws->w[1];
-+        pwd->w[1] = pwt->w[3];
-+        pwd->w[3] = pws->w[3];
++        memmove(&r->u8[0], &a->u8[sh], 16 - sh);
++        memset(&r->u8[16 - sh], 0, sh);
 +    }
  }
  
- void helper_msa_pckod_d(CPUMIPSState *env,
-@@ -5928,13 +5927,13 @@ void helper_msa_copy_s_b(CPUMIPSState *env, uint32_t rd,
-                          uint32_t ws, uint32_t n)
- {
-     n %= 16;
--#if HOST_BIG_ENDIAN
--    if (n < 8) {
--        n = 8 - n - 1;
--    } else {
--        n = 24 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 8) {
-+            n = 8 - n - 1;
-+        } else {
-+            n = 24 - n - 1;
-+        }
-     }
--#endif
-     env->active_tc.gpr[rd] = (int8_t)env->active_fpu.fpr[ws].wr.b[n];
- }
+ void helper_vsumsws(CPUPPCState *env, ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 2521ff65c6c..c00d29ce2c8 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -651,13 +651,13 @@ static int kvm_put_fp(CPUState *cs)
+             uint64_t *fpr = cpu_fpr_ptr(env, i);
+             uint64_t *vsrl = cpu_vsrl_ptr(env, i);
  
-@@ -5942,13 +5941,13 @@ void helper_msa_copy_s_h(CPUMIPSState *env, uint32_t rd,
-                          uint32_t ws, uint32_t n)
- {
-     n %= 8;
 -#if HOST_BIG_ENDIAN
--    if (n < 4) {
--        n = 4 - n - 1;
--    } else {
--        n = 12 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 4) {
-+            n = 4 - n - 1;
-+        } else {
-+            n = 12 - n - 1;
-+        }
-     }
+-            vsr[0] = float64_val(*fpr);
+-            vsr[1] = *vsrl;
+-#else
+-            vsr[0] = *vsrl;
+-            vsr[1] = float64_val(*fpr);
 -#endif
-     env->active_tc.gpr[rd] = (int16_t)env->active_fpu.fpr[ws].wr.h[n];
- }
++            if (HOST_BIG_ENDIAN) {
++                vsr[0] = float64_val(*fpr);
++                vsr[1] = *vsrl;
++            } else {
++                vsr[0] = *vsrl;
++                vsr[1] = float64_val(*fpr);
++            }
+             reg.addr = (uintptr_t) &vsr;
+             reg.id = vsx ? KVM_REG_PPC_VSR(i) : KVM_REG_PPC_FPR(i);
  
-@@ -5956,13 +5955,13 @@ void helper_msa_copy_s_w(CPUMIPSState *env, uint32_t rd,
-                          uint32_t ws, uint32_t n)
- {
-     n %= 4;
+@@ -728,17 +728,10 @@ static int kvm_get_fp(CPUState *cs)
+                                         strerror(errno));
+                 return ret;
+             } else {
 -#if HOST_BIG_ENDIAN
--    if (n < 2) {
--        n = 2 - n - 1;
--    } else {
--        n = 6 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 2) {
-+            n = 2 - n - 1;
-+        } else {
-+            n = 6 - n - 1;
-+        }
-     }
+-                *fpr = vsr[0];
++                *fpr = vsr[!HOST_BIG_ENDIAN];
+                 if (vsx) {
+-                    *vsrl = vsr[1];
++                    *vsrl = vsr[HOST_BIG_ENDIAN];
+                 }
+-#else
+-                *fpr = vsr[1];
+-                if (vsx) {
+-                    *vsrl = vsr[0];
+-                }
 -#endif
-     env->active_tc.gpr[rd] = (int32_t)env->active_fpu.fpr[ws].wr.w[n];
- }
+             }
+         }
+     }
+diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
+index 92d6e8c6032..ca9cf1823d4 100644
+--- a/target/ppc/translate/vmx-impl.c.inc
++++ b/target/ppc/translate/vmx-impl.c.inc
+@@ -134,9 +134,9 @@ static void gen_mtvscr(DisasContext *ctx)
  
-@@ -5977,13 +5976,13 @@ void helper_msa_copy_u_b(CPUMIPSState *env, uint32_t rd,
-                          uint32_t ws, uint32_t n)
- {
-     n %= 16;
+     val = tcg_temp_new_i32();
+     bofs = avr_full_offset(rB(ctx->opcode));
 -#if HOST_BIG_ENDIAN
--    if (n < 8) {
--        n = 8 - n - 1;
--    } else {
--        n = 24 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 8) {
-+            n = 8 - n - 1;
-+        } else {
-+            n = 24 - n - 1;
-+        }
-     }
+-    bofs += 3 * 4;
 -#endif
-     env->active_tc.gpr[rd] = (uint8_t)env->active_fpu.fpr[ws].wr.b[n];
- }
- 
-@@ -5991,13 +5990,13 @@ void helper_msa_copy_u_h(CPUMIPSState *env, uint32_t rd,
-                          uint32_t ws, uint32_t n)
- {
-     n %= 8;
--#if HOST_BIG_ENDIAN
--    if (n < 4) {
--        n = 4 - n - 1;
--    } else {
--        n = 12 - n - 1;
 +    if (HOST_BIG_ENDIAN) {
-+        if (n < 4) {
-+            n = 4 - n - 1;
-+        } else {
-+            n = 12 - n - 1;
-+        }
-     }
--#endif
-     env->active_tc.gpr[rd] = (uint16_t)env->active_fpu.fpr[ws].wr.h[n];
- }
++        bofs += 3 * 4;
++    }
  
-@@ -6005,13 +6004,13 @@ void helper_msa_copy_u_w(CPUMIPSState *env, uint32_t rd,
-                          uint32_t ws, uint32_t n)
- {
-     n %= 4;
--#if HOST_BIG_ENDIAN
--    if (n < 2) {
--        n = 2 - n - 1;
--    } else {
--        n = 6 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 2) {
-+            n = 2 - n - 1;
-+        } else {
-+            n = 6 - n - 1;
-+        }
-     }
--#endif
-     env->active_tc.gpr[rd] = (uint32_t)env->active_fpu.fpr[ws].wr.w[n];
- }
+     tcg_gen_ld_i32(val, tcg_env, bofs);
+     gen_helper_mtvscr(tcg_env, val);
+@@ -1528,10 +1528,10 @@ static void gen_vsplt(DisasContext *ctx, int vece)
  
-@@ -6021,13 +6020,13 @@ void helper_msa_insert_b(CPUMIPSState *env, uint32_t wd,
-     wr_t *pwd = &(env->active_fpu.fpr[wd].wr);
-     target_ulong rs = env->active_tc.gpr[rs_num];
-     n %= 16;
--#if HOST_BIG_ENDIAN
--    if (n < 8) {
--        n = 8 - n - 1;
--    } else {
--        n = 24 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 8) {
-+            n = 8 - n - 1;
-+        } else {
-+            n = 24 - n - 1;
-+        }
-     }
+     /* Experimental testing shows that hardware masks the immediate.  */
+     bofs += (uimm << vece) & 15;
+-#if !HOST_BIG_ENDIAN
+-    bofs ^= 15;
+-    bofs &= ~((1 << vece) - 1);
 -#endif
-     pwd->b[n] = (int8_t)rs;
- }
++    if (!HOST_BIG_ENDIAN) {
++        bofs ^= 15;
++        bofs &= ~((1 << vece) - 1);
++    }
  
-@@ -6037,13 +6036,13 @@ void helper_msa_insert_h(CPUMIPSState *env, uint32_t wd,
-     wr_t *pwd = &(env->active_fpu.fpr[wd].wr);
-     target_ulong rs = env->active_tc.gpr[rs_num];
-     n %= 8;
--#if HOST_BIG_ENDIAN
--    if (n < 4) {
--        n = 4 - n - 1;
--    } else {
--        n = 12 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 4) {
-+            n = 4 - n - 1;
-+        } else {
-+            n = 12 - n - 1;
-+        }
-     }
+     tcg_gen_gvec_dup_mem(vece, dofs, bofs, 16, 16);
+ }
+diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+index 00ad57c6282..8e5c75961f4 100644
+--- a/target/ppc/translate/vsx-impl.c.inc
++++ b/target/ppc/translate/vsx-impl.c.inc
+@@ -1642,9 +1642,9 @@ static bool trans_XXSPLTW(DisasContext *ctx, arg_XX2_uim *a)
+     tofs = vsr_full_offset(a->xt);
+     bofs = vsr_full_offset(a->xb);
+     bofs += a->uim << MO_32;
+-#if !HOST_BIG_ENDIAN
+-    bofs ^= 8 | 4;
 -#endif
-     pwd->h[n] = (int16_t)rs;
- }
++    if (!HOST_BIG_ENDIAN) {
++        bofs ^= 8 | 4;
++    }
  
-@@ -6053,13 +6052,13 @@ void helper_msa_insert_w(CPUMIPSState *env, uint32_t wd,
-     wr_t *pwd = &(env->active_fpu.fpr[wd].wr);
-     target_ulong rs = env->active_tc.gpr[rs_num];
-     n %= 4;
--#if HOST_BIG_ENDIAN
--    if (n < 2) {
--        n = 2 - n - 1;
--    } else {
--        n = 6 - n - 1;
-+    if (HOST_BIG_ENDIAN) {
-+        if (n < 2) {
-+            n = 2 - n - 1;
-+        } else {
-+            n = 6 - n - 1;
-+        }
-     }
+     tcg_gen_gvec_dup_mem(MO_32, tofs, bofs, 16, 16);
+     return true;
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index b8b23d44d5e..61aa77f5454 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -3951,9 +3951,9 @@ static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
+             tcg_out_mem_long(s, 0, LVEBX, out, base, offset);
+         }
+         elt = extract32(offset, 0, 4);
+-#if !HOST_BIG_ENDIAN
+-        elt ^= 15;
 -#endif
-     pwd->w[n] = (int32_t)rs;
- }
- 
++        if (!HOST_BIG_ENDIAN) {
++            elt ^= 15;
++        }
+         tcg_out32(s, VSPLTB | VRT(out) | VRB(out) | (elt << 16));
+         break;
+     case MO_16:
+@@ -3964,9 +3964,9 @@ static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
+             tcg_out_mem_long(s, 0, LVEHX, out, base, offset);
+         }
+         elt = extract32(offset, 1, 3);
+-#if !HOST_BIG_ENDIAN
+-        elt ^= 7;
+-#endif
++        if (!HOST_BIG_ENDIAN) {
++            elt ^= 7;
++        }
+         tcg_out32(s, VSPLTH | VRT(out) | VRB(out) | (elt << 16));
+         break;
+     case MO_32:
+@@ -3977,9 +3977,9 @@ static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
+         tcg_debug_assert((offset & 3) == 0);
+         tcg_out_mem_long(s, 0, LVEWX, out, base, offset);
+         elt = extract32(offset, 2, 2);
+-#if !HOST_BIG_ENDIAN
+-        elt ^= 3;
+-#endif
++        if (!HOST_BIG_ENDIAN) {
++            elt ^= 3;
++        }
+         tcg_out32(s, VSPLTW | VRT(out) | VRB(out) | (elt << 16));
+         break;
+     case MO_64:
+@@ -3991,9 +3991,9 @@ static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
+         tcg_out_mem_long(s, 0, LVX, out, base, offset & -16);
+         tcg_out_vsldoi(s, TCG_VEC_TMP1, out, out, 8);
+         elt = extract32(offset, 3, 1);
+-#if !HOST_BIG_ENDIAN
+-        elt = !elt;
+-#endif
++        if (!HOST_BIG_ENDIAN) {
++            elt = !elt;
++        }
+         if (elt) {
+             tcg_out_vsldoi(s, out, out, TCG_VEC_TMP1, 8);
+         } else {
 -- 
 2.51.0
 
