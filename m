@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B03BCC1C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC5EBCC1D4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:24:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v78OG-00028u-SU; Fri, 10 Oct 2025 04:22:17 -0400
+	id 1v78OI-000291-Nt; Fri, 10 Oct 2025 04:22:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OD-00027u-WB
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OC-00027Q-5P
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O7-00010d-UV
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O7-00011Z-U9
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760084519;
+ s=mimecast20190719; t=1760084522;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JXv/Cu7q862t0pbzb6wi7PCL6APdP4WKt8M+wjFeRsc=;
- b=bnelYJfPCQg4rZP4EirqfRGngk6V+67Ne7BMELnKH3e/rKxvb+VykJluntZKK31EBlHIHs
- 8oodPMI73ovvJ1RZUI+rNuV5S8FGeHRqL/2VlxlkCxxA6TuItdQxymvGEWheAquxmqswzj
- Cb8cxyvWEuxsK2Frbq9PGvj/QsaAthY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=/vSSZEI/Kr1oUdUVr1yK3MzhrrjUHh6aYDlKLtj28uw=;
+ b=Pgwb4jojNA0r8MfO5UqrEMyKsDNBYtwD/ifE3FUgDrhnTtm2pZAiC2cM492KsgtZHTCVVy
+ lfPu2i+pTVkqxfeRBCW07tztsh4so06X25WwsWvOKQvkgUwefnWvzDcbRt7Ye3U/SHOZx6
+ GecyaNP2XSpSH4lKN5S5wqqK5MWQWOM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-115-hUrEdA6-N4aECN-afarWTA-1; Fri,
- 10 Oct 2025 04:21:56 -0400
-X-MC-Unique: hUrEdA6-N4aECN-afarWTA-1
-X-Mimecast-MFC-AGG-ID: hUrEdA6-N4aECN-afarWTA_1760084515
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-NCLuLMl1NSyichtBCsiqdA-1; Fri,
+ 10 Oct 2025 04:21:58 -0400
+X-MC-Unique: NCLuLMl1NSyichtBCsiqdA-1
+X-Mimecast-MFC-AGG-ID: NCLuLMl1NSyichtBCsiqdA_1760084517
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3D1D71800366; Fri, 10 Oct 2025 08:21:55 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9EBEA1956096; Fri, 10 Oct 2025 08:21:57 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C0ABB1800446; Fri, 10 Oct 2025 08:21:53 +0000 (UTC)
+ id 2837E180141D; Fri, 10 Oct 2025 08:21:55 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 3/9] target/s390x: Replace legacy cpu_physical_memory_[un]map()
- calls (1/3)
-Date: Fri, 10 Oct 2025 10:21:38 +0200
-Message-ID: <20251010082145.576222-4-thuth@redhat.com>
+Subject: [PULL 4/9] target/s390x: Propagate CPUS390XState to
+ cpu_unmap_lowcore()
+Date: Fri, 10 Oct 2025 10:21:39 +0200
+Message-ID: <20251010082145.576222-5-thuth@redhat.com>
 In-Reply-To: <20251010082145.576222-1-thuth@redhat.com>
 References: <20251010082145.576222-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -84,61 +84,126 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Commit b7ecba0f6f6 ("docs/devel/loads-stores.rst: Document our
-various load and store APIs") mentioned cpu_physical_memory_*()
-methods are legacy, the replacement being address_space_*().
-
-Replace the *_map() / *_unmap() methods in mchk_store_vregs().
-No behavioral change expected.
+To be able to access the CPU state in cpu_unmap_lowcore()
+in the next commit, propagate it as argument.
+cpu_map_lowcore() already takes it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251002091132.65703-5-philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251002091132.65703-6-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/tcg/excp_helper.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ target/s390x/s390x-internal.h  |  2 +-
+ target/s390x/helper.c          |  4 ++--
+ target/s390x/tcg/excp_helper.c | 10 +++++-----
+ target/s390x/tcg/misc_helper.c |  4 ++--
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
+diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+index 56cce2e7f50..1fb752aa1d6 100644
+--- a/target/s390x/s390x-internal.h
++++ b/target/s390x/s390x-internal.h
+@@ -327,7 +327,7 @@ hwaddr s390_cpu_get_phys_addr_debug(CPUState *cpu, vaddr addr);
+ int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch);
+ int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len);
+ LowCore *cpu_map_lowcore(CPUS390XState *env);
+-void cpu_unmap_lowcore(LowCore *lowcore);
++void cpu_unmap_lowcore(CPUS390XState *env, LowCore *lowcore);
+ #endif /* CONFIG_USER_ONLY */
+ 
+ 
+diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+index 5c127da1a6a..a6d4a1ce05d 100644
+--- a/target/s390x/helper.c
++++ b/target/s390x/helper.c
+@@ -117,7 +117,7 @@ LowCore *cpu_map_lowcore(CPUS390XState *env)
+     return lowcore;
+ }
+ 
+-void cpu_unmap_lowcore(LowCore *lowcore)
++void cpu_unmap_lowcore(CPUS390XState *env, LowCore *lowcore)
+ {
+     cpu_physical_memory_unmap(lowcore, sizeof(LowCore), 1, sizeof(LowCore));
+ }
+@@ -134,7 +134,7 @@ void do_restart_interrupt(CPUS390XState *env)
+     mask = be64_to_cpu(lowcore->restart_new_psw.mask);
+     addr = be64_to_cpu(lowcore->restart_new_psw.addr);
+ 
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
+     env->pending_int &= ~INTERRUPT_RESTART;
+ 
+     s390_cpu_set_psw(env, mask, addr);
 diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
-index 4c7faeee82b..5e1d4dc9583 100644
+index 5e1d4dc9583..0ae4e266065 100644
 --- a/target/s390x/tcg/excp_helper.c
 +++ b/target/s390x/tcg/excp_helper.c
-@@ -30,6 +30,7 @@
- #ifndef CONFIG_USER_ONLY
- #include "qemu/timer.h"
- #include "system/address-spaces.h"
-+#include "system/memory.h"
- #include "hw/s390x/ioinst.h"
- #include "hw/s390x/s390_flic.h"
- #include "hw/boards.h"
-@@ -418,16 +419,18 @@ QEMU_BUILD_BUG_ON(sizeof(MchkExtSaveArea) != 1024);
+@@ -285,7 +285,7 @@ static void do_program_interrupt(CPUS390XState *env)
+     addr = be64_to_cpu(lowcore->program_new_psw.addr);
+     lowcore->per_breaking_event_addr = cpu_to_be64(env->gbea);
  
- static int mchk_store_vregs(CPUS390XState *env, uint64_t mcesao)
- {
-+    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-+    AddressSpace *as = env_cpu(env)->as;
-     hwaddr len = sizeof(MchkExtSaveArea);
-     MchkExtSaveArea *sa;
-     int i;
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
  
--    sa = cpu_physical_memory_map(mcesao, &len, true);
-+    sa = address_space_map(as, mcesao, &len, true, attrs);
-     if (!sa) {
-         return -EFAULT;
-     }
-     if (len != sizeof(MchkExtSaveArea)) {
--        cpu_physical_memory_unmap(sa, len, 1, 0);
-+        address_space_unmap(as, sa, len, true, 0);
-         return -EFAULT;
-     }
- 
-@@ -436,7 +439,7 @@ static int mchk_store_vregs(CPUS390XState *env, uint64_t mcesao)
-         sa->vregs[i][1] = cpu_to_be64(env->vregs[i][1]);
-     }
- 
--    cpu_physical_memory_unmap(sa, len, 1, len);
-+    address_space_unmap(as, sa, len, true, len);
-     return 0;
+     s390_cpu_set_psw(env, mask, addr);
  }
+@@ -304,7 +304,7 @@ static void do_svc_interrupt(CPUS390XState *env)
+     mask = be64_to_cpu(lowcore->svc_new_psw.mask);
+     addr = be64_to_cpu(lowcore->svc_new_psw.addr);
+ 
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
+ 
+     s390_cpu_set_psw(env, mask, addr);
+ 
+@@ -378,7 +378,7 @@ static void do_ext_interrupt(CPUS390XState *env)
+     lowcore->external_old_psw.mask = cpu_to_be64(s390_cpu_get_psw_mask(env));
+     lowcore->external_old_psw.addr = cpu_to_be64(env->psw.addr);
+ 
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
+ 
+     s390_cpu_set_psw(env, mask, addr);
+ }
+@@ -405,7 +405,7 @@ static void do_io_interrupt(CPUS390XState *env)
+     mask = be64_to_cpu(lowcore->io_new_psw.mask);
+     addr = be64_to_cpu(lowcore->io_new_psw.addr);
+ 
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
+     g_free(io);
+ 
+     s390_cpu_set_psw(env, mask, addr);
+@@ -491,7 +491,7 @@ static void do_mchk_interrupt(CPUS390XState *env)
+     mask = be64_to_cpu(lowcore->mcck_new_psw.mask);
+     addr = be64_to_cpu(lowcore->mcck_new_psw.addr);
+ 
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
+ 
+     s390_cpu_set_psw(env, mask, addr);
+ }
+diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
+index f7101be5745..6d9d601d29a 100644
+--- a/target/s390x/tcg/misc_helper.c
++++ b/target/s390x/tcg/misc_helper.c
+@@ -570,7 +570,7 @@ uint32_t HELPER(tpi)(CPUS390XState *env, uint64_t addr)
+         lowcore->subchannel_nr = cpu_to_be16(io->nr);
+         lowcore->io_int_parm = cpu_to_be32(io->parm);
+         lowcore->io_int_word = cpu_to_be32(io->word);
+-        cpu_unmap_lowcore(lowcore);
++        cpu_unmap_lowcore(env, lowcore);
+     }
+ 
+     g_free(io);
+@@ -700,7 +700,7 @@ void HELPER(stfl)(CPUS390XState *env)
+     lowcore = cpu_map_lowcore(env);
+     prepare_stfl();
+     memcpy(&lowcore->stfl_fac_list, stfl_bytes, sizeof(lowcore->stfl_fac_list));
+-    cpu_unmap_lowcore(lowcore);
++    cpu_unmap_lowcore(env, lowcore);
+ }
+ #endif
  
 -- 
 2.51.0
