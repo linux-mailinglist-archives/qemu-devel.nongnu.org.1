@@ -2,48 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E211FBCC954
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D07FBCC94E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:40:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7AVd-0002vn-Hg; Fri, 10 Oct 2025 06:38:02 -0400
+	id 1v7AVd-0002v1-9w; Fri, 10 Oct 2025 06:38:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AVY-0002sL-OW; Fri, 10 Oct 2025 06:37:56 -0400
+ id 1v7AVY-0002sK-OR; Fri, 10 Oct 2025 06:37:56 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AVN-0006sv-83; Fri, 10 Oct 2025 06:37:56 -0400
+ id 1v7AVM-0006sc-4i; Fri, 10 Oct 2025 06:37:56 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSS065199
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVST065199
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Fri, 10 Oct 2025 19:36:41 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=vDS3EWBEvsBwpNU5uZUE4XlgStIIxz7Om7dQPeWvjLw=; 
+DKIM-Signature: a=rsa-sha256; bh=ThpKeDV0ZQY9hCLvKxm2yckErAKZ6MOcSv7qQfLWJ8s=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Subject:Date:Message-Id:To;
- s=rs20250326; t=1760092601; v=1;
- b=okM3fa5SDGPbx46F5zHyWJQQymjDUpjBlBn3t2QpeauAMKQAmdZiKxz2PlDowmmG
- 1GyXrwQJ7R/cnI4fMoJakiWq8VdMryZATKJlGd+eXIzC0JKvlfl+5d65xtoq9vzV
- RaiQY1c1FyPA/IIOBeEH5SueNmRRdMCrEGq859rRwAyjxhlXEvsOXmDwmCayg7fA
- rNkHSz9YMm/rmO+GoZ0VOnHnaC2fpzhWGr83ud+p2YwODr5F8W0Lod3CJx0ZPCOO
- 2Mpk9mhA2XxaVYx3Q7YliUekJPxJ3DTiS24x4rdqvlrCfrqveUOsWR1v6gftt6nk
- 5W4id3gE1aYV3UHP/d84xw==
+ h=From:Date:Subject:Message-Id:To;
+ s=rs20250326; t=1760092602; v=1;
+ b=oKaQkfjtjYg96YMBz/oyisBEp17NWcxfGbA9/pvZG1dDmg9sTLbBmFt9JtjV28by
+ L02ol7XOJgrPIRBX8Tc+R4DBKYS52W5DYUpmG6OizACxkNydTT+1rPqb1lTC2Syd
+ /AQ7OJ2ROgh3uzgub3Qrih3HFJNkMz0QOAYp06aQZW5JoTzQcZvxGg+OtDCgHcpv
+ aCNQdIx64DjtHqX6D1l9reeWUxTkBDDgWpKRYOr5UeONynpMoqElh7ik+JGAWU5k
+ kZY/E1ouw1+Zd/Sw7sQwYqMIKg2+DbI2teyY2/GF+VGm/OmWCW/cOLwhyOZ20vji
+ XJuB4c90IkXbbNUT9xc+kQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH v2 00/12] qdev: Automatically delete memory subregions
-Date: Fri, 10 Oct 2025 19:35:28 +0900
-Message-Id: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 10 Oct 2025 19:35:29 +0900
+Subject: [PATCH v2 01/12] qdev: Automatically delete memory subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHDh6GgC/22NQQ6CMBBFr0JmbZu2aBpceQ/DAtoBRhMKUyASw
- t2tuHDj8r38vL9BRCaMcM02YFwoUugTmFMGrqv6FgX5xGCUuahCWxHnmrFNK1Eo69BbX2n0kPY
- DY0Ovo3Uvv8w4zik5/WRHcQq8Hn+L/th/6UULJWpscuuL+tzY/MaxlY4kyVlM4bkGWTn5GKDc9
- /0N8I5nQ8QAAAA=
-X-Change-ID: 20250917-subregion-907ced7da1ed
+Message-Id: <20251010-subregion-v2-1-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
+References: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
@@ -87,8 +84,8 @@ X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
  DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,73 +101,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series was spun off from "[PATCH v2 00/15] Fix memory region
-leaks and use-after-finalization":
-https://lore.kernel.org/qemu-devel/20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp/
-
 It is a common requirement of qdev to delete memory subregions to hide
 them from address spaces during unrealization. pci automatically
 deletes the IO subregions, but this process is manually implemented
 in other places, which is tedious and error-prone.
 
-Implement the logic to delete subregions in qdev to cover all devices.
+Let qdev enumerate all child memory regions, check if they have
+containers, and delete them if so.
 
-Note that some code removed in this series to delete subregions are
-apparently just unnecessary and can be removed without a change of qdev.
-They are still included in this series and follows the qdev change since
-removing them without the qdev change will cause regression if I fail to
-distinguish necessary and unnecessary code.
+The automatic deletion happens only after the device-specific
+unrealization code. This allows that the device-specific can continue to
+assume that subregions they added are present until unrealization
+finishes. So existing memory_region_del_subregion() calls in
+device-specific code will not fail but will be no-op.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
-Changes in v2:
-- Dropped patch "hw/pci-bridge: Do not assume immediate MemoryRegion
-  finalization" as it was unnecessary as pointed out by Peter Xu.
-- Dropped patch "[PATCH] vfio-user: Do not delete the subregion". It is
-  a fix unlike the other patches so I submitted it separately.
-- Expanded the patch message of "qdev: Automatically delete memory
-  subregions" to explain that existing memory_region_del_subregion()
-  calls in the device-specific code will be no-op.
-- Link to v1: https://lore.kernel.org/qemu-devel/20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp
+ MAINTAINERS            |  1 +
+ include/hw/qdev-core.h |  1 +
+ hw/core/qdev.c         | 14 ++++++++++++++
+ stubs/memory.c         |  9 +++++++++
+ stubs/meson.build      |  1 +
+ 5 files changed, 26 insertions(+)
 
----
-Akihiko Odaki (12):
-      qdev: Automatically delete memory subregions
-      hw/char/diva-gsp: Do not delete the subregion
-      hw/char/serial-pci-multi: Do not delete the subregion
-      secondary-vga: Do not delete the subregions
-      cmd646: Do not delete the subregions
-      hw/ide/piix: Do not delete the subregions
-      hw/ide/via: Do not delete the subregions
-      hw/nvme: Do not delete the subregion
-      pci: Do not delete the subregions
-      hw/ppc/spapr_pci: Do not delete the subregions
-      hw/usb/hcd-ehci: Do not delete the subregions
-      hw/usb/hcd-xhci: Do not delete the subregions
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 84cfd85e1fa1..f2ef02858e30 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3241,6 +3241,7 @@ F: include/system/physmem.h
+ F: include/system/ram_addr.h
+ F: include/system/ramblock.h
+ F: include/system/memory_mapping.h
++F: stubs/memory.c
+ F: system/dma-helpers.c
+ F: system/ioport.c
+ F: system/memory.c
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index a7bfb10dc70c..bd4d8049c435 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -526,6 +526,7 @@ bool qdev_realize_and_unref(DeviceState *dev, BusState *bus, Error **errp);
+  *  - unrealize any child buses by calling qbus_unrealize()
+  *    (this will recursively unrealize any devices on those buses)
+  *  - call the unrealize method of @dev
++ *  - remove @dev from memory
+  *
+  * The device can then be freed by causing its reference count to go
+  * to zero.
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index fab42a727059..622d4451e637 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -480,6 +480,17 @@ static bool check_only_migratable(Object *obj, Error **errp)
+     return true;
+ }
+ 
++static int del_memory_region(Object *child, void *opaque)
++{
++    MemoryRegion *mr = (MemoryRegion *)object_dynamic_cast(child, TYPE_MEMORY_REGION);
++
++    if (mr && mr->container) {
++        memory_region_del_subregion(mr->container, mr);
++    }
++
++    return 0;
++}
++
+ static void device_set_realized(Object *obj, bool value, Error **errp)
+ {
+     DeviceState *dev = DEVICE(obj);
+@@ -611,6 +622,7 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
+         if (dc->unrealize) {
+             dc->unrealize(dev);
+         }
++        object_child_foreach(OBJECT(dev), del_memory_region, NULL);
+         dev->pending_deleted_event = true;
+         DEVICE_LISTENER_CALL(unrealize, Reverse, dev);
+     }
+@@ -635,6 +647,8 @@ post_realize_fail:
+     }
+ 
+ fail:
++    object_child_foreach(OBJECT(dev), del_memory_region, NULL);
++
+     error_propagate(errp, local_err);
+     if (unattached_parent) {
+         /*
+diff --git a/stubs/memory.c b/stubs/memory.c
+new file mode 100644
+index 000000000000..9c36531ae542
+--- /dev/null
++++ b/stubs/memory.c
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "system/memory.h"
++
++void memory_region_del_subregion(MemoryRegion *mr,
++                                 MemoryRegion *subregion)
++{
++}
+diff --git a/stubs/meson.build b/stubs/meson.build
+index 5d577467bfdd..d3af15963ae1 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -96,5 +96,6 @@ if have_system or have_user
+ 
+   # Also included in have_system for tests/unit/test-qdev-global-props
+   stub_ss.add(files('hotplug-stubs.c'))
++  stub_ss.add(files('memory.c'))
+   stub_ss.add(files('sysbus.c'))
+ endif
 
- MAINTAINERS                |  1 +
- include/hw/qdev-core.h     |  1 +
- hw/char/diva-gsp.c         |  1 -
- hw/char/serial-pci-multi.c |  1 -
- hw/core/qdev.c             | 14 ++++++++++++++
- hw/display/vga-pci.c       |  8 --------
- hw/ide/cmd646.c            | 12 ------------
- hw/ide/piix.c              | 13 -------------
- hw/ide/via.c               | 12 ------------
- hw/nvme/ctrl.c             |  2 --
- hw/pci/pci.c               | 20 --------------------
- hw/ppc/spapr_pci.c         | 22 ----------------------
- hw/usb/hcd-ehci.c          |  4 ----
- hw/usb/hcd-xhci.c          | 10 ----------
- stubs/memory.c             |  9 +++++++++
- stubs/meson.build          |  1 +
- 16 files changed, 26 insertions(+), 105 deletions(-)
----
-base-commit: 94474a7733a57365d5a27efc28c05462e90e8944
-change-id: 20250917-subregion-907ced7da1ed
-
-Best regards,
---  
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+-- 
+2.51.0
 
 
