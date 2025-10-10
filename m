@@ -2,96 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA72BCDBD3
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 17:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E8EBCDBF9
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 17:14:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7ElJ-0008Go-SQ; Fri, 10 Oct 2025 11:10:29 -0400
+	id 1v7ElQ-0008LA-NR; Fri, 10 Oct 2025 11:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v7ElH-0008Fk-8V
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:10:27 -0400
+ id 1v7ElK-0008IH-QF
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:10:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v7El7-000429-H5
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:10:26 -0400
+ id 1v7El7-00042W-8s
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:10:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760109010;
+ s=mimecast20190719; t=1760109014;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=80OsYP00CTMBcfR/17Cxs+Xuu/BvDfU4GSy9OiK9oPs=;
- b=VGME7yyG5OfEbWQgp4Ui0dyLBCp7Z08Dh/fpub2/Vb/YYujS/LMXFQC8gF8QvOsYfDimUQ
- AGnHqMGFp+5KPIO1/cWHC7Vf0t2X0+IEKfADQ/IlQaBQmDLiwFGKzxC09g9MAqB6awOR/A
- KzQy8nlYSv3MJHeHAeaXCrGi/LLCmlA=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FCuQFa5fX4KQKF7cPe8uVRBcotSflZGTjBWBJT+Gw1A=;
+ b=CUEZPO0MmUV8onUngrlXt+EVf7ZLiP1J3ZMocvG78bYdWKyZm48KVXQ5gi8hqr+k17vzo+
+ Lt1zFbDtq/2x92M50oGW0GqkI1/E8uBoV36g66S5HucODENLzixJ0xd/jNfyW75/6gXajl
+ oEJ3GVVkzBm2z7o2ModRzgYau/HxkRw=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-ugFTnQN-MBqPrhtypYIDAg-1; Fri, 10 Oct 2025 11:10:09 -0400
-X-MC-Unique: ugFTnQN-MBqPrhtypYIDAg-1
-X-Mimecast-MFC-AGG-ID: ugFTnQN-MBqPrhtypYIDAg_1760109008
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-afcb72a8816so179505466b.0
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 08:10:09 -0700 (PDT)
+ us-mta-594-jef618aBNuSVrW4vuVYYJA-1; Fri, 10 Oct 2025 11:10:12 -0400
+X-MC-Unique: jef618aBNuSVrW4vuVYYJA-1
+X-Mimecast-MFC-AGG-ID: jef618aBNuSVrW4vuVYYJA_1760109012
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-6349af0e766so2508832a12.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 08:10:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760109008; x=1760713808;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=80OsYP00CTMBcfR/17Cxs+Xuu/BvDfU4GSy9OiK9oPs=;
- b=NlQncwa8vYtInhFnIkmfRFec1NjjLzyUd0iXAqCrRnqivoUdMbIDQOc92ksZdM3W99
- AykFFyz4RapIdJK8K8zBTXGhBvHbGT1rkyy2e+NDZ9PnviwkQZDsNEpTdwCGV87WF8PY
- 1rqaZgizKcyr7mjKfXg5+V2i70ck79er4X26ivCmVIZC9ljDjCaUAbbfMGLIJCOZp3kW
- cgV7CqSSth/sHX2v7ABi9Ix03CHu5zvYw78wvV7Qp5Jlh0xBPvawNeM7RumzkLHc/hFM
- aWT5yGjKftqmWx4dr/Q7i+Om6NEmAFew7TM05exhvzfBreM3imxIWOdDQtdmpFBxg/U2
- F76g==
-X-Gm-Message-State: AOJu0YyFJcljHzQwf3PxuNx2zC1gj9ru4WAtHulaxxUF52OvMYkKg21s
- 7kkqJ0MowGmc7uRaBp7wLBreORFDF1Gbwrufk2i7rYMZPQXYuKrl1f2aNaNbk9eaypQKyUitq5e
- 3q8sp0K7KJCnvOKB2H2nkHEhA6SKEicuQUfdlpkE05skPkO9ozZSAtQCs+JF+bG8innsNv5+sD3
- xtNN+04YOuwej9L1n0UFJjgutblucID6yyGhRktXx0
-X-Gm-Gg: ASbGnctxdjmoJ2m2u7gE/nHXw8OcFvho8JrpPsPw69efoGrOr/dvvkHu5DyFt3dLWTi
- aFA5UgmWXhDwF9qUJtv9cF+WTztcRGIi+qKvgsIqckhsJ1NBXvSNreFo6yFr5zJVBW+38uU+rfp
- MWbonpI8HJSZom6/quHBLN1GQmImT96XvcIh/2Q+nM0QNrDLxokCvYG5RsFc4vDUKnC9I9S1I9V
- z7kaAyDtUmIfKeBKthhndXYRQaz8DQpzRBLGEe/7XujnXf4gweyEp1zXB8arDN+n7C5e8vTIsu8
- CqkOh5k7N3st77pH5vjGrv5Rp2MwPnk5f25fY9DK2Ro/DXbq4VCPuAFAm3emnInfTNHhQ9HrYaM
- ozF6MQLnM9pp9JlLWuxPG5f21O33XEBHz3qWY/tG6As9q
-X-Received: by 2002:a17:906:4789:b0:b3e:f028:2d57 with SMTP id
- a640c23a62f3a-b50acc3132amr1426694766b.57.1760109008025; 
- Fri, 10 Oct 2025 08:10:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAuWZVQbffh2NRJQjq1kjw773APTWKBaf9fGH8YH3Dl3PwX2HjsNpBzFItKHPWhL/mfyfmIQ==
-X-Received: by 2002:a17:906:4789:b0:b3e:f028:2d57 with SMTP id
- a640c23a62f3a-b50acc3132amr1426691266b.57.1760109007572; 
- Fri, 10 Oct 2025 08:10:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760109011; x=1760713811;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FCuQFa5fX4KQKF7cPe8uVRBcotSflZGTjBWBJT+Gw1A=;
+ b=smCFdhm38ExnLq7LCkHGy0rBjKOHdVlc+FFXx9E41I42iXMlRpg3RMdd095rVT2m9c
+ aQ/sSrlgxLp0VIDQeW0zTdP3CTdHNvKGgHjXeD6RdsELmLm3C2WZcFVexoHsh2e3F7P+
+ hkdkHyKqBpnzod6xj6j4BJQ/mNP4bbphtgbpYDuAN2THuMWNrHWONCckoufnUEoYvuto
+ Tv/wAuMbAAF0bSZ50Oc6gngt0tH2y1WYeo2y794yfemTB8j/DD7Abhx3tTlvTarkf5qh
+ H7oi7KFZhHg94EbJMu+u6C26qx8vxYKg+qVCAgI2TjbgJz3iYIPIp/1LvqY430eWYGH+
+ dyhA==
+X-Gm-Message-State: AOJu0YziCjkdt2T748RlJGsiO88SITj5sZVCuteC8zZtwqRsWF9+SNut
+ 5UJyNbKNBp2MnzcCJP7WJ3rP8rwT0MCavFI9GvMAE+x0i+dzVwRqeQz1WW15LUSnsk0EmqvGEGZ
+ WX8Xf9hM/6tt2u8fU/PgJa7xEiaqtEKxybOXQWTXJKcjszIyq7dG9CI35lQSlthjyscS+pBuMZi
+ ZNPxqKTugmtixtXKp5+8C9CgoW7rO5sEuDcpMjdZXV
+X-Gm-Gg: ASbGnctZEwT21OndyX6V65s9V16Vf2Q3lWjlJm8PgmmEMrBo2093Eomye2wIvc86eQa
+ Oq8EkvFZRvv66PDLl4FhRk4o32hxE+eXTwPI3JKb22BKTX72KyH9dq4vlb+KLWuzyjiYXeZFUi1
+ SwA28M2SRBScvR5g4p0wWp/qrW6248VxCbeagMz7WFqVYuSj6YB+wNd/S68bXQP1Y2JtgMi+wbO
+ +D77x/cNOKneJK6CODX3pyoqy5RKR3Wwr82E+2h8LRZ7zmhG7A21LLfcDdL4yY6HmpdZUe8YuX5
+ hs09lVRSS5B8iC/wuwbCtOvsWkYnoH4+d2E4Z1GyKceSjvb+jOrbBiWEj4qEq3WQCLSqRmP6Byp
+ UqzKkO7uTYJvce2iAQI/eCt1PtZTvp0f5bpZs7yxxoNVj
+X-Received: by 2002:aa7:dcca:0:b0:636:240f:9ece with SMTP id
+ 4fb4d7f45d1cf-639d5c75d2amr8827969a12.34.1760109010808; 
+ Fri, 10 Oct 2025 08:10:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWT7mfaLiPP25ccYmgmOyWXrCLTdr+R4Lpky3/nq8T98ppQJkLXVDDiXep81ijjnycbqtbSg==
+X-Received: by 2002:aa7:dcca:0:b0:636:240f:9ece with SMTP id
+ 4fb4d7f45d1cf-639d5c75d2amr8827942a12.34.1760109010199; 
+ Fri, 10 Oct 2025 08:10:10 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.231.162])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b55d65d002esm248884866b.26.2025.10.10.08.10.06
+ 4fb4d7f45d1cf-63a5c32249esm2454971a12.41.2025.10.10.08.10.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 08:10:07 -0700 (PDT)
+ Fri, 10 Oct 2025 08:10:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com,
 	marcandre.lureau@redhat.com,
 	qemu-rust@nongnu.org
-Subject: [PATCH 00/19] rust: QObject and QAPI bindings
-Date: Fri, 10 Oct 2025 17:09:45 +0200
-Message-ID: <20251010151006.791038-1-pbonzini@redhat.com>
+Subject: [PATCH 01/19] util: add ensure macro
+Date: Fri, 10 Oct 2025 17:09:46 +0200
+Message-ID: <20251010151006.791038-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251010151006.791038-1-pbonzini@redhat.com>
+References: <20251010151006.791038-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,144 +109,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds two related parts of the Rust bindings:
+The macro is similar to anyhow::ensure but uses QEMU's variation
+on anyhow::Error.  It can be used to easily check a condition
+and format an error message.
 
-- QAPI code generator that creates Rust structs from the JSON
-  description.  The structs are *not* ABI compatible with the
-  C ones, instead they use native Rust data types.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/hw/timer/hpet/src/device.rs | 21 ++++++-----
+ rust/hw/timer/hpet/src/fw_cfg.rs |  7 ++--
+ rust/util/src/error.rs           | 65 ++++++++++++++++++++++++++++++++
+ 3 files changed, 80 insertions(+), 13 deletions(-)
 
-- QObject bindings and (de)serialization support, which can be used to
-  convert QObjects to and from QAPI structs.
-
-Unfortunately Rust code is not able to use visitors, other than by
-creating an intermediate QObject.  This is because of the different
-architecture of serde vs. QAPI visitors, and because visitor's
-dual-purpose functions, where the same function is used by both input and
-output visitors, rely heavily on the structs using the same representation
-as the visitor arguments (for example NUL-terminated strings).
-
-The serde format implementation was co-authored by me and Marc-André.
-Marc-André did all the bug fixing and integration testing.
-
-As an example of how this would be used, the marshaling functions for
-QMP commands would look like this:
-
-fn qmp_marshal_query_stats(args: *mut QDict,
-    retp: *mut *mut QObject, errp: *mut *mut Error)
-{
-    let qobj = unsafe { QObject::cloned_from_raw(args.cast()) };
-
-    let result = from_qobject::<StatsFilter>(qobj)
-         .map_err(anyhow::Error::from)
-         .and_then(qmp_query_stats)
-         .and_then(|ret| to_qobject::<Vec<StatsResult>>(ret).map_err(anyhow::Error::from));
-
-    match qmp_marshal_query_stats_rs(qobj) {
-        Ok(ret) => unsafe { *retp = ret.into_raw(); },
-        Err(e) => unsafe { crate::Error::from(e).propagate(errp) },
-    }
-}
-
-As a small extra, patches 1 and 2 rework a bit the error implementation
-so that it is possible to convert any Rust error into a QEMU one.  This
-is because we noticed that we had to add several From<> implementations
-to convert e.g. NulError or serde errors into util::Error.
-
-The price is that it's a bit harder to convert *strings* into errors;
-therefore, the first patch adds a macro wrapper for
-"if !cond { return Err(...) }", where the dots build an error from a
-formatted string.
-
-Paolo
-
-Marc-André Lureau (8):
-  rust/qobject: add Display/Debug
-  scripts/qapi: add QAPISchemaIfCond.rsgen()
-  scripts/qapi: generate high-level Rust bindings
-  scripts/qapi: add serde attributes
-  scripts/qapi: strip trailing whitespaces
-  scripts/rustc_args: add --no-strict-cfg
-  rust/util: build QAPI types
-  rust/tests: QAPI integration tests
-
-Paolo Bonzini (11):
-  util: add ensure macro
-  rust/util: use anyhow's native chaining capabilities
-  rust: do not add qemuutil to Rust crates
-  rust/qobject: add basic bindings
-  subprojects: add serde
-  rust/qobject: add Serialize implementation
-  rust/qobject: add Serializer (to_qobject) implementation
-  rust/qobject: add Deserialize implementation
-  rust/qobject: add Deserializer (from_qobject) implementation
-  rust/util: replace Error::err_or_unit/err_or_else with
-    Error::with_errp
-  rust/qobject: add from/to JSON bindings for QObject
-
- docs/devel/rust.rst                           |   1 +
- meson.build                                   |   4 +-
- rust/util/wrapper.h                           |   8 +
- qapi/meson.build                              |   6 +
- rust/Cargo.lock                               |   2 +
- rust/Cargo.toml                               |   2 +
- rust/chardev/meson.build                      |   2 +-
- rust/hw/timer/hpet/src/device.rs              |  21 +-
- rust/hw/timer/hpet/src/fw_cfg.rs              |   7 +-
- rust/meson.build                              |   4 +
- rust/tests/meson.build                        |  25 +-
- rust/tests/tests/integration.rs               |   2 +
- rust/tests/tests/qapi.rs                      | 444 +++++++++++++
- rust/util/Cargo.toml                          |   2 +
- rust/util/meson.build                         |  31 +-
- rust/util/src/error.rs                        | 222 +++----
- rust/util/src/lib.rs                          |   2 +
- rust/util/src/qobject/deserialize.rs          | 134 ++++
- rust/util/src/qobject/deserializer.rs         | 371 +++++++++++
- rust/util/src/qobject/error.rs                |  58 ++
- rust/util/src/qobject/mod.rs                  | 369 +++++++++++
- rust/util/src/qobject/serialize.rs            |  59 ++
- rust/util/src/qobject/serializer.rs           | 585 ++++++++++++++++++
- scripts/archive-source.sh                     |   3 +
- scripts/make-release                          |   2 +-
- scripts/qapi/backend.py                       |  27 +-
- scripts/qapi/common.py                        |  16 +
- scripts/qapi/gen.py                           |   6 +-
- scripts/qapi/main.py                          |   4 +-
- scripts/qapi/rs.py                            | 181 ++++++
- scripts/qapi/rs_types.py                      | 387 ++++++++++++
- scripts/qapi/schema.py                        |   4 +
- scripts/rust/rustc_args.py                    |  16 +-
- subprojects/.gitignore                        |   3 +
- .../packagefiles/serde-1-rs/meson.build       |  36 ++
- .../packagefiles/serde-1.0.226-include.patch  |  16 +
- .../packagefiles/serde_core-1-rs/meson.build  |  25 +
- .../serde_core-1.0.226-include.patch          |  15 +
- .../serde_derive-1-rs/meson.build             |  35 ++
- .../serde_derive-1.0.226-include.patch        |  11 +
- subprojects/serde-1-rs.wrap                   |  11 +
- subprojects/serde_core-1-rs.wrap              |  11 +
- subprojects/serde_derive-1-rs.wrap            |  11 +
- 43 files changed, 3042 insertions(+), 139 deletions(-)
- create mode 100644 rust/tests/tests/integration.rs
- create mode 100644 rust/tests/tests/qapi.rs
- create mode 100644 rust/util/src/qobject/deserialize.rs
- create mode 100644 rust/util/src/qobject/deserializer.rs
- create mode 100644 rust/util/src/qobject/error.rs
- create mode 100644 rust/util/src/qobject/mod.rs
- create mode 100644 rust/util/src/qobject/serialize.rs
- create mode 100644 rust/util/src/qobject/serializer.rs
- create mode 100644 scripts/qapi/rs.py
- create mode 100644 scripts/qapi/rs_types.py
- create mode 100644 subprojects/packagefiles/serde-1-rs/meson.build
- create mode 100644 subprojects/packagefiles/serde-1.0.226-include.patch
- create mode 100644 subprojects/packagefiles/serde_core-1-rs/meson.build
- create mode 100644 subprojects/packagefiles/serde_core-1.0.226-include.patch
- create mode 100644 subprojects/packagefiles/serde_derive-1-rs/meson.build
- create mode 100644 subprojects/packagefiles/serde_derive-1.0.226-include.patch
- create mode 100644 subprojects/serde-1-rs.wrap
- create mode 100644 subprojects/serde_core-1-rs.wrap
- create mode 100644 subprojects/serde_derive-1-rs.wrap
-
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 86638c07666..4218372a2a1 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -25,7 +25,10 @@
+     bindings::{address_space_memory, address_space_stl_le, hwaddr},
+     MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder, MEMTXATTRS_UNSPECIFIED,
+ };
+-use util::timer::{Timer, CLOCK_VIRTUAL, NANOSECONDS_PER_SECOND};
++use util::{
++    ensure,
++    timer::{Timer, CLOCK_VIRTUAL, NANOSECONDS_PER_SECOND},
++};
+ 
+ use crate::fw_cfg::HPETFwConfig;
+ 
+@@ -728,14 +731,14 @@ fn post_init(&self) {
+     }
+ 
+     fn realize(&self) -> util::Result<()> {
+-        if self.num_timers < HPET_MIN_TIMERS || self.num_timers > HPET_MAX_TIMERS {
+-            Err(format!(
+-                "hpet.num_timers must be between {HPET_MIN_TIMERS} and {HPET_MAX_TIMERS}"
+-            ))?;
+-        }
+-        if self.int_route_cap == 0 {
+-            Err("hpet.hpet-intcap property not initialized")?;
+-        }
++        ensure!(
++            (HPET_MIN_TIMERS..=HPET_MAX_TIMERS).contains(&self.num_timers),
++            "hpet.num_timers must be between {HPET_MIN_TIMERS} and {HPET_MAX_TIMERS}"
++        );
++        ensure!(
++            self.int_route_cap != 0,
++            "hpet.hpet-intcap property not initialized"
++        );
+ 
+         self.hpet_id.set(HPETFwConfig::assign_hpet_id()?);
+ 
+diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
+index e569b57b93b..27b3b2495a0 100644
+--- a/rust/hw/timer/hpet/src/fw_cfg.rs
++++ b/rust/hw/timer/hpet/src/fw_cfg.rs
+@@ -5,6 +5,7 @@
+ use std::ptr::addr_of_mut;
+ 
+ use common::Zeroable;
++use util::{self, ensure};
+ 
+ /// Each `HPETState` represents a Event Timer Block. The v1 spec supports
+ /// up to 8 blocks. QEMU only uses 1 block (in PC machine).
+@@ -36,7 +37,7 @@ unsafe impl Zeroable for HPETFwConfig {}
+ };
+ 
+ impl HPETFwConfig {
+-    pub(crate) fn assign_hpet_id() -> Result<usize, &'static str> {
++    pub(crate) fn assign_hpet_id() -> util::Result<usize> {
+         assert!(bql::is_locked());
+         // SAFETY: all accesses go through these methods, which guarantee
+         // that the accesses are protected by the BQL.
+@@ -47,9 +48,7 @@ pub(crate) fn assign_hpet_id() -> Result<usize, &'static str> {
+             fw_cfg.count = 0;
+         }
+ 
+-        if fw_cfg.count == 8 {
+-            Err("Only 8 instances of HPET are allowed")?;
+-        }
++        ensure!(fw_cfg.count != 8, "Only 8 instances of HPET are allowed");
+ 
+         let id: usize = fw_cfg.count.into();
+         fw_cfg.count += 1;
+diff --git a/rust/util/src/error.rs b/rust/util/src/error.rs
+index bfa5a8685bc..20b8e7d5af5 100644
+--- a/rust/util/src/error.rs
++++ b/rust/util/src/error.rs
+@@ -86,6 +86,19 @@ fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+     }
+ }
+ 
++impl From<Cow<'static, str>> for Error {
++    #[track_caller]
++    fn from(msg: Cow<'static, str>) -> Self {
++        let location = panic::Location::caller();
++        Error {
++            msg: Some(msg),
++            cause: None,
++            file: location.file(),
++            line: location.line(),
++        }
++    }
++}
++
+ impl From<String> for Error {
+     #[track_caller]
+     fn from(msg: String) -> Self {
+@@ -126,6 +139,17 @@ fn from(error: anyhow::Error) -> Self {
+ }
+ 
+ impl Error {
++    #[track_caller]
++    #[doc(hidden)]
++    pub fn format(args: fmt::Arguments) -> Self {
++        if let Some(msg) = args.as_str() {
++            Self::from(msg)
++        } else {
++            let msg = std::fmt::format(args);
++            Self::from(msg)
++        }
++    }
++
+     /// Create a new error, prepending `msg` to the
+     /// description of `cause`
+     #[track_caller]
+@@ -311,6 +335,47 @@ unsafe fn cloned_from_foreign(c_error: *const bindings::Error) -> Self {
+     }
+ }
+ 
++/// Ensure that a condition is true, returning an error if it is false.
++///
++/// This macro is similar to [`anyhow::ensure`] but returns a QEMU [`Result`].
++/// If the condition evaluates to `false`, the macro returns early with an error
++/// constructed from the provided message.
++///
++/// # Examples
++///
++/// ```
++/// # use util::{ensure, Result};
++/// # fn check_positive(x: i32) -> Result<()> {
++/// ensure!(x > 0, "value must be positive");
++/// #   Ok(())
++/// # }
++/// ```
++///
++/// ```
++/// # use util::{ensure, Result};
++/// # const MIN: i32 = 123;
++/// # const MAX: i32 = 456;
++/// # fn check_range(x: i32) -> Result<()> {
++/// ensure!(x >= MIN && x <= MAX, "{} not between {} and {}", x, MIN, MAX);
++/// #   Ok(())
++/// # }
++/// ```
++#[macro_export]
++macro_rules! ensure {
++    ($cond:expr, $fmt:literal, $($arg:tt)*) => {
++        if !$cond {
++            let e = $crate::Error::format(format_args!($fmt, $($arg)*));
++            return $crate::Result::Err(e);
++        }
++    };
++    ($cond:expr, $err:expr $(,)?) => {
++        if !$cond {
++            let s = ::std::borrow::Cow::<'static, str>::from($err);
++            return $crate::Result::Err(s.into());
++        }
++    };
++}
++
+ #[cfg(test)]
+ mod tests {
+     use std::ffi::CStr;
 -- 
 2.51.0
 
