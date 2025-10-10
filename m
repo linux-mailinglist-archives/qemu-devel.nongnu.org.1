@@ -2,52 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B46BCC1C2
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F02BCC1C5
 	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:23:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v78OE-00027j-9x; Fri, 10 Oct 2025 04:22:14 -0400
+	id 1v78OJ-00029d-8d; Fri, 10 Oct 2025 04:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OB-00027P-7d
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OE-00028D-WA
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O6-0000zz-MN
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O9-000107-6K
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760084513;
+ s=mimecast20190719; t=1760084514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Q4lxVt8/FFnxBjoexqWCnPwPdoNa45gC6XR0ABhZsvY=;
- b=YjC7Ogw98XN8GCkXLMwOCE9NOCfiWoiOI7Esm5tBcvDeZd76dTofSuUhN+9ATLzEsajMGu
- U/QgewIQu+YyxFoZSWBmc+cTRMw9jkdPp+0k5FP7Bm2FGfFXBom8/wlCTGiJ7pJoAOnST8
- 8aAno2UEteDVH6y1mfRHB+U5qlrfp5g=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zR9N58YTO83JkhU3KfFhan4WvyWnN7pZ0OHhHvlNLhI=;
+ b=J6EDlhIG5zwsUHijjbQ2/fZ+67Q1sYr3r0yn/2DhTHasA1cmSnu2n6FIJK0q3UmkGfmefI
+ 3dHddq2Qgdmohg9/T+6ruEuXHfVas4qDmEcHuVNIQscSVMhbonXc53/CGv4Y70lT5CRv2y
+ KhRNNooGFguVE8W+M5B0Q7EAyl8XcxE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-256-CEC7IgALMG2GkxTSl8Om6g-1; Fri,
- 10 Oct 2025 04:21:49 -0400
-X-MC-Unique: CEC7IgALMG2GkxTSl8Om6g-1
-X-Mimecast-MFC-AGG-ID: CEC7IgALMG2GkxTSl8Om6g_1760084508
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-zjYJYCvUMOeQ1CTLtnoBRQ-1; Fri,
+ 10 Oct 2025 04:21:51 -0400
+X-MC-Unique: zjYJYCvUMOeQ1CTLtnoBRQ-1
+X-Mimecast-MFC-AGG-ID: zjYJYCvUMOeQ1CTLtnoBRQ_1760084510
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F1E5C1800292; Fri, 10 Oct 2025 08:21:47 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 20BB019560AE; Fri, 10 Oct 2025 08:21:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CECD21800452; Fri, 10 Oct 2025 08:21:46 +0000 (UTC)
+ id 963441800452; Fri, 10 Oct 2025 08:21:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 0/9] s390x patches (+ 1 functional test patch)
-Date: Fri, 10 Oct 2025 10:21:35 +0200
-Message-ID: <20251010082145.576222-1-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 1/9] tests/functional: Drop the "Attempting to cache ..." log
+ text
+Date: Fri, 10 Oct 2025 10:21:36 +0200
+Message-ID: <20251010082145.576222-2-thuth@redhat.com>
+In-Reply-To: <20251010082145.576222-1-thuth@redhat.com>
+References: <20251010082145.576222-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -77,51 +82,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Richard!
+From: Thomas Huth <thuth@redhat.com>
 
-The following changes since commit 94474a7733a57365d5a27efc28c05462e90e8944:
+The fetch() function already either prints "Using cached asset ..."
+or "Downloading ... to ..." with the same file name to the log,
+so the "Attempting to cache ..." message does not provide any
+additional valuable information. Thus let's drop it to limit the
+length of the logging output to a more reasonable size.
 
-  Merge tag 'pull-loongarch-20251009' of https://github.com/gaosong715/qemu into staging (2025-10-09 07:59:29 -0700)
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251006170304.197387-1-thuth@redhat.com>
+---
+ tests/functional/qemu_test/asset.py | 1 -
+ 1 file changed, 1 deletion(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-10-10
-
-for you to fetch changes up to 47ea7263701e85ea03270d34c9a90f3971597e06:
-
-  s390x/pci: set kvm_msi_via_irqfd_allowed (2025-10-10 10:02:51 +0200)
-
-----------------------------------------------------------------
-* Improves s390x virtio-pci performance when using kvm
-* Fix a problem with losing interrupts on s390x in certain cases
-* Replace legacy cpu_physical_memory_[un]map() calls in s390x code
-
-----------------------------------------------------------------
-Jaehoon Kim (1):
-      s390x/pci: fix interrupt blocking by returning only the device's summary bit
-
-Matthew Rosato (1):
-      s390x/pci: set kvm_msi_via_irqfd_allowed
-
-Philippe Mathieu-Daudé (6):
-      target/s390x: Replace legacy cpu_physical_memory_[un]map() calls (1/3)
-      target/s390x: Propagate CPUS390XState to cpu_unmap_lowcore()
-      target/s390x: Replace legacy cpu_physical_memory_[un]map() calls (2/3)
-      target/s390x: Reduce s390_store_adtl_status() scope
-      target/s390x: Reduce s390_store_status() scope
-      target/s390x: Replace legacy cpu_physical_memory_[un]map() calls (3/3)
-
-Thomas Huth (1):
-      tests/functional: Drop the "Attempting to cache ..." log text
-
- include/hw/s390x/s390-pci-kvm.h     |   7 +++
- target/s390x/s390x-internal.h       |   5 +-
- hw/s390x/s390-pci-bus.c             |  22 +++++--
- target/s390x/helper.c               | 122 +++---------------------------------
- target/s390x/sigp.c                 | 117 ++++++++++++++++++++++++++++++++++
- target/s390x/tcg/excp_helper.c      |  19 +++---
- target/s390x/tcg/misc_helper.c      |   4 +-
- tests/functional/qemu_test/asset.py |   1 -
- 8 files changed, 164 insertions(+), 133 deletions(-)
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index 2971a989d1e..f666125bfaf 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -225,7 +225,6 @@ def precache_test(test):
+         log.addHandler(handler)
+         for name, asset in vars(test.__class__).items():
+             if name.startswith("ASSET_") and type(asset) == Asset:
+-                log.info("Attempting to cache '%s'" % asset)
+                 try:
+                     asset.fetch()
+                 except AssetError as e:
+-- 
+2.51.0
 
 
