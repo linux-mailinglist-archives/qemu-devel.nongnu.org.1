@@ -2,193 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A34BD9D98
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 16:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A35E2BDA150
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 16:41:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fb2-0000B7-2a; Tue, 14 Oct 2025 10:01:48 -0400
+	id 1v8gBn-0004y9-F9; Tue, 14 Oct 2025 10:39:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1v8fay-0000AR-KW
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 10:01:44 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1v8gBk-0004v6-CU
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 10:39:44 -0400
+Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1v8fal-0004XM-00
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 10:01:44 -0400
-Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 59E7Gklp2974023; Tue, 14 Oct 2025 07:01:25 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=ehoGWREo8w9bf/RcBCHeXN9yL/QnnIqhAGxVgMuiD
- lE=; b=LOyMK/VZyrESlmQHF3k75cXlU3WmhxuFkaVu2ZcDpnKWbIDm0j7+05a3W
- XjChjqh+hU5VUZkNJ669YCwBA+l5amMn4e6XgaEY7WETcArrrmI8Fkrc8Cvc+hdE
- 43N3OHQxLJYm4aaIM8m8ZHPNl/biIh3tDFstm5F11hekMlgQlJ2+q/AvTOh/STlH
- WlOwdYt6PxybijDX7DEANUuRHdp1AA/SLFO3oUBqIixkXK+v1LVp7Nb7UGDdwOCE
- cpeeF07HctyyNmYOgWXJYQ1yJ77kpOgNOVtlZimrEO/vsow9fmaWQwhYs35G9TqI
- 729XEnNwfisPXuwPaWZ/4/VNrjf2Q==
-Received: from ph0pr06cu001.outbound.protection.outlook.com
- (mail-westus3azon11021113.outbound.protection.outlook.com [40.107.208.113])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 49s6b4t8uy-1
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 14 Oct 2025 07:01:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sm7U4ySzVWG+HRVEf59bRubVOz7Wk6/TLdSnNZaFEvG6Ze2Cq8oWMAwbXfoec8AUbVlXvTLDKKqIvqR88kFIUfnKBuJQlsacWtG1+uSzS3sWvnJwIphHDxHbrDAYbtTlc5CAbhpqK1j7upPBAqIu94EHWzMm3hdZI/+70+E3KLI/wLueD3YaKU6P43BFHyTEc6C86f8prfTJ0x5RWWMf6BLlPyz8I5W+PPWq3Zf4bWOpXWq1XhoEfXNr3IS9+gx+ZpN9tpXLY9eNZxrB49FO1RogfMqRSafy684oS0uAeymsTZRHguGlOt9GPORKYeOcxYn6xshRP17FRUzkbwKmYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sZtCtKe3cd8J2brVL4XRcQ0miZLOAHLYKNL8GQGe7HA=;
- b=jY06lapmcWc0KzqmTOl8ABmzkdAe5KERey5VhXzqh2tWtIVCw0y8ZGnutM6/n+giyLQLhL8v/xSekWH+gdhw0zlhi5OjZx7b3lujk5ToCuzs0TzhkVlfHygbPunQIoMc3+mI0zOgN0Cz4z1i3SEid/W6C9Z7S9XtVQSwnwYty+Hkz+CzYVjg59o87XPcvR8eEPjmIhyvUuhfXSn7Eq8Ln0AkfihlKLdZLM8B/xketOF3zbfAkGnxCebGjf9bM1bBvX7FV8Rp96RQ48BwZxXZx+sMbQPNTQcaT6OCskd+fSK5q1uuscmi0B4sZ0KDoITSlXINqzf++J9uYh23m3xOOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sZtCtKe3cd8J2brVL4XRcQ0miZLOAHLYKNL8GQGe7HA=;
- b=m4Xw8P5iqxva0KXsFk330CUm7mQU14Tz7lcXCAa4Eeis6KiJDmoDzGog9KUXjcavxSZqBx4hjJjRgAlHdbItiPZpSWVQHv1R/i5u9DzSKqG01EUaTPDXhD++Vl8fgRc9oWNreMDsjRPMcApbiJTsnbiGomVQmM4jPgc1Zgqbei5rjnTRQX5RKcDTO73+UWxADolkDpc6HhdlQ5ODPOVQluF9Dfn/pEJtrUc4C+I8dWCJ0q/O+W6KfL0mv/0GCOqcmyzlrKoImL1FN7/JeHbet/0okVc/0/AkIM/c7IMem7ihOb+cLBxJBTsAoT61xqhiPxohPPhzk+OEASc+Jh2ACQ==
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
- by MN2PR02MB6640.namprd02.prod.outlook.com (2603:10b6:208:1d0::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Tue, 14 Oct
- 2025 14:01:23 +0000
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51%7]) with mapi id 15.20.9228.009; Tue, 14 Oct 2025
- 14:01:22 +0000
-Date: Tue, 14 Oct 2025 16:01:19 +0200
-From: John Levon <john.levon@nutanix.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- John Johnson <john.g.johnson@oracle.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>
-Subject: Re: [PULL 25/28] vfio: add region info cache
-Message-ID: <aO5Xr3n-Ck8Wyc4L@lent>
-References: <20250509131317.164235-1-clg@redhat.com>
- <20250509131317.164235-26-clg@redhat.com>
- <6519c5b0-46d2-4097-bb37-7a78f9087f68@redhat.com>
- <aO5RAIX6WI0MerI-@lent>
- <cb4b8412-f1a5-4c7c-b2f4-d65b72194412@app.fastmail.com>
- <c20591f7-d743-4380-ab89-0efe254acfb2@redhat.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c20591f7-d743-4380-ab89-0efe254acfb2@redhat.com>
-X-Url: http://www.movementarian.org/
-X-ClientProxiedBy: LO4P123CA0064.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:153::15) To CH2PR02MB6760.namprd02.prod.outlook.com
- (2603:10b6:610:7f::9)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1v8gBU-0000WG-4s
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 10:39:44 -0400
+DKIM-Signature: a=rsa-sha256; bh=yFAyRCYZF6OU/chPVhuheF5qFHBRpIViN8VbVhB+zTA=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
+ t=1760452755; v=1;
+ b=gSSwljpXKowo8a8KT9kqufGegJ/LkYmfsiIO70fMeAoAj4DBaiMCitZ/t0pWb2skB+P9gG2P
+ kBdWOqqtRm69Kps/yWsF7vCqV47mpkBrM71tt+pHKBS6j0k4/uVT5C7cLLAse+S48RZL+YsMZt6
+ etYkL2OEgvmKFz2DO/8luEzYmIaKexMqtITv8Gw6K2INu57u/yq99Q17LPIYDlCUtWhhjw6S+Bd
+ jq4zA36f2LYUHbhOthqt9cP0SPuFT0ILhusWR8ndyh+Q9YmIG9hr8JbQjQL9WXCF7xlx1Hn9uSd
+ ycdbvwJDvkwSpZcdP5jpiydjZHiVRH2gxGS0Yn8MyHcjw==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id 4312E23BDD;
+ Tue, 14 Oct 2025 14:39:15 +0000 (UTC)
+From: ~myrslint <myrslint@git.sr.ht>
+Date: Fri, 10 Oct 2025 02:43:48 +0000
+Subject: [PATCH qemu v7 1/2] Honor guest PAT on x86, absent Bochs display
+Message-ID: <176045275486.7119.13003157223292391926-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <176045275486.7119.13003157223292391926-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|MN2PR02MB6640:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4213352a-da5e-42de-222e-08de0b2a2834
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?IFwvRPvAKEZ2vinf9eR1QrveFRAPWU9TOlEorMmvnIYz20PeLZbreHsMaB?=
- =?iso-8859-1?Q?zp5CdLrJF52oCq/UiCDLMCwWptsMzOT4S/fZhzoiSmmMuGJD0ECMNscIZC?=
- =?iso-8859-1?Q?B2W+oYNf61WmAVcYRkti5raf0IQSXn6+7EJmLwUl7VCjUFsDHSMbX9mRt5?=
- =?iso-8859-1?Q?ZAFDJiAWQ4yO6b7wm/ZomC08C0pLmjf0PeA6YiW9mybenCuNp2IcLC84D0?=
- =?iso-8859-1?Q?gdPJHX1M8Fh877WGlMU4Z5FXGYTtDIAl/ni1ydeSlsXB8RSJHqZg+Unp7O?=
- =?iso-8859-1?Q?c2+1ezYBVob3OVrnt44ZpLRMSVrh2NOE4CSnmyI0AXmNcKHQXmU81wtdQo?=
- =?iso-8859-1?Q?8BLxcb/9S3dpMrDPctVqmBiJmYOUmEGIfA7s+vzlgDYl2f/ltD3+PSQVgo?=
- =?iso-8859-1?Q?F8kCNUXR3K6G0jlqbK3KmXvqnN8k+QU7/39sBPX6+55mBPRvrfbnvUMXwr?=
- =?iso-8859-1?Q?igm8xMQHQUosh1itmy/8oHqZBa4sXZ+VLF91DnWmUWlZf38lHkTJLy+HSG?=
- =?iso-8859-1?Q?rGomGg8/SJUidSHbC1iC4aaaiKB/tl7Pc59eupp4wtXdbPrs0qPKp1TjMx?=
- =?iso-8859-1?Q?OeK0s7KOEHH5R6UJeDhl7xoImChgReJC7TJVim34hVq5e5wanP2RkUdZEJ?=
- =?iso-8859-1?Q?4fxBJJKm6v/luPHGERTrxYyx4rff3RgU0wGQ7Ragj7+q0FlbGtYWEXsaaF?=
- =?iso-8859-1?Q?UGnl4RJmWvU6+OIpegYhRAafk8+LQUr57gFEHTCq4zwIQdHUopMdwYteup?=
- =?iso-8859-1?Q?WZxz0zRT1LgdmVmq9y1Cus+meGkYae6VBZvPRRcfZ49Rg4DQRHesjAxPZE?=
- =?iso-8859-1?Q?4NYbUiOaO3tTWqlxpfw1XHzk6gyeuIYxqMY4mrprxc4VgQ6y596C0DIa2+?=
- =?iso-8859-1?Q?PExoClGTwxbLanAo79wN2P9DI8n5KrM5vQ8+Q+iNlt/saPEfb89oNa39hm?=
- =?iso-8859-1?Q?tgx5jYJNjcdtTh+AeAkMH8YFz8seDDbM+cw70of7K587+iKn4gG/4fMs2m?=
- =?iso-8859-1?Q?W9d89c/D8rUOp6w/iEDR2CQkuhUqlhcec9nhSAohkWonLU2+w8x6kSrBVa?=
- =?iso-8859-1?Q?iHYVmqNe9dtAbAWj7Gk0SMVfZDNjz35KDX6O4HOGSAoFMcPZMrkvvQA01+?=
- =?iso-8859-1?Q?DIwp4CWHnbE9LJGEz/qV5edTttIKrZyowyfTmSDwyg4yd7p6DVFMXfs8+a?=
- =?iso-8859-1?Q?Rn1CotHp9zs6XJSTmpcBcdKvwBHb5XAi3uX1N2Sln5pdTwoAlNNF5mD9Z6?=
- =?iso-8859-1?Q?nm0e+8OoCtnY6Do7AOf9ANPk5Q98ij3BwXABuYf3Kk/+04JfDxMRQDY+M4?=
- =?iso-8859-1?Q?orXXK4qc1cPD01eLCs58XzW69zTCbhzvpsl/YXdCuolHrhWlGmCAaH1r4l?=
- =?iso-8859-1?Q?RcoSmPg691VyyoNAu7M/CtR2jr/GAwXJNo7VSBYhJGZT8IXckWNARGxjFf?=
- =?iso-8859-1?Q?Lg2fCa69FVUqNjZe4LkAPTHEFHQuUxqDYarvFkVTGNUatxvFEbgX1Ej0HZ?=
- =?iso-8859-1?Q?gZSqsD6t1Z0ATAom385NRV?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?o1k6oVYFKEfszs9HghmrQ3gE3Q2Pqlfs0WmF27XzBf72lMJRJtOUX69q2a?=
- =?iso-8859-1?Q?NxgXCGgXaEmqTaVcarjT+JE5QsquWrY4880SmAsFrLA9RnPt0Ujh7B0LIj?=
- =?iso-8859-1?Q?78uH8HUeh7h5FScXS6/lHWm/vHQntu5gmxUT2ml64AukxsjqipfUAVR1NG?=
- =?iso-8859-1?Q?Z+Sw9XaTajmfJRF7jwlMy+nMnLfw1UPhmsAe53fugqY+TUi9a0xwvze2XU?=
- =?iso-8859-1?Q?8HFNwDruaUHw+76mP7oFeOtgdihpvILJHDanPJZoPLD11xQInO5E1bKl7d?=
- =?iso-8859-1?Q?5zfRO6+6aNwPd8hJNLbIYOg1V9lV6aKOBwxU2ucGBpCuQNRRPTbPYb7ytt?=
- =?iso-8859-1?Q?UrkZqEazTHF8dW5hia2fFPwrr7tj3E400E0cbImbtDUBc2ZNx1SD/7s7lZ?=
- =?iso-8859-1?Q?8vYDxtBK3cMf9Clg9xohW7jxdGi6zy62o3lr4q46c3PtWE9+LXREOJi46M?=
- =?iso-8859-1?Q?YtDzy9aaetr4IxNygJwcHZKqruYNqQMYDk4TgFYTLHI2HYB+bH4MN6+EOV?=
- =?iso-8859-1?Q?NLmMn/aHGUfDDPTB4JnvbeL4/bS5idA4o9ltuZ5XvXUvpxhvJTAKsikx3q?=
- =?iso-8859-1?Q?q4j84RYnVBcCZcMrFAGO3A1WzP5wgmJqTwiJ19jzKktkXHjE32xCDPnZWc?=
- =?iso-8859-1?Q?eLCOKCFe0C58V5Dk8qlGnC6hI38cQvP33k6svmNaohBQgNj0wr4mp5Ozd7?=
- =?iso-8859-1?Q?fAWECD1NPOZw0AH/MTc4qu34Zh4PvGbUmo/fmN3aw9mOhDfvgrh/KaK9QQ?=
- =?iso-8859-1?Q?6AkJ2rSmUWKSsAlLjK7z97RDzijfuYtVijqTEFVwl1z5yO+gi7UuU2u1Oo?=
- =?iso-8859-1?Q?tTOo9cIOv8M/xRse5fOtsJOekcSexApCzcJb/jx3NB8SrumhvUyyfDRcGh?=
- =?iso-8859-1?Q?W4QA2xJRiEtnwgsQVYq5valrayuhwGqH31/h7zHeR+jRFeUtO3Isnm45Rb?=
- =?iso-8859-1?Q?B4fGsOctvyxi/ISg6S8foNHSqLLUP0zKfzkX7JBWR3k2HFiZbhRQzpbqWO?=
- =?iso-8859-1?Q?MKFvE21+bob/Fk7KUcgHVmAZUubMf0VH8JJApiC+e5pxZ8Akw4wADmeixW?=
- =?iso-8859-1?Q?3Z30LcsquGnObgWzA/7pwJsivbTMAhUJNXTQ52X70fjp1uD7bXbjkRIxPR?=
- =?iso-8859-1?Q?g2yE7Mfg6q9/gMilamP9A8M0p15RC7lnJti2gPYW4pGhcLOSCEip68i7dR?=
- =?iso-8859-1?Q?Q9HfXryVsErbKjhMbmX81mc9HsIA6/vHlkitarq+ug/ylNsc2ucoygubKz?=
- =?iso-8859-1?Q?NKX4psRsEYbRPeyedcnmHo6Jty9pBdYUMKe60GmK4Jfo67HB0LT/ecaJZ2?=
- =?iso-8859-1?Q?IHx3uFFm7GrLrEgn3Mh1xNXLrGlmqoSe1vbfssMnBMa0/FrWXFBYH6+HFs?=
- =?iso-8859-1?Q?1Q8h4GomBGsOm+vhO7yWdLRdZjIFwq9avKTc7h83Q0HtTiGEtcPUgzmzHS?=
- =?iso-8859-1?Q?jMfgq6TsLEDcFLM87RM3L9YTNkPQw6tFqu4/DTxVPCVvSrZ0iCRF3d+/sy?=
- =?iso-8859-1?Q?YjBe2vnCIGAFoA5RLZsj/jqG3a2EwY0KxEDW5qSEfeu7MgGDdOOZysdR9S?=
- =?iso-8859-1?Q?CTYwAT/34zojLol5LzbaCRHBiKoSwTVn5y4zfpKrfWMZZgmcsXnDZIif6B?=
- =?iso-8859-1?Q?Gao3IP0s7yVOhunTYdwGfWInZXI8KNJ+dC?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4213352a-da5e-42de-222e-08de0b2a2834
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 14:01:22.5497 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +ZRoODnt0xvY4srBKDaO9LCcYbjQjfEVZFNG3Th/rmUhM+qTYWG5vA//oN+Cs9tR0+t6KY7CpnvGPVBgSGReaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB6640
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE0MDEwNyBTYWx0ZWRfXxMRBBID3uaHv
- RW0oQtxm9mUEEygnUwnJ/tjTBC8O1ehslEJrNGQi3YgeNCfE7GftyAcedfGgcox5f24k9Tw63d7
- 2XjPFRKucMmU5vRFgX8NWaPuPTpVamEvcMIUmbDRBkj0evu2DHEVQKEgP5EqxyW4ubz9Ryi1Pg4
- qbqRQiWp3SCMKikvTnVPCQJswJPF8cSh9gnbbtJz+lw6mDs8mqWx8QYX27u77oyezWgDrYqegKL
- P96rNc0cti75eBdI4R8plFPjqQLW+uwpvKTpivUz3wuRSDm5d/TuGArfminF3nV7rtcR6et/3y5
- HHknKEnqFKa+wQTxQF0gp/Da8W1SaxbEhgS3iwl/3QcrlSJiJ/cFOphKMAbrwNenCLhyJpM9Dtx
- j+6CztA0GKxKDIa/TkBf9fP2xceLmw==
-X-Proofpoint-GUID: jq7yvYaE9VrHRC3PUGk6EsTIY--t8PnS
-X-Proofpoint-ORIG-GUID: jq7yvYaE9VrHRC3PUGk6EsTIY--t8PnS
-X-Authority-Analysis: v=2.4 cv=aJL9aL9m c=1 sm=1 tr=0 ts=68ee57b5 cx=c_pps
- a=f+3zdzEv7nFEBFh6qWwLEA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=x6icFKpwvdMA:10 a=0kUYKlekyDsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=_Eh3n3qZZcu1jyPUs-wA:9 a=3ZKOabzyN94A:10
- a=wPNLvfGTeEIA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-14_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=john.levon@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: 17
+X-Spam_score: 1.7
+X-Spam_bar: +
+X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -201,17 +61,196 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~myrslint <myrskylintu@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 14, 2025 at 03:58:02PM +0200, Cédric Le Goater wrote:
+From: myrslint <qemu.haziness801@passinbox.com>
 
-> We should then improve the VFIO region cache handling by reallocating
-> the reginfo array on demand.
+On x86_64, where most CPUs support self-snoop, it is preferrable to
+always honor guest PAT. Not doing so is a quirk. There is a default
+enabled KVM quirk flag which enforces not doing so due to a former bug
+in Bochs display driver.
 
-That would render it more or less pointless as that'd be a round-trip socket
-message every time for vfio-user.
+The bug has been fixed but not enough has yet passed since so we only
+disable said quirk flag if a Bochs display is not configured for the
+virtual machine.
 
-regards
-john
+This commit also moves around a bit of code that would be called when
+the initialization of a VM is done.
+
+Signed-off-by: myrslint <qemu.haziness801@passinbox.com>
+---
+ accel/kvm/kvm-all.c        |  1 +
+ accel/stubs/kvm-stub.c     |  1 +
+ hw/display/bochs-display.c |  5 +++++
+ include/system/kvm.h       |  9 ++++++++
+ target/i386/kvm/kvm.c      | 42 +++++++++++++++++++++++++++++++-------
+ 5 files changed, 51 insertions(+), 7 deletions(-)
+
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 58802f7c3c..391ec08629 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -103,6 +103,7 @@ bool kvm_readonly_mem_allowed;
+ bool kvm_vm_attributes_allowed;
+ bool kvm_msi_use_devid;
+ bool kvm_pre_fault_memory_supported;
++bool kvm_bochs_drm;
+ static bool kvm_has_guest_debug;
+ static int kvm_sstep_flags;
+ static bool kvm_immediate_exit;
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 68cd33ba97..e56b745d5d 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -24,6 +24,7 @@ bool kvm_gsi_direct_mapping;
+ bool kvm_allowed;
+ bool kvm_readonly_mem_allowed;
+ bool kvm_msi_use_devid;
++bool kvm_bochs_drm;
+=20
+ void kvm_flush_coalesced_mmio_buffer(void)
+ {
+diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
+index ad2821c974..9a33a4cd26 100644
+--- a/hw/display/bochs-display.c
++++ b/hw/display/bochs-display.c
+@@ -20,6 +20,8 @@
+ #include "ui/qemu-pixman.h"
+ #include "qom/object.h"
+=20
++#include "system/kvm.h"
++
+ typedef struct BochsDisplayMode {
+     pixman_format_code_t format;
+     uint32_t             bytepp;
+@@ -261,6 +263,7 @@ static const GraphicHwOps bochs_display_gfx_ops =3D {
+     .gfx_update =3D bochs_display_update,
+ };
+=20
++
+ static void bochs_display_realize(PCIDevice *dev, Error **errp)
+ {
+     BochsDisplayState *s =3D BOCHS_DISPLAY(dev);
+@@ -309,6 +312,8 @@ static void bochs_display_realize(PCIDevice *dev, Error *=
+*errp)
+     }
+=20
+     memory_region_set_log(&s->vram, true, DIRTY_MEMORY_VGA);
++
++    kvm_bochs_drm =3D true;
+ }
+=20
+ static bool bochs_display_get_big_endian_fb(Object *obj, Error **errp)
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 4fc09e3891..62b49deb3d 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -43,6 +43,7 @@ extern bool kvm_gsi_direct_mapping;
+ extern bool kvm_readonly_mem_allowed;
+ extern bool kvm_msi_use_devid;
+ extern bool kvm_pre_fault_memory_supported;
++extern bool kvm_bochs_drm;
+=20
+ #define kvm_enabled()           (kvm_allowed)
+ /**
+@@ -144,6 +145,13 @@ extern bool kvm_pre_fault_memory_supported;
+  */
+ #define kvm_msi_devid_required() (kvm_msi_use_devid)
+=20
++/**
++ * kvm_has_bochs_drm:
++ * Returns: true if KVM is possible and a Bochs DRM driver is
++ * in use for display.
++ */
++#define kvm_has_bochs_drm() (kvm_bochs_drm)
++
+ #else
+=20
+ #define kvm_enabled()           (0)
+@@ -158,6 +166,7 @@ extern bool kvm_pre_fault_memory_supported;
+ #define kvm_gsi_direct_mapping() (false)
+ #define kvm_readonly_mem_enabled() (false)
+ #define kvm_msi_devid_required() (false)
++#define kvm_has_bochs_drm() (false)
+=20
+ #endif  /* CONFIG_KVM_IS_POSSIBLE */
+=20
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index db40caa341..a720cc791b 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2692,13 +2692,13 @@ static bool kvm_rdmsr_pkg_energy_status(X86CPU *cpu,
+     return true;
+ }
+=20
+-static Notifier smram_machine_done;
++static Notifier kvm_machine_done;
+ static KVMMemoryListener smram_listener;
+ static AddressSpace smram_address_space;
+ static MemoryRegion smram_as_root;
+ static MemoryRegion smram_as_mem;
+=20
+-static void register_smram_listener(Notifier *n, void *unused)
++static void register_smram_listener(void)
+ {
+     CPUState *cpu;
+     MemoryRegion *smram =3D
+@@ -2731,6 +2731,37 @@ static void register_smram_listener(Notifier *n, void =
+*unused)
+     }
+ }
+=20
++static bool kvm_x86_smm_enabled(void)
++{
++    return object_dynamic_cast(OBJECT(current_machine), TYPE_X86_MACHINE) &&
++        x86_machine_is_smm_enabled(X86_MACHINE(current_machine));
++}
++
++static int kvm_x86_disable_quirsk2_mask(void)
++{
++    return kvm_check_extension(kvm_state, KVM_CAP_DISABLE_QUIRKS2);
++}
++
++static int kvm_disable_ignore_guest_pat(void)
++{
++    return kvm_vm_enable_cap(kvm_state, KVM_CAP_DISABLE_QUIRKS2, 0, \
++                             KVM_X86_QUIRK_IGNORE_GUEST_PAT);
++}
++
++static void handle_machine_done(Notifier *n, void *unused)
++{
++    if (kvm_x86_smm_enabled()) {
++        register_smram_listener();
++    }
++    if (!kvm_has_bochs_drm() && \
++        (kvm_x86_disable_quirsk2_mask() & KVM_X86_QUIRK_IGNORE_GUEST_PAT)) {
++        if (kvm_disable_ignore_guest_pat()) {
++            error_report("KVM_X86_QUIRK_IGNORE_GUEST_PAT available and "
++                         "modifiable but we failed to disable it\n");
++        }
++    }
++}
++
+ static void *kvm_msr_energy_thread(void *data)
+ {
+     KVMState *s =3D data;
+@@ -3311,11 +3342,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         return ret;
+     }
+=20
+-    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE) &&
+-        x86_machine_is_smm_enabled(X86_MACHINE(ms))) {
+-        smram_machine_done.notify =3D register_smram_listener;
+-        qemu_add_machine_init_done_notifier(&smram_machine_done);
+-    }
++    kvm_machine_done.notify =3D handle_machine_done;
++    qemu_add_machine_init_done_notifier(&kvm_machine_done);
+=20
+     if (enable_cpu_pm) {
+         ret =3D kvm_vm_enable_disable_exits(s);
+--=20
+2.49.1
+
 
