@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F640BCCF27
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 14:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CEDBCD047
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:05:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7COj-0007Ib-N2; Fri, 10 Oct 2025 08:39:01 -0400
+	id 1v7Ckt-0004mv-Tv; Fri, 10 Oct 2025 09:01:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7COg-0007He-8I
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 08:38:58 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <robert.hoo.linux@gmail.com>)
+ id 1v7Cjl-0004cG-N5
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:00:46 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7COV-0003Lp-ES
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 08:38:55 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3ecde0be34eso1620294f8f.1
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 05:38:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <robert.hoo.linux@gmail.com>)
+ id 1v7Cjb-0001tM-5e
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:00:45 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b609a32a9b6so1271670a12.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:00:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760099923; x=1760704723; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uuzFyIoAwO7W+bzGbBnrj2kx33yzwhJ3BfNWgxiSw9w=;
- b=tTUjKlXq8jvSL3MV1jnvhMtTafcB2tp8cMr4q2nsl0xsxQqME5FCDn4XU/N74EyIjY
- dqULXZSWs8DajrVigWeXiXpE4LgDQjwzJMqhnsw/gbcnmvUg9tEbBQH234dYnp1OeiCw
- NJMHJejgmMvLQejwVqMnXVYT7jxOpqKllKy6NG98HxQXmVtMJEXxB2pz4EFWzLmg/Qm7
- rmMRzOJoJJchfV4ZI1dkLcx8bmLJL3qr8S5Fxtj0wpzVbuuxAIwrvJNwSJlrj007t2A0
- bdFvR8guCxoBcDjZi7mK+TGKnhAy7WDOipUrSlVRPENTAAmvCyxx7U0vP91v4sk5Ozjh
- Tncg==
+ d=gmail.com; s=20230601; t=1760101225; x=1760706025; darn=nongnu.org;
+ h=content-transfer-encoding:subject:from:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vOOXZGCs8bQ+qHQrZlVXdYoF24tKQxHP/cXnUs7wLho=;
+ b=Kp4EPMGWJ3PYbWF3De5UMRobOJ3XHpz63CpCJ/T9HngB6MojcxqZ5LSU/PCyKq3CwS
+ Nlh4kT6hYScTtd97fWrPRA1oihnNIKfeavF6Yy06JpVm5N2zTzNr1TVEBBE2odDp0f+N
+ UCJ2K5iPmw1/EY2sAYPEVd2sGYDKtgRjDXDr2PVLDT1FYT/QEE7Zl2aiKjNx/w/nA5Kq
+ BdRuAwvGVG7yZSlVtPR5Im3F5rpnwZCIdvsCq8BMQ/Ws5F94TCvaLOBAZK0qN8Gvor2U
+ Tf1tqSZYNyzKfqvm8gj1oLcihnwymKPfhTWSaRdctUzB0H4BXAXect+T0d066HtRMyuf
+ 7jqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760099923; x=1760704723;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uuzFyIoAwO7W+bzGbBnrj2kx33yzwhJ3BfNWgxiSw9w=;
- b=su5WMtD74W6nc3H+vY1Togu0KHAwKCrgd74ZxPvVzH5KUOnEnKRtbXXdjQ4mBt53+s
- /cap1zLlkqje4nD5v8PsO6eigWb8wF2ZSnOF8svhw4S/Bnq8FtlhmnGhGQfWfG3YlERg
- sU5nFM0FVnYYatCg+bjpYeN0r6p0UFAXoZwXc8Crm5EBSSS1YiLHveBuwOX0AtAinsXh
- P0sTNQzGlcFWLBkWINwrr+E2WcqE87CZPaWxDq9XxmJMqq5475TWOhAotX/8w+a8kTZS
- SkHuxYw0fo9S0DKJne0WXOm2L8VWzAL1yj9T8Jw2QQ75uNcTphDHYv49jXVE3tSGVC3e
- fl0Q==
-X-Gm-Message-State: AOJu0YyLianxcjfcmlumy+mQqUZIWFewJEQeGfw1qDNcQEkqJmNsTBUE
- Tevx3c+RY/QLGgKzv3Y0+ggLIURymzATehh667EgSh1iD9WoK5A0PZu7QqA8WCstW8RdqDTQck2
- LbPEkJiW+RA==
-X-Gm-Gg: ASbGncsy+byPtZYdaFgER5UgWeUhGdFnUJ4IfrNKKhrHYs0HhrNyODERZLhSLsCLEYO
- cFf0ROU1OxVy9WwnKj3WOGM5944qDQEim1FIqyXpkxImMcKYY6y+WJLIKj69Mq94cbQuIG6Vf8Q
- VxT9ROhuulyX3LZs4aFiGDHilFeU+JBM7STsuRVpNyvfijUYSN7kKnczgba11yAscRp2dLxJpr+
- Mif60XRJArA3iFjDnIoqAJHvGGQtlenDZCnxwugCHUkXXhqLBtP9r+qoG7yPQHvqsBokaQ5MPdN
- 2E23TVrIKTmQkAUWL1xnLcgTeK7u5SAfo1gNDicV/Qfbdp+MCBOpN+9aVoEFoveU9ZkSeVUtofz
- G8fA8GXyEoTNt6Moc6IgZVfLgKSMg3X0SoChfOvJWMohZCP9vtT8vYwZHIbEextbDFgVmev3rEy
- KzH05glZVdYTRO
-X-Google-Smtp-Source: AGHT+IH+ZTJD8/+ExpN4VX1UsQkJgg0tMzAd8/lDYzArbnGHNWHIHmo4bbNVEc/K3BT7er3Yi3J5Og==
-X-Received: by 2002:a05:6000:288f:b0:425:58d0:483a with SMTP id
- ffacd0b85a97d-425829a5a12mr11307339f8f.3.1760099923460; 
- Fri, 10 Oct 2025 05:38:43 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb4891958sm48252315e9.11.2025.10.10.05.38.42
+ d=1e100.net; s=20230601; t=1760101225; x=1760706025;
+ h=content-transfer-encoding:subject:from:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=vOOXZGCs8bQ+qHQrZlVXdYoF24tKQxHP/cXnUs7wLho=;
+ b=gXawXYaa2gjS1iTXqWcRerT8Vb7k9Im83OsMr6A+DjlQHt8y900zqzXDnuO6vMjN20
+ f6oywL7Fg3cTVpA3JqWADqeGZWSxLK0nxr1IjHZio7ajZIrEdKwbV7D1AZ898uYppqd3
+ TABGUw9fOsgI/bNmjHO2CywgHNvdr6TnhWAL1cBANU5jzqf8SFHyYueJXKvbMRsY7Ice
+ c270jOKvJjDfcFmhfMIvJ8rBLcpqWwAJ4guawgrzPV0hD89RySUmvjkYkDxIFMRHTqVG
+ 0auKwW5OFdtQUkTYs7eUUyFCKgPRqayyyhuKXedmRJeIGXKDehEG3onMsTRJ6chGTjpT
+ qevA==
+X-Gm-Message-State: AOJu0Ywxm74cSrE2yF41Q5ThFANAEBS8yvafQKtTm7nwAsUUzwV5NXkH
+ apdLk+eBGijvWAyzowlbi8usVZ31HZj7ghAD8j1RTzfmfIbOhZ4VnO5xF/BwbZCB
+X-Gm-Gg: ASbGnctU8guasUs2ASXNtdCckaDCN24I69IJOPNwcDnAbx7fRDqRuQUexDliKdm4BZR
+ mVBxOuYgXzFSWFg+Ilp55PXjlKNgZDZXwOHk7NIB4Eh/UN6z4HyIlSfuFqy4CBWA6fhHRsoDIP9
+ qF9EKlAoJK9XIiSMKhp5x83mE/UNJyCqRsuEkqlJSAgWACgFkAOH4vfvkoOTFWzfmaslajsV8f8
+ dzzWD2CmiIdzJqp2PxO/QaRBCtNhZp2BPBXQTKVAmVsHwk10S5gD9cBOGtZZAympNkWY08cZ5eg
+ LxYl/s7YKvOMjvNujJbO8U3iPPpWe4VOW3zE56lCdnKe9y8k7gEQha0JCu1ZESfV1ySzJX09vUm
+ pD6paV+LYqCvtgWkkI1viPlvvqFCYJBhXMkjPoZRdElH2Ai2SUqDXWAT3RXgRQnxLNnbcvqbBQ7
+ QIX344b3ScaC5SGX0gTOBp8gRUnCp8KDAYp9Q5iVDcJXQnAv0Xe6UQplhqqJkRIkQY
+X-Google-Smtp-Source: AGHT+IEYuNdt8adqxLdE30t6Z6WFdRp/jd/MialuY+uI4QVuv21WKO0OSuuGmIgtwvNpmNOpRPUddw==
+X-Received: by 2002:a17:902:ef09:b0:27f:1c1a:ee43 with SMTP id
+ d9443c01a7336-290272c2564mr138425485ad.29.1760101225347; 
+ Fri, 10 Oct 2025 06:00:25 -0700 (PDT)
+Received: from [172.27.236.23]
+ (ec2-13-250-3-147.ap-southeast-1.compute.amazonaws.com. [13.250.3.147])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29034e45568sm56691545ad.55.2025.10.10.06.00.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Oct 2025 05:38:42 -0700 (PDT)
-Message-ID: <ca449bf5-a1e4-44d2-9181-128fa56432f1@linaro.org>
-Date: Fri, 10 Oct 2025 14:38:42 +0200
+ Fri, 10 Oct 2025 06:00:24 -0700 (PDT)
+Message-ID: <1943ea16-c3cb-4442-be72-5719026ee13a@gmail.com>
+Date: Fri, 10 Oct 2025 21:00:21 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: update cpr reviewers
 Content-Language: en-US
 To: qemu-devel@nongnu.org
-References: <1760098600-399192-1-git-send-email-steven.sistare@oracle.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1760098600-399192-1-git-send-email-steven.sistare@oracle.com>
+From: Robert Hoo <robert.hoo.linux@gmail.com>
+Subject: vsock support for communication between guests
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=robert.hoo.linux@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,15 +99,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/25 14:16, Steve Sistare wrote:
-> Update cpr reviewers.  Some of these files overlap with migration
-> files, but some do not.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->   MAINTAINERS | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+Hi,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Does vsock support communication between guests?
+ From man page, and my experiment, seems it doesn't.
+But why not?
 
