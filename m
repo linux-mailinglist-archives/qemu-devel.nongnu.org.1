@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F47BCDE46
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 17:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 192C2BCDE29
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 17:54:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7FP5-00049Y-L5; Fri, 10 Oct 2025 11:51:35 -0400
+	id 1v7FPI-0004CR-OY; Fri, 10 Oct 2025 11:51:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FP4-00049I-Hb
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:34 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FPD-0004C6-Fr
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:43 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FOy-0002WB-BV
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:34 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3f44000626bso1552280f8f.3
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 08:51:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FP3-0002YZ-W5
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:43 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3ece1102998so1350830f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 08:51:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760111482; x=1760716282; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760111487; x=1760716287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=caCZcdTZcK2izzqG8Sgv3bdl6ME2ZyIpYJtnkxpQrBs=;
- b=bFHEKYtrwJY8BLfd/MJO56JpHTg3U/0ow0wGmqQ6O20Cyj2/E3EXBtKR34PPZnTwkc
- 80vOR9VPootNn2fPAGYLGNAjcyU2S10vxRj86hVVe3MsjqsdBqnE0DWd5hkit76s3+Dk
- CdUZlZxis1eGVhqOCyOH+ZNf85BkP6tIMDNt01lGp5CcgmN43nmEMs3Yc/YGN29W0OfM
- ApEuv16Te3gUeWAlK3dROfSZhAIQoGwajYcv3BKsulrjeKhZ2OR6FhhTZd7R9zhzV05v
- m2N9Y/mXR1ZcltPe9joXYuwiV8jPhFMO3oiO8yaB/yb1HaF68lPzzHPbbMHXR6tLRuPs
- cgSQ==
+ bh=d8LJg+M831/BvkdpBsCwSrsSEz+7v6DyZplBFdI7dFw=;
+ b=WR4Om0v7Chn5UTGzTLEOZ7Cyor2hSN+Bun+ytNi3RNQR42FsJSQlywUnF8LLtJYJsZ
+ 2EBdnGpivi0V9njr85lALWG/VTHUzU8oGlEHz5EWxo4+UiWB8AjY5HE/GlrIb8gTVs77
+ fps7SiG5WhYwj1OdA5rHMjgiH3+YE3S3ga6HpMftWofDUN3Xg4PngtiCOM5EYCKfhKWN
+ ZYjgSIU0evwq2hIH6PtaKaxkaEn/97wG58zRc7dN9H+lZuaWkWsPL1aa9S5wEtBYD1ad
+ D/aCeCGlD8TpHS/Fg/e+d1InngPmalJVYdSxKPxyrHxH9Hv4m1SaNBSt+xaPftSZQp2U
+ Cu+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760111482; x=1760716282;
+ d=1e100.net; s=20230601; t=1760111487; x=1760716287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=caCZcdTZcK2izzqG8Sgv3bdl6ME2ZyIpYJtnkxpQrBs=;
- b=KRrvRY+dAPT65PG+awlgTqYcP8EO8UdWUYav1WW1qAREebUmxB2Xcj7PdJinH/BIqZ
- RJ9ZFS2UTGxIu+5PzpKWrmJHvptt35OZ7Ctoew4T232EC8MbzdJXAz3WC9avdKpWrkLz
- +hJDRM1jPPI5XpZnQSlnq158uo+fKWr9hxSAYiMxdrnyiKLYFB5tccuRIRUKo086xBxU
- NLITB98CfqUW3+yOpgM9xWBwo8ZKYMTE68U1d8DxxWz90HJeXtDxV+w3Jgkq0YlnPf6m
- yFbBoxjROElwlv9XA3o+9PVBdzM/gNXUuB97JZCWmYAMshubGXMKYsZy2DhnltaXcUzk
- nQQw==
-X-Gm-Message-State: AOJu0Yzx7COC2XlG+hY6gZ3IivMU9Cc06atMu/ayU/Oqy7sBPgYWSIDb
- lDRc98vVROavHThlAFh21xfDgqnq2pm9djnTdKMZzGu4BQDRmCE9R1YiD2R+ovSecpfM53aGMoo
- ue70x3MauJg==
-X-Gm-Gg: ASbGnctfFqTlqAyLRdo6B80V3uvs8T0TYFot9XSwQHl9rcTVpeCazH8QxavRT0f/l+c
- 3trDl+dLg899XGMH0+3Y8u+IFD8woo9D1dgRZyF2WqWYbT6a8bhAro8gBgJcvABM6scw7diqMHm
- 5ayVRWllvWbOnms4oliunAmNjwpApN0KoevZgZO5hRGo3aWHTCJYF+/BN/WtOg3OU/ljGpa91vx
- Yn+drgsJS3ZKR72V6CbUGqEE9ZrasYHRrjrz5IYthVWaqIY6j5jm3AO2+nSr9opR66BmmK6Wby1
- VtxqrL7AuBLgSqXu5gYG4AgwbKBc0az/M2X2Pxh8kqJXvfDmSTnDJUUNbQnag9Ubw2Th0Aqr0HE
- Li2xA/mWb8K2oKZYHrFcmcic2CS/3FadudVm0b7ULNwni/4L0X3wULi9PkOPqrv67e2kHZWFjcO
- 2WvsP2EddGoB1f9VHhp/M=
-X-Google-Smtp-Source: AGHT+IGF7GmDeGBEtquYI6CzkkaQKIuOdBtgkItLXocniOCzY4QqLiy5I42+Z8c9SucK6vOSORVbEw==
-X-Received: by 2002:a05:6000:2483:b0:3eb:4e88:55e with SMTP id
- ffacd0b85a97d-4266e7dfaa1mr7815794f8f.41.1760111482482; 
- Fri, 10 Oct 2025 08:51:22 -0700 (PDT)
+ bh=d8LJg+M831/BvkdpBsCwSrsSEz+7v6DyZplBFdI7dFw=;
+ b=v+TOKtVj0cAjw1lCsrQU1yz6RVJ+WZCYYQV+QVxIuUWVxX6ZpFPKYGG4pc4IVUoXoj
+ 9BRSNZlaARurWTaY8nEb7nJBIvIlnkbNZ1xBeP2prwbeB7ki85SNN2Zq0gcvhvU5wKnW
+ KC1ncqMn30W262bokaG3yFeKxQK+YWD5V+JMimcvXYIIyvxUqmQ/Rb8yc827ARbHFTM0
+ OiaqxoRZDOeugG3449L6HxFcu2xhZE+7Cmk3euPD9GjMGRrbb0FH7RwAxPsQT0tsR1x3
+ Zpxw49bSee8YjbeCfLRoPUB71sUOL9Ho0jQrbwMCzvWVtxG/9OTT5HrFQktgiizlD0v8
+ PhRA==
+X-Gm-Message-State: AOJu0YzHREG7Vl/0JBdZSFK15e2dRJbXOIhRUFNIa7TUOLE/ZiXeE0I/
+ PWNAWf48APjza1xZsyr3l4CKFJQ01MKLhqDwPaa1UwW/zN0t+Ktjycnp+GLR5mbMwdJDJnbVb+P
+ GAy3sBUNzow==
+X-Gm-Gg: ASbGncuT+ddSNiOq07/Dg7ngxXI4EDOOBq+eXN8gNnBrFVYd9RGPW+Q+PpfJsK47LAW
+ BCK06lXzgdCCzu3MyCR3aLzdl8xv+4c/Kh+ztOZ2DUs3H6zW6PittZ9jCAKDa2tfTW/hmTqTPQ8
+ k84TN39kKdGb0lu4tUiKl0PdO3BgndHKMkZM6PJAY5MziT8Lf1VqygotzDlqb05TAfDsq3xNiCv
+ DyqwT1tW5Ir5RZBazOcgNqeNoI8yMyzW6iO7BSCfUOEClm5QptZdBJ2OcAcapArK6wQ9tFZGWcv
+ sLYnegsal5SJGw968QBVwMXhIzhy61ofZIUQzSDH+HE3Ntcn0UxvpRN0vtbGULN11syEAXpuBjf
+ oaWsBdiLE9wz8nK1J9Ojd/xfd8tCfGrRpH7KofNWBYQVhk7tmMdrBZPaT3y6oj8PCmBPmBaBxF1
+ ebuxIsTO1+u+QavHB2oLo=
+X-Google-Smtp-Source: AGHT+IHyTyj4ZzN7MRqopW4KkDUz0H34e7o9fMfwaEQd4rnJNxZHM+WLp5bDwYyODO2Iu75UC2kdew==
+X-Received: by 2002:a05:6000:230e:b0:3ee:15c6:9a6b with SMTP id
+ ffacd0b85a97d-4266e8db295mr7424995f8f.48.1760111487394; 
+ Fri, 10 Oct 2025 08:51:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e8207sm4622865f8f.47.2025.10.10.08.51.21
+ ffacd0b85a97d-426ce57cd11sm4925450f8f.5.2025.10.10.08.51.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 08:51:22 -0700 (PDT)
+ Fri, 10 Oct 2025 08:51:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Christoph Muellner <christoph.muellner@vrull.eu>,
@@ -74,25 +74,24 @@ Cc: Christoph Muellner <christoph.muellner@vrull.eu>,
  Weiwei Li <liwei1518@gmail.com>, qemu-riscv@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 07/13] target/riscv: Conceal MO_TE within gen_fload_idx() /
- gen_fstore_idx()
-Date: Fri, 10 Oct 2025 17:50:38 +0200
-Message-ID: <20251010155045.78220-8-philmd@linaro.org>
+Subject: [PATCH 08/13] target/riscv: Conceal MO_TE within gen_storepair_tl()
+Date: Fri, 10 Oct 2025 17:50:39 +0200
+Message-ID: <20251010155045.78220-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010155045.78220-1-philmd@linaro.org>
 References: <20251010155045.78220-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,106 +107,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All callers of gen_fload_idx() / gen_fstore_idx() set the MO_TE flag.
-Set it once in the callees.
+All callers of gen_storepair_tl() set the MO_TE flag. Set it once in
+the callee.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/insn_trans/trans_xthead.c.inc | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ target/riscv/insn_trans/trans_xthead.c.inc | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/target/riscv/insn_trans/trans_xthead.c.inc b/target/riscv/insn_trans/trans_xthead.c.inc
-index 70c563664ab..859cbc26cb2 100644
+index 859cbc26cb2..2f31842791e 100644
 --- a/target/riscv/insn_trans/trans_xthead.c.inc
 +++ b/target/riscv/insn_trans/trans_xthead.c.inc
-@@ -349,6 +349,7 @@ static bool gen_fload_idx(DisasContext *ctx, arg_th_memidx *a, MemOp memop,
-     TCGv_i64 rd = cpu_fpr[a->rd];
-     TCGv addr = get_th_address_indexed(ctx, a->rs1, a->rs2, a->imm2, zext_offs);
+@@ -926,6 +926,7 @@ static bool gen_loadpair_tl(DisasContext *ctx, arg_th_pair *a, MemOp memop,
+     addr1 = get_address(ctx, a->rs, imm);
+     addr2 = get_address(ctx, a->rs, memop_size(memop) + imm);
  
 +    memop |= MO_TE;
-     tcg_gen_qemu_ld_i64(rd, addr, ctx->mem_idx, memop);
-     if ((memop & MO_SIZE) == MO_32) {
-         gen_nanbox_s(rd, rd);
-@@ -369,6 +370,7 @@ static bool gen_fstore_idx(DisasContext *ctx, arg_th_memidx *a, MemOp memop,
-     TCGv_i64 rd = cpu_fpr[a->rd];
-     TCGv addr = get_th_address_indexed(ctx, a->rs1, a->rs2, a->imm2, zext_offs);
+     tcg_gen_qemu_ld_tl(t1, addr1, ctx->mem_idx, memop);
+     tcg_gen_qemu_ld_tl(t2, addr2, ctx->mem_idx, memop);
+     gen_set_gpr(ctx, a->rd1, t1);
+@@ -937,19 +938,19 @@ static bool trans_th_ldd(DisasContext *ctx, arg_th_pair *a)
+ {
+     REQUIRE_XTHEADMEMPAIR(ctx);
+     REQUIRE_64BIT(ctx);
+-    return gen_loadpair_tl(ctx, a, MO_TE | MO_SQ, 4);
++    return gen_loadpair_tl(ctx, a, MO_SQ, 4);
+ }
+ 
+ static bool trans_th_lwd(DisasContext *ctx, arg_th_pair *a)
+ {
+     REQUIRE_XTHEADMEMPAIR(ctx);
+-    return gen_loadpair_tl(ctx, a, MO_TE | MO_SL, 3);
++    return gen_loadpair_tl(ctx, a, MO_SL, 3);
+ }
+ 
+ static bool trans_th_lwud(DisasContext *ctx, arg_th_pair *a)
+ {
+     REQUIRE_XTHEADMEMPAIR(ctx);
+-    return gen_loadpair_tl(ctx, a, MO_TE | MO_UL, 3);
++    return gen_loadpair_tl(ctx, a, MO_UL, 3);
+ }
+ 
+ static bool gen_storepair_tl(DisasContext *ctx, arg_th_pair *a, MemOp memop,
+@@ -964,6 +965,7 @@ static bool gen_storepair_tl(DisasContext *ctx, arg_th_pair *a, MemOp memop,
+     addr1 = get_address(ctx, a->rs, imm);
+     addr2 = get_address(ctx, a->rs, memop_size(memop) + imm);
  
 +    memop |= MO_TE;
-     tcg_gen_qemu_st_i64(rd, addr, ctx->mem_idx, memop);
- 
+     tcg_gen_qemu_st_tl(data1, addr1, ctx->mem_idx, memop);
+     tcg_gen_qemu_st_tl(data2, addr2, ctx->mem_idx, memop);
      return true;
-@@ -379,7 +381,7 @@ static bool trans_th_flrd(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVD);
--    return gen_fload_idx(ctx, a, MO_TE | MO_UQ, false);
-+    return gen_fload_idx(ctx, a, MO_UQ, false);
+@@ -973,13 +975,13 @@ static bool trans_th_sdd(DisasContext *ctx, arg_th_pair *a)
+ {
+     REQUIRE_XTHEADMEMPAIR(ctx);
+     REQUIRE_64BIT(ctx);
+-    return gen_storepair_tl(ctx, a, MO_TE | MO_SQ, 4);
++    return gen_storepair_tl(ctx, a, MO_SQ, 4);
  }
  
- static bool trans_th_flrw(DisasContext *ctx, arg_th_memidx *a)
-@@ -387,7 +389,7 @@ static bool trans_th_flrw(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVF);
--    return gen_fload_idx(ctx, a, MO_TE | MO_UL, false);
-+    return gen_fload_idx(ctx, a, MO_UL, false);
+ static bool trans_th_swd(DisasContext *ctx, arg_th_pair *a)
+ {
+     REQUIRE_XTHEADMEMPAIR(ctx);
+-    return gen_storepair_tl(ctx, a, MO_TE | MO_SL, 3);
++    return gen_storepair_tl(ctx, a, MO_SL, 3);
  }
  
- static bool trans_th_flurd(DisasContext *ctx, arg_th_memidx *a)
-@@ -395,7 +397,7 @@ static bool trans_th_flurd(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVD);
--    return gen_fload_idx(ctx, a, MO_TE | MO_UQ, true);
-+    return gen_fload_idx(ctx, a, MO_UQ, true);
- }
- 
- static bool trans_th_flurw(DisasContext *ctx, arg_th_memidx *a)
-@@ -403,7 +405,7 @@ static bool trans_th_flurw(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVF);
--    return gen_fload_idx(ctx, a, MO_TE | MO_UL, true);
-+    return gen_fload_idx(ctx, a, MO_UL, true);
- }
- 
- static bool trans_th_fsrd(DisasContext *ctx, arg_th_memidx *a)
-@@ -411,7 +413,7 @@ static bool trans_th_fsrd(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVD);
--    return gen_fstore_idx(ctx, a, MO_TE | MO_UQ, false);
-+    return gen_fstore_idx(ctx, a, MO_UQ, false);
- }
- 
- static bool trans_th_fsrw(DisasContext *ctx, arg_th_memidx *a)
-@@ -419,7 +421,7 @@ static bool trans_th_fsrw(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVF);
--    return gen_fstore_idx(ctx, a, MO_TE | MO_UL, false);
-+    return gen_fstore_idx(ctx, a, MO_UL, false);
- }
- 
- static bool trans_th_fsurd(DisasContext *ctx, arg_th_memidx *a)
-@@ -427,7 +429,7 @@ static bool trans_th_fsurd(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVD);
--    return gen_fstore_idx(ctx, a, MO_TE | MO_UQ, true);
-+    return gen_fstore_idx(ctx, a, MO_UQ, true);
- }
- 
- static bool trans_th_fsurw(DisasContext *ctx, arg_th_memidx *a)
-@@ -435,7 +437,7 @@ static bool trans_th_fsurw(DisasContext *ctx, arg_th_memidx *a)
-     REQUIRE_XTHEADFMEMIDX(ctx);
-     REQUIRE_FPU;
-     REQUIRE_EXT(ctx, RVF);
--    return gen_fstore_idx(ctx, a, MO_TE | MO_UL, true);
-+    return gen_fstore_idx(ctx, a, MO_UL, true);
- }
- 
- /* XTheadFmv */
+ /* XTheadSync */
 -- 
 2.51.0
 
