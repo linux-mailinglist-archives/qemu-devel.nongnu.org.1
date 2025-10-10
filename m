@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CEABCC92A
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF105BCC93C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:40:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7AVY-0002rv-A7; Fri, 10 Oct 2025 06:37:56 -0400
+	id 1v7AXB-0004nH-RS; Fri, 10 Oct 2025 06:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AVT-0002pP-76; Fri, 10 Oct 2025 06:37:51 -0400
+ id 1v7AX7-0004fu-S9; Fri, 10 Oct 2025 06:39:33 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AVL-0006sL-5W; Fri, 10 Oct 2025 06:37:49 -0400
+ id 1v7AX2-00072I-4r; Fri, 10 Oct 2025 06:39:33 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSd065199
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSe065199
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 10 Oct 2025 19:36:46 +0900 (JST)
+ Fri, 10 Oct 2025 19:36:47 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=F0AyM/lua4p28w0QtF6/Ku3cctKLYXgOBYs6U3KWbds=; 
+DKIM-Signature: a=rsa-sha256; bh=POdHoCg5/LDRfXqqwG2wxEKm9Lch4GRRuKLv3lF9UqQ=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1760092607; v=1;
- b=sk0m9MtpFdPqIsbZw2aWD+b7Frj6I4P++MNRQXm0vNjJLwaJYEFPTedDP8kPiT+9
- Fzsoh/3WjsmVvGZJ4bO+5dsyiPf0hHXE48ce8UpgEOJLqgHJOzOXtAx6905GiuIt
- hTsolJqixDwYrv9dyZ9uKbAkef1OEteb+8IwtoMJYDu6mEg5lxkY5d2qsa59voOo
- kkL6qojYLvL+U9Ze20SJwx1RzJA06TsOoMJisiYudSK+g8O6dofs7K+AcX5ggEUs
- htEt9zsOELtmbPLvmdC19CxMuwrI2NguBvPY7XHULDVkxLsM1cK0cEHZOLQXMQ0R
- Syjl7sg9kHZV4gzfIEbLGg==
+ b=omWHPnB0kq/HsZeLCV9201g//O7pESlMmKNQVAuFVdHJqzrokmRHvwFBsFx025tJ
+ rVhAW/HbNUh7rJIeuC68dIQ2YVvRW9mjZiGNtYAPaOaRSPKqCYwc7I4gWj1FMgNQ
+ nFWBkDC04ZVWOufnynP1t1BVyfFhmOrZE7dgT16PfFMVmJJAfQsjH6+hzDzkLRsP
+ HXWChVgESyX4icQehaKFmIQS6+aJfRjgN6qYVVOpPiPzAWDQHQ36F/r7mu/aNCms
+ U2jlZMnfvght/LWe6htOy409jEQajuK2JyD+xeFE1Iz4zTcjlni37eUgChHi21cp
+ 5N91WqbvzsfDhOViZ7v3Yg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 10 Oct 2025 19:35:39 +0900
-Subject: [PATCH v2 11/12] hw/usb/hcd-ehci: Do not delete the subregions
+Date: Fri, 10 Oct 2025 19:35:40 +0900
+Subject: [PATCH v2 12/12] hw/usb/hcd-xhci: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251010-subregion-v2-11-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20251010-subregion-v2-12-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 References: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -105,24 +105,30 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/usb/hcd-ehci.c | 4 ----
- 1 file changed, 4 deletions(-)
+ hw/usb/hcd-xhci.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
-index b090f253656b..21c3501455b5 100644
---- a/hw/usb/hcd-ehci.c
-+++ b/hw/usb/hcd-ehci.c
-@@ -2557,10 +2557,6 @@ void usb_ehci_unrealize(EHCIState *s, DeviceState *dev)
-     ehci_queues_rip_all(s, 0);
-     ehci_queues_rip_all(s, 1);
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 292c378bfc98..b68a2aec3171 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -3454,16 +3454,6 @@ static void usb_xhci_unrealize(DeviceState *dev)
+         xhci->mfwrap_timer = NULL;
+     }
  
--    memory_region_del_subregion(&s->mem, &s->mem_caps);
--    memory_region_del_subregion(&s->mem, &s->mem_opreg);
--    memory_region_del_subregion(&s->mem, &s->mem_ports);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_cap);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_oper);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_runtime);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_doorbell);
 -
-     usb_bus_release(&s->bus);
+-    for (i = 0; i < xhci->numports; i++) {
+-        XHCIPort *port = &xhci->ports[i];
+-        memory_region_del_subregion(&xhci->mem, &port->mem);
+-    }
+-
+     usb_bus_release(&xhci->bus);
+ }
  
-     if (s->vmstate) {
 
 -- 
 2.51.0
