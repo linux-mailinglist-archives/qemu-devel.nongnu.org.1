@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6A8BCC95E
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92837BCC95D
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7AaE-0001JQ-M8; Fri, 10 Oct 2025 06:42:46 -0400
+	id 1v7AaD-0001GW-Ez; Fri, 10 Oct 2025 06:42:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AaB-0001GX-Qs; Fri, 10 Oct 2025 06:42:43 -0400
+ id 1v7Aa9-0001FI-6l; Fri, 10 Oct 2025 06:42:41 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7Aa7-0007am-Sk; Fri, 10 Oct 2025 06:42:42 -0400
+ id 1v7Aa6-0007ap-1l; Fri, 10 Oct 2025 06:42:40 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSb065199
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSc065199
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 10 Oct 2025 19:36:45 +0900 (JST)
+ Fri, 10 Oct 2025 19:36:46 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=77yV9fYbXC5pzBNX3eGAOmBVD/+cfEjFUpOr2dKNlEY=; 
+DKIM-Signature: a=rsa-sha256; bh=BYxkSfwrSpmy7Ne/555FnmwBpew97gIRZUfu1KFJXjs=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1760092606; v=1;
- b=Mjx8pti/hT9j4javu08WKSV4r+2Ad3+i/NXM3NiDY9OW7WJSEDvk0Y9BGfjKw3T4
- eyiPU0uw5JwqiEoz53f/WI4MWjtQUe3617i2U0aAGbhw4633ePzHG6mVRYvIaYM5
- am450eyHk1D8f9AzWN/RVWAPg6GDKlUVLLFBX4pCnmkad2tAFaWbGRkyz/QXIDRY
- jXE71a9F0HaFYMrFHUQ52mi4aEqiZxq/N11b/1Dhh05Q/WNvwFag0NncaKMP67F3
- bgk+3rpom3A15EwpR0yVpnmzgGRYtfPbALmN7rBVlD/L9fuiIO8DIwVB64U+BQY7
- YfZRaniyCZoLSRyFRy8oOA==
+ b=U6007icUfLes67qlidY2xSsWBtCDzyNvQ05bTf+wwUwkFfwLsvHr8AAINAR1kun4
+ aIarixJpNxC3pjGHCOHoO0atb7w2uW/zVlTENgjcc9LfZjetAti/GOX37d0Eikkm
+ jhdTHoDlhV2YHKqfTtS+zFjXh+MqzinJqT5FBKE5EOrRj4qPX5gSrWuPNSqlyEYC
+ Ir/TkIGOGoALmreo6xmAUOYW5xEBsOQNaz3/5jHG0Tqg5F7cs9mZWEPX2AaaKojN
+ 1dgREw2x7Xulqy35NOYEN0DUu3Yzf4ZfDMOFlVeuO+OqJzuptskUINN6TwuTa/91
+ AVRFnJI477HhjhJj7pdEKQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 10 Oct 2025 19:35:37 +0900
-Subject: [PATCH v2 09/12] pci: Do not delete the subregions
+Date: Fri, 10 Oct 2025 19:35:38 +0900
+Subject: [PATCH v2 10/12] hw/ppc/spapr_pci: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251010-subregion-v2-9-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20251010-subregion-v2-10-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 References: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -105,52 +105,63 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/pci/pci.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ hw/ppc/spapr_pci.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index acc03fd4707c..63e4e49b7e1b 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1190,10 +1190,6 @@ static void do_pci_unregister_device(PCIDevice *pci_dev)
-     if (xen_mode == XEN_EMULATE) {
-         xen_evtchn_remove_pci_device(pci_dev);
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index f9095552e865..0c3df3189da5 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -1734,27 +1734,13 @@ static void spapr_phb_unrealize(DeviceState *dev)
+     SysBusDevice *s = SYS_BUS_DEVICE(dev);
+     PCIHostState *phb = PCI_HOST_BRIDGE(s);
+     SpaprPhbState *sphb = SPAPR_PCI_HOST_BRIDGE(phb);
+-    SpaprTceTable *tcet;
+     int i;
+-    const unsigned windows_supported = spapr_phb_windows_supported(sphb);
+ 
+     if (sphb->msi) {
+         g_hash_table_unref(sphb->msi);
+         sphb->msi = NULL;
      }
--    if (memory_region_is_mapped(&pci_dev->bus_master_enable_region)) {
--        memory_region_del_subregion(&pci_dev->bus_master_container_region,
--                                    &pci_dev->bus_master_enable_region);
--    }
-     address_space_destroy(&pci_dev->bus_master_as);
- }
  
-@@ -1419,27 +1415,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-     return pci_dev;
- }
- 
--static void pci_unregister_io_regions(PCIDevice *pci_dev)
--{
--    PCIIORegion *r;
--    int i;
--
--    for(i = 0; i < PCI_NUM_REGIONS; i++) {
--        r = &pci_dev->io_regions[i];
--        if (!r->size || r->addr == PCI_BAR_UNMAPPED)
--            continue;
--        memory_region_del_subregion(r->address_space, r->memory);
+-    /*
+-     * Remove IO/MMIO subregions and aliases, rest should get cleaned
+-     * via PHB's unrealize->object_finalize
+-     */
+-    for (i = windows_supported - 1; i >= 0; i--) {
+-        tcet = spapr_tce_find_by_liobn(sphb->dma_liobn[i]);
+-        if (tcet) {
+-            memory_region_del_subregion(&sphb->iommu_root,
+-                                        spapr_tce_get_iommu(tcet));
+-        }
 -    }
 -
--    pci_unregister_vga(pci_dev);
--}
+     remove_drcs(sphb, phb->bus);
+ 
+     for (i = PCI_NUM_PINS - 1; i >= 0; i--) {
+@@ -1766,8 +1752,6 @@ static void spapr_phb_unrealize(DeviceState *dev)
+ 
+     QLIST_REMOVE(sphb, list);
+ 
+-    memory_region_del_subregion(&sphb->iommu_root, &sphb->msiwindow);
 -
- static void pci_qdev_unrealize(DeviceState *dev)
- {
-     PCIDevice *pci_dev = PCI_DEVICE(dev);
-     PCIDeviceClass *pc = PCI_DEVICE_GET_CLASS(pci_dev);
+     /*
+      * An attached PCI device may have memory listeners, eg. VFIO PCI. We have
+      * unmapped all sections. Remove the listeners now, before destroying the
+@@ -1778,12 +1762,6 @@ static void spapr_phb_unrealize(DeviceState *dev)
  
--    pci_unregister_io_regions(pci_dev);
-     pci_del_option_rom(pci_dev);
-     pcie_sriov_unregister_device(pci_dev);
+     qbus_set_hotplug_handler(BUS(phb->bus), NULL);
+     pci_unregister_root_bus(phb->bus);
+-
+-    memory_region_del_subregion(get_system_memory(), &sphb->iowindow);
+-    if (sphb->mem64_win_pciaddr != (hwaddr)-1) {
+-        memory_region_del_subregion(get_system_memory(), &sphb->mem64window);
+-    }
+-    memory_region_del_subregion(get_system_memory(), &sphb->mem32window);
+ }
  
+ static void spapr_phb_destroy_msi(gpointer opaque)
 
 -- 
 2.51.0
