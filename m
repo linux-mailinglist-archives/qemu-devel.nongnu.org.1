@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFD1BCD114
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EED2CBCD228
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7CqW-0007R0-BX; Fri, 10 Oct 2025 09:07:44 -0400
+	id 1v7Cqh-0007V7-92; Fri, 10 Oct 2025 09:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7CqT-0007OJ-6j
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:41 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1v7CqZ-0007UK-4i
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:47 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7CpW-00041M-6k
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:40 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3ee1221ceaaso1496158f8f.3
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:38 -0700 (PDT)
+ id 1v7CpX-00041b-0f
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:46 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3ee15b5435bso1246512f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760101597; x=1760706397; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760101598; x=1760706398; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Dz/pKGGgrfjPnlvU/HHfzUVBqngVWK7gF/6Jqhpwo/E=;
- b=Ooi3ZppqWRz8Cy9Fp58v+BcJg3y9QkuHlkZ//BCNdmdOgFHPvkWc5V4Hc/cVJkOdxd
- CxwNhtvseNI1BdqA8GbHZ+87RSSLpcBTZPlqWwizNFAZj8WNnnReeoV/EvMznDRAP3dT
- c/FOs/2ZRVnyghAASAapnC60PihChWAtzzhnUFyKev524XA8lXr8dWyE/1ckfFkzFdld
- 9xlhGNv6BCXQImH+yONBKbc2ZzjLgiqe/N8yaZ8T89jYkjdhWuVPJanUUtVM958uTTE3
- c1lTyOz6yt71/Jg3kJnl/CF/H1PDsTz2RuBkiSbNvjFzBEPuhK0eF60iEBKlGZY+LUCG
- veZg==
+ :reply-to; bh=ybBv9KOBzW217hlkvIBBA2/Eg2OPOW21VAjC0SdENbc=;
+ b=EL7gwidMZsxM0ZDimiA/aUP82jkiUlQsrg+nQKdwtxOP3gEDuJjSC1LuQUkmiguI9a
+ jrFcU+EG1szhIy17Mjzje5sH2Bmf9nPX7Nclgw1BYHScboHfoRD7FDBalhWbbNy4vJO/
+ dz001lQI45DPpRBzO8n87phCfk/x+lFtGFIEP6V7WlBTgldO6buglFZfz6ltDZPG8sc0
+ QlWqfb4+a6Ggfm8i4HrW3ZE0A4Xs3AE2TOlllU5K5zpO/NN6fl8uvUl83KFNdufVm3ME
+ ZQ9sqSQHqRN1OT3Yy5FCiAFvEfQzuini3UwWpkJZU7PGO5TwJwVu9UgT+c0kk4b/S9Qm
+ EnEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760101597; x=1760706397;
+ d=1e100.net; s=20230601; t=1760101598; x=1760706398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Dz/pKGGgrfjPnlvU/HHfzUVBqngVWK7gF/6Jqhpwo/E=;
- b=NiKjVsMR5TQhmeTnu19Zl/8HUrLms1ZH/EkE9W1gbC/DRSd2Q+rB3C2cG+X0rXMTx3
- B/axsZ5v0hWp1rmXByhZyIYF/jbxnkoP2kPpGrJKRSBpqHB1H+dLfgryNZ7sc5tatbWW
- bR0nrgWg3EXm3ErU9FlbfyoslHlnKctIr+olFPQ5RPP4/WgUeWdTpg0vLaqbvg2ocvQv
- CiPDmobZB4uEbOVqjNxxxnIus0fn6QlawrVJNY3lumIFJEWc5vJYLr8RiCMiIkHsugHK
- EmjpFcsVTXLfp3lfVP94bXmZXGmreaYVTwCup28ai9NGSJfXYMRiXKWBKCtJwgX7iXZH
- tzfA==
-X-Gm-Message-State: AOJu0YyTZBxv49c3ful/0QNREHI5HKojoXwdcgLp91aWtzUZXRB4FieO
- KimEtC/C7kMK1vkVl/JWNGDkC+9KMRGm1HaH8esTVtZNCcRy31/gaHzjcvv1GwlFm02PB/LM+tR
- JWej2
-X-Gm-Gg: ASbGncs7QoFxSR+wjGLojAlQnPnt2DhSnqPAo3x4NAL8uoVySZDTQQWRj/NoqH/aNBa
- h+WTKVC+b81RtWC46JrpFjy5+W4nKv3itntHKBxNwoWtbMfXAgKZkrL+JOU1/eKRG/YnBkOVYnm
- PqeuOXzB6cVfc1ttmvDo57But6+X6PvT1MeEF/lsfXfgmVHMyTOYzYLnyaRbqzJ+PvK3e10BI3g
- MbVYazDsh98hPOfdFPAHg+kJ86vZyLTOc7WDxwR48dpIxuMcftSRKkvPO9WIYYwxw4jbO0PivxH
- ygUc3LGWg+vyaJY+UtQRe9Fe5N1WuyHu7rrGdrWmEC6jBFDYD5sfPFz92H6ER9F2fO/KJaY6cQ1
- ozO2Sl4D/ibCXQ5PZus38hmiRX2ufSBQYM3pe4CQee5r+RFMMtt56XeKw8k80fA==
-X-Google-Smtp-Source: AGHT+IEogQHajiYWM/FlOeCeTvWFjiBq6insM1VhFu3gfe/WDPtySWqO3TVEcEw+ddNxg0V9I9I/ZQ==
-X-Received: by 2002:a05:6000:250a:b0:402:a740:1edd with SMTP id
- ffacd0b85a97d-4266e7dfeb4mr8162530f8f.39.1760101597512; 
- Fri, 10 Oct 2025 06:06:37 -0700 (PDT)
+ bh=ybBv9KOBzW217hlkvIBBA2/Eg2OPOW21VAjC0SdENbc=;
+ b=YnvRKAV0wBK/cHSx4EgDCDRU5EoBJpgioeisCJswesagYOheIbZNy6APnOeXBjGrMX
+ lNJnBQxomVezfz7I5t6K7CVA1oxQJ/oAS17cGVbpSnVi8YTG/ozbipz7JHU74BCi7Gs+
+ R7cNzgAYoT3FjG0z/rRuScHcYtMpWvXujL65IVx0VumPXBY96aIsfzvvmd1A1Q4prb8t
+ /zBj/O0HOfWJbHemZXsTxfoB1e9dCwFr/wHwHmtwAXhhCI8v5gvPDiGzGZTwFmMKSkZi
+ Wq3o0WrUR1yVE4KQro9Erjr/n8zLZYI2lhdlPGOqIZ4WPBpdUS7tWzCQOValaeyJxEYu
+ ue8Q==
+X-Gm-Message-State: AOJu0Yykrnt8bxqzg+ckU+PKHkzd4o2xGdvA1lPJgoRQwNeBMBym3Uiy
+ 9pHcQJ54vc4JugWOHGUhwUilfzwVFVj/o7zW1NPXCZgPtim4GGfXWca4LyI0I1llHzqfJ3VsPdT
+ aPgai
+X-Gm-Gg: ASbGncuHoP0LXpfxiXhlNl95mL9t43VTfiRxcMUB3d+kkTVPjB7RwMPj4+28oJCplyb
+ tOr93Ckso3+QfWzHSSsZ/yDszlYqm8cspbyW2FGej3QZVrDTYCMmAptVmJ9PTHxdygX7hxVZ66c
+ aBdiKhQeCbuKo/VbUVvceg8dS3I8XIE+8BkWTAMmS9PIFpJJBQfKl0DkcFqEUzlJlRoxZ6z5/7H
+ eOLaL4QeXJNTbtSPXHwMRHy12whATIk2j5GpdLh0HujkV/vGdWrXFQw77XulDIhO6SO0aQp6agJ
+ 65F3J2QfCbuZVH39/AjY45R2rpEkE3qmmr17JgsMq94kDJ1MINV1PjJ6hGTFiGyVWrPz9zgebMz
+ /wWYGy4cQOxTQDxNEHLgk5uBkFqiHgROSbtN2PPHB3JU3OO6L7gc=
+X-Google-Smtp-Source: AGHT+IGhkyWhfevfyXOtQo41Lk85uItDkEIDS/2RSwXF5m+hfJz4YeFs11yPJFrtCpiF8dZjGBtMVQ==
+X-Received: by 2002:a05:6000:258a:b0:425:8bc2:9c4b with SMTP id
+ ffacd0b85a97d-42666abb51amr6165395f8f.6.1760101598428; 
+ Fri, 10 Oct 2025 06:06:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.36
+ ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 06:06:36 -0700 (PDT)
+ Fri, 10 Oct 2025 06:06:37 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 61/76] target/arm: Implement EXLOCK check during exception
- return
-Date: Fri, 10 Oct 2025 14:05:12 +0100
-Message-ID: <20251010130527.3921602-62-peter.maydell@linaro.org>
+Subject: [PULL 62/76] target/arm: Enable FEAT_GCS with -cpu max
+Date: Fri, 10 Oct 2025 14:05:13 +0100
+Message-ID: <20251010130527.3921602-63-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251010130527.3921602-1-peter.maydell@linaro.org>
 References: <20251010130527.3921602-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,36 +100,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251008215613.300150-62-richard.henderson@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20251008215613.300150-63-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/helper-a64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/tcg/cpu64.c        | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 08b7db7c467..ba1d775d818 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -675,6 +675,17 @@ void HELPER(exception_return)(CPUARMState *env, uint64_t new_pc)
-         goto illegal_return;
-     }
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 68d9a4e7342..4496178c48e 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -73,6 +73,7 @@ the following architecture extensions:
+ - FEAT_FRINTTS (Floating-point to integer instructions)
+ - FEAT_FlagM (Flag manipulation instructions v2)
+ - FEAT_FlagM2 (Enhancements to flag manipulation instructions)
++- FEAT_GCS (Guarded Control Stack Extension)
+ - FEAT_GTG (Guest translation granule size)
+ - FEAT_HAFDBS (Hardware management of the access flag and dirty bit state)
+ - FEAT_HBC (Hinted conditional branches)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index f024db1d29f..cc42dfdf561 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1280,6 +1280,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64PFR1, SME, 2);       /* FEAT_SME2 */
+     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_3 */
+     t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
++    t = FIELD_DP64(t, ID_AA64PFR1, GCS, 1);       /* FEAT_GCS */
+     SET_IDREG(isar, ID_AA64PFR1, t);
  
-+    /*
-+     * If GetCurrentEXLOCKEN, the exception return path must use GCSPOPCX,
-+     * which will set PSTATE.EXLOCK.  We need not explicitly check FEAT_GCS,
-+     * because GCSCR_ELx cannot be set without it.
-+     */
-+    if (new_el == cur_el &&
-+        (env->cp15.gcscr_el[cur_el] & GCSCR_EXLOCKEN) &&
-+        !(env->pstate & PSTATE_EXLOCK)) {
-+        goto illegal_return;
-+    }
-+
-     bql_lock();
-     arm_call_pre_el_change_hook(cpu);
-     bql_unlock();
+     t = GET_IDREG(isar, ID_AA64MMFR0);
 -- 
 2.43.0
 
