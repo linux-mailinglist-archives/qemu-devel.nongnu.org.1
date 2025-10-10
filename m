@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C973BCDE2B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 17:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BF8BCDE4C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 17:54:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7FOb-0003us-Vp; Fri, 10 Oct 2025 11:51:07 -0400
+	id 1v7FOp-0003yL-FI; Fri, 10 Oct 2025 11:51:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FOZ-0003ue-Lz
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:03 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FOj-0003wd-3C
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:13 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FOO-000273-T8
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:03 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-46e384dfde0so21322895e9.2
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 08:50:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7FOZ-0002CO-2j
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 11:51:12 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3fa528f127fso1672550f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 08:50:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760111447; x=1760716247; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rOoyfTQNfeXt4VFRkzKIh3cZAw4EXxDHAXBHc0WfkpA=;
- b=LH/ngjtNNhg5TZhKNRbz0nw5PkIuKYnyRGtrMdhqD5I8uHQ2Z+h5x61WkbVw4MZVZQ
- dp2oHwpU6jyOSZbExKEXXUmnOtQVJ81FuPp2YulhdISc5uBB20DqYEakyuF2pQXKya1N
- vM+2vhlhsgQQVkg7acsfDHNkEIivYr4SyJalDHjrymp5PHLEeZxw6YErX4eBgVmpu/+9
- ImdqnR+9XZSy4uYPzhmBLX9kohFF6JFoLeEADYRqtNlrISkhvs9k/vx1JGq961mecQX0
- y8RBajltv29Sxn2022fZoewrd931vpWL2gh5BaPf+tnn/tYS8QIC3Qgo483tXbZVQUFn
- xq7A==
+ d=linaro.org; s=google; t=1760111452; x=1760716252; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PbZf/4lXCFUtVLVqfehR/2skaY6PUFbfsiZG7sUkFCE=;
+ b=OI55x86LqEo74Lu/CE1hVZ51R54tFwIUBxO+GMplWQHwoCrrJ7iPtT4i2DHSKWEN7W
+ k1BzY0YHf5oDV4UcEtnJBUb+d8GCRDrNeHq8Khg0Z/uUo7GTnCBJ9gGcvt/RiZL89RBi
+ 9C9WbaG6mhDXq+pznqj3+13GQeGO+X+C+8FFckx/6iiRT4/JNkxbrjZ34R9M3sb/91R1
+ aXZR5mEOqb1EKVmQmFISWZPn1/um30aSwrwpzdE3OnDVyzyaQA59oEdaaAjzAyj6SGFC
+ 8xiXZtJhwwlk4odO1qSqcMLEzSegeEjKSmKPe6MVFTDS6j8r0sBGVsS/NPXpIwDfcvLj
+ S2bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760111447; x=1760716247;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rOoyfTQNfeXt4VFRkzKIh3cZAw4EXxDHAXBHc0WfkpA=;
- b=n+r4mn8NSYCGV7QYk+AbmtI8gYVDjOuCDODDsA3rANyF1iWc4gIzX6tK//FsUS9Gcu
- /hqMgLMUDCxMtSTRj16kEUZhSAf+vfpKrNfYpYgkwuB6VPiCZbh3Nd/9m+GApjBuxyrp
- 8mdz5ew4eY+xO3QebmDJmbjQGspBtzE8gf4PG4jaTYL7d9mh069z+K9F129LQXeVj8Y3
- NH1gD5HWj4b7yCNgbsnEVtbgPG8zR6GipY7r9FudPe7BhKSqUOligAFzZJ+ew4u7D2lB
- 4LpAuaeQZVMF+cpaox8DnqGPe8FWWxAd+A3kJvq+tex70hkxQozJXIZw69pkHtRrju00
- O9FA==
-X-Gm-Message-State: AOJu0YyP9Zz4fB83JXvGwSUZz5/ct4ZUyqqahfMGbtMJFDckdah0NJbe
- NrgJfu6omo8G19ndh84Agz0Dz1SMBA+H/jCED36pkvuPz6yA+cIGrLVEiyr7f5GIXtMjBIDEjI7
- CNYgRoHzbbQ==
-X-Gm-Gg: ASbGnctkTnigYQ0sP1leKpZyGf0fxP+3e9dy3/GQoEEz5/cbHF+07mQHj4EpxmvP6cb
- jpTxJ7DnX5v6vx6RNQ220a1bu27JG+wrKvBRqRqfRp59izmiub9gGRjgcuQLp/Qo7aiivETGQkc
- DSGBcJitp552rWLgl9xiALoRpwk9BewNaUiz1si3lHJZ36mTQAjlGLfKQ+c+QnafWjHgIIuOFMO
- ExyXMPyFmBDUQHi7QLd0uf4p1FaHBXBbtPpnsq+3OWEBciXKHszB/K4+vC7uOIdUyAnIcSd5dpi
- uju8NM/i8Zna9EW8J5BMa54tZe7ePHjf1E1S/8K/9FMXR/Yx2AI4gySoOW3PcHas2LcVy36Vg36
- YEsdK7FU0Cf46Q6nL9NQxUkA5+vEFTKKxbZd+iUG+pVLKNVHBIyAVhEZdsH0bW8CVUy67UrLLIf
- 7NdgFzBTHqt+lesYtA3xs=
-X-Google-Smtp-Source: AGHT+IF3KSjdLJohDZub0ei+ZVKsAV0c0OxokorXtitMsmb4VGgyyUNb5XdgvB8Lm7V7D0cAsnbyZQ==
-X-Received: by 2002:a05:600c:4750:b0:45f:28d2:bd38 with SMTP id
- 5b1f17b1804b1-46fa9af3095mr89767745e9.18.1760111447430; 
- Fri, 10 Oct 2025 08:50:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760111452; x=1760716252;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PbZf/4lXCFUtVLVqfehR/2skaY6PUFbfsiZG7sUkFCE=;
+ b=AtcVeRKkE8BsJhRDSt30FAzHqJV/nR7pJTRINykeHc3SUWFa6pg0Ok3UKXoAoONX/x
+ Ncts6isTy8/QRD5u2DUb0P31cp8qpeUr9NBELTGZ+k2eDYuj8EOguw8IjoIvJIw3oBTL
+ 177v16UgVbDC1vIO/VPIwPQNO7DjrQzO2qaL9jYBZMgLyKxnSCvzc/144sp6Vp9j9Knm
+ XtV4FhZqVJNya5pOhet2TmWEnMvWzXfHTzg+xRp7GfA+3b6calJPvFY4pDh/jQdidssD
+ tTmDlBb0odFxU/o0Vlexj40DPzSx2XNZc9qsX58LI9JLfKDpEhQ+pBigU/aZWT+7b/IM
+ AJYQ==
+X-Gm-Message-State: AOJu0Yz58aIJcVofbTrhfuQu2A4SKVLiNja5OXwE6R5BQitbLG7a2AOV
+ 2fvTJDwUl0aPQsVbZ+/jwZfvBBZigqKPMCZFJ5D1IMNRwlKWuf2lwAoOV/tJ/YJHoFaxL4i4kXF
+ 7knlK7HXqig==
+X-Gm-Gg: ASbGnctgBwTotjyUcfkTG+NRVg1cSIHBZIQTb5ES1M+wUKdTVE2YWabti254jbpV/cS
+ JgWXbqIe+AEJMToyJjQGLaqSmVLhGJ00RgngEJ0A4QiTzFzAxR7184q1xgmvbLWZINw4j26VZA7
+ Ial0gG/tpoWAR7TgJ7By0h6AjX11r2lgWyoTDZJ0hvbwIysvDb8eoZJASYFrpel6tJvo/Qw0gBj
+ lScVND8L5GLEQbHV9QlEB6tlvUjcvmnqlIhT9EkAsim2CqlcKQGet5CvRcXor86dmcq5FUkoIE2
+ RR53XvrQd8UtsHkeYiTUQeTtUPV0QBRBnybMGGfV9RWGSOO2LW0Ht9nSRRLVIfVbe2L8L0onahS
+ 12+WRZvgfCF89Z412EMZ6crFcxx5utjlEB885qcUrOJN112J/UJT9y2mxeLHbl5/Szj3fgkAyOd
+ AmHB4P2wEwTKDlkUop0BQ=
+X-Google-Smtp-Source: AGHT+IFec6tJzjkxLlLlFEt9D93P56h780sUOKmKiYIRaBVsCLtJOjjOVVGcddk5slz4ufCRS09q2Q==
+X-Received: by 2002:a5d:588c:0:b0:3f4:5bda:2710 with SMTP id
+ ffacd0b85a97d-425829b0578mr10312452f8f.9.1760111452485; 
+ Fri, 10 Oct 2025 08:50:52 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb483bbb4sm52096375e9.5.2025.10.10.08.50.46
+ 5b1f17b1804b1-46fb55ac08dsm45452255e9.13.2025.10.10.08.50.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 08:50:46 -0700 (PDT)
+ Fri, 10 Oct 2025 08:50:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Christoph Muellner <christoph.muellner@vrull.eu>,
@@ -72,23 +73,28 @@ Cc: Christoph Muellner <christoph.muellner@vrull.eu>,
  Valentin Haudiquet <valentin.haudiquet@canonical.com>,
  Weiwei Li <liwei1518@gmail.com>, qemu-riscv@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/13] target/riscv: Centralize MO_TE uses in a pair of helpers
-Date: Fri, 10 Oct 2025 17:50:31 +0200
-Message-ID: <20251010155045.78220-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabien Portas <fabien.portas@grenoble-inp.org>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20P=C3=A9trot?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+Subject: [PATCH 01/13] target/riscv: Really use little endianness for 128-bit
+ loads/stores
+Date: Fri, 10 Oct 2025 17:50:32 +0200
+Message-ID: <20251010155045.78220-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251010155045.78220-1-philmd@linaro.org>
+References: <20251010155045.78220-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,41 +110,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of having RISC-V cores changing their endianness
-at runtime, centralize the MO_TE uses to a pair of methods.
+Per commit a2f827ff4f4 ("target/riscv: accessors to registers upper
+part and 128-bit load/store") description:
 
-Except the 128-bit LD/ST change (first patch), no further
-functional changes intended.
+ > The 128-bit ISA adds ldu, lq and sq. We provide support for these
+ > instructions. Note that (a) we compute only 64-bit addresses to
+ > actually access memory, cowardly utilizing the existing address
+ > translation mechanism of QEMU, and (b) we assume for now
+ > little-endian memory accesses.
 
-Philippe Mathieu-Daudé (13):
-  target/riscv: Really use little endianness for 128-bit loads/stores
-  target/riscv: Explode MO_TExx -> MO_TE | MO_xx
-  target/riscv: Conceal MO_TE within gen_amo()
-  target/riscv: Conceal MO_TE within gen_inc()
-  target/riscv: Conceal MO_TE within gen_load() / gen_store()
-  target/riscv: Conceal MO_TE within gen_load_idx() / gen_store_idx()
-  target/riscv: Conceal MO_TE within gen_fload_idx() / gen_fstore_idx()
-  target/riscv: Conceal MO_TE within gen_storepair_tl()
-  target/riscv: Conceal MO_TE within gen_cmpxchg*()
-  target/riscv: Conceal MO_TE|MO_ALIGN within gen_lr() / gen_sc()
-  target/riscv: Factor MemOp variable out when MO_TE is set
-  target/riscv: Introduce mo_endian() helper
-  target/riscv: Introduce mo_endian_env() helper
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
- target/riscv/op_helper.c                      | 28 ++++--
- target/riscv/translate.c                      | 16 ++-
- target/riscv/insn_trans/trans_rva.c.inc       | 50 +++++-----
- target/riscv/insn_trans/trans_rvd.c.inc       |  6 +-
- target/riscv/insn_trans/trans_rvf.c.inc       |  6 +-
- target/riscv/insn_trans/trans_rvi.c.inc       | 36 ++++---
- target/riscv/insn_trans/trans_rvzabha.c.inc   | 20 ++--
- target/riscv/insn_trans/trans_rvzacas.c.inc   | 12 ++-
- target/riscv/insn_trans/trans_rvzce.c.inc     | 12 ++-
- target/riscv/insn_trans/trans_rvzfh.c.inc     |  8 +-
- target/riscv/insn_trans/trans_rvzicfiss.c.inc | 10 +-
- target/riscv/insn_trans/trans_xthead.c.inc    | 98 ++++++++++---------
- 12 files changed, 181 insertions(+), 121 deletions(-)
+However this commit used MO_TE (target endianness) for the
+gen_load_i128() and gen_store_i128() helpers. Likely it was
+unnoticed because current targets are only built using little
+endianness:
 
+  $ git grep -L TARGET_BIG_ENDIAN=y configs/targets/riscv*
+  configs/targets/riscv32-linux-user.mak
+  configs/targets/riscv32-softmmu.mak
+  configs/targets/riscv64-bsd-user.mak
+  configs/targets/riscv64-linux-user.mak
+  configs/targets/riscv64-softmmu.mak
+
+Replace by MO_TE -> MO_LE to really use little endianness.
+
+Cc: Fabien Portas <fabien.portas@grenoble-inp.org>
+Cc: Frédéric Pétrot <frederic.petrot@univ-grenoble-alpes.fr>
+Fixes: a2f827ff4f4 ("target/riscv: accessors to registers upper part and 128-bit load/store")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/riscv/insn_trans/trans_rvi.c.inc | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
+index b9c71604687..df0b555176a 100644
+--- a/target/riscv/insn_trans/trans_rvi.c.inc
++++ b/target/riscv/insn_trans/trans_rvi.c.inc
+@@ -389,9 +389,11 @@ static bool gen_load_i128(DisasContext *ctx, arg_lb *a, MemOp memop)
+         }
+     } else {
+         /* assume little-endian memory access for now */
+-        tcg_gen_qemu_ld_tl(destl, addrl, ctx->mem_idx, MO_TEUQ);
++        MemOp memop = MO_LEUQ;
++
++        tcg_gen_qemu_ld_tl(destl, addrl, ctx->mem_idx, memop);
+         tcg_gen_addi_tl(addrl, addrl, 8);
+-        tcg_gen_qemu_ld_tl(desth, addrl, ctx->mem_idx, MO_TEUQ);
++        tcg_gen_qemu_ld_tl(desth, addrl, ctx->mem_idx, memop);
+     }
+ 
+     gen_set_gpr128(ctx, a->rd, destl, desth);
+@@ -494,9 +496,11 @@ static bool gen_store_i128(DisasContext *ctx, arg_sb *a, MemOp memop)
+         tcg_gen_qemu_st_tl(src2l, addrl, ctx->mem_idx, memop);
+     } else {
+         /* little-endian memory access assumed for now */
+-        tcg_gen_qemu_st_tl(src2l, addrl, ctx->mem_idx, MO_TEUQ);
++        MemOp memop = MO_LEUQ;
++
++        tcg_gen_qemu_st_tl(src2l, addrl, ctx->mem_idx, memop);
+         tcg_gen_addi_tl(addrl, addrl, 8);
+-        tcg_gen_qemu_st_tl(src2h, addrl, ctx->mem_idx, MO_TEUQ);
++        tcg_gen_qemu_st_tl(src2h, addrl, ctx->mem_idx, memop);
+     }
+     return true;
+ }
 -- 
 2.51.0
 
