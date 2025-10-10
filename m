@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80CDBCD505
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E61DFBCD50F
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7DOw-0002EK-0M; Fri, 10 Oct 2025 09:43:18 -0400
+	id 1v7DP0-0002F9-MW; Fri, 10 Oct 2025 09:43:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOo-0002Al-81
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:43:11 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOt-0002Da-Dt
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:43:15 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOU-0007ry-LR
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:43:09 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-4257aafab98so1829870f8f.3
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:42:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOW-0007sQ-83
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:43:15 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-46faa5b0372so13328305e9.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760103758; x=1760708558; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760103766; x=1760708566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9OSShypqbaYu7gg2JRcaPkTQFiWcjkliGca982i75nQ=;
- b=J0vCIJG7y/kA8FgU9elcsWyEwAYXIQUKlcLT4IXuXZOMdl69a61Kt/0Iiy7U2wwSfj
- LqkmapS+gEGhpdIKRUZVjMMMhZn11ciYJtDmndsT1FGk/itLPG6FSxdq/CS31OUW4rrh
- 53IgeQYEYuGmJzGARc1lYItwippXBHgn+4AH//hyXYpcIEfA+rfrLW3hLoKn1ux3ZsYD
- jXUmH3ojX+CcLMeysslGCfTtMrkCjkWzqfyrakPS2XrYxBWoFlFtJTmJ2nqQ5KOQL3MW
- VBxs7uHvKd+3H0UqCL2KrkkhphHUAM58PdiMEXsXqi0FIhF9M707HVh/IGqSjAzQj15x
- 15Ug==
+ bh=61NQQUfc5AHH6sOajFhd3xe+bOM3Liy2MIqh9GGhkaQ=;
+ b=blXreB/V8dK5HYLUa7/X02sv/fssOGeMRXB+QnSf28A2WZxhISeZ9HlSDuq/34HgsO
+ yF6dgPCxCcbXGRiJ2hx6RgwDIJq6STqNICbNnnRtPNZJoVodbjBpLXabAWjKHDUqxPFK
+ JkH8Rkl4Rep/GCGrdU/2v2Z8v7A73VJ+NfXbhsJvad+TovJWU4e2doZa1GFwn5QF4Rf7
+ FPzCJWJpjWXc1K1EUArhttc8N5T5AIM/QhX3IeWbuw3+o4k2wu2r1oqTJvHRXYW4Csgy
+ t9VQxNAsPRvzl1zEPIABrllqN3SMwnbfgAMpH9mQXyP4RV+j2K/T2jhovh+HLzFFbGX7
+ n7GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760103758; x=1760708558;
+ d=1e100.net; s=20230601; t=1760103766; x=1760708566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9OSShypqbaYu7gg2JRcaPkTQFiWcjkliGca982i75nQ=;
- b=ud8D3fLBWg4/4X9Dx87/eRVkthsjYxNOkaBeIVbJBL/0HHLSGZfuQcj6KDNh4hqZND
- f7nFYKDTgxRaRVZ+bxBYzO/fgh6rUobjn1aFkOlC5q+kW/Ox0Cu1K0SCl0VRVD7wWPUY
- GkfjFbTGp4kbv/OALg5XokSBct8ZI/8Cv5Xr5ZhM0HHyIuNqOeF2PABcfodI0TYWArJY
- G961B+Ws03IKKtAA7uy8clkjComrtveRN/BbCfOLPHAAn85/Eip7+ItkE1/oFuq21FlW
- f/nD/mRLe80d1xlfeVtrjpdQHrdPD1Kg7M54dtLNHbtewvpp18h0YVNQ6wGoveNG0XiY
- 45ig==
-X-Gm-Message-State: AOJu0YyBVmwUsEMe36IoDVijKEocqogtexxRmmWd+QuqEgs8isBUWSNA
- aA0gUhjCAQ8lEtNPPThYgMywn8iQ/rXfpdCtJKrl/r04/S+7cfDEc1Ad4LyutFJ8ZnmrSwkpZSe
- BWesnx6wo5g==
-X-Gm-Gg: ASbGncsWHWViCofTGLfeCcjdUL2g2/dw+iio3qnRMA4KH9/lfrzIfqieoD+vmfiEyKM
- Oxvg4FYRnYJRhAFHmUuNaVf/UzcaSICEhZ/LSSfyGM/jNFe5578wfxPdnI8QxNoIKZEnhv/W8zO
- 3h+G3FiRT0gSFkwwE5JYQRyBg3Aou5VjhiWXX4u+rbTow/JvkLX5UsAu1Ejkp/kV+lrT565Z3oC
- pdsO4egX4MxO67YVT3v7vM4IEQ01C7nzqdHNnKLCOL7+K4Lpa70lRIIoIbKs64Av8TPcrISf03N
- ey5Lj/adwhn7dsp5SpljhDaFScAIA7HGz8busJu+LieMtaWh+UUl53s59Ca6twZc7co46WDRjzM
- +Hh93yysXR4Q80aWKS9G6shmwFgkFn2Cut5gValtYQ5dfE++0nOvbpUODmUK6vwfXAuFGgLhG/9
- hWiav2XXzj+RdBIMSlFtY=
-X-Google-Smtp-Source: AGHT+IGji93i+SOihun7JFXHhG4hGqXkH4wmT2Nj3yjUj0PvGZai8kOCJcP8uw/NluQ56SyBGkWf3Q==
-X-Received: by 2002:a05:6000:4023:b0:3ec:e277:288c with SMTP id
- ffacd0b85a97d-4266e7d90e2mr7334892f8f.31.1760103758528; 
- Fri, 10 Oct 2025 06:42:38 -0700 (PDT)
+ bh=61NQQUfc5AHH6sOajFhd3xe+bOM3Liy2MIqh9GGhkaQ=;
+ b=knenutEZgnhsTwJbeiR+1zvGn5ZLmIGqOVRV1RMZHFHpicm+bH4ceAK4a/2ndPDVVR
+ S19DOI7ZalvkOzLR7VTnaKYEv/tVBuFM4x/zB7za3fn9aTEbosHWpmqmJKwu6mKvNJsV
+ 2i0qXZHSFmOgcfB2+trCcq9IElBejeSJ0cJPJyNcBRRWBNBzMa3BrmEaDnb8epoEpWGh
+ DSuxiuRFE3gLNVOqzPJZQLaucmmKTDtHNzJozrCEX3h3JguB2O49MYsTbhLBmsUXeXHF
+ E4yJ93IQvaNwIRBIuE1k15loI9AEIvpRtnDjDX1qCwPKDWJtV3pczG+pMNLT6EHTd8tB
+ fWHw==
+X-Gm-Message-State: AOJu0YzXzZnRTA669K00rA0TqZ0Vzs+PO9V9/yBiqdTBRkPkTv8n4e/i
+ +04/wSbllXDsKndbM0oC8ECeJLCAhOvylOHHFBJOy0jgB/OyIlp6NqebBwYWhvBPDn6bLqs4sJp
+ 48hvtwlzvyg==
+X-Gm-Gg: ASbGncsFV7dL3FzPQWoS+cDju5G3wg0BLZEJ5Zg7iUDr5uXBSH96OJGqyiGknXG5JK1
+ qe7GaNGVJfOd/xqNjlTt/SY31KC33mm6DtDvhR0jZ9MpWltWxa2nb03Agm4ydQI2VWqcb6gV6Io
+ LGqqoYOvaXs7hle1oGJjLC65Vk6KweOoibfqPqBYmBQhwi9MalD4YWxMmDfL3kpA9VteMIUh4iW
+ +uPoZWhRBgv6K4WMQYGdxRI52/bSSG4zrpiD2KsLDeGaLvbUYrlX5J/Qc6pZoT4qMT8UcZ+wSSi
+ OKZX/+mbxNYHoIH+VVwiR0H6Pa5H2t7WxRb7zK7CRet1LUr+mJ8Bl6es4GgXrEhSbteUi6wVIQz
+ n8ICJxi3Gb91SjBspeUx+fM0sOu+LdokXyhuTACfhlLbOUXOLE3VpH98TfVsNNxWEA/ul8tpTi/
+ 70bp+hvfWm40OpYjzPTtgMD/olHqR87Q==
+X-Google-Smtp-Source: AGHT+IEL530wYI6ec2dvGV8IhPhoS7pJXv2tYfyowgqvyrI+XiBgK9StQAaWW4IwhCKK6t2MFVEECw==
+X-Received: by 2002:a05:600d:4203:b0:46e:6af4:ed83 with SMTP id
+ 5b1f17b1804b1-46fa9af9099mr85429505e9.23.1760103765671; 
+ Fri, 10 Oct 2025 06:42:45 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5cfe74sm4140481f8f.35.2025.10.10.06.42.37
+ 5b1f17b1804b1-46fb48a60b8sm47789695e9.19.2025.10.10.06.42.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 06:42:37 -0700 (PDT)
+ Fri, 10 Oct 2025 06:42:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 02/16] linux-user/arm: Replace HOST_BIG_ENDIAN #ifdef with
- runtime if() check
-Date: Fri, 10 Oct 2025 15:42:11 +0200
-Message-ID: <20251010134226.72221-3-philmd@linaro.org>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 03/16] ui: Replace HOST_BIG_ENDIAN #ifdef with runtime if()
+ check
+Date: Fri, 10 Oct 2025 15:42:12 +0200
+Message-ID: <20251010134226.72221-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010134226.72221-1-philmd@linaro.org>
 References: <20251010134226.72221-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,88 +110,54 @@ No functional change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/arm/nwfpe/double_cpdo.c | 12 ++----------
- linux-user/arm/nwfpe/fpa11_cpdt.c  | 29 ++++++++++++++---------------
- 2 files changed, 16 insertions(+), 25 deletions(-)
+ ui/vdagent.c | 16 ++++++++--------
+ ui/vnc.c     |  6 +-----
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/linux-user/arm/nwfpe/double_cpdo.c b/linux-user/arm/nwfpe/double_cpdo.c
-index d45ece2e2fe..e29b38aada0 100644
---- a/linux-user/arm/nwfpe/double_cpdo.c
-+++ b/linux-user/arm/nwfpe/double_cpdo.c
-@@ -150,11 +150,7 @@ unsigned int DoubleCPDO(const unsigned int opcode)
-       case MNF_CODE:
-       {
-          unsigned int *p = (unsigned int*)&rFm;
+diff --git a/ui/vdagent.c b/ui/vdagent.c
+index ddb91e75c64..66dc33567df 100644
+--- a/ui/vdagent.c
++++ b/ui/vdagent.c
+@@ -660,14 +660,14 @@ static void vdagent_chr_open(Chardev *chr,
+     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(chr);
+     ChardevQemuVDAgent *cfg = backend->u.qemu_vdagent.data;
+ 
 -#if HOST_BIG_ENDIAN
--         p[0] ^= 0x80000000;
--#else
--         p[1] ^= 0x80000000;
--#endif
-+         p[!HOST_BIG_ENDIAN] ^= 0x80000000;
-          fpa11->fpreg[Fd].fDouble = rFm;
-       }
-       break;
-@@ -162,11 +158,7 @@ unsigned int DoubleCPDO(const unsigned int opcode)
-       case ABS_CODE:
-       {
-          unsigned int *p = (unsigned int*)&rFm;
--#if HOST_BIG_ENDIAN
--         p[0] &= 0x7fffffff;
--#else
--         p[1] &= 0x7fffffff;
--#endif
-+         p[!HOST_BIG_ENDIAN] &= 0x7fffffff;
-          fpa11->fpreg[Fd].fDouble = rFm;
-       }
-       break;
-diff --git a/linux-user/arm/nwfpe/fpa11_cpdt.c b/linux-user/arm/nwfpe/fpa11_cpdt.c
-index 6b0317883a7..7b0a715d403 100644
---- a/linux-user/arm/nwfpe/fpa11_cpdt.c
-+++ b/linux-user/arm/nwfpe/fpa11_cpdt.c
-@@ -44,15 +44,14 @@ void loadDouble(const unsigned int Fn, target_ulong addr)
-     unsigned int *p;
-     p = (unsigned int *)&fpa11->fpreg[Fn].fDouble;
-     fpa11->fType[Fn] = typeDouble;
--#if HOST_BIG_ENDIAN
-     /* FIXME - handle failure of get_user() */
--    get_user_u32(p[0], addr);       /* sign & exponent */
--    get_user_u32(p[1], addr + 4);
--#else
--    /* FIXME - handle failure of get_user() */
--    get_user_u32(p[0], addr + 4);
--    get_user_u32(p[1], addr);       /* sign & exponent */
+-    /*
+-     * TODO: vdagent protocol is defined to be LE,
+-     * so we have to byteswap everything on BE hosts.
+-     */
+-    error_setg(errp, "vdagent is not supported on bigendian hosts");
+-    return;
 -#endif
 +    if (HOST_BIG_ENDIAN) {
-+        get_user_u32(p[0], addr);   /* sign & exponent */
-+        get_user_u32(p[1], addr + 4);
-+    } else {
-+        get_user_u32(p[0], addr + 4);
-+        get_user_u32(p[1], addr);   /* sign & exponent */
++        /*
++         * TODO: vdagent protocol is defined to be LE,
++         * so we have to byteswap everything on BE hosts.
++         */
++        error_setg(errp, "vdagent is not supported on bigendian hosts");
++        return;
 +    }
- }
  
- static inline
-@@ -151,13 +150,13 @@ void storeDouble(const unsigned int Fn, target_ulong addr)
-         val = fpa11->fpreg[Fn].fDouble;
-     }
-     /* FIXME - handle put_user() failures */
+     vd->mouse = VDAGENT_MOUSE_DEFAULT;
+     if (cfg->has_mouse) {
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 77c823bf2e8..e93b5335690 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -2348,11 +2348,7 @@ static void pixel_format_message (VncState *vs) {
+     vnc_write_u8(vs, vs->client_pf.bits_per_pixel); /* bits-per-pixel */
+     vnc_write_u8(vs, vs->client_pf.depth); /* depth */
+ 
 -#if HOST_BIG_ENDIAN
--    put_user_u32(p[0], addr);           /* msw */
--    put_user_u32(p[1], addr + 4);       /* lsw */
+-    vnc_write_u8(vs, 1);             /* big-endian-flag */
 -#else
--    put_user_u32(p[1], addr);           /* msw */
--    put_user_u32(p[0], addr + 4);       /* lsw */
+-    vnc_write_u8(vs, 0);             /* big-endian-flag */
 -#endif
-+    if (HOST_BIG_ENDIAN) {
-+        put_user_u32(p[0], addr);       /* msw */
-+        put_user_u32(p[1], addr + 4);   /* lsw */
-+    } else {
-+        put_user_u32(p[1], addr);       /* msw */
-+        put_user_u32(p[0], addr + 4);   /* lsw */
-+    }
- }
- 
- static inline
++    vnc_write_u8(vs, HOST_BIG_ENDIAN);         /* big-endian-flag */
+     vnc_write_u8(vs, 1);             /* true-color-flag */
+     vnc_write_u16(vs, vs->client_pf.rmax);     /* red-max */
+     vnc_write_u16(vs, vs->client_pf.gmax);     /* green-max */
 -- 
 2.51.0
 
