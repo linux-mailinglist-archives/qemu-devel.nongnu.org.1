@@ -2,63 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E712CBCCD28
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 14:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3853CBCCD3A
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 14:06:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7BoT-0002Ui-Ny; Fri, 10 Oct 2025 08:01:33 -0400
+	id 1v7Bs6-0004Jh-ND; Fri, 10 Oct 2025 08:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
- id 1v7Bo2-0002Hr-Gc
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 08:01:08 -0400
-Received: from smtp.eurecom.fr ([193.55.113.210])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1v7Brx-0004Ih-LM
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 08:05:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
- id 1v7Bnu-0000Tm-R2
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 08:01:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
- t=1760097659; x=1791633659;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=OzB2NceYgoK+Id5vIFm5FXVb+gjrSBWMNJc5ggIFIJA=;
- b=daaf7fU2fE4ImAdg/3Lmld+dWOTv9Yz4vu5b6kxTjOIxBLWBcmG5wUOG
- IfJerEPeLIFG9C8P/GFazg3OZnJJzRa0n3Sn4Nn1bBhbWVPv/xILDezqr
- 58Z7D2XTEtj7+tDFDBUkVp2YJNmnFb+6RWKoppMzdYgmxFYhnQYzaubJ6 c=;
-X-CSE-ConnectionGUID: R3PAVViqTYyKMtDWIK+vZA==
-X-CSE-MsgGUID: 3bSvSXMYS4CduVs6JTZEGQ==
-X-IronPort-AV: E=Sophos;i="6.19,218,1754949600"; 
-   d="scan'208";a="3223570"
-Received: from waha.eurecom.fr (HELO smtps.eurecom.fr) ([10.3.2.236])
- by drago1i.eurecom.fr with ESMTP; 10 Oct 2025 14:00:23 +0200
-Received: from marco-eurecom-desktop.s3.eurecom.fr (unknown [193.55.114.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by smtps.eurecom.fr (Postfix) with ESMTPSA id E10DF2C53;
- Fri, 10 Oct 2025 14:00:22 +0200 (CEST)
-From: Marco Cavenati <Marco.Cavenati@eurecom.fr>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, jmarcin@redhat.com,
- berrange@redhat.com, Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Subject: [PATCH v2 2/2] migration: mapped-ram: handle zero pages
-Date: Fri, 10 Oct 2025 13:59:54 +0200
-Message-ID: <20251010115954.1995298-3-Marco.Cavenati@eurecom.fr>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251010115954.1995298-1-Marco.Cavenati@eurecom.fr>
-References: <20251010115954.1995298-1-Marco.Cavenati@eurecom.fr>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1v7Brl-0001TZ-MU
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 08:05:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760097884;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tKSizi7tiaCHNDood4BQ6JOusijP44Auo1ckf5Jjulo=;
+ b=Yq1Xjovm9gZyYWhZAByRXldDy1OTi5PcLIYvyK5qiwacTeDLcxmG1Mk7S50rg9yF194PgI
+ g7YcKt3C6uMlDwBLA/3OZAcupuJb/wCDXQ5epx1nkm2FAm1pa6dhRiglax9qCEiuy12MGC
+ KZV9eWazrYIx6kytMdBM2zKhLsB2yhc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-PttJyYlUOj-LePEONKx_OQ-1; Fri, 10 Oct 2025 08:04:43 -0400
+X-MC-Unique: PttJyYlUOj-LePEONKx_OQ-1
+X-Mimecast-MFC-AGG-ID: PttJyYlUOj-LePEONKx_OQ_1760097882
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e44b9779eso10470295e9.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 05:04:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760097882; x=1760702682;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tKSizi7tiaCHNDood4BQ6JOusijP44Auo1ckf5Jjulo=;
+ b=O38jCwYkMMs2+JMgDhxn+i5IjCxQbydwD4l5eVY6vwqRv2G5OCTsAY90vnJbo+KkyO
+ ZG0GFfUZ4UqSZBE5c0RuyjZW60njo5G54ZmYTn0VbkUxn0meukugi8URVODV2hio5u+H
+ l8S3S4ByKvVcNrOX4jZi2NOk1QpWx7R9cn6VHakZZfI/WiEwsH8a+rulg3rRlcE3m3Wk
+ w1v9gJaCmzhAMFsLB8YVtR6B+YAv4ZNfoVNHQW+sfV2ewAMx7AlMwolg6P1QjlBVtYud
+ XGmaBTRbOhLlByFZbZWAytqhcxvauIP48r7RIiMnrBq/jIbG7aIo/25pNh8FmmMWD4wa
+ jJEw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWKJFD+UlMXHlPt+yf316Zf5SAtqWT3jgZ7x0quI5HvIUcAwH5iH8z2N8JtMvixQajlD3gc/pq5kFxw@nongnu.org
+X-Gm-Message-State: AOJu0YzG1fmkJ4ZtP7iL2Cm7pmQ2/OP5PUBXOCOONoV9nLva4e4BKsqn
+ WRTm1iJ70VL/4biCDmQrwjIVlJ4+vSYsFULYztnVtvCfP4AFrdeqfwznP4UBPMEQtO77JM6vXsj
+ IH4eDQPFwklct5I2TKqksdP4RIVxzm6i0MXlxFt4bDNK/gvFDlhcP01gy3RNlkKfn
+X-Gm-Gg: ASbGncsN66Fx1K0jEuMyEvJwifjpHKSk4kzUHd3tfo07gtqbzOxEQC65gqoQr/3kyJd
+ ol37+IqhoLn86PbNPsf6UbJk+cJFXAmdyUUHgIDBhs8qCDR0fsEKCTzOi3H135jDi0h6MCVqyNR
+ t//1mj1MnvnDSEZsdaXeh1ZmhX6XuB5GJ/giW5dFu3vDJwVdOrMQQ85OUYjhe9lC59aGB761NK5
+ erP9CR/b1/3iddKXpp85+tK51CN1nnEZOtivXnn1dExAmvajT1YbR+DoWYn/PdG285dCvV5SBOx
+ RgDZrOHMU8N1yj75aveKx8hQUlvjfI5UiSrkAAyTiQc06008ge/l/IkEln8UMNrRH7xj85n/jUr
+ dl0LmilkMb9s=
+X-Received: by 2002:a05:600d:41f2:b0:46e:456e:ada5 with SMTP id
+ 5b1f17b1804b1-46fa9b01934mr76056195e9.28.1760097881596; 
+ Fri, 10 Oct 2025 05:04:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTQI/jGxU8MChs15Sh7bQPs7KChD7qHUEgJoKVuXP9oL91yT0tNE8qM6VzPKylUlVsz76sbQ==
+X-Received: by 2002:a05:600d:41f2:b0:46e:456e:ada5 with SMTP id
+ 5b1f17b1804b1-46fa9b01934mr76055945e9.28.1760097881169; 
+ Fri, 10 Oct 2025 05:04:41 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46fb489ad27sm44666975e9.15.2025.10.10.05.04.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Oct 2025 05:04:40 -0700 (PDT)
+Message-ID: <3400cbc1-320d-4ddc-9172-21c3be89e32b@redhat.com>
+Date: Fri, 10 Oct 2025 14:04:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Did the latest QEMU emulated SMMUv3 not support "smmu sva"
+ function ?
+Content-Language: en-US
+To: tugouxp <13824125580@163.com>, qemu-devel@nongnu.org
+References: <202836e9.238.199cb6c9c1f.Coremail.13824125580@163.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <202836e9.238.199cb6c9c1f.Coremail.13824125580@163.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=193.55.113.210;
- envelope-from=Marco.Cavenati@eurecom.fr; helo=smtp.eurecom.fr
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,121 +110,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make mapped-ram compatible with loadvm snapshot restoring by explicitly
-zeroing memory pages in this case.
-Skip zeroing for -incoming and -loadvm migrations to preserve performance.
+Hi,
 
-Signed-off-by: Marco Cavenati <Marco.Cavenati@eurecom.fr>
----
- migration/options.c |  1 -
- migration/ram.c     | 59 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 58 insertions(+), 2 deletions(-)
+On 10/10/25 2:01 AM, tugouxp wrote:
+> Hi folks:
+>   i start my aacrh64 qemu platforms with command:
+> "qemu-system-aarch64 -m 512M -smp 4 -cpu cortex-a57 -machine
+> virt,*iommu=smmuv3* -kernel arch/arm64/boot/Image -append
+> "rdinit=/linuxrc nokaslr console=ttyAMA0 loglevel=8" -nographic"
+> and found it does not work normally with MULT substream(PASID), after
+> review the qemu smmuv3.c i made some discovery,  the smmu IDR1
+> register  SSIDSIZE did not initialized for the default value of
+> emulated "SSIDSIZE" in SMMU IDR1 is 0, which means only support one
+> sub stream(pasid), so that is why does not work.
+I confirm PASIDs are not yet supported by the vSMMU.
+>
+> so here i want to get a information is that, did the latest qemu did
+> not support SVA mechanis about IOMMU ? and did all the others platfrom
+> like arm on this function?  thanks for your kindly help.
+vSVA is not yet supported either. This is under work in [PATCH v4 00/27]
+hw/arm/virt: Add support for user-creatable accelerated SMMUv3
 
-diff --git a/migration/options.c b/migration/options.c
-index d9227809d7..e78324b80c 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -449,7 +449,6 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
- static const
- INITIALIZE_MIGRATE_CAPS_SET(check_caps_savevm,
-                             MIGRATION_CAPABILITY_MULTIFD,
--                            MIGRATION_CAPABILITY_MAPPED_RAM,
- );
- 
- static bool migrate_incoming_started(void)
-diff --git a/migration/ram.c b/migration/ram.c
-index 5eef2efc78..7d15b81777 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4039,12 +4039,58 @@ static size_t ram_load_multifd_pages(void *host_addr, size_t size,
-     return size;
- }
- 
-+/**
-+ * handle_zero_mapped_ram: Zero out a range of RAM pages if required during
-+ * mapped-ram load
-+ *
-+ * Zeroing is only performed when restoring from a snapshot (HMP loadvm).
-+ * During incoming migration or -loadvm cli snapshot load, the function is a
-+ * no-op and returns true as in those cases the pages are already guaranteed to
-+ * be zeroed.
-+ *
-+ * Returns: true on success, false on error (with @errp set).
-+ * @from_bit_idx: Starting index relative to the map of the page (inclusive)
-+ * @to_bit_idx:   Ending index relative to the map of the page (exclusive)
-+ */
-+static bool handle_zero_mapped_ram(RAMBlock *block, unsigned long from_bit_idx,
-+                                   unsigned long to_bit_idx, Error **errp)
-+{
-+    ERRP_GUARD();
-+    ram_addr_t offset;
-+    size_t size;
-+    void *host;
-+
-+    /*
-+     * Zeroing is not needed for either -loadvm (RUN_STATE_PRELAUNCH), or
-+     * -incoming (RUN_STATE_INMIGRATE).
-+     */
-+    if (!runstate_check(RUN_STATE_RESTORE_VM)) {
-+        return true;
-+    }
-+
-+    if (from_bit_idx >= to_bit_idx) {
-+        return true;
-+    }
-+
-+    size = TARGET_PAGE_SIZE * (to_bit_idx - from_bit_idx);
-+    offset = from_bit_idx << TARGET_PAGE_BITS;
-+    host = host_from_ram_block_offset(block, offset);
-+    if (!host) {
-+        error_setg(errp, "zero page outside of ramblock %s range",
-+                   block->idstr);
-+        return false;
-+    }
-+    ram_handle_zero(host, size);
-+
-+    return true;
-+}
-+
- static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
-                                      long num_pages, unsigned long *bitmap,
-                                      Error **errp)
- {
-     ERRP_GUARD();
--    unsigned long set_bit_idx, clear_bit_idx;
-+    unsigned long set_bit_idx, clear_bit_idx = 0;
-     ram_addr_t offset;
-     void *host;
-     size_t read, unread, size;
-@@ -4053,6 +4099,12 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
-          set_bit_idx < num_pages;
-          set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
- 
-+        /* Zero pages */
-+        if (!handle_zero_mapped_ram(block, clear_bit_idx, set_bit_idx, errp)) {
-+            return false;
-+        }
-+
-+        /* Non-zero pages */
-         clear_bit_idx = find_next_zero_bit(bitmap, num_pages, set_bit_idx + 1);
- 
-         unread = TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
-@@ -4084,6 +4136,11 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
-         }
-     }
- 
-+    /* Handle trailing 0 pages */
-+    if (!handle_zero_mapped_ram(block, clear_bit_idx, num_pages, errp)) {
-+        return false;
-+    }
-+
-     return true;
- 
- err:
--- 
-2.48.1
+Thanks
+
+Eric
+
+>
+>  
+> BRs
+> zlcao
 
 
