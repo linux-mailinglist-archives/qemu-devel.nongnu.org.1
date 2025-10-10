@@ -2,92 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188B0BCBC0E
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 08:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E428BCBC42
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 08:20:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v76Cs-00042e-35; Fri, 10 Oct 2025 02:02:22 -0400
+	id 1v76Sy-0001Zl-Ee; Fri, 10 Oct 2025 02:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v76Cm-000410-8L; Fri, 10 Oct 2025 02:02:16 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v76Ci-0005U3-74; Fri, 10 Oct 2025 02:02:15 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59A5tgtt035371
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 10 Oct 2025 14:55:42 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=0P4w0OYm6ufqbmzDUCCHp2xxLmutRkyQKj7l+mZLozg=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1760075743; v=1;
- b=KxQtgKw5cvPAq/61nSzZuaHPN2+00zGPbAdHVVdz3qXkAvoYKJMKCOt7i/3p2nJS
- d21RJaJINxDytoO4m8YGoBmuQTg4PA9+uBFpwy9McCAL9A9Xtn1veDkiOgbBCbWN
- 4WYn548gvwNWy23Wo/5S6r3fU/9N1Fmx6cvnHcGNZnkulbcMeqb3vm4beAoXo8Ku
- 1BDvqCPzzEL7MmEas4dBJFt+xkx4pr4/ErEmO5EaZOmdsSZgvzXtOw0gineWx2Nh
- qT+FIHw283UU3qZmzpDKb9gbMhH1RY58/3Lq52FO/9oZikrmFstzyj2pn1pX3WxL
- CRA81Vhcul/lB1d6cLYwmA==
-Message-ID: <13f5ba0b-8747-4c2d-af7c-d7ed3c2771a7@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 10 Oct 2025 14:55:42 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/14] qdev: Automatically delete memory subregions
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v76Si-0001T2-Bh
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 02:18:46 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v76Sg-0001Fm-CJ
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 02:18:44 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-42421b1514fso824098f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Oct 2025 23:18:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760077118; x=1760681918; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qgN8PirtL1wAXx2eZzf1aDL1LMCanDOchi4wgYl/Gek=;
+ b=PeOsK07uUef9/0ND8jiql1+SqHO3HDXLu2PDjUFOhAND/ix6lkZafNH6NlRKtzRxrV
+ klGh+td2Bi115IqukwoPX10tKBAcpeEWxHrOtxoIFM779SrX/CBpLgf0fwO8ZoAhYmzC
+ Zycg/WSQxMtFUhN9znaxagEBJRvhAY/kzdWQtaMjLYxCPA8vcuK1H3WLIK+W+jW7Ibej
+ cngKlO3f5gY8vKr9IU70fwm2HcN6H9WI7R9040JVVlsJL2UKZu/t1CP+SK9e3+2GBygV
+ ymQJJwmRdy2hgsGzfgFRtSRINtSiy1gPx0eKhIf+KUE4NDA3OrW5WPM9LpDip/cHIy3X
+ FW1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760077118; x=1760681918;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qgN8PirtL1wAXx2eZzf1aDL1LMCanDOchi4wgYl/Gek=;
+ b=oqtbZXvQ47o4y/cmvXXYmMefdx1W/LMELPPas6O5GMctqQt+8AoB4OhadY725L415C
+ Nipgp8OjQ5iWl7j+qSddsxz8DP9SYxK7uR5kXBrmnMvT3RZ17quJK2H4VjglouNtLMSl
+ P6geAGOLFbDgEFRwBUTh7ZFAq1qKIjedFVSm9eW8SCoxDvd9b9w6u3Oht0DnAkcFXpbH
+ bVfDNt683M4nZUw6x1qQ4JGJId0pzSrOsc0GRSOVSjXhY5PaKfYxJH4fkE+9YLKdHqPI
+ AHTYaQ3Lz8ozVHhYZgza0kD9wcQil4chaABQsKBfUU5jmq3A7cgkJ+ApBnrbOkM59Jsv
+ H27Q==
+X-Gm-Message-State: AOJu0YwIh7N1JbzU6ztLL4CHwNi0d7uVY9d8jGs/aYikqVLMKRmv24kv
+ EoLi4tLBjMVU3/agHPa9+CTsgjdRn88WfpfHLxwe+QSsW3bNOAQs2XseMqD0DMO4bST+JA/fv6c
+ 8ZqQN7bLIVQ==
+X-Gm-Gg: ASbGncuuAbHaP+okHzNBB/ff+AVEPwIqKf+F59wdNGGKNmYf5hWzNQ/T73O1stmGXNp
+ 5+AH6FUwIeAFHrLIMS8ZmK1iBdyQo+AfOb6yq7/UxAby5aZ3+kcZY9S4+u3abdp4akgUWfWSvuI
+ UiOJtoOibAAaIwYDsPYs5DEk2C1sgPwqSreFwCnZ4nDX7c1r4fhFyzGCYVrbO0PGhWjwVDiV00l
+ N7nfElgAWgYKsuoNTSN/BQCBMMAzssIVsQqBfRyiKyIkYNb15n9eBAKo8xpK7RLqMhExDs7//3U
+ 2VNpNGDoP7h6QlTqVa8qOurPtN/ozPq2T3xkqAAoHIpRdIk8sTQTuJvrTxwL5F2TOglWil00M4Y
+ vBLCGlBWoEUpaAzG3lP0gD22T5kWMBbokcYWC+fQyMRNlEM8eU/lU5M2IHGZ5zPvZF3bvLtxtvn
+ roPDODV4v8V6OBZ1g+3XYQq41pyTQ663Ogu0M=
+X-Google-Smtp-Source: AGHT+IHIxzhCOYo+HF8E11GlVEpn7oM97pQa/Kkuc/IsbL6c5D79xftuvtt0zYdRPWuVrUT63QMFeQ==
+X-Received: by 2002:a5d:5c8a:0:b0:425:8125:ac79 with SMTP id
+ ffacd0b85a97d-42666ab97f0mr6587425f8f.25.1760077118232; 
+ Thu, 09 Oct 2025 23:18:38 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46fb482b99fsm31628495e9.3.2025.10.09.23.18.37
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 09 Oct 2025 23:18:37 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>, Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- John Levon <john.levon@nutanix.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>, Aleksandar Rikalo
- <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
- <20250917-subregion-v1-2-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
- <aN7RHvjeQNtrXDcQ@x1.local> <aN7VH0j8HfaeRV1V@x1.local>
- <32e36e0c-c947-4fa4-bdbf-5ef3ce6ea0a3@rsg.ci.i.u-tokyo.ac.jp>
- <aN_rLDLeMcvRtmAa@x1.local>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <aN_rLDLeMcvRtmAa@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/6] hw/hppa: Clarify machine variables and move them out
+ of CPUArchState
+Date: Fri, 10 Oct 2025 08:18:30 +0200
+Message-ID: <20251010061836.45739-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,199 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/10/04 0:26, Peter Xu wrote:
-> On Fri, Oct 03, 2025 at 11:01:38PM +0900, Akihiko Odaki wrote:
->> On 2025/10/03 4:40, Peter Xu wrote:
->>> On Thu, Oct 02, 2025 at 03:23:10PM -0400, Peter Xu wrote:
->>>> On Wed, Sep 17, 2025 at 07:32:48PM +0900, Akihiko Odaki wrote:
->>>>> +static int del_memory_region(Object *child, void *opaque)
->>>>> +{
->>>>> +    MemoryRegion *mr = (MemoryRegion *)object_dynamic_cast(child, TYPE_MEMORY_REGION);
->>>>> +
->>>>> +    if (mr && mr->container) {
->>>>> +        memory_region_del_subregion(mr->container, mr);
->>>>> +    }
->>>>> +
->>>>> +    return 0;
->>>>> +}
->>>>> +
->>>>>    static void device_set_realized(Object *obj, bool value, Error **errp)
->>>>>    {
->>>>>        DeviceState *dev = DEVICE(obj);
->>>>> @@ -582,6 +593,7 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
->>>>>            if (dc->unrealize) {
->>>>>                dc->unrealize(dev);
->>>>>            }
->>>>> +        object_child_foreach(OBJECT(dev), del_memory_region, NULL);
->>>>
->>>> PS: I'll keep throwing some pure questions here, again, Paolo - it doesn't
->>>> need to block merging if you're confident with the general approach.
->>>>
->>>> Said that, a few things I still want to mention after I read this series..
->>>>
->>>> One thing I really feel hard to review such work is, you hardly describe
->>>> the problems the series is resolving.
->>>>
->>>> For example, this patch proposed auto-detach MRs in unrealize() for qdev,
->>>> however there's nowhere describing "what will start to work, while it
->>>> doesn't", "how bad is the problem", etc..  All the rest patches are about
->>>> "what we can avoid do" after this patch.
->>>
->>> For this part, I should be more clear on what I'm requesting on the
->>> answers.
->>>
->>> I think I get the whole point that MRs (while still with MR refcount
->>> piggypacked, as of current QEMU master does) can circular reference itself
->>> if not always detached properly, so explicitly my question is about:
->>>
->>> - What devices / use case you encountered, that QEMU has such issue?
->>>     Especially, this is about after we have merged commit ac7a892fd3 "memory:
->>>     Fix leaks due to owner-shared MRs circular references".  Asking because I
->>>     believe most of them should already auto-detach when owner is shared.
->>>
->>> - From above list of broken devices, are there any devices that are
->>>     hot-unpluggable (aka, high priority)?  Is it a problem if we do not
->>>     finalize a MR if it is never removable anyway?
-> 
-> [1]
-> 
->>>
->>>>
->>>> Meanwhile, the cover letter is misleading. It is:
->>>>
->>>> [PATCH 00/14] Fix memory region use-after-finalization
->>>>
->>>> I believe it's simply wrong, because the whole series is not about
->>>> finalize() but unrealize().  For Device class, it also includes the exit()
->>>> which will be invoked in pci_qdev_unrealize(), but that is also part of the
->>>> unrealize() routine, not finalize().
->>
->> The subject of the cover letter "fix memory region use-after-finalization"
->> is confusing. While this series has such fixes, it also contain refactoring
->> patches. The cover letter says:
->>
->>> Patch "qdev: Automatically delete memory subregions" and the
->>> succeeding patches are for refactoring, but patch "vfio-user: Do not
->>> delete the subregion" does fix use-after-finalization.
->>
->> More concretely, patch "qdev: Automatically delete memory subregions"
->> implements a common pattern of device unrealization, and the suceeding
->> patches remove ad-hoc implementations of it.
->>
->> And since patch "hw/pci-bridge: Do not assume immediate MemoryRegion
->> finalization" fixes nothing as you pointed out, only patch "vfio-user: Do
->> not delete the subregion" fixes something.
->>
->> Without patch "vfio-user: Do not delete the subregion",
->> vfio_user_msix_teardown() calls memory_region_del_subregion(). However, this
->> function is called from instance_finalize, so the subregion is already
->> finalized and results in a use-after-finalization scenario.
->>
->> Anything else is for refactoring and it's quite unlike patch "memory: Fix
->> leaks due to owner-shared MRs circular references", which is a bug fix.
->>
->> I think I'll drop patch "hw/pci-bridge: Do not assume immediate MemoryRegion
->> finalization" and rename this series simply to "qdev: Automatically delete
->> memory subregions" to avoid confusion.
-> 
-> Yes, thanks.  I went over quite a few follow up patches but I missed this
-> one.  IMHO you can also split the only fix out, so that can be better
-> looked at by vfio-user developers.  It'll also be easier for them to verify
-> if they want.
+Since v1:
+- Simplified (rth)
 
-I'll split the VFIO patch out since I found patch "qdev: Automatically 
-delete memory subregions" is unnecessary; I'll describe that later.
+The HPPA machines uses a pair of variables for distinct meanings,
+depending on kernel or firmware mode used. Replace by variables
+per mode, allowing to use the proper type. This helps reviewing
+the code. This cleanup allows removing unjustified target_ulong
+uses.
 
-> 
->>
->>>>
->>>> The other question is, what if a MR has a owner that is not the device
->>>> itself?  There's no place enforcing this, hence a qdev can logically have
->>>> some sub-objects (which may not really be qdev) that can be the owner of
->>>> the memory regions.  Then the device emulation will found that some MRs are
->>>> auto-detached and some are not.
->>>>
->>>> One example that I'm aware of is this:
->>>>
->>>> https://lore.kernel.org/all/20250910115420.1012191-2-aesteve@redhat.com/#t
->>>>
->>>> TYPE_VIRTIO_SHARED_MEMORY_MAPPING is an object, not qdev here, which can be
->>>> the owner of the MR.
->>
->> Patch "qdev: Automatically delete memory subregions" and the succeeding
->> patches are for refactoring of qdev. MRs not directly owned by qdev are out
->> of scope of the change.
-> 
-> Do you have a rough answer of above question [1], on what might suffer from
-> lost MRs?  I sincerely want to know how much we are missing after we could
-> already auto-detach owner-shared MRs.
+Philippe Mathieu-Daudé (6):
+  hw/hppa: Convert type_init() -> DEFINE_TYPES()
+  hw/hppa: Factor QOM HPPA_COMMON_MACHINE out
+  hw/hppa: Reduce variables scope in common_init()
+  hw/hppa: Move CPU::kernel_entry -> Machine::boot_info.gr25
+  hw/hppa: Move CPU::cmdline_or_bootorder -> Machine::boot_info.gr24
+  hw/hppa: Move CPU::initrd_base/end -> Machine::boot_info.gr22/23
 
-There is no functionally "broken" device. The patch that does fix 
-something is the VFIO patch, and it fixes use-after-finalization, which 
-is semantically problematic but does not cause a functional problem 
-(like use-after-free).
+ target/hppa/cpu.h |   4 --
+ hw/hppa/machine.c | 152 ++++++++++++++++++++++++----------------------
+ 2 files changed, 79 insertions(+), 77 deletions(-)
 
-> 
->  From a quick glance, at least patch 4-14 are detaching MRs that shares the
-> same owner.  IIUC, it means at least patch 4-14 do not rely on patch 2.
+-- 
+2.51.0
 
-If the container and the subregion shares the same owner, 
-memory_region_del_subregion() is unnecessary in the first place and can 
-be removed even without patch 2, and it seems there are a number of such 
-unnecessary memory_region_del_subregion() calls.
-
-That said, there are cases where memory_region_del_subregion() is truly 
-needed. In general, a device exposes its MMIO functionality to the guest 
-by adding its memory region to external containers, so there should be 
-some containers and subregions that do not share memory regions.
-
-Reviewing removed memory_region_del_subregion() calls in each patch, 
-patch 3, 6, 7, 8, 9, 10, 13, and 14 are for memory regions with shared 
-owners (that's why patch 3 can be applied without the qdev patch).
-Patch 4, 5, 11 and 12 are for memory regions with different owners.
-
-The point here is that we don't have to care whether memory regions 
-share owners if we delete all subregions for defensive programming.
-
-> 
-> Then I wonder how much patch 2 helps in real life.
-> 
-> There's indeed a difference though when a qdev may realize(), unrealize()
-> and realize() in a sequence, in which case patch 2 could help whil commit
-> ac7a892fd3 won't, however I don't know whether there's real use case,
-> either.
-
-It is not relevant what order realize() and unrealize() are performed. 
-This patch is to de-duplicate the code to unrealize devices, and commit 
-ac7a892fd3 fixes a bug instead.
-
-> 
-> I also wished if there's such device, it'll have explicit detach code so
-> that when I debug a problem on the device I can easily see when the MRs
-> will be available, instead of remembering all the rules when something in
-> some layer will auto-detach...
-
-Indeed, people who read the implementation of devices wonder where are 
-memory_region_del_subregion() calls that corresponding to 
-memory_region_add_subregion() calls they see.
-
-That said, anyone who cares device code already needs to know that 
-subregions (that do not share owners) need to be deleted during 
-unrealization, or devices will remain visible to the guest. I see 
-avoiding this consequence is important, and it is just nice to have less 
-code by de-deuplicating the memory_del_subregion() calls.
-
-> 
-> Personally I think such automation adds burden to developers' mind if
-> there're still a bunch of MRs that are not used in this way (there
-> definitely are, otherwise we should be able to completely unexport
-> memory_region_del_subregion). But that's subjective; I believe at least
-> Paolo agrees with your general approach.
-
-Indeed, memory_region_del_subregion() is still necessary for memory 
-regions that are not directly owned by devices. This is a trade-off 
-situation so there is no clear answer what's the best.
-
-Regards,
-Akihiko Odaki
 
