@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FF0BCC945
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD83ABCC925
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 12:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7AXU-0005oR-LL; Fri, 10 Oct 2025 06:39:56 -0400
+	id 1v7AVf-0002xN-75; Fri, 10 Oct 2025 06:38:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AXR-0005j1-DF; Fri, 10 Oct 2025 06:39:53 -0400
+ id 1v7AVd-0002wD-6a; Fri, 10 Oct 2025 06:38:01 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v7AXJ-00073Y-Qv; Fri, 10 Oct 2025 06:39:52 -0400
+ id 1v7AVM-0006sU-4d; Fri, 10 Oct 2025 06:37:59 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSY065199
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59AAaVSZ065199
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Fri, 10 Oct 2025 19:36:44 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=iiyInnSiBdFW+yfPCMju2JfXG3ua48WG78dciSW5cd4=; 
+DKIM-Signature: a=rsa-sha256; bh=N6KvdcMXa6qsZ06cdDLF8MQ7k2CfW5mVvMJOUaALk2A=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1760092604; v=1;
- b=DlOM/NCF2AGDOufJ0WcOdzX1wmc5fiPw/erxdOFG4p1PxPpo/nRibCN4LS6EnWRg
- 7YT1NoziFtx72d7+I5CNVuDCNIwezNLeazXbolqhdPv3HemAZ6vGTwyKKjys7Eir
- b6hUq/9ONepBKXJpYZGoyPN+77LkL/2DgoMuYjyV0mDDwAaODzVecsMyDydeCgEu
- e150H6FwV9EfVrOaGaVifFxzj+0IvoIXP9VWR2RhSzCA21AjMxfYoQwlz9cn4GWh
- bkP0X03g+rIlnJDLUS0wWLrf14v/Hu/XNjlmKee1Abr1Pu27Hh/N/r+ct32scPD6
- /MbP8Sr3xuLetUFPOpFWFw==
+ s=rs20250326; t=1760092605; v=1;
+ b=X8PPMq0xCHZIS1VdksljQCoIc09bGeA5sFgX0BoK4fqrNkTmD3rrDQumWfEpY4HO
+ otKojbtgPFcNQ7G6lWhEX24n/GTykSvCVCPgImNJE5fIq3GMzTHflqxa+5JSvZrv
+ LyLAFEhPOAJwUcOSxWbtNGO2TcDsHrJE0zEt7o+jWC0fY68fGU+TlsmoUJtGR5GQ
+ claW5MrBnplQ44fQE4OQcDL08fZVM4bfRsXmEhAeq3Y/078pOPmy/iv9VVJl9a2L
+ MXbVyd5bMM3JceOCtdIFzkYukXofQA/sWKI8+dyWxlk7EgB5fQE0o0PYP6xES4rU
+ YqaUiaN0Nn8AZqrT7KisPQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 10 Oct 2025 19:35:34 +0900
-Subject: [PATCH v2 06/12] hw/ide/piix: Do not delete the subregions
+Date: Fri, 10 Oct 2025 19:35:35 +0900
+Subject: [PATCH v2 07/12] hw/ide/via: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251010-subregion-v2-6-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20251010-subregion-v2-7-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 References: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20251010-subregion-v2-0-435a472bc9cd@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -83,8 +83,7 @@ X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,47 +104,39 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/ide/piix.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ hw/ide/via.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index a0f2709c6973..138f8e1936b4 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -166,17 +166,6 @@ static void pci_piix_ide_realize(PCIDevice *dev, Error **errp)
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index dedc2674c002..cbaf4ad1548b 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -234,17 +234,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
      }
  }
  
--static void pci_piix_ide_exitfn(PCIDevice *dev)
+-static void via_ide_exitfn(PCIDevice *dev)
 -{
 -    PCIIDEState *d = PCI_IDE(dev);
 -    unsigned i;
 -
--    for (i = 0; i < 2; ++i) {
+-    for (i = 0; i < ARRAY_SIZE(d->bmdma); ++i) {
 -        memory_region_del_subregion(&d->bmdma_bar, &d->bmdma[i].extra_io);
 -        memory_region_del_subregion(&d->bmdma_bar, &d->bmdma[i].addr_ioport);
 -    }
 -}
 -
- /* NOTE: for the PIIX3, the IRQs and IOports are hardcoded */
- static void piix3_ide_class_init(ObjectClass *klass, const void *data)
+ static void via_ide_class_init(ObjectClass *klass, const void *data)
  {
-@@ -186,7 +175,6 @@ static void piix3_ide_class_init(ObjectClass *klass, const void *data)
-     device_class_set_legacy_reset(dc, piix_ide_reset);
-     dc->vmsd = &vmstate_ide_pci;
-     k->realize = pci_piix_ide_realize;
--    k->exit = pci_piix_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_INTEL;
-     k->device_id = PCI_DEVICE_ID_INTEL_82371SB_1;
-     k->class_id = PCI_CLASS_STORAGE_IDE;
-@@ -209,7 +197,6 @@ static void piix4_ide_class_init(ObjectClass *klass, const void *data)
-     device_class_set_legacy_reset(dc, piix_ide_reset);
-     dc->vmsd = &vmstate_ide_pci;
-     k->realize = pci_piix_ide_realize;
--    k->exit = pci_piix_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_INTEL;
-     k->device_id = PCI_DEVICE_ID_INTEL_82371AB;
-     k->class_id = PCI_CLASS_STORAGE_IDE;
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -258,7 +247,6 @@ static void via_ide_class_init(ObjectClass *klass, const void *data)
+     k->config_read = via_ide_cfg_read;
+     k->config_write = via_ide_cfg_write;
+     k->realize = via_ide_realize;
+-    k->exit = via_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_VIA;
+     k->device_id = PCI_DEVICE_ID_VIA_IDE;
+     k->revision = 0x06;
 
 -- 
 2.51.0
