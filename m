@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD64EBCE05E
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 18:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E79BCE058
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 18:58:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7GQN-0001kP-Uc; Fri, 10 Oct 2025 12:56:59 -0400
+	id 1v7GQg-0002B2-3k; Fri, 10 Oct 2025 12:57:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v7GQJ-0001jx-My
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 12:56:55 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1v7GQe-0002AS-QB
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 12:57:16 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v7GQ6-0007jD-4z
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 12:56:55 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-28a5b8b12a1so22103965ad.0
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 09:56:38 -0700 (PDT)
+ id 1v7GQW-0007sG-Sp
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 12:57:16 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-782a77b5ec7so2138851b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 09:57:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760115394; x=1760720194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760115420; x=1760720220; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=fmNuqnDzh7GH9R3GIWxB7v1xjQNjsOrsgQWrbfpdeuY=;
- b=qZ2+wvkOKKw44jKSzgqx6vYeUiGZvIfGxYQ4o91MNJC9VtP3HfMrD99hZLj9rLhFJW
- /3vI0g77la5SRAf2uhr3rUHnFin78qMtVlS+nBUPsrh5iziO/zAj5dbX62VNt5MX6J1a
- ca+W4dbP4+2L9SQrVfh4Bn3sJjPFn/2viyefFW/OR8T74/z3J3KgyqpdUBrkfhMJWsWW
- frjPFwEnQdbvMTGb4Q22Dfwbt/lLWMFY9oldHYuiktCCQszRIVDqChhxsiWfzPCDQXNI
- yH10XeoqZYffwoMg53UtjRHKr5OAx03fpLz7bz59ElvQILgExkNJv5l6Ug8zEgyaQPKH
- jNCQ==
+ bh=pf6DqYhLys9vVFknX9I8ydYubWfT3qAkpEC9s2UPNhM=;
+ b=LytgH/FCOjQN2sipK4DATXv9hw85TOPm8DJd+XCkiDT5PIeev5JvMlMLFvjEYZ07bH
+ uC+/1wWInP69SawSWVO2VkkmVWVXoTvRjnOt1YjxbMbHa3MKIq1yf7V+1wOy5Td5qKX9
+ qTgIdBfE8I4harmvLzUAqMxOUhWB+LNhDvKhN4NyMFDNx71pEOYlTC8wYVyELxbc+y9z
+ DJfQ2C1ZU7rkQio0L4F35YTBubWVEJld0wxll823uhTuhU/lJP6vju3EzR5xT3fUwhTl
+ zdkcIGdZ0LLXbN2eAp4vo4QFPdqClrXFBUbH1obelMvQCECj2FNY+Z6UeieKEZtlMyFR
+ 87Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760115394; x=1760720194;
+ d=1e100.net; s=20230601; t=1760115420; x=1760720220;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fmNuqnDzh7GH9R3GIWxB7v1xjQNjsOrsgQWrbfpdeuY=;
- b=rON/vKzjLOHutAM8fTV+ZzzXFKHowXMiQLdv9TdKvrrwn6BXAW2HScSB1WKsXaoMTA
- GLRo3+WqA79cuugGh850hnZbHIAkV+2/x8ZP9fzccmMmBKJUvq+Uv62o22dTFzUXGlxA
- QvVzxdKSP37G6NA6cUEvVsNueD4RS4jzBchFJ1mytVx0wbB+rw25cKOJOw1N1NBUJhoJ
- ONMD4H1bFDel5TGUn+Uz3d/tT0G+gmLJ6lwvhgqVsDa8a7PtD84MtTKRQwdcdNRpNTu4
- 8wlCnM8gHz/WHyOx04PKYBI9T1LjtwcDTde9wAJ7fsdHC1PdLG1BatSqYaB1Tzmbo2XU
- Q09g==
-X-Gm-Message-State: AOJu0Yyz0Ni1DoGMdOMoxpk0Z9cFMv3SS/2oJCV/ay9PfBixFDcEQqpH
- HNB1QODaKKZyjhCTw/0lungClyFQeeF7efU9FZXCfDKiGY3jyMJNTwJz5s3UIfHDz5urNkdiZVe
- PBnQjC1o=
-X-Gm-Gg: ASbGnctDGOFVrJ/sVarDVdKH2/HT7oXSVKFdcrIXtiyKLvGiJb1e6K1uRxGezq/Hxm/
- mdiAft4rDVr+XPzaNzGb2vqqFVK//sgW0Jm4Zyl4UBQEnCZKAp+hpoM64GWWkp0C/GSX9ZT064x
- Btj5iUzgdc1ddYNwC2YMGMpZWDWV3ucQmgWKojoCXEoupfvEKKouWuxMB4zHJn5YByB7MYj2AI3
- 4ZSrZE25Nyrelb/b9I8iUe81lqpEoCTgNgoR2wcajCfgt6KgudSHPqBLFMCbHW6e8i0mydSZuLw
- 9QldSWaaGkyDt4YKP1y7AZR6IU3cNEXQCntx0S+9rgB0ODdfjtKBhYNDKketX8nc2iFG5giWGuY
- uPejR+vHaMtCCR/Pwhl3qQ3TuvMnX4dBsCBYkkz2oR8ziI2bbTx5WIXzzeUM=
-X-Google-Smtp-Source: AGHT+IEcrZPQCyR3Ha6wMoetrAMCfPKeknfIUCKfGrgwdVfDmjsVgXwLMfEHyewoxZoZcNIt6hNj2g==
-X-Received: by 2002:a17:903:1a06:b0:283:c950:a783 with SMTP id
- d9443c01a7336-2902741e42amr161600355ad.56.1760115394179; 
- Fri, 10 Oct 2025 09:56:34 -0700 (PDT)
+ bh=pf6DqYhLys9vVFknX9I8ydYubWfT3qAkpEC9s2UPNhM=;
+ b=CJLf3Qa66cjkA/W5eWWe23VIrZ7sRncCGV8LZ3m2oesObLfWGAAgrKlG6N2JHVqGp/
+ AqikE760tNLP59AhjvArUctI+qEhnLZV0XMI2no2q1IS0rpKu6NOtdNDgUKI2PMezJ/D
+ ooPJWnnpqfXPZk70smWdRuGAoicJHk8PvH5bDtmfU4IFJ/i7SAmTmZiI/VIqWJsDN2XE
+ SQYymapogJCV5AwcODXhje4cFmRzLC7oZLz9jjM4Ghfjrg93rwIg4jSPDldHNlTUaEA/
+ +w+/1+XCIu+eXxVuR7Tfb6KzUDpMzF73Xbqw9HPSXRpwXnE3h/i5odM/FpFe1f9/7H1P
+ QCSA==
+X-Gm-Message-State: AOJu0YyZMY+TbFPsjt8g1ZuAtrGiZ8ftxRraWj4PZUBWUo4BFxt1+8is
+ vcYLQu0xKf+MQeHfWj3eXT4kPGnOPvhc/TCdeSe4elq0DkKyyV0MRUqXohZgUwybd5iVANohPcg
+ tPcRbIe0=
+X-Gm-Gg: ASbGncvd9FdWJCGZYsvEEZtmex9VYl2BvfX0CvJPUcJn4b952LknA/M0cYYIHa2KvzZ
+ 99slvcBrDN8qdTJXoIah0QhkiRRfTxSx8OSurqb5XBm/QpdkydwoK4i/nNyYCl2MAwZA5tkErg/
+ kvnGIKWOrXd5ocdyrQO4D0jWgdvWVuLZVTF980NwxWDuFLYODiLnBPb3a/Y0DkwuiWsXAHhygEd
+ 07/OSJ5cincsk1TQe0gbiPZZIydAW5+fWtM1lXq0tWjWugWnwKLZQ/PoyxnUK5OuzRJIwgCFyYH
+ 2MpmygHqYB5U1XuYh2WDOjNrIPX9jsjh4LJYKpfrGC/V/lTT64poerc0wrr6WzCofY2/2yXK6rq
+ 6CAgwCgG/+6KC1ahnLxT5UOAgaldVeybrD5p23pi0qFHHkKfDXDM20XoIRuM=
+X-Google-Smtp-Source: AGHT+IEsXfEY08hGV+hYilgSWsd5Htugm+GKIFpuczdMj8CeN/LHpMVy1gFUpCh70zlP6vq0+0908g==
+X-Received: by 2002:a05:6a21:3282:b0:2df:b68d:f64 with SMTP id
+ adf61e73a8af0-32da854060cmr16800662637.52.1760115420175; 
+ Fri, 10 Oct 2025 09:57:00 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.157.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034f941a5sm61715065ad.127.2025.10.10.09.56.33
+ 98e67ed59e1d1-33b6262de64sm3452183a91.4.2025.10.10.09.56.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Oct 2025 09:56:33 -0700 (PDT)
-Message-ID: <aaf9e7ec-04ec-4eae-b107-fe1053823bfe@linaro.org>
-Date: Fri, 10 Oct 2025 09:56:32 -0700
+ Fri, 10 Oct 2025 09:56:59 -0700 (PDT)
+Message-ID: <18d49c34-0615-4f16-8d03-013e04192a1d@linaro.org>
+Date: Fri, 10 Oct 2025 09:56:58 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] target/tricore: Remove target_ulong use in
- gen_goto_tb()
+Subject: Re: [PATCH 02/12] target/tricore: Replace target_ulong -> vaddr with
+ tlb_fill() callees
 To: qemu-devel@nongnu.org
 References: <20251010052141.42460-1-philmd@linaro.org>
- <20251010052141.42460-2-philmd@linaro.org>
+ <20251010052141.42460-3-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251010052141.42460-2-philmd@linaro.org>
+In-Reply-To: <20251010052141.42460-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,45 +103,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/9/25 22:21, Philippe Mathieu-Daudé wrote:
-> translator_use_goto_tb() expects a vaddr type since commit
-> b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
-> translator_*()").
+> tlb_fill() provides a vaddr type since commit 68d6eee73c
+> ("target/tricore: Convert to CPUClass::tlb_fill").
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/tricore/translate.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+>   target/tricore/helper.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-> index 7c6e3095971..dd09f0651f5 100644
-> --- a/target/tricore/translate.c
-> +++ b/target/tricore/translate.c
-> @@ -72,7 +72,8 @@ static const char *regnames_d[] = {
+> diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+> index e4c53d453dd..7574111c87d 100644
+> --- a/target/tricore/helper.c
+> +++ b/target/tricore/helper.c
+> @@ -35,7 +35,7 @@ enum {
+>   };
 >   
->   typedef struct DisasContext {
->       DisasContextBase base;
-> -    target_ulong pc_succ_insn;
-> +
-> +    vaddr pc_succ_insn;
->       uint32_t opcode;
->       /* Routine used to access memory */
->       int mem_idx;
-> @@ -2811,13 +2812,12 @@ static void gen_calc_usb_mulr_h(TCGv arg)
->   
->   /* helpers for generating program flow micro-ops */
->   
-> -static inline void gen_save_pc(target_ulong pc)
-> +static inline void gen_save_pc(vaddr pc)
+>   static int get_physical_address(CPUTriCoreState *env, hwaddr *physical,
+> -                                int *prot, target_ulong address,
+> +                                int *prot, vaddr address,
+>                                   MMUAccessType access_type, int mmu_idx)
 >   {
->       tcg_gen_movi_tl(cpu_PC, pc);
+>       int ret = TLBRET_MATCH;
+> @@ -61,7 +61,7 @@ hwaddr tricore_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
 >   }
 >   
-> -static void gen_goto_tb(DisasContext *ctx, unsigned tb_slot_index,
-> -                        target_ulong dest)
-> +static void gen_goto_tb(DisasContext *ctx, unsigned tb_slot_index, vaddr dest)
+>   /* TODO: Add exception support */
+> -static void raise_mmu_exception(CPUTriCoreState *env, target_ulong address,
+> +static void raise_mmu_exception(CPUTriCoreState *env, vaddr address,
+>                                   int rw, int tlb_error)
 >   {
->       if (translator_use_goto_tb(&ctx->base, dest)) {
->           tcg_gen_goto_tb(tb_slot_index);
+>   }
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
