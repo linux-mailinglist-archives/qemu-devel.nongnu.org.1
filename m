@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AFCBCC1CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4FEBCC1BC
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 10:23:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v78OI-000292-Hu; Fri, 10 Oct 2025 04:22:18 -0400
+	id 1v78OP-0002BS-Lj; Fri, 10 Oct 2025 04:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OF-00028F-4T
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OL-0002AV-BA
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78O9-00018o-G2
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:14 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v78OF-0001Bc-ND
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 04:22:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760084528;
+ s=mimecast20190719; t=1760084534;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kN1hftEnvVvBVOyTPgXuryjh2sa8FXlMQCoo5OJbylY=;
- b=gZAekeU90zZono5gNioezBDEFbqjDuq1UZ/gDUMCZAfpjLoGCe7zOm61QfnePYtVSkkv/U
- L4TkoQudzFtrQfs9JQ/g+8Q+ySbSe1ROzo+RGxaOgB0TcqHxJDqbr/xJoOYvC+P/OPUSGT
- 6ZZAV4zctVNTRXPqtQaqlpef7226lkY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GkEwpiKaLxBSUhV5xR+XfwVb/cPt8uBBF9xkbsKEvGo=;
+ b=NM4lUQ/11zgjEASPZvUbFVTaH8owT0v0qmAnubVCETfvrbzsXwRknqe3bBPwurkTx0aArs
+ 21ZjlyyixSP7OXJNjuqoGqC0L/l3nDdNzhu3avW8CxUBeebXdvO350oozH4EayCDjyAjJu
+ 6m8LtxAxp8MfikDFiwGDP0KMn8m0EUk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-443-_H1qvcEqN36b20i0GAhZ9A-1; Fri,
- 10 Oct 2025 04:22:06 -0400
-X-MC-Unique: _H1qvcEqN36b20i0GAhZ9A-1
-X-Mimecast-MFC-AGG-ID: _H1qvcEqN36b20i0GAhZ9A_1760084525
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-bX2RmarzP12cibn2KWB0Tg-1; Fri,
+ 10 Oct 2025 04:22:09 -0400
+X-MC-Unique: bX2RmarzP12cibn2KWB0Tg-1
+X-Mimecast-MFC-AGG-ID: bX2RmarzP12cibn2KWB0Tg_1760084528
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8BCF9180034F; Fri, 10 Oct 2025 08:22:05 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2E8B7180057C; Fri, 10 Oct 2025 08:22:08 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2579F1800446; Fri, 10 Oct 2025 08:22:03 +0000 (UTC)
+ id 21BA51800452; Fri, 10 Oct 2025 08:22:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/9] target/s390x: Replace legacy cpu_physical_memory_[un]map()
- calls (3/3)
-Date: Fri, 10 Oct 2025 10:21:43 +0200
-Message-ID: <20251010082145.576222-9-thuth@redhat.com>
+ Matthew Rosato <mjrosato@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: [PULL 9/9] s390x/pci: set kvm_msi_via_irqfd_allowed
+Date: Fri, 10 Oct 2025 10:21:44 +0200
+Message-ID: <20251010082145.576222-10-thuth@redhat.com>
 In-Reply-To: <20251010082145.576222-1-thuth@redhat.com>
 References: <20251010082145.576222-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -82,111 +81,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
 
-Commit b7ecba0f6f6 ("docs/devel/loads-stores.rst: Document our
-various load and store APIs") mentioned cpu_physical_memory_*()
-methods are legacy, the replacement being address_space_*().
+Allow irqfd to be used for virtio-pci on s390x if the kernel supports
+it.  This improves s390x virtio-pci performance when using kvm
+acceleration by allowing kvm to deliver interrupts instead of QEMU.
 
-Replace the *_map() / *_unmap() methods in s390_store_status()
-and s390_store_adtl_status(). In s390_store_status(), replace
-cpu_physical_memory_write() by address_space_stb(), restricting
-@ar_id scope. No behavioral change expected.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251002091132.65703-10-philmd@linaro.org>
+Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Message-ID: <20251008203350.354121-1-mjrosato@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/sigp.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ include/hw/s390x/s390-pci-kvm.h | 7 +++++++
+ hw/s390x/s390-pci-bus.c         | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/target/s390x/sigp.c b/target/s390x/sigp.c
-index 2487acdb49e..f5d7bc0fa22 100644
---- a/target/s390x/sigp.c
-+++ b/target/s390x/sigp.c
-@@ -13,6 +13,7 @@
- #include "s390x-internal.h"
- #include "hw/boards.h"
- #include "system/hw_accel.h"
-+#include "system/memory.h"
- #include "system/runstate.h"
- #include "system/address-spaces.h"
- #include "exec/cputlb.h"
-@@ -147,7 +148,8 @@ QEMU_BUILD_BUG_ON(sizeof(SigpSaveArea) != 512);
- #define S390_STORE_STATUS_DEF_ADDR offsetof(LowCore, floating_pt_save_area)
- static int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch)
+diff --git a/include/hw/s390x/s390-pci-kvm.h b/include/hw/s390x/s390-pci-kvm.h
+index 933814a4025..c33f2833a3c 100644
+--- a/include/hw/s390x/s390-pci-kvm.h
++++ b/include/hw/s390x/s390-pci-kvm.h
+@@ -14,12 +14,19 @@
+ 
+ #include "hw/s390x/s390-pci-bus.h"
+ #include "hw/s390x/s390-pci-inst.h"
++#include "system/kvm.h"
+ 
+ #ifdef CONFIG_KVM
++static inline void s390_pcihost_kvm_realize(void)
++{
++    kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
++}
++
+ bool s390_pci_kvm_interp_allowed(void);
+ int s390_pci_kvm_aif_enable(S390PCIBusDevice *pbdev, ZpciFib *fib, bool assist);
+ int s390_pci_kvm_aif_disable(S390PCIBusDevice *pbdev);
+ #else
++static inline void s390_pcihost_kvm_realize(void) {}
+ static inline bool s390_pci_kvm_interp_allowed(void)
  {
--    static const uint8_t ar_id = 1;
-+    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-+    AddressSpace *as = CPU(cpu)->as;
-     SigpSaveArea *sa;
-     hwaddr len = sizeof(*sa);
-     int i;
-@@ -157,17 +159,21 @@ static int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch)
-         return 0;
-     }
- 
--    sa = cpu_physical_memory_map(addr, &len, true);
-+    sa = address_space_map(as, addr, &len, true, attrs);
-     if (!sa) {
-         return -EFAULT;
-     }
-     if (len != sizeof(*sa)) {
--        cpu_physical_memory_unmap(sa, len, 1, 0);
-+        address_space_unmap(as, sa, len, true, 0);
-         return -EFAULT;
-     }
- 
-     if (store_arch) {
--        cpu_physical_memory_write(offsetof(LowCore, ar_access_id), &ar_id, 1);
-+        static const uint8_t ar_id = 1;
-+
-+        address_space_stb(as, offsetof(LowCore, ar_access_id),
-+                          ar_id, attrs, NULL);
-+
-     }
-     for (i = 0; i < 16; ++i) {
-         sa->fprs[i] = cpu_to_be64(*get_freg(&cpu->env, i));
-@@ -189,7 +195,7 @@ static int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch)
-         sa->crs[i] = cpu_to_be64(cpu->env.cregs[i]);
-     }
- 
--    cpu_physical_memory_unmap(sa, len, 1, len);
-+    address_space_unmap(as, sa, len, true, len);
- 
-     return 0;
- }
-@@ -251,16 +257,18 @@ QEMU_BUILD_BUG_ON(sizeof(SigpAdtlSaveArea) != 4096);
- #define ADTL_GS_MIN_SIZE 2048 /* minimal size of adtl save area for GS */
- static int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len)
- {
-+    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-+    AddressSpace *as = CPU(cpu)->as;
-     SigpAdtlSaveArea *sa;
-     hwaddr save = len;
-     int i;
- 
--    sa = cpu_physical_memory_map(addr, &save, true);
-+    sa = address_space_map(as, addr, &save, true, attrs);
-     if (!sa) {
-         return -EFAULT;
-     }
-     if (save != len) {
--        cpu_physical_memory_unmap(sa, len, 1, 0);
-+        address_space_unmap(as, sa, len, true, 0);
-         return -EFAULT;
-     }
- 
-@@ -276,7 +284,8 @@ static int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len)
-         }
-     }
- 
--    cpu_physical_memory_unmap(sa, len, 1, len);
-+    address_space_unmap(as, sa, len, true, len);
-+
-     return 0;
+     return false;
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index e8e41c8a9a1..52820894fa1 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -900,6 +900,7 @@ static void s390_pcihost_realize(DeviceState *dev, Error **errp)
+     s390_pci_init_default_group();
+     css_register_io_adapters(CSS_IO_ADAPTER_PCI, true, false,
+                              S390_ADAPTER_SUPPRESSIBLE, errp);
++    s390_pcihost_kvm_realize();
  }
  
+ static void s390_pcihost_unrealize(DeviceState *dev)
 -- 
 2.51.0
 
