@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA70BBCC5DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 11:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A9CBCC5D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 11:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v79Us-0000ee-5L; Fri, 10 Oct 2025 05:33:10 -0400
+	id 1v79Uj-0000Q9-Dc; Fri, 10 Oct 2025 05:33:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v79Uj-0000Tt-C3
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 05:33:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v79Ug-0000Px-Lq
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 05:32:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v79Uc-0008RS-Ru
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 05:33:00 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v79Ue-0008Rt-JO
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 05:32:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760088773;
+ s=mimecast20190719; t=1760088775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=BY+rEomJkNlyeEwTPv1/EJwqH58Yd9savqEZOqtTZQs=;
- b=ciAlrm4mzQoMKxZs0HrsT2aJHfNWCpZTw9+cVOK6ynJVO+RSxpDH7oZ6jJmJYtS36Wx+G/
- 9rqnDydx/VerrpX55V/7WaRpfTn84ZUh4rsFYU0LRFOvDxD2wBRD3fV4tXZFRGxr8QrmHL
- qKCR8zHOEcTLhPE99wFQyu8S5+0e5vU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Mc7w1dD4+slOqf5GdCnR7SEfCdhq4eyMsgtA3XCLZ1E=;
+ b=SpFWNwE3SmloyNY90z3ztfZhp/GBXrjrIqw8N7zdsDiL79StGWeVa3zEBa1Yt8VpaEYRFO
+ 8hzyVeIeYrqln/TRnKAVKZE0QrcpseKSjz+nUNLCPxE0z8A52DyOi6tOCTFt65wLJ9dFJr
+ hJQGHt+RnXb0VLcmRH27cnxw36PWZ4E=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-451-o8iP3xA0O6yg5d6zIyouqA-1; Fri,
- 10 Oct 2025 05:32:49 -0400
-X-MC-Unique: o8iP3xA0O6yg5d6zIyouqA-1
-X-Mimecast-MFC-AGG-ID: o8iP3xA0O6yg5d6zIyouqA_1760088768
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-325-qLMQyyWsMTmw44XS_bpuHg-1; Fri,
+ 10 Oct 2025 05:32:52 -0400
+X-MC-Unique: qLMQyyWsMTmw44XS_bpuHg-1
+X-Mimecast-MFC-AGG-ID: qLMQyyWsMTmw44XS_bpuHg_1760088771
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B03C11955F18; Fri, 10 Oct 2025 09:32:48 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 248D61800452; Fri, 10 Oct 2025 09:32:51 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 64E9A18004D8; Fri, 10 Oct 2025 09:32:46 +0000 (UTC)
+ id 1C29D180035E; Fri, 10 Oct 2025 09:32:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] Clean up the functional download cache after some months
-Date: Fri, 10 Oct 2025 11:32:41 +0200
-Message-ID: <20251010093244.807544-1-thuth@redhat.com>
+Subject: [PATCH 1/2] tests/functional: Set current time stamp of assets when
+ using them
+Date: Fri, 10 Oct 2025 11:32:42 +0200
+Message-ID: <20251010093244.807544-2-thuth@redhat.com>
+In-Reply-To: <20251010093244.807544-1-thuth@redhat.com>
+References: <20251010093244.807544-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
@@ -79,30 +83,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The download cache of the functional tests is currently only growing.
-But sometimes tests get removed or changed to use different assets,
-thus we should clean up the stale old assets after a while when they
-are not in use anymore.
+From: Thomas Huth <thuth@redhat.com>
 
-This little patch series now introduces time stamps for the assets in
-the cache (first patch) that we update during each test run, so we can
-check these time stamps regularly and evict stale assets after half
-of a year not being used anymore (that should be enough time to still
-keep the assets around for a while in case you want to diagnose a
-problem that is still some months old).
+We are going to remove obsolete assets from the cache, so keep
+the time stamps of the assets that we use up-to-date to have a way
+to detect stale assets later.
 
-Thomas Huth (2):
-  tests/functional: Set current time stamp of assets when using them
-  tests: Evict stale files in the functional download cache after a
-    while
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/functional/qemu_test/asset.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- MAINTAINERS                         |  1 +
- scripts/clean_functional_cache.py   | 47 +++++++++++++++++++++++++++++
- tests/Makefile.include              |  1 +
- tests/functional/qemu_test/asset.py |  8 +++++
- 4 files changed, 57 insertions(+)
- create mode 100755 scripts/clean_functional_cache.py
-
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index 2971a989d1e..251953ed99f 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -10,6 +10,7 @@
+ import os
+ import stat
+ import sys
++import time
+ import unittest
+ import urllib.request
+ from time import sleep
+@@ -113,6 +114,11 @@ def _wait_for_other_download(self, tmp_cache_file):
+         self.log.debug("Time out while waiting for %s!", tmp_cache_file)
+         raise
+ 
++    def _save_time_stamp(self):
++        with open(self.cache_file.with_suffix(".stamp"), 'w',
++                  encoding='utf-8') as fh:
++            fh.write(f"{int(time.time())}")
++
+     def fetch(self):
+         if not self.cache_dir.exists():
+             self.cache_dir.mkdir(parents=True, exist_ok=True)
+@@ -120,6 +126,7 @@ def fetch(self):
+         if self.valid():
+             self.log.debug("Using cached asset %s for %s",
+                            self.cache_file, self.url)
++            self._save_time_stamp()
+             return str(self.cache_file)
+ 
+         if not self.fetchable():
+@@ -208,6 +215,7 @@ def fetch(self):
+             tmp_cache_file.unlink()
+             raise AssetError(self, "Hash does not match %s" % self.hash)
+         tmp_cache_file.replace(self.cache_file)
++        self._save_time_stamp()
+         # Remove write perms to stop tests accidentally modifying them
+         os.chmod(self.cache_file, stat.S_IRUSR | stat.S_IRGRP)
+ 
 -- 
 2.51.0
 
