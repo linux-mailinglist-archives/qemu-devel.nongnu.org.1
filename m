@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A533BCD3AD
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D18DBCD0AE
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:09:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7CqD-0006tZ-SP; Fri, 10 Oct 2025 09:07:26 -0400
+	id 1v7CqF-00072K-D4; Fri, 10 Oct 2025 09:07:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Cpx-0006rx-V6
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:10 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1v7Cq1-0006v2-Kq
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:17 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7CpD-0003x4-Nd
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:09 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-421851bca51so1275173f8f.1
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:17 -0700 (PDT)
+ id 1v7CpI-0003xG-P2
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:07:12 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3fa528f127fso1526630f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:06:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760101576; x=1760706376; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760101578; x=1760706378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ppETInW3MEqjqW6NdufgfdsoZNQc59d69wd6I8lXxCI=;
- b=b4B/L+4PGitiwdak4iFk6r5SvjfcZrZBJGVczGQbmFY/YEU6N0Ro6wO6akZe/JK8G2
- PQmsnZmuGZJM7yf/A9UFZt9foHVGBH0UqCVubsYqYAdWRe+TW/s4pGw2Un7KBPEV9FUZ
- /jDk3i8sXlkgk8nQRVy0ahZGpEuWEcWvuSZS8F8p+hPYNTFbLSn7IVK/O+byi9bXteCi
- QJUUAq3U6ixKZyY0f/3Usxmwtw30Wig+PQ2TXWbhNrvmRBE3qLsS1drqOdxM/MCiV1Fg
- 6VOTz2U57Q2lguU6ZdZY3UwQyaFKCK6iLl042FuZwUYbgCAGDeJKeIBmv3S3GwqAsP8O
- Fy0Q==
+ :reply-to; bh=7+nBYL3F8qlOvra824tlrP4zq/NyYtJG8TYO8wDuVM8=;
+ b=YWnPl/mW4LrJgSBdZygKnji0f3VMdgN/eDaJ1HWOdFL+pTIYJ9NvoTL/8qVK6bgrNs
+ 127li20xA/t/yl06bgWEGOUKLrGN/i+q2ceShLsP9qjtDnNdU+iHXwBzz4rB0tl3pi3z
+ DbpPEEpEut2wGu27sHxSURgHGbwC5jP1b3qkpTAhw00eYwP0gqQrXkbZhfmKgXuJYXKy
+ qGnOjGm9OUXrEFvF9Y8g2apnJFZQrPFLiJXtc0BupbaxWmx/+l9oo+OBahHKMW5TDG6J
+ xcX55iWmsmNV0O8RF5JCDJraypCiP5JPSDmGwHrPQa63vtMGk18RKGMt8jVd0GATrMSz
+ gWbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760101576; x=1760706376;
+ d=1e100.net; s=20230601; t=1760101578; x=1760706378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ppETInW3MEqjqW6NdufgfdsoZNQc59d69wd6I8lXxCI=;
- b=nQy6qbNFX2JUUbTOcJUkfeqNzfM63s21eCiQGo/K49cX1+nDlBjg76EJo0+Rz9jnyi
- usCinsUmwBoOaD+f8ZT45eqgl5Eyj7LEkKp40JvTqMBmYMPlCavUBXsb7J1kneIC0zeU
- RlTirTv2sSVsyXgE/3mbAUoUCsBsPZnhiVFkYfPVSCG+JCX9ovLn3Qx00TPq/RfYtSx6
- VsQ8iSBalLm+DGHBOrdln5pX8v+OYmQeGUvh+BrjmBswBfEx4MWY2Tq9sFf+rRb1wSW0
- CLGESZRmAPIVZKo2nwrFYEuPlaIB5hs7NK7XZkTZCeFLm2+bu7q2lXWWOO89n1d5QfKD
- 5xtA==
-X-Gm-Message-State: AOJu0Yxo0XoafAMwwMHOtoFqT1zkoqCH+Ucm5GCiECpzSGfyZA8T6kWz
- 2UWbs2TLECAVdQchn+PqbnZk7bXq7q/xu0j4XsEM1IDkJyp58xBHQMrm9b2gMN2K4JjQa1g4gZX
- VMzdl
-X-Gm-Gg: ASbGncuZfHWnKxwEZVJF5UySlZ2nEN1XDzVEx+q60QPhaZA+Qlty+ZX//1AJI9eEi0Y
- LnP5M4T09hraaAMb3gCvuhlPTmXFdXvqqQ6lc476XqPLYYcXv5gGzUzvoaZlCcoaIXoCd1NeI/2
- OVLyqem12n9p6wwHjWa9B1arXHyRSF72FLmJkuVdoGl286y+1eN+ECI8Ge6+KvlImM4uBR27xd9
- hXj0HiPephJBKMbintjo56lPJ+ZySbDj06IqOvNE7UkNSjAOjAzHQEHC2fk4s2tzBSF0SOPkIwd
- wI0GzCvpdfAgDb4y1OFGFpwK7SD2f1sKcJUIgDID0weC51Imw347WP7QLUijs655XvPcGzc/Pvk
- k/F95oOoMBSIulSqO7MA50YnVl7j2XCZYtKqZTyfD0vvlW6YY+EQ=
-X-Google-Smtp-Source: AGHT+IGcGku/UhwZBBcgzOTOgb6OnJj7t2TpsTmJiaTGcJD3jl0cSdaViLeS5vnozGayJDxxdbfY4A==
-X-Received: by 2002:a05:6000:2010:b0:402:4142:c7a7 with SMTP id
- ffacd0b85a97d-42666ac6f35mr8384789f8f.16.1760101576066; 
- Fri, 10 Oct 2025 06:06:16 -0700 (PDT)
+ bh=7+nBYL3F8qlOvra824tlrP4zq/NyYtJG8TYO8wDuVM8=;
+ b=AhFb5SrUl3drjPKa1RG4Jp3FTNdUfzvvK66Nz+t7dg8+Fkpot1RfFCo1S3762MKysO
+ iMxITZdNdNmWXlxA4z5g5aHyGYNKl4WOqgGH5s1RuWc3sH9bxDIKggPNzLQbjh/T1RN7
+ ywrh7faWzKCgFMdR75HrNg8tkqrqR0nYCWIIbQqbFtfJZp79dY5Zix+PkAv5G15du8XD
+ G8X9/ubQHP/5RiFN+e51Qeh3v5C3wrCBFbxARJYapXwnEyFHnCNe8jRuwhou/U7mYhCY
+ D+wtEuWBWj2puSHLiTwmI6CelZaIXQiuOajmylxqcskHdPoyTJvlrNMfgvwjYLc3oKM4
+ 4jSA==
+X-Gm-Message-State: AOJu0YxtLBxJgeAmaWZOIMpW6Yzl0dIGcHJG//k77HgUSbjUCIJMWB25
+ RE5LuTizlT7LIU7/ptNqvQrkMc+rSFSsM9c2Y/29EkvmsqV5EI8FeTd7nD198qVHDKazmOy3Sqv
+ vsMWp
+X-Gm-Gg: ASbGncuQMKkHy8p9Kje4ZzhZ27d6wsLZeTDb3Jkpb7+JB6z41YrGyCmqRRsPQ02e8OT
+ 7zTR4uNNcE25wh1i/uEtvV/8FFptifk0Slnop4p/IbspmNd5FzGdD1/YAeOaRQrNoCmlmLfn3km
+ D13CBOjDkCXJVBWS0ekMjFqeKqmyz80qvsLCNbnmwgevbO93a8qu2pxzEb/86zqBYIIv8v9LSC0
+ ZX9KmERZqfdnW2/y0b0rgk1S3yWj3HLDZijqRSN0+adCpL0iqqdtXfbPoUt8HR5R6TOgPaTxbZf
+ 6Sc7vFn0jjn9D2bgLwTsWnjm3om6yhC1ldG+91VDcUCD9bIa9Bc02gGVIM4rDlHyZU5g4blJrBc
+ DrKpbiHO43fs7hzXo5j2py4z5tN77JkoUgDwRswJROpo9aw5FNgE=
+X-Google-Smtp-Source: AGHT+IHMFOwhmXHr/OR2oBwK+pHFvwJ+D2U4oKlRQ+dGqNz18oPctB1sRFG0NpYfplokZ1gdBao6gQ==
+X-Received: by 2002:a05:6000:420e:b0:401:c55d:2d20 with SMTP id
+ ffacd0b85a97d-42582a04d0amr9472662f8f.26.1760101577839; 
+ Fri, 10 Oct 2025 06:06:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.15
+ ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.06.16
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 06:06:15 -0700 (PDT)
+ Fri, 10 Oct 2025 06:06:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 41/76] target/arm: Implement EXLOCKException for ELR_ELx and
- SPSR_ELx
-Date: Fri, 10 Oct 2025 14:04:52 +0100
-Message-ID: <20251010130527.3921602-42-peter.maydell@linaro.org>
+Subject: [PULL 42/76] target/arm: Split {full,core}_a64_user_mem_index
+Date: Fri, 10 Oct 2025 14:04:53 +0100
+Message-ID: <20251010130527.3921602-43-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251010130527.3921602-1-peter.maydell@linaro.org>
 References: <20251010130527.3921602-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,193 +100,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-If PSTATE.EXLOCK is set, and the GCS EXLOCK enable bit is set,
-and nested virt is in the appropriate state, then we need to
-raise an EXLOCK exception.
-
-Since PSTATE.EXLOCK cannot be set without GCS being present
-and enabled, no explicit check for GCS is required.
+Separate get_a64_user_mem_index into two separate functions, one which
+returns the full ARMMMUIdx and one which returns the core mmu_idx.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251008215613.300150-42-richard.henderson@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20251008215613.300150-43-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpregs.h        |  8 +++++
- target/arm/cpu.h           |  1 +
- target/arm/helper.c        | 67 ++++++++++++++++++++++++++++++++++----
- target/arm/tcg/op_helper.c |  7 ++++
- 4 files changed, 77 insertions(+), 6 deletions(-)
+ target/arm/tcg/translate-a64.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index bd2121a336e..a79f00351c8 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -351,6 +351,14 @@ typedef enum CPAccessResult {
-      * specified target EL.
-      */
-     CP_ACCESS_UNDEFINED = (2 << 2),
-+
-+    /*
-+     * Access fails with EXLOCK, a GCS exception syndrome.
-+     * These traps are always to the current execution EL,
-+     * which is the same as the usual target EL because
-+     * they cannot occur from EL0.
-+     */
-+    CP_ACCESS_EXLOCK = (3 << 2),
- } CPAccessResult;
- 
- /* Indexes into fgt_read[] */
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 54f3d7b1cca..91a851dac17 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1502,6 +1502,7 @@ void pmu_init(ARMCPU *cpu);
- #define PSTATE_C (1U << 29)
- #define PSTATE_Z (1U << 30)
- #define PSTATE_N (1U << 31)
-+#define PSTATE_EXLOCK (1ULL << 34)
- #define PSTATE_NZCV (PSTATE_N | PSTATE_Z | PSTATE_C | PSTATE_V)
- #define PSTATE_DAIF (PSTATE_D | PSTATE_A | PSTATE_I | PSTATE_F)
- #define CACHED_PSTATE_BITS (PSTATE_NZCV | PSTATE_DAIF | PSTATE_BTYPE)
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 5d40266d96b..1aa0a157b72 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3437,6 +3437,61 @@ static CPAccessResult access_nv1(CPUARMState *env, const ARMCPRegInfo *ri,
-     return CP_ACCESS_OK;
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 43c9bfef93f..1337e16a96b 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -93,7 +93,7 @@ void a64_translate_init(void)
  }
  
-+static CPAccessResult access_nv1_or_exlock_el1(CPUARMState *env,
-+                                               const ARMCPRegInfo *ri,
-+                                               bool isread)
-+{
-+    if (arm_current_el(env) == 1) {
-+        uint64_t nvx = arm_hcr_el2_nvx_eff(env);
-+
-+        if (!isread &&
-+            (env->pstate & PSTATE_EXLOCK) &&
-+            (env->cp15.gcscr_el[1] & GCSCR_EXLOCKEN) &&
-+            !(nvx & HCR_NV1)) {
-+            return CP_ACCESS_EXLOCK;
-+        }
-+        return access_nv1_with_nvx(nvx);
-+    }
-+
-+    /*
-+     * At EL2, since VHE redirection is done at translation time,
-+     * el_is_in_host is always false here, so EXLOCK does not apply.
-+     */
-+    return CP_ACCESS_OK;
-+}
-+
-+static CPAccessResult access_exlock_el2(CPUARMState *env,
-+                                        const ARMCPRegInfo *ri, bool isread)
-+{
-+    int el = arm_current_el(env);
-+
-+    if (el == 3) {
-+        return CP_ACCESS_OK;
-+    }
-+
-+    /*
-+     * Access to the EL2 register from EL1 means NV is set, and
-+     * EXLOCK has priority over an NV1 trap to EL2.
-+     */
-+    if (!isread &&
-+        (env->pstate & PSTATE_EXLOCK) &&
-+        (env->cp15.gcscr_el[el] & GCSCR_EXLOCKEN)) {
-+        return CP_ACCESS_EXLOCK;
-+    }
-+    return CP_ACCESS_OK;
-+}
-+
-+static CPAccessResult access_exlock_el3(CPUARMState *env,
-+                                        const ARMCPRegInfo *ri, bool isread)
-+{
-+    if (!isread &&
-+        (env->pstate & PSTATE_EXLOCK) &&
-+        (env->cp15.gcscr_el[3] & GCSCR_EXLOCKEN)) {
-+        return CP_ACCESS_EXLOCK;
-+    }
-+    return CP_ACCESS_OK;
-+}
-+
- #ifdef CONFIG_USER_ONLY
  /*
-  * `IC IVAU` is handled to improve compatibility with JITs that dual-map their
-@@ -3608,7 +3663,7 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-     { .name = "ELR_EL1", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS,
-       .opc0 = 3, .opc1 = 0, .crn = 4, .crm = 0, .opc2 = 1,
--      .access = PL1_RW, .accessfn = access_nv1,
-+      .access = PL1_RW, .accessfn = access_nv1_or_exlock_el1,
-       .nv2_redirect_offset = 0x230 | NV2_REDIR_NV1,
-       .vhe_redir_to_el2 = ENCODE_AA64_CP_REG(3, 4, 4, 0, 1),
-       .vhe_redir_to_el01 = ENCODE_AA64_CP_REG(3, 5, 4, 0, 1),
-@@ -3616,7 +3671,7 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-     { .name = "SPSR_EL1", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS,
-       .opc0 = 3, .opc1 = 0, .crn = 4, .crm = 0, .opc2 = 0,
--      .access = PL1_RW, .accessfn = access_nv1,
-+      .access = PL1_RW, .accessfn = access_nv1_or_exlock_el1,
-       .nv2_redirect_offset = 0x160 | NV2_REDIR_NV1,
-       .vhe_redir_to_el2 = ENCODE_AA64_CP_REG(3, 4, 4, 0, 0),
-       .vhe_redir_to_el01 = ENCODE_AA64_CP_REG(3, 5, 4, 0, 0),
-@@ -4100,7 +4155,7 @@ static const ARMCPRegInfo el2_cp_reginfo[] = {
-     { .name = "ELR_EL2", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS | ARM_CP_NV2_REDIRECT,
-       .opc0 = 3, .opc1 = 4, .crn = 4, .crm = 0, .opc2 = 1,
--      .access = PL2_RW,
-+      .access = PL2_RW, .accessfn = access_exlock_el2,
-       .fieldoffset = offsetof(CPUARMState, elr_el[2]) },
-     { .name = "ESR_EL2", .state = ARM_CP_STATE_BOTH,
-       .type = ARM_CP_NV2_REDIRECT,
-@@ -4118,7 +4173,7 @@ static const ARMCPRegInfo el2_cp_reginfo[] = {
-     { .name = "SPSR_EL2", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS | ARM_CP_NV2_REDIRECT,
-       .opc0 = 3, .opc1 = 4, .crn = 4, .crm = 0, .opc2 = 0,
--      .access = PL2_RW,
-+      .access = PL2_RW, .accessfn = access_exlock_el2,
-       .fieldoffset = offsetof(CPUARMState, banked_spsr[BANK_HYP]) },
-     { .name = "VBAR_EL2", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 0, .opc2 = 0,
-@@ -4400,7 +4455,7 @@ static const ARMCPRegInfo el3_cp_reginfo[] = {
-     { .name = "ELR_EL3", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS,
-       .opc0 = 3, .opc1 = 6, .crn = 4, .crm = 0, .opc2 = 1,
--      .access = PL3_RW,
-+      .access = PL3_RW, .accessfn = access_exlock_el3,
-       .fieldoffset = offsetof(CPUARMState, elr_el[3]) },
-     { .name = "ESR_EL3", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 6, .crn = 5, .crm = 2, .opc2 = 0,
-@@ -4411,7 +4466,7 @@ static const ARMCPRegInfo el3_cp_reginfo[] = {
-     { .name = "SPSR_EL3", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS,
-       .opc0 = 3, .opc1 = 6, .crn = 4, .crm = 0, .opc2 = 0,
--      .access = PL3_RW,
-+      .access = PL3_RW, .accessfn = access_exlock_el3,
-       .fieldoffset = offsetof(CPUARMState, banked_spsr[BANK_MON]) },
-     { .name = "VBAR_EL3", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 6, .crn = 12, .crm = 0, .opc2 = 0,
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index dd3700dc6f2..4fbd219555d 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -881,6 +881,13 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+- * Return the core mmu_idx to use for A64 load/store insns which
++ * Return the full arm mmu_idx to use for A64 load/store insns which
+  * have a "unprivileged load/store" variant. Those insns access
+  * EL0 if executed from an EL which has control over EL0 (usually
+  * EL1) but behave like normal loads and stores if executed from
+@@ -103,7 +103,7 @@ void a64_translate_init(void)
+  *           normal encoding (in which case we will return the same
+  *           thing as get_mem_index().
+  */
+-static int get_a64_user_mem_index(DisasContext *s, bool unpriv)
++static ARMMMUIdx full_a64_user_mem_index(DisasContext *s, bool unpriv)
+ {
+     /*
+      * If AccType_UNPRIV is not used, the insn uses AccType_NORMAL,
+@@ -130,7 +130,13 @@ static int get_a64_user_mem_index(DisasContext *s, bool unpriv)
+             g_assert_not_reached();
          }
-         syndrome = syn_uncategorized();
-         break;
-+    case CP_ACCESS_EXLOCK:
-+        /*
-+         * CP_ACCESS_EXLOCK is always directed to the current EL,
-+         * which is going to be the same as the usual target EL.
-+         */
-+        syndrome = syn_gcs_exlock();
-+        break;
-     default:
-         g_assert_not_reached();
      }
+-    return arm_to_core_mmu_idx(useridx);
++    return useridx;
++}
++
++/* Return the core mmu_idx per above. */
++static int core_a64_user_mem_index(DisasContext *s, bool unpriv)
++{
++    return arm_to_core_mmu_idx(full_a64_user_mem_index(s, unpriv));
+ }
+ 
+ static void set_btype_raw(int val)
+@@ -3577,7 +3583,7 @@ static void op_addr_ldst_imm_pre(DisasContext *s, arg_ldst_imm *a,
+     if (!a->p) {
+         tcg_gen_addi_i64(*dirty_addr, *dirty_addr, offset);
+     }
+-    memidx = get_a64_user_mem_index(s, a->unpriv);
++    memidx = core_a64_user_mem_index(s, a->unpriv);
+     *clean_addr = gen_mte_check1_mmuidx(s, *dirty_addr, is_store,
+                                         a->w || a->rn != 31,
+                                         mop, a->unpriv, memidx);
+@@ -3598,7 +3604,7 @@ static bool trans_STR_i(DisasContext *s, arg_ldst_imm *a)
+ {
+     bool iss_sf, iss_valid = !a->w;
+     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
+-    int memidx = get_a64_user_mem_index(s, a->unpriv);
++    int memidx = core_a64_user_mem_index(s, a->unpriv);
+     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
+ 
+     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, true, mop);
+@@ -3616,7 +3622,7 @@ static bool trans_LDR_i(DisasContext *s, arg_ldst_imm *a)
+ {
+     bool iss_sf, iss_valid = !a->w;
+     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
+-    int memidx = get_a64_user_mem_index(s, a->unpriv);
++    int memidx = core_a64_user_mem_index(s, a->unpriv);
+     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
+ 
+     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, false, mop);
+@@ -4514,7 +4520,7 @@ static bool do_SET(DisasContext *s, arg_set *a, bool is_epilogue,
+         return false;
+     }
+ 
+-    memidx = get_a64_user_mem_index(s, a->unpriv);
++    memidx = core_a64_user_mem_index(s, a->unpriv);
+ 
+     /*
+      * We pass option_a == true, matching our implementation;
+@@ -4568,8 +4574,8 @@ static bool do_CPY(DisasContext *s, arg_cpy *a, bool is_epilogue, CpyFn fn)
+         return false;
+     }
+ 
+-    rmemidx = get_a64_user_mem_index(s, runpriv);
+-    wmemidx = get_a64_user_mem_index(s, wunpriv);
++    rmemidx = core_a64_user_mem_index(s, runpriv);
++    wmemidx = core_a64_user_mem_index(s, wunpriv);
+ 
+     /*
+      * We pass option_a == true, matching our implementation;
 -- 
 2.43.0
 
