@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F59BCD117
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0017ABCD3CB
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:25:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7CpF-0006EV-Li; Fri, 10 Oct 2025 09:06:25 -0400
+	id 1v7CpR-0006NB-5z; Fri, 10 Oct 2025 09:06:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Cp6-0006Ap-Cv
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:18 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1v7CpF-0006HO-WB
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:26 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v7Coi-0003qE-RZ
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:15 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46e47cca387so20234665e9.3
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:05:50 -0700 (PDT)
+ id 1v7Coi-0003qX-SU
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:06:24 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-4060b4b1200so760251f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760101547; x=1760706347; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760101548; x=1760706348; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=enwh1J6egv9t5DFR/y6StdYupePvfYrOAyg7vK7uziQ=;
- b=Rl9KuDnSq5bkZmN3iNUDiH8lixZW0pLwGIZpRVkQYh5jC9C5g/pTN6bvJpoZG3AIOT
- cRL1RHTBmnw6tfESMhADR9CO2LYRVhFVHXFeo9w5E7DsI5ylB/e8rvW0EHhMH6c6DWxJ
- ePnn9/Ptvv85n8Pc1qSubIJ1T1KORiUwXjvgT4uJGeDpPvmc01wMenEUZvLRgkFKgzFs
- jk0FwxYdLbq2V8EavaV6jueSHhcq6mZu3JmeKxhUwrL/+Zi3TnZRPpFKmwCsBXkLAfk9
- r2QK/+2BoGdd/Kz7bbO+sss3+t+wGbRN4jBVdCxXtBSSAKpFjagiEl3XIk2yLxWj9IDV
- z1JA==
+ :reply-to; bh=xXmMqPnz22xb+g2HM6yf3gZM6LeywfZqHIoIxV6VTOY=;
+ b=eiZV4gEwYIa5TH6AXGMqJMeC8qAZwyrSyJYjTJaxnPPQ0C98u7MTykjOJ1UzxCH95v
+ aqhCP9UNe/Zc6MFM+iiBBQ1KsdicDC+qWExnohtlfj0KChsirot+J+vbZP5ZX+u1a/X1
+ VQFTQTASh3jxFTUehjZ/JYWsCTor/AR5yiQdy6EDCjTVTl0Y8kOL6Sq23TVQPGop/vcX
+ GNaAe5LYfPy3uLSDKC7YiGub5NgTcUNylq5NB0QltNaX5sjo0l8kLAx9oDNfthD6Ceuw
+ Ah0MQujaH1cl/M9A1d1JAGeEfEuOgbbEguTsi+bawsnQWYliAVfNKuvdwJZhHBoeO1gk
+ IzjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760101547; x=1760706347;
+ d=1e100.net; s=20230601; t=1760101548; x=1760706348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=enwh1J6egv9t5DFR/y6StdYupePvfYrOAyg7vK7uziQ=;
- b=PsF9ut7NMPIHC7Qw8uDOx/OhJpVoA9jl3Y+kQ4Du/PdyVwD7pPrc38A7yvbhGzYId5
- K4jOx1dfmb+LRh2UWphI5MHXZ8LPWrKFTKpXn5+aRKyKjSsLsXoojmMPOcFXR1pMgHmG
- Us2qbx/A1l1VELhxOu9KtHPS+ynG/BXevinZUIV7Ka+1mSW+FxAKp1WeIi1p7YmyOLZF
- GCuYHTGmVRPG6ZDQWmS9CQSpBRZsOzFauWN7coC2HJO4RI7ifwWqF2w1bSqOueG5L3XH
- KN65gKgq38iRmuPuQcLVejWdDCC7BP+Is348Asyg0GwoOk1sL0t8axi+GgbX0j/48xB4
- T/Jw==
-X-Gm-Message-State: AOJu0YzuZGfb/4qneBcJlfxcmAEBPKETh8BjgbDjtBfX5iMDnFgAJ7xH
- 7/ikuM0Rv9ZgeVxHuieTJ8H9dtagV2WjjnJo6JG/B7FkG+D2IRLqteX6EMb3MXb74WSc0/IKc5T
- CfWhP
-X-Gm-Gg: ASbGncuoc6j9BgeXY5eGuoQO0mxoeHOwTx2WIdCLDCFD0fGjvrqccfjuFIWKbOwFJkq
- T6/KtSA2enleUK1HUBG4bP4PNhjXxokfNCCtaM4QGUBXgDv6c8ud5AObSJTWleYUDeoOlk6tNlG
- BrCQxiEIEq5Xnh3ML2D+RN47T0MzkgglOktLg9KpnBFkqE+oC6DBYdERWQjHcHpZS7OtjGejnbM
- 8g5fVE/9pSSLQMUUqu53mKA+1DDjc1XfiwdPYnH/R5jFy4nvlkE/nx9mX+uJN8pIcf7BA/VnDoe
- yFtC14agIQg/uz3iHJoSYLCqnIVwnvbQmhtOErypcLsKM5mjHHNgobkKdUD6RFROgGpQqd7tPHN
- OpRf7IW0JmbqYEVdUgSSI6Y7oI/GVpGh7ZexVojHtB1GDtkofNtk=
-X-Google-Smtp-Source: AGHT+IF01bSwxs+gJP1JJvcPIVTuji1yeTjvhfHhjLA/P0LrqaebyQnw8my6Dior/S+icyegtLlLAQ==
-X-Received: by 2002:a05:600c:3483:b0:46e:1b89:77e5 with SMTP id
- 5b1f17b1804b1-46fa9a996cbmr79201265e9.12.1760101546622; 
- Fri, 10 Oct 2025 06:05:46 -0700 (PDT)
+ bh=xXmMqPnz22xb+g2HM6yf3gZM6LeywfZqHIoIxV6VTOY=;
+ b=pfIqePqauoJ8W1nX/HW0o+Tm8qur8eWrSQ2Mckxgbrl/AqPuwKUMD3uFPMxJwUlFCu
+ 2xMA37RcFLVdgbX1O4rEe7Y0GNRJk002dDDnTb0WGqSjcDiTVBvpalnBLE1M3qX9LwLF
+ I8b2wHwR4Uo00/Bgpw4NfWvkvqMqAcir1rAj5DwRou7qhCVhkivxbvt5bpWCd9ut6z+T
+ nNVAFRFoN/PneR8/9bubvBtujadGKvqWBMBvbKfQ+lxTtsjLMZsLQ1i20Y7Hqv1esKrx
+ VEFlNca+cF6AwT+vY+1woX0lNx+C/gwxh0gCSGKw25A+AiQxgx8UZA/F97K1hbeNY+7H
+ bHLg==
+X-Gm-Message-State: AOJu0YyStMldq8BnmnR5j87C72iWLf2Rblxn6nR9qtHbT6Q7E2giPLEL
+ GPmq00El44KuNRbHHhHKL7T/TCI/liOT08cAZxFp1R3RqEfoICmlyA2ieAgVzxGFfoRQJ6ZpgZu
+ 3eHm0
+X-Gm-Gg: ASbGnct+4BRGoZ5GmMv/J+xrOR+iUyws6fix0Je/eiDDhVCoKU/RsvZISSdGFXAp0gZ
+ BOqnj3XYb+qtLV8ttyBysBUlOrQgYuY7Tf6DRYgnZmsE6hq1fR/bUPyURO7XLoSngdnFbc4HvNc
+ L39YhrONaHn/iD8o1NnAfnlUe+lzq9HmbwExgcots/MCL6KiXF4UTFe1h3bv1fP6TVhOFg57/5x
+ lHUYgEU/ZIA6XnjOlE2QEJB/xFeHu6DbQzeoEmkt7N7SZEibptLhxl1deNfMjmDUs/fPcu0eDWG
+ 4FyVTg8xt+cfURai5eyFVmNBaq8XgzH0lTMDbXyFUJFocsmW4IG+DVj8zoMs+oIIM6lK1CmjSUo
+ dY5l7z4rRFX1TEEXS/24MqJLyY7qRaqYQWpolLiH2Uxb/xeIzVVs=
+X-Google-Smtp-Source: AGHT+IGiH+5wfuYkRDijkLeYtixQ47cn8zIxcGQUrP99iNh91lzDi00KNgbbjXlwflQ6FzmdahpTnA==
+X-Received: by 2002:a05:6000:240f:b0:3fa:ebaf:4c2f with SMTP id
+ ffacd0b85a97d-4266e8f70e7mr6577031f8f.30.1760101547839; 
+ Fri, 10 Oct 2025 06:05:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.05.45
+ ffacd0b85a97d-426ce583316sm4221657f8f.20.2025.10.10.06.05.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Oct 2025 06:05:45 -0700 (PDT)
+ Fri, 10 Oct 2025 06:05:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/76] include/exec/memopidx: Adjust for 32 mmu indexes
-Date: Fri, 10 Oct 2025 14:04:25 +0100
-Message-ID: <20251010130527.3921602-15-peter.maydell@linaro.org>
+Subject: [PULL 15/76] include/hw/core/cpu: Widen MMUIdxMap
+Date: Fri, 10 Oct 2025 14:04:26 +0100
+Message-ID: <20251010130527.3921602-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251010130527.3921602-1-peter.maydell@linaro.org>
 References: <20251010130527.3921602-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,50 +99,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+Widen MMUIdxMap to 32 bits.  Do not yet expand NB_MMU_MODES,
+but widen the map type in preparation.
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251008215613.300150-15-richard.henderson@linaro.org
+Message-id: 20251008215613.300150-16-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/exec/memopidx.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/hw/core/cpu.h | 2 +-
+ accel/tcg/cputlb.c    | 3 ---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/exec/memopidx.h b/include/exec/memopidx.h
-index eb7f1591a37..66d9c58b3af 100644
---- a/include/exec/memopidx.h
-+++ b/include/exec/memopidx.h
-@@ -25,9 +25,10 @@ typedef uint32_t MemOpIdx;
- static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
- {
- #ifdef CONFIG_DEBUG_TCG
--    assert(idx <= 15);
-+    assert(idx <= 31);
-+    assert(clz32(op) >= 5);
- #endif
--    return (op << 4) | idx;
-+    return (op << 5) | idx;
- }
- 
- /**
-@@ -38,7 +39,7 @@ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 4f7026a1191..d175edb6f8a 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -201,7 +201,7 @@ struct CPUClass {
+  * Fix the number of mmu modes to 16.
   */
- static inline MemOp get_memop(MemOpIdx oi)
- {
--    return oi >> 4;
-+    return oi >> 5;
- }
+ #define NB_MMU_MODES 16
+-typedef uint16_t MMUIdxMap;
++typedef uint32_t MMUIdxMap;
  
- /**
-@@ -49,7 +50,7 @@ static inline MemOp get_memop(MemOpIdx oi)
+ /* Use a fully associative victim tlb of 8 entries. */
+ #define CPU_VTLB_SIZE 8
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 7214d41cb5d..3010dd4f5df 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -90,9 +90,6 @@
   */
- static inline unsigned get_mmuidx(MemOpIdx oi)
- {
--    return oi & 15;
-+    return oi & 31;
- }
+ QEMU_BUILD_BUG_ON(sizeof(vaddr) > sizeof(run_on_cpu_data));
  
- #endif
+-/* We currently can't handle more than 16 bits in the MMUIDX bitmask.
+- */
+-QEMU_BUILD_BUG_ON(NB_MMU_MODES > 16);
+ #define ALL_MMUIDX_BITS ((1 << NB_MMU_MODES) - 1)
+ 
+ static inline size_t tlb_n_entries(CPUTLBDescFast *fast)
 -- 
 2.43.0
 
