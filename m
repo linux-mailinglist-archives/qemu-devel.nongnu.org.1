@@ -2,73 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287DCBCC5E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 11:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8CCBCC671
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 11:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v79Un-0000W9-4K; Fri, 10 Oct 2025 05:33:05 -0400
+	id 1v79dT-0003YU-26; Fri, 10 Oct 2025 05:42:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v79Uj-0000Tu-Cn
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 05:33:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1v79dO-0003Xa-0S; Fri, 10 Oct 2025 05:41:59 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v79Uf-0008SD-PF
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 05:33:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760088776;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N+UuhDVO9ypudlBt0lPyEmielLIGAP9FzQZjqJdYmu4=;
- b=e+o/R/Qt/KkpERpnaKhcUB/kRnOgPqUg2V95AIvwlzhSyWFLL6EzcqsglZM56FYJi5mmtU
- sn5fV25xY4EFioirP2OjFZC+Ma/oWXYKpxUiCOy3jIStU9u0efyUu9Wh4DFnHrzVjgnY3a
- R5WWEHxlHZSMdTm7ytojR7X2K5c2jYo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-PoY7MS4QNlO7ZdFSsHBiEA-1; Fri,
- 10 Oct 2025 05:32:55 -0400
-X-MC-Unique: PoY7MS4QNlO7ZdFSsHBiEA-1
-X-Mimecast-MFC-AGG-ID: PoY7MS4QNlO7ZdFSsHBiEA_1760088774
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C83A51800366; Fri, 10 Oct 2025 09:32:53 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.44.34.98])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A960D180035E; Fri, 10 Oct 2025 09:32:51 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] tests: Evict stale files in the functional download cache
- after a while
-Date: Fri, 10 Oct 2025 11:32:43 +0200
-Message-ID: <20251010093244.807544-3-thuth@redhat.com>
-In-Reply-To: <20251010093244.807544-1-thuth@redhat.com>
-References: <20251010093244.807544-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1v79dH-0003PF-V2; Fri, 10 Oct 2025 05:41:57 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59A9Ydp2047099
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 10 Oct 2025 18:34:44 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=x/7uMW3aUb4f+MV1RqbQecUUAkYpXAzDJhCxZDqC39w=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Date:Subject:Message-Id:To;
+ s=rs20250326; t=1760088885; v=1;
+ b=ctrcqZa9svXJFjag7F2MsEOdcgcWiw8mWYMQwHl+dbdpl4wCjKxrDaCH4AJK7wlu
+ RakwnoyWDoVWSBXToxoCkM3yFcp+gk24j0gBBcoD0kk4easlSWOEZantLxbACABn
+ 7mySgHD+b5v902BCWKpeZz73W03erQ5+dCh0x8WpnbMpoIjzgcQa/3IS8o2DwLCz
+ uqGHEoQJQDJNfHdfEOjs8a3HENwMx/0yNmyDY9DMppGX/b8Rius6Itv1Cz9jhajF
+ 29HBbuMbR7GKqMFHNnjxDdepD4oA8BoxnDAMZrFJaVqpDOsvlcTwiNqWHgPZF+W8
+ 9TG+v5gpXc3CZVDaRAjD+Q==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 10 Oct 2025 18:34:38 +0900
+Subject: [PATCH] vfio-user: Do not delete the subregion
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.438,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251010-vfio-v1-1-d7a6056539b7@rsg.ci.i.u-tokyo.ac.jp>
+X-B4-Tracking: v=1; b=H4sIAC3T6GgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0MD3bK0zHzdxDQLY5NU0zRjCwNzJaDSgqLUtMwKsDHRsbW1AGSJjU9
+ WAAAA
+X-Change-ID: 20251010-vfio-af834e5f3807
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,104 +103,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+Removing the PBA memory region from its container in
+vfio_user_msix_teardown() is semantically incorrect as the reference to
+the region is already deleted when the function is called.
 
-The download cache of the functional tests is currently only growing.
-But sometimes tests get removed or changed to use different assets,
-thus we should clean up the stale old assets after a while when they
-are not in use anymore. So add a script that looks at the time stamps
-of the assets and removes them if they haven't been touched for more
-than half of a year. Since there might also be some assets around that
-have been added to the cache before we added the time stamp files,
-assume a default time stamp that is close to the creation date of this
-patch, so that we don't delete these files too early.
+The operation is unnecessary in the first place since the PCI code
+removes all BARs during unrealization, so stop removing the PBA memory
+region in vfio_user_msix_teardown().
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- MAINTAINERS                       |  1 +
- scripts/clean_functional_cache.py | 47 +++++++++++++++++++++++++++++++
- tests/Makefile.include            |  1 +
- 3 files changed, 49 insertions(+)
- create mode 100755 scripts/clean_functional_cache.py
+ hw/vfio-user/pci.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 84cfd85e1fa..4c468d45337 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4398,6 +4398,7 @@ M: Thomas Huth <thuth@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
- F: docs/devel/testing/functional.rst
-+F: scripts/clean_functional_cache.py
- F: tests/functional/qemu_test/
+diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
+index b53ed3b456f9..1a3741a29a1a 100644
+--- a/hw/vfio-user/pci.c
++++ b/hw/vfio-user/pci.c
+@@ -74,12 +74,6 @@ static void vfio_user_msix_setup(VFIOPCIDevice *vdev)
  
- Windows Hosted Continuous Integration
-diff --git a/scripts/clean_functional_cache.py b/scripts/clean_functional_cache.py
-new file mode 100755
-index 00000000000..e5c4d1acaf3
---- /dev/null
-+++ b/scripts/clean_functional_cache.py
-@@ -0,0 +1,47 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+"""Delete stale assets from the download cache of the functional tests"""
-+
-+import os
-+import stat
-+import sys
-+import time
-+from pathlib import Path
-+
-+
-+cache_dir_env = os.getenv('QEMU_TEST_CACHE_DIR')
-+if cache_dir_env:
-+    cache_dir = Path(cache_dir_env, "download")
-+else:
-+    cache_dir = Path(Path("~").expanduser(), ".cache", "qemu", "download")
-+
-+if not os.path.exists(cache_dir):
-+    print(f"Cache dir {cache_dir} does not exist!", file=sys.stderr)
-+    sys.exit(1)
-+
-+os.chdir(cache_dir)
-+
-+for file in os.listdir(cache_dir):
-+    filename = os.fsdecode(file)
-+    # Only consider the files that use a sha256 as filename:
-+    if len(filename) != 64:
-+        continue
-+
-+    try:
-+        with open(filename + ".stamp", "r", encoding='utf-8') as fh:
-+            timestamp = int(fh.read())
-+    except FileNotFoundError:
-+        # Assume it's an old file that was already in the cache before we
-+        # added the code for evicting stale assets. Use the release date
-+        # of QEMU v10.1 as a default timestamp.
-+        timestamp = time.mktime((2025, 8, 26, 0, 0, 0, 0, 0, 0))
-+
-+    age = time.time() - timestamp
-+
-+    # Delete files older than half of a year (183 days * 24h * 60m * 60s)
-+    if age > 15811200:
-+        print(f"Removing {cache_dir}/{filename}.")
-+        os.chmod(filename, stat.S_IWRITE)
-+        os.remove(filename)
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index e47ef4d45c9..d4dfbf3716d 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -111,6 +111,7 @@ $(FUNCTIONAL_TARGETS): check-venv
- .PHONY: check-functional
- check-functional: check-venv
- 	@$(NINJA) precache-functional
-+	@$(PYTHON) $(SRC_PATH)/scripts/clean_functional_cache.py
- 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
- 
- .PHONY: check-func check-func-quick
--- 
-2.51.0
+ static void vfio_user_msix_teardown(VFIOPCIDevice *vdev)
+ {
+-    MemoryRegion *mr, *sub;
+-
+-    mr = vdev->bars[vdev->msix->pba_bar].mr;
+-    sub = vdev->msix->pba_region;
+-    memory_region_del_subregion(mr, sub);
+-
+     g_free(vdev->msix->pba_region);
+     vdev->msix->pba_region = NULL;
+ }
+
+---
+base-commit: 94474a7733a57365d5a27efc28c05462e90e8944
+change-id: 20251010-vfio-af834e5f3807
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
