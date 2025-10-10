@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651C5BCBDDE
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 09:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D167BCBDD2
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 09:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v77Dz-0001dp-9H; Fri, 10 Oct 2025 03:07:35 -0400
+	id 1v77E1-0001eS-Mc; Fri, 10 Oct 2025 03:07:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77Dx-0001dK-59
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:07:33 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77Dz-0001dt-FQ
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:07:35 -0400
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77Ds-0007xT-1K
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:07:32 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46e52279279so11653615e9.3
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 00:07:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v77Dw-0007xu-1f
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 03:07:33 -0400
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-46e2e6a708fso11167525e9.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 00:07:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760080043; x=1760684843; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760080048; x=1760684848; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UdXB7ylLc7Vhz3ZaX5Klsde0ekKLRZrXew/WW8Z5jnE=;
- b=fRXuKAA9IIKverx769MaAU4ZSW12xMIjRsn6sWSnM62lzY6UOmHo+RETeqs892dH7A
- IoqkNtb8JkiyrJZbkvJFKjd7Awno1iFbwNHLWcf7/W13H6AJdIuGHZPaaHpqJ5PIDxPQ
- gqfIiOz5+xnfKNyw2bwVscbp2/3Le0D29fn9qcRi2IkD7S++sRyNJp7kwT5NTGGvxM1b
- OZSWYfhnzK6iePmkbw4TnA1qGYlCXhyYsoa486TdQpTwncACc/UFQ5D/ITJpAJC068j5
- aoif6UGZEfJ/grGMfT7CxKBXS23cmoolfDF7BP4AjjNJgwW5/lJiGNdNjbunlTyCY0pE
- aICQ==
+ bh=dKAKoCrCXL4+jyUO8dvnijZXKLkuHiqnUNKcG3emi0Y=;
+ b=rt/s42uYVMDnJVTJ0YaqwF5R2LDmA2e5Wjjo9xn8TVw9pEW5JKY/+4RAjM1TclBkaY
+ 3c2wU0IuiwJH9jWOu+7aBAfpqRcHEBI95jRHCjjDGDwtnk4kXJzFN66TJ5loQwDIHrHA
+ ZdeXd7DTvOT+4NqO0pdfZiaaS0cF7AJLZiTXRx/KLJNR6JKy6KMFIKyJzHU8PUUFGTr6
+ ABK66ZSzbpCliJm2zfmGGE1mmx5USsHO66s93borlICLKDGMLCOtfPUtx53ujxJFobg8
+ JChzjkq5wHLABdJD8+Wl3IEfY3HyOoYAGALaZiLS/EdhAdRXHsOKqdAT3Z3968B/JU/9
+ Ydsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760080043; x=1760684843;
+ d=1e100.net; s=20230601; t=1760080048; x=1760684848;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UdXB7ylLc7Vhz3ZaX5Klsde0ekKLRZrXew/WW8Z5jnE=;
- b=ZbvbNJRjhnBVP7UVJUq3dvEL0Ik3+ai4bC2x2pbfG2CmAzH8Qs+JygcJ1zQRppaXmo
- v/9UdXioD9yUG3KCAaSjJUtpLPu1DUWapTPFm0KS3szZe8tH+0bsBpCyA7aL//KL40KE
- QaZH8gMTuLTFh8bOFKo86lx7kZ/RuapMN1EUqmrhjIyVjaY/WtKgsBfH0JH9BDwyKEQq
- dLlM0Fr7gTWZ6A7sVL5HAYsBrgd7zblJcLc86HyauwAdaQ/YTitWwJSjwKKcXadFOJ2q
- zZzTIKw/+4e+tUSuo975vMGJdInTTKJHAl2pGrAUEnD0HfqvybIUHg22spy+2fjotszo
- cC+w==
-X-Gm-Message-State: AOJu0YxQvy3jMOs0MhGLm7+RnYy3CDAC632e2H83aBO7lx60USguSCoi
- CkGSYfdhDQoB3EMSCdeLzgj2BhRp0OqVdWNEkUCoy0O/4ZQyUpP1M0yWe2Yxx75L/3JPjfjTTl3
- YaZzNvyMSWg==
-X-Gm-Gg: ASbGnct2pRLreXYw7dEcic76BqS7v85PrHWieSIXGbd+WfhoX3SasbQlbuHoRtOtksu
- GQgKGUfFEiONMMQO0bCSok/DSi5P0Nn9ZUC63d3OWG3+epq/AbGRu+FYzMXWUCjxAeBm7Ffr48R
- mtsV/AMo0BShhNYVf6BWBIn77nYrkHdrTiYkgpfbUDMEL/Kh7msQNSDyj29wHA1N/WxjwsN1OAT
- QrM2DgkgBo6DySoXfWOczoZL+8ba/l8j7eTEwypY7n7M7Gk84bzybqPL1lV4hynGP+6IJHJVgiC
- 6Wy8V3frzRQXIGaM6q1RlMqAJ+RJBnMUQQ3mEHlx/TwDZGfP2inTasTqw+DEpq0Ph8tkHXjz/5s
- QutReX3l3qx00BqGP+bTdaRAC8odVy3HLEcmPFpNprZ3mFt26t7Kiykv1VHPQbTbmo5GKFD/pwB
- ZgomJno+vehWU7pTP+Rvpm0o2z
-X-Google-Smtp-Source: AGHT+IGnMlG8AVlvQ3dQHjGkrHdxEmcdXTZ5LQFOn7/LfrfBqXqk6k3FNJlW+0ced2X+AYg9kUydDQ==
-X-Received: by 2002:a05:600c:1395:b0:46e:37fc:def0 with SMTP id
- 5b1f17b1804b1-46fa9a9efaamr72727875e9.9.1760080043573; 
- Fri, 10 Oct 2025 00:07:23 -0700 (PDT)
+ bh=dKAKoCrCXL4+jyUO8dvnijZXKLkuHiqnUNKcG3emi0Y=;
+ b=YHTluH5jH1POyLGL8p4OR9pl92E+BSp9MzxBupyzr8L8jyTMoYTQ2hAS7CxsFVKuAI
+ 0nUX7uFWYLz0hGimaO/iPyFzKUqChJ+jLEpnzs6Xm8xSscDpcvd/BBOAmlkVyfKhv0YS
+ yIZFpRDrtNieev/LZMUqT6kjaE6ItNRVg7Yu5vgGqTXUrghhk0tYu72ZWaPUI5hSRVnW
+ oTAc37GATBoNEN8jAkc6mk790qN4NlWA7sqnZImWetvUCbJfwjdPbThfTQHHwipo/58i
+ OYvZDihtz1TU4B8+4zGR+p212mB/dMP9CKPpbwEB9w/nuGjNKlK0PICntRiBjbQnUcyI
+ Vvtg==
+X-Gm-Message-State: AOJu0YxfucezmWVXMF6gA7AqB8EvSkwWmR6PmV1XI8zkczZCdM+3ZFAZ
+ ROA3I9BjwbuC/NpD1634ZTjdcefQ5MSzX0mZEeETHIeLDKTvltjijHBh79MEj9C5sXuHuEoDMGQ
+ 3F9ZibIMQo8bM
+X-Gm-Gg: ASbGnctw5T/7bpTOg9b1ZVtNYxMxlwyREUeT09Q7vCdkceRKr/v3hEbX78656AHO5sc
+ 2qBGoao0Gslf2RBr34Sqf9zxIbPY1y/+BrnqTcu7li6gEKTwxyYCmRA/VyGvgCWJNeH3ASgRG55
+ oZfZrPytNqwGjXuYsyIc/ffa1zat7jtqsszRf8StKHlYlG5ajCDN0F2ucimB6mABnOyo8T2D6Wz
+ zO3bhEXVNVqX0tymtt7PJxH/0GmCZMSqXXaJYvTJ5jZhBoTAnu5CcRsR8H1ehaHwbN4mWpp+ECd
+ IPZ4/8yQ+8YzSOl23Dzuuvr7y1R4bJ/Tz2KIrh45MQ8bDs+3SgnBtvaeI/qfiLS5PcY4ZJJo/ar
+ dMbkD/isFDggnDMh8THc2m2XdKBLAQjHFKsHOAJhUveX9w7KPAHXAbUS5MdmFpFo1z75sdo+m90
+ pmPJAtEuyAlnTJUJq0scyzDXnp
+X-Google-Smtp-Source: AGHT+IFHFRpk1YsDhmZMVZWf9CwZ3VzL/nEYWqU80e6jk7ZrGeymWYOPKFUx2kVJg/PPMVY0u11JTg==
+X-Received: by 2002:a05:600c:37cd:b0:46e:6d5f:f6c with SMTP id
+ 5b1f17b1804b1-46fa9a8c2ecmr70738935e9.3.1760080048304; 
+ Fri, 10 Oct 2025 00:07:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fab3d438fsm54961675e9.2.2025.10.10.00.07.22
+ 5b1f17b1804b1-46fab648795sm55878405e9.4.2025.10.10.00.07.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 00:07:23 -0700 (PDT)
+ Fri, 10 Oct 2025 00:07:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Stafford Horne <shorne@gmail.com>, Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 04/13] target/openrisc: Remove target_ulong use in
- raise_mmu_exception()
-Date: Fri, 10 Oct 2025 09:06:52 +0200
-Message-ID: <20251010070702.51484-5-philmd@linaro.org>
+Subject: [PATCH v3 05/13] target/openrisc: Use vaddr type for $pc jumps
+Date: Fri, 10 Oct 2025 09:06:53 +0200
+Message-ID: <20251010070702.51484-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010070702.51484-1-philmd@linaro.org>
 References: <20251010070702.51484-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,50 +100,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCGCPUOps::tlb_fill() handler provides a vaddr type (since commit
-7510454e3e7 "cpu: Turn cpu_handle_mmu_fault() into a CPUClass hook").
-
-Do not inline get_phys_nommu(), rely on the linker to optimize at
-linking time.
+translator_use_goto_tb() expects a vaddr type since commit
+b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
+translator_*()").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/openrisc/mmu.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ target/openrisc/translate.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/openrisc/mmu.c b/target/openrisc/mmu.c
-index acea50c41eb..ffb732e0d1f 100644
---- a/target/openrisc/mmu.c
-+++ b/target/openrisc/mmu.c
-@@ -28,15 +28,14 @@
- #include "qemu/host-utils.h"
- #include "hw/loader.h"
+diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
+index 5ab3bc7021d..9f61f917b3b 100644
+--- a/target/openrisc/translate.c
++++ b/target/openrisc/translate.c
+@@ -51,7 +51,7 @@ typedef struct DisasContext {
+     uint32_t avr;
  
--static inline void get_phys_nommu(hwaddr *phys_addr, int *prot,
--                                  target_ulong address)
-+static void get_phys_nommu(hwaddr *phys_addr, int *prot, vaddr address)
- {
-     *phys_addr = address;
-     *prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
- }
+     /* If not -1, jmp_pc contains this value and so is a direct jump.  */
+-    target_ulong jmp_pc_imm;
++    vaddr jmp_pc_imm;
  
- static int get_phys_mmu(OpenRISCCPU *cpu, hwaddr *phys_addr, int *prot,
--                        target_ulong addr, int need, bool super)
-+                        vaddr addr, int need, bool super)
- {
-     int idx = (addr >> TARGET_PAGE_BITS) & TLB_MASK;
-     uint32_t imr = cpu->env.tlb.itlb[idx].mr;
-@@ -95,7 +94,7 @@ static int get_phys_mmu(OpenRISCCPU *cpu, hwaddr *phys_addr, int *prot,
-     }
- }
+     /* The temporary corresponding to register 0 for this compilation.  */
+     TCGv R0;
+@@ -580,7 +580,7 @@ static bool trans_l_muldu(DisasContext *dc, arg_ab *a)
  
--static void raise_mmu_exception(OpenRISCCPU *cpu, target_ulong address,
-+static void raise_mmu_exception(OpenRISCCPU *cpu, vaddr address,
-                                 int exception)
+ static bool trans_l_j(DisasContext *dc, arg_l_j *a)
  {
-     CPUState *cs = CPU(cpu);
+-    target_ulong tmp_pc = dc->base.pc_next + a->n * 4;
++    vaddr tmp_pc = dc->base.pc_next + a->n * 4;
+ 
+     tcg_gen_movi_tl(jmp_pc, tmp_pc);
+     dc->jmp_pc_imm = tmp_pc;
+@@ -590,8 +590,8 @@ static bool trans_l_j(DisasContext *dc, arg_l_j *a)
+ 
+ static bool trans_l_jal(DisasContext *dc, arg_l_jal *a)
+ {
+-    target_ulong tmp_pc = dc->base.pc_next + a->n * 4;
+-    target_ulong ret_pc = dc->base.pc_next + 8;
++    vaddr tmp_pc = dc->base.pc_next + a->n * 4;
++    vaddr ret_pc = dc->base.pc_next + 8;
+ 
+     tcg_gen_movi_tl(cpu_regs[9], ret_pc);
+     /* Optimize jal being used to load the PC for PIC.  */
+@@ -605,7 +605,7 @@ static bool trans_l_jal(DisasContext *dc, arg_l_jal *a)
+ 
+ static void do_bf(DisasContext *dc, arg_l_bf *a, TCGCond cond)
+ {
+-    target_ulong tmp_pc = dc->base.pc_next + a->n * 4;
++    vaddr tmp_pc = dc->base.pc_next + a->n * 4;
+     TCGv t_next = tcg_constant_tl(dc->base.pc_next + 8);
+     TCGv t_true = tcg_constant_tl(tmp_pc);
+ 
+@@ -1586,7 +1586,7 @@ static void openrisc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+ static void openrisc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
+-    target_ulong jmp_dest;
++    vaddr jmp_dest;
+ 
+     /* If we have already exited the TB, nothing following has effect.  */
+     if (dc->base.is_jmp == DISAS_NORETURN) {
 -- 
 2.51.0
 
