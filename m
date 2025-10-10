@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBB7BCD58C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB874BCD571
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Oct 2025 15:51:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7DQ8-0002eo-Sy; Fri, 10 Oct 2025 09:44:32 -0400
+	id 1v7DQC-0002nT-VM; Fri, 10 Oct 2025 09:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DPp-0002X3-3o
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:13 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DPx-0002fW-M1
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:22 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DOx-0008CY-6H
- for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:11 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e4f2696bdso22403795e9.0
- for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:43:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v7DP5-0008DO-5R
+ for qemu-devel@nongnu.org; Fri, 10 Oct 2025 09:44:21 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e37d6c21eso12414385e9.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Oct 2025 06:43:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760103793; x=1760708593; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760103798; x=1760708598; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PEHpoi3UcJ1d9mK9rygYrDQXxzIPGGRGzqCX4yQQSa0=;
- b=dmeNUJ+9eo3l31jh8ljJPM2HNJ9PPcqFqI1JP08q8y01nYGHCkAo1mu8I0FBK7WTuP
- j7uI9AKrp5BULjVhfXngRWB0ly65GysS3jgWAu7QnWzpBkrXTxz8ToqKRxTkZ5l2Bmua
- IaJ8C/Qrp7QdOn/HUsGnsDS0DMlmr6BOIkzQgrZzl8rP2jU/d6KJ90gTXWHobITHEQ3h
- mlIgm4IiyLPGA68qDLZH0jcDH1m9UqJ2MlG74tmT2X8vidac7BgAlRz1LHL2CgQbh5Of
- nZyFDWUmEBItZqLr46YKNVf5PkWQhUXkyUuawaqoejnzeBl8ODx1/cqU5ggy4+TeI3fi
- vYXQ==
+ bh=fQ1xy8T+SXo1JHTBucWTk/aOP1Ac+xvM/ygDmheTPxE=;
+ b=m5w//XjQlm2YmAwHdnjSLtZZfmwSjmFXltxEjVwfgPnIQT6t1sSdvSd0153IH4PbQZ
+ p+pgGHBwvTHT191v2USp9WK78d/ObrCRCoGc34LXVSOn2ukW4BRhe+0ORKRmxYOxy60Q
+ kdAFjCsICKQFjLqsCLY7E6wQQtTCnkGOjwrhH09CCIZkSirHQiU3ttRz+Ax5li4eXJ+i
+ jLHtPvBqCvFrkYGTqBo7KDkPh/yVYWUSwq78cI1TW/dZPRQP4ZBrzq4a7FdW8vNUwT2H
+ 0WWxix/q0b1e9zaZhOq7mvg+zNdX7RWiZTP3X+OtLMIH+eQrKf8ZGCb057un/SUeWkt2
+ ih9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760103793; x=1760708593;
+ d=1e100.net; s=20230601; t=1760103798; x=1760708598;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PEHpoi3UcJ1d9mK9rygYrDQXxzIPGGRGzqCX4yQQSa0=;
- b=NTlRRM/FnkQCpZjDkE8CLSl/k5qS6D9YEh+iKiXqPeI8Y61XauTFGStGbbs9pZVR9d
- fCHdWZoB1aNxFPTYfUonxXeXVnVU2LwDFj53JmH8wRtNTT+vL+xyKiHssvZYsnDyyiVt
- N3gOYlBPbYmTU4aZ8m8VBZKKO5AXQHcMZAUmDSjA3N2tygZrmyoJ7DNU8gbzUEO9niIW
- BbbNeW8f5kzwgIIqgP6GIrDTqcOxGhHlc8UASb2x50/reLtAe6o6tuY+WxbdC+9dR9Iw
- MIAhES0yhHxhVGRPPcAp9hh2Vpj6MHnsuVb0WfO1d0X5BCwGhmMEeRvaqOHgifOXasVZ
- tgng==
-X-Gm-Message-State: AOJu0YwX4gfafXv7nTThR7Uff7ZEB0K/AKKEaWRU1zKVLVzLfrtOvOyC
- fUjxXIMd+GvqNE6u/PM9oZa9h2SFuNc2dvVfJCGmGhXTSA1Oc39zSySbHyN60pEUYJ3w7f0C/Hh
- 6RXvHIhhIpA==
-X-Gm-Gg: ASbGncuyRHFACHji412TnGkl1OEKIjLsWjsEcM4ZyoZS4Ib1pL7Ly0aVRLdSxJqk2Nv
- 0coATLkXLuYdwZQHqwRB+nNwk1MOO4/OXnhskWO32PaKbisVQAEXIxaaQhdxd8xmQqC6v1bl8jG
- pcE85ujEcDgztqSFQE51+ool2YkFi41gyODHGdVTc5XLCYIrtTjn/A7t68LAwYN63T356/U9gT4
- oe9ZsdLYOPH3KTIcY/NKGLCeAqRDksLwT9x1OM+WvDNags3nt66Fqe+8kfebOEHixr57ZJHV58V
- jYc7BWjEhQGT0sA7Fx/ieCUQYU82WVfcLuols2H/8CYLCRtAQT1kO8Udl/ZwV6dWf/D+dg3w9rL
- bvhxKLP0lbzJg7H+mT6Lyxb8/tIWq9h+e4WiAVHkccvH3/xbkSZJCb96a+WqtIaXDuzg/PXo6XX
- 6ANCD5JlW0ZFxT6i7g3CM=
-X-Google-Smtp-Source: AGHT+IGMyuXiXr2hhS5RrEBqHmkNz7q+JdBDAhdMbSHh7UARDHiDg+5JVxi3RtV8WP/bCBvAXMkyAQ==
-X-Received: by 2002:a05:6000:2410:b0:401:a3d5:5687 with SMTP id
- ffacd0b85a97d-4267260e17emr7032365f8f.49.1760103792680; 
- Fri, 10 Oct 2025 06:43:12 -0700 (PDT)
+ bh=fQ1xy8T+SXo1JHTBucWTk/aOP1Ac+xvM/ygDmheTPxE=;
+ b=G47x01Uwyn7p5USEcf8tuIZN7RhvDBXUQFoJWXgdOByINnJzrwML+Iw5CJnwNjU+NY
+ jFtx2GX+BIYrsW9qEKYvWLoe1W7CFbW8/jWDesckoddhwjbcGpWzD38qnuN7h9gRQDic
+ NneeXqWwUL2qoExLMz85rhuG7Ili+zUWrq0BtKjITffNsfqwFFGP1Daajbu4vnxvrUkC
+ KDd/zJrIT7W6TTM5QrsvCcNQH3YffrVQKywAtvSZGcAMAmc9BCHYVYGy2gInf0prGDDu
+ MkjVACU9dv3GitvIlw+lYFzcxPl9ri55GsaTfFRGQ/nlFECOkV9PoJxn87A0iFAEoIrK
+ 4dFw==
+X-Gm-Message-State: AOJu0Yxrh3xJORMSyU/xI0UafidIE9QOsNSF2TzBglGOGJmEXfCaZChl
+ bRgiTh6Mm99NZ0yjkhGzMei7C61gUjwhxSnBnMIcpZ4hQucc0cWLawO9KasvK988sDZdw/Uf1Jk
+ qxUG2Yoz4JQ==
+X-Gm-Gg: ASbGncvy5ZJdFOH6PySxaOMsvPS8ySah8epTHSBgywNgkWO8Qes7oc1ASlBcIZUYJVR
+ oMczuF+IqLe6eHUI5Rnpf6NmfReRCL+ZtacFGvjL01S6zrBdb7aZCy8I74b8ch3RwS9PshWqOyy
+ 1KYl5iSpBqRuUeN/0jHuZ1tC+pR2GKRx9fpzc6RrZoIoYkqBkQ1V6JD4UVzVhBxjBZMY2+VMnLC
+ MNOon/UlQVTAoGet98pXNUsf616GSb8Ng7rZ15zzjGGY8nEOTRgMyHYTQG6P+cIfOuH3FLFAbPL
+ 6oDKealk87D1g+lvaUNmFOjqpV0O0cPS/O9bkYvbW44iJd9FLUN58k6kUWgWiplHthnsqyBaFQ1
+ KBjxpUexySVqvagd+kCw6SqgMDThyIRCJq6B4WyBeJlU+M7BXbrZfda6NNgQ7xU+MGS6v4s2PZp
+ yesov05P8QoGe1D0+mra3x2K8phJXbSA==
+X-Google-Smtp-Source: AGHT+IFIPOzsMbnQa1BO9UiaMqXHUl6fRwbyBMETY9o6Uiq0UhksFIKSO4ECCTsdlFGZdCkYMwb9Ag==
+X-Received: by 2002:a05:600c:a43:b0:46f:b32e:5094 with SMTP id
+ 5b1f17b1804b1-46fb32e50fcmr47908965e9.32.1760103797977; 
+ Fri, 10 Oct 2025 06:43:17 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce57d49bsm4549912f8f.10.2025.10.10.06.43.11
+ 5b1f17b1804b1-46fb482ba41sm49073145e9.4.2025.10.10.06.43.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Oct 2025 06:43:11 -0700 (PDT)
+ Fri, 10 Oct 2025 06:43:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 08/16] hw/virtio: Replace HOST_BIG_ENDIAN #ifdef with runtime
- if() check
-Date: Fri, 10 Oct 2025 15:42:17 +0200
-Message-ID: <20251010134226.72221-9-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 09/16] target/alpha: Replace HOST_BIG_ENDIAN #ifdef with
+ runtime if() check
+Date: Fri, 10 Oct 2025 15:42:18 +0200
+Message-ID: <20251010134226.72221-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010134226.72221-1-philmd@linaro.org>
 References: <20251010134226.72221-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,46 +109,31 @@ No functional change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-access.h | 6 +-----
- hw/virtio/vhost.c                 | 7 +++----
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ target/alpha/translate.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-access.h b/include/hw/virtio/virtio-access.h
-index 07aae69042a..80328912ad3 100644
---- a/include/hw/virtio/virtio-access.h
-+++ b/include/hw/virtio/virtio-access.h
-@@ -149,11 +149,7 @@ static inline uint64_t virtio_ldq_p(VirtIODevice *vdev, const void *ptr)
- 
- static inline uint16_t virtio_tswap16(VirtIODevice *vdev, uint16_t s)
+diff --git a/target/alpha/translate.c b/target/alpha/translate.c
+index a492520075e..b93cbe3b61f 100644
+--- a/target/alpha/translate.c
++++ b/target/alpha/translate.c
+@@ -235,11 +235,12 @@ static TCGv dest_fpr(DisasContext *ctx, unsigned reg)
+ static int get_flag_ofs(unsigned shift)
  {
+     int ofs = offsetof(CPUAlphaState, flags);
 -#if HOST_BIG_ENDIAN
--    return virtio_access_is_big_endian(vdev) ? s : bswap16(s);
+-    ofs += 3 - (shift / 8);
 -#else
--    return virtio_access_is_big_endian(vdev) ? bswap16(s) : s;
+-    ofs += shift / 8;
 -#endif
-+    return HOST_BIG_ENDIAN ^ virtio_access_is_big_endian(vdev) ? s : bswap16(s);
- }
- 
- static inline uint16_t virtio_lduw_phys_cached(VirtIODevice *vdev,
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 266a11514a1..6343477b42f 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1168,11 +1168,10 @@ static inline bool vhost_needs_vring_endian(VirtIODevice *vdev)
-     if (virtio_vdev_has_feature(vdev, VIRTIO_F_VERSION_1)) {
-         return false;
-     }
--#if HOST_BIG_ENDIAN
--    return vdev->device_endian == VIRTIO_DEVICE_ENDIAN_LITTLE;
--#else
++
 +    if (HOST_BIG_ENDIAN) {
-+        return vdev->device_endian == VIRTIO_DEVICE_ENDIAN_LITTLE;
++        ofs += 3 - (shift / 8);
++    } else {
++        ofs += shift / 8;
 +    }
-     return vdev->device_endian == VIRTIO_DEVICE_ENDIAN_BIG;
--#endif
+     return ofs;
  }
  
- static int vhost_virtqueue_set_vring_endian_legacy(struct vhost_dev *dev,
 -- 
 2.51.0
 
