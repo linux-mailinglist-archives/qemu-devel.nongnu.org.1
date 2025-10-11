@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA18BCFDA3
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 01:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1C9BCFDA0
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 01:25:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7iwl-00069y-LA; Sat, 11 Oct 2025 19:24:19 -0400
+	id 1v7iwm-0006AB-I7; Sat, 11 Oct 2025 19:24:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7iwh-00068M-Mk
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 19:24:15 -0400
+ id 1v7iwj-000693-LT; Sat, 11 Oct 2025 19:24:18 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7iwf-0000r4-HE
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 19:24:15 -0400
+ id 1v7iwg-0000r6-4T; Sat, 11 Oct 2025 19:24:17 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 6570CC01DA;
- Sun, 12 Oct 2025 02:24:09 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id BB278C01DB;
+ Sun, 12 Oct 2025 02:24:10 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6OWMXt1FjqM0-e9wupjhW; Sun, 12 Oct 2025 02:24:08 +0300
+ ESMTPSA id 6OWMXt1FjqM0-6sHTDCW2; Sun, 12 Oct 2025 02:24:09 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760225048;
- bh=kPANk57eCGyW2xi6VXpwOdfF/zPec2fDl+4MdLGVlPk=;
+ s=default; t=1760225049;
+ bh=2vGzStpxOn6DIJrzjS4YB1XRA5fwr4MFFMHUtdQdzNI=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=czwjZpPW/YZAZflH3sNu5+16EPdJx7rIHqUiRgXehc5IeFxSfrqoy/0K1cvKg73PC
- fIDOHAitjr3Pu53kK2SaY2adeO9r4h76f0fbg9VvZeZykOXkOLEaqafd417UKzrBpN
- ZkQtzzaTjTFGDiDpAliILNP02/u/HCVErSA6OzoA=
+ b=s12qabnwdyIJ+n/1WSkVPG2nZm2D18BxBb59VqVrAUSAXyB95Su+rvdy8P5yM+gEk
+ jbojsPbuqJaHHckkvPgE9weFtRWHzefUQpgf2nZb93/dxbIh8Iu8iLQTmDKhhe03Ad
+ tWn4dGhdSemJKsVNmHCGfT0ogld5o2kkpZPdqSy0=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: mst@redhat.com
 Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
  raphael.s.norwitz@gmail.com, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru, d-tatianin@yandex-team.ru,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Zhenwei Pi <pizhenwei@bytedance.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 01/23] vhost-user: rework enabling vrings
-Date: Sun, 12 Oct 2025 02:23:40 +0300
-Message-ID: <20251011232404.561024-2-vsementsov@yandex-team.ru>
+ yc-core@yandex-team.ru, d-tatianin@yandex-team.ru, qemu-stable@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ qemu-block@nongnu.org (open list:Block layer core)
+Subject: [PATCH v2 02/23] vhost: drop backend_features field
+Date: Sun, 12 Oct 2025 02:23:41 +0300
+Message-ID: <20251011232404.561024-3-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011232404.561024-1-vsementsov@yandex-team.ru>
 References: <20251011232404.561024-1-vsementsov@yandex-team.ru>
@@ -76,155 +77,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We call the handler almost the same way in three places:
+This field is mostly unused and sometimes confusing (we even have
+a TODO-like comment to drop it). Let's finally do.
 
- - cryptodev-vhost.c
- - vhost_net.c
- - vhost.c
+The field is used to held VHOST_USER_F_PROTOCOL_FEATURES for vhost-user
+and/or VHOST_NET_F_VIRTIO_NET_HDR for vhost-net (which may be
+vhost-user-net). But we can simply recalculate these two flags in place
+from hdev->features, and from net-client for VHOST_NET_F_VIRTIO_NET_HDR.
 
-The only difference, is that in vhost.c we don't try to call the handler
-for old vhost-user (when VHOST_USER_F_PROTOCOL_FEATURES is not supported).
+Note: removing field from x-query-virtio-status result is incompatible
+change. We can do it because the command is unstable.
 
-cryptodev-vhost and vhost_net code will just fail in this case. Probably
-they were developed only for newer vhost-user. Anyway, it doesn't seem
-correct to rely on this error path, if these devices want to check,
-that they don't communicate to old vhost-user protocol, they should
-do that earlier.
-
-Let's create the common helper, to call .vhost_set_vring_enable and
-use in all three places. For vhost-user let's just always skip
-enable/disable if it's unsupported.
-
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- backends/cryptodev-vhost.c |  8 +-------
- hw/net/vhost_net.c         |  7 +------
- hw/virtio/vhost-user.c     |  7 ++++++-
- hw/virtio/vhost.c          | 21 ---------------------
- include/hw/virtio/vhost.h  |  9 +++++++++
- 5 files changed, 17 insertions(+), 35 deletions(-)
+ hw/block/vhost-user-blk.c   |  1 -
+ hw/net/vhost_net.c          | 26 ++++++++++++++------------
+ hw/scsi/vhost-scsi.c        |  1 -
+ hw/scsi/vhost-user-scsi.c   |  1 -
+ hw/virtio/vdpa-dev.c        |  1 -
+ hw/virtio/vhost-user.c      | 17 ++++++++---------
+ hw/virtio/virtio-hmp-cmds.c |  2 --
+ hw/virtio/virtio-qmp.c      |  4 ----
+ include/hw/virtio/vhost.h   |  7 -------
+ qapi/virtio.json            |  3 ---
+ 10 files changed, 22 insertions(+), 41 deletions(-)
 
-diff --git a/backends/cryptodev-vhost.c b/backends/cryptodev-vhost.c
-index 943680a23a..abdfce33af 100644
---- a/backends/cryptodev-vhost.c
-+++ b/backends/cryptodev-vhost.c
-@@ -152,7 +152,6 @@ vhost_set_vring_enable(CryptoDevBackendClient *cc,
- {
-     CryptoDevBackendVhost *crypto =
-                        cryptodev_get_vhost(cc, b, queue);
--    const VhostOps *vhost_ops;
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index c0cc5f6942..de7a810c93 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -348,7 +348,6 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
+     s->dev.nvqs = s->num_queues;
+     s->dev.vqs = s->vhost_vqs;
+     s->dev.vq_index = 0;
+-    s->dev.backend_features = 0;
  
-     cc->vring_enable = enable;
+     vhost_dev_set_config_notifier(&s->dev, &blk_ops);
  
-@@ -160,12 +159,7 @@ vhost_set_vring_enable(CryptoDevBackendClient *cc,
-         return 0;
-     }
- 
--    vhost_ops = crypto->dev.vhost_ops;
--    if (vhost_ops->vhost_set_vring_enable) {
--        return vhost_ops->vhost_set_vring_enable(&crypto->dev, enable);
--    }
--
--    return 0;
-+    return vhost_dev_set_vring_enable(&crypto->dev, enable);
- }
- 
- int cryptodev_vhost_start(VirtIODevice *dev, int total_queues)
 diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index a8ee18a912..25e9f1fd24 100644
+index 25e9f1fd24..fda90e231e 100644
 --- a/hw/net/vhost_net.c
 +++ b/hw/net/vhost_net.c
-@@ -587,7 +587,6 @@ VHostNetState *get_vhost_net(NetClientState *nc)
- int vhost_net_set_vring_enable(NetClientState *nc, int enable)
+@@ -52,8 +52,14 @@ int vhost_net_set_config(struct vhost_net *net, const uint8_t *data,
+ 
+ void vhost_net_ack_features_ex(struct vhost_net *net, const uint64_t *features)
  {
-     VHostNetState *net = get_vhost_net(nc);
--    const VhostOps *vhost_ops = net->dev.vhost_ops;
- 
-     /*
-      * vhost-vdpa network devices need to enable dataplane virtqueues after
-@@ -601,11 +600,7 @@ int vhost_net_set_vring_enable(NetClientState *nc, int enable)
- 
-     nc->vring_enable = enable;
- 
--    if (vhost_ops && vhost_ops->vhost_set_vring_enable) {
--        return vhost_ops->vhost_set_vring_enable(&net->dev, enable);
--    }
--
--    return 0;
-+    return vhost_dev_set_vring_enable(&net->dev, enable);
- }
- 
- int vhost_net_set_mtu(struct vhost_net *net, uint16_t mtu)
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 36c9c2e04d..f367ce06ce 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1235,7 +1235,12 @@ static int vhost_user_set_vring_enable(struct vhost_dev *dev, int enable)
-     int i;
- 
-     if (!virtio_has_feature(dev->features, VHOST_USER_F_PROTOCOL_FEATURES)) {
--        return -EINVAL;
-+        /*
-+         * For vhost-user devices, if VHOST_USER_F_PROTOCOL_FEATURES has not
-+         * been negotiated, the rings start directly in the enabled state,
-+         * and can't be disabled.
-+         */
-+        return 0;
-     }
- 
-     for (i = 0; i < dev->nvqs; ++i) {
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 266a11514a..414a48a218 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -2013,27 +2013,6 @@ int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
-     return 0;
- }
- 
--static int vhost_dev_set_vring_enable(struct vhost_dev *hdev, int enable)
--{
--    if (!hdev->vhost_ops->vhost_set_vring_enable) {
--        return 0;
--    }
--
--    /*
--     * For vhost-user devices, if VHOST_USER_F_PROTOCOL_FEATURES has not
--     * been negotiated, the rings start directly in the enabled state, and
--     * .vhost_set_vring_enable callback will fail since
--     * VHOST_USER_SET_VRING_ENABLE is not supported.
--     */
--    if (hdev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_USER &&
--        !virtio_has_feature(hdev->backend_features,
--                            VHOST_USER_F_PROTOCOL_FEATURES)) {
--        return 0;
--    }
--
--    return hdev->vhost_ops->vhost_set_vring_enable(hdev, enable);
--}
--
- /*
-  * Host notifiers must be enabled at this point.
-  *
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 08bbb4dfe9..1ee639dd7e 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -215,6 +215,15 @@ static inline bool vhost_dev_is_started(struct vhost_dev *hdev)
-     return hdev->started;
- }
- 
-+static inline int vhost_dev_set_vring_enable(struct vhost_dev *hdev, int enable)
-+{
-+    if (!hdev->vhost_ops->vhost_set_vring_enable) {
-+        return 0;
+-    virtio_features_copy(net->dev.acked_features_ex,
+-                         net->dev.backend_features_ex);
++    virtio_features_clear(net->dev.acked_features_ex);
++    if (net->backend == -1) {
++        net->dev.acked_features =
++           net->dev.features & (1ULL << VHOST_USER_F_PROTOCOL_FEATURES);
++    } else if (!qemu_has_vnet_hdr(net->nc)) {
++        net->dev.acked_features = 1ULL << VHOST_NET_F_VIRTIO_NET_HDR;
 +    }
 +
-+    return hdev->vhost_ops->vhost_set_vring_enable(hdev, enable);
-+}
+     vhost_ack_features_ex(&net->dev, net->feature_bits, features);
+ }
+ 
+@@ -258,12 +264,9 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
+         if (r < 0) {
+             goto fail;
+         }
+-        net->dev.backend_features = qemu_has_vnet_hdr(options->net_backend)
+-            ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
+         net->backend = r;
+         net->dev.protocol_features = 0;
+     } else {
+-        virtio_features_clear(net->dev.backend_features_ex);
+         net->dev.protocol_features = 0;
+         net->backend = -1;
+ 
+@@ -284,13 +287,12 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
+             net->dev.features &= ~(1ULL << VIRTIO_NET_F_MRG_RXBUF);
+         }
+ 
+-        if (virtio_features_andnot(missing_features,
+-                                   net->dev.backend_features_ex,
+-                                   net->dev.features_ex)) {
+-            fprintf(stderr, "vhost lacks feature mask 0x" VIRTIO_FEATURES_FMT
+-                   " for backend\n", VIRTIO_FEATURES_PR(missing_features));
+-            goto fail;
+-        }
++        if (!qemu_has_vnet_hdr(options->net_backend) &&
++            (~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR))) {
++            fprintf(stderr, "vhost lacks feature mask 0x%llx for backend\n",
++                    ~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR));
++             goto fail;
++         }
+     }
+ 
+     /* Set sane init value. Override when guest acks. */
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index cdf405b0f8..d694a25fe2 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -276,7 +276,6 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+     vqs = g_new0(struct vhost_virtqueue, vsc->dev.nvqs);
+     vsc->dev.vqs = vqs;
+     vsc->dev.vq_index = 0;
+-    vsc->dev.backend_features = 0;
+ 
+     ret = vhost_dev_init(&vsc->dev, (void *)(uintptr_t)vhostfd,
+                          VHOST_BACKEND_TYPE_KERNEL, 0, errp);
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 25f2d894e7..0c80a271d8 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -159,7 +159,6 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
+     vsc->dev.nvqs = VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
+     vsc->dev.vqs = s->vhost_vqs;
+     vsc->dev.vq_index = 0;
+-    vsc->dev.backend_features = 0;
+ 
+     ret = vhost_dev_init(&vsc->dev, &s->vhost_user, VHOST_BACKEND_TYPE_USER, 0,
+                          errp);
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index 4a7b970976..efd9f68420 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -104,7 +104,6 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+     v->dev.vqs = vqs;
+     v->dev.vq_index = 0;
+     v->dev.vq_index_end = v->dev.nvqs;
+-    v->dev.backend_features = 0;
+     v->started = false;
+ 
+     ret = vhost_vdpa_get_iova_range(v->vhostfd, &iova_range);
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index f367ce06ce..b80174f489 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1448,14 +1448,15 @@ static int vhost_user_set_features(struct vhost_dev *dev,
+     int ret;
+ 
+     /*
+-     * We need to include any extra backend only feature bits that
+-     * might be needed by our device. Currently this includes the
+-     * VHOST_USER_F_PROTOCOL_FEATURES bit for enabling protocol
+-     * features.
++     * Don't lose VHOST_USER_F_PROTOCOL_FEATURES, which is vhost-user
++     * specific.
+      */
+-    ret = vhost_user_set_u64(dev, VHOST_USER_SET_FEATURES,
+-                              features | dev->backend_features,
+-                              log_enabled);
++    if (virtio_has_feature(dev->features, VHOST_USER_F_PROTOCOL_FEATURES)) {
++        features |= 1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
++    }
 +
- /**
-  * vhost_dev_start() - start the vhost device
-  * @hdev: common vhost_dev structure
++    ret = vhost_user_set_u64(dev, VHOST_USER_SET_FEATURES, features,
++                             log_enabled);
+ 
+     if (virtio_has_feature(dev->protocol_features,
+                            VHOST_USER_PROTOCOL_F_STATUS)) {
+@@ -2189,8 +2190,6 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+             (dev->config_ops && dev->config_ops->vhost_dev_config_notifier);
+         uint64_t protocol_features;
+ 
+-        dev->backend_features |= 1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
+-
+         err = vhost_user_get_u64(dev, VHOST_USER_GET_PROTOCOL_FEATURES,
+                                  &protocol_features);
+         if (err < 0) {
+diff --git a/hw/virtio/virtio-hmp-cmds.c b/hw/virtio/virtio-hmp-cmds.c
+index 1daae482d3..4bf9a3109d 100644
+--- a/hw/virtio/virtio-hmp-cmds.c
++++ b/hw/virtio/virtio-hmp-cmds.c
+@@ -176,8 +176,6 @@ void hmp_virtio_status(Monitor *mon, const QDict *qdict)
+         hmp_virtio_dump_features(mon, s->vhost_dev->features);
+         monitor_printf(mon, "    Acked features:\n");
+         hmp_virtio_dump_features(mon, s->vhost_dev->acked_features);
+-        monitor_printf(mon, "    Backend features:\n");
+-        hmp_virtio_dump_features(mon, s->vhost_dev->backend_features);
+         monitor_printf(mon, "    Protocol features:\n");
+         hmp_virtio_dump_protocols(mon, s->vhost_dev->protocol_features);
+     }
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index b338344c6c..dd1a38e792 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -780,8 +780,6 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+                                                  vdev->guest_features_ex);
+     status->host_features = qmp_decode_features(vdev->device_id,
+                                                 vdev->host_features_ex);
+-    status->backend_features = qmp_decode_features(vdev->device_id,
+-                                                 vdev->backend_features_ex);
+ 
+     switch (vdev->device_endian) {
+     case VIRTIO_DEVICE_ENDIAN_LITTLE:
+@@ -822,8 +820,6 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+             qmp_decode_features(vdev->device_id, hdev->features_ex);
+         status->vhost_dev->acked_features =
+             qmp_decode_features(vdev->device_id, hdev->acked_features_ex);
+-        status->vhost_dev->backend_features =
+-            qmp_decode_features(vdev->device_id, hdev->backend_features_ex);
+ 
+         status->vhost_dev->protocol_features =
+             qmp_decode_protocols(hdev->protocol_features);
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 1ee639dd7e..3e69e47833 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -100,16 +100,9 @@ struct vhost_dev {
+      *
+      * @features: available features provided by the backend
+      * @acked_features: final negotiated features with front-end driver
+-     *
+-     * @backend_features: this is used in a couple of places to either
+-     * store VHOST_USER_F_PROTOCOL_FEATURES to apply to
+-     * VHOST_USER_SET_FEATURES or VHOST_NET_F_VIRTIO_NET_HDR. Its
+-     * future use should be discouraged and the variable retired as
+-     * its easy to confuse with the VirtIO backend_features.
+      */
+     VIRTIO_DECLARE_FEATURES(features);
+     VIRTIO_DECLARE_FEATURES(acked_features);
+-    VIRTIO_DECLARE_FEATURES(backend_features);
+ 
+     /**
+      * @protocol_features: is the vhost-user only feature set by
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index 05295ab665..b995a5bb6d 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -85,8 +85,6 @@
+ #
+ # @acked-features: vhost_dev acked_features
+ #
+-# @backend-features: vhost_dev backend_features
+-#
+ # @protocol-features: vhost_dev protocol_features
+ #
+ # @max-queues: vhost_dev max_queues
+@@ -106,7 +104,6 @@
+             'vq-index': 'int',
+             'features': 'VirtioDeviceFeatures',
+             'acked-features': 'VirtioDeviceFeatures',
+-            'backend-features': 'VirtioDeviceFeatures',
+             'protocol-features': 'VhostDeviceProtocols',
+             'max-queues': 'uint64',
+             'backend-cap': 'uint64',
 -- 
 2.48.1
 
