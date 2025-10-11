@@ -2,63 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D396BCF685
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634F8BCF737
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:29:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7a9u-0007j8-2U; Sat, 11 Oct 2025 10:01:20 -0400
+	id 1v7aAV-0001KQ-9W; Sat, 11 Oct 2025 10:01:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a84-0006NQ-7N
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:25 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1v7a8P-0006VB-S5; Sat, 11 Oct 2025 09:59:46 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a7g-0004nH-P5
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:23 -0400
+ id 1v7a81-0004nL-72; Sat, 11 Oct 2025 09:59:45 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 3A271C0193;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A83CBC0196;
  Sat, 11 Oct 2025 16:58:24 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-B3CZbFxj; Sat, 11 Oct 2025 16:58:23 +0300
+ ESMTPSA id uvMPBZ1FEOs0-9ZXnbFjJ; Sat, 11 Oct 2025 16:58:24 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191103;
- bh=5laPx8DQitkjjYv24YWNmXSF2GTnWZhXXAkNWY7GqhI=;
+ s=default; t=1760191104;
+ bh=EjDlYN/YV/1Al0fTsGpd9EuPX946XXrIIrx4bLAmmms=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=rk+lAWxtymsaJGJk5vgtgidLdDgTaC6sAHtUyzHRHE2hynFIKWit2aIVrsH1yxsez
- i2/BnhQY8R2joSIRq/Z1UjCBsJJ9Ki/rr88c8TSUxBZFpqj6Q/YoUpEjhLCpYVpI1d
- ZBFanHD01W35QCQ9825VVVJqyoCSxhFNBPmO2uO8=
+ b=k+EuZkrq3qIUBvHC4Iv9LGb6ZHou/5GJvEBk4QUnoMo59eUV2oFsPsXQemA7UCzfZ
+ br1Gdd220lALcfo/j1ZHHpyGHr4h7XCsAIYsYbBd2fMvg75nrUm6AN9Yx/db8X9m70
+ 5FD0ixNc3T6+RdNo7mUdxV97Mxug5yYl6ObBWm/o=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH 27/33] qapi/trace.json: reflow docs to width=70 and two spaces
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org (open list:Block layer core)
+Subject: [PATCH 28/33] qapi/transaction.json: docs: width=70 and two spaces
  between sentences
-Date: Sat, 11 Oct 2025 16:57:34 +0300
-Message-ID: <20251011135754.294521-54-vsementsov@yandex-team.ru>
+Date: Sat, 11 Oct 2025 16:57:35 +0300
+Message-ID: <20251011135754.294521-55-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,23 +74,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/trace.json | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ qapi/transaction.json | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/qapi/trace.json b/qapi/trace.json
-index de369dae6b..6162a9aa71 100644
---- a/qapi/trace.json
-+++ b/qapi/trace.json
-@@ -57,7 +57,8 @@
+diff --git a/qapi/transaction.json b/qapi/transaction.json
+index 4b4eb09bf3..f43da7f30d 100644
+--- a/qapi/transaction.json
++++ b/qapi/transaction.json
+@@ -250,21 +250,24 @@
  #
- #     -> { "execute": "trace-event-get-state",
- #          "arguments": { "name": "qemu_memalign" } }
--#     <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
-+#     <- { "return": [ { "name": "qemu_memalign", "state": "disabled",
-+#                        "vcpu": false } ] }
+ #     -> { "execute": "transaction",
+ #          "arguments": { "actions": [
+-#              { "type": "blockdev-snapshot-sync", "data" : { "device": "ide-hd0",
+-#                                          "snapshot-file": "/some/place/my-image",
+-#                                          "format": "qcow2" } },
+-#              { "type": "blockdev-snapshot-sync", "data" : { "node-name": "myfile",
+-#                                          "snapshot-file": "/some/place/my-image2",
+-#                                          "snapshot-node-name": "node3432",
+-#                                          "mode": "existing",
+-#                                          "format": "qcow2" } },
+-#              { "type": "blockdev-snapshot-sync", "data" : { "device": "ide-hd1",
+-#                                          "snapshot-file": "/some/place/my-image2",
+-#                                          "mode": "existing",
+-#                                          "format": "qcow2" } },
+-#              { "type": "blockdev-snapshot-internal-sync", "data" : {
+-#                                          "device": "ide-hd2",
+-#                                          "name": "snapshot0" } } ] } }
++#              { "type": "blockdev-snapshot-sync",
++#                "data" : { "device": "ide-hd0",
++#                            "snapshot-file": "/some/place/my-image",
++#                            "format": "qcow2" } },
++#              { "type": "blockdev-snapshot-sync",
++#                "data" : { "node-name": "myfile",
++#                           "snapshot-file": "/some/place/my-image2",
++#                           "snapshot-node-name": "node3432",
++#                           "mode": "existing",
++#                           "format": "qcow2" } },
++#              { "type": "blockdev-snapshot-sync",
++#                "data" : { "device": "ide-hd1",
++#                           "snapshot-file": "/some/place/my-image2",
++#                           "mode": "existing",
++#                           "format": "qcow2" } },
++#              { "type": "blockdev-snapshot-internal-sync",
++#                "data" : { "device": "ide-hd2",
++#                           "name": "snapshot0" } } ] } }
+ #     <- { "return": {} }
  ##
- { 'command': 'trace-event-get-state',
-   'data': {'name': 'str' },
+ { 'command': 'transaction',
 -- 
 2.48.1
 
