@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31A9BCF625
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60660BCF61C
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:02:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7a7Z-0006Ez-To; Sat, 11 Oct 2025 09:58:53 -0400
+	id 1v7a7R-0006B2-Ed; Sat, 11 Oct 2025 09:58:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a7P-0006B3-MX; Sat, 11 Oct 2025 09:58:43 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1v7a7O-0006A7-2z
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:42 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a78-0004hC-1q; Sat, 11 Oct 2025 09:58:42 -0400
+ id 1v7a76-0004hx-By
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:41 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E07D1C00D6;
- Sat, 11 Oct 2025 16:58:02 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 63E4FC0117;
+ Sat, 11 Oct 2025 16:58:03 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-si4h6nqr; Sat, 11 Oct 2025 16:58:02 +0300
+ ESMTPSA id uvMPBZ1FEOs0-5Y5qp5w7; Sat, 11 Oct 2025 16:58:03 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191082;
- bh=XaNPKEYFvprDxxt9TryZMmnN05KO5P9DtdGM+QisyJ4=;
+ s=default; t=1760191083;
+ bh=SMshwY7iNroE9KHjRmndU4fpWnM0HeoNxchRExZSkZ0=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=mwOKmVgJPR/s0LkPlyYL9bvDTeW9k9eVzvJkhqBRZ8wOWgsAMVKaPp0EWs7sp1BV3
- IVKfVGgcWQmLln1ABFLBUmI8U0JDHsGD5FNyC3elnfq7RhfTNyTMUb4EDhHd+pv4uZ
- JdGp7zhSqZVrjXtl93r7wGEnvIwxw8lywAK5NeeE=
+ b=pdVEqC+Tu82Tlda1ayTWBRtPeW8Krtfscsrr/XFbu6YlFk9mizbrHxGqRgoe68Lo1
+ 4SG20771RQsfO8m3oUoq4FhVt5GaUVUldjIg2VzmiLH2DQv2cTH2MUKIQtnyukuLAm
+ yuI/RopdI7Ed+4vF9id0mz5/QXMFhe3+q9S+goMw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Block layer core)
-Subject: [PATCH 06/33] qapi/block.json: reflow docs to width=70 and two spaces
- between sentences
-Date: Sat, 11 Oct 2025 16:56:52 +0300
-Message-ID: <20251011135754.294521-12-vsementsov@yandex-team.ru>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 07/33] qapi/char.json: docs: width=70 and two spaces between
+ sentences
+Date: Sat, 11 Oct 2025 16:56:53 +0300
+Message-ID: <20251011135754.294521-13-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,74 +77,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/block.json | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ qapi/char.json | 34 ++++++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/qapi/block.json b/qapi/block.json
-index 46955bbb3e..4398c801ee 100644
---- a/qapi/block.json
-+++ b/qapi/block.json
-@@ -240,7 +240,8 @@
- #          "arguments": { "id": "ide0-1-0" } }
+diff --git a/qapi/char.json b/qapi/char.json
+index f0a53f742c..52cca8da67 100644
+--- a/qapi/char.json
++++ b/qapi/char.json
+@@ -47,12 +47,14 @@
+ #           "return": [
+ #              {
+ #                 "label": "charchannel0",
+-#                 "filename": "unix:/var/lib/libvirt/qemu/seabios.rhel6.agent,server=on",
++#                 "filename":
++#                   "unix:/.../seabios.rhel6.agent,server=on",
+ #                 "frontend-open": false
+ #              },
+ #              {
+ #                 "label": "charmonitor",
+-#                 "filename": "unix:/var/lib/libvirt/qemu/seabios.rhel6.monitor,server=on",
++#                 "filename":
++#                   "unix:/.../seabios.rhel6.monitor,server=on",
+ #                 "frontend-open": true
+ #              },
+ #              {
+@@ -272,7 +274,8 @@
+ # @reconnect: For a client socket, if a socket is disconnected, then
+ #     attempt a reconnect after the given number of seconds.  Setting
+ #     this to zero disables this function.  The use of this member is
+-#     deprecated, use @reconnect-ms instead.  (default: 0) (Since: 2.2)
++#     deprecated, use @reconnect-ms instead.
++#     (default: 0) (Since: 2.2)
  #
- #     <- { "error": { "class": "GenericError",
--#                     "desc": "Tray of device 'ide0-1-0' is not open" } }
-+#                     "desc": "Tray of device 'ide0-1-0' is not open"
-+#     } }
+ # @reconnect-ms: For a client socket, if a socket is disconnected,
+ #     then attempt a reconnect after the given number of milliseconds.
+@@ -776,22 +779,25 @@
  #
- #     -> { "execute": "blockdev-open-tray",
- #          "arguments": { "id": "ide0-1-0" } }
-@@ -350,7 +351,8 @@
- #
- #     -> { "execute": "blockdev-change-medium",
- #          "arguments": { "id": "ide0-1-0",
--#                         "filename": "/srv/images/Fedora-12-x86_64-DVD.iso",
-+#                         "filename":
-+#                           "/srv/images/Fedora-12-x86_64-DVD.iso",
- #                         "format": "raw" } }
+ #     -> { "execute" : "chardev-add",
+ #          "arguments" : { "id" : "foo",
+-#                          "backend" : { "type" : "null", "data" : {} } } }
++#                          "backend" : { "type" : "null",
++#                                        "data" : {} } } }
  #     <- { "return": {} }
  #
-@@ -359,17 +361,17 @@
+ # .. qmp-example::
  #
- #     -> { "execute": "blockdev-change-medium",
- #          "arguments": { "id": "floppyA",
--#                         "filename": "/srv/images/ro.img",
-+#                         "filename": "ro.img",
- #                         "format": "raw",
- #                         "read-only-mode": "retain" } }
+ #     -> { "execute" : "chardev-add",
+-#          "arguments" : { "id" : "bar",
+-#                          "backend" : { "type" : "file",
+-#                                        "data" : { "out" : "/tmp/bar.log" } } } }
++#          "arguments" : {
++#            "id" : "bar",
++#            "backend" : { "type" : "file",
++#                          "data" : { "out" : "/tmp/bar.log" } } } }
+ #     <- { "return": {} }
  #
- #     <- { "error":
- #          { "class": "GenericError",
--#            "desc": "Could not open '/srv/images/ro.img': Permission denied" } }
-+#            "desc": "Could not open 'ro.img': Permission denied" } }
+ # .. qmp-example::
  #
- #     -> { "execute": "blockdev-change-medium",
- #          "arguments": { "id": "floppyA",
--#                         "filename": "/srv/images/ro.img",
-+#                         "filename": "ro.img",
- #                         "format": "raw",
- #                         "read-only-mode": "read-only" } }
- #
-@@ -407,7 +409,8 @@
- #                    "id": "/machine/unattached/device[22]",
- #                    "tray-open": true
- #          },
--#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
-+#          "timestamp": { "seconds": 1265044230,
-+#                         "microseconds": 450486 } }
+ #     -> { "execute" : "chardev-add",
+ #          "arguments" : { "id" : "baz",
+-#                          "backend" : { "type" : "pty", "data" : {} } } }
++#                          "backend" : { "type" : "pty",
++#                                        "data" : {} } } }
+ #     <- { "return": { "pty" : "/dev/pty/42" } }
  ##
- { 'event': 'DEVICE_TRAY_MOVED',
-   'data': { 'device': 'str', 'id': 'str', 'tray-open': 'bool' } }
-@@ -430,7 +433,8 @@
- #          "data": { "id": "pr-helper0",
- #                    "connected": true
- #          },
--#          "timestamp": { "seconds": 1519840375, "microseconds": 450486 } }
-+#          "timestamp": { "seconds": 1519840375,
-+#                         "microseconds": 450486 } }
+ { 'command': 'chardev-add',
+@@ -814,7 +820,8 @@
+ #
+ #     -> { "execute" : "chardev-change",
+ #          "arguments" : { "id" : "baz",
+-#                          "backend" : { "type" : "pty", "data" : {} } } }
++#                          "backend" : { "type" : "pty",
++#                                        "data" : {} } } }
+ #     <- { "return": { "pty" : "/dev/pty/42" } }
+ #
+ # .. qmp-example::
+@@ -851,7 +858,8 @@
+ #
+ # .. qmp-example::
+ #
+-#     -> { "execute": "chardev-remove", "arguments": { "id" : "foo" } }
++#     -> { "execute": "chardev-remove",
++#          "arguments": { "id" : "foo" } }
+ #     <- { "return": {} }
  ##
- { 'event': 'PR_MANAGER_STATUS_CHANGED',
-   'data': { 'id': 'str', 'connected': 'bool' } }
+ { 'command': 'chardev-remove',
+@@ -868,7 +876,8 @@
+ #
+ # .. qmp-example::
+ #
+-#     -> { "execute": "chardev-send-break", "arguments": { "id" : "foo" } }
++#     -> { "execute": "chardev-send-break",
++#          "arguments": { "id" : "foo" } }
+ #     <- { "return": {} }
+ ##
+ { 'command': 'chardev-send-break',
+@@ -891,7 +900,8 @@
+ #
+ #     <- { "event": "VSERPORT_CHANGE",
+ #          "data": { "id": "channel0", "open": true },
+-#          "timestamp": { "seconds": 1401385907, "microseconds": 422329 } }
++#          "timestamp": { "seconds": 1401385907,
++#                         "microseconds": 422329 } }
+ ##
+ { 'event': 'VSERPORT_CHANGE',
+   'data': { 'id': 'str',
 -- 
 2.48.1
 
