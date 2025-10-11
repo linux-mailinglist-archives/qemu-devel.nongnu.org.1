@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC79BCF6B8
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB8ABCF638
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:05:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7a7S-0006BV-Hq; Sat, 11 Oct 2025 09:58:46 -0400
+	id 1v7a7R-0006AZ-52; Sat, 11 Oct 2025 09:58:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a7I-00067M-Rw; Sat, 11 Oct 2025 09:58:36 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1v7a7M-00069C-CS; Sat, 11 Oct 2025 09:58:40 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a78-0004iL-1K; Sat, 11 Oct 2025 09:58:36 -0400
+ id 1v7a78-0004iM-Kc; Sat, 11 Oct 2025 09:58:38 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D61CCC0162;
- Sat, 11 Oct 2025 16:58:06 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5B7C6C0163;
+ Sat, 11 Oct 2025 16:58:07 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-MeDTcm6s; Sat, 11 Oct 2025 16:58:06 +0300
+ ESMTPSA id uvMPBZ1FEOs0-UqexzGof; Sat, 11 Oct 2025 16:58:07 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191086;
+ s=default; t=1760191087;
  bh=wx/I6VtVDwoWBi0b5ijZlX7Un2UFdYPB/5MJo7VWM0k=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Tu0OpRsewlekNojtLqweBGFSqWM6RM87GVLW+IEROwtjKh5YBbShd+t7gv2ST78qz
- PWKzovmSL3om+ON2nQufgGmOYJY3b7da2qmuYyAE7tyFkpcmA0+y/1hVo4uuk4vQAf
- GCincEiaHQ0fCQ6oiOXkCJA/8w+pO7zKg/nSvQcc=
+ b=0JmlY/nr2yPX91cmGGkAThtzao15Z1C8N7lZW3dTQstJcVzvFAbCLGESFr2v8W1t4
+ qutDW/TEGi91WXg+vyt6rLJjZTxKpDL4AQWV7UlG24fM661FcZbwp29LR2Hlbbsz2p
+ S2Yi9sYIXFcMkd9xGSlQUlaqTR6AMW3yt8xznWhI=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
  John Snow <jsnow@redhat.com>, qemu-block@nongnu.org (open list:Block Jobs)
-Subject: [PATCH 11/33] qapi/job.json: docs: width=70 and two spaces between
- sentences
-Date: Sat, 11 Oct 2025 16:57:01 +0300
-Message-ID: <20251011135754.294521-21-vsementsov@yandex-team.ru>
+Subject: [PATCH 11/33] qapi/job.json: reflow docs to width=70 and two spaces
+ between sentences
+Date: Sat, 11 Oct 2025 16:57:02 +0300
+Message-ID: <20251011135754.294521-22-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
