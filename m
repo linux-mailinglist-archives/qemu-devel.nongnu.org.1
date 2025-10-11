@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D365BCF6D4
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 201A9BCF6D7
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7aEM-0005d5-AG; Sat, 11 Oct 2025 10:05:54 -0400
+	id 1v7aEE-0005Hw-GE; Sat, 11 Oct 2025 10:05:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aEB-0005HQ-Ae
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:43 -0400
+ id 1v7aE9-0005GA-Pe
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:41 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDt-0005cl-Mh
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:42 -0400
+ id 1v7aDt-0005ck-8o
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:40 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 557EBC01A7;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D1C31C017C;
  Sat, 11 Oct 2025 17:04:58 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id h4NOTl1FrqM0-eLez2dbC; Sat, 11 Oct 2025 17:04:58 +0300
+ ESMTPSA id h4NOTl1FrqM0-AbLTsihX; Sat, 11 Oct 2025 17:04:58 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760191498;
- bh=rK/+G9hpA6fAo+LzVNCj2d73nJK3eoEO5+jb4Tdcr/8=;
+ bh=5laPx8DQitkjjYv24YWNmXSF2GTnWZhXXAkNWY7GqhI=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=FHwjrLJdt+cnDlwZnm8gF6zC37QfISJbOFEnhyxG/dlOVULOY8kgSR60R/f9fUFfp
- 9H8doXm3VDeHuO9BPrdoHroWzNL8FcVrxr6Mf58htgjZ9ImB4zwpUPIFnc+P/YqvYM
- YIqPFcwg0btEgdi58FTO6NMAV1LPJZpbNKQS333A=
+ b=Nwrm6ds5JS1VJVNGTBY+PBPnGif5MQpzQzGmo8+4IS3CsqP9gRdeC7bqleo/SYeJg
+ fLeAuFqKmcM3WNWN2njOH5ydfqL6RCjzS55or/Kg2BJMlkWBQ3hmzZGA+pR++3ZtgD
+ ccFARgYa5jc4k9nxAPI5qppH4sQ/7PjcWk63hE7g=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Subject: [PATCH v2 26/33] qapi/tpm.json: docs: width=70 and two spaces between
- sentences
-Date: Sat, 11 Oct 2025 17:04:32 +0300
-Message-ID: <20251011140441.297246-27-vsementsov@yandex-team.ru>
+ Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH v2 27/33] qapi/trace.json: docs: width=70 and two spaces
+ between sentences
+Date: Sat, 11 Oct 2025 17:04:33 +0300
+Message-ID: <20251011140441.297246-28-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011140441.297246-1-vsementsov@yandex-team.ru>
 References: <20251011140441.297246-1-vsementsov@yandex-team.ru>
@@ -57,8 +57,8 @@ X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,23 +76,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/tpm.json | 3 ++-
+ qapi/trace.json | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/tpm.json b/qapi/tpm.json
-index 3f2850a573..efa7addd78 100644
---- a/qapi/tpm.json
-+++ b/qapi/tpm.json
-@@ -175,7 +175,8 @@
- #              "options":
- #                { "type": "passthrough",
- #                  "data":
--#                    { "cancel-path": "/sys/class/misc/tpm0/device/cancel",
-+#                    { "cancel-path":
-+#                        "/sys/class/misc/tpm0/device/cancel",
- #                      "path": "/dev/tpm0"
- #                    }
- #                },
+diff --git a/qapi/trace.json b/qapi/trace.json
+index de369dae6b..6162a9aa71 100644
+--- a/qapi/trace.json
++++ b/qapi/trace.json
+@@ -57,7 +57,8 @@
+ #
+ #     -> { "execute": "trace-event-get-state",
+ #          "arguments": { "name": "qemu_memalign" } }
+-#     <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
++#     <- { "return": [ { "name": "qemu_memalign", "state": "disabled",
++#                        "vcpu": false } ] }
+ ##
+ { 'command': 'trace-event-get-state',
+   'data': {'name': 'str' },
 -- 
 2.48.1
 
