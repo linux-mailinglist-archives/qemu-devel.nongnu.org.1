@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF1CBCF6DA
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6FEBCF725
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:27:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7aE6-00054r-Ap; Sat, 11 Oct 2025 10:05:38 -0400
+	id 1v7aEI-0005V0-2o; Sat, 11 Oct 2025 10:05:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aE1-000515-D7
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:33 -0400
+ id 1v7aE5-00059P-DA
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:37 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDg-0005ca-Mj
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:33 -0400
+ id 1v7aDr-0005cZ-WC
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:36 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5D17AC01A6;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id C3212C01A5;
  Sat, 11 Oct 2025 17:04:57 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id h4NOTl1FrqM0-oxyAwMet; Sat, 11 Oct 2025 17:04:57 +0300
+ ESMTPSA id h4NOTl1FrqM0-CwNvxAEF; Sat, 11 Oct 2025 17:04:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760191497;
- bh=4ZFS7VeU5sKpFc5IFb6anQVAn3TG0buI2JtzIiCbrd4=;
+ bh=sM3USFOOrxTlF7/x0EAEtw5iQZvkoMmmbScXBN35Ioo=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=vUuu02QMaGwryA/CxkzBA76zVAP69XH6wntqloJm2lpk6HX6W19Sqyi6tKiMX6hI7
- YTcefz+kMwQdyedRHdpqepB8dhmx1k+lrUv3R5KsaTtmszXqMvEVopTDP4aLdLx+s3
- bsuUVWMfOur4Amv1boyS9ivjHsaTiQxsSB/Tff00=
+ b=bKdTGW+UExA7hDDIjxgyKHy5h8FXOxXHbJXLYppkkV4hOPGC5QnDLHexWusXVYDiD
+ /278bHg4j2ZE2ua7tn9ObslbScj6to586EuQv+l3lIUkeiEz6Gd5PfieF7IwuaGJnJ
+ DEvc20acU+VJyTDXO/hU9uudi/tPZC1sXBTIh484=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 24/33] qapi/sockets.json: docs: width=70 and two spaces
+Cc: qemu-devel@nongnu.org,
+	vsementsov@yandex-team.ru,
+	eblake@redhat.com
+Subject: [PATCH v2 25/33] qapi/stats.json: docs: width=70 and two spaces
  between sentences
-Date: Sat, 11 Oct 2025 17:04:30 +0300
-Message-ID: <20251011140441.297246-25-vsementsov@yandex-team.ru>
+Date: Sat, 11 Oct 2025 17:04:31 +0300
+Message-ID: <20251011140441.297246-26-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011140441.297246-1-vsementsov@yandex-team.ru>
 References: <20251011140441.297246-1-vsementsov@yandex-team.ru>
@@ -58,7 +59,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,56 +77,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/sockets.json | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ qapi/stats.json | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/sockets.json b/qapi/sockets.json
-index 32fac51728..473be2ac58 100644
---- a/qapi/sockets.json
-+++ b/qapi/sockets.json
-@@ -58,24 +58,26 @@
- # @ipv6: whether to accept IPv6 addresses, default try both IPv4 and
- #     IPv6
+diff --git a/qapi/stats.json b/qapi/stats.json
+index 151ac43c48..b7c61af0ca 100644
+--- a/qapi/stats.json
++++ b/qapi/stats.json
+@@ -185,7 +185,8 @@
+ # Return runtime-collected statistics for objects such as the VM or
+ # its vCPUs.
  #
--# @keep-alive: enable keep-alive when connecting to/listening on this socket.
-+# @keep-alive: enable keep-alive when connecting to/listening on this
-+#     socket.
- #     (Since 4.2, not supported for listening sockets until 10.1)
+-# The arguments are a `StatsFilter` and specify the provider and objects
++# The arguments are a `StatsFilter` and specify the provider and
++#     objects
+ # to return statistics about.
  #
--# @keep-alive-count: number of keep-alive packets sent before the connection is
--#     closed.  Only supported for TCP sockets on systems where TCP_KEEPCNT
--#     socket option is defined (this includes Linux, Windows, macOS, FreeBSD,
--#     but not OpenBSD).  When set to 0, system setting is used.  (Since 10.1)
--#
--# @keep-alive-idle: time in seconds the connection needs to be idle before
--#     sending a keepalive packet.  Only supported for TCP sockets on systems
--#     where TCP_KEEPIDLE socket option is defined (this includes Linux,
--#     Windows, macOS, FreeBSD, but not OpenBSD).  When set to 0, system setting
--#     is used.  (Since 10.1)
--#
--# @keep-alive-interval: time in seconds between keep-alive packets.  Only
--#     supported for TCP sockets on systems where TCP_KEEPINTVL is defined (this
--#     includes Linux, Windows, macOS, FreeBSD, but not OpenBSD).  When set to
--#     0, system setting is used.  (Since 10.1)
-+# @keep-alive-count: number of keep-alive packets sent before the
-+#     connection is closed.  Only supported for TCP sockets on systems
-+#     where TCP_KEEPCNT socket option is defined (this includes Linux,
-+#     Windows, macOS, FreeBSD, but not OpenBSD).  When set to 0,
-+#     system setting is used.  (Since 10.1)
-+#
-+# @keep-alive-idle: time in seconds the connection needs to be idle
-+#     before sending a keepalive packet.  Only supported for TCP
-+#     sockets on systems where TCP_KEEPIDLE socket option is defined
-+#     (this includes Linux, Windows, macOS, FreeBSD, but not OpenBSD).
-+#     When set to 0, system setting is used.  (Since 10.1)
-+#
-+# @keep-alive-interval: time in seconds between keep-alive packets.
-+#     Only supported for TCP sockets on systems where TCP_KEEPINTVL is
-+#     defined (this includes Linux, Windows, macOS, FreeBSD, but not
-+#     OpenBSD).  When set to 0, system setting is used.  (Since 10.1)
- #
- # @mptcp: enable multi-path TCP.  (Since 6.1)
- #
+ # Returns: a list of statistics, one for each provider and object
 -- 
 2.48.1
 
