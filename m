@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597AFBCF68E
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDEABCF6F8
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:20:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7aAA-0008KR-Fz; Sat, 11 Oct 2025 10:01:34 -0400
+	id 1v7a8y-0006zH-Sg; Sat, 11 Oct 2025 10:00:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a8B-0006QR-0I
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:32 -0400
+ id 1v7a8J-0006SN-VW
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:40 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a7l-0004oE-G1
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:30 -0400
+ id 1v7a7l-0004oD-Pm
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:39 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id BF038C019E;
- Sat, 11 Oct 2025 16:58:27 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 675F6C0199;
+ Sat, 11 Oct 2025 16:58:28 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-XgPtueZF; Sat, 11 Oct 2025 16:58:27 +0300
+ ESMTPSA id uvMPBZ1FEOs0-fFzbGR0B; Sat, 11 Oct 2025 16:58:27 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760191107;
  bh=Bgh0I22tjtIDyexIumg/uvSCP31Lm0cC6x+V9gfgWiY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=PaWigYbaCeYDGghuUqA+0kQEl0yO2RbcSfZImm6EdAxMw6EMusf5p57HoOp4wvTOh
- i4hq9nhy1WzhhpfoxL9sTn/6rUssLq/8DFem/BK80X7PvUh/FCVsu9lDzlf2nN8rg6
- NWSYX8v0tQiHXUSzkijGrhHdenv7UmQanZfNGcrA=
+ b=YeuHnBMM2RjEuCD6R2bOp+SLuSmW+nJVRXs61F2MqIj2WomVlNQiRVcyLv9WKxcGd
+ +nonKC2G83L01bA/2zfvS0oKJ+ZI1n7n/lPzG4SmHeJtooR6OA1CuEP/cjDAXzCBKe
+ wuLRTcNgUn67mOmIYoPz24QtyuTrT6mT8C+gVsAs=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 31/33] qapi/virtio.json: docs: width=70 and two spaces between
- sentences
-Date: Sat, 11 Oct 2025 16:57:41 +0300
-Message-ID: <20251011135754.294521-61-vsementsov@yandex-team.ru>
+Subject: [PATCH 31/33] qapi/virtio.json: reflow docs to width=70 and two
+ spaces between sentences
+Date: Sat, 11 Oct 2025 16:57:42 +0300
+Message-ID: <20251011135754.294521-62-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
@@ -57,8 +57,8 @@ X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
