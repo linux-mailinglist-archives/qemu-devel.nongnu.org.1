@@ -2,49 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882EBBCF6AC
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A66BCF661
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7aDy-0004pg-8z; Sat, 11 Oct 2025 10:05:30 -0400
+	id 1v7aDn-0004MR-66; Sat, 11 Oct 2025 10:05:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDc-0004Qa-Ix
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:08 -0400
+ id 1v7aDY-0004IU-0O
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:04 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDR-0005Or-QQ
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:08 -0400
+ id 1v7aDN-0005Ou-Ej
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:03 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 04682C0185;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 6C51FC018A;
  Sat, 11 Oct 2025 17:04:48 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id h4NOTl1FrqM0-3lLKxejU; Sat, 11 Oct 2025 17:04:47 +0300
+ ESMTPSA id h4NOTl1FrqM0-vf470P58; Sat, 11 Oct 2025 17:04:48 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191487;
- bh=SMshwY7iNroE9KHjRmndU4fpWnM0HeoNxchRExZSkZ0=;
+ s=default; t=1760191488;
+ bh=rFXBB96E86A3fQSXCMSSZzegEJGUuPqsnG2ic46PLlc=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=KdsNjfSYrReBd1GG7u54bqZ74x4cIqiIj3aXHjejyoRrwtgZIqchtWgNE6s0dTcdW
- MHzcd65cTms8aRn2fHtb36RCgk6rAg1D0SUZIQniEnzDBmL4pqfsc5I2rF4cYGVaHs
- Bmk87AxfYf7KOJAJYSzmmsm7Gm+YFaozrd22KsXc=
+ b=lV8BURAuzzrPHqlJ/WDIUZtB3uHIwUvteg/5spJesYXR6YcpfAPqS/Ooyupe9NNef
+ RyXvAjEXQuFpUmaOdlggkK+XSjBL4RyCnROQ69KQUECVcUaGrQA7bwJPgbl7tqlBM8
+ 9UMH+peSSZeFT3ggArnN/TTu33hqXUM4Q8STtbWg=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 07/33] qapi/char.json: docs: width=70 and two spaces
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 08/33] qapi/crypto.json: docs: width=70 and two spaces
  between sentences
-Date: Sat, 11 Oct 2025 17:04:13 +0300
-Message-ID: <20251011140441.297246-8-vsementsov@yandex-team.ru>
+Date: Sat, 11 Oct 2025 17:04:14 +0300
+Message-ID: <20251011140441.297246-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011140441.297246-1-vsementsov@yandex-team.ru>
 References: <20251011140441.297246-1-vsementsov@yandex-team.ru>
@@ -59,7 +58,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,111 +76,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/char.json | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ qapi/crypto.json | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/qapi/char.json b/qapi/char.json
-index f0a53f742c..52cca8da67 100644
---- a/qapi/char.json
-+++ b/qapi/char.json
-@@ -47,12 +47,14 @@
- #           "return": [
- #              {
- #                 "label": "charchannel0",
--#                 "filename": "unix:/var/lib/libvirt/qemu/seabios.rhel6.agent,server=on",
-+#                 "filename":
-+#                   "unix:/.../seabios.rhel6.agent,server=on",
- #                 "frontend-open": false
- #              },
- #              {
- #                 "label": "charmonitor",
--#                 "filename": "unix:/var/lib/libvirt/qemu/seabios.rhel6.monitor,server=on",
-+#                 "filename":
-+#                   "unix:/.../seabios.rhel6.monitor,server=on",
- #                 "frontend-open": true
- #              },
- #              {
-@@ -272,7 +274,8 @@
- # @reconnect: For a client socket, if a socket is disconnected, then
- #     attempt a reconnect after the given number of seconds.  Setting
- #     this to zero disables this function.  The use of this member is
--#     deprecated, use @reconnect-ms instead.  (default: 0) (Since: 2.2)
-+#     deprecated, use @reconnect-ms instead.
-+#     (default: 0) (Since: 2.2)
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index ab6eda4c2f..72ac718147 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -46,7 +46,8 @@
  #
- # @reconnect-ms: For a client socket, if a socket is disconnected,
- #     then attempt a reconnect after the given number of milliseconds.
-@@ -776,22 +779,25 @@
+ # @md5: MD5.  Should not be used in any new code, legacy compat only
  #
- #     -> { "execute" : "chardev-add",
- #          "arguments" : { "id" : "foo",
--#                          "backend" : { "type" : "null", "data" : {} } } }
-+#                          "backend" : { "type" : "null",
-+#                                        "data" : {} } } }
- #     <- { "return": {} }
+-# @sha1: SHA-1.  Should not be used in any new code, legacy compat only
++# @sha1: SHA-1.  Should not be used in any new code, legacy compat
++#     only
  #
- # .. qmp-example::
+ # @sha224: SHA-224.  (since 2.7)
  #
- #     -> { "execute" : "chardev-add",
--#          "arguments" : { "id" : "bar",
--#                          "backend" : { "type" : "file",
--#                                        "data" : { "out" : "/tmp/bar.log" } } } }
-+#          "arguments" : {
-+#            "id" : "bar",
-+#            "backend" : { "type" : "file",
-+#                          "data" : { "out" : "/tmp/bar.log" } } } }
- #     <- { "return": {} }
+@@ -377,8 +378,8 @@
+ #     deactivate all keyslots that match password located in
+ #     QCryptoSecret with this ID
  #
- # .. qmp-example::
+-# @iter-time: Optional (for activation only).  Number of milliseconds to
+-#     spend in PBKDF passphrase processing for the newly activated
++# @iter-time: Optional (for activation only).  Number of milliseconds
++#     to spend in PBKDF passphrase processing for the newly activated
+ #     keyslot.  Currently defaults to 2000.
  #
- #     -> { "execute" : "chardev-add",
- #          "arguments" : { "id" : "baz",
--#                          "backend" : { "type" : "pty", "data" : {} } } }
-+#                          "backend" : { "type" : "pty",
-+#                                        "data" : {} } } }
- #     <- { "return": { "pty" : "/dev/pty/42" } }
- ##
- { 'command': 'chardev-add',
-@@ -814,7 +820,8 @@
- #
- #     -> { "execute" : "chardev-change",
- #          "arguments" : { "id" : "baz",
--#                          "backend" : { "type" : "pty", "data" : {} } } }
-+#                          "backend" : { "type" : "pty",
-+#                                        "data" : {} } } }
- #     <- { "return": { "pty" : "/dev/pty/42" } }
- #
- # .. qmp-example::
-@@ -851,7 +858,8 @@
- #
- # .. qmp-example::
- #
--#     -> { "execute": "chardev-remove", "arguments": { "id" : "foo" } }
-+#     -> { "execute": "chardev-remove",
-+#          "arguments": { "id" : "foo" } }
- #     <- { "return": {} }
- ##
- { 'command': 'chardev-remove',
-@@ -868,7 +876,8 @@
- #
- # .. qmp-example::
- #
--#     -> { "execute": "chardev-send-break", "arguments": { "id" : "foo" } }
-+#     -> { "execute": "chardev-send-break",
-+#          "arguments": { "id" : "foo" } }
- #     <- { "return": {} }
- ##
- { 'command': 'chardev-send-break',
-@@ -891,7 +900,8 @@
- #
- #     <- { "event": "VSERPORT_CHANGE",
- #          "data": { "id": "channel0", "open": true },
--#          "timestamp": { "seconds": 1401385907, "microseconds": 422329 } }
-+#          "timestamp": { "seconds": 1401385907,
-+#                         "microseconds": 422329 } }
- ##
- { 'event': 'VSERPORT_CHANGE',
-   'data': { 'id': 'str',
+ # @keyslot: Optional.  ID of the keyslot to activate/deactivate.  For
 -- 
 2.48.1
 
