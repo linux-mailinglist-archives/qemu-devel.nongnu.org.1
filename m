@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E38BCF72B
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A171BBCF69D
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:13:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7aE5-00054I-4i; Sat, 11 Oct 2025 10:05:37 -0400
+	id 1v7aE7-0005BN-IT; Sat, 11 Oct 2025 10:05:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDq-0004g0-2j
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:23 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1v7aE1-00051b-L9
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:33 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDe-0005bp-Ff
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:20 -0400
+ id 1v7aDf-0005bm-ER
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:33 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 064DAC017A;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 7A4C8C01A1;
  Sat, 11 Oct 2025 17:04:55 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id h4NOTl1FrqM0-zi8stucj; Sat, 11 Oct 2025 17:04:54 +0300
+ ESMTPSA id h4NOTl1FrqM0-wKSa4CwY; Sat, 11 Oct 2025 17:04:55 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191494;
- bh=/q6rjoxdfB/1Xm73ZxRH85WAZxNcGltDxx8lvKX3FXI=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=FDfTWdZQSui38uxof+BOHNl52nADjorsZ2yKOaSnMbKwjYP9f1dfjQey/iAfssBj9
- /91IHBY5EAyGB0UpiGzRBMy+bA81Rks69MhVte4hiJ7xBIGYb8DYS1DK1KWT/zOuCY
- s+yTzI6UB2qpv3JUqxCWtDgr/01hxMA8uwp1si2U=
+ s=default; t=1760191495;
+ bh=83Si4n9Xifa8e3/o2G6/CFeqpWDDkQPsyg5kZnGHXPo=;
+ h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+ b=rMe7fP96aRbUuFcSoMi6SvgRDqKYuZ6dRmm3EOj8kHih6jd7QDAQA9scCoiEl4sLy
+ zsxP/YLleMTl6iUbQCJrsy97i1CoCsFLRfEg87kbgOzi/kRWdfe5ey7jK7btqKkk2e
+ OYhgQjCGp3RIjSWig/UZmuoKm0dLBxiJIjA6IAz4=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,24 +42,26 @@ Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v2 19/33] qapi/qdev.json: docs: width=70 and two spaces
- between sentences
-Date: Sat, 11 Oct 2025 17:04:25 +0300
-Message-ID: <20251011140441.297246-20-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 20/33] qapi/qom.json: docs: width=70 and two spaces between
+ sentences
+Date: Sat, 11 Oct 2025 17:04:26 +0300
+Message-ID: <20251011140441.297246-21-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011140441.297246-1-vsementsov@yandex-team.ru>
 References: <20251011140441.297246-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,54 +79,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/qdev.json | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ qapi/qom.json | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index e14a0c9259..9c4b498319 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -100,8 +100,8 @@
- #    process is signaled with a `DEVICE_DELETED` event.  Guest reset
- #    will automatically complete removal for all devices.  If a
- #    guest-side error in the hot removal process is detected, the
--#    device will not be removed and a `DEVICE_UNPLUG_GUEST_ERROR` event
--#    is sent.  Some errors cannot be detected.
-+#    device will not be removed and a `DEVICE_UNPLUG_GUEST_ERROR`
-+#    event is sent.  Some errors cannot be detected.
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 830cb2ffe7..99cdd0f60c 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -52,7 +52,8 @@
  #
- # Since: 0.14
+ # @name: the name of the property.
  #
-@@ -114,7 +114,8 @@
- # .. qmp-example::
+-# @type: the type of the property, as described in `ObjectPropertyInfo`.
++# @type: the type of the property, as described in
++#     `ObjectPropertyInfo`.
  #
- #     -> { "execute": "device_del",
--#          "arguments": { "id": "/machine/peripheral-anon/device[0]" } }
-+#          "arguments": {
-+#            "id": "/machine/peripheral-anon/device[0]" } }
- #     <- { "return": {} }
+ # @value: the value of the property.  Absent when the property cannot
+ #     be read.
+@@ -92,9 +93,12 @@
+ #     -> { "execute": "qom-list",
+ #          "arguments": { "path": "/chardevs" } }
+ #     <- { "return": [ { "name": "type", "type": "string" },
+-#                      { "name": "parallel0", "type": "child<chardev-vc>" },
+-#                      { "name": "serial0", "type": "child<chardev-vc>" },
+-#                      { "name": "mon0", "type": "child<chardev-stdio>" } ] }
++#                      { "name": "parallel0", "type":
++#     "child<chardev-vc>" },
++#                      { "name": "serial0", "type": "child<chardev-
++#     vc>" },
++#                      { "name": "mon0", "type": "child<chardev-
++#     stdio>" } ] }
  ##
- { 'command': 'device_del', 'data': {'id': 'str'} }
-@@ -138,7 +139,8 @@
- #     <- { "event": "DEVICE_DELETED",
- #          "data": { "device": "virtio-net-pci-0",
- #                    "path": "/machine/peripheral/virtio-net-pci-0" },
--#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
-+#          "timestamp": { "seconds": 1265044230,
-+#                         "microseconds": 450486 } }
- ##
- { 'event': 'DEVICE_DELETED',
-   'data': { '*device': 'str', 'path': 'str' } }
-@@ -160,7 +162,8 @@
- #     <- { "event": "DEVICE_UNPLUG_GUEST_ERROR",
- #          "data": { "device": "core1",
- #                    "path": "/machine/peripheral/core1" },
--#          "timestamp": { "seconds": 1615570772, "microseconds": 202844 } }
-+#          "timestamp": { "seconds": 1615570772,
-+#                         "microseconds": 202844 } }
- ##
- { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
-   'data': { '*device': 'str', 'path': 'str' } }
+ { 'command': 'qom-list',
+   'data': { 'path': 'str' },
+@@ -1082,7 +1086,8 @@
+ #     Authentication Information Structure' for the SNP_LAUNCH_FINISH
+ #     command defined in the SEV-SNP firmware ABI (default: all-zero)
+ #
+-# @author-key-enabled: true if 'id-auth' blob contains the 'AUTHOR_KEY'
++# @author-key-enabled: true if 'id-auth' blob contains the
++#     'AUTHOR_KEY'
+ #     field defined SEV-SNP firmware ABI (default: false)
+ #
+ # @host-data: 32-byte, base64-encoded, user-defined blob to provide to
+@@ -1117,17 +1122,17 @@
+ # @attributes: The 'attributes' of a TD guest that is passed to
+ #     KVM_TDX_INIT_VM
+ #
+-# @sept-ve-disable: toggle bit 28 of TD attributes to control disabling
+-#     of EPT violation conversion to #VE on guest TD access of PENDING
+-#     pages.  Some guest OS (e.g., Linux TD guest) may require this to
+-#     be set, otherwise they refuse to boot.
++# @sept-ve-disable: toggle bit 28 of TD attributes to control
++#     disabling of EPT violation conversion to #VE on guest TD access
++#     of PENDING pages.  Some guest OS (e.g., Linux TD guest) may
++#     require this to be set, otherwise they refuse to boot.
+ #
+ # @mrconfigid: ID for non-owner-defined configuration of the guest TD,
+-#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
+-#     Defaults to all zeros.
++#     e.g., run-time or OS configuration (base64 encoded SHA384
++#     digest).  Defaults to all zeros.
+ #
+-# @mrowner: ID for the guest TD’s owner (base64 encoded SHA384 digest).
+-#     Defaults to all zeros.
++# @mrowner: ID for the guest TD’s owner (base64 encoded SHA384
++#     digest).  Defaults to all zeros.
+ #
+ # @mrownerconfig: ID for owner-defined configuration of the guest TD,
+ #     e.g., specific to the workload rather than the run-time or OS
 -- 
 2.48.1
 
