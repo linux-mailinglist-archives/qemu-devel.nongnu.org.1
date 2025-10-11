@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22FFBCFD9A
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 01:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A09CBCFD8B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 01:25:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7iwv-0006Fw-Dc; Sat, 11 Oct 2025 19:24:29 -0400
+	id 1v7iww-0006GQ-TT; Sat, 11 Oct 2025 19:24:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7iws-0006F0-V0
+ id 1v7iws-0006F1-VQ
  for qemu-devel@nongnu.org; Sat, 11 Oct 2025 19:24:26 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7iwq-0000uV-Ou
+ id 1v7iwr-0000ug-8B
  for qemu-devel@nongnu.org; Sat, 11 Oct 2025 19:24:26 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 544C2C01DA;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E1579C01D9;
  Sun, 12 Oct 2025 02:24:23 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6OWMXt1FjqM0-dLmyNdO4; Sun, 12 Oct 2025 02:24:22 +0300
+ ESMTPSA id 6OWMXt1FjqM0-jCIlRWQX; Sun, 12 Oct 2025 02:24:23 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760225062;
- bh=WN5yuwTmhtU1R4aUfiR8bSsIlHXGKve2ZsnRiu3lKQ4=;
+ s=default; t=1760225063;
+ bh=OMhmUaU9DNTaQUYOhlrO4kclp+J0BsKC+ljy90fIMbc=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Ua04rSKfwuLK7FDd1r/TJValNMgRcKJqI35LbeF5M51XRQshQkyG+z6SxCo5BXWGl
- G+5na8b4CWxrbevpSnVCAolyEgWn7bO9Qtc0DxEvEE/+V1xrARWRZzayi96P8Wl9TQ
- vAucYtiYkNytFfGKnRg5CrutZ3qkP5Q2vqrafO9c=
+ b=GaGr/8GiV0WNXrjz7Pyc/YAExVacom948D7y/uveE1cCYgYZMPHARisla2Nvhluof
+ bruXYTaoC7usBSTJCYo7Vvm3NViLCRmyjZNVSQ4V6YLkNWF6ZcrCiXoU213yK6F63u
+ 50o9qejSqgHZST87KJUEQKhjlUo2TsK5cOlvPSOY=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,9 +42,10 @@ To: mst@redhat.com
 Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
  raphael.s.norwitz@gmail.com, vsementsov@yandex-team.ru,
  yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH v2 18/23] vhost: introduce check_memslots() helper
-Date: Sun, 12 Oct 2025 02:23:57 +0300
-Message-ID: <20251011232404.561024-19-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 19/23] vhost: vhost_dev_init(): simplify features
+ initialization
+Date: Sun, 12 Oct 2025 02:23:58 +0300
+Message-ID: <20251011232404.561024-20-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011232404.561024-1-vsementsov@yandex-team.ru>
 References: <20251011232404.561024-1-vsementsov@yandex-team.ru>
@@ -74,113 +75,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Drop extra variable and extra function parameter passing, initialize
+dev._features directly.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
 ---
- hw/virtio/vhost.c | 71 ++++++++++++++++++++++++++---------------------
- 1 file changed, 40 insertions(+), 31 deletions(-)
+ hw/virtio/vhost.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 8ba97c231b..c990029756 100644
+index c990029756..d02d1d4c34 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -1572,12 +1572,50 @@ static int vhost_dev_get_features(struct vhost_dev *hdev,
+@@ -1557,18 +1557,17 @@ static void vhost_virtqueue_cleanup(struct vhost_virtqueue *vq)
+     }
+ }
+ 
+-static int vhost_dev_get_features(struct vhost_dev *hdev,
+-                                  uint64_t *features)
++static int vhost_dev_init_features(struct vhost_dev *hdev)
+ {
+     uint64_t features64;
+     int r;
+ 
+     if (hdev->vhost_ops->vhost_get_features_ex) {
+-        return hdev->vhost_ops->vhost_get_features_ex(hdev, features);
++        return hdev->vhost_ops->vhost_get_features_ex(hdev, hdev->_features_ex);
+     }
+ 
+     r = hdev->vhost_ops->vhost_get_features(hdev, &features64);
+-    virtio_features_from_u64(features, features64);
++    virtio_features_from_u64(hdev->_features_ex, features64);
      return r;
  }
  
-+static bool check_memslots(struct vhost_dev *hdev, Error **errp)
-+{
-+    unsigned int used, reserved, limit;
-+
-+    limit = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
-+    if (limit < MEMORY_DEVICES_SAFE_MAX_MEMSLOTS &&
-+        memory_devices_memslot_auto_decision_active()) {
-+        error_setg(errp, "some memory device (like virtio-mem)"
-+            " decided how many memory slots to use based on the overall"
-+            " number of memory slots; this vhost backend would further"
-+            " restricts the overall number of memory slots");
-+        error_append_hint(errp, "Try plugging this vhost backend before"
-+            " plugging such memory devices.\n");
-+        return false;
-+    }
-+
-+    /*
-+     * The listener we registered properly setup the number of required
-+     * memslots in vhost_commit().
-+     */
-+    used = hdev->mem->nregions;
-+
-+    /*
-+     * We assume that all reserved memslots actually require a real memslot
-+     * in our vhost backend. This might not be true, for example, if the
-+     * memslot would be ROM. If ever relevant, we can optimize for that --
-+     * but we'll need additional information about the reservations.
-+     */
-+    reserved = memory_devices_get_reserved_memslots();
-+    if (used + reserved > limit) {
-+        error_setg(errp, "vhost backend memory slots limit (%d) is less"
-+                   " than current number of used (%d) and reserved (%d)"
-+                   " memory slots for memory devices.", limit, used, reserved);
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+@@ -1615,7 +1614,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
                     VhostBackendType backend_type, uint32_t busyloop_timeout,
                     Error **errp)
  {
-     uint64_t features[VIRTIO_FEATURES_NU64S];
--    unsigned int used, reserved, limit;
+-    uint64_t features[VIRTIO_FEATURES_NU64S];
      int i, r, n_initialized_vqs = 0;
  
      hdev->vdev = NULL;
-@@ -1603,19 +1641,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+@@ -1635,9 +1633,9 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
          goto fail;
      }
  
--    limit = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
--    if (limit < MEMORY_DEVICES_SAFE_MAX_MEMSLOTS &&
--        memory_devices_memslot_auto_decision_active()) {
--        error_setg(errp, "some memory device (like virtio-mem)"
--            " decided how many memory slots to use based on the overall"
--            " number of memory slots; this vhost backend would further"
--            " restricts the overall number of memory slots");
--        error_append_hint(errp, "Try plugging this vhost backend before"
--            " plugging such memory devices.\n");
--        r = -EINVAL;
--        goto fail;
--    }
--
-     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
-         r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i,
-                                  busyloop_timeout);
-@@ -1674,23 +1699,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     memory_listener_register(&hdev->memory_listener, &address_space_memory);
-     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
- 
--    /*
--     * The listener we registered properly setup the number of required
--     * memslots in vhost_commit().
--     */
--    used = hdev->mem->nregions;
--
--    /*
--     * We assume that all reserved memslots actually require a real memslot
--     * in our vhost backend. This might not be true, for example, if the
--     * memslot would be ROM. If ever relevant, we can optimize for that --
--     * but we'll need additional information about the reservations.
--     */
--    reserved = memory_devices_get_reserved_memslots();
--    if (used + reserved > limit) {
--        error_setg(errp, "vhost backend memory slots limit (%d) is less"
--                   " than current number of used (%d) and reserved (%d)"
--                   " memory slots for memory devices.", limit, used, reserved);
-+    if (!check_memslots(hdev, errp)) {
-         r = -EINVAL;
+-    r = vhost_dev_get_features(hdev, features);
++    r = vhost_dev_init_features(hdev);
+     if (r < 0) {
+-        error_setg_errno(errp, -r, "vhost_get_features failed");
++        error_setg_errno(errp, -r, "vhost_init_features failed");
          goto fail;
      }
+ 
+@@ -1650,8 +1648,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+         }
+     }
+ 
+-    virtio_features_copy(hdev->_features_ex, features);
+-
+     hdev->memory_listener = (MemoryListener) {
+         .name = "vhost",
+         .begin = vhost_begin,
 -- 
 2.48.1
 
