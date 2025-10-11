@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866F7BCF719
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E80BCF6BE
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7a77-00062M-6f; Sat, 11 Oct 2025 09:58:25 -0400
+	id 1v7a77-00063e-11; Sat, 11 Oct 2025 09:58:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a72-00061T-OW
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:20 -0400
+ id 1v7a74-000628-41
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:22 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a6t-0004cL-69
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:19 -0400
+ id 1v7a6u-0004cO-2l
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:21 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 7846AC0195;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id ECD19C0196;
  Sat, 11 Oct 2025 16:57:58 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-7cVsqjmc; Sat, 11 Oct 2025 16:57:58 +0300
+ ESMTPSA id uvMPBZ1FEOs0-mSMzA6ac; Sat, 11 Oct 2025 16:57:58 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760191078;
- bh=GwUGObk/skOiLvkKNiWNa/3LsaS2Qb5Akmk/NJK1Uw0=;
+ bh=KrogRysMTqgdyPfx+7Zf3fqdEHX2+3XH4e/2Zkq2+08=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=G/zNsj7+ZfX+WRwLAZwtTnglibCaJRUCNyKtFlMrL2sRN7xFzSceAS3RPL4olmO93
- IBhNjZJSfJBcMuUWgnqJGEtNs1nE71yMDHUiEcKxemTycTJqEtEjj7nCQ2ZIRRQU+k
- tKXPSfmr/vvwic5GDf1HQALa6vpRJTDHLdIusSVo=
+ b=rroOtsQRM3SIiYJGW08fFtri/CQGvzZzpieRGvxVLCm+6Q9MJLWD82S20ScvRudfl
+ 2Gbs3w/fo4y5o4hAI8Uk1xEHI5UPzqWhS2UXOKjLR8T1csIFbDCRmQAIspjkcutHEz
+ AzBzNuLy0/qO4aldqQruHc4x9YMbcjC38YznY11Y=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH 02/33] qapi/acpi.json: reflow docs to width=70 and two spaces
- between sentences
-Date: Sat, 11 Oct 2025 16:56:44 +0300
-Message-ID: <20251011135754.294521-4-vsementsov@yandex-team.ru>
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 03/33] qapi/audio.json: docs: width=70 and two spaces between
+ sentences
+Date: Sat, 11 Oct 2025 16:56:45 +0300
+Message-ID: <20251011135754.294521-5-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
@@ -77,47 +77,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/acpi.json | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ qapi/audio.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qapi/acpi.json b/qapi/acpi.json
-index 906b3687a5..601271607b 100644
---- a/qapi/acpi.json
-+++ b/qapi/acpi.json
-@@ -116,10 +116,16 @@
- # .. qmp-example::
+diff --git a/qapi/audio.json b/qapi/audio.json
+index 53142080f7..2df87b9710 100644
+--- a/qapi/audio.json
++++ b/qapi/audio.json
+@@ -76,8 +76,8 @@
  #
- #     -> { "execute": "query-acpi-ospm-status" }
--#     <- { "return": [ { "device": "d1", "slot": "0", "slot-type": "DIMM", "source": 1, "status": 0},
--#                      { "slot": "1", "slot-type": "DIMM", "source": 0, "status": 0},
--#                      { "slot": "2", "slot-type": "DIMM", "source": 0, "status": 0},
--#                      { "slot": "3", "slot-type": "DIMM", "source": 0, "status": 0}
-+#     <- { "return": [
-+#          { "device": "d1", "slot": "0",
-+#            "slot-type": "DIMM", "source": 1,
-+#            "status": 0 },
-+#          { "slot": "1", "slot-type": "DIMM", "source": 0,
-+#            "status": 0 },
-+#          { "slot": "2", "slot-type": "DIMM", "source": 0,
-+#            "status": 0 },
-+#          { "slot": "3", "slot-type": "DIMM", "source": 0,
-+#            "status": 0 }
- #        ]}
- ##
- { 'command': 'query-acpi-ospm-status', 'returns': ['ACPIOSTInfo'] }
-@@ -137,8 +143,10 @@
+ # @out: options of the playback stream
  #
- #     <- { "event": "ACPI_DEVICE_OST",
- #          "data": { "info": { "device": "d1", "slot": "0",
--#                              "slot-type": "DIMM", "source": 1, "status": 0 } },
--#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
-+#                              "slot-type": "DIMM", "source": 1,
-+#                              "status": 0 } },
-+#          "timestamp": { "seconds": 1265044230,
-+#                         "microseconds": 450486 } }
+-# @nsamples: set the number of samples per read/write calls (default to 480,
+-# 10ms at 48kHz).
++# @nsamples: set the number of samples per read/write calls
++#     (default to 480, 10ms at 48kHz).
+ #
+ # Since: 10.0
  ##
- { 'event': 'ACPI_DEVICE_OST',
-      'data': { 'info': 'ACPIOSTInfo' } }
 -- 
 2.48.1
 
