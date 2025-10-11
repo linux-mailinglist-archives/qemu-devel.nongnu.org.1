@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904DABCF649
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D87BCF6A3
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:13:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7a7i-0006GT-9k; Sat, 11 Oct 2025 09:59:05 -0400
+	id 1v7a8b-0006Wi-0q; Sat, 11 Oct 2025 09:59:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a7c-0006GH-8T
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:56 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1v7a7i-0006Hh-GK
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:05 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a7P-0004kM-OV
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:55 -0400
+ id 1v7a7U-0004kw-VS
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:59:02 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id EA6E0C0179;
- Sat, 11 Oct 2025 16:58:13 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 0E4EEC017E;
+ Sat, 11 Oct 2025 16:58:16 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-rwVWiBqK; Sat, 11 Oct 2025 16:58:13 +0300
+ ESMTPSA id uvMPBZ1FEOs0-jI08XM7C; Sat, 11 Oct 2025 16:58:15 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191093;
- bh=9E/JVW0uw8uTCppIO66nEpAS+hp8/t959JvxxH++TCk=;
+ s=default; t=1760191095;
+ bh=/q6rjoxdfB/1Xm73ZxRH85WAZxNcGltDxx8lvKX3FXI=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=L8NPrUw/i9KhZC7v8DR+jcSaQwI7yICzXEOqZQi4U3WFGLR5oB0oFaZPWMETulmDS
- KWulKpzwF43q2XtoCYDL+IAsMp8ptf3A8OlZPzzQGa4O/ROC5ESW313tJ2SQTIfHnM
- LoWLa5tdo0cBhNj6V0zONTnNJcrPP0jZCKEES2bk=
+ b=HOqN6UYW+8/hVC6CbhnTKueFh5WVx+dl4dHBWxlsEEuz9benNs+ssnCDWAEFg4QlQ
+ AKjtFcSBxw3t8AlslM66cM2Ur8a4lH1cArAhPCJlFpD5b56Z6MFcHslzJb8ChFhhqt
+ UTMrSu17vLMYdPN48wxCrWOgtywW0KQbzXZxNku0=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
-Cc: qemu-devel@nongnu.org,
-	vsementsov@yandex-team.ru,
-	eblake@redhat.com
-Subject: [PATCH 17/33] qapi/misc.json: docs: width=70 and two spaces between
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH 19/33] qapi/qdev.json: docs: width=70 and two spaces between
  sentences
-Date: Sat, 11 Oct 2025 16:57:13 +0300
-Message-ID: <20251011135754.294521-33-vsementsov@yandex-team.ru>
+Date: Sat, 11 Oct 2025 16:57:17 +0300
+Message-ID: <20251011135754.294521-37-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,64 +78,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qapi/misc.json | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ qapi/qdev.json | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/qapi/misc.json b/qapi/misc.json
-index 28c641fe2f..456241bcfd 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -34,8 +34,8 @@
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index e14a0c9259..9c4b498319 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -100,8 +100,8 @@
+ #    process is signaled with a `DEVICE_DELETED` event.  Guest reset
+ #    will automatically complete removal for all devices.  If a
+ #    guest-side error in the hot removal process is detected, the
+-#    device will not be removed and a `DEVICE_UNPLUG_GUEST_ERROR` event
+-#    is sent.  Some errors cannot be detected.
++#    device will not be removed and a `DEVICE_UNPLUG_GUEST_ERROR`
++#    event is sent.  Some errors cannot be detected.
  #
+ # Since: 0.14
+ #
+@@ -114,7 +114,8 @@
  # .. qmp-example::
  #
--#     -> { "execute": "add_client", "arguments": { "protocol": "vnc",
--#                                                  "fdname": "myclient" } }
-+#     -> { "execute": "add_client",
-+#          "arguments": { "protocol": "vnc", "fdname": "myclient" } }
+ #     -> { "execute": "device_del",
+-#          "arguments": { "id": "/machine/peripheral-anon/device[0]" } }
++#          "arguments": {
++#            "id": "/machine/peripheral-anon/device[0]" } }
  #     <- { "return": {} }
  ##
- { 'command': 'add_client',
-@@ -288,7 +288,8 @@
- # .. qmp-example::
- #
- #     -> { "execute": "get-win32-socket",
--#          "arguments": { "info": "abcd123..", "fdname": "skclient" } }
-+#          "arguments": { "info": "abcd123..",
-+#                         "fdname": "skclient" } }
- #     <- { "return": {} }
- ##
- { 'command': 'get-win32-socket', 'data': {'info': 'str', 'fdname': 'str'}, 'if': 'CONFIG_WIN32' }
-@@ -374,7 +375,8 @@
- #
- # .. qmp-example::
- #
--#     -> { "execute": "remove-fd", "arguments": { "fdset-id": 1, "fd": 3 } }
-+#     -> { "execute": "remove-fd",
-+#          "arguments": { "fdset-id": 1, "fd": 3 } }
- #     <- { "return": {} }
- ##
- { 'command': 'remove-fd', 'data': {'fdset-id': 'int', '*fd': 'int'} }
-@@ -564,7 +566,8 @@
- #
- #     <- { "event": "RTC_CHANGE",
- #          "data": { "offset": 78 },
--#          "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
-+#          "timestamp": { "seconds": 1267020223,
-+#                         "microseconds": 435656 } }
- ##
- { 'event': 'RTC_CHANGE',
-   'data': { 'offset': 'int', 'qom-path': 'str' } }
-@@ -594,7 +597,8 @@
- #                    "vfu-qom-path": "/objects/vfu1",
- #                    "dev-id": "sas1",
- #                    "dev-qom-path": "/machine/peripheral/sas1" },
+ { 'command': 'device_del', 'data': {'id': 'str'} }
+@@ -138,7 +139,8 @@
+ #     <- { "event": "DEVICE_DELETED",
+ #          "data": { "device": "virtio-net-pci-0",
+ #                    "path": "/machine/peripheral/virtio-net-pci-0" },
 -#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
 +#          "timestamp": { "seconds": 1265044230,
 +#                         "microseconds": 450486 } }
  ##
- { 'event': 'VFU_CLIENT_HANGUP',
-   'data': { 'vfu-id': 'str', 'vfu-qom-path': 'str',
+ { 'event': 'DEVICE_DELETED',
+   'data': { '*device': 'str', 'path': 'str' } }
+@@ -160,7 +162,8 @@
+ #     <- { "event": "DEVICE_UNPLUG_GUEST_ERROR",
+ #          "data": { "device": "core1",
+ #                    "path": "/machine/peripheral/core1" },
+-#          "timestamp": { "seconds": 1615570772, "microseconds": 202844 } }
++#          "timestamp": { "seconds": 1615570772,
++#                         "microseconds": 202844 } }
+ ##
+ { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
+   'data': { '*device': 'str', 'path': 'str' } }
 -- 
 2.48.1
 
