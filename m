@@ -2,63 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E537BCF731
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D3EBCF7DF
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 17:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7aEH-0005Ul-D3; Sat, 11 Oct 2025 10:05:49 -0400
+	id 1v7bOW-0006CF-4X; Sat, 11 Oct 2025 11:20:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aEE-0005P8-Jy
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:46 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1v7bOS-0006C7-N5
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 11:20:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7aDw-0005e6-AP
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 10:05:46 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 72924C0064;
- Sat, 11 Oct 2025 17:05:02 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id h4NOTl1FrqM0-CZdgs14b; Sat, 11 Oct 2025 17:05:02 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191502;
- bh=5V8+nPe1WDxsELTvlJ8cDdkGQXkPP96lZ8aVheUJlJU=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=I/zrZJacW/JQCUZ43wy+YXqKqwDRN7CuYl7HDyy2EqLOnbBrwL8B1OAz6NROxtxIg
- NzljO060FaX1LhbeZVDEniO+npNfAkkNmWgSIqhbg5AnUbX2b+PVHBsJeGongu8ak6
- 91Pbv+zc4wl72+Atqq/THpDXW+i1FwN0E5fgKvws=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: armbru@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH v2 33/33] qapi/acpi-hest.json: docs: width=70 and two spaces
- between sentences
-Date: Sat, 11 Oct 2025 17:04:39 +0300
-Message-ID: <20251011140441.297246-34-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251011140441.297246-1-vsementsov@yandex-team.ru>
-References: <20251011140441.297246-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1v7bOF-0002f5-Ne
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 11:20:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760196006;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gfeRhHLeX6RD0Xwvn6mUghsv4L7Bf+JEAgprBttqw6s=;
+ b=dLSvXan5/zn1YRsswkl6bVvcZSSH8cPHoO3wCCQgQ8Xa1Yku4gcBIBqaFt2euUmh0JqhP0
+ RNol0Q2XxTIhYola4l0JC+4hGqpJ6lsBUh0b4IBRmxj8pzkx3xZpif3G9n8g2n2Dji1BTd
+ apHFFxSitRCxW2V7pCzHVcs/4E4wl8s=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-393-adYwf52oMR-NV9giwU4JHQ-1; Sat, 11 Oct 2025 11:20:04 -0400
+X-MC-Unique: adYwf52oMR-NV9giwU4JHQ-1
+X-Mimecast-MFC-AGG-ID: adYwf52oMR-NV9giwU4JHQ_1760196003
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-b56f1c14b71so97389166b.2
+ for <qemu-devel@nongnu.org>; Sat, 11 Oct 2025 08:20:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760196003; x=1760800803;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gfeRhHLeX6RD0Xwvn6mUghsv4L7Bf+JEAgprBttqw6s=;
+ b=If1nzBtq/VMbbEsExU8oqaa0AQF1E58Kg3jOC9XPUiNMhKLi2uFNFnzBkKf4qeKbeM
+ vfDVGFM5uZbTVcRxRmmioV6YkqyiJ3SWySMylylL0ntIAZffBGXZ9wt7JbSM8LrmhUuG
+ sT0r8nIsGnYB64E15j6JbQb2Y4fvhZEhTPvzfaZsb7VO1qxLBvFxuCGCoWM5mpcx9YEP
+ 6qGLV7/Td2zpJGSFwlmFEGKVgtc4u/yOwTSQ3ehjQG9l9XBcmuVrgH1v+YqZxY6fut21
+ fM9CczFxcOaTYIZ/4CN59dTbfr2KfcBbH3hr9HvwH9Nn8DAkawJ/ky9z8fYzvwh7g5mP
+ AU+w==
+X-Gm-Message-State: AOJu0Yx/mNCZPtmFyge0rDtYyFwzMJkOFomZ2I6Whnje0YTOvnZW98ZD
+ RH4TSxmkqh36/JbcfTI2xV787ErT5UdV3I8TTLqCn4qqLR+j2wjTgaq7DAbprbT68srYzx5Xdkz
+ sUostIhjc1HKcvgSLB86L9FIcp1gJ4MWiM2L2Qd5peoA4ySsX9JMjGWBL8HI5pCVDmSodpaox/Z
+ AEoL/QKSJPXPbxEg22193Wl9jSQE3NvaQ=
+X-Gm-Gg: ASbGnctmAitkZmspehWcKIcFMvYg+n9GFHgv+oZ/zxYPfklOhIEOgsWG9gteU9m/i7q
+ jKEc3B13mpaqT5b/pBppPV9SLe08RGS5D/tz60CYAD/Mmr/z1ObZDakAtSH5a36QJUPwElUgWu0
+ 0aCmHM+Fs0TCr/hbGEMHuASA==
+X-Received: by 2002:a17:907:c28:b0:b46:3f98:6ba5 with SMTP id
+ a640c23a62f3a-b50aa48e3a6mr1792953366b.11.1760196003446; 
+ Sat, 11 Oct 2025 08:20:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7MPoPo29oph392rQnkgwLRREP17nxp20Qtx2Woj8JJSmpBb+MWYKNWwwoa7x8KUt+K7OIFIirL55/C8ztI9A=
+X-Received: by 2002:a17:907:c28:b0:b46:3f98:6ba5 with SMTP id
+ a640c23a62f3a-b50aa48e3a6mr1792951166b.11.1760196003084; Sat, 11 Oct 2025
+ 08:20:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <9c500fbcd2cf29afd1826b1ac906f9d5beac3601.1760104079.git.pabeni@redhat.com>
+ <CACGkMEt4YLAS7a-j-7t2ogoN=TWvsmBzDwJGVqvjbrt30orYTg@mail.gmail.com>
+In-Reply-To: <CACGkMEt4YLAS7a-j-7t2ogoN=TWvsmBzDwJGVqvjbrt30orYTg@mail.gmail.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Sat, 11 Oct 2025 23:19:26 +0800
+X-Gm-Features: AS18NWAe9ibbFKs8yBxChWMBVoJ7rEazvaNGhuDtrLS27tyGDs_-jUUyZWm_fAE
+Message-ID: <CAPpAL=wkRSftdvrUk-EE1=3B729ZKAFC_Z36F6k24ta5JX6fQA@mail.gmail.com>
+Subject: Re: [PATCH] virtio-net: Advertise UDP tunnel GSO support by default
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
+ Jason Wang <jasowang@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.441,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,25 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- qapi/acpi-hest.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested this patch with virtio-net regression tests, everything works fine.
 
-diff --git a/qapi/acpi-hest.json b/qapi/acpi-hest.json
-index 28af1266a7..22a28b2199 100644
---- a/qapi/acpi-hest.json
-+++ b/qapi/acpi-hest.json
-@@ -6,7 +6,7 @@
- # == GHESv2 CPER Error Injection
- #
- # Defined since ACPI Specification 6.1,
--# section 18.3.2.8 Generic Hardware Error Source version 2. See:
-+# section 18.3.2.8 Generic Hardware Error Source version 2.  See:
- #
- # https://uefi.org/sites/default/files/resources/ACPI_6_1.pdf
- ##
--- 
-2.48.1
+Tested-by: Lei Yang <leiyang@redhat.com>
+
+On Sat, Oct 11, 2025 at 12:58=E2=80=AFPM Jason Wang <jasowang@redhat.com> w=
+rote:
+>
+> On Fri, Oct 10, 2025 at 10:13=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> =
+wrote:
+> >
+> > Allow bidirection aggregated traffic for UDP encapsulated flows.
+>
+> bidirectional ?
+>
+> >
+> > Add the needed compatibility entries to avoid migration issues
+> > vs older QEMU instances.
+> >
+> > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> > ---
+>
+> Other than that.
+>
+> Acked-by: Jason Wang <jasowang@redhat.com>
+>
+> Thanks
+>
+>
 
 
