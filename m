@@ -2,50 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7C8BCF670
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4BFBCF707
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Oct 2025 16:23:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7a7A-00064q-I1; Sat, 11 Oct 2025 09:58:28 -0400
+	id 1v7a74-00061A-Bc; Sat, 11 Oct 2025 09:58:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a72-00061S-Nm
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:20 -0400
+ id 1v7a6x-00060w-W5
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:16 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7a6t-0004cM-5d
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:20 -0400
+ id 1v7a6r-0004cN-Cs
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 09:58:15 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E6AB6C0192;
- Sat, 11 Oct 2025 16:57:56 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 666D4C0193;
+ Sat, 11 Oct 2025 16:57:57 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uvMPBZ1FEOs0-PcT6l7O7; Sat, 11 Oct 2025 16:57:56 +0300
+ ESMTPSA id uvMPBZ1FEOs0-V3WhyNtC; Sat, 11 Oct 2025 16:57:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760191076;
- bh=/Shqrv+9pF+QMPiDRVvJFgk5xm3bawX7iNusiuy0a3Q=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=h7vsW0AbUn60Pl9bjdmO2XRrLpz6uoVoXjCk3jmEeeEARNEZMjKwO8FwFHh6f6Bme
- empHChWfkgYH5GjwygV/o252jgFoggowyDkoCFV7v3pnCdtbp0xeV4pKIV4HNp9D+i
- zewZzrMfPGxRESF8xafTNRsAVxKlRrLSSDNt48q0=
+ s=default; t=1760191077;
+ bh=sM4YrvUNO+2zghtH3aLu00wsMr94BOpnclkexE7YIug=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=hAw6yIMPaMEPLtOYm+bIhh+ZtNH2iwUkeRmw+iEQ/9+s8JRYkYhdVdvd8rxG7IZVn
+ hiheKZStbSbjqYrBGlbmfJTG3eQTafOsn0bMWY1XEDtiX4zyco8qt1W8DHgGXDOZRu
+ VGgatDdKiKJBMGCD0HSUDhj7r1U0jhWE01EuKDQg=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: armbru@redhat.com
-Cc: qemu-devel@nongnu.org,
-	vsementsov@yandex-team.ru,
-	eblake@redhat.com
-Subject: [PATCH 00/33] qapi: docs: width=70 and two spaces between sentences
-Date: Sat, 11 Oct 2025 16:56:41 +0300
-Message-ID: <20251011135754.294521-1-vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eblake@redhat.com,
+ Michael Roth <michael.roth@amd.com>
+Subject: [PATCH 01/33] qapi: Add documentation format validation
+Date: Sat, 11 Oct 2025 16:56:42 +0300
+Message-ID: <20251011135754.294521-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251011135754.294521-1-vsementsov@yandex-team.ru>
+References: <20251011135754.294521-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
@@ -72,84 +73,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all!
+Add explicit validation for QAPI documentation formatting rules:
 
-Let's bring the documentation in line with the requirements. And
-do check these requirements in QAPI parser, to avoid later
-further violations.
+1. Lines must not exceed 70 columns in width (including '# ' prefix)
+2. Sentences must be separated by two spaces
 
-Vladimir Sementsov-Ogievskiy (33):
-  qapi: Add documentation format validation
-  qapi/acpi.json: docs: width=70 and two spaces between sentences
-  qapi/audio.json: docs: width=70 and two spaces between sentences
-  qapi/block-core.json: docs: width=70 and two spaces between sentences
-  qapi/block-export.json: docs: width=70 and two spaces between
-    sentences
-  qapi/block.json: docs: width=70 and two spaces between sentences
-  qapi/char.json: docs: width=70 and two spaces between sentences
-  qapi/crypto.json: docs: width=70 and two spaces between sentences
-  qapi/dump.json: docs: width=70 and two spaces between sentences
-  qapi/introspect.json: docs: width=70 and two spaces between sentences
-  qapi/job.json: docs: width=70 and two spaces between sentences
-  qapi/machine-s390x.json: docs: width=70 and two spaces between
-    sentences
-  qapi/machine.json: docs: width=70 and two spaces between sentences
-  qapi/migration.json: docs: width=70 and two spaces between sentences
-  qapi/misc-arm.json: docs: width=70 and two spaces between sentences
-  qapi/misc-i386.json: docs: width=70 and two spaces between sentences
-  qapi/misc.json: docs: width=70 and two spaces between sentences
-  qapi/net.json: docs: width=70 and two spaces between sentences
-  qapi/qdev.json: docs: width=70 and two spaces between sentences
-  qapi/qom.json: docs: width=70 and two spaces between sentences
-  qapi/replay.json: docs: width=70 and two spaces between sentences
-  qapi/rocker.json: docs: width=70 and two spaces between sentences
-  qapi/run-state.json: docs: width=70 and two spaces between sentences
-  qapi/sockets.json: docs: width=70 and two spaces between sentences
-  qapi/stats.json: docs: width=70 and two spaces between sentences
-  qapi/tpm.json: docs: width=70 and two spaces between sentences
-  qapi/trace.json: docs: width=70 and two spaces between sentences
-  qapi/transaction.json: docs: width=70 and two spaces between sentences
-  qapi/ui.json: docs: width=70 and two spaces between sentences
-  qapi/vfio.json: docs: width=70 and two spaces between sentences
-  qapi/virtio.json: docs: width=70 and two spaces between sentences
-  qga/qapi-schema.json: docs: width=70 and two spaces between sentences
-  qapi/acpi-hest.json: docs: width=70 and two spaces between sentences
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ scripts/qapi/parser.py | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
- qapi/acpi-hest.json     |   2 +-
- qapi/acpi.json          |  20 ++-
- qapi/audio.json         |   4 +-
- qapi/block-core.json    | 191 +++++++++++++++-------------
- qapi/block-export.json  |  26 ++--
- qapi/block.json         |  18 +--
- qapi/char.json          |  34 +++--
- qapi/crypto.json        |   7 +-
- qapi/dump.json          |   9 +-
- qapi/introspect.json    |   8 +-
- qapi/job.json           |  26 ++--
- qapi/machine-s390x.json |   3 +-
- qapi/machine.json       |  59 +++++----
- qapi/migration.json     | 209 ++++++++++++++++++-------------
- qapi/misc-arm.json      |   6 +-
- qapi/misc-i386.json     |   9 +-
- qapi/misc.json          |  16 ++-
- qapi/net.json           |  61 +++++----
- qapi/qdev.json          |  13 +-
- qapi/qom.json           |  31 +++--
- qapi/replay.json        |   9 +-
- qapi/rocker.json        |  18 ++-
- qapi/run-state.json     |  60 +++++----
- qapi/sockets.json       |  34 ++---
- qapi/stats.json         |   3 +-
- qapi/tpm.json           |   3 +-
- qapi/trace.json         |   3 +-
- qapi/transaction.json   |  33 ++---
- qapi/ui.json            | 108 ++++++++++------
- qapi/vfio.json          |   3 +-
- qapi/virtio.json        | 269 +++-------------------------------------
- qga/qapi-schema.json    |  83 +++++++------
- scripts/qapi/parser.py  |  39 +++++-
- 33 files changed, 713 insertions(+), 704 deletions(-)
-
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 9fbf80a541..2c76686fc4 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -428,7 +428,44 @@ def get_doc_line(self) -> Optional[str]:
+             return ''
+         if self.val[1] != ' ':
+             raise QAPIParseError(self, "missing space after #")
+-        return self.val[2:].rstrip()
++
++        line = self.val[2:].rstrip()
++
++        self._validate_doc_line_format(line)
++
++        return line
++
++    def _validate_doc_line_format(self, line: str) -> None:
++        """
++        Validate documentation format rules for a single line:
++        1. Lines should not exceed 70 columns
++        2. Sentences should be separated by two spaces
++        """
++        # Check 70-column width rule
++        full_line_length = len(line) + 2  # "# " = 2 characters
++        if full_line_length > 70:
++            # Skip URL lines - they can't be broken
++            stripped_line = line.strip()
++            if (stripped_line.startswith(('http://', 'https://', 'ftp://')) and
++                ' ' not in stripped_line):
++                pass
++            else:
++                raise QAPIParseError(
++                    self, f"documentation line exceeds 70 columns "
++                    f"({full_line_length} columns): {line[:50]}..."
++                )
++
++        single_space_pattern = r'[.!?] [A-Z0-9]'
++        for m in list(re.finditer(single_space_pattern, line)):
++            left = line[0:m.start() + 1]
++            # Ignore abbreviations and numbered lists
++            if left.endswith('e.g.') or re.fullmatch(r' *\d\.', left):
++                continue
++            raise QAPIParseError(
++                 self, f"documentation has single space after sentence "
++                 f"ending. Use two spaces between sentences: "
++                 f"...{line[m.start()-5:m.end()+5]}..."
++            )
+ 
+     @staticmethod
+     def _match_at_name_colon(string: str) -> Optional[Match[str]]:
 -- 
 2.48.1
 
