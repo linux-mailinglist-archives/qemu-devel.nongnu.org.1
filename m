@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAEBBCFD8F
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 01:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE456BCFEB6
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 04:30:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7ix7-0006Jt-Id; Sat, 11 Oct 2025 19:24:41 -0400
+	id 1v7lpp-0003Ce-Cd; Sat, 11 Oct 2025 22:29:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7ix5-0006JF-O9
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 19:24:39 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v7ix3-0000vl-To
- for qemu-devel@nongnu.org; Sat, 11 Oct 2025 19:24:39 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9B627C01DD;
- Sun, 12 Oct 2025 02:24:26 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a4b::1:3c])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6OWMXt1FjqM0-W9WADeRZ; Sun, 12 Oct 2025 02:24:26 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760225066;
- bh=rkKDNqLmUfNjo4O0c7dmnMJaKIu8C/BqjUGQSszHpfU=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=z3+o7rhGTlgGdX+V011HX40aWdfxWoTCschahxUEhVHWcFrOHT7EQ6j8lZ8urzR7C
- p+LUU2/sSpTPfEzE6Xa+jMpZUBaEJPUYWZU3kNTJYOCHfVUVX7PZS4oq8YlrBHY5vl
- JkeyOwe/tKGSOAD95UnLhav1HdeQ2O4ILiCzNO1s=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: mst@redhat.com
-Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
- raphael.s.norwitz@gmail.com, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH v2 23/23] vhost: add some useful trace-points
-Date: Sun, 12 Oct 2025 02:24:02 +0300
-Message-ID: <20251011232404.561024-24-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251011232404.561024-1-vsementsov@yandex-team.ru>
-References: <20251011232404.561024-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <luoyonggang@gmail.com>)
+ id 1v7lpk-0003CN-33
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 22:29:16 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <luoyonggang@gmail.com>)
+ id 1v7lpi-00039z-9r
+ for qemu-devel@nongnu.org; Sat, 11 Oct 2025 22:29:15 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-6364eb29e74so5654146a12.0
+ for <qemu-devel@nongnu.org>; Sat, 11 Oct 2025 19:29:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1760236150; x=1760840950; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=kPdHNrdBvirF2XCVKlYe3wMWqYSLncgB7JJirp8dSSA=;
+ b=FY6YWn1x1K/nkQBkHp0l77YWsS3gdEK/8/2bflWs6aZV+XynWO+JiQ4RY1zrOsAEjb
+ TOld/Vqj9khVhrUMXsHDibA0xB3/ku34oCtxXeN2rfLKo5wnkoh8FEcyNda3paqRB719
+ wcZbimiS1gO8craSSVQswOYKHtFyYxGuCNEYm/7MLd06wi2funthYlBRQhJuDaiI2mjA
+ jMljQUifANGMxGssk24F2D9y1cOW7qAYGQq+0Dtfoixn+4iTjwRuVgXMpqU3VKP60LOj
+ t5I/sMIytuhwfiuwT3WO7c+Ub761CFGIsSH0RGeUc0fs1DE0u7WkW3NUs3C0opzc2txU
+ CLhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760236150; x=1760840950;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kPdHNrdBvirF2XCVKlYe3wMWqYSLncgB7JJirp8dSSA=;
+ b=BgX5WMtYqr8WBfMfmSuN1Q0+nfEZih6+YKNnUMGvPWtJXXL/VVxTH4aK9URcfH+AQf
+ hJCMQ7bZEqiHIEVCEPtMaP3Qo1jI1WyTz6reA7OAfFrpnMlUfxngdO31Ql7xPmXElhNk
+ OCCu4w36duYen9B7gcDaktgpLsAx+jmVp3IcnWuhOFOolep0Yan2fIcZSTTUKGXwMwWb
+ 4Au/64C9pK0K2HVtx5y9ml3sSPwAmTWCg0YyhpztvtZossXyQ8hZgEPJ+1NWUtwPwUil
+ HM8zsAh5gu6F+TX8hmHrRvrNECrBZkK4HYgC+t5CSgMUPsQ6sP4nlo2D0QP1k8A4fd1u
+ X8yA==
+X-Gm-Message-State: AOJu0YwyF1V/IOXrEsYilZoiPoerCXSPBywunVXUC7RJSmr2Rz7c5+ne
+ LRX5Rr6ejg9fHrjIZ3eraGsqww7BHXK4YnL0I8C0ksJzI1GZYVqpPm2zdqVYz5apGMRG14EvZuR
+ 48r6UkBWJLjBcbbBZLt+Q7zgmk9ByJ7w=
+X-Gm-Gg: ASbGncsrRHoKePHiEaE/IoGnYPaqrEIXOjCR0B5s2YN5Oie5pAuATV3W/PrFI98Hb4D
+ S7n/7oNBY8PQb4fAFAhfnnWh6lcQWh+ZZJdSF6b/u26BlVZ9X+wMvzGJVT+BzyoNwNcLXsspDxJ
+ 61Pxz3xJszGplvXAsIaxeTDpvU7UoiFsnjxDhvHooFOQ3MqvcAMfyWoOsmlC1RUlFDnossrHB8K
+ GT3/dnh62W88ulgRc+Bl/L4ug==
+X-Google-Smtp-Source: AGHT+IH/ukQfvdVsV7YHpbYMnfOYE93Zll0U4H8IoxKiDocXfKnvXI+SuLB4WJvJALnl9dGaGsUMjPrxEEtf3BqusVo=
+X-Received: by 2002:a17:906:ef04:b0:b3c:8b25:ab74 with SMTP id
+ a640c23a62f3a-b50aa393c32mr1871030166b.10.1760236149880; Sat, 11 Oct 2025
+ 19:29:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20251010160545.144760-1-berrange@redhat.com>
+In-Reply-To: <20251010160545.144760-1-berrange@redhat.com>
+From: =?UTF-8?B?572X5YuH5YiaKFlvbmdnYW5nIEx1byk=?= <luoyonggang@gmail.com>
+Date: Sun, 12 Oct 2025 10:28:58 +0800
+X-Gm-Features: AS18NWDHA9bPiQxy8OOYhRCiog90QgnYdjjp33do2fhuHdsq6ncPtl1Lo7f6fg4
+Message-ID: <CAE2XoE-QgRZydYk44eO-Ops5jk1uzosyiCwpomTfBaPf1DGgtA@mail.gmail.com>
+Subject: Re: [PATCH] gitlab: purge msys pacman cache
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Thomas Huth <thuth@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=luoyonggang@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -71,133 +93,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: luoyonggang@gmail.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- hw/virtio/trace-events | 12 ++++++++++--
- hw/virtio/vhost.c      | 20 ++++++++++++++++++--
- 2 files changed, 28 insertions(+), 4 deletions(-)
+On Sat, Oct 11, 2025 at 12:05=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+>
+> For the Windows msys2 CI job we install many packages using pacman
+> and use the GitLab cache to preserve the pacman cache across CI
+> runs. While metadata still needs downloading, this avoids pacman
+> re-downloading packages from msys2 if they have not changed.
+>
+> The problem is that pacman never automatically purges anything
+> from its package cache. Thus the GitLab cache is growing without
+> bound and packing/unpacking the cache is consuming an increasing
+> amount of time in the CI job.
+>
+> If we run 'pacman -Sc' /after/ installing our desired package set,
+> it will purge any cached downloaded packages that are not matching
+> any installed package.
+>
+> This will (currently) cap the pacman download cache at approx
+> 256 MB.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  .gitlab-ci.d/windows.yml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> See a test job with this change, plus a find across the msys
+> pacman cache, showing the cleanup effects....
+>
+> Before cleanup:
+>
+>   https://gitlab.com/berrange/qemu/-/jobs/11679136531#L34
+>
+> After cleanup:
+>
+>   https://gitlab.com/berrange/qemu/-/jobs/11679136531#L1126
+>
+> diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+> index 1e6a01bd9a..6e1135d8b8 100644
+> --- a/.gitlab-ci.d/windows.yml
+> +++ b/.gitlab-ci.d/windows.yml
+> @@ -87,6 +87,7 @@ msys2-64bit:
+>        mingw-w64-x86_64-pkgconf
+>        mingw-w64-x86_64-python
+>        mingw-w64-x86_64-zstd"
+> +  - .\msys64\usr\bin\bash -lc "pacman -Sc --noconfirm"
+>    - Write-Output "Running build at $(Get-Date -Format u)"
+>    - $env:JOBS =3D $(.\msys64\usr\bin\bash -lc nproc)
+>    - $env:CHERE_INVOKING =3D 'yes'  # Preserve the current working direct=
+ory
+> --
+> 2.50.1
+>
 
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index aa1ffa5e94..c2529814f9 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -9,8 +9,16 @@ vhost_section(const char *name) "%s"
- vhost_reject_section(const char *name, int d) "%s:%d"
- vhost_iotlb_miss(void *dev, int step) "%p step %d"
- vhost_dev_cleanup(void *dev) "%p"
--vhost_dev_start(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
--vhost_dev_stop(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
-+vhost_dev_start_in(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
-+vhost_dev_start_out(void *dev, const char *name) "%p:%s"
-+vhost_dev_stop_in(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
-+vhost_dev_stop_out(void *dev, const char *name) "%p:%s"
-+vhost_virtque_start_in(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_virtque_start_out(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_virtque_stop_in(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_virtque_stop_out(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_dev_init_in(void *dev) "%p"
-+vhost_dev_init_out(void *dev) "%p"
- 
- 
- # vhost-user.c
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index d02d1d4c34..f15ef8cff6 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1333,6 +1333,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-     };
-     struct VirtQueue *vvq = virtio_get_queue(vdev, idx);
- 
-+    trace_vhost_virtque_start_in(dev, vdev->name, idx);
-+
-     r = vhost_vrings_map(dev, vdev, vq, idx);
-     if (r <= 0) {
-         return r;
-@@ -1394,6 +1396,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-         }
-     }
- 
-+    trace_vhost_virtque_start_out(dev, vdev->name, idx);
-+
-     return 0;
- 
- fail:
-@@ -1412,6 +1416,8 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
-     };
-     int r = 0;
- 
-+    trace_vhost_virtque_stop_in(dev, vdev->name, idx);
-+
-     if (virtio_queue_get_desc_addr(vdev, idx) == 0) {
-         /* Don't stop the virtqueue which might have not been started */
-         return 0;
-@@ -1445,6 +1451,8 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
-     }
- 
-     vhost_vrings_unmap(dev, vq, true);
-+
-+    trace_vhost_virtque_stop_out(dev, vdev->name, idx);
-     return r;
- }
- 
-@@ -1616,6 +1624,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
- {
-     int i, r, n_initialized_vqs = 0;
- 
-+    trace_vhost_dev_init_in(hdev);
-+
-     hdev->vdev = NULL;
-     hdev->migration_blocker = NULL;
- 
-@@ -1700,6 +1710,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         goto fail;
-     }
- 
-+    trace_vhost_dev_init_out(hdev);
-+
-     return 0;
- 
- fail:
-@@ -2048,7 +2060,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     /* should only be called after backend is connected */
-     assert(hdev->vhost_ops);
- 
--    trace_vhost_dev_start(hdev, vdev->name, vrings);
-+    trace_vhost_dev_start_in(hdev, vdev->name, vrings);
- 
-     vdev->vhost_started = true;
-     hdev->started = true;
-@@ -2133,6 +2145,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-         }
-     }
-     vhost_start_config_intr(hdev);
-+
-+    trace_vhost_dev_start_out(hdev, vdev->name);
-     return 0;
- fail_iotlb:
-     if (vhost_dev_has_iommu(hdev) &&
-@@ -2182,7 +2196,7 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-     event_notifier_cleanup(
-         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
- 
--    trace_vhost_dev_stop(hdev, vdev->name, vrings);
-+    trace_vhost_dev_stop_in(hdev, vdev->name, vrings);
- 
-     if (hdev->vhost_ops->vhost_dev_start) {
-         hdev->vhost_ops->vhost_dev_start(hdev, false);
-@@ -2212,6 +2226,8 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-     hdev->started = false;
-     vdev->vhost_started = false;
-     hdev->vdev = NULL;
-+
-+    trace_vhost_dev_stop_out(hdev, vdev->name);
-     return rc;
- }
- 
--- 
-2.48.1
+Reviewed-by: Yonggang Luo <luoyonggang@gmail.com>
 
+--=20
+         =E6=AD=A4=E8=87=B4
+=E7=A4=BC
+=E7=BD=97=E5=8B=87=E5=88=9A
+Yours
+    sincerely,
+Yonggang Luo
 
