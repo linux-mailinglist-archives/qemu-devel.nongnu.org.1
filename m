@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46E8BD0499
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 17:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7731BD049E
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Oct 2025 17:09:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v7xfj-0001i7-Sq; Sun, 12 Oct 2025 11:07:43 -0400
+	id 1v7xfU-0001eG-3L; Sun, 12 Oct 2025 11:07:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v7xfR-0001eI-5s; Sun, 12 Oct 2025 11:07:25 -0400
+ id 1v7xfP-0001ch-J0; Sun, 12 Oct 2025 11:07:23 -0400
 Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <tangtao1634@phytium.com.cn>)
- id 1v7xfL-0001cw-T7; Sun, 12 Oct 2025 11:07:24 -0400
+ id 1v7xfK-0001cv-Uc; Sun, 12 Oct 2025 11:07:23 -0400
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDX32MZxOtofE6gAA--.44S2;
- Sun, 12 Oct 2025 23:07:05 +0800 (CST)
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCHj5saxOtohE6gAA--.38S2;
+ Sun, 12 Oct 2025 23:07:06 +0800 (CST)
 Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwDXPOoXxOto33dMAA--.3068S4;
- Sun, 12 Oct 2025 23:07:04 +0800 (CST)
+ by mail (Coremail) with SMTP id AQAAfwDXPOoXxOto33dMAA--.3068S5;
+ Sun, 12 Oct 2025 23:07:05 +0800 (CST)
 From: Tao Tang <tangtao1634@phytium.com.cn>
 To: Eric Auger <eric.auger@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
@@ -31,24 +31,23 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jean-Philippe Brucker <jean-philippe@linaro.org>,
  Mostafa Saleh <smostafa@google.com>, Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [RFC v3 01/21] hw/arm/smmuv3: Fix incorrect reserved mask for SMMU
- CR0 register
-Date: Sun, 12 Oct 2025 23:06:41 +0800
-Message-Id: <20251012150701.4127034-2-tangtao1634@phytium.com.cn>
+Subject: [RFC v3 02/21] hw/arm/smmuv3: Correct SMMUEN field name in CR0
+Date: Sun, 12 Oct 2025 23:06:42 +0800
+Message-Id: <20251012150701.4127034-3-tangtao1634@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
 References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwDXPOoXxOto33dMAA--.3068S4
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQABBWjqskUBVQAAsk
+X-CM-TRANSID: AQAAfwDXPOoXxOto33dMAA--.3068S5
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQABBWjqskUBVwAAsm
 Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
  4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvdXoWrZry5Ar43ZFW5GryDXw17GFg_yoWDtwbEkF
- s7Jay8Wr4UKFWDX3W8KFWSyry093y5WrZ5XF1xtFn8KFZ8Xa45WFs7Z3s5Z34fGFy8uFya
- kanFyrWag39rujkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrnU
- Uv73VFW2AGmfu7jjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUU
- UUUU=
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Jr47Xr1xXw4furyxury7GFg_yoW8Jry8pF
+ 4kGF1rGrWUAa4S9ryxGay7AF15Wayktr1UKr97G3sxJ3WavFZxAryvkF1DWFykuryUXF4r
+ u3Z2ya409a1IyrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
 Received-SPF: pass client-ip=129.150.39.64;
  envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
 X-Spam_score_int: -18
@@ -73,42 +72,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current definition of the SMMU_CR0_RESERVED mask is incorrect.
-It mistakenly treats bit 10 (DPT_WALK_EN) as a reserved bit while
-treating bit 9 (RES0) as an implemented bit.
+The FIELD macro for the SMMU enable bit in the CR0 register was
+incorrectly named SMMU_ENABLE.
 
-According to the SMMU architecture specification, the layout for CR0 is:
-| 31:11| RES0           |
-| 10   | DPT_WALK_EN    |
-| 9    | RES0           |
-| 8:6  | VMW            |
-| 5    | RES0           |
-| 4    | ATSCHK         |
-| 3    | CMDQEN         |
-| 2    | EVENTQEN       |
-| 1    | PRIQEN         |
-| 0    | SMMUEN         |
+The ARM SMMUv3 Architecture Specification (both older IHI 0070.E.a and
+newer IHI 0070.G.b) consistently refers to the SMMU enable bit as SMMUEN.
+
+This change makes our implementation consistent with the manual.
 
 Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lists.gnu.org/archive/html/qemu-arm/2025-06/msg00088.html
+Link: https://lists.nongnu.org/archive/html/qemu-arm/2025-09/msg01270.html
 ---
- hw/arm/smmuv3-internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/smmuv3-internal.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index b6b7399347..42ac77e654 100644
+index 42ac77e654..8d631ecf27 100644
 --- a/hw/arm/smmuv3-internal.h
 +++ b/hw/arm/smmuv3-internal.h
-@@ -120,7 +120,7 @@ REG32(CR0,                 0x20)
+@@ -116,7 +116,7 @@ REG32(IDR5,                0x14)
+ REG32(IIDR,                0x18)
+ REG32(AIDR,                0x1c)
+ REG32(CR0,                 0x20)
+-    FIELD(CR0, SMMU_ENABLE,   0, 1)
++    FIELD(CR0, SMMUEN,   0, 1)
      FIELD(CR0, EVENTQEN,      2, 1)
      FIELD(CR0, CMDQEN,        3, 1)
  
--#define SMMU_CR0_RESERVED 0xFFFFFC20
-+#define SMMU_CR0_RESERVED 0xFFFFFA20
+@@ -181,7 +181,7 @@ REG32(EVENTQ_IRQ_CFG2,     0xbc)
  
- REG32(CR0ACK,              0x24)
- REG32(CR1,                 0x28)
+ static inline int smmu_enabled(SMMUv3State *s)
+ {
+-    return FIELD_EX32(s->cr[0], CR0, SMMU_ENABLE);
++    return FIELD_EX32(s->cr[0], CR0, SMMUEN);
+ }
+ 
+ /* Command Queue Entry */
 -- 
 2.34.1
 
