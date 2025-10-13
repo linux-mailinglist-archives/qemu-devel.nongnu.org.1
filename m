@@ -2,51 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B2CBD17EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 07:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8564BD17E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 07:46:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8BNe-0001E7-5D; Mon, 13 Oct 2025 01:45:58 -0400
+	id 1v8BNc-0000z3-Mr; Mon, 13 Oct 2025 01:45:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v8BMt-0000JD-Si; Mon, 13 Oct 2025 01:45:22 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v8BMr-0002JY-Vq; Mon, 13 Oct 2025 01:45:11 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 13 Oct
- 2025 13:43:40 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 13 Oct 2025 13:43:40 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v3 16/16] hw/arm/aspeed_ast27x0-{ssp,tsp}: Fix coding style
-Date: Mon, 13 Oct 2025 13:43:28 +0800
-Message-ID: <20251013054334.955331-17-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
-References: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <asmadeus@codewreck.org>)
+ id 1v8BNE-0000ek-2I
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 01:45:32 -0400
+Received: from submarine.notk.org ([2001:bc8:3310:100::1])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <asmadeus@codewreck.org>) id 1v8BN8-0002X8-K0
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 01:45:31 -0400
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+ by submarine.notk.org (Postfix) with ESMTPS id 44F5614C2D3;
+ Mon, 13 Oct 2025 07:45:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+ s=2; t=1760334319;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ce15DNwFtcx1o8BE9rSi96ihc22rYfoAQEIEWN/lQiI=;
+ b=km//x1/Nc761HY8uuOCVIDYfKH8FWbd7/U/xWC1bXM7oz5qPszuIMwoIHFTKP0t0bQ5308
+ E9oQuHjCT6r942NE9nTIunW0ksi+AXaHT57qbCkyWfZJsWOTqxaIWXRqCAkaLK/Hpf7T5D
+ fPsWG6HaKG032EXiAkMO7elGABalmcA3g33HpsA0NLaOfZ7ZGFn66EHjEAAFWbN8VMF0PN
+ HPtO/lQg4fv8v80N+br8xRGaRS9+K5Gg7ufKa5h8Jb4qJnX+4ve3cw1V2yWGOT14I9nMI/
+ lXe3ChVs1iZZ21EDG3K/XrVaZMq9BI0TlKuKKs+fj3Tb6liwijvFPiqS4hIo1A==
+Received: from localhost (gaia.codewreck.org [local])
+ by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 81845d00;
+ Mon, 13 Oct 2025 05:45:13 +0000 (UTC)
+Date: Mon, 13 Oct 2025 14:44:58 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Filip Hejsek <filip.hejsek@gmail.com>
+Cc: qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Subject: Re: [PATCH RFC v5 12/12] ui/gtk: forward gtk console size to vc
+ chardev
+Message-ID: <aOyR2hppJDE4Zrzl@codewreck.org>
+References: <20250921-console-resize-v5-0-89e3c6727060@gmail.com>
+ <20250921-console-resize-v5-12-89e3c6727060@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250921-console-resize-v5-12-89e3c6727060@gmail.com>
+Received-SPF: pass client-ip=2001:bc8:3310:100::1;
+ envelope-from=asmadeus@codewreck.org; helo=submarine.notk.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,49 +79,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix coding style warnings in aspeed_ast27x0-ssp.c and aspeed_ast27x0-tsp.c
-reported by checkpatch.pl regarding line length exceeding 80 characters.
+Filip Hejsek wrote on Sun, Sep 21, 2025 at 01:45:42AM +0200:
+> Query the terminal size from the vte library when creating the console
+> and every time it might change. Vte doesn't send any signal specifically
+> for terminal size changes, so instead we register callbacks for
+> size-allocate and char-size-changed.
+> 
+> Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/arm/aspeed_ast27x0-ssp.c | 3 ++-
- hw/arm/aspeed_ast27x0-tsp.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Reviewed-by: Dominique Martinet <dominique.martinet@codewreck.org>
+(not tested; I couldn't figure how to make the console available to the
+gtk mux locally... ohwell, it looks good to me™)
 
-diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
-index d27be8b925..936c7c72e8 100644
---- a/hw/arm/aspeed_ast27x0-ssp.c
-+++ b/hw/arm/aspeed_ast27x0-ssp.c
-@@ -263,7 +263,8 @@ static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
-                                   sc->memmap[ASPEED_DEV_SCUIO], 0x1000);
- }
- 
--static void aspeed_soc_ast27x0ssp_class_init(ObjectClass *klass, const void *data)
-+static void aspeed_soc_ast27x0ssp_class_init(ObjectClass *klass,
-+                                             const void *data)
- {
-     static const char * const valid_cpu_types[] = {
-         ARM_CPU_TYPE_NAME("cortex-m4"), /* TODO: cortex-m4f */
-diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
-index 7f109101fe..9318f8c86c 100644
---- a/hw/arm/aspeed_ast27x0-tsp.c
-+++ b/hw/arm/aspeed_ast27x0-tsp.c
-@@ -263,7 +263,8 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
-                                   sc->memmap[ASPEED_DEV_SCUIO], 0x1000);
- }
- 
--static void aspeed_soc_ast27x0tsp_class_init(ObjectClass *klass, const void *data)
-+static void aspeed_soc_ast27x0tsp_class_init(ObjectClass *klass,
-+                                             const void *data)
- {
-     static const char * const valid_cpu_types[] = {
-         ARM_CPU_TYPE_NAME("cortex-m4"), /* TODO cortex-m4f */
+And that's the last patch, thanks a lot for this work! A few things
+cleaner than I had :)
 -- 
-2.43.0
-
+Dominique Martinet | Asmadeus
 
