@@ -2,64 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DB0BD2BCD
+	by mail.lfdr.de (Postfix) with ESMTPS id 77897BD2BC8
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:13:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8GSJ-0001II-8c; Mon, 13 Oct 2025 07:11:07 -0400
+	id 1v8GTJ-0001Yg-MF; Mon, 13 Oct 2025 07:12:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8GSF-0001He-10
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:11:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8GTH-0001YJ-C7
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:12:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8GSA-0003Hi-JP
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:11:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8GTA-0003WF-0F
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:12:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760353853;
+ s=mimecast20190719; t=1760353916;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wTXHtL7x9n8pBFTn/HV8u3bXuDvcA7YfgwtGE1bNnJQ=;
- b=JvgPUzz6SusWLtArb10vAnUU5GkVK0LRaKnYij52wPTozm6OIig1ADcw7ilywSM84EPrtC
- ddye62dRat1x4KAVvS1oVEuRo7xGmZ2C7cbwUFCkzoaBKbrrSaL6D/h1eBBQctv+AYKtkp
- 9uxLCQmE5Jv94soBfDh5e0MJkAM1EVU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4Jdv85aTfqoP0ZibPBcTkwt/hv72ZlSA/6bBbdVLFIY=;
+ b=Kv3EnhJ9tMfP9iepQV8pcYXLx5HtUYgYasJfbxTm4KehOuJsBSeu+FcJAlMmKR9hhmfKMA
+ Hx7M9jVRGyIRell6mzP/woYSwSpp3/jVRBj8CtbvUkPj2r7S/6jLt81mBx79X1y8XLvsnZ
+ z/jznoLAi9/lqaYel4xT0msuQGrkwNQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-Qnji2KRmPtGMliE5tch9Hg-1; Mon,
- 13 Oct 2025 07:10:50 -0400
-X-MC-Unique: Qnji2KRmPtGMliE5tch9Hg-1
-X-Mimecast-MFC-AGG-ID: Qnji2KRmPtGMliE5tch9Hg_1760353849
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-9-hmcftUM-PcCcFeIiAvXkkA-1; Mon,
+ 13 Oct 2025 07:11:53 -0400
+X-MC-Unique: hmcftUM-PcCcFeIiAvXkkA-1
+X-Mimecast-MFC-AGG-ID: hmcftUM-PcCcFeIiAvXkkA_1760353912
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B1B6D180028C; Mon, 13 Oct 2025 11:10:48 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EC901800597; Mon, 13 Oct 2025 11:11:52 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4D16D1954102; Mon, 13 Oct 2025 11:10:48 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE22E18019D9; Mon, 13 Oct 2025 11:11:51 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E2B7E21E6A27; Mon, 13 Oct 2025 13:10:45 +0200 (CEST)
+ id 2C75321E6A27; Mon, 13 Oct 2025 13:11:49 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org,  anthony@xenproject.org,  paul@xen.org,
- edgar.iglesias@gmail.com,  xen-devel@lists.xenproject.org,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH] hw/display/xenfb: Replace unreachable code by abort()
-In-Reply-To: <20250729111226.3627499-1-armbru@redhat.com> (Markus Armbruster's
- message of "Tue, 29 Jul 2025 13:12:26 +0200")
-References: <20250729111226.3627499-1-armbru@redhat.com>
-Date: Mon, 13 Oct 2025 13:10:45 +0200
-Message-ID: <877bwz6oqy.fsf@pond.sub.org>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,  =?utf-8?Q?Marc-?=
+ =?utf-8?Q?Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Akihiko Odaki
+ <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: Re: [PULL 09/13] ui/pixman: Consistent error handling in
+ qemu_pixman_shareable_free()
+In-Reply-To: <957601F2-78F5-4AD5-A6C2-CAFE49A97E84@gmail.com> (Bernhard
+ Beschow's message of "Mon, 13 Oct 2025 09:55:41 +0000")
+References: <20250930124653.321609-1-armbru@redhat.com>
+ <20250930124653.321609-10-armbru@redhat.com>
+ <957601F2-78F5-4AD5-A6C2-CAFE49A97E84@gmail.com>
+Date: Mon, 13 Oct 2025 13:11:49 +0200
+Message-ID: <87347n6op6.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,39 +89,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping?
+Bernhard Beschow <shentey@gmail.com> writes:
 
-Markus Armbruster <armbru@redhat.com> writes:
+> Am 30. September 2025 12:46:49 UTC schrieb Markus Armbruster <armbru@redh=
+at.com>:
+>>qemu_pixman_shareable_free() wraps around either qemu_memfd_free() or
+>>qemu_win32_map_free().  The former reports trouble as error, with
+>>error_report(), then succeeds.  The latter reports it as warning (we
+>>pass it &error_warn), then succeeds.
+>>
+>>Change the latter to report as error, too.
+>>
+>>Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>>Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>>Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>>Message-ID: <20250923091000.3180122-10-armbru@redhat.com>
+>>Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>>---
+>> ui/qemu-pixman.c | 5 ++++-
+>> 1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>>diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+>>index ef4e71da11..e46c6232cf 100644
+>>--- a/ui/qemu-pixman.c
+>>+++ b/ui/qemu-pixman.c
+>>@@ -288,7 +288,10 @@ qemu_pixman_shareable_free(qemu_pixman_shareable han=
+dle,
+>>                            void *ptr, size_t size)
+>> {
+>> #ifdef WIN32
+>>-    qemu_win32_map_free(ptr, handle, &error_warn);
+>>+    Error *err =3D NULL;
+>>+
+>>+    qemu_win32_map_free(ptr, handle, &err);
+>>+    error_report_err(err);
+>
+> The last line causes a crash on Windows since error_report_err() expects =
+err to be non-NULL. This can be reproduced by invoking `qemu-system-x86_64.=
+exe` without any parameters in msys2. Removing the line fixes the crash. I'=
+m not sure how to fix this, otherwise I had went for it myself.
 
-> xenfb_mouse_event() has a switch statement whose controlling
-> expression move->axis is an enum InputAxis.  The enum values are
-> INPUT_AXIS_X and INPUT_AXIS_Y, encoded as 0 and 1.  The switch has a
-> case for both axes.  In addition, it has an unreachable default label.
-> This convinces Coverity that move->axis can be greater than 1.  It
-> duly reports a buffer overrun when it is used to subscript an array
-> with two elements.
+My bad.  I'll fix it.  Thanks!
+
+> Best regards,
+> Bernhard
 >
-> Replace the unreachable code by abort().
->
-> Resolves: Coverity CID 1613906
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  hw/display/xenfb.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/hw/display/xenfb.c b/hw/display/xenfb.c
-> index 22822fecea..5e6c691779 100644
-> --- a/hw/display/xenfb.c
-> +++ b/hw/display/xenfb.c
-> @@ -283,8 +283,7 @@ static void xenfb_mouse_event(DeviceState *dev, QemuConsole *src,
->                  scale = surface_height(surface) - 1;
->                  break;
->              default:
-> -                scale = 0x8000;
-> -                break;
-> +                abort();
->              }
->              xenfb->axis[move->axis] = move->value * scale / 0x7fff;
->          }
+>> #else
+>>     qemu_memfd_free(ptr, size, handle);
+>> #endif
 
 
