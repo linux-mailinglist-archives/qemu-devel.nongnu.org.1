@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21A9BD312E
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC955BD3161
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8Hw6-0005Nz-3W; Mon, 13 Oct 2025 08:45:58 -0400
+	id 1v8Hvw-0005Bg-8b; Mon, 13 Oct 2025 08:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hvn-000503-26
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hvp-00052N-9g
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8HvW-0008Dv-6L
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:36 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8HvW-0008E5-Hp
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1760359520;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dFF38vbJCcqoZ0VZSxZGGvoYn4TrbGzQbFCWQwTPafY=;
- b=bW/xyD+cshS4u+DXB89x3ftvYh/uryic8RCG/wGU7VrwKQW2w2wr4fcKdj3XQa4RCVU7Uz
- oBU+pA5Ej5yLNUrwjKzIeUJBdSEyJ9xsOMQLVa6eJUnMlPrpXBc9jgGlp6SQrLLJuyORcD
- iKm54B41/PGmg4xo3KBLYWPAjoD+3ao=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Or6ZwxCzNCRqQiPHosNcpwXZ04PMuqaCvZzLOBokGJ8=;
+ b=FK5sOYCCEtDy97vWLTxYQ7r7HGPbVbWS5QtQfQsF8ZEfujW0YNVOytb57SFHFBbLWI6IFI
+ Ouq2xJ4fDqktUzmCq6Spk+2I8zl3cmRpNb1Q3MIM39MafzIolXux2EOl9boZqTjKXviEcc
+ d9iSpfNOHCwY1i8M6GBYv4oqnaeDlPk=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-148-lfSNv7ogMjSCSs_8G8Yxmw-1; Mon,
- 13 Oct 2025 08:45:15 -0400
-X-MC-Unique: lfSNv7ogMjSCSs_8G8Yxmw-1
-X-Mimecast-MFC-AGG-ID: lfSNv7ogMjSCSs_8G8Yxmw_1760359514
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-hjhl3ucfPNWRHP3_WLVZgA-1; Mon,
+ 13 Oct 2025 08:45:17 -0400
+X-MC-Unique: hjhl3ucfPNWRHP3_WLVZgA-1
+X-Mimecast-MFC-AGG-ID: hjhl3ucfPNWRHP3_WLVZgA_1760359516
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C41691956095; Mon, 13 Oct 2025 12:45:14 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B1566195608A; Mon, 13 Oct 2025 12:45:16 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.105])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 27D9A180047F; Mon, 13 Oct 2025 12:45:12 +0000 (UTC)
+ id 3E742180047F; Mon, 13 Oct 2025 12:45:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 25/29] hw/arm/aspeed_ast27x0-ssp: Change to use
+Subject: [PULL 26/29] hw/arm/aspeed_ast27x0-tsp: Change to use
  Aspeed27x0CoprocessorState
-Date: Mon, 13 Oct 2025 14:44:16 +0200
-Message-ID: <20251013124421.71977-26-clg@redhat.com>
+Date: Mon, 13 Oct 2025 14:44:17 +0200
+Message-ID: <20251013124421.71977-27-clg@redhat.com>
 In-Reply-To: <20251013124421.71977-1-clg@redhat.com>
 References: <20251013124421.71977-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,8 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,106 +85,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Refactor the AST27x0 SSP implementation to use the unified
-Aspeed27x0CoprocessorState structure shared between SSP and TSP.
-Previously, SSP and TSP each defined separate state structures
-(Aspeed27x0SSPSoCState and Aspeed27x0TSPSoCState), which contained
-identical members and caused unnecessary code duplication.
+Refactor the AST27x0 TSP implementation to use the unified
+Aspeed27x0CoprocessorState, matching the prior SSP change and removing the
+duplicated Aspeed27x0TSPSoCState.
 
-This change removes Aspeed27x0SSPSoCState and replaces it with
-Aspeed27x0CoprocessorState, consolidating shared coprocessor state fields
-into a single definition in aspeed_coprocessor.h.
+Key updates:
+- Delete Aspeed27x0TSPSoCState and reuse Aspeed27x0CoprocessorState.
 
-This refactor unifies SSP and TSP under the same coprocessor state type,
-improving code maintainability and consistency across Aspeed coprocessor
-implementations.
+Update Ast2700FCState to declare tsp as Aspeed27x0CoprocessorState.
+This aligns TSP with SSP on a single coprocessor state type, reducing code
+duplication and simplifying maintenance.
 
 No functional change.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251013054334.955331-13-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251013054334.955331-14-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed_coprocessor.h | 4 ++--
- hw/arm/aspeed_ast27x0-fc.c          | 2 +-
- hw/arm/aspeed_ast27x0-ssp.c         | 8 ++++----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ include/hw/arm/aspeed_coprocessor.h | 12 ++----------
+ hw/arm/aspeed_ast27x0-fc.c          |  2 +-
+ hw/arm/aspeed_ast27x0-tsp.c         |  8 ++++----
+ 3 files changed, 7 insertions(+), 15 deletions(-)
 
 diff --git a/include/hw/arm/aspeed_coprocessor.h b/include/hw/arm/aspeed_coprocessor.h
-index f09c2ed267b2..d799726635df 100644
+index d799726635df..110e776c6202 100644
 --- a/include/hw/arm/aspeed_coprocessor.h
 +++ b/include/hw/arm/aspeed_coprocessor.h
-@@ -41,7 +41,7 @@ struct AspeedCoprocessorClass {
-     int uarts_num;
- };
- 
--struct Aspeed27x0SSPSoCState {
-+struct Aspeed27x0CoprocessorState {
-     AspeedCoprocessorState parent;
-     AspeedINTCState intc[2];
-     UnimplementedDeviceState ipc[2];
-@@ -51,7 +51,7 @@ struct Aspeed27x0SSPSoCState {
- };
- 
+@@ -53,16 +53,8 @@ struct Aspeed27x0CoprocessorState {
  #define TYPE_ASPEED27X0SSP_SOC "aspeed27x0ssp-soc"
--OBJECT_DECLARE_SIMPLE_TYPE(Aspeed27x0SSPSoCState, ASPEED27X0SSP_SOC)
-+OBJECT_DECLARE_SIMPLE_TYPE(Aspeed27x0CoprocessorState, ASPEED27X0SSP_SOC)
+ OBJECT_DECLARE_SIMPLE_TYPE(Aspeed27x0CoprocessorState, ASPEED27X0SSP_SOC)
  
- struct Aspeed27x0TSPSoCState {
-     AspeedCoprocessorState parent;
+-struct Aspeed27x0TSPSoCState {
+-    AspeedCoprocessorState parent;
+-    AspeedINTCState intc[2];
+-    UnimplementedDeviceState ipc[2];
+-    UnimplementedDeviceState scuio;
+-
+-    ARMv7MState armv7m;
+-};
+-
+ #define TYPE_ASPEED27X0TSP_SOC "aspeed27x0tsp-soc"
+-OBJECT_DECLARE_SIMPLE_TYPE(Aspeed27x0TSPSoCState, ASPEED27X0TSP_SOC)
++DECLARE_OBJ_CHECKERS(Aspeed27x0CoprocessorState, AspeedCoprocessorClass,
++                     ASPEED27X0TSP_SOC, TYPE_ASPEED27X0TSP_SOC)
+ 
+ #endif /* ASPEED_COPROCESSOR_H */
 diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-index b34cd54e4e7f..cd09a2dcf0b9 100644
+index cd09a2dcf0b9..c2fa8df33ce4 100644
 --- a/hw/arm/aspeed_ast27x0-fc.c
 +++ b/hw/arm/aspeed_ast27x0-fc.c
-@@ -42,7 +42,7 @@ struct Ast2700FCState {
-     Clock *tsp_sysclk;
+@@ -43,7 +43,7 @@ struct Ast2700FCState {
  
      Aspeed27x0SoCState ca35;
--    Aspeed27x0SSPSoCState ssp;
-+    Aspeed27x0CoprocessorState ssp;
-     Aspeed27x0TSPSoCState tsp;
+     Aspeed27x0CoprocessorState ssp;
+-    Aspeed27x0TSPSoCState tsp;
++    Aspeed27x0CoprocessorState tsp;
  
      bool mmio_exec;
-diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
-index 1ebf06299ebe..f8319c95fd41 100644
---- a/hw/arm/aspeed_ast27x0-ssp.c
-+++ b/hw/arm/aspeed_ast27x0-ssp.c
-@@ -108,7 +108,7 @@ static struct nvic_intc_irq_info ast2700_ssp_intcmap[] = {
- static qemu_irq aspeed_soc_ast27x0ssp_get_irq(AspeedCoprocessorState *s,
+ };
+diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
+index b77c5291a6d5..e18c624361e2 100644
+--- a/hw/arm/aspeed_ast27x0-tsp.c
++++ b/hw/arm/aspeed_ast27x0-tsp.c
+@@ -108,7 +108,7 @@ static struct nvic_intc_irq_info ast2700_tsp_intcmap[] = {
+ static qemu_irq aspeed_soc_ast27x0tsp_get_irq(AspeedCoprocessorState *s,
                                                int dev)
  {
--    Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(s);
-+    Aspeed27x0CoprocessorState *a = ASPEED27X0SSP_SOC(s);
+-    Aspeed27x0TSPSoCState *a = ASPEED27X0TSP_SOC(s);
++    Aspeed27x0CoprocessorState *a = ASPEED27X0TSP_SOC(s);
      AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
  
      int or_idx;
-@@ -130,7 +130,7 @@ static qemu_irq aspeed_soc_ast27x0ssp_get_irq(AspeedCoprocessorState *s,
+@@ -130,7 +130,7 @@ static qemu_irq aspeed_soc_ast27x0tsp_get_irq(AspeedCoprocessorState *s,
  
- static void aspeed_soc_ast27x0ssp_init(Object *obj)
+ static void aspeed_soc_ast27x0tsp_init(Object *obj)
  {
--    Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(obj);
-+    Aspeed27x0CoprocessorState *a = ASPEED27X0SSP_SOC(obj);
+-    Aspeed27x0TSPSoCState *a = ASPEED27X0TSP_SOC(obj);
++    Aspeed27x0CoprocessorState *a = ASPEED27X0TSP_SOC(obj);
      AspeedCoprocessorState *s = ASPEED_COPROCESSOR(obj);
      AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
      int i;
-@@ -161,7 +161,7 @@ static void aspeed_soc_ast27x0ssp_init(Object *obj)
+@@ -161,7 +161,7 @@ static void aspeed_soc_ast27x0tsp_init(Object *obj)
  
- static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
+ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
  {
--    Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(dev_soc);
-+    Aspeed27x0CoprocessorState *a = ASPEED27X0SSP_SOC(dev_soc);
+-    Aspeed27x0TSPSoCState *a = ASPEED27X0TSP_SOC(dev_soc);
++    Aspeed27x0CoprocessorState *a = ASPEED27X0TSP_SOC(dev_soc);
      AspeedCoprocessorState *s = ASPEED_COPROCESSOR(dev_soc);
      AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
      DeviceState *armv7m;
-@@ -288,7 +288,7 @@ static const TypeInfo aspeed_soc_ast27x0ssp_types[] = {
+@@ -288,7 +288,7 @@ static const TypeInfo aspeed_soc_ast27x0tsp_types[] = {
      {
-         .name           = TYPE_ASPEED27X0SSP_SOC,
+         .name           = TYPE_ASPEED27X0TSP_SOC,
          .parent         = TYPE_ASPEED_COPROCESSOR,
--        .instance_size  = sizeof(Aspeed27x0SSPSoCState),
+-        .instance_size  = sizeof(Aspeed27x0TSPSoCState),
 +        .instance_size  = sizeof(Aspeed27x0CoprocessorState),
-         .instance_init  = aspeed_soc_ast27x0ssp_init,
-         .class_init     = aspeed_soc_ast27x0ssp_class_init,
+         .instance_init  = aspeed_soc_ast27x0tsp_init,
+         .class_init     = aspeed_soc_ast27x0tsp_class_init,
      },
 -- 
 2.51.0
