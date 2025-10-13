@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693BABD24D6
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 11:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7EBBD24D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 11:30:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8EsX-0004GT-UT; Mon, 13 Oct 2025 05:30:06 -0400
+	id 1v8EsW-0004I0-Im; Mon, 13 Oct 2025 05:30:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8EsL-00045p-HJ
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:54 -0400
-Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8EsR-0004AS-8i
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:30:00 -0400
+Received: from smtpout4.mo529.mail-out.ovh.net ([217.182.185.173])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8EsH-0005Nf-TK
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:53 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.0.125])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4clXB12dGTz6S2P;
- Mon, 13 Oct 2025 09:29:45 +0000 (UTC)
-Received: from kaod.org (37.59.142.99) by DAG8EX2.mxp5.local (172.16.2.72)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8EsL-0005QK-GH
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:57 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.58.164])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4clXB74Wrgz5wn1;
+ Mon, 13 Oct 2025 09:29:51 +0000 (UTC)
+Received: from kaod.org (37.59.142.105) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 13 Oct
- 2025 11:29:44 +0200
+ 2025 11:29:50 +0200
 Authentication-Results: garm.ovh; auth=pass
- (GARM-99G003490950b2-53c6-456f-87c9-989bdccb0e7d,
+ (GARM-105G006ac9256f5-71b4-4a3e-9d99-69957a8a5c14,
  E27D2F41E47E806E38994DC6761E007B2CBA9264) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <a4d48573-20a3-44a9-b204-97a9a4b7ff36@kaod.org>
-Date: Mon, 13 Oct 2025 11:29:44 +0200
+Message-ID: <8ef83f6c-27c3-4f59-8907-1e04ac630666@kaod.org>
+Date: Mon, 13 Oct 2025 11:29:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] aspeed: machine deprecations and test improvements
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
- <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
- <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>
-References: <20251007141604.761686-1-clg@redhat.com>
+Subject: Re: [SPAM] [PATCH v3 00/16] Introduce AspeedCoprocessor class and
+ base implementation
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
+References: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -83,35 +84,35 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251007141604.761686-1-clg@redhat.com>
+In-Reply-To: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.99]
-X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG8EX2.mxp5.local
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.105]
+X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: f67e894c-f70c-4972-b5f4-3536c4cd0f17
-X-Ovh-Tracer-Id: 14305965694137043890
+X-Ovh-Tracer-GUID: dffe85d6-10f4-4056-a895-c6b8fbf81ee0
+X-Ovh-Tracer-Id: 14307654542697204658
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTE9VTX+ijz0fVirTNoSacqh9QmpEkvyGf9pNuOhx64HC0BBIJVZvhj8Bxok8eueWwMOeMAV3QQpsxh5FHRWay4BrKj/uTe8FM9DwKBHcIZM8iLMrx4nulkwJ3CbjPXszh7vX7YfPn9yHuBZCDvf8qrUNHTCFddTw5BHolsdmVNYWU6udxr48Mjf/H0Y2vc/9aLKYmR2TTHYCYItChey3Y/OdAU8fAvg1cAcWzF2us7rYvODsLo2Ho4NOE6FG9VU+gAuMtywkPCV5smEPtXIgv0RfFyyc99vmiRo8APcDZ9fPgUxFp6K43zSBYkhsKJKopdqWLX43vR+YToAEi9Qz6UNWbIuvIMU0jn85gZMsc+rzqmHOH+BB7J51C23Sa2rtzKdfoZkjFe1jqcgLiRr457Mk2uX8O7hu555pEDFqphDb0czW4ZK63WGKgO1TOg5/2P5LFVYUcDhMsI0/Hz6amq0ERIHvloC0x1ENUICTdTCQOTetSk0YJrhklO2VsRQv9OXXGONK++f+KxRq2ixJ98iW4BEmM0dJGGUlOtgzFK9iKZwOdG6U15qDXlRxdQcucYOEe7qEiTX18mrH/NWuVNYKxk9JFZQVRxe67CgQTrU0mBRX5uFlgrPhtwFpCauBPiimMGEvmBi1YCQ4ZFUPVgQ9bvFpi2MK4u0lT9pFMXdgQ
-DKIM-Signature: a=rsa-sha256; bh=Au2myoRCd0XH4IOTPIGg200/Szy2Vzf8/1V/goOE6os=; 
+X-VR-SPAMCAUSE: dmFkZTEszVcNhUQg8auz4A/3rEGlbCnz21djLPODuz2XcWbj0GQqcv/m/s6gVRynEW3P+wlwpoZ5/TsorQ8anZlx3wEr/Mamp+1zRlm3vZqy8GWOJ2UL5S69vbcOAjKZtaJUJtMHYSw5eeSS7YQF/IM0Mu+82R4IeiPeSMwkPX2Qu+LbS53YsCRkt4dgBhdyr8r9QxbJD0W9b4c6eaQmu2QxXwxBDYsejEZsp91/pewMSosHL0kDLUyP6YuEpUQfVeAYk9qnJiDeBBTKTOY9kLmKEmFVZnoQUuT5AlCjUAGUH92DTjr8dZze2Bc8mzPk4TKVKHVabB2X30VWzWcVKwleaF4gQOhSlP9v6eRPTCxLSKRDv1tzSu38hQCkfzOfJbFWDU9pC6HwO+J3fngC7uy92g7zrfUJzZO7TbOK2oCNSEIJRPSkJk9XAPBann8k55taOTZ7VNzI8z7P7UnKLgJg+dELh0gldQ8a5HCrlRlBy0bJZ9CRLv4J2Hl8KStQ6FS2brFrAKAs3/eQhhMUXz7TjC6PkW93GsdqKib4AF+Ohcg5v+J00eSGsukqBaecdY+wnJ/Jy1u9+Lh5JuIfXmd5hBx31hmF/7kT/4N/2cKuqsBl8N0BwPI20eSa27m4Khx/EKOJv1nwv6dMUvaYWibaRIN/UlTGT0iZuepX55d+S7Q/Bg
+DKIM-Signature: a=rsa-sha256; bh=HJR9iv7cEmTDw+UW/5ef1iW9vBaeLmgftEpctCUCfzA=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1760347786; v=1;
- b=N7+9rH5xbZbLO0Tb/llsRkopyWboRu4SrqAl7NfMyPxr0viCnAlac9LL7fWwZ1WUkdwhZUGJ
- 9kcsRAb9T0M6whCqkWUT32bhTTv79aI88xo/ESpCFI4VXO+D6KRiOnRlULMiv2mkQs074Rn6YTi
- hYvtJLIK/qCOAYJXfEferQjVZgs0vLt+kuk3WXpDgL4BWco2sYFZpWiO7D3PhSpuDTLPYSd5dxX
- W511wnZM/iGolQwLNH68nASQN3HI+d2brk99CfveulaM3cH1QGwkbmc1DDK4tq72m/P4/nVfFs0
- LvHJIZJfO4S2a1FhYHlQ1izS7MkZEA2N0Aj/3ohmh6OTQ==
-Received-SPF: pass client-ip=178.33.43.201; envelope-from=clg@kaod.org;
- helo=4.mo552.mail-out.ovh.net
+ t=1760347791; v=1;
+ b=dBTXcj+C92eN2JaLNLxE3vmCRiac/4WHn0bTPPibi1U7ZdIqJA4YCRRgwdOgb3bWCEe+cV0c
+ Ii59hAUHFLEGHkNqmfBkIaAhmAqpWG2PqlmM9fGxgKPmNAwaB4S5lsFWDZbCaYwd3LRETSyWYj0
+ Q3s4vesWGMJlcQZ7RtLnuTPAdEBFd7+mZUtKzvEv3fNKfx7BQu/otRP/b2cjWs3S9PfQ+t0g6xf
+ mjdas456gjP1y9xHlsCiOpDwhUihqJBWBbybbW3A6gt5Ljq0iUxXXnQvM0TqP8HivAC4DyMn0zs
+ dOB0MMcqzMyJXgL2bgWSQb8pUogd5vgk0umbzhcxYzTlQ==
+Received-SPF: pass client-ip=217.182.185.173; envelope-from=clg@kaod.org;
+ helo=smtpout4.mo529.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,32 +128,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/7/25 16:15, Cédric Le Goater wrote:
-> Hello,
+On 10/13/25 07:43, Jamin Lin wrote:
+> v1:
+>    1. Remove AspeedSoCState dependency from aspeed_uart_first, aspeed_uart_last,
+>       aspeed_soc_uart_set_chr, aspeed_soc_cpu_type, aspeed_mmio_map,
+>       aspeed_mmio_map_unimplemented, aspeed_soc_get_irq, and
+>       aspeed_soc_uart_realize APIs.
+>    2. Introduce AspeedCoprocessor class and base implementation
 > 
-> The first three patches deprecate machines that have no functional
-> tests and can be replaced by more generic machines (evbs) with
-> command-line options for I2C device.
+> v2:
+>    1. Fix the "make check" failure.
 > 
-> The last two patches improve the functional tests for the ast2700
-> machines to save CI resources.
+> v3:
+>    1. Remove the aspeed_soc_get_irq and class get_irq hook
 > 
-> Thanks,
+> Jamin Lin (16):
+>    hw/arm/aspeed: Remove AspeedSoCState dependency from
+>      aspeed_uart_first() API
+>    hw/arm/aspeed: Remove AspeedSoCClass dependency from
+>      aspeed_uart_last() API
+>    hw/arm/aspeed: Remove AspeedSoCState dependency from
+>      aspeed_soc_uart_set_chr() API
+>    hw/arm/aspeed: Remove AspeedSoCClass dependency from
+>      aspeed_soc_cpu_type() API
+>    hw/arm/aspeed: Remove AspeedSoCState dependency from aspeed_mmio_map()
+>      API
+>    hw/arm/aspeed: Remove AspeedSoCState dependency from
+>      aspeed_mmio_map_unimplemented() API
+>    hw/arm/aspeed: Remove AspeedSoCState dependency from
+>      aspeed_soc_uart_realize() API
+>    hw/arm/aspeed: Remove the aspeed_soc_get_irq and class get_irq hook
+>    hw/arm/aspeed: Introduce AspeedCoprocessor class and base
+>      implementation
+>    hw/arm/aspeed_ast27x0-ssp: Make AST27x0 SSP inherit from
+>      AspeedCoprocessor instead of AspeedSoC
+>    hw/arm/aspeed_ast27x0-tsp: Make AST27x0 TSP inherit from
+>      AspeedCoprocessor instead of AspeedSoC
+>    hw/arm/aspeed_ast27x0-ssp: Change to use Aspeed27x0CoprocessorState
+>    hw/arm/aspeed_ast27x0-tsp: Change to use Aspeed27x0CoprocessorState
+>    hw/arm/aspeed_ast27x0-ssp: Rename type to
+>      TYPE_ASPEED27X0SSP_COPROCESSOR
+>    hw/arm/aspeed_ast27x0-tsp: Rename type to
+>      TYPE_ASPEED27X0TSP_COPROCESSOR
+>    hw/arm/aspeed_ast27x0-{ssp,tsp}: Fix coding style
 > 
-> C.
-> 
-> Cédric Le Goater (5):
->    aspeed: Deprecate the sonorapass-bmc machine
->    aspeed: Deprecate the qcom-dc-scm-v1-bmc and qcom-firework-bmc
->      machines
->    aspeed: Deprecate the fp5280g2-bmc machine
->    test/functional/aarch64: Remove test for the ast2700a0-evb machine
->    test/functional/aarch64: Split the ast2700a1-evb OpenBMC boot test
-> 
->   docs/about/deprecated.rst                     | 27 +++++++++++++++++++
->   hw/arm/aspeed.c                               |  4 +++
->   .../functional/aarch64/test_aspeed_ast2700.py | 21 ++++-----------
->   3 files changed, 36 insertions(+), 16 deletions(-)
+>   include/hw/arm/aspeed_coprocessor.h |  61 ++++++++++++++
+>   include/hw/arm/aspeed_soc.h         |  48 +++--------
+>   hw/arm/aspeed.c                     |  10 ++-
+>   hw/arm/aspeed_ast10x0.c             |  89 ++++++++++++--------
+>   hw/arm/aspeed_ast2400.c             |  94 ++++++++++++---------
+>   hw/arm/aspeed_ast2600.c             | 121 ++++++++++++++++------------
+>   hw/arm/aspeed_ast27x0-fc.c          |  33 +++++---
+>   hw/arm/aspeed_ast27x0-ssp.c         |  74 +++++++++--------
+>   hw/arm/aspeed_ast27x0-tsp.c         |  74 +++++++++--------
+>   hw/arm/aspeed_ast27x0.c             | 107 +++++++++++++-----------
+>   hw/arm/aspeed_coprocessor_common.c  |  49 +++++++++++
+>   hw/arm/aspeed_soc_common.c          |  63 ++++++---------
+>   hw/arm/fby35.c                      |  10 ++-
+>   hw/arm/meson.build                  |   7 +-
+>   14 files changed, 502 insertions(+), 338 deletions(-)
+>   create mode 100644 include/hw/arm/aspeed_coprocessor.h
+>   create mode 100644 hw/arm/aspeed_coprocessor_common.c
 > 
 
 
