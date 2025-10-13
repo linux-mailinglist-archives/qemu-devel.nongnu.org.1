@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653E9BD21A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 10:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717BDBD220A
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 10:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8E1o-0000e3-Et; Mon, 13 Oct 2025 04:35:36 -0400
+	id 1v8E8k-0002Xb-Oa; Mon, 13 Oct 2025 04:42:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8E1l-0000bI-Aw
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 04:35:33 -0400
-Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8E1f-0007AU-9S
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 04:35:31 -0400
-Received: by mail-yw1-x1132.google.com with SMTP id
- 00721157ae682-71d60501806so39789927b3.2
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 01:35:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760344524; x=1760949324; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=VWh+gheWqOAODEyZYewi9iX7yVjbHhH2k4OAEfmw7Os=;
- b=Lu06LpeYetlRYgTSTtZOjW+ZQMHtB28Safq1rtYBL2zsFEIVOkJETa1HOWToeaoqFH
- Azdv//JXBk2pWaZNCBU47mR5YeEq+6p6YVkMawED6DV8WaVYtThbUCT2QOM5TMY2WTte
- PuDalyvzAcoG4FnS0ANCX+l4dcKSFGhgfllqBwC7LjYPL71Jn/jCKi8viI7qnUNiuZht
- w6Jqx9c6BwQSen5VxJ01QyqBviU2ZS6eP1ntTJxleF1JxGHqO/JbrMpKyT/+sCKKguOO
- XWHB3UmLRq6abmT/5ALUH7Ia8B76D1arXBlF3aTDABcAd4rXWQah9Rn29oLU1GEqFMWL
- Z/OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760344524; x=1760949324;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VWh+gheWqOAODEyZYewi9iX7yVjbHhH2k4OAEfmw7Os=;
- b=IDC7xOhANVHKjW0ZqGTfe5hk57pFycIdgxE1OxrW6rhSdPll/+Eh6Dgc7STFzxLYCM
- di7Q9HPgNYsyhVStmTPykeMkAIpHT2UAWtOV4lCp6vphhYGEWJr/dIoVx4GrDS/MuAOs
- 7gOoAirXY0WIVQlqRx1ery9iWjdSacsK/wBGunYhd9zjd+yZHyRaNda47lJv+aL3Yo2Q
- Oi3Nxks+IPePDs0yeU8ZhwrzE53kTgymOrTP7n6TRvrAW9VgDRg3ZNtgG3edx4nRE5Z7
- FYTVqJzHlj0xlYMXqX397H46NNr9clKoQXFkbFnAkmlnaAPwIWz0DKi6+hnXWFRAmZI5
- 3YMA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUEQFGw7AogU+dPUpfAlzfBijuK8la6GRN4Em1OI9nZLTDn0JR1IaEdnDKaz4sJ78pToKtj0X0d67vj@nongnu.org
-X-Gm-Message-State: AOJu0YyK+KQUeknJ48Pw1eTxA90DRjIyU+f4454iq06BZH7UVAlCfTEU
- iBrB9mm1uyRPAdQ1LA0yGoEk/b4rigIcK6Hci5b20K7dSU6n7ezFhC9ZdYyL99Oct9R6QJHSM+I
- 2xPx2jGeuuGO6xY148T/VBlzqOUhXPW/9t99Kl7Ll7g==
-X-Gm-Gg: ASbGncsiuTBI546z28+fcZQlDpkCLeveXpG4wS6qSGNbuL8RhoMkcltbd4C+o4vYwdn
- jA+DjaAkRiaR3gHB6sr+YqT8YgVwfZynEGuYWI82O6i1bBN9PzYvZz/6F1YFsQVNp8fMseExk+Q
- dp4wawjW2k8ccftGIHQrsuuDuOIPuxS087/WnfCLIvm/MjBYE3voarRcb9UBXjWh1OJwFkTtmdb
- zJtdt0h8xStheyv65ufIRcd4bI7yeUfW5RWw8aF7w==
-X-Google-Smtp-Source: AGHT+IGH/jII7VIE/XBDZzhk+5l1AJAvfbCwzHs1m6Xss8vGfLtaV8I83h+gh8vwgs22vE9LvdDXG0F0iGiOZgGFm78=
-X-Received: by 2002:a05:690e:214e:b0:63b:b23b:ad98 with SMTP id
- 956f58d0204a3-63ccb8ee4e5mr14306108d50.38.1760344523892; Mon, 13 Oct 2025
- 01:35:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1v8E8g-0002XS-Rj
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 04:42:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1v8E8e-0007uu-EE
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 04:42:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760344954;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8Gx18BWScrcB/apdTJfsSp36EfCkQ7kQsNGc4Eh1iY0=;
+ b=MBpkLjsjqJ4HbC2TKshFmF4MsvC3gGF3UArsdMf1i7rICGuUZzZdtTIcMN28C9DbVESzun
+ gujXlQ9QF6TSy1Z5fxeMZN1Np6m+hfyEy2GfXf/t0JIhQEPPWR761K1oH/QZMIouonjzd4
+ 2Y/hxCx5qyrAYiwEsWrEJkrSfjpU/9I=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-C25DGSwoNJW6Dik_emMHjw-1; Mon,
+ 13 Oct 2025 04:42:31 -0400
+X-MC-Unique: C25DGSwoNJW6Dik_emMHjw-1
+X-Mimecast-MFC-AGG-ID: C25DGSwoNJW6Dik_emMHjw_1760344950
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B0B451800286; Mon, 13 Oct 2025 08:42:29 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.27])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 742911954105; Mon, 13 Oct 2025 08:42:28 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 49C2F18000B2; Mon, 13 Oct 2025 10:42:26 +0200 (CEST)
+Date: Mon, 13 Oct 2025 10:42:26 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>, 
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Laurent Vivier <lvivier@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH v3] hw/uefi: add "info firmware-log" +
+ "query-firmware-log" monitor commands
+Message-ID: <ebe6jknybpvqjtp4kb7oz7std2pofyszywfgradx7ridztxp73@qnope67mp4sc>
+References: <20251010071008.2555267-1-kraxel@redhat.com>
+ <aOjN5VCRh8WtmxJE@redhat.com>
+ <dyzu3h5qh7y3isn7m2ech3tq2lbr23aswrmc6npvjupm3wepqr@366kl5b2jkws>
+ <aOjSfQMrRpanYZ7g@redhat.com>
 MIME-Version: 1.0
-References: <20251007091214.403430-2-vishalc@linux.ibm.com>
- <CAFEAcA8VWKEy3XVo3b9pTg-jCAD2oA7=dFbOSRL3q+WRUoNBpA@mail.gmail.com>
- <aOyj5p2xzoxCyYZC@linux.ibm.com>
-In-Reply-To: <aOyj5p2xzoxCyYZC@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 13 Oct 2025 09:35:12 +0100
-X-Gm-Features: AS18NWAa1_UPp5xHV-HpbhV3bn3_J32Dz3FKQrncDEeSvQ2-pvuzkLd0BcVIhvo
-Message-ID: <CAFEAcA8zGH1sHL45WU=E2p4p0EizuOs3QRaniHW7ES-CQDPajg@mail.gmail.com>
-Subject: Re: [PATCH] hw/ppc/pnv: Improve kernel/initrd load failure error
- messages
-To: Vishal Chourasia <vishalc@linux.ibm.com>
-Cc: npiggin@gmail.com, adityag@linux.ibm.com, milesg@linux.ibm.com, 
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aOjSfQMrRpanYZ7g@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,56 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 13 Oct 2025 at 08:02, Vishal Chourasia <vishalc@linux.ibm.com> wrote:
->
-> On Tue, Oct 07, 2025 at 02:29:52PM +0100, Peter Maydell wrote:
-> > On Tue, 7 Oct 2025 at 13:59, Vishal Chourasia <vishalc@linux.ibm.com> wrote:
-> > >
-> > > When QEMU fails to load the kernel or initrd image, it previously emitted
-> > > a generic error message such as:
-> > >
-> > >   qemu-system-ppc64: Could not load kernel 'vmlinux'
-> > >
-> > > This provides little context on why the failure occurred, which can make
-> > > debugging difficult, especially for new users or when dealing with large
-> > > images.
-> > >
-> > > The new messages also include the configured size limits (in MiB) to help
-> > > users verify that their image files are within acceptable bounds.
-> >
-> > >          if (kernel_size < 0) {
-> > >              error_report("Could not load kernel '%s'",
-> > >                           machine->kernel_filename);
-> > > +            error_report(
-> > > +                "Possible reasons: file not found, permission denied, or size "
-> > > +                "exceeds the maximum supported limit (%ld MiB).",
-> > > +                KERNEL_MAX_SIZE / 1024 / 1024);
-> > >              exit(1);
-> > >          }
-> >
-> > Rather than printing a list of reasons why the load might
-> > have failed, I think it would be better if we enhanced
-> > the error handling in load_image_targphys() and friends
-> > (i.e. use Error), so that these functions can report back
-> > to the caller exactly why they failed and then the caller
-> > can give that error message to the user. That way we can
-> > improve the error reporting for every board that uses
-> > these load functions.
-> Hello Peter,
->
-> Wouldn't it be better to print the error inside the function itself.
+On Fri, Oct 10, 2025 at 10:31:41AM +0100, Daniel P. Berrangé wrote:
+> On Fri, Oct 10, 2025 at 11:27:36AM +0200, Gerd Hoffmann wrote:
+> > > > +static void handle_ovmf_log_range(GString *out,
+> > > > +                                  dma_addr_t start,
+> > > > +                                  dma_addr_t end,
+> > > > +                                  Error **errp)
+> > > > +{
+> > 
+> > > How about eliminating the intermediate buffer alloocation / printf by
+> > > reading straight into the GString buf ? Something like
+> > > 
+> > >    size_t len = end - start;
+> > >    g_string_set_size(out, out->len + len);
+> > >    if (dma_memory_read(&address_space_memory, start,
+> > >                        out->str + (out->len - len),
+> > > 	               len, MEMTXATTRS_UNSPECIFIED)) {
+> > >        ...
+> > >    }
+> > 
+> > There are two ranges in the wrap-around case, and I don't think I can
+> > put multiple chunks into a single gstring.
+> 
+> I'm not sure I understand ?  The code I've suggest here satisfies the
+> existing API contract you've got for handle_ovmf_log_range, so should
+> be happy with being called multiple times.
 
-No, because some users of this family of load functions
-use a sequence of calls to handle different possible
-formats. We don't want the function to load file format A
-to print any errors if we're then going to continue and
-successfully load the file as format B.
+I've missed the detail that the g_string_set_size() call actually
+/expands/ the string.  Tried, works fine.
 
-More generally, our usual coding practice for functions
-is that they use Error to tell the caller what went wrong,
-and it's the caller that then gets to decide whether they
-want to print an error and exit, tell the monitor about
-an error, or just continue to try something else instead.
+take care,
+  Gerd
 
--- PMM
 
