@@ -2,107 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE76BD3B88
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 16:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0580BD3D4E
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 17:03:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8Juz-000811-17; Mon, 13 Oct 2025 10:52:57 -0400
+	id 1v8K4J-0002TB-RW; Mon, 13 Oct 2025 11:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1v8Juw-00080n-6d
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 10:52:54 -0400
-Received: from fhigh-b2-smtp.messagingengine.com ([202.12.124.153])
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1v8K4F-0002Sk-Uw
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 11:02:31 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1v8Jus-0000MO-Vb
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 10:52:53 -0400
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 856A97A03E7;
- Mon, 13 Oct 2025 10:52:44 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-12.internal (MEProxy); Mon, 13 Oct 2025 10:52:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:in-reply-to:message-id
- :mime-version:references:reply-to:subject:subject:to:to; s=fm1;
- t=1760367164; x=1760453564; bh=KmDGbL9RHjHDbEn7ZPMO3YSkYbv8AvmX
- Dor7lfk8XNI=; b=AbS2peWGH5WmQ/DOaV3Xds/Iw+ZLIQmF2oMlOtJVeQER2Hx4
- weTVmjqulb/p4716AmwVCgfu4AKeMDGWTkyZj7Vxu1J+Q3SYva3JmbeD0EqQxefG
- vIIkD8wrBaAM9Alnc4AOKWfg96n4y+mXg+9vIg31m9pMGhocDI0nz83/fwaPwGym
- MYCfky5WmPJUR/aOEpZjPvL5BBHEd15lR2j+BEPFiVQE5rrHogSk3vUsXKZnluh3
- EEKxyDAtpx9GIVvxZXnAkEiqjU1lunYOH4l6+XB7ovE0CdFbDKo0CXOz+NjC6KrB
- rLBR/+1Pcfb4g/w4/BjxM+C8SEpoGnPAUQNFIg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760367164; x=
- 1760453564; bh=KmDGbL9RHjHDbEn7ZPMO3YSkYbv8AvmXDor7lfk8XNI=; b=t
- UHcgrn8rh1xvlvtmICbDwQJVK34ggz+1+eRw/YTcEHiW3pi5bDN9wsHTJsQRNzmI
- HMSu4vq6Bwo/CR2IrncfiPEavc7/kQ4R2oZW+nL8v8uCumoYpYpRW+kro+QgT3kE
- tCYJPl2nYA1qclvGqgjnFpnwVccKvyyoNWLAiCjA/hyvux2oQK4CKTRXqudbEh7n
- hDAPCfI4o3G+GO/XMP6LExzpWxqNj/w2r+pDMeFWcoxusS1MATOHw2XYduuQvr+o
- k19HVFizmvSsykQZ5tkdhq3GrezzpgdOjPS1XDNMopJtMBx5koQ9gOvMtuHWLqJf
- xx0j8VGL15kSlvly8fWHQ==
-X-ME-Sender: <xms:OxLtaGXPaCItqSI268u7UbfKdhCPDngdwnWXRUNnMstXL83lsl4A9w>
- <xme:OxLtaJfyPbPCzzTnF5nAHKlkUW_oT9Iq_ZuZzBF4pBBIgt0GM1WBvlkNI8aS1Qajj
- KRjRA4pV51Sb6wqhQ2mrF6qJNKNoLG23vaupnf0N8LLFL-lYfptWKY>
-X-ME-Received: <xmr:OxLtaCuHmjEX0HDg_IdKIpbjdr7T2OSwxHSCkXK1C-mZOVz0bDtyD9tcqwkO>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudejleegucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
- rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrh
- hlucfvnfffucdlfeehmdenucfjughrpegggfgtfffkvfevuffhofhfjgesthhqredtredt
- jeenucfhrhhomhepfdevhhgrugculfgrsghlohhnshhkihdfuceotghhrggusehjrggslh
- honhhskhhirdighiiiqeenucggtffrrghtthgvrhhnpefhfffhleekhfevtdekffejtefg
- hfffhfettdefkeekvdejieevleehjeeggeejteenucffohhmrghinhepfhhrvggvuggvsh
- hkthhophdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
- fhhrohhmpegthhgrugesjhgrsghlohhnshhkihdrgiihiidpnhgspghrtghpthhtohephe
- dpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsggrlhgrthhonhesvghikhdrsghm
- vgdrhhhupdhrtghpthhtohepmhgrrhgtrghnughrvgdrlhhurhgvrghusehrvgguhhgrth
- drtghomhdprhgtphhtthhopegthhgrugesjhgrsghlohhnshhkihdrgiihiidprhgtphht
- thhopehkrhgrgigvlhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvg
- hvvghlsehnohhnghhnuhdrohhrgh
-X-ME-Proxy: <xmx:OxLtaI9ZgV8eNd9wG9QbkJQVX6nDXHQReKPjlZgJ2VkDvbTqNWHa_g>
- <xmx:OxLtaN1Yc6edZCti6F1iKuaOf5QjMNIMOddATmL7lP-hKrM4kEym_g>
- <xmx:OxLtaNC9q4N7suO40FUZ6qx0Hzc2IqILo76uUU-IyLsm7K9D6kEYJA>
- <xmx:OxLtaJf5oQ7DQKIHj2B69dNTnhdEfVo2ulCB65-HRPedrNvEqRehPA>
- <xmx:PBLtaB5L_WFummvC2w8fPt-o3TYb5qpJIl4h962E_2bXVJXEuc8geNYn>
-Feedback-ID: ib26944c1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Oct 2025 10:52:43 -0400 (EDT)
-Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id 9877a157;
- Mon, 13 Oct 2025 14:52:41 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Oct 2025 10:52:41 -0400
-Message-Id: <DDHA2TJZB67L.8WL7I58CQAZ6@jablonski.xyz>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, "Chad Jablonski"
- <chad@jablonski.xyz>
-Cc: <qemu-devel@nongnu.org>, "Gerd Hoffmann" <kraxel@redhat.com>,
- <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH] ati-vga: Fix framebuffer mapping by using
- hardware-correct aperture sizes
-From: "Chad Jablonski" <chad@jablonski.xyz>
-X-Mailer: aerc 0.21.0
-References: <20251001034616.3017119-1-chad@jablonski.xyz>
- <8ca9a290-39be-7d52-2add-f37a30e05545@eik.bme.hu>
-In-Reply-To: <8ca9a290-39be-7d52-2add-f37a30e05545@eik.bme.hu>
-Received-SPF: pass client-ip=202.12.124.153; envelope-from=chad@jablonski.xyz;
- helo=fhigh-b2-smtp.messagingengine.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_SUSPICIOUS_NTLD=0.499, PDS_OTHER_BAD_TLD=2, RCVD_IN_DNSWL_LOW=-0.7,
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1v8K47-0001Q6-Ku
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 11:02:31 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4clgXG5Pjwz6G8xv;
+ Mon, 13 Oct 2025 23:01:02 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+ by mail.maildlp.com (Postfix) with ESMTPS id 51FB01402F3;
+ Mon, 13 Oct 2025 23:01:58 +0800 (CST)
+Received: from localhost (10.47.28.241) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 13 Oct
+ 2025 16:01:57 +0100
+Date: Mon, 13 Oct 2025 16:01:51 +0100
+To: Alireza Sanaee via <qemu-devel@nongnu.org>
+CC: <jonathan.cameron@huawei.com>, <linux-cxl@vger.kernel.org>,
+ <armbru@redhat.com>, <lizhijian@fujitsu.com>, <zhao1.liu@intel.com>,
+ <mst@redhat.com>, <linuxarm@huawei.com>, <anisa.su@samsung.com>
+Subject: Re: [RFC PATCH] hw/cxl: Add a performant (and correct) path for the
+ non interleaved cases.
+Message-ID: <20251013160151.000039dd.alireza.sanaee@huawei.com>
+In-Reply-To: <20251013143106.884-1-alireza.sanaee@huawei.com>
+References: <20251013143106.884-1-alireza.sanaee@huawei.com>
+Organization: Huawei
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.28.241]
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,79 +69,455 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Balaton,
+On Mon, 13 Oct 2025 15:31:06 +0100
+Alireza Sanaee via <qemu-devel@nongnu.org> wrote:
 
-Thanks for taking a look! I'll address all of these and send a v2.
+> The CXL address to device decoding logic is complex because of the
+> need to correctly decode fine grained interleave. The current
+> implementation prevents use with KVM where executed instructions may
+> reside in that memory and gives very slow performance even in TCG.
+> 
+> In many real cases non interleaved memory configurations are useful
+> and for those we can use a more conventional memory region alias
+> allowing similar performance to other memory in the system.
+> 
+> Whether this fast path is applicable can be established once the full
+> set of HDM decoders has been committed (in whatever order the guest
+> decides to commit them). As such a check is performed on each commit /
+> uncommit of HDM decoder to establish if the alias should be added or
+> removed.
+> 
+> Co-developed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
+> ---
+> Thanks to Jonathan Cameron for feedback and help with this patch.
+>  hw/cxl/cxl-component-utils.c |   9 ++
+>  hw/cxl/cxl-host.c            | 268
+> ++++++++++++++++++++++++++++++++++- hw/mem/cxl_type3.c           |
+> 4 + include/hw/cxl/cxl.h         |   1 +
+>  include/hw/cxl/cxl_device.h  |  10 ++
+>  5 files changed, 289 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/cxl/cxl-component-utils.c
+> b/hw/cxl/cxl-component-utils.c index 473895948b..f1ecd6ed22 100644
+> --- a/hw/cxl/cxl-component-utils.c
+> +++ b/hw/cxl/cxl-component-utils.c
+> @@ -116,6 +116,15 @@ static void dumb_hdm_handler(CXLComponentState
+> *cxl_cstate, hwaddr offset, value = FIELD_DP32(value,
+> CXL_HDM_DECODER0_CTRL, COMMITTED, 0); }
+>      stl_le_p((uint8_t *)cache_mem + offset, value);
+> +
+> +    if (should_commit) {
+> +        cfmws_update_non_interleaved(true);
+> +    }
+> +
+> +    if (should_uncommit) {
+> +        cfmws_update_non_interleaved(false);
+> +    }
+> +
+>  }
+>  
+>  static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset,
+> uint64_t value, diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+> index 0d891c651d..3a563af3bc 100644
+> --- a/hw/cxl/cxl-host.c
+> +++ b/hw/cxl/cxl-host.c
+> @@ -12,6 +12,7 @@
+>  #include "qapi/error.h"
+>  #include "system/qtest.h"
+>  #include "hw/boards.h"
+> +#include "qemu/log.h"
+>  
+>  #include "qapi/qapi-visit-machine.h"
+>  #include "hw/cxl/cxl.h"
+> @@ -104,7 +105,7 @@ void cxl_fmws_link_targets(Error **errp)
+>  }
+>  
+>  static bool cxl_hdm_find_target(uint32_t *cache_mem, hwaddr addr,
+> -                                uint8_t *target)
+> +                                uint8_t *target, bool *interleaved)
+>  {
+>      int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO -
+> R_CXL_HDM_DECODER0_BASE_LO; unsigned int hdm_count;
+> @@ -138,6 +139,11 @@ static bool cxl_hdm_find_target(uint32_t
+> *cache_mem, hwaddr addr, found = true;
+>          ig_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
+>          iw_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> +
+> +        if (interleaved) {
+> +            *interleaved = iw_enc != 0;
+> +        }
+> +
+>          target_idx = (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
+>  
+>          if (target_idx < 4) {
+> @@ -190,7 +196,7 @@ static PCIDevice
+> *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr) 
+>          cache_mem = hb_cstate->crb.cache_mem_registers;
+>  
+> -        target_found = cxl_hdm_find_target(cache_mem, addr, &target);
+> +        target_found = cxl_hdm_find_target(cache_mem, addr, &target,
+> NULL); if (!target_found) {
+>              return NULL;
+>          }
+> @@ -226,7 +232,7 @@ static PCIDevice
+> *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr) 
+>      cache_mem = usp_cstate->crb.cache_mem_registers;
+>  
+> -    target_found = cxl_hdm_find_target(cache_mem, addr, &target);
+> +    target_found = cxl_hdm_find_target(cache_mem, addr, &target,
+> NULL); if (!target_found) {
+>          return NULL;
+>      }
+> @@ -248,6 +254,262 @@ static PCIDevice
+> *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr) return d;
+>  }
+>  
+> +static bool cfmws_is_not_interleaved(CXLFixedWindow *fw, hwaddr addr)
+> +{
+> +    PCIDevice *rp, *d;
+> +    PCIHostState *hb;
+> +    CXLComponentState *hb_cstate, *usp_cstate;
+> +    CXLUpstreamPort *usp;
+> +    uint32_t *cache_mem;
+> +    bool target_found, interleaved;
+> +    uint8_t target;
+> +
+> +    addr = fw->base;
+> +    if (fw->num_targets > 1) {
+> +        return false;
+> +    }
+> +
+> +    hb = PCI_HOST_BRIDGE(fw->target_hbs[0]->cxl_host_bridge);
+> +    if (!hb || !hb->bus || !pci_bus_is_cxl(hb->bus)) {
+> +        return false;
+> +    }
+> +    if (cxl_get_hb_passthrough(hb)) {
+> +        rp = pcie_find_port_first(hb->bus);
+> +        if (!rp) {
+> +            return false;
+> +        }
+> +    } else {
+> +        hb_cstate = cxl_get_hb_cstate(hb);
+> +        if (!hb_cstate) {
+> +            return false;
+> +        }
+> +        cache_mem = hb_cstate->crb.cache_mem_registers;
+> +
+> +        target_found = cxl_hdm_find_target(cache_mem, addr, &target,
+> +                                           &interleaved);
+> +        if (!target_found) {
+> +            return false;
+> +        }
+> +        if (interleaved) {
+> +            return false;
+> +        }
+> +
+> +        rp = pcie_find_port_by_pn(hb->bus, target);
+> +        if (!rp) {
+> +            return false;
+> +        }
+> +    }
+> +    d = pci_bridge_get_sec_bus(PCI_BRIDGE(rp))->devices[0];
+> +    if (!d) {
+> +        return false;
+> +    }
+> +
+> +    if (object_dynamic_cast(OBJECT(d), TYPE_CXL_TYPE3)) {
+> +        return true;
+> +    }
+> +    /*
+> +     * Could also be a switch.  Note only one level of switching
+> currently
+> +     * supported.
+> +     */
+> +    if (!object_dynamic_cast(OBJECT(d), TYPE_CXL_USP)) {
+> +        return false;
+> +    }
+> +    usp = CXL_USP(d);
+> +
+> +    usp_cstate = cxl_usp_to_cstate(usp);
+> +    if (!usp_cstate) {
+> +        return false;
+> +    }
+> +
+> +    cache_mem = usp_cstate->crb.cache_mem_registers;
+> +
+> +    target_found = cxl_hdm_find_target(cache_mem, addr, &target,
+> +                                       &interleaved);
+> +    if (!target_found) {
+> +        return false;
+> +    }
+> +    if (interleaved) {
+> +        return false;
+> +    }
+> +
+> +    d = pcie_find_port_by_pn(&PCI_BRIDGE(d)->sec_bus, target);
+> +    if (!d) {
+> +        return false;
+> +    }
+> +
+> +    d = pci_bridge_get_sec_bus(PCI_BRIDGE(d))->devices[0];
+> +    if (!d) {
+> +        return false;
+> +    }
+> +
+> +    if (!object_dynamic_cast(OBJECT(d), TYPE_CXL_TYPE3)) {
+> +        return false;
+> +    }
+> +
+> +    return true;
+> +}
+> +
+> +static int cxl_fmws_direct_passthrough(Object *obj, void *opaque)
+> +{
+> +    struct cxl_direct_pt_state *state = opaque;
+> +    struct CXLFixedWindow *fw;
+> +    CXLType3Dev *ct3d = state->ct3d;
+> +
+> +    if (!object_dynamic_cast(obj, TYPE_CXL_FMW)) {
+> +        return 0;
+> +    }
+> +
+> +    fw = CXL_FMW(obj);
+> +
+> +    if (!cfmws_is_not_interleaved(fw, state->decoder_base)) {
+> +        return 0;
+> +    }
+> +
+> +    if (state->commit) {
+> +        MemoryRegion *mr = NULL;
+> +        uint64_t vmr_size = 0, pmr_size = 0;
+> +        uint64_t offset = 0;
+> +
+> +        if (ct3d->hostvmem) {
+> +            MemoryRegion *vmr =
+> host_memory_backend_get_memory(ct3d->hostvmem);
+> +            vmr_size = memory_region_size(vmr);
+> +            if (state->dpa_base < vmr_size) {
+> +                mr = vmr;
+> +                offset = state->dpa_base;
+> +            }
+> +        }
+> +        if (!mr && ct3d->hostpmem) {
+> +            MemoryRegion *pmr =
+> host_memory_backend_get_memory(ct3d->hostpmem);
+> +            pmr_size = memory_region_size(pmr);
+> +            if (state->dpa_base - vmr_size < pmr_size) {
+> +                mr = pmr;
+> +                offset = state->dpa_base - vmr_size;
+> +            }
+> +        }
+> +
+> +        if (!mr) {
+> +            return 0;
+> +        }
+> +
+> +        if
+> (memory_region_is_mapped(&ct3d->direct_mr[state->hdm_decoder_idx])) {
+> +            return 0;
+> +        }
+> +
+> +
+> memory_region_init_alias(&ct3d->direct_mr[state->hdm_decoder_idx],
+> +                                 OBJECT(ct3d), "direct-mapping", mr,
+> offset,
+> +                                 state->decoder_size);
+> +        memory_region_add_subregion(&fw->mr,
+> +                                    state->decoder_base - fw->base,
+> +
+> &ct3d->direct_mr[state->hdm_decoder_idx]);
+> +    } else {
+> +        if
+> (memory_region_is_mapped(&ct3d->direct_mr[state->hdm_decoder_idx])) {
+> +            memory_region_del_subregion(&fw->mr,
+> +                &ct3d->direct_mr[state->hdm_decoder_idx]);
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static int update_non_interleaved(Object *obj, void *opaque)
+> +{
+> +    CXLType3Dev *ct3d;
+> +    uint32_t *cache_mem;
+> +    unsigned int hdm_count, i;
+> +    uint32_t cap;
+> +    int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO -
+> R_CXL_HDM_DECODER0_BASE_LO;
+> +    uint64_t dpa_base = 0;
+> +    bool commit = *(bool *) opaque;
+> +
+> +    if (!object_dynamic_cast(obj, TYPE_CXL_TYPE3)) {
+> +        return 0;
+> +    }
+> +
+> +    ct3d = CXL_TYPE3(obj);
+> +    cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
+> +    /*
+> +     * Walk the decoders and find any committed with iw set to 0
+> +     * (non interleaved).
+> +     */
+> +    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
+> +    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
+> +
+> CXL_HDM_DECODER_CAPABILITY,
+> +                                                 DECODER_COUNT));
+> +
+> +    /* Now for each committed HDM decoder */
+> +    for (i = 0; i < hdm_count; i++) {
+> +        uint64_t decoder_base, decoder_size, skip;
+> +        uint32_t hdm_ctrl, low, high;
+> +        int iw, committed;
+> +
+> +        hdm_ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i
+> * hdm_inc);
+> +        committed = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL,
+> COMMITTED);
+> +        if (commit) {
+> +            if (!committed) {
+> +                return 0;
+> +            }
+> +        } else {
+> +            if (committed) {
+> +                return 0;
+> +            }
+> +        }
+> +
+> +        /*
+> +         * Even if this decoder is interleaved need to keep track of
+> DPA as the
+> +         * next HDM decoder may not be interleaved.
+> +         */
+> +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_LO +
+> +                       i * hdm_inc);
+> +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_HI +
+> +                        i * hdm_inc);
+> +        skip = ((uint64_t)high << 32) | (low & 0xf0000000);
+> +        dpa_base += skip;
+> +
+> +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i *
+> hdm_inc);
+> +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i *
+> hdm_inc);
+> +        decoder_size = ((uint64_t)high << 32) | (low & 0xf0000000);
+> +        iw = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> +        /* Get the HPA of the base */
+> +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i *
+> hdm_inc);
+> +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i *
+> hdm_inc);
+> +        decoder_base = ((uint64_t)high << 32) | (low & 0xf0000000);
+> +
+> +#ifdef DEBUG
+> +        qemu_log("non interleaved decoder %lx %lx %lx %d\n",
+> decoder_base,
+> +                 decoder_size, dpa_base, commit);
+> +#endif
+> +
+> +        /* Is it non interleaved? - need to check full path later */
+> +        if (iw == 0) {
+> +            struct cxl_direct_pt_state state = {
+> +                .ct3d = ct3d,
+> +                .decoder_base = decoder_base,
+> +                .decoder_size = decoder_size,
+> +                .dpa_base = dpa_base,
+> +                .hdm_decoder_idx = i,
+> +                .commit = commit,
+> +            };
+> +            object_child_foreach_recursive(object_get_root(),
+> +
+> cxl_fmws_direct_passthrough, &state);
+> +        }
+> +        dpa_base += decoder_size / cxl_interleave_ways_dec(iw,
+> &error_fatal); +
+> +    }
+> +    return 0;
+> +}
+> +
+> +bool cfmws_update_non_interleaved(bool commit)
+> +{
+> +    /*
+> +     * Walk endpoints to find committed decoders then check if they
+> are not
+> +     * interleaved (but path full is set up).
+> +     */
+> +    object_child_foreach_recursive(object_get_root(),
+> +                                   update_non_interleaved, &commit);
+> +
+> +    return false;
+> +}
+> +
+>  static MemTxResult cxl_read_cfmws(void *opaque, hwaddr addr,
+> uint64_t *data, unsigned size, MemTxAttrs attrs)
+>  {
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index be609ff9d0..8cdb3bff7e 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -427,6 +427,8 @@ static void hdm_decoder_commit(CXLType3Dev *ct3d,
+> int which) ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED,
+> 1); 
+>      stl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_inc,
+> ctrl); +
+> +    cfmws_update_non_interleaved(true);
+>  }
+>  
+>  static void hdm_decoder_uncommit(CXLType3Dev *ct3d, int which)
+> @@ -442,6 +444,8 @@ static void hdm_decoder_uncommit(CXLType3Dev
+> *ct3d, int which) ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL,
+> COMMITTED, 0); 
+>      stl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_inc,
+> ctrl); +
+> +    cfmws_update_non_interleaved(false);
+>  }
+>  
+>  static int ct3d_qmp_uncor_err_to_cxl(CxlUncorErrorType qmp_err)
+> diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+> index 998f495a98..d5d2a9efb5 100644
+> --- a/include/hw/cxl/cxl.h
+> +++ b/include/hw/cxl/cxl.h
+> @@ -71,4 +71,5 @@ CXLComponentState
+> *cxl_usp_to_cstate(CXLUpstreamPort *usp); typedef struct
+> CXLDownstreamPort CXLDownstreamPort;
+> DECLARE_INSTANCE_CHECKER(CXLDownstreamPort, CXL_DSP, TYPE_CXL_DSP) 
+> +bool cfmws_update_non_interleaved(bool);
+>  #endif
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 89411c8093..1d199d035e 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -584,6 +584,7 @@ struct CXLType3Dev {
+>      uint64_t sn;
+>  
+>      /* State */
+> +    MemoryRegion direct_mr[CXL_HDM_DECODER_COUNT];
+>      AddressSpace hostvmem_as;
+>      AddressSpace hostpmem_as;
+>      CXLComponentState cxl_cstate;
+> @@ -671,6 +672,15 @@ struct CSWMBCCIDev {
+>      CXLCCI *cci;
+>  };
+>  
+> +struct cxl_direct_pt_state {
+> +    CXLType3Dev *ct3d;
+> +    hwaddr decoder_base;
+> +    hwaddr decoder_size;
+> +    hwaddr dpa_base;
+> +    unsigned int hdm_decoder_idx;
+> +    bool commit;
+> +};
+> +
+>  #define TYPE_CXL_SWITCH_MAILBOX_CCI "cxl-switch-mailbox-cci"
+>  OBJECT_DECLARE_TYPE(CSWMBCCIDev, CSWMBCCIClass,
+> CXL_SWITCH_MAILBOX_CCI) 
 
-> The documentation does not mention 64MB alignment. It says apertures must=
-=20
-> be on a 32MB boundary and src and dst offsets are 128 bit aligned but=20
-> maybe I don't have the right documentation for these chips or don't get=
-=20
-> what it means.
->
-
-Agreed, yeah the register docs do say there is a max of 32MB of framebuffer
-memory and a max of 32MB of AGP memory (register reference pg. 2-6)
-which implies 32MB alignment. And the software guide does explicitly say
-that apertures must be located on a 32MB boundary (software guide 2-19).
-It then goes on to describe how the aperture is split into 32MB for frame
-buffer space and 32MB for AGP/PCI space. Which implies that 64MB is needed
-for the full aperture. And from what I understand requesting 64MB will
-naturally lead to a 64MB alignment from PCI.
-
-Outside of what I observed on the real hardware another thing that lead me
-to believe that the 64MB alignment is correct was this line in the XOrg
-r128 driver: https://gitlab.freedesktop.org/xorg/driver/xf86-video-r128/-/b=
-lob/XORG-RELEASE-1/src/r128_driver.c#L855
-The driver is assuming a 64MB alignment by masking addresses with
-0xfc000000 (2^26 =3D 64MB). When qemu requests 16MB or 32MB it breaks that =
-assumption
-and the driver looks in the wrong memory area for the framebuffer.
-
->
-> Can you check what the CONFIG_APER_SIZE register contains on these cards?=
-=20
-> Do all Rage 128 (and Pro) cards have 64MB and Radeon 7xxx/M6 have 128MB?=
-=20
-> The documentation is again not clear on this because it lists default=20
-> value of 0x2000000 for CONFIG_APER_SIZE on Rage 128 Pro and nothing for=
-=20
-> Radeon but in a figure it shows this should contain both VRAM and AGP=20
-> areas that suggests 64MB but it's possible that the documentation is=20
-> wrong.
->
-
-I will take a look at this!
-
->
-> This was changed in commit f7ecde051dd73 to be half the memory size=20
-> because at least a Radeon FCocde ROM seemed to detect VRAM size that way.=
-=20
-> I should test that again but it needed OpenBIOS patches that were not=20
-> merged so I had to find those again as I don't have that setup any more.=
-=20
-> Checking on real card may be the best source of what this should be but I=
-=20
-> think this might break that FCode ROM which is from a PowerMac card. This=
-=20
-> suggests it should be half the aper size.
->
-
-Ah, great, this is important context. I'll look at this more
-closely and check the real hardware.
-
->
-> Coding style says variables should be defined at the beginning of blocks=
-=20
-> so in this case at the beginning of the funcion.
->
-
-I'll also address all of the style comments.
-
-Thanks again,
-Chad
+Added anisa, linux-cxl, and linux-arm to the CC. 
 
