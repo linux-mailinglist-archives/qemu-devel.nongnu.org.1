@@ -2,59 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199A2BD2C37
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBF5BD2C58
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:28:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8GcH-0006jE-Mr; Mon, 13 Oct 2025 07:21:25 -0400
+	id 1v8Ghr-0007r3-7T; Mon, 13 Oct 2025 07:27:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8GcE-0006ir-5Q
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:21:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v8Ghm-0007qu-Sy
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8Gc7-0005D8-NY
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:21:21 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v8Ghj-0006E7-I6
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760354469;
+ s=mimecast20190719; t=1760354815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding;
- bh=tZdDJ2XLpcAXL13+XN0Wl55eE4UJ4vhjm1ynAm0LlRc=;
- b=R7sHsQEC53H9nl5EVhMN+lq/c9TpDSNbbi+2cGJN87vvbUro1gtKennDMd1g3swgoDGwPi
- wB3qoa2GulinrU2HlSun9d2sviJ2uuf2GhgUiDGs4lvsQjIIOy/Al/C4nZ4nEAwmC7vZ0N
- YNi1So0uBnrBrITczyFlKcfyF5oMzTE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-ZUHOhjhgOreW45Vd9rr_Kw-1; Mon,
- 13 Oct 2025 07:21:05 -0400
-X-MC-Unique: ZUHOhjhgOreW45Vd9rr_Kw-1
-X-Mimecast-MFC-AGG-ID: ZUHOhjhgOreW45Vd9rr_Kw_1760354465
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D1B0F180035C; Mon, 13 Oct 2025 11:21:04 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6DF091954102; Mon, 13 Oct 2025 11:21:04 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 09E4F21E6A27; Mon, 13 Oct 2025 13:21:02 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
+ bh=dZc+i1/wq00FsSHw4n8X05nrNOsKzzQwHS09WGIGmmo=;
+ b=Elf3tu+3uYivTpmpGPALHWwE2intbQcYAwfjpm7VmcRv6RgMzpSy0E8A0UKlT+S4CspESX
+ iZ92O0AbFgo0O9wlrn7VAvLYZ7a9nEuNerD96zmHmMp5YJ+Q0DhLCXfpp1AU08ChBqgk+H
+ i5rW+6mqMVHwMlf4fDRZXoKEk2cAo+Y=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-jqzcBhnFMfi9ViGYCx_8qQ-1; Mon, 13 Oct 2025 07:26:54 -0400
+X-MC-Unique: jqzcBhnFMfi9ViGYCx_8qQ-1
+X-Mimecast-MFC-AGG-ID: jqzcBhnFMfi9ViGYCx_8qQ_1760354813
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-b4626b2d07bso461123266b.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 04:26:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760354812; x=1760959612;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dZc+i1/wq00FsSHw4n8X05nrNOsKzzQwHS09WGIGmmo=;
+ b=Lox1s+sBpSzNBRpe9OobmHGbP6BAKDPD2Fy8b73WP1xIMXN2O75NH4CsH109Wmu0zP
+ +gRNW5oVkNUEev2nDM2jcLk295Hi32fq6C2rRwEp/Wm8DtFdvlv2YnW3WnnZWurbuUne
+ BprCTRIc/2PwpQpypCrlno+pUg4vt4RkXcqnGy7x2HXl99FW/v+8KHHGupgD5xCfIzuf
+ 1QXEb6H3YbdteGCj2AMljwOyVVSul4La0WfxOLxKO+3opYnya964N3zPUlhdE0nSXjbw
+ 3QyRUIs5ysXK4wQ+LlzGSw0/PtGnyZizhCgCqwfrd+rUltH4Ct9FOISYPbx1gNzUV8Mk
+ vGEA==
+X-Gm-Message-State: AOJu0Yz82eE3/FLv2M1zZouxOQFa+cb4NTFJjEketmcpwhKGOenmayXN
+ 0cD4HQ0gRO+evUSKP72DeniPkhOb3ZqS8o+JkqWHQtJJ+/SY+BJRlIHC0IYH4qOMmEv+lVvADAG
+ ARugFIRSfW6UdKV8SEMaDt+rm6d9UbCy11dy2SQ9XxQKRYcoiGU1AszsLozsC7dUzb7upQUt1QI
+ /cEiC6NrY7tAACA7IzE1B2RrtZZHBz6qxIcN6e8zbZ
+X-Gm-Gg: ASbGncuB25+IzymFW39/QQZY23rE4bx84aKb1Gse7tjg11u16eN3D+Qj/rHNvXnVBSB
+ lXRYYl6/VUtWipUyocSp7JPYNGqkpe8wezlB9N9O4NTQZxz6pqW0YrqJEa8RptChaqfzltPRWlu
+ yOjYkV2OBtLyhFi8EaBfLrccpljcp8R8SINZJpv7gXV0qBuLCVYtO4kN0uFa4SM0wPQQNBbbaOi
+ Vq1jyHRmoJck7z8r+bl/l36nkKIUp51QvN9BNJYnjlAi94l1/k8xnbDjd6bLnofz1GJoBfirTfr
+ 2qgkDqgp9is2w9B8qJdEbhOLS1Z9Slv8KsnzkQOR0Z8BJh/SmAlwOxHX7zEuQRsScMCXvJGJxMp
+ rpTszu+pGQSU+wvFPHlxHCjE4SdAFKUvzC2bQiQXDFiM=
+X-Received: by 2002:a17:906:4fce:b0:b4f:ffbf:9aeb with SMTP id
+ a640c23a62f3a-b50ac6d2768mr2244267866b.46.1760354812432; 
+ Mon, 13 Oct 2025 04:26:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGgIBgpo8EOuc4cdcssrL1zNFeHz8dZUfvyDotwYxuTyokh5EoZd5IeybTts0WJ6dxOO7wHgw==
+X-Received: by 2002:a17:906:4fce:b0:b4f:ffbf:9aeb with SMTP id
+ a640c23a62f3a-b50ac6d2768mr2244264966b.46.1760354811917; 
+ Mon, 13 Oct 2025 04:26:51 -0700 (PDT)
+Received: from [192.168.10.48] ([151.61.22.175])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b55d8c12a62sm911700966b.58.2025.10.13.04.26.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Oct 2025 04:26:51 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com,
-	Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH] ui/pixman: Fix crash in qemu_pixman_shareable_free()
-Date: Mon, 13 Oct 2025 13:21:02 +0200
-Message-ID: <20251013112102.2396012-1-armbru@redhat.com>
+Cc: Praveen K Paladugu <prapal@microsoft.com>,
+ Magnus Kulke <magnuskulke@linux.microsoft.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/2] monitor: generalized query for accelerator availability
+Date: Mon, 13 Oct 2025 13:26:48 +0200
+Message-ID: <20251013112650.935921-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -79,29 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reported-by: Bernhard Beschow <shentey@gmail.com>
-Fixes: b296b29d3414 (ui/pixman: Consistent error handling in qemu_pixman_shareable_free())
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- ui/qemu-pixman.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The recently-introduced query-mshv command is a duplicate of query-kvm,
+and neither provides a full view of which accelerators are supported
+by a particular binary of QEMU and which is in use.
 
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index e46c6232cf..aea09755b9 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -291,7 +291,9 @@ qemu_pixman_shareable_free(qemu_pixman_shareable handle,
-     Error *err = NULL;
- 
-     qemu_win32_map_free(ptr, handle, &err);
--    error_report_err(err);
-+    if (err) {
-+        error_report_err(err);
-+    }
- #else
-     qemu_memfd_free(ptr, size, handle);
- #endif
+KVM was the first accelerator added to QEMU, predating QOM and TYPE_ACCEL,
+so it got a pass.  But now, instead of adding a badly designed copy, solve
+the problem completely for all accelerators with a command that provides
+the whole picture:
+
+    >> {"execute": "query-accelerators"}
+    << {"return": {"enabled": "tcg", "present": ["kvm", "mshv", "qtest", "tcg", "xen"]}}
+
+Since query-mshv was not in any released version, drop it.  Because the
+code looks similar, I am not splitting this into removal of query-mshv
+and addition of the new command.
+
+Paolo
+
+Paolo Bonzini (2):
+  monitor: clarify "info accel" help message
+  monitor: generalize query-mshv/"info mshv" to query-accelerators/"info
+    accelerators"
+
+ qapi/accelerator.json      | 47 +++++++++++++++++++++++++++++---------
+ include/monitor/hmp.h      |  2 +-
+ hw/core/machine-hmp-cmds.c | 21 +++++++++--------
+ hw/core/machine-qmp-cmds.c | 20 ++++++++++++----
+ hmp-commands-info.hx       | 19 +++++++++------
+ 5 files changed, 76 insertions(+), 33 deletions(-)
+
 -- 
-2.49.0
+2.51.0
 
 
