@@ -2,102 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701B6BD2C13
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 199A2BD2C37
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8GYI-00050b-2b; Mon, 13 Oct 2025 07:17:18 -0400
+	id 1v8GcH-0006jE-Mr; Mon, 13 Oct 2025 07:21:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v8GYE-0004yO-Ey
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:17:15 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v8GY8-0004Ni-FP
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:17:12 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-46fcf9f63b6so1172705e9.2
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 04:17:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760354225; x=1760959025; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kfom9lIGK8B5LzNP84cHo2tdWvudesEHr5zm07ZX1zc=;
- b=IOHKeABYXD3G5cjOZTMHPr9Jvpb5bqIPjdOJc6UoA5U8reh+IWbtEDKLePSb8VBzCt
- J5AD/DSzfXVoze5Spr3dKYE0PcZCb8kDYQtY/9KtdAsq+KFH9oEtTtx9xnT24PgfnPYt
- WZIKQN8KHfH6X/yGu+xS9b64EYkJpSgexVas2/8wLUSz5hR4PvDcUqhllmvxIGFDLnIu
- P24nv+RtBkPzxWglnuh4kSBklp6kaAd8MawP+mEC/svqBjPbq5TBOFcMLf+nMh0sLQBc
- 2uDfYTi/0zzeAyA7PKhp1VF2JDz+see3I1LJhtzz09guCLLsyjw6+Yo2AQ1PlY4eBHku
- vAZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760354225; x=1760959025;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kfom9lIGK8B5LzNP84cHo2tdWvudesEHr5zm07ZX1zc=;
- b=Ytf9oWCVA6geNEZd7TEOSIhwl36y3BC5RhfoPiMB6ZwqGCnwudkZl/bxYy8aidukVZ
- m96pU7+02MGPh1RxW+wycDyOgVi1zIvb9aG4SugE+7DZ92CgDzS50vt05hPJjbTjo9YG
- lLL/W7fnsnVi4ozymIggNQzXRpjzk95sG1FuPa9ZZTfgw3lGhngjsem2cmRly9EapeaB
- y7wfVTlSpKN8y1jg/ddu9KHgtSDB6uIrQ5K8p0RrBEoR/P+fT46MdV95rM2TCb4Xvg0e
- zB8Kbhc28zyuWAYHxNtyDq4PVoNKnAAXRNM9nDpZjVoBW0TtwcD/k+Fyfwaq1AzmPQdL
- efTg==
-X-Gm-Message-State: AOJu0YwSVp8EIXIGdPLJz0Q0ziuh8cvscMmfYvxt/+ClhezoR09Sl07f
- AL0nCmCf93Yp3KKA0Q9COAx399hTPZ6MrpZfi7hUXgZ0MgLfegTRiiIx
-X-Gm-Gg: ASbGncs4Dkw2QcVlfFeLHRozi9ht4vW5rLA0J7uvITIJg/XsWoNDnmfQkvnxQYmc27n
- eQ87oSpai+/GHPBnIg4WUDio6l02ToGUtzp2rIJyGgF12IM/Ee0ejJZ3E+wBWrnn/E/HISbtQ9/
- 2tlntdL1/OFw19wmYCcrpvhBnhksjbtGlmJuKKSIzPKnOaxBGwGN4b38czXpoqVr3H+dbMTkpJ8
- pVHfcyAqe+zRvEvy5Zxl7oDnm/v83XyrJH/q4ICgj8j+z2ZtXWnbt7WCKqseBjZk1OoJemmoxoH
- igJWSIRZaD1XX20+6WP2s3DpVKd6LpXw3MpUb+ydJmrBHpTeCNMNpmuDVmH+xIBO/5xvI5EIFVf
- +MQrFuF9KhVk9JQ5dhjepGKuMmVQ/K4VhkBs+o118Z7BNAvd3+caaktFIJRaffNfeYND2Mwc+7U
- Km0smtkPjIi6vFuyn6lO/HgPtpTVvOx4gBRArCJyV4W6lC4siN
-X-Google-Smtp-Source: AGHT+IHsQ8yGCphHfIpI2hI91cvbXyTtAaY0V+rzP1LGt+AQxn2scdKT/VoLtCnWXMRLxBWW0Ykiqw==
-X-Received: by 2002:a05:600c:4fc9:b0:46c:7097:6363 with SMTP id
- 5b1f17b1804b1-46fa9aa4620mr125759665e9.13.1760354225225; 
- Mon, 13 Oct 2025 04:17:05 -0700 (PDT)
-Received: from ehlo.thunderbird.net
- (p200300faaf271400a0afdc243fcb5392.dip0.t-ipconnect.de.
- [2003:fa:af27:1400:a0af:dc24:3fcb:5392])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fab3d7df4sm133343415e9.1.2025.10.13.04.17.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Oct 2025 04:17:04 -0700 (PDT)
-Date: Mon, 13 Oct 2025 11:17:01 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-CC: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
- qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>
-Subject: =?US-ASCII?Q?Re=3A_=5BRFC_PATCH=5D_docs/system/security=3A_Restrict?=
- =?US-ASCII?Q?_=22virtualization_use_case=22_to_specific_machines?=
-In-Reply-To: <aL7xrilR-gyByKEM@redhat.com>
-References: <20250908125058.220973-1-peter.maydell@linaro.org>
- <aL7xrilR-gyByKEM@redhat.com>
-Message-ID: <73575243-9E58-4DEA-89ED-24E2340A4112@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8GcE-0006ir-5Q
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:21:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8Gc7-0005D8-NY
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:21:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760354469;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tZdDJ2XLpcAXL13+XN0Wl55eE4UJ4vhjm1ynAm0LlRc=;
+ b=R7sHsQEC53H9nl5EVhMN+lq/c9TpDSNbbi+2cGJN87vvbUro1gtKennDMd1g3swgoDGwPi
+ wB3qoa2GulinrU2HlSun9d2sviJ2uuf2GhgUiDGs4lvsQjIIOy/Al/C4nZ4nEAwmC7vZ0N
+ YNi1So0uBnrBrITczyFlKcfyF5oMzTE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-ZUHOhjhgOreW45Vd9rr_Kw-1; Mon,
+ 13 Oct 2025 07:21:05 -0400
+X-MC-Unique: ZUHOhjhgOreW45Vd9rr_Kw-1
+X-Mimecast-MFC-AGG-ID: ZUHOhjhgOreW45Vd9rr_Kw_1760354465
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D1B0F180035C; Mon, 13 Oct 2025 11:21:04 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6DF091954102; Mon, 13 Oct 2025 11:21:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 09E4F21E6A27; Mon, 13 Oct 2025 13:21:02 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com,
+	Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH] ui/pixman: Fix crash in qemu_pixman_shareable_free()
+Date: Mon, 13 Oct 2025 13:21:02 +0200
+Message-ID: <20251013112102.2396012-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,140 +79,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reported-by: Bernhard Beschow <shentey@gmail.com>
+Fixes: b296b29d3414 (ui/pixman: Consistent error handling in qemu_pixman_shareable_free())
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ ui/qemu-pixman.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index e46c6232cf..aea09755b9 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -291,7 +291,9 @@ qemu_pixman_shareable_free(qemu_pixman_shareable handle,
+     Error *err = NULL;
+ 
+     qemu_win32_map_free(ptr, handle, &err);
+-    error_report_err(err);
++    if (err) {
++        error_report_err(err);
++    }
+ #else
+     qemu_memfd_free(ptr, size, handle);
+ #endif
+-- 
+2.49.0
 
-Am 8=2E September 2025 15:09:34 UTC schrieb "Daniel P=2E Berrang=C3=A9" <b=
-errange@redhat=2Ecom>:
->On Mon, Sep 08, 2025 at 01:50:57PM +0100, Peter Maydell wrote:
->> Currently our security policy defines a "virtualization use case"
->> where we consider bugs to be security issues, and a
->> "non-virtualization use case" where we do not make any security
->> guarantees and don't consider bugs to be security issues=2E
->>=20
->> The rationale for this split is that much code in QEMU is older and
->> was not written with malicious guests in mind, and we don't have the
->> resources to audit, fix and defend it=2E  So instead we inform users
->> about what the can in practice rely on as a security barrier, and
->> what they can't=2E
->>=20
->> We don't currently restrict the "virtualization use case" to any
->> particular set of machine types=2E  This means that we have effectively
->> barred ourselves from adding KVM support to any machine type that we
->> don't want to put into the "bugs are security issues" category, even
->> if it would be useful for users to be able to get better performance
->> with a trusted guest by enabling KVM=2E This seems an unnecessary
->> restriction, and in practice the set of machine types it makes
->> sense to use for untrusted-guest virtualization is quite small=2E
->>=20
->> Specifically, we would like to be able to enable the use of
->> KVM with the imx8 development board machine types, but we don't
->> want to commit ourselves to having to support those SoC models
->> and device models as part of QEMU's security boundary:
->> https://lore=2Ekernel=2Eorg/qemu-devel/20250629204851=2E1778-3-shentey@=
-gmail=2Ecom/
->>=20
->> This patch updates the security policy to explicitly list the
->> machine types we consider to be useful for the "virtualization
->> use case"=2E
->>=20
->> This is an RFC partly to see if we have consensus that this change
->> makes sense, and partly because I was only able to identify the
->> machine types we want to cover for some of our target architectures=2E
->> If maintainers for the other architectures could clarify which
->> machine types work with KVM that would be helpful=2E
->
->The split of "virtualization" vs "non-virtualization" use case
->in the docs was always as rather a crude hack=2E
->
->"Virtualization uses cases" was more or less a code phrase to
->mean "the subset of QEMU that we traditionally shipped in RHEL"
->as that is approximately what we have reasonable confidence
->about=2E
->
->Personally I wouldn't assign strict equivalence between "machine
->can use KVM" and  "virtualization use case"=2E
-
-Yeah, that's exactly the knot this RFC attempts to untangle and which was =
-the motivation for the RFC in the first place=2E
-
->
->Case in point - the "isapc" machine type can use KVM but I would
->not consider that to be a virtualization use case, and would likely
->reject a security report if it /only/ affected isapc, and not 'pc'
->/ 'q35'=2E
->
->We didn't want to undertake the work to annotate every QOM/QDev
->impl in QEMU with info about whether we considered it in scope
->for security fixes or not, which is what we really ought to do
->at some point=2E The main challenge is someone having the time
->to do the audit & annotation work=2E
->
->> diff --git a/docs/system/security=2Erst b/docs/system/security=2Erst
->> index f2092c8768b=2E=2E395c2d7fb88 100644
->> --- a/docs/system/security=2Erst
->> +++ b/docs/system/security=2Erst
->> @@ -35,6 +35,34 @@ malicious:
->>  Bugs affecting these entities are evaluated on whether they can cause =
-damage in
->>  real-world use cases and treated as security bugs if this is the case=
-=2E
->> =20
->> +To be covered by this security support policy you must:
->> +
->> +- use a virtualization accelerator like KVM or HVF
->> +- use one of the machine types listed below
->> +
->> +It may be possible to use other machine types with a virtualization
->> +accelerator to provide improved performance with a trusted guest
->> +workload, but any machine type not listed here should not be
->> +considered to be providing guest isolation or security guarantees,
->> +and falls under the "non-virtualization use case"=2E
->> +
->> +Supported machine types for the virtualization use case, by target arc=
-hitecture:
->> +
->> +aarch64
->> +  ``virt``
->> +i386, x86_64
->> +  ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``, ``pc``, ``q35``, ``is=
-apc``
->> +s390x
->> +  ``s390-ccw-virtio``
->> +loongarch64:
->> +  ``virt``
->> +ppc, ppc64:
->> +  TODO
->> +mips, mips64:
->> +  TODO
->> +riscv32, riscv64:
->> +  TODO
->
->Currently 'virtualization use case' is reasonably vague such that we can
->bend its scope as we desire, at the time it is questioned in a possible
->security report=2E
->
->Machine types are only one aspect of this=2E Devices are the other, and
->the area where it gets significantly more fuzzy and difficult because
->essentially any device can be used with KVM, and where we draw the
->line is fairly arbitrary=2E
-
-I agree that pluggable devices are much more fuzzy=2E That's why this RFC =
-makes a start in spelling out the machines where certain guarantees are mad=
-e, and leaves pluggable devices untouched=2E This should allow for KVM to b=
-e usable in more machines, where these guarantees are too much of a burden=
-=2E
-
-Certainly there is more work to do on pluggable devices=2E And as you stat=
-ed above, somebody has to have the time to work on it=2E
-
-What is missing for your R-b, Daniel?
-
-Best regards,
-Bernhard
-
->
->
->
->With regards,
->Daniel
 
