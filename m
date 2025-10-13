@@ -2,45 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC62DBD24D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 11:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 693BABD24D6
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 11:30:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8Es6-0003Ql-KD; Mon, 13 Oct 2025 05:29:39 -0400
+	id 1v8EsX-0004GT-UT; Mon, 13 Oct 2025 05:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8Es4-0003KI-3Q
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:36 -0400
-Received: from smtpout3.mo529.mail-out.ovh.net ([46.105.54.81])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8EsL-00045p-HJ
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:54 -0400
+Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8Es0-0005MW-Ml
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:35 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.37.14])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4clX9j61nXz5vq6;
- Mon, 13 Oct 2025 09:29:29 +0000 (UTC)
-Received: from kaod.org (37.59.142.104) by DAG8EX2.mxp5.local (172.16.2.72)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v8EsH-0005Nf-TK
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:29:53 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.0.125])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4clXB12dGTz6S2P;
+ Mon, 13 Oct 2025 09:29:45 +0000 (UTC)
+Received: from kaod.org (37.59.142.99) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 13 Oct
- 2025 11:29:29 +0200
+ 2025 11:29:44 +0200
 Authentication-Results: garm.ovh; auth=pass
- (GARM-104R005f134f6fe-3ab5-4feb-9569-c302ce381fa4,
+ (GARM-99G003490950b2-53c6-456f-87c9-989bdccb0e7d,
  E27D2F41E47E806E38994DC6761E007B2CBA9264) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <00735bd6-c9f0-4612-95df-c531811b0a69@kaod.org>
-Date: Mon, 13 Oct 2025 11:29:28 +0200
+Message-ID: <a4d48573-20a3-44a9-b204-97a9a4b7ff36@kaod.org>
+Date: Mon, 13 Oct 2025 11:29:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v3 16/16] hw/arm/aspeed_ast27x0-{ssp,tsp}: Fix
- coding style
-To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
-References: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
- <20251013054334.955331-17-jamin_lin@aspeedtech.com>
+Subject: Re: [PATCH 0/5] aspeed: machine deprecations and test improvements
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
+ <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>
+References: <20251007141604.761686-1-clg@redhat.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -85,35 +83,35 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251013054334.955331-17-jamin_lin@aspeedtech.com>
+In-Reply-To: <20251007141604.761686-1-clg@redhat.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.104]
-X-ClientProxiedBy: DAG3EX2.mxp5.local (172.16.2.22) To DAG8EX2.mxp5.local
+X-Originating-IP: [37.59.142.99]
+X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: 737557cb-f2f3-4edd-9ed6-a6e2e20fe16f
-X-Ovh-Tracer-Id: 14301462092892048306
+X-Ovh-Tracer-GUID: f67e894c-f70c-4972-b5f4-3536c4cd0f17
+X-Ovh-Tracer-Id: 14305965694137043890
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTF+bN3PwyiC/2t7DgvTrZ2kHXaxQAdREPGALGgHlEr5G+PHs92GLIb0mG/PVR0MOVcOStB32v0pPfAkzdA6UfYiT0poU1pyZ2U5xwLDdXhPEOvxmDD9VsIFzv/5rpWs62b0IgipfbroIDVLOsVNqYbVNPCL8kkNWmKxY5XgvTPBNQxfFnKNn3ft1MgS9WTrln42lY9h5uo4S+odnr3V9zohgRzN6wUuA+K4ilJiOXvCcueqF2jQMsRMTuXG/Mg0b3ZuFuAj0hEV1WRE6Eqv2ycOAKntIt62ZcoEZjIaZDWJ9lDOJ/Rz8wGC1aSRGNLsSMk8Q8lGpoX2GnhvZ/ipVX+IOw846YWHR1eHOwwQvDtSH4LaAnCqiRPLAj6c5c82yCRD+ttJ1eVmBVr57WqJc256MZZUm0mYqUgJYYVVEOx8A4mdcuuwv6V2K86m7PCD8fC2GLkAqOf6/TzWQfwV3ikS/A668cJPWronOzOAe3hbBvI/COjsRKn7p/W1qk74MU8r0uEcRw9U7Thb/YrRwvPXPf2s1Hy/TtQ/3RPy1rRMaloeagn757BmrcS4dlqeAN7HfrjkYV04ATfd7VoJx9QNrwuGnFG0JHtBoFTivbaBqcxmxk7zpza99rtZXPmNXa7G0DVmA4bk9tz9v6RgprfMtYJ86H4pox+V9aKZwBCA7A
-DKIM-Signature: a=rsa-sha256; bh=K+k9qGIiCSrN1vVzrmIs1hqbVgCQPSI1a/xDj2qP//w=; 
+X-VR-SPAMCAUSE: dmFkZTE9VTX+ijz0fVirTNoSacqh9QmpEkvyGf9pNuOhx64HC0BBIJVZvhj8Bxok8eueWwMOeMAV3QQpsxh5FHRWay4BrKj/uTe8FM9DwKBHcIZM8iLMrx4nulkwJ3CbjPXszh7vX7YfPn9yHuBZCDvf8qrUNHTCFddTw5BHolsdmVNYWU6udxr48Mjf/H0Y2vc/9aLKYmR2TTHYCYItChey3Y/OdAU8fAvg1cAcWzF2us7rYvODsLo2Ho4NOE6FG9VU+gAuMtywkPCV5smEPtXIgv0RfFyyc99vmiRo8APcDZ9fPgUxFp6K43zSBYkhsKJKopdqWLX43vR+YToAEi9Qz6UNWbIuvIMU0jn85gZMsc+rzqmHOH+BB7J51C23Sa2rtzKdfoZkjFe1jqcgLiRr457Mk2uX8O7hu555pEDFqphDb0czW4ZK63WGKgO1TOg5/2P5LFVYUcDhMsI0/Hz6amq0ERIHvloC0x1ENUICTdTCQOTetSk0YJrhklO2VsRQv9OXXGONK++f+KxRq2ixJ98iW4BEmM0dJGGUlOtgzFK9iKZwOdG6U15qDXlRxdQcucYOEe7qEiTX18mrH/NWuVNYKxk9JFZQVRxe67CgQTrU0mBRX5uFlgrPhtwFpCauBPiimMGEvmBi1YCQ4ZFUPVgQ9bvFpi2MK4u0lT9pFMXdgQ
+DKIM-Signature: a=rsa-sha256; bh=Au2myoRCd0XH4IOTPIGg200/Szy2Vzf8/1V/goOE6os=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1760347770; v=1;
- b=t3e5cW6UPEtobSKJU2mb0n8RXW+or1SKTUoD2dv2UtE+hpXei3HwTBdr4pcpK/XIIHEm39xK
- RanArZA7gbnB72LVwt6fyAsUTlbIDLCmO17/fVwDtrocIXPdV/xOCnRgI+JboEUEGb7FYtCDOeV
- Q+wWU8iWwZz3X3DsyGvKPS214Bu7dKFhxnDiwRrJzGmnNtDhMjDOrvgX1AI9659m+l888bDROhT
- Iw1mwageSMbTTybePNVnkMufJnliX/s1OL6rExX0+pRQPk9GYhIb97JGbw24AE3ZSixay57/zDv
- FKXGszWN4JWPx+lNvip+QQsP25ZwdxZlz4O4iFZUN3Rzw==
-Received-SPF: pass client-ip=46.105.54.81; envelope-from=clg@kaod.org;
- helo=smtpout3.mo529.mail-out.ovh.net
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ t=1760347786; v=1;
+ b=N7+9rH5xbZbLO0Tb/llsRkopyWboRu4SrqAl7NfMyPxr0viCnAlac9LL7fWwZ1WUkdwhZUGJ
+ 9kcsRAb9T0M6whCqkWUT32bhTTv79aI88xo/ESpCFI4VXO+D6KRiOnRlULMiv2mkQs074Rn6YTi
+ hYvtJLIK/qCOAYJXfEferQjVZgs0vLt+kuk3WXpDgL4BWco2sYFZpWiO7D3PhSpuDTLPYSd5dxX
+ W511wnZM/iGolQwLNH68nASQN3HI+d2brk99CfveulaM3cH1QGwkbmc1DDK4tq72m/P4/nVfFs0
+ LvHJIZJfO4S2a1FhYHlQ1izS7MkZEA2N0Aj/3ohmh6OTQ==
+Received-SPF: pass client-ip=178.33.43.201; envelope-from=clg@kaod.org;
+ helo=4.mo552.mail-out.ovh.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,21 +127,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/13/25 07:43, Jamin Lin wrote:
-> Fix coding style warnings in aspeed_ast27x0-ssp.c and aspeed_ast27x0-tsp.c
-> reported by checkpatch.pl regarding line length exceeding 80 characters.
+On 10/7/25 16:15, Cédric Le Goater wrote:
+> Hello,
 > 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> ---
->   hw/arm/aspeed_ast27x0-ssp.c | 3 ++-
->   hw/arm/aspeed_ast27x0-tsp.c | 3 ++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
+> The first three patches deprecate machines that have no functional
+> tests and can be replaced by more generic machines (evbs) with
+> command-line options for I2C device.
+> 
+> The last two patches improve the functional tests for the ast2700
+> machines to save CI resources.
+> 
+> Thanks,
+> 
+> C.
+> 
+> Cédric Le Goater (5):
+>    aspeed: Deprecate the sonorapass-bmc machine
+>    aspeed: Deprecate the qcom-dc-scm-v1-bmc and qcom-firework-bmc
+>      machines
+>    aspeed: Deprecate the fp5280g2-bmc machine
+>    test/functional/aarch64: Remove test for the ast2700a0-evb machine
+>    test/functional/aarch64: Split the ast2700a1-evb OpenBMC boot test
+> 
+>   docs/about/deprecated.rst                     | 27 +++++++++++++++++++
+>   hw/arm/aspeed.c                               |  4 +++
+>   .../functional/aarch64/test_aspeed_ast2700.py | 21 ++++-----------
+>   3 files changed, 36 insertions(+), 16 deletions(-)
 > 
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Applied to aspeed-next.
 
 Thanks,
 
 C.
+
 
 
