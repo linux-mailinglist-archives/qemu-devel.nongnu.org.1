@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6C6BD3584
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 16:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89622BD35DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 16:14:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8JBK-0003Cl-4c; Mon, 13 Oct 2025 10:05:46 -0400
+	id 1v8JHD-0006Y5-M1; Mon, 13 Oct 2025 10:11:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8JBG-0003By-9z
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 10:05:43 -0400
-Received: from mail-yx1-xb12b.google.com ([2607:f8b0:4864:20::b12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8JHA-0006Xx-M9
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 10:11:48 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8JB9-0002AI-Nr
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 10:05:42 -0400
-Received: by mail-yx1-xb12b.google.com with SMTP id
- 956f58d0204a3-6353e91a04aso4534494d50.2
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 07:05:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8JH5-0002yI-2R
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 10:11:48 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46e5980471eso22746865e9.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 07:11:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760364332; x=1760969132; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9l46JjeZiu1BMV5wUaWsW4A92fE98oMzJFrRyS3dnSg=;
- b=e0dtK6Dv3s4hWlw7A7tnCZ6wdJthX1Y+aa+oZpyDnXR7QkfHdkTp7FC/bGPIQZaUdU
- L8xk0msF6SX1yU1plYXiEiyAHUR90jq6C4GnqcjaedtdIKrLa4cHjf0i+/WA7MdEHQcV
- MNMkcTgMxc3azJemmRyPQVWegEHY9MYAUrt67R0jWRfq8HX9fgvkOTh9E78nobmKMP76
- TLfRRML43Z7CYp6nKxSwNrmEFfXxC45JGbI+9xRI9+EbJ2jxXL3XHLg0TWbvrfEVOA8O
- HgNKD3U7+a3Wvz9TAAKZEophvuafrhgreZCTQd5sTM6ZSgkyuDs6mcTXJljga+xhoJYR
- FNOg==
+ d=linaro.org; s=google; t=1760364694; x=1760969494; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RxS0jvDhxWNFhdGQzx7kmaTSuq7EX1uqyPJfynODXvA=;
+ b=IyrlIQ9IXY3QbskEQqIJdNgxPC8UzxxT7lChsqfpsHMLTFSSSywDupIoUR7NuIzH3B
+ Yh4wfjAcdq0oCk1rKgZC12yh2dDQgHYtrhU9QlNx6dJ23qPiLwL9jo35wBv3TxxooejZ
+ M/yWVwMNLirvHHG+4rJtth6xwkDXYgakkrCfbvh0XrtaShYs5oG+4rBZaGW6h8atpiPC
+ 7OU5m3xPb8VFKvZ7W2+lmmnnR+UkBAt5kiB5lEfl5pJX+Ga39iFrAy0wzhl1U2VwxTt9
+ +t6/ix1wTbB+dU0ugH/NrkL5j9UyTi9DZLb25jB2SPFN0y8gcPQ71hZEUnaeJfc3mdoH
+ PKvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760364332; x=1760969132;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9l46JjeZiu1BMV5wUaWsW4A92fE98oMzJFrRyS3dnSg=;
- b=YYFk1KsXpp1XQGn2ye8c8ikXzIQa/o9ehbSSuzaRxFXgsdqyrfkyY5l7zrPttxWoBT
- UlnUN4UDEVKqd4VIHqkaChTnc9G6u6RW0L8ps+S0kRdjoQzVlN55TrnurcoJi1dIEXeP
- Vlw9x/PHEpO0c9PwlIrKd/sRFDOYbyXBZBPhISQqknUp58uuqNq13wUxpHQCfjjwvLY9
- RI2+JyaI+YJQCkT6j4AJ8lpbQsLMxFt94giwR3cJhZN/HRQ/PNEJnOe2wXAFupCkrDSw
- yIiQujQr9DCfN8qAeIVT0O6fg+N9FfNxyCRFrwOukQgkKOpuu71Jl7yuFsvIBbf+S/ri
- hUEw==
-X-Gm-Message-State: AOJu0YyZQFgDsG0HNblzcbTr92vC5haDXuAVl5OI7rRYtc0lBvOHuulx
- dHUgjCy63c350jNwliYpLzlWPVnVde5A+k9XXrc1IcgMeYl7Hb5HHMz1w+DRD6BnXVVSlBL4j1E
- fhEqssWR/Quj6Z1OxVsJ3IId/z2Rtv3SCK/fyzvZnpkmw+f6vAG6y
-X-Gm-Gg: ASbGnctL19mNZfGf33jgI9g+Sc/nnBzBQXLazvGC3ABPwEHIIZEpl1c98nTrJ5tCHts
- slbcKq5DIxwjqrxgysUR/cS14ZL0empCoavu82zGEsdGAebYy4YEui/F7lVeXHlXDyrJD50VpQ+
- 2TWOGXH8LAdVXWjKS9l93JYoKdHfzVlzEbIVDWPPuhYy2HWasjxPDIGP8Xw5jSGcqZoYLNMbw8/
- KA8uD0eLJ72TdWn77kgdSzl9IUPj94iCVGOHu+9AbjmytBI6gRz
-X-Google-Smtp-Source: AGHT+IGYJkdtw1tYwqcowgG+b55nFswVDVeJE4gCb29hFo0SfEDlQS4iBLxtYNcDYvIWzvA0AYULQ/RVNDJ6pAq6DO4=
-X-Received: by 2002:a05:690c:6c90:b0:781:258:d87a with SMTP id
- 00721157ae682-7810258f27dmr227499357b3.33.1760364331818; Mon, 13 Oct 2025
- 07:05:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760364694; x=1760969494;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RxS0jvDhxWNFhdGQzx7kmaTSuq7EX1uqyPJfynODXvA=;
+ b=mwODp+ATGwb4W33559ru36lRSO+iviEWDvZXNp/lxGignlG3Eoyyrzp70UkZvtdNmr
+ +azJtPIExcf5Y59PpFU7prCHf6BRAe4QtMH027C5I5oI+ZeG2D1D40zftKbGO/xFT/vM
+ /2KkJjXjemDq/TIKu065L3kHFw5dek2YBFGutz8xdhhOxRyGFigRbkG1McCzjwQLKsNB
+ VNY3z/5gMSfS0z4MwpI6zM1LdEV3WJzs5PFOBzAl99m6rtWDRUqZh91A9GpAiVa0HmE9
+ C3N50KNVGu1uZbNmQf/6F84U3yYsXUCNTp/3t2bLHZ7atLRF7WmeIcEqurgQY6WecZTT
+ 87nw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVxSZgnmBQT5sQWgQrblkwmWfSBPTRhnBiUTW1AR/HjB6KEug5LudHnAlAqPjdCSdxZDqqdDQc5gFcS@nongnu.org
+X-Gm-Message-State: AOJu0YzNc8XafW1ae/ptoAycBMpmOwRvZKluzafMqULJlYHR8CMEyZds
+ 1jnCZ+YqMYAjTWgpZc0I3wm0ZZkP6F3TSvdy4rFkAApYZR/vQS6fokKkEXphOc9YAgY=
+X-Gm-Gg: ASbGnctvI/WDWEUhOZGXRmPKQxqG9wGCyM8PT4IsyOder1PRXczuiKQp86XuykO1AJM
+ AgUFNNq94qqrB777DA//WXv/fD+xBdv9Yr9EbF2PSVNunMBki8R9xbxDevJWs30LFZ83Wf5Kfny
+ rUzzidVq2YVBRkV57siVzZczGWUrpLOr0K2c2yapTF7H8ssmHNqv2Xfr0z6xejdR9gQOAZfFbjw
+ BkHaxMcUzTGCRllTX6lLj8UHZEzayj7ckpLEZlbIxZ9c8tNtKBrX1KQ+yvSN2V3FjB5Lvi3ItLO
+ v2y/+iw3fFDEO+YEPWaPIftQeNnOCDHOIdptM7ZZ85AYyNBwfO/4/vMHqlnyfE1qELmwA+kQX7g
+ tuytY25QTOeobmcvNmkwM13xVS9I6QwLk+GNqlHJPaZ7HgpsL+Sm3/6K/rnb3GED1temNUa51SK
+ j46lcZ49Nb7E429wyE4Y651jc=
+X-Google-Smtp-Source: AGHT+IFK3hob+g1mmBEGu3QsXORDZ+6JyQuRyatKOlH33GhFUjbPskb+/aYFew0M5XK2A8Um5B53Lg==
+X-Received: by 2002:a05:600c:83c9:b0:46f:b42e:edd0 with SMTP id
+ 5b1f17b1804b1-46fb42eee2emr100222875e9.41.1760364694353; 
+ Mon, 13 Oct 2025 07:11:34 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-426ce5e1024sm18445134f8f.42.2025.10.13.07.11.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Oct 2025 07:11:33 -0700 (PDT)
+Message-ID: <2831438d-9ca2-4629-b708-65874cf3a4a7@linaro.org>
+Date: Mon, 13 Oct 2025 16:11:32 +0200
 MIME-Version: 1.0
-References: <20251010201917.685716-1-richard.henderson@linaro.org>
- <20251010201917.685716-4-richard.henderson@linaro.org>
-In-Reply-To: <20251010201917.685716-4-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 13 Oct 2025 15:05:19 +0100
-X-Gm-Features: AS18NWCXwC119tILLg9SkSrcATPC1dlSge4QwqtxoyD8sk0pB8Y2uGCzVApmX0c
-Message-ID: <CAFEAcA8G3CB49XiME3-HhPUiOec63=NNF6Dg7q=+05hv8ToLQQ@mail.gmail.com>
-Subject: Re: [PATCH 3/7] target/arm: Add AIE to ARMVAParameters
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12b.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ui/pixman: Fix crash in qemu_pixman_shareable_free()
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, Bernhard Beschow <shentey@gmail.com>
+References: <20251013112102.2396012-1-armbru@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251013112102.2396012-1-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,21 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 10 Oct 2025 at 21:20, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Allow the bit to be set in TCR2;
-> extract the bit in aa64_va_parameters.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 13/10/25 13:21, Markus Armbruster wrote:
+> Reported-by: Bernhard Beschow <shentey@gmail.com>
+> Fixes: b296b29d3414 (ui/pixman: Consistent error handling in qemu_pixman_shareable_free())
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  target/arm/internals.h |  1 +
->  target/arm/helper.c    | 30 +++++++++++++++++++++---------
->  2 files changed, 22 insertions(+), 9 deletions(-)
+>   ui/qemu-pixman.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+> index e46c6232cf..aea09755b9 100644
+> --- a/ui/qemu-pixman.c
+> +++ b/ui/qemu-pixman.c
+> @@ -291,7 +291,9 @@ qemu_pixman_shareable_free(qemu_pixman_shareable handle,
+>       Error *err = NULL;
+>   
+>       qemu_win32_map_free(ptr, handle, &err);
 
+Slightly better if qemu_win32_map_free(), as per commit e3fe3988d78
+("error: Document Error API usage rules") recommended style:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
++ *  We recommend
++ *   • bool-valued functions return true on success / false on failure,
++ *   • pointer-valued functions return non-null / null pointer, and
++ *   • integer-valued functions return non-negative / negative.
 
-thanks
--- PMM
+Anyhow,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> -    error_report_err(err);
+> +    if (err) {
+> +        error_report_err(err);
+> +    }
+>   #else
+>       qemu_memfd_free(ptr, size, handle);
+>   #endif
+
 
