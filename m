@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5684BD1804
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 07:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB10BBD180A
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 07:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8BLc-0007lf-Mv; Mon, 13 Oct 2025 01:43:52 -0400
+	id 1v8BLf-0007nc-Tf; Mon, 13 Oct 2025 01:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v8BLZ-0007lE-SO; Mon, 13 Oct 2025 01:43:49 -0400
+ id 1v8BLc-0007m2-M8; Mon, 13 Oct 2025 01:43:52 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v8BLW-0002DU-4j; Mon, 13 Oct 2025 01:43:49 -0400
+ id 1v8BLa-0002DU-UP; Mon, 13 Oct 2025 01:43:52 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 13 Oct
@@ -30,11 +30,13 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v3 00/16] Introduce AspeedCoprocessor class and base
- implementation
-Date: Mon, 13 Oct 2025 13:43:12 +0800
-Message-ID: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 01/16] hw/arm/aspeed: Remove AspeedSoCState dependency from
+ aspeed_uart_first() API
+Date: Mon, 13 Oct 2025 13:43:13 +0800
+Message-ID: <20251013054334.955331-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
+References: <20251013054334.955331-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -63,67 +65,70 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1:
-  1. Remove AspeedSoCState dependency from aspeed_uart_first, aspeed_uart_last,
-     aspeed_soc_uart_set_chr, aspeed_soc_cpu_type, aspeed_mmio_map,
-     aspeed_mmio_map_unimplemented, aspeed_soc_get_irq, and
-     aspeed_soc_uart_realize APIs.
-  2. Introduce AspeedCoprocessor class and base implementation
+Refactor the aspeed_uart_first() helper to remove its dependency on
+AspeedSoCState and make the UART helper APIs more generic.
 
-v2:
-  1. Fix the "make check" failure.
+The function now takes uarts_base as an integer parameter instead of
+requiring a full SoC class instance. Corresponding call sites in
+aspeed.c and aspeed_soc_common.c are updated accordingly.
 
-v3:
-  1. Remove the aspeed_soc_get_irq and class get_irq hook
+No functional change.
 
-Jamin Lin (16):
-  hw/arm/aspeed: Remove AspeedSoCState dependency from
-    aspeed_uart_first() API
-  hw/arm/aspeed: Remove AspeedSoCClass dependency from
-    aspeed_uart_last() API
-  hw/arm/aspeed: Remove AspeedSoCState dependency from
-    aspeed_soc_uart_set_chr() API
-  hw/arm/aspeed: Remove AspeedSoCClass dependency from
-    aspeed_soc_cpu_type() API
-  hw/arm/aspeed: Remove AspeedSoCState dependency from aspeed_mmio_map()
-    API
-  hw/arm/aspeed: Remove AspeedSoCState dependency from
-    aspeed_mmio_map_unimplemented() API
-  hw/arm/aspeed: Remove AspeedSoCState dependency from
-    aspeed_soc_uart_realize() API
-  hw/arm/aspeed: Remove the aspeed_soc_get_irq and class get_irq hook
-  hw/arm/aspeed: Introduce AspeedCoprocessor class and base
-    implementation
-  hw/arm/aspeed_ast27x0-ssp: Make AST27x0 SSP inherit from
-    AspeedCoprocessor instead of AspeedSoC
-  hw/arm/aspeed_ast27x0-tsp: Make AST27x0 TSP inherit from
-    AspeedCoprocessor instead of AspeedSoC
-  hw/arm/aspeed_ast27x0-ssp: Change to use Aspeed27x0CoprocessorState
-  hw/arm/aspeed_ast27x0-tsp: Change to use Aspeed27x0CoprocessorState
-  hw/arm/aspeed_ast27x0-ssp: Rename type to
-    TYPE_ASPEED27X0SSP_COPROCESSOR
-  hw/arm/aspeed_ast27x0-tsp: Rename type to
-    TYPE_ASPEED27X0TSP_COPROCESSOR
-  hw/arm/aspeed_ast27x0-{ssp,tsp}: Fix coding style
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ include/hw/arm/aspeed_soc.h | 6 +++---
+ hw/arm/aspeed.c             | 2 +-
+ hw/arm/aspeed_soc_common.c  | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
- include/hw/arm/aspeed_coprocessor.h |  61 ++++++++++++++
- include/hw/arm/aspeed_soc.h         |  48 +++--------
- hw/arm/aspeed.c                     |  10 ++-
- hw/arm/aspeed_ast10x0.c             |  89 ++++++++++++--------
- hw/arm/aspeed_ast2400.c             |  94 ++++++++++++---------
- hw/arm/aspeed_ast2600.c             | 121 ++++++++++++++++------------
- hw/arm/aspeed_ast27x0-fc.c          |  33 +++++---
- hw/arm/aspeed_ast27x0-ssp.c         |  74 +++++++++--------
- hw/arm/aspeed_ast27x0-tsp.c         |  74 +++++++++--------
- hw/arm/aspeed_ast27x0.c             | 107 +++++++++++++-----------
- hw/arm/aspeed_coprocessor_common.c  |  49 +++++++++++
- hw/arm/aspeed_soc_common.c          |  63 ++++++---------
- hw/arm/fby35.c                      |  10 ++-
- hw/arm/meson.build                  |   7 +-
- 14 files changed, 502 insertions(+), 338 deletions(-)
- create mode 100644 include/hw/arm/aspeed_coprocessor.h
- create mode 100644 hw/arm/aspeed_coprocessor_common.c
-
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index ed32efb543..5786fbbcbb 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -326,14 +326,14 @@ static inline int aspeed_uart_index(int uart_dev)
+     return uart_dev - ASPEED_DEV_UART0;
+ }
+ 
+-static inline int aspeed_uart_first(AspeedSoCClass *sc)
++static inline int aspeed_uart_first(int uarts_base)
+ {
+-    return aspeed_uart_index(sc->uarts_base);
++    return aspeed_uart_index(uarts_base);
+ }
+ 
+ static inline int aspeed_uart_last(AspeedSoCClass *sc)
+ {
+-    return aspeed_uart_first(sc) + sc->uarts_num - 1;
++    return aspeed_uart_first(sc->uarts_base) + sc->uarts_num - 1;
+ }
+ 
+ #endif /* ASPEED_SOC_H */
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 6046ec0bb2..471ad7fb84 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1310,7 +1310,7 @@ static void aspeed_set_bmc_console(Object *obj, const char *value, Error **errp)
+     AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
+     AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
+     int val;
+-    int uart_first = aspeed_uart_first(sc);
++    int uart_first = aspeed_uart_first(sc->uarts_base);
+     int uart_last = aspeed_uart_last(sc);
+ 
+     if (sscanf(value, "uart%u", &val) != 1) {
+diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
+index bc70e864fb..a4e74acdce 100644
+--- a/hw/arm/aspeed_soc_common.c
++++ b/hw/arm/aspeed_soc_common.c
+@@ -62,7 +62,7 @@ bool aspeed_soc_uart_realize(AspeedSoCState *s, Error **errp)
+ void aspeed_soc_uart_set_chr(AspeedSoCState *s, int dev, Chardev *chr)
+ {
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+-    int uart_first = aspeed_uart_first(sc);
++    int uart_first = aspeed_uart_first(sc->uarts_base);
+     int uart_index = aspeed_uart_index(dev);
+     int i = uart_index - uart_first;
+ 
 -- 
 2.43.0
 
