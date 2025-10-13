@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C31BD306E
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFCDBD307D
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8HvP-0004kF-Td; Mon, 13 Oct 2025 08:45:15 -0400
+	id 1v8HvG-0004ad-IA; Mon, 13 Oct 2025 08:45:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hv4-0004TL-P5
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hv4-0004TM-Oj
  for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hut-0007tz-5r
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:52 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hut-0007uL-NQ
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760359476;
+ s=mimecast20190719; t=1760359481;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jD3whb+AyK7uL3c3NqSwfzWssZjTm1+031MKx9wOVv4=;
- b=T3v2n5xOwVdioU0VRM5mn28fOka2+6c4lUcwn784CkW72gED1fM/XYG2tyVEmEGX8jgtQm
- pHJpLwQgXiyW1olkjSCY3DHH+B/Azui6jh4YSE6h6EMy/BcjFwZ1PWFEq0Nn8lEbfbma2T
- VTydA1VCIAz3gJFRUU8fCrc0pfNvseU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=y1n9/TEVgsijBQW/VTwJkBgfQKQp+H/4+6pCunli+Ks=;
+ b=GTelR5ruyhbZViWNRNtIwWwmekzH2RgVH/Xp/fLqxGfOZNzO1HSJd0zDXwA6h3NRIyJcz2
+ Is9BmK9o+3JkT9mnDx+/6nIEl6mIQH9r2Jxjjk4I3cic7O19Xltued3y69WsnT+6WWzEot
+ pE2rDBRWwNEA6DW/hlxwdWuqRONykRA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-164-ZkwlIG2ANYC8fToh4ysKHQ-1; Mon,
- 13 Oct 2025 08:44:35 -0400
-X-MC-Unique: ZkwlIG2ANYC8fToh4ysKHQ-1
-X-Mimecast-MFC-AGG-ID: ZkwlIG2ANYC8fToh4ysKHQ_1760359474
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-ZqlNdHRsOouNqxZHUYz7qA-1; Mon,
+ 13 Oct 2025 08:44:37 -0400
+X-MC-Unique: ZqlNdHRsOouNqxZHUYz7qA-1
+X-Mimecast-MFC-AGG-ID: ZqlNdHRsOouNqxZHUYz7qA_1760359476
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6F64E195411C; Mon, 13 Oct 2025 12:44:34 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5F278195608E; Mon, 13 Oct 2025 12:44:36 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.105])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EFCF31800446; Mon, 13 Oct 2025 12:44:32 +0000 (UTC)
+ id E036C1800446; Mon, 13 Oct 2025 12:44:34 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/29] tests/functional/arm/test_aspeed_ast2600: Update test
- ASPEED SDK v09.08
-Date: Mon, 13 Oct 2025 14:43:56 +0200
-Message-ID: <20251013124421.71977-6-clg@redhat.com>
+Subject: [PULL 06/29] tests/functional/aarch64/test_aspeed_ast2700: Update
+ test ASPEED SDK v09.08 for A1
+Date: Mon, 13 Oct 2025 14:43:57 +0200
+Message-ID: <20251013124421.71977-7-clg@redhat.com>
 In-Reply-To: <20251013124421.71977-1-clg@redhat.com>
 References: <20251013124421.71977-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,49 +85,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
+Support for AST2700 A0 was dropped starting from SDK v09.07.
+The new SDK v09.08 only updates support for AST2700 A1.
+
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251003072107.3530642-4-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251003072107.3530642-5-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/arm/test_aspeed_ast2600.py | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../functional/aarch64/test_aspeed_ast2700.py  | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_ast2600.py b/tests/functional/arm/test_aspeed_ast2600.py
-index f655c0ba0c7a..0127913cfb65 100755
---- a/tests/functional/arm/test_aspeed_ast2600.py
-+++ b/tests/functional/arm/test_aspeed_ast2600.py
-@@ -97,9 +97,9 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
+index 0973fce0e995..0e9f10d991ea 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700.py
+@@ -50,13 +50,9 @@ def verify_openbmc_boot_and_login(self, name):
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-a0-default-obmc.tar.gz',
+             '7247b6f19dbfb700686f8d9f723ac23f3eb229226c0589cb9b06b80d1b61f3cb')
  
-         self.do_test_arm_aspeed_buildroot_poweroff()
+-    ASSET_SDK_V906_AST2700A1 = Asset(
+-            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-default-obmc.tar.gz',
+-            'f1d53e0be8a404ecce3e105f72bc50fa4e090ad13160ffa91b10a6e0233a9dc6')
+-
+-    ASSET_SDK_V907_AST2700A1_VBOOROM = Asset(
+-            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2700-default-obmc.tar.gz',
+-            '6e9e0c4b13e0f26040eca3f4a7f17cf09fc0f5c37c820500ff79370cc3c44add')
++    ASSET_SDK_V908_AST2700A1 = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-default-obmc.tar.gz',
++            'eac3dc409b7ea3cd4b03d4792d3cebd469792ad893cb51e1d15f0fc20bd1e2cd')
  
--    ASSET_SDK_V907_AST2600 = Asset(
--        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2600-default-obmc.tar.gz',
--        'cb6c08595bcbba1672ce716b068ba4e48eda1ed9abe78a07b30392ba2278feba')
-+    ASSET_SDK_V908_AST2600 = Asset(
-+        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2600-default-obmc.tar.gz',
-+        'a0414f14ad696550efe083c2156dbeda855c08cc9ae7f40fe1b41bf292295f82')
- 
-     def do_ast2600_pcie_test(self):
+     def do_ast2700_i2c_test(self):
          exec_command_and_wait_for_pattern(self,
-@@ -122,7 +122,7 @@ def test_arm_ast2600_evb_sdk(self):
-         self.set_machine('ast2600-evb')
+@@ -133,11 +129,11 @@ def test_aarch64_ast2700a0_evb_sdk_v09_06(self):
+         self.verify_openbmc_boot_and_login('ast2700-a0-default')
+         self.do_ast2700_i2c_test()
+ 
+-    def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
++    def test_aarch64_ast2700a1_evb_sdk_v09_08(self):
+         self.set_machine('ast2700a1-evb')
          self.require_netdev('user')
  
--        self.archive_extract(self.ASSET_SDK_V907_AST2600)
-+        self.archive_extract(self.ASSET_SDK_V908_AST2600)
+-        self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
++        self.archive_extract(self.ASSET_SDK_V908_AST2700A1)
+         self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
+         self.vm.add_args('-netdev', 'user,id=net1')
+         self.start_ast2700_test('ast2700-default')
+@@ -145,11 +141,11 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
+         self.do_ast2700_i2c_test()
+         self.do_ast2700_pcie_test()
  
-         self.vm.add_args('-device',
-             'tmp105,bus=aspeed.i2c.bus.5,address=0x4d,id=tmp-test')
-@@ -160,7 +160,7 @@ def test_arm_ast2600_evb_sdk(self):
-     def test_arm_ast2600_otp_blockdev_device(self):
-         self.vm.set_machine("ast2600-evb")
+-    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_07(self):
++    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_08(self):
+         self.set_machine('ast2700a1-evb')
+         self.require_netdev('user')
  
--        image_path = self.archive_extract(self.ASSET_SDK_V907_AST2600)
-+        image_path = self.archive_extract(self.ASSET_SDK_V908_AST2600)
-         otp_img = self.generate_otpmem_image()
- 
-         self.vm.set_console()
+-        self.archive_extract(self.ASSET_SDK_V907_AST2700A1_VBOOROM)
++        self.archive_extract(self.ASSET_SDK_V908_AST2700A1)
+         self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
+         self.vm.add_args('-netdev', 'user,id=net1')
+         self.start_ast2700_test_vbootrom('ast2700-default')
 -- 
 2.51.0
 
