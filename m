@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1460BD5EA8
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DFCBD5EB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8O4M-0006SA-HW; Mon, 13 Oct 2025 15:18:54 -0400
+	id 1v8O4P-0006bm-LE; Mon, 13 Oct 2025 15:18:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4D-0006Hb-NM
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:46 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4I-0006PJ-KT
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:50 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4B-0001s4-Si
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:45 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-46e3a50bc0fso34348105e9.3
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4G-0001sI-SN
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:50 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-46fc5e54cceso9499415e9.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760383122; x=1760987922; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760383126; x=1760987926; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ImXH8sypVIhpdMufqY4sc5FsVXIt9DpvDMKcR5HfhOE=;
- b=qKFpw6iVGiJ3hBCB7ZfIKnTZCeY/w+3qs3Rqm1yARNcnacLtUpaGSajeTsodjxIOtM
- SDV5pyoghadLjJKoo9Zq/SrDcw4MJZKOFPF7ChNH5QBDoDzfwp6RBcQgmdACYYOGEXRo
- tdVjK+AzRR+yKOG66Y16WlBaFT/U/4mSk/6/avsIR5/t4HCL6iuwBPUHLqYBQj9dZxtD
- NHWJW7hXCUKLmkvZSVAZO36qas1qR6ExAzC3Qgoe7CZQCRv8HgXQoVK4btrOks4K4za3
- nTDXaR/nZQxi1oQEc4LuT+4CrTbhoJOP7wPYg6Xoc3i730bm72kaQgxNNo13WS+If+Jk
- yDUg==
+ :reply-to; bh=3o++8qrLq+EGatO3dUhXeLk7H80tOMbmVeX+vOl05oo=;
+ b=WKLCsr9K3TFTSlcIWmHLefD7HPQIHHji5jEfsPZulaGsd5NBgteO1d9zsyjGr1Kfz/
+ tRuLSNduc2tqanTfAAU1QWNtL8J8IqTt/MgALPs3Tjyc7JAAmDvfQsEOdcbRbrsReM+V
+ bWX4FSWwZAvv97Z2duRa/twwTdQ/pIPTLrjpc55p9T8QuZgAa7TX0LoPglpwZ9/l2uvq
+ QNu9/BfVG2aJHm7sTBvmYKgC2nMjbiYJEXHVF+SnF6e2sbsK0Q0jok7VainYPCaRd3mH
+ x1aroO9JDxmwIeiX8c1wy8M2wQ/rLiGeenyyCRq6K6xSRqCkjSaEMnZ7PX3joaKuzS5v
+ ykUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760383122; x=1760987922;
+ d=1e100.net; s=20230601; t=1760383126; x=1760987926;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ImXH8sypVIhpdMufqY4sc5FsVXIt9DpvDMKcR5HfhOE=;
- b=KZX903SsDO8+FYBY/o0wPkjokgQJfENCNYVxYQJEGELh4ITSWNzrliJDXM1+iRTg4I
- QqNCBUkJyYSpXCcq1tcNUWClOcFl60eujhUhs/+eoh/yPSLyd4yNaMwDHtrvLfVroWmp
- /BKLsZ7EUjcW37kVhS4eOwKGAvP7ffC/7jydHT2/75U1Vc9RLUatkyEduAtA/jXOLLcZ
- d0TQvgZpP6wus8diSadTPrBf8pHmd5w9wyRYNoVNf7wBU7Xb66VFDISljIlVjobNwAH5
- 5BzTS0IWD0XIUcfRqJSAeHhl0Gtp+FfE4RVBrL26OjaofkwhEz4iOYGU/ccDxdz8YGrj
- ENjQ==
-X-Gm-Message-State: AOJu0YzzwCWMuqN8Yc8azPn6aroBI4MSHOGIeAmdnUgqvlhc+dE73TE0
- PJa8QObsYlY5Bvws/JAMQcN9W9IPZCVy9530KWbu7WecwqkU6t/MbA8LQ/nT4U5jy8fRVdzHBnS
- G7vNEQlqzkA==
-X-Gm-Gg: ASbGncvOIpWrG9q69mEC16Qyy8dopjw/SRg7m4XWryvNeNAA+3FeOBbFA179z3Xcd+E
- ciwnIbXVdcbI3nqS+ym19JcK+4IAMzzTqijA9jCc2ya6WGgQx9C0uYUAV0NgGh8Id3lS6jVmMGf
- FGwboDU0H7virHYrBgpnzSwyQhfWlocwAFrtT3Bp0Y6jtZk6FvHlbDpGNYMnZGX7pp8N7KSPteL
- 4YQyDQ0DX5en9DI80XFsfqOa+yh/Z7CRbt72scVEIQC21jb4dbDK4GU+1/o9XFYQkY/mXMdFL7n
- jQbiUIUz5AVhFez+GnMqZGwH6Wx5ip5plZb7YVz/koBeVZeE+NTglwFgldjMWsfTtKoBeX9C0Y+
- aSk+S7cZLynSDSGjdg1+fL5IWW4FVBsPUHNk1J4zJtF+hHlp+Utzr5aWPBYot7AE++4CYg4Tkjh
- aO4o5bIGl1oCizCl8yA+s=
-X-Google-Smtp-Source: AGHT+IF5Eb+XA79eXZvnjcvCFm4yRMft5BmVXTBJOWG2i4nOd1dhHE6GO1wIG7DG69IC1V5EWULtmA==
-X-Received: by 2002:a05:600d:18:b0:46f:b43a:aeed with SMTP id
- 5b1f17b1804b1-46fb43aaf3cmr78144095e9.40.1760383121761; 
- Mon, 13 Oct 2025 12:18:41 -0700 (PDT)
+ bh=3o++8qrLq+EGatO3dUhXeLk7H80tOMbmVeX+vOl05oo=;
+ b=YBx4t0vVNsH9BrYf2LXhwrvpJuUQCGRJ9LB3m97t/J0u+QyDJcvJ/GIXpa3cz6MjiL
+ 3hVyeM7JFnVN0EHuk02Czt80PAPeTYxngg14g86puwiryRs1Zccm+a3xy4LfxNWyvu07
+ NNRKLTciIiAHj8GbHrm/gbNfCx1uzUvcx9B+DeIQg+gT4RnKkimcmYUz5lsSiRC1BEOC
+ KObDKych49VRB2pTNeCViMK4AcK8Jp9XrzXbBpNHmXIYIjmWDYkvZ7BjyZkpviarZmRN
+ GTlOLzhYfQcEiejIRIac8FooYNukkRPQpk54LuQm/C7bTRCDsOgoKZqoEUy0B+UKNkYU
+ 75Dw==
+X-Gm-Message-State: AOJu0YyG5TJUCLQWxO7iXv2yXkjw8zQduHLc/2KMg1iVai/pYeYmmW71
+ gfDY3aj9EEcDH0d+BV5WjQ+hv1SSHlJ5OqvI44jERrHiPcNMA5usD28lzbQ+ZcTZgyAysr2ZF+k
+ 3VO+UrZBTRA==
+X-Gm-Gg: ASbGnctcvuQ8BWPm1fJ9fZONUECVbRDcg+he5tU8II77lK2YVc/t2MVKPc5ml7JUVft
+ QuPJwQ4B04XgoXBK8bKNdhSWrkzG5JlCLH3Fax++280qq9YuDVhKj7JIRyHGbuMkNJwaho64W9H
+ MMPEA/H/zY5OeGiCf06RMVNB+7xNVqL4SPHSCV49WgwPn/El//apW/gvQlhvnhmBj2mr5pt8d9t
+ a4wAWuKgBAg/eFWrfqiBjWAWLObrmx1VadLOetaIN13N6iSXWchXDHKFt4O8uvuFrR73gKgmB4H
+ fC7Ph8JEP8gcIfLBFGAQHfNxiZ6npwF5TEIRBH1AZGdGEZw1nFKBZyybCSv9nDNZ4QQ1Vng6Duq
+ TflQ4wlAsMZ9X3iUFirlLWOyB3q4CgXCAcM78dQh5uPESnaTcJFQvIbzYDI3vrL6PihFq5j4/19
+ BK3HNWVbjZDky+1KMzK/E=
+X-Google-Smtp-Source: AGHT+IHfHF0Jcz36fCW9b6a35aYlV3oJwQtwj3o8JiFqeflivF511cRU7ISs/p2/HQ33gcjY/pyM3w==
+X-Received: by 2002:a05:600d:41f3:b0:46e:6603:2a84 with SMTP id
+ 5b1f17b1804b1-46fa9b08bd7mr168268785e9.32.1760383126277; 
+ Mon, 13 Oct 2025 12:18:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb482b9absm228450055e9.2.2025.10.13.12.18.40
+ 5b1f17b1804b1-46fb489af92sm217038955e9.17.2025.10.13.12.18.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Oct 2025 12:18:41 -0700 (PDT)
+ Mon, 13 Oct 2025 12:18:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/12] hw/s390x/sclp: Do not ignore address_space_read/write()
- errors
-Date: Mon, 13 Oct 2025 21:18:02 +0200
-Message-ID: <20251013191807.84550-8-philmd@linaro.org>
+Subject: [PULL 08/12] hw/vmapple: include missing headers
+Date: Mon, 13 Oct 2025 21:18:03 +0200
+Message-ID: <20251013191807.84550-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013191807.84550-1-philmd@linaro.org>
 References: <20251013191807.84550-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,68 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If address_space_read() fails, return PGM_ADDRESSING. In the
-unlikely case address_space_write() fails (we already checked
-the address is readable), return PGM_PROTECTION.
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
 
+Disablement by default led to:
+
+../hw/vmapple/vmapple.c:276:39: error: use of undeclared identifier 'GTIMER_VIRT'
+  276 |         qdev_connect_gpio_out(cpudev, GTIMER_VIRT,
+      |                                       ^
+../hw/vmapple/vmapple.c:479:54: error: use of undeclared identifier 'QEMU_PSCI_CONDUIT_HVC'
+  479 |         object_property_set_int(cpu, "psci-conduit", QEMU_PSCI_CONDUIT_HVC,
+      |                                                      ^
+../hw/vmapple/vmapple.c:556:13: error: call to undeclared function 'arm_build_mp_affinity'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  556 |             arm_build_mp_affinity(n, GICV3_TARGETLIST_BITS);
+      |             ^
+3 errors generated.
+
+pretty quickly.
+
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251007203153.30136-2-mohamed@unpredictable.fr>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-Message-Id: <20251007015802.24748-1-philmd@linaro.org>
 ---
- hw/s390x/sclp.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ hw/vmapple/vmapple.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
-index 51e88ba8f12..8602a566a49 100644
---- a/hw/s390x/sclp.c
-+++ b/hw/s390x/sclp.c
-@@ -306,6 +306,7 @@ int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code)
-     g_autofree SCCB *work_sccb = NULL;
-     AddressSpace *as = CPU(cpu)->as;
-     const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-+    MemTxResult ret;
+diff --git a/hw/vmapple/vmapple.c b/hw/vmapple/vmapple.c
+index 16e6110b68f..1e4365f32c9 100644
+--- a/hw/vmapple/vmapple.c
++++ b/hw/vmapple/vmapple.c
+@@ -51,6 +51,8 @@
+ #include "system/reset.h"
+ #include "system/runstate.h"
+ #include "system/system.h"
++#include "target/arm/gtimer.h"
++#include "target/arm/cpu.h"
  
-     /* first some basic checks on program checks */
-     if (env->psw.mask & PSW_MASK_PSTATE) {
-@@ -320,7 +321,10 @@ int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code)
-     }
- 
-     /* the header contains the actual length of the sccb */
--    address_space_read(as, sccb, attrs, &header, sizeof(SCCBHeader));
-+    ret = address_space_read(as, sccb, attrs, &header, sizeof(SCCBHeader));
-+    if (ret != MEMTX_OK) {
-+        return -PGM_ADDRESSING;
-+    }
- 
-     /* Valid sccb sizes */
-     if (be16_to_cpu(header.length) < sizeof(SCCBHeader)) {
-@@ -333,7 +337,11 @@ int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code)
-      * the host has checked the values
-      */
-     work_sccb = g_malloc0(be16_to_cpu(header.length));
--    address_space_read(as, sccb, attrs, work_sccb, be16_to_cpu(header.length));
-+    ret = address_space_read(as, sccb, attrs,
-+                            work_sccb, be16_to_cpu(header.length));
-+    if (ret != MEMTX_OK) {
-+        return -PGM_ADDRESSING;
-+    }
- 
-     if (!sclp_command_code_valid(code)) {
-         work_sccb->h.response_code = cpu_to_be16(SCLP_RC_INVALID_SCLP_COMMAND);
-@@ -347,7 +355,11 @@ int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code)
- 
-     sclp_c->execute(sclp, work_sccb, code);
- out_write:
--    address_space_write(as, sccb, attrs, work_sccb, be16_to_cpu(header.length));
-+    ret = address_space_write(as, sccb, attrs,
-+                              work_sccb, be16_to_cpu(header.length));
-+    if (ret != MEMTX_OK) {
-+        return -PGM_PROTECTION;
-+    }
- 
-     sclp_c->service_interrupt(sclp, sccb);
- 
+ struct VMAppleMachineState {
+     MachineState parent;
 -- 
 2.51.0
 
