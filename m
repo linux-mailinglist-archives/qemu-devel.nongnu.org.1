@@ -2,64 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD3DBD2F1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C16BD2F50
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:26:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8HUq-00052G-0L; Mon, 13 Oct 2025 08:17:48 -0400
+	id 1v8Hay-0008K0-Mi; Mon, 13 Oct 2025 08:24:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v8HUg-00050w-QF
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:17:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v8Hao-0008Ip-Jx
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:23:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v8HUd-0004Az-V4
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:17:37 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v8Hah-00056D-UJ
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:23:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760357852;
+ s=mimecast20190719; t=1760358227;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OXwz4g5ujXY5Dk9Mrb1HcPfOvf95MCBlWH7vWVvvb8o=;
- b=ekNg22eyuTSsGhcCbWsIBpRbLq2GcoWZq14tsX2KBjuRU3g+Psb4M9y08GFnWZ/prguzwJ
- lPXjEFl31/skgxZ+RVLjGH/PUUgBm7cbV1zADSriULeD1pQFbrdC3MftDIcj0i3nFnuq9o
- 4a6/HTPRnI2PlekzEo5GvusqbfJihQo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=lcIm/mRfoQurwfIb9UdwXteTtCIGOYn3WMAjqMQ49ak=;
+ b=Vtv8I8QDpjFsm1uGfKjmnUIWYioFrMdM6oY4vKLifBxYHS9XFzYF7PdUrbWO8mbCB/faGl
+ qr31HOhwQLuKHHokCcIahdDxtLsdCPICQZfbXjE0/6szLc0eV1auf2SwGZOx9mN+eWefIL
+ 5o9XPV/SQUh2Ay/16epSsC4yTpyCX3c=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-9JkSU5NAPIaNI6cJsuPuuQ-1; Mon,
- 13 Oct 2025 08:17:30 -0400
-X-MC-Unique: 9JkSU5NAPIaNI6cJsuPuuQ-1
-X-Mimecast-MFC-AGG-ID: 9JkSU5NAPIaNI6cJsuPuuQ_1760357849
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-5hvyzuFjNyK-uZ_E_fMgAA-1; Mon,
+ 13 Oct 2025 08:23:46 -0400
+X-MC-Unique: 5hvyzuFjNyK-uZ_E_fMgAA-1
+X-Mimecast-MFC-AGG-ID: 5hvyzuFjNyK-uZ_E_fMgAA_1760358225
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AED61800451; Mon, 13 Oct 2025 12:17:29 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.160])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9C31A1954102; Mon, 13 Oct 2025 12:17:27 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/2] tests: Evict stale files in the functional download
- cache after a while
-Date: Mon, 13 Oct 2025 14:17:19 +0200
-Message-ID: <20251013121720.34552-3-thuth@redhat.com>
-In-Reply-To: <20251013121720.34552-1-thuth@redhat.com>
-References: <20251013121720.34552-1-thuth@redhat.com>
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 70ACE1956086; Mon, 13 Oct 2025 12:23:44 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.32.195])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B65091800446; Mon, 13 Oct 2025 12:23:41 +0000 (UTC)
+Date: Mon, 13 Oct 2025 14:23:39 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: "Richard W.M. Jones" <rjones@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ odaki@rsg.ci.i.u-tokyo.ac.jp, viktor.prutyanov@phystech.edu,
+ hreitz@redhat.com, maochenxi@bosc.ac.cn, berrange@redhat.com,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH v2] block/curl.c: Use explicit long constants in
+ curl_easy_setopt calls
+Message-ID: <aOzvS-mjf8oeAiZo@redhat.com>
+References: <20251009141026.4042021-1-rjones@redhat.com>
+ <20251009141026.4042021-2-rjones@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+In-Reply-To: <20251009141026.4042021-2-rjones@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,7 +70,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,104 +86,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+Am 09.10.2025 um 16:08 hat Richard W.M. Jones geschrieben:
+> curl_easy_setopt takes a variable argument that depends on what
+> CURLOPT you are setting.  Some require a long constant.  Passing a
+> plain int constant is potentially wrong on some platforms.
+> 
+> With warnings enabled, multiple warnings like this were printed:
+> 
+> ../block/curl.c: In function ‘curl_init_state’:
+> ../block/curl.c:474:13: warning: call to ‘_curl_easy_setopt_err_long’ declared with attribute warning: curl_easy_setopt expects a long argument [-Wattribute-warning]
+>   474 |             curl_easy_setopt(state->curl, CURLOPT_AUTOREFERER, 1) ||
+>       |             ^
+> 
+> Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
+> Signed-off-by: Chenxi Mao <maochenxi@bosc.ac.cn>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-The download cache of the functional tests is currently only growing.
-But sometimes tests get removed or changed to use different assets,
-thus we should clean up the stale old assets after a while when they
-are not in use anymore. So add a script that looks at the time stamps
-of the assets and removes them if they haven't been touched for more
-than half of a year. Since there might also be some assets around that
-have been added to the cache before we added the time stamp files,
-assume a default time stamp that is close to the creation date of this
-patch, so that we don't delete these files too early (so we still have
-all assets around in case we have to bisect an issue in the recent past
-of QEMU).
+CURLOPT_VERBOSE takes a long, too.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS                       |  1 +
- scripts/clean_functional_cache.py | 45 +++++++++++++++++++++++++++++++
- tests/Makefile.include            |  1 +
- 3 files changed, 47 insertions(+)
- create mode 100755 scripts/clean_functional_cache.py
+It's hidden behind an #ifdef DEBUG_VERBOSE, so we won't see it in normal
+builds, but would be nice to fix it, too.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 84cfd85e1fa..4c468d45337 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4398,6 +4398,7 @@ M: Thomas Huth <thuth@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
- F: docs/devel/testing/functional.rst
-+F: scripts/clean_functional_cache.py
- F: tests/functional/qemu_test/
- 
- Windows Hosted Continuous Integration
-diff --git a/scripts/clean_functional_cache.py b/scripts/clean_functional_cache.py
-new file mode 100755
-index 00000000000..c3370ffbb87
---- /dev/null
-+++ b/scripts/clean_functional_cache.py
-@@ -0,0 +1,45 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+"""Delete stale assets from the download cache of the functional tests"""
-+
-+import os
-+import stat
-+import sys
-+import time
-+from pathlib import Path
-+
-+
-+cache_dir_env = os.getenv('QEMU_TEST_CACHE_DIR')
-+if cache_dir_env:
-+    cache_dir = Path(cache_dir_env, "download")
-+else:
-+    cache_dir = Path(Path("~").expanduser(), ".cache", "qemu", "download")
-+
-+if not cache_dir.exists():
-+    print(f"Cache dir {cache_dir} does not exist!", file=sys.stderr)
-+    sys.exit(1)
-+
-+os.chdir(cache_dir)
-+
-+for file in cache_dir.iterdir():
-+    # Only consider the files that use a sha256 as filename:
-+    if len(file.name) != 64:
-+        continue
-+
-+    try:
-+        timestamp = int(file.with_suffix(".stamp").read_text())
-+    except FileNotFoundError:
-+        # Assume it's an old file that was already in the cache before we
-+        # added the code for evicting stale assets. Use the release date
-+        # of QEMU v10.1 as a default timestamp.
-+        timestamp = time.mktime((2025, 8, 26, 0, 0, 0, 0, 0, 0))
-+
-+    age = time.time() - timestamp
-+
-+    # Delete files older than half of a year (183 days * 24h * 60m * 60s)
-+    if age > 15811200:
-+        print(f"Removing {cache_dir}/{file.name}.")
-+        file.chmod(stat.S_IWRITE)
-+        file.unlink()
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index e47ef4d45c9..d4dfbf3716d 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -111,6 +111,7 @@ $(FUNCTIONAL_TARGETS): check-venv
- .PHONY: check-functional
- check-functional: check-venv
- 	@$(NINJA) precache-functional
-+	@$(PYTHON) $(SRC_PATH)/scripts/clean_functional_cache.py
- 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
- 
- .PHONY: check-func check-func-quick
--- 
-2.51.0
+Kevin
 
 
