@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0593BD5E9F
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B608BD5EA5
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8O3n-0005eJ-L1; Mon, 13 Oct 2025 15:18:21 -0400
+	id 1v8O44-0005pr-CM; Mon, 13 Oct 2025 15:18:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O3j-0005dI-Az
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:15 -0400
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O3o-0005ec-Bf
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:25 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O3f-0001pB-Hi
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:13 -0400
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-42421b1514fso2281052f8f.2
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O3k-0001pX-9I
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:18 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-46e34052bb7so54615765e9.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760383089; x=1760987889; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=/B22OX7oPRVjLf1BerxieKilML3SFOHqoUFJ3V+rE90=;
- b=wpj0a7twQ5/TQDq9uoM4YvRc0C01SHIUon5ZAfjTQnU6WO74ZoDcr7qtf6ju4boAax
- kd46fgDTqzk901JS3YNE6IzxrevTTYRArfX6hzUMjrpkAk/uAUB/0smCWvt9IHzhyMoH
- Tl7Y/Kk/STCXpE4zNLH3TrHot+zEvsfGVj9KnGD7zQzm/pxZp81P6fEfqRORzL4FXhYQ
- LNtNnQsaNK9EMTtXPt9LK7TWRgME9iF7VUj12NylA5VvyyyFS2YIf04vwi3AbGaO4gDI
- sdrFg0aEcNY7APq/v66wTKBmjmIyONjLVTlM9/laW7r+eJbGx9LJF3prrTqkhrL6iIzZ
- /LfA==
+ d=linaro.org; s=google; t=1760383094; x=1760987894; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=TiskSlcpHbVz6etHzZa5UXIOcmLt3xPCpjHSlXUbr6c=;
+ b=YbfnCE022UyiZi5OD/osa4oPQC1CNRG5gigGpjwtIIxKbQOUZNMs5s5QCuK6H5C/bs
+ TiMay4Rb9AueF0Fti4kF0RDN91562gJhDxfYPm/FuOjI9zhIZxxsp/SDs9MGAzIQHFnj
+ ZdISbZv1hf36LtqGv5KmfuckmDFKzzDNBTKyfjtZz2Vi/uRx3HQVsSOHy9W2IeIlUC9I
+ tTS7B6I6/GNTASB4G7cRAhFKyQAE+Qso/chojt+MROfxfxfZmw4fZ3goymQ8u4TVY73U
+ cwOeDbd+w7IV1QUvSiyKEZzSGsS7joCHpDMcbcC5TLD6JH3EEpLwPa+4K7wkuTZdhHJc
+ 2QNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760383089; x=1760987889;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/B22OX7oPRVjLf1BerxieKilML3SFOHqoUFJ3V+rE90=;
- b=aJbrRG7XfB3WuKYFN81LneuWaysH/+OeeyL8WL97n8UJvDN99G8y9RzkP3dpZe9cPr
- srf4gpF8JbasNdkVlj5+RC0KA+Ao/X/b1zdmbesg/DhiropsJVvoObRlpXJ+fVRkWxuS
- QjcqypYRSkQ9qwbYzNui5XY+w9BuAdcqcZyC5OqNVBLSZ+fA0nu5oj8UHWnmGsXX3Tj4
- ztZRl48f1cIAXoU1XX0W6d9zUTUFw2Ulg2PXHfMhUexLR3CBluDCwsLTYMKxdLJN/tIN
- Vm7Jw/cOSn0BTccWLvLRBhh8+V0dJ0enCmOIUVTMZq+CcbWBaNvn0Ir1iHmGs4X5i+rC
- YMaw==
-X-Gm-Message-State: AOJu0Yz1Tn3GQWQ+w5fI5kJAKZq7/SE7y7Ckt9sYhtz59qzlXPXxYOTY
- dkZwifb/BcmK8J/VkcK3j/8yIDqvkRssM46fc+Ax3VNq/xZgozYTJjye6/8zt+1YqopG1DCHeBR
- d84UjCvVOvLFD
-X-Gm-Gg: ASbGnctbF8V9+wfKWFMuzXjRfJC8yk+tIiFsI0vbhqUFixjKfvcLPEIPU3bVnopJrCi
- TzIdOMH7aRjRHbI8Q3tdTCWevnOLnCzr1vMxmD+VP4KzwmMMIAjLIxMDiuRhiigahh0DDFiR1Q9
- D2DAn6S/jj/yh1dRak93aZWAd+ZM0TSiPJ4QPUCmAalw5L+ab9USScCruJBdXi7ouVKEaBS95fC
- MZir1/ueN9bJmcrOFP9SkzPGS/rYm+kyiEi5kvq5hUStVydoF5EPfLuYOGyP09DreWax7CoddbL
- aA8S23eh0ClnWb4NfG30C/hM3Sh/U3NkRs0olp/5849Ylv2KcwfpsBjnMIfR9l8DG9VKQtaVfV4
- My5N/CO9SUFpKjfNWP5LYfdKS5DTb9poV/zKyTGawU3vEh+N3W4I9Eo672HITdJbzOXDTPT9Kwm
- 7/nMPGE3Bb/pKJ8zkoutOLeR2D9g+CKw==
-X-Google-Smtp-Source: AGHT+IG2fKnQoYV5EmViCvjMZb2eXkyAHKmhvBY4SVMwyUyTAWPdCKnWxlZQiq8v056F8f2z1eMaAA==
-X-Received: by 2002:a05:6000:2509:b0:3e4:64b0:a776 with SMTP id
- ffacd0b85a97d-4266e7df845mr14274812f8f.52.1760383089517; 
- Mon, 13 Oct 2025 12:18:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760383094; x=1760987894;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TiskSlcpHbVz6etHzZa5UXIOcmLt3xPCpjHSlXUbr6c=;
+ b=gqgJ9xXLpwB1L++c6crfpXo+WL2EOSSlsuN8TKqJAp1SzWmJlaymBkuacvansmpd6M
+ WHMz/yflPodIkBZUZPAeX52jbbbD/bglOhAQjFjrb7xYKZ5yNwohshcDWzDGBBRJbNWB
+ vY/i6aVG4ma0YsZbQmBT6DY86J6YKeAMLY/v8Dgp415Izh7QaEbLOI+nQWtqyuF22VFP
+ lq9Ojj8/y927ZHLI0YKowwRmKNZyfD2ZjQw6bQXSy0nMXeQfO6FdUO/nmnZv53WoZEWs
+ 5Aj5aMdcgxDQeP8jDoNklHUaekPE6jgWyZlpY4/C95Tu2CBv01A0EC8BiaE/Oj3Ixk1r
+ zH+w==
+X-Gm-Message-State: AOJu0YzfKUzIow57vna84Vt/cvz6LIfkmf5y+ta30nsrEef8TukCsjP9
+ 8QXObgAu62Bf8l0IOPpr4vQRR4otacyDdZyFcJbcz4mriQb+ztNkyP0ZPOeuPeXd3THCjueGkOo
+ KV4A/3gM3/g==
+X-Gm-Gg: ASbGncvHPERsvx+jcyRhSzJQvkPCinV3ef82pAsn3XCo3ISYlEHLmUS29tQADOdE9md
+ QLWnu0IbChyIc8t7nDnMNGIsQMVBXFjWn2/FJOqEBAun9CU7X1YI/ZAkWqbzcv/ZICvcqngS9uK
+ gSAaVGeL2ZI8zlo3uxuE5CslsRDLuvHqi7f8zX0waokT/5XDIQsBNE9A/0z/8Meyp4/lmPwozsE
+ rr+S4zJqwjsNfYYZJaJD2pgmeLeaecJNlF/KMb7HPkIE0VFNCkrInjFWXqjctaS7xorAfVyRp/s
+ GH/t8p3gAI0P0ujyCQCuTekFSbV1hsRvOdQSawJwgCoQU1DS+MMrP/3ht351OepMRQUCpOCKx5r
+ 8jiNXsFhE8zMBFrgAOflB2UAZaHKFZnD4SETUABXyCmSuMuWn2kv31bkAbi45FKtcAZUvkwGmHr
+ ibfITXi9R3mab5CxeN87Gdy36IEpDWGw==
+X-Google-Smtp-Source: AGHT+IFDodQo9M24T2nSpwjl7e0HKNo2PXvheRtdse0f/NQ7gs8mrsx+GkEOPtpeUVpl06o6PBOrJA==
+X-Received: by 2002:a05:600c:1383:b0:46e:330a:1762 with SMTP id
+ 5b1f17b1804b1-46fa9af1697mr156506475e9.22.1760383094157; 
+ Mon, 13 Oct 2025 12:18:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e1284sm19572199f8f.45.2025.10.13.12.18.08
+ ffacd0b85a97d-426ce589a21sm20209395f8f.23.2025.10.13.12.18.13
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Oct 2025 12:18:08 -0700 (PDT)
+ Mon, 13 Oct 2025 12:18:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/12] Misc HW patches for 2025-10-13
-Date: Mon, 13 Oct 2025 21:17:55 +0200
-Message-ID: <20251013191807.84550-1-philmd@linaro.org>
+Subject: [PULL 01/12] hw/display/xenfb: Replace unreachable code by
+ g_assert_not_reached()
+Date: Mon, 13 Oct 2025 21:17:56 +0200
+Message-ID: <20251013191807.84550-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251013191807.84550-1-philmd@linaro.org>
+References: <20251013191807.84550-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,56 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f3f2ad119347e8c086b72282febcaac5d731b343:
+From: Markus Armbruster <armbru@redhat.com>
 
-  Merge tag 'pull-target-arm-20251010' of https://gitlab.com/pm215/qemu into staging (2025-10-10 08:26:09 -0700)
+xenfb_mouse_event() has a switch statement whose controlling
+expression move->axis is an enum InputAxis.  The enum values are
+INPUT_AXIS_X and INPUT_AXIS_Y, encoded as 0 and 1.  The switch has a
+case for both axes.  In addition, it has an unreachable default label.
+This convinces Coverity that move->axis can be greater than 1.  It
+duly reports a buffer overrun when it is used to subscript an array
+with two elements.
 
-are available in the Git repository at:
+Replace the unreachable code by g_assert_not_reached().
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20251013
+Resolves: Coverity CID 1613906
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250729111226.3627499-1-armbru@redhat.com>
+[PMD: s/abort/g_assert_not_reached/]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/display/xenfb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-for you to fetch changes up to 9fedc11ff127636900cc7a0a3e7214e5cb60a313:
-
-  hw/hppa: Reduce variables scope in common_init() (2025-10-13 21:13:08 +0200)
-
-----------------------------------------------------------------
-Misc HW patches
-----------------------------------------------------------------
-
-Cédric Le Goater (1):
-  hw/arm/aspeed: Don't set 'auto_create_sdcard'
-
-Luc Michel (1):
-  hw/net/can/xlnx-versal-canfd: remove unused include directives
-
-Markus Armbruster (1):
-  hw/display/xenfb: Replace unreachable code by g_assert_not_reached()
-
-Mohamed Mediouni (1):
-  hw/vmapple: include missing headers
-
-Philippe Mathieu-Daudé (8):
-  hw/ppc: Do not open-code cpu_resume() in spin_kick()
-  hw/xtensa/xtfpga: Have xtfpga_init() only initialize MMU
-  hw/sparc/leon3: Remove unnecessary CPU() QOM cast
-  hw/s390x/sclp: Do not ignore address_space_read/write() errors
-  hw/loongarch/boot: Remove unnecessary cast to target_ulong
-  hw/hppa: Convert type_init() -> DEFINE_TYPES()
-  hw/hppa: Factor QOM HPPA_COMMON_MACHINE out
-  hw/hppa: Reduce variables scope in common_init()
-
- hw/arm/aspeed.c                |  22 -------
- hw/display/xenfb.c             |   3 +-
- hw/hppa/machine.c              | 104 +++++++++++++++++----------------
- hw/loongarch/boot.c            |   7 ++-
- hw/net/can/xlnx-versal-canfd.c |   4 --
- hw/ppc/ppce500_spin.c          |   3 +-
- hw/s390x/sclp.c                |  18 +++++-
- hw/sparc/leon3.c               |   2 +-
- hw/vmapple/vmapple.c           |   2 +
- hw/xtensa/xtfpga.c             |   2 +-
- 10 files changed, 78 insertions(+), 89 deletions(-)
-
+diff --git a/hw/display/xenfb.c b/hw/display/xenfb.c
+index 22822fecea3..164fd0b2485 100644
+--- a/hw/display/xenfb.c
++++ b/hw/display/xenfb.c
+@@ -283,8 +283,7 @@ static void xenfb_mouse_event(DeviceState *dev, QemuConsole *src,
+                 scale = surface_height(surface) - 1;
+                 break;
+             default:
+-                scale = 0x8000;
+-                break;
++                g_assert_not_reached();
+             }
+             xenfb->axis[move->axis] = move->value * scale / 0x7fff;
+         }
 -- 
 2.51.0
 
