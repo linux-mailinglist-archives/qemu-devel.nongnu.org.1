@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6C7BD3149
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603D3BD316E
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:54:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8HvN-0004eU-7H; Mon, 13 Oct 2025 08:45:13 -0400
+	id 1v8HvL-0004eQ-Nw; Mon, 13 Oct 2025 08:45:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8HvA-0004Vk-RB
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:01 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8HvB-0004X3-Um
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hv1-0007vo-No
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:59 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hv5-0007wd-Oy
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:45:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760359488;
+ s=mimecast20190719; t=1760359492;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L9vgsJ6bfc1NYPsE3zN5lYySPC6wzDYbQwka3TMd7pQ=;
- b=cCPArEot1Ezk4ktKQcyNJmPP5Z5PqqdjC/me58yJ5FXd4b4fMsvozK1WLaRqNBslP6TJEH
- JnMrtQFsp6WOtzDcSy6AZAyfUGhFbXjFUM3YCUrDTH4lciIaop/zXdao3APEGISFLnVaGM
- S+ASSYDIuZmSK6T983ieKtQZnwcKIuc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Khd9Ah7PVkvKBXPNxXDw7F9r6smK+lE2bENEWbULZ70=;
+ b=D9PB2lAAe7P2itQjuUfrmnW7flWc9a98WEMz9YSJCy37MA2Pgkg8hUk+8jsyqO8fFa9mLf
+ 1Ov+iO7QhqKbwoMSi5QPYvZ8QvdKyzFS8xrbqBn1yOwrz92reNttySonTRdSUFcIbGEJBT
+ /8iFVSNOJbkYFBT/fEaDcn7HuGsrLTk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-492-EEYH1uyiMuaM28RLlcOMJQ-1; Mon,
- 13 Oct 2025 08:44:47 -0400
-X-MC-Unique: EEYH1uyiMuaM28RLlcOMJQ-1
-X-Mimecast-MFC-AGG-ID: EEYH1uyiMuaM28RLlcOMJQ_1760359486
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-2E_i42YFO8m0Y3dG2tdXuw-1; Mon,
+ 13 Oct 2025 08:44:49 -0400
+X-MC-Unique: 2E_i42YFO8m0Y3dG2tdXuw-1
+X-Mimecast-MFC-AGG-ID: 2E_i42YFO8m0Y3dG2tdXuw_1760359488
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7845B18004D4; Mon, 13 Oct 2025 12:44:46 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A4342195410F; Mon, 13 Oct 2025 12:44:48 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.105])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 06BE0180047F; Mon, 13 Oct 2025 12:44:44 +0000 (UTC)
+ id EAB881800446; Mon, 13 Oct 2025 12:44:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- John Wang <wangzq.jn@gmail.com>
-Subject: [PULL 11/29] aspeed: Deprecate the fp5280g2-bmc machine
-Date: Mon, 13 Oct 2025 14:44:02 +0200
-Message-ID: <20251013124421.71977-12-clg@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Jamin Lin <jamin_lin@aspeedtech.com>
+Subject: [PULL 12/29] test/functional/aarch64: Remove test for the
+ ast2700a0-evb machine
+Date: Mon, 13 Oct 2025 14:44:03 +0200
+Message-ID: <20251013124421.71977-13-clg@redhat.com>
 In-Reply-To: <20251013124421.71977-1-clg@redhat.com>
 References: <20251013124421.71977-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -59,14 +60,14 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,53 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are no functional tests for the 'fp5280g2-bmc' machine which
-makes harder to determine when something becomes deprecated or unused.
+The 'ast2700a0-evb' machine was deprecated in commit 6888a4a9c860 and
+removal is scheduled in the QEMU 11.0 release. This change removes
+the corresponding tests ahead of time to save CI resources.
 
-Since the machine does not rely on any specific device models, it can
-be replaced by the 'ast2500-evb' machine using the 'fmc-model' option
-to specify the flash type. The I2C devices connected to the board can
-be defined via the QEMU command line.
-
-Cc: John Wang <wangzq.jn@gmail.com>
-Link: https://lore.kernel.org/qemu-devel/20251007141604.761686-4-clg@redhat.com
+Cc: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Link: https://lore.kernel.org/qemu-devel/20251007141604.761686-5-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/about/deprecated.rst | 8 ++++++++
- hw/arm/aspeed.c           | 1 +
- 2 files changed, 9 insertions(+)
+ tests/functional/aarch64/test_aspeed_ast2700.py | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index f6410037ead2..98361f5832dc 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -304,6 +304,14 @@ machine using the ``fmc-model`` option to specify the flash type. The
- I2C devices connected to the board can be defined via the QEMU command
- line.
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
+index ef7ed522afc3..a60dc1259f69 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700.py
+@@ -46,10 +46,6 @@ def verify_openbmc_boot_and_login(self, name):
+         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
+         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
  
-+Arm ``fp5280g2-bmc`` machine (since 10.2)
-+'''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``fp5280g2-bmc`` machine does not rely on any specific device
-+models, it can be replaced by the ``ast2500-evb`` machine using the
-+``fmc-model`` option to specify the flash type. The I2C devices
-+connected to the board can be defined via the QEMU command line.
-+
- RISC-V default machine option (since 10.0)
- ''''''''''''''''''''''''''''''''''''''''''
+-    ASSET_SDK_V906_AST2700 = Asset(
+-            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-a0-default-obmc.tar.gz',
+-            '7247b6f19dbfb700686f8d9f723ac23f3eb229226c0589cb9b06b80d1b61f3cb')
+-
+     ASSET_SDK_V908_AST2700A1 = Asset(
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-default-obmc.tar.gz',
+             'eac3dc409b7ea3cd4b03d4792d3cebd469792ad893cb51e1d15f0fc20bd1e2cd')
+@@ -124,14 +120,6 @@ def start_ast2700_test_vbootrom(self, name):
+         self.do_test_aarch64_aspeed_sdk_start(
+                 self.scratch_file(name, 'image-bmc'))
  
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 0707a760fda6..e73185eeb35c 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1626,6 +1626,7 @@ static void aspeed_machine_fp5280g2_class_init(ObjectClass *oc,
-     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
- 
-     mc->desc       = "Inspur FP5280G2 BMC (ARM1176)";
-+    mc->deprecation_reason = "use 'ast2500-evb' instead";
-     amc->soc_name  = "ast2500-a1";
-     amc->hw_strap1 = FP5280G2_BMC_HW_STRAP1;
-     amc->fmc_model = "n25q512a";
+-    def test_aarch64_ast2700a0_evb_sdk_v09_06(self):
+-        self.set_machine('ast2700a0-evb')
+-
+-        self.archive_extract(self.ASSET_SDK_V906_AST2700)
+-        self.start_ast2700_test('ast2700-a0-default')
+-        self.verify_openbmc_boot_and_login('ast2700-a0-default')
+-        self.do_ast2700_i2c_test()
+-
+     def test_aarch64_ast2700a1_evb_sdk_v09_08(self):
+         self.set_machine('ast2700a1-evb')
+         self.require_netdev('user')
 -- 
 2.51.0
 
