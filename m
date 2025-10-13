@@ -2,92 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A54BD2658
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 11:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6053EBD2875
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 12:20:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8FHd-0005XV-CV; Mon, 13 Oct 2025 05:56:01 -0400
+	id 1v8Fda-0003Mw-9k; Mon, 13 Oct 2025 06:18:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v8FHW-0005X4-Ks
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:55:57 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v8FHR-0000QB-KS
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 05:55:54 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-46e42fa08e4so35374095e9.3
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 02:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760349345; x=1760954145; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YWXK7vYDauy0slYNRqT/3zWRydScEQRYvgw8mQT6ySs=;
- b=MBq5rTv/c6LkXsY8ugGwOZ2g1a49jNDw5BvA6IrFbqqg/m+tOzXZ/ArmbuCshWLEJ6
- ksnHTVPh/Wib501J6rIvSA9Qz5RuhMQFg00pdNcTXHypoAWgQxRAZrcsO+ciqufs6UUz
- q9wkXbXXK4Zx3jvOuZxfw4APJswPUz9Jz1mS1eKA59JjOpUpdq8OuDpl4ZkQzWF57gl8
- lou/C8lDbekB6PZrcZ5Dzs1a4er2fvN0VRDXGrgQ3IVuQIM17BZQbBsRAwUvAenYCGAW
- 2Gg7qSOic2qcey8yeuwhI0sGrqGPBQ0HQUKo4jJl4JpTY0YOo5p0aVvR11QGYW26w6Ft
- O8VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760349345; x=1760954145;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YWXK7vYDauy0slYNRqT/3zWRydScEQRYvgw8mQT6ySs=;
- b=N0J5MV7uhIa3Z6PeBGT2LwLD9ZuXuH83a+ou3JDa8DnKgA7D5ChuF+70DBUNMo5XK6
- Htg2jfgpim4CWV0Cg02/FaeUjCRg6dYZU4KczUBSWZWYLHW8hs1xky8X0OWgaIQ8OHxD
- y6h8Y1/Es0t3t4aWWaVtfmLMHr7Jiw6FpXa+xCOa7t0b/Ugif/m5MM8/XEDI/9JgsqUX
- XOxLNTDwNPXnbG/sbWwObTLtmz+DVwZPMDdTockO0wiYb/EAjjPLLI8SLWzsNmrmVnHc
- E5K6YNNgxrUY0t5muSzqti+hqtp8OlPCXFAMwvYkUtwDzZyL74NSj6Eyer+OlramPh05
- NZaw==
-X-Gm-Message-State: AOJu0YzN+HS/rg7NfgQKzDyhnXyE6ZCQ4LY7zzscPSaZNYmaak4foZum
- CGnJTtVw5CtvaSLv1wwA1wwn/vnP+mNadEm+dgaZmcHuAr66+0QOP/3VHPutpQ==
-X-Gm-Gg: ASbGncu18mQMMlKCs8zDXTBY7FyD+6G+JFZJjaQszYFuADnqAO9/H+o8wgX6/6Z3N+s
- dZOXn4gLDnOZ23OkaYc7jzbGpaBomb209FdBm3T9tRTiycwlzzmtY6TGMe7PLNsDqjWCwAIeNhb
- tMu+ktlX0NP3BUdHLCrYEJJr7M2LJJCk2M33iwzAna2XyaxS1zMuULHh1odiZDQpcuDjnknzpUC
- KV0TF3tBz347dV5Rk94rP169QU9VmT+PKt9193YJjYm3PZUu49dP6ilwwaKvcWRfUa3uvG4vSqV
- APLuWUwb40KfXACEckAZo2eCl4bmbQp8NqTo1bfEVVaBu0g7yjWeHvDnSDi2/WH/YRNA4dgfjWh
- qr2Fhshad4Wbx5pfAqWtxE8RXfZVMNaEWCJOMoZ0ya6K9norm3KtiVZGEQoM1pdbufiALSXA9mH
- chKRjX4u5Gw1BkXyf7BO9u+jEQrems2/GtTrWEQQ==
-X-Google-Smtp-Source: AGHT+IG9fZby8ByAqo6n2LXALrn9JnVLZJ+k6mwJsQ/xtgubPffwHotRzGUiLXhiW32PMADwQYBIlQ==
-X-Received: by 2002:a05:600c:5028:b0:46e:428a:b4c7 with SMTP id
- 5b1f17b1804b1-46fa9af2ff1mr139812295e9.23.1760349344435; 
- Mon, 13 Oct 2025 02:55:44 -0700 (PDT)
-Received: from ehlo.thunderbird.net
- (p200300faaf271400a0afdc243fcb5392.dip0.t-ipconnect.de.
- [2003:fa:af27:1400:a0af:dc24:3fcb:5392])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb48a5bf9sm179028265e9.18.2025.10.13.02.55.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Oct 2025 02:55:44 -0700 (PDT)
-Date: Mon, 13 Oct 2025 09:55:41 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-CC: richard.henderson@linaro.org,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: =?US-ASCII?Q?Re=3A_=5BPULL_09/13=5D_ui/pixman=3A_Consistent_err?=
- =?US-ASCII?Q?or_handling_in_qemu=5Fpixman=5Fshareable=5Ffree=28=29?=
-In-Reply-To: <20250930124653.321609-10-armbru@redhat.com>
-References: <20250930124653.321609-1-armbru@redhat.com>
- <20250930124653.321609-10-armbru@redhat.com>
-Message-ID: <957601F2-78F5-4AD5-A6C2-CAFE49A97E84@gmail.com>
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1v8FdX-0003Md-DY; Mon, 13 Oct 2025 06:18:39 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1v8FdU-0004Dy-Ny; Mon, 13 Oct 2025 06:18:39 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59CLGEd3009098;
+ Mon, 13 Oct 2025 10:18:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=iqtg2O
+ xCRrc+RKm/ff9rzzeCiM3GtQKtsOtjesa58SU=; b=cAH0xBlH+ZpNFJB23+9j1l
+ 1TBqCtQUhwcvVlRtXDrGlvV2U6Jl1vLrmjuPssdXG7gQne1ZA+iCO7fGmujZGcbd
+ DTZo9Y68664ZnKFlsTW1T7ARq4kBDJq1qq8jkwszfPPrF2buul0rB51FhWOHyTm8
+ sb5mM6A9QYsf5tTRz1RwjcG4fP3yjhDFeEneBO8Vmhrp7gJ9Nmi9u3SWK3+X+D8b
+ EQ3r6n5b/YNqpt16V6+N0PuzhcHxHrXqL3dw35gDSBo+7gx2Y+qcKwRqGq90oguA
+ +9wgeNli03S97pMzLhtSi2SiIlO+egImkTL1N9zBzHHci4L79c6os0SJjeHEJzfA
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qewtraee-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Oct 2025 10:18:29 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59DAFjdB026939;
+ Mon, 13 Oct 2025 10:18:29 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qewtrae9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Oct 2025 10:18:28 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59DAHP27017008;
+ Mon, 13 Oct 2025 10:18:27 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r32jn768-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Oct 2025 10:18:27 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59DAINc662915032
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Oct 2025 10:18:23 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AC8DD2019E;
+ Mon, 13 Oct 2025 10:18:23 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B990B20199;
+ Mon, 13 Oct 2025 10:18:21 +0000 (GMT)
+Received: from [9.124.216.147] (unknown [9.124.216.147])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Oct 2025 10:18:21 +0000 (GMT)
+Message-ID: <5f414f58-f687-46c5-bcaa-32339ea9311e@linux.ibm.com>
+Date: Mon, 13 Oct 2025 15:48:20 +0530
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/ppc/pnv: Improve kernel/initrd load failure error
+ messages
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Vishal Chourasia <vishalc@linux.ibm.com>
+Cc: npiggin@gmail.com, milesg@linux.ibm.com, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20251007091214.403430-2-vishalc@linux.ibm.com>
+ <CAFEAcA8VWKEy3XVo3b9pTg-jCAD2oA7=dFbOSRL3q+WRUoNBpA@mail.gmail.com>
+ <aOyj5p2xzoxCyYZC@linux.ibm.com>
+ <CAFEAcA8zGH1sHL45WU=E2p4p0EizuOs3QRaniHW7ES-CQDPajg@mail.gmail.com>
+Content-Language: en-US
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <CAFEAcA8zGH1sHL45WU=E2p4p0EizuOs3QRaniHW7ES-CQDPajg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nu-r5run7LbK2UpEUgaPXvibFrhLBjpE
+X-Authority-Analysis: v=2.4 cv=Kr1AGGWN c=1 sm=1 tr=0 ts=68ecd1f5 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=07WxnQuDVi7JMVqgBJUA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: KehpuL2CdDWaKQziwlbb64k4xXnfRkSb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX65GBScMKwphO
+ 6C4KBq45jPoreyG0yuKntPmmxzVYfWTby/NUhwf2SIHYBALNGf8QYuwYXiYsTPTgHw+qqzFU/Xc
+ bq4ueP23qrURK/R0+MD8L0d7eGAKrMYTZ9jInK0VeFyxd3ejCpE9BGuaYjEfr4PWJHZyWqot+0S
+ L8rzMafq/ZabMDvs0GOHx0EquJ0Hp9MvJ7g6J3hVvBN9aM729mUgX+4v/gM7TcvKdQQj9SOcRFu
+ 4x91ik2y4m41HxNwvvECJzJkuXYZQASS6OTszwmqyw2YKwseJ7sd5LO3hsO6D6Lc4VPHFUl43E8
+ vSQefe1w6WkJwelksxA4eG6R3JSM2fUf0bPwZgIWIfcCd1aaVO/WfF2E4T9pORgUBGWcuaM7sxt
+ nQal2qpii21K6xKQyNRHT7KmnRvtpQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-13_04,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
+ phishscore=0 suspectscore=0 malwarescore=0 clxscore=1011 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,50 +129,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 13/10/25 14:05, Peter Maydell wrote:
 
-
-Am 30=2E September 2025 12:46:49 UTC schrieb Markus Armbruster <armbru@red=
-hat=2Ecom>:
->qemu_pixman_shareable_free() wraps around either qemu_memfd_free() or
->qemu_win32_map_free()=2E  The former reports trouble as error, with
->error_report(), then succeeds=2E  The latter reports it as warning (we
->pass it &error_warn), then succeeds=2E
+> On Mon, 13 Oct 2025 at 08:02, Vishal Chourasia <vishalc@linux.ibm.com> wrote:
+>> On Tue, Oct 07, 2025 at 02:29:52PM +0100, Peter Maydell wrote:
+>>> On Tue, 7 Oct 2025 at 13:59, Vishal Chourasia <vishalc@linux.ibm.com> wrote:
+>>> <...snip...>
+>>>
+>>> Rather than printing a list of reasons why the load might
+>>> have failed, I think it would be better if we enhanced
+>>> the error handling in load_image_targphys() and friends
+>>> (i.e. use Error), so that these functions can report back
+>>> to the caller exactly why they failed and then the caller
+>>> can give that error message to the user. That way we can
+>>> improve the error reporting for every board that uses
+>>> these load functions.
+>> Hello Peter,
+>>
+>> Wouldn't it be better to print the error inside the function itself.
+> No, because some users of this family of load functions
+> use a sequence of calls to handle different possible
+> formats. We don't want the function to load file format A
+> to print any errors if we're then going to continue and
+> successfully load the file as format B.
 >
->Change the latter to report as error, too=2E
+> More generally, our usual coding practice for functions
+> is that they use Error to tell the caller what went wrong,
+> and it's the caller that then gets to decide whether they
+> want to print an error and exit, tell the monitor about
+> an error, or just continue to try something else instead.
+
+In that case, maybe we can have 'load_image_targphys' take an 'enum 
+LoadError*' ? Caller can pass that argument if interesting in handling 
+errors.
+
+Though i see 71 instances of this function, will have to modify all call 
+sites (probably by passing NULL as error* which will be same as previous 
+usage).
+
+What do you say ?
+
+Thanks,
+
+- Aditya G
+
 >
->Cc: Marc-Andr=C3=A9 Lureau <marcandre=2Elureau@redhat=2Ecom>
->Signed-off-by: Markus Armbruster <armbru@redhat=2Ecom>
->Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre=2Elureau@redhat=2Ecom>
->Message-ID: <20250923091000=2E3180122-10-armbru@redhat=2Ecom>
->Reviewed-by: Akihiko Odaki <odaki@rsg=2Eci=2Ei=2Eu-tokyo=2Eac=2Ejp>
->---
-> ui/qemu-pixman=2Ec | 5 ++++-
-> 1 file changed, 4 insertions(+), 1 deletion(-)
->
->diff --git a/ui/qemu-pixman=2Ec b/ui/qemu-pixman=2Ec
->index ef4e71da11=2E=2Ee46c6232cf 100644
->--- a/ui/qemu-pixman=2Ec
->+++ b/ui/qemu-pixman=2Ec
->@@ -288,7 +288,10 @@ qemu_pixman_shareable_free(qemu_pixman_shareable han=
-dle,
->                            void *ptr, size_t size)
-> {
-> #ifdef WIN32
->-    qemu_win32_map_free(ptr, handle, &error_warn);
->+    Error *err =3D NULL;
->+
->+    qemu_win32_map_free(ptr, handle, &err);
->+    error_report_err(err);
-
-The last line causes a crash on Windows since error_report_err() expects e=
-rr to be non-NULL=2E This can be reproduced by invoking `qemu-system-x86_64=
-=2Eexe` without any parameters in msys2=2E Removing the line fixes the cras=
-h=2E I'm not sure how to fix this, otherwise I had went for it myself=2E
-
-Best regards,
-Bernhard
-
-> #else
->     qemu_memfd_free(ptr, size, handle);
-> #endif
+> -- PMM
 
