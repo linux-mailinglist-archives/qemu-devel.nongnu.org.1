@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19C6BD33B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 15:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87853BD33E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 15:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8IlK-0006dC-Lu; Mon, 13 Oct 2025 09:38:54 -0400
+	id 1v8IlL-0006dg-8g; Mon, 13 Oct 2025 09:38:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v8IlG-0006cj-Fh
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 09:38:50 -0400
+ id 1v8IlI-0006dA-Kg
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 09:38:52 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v8IlB-0006aV-OO
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 09:38:49 -0400
+ id 1v8IlC-0006aj-Iu
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 09:38:51 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 9495380850;
- Mon, 13 Oct 2025 16:38:42 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 55F5D80867;
+ Mon, 13 Oct 2025 16:38:43 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a50::1:2a])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ccOm1D2F0Cg0-qWcS88US; Mon, 13 Oct 2025 16:38:42 +0300
+ ESMTPSA id ccOm1D2F0Cg0-JHwB3Czw; Mon, 13 Oct 2025 16:38:42 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760362722;
- bh=QFWrlX2U0gd/Ao2+3nodtFsuWYWSxeHAKwHgaTV0mKg=;
+ bh=FgcMsYI1bn9hUGlF235jK8ao8kgyOs3Gy+xNQW4udsE=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Zh8UNYSfVQgdO/52LOoxlCjqLkgRGgOr5yMpKINRw/lEjDrY9eI0UzbulQTSHA4+d
- p6jYifB0g/TzQo5a3PGF43ICmonmKdGqb8JfqtG0t4UFU8qM6tW9cx3vt7IFheRR7s
- zjcBjFIoMvEYUvPYcwVg6qOZMLReSQLRjOPl6lA4=
+ b=LuqU+FZdMGKVyNHA9SVRnxoxnWjoT4yqUANodlWIcKqt+j5glJ5t4Ikit1tAayWMd
+ cKFiniDH6YdXbGc+VEbUGkzdMRDiOfkpQwJOgxZOLToQZx/9zcLjil5DvSS5EwOoFX
+ HERAFgS2AiJjryipwR5LlAhGAxHVecKiRVqIprp4=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,9 +42,10 @@ To: marcandre.lureau@redhat.com
 Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  qemu-devel@nongnu.org, vsementsov@yandex-team.ru, raphael@enfabrica.net,
  armbru@redhat.com, yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH v2 3/7] chardev/char: qemu_char_open(): add return value
-Date: Mon, 13 Oct 2025 16:38:32 +0300
-Message-ID: <20251013133836.852018-4-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 4/7] chardev/char: move filename and be_opened handling to
+ qemu_char_open()
+Date: Mon, 13 Oct 2025 16:38:33 +0300
+Message-ID: <20251013133836.852018-5-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251013133836.852018-1-vsementsov@yandex-team.ru>
 References: <20251013133836.852018-1-vsementsov@yandex-team.ru>
@@ -73,51 +74,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Accordingly with recommendations in include/qapi/error.h accompany
-errp by boolean return value and get rid of error propagation.
+Absent filename and necessity to send CHR_EVENT_OPENED are artifacts
+of .open(). Handle them in qemu_char_open().
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- chardev/char.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ chardev/char.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/chardev/char.c b/chardev/char.c
-index d5a2533e8e..64ec60c0f2 100644
+index 64ec60c0f2..6498d53daa 100644
 --- a/chardev/char.c
 +++ b/chardev/char.c
-@@ -246,14 +246,20 @@ int qemu_chr_add_client(Chardev *s, int fd)
-         CHARDEV_GET_CLASS(s)->chr_add_client(s, fd) : -1;
+@@ -247,18 +247,27 @@ int qemu_chr_add_client(Chardev *s, int fd)
  }
  
--static void qemu_char_open(Chardev *chr, ChardevBackend *backend,
-+static bool qemu_char_open(Chardev *chr, ChardevBackend *backend,
-                            bool *be_opened, Error **errp)
+ static bool qemu_char_open(Chardev *chr, ChardevBackend *backend,
+-                           bool *be_opened, Error **errp)
++                           const char *default_filename, Error **errp)
  {
-+    ERRP_GUARD();
+     ERRP_GUARD();
      ChardevClass *cc = CHARDEV_GET_CLASS(chr);
++    bool be_opened = true;
  
      if (cc->open) {
-         cc->open(chr, backend, be_opened, errp);
-+        if (*errp) {
-+            return false;
-+        }
+-        cc->open(chr, backend, be_opened, errp);
++        cc->open(chr, backend, &be_opened, errp);
+         if (*errp) {
+             return false;
+         }
      }
+ 
++    if (!chr->filename) {
++        chr->filename = g_strdup(default_filename);
++    }
 +
-+    return true;
++    if (be_opened) {
++        qemu_chr_be_event(chr, CHR_EVENT_OPENED);
++    }
++
+     return true;
  }
  
- static void char_init(Object *obj)
-@@ -1030,9 +1036,7 @@ static Chardev *chardev_new(const char *id, const char *typename,
+@@ -1021,7 +1030,6 @@ static Chardev *chardev_new(const char *id, const char *typename,
+     Object *obj;
+     Chardev *chr = NULL;
+     Error *local_err = NULL;
+-    bool be_opened = true;
+ 
+     assert(g_str_has_prefix(typename, "chardev-"));
+     assert(id);
+@@ -1036,17 +1044,10 @@ static Chardev *chardev_new(const char *id, const char *typename,
          goto fail;
      }
  
--    qemu_char_open(chr, backend, &be_opened, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!qemu_char_open(chr, backend, &be_opened, &local_err)) {
+-    if (!qemu_char_open(chr, backend, &be_opened, &local_err)) {
++    if (!qemu_char_open(chr, backend, typename + 8, &local_err)) {
          goto fail;
      }
  
+-    if (!chr->filename) {
+-        chr->filename = g_strdup(typename + 8);
+-    }
+-    if (be_opened) {
+-        qemu_chr_be_event(chr, CHR_EVENT_OPENED);
+-    }
+-
+     return chr;
+ 
+ fail:
 -- 
 2.48.1
 
