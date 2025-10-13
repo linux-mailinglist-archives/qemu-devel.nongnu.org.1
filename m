@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D45BD3110
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B01E1BD30A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:47:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8HvD-0004WD-5k; Mon, 13 Oct 2025 08:45:03 -0400
+	id 1v8HvD-0004Vj-Gy; Mon, 13 Oct 2025 08:45:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hus-0004QO-CQ
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hut-0004RH-Df
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hui-0007sv-Mm
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Huj-0007t7-MD
  for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760359470;
+ s=mimecast20190719; t=1760359472;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o9XJQoWj0w1litKRtm7b6WTU9qbMY5CqhuJH/7tfqOI=;
- b=iumP59N8pxWcQZJHBZ1cZWoWrwTPQ2UmfV68aaHlhFmqpdaMy07vpQkf30088Rp+dWnyqC
- c7hd0v6fk7kpjR5A2k2OBkfrb6wgZJXEvyREMUqY+Jn+/5VqcohKPWOYJ7jH0OkerZX9qH
- ghmgX7Kslm3Rlx8TQhHvM1t5vp1x3Bo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=PH43Dh/oEMaltFLCgST7LlrkWmG9Na+ZM+oAkdq05pY=;
+ b=LJbKeb+uS+Magq0u3tnOjJ+tDai48KrClyViU3YnGz3MsoAV7E1m+9Az/etat/GOXkf9jb
+ BR0HoqxqeeN3BzkQicjnxCGczd/zO/nRn79DZZ5+O5uhQIIXROAbh1AlazWnrOt2v93AmZ
+ XrHGVB4rc4mZ0HDJuXu1vV94tDNQ7cc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-WdDIGCHnN2aMOSfkr7yc2w-1; Mon,
- 13 Oct 2025 08:44:27 -0400
-X-MC-Unique: WdDIGCHnN2aMOSfkr7yc2w-1
-X-Mimecast-MFC-AGG-ID: WdDIGCHnN2aMOSfkr7yc2w_1760359466
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-56-TjzMoI0yMrydITepsxQ4SQ-1; Mon,
+ 13 Oct 2025 08:44:29 -0400
+X-MC-Unique: TjzMoI0yMrydITepsxQ4SQ-1
+X-Mimecast-MFC-AGG-ID: TjzMoI0yMrydITepsxQ4SQ_1760359468
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7147218004D8; Mon, 13 Oct 2025 12:44:26 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 63BFA1956095; Mon, 13 Oct 2025 12:44:28 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.105])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F33BD180047F; Mon, 13 Oct 2025 12:44:24 +0000 (UTC)
+ id E4B241800446; Mon, 13 Oct 2025 12:44:26 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/29] tests/functional/aarch64/aspeed_ast2700: Add PCIe and
- network tests
-Date: Mon, 13 Oct 2025 14:43:52 +0200
-Message-ID: <20251013124421.71977-2-clg@redhat.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/29] aspeed: Don't set 'auto_create_sdcard'
+Date: Mon, 13 Oct 2025 14:43:53 +0200
+Message-ID: <20251013124421.71977-3-clg@redhat.com>
 In-Reply-To: <20251013124421.71977-1-clg@redhat.com>
 References: <20251013124421.71977-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,123 +82,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+The Aspeed machines inherited from a 'no_sdcard' attribute when first
+introduced in QEMU. This attribute was later renamed to
+'auto_create_sdcard' by commit cdc8d7cadaac ("hw/boards: Rename
+no_sdcard -> auto_create_sdcard") and set to 'true'. This has the
+indesirable efect to automatically create SD cards at init time.
 
-Extend the AST2700 and AST2700fc functional tests with PCIe and network
-checks.
+Remove 'auto_create_sdcard' to avoid creating a SD card device.
 
-This patch introduces a helper "do_ast2700_pcie_test()" that runs "lspci"
-on the emulated system and verifies the expected PCIe devices:
-
-- 0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
-- 0002:01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
-
-Additional changes:
-- Add `-device e1000e,netdev=net1,bus=pcie.2 -netdev user,id=net1` to the
-  AST2700 and AST2700fc test machines.
-- In the AST2700 vbootrom test, assign an IP address to the e1000e
-  interface and verify it using `ip addr`.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250919093017.338309-15-jamin_lin@aspeedtech.com
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/qemu-devel/20251003103024.1863551-1-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- .../functional/aarch64/test_aspeed_ast2700.py | 21 +++++++++++++++++++
- .../aarch64/test_aspeed_ast2700fc.py          | 13 ++++++++++++
- 2 files changed, 34 insertions(+)
+ hw/arm/aspeed.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
 
-diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
-index a3db26729499..0973fce0e995 100755
---- a/tests/functional/aarch64/test_aspeed_ast2700.py
-+++ b/tests/functional/aarch64/test_aspeed_ast2700.py
-@@ -69,6 +69,16 @@ def do_ast2700_i2c_test(self):
-         exec_command_and_wait_for_pattern(self,
-             'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
- 
-+    def do_ast2700_pcie_test(self):
-+        exec_command_and_wait_for_pattern(self,
-+            'lspci -s 0002:00:00.0',
-+            '0002:00:00.0 PCI bridge: '
-+            'ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge')
-+        exec_command_and_wait_for_pattern(self,
-+            'lspci -s 0002:01:00.0',
-+            '0002:01:00.0 Ethernet controller: '
-+            'Intel Corporation 82574L Gigabit Network Connection')
-+
-     def start_ast2700_test(self, name):
-         num_cpu = 4
-         uboot_size = os.path.getsize(self.scratch_file(name,
-@@ -125,20 +135,31 @@ def test_aarch64_ast2700a0_evb_sdk_v09_06(self):
- 
-     def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
-         self.set_machine('ast2700a1-evb')
-+        self.require_netdev('user')
- 
-         self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
-+        self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
-+        self.vm.add_args('-netdev', 'user,id=net1')
-         self.start_ast2700_test('ast2700-default')
-         self.verify_openbmc_boot_and_login('ast2700-default')
-         self.do_ast2700_i2c_test()
-+        self.do_ast2700_pcie_test()
- 
-     def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_07(self):
-         self.set_machine('ast2700a1-evb')
-+        self.require_netdev('user')
- 
-         self.archive_extract(self.ASSET_SDK_V907_AST2700A1_VBOOROM)
-+        self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
-+        self.vm.add_args('-netdev', 'user,id=net1')
-         self.start_ast2700_test_vbootrom('ast2700-default')
-         self.verify_vbootrom_firmware_flow()
-         self.verify_openbmc_boot_and_login('ast2700-default')
-         self.do_ast2700_i2c_test()
-+        self.do_ast2700_pcie_test()
-+        exec_command_and_wait_for_pattern(self,
-+            'ip addr show dev eth2',
-+            'inet 10.0.2.15/24')
- 
- if __name__ == '__main__':
-     QemuSystemTest.main()
-diff --git a/tests/functional/aarch64/test_aspeed_ast2700fc.py b/tests/functional/aarch64/test_aspeed_ast2700fc.py
-index b85370e182ea..28b66614d970 100755
---- a/tests/functional/aarch64/test_aspeed_ast2700fc.py
-+++ b/tests/functional/aarch64/test_aspeed_ast2700fc.py
-@@ -20,6 +20,8 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
-         self.vm.set_console()
-         self.vm.add_args('-device',
-                          'tmp105,bus=aspeed.i2c.bus.1,address=0x4d,id=tmp-test')
-+        self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
-+        self.vm.add_args('-netdev', 'user,id=net1')
-         self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
-                          '-net', 'nic', '-net', 'user', '-snapshot')
- 
-@@ -49,6 +51,16 @@ def do_ast2700_i2c_test(self):
-         exec_command_and_wait_for_pattern(self,
-             'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
- 
-+    def do_ast2700_pcie_test(self):
-+        exec_command_and_wait_for_pattern(self,
-+            'lspci -s 0002:00:00.0',
-+            '0002:00:00.0 PCI bridge: '
-+            'ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge')
-+        exec_command_and_wait_for_pattern(self,
-+            'lspci -s 0002:01:00.0',
-+            '0002:01:00.0 Ethernet controller: '
-+            'Intel Corporation 82574L Gigabit Network Connection')
-+
-     def do_ast2700fc_ssp_test(self):
-         self.vm.shutdown()
-         self.vm.set_console(console_index=1)
-@@ -128,6 +140,7 @@ def test_aarch64_ast2700fc_sdk_v09_06(self):
-         self.start_ast2700fc_test('ast2700-default')
-         self.verify_openbmc_boot_and_login('ast2700-default')
-         self.do_ast2700_i2c_test()
-+        self.do_ast2700_pcie_test()
-         self.do_ast2700fc_ssp_test()
-         self.do_ast2700fc_tsp_test()
- 
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 6046ec0bb2a2..58cfbc713794 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1418,7 +1418,6 @@ static void aspeed_machine_palmetto_class_init(ObjectClass *oc,
+     amc->spi_model = "mx25l25635f";
+     amc->num_cs    = 1;
+     amc->i2c_init  = palmetto_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 256 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1436,7 +1435,6 @@ static void aspeed_machine_quanta_q71l_class_init(ObjectClass *oc,
+     amc->spi_model = "mx25l25635e";
+     amc->num_cs    = 1;
+     amc->i2c_init  = quanta_q71l_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 128 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+@@ -1455,7 +1453,6 @@ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
+     amc->num_cs    = 1;
+     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+     amc->i2c_init  = palmetto_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 256 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+@@ -1474,7 +1471,6 @@ static void aspeed_machine_supermicro_x11spi_bmc_class_init(ObjectClass *oc,
+     amc->num_cs    = 1;
+     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+     amc->i2c_init  = palmetto_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+@@ -1492,7 +1488,6 @@ static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc,
+     amc->spi_model = "mx25l25635f";
+     amc->num_cs    = 1;
+     amc->i2c_init  = ast2500_evb_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1511,7 +1506,6 @@ static void aspeed_machine_yosemitev2_class_init(ObjectClass *oc,
+     amc->spi_model = "mx25l25635e";
+     amc->num_cs    = 2;
+     amc->i2c_init  = yosemitev2_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1529,7 +1523,6 @@ static void aspeed_machine_romulus_class_init(ObjectClass *oc,
+     amc->spi_model = "mx66l1g45g";
+     amc->num_cs    = 2;
+     amc->i2c_init  = romulus_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1548,7 +1541,6 @@ static void aspeed_machine_tiogapass_class_init(ObjectClass *oc,
+     amc->spi_model = "mx25l25635e";
+     amc->num_cs    = 2;
+     amc->i2c_init  = tiogapass_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1566,7 +1558,6 @@ static void aspeed_machine_sonorapass_class_init(ObjectClass *oc,
+     amc->spi_model = "mx66l1g45g";
+     amc->num_cs    = 2;
+     amc->i2c_init  = sonorapass_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size       = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1584,7 +1575,6 @@ static void aspeed_machine_witherspoon_class_init(ObjectClass *oc,
+     amc->spi_model = "mx66l1g45g";
+     amc->num_cs    = 2;
+     amc->i2c_init  = witherspoon_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1606,7 +1596,6 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
+                      ASPEED_MAC3_ON;
+     amc->sdhci_wp_inverted = true;
+     amc->i2c_init  = ast2600_evb_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+     aspeed_machine_ast2600_class_emmc_init(oc);
+@@ -1625,7 +1614,6 @@ static void aspeed_machine_g220a_class_init(ObjectClass *oc, const void *data)
+     amc->num_cs    = 2;
+     amc->macs_mask  = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+     amc->i2c_init  = g220a_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1024 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1644,7 +1632,6 @@ static void aspeed_machine_fp5280g2_class_init(ObjectClass *oc,
+     amc->num_cs    = 2;
+     amc->macs_mask  = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+     amc->i2c_init  = fp5280g2_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 512 * MiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1663,7 +1650,6 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, const void *data)
+     amc->num_cs    = 2;
+     amc->macs_mask  = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
+     amc->i2c_init  = rainier_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+     aspeed_machine_ast2600_class_emmc_init(oc);
+@@ -1686,7 +1672,6 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, const void *data)
+     amc->macs_mask = ASPEED_MAC3_ON;
+     amc->i2c_init = fuji_bmc_i2c_init;
+     amc->uart_default = ASPEED_DEV_UART1;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = FUJI_BMC_RAM_SIZE;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1708,7 +1693,6 @@ static void aspeed_machine_bletchley_class_init(ObjectClass *oc,
+     amc->num_cs    = 2;
+     amc->macs_mask = ASPEED_MAC2_ON;
+     amc->i2c_init  = bletchley_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = BLETCHLEY_BMC_RAM_SIZE;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+@@ -1728,7 +1712,6 @@ static void aspeed_machine_catalina_class_init(ObjectClass *oc,
+     amc->num_cs    = 2;
+     amc->macs_mask = ASPEED_MAC2_ON;
+     amc->i2c_init  = catalina_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = CATALINA_BMC_RAM_SIZE;
+     aspeed_machine_class_init_cpus_defaults(mc);
+     aspeed_machine_ast2600_class_emmc_init(oc);
+@@ -1796,7 +1779,6 @@ static void aspeed_machine_fby35_class_init(ObjectClass *oc, const void *data)
+     amc->num_cs    = 2;
+     amc->macs_mask = ASPEED_MAC3_ON;
+     amc->i2c_init  = fby35_i2c_init;
+-    mc->auto_create_sdcard = true;
+     /* FIXME: Replace this macro with something more general */
+     mc->default_ram_size = FUJI_BMC_RAM_SIZE;
+     aspeed_machine_class_init_cpus_defaults(mc);
+@@ -1909,7 +1891,6 @@ static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc,
+     amc->uart_default = ASPEED_DEV_UART12;
+     amc->i2c_init  = ast2700_evb_i2c_init;
+     amc->vbootrom = true;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+@@ -1932,7 +1913,6 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
+     amc->uart_default = ASPEED_DEV_UART12;
+     amc->i2c_init  = ast2700_evb_i2c_init;
+     amc->vbootrom = true;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+@@ -1953,7 +1933,6 @@ static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
+     amc->num_cs    = 2;
+     amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
+     amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
+@@ -1973,7 +1952,6 @@ static void aspeed_machine_qcom_firework_class_init(ObjectClass *oc,
+     amc->num_cs    = 2;
+     amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
+     amc->i2c_init  = qcom_dc_scm_firework_i2c_init;
+-    mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ };
 -- 
 2.51.0
 
