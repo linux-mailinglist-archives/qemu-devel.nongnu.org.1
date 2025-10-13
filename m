@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7E0BD2C5C
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B10BD2C5B
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:28:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8Ghu-0007rv-5s; Mon, 13 Oct 2025 07:27:14 -0400
+	id 1v8Ght-0007rt-NG; Mon, 13 Oct 2025 07:27:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8Ghr-0007rl-UU
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:11 -0400
+ id 1v8Ghp-0007rI-MK
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8Ghj-0006EI-Iz
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:11 -0400
+ id 1v8Ghk-0006Ee-Hq
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760354818;
+ s=mimecast20190719; t=1760354821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LepuwBhAkX4dBl/Qwx8zxDytaulQLhzP+F8yzQjq1Ag=;
- b=fRSSCtBX4PF200pMJtASryjkiwTqvWTcwr1djyBxUbtrjo9eFBofmzNXhmxv/qRCCndcxD
- jdt3nBRfAXWKcgkvUVonYvw5ecejbO+OaBBcfqvakzMoa4gopkWxyaE8Mey9z71juZv1qQ
- Q4eOVDH0QGtE/wP5scEAPzOtDHA+qjo=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nXbW3N8gX99+5lwtTmZ4123UvfpZvpKKoarN9yvkUuc=;
+ b=hGuOVRjoW0DMWWjoa2L/vFPQBVXSGgOfN8yO8Yah0bV5EWCj7BSCMopfXDHS65mJ+x7LuB
+ 8hOGpUsWz7wVITC60X4HTaCmVTunx4vbm1bIzJTvjtVsFy++l5fOJudNzCD7lsVhM0MlrQ
+ aN0WkllutH1QyLLgisehdChMiAKpgWM=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-RJQZnj0aOBuIm1TUWzLq4g-1; Mon, 13 Oct 2025 07:26:57 -0400
-X-MC-Unique: RJQZnj0aOBuIm1TUWzLq4g-1
-X-Mimecast-MFC-AGG-ID: RJQZnj0aOBuIm1TUWzLq4g_1760354816
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b3cd833e7b5so519667566b.3
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 04:26:56 -0700 (PDT)
+ us-mta-267-R89GVmBsMD2Iu3cV3uRBMg-1; Mon, 13 Oct 2025 07:26:59 -0400
+X-MC-Unique: R89GVmBsMD2Iu3cV3uRBMg-1
+X-Mimecast-MFC-AGG-ID: R89GVmBsMD2Iu3cV3uRBMg_1760354818
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-6365fb32d66so4754425a12.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 04:26:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760354815; x=1760959615;
+ d=1e100.net; s=20230601; t=1760354817; x=1760959617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LepuwBhAkX4dBl/Qwx8zxDytaulQLhzP+F8yzQjq1Ag=;
- b=NrcjSf0qQruNYc+kkU7qSO+TE6vE7Vjw5/ZnUGjxfmdYpBgvqEor7TiIxTlKQR9DhF
- avfIFujsrO4lx9Tr4Kt24uVBL+7VBgIi/E2eYLBry/Cnb56VHeOByvYDXK/7exMBDD7z
- b3bEkzwFRYRJmQr0Jip6ZrmjBOAtRe5riY8Y/YOqq9DW4zM3njuwaoZdPsUBNGgxnIu+
- XEoAnWg190xCccqQHu+Y19VPwVhJa/V1tpBcGc5Iv+1ziHxYYDa/AsNVoneiSgI3fWVZ
- bWaD8tnJAxrYtTUCDIdNh3JfOJkRBE4U2z2fklUNdBwWo9T7TkbXwy91hNdHCUnyP0xK
- NzXg==
-X-Gm-Message-State: AOJu0Yy2es6v2sWZPT6Z9AYRIzzNuhtx2VbdCrJeyqpKwH1BODF1n7dc
- 8MCktfXGL78/7pCTR4ONrVOvYNDD4SWagm9YaI5VW4pwPwzQ2aAzEKVK7s8TAXO1RjJcdO4HxQW
- T0d7u083Fwxsl3VpVJYgitL5opU8V1EY6LpDzfyI4JxdPYluMvSRkANkp75H0G4dMKL8OUBUzJ1
- qdIezGRL3mDepwBoNqzLZ0XOosd8Saqhm3Ly4/JbN2
-X-Gm-Gg: ASbGncuOgjSQUgbb6+QLH135GnFKKGdzOD+ogzYHVPnvwSEpOZNDWTnYoeAxR7uQt14
- xyVMSLzdgX2yUr9nBOjQwD6sT9Eu7KvFoE60YoVGr+KFSGpSowaSWf577UWrCSXjWnIpX8VWfAX
- slX6kAH9tdeHrnUG2COpvTY2MXpLA1GwEzWU95nKHPIpfRaLkxg4fIGJfX5EV3ms0U4wwssnZjS
- LvNygvTV9m57HKEKEX3IkwUYxwHCczZsq7GOXKKvFaWWIWd66LmIRIKBPAcTYV0d3NSOLesdu8H
- FOaHlUST9Zgf+vsswejBl/F+aqpyg3fI0wEyBn1U1KiTlBbjdpkGqEbpHLNFje+1WOQ/K4PeUtB
- HPwfRbwhi13u7lNf8iE/GoXirmhak+2fgDfrWAYXnxjU=
-X-Received: by 2002:a17:906:cb85:b0:b54:8670:7c2d with SMTP id
- a640c23a62f3a-b5486707c37mr1442817066b.55.1760354814853; 
- Mon, 13 Oct 2025 04:26:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkVjm3y2bRwCKwPxui8m0M/ZFHeyS2iqW9F19UZaqjvBvZ6PpM4oZ44ayQ7w7wTthIk7HJxw==
-X-Received: by 2002:a17:906:cb85:b0:b54:8670:7c2d with SMTP id
- a640c23a62f3a-b5486707c37mr1442814966b.55.1760354814466; 
- Mon, 13 Oct 2025 04:26:54 -0700 (PDT)
+ bh=nXbW3N8gX99+5lwtTmZ4123UvfpZvpKKoarN9yvkUuc=;
+ b=i4WPoVLbdUXcU7+sHikfRB6fq/rIOxGySJNfm4s1EgA11vUb37rmnvjifDrYrfZatP
+ szz85u8aY2godt4KDB4pz3/pF/QRRq53Lji17vgh8c3I0D1abKnqlnrH4D6LiX3vWGDQ
+ vATfcWWfI1bU4s3PyhDb+KKtVEEIos5sAC1nEwIId92SGlZkj1D6pEQafBcd2/+UHjBk
+ kZyDiikfgwpG9erV+ubIG+TI+t4sdpQf2zR6iCDyqlBZQl2RZBT97lBiO67XFyXeBWwr
+ x9sMgRfyNJFaHMtop0qhUpw82n0mOmcmZeTeqKg8vM/luZt2Dfio7uVFyfKSB4rlxPa7
+ RedQ==
+X-Gm-Message-State: AOJu0YwsxLdMYWoXvyq4OTFH0qOPXl4ocyIU29u7iGNI++Rf5jP+2o6t
+ 7SSHbl2rvZVl6Ctlc76Bhg58JQkoHyKS65sbx4Z773lmuzUiKAqo8mfdeaAXtwLZnTV691E8+i0
+ dKL/yq9nsBp2go3xAxbjYuR+y5XxTWPV1xhr8O9whykfzihnjRrYNSPOpJb6Cxqya5mmH2Qa15Y
+ j5NTeWMfXYzxE9vn9xO/FMiDvGt7X3MSYF1HZiHiHS
+X-Gm-Gg: ASbGncsRnB+0QWLmXfZNQkbuTtdiKRY0WaSVWSmaiOUCucsWgEsLO08bQ/LbKLOkYSp
+ lNPyXT9e++8TpNHSO1c5AmO7auQ7MBY6WL4fncR3LCP3mYkLJ3DLe/A9Lt6gnQOUAzo7OtqWJz0
+ q1TS63pZYu9W7SJ3nF4A07ldQNpSCwPx+7GQpok54PfHByxQhDIvFy//57GPZX2O/0NpGLXnpxs
+ ygqxY5c6XeHpMaz6DlYrznbqrdE/8SxWZ1ighOILetoDAMg4J1G573PWYX7+04iFMwjlWhKHuHE
+ 4CUGtrbIdsx4bu0JIztK1hZxI4xLOWC5L2z/pQQnmqNOfasv3ghK+QL6QNwtftZFv7tzY5NMBZD
+ LPXiUArSIqqRSJoeb9PwlU8eZfHRZaPkzpPfm7Qc4FyU=
+X-Received: by 2002:a05:6402:278f:b0:637:dfb1:339e with SMTP id
+ 4fb4d7f45d1cf-639d5b57a36mr17958878a12.5.1760354817479; 
+ Mon, 13 Oct 2025 04:26:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEis6t2y7JR5br06DhN6aFKBpDTSbvvxJZ6BapbwXDWvBCNFi9BEIIKbOvIkFs0b7nQqrKQwQ==
+X-Received: by 2002:a05:6402:278f:b0:637:dfb1:339e with SMTP id
+ 4fb4d7f45d1cf-639d5b57a36mr17958848a12.5.1760354816910; 
+ Mon, 13 Oct 2025 04:26:56 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b55d931d806sm939689766b.71.2025.10.13.04.26.52
+ 4fb4d7f45d1cf-63a5235e7fasm8593722a12.7.2025.10.13.04.26.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Oct 2025 04:26:52 -0700 (PDT)
+ Mon, 13 Oct 2025 04:26:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Praveen K Paladugu <prapal@microsoft.com>,
  Magnus Kulke <magnuskulke@linux.microsoft.com>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 1/2] monitor: clarify "info accel" help message
-Date: Mon, 13 Oct 2025 13:26:49 +0200
-Message-ID: <20251013112650.935921-2-pbonzini@redhat.com>
+Subject: [PATCH 2/2] monitor: generalize query-mshv/"info mshv" to
+ query-accelerators/"info accelerators"
+Date: Mon, 13 Oct 2025 13:26:50 +0200
+Message-ID: <20251013112650.935921-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013112650.935921-1-pbonzini@redhat.com>
 References: <20251013112650.935921-1-pbonzini@redhat.com>
@@ -110,33 +111,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation for adding "info accelerators", explain that this command
-is about runtime statistics.
+The recently-introduced query-mshv command is a duplicate of query-kvm,
+and neither provides a full view of which accelerators are supported
+by a particular binary of QEMU and which is in use.
 
+KVM was the first accelerator added to QEMU, predating QOM and TYPE_ACCEL,
+so it got a pass.  But now, instead of adding a badly designed copy, solve
+the problem completely for all accelerators with a command that provides
+the whole picture:
+
+    >> {"execute": "query-accelerators"}
+    << {"return": {"enabled": "tcg", "present": ["kvm", "mshv", "qtest", "tcg", "xen"]}}
+
+Cc: Praveen K Paladugu <prapal@microsoft.com>
+Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hmp-commands-info.hx | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
+ fixup a0df118f73f # fff
+---
+ qapi/accelerator.json      | 47 +++++++++++++++++++++++++++++---------
+ include/monitor/hmp.h      |  2 +-
+ hw/core/machine-hmp-cmds.c | 21 +++++++++--------
+ hw/core/machine-qmp-cmds.c | 20 ++++++++++++----
+ hmp-commands-info.hx       | 15 ++++++++----
+ 5 files changed, 74 insertions(+), 31 deletions(-)
+
+diff --git a/qapi/accelerator.json b/qapi/accelerator.json
+index 664e0272465..2b920608847 100644
+--- a/qapi/accelerator.json
++++ b/qapi/accelerator.json
+@@ -56,30 +56,55 @@
+   'features': [ 'unstable' ] }
+ 
+ ##
+-# @MshvInfo:
++# @Accelerator:
+ #
+ # Information about support for MSHV acceleration
+ #
+-# @enabled: true if MSHV acceleration is active
++# @hvf: Apple Hypervisor.framework
+ #
+-# @present: true if MSHV acceleration is built into this executable
++# @kvm: KVM
++#
++# @mshv: Hyper-V
++#
++# @nvmm: NetBSD NVMM
++#
++# @qtest: QTest (dummy accelerator)
++#
++# @tcg: TCG (dynamic translation)
++#
++# @whpx: Windows Hypervisor Platform
++#
++# @xen: Xen
+ #
+ # Since: 10.2.0
+ ##
+-{ 'struct': 'MshvInfo', 'data': {'enabled': 'bool', 'present': 'bool'} }
++{ 'enum': 'Accelerator', 'data': ['hvf', 'kvm', 'mshv', 'nvmm', 'qtest', 'tcg', 'whpx', 'xen'] }
+ 
+ ##
+-# @query-mshv:
++# @AcceleratorInfo:
+ #
+-# Return information about MSHV acceleration
++# Information about support for various accelerators
+ #
+-# Returns: @MshvInfo
++# @enabled: the accelerator that is in use
+ #
+-# Since: 10.0.92
++# @present: the list of accelerators that are built into this executable
++#
++# Since: 10.2.0
++##
++{ 'struct': 'AcceleratorInfo', 'data': {'enabled': 'Accelerator', 'present': ['Accelerator']} }
++
++##
++# @query-accelerators:
++#
++# Return information about accelerators
++#
++# Returns: @AcceleratorInfo
++#
++# Since: 10.2.0
+ #
+ # .. qmp-example::
+ #
+-#     -> { "execute": "query-mshv" }
+-#     <- { "return": { "enabled": true, "present": true } }
++#     -> { "execute": "query-accelerators" }
++#     <- { "return": { "enabled": "mshv", "present": ["kvm", "mshv", "qtest", "tcg"] } }
+ ##
+-{ 'command': 'query-mshv', 'returns': 'MshvInfo' }
++{ 'command': 'query-accelerators', 'returns': 'AcceleratorInfo' }
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index 31bd812e5f4..897dfaa2b6d 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -24,7 +24,7 @@ strList *hmp_split_at_comma(const char *str);
+ void hmp_info_name(Monitor *mon, const QDict *qdict);
+ void hmp_info_version(Monitor *mon, const QDict *qdict);
+ void hmp_info_kvm(Monitor *mon, const QDict *qdict);
+-void hmp_info_mshv(Monitor *mon, const QDict *qdict);
++void hmp_info_accelerators(Monitor *mon, const QDict *qdict);
+ void hmp_info_status(Monitor *mon, const QDict *qdict);
+ void hmp_info_uuid(Monitor *mon, const QDict *qdict);
+ void hmp_info_chardev(Monitor *mon, const QDict *qdict);
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index 682ed9f49b8..74a56600be8 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -163,19 +163,22 @@ void hmp_info_kvm(Monitor *mon, const QDict *qdict)
+     qapi_free_KvmInfo(info);
+ }
+ 
+-void hmp_info_mshv(Monitor *mon, const QDict *qdict)
++void hmp_info_accelerators(Monitor *mon, const QDict *qdict)
+ {
+-    MshvInfo *info;
++    AcceleratorInfo *info;
++    AcceleratorList *accel;
+ 
+-    info = qmp_query_mshv(NULL);
+-    monitor_printf(mon, "mshv support: ");
+-    if (info->present) {
+-        monitor_printf(mon, "%s\n", info->enabled ? "enabled" : "disabled");
+-    } else {
+-        monitor_printf(mon, "not compiled\n");
++    info = qmp_query_accelerators(NULL);
++    for (accel = info->present; accel; accel = accel->next) {
++        char trail = accel->next ? ' ' : '\n';
++        if (info->enabled == accel->value) {
++            monitor_printf(mon, "[%s]%c", Accelerator_str(accel->value), trail);
++        } else {
++            monitor_printf(mon, "%s%c", Accelerator_str(accel->value), trail);
++        }
+     }
+ 
+-    qapi_free_MshvInfo(info);
++    qapi_free_AcceleratorInfo(info);
+ }
+ 
+ void hmp_info_uuid(Monitor *mon, const QDict *qdict)
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index e24bf0d97bf..51d5c230f7e 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -31,15 +31,25 @@
+ #include <sys/stat.h>
+ 
+ /*
+- * QMP query for MSHV
++ * QMP query for enabled and present accelerators
+  */
+-MshvInfo *qmp_query_mshv(Error **errp)
++AcceleratorInfo *qmp_query_accelerators(Error **errp)
+ {
+-    MshvInfo *info = g_malloc0(sizeof(*info));
++    AcceleratorInfo *info = g_malloc0(sizeof(*info));
++    AccelClass *current_class = ACCEL_GET_CLASS(current_accel());
++    int i;
+ 
+-    info->enabled = mshv_enabled();
+-    info->present = accel_find("mshv");
++    for (i = ACCELERATOR__MAX; i-- > 0; ) {
++        const char *s = Accelerator_str(i);
++        AccelClass *this_class = accel_find(s);
+ 
++        if (this_class) {
++            QAPI_LIST_PREPEND(info->present, i);
++            if (this_class == current_class) {
++                info->enabled = i;
++            }
++        }
++    }
+     return info;
+ }
+ 
 diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index eaaa880c1b3..c2aa40056bb 100644
+index c2aa40056bb..25b4aed51f5 100644
 --- a/hmp-commands-info.hx
 +++ b/hmp-commands-info.hx
-@@ -271,12 +271,12 @@ ERST
-         .name       = "accel",
+@@ -308,16 +308,21 @@ SRST
+ ERST
+ 
+     {
+-        .name       = "mshv",
++        .name       = "accelerators",
          .args_type  = "",
          .params     = "",
--        .help       = "show accelerator info",
-+        .help       = "show accelerator statistics",
+-        .help       = "show MSHV information",
+-        .cmd        = hmp_info_mshv,
++        .help       = "show present and enabled information",
++        .cmd        = hmp_info_accelerators,
      },
  
  SRST
-   ``info accel``
--    Show accelerator info.
-+    Show accelerator statistics.
+-  ``info mshv``
+-    Show MSHV information.
++  ``info accelerators``
++    Show which accelerators are compiled into a QEMU binary, and what accelerator
++    is in use. For example::
++
++        kvm qtest [tcg]
++
++    indicates that TCG in use, and that KVM and qtest are also available.
  ERST
  
- SRST
+     {
 -- 
 2.51.0
 
