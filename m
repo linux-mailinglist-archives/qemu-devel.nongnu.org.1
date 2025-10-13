@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BD1BD5EAE
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327D7BD5EC3
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8O4V-00075L-4D; Mon, 13 Oct 2025 15:19:03 -0400
+	id 1v8O4Z-0007Wu-HK; Mon, 13 Oct 2025 15:19:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4S-0006xF-MF
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:19:00 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4X-0007K6-7d
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:19:05 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4Q-0001t9-ND
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:19:00 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-42421b1514fso2281270f8f.2
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4U-0001uJ-Pi
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:19:04 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3ee12332f3dso2784166f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:19:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760383136; x=1760987936; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760383140; x=1760987940; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CB1VK/yjYxp4/URxQ/T4/YFokgwgN5AuNNyA+7xghsY=;
- b=SwcptS4q6/A/LRiXBBC3bxPzg8J3+9dhBk80nOKREk0DBQWR7D4NO3IjDp0xSAqzLj
- IEw2/9sevVi/Spsaxeu7X8EDSZwHZySnnYXVVjf/DHtimfrXJ90RlRn3dvYLLmf3XhGw
- TOc2E9IiBi7KmgldcZIOdGQ7j/1vTWRE5u5RiDu7kwRMgBD+9S6u/G7l3cL+3Yl4hPo+
- ypf74sehHbCwNUcdRBvexWkNVsvJVNTgMbT41/BKEmBrr8kQp7S4R3vFhKlQmGLShuUe
- Vzy6hXLjpyCscfeJYYEakxqzeMhQpP5mF02yX3nIzLxGlqr4wskn6SPHcY48h3ZPa+o7
- izXQ==
+ :reply-to; bh=Z3OmPpMLr5a1yvZb58CoYa8yVy1NYMyFvJnwaus/3Ok=;
+ b=kYB2UAa9Ab13jkeGKUF/Shwsb5kDZ3NVxPndqdLQeClnLLBkHmOdCx6jrAG/iffAp6
+ KdCiB3goD4tDRu/zsfZtOliPuZlV+km4qeEQeyGj5eKevpU4LX7g/b+el3fq7rGAuE/r
+ UZe9+F1NzRNVpqrMT7puHwZlLd0CcU5xXZsyLKIAEojBvkKm5c3caSKJMObmTe9asD6h
+ ti62QcX1B+UGdnNefHkCdJG1c/cMENvknOfSf46GyrnZBLsWEXZChAXoc1WTbVZdB6kl
+ Gekm30zWGZiQZEChDSsUhg8JuMf5+idBpUBoiDtrRC+WAybpDfNXZZeNPC9MM4m0kVtp
+ Mjfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760383136; x=1760987936;
+ d=1e100.net; s=20230601; t=1760383140; x=1760987940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CB1VK/yjYxp4/URxQ/T4/YFokgwgN5AuNNyA+7xghsY=;
- b=kfWGf39q4bM/g+DUDkumugwA4T2iLOITjnx6RyWXr085me8EAAarrkylJVdhmqc5vt
- Gc+5yzJnNyp0/YBM8ulbIY5aHRxZCPtnZtaK6pLTyhIwCgq+eMfmus+jmoVcNcJqBwYG
- P2rzhcHi8oymjHVmqQrGQt/sYsnJgvw1m5cpHW+ffOIuneg3BXDCbD9u3hVO9EA3N8Ft
- CoLCBEFFc4sGW+gXJJOVJMGqoIBfTEP76U9QN2JqIyPIwNh+wUfxNeKYP2KbpTZFlquq
- ls6MmzHo9KRaS/+JBLhEHPBxYkUoBVPpwAiP5uY4KS8QD/t+UFz66csEhN0tPTT1CqcX
- xfIQ==
-X-Gm-Message-State: AOJu0Yx9PZ5Fc8HXcdLODIf0gaRJV50C1hJCOUMC72lKU5FytYWHi3YG
- BqyLGp11dG5qA0y63J0PD3pNVYXmdJngNpKI6ujuCKecVJmJPcVSE3WEthRiIff6xWsywEAQl6R
- 36wpBU2gORA==
-X-Gm-Gg: ASbGncubvM2mivwrkluL0OSJpy4PVBXaihvQIspLl5ZZtcPlhpNqW4VbP6BCZacGiEy
- M3efz5uZu+YO38HkFWQE6qRxCAXReGIINuAPjvQKAuXkiQwd9zOQmXB++EmNAvl+LwlVBEkTfZf
- /vQWSbJfUSNlDcGx4U+PibM3E3UeW8mSl9QVWYFJqpTRkgUPqj1ywMO+pbiikJhcjluH5j8KcsQ
- cIwZvpEcsRsJoWvVp2e7Y8ScJavhz6TdLbCBNDVww5/o49LaIAGU60OVnlMTGzCJbAqdF4i6GbN
- 2ie93my17fZS9AATqNn0Qk13o8EnI2oRt8HDDKfALmfKYAtrCZJLYyx64VFrzQa9+08u9kVmPXp
- PPzt2ZMTuox88v/8Cn1AXJclYBG+gs3KpzBum0Oma64YDAnOkQexEIKvWvXBlC02ayKEYiyTTGV
- DhyPbFsPSupuzm1uyDr0Y=
-X-Google-Smtp-Source: AGHT+IEZ/inCgUIVwBHqWsvqvOAAgAj78jhcsdU8s7M8LaGWyvxttBitBVrHVlfX2bWU77Rdoj2lgg==
-X-Received: by 2002:a05:6000:24c5:b0:426:ee08:8eb4 with SMTP id
- ffacd0b85a97d-426ee0893bemr181012f8f.44.1760383135974; 
- Mon, 13 Oct 2025 12:18:55 -0700 (PDT)
+ bh=Z3OmPpMLr5a1yvZb58CoYa8yVy1NYMyFvJnwaus/3Ok=;
+ b=T5Ms+08jEfNcKgtinsalzJ854mMlrNyJFlMX+xfAPcUb+wpnU/EH4B1DPtHnDXCd8y
+ lvalBS6d9Ao8eqHsiASpjvw3CfdM2NL1MZukdIZguERu5BVKJ7cpK7BygIunFu5YOGVL
+ 8Q1WW7HOrlYVM0TC5o2N7NznOgldVUHj33pmA6BhVbuVy7ljtfTefDW9IYrl1SetgxHN
+ SCq19nBqC3juU92LOVxsuJFMNnjWS6LAOnFI539UDasP6UGQAGL2OyvTvWYwQqmYZvKl
+ ShG9A7hbK93i5H17yUWOqrMz6AkrvXfh/9W4x2doOTMEL2uieZaivZdya5zd3QIbnfJ+
+ eJyQ==
+X-Gm-Message-State: AOJu0Yzq4QKVScnADvwHR2ZV5BBY7c46BdjEactlmmUkWjYB4XwApVy8
+ x3dHS1e5IPagCq1LuQExlKrY06qAptYwtmB4FiaGQ9HlxMCtbCBmMSnNYx8VLW6AlKao035G+cZ
+ QQhd8cnxu4A==
+X-Gm-Gg: ASbGncsRZymElWDqZ+YDswyCgCg99pKuKv5IaQoS+vdzHBhVcSqCMOOkbOapGWamC+e
+ YLqB6mSSos9TE5d5PV43S2OzAlHTcoS4YQ2f7SE/MuG0tGgN/flW485ej4fSbhDg5eMCrAqM2c/
+ l+M+7H0b0i5BQj2/I7uiz4deXg9C5ag6dZcvTO0HZBLlDAVt3TYKx0atTS0CdEKTl+UJBWj3BUo
+ sw1gOkGgSjv+ngJM4JYY76efCFSWvkXzjNABelNDcT3nqczCf4R/MamsxRP5IfG31GpBE/GXbDp
+ vQfR5qq4D2YtdQl4noqqyZfbH8pwMcgIaZ8bIezSSQWkh8+QyWRqBnh6ZDTLe8+o+2g3+xWqGpZ
+ OY4jhX367hHxSKFXAIvqqjXSoGQye6bwIaLfxj/+yJ33I06t/APY2EwXeh0KcjkfikWubPSDeDM
+ YYvfRcw8lNJtQVo/5DnfU=
+X-Google-Smtp-Source: AGHT+IHAxGuD9lYVfM5Ei4GyR/TO2HxvXtPOe/VG9qVDgyQm5Wd4eLiE+VUH3kwBdHnm/GOZVstxFA==
+X-Received: by 2002:a05:6000:230e:b0:3ea:5f76:3f7a with SMTP id
+ ffacd0b85a97d-4266e7d6b9bmr14846273f8f.22.1760383140477; 
+ Mon, 13 Oct 2025 12:19:00 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5833dcsm19579127f8f.19.2025.10.13.12.18.55
+ ffacd0b85a97d-426ce583424sm19444347f8f.21.2025.10.13.12.18.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Oct 2025 12:18:55 -0700 (PDT)
+ Mon, 13 Oct 2025 12:19:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/12] hw/hppa: Convert type_init() -> DEFINE_TYPES()
-Date: Mon, 13 Oct 2025 21:18:05 +0200
-Message-ID: <20251013191807.84550-11-philmd@linaro.org>
+Subject: [PULL 11/12] hw/hppa: Factor QOM HPPA_COMMON_MACHINE out
+Date: Mon, 13 Oct 2025 21:18:06 +0200
+Message-ID: <20251013191807.84550-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013191807.84550-1-philmd@linaro.org>
 References: <20251013191807.84550-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,76 +97,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer DEFINE_TYPES() macro over type_init() to register
-multiple QOM types.
+B160L and C3700 share a lot of common code. Factor it out
+as an abstract HPPA_COMMON_MACHINE QOM parent.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251009143106.22724-3-philmd@linaro.org>
+Message-Id: <20251009143106.22724-4-philmd@linaro.org>
 ---
- hw/hppa/machine.c | 42 ++++++++++++++++++------------------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+ hw/hppa/machine.c | 61 +++++++++++++++++++++++++----------------------
+ 1 file changed, 33 insertions(+), 28 deletions(-)
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index dacedc5409c..2ab5fcb471a 100644
+index 2ab5fcb471a..c8da159a114 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -709,16 +709,6 @@ static void HP_B160L_machine_init_class_init(ObjectClass *oc, const void *data)
-     nc->nmi_monitor_handler = hppa_nmi;
+@@ -36,6 +36,13 @@
+ #include "net/net.h"
+ #include "qemu/log.h"
+ 
++#define TYPE_HPPA_COMMON_MACHINE  MACHINE_TYPE_NAME("hppa-common")
++OBJECT_DECLARE_SIMPLE_TYPE(HppaMachineState, HPPA_COMMON_MACHINE)
++
++struct HppaMachineState {
++    MachineState parent_obj;
++};
++
+ #define MIN_SEABIOS_HPPA_VERSION 12 /* require at least this fw version */
+ 
+ #define HPA_POWER_BUTTON        (FIRMWARE_END - 0x10)
+@@ -683,6 +690,22 @@ static void hppa_nmi(NMIState *n, int cpu_index, Error **errp)
+     }
  }
  
--static const TypeInfo HP_B160L_machine_init_typeinfo = {
--    .name = MACHINE_TYPE_NAME("B160L"),
--    .parent = TYPE_MACHINE,
--    .class_init = HP_B160L_machine_init_class_init,
--    .interfaces = (const InterfaceInfo[]) {
--        { TYPE_NMI },
--        { }
--    },
--};
--
- static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
++static void hppa_machine_common_class_init(ObjectClass *oc, const void *data)
++{
++    MachineClass *mc = MACHINE_CLASS(oc);
++    NMIClass *nc = NMI_CLASS(oc);
++
++    mc->reset = hppa_machine_reset;
++    mc->block_default_type = IF_SCSI;
++    mc->default_cpus = 1;
++    mc->max_cpus = HPPA_MAX_CPUS;
++    mc->default_boot_order = "cd";
++    mc->default_ram_id = "ram";
++    mc->default_nic = "tulip";
++
++    nc->nmi_monitor_handler = hppa_nmi;
++}
++
+ static void HP_B160L_machine_init_class_init(ObjectClass *oc, const void *data)
  {
      static const char * const valid_cpu_types[] = {
-@@ -745,20 +735,24 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
-     nc->nmi_monitor_handler = hppa_nmi;
+@@ -690,23 +713,13 @@ static void HP_B160L_machine_init_class_init(ObjectClass *oc, const void *data)
+         NULL
+     };
+     MachineClass *mc = MACHINE_CLASS(oc);
+-    NMIClass *nc = NMI_CLASS(oc);
+ 
+     mc->desc = "HP B160L workstation";
+     mc->default_cpu_type = TYPE_HPPA_CPU;
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->init = machine_HP_B160L_init;
+-    mc->reset = hppa_machine_reset;
+-    mc->block_default_type = IF_SCSI;
+-    mc->max_cpus = HPPA_MAX_CPUS;
+-    mc->default_cpus = 1;
+     mc->is_default = true;
+     mc->default_ram_size = 512 * MiB;
+-    mc->default_boot_order = "cd";
+-    mc->default_ram_id = "ram";
+-    mc->default_nic = "tulip";
+-
+-    nc->nmi_monitor_handler = hppa_nmi;
  }
  
--static const TypeInfo HP_C3700_machine_init_typeinfo = {
--    .name = MACHINE_TYPE_NAME("C3700"),
--    .parent = TYPE_MACHINE,
--    .class_init = HP_C3700_machine_init_class_init,
--    .interfaces = (const InterfaceInfo[]) {
--        { TYPE_NMI },
--        { }
-+static const TypeInfo hppa_machine_types[] = {
-+    {
-+        .name = MACHINE_TYPE_NAME("B160L"),
-+        .parent = TYPE_MACHINE,
-+        .class_init = HP_B160L_machine_init_class_init,
-+        .interfaces = (const InterfaceInfo[]) {
-+            { TYPE_NMI },
-+            { }
-+        },
+ static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
+@@ -716,42 +729,34 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
+         NULL
+     };
+     MachineClass *mc = MACHINE_CLASS(oc);
+-    NMIClass *nc = NMI_CLASS(oc);
+ 
+     mc->desc = "HP C3700 workstation";
+     mc->default_cpu_type = TYPE_HPPA64_CPU;
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->init = machine_HP_C3700_init;
+-    mc->reset = hppa_machine_reset;
+-    mc->block_default_type = IF_SCSI;
+     mc->max_cpus = HPPA_MAX_CPUS;
+-    mc->default_cpus = 1;
+-    mc->is_default = false;
+     mc->default_ram_size = 1024 * MiB;
+-    mc->default_boot_order = "cd";
+-    mc->default_ram_id = "ram";
+-    mc->default_nic = "tulip";
+-
+-    nc->nmi_monitor_handler = hppa_nmi;
+ }
+ 
+ static const TypeInfo hppa_machine_types[] = {
+     {
+-        .name = MACHINE_TYPE_NAME("B160L"),
+-        .parent = TYPE_MACHINE,
+-        .class_init = HP_B160L_machine_init_class_init,
++        .name           = TYPE_HPPA_COMMON_MACHINE,
++        .parent         = TYPE_MACHINE,
++        .instance_size  = sizeof(HppaMachineState),
++        .class_init     = hppa_machine_common_class_init,
++        .abstract       = true,
+         .interfaces = (const InterfaceInfo[]) {
+             { TYPE_NMI },
+             { }
+         },
 +    }, {
-+        .name = MACHINE_TYPE_NAME("C3700"),
-+        .parent = TYPE_MACHINE,
-+        .class_init = HP_C3700_machine_init_class_init,
-+        .interfaces = (const InterfaceInfo[]) {
-+            { TYPE_NMI },
-+            { }
-+        },
++        .name = MACHINE_TYPE_NAME("B160L"),
++        .parent = TYPE_HPPA_COMMON_MACHINE,
++        .class_init = HP_B160L_machine_init_class_init,
+     }, {
+         .name = MACHINE_TYPE_NAME("C3700"),
+-        .parent = TYPE_MACHINE,
++        .parent = TYPE_HPPA_COMMON_MACHINE,
+         .class_init = HP_C3700_machine_init_class_init,
+-        .interfaces = (const InterfaceInfo[]) {
+-            { TYPE_NMI },
+-            { }
+-        },
      },
  };
  
--static void hppa_machine_init_register_types(void)
--{
--    type_register_static(&HP_B160L_machine_init_typeinfo);
--    type_register_static(&HP_C3700_machine_init_typeinfo);
--}
--
--type_init(hppa_machine_init_register_types)
-+DEFINE_TYPES(hppa_machine_types)
 -- 
 2.51.0
 
