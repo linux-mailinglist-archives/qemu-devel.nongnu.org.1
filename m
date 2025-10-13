@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09083BD30AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F999BD3101
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 14:49:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8HvI-0004bJ-07; Mon, 13 Oct 2025 08:45:08 -0400
+	id 1v8HvD-0004WN-Ie; Mon, 13 Oct 2025 08:45:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hv0-0004Ry-05
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:51 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Huw-0004RW-5d
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hur-0007tX-UK
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8Hus-0007u1-09
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 08:44:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760359474;
+ s=mimecast20190719; t=1760359476;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gDa4MlGPXC/kLw04nHyA0sUhKFEOWlwz/Set6pS/fKA=;
- b=jV8zfrMAXn5tfdujvxrr63T33sTBWYyv/eosql0skKSZeS+0PJLpvnuJ5C5wp35VMLjUnA
- bPAdaeFwJ7wzV/2tDi04mv2Nqvwz2leffZJBE6CmK7hlami5aIIn+6U5dAIvSiBGOMb0QV
- Xbci5BQNrUDgbhsP13wXxJizJYhKxGs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=+wLLowZR2JYVxvfqBLFtcuXNC0kQInOKATiif4no2gM=;
+ b=AP/Pyd/LuUTX9KhX2y81kQ1AUGBAo/KB9AWJCw4LEGn4EtZzDsU0eFnpj9VBfeDNSZ8Fta
+ ZB2wCzfTJ68C1bT2fnrVSghJi9azxgja/z61cTB/FpeAT8zN5/y+IdiwYSrgA5W6LlH3Yv
+ QyJRgFAl27CqQxPbr5D/bB88KnGkgWo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-TNj5ifmkO7uwr5Uuop2-eA-1; Mon,
- 13 Oct 2025 08:44:31 -0400
-X-MC-Unique: TNj5ifmkO7uwr5Uuop2-eA-1
-X-Mimecast-MFC-AGG-ID: TNj5ifmkO7uwr5Uuop2-eA_1760359470
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-120-eNHDJ9ZxM3yD-UXWfh3Shw-1; Mon,
+ 13 Oct 2025 08:44:33 -0400
+X-MC-Unique: eNHDJ9ZxM3yD-UXWfh3Shw-1
+X-Mimecast-MFC-AGG-ID: eNHDJ9ZxM3yD-UXWfh3Shw_1760359472
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8CCE9195410A; Mon, 13 Oct 2025 12:44:30 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7B21D180045C; Mon, 13 Oct 2025 12:44:32 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.105])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D4B701800282; Mon, 13 Oct 2025 12:44:28 +0000 (UTC)
+ id 09646180047F; Mon, 13 Oct 2025 12:44:30 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 03/29] tests/functional/arm/test_aspeed_ast1030: Update test
- ASPEED SDK v03.03
-Date: Mon, 13 Oct 2025 14:43:54 +0200
-Message-ID: <20251013124421.71977-4-clg@redhat.com>
+Subject: [PULL 04/29] tests/functional/arm/test_aspeed_ast2500: Update test
+ ASPEED SDK v09.08
+Date: Mon, 13 Oct 2025 14:43:55 +0200
+Message-ID: <20251013124421.71977-5-clg@redhat.com>
 In-Reply-To: <20251013124421.71977-1-clg@redhat.com>
 References: <20251013124421.71977-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -67,8 +67,8 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ TVD_SPACE_RATIO=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,52 +88,35 @@ From: Jamin Lin <jamin_lin@aspeedtech.com>
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251003072107.3530642-2-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251003072107.3530642-3-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/arm/test_aspeed_ast1030.py | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ tests/functional/arm/test_aspeed_ast2500.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_ast1030.py b/tests/functional/arm/test_aspeed_ast1030.py
-index e47b597d0bd9..60e2b0251c6c 100755
---- a/tests/functional/arm/test_aspeed_ast1030.py
-+++ b/tests/functional/arm/test_aspeed_ast1030.py
-@@ -13,17 +13,17 @@
+diff --git a/tests/functional/arm/test_aspeed_ast2500.py b/tests/functional/arm/test_aspeed_ast2500.py
+index 4fdd81e2f95b..5efd104c2b95 100755
+--- a/tests/functional/arm/test_aspeed_ast2500.py
++++ b/tests/functional/arm/test_aspeed_ast2500.py
+@@ -37,14 +37,14 @@ def test_arm_ast2500_evb_buildroot(self):
  
- class AST1030Machine(AspeedTest):
+         self.do_test_arm_aspeed_buildroot_poweroff()
  
--    ASSET_ZEPHYR_3_02 = Asset(
-+    ASSET_ZEPHYR_3_03 = Asset(
-         ('https://github.com/AspeedTech-BMC'
--         '/zephyr/releases/download/v00.03.02/ast1030-evb-demo.zip'),
--        '1ec83caab3ddd5d09481772801be7210e222cb015ce22ec6fffb8a76956dcd4f')
-+         '/zephyr/releases/download/v00.03.03/ast1030-evb-demo.zip'),
-+         '27cd73cdee6374bceb4ee58b3ace87989fa3f0684f4e612510804b588b24d4e0')
+-    ASSET_SDK_V907_AST2500 = Asset(
+-        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2500-default-obmc.tar.gz',
+-        'd52bcc279a37c8d7679b3e4ef22cc77c36f0f6624c687b37334f798828afb077')
++    ASSET_SDK_V908_AST2500 = Asset(
++        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2500-default-obmc.tar.gz',
++        'c0a2ba169efd19be5eb77c50ec2a6afd9d826e196a0be3432f969fc72d4b7c0e')
  
--    def test_arm_ast1030_zephyros_3_02(self):
-+    def test_arm_ast1030_zephyros_3_03(self):
-         self.set_machine('ast1030-evb')
+     def test_arm_ast2500_evb_sdk(self):
+         self.set_machine('ast2500-evb')
  
--        kernel_name = "ast1030-evb-demo-3/zephyr.elf"
-+        kernel_name = "ast1030-evb-demo/zephyr.elf"
-         kernel_file = self.archive_extract(
--            self.ASSET_ZEPHYR_3_02, member=kernel_name)
-+            self.ASSET_ZEPHYR_3_03, member=kernel_name)
+-        self.archive_extract(self.ASSET_SDK_V907_AST2500)
++        self.archive_extract(self.ASSET_SDK_V908_AST2500)
  
-         self.vm.set_console()
-         self.vm.add_args('-kernel', kernel_file, '-nographic')
-@@ -72,8 +72,9 @@ def test_arm_ast1030_zephyros_1_07(self):
-     def test_arm_ast1030_otp_blockdev_device(self):
-         self.vm.set_machine("ast1030-evb")
- 
--        kernel_name = "ast1030-evb-demo-3/zephyr.elf"
--        kernel_file = self.archive_extract(self.ASSET_ZEPHYR_3_02, member=kernel_name)
-+        kernel_name = "ast1030-evb-demo/zephyr.elf"
-+        kernel_file = self.archive_extract(self.ASSET_ZEPHYR_3_03,
-+                                           member=kernel_name)
-         otp_img = self.generate_otpmem_image()
- 
-         self.vm.set_console()
+         self.do_test_arm_aspeed_sdk_start(
+             self.scratch_file("ast2500-default", "image-bmc"))
 -- 
 2.51.0
 
