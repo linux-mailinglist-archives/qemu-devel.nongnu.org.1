@@ -2,100 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B10BD2C5B
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA2FBD2D82
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 13:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8Ght-0007rt-NG; Mon, 13 Oct 2025 07:27:13 -0400
+	id 1v8H29-0003hT-EG; Mon, 13 Oct 2025 07:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8Ghp-0007rI-MK
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v8H28-0003gs-1r
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:48:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8Ghk-0006Ee-Hq
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:27:08 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v8H1z-0000DA-Ej
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 07:48:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760354821;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nXbW3N8gX99+5lwtTmZ4123UvfpZvpKKoarN9yvkUuc=;
- b=hGuOVRjoW0DMWWjoa2L/vFPQBVXSGgOfN8yO8Yah0bV5EWCj7BSCMopfXDHS65mJ+x7LuB
- 8hOGpUsWz7wVITC60X4HTaCmVTunx4vbm1bIzJTvjtVsFy++l5fOJudNzCD7lsVhM0MlrQ
- aN0WkllutH1QyLLgisehdChMiAKpgWM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-R89GVmBsMD2Iu3cV3uRBMg-1; Mon, 13 Oct 2025 07:26:59 -0400
-X-MC-Unique: R89GVmBsMD2Iu3cV3uRBMg-1
-X-Mimecast-MFC-AGG-ID: R89GVmBsMD2Iu3cV3uRBMg_1760354818
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-6365fb32d66so4754425a12.0
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 04:26:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760354817; x=1760959617;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nXbW3N8gX99+5lwtTmZ4123UvfpZvpKKoarN9yvkUuc=;
- b=i4WPoVLbdUXcU7+sHikfRB6fq/rIOxGySJNfm4s1EgA11vUb37rmnvjifDrYrfZatP
- szz85u8aY2godt4KDB4pz3/pF/QRRq53Lji17vgh8c3I0D1abKnqlnrH4D6LiX3vWGDQ
- vATfcWWfI1bU4s3PyhDb+KKtVEEIos5sAC1nEwIId92SGlZkj1D6pEQafBcd2/+UHjBk
- kZyDiikfgwpG9erV+ubIG+TI+t4sdpQf2zR6iCDyqlBZQl2RZBT97lBiO67XFyXeBWwr
- x9sMgRfyNJFaHMtop0qhUpw82n0mOmcmZeTeqKg8vM/luZt2Dfio7uVFyfKSB4rlxPa7
- RedQ==
-X-Gm-Message-State: AOJu0YwsxLdMYWoXvyq4OTFH0qOPXl4ocyIU29u7iGNI++Rf5jP+2o6t
- 7SSHbl2rvZVl6Ctlc76Bhg58JQkoHyKS65sbx4Z773lmuzUiKAqo8mfdeaAXtwLZnTV691E8+i0
- dKL/yq9nsBp2go3xAxbjYuR+y5XxTWPV1xhr8O9whykfzihnjRrYNSPOpJb6Cxqya5mmH2Qa15Y
- j5NTeWMfXYzxE9vn9xO/FMiDvGt7X3MSYF1HZiHiHS
-X-Gm-Gg: ASbGncsRnB+0QWLmXfZNQkbuTtdiKRY0WaSVWSmaiOUCucsWgEsLO08bQ/LbKLOkYSp
- lNPyXT9e++8TpNHSO1c5AmO7auQ7MBY6WL4fncR3LCP3mYkLJ3DLe/A9Lt6gnQOUAzo7OtqWJz0
- q1TS63pZYu9W7SJ3nF4A07ldQNpSCwPx+7GQpok54PfHByxQhDIvFy//57GPZX2O/0NpGLXnpxs
- ygqxY5c6XeHpMaz6DlYrznbqrdE/8SxWZ1ighOILetoDAMg4J1G573PWYX7+04iFMwjlWhKHuHE
- 4CUGtrbIdsx4bu0JIztK1hZxI4xLOWC5L2z/pQQnmqNOfasv3ghK+QL6QNwtftZFv7tzY5NMBZD
- LPXiUArSIqqRSJoeb9PwlU8eZfHRZaPkzpPfm7Qc4FyU=
-X-Received: by 2002:a05:6402:278f:b0:637:dfb1:339e with SMTP id
- 4fb4d7f45d1cf-639d5b57a36mr17958878a12.5.1760354817479; 
- Mon, 13 Oct 2025 04:26:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEis6t2y7JR5br06DhN6aFKBpDTSbvvxJZ6BapbwXDWvBCNFi9BEIIKbOvIkFs0b7nQqrKQwQ==
-X-Received: by 2002:a05:6402:278f:b0:637:dfb1:339e with SMTP id
- 4fb4d7f45d1cf-639d5b57a36mr17958848a12.5.1760354816910; 
- Mon, 13 Oct 2025 04:26:56 -0700 (PDT)
-Received: from [192.168.10.48] ([151.61.22.175])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63a5235e7fasm8593722a12.7.2025.10.13.04.26.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Oct 2025 04:26:55 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Praveen K Paladugu <prapal@microsoft.com>,
- Magnus Kulke <magnuskulke@linux.microsoft.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/2] monitor: generalize query-mshv/"info mshv" to
- query-accelerators/"info accelerators"
-Date: Mon, 13 Oct 2025 13:26:50 +0200
-Message-ID: <20251013112650.935921-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013112650.935921-1-pbonzini@redhat.com>
-References: <20251013112650.935921-1-pbonzini@redhat.com>
+ s=mimecast20190719; t=1760356076;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=sNnPTYbZCyewx5ZyqMD2+eJux9WBiG9bPY+F35szlDk=;
+ b=Ak3+UBjTZCAjUQRgrMXbLFvlcJE0TNVBzMcTMqrKEH9mcvkFGMOM6VNgP1H2/zmV6IO1f4
+ RDHJu68o2/rH2ORLc6MzpexQ7hslswoUN3ppenuCiKfOCZn2h2blNry0X0c5E0MgASUwYJ
+ MjQfSeU+RzcYitFKyRSpATllLzR9JO0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-nGZjns8CPnuoWHaXFK-qBA-1; Mon,
+ 13 Oct 2025 07:47:53 -0400
+X-MC-Unique: nGZjns8CPnuoWHaXFK-qBA-1
+X-Mimecast-MFC-AGG-ID: nGZjns8CPnuoWHaXFK-qBA_1760356071
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1CF881800578; Mon, 13 Oct 2025 11:47:50 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.40])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 759421954102; Mon, 13 Oct 2025 11:47:42 +0000 (UTC)
+Date: Mon, 13 Oct 2025 12:47:38 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
+ qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>
+Subject: Re: [RFC PATCH] docs/system/security: Restrict "virtualization use
+ case" to specific machines
+Message-ID: <aOzm2ukHfkPF-zhT@redhat.com>
+References: <20250908125058.220973-1-peter.maydell@linaro.org>
+ <20250908104125-mutt-send-email-mst@kernel.org>
+ <46AA9C03-CA7E-4C4B-AD05-A9053666BA52@gmail.com>
+ <20251013070945-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251013070945-mutt-send-email-mst@kernel.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,222 +94,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The recently-introduced query-mshv command is a duplicate of query-kvm,
-and neither provides a full view of which accelerators are supported
-by a particular binary of QEMU and which is in use.
+On Mon, Oct 13, 2025 at 07:12:31AM -0400, Michael S. Tsirkin wrote:
+> On Mon, Oct 13, 2025 at 10:40:36AM +0000, Bernhard Beschow wrote:
+> > 
+> > 
+> > Am 8. September 2025 14:45:40 UTC schrieb "Michael S. Tsirkin" <mst@redhat.com>:
+> > >On Mon, Sep 08, 2025 at 01:50:57PM +0100, Peter Maydell wrote:
+> > >> Currently our security policy defines a "virtualization use case"
+> > >> where we consider bugs to be security issues, and a
+> > >> "non-virtualization use case" where we do not make any security
+> > >> guarantees and don't consider bugs to be security issues.
+> > >> 
+> > >> The rationale for this split is that much code in QEMU is older and
+> > >> was not written with malicious guests in mind, and we don't have the
+> > >> resources to audit, fix and defend it.  So instead we inform users
+> > >> about what the can in practice rely on as a security barrier, and
+> > >> what they can't.
+> > >> 
+> > >> We don't currently restrict the "virtualization use case" to any
+> > >> particular set of machine types.  This means that we have effectively
+> > >> barred ourselves from adding KVM support to any machine type that we
+> > >> don't want to put into the "bugs are security issues" category, even
+> > >> if it would be useful for users to be able to get better performance
+> > >> with a trusted guest by enabling KVM. This seems an unnecessary
+> > >> restriction, and in practice the set of machine types it makes
+> > >> sense to use for untrusted-guest virtualization is quite small.
+> > >> 
+> > >> Specifically, we would like to be able to enable the use of
+> > >> KVM with the imx8 development board machine types, but we don't
+> > >> want to commit ourselves to having to support those SoC models
+> > >> and device models as part of QEMU's security boundary:
+> > >> https://lore.kernel.org/qemu-devel/20250629204851.1778-3-shentey@gmail.com/
+> > >> 
+> > >> This patch updates the security policy to explicitly list the
+> > >> machine types we consider to be useful for the "virtualization
+> > >> use case".
+> > >
+> > >This use-case sounds reasonable to me. I also imagine that
+> > >some machines can get fixed down the road perhaps to
+> > >the point where they enter the "virtualization use case".
+> > >
+> > >However, since we are
+> > >getting this elaborate, would my old idea of a runtime flag
+> > >make sense now?
+> > >
+> > >To recap, the idea was to add a "-virt" flag that will
+> > >block any machines, devices and so on not considered
+> > >part of the "virtualization use case".
+> > >
+> > >We could also create a mechanism for downstreams to
+> > >tweak this as they see fit.
+> > 
+> > Hi Michael,
+> > 
+> > Thanks for confirming that the use case seems reasonable.
+> > 
+> > For now, we'd like to sharpen the term "virtualization use case" to allow for KVM to be usable in machines that aren't inside the security boundary and where maintenance commitment is unrealistic. The current approach is to adjust the policy and to spell out the machines where these commitments are made.
+> > 
+> > The trigger for this RFC was to be able to add KVM support to the imx8mp-evk machine. I have it working but can't currently upstream it due to our policy. It asks for unreasonable work and commitment which adds an unjustifyable burden on the maintainers.
+> > 
+> > I do see a need for further enhancements on the broader topic like adding a -virt switch etc. Maybe we should come up with a different term than "virtualization use case" which appears to leave a lot of room for interpretation. I propose these topics to be addressed separately.
+> > 
+> > What is missing for your R-b?
+> > 
+> > Thanks,
+> > Bernhard
+> 
+> rebase on top of this:
+> https://lore.kernel.org/all/20250926140144.1998694-1-berrange@redhat.com
+> 
+> if there's anything missing there, add it.
 
-KVM was the first accelerator added to QEMU, predating QOM and TYPE_ACCEL,
-so it got a pass.  But now, instead of adding a badly designed copy, solve
-the problem completely for all accelerators with a command that provides
-the whole picture:
+I don't think that its desirable to rebase on top of that series,
+as it is liable to unduly delay Bernhard's work.
 
-    >> {"execute": "query-accelerators"}
-    << {"return": {"enabled": "tcg", "present": ["kvm", "mshv", "qtest", "tcg", "xen"]}}
+With a very minimal wording tweak our current defined policy could
+avoid being a blocker for enabling KVM in imx8mp-evk. In
 
-Cc: Praveen K Paladugu <prapal@microsoft.com>
-Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+  https://www.qemu.org/docs/master/system/security.html
 
- fixup a0df118f73f # fff
----
- qapi/accelerator.json      | 47 +++++++++++++++++++++++++++++---------
- include/monitor/hmp.h      |  2 +-
- hw/core/machine-hmp-cmds.c | 21 +++++++++--------
- hw/core/machine-qmp-cmds.c | 20 ++++++++++++----
- hmp-commands-info.hx       | 15 ++++++++----
- 5 files changed, 74 insertions(+), 31 deletions(-)
+where it describes the "virtualization use case", we could simply
+tweak it to always require a versioned machine type
 
-diff --git a/qapi/accelerator.json b/qapi/accelerator.json
-index 664e0272465..2b920608847 100644
---- a/qapi/accelerator.json
-+++ b/qapi/accelerator.json
-@@ -56,30 +56,55 @@
-   'features': [ 'unstable' ] }
- 
- ##
--# @MshvInfo:
-+# @Accelerator:
- #
- # Information about support for MSHV acceleration
- #
--# @enabled: true if MSHV acceleration is active
-+# @hvf: Apple Hypervisor.framework
- #
--# @present: true if MSHV acceleration is built into this executable
-+# @kvm: KVM
-+#
-+# @mshv: Hyper-V
-+#
-+# @nvmm: NetBSD NVMM
-+#
-+# @qtest: QTest (dummy accelerator)
-+#
-+# @tcg: TCG (dynamic translation)
-+#
-+# @whpx: Windows Hypervisor Platform
-+#
-+# @xen: Xen
- #
- # Since: 10.2.0
- ##
--{ 'struct': 'MshvInfo', 'data': {'enabled': 'bool', 'present': 'bool'} }
-+{ 'enum': 'Accelerator', 'data': ['hvf', 'kvm', 'mshv', 'nvmm', 'qtest', 'tcg', 'whpx', 'xen'] }
- 
- ##
--# @query-mshv:
-+# @AcceleratorInfo:
- #
--# Return information about MSHV acceleration
-+# Information about support for various accelerators
- #
--# Returns: @MshvInfo
-+# @enabled: the accelerator that is in use
- #
--# Since: 10.0.92
-+# @present: the list of accelerators that are built into this executable
-+#
-+# Since: 10.2.0
-+##
-+{ 'struct': 'AcceleratorInfo', 'data': {'enabled': 'Accelerator', 'present': ['Accelerator']} }
-+
-+##
-+# @query-accelerators:
-+#
-+# Return information about accelerators
-+#
-+# Returns: @AcceleratorInfo
-+#
-+# Since: 10.2.0
- #
- # .. qmp-example::
- #
--#     -> { "execute": "query-mshv" }
--#     <- { "return": { "enabled": true, "present": true } }
-+#     -> { "execute": "query-accelerators" }
-+#     <- { "return": { "enabled": "mshv", "present": ["kvm", "mshv", "qtest", "tcg"] } }
- ##
--{ 'command': 'query-mshv', 'returns': 'MshvInfo' }
-+{ 'command': 'query-accelerators', 'returns': 'AcceleratorInfo' }
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index 31bd812e5f4..897dfaa2b6d 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -24,7 +24,7 @@ strList *hmp_split_at_comma(const char *str);
- void hmp_info_name(Monitor *mon, const QDict *qdict);
- void hmp_info_version(Monitor *mon, const QDict *qdict);
- void hmp_info_kvm(Monitor *mon, const QDict *qdict);
--void hmp_info_mshv(Monitor *mon, const QDict *qdict);
-+void hmp_info_accelerators(Monitor *mon, const QDict *qdict);
- void hmp_info_status(Monitor *mon, const QDict *qdict);
- void hmp_info_uuid(Monitor *mon, const QDict *qdict);
- void hmp_info_chardev(Monitor *mon, const QDict *qdict);
-diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-index 682ed9f49b8..74a56600be8 100644
---- a/hw/core/machine-hmp-cmds.c
-+++ b/hw/core/machine-hmp-cmds.c
-@@ -163,19 +163,22 @@ void hmp_info_kvm(Monitor *mon, const QDict *qdict)
-     qapi_free_KvmInfo(info);
- }
- 
--void hmp_info_mshv(Monitor *mon, const QDict *qdict)
-+void hmp_info_accelerators(Monitor *mon, const QDict *qdict)
- {
--    MshvInfo *info;
-+    AcceleratorInfo *info;
-+    AcceleratorList *accel;
- 
--    info = qmp_query_mshv(NULL);
--    monitor_printf(mon, "mshv support: ");
--    if (info->present) {
--        monitor_printf(mon, "%s\n", info->enabled ? "enabled" : "disabled");
--    } else {
--        monitor_printf(mon, "not compiled\n");
-+    info = qmp_query_accelerators(NULL);
-+    for (accel = info->present; accel; accel = accel->next) {
-+        char trail = accel->next ? ' ' : '\n';
-+        if (info->enabled == accel->value) {
-+            monitor_printf(mon, "[%s]%c", Accelerator_str(accel->value), trail);
-+        } else {
-+            monitor_printf(mon, "%s%c", Accelerator_str(accel->value), trail);
-+        }
-     }
- 
--    qapi_free_MshvInfo(info);
-+    qapi_free_AcceleratorInfo(info);
- }
- 
- void hmp_info_uuid(Monitor *mon, const QDict *qdict)
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index e24bf0d97bf..51d5c230f7e 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -31,15 +31,25 @@
- #include <sys/stat.h>
- 
- /*
-- * QMP query for MSHV
-+ * QMP query for enabled and present accelerators
-  */
--MshvInfo *qmp_query_mshv(Error **errp)
-+AcceleratorInfo *qmp_query_accelerators(Error **errp)
- {
--    MshvInfo *info = g_malloc0(sizeof(*info));
-+    AcceleratorInfo *info = g_malloc0(sizeof(*info));
-+    AccelClass *current_class = ACCEL_GET_CLASS(current_accel());
-+    int i;
- 
--    info->enabled = mshv_enabled();
--    info->present = accel_find("mshv");
-+    for (i = ACCELERATOR__MAX; i-- > 0; ) {
-+        const char *s = Accelerator_str(i);
-+        AccelClass *this_class = accel_find(s);
- 
-+        if (this_class) {
-+            QAPI_LIST_PREPEND(info->present, i);
-+            if (this_class == current_class) {
-+                info->enabled = i;
-+            }
-+        }
-+    }
-     return info;
- }
- 
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index c2aa40056bb..25b4aed51f5 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -308,16 +308,21 @@ SRST
- ERST
- 
-     {
--        .name       = "mshv",
-+        .name       = "accelerators",
-         .args_type  = "",
-         .params     = "",
--        .help       = "show MSHV information",
--        .cmd        = hmp_info_mshv,
-+        .help       = "show present and enabled information",
-+        .cmd        = hmp_info_accelerators,
-     },
- 
- SRST
--  ``info mshv``
--    Show MSHV information.
-+  ``info accelerators``
-+    Show which accelerators are compiled into a QEMU binary, and what accelerator
-+    is in use. For example::
-+
-+        kvm qtest [tcg]
-+
-+    indicates that TCG in use, and that KVM and qtest are also available.
- ERST
- 
-     {
+Change
+
+  "These use cases rely on hardware virtualization extensions
+   to execute guest code safely on the physical CPU at close-
+   to-native speed."
+
+To say
+
+  "These use cases apply to versioned machine types when used
+   in combination with hardware virtualization extensions
+   to execute guest code safely on the physical CPU at close-
+   to-native speed"
+
+Since imx8mp-evk won't be a versioned machine type, it is thus
+trivially excluded, without us having to enumerate all machine
+types int he docs.
+
+
+With regards,
+Daniel
 -- 
-2.51.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
