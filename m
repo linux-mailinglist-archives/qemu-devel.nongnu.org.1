@@ -2,64 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1404ABD1BA3
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 09:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4E9BD1BF4
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 09:12:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8CXz-0001eh-5m; Mon, 13 Oct 2025 03:00:43 -0400
+	id 1v8CiX-0005p7-7H; Mon, 13 Oct 2025 03:11:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v8CXw-0001eF-DW; Mon, 13 Oct 2025 03:00:40 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ id 1v8CiP-0005iN-Rk
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 03:11:31 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1v8CXr-0002QK-JA; Mon, 13 Oct 2025 03:00:40 -0400
+ id 1v8CiM-0003bs-Bg
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 03:11:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760338836; x=1791874836;
+ t=1760339486; x=1791875486;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=TwRmDYCfqedlrRkRKtNhpPjaMyBXRJ69Lq00zKHhL+M=;
- b=L3QW0sWjlYF/rzLOgBwWjpXEQgea550RfQDnAb6NBdiqVUHk2VnKW8QP
- OTQFfvii+Z0CBg/poQ00VYxLObNNZ1tjNnu5Y+Re4sevAmgB9dlrkqNhN
- 9By4HtKjRm2eOqzKwmwpD7O215esjg/hs3x9zXBxqv7SRL1uvjbVXvkxp
- PTDmMnZWR8KP1jhRzpjQfN94ZZWrS5GeBNX+jKDJytZGuA1wMb8y2GIJQ
- TkhwmuEho5q08hw9TNRccKKWoVYVabBq11dvrCC2NejqcdrNM5k6Onstv
- VbdfV8TmoRNckVXPTt2manlkQxuc+JEzddv2LluF6MEEdOc6Aoo2oQrCU Q==;
-X-CSE-ConnectionGUID: UQUBpumBSoOtPPPj2ZFQeg==
-X-CSE-MsgGUID: xe3UmPBSR96Do0u5fIug8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11580"; a="73817725"
-X-IronPort-AV: E=Sophos;i="6.19,224,1754982000"; d="scan'208";a="73817725"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 00:00:29 -0700
-X-CSE-ConnectionGUID: hnpqhbFORkeJV2lCcLSGnw==
-X-CSE-MsgGUID: 76LzoSzYR5SndkQOCSuo7A==
+ bh=M2Q7qIm8s1tX8Cfy27fSVfpbtAGIBwPTsmRQVLTKYgs=;
+ b=mMfRG9fPJuIYX+SZY1z3+b1M/gBWZvUFvjbspzHpXlY1Dk6ExODZfLHz
+ HLybOfQr3NcVDamOB0MMOJBFCL6Hf4SyFEruPpppeYkcppvtavwUxJenI
+ zfmLV2iGZfQ2uIPvwLpw8+yAjauE7s9bTobV9da+vHJSWfwmxcMi1KLuc
+ hjmSm5LF0o5cbxe4QlZ+HDIx1gVYSF/f1ugCZnQeKMJCFq4b+NTKLQecC
+ Zei/VZkrmfYZOIWATAkzh+k39CPcg1E1QHK0uLlISj6owLYT+Mjndrt3i
+ uZ3cmpGVWZHXtTyfK4TbUSLLJJI7UYOulN17nhu83TEZNHvf+Q4WFblqp w==;
+X-CSE-ConnectionGUID: Y59IcQpsS26IpFPab/dh9Q==
+X-CSE-MsgGUID: mj3ZivS6RiC7So2BX2jCgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11580"; a="66326742"
+X-IronPort-AV: E=Sophos;i="6.19,224,1754982000"; d="scan'208";a="66326742"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 00:11:21 -0700
+X-CSE-ConnectionGUID: ZKVcirKKShuVpruUzj+HVg==
+X-CSE-MsgGUID: mjOFIC6rSm+e4ojnOa/P2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,224,1754982000"; d="scan'208";a="181960118"
+X-IronPort-AV: E=Sophos;i="6.19,224,1754982000"; d="scan'208";a="181951775"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa008.fm.intel.com with ESMTP; 13 Oct 2025 00:00:27 -0700
-Date: Mon, 13 Oct 2025 15:22:32 +0800
+ by fmviesa009.fm.intel.com with ESMTP; 13 Oct 2025 00:11:17 -0700
+Date: Mon, 13 Oct 2025 15:33:22 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- hector.cao@canonical.com, lk@c--e.de, berrange@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-stable <qemu-stable@nongnu.org>
-Subject: Re: [RFT PATCH v2 0/2] Fix cross migration issue with missing
- features: pdcm, arch-capabilities
-Message-ID: <aOyouIh//WY+EkKb@intel.com>
-References: <20250923104136.133875-1-pbonzini@redhat.com>
- <aNVrAkx+ahn7ZRns@intel.com>
- <8a754d6c-1d8c-43d7-b3f8-a4b3e194d30e@tls.msk.ru>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v9 02/21] hw/core/machine: Support modules in -smp
+Message-ID: <aOyrQl4WqqU0wVc4@intel.com>
+References: <20240227103231.1556302-1-zhao1.liu@linux.intel.com>
+ <20240227103231.1556302-3-zhao1.liu@linux.intel.com>
+ <87plwgzzc4.fsf@pond.sub.org> <87jz14qp57.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8a754d6c-1d8c-43d7-b3f8-a4b3e194d30e@tls.msk.ru>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <87jz14qp57.fsf@pond.sub.org>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -84,106 +95,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 10, 2025 at 08:40:56PM +0300, Michael Tokarev wrote:
-> Date: Fri, 10 Oct 2025 20:40:56 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [RFT PATCH v2 0/2] Fix cross migration issue with missing
->  features: pdcm, arch-capabilities
+On Thu, Oct 09, 2025 at 01:40:36PM +0200, Markus Armbruster wrote:
+> Date: Thu, 09 Oct 2025 13:40:36 +0200
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: [PATCH v9 02/21] hw/core/machine: Support modules in -smp
 > 
-> On 9/25/25 19:17, Zhao Liu wrote:
-> > On Tue, Sep 23, 2025 at 12:41:34PM +0200, Paolo Bonzini wrote:
-> > > Date: Tue, 23 Sep 2025 12:41:34 +0200
-> > > From: Paolo Bonzini <pbonzini@redhat.com>
-> > > Subject: [RFT PATCH v2 0/2] Fix cross migration issue with missing
-> > >   features: pdcm, arch-capabilities
-> > > X-Mailer: git-send-email 2.51.0
-> > > 
-> > > Add two compatibility properties to restore legacy behavior of machine types
-> > > prior to QEMU 10.1.  Each of them addresses the two changes to CPUID:
-> > > 
-> > > - ARCH_CAPABILITIES should not be autoenabled when the CPU model specifies AMD
-> > >    as the vendor
-> > > 
-> > > - specifying PDCM without PMU now causes an error, instead of being silently
-> > >    dropped in cpu_x86_cpuid.
-> > > 
-> > > Note, I only tested this lightly.
-> > 
-> > Sorry for late.
-> > 
-> > I found the previous 2 fixes were merged into stable 10.0:
-> > 
-> > 24778b1c7ee7aca9721ed4757b0e0df0c16390f7
-> > 3d26cb65c27190e57637644ecf6c96b8c3d246a3
-> > 
-> > Should stable 10.0 revert these 2 fixes, to ensure migration
-> > compatibility?
-
-Sorry for late...just return from vacation.
-
-> Now when I think about it.
+> Markus Armbruster <armbru@redhat.com> writes:
 > 
-> There were at least 2 point releases of 10.0.x (10.0.4 & 10.0.5)
-> with these 2 patches already.
-
-EMM, it seems 10.0.x (x < 4) can't migrate to 10.0.y (4 <= y <= 5),
-right? If so, could we treat this behavior as a regression?
-
-> Reverting them in 10.0 will make
-> 10.0 to be non-migratable with itself (10.0.5 can't be migrated
-> to 10.0.6 if we'll release 10.0.6 with these 2 patches reverted).
+> > Zhao Liu <zhao1.liu@linux.intel.com> writes:
+> >
+> >> From: Zhao Liu <zhao1.liu@intel.com>
+> >>
+> >> Add "modules" parameter parsing support in -smp.
+> >>
+> >> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> >> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> >> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> >
+> > QAPI schema
+> > Acked-by: Markus Armbruster <armbru@redhat.com>
 > 
-> Also, as far as I can see (and I asked about this some 5 times
-> already, with no one answering - is it that difficult?) - we
-> should pick this series (pdcm, arch-capabilities) to 10.1.x stable
-> series too, since we can't migrate from previous versions to 10.1
-> which has the two changes mentioned above.
-
-I think so. in this series, Paolo added compat options in pc_compat_10_0
-so it should be picked to stable v10.1.
-
-> It looks to me - since the breakage is already done, and both 10.0
-> and 10.1 is broken, we should declare the current situation as a
-> status quo, and do the following:
+> I missed something.  The patch added @modules without updating "The
+> ordering from ...":
 > 
-> 1. keep the above mentioned 24778b1c7ee7a and 3d26cb65c27190e5 in
->    10.0.x (instead of reverting them);
+>     ##
+>     # @SMPConfiguration:
+>     #
+>     # Schema for CPU topology configuration.  A missing value lets QEMU
+>     # figure out a suitable value based on the ones that are provided.
+>     #
+>     # The members other than @cpus and @maxcpus define a topology of
+>     # containers.
+>     #
+> --> # The ordering from highest/coarsest to lowest/finest is: @drawers,
+> --> # @books, @sockets, @dies, @clusters, @cores, @threads.
 > 
-> 2. pick up this 2 patches (fix cross migration issue with missing
->    pdcm, arch-capabilities) to 10.1.x (it should be done either way,
->    I think);
-
-IIUC, if we picked current compat options to stable v10.1, then stable
-v10.1 requires previous v10.0 sets the pdcm & arch-cap bits (i.e., do
-not apply the fixes or revert the previous fix).
-
-So it seems the reverts are unavoidable on v10.0?
-
-(Let's see what Paolo and the other maintainers think.)
-
-> 3. on top of these 2 "missing features: pdcm, arch-capabilities",
->    make the crossing line for before-10.0, not for before-10.1 series, -
->    ie, consider 10.0 *also* has these properties, but 9.2 and before
->    are not.
+> Where does it go in this list?
 > 
-> This too will make 10.0.5 => 10.0.6 non-migrateable, just like if
-> I'll revert 24778b1c7ee7a and 3d26cb65c27190e5 in 10.0.  But this way
-> we will also have these bugs fixed in 10.0.  And all subsequent
-> versions of 10.0 and 10.1 will be migratable again.
-> 
-> Please, don't be quiet this time, - I need your comments for this
-> matter, because I don't understand well enough how migration works.
-> 
-> Cc'ing Peter too, because I'm stuck here and no my questions are
-> getting answered.. maybe he can help to at least clear some questions.
+> The order below suggests between @clusters and @modules.
 
-This issue is indeed quite tricky. Sometimes people (including myself)
-assume that backporting fixes to the stable branch can avoid adding a
-compat option. Now it seems the compat option is the better choice, as
-users need to ensure migration rather than downtime before upgrading to
-the stable version :-(.
+Thanks Markus! I missed this case... sorry for that.
 
-Thanks,
+And you're right, @module is between @clusters and @modules.
+
+I'll submit a patch to fix this doc!
+
+Regards,
 Zhao
 
 
