@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20CEBD5EBA
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BD1BD5EAE
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Oct 2025 21:19:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8O4S-0006qG-Pq; Mon, 13 Oct 2025 15:19:00 -0400
+	id 1v8O4V-00075L-4D; Mon, 13 Oct 2025 15:19:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4P-0006l3-Q1
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:58 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4S-0006xF-MF
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:19:00 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4M-0001sp-T9
- for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:18:57 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-46e2e363118so39131735e9.0
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8O4Q-0001t9-ND
+ for qemu-devel@nongnu.org; Mon, 13 Oct 2025 15:19:00 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-42421b1514fso2281270f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 12:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760383131; x=1760987931; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760383136; x=1760987936; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ezt+z2zqy28XBUfCShfQnBxAW4qjR8fLU+BoSrNZSxI=;
- b=WX99JstGgjuox25nwf4Buie0902h/jJ+HdDNJ+ul3QAOkNbQGZaoIu/HXUVC7ewKlg
- 5NC2gWZ9zynSoHrG54MCs7WUSeodcNcn71CRySlv25WwwrXv3AaSG2EnIt1yn1kiQ0MH
- oqCpCi4jPhPAkvVBezbIWMFcxwchIWD7PfmlWdG68kPLP2/vidvB7hCgb6qLzDx0By3H
- 3yFT1cFn4y/QD9bXb2T0+g/sDQS/NWcm0VpzRzLwajMXppup2bslsG9rhibaNN2DyDOE
- LVvqQDmZwtWJV5SXIp0Jy3z+oRujVYdvdCJjJhQTIJmjcrm/FlO6DVdm9zGIDU4O04x5
- IzVg==
+ :reply-to; bh=CB1VK/yjYxp4/URxQ/T4/YFokgwgN5AuNNyA+7xghsY=;
+ b=SwcptS4q6/A/LRiXBBC3bxPzg8J3+9dhBk80nOKREk0DBQWR7D4NO3IjDp0xSAqzLj
+ IEw2/9sevVi/Spsaxeu7X8EDSZwHZySnnYXVVjf/DHtimfrXJ90RlRn3dvYLLmf3XhGw
+ TOc2E9IiBi7KmgldcZIOdGQ7j/1vTWRE5u5RiDu7kwRMgBD+9S6u/G7l3cL+3Yl4hPo+
+ ypf74sehHbCwNUcdRBvexWkNVsvJVNTgMbT41/BKEmBrr8kQp7S4R3vFhKlQmGLShuUe
+ Vzy6hXLjpyCscfeJYYEakxqzeMhQpP5mF02yX3nIzLxGlqr4wskn6SPHcY48h3ZPa+o7
+ izXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760383131; x=1760987931;
+ d=1e100.net; s=20230601; t=1760383136; x=1760987936;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ezt+z2zqy28XBUfCShfQnBxAW4qjR8fLU+BoSrNZSxI=;
- b=ekmZmRzvuDvWmd0sX7nBDC9v/VifVrLcEjfiYjVb+izY2K/BJYxyGgoZCCgEgWCJ1W
- 8Ip9trT6oHMWcMHik+fKA5SOYZqWBSdGm6HtBldqq9mSqMdP0Mio4Od+MB5wDKkvesav
- 8MTAq6lSpW6rc6vNYM/6Aj25LzmZTfEjVnm40lsj16GU22hQHdupiqTTZZmM97X+lTy4
- aRytJZWNFDApnevmnwopwAwRmTMIs1CApwCzl2IGxNTnrn38HQCgXhMFVHfqVjkHUMHm
- TZ5Lqy9rjG31ilN9Nj03H8PrqYSwRAqOKdFih6ezvBy1btsfT3vhc9AZVBd+p7tnuTZS
- NKsw==
-X-Gm-Message-State: AOJu0Yx2d1ujxHsbYB6dcpY8/YOHjRlEkTsGGSWW2iAr7vywba1Rthgi
- FiBak7a7gZnvemKfNiNI5p2jkrPKAzm6dDACBUpPG5Uut5583ARNYtCZ8W0C7g/bJ8g+p+Aj2UI
- nTeIzDXFwog==
-X-Gm-Gg: ASbGncuXvieTtMLvGLyK44ZJmmjwXU7OuVIw7ti0XW7d9/hPCjBIPd3EOGQOu8teevz
- LstBi/iBuVTl3StpZ7Fx75el0LYZQwt7wr01kQXxUVqW3XeqMm6/OQe2qAIFOBbYVf4Vcb7TSM4
- gnQkjKifWhEOqQsVuvahj//PQpFDB4oHZ6JFnKsSL7dfjnJwSznKokH29EzqyhcO+1Yc5RxOs82
- Mirj+5Q6aXwFvfliu6Z0CuZQfnGzGye/cyj+ZYB+Y5xcINzcUTFtXghN/gPPO7UUCT0HBfP3Qeq
- I89j2RgDDFI90Vup6ZM5bPdjMPutUCYuwJm0pgVVPy0WFfgj/q7XDHcVW+3sLiBwzN7Xkmw3CVZ
- jB9sRuNmuKhAt6ENj8jSC3U3+fwZcd20MLYi+vPJAb4h7JUilug0q+JzOGCGk/cpfexfnr1ce18
- zHoOviU6xfj/In87DYRNMlb4Wtyxntwg==
-X-Google-Smtp-Source: AGHT+IGt3D3aRphYd2Zw92sEQIv24gJhiXDWK4kDBC2x2zTnGqbiEQ1WzJvKSIwNzg4uiQ6zsYIoeQ==
-X-Received: by 2002:a05:600d:416a:b0:46e:3f75:da49 with SMTP id
- 5b1f17b1804b1-46fa9b11794mr156207145e9.37.1760383131482; 
- Mon, 13 Oct 2025 12:18:51 -0700 (PDT)
+ bh=CB1VK/yjYxp4/URxQ/T4/YFokgwgN5AuNNyA+7xghsY=;
+ b=kfWGf39q4bM/g+DUDkumugwA4T2iLOITjnx6RyWXr085me8EAAarrkylJVdhmqc5vt
+ Gc+5yzJnNyp0/YBM8ulbIY5aHRxZCPtnZtaK6pLTyhIwCgq+eMfmus+jmoVcNcJqBwYG
+ P2rzhcHi8oymjHVmqQrGQt/sYsnJgvw1m5cpHW+ffOIuneg3BXDCbD9u3hVO9EA3N8Ft
+ CoLCBEFFc4sGW+gXJJOVJMGqoIBfTEP76U9QN2JqIyPIwNh+wUfxNeKYP2KbpTZFlquq
+ ls6MmzHo9KRaS/+JBLhEHPBxYkUoBVPpwAiP5uY4KS8QD/t+UFz66csEhN0tPTT1CqcX
+ xfIQ==
+X-Gm-Message-State: AOJu0Yx9PZ5Fc8HXcdLODIf0gaRJV50C1hJCOUMC72lKU5FytYWHi3YG
+ BqyLGp11dG5qA0y63J0PD3pNVYXmdJngNpKI6ujuCKecVJmJPcVSE3WEthRiIff6xWsywEAQl6R
+ 36wpBU2gORA==
+X-Gm-Gg: ASbGncubvM2mivwrkluL0OSJpy4PVBXaihvQIspLl5ZZtcPlhpNqW4VbP6BCZacGiEy
+ M3efz5uZu+YO38HkFWQE6qRxCAXReGIINuAPjvQKAuXkiQwd9zOQmXB++EmNAvl+LwlVBEkTfZf
+ /vQWSbJfUSNlDcGx4U+PibM3E3UeW8mSl9QVWYFJqpTRkgUPqj1ywMO+pbiikJhcjluH5j8KcsQ
+ cIwZvpEcsRsJoWvVp2e7Y8ScJavhz6TdLbCBNDVww5/o49LaIAGU60OVnlMTGzCJbAqdF4i6GbN
+ 2ie93my17fZS9AATqNn0Qk13o8EnI2oRt8HDDKfALmfKYAtrCZJLYyx64VFrzQa9+08u9kVmPXp
+ PPzt2ZMTuox88v/8Cn1AXJclYBG+gs3KpzBum0Oma64YDAnOkQexEIKvWvXBlC02ayKEYiyTTGV
+ DhyPbFsPSupuzm1uyDr0Y=
+X-Google-Smtp-Source: AGHT+IEZ/inCgUIVwBHqWsvqvOAAgAj78jhcsdU8s7M8LaGWyvxttBitBVrHVlfX2bWU77Rdoj2lgg==
+X-Received: by 2002:a05:6000:24c5:b0:426:ee08:8eb4 with SMTP id
+ ffacd0b85a97d-426ee0893bemr181012f8f.44.1760383135974; 
+ Mon, 13 Oct 2025 12:18:55 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fab633cdasm133419805e9.9.2025.10.13.12.18.50
+ ffacd0b85a97d-426ce5833dcsm19579127f8f.19.2025.10.13.12.18.55
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Oct 2025 12:18:51 -0700 (PDT)
+ Mon, 13 Oct 2025 12:18:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/12] hw/loongarch/boot: Remove unnecessary cast to
- target_ulong
-Date: Mon, 13 Oct 2025 21:18:04 +0200
-Message-ID: <20251013191807.84550-10-philmd@linaro.org>
+Subject: [PULL 10/12] hw/hppa: Convert type_init() -> DEFINE_TYPES()
+Date: Mon, 13 Oct 2025 21:18:05 +0200
+Message-ID: <20251013191807.84550-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013191807.84550-1-philmd@linaro.org>
 References: <20251013191807.84550-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,48 +97,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reduce initrd_size scope. It is already of signed type (ssize_t),
-no need to cast to unsigned for the comparison.
+Prefer DEFINE_TYPES() macro over type_init() to register
+multiple QOM types.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251009201947.34643-2-philmd@linaro.org>
+Message-Id: <20251009143106.22724-3-philmd@linaro.org>
 ---
- hw/loongarch/boot.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/hppa/machine.c | 42 ++++++++++++++++++------------------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
 
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index a516415822d..3dd48cb8aab 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -306,7 +306,7 @@ static ram_addr_t alloc_initrd_memory(struct loongarch_boot_info *info,
- static int64_t load_kernel_info(struct loongarch_boot_info *info)
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index dacedc5409c..2ab5fcb471a 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -709,16 +709,6 @@ static void HP_B160L_machine_init_class_init(ObjectClass *oc, const void *data)
+     nc->nmi_monitor_handler = hppa_nmi;
+ }
+ 
+-static const TypeInfo HP_B160L_machine_init_typeinfo = {
+-    .name = MACHINE_TYPE_NAME("B160L"),
+-    .parent = TYPE_MACHINE,
+-    .class_init = HP_B160L_machine_init_class_init,
+-    .interfaces = (const InterfaceInfo[]) {
+-        { TYPE_NMI },
+-        { }
+-    },
+-};
+-
+ static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
  {
-     uint64_t kernel_entry, kernel_low, kernel_high, initrd_offset = 0;
--    ssize_t kernel_size, initrd_size;
-+    ssize_t kernel_size;
+     static const char * const valid_cpu_types[] = {
+@@ -745,20 +735,24 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, const void *data)
+     nc->nmi_monitor_handler = hppa_nmi;
+ }
  
-     kernel_size = load_elf(info->kernel_filename, NULL,
-                            cpu_loongarch_virt_to_phys, NULL,
-@@ -328,7 +328,8 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-     }
+-static const TypeInfo HP_C3700_machine_init_typeinfo = {
+-    .name = MACHINE_TYPE_NAME("C3700"),
+-    .parent = TYPE_MACHINE,
+-    .class_init = HP_C3700_machine_init_class_init,
+-    .interfaces = (const InterfaceInfo[]) {
+-        { TYPE_NMI },
+-        { }
++static const TypeInfo hppa_machine_types[] = {
++    {
++        .name = MACHINE_TYPE_NAME("B160L"),
++        .parent = TYPE_MACHINE,
++        .class_init = HP_B160L_machine_init_class_init,
++        .interfaces = (const InterfaceInfo[]) {
++            { TYPE_NMI },
++            { }
++        },
++    }, {
++        .name = MACHINE_TYPE_NAME("C3700"),
++        .parent = TYPE_MACHINE,
++        .class_init = HP_C3700_machine_init_class_init,
++        .interfaces = (const InterfaceInfo[]) {
++            { TYPE_NMI },
++            { }
++        },
+     },
+ };
  
-     if (info->initrd_filename) {
--        initrd_size = get_image_size(info->initrd_filename);
-+        ssize_t initrd_size = get_image_size(info->initrd_filename);
-+
-         if (initrd_size > 0) {
-             initrd_offset = ROUND_UP(kernel_high + 4 * kernel_size, 64 * KiB);
-             initrd_offset = alloc_initrd_memory(info, initrd_offset,
-@@ -337,7 +338,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-                                               initrd_offset, initrd_size);
-         }
- 
--        if (initrd_size == (target_ulong)-1) {
-+        if (initrd_size == -1) {
-             error_report("could not load initial ram disk '%s'",
-                          info->initrd_filename);
-             exit(1);
+-static void hppa_machine_init_register_types(void)
+-{
+-    type_register_static(&HP_B160L_machine_init_typeinfo);
+-    type_register_static(&HP_C3700_machine_init_typeinfo);
+-}
+-
+-type_init(hppa_machine_init_register_types)
++DEFINE_TYPES(hppa_machine_types)
 -- 
 2.51.0
 
