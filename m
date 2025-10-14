@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3668BD9C41
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5835FBD9C95
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fDY-0004rB-Fk; Tue, 14 Oct 2025 09:37:33 -0400
+	id 1v8fDd-00052l-53; Tue, 14 Oct 2025 09:37:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDS-0004pd-Au
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:26 -0400
+ id 1v8fDT-0004qC-GL
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDP-0000xq-Ot
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:25 -0400
+ id 1v8fDP-0000xu-Pz
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449040;
+ s=mimecast20190719; t=1760449041;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9x2xBqXLvD3TD22ZGiq+KsjrIorcQc7dSOkJFfUH7FU=;
- b=V6YgnszRMFTJ4Pw7jTzQeR9LRaJ2tKDlEDkytUKnsHr9ecgQ6wz4xccP5OR7bjAK6Bn/41
- PWbKz63YKdypaNwwJAEifJ7V9HRh8deYndB7N8WqUyOsxXw2ZgRFMy304bCqpRydYlKmyW
- zR1Q/nfi0RRzViKHT6gXWKZIIRc8NIU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mS+v14KcHsr+muZI98IFf3wSVAEOdlp3uBgp4JAsLiM=;
+ b=TT71WzleJ8mDxJuiHt48CluDwg31HiUjIa99oAHruVoNntaoioKzd9IsDRQj4+IMBR+rYt
+ LZs8HtQMlDxPLTj1PTmRc8L8z4wcn17kqETBkEbmKX86RQ+jNHDTH8tWM1sc688axo/WUA
+ VWuXM+6psd4swcOGU6TgquRkQ74sZKI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-_X79uieCOlKeeGGDtZD6NA-1; Tue, 14 Oct 2025 09:37:17 -0400
-X-MC-Unique: _X79uieCOlKeeGGDtZD6NA-1
-X-Mimecast-MFC-AGG-ID: _X79uieCOlKeeGGDtZD6NA_1760449036
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3ed9557f976so5770357f8f.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:17 -0700 (PDT)
+ us-mta-15-wbeHQ7O4PLyLPemlWDktQA-1; Tue, 14 Oct 2025 09:37:19 -0400
+X-MC-Unique: wbeHQ7O4PLyLPemlWDktQA-1
+X-Mimecast-MFC-AGG-ID: wbeHQ7O4PLyLPemlWDktQA_1760449039
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e3e177893so38373125e9.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449035; x=1761053835;
+ d=1e100.net; s=20230601; t=1760449038; x=1761053838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9x2xBqXLvD3TD22ZGiq+KsjrIorcQc7dSOkJFfUH7FU=;
- b=Ncb3yCS4oUBvwxRehcfXiBfoZHC2wa3ToOWpSXI4PvYsP/AnR4wgqFuZmFJOVm36j2
- Sfmhtzf9DP5+wznvpjKqBnsnYIlksiniLDsD+HjsVdL4CRFSERKJmGGCrGetyflfvUpw
- 8rkG2Rp04fdbiy6L1LtZ/hlAjWe1wx/zhcWllzo+meZvkUZ56pf+hPjzNI37mHDgjVHb
- 8tIzKPWxvClDROh4tQlt427SEslkbIiETH5zHxdz511Ovnt8xZQCuvML0IRXVTnJ9/We
- 4NglE6mxYw2hHkbwgp746+JqX9JcYAcR5A6YY7nxl35TE16hx2+1dsOd2eY0Uc9iL2Aa
- NmSg==
-X-Gm-Message-State: AOJu0YwWqEUPt3HLdxcM5wLfIbQ6lNMxhMuypNEMyVnWLO8z9od4GZ77
- J8ySqAUQGb7xq/ll4xo/1qk4UrEVaAtWxQLLw4yIvPs2hfddCnYJFZJZdwPBVgL19xxMDc91AOc
- b/0wsgA9MsCBNHKDnOMY8eTCXe5pcVbxYzVWxlc5AC9WeZnsCuERgLAuRO5xWZwJS5x3j9G7mYV
- 7Be+MfgsqPxC5YjyVpiY/60QsyU2RSmrBm9qt5pI26
-X-Gm-Gg: ASbGncvy/W4VP+nZMDbsaXxhnFL42+hwRPC5e/EzTfVEjNdHAFXQBhG557oqxPnF7oc
- TycIKSMxFVI/2qakoJC1mdcZWDzDwXxR9HR2imTXqKcWQmUVwjJqFBqnvci2PcQZqyklnI8aI0o
- pYhf/ovOQBngPoZu0Fn8YeS8U+iuNr2yXfYHi3iziEfn4FUjpZ/7OuNG6IbXw9DXmsMbtokFIAA
- B1GZIhc4ryD9TuUJBQeEtRehCMCmp9KFmjfwW+tLvQ4MITnG9BNvL34XOaFvLLSPdx4FAHOZJfY
- wsPkcblQSw3Ne5Qk1xZKasJ2rki86XMSUMSwYiY0cd3XE20xfvfyLrzwacgFZjfn1zgh4it+sXH
- fBhD8YO2X3NBbi+7tK/kteK2Adc7mEp1uA2Cs1uWDU70=
-X-Received: by 2002:a5d:5c8a:0:b0:3e0:2a95:dc90 with SMTP id
- ffacd0b85a97d-4266e7e1438mr16446142f8f.35.1760449035054; 
- Tue, 14 Oct 2025 06:37:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+DOgeWJPw+2zO4YmZJy5Tyw9ra26azI7iTBQiCuOjeJpkADdEmJuSgZijPwN/VzK1XguE5A==
-X-Received: by 2002:a5d:5c8a:0:b0:3e0:2a95:dc90 with SMTP id
- ffacd0b85a97d-4266e7e1438mr16446123f8f.35.1760449034584; 
- Tue, 14 Oct 2025 06:37:14 -0700 (PDT)
+ bh=mS+v14KcHsr+muZI98IFf3wSVAEOdlp3uBgp4JAsLiM=;
+ b=N80AgnKDeUMXjdglHWWn5xm7KqPN6atX9oqGEsvnWH2WflIRrs9cmW/lDOmLLRAfog
+ K3KBZn8GsPM9mMceldY/XivhWh2d7iLKoAPulR3/o3OWbn0ArSG+35UcH72JoZMC7HOJ
+ IF0HXVAsny/FE4q9IEYLMn/WxnKovkW8f2zUZtx9FPRT/4m0M+kgT9dGqQPo4UyeePD0
+ wdfOL8PQF1OyR6Qdf7nZWr7TItL4CzJTMn4253+/GMjvcZ6NRCPm/4+F4K9CO0RzM0Q0
+ L8gtmGXXvMpcw/59ZtJt6S3skCuStZStwgCAgiLe6Tc4/Q3VGLJx2zXwtZ8K9rXFanYc
+ +NoQ==
+X-Gm-Message-State: AOJu0YweJyicVWKFhgcitr/UDB4YsasDktxAgDiYR0GjrZugb1vNMQ9X
+ Aa4xFA1R0IwYRslQjiGNJ4Y+fZ2/jZspAiZtBQXZnDDaiKD1deyCAlqQi2miFRNF92tlvEoP7Bt
+ 30Of0ntSJhC/HO4bhS563wXExtWvmTa6C7MWrqCtoofT2v1WA1ZRxpI34GDpVUeEDuguXL6srq8
+ wBM1jBgsbBUlE2hEM8GLDe9SbHqAVQrglargWQMTsq
+X-Gm-Gg: ASbGnctj7Xk9Ni8h7GcvQ2acItht8os+Pn07cxXxz/s/JKDjvUstWB/diDoj0AgkB9x
+ ic8V+4bndlUC6qUcE4e4Dk5uHjkZziDAPG7GFvkTTpgxbTDmiQFqJEnG8i85mtFi5BI3j+0xSx+
+ xCC8r84pqeOh7MtOeeL/dlYwx0H9GwQrqchA5hj9XaeAXoF5GctosawrMV1rxLBv9UqkEJpCPQD
+ IlIYZgINnNfrTRpjX2uajqKnh56o5wnxFwSNMhok6ayinh3Bgq8hMH1mfabVR3dlJxvixpCSDW2
+ Rl5PPFvjMoeqVI7I36JdJiPYdVIjruqb/EZIB1Ct2L1ZwC1aoDoUE+eUhzXHSKNpwD1r1uZ8Swf
+ qPtYPMVbpJjN3iI3nHJxNnzt044UsZUjbBnrLZApRtaE=
+X-Received: by 2002:a05:600c:c08f:b0:46f:b327:ecfb with SMTP id
+ 5b1f17b1804b1-46fb327ef42mr98968325e9.9.1760449037698; 
+ Tue, 14 Oct 2025 06:37:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOzzYvEZNYIU+xDwcqH4jE17d+dcWVQh5lXMnUdRGNsOdgt6Ri/yG9FfVWWzg0+3PwgCnDLQ==
+X-Received: by 2002:a05:600c:c08f:b0:46f:b327:ecfb with SMTP id
+ 5b1f17b1804b1-46fb327ef42mr98968095e9.9.1760449037187; 
+ Tue, 14 Oct 2025 06:37:17 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e13b6sm23800764f8f.44.2025.10.14.06.37.13
+ ffacd0b85a97d-426ce57d404sm23972223f8f.3.2025.10.14.06.37.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:14 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:15 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/28] rust: pl011: fix warning with new clippy
-Date: Tue, 14 Oct 2025 15:36:46 +0200
-Message-ID: <20251014133713.1103695-1-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 02/28] rust: bits: disable double_parens check
+Date: Tue, 14 Oct 2025 15:36:47 +0200
+Message-ID: <20251014133713.1103695-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -107,28 +108,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Newer versions of clippy are able to see that all the variants in
-the PL011 word length enum end with "Bits", and complain about it.
-Allow it.
+It is showing in the output of the bits! macro when using the nightly
+toolchain, though it's not clear if it is intentional or a bug.
+Shut it up for now.
 
+Link: https://github.com/rust-lang/rust-clippy/issues/15852
 Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20251010145756.787800-1-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/registers.rs | 1 +
- 1 file changed, 1 insertion(+)
+ rust/qemu-macros/src/lib.rs | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/registers.rs b/rust/hw/char/pl011/src/registers.rs
-index 0c3a4d7d214..fa572811b29 100644
---- a/rust/hw/char/pl011/src/registers.rs
-+++ b/rust/hw/char/pl011/src/registers.rs
-@@ -255,6 +255,7 @@ pub enum Mode {
+diff --git a/rust/qemu-macros/src/lib.rs b/rust/qemu-macros/src/lib.rs
+index 3e21b67b471..3bf315c4c0a 100644
+--- a/rust/qemu-macros/src/lib.rs
++++ b/rust/qemu-macros/src/lib.rs
+@@ -401,7 +401,14 @@ pub fn bits_const_internal(ts: TokenStream) -> TokenStream {
+     let ts = proc_macro2::TokenStream::from(ts);
+     let mut it = ts.into_iter();
  
- #[bitsize(2)]
- #[derive(Clone, Copy, Debug, Eq, FromBits, PartialEq)]
-+#[allow(clippy::enum_variant_names)]
- /// `WLEN` Word length, field of [Line Control register](LineControl).
- ///
- /// These bits indicate the number of data bits transmitted or received in a
+-    BitsConstInternal::parse(&mut it)
+-        .unwrap_or_else(syn::Error::into_compile_error)
+-        .into()
++    let out = BitsConstInternal::parse(&mut it).unwrap_or_else(syn::Error::into_compile_error);
++
++    // https://github.com/rust-lang/rust-clippy/issues/15852
++    quote! {
++        {
++            #[allow(clippy::double_parens)]
++            #out
++        }
++    }
++    .into()
+ }
 -- 
 2.51.0
 
