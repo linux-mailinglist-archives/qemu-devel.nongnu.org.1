@@ -2,71 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE39FBD8CA2
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 12:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE01BD8CC3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 12:44:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8cTp-0002Oi-5O; Tue, 14 Oct 2025 06:42:09 -0400
+	id 1v8cWF-0005NF-QW; Tue, 14 Oct 2025 06:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v8cTj-0002N9-99
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:42:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v8cTc-0003Rz-RD
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:42:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760438515;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rPunozIlJsPf0Eb7GaO75w0UILt9yZ6AuTh6/QetChE=;
- b=A+mVTgOg+Ta0M9GlAJM8CgRHnSUjwGV+paQNEqICnv3JK3nUCAXwKM8jCUY3nqxt4nmzXP
- yLpJDZc9aEet32OQXLCrF4oqQVHXfxoMCiib+n8Nm73nLLAF45l05gV/Tg/sb925Z4tH95
- v4ZqZcpFTT+MhLYj+kuiYy5wTYvfAzI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-OLFBKVE-M2iq_Er1Han6oQ-1; Tue,
- 14 Oct 2025 06:41:53 -0400
-X-MC-Unique: OLFBKVE-M2iq_Er1Han6oQ-1
-X-Mimecast-MFC-AGG-ID: OLFBKVE-M2iq_Er1Han6oQ_1760438513
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C440180034F; Tue, 14 Oct 2025 10:41:53 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.162])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1D8B8300018D; Tue, 14 Oct 2025 10:41:50 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>,
-	qemu-block@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 3/3] tests/qemu-iotest: Add more image formats to the
- thorough testing
-Date: Tue, 14 Oct 2025 12:41:42 +0200
-Message-ID: <20251014104142.1281028-4-thuth@redhat.com>
-In-Reply-To: <20251014104142.1281028-1-thuth@redhat.com>
-References: <20251014104142.1281028-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v8cVQ-0004aU-65
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:43:49 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v8cVF-0003Wx-4U
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:43:47 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-426edfffc66so529820f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 03:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760438605; x=1761043405; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jil0Ama1zoQrZnPdRDjlJAWkmuZcYK/+OGYeLjiDqe0=;
+ b=p154IGX5rhIDLDWv+CwtHRzGTgar/5m/1tLfCuoJmj8NFStWaVRNbw1efoHQTwJ2bE
+ jrhsmONqH/XjckqIrOuXGwkEa5CWZFIZHJfznLNKQg8SaaMvs4LEO2793uJ/redep2Cp
+ L7MSiYbotGRgUcqGwsXx4Z4DdqkNykvPQhfhCFL3S+Qf8gxvrofjOfEeuAfWBIyVFpck
+ vCYQV3YCboWDRaJWN5L2VSA7N+WtKB9S/x4PaE4MM3XxtecuyL2wOw6fMe0ewvk+3yln
+ FyMKBZn6kssaxq325OiCHdzJZ14yLzGB3dys9/G5+Yvd0OjD8iChFlo3tbwGYoU5KO76
+ 5EZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760438605; x=1761043405;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jil0Ama1zoQrZnPdRDjlJAWkmuZcYK/+OGYeLjiDqe0=;
+ b=iCwbDtL/M75qTMtVy8s1eqVV8Q5lhEJfkzylaYmE2T6Aec5OLF24+V5zdTbWuwPB92
+ JVu4vhSdiFBZtaunD7KrLLsFVcs4l9ZYFgKeMWRIZ1BDtkQj11TnfKSpEFA8ivI5YrVG
+ caaRS0lu/frGATJwYQzmR100Jd1txdbqe/YkqOMbZ2WiBEPbImG0UDIuAnnngoYDy3pd
+ fGUuONafCOp8oP9BB5bkuaaeDDp1/o/UIOKD4BIfeHdB0wZHk5fxWplHRFolE3dUpihE
+ UiqvUy9HLxEec+pJw9ZrVYzBTCeE13VddO6bAO6chzl143Shk7b2p2eQh900n4ISJ0Dx
+ EmzQ==
+X-Gm-Message-State: AOJu0YzWzaUFyXAzuW2x5CbpabNryd53JoPVlgL8Kk2mby5R333oISOq
+ iQg6Ea6FydpNXVh15gdgOhVF+TnsEpQBs/Vy2CEeC84cDv0+WQZ0o9ps7QNhuCcvj94=
+X-Gm-Gg: ASbGnctZzF85h9zLer3pc757Esh9XKEC0SYxx0AJKOz1C2oX8u/sGXmwYfJX3fdlF4n
+ ZOj74GPe5n51r8dzfRMWgqUHdoe95exD1kqvtbZUlER/HZV8KPaG3nbbLWDU2pwkapF+PQDzZl2
+ FpTscjjtKtYhI0/lS5Q6CnXCenAn/jSGojGa+JXoMJzCzk0jEkUiJLTSqJGOpc+BkoKB9ESJx4W
+ aEgtHrx7dXCh9Pr5E5QE7LvITGIZsBIQrTkIfVOmTno3pUJaT+fF8qm3pY7DJL/DaKvHTBLoIiO
+ Xh6vNofouWkBdJVW5ZQislE1ADjwdD2O0+ojOLZ3uVpXA7sWxchxhU0ItbazXFUYvGnZ0cL6Sao
+ b+YvrZBbZ4wdiXrHByfTTzfA7X51pcbT5KyDi7qurfONMgStWWHYXcH2Y
+X-Google-Smtp-Source: AGHT+IEapHYNwEsBeHKpfb8hNIa+UaI/5witG9DkXrRFY1Y8kMzrkmWlFHzupl/07WpZBNXGZEKkbQ==
+X-Received: by 2002:a05:6000:40c8:b0:410:f600:c35e with SMTP id
+ ffacd0b85a97d-425829b0561mr16342480f8f.8.1760438604816; 
+ Tue, 14 Oct 2025 03:43:24 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-426ce583424sm22685054f8f.21.2025.10.14.03.43.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Oct 2025 03:43:24 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5264A5F812;
+ Tue, 14 Oct 2025 11:43:23 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, qemu-s390x@nongnu.org
+Subject: [PATCH 0/5] testing/next - arm custom runner tweaks
+Date: Tue, 14 Oct 2025 11:43:17 +0100
+Message-ID: <20251014104323.3023714-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,38 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+This isn't quite ready yet as there is an in-flight MR for libvirt-ci
+and the final patch has to manually drop a couple of packages which
+don't cleanly install. I don't know if we should deal with that
+upstream or in the lcitool metadata. For reference the two packages
+are:
 
-Now that the "check" script is a little bit smarter with providing
-a list of tests that are supported for an image format, we can also
-add more image formats that can be used for generic block layer
-testing. (Note: qcow1 and luks are not added because some tests
-there currently fail, and other formats like bochs, cloop, dmg and
-vvfat do not work with the generic tests and thus would only get
-skipped if we'd tried to add them here)
+  libcurl4-gnutls-dev:armhf
+  libglusterfs-dev:armhf
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/qemu-iotests/meson.build | 3 +++
- 1 file changed, 3 insertions(+)
+which I don't think are crucial to coverage. The main motivation was
+to include the crypto libs so the block io tests don't fail.
 
-diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-index fad340ad595..35256217a37 100644
---- a/tests/qemu-iotests/meson.build
-+++ b/tests/qemu-iotests/meson.build
-@@ -21,7 +21,10 @@ qemu_iotests_env = {'PYTHON': python.full_path()}
- qemu_iotests_formats = {
-   'qcow2': 'quick',
-   'raw': 'slow',
-+  'parallels': 'thorough',
-   'qed': 'thorough',
-+  'vdi': 'thorough',
-+  'vhdx': 'thorough',
-   'vmdk': 'thorough',
-   'vpc': 'thorough'
- }
+However the the bulk of it works to:
+
+  - improve utilisation of the new CI machines
+  - remove hacks that get in the way of private test runners
+  - fully drive ansible packages with lcitool
+  - widen the testing of 32 bit Arm on the custom runner
+
+Please review.
+
+Alex.
+
+Alex Bennée (5):
+  tests/lcitool: bump to latest version and regenerate (!wait on
+    upstream)
+  gitlab: use template for ubuntu-24.04-aarch64 jobs
+  gitlab: modernise the ubuntu24.04-aarch32 jobs
+  scripts/setup: update the armhf overlay
+  scripts/setup: update build-environment to use armhf yaml (!WIP)
+
+ .../custom-runners/ubuntu-24.04-aarch32.yml   |  15 +-
+ .../custom-runners/ubuntu-24.04-aarch64.yml   | 230 ++++++++----------
+ scripts/ci/setup/ubuntu/build-environment.yml |  22 +-
+ .../ci/setup/ubuntu/ubuntu-2404-aarch64.yaml  |   4 +-
+ ...armhf-cross.yml => ubuntu-2404-armhf.yaml} |  67 +----
+ .../ci/setup/ubuntu/ubuntu-2404-s390x.yaml    |   4 +-
+ tests/docker/dockerfiles/alpine.docker        |  10 +-
+ tests/docker/dockerfiles/centos9.docker       |  10 +-
+ .../dockerfiles/debian-amd64-cross.docker     |  16 +-
+ .../dockerfiles/debian-arm64-cross.docker     |  16 +-
+ .../dockerfiles/debian-armhf-cross.docker     |  16 +-
+ .../dockerfiles/debian-i686-cross.docker      |  16 +-
+ .../dockerfiles/debian-mips64el-cross.docker  |  16 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |  16 +-
+ .../dockerfiles/debian-ppc64el-cross.docker   |  16 +-
+ .../dockerfiles/debian-riscv64-cross.docker   |  16 +-
+ .../dockerfiles/debian-s390x-cross.docker     |  16 +-
+ tests/docker/dockerfiles/debian.docker        |  10 +-
+ .../dockerfiles/fedora-rust-nightly.docker    |  10 +-
+ .../dockerfiles/fedora-win64-cross.docker     |  14 +-
+ tests/docker/dockerfiles/fedora.docker        |  10 +-
+ tests/docker/dockerfiles/opensuse-leap.docker |  10 +-
+ tests/docker/dockerfiles/ubuntu2204.docker    |  10 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/refresh                         |  11 +
+ 25 files changed, 259 insertions(+), 324 deletions(-)
+ rename scripts/ci/setup/ubuntu/{ubuntu-2204-armhf-cross.yml => ubuntu-2404-armhf.yaml} (63%)
+
 -- 
-2.51.0
+2.47.3
 
 
