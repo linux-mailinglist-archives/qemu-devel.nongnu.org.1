@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C805BDB1FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 21:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB00BDB210
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 21:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8l2j-0001eV-IV; Tue, 14 Oct 2025 15:50:45 -0400
+	id 1v8l2e-0001b0-1x; Tue, 14 Oct 2025 15:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8l2X-0001a3-HL
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:50:34 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1v8l2U-0001ZZ-GB
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:50:30 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8l2R-0003PI-T8
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:50:32 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-781251eec51so4779235b3a.3
+ id 1v8l2R-0003PY-Bs
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:50:30 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-782e93932ffso5192683b3a.3
  for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 12:50:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760471422; x=1761076222; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760471423; x=1761076223; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NLWvUqmmBANKsaF5zaX5lQHObBvuZy86Gts19KQtK6w=;
- b=siwZYPlEVlKtEU4zyVBrILUXVepO+jkn2qg/184Htwk+k4HZ8iPHtMTsfcta2IOXx3
- BZdjl0uAisliXeH/wQHDo3X8O8x6U66cQ+Ewlr7FE7Ftwunn8QcNElLMe8wJ+H7I50On
- y/gU0+rymb4NmKZTlqBZ6KsdqGenashFS+6aj53vs03umB8HdpUq+tuH/C4FAQZLdtvZ
- zuAdPqBa4nlAQFfP1TFUN5scqKA7SjrplfERtHE/ImnUeL3oSV6zIQmIRKYtUgMhr1EE
- LIxymcVOFqIowYhJ78/VOylDngr29Y1FAbcSK3ADfkMhU44I4iZFzyuTxZfCH8ANEfn3
- WV1Q==
+ bh=ZFl/S3NyYvxn7AHHN5Wyq5GFhbcqVyXqzmKDA5xxH9g=;
+ b=BOOn9EX50bvPI8hYVpBoqFSA8b3EQjfPv0CrwCczGF36LiKPS34ws+AfkHHJ2jVOqz
+ VwZhHHN6sHENKzBk9sdn74g2mtg1dbBKC9VAUg7nV2Sr5TovC34ERWpHE5zglsY+mCub
+ BmplDxmEdxPPKAWppg40l8xwsARliVJfJgoMT2R3rzMzEHVWEP0kt1jkrQC/KaJ6OLVF
+ VDBYe6unuJ0/uA0Dd/QiNa5HHHfsWu2/mQIcyr+mfDEs99SNvt/EhAXeVirQVQ4MlBY8
+ FuLKBrAm0a1R38C0XnYqPYxAuPyNDkDQ5XOHuHDfVrh26BYoIJkJQ5j0gyvWR0xeHUmu
+ /ZGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760471422; x=1761076222;
+ d=1e100.net; s=20230601; t=1760471423; x=1761076223;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NLWvUqmmBANKsaF5zaX5lQHObBvuZy86Gts19KQtK6w=;
- b=iRyYW3nqF/G9Ps0wn8uhzxYSvwuRFr34uTDx5vE1K36jvkj2xUdj/TjMJTF1AFl0Uw
- BUfDWToKODogxre99CnitHA3WtfEfpFRx6DAq1c7o2oC9hSvNmB3bpUe7O8+HFU6LHYQ
- ZntcEhhcouJFAb0UfSeCrsI8oAn9HGXQPn3zHLZ9oUz7bQZnHA6XWgIE3V6NB3OMerIk
- ReT7OqWY7hhf0QGtRyx7S5y2El1PgRE4usc2/O827TH+sBn5Gna9diM97iDB2VP0HP/4
- IGTnsmsXxtdII2fvJRfltDv/e/d8c1VXlrdhYZD6bHTGmW7rzhnX57CkeL9sD3FmX84W
- m3HQ==
-X-Gm-Message-State: AOJu0YwZIWJhy9Brr3pTFqt5APjqKYcTbqkox3rtQqSvw/Ox5bYb4j9E
- yYX8UOr/I3ZavhYxbaeotjwW8nbxSbrdPyZ4nffYo8EAmKwZiyt71FbA71nneTs0MDcMxMMyhhM
- z+U/y25w=
-X-Gm-Gg: ASbGnct8fDmRbe0v1W1sjCWKj7jrk711i3nFl+Nyhvs7fXt4FWS+Gn4sx0LXcKiqFKa
- ke973i8PfKdfR8EYU/+jnQGk8PIPMR5L/9d8JkcjzQM6WRAzK3giIB4AKvuAAesY2eXaXCG6czG
- zHunKK6u3UvuW8MK8iwrti5Ww7XqC+QoTZs7gQZWnQoZboKmyl7hXXr+4cx4hOXNeUlcLjm+gNN
- tyQLcWcc0BaS1Cvd0GblLQRTEDBAnHjAidOBOg39D6nQ0Azg4z4UZ4DgqLauWSvwr1/dOgAbmHl
- /Eld/z4CuH3BAzRNvSoWnEe1/ul9twsc+G7XMOzbx5iN9HSgAoZor7rVfeab2rz6XrAN9x1ti9W
- YH/hwbX2xqyWRVK3HcVwJco5k8otbjfeGAk5ztCTLsLhYHoEjdvw=
-X-Google-Smtp-Source: AGHT+IFO+jcUMFNDnlWEPK/csFK/QMM1pst4KCKWDs40eylcmd6uLUfhUUPiUV4sgNL1nYfLbGs65w==
-X-Received: by 2002:a05:6a20:a123:b0:243:d1bd:fbc9 with SMTP id
- adf61e73a8af0-32da8462b41mr36584149637.56.1760471421934; 
- Tue, 14 Oct 2025 12:50:21 -0700 (PDT)
+ bh=ZFl/S3NyYvxn7AHHN5Wyq5GFhbcqVyXqzmKDA5xxH9g=;
+ b=RQ3lsE0sze32ijcYWQLV3sgX3nLy8F6v23iq6iil5Sdn/wULsgkSJw+4B0556z0T5e
+ DzSday1fkB9Yzzn91S2gTDtl7Q4AAR6hl6ot1GAWpNaI1ed+tbdWxwxLz8ZOznh8dk1y
+ OWVsiEkYr1IHuJwh6Yb1plUL7gn3qyxZuRS5gJ1aoyCl6VDa0q3pwZZrZ3xuYgODzsTH
+ jc+dc2fHOdzvwq1UYz3uZTyW536OZNHLcmnZp501vuiniEJmTVxNkS8nizTsLbJAtcWn
+ YIiVZbcWcklFe5rivBynphnV8T9CjFyfJX3E+nmhRV6CSL1/RnHJUmi+CQ7l16kdARRc
+ 74tw==
+X-Gm-Message-State: AOJu0Yzq4e5PeHEXArgXPzdnmHdqw0tOoy0oKdbH9JrqiopDX1vhzigj
+ CM5eM9FN5WJ6lXvvmwgdpkQUuyFhvwZWwwlu0DxqRFRFUkyhLcavdATk9veog5k64XLcVYnadRo
+ cP1m/yUs=
+X-Gm-Gg: ASbGncsQSeApaliKexja5I3MIROgIsqCAAjJLUVmLHj2aRnRMJqrU8xHrLQkFzVnCLK
+ Ge8FD9tYLVFtbe5CK18e2yuSvemNygOWUyOVEkL4e0/v/mKK94meek+V273fgpWWZr3WWMUfriL
+ IrhLXvgDNPq+8wAHoIoOdkek4Umt2LYfgSl71Hxx87egI2WugrPAzgiYgB7FXrHxruZRzS0Y/CC
+ cTgFOr5VguDaFxNKbOy+hOeQalPvSehRLMT/QQ8+9nhl7QG2kmajqfxTV+hQUgFUJJ2L5l6wBHq
+ P0EmVPwAeS1Hj7QLKMLToADvbC1mX1iwd5a0Mr0SvS+fFiGdKR+/6rLtttODDdx4IjLon63JyCc
+ H+SY9UMPO5uqRzQXw82p4DwxjAIBQ8yIKAPL/HYS0qSfX0nqHTLLB21QURogkDQ==
+X-Google-Smtp-Source: AGHT+IEFjjyZcrv5mQPM07splw9sDAV1uCpgUKR95zTMlMrtsnlIc/Oo0R2cQ+1+b01512eWprvYxA==
+X-Received: by 2002:a05:6a00:3d16:b0:77c:64d8:3afd with SMTP id
+ d2e1a72fcca58-79387a28eadmr33467529b3a.28.1760471422688; 
+ Tue, 14 Oct 2025 12:50:22 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7992b63a03dsm15918727b3a.19.2025.10.14.12.50.21
+ d2e1a72fcca58-7992b63a03dsm15918727b3a.19.2025.10.14.12.50.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 12:50:21 -0700 (PDT)
+ Tue, 14 Oct 2025 12:50:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 2/7] target/arm: Implement MAIR2_ELx and AMAIR2_ELx
-Date: Tue, 14 Oct 2025 12:50:12 -0700
-Message-ID: <20251014195017.421681-3-richard.henderson@linaro.org>
+Subject: [PATCH v2 3/7] target/arm: Add AIE to ARMVAParameters
+Date: Tue, 14 Oct 2025 12:50:13 -0700
+Message-ID: <20251014195017.421681-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251014195017.421681-1-richard.henderson@linaro.org>
 References: <20251014195017.421681-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,161 +98,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable the SCR.AIEn bit in scr_write, and test it in aien_access.
+Allow the bit to be set in TCR2;
+extract the bit in aa64_va_parameters.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpregs.h |  2 ++
- target/arm/cpu.h    |  5 +++-
- target/arm/cpu.c    |  3 +++
- target/arm/helper.c | 62 +++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 71 insertions(+), 1 deletion(-)
+ target/arm/internals.h |  1 +
+ target/arm/helper.c    | 30 +++++++++++++++++++++---------
+ 2 files changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 763de5e051..48a406a5fb 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -806,6 +806,8 @@ typedef enum FGTBit {
-     DO_REV_BIT(HFGRTR, NTPIDR2_EL0),
-     DO_REV_BIT(HFGRTR, NPIRE0_EL1),
-     DO_REV_BIT(HFGRTR, NPIR_EL1),
-+    DO_REV_BIT(HFGRTR, NMAIR2_EL1),
-+    DO_REV_BIT(HFGRTR, NAMAIR2_EL1),
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f539bbe58e..a65386aaed 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1391,6 +1391,7 @@ typedef struct ARMVAParameters {
+     bool hd         : 1;
+     ARMGranuleSize gran : 2;
+     bool pie        : 1;
++    bool aie        : 1;
+ } ARMVAParameters;
  
-     /* Trap bits in HDFGRTR_EL2 / HDFGWTR_EL2, starting from bit 0. */
-     DO_BIT(HDFGRTR, DBGBCRN_EL1),
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 1d4e13320c..e21612b898 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -447,7 +447,8 @@ typedef struct CPUArchState {
-         uint64_t c9_pmuserenr; /* perf monitor user enable */
-         uint64_t c9_pmselr; /* perf monitor counter selection register */
-         uint64_t c9_pminten; /* perf monitor interrupt enables */
--        union { /* Memory attribute redirection */
-+        /* Memory attribute redirection */
-+        union {
-             struct {
- #if HOST_BIG_ENDIAN
-                 uint64_t _unused_mair_0;
-@@ -467,6 +468,7 @@ typedef struct CPUArchState {
-             };
-             uint64_t mair_el[4];
-         };
-+        uint64_t mair2_el[4];
-         union { /* vector base address register */
-             struct {
-                 uint64_t _unused_vbar;
-@@ -1736,6 +1738,7 @@ static inline void xpsr_write(CPUARMState *env, uint32_t val, uint32_t mask)
- #define SCR_TCR2EN            (1ULL << 43)
- #define SCR_SCTLR2EN          (1ULL << 44)
- #define SCR_PIEN              (1ULL << 45)
-+#define SCR_AIEN              (1ULL << 46)
- #define SCR_GPF               (1ULL << 48)
- #define SCR_MECEN             (1ULL << 49)
- #define SCR_NSE               (1ULL << 62)
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 3b556f1404..d2fc17eab6 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -652,6 +652,9 @@ void arm_emulate_firmware_reset(CPUState *cpustate, int target_el)
-                 cpu_isar_feature(aa64_s2pie, cpu)) {
-                 env->cp15.scr_el3 |= SCR_PIEN;
-             }
-+            if (cpu_isar_feature(aa64_aie, cpu)) {
-+                env->cp15.scr_el3 |= SCR_AIEN;
-+            }
-             if (cpu_isar_feature(aa64_mec, cpu)) {
-                 env->cp15.scr_el3 |= SCR_MECEN;
-             }
+ /**
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 167f2909b3..e4d1651440 100644
+index e4d1651440..8c0b8889db 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -779,6 +779,9 @@ static void scr_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-             cpu_isar_feature(aa64_s2pie, cpu)) {
-             valid_mask |= SCR_PIEN;
-         }
-+        if (cpu_isar_feature(aa64_aie, cpu)) {
-+            valid_mask |= SCR_AIEN;
-+        }
-         if (cpu_isar_feature(aa64_mec, cpu)) {
-             valid_mask |= SCR_MECEN;
-         }
-@@ -6189,6 +6192,61 @@ static const ARMCPRegInfo s2pie_reginfo[] = {
-       .fieldoffset = offsetof(CPUARMState, cp15.s2pir_el2) },
- };
- 
-+static CPAccessResult aien_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                  bool isread)
-+{
-+    if (arm_feature(env, ARM_FEATURE_EL3)
-+        && !(env->cp15.scr_el3 & SCR_AIEN)
-+        && arm_current_el(env) < 3) {
-+        return CP_ACCESS_TRAP_EL3;
-+    }
-+    return CP_ACCESS_OK;
-+}
-+
-+static CPAccessResult aien_el1_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                      bool isread)
-+{
-+    CPAccessResult ret = access_tvm_trvm(env, ri, isread);
-+    if (ret == CP_ACCESS_OK) {
-+        ret = aien_access(env, ri, isread);
-+    }
-+    return ret;
-+}
-+
-+static const ARMCPRegInfo aie_reginfo[] = {
-+    { .name = "MAIR2_EL1", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 0, .crn = 10, .crm = 2, .opc2 = 1,
-+      .access = PL1_RW, .accessfn = aien_el1_access,
-+      .fgt = FGT_NMAIR2_EL1, .nv2_redirect_offset = 0x280 | NV2_REDIR_NV1,
-+      .vhe_redir_to_el2 = ENCODE_AA64_CP_REG(3, 4, 10, 1, 1),
-+      .vhe_redir_to_el01 = ENCODE_AA64_CP_REG(3, 5, 10, 2, 1),
-+      .fieldoffset = offsetof(CPUARMState, cp15.mair2_el[1]) },
-+    { .name = "MAIR2_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 10, .crm = 1, .opc2 = 1,
-+      .access = PL2_RW, .accessfn = aien_access,
-+      .fieldoffset = offsetof(CPUARMState, cp15.mair2_el[2]) },
-+    { .name = "MAIR2_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 10, .crm = 1, .opc2 = 1,
-+      .access = PL3_RW,
-+      .fieldoffset = offsetof(CPUARMState, cp15.mair2_el[3]) },
-+
-+    { .name = "AMAIR2_EL1", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 0, .crn = 10, .crm = 3, .opc2 = 1,
-+      .access = PL1_RW, .accessfn = aien_el1_access,
-+      .fgt = FGT_NAMAIR2_EL1, .nv2_redirect_offset = 0x288 | NV2_REDIR_NV1,
-+      .vhe_redir_to_el2 = ENCODE_AA64_CP_REG(3, 4, 10, 3, 1),
-+      .vhe_redir_to_el01 = ENCODE_AA64_CP_REG(3, 5, 10, 3, 1),
-+      .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "AMAIR2_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 10, .crm = 3, .opc2 = 1,
-+      .access = PL2_RW, .accessfn = aien_access,
-+      .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "AMAIR2_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 10, .crm = 3, .opc2 = 1,
-+      .access = PL3_RW,
-+      .type = ARM_CP_CONST, .resetvalue = 0 },
-+};
-+
- void register_cp_regs_for_features(ARMCPU *cpu)
- {
-     /* Register all the coprocessor registers based on feature bits */
-@@ -7434,6 +7492,10 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         }
+@@ -6098,6 +6098,9 @@ static void tcr2_el1_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     if (cpu_isar_feature(aa64_s1pie, cpu)) {
+         valid_mask |= TCR2_PIE;
      }
- 
 +    if (cpu_isar_feature(aa64_aie, cpu)) {
-+        define_arm_cp_regs(cpu, aie_reginfo);
++        valid_mask |= TCR2_AIE;
 +    }
-+
-     if (cpu_isar_feature(any_predinv, cpu)) {
-         define_arm_cp_regs(cpu, predinv_reginfo);
+     value &= valid_mask;
+     raw_write(env, ri, value);
+ }
+@@ -6111,7 +6114,10 @@ static void tcr2_el2_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     if (cpu_isar_feature(aa64_s1pie, cpu)) {
+         valid_mask |= TCR2_PIE;
      }
+-    if (cpu_isar_feature(aa64_mec, env_archcpu(env))) {
++    if (cpu_isar_feature(aa64_aie, cpu)) {
++        valid_mask |= TCR2_AIE;
++    }
++    if (cpu_isar_feature(aa64_mec, cpu)) {
+         valid_mask |= TCR2_AMEC0 | TCR2_AMEC1;
+     }
+     value &= valid_mask;
+@@ -9666,6 +9672,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+ {
+     uint64_t tcr = regime_tcr(env, mmu_idx);
+     bool epd, hpd, tsz_oob, ds, ha, hd, pie = false;
++    bool aie = false;
+     int select, tsz, tbi, max_tsz, min_tsz, ps, sh;
+     ARMGranuleSize gran;
+     ARMCPU *cpu = env_archcpu(env);
+@@ -9688,10 +9695,12 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+             if (r_el == 3) {
+                 pie = (extract64(tcr, 35, 1)
+                        && cpu_isar_feature(aa64_s1pie, cpu));
+-            } else {
+-                pie = ((env->cp15.tcr2_el[2] & TCR2_PIE)
+-                       && (!arm_feature(env, ARM_FEATURE_EL3)
+-                           || (env->cp15.scr_el3 & SCR_TCR2EN)));
++                aie = (extract64(tcr, 37, 1)
++                       && cpu_isar_feature(aa64_aie, cpu));
++            } else if (!arm_feature(env, ARM_FEATURE_EL3)
++                       || (env->cp15.scr_el3 & SCR_TCR2EN)) {
++                pie = env->cp15.tcr2_el[2] & TCR2_PIE;
++                aie = env->cp15.tcr2_el[2] & TCR2_AIE;
+             }
+         }
+         epd = false;
+@@ -9733,10 +9742,12 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+             epd = true;
+         }
+ 
+-        pie = ((env->cp15.tcr2_el[r_el] & TCR2_PIE)
+-               && (!arm_feature(env, ARM_FEATURE_EL3)
+-                   || (env->cp15.scr_el3 & SCR_TCR2EN))
+-               && (r_el == 2 || (arm_hcrx_el2_eff(env) & HCRX_TCR2EN)));
++        if ((!arm_feature(env, ARM_FEATURE_EL3)
++             || (env->cp15.scr_el3 & SCR_TCR2EN))
++            && (r_el == 2 || (arm_hcrx_el2_eff(env) & HCRX_TCR2EN))) {
++            pie = env->cp15.tcr2_el[r_el] & TCR2_PIE;
++            aie = env->cp15.tcr2_el[r_el] & TCR2_AIE;
++        }
+     }
+     hpd |= pie;
+ 
+@@ -9818,6 +9829,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+         .hd = ha && hd,
+         .gran = gran,
+         .pie = pie,
++        .aie = aie,
+     };
+ }
+ 
 -- 
 2.43.0
 
