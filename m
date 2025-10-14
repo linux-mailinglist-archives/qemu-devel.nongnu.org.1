@@ -2,99 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5661ABDA561
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46337BDA5B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:27:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8gtN-0005G9-SY; Tue, 14 Oct 2025 11:24:49 -0400
+	id 1v8gvo-0006zO-K0; Tue, 14 Oct 2025 11:27:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v8gtL-0005FV-8b
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:24:47 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1v8gtI-0007I0-VO
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:24:46 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-789fb76b466so4988299b3a.0
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 08:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760455482; x=1761060282; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KuL9N6TS69/nmbvHCWcmwf8nUDNY2qRkN0vCSdqJqGw=;
- b=Jn1v8Zijgwn7omuASbqWSOMrtDCEgRj+segjX5mnd9nBecQOnGPplpz/X8oRPlpV8F
- qM6ly3QfC33YbQeKxyYAFzDMmV+3AANQveW7j3b9Z6SD5XM5xwJPIAud6RTKvrSXWIWS
- AR1bkAyIjZhWbJ52XUX/pxhZnrC0sLDZqiYuxnA4kLxeA1ZVqyOIIrWghReqkp75ihaa
- QPZPOBPxCD9kGkQyQ/6rCM6d5zaw1Y1WdbtvtPYnrvqdzCFqBCu7aHeHbPW920KCsO+V
- 20aWBPZrWGlwnK4kX5bIiGScV/6B1TotChMohgPpbETF/sxafiiM9Uj2cby4ySUHIbKK
- j3PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760455482; x=1761060282;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KuL9N6TS69/nmbvHCWcmwf8nUDNY2qRkN0vCSdqJqGw=;
- b=tRER587b/mgw40KrQipH+Ctz5cg2s4qizDo0VirPdRAdAbCky3W7zn7ciuuiacX6t8
- cu46s51BFaWt61hR7eJ3QbubJqy29HxOCroAhFk2E0KyID7U/8w6yLM+jV6doRY288QM
- PdugAhpGRJMUJwczr1yNOS12QAc3V8Yo0PcmGPzSumyGk/LyLIOpf0+cGGsGhDNq2nf/
- MTFufZSiEleKHoJ5Axou3KMygh07KdcJ7VQc0qQmO9GB2JaP/lGxCLfpRs339c61uekl
- PGFaF+oSZmw57kON+T7/Zf9bxejxk0qA+OXaYXi0DaWUMkZYBI35MP7jki/5SC+4zM6n
- hRkg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXaE+ggvUkaeK16K369gO1X82/CqAWXInn6ZfRaqGnmOMlIksoN36SaBvBC0x7HG5zUbhNxbgWqq7v8@nongnu.org
-X-Gm-Message-State: AOJu0Yxj5eH54SsUhWMHC0uqpir5sFdj4L50D+qHruxQO3Q0w+4o9LOb
- hzvD0qZdNMDkBkjItPXqGUhXLBqoZpQfbxGz1z9NknaABbuMLfz9T8oFUdu8R4Po5iw=
-X-Gm-Gg: ASbGnctoT0BEPe4BjRRq4n6n2o2piu3aNJ3GBidgXP96YDcA05FDzoVxq4j7gHhmrVc
- ZdgiJqCTTZTW/wQ9fvxesmy7hdyyGoMAyFJK6fMlDHaM1y5Y8B9SrJX7qpqThHSMIeSSJwkpP0p
- TRRpBP9wqaAP9nPi1T5kU34H2LoTxV4Sd3UoGxquDYAPUH9HCwMSV75zgreI/CeD3Yx40n0Z9IK
- SQNASkAbVgQ6AmkXnjLPXTe1rIuGrgd6J5s0wwSHxrJmnJo+/A/lboTw/Ekhcyqwtcl7t9+yBlo
- zNBsfyoTz+CzyVk4ZVGnf3W0Jv5E1xbvlLQ/5j1ysle8bRFLHkBYyOqBBRmLYFAHMLwHRUgxcsD
- RoMgfK0fFu0aj/1JcDm43OT7NBW4DuTOnQhirq+ykK4wH2F4y6HAAQ6aoCmcWeqv7ki1LLedHIT
- FctLOrMWf8wphtzmr/rLIwZrlp087dxunuZg==
-X-Google-Smtp-Source: AGHT+IHICk8X4m/xwiEFDz6dLz4rxcijLNqO7dYzaHlBvyhP8amqAopQ/TxNGF4L3D+gULOkQTRYCw==
-X-Received: by 2002:a05:6a20:72a2:b0:262:9461:2e59 with SMTP id
- adf61e73a8af0-32da83df936mr31006757637.39.1760455482325; 
- Tue, 14 Oct 2025 08:24:42 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:b401:1d95:80a1:93a2:fc08:86bf?
- ([2804:7f0:b401:1d95:80a1:93a2:fc08:86bf])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7992b8285ddsm15485102b3a.23.2025.10.14.08.24.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Oct 2025 08:24:41 -0700 (PDT)
-Message-ID: <ca74ac20-f510-4c78-8f3b-85a551841041@linaro.org>
-Date: Tue, 14 Oct 2025 12:24:39 -0300
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v8gvl-0006yn-Ej
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:27:17 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v8gvh-0007gV-I9
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:27:17 -0400
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7D016807B3;
+ Tue, 14 Oct 2025 18:27:09 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8a::1:35])
+ by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 7RRbiX2F1mI0-sK1dSZ2n; Tue, 14 Oct 2025 18:27:09 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1760455629;
+ bh=llTLM2QuEj792eKtiT19nsfj+fT4jxC8Z44mroiEp7w=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=nnefxUR3mkjflYdeg+88NZfvlaoNmug5rD3V0s1andUG4Nt918gyfZD4zaODxiTwS
+ cVIRCvBHuuTYfz5SMIzMehkzNcP40atGsXZfCvUQarZVV/Tv1y0yuQJfJZiVoiS7O3
+ ESlU8ACtEesDgi4y9jn97HAbJ8SgJL4HTDeOjoQQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: marcandre.lureau@redhat.com
+Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
+ qemu-devel@nongnu.org, vsementsov@yandex-team.ru, raphael@enfabrica.net,
+ armbru@redhat.com, yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
+Subject: [PATCH v3 0/7] chardev: postpone connect
+Date: Tue, 14 Oct 2025 18:26:37 +0300
+Message-ID: <20251014152644.954762-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/76] target-arm queue
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20251010130527.3921602-1-peter.maydell@linaro.org>
- <35087274-df34-4528-88a2-d855768fb5af@linaro.org>
- <e3314d25-dd8a-46a9-bbfc-44fba387099a@linaro.org>
- <CAFEAcA_OLA=Ct7wFHwnfixrYofjyMDuw_5ViNb7Yxu43B12szQ@mail.gmail.com>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <CAFEAcA_OLA=Ct7wFHwnfixrYofjyMDuw_5ViNb7Yxu43B12szQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x433.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -106,52 +72,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+Hi all!
 
-On 10/12/25 16:58, Peter Maydell wrote:
-> On Fri, 10 Oct 2025 at 20:59, Gustavo Romero <gustavo.romero@linaro.org> wrote:
->>
->> Hi,
->>
->> On 10/10/25 16:03, Richard Henderson wrote:
->>> On 10/10/25 06:04, Peter Maydell wrote:
->>>> Hi; this is another target-arm pullreq. It's a big one but it's
->>>> only two series: FEAT_MEC and FEAT_GCS.
->>>>
->>>> thanks
->>>> -- PMM
->>>>
->>>> The following changes since commit 94474a7733a57365d5a27efc28c05462e90e8944:
->>>>
->>>>     Merge tag 'pull-loongarch-20251009' ofhttps://github.com/gaosong715/qemu into staging (2025-10-09 07:59:29 -0700)
->>>>
->>>> are available in the Git repository at:
->>>>
->>>>     https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20251010
->>>>
->>>> for you to fetch changes up to 00936783abf77ebb47a78312a2e6500c6a13d938:
->>>>
->>>>     target/arm: Enable FEAT_MEC in -cpu max (2025-10-10 13:22:05 +0100)
->>>>
->>>> ----------------------------------------------------------------
->>>> target-arm queue:
->>>>    * Implement FEAT_GCS
->>>>    * Implement FEAT_MEC
->>>
->>> Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
->>
->> Could somebody give me access to https://wiki.qemu.org/ChangeLog/10.2, please?
-> 
-> It should be accessible to anybody with a wiki account, I think.
-> 
-> (I have already updated it per this pullreq's changes; let me
-> know if I missed anything.)
+That's only a preparation for backend-transfer migration of
+vhost-user-blk, and introduced DEFINE_PROP_CHR_NO_CONNECT()
+is unused now.
 
-It's missing FEAT_MEC in the list. But let me add it so I can test my access to the Wiki pages.
+v2 of "vhost-user-blk: live-backend local migration" is coming
+soon, and will be based on this series (and will use
+DEFINE_PROP_CHR_NO_CONNECT of course).
 
-Currently, the wiki is returning a Bad Gateway, so I'll wait it get resolved ;)
+If the design gets general approval, I'll try to update other
+chardev backends, to avoid supporting two different initialization
+APIs in future.
 
 
-Cheers,
-Gustavo
+Changes in v3:
+
+01: add r-b by Marc-André
+02: - rename function and save comment
+    - add r-b by Marc-André
+03: fix local_err to errp
+04-06: add r-b by Marc-André
+07: reworked to introduce DEFINE_PROP_CHR_NO_CONNECT
+
+
+For backend-transfer migration we are going to pass
+vhost-user-blk fds, including backend chardev fd to the target
+in migration stream (backed by UNIX domain socket).
+
+So, on the target, we want to know, should we call connect(),
+or is it a backend-transfer migration, and we should wait for
+incoming fd.
+
+But at initialization time we can't know it: user may setup
+migration parameters (enabling backend-transfer) later.
+
+So, let's postpone chardev open/connect phase up to attaching
+to frontend. At this point we can split the behavior:
+
+If frontend is a device, which define chardev property
+using DEFINE_PROP_CHR_NO_CONNECT (at least, vhost-user-blk will
+behave this way soon), then do not connect(), let the device decide
+when to do connect().
+
+Otherwise (basic DEFINE_PROP_CHR, or other calls to qemu_chr_fe_init()),
+do connect() at point of attaching frontend.
+
+The series is based on
+  [PATCH 0/2] remove deprecated 'reconnect' options
+Based-on: <20250924133309.334631-1-vsementsov@yandex-team.ru>
+
+Vladimir Sementsov-Ogievskiy (7):
+  chardev/char-socket: simplify reconnect-ms handling
+  chardev/char: split chardev_init_logfd() out of qemu_char_open()
+  chardev/char: qemu_char_open(): add return value
+  chardev/char: move filename and be_opened handling to qemu_char_open()
+  chardev/char: introduce .init() + .connect() initialization interface
+  chardev/char-socket: move to .init + .connect api
+  chardev: introduce DEFINE_PROP_CHR_NO_CONNECT
+
+ chardev/char-fe.c                   |  12 ++-
+ chardev/char-socket.c               |  64 ++++++++-------
+ chardev/char.c                      | 118 ++++++++++++++++++++--------
+ hw/core/qdev-properties-system.c    |  26 +++++-
+ include/chardev/char-fe.h           |   6 +-
+ include/chardev/char-socket.h       |   1 +
+ include/chardev/char.h              |  22 +++++-
+ include/hw/qdev-properties-system.h |   3 +
+ tests/unit/test-char.c              |  14 ++--
+ ui/dbus-chardev.c                   |  12 ++-
+ 10 files changed, 203 insertions(+), 75 deletions(-)
+
+-- 
+2.48.1
+
 
