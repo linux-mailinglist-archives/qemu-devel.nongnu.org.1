@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00F3BDA712
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7DDBDA4AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:18:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8h7x-0006gj-B1; Tue, 14 Oct 2025 11:39:53 -0400
+	id 1v8gmj-00028e-06; Tue, 14 Oct 2025 11:17:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1v8h7p-0006gY-0G
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:39:46 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v8gme-000287-KK; Tue, 14 Oct 2025 11:17:52 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1v8h7k-0001Kh-GL
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:39:43 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cmJH026JKz6GDQJ;
- Tue, 14 Oct 2025 23:36:44 +0800 (CST)
-Received: from dubpeml100003.china.huawei.com (unknown [7.214.147.98])
- by mail.maildlp.com (Postfix) with ESMTPS id 692FC14037D;
- Tue, 14 Oct 2025 23:39:34 +0800 (CST)
-Received: from dubpeml500004.china.huawei.com (7.214.147.1) by
- dubpeml100003.china.huawei.com (7.214.147.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Oct 2025 16:39:34 +0100
-Received: from dubpeml500004.china.huawei.com ([7.214.147.1]) by
- dubpeml500004.china.huawei.com ([7.214.147.1]) with mapi id 15.02.1544.011;
- Tue, 14 Oct 2025 16:39:34 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Salil Mehta
- <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
-Subject: RE: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
- kernel in cpuif reset
-Thread-Topic: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
- kernel in cpuif reset
-Thread-Index: AQHcPPUb159YqalKN0iW0Ad9cDluebTBcyuAgAAtQ0D///KGAIAAES+Q///z8ACAABG8wP//+S2AAAIw8TD///c1gP//7sZQgAAX3QD//+w+sA==
-Date: Tue, 14 Oct 2025 15:39:33 +0000
-Message-ID: <e8aba327f32d45d9828b0bc6a038f750@huawei.com>
-References: <20251014102439.319915-1-peter.maydell@linaro.org>
- <261d6938fc894b1ca0979aef30fb9e1c@huawei.com>
- <eebfcb04afc2498d8969d96fcbcf0926@huawei.com>
- <CAFEAcA_MZu4stZ4MY4zdpM0zy-gNBA3yj4dkuWL3d-FLFZC6rg@mail.gmail.com>
- <b3f9f1d44d8d4a779dcaae2497b8b71b@huawei.com>
- <CAFEAcA804drHGyTG73bXkqSMgXvKGGaLWvm6QS85FhD+dXDqjw@mail.gmail.com>
- <cb5c762bd24d4cd69aea415d4bc10051@huawei.com>
- <CAFEAcA-g18R03vqpqXr0boOccDqhNP0J7Gx8nZOxUrbQh13pog@mail.gmail.com>
- <599ea0ba89314d28af8b3ae7b590d1a9@huawei.com>
- <CAFEAcA8-QGBGqjw3Eefx_yyz_30azn9Trz-OGSxq7v4N=X+26Q@mail.gmail.com>
- <a630fc58d9f946988bd6c27479543dd1@huawei.com>
- <CAFEAcA8GsSDnY8GEJZYNbJ3KZAp9tJ=s_vUBB_XwwGaEwozxzQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA8GsSDnY8GEJZYNbJ3KZAp9tJ=s_vUBB_XwwGaEwozxzQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.67.200]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v8gma-0006U2-BN; Tue, 14 Oct 2025 11:17:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760455068; x=1791991068;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+QtHRQ6oWS3RVcVguLBinTUwEH/gTU7AL+1AOC8GzA4=;
+ b=lRsNGGELeMSGe45UzHAvm8ou9pjjALSfozzL0Q2aMd4G7NdIt36L2zxE
+ 7MNYWwHpA7vzCKgpnuj1NtTFSX82q8V873ZQ2nAhu9u7CT4OfHNCn6+1O
+ pNvGizcurawxnF4Eep1fKK5OtfpXr/i5WbEkvmX5T8A97gIZAR4RFos40
+ PKkev5nRyWOtVlqlQskTvHZ13wcbCLtXPfaiGgn3k1ByFLvaf0LC/eyjS
+ 3JWbSGftWFDPkUgehajMrZjcpwzr5xI4weuLodOshfwljKrXdt/BHD0pc
+ E99ctmO3hwRJwDvCBSZ+eExiz3wxye6EI1Fsr5PKg9Kg3e6box5N5P1Cm Q==;
+X-CSE-ConnectionGUID: FzXsZD+1TgyepNe5XbiHAQ==
+X-CSE-MsgGUID: F3pY7HgnRlyOLRBurfINSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66444690"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="66444690"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2025 08:17:40 -0700
+X-CSE-ConnectionGUID: z61vCBn7Q3KC5vEH5QTWAQ==
+X-CSE-MsgGUID: nDHMKyi1ThKQlYbgXtLpKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; d="scan'208";a="187213910"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa004.fm.intel.com with ESMTP; 14 Oct 2025 08:17:38 -0700
+Date: Tue, 14 Oct 2025 23:39:44 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH] rust/qemu-macros: Convert bit value to u8 within
+ #[property]
+Message-ID: <aO5uwJnKqSJAlioY@intel.com>
+References: <20251014150251.2473680-1-zhao1.liu@intel.com>
+ <0d7741c3-2ffb-4076-8baa-864a83197805@redhat.com>
 MIME-Version: 1.0
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d7741c3-2ffb-4076-8baa-864a83197805@redhat.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,31 +78,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBQZXRlciBNYXlkZWxsIDxwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc+DQo+IFNlbnQ6
-IFR1ZXNkYXksIE9jdG9iZXIgMTQsIDIwMjUgNDoyNCBQTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNh
-bGlsLm1laHRhQGh1YXdlaS5jb20+DQo+IA0KPiBPbiBUdWUsIDE0IE9jdCAyMDI1IGF0IDE2OjEz
-LCBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiA+
-IEZyb206IFBldGVyIE1heWRlbGwgPHBldGVyLm1heWRlbGxAbGluYXJvLm9yZz4gSW4gd2hhdCBz
-aXR1YXRpb24gZG8NCj4gPiA+IHdlIGV2ZXIgc3RhcnQgcnVubmluZyBhIFZDUFUgYmVmb3JlIHRo
-ZSAqR0lDKiBoYXMgYmVlbiByZWFsaXplZD8gVGhlDQo+ID4gPiBHSUMgc2hvdWxkIGdldCByZWFs
-aXplZCBhcyBwYXJ0IG9mIGNyZWF0aW5nIHRoZSB2aXJ0IGJvYXJkLCB3aGljaA0KPiA+ID4gbXVz
-dCBjb21wbGV0ZSBiZWZvcmUgd2UgZG8gYW55dGhpbmcgbGlrZSBydW5uaW5nIGEgdmNwdS4NCj4g
-Pg0KPiA+DQo+ID4gSnVzdCBhZnRlciByZWFsaXphdGlvbiBvZiB2Q1BVIGluIHRoZSBtYWNodmly
-dF9pbml0KCkgeW91IGNhbiBzZWUgdGhlDQo+ID4gZGVmYXVsdCBwb3dlcl9zdGF0ZSBpcyBQU0NJ
-IENQVV9PTiwgd2hpY2ggbWVhbnMNCj4gS1ZNX01QX1NUQVRFX1JVTk5BQkxFLg0KPiA+IFNpbmNl
-LCB0aGUgdGhyZWFkIGlzIHVwIGFuZCBub3QgZG9pbmcgSU8gd2FpdCBpbiB1c2Vyc3BhY2UgaXQg
-Z2V0cw0KPiA+IGludG8NCj4gPiBjcHVfZXhlYygpIGxvb3AgYW5kIGFjdHVhbGx5IHJ1biBLVk1f
-UlVOIElPQ1RMLiBJbnNpZGUgdGhlIEtWTSBpdA0KPiA+IG1vbWVudGFyaWx5IHRha2VzIHRoZSB2
-Q1BVIG11dGV4IGJ1dCBsYXRlciBleGl0IGFuZCByZWxlYXNlcy4gVGhpcw0KPiA+IGtlZXBzIGdv
-aW5nIG9uIGZvciBhbGwgb2YgdGhlIHZDUFUgdGhyZWFkcyByZWFsaXplZCBlYXJseS4NCj4gDQo+
-IFlpa2VzLiBXZSBkZWZpbml0ZWx5IHNob3VsZCBmaXggdGhhdCA6IGxldHRpbmcgdGhlIHZjcHUg
-cnVuIGJlZm9yZSB3ZSBnZXQgdG8NCj4gcWVtdV9tYWNoaW5lX2NyZWF0aW9uX2RvbmUoKSBzZWVt
-cyBsaWtlIGl0IHdvdWxkIGJlIGEgbWFzc2l2ZSBzb3VyY2Ugb2YNCj4gcmFjZSBjb25kaXRpb25z
-Lg0KDQoNCkJUVywgSSBkaWQgcmFpc2UgdGhpcyBpc3N1ZSBpbiB0aGUgbGFzdCBLVk0gQ2FsbCB3
-aXRoIEFsZXggQmVubsOpZQ0KDQoNCkJlc3QgcmVnYXJkcw0KU2FsaWwuDQo=
+On Tue, Oct 14, 2025 at 05:09:34PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 14 Oct 2025 17:09:34 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH] rust/qemu-macros: Convert bit value to u8 within
+>  #[property]
+> 
+> On 10/14/25 17:02, Zhao Liu wrote:
+> > diff --git a/rust/qemu-macros/src/lib.rs b/rust/qemu-macros/src/lib.rs
+> > index 3e21b67b4719..2a7454da2416 100644
+> > --- a/rust/qemu-macros/src/lib.rs
+> > +++ b/rust/qemu-macros/src/lib.rs
+> > @@ -271,7 +271,10 @@ macro_rules! str_to_c_str {
+> >                   name: ::std::ffi::CStr::as_ptr(#prop_name),
+> >                   info: #qdev_prop,
+> >                   offset: ::core::mem::offset_of!(#name, #field_name) as isize,
+> > -                bitnr: #bitnr,
+> > +                bitnr: {
+> > +                    const { assert!(#bitnr >= 0 && #bitnr <= u8::MAX as _, "bit exceeds u8 range"); }
+> 
+> The check for the upper limit must be "#bitnr < $field_ty::BITS as _", for
+> example rejecting 32 for an u32 field.
+
+Yes, good point, MAX is not enough.
+
+> Also, the tests need to be updated.
+
+Will do.
+
+Regards,
+Zhao
+
 
