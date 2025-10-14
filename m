@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E460FBD9C71
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE11BD9C83
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:40:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEE-0005TI-KM; Tue, 14 Oct 2025 09:38:14 -0400
+	id 1v8fEG-0005hX-V0; Tue, 14 Oct 2025 09:38:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDo-0005Rl-Im
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:50 -0400
+ id 1v8fDr-0005ST-Ku
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDl-00013B-FL
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:48 -0400
+ id 1v8fDo-00013U-OC
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449064;
+ s=mimecast20190719; t=1760449066;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e32N7ZSB2saMjOPTEs5cXNXBo4U73cVipS9h91Ip8+Y=;
- b=i37sqciaIIBiDMlr1z5RYAKWFzkYATypExdqR8ZHhdjJ95lV+MM0NyYOAheCjAG5b9+L/E
- KBlggWYsMga6zRRHlwewBRpTLyCqiIZhIFH2TmaLp0Ayy/4zHh4ebaIa2917633vTCyBJn
- MZ4P2Z0nl0mdXh1O7+gpc0hKDihNrkM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iA0bDEBxJgjEmhhlL5wXkh2D/VoTpIzJgtkxrAf3WUE=;
+ b=Qn0EQO1Uul0YnKFOM0CzIE/vi/te9/EEHe03D72oOm8kRXaLnBqNTN8vD3Qc8z9mv56Nw5
+ BNe8ygNqmUy9vKIoNvYPRCOY2eRcK7AE0CDbVYaVmIEvdxjIaYiTaO5NRSg+fsI1MeA0Ui
+ /IELkDUXH5l/OH/OB8LDfG50wfHajCM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-67-oFwZ6s8tOc2Y1EvSzKvKNQ-1; Tue, 14 Oct 2025 09:37:41 -0400
-X-MC-Unique: oFwZ6s8tOc2Y1EvSzKvKNQ-1
-X-Mimecast-MFC-AGG-ID: oFwZ6s8tOc2Y1EvSzKvKNQ_1760449061
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3ee1365964cso5309381f8f.2
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:41 -0700 (PDT)
+ us-mta-395-WrITmq4bML-ACdWp-sraoA-1; Tue, 14 Oct 2025 09:37:45 -0400
+X-MC-Unique: WrITmq4bML-ACdWp-sraoA-1
+X-Mimecast-MFC-AGG-ID: WrITmq4bML-ACdWp-sraoA_1760449064
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e3a049abaso38646665e9.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449059; x=1761053859;
+ d=1e100.net; s=20230601; t=1760449062; x=1761053862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e32N7ZSB2saMjOPTEs5cXNXBo4U73cVipS9h91Ip8+Y=;
- b=PessiixYZH7s5QJv0+zZfnDOgu0qYFRQlB++wvMU+50TT827p0EAhJrukIOhZo4RAu
- kSO7VdzdbTbRAduf6JxgUOdzJpzgVUfhjoccM/WbGAvhcAgYuX7JtpA3cjb9EU83j8Bf
- oOlcIofprwtLVQvEdHJtAdgKQY/MTT/nRx+zuk0kewPAABPA6hvVRtYYlVI3H5SPAZ+1
- pFUIpkqKAJxNoZA+8ywYmIE4pMhd6OH2bp2SmfmUwGswV0mY1R/wTEfJqU35AgS0A57Q
- 2+ydlVqSU/LALa8oFD0UV+04b/ksuhw7SWaDIiaSjwQPa1kF6eM+idzhF2WpySMiN2X7
- AjOQ==
-X-Gm-Message-State: AOJu0YyHW8HCwarAR4Gb/M5C59noTRmwR5VsirK3s8q9LqPZa+oDbOTl
- MjPM7RXzQGK3Suc8zvqe2W7Dehxp9uwI2iHza58gWZ3VJd+1SMIdSOuNkJR+IqzGfsCxbCBra9g
- BhE8XtuXi20VqSFY70eWCQkimIyhHgbAqr4wyfxvMvQFs7ltD3dcd1T9IGXEFHqBc2E3cQaYgd2
- ce706pnMmBbAl6xJey5VOOwM/wX2ud8/njJsiy1UFs
-X-Gm-Gg: ASbGncsy2v2UhkgryCRNBT3hal3jM6wmQKZqdt6Ao20A0505AGQYHhKxiWxxxJ67+Qf
- +HqOXE3tk3tFQC2OEoRqHS6GspGf8qGXyxGNBNZOsNVFrcd++pHRZI53k+dmzXgDB4AoqYwUVsr
- c9k9lFOJ7x+rg2v1o+NB2r68LtD4eHRJthkQfpsalFT/G8YwenGQ2Pn/VDbcPg6f03dkoYrgdDs
- /wGhuCkdQta31GXnovEeHMYpAdfgD5gthgz3UeMfenDQss67ithd9FqhCsJTWAjLPyvMohptwKU
- SUDCzgxAtKGYZVEtDw3lIqe8zrAm/s7uhsYhM74qOJ8POg+9mEFKYB4coaUK8zryzuzLZhcDSLm
- VCqngEneQPsb65qLzaVsEf3u/1leSMUemexizXRLM1Vo=
-X-Received: by 2002:a05:6000:430e:b0:3e7:d199:7889 with SMTP id
- ffacd0b85a97d-4266e7c4ed5mr18807325f8f.27.1760449059399; 
- Tue, 14 Oct 2025 06:37:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEICUlNgOSBk2ILbWFjuCrM2q3JRkIPYPwMDYwrTG2ujJznQy0cE01VFRryWowL5W5l6DKqng==
-X-Received: by 2002:a05:6000:430e:b0:3e7:d199:7889 with SMTP id
- ffacd0b85a97d-4266e7c4ed5mr18807300f8f.27.1760449058848; 
- Tue, 14 Oct 2025 06:37:38 -0700 (PDT)
+ bh=iA0bDEBxJgjEmhhlL5wXkh2D/VoTpIzJgtkxrAf3WUE=;
+ b=E/10Y3UclsrTPB48kpKaM6U+1j+f+Rc07Iwp7GtLQAgBo/frm/g4ZfIhmiOEfs8XqM
+ QJfRD4fvOaCemgYbHJuUM80IXJ3SidaNUsk3euXM+yXKCRM/x8w9RTPrjMylTuRnTG3Q
+ 4UEjYx2dWhh1dxR1JfhBIPmi/yPSDFMrbAvxowiOelgbrVEzys++6+/t6FdE3o1WCSEd
+ GN/mvPQ9cLEb63RQzeY5HMW7Dv9omWIgfhHZA/JyiRzC+EhLJTW7C2Frf70HjzrxLe8x
+ eg1+c9pm+hlWb1I0O3UcfqZUfr7UqDQ5rUN1uncr84/LmeFb8BX4X+AFW9WPXYPgPwuk
+ c4Dg==
+X-Gm-Message-State: AOJu0Yz2wxZydGbnQvqhotGmEiHUvELD+OZfBaBf+qyzkuFYVCOBvQim
+ nMuzmBRk3X2B178WPb753pFXBFaWDr2luoU2pJrD6bQ6EN4XZKB9xZMfTg14iEZ3q31kHWijnaL
+ 7ogfT5mkNU7epgztwVZfm6rKZTtElv+3kFsAgYY2mWxZwEBILs4Lzx8kZmCkdAdxSniDdTFjtzC
+ ihMi4PEx4JNPa1eCBkF74j3SrpKtHGyuO1aQnZED21
+X-Gm-Gg: ASbGncu6mZeyAF+Y9CrZkbJ8pfdaujmJ22qZvCnajjSYBwHj5HgyMIztGdjxh+Gumi5
+ sa4uakdUvY6lr7mvUH5dY7CYbinGa1wV9sut6sbWPFs5ck3aoiIfqRygLdJoVkj+Kqh87lDBR64
+ UqEPvlgD6tnRwmN+E7ohtmNvN7erjgPD5sxbSqsC+lWNRsS/IMTshkmqotSgg552Oorawo7pvJ/
+ NC7Cb4IWQOeYNc6OgfhTjk3rURW27Hw/oH8J325UtkFgKV1jF8I0qhOvn4t25GCPbh2Z0UmuVWf
+ VtJv8TDy9Csd0WBqn6PnJszX9ZFLj/7EyoA/hexHvc7Rl6xn5dpb8OHS+TIuf+FmKnVoKvBvD6S
+ VSbJBcdM8nSBikRO2moDUn5O3Lb/Z9BAxzuRFQqkwhIA=
+X-Received: by 2002:a05:600c:8b6a:b0:46f:b42e:ed88 with SMTP id
+ 5b1f17b1804b1-46fb42eee4fmr132671855e9.41.1760449062401; 
+ Tue, 14 Oct 2025 06:37:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiyLGx/XOXKn7gRuHhlmN4j1M0MNnfyE1WU7UUmxZsiMQsjpqt43Gp8uHWcMVkis96pQUQVg==
+X-Received: by 2002:a05:600c:8b6a:b0:46f:b42e:ed88 with SMTP id
+ 5b1f17b1804b1-46fb42eee4fmr132671605e9.41.1760449061913; 
+ Tue, 14 Oct 2025 06:37:41 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e8141sm23553472f8f.48.2025.10.14.06.37.36
+ 5b1f17b1804b1-46fb4989601sm236079775e9.9.2025.10.14.06.37.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:36 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- YiFei Zhu <zhuyifei@google.com>, unvariant.winter@gmail.com,
- qemu-stable@nongnu.org
-Subject: [PULL 10/28] i386/tcg/smm_helper: Properly apply DR values on SMM
- entry / exit
-Date: Tue, 14 Oct 2025 15:36:55 +0200
-Message-ID: <20251014133713.1103695-10-pbonzini@redhat.com>
+ Thomas Ogrisegg <tom-bugs-qemu@fnord.at>, qemu-stable@nongnu.org
+Subject: [PULL 11/28] target/i386: fix x86_64 pushw op
+Date: Tue, 14 Oct 2025 15:36:56 +0200
+Message-ID: <20251014133713.1103695-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -110,61 +108,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Thomas Ogrisegg <tom-bugs-qemu@fnord.at>
 
-do_smm_enter and helper_rsm sets the env->dr, but does not sync the
-values with cpu_x86_update_dr7. A malicious kernel may control the
-instruction pointer in SMM by setting a breakpoint on the SMI
-entry point, and after do_smm_enter cpu->breakpoints contains the
-stale breakpoint; and because IDT is not reloaded upon SMI entry,
-the debug exception handler controlled by the malicious kernel
-is invoked.
+For x86_64 a 16 bit push op (pushw) of a memory address would generate
+a 64 bit store on the stack instead of a 16 bit store.
 
-Fixes: 01df040b5247 ("x86: Debug register emulation (Jan Kiszka)")
-Reported-by: unvariant.winter@gmail.com
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Link: https://lore.kernel.org/r/2bacb9b24e9d337dbe48791aa25d349eb9c52c3a.1758794468.git.zhuyifei@google.com
+For example:
+        pushw (%rax)
+
+behaves like
+        pushq (%rax)
+
+which is incorrect.
+
+This patch fixes that.
+
+Signed-off-by: Thomas Ogrisegg <tom-bugs-qemu@fnord.at>
+Link: https://lore.kernel.org/r/20250715210307.GA1115@x1.fnord.at
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/system/smm_helper.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/i386/tcg/decode-new.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/system/smm_helper.c b/target/i386/tcg/system/smm_helper.c
-index 251eb7856ce..fb028a8272f 100644
---- a/target/i386/tcg/system/smm_helper.c
-+++ b/target/i386/tcg/system/smm_helper.c
-@@ -168,7 +168,7 @@ void do_smm_enter(X86CPU *cpu)
-                        env->cr[0] & ~(CR0_PE_MASK | CR0_EM_MASK | CR0_TS_MASK |
-                                       CR0_PG_MASK));
-     cpu_x86_update_cr4(env, 0);
--    env->dr[7] = 0x00000400;
-+    helper_set_dr(env, 7, 0x00000400);
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 51038657f0f..a50f57dbaab 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1541,7 +1541,7 @@ static void decode_group4_5(DisasContext *s, CPUX86State *env, X86OpEntry *entry
+         [0x0b] = X86_OP_ENTRYr(CALLF_m, M,p),
+         [0x0c] = X86_OP_ENTRYr(JMP_m,   E,f64,                         zextT0),
+         [0x0d] = X86_OP_ENTRYr(JMPF_m,  M,p),
+-        [0x0e] = X86_OP_ENTRYr(PUSH,    E,f64),
++        [0x0e] = X86_OP_ENTRYr(PUSH,    E,d64),
+     };
  
-     cpu_x86_load_seg_cache(env, R_CS, (env->smbase >> 4) & 0xffff, env->smbase,
-                            0xffffffff,
-@@ -233,8 +233,8 @@ void helper_rsm(CPUX86State *env)
-     env->eip = x86_ldq_phys(cs, sm_state + 0x7f78);
-     cpu_load_eflags(env, x86_ldl_phys(cs, sm_state + 0x7f70),
-                     ~(CC_O | CC_S | CC_Z | CC_A | CC_P | CC_C | DF_MASK));
--    env->dr[6] = x86_ldl_phys(cs, sm_state + 0x7f68);
--    env->dr[7] = x86_ldl_phys(cs, sm_state + 0x7f60);
-+    helper_set_dr(env, 6, x86_ldl_phys(cs, sm_state + 0x7f68));
-+    helper_set_dr(env, 7, x86_ldl_phys(cs, sm_state + 0x7f60));
- 
-     cpu_x86_update_cr4(env, x86_ldl_phys(cs, sm_state + 0x7f48));
-     cpu_x86_update_cr3(env, x86_ldq_phys(cs, sm_state + 0x7f50));
-@@ -268,8 +268,8 @@ void helper_rsm(CPUX86State *env)
-     env->regs[R_EDX] = x86_ldl_phys(cs, sm_state + 0x7fd8);
-     env->regs[R_ECX] = x86_ldl_phys(cs, sm_state + 0x7fd4);
-     env->regs[R_EAX] = x86_ldl_phys(cs, sm_state + 0x7fd0);
--    env->dr[6] = x86_ldl_phys(cs, sm_state + 0x7fcc);
--    env->dr[7] = x86_ldl_phys(cs, sm_state + 0x7fc8);
-+    helper_set_dr(env, 6, x86_ldl_phys(cs, sm_state + 0x7fcc));
-+    helper_set_dr(env, 7, x86_ldl_phys(cs, sm_state + 0x7fc8));
- 
-     env->tr.selector = x86_ldl_phys(cs, sm_state + 0x7fc4) & 0xffff;
-     env->tr.base = x86_ldl_phys(cs, sm_state + 0x7f64);
+     int w = (*b & 1);
 -- 
 2.51.0
 
