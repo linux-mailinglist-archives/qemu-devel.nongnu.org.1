@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE11BD9C83
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5ADBD9C56
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEG-0005hX-V0; Tue, 14 Oct 2025 09:38:17 -0400
+	id 1v8fEH-0005lz-8m; Tue, 14 Oct 2025 09:38:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDr-0005ST-Ku
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:52 -0400
+ id 1v8fDw-0005TT-AC
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDo-00013U-OC
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:51 -0400
+ id 1v8fDt-00013r-Am
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449066;
+ s=mimecast20190719; t=1760449070;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iA0bDEBxJgjEmhhlL5wXkh2D/VoTpIzJgtkxrAf3WUE=;
- b=Qn0EQO1Uul0YnKFOM0CzIE/vi/te9/EEHe03D72oOm8kRXaLnBqNTN8vD3Qc8z9mv56Nw5
- BNe8ygNqmUy9vKIoNvYPRCOY2eRcK7AE0CDbVYaVmIEvdxjIaYiTaO5NRSg+fsI1MeA0Ui
- /IELkDUXH5l/OH/OB8LDfG50wfHajCM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p7FvYGDrbnzpa7OItG1//SbTNo4zP2HPygbU6jXz7UU=;
+ b=A1gMw1KbIjZiRkpCoJTd1iwxPHOt+fUbT/SLUAPU/FfUfr5NojYww1NOXa5T3fGjd9oQ+K
+ zify7386umIbNuK5PPelLLm81q9C+koy/FVn9/wBdoJ+VkRaF0m5ytRlNw7Q3JXizoRD0z
+ URKUGI2uxhodl5fdZvMLsiy/rEs8r18=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-WrITmq4bML-ACdWp-sraoA-1; Tue, 14 Oct 2025 09:37:45 -0400
-X-MC-Unique: WrITmq4bML-ACdWp-sraoA-1
-X-Mimecast-MFC-AGG-ID: WrITmq4bML-ACdWp-sraoA_1760449064
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-46e3a049abaso38646665e9.0
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:45 -0700 (PDT)
+ us-mta-595-3Vz6BQRHPkCLv_5LCZEUHw-1; Tue, 14 Oct 2025 09:37:48 -0400
+X-MC-Unique: 3Vz6BQRHPkCLv_5LCZEUHw-1
+X-Mimecast-MFC-AGG-ID: 3Vz6BQRHPkCLv_5LCZEUHw_1760449066
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-426d314d0deso2307224f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449062; x=1761053862;
+ d=1e100.net; s=20230601; t=1760449065; x=1761053865;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iA0bDEBxJgjEmhhlL5wXkh2D/VoTpIzJgtkxrAf3WUE=;
- b=E/10Y3UclsrTPB48kpKaM6U+1j+f+Rc07Iwp7GtLQAgBo/frm/g4ZfIhmiOEfs8XqM
- QJfRD4fvOaCemgYbHJuUM80IXJ3SidaNUsk3euXM+yXKCRM/x8w9RTPrjMylTuRnTG3Q
- 4UEjYx2dWhh1dxR1JfhBIPmi/yPSDFMrbAvxowiOelgbrVEzys++6+/t6FdE3o1WCSEd
- GN/mvPQ9cLEb63RQzeY5HMW7Dv9omWIgfhHZA/JyiRzC+EhLJTW7C2Frf70HjzrxLe8x
- eg1+c9pm+hlWb1I0O3UcfqZUfr7UqDQ5rUN1uncr84/LmeFb8BX4X+AFW9WPXYPgPwuk
- c4Dg==
-X-Gm-Message-State: AOJu0Yz2wxZydGbnQvqhotGmEiHUvELD+OZfBaBf+qyzkuFYVCOBvQim
- nMuzmBRk3X2B178WPb753pFXBFaWDr2luoU2pJrD6bQ6EN4XZKB9xZMfTg14iEZ3q31kHWijnaL
- 7ogfT5mkNU7epgztwVZfm6rKZTtElv+3kFsAgYY2mWxZwEBILs4Lzx8kZmCkdAdxSniDdTFjtzC
- ihMi4PEx4JNPa1eCBkF74j3SrpKtHGyuO1aQnZED21
-X-Gm-Gg: ASbGncu6mZeyAF+Y9CrZkbJ8pfdaujmJ22qZvCnajjSYBwHj5HgyMIztGdjxh+Gumi5
- sa4uakdUvY6lr7mvUH5dY7CYbinGa1wV9sut6sbWPFs5ck3aoiIfqRygLdJoVkj+Kqh87lDBR64
- UqEPvlgD6tnRwmN+E7ohtmNvN7erjgPD5sxbSqsC+lWNRsS/IMTshkmqotSgg552Oorawo7pvJ/
- NC7Cb4IWQOeYNc6OgfhTjk3rURW27Hw/oH8J325UtkFgKV1jF8I0qhOvn4t25GCPbh2Z0UmuVWf
- VtJv8TDy9Csd0WBqn6PnJszX9ZFLj/7EyoA/hexHvc7Rl6xn5dpb8OHS+TIuf+FmKnVoKvBvD6S
- VSbJBcdM8nSBikRO2moDUn5O3Lb/Z9BAxzuRFQqkwhIA=
-X-Received: by 2002:a05:600c:8b6a:b0:46f:b42e:ed88 with SMTP id
- 5b1f17b1804b1-46fb42eee4fmr132671855e9.41.1760449062401; 
- Tue, 14 Oct 2025 06:37:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiyLGx/XOXKn7gRuHhlmN4j1M0MNnfyE1WU7UUmxZsiMQsjpqt43Gp8uHWcMVkis96pQUQVg==
-X-Received: by 2002:a05:600c:8b6a:b0:46f:b42e:ed88 with SMTP id
- 5b1f17b1804b1-46fb42eee4fmr132671605e9.41.1760449061913; 
- Tue, 14 Oct 2025 06:37:41 -0700 (PDT)
+ bh=p7FvYGDrbnzpa7OItG1//SbTNo4zP2HPygbU6jXz7UU=;
+ b=K5V9PaN/yhaVMeocW0HbTyzCOs+UBuArFjsg0c4C7qfCoCWeGd76RK5drPPCodQZ1D
+ d7JIIpNi/Qu0C69MMSyPYKHXaWfi3RVK1xsrtuuzh1vkb1eoOwFLcsYY1pne3hIT5092
+ JWf6iOopBaH0vii063LNFWPl8WdFNk4GFr0xVN/If2JsAvahMh34JZ9KQjViguXrtUgZ
+ b5oXALviuBXXtD/5pv49j5wL3X/dwzzMyLcGXLDT5Ixym9uwulnd3O8l/IPjJ8AIzQ5j
+ GDT/5RyDUftnHJO3Qj5fKObIRWFhJSOYCVNHzbRVoOQSrv3W3Hb/BycbJiRgCR6EYitZ
+ /oyw==
+X-Gm-Message-State: AOJu0YzHJItkHf116XzYejFp4fZ4GplXsyR5mzTXseZ78nUlpmULG9Uj
+ Cod0FRHAxIr7zjI+vK9UlrSAHrFcdhSp07F/958jnUV+gHSoCgioV8VrndkEqhYlYIVzF9lwtwX
+ wAWgXu2G1bwUva/kkh6JCP8ScOiuaL1g1KmRXetD6HpxKSKzpc+pGRV18koPHwHkq/qCbUSmJhi
+ LKN3ABpwv2BnqwlifGOz3Ypkwi/4JaFGoQMspjoExg
+X-Gm-Gg: ASbGncubDnkjJrGX5Csq85QETlkaE5VvW9DpfId863FDfa2nEnaZ/kVCSRG8tLgwrpL
+ kJhssqs8KNstJ3fX1AQJRNRtPD9gJs1X5hirCR8+cHrqRLP0NJweS6U5okUY4t0waRk0JZgqgXO
+ ntz/alfwLOhUXe/lpJwdEZT+X5QHCaFS13zomK9X7hmFERt1KX4orRV8XfVaizE1BvBQq8cTTVe
+ 0agKKl0GXnhNhTJE7yKne3NlrHIdgo67Q+/zUbRJrUOlyAsvvlFrHYnEdGr0F/4hX+K42sEsPX5
+ i55DeWCREsmQcXpZpad7W7hkmL/Sf/zytdelZZfBudeMYduEzaETi76zGfp4xB4SwdZB1kcHUgK
+ FQuPOPrQC7bHbWg0J4BUkZdlA66obuusWSprByncb/tk=
+X-Received: by 2002:a5d:64e5:0:b0:426:dbef:acb9 with SMTP id
+ ffacd0b85a97d-426dbefae8cmr6225659f8f.59.1760449065289; 
+ Tue, 14 Oct 2025 06:37:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEplO1pLbjZe1RBpX4n9mG3SzMFiTOsTTJ6T496fJkUx9SSh/t0dSNlIbQw9ibWdORIcge1sg==
+X-Received: by 2002:a5d:64e5:0:b0:426:dbef:acb9 with SMTP id
+ ffacd0b85a97d-426dbefae8cmr6225641f8f.59.1760449064873; 
+ Tue, 14 Oct 2025 06:37:44 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb4989601sm236079775e9.9.2025.10.14.06.37.39
+ ffacd0b85a97d-426ed61d31esm4698970f8f.52.2025.10.14.06.37.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:39 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Thomas Ogrisegg <tom-bugs-qemu@fnord.at>, qemu-stable@nongnu.org
-Subject: [PULL 11/28] target/i386: fix x86_64 pushw op
-Date: Tue, 14 Oct 2025 15:36:56 +0200
-Message-ID: <20251014133713.1103695-11-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 12/28] target/i386: fix access to the T bit of the TSS
+Date: Tue, 14 Oct 2025 15:36:57 +0200
+Message-ID: <20251014133713.1103695-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -108,42 +108,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Ogrisegg <tom-bugs-qemu@fnord.at>
+The T bit is bit 0 of the 16-bit word at offset 100 of the TSS.  However,
+accessing it with a 32-bit word is not really correct, because bytes
+102-103 contain the I/O map base address (relative to the base of the
+TSS) and bits 1-15 are reserved.  In particular, any task switch to a TSS that
+has a nonzero I/O map base address is broken.
 
-For x86_64 a 16 bit push op (pushw) of a memory address would generate
-a 64 bit store on the stack instead of a 16 bit store.
+This fixes the eventinj and taskswitch tests in kvm-unit-tests.
 
-For example:
-        pushw (%rax)
-
-behaves like
-        pushq (%rax)
-
-which is incorrect.
-
-This patch fixes that.
-
-Signed-off-by: Thomas Ogrisegg <tom-bugs-qemu@fnord.at>
-Link: https://lore.kernel.org/r/20250715210307.GA1115@x1.fnord.at
 Cc: qemu-stable@nongnu.org
+Fixes: ad441b8b791 ("target/i386: implement TSS trap bit", 2025-05-12)
+Reported-by: Thomas Huth <thuth@redhat.com>
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/3101
+Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 2 +-
+ target/i386/tcg/seg_helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 51038657f0f..a50f57dbaab 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1541,7 +1541,7 @@ static void decode_group4_5(DisasContext *s, CPUX86State *env, X86OpEntry *entry
-         [0x0b] = X86_OP_ENTRYr(CALLF_m, M,p),
-         [0x0c] = X86_OP_ENTRYr(JMP_m,   E,f64,                         zextT0),
-         [0x0d] = X86_OP_ENTRYr(JMPF_m,  M,p),
--        [0x0e] = X86_OP_ENTRYr(PUSH,    E,f64),
-+        [0x0e] = X86_OP_ENTRYr(PUSH,    E,d64),
-     };
- 
-     int w = (*b & 1);
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index 071f3fbd83d..f49fe851cdf 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -456,7 +456,7 @@ static void switch_tss_ra(CPUX86State *env, int tss_selector,
+             new_segs[i] = access_ldw(&new, tss_base + (0x48 + i * 4));
+         }
+         new_ldt = access_ldw(&new, tss_base + 0x60);
+-        new_trap = access_ldl(&new, tss_base + 0x64);
++        new_trap = access_ldw(&new, tss_base + 0x64) & 1;
+     } else {
+         /* 16 bit */
+         new_cr3 = 0;
 -- 
 2.51.0
 
