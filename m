@@ -2,84 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A47BD7680
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 07:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458D3BD755C
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 06:57:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8XRI-0002W3-36; Tue, 14 Oct 2025 01:19:12 -0400
+	id 1v8X5c-0007Vr-W1; Tue, 14 Oct 2025 00:56:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v8XRF-0002Uy-1u
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 01:19:09 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v8XRC-0005Od-7W
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 01:19:08 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-62fca01f0d9so10076635a12.3
- for <qemu-devel@nongnu.org>; Mon, 13 Oct 2025 22:19:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760419143; x=1761023943; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZAlk7T6TK2p+DpULEo0NtxKk/ZIZl2cy2Hvke0k38nE=;
- b=cqdLeJtj6gj60ocHyYPYyHcwfab5M1TCI142WoVPyNAqwSu2g/4AhqjJ6hRRR9vKe7
- y1d5ZHmavaGy8yQ8YFHR07uxE8jHxfY0Wui/XymdODRTMyBWmoc3At1HsCNr4HUW81Bw
- lnVfnT8YDcFnUVdo6niLpaBntM33bgbLRXA11/0x12NP1db0Ev0k/XC8+jhVGCc5dcC1
- sZ3NCjEkaW57eyR05ANR+/dkMu8xXrO1HOGx3gKN4vjHUgaNJaMcAbFnYuPTJasqxe3s
- +x3d8+1QAGCiFtB4qGkUpeahJglMTX7m+SoaSPj2385g6nIhZOmuXxh1FCHHgQTKnjJV
- t/8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760419143; x=1761023943;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZAlk7T6TK2p+DpULEo0NtxKk/ZIZl2cy2Hvke0k38nE=;
- b=O+gs5NRZrhQtKmDOmIks9G1NlqAjMdxDRMqmPHiqbU12j+IoX16V32JiGXFzMTygx6
- BfL5+4t1BQOUTa6p/4766RsaiDX6H7N37SG6yXyVwujuDTZz8BWsm6HhiDO5tnZTXhx1
- 9g+Ss+QX40/ZVemokbdrH7tdJAx4M5Fp5oJGwnC8uDp7cOekBxwFy3s6WZqM3j8rR64v
- Mm4fbXaRxMac9TC/OH1IyT8aklJsdCBsrtPvBGrJnF+58FgTsoo6t61ayn0LTkkl7F1I
- /ehDtxULqREu5jS0aqe8K5yhkN9L/KcSzGA6KDOU2B/Vs6x+jMCyez8N3cXYyfEc7vfv
- VjQQ==
-X-Gm-Message-State: AOJu0YzW3aVZZDkXSlr3yfkA1GaPL9dh284RiB+C8cOgset+MLlZh9Sp
- vOPcAMVBPyar1nnvj0kUeS566bAMXQVJmmnPX+cxoMzP9z8urfo4djkSaPw6UP0pwD8hwPEXoeA
- DcGA3dRbgxwH9ZiiBuXypAZBeSdz6EAs=
-X-Gm-Gg: ASbGnct3MZ/ylN/1IlSCmSDk8xeSzvvTQTt+YLMyJEOi7nnTHSFuOWU+hO9tzAYBUg9
- hA2aH6SSGTtBcfWB36eOchEdsaZWnyvGhBO/DoJN88SiJdYgQOt1GOMUBZOgD0XucsDYW87VxpI
- IVaGH4CvgsYKpDFTVBiPPWVHttz3CvKQWWYbasj6wF/J5cTTrhy0zuUeY8KNZpnuFSiGhnBCxKr
- sFwCP4DcHFy8il+ZselgO6OYDINinnSz6LKKZILAjRdGfyaxOgZCjAxP8t/8qY6d2M=
-X-Google-Smtp-Source: AGHT+IGV79/HDVEqu1oh+LwrazhIGg2jJTrJH/TszM1bqSwYgSmGNjr5GmriSxInUIugojyHJu//tdcZTiM9vyrRpRc=
-X-Received: by 2002:a05:6402:1469:b0:639:ffd6:993b with SMTP id
- 4fb4d7f45d1cf-639ffd6a393mr17024089a12.16.1760419143498; Mon, 13 Oct 2025
- 22:19:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v8X5a-0007VT-7R
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 00:56:46 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v8X5X-0002Zd-Hn
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 00:56:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760417804; x=1791953804;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=3w0qkxDq2tXlfDXFJaaWsCgIzXkP+lGC6jqtPbe1cho=;
+ b=GGMyailE0nnKR53/Qx8v+rFEH4JIDhjsmgWs22JqVo/2iGhFkB3GO73/
+ nM6aIT/YxityzUZf21+9vQ6tEg2wSb99aJyrLfhgMSFQj/7duLxTj7oi/
+ yDQRgP0ZfExnbEX0imKM5EOgPwjD3QZAbhYs5RFf1k6mgcclQlVINup8a
+ wJ0uBCQWXL/tGhY5kqFjZfdLi+sA9GO2zRcaMzbJR8jMr1lq021dN6Hks
+ B9m831JIXP1OU1nnYibu8kfbm9K7YQpTUolSv35Sz442rc6gTEoUn21c5
+ C6TQTtQInRtp2B8wn2CYTKZk5SirXYiM8dJ6A+HBEfhU5KMWa+I80gPC3 g==;
+X-CSE-ConnectionGUID: fNJIiC4UQNG/fFNHattWvg==
+X-CSE-MsgGUID: 41R2tBUPQzauQjKzhCR/dA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="61779168"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="61779168"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 21:56:41 -0700
+X-CSE-ConnectionGUID: C6ROJ3dYRGGPDsjVPabEVw==
+X-CSE-MsgGUID: 94xaixZIRmGkdTGJIaxGDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="185804304"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 13 Oct 2025 21:56:40 -0700
+Date: Tue, 14 Oct 2025 13:18:44 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 11/11] rust: migration: implement ToMigrationState as
+ part of impl_vmstate_bitsized
+Message-ID: <aO3dNAqr0ijuTDeI@intel.com>
+References: <20251001075005.1041833-1-pbonzini@redhat.com>
+ <20251001075210.1042479-11-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20251010134226.72221-1-philmd@linaro.org>
- <20251010134226.72221-7-philmd@linaro.org>
-In-Reply-To: <20251010134226.72221-7-philmd@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 14 Oct 2025 15:18:37 +1000
-X-Gm-Features: AS18NWCjCT2NUdXpwcdshncS05aqvBaiKkJbnAAsctvuvEFFjLEiu-TySDv6H4c
-Message-ID: <CAKmqyKMFnTrdeY_i84omjNHE65omMW6EjG_b2MsU19LeLgJ8kw@mail.gmail.com>
-Subject: Re: [PATCH 06/16] hw/core/loader: Replace HOST_BIG_ENDIAN #ifdef with
- runtime if() check
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: 7
-X-Spam_score: 0.7
-X-Spam_bar: /
-X-Spam_report: (0.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251001075210.1042479-11-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,51 +82,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 10, 2025 at 11:46=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> Replace compile-time #ifdef with a runtime check to ensure all code
-> paths are built and tested. This reduces build-time configuration
-> complexity and improves maintainability.
->
-> No functional change intended.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+On Wed, Oct 01, 2025 at 09:52:10AM +0200, Paolo Bonzini wrote:
+> Date: Wed,  1 Oct 2025 09:52:10 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 11/11] rust: migration: implement ToMigrationState as part
+>  of impl_vmstate_bitsized
+> X-Mailer: git-send-email 2.51.0
+> 
+> This is most likely desirable, and is the easiest way to migrate
+> a bit-sized value without peeking at the innards of the bilge crate.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  hw/core/loader.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/core/loader.c b/hw/core/loader.c
-> index 477661a0255..aef10cb3f2b 100644
-> --- a/hw/core/loader.c
-> +++ b/hw/core/loader.c
-> @@ -491,7 +491,9 @@ ssize_t load_elf_ram_sym(const char *filename,
->
->  static void bswap_uboot_header(uboot_image_header_t *hdr)
->  {
-> -#if !HOST_BIG_ENDIAN
-> +    if (HOST_BIG_ENDIAN) {
-> +        return;
-> +    }
->      bswap32s(&hdr->ih_magic);
->      bswap32s(&hdr->ih_hcrc);
->      bswap32s(&hdr->ih_time);
-> @@ -499,7 +501,6 @@ static void bswap_uboot_header(uboot_image_header_t *=
-hdr)
->      bswap32s(&hdr->ih_load);
->      bswap32s(&hdr->ih_ep);
->      bswap32s(&hdr->ih_dcrc);
-> -#endif
->  }
->
->
-> --
-> 2.51.0
->
->
+>  rust/migration/src/vmstate.rs | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
