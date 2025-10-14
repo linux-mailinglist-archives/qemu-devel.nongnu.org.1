@@ -2,102 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF08FBDABAF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7478BDAC43
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:24:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8iOU-0003EP-Kv; Tue, 14 Oct 2025 13:01:02 -0400
+	id 1v8ikc-00019e-Rv; Tue, 14 Oct 2025 13:23:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v8iON-0003Dg-DC
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:00:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v8iOK-0004v6-2i
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:00:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760461247;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nxDkPntV5OLXd8NROvyjYRRdUaTdnggzBCf5Crj4Ya8=;
- b=QzfB38Grw0h69AG5iUarIWXm8KONWkoudsosoey1VBbAUBw67g5I3kCv5CpkGkPaS6FCNe
- WyIgiKT9N9XXRpgvz4lOhedJKGL/msTnYUGeKSDUIfAcEgnD7+Yo7neO4KfprlNS9e5HGm
- OpYs5KO0onA39amg5JJqjihgoPpF8EM=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-wzKaB_9oMDSiwoTVCQPCPQ-1; Tue, 14 Oct 2025 13:00:46 -0400
-X-MC-Unique: wzKaB_9oMDSiwoTVCQPCPQ-1
-X-Mimecast-MFC-AGG-ID: wzKaB_9oMDSiwoTVCQPCPQ_1760461245
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-85641d6f913so3037595585a.2
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:00:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v8ikY-00018F-Ga
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:23:50 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v8ikT-0008CG-EB
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:23:50 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-781ea2cee3fso5393703b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:23:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760462623; x=1761067423; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=niR71WY8+70F5DTcAjNAlB+900kgRK4/ItkjLbV5EFI=;
+ b=erbrFnPTDZxOYnxBR4CpOvxeUCe1nGMhdjGiXdUP+FehPNHtoyN3GU0WZ0NWPsSJCW
+ 6+qmJqpm9L6FAx1Dm5yKqW5cS4wv5PvjtK496ObdI7UF/j+woIaJ318t93ikU2nG6jXd
+ lFlcyRnu0gvLUpdagv2iEJCFPw+2CILgoFA7P7WmdC54foHPaNGOHkJRLFnIK/fUM4Sr
+ d9yGTVoe43JuFhOnUE+ti4fn/OpMJaVJDX4+gM9i2ijS8lWakvspw0ULQcXxY7lhQAmI
+ TAc2S89AZE5yHDSkvvrcIkKNSnEcMSO37rhP6AA1xh7eNfnXckA5/dRBtSWaruKDRWrA
+ jH0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760461245; x=1761066045;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nxDkPntV5OLXd8NROvyjYRRdUaTdnggzBCf5Crj4Ya8=;
- b=ZzUct5DQdsriWJW4FqS9qy/IJ/+6dibcGhMOXbi8ivZAZ5Ce/RIZKmcqcFN/ylDXMl
- /BHFfjB7QKs4NEfnJUU6VCt70U98N2VczumOmMmKcbiCYvS5SCyvr1lvrWkO/Udi/78R
- KvLkln/2oycGmCCt/B2FpBUWdXGep20ucU2BUX2byUTBxi7RsdosKBGmR1wWTg2KEQXr
- Pdl3+JczuYOu2/xc2uci/XEXW5c20Q1DFkF41FAcd8p+MEg7HuwfUD4pasn4kVVpweim
- i9atTtju5Cpo4bACCJYKXOUnv9W7BOj3QeEG2LMVTTjiAj+mCQ23XPmv4DCYW1ebq+E9
- 404g==
-X-Gm-Message-State: AOJu0YyduQeqVaWbpELJ6GqF2EuyKIsNKW5WkPa9erG4McKLUpKmhHEJ
- Dd9qlOsA0UMCZS6+Im1sqUAqZNTWWExZYaYYLT+DB+vbHPgDHJ5FEjrM8wRBYokkruNf3K7Bqlb
- 9iNIcNxBSPvpcKqldiMHXyjpu+XonQbJ80vnrc5z5FvBVnCg50uHtHsbF
-X-Gm-Gg: ASbGncsOWsNZzmywvz5QyOKvustirxZcHDfzdK++hyxnj0Y+CpASAviRk60kcA7uKU/
- Z6KK7bYTiJM/Bi17bYqb1UIb4OKIYQ4wCrp6lmL9R5CSmJclLtddgzrplI9IKQv4yW4twCVQNfc
- 4+gcexW6zVetJXRUFC2D342a6rrh43O0LGNPdITBO1XnFg7g0IouiepVkqu+gVu1oyEdYw+Qv/D
- qs/MA2J/15nLRzPHiacK7guCnUeFjb59+evZdtMo+UTdCFj6f5wLMrr5GxBRgwt5y8/hdrds6f1
- Pa06HqmxfR8z3PgcH7jGWGSxIEWaUo9b
-X-Received: by 2002:a05:620a:c42:b0:864:e52f:311f with SMTP id
- af79cd13be357-8834ff8e275mr3862990685a.6.1760461244843; 
- Tue, 14 Oct 2025 10:00:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHPhsYkd0C/QTTJJBKr8fo3Bz+RCmzzQiW8CcpsXiGg5tERZO3y+OdaYFFnMzPf1stNKNRQ+g==
-X-Received: by 2002:a05:620a:c42:b0:864:e52f:311f with SMTP id
- af79cd13be357-8834ff8e275mr3862975585a.6.1760461243763; 
- Tue, 14 Oct 2025 10:00:43 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4e881c8cecfsm2384461cf.19.2025.10.14.10.00.42
+ d=1e100.net; s=20230601; t=1760462623; x=1761067423;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=niR71WY8+70F5DTcAjNAlB+900kgRK4/ItkjLbV5EFI=;
+ b=MzX/uOF1bIfUFjnP9SswETtWjSd3PuTq8dEmwWa63klKA+Sex0T52ihr7k4ZtFAK0C
+ e4XGpaBDW4pKc8MKagGjsbgicWjgDHDLQnYqMPJNNLxjY4YnVSaBhLgrYwcR72PSCqtW
+ iA6GxljW9fou+jCJE9cBAJTMpeuu1wM/NIMuPgatn/C84yRJUUP2FfxFT/kvzhS5K4IS
+ WN1JhsIU4iFR8aHITL9CNWtT34ItdygYVDKxSyB4Ls1hhQNd+7ly735c6oB0V/7zA932
+ iw7WghtLtYt/5Y4ZaSIRLhrN9bDblydafSJ1Kw5/5YynvGGXXgGIvK36FOwnYkUh4Yb3
+ B3tQ==
+X-Gm-Message-State: AOJu0YyljKezIv4m6Vp3eIT6KQA8XaxNqOzZOO65M6Wl3bl2hJPRKO/F
+ 1jVN4J1pdTIMyTP9Z5x18F4H1sJsMIAcQTN0E/KB1Tk/DsqBsJjQ/NuYphzsPOxNBmsnD+cwj8g
+ Xj446psU=
+X-Gm-Gg: ASbGncsD10MAl8bYrVBNnTJ+zzKZsQlztzj+djxkUNPpQ+ZoN4SjVaYjVNuBZ0M7phm
+ sP3S8QNMVcVhzH6VvAMi2blM4yBwbBzQsopnDNkxdIf0S0lra82Uy2VpLds0KkP6vQw5foS12jP
+ 6yRmP4WLHyXgdCDnMWZuS1cUHJHuNaPtUx2w1upuZSZSbMzT5fyS6bKPUzarJoY3UuQjnNGIQRh
+ yYpGxQnJKd0KqK9jvSg05k/1BzkljT8k0AwMk2MSgcm3gFxiLrqMmj6JElFET6FsoLMX7MP4UFi
+ uERBNJOoZLkLd09AAz9XI7Tqn5jXB3r+1EZC1LJez2LZB8gddX59418ecC8k3oyxkXn6PQEtKd4
+ 1X1AnfWxFv7hReoSf2TBkiK4DXe4wAu7bleVp9XXDtNZi9XinEig=
+X-Google-Smtp-Source: AGHT+IFfxfS6RH2o49k/eMS++jDvaC02A7y82sUzKJdq8v/rDZWrcO2BH8SzUKbDiH9IvjJ3sRzUtw==
+X-Received: by 2002:a05:6a00:9a1:b0:781:2ba:ef14 with SMTP id
+ d2e1a72fcca58-79387637461mr28004389b3a.25.1760462622768; 
+ Tue, 14 Oct 2025 10:23:42 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7992bb116basm15741913b3a.30.2025.10.14.10.23.42
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 10:00:43 -0700 (PDT)
-Date: Tue, 14 Oct 2025 13:00:39 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Markus Armbruster <armbru@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-stable@nongnu.org
-Subject: Re: [PATCH 5/8] hw/display: re-arrange memory region tracking
-Message-ID: <aO6Btwg4vo2vZRnY@x1.local>
-References: <20251014111234.3190346-1-alex.bennee@linaro.org>
- <20251014111234.3190346-6-alex.bennee@linaro.org>
+ Tue, 14 Oct 2025 10:23:42 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] tcg/linux-user patch queue
+Date: Tue, 14 Oct 2025 10:23:38 -0700
+Message-ID: <20251014172341.243858-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251014111234.3190346-6-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,143 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 14, 2025 at 12:12:31PM +0100, Alex Bennée wrote:
-> QOM objects can be embedded in other QOM objects and managed as part
-> of their lifetime but this isn't the case for
-> virtio_gpu_virgl_hostmem_region. However before we can split it out we
-> need some other way of associating the wider data structure with the
-> memory region.
-> 
-> Fortunately MemoryRegion has an opaque pointer. This is passed down to
-> MemoryRegionOps for device type regions but is unused in the
-> memory_region_init_ram_ptr() case. Use the opaque to carry the
-> reference and allow the final MemoryRegion object to be reaped when
-> its reference count is cleared.
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Message-Id: <20250410122643.1747913-2-manos.pitsidianakis@linaro.org>
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-ID: <20250603110204.838117-10-alex.bennee@linaro.org>
-> ---
->  include/system/memory.h       |  1 +
->  hw/display/virtio-gpu-virgl.c | 23 ++++++++---------------
->  2 files changed, 9 insertions(+), 15 deletions(-)
-> 
-> diff --git a/include/system/memory.h b/include/system/memory.h
-> index 3bd5ffa5e0d..3349a5185a0 100644
-> --- a/include/system/memory.h
-> +++ b/include/system/memory.h
-> @@ -843,6 +843,7 @@ struct MemoryRegion {
->      DeviceState *dev;
->  
->      const MemoryRegionOps *ops;
-> +    /* opaque data, used by backends like @ops */
+The following changes since commit f3f2ad119347e8c086b72282febcaac5d731b343:
 
-IMHO this comment isn't very helpful..  Maybe it should provide a list of
-things that are using the opaque, in this case memory_region_init_ram_ptr
-is the new addition.
+  Merge tag 'pull-target-arm-20251010' of https://gitlab.com/pm215/qemu into staging (2025-10-10 08:26:09 -0700)
 
-Having memory_region_init() directly taking opaque as a parameter would be
-nice but it might be an overkill indeed..  Still, there's option to at
-least start to have opaque passed into memory_region_init_ram_ptr() so
-people when reading memory.c will also know when opaque is used.  Otherwise
-it can easily break virtio-gpu if someone decides to reuse opaque for the
-API, without noticing it's used in virtio-gpu (like the ->free use..).
+are available in the Git repository at:
 
-No strong feelings, but if anyone agrees it could be at least something to
-be considered to be worked on top.
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20251014
 
-Thanks,
+for you to fetch changes up to ec03dd9723781c7e9d4b4f70c7f54d12da9459d5:
 
->      void *opaque;
->      MemoryRegion *container;
->      int mapped_via_alias; /* Mapped via an alias, container might be NULL */
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 07f6355ad62..0ef0b2743fe 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -52,17 +52,11 @@ virgl_get_egl_display(G_GNUC_UNUSED void *cookie)
->  
->  #if VIRGL_VERSION_MAJOR >= 1
->  struct virtio_gpu_virgl_hostmem_region {
-> -    MemoryRegion mr;
-> +    MemoryRegion *mr;
->      struct VirtIOGPU *g;
->      bool finish_unmapping;
->  };
->  
-> -static struct virtio_gpu_virgl_hostmem_region *
-> -to_hostmem_region(MemoryRegion *mr)
-> -{
-> -    return container_of(mr, struct virtio_gpu_virgl_hostmem_region, mr);
-> -}
-> -
->  static void virtio_gpu_virgl_resume_cmdq_bh(void *opaque)
->  {
->      VirtIOGPU *g = opaque;
-> @@ -73,14 +67,12 @@ static void virtio_gpu_virgl_resume_cmdq_bh(void *opaque)
->  static void virtio_gpu_virgl_hostmem_region_free(void *obj)
->  {
->      MemoryRegion *mr = MEMORY_REGION(obj);
-> -    struct virtio_gpu_virgl_hostmem_region *vmr;
-> +    struct virtio_gpu_virgl_hostmem_region *vmr = mr->opaque;
->      VirtIOGPUBase *b;
->      VirtIOGPUGL *gl;
->  
-> -    vmr = to_hostmem_region(mr);
-> -    vmr->finish_unmapping = true;
-> -
->      b = VIRTIO_GPU_BASE(vmr->g);
-> +    vmr->finish_unmapping = true;
->      b->renderer_blocked--;
->  
->      /*
-> @@ -118,8 +110,8 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->  
->      vmr = g_new0(struct virtio_gpu_virgl_hostmem_region, 1);
->      vmr->g = g;
-> +    mr = g_new0(MemoryRegion, 1);
->  
-> -    mr = &vmr->mr;
->      memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
->      memory_region_add_subregion(&b->hostmem, offset, mr);
->      memory_region_set_enabled(mr, true);
-> @@ -131,7 +123,9 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->       * command processing until MR is fully unreferenced and freed.
->       */
->      OBJECT(mr)->free = virtio_gpu_virgl_hostmem_region_free;
-> +    mr->opaque = vmr;
->  
-> +    vmr->mr = mr;
->      res->mr = mr;
->  
->      trace_virtio_gpu_cmd_res_map_blob(res->base.resource_id, vmr, mr);
-> @@ -144,16 +138,15 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
->                                       struct virtio_gpu_virgl_resource *res,
->                                       bool *cmd_suspended)
->  {
-> -    struct virtio_gpu_virgl_hostmem_region *vmr;
->      VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
->      MemoryRegion *mr = res->mr;
-> +    struct virtio_gpu_virgl_hostmem_region *vmr;
->      int ret;
->  
->      if (!mr) {
->          return 0;
->      }
-> -
-> -    vmr = to_hostmem_region(res->mr);
-> +    vmr = mr->opaque;
->  
->      trace_virtio_gpu_cmd_res_unmap_blob(res->base.resource_id, mr, vmr->finish_unmapping);
->  
-> -- 
-> 2.47.3
-> 
+  accel/tcg: Hoist first page lookup above pointer_wrap (2025-10-14 07:33:21 -0700)
 
--- 
-Peter Xu
+----------------------------------------------------------------
+linux-user: Support MADV_DONTDUMP, MADV_DODUMP
+accel/tcg: Hoist first page lookup above pointer_wrap
 
+----------------------------------------------------------------
+Jon Wilson (1):
+      linux-user: Support MADV_DONTDUMP, MADV_DODUMP
+
+Richard Henderson (2):
+      accel/tcg: Add clear_flags argument to page_set_flags
+      accel/tcg: Hoist first page lookup above pointer_wrap
+
+ bsd-user/bsd-mem.h             |   7 +--
+ include/exec/page-protection.h |  21 ++++----
+ include/user/page-protection.h |   9 +++-
+ target/arm/cpu.h               |   1 -
+ accel/tcg/cputlb.c             |  23 +++++----
+ accel/tcg/user-exec.c          | 114 +++++++++++------------------------------
+ bsd-user/mmap.c                |   6 +--
+ linux-user/arm/elfload.c       |   2 +-
+ linux-user/elfload.c           |   4 +-
+ linux-user/hppa/elfload.c      |   2 +-
+ linux-user/mmap.c              |  38 +++++++++-----
+ linux-user/x86_64/elfload.c    |   2 +-
+ 12 files changed, 98 insertions(+), 131 deletions(-)
 
