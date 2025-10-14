@@ -2,66 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF5FBDA5C6
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3A9BDA5D7
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:28:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8gvs-00071v-LP; Tue, 14 Oct 2025 11:27:24 -0400
+	id 1v8gwn-0007xA-Rj; Tue, 14 Oct 2025 11:28:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v8gvo-00070H-OB
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:27:21 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v8gwh-0007hM-CH; Tue, 14 Oct 2025 11:28:15 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v8gvk-0007h8-JT
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:27:20 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 80FC18084E;
- Tue, 14 Oct 2025 18:27:14 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8a::1:35])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 7RRbiX2F1mI0-jg6F337t; Tue, 14 Oct 2025 18:27:13 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760455633;
- bh=bC9Y5ShAH+SVjgWS9ppwse+2lSNdalehyTgtqyTpO3c=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=wQ9jpq/Kh5qDfoNBc2PSAge5/tQBQhq9s9A3LvR6asBB+qz/veeWbjGA48qGRUSeP
- Uc857nts+vuWC22I8IxH/TsKohGi3vWcEiue2h0+9GD0/EhIV7HGqi5d10BaJ4J+nN
- n6TeALriqQbGq7NmOgQANi8mk9AX7szZHGXyC41k=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: marcandre.lureau@redhat.com
-Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
- qemu-devel@nongnu.org, vsementsov@yandex-team.ru, raphael@enfabrica.net,
- armbru@redhat.com, yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH v3 7/7] chardev: introduce DEFINE_PROP_CHR_NO_CONNECT
-Date: Tue, 14 Oct 2025 18:26:44 +0300
-Message-ID: <20251014152644.954762-8-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251014152644.954762-1-vsementsov@yandex-team.ru>
-References: <20251014152644.954762-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v8gwd-0007nh-Lw; Tue, 14 Oct 2025 11:28:14 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C939115D6E2;
+ Tue, 14 Oct 2025 18:27:45 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 47CEF29F61F;
+ Tue, 14 Oct 2025 18:28:06 +0300 (MSK)
+Message-ID: <6176d689-ff2f-42c8-a0c6-38f3f87e7da8@tls.msk.ru>
+Date: Tue, 14 Oct 2025 18:28:06 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/23] vhost: drop backend_features field
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, mst@redhat.com
+Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
+ raphael.s.norwitz@gmail.com, yc-core@yandex-team.ru,
+ d-tatianin@yandex-team.ru, qemu-stable@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+References: <20251011232404.561024-1-vsementsov@yandex-team.ru>
+ <20251011232404.561024-3-vsementsov@yandex-team.ru>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <20251011232404.561024-3-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -73,165 +109,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For further vhost-user-blk backend-transfer migration realization we
-want to give it (vhost-user-blk) a possibility (and responsibility) to
-decide when do connect.
+On 10/12/25 02:23, Vladimir Sementsov-Ogievskiy wrote:
+> This field is mostly unused and sometimes confusing (we even have
+> a TODO-like comment to drop it). Let's finally do.
+> 
+> The field is used to held VHOST_USER_F_PROTOCOL_FEATURES for vhost-user
+> and/or VHOST_NET_F_VIRTIO_NET_HDR for vhost-net (which may be
+> vhost-user-net). But we can simply recalculate these two flags in place
+> from hdev->features, and from net-client for VHOST_NET_F_VIRTIO_NET_HDR.
+> 
+> Note: removing field from x-query-virtio-status result is incompatible
+> change. We can do it because the command is unstable.
+> 
+> Cc: qemu-stable@nongnu.org
 
-For incoming migration we'll need to postpone connect at least until
-early stage of migrate-incoming command, when we already know all
-migration parameters and can decide, are we going to do incoming
-backend-transfer (and get chardev fd from incoming stream), or we
-finally need to connect.
+Why do you think this change deserves qemu-stable?  Does it fix a bug or
+is it just a clean-up?
 
-With this patch, we only provide new macro, to define chardev property,
-later it will be used in vhost-user-blk instead of DEFINE_PROP_CHR.
-Then, vhost-user-blk will call qemu_chr_connect() by hand when needed
-(for example through qemu_chr_fe_wait_connected(), which is already
-called in vhost_user_blk_realize_connect()).
+Thanks,
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- chardev/char-fe.c                   | 10 ++++++++--
- hw/core/qdev-properties-system.c    | 26 +++++++++++++++++++++++---
- include/chardev/char-fe.h           |  6 +++++-
- include/hw/qdev-properties-system.h |  3 +++
- 4 files changed, 39 insertions(+), 6 deletions(-)
-
-diff --git a/chardev/char-fe.c b/chardev/char-fe.c
-index 973fed5bea..a0218393e4 100644
---- a/chardev/char-fe.c
-+++ b/chardev/char-fe.c
-@@ -189,11 +189,12 @@ bool qemu_chr_fe_backend_open(CharBackend *be)
-     return be->chr && be->chr->be_open;
- }
- 
--bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
-+bool qemu_chr_fe_init_ex(CharBackend *b, Chardev *s, bool connect,
-+                         Error **errp)
- {
-     unsigned int tag = 0;
- 
--    if (!qemu_chr_connect(s, errp)) {
-+    if (connect && !qemu_chr_connect(s, errp)) {
-         return false;
-     }
- 
-@@ -218,6 +219,11 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
-     return true;
- }
- 
-+bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
-+{
-+    return qemu_chr_fe_init_ex(b, s, true, errp);
-+}
-+
- void qemu_chr_fe_deinit(CharBackend *b, bool del)
- {
-     assert(b);
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 1f810b7ddf..6a0572ca03 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -266,8 +266,8 @@ static void get_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-     g_free(p);
- }
- 
--static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
--                    Error **errp)
-+static void do_set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-+                       bool connect, Error **errp)
- {
-     ERRP_GUARD();
-     const Property *prop = opaque;
-@@ -297,13 +297,25 @@ static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-     if (s == NULL) {
-         error_setg(errp, "Property '%s.%s' can't find value '%s'",
-                    object_get_typename(obj), name, str);
--    } else if (!qemu_chr_fe_init(be, s, errp)) {
-+    } else if (!qemu_chr_fe_init_ex(be, s, connect, errp)) {
-         error_prepend(errp, "Property '%s.%s' can't take value '%s': ",
-                       object_get_typename(obj), name, str);
-     }
-     g_free(str);
- }
- 
-+static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-+                    Error **errp)
-+{
-+    do_set_chr(obj, v, name, opaque, true, errp);
-+}
-+
-+static void set_chr_no_connect(Object *obj, Visitor *v, const char *name,
-+                               void *opaque, Error **errp)
-+{
-+    do_set_chr(obj, v, name, opaque, false, errp);
-+}
-+
- static void release_chr(Object *obj, const char *name, void *opaque)
- {
-     const Property *prop = opaque;
-@@ -320,6 +332,14 @@ const PropertyInfo qdev_prop_chr = {
-     .release = release_chr,
- };
- 
-+const PropertyInfo qdev_prop_chr_no_connect = {
-+    .type  = "str",
-+    .description = "ID of a chardev to use as a backend",
-+    .get   = get_chr,
-+    .set   = set_chr_no_connect,
-+    .release = release_chr,
-+};
-+
- /* --- mac address --- */
- 
- /*
-diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
-index 8ef05b3dd0..32013623b3 100644
---- a/include/chardev/char-fe.h
-+++ b/include/chardev/char-fe.h
-@@ -25,15 +25,19 @@ struct CharBackend {
- };
- 
- /**
-- * qemu_chr_fe_init:
-+ * qemu_chr_fe_init(_ex):
-  *
-  * Initializes a front end for the given CharBackend and
-  * Chardev. Call qemu_chr_fe_deinit() to remove the association and
-  * release the driver.
-+ * Call qemu_chr_connect(), except for the case when connect=false
-+ * parameter set for _ex() version.
-  *
-  * Returns: false on error.
-  */
- bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp);
-+bool qemu_chr_fe_init_ex(CharBackend *b, Chardev *s, bool connect,
-+                         Error **errp);
- 
- /**
-  * qemu_chr_fe_deinit:
-diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
-index 9601a11a09..41f68f60b9 100644
---- a/include/hw/qdev-properties-system.h
-+++ b/include/hw/qdev-properties-system.h
-@@ -7,6 +7,7 @@ bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm, const char *str,
-                                        Error **errp);
- 
- extern const PropertyInfo qdev_prop_chr;
-+extern const PropertyInfo qdev_prop_chr_no_connect;
- extern const PropertyInfo qdev_prop_macaddr;
- extern const PropertyInfo qdev_prop_reserved_region;
- extern const PropertyInfo qdev_prop_multifd_compression;
-@@ -39,6 +40,8 @@ extern const PropertyInfo qdev_prop_virtio_gpu_output_list;
- 
- #define DEFINE_PROP_CHR(_n, _s, _f)             \
-     DEFINE_PROP(_n, _s, _f, qdev_prop_chr, CharBackend)
-+#define DEFINE_PROP_CHR_NO_CONNECT(_n, _s, _f) \
-+    DEFINE_PROP(_n, _s, _f, qdev_prop_chr_no_connect, CharBackend)
- #define DEFINE_PROP_NETDEV(_n, _s, _f)             \
-     DEFINE_PROP(_n, _s, _f, qdev_prop_netdev, NICPeers)
- #define DEFINE_PROP_DRIVE(_n, _s, _f) \
--- 
-2.48.1
-
+/mjt
 
