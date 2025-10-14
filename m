@@ -2,91 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECBEBDA543
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4086EBDA55E
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:25:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8gsa-00055v-Mf; Tue, 14 Oct 2025 11:24:00 -0400
+	id 1v8gtG-0005EX-KL; Tue, 14 Oct 2025 11:24:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8gsY-00055T-7t
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:23:58 -0400
-Received: from mail-yx1-xb12f.google.com ([2607:f8b0:4864:20::b12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8gsV-0007Dl-Dq
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:23:57 -0400
-Received: by mail-yx1-xb12f.google.com with SMTP id
- 956f58d0204a3-633b87e7b9fso5095437d50.1
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 08:23:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760455431; x=1761060231; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=diQY18DOnazfPDHWolIcIHXy+xgSQZWE0WX3F6TuikY=;
- b=bZIu+iaqKtDHFPwxwVsHM+jX5UtIYZmBRcK45vOIQoxFgGd6t0h1Q+TXUXj+kGwFZD
- r75hMqjxXw5+ePCzx0FoUuTbhk9cE4j9Ek2cf1Sy4McuSeYvjQQKme/6mNCDIBzR+TyK
- Mh5SB737A7B+5pDbFORIi3KZVIt6Z5tJksExjmJM7C7KGv4jnvZTRIdH+yqv4hPA/ad/
- mV38Sr2qHny0VT2H4bswRSZS2+mt5LSuDm/cwM/L++b+Vp1TzxJFCGXngb22c13Hioss
- CuW2Z6iZ9KaWbi4ETqYdP/1BAR8MJ2vzbwnHfJA7IswNk9jLcbdEHO1L0ayMuFfL5hwo
- htAQ==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1v8gtC-0005CI-BA
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:24:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1v8gt9-0007Gp-N4
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:24:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760455472;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TqTvXFgRLqO0gcnAKTGgbgM5jP/HgGbcGS3pZwnb52Y=;
+ b=DswRqYx+BP+Y9vm0igY1IRlH/6hcyG1zpuwmJql2Vjkg2NnTf6xQNuFAeTGPi1YHwAeGT1
+ 32ETfyJWa+jxxUMBWij3fn9GSXYZA0pfXPT577wUU2F+mehcB/O+xMMiXaoVMdlqfSZZKP
+ z6GjYtX0ln76pJzQmUCSk6yWX069zBk=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-152-Mwo2ipc9NQKSUBxRwKqUYg-1; Tue, 14 Oct 2025 11:24:31 -0400
+X-MC-Unique: Mwo2ipc9NQKSUBxRwKqUYg-1
+X-Mimecast-MFC-AGG-ID: Mwo2ipc9NQKSUBxRwKqUYg_1760455470
+Received: by mail-il1-f199.google.com with SMTP id
+ e9e14a558f8ab-4272d0bebf0so13004525ab.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 08:24:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760455431; x=1761060231;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=diQY18DOnazfPDHWolIcIHXy+xgSQZWE0WX3F6TuikY=;
- b=dKsMjbhn4jYCE4zwhe1tij3lpyA4GJOBBJAMz/hYAakIMW5Dvlp18swHlyQwmxRrUO
- Mgpwlu7ozzYngUrnMlMjROCLJVCNR9N8moA49ZC3WCdp5WaQGTURSRxTI+PpYoiSKveT
- 5sJ8QqTKCHsR4rgnimHemJDj+r2dmkpL30lqpTC2HktjKmFUziBDYcfelEpv1XTY/yPQ
- 9uUs8WGSGTYQ1Gi86z8K9tV1KE+XU5yTYh2Mv3knbu4mFL4xyHFnYiGuR+ooVCeOC/1E
- mEUMNf85CwPZ7CvFF2lNzB/kImLxl9XN090gqFLqaHHkfCgafKAVeTKQwAP3lElnymnC
- Crrw==
-X-Gm-Message-State: AOJu0YxIQv5GHUd94m2QN4qKAfLbSV1DOnRShFZjtnsDaQT+x141InHT
- 8Oc82NLuQjg+zMuHqtAVBjvtBVXJ3WW5tVYuqToCaThX4jqjeypu/hMMtC01L0LIY2E6GDoO+GA
- d0g16K2oRGbexhwr/vDWkgBJhjEdpx9vIyUeyHiGDyA==
-X-Gm-Gg: ASbGnctzXKPbLp0TJs8PWHDrNvkvrkycmzzu13usyTS/GhImfcFQyTG39QSF9g29Yuc
- F31weNOy/yVMsVWik/qWJtRANeq75YyN2zCW+mNw2Z2H8duNgLIQpkgQ6eivBIIhB6utst2Qy/A
- kbfSSJE8LfOqmBJA5gXEsQHINo1k4slrtXK/48DDykZukosjvIP7Z3i8FT8937P8Qn7ogctT5r5
- +rQgKM7f2+1mEb1nQYW5VZ/wQR9vDX2yrcT3NzMIQ==
-X-Google-Smtp-Source: AGHT+IHPm4M9WmBSszDmg5m1FNuhOAvixuLLFpFIiS8jK4kpjMWqFVUdRQykZ8ICjVDhjJCYhUdB0PkF2r+TBTpXQpM=
-X-Received: by 2002:a53:df0d:0:b0:63d:21ec:cd28 with SMTP id
- 956f58d0204a3-63d21ecd1fbmr1438247d50.65.1760455431380; Tue, 14 Oct 2025
- 08:23:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760455470; x=1761060270;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TqTvXFgRLqO0gcnAKTGgbgM5jP/HgGbcGS3pZwnb52Y=;
+ b=gHsGstEyrUz4Coi+qxtu1U/D19tMIKG/MEufSG7+GCo7G/r3QAvT42L4RyuwH8hhBQ
+ mz8DJi5oIsxHpusuu1gNgdNr944Q/Wp+SSZrYZLroCeJpHS5Nye1rFJMD4dyE1vxTmvj
+ jqfcNXwO+aW/IxRk0JMq8LoR5BcaMfq1UAefo8UCldBpLl0JDIzVaTf6esYhqqJ9LeeU
+ 8guyzpWUi+2Wl/zRsm0I3GyOkgaL+JkQNafhfoFc9k8virU1nYlJSzGCwbMqBLFziO7M
+ U/SW8pNcAhJqyi1L/5etFDSCPjmrRRS4lgzJRqdumUNZsJtHDuCTIsNQLIKXWX4x7kaC
+ QrSQ==
+X-Gm-Message-State: AOJu0Yzag+sIGre/mYrCJEOFOApSinx3AYXwS9rjIrSlE97Zophk4NH4
+ BqQVpEmNBKg/2Su4GBN+vNtHTYVEfSGFW4KyWF8wuOjw7WItHYIRiJ2NuoR0fUPdBluM1oXmTC1
+ GUMjtRA5hzfgeZWIcNPO3xHkiGQTzjQD6r3xK0FrZ6RPE0N6Z/cyKDnOC
+X-Gm-Gg: ASbGncutLm7YeE4z2REQWFn9SERTBF29gkFESlP9KfbxaNTwToVdH1YbydaRcbKtvlw
+ zWLegj4XlWvAjqLnTOWkYYKLgTTufQs5gz/2P8/6MB3+RHo1g1ZPCPg7IjD22vfre9P3/cT9L+A
+ qwDMPevCG4yG2AZr/dfPQOAos9Z8gg26BhwULnrC/dEH2esp4wcf7UGjH0Q9Gkg7JzihkJTO5Ib
+ aQxHElHswh1VuuDOrdO77fhd2cK9yl9SaoWlhwM2PJy3BU04JmyZqTDD0lPcrAkWK9QZIXoxaHq
+ dZpCIMbjMm/LQWtlvMj+oILq/otFlOgZhHJBc6OkVBw=
+X-Received: by 2002:a05:6e02:12e2:b0:430:a38c:b74e with SMTP id
+ e9e14a558f8ab-430a38cd067mr11853355ab.3.1760455470353; 
+ Tue, 14 Oct 2025 08:24:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEX1dsQxf8Dqc85ZWyQ6h2vq8ktT2LZp51Qf35pMDfm/aBeLIQYpdKTTdnTfmJZLgyn3KMKzw==
+X-Received: by 2002:a05:6e02:12e2:b0:430:a38c:b74e with SMTP id
+ e9e14a558f8ab-430a38cd067mr11853175ab.3.1760455469874; 
+ Tue, 14 Oct 2025 08:24:29 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-58f6d0455afsm4829820173.23.2025.10.14.08.24.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Oct 2025 08:24:29 -0700 (PDT)
+Date: Tue, 14 Oct 2025 09:24:27 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: John Levon <john.levon@nutanix.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clg@redhat.com>, Thanos Makatos <thanos.makatos@nutanix.com>, Thomas Huth
+ <thuth@redhat.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman
+ <farman@linux.ibm.com>, qemu-stable@nongnu.org, qemu-s390x@nongnu.org
+Subject: Re: [PATCH 0/2] Fixes for vfio region cache
+Message-ID: <20251014092427.2b246db1.alex.williamson@redhat.com>
+In-Reply-To: <20251014151227.2298892-1-john.levon@nutanix.com>
+References: <20251014151227.2298892-1-john.levon@nutanix.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20251014102439.319915-1-peter.maydell@linaro.org>
- <261d6938fc894b1ca0979aef30fb9e1c@huawei.com>
- <eebfcb04afc2498d8969d96fcbcf0926@huawei.com>
- <CAFEAcA_MZu4stZ4MY4zdpM0zy-gNBA3yj4dkuWL3d-FLFZC6rg@mail.gmail.com>
- <b3f9f1d44d8d4a779dcaae2497b8b71b@huawei.com>
- <CAFEAcA804drHGyTG73bXkqSMgXvKGGaLWvm6QS85FhD+dXDqjw@mail.gmail.com>
- <cb5c762bd24d4cd69aea415d4bc10051@huawei.com>
- <CAFEAcA-g18R03vqpqXr0boOccDqhNP0J7Gx8nZOxUrbQh13pog@mail.gmail.com>
- <599ea0ba89314d28af8b3ae7b590d1a9@huawei.com>
- <CAFEAcA8-QGBGqjw3Eefx_yyz_30azn9Trz-OGSxq7v4N=X+26Q@mail.gmail.com>
- <a630fc58d9f946988bd6c27479543dd1@huawei.com>
-In-Reply-To: <a630fc58d9f946988bd6c27479543dd1@huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 14 Oct 2025 16:23:40 +0100
-X-Gm-Features: AS18NWBgNpqVqgTGQHuSfXoz9C5kHqv4h1cchbf1DnaOpmaXKy2na5k-ghepIZE
-Message-ID: <CAFEAcA8GsSDnY8GEJZYNbJ3KZAp9tJ=s_vUBB_XwwGaEwozxzQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
- kernel in cpuif reset
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Salil Mehta <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12f.google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,24 +109,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Oct 2025 at 16:13, Salil Mehta <salil.mehta@huawei.com> wrote:
->
-> > From: Peter Maydell <peter.maydell@linaro.org>
-> > In what situation do we ever start running a VCPU before the *GIC* has
-> > been realized? The GIC should get realized as part of creating the virt board,
-> > which must complete before we do anything like running a vcpu.
->
->
-> Just after realization of vCPU in the machvirt_init() you can see the default
-> power_state is PSCI CPU_ON, which means KVM_MP_STATE_RUNNABLE.
-> Since, the thread is up and not doing IO wait in userspace it gets into
-> cpu_exec() loop and actually run KVM_RUN IOCTL. Inside the KVM it
-> momentarily takes the vCPU mutex but later exit and releases. This keeps
-> going on for all of the vCPU threads realized early.
+On Tue, 14 Oct 2025 17:12:25 +0200
+John Levon <john.levon@nutanix.com> wrote:
 
-Yikes. We definitely should fix that : letting the vcpu run
-before we get to qemu_machine_creation_done() seems like it
-would be a massive source of race conditions.
+> John Levon (2):
+>   vfio: rename field to "num_initial_regions"
+>   vfio: only check region info cache for initial regions
+> 
+>  include/hw/vfio/vfio-device.h |  2 +-
+>  hw/vfio-user/device.c         |  2 +-
+>  hw/vfio/ccw.c                 |  4 ++--
+>  hw/vfio/device.c              | 39 ++++++++++++++++++++++-------------
+>  hw/vfio/iommufd.c             |  3 ++-
+>  hw/vfio/pci.c                 |  4 ++--
+>  6 files changed, 33 insertions(+), 21 deletions(-)
+> 
 
--- PMM
+Reviewed-by: Alex Williamson <alex@shazbot.org>
+
 
