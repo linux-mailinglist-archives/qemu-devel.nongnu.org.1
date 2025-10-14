@@ -2,89 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA20BD9CAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005F3BD9C9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEx-0006Ui-Aj; Tue, 14 Oct 2025 09:38:59 -0400
+	id 1v8fGf-0004IN-RM; Tue, 14 Oct 2025 09:40:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEn-0006JU-CY
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:51 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v8fGX-0004A9-Ps
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:40:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEc-0001Bt-T5
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:48 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v8fGU-0001hh-FX
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:40:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449117;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Uh/pxSQ/Sd1WhNbQxNStDv+XeBlFCMlLdX4UKvDjl8Q=;
- b=dZj4RFqsmj8ykWu3Q3bhWUHa+Z1+o2iozaMFqOqF5s1qkw9HlmKUDVRAS3bukCYskXuIZx
- yH50sWwJTlpvnCk64S1heaZzQnvRI1MFMSpCyZiOvOGJT1Puc+80oQ4rwICTRil19H48lo
- BaNayTyPNfE4DhsVkI7PKXWzMAIxjAI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-kvZuiuB0OEqCLwaWK8519g-1; Tue, 14 Oct 2025 09:38:35 -0400
-X-MC-Unique: kvZuiuB0OEqCLwaWK8519g-1
-X-Mimecast-MFC-AGG-ID: kvZuiuB0OEqCLwaWK8519g_1760449115
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e36686ca1so49926475e9.2
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449114; x=1761053914;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Uh/pxSQ/Sd1WhNbQxNStDv+XeBlFCMlLdX4UKvDjl8Q=;
- b=NU8sEqxdrBCvEVqpRlXiUfG5b051vUcRwArLmzEWLSaQJhDwNqW0q3rdFVvbhwiSsl
- h/fE0HlIb/PiSO53sPE/OloI8kRoqXchVSuhRSJjVJSLVnKN1fDjKNBXl92OZheT9tT7
- QbtgacCFzJi7o85hntwHs58a8xBqcKmzphbHeifo/m7TnCAf7FGDTOiOkLTo4gWbA48R
- v1dP1d2bmrKWraL8oG8IfCbzFTkNiQ8hQIPdjoR0Xl13R/SmR6CbL9oi1pjKh+GAgx6S
- m3agGG1x09Ve27tIyvBse//3FlP9sJzDQIz4pNQoueecsNo+zuQV7/VLdjqNp5PFGZuV
- EZiA==
-X-Gm-Message-State: AOJu0YwAeDYuNC7IrE+ULHCeR5h7632h6xG3Yl0tC4nqF/9ag25Hkrwn
- 0dLx6XjItFfl5p2S1RKO2u4Tjnv/68VizI1fT5nZfMLt/X6T37kHKpBsfhsPdnDsSpp2xFJ6EYk
- +OJoe911FEE7wbdkb1RFnhLEvCQBQR98cKb6BWo+O5jlQb7OU3gJw71ouHbfEKYmWXLCWuFX/QU
- ULmNherPjYZMxmpP1fGqIRBy/YTpC5u3ht+hzQEbvj
-X-Gm-Gg: ASbGncsrEwaQ5YLsF7B3I4MyHwKtDqtNMZSDNLF2qGS8pnvSA43Nrf5rEPx/Tyk2SO0
- e0L3jWaV9UXcE88Cwcq9P6Q7wWH0khJF3Kd9jWnCQiVTUfjli6yxBqVLGugimbheTTeISYudlcb
- 8O6Q14eW78YCVqdkuqyGjGrDoZ6mNy1c965y0IhfODFpCl2ZrkC0VInsxrCk6FiT8yfLhF6Y3Md
- izxTbd6hlxl/m6+J/PCOPZQ7G8PrzRBofIDXwdDTkvYdDAL95poUlBSN2xTXlTTh8tss+5pbMHx
- 7OKLB+CNzAOJbd/njZSZUYArL5xIheM65SSuu1MNh/u4iJhSNjiY3Qs28ims9TGPFihJbfHNzzE
- BmQWAnbkvpfl8nToicrtHwQ6BqAHKA0I7NQDy1zed4Gs=
-X-Received: by 2002:a05:600c:c091:b0:46e:59bd:f7d3 with SMTP id
- 5b1f17b1804b1-46fae33dffamr98424775e9.20.1760449114183; 
- Tue, 14 Oct 2025 06:38:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE21Pc7pirquGQfHgv3GbUAv+Qiye+ZBS8YQ2zNUOpUiNxmh7qAInM154RCSTudFmqOfSUp+w==
-X-Received: by 2002:a05:600c:c091:b0:46e:59bd:f7d3 with SMTP id
- 5b1f17b1804b1-46fae33dffamr98424655e9.20.1760449113763; 
- Tue, 14 Oct 2025 06:38:33 -0700 (PDT)
-Received: from [192.168.10.48] ([151.61.22.175])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fab36ed3bsm163774515e9.0.2025.10.14.06.38.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:38:31 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 28/28] rust: migration: implement ToMigrationState as part of
- impl_vmstate_bitsized
-Date: Tue, 14 Oct 2025 15:37:13 +0200
-Message-ID: <20251014133713.1103695-28-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
-References: <20251014133540.1103268-1-pbonzini@redhat.com>
+ s=mimecast20190719; t=1760449231;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=XTC2RrrB6xweYC0Ajkktb7AoOX0SYgbkHGC1J1h6wrA=;
+ b=VkH+fG6oc7Vvw06pYAfb2Ct8+SXPtbwtogZfPSds3Umg3V5WraF1tqzaDgktNYEXwbbROg
+ harGveNnexCpkd2+XT4ZuFI2KR09c7GW0ygKrRGOqP73kc3nhwdjLU2GmI0siQ3GIvJeBs
+ zT8LGb+VG7erohvEWaUmydTmT7gwbzc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-DLzMK1VpN0CmOs_JVucs2A-1; Tue,
+ 14 Oct 2025 09:40:25 -0400
+X-MC-Unique: DLzMK1VpN0CmOs_JVucs2A-1
+X-Mimecast-MFC-AGG-ID: DLzMK1VpN0CmOs_JVucs2A_1760449224
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 442831800577; Tue, 14 Oct 2025 13:40:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.198])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 44BBC1954107; Tue, 14 Oct 2025 13:40:19 +0000 (UTC)
+Date: Tue, 14 Oct 2025 14:40:15 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: marcandre.lureau@redhat.com, pbonzini@redhat.com, eduardo@habkost.net,
+ qemu-devel@nongnu.org, raphael@enfabrica.net, armbru@redhat.com,
+ yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
+Subject: Re: [PATCH v2 0/7] chardev: postpone connect
+Message-ID: <aO5Sv8i4rxLFi-XF@redhat.com>
+References: <20251013133836.852018-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251013133836.852018-1-vsementsov@yandex-team.ru>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,49 +81,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is most likely desirable, and is the easiest way to migrate
-a bit-sized value without peeking at the innards of the bilge crate.
+On Mon, Oct 13, 2025 at 04:38:29PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> Hi all!
+> 
+> That's a preparation for backend-transfer migration of
+> vhost-user-blk. For such migration we are going to transfer
+> vhost-user-blk fds, including backend chardev fd to the target
+> in migration stream (backed by UNIX domain socket).
+> 
+> So, on the target, we want to know, should we call connect(),
+> or is it a backend-transfer migration, and we should wait for
+> incoming fd.
+> 
+> But at initialization time we can't know it: user may setup
+> migration parameters (enabling backend-transfer) later.
+> 
+> So, let's postpone chardev open/connect phase up to attaching
+> to frontend. At this point we can check:
+> 
+> - if it's vhost-user-blk, do nothing, let vhost-user-blk decide
+>   when to do connect()
+> - otherwise, do connect() at this point
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/migration/src/vmstate.rs | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+I'm finding it quite unpleasant that we've created a new set of
+callbacks just for the socket backend, and not the other chardev
+backends.
 
-diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
-index 445fe7fbc08..42e5df8d818 100644
---- a/rust/migration/src/vmstate.rs
-+++ b/rust/migration/src/vmstate.rs
-@@ -296,6 +296,25 @@ unsafe impl $crate::vmstate::VMState for $type {
-                                           as ::bilge::prelude::Number>::UnderlyingType
-                                          as $crate::vmstate::VMState>::VARRAY_FLAG;
-         }
-+
-+        impl $crate::migratable::ToMigrationState for $type {
-+            type Migrated = <<$type as ::bilge::prelude::Bitsized>::ArbitraryInt
-+                                          as ::bilge::prelude::Number>::UnderlyingType;
-+
-+            fn snapshot_migration_state(&self, target: &mut Self::Migrated) -> Result<(), $crate::InvalidError> {
-+                *target = Self::Migrated::from(*self);
-+                Ok(())
-+            }
-+
-+            fn restore_migrated_state_mut(
-+                &mut self,
-+                source: Self::Migrated,
-+                version_id: u8,
-+            ) -> Result<(), $crate::InvalidError> {
-+                *self = Self::from(source);
-+                Ok(())
-+            }
-+        }
-     };
- }
- 
+Conceptually it feels like the problem of transferring in pre-
+opened FDs from a previous QEMU should be conceptually relevant
+to all the backend types. If it is, then I very much want us to
+convert all the backends instead of leaving a pile of technical
+debt for someone else in the future.
+
+This series also doesn't illustrate usage of the new model with
+pre-opened FDs, so I'm finding it hard to validate whether
+this design is effective or not.
+
+
+With regards,
+Daniel
 -- 
-2.51.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
