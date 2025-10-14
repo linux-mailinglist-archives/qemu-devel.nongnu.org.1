@@ -2,47 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF33CBD7949
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 08:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471DABD7997
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 08:43:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8Yed-00035P-PY; Tue, 14 Oct 2025 02:37:03 -0400
+	id 1v8YkM-0006Qc-Iw; Tue, 14 Oct 2025 02:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8YeZ-00034l-8p; Tue, 14 Oct 2025 02:36:59 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v8YkI-0006QG-4k
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 02:42:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8YeW-0006Sy-GJ; Tue, 14 Oct 2025 02:36:59 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B38EB15D3C8;
- Tue, 14 Oct 2025 09:36:32 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A96DA29F295;
- Tue, 14 Oct 2025 09:36:52 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-stable@nongnu.org,
- hector.cao@canonical.com, lk@c--e.de, berrange@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH] target/i386: move arch_capabilities & pdcm compatibility
- properties from 10.0 to 9.2 machine type
-Date: Tue, 14 Oct 2025 09:36:47 +0300
-Message-ID: <20251014063650.25057-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.3
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v8YkF-00075k-2q
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 02:42:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760424168;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f3njgFPZTEgXIwLuw97AAgM9XlnNLoe4sFCLoEdh8Bw=;
+ b=gdUrZlwMdrxwlSafEWSrH6ZlzDx6EzRzJaYbFy6QjfXIfAzMaRzZgg3O372/VKUEWDH7df
+ UNPY0myE/qli+qHC9ugtivaBO548sdYL2cXi5jtwbIId/RWSOYYhGhND9PYMoVqMIWBBQc
+ gPDAhbuOHVThCOPSORBx5J/Rl6M5EBw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-m3VOcgzvN-WGXVmoFELPLw-1; Tue,
+ 14 Oct 2025 02:42:45 -0400
+X-MC-Unique: m3VOcgzvN-WGXVmoFELPLw-1
+X-Mimecast-MFC-AGG-ID: m3VOcgzvN-WGXVmoFELPLw_1760424164
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 69AC718004D4; Tue, 14 Oct 2025 06:42:44 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.224.78])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 90EEA19560A2; Tue, 14 Oct 2025 06:42:42 +0000 (UTC)
+Date: Tue, 14 Oct 2025 08:42:40 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH] iotests: Adjust nbd expected outputs to match current
+ behavior
+Message-ID: <aO3w4NoXneWRPSHQ@redhat.com>
+References: <20251013213638.494193-2-eblake@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+In-Reply-To: <20251013213638.494193-2-eblake@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,102 +84,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The two compat properties, introduced by the following commits (f):
+Am 13.10.2025 um 23:36 hat Eric Blake geschrieben:
+> 'git bisect' confirms that the NBD iotests 94 and 119 have been broken
+> since commit effd60c8 in v9.0.0; but as Dan Berrange's efforts to
+> improve CI have proven, we haven't been reliably running them to
+> notice.  The change was good (moving coroutine commands to run in the
+> right context), but it meant that "execute":"quit" now waits to
+> complete until the coroutines tearing down NBD have first reported the
+> SHUTDOWN event, in the opposite order of what happened pre-patch.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> Fixes: effd60c8 ("monitor: only run coroutine commands in qemu_aio_context", v9.0.0)
+> Reported-by: Daniel P. Berrangé <berrange@redhat.com>
 
- e9efa4a771 target/i386: add compatibility property for arch_capabilities
- 6529f31e0d target/i386: add compatibility property for pdcm feature
+Thanks, applied to the block branch.
 
-were added to address migration issues after the following commits (c10.1):
-
- d3a24134e3 target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
- e68ec29809 i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check
-
-which were added in 10.1 and broke migration from 10.0 to 10.1.
-
-However, the 2 changes which required the compat properties, were
-mistakenly cherry-picked to 10.0.x stable branch (c10.0):
-
- 24778b1c7e target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
- 3d26cb65c2 i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check
-
-and were released as v10.0.4 (and v10.0.5).  This breaks migration
-from earlier versions to 10.0.4 the same way as it's broken for 10.1
-where the two fixes (f) are needed.
-
-However, reverting c10.0 commits from the 10.0.x stable branch will
-make that branch further incompatible with itself again, in an opposite
-way.
-
-It might be better to accept the current situation and "pretend" that
-the c10.0 commits has "always" been in 10.0 branch.  So the fixups (f)
-are needed for both 10.0 and 10.1 branches to preserve migration
-compatibility from the earlier versions and between 10.0 & 10.1 & next.
-So the fixup commits (f) can be applied to both branches, and on top
-of that, adjust the machine version for the compat properties from 10.0
-to the previous, 9.2, machine type.
-
-This is what this change does.
-
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
-Note1: this is an alternative to reverting the two changes (c10.0)
-from the 10.0.x branch.  If accepted, this will be the first time
-in history when we modify machine properties retrospectively (or
-I think so, maybe there were other case like this already).
-
-Note2: I still don't understand the implications of this migration
-stuff, - what exactly is broken now and what will be broken if this
-change is accepted, or if (c10.0) are reverted.  We've quite a matrix
-here:
-
-  10.0.3 and before
-  10.0.4, 10.0.5 (with c10.0 applied)
-  10.0.6 and up (with the fix, either revert of (c10.0) or with 2 fixups on top)
-  10.1.1 and before (before (f) is applied)
-  10.1.2 and up (with (f) applied and maybe with this fixup applied too)
-
-This set is multiplied further by the number of possible machine versions
-used in particular setup - if it was -m pc-10.0 or -m pc-10.1.
-
-We also have backwards migration but I don't care about it at this time.
-
-Note3: It'd be best if we can release a fixed set of versions sooner,
-so it's finally known which combination is broken for migration and
-in which way.
-
-Note4: due to my lack of understanding of the brokeness and its severity,
-I can't decide which way to go from here.  It'd be really nice if I knew
-at least, like, 'a->b: dies at migration; c->d: migration succeeds, but
-some OSes might start misbehaving due to changed CPU properties' stuff about
-the above matrix, - this way, it will be possible to make a better decision.
-
-Thanks, and sorry for the breakage and the long post.
-
- hw/i386/pc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 4d6bcbb846..40fb12a3d2 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -87,12 +87,13 @@ const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
- GlobalProperty pc_compat_10_0[] = {
-     { TYPE_X86_CPU, "x-consistent-cache", "false" },
-     { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
--    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
--    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
- };
- const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
- 
--GlobalProperty pc_compat_9_2[] = {};
-+GlobalProperty pc_compat_9_2[] = {
-+    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
-+    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
-+};
- const size_t pc_compat_9_2_len = G_N_ELEMENTS(pc_compat_9_2);
- 
- GlobalProperty pc_compat_9_1[] = {
--- 
-2.47.3
+Kevin
 
 
