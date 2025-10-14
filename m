@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB90BBDACB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5209FBDACC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:40:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8izc-0006hX-TI; Tue, 14 Oct 2025 13:39:24 -0400
+	id 1v8izc-0006hZ-Vy; Tue, 14 Oct 2025 13:39:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8iza-0006gs-6x
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8iza-0006gt-7k
  for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:39:22 -0400
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8izS-000239-J0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v8izX-00023e-BY
  for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:39:21 -0400
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-4060b4b1200so4311523f8f.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:39:14 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id
+ 5b1f17b1804b1-46e34052bb7so66252605e9.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:39:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760463552; x=1761068352; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760463557; x=1761068357; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rW3CBjkfIGxpQAHfCQx06BXel4TTCBxWxu+26fAtQf8=;
- b=O9iF5Yb9p6r5epaWplv/V6N7hDCpoUfS517lpnqGXkQnRaYc0+SbhaaWN0x/qAl60/
- dAA/2bIbyG75nu0UpVshQX7stbmQ8hFX/rnjXtpWBV1m2LLlSUThCIS/4IIaTmLPQ5KU
- 3pxgfVBcWZ2P1Fmx1JBRaGvK/nJ3M8T+FJXLMOBLF7ueJuvZ+pDMRQ4eJ74taV4bN0g/
- UUUr18HeYkipXjaEtyvrcCThr2WesUEbAUaIRPBkr5nM5Arf/PPtRJhnm40XDS1uclok
- 4pNEdM1spbBNHHCdQO08J7V4kkpPnhpLGD2GabAYYKO0erxw6liRmGEj+9qiJiCVk5k1
- ERWQ==
+ bh=B7vF0j4DV78yMBqROnTyJIaFNu0YV72na+d17JA/sVo=;
+ b=NmHEEv6wS0mZrjK93WqoNod4GrX9vW1PygfiFVeRTQlmruflrKJLk6oVNJVqQHhUQd
+ O8bEWZzBMTy44kxJGVQZhmHNyXvbsvYmjMEpLkY0Oe4IHAYHSuQH6z+M06cWTN56A8Ej
+ pBVianQpnh6iOZu3i8qa8EimEqdT6XP6XW8AnWKIxWv1Lo/F9MGkQ+VefVVmQ3mOwrSB
+ 2CxOdA0e9neAUOOwF1+CIpk5pUXLScgrBIw8Dff6I0bgi2Hycb9tnFDEzme1zcJJuWYH
+ DccIaapQ8lrSReWvNSAbfb/1Ww4Xs5lm23UDbtOWT8YRbEy1EemBKZAqL5RYgfO5yPgP
+ Ftaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760463552; x=1761068352;
+ d=1e100.net; s=20230601; t=1760463557; x=1761068357;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rW3CBjkfIGxpQAHfCQx06BXel4TTCBxWxu+26fAtQf8=;
- b=LRD5UvrAWijTrFY8LyuCM6uKsN53dFiIOWX6BVnUYdFCOflnKF6kOFnGTRQSrH45GG
- zsEhTCcFb9fbyTBh5OSGG06ik6ObQj2LyVDbGnbrw/aFUVTdfW8BuUXWC21WM9L6pc9C
- 3sH8efKGcdkVBz9XtEvzXEsAxtffuR30xPTruIPzShV/9JqMv5WpykjsA+i58F/J92DJ
- /xJrPqEAgkdiv7z25crKK/uvmxiljv6o2is4D1lZ5ZH1MMNJZ9hk1Z4I20cfjRJocDKj
- Kv2H52VpzW5EkouiYSy2uMI8LCZq3ilzVHGVkbvBLjdpWGO8nEk4FmXbC2Vs0KX/L4To
- BbTQ==
-X-Gm-Message-State: AOJu0YzK7/50E59kptZnBm6iAWRyW4Y28HTPL2Pvr2zQubthImY/6gzO
- lNPyw/0ZfwGupDpx4D16pNRXvxqepyaAVNAnaZ8RSvWForu5fDJIDQbSnY8xEUH/oA2YKi4UyVK
- VGDHG+4wTWivw
-X-Gm-Gg: ASbGncsFnu9SO7JxjdeOdIm7Gan+2NWE8qylsER0jTtMffm5+rVicGvVVz+cAXEaEpZ
- 12iLxverqvYcAY64EFq3IvOzZyo2uPGNQlFKq+QJOtZTC/ZNiY6bD+pPci6tylkjVxbqDctYcEM
- kpB0mSZ7tmLAyeXLKSEJojba+e8ZqCcC5gFz/OCdh6qZPlWQm/N8a4olFjNtG5eTAw4tlye4iQ/
- JvfbfYXLDDpAwvPsJP5OLhCuTpx+Ddn+Qiwd84uDljcMiO9Q+6dq782JEFT4zRwLV9+ef7+TzyD
- BKveDB3P00yOXw4hq2N7IaZ9WF42Ps9z0UDcBJsq91xJV/WBWyq9/do5rfj+isQqvc2KOMl0CDJ
- 17i8Ws3NU8qQTWvrzdtGZ107gFeaYnbWODgyXIsfQNciWssCiNgCYlCWcFLc3WrpDhMZZUBaXox
- l/go1IwhSmFOwidNvOlOE=
-X-Google-Smtp-Source: AGHT+IFYw8Ryr3VNlmGSC6jxDJ0pz3B4MRW52uJkgQ5NpF8h8xj/3o2UiH1WZlQeQtzwrQVbd3CJMg==
-X-Received: by 2002:a05:6000:2484:b0:3ec:2529:b4e5 with SMTP id
- ffacd0b85a97d-4266e8f8008mr18642806f8f.38.1760463552303; 
- Tue, 14 Oct 2025 10:39:12 -0700 (PDT)
+ bh=B7vF0j4DV78yMBqROnTyJIaFNu0YV72na+d17JA/sVo=;
+ b=wA1LRVONqI2LvQxn7ndjOjuFc5SnM6MYNjxC3dF0MWBjZv32S6Tf3jbdB33wr/GYGt
+ WhXXqoih2uB4zw9nODdq4jo0bv4VqLv32q8bxKciGHa0Id2gkodS8C7Wo/LYMyFm2kfh
+ 6JlnGqES3oHEKB9CHdNP2fsdqFtg8lGaPg7EW7hT7sckpWGKmTibIWH6nz+I1meIvSmA
+ DLOtELshGrUl0UwVC2CSrUmQUti+dxfEBwsx/NZ45EOIhKWsAUXltkWrYL6tCELA5rg0
+ Q/owkrdj95k9noEGcdO9UTTdoGayefYmzJYfOCuzMcBLcaNmphMrltUHm/08IyKiGIqs
+ 1URA==
+X-Gm-Message-State: AOJu0YzeOVANHcB2aoyFIiK4BrQ0/qUKsnPJsdtBzWyjVPDLV3ydphZj
+ 9qNij6pr8l5S3AYGXd13f1/vQMkqHXcg+LB7kSExf/ASKO7dTjb7qrNMHkRqK34/ULuFlUD2EqI
+ MM21CLIFC1Tke
+X-Gm-Gg: ASbGncuMeCN/sCLvFjR2MuLeULh945ZgIJW82YPXrh8z77K4H27SaDdAnpJluQch+aK
+ SAYnd1QKgLeBeMR0q7eICpDwA7ueoSd6D1QjIjauSgHbGIPoI9GGue7Xoikvvefc3kYlaDWJRGF
+ zX9IrxcPd3rRKdJFMKhhCYiZ6PT7NF+79/Jo4IBLTG97lPJdgu/G8knSakYfkFL5iULp5sMZCcB
+ oMExPsRMC+8sOllJm7TpM+tdYwfHHlL68wVQq2msbV8sAcMUM8uxz7pHyo6gSTbIRcooJM43Zdb
+ mlDje6oHvzcsKEu0/sRvs8Rx+Cs6BpISo5WUd45DFr92M5ZNEOCl7xX5FSw6Sxz7H/dytaRYrL1
+ wp+sDomblKaQdFV9CAI+Z53Ul3PfRSu8EEeaiPFSq1iT6bOeXgDNFUT8UQqAFhX1jFZsHpHiRwR
+ R43G3/HNRx8tO9iYk0mZs=
+X-Google-Smtp-Source: AGHT+IFjUVEp4jSXGxvQNlIsGu/N/ppNcV+o4bN3ZwnNyM2O47Pv4LdijWQR1zOlCR5X/8yUXanfcA==
+X-Received: by 2002:a05:600c:4688:b0:46e:4372:5395 with SMTP id
+ 5b1f17b1804b1-46fa9b01ff5mr179218685e9.25.1760463557202; 
+ Tue, 14 Oct 2025 10:39:17 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e8a06sm24742531f8f.55.2025.10.14.10.39.11
+ 5b1f17b1804b1-46fb479c171sm249133035e9.0.2025.10.14.10.39.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Oct 2025 10:39:11 -0700 (PDT)
+ Tue, 14 Oct 2025 10:39:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -69,24 +69,24 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 2/3] docker: Stop building 32-bit PowerPC images
-Date: Tue, 14 Oct 2025 19:38:58 +0200
-Message-ID: <20251014173900.87497-3-philmd@linaro.org>
+Subject: [PATCH 3/3] buildsys: Remove support for 32-bit PPC hosts
+Date: Tue, 14 Oct 2025 19:38:59 +0200
+Message-ID: <20251014173900.87497-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014173900.87497-1-philmd@linaro.org>
 References: <20251014173900.87497-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::342;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x342.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,62 +102,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-32-bit host support is deprecated since commit 6d701c9bac1
-("meson: Deprecate 32-bit host support"). Besides, the Ubuntu
-distribution we are using to cross-build dropped support for
-32-bit PPC as of Ubuntu 18.04 LTS [*].
-
-  Given the recent announcement that the powerpc architecture
-  would be dropped from the upcoming Debian release, there
-  has been a good deal of discussion about the future of this
-  architecture in Ubuntu as well [...].
-
-  Unlike the ppc64el architecture, there is no longer upstream
-  support for the 32-bit, big-endian powerpc architecture [...].
-
-  The Technical Board has therefore determined that the powerpc
-  port should not be included in the Ubuntu 17.04 (zesty) release.
-
-  The powerpc architecture will continue to be supported as part
-  of existing stable releases.  Since powerpc is included in
-  Ubuntu 16.04 LTS, security updates for existing packages can be
-  expected until April 2021.
-
-Next commits will remove support for 32-bit PPC hosts. Stop
-building the powerpc Docker image.
-
-[*] https://lists.ubuntu.com/archives/ubuntu-devel-announce/2016-December/001199.html
+Stop detecting 32-bit PPC host as supported. See previous commit
+for rationale.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- configure                                             | 1 -
- tests/docker/dockerfiles/debian-all-test-cross.docker | 1 -
- 2 files changed, 2 deletions(-)
+ configure                 | 12 ++----------
+ include/qemu/host-utils.h |  2 +-
+ include/qemu/timer.h      | 13 +------------
+ disas/disas-host.c        |  4 +---
+ util/cacheflush.c         |  4 ++--
+ 5 files changed, 7 insertions(+), 28 deletions(-)
 
 diff --git a/configure b/configure
-index 461b53dd605..ce76a00aff1 100755
+index ce76a00aff1..8205c8df599 100755
 --- a/configure
 +++ b/configure
-@@ -1362,7 +1362,6 @@ fi
- : ${cross_prefix_mips64="mips64-linux-gnuabi64-"}
- : ${cross_prefix_mipsel="mipsel-linux-gnu-"}
- : ${cross_prefix_mips="mips-linux-gnu-"}
--: ${cross_prefix_ppc="powerpc-linux-gnu-"}
- : ${cross_prefix_ppc64="powerpc64-linux-gnu-"}
- : ${cross_prefix_ppc64le="$cross_prefix_ppc64"}
- : ${cross_prefix_riscv64="riscv64-linux-gnu-"}
-diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
-index 420a4e33e60..08361cbe6b5 100644
---- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-@@ -58,7 +58,6 @@ ENV AVAILABLE_COMPILERS gcc-aarch64-linux-gnu \
- RUN if dpkg-architecture -e amd64; then \
-   export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-hppa-linux-gnu libc6-dev-hppa-cross"; \
-   export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-m68k-linux-gnu libc6-dev-m68k-cross"; \
--  export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc-linux-gnu libc6-dev-powerpc-cross"; \
-   export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; \
-   export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; \
-   fi && \
+@@ -391,15 +391,12 @@ elif check_define __sparc__ ; then
+   else
+     cpu="sparc"
+   fi
+-elif check_define _ARCH_PPC ; then
+-  if check_define _ARCH_PPC64 ; then
++elif check_define _ARCH_PPC64 ; then
+     if check_define _LITTLE_ENDIAN ; then
+       cpu="ppc64le"
+     else
+       cpu="ppc64"
+     fi
+-  else
+-    cpu="ppc"
+   fi
+ elif check_define __mips__ ; then
+   if check_define __mips64 ; then
+@@ -479,11 +476,6 @@ case "$cpu" in
+     linux_arch=mips
+     ;;
+ 
+-  ppc)
+-    host_arch=ppc
+-    linux_arch=powerpc
+-    CPU_CFLAGS="-m32"
+-    ;;
+   ppc64)
+     host_arch=ppc64
+     linux_arch=powerpc
+@@ -1477,7 +1469,7 @@ probe_target_compiler() {
+         container_image=debian-all-test-cross
+         container_cross_prefix=mips64-linux-gnuabi64-
+         ;;
+-      ppc|ppc64|ppc64le)
++      ppc64|ppc64le)
+         container_image=debian-all-test-cross
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         ;;
+diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
+index dd558589cb5..22d440287f1 100644
+--- a/include/qemu/host-utils.h
++++ b/include/qemu/host-utils.h
+@@ -806,7 +806,7 @@ static inline uint64_t udiv_qrnnd(uint64_t *r, uint64_t n1,
+     asm("dlgr %0, %1" : "+r"(n) : "r"(d));
+     *r = n >> 64;
+     return n;
+-#elif defined(_ARCH_PPC64) && defined(_ARCH_PWR7)
++#elif defined(_ARCH_PWR7)
+     /* From Power ISA 2.06, programming note for divdeu.  */
+     uint64_t q1, q2, Q, r1, r2, R;
+     asm("divdeu %0,%2,%4; divdu %1,%3,%4"
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index abd2204f3be..6c15acebbc0 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -850,12 +850,11 @@ static inline int64_t get_clock(void)
+ /*******************************************/
+ /* host CPU ticks (if available) */
+ 
+-#if defined(_ARCH_PPC)
++#if defined(_ARCH_PPC64)
+ 
+ static inline int64_t cpu_get_host_ticks(void)
+ {
+     int64_t retval;
+-#ifdef _ARCH_PPC64
+     /* This reads timebase in one 64bit go and includes Cell workaround from:
+        http://ozlabs.org/pipermail/linuxppc-dev/2006-October/027052.html
+     */
+@@ -863,16 +862,6 @@ static inline int64_t cpu_get_host_ticks(void)
+                           "cmpwi   %0,0\n\t"
+                           "beq-    $-8"
+                           : "=r" (retval));
+-#else
+-    /* http://ozlabs.org/pipermail/linuxppc-dev/1999-October/003889.html */
+-    unsigned long junk;
+-    __asm__ __volatile__ ("mfspr   %1,269\n\t"  /* mftbu */
+-                          "mfspr   %L0,268\n\t" /* mftb */
+-                          "mfspr   %0,269\n\t"  /* mftbu */
+-                          "cmpw    %0,%1\n\t"
+-                          "bne     $-16"
+-                          : "=r" (retval), "=r" (junk));
+-#endif
+     return retval;
+ }
+ 
+diff --git a/disas/disas-host.c b/disas/disas-host.c
+index 8146fafe804..4b06f41fa6c 100644
+--- a/disas/disas-host.c
++++ b/disas/disas-host.c
+@@ -56,11 +56,9 @@ static void initialize_debug_host(CPUDebug *s)
+     s->info.cap_mode = CS_MODE_64;
+     s->info.cap_insn_unit = 1;
+     s->info.cap_insn_split = 8;
+-#elif defined(_ARCH_PPC)
++#elif defined(_ARCH_PPC64)
+     s->info.cap_arch = CS_ARCH_PPC;
+-# ifdef _ARCH_PPC64
+     s->info.cap_mode = CS_MODE_64;
+-# endif
+ #elif defined(__riscv)
+ #if defined(_ILP32) || (__riscv_xlen == 32)
+     s->info.print_insn = print_insn_riscv32;
+diff --git a/util/cacheflush.c b/util/cacheflush.c
+index 17c58918de6..69c9614e2c9 100644
+--- a/util/cacheflush.c
++++ b/util/cacheflush.c
+@@ -153,7 +153,7 @@ static void arch_cache_info(int *isize, int *dsize)
+     }
+ }
+ 
+-#elif defined(_ARCH_PPC) && defined(__linux__)
++#elif defined(_ARCH_PPC64) && defined(__linux__)
+ # include "elf.h"
+ 
+ static void arch_cache_info(int *isize, int *dsize)
+@@ -187,7 +187,7 @@ static void fallback_cache_info(int *isize, int *dsize)
+     } else if (*dsize) {
+         *isize = *dsize;
+     } else {
+-#if defined(_ARCH_PPC)
++#if defined(_ARCH_PPC64)
+         /*
+          * For PPC, we're going to use the cache sizes computed for
+          * flush_idcache_range.  Which means that we must use the
 -- 
 2.51.0
 
