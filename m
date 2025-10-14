@@ -2,123 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81A8BD9B84
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C298BD9BB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:32:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8f5r-0006V7-KR; Tue, 14 Oct 2025 09:29:35 -0400
+	id 1v8f8N-000159-57; Tue, 14 Oct 2025 09:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1v8f5p-0006So-7U
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:29:33 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1v8f5f-00087L-QR
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:29:32 -0400
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59E87LFM008546
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 13:29:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- mpWZ77L72MtDnY6aFBb3wvz17h863QymOKjhJeJ8LWw=; b=Kok3pOpqOq5REvB4
- mfb1lB7hMSuGxtKG1PT0yL0y74oGtSmCS913C1N71RnsOi1gWs9k4Z/NdFxw+yYT
- +Wq/NiLHxLpXuFtgzHz4CVa28NzqCDT9qchUoPMEG8Uu7cw+NEi+yl+yMJhY9vQU
- h9oljWKPcen8+Ok/fgL2V1i0Q/yL3Rvk/CaMFXWGFuKXsvMt7fxV27NfDU0xtHRs
- 9Oc6No+O659z/KpywQNbEsQ7mYOyR+6uJ8csFdlWy0QDeY4skKCQqMKguF/IzSoH
- ehD9KnQ9XHQUWNnVyy2B1fndHWDGhHhkA+KQCB0wYuV2XdFG7vLNioStkVdkAgXe
- gpCENA==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49rtrt5fk8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 13:29:22 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-28973df6a90so98217345ad.2
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:29:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8f81-0000sv-1C
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:31:51 -0400
+Received: from mail-yx1-xb132.google.com ([2607:f8b0:4864:20::b132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8f7p-000091-F3
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:31:48 -0400
+Received: by mail-yx1-xb132.google.com with SMTP id
+ 956f58d0204a3-63d0692136bso2062244d50.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:31:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760448689; x=1761053489; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XW2a6gWYcC1WnuVYDBcLoYUBaoDqPbQydJ7nhuEJsDs=;
+ b=mHKcHCMUf0599uox6Hoh98RkOPKGhBA1Nf7RL9pWeddhsXJy6zfjB4JQvtAg5/aFOy
+ ghYfRGeBiBmBqrWpkOtpmu+q4qXQlJ3uuMScKITmHY7wVWu4zokq3ro9CpPMYtQSYd0M
+ mUcOvlZDDs8rAqkm9xzMegLSdcg9pIP8oKq9hk36TJjTXQ/xB4Ii1eCMtOaqWlNV6diM
+ I1qyUjCXrhG2yV+W5EkxIRdWkSyMmCYPHl7/DE63L3r1g2l2QCqe7hWFrsHOduzPCN8G
+ 3HDzkgrBCDoFafvXNVqWMbaHksod3Er6WYkvrSKaVjsXMiou+mrLxEUneVdrQyzLOUh5
+ RlgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760448561; x=1761053361;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mpWZ77L72MtDnY6aFBb3wvz17h863QymOKjhJeJ8LWw=;
- b=qX6vdLIWb/OczOwlS0Ix5jYhc/zQjEZt43r+m2GkGFMM4Of0lFYj5F0GHymUJnxsu9
- 2aCfURC9cw55e7SeHvqd+ExdBwvpVQgoBixy0UY6A65r9N5Cd198TPG2rkTXh3qtbZ5r
- jsvynHgXDv/2NXaxjbwXFU74RCDaFATIcuj/JEaFnnWBDWLq8DVT17eT/AovpY+JZqWs
- 5X3vhA5RNHBjjBc3N9tIZL/ldpInUmimZjAgMPIMCOGZ7hM6QkbCPxxjxZZJ4P2sMc0J
- p2JCDfbHFJ/6VhpC4cccTsXxa4woTRJDxrAcjSwOmgjgHZJ7LnvNbv4DoTBB1CvxurXc
- 5O4Q==
-X-Gm-Message-State: AOJu0YwC/3Nb6V0LvGF2bGD3sha7ojStQLfqXNOvHugBnOqae9SdYFtI
- UkuAWIX/dgA/AFIr8aMDuGQA8ATu1WJT80zxMiqe1CmfQxZBc7gOp3JHNUXwrgUz/OB+ciXy5wM
- Y3jBhK8IU+SR8X3zWbjhS/O9gDyoZ/X1UFWAPJaWdhdhspkBYzpKN4KZ+Z4AelZyR5w==
-X-Gm-Gg: ASbGnctWUQtBdyr7Zlt12RQXutA6xZ0wKdsGDodLKkmDN4bshaxZcGQgdTLqivJ1ifR
- R3Y9vohA5WUVf6ptY+N5CskJDExaIsPDaEE3foMJXQyg4Q6unac/QGU8aYUZZzE26mjZ6GsdKs5
- zAH7Ie4hZ8nvpc/68kidUPJMajplqMYyebeEm1e2azLG5BP0UpyIv8L5C6ramiHVL0TPyWUrkPZ
- OdGYvXRlI4iQwNPJ2V1gQ2Ak3GDep0RcWF/oz1ULPAdO9R5pHcCa4muuyYlUAnMFGr+5Kry8IeS
- C+SfKgFV4+3kKxcV0E0A9l/Qb7Tuy6AaVXMIhwB4tUSfPjfdAaJQfo9oTn1zw/T8RG9hLuBewnL
- lv3KW0c4mNUlQ
-X-Received: by 2002:a17:903:8c8:b0:264:a34c:c7f with SMTP id
- d9443c01a7336-290273568famr357097315ad.7.1760448560724; 
- Tue, 14 Oct 2025 06:29:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/JzvAaW1h6+yfJYQW0XzciNA7lJCL1SIpnZM9Lbdc2oJuIKZiLHyUBk3oz+iEERvAsw5rZg==
-X-Received: by 2002:a17:903:8c8:b0:264:a34c:c7f with SMTP id
- d9443c01a7336-290273568famr357096825ad.7.1760448560120; 
- Tue, 14 Oct 2025 06:29:20 -0700 (PDT)
-Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
- [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034f07275sm164478125ad.66.2025.10.14.06.29.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:29:19 -0700 (PDT)
-From: Brian Cain <brian.cain@oss.qualcomm.com>
-To: qemu-devel@nongnu.org
-Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
- philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
- anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
- alex.bennee@linaro.org, quic_mburton@quicinc.com,
- sid.manning@oss.qualcomm.com
-Subject: [PATCH v3 4/4] tests/tcg/hexagon: Add cs{0,1} coverage
-Date: Tue, 14 Oct 2025 06:29:07 -0700
-Message-Id: <20251014132907.3268743-5-brian.cain@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251014132907.3268743-1-brian.cain@oss.qualcomm.com>
-References: <20251014132907.3268743-1-brian.cain@oss.qualcomm.com>
+ d=1e100.net; s=20230601; t=1760448689; x=1761053489;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XW2a6gWYcC1WnuVYDBcLoYUBaoDqPbQydJ7nhuEJsDs=;
+ b=H6y7Lk0jYbl0ZsjQjatZDsYQYvnBiX6cpmjKkmEJMHpqTpe3s1kAv8blMvaAYK0pYQ
+ rR2gQdaRXRPejXrb1YqjFmo5rDFE4p4YQUc/6ZtkHLl95b0QOaqOYQJl3VMXvixp9+bR
+ Rd9CBHLmZTpB1NoJayz1XQvj1MEmUKxIAiQD5V7+SLjqQriDRoFypYOpMd+iUwAZqLnZ
+ Y0Nki1v3qNUMVYhNrVWIy+Sdtx+yxa77ubckvUgKe6xt3Zabsh4d91FIABclPr/nfThX
+ kGP1YcQKRK1vTiXQ5O6UQQrAd3YM7Ic58wDQL+5WHTwTZ9LGLL9s9XL42ibpZ+VeAgo/
+ JJ1A==
+X-Gm-Message-State: AOJu0YzvBitbJkICwedIwwblGsozfLSpWvZvX/EN0N7mhYKsA5HnU+Yt
+ MFCbSdayoANmfwVBauzXhgiMwatB1u2uuZODCPr51FyyOdTrClIOfTBAh5lvyIdPOjAwwFqDTkr
+ DNJC+1gvITKiglhCfrLeQht59Fu6lUidqGXcjtXaW2w==
+X-Gm-Gg: ASbGncv+JQ7sYu6sFm7lChjvEIyvftHIXnpFgU098WFB0Z1f9fDFPP6wyN/O2kKBhxu
+ VDSPMskbZuFwtEG+fAPts4sbfRAZm43UyCBtP/FEDHLBlkrTwj8eGewM/XFSjjH1/D1Jqgkrc9X
+ HWKkJVd3dcu7NcKW2Kldt36qklyg49WkoQorlbBHTpxT/aiL8ub3uOpNjGYlrpd/KitZKVuAclG
+ +qmlpQYzA1P7sd2iaI6qtGQNOkLerNs/zasOXNBRw==
+X-Google-Smtp-Source: AGHT+IEmyPGxtge0re7VgCuoIgBKV0sLz1T8rwJqNuZtnBXV2zeslWnPCFlW7jeaXybg/p3Urk8skZ87Lq2+dqsei5w=
+X-Received: by 2002:a05:690e:86:b0:636:e0b:7bd5 with SMTP id
+ 956f58d0204a3-63ccb8dbd91mr17704290d50.31.1760448688975; Tue, 14 Oct 2025
+ 06:31:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Proofpoint-ORIG-GUID: QsX90ZB3MNBHuerQTozC_Qi7IFhAs0Je
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEzMDAyMiBTYWx0ZWRfXxActbz8vgh0k
- RLZa2vd0ood1f3uQS5MSeb8r6eF/cw7l34vQzY+depVNTIgtQUEoLOXfTSAazeFgAJTOsOg6jAK
- pC6lnAgyvULjEEoKRXjlm7tyxrc04OodbBi7Fv1QEei6T2tyRVgVCN1JGYaKuBbI7LT1EkqtqBQ
- KfGe5sM/SD5mDsnHxSWFyOR8bmQyXII6BXxxF7+7PMsfA6mY/dP55vb120pzwKb3+ZP4spMBqtp
- 62xxeYDunmVCPifrunJw2sR5/YVW3r9AfaYybc++vUNx4MNKk9MTAv2x8krP5Y+oNT2uRKFSgh1
- DigGDg3t3LMJolmY7voMCw4BQFarsJfnkNg8HPxNjY+SGqSv0eIOtED5Z0JSIHZqG4V9GrVJ7TR
- nBWeJ651XVhTV2JU9QFX95lBmg737g==
-X-Authority-Analysis: v=2.4 cv=SfD6t/Ru c=1 sm=1 tr=0 ts=68ee5032 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=VgE1YBpVsVNxnyuYq6cA:9 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: QsX90ZB3MNBHuerQTozC_Qi7IFhAs0Je
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-14_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 adultscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510130022
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20251014102439.319915-1-peter.maydell@linaro.org>
+ <261d6938fc894b1ca0979aef30fb9e1c@huawei.com>
+ <eebfcb04afc2498d8969d96fcbcf0926@huawei.com>
+In-Reply-To: <eebfcb04afc2498d8969d96fcbcf0926@huawei.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 14 Oct 2025 14:31:16 +0100
+X-Gm-Features: AS18NWBvhznq6zUD_XVLQ_IUpAw3cv5PhmbCn__9oxabrlS2vbbX88_BH59uhg4
+Message-ID: <CAFEAcA_MZu4stZ4MY4zdpM0zy-gNBA3yj4dkuWL3d-FLFZC6rg@mail.gmail.com>
+Subject: Re: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Salil Mehta <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb132.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -134,39 +94,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Q292ZXIgY3MwLDEgcmVnaXN0ZXIgY29ycnVwdGlvbiBpbiB0aGUgc2lnbmFsX2NvbnRleHQgdGVz
-dCBjYXNlLgoKbGMwLCBzYTAgcmVnaXN0ZXJzIHByZXZpb3VzbHkgb21pdHRlZCBmcm9tIHRoZSBj
-bG9iYmVycyBsaXN0CmFyZSBub3cgY2FwdHVyZWQuCgpSZXZpZXdlZC1ieTogQW50b24gSm9oYW5z
-c29uIDxhbmpvQHJldi5uZz4KU2lnbmVkLW9mZi1ieTogQnJpYW4gQ2FpbiA8YnJpYW4uY2FpbkBv
-c3MucXVhbGNvbW0uY29tPgotLS0KIHRlc3RzL3RjZy9oZXhhZ29uL3NpZ25hbF9jb250ZXh0LmMg
-fCAyMyArKysrKysrKysrKysrKysrKysrKy0tLQogMSBmaWxlIGNoYW5nZWQsIDIwIGluc2VydGlv
-bnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvdGNnL2hleGFnb24vc2ln
-bmFsX2NvbnRleHQuYyBiL3Rlc3RzL3RjZy9oZXhhZ29uL3NpZ25hbF9jb250ZXh0LmMKaW5kZXgg
-NzIwMmZhNjRiNi4uMTJiNzhmMTc5MCAxMDA2NDQKLS0tIGEvdGVzdHMvdGNnL2hleGFnb24vc2ln
-bmFsX2NvbnRleHQuYworKysgYi90ZXN0cy90Y2cvaGV4YWdvbi9zaWduYWxfY29udGV4dC5jCkBA
-IC0yNiw3ICsyNiwxMSBAQCB2b2lkIHNpZ191c2VyKGludCBzaWcsIHNpZ2luZm9fdCAqaW5mbywg
-dm9pZCAqcHVjKQogICAgICAgICAicDEgPSByN1xuXHQiCiAgICAgICAgICJwMiA9IHI3XG5cdCIK
-ICAgICAgICAgInAzID0gcjdcblx0IgotICAgICAgICA6IDogOiAicjciLCAicDAiLCAicDEiLCAi
-cDIiLCAicDMiKTsKKyAgICAgICAgInI2ID0gIzB4MTIzNDU2Nzhcblx0IgorICAgICAgICAiY3Mw
-ID0gcjZcblx0IgorICAgICAgICAicjYgPSAjMHg4NzY1NDMyMVxuXHQiCisgICAgICAgICJjczEg
-PSByNlxuXHQiCisgICAgICAgIDogOiA6ICJyNiIsICJyNyIsICJwMCIsICJwMSIsICJwMiIsICJw
-MyIpOwogfQogCiBpbnQgbWFpbigpCkBAIC01Myw3ICs1NywxMSBAQCBpbnQgbWFpbigpCiAgICAg
-dGltZXJfc2V0dGltZSh0aWQsIDAsICZpdCwgTlVMTCk7CiAKICAgICBhc20oImxvb3AwKDFmLCAl
-MSlcblx0IgotICAgICAgICAiMTogcjggPSAjMHhmZlxuXHQiCisgICAgICAgICIxOiByOSA9ICMw
-eGRlYWRiZWVmXG5cdCIKKyAgICAgICAgIiAgIGNzMCA9IHI5XG5cdCIKKyAgICAgICAgIiAgIHI5
-ID0gIzB4YmFkYzBmZWVcblx0IgorICAgICAgICAiICAgY3MxID0gcjlcblx0IgorICAgICAgICAi
-ICAgcjggPSAjMHhmZlxuXHQiCiAgICAgICAgICIgICBwMCA9IHI4XG5cdCIKICAgICAgICAgIiAg
-IHAxID0gcjhcblx0IgogICAgICAgICAiICAgcDIgPSByOFxuXHQiCkBAIC03NCwxMCArODIsMTkg
-QEAgaW50IG1haW4oKQogICAgICAgICAiICAgcjggPSBwM1xuXHQiCiAgICAgICAgICIgICBwMCA9
-IGNtcC5lcShyOCwgIzB4ZmYpXG5cdCIKICAgICAgICAgIiAgIGlmICghcDApIGp1bXAgMmJcblx0
-IgorICAgICAgICAiICAgcjggPSBjczBcblx0IgorICAgICAgICAiICAgcjkgPSAjMHhkZWFkYmVl
-ZlxuXHQiCisgICAgICAgICIgICBwMCA9IGNtcC5lcShyOCwgcjkpXG5cdCIKKyAgICAgICAgIiAg
-IGlmICghcDApIGp1bXAgMmJcblx0IgorICAgICAgICAiICAgcjggPSBjczFcblx0IgorICAgICAg
-ICAiICAgcjkgPSAjMHhiYWRjMGZlZVxuXHQiCisgICAgICAgICIgICBwMCA9IGNtcC5lcShyOCwg
-cjkpXG5cdCIKKyAgICAgICAgIiAgIGlmICghcDApIGp1bXAgMmJcblx0IgogICAgICAgICAiNDog
-e306IGVuZGxvb3AwXG5cdCIKICAgICAgICAgOgogICAgICAgICA6ICJyIigmZXJyKSwgInIiKGkp
-Ci0gICAgICAgIDogIm1lbW9yeSIsICJyOCIsICJwMCIsICJwMSIsICJwMiIsICJwMyIpOworICAg
-ICAgICA6ICJtZW1vcnkiLCAicjgiLCAicjkiLCAicDAiLCAicDEiLCAicDIiLCAicDMiLCAiY3Mw
-IiwgImNzMSIsICJsYzAiLAorICAgICAgICAgICJzYTAiKTsKIAogICAgIHB1dHMoZXJyID8gIkZB
-SUwiIDogIlBBU1MiKTsKICAgICByZXR1cm4gZXJyOwotLSAKMi4zNC4xCgo=
+On Tue, 14 Oct 2025 at 14:23, Salil Mehta <salil.mehta@huawei.com> wrote:
+>
+> Hi Peter,
+>
+> > From: qemu-devel-bounces+salil.mehta=huawei.com@nongnu.org <qemu-
+> > devel-bounces+salil.mehta=huawei.com@nongnu.org> On Behalf Of Salil
+> > Mehta via
+> > Sent: Tuesday, October 14, 2025 11:41 AM
+> > To: Peter Maydell <peter.maydell@linaro.org>; qemu-devel@nongnu.org
+> >
+> > Hi Peter,
+> >
+> > > From: qemu-devel-bounces+salil.mehta=huawei.com@nongnu.org
+> > <qemu-
+> > > devel-bounces+salil.mehta=huawei.com@nongnu.org> On Behalf Of Peter
+> > > Maydell
+> > > Sent: Tuesday, October 14, 2025 11:25 AM
+> > > To: qemu-devel@nongnu.org
+> > >
+> > > Currently in arm_gicv3_icc_reset() we read the kernel's value of
+> > > ICC_CTLR_EL1 as part of resetting the CPU interface.  This mostly
+> > > works, but we're actually breaking an assumption the kernel makes that
+> > > userspace only accesses the in-kernel GIC data when the VM is totally
+> > > paused, which may not be the case if a single vCPU is being reset.
+> > > The effect is that it's possible that the read attempt returns EBUSY.
+> > >
+> > > Avoid this by reading the kernel's value of the reset ICC_CTLR_EL1
+> > > once in device realize. This brings ICC_CTLR_EL1 into line with the
+> > > other cpuif registers, where we assume we know what the kernel is
+> > > resetting them to and just update QEMU's data structures in
+> > arm_gicv3_icc_reset().
+> > >
+> > > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > > ---
+> > > I've only tested this fairly lightly, but it seems to work.
+> > > Salil, does this fix the EBUSY issues you were seeing ?
+> >
+> >
+> > Let me try this and get back to you.  Also, just to let you know that -EBUSY
+> > can return from other places as well. Please check  my reply in the other mail-
+> > chain.
+>
+>
+> Got this.
+>
+> (gdb) handle SIGUSR1 nostop noprint pass
+> Signal        Stop      Print   Pass to program Description
+> SIGUSR1       No        No      Yes             User defined signal 1
+> (gdb) run
+> Starting program:
+> /opt/workspace/code/qemu/qemu/build/qemu-system-aarch64 --enable-kvm -machine virt,gic-version=3 -cpu host -smp cpus=2,disabledcpus=2 -m 300M -kernel /opt/workspace/code/linux/linux/arch/arm64/boot/Image
+> -initrd /opt/workspace/code/filesystem/rootfs.cpio.gz -append console=ttyAMA0\ root=/dev/ram\ earlycon\ rdinit=/init\ maxcpus=1\ acpi=force -nographic -bios /opt/workspace/code/uefi/edk2/Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/FV/QEMU_EFI.fd
+> [Thread debugging using libthread_db enabled] Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+> [New Thread 0xfffff5b5eb40 (LWP 31994)]
+> [New Thread 0xfffff4e88b40 (LWP 31996)]
+> [New Thread 0xffffd4dfeb40 (LWP 31997)]
+> Unexpected error in kvm_device_access() at ../accel/kvm/kvm-all.c:3475:
+> qemu-system-aarch64: KVM_GET_DEVICE_ATTR failed: Group 6 attr
+> 0x000000000000c664: Inappropriate ioctl for device
+
+Does it do this consistently, or only sometimes? What
+host kernel version are you running? And what QEMU
+commit (plus this patch)?
+
+I'm guessing from that "disabledcpus=2" part that you're
+running some not-yet-upstream set of QEMU patches. Please
+drop those, and test only with this, to rule out the
+possibility of some bug/unexpected interaction with those.
+
+thanks
+-- PMM
 
