@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C617ABDB29D
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDD6BDB31D
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:16:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8lJ9-00022G-MO; Tue, 14 Oct 2025 16:07:43 -0400
+	id 1v8lJI-00027E-5n; Tue, 14 Oct 2025 16:07:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8lJ2-000218-G0
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:07:36 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1v8lJE-000262-A3
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:07:48 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8lIr-0005K5-CY
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:07:35 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-271d1305ad7so91248735ad.2
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 13:07:23 -0700 (PDT)
+ id 1v8lIt-0005KH-10
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:07:48 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-b633b54d05dso3738298a12.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 13:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760472442; x=1761077242; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760472443; x=1761077243; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z1lTFXn6uKuCiyCV0s/y9SEm5jCxZH9j54VQidGTnOE=;
- b=clv/snpUmw92lG6VX1H7vED5jSjGT1uZGgfRAY/ch9YYcu/sKydyvLFl/+O6BQ770+
- RYUQJFzBA5EDcn38k5Yf0I+jFBDKY7u9ml4LbKJZINeEoq8e6LqMlX76bYctrxG+7iCs
- LVDA1C311n14osUblOs66EqgF5dCsrMSstEjpnvx12KyXbs8MFso6YxLeZ4avdxSehMS
- Azxv7cc+nKwt/0uJaFazGnwJY2d5t5n2wFFlOhSuMVBAs+UQLfK510jNlrv7aO60fmzy
- xsEm2uPHoqK1Xjgz0weqqHgc7I5UnvC+BH36BZsdJqGuXb4Ove1szSClYOcH2DVnS0Rh
- 6NKw==
+ bh=nVLp2fMlNwwT84vDf2syQ7Ds5F9iDytds/Dwe6kgLt8=;
+ b=BRsx4Z51DGoR5yBPilIF/AJZTSGUjXttk6NkCHrOKYjK/FSS69i4a/TTrpnPJG2yGI
+ SPCQ0h0TE8XH+xXaZ8C2wBUAyA/MyJiIojG7nDdd+dmbZnOoci9V8ariCUjtQ1MuAlZk
+ 3BAHkxDvnrehLt20OGWPDHtnNIbpqTzR06eu2xZRqM073WPDpF4EsFGXKgdNwgTMhaKb
+ 1Tym61M1FD0V/9TbJntsUp3qgm7VDFWbAOWHSserilkvwq2fjs5W3iqDCaNlZ7VDUlgQ
+ gBi/WJXr3uEW5dHt5noxtv9x/RnqYn0AOLCOQsCAtV/1/mfxuqR1Nvkzp207+eDKoDZ1
+ s6yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760472442; x=1761077242;
+ d=1e100.net; s=20230601; t=1760472443; x=1761077243;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z1lTFXn6uKuCiyCV0s/y9SEm5jCxZH9j54VQidGTnOE=;
- b=qKunjxMgfPmKa+wyAYp7EmU2eYF03bW+lDRnt0YSP5TBENin39+obAzAsJ/f8LBoXJ
- CBbL23Q+xEDbzVFv2ftLPZbXZLxja6YbDHCHT/zbfmgwYII09v+BGjBYPdIsehDq6/w2
- c+zubhIsxYc8sZKeew/0vx9IH6BGwXukNw8dFUipkzUjrxmlnzzTVwAFKY6hELYvx357
- JwV60HwqQye5xwuF6TXWWTTjgOg8UVSTeNGolKWt9DVpaYvnbAR919XynWgfKFdhsdPh
- 9Og++krsDX6ixObc5XPsY0URQzOvsZatE5t/t3FPpm3vDFUlafcTY0ZVJ4oK15XvkIF5
- OL+w==
-X-Gm-Message-State: AOJu0YzsWYLkn0ACqpwpRpZ63oggHcyzHfedZh5m4Ze80Zy7YB9TiG0x
- +9wpWtS4tsq1ICFnjtH0VGSduE0b0I9KXQ1f5TEaZ9+eqLIlRbNKzhLqdji+DW456Q6GTmYw5cm
- SWWolnJ4=
-X-Gm-Gg: ASbGncvM6lFsse8vpI7dplfR8qPDZCk54EWrXnbq7pOPIniIDce0co4wLNFxcHuSf7b
- vQfO/089QZWvsPm9sQP4fMJ809NrXwPAC5K0mc1VmUkJhIbR+CoT3Ffcxe+GrSKxIoDRwihxYZR
- p6WU5ZMCbpxWzyEGoW0BI+R+OUPP5ATc0I2jY1YNc7nR0Z7yfaO9KNUXEIC517pn6X8pzHrK9rI
- L7pQ2ftXsQ+P8xb/FRcq7NXC2BWQYe9WUcBN2YS9DcJ3ygU39Riko1Ruhd30SCdXcQekFRQgye9
- INJgjoDSr+DZjBm69O4is08F0obbMNXGBMPgRaS09lLTKHRPoHCzYcjSPNbfl309wELDRR6ht++
- NNIEgUjOjqPRxjKIE0KUtnA/MscS4olZD6i9T45REHiDlw9Lopzv3JLZP7u1ySw==
-X-Google-Smtp-Source: AGHT+IHAu5TFFyFx1nMwVkb1PXZIOMOpGle0COxxdWE7E6K1YFCbxJa3M8xJ8WIMzN2izlLCMsfW8g==
-X-Received: by 2002:a17:903:19c5:b0:27e:f07c:8413 with SMTP id
- d9443c01a7336-29027356911mr278840405ad.9.1760472442010; 
+ bh=nVLp2fMlNwwT84vDf2syQ7Ds5F9iDytds/Dwe6kgLt8=;
+ b=JPViOlFiqixFKWKtKO4UKgIy/UTfUVt8rlW6p571SRFa7XOsQSMHGyKAavVjQV1vtM
+ oj3SqQ77SovBxhDfVmc2ncPG7ffnINZkTFX9+syYF4b49hhfKM3j87/dnm//LSCVSGLh
+ /On1N+/iTck+S/z4tY39xH0ham3VRUK3MImG/ubpCVgQcTrPLXC1mg9JkND8oFVehUuA
+ 00yg2GKu9vd1McXhBGqPbeuK3BTQ7HT4y6ocL7RVWVXTiUeJstbHEj0D20eWzNtzjhox
+ rBRa5NT36zsk5IUzkdPil3/yZDt1EHDhHqjDyPcLWXsMjOE6Ls93lXZp2JSvG+8DHXhI
+ ktzw==
+X-Gm-Message-State: AOJu0YzFGkJFvBOzHIl2qBlDijuQFpyXpMwYEeLX/okXErmFQFbMuPim
+ bjsAJ55nLCSXeRQ18WIHS5yjL/ls+nSYkQpAxNbktVgSN2tdRGusgoyc1wo3js8iD/35ejGqGCd
+ QrdCnzLo=
+X-Gm-Gg: ASbGnctgwCkYFz3X17UXfQ7E6l2zdUa1Tm2XcZHKyae52G7jKJ/0AH1/BvuFED0oBV4
+ bXjZ5uLhbukMgC6czJqwcdLY/fzv9FY2atb2B5YwW6/lQqE94su75THzu2MzBGz/iKV5+EpTt3i
+ KwRwQawLLgqTBYH9TWaGJklAXLvxvAPEaDdSKTMbL4y8Ww48nw/2hYGA0hc36aYD9LHjFz8o/9c
+ LFXLMeI/rA8mdm9u86gK8LGuOPWwK+XTX8VU1UWgkfBfFMWRJorkPPJ8/ZCmzQTDY4qgZqc57Pn
+ q/qqdSLyun9J05AVJ3e70kx/+/qP/6/bwT0kvnkPTQRRJx6T48hpiA4xxw9DTvNWkaQ96Su/Je6
+ 8zFTkR7GyTMWRBKwkHus9QM/Mz4JgJccboBmWfL71FsKSZUjS/stAaM/Yh/2+MWrLvQEPymHotX
+ 2dCpxyRi3Iyw==
+X-Google-Smtp-Source: AGHT+IF3BrAmthwPP0cKfOYrGdFnqXDCZjrsoW5R/7pgybN6uH6v2dWfQrTGHH7lapZcdSv4utMSVA==
+X-Received: by 2002:a17:903:32cd:b0:269:8fa3:c227 with SMTP id
+ d9443c01a7336-2902721310amr330372025ad.8.1760472442677; 
  Tue, 14 Oct 2025 13:07:22 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034f93ea2sm172100975ad.126.2025.10.14.13.07.21
+ d9443c01a7336-29034f93ea2sm172100975ad.126.2025.10.14.13.07.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 13:07:21 -0700 (PDT)
+ Tue, 14 Oct 2025 13:07:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 04/37] target/arm: Asserts for ARM_CP_128BIT in
- define_one_arm_cp_reg
-Date: Tue, 14 Oct 2025 13:06:45 -0700
-Message-ID: <20251014200718.422022-5-richard.henderson@linaro.org>
+Subject: [PATCH v2 05/37] target/arm: Split add_cpreg_to_hashtable_aa64
+Date: Tue, 14 Oct 2025 13:06:46 -0700
+Message-ID: <20251014200718.422022-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251014200718.422022-1-richard.henderson@linaro.org>
 References: <20251014200718.422022-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +98,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-128-bit registers are aarch64 only; disallow non-zero reset values.
+Rename the existing add_cpreg_to_hashtable_aa64 as *_1.
+Introduce a new add_cpreg_to_hashtable_aa64 that handles
+128-bit and 64-bit views of an AArch64 system register.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/helper.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ target/arm/helper.c | 61 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 57 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8c0b8889db..3b06704963 100644
+index 3b06704963..c240edf182 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -7805,6 +7805,22 @@ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
-     assert(r->state == ARM_CP_STATE_AA32 || !(r->type & ARM_CP_64BIT));
-     /* AArch32 64-bit registers have only CRm and Opc1 fields. */
-     assert(!(r->type & ARM_CP_64BIT) || !(r->opc2 || r->crn));
-+    if (r->type & ARM_CP_128BIT) {
-+        /*
-+         * Only AArch64 regs are 128-bit.  There is usually an AArch32 64-bit
-+         * register aliasing the low half, which must be defined separately due
-+         * to encoding conflicts above.
-+         */
-+        assert(r->state == ARM_CP_STATE_AA64);
-+        /*
-+         * All 128-bit regs are UNKNOWN at reset, so there's no need
-+         * for either resetvalue or resetfn.  For those EL2 registers
-+         * that become CONST RES0 for EL3 with EL2 disabled, we allow
-+         * ARM_CP_CONST, but only with value 0.
-+         */
-+        assert(r->resetvalue == 0);
-+        assert(r->resetfn == NULL);
-+    }
-     /* op0 only exists in the AArch64 encodings */
-     assert(r->state != ARM_CP_STATE_AA32 || r->opc0 == 0);
+@@ -7668,11 +7668,9 @@ static void add_cpreg_to_hashtable_aa32(ARMCPU *cpu, ARMCPRegInfo *r)
+     }
+ }
  
+-static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, ARMCPRegInfo *r)
++static void add_cpreg_to_hashtable_aa64_1(ARMCPU *cpu, ARMCPRegInfo *r,
++                                          uint32_t key)
+ {
+-    uint32_t key = ENCODE_AA64_CP_REG(r->opc0, r->opc1,
+-                                      r->crn, r->crm, r->opc2);
+-
+     if ((r->type & ARM_CP_ADD_TLBI_NXS) &&
+         cpu_isar_feature(aa64_xs, cpu)) {
+         /*
+@@ -7740,6 +7738,10 @@ static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, ARMCPRegInfo *r)
+         r2->writefn = NULL;
+         r2->raw_readfn = NULL;
+         r2->raw_writefn = NULL;
++        r2->read128fn = NULL;
++        r2->write128fn = NULL;
++        r2->raw_read128fn = NULL;
++        r2->raw_write128fn = NULL;
+         r2->accessfn = NULL;
+         r2->fieldoffset = 0;
+ 
+@@ -7761,6 +7763,57 @@ static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, ARMCPRegInfo *r)
+                            ARM_CP_SECSTATE_NS, key);
+ }
+ 
++static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, ARMCPRegInfo *r)
++{
++    uint32_t key64 = ENCODE_AA64_CP_REG(r->opc0, r->opc1,
++                                        r->crn, r->crm, r->opc2);
++
++    /*
++     * All 128-bit system registers and instructions have 64-bit aliases.
++     * If the 128-bit feature is enabled, create a duplicate.
++     */
++    if (r->type & ARM_CP_128BIT) {
++        if (cpu_isar_feature(aa64_sysreg128, cpu) ||
++            cpu_isar_feature(aa64_sysinstr128, cpu)) {
++            ARMCPRegInfo *r128 = alloc_cpreg(r, NULL);
++            uint32_t key128 = key64 | CP_REG_AA64_128BIT_MASK;
++
++            r128->accessfn = r128->access128fn;
++            r128->access128fn = NULL;
++            r128->readfn = NULL;
++            r128->writefn = NULL;
++            r128->raw_readfn = NULL;
++            r128->raw_writefn = NULL;
++
++            if (r128->vhe_redir_to_el2) {
++                r128->vhe_redir_to_el2 |= CP_REG_AA64_128BIT_MASK;
++            }
++            if (r128->vhe_redir_to_el01) {
++                r128->vhe_redir_to_el01 |= CP_REG_AA64_128BIT_MASK;
++            }
++
++            add_cpreg_to_hashtable_aa64_1(cpu, r128, key128);
++
++            /*
++             * The 128-bit definition is the canonical view.
++             * The 64-bit definition is an alias, hidden from gdb.
++             */
++            r->type |= ARM_CP_ALIAS | ARM_CP_NO_GDB;
++        }
++
++        /* Squash the original to create the 64-bit view. */
++        r->type &= ~ARM_CP_128BIT;
++        r->access128fn = NULL;
++        r->read128fn = NULL;
++        r->write128fn = NULL;
++        r->raw_read128fn = NULL;
++        r->raw_write128fn = NULL;
++        r->fieldoffsethi = 0;
++    }
++
++    add_cpreg_to_hashtable_aa64_1(cpu, r, key64);
++}
++
+ void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *r)
+ {
+     /*
 -- 
 2.43.0
 
