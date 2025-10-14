@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07D5BD8943
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 11:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95DEBD8952
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 11:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8bgn-0004g4-Tt; Tue, 14 Oct 2025 05:51:29 -0400
+	id 1v8bgo-0004h6-50; Tue, 14 Oct 2025 05:51:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1v8bgc-0004fu-D6
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 05:51:18 -0400
+ id 1v8bgf-0004gD-DC
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 05:51:22 -0400
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1v8bgY-0005WO-Gt
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 05:51:18 -0400
+ id 1v8bgc-0005WO-VE
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 05:51:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760435475; x=1791971475;
+ t=1760435479; x=1791971479;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lsd+HeGJLyHTmOx/FJA4TEA9vcuzEdjoafp24cU5pqM=;
- b=DPEGwck05UaiiV3aXZ3c7tgx2shgafiB7jDNs6Yuh3hn5chc/fSyk1NJ
- ODMrqaViMWHnm7s+LUnEVIV8KPBigShpgIWQgH2fOkAPyETBcsN6xXa+3
- oPT9DBb1s9SubAIUdobFzD4I8BJxxgXal9qoI5hw5J8JIELo8pYoHate2
- DwSW8PsYEgOdkYblssLSBz/xU0OepYiqEzS+ThTF7Q1F7HQLVF8wgGuyY
- vBlHkKv3EaIcTxt8Ve/vRqNNLF5Dmrzk2rw/ZLptGAxcluRWOlOlcDhGc
- yQKRWsrk1hiIldCK9opgx5s6bODnQ2pYZHflI0/DOagqfbB2JoDhIBjYC Q==;
-X-CSE-ConnectionGUID: YZrrFValQSKUYfTN98e7Ig==
-X-CSE-MsgGUID: P3oEJ97bT8CswOag0Oigmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="61627805"
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="61627805"
+ bh=kODwuhjN2HcqQGQLVeeaYZPYI8mczYYWB1DNFcR7uVE=;
+ b=AoB+hywioRhXr6YmVDZcBPgHw+acQs31bMtlN7EEo04WX/FYLKfBe9kN
+ O/FNXoUt4vd10xE5U3Liq9flWa/DOtHsJAL7wy9RvXJDliEjR/+P5uDjq
+ Ow8euqq+YSZcZKQ9lHBYIImOTFhkjBpgvnfJ/L1xrp99l9p9Ob1wP0ba2
+ UyrQP5RM5pS5j72lBjuFTCJ69xCqy/p1BKfK3+McJGPDzZKihDIVVQoT6
+ TBoDRIUkK94I3sfhOrRSSAvFmNtH8Z9DN7O3vAbNa9hkrK9vtiA6Gm4ky
+ 2sLAcEXxSLL2epVVwHoODCl5eQi8ZMLabTxtIED/KmnmGQX/67U6WvDwN g==;
+X-CSE-ConnectionGUID: EDegYHB1Rd+EAuP2rb38jw==
+X-CSE-MsgGUID: uKQS4RDmQdumgZ3pUbDCcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="61627808"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="61627808"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 02:51:10 -0700
-X-CSE-ConnectionGUID: vx58wDbAQfG1Oi5h7p5mJw==
-X-CSE-MsgGUID: m+zOQqRtRyKFobd25ioK0A==
+ 14 Oct 2025 02:51:11 -0700
+X-CSE-ConnectionGUID: 2EIox7ZNQ4mTEMqlnEwDlw==
+X-CSE-MsgGUID: XhcVYLz6QF6VnOXF1qgIrg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181068415"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181068418"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.22])
- by orviesa010.jf.intel.com with ESMTP; 14 Oct 2025 02:51:08 -0700
+ by orviesa010.jf.intel.com with ESMTP; 14 Oct 2025 02:51:10 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
 	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 1/2] i386/kvm/cpu: Init SMM cpu address space for hotplugged
- CPUs
-Date: Tue, 14 Oct 2025 17:42:14 +0800
-Message-ID: <20251014094216.164306-2-xiaoyao.li@intel.com>
+Subject: [PATCH 2/2] target/i386: Use X86ASIdx_MEM in kvm_init()
+Date: Tue, 14 Oct 2025 17:42:15 +0800
+Message-ID: <20251014094216.164306-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251014094216.164306-1-xiaoyao.li@intel.com>
 References: <20251014094216.164306-1-xiaoyao.li@intel.com>
@@ -82,75 +81,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SMM cpu address space is initialized in a machine_init_done
-notifier. It only runs once when QEMU starts up, which leads to the
-issue that for any hotplugged CPU after the machine is ready, SMM
-cpu address space doesn't get initialized.
+When the patch introduces 'enum X86ADIdx'[0] got merged, it somehow
+missed the change to replace as id 0 with X86ASIdx_MEM in kvm_init().
 
-Fix the issue by initializing the SMM cpu address space in x86_cpu_plug()
-when the cpu is hotplugged.
+Change the leftover in kvm_init() to make the usage consistent.
 
-Fixes: 591f817d819f ("target/i386: Define enum X86ASIdx for x86's address spaces")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Closes: https://lore.kernel.org/qemu-devel/CAFEAcA_3kkZ+a5rTZGmK8W5K6J7qpYD31HkvjBnxWr-fGT2h_A@mail.gmail.com/
+[0] https://lore.kernel.org/qemu-devel/20250730095253.1833411-3-xiaoyao.li@intel.com/
+
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- hw/i386/x86-common.c       | 11 +++++++++++
- target/i386/kvm/kvm.c      |  6 ++++++
- target/i386/kvm/kvm_i386.h |  1 +
- 3 files changed, 18 insertions(+)
+ accel/kvm/kvm-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index 7512be64d67b..dd6ac3f3b741 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -183,6 +183,17 @@ void x86_cpu_plug(HotplugHandler *hotplug_dev,
-         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     }
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 58802f7c3cc1..3030c47d55b1 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2800,7 +2800,7 @@ static int kvm_init(AccelState *as, MachineState *ms)
+     s->memory_listener.listener.coalesced_io_del = kvm_uncoalesce_mmio_region;
  
-+    /*
-+     * Non-hotplugged CPUs get their SMM cpu address space initialized in
-+     * machine init done notifier: register_smram_listener().
-+     *
-+     * We need initialize the SMM cpu address space for the hotplugged CPU
-+     * specifically.
-+     */
-+    if (dev->hotplugged && kvm_enabled() && x86_machine_is_smm_enabled(x86ms)) {
-+        kvm_smm_cpu_address_space_init(cpu);
-+    }
-+
-     found_cpu = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, NULL);
-     found_cpu->cpu = CPU(dev);
- out:
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index db40caa3412f..c339d8c84434 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2731,6 +2731,12 @@ static void register_smram_listener(Notifier *n, void *unused)
-     }
- }
+     kvm_memory_listener_register(s, &s->memory_listener,
+-                                 &address_space_memory, 0, "kvm-memory");
++                                 &address_space_memory, X86ASIdx_MEM, "kvm-memory");
+     memory_listener_register(&kvm_io_listener,
+                              &address_space_io);
  
-+/* It should only be called in cpu's hotplug callback */
-+void kvm_smm_cpu_address_space_init(X86CPU *cpu)
-+{
-+    cpu_address_space_init(CPU(cpu), X86ASIdx_SMM, "cpu-smm", &smram_as_root);
-+}
-+
- static void *kvm_msr_energy_thread(void *data)
- {
-     KVMState *s = data;
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 5f83e8850a2b..35017ba07a4a 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -74,6 +74,7 @@ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
-                              uint32_t cpuid_i);
- #endif /* CONFIG_KVM */
- 
-+void kvm_smm_cpu_address_space_init(X86CPU *cpu);
- void kvm_pc_setup_irq_routing(bool pci_enabled);
- 
- #endif
 -- 
 2.43.0
 
