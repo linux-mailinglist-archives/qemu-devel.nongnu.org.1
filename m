@@ -2,137 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850BABDB0AB
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 21:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09391BDB0B4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 21:21:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8kXM-0005X1-02; Tue, 14 Oct 2025 15:18:20 -0400
+	id 1v8kYt-0005wV-Hf; Tue, 14 Oct 2025 15:19:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8kXF-0005W3-LC
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:18:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v8kYp-0005vc-5R
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:19:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v8kXC-0007NM-6o
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:18:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v8kYl-0007XW-Pa
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:19:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760469485;
+ s=mimecast20190719; t=1760469583;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vvMwMAmyhRUrtehTUF0szqO3/q+p+aYypOFhNDW0YJs=;
- b=UwhwkunVmWwseOZ9KEyZyKsmg/zUbqVE8jsNoAeKpsK/Ej6uZ9xpZeY9dwdBu2dEYSyizs
- MArMBglWJ2JzDUqQA98ATFpoG/2z6LJ/oN4MyDc/6otKjtN+nsNLaFb5sUoCMKxgA55jev
- NiORqQkmXImdGBiFN4mlWftFdbOzD0I=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nxxHIyWXSbtCv/rAIR+l2M0E7ZD4lmObdEUsl/l6F/Q=;
+ b=XCrTJBleAho9Opi6B7cSCwlAWxXPAhCcxI1E7BviMRZ7lqemr35IhLcWxzagTw7sv+a7Qq
+ GMLbTfLA1nDK/0VvP6uvUAft5TNPptx6eCFJrDATrU+H/mFXpjgXEUusxHIrkdcVpmjtgB
+ 5rYqRFcU2wPue4eSmeGYQIOqSU22OxA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-TaKQEC9lMqaLsu2ERgI69g-1; Tue, 14 Oct 2025 15:18:02 -0400
-X-MC-Unique: TaKQEC9lMqaLsu2ERgI69g-1
-X-Mimecast-MFC-AGG-ID: TaKQEC9lMqaLsu2ERgI69g_1760469481
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e509374dcso25462895e9.1
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 12:18:02 -0700 (PDT)
+ us-mta-362-g0eLZCAeMiyGvUcYZBkowQ-1; Tue, 14 Oct 2025 15:19:41 -0400
+X-MC-Unique: g0eLZCAeMiyGvUcYZBkowQ-1
+X-Mimecast-MFC-AGG-ID: g0eLZCAeMiyGvUcYZBkowQ_1760469580
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-426d314d0deso2526917f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 12:19:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760469481; x=1761074281;
+ d=1e100.net; s=20230601; t=1760469579; x=1761074379;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=vvMwMAmyhRUrtehTUF0szqO3/q+p+aYypOFhNDW0YJs=;
- b=N9VrsD5rq5By/GqI+760Sr8yoNXVazE2B9e841TY7t5cMxkbJ7gS0u8yEo/+kA1bj6
- C/xMspIF4rFfOkSGCef6b5E37CYMdC9VmcV491gaDOAEjE1Vto/n1eHXoleWwtYaCqEl
- zzW+8tCpzm2TzWF/0KLlTlTO5aQUUkLAPjzDwCfXQdBR4oaH/QArKbl9QtMPIj+vt8jb
- TV4agu8gKsoqYMZhaJfLZGCRKvvP6CrBUq/oCgmAHD/CdV3Fvm6W25lWia2sg+Vcip3M
- aPS1UFhaLXYU6TRmyPFRrulqTowa34ggoFbLQl88K2F7OmXZ/qlqa1Tg4fYS7zuIChUr
- Apng==
+ bh=nxxHIyWXSbtCv/rAIR+l2M0E7ZD4lmObdEUsl/l6F/Q=;
+ b=rLJ7dS95qJLihEv5t5SD1+F6z2+Di7j0MK0C8egwKeAhlAzm/Ig1T5USQgOTxLFJjd
+ u5ze8Zkn4Gir0vHF5dhfW2nOtBXRunfGEs1TPjbwxi4ly5Pw3IS6xATQPAe1BULfi/Gd
+ uUNGFNYoyMH9ZnT0aS6VEIBAQuY3IDCN91nZRi+2JOR7297I5EzkQRiODxwW95VPfLZ6
+ 4UCStymadkkEEjTDIXkIhWywUYtuHdOGg+66bokZI14yjH+wYqwdCXc4l3GSBfJphk5g
+ P8NLRGyTEp5GIxfOvDTTSvj95NJz3rDXMAyOtoCniM4YO8Tzgv7l7VGykwrsie1a9USK
+ 2eAA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrqWzRCtrDCcikybD9TDjyGGKuHCaMnfc+Jh6lTW2bxqSkhO0ltI5oVe08h4gxOLryPEbrGY3nfuba@nongnu.org
-X-Gm-Message-State: AOJu0Yw9fSDKJKlDaWBA9OcL3bOYXidF4W8OriN9tZMq9lMYLGqVXB6K
- jQaod/VHmsVIZkZyrhrQZ64Q87CUEX3unHjzGsNvU+hhCd+zGcazwFyDU4xkQnC4pF5CwSNtqMd
- 2EpEjxaBfRS8PquPY/JR6DP+psMLPxmEqdCMpV7rL13xquPsBdhE7DKY3
-X-Gm-Gg: ASbGncs6itccmhqBU9vTPlefbo4KerxpJF9Vx0kJS7aGScF9MA49M/0703NmHMq7q0k
- yrUFiIMtj5pVBVxFOoSn+sZci5QkqY5Ed6isWw67eXM//X7pRPIgMVVIOev4NBBIS9nq0xg+Ps+
- Az+FL3myMXvYMaLcpE0eFyn31MxsrxQdMflqThKrKCy5Hcziih/L30mI44TzznHWXC6boxIQB9Q
- jer519R+9DdlFOLn5fKcLM6d7esyRKunNUg4A8R863PxrUCGXKbEJ1VNkwManoufaOycXJGoXvK
- 3RITfLrDdz5+fTIpK2osaDnMgL1GUHlu/McXUi0gGagY1o+ynK/s2l/tpR7zqkyFGet6DQwVju4
- F+cE=
-X-Received: by 2002:a05:600c:1f8e:b0:46f:b42e:e392 with SMTP id
- 5b1f17b1804b1-46fbbeb30a2mr90594125e9.39.1760469481004; 
- Tue, 14 Oct 2025 12:18:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGk1F5tgxsBpOKnSPu3wNLL9gO6D6y9/QvSlOThTE8YqBxthqB38W2u6UDufG23sI5K+5bA6g==
-X-Received: by 2002:a05:600c:1f8e:b0:46f:b42e:e392 with SMTP id
- 5b1f17b1804b1-46fbbeb30a2mr90594005e9.39.1760469480592; 
- Tue, 14 Oct 2025 12:18:00 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fc155143fsm209339275e9.11.2025.10.14.12.17.59
+ AJvYcCUsAVr6qVthbDkSACf6VTcKnnGvr30+rYOmLz9+2L54FTj15ZJ2VOIAOqXcbadbXIJX/J+QUlkT9tIH@nongnu.org
+X-Gm-Message-State: AOJu0YwlA0d/p0KNZJg4N4VMxcf2eKFeUEO9aZ+0f51f/cLIR4cn6Wbs
+ KUEhE0lWXhm0JozJrtfxf3tZ/3FfS4Xkueh8kqJIyQOJnaECHk6k7o0SBr+DPizO361XFLiR+0z
+ 0JXQDhzubclxhig7aCOLRLtlfQ6/lkXapP/S+SLZzJEj7sd5FezyVVAMM
+X-Gm-Gg: ASbGncuDQi+R5+pJTYO7+YPNF9eh8rBOs4napgOS7c9ggLp7S2tn4RwFf9LjfrhTBO3
+ NCFdMewM9bCyFBcYeBnRZHFVXDnKvAS5+J0C2aD2EUre+BSnPL0OdsdhcfWaSIz0stLQNAKVZ/L
+ oGBe5howXBCuurCIu04bXFNbfs7PkFdk2PJM5b/PgdPlbcxWVfIfji4Td1mgklmSSamZIR9u0Sc
+ YjicFmIxVvyh92DKvIR8Igfwaw03l3HNbBoSnMnxz5YHkytVOE24j6MpMYdJU8Pp1LAa9z7yLuO
+ oiFf45bS/kqdOC7lgxYmbYfg7c6Mae0auIGTYu/0KK33tT3du8ThujQ4y+c9MvCXx9dYBXAiEzo
+ MjEwo9A==
+X-Received: by 2002:a05:6000:4b16:b0:426:d54d:224d with SMTP id
+ ffacd0b85a97d-426d54d22bemr10056337f8f.27.1760469579466; 
+ Tue, 14 Oct 2025 12:19:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBFHAWA63ZBRbemBt5/mSxRdybStwhSb7Vup/WaMzJ5QPM+Cuk2SJkPT6rahMRl85zFa+Bow==
+X-Received: by 2002:a05:6000:4b16:b0:426:d54d:224d with SMTP id
+ ffacd0b85a97d-426d54d22bemr10056318f8f.27.1760469579071; 
+ Tue, 14 Oct 2025 12:19:39 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-112-136.pools.arcor-ip.net.
+ [47.64.112.136]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-426ce583664sm25165819f8f.22.2025.10.14.12.19.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Oct 2025 12:17:59 -0700 (PDT)
-Message-ID: <06010021-2170-44e0-a186-6c69a075da49@redhat.com>
-Date: Tue, 14 Oct 2025 21:17:58 +0200
+ Tue, 14 Oct 2025 12:19:38 -0700 (PDT)
+Message-ID: <e6bf49c3-b115-4359-a27c-8ff574aed005@redhat.com>
+Date: Tue, 14 Oct 2025 21:19:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio: rename field to "num_initial_regions"
-To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>, Thomas Huth <thuth@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- qemu-stable@nongnu.org, qemu-s390x@nongnu.org
-References: <20251014151227.2298892-1-john.levon@nutanix.com>
- <20251014151227.2298892-2-john.levon@nutanix.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251014151227.2298892-2-john.levon@nutanix.com>
+Subject: Re: [PATCH v5 2/9] python: Install pygdbmi in meson's venv
+To: John Snow <jsnow@redhat.com>
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org, berrange@redhat.com, qemu-arm@nongnu.org
+References: <20251002020432.54443-1-gustavo.romero@linaro.org>
+ <20251002020432.54443-3-gustavo.romero@linaro.org>
+ <CAFn=p-bscu00jtyfm+SmeYqB7gt6eA+F8uuYb8ng6rTe_a=HTA@mail.gmail.com>
+ <a0d4ba3d-f799-4ec3-8d3b-efdc33527242@redhat.com>
+ <CAFn=p-awbF01tQr9xnRX8EqPBNoafGP+N2W-hoMwc68cmwQzLA@mail.gmail.com>
+ <701600e9-651c-405a-b076-57883878bdef@redhat.com>
+ <CAFn=p-aYSo15pW+wBKsAOFdf9PyniZf4R2TcvMNJaRPULxVL9w@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAFn=p-aYSo15pW+wBKsAOFdf9PyniZf4R2TcvMNJaRPULxVL9w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -157,147 +159,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/14/25 17:12, John Levon wrote:
-> We set VFIODevice::num_regions at initialization time, and do not
-> otherwise refresh it. As it is valid in theory for a VFIO device to
-> later increase the number of supported regions, rename the field to
-> "num_initial_regions" to better reflect its semantics.
+On 14/10/2025 21.05, John Snow wrote:
+> On Tue, Oct 14, 2025 at 2:59 PM Thomas Huth <thuth@redhat.com> wrote:
+>>
+>> On 14/10/2025 20.55, John Snow wrote:
+>>> On Tue, Oct 14, 2025 at 2:21 PM Thomas Huth <thuth@redhat.com> wrote:
+>>>>
+>>>> On 14/10/2025 19.39, John Snow wrote:
+>>>>> On Wed, Oct 1, 2025 at 10:09 PM Gustavo Romero
+>>>>> <gustavo.romero@linaro.org> wrote:
+>>>>>>
+>>>>>> The upcoming changes in the reverse_debugging functional test to remove
+>>>>>> Avocado as a dependency will require pygdbmi for interacting with GDB,
+>>>>>> so install it in meson's venv (located in the build dir's pyvenv/).
+>>>>>>
+>>>>>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>>>>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>>>>> ---
+>>>>>>     pythondeps.toml | 1 +
+>>>>>>     1 file changed, 1 insertion(+)
+>>>>>>
+>>>>>> diff --git a/pythondeps.toml b/pythondeps.toml
+>>>>>> index 16fb2a989c..98e99e7900 100644
+>>>>>> --- a/pythondeps.toml
+>>>>>> +++ b/pythondeps.toml
+>>>>>> @@ -33,3 +33,4 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
+>>>>>>
+>>>>>>     [testdeps]
+>>>>>>     qemu.qmp = { accepted = ">=0.0.3", installed = "0.0.3" }
+>>>>>> +pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
+>>>>>> --
+>>>>>> 2.34.1
+>>>>>>
+>>>>>
+>>>>> Do we need to vendor pygdbmi? Currently, mkvenv does not consult
+>>>>> online sources and so if this package is missing, pulling in testdeps
+>>>>> will fail.
+>>>>
+>>>> This is handled by the "check-venv" target which is called now when you do a
+>>>> "make check-functional". See:
+>>>>
+>>>>     https://gitlab.com/qemu-project/qemu/-/commit/75b1786996c422878d09bd12f166004a7d32e459
+>>>>
+>>>> Works fine for me, did you hit any issues here?
+>>>>
+>>>>     Thomas
+>>>
+>>> Ah-ha. I am working on dropping qemu.qmp from the tree and had moved
+>>> this machinery into mkvenv.py - I didn't realize that the Makefile
+>>> invocation here passes `--online`. The core groups for mkvenv still
+>>> operate offline only, I didn't realize we let it go online for tests.
+>>>
+>>> Before these dependencies get more numerous: do we accept that "make
+>>> check" might only work if you are online, or do we want to enforce the
+>>> idea that "make check" should always work offline only?
+>>>
+>>> (like "make check" works offline and "make check-extras" may require
+>>> internet for deps?)
+>>
+>> "make check" works offline (it does not include "check-functional"). It's
+>> only "make check-functional" that requires an internet connection. It
+>> required this for downloading the assets for the functional tests already,
+>> so adding "check-venv" here did not hurt.
+>>
+>>    Thomas
 > 
-> Signed-off-by: John Levon <john.levon@nutanix.com>
+> OK, got it. For *my* purposes (and this has nothing to do with this
+> patch anymore, I see that it's fine as-is) I need to pull qemu.qmp
+> into the testing venv /offline/ for the default "make check"
+> invocation and I intended to vendor qemu.qmp to accomplish that.
 
+Makes sense. I did the same for pycotap a year ago.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-> ---
->   include/hw/vfio/vfio-device.h |  2 +-
->   hw/vfio-user/device.c         |  2 +-
->   hw/vfio/ccw.c                 |  4 ++--
->   hw/vfio/device.c              | 12 ++++++------
->   hw/vfio/iommufd.c             |  3 ++-
->   hw/vfio/pci.c                 |  4 ++--
->   6 files changed, 14 insertions(+), 13 deletions(-)
+> With this dep here, installing "testdeps" offline now fails, so either:
 > 
-> diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-> index 7e9aed6d3c..0fe6c60ba2 100644
-> --- a/include/hw/vfio/vfio-device.h
-> +++ b/include/hw/vfio/vfio-device.h
-> @@ -74,7 +74,7 @@ typedef struct VFIODevice {
->       VFIODeviceOps *ops;
->       VFIODeviceIOOps *io_ops;
->       unsigned int num_irqs;
-> -    unsigned int num_regions;
-> +    unsigned int num_initial_regions;
->       unsigned int flags;
->       VFIOMigration *migration;
->       Error *migration_blocker;
-> diff --git a/hw/vfio-user/device.c b/hw/vfio-user/device.c
-> index 0609a7dc25..64ef35b320 100644
-> --- a/hw/vfio-user/device.c
-> +++ b/hw/vfio-user/device.c
-> @@ -134,7 +134,7 @@ static int vfio_user_device_io_get_region_info(VFIODevice *vbasedev,
->       VFIOUserFDs fds = { 0, 1, fd};
->       int ret;
->   
-> -    if (info->index > vbasedev->num_regions) {
-> +    if (info->index > vbasedev->num_initial_regions) {
->           return -EINVAL;
->       }
->   
-> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-> index 9560b8d851..4d9588e7aa 100644
-> --- a/hw/vfio/ccw.c
-> +++ b/hw/vfio/ccw.c
-> @@ -484,9 +484,9 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
->        * We always expect at least the I/O region to be present. We also
->        * may have a variable number of regions governed by capabilities.
->        */
-> -    if (vdev->num_regions < VFIO_CCW_CONFIG_REGION_INDEX + 1) {
-> +    if (vdev->num_initial_regions < VFIO_CCW_CONFIG_REGION_INDEX + 1) {
->           error_setg(errp, "vfio: too few regions (%u), expected at least %u",
-> -                   vdev->num_regions, VFIO_CCW_CONFIG_REGION_INDEX + 1);
-> +                   vdev->num_initial_regions, VFIO_CCW_CONFIG_REGION_INDEX + 1);
->           return false;
->       }
->   
-> diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-> index 64f8750389..52079f4cf5 100644
-> --- a/hw/vfio/device.c
-> +++ b/hw/vfio/device.c
-> @@ -257,7 +257,7 @@ int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
->   {
->       int i;
->   
-> -    for (i = 0; i < vbasedev->num_regions; i++) {
-> +    for (i = 0; i < vbasedev->num_initial_regions; i++) {
->           struct vfio_info_cap_header *hdr;
->           struct vfio_region_info_cap_type *cap_type;
->   
-> @@ -466,7 +466,7 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainer *bcontainer,
->       int i;
->   
->       vbasedev->num_irqs = info->num_irqs;
-> -    vbasedev->num_regions = info->num_regions;
-> +    vbasedev->num_initial_regions = info->num_regions;
->       vbasedev->flags = info->flags;
->       vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
->   
-> @@ -476,10 +476,10 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainer *bcontainer,
->       QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
->   
->       vbasedev->reginfo = g_new0(struct vfio_region_info *,
-> -                               vbasedev->num_regions);
-> +                               vbasedev->num_initial_regions);
->       if (vbasedev->use_region_fds) {
-> -        vbasedev->region_fds = g_new0(int, vbasedev->num_regions);
-> -        for (i = 0; i < vbasedev->num_regions; i++) {
-> +        vbasedev->region_fds = g_new0(int, vbasedev->num_initial_regions);
-> +        for (i = 0; i < vbasedev->num_initial_regions; i++) {
->               vbasedev->region_fds[i] = -1;
->           }
->       }
-> @@ -489,7 +489,7 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
->   {
->       int i;
->   
-> -    for (i = 0; i < vbasedev->num_regions; i++) {
-> +    for (i = 0; i < vbasedev->num_initial_regions; i++) {
->           g_free(vbasedev->reginfo[i]);
->           if (vbasedev->region_fds != NULL && vbasedev->region_fds[i] != -1) {
->               close(vbasedev->region_fds[i]);
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index 68470d552e..10fc065d20 100644
-> --- a/hw/vfio/iommufd.c
-> +++ b/hw/vfio/iommufd.c
-> @@ -663,7 +663,8 @@ found_container:
->       vfio_iommufd_cpr_register_device(vbasedev);
->   
->       trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
-> -                                   vbasedev->num_regions, vbasedev->flags);
-> +                                   vbasedev->num_initial_regions,
-> +                                   vbasedev->flags);
->       return true;
->   
->   err_listener_register:
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 06b06afc2b..8b8bc5a421 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2975,9 +2975,9 @@ bool vfio_pci_populate_device(VFIOPCIDevice *vdev, Error **errp)
->           return false;
->       }
->   
-> -    if (vbasedev->num_regions < VFIO_PCI_CONFIG_REGION_INDEX + 1) {
-> +    if (vbasedev->num_initial_regions < VFIO_PCI_CONFIG_REGION_INDEX + 1) {
->           error_setg(errp, "unexpected number of io regions %u",
-> -                   vbasedev->num_regions);
-> +                   vbasedev->num_initial_regions);
->           return false;
->       }
->   
+> (1) I vendor pygdbmi so it can be installed offline, or
+> (2) I split the test deps into two groups; offline and online.
+
+Please go with option (2). We likely should add more deps for the functional 
+tests one day (e.g. a bunch of tests are using "numpy" and "cv2" - and 
+currently these need to be installed in the host env manually), so adding 
+all these via option (1) won't scale in the long run.
+
+  Thomas
 
 
