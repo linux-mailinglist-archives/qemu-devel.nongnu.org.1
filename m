@@ -2,76 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF55BD9754
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 14:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B90BD9751
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 14:53:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8eWd-0005G0-Q3; Tue, 14 Oct 2025 08:53:11 -0400
+	id 1v8eWo-0005Gv-Qi; Tue, 14 Oct 2025 08:53:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8eWY-0005FB-QU
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 08:53:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8eWQ-0003uP-JR
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 08:53:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760446373;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=U3UqQXrcego6DBmgEw1aiqxuJEkjeFTMvBia1HFgwGw=;
- b=NbDe1llu9FlNY5leS9wXXMMtlV6fmU3AXrVEuxvlaFfMQLHAvUCG2ASiyVOQHSJVZIDp7d
- 2YwD1ruC3MQ+iqdhf04DR9gnlCqxzc8Os2YbCyyzhjLO69uDCwMdpk7eRRwKeCQvqgs7oN
- 2AfAL2bIwkBalWuBifiteHgGdy0reZE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-327-88jpo1BKMauoxGOC25keTQ-1; Tue,
- 14 Oct 2025 08:52:49 -0400
-X-MC-Unique: 88jpo1BKMauoxGOC25keTQ-1
-X-Mimecast-MFC-AGG-ID: 88jpo1BKMauoxGOC25keTQ_1760446369
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 05416180028D; Tue, 14 Oct 2025 12:52:49 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 862B11955F21; Tue, 14 Oct 2025 12:52:48 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 23EB321E6A27; Tue, 14 Oct 2025 14:52:46 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  marcandre.lureau@redhat.com,  Bernhard Beschow
- <shentey@gmail.com>
-Subject: Re: [PATCH] ui/pixman: Fix crash in qemu_pixman_shareable_free()
-In-Reply-To: <2831438d-9ca2-4629-b708-65874cf3a4a7@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 13 Oct 2025 16:11:32
- +0200")
-References: <20251013112102.2396012-1-armbru@redhat.com>
- <2831438d-9ca2-4629-b708-65874cf3a4a7@linaro.org>
-Date: Tue, 14 Oct 2025 14:52:46 +0200
-Message-ID: <87jz0xmyqp.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8eWh-0005GR-W7
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 08:53:16 -0400
+Received: from mail-yx1-xb131.google.com ([2607:f8b0:4864:20::b131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8eWZ-0003vH-3T
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 08:53:15 -0400
+Received: by mail-yx1-xb131.google.com with SMTP id
+ 956f58d0204a3-6354af028c6so5181920d50.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 05:53:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760446385; x=1761051185; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Sk9uJbC7nqF1Vr/op1/1cZNr7x1v5xpAmDnAo7NDF68=;
+ b=ADqqDuzV/tkt8kv6osDKvPM3zUk8eyKAh+vfdAP78su0ohBolVYkf39MivhDEpoEuu
+ Kev1VfOTTtGwMUtnZOuJFAXLqpebxyrxx2kakYzHVLLYhbs9Cg9bn/QTlLl3nWzXeuae
+ o9qnqQs3b+PnewxuxRwh+cBgr0Eqwiz6CN65lUN7arfNTYWpOnTp2MD0HGEvDghpnbKz
+ RGTJridpdumZABMXBsf7mWHGIrpFziAVyeQUZWTykZzZWubaA2NuLA9QwsPX/pIcSUgQ
+ 5xwi1FEp26Xkp/WNwz6Rj0MOCAv6vM51WrsmAJJ3vIBILPkcDdO4glQo2+0uIkZaIj0z
+ 0Vww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760446385; x=1761051185;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Sk9uJbC7nqF1Vr/op1/1cZNr7x1v5xpAmDnAo7NDF68=;
+ b=TMzZ3Y4EvxnKisRNwpUKnRAjxJw8qJOcmlpuXrKKh0W698SoAzdMZ0hqtHCXGI0JZb
+ +Kc6yBYX/DNokkb5kTTvqARnlRhG5xVwcbicwfoWLhSyN1nG2fwwlo0eeJaDNHG6oC3d
+ Vdym6gthMjqlXF0gmH+eyY5x/4CQDYYmiMzPpEWH4vUNznbaLttGD+sDHKwdWKc3wM3q
+ m5l0vWzSLeBVciuM6LJyguaiK2EMYctA3fQDPDd367wcsKQgjNy/nsVqab6SjKD8CFrl
+ MD893ZgLzf5RgfJ/qNmUCyqwpsPrQpER5SSbeHiU2S+TqVCMz0tZ2xHtdJAfk7iCQNYs
+ 2qwA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLKX88p1EXFCmNOLKtZOHamWIEMk6CTQg1y8visiaaA/25Di8S/9zrh/F5aowSycORyVBZkrJ2cZ3R@nongnu.org
+X-Gm-Message-State: AOJu0Yz//b4DiqdJIbyA5OxKiwqDwVSBhFmU3r2tKObO95Va2dQcTbpt
+ 79EOCVfIqGn+k3J9NXuiD0v+d/x3FYfLjYJRnHdNEv378hjPyVyxT1pVzzvoIpjabMn3YKW5vlT
+ OcddUNnouPrMDhra0C3yARkmU/HRTaZx2h64TnZADRQ==
+X-Gm-Gg: ASbGncuWvMNm06K+KzuZM2RzuXtYytbWhihOI22W+PVbYQsI8CKid5UqSjQKEz6YMPv
+ zGrE+1p5nr4xd9SF3gLXR/GJhdZlUgnGsQEeuzsfQr3URnpUkUsbp0N0+ilkYi0crXOyic1AAMd
+ /Bwo2fC8MWcHn+2fnNVD/5P8Mw9D5J8yoViD3sLp0kuLp6D57gRLBNZ8aTMv42c3wNj7t4s4XfT
+ RC5skFEsOR/JMaWFfNjyj8EDtjSUHc=
+X-Google-Smtp-Source: AGHT+IENHNrZVm/nujcMu06bFxnzR63nkyRDwK429nxQdtTtB7BqjmRozQL2J/1ya9dDcpdqEjXViinZyqhLPNUFNzM=
+X-Received: by 2002:a53:a04d:0:b0:638:53e9:bab0 with SMTP id
+ 956f58d0204a3-63ccb8e0cc1mr17817376d50.24.1760446384784; Tue, 14 Oct 2025
+ 05:53:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250919115017.1536203-1-berrange@redhat.com>
+ <20250919115017.1536203-15-berrange@redhat.com>
+ <CAFEAcA8AE4AcF6VOAPmtNeJi1XRBXityX1mLPw6K9+++VW6EEw@mail.gmail.com>
+ <f5e98585-6ad2-4e54-97db-0c4019380ee7@yandex-team.ru>
+In-Reply-To: <f5e98585-6ad2-4e54-97db-0c4019380ee7@yandex-team.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 14 Oct 2025 13:52:52 +0100
+X-Gm-Features: AS18NWA0WbwVlzEf6vW7gFBN0arMQ9prFOdBPDocU7diZzAEujjcdBEZAnoQZz8
+Message-ID: <CAFEAcA-z8F2aVx7cCqCoWCXJkD+onzGAvd1DiO=dVGKZoO7N8A@mail.gmail.com>
+Subject: Re: [PULL 14/16] chardev: qemu_chr_open_fd(): add errp
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Jagannathan Raman <jag.raman@oracle.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Thanos Makatos <thanos.makatos@nutanix.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Darren Kenny <darren.kenny@oracle.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Kevin Wolf <kwolf@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-block@nongnu.org, 
+ Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, 
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John Levon <john.levon@nutanix.com>, 
+ Fam Zheng <fam@euphon.net>, Alexander Bulekov <alxndr@bu.edu>,
+ Stefan Weil <sw@weilnetz.de>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>, 
+ Qiuhao Li <Qiuhao.Li@outlook.com>, Michael Roth <michael.roth@amd.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>, 
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,53 +120,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-> On 13/10/25 13:21, Markus Armbruster wrote:
->> Reported-by: Bernhard Beschow <shentey@gmail.com>
->> Fixes: b296b29d3414 (ui/pixman: Consistent error handling in qemu_pixman=
-_shareable_free())
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>   ui/qemu-pixman.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
->> index e46c6232cf..aea09755b9 100644
->> --- a/ui/qemu-pixman.c
->> +++ b/ui/qemu-pixman.c
->> @@ -291,7 +291,9 @@ qemu_pixman_shareable_free(qemu_pixman_shareable han=
-dle,
->>       Error *err =3D NULL;
->>=20=20=20
->>       qemu_win32_map_free(ptr, handle, &err);
+On Mon, 22 Sept 2025 at 15:27, Vladimir Sementsov-Ogievskiy
+<vsementsov@yandex-team.ru> wrote:
 >
-> Slightly better if qemu_win32_map_free(), as per commit e3fe3988d78
-> ("error: Document Error API usage rules") recommended style:
+> On 22.09.25 16:45, Peter Maydell wrote:
+> > On Fri, 19 Sept 2025 at 12:55, Daniel P. Berrang=C3=A9 <berrange@redhat=
+.com> wrote:
+> >>
+> >> From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> >>
+> >> Every caller already support errp, let's go further.
+> >>
+> >> Suggested-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> >> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> >> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru=
 >
-> + *  We recommend
-> + *   =E2=80=A2 bool-valued functions return true on success / false on f=
-ailure,
-> + *   =E2=80=A2 pointer-valued functions return non-null / null pointer, =
-and
-> + *   =E2=80=A2 integer-valued functions return non-negative / negative.
+> >> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> >
+> > Coverity reports a bug in this change (CID 1630444):
+> >
+> >
+> >> diff --git a/chardev/char-file.c b/chardev/char-file.c
+> >> index a9e8c5e0d7..89e9cb849c 100644
+> >> --- a/chardev/char-file.c
+> >> +++ b/chardev/char-file.c
+> >> @@ -92,7 +92,11 @@ static void qmp_chardev_open_file(Chardev *chr,
+> >>           }
+> >>       }
+> >>
+> >> -    qemu_chr_open_fd(chr, in, out);
+> >> +    if (!qemu_chr_open_fd(chr, in, out, errp)) {
+> >> +        qemu_close(out);
+> >> +        qemu_close(in);
+> >
+> > Here 'in' can be -1 (if there is only an output file
+> > and no separate input file specified), so we can
+> > try to close(-1). Suggested fix:
+> >
+> >           if (in >=3D 0) {
+> >               qemu_close(in);
+> >           }
+>
+> Agree. I'll send a patch.
 
-I went fo a minimal fix.
+Hi -- did you ever send a patch for this? (I was just looking
+through our still-outstanding coverity issues and noticed this
+one still there.)
 
-I now see that this is the only use of qemu_win32_map_free().  Changing
-it to return bool would've been okay.
-
-> Anyhow,
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-
-Thanks!
-
->> -    error_report_err(err);
->> +    if (err) {
->> +        error_report_err(err);
->> +    }
->>   #else
->>       qemu_memfd_free(ptr, size, handle);
->>   #endif
-
+thanks
+-- PMM
 
