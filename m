@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9421BDACCA
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFC6BDADD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:55:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8j0Q-0006uY-KP; Tue, 14 Oct 2025 13:40:15 -0400
+	id 1v8jDh-0003tR-NQ; Tue, 14 Oct 2025 13:53:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1v8j09-0006oX-Vu
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:39:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1v8j04-00026n-0a
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:39:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760463588;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hliqD4dhEXXuu2qUMeAR2zqCexonK+0uACESUm65DsI=;
- b=eCxQQwowTyY34SaYeAoYMf6q6gzTYlA2PZzUbRsaINjwEQZd7DEU4Jh7Tf7Ejg5p1UZPsB
- Fmc+Ob9RSouZ+nIQqHqOdfR5aHzidkb42fBIwr/JaIyH69hSTzwvz0JlHfO/K4YZtGoWn2
- 9lR4W/BKRW1Jius9NEtMiTms7oE3KDQ=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-284-DBq8GgovNbmXE7ASg3AUVg-1; Tue, 14 Oct 2025 13:39:46 -0400
-X-MC-Unique: DBq8GgovNbmXE7ASg3AUVg-1
-X-Mimecast-MFC-AGG-ID: DBq8GgovNbmXE7ASg3AUVg_1760463586
-Received: by mail-yx1-f70.google.com with SMTP id
- 956f58d0204a3-63d241c46f0so1094377d50.1
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:39:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v8jDe-0003tF-Lg
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:53:54 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v8jDb-000478-5x
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:53:54 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-b609a32a9b6so3324974a12.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:53:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760464426; x=1761069226; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=t0tmAiM337Pp9Kn2FXjsiPOir3KblHnvBbauK6Zk0m0=;
+ b=N/7QZGap2LSrmn1vArtGQUSck5RcLIDf1n88snhgYyERv0FagPIhtPVmDQ454n4xWg
+ OPLmLDnLHmxfN12Y3pM+YCl9FhtfKbunKySvRCLYIuwTfjjkNRAOSaseBAGZegrUVwL+
+ NHpx9gqOFKAPwEgvPOkwgxcFnf+CtuVhfxKvzocfgCYEayxVeuSF+vX4I+fYyHpQDYa3
+ Z9ufdk7pQLJ05RNvluo+pMluEIJhHwrF6bwvP5lLtTg7V7oCrknZSHoqoVQhX2uE+eq0
+ VXQ4dkiCqxD6eN+kKTDWZXOFxH/1IpJytQ63KKKQlyAxx3wN+HZ62sEJJzksoeLgZQI0
+ C+3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760463586; x=1761068386;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hliqD4dhEXXuu2qUMeAR2zqCexonK+0uACESUm65DsI=;
- b=D6AzWNMD0M69leyoOcXjN1LHB5QQb/S53ZABEDz4zB//M8Z/Q230COnWIw9LpFYqNP
- ed4I6rIc6I7KOP1aXfklqXduP/q6yHBeHiBxnupEtWB4rk1v4wvB1del9GwMmYbKc7Fi
- J8c4MlUobWnaIScBmz290Q/IgUVmt62IqgWZNMehx3JnVj53d9kiPtSu/a5hU1AryBoM
- 128Buw8U2gmkUn0y/jhqX8NPxkd5kZ2QnLWLBUhb2hz4Ronw8AIWUlJgyzElefWFQ5fu
- ENysgJqwIgxo/W0/VES+8irlGkk7UzBrqa0vDtQiFMTuIp5V5/jAQXDedOGJEpvvyFLR
- S/Bw==
-X-Gm-Message-State: AOJu0YzrM0FPBii+4MqqCBdEtA08aKmCCNxsioVm4257DgGkkLkgxT3f
- C8ZO+XNHt4DGSWBzZNvkYYCHPc6soAcoBKHjBhW3x9WAKVb8kv9o+4P88kv2fGB2txadHZgofdb
- wLVBn3uq6M1RkivqWwcqcbaQVXORQL03Umu8utSPsGRkexZ9D1A/Z+T8+Y681712ud1VlZmp9E8
- I26OTg0OseaUue50ZVLliSF/DZGcr8D/s=
-X-Gm-Gg: ASbGncsIPbvEfN1ZbvqXMGT1f10KsvKEtaVwM8MGRYkAM6uvq2YfYjYJJCYZuqT1DNx
- +s1Jk/CQIoYnuX+p1AIf4B3vGDU/Ym8KOS7/2gYRfHPXKRbq4yEq6JxLt6tPfVN7oAXya04Mrb2
- HyL0hrXY1o1eoSlps0+EKCVGkduSAFIqpv9vCsZ2iEFpR7fgyebVSc
-X-Received: by 2002:a53:ec89:0:b0:629:9c6b:b3ab with SMTP id
- 956f58d0204a3-63ccb825baamr16549526d50.1.1760463586123; 
- Tue, 14 Oct 2025 10:39:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHvAZ3TlJumy+HFWgsNOzSn4+V/UatjmfATj0mAydNOUQQ5gO7+6JntTIRiCg6EuCyAe6kiiR8/Lb3wDRPMcBQ=
-X-Received: by 2002:a53:ec89:0:b0:629:9c6b:b3ab with SMTP id
- 956f58d0204a3-63ccb825baamr16549519d50.1.1760463585757; Tue, 14 Oct 2025
- 10:39:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760464426; x=1761069226;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t0tmAiM337Pp9Kn2FXjsiPOir3KblHnvBbauK6Zk0m0=;
+ b=n5iWrTsoIR6sTXdwAgWhqTxpfmBmCrYfUeZjKMySuh7h9F/eW8dtsxNYx/f7hu9bLM
+ J7tL93IgCtI/wBeagpLg2epxykhlWqcV9wuwV4jCaEgY8TyOT1jllTSxWUEeACXGhiZo
+ 8sV0TDVquQgaPjXKV2fov+c5X/OeNciFcHlJi4TzaBhuFqTTgUJu/N1lCTtm3JSsnIG7
+ SYwc63EybiCWAhkpd+wkpPrl4Lu1cnPaPR6ARX6qH6vusMf5YmilbhQAmbCRLpz9SibN
+ hNDOaRHjba1Sd47yak6UrpZCk1IXoEIzYMSPoNy+RV1HsDw8n+02/jYpiqTKgIyFfopS
+ +/4Q==
+X-Gm-Message-State: AOJu0YyAYClyOOyExevvKykCNt/dw6ceySfnv4Qz+xrecv65vulZ66/G
+ +qmL5o1o/MD7Hd47pnfx/stTa28o/GVPTUYB6bo2t12yke1TPte3vud69Lky3cmK/v19ty377l4
+ UmmZbPPE=
+X-Gm-Gg: ASbGncvjPVv3iEQ78rsw9ueX1Icj4m4jPFj6mbZgP0R+1MTL+UeLzFfWwPbUDBNZNFx
+ 3uMlS8DAMI4nHquv9+N12rVoKOxvSakcXaa/NUD/FkYXyDGBpmSiXS35MOfT3/9RNO7MGvB45+0
+ +bWftn+lGRdScOZ10LhLDVdSxF+KXAGjizk177+ab0PDwCRxmIHVSKKjaLe6mlNvfdAC578fXvo
+ UmAKHAAfUZ9pm8zNe0H5PkLz6/F2JapjYvX9+SBVrKNHZv32xrk73k9giWLKz7F0utNcSyBW0CL
+ gJub6SYDvdO/o4Oa3Y9/kcX/40vG+I1njgiPjjitq7VQ9gjlulm/VTjEL0iLJRkfDfhkau8wFDi
+ 8UYqxFXJE1/WGLJZL87lq4F42OVG89vTy2pHstYOmJICloBe6gn39koyH04s=
+X-Google-Smtp-Source: AGHT+IG98yvBzY1L6yLBRfVFtWf5eMTcbb05DqsKN7Zg8VHzwiKa3Cz7DYZFjmK823OOs38IABah8g==
+X-Received: by 2002:a17:903:2ece:b0:267:cdb8:c683 with SMTP id
+ d9443c01a7336-290272679e7mr322560985ad.27.1760464426368; 
+ Tue, 14 Oct 2025 10:53:46 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29034f4ad6esm169901905ad.109.2025.10.14.10.53.45
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Oct 2025 10:53:45 -0700 (PDT)
+Message-ID: <cf89f7fd-0d8b-466c-a696-d3e84cf1bb2d@linaro.org>
+Date: Tue, 14 Oct 2025 10:53:44 -0700
 MIME-Version: 1.0
-References: <20251002020432.54443-1-gustavo.romero@linaro.org>
- <20251002020432.54443-3-gustavo.romero@linaro.org>
-In-Reply-To: <20251002020432.54443-3-gustavo.romero@linaro.org>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 14 Oct 2025 13:39:34 -0400
-X-Gm-Features: AS18NWCaWYZ4L6ElMmgO0jciDGRjpiOivPXm_Z1wMeZuFPvn8Yi1E1Fdm7RRPXY
-Message-ID: <CAFn=p-bscu00jtyfm+SmeYqB7gt6eA+F8uuYb8ng6rTe_a=HTA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/9] python: Install pygdbmi in meson's venv
-To: Gustavo Romero <gustavo.romero@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com, 
- berrange@redhat.com, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_BL_SPAMCOP_NET=1.347, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] testing/next - arm custom runner tweaks
+To: qemu-devel@nongnu.org
+References: <20251014104323.3023714-1-alex.bennee@linaro.org>
+ <c5003498-7914-4d94-bb79-0851c49c47a1@redhat.com>
+ <874is1l7db.fsf@draig.linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <874is1l7db.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,43 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 1, 2025 at 10:09=E2=80=AFPM Gustavo Romero
-<gustavo.romero@linaro.org> wrote:
->
-> The upcoming changes in the reverse_debugging functional test to remove
-> Avocado as a dependency will require pygdbmi for interacting with GDB,
-> so install it in meson's venv (located in the build dir's pyvenv/).
->
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-> ---
->  pythondeps.toml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/pythondeps.toml b/pythondeps.toml
-> index 16fb2a989c..98e99e7900 100644
-> --- a/pythondeps.toml
-> +++ b/pythondeps.toml
-> @@ -33,3 +33,4 @@ sphinx_rtd_theme =3D { accepted =3D ">=3D0.5", installe=
-d =3D "1.2.2" }
->
->  [testdeps]
->  qemu.qmp =3D { accepted =3D ">=3D0.0.3", installed =3D "0.0.3" }
-> +pygdbmi =3D { accepted =3D ">=3D0.11.0.0", installed =3D "0.11.0.0" }
-> --
-> 2.34.1
->
+On 10/14/25 10:29, Alex Bennée wrote:
+> Thomas Huth <thuth@redhat.com> writes:
+> 
+>> On 14/10/2025 12.43, Alex Bennée wrote:
+>>> This isn't quite ready yet as there is an in-flight MR for libvirt-ci
+>>> and the final patch has to manually drop a couple of packages which
+>>> don't cleanly install. I don't know if we should deal with that
+>>> upstream or in the lcitool metadata. For reference the two packages
+>>> are:
+>>>     libcurl4-gnutls-dev:armhf
+>>>     libglusterfs-dev:armhf
+>>
+>> FYI, glusterfs is deprecated in QEMU since a while:
+>>
+>>   https://gitlab.com/qemu-project/qemu/-/commit/b873463821343c6f702c4195f2168790b09cf44e
+>>
+>> ... so you could also add a patch that removes it from QEMU now, I
+>> guess.
+> 
+> I can do that.
+> 
+> 
+> Richard and Phillipe reminded me that we are due to drop 32 bit hosts
+> real soon now so maybe I should just remove the runner and the hacks
+> needed to get it working?
 
-Do we need to vendor pygdbmi? Currently, mkvenv does not consult
-online sources and so if this package is missing, pulling in testdeps
-will fail.
+I think that's for the best.
 
-We can either:
 
-(1) vendor pygdbmi, or
-(2) change mkvenv arguments for the testdeps group specifically to
-allow it to download missing deps.
-
---js
-
+r~
 
