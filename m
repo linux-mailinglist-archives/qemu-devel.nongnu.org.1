@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A0BBDB498
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0864DBDB45C
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:35:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8lhr-0000sE-BQ; Tue, 14 Oct 2025 16:33:15 -0400
+	id 1v8lht-0000sj-3m; Tue, 14 Oct 2025 16:33:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8lho-0000ra-Ol
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8lho-0000rb-S5
  for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:12 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8lhh-0000Qe-PM
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8lhh-0000Qh-3D
  for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,16 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=XXpk3LIVkhQRKZa5yBAxkpMgJMOw61bhlxojMjY/kx0=; b=pkRwv0FwJx/Xexq
- 1u7v/bD/EjgQh/CXftzAhP1rNwlQY1hRAM/8PXND4sGiAPkQ1mp17+uMFobsCPm0wM6DQ7n2OYbvV
- TNeQTXi0QdMNHHB6kjZelFhzGBPJzDgTtUHTJugYXWlmv3tWISuzKEeNQxrgyY4mg3u6Lk8f6XFrY
- g4=;
+ List-Help; bh=3SDL1FLWZ6yrsFeeAEGpGZGvqnL1BXwNVWV35NOAB+k=; b=aCaTTY/u1qfao+B
+ zGMyj0YuJOa7IL965h171wijuC4zBByzFbGq6Eaq31dbq2UvCVj922l2NCZk4/mcdlmmK0O91mKuf
+ jnIqaPAvEv1g+W8fDQ2zljozh54nonHHhg9unqCRLCdRgSo1yo/DbGz+ZSCMQkm3f3gCL3rjml415
+ pg=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [PATCH v3 09/34] target/riscv: Combine mhpmcounter and mhpmcounterh
-Date: Tue, 14 Oct 2025 22:34:46 +0200
-Message-ID: <20251014203512.26282-10-anjo@rev.ng>
+Subject: [PATCH v3 10/34] target/riscv: Fix size of gpr and gprh
+Date: Tue, 14 Oct 2025 22:34:47 +0200
+Message-ID: <20251014203512.26282-11-anjo@rev.ng>
 In-Reply-To: <20251014203512.26282-1-anjo@rev.ng>
 References: <20251014203512.26282-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,362 +62,136 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to version 20250508 of the privileged specification,
-mhpmconter is a 64-bit register and mhpmcounterh refers to the top
-32 bits of this register when XLEN == 32.  No real advantage is
-gained by keeping them separate, and combining allows for slight
-simplification.
+gprh is only needed for TARGET_RISCV64 when modeling 128-bit registers,
+fixing their size to 64 bits makes sense.
 
-Note, the cpu/pmu VMSTATE version is bumped breaking migration from
+gpr is also fixed to 64 bits since all direct uses of env->gpr
+correctly zero extend/truncate to/from target_ulong, meaning
+!TARGET_RISCV64 will behave as expected.
+
+We do however need to be a bit careful when mapping 64-bit fields to
+32-bit TCGv globals on big endian hosts.
+
+Note, the cpu/rv128 VMSTATE version is bumped, breaking migration from
 older versions.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/riscv/cpu.h     |  10 ++--
- target/riscv/csr.c     |  76 ++++++++++++++--------------
- target/riscv/machine.c |  10 ++--
- target/riscv/pmu.c     | 111 +++++++++++------------------------------
- 4 files changed, 73 insertions(+), 134 deletions(-)
+ target/riscv/cpu.h            |  4 ++--
+ target/riscv/cpu.c            |  2 +-
+ target/riscv/machine.c        |  8 ++++----
+ target/riscv/riscv-qmp-cmds.c |  2 +-
+ target/riscv/translate.c      | 17 +++++++++++++++--
+ 5 files changed, 23 insertions(+), 10 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 58384c77b3..09d9e4c33c 100644
+index 09d9e4c33c..7573d5aa7e 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -195,13 +195,9 @@ FIELD(VTYPE, RESERVED, 10, sizeof(target_ulong) * 8 - 11)
+@@ -212,8 +212,8 @@ typedef struct PMUFixedCtrState {
+ } PMUFixedCtrState;
  
- typedef struct PMUCTRState {
-     /* Current value of a counter */
--    target_ulong mhpmcounter_val;
--    /* Current value of a counter in RV32 */
--    target_ulong mhpmcounterh_val;
--    /* Snapshot values of counter */
--    target_ulong mhpmcounter_prev;
--    /* Snapshort value of a counter in RV32 */
--    target_ulong mhpmcounterh_prev;
-+    uint64_t mhpmcounter_val;
-+    /* Snapshot value of a counter */
-+    uint64_t mhpmcounter_prev;
-     /* Value beyond UINT32_MAX/UINT64_MAX before overflow interrupt trigger */
-     target_ulong irq_overflow_left;
- } PMUCTRState;
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index b28839d121..65b6469395 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1300,24 +1300,27 @@ static RISCVException riscv_pmu_write_ctr(CPURISCVState *env, target_ulong val,
-                                           uint32_t ctr_idx)
- {
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
--    uint64_t mhpmctr_val = val;
-+    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
-+    int deposit_size = rv32 ? 32 : 64;
-+    uint64_t ctr;
-+
-+    counter->mhpmcounter_val = deposit64(counter->mhpmcounter_val,
-+                                         0, deposit_size, val);
+ struct CPUArchState {
+-    target_ulong gpr[32];
+-    target_ulong gprh[32]; /* 64 top bits of the 128-bit registers */
++    uint64_t gpr[32];
++    uint64_t gprh[32]; /* 64 top bits of the 128-bit registers */
  
--    counter->mhpmcounter_val = val;
-     if (!get_field(env->mcountinhibit, BIT(ctr_idx)) &&
-         (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
-          riscv_pmu_ctr_monitor_instructions(env, ctr_idx))) {
--        counter->mhpmcounter_prev = riscv_pmu_ctr_get_fixed_counters_val(env,
--                                                                ctr_idx, false);
-+        ctr = riscv_pmu_ctr_get_fixed_counters_val(env, ctr_idx, false);
-+        counter->mhpmcounter_prev = deposit64(counter->mhpmcounter_prev,
-+                                              0, deposit_size, ctr);
-         if (ctr_idx > 2) {
--            if (riscv_cpu_mxl(env) == MXL_RV32) {
--                mhpmctr_val = mhpmctr_val |
--                              ((uint64_t)counter->mhpmcounterh_val << 32);
--            }
--            riscv_pmu_setup_timer(env, mhpmctr_val, ctr_idx);
-+            riscv_pmu_setup_timer(env, counter->mhpmcounter_val, ctr_idx);
-         }
-      } else {
-         /* Other counters can keep incrementing from the given value */
--        counter->mhpmcounter_prev = val;
-+        counter->mhpmcounter_prev = deposit64(counter->mhpmcounter_prev,
-+                                              0, deposit_size, val);
-+
-     }
+     /* vector coprocessor state. */
+     uint64_t vreg[32 * RV_VLEN_MAX / 64] QEMU_ALIGNED(16);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index a877018ab0..b7690ac00f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -583,7 +583,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ #endif
  
-     return RISCV_EXCP_NONE;
-@@ -1327,21 +1330,22 @@ static RISCVException riscv_pmu_write_ctrh(CPURISCVState *env, target_ulong val,
-                                           uint32_t ctr_idx)
- {
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
--    uint64_t mhpmctr_val = counter->mhpmcounter_val;
--    uint64_t mhpmctrh_val = val;
-+    uint64_t ctrh;
- 
--    counter->mhpmcounterh_val = val;
--    mhpmctr_val = mhpmctr_val | (mhpmctrh_val << 32);
-+    counter->mhpmcounter_val = deposit64(counter->mhpmcounter_val,
-+                                         32, 32, val);
-     if (!get_field(env->mcountinhibit, BIT(ctr_idx)) &&
-         (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
-          riscv_pmu_ctr_monitor_instructions(env, ctr_idx))) {
--        counter->mhpmcounterh_prev = riscv_pmu_ctr_get_fixed_counters_val(env,
--                                                                 ctr_idx, true);
-+        ctrh = riscv_pmu_ctr_get_fixed_counters_val(env, ctr_idx, true);
-+        counter->mhpmcounter_prev = deposit64(counter->mhpmcounter_prev,
-+                                              32, 32, ctrh);
-         if (ctr_idx > 2) {
--            riscv_pmu_setup_timer(env, mhpmctr_val, ctr_idx);
-+            riscv_pmu_setup_timer(env, counter->mhpmcounter_val, ctr_idx);
-         }
-     } else {
--        counter->mhpmcounterh_prev = val;
-+        counter->mhpmcounter_prev = deposit64(counter->mhpmcounter_prev,
-+                                              32, 32, val);
-     }
- 
-     return RISCV_EXCP_NONE;
-@@ -1364,13 +1368,19 @@ static RISCVException write_mhpmcounterh(CPURISCVState *env, int csrno,
- }
- 
- RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
--                                         bool upper_half, uint32_t ctr_idx)
-+                                  bool upper_half, uint32_t ctr_idx)
- {
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
--    target_ulong ctr_prev = upper_half ? counter->mhpmcounterh_prev :
--                                         counter->mhpmcounter_prev;
--    target_ulong ctr_val = upper_half ? counter->mhpmcounterh_val :
--                                        counter->mhpmcounter_val;
-+    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
-+    int start = upper_half ? 32 : 0;
-+    int length = rv32 ? 32 : 64;
-+    uint64_t ctr_prev, ctr_val;
-+
-+    /* Ensure upper_half is only set for XLEN == 32 */
-+    g_assert(rv32 || !upper_half);
-+
-+    ctr_prev = extract64(counter->mhpmcounter_prev, start, length);
-+    ctr_val  = extract64(counter->mhpmcounter_val, start, length);
- 
-     if (get_field(env->mcountinhibit, BIT(ctr_idx))) {
-         /*
-@@ -2994,6 +3004,7 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
-     uint32_t present_ctrs = cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR;
-     target_ulong updated_ctrs = (env->mcountinhibit ^ val) & present_ctrs;
-     uint64_t mhpmctr_val, prev_count, curr_count;
-+    uint64_t ctrh;
- 
-     /* WARL register - disable unavailable counters; TM bit is always 0 */
-     env->mcountinhibit = val & present_ctrs;
-@@ -3012,17 +3023,13 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
-             counter->mhpmcounter_prev =
-                 riscv_pmu_ctr_get_fixed_counters_val(env, cidx, false);
-             if (riscv_cpu_mxl(env) == MXL_RV32) {
--                counter->mhpmcounterh_prev =
--                    riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true);
-+                ctrh = riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true);
-+                counter->mhpmcounter_prev = deposit64(counter->mhpmcounter_prev,
-+                                                      32, 32, ctrh);
-             }
- 
-             if (cidx > 2) {
--                mhpmctr_val = counter->mhpmcounter_val;
--                if (riscv_cpu_mxl(env) == MXL_RV32) {
--                    mhpmctr_val = mhpmctr_val |
--                            ((uint64_t)counter->mhpmcounterh_val << 32);
--                }
--                riscv_pmu_setup_timer(env, mhpmctr_val, cidx);
-+                riscv_pmu_setup_timer(env, counter->mhpmcounter_val, cidx);
-             }
-         } else {
-             curr_count = riscv_pmu_ctr_get_fixed_counters_val(env, cidx, false);
-@@ -3034,18 +3041,11 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
-                     riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true);
- 
-                 curr_count = curr_count | (tmp << 32);
--                mhpmctr_val = mhpmctr_val |
--                    ((uint64_t)counter->mhpmcounterh_val << 32);
--                prev_count = prev_count |
--                    ((uint64_t)counter->mhpmcounterh_prev << 32);
-             }
- 
-             /* Adjust the counter for later reads. */
-             mhpmctr_val = curr_count - prev_count + mhpmctr_val;
-             counter->mhpmcounter_val = mhpmctr_val;
--            if (riscv_cpu_mxl(env) == MXL_RV32) {
--                counter->mhpmcounterh_val = mhpmctr_val >> 32;
--            }
-         }
-     }
- 
+     for (i = 0; i < 32; i++) {
+-        qemu_fprintf(f, " %-8s " TARGET_FMT_lx,
++        qemu_fprintf(f, " %-8s %" PRIx64,
+                      riscv_int_regnames[i], env->gpr[i]);
+         if ((i & 3) == 3) {
+             qemu_fprintf(f, "\n");
 diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 6146124229..09c032a879 100644
+index 09c032a879..7349383eab 100644
 --- a/target/riscv/machine.c
 +++ b/target/riscv/machine.c
-@@ -335,14 +335,12 @@ static bool pmu_needed(void *opaque)
+@@ -177,11 +177,11 @@ static bool rv128_needed(void *opaque)
  
- static const VMStateDescription vmstate_pmu_ctr_state = {
-     .name = "cpu/pmu",
--    .version_id = 2,
--    .minimum_version_id = 2,
-+    .version_id = 3,
-+    .minimum_version_id = 3,
-     .needed = pmu_needed,
+ static const VMStateDescription vmstate_rv128 = {
+     .name = "cpu/rv128",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .needed = rv128_needed,
      .fields = (const VMStateField[]) {
--        VMSTATE_UINTTL(mhpmcounter_val, PMUCTRState),
--        VMSTATE_UINTTL(mhpmcounterh_val, PMUCTRState),
--        VMSTATE_UINTTL(mhpmcounter_prev, PMUCTRState),
--        VMSTATE_UINTTL(mhpmcounterh_prev, PMUCTRState),
-+        VMSTATE_UINT64(mhpmcounter_val, PMUCTRState),
-+        VMSTATE_UINT64(mhpmcounter_prev, PMUCTRState),
+-        VMSTATE_UINTTL_ARRAY(env.gprh, RISCVCPU, 32),
++        VMSTATE_UINT64_ARRAY(env.gprh, RISCVCPU, 32),
+         VMSTATE_UINT64(env.mscratchh, RISCVCPU),
+         VMSTATE_UINT64(env.sscratchh, RISCVCPU),
          VMSTATE_END_OF_LIST()
-     }
- };
-diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 273822e921..708f2ec7aa 100644
---- a/target/riscv/pmu.c
-+++ b/target/riscv/pmu.c
-@@ -101,82 +101,6 @@ static bool riscv_pmu_counter_enabled(RISCVCPU *cpu, uint32_t ctr_idx)
-     }
- }
- 
--static int riscv_pmu_incr_ctr_rv32(RISCVCPU *cpu, uint32_t ctr_idx)
--{
--    CPURISCVState *env = &cpu->env;
--    target_ulong max_val = UINT32_MAX;
--    PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
--    bool virt_on = env->virt_enabled;
--
--    /* Privilege mode filtering */
--    if ((env->priv == PRV_M &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_MINH)) ||
--        (env->priv == PRV_S && virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_VSINH)) ||
--        (env->priv == PRV_U && virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_VUINH)) ||
--        (env->priv == PRV_S && !virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_SINH)) ||
--        (env->priv == PRV_U && !virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_UINH))) {
--        return 0;
--    }
--
--    /* Handle the overflow scenario */
--    if (counter->mhpmcounter_val == max_val) {
--        if (counter->mhpmcounterh_val == max_val) {
--            counter->mhpmcounter_val = 0;
--            counter->mhpmcounterh_val = 0;
--            /* Generate interrupt only if OF bit is clear */
--            if (!(env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_OF)) {
--                env->mhpmevent_val[ctr_idx] |= MHPMEVENT_BIT_OF;
--                riscv_cpu_update_mip(env, MIP_LCOFIP, BOOL_TO_MASK(1));
--            }
--        } else {
--            counter->mhpmcounterh_val++;
--        }
--    } else {
--        counter->mhpmcounter_val++;
--    }
--
--    return 0;
--}
--
--static int riscv_pmu_incr_ctr_rv64(RISCVCPU *cpu, uint32_t ctr_idx)
--{
--    CPURISCVState *env = &cpu->env;
--    PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
--    uint64_t max_val = UINT64_MAX;
--    bool virt_on = env->virt_enabled;
--
--    /* Privilege mode filtering */
--    if ((env->priv == PRV_M &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_MINH)) ||
--        (env->priv == PRV_S && virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_VSINH)) ||
--        (env->priv == PRV_U && virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_VUINH)) ||
--        (env->priv == PRV_S && !virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_SINH)) ||
--        (env->priv == PRV_U && !virt_on &&
--        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_UINH))) {
--        return 0;
--    }
--
--    /* Handle the overflow scenario */
--    if (counter->mhpmcounter_val == max_val) {
--        counter->mhpmcounter_val = 0;
--        /* Generate interrupt only if OF bit is clear */
--        if (!(env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_OF)) {
--            env->mhpmevent_val[ctr_idx] |= MHPMEVENT_BIT_OF;
--            riscv_cpu_update_mip(env, MIP_LCOFIP, BOOL_TO_MASK(1));
--        }
--    } else {
--        counter->mhpmcounter_val++;
--    }
--    return 0;
--}
--
- /*
-  * Information needed to update counters:
-  *  new_priv, new_virt: To correctly save starting snapshot for the newly
-@@ -275,8 +199,10 @@ void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
- int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx)
+@@ -429,7 +429,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+     .minimum_version_id = 11,
+     .post_load = riscv_cpu_post_load,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
++        VMSTATE_UINT64_ARRAY(env.gpr, RISCVCPU, 32),
+         VMSTATE_UINT64_ARRAY(env.fpr, RISCVCPU, 32),
+         VMSTATE_UINT8_ARRAY(env.miprio, RISCVCPU, 64),
+         VMSTATE_UINT8_ARRAY(env.siprio, RISCVCPU, 64),
+diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
+index c499f9b9a7..95fa713c69 100644
+--- a/target/riscv/riscv-qmp-cmds.c
++++ b/target/riscv/riscv-qmp-cmds.c
+@@ -262,7 +262,7 @@ static bool reg_is_ulong_integer(CPURISCVState *env, const char *name,
+                                  target_ulong *val, bool is_gprh)
  {
-     uint32_t ctr_idx;
--    int ret;
-     CPURISCVState *env = &cpu->env;
-+    uint64_t max_val = UINT64_MAX;
-+    bool virt_on = env->virt_enabled;
-+    PMUCTRState *counter;
-     gpointer value;
+     const char * const *reg_names;
+-    target_ulong *vals;
++    uint64_t *vals;
  
-     if (!cpu->cfg.pmu_mask) {
-@@ -293,13 +219,34 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx)
-         return -1;
+     if (is_gprh) {
+         reg_names = riscv_int_regnamesh;
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index 6fc06c71f5..4308b7712e 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -27,6 +27,7 @@
+ #include "accel/tcg/cpu-ldst.h"
+ #include "exec/translation-block.h"
+ #include "exec/log.h"
++#include "exec/tswap.h"
+ #include "semihosting/semihost.h"
+ 
+ #include "internals.h"
+@@ -1428,12 +1429,24 @@ void riscv_translate_init(void)
+      */
+     cpu_gpr[0] = NULL;
+     cpu_gprh[0] = NULL;
++    /*
++     * Be careful with big endian hosts when mapping 64-bit CPUArchState fields
++     * to 32-bit TCGv globals.  An offset of 4 bytes is applied so the least
++     * significant bytes are correctly written to.
++     */
++#if HOST_BIG_ENDIAN && !defined(TARGET_RISCV64)
++    size_t field_offset = 4;
++#else
++    size_t field_offset = 0;
++#endif
+ 
+     for (i = 1; i < 32; i++) {
+         cpu_gpr[i] = tcg_global_mem_new(tcg_env,
+-            offsetof(CPURISCVState, gpr[i]), riscv_int_regnames[i]);
++            offsetof(CPURISCVState, gpr[i]) + field_offset,
++            riscv_int_regnames[i]);
+         cpu_gprh[i] = tcg_global_mem_new(tcg_env,
+-            offsetof(CPURISCVState, gprh[i]), riscv_int_regnamesh[i]);
++            offsetof(CPURISCVState, gprh[i]) + field_offset,
++            riscv_int_regnamesh[i]);
      }
  
--    if (riscv_cpu_mxl(env) == MXL_RV32) {
--        ret = riscv_pmu_incr_ctr_rv32(cpu, ctr_idx);
-+    /* Privilege mode filtering */
-+    if ((env->priv == PRV_M &&
-+        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_MINH)) ||
-+        (env->priv == PRV_S && virt_on &&
-+        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_VSINH)) ||
-+        (env->priv == PRV_U && virt_on &&
-+        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_VUINH)) ||
-+        (env->priv == PRV_S && !virt_on &&
-+        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_SINH)) ||
-+        (env->priv == PRV_U && !virt_on &&
-+        (env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_UINH))) {
-+        return 0;
-+    }
-+
-+    /* Handle the overflow scenario */
-+    counter = &env->pmu_ctrs[ctr_idx];
-+    if (counter->mhpmcounter_val == max_val) {
-+        counter->mhpmcounter_val = 0;
-+        /* Generate interrupt only if OF bit is clear */
-+        if (!(env->mhpmevent_val[ctr_idx] & MHPMEVENT_BIT_OF)) {
-+            env->mhpmevent_val[ctr_idx] |= MHPMEVENT_BIT_OF;
-+            riscv_cpu_update_mip(env, MIP_LCOFIP, BOOL_TO_MASK(1));
-+        }
-     } else {
--        ret = riscv_pmu_incr_ctr_rv64(cpu, ctr_idx);
-+        counter->mhpmcounter_val++;
-     }
- 
--    return ret;
-+    return 0;
- }
- 
- bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
-@@ -470,8 +417,6 @@ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
-     if (riscv_cpu_mxl(env) == MXL_RV32) {
-         riscv_pmu_read_ctr(env, (target_ulong *)&curr_ctrh_val, true, ctr_idx);
-         curr_ctr_val = curr_ctr_val | (curr_ctrh_val << 32);
--        ctr_val = ctr_val |
--                ((uint64_t)counter->mhpmcounterh_val << 32);
-     }
- 
-     /*
+     for (i = 0; i < 32; i++) {
 -- 
 2.51.0
 
