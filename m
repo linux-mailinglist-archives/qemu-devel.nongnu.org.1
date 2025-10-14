@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEEF0BDA900
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 18:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D3BBDA925
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 18:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8hYa-00081t-Hq; Tue, 14 Oct 2025 12:07:24 -0400
+	id 1v8had-0001N3-0U; Tue, 14 Oct 2025 12:09:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1v8hYX-00080o-Ua
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 12:07:21 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1v8hYQ-00056d-PX
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 12:07:21 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cmJtl2SxBz6GDSM;
- Wed, 15 Oct 2025 00:04:15 +0800 (CST)
-Received: from dubpeml100003.china.huawei.com (unknown [7.214.147.98])
- by mail.maildlp.com (Postfix) with ESMTPS id 828C51402C8;
- Wed, 15 Oct 2025 00:07:05 +0800 (CST)
-Received: from dubpeml500004.china.huawei.com (7.214.147.1) by
- dubpeml100003.china.huawei.com (7.214.147.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Oct 2025 17:07:05 +0100
-Received: from dubpeml500004.china.huawei.com ([7.214.147.1]) by
- dubpeml500004.china.huawei.com ([7.214.147.1]) with mapi id 15.02.1544.011;
- Tue, 14 Oct 2025 17:07:05 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Salil Mehta
- <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
-Subject: RE: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
- kernel in cpuif reset
-Thread-Topic: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
- kernel in cpuif reset
-Thread-Index: AQHcPPUb159YqalKN0iW0Ad9cDluebTBcyuAgAAtQ0D///KGAIAAES+Q///z8ACAABG8wP//+S2AAAIw8TD///c1gP//7sZQgAAX3QD//+6K8P//07fQ
-Date: Tue, 14 Oct 2025 16:07:05 +0000
-Message-ID: <57c971afc3e64c1cbd48d032fb557c00@huawei.com>
-References: <20251014102439.319915-1-peter.maydell@linaro.org>
- <261d6938fc894b1ca0979aef30fb9e1c@huawei.com>
- <eebfcb04afc2498d8969d96fcbcf0926@huawei.com>
- <CAFEAcA_MZu4stZ4MY4zdpM0zy-gNBA3yj4dkuWL3d-FLFZC6rg@mail.gmail.com>
- <b3f9f1d44d8d4a779dcaae2497b8b71b@huawei.com>
- <CAFEAcA804drHGyTG73bXkqSMgXvKGGaLWvm6QS85FhD+dXDqjw@mail.gmail.com>
- <cb5c762bd24d4cd69aea415d4bc10051@huawei.com>
- <CAFEAcA-g18R03vqpqXr0boOccDqhNP0J7Gx8nZOxUrbQh13pog@mail.gmail.com>
- <599ea0ba89314d28af8b3ae7b590d1a9@huawei.com>
- <CAFEAcA8-QGBGqjw3Eefx_yyz_30azn9Trz-OGSxq7v4N=X+26Q@mail.gmail.com>
- <a630fc58d9f946988bd6c27479543dd1@huawei.com>
- <CAFEAcA8GsSDnY8GEJZYNbJ3KZAp9tJ=s_vUBB_XwwGaEwozxzQ@mail.gmail.com>
- <880fc89ebcb9404cbc135a501e635671@huawei.com>
-In-Reply-To: <880fc89ebcb9404cbc135a501e635671@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.67.200]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8haX-0001Mj-FI
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 12:09:25 -0400
+Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8haU-0005KP-02
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 12:09:25 -0400
+Received: by mail-yw1-x1130.google.com with SMTP id
+ 00721157ae682-7815092cd06so9749037b3.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 09:09:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760458159; x=1761062959; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tsFaLEfLhcvzz++ZyZjgYONkG3EwSGLyjtHXvr32VQM=;
+ b=G5c/xg7K3/uoRb4qmT3qar7+3piIFJ9zLIoDPyfHUhuxyRbQEBQ6t64DX/4o8DuxEo
+ KrFl1F5uYFvtwZ2UikgPjRdArrhE/69MSMWexgFicF4zftX8Ym354WS2Niv0qxXLfbtf
+ ZvOF1YcXl5Bg1oGBEiQ6LQesAH1p6qsxgzliPA+535HnQBuw2yKO7Q5XEBGK3kOxBtm1
+ U8IqJMbl5u/sm54VeEhtF72YzzU7PVJfZWIm1omGUzYvNUQYA3D/4qvrmcmzO2Gl35PV
+ 9DbYpB6SP3+Z06qN+xSepuz8lnOJXDOSuNObKu5be9wjwscwMAMf9dEfuo/h4VXZlcY8
+ w2Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760458159; x=1761062959;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tsFaLEfLhcvzz++ZyZjgYONkG3EwSGLyjtHXvr32VQM=;
+ b=RavvIolpmz0bjEjdzmZmwbmqKND2SPuLJ6dgqHuWMGc/faBG6ryhyQpQRWhEmKJ58V
+ g0nDlrEeXHzmUGZ76liZung+A0FVmf0W8Ko0SHj4Ix9LOQCmPrv0Y7xHOss9X6VAWUMr
+ wP/R0QJ3Jd4BfVQstQalj4R3hqA7PpvY2bbBt04aBnm/64eeAO5WBdMROdLiQmpGEAiN
+ Dfkl+/FLsatpqco9sJnbcahVk2N18QE5FFrA3dG6d5rcpL8rU8fpZPQlTSLUZHwMolee
+ RuLGAwRr/flSjbSBG6YKkN2FRogvIKQy2eMs09Bd7oA9NeLuKWe9zhiC0AEG2oOUbetf
+ 5j5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVp1gnOJgwmvrN4OTjnFguDjGt+m4SJ9gR/mljDCBluEi628HeJsx6I3DFLO44lKtLeAXktzIAcOGrC@nongnu.org
+X-Gm-Message-State: AOJu0YwRxPeCq9O5sg9WmjUrQUDneaN/D34FHBUBli6S8mpo+n2J/fOB
+ tH7mTfs+nUfy1UD5eucLcoyBZ5Ob/ZcXN0bIJNq14PgBvIkl8A+Jw+mrAoYgD2cKSTk8cATqadm
+ OcdIijs324Boy12SCS+lRn+1aW413GikBm428Bg/V/Q==
+X-Gm-Gg: ASbGnctlTX77nEOhNhxHO3RBJNmgCHvQzDnQ5Y7b0bimV9WHzIcvAM+JZJE2ML1ibAr
+ BJlob2hu7nnS6uaYdYCcczW+weXCKpjUhRwhVsFxJk2a62DMJiPGOCB2rhIl56IHYumJOMrnQvP
+ qK2/njmLUN72kt5bV/KhjiLP6Bd9TxzsIeD18LhuvOx+n7My6ZHx5CZYZj82wt3YgrVHYvrnbEn
+ XkBGHwPdCpBJKqb7Kfqs+roB3V/Y+DLMvZf+5g5Pw==
+X-Google-Smtp-Source: AGHT+IHVZLMJJ1Y5tPQm2Dl1eW62thXEVO1rf9/5Fh4ZA41a3t4HFdokS6B+BYLD22UYFzuIqjIPX1TFyGsHccMnVEc=
+X-Received: by 2002:a05:690e:2445:b0:63c:f5a6:f2d5 with SMTP id
+ 956f58d0204a3-63cf5a707d6mr7465735d50.55.1760458159183; Tue, 14 Oct 2025
+ 09:09:19 -0700 (PDT)
 MIME-Version: 1.0
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+References: <859f333e-37f9-4e76-bf88-a69d0641626a@siemens.com>
+In-Reply-To: <859f333e-37f9-4e76-bf88-a69d0641626a@siemens.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 14 Oct 2025 17:09:06 +0100
+X-Gm-Features: AS18NWBvalo1Pjvnm3N-tDVrq0BJzM5OIdreqwRPEFJVUdjqID-tGVXqu7t1zLY
+Message-ID: <CAFEAcA8HiZcLqxUAiU26XTS7e2xm6Uf0EUqQc7Ny7cvD8EhxJw@mail.gmail.com>
+Subject: Re: [PATCH] hw/openrisc/openrisc_sim: Avoid false-positive overflow
+ warning
+To: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Jia Liu <proljc@gmail.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,70 +92,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBTYWxpbCBNZWh0YQ0KPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVyIDE0LCAyMDI1IDQ6
-MzMgUE0NCj4gVG86ICdQZXRlciBNYXlkZWxsJyA8cGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnPg0K
-PiANCj4gPiBGcm9tOiBQZXRlciBNYXlkZWxsIDxwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc+DQo+
-ID4gU2VudDogVHVlc2RheSwgT2N0b2JlciAxNCwgMjAyNSA0OjI0IFBNDQo+ID4gVG86IFNhbGls
-IE1laHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPg0KPiA+DQo+ID4gT24gVHVlLCAxNCBPY3Qg
-MjAyNSBhdCAxNjoxMywgU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+IHdy
-b3RlOg0KPiA+ID4NCj4gPiA+ID4gRnJvbTogUGV0ZXIgTWF5ZGVsbCA8cGV0ZXIubWF5ZGVsbEBs
-aW5hcm8ub3JnPiBJbiB3aGF0IHNpdHVhdGlvbg0KPiA+ID4gPiBkbyB3ZSBldmVyIHN0YXJ0IHJ1
-bm5pbmcgYSBWQ1BVIGJlZm9yZSB0aGUgKkdJQyogaGFzIGJlZW4NCj4gPiA+ID4gcmVhbGl6ZWQ/
-IFRoZSBHSUMgc2hvdWxkIGdldCByZWFsaXplZCBhcyBwYXJ0IG9mIGNyZWF0aW5nIHRoZSB2aXJ0
-DQo+ID4gPiA+IGJvYXJkLCB3aGljaCBtdXN0IGNvbXBsZXRlIGJlZm9yZSB3ZSBkbyBhbnl0aGlu
-ZyBsaWtlIHJ1bm5pbmcgYSB2Y3B1Lg0KPiA+ID4NCj4gPiA+DQo+ID4gPiBKdXN0IGFmdGVyIHJl
-YWxpemF0aW9uIG9mIHZDUFUgaW4gdGhlIG1hY2h2aXJ0X2luaXQoKSB5b3UgY2FuIHNlZQ0KPiA+
-ID4gdGhlIGRlZmF1bHQgcG93ZXJfc3RhdGUgaXMgUFNDSSBDUFVfT04sIHdoaWNoIG1lYW5zDQo+
-ID4gS1ZNX01QX1NUQVRFX1JVTk5BQkxFLg0KPiA+ID4gU2luY2UsIHRoZSB0aHJlYWQgaXMgdXAg
-YW5kIG5vdCBkb2luZyBJTyB3YWl0IGluIHVzZXJzcGFjZSBpdCBnZXRzDQo+ID4gPiBpbnRvDQo+
-ID4gPiBjcHVfZXhlYygpIGxvb3AgYW5kIGFjdHVhbGx5IHJ1biBLVk1fUlVOIElPQ1RMLiBJbnNp
-ZGUgdGhlIEtWTSBpdA0KPiA+ID4gbW9tZW50YXJpbHkgdGFrZXMgdGhlIHZDUFUgbXV0ZXggYnV0
-IGxhdGVyIGV4aXQgYW5kIHJlbGVhc2VzLiBUaGlzDQo+ID4gPiBrZWVwcyBnb2luZyBvbiBmb3Ig
-YWxsIG9mIHRoZSB2Q1BVIHRocmVhZHMgcmVhbGl6ZWQgZWFybHkuDQo+ID4NCj4gPiBZaWtlcy4g
-V2UgZGVmaW5pdGVseSBzaG91bGQgZml4IHRoYXQgOiBsZXR0aW5nIHRoZSB2Y3B1IHJ1biBiZWZv
-cmUgd2UNCj4gPiBnZXQgdG8NCj4gPiBxZW11X21hY2hpbmVfY3JlYXRpb25fZG9uZSgpIHNlZW1z
-IGxpa2UgaXQgd291bGQgYmUgYSBtYXNzaXZlIHNvdXJjZQ0KPiA+IG9mIHJhY2UgY29uZGl0aW9u
-cy4NCj4gDQo+IEkndmUgYWxyZWFkeSBwcm9wb3NlZCBmaXggZm9yIHRoaXMgYnkgcGFya2luZyBz
-dWNoIHRocmVhZHMgaW4gdXNlcnNwYWNlLiBQbGVhc2UNCj4gY2hlY2sgZnVuY3Rpb25zIHZpcnRf
-KHVuKXBhcmtfY3B1X2luX3VzZXJzcGFjZSgpLiBCdXQgbmVlZCB0byBjaGVjayBpZiB3ZQ0KPiBj
-YW4gdXNlIHRoaXMgdHJpY2sgY2FuIGJlIHVzZWQgYXQgdGhlIHZlcnkgZWFybHkgc3RhZ2VzIG9m
-IHRoZSBWTSBpbml0aWFsaXphdGlvbi4NCj4gDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3Fl
-bXUtZGV2ZWwvMjAyNTEwMDEwMTAxMjcuMzA5MjYzMS0xOC0NCj4gc2FsaWwubWVodGFAb3Buc3Jj
-Lm5ldC8NCj4gDQo+IA0KPiBJIGFsc28gdGhpbmsgd2UgbmVlZCAxOjEgbWFwcGluZyBiZXR3ZWVu
-IHRoZSBBUk1DUFUgcG93ZXItc3RhdGUgYW5kIHRoZQ0KPiBLVk0gTVBfU1RBVEUuICBSaWdodCBu
-b3csDQo+IA0KPiBLVk1fTVBfU1RBVEVfUlVOTkFCTEUgPSB7UFNDSSBDUFVfT0ZGLCBQU0NJIENQ
-VV9PTn0NCj4gS1ZNX01QX1NUQVRFX1NUT1BQRUQgICAgPSB7UFNDSSBDUFVfT0ZGfQ0KPiANCj4g
-S1ZNIE1QIFN0YXRlIFJVTk5BQkxFIHNlZW1zIGFtYmlndW91cy4gU2hvdWxkIHdlIHVzZSBQU0NJ
-DQo+IENQVV9QRU5ESU5HIGF0IGVhcmx5IHN0YWdlcyBpbnN0ZWFkPw0KDQpUaGVyZSBpcyBvbmUg
-bW9yZSBpc3N1ZS4NCg0KLyoNCiAqIFVwZGF0ZSBLVk0ncyBNUF9TVEFURSBiYXNlZCBvbiB3aGF0
-IFFFTVUgdGhpbmtzIGl0IGlzDQogKi8NCnN0YXRpYyBpbnQga3ZtX2FybV9zeW5jX21wc3RhdGVf
-dG9fa3ZtKEFSTUNQVSAqY3B1KQ0Kew0KICAgIGlmIChjYXBfaGFzX21wX3N0YXRlKSB7DQogICAg
-ICAgIHN0cnVjdCBrdm1fbXBfc3RhdGUgbXBfc3RhdGUgPSB7DQogICAgICAgICAgICAubXBfc3Rh
-dGUgPSAoY3B1LT5wb3dlcl9zdGF0ZSA9PSBQU0NJX09GRikgPw0KICAgICAgICAgICAgS1ZNX01Q
-X1NUQVRFX1NUT1BQRUQgOiBLVk1fTVBfU1RBVEVfUlVOTkFCTEUNCiAgICAgICAgfTsNCiAgICAg
-ICAgcmV0dXJuIGt2bV92Y3B1X2lvY3RsKENQVShjcHUpLCBLVk1fU0VUX01QX1NUQVRFLCAmbXBf
-c3RhdGUpOw0KICAgIH0NCiAgICByZXR1cm4gMDsNCn0NCg0KDQp2YWx1ZSBvZiBQU0NJX09GRiA9
-IDEgYW5kIHdlIGRvIG5vdCBpbml0aWFsaXplIHRoZSBkZWZhdWx0IHN0YXRlIG9mIHBvd2VyX3N0
-YXRlLg0KVGhpcyBtZWFucyBLVk1fTVBfU1RBVEUgc3RhdGUgd2lsbCBiZSBjb25maWd1cmVkIGFz
-IFJVTk5BQkxFIGF0IHRoZSBmaXJzdA0KaW5zdGFuY2UgdGlsbCB0aGUgY3B1X3Jlc2V0KCkgaGFw
-cGVucy4gVGhpcyBpcyBub3QgY29ycmVjdCBlaXRoZXIuDQoNCkJ1dCB0aGVuIHdoYXQgc2hvdWxk
-IGJlIHRoZSB2Q1BVcyBkZWZhdWx0IHN0YXRlLCBLVk1fTVBfU1RBVEUgX1NUT1BQRUQ/DQpTdG9w
-cGVkIGlzIGltcGxlbWVudGVkIGFzIHNsZWVwIGluc2lkZSB0aGUgS1ZNIC0gYSBibG9ja2luZyBj
-YWxsLiAgQW4gaW52aXRhdGlvbg0KdG8gdGhlIHZDUFUgbG9jayBjb250ZW50aW9uPyBvciBzaG91
-bGQgYmUgc2xlZXAgaW4gdXNlcnNwYWNlPw0KDQpzdGF0aWMgdm9pZCBrdm1fdmNwdV9zbGVlcChz
-dHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUpDQp7DQoJc3RydWN0IHJjdXdhaXQgKndhaXQgPSBrdm1fYXJj
-aF92Y3B1X2dldF93YWl0KHZjcHUpOw0KDQoJcmN1d2FpdF93YWl0X2V2ZW50KHdhaXQsDQoJCQkg
-ICAoIWt2bV9hcm1fdmNwdV9zdG9wcGVkKHZjcHUpKSAmJiAoIXZjcHUtPmFyY2gucGF1c2UpLA0K
-CQkJICAgVEFTS19JTlRFUlJVUFRJQkxFKTsNCg0KCWlmIChrdm1fYXJtX3ZjcHVfc3RvcHBlZCh2
-Y3B1KSB8fCB2Y3B1LT5hcmNoLnBhdXNlKSB7DQoJCS8qIEF3YWtlbiB0byBoYW5kbGUgYSBzaWdu
-YWwsIHJlcXVlc3Qgd2Ugc2xlZXAgYWdhaW4gbGF0ZXIuICovDQoJCWt2bV9tYWtlX3JlcXVlc3Qo
-S1ZNX1JFUV9TTEVFUCwgdmNwdSk7DQoJfQ0KDQoJLyoNCgkgKiBNYWtlIHN1cmUgd2Ugd2lsbCBv
-YnNlcnZlIGEgcG90ZW50aWFsIHJlc2V0IHJlcXVlc3QgaWYgd2UndmUNCgkgKiBvYnNlcnZlZCBh
-IGNoYW5nZSB0byB0aGUgcG93ZXIgc3RhdGUuIFBhaXJzIHdpdGggdGhlIHNtcF93bWIoKSBpbg0K
-CSAqIGt2bV9wc2NpX3ZjcHVfb24oKS4NCgkgKi8NCglzbXBfcm1iKCk7DQp9DQoNCg0K
+On Tue, 14 Oct 2025 at 17:03, Jan Kiszka <jan.kiszka@siemens.com> wrote:
+>
+> From: Jan Kiszka <jan.kiszka@siemens.com>
+>
+> Resolves this build breakage:
+>
+> ../hw/openrisc/openrisc_sim.c: In function =E2=80=98openrisc_sim_init=E2=
+=80=99:
+> ../hw/openrisc/openrisc_sim.c:284:45: error: =E2=80=98__builtin___snprint=
+f_chk=E2=80=99 output may be truncated before the last format character [-W=
+error=3Dformat-truncation=3D]
+>      snprintf(alias, sizeof(alias), "serial%d", uart_idx);
+>                                              ^
+> In file included from /usr/include/stdio.h:964:0,
+>                  from /data/qemu/include/qemu/osdep.h:114,
+>                  from ../hw/openrisc/openrisc_sim.c:21:
+> /usr/include/bits/stdio2.h:54:10: note: =E2=80=98__builtin___snprintf_chk=
+=E2=80=99 output between 8 and 9 bytes into a destination of size 8
+>    return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+>           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>         __glibc_objsize (__s), __fmt,
+>         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>         __va_arg_pack ());
+>         ~~~~~~~~~~~~~~~~~
+>
+> This is actually a false positive because uart_idx is 0..3, never larger
+> or even negative.
+>
+> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+> ---
+>  hw/openrisc/openrisc_sim.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
+> index 880c8ebbb8..dcb1a7a00b 100644
+> --- a/hw/openrisc/openrisc_sim.c
+> +++ b/hw/openrisc/openrisc_sim.c
+> @@ -281,7 +281,7 @@ static void openrisc_sim_serial_init(Or1ksimState *st=
+ate, hwaddr base,
+>          /* The /chosen node is created during fdt creation. */
+>          qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename)=
+;
+>      }
+> -    snprintf(alias, sizeof(alias), "serial%d", uart_idx);
+> +    snprintf(alias, sizeof(alias), "serial%u", uart_idx);
+>      qemu_fdt_setprop_string(fdt, "/aliases", alias, nodename);
+
+If we're going to change this I think I'd prefer
+   g_autofree char *alias =3D g_strdup_printf("serial%d", uart_idx);
+
+(declaration at top of function as usual for our style)
+
+thanks
+-- PMM
 
