@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F4ABDB462
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0A8BDB444
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:35:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8liS-00016p-U7; Tue, 14 Oct 2025 16:33:52 -0400
+	id 1v8liV-000184-NK; Tue, 14 Oct 2025 16:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liQ-000169-O2
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:50 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liU-00017i-Cx
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:54 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liN-0000Uz-FX
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:50 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liS-0000Vw-9p
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+ In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=Utt52bt/cbtt3K4BuxcmCgUpU8eN5qGfrYdcfJB7ym8=; b=YTWnikxU+qz9EaC
- 2XwojP+DiIIl4gXoQ1gIBNNp1J2eo43w4wQxV719VedAkZFviNuEupbM/AJFDAW/TZzF7tYsmJXuY
- +jwnF+Xz7xC+uxiHUe4M/wlLWTUDPZJY8EHi1gwHyHkxuHO/+p9f8VpRYzrAZAjZ00gkZTQy7EW0k
- po=;
+ List-Help; bh=TuatpIkAcRSnrBRBIXYO0AmSntjEDrH/zc5dJrlt/Yc=; b=VfHL1sC+H72rm7B
+ 0pylmVIHEK40cOcVQx1vtx2jakHH9kGvZTl4HCCOlVFP7jXurCDVAR+CCWFF7PcO/a8yJ6H0iEZIx
+ aHbRwWzPmVgEMCIDuURcNXbDyKkwZof+WuJoFwx1tj1/H+MKBJqZZRzNJgEsQ1cI7xGvm2wKv+DuY
+ dg=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [PATCH v3 25/34] target/riscv: Fix size of irq_overflow_left
-Date: Tue, 14 Oct 2025 22:35:02 +0200
-Message-ID: <20251014203512.26282-26-anjo@rev.ng>
+Subject: [PATCH v3 26/34] target/riscv: Indent PMUFixedCtrState correctly
+Date: Tue, 14 Oct 2025 22:35:03 +0200
+Message-ID: <20251014203512.26282-27-anjo@rev.ng>
 In-Reply-To: <20251014203512.26282-1-anjo@rev.ng>
 References: <20251014203512.26282-1-anjo@rev.ng>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
@@ -62,27 +63,36 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix to 64 bits to hold all relevant values.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/cpu.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index c192359e56..cb99314679 100644
+index cb99314679..3072ee0005 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -223,7 +223,7 @@ typedef struct PMUCTRState {
-     /* Snapshot value of a counter */
-     uint64_t mhpmcounter_prev;
-     /* Value beyond UINT32_MAX/UINT64_MAX before overflow interrupt trigger */
--    target_ulong irq_overflow_left;
-+    uint64_t irq_overflow_left;
+@@ -227,12 +227,12 @@ typedef struct PMUCTRState {
  } PMUCTRState;
  
  typedef struct PMUFixedCtrState {
+-        /* Track cycle and icount for each privilege mode */
+-        uint64_t counter[4];
+-        uint64_t counter_prev[4];
+-        /* Track cycle and icount for each privilege mode when V = 1*/
+-        uint64_t counter_virt[2];
+-        uint64_t counter_virt_prev[2];
++    /* Track cycle and icount for each privilege mode */
++    uint64_t counter[4];
++    uint64_t counter_prev[4];
++    /* Track cycle and icount for each privilege mode when V = 1*/
++    uint64_t counter_virt[2];
++    uint64_t counter_virt_prev[2];
+ } PMUFixedCtrState;
+ 
+ struct CPUArchState {
 -- 
 2.51.0
 
