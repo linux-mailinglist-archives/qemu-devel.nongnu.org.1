@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16D6BD9CB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AD3BD9C62
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:39:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEx-0006Sy-Fo; Tue, 14 Oct 2025 09:38:59 -0400
+	id 1v8fEq-0006AG-E1; Tue, 14 Oct 2025 09:38:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEW-0005yo-TZ
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:34 -0400
+ id 1v8fEW-0005yX-5k
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEP-00017p-Ux
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:32 -0400
+ id 1v8fES-00018G-N5
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449103;
+ s=mimecast20190719; t=1760449106;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XEG6T/J+GXYTGRUDDa6Uq81qUc1bn8Yy9qgoJUqKqdY=;
- b=N6fZQ6UoCB140bSOQNnO2HIZN9n8SHgdikazEf3R07KWUzq1NPELwum4weU3w1Gl2XxIqz
- qJf+xDLPtxujb9JmrOVdkF4/I6X1icR02GDicun1ZNrYjEEO3aAI6FcklDbR7eGWVSsEHA
- rYrqwtD4bka+4Wd9nYuEdLFwUAAt31I=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3h9CREHD+hrW6wzadkBuc/EvwxUe2yLhbknJ1TxTLXA=;
+ b=iplVChRAxuTnV4kuWWxb+0Uh66+1ZggSEVmy5k6tFo9WcIZc/9/zrQtjJMyIXoNq/TyfA+
+ TduWb9PcG+xzDf0yDlWzEsVY4aTLPDDzqtMWMivz/1CjmMGWa5nmR9zayxu05GU6B0jf9D
+ b5Thkjfkz7yRNbwu2to6IvascihaEew=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-81-fLVKrTtqPQigEHydnBO77g-1; Tue, 14 Oct 2025 09:38:21 -0400
-X-MC-Unique: fLVKrTtqPQigEHydnBO77g-1
-X-Mimecast-MFC-AGG-ID: fLVKrTtqPQigEHydnBO77g_1760449101
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-426ce339084so3990461f8f.0
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:21 -0700 (PDT)
+ us-mta-663-BJX1KTtsNB2uDEBMzUI7Hg-1; Tue, 14 Oct 2025 09:38:25 -0400
+X-MC-Unique: BJX1KTtsNB2uDEBMzUI7Hg-1
+X-Mimecast-MFC-AGG-ID: BJX1KTtsNB2uDEBMzUI7Hg_1760449104
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46e4fa584e7so30805625e9.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449100; x=1761053900;
+ d=1e100.net; s=20230601; t=1760449102; x=1761053902;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XEG6T/J+GXYTGRUDDa6Uq81qUc1bn8Yy9qgoJUqKqdY=;
- b=IymsIWQ8skL3F343935hXtSHr9UkgpIJb6Q+LvzwEj+S9uDQOM5DzoGkz0SKbO1B46
- x2OSrXKiTnSAR7VMz9P26qTaqKHYSL+Q5eTT7WPVEfRNifbNJTBNTmST51B3StEwOQ0I
- RPzmCfU2toCiTQOrfSqrlh8WX3P39k4EmKtwpivqZOi9cP6vIEm3plbYAKq4bAJeEtzH
- 72B1iNVThCGFMSTipULwbqXwJn6XytMukmLYXHdgIxVATvfFAs8nhujQ47aiNn7FY9d9
- V4Cn3UZCWdyOVug8t4Gd20mHU9hcvcDZvu4n4iAf7OpcJzmqUDpwlwYX36BhOTpGntNF
- 2kLQ==
-X-Gm-Message-State: AOJu0YxR3EskeIL3NnaFrwXWnuzFoUYzI00CZuUkYPkxT+wNr/G0RWIb
- 9RkgF/ooTiI1lFQiBh5+7btDX/3oSqVAEe/xSUzZJYpwPXpx3HEl+JHtprzUrZXmKqbiQI6FTdD
- AhkRaZAJDsqCtTig9YfwznmScOAwtqqCsOj1pKR+u5OBlPMCyKwwUTkY2kycRBb221DvMCW79+2
- ssuoFkmKzit0ugOYl8kiqfRVK/X0me4ZhFdlgEcQgx
-X-Gm-Gg: ASbGnctxuEaJ6OYW2c6TWDypWHYe9p/R+yH58BppapaQgK2eWFmEANkOKeLni3s69B+
- KUgz2jg21Ki7oGAyL8vXUJBcsR3Gm0+aYP5MOWBZp9hLWpjrKeR1rsOtMwil8Y4YGUCF8s7M6bO
- nLx4iUqRE7uTBk+TN5XgNs1KOLLM5nPFMKAjFLExPX3OejqqCLOyqELi61nvX6zMP1A3M5STYLN
- lgtbD8AsKWdByWExPitA5D0ErKSvTyWhdsSSRsCWwcKalERThu9znDBBnaMbnMDJvqB9OtfTPtq
- NWzfqTuR0Q0Qlq7SLADRcofHVxZnN7PLi4dJX0dxPbdT9lF94gve+yjeBxAx0CjtNxQlD4RA6jx
- 1A8+rdIqQLJ+nSLP4ekDu0ul8KCsAN/fmxwOlSlb/yvY=
-X-Received: by 2002:a05:6000:2906:b0:3eb:c276:a347 with SMTP id
- ffacd0b85a97d-42666a9700fmr14230901f8f.0.1760449099645; 
- Tue, 14 Oct 2025 06:38:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTr4/jOIqoVUg6CIZOSz1yoksWQovr0g4YZjumlQG5UIWUrzcM99ZEu+9ytfXFqlAVh6Yw1A==
-X-Received: by 2002:a05:6000:2906:b0:3eb:c276:a347 with SMTP id
- ffacd0b85a97d-42666a9700fmr14230879f8f.0.1760449099090; 
- Tue, 14 Oct 2025 06:38:19 -0700 (PDT)
+ bh=3h9CREHD+hrW6wzadkBuc/EvwxUe2yLhbknJ1TxTLXA=;
+ b=gMWQlzz2AzyL0B19RWRFglKyuUyT575E5V/HSI/MUEal6LcEi+6FtKd5DvVzmgFoP7
+ m3rRvLFkcVdInqXd+c23LC7oGqEz3M1LgaP2/j5e/XseFvyfW2czcvdmwt3V/bXPBQQH
+ OpKebPL6KLdm6/6fYDQ+kll6U2X/0IHWPtoQQ32cvZXy5oCTJ1vCwIGOdRhbANPNps/z
+ 6Afa2bW3ltZUUJlQy0RRksNuX0BqF4ywwYwnv007Hko8/n8V4jkVOQTux5uEW6Ww7S/P
+ Ncbnd0r/Bib49czOLCLl/eKZXefQs83EZyWmXh2nNynBlfdWpG+6ZBnJXgIFfqZJUr2g
+ iLAw==
+X-Gm-Message-State: AOJu0Yyhi//Q2Dc4b0yaDSYxxz/02ESH+8qq6z0l56KguN2FnQW/WD61
+ /jrtSaAt0S55nsvOBxQDwmNyrlxnqMvri5e/GKSSSa3sIU1zVPXRX9Zs7QFnpbKysVMM226bwhU
+ iYBLojVzAfPCQPrWi+W6EIPtvURXKJy8A5Vok6rs0QoHHOwy4UB0qC6DCayA5TjiKiTtel/BQyt
+ e2f3GAuQ8io17/SLCkps/5g62jZkoNQc3uGrZUm/S7
+X-Gm-Gg: ASbGnctt8GwLFtXxh0h3m3V2XxEKzSkiUYmKY2PD6HeuKSrrFlUat0pxr0yAYVvXmky
+ W51TbPyWsr1eDTYtS9Ej83Yl7MtQVEjZ97foEMD/VEyX5GGRbw6FFfxGSJQkYDXHvhlirI4KTWv
+ 3tDhUJShFIBwXO9a5BepjymCd0P5OlsOdnv6hvH4TiZc1oT8AzcTO5H+MWmySzTb4nfdVobZIVi
+ YrUm/U3R1GlyrH5M5uBk0alDaU2kozN2EYKTHvWU/C/0JE2MIzoGjwnZpiwyf0AF1OMnCd4aN8u
+ 8tVfJoIKUWMUEMykq1EoMsqW5BcBjDCTzzqELr6XPiotS0874/rL1Y+AjFmvyfFuYEJHnJ9G5kJ
+ 3AOjZm40YrBbPJt+Pnp/8UQyRNivD70ejTUdZ85YZmTU=
+X-Received: by 2002:a05:600c:3e8d:b0:46d:3a07:73cd with SMTP id
+ 5b1f17b1804b1-46fb409ca81mr127678915e9.23.1760449102381; 
+ Tue, 14 Oct 2025 06:38:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoS9vzCdmARSwdIzPe5BolLkwlUjOwzLaetbBRCGQ4qkcAzfQyfhAo/WzkSDK6omQ2+3hbmg==
+X-Received: by 2002:a05:600c:3e8d:b0:46d:3a07:73cd with SMTP id
+ 5b1f17b1804b1-46fb409ca81mr127678645e9.23.1760449101797; 
+ Tue, 14 Oct 2025 06:38:21 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426f2f72e18sm2451882f8f.0.2025.10.14.06.38.17
+ 5b1f17b1804b1-46fb489197dsm248535045e9.10.2025.10.14.06.38.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:38:17 -0700 (PDT)
+ Tue, 14 Oct 2025 06:38:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 23/28] rust: migration: extract vmstate_fields_ref
-Date: Tue, 14 Oct 2025 15:37:08 +0200
-Message-ID: <20251014133713.1103695-23-pbonzini@redhat.com>
+Subject: [PULL 24/28] rust: move VMState from bql to migration
+Date: Tue, 14 Oct 2025 15:37:09 +0200
+Message-ID: <20251014133713.1103695-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -108,88 +108,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is useful when building a VMState for generic structs, because you have
-to avoid nested statics.  Using vmstate_fields! will fail in the likely case
-where the _FIELDS static uses Self from an outer item, because that is
-forbidden.
-
-The separate macros are needed because you cannot just do
-
-                 .fields(vmstate_fields_ref! {
-                      vmstate_of!(PL011State, clock),
-                 })
-
-The value returned by vmstate_fields_ref! is not promoted to static, which is
-unfortunate but intentional (https://github.com/rust-lang/rust/issues/60502):
-
-error[E0716]: temporary value dropped while borrowed
-   --> rust/hw/char/pl011/libpl011.rlib.p/structured/device.rs:743:17
-    |
-738 | /      VMStateDescriptionBuilder::<PL011State>::new()
-739 | |          .name(c"pl011/clock")
-740 | |          .version_id(1)
-741 | |          .minimum_version_id(1)
-742 | |          .needed(&PL011State::clock_needed)
-743 | |          .fields(vmstate_fields_ref! {
-    | | _________________^
-744 | ||              vmstate_of!(PL011State, clock),
-745 | ||         })
-    | ||_________^- argument requires that borrow lasts for `'static`
-    |  |_________|
-    |            creates a temporary value which is freed while still in use
-746 |            .build();
-    |                   - temporary value is freed at the end of this statement
-
-Thus it is necessary to use the "static", whether explicitly or hidden by
-vmstate_fields.
+The high-level wrapper Migratable<T> will contain a BqlCell,
+which would introduce a circular dependency betwen the bql and
+migration crates.  Move the implementation of VMState for cells
+to "migration", together with the implementation for std types.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/migration/src/vmstate.rs | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ rust/Cargo.lock               | 2 +-
+ rust/bql/Cargo.toml           | 1 -
+ rust/bql/meson.build          | 1 -
+ rust/bql/src/cell.rs          | 6 ------
+ rust/meson.build              | 2 +-
+ rust/migration/Cargo.toml     | 1 +
+ rust/migration/meson.build    | 4 ++--
+ rust/migration/src/vmstate.rs | 2 ++
+ 8 files changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
-index 6b0f96c4da8..59e665f6c3a 100644
---- a/rust/migration/src/vmstate.rs
-+++ b/rust/migration/src/vmstate.rs
-@@ -412,19 +412,30 @@ const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> {
-     }};
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index 11085133490..5c2f8ea9240 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -59,7 +59,6 @@ name = "bql"
+ version = "0.1.0"
+ dependencies = [
+  "glib-sys",
+- "migration",
+ ]
+ 
+ [[package]]
+@@ -198,6 +197,7 @@ checksum = "f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273"
+ name = "migration"
+ version = "0.1.0"
+ dependencies = [
++ "bql",
+  "common",
+  "glib-sys",
+  "util",
+diff --git a/rust/bql/Cargo.toml b/rust/bql/Cargo.toml
+index d5177e5f8e2..8fd81311028 100644
+--- a/rust/bql/Cargo.toml
++++ b/rust/bql/Cargo.toml
+@@ -13,7 +13,6 @@ repository.workspace = true
+ rust-version.workspace = true
+ 
+ [dependencies]
+-migration = { path = "../migration" }
+ glib-sys.workspace = true
+ 
+ [features]
+diff --git a/rust/bql/meson.build b/rust/bql/meson.build
+index 22d7c9b8776..091372dd7b6 100644
+--- a/rust/bql/meson.build
++++ b/rust/bql/meson.build
+@@ -37,7 +37,6 @@ _bql_rs = static_library(
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+   rust_args: _bql_cfg,
+-  link_with: [_migration_rs],
+   dependencies: [glib_sys_rs],
+ )
+ 
+diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
+index 54cfe6145c5..8ade7db629c 100644
+--- a/rust/bql/src/cell.rs
++++ b/rust/bql/src/cell.rs
+@@ -151,8 +151,6 @@
+     ptr::NonNull,
+ };
+ 
+-use migration::impl_vmstate_transparent;
+-
+ /// A mutable memory location that is protected by the Big QEMU Lock.
+ ///
+ /// # Memory layout
+@@ -364,8 +362,6 @@ pub fn take(&self) -> T {
+     }
  }
  
-+/// Add a terminator to the fields in the arguments, and return
-+/// a reference to the resulting array of values.
-+#[macro_export]
-+macro_rules! vmstate_fields_ref {
-+    ($($field:expr),*$(,)*) => {
-+        &[
-+            $($field),*,
-+            $crate::bindings::VMStateField {
-+                flags: $crate::bindings::VMStateFlags::VMS_END,
-+                ..::common::zeroable::Zeroable::ZERO
-+            }
-+        ]
-+    }
-+}
-+
- /// Helper macro to declare a list of
- /// ([`VMStateField`](`crate::bindings::VMStateField`)) into a static and return
- /// a pointer to the array of values it created.
- #[macro_export]
- macro_rules! vmstate_fields {
-     ($($field:expr),*$(,)*) => {{
--        static _FIELDS: &[$crate::bindings::VMStateField] = &[
-+        static _FIELDS: &[$crate::bindings::VMStateField] = $crate::vmstate_fields_ref!(
-             $($field),*,
--            $crate::bindings::VMStateField {
--                flags: $crate::bindings::VMStateFlags::VMS_END,
--                ..::common::zeroable::Zeroable::ZERO
--            }
--        ];
-+        );
-         _FIELDS
-     }}
+-impl_vmstate_transparent!(crate::cell::BqlCell<T> where T: VMState);
+-
+ /// A mutable memory location with dynamically checked borrow rules,
+ /// protected by the Big QEMU Lock.
+ ///
+@@ -691,8 +687,6 @@ fn from(t: T) -> BqlRefCell<T> {
+     }
  }
+ 
+-impl_vmstate_transparent!(crate::cell::BqlRefCell<T> where T: VMState);
+-
+ struct BorrowRef<'b> {
+     borrow: &'b Cell<BorrowFlag>,
+ }
+diff --git a/rust/meson.build b/rust/meson.build
+index 6ba075c8c71..76e10699b37 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -29,8 +29,8 @@ subdir('qemu-macros')
+ subdir('common')
+ subdir('bits')
+ subdir('util')
+-subdir('migration')
+ subdir('bql')
++subdir('migration')
+ subdir('qom')
+ subdir('system')
+ subdir('chardev')
+diff --git a/rust/migration/Cargo.toml b/rust/migration/Cargo.toml
+index 94504f3625c..b995c4c8c88 100644
+--- a/rust/migration/Cargo.toml
++++ b/rust/migration/Cargo.toml
+@@ -13,6 +13,7 @@ repository.workspace = true
+ rust-version.workspace = true
+ 
+ [dependencies]
++bql = { path = "../bql" }
+ common = { path = "../common" }
+ util = { path = "../util" }
+ glib-sys.workspace = true
+diff --git a/rust/migration/meson.build b/rust/migration/meson.build
+index 18be65c92cf..845136239e8 100644
+--- a/rust/migration/meson.build
++++ b/rust/migration/meson.build
+@@ -37,12 +37,12 @@ _migration_rs = static_library(
+   ),
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+-  link_with: [_util_rs],
++  link_with: [_util_rs, _bql_rs],
+   dependencies: [common_rs, glib_sys_rs],
+ )
+ 
+ migration_rs = declare_dependency(link_with: [_migration_rs],
+-  dependencies: [migration, qemuutil])
++  dependencies: [bql_rs, migration, qemuutil])
+ 
+ # Doctests are essentially integration tests, so they need the same dependencies.
+ # Note that running them requires the object files for C code, so place them
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index 59e665f6c3a..445fe7fbc08 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -276,6 +276,8 @@ unsafe impl<$base> $crate::vmstate::VMState for $type where $base: $crate::vmsta
+     };
+ }
+ 
++impl_vmstate_transparent!(bql::BqlCell<T> where T: VMState);
++impl_vmstate_transparent!(bql::BqlRefCell<T> where T: VMState);
+ impl_vmstate_transparent!(std::cell::Cell<T> where T: VMState);
+ impl_vmstate_transparent!(std::cell::UnsafeCell<T> where T: VMState);
+ impl_vmstate_transparent!(std::pin::Pin<T> where T: VMState);
 -- 
 2.51.0
 
