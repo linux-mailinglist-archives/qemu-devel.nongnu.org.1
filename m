@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEDABD82BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 10:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2279BD81D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 10:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8aN8-00058X-S6; Tue, 14 Oct 2025 04:27:06 -0400
+	id 1v8a7D-00005u-7k; Tue, 14 Oct 2025 04:10:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v8aN6-00057v-UN
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 04:27:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v8a7A-000057-2E; Tue, 14 Oct 2025 04:10:36 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v8aN2-0004L9-OV
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 04:27:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760430419;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SQ6bqhqmgQvV3BqM1we6Mx7PD1rUGj8m3YMzOR47ZWs=;
- b=QXrb6BYiWVeDGsfrjKSAxmQe+3aZnfa6ZlQAxqlMsvT+OVCsEwaKmPg5F3fmxLy4swKHL2
- 9L7f1OX9oftLellK1zLj0dobJTgQV/dUGugzwrIrn1w129sosCg/hXhpC/OKwycefpDWCw
- 2eHW+da8EO7HoyGZRLNIi3zBGiRZXJ0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-PLuYjgBAOMufQyEdfzShpw-1; Tue,
- 14 Oct 2025 04:26:55 -0400
-X-MC-Unique: PLuYjgBAOMufQyEdfzShpw-1
-X-Mimecast-MFC-AGG-ID: PLuYjgBAOMufQyEdfzShpw_1760430414
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2A2CC19560BB; Tue, 14 Oct 2025 08:26:54 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.224.78])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CF5301800447; Tue, 14 Oct 2025 08:26:51 +0000 (UTC)
-Date: Tue, 14 Oct 2025 10:26:49 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Subject: Re: [PATCH 2/4] tests: rearrange suites for I/O tests
-Message-ID: <aO4JSRfDAn6Jq7Hn@redhat.com>
-References: <20251008113552.747002-1-berrange@redhat.com>
- <20251008113552.747002-3-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v8a76-00027h-BC; Tue, 14 Oct 2025 04:10:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760429432; x=1791965432;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+rb9fd7gk+4x28bbRTA4dNcOeJ35a1K7hPzPcL6gDAw=;
+ b=eG9DYXRTk1hHUNtByUG0j7PqD6jjh/eYkTvqEk5ys9KgbqpCmyinP3ag
+ Dct/OUP6ytnRdmN7TNFLige+sydX1eFG8YducIjTcI8CZBZtpFeIl3I8v
+ eRrLwb96vAd2t8ICSGaDTFJBfKYm961QmEazqL2pxsCj3J/c+L0itG0G3
+ UJKhOFcZlQb3tcVQFmjJvFkG8sl31emjAQw4cl5XFobi9BfueH9pscLB2
+ bcR80sRrlJn8lmOW3GcmRbOm0/ZAWf4saDlpjHCfv7WgtKDcaz6DVInse
+ 9y+EAPsz2fe3K6sNnKmwljHsEJy2+AcjhP6dezO1ABXpwBlMeIa9Lq4ck g==;
+X-CSE-ConnectionGUID: zK1RHPySRSWYUu/4I4svQg==
+X-CSE-MsgGUID: BBqmGwzqRyqsQCC1tgoWkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="61793295"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="61793295"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2025 01:10:28 -0700
+X-CSE-ConnectionGUID: hxTqizD9TUK8trm29fJs2g==
+X-CSE-MsgGUID: F/s274voTFmQeW7xGWCKZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181772916"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa006.fm.intel.com with ESMTP; 14 Oct 2025 01:10:25 -0700
+Date: Tue, 14 Oct 2025 16:32:30 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Michael Tokarev <mjt@tls.msk.ru>,
+ Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-stable@nongnu.org, hector.cao@canonical.com, lk@c--e.de,
+ berrange@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
+ Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH] target/i386: move arch_capabilities & pdcm compatibility
+ properties from 10.0 to 9.2 machine type
+Message-ID: <aO4KnvVkANLF/3QF@intel.com>
+References: <20251014063650.25057-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251008113552.747002-3-berrange@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20251014063650.25057-1-mjt@tls.msk.ru>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,181 +83,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 08.10.2025 um 13:35 hat Daniel P. Berrangé geschrieben:
-> Currently there are 5 block formats, each classified as either quick,
-> slow or thorough. This classification then determines what tests we
-> add to meson suites. The suites are as follows
-> 
->   * block
-> 
->     => tests listed by 'check -g auto -n' for 'quick' formats
-> 
->   * slow, block-slow
-> 
->     => tests listed by 'check -n' for 'slow' formats or 'check -g auto -n'
->        for 'quick' formats
-> 
->   * thorough, block-thorough
-> 
->     => tests listed by 'check -n' for 'thorough' formats
-> 
-> The pairs of suites 'slow' / 'block-slow' and 'thorough' / 'block-thorough'
-> match in terms of what tests are enabled. The only difference is whether
-> non-block related tests are also in the suite.
-> 
-> There are two problems with this
-> 
->  * If a format is classified as 'quick', we don't expose any
->    meson suite for running *all* tests, only the 'auto' tests.
-> 
->    eg there is no suite to run all qcow2 tests, only 'quick'
->    tests can be run via meson, even if using 'SPEED=slow' we
->    still filter to only 'auto' tests.
-> 
->  * There is no suite that allows running all tests for a given
->    format.
-> 
->    eg there is no suite to run only 'raw' tests - you can only
->    use 'block-slow' which runs both raw and "auto" qcow2 tests.
-> 
->    eg there is no suite to run only 'vpc' tests - you can only
->    use 'block-thorough' which runs qed, vmdk & vpc tests.
-> 
-> This patch suggests that 'block-slow' and 'block-thorough' are
-> not actually compelling use cases, and should be dropped. ie it
-> is not expected that people need to run all VPC, VMDK and QED
-> tests at the same time. Instead a more useful feature is the
-> ability to run all tests for a given format. Further the 'auto'
-> filtering should only apply in the default 'block' target/suite.
-> 
-> IOW, with this patch we get the follows meson suites:
-> 
->  * 'block' - 'auto' tests for any format listed as 'quick'
->              Currently just qcow2 'auto' tests
->  * 'block-$FORMAT' - ALL tests for the given $FORMAT, for each
->                      of qcow2, raw, qed, vmdk & vpc
->  * 'slow' - ALL tests for formats tagged with 'quick' or 'slow'
->  * 'thorough' - ALL tests formats tagged with 'thorough'
-> 
-> This corresponds to the following make targets.
-> 
->  * 'make check-block'
-> 
->     => runs only 'auto' qcow2 tests  (unchanged)
-> 
->  * 'make check-block SPEED=thorough'
-> 
->     => runs all 'qed', 'vmdk', 'vpc' tests (unchanged)
++Christian (who reported the migration bug) and Perter Xu
 
-Also all qcow2 and raw tests, right?
-
-Quotes are a bit inconsistent here in the commit message. Sometimes
-you use quotes for format names like here, but in other places you use
-quotes for 'auto' and leave format names without quotes.
-
->  * 'make check-block SPEED=slow'
+On Tue, Oct 14, 2025 at 09:36:47AM +0300, Michael Tokarev wrote:
+> Date: Tue, 14 Oct 2025 09:36:47 +0300
+> From: Michael Tokarev <mjt@tls.msk.ru>
+> Subject: [PATCH] target/i386: move arch_capabilities & pdcm compatibility
+>  properties from 10.0 to 9.2 machine type
+> X-Mailer: git-send-email 2.47.3
 > 
->     => runs all 'raw' tests (unchanged)
->     => runs all 'qcow2' tests (previously was only 'auto' tests)
+> The two compat properties, introduced by the following commits (f):
 > 
->  * 'make check-block-qcow2'
+>  e9efa4a771 target/i386: add compatibility property for arch_capabilities
+>  6529f31e0d target/i386: add compatibility property for pdcm feature
 > 
->      => runs all qcow2 tests (new feature)
+> were added to address migration issues after the following commits (c10.1):
 > 
->  * 'make check-block-raw'
+>  d3a24134e3 target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
+>  e68ec29809 i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check
 > 
->      => runs all raw tests (new feature)
+> which were added in 10.1 and broke migration from 10.0 to 10.1.
 > 
->  * 'make check-block-vpc'
+> However, the 2 changes which required the compat properties, were
+> mistakenly cherry-picked to 10.0.x stable branch (c10.0):
 > 
->      => runs all vpc tests (new feature)
+>  24778b1c7e target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
+>  3d26cb65c2 i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check
 > 
->  * 'make check-block-qed'
+> and were released as v10.0.4 (and v10.0.5).  This breaks migration
+> from earlier versions to 10.0.4 the same way as it's broken for 10.1
+> where the two fixes (f) are needed.
 > 
->      => runs all qed tests (new feature)
+> However, reverting c10.0 commits from the 10.0.x stable branch will
+> make that branch further incompatible with itself again, in an opposite
+> way.
 > 
->  * 'make check-block-vmdk'
+> It might be better to accept the current situation and "pretend" that
+> the c10.0 commits has "always" been in 10.0 branch.  So the fixups (f)
+> are needed for both 10.0 and 10.1 branches to preserve migration
+> compatibility from the earlier versions and between 10.0 & 10.1 & next.
+> So the fixup commits (f) can be applied to both branches, and on top
+> of that, adjust the machine version for the compat properties from 10.0
+> to the previous, 9.2, machine type.
 > 
->      => runs all vmdk tests (new feature)
+> This is what this change does.
 > 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->  tests/qemu-iotests/meson.build | 48 ++++++++++++++++++++++++++--------
->  1 file changed, 37 insertions(+), 11 deletions(-)
+> Note1: this is an alternative to reverting the two changes (c10.0)
+> from the 10.0.x branch.  If accepted, this will be the first time
+> in history when we modify machine properties retrospectively (or
+> I think so, maybe there were other case like this already).
 > 
-> diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-> index fad340ad59..939a14ffae 100644
-> --- a/tests/qemu-iotests/meson.build
-> +++ b/tests/qemu-iotests/meson.build
-> @@ -35,23 +35,21 @@ endforeach
->  qemu_iotests_check_cmd = files('check')
->  
->  foreach format, speed: qemu_iotests_formats
-> -  if speed == 'quick'
-> -    suites = 'block'
-> -  else
-> -    suites = ['block-' + speed, speed]
-> -  endif
-> -
-> -  args = ['-tap', '-' + format]
-> -  if speed == 'quick'
-> -      args += ['-g', 'auto']
-> -  endif
-> +  listargs = ['-tap', '-' + format]
->  
->    rc = run_command(
-> -      [python, qemu_iotests_check_cmd] + args + ['-n'],
-> +      [python, qemu_iotests_check_cmd] + listargs + ['-n'],
->        check: true,
->    )
->  
->    foreach item: rc.stdout().strip().split()
-> +      suites = ['block-' + format]
-> +      if speed == 'quick'
-> +          suites += ['slow']
-> +      else
-> +          suites += [speed]
-> +      endif
-> +
->        args = [qemu_iotests_check_cmd,
->                '-tap', '-' + format, item,
->                '--source-dir', meson.current_source_dir(),
-> @@ -68,4 +66,32 @@ foreach format, speed: qemu_iotests_formats
->             timeout: 180,
->             suite: suites)
->    endforeach
-> +
-> +  if speed == 'quick'
-> +      listargs += ['-g', 'auto']
-> +      suites = ['block']
-> +
-> +      rc = run_command(
-> +          [python, qemu_iotests_check_cmd] + listargs + ['-n'],
-> +          check: true,
-> +      )
-> +
-> +      foreach item: rc.stdout().strip().split()
-> +          args = [qemu_iotests_check_cmd,
-> +                  '-tap', '-' + format, item,
-> +                  '--source-dir', meson.current_source_dir(),
-> +                  '--build-dir', meson.current_build_dir()]
-> +          # Some individual tests take as long as 45 seconds
-> +          # Bump the timeout to 3 minutes for some headroom
-> +          # on slow machines to minimize spurious failures
-> +          test('io-' + format + '-' + item,
-> +               python,
-> +               args: args,
-> +               depends: qemu_iotests_binaries,
-> +               env: qemu_iotests_env,
-> +               protocol: 'tap',
-> +               timeout: 180,
-> +               suite: suites)
-> +      endforeach
-> +  endif
->  endforeach
+> Note2: I still don't understand the implications of this migration
+> stuff, - what exactly is broken now and what will be broken if this
+> change is accepted, or if (c10.0) are reverted.  We've quite a matrix
+> here:
+> 
+>   10.0.3 and before
+>   10.0.4, 10.0.5 (with c10.0 applied)
+>   10.0.6 and up (with the fix, either revert of (c10.0) or with 2 fixups on top)
+>   10.1.1 and before (before (f) is applied)
+>   10.1.2 and up (with (f) applied and maybe with this fixup applied too)
+> 
+> This set is multiplied further by the number of possible machine versions
+> used in particular setup - if it was -m pc-10.0 or -m pc-10.1.
+> 
+> We also have backwards migration but I don't care about it at this time.
 
-The code itself looks good to me.
+Canonical initially reported migration failures between QEMU 10.0 and
+10.1, so their 10.0 build lacked the original two fixups.
 
-Kevin
+Adding the compat option to pc_compat_9_2 can help stable v10.0.[4,5],
+but Canonical's case will still fail.
 
+I think that if Canonical officially adopts v10.0.[0-3] and hasn't used
+v10.0.[4,5], reverting might be a more viable option. If they plan to
+use v10.0.[4,5], then the current solution is preferable. Understanding
+Canonical's v10.0 status can help evaluate the impact of different
+options.
+
+Regards,
+Zhao
+
+> Note3: It'd be best if we can release a fixed set of versions sooner,
+> so it's finally known which combination is broken for migration and
+> in which way.
+> 
+> Note4: due to my lack of understanding of the brokeness and its severity,
+> I can't decide which way to go from here.  It'd be really nice if I knew
+> at least, like, 'a->b: dies at migration; c->d: migration succeeds, but
+> some OSes might start misbehaving due to changed CPU properties' stuff about
+> the above matrix, - this way, it will be possible to make a better decision.
+> 
+> Thanks, and sorry for the breakage and the long post.
+> 
+>  hw/i386/pc.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 4d6bcbb846..40fb12a3d2 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -87,12 +87,13 @@ const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
+>  GlobalProperty pc_compat_10_0[] = {
+>      { TYPE_X86_CPU, "x-consistent-cache", "false" },
+>      { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
+> -    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
+> -    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
+>  };
+>  const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
+>  
+> -GlobalProperty pc_compat_9_2[] = {};
+> +GlobalProperty pc_compat_9_2[] = {
+> +    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
+> +    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
+> +};
+>  const size_t pc_compat_9_2_len = G_N_ELEMENTS(pc_compat_9_2);
+>  
+>  GlobalProperty pc_compat_9_1[] = {
+> -- 
+> 2.47.3
+> 
 
