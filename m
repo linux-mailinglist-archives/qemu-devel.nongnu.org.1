@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E92BD9C38
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42DCBD9CB3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:43:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fDb-0004w3-FD; Tue, 14 Oct 2025 09:37:35 -0400
+	id 1v8fDd-00055C-Pb; Tue, 14 Oct 2025 09:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDU-0004qy-6S
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v8fDX-0004rw-3d
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDS-0000y4-4U
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:27 -0400
+ id 1v8fDT-0000yR-PP
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449043;
+ s=mimecast20190719; t=1760449046;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cqzK4xMOj6Z3D/xSJ9Ykj+zTwkBuUmwR3JfwFDRx8Yw=;
- b=Z3SLEOWON4QFtTixQ6ZPo/NXRlXeSHhrum4PF9XtxyADitWJZwRnodoEaoeCT2rNhDLvHh
- fVahObKur8x/kKZ80y9PauYEB37Om8FZSr6np9EuQd8j9LAThDxkLWwY1aOYMEOPhE8LUY
- m06t8xJvsrA7JorWQdLwwFoiArVUYUM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BjuuT5ps9Dfi0wcjSzFfW+GOqbh1dg4/Hs0SayeiIrQ=;
+ b=GcXlvhnl3Rurz/OqJ1+MRm9JQnzm5ub5l3ugEi9Sz9Dg8Sgjpql9cRwlds7D+jkY4yoc8l
+ WjDUHg8zGhhFFJtNPmoGxTOGfTgbeAlx2gpFiYjVQFXzrp9R5V1M6J3ijthIV1j9b8LEuq
+ aX1/Y95eQ+4NfByJZK+QxO9rWbDWoL8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-541-6p1dHaMxOsWt7fZaGW_4JA-1; Tue, 14 Oct 2025 09:37:22 -0400
-X-MC-Unique: 6p1dHaMxOsWt7fZaGW_4JA-1
-X-Mimecast-MFC-AGG-ID: 6p1dHaMxOsWt7fZaGW_4JA_1760449041
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-401dbafbcfaso4319905f8f.1
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:22 -0700 (PDT)
+ us-mta-626-m020g0RuNYeHTRlk2LDHgw-1; Tue, 14 Oct 2025 09:37:24 -0400
+X-MC-Unique: m020g0RuNYeHTRlk2LDHgw-1
+X-Mimecast-MFC-AGG-ID: m020g0RuNYeHTRlk2LDHgw_1760449044
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e47d14dceso30829595e9.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449040; x=1761053840;
+ d=1e100.net; s=20230601; t=1760449042; x=1761053842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cqzK4xMOj6Z3D/xSJ9Ykj+zTwkBuUmwR3JfwFDRx8Yw=;
- b=YQt4LLhOy6mZXOdh264zenTPIlv/F4vJgxd/DygPVtcI7HEMzX/t/YIkqkb5VrEXf/
- 7optiKcLIXlweZNAEFQpUmstoKMwOFRusdRtWhN0uuYteikeGTYRg+sti7csDqag0kUs
- Z1VnAfnMSXf09522wGRFnVRXRWFRAiDQrqBxbw31XbIvBthed2l21L7TOHp7+Ym8WvDH
- FWGJrCeylN9fjnIHrzY5jgtLRDkF6Y6+PlEKxdsOZQ8ShUp/o60asf4Z5pYUf8kfcL8+
- dsWmVySRlZdFL4gVyUdpqDmkbXArNKgtr4cII0AcoPskGbJ26gn4SeN3sVZPD/vkrsRU
- Osow==
-X-Gm-Message-State: AOJu0YzQBZvCTnS9Vkvj9F4g65rIWbro50tI+mLdQcPbbQCYVsb9W56y
- a53f8ES80NGRKSSWKXfAPwN/3i7ceA/CqZn/mgIlCN83pVQ5CMQ3bSbzVT7f57E+y6UnTUPBIXH
- 6NmdVCQ8xezWxicqx8KIMK0yLV8xBuobQnNi+FLjhwNgB68FYaYhEOgxz3ZCraN0t/hXYMaiFB0
- D0XAtaG6yxHYhqnspcCLR6lDTiJH+JzCKOYvzQK3uE
-X-Gm-Gg: ASbGncujtgr74joUpiubni2ajeVkq4zcXbg/bD/urhTusOGORHF1KOG9Pm35hS5yjIN
- THKwT9D7LrNWOk4RkNfsvbSIsnJBMCCZkUyl8urDkVX67Hc8LVK33rVoWIMx0bxlbDTv6rzUSBb
- XMx7KSnDBSq5CCznydTpmMI6uVR7N46FRVwoqtLINtCYXZr7+LizgPD4GEMue2Gp8+w/KvXX50R
- g6OfjgV63nJZnFLR0F1Ylo1VkWTAqrGHI7o5gIa1SgBGr7QPCvq2Qb07rQ/U4E4CVROdoQzOutB
- HNJDzUS737/aeLdSGWFgOpMjBGNVeSeAT30oH/O/1F7AophIcHVkW6+IBfS0vP94lJLr0fbG8JJ
- Fm326K4Std7aLjEEIgZMALNAq+dUvsiFLb9tqru3krGA=
-X-Received: by 2002:a05:6000:2305:b0:425:7e45:aaa8 with SMTP id
- ffacd0b85a97d-42667178050mr16077084f8f.19.1760449040306; 
- Tue, 14 Oct 2025 06:37:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzU29JgVkFZ4W8Q1tBLT/IamVpxQegmGCOEfrVnNf9pJSjt0bkMB0AlhOpJxeaQq7KBSafIg==
-X-Received: by 2002:a05:6000:2305:b0:425:7e45:aaa8 with SMTP id
- ffacd0b85a97d-42667178050mr16077057f8f.19.1760449039837; 
- Tue, 14 Oct 2025 06:37:19 -0700 (PDT)
+ bh=BjuuT5ps9Dfi0wcjSzFfW+GOqbh1dg4/Hs0SayeiIrQ=;
+ b=CaPoKkpYAPs8ot1orJk49uaHxQNFUYJfqTwFkclp55O3XycVs6MFiNAvy++tVaCer0
+ wRW04n4fUc5z1XpFKRiL3FIIVXAf0JJmmq6WrnQnD38x8OQWHSZFEeYwlBdQMFM8j0SI
+ VokQB2w63YhgTtw50DS0nDchqvVwmrFv6RfUpz0hAr604u541YzmFFAMUOoDvNJuUBsv
+ xl39HomaLhzIyC6We8z4Ml5YBByUKCPYmM/gniajMrH27ietbFZ2j0vmlTQOR1EZZ7xB
+ vJuhnZ1H2F+/AcAetfA9IfZFZCoC+KJGWyX2qH05Zq/FlGCvYMI+OBM2YZj/TQr+XsbO
+ EhsA==
+X-Gm-Message-State: AOJu0YwDy13orWeMqhcO2b3La3NSXoqk2WZhlAWuuBVH7/0CSCumyvAl
+ tubVfyt1tdOHREejgDsXChILn6ive4yFVQkc9WVA65F1JN7FJRZCBGQIzuSI66CPCriOGERq9DK
+ Rjokw+jnVS+kpus5YLw57SwRhv1i/LzX+3CjjnjDQM8ji4YghoZzlVNQD6wfMgTr23Z+vQVYVo1
+ 9fkzn5pn7rQss1W7umb9NMPRn5Xh0/W0tto8Kwhb2M
+X-Gm-Gg: ASbGncsAtdNWBOL2U65SetLqHw4rG7Eyjt6oS7Unub/MemZVfSyn+TEFmr7Poa+uBJH
+ aWFcjxC2ziWWkT6gWfQv/ImN4N2x31mKo2bUOQ/bkHH89Bo41hj30/8O1Gowt7qKIhw0SVqjsWF
+ LSfXAwg9v4S9/KlZJxU97aIF2B3AG2h5MTCJdtFqdyjyMnkQB3nFVS46qig/mqvUTpyp9CL812h
+ PQrBQdTnButYYtbv4o/6f6hX7KZWoikKsgrkoDB1lDROe2nsm2YysFcCnHPPe7hpNxVRvs2GK8M
+ ev0esvxKyjxL3wbHmWzt/51wrGq7abPeWKRGtTdSvVAS7Slp4I1FrX1s/g1iR6pkK+iCXk4ozYf
+ wGbrdElRKTVW+cOyH+wjKyFStO1Gb0Z6Jp88tFH00btI=
+X-Received: by 2002:a05:600c:6487:b0:46e:39e1:fc27 with SMTP id
+ 5b1f17b1804b1-46fa9a8f0cemr160858255e9.5.1760449042458; 
+ Tue, 14 Oct 2025 06:37:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGz9AQzpHhBkTuqISA71C/vLz0QatAKj7rneETun4Wd4LAeAmU2VW/RUC3bf8fCj5r+f9ysxQ==
+X-Received: by 2002:a05:600c:6487:b0:46e:39e1:fc27 with SMTP id
+ 5b1f17b1804b1-46fa9a8f0cemr160858095e9.5.1760449042048; 
+ Tue, 14 Oct 2025 06:37:22 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5cf6b4sm23838242f8f.25.2025.10.14.06.37.17
+ ffacd0b85a97d-426ed61d31esm4697479f8f.52.2025.10.14.06.37.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:18 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/28] rust: migration: hide more warnings from
- call_func_with_field!
-Date: Tue, 14 Oct 2025 15:36:48 +0200
-Message-ID: <20251014133713.1103695-3-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 04/28] rust: hpet: fix fw_cfg handling
+Date: Tue, 14 Oct 2025 15:36:49 +0200
+Message-ID: <20251014133713.1103695-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,31 +108,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The call_func_with_field! macro uses dead code willingly to infer
-the appropriate type.  This has started adding a new warning:
+HPET ids for fw_cfg are not assigned correctly, because there
+is a read but no write.  This is caught by nightly Rust as
+an unused-assignments warning, so fix it.
 
-error: unused variable: `value__`
- 79 |             break phantom__(&{ let value__: $typ; value__.$($field).+ })
-
-So shut it up together with the existing unreachable_code warning.
-
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/migration/src/vmstate.rs | 1 +
- 1 file changed, 1 insertion(+)
+ rust/hw/timer/hpet/src/fw_cfg.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
-index e04b19b3c9f..5f5708ad39e 100644
---- a/rust/migration/src/vmstate.rs
-+++ b/rust/migration/src/vmstate.rs
-@@ -72,6 +72,7 @@ macro_rules! call_func_with_field {
-     ($func:expr, $typ:ty, $($field:tt).+) => {
-         $func(loop {
-             #![allow(unreachable_code)]
-+            #![allow(unused_variables)]
-             const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> { ::core::marker::PhantomData }
-             // Unreachable code is exempt from checks on uninitialized values.
-             // Use that trick to infer the type of this PhantomData.
+diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
+index e569b57b93b..bb4ea8909ad 100644
+--- a/rust/hw/timer/hpet/src/fw_cfg.rs
++++ b/rust/hw/timer/hpet/src/fw_cfg.rs
+@@ -40,7 +40,7 @@ pub(crate) fn assign_hpet_id() -> Result<usize, &'static str> {
+         assert!(bql::is_locked());
+         // SAFETY: all accesses go through these methods, which guarantee
+         // that the accesses are protected by the BQL.
+-        let mut fw_cfg = unsafe { *addr_of_mut!(hpet_fw_cfg) };
++        let fw_cfg = unsafe { &mut *addr_of_mut!(hpet_fw_cfg) };
+ 
+         if fw_cfg.count == u8::MAX {
+             // first instance
+@@ -60,7 +60,7 @@ pub(crate) fn update_hpet_cfg(hpet_id: usize, timer_block_id: u32, address: u64)
+         assert!(bql::is_locked());
+         // SAFETY: all accesses go through these methods, which guarantee
+         // that the accesses are protected by the BQL.
+-        let mut fw_cfg = unsafe { *addr_of_mut!(hpet_fw_cfg) };
++        let fw_cfg = unsafe { &mut *addr_of_mut!(hpet_fw_cfg) };
+ 
+         fw_cfg.hpet[hpet_id].event_timer_block_id = timer_block_id;
+         fw_cfg.hpet[hpet_id].address = address;
 -- 
 2.51.0
 
