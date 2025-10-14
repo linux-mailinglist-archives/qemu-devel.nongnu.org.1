@@ -2,98 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3A9BDA5D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFD5BDA5FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 17:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8gwn-0007xA-Rj; Tue, 14 Oct 2025 11:28:22 -0400
+	id 1v8gxR-0001IB-HT; Tue, 14 Oct 2025 11:29:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8gwh-0007hM-CH; Tue, 14 Oct 2025 11:28:15 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8gwd-0007nh-Lw; Tue, 14 Oct 2025 11:28:14 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C939115D6E2;
- Tue, 14 Oct 2025 18:27:45 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 47CEF29F61F;
- Tue, 14 Oct 2025 18:28:06 +0300 (MSK)
-Message-ID: <6176d689-ff2f-42c8-a0c6-38f3f87e7da8@tls.msk.ru>
-Date: Tue, 14 Oct 2025 18:28:06 +0300
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8gxO-0001Cg-2w
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:28:58 -0400
+Received: from mail-yx1-xb12b.google.com ([2607:f8b0:4864:20::b12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v8gxH-0007tQ-FO
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 11:28:57 -0400
+Received: by mail-yx1-xb12b.google.com with SMTP id
+ 956f58d0204a3-633be3be1e6so8152615d50.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 08:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760455725; x=1761060525; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ezXMhwOTWnWjGUT/Us2VhLOmjzCZ6KCYiyUvleOD5bo=;
+ b=jYEHThs/35uhgNGNwVXPSb2iQHxb/XKPJ+nEjhr+T7WAW2as89lRrNimovfBqJWvBP
+ QhEaYXc9ABx6SF6UdQNVS/Sy/nkK9BDc98o6YgYE3w+IlclDPborU+fYfN145zikdJhi
+ Sx9+LUST/B/KqEmvJt5xzxybY5nRTS8MXvbzFLUfKrZZMWdwlsZG6/S76AbnLJ5JEynv
+ voMagMIgZy3DayDa/xNE5EZ1kN2fXxt8SvxVVb9bTQHllrzAPR/MuFECeZ7sNSgwgoOw
+ cEN9rlRkasnUl8kOcXsrCv+l8YBqIeVMsZ+xFxj5aPosHA9x5AZeqyuYA6XEI4nnL1sr
+ EmOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760455725; x=1761060525;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ezXMhwOTWnWjGUT/Us2VhLOmjzCZ6KCYiyUvleOD5bo=;
+ b=K6NqMugAJ6QztaOV9uVIWZo2G6xpbNQG23Glx7LHArNzT/OopWjZ4B8P/AOx5CbNo6
+ wHptqEUZYnUuoNrGjstn6gvdn9TQVdmoF91WAgoDJBOuY3CBZfVKy7/6NDXugjVtCWvR
+ qgy0gjUNlpgItNbx6sWXXRWwdLOjNlGAHb3aPwxEVVTpJNexzQsXlrz2eh1Aa7oNgJlP
+ sOXgsHMrx/kTPAvwlN3lE1T7Mz5PZjHBsVytP+F83gOMGNZdM/S7D94CqByRbkta2UlF
+ iHA+PLPAE7ufnHPA5ygklNbTcjWy5bi9UhVEXKRb21MLDRtpq+AlHbkPOZ74jQzUaxgR
+ Zq3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWp6RsO0wo5MGTabmHZ0OeRpBeo4RJ+gLGhesN22hAManc7ArXpD5KkskxBEMd6++58h63h8tbQc7JC@nongnu.org
+X-Gm-Message-State: AOJu0Yy7qRTLUB5pbpjik7QvKztm+OJzbQyiqcDPi6NBij3HMMWB1OJb
+ n2V7H54phHaDNNZ6WDYDOgtNTEu3bEN/ik5kjGTSflczbkdgPFleDWcx+e+ThoQ7C2GjX9KvhFW
+ +9S/aFuS+9Ibiw4M5SRX9OR9tugZ4naruX/zDzW0Y9Q==
+X-Gm-Gg: ASbGncv2RG0RzUi4fLgTP/8SooClTCL9ILK0rB/5qfD+d10LvOAwhEB9hqjiD6WAwWU
+ E4DI4jy70z9FVzofeX2Xcz5NsHTBCbK+sMmmZeMJH2wqXahK4yMP2WExEIhKx+WsJtpYr3czvuw
+ La045nBhw+tgOWYnnd4rAGeKTZiJnSu5z0bxJP7rZIzw/7W8jKsDERuUgE1TyKFdpFVtArSCOo+
+ 3rc6ZTxEOs7BtLkicQUC8kGXyA9f5w=
+X-Google-Smtp-Source: AGHT+IEh6Mot9BTMvMsfgq6NUbgeBX+aVTaoLEcrK+vh8xzQaE9ndPoOkvrd2fIlM2hYpoJm26RobA2JUKaWR7+G8Pw=
+X-Received: by 2002:a05:690e:2d2:b0:636:cc3:af35 with SMTP id
+ 956f58d0204a3-63cbe13ede2mr18321953d50.22.1760455725212; Tue, 14 Oct 2025
+ 08:28:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/23] vhost: drop backend_features field
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, mst@redhat.com
-Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
- raphael.s.norwitz@gmail.com, yc-core@yandex-team.ru,
- d-tatianin@yandex-team.ru, qemu-stable@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- "open list:Block layer core" <qemu-block@nongnu.org>
-References: <20251011232404.561024-1-vsementsov@yandex-team.ru>
- <20251011232404.561024-3-vsementsov@yandex-team.ru>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
- HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
- 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
- /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
- DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
- /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
- 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
- a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
- z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
- y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
- a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
- BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
- /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
- cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
- G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
- b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
- LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
- JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
- 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
- 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
- CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
- k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
- OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
- XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
- tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
- zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
- jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
- xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
- K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
- t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
- +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
- eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
- GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
- Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
- RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
- S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
- wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
- VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
- FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
- YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
- ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
- 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20251011232404.561024-3-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20251010130527.3921602-1-peter.maydell@linaro.org>
+ <35087274-df34-4528-88a2-d855768fb5af@linaro.org>
+ <e3314d25-dd8a-46a9-bbfc-44fba387099a@linaro.org>
+ <CAFEAcA_OLA=Ct7wFHwnfixrYofjyMDuw_5ViNb7Yxu43B12szQ@mail.gmail.com>
+ <ca74ac20-f510-4c78-8f3b-85a551841041@linaro.org>
+In-Reply-To: <ca74ac20-f510-4c78-8f3b-85a551841041@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 14 Oct 2025 16:28:32 +0100
+X-Gm-Features: AS18NWDl9NzxpQT9ga_Dw5sLxgEdYJvX7oby4Kcs8jHD5N6I78aTO2uVNSTfnkM
+Message-ID: <CAFEAcA9MjN3q06COn=_==v+zFt06Qtp9WEy7+yx2JO_L17StCQ@mail.gmail.com>
+Subject: Re: [PULL 00/76] target-arm queue
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,24 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/12/25 02:23, Vladimir Sementsov-Ogievskiy wrote:
-> This field is mostly unused and sometimes confusing (we even have
-> a TODO-like comment to drop it). Let's finally do.
-> 
-> The field is used to held VHOST_USER_F_PROTOCOL_FEATURES for vhost-user
-> and/or VHOST_NET_F_VIRTIO_NET_HDR for vhost-net (which may be
-> vhost-user-net). But we can simply recalculate these two flags in place
-> from hdev->features, and from net-client for VHOST_NET_F_VIRTIO_NET_HDR.
-> 
-> Note: removing field from x-query-virtio-status result is incompatible
-> change. We can do it because the command is unstable.
-> 
-> Cc: qemu-stable@nongnu.org
+On Tue, 14 Oct 2025 at 16:24, Gustavo Romero <gustavo.romero@linaro.org> wrote:
+>
+> Hi Peter,
+>
+> On 10/12/25 16:58, Peter Maydell wrote:
+> > On Fri, 10 Oct 2025 at 20:59, Gustavo Romero <gustavo.romero@linaro.org> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 10/10/25 16:03, Richard Henderson wrote:
+> >>> On 10/10/25 06:04, Peter Maydell wrote:
+> >>>> ----------------------------------------------------------------
+> >>>> target-arm queue:
+> >>>>    * Implement FEAT_GCS
+> >>>>    * Implement FEAT_MEC
+> >>>
+> >>> Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
+> >>
+> >> Could somebody give me access to https://wiki.qemu.org/ChangeLog/10.2, please?
+> >
+> > It should be accessible to anybody with a wiki account, I think.
+> >
+> > (I have already updated it per this pullreq's changes; let me
+> > know if I missed anything.)
+>
+> It's missing FEAT_MEC in the list.
 
-Why do you think this change deserves qemu-stable?  Does it fix a bug or
-is it just a clean-up?
+...and also FEAT_GCS : looks like I didn't update the changelog
+at all for this pullreq. Either I was confusing it with
+some other pullreq, or else I failed to actually save my
+changes or something.
 
-Thanks,
+> But let me add it so I can test my access to the Wiki pages.
 
-/mjt
+Sure -- please add both FEAT_MEC and FEAT_GCS.
+
+-- PMM
 
