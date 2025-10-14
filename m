@@ -2,95 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE4BBD9C6E
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A44A4BD9C8C
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:41:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEM-0005ss-MS; Tue, 14 Oct 2025 09:38:22 -0400
+	id 1v8fEb-0005wz-VR; Tue, 14 Oct 2025 09:38:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEC-0005e4-Vs
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:14 -0400
+ id 1v8fEQ-0005v2-6g
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fE7-00015s-QK
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:12 -0400
+ id 1v8fEG-00016j-7d
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449084;
+ s=mimecast20190719; t=1760449092;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RqD/1IAJB4FUzAxd+H8ERosOQw0rg1wSHVlzec/yl84=;
- b=f1vBUh6UH399utPxJHJF+tXLf4X4Hqo5V5krMrPAVoFwZ4WDq/F6z3CAWtojoSh2a0C+Rx
- qNKcSpeiM6RI+0klHbHkDGYpazxsLQM5mNMFsAoq57ln4LQlHJDRZZbbRPfggXn2XwNV12
- SUQIPoW/zbTpgx5O5aBkGdruoItJUHE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kBi6nmZqJdl0va4wx3o6PVk2Le5zxB7N8Bp43lI1p0c=;
+ b=OonwqXN0Vb/ZuQIkI6VPZa30tQUesJ0lAeB/9wdw4FkeDujDxSlF4grcw5YCQ017SaKnk2
+ WLDJzMlC/khnAW2apOjks/DyTJ98BQMmJBe6iolG5/WjrHvNxijeQ0+hHg6R7t27k97/Oc
+ paMYf5kIHprf5j0esfbzUlqA1hBZsxo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-JEAksl3HPeq7Z53Nlf5oxQ-1; Tue, 14 Oct 2025 09:38:03 -0400
-X-MC-Unique: JEAksl3HPeq7Z53Nlf5oxQ-1
-X-Mimecast-MFC-AGG-ID: JEAksl3HPeq7Z53Nlf5oxQ_1760449082
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e3d43bbc7so31581815e9.2
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:03 -0700 (PDT)
+ us-mta-63-LxZcPUZeMAudoUD4ElL2vA-1; Tue, 14 Oct 2025 09:38:11 -0400
+X-MC-Unique: LxZcPUZeMAudoUD4ElL2vA-1
+X-Mimecast-MFC-AGG-ID: LxZcPUZeMAudoUD4ElL2vA_1760449090
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3f7b5c27d41so3568922f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449081; x=1761053881;
+ d=1e100.net; s=20230601; t=1760449089; x=1761053889;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RqD/1IAJB4FUzAxd+H8ERosOQw0rg1wSHVlzec/yl84=;
- b=Pmw9j3916kaO1u63r1Gl1QbiQru1LCRNJ9KzH3+YVqBL+QjspJ1NUYdvrDuasrytj1
- WV7pS5c8n4vAeainK0Ao4oFeNeITwCD6GhiSft6IJCgAMfD11vrdZOqfc+lnMbX58hDw
- 7blQ7ET9zXTX2fQeXB1kG/bsnmRD0zyNbJ9Zv+2yACaF2D6+bEoY8gsy3u2Sl2mOLdUZ
- GxcvmaG2RP4IfdiGc09X8ClxfAjyI0J7WZVKdNXjRlRkbDVUzID/ou8rh77ZxPB7ZkH+
- UtFuikO22f+WnvUQnmw7oXSmCsJrbYfhFgEpyKgEB0ITKDxNwLQ445fqQm6F3DkdxcXl
- VIGw==
-X-Gm-Message-State: AOJu0YyOqh4RoRj97Yf6MzdgEEp498QDZSXMm8S7kjYbK2jEdT1kEjE1
- eENdHYfgKoxncmzDG5iKCZ98BqYeCOf73SypAoc2QtZtMRvPW0qoIJXxVcOVp6r99ntTeSNTGx+
- OK77yrS45rbnec54LmkJGfFLvNTT8muNyYDZxjJaTHdMlsAWLVsNaKYDMRxblRMVdwdoJXX9mhS
- ywKGD4gHGesqFHXUHTib/8Tv3AiiQ359pF9oNISxT8
-X-Gm-Gg: ASbGncsrQV1KI4np1HBh4K+mmXfhAUsKtNLzuxp8cobCWmA/33226ax68WWF8NDZrYL
- XkzBLB2INj0y/Rpk2Q0FUGp7KgCPsnNAAdQWOROHGUBbiR0mIz9QeV+0Xz8NjDENdKo0R1MgmRB
- c6kvYQL3xid+nRm/EQ2f6nSWc6o1ZOHRSg7IemrXrphjQtsn+JIlmgZob0Liusz2o2UCh7tn1Gr
- NRgmZaVEOFcq+z34Z868DvDuOmbKkcfzdDTuUuKSpjbjJxAovpCBiJlcJffaotcwcqaFEGhLdDC
- kf06+undwPfgtRmqSkyu8cpwr3+w0jWyQyfwLHYjsXPCNvaSuuBE31ObufoauJio7qtXVHHOJSR
- FJOz/CMHgb4TrctRWezjGeji2At6qd8CtLQ03CKo8fU8=
-X-Received: by 2002:a05:600c:19d2:b0:45d:84ca:8a7 with SMTP id
- 5b1f17b1804b1-46fa9a96712mr158389015e9.14.1760449081054; 
- Tue, 14 Oct 2025 06:38:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUIyhryfSs+RE6qwpAkvKUb5CHomkwwPjEP8qM2wMByAzDu26dIUB1nqsXCUJArXjKWPa0PA==
-X-Received: by 2002:a05:600c:19d2:b0:45d:84ca:8a7 with SMTP id
- 5b1f17b1804b1-46fa9a96712mr158388765e9.14.1760449080632; 
- Tue, 14 Oct 2025 06:38:00 -0700 (PDT)
+ bh=kBi6nmZqJdl0va4wx3o6PVk2Le5zxB7N8Bp43lI1p0c=;
+ b=maZQn18A+xPTtAdfbqYnGUJv0FDgojfoSpwIfGu4b95nEda/L8Lm+inJjQxjl6kae2
+ K7pVU0rJSw+vheHIlMHABmJkHW3rrH2ZWUYO9qGodAbKISPI3R8ebRSUYkdO1vkTnfum
+ wRLWGfJnQdLr7YYb5HNL9JYhUtM6+ucJDvJsKWlh45dCdQJhR54przx8Um6idq5mBkGJ
+ mG+JVYrA/wYQ0KYDZ51A1rN53O29DD/EWtYGM+RHKxD9TUAkL+WMTQpouEvcqYcRVBYl
+ vCcqOVc53s+E8CFv/gdR9Rf4izV+d7pr/UHK+OshN3zj5PO14OfCSwp+tJiPjhQXDbbK
+ Yhew==
+X-Gm-Message-State: AOJu0YyKKve83HwpBd7UbkwJWZM392Qww3aVDy1TaU77mgOAN4g6Dtzp
+ 3R+HdLNKvGk0AZRkSmrkKXiABwIjIuAGQFbHr6OdYY7rXzsECRNRHoID8M3oM0eDlckSGno5hbN
+ cA1ngm2aHnGJbdml5SJUqNsfNojrXv8+4/mOaPHQ/3LUMS68Xcp2qzwjYjoccNSmHtFAPYmA1iz
+ ItJqNj9byk4ofloBHc/RlkWQ3gYVnfNwMWmIFZEcV4
+X-Gm-Gg: ASbGncu7reZI1y1VYhZ5+2yy0Jah3RAYwDM0bFCAJStJg815hpiJxPJH1+r1x2YDhDG
+ UipMqaO4sVRflzTUI/EAEbckCUO1qfhJ9l6NlQII97u2uCV72yPnZR6bMIA5XFfOm5/OUmlRVvj
+ n4sBd3etT6WTjCBBokqDj/xvAhAA7Wq0NREh8sQK9rwEjrfT44/znICF2JKDB2pkAwu+IEVEIMu
+ KYzPQVdm/PbQwDXtKlROZizcihXnFCvfnNY+5I4tHxkZqvCr4Of38unlu7nqY7Mt4N5ep9XEPzh
+ zqlBIW+3PEVchOy8s4PgsQ23qi/Y+hIOWEODTpnQ2H+ZKPGPG7PikZKPmWhKeUYXUSyAT9BY8Yx
+ 97DfOt35KYI0rROkaZNfVp2dvOIXvNtu8lw0dlNrx6rU=
+X-Received: by 2002:a5d:5f53:0:b0:426:f4b4:f0fb with SMTP id
+ ffacd0b85a97d-426f4b4f100mr42772f8f.2.1760449089230; 
+ Tue, 14 Oct 2025 06:38:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExh928QlKDojRECS/IuS2gYFM/lyLxAFd/QuloiaqyyRe7Ns/6uwaNv8KHSkWFvNaaf8LvTA==
+X-Received: by 2002:a5d:5f53:0:b0:426:f4b4:f0fb with SMTP id
+ ffacd0b85a97d-426f4b4f100mr42406f8f.2.1760449082967; 
+ Tue, 14 Oct 2025 06:38:02 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb49d03e2sm243126265e9.19.2025.10.14.06.37.59
+ ffacd0b85a97d-426e6f03a76sm8232563f8f.36.2025.10.14.06.38.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:59 -0700 (PDT)
+ Tue, 14 Oct 2025 06:38:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/28] accel/kvm: Factor kvm_cpu_synchronize_put() out
-Date: Tue, 14 Oct 2025 15:37:03 +0200
-Message-ID: <20251014133713.1103695-18-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 19/28] rust: bql: add BqlRefCell::get_mut()
+Date: Tue, 14 Oct 2025 15:37:04 +0200
+Message-ID: <20251014133713.1103695-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -109,105 +107,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+This method is rarely useful in QEMU due to the pervasiveness of
+shared references, but add it for when a &mut BqlRefCell<> is used.
 
-The same code is duplicated 3 times: factor a common method.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20251008040715.81513-4-philmd@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c | 47 ++++++++++++++++++---------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
+ rust/bql/src/cell.rs | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 58802f7c3cc..56031925c4e 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2937,22 +2937,32 @@ void kvm_cpu_synchronize_state(CPUState *cpu)
-     }
- }
- 
--static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
-+static bool kvm_cpu_synchronize_put(CPUState *cpu, KvmPutState state,
-+                                    const char *desc)
- {
-     Error *err = NULL;
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_RESET_STATE, &err);
-+    int ret = kvm_arch_put_registers(cpu, state, &err);
-     if (ret) {
-         if (err) {
--            error_reportf_err(err, "Restoring resisters after reset: ");
-+            error_reportf_err(err, "Restoring resisters %s: ", desc);
-         } else {
--            error_report("Failed to put registers after reset: %s",
-+            error_report("Failed to put registers %s: %s", desc,
-                          strerror(-ret));
+diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
+index 24ab294b60d..54cfe6145c5 100644
+--- a/rust/bql/src/cell.rs
++++ b/rust/bql/src/cell.rs
+@@ -580,6 +580,23 @@ pub fn borrow_mut(&self) -> BqlRefMut<'_, T> {
          }
--        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
--        vm_stop(RUN_STATE_INTERNAL_ERROR);
-+        return false;
      }
  
-     cpu->vcpu_dirty = false;
-+
-+    return true;
-+}
-+
-+static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
-+{
-+    if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RESET_STATE, "after reset")) {
-+        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
-+        vm_stop(RUN_STATE_INTERNAL_ERROR);
++    /// Returns a mutable reference to the underlying data in this cell,
++    /// while the owner already has a mutable reference to the cell.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use bql::BqlRefCell;
++    ///
++    /// let mut c = BqlRefCell::new(5);
++    ///
++    /// *c.get_mut() = 10;
++    /// ```
++    #[inline]
++    pub const fn get_mut(&mut self) -> &mut T {
++        self.value.get_mut()
 +    }
- }
- 
- void kvm_cpu_synchronize_post_reset(CPUState *cpu)
-@@ -2966,19 +2976,9 @@ void kvm_cpu_synchronize_post_reset(CPUState *cpu)
- 
- static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
- {
--    Error *err = NULL;
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_FULL_STATE, &err);
--    if (ret) {
--        if (err) {
--            error_reportf_err(err, "Putting registers after init: ");
--        } else {
--            error_report("Failed to put registers after init: %s",
--                         strerror(-ret));
--        }
-+    if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_FULL_STATE, "after init")) {
-         exit(1);
-     }
--
--    cpu->vcpu_dirty = false;
- }
- 
- void kvm_cpu_synchronize_post_init(CPUState *cpu)
-@@ -3168,20 +3168,11 @@ int kvm_cpu_exec(CPUState *cpu)
-         MemTxAttrs attrs;
- 
-         if (cpu->vcpu_dirty) {
--            Error *err = NULL;
--            ret = kvm_arch_put_registers(cpu, KVM_PUT_RUNTIME_STATE, &err);
--            if (ret) {
--                if (err) {
--                    error_reportf_err(err, "Putting registers after init: ");
--                } else {
--                    error_report("Failed to put registers after init: %s",
--                                 strerror(-ret));
--                }
-+            if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RUNTIME_STATE,
-+                                         "at runtime")) {
-                 ret = -1;
-                 break;
-             }
--
--            cpu->vcpu_dirty = false;
-         }
- 
-         kvm_arch_pre_run(cpu, run);
++
+     /// Returns a raw pointer to the underlying data in this cell.
+     ///
+     /// # Examples
 -- 
 2.51.0
 
