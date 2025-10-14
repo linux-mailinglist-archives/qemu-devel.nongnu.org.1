@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92551BD9C44
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A091BBD9C47
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fDe-0005B2-6v; Tue, 14 Oct 2025 09:37:38 -0400
+	id 1v8fDk-0005OC-L2; Tue, 14 Oct 2025 09:37:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDa-00053V-B3
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:34 -0400
+ id 1v8fDi-0005NX-VQ
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDX-0000yq-Ek
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:34 -0400
+ id 1v8fDf-00011G-Qy
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449048;
+ s=mimecast20190719; t=1760449054;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2dTSUgN6s0KeJhRecE9yb8BWINQmHI2btxAHd/ryNlM=;
- b=CWoGHdZOGP9PvznGNpBNzeLhXEMsR8dAW2/F63ltmxLkND4SR7F1QdOhdz3bTvIYx/3H/3
- foexSgHotbOBycHWQC1X/YINAZ8KqkBYFVavuZ6yAkCHfCNPDzjeMTtkCkUB6j6U2q2nVc
- JkiFk4j1BwIdmeBJkunSKX40gyZI3+g=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uB1cEppwLCqDji7ECAgcmqsbb83VNwGMahtfkyO/muU=;
+ b=iZqVEm/B98VA1JvS0sMqw5QW2nEDZ+NbNbtAUs8eqDE3LcSa38/pEYK0Q3a/vFC+ojo2VC
+ Jk/CQeNtNUZmgizNEgcnCJweDopcQ9Xc8o8h/dcRqluC3XYw8DLIh0+nDzveqFrh/RSoHP
+ U8FxHIt23cqtKhW1lN4B3VbdB/LA4yQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-ZAe6Z7VxO-uXwqy_FRKljw-1; Tue, 14 Oct 2025 09:37:27 -0400
-X-MC-Unique: ZAe6Z7VxO-uXwqy_FRKljw-1
-X-Mimecast-MFC-AGG-ID: ZAe6Z7VxO-uXwqy_FRKljw_1760449046
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3f3c118cbb3so5322091f8f.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:26 -0700 (PDT)
+ us-mta-682-DHyHZyzwOl-FRxo2IexCDQ-1; Tue, 14 Oct 2025 09:37:30 -0400
+X-MC-Unique: DHyHZyzwOl-FRxo2IexCDQ-1
+X-Mimecast-MFC-AGG-ID: DHyHZyzwOl-FRxo2IexCDQ_1760449049
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46e31191379so39306795e9.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449045; x=1761053845;
+ d=1e100.net; s=20230601; t=1760449048; x=1761053848;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2dTSUgN6s0KeJhRecE9yb8BWINQmHI2btxAHd/ryNlM=;
- b=ELedXJUWTCU44wojWtkzTJZaSYQuz+PSUHkbSEtMiX/qU2AKRD5vf0P3uReQLFbNy2
- 4c3WIJMnIZxY3dhAk5nmCU//XuqcWbXhTCjeWmlv5Oz2gwWiwMYX7SmKMmltrfhEI2NV
- DnXflo5p3h/9AyiUf12uLtBcEqg0jAV7LBoK58s6sQmTCZYzTbQwPQ38NEHuwuo5xjAe
- 1cUw3eJxMCjtTaUmWoI9Kj3jFxl64/G/OmCwTaBOaYFMi1n5BPIHhnjFvWwszLYOsLXu
- Bcn6KWF+YdrXC/jZfjEBFhd2xmBIfaMyv3Y7lVRwovFnqyiaClhNpDcrWyGihHD+62ao
- pVZg==
-X-Gm-Message-State: AOJu0YyM1WDY+V8Z2YuKoNDDOLv/0z4UC5eUyzh17Bb7OK79WVQCpJgI
- 8WkRWmJkKZMmd7oTFEYy+j7ES04iEm3r2bXx+cTFOu1+l/zBP4zBrx0CW8/9qBV28tMewd1ECdC
- oWF1bLfOnA+iSPzHw1qLGXb7rmEM77r3hZB2mn/vNnM53eD+yD3HQsdV7BkdR01EPvEtBQP1BL0
- pyGPMkC0QGWzrr4kUo/zdAIzTk/c0y0Wc3eexsDnfy
-X-Gm-Gg: ASbGnct4N3Ilbj8XUSHb4s6OdU+uBuItGFQLUbJGiVnzoXfBZibGtVmqDHCUcDtrPrM
- BMugMUq2GjKjqOa1bb32/fzqxQ1QG+0c+MNUcryg3AoIiVf5bVVD5xi0IBysb/jAbUMmisP0g1o
- 9Ftq0l4JA4ZogKP+a74ZFowyrvWTzKmejYbjEbOaEiwrcsWC74+7nqPGQh/PCyWaerc108qSG4Z
- 8Uq5hNd2v+karpkvFu9TXF19byfGZptty1IF8lgsdMcBYucQLDkAVWuGa8QzW2gdhzb18YJ8fMg
- rHELElDD+tTPRFMe8dV16fO1NuX1RDMJKiauuJn2qep2O3PIQLa7gX/kS4XKcZyj5H+/pQvVOBR
- vMpNs2neZtSkT+X4Qb7c56wbmkzKWojaTAzyGnF4E4cc=
-X-Received: by 2002:a05:6000:4301:b0:3d8:3eca:a978 with SMTP id
- ffacd0b85a97d-4266726d56emr13886053f8f.21.1760449045309; 
- Tue, 14 Oct 2025 06:37:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0SVpkY2U+zhsIzEUgJ96Q+xlYML5tmtcgU3ycYAC2h/ax0YTcD4wgsXLc+v+AV67Yl718Bg==
-X-Received: by 2002:a05:6000:4301:b0:3d8:3eca:a978 with SMTP id
- ffacd0b85a97d-4266726d56emr13886035f8f.21.1760449044869; 
- Tue, 14 Oct 2025 06:37:24 -0700 (PDT)
+ bh=uB1cEppwLCqDji7ECAgcmqsbb83VNwGMahtfkyO/muU=;
+ b=EQa5JnalE/f5Ilw009vz2n0cboEHz0c7NUsr90Nim0N+hVJccPFOeA95+T4Utl1ae9
+ BdZeES3aXa2gsueXTR1zFxA/jNpDj43r2NJ1yc87XKuJfhV4hjAMMABPViX6Z+jaMgbX
+ mG090Eu27t99xK1NfKKPEcGeq2K/uA+52oTJxdePc+fF+rDOeJ2kpj5BS8yq4urJ9mMO
+ 6IvZdPaJGE9//rV0uYtH8yVaZJEx8ZKn+RKE+qrpoy2YCIxCrII4Z48rvkRw6kUsbr2f
+ h8kcePk7Bd5KBlDb8GwmpzOZ0/bhwpOMDBF1a0OdaB4qwL+x1aNC4cyoTBDukrBmBCB5
+ COfw==
+X-Gm-Message-State: AOJu0Yzn69Z/knAw/MWOlEHB4y44//PAsiO3sJDrVzmLf2xsimJvTk2D
+ nod3ecT0HKSiSGEkh7aLtYt6F1AMGgQDntyHCkRP7NSpm+d5teMGnKAMhVSBRHqn6aqvoV3T9Z0
+ kUhSK9e3by5kq/rbG6wZLG0AnfJ0227xlhLvm2Nd8Ffl+2j6lMszEKfjzXbv0uLGENT9O+DhvQa
+ Wx5dc/3sNb9OnsQZRa73LICAowzKqsuxCK3xLLwClp
+X-Gm-Gg: ASbGncu/ZcMMP/nHbJ3DDxeSqbLe1/0dSG5XmoE8IRzdkS2bo/0/tCEtVE20dYIKUAD
+ TIajKI7EZhlb9QXM/qpM5uZHHXMuMh7xlqmXw9uepX4EI3rXp2E+we8SVZADcIBYrFT3PckMGHx
+ 9IWLln+20OiwlxOBLmm3GQnT690zblueJB7/E0maPVdKt4ElMyAwgYkqS5qVzZwmImiHuj5mkoU
+ RRrhItFUzSPa345Mdy1k9P/4vhfdwgO6s81nnIVUgo0D7RoZheJjBfHDum+zrG6KpER+EdYbbaV
+ nHc+g630Zqt/+5epmGrb/8Q5JYzF+KqS9RGoK4BOkirV3Ux1yXyOmQSSFTWau5uXYq8OdX01Gjk
+ j9SIvdn1ivLkTFNX2ASuQw6WyMA01hRItvZEjCHkuPqw=
+X-Received: by 2002:a05:600c:5248:b0:45b:88d6:8ddb with SMTP id
+ 5b1f17b1804b1-46fa9b1968dmr182733005e9.37.1760449047849; 
+ Tue, 14 Oct 2025 06:37:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/PLwuDlRs89C2Oasp7RH2ymVPKoR+ghQxTz11/pik7JgNjVryzuNOxLzeq4nGxdsE7JUYqQ==
+X-Received: by 2002:a05:600c:5248:b0:45b:88d6:8ddb with SMTP id
+ 5b1f17b1804b1-46fa9b1968dmr182732725e9.37.1760449047406; 
+ Tue, 14 Oct 2025 06:37:27 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e10e8sm23711721f8f.39.2025.10.14.06.37.22
+ 5b1f17b1804b1-46fb48a60b8sm243488485e9.19.2025.10.14.06.37.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:23 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:26 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Babu Moger <babu.moger@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 05/28] target/i386: Add TSA attack variants TSA-SQ and TSA-L1
-Date: Tue, 14 Oct 2025 15:36:50 +0200
-Message-ID: <20251014133713.1103695-5-pbonzini@redhat.com>
+Subject: [PULL 06/28] target/i386: Add TSA feature flag verw-clear
+Date: Tue, 14 Oct 2025 15:36:51 +0200
+Message-ID: <20251014133713.1103695-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -115,17 +115,10 @@ Transient Scheduler Attacks (TSA) are new speculative side channel attacks
 related to the execution timing of instructions under specific
 microarchitectural conditions. In some cases, an attacker may be able to
 use this timing information to infer data from other contexts, resulting in
-information leakage.
+information leakage
 
-AMD has identified two sub-variants two variants of TSA.
-CPUID Fn8000_0021 ECX[1] (TSA_SQ_NO).
-	If this bit is 1, the CPU is not vulnerable to TSA-SQ.
-
-CPUID Fn8000_0021 ECX[2] (TSA_L1_NO).
-	If this bit is 1, the CPU is not vulnerable to TSA-L1.
-
-Add the new feature word FEAT_8000_0021_ECX and corresponding bits to
-detect TSA variants.
+CPUID Fn8000_0021 EAX[5] (VERW_CLEAR). If this bit is 1, the memory form of
+the VERW instruction may be used to help mitigate TSA.
 
 Link: https://www.amd.com/content/dam/amd/en/documents/resources/bulletin/technical-guidance-for-mitigating-transient-scheduler-attacks.pdf
 Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -134,72 +127,39 @@ Signed-off-by: Babu Moger <babu.moger@amd.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com
+Link: https://lore.kernel.org/r/e6362672e3a67a9df661a8f46598335a1a2d2754.1752176771.git.babu.moger@amd.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  6 ++++++
- target/i386/cpu.c | 17 +++++++++++++++++
- 2 files changed, 23 insertions(+)
+ target/i386/cpu.h | 2 ++
+ target/i386/cpu.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 8b7c173838e..f74f13534e7 100644
+index f74f13534e7..ce948861a76 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -643,6 +643,7 @@ typedef enum FeatureWord {
-     FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
-     FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
-     FEAT_8000_0021_EBX, /* CPUID[8000_0021].EBX */
-+    FEAT_8000_0021_ECX, /* CPUID[8000_0021].ECX */
-     FEAT_8000_0022_EAX, /* CPUID[8000_0022].EAX */
-     FEAT_C000_0001_EDX, /* CPUID[C000_0001].EDX */
-     FEAT_KVM,           /* CPUID[4000_0001].EAX (KVM_CPUID_FEATURES) */
-@@ -1126,6 +1127,11 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
-  */
- #define CPUID_8000_0021_EBX_RAPSIZE    (8U << 16)
- 
-+/* CPU is not vulnerable TSA SA-SQ attack */
-+#define CPUID_8000_0021_ECX_TSA_SQ_NO  (1U << 1)
-+/* CPU is not vulnerable TSA SA-L1 attack */
-+#define CPUID_8000_0021_ECX_TSA_L1_NO  (1U << 2)
-+
- /* Performance Monitoring Version 2 */
- #define CPUID_8000_0022_EAX_PERFMON_V2  (1U << 0)
- 
+@@ -1104,6 +1104,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_8000_0021_EAX_FS_GS_BASE_NS                (1U << 1)
+ /* LFENCE is always serializing */
+ #define CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING    (1U << 2)
++/* Memory form of VERW mitigates TSA */
++#define CPUID_8000_0021_EAX_VERW_CLEAR                   (1U << 5)
+ /* Null Selector Clears Base */
+ #define CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE            (1U << 6)
+ /* Automatic IBRS */
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index ab18de894e4..339881b40f8 100644
+index 339881b40f8..4f99cbc5c0b 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1415,6 +1415,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         .tcg_features = 0,
-         .unmigratable_flags = 0,
-     },
-+    [FEAT_8000_0021_ECX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .feat_names = {
-+            NULL, "tsa-sq-no", "tsa-l1-no", NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+        },
-+        .cpuid = { .eax = 0x80000021, .reg = R_ECX, },
-+        .tcg_features = 0,
-+        .unmigratable_flags = 0,
-+    },
-     [FEAT_8000_0022_EAX] = {
+@@ -1397,7 +1397,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
          .type = CPUID_FEATURE_WORD,
          .feat_names = {
-@@ -8526,6 +8542,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *eax = *ebx = *ecx = *edx = 0;
-         *eax = env->features[FEAT_8000_0021_EAX];
-         *ebx = env->features[FEAT_8000_0021_EBX];
-+        *ecx = env->features[FEAT_8000_0021_ECX];
-         break;
-     case 0x80000022:
-         *eax = *ebx = *ecx = *edx = 0;
+             "no-nested-data-bp", "fs-gs-base-ns", "lfence-always-serializing", NULL,
+-            NULL, NULL, "null-sel-clr-base", NULL,
++            NULL, "verw-clear", "null-sel-clr-base", NULL,
+             "auto-ibrs", NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
 -- 
 2.51.0
 
