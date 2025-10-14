@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4202DBDB495
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C72BDB474
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:38:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8liP-00015K-5E; Tue, 14 Oct 2025 16:33:49 -0400
+	id 1v8liS-00016l-Rb; Tue, 14 Oct 2025 16:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liM-00013u-W2
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:47 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liQ-00016A-Oq
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:51 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liI-0000U7-5g
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:46 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v8liI-0000UI-Ti
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:33:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=qAS/Iof8SlvxO1WYLJHSsjfSIC9boMyGKPqhPgnpWMA=; b=XtukVYYkm4TpcPX
- uyxHH624h2iBeA3ZIBvrAz/mNQTVqWu4DJL07e1xyUkCC7R7fQxFRq+5PKgEGRfYX8Cb4WQ1SICTj
- /spJMNT1nmBTLEkXFclOQ55Zm3kCu1guvk52s1S+xshOvCW3DxlZi8kTqBXQwVVqWd59XKhaXVcyk
- 3k=;
+ List-Help; bh=TUmJvSUXb1z086TrrU3UN8wTaK6KpbzMPiFq/OCXpAw=; b=Xp2OtosMQ7YN1ow
+ uH5kh2T8jAvMmqsIzQlqSGQ4OZykg8mVc1FmXoMNfS01Cqq4FRl/kcFczO4SQZ8/FvoJFz9ZeC8kB
+ nijrQbKCPZeRMGpLBXkLIsO3k8Th6l3GsVWpNXjHJcmakxBOErqwn0lmOa4vP/QWzRGVePMf1hEOV
+ DI=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [PATCH v3 22/34] target/riscv: Fix size of gei fields
-Date: Tue, 14 Oct 2025 22:34:59 +0200
-Message-ID: <20251014203512.26282-23-anjo@rev.ng>
+Subject: [PATCH v3 23/34] target/riscv: Fix size of [m|s|vs]iselect fields
+Date: Tue, 14 Oct 2025 22:35:00 +0200
+Message-ID: <20251014203512.26282-24-anjo@rev.ng>
 In-Reply-To: <20251014203512.26282-1-anjo@rev.ng>
 References: <20251014203512.26282-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,89 +62,199 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-geilen takes the values 31 or 63, fix it to 8 bits. hgeie and hgeip are
-at most 64 bits in size, fix to 64.  Update relevant function arguments.
+[m|s|vs]iselect are defined in version 20250508 of the privileged
+specification to be XLEN in size, however QEMU only ever uses at most
+16 bits of these fields, so fix them to 16.  Update relevant function
+arguments.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/riscv/cpu.h        | 10 +++++-----
- target/riscv/cpu_helper.c |  4 ++--
- target/riscv/machine.c    |  4 ++--
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ target/riscv/cpu.h     |  6 +++---
+ target/riscv/csr.c     | 32 ++++++++++++++++----------------
+ target/riscv/machine.c |  6 +++---
+ 3 files changed, 22 insertions(+), 22 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1d5d74f11b..f637ab476e 100644
+index f637ab476e..620411b894 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -278,7 +278,7 @@ struct CPUArchState {
- #ifndef CONFIG_USER_ONLY
-     /* This contains QEMU specific information about the virt state. */
-     bool virt_enabled;
--    target_ulong geilen;
-+    uint8_t geilen;
-     uint64_t resetvec;
+@@ -342,8 +342,8 @@ struct CPUArchState {
+     uint8_t siprio[64];
  
-     uint64_t mhartid;
-@@ -355,8 +355,8 @@ struct CPUArchState {
-     uint64_t htval;
-     uint64_t htinst;
-     uint64_t hgatp;
--    target_ulong hgeie;
--    target_ulong hgeip;
-+    uint64_t hgeie;
-+    uint64_t hgeip;
-     uint64_t htimedelta;
-     uint64_t hvien;
+     /* AIA CSRs */
+-    target_ulong miselect;
+-    target_ulong siselect;
++    uint16_t miselect;
++    uint16_t siselect;
+     uint64_t mvien;
+     uint64_t mvip;
  
-@@ -608,8 +608,8 @@ int riscv_cpu_mirq_pending(CPURISCVState *env);
- int riscv_cpu_sirq_pending(CPURISCVState *env);
- int riscv_cpu_vsirq_pending(CPURISCVState *env);
- bool riscv_cpu_fp_enabled(CPURISCVState *env);
--target_ulong riscv_cpu_get_geilen(CPURISCVState *env);
--void riscv_cpu_set_geilen(CPURISCVState *env, target_ulong geilen);
-+uint8_t riscv_cpu_get_geilen(CPURISCVState *env);
-+void riscv_cpu_set_geilen(CPURISCVState *env, uint8_t geilen);
- bool riscv_cpu_vector_enabled(CPURISCVState *env);
- void riscv_cpu_set_virt_enabled(CPURISCVState *env, bool enable);
- int riscv_env_mmu_index(CPURISCVState *env, bool ifetch);
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 26c3c846a5..55c9e9ae29 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -662,7 +662,7 @@ void riscv_cpu_swap_hypervisor_regs(CPURISCVState *env)
-     }
+@@ -389,7 +389,7 @@ struct CPUArchState {
+     uint64_t vsatp;
+ 
+     /* AIA VS-mode CSRs */
+-    target_ulong vsiselect;
++    uint16_t vsiselect;
+ 
+     uint64_t mtval2;
+     uint64_t mtinst;
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 5ba1fe4168..ebdb955869 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -2405,7 +2405,7 @@ static RISCVException rmw_xiselect(CPURISCVState *env, int csrno,
+                                    target_ulong *val, target_ulong new_val,
+                                    target_ulong wr_mask)
+ {
+-    target_ulong *iselect;
++    uint16_t *iselect;
+     int ret;
+ 
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_SVSLCT);
+@@ -2448,18 +2448,18 @@ static RISCVException rmw_xiselect(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
  }
  
--target_ulong riscv_cpu_get_geilen(CPURISCVState *env)
-+uint8_t riscv_cpu_get_geilen(CPURISCVState *env)
+-static bool xiselect_aia_range(target_ulong isel)
++static bool xiselect_aia_range(uint16_t isel)
  {
-     if (!riscv_has_ext(env, RVH)) {
-         return 0;
-@@ -671,7 +671,7 @@ target_ulong riscv_cpu_get_geilen(CPURISCVState *env)
-     return env->geilen;
+     return (ISELECT_IPRIO0 <= isel && isel <= ISELECT_IPRIO15) ||
+            (ISELECT_IMSIC_FIRST <= isel && isel <= ISELECT_IMSIC_LAST);
  }
  
--void riscv_cpu_set_geilen(CPURISCVState *env, target_ulong geilen)
-+void riscv_cpu_set_geilen(CPURISCVState *env, uint8_t geilen)
+-static bool xiselect_cd_range(target_ulong isel)
++static bool xiselect_cd_range(uint16_t isel)
  {
-     if (!riscv_has_ext(env, RVH)) {
-         return;
+     return (ISELECT_CD_FIRST <= isel && isel <= ISELECT_CD_LAST);
+ }
+ 
+-static bool xiselect_ctr_range(int csrno, target_ulong isel)
++static bool xiselect_ctr_range(int csrno, uint16_t isel)
+ {
+     /* MIREG-MIREG6 for the range 0x200-0x2ff are not used by CTR. */
+     return CTR_ENTRIES_FIRST <= isel && isel <= CTR_ENTRIES_LAST &&
+@@ -2467,7 +2467,7 @@ static bool xiselect_ctr_range(int csrno, target_ulong isel)
+ }
+ 
+ static int rmw_iprio(target_ulong xlen,
+-                     target_ulong iselect, uint8_t *iprio,
++                     uint16_t iselect, uint8_t *iprio,
+                      target_ulong *val, target_ulong new_val,
+                      target_ulong wr_mask, int ext_irq_no)
+ {
+@@ -2511,7 +2511,7 @@ static int rmw_iprio(target_ulong xlen,
+     return 0;
+ }
+ 
+-static int rmw_ctrsource(CPURISCVState *env, int isel, target_ulong *val,
++static int rmw_ctrsource(CPURISCVState *env, uint16_t isel, target_ulong *val,
+                           target_ulong new_val, target_ulong wr_mask)
+ {
+     /*
+@@ -2550,7 +2550,7 @@ static int rmw_ctrsource(CPURISCVState *env, int isel, target_ulong *val,
+     return 0;
+ }
+ 
+-static int rmw_ctrtarget(CPURISCVState *env, int isel, target_ulong *val,
++static int rmw_ctrtarget(CPURISCVState *env, uint16_t isel, target_ulong *val,
+                           target_ulong new_val, target_ulong wr_mask)
+ {
+     /*
+@@ -2589,7 +2589,7 @@ static int rmw_ctrtarget(CPURISCVState *env, int isel, target_ulong *val,
+     return 0;
+ }
+ 
+-static int rmw_ctrdata(CPURISCVState *env, int isel, target_ulong *val,
++static int rmw_ctrdata(CPURISCVState *env, uint16_t isel, target_ulong *val,
+                         target_ulong new_val, target_ulong wr_mask)
+ {
+     /*
+@@ -2630,7 +2630,7 @@ static int rmw_ctrdata(CPURISCVState *env, int isel, target_ulong *val,
+ }
+ 
+ static RISCVException rmw_xireg_aia(CPURISCVState *env, int csrno,
+-                         target_ulong isel, target_ulong *val,
++                         uint16_t isel, target_ulong *val,
+                          target_ulong new_val, target_ulong wr_mask)
+ {
+     bool virt = false, isel_reserved = false;
+@@ -2710,12 +2710,12 @@ done:
+ }
+ 
+ static int rmw_xireg_cd(CPURISCVState *env, int csrno,
+-                        target_ulong isel, target_ulong *val,
++                        uint16_t isel, target_ulong *val,
+                         target_ulong new_val, target_ulong wr_mask)
+ {
+     int ret = -EINVAL;
+-    int ctr_index = isel - ISELECT_CD_FIRST;
+-    int isel_hpm_start = ISELECT_CD_FIRST + 3;
++    uint16_t ctr_index = isel - ISELECT_CD_FIRST;
++    uint16_t isel_hpm_start = ISELECT_CD_FIRST + 3;
+ 
+     if (!riscv_cpu_cfg(env)->ext_smcdeleg || !riscv_cpu_cfg(env)->ext_ssccfg) {
+         ret = RISCV_EXCP_ILLEGAL_INST;
+@@ -2782,7 +2782,7 @@ done:
+ }
+ 
+ static int rmw_xireg_ctr(CPURISCVState *env, int csrno,
+-                        target_ulong isel, target_ulong *val,
++                        uint16_t isel, target_ulong *val,
+                         target_ulong new_val, target_ulong wr_mask)
+ {
+     if (!riscv_cpu_cfg(env)->ext_smctr && !riscv_cpu_cfg(env)->ext_ssctr) {
+@@ -2810,7 +2810,7 @@ static int rmw_xireg_ctr(CPURISCVState *env, int csrno,
+  * extension using csrind should be implemented here.
+  */
+ static int rmw_xireg_csrind(CPURISCVState *env, int csrno,
+-                              target_ulong isel, target_ulong *val,
++                              uint16_t isel, target_ulong *val,
+                               target_ulong new_val, target_ulong wr_mask)
+ {
+     bool virt = csrno == CSR_VSIREG ? true : false;
+@@ -2840,7 +2840,7 @@ static int rmw_xiregi(CPURISCVState *env, int csrno, target_ulong *val,
+                       target_ulong new_val, target_ulong wr_mask)
+ {
+     int ret = -EINVAL;
+-    target_ulong isel;
++    uint16_t isel;
+ 
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_SVSLCT);
+     if (ret != RISCV_EXCP_NONE) {
+@@ -2871,7 +2871,7 @@ static RISCVException rmw_xireg(CPURISCVState *env, int csrno,
+                                 target_ulong wr_mask)
+ {
+     int ret = -EINVAL;
+-    target_ulong isel;
++    uint16_t isel;
+ 
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_SVSLCT);
+     if (ret != RISCV_EXCP_NONE) {
 diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index ce5e44325d..8a8f5be8d6 100644
+index 8a8f5be8d6..376075b2bd 100644
 --- a/target/riscv/machine.c
 +++ b/target/riscv/machine.c
-@@ -91,8 +91,8 @@ static const VMStateDescription vmstate_hyper = {
-         VMSTATE_UINT64(env.htval, RISCVCPU),
-         VMSTATE_UINT64(env.htinst, RISCVCPU),
-         VMSTATE_UINT64(env.hgatp, RISCVCPU),
--        VMSTATE_UINTTL(env.hgeie, RISCVCPU),
--        VMSTATE_UINTTL(env.hgeip, RISCVCPU),
-+        VMSTATE_UINT64(env.hgeie, RISCVCPU),
-+        VMSTATE_UINT64(env.hgeip, RISCVCPU),
-         VMSTATE_UINT64(env.hvien, RISCVCPU),
-         VMSTATE_UINT64(env.hvip, RISCVCPU),
-         VMSTATE_UINT64(env.htimedelta, RISCVCPU),
+@@ -108,7 +108,7 @@ static const VMStateDescription vmstate_hyper = {
+         VMSTATE_UINT64(env.vscause, RISCVCPU),
+         VMSTATE_UINT64(env.vstval, RISCVCPU),
+         VMSTATE_UINT64(env.vsatp, RISCVCPU),
+-        VMSTATE_UINTTL(env.vsiselect, RISCVCPU),
++        VMSTATE_UINT16(env.vsiselect, RISCVCPU),
+         VMSTATE_UINT64(env.vsie, RISCVCPU),
+ 
+         VMSTATE_UINT64(env.mtval2, RISCVCPU),
+@@ -467,8 +467,8 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINT64(env.mepc, RISCVCPU),
+         VMSTATE_UINT64(env.mcause, RISCVCPU),
+         VMSTATE_UINT64(env.mtval, RISCVCPU),
+-        VMSTATE_UINTTL(env.miselect, RISCVCPU),
+-        VMSTATE_UINTTL(env.siselect, RISCVCPU),
++        VMSTATE_UINT16(env.miselect, RISCVCPU),
++        VMSTATE_UINT16(env.siselect, RISCVCPU),
+         VMSTATE_UINT32(env.scounteren, RISCVCPU),
+         VMSTATE_UINT32(env.mcounteren, RISCVCPU),
+         VMSTATE_UINT32(env.scountinhibit, RISCVCPU),
 -- 
 2.51.0
 
