@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F7DBDB320
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D528DBDB339
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8lKZ-0003EM-Re; Tue, 14 Oct 2025 16:09:11 -0400
+	id 1v8lL7-0003la-Jc; Tue, 14 Oct 2025 16:09:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8lKP-00032X-Jl
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:09:02 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8lJE-0005Rs-Tw
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:09:00 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-27d3540a43fso56645995ad.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 13:07:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760472465; x=1761077265; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TvgyMGsMGCO23ydvUvmFS9TDLif2EzsiRI0mh1tWq9w=;
- b=nPYPsRamvZ8hlVtY2m+B5XLaXGgIoVfAjbvi4xYx6Z5G578qQTV7YBoonx3RZ7vKLa
- eVJAfavytHG20o+5831rBXlRC95+Zftlr5fefO7pMzNpdqzZh/qvDsUfhi96qQwD6Caq
- BfFbm7anAzRZOtqMZcQN3AW3zbTOwtkPFudTQvI5dtNmwGBvI8TF3yRhV1+I866S1AFE
- dmxhb21efoufROn1TJIZV+h7dEAv8Myhz8Zjcdq+bwmoZ+X8RqpFLpWhZv82a3dPnxgb
- f2pS5/ObLZWtuiwIyEE42XYw4dmlrmPJ85748/KNhDaOEE04OUzmgyxt1/r6ckdI+LAT
- qU3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760472465; x=1761077265;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TvgyMGsMGCO23ydvUvmFS9TDLif2EzsiRI0mh1tWq9w=;
- b=rq+cs/zVeVFAZD55Gr94Xy9Gt4eWTxB7Z25iiMJwoFet+c1eTwGxV6ag6qKtObdj90
- waxvmViUbwIZJjwYFxCFKgBEldpTAnUvF+7UHn7dWBZRbud4mqieyw9ypwD3WeHG3aLY
- JxocWfmscEo14FyKJ1sDtdqfNO8szRj7UXO0uZuVgKCPs10oTweMTW0XN4XLw/JeXYKy
- A/d4e5NZSzSTwausdM2nJiIvV2bIO5ovp7kUIF7tdaepMF81sB4MeNTpJBabxsJWUixx
- gRwBv1LDjWeoyElWQqcUQ0rQiQxxwS8+ElpJyMCBkqNDxSTPS6ptYpaf3PNz3HIAr1G6
- 2G9Q==
-X-Gm-Message-State: AOJu0YzUjdLOj6eaeBn2hK5xcRlv4309UP4ZjwuTUf8SES4u9g5WiufU
- SUjdysel3WDroxbg1d9JANq6QV167oryKWQIEGLpd7KGjY6PD1i9aKGRuI3rEmO7K34Uw80xCUQ
- Zkwieqow=
-X-Gm-Gg: ASbGncvzu/KssmaFnBIXX92sNKBWU1byxxDDK9ObyFN5AlHfaH7tEWflGmRkljEdVL1
- j7vBS3EsWc0uLAwZc1bbUfxoqiChEQUDgRn15w1okpjeKNWhlrAVq3bL6FR17wVdq9w3elx22ff
- LcDPclpssxLje/2E1Ccb/yrUA4nr91Fplvw0vGH+ij3v92+X29tApjzn7uN1ntB7eollExLaVaW
- dv4TQyyQh7w9S/hOjras9IuEWNhgV24UcRipAz8aKJNkMCE6enrq4N/GHv6ZLX3+7Dehy25uRa6
- fmfYJINJ1zI3ikitr93dw3p8XQZMahwms15NvwX5Ui1iPjg8G2DgIR+m5laObKE0zK9W0MTk9RC
- 3/pfcmWjMI3HoM7JxRR5sigDIFakRFx70/qSnXacMuRB0M70Vjcg=
-X-Google-Smtp-Source: AGHT+IGVUSlOtmXSrAxpQFUx/nQbqRv0knhx1iUsgwfzkGZuiIlN6uD8MrHUMp+SW/2gAqy1lODlWg==
-X-Received: by 2002:a17:902:e943:b0:264:f714:8dce with SMTP id
- d9443c01a7336-290272c2542mr318983735ad.36.1760472465174; 
- Tue, 14 Oct 2025 13:07:45 -0700 (PDT)
-Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29034f93ea2sm172100975ad.126.2025.10.14.13.07.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 13:07:44 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 37/37] NOTFORMERGE: Enable FEAT_SYSREG128,
- FEAT_SYSINSTR128 for cpu max
-Date: Tue, 14 Oct 2025 13:07:18 -0700
-Message-ID: <20251014200718.422022-38-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251014200718.422022-1-richard.henderson@linaro.org>
-References: <20251014200718.422022-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1v8lKV-000391-8l
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:09:07 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1v8lJK-0005SZ-3f
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:09:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1760472462; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=Tgt0d8JCs3pnbbw2LY2cD6npWv0HHHVi/WU5l3nc4y/fL7nBRSPX+VbUHEwlXwuz7z9nbWDIghdf9Nsnysh+In+BAb0KmGBjz3Cke/daZWVxTBKE3mYz7xABwiPTaMJaNbzD96u0XAl/Y4vf2gPT2SKDg12NCMwpiPNvJjxyiBk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1760472462;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=5anPb/Aw+6cdNC6EPvJ8LSxBvrXzY9cn0vktTw0DQ14=; 
+ b=E47M5xjtjSeU5cmJlwXfGNzuaUAVGL8tYnD1mOmt60QkVnECcN75J5XEo7p9ua/Ga7foBz2hiH/dgyI3E1iRg4IzhGBSK5NhtQOiBkZJRvWKR8LCZ97YpegaZHyE3MRJD6KaHkIZxlNkIQILPvA+oDgbRkXfwCsxmZ2Y8JfQWDs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760472462; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=5anPb/Aw+6cdNC6EPvJ8LSxBvrXzY9cn0vktTw0DQ14=;
+ b=PDfoBeXxPAIbVoNcF8fIu3zkVEXOA8ClFmfPBkle/aSpPOoTlEgHxgzA6iAIypcD
+ f+d3E5RLeOeilDOe3JkTXnVkOtgQAT0y4DVz2V/+J7pNpWUBfOy4kU8jt8zoJ0msIU9
+ JIq/ajK6IreChJZ2vFp0nkr29iUsCaKyw77A53bQ=
+Received: by mx.zohomail.com with SMTPS id 1760472459377868.4205858169927;
+ Tue, 14 Oct 2025 13:07:39 -0700 (PDT)
+Message-ID: <c54a2b69-5af0-4319-8241-65bbae399e4c@collabora.com>
+Date: Tue, 14 Oct 2025 23:07:32 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH qemu v8 1/1] Honor guest PAT on x86, absent Bochs display
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: ~myrslint <myrskylintu@proton.me>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+References: <176045956423.5579.13349691093596703310-1@git.sr.ht>
+ <2f9abed7-2cb8-4c96-b9cd-5e8d2084b1e7@collabora.com>
+Content-Language: en-US
+In-Reply-To: <2f9abed7-2cb8-4c96-b9cd-5e8d2084b1e7@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,28 +80,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not merge yet, because both of these are enabled
-if and only if FEAT_D128 is also enabled.
+On 10/14/25 23:01, Dmitry Osipenko wrote:
+> On 10/14/25 19:23, ~myrslint wrote:
+>> From: myrslint <qemu.haziness801@passinbox.com>
+>>
+>> On x86_64, where most CPUs support self-snoop, it is preferrable to
+>> always honor guest PAT. Not doing so is a quirk. There is a default
+>> enabled KVM quirk flag which enforces not doing so due to a former bug
+>> in Bochs display driver.
+>>
+>> The bug has been fixed but not enough has yet passed since so we only
+>> disable said quirk flag if a Bochs display is not configured for the
+>> virtual machine.
+>>
+>> This commit also moves around a bit of code that would be called when
+>> the initialization of a VM is done.
+>>
+>> Signed-off-by: myrslint <qemu.haziness801@passinbox.com>
+>> ---
+>>  accel/kvm/kvm-all.c        |  1 +
+>>  accel/stubs/kvm-stub.c     |  1 +
+>>  hw/display/bochs-display.c | 17 +++++++++++++++
+>>  include/system/kvm.h       |  9 ++++++++
+>>  target/i386/kvm/kvm.c      | 42 +++++++++++++++++++++++++++++++-------
+>>  5 files changed, 63 insertions(+), 7 deletions(-)
+> 
+> Looks perfect. Now up to Paolo to review further and apply the patch.
+> 
+> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/cpu64.c | 2 ++
- 1 file changed, 2 insertions(+)
+Ah, the commit title still isn't ideal. It should be prefixed with
+"i386/kvm:" like other kvm commits are in QEMU. Likely Paolo could
+correct it while applying if v9 won't be needed.
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 6871956382..058d5c0ec1 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1254,6 +1254,8 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
-     t = FIELD_DP64(t, ID_AA64ISAR2, CSSC, 1);     /* FEAT_CSSC */
-     t = FIELD_DP64(t, ID_AA64ISAR2, ATS1A, 1);    /* FEAT_ATS1A */
-+    t = FIELD_DP64(t, ID_AA64ISAR2, SYSREG_128, 1);   /* FEAT_SYSREG128 */
-+    t = FIELD_DP64(t, ID_AA64ISAR2, SYSINSTR_128, 1); /* FEAT_SYSINSTR128 */
-     SET_IDREG(isar, ID_AA64ISAR2, t);
- 
-     t = GET_IDREG(isar, ID_AA64PFR0);
 -- 
-2.43.0
-
+Best regards,
+Dmitry
 
