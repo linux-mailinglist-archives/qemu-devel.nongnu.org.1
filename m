@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5ADBD9C56
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9201BD9CAA
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:43:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEH-0005lz-8m; Tue, 14 Oct 2025 09:38:17 -0400
+	id 1v8fEI-0005mf-9q; Tue, 14 Oct 2025 09:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDw-0005TT-AC
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:58 -0400
+ id 1v8fDz-0005VN-GP
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDt-00013r-Am
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:55 -0400
+ id 1v8fDt-000144-IZ
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449070;
+ s=mimecast20190719; t=1760449071;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p7FvYGDrbnzpa7OItG1//SbTNo4zP2HPygbU6jXz7UU=;
- b=A1gMw1KbIjZiRkpCoJTd1iwxPHOt+fUbT/SLUAPU/FfUfr5NojYww1NOXa5T3fGjd9oQ+K
- zify7386umIbNuK5PPelLLm81q9C+koy/FVn9/wBdoJ+VkRaF0m5ytRlNw7Q3JXizoRD0z
- URKUGI2uxhodl5fdZvMLsiy/rEs8r18=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sTZ3ClnJQMXJF+JfzAzYWShwr2lG5rC7REx/EFEbJ/o=;
+ b=icK/Y4W8U1kjTn1b0l2+AQvW6CfEQFMCMNci1q3RG2M1T0tYwqUMAdD2a0CjMW9ePjBpim
+ jbMAobEALNZYIrjF3v2H5AQh0GSyUo+xY+0IBavnFFoPVuep/7TUbnsCJ3xVsaFaP+Aq01
+ tBr5GECSIq/9vRbxdhRIElDVz8EXkoU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-3Vz6BQRHPkCLv_5LCZEUHw-1; Tue, 14 Oct 2025 09:37:48 -0400
-X-MC-Unique: 3Vz6BQRHPkCLv_5LCZEUHw-1
-X-Mimecast-MFC-AGG-ID: 3Vz6BQRHPkCLv_5LCZEUHw_1760449066
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-426d314d0deso2307224f8f.1
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:47 -0700 (PDT)
+ us-mta-631-9ryCwmJ0NvWVIyrkRMJNig-1; Tue, 14 Oct 2025 09:37:50 -0400
+X-MC-Unique: 9ryCwmJ0NvWVIyrkRMJNig-1
+X-Mimecast-MFC-AGG-ID: 9ryCwmJ0NvWVIyrkRMJNig_1760449069
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3efe4fcc9ccso4616596f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449065; x=1761053865;
+ d=1e100.net; s=20230601; t=1760449068; x=1761053868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p7FvYGDrbnzpa7OItG1//SbTNo4zP2HPygbU6jXz7UU=;
- b=K5V9PaN/yhaVMeocW0HbTyzCOs+UBuArFjsg0c4C7qfCoCWeGd76RK5drPPCodQZ1D
- d7JIIpNi/Qu0C69MMSyPYKHXaWfi3RVK1xsrtuuzh1vkb1eoOwFLcsYY1pne3hIT5092
- JWf6iOopBaH0vii063LNFWPl8WdFNk4GFr0xVN/If2JsAvahMh34JZ9KQjViguXrtUgZ
- b5oXALviuBXXtD/5pv49j5wL3X/dwzzMyLcGXLDT5Ixym9uwulnd3O8l/IPjJ8AIzQ5j
- GDT/5RyDUftnHJO3Qj5fKObIRWFhJSOYCVNHzbRVoOQSrv3W3Hb/BycbJiRgCR6EYitZ
- /oyw==
-X-Gm-Message-State: AOJu0YzHJItkHf116XzYejFp4fZ4GplXsyR5mzTXseZ78nUlpmULG9Uj
- Cod0FRHAxIr7zjI+vK9UlrSAHrFcdhSp07F/958jnUV+gHSoCgioV8VrndkEqhYlYIVzF9lwtwX
- wAWgXu2G1bwUva/kkh6JCP8ScOiuaL1g1KmRXetD6HpxKSKzpc+pGRV18koPHwHkq/qCbUSmJhi
- LKN3ABpwv2BnqwlifGOz3Ypkwi/4JaFGoQMspjoExg
-X-Gm-Gg: ASbGncubDnkjJrGX5Csq85QETlkaE5VvW9DpfId863FDfa2nEnaZ/kVCSRG8tLgwrpL
- kJhssqs8KNstJ3fX1AQJRNRtPD9gJs1X5hirCR8+cHrqRLP0NJweS6U5okUY4t0waRk0JZgqgXO
- ntz/alfwLOhUXe/lpJwdEZT+X5QHCaFS13zomK9X7hmFERt1KX4orRV8XfVaizE1BvBQq8cTTVe
- 0agKKl0GXnhNhTJE7yKne3NlrHIdgo67Q+/zUbRJrUOlyAsvvlFrHYnEdGr0F/4hX+K42sEsPX5
- i55DeWCREsmQcXpZpad7W7hkmL/Sf/zytdelZZfBudeMYduEzaETi76zGfp4xB4SwdZB1kcHUgK
- FQuPOPrQC7bHbWg0J4BUkZdlA66obuusWSprByncb/tk=
-X-Received: by 2002:a5d:64e5:0:b0:426:dbef:acb9 with SMTP id
- ffacd0b85a97d-426dbefae8cmr6225659f8f.59.1760449065289; 
- Tue, 14 Oct 2025 06:37:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEplO1pLbjZe1RBpX4n9mG3SzMFiTOsTTJ6T496fJkUx9SSh/t0dSNlIbQw9ibWdORIcge1sg==
-X-Received: by 2002:a5d:64e5:0:b0:426:dbef:acb9 with SMTP id
- ffacd0b85a97d-426dbefae8cmr6225641f8f.59.1760449064873; 
- Tue, 14 Oct 2025 06:37:44 -0700 (PDT)
+ bh=sTZ3ClnJQMXJF+JfzAzYWShwr2lG5rC7REx/EFEbJ/o=;
+ b=OXYell6hYO15WU3qHoeRAg9dYz9e1RyaLFZUz+VAd+OLqnVUvlHe6q3mXWUWrzRPg3
+ TyN09GZQtcy4bZGDWPIXx6WtbNURDPFCd1ov7w/vp5eiGnmsO43VGrJLJTJUwD8gVTbQ
+ R4zIesPzbcejyufFnO1oepLKylkck5/IVa/87HBh4dPHJCw/lIvrAtyGH7xLJGE8m9N9
+ BjRydytMsJhyxJADfCswVnypFdtkgYbf2vTxHIdpSR8OwysIL/9CpcuwhcesknjhhiK+
+ mfF72TR9tJdZze99mTEcFbOgnwXdvpDROPy9pOKaE3NW71HVFhUccPh4Qbmf9eZg9sYJ
+ bbzA==
+X-Gm-Message-State: AOJu0YwB/MPQ2jDs0qopT6ldMlUlVHEBl4jZwyEArefiunQjQCgZQppW
+ nqMGZW2D6D2KoxN7J6GfBWgpzvrmndpZ3Lj6H5Q1JSBfNY0FMfQVrAOnqcY1kAc6jopY3HTIshj
+ CUEQOv/HIPim9bgow8oKtG8stZV4b6H/0QV9jgNc7ToXj76OH7z0I63ONfdC9MYI21pk5fBoykG
+ S2XFGDCkQthVJkwCyhb24Tsb2criQHcqO4T79YNVAI
+X-Gm-Gg: ASbGncsLq7FFjhfrLV0EJJGah0rXeSU95XDHi/aU9zYJuGtNtpk6avoU8heyPArC6vO
+ FF54xpvkvUfQP4aE75M8ctgJDqE2D/xU1sDK578U0tj87HnKmwsxTRc2Dxyoi5TWVhijzLKw9E8
+ KDj+xJva1SQbE0GspbMUM0OjfYcvNBb10q1Lh+QGJDn/2MtOCmqIB/rhgqlHM5Eym2SW+wlhpWT
+ b4n8rUBudl4DsfZ4zJT2kMjvXwFgNWWGl5mhp2yTEBMrHZphUbrMyI8BL32ddrI6S9a4UWBaElh
+ 8V0Y+m7QmoEg8NJ9lk+ZiLKfr68+5mRMpfj03v9AkGna+CF3tuNTsYGV1giHkL9RpbJYVUUE2aM
+ 3AGHKWoqg4lF6S3NwD9RrW95wqwQ8oTvsVe8IMEGR0Co=
+X-Received: by 2002:a05:6000:288c:b0:3dc:eb5:51ea with SMTP id
+ ffacd0b85a97d-4266e8e0995mr16141079f8f.49.1760449067983; 
+ Tue, 14 Oct 2025 06:37:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6Kym2GKQ7rcZhfbWeNFBgZwNZxuBLv0dpUpiOxebr3mC2GbjKhbJx5KGk90AyKaQBtUAASg==
+X-Received: by 2002:a05:6000:288c:b0:3dc:eb5:51ea with SMTP id
+ ffacd0b85a97d-4266e8e0995mr16141051f8f.49.1760449067534; 
+ Tue, 14 Oct 2025 06:37:47 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ed61d31esm4698970f8f.52.2025.10.14.06.37.42
+ ffacd0b85a97d-426ce5cf6b4sm23840092f8f.25.2025.10.14.06.37.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:42 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 12/28] target/i386: fix access to the T bit of the TSS
-Date: Tue, 14 Oct 2025 15:36:57 +0200
-Message-ID: <20251014133713.1103695-12-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	qemu-stable@nongnu.org
+Subject: [PULL 13/28] async: access bottom half flags with qatomic_read
+Date: Tue, 14 Oct 2025 15:36:58 +0200
+Message-ID: <20251014133713.1103695-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -92,7 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,37 +108,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The T bit is bit 0 of the 16-bit word at offset 100 of the TSS.  However,
-accessing it with a 32-bit word is not really correct, because bytes
-102-103 contain the I/O map base address (relative to the base of the
-TSS) and bits 1-15 are reserved.  In particular, any task switch to a TSS that
-has a nonzero I/O map base address is broken.
+Running test-aio-multithread under TSAN reveals data races on bh->flags.
+Because bottom halves may be scheduled or canceled asynchronously,
+without taking a lock, adjust aio_compute_bh_timeout() and aio_ctx_check()
+to use a relaxed read to access the flags.
 
-This fixes the eventinj and taskswitch tests in kvm-unit-tests.
+Use an acquire load to ensure that anything that was written prior to
+qemu_bh_schedule() is visible.
 
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2749
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/851
 Cc: qemu-stable@nongnu.org
-Fixes: ad441b8b791 ("target/i386: implement TSS trap bit", 2025-05-12)
-Reported-by: Thomas Huth <thuth@redhat.com>
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/3101
-Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/seg_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ util/async.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 071f3fbd83d..f49fe851cdf 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -456,7 +456,7 @@ static void switch_tss_ra(CPUX86State *env, int tss_selector,
-             new_segs[i] = access_ldw(&new, tss_base + (0x48 + i * 4));
+diff --git a/util/async.c b/util/async.c
+index 2719c629ae9..a736d2cd0d0 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -256,8 +256,9 @@ static int64_t aio_compute_bh_timeout(BHList *head, int timeout)
+     QEMUBH *bh;
+ 
+     QSLIST_FOREACH_RCU(bh, head, next) {
+-        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+-            if (bh->flags & BH_IDLE) {
++        int flags = qatomic_load_acquire(&bh->flags);
++        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++            if (flags & BH_IDLE) {
+                 /* idle bottom halves will be polled at least
+                  * every 10ms */
+                 timeout = 10000000;
+@@ -335,14 +336,16 @@ aio_ctx_check(GSource *source)
+     aio_notify_accept(ctx);
+ 
+     QSLIST_FOREACH_RCU(bh, &ctx->bh_list, next) {
+-        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++        int flags = qatomic_load_acquire(&bh->flags);
++        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+             return true;
          }
-         new_ldt = access_ldw(&new, tss_base + 0x60);
--        new_trap = access_ldl(&new, tss_base + 0x64);
-+        new_trap = access_ldw(&new, tss_base + 0x64) & 1;
-     } else {
-         /* 16 bit */
-         new_cr3 = 0;
+     }
+ 
+     QSIMPLEQ_FOREACH(s, &ctx->bh_slice_list, next) {
+         QSLIST_FOREACH_RCU(bh, &s->bh_list, next) {
+-            if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++            int flags = qatomic_load_acquire(&bh->flags);
++            if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+                 return true;
+             }
+         }
 -- 
 2.51.0
 
