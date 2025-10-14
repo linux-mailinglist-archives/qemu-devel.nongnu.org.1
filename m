@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24A9BDAC3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B42BDA8E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 18:05:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8ijQ-0000RR-6C; Tue, 14 Oct 2025 13:22:40 -0400
+	id 1v8hWN-0006y7-7M; Tue, 14 Oct 2025 12:05:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dan@islenet.com>) id 1v8gB2-0004kt-6b
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 10:39:02 -0400
-Received: from lin1.islenet.com ([2600:3c03:e000:2e3::1])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1v8hWH-0006xO-VF
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 12:05:02 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dan@islenet.com>) id 1v8gAv-0000Ta-P7
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 10:38:59 -0400
-Received: from localhost (localhost [IPv6:::1])
- by lin1.islenet.com (Postfix) with ESMTP id 0D9CBF587E
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:38:47 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=islenet.com; h=
- mime-version:user-agent:content-transfer-encoding:content-type
- :content-type:references:in-reply-to:date:date:from:from:subject
- :subject:message-id:received:received; s=default; t=1760452726;
- x=1761316727; bh=vdbUDl7UbxlgbDCkGWGOC8k5rQkr5MDU/yFLZqabLys=; b=
- g46JU7Yz8MFBQIzIoLlZWJ1nQUgVekLXblxqlYNNd1SDQPcDf+U+UrpbHPeZG6CQ
- OucQO8vkrDU+1zzVy/wDfmc3SAE72SWCaiglnGo5aqgwXxjg7+k6FehAQpoqcf7U
- yxVP8ngbulVSCMZmvNhlBPQ/kcZjAZ/JqvnBnlo/RDFvBaoJesdXl6oPq4/HGWep
- /n3l5+C8bPIKIeHm1n8ZwC/Bwgg6N6eERk+6fo7DiJJvIXQWuobbEDYLlBeCvvZz
- XmIBLTj0WnUWpJAwofZzEbccWNu+9136fwn9Dp0z9GB+8b/JreCJ9moi1r96GnvZ
- 7WZ5Na1qRV/JI3FFcDFlNA==
-X-Virus-Scanned: amavis at islenet.com
-Received: from lin1.islenet.com ([IPv6:::1])
- by localhost (lin1.islenet.com [IPv6:::1]) (amavis, port 10026) with LMTP
- id LUrFXBjZRne9 for <qemu-devel@nongnu.org>;
- Tue, 14 Oct 2025 10:38:46 -0400 (EDT)
-Received: from venus.islenet.com (unknown [IPv6:2601:985:300:a441::7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lin1.islenet.com (Postfix) with ESMTPSA id BF544F5870
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:38:46 -0400 (EDT)
-Message-ID: <049abab6fcd8a07dc32afd6c914e7dc920bc68ce.camel@islenet.com>
-Subject: Re: DOS 6.22 with LIM 4.0 Expanded Memory
-From: "Daniel L. Srebnick" <dan@islenet.com>
-To: qemu-devel@nongnu.org
-Date: Tue, 14 Oct 2025 10:38:46 -0400
-In-Reply-To: <69de1286-0750-47d1-bac6-26512a339018@linaro.org>
-References: <ebb4d277d49d53e55d9c0d56375df29981631c3e.camel@islenet.com>
- <69de1286-0750-47d1-bac6-26512a339018@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1v8hWE-0004jF-68
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 12:05:01 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1760457885; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=PsezeQPpHkrJEoIftEjDyHpIvqyCcogc4W2oT48brkfUu7U2F3pPPdNWhnt9mCRuPJ5O9w4BSrVVupd9CxDv+xkMEAcDddtZkUmY83jQU76iqhAOE0Qswz93SxNdGMiWmmVwHL4n6zS6fiCTMBbz1efPdyvtdxEFWHI409hmNcU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1760457885;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=xQLomgCMn/wxJQ256pDUjPavFVzjhAJvszM1OScp0W0=; 
+ b=edTY4oCTbOpzymglyWLFaj1zKGnVlgIHAD9E49lOLlthx+w0UfB9sttiIdwN3Ff5M5ayBI0BYd+NGdq09LSZ4U7nwMOafU01DltZJz7M+08KDXHfHr3ZMgyAqWaCHF0puzjninIC6S84mpSNhCRdmCEn14IR1V6rrkT8nkvxUac=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760457885; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=xQLomgCMn/wxJQ256pDUjPavFVzjhAJvszM1OScp0W0=;
+ b=K9iHudF5qxEJhaIzlTNhoUW2+XpljAvhgZD/f1aEWNMVLYH2iv1DCvUu3mATtg1o
+ OEFx/4Sjov1edF7g+D32qp19Ak4R4ZLADZC42Bn9GMc7AdCVIenA2yGzuG1gLIBPHoF
+ VYgk58PeZUBNCBltVjT7xHWvHZagsch0oT3WiXgA=
+Received: by mx.zohomail.com with SMTPS id 1760457882861455.30815142082804;
+ Tue, 14 Oct 2025 09:04:42 -0700 (PDT)
+Message-ID: <ca3d0a47-8ea6-48e1-8063-76fdc362a427@collabora.com>
+Date: Tue, 14 Oct 2025 19:04:35 +0300
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2600:3c03:e000:2e3::1;
- envelope-from=dan@islenet.com; helo=lin1.islenet.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH qemu v7 0/2] Honor guest PAT on x86, absent Bochs display
+To: ~myrslint <myrskylintu@proton.me>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+References: <176045275486.7119.13003157223292391926-0@git.sr.ht>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <176045275486.7119.13003157223292391926-0@git.sr.ht>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 14 Oct 2025 13:22:38 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,20 +78,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2025-10-01 at 23:42 -0300, Gustavo Romero wrote:
->=20
-> A command line to start the VM would be better than the XML file,
-> IMHO.
->=20
+On 10/14/25 17:39, ~myrslint wrote:
+> This is a minor revision of of the proposed patch to disable KVM ignore
+> guest PAT quirk, on x86_64 target, when KVM is available and Bochs DRM
+> display driver is not used.
+> 
+> This revision hopefully addresses the points raised by Dmitry Osipenko
+> <dmitry.osipenko@collabora.com> regarding the v6 one.
+> 
+> As with the v6 of the patch it is intended to address the following
+> issue:
+> https://gitlab.com/qemu-project/qemu/-/issues/2943
+> 
+> myrslint (2):
+>   Honor guest PAT on x86, absent Bochs display
+>   Honor guest PAT on x86, absent Bochs display
+> 
 
-qemu-system-i386 MS-DOS_6.22.qcow2 -machine pc-i440fx-9.2
-
-Assuming that the qcow2 files has an MS-DOS 6.22 image.
-
-In config.sys, you'd need a line like:
-
-device=3Dc:\dos\emm386.exe ram=20
+Something went wrong, you posted two patches here - old and new versions
+with incorrect commit titles.
 
 
-
+-- 
+Best regards,
+Dmitry
 
