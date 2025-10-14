@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005F3BD9C9E
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E94BD9CB9
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:43:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fGf-0004IN-RM; Tue, 14 Oct 2025 09:40:46 -0400
+	id 1v8fIX-0007DL-DF; Tue, 14 Oct 2025 09:42:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v8fGX-0004A9-Ps
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:40:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1v8fHs-00074t-Qt
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:42:04 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v8fGU-0001hh-FX
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:40:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449231;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=XTC2RrrB6xweYC0Ajkktb7AoOX0SYgbkHGC1J1h6wrA=;
- b=VkH+fG6oc7Vvw06pYAfb2Ct8+SXPtbwtogZfPSds3Umg3V5WraF1tqzaDgktNYEXwbbROg
- harGveNnexCpkd2+XT4ZuFI2KR09c7GW0ygKrRGOqP73kc3nhwdjLU2GmI0siQ3GIvJeBs
- zT8LGb+VG7erohvEWaUmydTmT7gwbzc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-DLzMK1VpN0CmOs_JVucs2A-1; Tue,
- 14 Oct 2025 09:40:25 -0400
-X-MC-Unique: DLzMK1VpN0CmOs_JVucs2A-1
-X-Mimecast-MFC-AGG-ID: DLzMK1VpN0CmOs_JVucs2A_1760449224
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 442831800577; Tue, 14 Oct 2025 13:40:23 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.198])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 44BBC1954107; Tue, 14 Oct 2025 13:40:19 +0000 (UTC)
-Date: Tue, 14 Oct 2025 14:40:15 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: marcandre.lureau@redhat.com, pbonzini@redhat.com, eduardo@habkost.net,
- qemu-devel@nongnu.org, raphael@enfabrica.net, armbru@redhat.com,
- yc-core@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: Re: [PATCH v2 0/7] chardev: postpone connect
-Message-ID: <aO5Sv8i4rxLFi-XF@redhat.com>
-References: <20251013133836.852018-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1v8fHV-0001ts-LN
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:41:43 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cmFfg4X3tz6GDSK;
+ Tue, 14 Oct 2025 21:38:35 +0800 (CST)
+Received: from dubpeml100004.china.huawei.com (unknown [7.214.146.78])
+ by mail.maildlp.com (Postfix) with ESMTPS id 832771402FE;
+ Tue, 14 Oct 2025 21:41:25 +0800 (CST)
+Received: from dubpeml500004.china.huawei.com (7.214.147.1) by
+ dubpeml100004.china.huawei.com (7.214.146.78) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 14 Oct 2025 14:41:25 +0100
+Received: from dubpeml500004.china.huawei.com ([7.214.147.1]) by
+ dubpeml500004.china.huawei.com ([7.214.147.1]) with mapi id 15.02.1544.011;
+ Tue, 14 Oct 2025 14:41:25 +0100
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Salil Mehta
+ <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
+Subject: RE: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+Thread-Topic: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+Thread-Index: AQHcPPUb159YqalKN0iW0Ad9cDluebTBcyuAgAAtQ0D///KGAIAAES+Q
+Date: Tue, 14 Oct 2025 13:41:25 +0000
+Message-ID: <b3f9f1d44d8d4a779dcaae2497b8b71b@huawei.com>
+References: <20251014102439.319915-1-peter.maydell@linaro.org>
+ <261d6938fc894b1ca0979aef30fb9e1c@huawei.com>
+ <eebfcb04afc2498d8969d96fcbcf0926@huawei.com>
+ <CAFEAcA_MZu4stZ4MY4zdpM0zy-gNBA3yj4dkuWL3d-FLFZC6rg@mail.gmail.com>
+In-Reply-To: <CAFEAcA_MZu4stZ4MY4zdpM0zy-gNBA3yj4dkuWL3d-FLFZC6rg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.67.200]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251013133836.852018-1-vsementsov@yandex-team.ru>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,52 +77,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 13, 2025 at 04:38:29PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> Hi all!
-> 
-> That's a preparation for backend-transfer migration of
-> vhost-user-blk. For such migration we are going to transfer
-> vhost-user-blk fds, including backend chardev fd to the target
-> in migration stream (backed by UNIX domain socket).
-> 
-> So, on the target, we want to know, should we call connect(),
-> or is it a backend-transfer migration, and we should wait for
-> incoming fd.
-> 
-> But at initialization time we can't know it: user may setup
-> migration parameters (enabling backend-transfer) later.
-> 
-> So, let's postpone chardev open/connect phase up to attaching
-> to frontend. At this point we can check:
-> 
-> - if it's vhost-user-blk, do nothing, let vhost-user-blk decide
->   when to do connect()
-> - otherwise, do connect() at this point
-
-I'm finding it quite unpleasant that we've created a new set of
-callbacks just for the socket backend, and not the other chardev
-backends.
-
-Conceptually it feels like the problem of transferring in pre-
-opened FDs from a previous QEMU should be conceptually relevant
-to all the backend types. If it is, then I very much want us to
-convert all the backends instead of leaving a pile of technical
-debt for someone else in the future.
-
-This series also doesn't illustrate usage of the new model with
-pre-opened FDs, so I'm finding it hard to validate whether
-this design is effective or not.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+PiBGcm9tOiBQZXRlciBNYXlkZWxsIDxwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc+DQo+IFNlbnQ6
+IFR1ZXNkYXksIE9jdG9iZXIgMTQsIDIwMjUgMjozMSBQTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNh
+bGlsLm1laHRhQGh1YXdlaS5jb20+DQo+IA0KPiBPbiBUdWUsIDE0IE9jdCAyMDI1IGF0IDE0OjIz
+LCBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBI
+aSBQZXRlciwNCj4gPg0KPiA+ID4gRnJvbTogcWVtdS1kZXZlbC1ib3VuY2VzK3NhbGlsLm1laHRh
+PWh1YXdlaS5jb21Abm9uZ251Lm9yZw0KPiA8cWVtdS0NCj4gPiA+IGRldmVsLWJvdW5jZXMrc2Fs
+aWwubWVodGE9aHVhd2VpLmNvbUBub25nbnUub3JnPiBPbiBCZWhhbGYgT2YgU2FsaWwNCj4gPiA+
+IE1laHRhIHZpYQ0KPiA+ID4gU2VudDogVHVlc2RheSwgT2N0b2JlciAxNCwgMjAyNSAxMTo0MSBB
+TQ0KPiA+ID4gVG86IFBldGVyIE1heWRlbGwgPHBldGVyLm1heWRlbGxAbGluYXJvLm9yZz47IHFl
+bXUtDQo+IGRldmVsQG5vbmdudS5vcmcNCj4gPiA+DQo+ID4gPiBIaSBQZXRlciwNCj4gPiA+DQo+
+ID4gPiA+IEZyb206IHFlbXUtZGV2ZWwtYm91bmNlcytzYWxpbC5tZWh0YT1odWF3ZWkuY29tQG5v
+bmdudS5vcmcNCj4gPiA+IDxxZW11LQ0KPiA+ID4gPiBkZXZlbC1ib3VuY2VzK3NhbGlsLm1laHRh
+PWh1YXdlaS5jb21Abm9uZ251Lm9yZz4gT24gQmVoYWxmIE9mDQo+ID4gPiA+IGRldmVsLWJvdW5j
+ZXMrUGV0ZXINCj4gPiA+ID4gTWF5ZGVsbA0KPiA+ID4gPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVy
+IDE0LCAyMDI1IDExOjI1IEFNDQo+ID4gPiA+IFRvOiBxZW11LWRldmVsQG5vbmdudS5vcmcNCj4g
+PiA+ID4NCj4gPiA+ID4gQ3VycmVudGx5IGluIGFybV9naWN2M19pY2NfcmVzZXQoKSB3ZSByZWFk
+IHRoZSBrZXJuZWwncyB2YWx1ZSBvZg0KPiA+ID4gPiBJQ0NfQ1RMUl9FTDEgYXMgcGFydCBvZiBy
+ZXNldHRpbmcgdGhlIENQVSBpbnRlcmZhY2UuICBUaGlzIG1vc3RseQ0KPiA+ID4gPiB3b3Jrcywg
+YnV0IHdlJ3JlIGFjdHVhbGx5IGJyZWFraW5nIGFuIGFzc3VtcHRpb24gdGhlIGtlcm5lbCBtYWtl
+cw0KPiA+ID4gPiB0aGF0IHVzZXJzcGFjZSBvbmx5IGFjY2Vzc2VzIHRoZSBpbi1rZXJuZWwgR0lD
+IGRhdGEgd2hlbiB0aGUgVk0gaXMNCj4gPiA+ID4gdG90YWxseSBwYXVzZWQsIHdoaWNoIG1heSBu
+b3QgYmUgdGhlIGNhc2UgaWYgYSBzaW5nbGUgdkNQVSBpcyBiZWluZw0KPiByZXNldC4NCj4gPiA+
+ID4gVGhlIGVmZmVjdCBpcyB0aGF0IGl0J3MgcG9zc2libGUgdGhhdCB0aGUgcmVhZCBhdHRlbXB0
+IHJldHVybnMgRUJVU1kuDQo+ID4gPiA+DQo+ID4gPiA+IEF2b2lkIHRoaXMgYnkgcmVhZGluZyB0
+aGUga2VybmVsJ3MgdmFsdWUgb2YgdGhlIHJlc2V0IElDQ19DVExSX0VMMQ0KPiA+ID4gPiBvbmNl
+IGluIGRldmljZSByZWFsaXplLiBUaGlzIGJyaW5ncyBJQ0NfQ1RMUl9FTDEgaW50byBsaW5lIHdp
+dGgNCj4gPiA+ID4gdGhlIG90aGVyIGNwdWlmIHJlZ2lzdGVycywgd2hlcmUgd2UgYXNzdW1lIHdl
+IGtub3cgd2hhdCB0aGUga2VybmVsDQo+ID4gPiA+IGlzIHJlc2V0dGluZyB0aGVtIHRvIGFuZCBq
+dXN0IHVwZGF0ZSBRRU1VJ3MgZGF0YSBzdHJ1Y3R1cmVzIGluDQo+ID4gPiBhcm1fZ2ljdjNfaWNj
+X3Jlc2V0KCkuDQo+ID4gPiA+DQo+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IFBldGVyIE1heWRlbGwg
+PHBldGVyLm1heWRlbGxAbGluYXJvLm9yZz4NCj4gPiA+ID4gLS0tDQo+ID4gPiA+IEkndmUgb25s
+eSB0ZXN0ZWQgdGhpcyBmYWlybHkgbGlnaHRseSwgYnV0IGl0IHNlZW1zIHRvIHdvcmsuDQo+ID4g
+PiA+IFNhbGlsLCBkb2VzIHRoaXMgZml4IHRoZSBFQlVTWSBpc3N1ZXMgeW91IHdlcmUgc2VlaW5n
+ID8NCj4gPiA+DQo+ID4gPg0KPiA+ID4gTGV0IG1lIHRyeSB0aGlzIGFuZCBnZXQgYmFjayB0byB5
+b3UuICBBbHNvLCBqdXN0IHRvIGxldCB5b3Uga25vdw0KPiA+ID4gdGhhdCAtRUJVU1kgY2FuIHJl
+dHVybiBmcm9tIG90aGVyIHBsYWNlcyBhcyB3ZWxsLiBQbGVhc2UgY2hlY2sgIG15DQo+ID4gPiBy
+ZXBseSBpbiB0aGUgb3RoZXIgbWFpbC0gY2hhaW4uDQo+ID4NCj4gPg0KPiA+IEdvdCB0aGlzLg0K
+PiA+DQo+ID4gKGdkYikgaGFuZGxlIFNJR1VTUjEgbm9zdG9wIG5vcHJpbnQgcGFzcw0KPiA+IFNp
+Z25hbCAgICAgICAgU3RvcCAgICAgIFByaW50ICAgUGFzcyB0byBwcm9ncmFtIERlc2NyaXB0aW9u
+DQo+ID4gU0lHVVNSMSAgICAgICBObyAgICAgICAgTm8gICAgICBZZXMgICAgICAgICAgICAgVXNl
+ciBkZWZpbmVkIHNpZ25hbCAxDQo+ID4gKGdkYikgcnVuDQo+ID4gU3RhcnRpbmcgcHJvZ3JhbToN
+Cj4gPiAvb3B0L3dvcmtzcGFjZS9jb2RlL3FlbXUvcWVtdS9idWlsZC9xZW11LXN5c3RlbS1hYXJj
+aDY0IC0tZW5hYmxlLQ0KPiBrdm0NCj4gPiAtbWFjaGluZSB2aXJ0LGdpYy12ZXJzaW9uPTMgLWNw
+dSBob3N0IC1zbXAgY3B1cz0yLGRpc2FibGVkY3B1cz0yIC1tDQo+ID4gMzAwTSAta2VybmVsIC9v
+cHQvd29ya3NwYWNlL2NvZGUvbGludXgvbGludXgvYXJjaC9hcm02NC9ib290L0ltYWdlDQo+ID4g
+LWluaXRyZCAvb3B0L3dvcmtzcGFjZS9jb2RlL2ZpbGVzeXN0ZW0vcm9vdGZzLmNwaW8uZ3ogLWFw
+cGVuZA0KPiA+IGNvbnNvbGU9dHR5QU1BMFwgcm9vdD0vZGV2L3JhbVwgZWFybHljb25cIHJkaW5p
+dD0vaW5pdFwgbWF4Y3B1cz0xXA0KPiA+IGFjcGk9Zm9yY2UgLW5vZ3JhcGhpYyAtYmlvcw0KPiA+
+IC9vcHQvd29ya3NwYWNlL2NvZGUvdWVmaS9lZGsyL0J1aWxkL0FybVZpcnRRZW11LQ0KPiBBQVJD
+SDY0L1JFTEVBU0VfR0NDNS9GDQo+ID4gVi9RRU1VX0VGSS5mZCBbVGhyZWFkIGRlYnVnZ2luZyB1
+c2luZyBsaWJ0aHJlYWRfZGIgZW5hYmxlZF0gVXNpbmcgaG9zdA0KPiA+IGxpYnRocmVhZF9kYiBs
+aWJyYXJ5ICIvbGliL2FhcmNoNjQtbGludXgtZ251L2xpYnRocmVhZF9kYi5zby4xIi4NCj4gPiBb
+TmV3IFRocmVhZCAweGZmZmZmNWI1ZWI0MCAoTFdQIDMxOTk0KV0gW05ldyBUaHJlYWQgMHhmZmZm
+ZjRlODhiNDANCj4gPiAoTFdQIDMxOTk2KV0gW05ldyBUaHJlYWQgMHhmZmZmZDRkZmViNDAgKExX
+UCAzMTk5NyldIFVuZXhwZWN0ZWQgZXJyb3INCj4gPiBpbiBrdm1fZGV2aWNlX2FjY2VzcygpIGF0
+IC4uL2FjY2VsL2t2bS9rdm0tYWxsLmM6MzQ3NToNCj4gPiBxZW11LXN5c3RlbS1hYXJjaDY0OiBL
+Vk1fR0VUX0RFVklDRV9BVFRSIGZhaWxlZDogR3JvdXAgNiBhdHRyDQo+ID4gMHgwMDAwMDAwMDAw
+MDBjNjY0OiBJbmFwcHJvcHJpYXRlIGlvY3RsIGZvciBkZXZpY2UNCj4gDQo+IERvZXMgaXQgZG8g
+dGhpcyBjb25zaXN0ZW50bHksIG9yIG9ubHkgc29tZXRpbWVzPyBXaGF0IGhvc3Qga2VybmVsIHZl
+cnNpb24gYXJlDQo+IHlvdSBydW5uaW5nPyBBbmQgd2hhdCBRRU1VIGNvbW1pdCAocGx1cyB0aGlz
+IHBhdGNoKT8NCg0KSSd2ZSB0cmllZCAzIHRpbWVzIGFuZCBpdCBoYXBwZW5lZCBhbGwgdGhlIDMg
+dGltZXMgYnV0IHRoaXMgaXMgYSB2ZXJ5IHBlcnRpbmVudA0KcXVlc3Rpb24gYW5kIEknbSBub3Qg
+c3VyZSBpZiBldmVyeSBhdHRlbXB0IHdpbGwgbGVhZCB0byB0aGlzLg0KDQpJIHRob3VnaHQgeW91
+IGFza2VkIG1lIHRvIHZhbGlkYXRlIHRoZSBmaXggYnkgcmVwbGFjaW5nIGJlbG93Og0KDQpodHRw
+czovL2xvcmUua2VybmVsLm9yZy9xZW11LWRldmVsLzIwMjUxMDAxMDEwMTI3LjMwOTI2MzEtMjIt
+c2FsaWwubWVodGFAb3Buc3JjLm5ldC8NCg0KDQpZZXMsIEknbSB1c2luZyB0aGUgcmVjZW50IFJG
+QyBWNiB2Q1BVIEhvdHBsdWcgcGF0Y2hlcyBicmFuY2ggSSd2ZSBwdXNoZWQgdG8gdGhlDQpjb21t
+dW5pdHkuDQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvMjAyNTEwMDEwMTAx
+MjcuMzA5MjYzMS0xLXNhbGlsLm1laHRhQG9wbnNyYy5uZXQvDQoNCllvdSBjYW4gYWxzbyBnZXQg
+aXQgaGVyZToNCmh0dHBzOi8vZ2l0aHViLmNvbS9zYWxpbC1tZWh0YS9xZW11LmdpdCB2aXJ0LWNw
+dWhwLWFybXY4L3JmYy12Ng0KDQoNCkFncmVlZC4gaXRzIHdvcnRoIHNlZWluZyB3aXRob3V0IHRo
+ZSBwYXRjaGVzIGFwcGxpZWQuIEknbGwgc2hhcmUgd2l0aCB5b3UgdGhlDQpyZXN1bHQgc2hvcnRs
+eS4NCg0KDQpUaGFua3MNClNhbGlsLg0KDQo+IA0KPiBJJ20gZ3Vlc3NpbmcgZnJvbSB0aGF0ICJk
+aXNhYmxlZGNwdXM9MiIgcGFydCB0aGF0IHlvdSdyZSBydW5uaW5nIHNvbWUgbm90LQ0KPiB5ZXQt
+dXBzdHJlYW0gc2V0IG9mIFFFTVUgcGF0Y2hlcy4gUGxlYXNlIGRyb3AgdGhvc2UsIGFuZCB0ZXN0
+IG9ubHkgd2l0aA0KPiB0aGlzLCB0byBydWxlIG91dCB0aGUgcG9zc2liaWxpdHkgb2Ygc29tZSBi
+dWcvdW5leHBlY3RlZCBpbnRlcmFjdGlvbiB3aXRoDQo+IHRob3NlLg0KPiANCj4gdGhhbmtzDQo+
+IC0tIFBNTQ0K
 
