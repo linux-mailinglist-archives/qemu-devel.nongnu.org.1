@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D859ABDAC46
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0D2BDAC49
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 19:25:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8ika-00018z-Af; Tue, 14 Oct 2025 13:23:52 -0400
+	id 1v8ikc-00019d-70; Tue, 14 Oct 2025 13:23:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8ikY-000184-4S
+ id 1v8ikY-00018B-Ab
  for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:23:50 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v8ikV-0008CQ-FZ
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:23:49 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-781206cce18so117187b3a.0
+ id 1v8ikV-0008CS-Ei
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 13:23:50 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-782e93932ffso5060787b3a.3
  for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 10:23:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760462624; x=1761067424; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760462625; x=1761067425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KE/L4nHYv6E0nW8LCragzopjp5sCZZHKC1hbmexUOBE=;
- b=VJfO2RcpCNeiZy3RrNBolt4/2mAhCeutmfS0aitPz0gxN4FocQpTgwCvyF94zxea93
- mBVOSRbyV2c0KQm0ZiUiyg6CD9IRmsAEpfSW7mDvlYdcEktz7MmDowV1sLQZw56RQWlL
- ALt+dce4/Z5/N3W/Bca4SaTDO3tjl6vydaZf+KtvNf1LVzuM3zK4XBiV9NvuSLwMFYPc
- u3JhYtcWrbVKaWZFhVbkWsQ0Qu8ERaiLLjntw8Dl03nJDlwFdyYSDqbHOL7nR6fTMw3M
- lD5MRw3tNIXW8V02szYZpEcl246SJt1wsiH19lOCN00nDgnMz6eYLFvf2b6JCR8SnXOj
- Kzog==
+ bh=hB3ew05sFTjrc2BAHZj/TJ6nak9Kqkcz//MuGkF6rNE=;
+ b=VPgxl80ubhvgSwAcMy0yqRAX9MPXiqN978QzeSz61/vUB9rcaWY62UTGB3LQv2RYfZ
+ zVUEn0QMal7t/xgOQWuIaJ8s283dKEcixc9OJDXEgozKVRktstZbgux17vKb7nLrkzsE
+ AaVtTX0+lPLitnLts6BnN3Nx8/KUZUl1UOUtrAS66eYfxcJCl//tVRL5KGZQROXRKtGD
+ NtzNnX2kuwcaq9cSqVLkFjkFsXIKlXXFnNRF08q37Yx3Cxd5THnwRYQan9QlrjVFCQJI
+ zs+GUlajrsf/88HfNeJXQX99VQOl08CR4GkL9b+J0O+u9hNwP1tGfxVpIKcwM9EPVANJ
+ 1uqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760462624; x=1761067424;
+ d=1e100.net; s=20230601; t=1760462625; x=1761067425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KE/L4nHYv6E0nW8LCragzopjp5sCZZHKC1hbmexUOBE=;
- b=XnD/aEUfyCl4F9xUUL3IRp+Jh3rg0YdaP3If/mXQs4nJnyp3SDN1KZOzvt9lQJ2SCo
- nK26dzMieA/suqr0vq/muwGR3T1TtoCfHoyoMyEJitcBeeiPoGle5XQxUR4jl4HwuYkI
- 5D/E/wrF7JLpjsiEs8N7/QhIK8DGfzRt4aoaw23DXzdIDRHxrAI9bltKXYgIMpkhtZrP
- 5VgLoSBMKz7fE7JYde6MPP+PLWOA0+dp+mVaHXFmDEj2eMEbJSsSKxHB8KuhRwSgfCxa
- L5I5YWeTXMYJDO2fJ8ttmI4nQ4onfPK1KAW4l6+fQfiW4Zf15OtzusTwfxUgPPstzpRZ
- sGVw==
-X-Gm-Message-State: AOJu0YzQ4wiywtzasdq5opL46vpg0XRtLyNpk8WQ286wy0goiC9Hhpha
- OK7MkQQRHzndvsMHToERsJwXLZRMAteXzuNCXqkCwblmvhv08VyYI/y68sc/kd5mqple8cFoe/J
- sgGmpGYw=
-X-Gm-Gg: ASbGncvL0ExjWK09G9A4TP6DLZ+eJoWRjSa1oArTZHfSfVuiErNVIJPqOSa4hALAtgm
- BB0ovMIe0RFzdNXcC1Tnrb7KniJusakGdWkaTKNLDRwt+ferRFWJueEVVAtrTGFqxhZP1wj7KrW
- tWpEBvqBgQ5Mh2Tm9hRvxnWbLNUMo4hvEXh8/zw4mz2sPYEruzVj7s6nNZCSd533yET4wrF6fGS
- m7bMaHJkbb49DlLXa942UaqhKMaJBgZaZ88mZSFBoabnJXHh+VKidpGDgRQz9i+toefpQUIREqj
- 8J3/a6BTkMaehmUWhGm2Byx+kReybfddOyq8iogmYWNGV5NimhcmwZFYLnLtkMuvmeQd/sFHGg4
- XutrAe/jLtpYV/c3FPjos06PJXBlzPQqUs0w4xE6JXARbf0OVuNgikJSl/S0ybQ==
-X-Google-Smtp-Source: AGHT+IFWXGc/AkmhwrY9X7IJ2hdP0OJSpVBqJOUktqEDS43YXJRdXLOEx0WkFMTygBXtrBQOBo8b8A==
-X-Received: by 2002:a05:6a00:987:b0:781:1110:f175 with SMTP id
- d2e1a72fcca58-793992757eemr31731545b3a.14.1760462624237; 
+ bh=hB3ew05sFTjrc2BAHZj/TJ6nak9Kqkcz//MuGkF6rNE=;
+ b=ARS15EHOjQPwyfFVucLMhGEWTtEk6aI01IMQUi/iS9gljr7rgI1VYhenmfRNCECkOQ
+ u3NxiWH5BMSx2+xSXDdkW293VE7cvS0x5du/0OO1d+E6xB9CraXgxr2/Fwuq+2TBThkk
+ SI/l32VlfLlA57FcOJMdGzfI0lBkrehIeOq/pHsd12+LOblozjS6UmhdSCMx7BZq3e2z
+ rJ85KHffNKpDPLXOne4E82br86GhxC09kXko07rCkwwIt5A8S94ojwQ7lNv95gugQgFF
+ udkVw+GzkLszcEsgeCmQaQUkgiDJtqnHssEGjEreKJLMI8KXgHSka1OkWc6pQUTDrSZV
+ 3zJg==
+X-Gm-Message-State: AOJu0YzzfzNk3PCUcNQeouUyB99RbMRfI4Ls+MXvgvxLHkNDuvurpvJj
+ pFtCbTyoGQJpC3eAC5dwI7OenHFKwB319QjfR9g7L3nRVWF14MiAccfTa1q0gRxx3QCM0W/7kcP
+ liIOAxsc=
+X-Gm-Gg: ASbGncu4ecqAu4k3o6dex9eH+TGw6VXDaaw9z9SSDYbo83Ps2L+w7oso0ckG/fyCbdu
+ 09VJPJoW8SFtec1nV3aUHA3AfVDawqxmfmrhGp3w3gBNOLPvMPrPafihQxWHLEOD4lCZnMJ4VP6
+ 4ikRHa1YqnZKdMjE72F8MyD3CDVFWRboCRjztWM3wsluk/n1fGEd2+T5fLUG9Q6HS1mVdir9RoS
+ h+Dfw8LX0O818G0idz8BG+53T8hlf/fGiv9bKhTgH/BvFgzIGYnjHB4sDXd9Xt0o4e91YO4Z8aO
+ wl36JkF6ohKZni/YAXOySNzIAbrm4ldcjDSAgqGdFtRofWAqbTXw6XkCRvx50xwnAWVuDaBOlIG
+ dWbe0ZtAyrLuXzSh1jNcXzXC4xcEvemqBgmSJPcO0o+PS5CSyZi6so+mj5uwLwg==
+X-Google-Smtp-Source: AGHT+IFNkh8sAq9fKTei6ASjBB++QBue3bSYFDQBF9q0a9sCpvs2kDpJtIh/oeIhndzwCemV8vTaEQ==
+X-Received: by 2002:a05:6a00:13a8:b0:77d:b0cf:ca14 with SMTP id
+ d2e1a72fcca58-79387a28134mr27668039b3a.22.1760462624919; 
  Tue, 14 Oct 2025 10:23:44 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7992bb116basm15741913b3a.30.2025.10.14.10.23.43
+ d2e1a72fcca58-7992bb116basm15741913b3a.30.2025.10.14.10.23.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 10:23:43 -0700 (PDT)
+ Tue, 14 Oct 2025 10:23:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jon Wilson <jonwilson030981@gmail.com>
-Subject: [PULL 2/3] linux-user: Support MADV_DONTDUMP, MADV_DODUMP
-Date: Tue, 14 Oct 2025 10:23:40 -0700
-Message-ID: <20251014172341.243858-3-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 3/3] accel/tcg: Hoist first page lookup above pointer_wrap
+Date: Tue, 14 Oct 2025 10:23:41 -0700
+Message-ID: <20251014172341.243858-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251014172341.243858-1-richard.henderson@linaro.org>
 References: <20251014172341.243858-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,68 +99,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jon Wilson <jonwilson030981@gmail.com>
+For strict alignment targets we registered cpu_pointer_wrap_notreached,
+but generic code used it before recognizing the alignment exception.
+Hoist the first page lookup, so that the alignment exception happens first.
 
-Set and clear PAGE_DONTDUMP, and honor that in vma_dump_size.
-
-Signed-off-by: Jon Wilson <jonwilson030981@gmail.com>
-[rth: Use new page_set_flags semantics; also handle DODUMP]
+Cc: qemu-stable@nongnu.org
+Buglink: https://bugs.debian.org/1112285
+Fixes: a4027ed7d4be ("target: Use cpu_pointer_wrap_notreached for strict align targets")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/page-protection.h | 6 +++++-
- linux-user/elfload.c           | 4 ++--
- linux-user/mmap.c              | 6 ++++++
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ accel/tcg/cputlb.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/include/exec/page-protection.h b/include/exec/page-protection.h
-index 5a18f98a3a..c50ce57d15 100644
---- a/include/exec/page-protection.h
-+++ b/include/exec/page-protection.h
-@@ -30,7 +30,11 @@
- #define PAGE_PASSTHROUGH 0x40
- /* For linux-user, indicates that the page is MAP_ANON. */
- #define PAGE_ANON      0x0080
--
-+/*
-+ * For linux-user, indicates that the page should not be
-+ * included in a core dump.
-+ */
-+#define PAGE_DONTDUMP  0x0100
- /* Target-specific bits that will be used via page_get_flags().  */
- #define PAGE_TARGET_1  0x0200
- #define PAGE_TARGET_2  0x0400
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 1370ec59be..0002d5be2f 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2127,8 +2127,8 @@ static void bswap_note(struct elf_note *en)
-  */
- static size_t vma_dump_size(vaddr start, vaddr end, int flags)
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 3010dd4f5d..631f1fe135 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1742,6 +1742,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+                        uintptr_t ra, MMUAccessType type, MMULookupLocals *l)
  {
--    /* The area must be readable. */
--    if (!(flags & PAGE_READ)) {
-+    /* The area must be readable and dumpable. */
-+    if (!(flags & PAGE_READ) || (flags & PAGE_DONTDUMP)) {
-         return 0;
-     }
+     bool crosspage;
++    vaddr last;
+     int flags;
  
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 527ca5f211..423c77856a 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -1248,6 +1248,12 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
-      */
-     mmap_lock();
-     switch (advice) {
-+    case MADV_DONTDUMP:
-+        page_set_flags(start, start + len - 1, PAGE_DONTDUMP, 0);
-+        break;
-+    case MADV_DODUMP:
-+        page_set_flags(start, start + len - 1, 0, PAGE_DONTDUMP);
-+        break;
-     case MADV_WIPEONFORK:
-     case MADV_KEEPONFORK:
-         ret = -EINVAL;
+     l->memop = get_memop(oi);
+@@ -1751,13 +1752,15 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+ 
+     l->page[0].addr = addr;
+     l->page[0].size = memop_size(l->memop);
+-    l->page[1].addr = (addr + l->page[0].size - 1) & TARGET_PAGE_MASK;
++    l->page[1].addr = 0;
+     l->page[1].size = 0;
+-    crosspage = (addr ^ l->page[1].addr) & TARGET_PAGE_MASK;
+ 
++    /* Lookup and recognize exceptions from the first page. */
++    mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
++
++    last = addr + l->page[0].size - 1;
++    crosspage = (addr ^ last) & TARGET_PAGE_MASK;
+     if (likely(!crosspage)) {
+-        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
+-
+         flags = l->page[0].flags;
+         if (unlikely(flags & (TLB_WATCHPOINT | TLB_NOTDIRTY))) {
+             mmu_watch_or_dirty(cpu, &l->page[0], type, ra);
+@@ -1767,18 +1770,18 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+         }
+     } else {
+         /* Finish compute of page crossing. */
+-        int size0 = l->page[1].addr - addr;
++        vaddr addr1 = last & TARGET_PAGE_MASK;
++        int size0 = addr1 - addr;
+         l->page[1].size = l->page[0].size - size0;
+         l->page[0].size = size0;
+-
+         l->page[1].addr = cpu->cc->tcg_ops->pointer_wrap(cpu, l->mmu_idx,
+-                                                         l->page[1].addr, addr);
++                                                         addr1, addr);
+ 
+         /*
+-         * Lookup both pages, recognizing exceptions from either.  If the
+-         * second lookup potentially resized, refresh first CPUTLBEntryFull.
++         * Lookup and recognize exceptions from the second page.
++         * If the lookup potentially resized the table, refresh the
++         * first CPUTLBEntryFull pointer.
+          */
+-        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
+         if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
+             uintptr_t index = tlb_index(cpu, l->mmu_idx, addr);
+             l->page[0].full = &cpu->neg.tlb.d[l->mmu_idx].fulltlb[index];
 -- 
 2.43.0
 
