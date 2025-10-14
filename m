@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080C2BDB0BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 21:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBABDBDB0B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 21:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8kZ2-00061l-9D; Tue, 14 Oct 2025 15:20:04 -0400
+	id 1v8kYz-00060Y-PM; Tue, 14 Oct 2025 15:20:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v8kYw-0005zp-VE
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:19:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v8kYw-0005zo-Ox
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:19:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v8kYr-0007Yp-V9
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:19:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v8kYu-0007Yv-Bg
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 15:19:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760469592;
+ s=mimecast20190719; t=1760469593;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V6i0nVanfDujpYn//cEXKWgfyzyv69/ASXLJkx8rKto=;
- b=iXnLYAACMpE/jKhLXftYzN46oXOmmsJohZheX4QCjZRs4yRJxNxUzi1+wMZx27PiDVrBO/
- 6KA3isSSAtb8S1WbIERRap+1TweVchLtSY6mP//BQ8AbIgceHHD+0xmtJW5PGFWDBUQqJC
- LymOwoW8SllOpFnRqXSX0LRkprVHQKs=
+ bh=V+VWQlRtDiKUJEtuqAgZyiqfrGUS0b2sMRTtBiC3lXE=;
+ b=d77Vq/QmMu3MWK+4OQ2unumvW2B7aRTwkYy6m5btBULLEGetJThH5LT0/cmczZj94nd3RK
+ 3r48mVU2CUGlp4V/qrZkwlbJ1OO+cZE2n5uUcb4UVo2F3SahGDvhzg3EThWSinhWIa4LRx
+ 6hDgESO22YAzaAyipMYrtm5BJkJi9ts=
 Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
  [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-ZQbf-LLYOCKFmFpYg18YRw-1; Tue, 14 Oct 2025 15:19:50 -0400
-X-MC-Unique: ZQbf-LLYOCKFmFpYg18YRw-1
-X-Mimecast-MFC-AGG-ID: ZQbf-LLYOCKFmFpYg18YRw_1760469590
+ us-mta-633-ZbC3z-73NKK4nxwViJpfhw-1; Tue, 14 Oct 2025 15:19:52 -0400
+X-MC-Unique: ZbC3z-73NKK4nxwViJpfhw-1
+X-Mimecast-MFC-AGG-ID: ZbC3z-73NKK4nxwViJpfhw_1760469592
 Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-856c1aa079bso86834485a.0
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 12:19:50 -0700 (PDT)
+ af79cd13be357-86df46fa013so3583462985a.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 12:19:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760469589; x=1761074389;
+ d=1e100.net; s=20230601; t=1760469591; x=1761074391;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V6i0nVanfDujpYn//cEXKWgfyzyv69/ASXLJkx8rKto=;
- b=u2WBaBhIHJCSojqhPq/7nHsVW8Q2pVYbXLe5A17REFnAuEnX3kk3jq1+uMwQoqG3wP
- B1a6tjobxki3JRoYJXyYMtF3nRI1tkL7Ae8SxtvyGeywgU+tUTLGJPqcuYbNAJXbFM63
- pBlxJ+NE/8CSvTijgYHqbHb3/RspkPcdv+fqq+GOMS8ARPL4ej4m4pEV5GM1N1ZI4fIL
- lcTq3VKk4zHllpCxBTsNkj54vPprsutIvEUl7JEPKnTBGMEn+lvJgxt1z8zqnuWMhe2B
- WR4dqjdhyhdUPA40yvil9yIiPspWm73SkVj3UVPTdk0qzG7GYATf7Ne0n89ZxvdvVYdC
- JbpA==
-X-Gm-Message-State: AOJu0YwBtK6fzz+eGSyfafZ9S/755Pr2xokcOWg38xYAfb6oUnwnOWgQ
- eeaMfD4Q+VOq0+/gQCnqUfQ4ZT+3IeUN4wjqD8KgVuD7diFXqjiAjVooFDs8HVIv247Ic7XnXAq
- tpkfUBgb8BgrjLoIAWkSPfo+jJ/0P7tofc99rRm/E9aTn31drndv/5zfDbYLJRtPfnL4nfQtlEi
- JfyguY2O8LIHK4WpYYONPGLeTXXdACQ5CmWZswHg==
-X-Gm-Gg: ASbGncs1L3YG2d8Echzv0Sqm2DS6cEVnopQXeXA2ihHclM1X0w/QG2RHx8zIiXkEvem
- 1objj9kp55Ed9Y0L1SRwPdDvrqCk9adgcHmLKTvbMgkHAyspS9870rxWxjEJ8msDgObN9XBf+24
- CQWa5Q7kEfPnNjDpwa9pz92WpyUPZyJ8h+2h964z/PCW70IcEn8RU5VcFV0xHjHZdCf4SWGna0s
- mfm5x/iA5vkxuodY2Iknm6Sxsc31Joe0qW4i82/rNvANCtzKua5PEhyxu1Ld0skP3uTg5xU32rP
- 2N4xR6YziGG2QNV0tZI0/7gJCUW1vg==
-X-Received: by 2002:a05:620a:1a06:b0:836:974d:978e with SMTP id
- af79cd13be357-8820d666600mr3452113085a.41.1760469589400; 
- Tue, 14 Oct 2025 12:19:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGF1YMSO5fjIviqhqlyWlgg7NrWaBHjGPprZFtXYgRhdhQRs6TkX0J25lpM04xubNqmQAIDWA==
-X-Received: by 2002:a05:620a:1a06:b0:836:974d:978e with SMTP id
- af79cd13be357-8820d666600mr3452108785a.41.1760469588862; 
- Tue, 14 Oct 2025 12:19:48 -0700 (PDT)
+ bh=V+VWQlRtDiKUJEtuqAgZyiqfrGUS0b2sMRTtBiC3lXE=;
+ b=rGiUOeVABYgEV4B1DB5NCBB4RfrzSjwptf7Aa1gtN33YXSCfFJblEb5b0pzW0VRBuo
+ oy7/el90ScyIO/kVNIMB2MRPfBucLIrdmYU6JIIjSxYPQxEjRA3s6fXQh+Dz8z+EFX1T
+ OQ6O8XjPdIJQtOXG5p8oLRejRvKtzQlynqzg1014w0jPcT9KpgytvawvVOPDyGK+0TjY
+ 5b+X3pVp/yRGylBosz/e8WwuT347BDx/9WkP17jXLJ1ZpEqxzBXdxS3oGIGoqjGqJxzm
+ 5FBbsJsEaigPwaV2Jogim39/47WR57ion26zIJlH3w1EIZOXM7fP5mSNdQIyTJYtWUY3
+ hQaQ==
+X-Gm-Message-State: AOJu0YxmoK1EsxCb9A0hew8rNIZLRF64sURARrzzwE0lVFLSK9JwUpT+
+ Ia4LJuv+Z983eoouCu75/xRaUEi8KC8hKUhyHzPqfkTN6JbS0YMgg4oAkS+GrjvW2gIRB2VCNoy
+ pJrdY0j+rzbI+eKiFlQMY795j4f7ec8zRvEiCn+DU6eHyzb0E6imvahLPv1NJc7wDvadKpDJ4se
+ dttulpZTy1hvIihQHZTnFvtOPARBCB9bQIZ9emdg==
+X-Gm-Gg: ASbGncv8ZaZXujaN2Yh1JAlcU51rwO5MLyjujGVSu4RMvIMrJJ+nq3EW75oASUAkFtG
+ +Tq8bJQLjX77mxRxptAExfni1aa1uah+aHPOZcpvyxZcORd/PL/DerF5CCwIFNTHI0U90VQG4Kc
+ JPsGN12KCFPwaA2txz6uTmH+/stQz6Imf9aicQo09hkzi+EQsuMZHXwMBT7TjDkLSpWgKdmOqgg
+ b1fytJL86ctdvHf9FDpPLE4F4mMi38NE4KBtNbaIFJQZUWGK4ZH6sQ0cQpQD+Xa5Y2HIICspdy1
+ GhM6un4/EaT0kQVOP47ST/qCQQ4kpQ==
+X-Received: by 2002:a05:620a:2981:b0:84a:f7cc:1eaf with SMTP id
+ af79cd13be357-88350f575a5mr4294861285a.35.1760469591169; 
+ Tue, 14 Oct 2025 12:19:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoakdbp9BljsWaX0AKJTl/ij+zsqC0Zbicq0Rxf7FJqOn2GPnzuFXEGfZ8S8aBbhB++KEikQ==
+X-Received: by 2002:a05:620a:2981:b0:84a:f7cc:1eaf with SMTP id
+ af79cd13be357-88350f575a5mr4294854485a.35.1760469590612; 
+ Tue, 14 Oct 2025 12:19:50 -0700 (PDT)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-884a22744f2sm1256602585a.44.2025.10.14.12.19.47
+ af79cd13be357-884a22744f2sm1256602585a.44.2025.10.14.12.19.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 12:19:47 -0700 (PDT)
+ Tue, 14 Oct 2025 12:19:49 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  peterx@redhat.com, Richard Henderson <rth@twiddle.net>,
  "Emilio G . Cota" <cota@braap.org>
-Subject: [PATCH v2 1/3] qht: Zero-initialize qht_map
-Date: Tue, 14 Oct 2025 15:19:42 -0400
-Message-ID: <20251014191944.2225735-2-peterx@redhat.com>
+Subject: [PATCH v2 2/3] tests/test-rcu-*: Zero-initialize allocated elements
+Date: Tue, 14 Oct 2025 15:19:43 -0400
+Message-ID: <20251014191944.2225735-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251014191944.2225735-1-peterx@redhat.com>
 References: <20251014191944.2225735-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,27 +106,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU almost always do this across the tree except QHT.  This prepares for
-rcu to track double free.
+QEMU almost always do this, so do it too with the RCU unit tests.  It's
+preparation work to start asserting on possible rcu double free.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- util/qht.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/unit/test-rcu-list.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/util/qht.c b/util/qht.c
-index 208c2f4b32..872d9f9cec 100644
---- a/util/qht.c
-+++ b/util/qht.c
-@@ -441,7 +441,7 @@ static struct qht_map *qht_map_create(size_t n_buckets)
-     struct qht_map *map;
-     size_t i;
- 
--    map = g_malloc(sizeof(*map));
-+    map = g_malloc0(sizeof(*map));
-     map->n_buckets = n_buckets;
- 
-     map->n_added_buckets = 0;
+diff --git a/tests/unit/test-rcu-list.c b/tests/unit/test-rcu-list.c
+index 8f0adb8b00..853c9e33d9 100644
+--- a/tests/unit/test-rcu-list.c
++++ b/tests/unit/test-rcu-list.c
+@@ -233,7 +233,7 @@ static void *rcu_q_updater(void *arg)
+         TEST_LIST_FOREACH_RCU(el, &Q_list_head, entry) {
+             j++;
+             if (target_el == j) {
+-                struct list_element *new_el = g_new(struct list_element, 1);
++                struct list_element *new_el = g_new0(struct list_element, 1);
+                 n_nodes_local++;
+                 TEST_LIST_INSERT_AFTER_RCU(el, new_el, entry);
+                 break;
+@@ -259,7 +259,7 @@ static void rcu_qtest_init(void)
+     nthreadsrunning = 0;
+     srand(time(0));
+     for (i = 0; i < RCU_Q_LEN; i++) {
+-        new_el = g_new(struct list_element, 1);
++        new_el = g_new0(struct list_element, 1);
+         TEST_LIST_INSERT_HEAD_RCU(&Q_list_head, new_el, entry);
+     }
+     qemu_mutex_lock(&counts_mutex);
 -- 
 2.50.1
 
