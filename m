@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461E0BD8CC9
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 12:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57498BD8CCF
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 12:45:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8cWA-0004y5-K4; Tue, 14 Oct 2025 06:44:35 -0400
+	id 1v8cWo-0005pD-8c; Tue, 14 Oct 2025 06:45:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v8cVL-0004UQ-7a
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:43:44 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1v8cVU-0004dE-P8
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:43:54 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v8cVB-0003X9-QT
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:43:42 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-46e42fa08e4so43610715e9.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 03:43:28 -0700 (PDT)
+ id 1v8cVG-0003Xt-5X
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 06:43:52 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-46fcf9f63b6so6844445e9.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 03:43:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760438606; x=1761043406; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760438609; x=1761043409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hIbkSUzuy95fWVG2YehHRKZZn6Jn1DT3kGS2n9ZFy4w=;
- b=IGE/rHihEkInGV3zRR/3EmBs5uRD3jp+9AnpLu6j/YwsqafnOjN5pyVpYm+IAQEGuN
- EJthRSAZM9Zu7FA2R/a9Hw8PAoWaZjt7McCf0CNpAsKNj/pWVfBKvHRxgzpK63oh5GWz
- KOjeqAtZ6jCQ469qKPtz2rNIbmmbtws+L7xKqhg5c18fN34FvRxEsYaa/1AJg9tREMYB
- qE9MFvxJ0VfPfR0GNgXQyzeE5SBjJt/tU2nGQ/JfqJtB3+MKPFhmJaCDiUQ+MSwqBxj+
- piYUQD2GluVwkCQ3SubQm591onESZgSqVSMsmhi51nTMvNi3VE13S+cOUuUIZUzBpzYj
- ykog==
+ bh=KNf+WB9/HHEpVf98t3lNdtnVbvRPlPY/srMoe1KsGrk=;
+ b=vYxkpwhyStJsgyTnCCsHwsc2q1jdP5zvS8Ji24tLgUXP29kiKZLuKdDqeuIc+m1JmU
+ KpxKqId55SIr/FBmK2mkYwsqJB14BFD6iFNGMyS6lhJZBg1LZj6Wp6V8yaAFf310Yy9t
+ 0pXCy9/GRDGFDSbgG+XTn2oLKOiFTZahHDbNdxBjeYGsUd7MrrkoiM++B6m4PDNSkGJE
+ lfnIs+frqaadaavhoL1Z7ZuUriCZuyGYWYzeqrAYxLVT+xiHD7nJBQo++iRiOflPX5ty
+ uTSyiVVcYUG1ZYQ8pvdg4U6zkhLTB343+kdmjXZ1me3vQnnwhSnhsUcjSaaiYH3/uyq4
+ saKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760438606; x=1761043406;
+ d=1e100.net; s=20230601; t=1760438609; x=1761043409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hIbkSUzuy95fWVG2YehHRKZZn6Jn1DT3kGS2n9ZFy4w=;
- b=qK89toQcflCCGg0LVIskKADBCEQBVSOTzZ+lB6pxLKy68YzrGOqRh32dlkgdYNcX7Q
- mNVbviRokmfDJ1p7zbZorXw7Yd4R2J206fqbzjOsoTHc+Ep1/fGzmTVn/+HFlqmqgZMh
- vHG6COjNOGy4qxUfDXTU5EksaaHk4nB48gwmjLfZQG2aQf9Qkw+em9s60pFRDYUuKE5p
- GRzdEUAKfEr6XYNtKwqKYroCBBLJ5jDbiXxe1SwIfRmnedFXBNZNgQ+VXB7Szmc8T7Ry
- Gm0Z7s4yV8ZBJjmqSE1kIXvrVGI6fI8lVFzLUVMTT+OwDtLMYfOop3oMVD+vrIcoL75W
- 8MxA==
-X-Gm-Message-State: AOJu0Ywo0FhCgYbSeN0bH7fGH9k9sgH8RjrXt2cnk8Jx8f1J/9QfwLeQ
- mbMe5VtyGTVPmsxofxxZgu/KlQLpCuya1O3kxy6dVe1JmPrPnXeEZR/83Bcanu7XWbg=
-X-Gm-Gg: ASbGncs6hIfUMUb/pusuZVbZy1nICiYFhj8f303FGW2Pz+F6AcnMyMnRBp+zehSiX9I
- aPzTwESDyATAEHHhSt+juIhSUFwY5V4rhwtilUpDADFzTG94cfwohSbr6KLqhyAevIY3sq9B5LE
- Yi7vHEglYfBREJ6YcZ7KRgQ2X2AohjlPi++7XlkhgVWrOXwVG02Upjng9YOFFEqlYsuWf5JASGv
- ZcOVKLIgP/89KUYRZcVCLrrae7x3ADXwjEn8kFnbMKcdyPl2JuV+VErEhZluoJePjw/jIRBszLx
- s6PbxLugzR54a7SnK+RSVjF5fYzc2VysWJgbjywbV0ZgLYcYqfd2lJzXa92qBgRq9B042qY2TQY
- viHrP/k+8i/kLVh+NfxZPAGM9ac6+mVZMGfPFlcKUBDC2bg==
-X-Google-Smtp-Source: AGHT+IE5X7bSlEgQpG3QMyeIYGEdXpqE6l/mhSZdpcUHn6QYdxjN5qcU5j40aopNr0wL4Aiw2h6Smw==
-X-Received: by 2002:a05:600c:608d:b0:46e:6d5f:f59 with SMTP id
- 5b1f17b1804b1-46fa9a8b2aemr167346395e9.4.1760438606466; 
- Tue, 14 Oct 2025 03:43:26 -0700 (PDT)
+ bh=KNf+WB9/HHEpVf98t3lNdtnVbvRPlPY/srMoe1KsGrk=;
+ b=Y/aEVzaWMEE3sAZnhTa5nwYVe71y+J/MIstyRBbiN4FTi4qdSJp3yvZs1iW6QB9T46
+ aUgRrkyemFcf1zQmIEHmQGw7hRdhXOTpjO80W/bUm4ISS6eqMZtNZb58YVMxwbJ22EdN
+ eDH7lH5mUHf9/hllAt5DC6z7kpEFCp4IEnnB8LICxwwYdNNDV5rqnQjnvtz4nJmXfJep
+ s7RrDiCuUUdhC40gdlxWvDTpvvZcpO22NuTv/Ghwj52xPBBTR+iz3D91GsFjDSTBYwEM
+ l316aZx7V8W+SCR2ORFzGOF5y0t0g6HraQ6/Fd8evyLYIKivZO6Sj0lpRfVhPBEWAp0M
+ J1zQ==
+X-Gm-Message-State: AOJu0YzLFhmLulEsTi7EAO5oXBU7mqUQ0p+v4qPF9V8/5u1LYXpMstFV
+ lTPwwwe0FAJdBP+bIs9NVQBFG2ByQaXn5hXO/U/L9Kk5UE2RNBf0wIbnkoHkdNHXk68=
+X-Gm-Gg: ASbGnct1ahr1I4Gdrl7a03SrZw8gkxA4KqQdCYBurLhfOat5CinosuORvfhT4+8HQMe
+ fxkW6vmrwbQDq1LqFbeT29Aityu8kYqWGVM+erlr7FLGdXjyfve95dOmCvDN0yWgBDcQW3C0K4r
+ g80pZASefOTkO10hX/Bluead4Ib37S/o1k/n3qMuuafb76dkmCtdR5AISsqTvprw5CzS7AcD2g2
+ ypRAGCqfSaIBq+1wNMnwvIiJEzU56EhHzXGHt00D0zWHfE9k63D6FeraLWHyIr097AyDWD+zs14
+ fgA195LU3/Ar5d8O2Y/2MkwViP7Exq27a5ExvGQgjs0O989tMvvFfwrvdl8UQ4NA+7X9yOC0z4i
+ wPplDPVDH0AGgNyCrjRvSjyQSS8QTymh4hB755sm9oH66fiGJPW4/VcKp
+X-Google-Smtp-Source: AGHT+IE5oziyVLzMIkHDhEJ8wnG4fD4sgI+5JeehZ5XWbQwN1z03PE5wfCSOix15Sslw5ge5i5kl4w==
+X-Received: by 2002:a05:600c:8b54:b0:46f:d897:516f with SMTP id
+ 5b1f17b1804b1-46fd89758e7mr18901755e9.34.1760438608426; 
+ Tue, 14 Oct 2025 03:43:28 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5cf70fsm22221883f8f.27.2025.10.14.03.43.24
+ 5b1f17b1804b1-46fb497b8fcsm234993105e9.2.2025.10.14.03.43.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 03:43:24 -0700 (PDT)
+ Tue, 14 Oct 2025 03:43:25 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B23725F83C;
+ by draig.lan (Postfix) with ESMTP id C97A45F871;
  Tue, 14 Oct 2025 11:43:23 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,24 +71,24 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>, qemu-s390x@nongnu.org
-Subject: [PATCH 3/5] gitlab: modernise the ubuntu24.04-aarch32 jobs
-Date: Tue, 14 Oct 2025 11:43:20 +0100
-Message-ID: <20251014104323.3023714-4-alex.bennee@linaro.org>
+Subject: [PATCH 4/5] scripts/setup: update the armhf overlay
+Date: Tue, 14 Oct 2025 11:43:21 +0100
+Message-ID: <20251014104323.3023714-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251014104323.3023714-1-alex.bennee@linaro.org>
 References: <20251014104323.3023714-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,42 +104,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only have one job here so no point using a template but we might as
-well update the JOBS calculation and use our fancy section markers.
+We certainly didn't generate the armhf list via lcitool as it couldn't
+deal with ubuntu or foreign layers. Now we can properly generate the
+list.
 
+Fixes: 1417704564a (tests/lcitool: generate package lists for ansible)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .../custom-runners/ubuntu-24.04-aarch32.yml       | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ ...armhf-cross.yml => ubuntu-2404-armhf.yaml} | 65 +++----------------
+ tests/lcitool/refresh                         | 11 ++++
+ 2 files changed, 20 insertions(+), 56 deletions(-)
+ rename scripts/ci/setup/ubuntu/{ubuntu-2204-armhf-cross.yml => ubuntu-2404-armhf.yaml} (65%)
 
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
-index 75029c9187e..3e7fdc8fa98 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
-@@ -16,10 +16,21 @@ ubuntu-24.04-aarch32-all:
-  - if: "$AARCH32_RUNNER_AVAILABLE"
-    when: manual
-    allow_failure: true
-+ before_script:
-+   - source scripts/ci/gitlab-ci-section
-+   - section_start setup "Pre-script setup"
-+   - JOBS=$(expr $(nproc) - 4)
-+   - section_end setup
-  script:
-  - mkdir build
-  - cd build
-+ - section_start configure "Running configure"
-  - ../configure --cross-prefix=arm-linux-gnueabihf-
-    || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-- - make --output-sync -j`nproc --ignore=40` check
-+ - section_end configure
-+ - section_start build "Building QEMU"
-+ - make --output-sync -j"$JOBS"
-+ - section_end build
-+ - section_start test "Running tests"
-+ - make --output-sync -j"$JOBS" check
-+ - section_end test
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml b/scripts/ci/setup/ubuntu/ubuntu-2404-armhf.yaml
+similarity index 65%
+rename from scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
+rename to scripts/ci/setup/ubuntu/ubuntu-2404-armhf.yaml
+index 0cc34cd10b9..f06f95514bd 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2404-armhf.yaml
+@@ -1,64 +1,13 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool variables --cross-arch armv7l ubuntu-2204 qemu
++#  $ lcitool variables --host-arch aarch64 --cross-arch armv7l ubuntu-2404 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+ packages:
+-  - bash
+-  - bc
+-  - bison
+-  - bsdextrautils
+-  - bzip2
+-  - ca-certificates
+-  - ccache
+-  - dbus
+-  - debianutils
+-  - diffutils
+-  - exuberant-ctags
+-  - findutils
+-  - flex
+-  - gcc
+-  - gcovr
+-  - gettext
+-  - git
+-  - hostname
+-  - libglib2.0-dev
+-  - libpcre2-dev
+-  - libsndio-dev
+-  - libspice-protocol-dev
+-  - llvm
+-  - locales
+-  - make
+-  - meson
+-  - mtools
+-  - ncat
+-  - ninja-build
+-  - openssh-client
+-  - pkgconf
+-  - python3
+-  - python3-numpy
+-  - python3-opencv
+-  - python3-pillow
+-  - python3-pip
+-  - python3-sphinx
+-  - python3-sphinx-rtd-theme
+-  - python3-tomli
+-  - python3-venv
+-  - python3-yaml
+-  - rpm2cpio
+-  - sed
+-  - socat
+-  - sparse
+-  - swtpm
+-  - tar
+-  - tesseract-ocr
+-  - tesseract-ocr-eng
+-  - xorriso
+-  - zstd
+   - gcc-arm-linux-gnueabihf
+   - libaio-dev:armhf
+-  - libasan6:armhf
++  - libasan8:armhf
+   - libasound2-dev:armhf
+   - libattr1-dev:armhf
+   - libbpf-dev:armhf
+@@ -68,6 +17,7 @@ packages:
+   - libcacard-dev:armhf
+   - libcap-ng-dev:armhf
+   - libcapstone-dev:armhf
++  - libcbor-dev:armhf
+   - libcmocka-dev:armhf
+   - libcurl4-gnutls-dev:armhf
+   - libdaxctl-dev:armhf
+@@ -82,7 +32,7 @@ packages:
+   - libglusterfs-dev:armhf
+   - libgnutls28-dev:armhf
+   - libgtk-3-dev:armhf
+-  - libibumad-dev:armhf
++  - libgtk-vnc-2.0-dev:armhf
+   - libibverbs-dev:armhf
+   - libiscsi-dev:armhf
+   - libjemalloc-dev:armhf
+@@ -94,11 +44,11 @@ packages:
+   - libnfs-dev:armhf
+   - libnuma-dev:armhf
+   - libpam0g-dev:armhf
++  - libpcre2-dev:armhf
+   - libpipewire-0.3-dev:armhf
+   - libpixman-1-dev:armhf
+   - libpng-dev:armhf
+   - libpulse-dev:armhf
+-  - librbd-dev:armhf
+   - librdmacm-dev:armhf
+   - libsasl2-dev:armhf
+   - libsdl2-dev:armhf
+@@ -107,8 +57,11 @@ packages:
+   - libselinux1-dev:armhf
+   - libslirp-dev:armhf
+   - libsnappy-dev:armhf
++  - libsndio-dev:armhf
++  - libspice-protocol-dev:armhf
+   - libspice-server-dev:armhf
+   - libssh-dev:armhf
++  - libstd-rust-dev:armhf
+   - libsystemd-dev:armhf
+   - libtasn1-6-dev:armhf
+   - libubsan1:armhf
+@@ -119,7 +72,7 @@ packages:
+   - libvdeplug-dev:armhf
+   - libvirglrenderer-dev:armhf
+   - libvte-2.91-dev:armhf
+-  - libxen-dev:armhf
++  - libxdp-dev:armhf
+   - libzstd-dev:armhf
+   - nettle-dev:armhf
+   - systemtap-sdt-dev:armhf
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 056cfb6e9d7..8ad45da19c1 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -99,6 +99,16 @@ def generate_yaml(os, target, arch, trailer=None):
+                          arch, target, "qemu"]
+     generate(filename, cmd, trailer)
+ 
++# an overlay file only cares about the additional packages for cross
++# so we can skip all the host packages needed.
++def generate_cross_overlay_yaml(os, target, arch, name, cross, trailer=None):
++    filename = Path(src_dir, "scripts", "ci", "setup", os, f"{target}-{name}.yaml")
++    cmd = lcitool_cmd + ["variables", "--format", "yaml",
++                         "--layer", "foreign",
++                         "-a", arch, "--cross", cross,
++                         target, "qemu"]
++    generate(filename, cmd, trailer)
++
+ 
+ alpine_extras = [
+     "# https://gitlab.alpinelinux.org/alpine/aports/-/issues/17463\n",
+@@ -271,6 +281,7 @@ try:
+     # Ansible package lists
+     #
+     generate_yaml("ubuntu", "ubuntu-2404", "aarch64")
++    generate_cross_overlay_yaml("ubuntu", "ubuntu-2404", "aarch64", "armhf", cross="armv7l")
+     generate_yaml("ubuntu", "ubuntu-2404", "s390x")
+ 
+ 
 -- 
 2.47.3
 
