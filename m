@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A091BBD9C47
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F5ABD9C65
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:40:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fDk-0005OC-L2; Tue, 14 Oct 2025 09:37:44 -0400
+	id 1v8fDl-0005OT-0G; Tue, 14 Oct 2025 09:37:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDi-0005NX-VQ
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:43 -0400
+ id 1v8fDi-0005NM-Jc
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fDf-00011G-Qy
+ id 1v8fDe-00011N-Oo
  for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:37:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1760449054;
@@ -24,61 +24,60 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uB1cEppwLCqDji7ECAgcmqsbb83VNwGMahtfkyO/muU=;
- b=iZqVEm/B98VA1JvS0sMqw5QW2nEDZ+NbNbtAUs8eqDE3LcSa38/pEYK0Q3a/vFC+ojo2VC
- Jk/CQeNtNUZmgizNEgcnCJweDopcQ9Xc8o8h/dcRqluC3XYw8DLIh0+nDzveqFrh/RSoHP
- U8FxHIt23cqtKhW1lN4B3VbdB/LA4yQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LfpYXKeThudHsYbBI1p5Y6IAia2GV9M0i2k7RLhVCJc=;
+ b=CyAb45UNTc5wZtDKw/K63dGBNgru4Zo641oAmBNXe9GE4XMOLI5yZ/0X+R078WRtvYz0/5
+ HRvwIKeLvn4JhrqkB34J7wbrE1POvw4SM7OONrfB2tk4jWZ7fXsZfg1fgxIPdcB91/b/e9
+ th35O1wN6DlfAxcvjYMKqQOBsJhhnHk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-DHyHZyzwOl-FRxo2IexCDQ-1; Tue, 14 Oct 2025 09:37:30 -0400
-X-MC-Unique: DHyHZyzwOl-FRxo2IexCDQ-1
-X-Mimecast-MFC-AGG-ID: DHyHZyzwOl-FRxo2IexCDQ_1760449049
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e31191379so39306795e9.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:29 -0700 (PDT)
+ us-mta-496-puDYPegMMpCtKHc5abHQOQ-1; Tue, 14 Oct 2025 09:37:32 -0400
+X-MC-Unique: puDYPegMMpCtKHc5abHQOQ-1
+X-Mimecast-MFC-AGG-ID: puDYPegMMpCtKHc5abHQOQ_1760449052
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-401dbafbcfaso4320099f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:37:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449048; x=1761053848;
+ d=1e100.net; s=20230601; t=1760449050; x=1761053850;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uB1cEppwLCqDji7ECAgcmqsbb83VNwGMahtfkyO/muU=;
- b=EQa5JnalE/f5Ilw009vz2n0cboEHz0c7NUsr90Nim0N+hVJccPFOeA95+T4Utl1ae9
- BdZeES3aXa2gsueXTR1zFxA/jNpDj43r2NJ1yc87XKuJfhV4hjAMMABPViX6Z+jaMgbX
- mG090Eu27t99xK1NfKKPEcGeq2K/uA+52oTJxdePc+fF+rDOeJ2kpj5BS8yq4urJ9mMO
- 6IvZdPaJGE9//rV0uYtH8yVaZJEx8ZKn+RKE+qrpoy2YCIxCrII4Z48rvkRw6kUsbr2f
- h8kcePk7Bd5KBlDb8GwmpzOZ0/bhwpOMDBF1a0OdaB4qwL+x1aNC4cyoTBDukrBmBCB5
- COfw==
-X-Gm-Message-State: AOJu0Yzn69Z/knAw/MWOlEHB4y44//PAsiO3sJDrVzmLf2xsimJvTk2D
- nod3ecT0HKSiSGEkh7aLtYt6F1AMGgQDntyHCkRP7NSpm+d5teMGnKAMhVSBRHqn6aqvoV3T9Z0
- kUhSK9e3by5kq/rbG6wZLG0AnfJ0227xlhLvm2Nd8Ffl+2j6lMszEKfjzXbv0uLGENT9O+DhvQa
- Wx5dc/3sNb9OnsQZRa73LICAowzKqsuxCK3xLLwClp
-X-Gm-Gg: ASbGncu/ZcMMP/nHbJ3DDxeSqbLe1/0dSG5XmoE8IRzdkS2bo/0/tCEtVE20dYIKUAD
- TIajKI7EZhlb9QXM/qpM5uZHHXMuMh7xlqmXw9uepX4EI3rXp2E+we8SVZADcIBYrFT3PckMGHx
- 9IWLln+20OiwlxOBLmm3GQnT690zblueJB7/E0maPVdKt4ElMyAwgYkqS5qVzZwmImiHuj5mkoU
- RRrhItFUzSPa345Mdy1k9P/4vhfdwgO6s81nnIVUgo0D7RoZheJjBfHDum+zrG6KpER+EdYbbaV
- nHc+g630Zqt/+5epmGrb/8Q5JYzF+KqS9RGoK4BOkirV3Ux1yXyOmQSSFTWau5uXYq8OdX01Gjk
- j9SIvdn1ivLkTFNX2ASuQw6WyMA01hRItvZEjCHkuPqw=
-X-Received: by 2002:a05:600c:5248:b0:45b:88d6:8ddb with SMTP id
- 5b1f17b1804b1-46fa9b1968dmr182733005e9.37.1760449047849; 
- Tue, 14 Oct 2025 06:37:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/PLwuDlRs89C2Oasp7RH2ymVPKoR+ghQxTz11/pik7JgNjVryzuNOxLzeq4nGxdsE7JUYqQ==
-X-Received: by 2002:a05:600c:5248:b0:45b:88d6:8ddb with SMTP id
- 5b1f17b1804b1-46fa9b1968dmr182732725e9.37.1760449047406; 
- Tue, 14 Oct 2025 06:37:27 -0700 (PDT)
+ bh=LfpYXKeThudHsYbBI1p5Y6IAia2GV9M0i2k7RLhVCJc=;
+ b=tPOEwaEYByA7NMm++T7KPTZvm56b+xgluJei96QWZYcSyNWsO2Y/nnUqxaJimy5vTW
+ oqtp0uXo+SQfwxb6rEm+siUaPn0Vm2Ccu9H4m9DbGoJXyUqRPEUnpLEcAuOgyZE/5rsO
+ FBEywyZN8v74euuG2ElEs7CtJbBJ6X9kzSBnW76T1/xxPYfE7Wc/ko3umDi/iuZHzTHA
+ Y3y2dhXrc1ah6yLilof6F8oqHqr+iDprBAQOjt1OZIXZ8+kKbxNQFMZmB1yd9/28oRRG
+ 22zJNomSruqUNF8wEUu63jFTSsQuKVj8e85EJ2LzNLCN8CKoOStKmckkYmSylUPLMfas
+ j3uw==
+X-Gm-Message-State: AOJu0YxjrCtjEe4PhObc0b9MCpF0mD4UwLUVtZj9rC3lkoiciOtZOAyR
+ 4QHAk2EmI73mnuA/m0OpUbDkoNu5JhKn8k1WIJosk7m82/ARCHgC8PPKQgSEk2rTN165Hx9AWnc
+ op8MimlWxWVumZFZ3epoVPXnQfyPnx8Mk2PgCmvo+9njUpE/nGvLk7EBCo4Xl5my9KWixEbbnVu
+ /u2MOWn9HOikAAHYi1bzO+93HlNTMAwrPAkUJyTBWd
+X-Gm-Gg: ASbGnctx0JN11ux84IsP6Fm1qRnmvvMXvBp0EkZELF0k3tPNoGgaa4vCsry/Ng+3Ojz
+ sj6uYyohDQTj5Rr4FuNImsSKu3Mkr5UFOv0hRjMaW2Kxy0Bx4cpbdSrAVA8wA0dD2Xjo2mZHMqg
+ cSWWFBC6Q9n5YhApqJTHVQK/Q6u+TMUJO75Usp32ikvxPjhQK99BvhYaUTwkK3BMVDlnVfueFCx
+ X8dS0/i3Fb0J5L15A1ZtFUqeAIv3p3b9stnrReA8y2jQG2RTzrAlIx6TMUEFDfqty+KmJSrpofz
+ CdoZSIKnkZl8aSz7lys5lrJmQscr1dH05r/bQFNwtUPmqf95DM/hnm5SOvgHaIiTpOGq26AteFS
+ 8In6XMT2entRP1aoSMKXy3uG4tcS/GclklXzaSjM310o=
+X-Received: by 2002:a05:6000:420c:b0:411:f07a:67ff with SMTP id
+ ffacd0b85a97d-4266e8de19dmr17312474f8f.42.1760449050481; 
+ Tue, 14 Oct 2025 06:37:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJMXdr4xgukabgdGHaoZnSD9ZlHKVGuhhxfFDtFRQRpo18ts2ch8mbf+0uAit5k5IuiPzbiA==
+X-Received: by 2002:a05:6000:420c:b0:411:f07a:67ff with SMTP id
+ ffacd0b85a97d-4266e8de19dmr17312443f8f.42.1760449050048; 
+ Tue, 14 Oct 2025 06:37:30 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46fb48a60b8sm243488485e9.19.2025.10.14.06.37.25
+ ffacd0b85a97d-426ce5e1024sm23585131f8f.42.2025.10.14.06.37.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:37:26 -0700 (PDT)
+ Tue, 14 Oct 2025 06:37:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Babu Moger <babu.moger@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 06/28] target/i386: Add TSA feature flag verw-clear
-Date: Tue, 14 Oct 2025 15:36:51 +0200
-Message-ID: <20251014133713.1103695-6-pbonzini@redhat.com>
+ Mathias Krause <minipli@grsecurity.net>, qemu-stable@nongnu.org
+Subject: [PULL 07/28] target/i386: Fix CR2 handling for non-canonical addresses
+Date: Tue, 14 Oct 2025 15:36:52 +0200
+Message-ID: <20251014133713.1103695-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
@@ -93,7 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,57 +108,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Babu Moger <babu.moger@amd.com>
+From: Mathias Krause <minipli@grsecurity.net>
 
-Transient Scheduler Attacks (TSA) are new speculative side channel attacks
-related to the execution timing of instructions under specific
-microarchitectural conditions. In some cases, an attacker may be able to
-use this timing information to infer data from other contexts, resulting in
-information leakage
+Commit 3563362ddfae ("target/i386: Introduce structures for mmu_translate")
+accidentally modified CR2 for non-canonical address exceptions while these
+should lead to a #GP / #SS instead -- without changing CR2.
 
-CPUID Fn8000_0021 EAX[5] (VERW_CLEAR). If this bit is 1, the memory form of
-the VERW instruction may be used to help mitigate TSA.
+Fix that.
 
-Link: https://www.amd.com/content/dam/amd/en/documents/resources/bulletin/technical-guidance-for-mitigating-transient-scheduler-attacks.pdf
-Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/e6362672e3a67a9df661a8f46598335a1a2d2754.1752176771.git.babu.moger@amd.com
+A KUT test for this was submitted as [1].
+
+[1] https://lore.kernel.org/kvm/20250612141637.131314-1-minipli@grsecurity.net/
+
+Fixes: 3563362ddfae ("target/i386: Introduce structures for mmu_translate")
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Link: https://lore.kernel.org/r/20250612142155.132175-1-minipli@grsecurity.net
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 2 ++
- target/i386/cpu.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ target/i386/tcg/system/excp_helper.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index f74f13534e7..ce948861a76 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1104,6 +1104,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_8000_0021_EAX_FS_GS_BASE_NS                (1U << 1)
- /* LFENCE is always serializing */
- #define CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING    (1U << 2)
-+/* Memory form of VERW mitigates TSA */
-+#define CPUID_8000_0021_EAX_VERW_CLEAR                   (1U << 5)
- /* Null Selector Clears Base */
- #define CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE            (1U << 6)
- /* Automatic IBRS */
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 339881b40f8..4f99cbc5c0b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1397,7 +1397,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
-             "no-nested-data-bp", "fs-gs-base-ns", "lfence-always-serializing", NULL,
--            NULL, NULL, "null-sel-clr-base", NULL,
-+            NULL, "verw-clear", "null-sel-clr-base", NULL,
-             "auto-ibrs", NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
+diff --git a/target/i386/tcg/system/excp_helper.c b/target/i386/tcg/system/excp_helper.c
+index 50040f6fcaf..f622b5d588e 100644
+--- a/target/i386/tcg/system/excp_helper.c
++++ b/target/i386/tcg/system/excp_helper.c
+@@ -592,7 +592,8 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+                 if (sext != 0 && sext != -1) {
+                     *err = (TranslateFault){
+                         .exception_index = EXCP0D_GPF,
+-                        .cr2 = addr,
++                        /* non-canonical #GP doesn't change CR2 */
++                        .cr2 = env->cr[2],
+                     };
+                     return false;
+                 }
 -- 
 2.51.0
 
