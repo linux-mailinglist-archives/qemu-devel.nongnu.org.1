@@ -2,81 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89347BD835C
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 10:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2176BD842A
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 10:47:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8aWu-0008Tx-FT; Tue, 14 Oct 2025 04:37:12 -0400
+	id 1v8afM-0001Yf-Kd; Tue, 14 Oct 2025 04:45:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8aWs-0008Tp-UF
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 04:37:10 -0400
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v8aWq-0005Ri-NE
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 04:37:10 -0400
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-77f9fb2d9c5so45014217b3.0
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 01:37:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760431023; x=1761035823; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=G2wXHawLphgjXMKUIBlNV42EVOVQetLfGGTkt4o3IG0=;
- b=lX8oz2bzDkQTEuC+r6ZWKoyeJswSjYjVmyjV0NfgKWmfeQpagJ1DdvN3/tKiaKXTIn
- 6pIvtBdAN8okJT7F9ekT31drRC/QA7MCHpMbElLP2gzvY5Pbo/PHZsw9pD/NfFbcXH7j
- sBDGL+OZ+h47ucsREL2i6ZWf0eKmDi1xaYMTdmOMmT34AUAAbAi2TgayYF7fMDU118qa
- +vNaApA0Gjb4k4KVb6ydk8EAsRYnH1kHkpNEsZelb9F4kZZMCLUUkzOlMXiHkVJz0LX6
- VxTkCZ7fuvXJFF2e3jkZX6incEsa/0Nse2JrQJRqO1UzEUPVeyIRaRZi2SSsXNkg4zHy
- 5mig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760431023; x=1761035823;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=G2wXHawLphgjXMKUIBlNV42EVOVQetLfGGTkt4o3IG0=;
- b=lgkRhP92uPXs1NEiQyNnT6Ns/comNQkfHAsUbe3E3eIjlFw/SB1puOBeKoXxc0mgiK
- cTlgK269EAfls8vx9VjWd6YKi0n6qnlpCp8k1MDM8nLeVL1gaq8rjpLUn5EkFtwCq+HD
- e89xKQDWPSLIoAb+JFxFGcm/1xecS2YF2pv+AXKGKoNjPd4+QXv+wNTkKV0f+m2Gaa5F
- 7Gl7rzCPAxUuOtQOh6KvTCcjPSJoxRYLfsRvVHXzwAdxvVeehwd1o7DXRxJgFr9wKIwS
- S+cdcyG+M7IWQblAHmPa1TkW6lW4tgdyCNsgSCdg/MdBzSQ6//ZH4DB2dY+v8RNbDIZ+
- 29kg==
-X-Gm-Message-State: AOJu0YyvPRGhPPtFb51lw7lO84QBEauHri/dnS8lQlwwXDlp+P7KRXo4
- P9niPwlVSssNf4MBDPkRUllIPcuH4gfN0QS1sfyWdS3lBDydS3bejlY7MtBK+sThE3GNn/vrbWO
- t3QDlK9L+s3m62JNXJ9kPKtuxCyjYEPIK08v7lqwhsw==
-X-Gm-Gg: ASbGnctkNpk1k7UPnh7EtnOmcHHnfPSQ7WBfeqOo/PzqkfxoZ67TD1K9k5NIahno9Jy
- wNjSCwLW3hzrZCduTzYN9FICRK7hmgY9M/RKAAzFNv/EAZgPKuulPvP6g6IXVp/66oOOIR3y9By
- U+DKQ+hqMMEyu3z+JrRqCwsVr2OjZDmSW8eUjFDMdAkhylUCK1KTEFEkm/Fa0gpRJbdovfHKC6w
- K+AuOqPmlnz2VuY1s8ZpdlIXvi+gu8=
-X-Google-Smtp-Source: AGHT+IECuBWW7Mr3bdnefo9hCmYHcFbwqlQRLyVDhb767ve9pQExfrgwAwUBBTHQcYKoTbM+UVDSaLdeF/fMGFZKDEA=
-X-Received: by 2002:a53:ea51:0:b0:63c:da95:21c7 with SMTP id
- 956f58d0204a3-63cda9524edmr14064490d50.48.1760431023344; Tue, 14 Oct 2025
- 01:37:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1v8afK-0001Y9-Bd; Tue, 14 Oct 2025 04:45:54 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1v8afH-0006P0-Fh; Tue, 14 Oct 2025 04:45:54 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59E6Zx97022496;
+ Tue, 14 Oct 2025 08:45:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=ndB1T9
+ HKSNv1vkNUMzIWnb8HzVSMRApjeuwCKJWx7YA=; b=UnqkSdrIigDS/rqfQePIDN
+ sSjehS8LmaewqKYKGgN9mg5YeuIiPkamQBXPELCOXSlGvl9g8W7bMyObOV9kkaBh
+ lVeW4uIdkWDLXEr7XVecSzCY6GXTXETXWXN5e/RbPB99hSB3pYa2xaVWNQvjZGP1
+ f14RoKsPwWrKGLzwKSfyvoEkCaixDQ69u663KRbL3Kn4FE1U+UU+9vZeqnJKZpWS
+ sklPD38ZV3HtW2uYpV0aE2cWl2xtEh0xBer/FsAPyg2m7zll2ZogqphMK3Ctm7VC
+ /XxybBrGFdPA3vHsOyt7PORFJIYX3kUjvUvQzK1FcUNHdnKIr/weUIEEbRfcJE/w
+ ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnr5buh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Oct 2025 08:45:48 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59E7BJtS018823;
+ Tue, 14 Oct 2025 08:45:48 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jmj1jp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Oct 2025 08:45:47 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59E8jkD728377344
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Oct 2025 08:45:46 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 898F858052;
+ Tue, 14 Oct 2025 08:45:46 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D8C4158045;
+ Tue, 14 Oct 2025 08:45:45 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 14 Oct 2025 08:45:45 +0000 (GMT)
 MIME-Version: 1.0
-References: <20250729111226.3627499-1-armbru@redhat.com>
-In-Reply-To: <20250729111226.3627499-1-armbru@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 14 Oct 2025 09:36:51 +0100
-X-Gm-Features: AS18NWDdnneHmaeFVDUQFGdg-xa0DZiF63LABZFsNDGIwihe3MoHxpb_nMM5usM
-Message-ID: <CAFEAcA-UrCD7mrmX_4dCK0urMmY5+qs=Y268WerQVq1c+7nB=Q@mail.gmail.com>
-Subject: Re: [PATCH] hw/display/xenfb: Replace unreachable code by abort()
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, sstabellini@kernel.org, anthony@xenproject.org, 
- paul@xen.org, edgar.iglesias@gmail.com, xen-devel@lists.xenproject.org, 
- qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Date: Tue, 14 Oct 2025 10:45:45 +0200
+From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-s390x mailing list <qemu-s390x@nongnu.org>, Thomas Huth
+ <thuth@redhat.com>, Sebastian Mitterle <smitterl@redhat.com>, qemu-devel
+ mailing list <qemu-devel@nongnu.org>, Hendrik Brueckner
+ <brueckner@linux.ibm.com>, Michael Mueller <mimu@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] qapi/machine-s390x: add QAPI event
+ SCLP_CPI_INFO_AVAILABLE
+In-Reply-To: <cb6b2a02856cffcb51b6049e7bc03ed8e160f03c.camel@linux.ibm.com>
+References: <20251013133902.111233-1-shalini@linux.ibm.com>
+ <cb6b2a02856cffcb51b6049e7bc03ed8e160f03c.camel@linux.ibm.com>
+Message-ID: <4c4740467a03a54fa3f8bf42e0ee5c34@linux.ibm.com>
+X-Sender: shalini@linux.ibm.com
+Organization: IBM Deutschland Research & Development GmbH
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68ee0dbc cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=-qjoJ--zFjlsQy1LV4QA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: LMOVtkvt9dQIIgFH_dGikXPA9QZFW51J
+X-Proofpoint-ORIG-GUID: LMOVtkvt9dQIIgFH_dGikXPA9QZFW51J
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX5LmzmvxqTdsf
+ wwM01PYkrmt27XZG2QhoffyX9W922zYwNIdp0AZoqG7Wp3N4XeSs1B/pPm90IiFQ3D2xL7qaZOE
+ 5/SlBMtI10q5Dz3eNf6DgBH0JrG8VnR8PEptrBcsIC8kt23aFdV3VcYRlD5EU/CEDiMa/gHOTOT
+ TDmAx89JRUlPn3UTAk4rFUICXMs9+lz8Fby4SaWaMVTin8NRaXjqEOUGQSmAlGsJ5GoG1i6hFeb
+ Ums7Cpy/U+4X0hqd6RgwC5EtfhkScDMPbFj+O/8GUAEFcMYdwO8cKhSmviThqSuenM7C8dyIduU
+ /sbwF2DERnuNfXT5jVyT2lg3eNmPviSHN7gA8sA2Dt7YKcoWG0Y8efY8UWeb/b4seVedwc3blvu
+ 9lLUaK/ETsvnhFCChzGqZz3x3CwOlw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-14_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510100140
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=shalini@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,34 +124,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 29 Jul 2025 at 12:14, Markus Armbruster <armbru@redhat.com> wrote:
->
-> xenfb_mouse_event() has a switch statement whose controlling
-> expression move->axis is an enum InputAxis.  The enum values are
-> INPUT_AXIS_X and INPUT_AXIS_Y, encoded as 0 and 1.  The switch has a
-> case for both axes.  In addition, it has an unreachable default label.
-> This convinces Coverity that move->axis can be greater than 1.  It
-> duly reports a buffer overrun when it is used to subscript an array
-> with two elements.
+On 2025-10-13 18:50, Nina Schoetterl-Glausch wrote:
+> On Mon, 2025-10-13 at 15:39 +0200, Shalini Chellathurai Saroja wrote:
+>> Add QAPI event SCLP_CPI_INFO_AVAILABLE to notify the availability
+>> of Control-Program Identification data in QOM.
+>> 
+>> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+>> Suggested-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>  hw/s390x/sclpcpi.c      |  4 ++++
+>>  qapi/machine-s390x.json | 25 +++++++++++++++++++++++++
+>>  2 files changed, 29 insertions(+)
+>> 
+>> diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
+>> index 7aa039d510..90da61b1c8 100644
+>> --- a/hw/s390x/sclpcpi.c
+>> +++ b/hw/s390x/sclpcpi.c
+>> @@ -54,6 +54,7 @@
+>>  #include "hw/s390x/event-facility.h"
+>>  #include "hw/s390x/ebcdic.h"
+>>  #include "qapi/qapi-visit-machine.h"
+>> +#include "qapi/qapi-events-machine-s390x.h"
+>>  #include "migration/vmstate.h"
+>> 
+>>  typedef struct Data {
+>> @@ -106,6 +107,9 @@ static int write_event_data(SCLPEvent *event, 
+>> EventBufferHeader *evt_buf_hdr)
+>>      e->timestamp = qemu_clock_get_ns(QEMU_CLOCK_HOST);
+>> 
+>>      cpim->ebh.flags = SCLP_EVENT_BUFFER_ACCEPTED;
+>> +
+>> +    qapi_event_send_sclp_cpi_info_available(true);
+>> +
+>>      return SCLP_RC_NORMAL_COMPLETION;
+>>  }
+>> 
+>> diff --git a/qapi/machine-s390x.json b/qapi/machine-s390x.json
+>> index 966dbd61d2..338653e0b8 100644
+>> --- a/qapi/machine-s390x.json
+>> +++ b/qapi/machine-s390x.json
+>> @@ -119,3 +119,28 @@
+>>  { 'command': 'query-s390x-cpu-polarization', 'returns': 
+>> 'CpuPolarizationInfo',
+>>    'features': [ 'unstable' ]
+>>  }
+>> +
+>> +##
+>> +# @SCLP_CPI_INFO_AVAILABLE:
+>> +#
+>> +# Emitted when the Control-Program Identification data is available
+>> +# in the QOM tree.
+>> +#
+>> +# @iscpiavailable: is CPI data available in QOM
+>> +#
+>> +# Features:
+>> +#
+>> +# @unstable: This event is experimental.
+>> +#
+>> +# Since: 10.2
+>> +#
+>> +# .. qmp-example::
+>> +#
+>> +#     <- { "event": "SCLP_CPI_INFO_AVAILABLE",
+>> +#          "data": { "iscpiavailable": true },
+>> +#          "timestamp": { "seconds": 1401385907, "microseconds": 
+>> 422329 } }
+>> +##
+>> +{ 'event': 'SCLP_CPI_INFO_AVAILABLE',
+>> +  'data': { 'iscpiavailable': 'bool' },
+> 
+> 
+> What is the point of this payload?
 
-I think also that Coverity gets confused by QAPI's convention
-in generated code of defining enumerations like this:
+The data 'iscpiavailable' is not necessary. I will remove this
+and send v3. Thank you Nina for the quick feedback.
 
-typedef enum InputAxis {
-    INPUT_AXIS_X,
-    INPUT_AXIS_Y,
-    INPUT_AXIS__MAX,
-} InputAxis;
+> 
+>> +  'features': [ 'unstable' ]
+>> +}
 
-Coverity thinks that INPUT_AXIS__MAX might be a valid
-value it can see in move->axis, because we defined the
-enum that way.
-
-In theory I suppose that since the __MAX value is only
-there to be an array or enumeration bound that we could
-emit code that #defines it rather than making it part
-of the enum.
-
-thanks
--- PMM
+-- 
+Mit freundlichen Grüßen / Kind regards
+Shalini Chellathurai Saroja
+Software Developer
+Linux on IBM Z & KVM Development
+IBM Deutschland Research & Development GmbH
+Dept 1419, Schoenaicher Str. 220, 71032 Boeblingen
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Geschäftsführung: David Faller
+Sitz der Gesellschaft: Böblingen / Registergericht: Amtsgericht 
+Stuttgart, HRB 243294
 
