@@ -2,84 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912A2BD96B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 14:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D40F1BD9715
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 14:49:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8eL5-00020r-O3; Tue, 14 Oct 2025 08:41:15 -0400
+	id 1v8eRS-0003uV-6j; Tue, 14 Oct 2025 08:47:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1v8eL2-0001zo-3l; Tue, 14 Oct 2025 08:41:12 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>)
- id 1v8eKp-0002qV-CQ; Tue, 14 Oct 2025 08:41:11 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8Axjr_KRO5owAIWAA--.45451S3;
- Tue, 14 Oct 2025 20:40:42 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJBxzsHFRO5odZjhAA--.11589S3;
- Tue, 14 Oct 2025 20:40:39 +0800 (CST)
-Subject: Re: [RFC PATCH] docs/system/security: Restrict "virtualization use
- case" to specific machines
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
- qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Song Gao <gaosong@loongson.cn>
-References: <20250908125058.220973-1-peter.maydell@linaro.org>
- <20250908104125-mutt-send-email-mst@kernel.org>
- <46AA9C03-CA7E-4C4B-AD05-A9053666BA52@gmail.com>
- <20251013070945-mutt-send-email-mst@kernel.org> <aOzm2ukHfkPF-zhT@redhat.com>
- <CAFEAcA9p51aPGhHgUPishEJ9TE60dm83ofKr5Wa-qM_1SqJ67w@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <3689544a-86d9-2df0-32ad-50eb8493c31a@loongson.cn>
-Date: Tue, 14 Oct 2025 20:38:22 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v8eRQ-0003u6-Jg
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 08:47:48 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v8eRJ-0003NQ-VX
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 08:47:48 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-634a3327ff7so10819883a12.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 05:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760446057; x=1761050857; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FzcCdvqVExjkLrdp+A5jr5Gzjr8KK8VBYoh/fTORjEQ=;
+ b=NJaeDfUtaOWuDyWeJZThEhF6i8nVPMPj2vvhaw+8NHFzZl8BR9zxuMr4EQKI0h/cgs
+ 13M6HlP9SXmwDogfJXr9wq4P7sYC1fFGUIjJbya4ABO5NRS02BNFZtk8QxNCD18wv2mw
+ cN7ox5wPA0uyxJR8T+rQXmMPDXxrK41xX1t7HxB1MzCjnMYawG++NlGIaOJd/5Lpsyas
+ woEmYzS375I5UZ71SE5cFyyds3D//We9EZ75rYfqd0zxTdnmRiXhvTBG+XkRSfJY/RT2
+ nfdlKcht3x22cnsbW4adsN0vKlD/TiIt1l3UO0d0G6SlBD5OaD0WDWLhlTrj8eb4nXu3
+ Kk9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760446057; x=1761050857;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=FzcCdvqVExjkLrdp+A5jr5Gzjr8KK8VBYoh/fTORjEQ=;
+ b=CZjVE9nllt14zR12vOLhuzW6+v76fRoJmRusfG38RlCIqWmq5/5KH4Pkh0srIM6JQ9
+ JnEgWyFlR5/7BbdOUHG/tvYbjj2MSk9sE9IjcoxnYjW1kTLrZk+iGyKwSpVd2kSs2YsE
+ U0ZI2GSIJqkpIfjN5vLNzu9ZgBXGZCxG79DnKb/h5fJwfGFiKAVA27VhRf3aNvQXVRsC
+ PwsK61uZi+Kp0kPdFlNjiog8FaozutOTUDe/1wCJYdmVdPKv8xS/+WeSlgdjD/lOGlTr
+ okLf/8RjA01/o+Cqhfn9bnCRMNTTs3i7076/NhM1nZpP+qOX8fMzi54ZlqONBTZiaFcN
+ h7Zg==
+X-Gm-Message-State: AOJu0Yynsb7UGlxMkMV2nezvon6qk9Gd/o69zj1HzfIQ3q96eLHBE1Y2
+ z8v3uChkWVbF1VBhlD+c+du1n5eogBHwmE/OJGENpHYaS4gcqfes9mCwJ//b/coboD0=
+X-Gm-Gg: ASbGncuimzxKSGP0BEgGPdVs1fqrA9s48xnmpZU221PB5Cm9/TWTJ8vA/gT7SHTv3KO
+ wnCmykGYR8w1YZR6eL4lfsO1FKmtMO/H57hiF9Kh5MWBiDoJRvZPn0KARJim3WlgfiOgjscqyUw
+ /mFE6lxk92f09HGdp0dvz9vtW4by1oRr2TNVIVNQyRy0gN9qsF3dfzDU+qAhM8zYTCWyoqhgQkI
+ 2c3W9CowNLXAHiLtX2GYHwBdbQnoWYrO4UxqP14CzJAQ9n7ahzw+ky4mvkSMpRHx1ACysGnE5t8
+ Xa7KT8aS1arb/heZO/klOdP1v1mAZSDIVTycdSnk8NDJ4aiSFPHCBawJXJDGM5LAjwOgi656gQN
+ p6LUarXZKXDxDau12UCjSQvlXb7uZKebPwgskVL41ADN9hRSefCmSPoSw
+X-Google-Smtp-Source: AGHT+IFnz6+YfnK3Z8hw9t93tzgf+lO2jkmS8U5hxVB8zl32u0LiOBndlgoGIHbPX2e5A80b2bK/3A==
+X-Received: by 2002:a05:6402:2809:b0:639:c9c2:3956 with SMTP id
+ 4fb4d7f45d1cf-639d5c5a382mr24681592a12.28.1760446055853; 
+ Tue, 14 Oct 2025 05:47:35 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-63a5235dca9sm11132257a12.8.2025.10.14.05.47.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Oct 2025 05:47:35 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 617A85F812;
+ Tue, 14 Oct 2025 13:47:34 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Julian Ganz <neither@nut.email>
+Cc: qemu-devel@nongnu.org,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,  Weiwei Li
+ <liwei1518@gmail.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
+Subject: Re: [PATCH v7 25/25] tests: add test with interrupted memory
+ accesses on rv64
+In-Reply-To: <729c8db0f4b61033f5a460747ea50fced9dabc1e.1759744337.git.neither@nut.email>
+ (Julian Ganz's message of "Mon, 6 Oct 2025 11:59:20 +0200")
+References: <cover.1759744337.git.neither@nut.email>
+ <729c8db0f4b61033f5a460747ea50fced9dabc1e.1759744337.git.neither@nut.email>
+User-Agent: mu4e 1.12.14-dev1; emacs 30.1
+Date: Tue, 14 Oct 2025 13:47:34 +0100
+Message-ID: <87frbllkex.fsf@draig.linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <CAFEAcA9p51aPGhHgUPishEJ9TE60dm83ofKr5Wa-qM_1SqJ67w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxzsHFRO5odZjhAA--.11589S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZFWfXryUtF1xWw45CFWkZrc_yoW8ZFyfpr
- 4rua1YkryrJFn3A34qgw1SgF1Yvr9xK3W29Fnagw4rCFykGr45JF4Syw4Fv3WkJws5tw1F
- vrsFy3ZrX3WDZagCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUPYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
- x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
- McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7
- I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCF
- x2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r
- 1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij
- 64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr
- 0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF
- 0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.712,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,75 +107,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Julian Ganz <neither@nut.email> writes:
 
+> This test aims at catching API misbehaviour w.r.t. the interaction
+> between interrupts and memory accesses, such as the bug fixed in
+>
+>     27f347e6a1d269c533633c812321cabb249eada8
 
-On 2025/10/14 下午8:20, Peter Maydell wrote:
-> On Mon, 13 Oct 2025 at 12:47, Daniel P. Berrangé <berrange@redhat.com> wrote:
->> With a very minimal wording tweak our current defined policy could
->> avoid being a blocker for enabling KVM in imx8mp-evk. In
->>
->>    https://www.qemu.org/docs/master/system/security.html
->>
->> where it describes the "virtualization use case", we could simply
->> tweak it to always require a versioned machine type
->>
->> Change
->>
->>    "These use cases rely on hardware virtualization extensions
->>     to execute guest code safely on the physical CPU at close-
->>     to-native speed."
->>
->> To say
->>
->>    "These use cases apply to versioned machine types when used
->>     in combination with hardware virtualization extensions
->>     to execute guest code safely on the physical CPU at close-
->>     to-native speed"
-> 
-> With the suggested changes listed elsewhere in this
-> thread, my current manually curated list of machines is:
-> 
-> aarch64
->    ``virt``
-> i386, x86_64
->    ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``, ``pc``, ``q35``
-> s390x
->    ``s390-ccw-virtio``
-> loongarch64:
->    ``virt``
-> ppc64:
->    ``pseries``
-> riscv32, riscv64:
->    ``virt``
-> 
-> If we say "versioned machine type", that puts these machines
-> outside the "supported" boundary:
-> 
-> i386, x86_64
->    ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``
-> loongarch64:
->    ``virt``
-> riscv32, riscv64:
->    ``virt``
-> 
-> I can certainly see the argument for loongarch64
-> and maybe even riscv[*] still being "not supported for
-> production security-boundary stuff", but do we really
-> want to say that the Xen machine types and microvm
-> aren't suitable for VM use ?
-> 
-> [*] Could somebody from riscv or loongarch maintainers
-> say whether they think these machines should be on the
-> "security supported" list or not yet ?
-yes, loongarch virt machine with kvm accel should be security supported. 
-Also in next version we consider to add versioned machine type with 
-loongarch architecture.
+Even better the abbrev with title:
 
-Regards
-Bibo Mao
-> 
-> thanks
-> -- PMM
-> 
+  27f347e6a1d (accel/tcg: also suppress asynchronous IRQs for cpu_io_recomp=
+ile)
 
+> Because the condition for triggering misbehaviour may not be
+> deterministic and the cross-section between memory accesses and
+> interrupt handlers may be small, we have to place our trust in large
+> numbers. Instead of guessing/trying an arbitrary, fixed loop-bound, we
+> decided to loop for a fixed amount of real-time. This avoids the test
+> running into a time-out on slower machines while enabling a high number
+> of possible interactions on faster machines.
+>
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Julian Ganz <neither@nut.email>
+> ---
+>  tests/tcg/riscv64/Makefile.softmmu-target |  6 ++
+>  tests/tcg/riscv64/interruptedmemory.S     | 67 +++++++++++++++++++++++
+>  2 files changed, 73 insertions(+)
+>  create mode 100644 tests/tcg/riscv64/interruptedmemory.S
+>
+> diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv6=
+4/Makefile.softmmu-target
+> index 1a71a78653..d8f92b8e61 100644
+> --- a/tests/tcg/riscv64/Makefile.softmmu-target
+> +++ b/tests/tcg/riscv64/Makefile.softmmu-target
+> @@ -30,5 +30,11 @@ run-plugin-doubletrap: doubletrap
+>  	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
+>  	  $(QEMU_OPTS)$<)
+>=20=20
+> +EXTRA_RUNS +=3D run-plugin-interruptedmemory
+> +run-plugin-interruptedmemory: interruptedmemory
+> +	$(call run-test, $<, \
+> +	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
+> +	  $(QEMU_OPTS)$<)
+
+Something went wrong with substitutions there because I see:
+
+  timeout -s KILL --foreground 120  /home/alex/lsrc/qemu.git/builds/all/qem=
+u-system-riscv64 -plugin ../plugins/libdiscons.so -d plugin -D .pout -M vir=
+t -display none -semihosting -device loader,file=3Dinterruptedmemory
+
+There doesn't seem to be any output either when I run it manually -
+should we be checking the output and at least confirming we are
+detecting the right sort of events?
+
+> +
+>  # We don't currently support the multiarch system tests
+>  undefine MULTIARCH_TESTS
+> diff --git a/tests/tcg/riscv64/interruptedmemory.S b/tests/tcg/riscv64/in=
+terruptedmemory.S
+> new file mode 100644
+> index 0000000000..a32d672849
+> --- /dev/null
+> +++ b/tests/tcg/riscv64/interruptedmemory.S
+> @@ -0,0 +1,67 @@
+> +	.option norvc
+> +
+> +	.text
+> +	.global _start
+> +_start:
+> +	# Set up trap vector
+> +	lla	t0, trap
+> +	csrw	mtvec, t0
+> +
+> +	# Set up timer
+> +	lui	t1, 0x02004
+> +	sd	zero, 0(t1) # MTIMECMP0
+> +
+> +	# Enable timer interrupts
+> +	li	t0, 0x80
+> +	csrrs	zero, mie, t0
+> +	csrrsi	zero, mstatus, 0x8
+> +
+> +	# Find out when to stop
+> +	call	rtc_get
+> +	li	t0, 60
+> +	slli	t0, t0, 30 # Approx. 10e9 ns
+> +	add	t0, t0, a0
+
+The runtime of 60s seems quite long for a tcg test. Can we not show
+stuff happening in a shorter period of time?
+
+> +
+> +	# Loop with memory accesses
+> +	la	t1, semiargs
+> +0:
+> +	ld	t2, 0(t1)
+> +	sd	t2, 0(t1)
+> +	call	rtc_get
+> +	bltu	a0, t0, 0b
+> +
+> +	li	a0, 0
+> +	lla	a1, semiargs
+> +	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
+> +	sd	t0, 0(a1)
+> +	sd	a0, 8(a1)
+> +	li	a0, 0x20	# TARGET_SYS_EXIT_EXTENDED
+> +
+> +	# Semihosting call sequence
+> +	.balign	16
+> +	slli	zero, zero, 0x1f
+> +	ebreak
+> +	srai	zero, zero, 0x7
+> +	j	.
+> +
+> +rtc_get:
+> +	# Get current time from the goldfish RTC
+> +	lui	t3, 0x0101
+> +	lw	a0, 0(t3)
+> +	lw	t3, 4(t3)
+> +	slli	t3, t3, 32
+> +	add	a0, a0, t3
+> +	ret
+> +
+> +trap:
+> +	lui	t5, 0x0200c
+> +	ld	t6, -0x8(t5) # MTIME
+> +	addi	t6, t6, 100
+> +	lui	t5, 0x02004
+> +	sd	t6, 0(t5) # MTIMECMP
+> +	mret
+> +
+> +	.data
+> +	.balign	16
+> +semiargs:
+> +	.space	16
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
