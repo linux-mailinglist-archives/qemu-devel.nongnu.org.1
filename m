@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44A4BD9C8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C02BD9C5F
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 15:39:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8fEb-0005wz-VR; Tue, 14 Oct 2025 09:38:38 -0400
+	id 1v8fEU-0005tX-CN; Tue, 14 Oct 2025 09:38:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEQ-0005v2-6g
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v8fEN-0005t6-3B
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v8fEG-00016j-7d
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:25 -0400
+ id 1v8fEG-00016y-NL
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 09:38:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760449092;
+ s=mimecast20190719; t=1760449095;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kBi6nmZqJdl0va4wx3o6PVk2Le5zxB7N8Bp43lI1p0c=;
- b=OonwqXN0Vb/ZuQIkI6VPZa30tQUesJ0lAeB/9wdw4FkeDujDxSlF4grcw5YCQ017SaKnk2
- WLDJzMlC/khnAW2apOjks/DyTJ98BQMmJBe6iolG5/WjrHvNxijeQ0+hHg6R7t27k97/Oc
- paMYf5kIHprf5j0esfbzUlqA1hBZsxo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xa/WqT0YQ5aqnmYvdDBWwUo/98Zjo9UlKye5iKQIlwk=;
+ b=IgU3QsHf2U4ifurPBqR9WuSz7xg9lXKVHVZkC1mUctalrS1/IIOt524csLuZeCPtADlhJW
+ P5s7bTQdQIYqJhh5cWf2FBy2M+Ap5iVOnHe1mLxD0n2yusEcRoI2Bf3KKfpoFJNmaHZY3N
+ r7VFXDKxZwxHIiFpiNAYzN13391PY9c=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-LxZcPUZeMAudoUD4ElL2vA-1; Tue, 14 Oct 2025 09:38:11 -0400
-X-MC-Unique: LxZcPUZeMAudoUD4ElL2vA-1
-X-Mimecast-MFC-AGG-ID: LxZcPUZeMAudoUD4ElL2vA_1760449090
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3f7b5c27d41so3568922f8f.0
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:10 -0700 (PDT)
+ us-mta-684-PHH_l4XpOfypFNMXdrorng-1; Tue, 14 Oct 2025 09:38:14 -0400
+X-MC-Unique: PHH_l4XpOfypFNMXdrorng-1
+X-Mimecast-MFC-AGG-ID: PHH_l4XpOfypFNMXdrorng_1760449093
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46e47d14dceso30834625e9.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 06:38:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760449089; x=1761053889;
+ d=1e100.net; s=20230601; t=1760449091; x=1761053891;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kBi6nmZqJdl0va4wx3o6PVk2Le5zxB7N8Bp43lI1p0c=;
- b=maZQn18A+xPTtAdfbqYnGUJv0FDgojfoSpwIfGu4b95nEda/L8Lm+inJjQxjl6kae2
- K7pVU0rJSw+vheHIlMHABmJkHW3rrH2ZWUYO9qGodAbKISPI3R8ebRSUYkdO1vkTnfum
- wRLWGfJnQdLr7YYb5HNL9JYhUtM6+ucJDvJsKWlh45dCdQJhR54przx8Um6idq5mBkGJ
- mG+JVYrA/wYQ0KYDZ51A1rN53O29DD/EWtYGM+RHKxD9TUAkL+WMTQpouEvcqYcRVBYl
- vCcqOVc53s+E8CFv/gdR9Rf4izV+d7pr/UHK+OshN3zj5PO14OfCSwp+tJiPjhQXDbbK
- Yhew==
-X-Gm-Message-State: AOJu0YyKKve83HwpBd7UbkwJWZM392Qww3aVDy1TaU77mgOAN4g6Dtzp
- 3R+HdLNKvGk0AZRkSmrkKXiABwIjIuAGQFbHr6OdYY7rXzsECRNRHoID8M3oM0eDlckSGno5hbN
- cA1ngm2aHnGJbdml5SJUqNsfNojrXv8+4/mOaPHQ/3LUMS68Xcp2qzwjYjoccNSmHtFAPYmA1iz
- ItJqNj9byk4ofloBHc/RlkWQ3gYVnfNwMWmIFZEcV4
-X-Gm-Gg: ASbGncu7reZI1y1VYhZ5+2yy0Jah3RAYwDM0bFCAJStJg815hpiJxPJH1+r1x2YDhDG
- UipMqaO4sVRflzTUI/EAEbckCUO1qfhJ9l6NlQII97u2uCV72yPnZR6bMIA5XFfOm5/OUmlRVvj
- n4sBd3etT6WTjCBBokqDj/xvAhAA7Wq0NREh8sQK9rwEjrfT44/znICF2JKDB2pkAwu+IEVEIMu
- KYzPQVdm/PbQwDXtKlROZizcihXnFCvfnNY+5I4tHxkZqvCr4Of38unlu7nqY7Mt4N5ep9XEPzh
- zqlBIW+3PEVchOy8s4PgsQ23qi/Y+hIOWEODTpnQ2H+ZKPGPG7PikZKPmWhKeUYXUSyAT9BY8Yx
- 97DfOt35KYI0rROkaZNfVp2dvOIXvNtu8lw0dlNrx6rU=
-X-Received: by 2002:a5d:5f53:0:b0:426:f4b4:f0fb with SMTP id
- ffacd0b85a97d-426f4b4f100mr42772f8f.2.1760449089230; 
- Tue, 14 Oct 2025 06:38:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExh928QlKDojRECS/IuS2gYFM/lyLxAFd/QuloiaqyyRe7Ns/6uwaNv8KHSkWFvNaaf8LvTA==
-X-Received: by 2002:a5d:5f53:0:b0:426:f4b4:f0fb with SMTP id
- ffacd0b85a97d-426f4b4f100mr42406f8f.2.1760449082967; 
- Tue, 14 Oct 2025 06:38:02 -0700 (PDT)
+ bh=xa/WqT0YQ5aqnmYvdDBWwUo/98Zjo9UlKye5iKQIlwk=;
+ b=fCIcXHnqU8S2o/jibicl9qsTHVFI5jKck0e70zR3Pwbnttgg5/wf9Lp0P/1DfNQ91y
+ pFc14nKbKhVA5XQX1m7mSrdEXwzzUieSx2WEDD67l/bZSd9N+k1WRGr02dctNt5/B4pk
+ oSOvui3sSSnKvKc4updyioswBUHybbx3Pd9Ukgn9RTd58H8AZUegVDI5sKShpdk/Ugyf
+ 0/+TqOtcYZSLZsVvXD1Zr5O+kiPlLgZmHzKXiwraUTrPK3GxTDh7TIWkZ80bnNs6xFxo
+ zCo5FezO8LdKza149JCtqaI/+OWuOPWVTWT1O1NeoBxG+ptsJedv8izKFtmtcsdPOjBa
+ QRhw==
+X-Gm-Message-State: AOJu0YzCtDi81F7eDFFIV7sWopuaGAa8RlYiDOfX3Qnz+j92UIVMUH3b
+ ByX9dwHwtDiLLiXmp4fRanpKemiLXL+knFqpqUu/9ulhJ8hJ36hOENK1i2w2U48bP8st3LdRigH
+ x6J1Ju+GwcElBeA4q8g/MCY24QJh3u/+0y7zh3+BGAE5pUgJWph8+/sDqCk85ISC7CdZOv8AEfl
+ o242QtLnFXkDmQ0r6ZauBpt+1NSUEc41GJPwWxWfFE
+X-Gm-Gg: ASbGncvNstQNzjWNHcYLlu1GN9+cK3TyzbR8WJaCW9pTsFmhIMZKr72vvO0DqjpWS8q
+ 1o8EX814PiWyiRFQ20pRmS25ZTDnWhI0FN/7cfcbYWH2rDqmfxIAg2xLbm1PFOePl2S+eJem+K9
+ 2NLdcnoz2XW8B1ajcRujIqCeW7W/V2f4Kj0QWMQJes2cxPLd0w3eaU6UQXGOBylrHBRxNkWDz88
+ JsF0+xhvL+ogdKeGaJrI780UagmGxjLba5xlPhF+dZfmW3KpgMy8NzwX3h7mFWqGxiacWOvDZmY
+ +vPuIaoef/WQ7ccVQ/z/JqAmYaSvTSNth1O4g7KJTYBpYAMdb+9PAEpsiQ65XoVb/Ky+8iUvXd9
+ w5AOjU176LPQycu2m6t+b5V/RgFqop7EfMtfYbcrRfaU=
+X-Received: by 2002:a05:600c:6487:b0:46e:39e1:fc27 with SMTP id
+ 5b1f17b1804b1-46fa9a8f0cemr160878715e9.5.1760449090997; 
+ Tue, 14 Oct 2025 06:38:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEmnR9yxFYmZ+ykpFC86rSk7rhuXi1POD3hloDWO1FImA+qcYW83S8RGrFU2CHfGy7/L1FIw==
+X-Received: by 2002:a05:600c:6487:b0:46e:39e1:fc27 with SMTP id
+ 5b1f17b1804b1-46fa9a8f0cemr160878475e9.5.1760449090516; 
+ Tue, 14 Oct 2025 06:38:10 -0700 (PDT)
 Received: from [192.168.10.48] ([151.61.22.175])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426e6f03a76sm8232563f8f.36.2025.10.14.06.38.01
+ ffacd0b85a97d-426ce5e1024sm23587864f8f.42.2025.10.14.06.38.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Oct 2025 06:38:01 -0700 (PDT)
+ Tue, 14 Oct 2025 06:38:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/28] rust: bql: add BqlRefCell::get_mut()
-Date: Tue, 14 Oct 2025 15:37:04 +0200
-Message-ID: <20251014133713.1103695-19-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 20/28] rust: migration: do not pass raw pointer to
+ VMStateDescription::fields
+Date: Tue, 14 Oct 2025 15:37:05 +0200
+Message-ID: <20251014133713.1103695-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014133540.1103268-1-pbonzini@redhat.com>
 References: <20251014133540.1103268-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,42 +109,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This method is rarely useful in QEMU due to the pervasiveness of
-shared references, but add it for when a &mut BqlRefCell<> is used.
+Pass a slice instead; a function that accepts a raw pointer should
+arguably be declared as unsafe.
 
+But since it is now much easier to forget vmstate_fields!, validate the
+value (at least to some extent) before passing it to C.  (Unfortunately,
+doing the same for subsections would require const ptr::is_null(), which
+is only stable in Rust 1.84).
+
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/bql/src/cell.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ rust/migration/src/vmstate.rs | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
-index 24ab294b60d..54cfe6145c5 100644
---- a/rust/bql/src/cell.rs
-+++ b/rust/bql/src/cell.rs
-@@ -580,6 +580,23 @@ pub fn borrow_mut(&self) -> BqlRefMut<'_, T> {
-         }
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index 5f5708ad39e..2e320262f06 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -425,7 +425,7 @@ macro_rules! vmstate_fields {
+                 ..::common::zeroable::Zeroable::ZERO
+             }
+         ];
+-        _FIELDS.as_ptr()
++        _FIELDS
+     }}
+ }
+ 
+@@ -677,8 +677,11 @@ pub const fn unplug_pending<F: for<'a> FnCall<(&'a T,), bool>>(mut self, _f: &F)
      }
  
-+    /// Returns a mutable reference to the underlying data in this cell,
-+    /// while the owner already has a mutable reference to the cell.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use bql::BqlRefCell;
-+    ///
-+    /// let mut c = BqlRefCell::new(5);
-+    ///
-+    /// *c.get_mut() = 10;
-+    /// ```
-+    #[inline]
-+    pub const fn get_mut(&mut self) -> &mut T {
-+        self.value.get_mut()
-+    }
-+
-     /// Returns a raw pointer to the underlying data in this cell.
-     ///
-     /// # Examples
+     #[must_use]
+-    pub const fn fields(mut self, fields: *const VMStateField) -> Self {
+-        self.0.fields = fields;
++    pub const fn fields(mut self, fields: &'static [VMStateField]) -> Self {
++        if fields[fields.len() - 1].flags.0 != VMStateFlags::VMS_END.0 {
++            panic!("fields are not terminated, use vmstate_fields!");
++        }
++        self.0.fields = fields.as_ptr();
+         self
+     }
+ 
 -- 
 2.51.0
 
