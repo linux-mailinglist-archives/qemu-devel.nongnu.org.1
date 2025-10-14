@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A4DBDB266
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66299BDB29A
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Oct 2025 22:09:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8lDL-0000Pg-1g; Tue, 14 Oct 2025 16:01:43 -0400
+	id 1v8lJ5-00021O-7E; Tue, 14 Oct 2025 16:07:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1v8lDI-0000P8-S9
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:01:40 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1v8lDA-0004lK-ME
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:01:39 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1760472078; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=EiaUwkDJbXl/J5w7XeIx+tBpmj/jh4X6H0ZFbKmMCA/lEWttBDvgT/KNo3Ju28xAgJwbcP05/A5WW9WTr44fPLRPnXP+CzKHoL8JjIc8K2qtPXYU6OOU7fE9MHlvuclV7g3qV/styHVSXDaOm6QnswOkMKneCroY2UHYpsR7pIE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1760472078;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=LYDiELtKOKYtsSCcA8IbIJdDEoZdsdg0cwRccKLMyf8=; 
- b=Y9dpVPN5h5udY1XgyV9vixj03myl1DOnvx1gSkHwWdfDICgt06/8qUwg0Sx8ShuvJxpqGhR9MvC3BtYvgJKtXNF0N+TQZWdqIk2Y70Mrq0MZYP25dCUnP37hos5I8UYmgsO/ZkxFylZoKR6G+iG6dip7UGIWxHC/Il0zSrECOdo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760472078; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=LYDiELtKOKYtsSCcA8IbIJdDEoZdsdg0cwRccKLMyf8=;
- b=LqafrVEps6bJRox2DHb0hviJBqid3KAuQ8PO70CXsovEPR/nkxv0oEWd7h2RU9rT
- /a4rNEsz/UsiPAd67HhhCmTyZuzMr3iqLXfiN+rZcPj/aMBkp0zbv+3ZXL1WbqXdHAk
- TnQwxrXigHFf34NJJzJPhoy19MX3cdB3TiwPvKvk=
-Received: by mx.zohomail.com with SMTPS id 176047207692795.19604092799977;
- Tue, 14 Oct 2025 13:01:16 -0700 (PDT)
-Message-ID: <2f9abed7-2cb8-4c96-b9cd-5e8d2084b1e7@collabora.com>
-Date: Tue, 14 Oct 2025 23:01:11 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v8lJ1-000210-Qp
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:07:35 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v8lIr-0005Jm-Og
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 16:07:35 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2698d47e776so44137205ad.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 13:07:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760472440; x=1761077240; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nJYlo0OiXoHFOl/mBi+NzOWKzk1tHIAZuQS9beBjKho=;
+ b=iN7M1JaNnOyaWUKgB4Qb5t4amYTWrLMY4urrjU17EPb55McrkfMPVyVgaad3r5ZSDm
+ vVH0UhJcpf4bT6Suvi8JYf1HO1K3lOwVSkgucC0XZPlfwnmmukvsk05BSjZ+iNFLjPml
+ JlRptKuC53cnVc1eq9y5j5FlZE+rTfXY1/Ams6JTTGBv3udPEKjiaPqIFhsoevskkayP
+ WqvV/+OqAJBxgXEu5jwqN9A1Np0qBpIeXwItGs0OTUHwtcD3MncDT09oiPMITPnSIQQI
+ /1zvOZ4WAXBmm/ObdXqJc1AemnVrWoPbDyMtAH257zXAKuZOi6iiPLJKnWhK5sC3L19J
+ mlUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760472440; x=1761077240;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nJYlo0OiXoHFOl/mBi+NzOWKzk1tHIAZuQS9beBjKho=;
+ b=WQp//n7t2myCoBdDIa6YE4TZAZ9dVsKXgN3GqAzNM8hUT3oCNVttSNancx76Opyi4A
+ 8ukUQxTVNUE2tAy9lhs6IZ7j9Irwi/UOHFK2eedPBk7NTZm96UsuVy9DxibkqrOUX6sW
+ T3Afq3yQmLCDmtZftj+aKaxyrjALH3c3dPKOKQmFXMp4J+BGofRgJrKerHThPlM+50fX
+ tt5q0neKpL+abHtUi9LeT86aRBqF3iRXJdfSaRufTl9sbbiyC4FN63S2vCmLUJmTQZUo
+ mjjP5tXGK3lDqvabbHgWrBeZsnJ9JbCH3Ko34sJ8Vjmzc+xNq83TrEFo9zWzLFjSrYtg
+ GB+g==
+X-Gm-Message-State: AOJu0Ywjs7G6nIotonnLLFgxFi0NbBx31RlKNXwr5Q5Jes5b9fAWD0kN
+ I810mGsp5i07pqHGuDRkU6uRxsUNqMaheStSzQCNylwcyw9pRxzle6I87Un1dauXRCQlbmZIKe7
+ A7zzW17c=
+X-Gm-Gg: ASbGncvSW+h5IyJqWva0wUi52xt1F5Rhs31dTh3Ra6U4ReElO7gRTdmqXJFeSSSVj9v
+ l39FSerqc2xMoOy3A5hr9XZtqItFi8osrmsxEAYOghyG1DqB/JhKD2Jge5wVL4X+3QLJ6VFAi2r
+ aGlAhu1J6n3rALoJQyghmhIp4p6pi07QPUVoCeelPQfQillBBPLQnOPS3BjVPn8i3LCgPyDi2gX
+ 09ZZbC/o3d5a7EdV2RO5T0JkHlog8n0mr4Q3zn69EsLlmSF5OOW0AGoauVXWlaTzhk3WZsV2MUD
+ SZTrPfmXsa1L+urU9/1zLbwzBBknqWeLjM0AOkhfA0osUFo+hcwgtTZGaUjIS7Itqz3zfgKhUUW
+ NaDD4p9a9Y7AWdUyE3HJFvjfsbKA5hdwV0pt832wzjV3i4t9dY8sadrYKNvUXEw==
+X-Google-Smtp-Source: AGHT+IG0WN7QBtUj2770IMPGFWz9k+NTd5lWht5HLtwxStD7w8WLplclgozJqvzKT0HA8FNiI60sPA==
+X-Received: by 2002:a17:902:db11:b0:274:6d95:99d2 with SMTP id
+ d9443c01a7336-290273434bamr359900045ad.39.1760472439470; 
+ Tue, 14 Oct 2025 13:07:19 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29034f93ea2sm172100975ad.126.2025.10.14.13.07.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Oct 2025 13:07:19 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v2 00/37] target/arm: Implement FEAT_SYSREG128
+Date: Tue, 14 Oct 2025 13:06:41 -0700
+Message-ID: <20251014200718.422022-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH qemu v8 1/1] Honor guest PAT on x86, absent Bochs display
-To: ~myrslint <myrskylintu@proton.me>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-References: <176045956423.5579.13349691093596703310-1@git.sr.ht>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <176045956423.5579.13349691093596703310-1@git.sr.ht>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,35 +94,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/14/25 19:23, ~myrslint wrote:
-> From: myrslint <qemu.haziness801@passinbox.com>
-> 
-> On x86_64, where most CPUs support self-snoop, it is preferrable to
-> always honor guest PAT. Not doing so is a quirk. There is a default
-> enabled KVM quirk flag which enforces not doing so due to a former bug
-> in Bochs display driver.
-> 
-> The bug has been fixed but not enough has yet passed since so we only
-> disable said quirk flag if a Bochs display is not configured for the
-> virtual machine.
-> 
-> This commit also moves around a bit of code that would be called when
-> the initialization of a VM is done.
-> 
-> Signed-off-by: myrslint <qemu.haziness801@passinbox.com>
-> ---
->  accel/kvm/kvm-all.c        |  1 +
->  accel/stubs/kvm-stub.c     |  1 +
->  hw/display/bochs-display.c | 17 +++++++++++++++
->  include/system/kvm.h       |  9 ++++++++
->  target/i386/kvm/kvm.c      | 42 +++++++++++++++++++++++++++++++-------
->  5 files changed, 63 insertions(+), 7 deletions(-)
+Based-on: 20251014195017.421681-1-richard.henderson@linaro.org
+("[PATCH v2 0/7] target/arm: Implement FEAT_AIE")
 
-Looks perfect. Now up to Paolo to review further and apply the patch.
+Changes for v2:
+  - The VHE rewrite has been merged.
+  - The ARMCPU data are two separate uint64_t not Int128.
+  - The write128fn callback uses two separate uint64_t arguments.
+  - The read128fn callback continues to return Int128.
+  - Updated arm_gdb_get_sysreg for 128-bit registers.
 
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+The final patch may be used to test all of this, but is not intended
+for merge.  All of this should enabled if and only if FEAT_D128.
+
+
+r~
+
+
+Richard Henderson (37):
+  target/arm: Implement isar tests for FEAT_SYSREG128, FEAT_SYSINSTR128
+  target/arm: Define CP_REG_SIZE_U128
+  target/arm: Update ARMCPRegInfo for 128-bit sysregs
+  target/arm: Asserts for ARM_CP_128BIT in define_one_arm_cp_reg
+  target/arm: Split add_cpreg_to_hashtable_aa64
+  target/arm: Add raw_read128, raw_write128
+  target/arm: Add read_raw_cp_reg128, write_raw_cp_reg128
+  target/arm: Use cpreg_field_type in arm_gen_one_feature_sysreg
+  target/arm: Merge arm_gen_one_feature_sysreg into the single caller
+  target/arm: Handle MO_128 in arm_gdb_get_sysreg
+  target/arm: Handle ARM_CP_128BIT in cpu reset
+  target/arm: Put 128-bit sysregs into a separate list
+  target/arm/kvm: Assert no 128-bit sysregs in kvm_arm_init_cpreg_list
+  target/arm/hvf: Assert no 128-bit sysregs in hvf_arch_init_vcpu
+  migration: Add vmstate_info_int128
+  target/arm: Migrate cpreg128 registers
+  target/arm: Add syn_aa64_sysreg128trap
+  target/arm: Introduce helper_{get,set}_cp_reg128
+  target/arm: Implement MRRS, MSRR, SYSP
+  target/arm: Consolidate definitions of PAR
+  target/arm: Extend PAR_EL1 to 128-bit
+  target/arm: Consolidate definitions of TTBR[01]
+  target/arm: Split out flush_if_asid_change
+  target/arm: Use flush_if_asid_change in vmsa_ttbr_write
+  target/arm: Extend TTBR system registers to 128-bit
+  target/arm: Implement TLBIP IPAS2E1, IPAS2LE1
+  target/arm: Implement TLBIP IPAS2E1IS, IPAS2LE1IS
+  target/arm: Implement TLBIP RVAE1, RVAAE1, RVALE1, RVAALE1
+  target/arm: Implement TLBIP RIPAS1E1, RIPAS1LE1, RIPAS2E1IS,
+    RIPAS2LE1IS
+  target/arm: Implement TLBIP RVA{L}E2{IS,OS}
+  target/arm: Implement TLBIP RVA{L}E3{IS,OS}
+  target/arm: Implement TLBIP VA{L}E1{IS,OS}
+  target/arm: Implement TLBIP VAE2, VALE2
+  target/arm: Implement TLBIP VAE3, VALE3
+  target/arm: Implement TLBIP VA{L}E2{IS,OS}
+  target/arm: Implement TLBIP VA{L}E3{IS,OS}
+  NOTFORMERGE: Enable FEAT_SYSREG128, FEAT_SYSINSTR128 for cpu max
+
+ include/migration/vmstate.h    |   1 +
+ target/arm/cpregs.h            |  31 ++
+ target/arm/cpu-features.h      |  10 +
+ target/arm/cpu.h               |  33 +-
+ target/arm/internals.h         |   1 +
+ target/arm/kvm-consts.h        |   2 +
+ target/arm/syndrome.h          |  10 +
+ target/arm/tcg/helper.h        |   2 +
+ migration/vmstate-types.c      |  30 ++
+ target/arm/cpu.c               |  20 +-
+ target/arm/gdbstub.c           |  87 +++--
+ target/arm/helper.c            | 663 ++++++++++++++++++++++++++-------
+ target/arm/hvf/hvf.c           |   4 +
+ target/arm/kvm.c               |   2 +
+ target/arm/machine.c           |  50 +++
+ target/arm/tcg/cpregs-at.c     |   4 +
+ target/arm/tcg/cpu64.c         |   2 +
+ target/arm/tcg/op_helper.c     |  29 ++
+ target/arm/tcg/tlb-insns.c     | 494 ++++++++++++++++++------
+ target/arm/tcg/translate-a64.c | 169 +++++++--
+ target/arm/tcg/a64.decode      |  12 +-
+ 21 files changed, 1312 insertions(+), 344 deletions(-)
 
 -- 
-Best regards,
-Dmitry
+2.43.0
+
 
