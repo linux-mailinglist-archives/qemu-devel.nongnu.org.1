@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001BDBDC7B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1243BDC7AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:33:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t5l-0000MV-Hh; Wed, 15 Oct 2025 00:26:25 -0400
+	id 1v8t5m-0000RL-Cr; Wed, 15 Oct 2025 00:26:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5g-0000K1-En; Wed, 15 Oct 2025 00:26:20 -0400
+ id 1v8t5i-0000N3-La; Wed, 15 Oct 2025 00:26:22 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5b-0002pp-QX; Wed, 15 Oct 2025 00:26:20 -0400
+ id 1v8t5e-0002qR-Jh; Wed, 15 Oct 2025 00:26:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7C10115D9CF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8AFBF15D9D0;
  Wed, 15 Oct 2025 07:24:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1FAF829FE78;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2ECE829FE79;
  Wed, 15 Oct 2025 07:25:21 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Hector Cao <hector.cao@canonical.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.2 10/11] target/i386: add compatibility property for
- arch_capabilities
-Date: Wed, 15 Oct 2025 07:25:14 +0300
-Message-ID: <20251015042520.68556-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Hector Cao <hector.cao@canonical.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.2 11/11] target/i386: add compatibility property for
+ pdcm feature
+Date: Wed, 15 Oct 2025 07:25:15 +0300
+Message-ID: <20251015042520.68556-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.2-20251014173635@cover.tls.msk.ru>
 References: <qemu-stable-10.1.2-20251014173635@cover.tls.msk.ru>
@@ -58,112 +58,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Hector Cao <hector.cao@canonical.com>
 
-Prior to v10.1, if requested by user, arch-capabilities is always on
-despite the fact that CPUID advertises it to be off/unvailable.
-This causes a migration issue for VMs that are run on a machine
-without arch-capabilities and expect this feature to be present
-on the destination host with QEMU 10.1.
+The pdcm feature is supposed to be disabled when PMU is not
+available. Up until v10.1, pdcm feature is enabled even when PMU
+is off. This behavior has been fixed but this change breaks the
+migration of VMs that are run with QEMU < 10.0 and expect the pdcm
+feature to be enabled on the destination host.
 
-Add a compatibility property to restore the legacy behavior for all
-machines with version prior to 10.1.
+This commit restores the legacy behavior for machines with version
+prior to 10.1 to allow the migration from older QEMU to QEMU 10.1.
 
-To preserve the functionality (added by 10.1) of turning off
-ARCH_CAPABILITIES where Windows does not like it, use directly
-the guest CPU vendor: x86_cpu_get_supported_feature_word is not
-KVM-specific and therefore should not necessarily use the host
-CPUID.
-
-Co-authored-by: Hector Cao <hector.cao@canonical.com>
 Signed-off-by: Hector Cao <hector.cao@canonical.com>
-Fixes: d3a24134e37 ("target/i386: do not expose ARCH_CAPABILITIES on AMD CPU", 2025-07-17)
+Link: https://lore.kernel.org/r/20250910115733.21149-3-hector.cao@canonical.com
+Fixes: e68ec298090 ("i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check", 2025-06-20)
+[Move property from migration object to CPU. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e9efa4a77168ac2816bf9471f878252ce6224710)
+(cherry picked from commit 6529f31e0dccadb532c80b36e3efe7aef83f9cad)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 2f58e73d33..2504365bc2 100644
+index 2504365bc2..0861e329b5 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -84,6 +84,7 @@
- GlobalProperty pc_compat_10_0[] = {
+@@ -85,6 +85,7 @@ GlobalProperty pc_compat_10_0[] = {
      { TYPE_X86_CPU, "x-consistent-cache", "false" },
      { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
-+    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
+     { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
++    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
  };
  const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
  
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 6d85149e6e..fe369bb128 100644
+index fe369bb128..ab18de894e 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7539,6 +7539,20 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
- #endif
-         break;
- 
-+    case FEAT_7_0_EDX:
-+        /*
-+         * Windows does not like ARCH_CAPABILITIES on AMD machines at all.
-+         * Do not show the fake ARCH_CAPABILITIES MSR that KVM sets up,
-+         * except if needed for migration.
-+         *
-+         * When arch_cap_always_on is removed, this tweak can move to
-+         * kvm_arch_get_supported_cpuid.
-+         */
-+        if (cpu && IS_AMD_CPU(&cpu->env) && !cpu->arch_cap_always_on) {
-+            unavail = CPUID_7_0_EDX_ARCH_CAPABILITIES;
+@@ -7908,6 +7908,11 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             /* Fixup overflow: max value for bits 23-16 is 255. */
+             *ebx |= MIN(num, 255) << 16;
+         }
++        if (cpu->pdcm_on_even_without_pmu) {
++            if (!cpu->enable_pmu) {
++                *ecx &= ~CPUID_EXT_PDCM;
++            }
 +        }
-+        break;
-+
-     default:
          break;
+     case 2: { /* cache info: needed for Pentium Pro compatibility */
+         const CPUCaches *caches;
+@@ -8958,9 +8963,11 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
      }
-@@ -10004,6 +10018,9 @@ static const Property x86_cpu_properties[] = {
-                      true),
-     DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
-     DEFINE_PROP_BOOL("x-force-cpuid-0x1f", X86CPU, force_cpuid_0x1f, false),
-+
-+    DEFINE_PROP_BOOL("x-arch-cap-always-on", X86CPU,
-+                     arch_cap_always_on, false),
+ 
+-    /* PDCM is fixed1 bit for TDX */
+-    if (!cpu->enable_pmu && !is_tdx_vm()) {
+-        env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
++    if (!cpu->pdcm_on_even_without_pmu) {
++        /* PDCM is fixed1 bit for TDX */
++        if (!cpu->enable_pmu && !is_tdx_vm()) {
++            env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
++        }
+     }
+ 
+     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
+@@ -10021,6 +10028,8 @@ static const Property x86_cpu_properties[] = {
+ 
+     DEFINE_PROP_BOOL("x-arch-cap-always-on", X86CPU,
+                      arch_cap_always_on, false),
++    DEFINE_PROP_BOOL("x-pdcm-on-even-without-pmu", X86CPU,
++                     pdcm_on_even_without_pmu, false),
  };
  
  #ifndef CONFIG_USER_ONLY
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e0be7a7406..414ca968e8 100644
+index 414ca968e8..42168f1d6d 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -2314,6 +2314,12 @@ struct ArchCPU {
-     /* Forcefully disable KVM PV features not exposed in guest CPUIDs */
-     bool kvm_pv_enforce_cpuid;
+@@ -2320,6 +2320,12 @@ struct ArchCPU {
+      */
+     bool arch_cap_always_on;
  
 +    /*
-+     * Expose arch-capabilities unconditionally even on AMD models, for backwards
-+     * compatibility with QEMU <10.1.
++     * Backwards compatibility with QEMU <10.1. The PDCM feature is now disabled when
++     * PMU is not available, but prior to 10.1 it was enabled even if PMU is off.
 +     */
-+    bool arch_cap_always_on;
++    bool pdcm_on_even_without_pmu;
 +
      /* Number of physical address bits supported */
      uint32_t phys_bits;
  
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 5621200be0..96035c27cd 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -503,12 +503,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-          * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
-          * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
-          * returned by KVM_GET_MSR_INDEX_LIST.
--         *
--         * But also, because Windows does not like ARCH_CAPABILITIES on AMD
--         * mcahines at all, do not show the fake ARCH_CAPABILITIES MSR that
--         * KVM sets up.
-          */
--        if (!has_msr_arch_capabs || !(edx & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
-+        if (!has_msr_arch_capabs) {
-             ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
-         }
-     } else if (function == 7 && index == 1 && reg == R_EAX) {
 -- 
 2.47.3
 
