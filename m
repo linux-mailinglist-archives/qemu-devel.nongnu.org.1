@@ -2,82 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D43BBDF216
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 16:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC217BDF44A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 17:07:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v92hM-0000Yp-Ab; Wed, 15 Oct 2025 10:41:53 -0400
+	id 1v92xR-0007f8-2Q; Wed, 15 Oct 2025 10:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v92go-0000Nz-S0
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:41:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v92xO-0007eY-CK
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:26 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v92gf-0006Js-Dz
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:41:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760539265;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=R1MLAN7CR8OZ9XZGygHRbL8NAIs9pi1ZShZl/FkeZOs=;
- b=OskIw6A7hEHUx4Jg6/UBCbvKIrEOeBMRLThq9d2HJM6ofVTRNyHKzq8fVuubaly8ek7s7l
- BbPATXKUDHuYfO5ojOo7ZOQZVAU08XedMUx6Ip6Hhszu1i6KDmElUtfWUsRg8YQtefiJ5T
- 2WU/X64tTPrkUcIlOyYtiO23rEGZlV8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-WiZZrmeHPP-8aixi4OjAKg-1; Wed,
- 15 Oct 2025 10:41:01 -0400
-X-MC-Unique: WiZZrmeHPP-8aixi4OjAKg-1
-X-Mimecast-MFC-AGG-ID: WiZZrmeHPP-8aixi4OjAKg_1760539260
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CE7C019560BB; Wed, 15 Oct 2025 14:40:59 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D85FA30001A1; Wed, 15 Oct 2025 14:40:58 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7209921E6A27; Wed, 15 Oct 2025 16:40:56 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org,  Yanan Wang <wangyanan55@huawei.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  "Dr. David Alan Gilbert"
- <dave@treblig.org>,  Eric Blake <eblake@redhat.com>,  Zhao Liu
- <zhao1.liu@intel.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,  Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v5 3/3] hw/uefi/ovmf-log: add maxsize parameter
-In-Reply-To: <20251015120637.1736402-4-kraxel@redhat.com> (Gerd Hoffmann's
- message of "Wed, 15 Oct 2025 14:06:37 +0200")
-References: <20251015120637.1736402-1-kraxel@redhat.com>
- <20251015120637.1736402-4-kraxel@redhat.com>
-Date: Wed, 15 Oct 2025 16:40:56 +0200
-Message-ID: <87wm4w9qiv.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v92xH-0000a3-Cr
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:26 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id C193BC04DA;
+ Wed, 15 Oct 2025 17:58:11 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a94::1:15])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id AwRFIp2FFSw0-tfJmmqAZ; Wed, 15 Oct 2025 17:58:11 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1760540291;
+ bh=jrQtk21mt1nUk+DmzUszLZtEs0ITLbqWzIIrKdfzsTI=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=MZnfZWntQcF6TFWb1/h8C3vCVj0ERliiO4Z0ilp+5U9fDzAcxKaCBGle2Bkwn+NfG
+ F2Hj48v0GOo9iA1gI0nRwOn1wpfSqJJ5U9FJ76bRR/R4DP/Cq9BqxXQepnPRamaF5k
+ cY2hQRhAtp9D3Cx5HacmNWpb3qfVaLoOu+/SpZDg=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: mst@redhat.com
+Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
+ vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
+ d-tatianin@yandex-team.ru
+Subject: [PATCH v3 00/23] vhost refactoring and fixes
+Date: Wed, 15 Oct 2025 17:57:44 +0300
+Message-ID: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -89,150 +73,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gerd Hoffmann <kraxel@redhat.com> writes:
+Hi all. That's rebased and updated first part of
+  [PATCH 00/33] vhost-user-blk: live-backend local migration
 
-> Allow limiting the amount of log output sent.  Allow up to 1 MiB.
-> In case the guest log buffer is larger than 1 MiB limit the output
-> instead of throwing an error.
->
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  hw/uefi/ovmf-log.c   | 42 ++++++++++++++++++++++++++++++++++--------
->  hmp-commands-info.hx |  4 ++--
->  qapi/machine.json    |  5 +++++
->  3 files changed, 41 insertions(+), 10 deletions(-)
->
-> diff --git a/hw/uefi/ovmf-log.c b/hw/uefi/ovmf-log.c
-> index e281a980a101..28788620e3f6 100644
-> --- a/hw/uefi/ovmf-log.c
-> +++ b/hw/uefi/ovmf-log.c
-> @@ -18,6 +18,7 @@
->  #include "qapi/error.h"
->  #include "qapi/type-helpers.h"
->  #include "qapi/qapi-commands-machine.h"
-> +#include "qobject/qdict.h"
->  
->  
->  /* ----------------------------------------------------------------------- */
-> @@ -164,7 +165,8 @@ static void handle_ovmf_log_range(GString *out,
->      }
->  }
->  
-> -FirmwareLog *qmp_query_firmware_log(Error **errp)
-> +FirmwareLog *qmp_query_firmware_log(bool have_max_size, uint64_t max_size,
-> +                                    Error **errp)
->  {
->      MEM_DEBUG_LOG_HDR header;
->      dma_addr_t offset, base;
-> @@ -184,18 +186,40 @@ FirmwareLog *qmp_query_firmware_log(Error **errp)
->          return NULL;
->      }
->  
-> -    if (header.DebugLogSize > MiB) {
-> -        /* default size is 128k (32 pages), allow up to 1M */
-> -        error_setg(errp, "firmware log: log buffer is too big");
-> -        return NULL;
-> -    }
-> -
->      if (header.DebugLogHeadOffset > header.DebugLogSize ||
->          header.DebugLogTailOffset > header.DebugLogSize) {
->          error_setg(errp, "firmware log: invalid header");
->          return NULL;
->      }
->  
-> +    if (have_max_size) {
-> +        if (max_size > MiB) {
-> +            error_setg(errp, "firmware log: max-size larger than 1 MiB");
+v3:
+01-05,07-23: add r-b by Daniil
+01,03,04,11-12,15,19,22,23: add r-b by Raphael
+02: - add a-b by Markus and Raphael
+    - touch-up commit message
+06: carefully follow existing pattern
+    of split into features / features_ex
 
-"parameter 'max-size' exceeds 1MiB" or similar.
+Vladimir Sementsov-Ogievskiy (23):
+  vhost-user: rework enabling vrings
+  vhost: drop backend_features field
+  vhost-user: introduce vhost_user_has_protocol_feature() helper
+  vhost: move protocol_features to vhost_user
+  vhost-user-gpu: drop code duplication
+  vhost: make vhost_dev.features private
+  virtio: move common part of _set_guest_notifier to generic code
+  virtio: drop *_set_guest_notifier_fd_handler() helpers
+  vhost-user: keep QIOChannelSocket for backend channel
+  vhost: vhost_virtqueue_start(): fix failure path
+  vhost: make vhost_memory_unmap() null-safe
+  vhost: simplify calls to vhost_memory_unmap()
+  vhost: move vrings mapping to the top of vhost_virtqueue_start()
+  vhost: vhost_virtqueue_start(): drop extra local variables
+  vhost: final refactoring of vhost vrings map/unmap
+  vhost: simplify vhost_dev_init() error-path
+  vhost: move busyloop timeout initialization to vhost_virtqueue_init()
+  vhost: introduce check_memslots() helper
+  vhost: vhost_dev_init(): simplify features initialization
+  hw/virtio/virtio-bus: refactor virtio_bus_set_host_notifier()
+  vhost-user: make trace events more readable
+  vhost-user-blk: add some useful trace-points
+  vhost: add some useful trace-points
 
-> +            return NULL;
-> +        }
-> +    } else {
-> +        max_size = MiB;
-> +    }
-> +
-> +    /* adjust header.DebugLogHeadOffset so we return at most maxsize bytes */
-> +    if (header.DebugLogHeadOffset > header.DebugLogTailOffset) {
-> +        /* wrap around */
-> +        if (header.DebugLogTailOffset > max_size) {
-> +            header.DebugLogHeadOffset = header.DebugLogTailOffset - max_size;
-> +        } else {
-> +            uint64_t max_chunk = max_size - header.DebugLogTailOffset;
-> +            if (header.DebugLogSize > max_chunk &&
-> +                header.DebugLogHeadOffset < header.DebugLogSize - max_chunk) {
-> +                header.DebugLogHeadOffset = header.DebugLogSize - max_chunk;
-> +            }
-> +        }
-> +    } else {
-> +        if (header.DebugLogTailOffset > max_size &&
-> +            header.DebugLogHeadOffset < header.DebugLogTailOffset - max_size) {
-> +            header.DebugLogHeadOffset = header.DebugLogTailOffset - max_size;
-> +        }
-> +    }
+ backends/cryptodev-vhost.c     |   9 +-
+ hw/block/trace-events          |  10 ++
+ hw/block/vhost-user-blk.c      |  20 ++-
+ hw/display/vhost-user-gpu.c    |  11 +-
+ hw/net/vhost_net.c             |  35 ++--
+ hw/scsi/vhost-scsi.c           |   1 -
+ hw/scsi/vhost-user-scsi.c      |   1 -
+ hw/virtio/trace-events         |  16 +-
+ hw/virtio/vdpa-dev.c           |   3 +-
+ hw/virtio/vhost-user-base.c    |   8 +-
+ hw/virtio/vhost-user.c         | 285 ++++++++++++++++++++++---------
+ hw/virtio/vhost.c              | 300 +++++++++++++++++----------------
+ hw/virtio/virtio-bus.c         |  18 +-
+ hw/virtio/virtio-hmp-cmds.c    |   2 -
+ hw/virtio/virtio-mmio.c        |  41 +----
+ hw/virtio/virtio-pci.c         |  34 +---
+ hw/virtio/virtio-qmp.c         |  12 +-
+ hw/virtio/virtio.c             |  48 +++---
+ include/hw/virtio/vhost-user.h |   3 +
+ include/hw/virtio/vhost.h      |  63 +++++--
+ include/hw/virtio/virtio-pci.h |   3 -
+ include/hw/virtio/virtio.h     |  16 +-
+ net/vhost-vdpa.c               |   7 +-
+ qapi/virtio.json               |   3 -
+ 24 files changed, 537 insertions(+), 412 deletions(-)
 
-Didn't review this part; my brain's fried for today :)
-
-> +
->      base = offset + header.HeaderSize;
->      if (header.DebugLogHeadOffset > header.DebugLogTailOffset) {
->          /* wrap around */
-> @@ -239,8 +263,10 @@ void hmp_info_firmware_log(Monitor *mon, const QDict *qdict)
->      Error *err = NULL;
->      FirmwareLog *log;
->      gsize log_len;
-> +    int64_t maxsize;
->  
-> -    log = qmp_query_firmware_log(&err);
-> +    maxsize = qdict_get_try_int(qdict, "maxsize", -1);
-> +    log = qmp_query_firmware_log(maxsize != -1, (uint64_t)maxsize, &err);
->      if (err)  {
->          hmp_handle_error(mon, err);
->          return;
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index f0aef419923c..f00d7081b40c 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -993,8 +993,8 @@ ERST
->  
->      {
->          .name       = "firmware-log",
-> -        .args_type  = "",
-> -        .params     = "",
-> +        .args_type  = "maxsize:o?",
-> +        .params     = "[maxsize]",
->          .help       = "show the firmware (ovmf) debug log",
->          .cmd        = hmp_info_firmware_log,
->      },
-
-Might want to spell it max-size for consistency with QMP.  Up to you.
-
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index 96133e5c71cf..e4b15680c172 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1858,9 +1858,14 @@
->  #
->  # Find firmware memory log buffer in guest memory, return content.
->  #
-> +# @max-size: limit the amount of log data returned.  Up to 1 MiB if
-> +#            log data is allowed.  In case the amout of log data is
-
-What are you trying to convey by "if log data is allowed"?
-
-s/amout/amount/
-
-> +#            larger than max-size the tail of the log is returned.
-
-Please use @max-size here for nicer rendering.
-
-> +#
->  # Since: 10.2
->  ##
->  { 'command': 'query-firmware-log',
-> +  'data': { '*max-size': 'size' },
->    'returns': 'FirmwareLog' }
->  
->  ##
+-- 
+2.48.1
 
 
