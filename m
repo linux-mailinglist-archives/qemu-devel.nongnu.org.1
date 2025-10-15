@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F77DBDC7AB
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C72BDC799
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t6A-0000aZ-7Y; Wed, 15 Oct 2025 00:26:50 -0400
+	id 1v8t6I-0000br-Ng; Wed, 15 Oct 2025 00:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t67-0000Zr-AJ; Wed, 15 Oct 2025 00:26:47 -0400
+ id 1v8t6C-0000bI-85; Wed, 15 Oct 2025 00:26:52 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t64-0002vS-0F; Wed, 15 Oct 2025 00:26:46 -0400
+ id 1v8t69-0002we-9c; Wed, 15 Oct 2025 00:26:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0CCF215D9D7;
+ by isrv.corpit.ru (Postfix) with ESMTP id 261C615D9D8;
  Wed, 15 Oct 2025 07:25:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 99BA029FE7E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B420F29FE7F;
  Wed, 15 Oct 2025 07:25:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Filip Hejsek <filip.hejsek@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, ShengYi Hung <aokblast@FreeBSD.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 04/13] ui/gtk: Fix callback function signature
-Date: Wed, 15 Oct 2025 07:25:28 +0300
-Message-ID: <20251015042540.68611-4-mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 05/13] hid: fix incorrect return value for hid
+Date: Wed, 15 Oct 2025 07:25:29 +0300
+Message-ID: <20251015042540.68611-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,34 +57,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Filip Hejsek <filip.hejsek@gmail.com>
+From: ShengYi Hung <aokblast@FreeBSD.org>
 
-The correct type for opaque pointer is gpointer,
-not gpointer * (which is a pointer to a pointer).
+The return value of hid_keyboard_write is used to set the packet's actual_length
+and pass to xhci directly to allow guest know how many byte actually processed.
+Therefore, return 1 to indicate a successful transfer or it will be
+considered as a wrong xfer.
 
-Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: ShengYi Hung <aokblast@FreeBSD.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit c187a67c9dcdece58138f4df5ca4dd846934eddc)
+(cherry picked from commit 1c0f5142d921525f1023152eac63d2ff3d33e3b2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 2db10c46da..fe0a2249ff 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -769,9 +769,9 @@ static gboolean gd_render_event(GtkGLArea *area, GdkGLContext *context,
+diff --git a/hw/input/hid.c b/hw/input/hid.c
+index 76bedc1844..de24cd0ef0 100644
+--- a/hw/input/hid.c
++++ b/hw/input/hid.c
+@@ -478,6 +478,7 @@ int hid_keyboard_write(HIDState *hs, uint8_t *buf, int len)
+             ledstate |= QEMU_CAPS_LOCK_LED;
+         }
+         kbd_put_ledstate(ledstate);
++        return 1;
+     }
+     return 0;
  }
- 
- static void gd_resize_event(GtkGLArea *area,
--                            gint width, gint height, gpointer *opaque)
-+                            gint width, gint height, gpointer opaque)
- {
--    VirtualConsole *vc = (void *)opaque;
-+    VirtualConsole *vc = opaque;
-     double pw = width, ph = height;
-     double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
-     GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(area));
 -- 
 2.47.3
 
