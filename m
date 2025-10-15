@@ -2,67 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A20BDF470
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 17:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8B6BDF5E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 17:30:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v92y2-0007nv-0q; Wed, 15 Oct 2025 10:59:06 -0400
+	id 1v93Q5-0006kT-54; Wed, 15 Oct 2025 11:28:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v92xo-0007nL-JG
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:54 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1v93Q0-0006jy-HV
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 11:28:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v92xj-0000fv-Pe
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:51 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id CFB81C0678;
- Wed, 15 Oct 2025 17:58:30 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a94::1:15])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id AwRFIp2FFSw0-MaNMqgIP; Wed, 15 Oct 2025 17:58:30 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760540310;
- bh=vsodk9AXUS2kWNzrVElaIrmi/9pMIgvOF9+FQJJtX2g=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=cE3jGIS/WGabD9/OOjUTL7OverKyy/P6XCDCGnAhNyr0MENMl1fobC8yO/He+R36p
- 2Mj4x4piZOAlzvQCItPXd/fBoUaOToFmj9hUcjjShQT7J0MRnKtp7e3lZQz18dq3/M
- CBmIPSiksNnMcAoHt0jbUV3DVGnv0HPYRwZMBRWw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: mst@redhat.com
-Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
- vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
- d-tatianin@yandex-team.ru, Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Subject: [PATCH v3 23/23] vhost: add some useful trace-points
-Date: Wed, 15 Oct 2025 17:58:07 +0300
-Message-ID: <20251015145808.1112843-24-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
-References: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1v93Ph-0006oq-0w
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 11:28:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760542047;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=n/50tlHOGBoGaeRg+7foL3dtTJRjL8C74PNhafhhHCs=;
+ b=KM6WvoutQAWtQ2qwFdUaFrab1/Y3cPqHNcWbGbjFYpBHJdgM2WdvQyHCpOcpAedWfofKye
+ f86HFWSo+sSyHLEqYx7/ps6Fu+VXeoFYpo6qMmF0Me6cZT74N93xCuYAMWI6V1zX70xCCe
+ nbnhYcO6/7RBDvsJQkQSmmur6ri4P2o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-Xz6iVfQ9PPCQvybmh9b1ug-1; Wed,
+ 15 Oct 2025 11:27:26 -0400
+X-MC-Unique: Xz6iVfQ9PPCQvybmh9b1ug-1
+X-Mimecast-MFC-AGG-ID: Xz6iVfQ9PPCQvybmh9b1ug_1760542045
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D57C61800657; Wed, 15 Oct 2025 15:27:24 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.91])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9F3FA18003FC; Wed, 15 Oct 2025 15:27:23 +0000 (UTC)
+Date: Wed, 15 Oct 2025 11:27:22 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, stevensd@chromium.org, jasowang@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>, hi@alyssa.is,
+ Laurent Vivier <lvivier@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ david@redhat.com, manos.pitsidianakis@linaro.org,
+ Fabiano Rosas <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, slp@redhat.com,
+ dbassey@redhat.com
+Subject: Re: [PATCH v9 1/7] vhost-user: Add VirtIO Shared Memory map request
+Message-ID: <20251015152722.GB1133221@fedora>
+References: <20251015085930.1517330-1-aesteve@redhat.com>
+ <20251015085930.1517330-2-aesteve@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="4qIUDEQ4pRsr28ME"
+Content-Disposition: inline
+In-Reply-To: <20251015085930.1517330-2-aesteve@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -74,132 +89,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
----
- hw/virtio/trace-events | 12 ++++++++++--
- hw/virtio/vhost.c      | 20 ++++++++++++++++++--
- 2 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index aa1ffa5e94..c2529814f9 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -9,8 +9,16 @@ vhost_section(const char *name) "%s"
- vhost_reject_section(const char *name, int d) "%s:%d"
- vhost_iotlb_miss(void *dev, int step) "%p step %d"
- vhost_dev_cleanup(void *dev) "%p"
--vhost_dev_start(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
--vhost_dev_stop(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
-+vhost_dev_start_in(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
-+vhost_dev_start_out(void *dev, const char *name) "%p:%s"
-+vhost_dev_stop_in(void *dev, const char *name, bool vrings) "%p:%s vrings:%d"
-+vhost_dev_stop_out(void *dev, const char *name) "%p:%s"
-+vhost_virtque_start_in(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_virtque_start_out(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_virtque_stop_in(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_virtque_stop_out(void *dev, const char *name, int idx) "%p:%s %d"
-+vhost_dev_init_in(void *dev) "%p"
-+vhost_dev_init_out(void *dev) "%p"
- 
- 
- # vhost-user.c
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index fb5c4ba1ca..7ba90c24db 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1333,6 +1333,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-     };
-     struct VirtQueue *vvq = virtio_get_queue(vdev, idx);
- 
-+    trace_vhost_virtque_start_in(dev, vdev->name, idx);
-+
-     r = vhost_vrings_map(dev, vdev, vq, idx);
-     if (r <= 0) {
-         return r;
-@@ -1394,6 +1396,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-         }
-     }
- 
-+    trace_vhost_virtque_start_out(dev, vdev->name, idx);
-+
-     return 0;
- 
- fail:
-@@ -1412,6 +1416,8 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
-     };
-     int r = 0;
- 
-+    trace_vhost_virtque_stop_in(dev, vdev->name, idx);
-+
-     if (virtio_queue_get_desc_addr(vdev, idx) == 0) {
-         /* Don't stop the virtqueue which might have not been started */
-         return 0;
-@@ -1445,6 +1451,8 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
-     }
- 
-     vhost_vrings_unmap(dev, vq, true);
-+
-+    trace_vhost_virtque_stop_out(dev, vdev->name, idx);
-     return r;
- }
- 
-@@ -1616,6 +1624,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
- {
-     int i, r, n_initialized_vqs = 0;
- 
-+    trace_vhost_dev_init_in(hdev);
-+
-     hdev->vdev = NULL;
-     hdev->migration_blocker = NULL;
- 
-@@ -1700,6 +1710,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         goto fail;
-     }
- 
-+    trace_vhost_dev_init_out(hdev);
-+
-     return 0;
- 
- fail:
-@@ -2048,7 +2060,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     /* should only be called after backend is connected */
-     assert(hdev->vhost_ops);
- 
--    trace_vhost_dev_start(hdev, vdev->name, vrings);
-+    trace_vhost_dev_start_in(hdev, vdev->name, vrings);
- 
-     vdev->vhost_started = true;
-     hdev->started = true;
-@@ -2133,6 +2145,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-         }
-     }
-     vhost_start_config_intr(hdev);
-+
-+    trace_vhost_dev_start_out(hdev, vdev->name);
-     return 0;
- fail_iotlb:
-     if (vhost_dev_has_iommu(hdev) &&
-@@ -2182,7 +2196,7 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-     event_notifier_cleanup(
-         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
- 
--    trace_vhost_dev_stop(hdev, vdev->name, vrings);
-+    trace_vhost_dev_stop_in(hdev, vdev->name, vrings);
- 
-     if (hdev->vhost_ops->vhost_dev_start) {
-         hdev->vhost_ops->vhost_dev_start(hdev, false);
-@@ -2212,6 +2226,8 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-     hdev->started = false;
-     vdev->vhost_started = false;
-     hdev->vdev = NULL;
-+
-+    trace_vhost_dev_stop_out(hdev, vdev->name);
-     return rc;
- }
- 
--- 
-2.48.1
+--4qIUDEQ4pRsr28ME
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Oct 15, 2025 at 10:59:24AM +0200, Albert Esteve wrote:
+> +static void virtio_shared_memory_mapping_instance_finalize(Object *obj)
+> +{
+> +    VirtioSharedMemoryMapping *mapping = VIRTIO_SHARED_MEMORY_MAPPING(obj);
+> +
+> +    /* Clean up MemoryRegion if it exists */
+> +    if (mapping->mr) {
+> +        /* Unparent the MemoryRegion to trigger cleanup */
+> +        object_unparent(OBJECT(mapping->mr));
+> +        mapping->mr = NULL;
+> +    }
+> +
+> +    /* Close file descriptor */
+> +    if (mapping->fd >= 0) {
+> +        close(mapping->fd);
+> +        mapping->fd = -1;
+> +    }
+
+This looks like a double close(), which could accidentally close a
+reused fd in a multi-threaded program. reclaim_ramblock() already closes
+the file descriptor (it's stored in RAMBlock), so I think the
+VirtioSharedMemoryMapping struct should not hold on to fd and close it
+here.
+
+Other than that:
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--4qIUDEQ4pRsr28ME
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjvvVoACgkQnKSrs4Gr
+c8gGnAgAk8aHJeyQ/wImG2u6Xsobk98LQqNYalWSyGRpfMre7zSrW/pUFLsfEKWS
+IXdwAPUwff3k/6TPwHgUdEwQaXK+iTuPZg7/KoqT/lT5e9CCjp/OAiGpJJiiCnMM
+hvBcBSb4IJragbq1CpF5DDy3HqriWfLScbspHiXDvmYVqKLjhTHwCRulSHPPVmwj
+TvM8j4iuuWBXUyW6HJcpoYgp/JQJCx+4P+0apvFfM95NrAoAhqhutXoEZUkyPEDj
+rI0Yj/FZ8OVxDRGBOB5jWx0+YKs2fowxBrtQBQSBamY50yw1i6rE7+lCmZBUyWj0
+r/ay1046SQK7+FcIhBlLZuE5NEKfNw==
+=76Uc
+-----END PGP SIGNATURE-----
+
+--4qIUDEQ4pRsr28ME--
 
 
