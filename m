@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95CBBDEBBE
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7812ABDEC24
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v91SC-0005Ht-QM; Wed, 15 Oct 2025 09:22:10 -0400
+	id 1v91ST-0005S8-PK; Wed, 15 Oct 2025 09:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v91S2-0005Gc-El
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:21:58 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ id 1v91S3-0005Gv-Dy
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:21:59 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v91Rv-000308-LQ
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:21:57 -0400
+ id 1v91Rw-00030P-Q3
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:21:58 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id D53D788AC5;
- Wed, 15 Oct 2025 16:21:44 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id B4A8A88A66;
+ Wed, 15 Oct 2025 16:21:45 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a94::1:15])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id bLQ5oq0N5Os0-6uANg08g; Wed, 15 Oct 2025 16:21:44 +0300
+ ESMTPSA id bLQ5oq0N5Os0-4jyuH5pW; Wed, 15 Oct 2025 16:21:45 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760534504;
- bh=CH1U52vxvOc9yKk9t/kUb3x+nUIUMQAF51KvUr2wRZY=;
+ s=default; t=1760534505;
+ bh=AqHqBScLVphRHYcYitihKjsg9x0DNw0fNX+yiK30WWI=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=a3kZQY22N1JK5ATWYfZ+HZxYeVIU9uf+F1yvIgiDHXZM2sv+ZXkKkenWl/rrVWj+k
- IHrTFWj8I5xU5dLS7gMwdtHv0k2kHFk2I+f5iy9RYr9VSI8MxifQwT83wWOExfBwQf
- /YGtv3imx5uYrarW9sHuseQIR5y7HmZhdWlly0ks=
+ b=PLATewOUgOYJsoCngtpT4DP+5+/rY+JmjfA/0sLBz/huo7FuhHkyQyZ7BKH3IPvWw
+ ok4a0xF8QQdTeEALUIIhATu3bJKUyGfF3G5aVsHz3KskLJJVYzT/4fNT2cHLWM3Noj
+ ImBnDSrIjxVCjePwh0QpyvuWgv6rQsZKUxFokpE8=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,24 +47,22 @@ Cc: peterx@redhat.com, farosas@suse.de, sw@weilnetz.de, eblake@redhat.com,
  steven.sistare@oracle.com, leiyang@redhat.com, davydov-max@yandex-team.ru,
  yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
  raphael.s.norwitz@gmail.com
-Subject: [PATCH v8 05/19] net/tap: rework scripts handling
-Date: Wed, 15 Oct 2025 16:21:21 +0300
-Message-ID: <20251015132136.1083972-6-vsementsov@yandex-team.ru>
+Subject: [PATCH v8 06/19] net/tap: setup exit notifier only when needed
+Date: Wed, 15 Oct 2025 16:21:22 +0300
+Message-ID: <20251015132136.1083972-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
 References: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,116 +77,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify handling scripts: parse all these "no" and '\0' once, and
-then keep simpler logic for net_tap_open() and net_init_tap_one(): NULL
-means no script to run, otherwise run script.
+No reason to setup notifier on each queue of multique tap,
+when we actually want to run downscript only once.
+As well, let's not setup notifier, when downscript is
+not enabled (downsciprt="no").
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 ---
- net/tap.c | 45 +++++++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ net/tap.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/net/tap.c b/net/tap.c
-index a05cc7ef64..994e885c5f 100644
+index 994e885c5f..17ad561f9c 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -91,6 +91,21 @@ static void launch_script(const char *setup_script, const char *ifname,
- static void tap_send(void *opaque);
- static void tap_writable(void *opaque);
+@@ -326,11 +326,9 @@ static void tap_exit_notify(Notifier *notifier, void *data)
+     TAPState *s = container_of(notifier, TAPState, exit);
+     Error *err = NULL;
  
-+static char *tap_parse_script(const char *script_arg, const char *default_path)
-+{
-+    g_autofree char *res = g_strdup(script_arg);
-+
-+    if (!res) {
-+        res = get_relocated_path(default_path);
-+    }
-+
-+    if (res[0] == '\0' || strcmp(res, "no") == 0) {
-+        return NULL;
-+    }
-+
-+    return g_steal_pointer(&res);
-+}
-+
- static void tap_update_fd_handler(TAPState *s)
- {
-     qemu_set_fd_handler(s->fd,
-@@ -668,9 +683,7 @@ static int net_tap_open(int *vnet_hdr, bool vnet_hdr_required,
-         return -1;
+-    if (s->down_script[0]) {
+-        launch_script(s->down_script, s->down_script_arg, s->fd, &err);
+-        if (err) {
+-            error_report_err(err);
+-        }
++    launch_script(s->down_script, s->down_script_arg, s->fd, &err);
++    if (err) {
++        error_report_err(err);
      }
+ }
  
--    if (setup_script &&
--        setup_script[0] != '\0' &&
--        strcmp(setup_script, "no") != 0) {
-+    if (setup_script) {
-         launch_script(setup_script, ifname, fd, &err);
-         if (err) {
-             error_propagate(errp, err);
-@@ -706,9 +719,9 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         qemu_set_info_str(&s->nc, "helper=%s", tap->helper);
-     } else {
-         qemu_set_info_str(&s->nc, "ifname=%s,script=%s,downscript=%s", ifname,
--                          script, downscript);
-+                          script ?: "no", downscript ?: "no");
+@@ -346,8 +344,11 @@ static void tap_cleanup(NetClientState *nc)
  
--        if (strcmp(downscript, "no") != 0) {
-+        if (downscript) {
+     qemu_purge_queued_packets(nc);
+ 
+-    tap_exit_notify(&s->exit, NULL);
+-    qemu_remove_exit_notifier(&s->exit);
++    if (s->exit.notify) {
++        tap_exit_notify(&s->exit, NULL);
++        qemu_remove_exit_notifier(&s->exit);
++        s->exit.notify = NULL;
++    }
+ 
+     tap_read_poll(s, false);
+     tap_write_poll(s, false);
+@@ -443,9 +444,6 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
+     tap_read_poll(s, true);
+     s->vhost_net = NULL;
+ 
+-    s->exit.notify = tap_exit_notify;
+-    qemu_add_exit_notifier(&s->exit);
+-
+     return s;
+ }
+ 
+@@ -725,6 +723,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
              snprintf(s->down_script, sizeof(s->down_script), "%s", downscript);
              snprintf(s->down_script_arg, sizeof(s->down_script_arg),
                       "%s", ifname);
-@@ -963,10 +976,10 @@ free_fail:
-             return -1;
++            s->exit.notify = tap_exit_notify;
++            qemu_add_exit_notifier(&s->exit);
          }
-     } else {
--        const char *script = tap->script;
--        const char *downscript = tap->downscript;
--        g_autofree char *default_script = NULL;
--        g_autofree char *default_downscript = NULL;
-+        g_autofree char *script =
-+            tap_parse_script(tap->script, DEFAULT_NETWORK_SCRIPT);
-+        g_autofree char *downscript =
-+            tap_parse_script(tap->downscript, DEFAULT_NETWORK_DOWN_SCRIPT);
-         bool vnet_hdr_required = tap->has_vnet_hdr && tap->vnet_hdr;
+     }
  
-         if (tap->vhostfds) {
-@@ -974,14 +987,6 @@ free_fail:
-             return -1;
-         }
- 
--        if (!script) {
--            script = default_script = get_relocated_path(DEFAULT_NETWORK_SCRIPT);
--        }
--        if (!downscript) {
--            downscript = default_downscript =
--                                 get_relocated_path(DEFAULT_NETWORK_DOWN_SCRIPT);
--        }
--
-         if (tap->ifname) {
-             pstrcpy(ifname, sizeof ifname, tap->ifname);
-         } else {
-@@ -991,7 +996,7 @@ free_fail:
-         for (i = 0; i < queues; i++) {
-             vnet_hdr = tap->has_vnet_hdr ? tap->vnet_hdr : 1;
-             fd = net_tap_open(&vnet_hdr, vnet_hdr_required,
--                              i >= 1 ? "no" : script,
-+                              i >= 1 ? NULL : script,
-                               ifname, sizeof ifname, queues > 1, errp);
-             if (fd == -1) {
-                 return -1;
-@@ -1006,8 +1011,8 @@ free_fail:
-             }
- 
-             net_init_tap_one(tap, peer, "tap", name, ifname,
--                             i >= 1 ? "no" : script,
--                             i >= 1 ? "no" : downscript,
-+                             i >= 1 ? NULL : script,
-+                             i >= 1 ? NULL : downscript,
-                              vhostfdname, vnet_hdr, fd, &err);
-             if (err) {
-                 error_propagate(errp, err);
 -- 
 2.48.1
 
