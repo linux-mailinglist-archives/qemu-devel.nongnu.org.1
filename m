@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A01DBDC7A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E49E9BDC79F
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:32:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t6d-00016U-Vy; Wed, 15 Oct 2025 00:27:20 -0400
+	id 1v8t6g-00019n-9W; Wed, 15 Oct 2025 00:27:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6Z-00013O-Uj; Wed, 15 Oct 2025 00:27:15 -0400
+ id 1v8t6c-00017t-NO; Wed, 15 Oct 2025 00:27:19 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6W-0002yg-4b; Wed, 15 Oct 2025 00:27:15 -0400
+ id 1v8t6W-0002yo-Ai; Wed, 15 Oct 2025 00:27:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5982015D9DB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 723F515D9DC;
  Wed, 15 Oct 2025 07:25:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id EFA9E29FE82;
- Wed, 15 Oct 2025 07:25:40 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0C0A629FE83;
+ Wed, 15 Oct 2025 07:25:41 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Jim Shu <jim.shu@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 08/13] target/arm: Don't set HCR.RW for AArch32 only
- CPUs
-Date: Wed, 15 Oct 2025 07:25:32 +0300
-Message-ID: <20251015042540.68611-8-mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 09/13] target/riscv: Fix the mepc when sspopchk
+ triggers the exception
+Date: Wed, 15 Oct 2025 07:25:33 +0300
+Message-ID: <20251015042540.68611-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,40 +59,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Jim Shu <jim.shu@sifive.com>
 
-In commit 39ec3fc0301 we fixed a bug where we were not implementing
-HCR_EL2.RW as RAO/WI for CPUs where EL1 doesn't support AArch32.
-However, we got the condition wrong, so we now set this bit even on
-CPUs which have no AArch64 support at all.  This is wrong because the
-AArch32 HCR register defines this bit as RES0.
+When sspopchk is in the middle of TB and triggers the SW check
+exception, it should update PC from gen_update_pc(). If not, RISC-V mepc
+CSR will get wrong PC address which is still at the start of TB.
 
-Correct the condition we use for forcing HCR_RW to be set.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3128
-Fixes: 39ec3fc0301 ("target/arm: HCR_EL2.RW should be RAO/WI if EL1 doesn't support AArch32")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250925115723.1293233-1-peter.maydell@linaro.org
-(cherry picked from commit a23e719ca8e80d22eafe4b2b57833918d439fa0c)
+Signed-off-by: Jim Shu <jim.shu@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250924074818.230010-2-jim.shu@sifive.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit c851052a77fd79300708df2070297b5428b4be8d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 066705ddb7..b3ca49a6de 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5340,7 +5340,8 @@ static void do_hcr_write(CPUARMState *env, uint64_t value, uint64_t valid_mask)
-     value &= valid_mask;
- 
-     /* RW is RAO/WI if EL1 is AArch64 only */
--    if (!cpu_isar_feature(aa64_aa32_el1, cpu)) {
-+    if (arm_feature(env, ARM_FEATURE_AARCH64) &&
-+        !cpu_isar_feature(aa64_aa32_el1, cpu)) {
-         value |= HCR_RW;
-     }
- 
+diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
+index b0096adcd0..45686af4d6 100644
+--- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
+@@ -40,6 +40,7 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
+     tcg_gen_brcond_tl(TCG_COND_EQ, data, rs1, skip);
+     tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_BCFI_TVAL),
+                   tcg_env, offsetof(CPURISCVState, sw_check_code));
++    gen_update_pc(ctx, 0);
+     gen_helper_raise_exception(tcg_env,
+                   tcg_constant_i32(RISCV_EXCP_SW_CHECK));
+     gen_set_label(skip);
 -- 
 2.47.3
 
