@@ -2,79 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F52BE09DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 22:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8D6BE0D60
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 23:40:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v97wa-0005PD-Fh; Wed, 15 Oct 2025 16:17:56 -0400
+	id 1v99DF-0003fT-PP; Wed, 15 Oct 2025 17:39:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v97wO-0005Or-R9
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 16:17:44 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1v99DC-0003fC-Hc
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 17:39:10 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v97wJ-0001JQ-MJ
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 16:17:44 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A79CDC0283;
- Wed, 15 Oct 2025 23:17:29 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a94::1:15] (unknown
- [2a02:6bf:8080:a94::1:15])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id RHXdxH3FkmI0-ac8P23ip; Wed, 15 Oct 2025 23:17:28 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760559448;
- bh=IRp+jKKVA4aFHoj8EEYL5pqxpTOFqc90da8+OSO60y0=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=gfBv3rYpnbs2XBoe8ufuZAU8Hje5osn4G7dzkimy+k7FFUf4bJi7Lto0fqYzrylEa
- Y3e+FJLEt4lUDgolxhirHpnOhMNun3yD62avOoWmjd1wnaG3b3jeYjldvtixjgIuLS
- ygDKrwZzPYeYMugGjSdM+XQ2q+/YR/CRfNBKxPHk=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <981b9636-0a7a-4334-b222-7621971e6b2c@yandex-team.ru>
-Date: Wed, 15 Oct 2025 23:17:27 +0300
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1v99DA-00052M-5w
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 17:39:10 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C4B6D15E431;
+ Wed, 15 Oct 2025 23:20:39 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E27232A12B3;
+ Wed, 15 Oct 2025 23:20:40 +0300 (MSK)
+Message-ID: <4b289042-470e-4fa6-b287-2d5ae3a05157@tls.msk.ru>
+Date: Wed, 15 Oct 2025 23:20:40 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 16/19] qapi: add interface for backend-transfer
- virtio-net/tap migration
-To: Peter Xu <peterx@redhat.com>
-Cc: mst@redhat.com, jasowang@redhat.com, farosas@suse.de, sw@weilnetz.de,
- eblake@redhat.com, armbru@redhat.com, thuth@redhat.com, philmd@linaro.org,
- berrange@redhat.com, qemu-devel@nongnu.org, michael.roth@amd.com,
- steven.sistare@oracle.com, leiyang@redhat.com, davydov-max@yandex-team.ru,
- yc-core@yandex-team.ru, raphael.s.norwitz@gmail.com
-References: <20251010173957.166759-1-vsementsov@yandex-team.ru>
- <20251010173957.166759-17-vsementsov@yandex-team.ru>
- <aO57SKp86zX2R8mV@x1.local>
- <6da192b9-7609-4cc8-82a9-1a445ecb10c9@yandex-team.ru>
- <aO6xqt5_1PDBwOwu@x1.local>
- <9a9ced95-583e-4c1e-84f0-af12a5800193@yandex-team.ru>
- <aO_nfsgM2CWEjyeQ@x1.local>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <aO_nfsgM2CWEjyeQ@x1.local>
+Subject: Re: [PATCH v3 7/7] esp.c: only allow ESP commands permitted in the
+ current asc_mode
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
+ fam@euphon.net, qemu-devel@nongnu.org
+References: <20250711204636.542964-1-mark.cave-ayland@ilande.co.uk>
+ <20250711204636.542964-8-mark.cave-ayland@ilande.co.uk>
+ <43ef15f9-1225-4416-9d04-eefc4f6eb952@tls.msk.ru>
+ <30f3c816-83d7-4a2b-8107-de5c433d183a@ilande.co.uk>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <30f3c816-83d7-4a2b-8107-de5c433d183a@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -86,54 +105,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.10.25 21:27, Peter Xu wrote:
->> Interesting, could migration "return path" be somehow used to get information
->> from target, does it support backend transfer for concrete device?
->>
->> So that, we simply enable backend-transfer=true parameter both on
->> source and target. Than, source somehow find out through return path,
->> for the device, does target support backend-transfer for it, and decide,
->> what to do? Or that's too complicated?
-> Fabiano is looking at something like that, we called it migration
-> handshake.
-> 
-> https://wiki.qemu.org/ToDo/LiveMigration#Migration_handshake
-> 
-> Fundamentally one of its goal is that we can have bi-directional "talks"
-> between src/dst, before migration ever started, to synchronize on things
-> like this.  It's still likely not gonna happen this release.. though..  but
-> it's on the radar.  With that, dst also doesn't need to set migration
-> caps/params the same as src, because they'll talk things over.
+On 10/15/25 22:06, Mark Cave-Ayland wrote:
+..> Yeah that's an odd one. I just tested master here and it works fine 
+here
+> on Debian bookworm:
 
-Oh, that sounds cool, I've always dreamed of something like this.
+I'm on debian trixie though, - maybe that's the reason.
 
-Note for myself: look through the QEMU wiki, it may contain quite interesting things,
-not only "QEMU Planning" and "Submit a Patch" :)
+The current master is broken for me too, - everything since this
+commit.
 
-For live-update with backend transfer, we'll probably can not only check the
-device tree, but recreate it automatically, using information from target.
+Now I wonder, as usual, how to debug such a case, - at the very
+start, I'd love to see qemu messages if any.
 
-> Allow QMP command "migrate[_incoming]" ..
+Sigh.
 
-O I thought about this too.
-
--
-
-Off topic:
-
-Didn't you think about moving to some context-free protocol for migration
-stream? Current protocol is hardly bound to migration states definitions
-in the code. This, for example, makes writing an external tool to analyze the
-stream almost impossible. As well, any misconfiguration leads to strange
-error, when we treat data wrongly on the target.
-
-I imagine.. json? Or something like this.. So that we can always understand
-the structure of incoming object, even if we don't know, what exactly we
-are going to get. This also simplifies expanding the state in new verions:
-we just add a new field into migratable object, and can handle absent field
-in incoming stream.
-
--- 
-Best regards,
-Vladimir
+/mjt
 
