@@ -2,106 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A660BDF00E
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 16:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F590BDF005
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 16:23:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v92OS-00022s-Vp; Wed, 15 Oct 2025 10:22:21 -0400
+	id 1v92OJ-0001yA-4P; Wed, 15 Oct 2025 10:22:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1v92OB-0001yO-RU; Wed, 15 Oct 2025 10:22:04 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1v92O5-0003Ey-4Q; Wed, 15 Oct 2025 10:22:01 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59FDhIoV012462;
- Wed, 15 Oct 2025 14:21:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=nl58wB/743+XYbyH/
- PRwPwx7180GhCodSAoKZ+9SPCM=; b=G0Cf3uB9k8eWwram6AoPCeo2I43m6jApn
- N3hplGX34rQkyEa36s51kHn0wlIciN3K5nwE8N6b7kWd4sXxQITjUhx4x8ALwNnQ
- 9/yQmBfIgsIZQdC61WWwrc1CF+ENgfZ2xV6pRpW7PlxUUURQU/4CDO0+hLkv10MH
- zro5+YC0BwT1u+CKzTvatgoKUgoW7B4RgJuB1fCDW0BWC6vznE6Etvp7/QYnwPXd
- yCH0QjHFzFcjiWWXrLSt6kcYCl9WcIUAILfo/O4kD+MOMzvjEBu3Y2DQx7ecO8xz
- By0OXqt+pns632x82hJYtiCtCuQRDtEqQf56W90JqDURK2DDyoOaQ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrcgj6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Oct 2025 14:21:47 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59FBq6So018348;
- Wed, 15 Oct 2025 14:21:46 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49s3rfacrf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Oct 2025 14:21:46 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59FELj3t24052190
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Oct 2025 14:21:45 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3A7EF20107;
- Wed, 15 Oct 2025 14:21:45 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BDE7720104;
- Wed, 15 Oct 2025 14:21:44 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.87.134.59])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 15 Oct 2025 14:21:44 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH v2 3/3] tests/tcg/s390x: Test SET CLOCK COMPARATOR
-Date: Wed, 15 Oct 2025 16:21:06 +0200
-Message-ID: <20251015142141.3238-4-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251015142141.3238-1-iii@linux.ibm.com>
-References: <20251015142141.3238-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v92O6-0001xU-8j
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:21:59 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v92Nv-0003D7-NQ
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:21:57 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e42fa08e4so53735985e9.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 07:21:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760538098; x=1761142898; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1PZLtIJoeD14AAn0MhPZQrGx8WOMeY2wxBqneKwWH9Q=;
+ b=FgVPz3/uyUqOsag1L+N8QNx19uz7owLQiTX7mp3JDCCHB7tbMyqs9vIKsp4lNE0uU4
+ fs5+sOCcJAeRlGC2yNwDuayZ7V0GdRkTgMgeDucEFp7dxjeueu7gtRgNwlK7i1YiWLWe
+ dp3pSVk5TELoF5p4QTJsg360tWMoOfRAICNfhfsKcTrQFVI5s9oNYkbMD90fKZLfu6Gp
+ tGdxR5K6rsmrH65zE7PPCRkui90ORW5Rr8ApK7NxOV8dIMOhCUY8cvDtrv0E2QSo4Dvx
+ JK9NYgasY7icq1/7EJbVd0LmxXZTeuOjD8WLrZwtRXfzWyf9b9xCUEvWrnMjKmE4DcYH
+ vIig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760538098; x=1761142898;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1PZLtIJoeD14AAn0MhPZQrGx8WOMeY2wxBqneKwWH9Q=;
+ b=NzRKpgtgSVKLx/ib2oIGyuD+kvjmvzxkyov47SSY784/g9PC6UM4jxSaGccFPwfl07
+ oAUYiazZ1MgFK+CwchmPe7on9BHOKSSSpxO9FRFLkEpHpJzIQs4ks3k65pPvbekq3T5j
+ VufJYSqFLmE20SqjCtMKnpSXiQtusJfgwdjs910++L8sVBfORwKH91qi/IHMuE0NRkpO
+ j83Rq/IZB3b58AWCarr2t/qmOYT54RxIrU+CQZSo6vjW0XOh9hbgyWsu+Ksb8gDJvkdy
+ cVQBC+ZWOU7FsO9e33j1Zdhmk0H6dmUBrHx55wxBRItlae6fWWDvmCJwV/+slyslh1ue
+ hcfg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVDOYYef4gU+r15dTNl8ttfcUZIvNK2P3PPxkkSvameLZP2YZhQ+KzVfkk8lmVKSd6sVz7qjAVDnlFi@nongnu.org
+X-Gm-Message-State: AOJu0YwtlZWg3pr8FbI9iY+hPcCou8TnGmbG8GiqeFvujruHNyYIZ1QF
+ tucAH1mjiN//6SxNqqmFBSwQ/1dUJD3GelX0uPpL7iOZDwzEdY8ZVo6mnxVhsrJievU=
+X-Gm-Gg: ASbGnct/tn0DesyrsBTEbCx/yCiL8HhEZi0bYAt8fL7zWNhiTf+Lj+4NzwlMxBdRm5s
+ 5YF9vJIz3uk0uavwzqBxDb78VMCIxpmYSB4NutssQdgrIIBidrwR7hZlfkXjb+XaBJDW2lln1bV
+ pjWV3kXBv5i9Nl84rGBGzTngfYZQ8H+3hg2RKwoj/C0twCxfX2MLy1xDhxy7zltRdyzwO8LnZlE
+ GHD9sSEDNcYODzRR/cSMxgeToeuBj33Z1w6kt+U6/zC02jNqRSvQEkiQIcQAIuYeBPTV4nvtlHV
+ XfkVTPDzQTL7ngwu042MwYDtVl0Dq3uitPtjIKqprCtUsebFYtaWiprINaUEX1iZ3m5iaeCrcJS
+ aUYMC8qHzYYZtow3A+Nd8luEURhHSWeVfI5fkvDXdvRtg4yJylumt4t0uaXFKCdf45ZS7jAzYLN
+ BPt9oK4jnVETaBE/01ZrpQ4q0=
+X-Google-Smtp-Source: AGHT+IFbkP0/ADjhwk1Bcv71pnSDWQNl0e8hHph0PsM/LLRWD/yYxWDHaJK96t+C3TVKxm1AkKEDXw==
+X-Received: by 2002:a05:600c:8719:b0:45b:9a46:69e9 with SMTP id
+ 5b1f17b1804b1-46fa9b06cfbmr230163755e9.31.1760538097763; 
+ Wed, 15 Oct 2025 07:21:37 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47101be0caasm32393525e9.3.2025.10.15.07.21.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Oct 2025 07:21:37 -0700 (PDT)
+Message-ID: <1f8876eb-9e57-4102-8d04-3de29c4832f9@linaro.org>
+Date: Wed, 15 Oct 2025 16:21:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68efadfb cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=69wJf7TsAAAA:8 a=VnNF1IyMAAAA:8
- a=o2U2niT9lMQTt7bDKj0A:9 a=Fg1AiH1G6rFz08G2ETeA:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: Nbn5RUrsbMwOUv7SpwDBNgGRVodRQKAv
-X-Proofpoint-ORIG-GUID: Nbn5RUrsbMwOUv7SpwDBNgGRVodRQKAv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX39X0ggSbt5Pt
- VFSU/zCML/iXt/8b+tJpxRURGjshb8qimEuw38EX1f8N1NFipSDjgb1mNk5y25GyilKJ+Kggbly
- DctgA8xLez4XAoIK903MK3ItynomV6vxDZwIHfk4XLqODga07qdcu1Ts/2UIbS4RLZlpjVF5kqZ
- Jf5TJqwMjKmvwLK0WBqORXtmVjv5rkVENRhTRgfCUG8bgM1cooM88X8L+0Wj+OtAACXrDOHqQwN
- DMjzDuLwoTF/pCJtO37dNLykurhcfU9KakIU+msPbBtwFvhPpOUIYRWU7dtqSypu2ZlEqxpZHFn
- bZM8R6E0E9JJDb1vTBwWBU/rX37Puwha12pOIs0UqgVZZ+u/zUHCyNcgTn0kWUB/ebTIwC3Sw+S
- 4wiSnB+PdYK4/YXGuI2CiJTAjIM4tg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-15_05,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 spamscore=0 clxscore=1011 impostorscore=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
- definitions=main-2510100140
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] hw/riscv: Use generic hwaddr for firmware addressses
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org, alistair.francis@wdc.com,
+ richard.henderson@linaro.org, palmer@dabbelt.com
+References: <20251015-feature-single-binary-hw-v1-v1-0-8b416eda42cf@rev.ng>
+ <20251015-feature-single-binary-hw-v1-v1-1-8b416eda42cf@rev.ng>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251015-feature-single-binary-hw-v1-v1-1-8b416eda42cf@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,90 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
+On 15/10/25 15:27, Anton Johansson wrote:
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   include/hw/riscv/boot.h    | 20 ++++++++++----------
+>   hw/riscv/boot.c            | 22 +++++++++++-----------
+>   hw/riscv/microchip_pfsoc.c |  2 +-
+>   hw/riscv/sifive_u.c        |  2 +-
+>   hw/riscv/spike.c           |  4 ++--
+>   hw/riscv/virt.c            |  2 +-
+>   6 files changed, 26 insertions(+), 26 deletions(-)
+> 
+> diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
+> index 7d59b2e6c6..d835594baa 100644
+> --- a/include/hw/riscv/boot.h
+> +++ b/include/hw/riscv/boot.h
+> @@ -43,21 +43,21 @@ bool riscv_is_32bit(RISCVHartArrayState *harts);
+>   char *riscv_plic_hart_config_string(int hart_count);
+>   
+>   void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts);
+> -target_ulong riscv_calc_kernel_start_addr(RISCVBootInfo *info,
+> -                                          target_ulong firmware_end_addr);
+> -target_ulong riscv_find_and_load_firmware(MachineState *machine,
+> -                                          const char *default_machine_firmware,
+> -                                          hwaddr *firmware_load_addr,
+> -                                          symbol_fn_t sym_cb);
+> +hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
+> +                                    hwaddr firmware_end_addr);
+> +hwaddr riscv_find_and_load_firmware(MachineState *machine,
+> +                                    const char *default_machine_firmware,
+> +                                    hwaddr *firmware_load_addr,
+> +                                    symbol_fn_t sym_cb);
+>   const char *riscv_default_firmware_name(RISCVHartArrayState *harts);
+>   char *riscv_find_firmware(const char *firmware_filename,
+>                             const char *default_machine_firmware);
+> -target_ulong riscv_load_firmware(const char *firmware_filename,
+> -                                 hwaddr *firmware_load_addr,
+> -                                 symbol_fn_t sym_cb);
+> +hwaddr riscv_load_firmware(const char *firmware_filename,
+> +                           hwaddr *firmware_load_addr,
+> +                           symbol_fn_t sym_cb);
+>   void riscv_load_kernel(MachineState *machine,
+>                          RISCVBootInfo *info,
+> -                       target_ulong kernel_start_addr,
+> +                       hwaddr kernel_start_addr,
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/sckc.S                  | 55 +++++++++++++++++++++++++
- 2 files changed, 56 insertions(+)
- create mode 100644 tests/tcg/s390x/sckc.S
+vaddr?
 
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 8cd4667c63b..a4425d3184a 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -28,6 +28,7 @@ ASM_TESTS =                                                                    \
-     mc                                                                         \
-     per                                                                        \
-     precise-smc-softmmu                                                        \
-+    sckc                                                                       \
-     ssm-early                                                                  \
-     stosm-early                                                                \
-     stpq                                                                       \
-diff --git a/tests/tcg/s390x/sckc.S b/tests/tcg/s390x/sckc.S
-new file mode 100644
-index 00000000000..66e8733f45c
---- /dev/null
-+++ b/tests/tcg/s390x/sckc.S
-@@ -0,0 +1,55 @@
-+/*
-+ * Test clock comparator.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+    .org 0x130
-+ext_old_psw:
-+    .org 0x1b0
-+ext_new_psw:
-+    .quad 0x180000000, _ext            /* 64-bit mode */
-+    .org 0x200                         /* lowcore padding */
-+
-+    .globl _start
-+_start:
-+    lpswe start31_psw
-+_start31:
-+    stctg %c0,%c0,c0
-+    oi c0+6,8                          /* set clock-comparator subclass mask */
-+    lctlg %c0,%c0,c0
-+    jg .
-+
-+_ext:
-+    stg %r0,ext_saved_r0
-+
-+    lg %r0,ext_counter
-+    aghi %r0,1
-+    stg %r0,ext_counter
-+
-+    cgfi %r0,0x1000
-+    jnz 0f
-+    lpswe success_psw
-+0:
-+
-+    stck clock
-+    lg %r0,clock
-+    agfi %r0,0x40000                   /* 64us * 0x1000 =~ 0.25s */
-+    stg %r0,clock
-+    sckc clock
-+
-+    lg %r0,ext_saved_r0
-+    lpswe ext_old_psw
-+
-+    .align 8
-+start31_psw:
-+    .quad 0x100000080000000,_start31   /* EX, 31-bit mode */
-+success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
-+c0:
-+    .skip 8
-+clock:
-+    .quad 0
-+ext_counter:
-+    .quad 0
-+ext_saved_r0:
-+    .skip 8
--- 
-2.51.0
-
+>                          bool load_initrd,
+>                          symbol_fn_t sym_cb);
 
