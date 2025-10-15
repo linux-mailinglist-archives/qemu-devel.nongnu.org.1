@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE33BDDC20
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8045BBDDC53
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8xic-0008CD-Mt; Wed, 15 Oct 2025 05:22:50 -0400
+	id 1v8xms-00047K-9d; Wed, 15 Oct 2025 05:27:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1v8xiW-00089T-Nd; Wed, 15 Oct 2025 05:22:45 -0400
-Received: from mx07-0090a401.pphosted.com ([66.159.244.62])
+ id 1v8xmp-00046l-RC; Wed, 15 Oct 2025 05:27:12 -0400
+Received: from mx08-0090a401.pphosted.com ([66.159.246.175])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1v8xiM-0008Op-63; Wed, 15 Oct 2025 05:22:43 -0400
-Received: from pps.filterd (m0463074.ppops.net [127.0.0.1])
- by mx07-0090a401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 59F5mTBx3187626; Wed, 15 Oct 2025 09:22:17 GMT
+ id 1v8xmj-0000tv-DG; Wed, 15 Oct 2025 05:27:11 -0400
+Received: from pps.filterd (m0463075.ppops.net [127.0.0.1])
+ by mx08-0090a401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 59F69Yb31694218; Wed, 15 Oct 2025 09:26:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beckhoff.com; h=
  cc:content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=mail2022r; bh=23mQ5+KHilvkrloqgFyXRmee
- nufwLxpzXQnLdHKAPxA=; b=RDFgvCuLeEprAr3giXRU0L+XaIv2uQNSVUfuJZes
- zvAwz82XQs1Lgflccz2ySpdhqs7QEgYpjpAgZq2dxQh4/lQQ35JoTDcihwBJTxwC
- 39OVakL1uDCI5bYp9Fb3IMvYIz0jiTTro4ZMYhgTAJRPQ+ada1XzA7wMDjaCbA1i
- uZJD1YxoVj+3MDF2g7CEY7ZVKq6GCeSMxciK4+XTWkdCKyQgb7bBoBLvU+BltfNI
- nyX77bu8ZlG0JjBpwNxDxIJnjRGwB9d0qPpnjRdlTDxyodJ9g4gI/lb93qMGWsBF
- xhQ+oUhLalY3CDmZAztudEaaprWh1hduh5+17quQUOsUsA==
-Received: from ex13.beckhoff.com ([62.159.14.12])
- by mx07-0090a401.pphosted.com (PPS) with ESMTPS id 49sscv1c3b-1
+ :references:subject:to; s=mail2022r; bh=lCfGpgWQMQf/cHREgZrXPLL5
+ 89Dm7tevk+CJBBXtMkk=; b=UBSXJAcHL1lV0c0RUeSXxWYgZ8q65bHxi1bIdp5y
+ HBTrpaf0afYLgHcBE0vAtQGnnLURRe8yYXk129+zCX2jP+LraH9FwN0G/DF83hQ8
+ zwKpjGu+j1QfaJxktOe6yyG0IZZQJCWT10RRavaaLITkzqrAEGsoCjWBakCjgNxc
+ RhzLzHJv9nyF3IT7W8y55oleX3hNAqt5EfvHWbF0FeYi4MNYjL2GeQAYtvTPi20R
+ yMV+LwzhdfHTjCWC3fLB0VG5668kTKF4tqh1mOYlEPPN+YEoQyw0YfPmetkCyh6B
+ ffY3ho9tK6ngXtsvTztYL6I1fPRx+ETna0ccHi85d+19Uw==
+Received: from ex14.beckhoff.com ([62.159.14.12])
+ by mx08-0090a401.pphosted.com (PPS) with ESMTPS id 49t2x68qv5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Oct 2025 09:22:16 +0000 (GMT)
-Received: from ex10.beckhoff.com (172.17.2.111) by ex13.beckhoff.com
- (172.17.6.19) with Microsoft SMTP Server (version=TLS1_2,
+ Wed, 15 Oct 2025 09:26:56 +0000 (GMT)
+Received: from ex10.beckhoff.com (172.17.2.111) by ex14.beckhoff.com
+ (172.17.3.7) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 15 Oct
- 2025 11:22:15 +0200
+ 2025 11:26:54 +0200
 Received: from ex10.beckhoff.com ([fe80::ab7f:9a91:d220:441b]) by
  ex10.beckhoff.com ([fe80::ab7f:9a91:d220:441b%12]) with mapi id
- 15.02.2562.017; Wed, 15 Oct 2025 11:22:15 +0200
+ 15.02.2562.017; Wed, 15 Oct 2025 11:26:54 +0200
 From: =?utf-8?B?Q29ydmluIEvDtmhuZQ==?= <C.Koehne@beckhoff.com>
 To: "peter.maydell@linaro.org" <peter.maydell@linaro.org>
 CC: "hreitz@redhat.com" <hreitz@redhat.com>, "alistair@alistair23.me"
@@ -49,39 +49,38 @@ CC: "hreitz@redhat.com" <hreitz@redhat.com>, "alistair@alistair23.me"
  =?utf-8?B?WWFubmljayBWb8OfZW4=?= <Y.Vossen@beckhoff.com>,
  "pbonzini@redhat.com" <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
  <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 11/14] hw/misc: Add Beckhoff CCAT device
-Thread-Topic: [PATCH v2 11/14] hw/misc: Add Beckhoff CCAT device
-Thread-Index: AQHcDcMwea5IHvjMZUi/2YBy7YDE9rRqCH4AgFkk1wA=
-Date: Wed, 15 Oct 2025 09:22:15 +0000
-Message-ID: <b7a7ef984e81a2fb0ce2793f25d660caca67ab4f.camel@beckhoff.com>
+Subject: Re: [PATCH v2 00/14] hw/arm: add Beckhoff CX7200 board
+Thread-Topic: [PATCH v2 00/14] hw/arm: add Beckhoff CX7200 board
+Thread-Index: AQHcDcMp+xUfgo4QkkKp5EpDCdpuJLRj4bEAgF9M8gA=
+Date: Wed, 15 Oct 2025 09:26:54 +0000
+Message-ID: <7851b91e797bfd2b4171fe32662f2c3c26902bb7.camel@beckhoff.com>
 References: <20250815090113.141641-1-corvin.koehne@gmail.com>
- <20250815090113.141641-12-corvin.koehne@gmail.com>
- <CAFEAcA_VQgoym1_Nmw8iXyBS-ZQTvc+3FYQBTR7W0_Pxb3u=RQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA_VQgoym1_Nmw8iXyBS-ZQTvc+3FYQBTR7W0_Pxb3u=RQ@mail.gmail.com>
+ <CAFEAcA9y-0-Oe5beVObe+SZqmByRSOYkCaKM1FDjeo0jdxjjCQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA9y-0-Oe5beVObe+SZqmByRSOYkCaKM1FDjeo0jdxjjCQ@mail.gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.17.128.174]
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="=-mdoOgExWiFK4oLb+eFoy"
+ protocol="application/pgp-signature"; boundary="=-Lw3VBhkrVBNiH2CrjPJQ"
 MIME-Version: 1.0
-X-Proofpoint-GUID: jd67gIwbN8xcj7W04ekRgYEmJB0lfQRf
-X-Authority-Analysis: v=2.4 cv=MMVtWcZl c=1 sm=1 tr=0 ts=68ef67c9 cx=c_pps
+X-Proofpoint-ORIG-GUID: S7rIG3LOyFr7CxRKuaTybodSyrd6LKPh
+X-Proofpoint-GUID: S7rIG3LOyFr7CxRKuaTybodSyrd6LKPh
+X-Authority-Analysis: v=2.4 cv=WfABqkhX c=1 sm=1 tr=0 ts=68ef68e1 cx=c_pps
  a=ZkhbYXbYXnnsONUOWLo3Bg==:117 a=ZkhbYXbYXnnsONUOWLo3Bg==:17
  a=xqWC_Br6kY4A:10 a=ErxAllwcpegA:10 a=x6icFKpwvdMA:10 a=M51BFTxLslgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=3dN-dAOnzxXYxHM_xGQA:9 a=QEXdDO2ut3YA:10
- a=g_xI4TjUgyBJa0J3FfUA:9 a=FfaGCDsud1wA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE1MDA3MSBTYWx0ZWRfX3C+UBcIH+FGE
- dlFmFwt7U6a9dUaqO2QJqvTrpEazbnWQnjuFIIYtS7E30FrzXLP69mmDhFu19ivtcYLKiGtraSW
- QghhGo8fI3QCCmnZlMS2BfxRPHpvuZ20WKP39k1XOcP25TWfdzbj0qyPzMpqigld02gAJdQaMuu
- XGEe0mV78JyJN8pyDGz61+4tP78vZvCo2p9eDoCgzbtaweTIoavDxaeic1uGVio+QylTJ6i+wzk
- C3iBTagyCyWtm/GBow7ZvJOtMMRUGVp8R+JEozLumqG7q/PjSaITJB40x5M9JdN0uyu37ANEQ6H
- rMAm+tDPwUsuwXKoQdWkHrPcJA2H2H+DtZXplKhref+46R6JmrDiZAQSc4+4H7vuEIT5zZZI8qY
- Dud425kIWj8HLfW5/YDF1e25ylZ57Q==
-X-Proofpoint-ORIG-GUID: jd67gIwbN8xcj7W04ekRgYEmJB0lfQRf
-Received-SPF: pass client-ip=66.159.244.62; envelope-from=C.Koehne@beckhoff.com;
- helo=mx07-0090a401.pphosted.com
+ a=VkNPw1HP01LnGYTKEx00:22 a=elej7QgOwMPcv-EOkUgA:9 a=QEXdDO2ut3YA:10
+ a=10j73BITz0fXYFs0uoEA:9 a=FfaGCDsud1wA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE1MDA3MiBTYWx0ZWRfX+LJ+1DumgJ25
+ a91cZrWr8BdSxGTSsPtk8o1kFqvgSVaChjOeZeFJStU18PwArbU8rwFRQk5aejZTtErG8IxketF
+ /sQvTK5hsBJ5fQ4ojGEdPbt2xQazZzOgDM3W8vU4Sj9bsgaoHWleawSmLumONlVXp0sjHuebzUc
+ YCSaJ8SDYq92UlZ+nLMm1yQBGgznLCpanB49oDl6nEx0g7lMSifKzK168/nh7RUwM4iktLKxbhc
+ 3NIVvnjIClUYNpE67Nj3kJRbJs99bZyD+DQp61Ho3FWoNKKDuEddLLS1VXME+Fq12DshsaK05z/
+ odDO/VLX1bt3160x1u95J/Lv6EAEoh2kVEmCdyd0FFrJ1wElAj0OGMmoIR+su4HpvSrKoMDR8bu
+ mjq2t/eQFEw+3yTWJEL7BdauahKNFg==
+Received-SPF: pass client-ip=66.159.246.175;
+ envelope-from=C.Koehne@beckhoff.com; helo=mx08-0090a401.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,42 +103,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-mdoOgExWiFK4oLb+eFoy
+--=-Lw3VBhkrVBNiH2CrjPJQ
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-08-19 at 17:03 +0100, Peter Maydell wrote:
-> Is there a datasheet/manual for this device? The comment
-> at the top of the file is a good place to put the URL to it.
+On Fri, 2025-08-15 at 19:06 +0100, Peter Maydell wrote:
+> This patchset is on my list to review. As an initial request,
+> for a new board could we have a test in tests/functional/
+> please? This is basically a simple test that downloads
+> a guest image from some public stable URL, runs it on QEMU,
+> and checks for some output on the UART that indicates
+> that it succeeded. (You can do more complex things like
+> sending commands to the guest if you want/need to, but
+> "does it basically boot" is the minimum bar here.)
+> The other files in tests/functional/ should hopefully
+> serve as examples you can pattern your test on.
+>=20
+> thanks
+> -- PMM
 
-Unfortunately, there's no publicly available manual so far. We're currently
-trying to convince people to publish one. We're going to add the URL to the
-comment when on is available.
+At the moment, there's no image for this device publicly available. However=
+,
+we're working on it. We're going to add such a patch when there's a public
+stable URL.
 
 
 Best regards,
 Corvin
 
---=-mdoOgExWiFK4oLb+eFoy
+--=-Lw3VBhkrVBNiH2CrjPJQ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmjvZ8YACgkQ2FTaVjFe
-AmpLgg//W5eC3qt/yguDkM6V9f9KE4thnud8WH0AINJlywJdWyRKaSezodEmp0nE
-QaLgvE24gZvVsqZfc0YTF+ssSUQN4cqYbSgfYWM3eAZ5TxPP/7tDHdJbE4+3AGmQ
-YYxDYIDjtBt8XhX0Gyo2kfWfv06Iowt5TCKQowW7pN48Yz5DFZJytGnviTR3nUmv
-jSULePuriH9evHCOfL/y9m0+hZcew9IFVfkyigLRXZ+spdBvzx8KfzVd+neU1SR/
-1zqgEnQbiBxTvXsLWo0TYsiUlT1e8Wukc5E6/FFnnVON2Cs0/vLdraBhSG1NZNgD
-pB1no8uPcIFTb1u5o4Zgk0yWb94OXM+ZGhTZQAc4nwjjiy0cC+DgC2XLTiR1guWh
-l/2/WtD+VHKgtd9oHw57j1s2jj7gya3TMJXQ7J05EQGXsnhHF2y6pJqNDP7umudV
-nnwKKtMP6M+clEBjPhTdiQ3BIpxSLSO3ViG/02enHR4yRFDeqXIGGPIWtCYm7K5c
-+ztVgvKOZZmxfMf/ibVnNXVCxsWEhhsQAUI7yIri+nkYLkvqDhiQTAHiSnfVIair
-WOOGF8goNaCvF2VjN3w1zsXNRV+loITGWUdiY77LHo6sBiochHI51/GY1oyTKESi
-IFqdnxzg+KimouYuJSSKI7OGMdrpmaHMqSJuSHCnkX9rBk6avFU=
-=Sf0p
+iQIzBAABCgAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmjvaN4ACgkQ2FTaVjFe
+AmrYTw/+Lkg39YidNRblygTQ8Jiw9ezzMBIaWYe74W0n0kv+oOqaP5Y+hWgxHJnf
+9rI3p9Hdex6YlWqSlqcjY9FUJcJUjL1yLb11G3DoGsWk14pCVnNgKZg6t/6OglZQ
+c1MxO+WTKkar4Fkp2xSxbEjkoue4AjyVUCrDJWYOCkxKn4hZI+19muFOqBtpI7e7
+AJ5I/PXobOry/FILe4eavLrj6BUTz1lzCl2Dndb/6haGrf7Ic2Fg76rgV4z60yvE
+uvk+ORRfD0sHMcY26fVylElH7yHqnRXMgXQw8QOTetLG+CMxMadXEc/78592GOKO
+kfx8ubInOXD4Dya7TuWU5ayanogYL/Y9pUKN+dDGspSsQGgF3sPWkuR+rjjYQ4PA
+jL/R4Q6IcZOWN5xNQFLNGKvbp1Qe9C54uLp1k5up3/cmR5IDNf0CaBxbskz5j69X
+xyPkHOvGGpw5Y4qYTgFFc8RL41800Er/+PS2Bi+IpswxAcCCrMHpnL+8DIPucVhg
+uHK2Dak/8wFiOc3tPWJSjOWWyLhmoVhEx/Gn+Ft3daCjl0Oge17LxQvTPxVzRnw2
+7ovX/UuMYzkEKxthG42cYYBgeLTWgPN8DvruXMjvbzfYinlGxs/V97bgN7hNcu9A
+foX6M3c38GoXx6zj5bFGIR/TtkyJ2SAutip/k65LjcABleCLNIM=
+=akyR
 -----END PGP SIGNATURE-----
 
---=-mdoOgExWiFK4oLb+eFoy--
+--=-Lw3VBhkrVBNiH2CrjPJQ--
 
