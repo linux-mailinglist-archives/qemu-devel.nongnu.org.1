@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8B4BDC288
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 04:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E42BDC306
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 04:43:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8rJ1-0007FB-GZ; Tue, 14 Oct 2025 22:31:59 -0400
+	id 1v8rSc-0000mH-BR; Tue, 14 Oct 2025 22:41:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v8rIy-0007F2-Sq
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:31:57 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v8rIu-0004hE-3d
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:31:55 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-63994113841so11314786a12.3
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 19:31:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760495504; x=1761100304; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XqUux0AQPbB5AT6nf1+t3MWAjlR79bWMPkbU7vu+9hA=;
- b=W9cjJUAnCTFOSjEBvXebPEHuGXMm87EoIh+TWMAatsdDSFqwlh2IiIV3/Eee0/WdxE
- Pd/lqwIWbqHU79p8TUwxhvoewWrurTRMNZLaDB9MD1agig0Lu+fjJeszJIURyBd/qahW
- 9Hp78w4RwiRwqzKPdhJGe3wYPbjGkgjEYrVC+gdpowY4jHyjkn1FlKSJMTcZo20ZH//i
- 8gGidNBbKO8RR65piRo6n+qDku75fvWNz4ny3Zpy7nvtUiu6Gi4j1pohDLPr4zpBWEP5
- H8KKMw9JwAHfh2K44IwgSr3bhECU8on9kp8OyEe5ldh//iyUJGiP9aFa6LPS/7k+I6XI
- VRSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760495504; x=1761100304;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XqUux0AQPbB5AT6nf1+t3MWAjlR79bWMPkbU7vu+9hA=;
- b=hG355KHVF14xTtIJdQCFYBpstBYE22+n7H8F3NhpB5eM3QUCsaU+W5H09wEBy2AUwb
- oLQAyMUD5AUsBEkJ+85kqDGyGPgQBIrM6rGXmqe1QfRtkL2QyZENIAHoT4l1Zm9D8HVm
- bDKRmHVYw9oryGlPxcTzovYjbwr1j4Nj9h/i5R6/vz5KRVYgi/36auY0HZVLg4NUaKcj
- WT7A27ZndzSRf/VYL6IkdZnHa0lxTLmLnOOJbhkJWEkKmss6bG4nrlcpnZQhjGpmxfa7
- i96kvs5KqIzIwE5ftrhwQZRhKiAKYbCZbGDqnOG0+Id1wxOyzptUGLUIdcdqqLXtARhi
- fQ1Q==
-X-Gm-Message-State: AOJu0Yzu+7eq5RsHDi6s2LLbj8IrDfVd5gQjjcgCPB5ofR802IHlN10V
- qH4wpMuNN80g0DsLeN3A16M1CTsO1desvUgFSRYuRNWyq3+jW1JP/DPV9FxpFeAMvg6gaEYmNVw
- 5xgfPqEXbT9hy0pK1gpiFkek4A72/ujk=
-X-Gm-Gg: ASbGncskERwLlbWZ5Ci6TW7nDfzAxSnHgvYl7olzZT1i38oqb8fi1Q89ZYo7fMQN5pM
- huOtUJtwp0w59TCAYK/5tJ+eUa/3lcUBVFQNmoW9WNsfJcfjxIiLsCktcXj2zYZJNzS8cAWEgFX
- I6P7C5Et28a1agPjGF/ZK7jZl8T7CevLqh545+YcEM/cSuO3x0iXbf7recobB0T3um/KD4kxJaf
- ji1BmWJ0DkRavz/CliOEG0xRWJyHu8hh/MN5aVitCnYOHM6+Sy0FB5u
-X-Google-Smtp-Source: AGHT+IF9vUJq7NpQSRnfoDt2DiDqAixHvCh6KXifOca9f5YAf98+fThZVwLcljhWUVD18dH6cI9OxhcdMr5JwA/OmBk=
-X-Received: by 2002:a05:6402:5c8:b0:637:e490:4600 with SMTP id
- 4fb4d7f45d1cf-639d5b80283mr25139574a12.16.1760495503831; Tue, 14 Oct 2025
- 19:31:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1v8rSW-0000lX-BS
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:41:48 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1v8rSP-0005g8-W6
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:41:47 -0400
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59F2fJuN061330
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 15 Oct 2025 11:41:19 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=wA2nkoAjrw2F42nkelDD0ZtqCBF9pYTxn8ZInFXqjVA=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1760496079; v=1;
+ b=LinuVxETo6DrZDPrRTEPlUJGZ8xi6dz4XmjrHiiWeaQNBqwgT50QwMgthPP6tfO1
+ Ttryt628yyjuNp6YFA3ry6ilLYZXPmssl5IFQ3o7U6bhFbbjBF3Op1ztil9YclgY
+ HrHKmRMHNyHnVs0bCNMpd275dzaMH/bV7CBU+ertLml5+Bcysc5ZCNowWF4cHm9l
+ YL34/mOw/9wRPAWBS3WnQXKCuLzXdjS8YX9+DkEbWrSdzNBg8v0WktHe32P3U1cF
+ N+1X1e4R6zMKYXm+etTi+lmzWDkGa2qH2l/nRr3JPk5MEj7zTG9rw+BVNj0oIRvH
+ wz4j9lNrZbMvgP5sa4Rbqg==
+Message-ID: <eea555b4-879c-4fd8-b837-1a8c1e1c76fa@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 15 Oct 2025 11:41:18 +0900
 MIME-Version: 1.0
-References: <20251013133242.1945681-1-jelly.zhao.42@gmail.com>
-In-Reply-To: <20251013133242.1945681-1-jelly.zhao.42@gmail.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 15 Oct 2025 12:31:17 +1000
-X-Gm-Features: AS18NWCcb-wfa9ZY4kCaGLgWq46oXhRq5jWEl6ht5DIJB8_SCehCz9ciflTgtJM
-Message-ID: <CAKmqyKP-AvSfOk4rXAsT1vPdWGfVBxd6+pgw080_tAijEUY4Og@mail.gmail.com>
-Subject: Re: [PATCH] hw/riscv: Correct mmu-type property of sifive_u harts in
- device tree
-To: Zejun Zhao <jelly.zhao.42@gmail.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <Alistair.Francis@wdc.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/8] tests/functional: add GPU blob allocation test
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20251014111234.3190346-1-alex.bennee@linaro.org>
+ <20251014111234.3190346-9-alex.bennee@linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20251014111234.3190346-9-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,44 +79,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 14, 2025 at 1:00=E2=80=AFAM Zejun Zhao <jelly.zhao.42@gmail.com=
-> wrote:
->
-> Correct mmu-type property of sifive_u harts from Sv48 to Sv39 in 64-bit
-> mode since it's the only supported SATP mode.
->
-> Signed-off-by: Zejun Zhao <jelly.zhao.42@gmail.com>
+On 2025/10/14 20:12, Alex Bennée wrote:
+> This is a very short microkernel test that initialises and then maps
+> and unmaps a blob resource.
+> 
+> Without the other fixes in this series it causes QEMU to hang on the
+> unhandled unmap.
 
-Thanks!
+Thank you for the reproduction case.
 
-Applied to riscv-to-apply.next
+I don't have time to look into it this and the next week due to 
+attendance to a conference (MICRO-58), but I'll definitely do so after that.
 
-Alistair
-
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->  hw/riscv/sifive_u.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-> index d69f942cfb..3e1ed209ca 100644
-> --- a/hw/riscv/sifive_u.c
-> +++ b/hw/riscv/sifive_u.c
-> @@ -176,7 +176,7 @@ static void create_fdt(SiFiveUState *s, const MemMapE=
-ntry *memmap,
->              if (is_32_bit) {
->                  qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "risc=
-v,sv32");
->              } else {
-> -                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "risc=
-v,sv48");
-> +                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "risc=
-v,sv39");
->              }
->              riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, node=
-name);
->          } else {
-> --
-> 2.43.0
->
->
+>   tests/functional/aarch64/meson.build      |  1 +
+>   tests/functional/aarch64/test_gpu_blob.py | 73 +++++++++++++++++++++++
+>   2 files changed, 74 insertions(+)
+>   create mode 100755 tests/functional/aarch64/test_gpu_blob.py
+> 
+> diff --git a/tests/functional/aarch64/meson.build b/tests/functional/aarch64/meson.build
+> index 5ad52f93e1d..f6ca33b2be4 100644
+> --- a/tests/functional/aarch64/meson.build
+> +++ b/tests/functional/aarch64/meson.build
+> @@ -26,6 +26,7 @@ tests_aarch64_system_thorough = [
+>     'aspeed_ast2700',
+>     'aspeed_ast2700fc',
+>     'device_passthrough',
+> +  'gpu_blob',
+>     'hotplug_pci',
+>     'imx8mp_evk',
+>     'kvm',
+> diff --git a/tests/functional/aarch64/test_gpu_blob.py b/tests/functional/aarch64/test_gpu_blob.py
+> new file mode 100755
+> index 00000000000..a913d3b29c8
+> --- /dev/null
+> +++ b/tests/functional/aarch64/test_gpu_blob.py
+> @@ -0,0 +1,73 @@
+> +#!/usr/bin/env python3
+> +#
+> +# Functional tests for GPU blob support. This is a directed test to
+> +# exercise the blob creation and removal features of virtio-gpu. You
+> +# can find the source code for microkernel test here:
+> +#   https://gitlab.com/epilys/qemu-880-repro
+
+Nice. I appreciate the effort to creat the microkernel; hopefully it 
+will be useful also to exercise this part of virtio-gpu for debugging in 
+the future.
+
+> +#
+> +# Copyright (c) 2025 Linaro Ltd.
+> +#
+> +# Authors:
+> +#  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> +#  Alex Bennée <alex.bennee@linaro.org>
+> +#
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +from qemu.machine.machine import VMLaunchFailure
+> +
+> +from qemu_test import Asset
+> +from qemu_test import wait_for_console_pattern
+> +from qemu_test.linuxkernel import LinuxKernelTest
+> +
+> +class Aarch64VirtBlobTest(LinuxKernelTest):
+> +
+> +    ASSET_BLOB = Asset('https://fileserver.linaro.org/s/kE4nCFLdQcoBF9t/'
+> +                       'download?path=%2Fblob-test&files=qemu-880.bin',
+> +                       '2f6ab85d0b156c94fcedd2c4c821c5cbd52925a2de107f8e2d569ea2e34e42eb')
+> +
+> +    def test_virtio_gpu_blob(self):
+> +
+> +        self.set_machine('virt')
+> +        self.require_accelerator("tcg")
+> +
+> +        blob = self.ASSET_BLOB.fetch()
+> +
+> +        self.vm.set_console()
+> +
+> +        self.vm.add_args("-machine", "virt,memory-backend=mem0,accel=tcg",
+> +                         '-m', '4G',
+> +                         '-cpu', 'max',
+> +                         '-kernel', blob,
+> +                         '-object', 'memory-backend-memfd,share=on,id=mem0,size=4G',
+> +                         '-global', 'virtio-mmio.force-legacy=false',
+> +                         '-nic', 'none',
+> +                         '-device',
+> +                         'virtio-gpu-gl,hostmem=128M,blob=true,venus=true',
+
+venus is not exercised with this test case so can be removed.
+
+This test somehow hung on my laptop even with the all other patches in 
+this series applied, and removing venus=true fixed the hung.
+
+I suppose the hang is unrelated to the problem fixed in this series and 
+but rather is a problem specific to my environment (Asahi Linux). 
+Anyway, I think removing venus=true is a safer option to avoid problems 
+with the host graphics stack.
+
+Below is a part of build/meson-logs/testlog.txt:
+
+==================================== 1/1 
+=====================================
+test:         qemu:func-thorough+func-aarch64-thorough+thorough / 
+func-aarch64-gpu_blob
+start time:   02:25:49
+duration:     90.01s
+result:       killed by signal 15 SIGTERM
+command: 
+MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 
+MALLOC_PERTURB_=12 RUST_BACKTRACE=1 
+QEMU_TEST_QEMU_BINARY=/home/me/q/var/qemu/build/qemu-system-aarch64 
+UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 
+PYTHONPATH=/home/me/q/var/qemu/python:/home/me/q/var/qemu/tests/functional 
+ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 
+MESON_TEST_ITERATION=1 QEMU_BUILD_ROOT=/home/me/q/var/qemu/build 
+QEMU_TEST_QEMU_IMG=/home/me/q/var/qemu/build/qemu-img 
+LD_LIBRARY_PATH=/home/me/q/var/qemu/build/contrib/plugins:/home/me/q/var/qemu/build/tests/tcg/plugins 
+/home/me/q/var/qemu/build/pyvenv/bin/python3 
+/home/me/q/var/qemu/tests/functional/aarch64/test_gpu_blob.py
+----------------------------------- stderr 
+-----------------------------------
+==31639==WARNING: ASan doesn't fully support makecontext/swapcontext 
+functions and may produce false positives in some cases!
+==============================================================================
+
+
+Summary of Failures:
+
+1/1 qemu:func-thorough+func-aarch64-thorough+thorough / 
+func-aarch64-gpu_blob TIMEOUT        90.01s   killed by signal 15 SIGTERM
+
+Ok:                 0
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            1
+
+> +                         '-display', 'egl-headless,gl=on',
+> +                         '-d', 'guest_errors')
+> +
+> +        try:
+> +            self.vm.launch()
+> +        except VMLaunchFailure as excp:
+> +            if "old virglrenderer, blob resources unsupported" in excp.output:
+> +                self.skipTest("No blob support for virtio-gpu")
+> +            elif "old virglrenderer, venus unsupported" in excp.output:
+> +                self.skipTest("No venus support for virtio-gpu")
+> +            elif "egl: no drm render node available" in excp.output:
+> +                self.skipTest("Can't access host DRM render node")
+
+This condition is unnecessary as DRM render node is not used.
+
+> +            elif "'type' does not accept value 'egl-headless'" in excp.output:
+> +                self.skipTest("egl-headless support is not available")
+> +            elif "'type' does not accept value 'dbus'" in excp.output:
+> +                self.skipTest("dbus display support is not available")
+
+This can be removed too.
+
+> +            elif "eglInitialize failed: EGL_NOT_INITIALIZED" in excp.output:
+> +                self.skipTest("EGL failed to initialize on this host")
+> +            else:
+> +                self.log.info("unhandled launch failure: %s", excp.output)
+> +                raise excp
+> +
+> +        self.wait_for_console_pattern('[INFO] virtio-gpu test finished')
+> +        # the test should cleanly exit
+> +
+> +
+> +if __name__ == '__main__':
+> +    LinuxKernelTest.main()
+
 
