@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDC3BDC746
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EACBDC744
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:28:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t5y-0000Wv-62; Wed, 15 Oct 2025 00:26:39 -0400
+	id 1v8t6R-0000eD-3e; Wed, 15 Oct 2025 00:27:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5t-0000WL-NF; Wed, 15 Oct 2025 00:26:33 -0400
+ id 1v8t6L-0000cq-HB; Wed, 15 Oct 2025 00:27:01 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5q-0002uk-ME; Wed, 15 Oct 2025 00:26:33 -0400
+ id 1v8t6F-0002up-Fw; Wed, 15 Oct 2025 00:27:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D326615D9D5;
+ by isrv.corpit.ru (Postfix) with ESMTP id E636715D9D6;
  Wed, 15 Oct 2025 07:25:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6CC1229FE7C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 86A5B29FE7D;
  Wed, 15 Oct 2025 07:25:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [Stable-10.0.6 02/13] Revert "i386/cpu: Move adjustment of
- CPUID_EXT_PDCM before feature_dependencies[] check"
-Date: Wed, 15 Oct 2025 07:25:26 +0300
-Message-ID: <20251015042540.68611-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Weifeng Liu <weifeng.liu.z@gmail.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 03/13] ui/gtk: Consider scaling when propagating ui
+ info
+Date: Wed, 15 Oct 2025 07:25:27 +0300
+Message-ID: <20251015042540.68611-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,41 +61,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 3d26cb65c27190e57637644ecf6c96b8c3d246a3
-(v10.0.3-34-g3d26cb65c271) from 10.0.x branch.
+From: Weifeng Liu <weifeng.liu.z@gmail.com>
 
-The problem is that the change makes qemu 10.0.x non-migratable
-to subsequent qemu versions, since it requires introducing a new
-machine type.  This change shuld not have been picked up for 10.0.x.
+The ui width and height sent to guest is supposed to be in buffer
+coordinate. Hence conversion is required.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+If scaling (global window scale and zooming scale) is not respected in
+non-free-scale mode, window size could keep changing because of the
+existence of the iteration of the following steps:
+
+1. In resize event or configure event, a size larger (or smaller) than
+   the currently used one might be calculated due to not considering
+   scaling.
+2. On reception of the display size change event in guest, the guest
+   might decide to do a mode setting and use the larger (or smaller)
+   mode.
+3. When the new guest scan-out command arrives, QEMU would request the
+   window size to change to fit the new buffer size. This will trigger a
+   resize event or a configure event, making us go back to step 1.
+
+Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
+Message-ID: <20250511073337.876650-8-weifeng.liu.z@gmail.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+(cherry picked from commit a1b28f71f7ff0fcafbe0672b788e8e57ee4fe8f6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 58c62ff5b5..34b52ef7a1 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6851,6 +6851,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             /* Fixup overflow: max value for bits 23-16 is 255. */
-             *ebx |= MIN(num, 255) << 16;
-         }
-+        if (!cpu->enable_pmu) {
-+            *ecx &= ~CPUID_EXT_PDCM;
-+        }
-         break;
-     case 2:
-         /* cache info: needed for Pentium Pro compatibility */
-@@ -7840,10 +7843,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
+diff --git a/ui/gtk.c b/ui/gtk.c
+index ea3f403b02..2db10c46da 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -772,8 +772,21 @@ static void gd_resize_event(GtkGLArea *area,
+                             gint width, gint height, gpointer *opaque)
+ {
+     VirtualConsole *vc = (void *)opaque;
++    double pw = width, ph = height;
++    double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
++    GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(area));
++    const int gs = gdk_window_get_scale_factor(window);
  
--    if (!cpu->enable_pmu) {
--        env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
--    }
--
-     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-         FeatureDep *d = &feature_dependencies[i];
-         if (!(env->features[d->from.index] & d->from.mask)) {
+-    gd_set_ui_size(vc, width, height);
++    if (!vc->s->free_scale && !vc->s->full_screen) {
++        pw /= sx;
++        ph /= sy;
++    }
++
++    /**
++     * width and height here are in pixel coordinate, so we must divide it
++     * by global window scale (gs)
++     */
++    gd_set_ui_size(vc, pw / gs, ph / gs);
+ }
+ 
+ #endif
+@@ -1836,8 +1849,16 @@ static gboolean gd_configure(GtkWidget *widget,
+                              GdkEventConfigure *cfg, gpointer opaque)
+ {
+     VirtualConsole *vc = opaque;
++    const double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
++    double width = cfg->width, height = cfg->height;
++
++    if (!vc->s->free_scale && !vc->s->full_screen) {
++        width /= sx;
++        height /= sy;
++    }
++
++    gd_set_ui_size(vc, width, height);
+ 
+-    gd_set_ui_size(vc, cfg->width, cfg->height);
+     return FALSE;
+ }
+ 
 -- 
 2.47.3
 
