@@ -2,59 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB227BDEBF7
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62302BDEC27
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:28:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v91V0-0000Uy-Vj; Wed, 15 Oct 2025 09:25:03 -0400
+	id 1v91VL-0001Wu-9l; Wed, 15 Oct 2025 09:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1v91Ub-0000Ji-D0
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:24:37 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v91VE-0001V2-Jm
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:25:16 -0400
+Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1v91UU-0003Qr-3F
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:24:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=eSIsQT3zGPtkzbH2Vj3vQLJ1uU76XbGJhgS3rx2A1Ks=; b=OQy+55qgsXVq/5fq
- gKOXMeEMlMfnH2Hhpvg4dogBpXKRhabyFe4GZkC4xphf/eu8P/2K+fTT1DqrxFLSYpEORUXyCDa2P
- AGMV3YQ68WpOi9/cGD73b4vzvLva2/VKNB0Lo5Ax+ekiMPffGXxzB497HyLgjYs26InNXSXSaQSw9
- m6mlKyYfUQ+Ij4DUYtehBMP/dfUrrfwdZiGrcpIp4xnr9iwAlFULATVZuESR4afUgaBM+NlbfOYM0
- A11whiXXGOmgxYjWQhcynz/sUvM1ojUVEpYhOC2raTVHOy8JzJ3FJ4VBsy4RKZtPlYL6gPYsnBSI1
- ZaGj+VKJmI0AnyBazw==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1v91UK-00GbU9-0Q;
- Wed, 15 Oct 2025 13:24:20 +0000
-Date: Wed, 15 Oct 2025 13:24:20 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com,
- Gerd Hoffmann <kraxel@redhat.com>,
- "reviewer:Incompatible changes" <devel@lists.libvirt.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2] RFC: audio: deprecate HMP audio commands
-Message-ID: <aO-ghGojbKm8wrFS@gallifrey>
-References: <20251015092851.2850617-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v91V6-0003Sy-CO
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:25:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=H/31MhrLPXnZbU3lNqjXIGTOfAqSylJx4aswOrgd3gw=; b=wm8iPJNeytNXz//
+ Knz3J9poFWERQXbUIIyywyS0iAntg4Wh7kGlM/IiA7EMytypFmjqYJkjX2pUh/ITDgUzLliiZVPy9
+ d12WSJGTtTaHs0tvl1uhaEP/4ePZ6Ks8uexGyBEBzGmqozcCc4uFhlUzBUozl5+sH90IZj9lwTCK0
+ js=;
+Subject: [PATCH 0/5] single-binary: Prepare hw/riscv for single compilation
+Date: Wed, 15 Oct 2025 15:27:37 +0200
+Message-Id: <20251015-feature-single-binary-hw-v1-v1-0-8b416eda42cf@rev.ng>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20251015092851.2850617-1-marcandre.lureau@redhat.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 13:23:10 up 170 days, 21:36,  1 user,  load average: 0.00, 0.00, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEmh72gC/x3MSwrDIBAA0KuEWWdAE5TSq4Qs1Ex0oNgw5kvI3
+ Stdvs27oZAwFXg3NwjtXPibK3TbQEguR0KeqqFTndFKG5zJrZsQFs7xQ+g5O7kwHbhrfAXTe2u
+ t8iZAHRahmc//PozP8wO+TwIgbQAAAA==
+X-Change-ID: 20251015-feature-single-binary-hw-v1-8c53b6660b5c
+To: qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, 
+ alistair.francis@wdc.com, richard.henderson@linaro.org, palmer@dabbelt.com
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,194 +60,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* marcandre.lureau@redhat.com (marcandre.lureau@redhat.com) wrote:
-> From: Marc-Andr=E9 Lureau <marcandre.lureau@redhat.com>
->=20
-> The command is niche and better served by the host audio system.
-> There is no QMP equivalent, fortunately. You can capture the audio
-> stream via remote desktop protocols too (dbus, vnc, spice).
->=20
-> Signed-off-by: Marc-Andr=E9 Lureau <marcandre.lureau@redhat.com>
+Hello,
 
-=46rom the HMP side I'm happy with the deprecation, you're right
-it's pretty obscure and it's easy enough to do from the host.
+this is a small prerequisite patchset that removes target_[u]?long and
+replaces a few target specific macros with target-info variants.
 
-Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
+Next up is using the target-info style QOM filtering of boards and then
+moving translation units to common code.  My current patches for this
+are based on Philippes single-binary-hw-arm-rfc-v5 branch, is there some
+other branch I should target here?
 
-Dave
+---
+Anton Johansson (5):
+      hw/riscv: Use generic hwaddr for firmware addressses
+      hw/riscv: Replace target_ulong uses
+      hw/riscv: Widen OpenSBI dynamic info struct
+      target-info: Introduce runtime TARGET_PHYS_ADDR_SPACE_BITS
+      hw/riscv: Use runtime target_phys_addr_space_bits()
 
-> ---
->  docs/about/deprecated.rst | 20 ++++++++++++++++++++
->  meson.build               |  4 ++++
->  audio/audio-hmp-cmds.c    |  7 +++++++
->  audio/meson.build         |  5 +++--
->  hmp-commands-info.hx      |  2 ++
->  hmp-commands.hx           |  2 ++
->  6 files changed, 38 insertions(+), 2 deletions(-)
->=20
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 98361f5832..a357f207cf 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -169,6 +169,26 @@ Use ``job-finalize`` instead.
-> =20
->  This argument has always been ignored.
-> =20
-> +Human Machine Protocol (HMP) commands
-> +-------------------------------------
-> +
-> +``wavcapture`` (since 10.2)
-> +''''''''''''''''''''''''''''
-> +
-> +The ``wavcapture`` command is deprecated and will be removed in a future=
- release.
-> +
-> +Use ``-audiodev wav`` or your host audio system to capture audio.
-> +
-> +``stopcapture`` (since 10.2)
-> +''''''''''''''''''''''''''''
-> +
-> +The ``stopcapture`` command is deprecated and will be removed in a futur=
-e release.
-> +
-> +``info`` argument ``capture`` (since 10.2)
-> +''''''''''''''''''''''''''''''''''''''''''
-> +
-> +The ``info capture`` command is deprecated and will be removed in a futu=
-re release.
-> +
->  Host Architectures
->  ------------------
-> =20
-> diff --git a/meson.build b/meson.build
-> index afaefa0172..a4d8e33132 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -2354,6 +2354,10 @@ endif
->  config_host_data =3D configuration_data()
-> =20
->  config_host_data.set('CONFIG_HAVE_RUST', have_rust)
-> +
-> +# HMP code deprecated since v10.2, to be removed
-> +config_host_data.set('CONFIG_AUDIO_HMP', true)
-> +
->  audio_drivers_selected =3D []
->  if have_system
->    audio_drivers_available =3D {
-> diff --git a/audio/audio-hmp-cmds.c b/audio/audio-hmp-cmds.c
-> index 8774c09f18..9129a02331 100644
-> --- a/audio/audio-hmp-cmds.c
-> +++ b/audio/audio-hmp-cmds.c
-> @@ -28,6 +28,7 @@
->  #include "monitor/monitor.h"
->  #include "qapi/error.h"
->  #include "qobject/qdict.h"
-> +#include "qemu/error-report.h"
-> =20
->  static QLIST_HEAD (capture_list_head, CaptureState) capture_head;
-> =20
-> @@ -36,6 +37,8 @@ void hmp_info_capture(Monitor *mon, const QDict *qdict)
->      int i;
->      CaptureState *s;
-> =20
-> +    warn_report_once("'info capture' is deprecated since v10.2, to be re=
-moved");
-> +
->      for (s =3D capture_head.lh_first, i =3D 0; s; s =3D s->entries.le_ne=
-xt, ++i) {
->          monitor_printf(mon, "[%d]: ", i);
->          s->ops.info (s->opaque);
-> @@ -48,6 +51,8 @@ void hmp_stopcapture(Monitor *mon, const QDict *qdict)
->      int n =3D qdict_get_int(qdict, "n");
->      CaptureState *s;
-> =20
-> +    warn_report_once("'stopcapture' is deprecated since v10.2, to be rem=
-oved");
-> +
->      for (s =3D capture_head.lh_first, i =3D 0; s; s =3D s->entries.le_ne=
-xt, ++i) {
->          if (i =3D=3D n) {
->              s->ops.destroy (s->opaque);
-> @@ -69,6 +74,8 @@ void hmp_wavcapture(Monitor *mon, const QDict *qdict)
->      Error *local_err =3D NULL;
->      AudioState *as =3D audio_state_by_name(audiodev, &local_err);
-> =20
-> +    warn_report_once("'wavcapture' is deprecated since v10.2, to be remo=
-ved");
-> +
->      if (!as) {
->          error_report_err(local_err);
->          return;
-> diff --git a/audio/meson.build b/audio/meson.build
-> index 59f0a431d5..f0c97e5223 100644
-> --- a/audio/meson.build
-> +++ b/audio/meson.build
-> @@ -1,12 +1,13 @@
->  system_ss.add([spice_headers, files('audio.c')])
->  system_ss.add(files(
-> -  'audio-hmp-cmds.c',
->    'mixeng.c',
->    'noaudio.c',
->    'wavaudio.c',
-> -  'wavcapture.c',
->  ))
-> =20
-> +# deprecated since v10.2, to be removed
-> +system_ss.add(files('audio-hmp-cmds.c', 'wavcapture.c'))
-> +
->  system_ss.add(when: coreaudio, if_true: files('coreaudio.m'))
->  system_ss.add(when: dsound, if_true: files('dsoundaudio.c', 'audio_win_i=
-nt.c'))
-> =20
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index 25b4aed51f..59f3446224 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -363,6 +363,7 @@ SRST
->      Show host USB devices.
->  ERST
-> =20
-> +#ifdef CONFIG_AUDIO_HMP
->      {
->          .name       =3D "capture",
->          .args_type  =3D "",
-> @@ -375,6 +376,7 @@ SRST
->    ``info capture``
->      Show capture information.
->  ERST
-> +#endif
-> =20
->      {
->          .name       =3D "snapshots",
-> diff --git a/hmp-commands.hx b/hmp-commands.hx
-> index 15f6082596..6d59bc8f18 100644
-> --- a/hmp-commands.hx
-> +++ b/hmp-commands.hx
-> @@ -764,6 +764,7 @@ SRST
-> =20
->  ERST
-> =20
-> +#ifdef CONFIG_AUDIO_HMP
->      {
->          .name       =3D "wavcapture",
->          .args_type  =3D "path:F,audiodev:s,freq:i?,bits:i?,nchannels:i?",
-> @@ -798,6 +799,7 @@ SRST
->      info capture
-> =20
->  ERST
-> +#endif
-> =20
->      {
->          .name       =3D "memsave",
-> --=20
-> 2.51.0
->=20
---=20
- -----Open up your eyes, open up your mind, open up your code -------  =20
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \=20
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+ include/hw/riscv/boot.h         | 20 +++++++++----------
+ include/hw/riscv/boot_opensbi.h | 14 ++++++-------
+ include/qemu/target-info-impl.h |  2 ++
+ include/qemu/target-info.h      |  8 ++++++++
+ hw/riscv/boot.c                 | 44 +++++++++++++++++++++--------------------
+ hw/riscv/microchip_pfsoc.c      |  2 +-
+ hw/riscv/riscv-iommu.c          |  7 ++++---
+ hw/riscv/riscv_hart.c           |  2 +-
+ hw/riscv/sifive_u.c             |  2 +-
+ hw/riscv/spike.c                |  4 ++--
+ hw/riscv/virt.c                 |  2 +-
+ target-info.c                   |  5 +++++
+ 12 files changed, 65 insertions(+), 47 deletions(-)
+
 
