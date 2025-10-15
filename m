@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8D7BDBF8C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 03:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A47BDBF94
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 03:20:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8qA9-0000Qv-0G; Tue, 14 Oct 2025 21:18:45 -0400
+	id 1v8qA9-0000RD-IJ; Tue, 14 Oct 2025 21:18:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3bfbuaAkKCmQNKZKCQaCPIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--lixiaoyan.bounces.google.com>)
- id 1v8qA5-0000PJ-Uc
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 21:18:42 -0400
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
+ <3b_buaAkKCmYPMbMEScERKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--lixiaoyan.bounces.google.com>)
+ id 1v8qA8-0000Q9-4j
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 21:18:44 -0400
+Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3bfbuaAkKCmQNKZKCQaCPIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--lixiaoyan.bounces.google.com>)
- id 1v8qA3-0003Cm-LX
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 21:18:41 -0400
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b57cf8dba28so10333602a12.1
- for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 18:18:38 -0700 (PDT)
+ <3b_buaAkKCmYPMbMEScERKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--lixiaoyan.bounces.google.com>)
+ id 1v8qA6-0003DB-BM
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 21:18:43 -0400
+Received: by mail-pj1-x1049.google.com with SMTP id
+ 98e67ed59e1d1-33428befd39so22936813a91.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 18:18:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1760491117; x=1761095917; darn=nongnu.org;
+ d=google.com; s=20230601; t=1760491119; x=1761095919; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=CPQs+PsbgO0P6AZuHEwWkT67RFWoD7TQs6ylOThGD/E=;
- b=Bn58UuaDYu/9ayiqy1eaqKB+QDYNrSeFfkWNC0/G0uG1usOCg2Z0Z2Y9qLPJf5JFme
- 0ax7NjwMpfTwklQt4JrgxhFN07Yq2p8G3h2kl5Q1lcGfH5E7WDCEw3xq4OlegTUu8AEY
- 57YAkBvO1qVghJVRV0bQQkcImv8rfKJk/jFRuJVXT1qsnqs7qZLMEFF4Z2Aj34iR3NNH
- 2eyzb4650cuxq/M01jkhFNwyxM859CRGS/z9ZF9PjXcU2CuwR6VlxboMj1w/bmxFScHF
- D3iMx5sWUyyzQbsskXcfDi/NEVMytcfRMK8WTwmUllxSUT6itpBxioA58H0hWllZmpuy
- QWPg==
+ bh=tFcrpMNqUzSK5xY1pNPFjqerwuvA1GbCVm02DaoYGWw=;
+ b=Dhg7rMZniMNCdmiLpWuOYbbQ1V6hAftFwweWxGzonOKqOV+kX/1MDiZeGpYslRn12f
+ HrQ7elrVlPQqhFVoNQlLDd6XM0NdMDyu8qcPwbrX4BpCRYViX6kea3VRiI2EcSwwRi7O
+ Aye07CgUS9RSe80SIqppN5vohke74yzMxdpAna8uNHMJDejUN6ARtDh2IbHLSQHqujzd
+ 1HSfajy4HlRti6Dqfq9aOhslycSfjoXGSl2UvCq8uambVKUWVzCoW10UaN6SfeSwhbvS
+ dHqDjCjtnVHcDNjJYoCh7vNpT5AqC05dw2Mkn+XJLh0jTmruFJ4e0p+HYpf1EITjHVFB
+ Jbyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760491117; x=1761095917;
+ d=1e100.net; s=20230601; t=1760491119; x=1761095919;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CPQs+PsbgO0P6AZuHEwWkT67RFWoD7TQs6ylOThGD/E=;
- b=wo5SyS2EZiFZGXoJrMidj1BG0NcDcaR4fI3hy1Hd0SkCF09eF//MlzY0aWqfutwbqb
- 0VEKAbRPdP3eVm4EyITRaTHn8lbzYENrAKSPVEMD51/QJhpuNGrH+DpGc84tGGFwmdpq
- 7emsXWxMPhrFcPe9KTEpUJc+0rxyV97xNryRwrpAxBl133jT4TOGEgPknKiKgH5cpBwI
- CnJVLKgyuhbhZn/ZPhq4CFEymLeKEc6HB5BDc+hAueIWRu5Sp/GOb4qJVV9c0pgjuoBG
- hXqdN1DIZX0vED40PIDMITnd77/lvQ4IBNxcJ7oWUpK+EY57Ht9omq+IU//2Ab9cKNtx
- VXzA==
+ bh=tFcrpMNqUzSK5xY1pNPFjqerwuvA1GbCVm02DaoYGWw=;
+ b=sHMoUmo6UtBpfouuyqY1lwOSnUKXy0Bx5UW3ehnLJFUrQC1Z0xgu7sj4TfJKly+s32
+ Ddow55f1Z8t8tbU1DOrm+RbTLZxYQ/eLstr/3ywXJluvzqaxTqI16mu86rh46UI4ykJG
+ 66s7DTp7yDRXSbi5eapE0zl3JKtiSyjSaCcCINz4w+VGX2ADNKM9y/MA8LGuKARzD6Gv
+ TxVHqej3SCtVZTiH7GYaKYXsUseWFDTdqA/0MZ5V2Ort+ktXg89ZKzwwtYBF+K/UGaeM
+ UqzDhAopQBGRp0B91h3gt17G7bwAERjcvgzH+VWoZXoiUs4Gy8dDsdvN77EcZg0ks1e3
+ iYLQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUELsowQLmJixNK6GmZt7D90cNknh69XM4QRpt8PkuCc7dF78+0NmLTqvGtLFZI2WrIsgspkgZs7yxD@nongnu.org
-X-Gm-Message-State: AOJu0YybrUq/OxHVr/oZ8w9N0Vc6bOyW7WEy3N7aw7jlnSrUldj4J1+b
- b2GpPwMUwYQoECmsmDdi7JH/219N3MEo4gJd6SM7aLm4H8vUaqWuSx4s1BT/Ovz9rwBGxZLnhom
- XC09Huz9asZLgDAXNZA==
-X-Google-Smtp-Source: AGHT+IFry+Tx4jNARET6jdIzh7caqsmh28sD+VHmqU3izgHWU3OMXaqVC4Lqukc/HZvWXUYV6Pdxseox259GEfQ=
-X-Received: from plxd12.prod.google.com ([2002:a17:902:ef0c:b0:269:ab8c:6531])
+ AJvYcCWcXFjPPhTg2EYjpR+9vD5kzm0QgBgMZF4hkUD4BlqnQWpSvyJINZr31vnrImJea4bhUL5Fw5ugYF30@nongnu.org
+X-Gm-Message-State: AOJu0Yyr6/EacfY5q2Hde1pTQG8Xq7qqumB+Y7Ksn7zBWYpN7zscxFXW
+ M2nOOpsnl6IqeHzxhPr+LzNt+G8cy5TZ6lowNLbtAGHo/7/yoI0iBFg6CdLxwyjlyoja+GvJPO2
+ E3hbvplHQBeb3PlWR6g==
+X-Google-Smtp-Source: AGHT+IFZhDR+vh+kuynIcVAxf3GbvjB/ncgWkyQSmW0gDVUzvv6yS2h499GC8W5hXkls5C1vc5Jx5D8QVwS7qww=
+X-Received: from pjblt11.prod.google.com ([2002:a17:90b:354b:b0:33b:51fe:1a8d])
  (user=lixiaoyan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2b03:b0:264:70e9:dcb8 with SMTP id
- d9443c01a7336-2902739f408mr327738495ad.55.1760491117364; 
- Tue, 14 Oct 2025 18:18:37 -0700 (PDT)
-Date: Wed, 15 Oct 2025 01:18:26 +0000
+ 2002:a17:90b:1648:b0:32e:e18a:368c with SMTP id
+ 98e67ed59e1d1-33b51106a8emr38759811a91.7.1760491119120; 
+ Tue, 14 Oct 2025 18:18:39 -0700 (PDT)
+Date: Wed, 15 Oct 2025 01:18:27 +0000
 In-Reply-To: <20251015011830.1688468-1-lixiaoyan@google.com>
 Mime-Version: 1.0
 References: <20251015011830.1688468-1-lixiaoyan@google.com>
 X-Mailer: git-send-email 2.51.0.788.g6d19910ace-goog
-Message-ID: <20251015011830.1688468-3-lixiaoyan@google.com>
-Subject: [PATCH v2 2/5] tests/qtest: Add qtest for for ASPEED GPIO gpio-set
- property
+Message-ID: <20251015011830.1688468-4-lixiaoyan@google.com>
+Subject: [PATCH v2 3/5] hw/arm/npcm8xx.c: Add all IRQ ENUMs
 From: Coco Li <lixiaoyan@google.com>
 To: peter.maydell@linaro.org, clg@kaod.org
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, lixiaoyan@google.com, 
- flwu@google.com, andrew@codeconstruct.com.au, philmd@linaro.org
+ flwu@google.com, andrew@codeconstruct.com.au, philmd@linaro.org, 
+ Hao Wu <wuhaotsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3bfbuaAkKCmQNKZKCQaCPIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--lixiaoyan.bounces.google.com;
- helo=mail-pg1-x54a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
+ envelope-from=3b_buaAkKCmYPMbMEScERKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--lixiaoyan.bounces.google.com;
+ helo=mail-pj1-x1049.google.com
 X-Spam_score_int: -88
 X-Spam_score: -8.9
 X-Spam_bar: --------
 X-Spam_report: (-8.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.269,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001, UPPERCASE_50_75=0.008,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,183 +95,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Felix Wu <flwu@google.com>
+In the process of implementing serial gpio and adding the corresponding
+ENUMs, also complete the list for npcm8xx.
 
- - Added qtests to test gpio-set property for ASPEED.
- - Added function to get uint in qdict.
-
-Signed-off-by: Felix Wu <flwu@google.com>
+Signed-off-by: Coco Li <lixiaoyan@google.com>
+Reviewed-by: Hao Wu <wuhaotsh@google.com>
 ---
- include/qobject/qdict.h        |   1 +
- qobject/qdict.c                |  13 ++++
- tests/qtest/aspeed_gpio-test.c | 105 ++++++++++++++++++++++++++++++---
- 3 files changed, 110 insertions(+), 9 deletions(-)
+ hw/arm/npcm8xx.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/include/qobject/qdict.h b/include/qobject/qdict.h
-index 903e6e5462..861996f08d 100644
---- a/include/qobject/qdict.h
-+++ b/include/qobject/qdict.h
-@@ -57,6 +57,7 @@ void qdict_put_str(QDict *qdict, const char *key, const char *value);
+diff --git a/hw/arm/npcm8xx.c b/hw/arm/npcm8xx.c
+index a276fea698..10887d07fa 100644
+--- a/hw/arm/npcm8xx.c
++++ b/hw/arm/npcm8xx.c
+@@ -92,8 +92,14 @@ enum NPCM8xxInterrupt {
+     NPCM8XX_GMAC2_IRQ,
+     NPCM8XX_GMAC3_IRQ,
+     NPCM8XX_GMAC4_IRQ,
+-    NPCM8XX_MMC_IRQ             = 26,
++    NPCM8XX_ESPI_IRQ,
++    NPCM8XX_SIOX0_IRQ,
++    NPCM8XX_SIOX1_IRQ,
++    NPCM8XX_MC_IRQ              = 25,
++    NPCM8XX_MMC_IRQ,
+     NPCM8XX_PSPI_IRQ            = 28,
++    NPCM8XX_VDMA_IRQ,
++    NPCM8XX_MCTP_IRQ,
+     NPCM8XX_TIMER0_IRQ          = 32,   /* Timer Module 0 */
+     NPCM8XX_TIMER1_IRQ,
+     NPCM8XX_TIMER2_IRQ,
+@@ -116,6 +122,14 @@ enum NPCM8xxInterrupt {
+     NPCM8XX_OHCI1_IRQ,
+     NPCM8XX_EHCI2_IRQ,
+     NPCM8XX_OHCI2_IRQ,
++    NPCM8XX_SPI1_IRQ            = 82,
++    NPCM8XX_RNG_IRQ             = 84,
++    NPCM8XX_SPI0_IRQ            = 85,
++    NPCM8XX_SPI3_IRQ            = 87,
++    NPCM8XX_GDMA0_IRQ           = 88,
++    NPCM8XX_GDMA1_IRQ,
++    NPCM8XX_GDMA2_IRQ,
++    NPCM8XX_OTP_IRQ             = 92,
+     NPCM8XX_PWM0_IRQ            = 93,   /* PWM module 0 */
+     NPCM8XX_PWM1_IRQ,                   /* PWM module 1 */
+     NPCM8XX_MFT0_IRQ            = 96,   /* MFT module 0 */
+@@ -128,6 +142,11 @@ enum NPCM8xxInterrupt {
+     NPCM8XX_MFT7_IRQ,                   /* MFT module 7 */
+     NPCM8XX_PCI_MBOX1_IRQ       = 105,
+     NPCM8XX_PCI_MBOX2_IRQ,
++    NPCM8XX_GPIO231_IRQ         = 108,
++    NPCM8XX_GPIO233_IRQ,
++    NPCM8XX_GPIO234_IRQ,
++    NPCM8XX_GPIO93_IRQ,
++    NPCM8XX_GPIO94_IRQ,
+     NPCM8XX_GPIO0_IRQ           = 116,
+     NPCM8XX_GPIO1_IRQ,
+     NPCM8XX_GPIO2_IRQ,
+@@ -163,6 +182,12 @@ enum NPCM8xxInterrupt {
+     NPCM8XX_SMBUS24_IRQ,
+     NPCM8XX_SMBUS25_IRQ,
+     NPCM8XX_SMBUS26_IRQ,
++    NPCM8XX_FLM0_IRQ            = 160,
++    NPCM8XX_FLM1_IRQ,
++    NPCM8XX_FLM2_IRQ,
++    NPCM8XX_FLM3_IRQ,
++    NPCM8XX_JMT1_IRQ            = 188,
++    NPCM8XX_JMT2_IRQ,
+     NPCM8XX_UART0_IRQ           = 192,
+     NPCM8XX_UART1_IRQ,
+     NPCM8XX_UART2_IRQ,
+@@ -170,6 +195,22 @@ enum NPCM8xxInterrupt {
+     NPCM8XX_UART4_IRQ,
+     NPCM8XX_UART5_IRQ,
+     NPCM8XX_UART6_IRQ,
++    NPCM8XX_I3C0_IRQ            = 224,
++    NPCM8XX_I3C1_IRQ,
++    NPCM8XX_I3C2_IRQ,
++    NPCM8XX_I3C3_IRQ,
++    NPCM8XX_I3C4_IRQ,
++    NPCM8XX_I3C5_IRQ,
++    NPCM8XX_A35INTERR_IRQ       = 240,
++    NPCM8XX_A35EXTERR_IRQ,
++    NPCM8XX_PMU0_IRQ,
++    NPCM8XX_PMU1_IRQ,
++    NPCM8XX_PMU2_IRQ,
++    NPCM8XX_PMU3_IRQ,
++    NPCM8XX_CTI0_IRQ,
++    NPCM8XX_CTI1_IRQ,
++    NPCM8XX_CTI2_IRQ,
++    NPCM8XX_CTI3_IRQ,
+ };
  
- double qdict_get_double(const QDict *qdict, const char *key);
- int64_t qdict_get_int(const QDict *qdict, const char *key);
-+uint64_t qdict_get_uint(const QDict *qdict, const char *key);
- bool qdict_get_bool(const QDict *qdict, const char *key);
- QList *qdict_get_qlist(const QDict *qdict, const char *key);
- QDict *qdict_get_qdict(const QDict *qdict, const char *key);
-diff --git a/qobject/qdict.c b/qobject/qdict.c
-index a90ac9ae2f..0dafe6d421 100644
---- a/qobject/qdict.c
-+++ b/qobject/qdict.c
-@@ -209,6 +209,19 @@ int64_t qdict_get_int(const QDict *qdict, const char *key)
-     return qnum_get_int(qobject_to(QNum, qdict_get(qdict, key)));
- }
- 
-+/**
-+ * qdict_get_uint(): Get an unsigned integer mapped by 'key'
-+ *
-+ * This function assumes that 'key' exists and it stores a
-+ * QNum representable as uint.
-+ *
-+ * Return unsigned integer mapped by 'key'.
-+ */
-+uint64_t qdict_get_uint(const QDict *qdict, const char *key)
-+{
-+    return qnum_get_uint(qobject_to(QNum, qdict_get(qdict, key)));
-+}
-+
- /**
-  * qdict_get_bool(): Get a bool mapped by 'key'
-  *
-diff --git a/tests/qtest/aspeed_gpio-test.c b/tests/qtest/aspeed_gpio-test.c
-index 12675d4cbb..c2f9ca2298 100644
---- a/tests/qtest/aspeed_gpio-test.c
-+++ b/tests/qtest/aspeed_gpio-test.c
-@@ -27,28 +27,115 @@
- #include "qemu/timer.h"
- #include "qobject/qdict.h"
- #include "libqtest-single.h"
-+#include "qemu/typedefs.h"
- 
- #define AST2600_GPIO_BASE 0x1E780000
- 
- #define GPIO_ABCD_DATA_VALUE 0x000
- #define GPIO_ABCD_DIRECTION  0x004
- 
-+static uint32_t qtest_qom_get_uint32(QTestState *s, const char *path,
-+                                     const char *property)
-+{
-+    QDict *r;
-+
-+    uint32_t res;
-+    r = qtest_qmp(s, "{ 'execute': 'qom-get', 'arguments': "
-+                     "{ 'path': %s, 'property': %s } }", path, property);
-+    res = qdict_get_uint(r, "return");
-+    qobject_unref(r);
-+
-+    return res;
-+}
-+
-+static void qtest_qom_set_uint32(QTestState *s, const char *path,
-+                                 const char *property, uint32_t value)
-+{
-+    QDict *r;
-+
-+    r = qtest_qmp(s, "{ 'execute': 'qom-set', 'arguments': "
-+                     "{ 'path': %s, 'property': %s, 'value': %" PRIu32 " } }",
-+                     path, property, value);
-+    qobject_unref(r);
-+}
-+
-+static const char *resp_get_error(QDict *r, const char* error_key)
-+{
-+    QDict *qdict;
-+
-+    g_assert(r);
-+
-+    qdict = qdict_get_qdict(r, "error");
-+    if (qdict) {
-+        return qdict_get_str(qdict, error_key);
-+    }
-+
-+    return NULL;
-+}
-+
-+static bool qtest_qom_check_error(QTestState *s, const char *path,
-+                                  const char *property, const char *error_msg,
-+                                  const char *error_msg_key)
-+{
-+    QDict *r;
-+    bool b;
-+
-+    r = qtest_qmp(s, "{ 'execute': 'qom-get', 'arguments': "
-+                     "{ 'path': %s, 'property': %s } }", path, property);
-+    b = g_str_equal(resp_get_error(r, error_msg_key), error_msg);
-+    qobject_unref(r);
-+
-+    return b;
-+}
-+
- static void test_set_colocated_pins(const void *data)
- {
-     QTestState *s = (QTestState *)data;
--
-+    const char path[] = "/machine/soc/gpio";
-     /*
-      * gpioV4-7 occupy bits within a single 32-bit value, so we want to make
-      * sure that modifying one doesn't affect the other.
-      */
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV4", true);
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV5", false);
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV6", true);
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV7", false);
--    g_assert(qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV4"));
--    g_assert(!qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV5"));
--    g_assert(qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV6"));
--    g_assert(!qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV7"));
-+    qtest_qom_set_bool(s, path, "gpioV4", true);
-+    qtest_qom_set_bool(s, path, "gpioV5", false);
-+    qtest_qom_set_bool(s, path, "gpioV6", true);
-+    qtest_qom_set_bool(s, path, "gpioV7", false);
-+    g_assert(qtest_qom_get_bool(s, path, "gpioV4"));
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioV5"));
-+    g_assert(qtest_qom_get_bool(s, path, "gpioV6"));
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioV7"));
-+
-+    /*
-+     * Testing the gpio-set[%d] properties, using individual gpio boolean
-+     * properties to do cross check.
-+     * We use gpioR4-7 for test, Setting them to be 0b1010.
-+     */
-+    qtest_qom_set_uint32(s, path, "gpio-set[4]", 0x0);
-+    g_assert(qtest_qom_get_uint32(s, path, "gpio-set[4]") == 0x0);
-+    qtest_qom_set_uint32(s, path, "gpio-set[4]", 0xa000);
-+    g_assert(qtest_qom_get_uint32(s, path, "gpio-set[4]") == 0xa000);
-+
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioR4"));
-+    g_assert(qtest_qom_get_bool(s, path, "gpioR5"));
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioR6"));
-+    g_assert(qtest_qom_get_bool(s, path, "gpioR7"));
-+
-+    /*
-+     * Testing the invalid indexing, the response info should contain following
-+     * info:
-+     * {key: "class", value: "GenericError"}
-+     *
-+     * For pins, it should follow "gpio%2[A-Z]%1d" or "gpio%3[18A-E]%1d" format.
-+     */
-+    const char error_msg[] = "GenericError";
-+    const char error_msg_key[] = "class";
-+
-+    g_assert(qtest_qom_check_error(s, path, "gpioR+1", error_msg,
-+                                   error_msg_key));
-+    g_assert(qtest_qom_check_error(s, path, "gpio-set[99]", error_msg,
-+                                   error_msg_key));
-+    g_assert(qtest_qom_check_error(s, path, "gpio-set[-3]", error_msg,
-+                                   error_msg_key));
- }
- 
- static void test_set_input_pins(const void *data)
+ /* Total number of GIC interrupts, including internal Cortex-A35 interrupts. */
 -- 
 2.51.0.788.g6d19910ace-goog
 
