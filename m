@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5DDBDC78A
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F815BDC78F
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t6y-0001WQ-HU; Wed, 15 Oct 2025 00:27:40 -0400
+	id 1v8t77-00029Y-OO; Wed, 15 Oct 2025 00:27:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6s-0001P6-75; Wed, 15 Oct 2025 00:27:35 -0400
+ id 1v8t73-0001y6-Qp; Wed, 15 Oct 2025 00:27:45 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6n-00030b-0O; Wed, 15 Oct 2025 00:27:31 -0400
+ id 1v8t6x-000318-3O; Wed, 15 Oct 2025 00:27:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AD5BB15D9DF;
+ by isrv.corpit.ru (Postfix) with ESMTP id C0E2015D9E0;
  Wed, 15 Oct 2025 07:25:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5066229FE86;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 60F7629FE87;
  Wed, 15 Oct 2025 07:25:41 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 12/13] target/riscv: rvv: Fix vslide1[up|down].vx
- unexpected result when XLEN=32 and SEW=64
-Date: Wed, 15 Oct 2025 07:25:36 +0300
-Message-ID: <20251015042540.68611-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Damien Bergamini <damien.bergamini@eviden.com>,
+ Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 13/13] pcie_sriov: Fix broken MMIO accesses from
+ SR-IOV VFs
+Date: Wed, 15 Oct 2025 07:25:37 +0300
+Message-ID: <20251015042540.68611-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
@@ -59,159 +60,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Damien Bergamini <damien.bergamini@eviden.com>
 
-When XLEN is 32 and SEW is 64, the original implementation of
-vslide1up.vx and vslide1down.vx helper functions fills the 32-bit value
-of rs1 into the first element of the destination vector register (rd),
-which is a 64-bit element.
+Starting with commit cab1398a60eb, SR-IOV VFs are realized as soon as
+pcie_sriov_pf_init() is called.  Because pcie_sriov_pf_init() must be
+called before pcie_sriov_pf_init_vf_bar(), the VF BARs types won't be
+known when the VF realize function calls pcie_sriov_vf_register_bar().
 
-This commit attempted to resolve the issue by extending the rs1 value
-to 64 bits during the TCG translation phase to ensure that the helper
-functions won't lost the higer 32 bits.
+This breaks the memory regions of the VFs (for instance with igbvf):
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250124073325.2467664-1-max.chou@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 81d1885dcc4424fec6761120f6e251eb3408fb8e)
+$ lspci
+...
+    Region 0: Memory at 281a00000 (64-bit, prefetchable) [virtual] [size=16K]
+    Region 3: Memory at 281a20000 (64-bit, prefetchable) [virtual] [size=16K]
+
+$ info mtree
+...
+address-space: pci_bridge_pci_mem
+  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
+    0000000081a00000-0000000081a03fff (prio 1, i/o): igbvf-mmio
+    0000000081a20000-0000000081a23fff (prio 1, i/o): igbvf-msix
+
+and causes MMIO accesses to fail:
+
+    Invalid write at addr 0x281A01520, size 4, region '(null)', reason: rejected
+    Invalid read at addr 0x281A00C40, size 4, region '(null)', reason: rejected
+
+To fix this, VF BARs are now registered with pci_register_bar() which
+has a type parameter and pcie_sriov_vf_register_bar() is removed.
+
+Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")
+Signed-off-by: Damien Bergamini <damien.bergamini@eviden.com>
+Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20250901151314.1038020-1-clement.mathieu--drif@eviden.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 2e54e5fda779a7ba45578884276dca62462f7a06)
+(This is a back-port of commit 2e54e5fda779 to 10.0.x)
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index e2e883151d..ddb07ca3d1 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -1101,14 +1101,14 @@ DEF_HELPER_6(vslidedown_vx_b, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vslidedown_vx_h, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vslidedown_vx_w, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vslidedown_vx_d, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_b, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_h, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_w, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_d, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_b, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_h, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_w, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_d, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_b, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_h, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_w, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_d, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_b, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_h, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_w, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_d, void, ptr, ptr, i64, ptr, env, i32)
+diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
+index ab2142807f..00d7bd93fd 100644
+--- a/docs/pcie_sriov.txt
++++ b/docs/pcie_sriov.txt
+@@ -72,8 +72,7 @@ setting up a BAR for a VF.
+ 2) Similarly in the implementation of the virtual function, you need to
+    make it a PCI Express device and add a similar set of capabilities
+    except for the SR/IOV capability. Then you need to set up the VF BARs as
+-   subregions of the PFs SR/IOV VF BARs by calling
+-   pcie_sriov_vf_register_bar() instead of the normal pci_register_bar() call:
++   subregions of the PFs SR/IOV VF BARs by calling pci_register_bar():
  
- DEF_HELPER_6(vfslide1up_vf_h, void, ptr, ptr, i64, ptr, env, i32)
- DEF_HELPER_6(vfslide1up_vf_w, void, ptr, ptr, i64, ptr, env, i32)
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 445a0b72a5..b8919bb824 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -3494,7 +3494,6 @@ static bool slideup_check(DisasContext *s, arg_rmrr *a)
+    pci_your_vf_dev_realize( ... )
+    {
+@@ -83,7 +82,7 @@ setting up a BAR for a VF.
+       pcie_ari_init(d, 0x100);
+       ...
+       memory_region_init(mr, ... )
+-      pcie_sriov_vf_register_bar(d, bar_nr, mr);
++      pci_register_bar(d, bar_nr, bar_type, mr);
+       ...
+    }
+ 
+diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
+index 21a97d4d61..575410d6cc 100644
+--- a/hw/net/igbvf.c
++++ b/hw/net/igbvf.c
+@@ -251,10 +251,12 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
+ 
+     memory_region_init_io(&s->mmio, OBJECT(dev), &mmio_ops, s, "igbvf-mmio",
+         IGBVF_MMIO_SIZE);
+-    pcie_sriov_vf_register_bar(dev, IGBVF_MMIO_BAR_IDX, &s->mmio);
++    pci_register_bar(dev, IGBVF_MMIO_BAR_IDX, PCI_BASE_ADDRESS_MEM_TYPE_64 |
++                     PCI_BASE_ADDRESS_MEM_PREFETCH, &s->mmio);
+ 
+     memory_region_init(&s->msix, OBJECT(dev), "igbvf-msix", IGBVF_MSIX_SIZE);
+-    pcie_sriov_vf_register_bar(dev, IGBVF_MSIX_BAR_IDX, &s->msix);
++    pci_register_bar(dev, IGBVF_MSIX_BAR_IDX, PCI_BASE_ADDRESS_MEM_TYPE_64 |
++                     PCI_BASE_ADDRESS_MEM_PREFETCH, &s->msix);
+ 
+     ret = msix_init(dev, IGBVF_MSIX_VEC_NUM, &s->msix, IGBVF_MSIX_BAR_IDX, 0,
+         &s->msix, IGBVF_MSIX_BAR_IDX, 0x2000, 0x70, errp);
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 67cb95c809..c93039ba23 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8708,12 +8708,8 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+                               msix_table_offset);
+         memory_region_add_subregion(&n->bar0, 0, &n->iomem);
+ 
+-        if (pci_is_vf(pci_dev)) {
+-            pcie_sriov_vf_register_bar(pci_dev, 0, &n->bar0);
+-        } else {
+-            pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
+-                             PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
+-        }
++        pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
++                         PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
+ 
+         ret = msix_init(pci_dev, nr_vectors,
+                         &n->bar0, 0, msix_table_offset,
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 503a897528..57c608c368 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1470,7 +1470,6 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
+     pcibus_t size = memory_region_size(memory);
+     uint8_t hdr_type;
+ 
+-    assert(!pci_is_vf(pci_dev)); /* VFs must use pcie_sriov_vf_register_bar */
+     assert(region_num >= 0);
+     assert(region_num < PCI_NUM_REGIONS);
+     assert(is_power_of_2(size));
+@@ -1482,7 +1481,6 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
+ 
+     r = &pci_dev->io_regions[region_num];
+     assert(!r->size);
+-    r->addr = PCI_BAR_UNMAPPED;
+     r->size = size;
+     r->type = type;
+     r->memory = memory;
+@@ -1490,22 +1488,32 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
+                         ? pci_get_bus(pci_dev)->address_space_io
+                         : pci_get_bus(pci_dev)->address_space_mem;
+ 
+-    wmask = ~(size - 1);
+-    if (region_num == PCI_ROM_SLOT) {
+-        /* ROM enable bit is writable */
+-        wmask |= PCI_ROM_ADDRESS_ENABLE;
+-    }
++    if (pci_is_vf(pci_dev)) {
++        r->addr = pci_bar_address(pci_dev, region_num, r->type, r->size);
++        if (r->addr != PCI_BAR_UNMAPPED) {
++            memory_region_add_subregion_overlap(r->address_space,
++                                                r->addr, r->memory, 1);
++        }
++    } else {
++        r->addr = PCI_BAR_UNMAPPED;
+ 
+-    addr = pci_bar(pci_dev, region_num);
+-    pci_set_long(pci_dev->config + addr, type);
++        wmask = ~(size - 1);
++        if (region_num == PCI_ROM_SLOT) {
++            /* ROM enable bit is writable */
++            wmask |= PCI_ROM_ADDRESS_ENABLE;
++        }
+ 
+-    if (!(r->type & PCI_BASE_ADDRESS_SPACE_IO) &&
+-        r->type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
+-        pci_set_quad(pci_dev->wmask + addr, wmask);
+-        pci_set_quad(pci_dev->cmask + addr, ~0ULL);
+-    } else {
+-        pci_set_long(pci_dev->wmask + addr, wmask & 0xffffffff);
+-        pci_set_long(pci_dev->cmask + addr, 0xffffffff);
++        addr = pci_bar(pci_dev, region_num);
++        pci_set_long(pci_dev->config + addr, type);
++
++        if (!(r->type & PCI_BASE_ADDRESS_SPACE_IO) &&
++            r->type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
++            pci_set_quad(pci_dev->wmask + addr, wmask);
++            pci_set_quad(pci_dev->cmask + addr, ~0ULL);
++        } else {
++            pci_set_long(pci_dev->wmask + addr, wmask & 0xffffffff);
++            pci_set_long(pci_dev->cmask + addr, 0xffffffff);
++        }
+     }
  }
  
- GEN_OPIVX_TRANS(vslideup_vx, slideup_check)
--GEN_OPIVX_TRANS(vslide1up_vx, slideup_check)
- GEN_OPIVI_TRANS(vslideup_vi, IMM_ZX, vslideup_vx, slideup_check)
- 
- static bool slidedown_check(DisasContext *s, arg_rmrr *a)
-@@ -3505,9 +3504,56 @@ static bool slidedown_check(DisasContext *s, arg_rmrr *a)
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index 6281bd61d9..17bbfc568f 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -146,42 +146,6 @@ void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
+     dev->exp.sriov_pf.vf_bar_type[region_num] = type;
  }
  
- GEN_OPIVX_TRANS(vslidedown_vx, slidedown_check)
--GEN_OPIVX_TRANS(vslide1down_vx, slidedown_check)
- GEN_OPIVI_TRANS(vslidedown_vi, IMM_ZX, vslidedown_vx, slidedown_check)
- 
-+typedef void gen_helper_vslide1_vx(TCGv_ptr, TCGv_ptr, TCGv_i64, TCGv_ptr,
-+                                TCGv_env, TCGv_i32);
-+
-+#define GEN_OPIVX_VSLIDE1_TRANS(NAME, CHECK)                            \
-+static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                  \
-+{                                                                       \
-+    if (CHECK(s, a)) {                                                  \
-+        static gen_helper_vslide1_vx * const fns[4] = {                 \
-+            gen_helper_##NAME##_b, gen_helper_##NAME##_h,               \
-+            gen_helper_##NAME##_w, gen_helper_##NAME##_d,               \
-+        };                                                              \
-+                                                                        \
-+        TCGv_ptr dest, src2, mask;                                      \
-+        TCGv_i64 src1;                                                  \
-+        TCGv_i32 desc;                                                  \
-+        uint32_t data = 0;                                              \
-+                                                                        \
-+        dest = tcg_temp_new_ptr();                                      \
-+        mask = tcg_temp_new_ptr();                                      \
-+        src2 = tcg_temp_new_ptr();                                      \
-+        src1 = tcg_temp_new_i64();                                      \
-+                                                                        \
-+        data = FIELD_DP32(data, VDATA, VM, a->vm);                      \
-+        data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                  \
-+        data = FIELD_DP32(data, VDATA, VTA, s->vta);                    \
-+        data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);  \
-+        data = FIELD_DP32(data, VDATA, VMA, s->vma);                    \
-+        desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,            \
-+                                s->cfg_ptr->vlenb, data));              \
-+                                                                        \
-+        tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, a->rd));            \
-+        tcg_gen_addi_ptr(src2, tcg_env, vreg_ofs(s, a->rs2));           \
-+        tcg_gen_addi_ptr(mask, tcg_env, vreg_ofs(s, 0));                \
-+        tcg_gen_ext_tl_i64(src1, get_gpr(s, a->rs1, EXT_SIGN));         \
-+                                                                        \
-+        fns[s->sew](dest, mask, src1, src2, tcg_env, desc);             \
-+                                                                        \
-+        tcg_gen_movi_tl(cpu_vstart, 0);                                 \
-+        finalize_rvv_inst(s);                                           \
-+                                                                        \
-+        return true;                                                    \
-+    }                                                                   \
-+    return false;                                                       \
-+}
-+
-+GEN_OPIVX_VSLIDE1_TRANS(vslide1up_vx, slideup_check)
-+GEN_OPIVX_VSLIDE1_TRANS(vslide1down_vx, slidedown_check)
-+
- /* Vector Floating-Point Slide Instructions */
- static bool fslideup_check(DisasContext *s, arg_rmrr *a)
+-void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
+-                                MemoryRegion *memory)
+-{
+-    PCIIORegion *r;
+-    PCIBus *bus = pci_get_bus(dev);
+-    uint8_t type;
+-    pcibus_t size = memory_region_size(memory);
+-
+-    assert(pci_is_vf(dev)); /* PFs must use pci_register_bar */
+-    assert(region_num >= 0);
+-    assert(region_num < PCI_NUM_REGIONS);
+-    type = dev->exp.sriov_vf.pf->exp.sriov_pf.vf_bar_type[region_num];
+-
+-    if (!is_power_of_2(size)) {
+-        error_report("%s: PCI region size must be a power"
+-                     " of two - type=0x%x, size=0x%"FMT_PCIBUS,
+-                     __func__, type, size);
+-        exit(1);
+-    }
+-
+-    r = &dev->io_regions[region_num];
+-    r->memory = memory;
+-    r->address_space =
+-        type & PCI_BASE_ADDRESS_SPACE_IO
+-        ? bus->address_space_io
+-        : bus->address_space_mem;
+-    r->size = size;
+-    r->type = type;
+-
+-    r->addr = pci_bar_address(dev, region_num, r->type, r->size);
+-    if (r->addr != PCI_BAR_UNMAPPED) {
+-        memory_region_add_subregion_overlap(r->address_space,
+-                                            r->addr, r->memory, 1);
+-    }
+-}
+-
+ static void register_vfs(PCIDevice *dev)
  {
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 1012d38c8a..559c660566 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -5169,11 +5169,11 @@ GEN_VEXT_VSLIE1UP(16, H2)
- GEN_VEXT_VSLIE1UP(32, H4)
- GEN_VEXT_VSLIE1UP(64, H8)
+     uint16_t num_vfs;
+diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
+index c5d2d318d3..e9cb0a3248 100644
+--- a/include/hw/pci/pcie_sriov.h
++++ b/include/hw/pci/pcie_sriov.h
+@@ -36,10 +36,6 @@ void pcie_sriov_pf_exit(PCIDevice *dev);
+ void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
+                                uint8_t type, dma_addr_t size);
  
--#define GEN_VEXT_VSLIDE1UP_VX(NAME, BITWIDTH)                     \
--void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2, \
--                  CPURISCVState *env, uint32_t desc)              \
--{                                                                 \
--    vslide1up_##BITWIDTH(vd, v0, s1, vs2, env, desc);             \
-+#define GEN_VEXT_VSLIDE1UP_VX(NAME, BITWIDTH)                   \
-+void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,   \
-+                  CPURISCVState *env, uint32_t desc)            \
-+{                                                               \
-+    vslide1up_##BITWIDTH(vd, v0, s1, vs2, env, desc);           \
- }
- 
- /* vslide1up.vx vd, vs2, rs1, vm # vd[0]=x[rs1], vd[i+1] = vs2[i] */
-@@ -5220,11 +5220,11 @@ GEN_VEXT_VSLIDE1DOWN(16, H2)
- GEN_VEXT_VSLIDE1DOWN(32, H4)
- GEN_VEXT_VSLIDE1DOWN(64, H8)
- 
--#define GEN_VEXT_VSLIDE1DOWN_VX(NAME, BITWIDTH)                   \
--void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2, \
--                  CPURISCVState *env, uint32_t desc)              \
--{                                                                 \
--    vslide1down_##BITWIDTH(vd, v0, s1, vs2, env, desc);           \
-+#define GEN_VEXT_VSLIDE1DOWN_VX(NAME, BITWIDTH)                 \
-+void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,   \
-+                  CPURISCVState *env, uint32_t desc)            \
-+{                                                               \
-+    vslide1down_##BITWIDTH(vd, v0, s1, vs2, env, desc);         \
- }
- 
- /* vslide1down.vx vd, vs2, rs1, vm # vd[i] = vs2[i+1], vd[vl-1]=x[rs1] */
+-/* Instantiate a bar for a VF */
+-void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
+-                                MemoryRegion *memory);
+-
+ /*
+  * Default (minimal) page size support values
+  * as required by the SR/IOV standard:
 -- 
 2.47.3
 
