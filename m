@@ -2,94 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3CDBDDBDB
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED341BDDC23
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:24:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8xeb-00028i-0R; Wed, 15 Oct 2025 05:18:41 -0400
+	id 1v8xgX-0004D2-22; Wed, 15 Oct 2025 05:20:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1v8xeT-00022z-4d
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:18:33 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1v8xe0-0007Hs-1P
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:18:32 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-b5a8184144dso380818666b.1
- for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 02:17:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760519875; x=1761124675; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z3TwBBdLUHAKhGiv26iGeP2UfTRRDnunnjZgIo/sg9k=;
- b=Oi9A5rvVpwcpO2fhL43PQvh00Y4XwC7n9AMjkxFn7iMl5Nqzd7MOmx7t6fuw0tGl1o
- 4OKHxGYo2xGbRpJPLeif9oZ8Wz/0d7o2UWLAkt54gIQ/e8/0+l3S0UbgxTxRpLnRLFIn
- rllF1IYE17v+kaXBdv+aivixfcWyj+Wnv9+zUmIpw2+biNMTGWDZXOU+oVZJFkHW4nOm
- OuPprTm5bGVshG3Y256Y9l9QNFxzcwTj/q26LeiLO3TVeQhS1zQnMvIIsrHlxKj0k0gD
- XcFTAKo6bVkI7qY/l2dH+dzVI2oBctTcwxQyQm33iNLGt2xl6zy42dma4bGo3EZuui0d
- YyhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760519875; x=1761124675;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z3TwBBdLUHAKhGiv26iGeP2UfTRRDnunnjZgIo/sg9k=;
- b=BT/jLSTk+kVFt0zF85A2L+KpRaZAJJM7oqvGPow59YuTVf1TZBfSh7Af2+G7TeVT1K
- ZX2lFmcqxYqYarjy6XPdcZ9iaUhUtcISFU79foyKayNAML7jCipCJpQTD5Srn3DbGo/4
- wzdIuSQhkpV3Keq7Sp9yXC8AzAvWqjO2jqz53YnugQihFMtRusn5LByFWRFHvxlFIwIE
- gjv5XGPBhkbi5erQS0UJ3SIJoxcofcosbNY9QNdGQh3d0EwpDVJ7YCF7vLGNLAhaLB0H
- EcdksESmrbjLOumf9CRF72j8Hl2c68b32xdkpJIawxIBtwzYnslnrNThbhOvzLJtEzRQ
- wcIw==
-X-Gm-Message-State: AOJu0YzwioQMHjhR3FljhLRBgCQe08HAp4GIStVGw2AphLpK+BBdKB4C
- RjJY9n9jAmGtr2IFBnbeAKtjQ4Kp0G/EnEaYpQMjAwrDjo+HsNeQa+Sp77v4NjqRpjc=
-X-Gm-Gg: ASbGncv/HkGlyr2JnKlL9HyrvJuRnaItjrMrfXu+oL6HSg4qkInKcz8q23vvCj+gZWF
- hqIWko1vs/G86TQ3SYtAzlFoZHXJZTEKRNpQUHTcXJv7lIWJfsWR3TZdR27Xf50DFkUw5zWLMdS
- 4gQjLrtbk1M9AFajvuJFtW/fzFcB4a+eGaypaTRhAAEk9cM35j4Z0yUn0Wiwzlb/ikHzL2AwINV
- /iC0V4rLeGNhIFFO9S0Pwea+R/lCdmus4a8XwTHVepYo/SmoZUOWjJq16irHEY7sOxxS+5NRaGM
- HFeKW2/WDuAjh5u5s8TLgbwRhxNOswv4R0NY06nEZ+iWzdhOdtQf0lUER7+ZWlQzQeVm8TB87NR
- Q93R8kXTlCafJBkJxMeyXedxYOJYaLg1WLESbccjSrhiKCJ39fgFi+7czn7WnoqNCg989DaNg
-X-Google-Smtp-Source: AGHT+IHUguSygxcid9NBMRmtzkqRkLlbFkDo7Z+do6kIUo0reSSQnIOjB9aVImbBfTWyTiL7i/fkIA==
-X-Received: by 2002:a17:907:3f8a:b0:b3f:ccac:af47 with SMTP id
- a640c23a62f3a-b50ac1ccce8mr3300142566b.31.1760519875438; 
- Wed, 15 Oct 2025 02:17:55 -0700 (PDT)
-Received: from PC-DA2D10.beckhoff.com ([195.226.174.194])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b5cb9e7a23dsm182069966b.23.2025.10.15.02.17.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Oct 2025 02:17:55 -0700 (PDT)
-From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1v8xgT-00049E-TH
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:20:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1v8xg8-0007tr-M1
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:20:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760520008;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=37RHUcEAG6umQd9fGbe3X3p5XRjtgf1f2iFAxJSPW+Y=;
+ b=btjfy8Qwam9X3wIZ6+xLo5y7wwCd/HuZZTHx8Ez7KTZG+AlzJM8a+pdCHScshP970zULzF
+ cjPup5hpjWicxEf1x+szdMPYtxKgCMY7qz8ohZf0Gxxp12n6hDaxFV6CFfrSNGC0ZqfM5D
+ tzvqVMLntJd0TGOBJJwu7hRHqx5+ieI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-ddP9GtA5OtGqdTfrb4uaNQ-1; Wed,
+ 15 Oct 2025 05:20:07 -0400
+X-MC-Unique: ddP9GtA5OtGqdTfrb4uaNQ-1
+X-Mimecast-MFC-AGG-ID: ddP9GtA5OtGqdTfrb4uaNQ_1760520006
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 934B81800345
+ for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 09:20:06 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.44.32.123])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B4D6918004D4; Wed, 15 Oct 2025 09:20:04 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-block@nongnu.org,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH v3 14/14] docs/system/arm: Add support for Beckhoff CX7200
-Date: Wed, 15 Oct 2025 11:17:29 +0200
-Message-ID: <20251015091729.33761-15-corvin.koehne@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251015091729.33761-1-corvin.koehne@gmail.com>
-References: <20251015091729.33761-1-corvin.koehne@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH] vhost-user: fix shared object lookup handler logic
+Date: Wed, 15 Oct 2025 11:19:55 +0200
+Message-ID: <20251015091955.1524800-1-aesteve@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x632.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,94 +80,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: YannickV <Y.Vossen@beckhoff.com>
+Fix vhost_user_backend_handle_shared_object_lookup() logic to handle
+the error path the same way as other handlers do. The main
+difference between them is that shared_object_lookup handler
+sends the reply from within the handler itself.
 
-This commit offers some documentation on the Beckhoff CX7200
-qemu emulation.
+What vhost_user_backend_handle_shared_object_lookup() returns, depends
+on whether vhost_user_backend_send_dmabuf_fd() succeded or not to send
+a reply. Any check that results in an error before that only
+determines the return value in the response. However, when an error
+in sending the response within the handler occurs, we want to jump
+to err and close the backend channel to be consistent with other message
+types. On the other hand, when the response succeds then the
+VHOST_USER_NEED_REPLY_MASK flag is unset and the reply in backend_read
+is skipped, going directly to the fdcleanup.
 
-Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
+Fixes: 160947666276c5b7f6bca4d746bcac2966635d79
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
 ---
- docs/system/arm/beckhoff-cx7200.rst | 57 +++++++++++++++++++++++++++++
- docs/system/target-arm.rst          |  1 +
- 2 files changed, 58 insertions(+)
- create mode 100644 docs/system/arm/beckhoff-cx7200.rst
+ hw/virtio/vhost-user.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/docs/system/arm/beckhoff-cx7200.rst b/docs/system/arm/beckhoff-cx7200.rst
-new file mode 100644
-index 0000000000..f060319b0f
---- /dev/null
-+++ b/docs/system/arm/beckhoff-cx7200.rst
-@@ -0,0 +1,57 @@
-+Beckhoff CX7200 (``beckhoff-cx7200``)
-+======================================
-+The Beckhoff CX7200 is based on the same architecture as the Xilinx Zynq A9.
-+The Zynq 7000 family is based on the AMD SoC architecture. These products
-+integrate a feature-rich dual or single-core Arm Cortex-A9 MPCore based
-+processing system (PS) and AMD programmable logic (PL) in a single device.
-+The Beckhoff Communication Controller (CCAT) can be found in the PL of Zynq.
-+
-+More details here:
-+https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Zynq-7000-SoC-Technical-Reference-Manual
-+https://www.beckhoff.com/de-de/produkte/ipc/embedded-pcs/cx7000-arm-r-cortex-r/cx7293.html
-+
-+The CX7200 supports following devices:
-+    - A9 MPCORE
-+        - cortex-a9
-+        - GIC v1
-+        - Generic timer
-+        - wdt
-+    - OCM 256KB
-+    - SMC SRAM@0xe2000000 64MB
-+    - Zynq SLCR
-+    - SPI x2
-+    - QSPI
-+    - UART
-+    - TTC x2
-+    - Gigabit Ethernet Controller
-+    - SD Controller
-+    - XADC
-+    - Arm PrimeCell DMA Controller
-+    - DDR Memory
-+    - DDR Controller
-+    - Beckhoff Communication Controller (CCAT)
-+        - EEPROM Interface
-+        - DMA Controller
-+
-+Following devices are not supported:
-+    - I2C
-+
-+Running
-+"""""""
-+Directly loading an ELF file to the CPU of the CX7200 to run f.e. TC/RTOS (based on FreeRTOS):
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-arm -M beckhoff-cx7200 \
-+        -device loader,file=CX7200_Zynq_Fsbl.elf \
-+        -display none \
-+        -icount shift=auto \
-+
-+
-+For setting the EEPROM content of the CCAT provide the following on the command line:
-+
-+.. code-block:: bash
-+
-+        -drive file=eeprom.bin,format=raw,id=ccat-eeprom
-+
-+The size of eeprom.bin must be aligned to a power of 2 and bigger than 256 bytes.
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index a96d1867df..e634872b97 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -82,6 +82,7 @@ Board-specific documentation
-    arm/aspeed
-    arm/bananapi_m2u.rst
-    arm/b-l475e-iot01a.rst
-+   arm/beckhoff-cx7200
-    arm/sabrelite
-    arm/highbank
-    arm/digic
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 36c9c2e04d..163c3d8ca5 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1833,8 +1833,11 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+                                                              &payload.object);
+         break;
+     case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
+-        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
+-                                                             &hdr, &payload);
++        /* Handler manages its own response, check error and close connection */
++        if (vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
++                                                           &hdr, &payload) < 0) {
++            goto err;
++        }
+         break;
+     default:
+         error_report("Received unexpected msg type: %d.", hdr.request);
 -- 
-2.47.3
+2.49.0
 
 
