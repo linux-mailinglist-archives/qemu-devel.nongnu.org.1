@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1243BDC7AE
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD0DBDC7B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:33:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t5m-0000RL-Cr; Wed, 15 Oct 2025 00:26:26 -0400
+	id 1v8t5r-0000US-JP; Wed, 15 Oct 2025 00:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5i-0000N3-La; Wed, 15 Oct 2025 00:26:22 -0400
+ id 1v8t5o-0000Tp-Uf; Wed, 15 Oct 2025 00:26:28 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5e-0002qR-Jh; Wed, 15 Oct 2025 00:26:22 -0400
+ id 1v8t5i-0002sX-EM; Wed, 15 Oct 2025 00:26:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8AFBF15D9D0;
- Wed, 15 Oct 2025 07:24:59 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id A937A15D9D3;
+ Wed, 15 Oct 2025 07:25:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2ECE829FE79;
- Wed, 15 Oct 2025 07:25:21 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4F11A29FE7A;
+ Wed, 15 Oct 2025 07:25:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Hector Cao <hector.cao@canonical.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.2 11/11] target/i386: add compatibility property for
- pdcm feature
-Date: Wed, 15 Oct 2025 07:25:15 +0300
-Message-ID: <20251015042520.68556-11-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 00/13] Patch Round-up for stable 10.0.6,
+ freeze on 2025-10-18
+Date: Wed, 15 Oct 2025 07:25:24 +0300
+Message-ID: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <qemu-stable-10.1.2-20251014173635@cover.tls.msk.ru>
-References: <qemu-stable-10.1.2-20251014173635@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,95 +57,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hector Cao <hector.cao@canonical.com>
+The following patches are queued for QEMU stable v10.0.6:
 
-The pdcm feature is supposed to be disabled when PMU is not
-available. Up until v10.1, pdcm feature is enabled even when PMU
-is off. This behavior has been fixed but this change breaks the
-migration of VMs that are run with QEMU < 10.0 and expect the pdcm
-feature to be enabled on the destination host.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
-This commit restores the legacy behavior for machines with version
-prior to 10.1 to allow the migration from older QEMU to QEMU 10.1.
+Patch freeze is 2025-10-18, and the release is planned for 2025-10-20:
 
-Signed-off-by: Hector Cao <hector.cao@canonical.com>
-Link: https://lore.kernel.org/r/20250910115733.21149-3-hector.cao@canonical.com
-Fixes: e68ec298090 ("i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check", 2025-06-20)
-[Move property from migration object to CPU. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 6529f31e0dccadb532c80b36e3efe7aef83f9cad)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+  https://wiki.qemu.org/Planning/10.0
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 2504365bc2..0861e329b5 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -85,6 +85,7 @@ GlobalProperty pc_compat_10_0[] = {
-     { TYPE_X86_CPU, "x-consistent-cache", "false" },
-     { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
-     { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
-+    { TYPE_X86_CPU, "x-pdcm-on-even-without-pmu", "true" },
- };
- const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
- 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index fe369bb128..ab18de894e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7908,6 +7908,11 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             /* Fixup overflow: max value for bits 23-16 is 255. */
-             *ebx |= MIN(num, 255) << 16;
-         }
-+        if (cpu->pdcm_on_even_without_pmu) {
-+            if (!cpu->enable_pmu) {
-+                *ecx &= ~CPUID_EXT_PDCM;
-+            }
-+        }
-         break;
-     case 2: { /* cache info: needed for Pentium Pro compatibility */
-         const CPUCaches *caches;
-@@ -8958,9 +8963,11 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
- 
--    /* PDCM is fixed1 bit for TDX */
--    if (!cpu->enable_pmu && !is_tdx_vm()) {
--        env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-+    if (!cpu->pdcm_on_even_without_pmu) {
-+        /* PDCM is fixed1 bit for TDX */
-+        if (!cpu->enable_pmu && !is_tdx_vm()) {
-+            env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-+        }
-     }
- 
-     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-@@ -10021,6 +10028,8 @@ static const Property x86_cpu_properties[] = {
- 
-     DEFINE_PROP_BOOL("x-arch-cap-always-on", X86CPU,
-                      arch_cap_always_on, false),
-+    DEFINE_PROP_BOOL("x-pdcm-on-even-without-pmu", X86CPU,
-+                     pdcm_on_even_without_pmu, false),
- };
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 414ca968e8..42168f1d6d 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2320,6 +2320,12 @@ struct ArchCPU {
-      */
-     bool arch_cap_always_on;
- 
-+    /*
-+     * Backwards compatibility with QEMU <10.1. The PDCM feature is now disabled when
-+     * PMU is not available, but prior to 10.1 it was enabled even if PMU is off.
-+     */
-+    bool pdcm_on_even_without_pmu;
-+
-     /* Number of physical address bits supported */
-     uint32_t phys_bits;
- 
--- 
-2.47.3
+This release is supposed to go faster, to include two important migration
+fixes, - reverts of two changes from 10.0.4 which causes migration regression
+(the first two patches).
 
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 deb02cd055 Michael Tokarev:
+   Revert "target/i386: do not expose ARCH_CAPABILITIES on AMD CPU"
+02 21a79242f5 Michael Tokarev:
+   Revert "i386/cpu: Move adjustment of CPUID_EXT_PDCM before 
+   feature_dependencies[] check"
+03 a1b28f71f7ff Weifeng Liu:
+   ui/gtk: Consider scaling when propagating ui info
+04 c187a67c9dcd Filip Hejsek:
+   ui/gtk: Fix callback function signature
+05 1c0f5142d921 ShengYi Hung:
+   hid: fix incorrect return value for hid
+06 f65918497cc6 nanliu:
+   docs/devel: Correct uefi-vars-x64 device name
+07 bab681f75204 Stefan Hajnoczi:
+   pcie_sriov: make pcie_sriov_pf_exit() safe on non-SR-IOV devices
+08 a23e719ca8e8 Peter Maydell:
+   target/arm: Don't set HCR.RW for AArch32 only CPUs
+09 c851052a77fd Jim Shu:
+   target/riscv: Fix the mepc when sspopchk triggers the exception
+10 84c1605b7606 Jim Shu:
+   target/riscv: Fix SSP CSR error handling in VU/VS mode
+11 0b16c7b6a854 Jim Shu:
+   target/riscv: Fix ssamoswap error handling
+12 81d1885dcc44 Max Chou:
+   target/riscv: rvv: Fix vslide1[up|down].vx unexpected result when XLEN=32 
+   and SEW=64
+13 2e54e5fda779 Damien Bergamini:
+   pcie_sriov: Fix broken MMIO accesses from SR-IOV VFs
 
