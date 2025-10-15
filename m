@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8774DBDFEAB
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 19:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7D3BDFF77
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 19:59:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v95VF-0003ZI-2M; Wed, 15 Oct 2025 13:41:33 -0400
+	id 1v95kj-0007bg-DH; Wed, 15 Oct 2025 13:57:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v95V9-0003WJ-AE
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 13:41:28 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v95kh-0007bX-2K
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 13:57:31 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v95V1-0001CH-Fj
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 13:41:27 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-7811fa91774so5986096b3a.0
- for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 10:41:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v95kc-0005Rk-Jq
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 13:57:30 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-471076f819bso6398365e9.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 10:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760550074; x=1761154874; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vwsJIirwXLXCJz81e1fZsYyuNQ/sijCuEumUF+Ei850=;
- b=Hsp5aChsqZpqM3+UWLmVqelhNNoJ1nGvy40xrpttSueN0L5mTNBnJb8h6AO5ZnxBqY
- TTCinvHrgheK7Lq8LzZ2S6dnp2TukN8g+ISDv1k50tfxAgax0KZgLXrBVtzgpo4W4d5U
- vmLCFZ/biAeR1ABybSIGqlKqxCSdbfZLtmrlc0BaLbpFSUEaCZ7agKUQY+SRMIoCWWUX
- v+9l0jdBxUgagfEIccWDaSMBY7LeqS3VkHTahzPgbqJDvIJ+V7yN7UTe+0UWeb80Meh1
- g3WMiBhiKoCGz0d8kMNjBLKb4pfIYXOqml2O+uZeaKjNvwT2RjighpIJqLyeo5p34sxC
- 1dMA==
+ d=linaro.org; s=google; t=1760551040; x=1761155840; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+M9WOvmKYPQ4WsmxkpnmdsqwetzUwBl1PuF1HO+xpBc=;
+ b=yCnfvJsFxpoRya4Tk1C6coFa5e0l/P/xv73qVs6zgflGBadtkBma4D42sdyloNQ3kp
+ mxa+fx4uhTWum7Ho0wa4+CzKY0/4vgSzheL3nSBshNXuQi4h71e10/l/IQg4A6svk8ZB
+ JUZyD+gvKVSMo+wlGhDdE1L2d2ueYBM9N9UEfxHOXAsRstESRU9n/JenJfoflJnMZy+u
+ oCXCh/KveFivRkQByl3gyBrQ16vPwxjBvGtSoFmXQQdgZfLSPaMP7VgD8Ccwy4DO/Vc1
+ Ee+WgWptFcwbHiXGV9k2bzkXKG3fyk9tWa12+E/Dc3Bc+YaLOXTNpHqkxRY0dhL8jArF
+ lqJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760550074; x=1761154874;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vwsJIirwXLXCJz81e1fZsYyuNQ/sijCuEumUF+Ei850=;
- b=ki80IvGDj7xrwawSAAktqB1/oWqDdaIL5zUkz+BEDyMp5AeHRqIfVrMBftmKof8FDj
- McUPaT79sGAwyf6HAxeC0fiNAdiPVkEcWtc5zICCjEoiqaY+9LzriRlLwao6x/w/ZPr4
- eXtu9QShBk5IEZ244ohDwGsIA+E5kAKi0U5zt/ga0FiKBH2yKI/R1+TgtgNSbBjIisVG
- fHow2bNAL/KZGJmTUUajnt1FopNDPc9mJbTuNGWpmHdjF609fPjnD32xnsIfGNEje0rc
- Xh9u2JB8Edo36DgphS/T9TE9rHe3w93YRKeSCGMNt/Qbsdfw8WI+/hTFyfijiPMjHe7J
- hGzg==
-X-Gm-Message-State: AOJu0YwYp0ezPrrQLZdQsvXjLKV+gLhKibItPyEXQRdHgVnEmTMTt/EO
- 8vx9u+Efp6YkNIzISBtWNQK6HlF7pP/AH6rE0TwMAwYR29DC6CcUSd1X96jdyS80+Cs=
-X-Gm-Gg: ASbGnctt/8q8lHlFE1CMdZs9OEyvfEa6OIvEG0oi+DY1ywxk0FsEBqXaVf8EHXvTt3n
- bb69gJN3J9U+E/XrLnH1tCkjNkdNuoZ4ln+ykmTR1mgjhiZo7qdDV/JQ4DCeKygNqvRruJ8fn4c
- 31GSeDG2TX436GDypybkYR8/wY/+GnSka07sbOQ3g75incboMEOpq49EfisxZpLnkELPt5sBhm+
- AVTv73xExCXw6gkli3yTDRa4iDFDtQpWgWdCgKSbuImVcL4RXZAEu9/2SPQnDjZRHZDhHqdzUdE
- E5RM4upcrFB4cqjklOHxiScR3UQYhhZP+odFMxBex7E2YrRB8x/8cFUOU8M1Vgh7C9DAMQ/xVbe
- yf94YWKcJrjBE3w7J3kWEeBUFRjHbFB7UG0eGSLrGazzeVsCUXD2US6Dac13WCpzypVd2
-X-Google-Smtp-Source: AGHT+IFKoiCKwYfF4oBu2Xj1N/pEAbzbp7bKHc4dNqUTrbMxBMSGNbbjANG9APQE7aCyeF7TiLX+Yw==
-X-Received: by 2002:a05:6a20:3d05:b0:334:879e:3c8f with SMTP id
- adf61e73a8af0-334879e3e5emr4361030637.25.1760550073938; 
- Wed, 15 Oct 2025 10:41:13 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b6a2288786bsm230892a12.5.2025.10.15.10.41.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Oct 2025 10:41:13 -0700 (PDT)
-Message-ID: <4bea1c28-7c5e-4b5c-8757-21e5cb3545ab@linaro.org>
-Date: Wed, 15 Oct 2025 10:41:11 -0700
+ d=1e100.net; s=20230601; t=1760551040; x=1761155840;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+M9WOvmKYPQ4WsmxkpnmdsqwetzUwBl1PuF1HO+xpBc=;
+ b=J0VBaJazW5XBt5SXpvYmx0WwTcNQYQtzoCks2rymZAT+HxLcRy4Kf6+2v7La9nFY8k
+ YYQaUWXz6X28mxi3q8K/qmxRaj1MRFhZyOLN8Q5jkndvJUL+O47TowlKA9y4z7wXlEK2
+ QzErZGXXBxoLfYgwQLCaEqFCXNiNVPM6iOXER9Vq5QtbGPC2jdbWMLmTxij4MKl8lmxs
+ 1uCC9SizTjavR6x0WDAomwL16k9u2hvYJzx4sHKVaxjVnaMDL0x+ujTC72jdfoPlXQ97
+ TA+/lD7k9j8EPr8lq2Ns+TKUBnLr6SIPV9/FgFXDo3nv+iJoZ84GUANPYZ2gvGopWidm
+ V7SQ==
+X-Gm-Message-State: AOJu0YxNeyNTwXFeBAViLYrxmyPtwIRTg8E3cAE9/MaVrb/BDiYpZ7BV
+ R0hFs44jhw1xFLxY4FY8bsoHMohvGVLVnUAzFRWtcVNdQZzpTgSPmEOImedm1v0cv72dHx4uXnW
+ hwv/LTPy8dg==
+X-Gm-Gg: ASbGncu78J/XY59bb47pN+bDQknMq9NfGZIMeFIyOSKgNHdmL2ZkoSCjnqmguatlwC7
+ QTxlvlGHrJWIW1UaNJVo1A3E1avO8m+Bkqn6gqoCIsuHA3KsdxV+/Y/N/C9ARRb54edclEcATg4
+ Tt5kn7mEHxs+jstdpKcs9u4WMIYMGaX4/d7vlkwCFn2vKNTdXUU2lzCd56IASmxTwTM5LOgvXwN
+ faUuF9splDQScjo2ahHKvVJ4Q0JBHfYRS7Jhsck2UrPboNkYSTu09LM6bC2mdjfaUeE+joU2CsW
+ MjKg3idzBOxWVj/loKudGnoGnC0zmcmD/2YVFiNirN0926EeDRFdwJkLImA4rSQIiJ92UXzmcbO
+ FAu2opd0seP3NWVvuajmf4QEcxRHfI1eIxcfWaS5zoRKZA6nz4Mo+eXtVqpxCvjShP1BZ4OUSDV
+ Xvlaogc2mho2glvYpJJys=
+X-Google-Smtp-Source: AGHT+IGB34u0FDSqz3fhxxVb8ltei5hQ+++R25QF58rg4CSF3immh4mXDeY9tHtacJKjuB+Jz9Gqlg==
+X-Received: by 2002:a05:600c:4ed4:b0:45d:d505:a1c3 with SMTP id
+ 5b1f17b1804b1-46fa9b13b04mr206951205e9.37.1760551040542; 
+ Wed, 15 Oct 2025 10:57:20 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46fab3703adsm180518755e9.0.2025.10.15.10.57.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 15 Oct 2025 10:57:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Anton Johansson <anjo@rev.ng>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/7] target/microblaze: Remove all uses of target_ulong type
+Date: Wed, 15 Oct 2025 19:57:10 +0200
+Message-ID: <20251015175717.93945-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] contrib/plugins/uftrace_symbols.py: generate debug files
- to map symbols to source
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20251013213912.413386-1-pierrick.bouvier@linaro.org>
- <87h5w0ju6g.fsf@draig.linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <87h5w0ju6g.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,28 +98,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/15/25 4:11 AM, Alex Bennée wrote:
-> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
-> 
->> Enhance uftrace_symbols.py to generate .dbg files, containing
->> source location for every symbol present in .sym file.
->> It allows to use uftrace {replay,dump} --srcline and show origin of
->> functions, connecting trace to original source code.
->>
->> It was first implemented with pyelftools DWARF parser, which was way
->> to slow (~minutes) to get locations for every symbol in the linux
->> kernel. Thus, we use addr2line instead, which runs in seconds.
->>
->> As well, there were some bugs with latest pyelftools release,
->> requiring to run master version, which is not installable with pip.
->> Thus, since we now require binutils (addr2line), we can ditch pyelftools
->> based implementation and simply rely on nm to get symbols information,
->> which is faster and better.
->>
->> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> 
-> Queued to maintainer/oct-2025, thanks.
-> 
+Missing review: 5 and 6
 
-Thanks Alex.
+Since v1:
+- More uses of TCG_i32 (Anton)
+
+Remove the left over target_ulong uses in MicroBlaze frontend.
+
+Philippe Mathieu-Daudé (7):
+  target/microblaze: Remove target_ulong use in cpu_handle_mmu_fault()
+  target/microblaze: Remove target_ulong uses in
+    get_phys_page_attrs_debug
+  target/microblaze: Remove target_ulong use in gen_goto_tb()
+  target/microblaze: Remove target_ulong use in helper_stackprot()
+  target/microblaze: Have compute_ldst_addr_type[ab] return TCG_i32
+  target/microblaze: Have do_load/store() take a TCG_i32 address
+    argument
+  target/microblaze: Convert CPUMBState::res_addr field to uint32_t type
+
+ target/microblaze/cpu.h       |  2 +-
+ target/microblaze/helper.h    |  2 +-
+ target/microblaze/mmu.h       |  2 +-
+ target/microblaze/helper.c    |  3 +-
+ target/microblaze/machine.c   |  6 +--
+ target/microblaze/mmu.c       |  4 +-
+ target/microblaze/op_helper.c |  4 +-
+ target/microblaze/translate.c | 80 +++++++++++++++++------------------
+ 8 files changed, 52 insertions(+), 51 deletions(-)
+
+-- 
+2.51.0
+
 
