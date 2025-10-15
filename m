@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E7ABDCB88
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 08:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDBABDCB6D
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 08:25:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8uus-0001An-Tp; Wed, 15 Oct 2025 02:23:18 -0400
+	id 1v8uut-0001B4-Sw; Wed, 15 Oct 2025 02:23:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v8uuj-00014H-DG; Wed, 15 Oct 2025 02:23:12 -0400
+ id 1v8uur-00019d-CI; Wed, 15 Oct 2025 02:23:17 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1v8uuf-0002xW-Oi; Wed, 15 Oct 2025 02:23:09 -0400
+ id 1v8uul-0002xW-8d; Wed, 15 Oct 2025 02:23:17 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 15 Oct
@@ -29,10 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 05/12] hw/arm/ast27x0: Share single SCU instance across PSP, SSP,
+Subject: [PATCH v1 06/12] hw/arm/ast27x0: Share single UART set across PSP, SSP,
  and TSP
-Date: Wed, 15 Oct 2025 14:22:00 +0800
-Message-ID: <20251015062210.3128710-6-jamin_lin@aspeedtech.com>
+Date: Wed, 15 Oct 2025 14:22:01 +0800
+Message-ID: <20251015062210.3128710-7-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251015062210.3128710-1-jamin_lin@aspeedtech.com>
 References: <20251015062210.3128710-1-jamin_lin@aspeedtech.com>
@@ -64,174 +64,274 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AST2700 has a single SCU hardware block, memory-mapped at
-0x12C02000–0x12C03FFF from the perspective of the main CA35 processor (PSP).
-The SSP and TSP coprocessors access this same SCU block at different
-addresses: 0x72C02000–0x72C03FFF.
-
-Previously, each subsystem (PSP, SSP, and TSP) instantiated its own SCU
-device, resulting in three independent SCU instances in the QEMU model.
-In real hardware, however, only a single SCU exists and is shared among
+In the original model, each subsystem (PSP, SSP, and TSP) created its own
+set of 13 UART devices, resulting in a total of 39 UART instances. However,
+on real AST2700 hardware, there is only one set of 13 UARTs shared among
 all processors.
 
-This commit reworks the SCU model to correctly reflect the hardware
-behavior by allowing SSP and TSP to reference the PSP’s SCU instance.
-The following changes are introduced:
+This commit reworks the UART handling to correctly model the shared
+hardware design. The PSP now creates the full set of 13 UART instances,
+while the SSP and TSP link to the corresponding shared UART device
+through object properties.
 
-- Add a scu property to AspeedCoprocessorState for linking the
-  coprocessor to the PSP’s SCU instance.
-- Replace per-coprocessor SCU instantiation with a shared SCU link.
-- Add "MemoryRegion scu_alias" to model address remapping for SSP and TSP.
-- Create SCU alias regions in both SSP and TSP coprocessors and map
-  them at 0x72C02000 to mirror the PSP’s SCU registers.
-- Ensure the SCU device in PSP is realized before SSP/TSP alias setup.
+Changes include:
+- Add "DEFINE_PROP_LINK("uart", ...)" and "DEFINE_PROP_INT32("uart-dev", ...)"
+  to allow each coprocessor to reference a specific shared UART instance.
+- Modify SSP to link to PSP’s UART4, and TSP to link to PSP’s UART7.
+- Introduce "uart_alias" to remap the UART’s MMIO region into the coprocessor’s
+  memory space.
+- Redirect the UART interrupt to the coprocessor’s NVIC, replacing the
+  default routing to the PSP’s GIC.
 
-With this change, PSP, SSP, and TSP now share a consistent SCU state,
-matching the single-SCU hardware design of AST2700.
+With this change, only one set of 13 UART devices is instantiated by the PSP,
+while the SSP and TSP reuse them via aliasing and shared interrupt routing,
+matching the real AST2700 hardware behavior.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- include/hw/arm/aspeed_coprocessor.h |  4 ++--
- hw/arm/aspeed_ast27x0-fc.c          |  4 ++++
- hw/arm/aspeed_ast27x0-ssp.c         | 13 +++++--------
- hw/arm/aspeed_ast27x0-tsp.c         | 13 +++++--------
- hw/arm/aspeed_coprocessor_common.c  |  2 ++
- 5 files changed, 18 insertions(+), 18 deletions(-)
+ include/hw/arm/aspeed_coprocessor.h |  6 +++---
+ hw/arm/aspeed_ast27x0-fc.c          | 24 ++++++++++++------------
+ hw/arm/aspeed_ast27x0-ssp.c         | 29 ++++++++++++-----------------
+ hw/arm/aspeed_ast27x0-tsp.c         | 29 ++++++++++++-----------------
+ hw/arm/aspeed_coprocessor_common.c  |  3 +++
+ 5 files changed, 42 insertions(+), 49 deletions(-)
 
 diff --git a/include/hw/arm/aspeed_coprocessor.h b/include/hw/arm/aspeed_coprocessor.h
-index d9a5f517d7..c1f2c549c3 100644
+index c1f2c549c3..4a50f688ec 100644
 --- a/include/hw/arm/aspeed_coprocessor.h
 +++ b/include/hw/arm/aspeed_coprocessor.h
-@@ -19,9 +19,10 @@ struct AspeedCoprocessorState {
+@@ -19,13 +19,15 @@ struct AspeedCoprocessorState {
      MemoryRegion sdram;
      MemoryRegion *sram;
      MemoryRegion sram_alias;
-+    MemoryRegion scu_alias;
++    MemoryRegion uart_alias;
+     MemoryRegion scu_alias;
      Clock *sysclk;
  
--    AspeedSCUState scu;
-+    AspeedSCUState *scu;
+     AspeedSCUState *scu;
      AspeedSCUState scuio;
      AspeedTimerCtrlState timerctrl;
-     SerialMM uart[ASPEED_UARTS_NUM];
-@@ -36,7 +37,6 @@ struct AspeedCoprocessorClass {
+-    SerialMM uart[ASPEED_UARTS_NUM];
++    SerialMM *uart;
++    int uart_dev;
+ };
  
-     /** valid_cpu_types: NULL terminated array of a single CPU type. */
+ #define TYPE_ASPEED_COPROCESSOR "aspeed-coprocessor"
+@@ -39,8 +41,6 @@ struct AspeedCoprocessorClass {
      const char * const *valid_cpu_types;
--    uint32_t silicon_rev;
      const hwaddr *memmap;
      const int *irqmap;
-     int uarts_base;
+-    int uarts_base;
+-    int uarts_num;
+ };
+ 
+ struct Aspeed27x0CoprocessorState {
 diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-index dfac7d1e17..ba43a46207 100644
+index ba43a46207..99af87dbd7 100644
 --- a/hw/arm/aspeed_ast27x0-fc.c
 +++ b/hw/arm/aspeed_ast27x0-fc.c
-@@ -138,6 +138,8 @@ static bool ast2700fc_ssp_init(MachineState *machine, Error **errp)
-                             sc->uarts_num, serial_hd(1));
+@@ -93,6 +93,10 @@ static bool ast2700fc_ca35_init(MachineState *machine, Error **errp)
+                             AST2700FC_HW_STRAP2, &error_abort);
+     aspeed_soc_uart_set_chr(soc->uart, ASPEED_DEV_UART12, sc->uarts_base,
+                             sc->uarts_num, serial_hd(0));
++    aspeed_soc_uart_set_chr(soc->uart, ASPEED_DEV_UART4, sc->uarts_base,
++                            sc->uarts_num, serial_hd(1));
++    aspeed_soc_uart_set_chr(soc->uart, ASPEED_DEV_UART7, sc->uarts_base,
++                            sc->uarts_num, serial_hd(2));
+     if (!qdev_realize(DEVICE(&s->ca35), NULL, errp)) {
+         return false;
+     }
+@@ -115,8 +119,6 @@ static bool ast2700fc_ca35_init(MachineState *machine, Error **errp)
+ 
+ static bool ast2700fc_ssp_init(MachineState *machine, Error **errp)
+ {
+-    AspeedCoprocessorState *soc;
+-    AspeedCoprocessorClass *sc;
+     Ast2700FCState *s = AST2700A1FC(machine);
+     AspeedSoCState *psp = ASPEED_SOC(&s->ca35);
+ 
+@@ -132,10 +134,10 @@ static bool ast2700fc_ssp_init(MachineState *machine, Error **errp)
+     object_property_set_link(OBJECT(&s->ssp), "memory",
+                              OBJECT(&s->ssp_memory), &error_abort);
+ 
+-    soc = ASPEED_COPROCESSOR(&s->ssp);
+-    sc = ASPEED_COPROCESSOR_GET_CLASS(soc);
+-    aspeed_soc_uart_set_chr(soc->uart, ASPEED_DEV_UART4, sc->uarts_base,
+-                            sc->uarts_num, serial_hd(1));
++    object_property_set_link(OBJECT(&s->ssp), "uart",
++                             OBJECT(&psp->uart[4]), &error_abort);
++    object_property_set_int(OBJECT(&s->ssp), "uart-dev", ASPEED_DEV_UART4,
++                            &error_abort);
      object_property_set_link(OBJECT(&s->ssp), "sram",
                               OBJECT(&psp->sram), &error_abort);
-+    object_property_set_link(OBJECT(&s->ssp), "scu",
-+                             OBJECT(&psp->scu), &error_abort);
-     if (!qdev_realize(DEVICE(&s->ssp), NULL, errp)) {
-         return false;
-     }
-@@ -170,6 +172,8 @@ static bool ast2700fc_tsp_init(MachineState *machine, Error **errp)
-                             sc->uarts_num, serial_hd(2));
+     object_property_set_link(OBJECT(&s->ssp), "scu",
+@@ -149,8 +151,6 @@ static bool ast2700fc_ssp_init(MachineState *machine, Error **errp)
+ 
+ static bool ast2700fc_tsp_init(MachineState *machine, Error **errp)
+ {
+-    AspeedCoprocessorState *soc;
+-    AspeedCoprocessorClass *sc;
+     Ast2700FCState *s = AST2700A1FC(machine);
+     AspeedSoCState *psp = ASPEED_SOC(&s->ca35);
+ 
+@@ -166,10 +166,10 @@ static bool ast2700fc_tsp_init(MachineState *machine, Error **errp)
+     object_property_set_link(OBJECT(&s->tsp), "memory",
+                              OBJECT(&s->tsp_memory), &error_abort);
+ 
+-    soc = ASPEED_COPROCESSOR(&s->tsp);
+-    sc = ASPEED_COPROCESSOR_GET_CLASS(soc);
+-    aspeed_soc_uart_set_chr(soc->uart, ASPEED_DEV_UART7, sc->uarts_base,
+-                            sc->uarts_num, serial_hd(2));
++    object_property_set_link(OBJECT(&s->tsp), "uart",
++                             OBJECT(&psp->uart[7]), &error_abort);
++    object_property_set_int(OBJECT(&s->tsp), "uart-dev", ASPEED_DEV_UART7,
++                            &error_abort);
      object_property_set_link(OBJECT(&s->tsp), "sram",
                               OBJECT(&psp->sram), &error_abort);
-+    object_property_set_link(OBJECT(&s->tsp), "scu",
-+                             OBJECT(&psp->scu), &error_abort);
-     if (!qdev_realize(DEVICE(&s->tsp), NULL, errp)) {
-         return false;
-     }
+     object_property_set_link(OBJECT(&s->tsp), "scu",
 diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
-index 66c4ef6d1b..577a3379c6 100644
+index 577a3379c6..d12a9b8459 100644
 --- a/hw/arm/aspeed_ast27x0-ssp.c
 +++ b/hw/arm/aspeed_ast27x0-ssp.c
-@@ -137,9 +137,7 @@ static void aspeed_soc_ast27x0ssp_init(Object *obj)
-     int i;
+@@ -133,16 +133,10 @@ static void aspeed_soc_ast27x0ssp_init(Object *obj)
+ {
+     Aspeed27x0CoprocessorState *a = ASPEED27X0SSP_COPROCESSOR(obj);
+     AspeedCoprocessorState *s = ASPEED_COPROCESSOR(obj);
+-    AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
+-    int i;
  
      object_initialize_child(obj, "armv7m", &a->armv7m, TYPE_ARMV7M);
--    object_initialize_child(obj, "scu", &s->scu, TYPE_ASPEED_2700_SCU);
      s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
--    qdev_prop_set_uint32(DEVICE(&s->scu), "silicon-rev", sc->silicon_rev);
  
-     for (i = 0; i < sc->uarts_num; i++) {
-         object_initialize_child(obj, "uart[*]", &s->uart[i], TYPE_SERIAL_MM);
-@@ -203,11 +201,11 @@ static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
-                                 &s->sram_alias);
- 
-     /* SCU */
--    if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
--        return;
+-    for (i = 0; i < sc->uarts_num; i++) {
+-        object_initialize_child(obj, "uart[*]", &s->uart[i], TYPE_SERIAL_MM);
 -    }
--    aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->scu), 0,
--                    sc->memmap[ASPEED_DEV_SCU]);
-+    memory_region_init_alias(&s->scu_alias, OBJECT(s), "scu.alias",
-+                             &s->scu->iomem, 0,
-+                             memory_region_size(&s->scu->iomem));
-+    memory_region_add_subregion(s->memory, sc->memmap[ASPEED_DEV_SCU],
-+                                &s->scu_alias);
+-
+     object_initialize_child(obj, "intc0", &a->intc[0],
+                             TYPE_ASPEED_2700SSP_INTC);
+     object_initialize_child(obj, "intc1", &a->intc[1],
+@@ -165,7 +159,6 @@ static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
+     AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
+     DeviceState *armv7m;
+     g_autofree char *sdram_name = NULL;
+-    int uart;
+     int i;
  
-     /* INTC */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&a->intc[0]), errp)) {
-@@ -285,7 +283,6 @@ static void aspeed_soc_ast27x0ssp_class_init(ObjectClass *klass,
+     if (!clock_has_source(s->sysclk)) {
+@@ -244,15 +237,19 @@ static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
+         sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc[1]), i,
+                         qdev_get_gpio_in(DEVICE(&a->intc[0].orgates[0]), i));
+     }
++
+     /* UART */
+-    for (i = 0, uart = sc->uarts_base; i < sc->uarts_num; i++, uart++) {
+-        if (!aspeed_soc_uart_realize(s->memory, &s->uart[i],
+-                                     sc->memmap[uart], errp)) {
+-            return;
+-        }
+-        sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart[i]), 0,
+-                           aspeed_soc_ast27x0ssp_get_irq(s, uart));
+-    }
++    memory_region_init_alias(&s->uart_alias, OBJECT(s), "uart.alias",
++                             &s->uart->serial.io, 0,
++                             memory_region_size(&s->uart->serial.io));
++    memory_region_add_subregion(s->memory, sc->memmap[s->uart_dev],
++                                &s->uart_alias);
++    /*
++     * Redirect the UART interrupt to the NVIC, replacing the default routing
++     * to the PSP's GIC.
++     */
++    sysbus_connect_irq(SYS_BUS_DEVICE(s->uart), 0,
++                       aspeed_soc_ast27x0ssp_get_irq(s, s->uart_dev));
+ 
+     aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->timerctrl),
+                                   "aspeed.timerctrl",
+@@ -283,8 +280,6 @@ static void aspeed_soc_ast27x0ssp_class_init(ObjectClass *klass,
      dc->realize = aspeed_soc_ast27x0ssp_realize;
  
      sc->valid_cpu_types = valid_cpu_types;
--    sc->silicon_rev = AST2700_A1_SILICON_REV;
-     sc->uarts_num = 13;
-     sc->uarts_base = ASPEED_DEV_UART0;
+-    sc->uarts_num = 13;
+-    sc->uarts_base = ASPEED_DEV_UART0;
      sc->irqmap = aspeed_soc_ast27x0ssp_irqmap;
+     sc->memmap = aspeed_soc_ast27x0ssp_memmap;
+ }
 diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
-index 56b68adf54..a7c141678f 100644
+index a7c141678f..5b75e14206 100644
 --- a/hw/arm/aspeed_ast27x0-tsp.c
 +++ b/hw/arm/aspeed_ast27x0-tsp.c
-@@ -137,9 +137,7 @@ static void aspeed_soc_ast27x0tsp_init(Object *obj)
-     int i;
+@@ -133,16 +133,10 @@ static void aspeed_soc_ast27x0tsp_init(Object *obj)
+ {
+     Aspeed27x0CoprocessorState *a = ASPEED27X0TSP_COPROCESSOR(obj);
+     AspeedCoprocessorState *s = ASPEED_COPROCESSOR(obj);
+-    AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
+-    int i;
  
      object_initialize_child(obj, "armv7m", &a->armv7m, TYPE_ARMV7M);
--    object_initialize_child(obj, "scu", &s->scu, TYPE_ASPEED_2700_SCU);
      s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
--    qdev_prop_set_uint32(DEVICE(&s->scu), "silicon-rev", sc->silicon_rev);
  
-     for (i = 0; i < sc->uarts_num; i++) {
-         object_initialize_child(obj, "uart[*]", &s->uart[i], TYPE_SERIAL_MM);
-@@ -203,11 +201,11 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
-                                 &s->sram_alias);
- 
-     /* SCU */
--    if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
--        return;
+-    for (i = 0; i < sc->uarts_num; i++) {
+-        object_initialize_child(obj, "uart[*]", &s->uart[i], TYPE_SERIAL_MM);
 -    }
--    aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->scu), 0,
--                    sc->memmap[ASPEED_DEV_SCU]);
-+    memory_region_init_alias(&s->scu_alias, OBJECT(s), "scu.alias",
-+                             &s->scu->iomem, 0,
-+                             memory_region_size(&s->scu->iomem));
-+    memory_region_add_subregion(s->memory, sc->memmap[ASPEED_DEV_SCU],
-+                                &s->scu_alias);
+-
+     object_initialize_child(obj, "intc0", &a->intc[0],
+                             TYPE_ASPEED_2700TSP_INTC);
+     object_initialize_child(obj, "intc1", &a->intc[1],
+@@ -165,7 +159,6 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
+     AspeedCoprocessorClass *sc = ASPEED_COPROCESSOR_GET_CLASS(s);
+     DeviceState *armv7m;
+     g_autofree char *sdram_name = NULL;
+-    int uart;
+     int i;
  
-     /* INTC */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&a->intc[0]), errp)) {
-@@ -285,7 +283,6 @@ static void aspeed_soc_ast27x0tsp_class_init(ObjectClass *klass,
+     if (!clock_has_source(s->sysclk)) {
+@@ -244,15 +237,19 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
+         sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc[1]), i,
+                         qdev_get_gpio_in(DEVICE(&a->intc[0].orgates[0]), i));
+     }
++
+     /* UART */
+-    for (i = 0, uart = sc->uarts_base; i < sc->uarts_num; i++, uart++) {
+-        if (!aspeed_soc_uart_realize(s->memory, &s->uart[i],
+-                                     sc->memmap[uart], errp)) {
+-            return;
+-        }
+-        sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart[i]), 0,
+-                           aspeed_soc_ast27x0tsp_get_irq(s, uart));
+-    }
++    memory_region_init_alias(&s->uart_alias, OBJECT(s), "uart.alias",
++                             &s->uart->serial.io, 0,
++                             memory_region_size(&s->uart->serial.io));
++    memory_region_add_subregion(s->memory, sc->memmap[s->uart_dev],
++                                &s->uart_alias);
++    /*
++     * Redirect the UART interrupt to the NVIC, replacing the default routing
++     * to the PSP's GIC.
++     */
++    sysbus_connect_irq(SYS_BUS_DEVICE(s->uart), 0,
++                       aspeed_soc_ast27x0tsp_get_irq(s, s->uart_dev));
+ 
+     aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->timerctrl),
+                                   "aspeed.timerctrl",
+@@ -283,8 +280,6 @@ static void aspeed_soc_ast27x0tsp_class_init(ObjectClass *klass,
      dc->realize = aspeed_soc_ast27x0tsp_realize;
  
      sc->valid_cpu_types = valid_cpu_types;
--    sc->silicon_rev = AST2700_A1_SILICON_REV;
-     sc->uarts_num = 13;
-     sc->uarts_base = ASPEED_DEV_UART0;
+-    sc->uarts_num = 13;
+-    sc->uarts_base = ASPEED_DEV_UART0;
      sc->irqmap = aspeed_soc_ast27x0tsp_irqmap;
+     sc->memmap = aspeed_soc_ast27x0tsp_memmap;
+ }
 diff --git a/hw/arm/aspeed_coprocessor_common.c b/hw/arm/aspeed_coprocessor_common.c
-index 8322ad5eb5..14e26bbe23 100644
+index 14e26bbe23..f037d5b573 100644
 --- a/hw/arm/aspeed_coprocessor_common.c
 +++ b/hw/arm/aspeed_coprocessor_common.c
-@@ -27,6 +27,8 @@ static const Property aspeed_coprocessor_properties[] = {
-                      TYPE_MEMORY_REGION, MemoryRegion *),
-     DEFINE_PROP_LINK("sram", AspeedCoprocessorState, sram, TYPE_MEMORY_REGION,
+@@ -29,6 +29,9 @@ static const Property aspeed_coprocessor_properties[] = {
                       MemoryRegion *),
-+    DEFINE_PROP_LINK("scu", AspeedCoprocessorState, scu, TYPE_ASPEED_SCU,
-+                     AspeedSCUState *),
+     DEFINE_PROP_LINK("scu", AspeedCoprocessorState, scu, TYPE_ASPEED_SCU,
+                      AspeedSCUState *),
++    DEFINE_PROP_LINK("uart", AspeedCoprocessorState, uart, TYPE_SERIAL_MM,
++                     SerialMM *),
++    DEFINE_PROP_INT32("uart-dev", AspeedCoprocessorState, uart_dev, 0),
  };
  
  static void aspeed_coprocessor_class_init(ObjectClass *oc, const void *data)
