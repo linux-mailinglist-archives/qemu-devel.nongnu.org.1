@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5566BDC75A
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001BDBDC7B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:33:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t5c-0000FN-8n; Wed, 15 Oct 2025 00:26:16 -0400
+	id 1v8t5l-0000MV-Hh; Wed, 15 Oct 2025 00:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5Y-0000Db-DA; Wed, 15 Oct 2025 00:26:12 -0400
+ id 1v8t5g-0000K1-En; Wed, 15 Oct 2025 00:26:20 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t5S-0002nk-CI; Wed, 15 Oct 2025 00:26:12 -0400
+ id 1v8t5b-0002pp-QX; Wed, 15 Oct 2025 00:26:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6D1D215D9CE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7C10115D9CF;
  Wed, 15 Oct 2025 07:24:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 111E429FE77;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1FAF829FE78;
  Wed, 15 Oct 2025 07:25:21 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.2 09/11] target/riscv: rvv: Fix vslide1[up|down].vx
- unexpected result when XLEN=32 and SEW=64
-Date: Wed, 15 Oct 2025 07:25:13 +0300
-Message-ID: <20251015042520.68556-9-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Hector Cao <hector.cao@canonical.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.2 10/11] target/i386: add compatibility property for
+ arch_capabilities
+Date: Wed, 15 Oct 2025 07:25:14 +0300
+Message-ID: <20251015042520.68556-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.2-20251014173635@cover.tls.msk.ru>
 References: <qemu-stable-10.1.2-20251014173635@cover.tls.msk.ru>
@@ -59,159 +58,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-When XLEN is 32 and SEW is 64, the original implementation of
-vslide1up.vx and vslide1down.vx helper functions fills the 32-bit value
-of rs1 into the first element of the destination vector register (rd),
-which is a 64-bit element.
+Prior to v10.1, if requested by user, arch-capabilities is always on
+despite the fact that CPUID advertises it to be off/unvailable.
+This causes a migration issue for VMs that are run on a machine
+without arch-capabilities and expect this feature to be present
+on the destination host with QEMU 10.1.
 
-This commit attempted to resolve the issue by extending the rs1 value
-to 64 bits during the TCG translation phase to ensure that the helper
-functions won't lost the higer 32 bits.
+Add a compatibility property to restore the legacy behavior for all
+machines with version prior to 10.1.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250124073325.2467664-1-max.chou@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 81d1885dcc4424fec6761120f6e251eb3408fb8e)
+To preserve the functionality (added by 10.1) of turning off
+ARCH_CAPABILITIES where Windows does not like it, use directly
+the guest CPU vendor: x86_cpu_get_supported_feature_word is not
+KVM-specific and therefore should not necessarily use the host
+CPUID.
+
+Co-authored-by: Hector Cao <hector.cao@canonical.com>
+Signed-off-by: Hector Cao <hector.cao@canonical.com>
+Fixes: d3a24134e37 ("target/i386: do not expose ARCH_CAPABILITIES on AMD CPU", 2025-07-17)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit e9efa4a77168ac2816bf9471f878252ce6224710)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index c82bacdc39..b785456ee0 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -1101,14 +1101,14 @@ DEF_HELPER_6(vslidedown_vx_b, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vslidedown_vx_h, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vslidedown_vx_w, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vslidedown_vx_d, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_b, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_h, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_w, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1up_vx_d, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_b, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_h, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_w, void, ptr, ptr, tl, ptr, env, i32)
--DEF_HELPER_6(vslide1down_vx_d, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_b, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_h, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_w, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1up_vx_d, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_b, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_h, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_w, void, ptr, ptr, i64, ptr, env, i32)
-+DEF_HELPER_6(vslide1down_vx_d, void, ptr, ptr, i64, ptr, env, i32)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 2f58e73d33..2504365bc2 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -84,6 +84,7 @@
+ GlobalProperty pc_compat_10_0[] = {
+     { TYPE_X86_CPU, "x-consistent-cache", "false" },
+     { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
++    { TYPE_X86_CPU, "x-arch-cap-always-on", "true" },
+ };
+ const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
  
- DEF_HELPER_6(vfslide1up_vf_h, void, ptr, ptr, i64, ptr, env, i32)
- DEF_HELPER_6(vfslide1up_vf_w, void, ptr, ptr, i64, ptr, env, i32)
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 71f98fb350..f4b5460340 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -3561,7 +3561,6 @@ static bool slideup_check(DisasContext *s, arg_rmrr *a)
- }
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 6d85149e6e..fe369bb128 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7539,6 +7539,20 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
+ #endif
+         break;
  
- GEN_OPIVX_TRANS(vslideup_vx, slideup_check)
--GEN_OPIVX_TRANS(vslide1up_vx, slideup_check)
- GEN_OPIVI_TRANS(vslideup_vi, IMM_ZX, vslideup_vx, slideup_check)
- 
- static bool slidedown_check(DisasContext *s, arg_rmrr *a)
-@@ -3572,9 +3571,56 @@ static bool slidedown_check(DisasContext *s, arg_rmrr *a)
- }
- 
- GEN_OPIVX_TRANS(vslidedown_vx, slidedown_check)
--GEN_OPIVX_TRANS(vslide1down_vx, slidedown_check)
- GEN_OPIVI_TRANS(vslidedown_vi, IMM_ZX, vslidedown_vx, slidedown_check)
- 
-+typedef void gen_helper_vslide1_vx(TCGv_ptr, TCGv_ptr, TCGv_i64, TCGv_ptr,
-+                                TCGv_env, TCGv_i32);
++    case FEAT_7_0_EDX:
++        /*
++         * Windows does not like ARCH_CAPABILITIES on AMD machines at all.
++         * Do not show the fake ARCH_CAPABILITIES MSR that KVM sets up,
++         * except if needed for migration.
++         *
++         * When arch_cap_always_on is removed, this tweak can move to
++         * kvm_arch_get_supported_cpuid.
++         */
++        if (cpu && IS_AMD_CPU(&cpu->env) && !cpu->arch_cap_always_on) {
++            unavail = CPUID_7_0_EDX_ARCH_CAPABILITIES;
++        }
++        break;
 +
-+#define GEN_OPIVX_VSLIDE1_TRANS(NAME, CHECK)                            \
-+static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                  \
-+{                                                                       \
-+    if (CHECK(s, a)) {                                                  \
-+        static gen_helper_vslide1_vx * const fns[4] = {                 \
-+            gen_helper_##NAME##_b, gen_helper_##NAME##_h,               \
-+            gen_helper_##NAME##_w, gen_helper_##NAME##_d,               \
-+        };                                                              \
-+                                                                        \
-+        TCGv_ptr dest, src2, mask;                                      \
-+        TCGv_i64 src1;                                                  \
-+        TCGv_i32 desc;                                                  \
-+        uint32_t data = 0;                                              \
-+                                                                        \
-+        dest = tcg_temp_new_ptr();                                      \
-+        mask = tcg_temp_new_ptr();                                      \
-+        src2 = tcg_temp_new_ptr();                                      \
-+        src1 = tcg_temp_new_i64();                                      \
-+                                                                        \
-+        data = FIELD_DP32(data, VDATA, VM, a->vm);                      \
-+        data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                  \
-+        data = FIELD_DP32(data, VDATA, VTA, s->vta);                    \
-+        data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);  \
-+        data = FIELD_DP32(data, VDATA, VMA, s->vma);                    \
-+        desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,            \
-+                                s->cfg_ptr->vlenb, data));              \
-+                                                                        \
-+        tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, a->rd));            \
-+        tcg_gen_addi_ptr(src2, tcg_env, vreg_ofs(s, a->rs2));           \
-+        tcg_gen_addi_ptr(mask, tcg_env, vreg_ofs(s, 0));                \
-+        tcg_gen_ext_tl_i64(src1, get_gpr(s, a->rs1, EXT_SIGN));         \
-+                                                                        \
-+        fns[s->sew](dest, mask, src1, src2, tcg_env, desc);             \
-+                                                                        \
-+        tcg_gen_movi_tl(cpu_vstart, 0);                                 \
-+        finalize_rvv_inst(s);                                           \
-+                                                                        \
-+        return true;                                                    \
-+    }                                                                   \
-+    return false;                                                       \
-+}
+     default:
+         break;
+     }
+@@ -10004,6 +10018,9 @@ static const Property x86_cpu_properties[] = {
+                      true),
+     DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
+     DEFINE_PROP_BOOL("x-force-cpuid-0x1f", X86CPU, force_cpuid_0x1f, false),
 +
-+GEN_OPIVX_VSLIDE1_TRANS(vslide1up_vx, slideup_check)
-+GEN_OPIVX_VSLIDE1_TRANS(vslide1down_vx, slidedown_check)
++    DEFINE_PROP_BOOL("x-arch-cap-always-on", X86CPU,
++                     arch_cap_always_on, false),
+ };
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e0be7a7406..414ca968e8 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2314,6 +2314,12 @@ struct ArchCPU {
+     /* Forcefully disable KVM PV features not exposed in guest CPUIDs */
+     bool kvm_pv_enforce_cpuid;
+ 
++    /*
++     * Expose arch-capabilities unconditionally even on AMD models, for backwards
++     * compatibility with QEMU <10.1.
++     */
++    bool arch_cap_always_on;
 +
- /* Vector Floating-Point Slide Instructions */
- static bool fslideup_check(DisasContext *s, arg_rmrr *a)
- {
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 7c67d67a13..41ea223106 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -5198,11 +5198,11 @@ GEN_VEXT_VSLIE1UP(16, H2)
- GEN_VEXT_VSLIE1UP(32, H4)
- GEN_VEXT_VSLIE1UP(64, H8)
+     /* Number of physical address bits supported */
+     uint32_t phys_bits;
  
--#define GEN_VEXT_VSLIDE1UP_VX(NAME, BITWIDTH)                     \
--void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2, \
--                  CPURISCVState *env, uint32_t desc)              \
--{                                                                 \
--    vslide1up_##BITWIDTH(vd, v0, s1, vs2, env, desc);             \
-+#define GEN_VEXT_VSLIDE1UP_VX(NAME, BITWIDTH)                   \
-+void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,   \
-+                  CPURISCVState *env, uint32_t desc)            \
-+{                                                               \
-+    vslide1up_##BITWIDTH(vd, v0, s1, vs2, env, desc);           \
- }
- 
- /* vslide1up.vx vd, vs2, rs1, vm # vd[0]=x[rs1], vd[i+1] = vs2[i] */
-@@ -5249,11 +5249,11 @@ GEN_VEXT_VSLIDE1DOWN(16, H2)
- GEN_VEXT_VSLIDE1DOWN(32, H4)
- GEN_VEXT_VSLIDE1DOWN(64, H8)
- 
--#define GEN_VEXT_VSLIDE1DOWN_VX(NAME, BITWIDTH)                   \
--void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2, \
--                  CPURISCVState *env, uint32_t desc)              \
--{                                                                 \
--    vslide1down_##BITWIDTH(vd, v0, s1, vs2, env, desc);           \
-+#define GEN_VEXT_VSLIDE1DOWN_VX(NAME, BITWIDTH)                 \
-+void HELPER(NAME)(void *vd, void *v0, uint64_t s1, void *vs2,   \
-+                  CPURISCVState *env, uint32_t desc)            \
-+{                                                               \
-+    vslide1down_##BITWIDTH(vd, v0, s1, vs2, env, desc);         \
- }
- 
- /* vslide1down.vx vd, vs2, rs1, vm # vd[i] = vs2[i+1], vd[vl-1]=x[rs1] */
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 5621200be0..96035c27cd 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -503,12 +503,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+          * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
+          * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
+          * returned by KVM_GET_MSR_INDEX_LIST.
+-         *
+-         * But also, because Windows does not like ARCH_CAPABILITIES on AMD
+-         * mcahines at all, do not show the fake ARCH_CAPABILITIES MSR that
+-         * KVM sets up.
+          */
+-        if (!has_msr_arch_capabs || !(edx & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
++        if (!has_msr_arch_capabs) {
+             ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+         }
+     } else if (function == 7 && index == 1 && reg == R_EAX) {
 -- 
 2.47.3
 
