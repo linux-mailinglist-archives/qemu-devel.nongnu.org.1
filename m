@@ -2,70 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B094BDD339
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 09:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B974BDD3F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 09:57:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8wGY-0003DX-4N; Wed, 15 Oct 2025 03:49:46 -0400
+	id 1v8wMo-0005py-27; Wed, 15 Oct 2025 03:56:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8wGW-0003DP-1C
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 03:49:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8wMl-0005lE-L5
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 03:56:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8wGT-0004hB-4k
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 03:49:43 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v8wMf-0005Y4-PR
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 03:56:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760514576;
+ s=mimecast20190719; t=1760514959;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=209SPIqSN3v9lT+ktBqCQwf8SocoS3T27DeJ7bLeSPI=;
- b=VpTqG6RN5vIkUJb1KnEoByCm82M0puiC+7zk/+GrhiFDdBJSvM7ahm0utbWtKuAIjGRb2N
- kTgoPrJq3X2lyBiNH8sE6UzrBQBXjItF14HXUfrzPlGxmLvtVxpCitH0PI/dIcauZ2dsrr
- x1uyg4KN9tXd8VY37hFKIjDvL2DhV0Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=i9nv8f8DCeB1cUJjABzO7Z7CSJUt2Z/XMPTp2ytRtLE=;
+ b=UzhoUjr6xn2EXEUBHChjogMuf3cMzof4qwA2PaNFN4J8oTRfrNhFp/wmOrkcX8pCm0XHqT
+ UuvD22bVgOP7NFGdrn1nCoDyuCnegboYPsYjhU0P8CAw7TZsiGpYdG8vrbFQiegJnW7YFU
+ tCCvru6+iLGnHuoNR1iPeUesUlydusQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-y7KCTQX0N0amfAp90oUtwg-1; Wed,
- 15 Oct 2025 03:49:32 -0400
-X-MC-Unique: y7KCTQX0N0amfAp90oUtwg-1
-X-Mimecast-MFC-AGG-ID: y7KCTQX0N0amfAp90oUtwg_1760514571
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-wWh6lHvHOleM0BrdCKsCAQ-1; Wed,
+ 15 Oct 2025 03:55:56 -0400
+X-MC-Unique: wWh6lHvHOleM0BrdCKsCAQ-1
+X-Mimecast-MFC-AGG-ID: wWh6lHvHOleM0BrdCKsCAQ_1760514954
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DFD2519560A7; Wed, 15 Oct 2025 07:49:30 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2EAA81800BC1; Wed, 15 Oct 2025 07:55:54 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE7BA1800446; Wed, 15 Oct 2025 07:49:29 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E3851800451; Wed, 15 Oct 2025 07:55:53 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 578B621E6A27; Wed, 15 Oct 2025 09:49:27 +0200 (CEST)
+ id C77B621E6A27; Wed, 15 Oct 2025 09:55:50 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: marcandre.lureau@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
  eduardo@habkost.net,  qemu-devel@nongnu.org,  raphael@enfabrica.net,
  yc-core@yandex-team.ru,  d-tatianin@yandex-team.ru
-Subject: Re: [PATCH v3 5/7] chardev/char: introduce .init() + .connect()
- initialization interface
-In-Reply-To: <76945924-ed5e-4365-95c8-a8f752d7ad03@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Wed, 15 Oct 2025 09:58:39 +0300")
+Subject: Re: [PATCH v3 7/7] chardev: introduce DEFINE_PROP_CHR_NO_CONNECT
+In-Reply-To: <2df28aa4-d979-4659-a1ca-33d9cba94fb1@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Wed, 15 Oct 2025 10:11:16 +0300")
 References: <20251014152644.954762-1-vsementsov@yandex-team.ru>
- <20251014152644.954762-6-vsementsov@yandex-team.ru>
- <87y0pcirp0.fsf@pond.sub.org>
- <76945924-ed5e-4365-95c8-a8f752d7ad03@yandex-team.ru>
-Date: Wed, 15 Oct 2025 09:49:27 +0200
-Message-ID: <87plaofvug.fsf@pond.sub.org>
+ <20251014152644.954762-8-vsementsov@yandex-team.ru>
+ <87tt00irg0.fsf@pond.sub.org>
+ <2df28aa4-d979-4659-a1ca-33d9cba94fb1@yandex-team.ru>
+Date: Wed, 15 Oct 2025 09:55:50 +0200
+Message-ID: <87ldlcfvjt.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,101 +89,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-> On 15.10.25 09:50, Markus Armbruster wrote:
+> On 15.10.25 09:56, Markus Armbruster wrote:
 >> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
->>=20
->>> We'll need a possibility to postpone connect step to later point in
->>> time to implement backend-transfer migration feature for vhost-user-blk
->>> in further commits. Let's start with new char interface for backends.
+>> 
+>>> For further vhost-user-blk backend-transfer migration realization we
+>>> want to give it (vhost-user-blk) a possibility (and responsibility) to
+>>> decide when do connect.
 >>>
->>> .init() takes QAPI parameters and should parse them, called early
+>>> For incoming migration we'll need to postpone connect at least until
+>>> early stage of migrate-incoming command, when we already know all
+>>> migration parameters and can decide, are we going to do incoming
+>>> backend-transfer (and get chardev fd from incoming stream), or we
+>>> finally need to connect.
 >>>
->>> .connect() should actually establish a connection, and postponed to
->>> the point of attaching to frontend. Called at later point, either
->>> at time of attaching frontend, either from qemu_chr_wait_connected().
+>>> With this patch, we only provide new macro, to define chardev property,
+>>> later it will be used in vhost-user-blk instead of DEFINE_PROP_CHR.
+>>
+>> There is no "later" in this series.
+>> The new macro is called DEFINE_PROP_CHR_NO_CONNECT().
+>> 
+>>> Then, vhost-user-blk will call qemu_chr_connect() by hand when needed
+>>> (for example through qemu_chr_fe_wait_connected(), which is already
+>>> called in vhost_user_blk_realize_connect()).
 >>>
 >>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->> [...]
->>=20
->>> diff --git a/include/chardev/char.h b/include/chardev/char.h
->>> index 429852f8d9..ebadaf3482 100644
->>> --- a/include/chardev/char.h
->>> +++ b/include/chardev/char.h
->>> @@ -63,6 +63,7 @@ struct Chardev {
->>>      CharBackend *be;
->>>      char *label;
->>>      char *filename;
->>> +    bool connect_postponed;
->>>      int logfd;
->>>      int be_open;
->>>      /* used to coordinate the chardev-change special-case: */
->>> @@ -225,6 +226,7 @@ QemuOpts *qemu_chr_parse_compat(const char *label, =
-const char *filename,
->>>                                  bool permit_mux_mon);
->>>  int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write=
-_all);
->>>  #define qemu_chr_write_all(s, buf, len) qemu_chr_write(s, buf, len, tr=
-ue)
->>> +bool qemu_chr_connect(Chardev *chr, Error **errp);
->>>  int qemu_chr_wait_connected(Chardev *chr, Error **errp);
->>>
->>>  #define TYPE_CHARDEV "chardev"
->>> @@ -259,10 +261,28 @@ struct ChardevClass {
->>>      /* parse command line options and populate QAPI @backend */
->>>      void (*parse)(QemuOpts *opts, ChardevBackend *backend, Error **err=
-p);
->>>
->>> -    /* called after construction, open/starts the backend */
->>> +    /*
->>> +     * Called after construction, create and open/starts the backend,
 >>
->> What to do mean by "create and open/starts"?
->> Maybe "create and start"?
+>> Excuse my quick & ignorant questions...
+>>
+>> I understand ChardevClass provides either methods init() and connect(),
+>> or method open().
+>>
+>> Is a ChardevClass providing open() usable with
+>> DEFINE_PROP_CHR_NO_CONNECT()?
 >
-> Yes, sounds good.
+> Good question. It's usable, but it will work like simple DEFINE_PROP_CHR.
+> I should improve it somehow. Better is to fail than go unexpected way.
 >
->>> +     * mutual exclusive with .init. .connect must not be defined when
->>
->> mutually
->>=20
->>> +     * .open is defined.
->>> +     */
->>
->> Suggest to use @name to refer to a member name.  We do that elsewhere,
->> and it's easier on the eyes than dots.
->>=20
->>>      void (*open)(Chardev *chr, ChardevBackend *backend,
->>>                   bool *be_opened, Error **errp);
->>> +    /*
->>> +     * Called after construction, create the backend, mutual exclusive
->>
->> mutually
->>=20
->>> +     * with .open, and must be accompanied by .connect.
->>
->> Is it okay to destroy after init() without connect()?
->> If yes, "must" is misleading.
+>> Is a ChardevClass providing init() and connect() usable with
+>> DEFINE_PROP_CHR()?
 >
-> Hmm. "should" is OK then?
-
-"Should be followed by connect()" would work.
-
-Or something like "The backend still needs to be started with init()."
-
->>> +     * Must set chr-filename.
->>
->> What's chr-filename?
+> Yes, and works correctly.
 >
-> Type. That should be chr->filename. Or better @chr->filename ?
+>> Could the code do the right thing based on presence of open() vs. init()
+>> and connect() instead of DEFINE_PROP_CHR()
+>> vs. DEFINE_PROP_CHR_NO_CONNECT()?
+>> 
+>
+> No, because, the frontend should be prepared to work with new _NO_CONNECT (e.g.,
+> call _connect() by hand when needed). There are a lot of frontends, which
+> expect already connected backend, updating them all would be big (and
+> unnecessary) work.
 
-There is no member @chr.  I figure it's CharBackend member @chr.
-Perhaps "the CharBackend's chr->filename".=20
+QMP command
 
-[...]
+    {"execute": "qom-list-types", "arguments": {"implements": "chardev"}}
 
-> Thanks for reviewing!
+shows me 23 subtypes of "chardev".  Could miss a few not in this build.
 
-You're welcome!
+Converting them all would be work.  It's not a prohibitive amount of
+work, though.  Whether it's worth our while is not for me to judge.
 
 
