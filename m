@@ -2,88 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6698ABDEB0E
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE674BDEC2A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:28:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v91Js-0002Sd-Bq; Wed, 15 Oct 2025 09:13:32 -0400
+	id 1v91SV-0005SR-Gf; Wed, 15 Oct 2025 09:22:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1v91Jj-0002Rn-Jz
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:13:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v91SD-0005K9-V5
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:22:12 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1v91Jc-0001xw-Dk
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:13:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760533987;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Dt73WI0EUdeOhWsEo2yudqjG8YLrA2wI+alCNe9pK1c=;
- b=ET+Mnbq+6MmnB0XfUSTzkmNpOsM+O+RrovAL8cKT+k7EUBVU3RoidsXrhgVHCBupGFNKJU
- 8yrYTkCTGqtHhbp5b53k4h80ct1vFLzjkEnf9vKxxNALabW8ljYR2BduM2BbL9fb7d1TSE
- /Qn6ZxGUeG6w4d9f22QrG7w6pkTZKxE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-01mKq6WHM3ivYnwkn6Vv1g-1; Wed,
- 15 Oct 2025 09:13:04 -0400
-X-MC-Unique: 01mKq6WHM3ivYnwkn6Vv1g-1
-X-Mimecast-MFC-AGG-ID: 01mKq6WHM3ivYnwkn6Vv1g_1760533982
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4D35E1800592; Wed, 15 Oct 2025 13:13:02 +0000 (UTC)
-Received: from localhost (dhcp-192-195.str.redhat.com [10.33.192.195])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 76B631800446; Wed, 15 Oct 2025 13:13:01 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: eric.auger@redhat.com, Sebastian Ott <sebott@redhat.com>, Shameer
- Kolothum <skolothumtho@nvidia.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- peter.maydell@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
- gshan@redhat.com
-Subject: Re: [RFC 1/3] target/arm/cpu: Add new CPU property for KVM regs to
- hide
-In-Reply-To: <9590ce96-6617-4cfb-849e-b24ea7fcacb9@redhat.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Avril Crosse O'Flaherty"
-References: <20250911134324.3702720-1-eric.auger@redhat.com>
- <20250911134324.3702720-2-eric.auger@redhat.com>
- <0f05a0ec-8b98-a9b7-6e3a-9ef73d0c34e7@redhat.com>
- <b2ae3dc0-9bf0-4e89-a995-b97410d57861@redhat.com>
- <87ikgpv6yo.fsf@redhat.com>
- <9590ce96-6617-4cfb-849e-b24ea7fcacb9@redhat.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Wed, 15 Oct 2025 15:12:58 +0200
-Message-ID: <87cy6oux45.fsf@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v91Ry-0002zM-OT
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:22:09 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id A209B88A38;
+ Wed, 15 Oct 2025 16:21:40 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a94::1:15])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id bLQ5oq0N5Os0-EOnu6P8d; Wed, 15 Oct 2025 16:21:40 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1760534500;
+ bh=ePoa29wrt1w1F3WGPA0fKkMQsbiaS75m7RxB80TNt3k=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=neLAGCXEh0vFDK3RNHFzSkAXhXCk78sJ5DoFj7gWNEGqAXlzMsel9nR+wIdMBLyx2
+ o6rnt7UFDOJkI69dF4BE+sziGBTPFhbVn6rPdo+nNfe5TyU8TT8rTp3CN+dBSTefCc
+ e8fTZoMFBABARjuEYwr2RwgW/lywjgZ9b6YUVkA0=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: mst@redhat.com,
+	jasowang@redhat.com
+Cc: peterx@redhat.com, farosas@suse.de, sw@weilnetz.de, eblake@redhat.com,
+ armbru@redhat.com, thuth@redhat.com, philmd@linaro.org,
+ berrange@redhat.com, qemu-devel@nongnu.org, michael.roth@amd.com,
+ steven.sistare@oracle.com, leiyang@redhat.com, davydov-max@yandex-team.ru,
+ yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
+ raphael.s.norwitz@gmail.com
+Subject: [PATCH v8 00/19] virtio-net: live-TAP local migration
+Date: Wed, 15 Oct 2025 16:21:16 +0300
+Message-ID: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -95,81 +76,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 14 2025, Eric Auger <eric.auger@redhat.com> wrote:
+Hi all!
 
-> On 10/8/25 3:49 PM, Cornelia Huck wrote:
->> On Fri, Oct 03 2025, Eric Auger <eric.auger@redhat.com> wrote:
->>
->>> Hi Sebastian,
->>>
->>> On 9/18/25 6:16 PM, Sebastian Ott wrote:
->>>> On Thu, 11 Sep 2025, Eric Auger wrote:
->>>>> New kernels sometimes expose new registers in an unconditionnal
->>>>> manner.=C2=A0 This situation breaks backward migration as qemu notices
->>>>> there are more registers to store on guest than supported in the
->>>>> destination kerenl. This leads to a "failed to load
->>>>> cpu:cpreg_vmstate_array_len" error.
->>>>>
->>>>> A good example is the introduction of KVM_REG_ARM_VENDOR_HYP_BMAP_2
->>>>> pseudo FW register in v6.16 by commit C0000e58c74e (=E2=80=9CKVM: arm=
-64:
->>>>> Introduce KVM_REG_ARM_VENDOR_HYP_BMAP_2=E2=80=9D). Trying to do backw=
-ard
->>>>> migration from a host kernel which features the commit to a destinati=
-on
->>>>> host that doesn't fail.
->>>>>
->>>>> Currently QEMU is not using that feature so ignoring this latter
->>>>> is not a problem. An easy way to fix the migration issue is to teach
->>>>> qemu we don't care about that register and we can simply ignore it,
->>>>> including its state migration.
->>>>>
->>>>> This patch introduces a CPU property, under the form of an array of
->>>>> reg indices which indicates which registers can be ignored.
->>>>>
->>>>> The goal then is to set this property in machine type compats such
->>>>> as:
->>>>> static GlobalProperty arm_virt_kernel_compat_10_1[] =3D {
->>>>> =C2=A0=C2=A0 /* KVM_REG_ARM_VENDOR_HYP_BMAP_2 */
->>>>> =C2=A0=C2=A0 { TYPE_ARM_CPU, "kvm-hidden-regs", "0x6030000000160003" =
-},
->>>>> }
->>>> One thing worth noting - once this series lands:
->>>> https://lore.kernel.org/qemu-devel/20250801074730.28329-1-shameerkolot=
-hum@gmail.com/
->>>>
->>>> we might need to add a bit more logic here. Either using the kvm
->>>> interfaces (only ignore KVM_REG_ARM_VENDOR_HYP_BMAP_2 when the register
->>>> value is 0) or qemu knowledge (only ignore KVM_REG_ARM_VENDOR_HYP_BMAP=
-_2
->>>> when the impl-cpu property is not used).
->>> Effectively if we "hide" KVM_REG_ARM_VENDOR_HYP_BMAP_2 on save/restore
->>> we must enforce the reg is not used by userspace.
->>>
->>> One way would be to test whether KVM_REG_ARM_VENDOR_HYP_BMAP_2 is hidden
->>> in kvm_arm_target_impl_cpus_supported() and if it is, report false.
->>> However for every new functionality in qemu it does not sound sensible
->>> to check whether new KVM regs being used are anonymously hidden.
->>>
->>> Another way could be to fail kvm_set_one_reg/kvm_get_one_reg in case the
->>> register is hidden. That way in Shameer's series, kvm_arch_init_vcpu()
->>> would fail if BMAP_2 is hidden, ie. in our example for all machines
->>> types before 10.2. By the way adding Shameer.
->> I think tying this to the state of the reg (hidden or not) is less
->> error-prone (I'd assume we'd have different ways of detecting whether
->> something is used for future cases, and "is the reg hidden?" would work
->> in all cases.) We'd need to tie migration to matching machine versions
->> anyway, I think.
->>
-> I guess you suggest to check the hidden/fake state in
->
-> kvm_set_one_reg/kvm_get_one_reg too. One issue is those helpers are arch =
-agnostic. I would need to either introduce a callback in the CPU class to c=
-heck the actual status or add the props in the parent CPU object. Or introd=
-uce a KVM IOTCL to teach KVM a reg shall never be accessed.
+Here is a new migration parameter backend-transfer, which, being
+assisted by new device property backend-transfer, allows to
+enable local migration of TAP virtio-net backend, including its
+properties and open fds.
 
-Aren't they always called from arch code, though? We could easily wrap
-them for arm, I think. (Unless there's some more generic interest in
-conditional ONE_REG accesses.)
+With this new option, management software doesn't need to
+initialize new TAP and do a switch to it. Nothing should be
+done around virtio-net in local migration: it just migrates
+and continues to use same TAP device. So we avoid extra logic
+in management software, extra allocations in kernel (for new TAP),
+and corresponding extra delay in migration downtime.
+
+v8:
+14: add a-b by Peter
+16: rework to one boolean parameter
+17: rework to use per-device property
+19: update to use new API
+
+Vladimir Sementsov-Ogievskiy (19):
+  net/tap: net_init_tap_one(): drop extra error propagation
+  net/tap: net_init_tap_one(): move parameter checking earlier
+  net/tap: rework net_tap_init()
+  net/tap: pass NULL to net_init_tap_one() in cases when scripts are
+    NULL
+  net/tap: rework scripts handling
+  net/tap: setup exit notifier only when needed
+  net/tap: split net_tap_fd_init()
+  net/tap: tap_set_sndbuf(): add return value
+  net/tap: rework tap_set_sndbuf()
+  net/tap: rework sndbuf handling
+  net/tap: introduce net_tap_setup()
+  net/tap: move vhost fd initialization to net_tap_new()
+  net/tap: finalize net_tap_set_fd() logic
+  migration: introduce .pre_incoming() vmsd handler
+  net/tap: postpone tap setup to pre-incoming
+  qapi: introduce backend-transfer migration parameter
+  virtio-net: support backend-transfer migration for virtio-net/tap
+  tests/functional: add skipWithoutSudo() decorator
+  tests/functional: add test_x86_64_tap_migration
+
+ hw/core/machine.c                             |   1 +
+ hw/net/virtio-net.c                           | 151 ++++++-
+ include/hw/virtio/virtio-net.h                |   1 +
+ include/migration/vmstate.h                   |   1 +
+ include/net/tap.h                             |   5 +
+ migration/migration.c                         |   4 +
+ migration/options.c                           |  18 +
+ migration/options.h                           |   2 +
+ migration/savevm.c                            |  15 +
+ migration/savevm.h                            |   1 +
+ net/tap-bsd.c                                 |   3 +-
+ net/tap-linux.c                               |  19 +-
+ net/tap-solaris.c                             |   3 +-
+ net/tap-stub.c                                |   3 +-
+ net/tap-win32.c                               |  11 +
+ net/tap.c                                     | 425 +++++++++++++-----
+ net/tap_int.h                                 |   3 +-
+ qapi/migration.json                           |  38 +-
+ tests/functional/qemu_test/decorators.py      |  16 +
+ tests/functional/test_x86_64_tap_migration.py | 395 ++++++++++++++++
+ 20 files changed, 984 insertions(+), 131 deletions(-)
+ create mode 100644 tests/functional/test_x86_64_tap_migration.py
+
+-- 
+2.48.1
 
 
