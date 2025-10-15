@@ -2,69 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED341BDDC23
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE33BDDC20
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8xgX-0004D2-22; Wed, 15 Oct 2025 05:20:41 -0400
+	id 1v8xic-0008CD-Mt; Wed, 15 Oct 2025 05:22:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1v8xgT-00049E-TH
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:20:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
+ id 1v8xiW-00089T-Nd; Wed, 15 Oct 2025 05:22:45 -0400
+Received: from mx07-0090a401.pphosted.com ([66.159.244.62])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1v8xg8-0007tr-M1
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:20:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760520008;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=37RHUcEAG6umQd9fGbe3X3p5XRjtgf1f2iFAxJSPW+Y=;
- b=btjfy8Qwam9X3wIZ6+xLo5y7wwCd/HuZZTHx8Ez7KTZG+AlzJM8a+pdCHScshP970zULzF
- cjPup5hpjWicxEf1x+szdMPYtxKgCMY7qz8ohZf0Gxxp12n6hDaxFV6CFfrSNGC0ZqfM5D
- tzvqVMLntJd0TGOBJJwu7hRHqx5+ieI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-ddP9GtA5OtGqdTfrb4uaNQ-1; Wed,
- 15 Oct 2025 05:20:07 -0400
-X-MC-Unique: ddP9GtA5OtGqdTfrb4uaNQ-1
-X-Mimecast-MFC-AGG-ID: ddP9GtA5OtGqdTfrb4uaNQ_1760520006
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 934B81800345
- for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 09:20:06 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.44.32.123])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B4D6918004D4; Wed, 15 Oct 2025 09:20:04 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Albert Esteve <aesteve@redhat.com>
-Subject: [PATCH] vhost-user: fix shared object lookup handler logic
-Date: Wed, 15 Oct 2025 11:19:55 +0200
-Message-ID: <20251015091955.1524800-1-aesteve@redhat.com>
+ (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
+ id 1v8xiM-0008Op-63; Wed, 15 Oct 2025 05:22:43 -0400
+Received: from pps.filterd (m0463074.ppops.net [127.0.0.1])
+ by mx07-0090a401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 59F5mTBx3187626; Wed, 15 Oct 2025 09:22:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beckhoff.com; h=
+ cc:content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=mail2022r; bh=23mQ5+KHilvkrloqgFyXRmee
+ nufwLxpzXQnLdHKAPxA=; b=RDFgvCuLeEprAr3giXRU0L+XaIv2uQNSVUfuJZes
+ zvAwz82XQs1Lgflccz2ySpdhqs7QEgYpjpAgZq2dxQh4/lQQ35JoTDcihwBJTxwC
+ 39OVakL1uDCI5bYp9Fb3IMvYIz0jiTTro4ZMYhgTAJRPQ+ada1XzA7wMDjaCbA1i
+ uZJD1YxoVj+3MDF2g7CEY7ZVKq6GCeSMxciK4+XTWkdCKyQgb7bBoBLvU+BltfNI
+ nyX77bu8ZlG0JjBpwNxDxIJnjRGwB9d0qPpnjRdlTDxyodJ9g4gI/lb93qMGWsBF
+ xhQ+oUhLalY3CDmZAztudEaaprWh1hduh5+17quQUOsUsA==
+Received: from ex13.beckhoff.com ([62.159.14.12])
+ by mx07-0090a401.pphosted.com (PPS) with ESMTPS id 49sscv1c3b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Oct 2025 09:22:16 +0000 (GMT)
+Received: from ex10.beckhoff.com (172.17.2.111) by ex13.beckhoff.com
+ (172.17.6.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 15 Oct
+ 2025 11:22:15 +0200
+Received: from ex10.beckhoff.com ([fe80::ab7f:9a91:d220:441b]) by
+ ex10.beckhoff.com ([fe80::ab7f:9a91:d220:441b%12]) with mapi id
+ 15.02.2562.017; Wed, 15 Oct 2025 11:22:15 +0200
+From: =?utf-8?B?Q29ydmluIEvDtmhuZQ==?= <C.Koehne@beckhoff.com>
+To: "peter.maydell@linaro.org" <peter.maydell@linaro.org>
+CC: "hreitz@redhat.com" <hreitz@redhat.com>, "alistair@alistair23.me"
+ <alistair@alistair23.me>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "edgar.iglesias@gmail.com" <edgar.iglesias@gmail.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>, "kwolf@redhat.com"
+ <kwolf@redhat.com>,
+ =?utf-8?B?WWFubmljayBWb8OfZW4=?= <Y.Vossen@beckhoff.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 11/14] hw/misc: Add Beckhoff CCAT device
+Thread-Topic: [PATCH v2 11/14] hw/misc: Add Beckhoff CCAT device
+Thread-Index: AQHcDcMwea5IHvjMZUi/2YBy7YDE9rRqCH4AgFkk1wA=
+Date: Wed, 15 Oct 2025 09:22:15 +0000
+Message-ID: <b7a7ef984e81a2fb0ce2793f25d660caca67ab4f.camel@beckhoff.com>
+References: <20250815090113.141641-1-corvin.koehne@gmail.com>
+ <20250815090113.141641-12-corvin.koehne@gmail.com>
+ <CAFEAcA_VQgoym1_Nmw8iXyBS-ZQTvc+3FYQBTR7W0_Pxb3u=RQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA_VQgoym1_Nmw8iXyBS-ZQTvc+3FYQBTR7W0_Pxb3u=RQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.17.128.174]
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="=-mdoOgExWiFK4oLb+eFoy"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Proofpoint-GUID: jd67gIwbN8xcj7W04ekRgYEmJB0lfQRf
+X-Authority-Analysis: v=2.4 cv=MMVtWcZl c=1 sm=1 tr=0 ts=68ef67c9 cx=c_pps
+ a=ZkhbYXbYXnnsONUOWLo3Bg==:117 a=ZkhbYXbYXnnsONUOWLo3Bg==:17
+ a=xqWC_Br6kY4A:10 a=ErxAllwcpegA:10 a=x6icFKpwvdMA:10 a=M51BFTxLslgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=3dN-dAOnzxXYxHM_xGQA:9 a=QEXdDO2ut3YA:10
+ a=g_xI4TjUgyBJa0J3FfUA:9 a=FfaGCDsud1wA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE1MDA3MSBTYWx0ZWRfX3C+UBcIH+FGE
+ dlFmFwt7U6a9dUaqO2QJqvTrpEazbnWQnjuFIIYtS7E30FrzXLP69mmDhFu19ivtcYLKiGtraSW
+ QghhGo8fI3QCCmnZlMS2BfxRPHpvuZ20WKP39k1XOcP25TWfdzbj0qyPzMpqigld02gAJdQaMuu
+ XGEe0mV78JyJN8pyDGz61+4tP78vZvCo2p9eDoCgzbtaweTIoavDxaeic1uGVio+QylTJ6i+wzk
+ C3iBTagyCyWtm/GBow7ZvJOtMMRUGVp8R+JEozLumqG7q/PjSaITJB40x5M9JdN0uyu37ANEQ6H
+ rMAm+tDPwUsuwXKoQdWkHrPcJA2H2H+DtZXplKhref+46R6JmrDiZAQSc4+4H7vuEIT5zZZI8qY
+ Dud425kIWj8HLfW5/YDF1e25ylZ57Q==
+X-Proofpoint-ORIG-GUID: jd67gIwbN8xcj7W04ekRgYEmJB0lfQRf
+Received-SPF: pass client-ip=66.159.244.62; envelope-from=C.Koehne@beckhoff.com;
+ helo=mx07-0090a401.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,46 +104,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix vhost_user_backend_handle_shared_object_lookup() logic to handle
-the error path the same way as other handlers do. The main
-difference between them is that shared_object_lookup handler
-sends the reply from within the handler itself.
+--=-mdoOgExWiFK4oLb+eFoy
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-What vhost_user_backend_handle_shared_object_lookup() returns, depends
-on whether vhost_user_backend_send_dmabuf_fd() succeded or not to send
-a reply. Any check that results in an error before that only
-determines the return value in the response. However, when an error
-in sending the response within the handler occurs, we want to jump
-to err and close the backend channel to be consistent with other message
-types. On the other hand, when the response succeds then the
-VHOST_USER_NEED_REPLY_MASK flag is unset and the reply in backend_read
-is skipped, going directly to the fdcleanup.
+On Tue, 2025-08-19 at 17:03 +0100, Peter Maydell wrote:
+> Is there a datasheet/manual for this device? The comment
+> at the top of the file is a good place to put the URL to it.
 
-Fixes: 160947666276c5b7f6bca4d746bcac2966635d79
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
- hw/virtio/vhost-user.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Unfortunately, there's no publicly available manual so far. We're currently
+trying to convince people to publish one. We're going to add the URL to the
+comment when on is available.
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 36c9c2e04d..163c3d8ca5 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1833,8 +1833,11 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
-                                                              &payload.object);
-         break;
-     case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
--        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
--                                                             &hdr, &payload);
-+        /* Handler manages its own response, check error and close connection */
-+        if (vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
-+                                                           &hdr, &payload) < 0) {
-+            goto err;
-+        }
-         break;
-     default:
-         error_report("Received unexpected msg type: %d.", hdr.request);
--- 
-2.49.0
 
+Best regards,
+Corvin
+
+--=-mdoOgExWiFK4oLb+eFoy
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmjvZ8YACgkQ2FTaVjFe
+AmpLgg//W5eC3qt/yguDkM6V9f9KE4thnud8WH0AINJlywJdWyRKaSezodEmp0nE
+QaLgvE24gZvVsqZfc0YTF+ssSUQN4cqYbSgfYWM3eAZ5TxPP/7tDHdJbE4+3AGmQ
+YYxDYIDjtBt8XhX0Gyo2kfWfv06Iowt5TCKQowW7pN48Yz5DFZJytGnviTR3nUmv
+jSULePuriH9evHCOfL/y9m0+hZcew9IFVfkyigLRXZ+spdBvzx8KfzVd+neU1SR/
+1zqgEnQbiBxTvXsLWo0TYsiUlT1e8Wukc5E6/FFnnVON2Cs0/vLdraBhSG1NZNgD
+pB1no8uPcIFTb1u5o4Zgk0yWb94OXM+ZGhTZQAc4nwjjiy0cC+DgC2XLTiR1guWh
+l/2/WtD+VHKgtd9oHw57j1s2jj7gya3TMJXQ7J05EQGXsnhHF2y6pJqNDP7umudV
+nnwKKtMP6M+clEBjPhTdiQ3BIpxSLSO3ViG/02enHR4yRFDeqXIGGPIWtCYm7K5c
++ztVgvKOZZmxfMf/ibVnNXVCxsWEhhsQAUI7yIri+nkYLkvqDhiQTAHiSnfVIair
+WOOGF8goNaCvF2VjN3w1zsXNRV+loITGWUdiY77LHo6sBiochHI51/GY1oyTKESi
+IFqdnxzg+KimouYuJSSKI7OGMdrpmaHMqSJuSHCnkX9rBk6avFU=
+=Sf0p
+-----END PGP SIGNATURE-----
+
+--=-mdoOgExWiFK4oLb+eFoy--
 
