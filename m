@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8D6BE0D60
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 23:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A97BE0D72
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 23:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v99DF-0003fT-PP; Wed, 15 Oct 2025 17:39:13 -0400
+	id 1v99DF-0003fO-IV; Wed, 15 Oct 2025 17:39:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1v99DC-0003fC-Hc
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1v99DC-0003f4-As
  for qemu-devel@nongnu.org; Wed, 15 Oct 2025 17:39:10 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1v99DA-00052M-5w
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1v99D9-00052L-U0
  for qemu-devel@nongnu.org; Wed, 15 Oct 2025 17:39:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C4B6D15E431;
- Wed, 15 Oct 2025 23:20:39 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 9B15015E434;
+ Wed, 15 Oct 2025 23:23:14 +0300 (MSK)
 Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E27232A12B3;
- Wed, 15 Oct 2025 23:20:40 +0300 (MSK)
-Message-ID: <4b289042-470e-4fa6-b287-2d5ae3a05157@tls.msk.ru>
-Date: Wed, 15 Oct 2025 23:20:40 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id B6F622A12B4;
+ Wed, 15 Oct 2025 23:23:15 +0300 (MSK)
+Message-ID: <fc9a6d4f-ffc4-4242-837a-d91aa3d68a70@tls.msk.ru>
+Date: Wed, 15 Oct 2025 23:23:15 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 7/7] esp.c: only allow ESP commands permitted in the
@@ -106,19 +106,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/15/25 22:06, Mark Cave-Ayland wrote:
-..> Yeah that's an odd one. I just tested master here and it works fine 
-here
-> on Debian bookworm:
+..> Could it be related to the newer xorriso version? And are you sure 
+there
+> isn't an older copy of SeaBIOS lying around somewhere that is getting 
+> picked up by accident?
 
-I'm on debian trixie though, - maybe that's the reason.
+I forgot to answer this one (saw it in the first place though).
 
-The current master is broken for me too, - everything since this
-commit.
+Nope, this is qemu git build, - which picks up everything from
+pc-bios directory.  So it's 1.17.0.
 
-Now I wonder, as usual, how to debug such a case, - at the very
-start, I'd love to see qemu messages if any.
-
-Sigh.
+xorriso version - might be, but I'd love to see qemu messages :)
 
 /mjt
 
