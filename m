@@ -2,74 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7F3BDDC8C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5653BDDD2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 11:40:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8xov-0004r2-T6; Wed, 15 Oct 2025 05:29:21 -0400
+	id 1v8xy9-0007S1-37; Wed, 15 Oct 2025 05:38:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v8xot-0004qr-Ke
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:29:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v8xoo-00013Q-M6
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:29:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760520540;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=UkoUjr5ni9hGyQHXv8EnkGG3NKfyVwQg3RCFg8iD8Zc=;
- b=aruOnHWlz2Z+AVOqnuPqqo3wae4Tslt0nclzN5JJdiBvQhfEu/VA/Fy3YRCXCaslXfBqo1
- 1WuyL6Z2867H4iIFtNJKI8eLZxrcO+yZM++u1ZILgCVjqxF7oEE2Y7Ty213t+2CYsRP97t
- U9fpEYb0p3LNn+imJvTKrqpyo5ve96s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-3jmt0jf8NqmCCEgrNTwvfA-1; Wed,
- 15 Oct 2025 05:28:57 -0400
-X-MC-Unique: 3jmt0jf8NqmCCEgrNTwvfA-1
-X-Mimecast-MFC-AGG-ID: 3jmt0jf8NqmCCEgrNTwvfA_1760520536
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 740141956080; Wed, 15 Oct 2025 09:28:56 +0000 (UTC)
-Received: from localhost (unknown [10.45.242.3])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 07C6219560AD; Wed, 15 Oct 2025 09:28:54 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, berrange@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- devel@lists.libvirt.org (reviewer:Incompatible changes),
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2] RFC: audio: deprecate HMP audio commands
-Date: Wed, 15 Oct 2025 13:28:51 +0400
-Message-ID: <20251015092851.2850617-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1v8xy6-0007Ri-IF
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:38:50 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1v8xxv-0002M7-I9
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 05:38:50 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b85so6658440f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 02:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760521111; x=1761125911; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=MM/El5IIBUMqrW83Ypet7wgb+WSTHn/RnuHvXSALrUs=;
+ b=ElZeQlOPM6VG/C5zVvs2Pg+e2ZODb28OqOUdNwYddlk/U97MndXnf8/MxJvx9NsHwz
+ +b0Q0NuFtXL9T2SISWzjagLlIfB+6JdHiVvrOf+LzsaiNtmsC5/IQ5IU+zZuL5EpqXcP
+ 1Cm6nO2Mz/KiYpuZvlQz/s/7dHbX9/r+iZsZe1BBXHaWsPQE0+ZCQUm9zMAjZuMUlD9s
+ kmdQsc+ZZ2N1r5Vt3DeeeGlS6VBtceJvX07LZXz3THLaz3G6tZP0htOwuma8LfcUAsR9
+ WkCIjI2Vep+cqSPhkJAz9QlOBltTGf4BIPqmv6CSUqUIXxbqfXm2FKe+SLNgVtLyyFrw
+ fAHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760521111; x=1761125911;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MM/El5IIBUMqrW83Ypet7wgb+WSTHn/RnuHvXSALrUs=;
+ b=kRMFINySO1ImDUVaQq/HEO4/WgRNC/78v1fv/jR3evLjPuluT3nmZCw3y0uh5j0l/s
+ iXoQPNSrZDyXeji54u/zE25v1s5563Ft5mBHlBc4hXSM8DBGY0kPizgElEKv4bVTk3mH
+ hbehzIlsgOC5733xu6xZKHFH5rVFgkJzGJPgYImXGO6f1rtYiSluigBLXX/6D7LxevjJ
+ +03S4C7KWw4mkXeyTXBXZSGYp0kSgv0UQn+VzOaKK1jtzs8CzBMAJ+mOBCQeAvmKuWw8
+ sXcPQyX2rkfKffR4Ok4agGDvucSCBeg4FXe+V6jjwXiwBJGa/kW9X1Jl1RHo4wBtCmCk
+ SuIg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUp0k9Pf+YtH92HBEvT4wDMSmNgKyMx1iIJVql7DatN4V2D3rqGJN+odMzvSmi4M9vtz2JtRbuxBlxp@nongnu.org
+X-Gm-Message-State: AOJu0YwaV6xFOznzBkXnOujEKWvdRz4uQpYXriBvjggu3HNxZt47H6cF
+ XT9ZADZ6/b7TR697TSt0WUTvTNMecozsP+ioZBTNnpjco5XJtHbYGau3MoL1jv+KL04=
+X-Gm-Gg: ASbGnctEg8ZfUirhtNnzwRIK+4ceeQyV/bTfo42g9BnTGqXsxoS/sc6gopgQEafByyv
+ 8ByTwO/kQFJCuvFxdN/huxkxxBrwCH8jXNO27cqNfHKwgaDZ51ozl4tj8mc9Nlsq4A56DZmV8Ak
+ PeFm+m05Y0EjejHZL836t3WM4pFMITQOdxwTAADC8mZ+sOTxqWbE6tb1fFzfve2iDSyUx22cY2d
+ Q/z1w62FpxLj3xhCa4lY5uTMgvvQGeYjFW2oVJWkLs/pJ8Mr3Brrp5V3gqmq4lXNS4FQ0w9hHqL
+ 4Ro/a1W1bZ6l0S8RnbiQkgakkt0Ut4pWHKCPkEHQL6HNnlq+nqHO+uNmm9zjUrBikjKnlzbG6Q+
+ MQwtmYvvdSqkNj0JBu0g6WTkLqso8Dc+Llh1/nexIaIvURS4cU7p0u4Qjmpo9oUV1a0HWFfjWIV
+ WFp0DtqYWb5iZs1d9lPnBRH7o1NQ==
+X-Google-Smtp-Source: AGHT+IFVFeYT2IBZ7/Ptea4tmzAalfjoHK+FNQp9LADYwgnvtfNBBEFgLBPU1dWvfkwckbQjAflMww==
+X-Received: by 2002:a05:6000:4014:b0:3e8:b4cb:c3a0 with SMTP id
+ ffacd0b85a97d-42666ac4a18mr16291222f8f.8.1760521110580; 
+ Wed, 15 Oct 2025 02:38:30 -0700 (PDT)
+Received: from meli-email.org (ppp-2-86-215-65.home.otenet.gr. [2.86.215.65])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47101c23a52sm17364535e9.12.2025.10.15.02.38.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Oct 2025 02:38:30 -0700 (PDT)
+Date: Wed, 15 Oct 2025 12:29:59 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: stevensd@chromium.org, jasowang@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>, hi@alyssa.is,
+ Laurent Vivier <lvivier@redhat.com>,
+ Alex Benn=?UTF-8?B?w6k=?=e <alex.bennee@linaro.org>, david@redhat.com,
+ manos.pitsidianakis@linaro.org, Fabiano Rosas <farosas@suse.de>,
+ Michael S. Tsirkin <mst@redhat.com>, stefanha@redhat.com,
+ Stefano Garzarella <sgarzare@redhat.com>, slp@redhat.com, dbassey@redhat.com,
+ Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH v9 3/7] vhost_user.rst: Add SHMEM_MAP/_UNMAP to spec
+User-Agent: meli/0.8.12
+References: <20251015085930.1517330-1-aesteve@redhat.com>
+ <20251015085930.1517330-4-aesteve@redhat.com>
+In-Reply-To: <20251015085930.1517330-4-aesteve@redhat.com>
+Message-ID: <t462s4.1g2keahxb4duv@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,168 +107,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Wed, 15 Oct 2025 11:59, Albert Esteve <aesteve@redhat.com> wrote:
+>Add SHMEM_MAP/_UNMAP request to the vhost-user
+>spec documentation.
+>
+>Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>Signed-off-by: Albert Esteve <aesteve@redhat.com>
+>---
 
-The command is niche and better served by the host audio system.
-There is no QMP equivalent, fortunately. You can capture the audio
-stream via remote desktop protocols too (dbus, vnc, spice).
+I found a minor typo (response inline) but otherwise LGTM
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- docs/about/deprecated.rst | 20 ++++++++++++++++++++
- meson.build               |  4 ++++
- audio/audio-hmp-cmds.c    |  7 +++++++
- audio/meson.build         |  5 +++--
- hmp-commands-info.hx      |  2 ++
- hmp-commands.hx           |  2 ++
- 6 files changed, 38 insertions(+), 2 deletions(-)
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 98361f5832..a357f207cf 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -169,6 +169,26 @@ Use ``job-finalize`` instead.
- 
- This argument has always been ignored.
- 
-+Human Machine Protocol (HMP) commands
-+-------------------------------------
-+
-+``wavcapture`` (since 10.2)
-+''''''''''''''''''''''''''''
-+
-+The ``wavcapture`` command is deprecated and will be removed in a future release.
-+
-+Use ``-audiodev wav`` or your host audio system to capture audio.
-+
-+``stopcapture`` (since 10.2)
-+''''''''''''''''''''''''''''
-+
-+The ``stopcapture`` command is deprecated and will be removed in a future release.
-+
-+``info`` argument ``capture`` (since 10.2)
-+''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``info capture`` command is deprecated and will be removed in a future release.
-+
- Host Architectures
- ------------------
- 
-diff --git a/meson.build b/meson.build
-index afaefa0172..a4d8e33132 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2354,6 +2354,10 @@ endif
- config_host_data = configuration_data()
- 
- config_host_data.set('CONFIG_HAVE_RUST', have_rust)
-+
-+# HMP code deprecated since v10.2, to be removed
-+config_host_data.set('CONFIG_AUDIO_HMP', true)
-+
- audio_drivers_selected = []
- if have_system
-   audio_drivers_available = {
-diff --git a/audio/audio-hmp-cmds.c b/audio/audio-hmp-cmds.c
-index 8774c09f18..9129a02331 100644
---- a/audio/audio-hmp-cmds.c
-+++ b/audio/audio-hmp-cmds.c
-@@ -28,6 +28,7 @@
- #include "monitor/monitor.h"
- #include "qapi/error.h"
- #include "qobject/qdict.h"
-+#include "qemu/error-report.h"
- 
- static QLIST_HEAD (capture_list_head, CaptureState) capture_head;
- 
-@@ -36,6 +37,8 @@ void hmp_info_capture(Monitor *mon, const QDict *qdict)
-     int i;
-     CaptureState *s;
- 
-+    warn_report_once("'info capture' is deprecated since v10.2, to be removed");
-+
-     for (s = capture_head.lh_first, i = 0; s; s = s->entries.le_next, ++i) {
-         monitor_printf(mon, "[%d]: ", i);
-         s->ops.info (s->opaque);
-@@ -48,6 +51,8 @@ void hmp_stopcapture(Monitor *mon, const QDict *qdict)
-     int n = qdict_get_int(qdict, "n");
-     CaptureState *s;
- 
-+    warn_report_once("'stopcapture' is deprecated since v10.2, to be removed");
-+
-     for (s = capture_head.lh_first, i = 0; s; s = s->entries.le_next, ++i) {
-         if (i == n) {
-             s->ops.destroy (s->opaque);
-@@ -69,6 +74,8 @@ void hmp_wavcapture(Monitor *mon, const QDict *qdict)
-     Error *local_err = NULL;
-     AudioState *as = audio_state_by_name(audiodev, &local_err);
- 
-+    warn_report_once("'wavcapture' is deprecated since v10.2, to be removed");
-+
-     if (!as) {
-         error_report_err(local_err);
-         return;
-diff --git a/audio/meson.build b/audio/meson.build
-index 59f0a431d5..f0c97e5223 100644
---- a/audio/meson.build
-+++ b/audio/meson.build
-@@ -1,12 +1,13 @@
- system_ss.add([spice_headers, files('audio.c')])
- system_ss.add(files(
--  'audio-hmp-cmds.c',
-   'mixeng.c',
-   'noaudio.c',
-   'wavaudio.c',
--  'wavcapture.c',
- ))
- 
-+# deprecated since v10.2, to be removed
-+system_ss.add(files('audio-hmp-cmds.c', 'wavcapture.c'))
-+
- system_ss.add(when: coreaudio, if_true: files('coreaudio.m'))
- system_ss.add(when: dsound, if_true: files('dsoundaudio.c', 'audio_win_int.c'))
- 
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 25b4aed51f..59f3446224 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -363,6 +363,7 @@ SRST
-     Show host USB devices.
- ERST
- 
-+#ifdef CONFIG_AUDIO_HMP
-     {
-         .name       = "capture",
-         .args_type  = "",
-@@ -375,6 +376,7 @@ SRST
-   ``info capture``
-     Show capture information.
- ERST
-+#endif
- 
-     {
-         .name       = "snapshots",
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 15f6082596..6d59bc8f18 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -764,6 +764,7 @@ SRST
- 
- ERST
- 
-+#ifdef CONFIG_AUDIO_HMP
-     {
-         .name       = "wavcapture",
-         .args_type  = "path:F,audiodev:s,freq:i?,bits:i?,nchannels:i?",
-@@ -798,6 +799,7 @@ SRST
-     info capture
- 
- ERST
-+#endif
- 
-     {
-         .name       = "memsave",
--- 
-2.51.0
+> docs/interop/vhost-user.rst | 58 +++++++++++++++++++++++++++++++++++++
+> 1 file changed, 58 insertions(+)
+>
+>diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+>index 436a94c0ee..dab9f3af42 100644
+>--- a/docs/interop/vhost-user.rst
+>+++ b/docs/interop/vhost-user.rst
+>@@ -350,6 +350,27 @@ Device state transfer parameters
+>   In the future, additional phases might be added e.g. to allow
+>   iterative migration while the device is running.
+> 
+>+MMAP request
+>+^^^^^^^^^^^^
+>+
+>++-------+---------+-----------+------------+-----+-------+
+>+| shmid | padding | fd_offset | shm_offset | len | flags |
+>++-------+---------+-----------+------------+-----+-------+
+>+
+>+:shmid: a 8-bit shared memory region identifier
+>+
+>+:fd_offset: a 64-bit offset of this area from the start
+>+            of the supplied file descriptor
+>+
+>+:shm_offset: a 64-bit offset from the start of the
+>+             pointed shared memory region
+>+
+>+:len: a 64-bit size of the memory to map
+>+
+>+:flags: a 64-bit value:
+>+  - 0: Pages are mapped read-only
+>+  - 1: Pages are mapped read-write
+>+
+> C structure
+> -----------
+> 
+>@@ -375,6 +396,7 @@ In QEMU the vhost-user message is implemented with the following struct:
+>           VhostUserInflight inflight;
+>           VhostUserShared object;
+>           VhostUserTransferDeviceState transfer_state;
+>+          VhostUserMMap mmap;
+>       };
+>   } QEMU_PACKED VhostUserMsg;
+> 
+>@@ -1057,6 +1079,7 @@ Protocol features
+>   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
+>   #define VHOST_USER_PROTOCOL_F_SHARED_OBJECT        18
+>   #define VHOST_USER_PROTOCOL_F_DEVICE_STATE         19
+>+  #define VHOST_USER_PROTOCOL_F_SHMEM                20
+> 
+> Front-end message types
+> -----------------------
+>@@ -1865,6 +1888,41 @@ is sent by the front-end.
+>   when the operation is successful, or non-zero otherwise. Note that if the
+>   operation fails, no fd is sent to the backend.
+> 
+>+``VHOST_USER_BACKEND_SHMEM_MAP``
+>+  :id: 9
+>+  :equivalent ioctl: N/A
+>+  :request payload: fd and ``struct VhostUserMMap``
+>+  :reply payload: N/A
+>+
+>+  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
+>+  successfully negotiated, this message can be submitted by the backends to
+>+  advertise a new mapping to be made in a given VIRTIO Shared Memory Region.
+>+  Upon receiving the message, the front-end will mmap the given fd into the
+>+  VIRTIO Shared Memory Region with the requested ``shmid``.
+>+  If``VHOST_USER_PROTOCOL_F_REPLY_ACK`` is negotiated, and
 
+Space missing after initial "If"
+
+>+  back-end set the ``VHOST_USER_NEED_REPLY`` flag, the front-end
+>+  must respond with zero when operation is successfully completed,
+>+  or non-zero otherwise.
+>+
+>+  Mapping over an already existing map is not allowed and requests shall fail.
+>+  Therefore, the memory range in the request must correspond with a valid,
+>+  free region of the VIRTIO Shared Memory Region. Also, note that mappings
+>+  consume resources and that the request can fail when there are no 
+>resources
+>+  available.
+>+
+>+``VHOST_USER_BACKEND_SHMEM_UNMAP``
+>+  :id: 10
+>+  :equivalent ioctl: N/A
+>+  :request payload: ``struct VhostUserMMap``
+>+  :reply payload: N/A
+>+
+>+  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
+>+  successfully negotiated, this message can be submitted by the backends so
+>+  that the front-end un-mmaps a given range (``shm_offset``, ``len``) in the
+>+  VIRTIO Shared Memory Region with the requested ``shmid``. Note that the
+>+  given range shall correspond to the entirety of a valid mapped region.
+>+  A reply is generated indicating whether unmapping succeeded.
+>+
+> .. _reply_ack:
+> 
+> VHOST_USER_PROTOCOL_F_REPLY_ACK
+>-- 
+>2.49.0
+>
 
