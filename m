@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B17BDEC09
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4686DBDEBFD
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v91VQ-0001b2-Ix; Wed, 15 Oct 2025 09:25:28 -0400
+	id 1v91VO-0001cD-Ki; Wed, 15 Oct 2025 09:25:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v91VL-0001Zn-1q
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:25:23 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v91VN-0001ap-4j
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:25:25 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v91V9-0003TG-VK
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:25:22 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v91V9-0003TK-Tu
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:25:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
  Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=LOzfUGc1gZU7GU3687awBrp3Z3VQmfDZjAha2HADLKA=; b=Br/BcLc/5xd0enN
- oEoIMPce8jqrrocdya9T3s/y91gKRCxIQQf8lrurlRSNfIKALkkJb+doYWmeWkbWyraCkG2n0pyYg
- lqYlwCTnaBKBvjktUAOo+Bswzd/ncNaedlCgaujU/3BSIulk1BDxo9JbMP/Jf5OkBd2F66MhXLFDp
- xo=;
-Date: Wed, 15 Oct 2025 15:27:40 +0200
-Subject: [PATCH 3/5] hw/riscv: Widen OpenSBI dynamic info struct
+ List-Help; bh=zKU6myrwXMXIlgy4yFFaEUrAYf8RL5GyRb/aBqTqUjI=; b=VnDuutva7dR0oXK
+ rtQEy/5gdTLDTrzr6x6gJz+i0t2RykF8qsZ69YilwtmdFSBw6VGd/D+ODb20vzw4wcmyx5WU+FFyq
+ Dvru2ZyMkvGUGcphQenpzIM6Kr/Yv+IfcFo6R9LjRZzipbX6Tb24alSqM987oDTSrOQNc5sHtYgJ5
+ Y8=;
+Date: Wed, 15 Oct 2025 15:27:41 +0200
+Subject: [PATCH 4/5] target-info: Introduce runtime TARGET_PHYS_ADDR_SPACE_BITS
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251015-feature-single-binary-hw-v1-v1-3-8b416eda42cf@rev.ng>
+Message-Id: <20251015-feature-single-binary-hw-v1-v1-4-8b416eda42cf@rev.ng>
 References: <20251015-feature-single-binary-hw-v1-v1-0-8b416eda42cf@rev.ng>
 In-Reply-To: <20251015-feature-single-binary-hw-v1-v1-0-8b416eda42cf@rev.ng>
 To: qemu-devel@nongnu.org
@@ -44,8 +44,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,101 +63,61 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since fw_dynamic_info is only used for non 32 bit targets, target_long
-is int64_t anyway.  Rename struct to fw_dynamic_info64 and use int64_t.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/hw/riscv/boot_opensbi.h | 14 +++++++-------
- hw/riscv/boot.c                 | 22 ++++++++++++----------
- 2 files changed, 19 insertions(+), 17 deletions(-)
+ include/qemu/target-info-impl.h | 2 ++
+ include/qemu/target-info.h      | 8 ++++++++
+ target-info.c                   | 5 +++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/include/hw/riscv/boot_opensbi.h b/include/hw/riscv/boot_opensbi.h
-index 18664a174b..ab9999be3f 100644
---- a/include/hw/riscv/boot_opensbi.h
-+++ b/include/hw/riscv/boot_opensbi.h
-@@ -29,17 +29,17 @@ enum sbi_scratch_options {
- };
+diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-impl.h
+index 17887f64e2..80d1613128 100644
+--- a/include/qemu/target-info-impl.h
++++ b/include/qemu/target-info-impl.h
+@@ -18,6 +18,8 @@ typedef struct TargetInfo {
+     SysEmuTarget target_arch;
+     /* runtime equivalent of TARGET_LONG_BITS definition */
+     unsigned long_bits;
++    /* runtime equivalent of TARGET_PHYS_ADDR_SPACE_BITS definition */
++    unsigned phys_addr_space_bits;
+     /* runtime equivalent of CPU_RESOLVING_TYPE definition */
+     const char *cpu_type;
+     /* QOM typename machines for this binary must implement */
+diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
+index abcf25db6f..8474c43404 100644
+--- a/include/qemu/target-info.h
++++ b/include/qemu/target-info.h
+@@ -23,6 +23,14 @@ const char *target_name(void);
+  */
+ unsigned target_long_bits(void);
  
- /** Representation dynamic info passed by previous booting stage */
--struct fw_dynamic_info {
-+struct fw_dynamic_info64 {
-     /** Info magic */
--    target_long magic;
-+    int64_t magic;
-     /** Info version */
--    target_long version;
-+    int64_t version;
-     /** Next booting stage address */
--    target_long next_addr;
-+    int64_t next_addr;
-     /** Next booting stage mode */
--    target_long next_mode;
-+    int64_t next_mode;
-     /** Options for OpenSBI library */
--    target_long options;
-+    int64_t options;
-     /**
-      * Preferred boot HART id
-      *
-@@ -55,7 +55,7 @@ struct fw_dynamic_info {
-      * stage can set it to -1UL which will force the FW_DYNAMIC firmware
-      * to use the relocation lottery mechanism.
-      */
--    target_long boot_hart;
-+    int64_t boot_hart;
- };
++/**
++ * target_phys_addr_space_bits:
++ *
++ * Returns: number of bits needed to represent the targets physical
++ *          address space.
++ */
++unsigned target_phys_addr_space_bits(void);
++
+ /**
+  * target_machine_typename:
+  *
+diff --git a/target-info.c b/target-info.c
+index 3110ab32f7..3d696ae0b3 100644
+--- a/target-info.c
++++ b/target-info.c
+@@ -22,6 +22,11 @@ unsigned target_long_bits(void)
+     return target_info()->long_bits;
+ }
  
- /** Representation dynamic info passed by previous booting stage */
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index 4eadcff26c..64608e58c7 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -387,7 +387,8 @@ void riscv_rom_copy_firmware_info(MachineState *machine,
-                                   uint64_t kernel_entry)
++unsigned target_phys_addr_space_bits(void)
++{
++    return target_info()->phys_addr_space_bits;
++}
++
+ SysEmuTarget target_arch(void)
  {
-     struct fw_dynamic_info32 dinfo32;
--    struct fw_dynamic_info dinfo;
-+    struct fw_dynamic_info64 dinfo64;
-+    void *dinfo_ptr = NULL;
-     size_t dinfo_len;
- 
-     if (riscv_is_32bit(harts)) {
-@@ -397,15 +398,17 @@ void riscv_rom_copy_firmware_info(MachineState *machine,
-         dinfo32.next_addr = cpu_to_le32(kernel_entry);
-         dinfo32.options = 0;
-         dinfo32.boot_hart = 0;
-+        dinfo_ptr = &dinfo32;
-         dinfo_len = sizeof(dinfo32);
-     } else {
--        dinfo.magic = cpu_to_le64(FW_DYNAMIC_INFO_MAGIC_VALUE);
--        dinfo.version = cpu_to_le64(FW_DYNAMIC_INFO_VERSION);
--        dinfo.next_mode = cpu_to_le64(FW_DYNAMIC_INFO_NEXT_MODE_S);
--        dinfo.next_addr = cpu_to_le64(kernel_entry);
--        dinfo.options = 0;
--        dinfo.boot_hart = 0;
--        dinfo_len = sizeof(dinfo);
-+        dinfo64.magic = cpu_to_le64(FW_DYNAMIC_INFO_MAGIC_VALUE);
-+        dinfo64.version = cpu_to_le64(FW_DYNAMIC_INFO_VERSION);
-+        dinfo64.next_mode = cpu_to_le64(FW_DYNAMIC_INFO_NEXT_MODE_S);
-+        dinfo64.next_addr = cpu_to_le64(kernel_entry);
-+        dinfo64.options = 0;
-+        dinfo64.boot_hart = 0;
-+        dinfo_ptr = &dinfo64;
-+        dinfo_len = sizeof(dinfo64);
-     }
- 
-     /**
-@@ -419,8 +422,7 @@ void riscv_rom_copy_firmware_info(MachineState *machine,
-     }
- 
-     rom_add_blob_fixed_as("mrom.finfo",
--                           riscv_is_32bit(harts) ?
--                           (void *)&dinfo32 : (void *)&dinfo,
-+                           dinfo_ptr,
-                            dinfo_len,
-                            rom_base + reset_vec_size,
-                            &address_space_memory);
+     SysEmuTarget arch = target_info()->target_arch;
 
 -- 
 2.51.0
