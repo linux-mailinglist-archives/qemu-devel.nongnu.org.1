@@ -2,33 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F18CBDC79C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B8FBDC781
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:30:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t6W-0000sH-0A; Wed, 15 Oct 2025 00:27:12 -0400
+	id 1v8t6W-0000sM-0g; Wed, 15 Oct 2025 00:27:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6R-0000i0-Rq; Wed, 15 Oct 2025 00:27:07 -0400
+ id 1v8t6R-0000hz-R9; Wed, 15 Oct 2025 00:27:07 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6J-0002x6-LH; Wed, 15 Oct 2025 00:27:07 -0400
+ id 1v8t6N-0002xo-To; Wed, 15 Oct 2025 00:27:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 368E315D9D9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4889D15D9DA;
  Wed, 15 Oct 2025 07:25:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id CD67029FE80;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DE29729FE81;
  Wed, 15 Oct 2025 07:25:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, nanliu <nanliu@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 06/13] docs/devel: Correct uefi-vars-x64 device name
-Date: Wed, 15 Oct 2025 07:25:30 +0300
-Message-ID: <20251015042540.68611-6-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Qing Wang <qinwang@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 07/13] pcie_sriov: make pcie_sriov_pf_exit() safe on
+ non-SR-IOV devices
+Date: Wed, 15 Oct 2025 07:25:31 +0300
+Message-ID: <20251015042540.68611-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
@@ -57,46 +60,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: nanliu <nanliu@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-The documentation for UEFI variable storage in uefi-vars.rst
-incorrectly listed the device name as `uefi-vars-x86`.
+Commit 3f9cfaa92c96 ("virtio-pci: Implement SR-IOV PF") added an
+unconditional call from virtio_pci_exit() to pcie_sriov_pf_exit().
 
-The correct device name as implemented in the source code is
-`uefi-vars-x64`.
+pcie_sriov_pf_exit() reads from the SR-IOV Capability in Configuration
+Space:
 
-This commit updates the documentation to use the correct name,
-aligning it with the implementation.
+  uint8_t *cfg = dev->config + dev->exp.sriov_cap;
+  ...
+  unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Signed-off-by: Nana Liu <nanliu@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+This results in undefined behavior when dev->exp.sriov_cap is 0 because
+this is not an SR-IOV device. For example, unparent_vfs() segfaults when
+total_vfs happens to be non-zero.
+
+Fix this by returning early from pcie_sriov_pf_exit() when
+dev->exp.sriov_cap is 0 because this is not an SR-IOV device.
+
+Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Reported-by: Qing Wang <qinwang@redhat.com>
+Buglink: https://issues.redhat.com/browse/RHEL-116443
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20250924155153.579495-1-stefanha@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit bab681f752048c3bc22d561b1d314c7ec16419c9)
+(Mjt: backport to before v10.0.0-819-g19e55471d4e8
+ "pcie_sriov: Allow user to create SR-IOV device")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit f65918497cc6b9034ce8f81a4df1d6407e110367)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/devel/uefi-vars.rst b/docs/devel/uefi-vars.rst
-index 0151a26a0a..b4013b5d12 100644
---- a/docs/devel/uefi-vars.rst
-+++ b/docs/devel/uefi-vars.rst
-@@ -34,7 +34,7 @@ configures the shared buffer location and size, and traps to the host
- to process the requests.
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index dd4fbaea46..6281bd61d9 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -112,6 +112,9 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+ void pcie_sriov_pf_exit(PCIDevice *dev)
+ {
+     uint8_t *cfg = dev->config + dev->exp.sriov_cap;
++    if (dev->exp.sriov_cap == 0) {
++        return;
++    }
  
- The ``uefi-vars`` device implements the UEFI virtual device.  It comes
--in ``uefi-vars-x86`` and ``uefi-vars-sysbus`` flavours.  The device
-+in ``uefi-vars-x64`` and ``uefi-vars-sysbus`` flavours.  The device
- reimplements the handlers needed, specifically
- ``EfiSmmVariableProtocol`` and ``VarCheckPolicyLibMmiHandler``.  It
- also consumes events (``EfiEndOfDxeEventGroup``,
-@@ -57,7 +57,7 @@ usage on x86_64
- .. code::
- 
-    qemu-system-x86_64 \
--      -device uefi-vars-x86,jsonfile=/path/to/vars.json
-+      -device uefi-vars-x64,jsonfile=/path/to/vars.json
- 
- usage on aarch64
- ----------------
+     unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+ }
 -- 
 2.47.3
 
