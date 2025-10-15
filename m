@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE17BDC34B
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 04:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 859B8BDC354
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 04:53:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8raH-0001qT-6Q; Tue, 14 Oct 2025 22:49:50 -0400
+	id 1v8rcy-00036F-0A; Tue, 14 Oct 2025 22:52:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v8ra3-0001q5-IH
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:49:35 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v8rZq-0006JR-A3
- for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:49:28 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 59F2n486063990
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 15 Oct 2025 11:49:04 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=gguJc98z35ToVrINbOWa6utCG1k72ZRcJf5CX1dzVvc=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1760496544; v=1;
- b=Rj+X+RrJYLg71YUWNF9fDTh760YTzWnQv7RZVYaSbz54RmiNChx3v9r7RsyIfh+z
- NZuJOJ25CUacEn479I/Z0h1dW1TOC84w7xyGPYTdzRq7cJ5DhmabKvG1dGZZMH/J
- Abjfx2lDXYsK1Wo7ck7flxNJK4HcwouRTuhSuWUxTSWF6qfwnvV5PymB5xjffc5L
- O4e6Dv3T89+5GKyQZWmGNGTg//bAXn/fAJTooRQSoIJ02So61W8hVtxZkZFhMT7h
- ZowBwBK72wMnQWQ/2DFub2q7ysToNhzo5bs3UAHiIBjZ8/g8RY8nx/znH0hG9beK
- ktXa1c72pXlksOa3uyoWaw==
-Message-ID: <7ebab3d3-ee30-499c-b475-a64560eb160a@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 15 Oct 2025 11:49:04 +0900
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1v8rci-00035M-MF
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:52:22 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1v8rcV-0006j2-Vu
+ for qemu-devel@nongnu.org; Tue, 14 Oct 2025 22:52:20 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-6318855a83fso13562065a12.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Oct 2025 19:52:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1760496722; x=1761101522; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yrYATmWBAX2GR6ZMhMA7RmRp8c2zVgLxLVX3yrwBUEU=;
+ b=JPMlEsS1FIv6YW1EhtHIV8Nmwko+ve8fISn5p+u3f9d4UAbeaH5fSQJ/Y15+2byUWx
+ bkoUXCCVeLl7lm+bSrycjrzIrtk4vn0ep3PpfgOx3d9Fipn1A8VSDaOaV7TKpyLUan9/
+ gHxCjgCjAXR9xSC7A5+GxZb8gFQH6rA+kQgGKks9ONN2no6Lq8WvxKYiaelEG9xOXUZZ
+ uOVUMnzzclpcvznU+MTRrP3SeIrMO16XT50f7hq1QTTjEgCiS6yqaheny7eTf56Z/6Gy
+ D4Sug9TZWcWq9PXzHq/ztjqulCHqvlTgyQiKujvcXg4OnLD23geoL887MzuGjYh4h/WB
+ UtuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760496722; x=1761101522;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yrYATmWBAX2GR6ZMhMA7RmRp8c2zVgLxLVX3yrwBUEU=;
+ b=ZMQteSWRgB1sRgdB6pJyGBjy+V1aoVwKTdByx2IfCcnaMErzSe5K9IVG1YQcOOwSVM
+ J3waJfp6ccLN9yD5Y27Fn4aYue995tq0eyzOoIOwrIvBSvIttSoqb2ZbkUgrfo5azhL/
+ UJ/aKU4Z/S753k77BkD+A6S+pX16oSc//VasNyWCznipA60Z0EQ7K7bflUdFHdC+ZrZQ
+ 6FrWviwWfO1h2lwcEwY2HXBzHaQS+LlIYKK98r5qn4zdW4wjDhxdZ4+dtTJJFmxLT2yJ
+ zHtxUmGNu2+3ZMhgiJZv2T+oI3zQefyvnV9yhWU31LZ9qtcVT+yUNZqBaGNUPssEbYq6
+ T47g==
+X-Gm-Message-State: AOJu0Yzcmrh4FoVC3b38AIfObH4lKdqdizDd4xz4rfnbdrXPMB3QHoeH
+ y8YBPd1IEG2kKb0x2Lbee1Aoo4VGbglSW/6xnSFwSFjDCDvu4bNogt+6SDzr4LE+oLkOupvCfcD
+ CVF9ZVHRtK7medtlE8UK+veawsLu//tsZPw==
+X-Gm-Gg: ASbGncvjnN9y5c0xrnzJZesueUYj/j5GO8tMmSCE6RchbVy8sTTh9lvpY4IEGNTfsQL
+ 1AQNMpWtwLAvR+D6HSvjtTNHcxOo1vxvEDA7acsYSMAXaYyninpY3tXatTeAq6aeIUe2PJNnjql
+ daQqC6h39/H/oeCrjD361QmEaYuLq1L0JxItHQagKquCFJtRbh1WWsKWUTpbfCPyJx2hHFPQ2YA
+ OTaTrSUjCf4NmhFQ7meLnr/ZPpjXRohwanUEp3iJZjhOIZnG/Hpk0aU
+X-Google-Smtp-Source: AGHT+IHfdiazKAbx3IzJ0+Yac/K58inmUv1XsIBrE0OCc+SfRlMNaRiS7aEv5XbNypPb0qc6WRbYd9uawaSR9g5s9FQ=
+X-Received: by 2002:a05:6402:2789:b0:63b:ee26:546d with SMTP id
+ 4fb4d7f45d1cf-63bee265665mr584877a12.12.1760496721892; Tue, 14 Oct 2025
+ 19:52:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] Support per-head resolutions with virtio-gpu
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Andrew Keesler <ankeesler@google.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20251014111234.3190346-1-alex.bennee@linaro.org>
- <20251014111234.3190346-2-alex.bennee@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20251014111234.3190346-2-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+References: <20251010134226.72221-1-philmd@linaro.org>
+ <20251010134226.72221-14-philmd@linaro.org>
+In-Reply-To: <20251010134226.72221-14-philmd@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 15 Oct 2025 12:51:34 +1000
+X-Gm-Features: AS18NWBwVRqB-drBRL_aG1NiBUYL6uW6v4KzuNNNosV6WccScC7pzNA2dGBiVuE
+Message-ID: <CAKmqyKPtjuAa=-fTukwE0-x5Ds5YLLotCHzxk=_TJaqzxuGwqA@mail.gmail.com>
+Subject: Re: [PATCH 13/16] target/riscv: Replace HOST_BIG_ENDIAN #ifdef with
+ runtime if() check
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,121 +101,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/10/14 20:12, Alex Bennée wrote:
-> From: Andrew Keesler <ankeesler@google.com>
-> 
-> In 454f4b0f, we started down the path of supporting separate
-> configurations per display head (e.g., you have 2 heads - one with
-> EDID name "AAA" and the other with EDID name "BBB").
-> 
-> In this change, we add resolution to this configuration surface (e.g.,
-> you have 2 heads - one with resolution 111x222 and the other with
-> resolution 333x444).
-> 
->    -display vnc=localhost:0,id=aaa,display=vga,head=0 \
->    -display vnc=localhost:1,id=bbb,display=vga,head=1 \
->    -device '{"driver":"virtio-vga",
->              "max_outputs":2,
->              "id":"vga",
->              "outputs":[
->                {
->                   "name":"AAA",
->                   "xres":111,
->                   "yres":222
->                },
->                {
->                   "name":"BBB",
->                   "xres":333,
->                   "yres":444
->                }
->              ]}'
-> 
-> Here is the behavior matrix of the current resolution configuration
-> surface (xres/yres) with the new resolution configuration surface
-> (outputs[i].xres/yres).
-> 
-> Case: !(xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
-> Behavior: current behavior - outputs[0] enabled with default xres/yres
-> 
-> Case: (xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
-> Behavior: current behavior - outputs[0] enabled with xres/yres
-> 
-> Case: !(xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
-> Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
-> 
-> Case: (xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
-> Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
-> Signed-off-by: Andrew Keesler <ankeesler@google.com>
+On Fri, Oct 10, 2025 at 11:52=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> Replace compile-time #ifdef with a runtime check to ensure all code
+> paths are built and tested. This reduces build-time configuration
+> complexity and improves maintainability.
+>
+> No functional change intended.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Nitpick: it is better to have a blank line between Behavior: and 
-Signed-off-by: to clarify the beginning of tags.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Message-ID: <20250902141312.750525-2-ankeesler@google.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Alistair
+
 > ---
->   qapi/virtio.json             | 10 ++++++++--
->   hw/display/virtio-gpu-base.c | 10 ++++++++++
->   2 files changed, 18 insertions(+), 2 deletions(-)
-> 
-> diff --git a/qapi/virtio.json b/qapi/virtio.json
-> index 05295ab6655..0ce789bb22f 100644
-> --- a/qapi/virtio.json
-> +++ b/qapi/virtio.json
-> @@ -971,15 +971,21 @@
->   ##
->   # @VirtIOGPUOutput:
->   #
-> -# Describes configuration of a VirtIO GPU output.
-> +# Describes configuration of a VirtIO GPU output. If both xres and
-> +# yres are set, they take precedence over root virtio-gpu
-> +# resolution configuration and enable the corresponding output.
->   #
->   # @name: the name of the output
->   #
-> +# @xres: horizontal resolution of the output in pixels (since 10.2)
-> +#
-> +# @yres: vertical resolution of the output in pixels (since 10.2)
-> +#
->   # Since: 10.1
->   ##
->   
->   { 'struct': 'VirtIOGPUOutput',
-> -  'data': { 'name': 'str' } }
-> +  'data': { 'name': 'str', '*xres': 'uint16', '*yres': 'uint16' } }
->   
->   ##
->   # @DummyVirtioForceArrays:
-> diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-> index 7269477a1c8..6adb5312a40 100644
-> --- a/hw/display/virtio-gpu-base.c
-> +++ b/hw/display/virtio-gpu-base.c
-> @@ -233,6 +233,16 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
->       g->req_state[0].width = g->conf.xres;
->       g->req_state[0].height = g->conf.yres;
->   
-> +    for (output_idx = 0, node = g->conf.outputs;
-> +         node && output_idx < g->conf.max_outputs;
-
-output_idx < g->conf.max_outputs is redundant as it is already enforced 
-with the first for-loop that enumerates outputs.
-
-The condition can be simply removed, but I think merging this loop to 
-the earlier loop will make the code a bit more concise.
-
-Aside this redundancy of the code, the logic this patch implements looks 
-good to me.
-
-> +         output_idx++, node = node->next) {
-> +        if (node->value->has_xres && node->value->has_yres) {
-> +            g->enabled_output_bitmask |= (1 << output_idx);
-> +            g->req_state[output_idx].width = node->value->xres;
-> +            g->req_state[output_idx].height = node->value->yres;
-> +        }
-> +    }
+>  target/riscv/vector_helper.c            | 32 ++++++++++++-------------
+>  target/riscv/insn_trans/trans_rvv.c.inc | 16 ++++++-------
+>  2 files changed, 24 insertions(+), 24 deletions(-)
+>
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 41ea2231067..2de3358ee86 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -235,26 +235,26 @@ vext_continuous_ldst_host(CPURISCVState *env, vext_=
+ldst_elem_fn_host *ldst_host,
+>                          void *vd, uint32_t evl, uint32_t reg_start, void=
+ *host,
+>                          uint32_t esz, bool is_load)
+>  {
+> -#if HOST_BIG_ENDIAN
+> -    for (; reg_start < evl; reg_start++, host +=3D esz) {
+> -        ldst_host(vd, reg_start, host);
+> -    }
+> -#else
+> -    if (esz =3D=3D 1) {
+> -        uint32_t byte_offset =3D reg_start * esz;
+> -        uint32_t size =3D (evl - reg_start) * esz;
+> -
+> -        if (is_load) {
+> -            memcpy(vd + byte_offset, host, size);
+> -        } else {
+> -            memcpy(host, vd + byte_offset, size);
+> -        }
+> -    } else {
+> +    if (HOST_BIG_ENDIAN) {
+>          for (; reg_start < evl; reg_start++, host +=3D esz) {
+>              ldst_host(vd, reg_start, host);
+>          }
+> +    } else {
+> +        if (esz =3D=3D 1) {
+> +            uint32_t byte_offset =3D reg_start * esz;
+> +            uint32_t size =3D (evl - reg_start) * esz;
 > +
->       g->hw_ops = &virtio_gpu_ops;
->       for (i = 0; i < g->conf.max_outputs; i++) {
->           g->scanout[i].con =
-
+> +            if (is_load) {
+> +                memcpy(vd + byte_offset, host, size);
+> +            } else {
+> +                memcpy(host, vd + byte_offset, size);
+> +            }
+> +        } else {
+> +            for (; reg_start < evl; reg_start++, host +=3D esz) {
+> +                ldst_host(vd, reg_start, host);
+> +            }
+> +        }
+>      }
+> -#endif
+>  }
+>
+>  static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
+> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_=
+trans/trans_rvv.c.inc
+> index f4b5460340e..2a487179f63 100644
+> --- a/target/riscv/insn_trans/trans_rvv.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
+> @@ -3351,19 +3351,19 @@ static void load_element(TCGv_i64 dest, TCGv_ptr =
+base,
+>  /* offset of the idx element with base register r */
+>  static uint32_t endian_ofs(DisasContext *s, int r, int idx)
+>  {
+> -#if HOST_BIG_ENDIAN
+> -    return vreg_ofs(s, r) + ((idx ^ (7 >> s->sew)) << s->sew);
+> -#else
+> -    return vreg_ofs(s, r) + (idx << s->sew);
+> -#endif
+> +    if (HOST_BIG_ENDIAN) {
+> +        return vreg_ofs(s, r) + ((idx ^ (7 >> s->sew)) << s->sew);
+> +    } else {
+> +        return vreg_ofs(s, r) + (idx << s->sew);
+> +    }
+>  }
+>
+>  /* adjust the index according to the endian */
+>  static void endian_adjust(TCGv_i32 ofs, int sew)
+>  {
+> -#if HOST_BIG_ENDIAN
+> -    tcg_gen_xori_i32(ofs, ofs, 7 >> sew);
+> -#endif
+> +    if (HOST_BIG_ENDIAN) {
+> +        tcg_gen_xori_i32(ofs, ofs, 7 >> sew);
+> +    }
+>  }
+>
+>  /* Load idx >=3D VLMAX ? 0 : vreg[idx] */
+> --
+> 2.51.0
+>
+>
 
