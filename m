@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EE6BDEBCA
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A60BDEBD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 15:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v91T3-0005dz-MT; Wed, 15 Oct 2025 09:23:01 -0400
+	id 1v91Sc-0005Ve-GF; Wed, 15 Oct 2025 09:22:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v91SV-0005TA-MR
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:22:27 -0400
+ id 1v91SO-0005OZ-Fa
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:22:22 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v91S9-00034l-4r
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:22:27 -0400
+ id 1v91S8-00034m-An
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 09:22:19 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 8166588ACF;
- Wed, 15 Oct 2025 16:21:54 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 5C22088B0F;
+ Wed, 15 Oct 2025 16:21:55 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a94::1:15])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id bLQ5oq0N5Os0-95StWcB1; Wed, 15 Oct 2025 16:21:53 +0300
+ ESMTPSA id bLQ5oq0N5Os0-NWwvEDBJ; Wed, 15 Oct 2025 16:21:54 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760534513;
- bh=MqiBmROUNBmcgWznWmpS2J0vN0EQYgRHjh9r7Qc714k=;
+ s=default; t=1760534514;
+ bh=AmK5dTR7FNJv8BYt1ii1QHE7ubRAYsDylzbe2+T8b9U=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=fX7heLf4GCGYP8i3Cov6V7R1LuO7yyjyND2b1DBJg1pL/Yxh3qElFmPlhIozhV8NL
- NRo8ON2xDFXSBbq6+uiUJ37GI27O3pMXi6O1eCdQiBY+nVFhNslsPnfRdvUwc8QGt0
- amhNDkijw+XlsGWFuFaWaoYfd1h8pPLMd4kp57dU=
+ b=fz2iEiGT6d0xIoewgcCwzZuxx+hqQjq+QvqQeZ0aQPG4FICKIvsEqSBn9b9IqXmib
+ qq/zt7Rb5Y7tEnkfPKiuEFe3qjta/xt32mWGU8bD2iw/hwwE5Xlq0R5zvWJ6UzaR7Q
+ uA9FA+Q9+35zq08A+iUy5sxOf1N9ckkBhSmDGLWg=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,9 +46,10 @@ Cc: peterx@redhat.com, farosas@suse.de, sw@weilnetz.de, eblake@redhat.com,
  steven.sistare@oracle.com, leiyang@redhat.com, davydov-max@yandex-team.ru,
  yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
  raphael.s.norwitz@gmail.com
-Subject: [PATCH v8 16/19] qapi: introduce backend-transfer migration parameter
-Date: Wed, 15 Oct 2025 16:21:32 +0300
-Message-ID: <20251015132136.1083972-17-vsementsov@yandex-team.ru>
+Subject: [PATCH v8 17/19] virtio-net: support backend-transfer migration for
+ virtio-net/tap
+Date: Wed, 15 Oct 2025 16:21:33 +0300
+Message-ID: <20251015132136.1083972-18-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
 References: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
@@ -63,7 +64,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,182 +79,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This parameter enables backend-transfer feature: all devices
-which support it will migrate their backends (for example a TAP
-device, by passing open file descriptor to migration channel).
+Add virtio-net option backend-transfer, which is true by default,
+but false for older machine types, which doesn't support the feature.
 
-Currently no such devices, so the new parameter is a noop.
+For backend-transfer migration, both global migration parameter
+backend-transfer and virtio-net backend-transfer option should be
+set to true.
 
-Next commit will add support for virtio-net, to migrate its
-TAP backend.
+With the parameters enabled (both on source and target) of-course, and
+with unix-socket used as migration-channel, we do "migrate" the
+virtio-net backend - TAP device, with all its fds.
+
+This way management tool should not care about creating new TAP, and
+should not handle switching to it. Migration downtime become shorter.
+
+How it works:
+
+1. For incoming migration, we postpone TAP initialization up to
+   pre-incoming point.
+
+2. At pre-incoming point we see that "virtio-net-tap" is set for
+   backend-transfer, so we postpone TAP initialization up to
+   post-load
+
+3. During virtio-load, we get TAP state (and fds) as part of
+   virtio-net state
+
+4. In post-load we finalize TAP initialization
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- migration/options.c | 18 ++++++++++++++++++
- migration/options.h |  2 ++
- qapi/migration.json | 38 ++++++++++++++++++++++++++++++++------
- 3 files changed, 52 insertions(+), 6 deletions(-)
+ hw/core/machine.c              |  1 +
+ hw/net/virtio-net.c            | 75 +++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-net.h |  1 +
+ include/net/tap.h              |  2 +
+ net/tap.c                      | 45 +++++++++++++++++++-
+ 5 files changed, 122 insertions(+), 2 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index 5183112775..a461b07b54 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -262,6 +262,12 @@ bool migrate_mapped_ram(void)
-     return s->capabilities[MIGRATION_CAPABILITY_MAPPED_RAM];
- }
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 681adbb7ac..a3d77f5604 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -40,6 +40,7 @@
  
-+bool migrate_backend_transfer(void)
+ GlobalProperty hw_compat_10_1[] = {
+     { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
++    { TYPE_VIRTIO_NET, "backend-transfer", "false" },
+ };
+ const size_t hw_compat_10_1_len = G_N_ELEMENTS(hw_compat_10_1);
+ 
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 661413c72f..5f9711dee7 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -38,6 +38,7 @@
+ #include "qapi/qapi-events-migration.h"
+ #include "hw/virtio/virtio-access.h"
+ #include "migration/misc.h"
++#include "migration/options.h"
+ #include "standard-headers/linux/ethtool.h"
+ #include "system/system.h"
+ #include "system/replay.h"
+@@ -3358,6 +3359,9 @@ struct VirtIONetMigTmp {
+     uint16_t        curr_queue_pairs_1;
+     uint8_t         has_ufo;
+     uint32_t        has_vnet_hdr;
++
++    NetClientState *ncs;
++    uint32_t max_queue_pairs;
+ };
+ 
+ /* The 2nd and subsequent tx_waiting flags are loaded later than
+@@ -3627,6 +3631,71 @@ static const VMStateDescription vhost_user_net_backend_state = {
+     }
+ };
+ 
++static bool virtio_net_is_tap_mig(void *opaque, int version_id)
 +{
-+    MigrationState *s = migrate_get_current();
-+    return s->parameters.backend_transfer;
++    VirtIONet *n = opaque;
++    NetClientState *nc;
++
++    nc = qemu_get_queue(n->nic);
++
++    return migrate_backend_transfer() && n->backend_transfer && nc->peer &&
++        nc->peer->info->type == NET_CLIENT_DRIVER_TAP;
 +}
 +
- bool migrate_ignore_shared(void)
++static int virtio_net_nic_pre_save(void *opaque)
++{
++    struct VirtIONetMigTmp *tmp = opaque;
++
++    tmp->ncs = tmp->parent->nic->ncs;
++    tmp->max_queue_pairs = tmp->parent->max_queue_pairs;
++
++    return 0;
++}
++
++static int virtio_net_nic_pre_load(void *opaque)
++{
++    /* Reuse the pointer setup from save */
++    virtio_net_nic_pre_save(opaque);
++
++    return 0;
++}
++
++static int virtio_net_nic_post_load(void *opaque, int version_id)
++{
++    struct VirtIONetMigTmp *tmp = opaque;
++    Error *local_err = NULL;
++
++    if (!virtio_net_update_host_features(tmp->parent, &local_err)) {
++        error_report_err(local_err);
++        return -EINVAL;
++    }
++
++    return 0;
++}
++
++static const VMStateDescription vmstate_virtio_net_nic_nc = {
++    .name = "virtio-net-nic-nc",
++    .fields = (const VMStateField[]) {
++        VMSTATE_STRUCT_POINTER(peer, NetClientState, vmstate_tap,
++                               NetClientState),
++        VMSTATE_END_OF_LIST()
++   },
++};
++
++static const VMStateDescription vmstate_virtio_net_nic = {
++    .name      = "virtio-net-nic",
++    .pre_load  = virtio_net_nic_pre_load,
++    .pre_save  = virtio_net_nic_pre_save,
++    .post_load  = virtio_net_nic_post_load,
++    .fields    = (const VMStateField[]) {
++        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(ncs, struct VirtIONetMigTmp,
++                                             max_queue_pairs,
++                                             vmstate_virtio_net_nic_nc,
++                                             struct NetClientState),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
+ static const VMStateDescription vmstate_virtio_net_device = {
+     .name = "virtio-net-device",
+     .version_id = VIRTIO_NET_VM_VERSION,
+@@ -3658,6 +3727,9 @@ static const VMStateDescription vmstate_virtio_net_device = {
+          * but based on the uint.
+          */
+         VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN >> 3),
++        VMSTATE_WITH_TMP_TEST(VirtIONet, virtio_net_is_tap_mig,
++                              struct VirtIONetMigTmp,
++                              vmstate_virtio_net_nic),
+         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
+                          vmstate_virtio_net_has_vnet),
+         VMSTATE_UINT8(mac_table.multi_overflow, VirtIONet),
+@@ -4239,7 +4311,7 @@ static bool vhost_user_blk_pre_incoming(void *opaque, Error **errp)
+     VirtIONet *n = opaque;
+     int i;
+ 
+-    if (peer_wait_incoming(n)) {
++    if (!virtio_net_is_tap_mig(opaque, 0) && peer_wait_incoming(n)) {
+         for (i = 0; i < n->max_queue_pairs; i++) {
+             if (!peer_postponed_init(n, i, errp)) {
+                 return false;
+@@ -4389,6 +4461,7 @@ static const Property virtio_net_properties[] = {
+                                host_features_ex,
+                                VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM,
+                                false),
++    DEFINE_PROP_BOOL("backend-transfer", VirtIONet, backend_transfer, true),
+ };
+ 
+ static void virtio_net_class_init(ObjectClass *klass, const void *data)
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 5b8ab7bda7..bf07f8a4cb 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -231,6 +231,7 @@ struct VirtIONet {
+     struct EBPFRSSContext ebpf_rss;
+     uint32_t nr_ebpf_rss_fds;
+     char **ebpf_rss_fds;
++    bool backend_transfer;
+ };
+ 
+ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
+diff --git a/include/net/tap.h b/include/net/tap.h
+index 5a926ba513..506f7ab719 100644
+--- a/include/net/tap.h
++++ b/include/net/tap.h
+@@ -36,4 +36,6 @@ int tap_get_fd(NetClientState *nc);
+ bool tap_wait_incoming(NetClientState *nc);
+ bool tap_postponed_init(NetClientState *nc, Error **errp);
+ 
++extern const VMStateDescription vmstate_tap;
++
+ #endif /* QEMU_NET_TAP_H */
+diff --git a/net/tap.c b/net/tap.c
+index 8afbf3b407..b9c12dd64c 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -819,7 +819,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+ 
+ static bool net_tap_setup(TAPState *s, int fd, int vnet_hdr, Error **errp)
  {
-     MigrationState *s = migrate_get_current();
-@@ -963,6 +969,9 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->cpr_exec_command = QAPI_CLONE(strList,
-                                           s->parameters.cpr_exec_command);
- 
-+    params->has_backend_transfer = true;
-+    params->backend_transfer = s->parameters.backend_transfer;
-+
-     return params;
- }
- 
-@@ -997,6 +1006,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_zero_page_detection = true;
-     params->has_direct_io = true;
-     params->has_cpr_exec_command = true;
-+    params->has_backend_transfer = true;
- }
- 
- /*
-@@ -1305,6 +1315,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_cpr_exec_command) {
-         dest->cpr_exec_command = params->cpr_exec_command;
+-    if (!net_tap_set_fd(s, fd, vnet_hdr, errp)) {
++    if (fd != -1 && !net_tap_set_fd(s, fd, vnet_hdr, errp)) {
+         return false;
      }
-+
-+    if (params->has_backend_transfer) {
-+        dest->backend_transfer = params->backend_transfer;
-+    }
- }
  
- static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-@@ -1443,6 +1457,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-         s->parameters.cpr_exec_command =
-             QAPI_CLONE(strList, params->cpr_exec_command);
+@@ -1225,6 +1225,49 @@ int tap_disable(NetClientState *nc)
      }
-+
-+    if (params->has_backend_transfer) {
-+        s->parameters.backend_transfer = params->backend_transfer;
-+    }
  }
  
- void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-diff --git a/migration/options.h b/migration/options.h
-index 82d839709e..755ba1c024 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -87,6 +87,8 @@ const char *migrate_tls_hostname(void);
- uint64_t migrate_xbzrle_cache_size(void);
- ZeroPageDetection migrate_zero_page_detection(void);
- 
-+bool migrate_backend_transfer(void);
++static int tap_pre_load(void *opaque)
++{
++    TAPState *s = opaque;
 +
- /* parameters helpers */
- 
- bool migrate_params_check(MigrationParameters *params, Error **errp);
-diff --git a/qapi/migration.json b/qapi/migration.json
-index be0f3fcc12..35601a1f87 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -951,9 +951,16 @@
- #     is @cpr-exec.  The first list element is the program's filename,
- #     the remainder its arguments.  (Since 10.2)
- #
-+# @backend-transfer: Enable backend-transfer feature for devices that
-+#     supports it. In general that means that backend state and its
-+#     file descriptors are passed to the destination in the migraton
-+#     channel (which must be a UNIX socket). Individual devices
-+#     declare the support for backend-transfer by per-device
-+#     backend-transfer option. (Since 10.2)
-+#
- # Features:
- #
--# @unstable: Members @x-checkpoint-delay and
-+# @unstable: Members @backend-transfer, @x-checkpoint-delay and
- #     @x-vcpu-dirty-limit-period are experimental.
- #
- # Since: 2.4
-@@ -978,7 +985,8 @@
-            'mode',
-            'zero-page-detection',
-            'direct-io',
--           'cpr-exec-command'] }
-+           'cpr-exec-command',
-+           { 'name': 'backend-transfer', 'features': ['unstable'] } ] }
- 
- ##
- # @MigrateSetParameters:
-@@ -1137,9 +1145,16 @@
- #     is @cpr-exec.  The first list element is the program's filename,
- #     the remainder its arguments.  (Since 10.2)
- #
-+# @backend-transfer: Enable backend-transfer feature for devices that
-+#     supports it. In general that means that backend state and its
-+#     file descriptors are passed to the destination in the migraton
-+#     channel (which must be a UNIX socket). Individual devices
-+#     declare the support for backend-transfer by per-device
-+#     backend-transfer option. (Since 10.2)
-+#
- # Features:
- #
--# @unstable: Members @x-checkpoint-delay and
-+# @unstable: Members @backend-transfer, @x-checkpoint-delay and
- #     @x-vcpu-dirty-limit-period are experimental.
- #
- # TODO: either fuse back into `MigrationParameters`, or make
-@@ -1179,7 +1194,9 @@
-             '*mode': 'MigMode',
-             '*zero-page-detection': 'ZeroPageDetection',
-             '*direct-io': 'bool',
--            '*cpr-exec-command': [ 'str' ]} }
-+            '*cpr-exec-command': [ 'str' ],
-+            '*backend-transfer': { 'type': 'bool',
-+                                   'features': [ 'unstable' ] } } }
- 
- ##
- # @migrate-set-parameters:
-@@ -1352,9 +1369,16 @@
- #     is @cpr-exec.  The first list element is the program's filename,
- #     the remainder its arguments.  (Since 10.2)
- #
-+# @backend-transfer: Enable backend-transfer feature for devices that
-+#     supports it. In general that means that backend state and its
-+#     file descriptors are passed to the destination in the migraton
-+#     channel (which must be a UNIX socket). Individual devices
-+#     declare the support for backend-transfer by per-device
-+#     backend-transfer option. (Since 10.2)
-+#
- # Features:
- #
--# @unstable: Members @x-checkpoint-delay and
-+# @unstable: Members @backend-transfer, @x-checkpoint-delay and
- #     @x-vcpu-dirty-limit-period are experimental.
- #
- # Since: 2.4
-@@ -1391,7 +1415,9 @@
-             '*mode': 'MigMode',
-             '*zero-page-detection': 'ZeroPageDetection',
-             '*direct-io': 'bool',
--            '*cpr-exec-command': [ 'str' ]} }
-+            '*cpr-exec-command': [ 'str' ],
-+            '*backend-transfer': { 'type': 'bool',
-+                                   'features': [ 'unstable' ] } } }
- 
- ##
- # @query-migrate-parameters:
++    if (s->fd != -1) {
++        error_report(
++            "TAP is already initialized and cannot receive incoming fd");
++        return -EINVAL;
++    }
++
++    return 0;
++}
++
++static int tap_post_load(void *opaque, int version_id)
++{
++    TAPState *s = opaque;
++    Error *local_err = NULL;
++
++    if (!net_tap_setup(s, -1, -1, &local_err)) {
++        error_report_err(local_err);
++        qemu_del_net_client(&s->nc);
++        return -EINVAL;
++    }
++
++    return 0;
++}
++
++const VMStateDescription vmstate_tap = {
++    .name = "net-tap",
++    .pre_load = tap_pre_load,
++    .post_load = tap_post_load,
++    .fields = (const VMStateField[]) {
++        VMSTATE_FD(fd, TAPState),
++        VMSTATE_BOOL(using_vnet_hdr, TAPState),
++        VMSTATE_BOOL(has_ufo, TAPState),
++        VMSTATE_BOOL(has_uso, TAPState),
++        VMSTATE_BOOL(has_tunnel, TAPState),
++        VMSTATE_BOOL(enabled, TAPState),
++        VMSTATE_UINT32(host_vnet_hdr_len, TAPState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ bool tap_wait_incoming(NetClientState *nc)
+ {
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
 -- 
 2.48.1
 
