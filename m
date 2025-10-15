@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2797BDF46D
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 17:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A864EBDF449
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 17:07:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v92y2-0007qa-US; Wed, 15 Oct 2025 10:59:06 -0400
+	id 1v92y2-0007ny-0M; Wed, 15 Oct 2025 10:59:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v92xq-0007ng-IZ
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:56 -0400
+ id 1v92xm-0007nJ-KP
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:52 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v92xg-0000fH-VA
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:54 -0400
+ id 1v92xf-0000fI-7c
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 10:58:50 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4FA5FC067C;
- Wed, 15 Oct 2025 17:58:28 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 32B72C0682;
+ Wed, 15 Oct 2025 17:58:29 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a94::1:15])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id AwRFIp2FFSw0-rX3IEuCK; Wed, 15 Oct 2025 17:58:27 +0300
+ ESMTPSA id AwRFIp2FFSw0-jD4PzcbG; Wed, 15 Oct 2025 17:58:28 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760540307;
- bh=Qvhx2PfrSL/sLNOgPGSepT8yXjtIZZets0wvlD0gIvE=;
+ s=default; t=1760540308;
+ bh=i+Ml9JXsD0yCNdPC8wPWT5tprwkwd9kIFUUhFxR3nUM=;
  h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=0DHLyI0N1bXIgGXn88iAjOdrbyy8jf0ck0OJzGBs5im2og9Hb0OPurEhH/BVJ7WHs
- suagy6eQAim/oQczd/VQQshMERts1Umltwdzn4m3gHOpdeTibcf0Ts6p3nHYjPnm8j
- oVOR+PFOdGbHWYv6iusUff1EG2Q/Wg24TCDsQlIo=
+ b=SBUwL4wsvdweuvds816r74IpXihk3VLN1/xheBUQdlanumJBrdTvGJ3hLZ932V/K8
+ qzTPc+AlkK3hni1ZyFZeictLTJ8RIjSwQuuhrXiefuSOXdxGgpHxz6IrcYKj4atHOd
+ WWypp59/RQg5gC4pq2pzVaX+NaVlKFpozS+2zk3M=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,10 +45,9 @@ Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
  d-tatianin@yandex-team.ru,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Subject: [PATCH v3 20/23] hw/virtio/virtio-bus: refactor
- virtio_bus_set_host_notifier()
-Date: Wed, 15 Oct 2025 17:58:04 +0300
-Message-ID: <20251015145808.1112843-21-vsementsov@yandex-team.ru>
+Subject: [PATCH v3 21/23] vhost-user: make trace events more readable
+Date: Wed, 15 Oct 2025 17:58:05 +0300
+Message-ID: <20251015145808.1112843-22-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
 References: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
@@ -78,49 +77,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The logic kept as is. Refactor to simplify further changes.
-
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
 Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- hw/virtio/virtio-bus.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ hw/virtio/trace-events |  4 +-
+ hw/virtio/vhost-user.c | 94 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 94 insertions(+), 4 deletions(-)
 
-diff --git a/hw/virtio/virtio-bus.c b/hw/virtio/virtio-bus.c
-index cef944e015..9b545acda3 100644
---- a/hw/virtio/virtio-bus.c
-+++ b/hw/virtio/virtio-bus.c
-@@ -298,20 +298,18 @@ int virtio_bus_set_host_notifier(VirtioBusState *bus, int n, bool assign)
-                          __func__, strerror(-r), r);
-             return r;
-         }
--        r = k->ioeventfd_assign(proxy, notifier, n, true);
--        if (r < 0) {
--            error_report("%s: unable to assign ioeventfd: %d", __func__, r);
--            virtio_bus_cleanup_host_notifier(bus, n);
--        }
--    } else {
--        k->ioeventfd_assign(proxy, notifier, n, false);
-     }
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 658cc365e7..aa1ffa5e94 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -25,8 +25,8 @@ vhost_user_set_mem_table_withfd(int index, const char *name, uint64_t memory_siz
+ vhost_user_postcopy_waker(const char *rb, uint64_t rb_offset) "%s + 0x%"PRIx64
+ vhost_user_postcopy_waker_found(uint64_t client_addr) "0x%"PRIx64
+ vhost_user_postcopy_waker_nomatch(const char *rb, uint64_t rb_offset) "%s + 0x%"PRIx64
+-vhost_user_read(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
+-vhost_user_write(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
++vhost_user_read(uint32_t req, const char *req_name, uint32_t flags) "req:%d (%s) flags:0x%"PRIx32""
++vhost_user_write(uint32_t req, const char *req_name, uint32_t flags) "req:%d (%s) flags:0x%"PRIx32""
+ vhost_user_create_notifier(int idx, void *n) "idx:%d n:%p"
  
--    if (r == 0) {
--        virtio_queue_set_host_notifier_enabled(vq, assign);
-+    r = k->ioeventfd_assign(proxy, notifier, n, assign);
-+    if (r < 0 && assign) {
-+        error_report("%s: unable to assign ioeventfd: %d", __func__, r);
-+        virtio_bus_cleanup_host_notifier(bus, n);
-+        return r;
-     }
+ # vhost-vdpa.c
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 23e7c12b16..e45b74eddd 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -119,6 +119,94 @@ typedef enum VhostUserBackendRequest {
+     VHOST_USER_BACKEND_MAX
+ }  VhostUserBackendRequest;
  
--    return r;
-+    virtio_queue_set_host_notifier_enabled(vq, assign);
++static const char *vhost_req_name(VhostUserRequest req)
++{
++    switch (req) {
++    case VHOST_USER_NONE:
++        return "NONE";
++    case VHOST_USER_GET_FEATURES:
++        return "GET_FEATURES";
++    case VHOST_USER_SET_FEATURES:
++        return "SET_FEATURES";
++    case VHOST_USER_SET_OWNER:
++        return "SET_OWNER";
++    case VHOST_USER_RESET_OWNER:
++        return "RESET_OWNER";
++    case VHOST_USER_SET_MEM_TABLE:
++        return "SET_MEM_TABLE";
++    case VHOST_USER_SET_LOG_BASE:
++        return "SET_LOG_BASE";
++    case VHOST_USER_SET_LOG_FD:
++        return "SET_LOG_FD";
++    case VHOST_USER_SET_VRING_NUM:
++        return "SET_VRING_NUM";
++    case VHOST_USER_SET_VRING_ADDR:
++        return "SET_VRING_ADDR";
++    case VHOST_USER_SET_VRING_BASE:
++        return "SET_VRING_BASE";
++    case VHOST_USER_GET_VRING_BASE:
++        return "GET_VRING_BASE";
++    case VHOST_USER_SET_VRING_KICK:
++        return "SET_VRING_KICK";
++    case VHOST_USER_SET_VRING_CALL:
++        return "SET_VRING_CALL";
++    case VHOST_USER_SET_VRING_ERR:
++        return "SET_VRING_ERR";
++    case VHOST_USER_GET_PROTOCOL_FEATURES:
++        return "GET_PROTOCOL_FEATURES";
++    case VHOST_USER_SET_PROTOCOL_FEATURES:
++        return "SET_PROTOCOL_FEATURES";
++    case VHOST_USER_GET_QUEUE_NUM:
++        return "GET_QUEUE_NUM";
++    case VHOST_USER_SET_VRING_ENABLE:
++        return "SET_VRING_ENABLE";
++    case VHOST_USER_SEND_RARP:
++        return "SEND_RARP";
++    case VHOST_USER_NET_SET_MTU:
++        return "NET_SET_MTU";
++    case VHOST_USER_SET_BACKEND_REQ_FD:
++        return "SET_BACKEND_REQ_FD";
++    case VHOST_USER_IOTLB_MSG:
++        return "IOTLB_MSG";
++    case VHOST_USER_SET_VRING_ENDIAN:
++        return "SET_VRING_ENDIAN";
++    case VHOST_USER_GET_CONFIG:
++        return "GET_CONFIG";
++    case VHOST_USER_SET_CONFIG:
++        return "SET_CONFIG";
++    case VHOST_USER_CREATE_CRYPTO_SESSION:
++        return "CREATE_CRYPTO_SESSION";
++    case VHOST_USER_CLOSE_CRYPTO_SESSION:
++        return "CLOSE_CRYPTO_SESSION";
++    case VHOST_USER_POSTCOPY_ADVISE:
++        return "POSTCOPY_ADVISE";
++    case VHOST_USER_POSTCOPY_LISTEN:
++        return "POSTCOPY_LISTEN";
++    case VHOST_USER_POSTCOPY_END:
++        return "POSTCOPY_END";
++    case VHOST_USER_GET_INFLIGHT_FD:
++        return "GET_INFLIGHT_FD";
++    case VHOST_USER_SET_INFLIGHT_FD:
++        return "SET_INFLIGHT_FD";
++    case VHOST_USER_GPU_SET_SOCKET:
++        return "GPU_SET_SOCKET";
++    case VHOST_USER_RESET_DEVICE:
++        return "RESET_DEVICE";
++    case VHOST_USER_GET_MAX_MEM_SLOTS:
++        return "GET_MAX_MEM_SLOTS";
++    case VHOST_USER_ADD_MEM_REG:
++        return "ADD_MEM_REG";
++    case VHOST_USER_REM_MEM_REG:
++        return "REM_MEM_REG";
++    case VHOST_USER_SET_STATUS:
++        return "SET_STATUS";
++    case VHOST_USER_GET_STATUS:
++        return "GET_STATUS";
++    default:
++        return "<unknown>";
++    }
++}
 +
-+    return 0;
- }
+ typedef struct VhostUserMemoryRegion {
+     uint64_t guest_phys_addr;
+     uint64_t memory_size;
+@@ -311,7 +399,8 @@ static int vhost_user_read_header(struct vhost_dev *dev, VhostUserMsg *msg)
+         return -EPROTO;
+     }
  
- void virtio_bus_cleanup_host_notifier(VirtioBusState *bus, int n)
+-    trace_vhost_user_read(msg->hdr.request, msg->hdr.flags);
++    trace_vhost_user_read(msg->hdr.request,
++                          vhost_req_name(msg->hdr.request), msg->hdr.flags);
+ 
+     return 0;
+ }
+@@ -431,7 +520,8 @@ static int vhost_user_write(struct vhost_dev *dev, VhostUserMsg *msg,
+         return ret < 0 ? -saved_errno : -EIO;
+     }
+ 
+-    trace_vhost_user_write(msg->hdr.request, msg->hdr.flags);
++    trace_vhost_user_write(msg->hdr.request, vhost_req_name(msg->hdr.request),
++                           msg->hdr.flags);
+ 
+     return 0;
+ }
 -- 
 2.48.1
 
