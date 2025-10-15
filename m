@@ -2,48 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F815BDC78F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A41D9BDC8A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t77-00029Y-OO; Wed, 15 Oct 2025 00:27:49 -0400
+	id 1v8tLW-0006QM-Tw; Wed, 15 Oct 2025 00:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t73-0001y6-Qp; Wed, 15 Oct 2025 00:27:45 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1v8tLT-0006Ps-SQ
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 00:42:39 -0400
+Received: from mail-westus3azlp170120001.outbound.protection.outlook.com
+ ([2a01:111:f403:c107::1] helo=PH8PR06CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6x-000318-3O; Wed, 15 Oct 2025 00:27:45 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C0E2015D9E0;
- Wed, 15 Oct 2025 07:25:19 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 60F7629FE87;
- Wed, 15 Oct 2025 07:25:41 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Damien Bergamini <damien.bergamini@eviden.com>,
- Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 13/13] pcie_sriov: Fix broken MMIO accesses from
- SR-IOV VFs
-Date: Wed, 15 Oct 2025 07:25:37 +0300
-Message-ID: <20251015042540.68611-13-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
-References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1v8tLL-00055i-It
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 00:42:39 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ww7ztVu3vG5dSzE/hkSPzAytbkyQlDWKf269KL3M8PpW+i0YysrLRZEBhwQMLJ4GYfL7wGgitzbliNpvNP6/tbXwkaVVnW/w4Ir2PsSaLvMmm+JpNzBPoyUoTVkGTXrKGdNfLhZWHu6ig6Mf1NMsPp0R7ZCf82gEHYAZmHm2E69Ccm0fejfCZZwEzEIPznKm+enAz2ZoToqtmigayfkzWeWkGhmZ+tsQW7vFfB29to+q5A2yOGW26Q5rLrvpHLD+4YD+bxv9qfDm3Jt3Q3SZxG7U3nZOE9VhvjdKJsCeulvp6bMyzJDtGYUKRrXknskfrsMvuxp2NiZllq3yQ21Oig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lFLuFu94L7sf7JcbHWYl0+13Z1/CyK7BOemPN/OSkC8=;
+ b=jchijyqRymuayvDBNizGu9YP4EAr6LB7ziMUqvSYCKP0PgJ+Wl2akk3Lx1z7gKoHIByPGQdhgi+v5TgYM6eeYLEwBBUInBbrsy9fwDQHzJHYxz93Bnd64bvFmjdxyH5rGe9oshwjgaEFdTG12j2oLxM+yffeJgEVavDTWxqMbemf4BExWXQpwMFbqdL2ZmKmSXlshdRVmZSBsWb5kGSUL7qEilRaOPHy4mLCZxFE/NHQVXyIpEzMztJkLjNZoWMGq3lwCQTSzsybCVoxG6N+yu3R3TwuyDvaPIuPMMPUS0eEumCN6C9Fdzi/iF6VYhVeGRxeh0hsSlOWz99Di1fILQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=oracle.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lFLuFu94L7sf7JcbHWYl0+13Z1/CyK7BOemPN/OSkC8=;
+ b=WICsY60PsYD23YwIus+f/yBWK8C3o6BQCLtFkiG8rzupLC7gTvcQtMD81SpFeNV+Z5gkDLH+P/xvM22x51EfAuUhCWjbpF5AeKSa+7CodlSRT8RprbHZEFBTccp9wvgo/0hbuMclxT5BhMjXx0MzYqfmp8kz8WkZCTowT7JFvVw=
+Received: from SJ0PR05CA0121.namprd05.prod.outlook.com (2603:10b6:a03:33d::6)
+ by IA1PR12MB7591.namprd12.prod.outlook.com (2603:10b6:208:429::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Wed, 15 Oct
+ 2025 04:42:11 +0000
+Received: from MWH0EPF000971E4.namprd02.prod.outlook.com
+ (2603:10b6:a03:33d:cafe::98) by SJ0PR05CA0121.outlook.office365.com
+ (2603:10b6:a03:33d::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.9 via Frontend Transport; Wed,
+ 15 Oct 2025 04:42:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MWH0EPF000971E4.mail.protection.outlook.com (10.167.243.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9228.7 via Frontend Transport; Wed, 15 Oct 2025 04:42:11 +0000
+Received: from [172.31.35.81] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Oct
+ 2025 21:42:04 -0700
+Message-ID: <b486ed18-a7c0-4035-a27c-7bfb87c7c789@amd.com>
+Date: Wed, 15 Oct 2025 10:11:56 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] amd_iommu: Cleanups and fixes (PART 2)
+Content-Language: en-US
+To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, <qemu-devel@nongnu.org>
+CC: <mst@redhat.com>, <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
+ <philmd@linaro.org>, <suravee.suthikulpanit@amd.com>, <vasant.hegde@amd.com>, 
+ <marcel.apfelbaum@gmail.com>, <eduardo@habkost.net>, <aik@amd.com>
+References: <20251013050046.393-1-sarunkod@amd.com>
+ <a50b49dc-d35d-4db9-b177-9901bef6ed75@oracle.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <a50b49dc-d35d-4db9-b177-9901bef6ed75@oracle.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E4:EE_|IA1PR12MB7591:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73f2293d-dc04-4166-cde6-08de0ba534b1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|82310400026|36860700013|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cFNFekJNbDhZZ1prVk5YcFEwOTBObEVUNmo0WE5ZREVoa2NsRXIwOGdHZ2lj?=
+ =?utf-8?B?UkxXZ0d0Y1g0eDJqOWFNcjZadkZFblJCd0lPSHZyN3BaclU4VjN4aVhCenBa?=
+ =?utf-8?B?Yjg0d0N4MWRCdElOdmFxbkJ1ZG5FSFU0empsTzhjZ0ppVG96WHJ3eTVWWGZQ?=
+ =?utf-8?B?dHU2anl3VFk3bWx0VndNc25Cc0dBM1Q4ZnhXRnY5a3VHREFHUHkzQnhlQ3da?=
+ =?utf-8?B?UjZ1Q1FxL2F1d01IMGlaSG5MWUduQy9UTnhUZ1pnYlBQemtjTXdzTjlvSDNY?=
+ =?utf-8?B?amNDN29yTDlvN2RMNFZXaDV5dC9iZjJ3Zk5wakRaRURtRVpJMXJnOHJMWkRS?=
+ =?utf-8?B?K2M0UU9NWnd4eWMwY3lnb05XVnhFTThoNmRPek9iUWtTcVhQSUQvUitzQitp?=
+ =?utf-8?B?MTZRVmJjUEhlbC8yQ1dhcUlyT1VSMGhTTlFmcHhKS2NiVW50bm50b3RGdGlM?=
+ =?utf-8?B?ZStldmVFRzAzUmxGajkrd1dhV0Y4d0dQaTQrOTFNNDlPait2blk5UFZORkFw?=
+ =?utf-8?B?NXdYTi9DWkZWRkM2cTJ3RC9DYnJmOGVGY250THJZWlZuaU4zSHN5cCtQOTRH?=
+ =?utf-8?B?NnZJZUNlU1l2cjJrdGdSNFFjNURjRU9rNWYyd1ZTSkxmZVlzS2FLSUMyeXFh?=
+ =?utf-8?B?VCt3aFd3YkY0U0lFeE1TVjRXNjZXYXRwVkZvZ2dEQjUzcVdTNkVVclFqZXJ0?=
+ =?utf-8?B?Q2Y1ZXk1Z0hmRXlhQ2wxWmsvbjdnOS9adTdzWTU2YXAyVmFPL1ZtdG40RTlF?=
+ =?utf-8?B?QTlvM1dCemFJNFBMcFJSa0cxWkhyb3krcnYvWUtEZmpuUFVvUEZreDZRbEFv?=
+ =?utf-8?B?VVROOTZIcVVHQ0l6WWJxcmNzTytJR1o5M25XZ1UvdWNJbVVoSDB0Q0Q4WStx?=
+ =?utf-8?B?eHVyZ1dhMlByQmlYaktkZnB6RzNlbmh3a2xkZStjSjU0dy9Gc0ttZnlJQzh6?=
+ =?utf-8?B?SzVGZnVpck15K0ZIN2RSY1d1dlJmdXBrK3F5TXphUUFKNmRPajZmUmJ6cUlB?=
+ =?utf-8?B?L1N6RkkxL1VqSlE0NTVrY1hXSTl3b2lhelJEdWJaQ1U0L1JxVEc3dXFXS3Bn?=
+ =?utf-8?B?QnI5Q3JJMXVjdkRWUFIzV2h4S09vUThOOTg1Q3VPZGduOW9ueWRSajdsVy9L?=
+ =?utf-8?B?bjRFdUNHTU50UzhZWDBYaW9LOWZqV0N0anRDSnJJSkNZdnVVMFhLbVYvV3Zk?=
+ =?utf-8?B?WWgxbnZJYS9xdVZHVWdYMytyYjlxOWN3eVRrMVhCYXdIM3ZEalcrMjVPeWhF?=
+ =?utf-8?B?a1VmYzdid0kyTnpLaHNuR1ZIbjV6R21kU1JRd1RYUk00TGk2eUJNMDhIMkVU?=
+ =?utf-8?B?YTB5ZHphcE1TR1lDeStNbkxFSUdFVVVVVW03UHBpaGsyOUt0R0VIU3Y5bFZ0?=
+ =?utf-8?B?Y1ZaVWxna0Zmd2sxdWx1UFlVdlBSZWFMOVlnTDNOdkJNYThqNjhFYjViaitS?=
+ =?utf-8?B?Yy8xOHYvd0xlVkxaMjJEOUMycTh1SkNNUjhZQUZyRkJQRjg5S0dlWXF2T3lO?=
+ =?utf-8?B?Z3IvdkJnR2NOazJpOTN5by9WYUNDaXJjcUJOSmxRWmJEdUpQRW5LV0FJWmdt?=
+ =?utf-8?B?a25ORmllazdsNDZUYS9LQXJGRkpyRHY2ZkYvcFBDMWxFVGtCMzFvRHp4TUVy?=
+ =?utf-8?B?aDVWcjZLM0drNWpyVXlZQXE4bW9CRkJYK0NWV1ZFZmo0S3RYaEJ4M0czU01x?=
+ =?utf-8?B?QzhndUdIL01SeTZkK09mWnN5YUY4UFJMWjYrVXVUakhZcVF6QjErbEtCMllJ?=
+ =?utf-8?B?enhiSDVNQzcwUXZLaUNtK3JuZ3NmUndiTmt2bXA2UTg3OUpNbXROL05WZkVN?=
+ =?utf-8?B?VGo0K0dzY2xTVUNVcHFVRXNNTjJ3N2w4UldZSndqSEg1ZEN5M0hMelNPYUFH?=
+ =?utf-8?B?OWZOYWppTVhzL2tqNHFRM3ExeUtJaVVvTFB5S0w4cUg5QVlMNk5FL2k0U2k3?=
+ =?utf-8?B?QlVaNjk4VXJwcGpkUDFxQjRQMmZTQmMzNk9nNlFDTnd3T0JLQnY4R1N0M1lu?=
+ =?utf-8?B?SE9YT0pZNWg4cmFhby8vQ0c1cjZTdTlWak5xazFSdGZiYnFranZDbThZUG4z?=
+ =?utf-8?B?ZE1jbk96cFlhdnZMOVBlTTF6SjhnbVlVYXR5elhGbUR3bTU3Z2FhVmlSaXJO?=
+ =?utf-8?Q?a8FA=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 04:42:11.3423 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73f2293d-dc04-4166-cde6-08de0ba534b1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7591
+Received-SPF: permerror client-ip=2a01:111:f403:c107::1;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=PH8PR06CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,238 +159,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Damien Bergamini <damien.bergamini@eviden.com>
 
-Starting with commit cab1398a60eb, SR-IOV VFs are realized as soon as
-pcie_sriov_pf_init() is called.  Because pcie_sriov_pf_init() must be
-called before pcie_sriov_pf_init_vf_bar(), the VF BARs types won't be
-known when the VF realize function calls pcie_sriov_vf_register_bar().
 
-This breaks the memory regions of the VFs (for instance with igbvf):
+On 10/15/2025 2:57 AM, Alejandro Jimenez wrote:
+> Hi,
+>
+> On 10/13/25 1:00 AM, Sairaj Kodilkar wrote:
+>> This series provide fixes for following two issues:
+>>
+>> 1. AMD IOMMU fails to detect the devices when they are attached to 
+>> PCI bus with
+>>     bus id != 0.
+>>     e.g. With following command line, dhclient command fails inside 
+>> the guest
+>>
+>>      -device 
+>> pcie-root-port,port=0x10,chassis=1,id=pci.1,bus=pcie.0,multifunction=on,addr=0x5 
+>> \
+>>      -netdev user,id=USER0,hostfwd=tcp::3333-:22 \
+>>      -device 
+>> virtio-net-pci,id=vnet0,iommu_platform=on,disable-legacy=on,romfile=,netdev=USER0,bus=pci.1,addr=0 
+>> \
+>>
+>> 2. Current AMD IOMMU supports IOVAs upto 60 bit which cause failure 
+>> while
+>>     setting up the devices when guest is booted with command line
+>>     "iommu.forcedac=1".
+>>
+>>     One example of the failure is when there are two virtio ethernet 
+>> devices
+>>     attached to the guest with command line
+>>             -netdev user,id=USER0 \
+>>         -netdev user,id=USER1 \
+>>         -device 
+>> virtio-net-pci,id=vnet0,iommu_platform=on,disable-legacy=on,romfile=,netdev=USER0 
+>> \
+>>         -device 
+>> virtio-net-pci,id=vnet1,iommu_platform=on,disable-legacy=on,romfile=,netdev=USER1 
+>> \
+>>         In this case dhclient fails for second device with following 
+>> dmesg
+>>         [   24.802644] virtio_net virtio0 enp0s1: TX timeout on 
+>> queue: 0, sq: output.0, vq: 0x1, name: output.0, 5664000 usecs ago
+>>     [   29.856716] virtio_net virtio0 enp0s1: NETDEV WATCHDOG: CPU: 
+>> 59: transmit queue 0 timed out 10720 ms
+>>     [   29.858585] virtio_net virtio0 enp0s1: TX timeout on queue: 0, 
+>> sq: output.0, vq: 0x1, name: output.0, 10720000 usecs ago
+>>
+>> ------------------------------------------------------------------------------- 
+>>
+>>
+>> Change log: > ----------
+>> P1:
+>
+> I generally like to include a link to the previous version. Not a 
+> must, but makes it easier others to follow the series history.
+>
+>>   - Use fixed type uint8_t for devfn
+>>   - Use uintptr_t instead of uint64_t
+>>   - Build hash key using lower 56 bits of bus pointer and 8 bits of 
+>> devfn
+>>   - Use gboolean instead of int for amdvi_find_as_by_devid
+>>   - Update comments
+>>   - Use IOMMU_NOTIFIER_NONE instead of IOMMU_NONE
+>>
+>> P2:
+>>   - Reword commit message
+>>   - Correctly initialize `struct amdvi_iotlb_key`
+>>   - Remove unused macro
+>>
+>
+> Before sending a new revision, ideally you should run a smoke test (or 
+> more thorough testing depending on the scope of the changes). But at 
+> the bare minimum please make sure a clean build is done. There are 
+> trivial issues in both patches that cause compilation errors. See the 
+> replies for details.
 
-$ lspci
-...
-    Region 0: Memory at 281a00000 (64-bit, prefetchable) [virtual] [size=16K]
-    Region 3: Memory at 281a20000 (64-bit, prefetchable) [virtual] [size=16K]
+Hi Alejandro,
+Yep I did that, but I think that somehow I tested a different branch 
+thats why failed to catch these errors.
+Sorry for inconvenience. Will take care of it in future !
 
-$ info mtree
-...
-address-space: pci_bridge_pci_mem
-  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
-    0000000081a00000-0000000081a03fff (prio 1, i/o): igbvf-mmio
-    0000000081a20000-0000000081a23fff (prio 1, i/o): igbvf-msix
+Thanks
+Sairaj
 
-and causes MMIO accesses to fail:
-
-    Invalid write at addr 0x281A01520, size 4, region '(null)', reason: rejected
-    Invalid read at addr 0x281A00C40, size 4, region '(null)', reason: rejected
-
-To fix this, VF BARs are now registered with pci_register_bar() which
-has a type parameter and pcie_sriov_vf_register_bar() is removed.
-
-Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")
-Signed-off-by: Damien Bergamini <damien.bergamini@eviden.com>
-Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250901151314.1038020-1-clement.mathieu--drif@eviden.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 2e54e5fda779a7ba45578884276dca62462f7a06)
-(This is a back-port of commit 2e54e5fda779 to 10.0.x)
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
-index ab2142807f..00d7bd93fd 100644
---- a/docs/pcie_sriov.txt
-+++ b/docs/pcie_sriov.txt
-@@ -72,8 +72,7 @@ setting up a BAR for a VF.
- 2) Similarly in the implementation of the virtual function, you need to
-    make it a PCI Express device and add a similar set of capabilities
-    except for the SR/IOV capability. Then you need to set up the VF BARs as
--   subregions of the PFs SR/IOV VF BARs by calling
--   pcie_sriov_vf_register_bar() instead of the normal pci_register_bar() call:
-+   subregions of the PFs SR/IOV VF BARs by calling pci_register_bar():
- 
-    pci_your_vf_dev_realize( ... )
-    {
-@@ -83,7 +82,7 @@ setting up a BAR for a VF.
-       pcie_ari_init(d, 0x100);
-       ...
-       memory_region_init(mr, ... )
--      pcie_sriov_vf_register_bar(d, bar_nr, mr);
-+      pci_register_bar(d, bar_nr, bar_type, mr);
-       ...
-    }
- 
-diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
-index 21a97d4d61..575410d6cc 100644
---- a/hw/net/igbvf.c
-+++ b/hw/net/igbvf.c
-@@ -251,10 +251,12 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
- 
-     memory_region_init_io(&s->mmio, OBJECT(dev), &mmio_ops, s, "igbvf-mmio",
-         IGBVF_MMIO_SIZE);
--    pcie_sriov_vf_register_bar(dev, IGBVF_MMIO_BAR_IDX, &s->mmio);
-+    pci_register_bar(dev, IGBVF_MMIO_BAR_IDX, PCI_BASE_ADDRESS_MEM_TYPE_64 |
-+                     PCI_BASE_ADDRESS_MEM_PREFETCH, &s->mmio);
- 
-     memory_region_init(&s->msix, OBJECT(dev), "igbvf-msix", IGBVF_MSIX_SIZE);
--    pcie_sriov_vf_register_bar(dev, IGBVF_MSIX_BAR_IDX, &s->msix);
-+    pci_register_bar(dev, IGBVF_MSIX_BAR_IDX, PCI_BASE_ADDRESS_MEM_TYPE_64 |
-+                     PCI_BASE_ADDRESS_MEM_PREFETCH, &s->msix);
- 
-     ret = msix_init(dev, IGBVF_MSIX_VEC_NUM, &s->msix, IGBVF_MSIX_BAR_IDX, 0,
-         &s->msix, IGBVF_MSIX_BAR_IDX, 0x2000, 0x70, errp);
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 67cb95c809..c93039ba23 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8708,12 +8708,8 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-                               msix_table_offset);
-         memory_region_add_subregion(&n->bar0, 0, &n->iomem);
- 
--        if (pci_is_vf(pci_dev)) {
--            pcie_sriov_vf_register_bar(pci_dev, 0, &n->bar0);
--        } else {
--            pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
--                             PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
--        }
-+        pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
-+                         PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);
- 
-         ret = msix_init(pci_dev, nr_vectors,
-                         &n->bar0, 0, msix_table_offset,
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 503a897528..57c608c368 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1470,7 +1470,6 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
-     pcibus_t size = memory_region_size(memory);
-     uint8_t hdr_type;
- 
--    assert(!pci_is_vf(pci_dev)); /* VFs must use pcie_sriov_vf_register_bar */
-     assert(region_num >= 0);
-     assert(region_num < PCI_NUM_REGIONS);
-     assert(is_power_of_2(size));
-@@ -1482,7 +1481,6 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
- 
-     r = &pci_dev->io_regions[region_num];
-     assert(!r->size);
--    r->addr = PCI_BAR_UNMAPPED;
-     r->size = size;
-     r->type = type;
-     r->memory = memory;
-@@ -1490,22 +1488,32 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,
-                         ? pci_get_bus(pci_dev)->address_space_io
-                         : pci_get_bus(pci_dev)->address_space_mem;
- 
--    wmask = ~(size - 1);
--    if (region_num == PCI_ROM_SLOT) {
--        /* ROM enable bit is writable */
--        wmask |= PCI_ROM_ADDRESS_ENABLE;
--    }
-+    if (pci_is_vf(pci_dev)) {
-+        r->addr = pci_bar_address(pci_dev, region_num, r->type, r->size);
-+        if (r->addr != PCI_BAR_UNMAPPED) {
-+            memory_region_add_subregion_overlap(r->address_space,
-+                                                r->addr, r->memory, 1);
-+        }
-+    } else {
-+        r->addr = PCI_BAR_UNMAPPED;
- 
--    addr = pci_bar(pci_dev, region_num);
--    pci_set_long(pci_dev->config + addr, type);
-+        wmask = ~(size - 1);
-+        if (region_num == PCI_ROM_SLOT) {
-+            /* ROM enable bit is writable */
-+            wmask |= PCI_ROM_ADDRESS_ENABLE;
-+        }
- 
--    if (!(r->type & PCI_BASE_ADDRESS_SPACE_IO) &&
--        r->type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
--        pci_set_quad(pci_dev->wmask + addr, wmask);
--        pci_set_quad(pci_dev->cmask + addr, ~0ULL);
--    } else {
--        pci_set_long(pci_dev->wmask + addr, wmask & 0xffffffff);
--        pci_set_long(pci_dev->cmask + addr, 0xffffffff);
-+        addr = pci_bar(pci_dev, region_num);
-+        pci_set_long(pci_dev->config + addr, type);
-+
-+        if (!(r->type & PCI_BASE_ADDRESS_SPACE_IO) &&
-+            r->type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
-+            pci_set_quad(pci_dev->wmask + addr, wmask);
-+            pci_set_quad(pci_dev->cmask + addr, ~0ULL);
-+        } else {
-+            pci_set_long(pci_dev->wmask + addr, wmask & 0xffffffff);
-+            pci_set_long(pci_dev->cmask + addr, 0xffffffff);
-+        }
-     }
- }
- 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 6281bd61d9..17bbfc568f 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -146,42 +146,6 @@ void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
-     dev->exp.sriov_pf.vf_bar_type[region_num] = type;
- }
- 
--void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
--                                MemoryRegion *memory)
--{
--    PCIIORegion *r;
--    PCIBus *bus = pci_get_bus(dev);
--    uint8_t type;
--    pcibus_t size = memory_region_size(memory);
--
--    assert(pci_is_vf(dev)); /* PFs must use pci_register_bar */
--    assert(region_num >= 0);
--    assert(region_num < PCI_NUM_REGIONS);
--    type = dev->exp.sriov_vf.pf->exp.sriov_pf.vf_bar_type[region_num];
--
--    if (!is_power_of_2(size)) {
--        error_report("%s: PCI region size must be a power"
--                     " of two - type=0x%x, size=0x%"FMT_PCIBUS,
--                     __func__, type, size);
--        exit(1);
--    }
--
--    r = &dev->io_regions[region_num];
--    r->memory = memory;
--    r->address_space =
--        type & PCI_BASE_ADDRESS_SPACE_IO
--        ? bus->address_space_io
--        : bus->address_space_mem;
--    r->size = size;
--    r->type = type;
--
--    r->addr = pci_bar_address(dev, region_num, r->type, r->size);
--    if (r->addr != PCI_BAR_UNMAPPED) {
--        memory_region_add_subregion_overlap(r->address_space,
--                                            r->addr, r->memory, 1);
--    }
--}
--
- static void register_vfs(PCIDevice *dev)
- {
-     uint16_t num_vfs;
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index c5d2d318d3..e9cb0a3248 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -36,10 +36,6 @@ void pcie_sriov_pf_exit(PCIDevice *dev);
- void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
-                                uint8_t type, dma_addr_t size);
- 
--/* Instantiate a bar for a VF */
--void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
--                                MemoryRegion *memory);
--
- /*
-  * Default (minimal) page size support values
-  * as required by the SR/IOV standard:
--- 
-2.47.3
+>
+> Thank you,
+> Alejandro
+>
+>> ------------------------------------------------------------------------------- 
+>>
+>>
+>> Base commit: (qemu uptream) eb7abb4a719f
+>>
+>> ------------------------------------------------------------------------------- 
+>>
+>>
+>> Sairaj Kodilkar (2):
+>>    amd_iommu: Fix handling device on buses != 0
+>>    amd_iommu: Support 64 bit address for IOTLB lookup
+>>
+>>   hw/i386/amd_iommu.c | 179 +++++++++++++++++++++++++++-----------------
+>>   hw/i386/amd_iommu.h |   6 +-
+>>   2 files changed, 113 insertions(+), 72 deletions(-)
+>>
+>
 
 
