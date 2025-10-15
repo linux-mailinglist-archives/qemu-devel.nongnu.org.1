@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E80BDFF87
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 20:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F82BBDFF8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 20:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v95pA-0003r9-QT; Wed, 15 Oct 2025 14:02:08 -0400
+	id 1v95p7-0003qx-Ic; Wed, 15 Oct 2025 14:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v95ol-0003nt-HO
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v95ov-0003oR-It
  for qemu-devel@nongnu.org; Wed, 15 Oct 2025 14:01:55 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v95oe-0006Fa-33
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 14:01:43 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e6c8bc46eso46478215e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 11:01:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v95ok-0006GM-CM
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 14:01:52 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-4060b4b1200so5307259f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 11:01:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760551292; x=1761156092; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760551297; x=1761156097; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V994PTOYXfSbgqk3wPN+Ltq5BghnfXGjVQUSgxw4NwA=;
- b=eeoxEsR9TCcbPnrGkL3iOyRwe51DRlmbO6vtxbA2ETd3rhLGHWoo9aR2LsYZKYIQVJ
- PwIECFcPAhZxT9BCjMqoO5dQdJSs9nZD3xC0GDXMfSJVEzeOFMRqXLOEyv9evT1m0IMl
- KtL6u79Kk52kHCpnn+yhY0fQXkHJe0KwZswcaywD9cP6cJiHuq7kPY/v3f9DW4OfFRtD
- iVi3+b/PelDANTfRdpnfM3Blq27Kz5aLGm2umfx5G3wfE/oWn4wlHr+leSkRYXry0Vdd
- qePTT4H3HRN+0XCxj4GEhccAdPvxeItQefHZ26+qmBN3OdjMgK+D/XWXe2ofNHk1HJad
- icGA==
+ bh=yrPHlsfsgalogJYV5kdJutsTBB8awCOsQOV06x5p5gM=;
+ b=VCCHOJa79TO8nsBMTpTeio/r2gQhA2GiHojgtcbXrHdJcI0yphIiKyBpTUIXh94mEx
+ uj/FKtoc4AO7mbO3Y/Nlg49V2LbcH2X6ptid4C5OwFTvsvK/aPueo14AnWsfsbhzh7uL
+ oTES6vLMnKR+kd3GNriskmXbl1uIqVhlShc/z2HHJ61T/XZwQ970xm+PyuaQsg/t17tX
+ tMO9eaPdVQkzUmU6fIoHKpYeFm6c46PmoDeZHyV16VAtBeAKueVrcNuQYxqCIKYKEU0l
+ ncD3x82emcadesFo17e5TwmPDyloViaCmT7VeMHmyfaXwulAAHDMJW1Cumr2p0hag6nW
+ jjVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760551292; x=1761156092;
+ d=1e100.net; s=20230601; t=1760551297; x=1761156097;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V994PTOYXfSbgqk3wPN+Ltq5BghnfXGjVQUSgxw4NwA=;
- b=aZcHOfUzYZef1MwJ1U+/fCw7TcH36+8U6A3gI7rrLfBjFxgQBX9OZSkODC+fX8zUok
- tJeS4VgyyKJsSsW0UJFYUi5kJLUrVaWg5v5cLVB8DexmkUuUpI6vSTyOrE7BfERQ0V7P
- 9lHPb6P+Ik3KZEGZ1tWmMxz6BloqhiXA7DBSm1/SDdNspEB1XYcih1rV9ffmuOyC9LmV
- 103L8X3uIuEIWDH+GPOaWSwZKmazgDJaVLSzy53pEiITJlEtgDeBc8ljDsN/ckSfiOe8
- ri6SOOW2WxVdZJRfUWw+pk378vu4RqhRVFFHrbH3VoiaGeclzbb429Udkz8AZ4im0zIk
- DMVw==
-X-Gm-Message-State: AOJu0Yxlhdc2NvTbtQEflRGajy7jP14gtitskR/JW9SBYuTxo8LwjAoA
- x9jSyLBCkvxM2oVcaToDxokHXiJ7pH0UcJcKMl0xNQSIC5jwFGQXYcX4Vib0kL2bMsvKquBZIir
- LoRfGeoerug==
-X-Gm-Gg: ASbGncuISar58OMlaCKn3zDj471Cphk0S0VrTPdt0rqaAcnw/BQCRIo6Svf+j4HBcX1
- PvRRpQd/jmwlucnVl/4XFGbKaK9nuUuFTk3j9F5IxfNumU9RzGyyj+WKtAQUCCAHP6WYtcTBGqS
- 0aKlB9Nv85qTiaZ2yQo6D+fd7KGzdgjpXaNT+Hu8N6/It3ysJ/ElQAaRDaRwBFrPTskEwPrbauY
- F2pEBE4Hbs6ZY2Gm9suefv9uKz3aN4tKOoC/8fm6A5dEgXwufv10P0J8Rj6lF6W2IZKvSmDossA
- aYSNHQ6OyYglPYwng/g2pUIsvQXrCeBmlkw4ql3RZMHb80KS/EQh9mqmaenk0rJsC3y2KPa4TXe
- cYlO5YYBPwtE03cWAQWjAK9F85iDmmvWme9XqgT361SyytrcoBL8Ez0D7qhtJJ1RpGCWdloKbAb
- EuhvFBsFdLQBskNa6E3UXHBj9kWD3wQw==
-X-Google-Smtp-Source: AGHT+IHoOk0Y+TM0NcopWernL11ZV7KMHjfwjVzLtqw75+zPta1bkG5ZiFL5PJo2PDcs6BavtlVNCg==
-X-Received: by 2002:a05:600c:8b54:b0:46f:d897:516f with SMTP id
- 5b1f17b1804b1-46fd89758e7mr72203455e9.34.1760551291957; 
- Wed, 15 Oct 2025 11:01:31 -0700 (PDT)
+ bh=yrPHlsfsgalogJYV5kdJutsTBB8awCOsQOV06x5p5gM=;
+ b=TFkcGywg5mspEPHR6lpU6GSLisCIc/TREEfzI4iv/ekF5IlQEznhQeHGUn++MwsioH
+ 6rkR6OsG1pH0q7CZcsBG0ZGExjqFPU5qqADXQAnig67tfV4Jte/auJl5GEmzeQc5ssWc
+ vcvGkMFElnoyuFK4t9+1sh80Ml+xWQvJFhtDt49N5JL9NTKYZSjuO8CZfHkt0W16vyG0
+ z9cqE2SFb81jsmUcxnBrVtOs9O5GErlA78MWIGhqlJ8fNBLJgq5SVCT4/HDWcTvNkVpM
+ gfMv+6O280DmyzTwmmqx3PN0AXtMNOQXN6SsYyhmnRpItKqhFNI6vJSAXwRacnei38EI
+ m1fg==
+X-Gm-Message-State: AOJu0YwS9py1eOWuZCr6TU0ScoTcmWZMfejQnKqBDs9p6AnJQm9GTNKq
+ gDpbxwQbESpF8msTPpJhkJ24pjta5Skf5knSDXM1sSmNyYRrYbMw7Uey7uadyTVfaZL12WyvOiZ
+ 7Cq8QQlihlw==
+X-Gm-Gg: ASbGncs9JAxHmUwLVbmNNGNfb6Onr9W4SsAlKee0RxX9XT3+GhBaZ/m6b8nGJgkOo9O
+ PnPGmRJru2s8DUWx1x/Et19bATtIivIOPkgoxFE/03uPNjC4eqWnsOqVU7gfeWwTh6plHpCx5gZ
+ ZMNiPyChVGbKGl8RcyvSDL9uwB7vyAYhPahR84gCAVg8PNH3GPXeg/DNpzbA6wPAabU5XD0/p9b
+ Nm/27/0ux7gwga7ueAGveX28+3WUz7AdDRWIMbh8TcTwn6vnOGaxw4mNs3drcPVWtgEsyE3MUc6
+ ex1ZMq6V08+BWGs7Pqt+6AJIZ2wHqzjrgpeuR3hworvigIfUVrFSDiXUd5uhQN6HxSLAJypZKBa
+ +jVPn+5fvJYRkyfJ7wOWtCZkhslab1m8yMs/UQuWbT20uJveCsragDovl4kOSm4spJiwFAI6oR5
+ 84+xfzgTrV+x7TH+08bWqCL5yccp6T0g==
+X-Google-Smtp-Source: AGHT+IFC+NefnqddUSKxjh0l5NYKR/NIZLfhlDGGPJS9Jle9EJtDpPjETc4rorfbsat69fGq3hoLUA==
+X-Received: by 2002:a5d:5c84:0:b0:3ee:1461:165f with SMTP id
+ ffacd0b85a97d-4266e8f801amr18061095f8f.31.1760551296717; 
+ Wed, 15 Oct 2025 11:01:36 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710a20328asm8387755e9.1.2025.10.15.11.01.31
+ ffacd0b85a97d-426ce57d49bsm31762559f8f.10.2025.10.15.11.01.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Oct 2025 11:01:31 -0700 (PDT)
+ Wed, 15 Oct 2025 11:01:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 3/7] target/microblaze: Remove target_ulong use in
- gen_goto_tb()
-Date: Wed, 15 Oct 2025 20:01:11 +0200
-Message-ID: <20251015180115.97493-4-philmd@linaro.org>
+Subject: [PATCH v3 4/7] target/microblaze: Remove target_ulong use in
+ helper_stackprot()
+Date: Wed, 15 Oct 2025 20:01:12 +0200
+Message-ID: <20251015180115.97493-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015180115.97493-1-philmd@linaro.org>
 References: <20251015180115.97493-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,31 +102,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-translator_use_goto_tb() expects a vaddr type since commit
-b1c09220b4c ("accel/tcg: Replace target_ulong with vaddr in
-translator_*()").
+Since commit 36a9529e60e ("target/microblaze: Simplify
+compute_ldst_addr_type{a,b}"), helper_stackprot() takes
+a TCGv_i32 argument.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/microblaze/translate.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ target/microblaze/helper.h    | 2 +-
+ target/microblaze/op_helper.c | 4 ++--
+ target/microblaze/translate.c | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 3dd74b021e8..b93a40fedbc 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -116,8 +116,7 @@ static void gen_raise_hw_excp(DisasContext *dc, uint32_t esr_ec)
-     gen_raise_exception_sync(dc, EXCP_HW_EXCP);
+diff --git a/target/microblaze/helper.h b/target/microblaze/helper.h
+index ef4fad9b91e..01eba592b26 100644
+--- a/target/microblaze/helper.h
++++ b/target/microblaze/helper.h
+@@ -20,7 +20,7 @@ DEF_HELPER_FLAGS_3(fcmp_ne, TCG_CALL_NO_WG, i32, env, i32, i32)
+ DEF_HELPER_FLAGS_3(fcmp_ge, TCG_CALL_NO_WG, i32, env, i32, i32)
+ 
+ DEF_HELPER_FLAGS_2(pcmpbf, TCG_CALL_NO_RWG_SE, i32, i32, i32)
+-DEF_HELPER_FLAGS_2(stackprot, TCG_CALL_NO_WG, void, env, tl)
++DEF_HELPER_FLAGS_2(stackprot, TCG_CALL_NO_WG, void, env, i32)
+ DEF_HELPER_FLAGS_2(get, TCG_CALL_NO_RWG, i32, i32, i32)
+ DEF_HELPER_FLAGS_3(put, TCG_CALL_NO_RWG, void, i32, i32, i32)
+ 
+diff --git a/target/microblaze/op_helper.c b/target/microblaze/op_helper.c
+index b8365b3b1d2..df93c4229d6 100644
+--- a/target/microblaze/op_helper.c
++++ b/target/microblaze/op_helper.c
+@@ -365,13 +365,13 @@ uint32_t helper_pcmpbf(uint32_t a, uint32_t b)
+     return 0;
  }
  
--static void gen_goto_tb(DisasContext *dc, unsigned tb_slot_idx,
--                        target_ulong dest)
-+static void gen_goto_tb(DisasContext *dc, unsigned tb_slot_idx, vaddr dest)
+-void helper_stackprot(CPUMBState *env, target_ulong addr)
++void helper_stackprot(CPUMBState *env, uint32_t addr)
  {
-     if (translator_use_goto_tb(&dc->base, dest)) {
-         tcg_gen_goto_tb(tb_slot_idx);
+     if (addr < env->slr || addr > env->shr) {
+         CPUState *cs = env_cpu(env);
+ 
+         qemu_log_mask(CPU_LOG_INT, "Stack protector violation at "
+-                      TARGET_FMT_lx " %x %x\n",
++                                   "0x%x 0x%x 0x%x\n",
+                       addr, env->slr, env->shr);
+ 
+         env->ear = addr;
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index b93a40fedbc..994e1d5cef0 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -606,7 +606,7 @@ DO_TYPEBI(xori, false, tcg_gen_xori_i32)
+ 
+ static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
+ {
+-    TCGv ret;
++    TCGv_i32 ret;
+ 
+     /* If any of the regs is r0, set t to the value of the other reg.  */
+     if (ra && rb) {
+@@ -628,7 +628,7 @@ static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
+ 
+ static TCGv compute_ldst_addr_typeb(DisasContext *dc, int ra, int imm)
+ {
+-    TCGv ret;
++    TCGv_i32 ret;
+ 
+     /* If any of the regs is r0, set t to the value of the other reg.  */
+     if (ra && imm) {
 -- 
 2.51.0
 
