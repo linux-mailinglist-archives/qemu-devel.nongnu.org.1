@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C72BDC799
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F18CBDC79C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Oct 2025 06:31:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v8t6I-0000br-Ng; Wed, 15 Oct 2025 00:26:59 -0400
+	id 1v8t6W-0000sH-0A; Wed, 15 Oct 2025 00:27:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t6C-0000bI-85; Wed, 15 Oct 2025 00:26:52 -0400
+ id 1v8t6R-0000i0-Rq; Wed, 15 Oct 2025 00:27:07 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1v8t69-0002we-9c; Wed, 15 Oct 2025 00:26:51 -0400
+ id 1v8t6J-0002x6-LH; Wed, 15 Oct 2025 00:27:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 261C615D9D8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 368E315D9D9;
  Wed, 15 Oct 2025 07:25:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B420F29FE7F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id CD67029FE80;
  Wed, 15 Oct 2025 07:25:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, ShengYi Hung <aokblast@FreeBSD.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 05/13] hid: fix incorrect return value for hid
-Date: Wed, 15 Oct 2025 07:25:29 +0300
-Message-ID: <20251015042540.68611-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, nanliu <nanliu@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 06/13] docs/devel: Correct uefi-vars-x64 device name
+Date: Wed, 15 Oct 2025 07:25:30 +0300
+Message-ID: <20251015042540.68611-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251014174303@cover.tls.msk.ru>
@@ -57,31 +57,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: ShengYi Hung <aokblast@FreeBSD.org>
+From: nanliu <nanliu@redhat.com>
 
-The return value of hid_keyboard_write is used to set the packet's actual_length
-and pass to xhci directly to allow guest know how many byte actually processed.
-Therefore, return 1 to indicate a successful transfer or it will be
-considered as a wrong xfer.
+The documentation for UEFI variable storage in uefi-vars.rst
+incorrectly listed the device name as `uefi-vars-x86`.
 
-Signed-off-by: ShengYi Hung <aokblast@FreeBSD.org>
+The correct device name as implemented in the source code is
+`uefi-vars-x64`.
+
+This commit updates the documentation to use the correct name,
+aligning it with the implementation.
+
+Signed-off-by: Nana Liu <nanliu@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 1c0f5142d921525f1023152eac63d2ff3d33e3b2)
+(cherry picked from commit f65918497cc6b9034ce8f81a4df1d6407e110367)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/input/hid.c b/hw/input/hid.c
-index 76bedc1844..de24cd0ef0 100644
---- a/hw/input/hid.c
-+++ b/hw/input/hid.c
-@@ -478,6 +478,7 @@ int hid_keyboard_write(HIDState *hs, uint8_t *buf, int len)
-             ledstate |= QEMU_CAPS_LOCK_LED;
-         }
-         kbd_put_ledstate(ledstate);
-+        return 1;
-     }
-     return 0;
- }
+diff --git a/docs/devel/uefi-vars.rst b/docs/devel/uefi-vars.rst
+index 0151a26a0a..b4013b5d12 100644
+--- a/docs/devel/uefi-vars.rst
++++ b/docs/devel/uefi-vars.rst
+@@ -34,7 +34,7 @@ configures the shared buffer location and size, and traps to the host
+ to process the requests.
+ 
+ The ``uefi-vars`` device implements the UEFI virtual device.  It comes
+-in ``uefi-vars-x86`` and ``uefi-vars-sysbus`` flavours.  The device
++in ``uefi-vars-x64`` and ``uefi-vars-sysbus`` flavours.  The device
+ reimplements the handlers needed, specifically
+ ``EfiSmmVariableProtocol`` and ``VarCheckPolicyLibMmiHandler``.  It
+ also consumes events (``EfiEndOfDxeEventGroup``,
+@@ -57,7 +57,7 @@ usage on x86_64
+ .. code::
+ 
+    qemu-system-x86_64 \
+-      -device uefi-vars-x86,jsonfile=/path/to/vars.json
++      -device uefi-vars-x64,jsonfile=/path/to/vars.json
+ 
+ usage on aarch64
+ ----------------
 -- 
 2.47.3
 
