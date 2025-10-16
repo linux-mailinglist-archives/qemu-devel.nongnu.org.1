@@ -2,94 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84184BE40B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 16:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE650BE41C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:06:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9PPM-0000C0-2A; Thu, 16 Oct 2025 10:56:48 -0400
+	id 1v9PWf-0002Dy-GY; Thu, 16 Oct 2025 11:04:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PPI-0000B9-VW
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:56:44 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1v9PWc-0002DL-Pu
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:19 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PPC-0008W6-Pe
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:56:44 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-b3b27b50090so149088166b.0
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 07:56:37 -0700 (PDT)
+ id 1v9PWN-0001A1-UE
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:17 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-46e34052bb7so9844035e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760626595; x=1761231395; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7AYPIdEsoAMLYFBuom60D9v7vT0wj7FvGb5ra70rjWI=;
- b=KdtI5FnAZaKlTJPbgDrB5px5dHUnEc2san52C03Py/NOdtK4M1+xU8cXUr3ehXnArl
- kSspnwpflhLKtAp5j6QpgBXUUA/JmEAZXQN4JMx5nuqimF2yg5sGo15ysG2bk2yhAAPq
- 7NoPR15pVciIu78AnhClL41oua+QDw9snfX+OGGKeRhVUUALI5xa2At0Y2/A5LQD1cHt
- 8gu+0+SDp/jwRmXAoAy3oH1xh7pJYljY8pYpuMLykjd8OTYS1gVwX+h44a8kS7bUyMJF
- dqrvo/C6uumaC6GJA63t8n6D/V3JdL7S7bKT9BttOibtq96pcnetCTuMvctQFMQeuhOJ
- HgsQ==
+ d=linaro.org; s=google; t=1760627039; x=1761231839; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dNNcFWcqxb1X8X1fowx3mWVf0mKnSil0ppjSgKrWAv4=;
+ b=xEOc5lRj40o47CNBf8/ODUA9aBN01rNMIehOWfW20IqurXIHGvkcvqZvs8UJYYmRlT
+ 1KY6/cjRbigvGsaigYHuJLMuIgogDsO3XP1YS/vdLD8EDig1FYpRhvUh0gYu3FCEWDTJ
+ ks0dcRGuwdGeA4eyjt/W7NEyeE+Bqumu7Q5/3yxD/Lc78yhBKukaVr0hDHglU94hJ232
+ wReDol9mbccqgwy7+Zq4ZVp/etEJZDO8Ry7gPTnMsfmcCy0G+0P5+E1c7RNPAzzLs43E
+ zu9QcrhlEI9YGF+9xkfUq15we3AUG/XRKUm+Fvufsn9QnTZTloHalkKFN/LhV3Bp8Q7a
+ bzKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760626595; x=1761231395;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=7AYPIdEsoAMLYFBuom60D9v7vT0wj7FvGb5ra70rjWI=;
- b=H5mMn+VVJBVlBFU1omulBIxPsX2N4miu08KxU0evx2GRqUHIrQPgHrfSeFb4O2WPnX
- mesjOv7KQsQj3U6yjZ78tay6mPWYZnBI71alUto+/M3fpsbWZTvu3GE0yhfdSvzoaFc/
- vbk9vq36Bj+/7u1dPXC5I1VFh3Q9JrU53uMGpoVIEsRV5gvHBlYqDFmDTTAfGzf0OziK
- y7AfjdwlFOMybiY3NhWuNTWV/3GcCieeptJ7Ai3yEhFb8mvCg5gpxlxnzcLazcOxfSf7
- 7RyXfyok6CBvLYrp6WllVpWYJ4TbJ/UPDyqqGuvCBpz2Fb+Xk8z5DHk3DyTPNoudFZVX
- +A4w==
-X-Gm-Message-State: AOJu0YxlHvwHYREQzix4qr5NaAV5RwUBKHgAn37JJZih3R/STjEyYSm3
- PDNrT3hUHPy6pHetKlvD5yuGveM3/YuwT7AIptMWKkyujoNtTiZ7uld0bvxU66Pa/1k=
-X-Gm-Gg: ASbGncsXqQmZQk4WbPAtqkVctJrM1I+TnGtfxl9xi5Fw1ydTnNdSSzuhuArto9mxRY3
- /7sSi5iHp8tUc0g9yjtUWhF8NKUhS//p8pkVm3dmKBa80QG6qGSnmcdp+gCOnj7plOTiLvCksIL
- 0aG8fdsLLuVsv6Vy4B4q1A9/7YsGQOm2DJ/IHgOyO4T1rIDaeFvkBp95sTmVcc9hdyoqcyrYlyO
- dUmg4rcVVo2tDjNaL+xeTSTdAlTP4OgJKeZ0hQqNKpbH0rBNmzw4YC/lctdwQdLcLXHdBITV66c
- gB8ZcMY0KEJMUdMVLqYd3ccWM3S4KByTQ+KoqcdsZd2+pNL7lLovmu3z0XGDi1I5bE76elVgXGq
- cMJmIq9uXyR97OpDIQGsCZLEZn4P3btqAjrJzuPCxu2gAEO3t5lfhq/yqfLsSzb9nQlR/tGQUH7
- B4
-X-Google-Smtp-Source: AGHT+IHGZWgr7m12+1Z6Z7xkMnuNN1fDEJGM8CrtBkUZWYgh/kblpHlGFLvBnxzwDMjo2HD0JHuNHA==
-X-Received: by 2002:a17:907:3cc9:b0:b09:c230:12dc with SMTP id
- a640c23a62f3a-b6472d5d530mr24170966b.8.1760626595288; 
- Thu, 16 Oct 2025 07:56:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760627039; x=1761231839;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dNNcFWcqxb1X8X1fowx3mWVf0mKnSil0ppjSgKrWAv4=;
+ b=p1guENFXgwvPc/PL+1u6qnEr8wbfgaFEkQbsPGoWUjfN2TlYDIXfC0rB4jJbxg3RGW
+ eUOMNmdGCNh60f7LgQKtHgU+Fw6m39fFU2J17zF4detL1wgoeIdIRYaIUCGOqYnwgPOY
+ HV6GB3CU6xBZxqdt4THagsrPFZWUadJMICx8fMS7EOMsv28T2iOULiU0yBIuf0CEbFb3
+ gR8hrBCTMnwqBl9HJEK/9L/z35sz5wgBPGkNsiWdQCcyzYpI3OStDWueoUSDT4VSj3VR
+ Skp/KKASphMFXqDgN2Ucup9qYoYPRp/ZA2ovm8iUdF+/i/giSsKIIt53y5x2PkArylxR
+ ee1w==
+X-Gm-Message-State: AOJu0Yy48PV4mQeQ4Ci9zMqqitKoYM+SAMCMtbETJK2IOCqPfqpg2sCN
+ xxxgEg4vRtOAsiMXAPxCTcleMY1ClduGHvKlCO+en4jAHIjgYMfBduC28VFTDW+Qflc=
+X-Gm-Gg: ASbGncvcZB8fNkuFX4oS727rp4Jz1gQyc5kPCL3001/LNDh2o3U9mH34rOyDg3SsQ2a
+ 0xMCntPFpApTrjoRkqqNDp54q2QIqaZWNWfY40QTlW8+on40NYF1jpxTD9kt7C/EqZyRUzVX32H
+ G112MdI0sxVlIOSwQRHcSGwyhVfVeQqn3awfnqQZnEM2d/6188zgpWBSxlrtq8act0brrrixnXe
+ cjE6FU+jUTuuQCgHbYijkQ4q9XpEFXqzDCwm8wUlNQcSRwbOLcCbFpK1MCdSn4jPF3g+MximpmG
+ aj3I2ChkpWTPljBlhpMNPX1IJgS98DKrQx+nmljTjQ3ovvjEXQaxQs5NcsH93JE6EF4MJ6mlBJq
+ iWLYtVW3dnK2x/lZs1U7MPfDnGCe4fRCbxTlRjjEg+tuNoPeaDwuESYH4OXr27kMPoik7mkzwPp
+ 6bysz7NWAyIYW/eQ4=
+X-Google-Smtp-Source: AGHT+IHqaO7k0AEkcy4zJWRYhvvJwpC6xwuCG3X6FtnFAiCUFHnuEaxWgDroiuYglf0fkn04R6vgow==
+X-Received: by 2002:a5d:5f44:0:b0:426:d5ab:789 with SMTP id
+ ffacd0b85a97d-42704dd6ae1mr351603f8f.53.1760627039038; 
+ Thu, 16 Oct 2025 08:03:59 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b5cccdaa1bbsm533811366b.58.2025.10.16.07.56.34
+ ffacd0b85a97d-4270539be85sm84184f8f.7.2025.10.16.08.03.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Oct 2025 07:56:34 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9847E5F80C;
- Thu, 16 Oct 2025 15:56:33 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yodel Eldar <yodel.eldar@yodel.dev>
-Cc: qemu-devel@nongnu.org,  Dominik 'Disconnect3d' Czarnota
- <dominik.b.czarnota@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH] gdbstub/user-target: Map errno values from the host OS
- to GDB
-In-Reply-To: <20251015162520.15736-1-yodel.eldar@yodel.dev> (Yodel Eldar's
- message of "Wed, 15 Oct 2025 11:25:20 -0500")
-References: <20251015162520.15736-1-yodel.eldar@yodel.dev>
-User-Agent: mu4e 1.12.14-dev1; emacs 30.1
-Date: Thu, 16 Oct 2025 15:56:33 +0100
-Message-ID: <87o6q6j3oe.fsf@draig.linaro.org>
+ Thu, 16 Oct 2025 08:03:58 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 7602F5F80C;
+ Thu, 16 Oct 2025 16:03:57 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Levon <john.levon@nutanix.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH 00/11] maintainer updates for October (gitlab, gpu, plugins,
+ docs) pre-PR
+Date: Thu, 16 Oct 2025 16:03:45 +0100
+Message-ID: <20251016150357.876415-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,172 +111,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yodel Eldar <yodel.eldar@yodel.dev> writes:
+Softfreeze is only a few short weeks away so I want to flush out what
+is ready from my various maintainer trees.
 
-> This patch introduces the function "gdb_host_errno_to_gdb" that maps
-> host-dependent errno values to their GDB protocol-specific
-> representations as listed in the GDB manual [1].
->
-> The stub now uses the correct GDB errno values in F reply packets.
->
-> [1] https://sourceware.org/gdb/current/onlinedocs/gdb.html/Errno-Values.h=
-tml
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2751
-> Reported-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.co=
-m>
-> Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
-> ---
->  gdbstub/user-target.c | 93 +++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 89 insertions(+), 4 deletions(-)
->
-> diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-> index 43231e695e..29feb0509c 100644
-> --- a/gdbstub/user-target.c
-> +++ b/gdbstub/user-target.c
-> @@ -302,6 +302,87 @@ static void hostio_reply_with_data(const void *buf, =
-size_t n)
->                            gdbserver_state.str_buf->len, true);
->  }
->=20=20
-> +/*
-> + * Map host error numbers to their GDB protocol counterparts.
-> + * For the list of GDB File-I/O supported error numbers, please consult:
-> + * https://sourceware.org/gdb/current/onlinedocs/gdb.html/Errno-Values.h=
-tml
-> + */
-> +
-> +static int gdb_host_errno_to_gdb(int errnum)
-> +{
-> +    enum {
-> +        GDB_EPERM        =3D    1,
-> +        GDB_ENOENT       =3D    2,
-> +        GDB_EINTR        =3D    4,
-> +        GDB_EIO          =3D    5,
-> +        GDB_EBADF        =3D    9,
-> +        GDB_EACCES       =3D   13,
-> +        GDB_EFAULT       =3D   14,
-> +        GDB_EBUSY        =3D   16,
-> +        GDB_EEXIST       =3D   17,
-> +        GDB_ENODEV       =3D   19,
-> +        GDB_ENOTDIR      =3D   20,
-> +        GDB_EISDIR       =3D   21,
-> +        GDB_EINVAL       =3D   22,
-> +        GDB_ENFILE       =3D   23,
-> +        GDB_EMFILE       =3D   24,
-> +        GDB_EFBIG        =3D   27,
-> +        GDB_ENOSPC       =3D   28,
-> +        GDB_ESPIPE       =3D   29,
-> +        GDB_EROFS        =3D   30,
-> +        GDB_ENOSYS       =3D   88,
-> +        GDB_ENAMETOOLONG =3D   91,
-> +        GDB_EUNKNOWN     =3D 9999,
-> +    };
+Most have already been reviewed from the various sub-trees but the
+following could still do with a quick look over:
 
-We have this enum in include/gdbstub/syscalls.h already.
+  hw/display: add blob map/unmap trace events
+  gitlab: drop aarch32 runner and associated bits
+  gitlab: use template for ubuntu-24.04-aarch64 jobs
 
-> +
-> +    switch (errnum) {
-> +    case EPERM:
-> +        return GDB_EPERM;
-> +    case ENOENT:
-> +        return GDB_ENOENT;
-> +    case EINTR:
-> +        return GDB_EINTR;
-> +    case EIO:
-> +        return GDB_EIO;
-> +    case EBADF:
-> +        return GDB_EBADF;
-> +    case EACCES:
-> +        return GDB_EACCES;
-> +    case EFAULT:
-> +        return GDB_EFAULT;
-> +    case EBUSY:
-> +        return GDB_EBUSY;
-> +    case EEXIST:
-> +        return GDB_EEXIST;
-> +    case ENODEV:
-> +        return GDB_ENODEV;
-> +    case ENOTDIR:
-> +        return GDB_ENOTDIR;
-> +    case EISDIR:
-> +        return GDB_EISDIR;
-> +    case EINVAL:
-> +        return GDB_EINVAL;
-> +    case ENFILE:
-> +        return GDB_ENFILE;
-> +    case EMFILE:
-> +        return GDB_EMFILE;
-> +    case EFBIG:
-> +        return GDB_EFBIG;
-> +    case ENOSPC:
-> +        return GDB_ENOSPC;
-> +    case ESPIPE:
-> +        return GDB_ESPIPE;
-> +    case EROFS:
-> +        return GDB_EROFS;
-> +    case ENOSYS:
-> +        return GDB_ENOSYS;
-> +    case ENAMETOOLONG:
-> +        return GDB_ENAMETOOLONG;
-> +    default:
-> +        return GDB_EUNKNOWN;
-> +    }
-> +}
-> +
->  void gdb_handle_v_file_open(GArray *params, void *user_ctx)
->  {
->      const char *filename =3D get_filename_param(params, 0);
-> @@ -315,7 +396,8 @@ void gdb_handle_v_file_open(GArray *params, void *use=
-r_ctx)
->      int fd =3D open(filename, flags, mode);
->  #endif
->      if (fd < 0) {
-> -        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-> +        int gdb_errno =3D gdb_host_errno_to_gdb(errno);
-> +        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
->      } else {
->          g_string_printf(gdbserver_state.str_buf, "F%x", fd);
->      }
-> @@ -327,7 +409,8 @@ void gdb_handle_v_file_close(GArray *params, void *us=
-er_ctx)
->      int fd =3D gdb_get_cmd_param(params, 0)->val_ul;
->=20=20
->      if (close(fd) =3D=3D -1) {
-> -        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-> +        int gdb_errno =3D gdb_host_errno_to_gdb(errno);
-> +        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
->          gdb_put_strbuf();
->          return;
->      }
-> @@ -350,7 +433,8 @@ void gdb_handle_v_file_pread(GArray *params, void *us=
-er_ctx)
->=20=20
->      ssize_t n =3D pread(fd, buf, bufsiz, offset);
->      if (n < 0) {
-> -        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-> +        int gdb_errno =3D gdb_host_errno_to_gdb(errno);
-> +        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
->          gdb_put_strbuf();
->          return;
->      }
-> @@ -373,7 +457,8 @@ void gdb_handle_v_file_readlink(GArray *params, void =
-*user_ctx)
->      ssize_t n =3D readlink(filename, buf, BUFSIZ);
->  #endif
->      if (n < 0) {
-> -        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-> +        int gdb_errno =3D gdb_host_errno_to_gdb(errno);
-> +        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
->          gdb_put_strbuf();
->          return;
->      }
+Alex.
 
-with that fixed:
+Alex Bennée (7):
+  gitlab: use template for ubuntu-24.04-aarch64 jobs
+  gitlab: drop aarch32 runner and associated bits
+  hw/display: add blob map/unmap trace events
+  docs/system: split VirtIO devices from the rest
+  docs/system: unify the naming style for VirtIO devices
+  docs/system: drop vhost-user-rng docs
+  docs/system: merge vhost-user-input into vhost-user-contrib
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Andrew Keesler (1):
+  Support per-head resolutions with virtio-gpu
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Dongwon Kim (1):
+  ui/gtk-gl-area: Remove extra draw call in refresh
+
+Peter Maydell (1):
+  tests/tcg/multiarch/linux/linux-test: Don't try to test atime update
+
+Pierrick Bouvier (1):
+  contrib/plugins/uftrace_symbols.py: generate debug files to map
+    symbols to source
+
+ docs/system/device-emulation.rst              |  18 +-
+ docs/system/devices/vfio-user.rst             |   2 +-
+ docs/system/devices/vhost-user-input.rst      |  45 ----
+ docs/system/devices/vhost-user-rng.rst        |  41 ----
+ docs/system/devices/virtio/index.rst          |  29 +++
+ .../devices/virtio/vhost-user-contrib.rst     |  87 +++++++
+ .../devices/{ => virtio}/vhost-user.rst       |  22 +-
+ .../devices/{ => virtio}/virtio-gpu.rst       |   4 +-
+ .../devices/{ => virtio}/virtio-pmem.rst      |   6 +-
+ .../devices/{ => virtio}/virtio-snd.rst       |   2 +-
+ qapi/virtio.json                              |  10 +-
+ hw/display/virtio-gpu-base.c                  |   9 +
+ hw/display/virtio-gpu-virgl.c                 |   4 +
+ tests/tcg/multiarch/linux/linux-test.c        |   9 +-
+ ui/gtk-gl-area.c                              |  17 +-
+ .gitlab-ci.d/custom-runners.yml               |   1 -
+ .../custom-runners/ubuntu-24.04-aarch32.yml   |  25 --
+ .../custom-runners/ubuntu-24.04-aarch64.yml   | 230 ++++++++----------
+ contrib/plugins/uftrace_symbols.py            | 120 +++++----
+ hw/display/trace-events                       |   2 +
+ scripts/ci/setup/ubuntu/build-environment.yml |  17 --
+ .../setup/ubuntu/ubuntu-2204-armhf-cross.yml  | 127 ----------
+ 22 files changed, 361 insertions(+), 466 deletions(-)
+ delete mode 100644 docs/system/devices/vhost-user-input.rst
+ delete mode 100644 docs/system/devices/vhost-user-rng.rst
+ create mode 100644 docs/system/devices/virtio/index.rst
+ create mode 100644 docs/system/devices/virtio/vhost-user-contrib.rst
+ rename docs/system/devices/{ => virtio}/vhost-user.rst (77%)
+ rename docs/system/devices/{ => virtio}/virtio-gpu.rst (99%)
+ rename docs/system/devices/{ => virtio}/virtio-pmem.rst (98%)
+ rename docs/system/devices/{ => virtio}/virtio-snd.rst (99%)
+ delete mode 100644 .gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
+ delete mode 100644 scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
+
+-- 
+2.47.3
+
 
