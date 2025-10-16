@@ -2,108 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874C7BE515F
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 20:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1C0BE517D
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 20:46:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Suj-0000eR-CF; Thu, 16 Oct 2025 14:41:25 -0400
+	id 1v9Sy9-0001hq-EQ; Thu, 16 Oct 2025 14:44:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v9Suh-0000ci-6f
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:41:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1v9Sxr-0001gi-6o
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:44:39 -0400
+Received: from p-east3-cluster6-host12-snip4-8.eps.apple.com ([57.103.85.249]
+ helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v9SuX-0001eq-PH
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:41:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760640063;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bRMvn+ABZ9bFjaIYXbewsW5Pzi87xtPeJm5LoeCuXtQ=;
- b=AyJpQ9mFhK3So50Fl0Uvf0Wcw89DwLb2b9FlsPCXVZVZg5GWST6vXkxAwE1Qt0iZP+vUgc
- ff7zQ0lmOyk/vjRbGGaH4HmbSJCeZWgUTAQN2XALJ9cmAAGITGgOUn2a+YmOGeWx1YdaTH
- DvASOWjA3hZJoSqwMgiaoRGcJQOxjWk=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-1L6_Eaj5OxStlaQfhuQlCQ-1; Thu, 16 Oct 2025 14:41:02 -0400
-X-MC-Unique: 1L6_Eaj5OxStlaQfhuQlCQ-1
-X-Mimecast-MFC-AGG-ID: 1L6_Eaj5OxStlaQfhuQlCQ_1760640062
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-8544316ef6aso590801385a.1
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 11:41:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760640062; x=1761244862;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bRMvn+ABZ9bFjaIYXbewsW5Pzi87xtPeJm5LoeCuXtQ=;
- b=eiS4nVWYAPBkzjej18iP+oiljDbzA6SW9WjnX0Di7yPzNDKmX5VzZ75/ZcKNZySW8x
- gHttA9jgtfZX3PKgNsOC6r2iizu6rWjvKU2AJsdZmUlTrnaaQ3EH2LLC4dpENKM2DYv3
- bAOX4jqlH4nxOeznv4QxoWAOldvcIBlX15iaEDPxE4XyGHetAjEJNb8hGnTkMquMqjBY
- CzouciUgRL3dzCWGFDtJQ9kteZbbD0YySx0cGVb/IogTNgF7m2fYnwZeqXKv04Fm5wAa
- WxZ8+Up4D3MJN+aUY5FSCLgAZUTR+WvFInZ6OLITVEObx1Fms6JndnXlq5Q6MjuEzwRu
- 1Tkg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUGoR8i56Ih6WRH9UCgsdPNVjS67IMdTVcxMPNKsbMNh1NgOeZIm4/xDcaVRZo9Ds6nsb5tgXuVMqD3@nongnu.org
-X-Gm-Message-State: AOJu0YxYrz4x8/Q6o5RNgHl79NW4fetX8xBka/mpBGHbR9JD/5nFy3pA
- V5560UbUAovXDV9z7ksisBtK1IssbPiy8cWQ5AwOFC6jpI6DCkbmKxuL0nf6bIumU7JV6g9ok4d
- fIPZh/HtiNzPPkKulZxv8Qf1PpfgVLLuGSuVcgF5ibFX/o8oDojK7vaT7
-X-Gm-Gg: ASbGncu7dcthwYLiHJ4iNUzNl9+nt8J/ArT01V4fpnxgYw5FK7Fmf9tJWCEmfd3cBqq
- 9Qw34KSElSuVAKOTq6L3iWlsbSK4i6Vp1x2Qu8/+QRyNmIzB7IvCF9PZ3ECzRQOLoMPbZlvL/KO
- FJWSdCVf9T0EgslGwqEfQ9aTPhKXRR9cxayo3U93lX7BVIWW6+TkUz4ALzdN7I4R/eHpIq6QVuI
- KP5+ze/G+7l5fAqlNsgPN5kx80qsKH7THMYi51RJOYHphd+5HseRLybXptkJ7OZ5+hq3iVErkDk
- viH8BpvaNexnb3nQnc38uVbMF5rZe6kQwypmzTsH08Fu7v7n0Ug87o8RJdQcqQnfhmo=
-X-Received: by 2002:a05:620a:489b:b0:852:9e8:4a02 with SMTP id
- af79cd13be357-8906e6b7435mr164429785a.19.1760640061698; 
- Thu, 16 Oct 2025 11:41:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGT7AkGZkiwa7XlmyNSrRPuJs1/vyvncJ1sYa3tua97ghmiFixV6YbW8/dXvr47rUeqKRg2Ug==
-X-Received: by 2002:a05:620a:489b:b0:852:9e8:4a02 with SMTP id
- af79cd13be357-8906e6b7435mr164424785a.19.1760640061258; 
- Thu, 16 Oct 2025 11:41:01 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-88f37e4b953sm254672185a.29.2025.10.16.11.40.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Oct 2025 11:41:00 -0700 (PDT)
-Date: Thu, 16 Oct 2025 14:40:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- mst@redhat.com, jasowang@redhat.com, farosas@suse.de,
- sw@weilnetz.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org,
- michael.roth@amd.com, steven.sistare@oracle.com, leiyang@redhat.com,
- davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
- raphael.s.norwitz@gmail.com
-Subject: Re: [PATCH v8 16/19] qapi: introduce backend-transfer migration
- parameter
-Message-ID: <aPE8Oo5D3oesB7sV@x1.local>
-References: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
- <20251015132136.1083972-17-vsementsov@yandex-team.ru>
- <aO_ll4Lf0bq6vgdm@x1.local>
- <3b9f1da4-6264-45d4-ade1-a6273cc6fa1e@yandex-team.ru>
- <aO_--QWDJO7iOhR4@x1.local>
- <8c575b3a-7d1f-446d-8f6d-4b2e4b851731@yandex-team.ru>
- <aPCtkB-GvFNuqlHn@redhat.com>
- <29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1v9Sxa-00025P-S3
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:44:38 -0400
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-9 (Postfix) with ESMTPS id
+ 43D2518004E4; Thu, 16 Oct 2025 18:44:17 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=jXPIkvwftnVZHRg4Mjz/B4doNai4bCzAxKe4sYL/QI8=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
+ b=AjIcr1rcdLHwDBsG9Y09IiNwKBwXwuFU5S/dzH46M5KSSPbpjK/2vZVJAy5TFKBdTvC464x5kzxfYehth060Vzz91WWqegB/Fog7hLnEIYcr1xFj/CecTIc/MoMEjANS3Hv4nHOBVntBWv5SpDLYp1zdM6JLbeBPCfCISJu+Y1UbU2HALHXKUa6/8aGDneCByUP8snYXRirpEzopLHCQy2gKvdDs4fLCKOCbGJSSRYeeeu5pa32WdU8hYc+11qGI310WtgJ33xRcZaWB53aDjCFz/aEhAIDeCUotO3eKm5590dhsRFMCu2U3243/J4WWd9WyGAOSNwUVQoNhV9vbQw==
+mail-alias-created-date: 1752046281608
+Received: from localhost.localdomain (unknown [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-9 (Postfix) with ESMTPSA id
+ 7E6E1180016A; Thu, 16 Oct 2025 18:44:15 +0000 (UTC)
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Cameron Esfahani <dirty@apple.com>, Alexander Graf <agraf@csgraf.de>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>, Mads Ynddal <mads@ynddal.dk>,
+ Pedro Barbuda <pbarbuda@microsoft.com>
+Subject: [PATCH v8 15/24] hw/arm: virt: cleanly fail on attempt to use the
+ platform vGIC together with ITS
+Date: Thu, 16 Oct 2025 20:44:04 +0200
+Message-ID: <20251016184413.69870-1-mohamed@unpredictable.fr>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDEzNyBTYWx0ZWRfX7WfhM/iit82v
+ OIdbfV3Ku4ZRZ13APXm7TPtLQc3LpR5ZYiSU6FxKnF3qjM9BXf2RrcgtqL7AqdWYfZOC0DEhF7v
+ YYYzZWjnmxn1DONW3+cY5mDXMRr7YcFTV5HKvpfLvL9hHXHlyeLt5GaGSGTP8LIgbx58MgDjnp2
+ OZPSw3QPyaGijxte/3La96ZHppxrWYSVwtZWH8GbuidPNiJtUzS5uQj2Tepoghe1CqxX9JydDir
+ fOZj0fy9SbLKT/UwntnX1JhcQT4nJA2QM21iWhnC1vS3Bo0vAuHnDptSvJZ9Fy5DhxlbB6PRo=
+X-Proofpoint-ORIG-GUID: kkO2l9kMjSZ6w_dX1_ZU-DJeyo8IG1yI
+X-Proofpoint-GUID: kkO2l9kMjSZ6w_dX1_ZU-DJeyo8IG1yI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_03,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ mlxscore=0 adultscore=0 phishscore=0 spamscore=0
+ malwarescore=0 bulkscore=0
+ mlxlogscore=953 clxscore=1030 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2506270000 definitions=main-2510160137
+X-JNJ: AAAAAAABJCq2o+OH+ad70jQ+yt4p9n4BqR6E6d0+iEqG9L8Qkg6dMc3MRR7ZHQZJYJFUzGSKo7k88y5fG2tJ/jS/KJRUGgSjIbATRxC//rOuTsVf91hjrqI4QGamhxUIo+pAzYApQ4to92QF51YqyWyvYSWHsZX4iHZU1jdE//XV2P9MFuFKW4yVK17vSp9Xv5UBwcje6xCjbUgrMu+NcqdLrhLuI9E9mngPimSW1bCFay2SMhZ2O96C6XdatSdWBv1u65S5MxLX2IqjYG65HV/HaQdyXjH6gSciUZBXAJxBlypK3uqtsch8AMQT5vlWTLwsNkqBi1NJxLfCtFGknILGclx0BTOPOzq6u3i0qeBl4x+OuMDtne2kwjO0Lxq6rFSa7xM0w/QjpbeXDQcNKIrNPqd/AYguIb2sb7C7WM5d6JFhoGxCLqiHDUcNnU9R6L0KsTnlTQgKK+8uPtqVDwQ0YsnqePklvYOkNYCNaubi78CITehlaUSjVgdD/ZWfh0o00eGD1ZmLNbde+mcXaNd6s0dP4A0nFyy2iGpLLb0DJK+si8GJymy1RdFCA/nTSmyHPuPz2uXmtoQ9a5oWZ+Hv81WDHNMJVM4Do/deVjohIsLgPsV7PIuGGE7Ri2pJ5Hq0wZAri/6a3g/w+XvuRu+bY+8elktCRsZbSNhR4b+CreQExO67ny4OR6X6KpTo9Bs=
+Received-SPF: pass client-ip=57.103.85.249;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,163 +87,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 16, 2025 at 12:23:35PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 16.10.25 11:32, Daniel P. Berrangé wrote:
-> > On Thu, Oct 16, 2025 at 12:02:45AM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > > On 15.10.25 23:07, Peter Xu wrote:
-> > > > On Wed, Oct 15, 2025 at 10:02:14PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > > > > On 15.10.25 21:19, Peter Xu wrote:
-> > > > > > On Wed, Oct 15, 2025 at 04:21:32PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > > > > > > This parameter enables backend-transfer feature: all devices
-> > > > > > > which support it will migrate their backends (for example a TAP
-> > > > > > > device, by passing open file descriptor to migration channel).
-> > > > > > > 
-> > > > > > > Currently no such devices, so the new parameter is a noop.
-> > > > > > > 
-> > > > > > > Next commit will add support for virtio-net, to migrate its
-> > > > > > > TAP backend.
-> > > > > > > 
-> > > > > > > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> > > > > > > ---
-> > > > > 
-> > > > > [..]
-> > > > > 
-> > > > > > > --- a/qapi/migration.json
-> > > > > > > +++ b/qapi/migration.json
-> > > > > > > @@ -951,9 +951,16 @@
-> > > > > > >     #     is @cpr-exec.  The first list element is the program's filename,
-> > > > > > >     #     the remainder its arguments.  (Since 10.2)
-> > > > > > >     #
-> > > > > > > +# @backend-transfer: Enable backend-transfer feature for devices that
-> > > > > > > +#     supports it. In general that means that backend state and its
-> > > > > > > +#     file descriptors are passed to the destination in the migraton
-> > > > > > > +#     channel (which must be a UNIX socket). Individual devices
-> > > > > > > +#     declare the support for backend-transfer by per-device
-> > > > > > > +#     backend-transfer option. (Since 10.2)
-> > > > > > 
-> > > > > > Thanks.
-> > > > > > 
-> > > > > > I still prefer the name "fd-passing" or anything more explicit than
-> > > > > > "backend-transfer". Maybe the current name is fine for TAP, only because
-> > > > > > TAP doesn't have its own VMSD to transfer?
-> > > > > > 
-> > > > > > Consider a device that would be a backend that supports VMSDs already to be
-> > > > > > migrated, then if it starts to allow fd-passing, this name will stop being
-> > > > > > suitable there, because it used to "transfer backend" already, now it's
-> > > > > > just started to "fd-passing".
-> > > > > > 
-> > > > > > Meanwhile, consider another example - what if a device is not a backend at
-> > > > > > all (e.g. vfio?), has its own VMSD, then want to do fd-passing?
-> > > > > 
-> > > > > Reasonable.
-> > > > > 
-> > > > > But consider also the discussion with Fabiano in v5, where he argues against fds
-> > > > > (reasonable too):
-> > > > > 
-> > > > > https://lore.kernel.org/qemu-devel/87y0qatqoa.fsf@suse.de/
-> > > > > 
-> > > > > (still, they were against my "fds" name for the parameter, which is
-> > > > > really too generic, fd-passing is not)
-> > > > > 
-> > > > > and the arguments for backend-transfer (to read similar with cpr-transfer)
-> > > > > 
-> > > > > https://lore.kernel.org/qemu-devel/87ms6qtlgf.fsf@suse.de/
-> > > > > 
-> > > > > 
-> > > > > > 
-> > > > > > In general, I think "fd" is really a core concept of this whole thing.
-> > > > > 
-> > > > > I think, we can call "backend" any external object, linked by the fd.
-> > > > > 
-> > > > > Still, backend/frontend terminology is so misleading, when applied to
-> > > > > complex systems (for me, at least), that I don't really like "-backend"
-> > > > > word here.
-> > > > > 
-> > > > > fd-passing is OK for me, I can resend with it, if arguments by Fabiano
-> > > > > not change your mind.
-> > > > 
-> > > > Ah, I didn't notice the name has been discussed.
-> > > > 
-> > > > I think it means you can vote for your own preference now because we have
-> > > > one vote for each. :) Let's also see whether Fabiano will come up with
-> > > > something better than both.
-> > > > 
-> > > > You mentioned explicitly the file descriptors in the qapi doc, that's what
-> > > > I would strongly request for.  The other thing is the unix socket check, it
-> > > > looks all good below now with it, thanks.  No strong feelings on the names.
-> > > > 
-> > > 
-> > > After a bit more thinking, I leaning towards keeping backend-transfer. I think
-> > > it's more meaningful for the user:
-> > > 
-> > > If we call it "fd-passing", user may ask:
-> > > 
-> > > Ok, what is it? Allow QEMU to pass some fds through migration stream, if it
-> > > supports fds? Which fds? Why to pass them? Finally, why QEMU can't just check
-> > > is it unix socket or not, and pass any fds it wants if it is?
-> > > 
-> > > Logical question is, why not just drop the global capability, and check only
-> > > is it unix socket or not? (OK, relying only on socket type is wrong anyway,
-> > > as it may be some complex tunneling, which includes unix sockets, but still
-> > > can't pass fds, but I think now about feature naming)
-> > > 
-> > > But we really want an explicit switch for the feature. As qemu-update is
-> > > not the only case of local migration. The another case is changing the
-> > > backend. So for the user's choice is:
-> > > 
-> > > 1. Remote migration: we can't reuse backends (files, sockets, host devices), as
-> > > we are moving to another host. So, we don't enable "backend-transfer". We don't
-> > > transfer the backend, we have to initialize new backend on another host.
-> > > 
-> > > 2. Local migration to update QEMU, with minimal freeze-time and minimal
-> > > extra actions: use "backend-transfer", exactly to keep the backends
-> > > (vhost-user-server, TAP device in kernel, in-kernel vfio device state, etc)
-> > > as is.
-> > > 
-> > > 3. Local migration, but we want to reconfigure some backend, or switch
-> > > to another backend. We disable "backend-transfer" for one device.
-> > 
-> > This implies that you're changing 'backend-transfer' against the
-> > device at time of each migration.
-> > 
-> > This takes us back to the situation we've had historically where the
-> > behaviour of migration depends on global properties the mgmt app has
-> > set prior to the 'migrate' command being run. We've just tried to get
-> > away from that model by passing everything as parameters to the
-> > migrate command, so I'm loathe to see us invent a new way to have
-> > global state properties changing migration behaviour.
-> > 
-> > This 'backend-transfer' device property is not really a device property,
-> > it is an indirect parameter to the 'migrate' command.
+Switch its to a tristate.
 
-I was not seeing it like that.
+Windows Hypervisor Platform's vGIC doesn't support ITS.
+Deal with this by reporting to the user and exiting.
 
-I was treating per-device parameter to be a flag showing whether the device
-is capable of passing over FDs, which is more like a device attribute.
+Regular configuration: GICv3 + ITS
+New default configuration with WHPX: GICv3 with GICv2m
+And its=off explicitly for the newest machine version: GICv3 + GICv2m
 
-Those things (after set by machine type) should never change, and the only
-thing to be changed is the global "backend-transfer" boolean that can be
-set in the "migrate" QMP command, and should be decided by the admin when
-one wants to initiate the migration process.
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+---
+ hw/arm/virt-acpi-build.c | 15 +++++++------
+ hw/arm/virt.c            | 46 +++++++++++++++++++++++++++++++---------
+ include/hw/arm/virt.h    |  4 +++-
+ 3 files changed, 47 insertions(+), 18 deletions(-)
 
-> > 
-> > Ergo, if we need the ability to selectively migrate the backend state
-> > of individal devices, then instead of a property on the device, we
-> > should pass a list of device IDs as a parameter to the migrate
-> > command in QMP.
-
-I doubt whether we would really need that in reality.
-
-Likely the admin should only worry about whether setting the global
-"backend-transfer", the admin may not even need to know which device, and
-how many devices, will be beneficial to this feature enabled.
-
-It just says, "we're doing local migration and via unix sockets, so
-whatever devices can try to reuse their backends if possible".
-
-Thanks,
-
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 0a6ec74aa0..8e730731ca 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -472,7 +472,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         nb_nodes = num_smmus + 1; /* RC and SMMUv3 */
+         rc_mapping_count = rc_smmu_idmaps_len;
+ 
+-        if (vms->its) {
++        if (virt_is_its_enabled(vms)) {
+             /*
+              * Knowing the ID ranges from the RC to the SMMU, it's possible to
+              * determine the ID ranges from RC that go directly to ITS.
+@@ -483,7 +483,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+             rc_mapping_count += rc_its_idmaps->len;
+         }
+     } else {
+-        if (vms->its) {
++        if (virt_is_its_enabled(vms)) {
+             nb_nodes = 2; /* RC and ITS */
+             rc_mapping_count = 1; /* Direct map to ITS */
+         } else {
+@@ -498,7 +498,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     build_append_int_noprefix(table_data, IORT_NODE_OFFSET, 4);
+     build_append_int_noprefix(table_data, 0, 4); /* Reserved */
+ 
+-    if (vms->its) {
++    if (virt_is_its_enabled(vms)) {
+         /* Table 12 ITS Group Format */
+         build_append_int_noprefix(table_data, 0 /* ITS Group */, 1); /* Type */
+         node_size =  20 /* fixed header size */ + 4 /* 1 GIC ITS Identifier */;
+@@ -517,7 +517,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         int smmu_mapping_count, offset_to_id_array;
+         int irq = sdev->irq;
+ 
+-        if (vms->its) {
++        if (virt_is_its_enabled(vms)) {
+             smmu_mapping_count = 1; /* ITS Group node */
+             offset_to_id_array = SMMU_V3_ENTRY_SIZE; /* Just after the header */
+         } else {
+@@ -610,7 +610,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+             }
+         }
+ 
+-        if (vms->its) {
++        if (virt_is_its_enabled(vms)) {
+             /*
+              * Map bypassed (don't go through the SMMU) RIDs (input) to
+              * ITS Group node directly: RC -> ITS.
+@@ -945,7 +945,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+                                           memmap[VIRT_HIGH_GIC_REDIST2].size);
+         }
+ 
+-        if (vms->its) {
++        if (virt_is_its_enabled(vms)) {
+             /*
+              * ACPI spec, Revision 6.0 Errata A
+              * (original 6.0 definition has invalid Length)
+@@ -961,7 +961,8 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         }
+     }
+ 
+-    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) && !vms->no_gicv3_with_gicv2m) {
++    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms))
++     && !vms->no_gicv3_with_gicv2m) {
+         const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
+ 
+         /* 5.2.12.16 GIC MSI Frame Structure */
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 9121eb37eb..dbf9a28b8d 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -735,7 +735,7 @@ static void create_its(VirtMachineState *vms)
+ {
+     DeviceState *dev;
+ 
+-    assert(vms->its);
++    assert(virt_is_its_enabled(vms));
+     if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
+         /*
+          * Do nothing if ITS is neither supported by the host nor emulated by
+@@ -744,6 +744,15 @@ static void create_its(VirtMachineState *vms)
+         return;
+     }
+ 
++    if (whpx_enabled() && vms->tcg_its) {
++        /*
++         * Signal to the user when ITS is neither supported by the host
++         * nor emulated by the machine.
++         */
++        info_report("ITS not supported on WHPX.");
++        exit(1);
++    }
++
+     dev = qdev_new(its_class_name());
+ 
+     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
+@@ -955,7 +964,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ 
+     fdt_add_gic_node(vms);
+ 
+-    if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
++    if (vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms)) {
+         create_its(vms);
+     } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
+         create_v2m(vms);
+@@ -2705,18 +2714,34 @@ static void virt_set_highmem_mmio_size(Object *obj, Visitor *v,
+     extended_memmap[VIRT_HIGH_PCIE_MMIO].size = size;
+ }
+ 
+-static bool virt_get_its(Object *obj, Error **errp)
++bool virt_is_its_enabled(VirtMachineState *vms)
++{
++    if (vms->its == ON_OFF_AUTO_OFF) {
++        return false;
++    }
++    if (vms->its == ON_OFF_AUTO_AUTO) {
++        if (whpx_enabled()) {
++            return false;
++        }
++    }
++    return true;
++}
++
++static void virt_get_its(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(obj);
++    OnOffAuto its = vms->its;
+ 
+-    return vms->its;
++    visit_type_OnOffAuto(v, name, &its, errp);
+ }
+ 
+-static void virt_set_its(Object *obj, bool value, Error **errp)
++static void virt_set_its(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(obj);
+ 
+-    vms->its = value;
++    visit_type_OnOffAuto(v, name, &vms->its, errp);
+ }
+ 
+ static bool virt_get_dtb_randomness(Object *obj, Error **errp)
+@@ -3426,8 +3451,9 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+                                           "guest CPU which implements the ARM "
+                                           "Memory Tagging Extension");
+ 
+-    object_class_property_add_bool(oc, "its", virt_get_its,
+-                                   virt_set_its);
++    object_class_property_add(oc, "its", "OnOffAuto",
++        virt_get_its, virt_set_its,
++        NULL, NULL);
+     object_class_property_set_description(oc, "its",
+                                           "Set on/off to enable/disable "
+                                           "ITS instantiation");
+@@ -3487,8 +3513,8 @@ static void virt_instance_init(Object *obj)
+     vms->highmem_mmio = true;
+     vms->highmem_redists = true;
+ 
+-    /* Default allows ITS instantiation */
+-    vms->its = true;
++    /* Default allows ITS instantiation if available */
++    vms->its = ON_OFF_AUTO_AUTO;
+     /* Allow ITS emulation if the machine version supports it */
+     vms->tcg_its = !vmc->no_tcg_its;
+     vms->no_gicv3_with_gicv2m = false;
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index d31348dd61..997dd51678 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -149,7 +149,7 @@ struct VirtMachineState {
+     bool highmem_ecam;
+     bool highmem_mmio;
+     bool highmem_redists;
+-    bool its;
++    OnOffAuto its;
+     bool tcg_its;
+     bool virt;
+     bool ras;
+@@ -218,4 +218,6 @@ static inline int virt_gicv3_redist_region_count(VirtMachineState *vms)
+             vms->highmem_redists) ? 2 : 1;
+ }
+ 
++bool virt_is_its_enabled(VirtMachineState *vms);
++
+ #endif /* QEMU_ARM_VIRT_H */
 -- 
-Peter Xu
+2.50.1 (Apple Git-155)
 
 
