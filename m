@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF787BE3592
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BD0BE35BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9N0k-000081-P0; Thu, 16 Oct 2025 08:23:14 -0400
+	id 1v9N1C-0000r4-Rc; Thu, 16 Oct 2025 08:23:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mz0-0005jW-S2
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mz0-0005jZ-SD
  for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:21:27 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Myn-0000Tt-2o
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:21:24 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e37d10ed2so5333465e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:21:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mys-0000UT-T7
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:21:25 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-47109187c32so3480495e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617264; x=1761222064; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760617268; x=1761222068; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BCJrU5ZLrWgbTac3F9afgkynkH23kc7VJ51ZhIVJfZk=;
- b=KuO6QiXyDMQL2VoUkrsuNGUBk9YICDu6yFFYoTfDo4jSwSQuNdqz9DJPz74+67fACZ
- JSv42ZzrSstJuhRuzuUEp5HM/RpaRNlitJtppeDHCBl+l8T7uS6P3ZvGTWAeEfBkstYo
- kUw0r8rm0uj7s1yZfp37KZ9t0N6/+DtMsMhU5Q9ViVb2lr+96hyzBr3MgHZgzX4aOR/E
- uuT0aTWEsW7JLn7gIiEWYD+UPDPfm7JGsBtK6jGvNXnjKHKFW9W8U396DsQuIa3AFjt5
- oFNa0FdrA4U9lEE32ilf3cqC3k7nDgL308bC0qKDYTPYH+lj6r7EUcUMrC2BHknteYwM
- Ag+A==
+ :reply-to; bh=AyoHyu+3x+RmN2fv1vN+8a0sulrF/dPr3KwOq/zbGuw=;
+ b=pDlZNgdKBv6PWrJcpX3NK/IJTG1NnNa2PUNJUh+YK8zfEP8bCzSzkMKUcS+4vxKZJS
+ 6eWwtB/3Y067/9s9X83Y6M79HC5inqpi35gbXkd/0+IK7AiJf/UIcHFVYfVQfbcvCCng
+ VFRP4bBna1t9V+GXcWpjx4j3SqduW4pGo6eIEqJIqLl9QMRF1nr0u4l0U02vqvxlugsI
+ 60FUedru0Tduscqe+qW9GLjwNIC1KDNKnw02vJChHZ7LsihnjLVKnFsxT67l32GDksrb
+ ZfWgWkN/HrGVfRs0D+F8PZLy2rt04AMjMvZn+yAh73By5MSehhyOO15n7ricek51C5dj
+ FBug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617264; x=1761222064;
+ d=1e100.net; s=20230601; t=1760617268; x=1761222068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BCJrU5ZLrWgbTac3F9afgkynkH23kc7VJ51ZhIVJfZk=;
- b=E5+NevuV7SrhP9qU4zM9YhvRrvRUirJ/LMHJoVqvatd6wWA8Z+n8FVkcgOAef96y/V
- Vs69Z3ulLIAc/cCPPP9iBvRoyzJ0iYSujuHDNyRgSEcupEpa9Vd0OM6G//oowNUqqIUF
- Gw7q7nVWiHJlBwpHBgNUje8TRcHeVfe3RBDg5gZY4xSGcs715Qrpb4NpVj2dOdtMkh2C
- 7woSpWLSUIe8R2NRehIw7IQWWnmu7PrSrMN4XNSg0H9vvbccJAq7NkZwpiQYErpGSlIP
- r8AIpOH4tXTZP0HWlgKrCBgrei5DpFtR/B6sDsfj95GMmDCTxBxmizv3si3p1WzXX5a6
- xMIg==
-X-Gm-Message-State: AOJu0YwyvNwF9PVuWhwuzLbFycuhocwA45zlo0GeDykL5eRgnq9xCN1Y
- g+zqe6cdo97N66Cy3RXnKeeFjrC+ICWucQb+e9DwbTTNg6BscdJr55F6S6gQa4r6PSH/QHP1xIG
- EUjKs2UQ=
-X-Gm-Gg: ASbGnct4oLp4/ld/DLErsyv4KXNQu9BFALX2dNGajOPNLbiK311k63MsYJOC8K8TXix
- nDGVwBdQtEHEu4Tp6M52dzrZHl3piez5Sl7Hd3j3jk8UES3/3TNMIoqlNXpLrE7MYxa3JdrytKT
- HtE202WbK4K4yFvbTpCs29AM6uTRf/tprVe0KBQI8/9rv2eH2Ge70qZKsSMKHiFvfjqALtstZsW
- 8GqZo0JKKvTUwQDdgbBuQcW/cG9qURvMWSefbh2+/8y2tpMg3DhIuibbIXS9+uD1ctfXct7/0xk
- k2BgI7v6THZ78dKXAiYvUojqCCKeSBza4gRzJlWmWdz2vwyoea9mIdq19q7ecNJPwRvHoWGsM54
- 2fQ6TIsogS6C5oQyEfk07bw6JMZyHhV+Rz7dL9l3STFTHT1GOW709QGDKZB7KptDqz3Qz/YvDoh
- sE07IoF/aCb8Luu0iiD33eO/N3ZtIzoWRq8kpYQQZezLz/KxeTYQAXFw==
-X-Google-Smtp-Source: AGHT+IFeImkrLnqR40Qx0dUeqIMNB7TyMDJjeqaB6H01p6xy1IvMLqOT9IQrQlae6GFdzZXlaFO3DQ==
-X-Received: by 2002:a05:600c:811b:b0:471:16f3:e542 with SMTP id
- 5b1f17b1804b1-47116f3e8b5mr1320525e9.2.1760617263888; 
- Thu, 16 Oct 2025 05:21:03 -0700 (PDT)
+ bh=AyoHyu+3x+RmN2fv1vN+8a0sulrF/dPr3KwOq/zbGuw=;
+ b=b3enjhE3EjBkUniOTic4prTrkyFSIkSIVkX7LpEXj+XXnZQBOVWWy8fcO6Oe2icPG7
+ gygYbWIzi4oiGfFcAQ92/NQ4OCms5hB++6oxDHb73MsPsWETjKLlg2nDEMl23UkReUgs
+ ejSTSwg/cVQ2dYYabEtsZ3VMziQbB9VoOlB83tvbIyEYvqT0Ubxy+l2oSQWyR2RcpZ+7
+ 2JiV3kt+50qOcBYXQnP0OLm50i0hu46b5sTUeK2G7/JS9PZqTwlVZyB3oWI0k62ju9VE
+ kju1vaabBfzyvvLxRXiUkT16zVt7ouHR3ag2bjxeoXVNGv1qtt0bBrwWeujjmciKJ6dS
+ GA0A==
+X-Gm-Message-State: AOJu0YwBKzygm6fTf6GFIvqQDguoWAxFavZFAYtb0QXAXcbK+cMx1xnS
+ WvEBzFK2jt8N05TYqX3jMjC4lE/9+Aig4j4UWmWZ8URACMDMNefanzELfdofbY4dBH7OhZ6KxGP
+ qIdrk9Dg=
+X-Gm-Gg: ASbGncvB68KFs9kSzs2EGd35aHhJ6dLntXL+9WUiQZ6hVIfKPrjgyYPJOoCU+bEBC0R
+ X1LWjil7RXaIHGI498pq0ZcTThfMCQQ+EbPdcZEY5noL/w0PgdmSAUbt/QfRSSjSUOFvUx7maGf
+ Ttsx0b3o8n2HWbTN2AjolQnRqMsLcGh7CuWdILR4yIw8Zv6A8KlebxolZKnjJeeO2ayIHLpjDC6
+ 6oDR0xIu8PJQHKy6J/5xGHgdnMOLBcJh9EVbXgmr7gXeqHnOsCnZXYsAq6yKVSNGRUudSvlGEjg
+ eNho0iZsZjfj+sLl9WF5JMqg9eJKk591HZwo737pcYVz3zbpTiVpZVR2sf8ffs2lLTPBpQEFrf1
+ CoxSgWWJM0ySAqedes/dA35tst7N8GKYmAnafI4y8MeW2ND1SllYSh/C/Bp55uVxXf/mWgH35RO
+ Qt7xjCMjcgz+8Gg28Xjw1egbwnD8YiUDE+pDIHwLv/ZokPzi44V37yyA==
+X-Google-Smtp-Source: AGHT+IEjG4MELIVv4VdYJGDaBhOHs9TyAe+s5+Ua8RJgDY530EP8rv0JnFuCrYn1lzDonAuwtQfL0A==
+X-Received: by 2002:a05:6000:4313:b0:3e0:c28a:abbb with SMTP id
+ ffacd0b85a97d-42666ac39a2mr20831887f8f.13.1760617268598; 
+ Thu, 16 Oct 2025 05:21:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4711442dbaesm24703395e9.8.2025.10.16.05.21.02
+ ffacd0b85a97d-426ce57cc0esm34730076f8f.6.2025.10.16.05.21.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:21:03 -0700 (PDT)
+ Thu, 16 Oct 2025 05:21:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 71/75] target/xtensa: Replace legacy
- cpu_physical_memory_[un]map() calls
-Date: Thu, 16 Oct 2025 14:15:27 +0200
-Message-ID: <20251016121532.14042-72-philmd@linaro.org>
+Subject: [PULL 72/75] target/xtensa: Remove target_ulong use in
+ xtensa_tr_translate_insn()
+Date: Thu, 16 Oct 2025 14:15:28 +0200
+Message-ID: <20251016121532.14042-73-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,74 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit b7ecba0f6f6 ("docs/devel/loads-stores.rst: Document our
-various load and store APIs") mentioned cpu_physical_memory_*()
-methods are legacy, the replacement being address_space_*().
-
-Replace the *_map() / *_unmap() methods in the SIMCALL helper,
-using the vCPU default address space. No behavioral change expected.
+Since commit 85c19af63e7 ("include/exec: Use vaddr in DisasContextBase
+for virtual addresses") the DisasContextBase::pc_first field is a
+vaddr type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20251002145742.75624-6-philmd@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-Id: <20251008051529.86378-2-philmd@linaro.org>
 ---
- target/xtensa/xtensa-semi.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ target/xtensa/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
-index 636f421da2b..431c263dc57 100644
---- a/target/xtensa/xtensa-semi.c
-+++ b/target/xtensa/xtensa-semi.c
-@@ -32,6 +32,7 @@
- #include "exec/target_page.h"
- #include "semihosting/semihost.h"
- #include "semihosting/uaccess.h"
-+#include "system/memory.h"
- #include "qapi/error.h"
- #include "qemu/log.h"
- 
-@@ -192,7 +193,9 @@ void xtensa_sim_open_console(Chardev *chr)
- 
- void HELPER(simcall)(CPUXtensaState *env)
+diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
+index 34ae2f4e162..bb8d2ed86cf 100644
+--- a/target/xtensa/translate.c
++++ b/target/xtensa/translate.c
+@@ -1166,7 +1166,7 @@ static void xtensa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
  {
-+    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-     CPUState *cs = env_cpu(env);
-+    AddressSpace *as = cs->as;
-     uint32_t *regs = env->regs;
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
+     CPUXtensaState *env = cpu_env(cpu);
+-    target_ulong page_start;
++    vaddr page_start;
  
-     switch (regs[2]) {
-@@ -215,7 +218,7 @@ void HELPER(simcall)(CPUXtensaState *env)
-                     TARGET_PAGE_SIZE - (vaddr & (TARGET_PAGE_SIZE - 1));
-                 uint32_t io_sz = page_left < len ? page_left : len;
-                 hwaddr sz = io_sz;
--                void *buf = cpu_physical_memory_map(paddr, &sz, !is_write);
-+                void *buf = address_space_map(as, paddr, &sz, !is_write, attrs);
-                 uint32_t io_done;
-                 bool error = false;
- 
-@@ -261,7 +264,7 @@ void HELPER(simcall)(CPUXtensaState *env)
-                         error = true;
-                         io_done = 0;
-                     }
--                    cpu_physical_memory_unmap(buf, sz, !is_write, io_done);
-+                    address_space_unmap(as, buf, sz, !is_write, io_done);
-                 } else {
-                     error = true;
-                     regs[3] = TARGET_EINVAL;
-@@ -408,11 +411,11 @@ void HELPER(simcall)(CPUXtensaState *env)
- 
-             while (sz) {
-                 hwaddr len = sz;
--                void *buf = cpu_physical_memory_map(base, &len, 1);
-+                void *buf = address_space_map(as, base, &len, true, attrs);
- 
-                 if (buf && len) {
-                     memset(buf, regs[4], len);
--                    cpu_physical_memory_unmap(buf, len, 1, len);
-+                    address_space_unmap(as, buf, len, true, len);
-                 } else {
-                     len = 1;
-                 }
+     /* These two conditions only apply to the first insn in the TB,
+        but this is the first TranslateOps hook that allows exiting.  */
 -- 
 2.51.0
 
