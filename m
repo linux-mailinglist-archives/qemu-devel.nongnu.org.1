@@ -2,79 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7FBBE2499
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 11:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EEDBE2523
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 11:14:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9JuF-0002yP-0U; Thu, 16 Oct 2025 05:04:19 -0400
+	id 1v9K2P-0007TO-7H; Thu, 16 Oct 2025 05:12:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9JuC-0002y0-6Z
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 05:04:16 -0400
-Received: from mail-yx1-xb129.google.com ([2607:f8b0:4864:20::b129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9K2N-0007Sr-57
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 05:12:43 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9Ju5-0006l5-Pm
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 05:04:14 -0400
-Received: by mail-yx1-xb129.google.com with SMTP id
- 956f58d0204a3-63e11347fd9so184311d50.1
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 02:04:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9K2B-0007Y0-Lc
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 05:12:42 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-46e3a50bc0fso3455595e9.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 02:12:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760605446; x=1761210246; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IcymViIMbHOz9ezVPTAlrr0iHbP3vKqF/BfZyhqmAaI=;
- b=flnKmzYgZg7G9a6cgRBWI2sWZxs/PFGt+7wKX2JJpEICv4VeaJ7jm49kYpuNmedsUZ
- 3jTawCd+LwdepGV5Lf3QC83QPx7CWDC992JeT7/A4pFF8ggWDlJaXZ5+vR7nXA4LLTnT
- CImjvK5jRJzL5C07nPR/dcndkceBY6Rd7N2KSJNIrTpPvV+HINfHR+m3KjlQs3tDeVkP
- NNXQtyMGDvrnumRxc+TGM5/Xx6j6uApqnjvnhGZ6vT0LrJx5K7xNpdvkUYpxEKJEW+AM
- CO5OyHsX94EPGVgLLBWABUbUzn2KrxHMBC/3UjCiUknf2SfHrPqz3FIi25sFGWVBzymx
- HGTA==
+ d=linaro.org; s=google; t=1760605944; x=1761210744; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xNfv9xsmmhteqxadkVhT2+fkyYPSah+3ICpJbHA4auM=;
+ b=fYWxzTg75xkyqxbMA+A2hRj6d6MJ++WASzMcmYxTRgZ8gJkfnmlczf0HinOpRbDOfa
+ k3bnXyPzNQrFlYhXlw1WfLprZ6rlwK0Q3oGXlA62p4Vsc5K8tpt8N0NA4KUlqzvhVub/
+ Rf2wCinriQ8CM/hygso8KzvkvfLZrfc8yiqr+ugg6Nv6lyptboF/BrOx9ccbMkyRNi+P
+ aUTHncu4Ya7WB4AyIlSI27xSkZBVoPKu2O2wTQWwk5ZwClD3b069bycfFgRK1j8DNPG9
+ pOONqR6A2T3pQ5cEHvW9E9brdw9671HKC4qsxZGLQgUk4OHaAT/K8XlkCrjP+CCTvqhS
+ 0cew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760605446; x=1761210246;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IcymViIMbHOz9ezVPTAlrr0iHbP3vKqF/BfZyhqmAaI=;
- b=w67UHx01P/EngjytZl3gNpp8jyQKkJUBrc1kOx39fjJIretKh/DsAP2P6u5x0Kn0UL
- OJJ6xrqq6w5UxCIZPEWH4xADk5zstWX1mp+O2wvskSdVvNS0skWg+mT5otFWjKxBIPf4
- EW5qOxjsb1bkE21Qs43BHAyYd4Hu0hfebOBH/+Kb2QvpiPCkVsI4NMD9866Eqbr43HWS
- c3tiNuuVYkJoFM7ebyQNibRH6Kcao98LHJWakvZNGIc8sPSrOUbxb0wZEq3mDLiIWRZX
- YlRMaVKhGl9l4g8zr4Fs0EZdboR/+gMOt8IBhGzemox4TKFH05l09z3kJFlq2Ox8WX5r
- JL7A==
-X-Gm-Message-State: AOJu0YyhstWe1zkk0OvonllTGJovUqh+Ozy1U7GUlUmP50Q9ou3UWTWi
- /Ye9CTZFVpoT0pNorTOM4aD8n1BXGs+nJ6I/q+Vap7C1b+iICLF+8URQcEYrg6Ipz/gxc64cWui
- qz8Pk2gMMXsGCqTGolL/v9novdOPgboysp2uZPlGMrV6in8obg5xd
-X-Gm-Gg: ASbGncvJbGrTwVJhxyRZcx2PJDtbPE67IaAVRpYkKFnOiQFy3UewYPYYJXq7E6VghIx
- vUXxyP2DPzDvzGlsbgA9X1MMyIKm0GJ4S8LK1tzpbGvcPpKiV4yB54hqe3Fy6ZF/YmhI9fNhKjL
- 9Ewqace0sNiA1mwKcMRG7FzOKfvrkWbpZdh/IwW/7n4ezBpfpGthS9IBPjbx+PtF9dn6XDahmnH
- FTXxGLOchsR+2dyi6EwtCq+efmf57RH4zXaqwv7RU1mL8XqoCO4bDh/kGztwjXJsg==
-X-Google-Smtp-Source: AGHT+IGCessBEORPPfwYnMf0LLrtRb7K1FqrPtN/+O+E++Iws006whXIpU9HxhJ/lCdYIytdWhmBrB5tYNd0DF8IW0Y=
-X-Received: by 2002:a05:690e:12cc:b0:63e:f05:afcd with SMTP id
- 956f58d0204a3-63e0f05b6famr745908d50.68.1760605445768; Thu, 16 Oct 2025
- 02:04:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760605944; x=1761210744;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xNfv9xsmmhteqxadkVhT2+fkyYPSah+3ICpJbHA4auM=;
+ b=TazX18Fk9softcn2Gnfycf8Jp6WbFPh8ofDNEzguprgG8JKKvogTjP83/kQSM+sMw0
+ 5AbX0pR22jWKqy4Ry9WQhOsUWy3baPYA0kNz8/vR6jhjceO9RUIeeHRDHvyEvK2EKxZZ
+ CW16JAENoMzBjW4oO95B5lc7+yhiK92klDFw3+74LX0A7LFk3RY20V4ts8wmCJA3/ni1
+ 8eqdZ0kqx9vjy+J8hzUnQiwzTnLvMtp4cp+y1YhX1+5IlK/w54FPIgKN0+/BFiZuHMz8
+ reIJEJRsDnKAgpqxEvsYQ17IgbZawxiEhZpQ0KOQy4XRYtztv3CZo0b/Sb6CJ0WK9mHp
+ K4vA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVbHdmVEfFnbu/GmlMZs3r+F1GY9DxQfGAPBru+bwTXxJSsIbA07nxc9iAtTqAi41pN/xYBW+w9cTj8@nongnu.org
+X-Gm-Message-State: AOJu0Yz9Manl7Yq6Y1NctmF0xzg7pu2dJDi/XsKgmXspw+M/5xwZEJxz
+ J3YF0oorj0QfT44h16QjwuauqXNuZ76jFAbJxbcjWHW4OMR89zOT95we9cd/jOFrlls=
+X-Gm-Gg: ASbGnctUELLxvcJZMZ41wls/SSnJUkKoBL6y3/n3X4ILP+zd3OZUFGGbIc0ktBUOxw4
+ gAiAQrmeKv7jWDy9JWThU3Jj4Ho9kUrsaW0FNVPhnNJ3dCLkGgoPBAiTZZi3zgYdyjWOYGOWTZ5
+ J3aRpt0hmdCV/li9WsX3/X7TzTOc3NE1obGzU1lj/OhOKTV1TYwKDUuWcC1k4Dgb9F15xIS5Gga
+ Mr1mBB9o6+F50lXl2qL595x/Xs5xCBGHpaTgzi2oOXSf9ptZR4xlfz0fmDRcY7zWOCj41nl7X4V
+ 16fjYkV3XYTHXjsWRZsvmjsjoqCL6YW5LiW8y9yqVWvpdHF/sefDEvMS698S3/HbR+ikL4mp4NF
+ NK9fz9QpcBtUXliF/d1A0xQMoE64REDj1f2cm+LEzsciv9k3QUAaFZPJutETIT7yCtD98giCkaW
+ jFxUjvqSJeB6FyyZNnGK4MXa1yiPQehuc/MP3eFSsYHOWa4bUFddWG6iYr4g==
+X-Google-Smtp-Source: AGHT+IE80TJxnu4thgS5f+era764aCpK9tGSrOOZRfaWpeLL3Lkv72yXnMKHQ6DPJ379DWca9g9xvg==
+X-Received: by 2002:a05:6000:258a:b0:425:8bc2:9c4b with SMTP id
+ ffacd0b85a97d-42666abb51amr16517178f8f.6.1760605943892; 
+ Thu, 16 Oct 2025 02:12:23 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4710cd833ebsm16015305e9.3.2025.10.16.02.12.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Oct 2025 02:12:23 -0700 (PDT)
+Message-ID: <ea10c781-d15f-4346-a092-78d203f2f0c9@linaro.org>
+Date: Thu, 16 Oct 2025 11:12:22 +0200
 MIME-Version: 1.0
-References: <cf07f156-6d93-4631-8f8b-6bdaae488519@roeck-us.net>
-In-Reply-To: <cf07f156-6d93-4631-8f8b-6bdaae488519@roeck-us.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 16 Oct 2025 10:03:54 +0100
-X-Gm-Features: AS18NWBwiUYEFqDfVwz4CUfeWq8xWK3BepX39YIcd6Tu6VTqgDWv5JiRai8mi4Q
-Message-ID: <CAFEAcA-rKUJsEbEr8CVOd2_p-Cmowg=f2BJuADmwaaLq=zDVEg@mail.gmail.com>
-Subject: Re: Reverts needed to get qemu 10.1.1 and 10.0.5 working for me
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b129;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb129.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: aspeed: Split the machine definition into individual source files
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ "'qemu-arm@nongnu.org'" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: 'Andrew Jeffery' <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, 'Jamin Lin' <jamin_lin@aspeedtech.com>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Patrick Williams <patrick@stwcx.xyz>
+References: <e2df1ff1-3ce4-4233-b32e-2bc680725c71@kaod.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <e2df1ff1-3ce4-4233-b32e-2bc680725c71@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,28 +106,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 15 Oct 2025 at 11:34, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> Hi all,
->
-> I lost track what exactly I reported, so here is a summary of reverts and
-> patches I needed to get qemu 10.1.1 and 10.0.5 working for me.
+On 19/6/25 11:23, Cédric Le Goater wrote:
+> Hi,
+> 
+> This is a follow up of a private discussion with Patrick.
+> 
+> Aspeed modeling started nearly 10y ago with the palmetto-bmc machine.
+> We now have 5 SoCs and 25 machines which are mostly defined in
+> in a single aspeed.c file. Multi SoC machines, fby35 and ast2700fc,
+> are defined in fby35.c and aspeed_ast27x0-fc.c respectively.
+> 
+> Since we started separating the SoCs :
+> 
+>    hw/arm/aspeed_ast10x0.c
+>    hw/arm/aspeed_ast2400.c
+>    hw/arm/aspeed_ast2600.c
+>    hw/arm/aspeed_ast27x0.c
+>    hw/arm/aspeed_ast27x0-ssp.c
+>    hw/arm/aspeed_ast27x0-tsp.c
+> 
+> We could do the same for the machines keeping an 'aspeed_ast<rev>'
+> prefix (and maybe avoid the 'bmc' suffix). I think this would ease
+> introduction of new machines. We would be able to get rid of
+> aspeed_eeprom.[ch] and move machine custom data in the machine source
+> file. Which seems cleaner.
+> 
+> Timing is about right for code reshuffling, still 3w before soft
+> freeze, no important changes inflight, but if we start doing this
+> conversion, we should do it for all. See the list below for the brave.
+> 
+> Comments ?
 
-> commit 7a7e0ff6552fd5ca60d31d302fde492c7194208b
-> Author:     Guenter Roeck <linux@roeck-us.net>
-> AuthorDate: Sun Oct 12 20:26:29 2025 -0700
-> Commit:     Guenter Roeck <linux@roeck-us.net>
-> CommitDate: Sun Oct 12 20:37:24 2025 -0700
->
->     Revert "hw/usb/network: Remove hardcoded 0x40 prefix in STRING_ETHADDR response"
->
->     This reverts commit 4474802b0cd59fa14b603b953fa0bc8cc92783c0.
->
->     The patch seems innocent but causes net-cdc connection failures.
->
->     Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Good idea, but please split ASPEED_SOC in Kconfig accordingly.
 
-This is weird. Do you have a repro case for it?
+Regards,
 
--- PMM
+Phil.
 
