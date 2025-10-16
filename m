@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C301BBE4CC4
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 19:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060D4BE4CD0
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 19:13:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9RVh-0001ZS-RB; Thu, 16 Oct 2025 13:11:31 -0400
+	id 1v9RWm-0003Ks-H3; Thu, 16 Oct 2025 13:12:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v9RVV-0001NH-1y
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:11:18 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1v9RWk-0003Ka-Lm
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:12:34 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v9RVO-0003fE-1e
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:11:16 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-780fc3b181aso646349b3a.2
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 10:11:08 -0700 (PDT)
+ id 1v9RWb-0003p4-RC
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:12:34 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-3327f8ed081so1303483a91.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 10:12:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760634666; x=1761239466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760634740; x=1761239540; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=K39YbJ8V0SFQMeOuwPXO7YyEdomsHJKYwlcAPQMmelY=;
- b=jXB9l/MWmX8uYImigLmuNnpuSFW8jJx3sX7NDctsHj5cw6nSO3w1o0X5Kuoy87ddem
- eK3illCIR40kxcGu9pksh4uCKyp2iCSgW+0uNJv/ujRV602a2v3Mtwi8bLtHhh5gKKao
- yK+P3iynZ0XOmQEHf7f01f8Fwv/ZH/ItCXwW5j0ws9IqRRxAFoF6/gBM8G+jU4Fevvd3
- h6MeF6UODhsN+4sQJuOOhpdauJE7hOJXxnFIbdycH6vMIBbTph8ketb5xr1JdFdBrgeU
- CYuiFqxNkF+SkKk2X523zD/kZpHmTIJy+WsG+tR4eYapcAKT8MyJoIjbeGxg5W4yfpNJ
- zFFw==
+ bh=Wqblu1nTC6KBf9GQr3KlSotdtAc28SYiKW3vv2OoNSk=;
+ b=heyPNoVE66P3uI7NuJ7SSqwENPmcrQJD60RswW4hQ8OsZVeO+9Nf7RwewES0wRTrm2
+ JuRcYNHFI2IZifJvyoIgOroW47lvICwwFW/IUUADhZLN9rKgTjB2dTL9YpjeieVZCGIj
+ 4F215nrqxl6q/UIrg/lcA0L07cYu8UPaDfVhnWZ3yyKtfhJaeZ6bpAgKQ2onwicd94qA
+ m8AIlbGWUxyLgyiHkV+Tlgqv3SOi3qSTa16zGhxgzfrZR1rdWV2Nwod39YUsBSracQMH
+ oA/NmCen9pmv/BZvLENuy9K+VWClZIuyorPvfq0ZklNDJC//oAZ/tweAUI322NXGcGU6
+ ZkjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760634666; x=1761239466;
+ d=1e100.net; s=20230601; t=1760634740; x=1761239540;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=K39YbJ8V0SFQMeOuwPXO7YyEdomsHJKYwlcAPQMmelY=;
- b=bF6K5ZvKxFAnEZSJsyH97a4p6M4Wcw+7iD+u4rSJbMwtGxl4qayDzahUu6kg3w8fEW
- orlDiWgFyqnbhM7bbEIZOZSdbSS0ZCpJ6GE7pGjw0WGsOEn5TFpRykxxlBzTZri7TnNk
- XJilxwq2sD6JcGrFiV6HX+pchWSUMpoctjreAhaZuce9MMAK1Nqad5Rbaukwls37nKnz
- feP5zw0XkDYCnxDrFw83lWJUnGqA30pXiN9R9Yg9qgH2rFcDm/t3RgaBbuMS3ZryTU8w
- p+XIoKl4VTmBov2KE0+47YrNMPIJWxBCmMMyQWFQYB54mY4PPAdwBkqhA+xM3+8zdI5E
- H2Xg==
+ bh=Wqblu1nTC6KBf9GQr3KlSotdtAc28SYiKW3vv2OoNSk=;
+ b=NHGfY5owQL+8Z3I1ZMOzYNcSt+0kwgSSber95fRigsTekQAd4BJMI/3LEToODMGOmB
+ 3d0Zc8XYEOfmTytg1/pzvD55vpzWbid4ebo0s4wfCivaJgzu1b7ICj8S+/KDgegEmz/b
+ BqrTdWPpz3r+hDNGGbi2YvPJa640YIKPWnEizsgFJHNf/86EWFZeGoVIYFQvZpTBNAhY
+ +bQZZW3BdoKzXAor9etr897AzUGp2cDbdZxKGh6TeZUH/TsVBnLFUW21RXyWa1ByTA2K
+ g/Yy1w1qZYDVUHE4tAv0JRFV93iyiCkw04ssdEobg23azkycf8PKcdLXIxhpkmsFCLii
+ NZ7A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW0EqyRW/HnHXQhJacdULqKl++ZYuaImXWcDuu+zadQuL8i/SDSfOT3BGV9EA31qOgCswnQQj5lmvJQ@nongnu.org
-X-Gm-Message-State: AOJu0Yw96ELKCAyZikJcDbanDYQ596K1hMPC9vKkJRZA5EMnvkyw9K2N
- zys5EJWZNjrQ995E5iKm3RXQTK/hT0dFtFrdY6kGfiNPxCGihGch626jRHk3wXtAy5M=
-X-Gm-Gg: ASbGncvP4CSyp98hwlaae7clOkC8YYF98cYoSJIL9DUd7okRrkOdpdgaRsth1Im5OJ8
- AsPwfwVuFfncuLZz33Z6oweU98AvTA4zU9hRNlHaguzVubLbKKpeYcyt1+d3XPrEcYi15dyqEQN
- ecyxRl2PiIkF34PeoP4os/2PPvm9riVtvk4+t2Fa181aUK6z8Lg0TrniSSm9oBXbkMsYzzoufLM
- TuWMuih/9f4nzovYZmUPGh1fC+677s+LP0C4tjvDvjaHjnD+HIWwk41uxDDljhYOZ5xik7C/lc+
- XY04LqgMEIMwcIuMuLJ7NVBHcBH4mDOnftorEsWz5N0xzueo0Dv3AUU0uqfNnDZPdiCje9cJJKv
- 1/9P5KZXeYcTeAJ/qhmqiKopfQa79zGhe+APkDMI6xzIJe5NkMrrozYWqOiUYkyEAPM7qJe4cz2
- WlziCnQ54eOixG
-X-Google-Smtp-Source: AGHT+IEVtlrZhg/XjQQtIqOB96+jdcBFExfh4wze5+8/y99XoPAXoumLttosjY3oO+kv5n+KGFMDlw==
-X-Received: by 2002:a05:6a21:3399:b0:32d:b946:dc55 with SMTP id
- adf61e73a8af0-334a85398b9mr843561637.22.1760634666520; 
- Thu, 16 Oct 2025 10:11:06 -0700 (PDT)
+ AJvYcCUQsFTnD++lLarPYwhkhk3Lso14knx/j+ffSNpPLHGMEGdJ/nZQn8ot3HOa41LscPuDL76ZBe1RlYjx@nongnu.org
+X-Gm-Message-State: AOJu0YzWsptJh12bWFRJGknR8d8rS2AVCVfDS6sYogErZHWrumYM4gS6
+ b6WDU23lGB8gsimFNrDqrQgXqqZFIG0bZZqVlZrWP0HppxGGYhecxDmSJ6irzjFPD88=
+X-Gm-Gg: ASbGncsmbOLK32kexGmo06jtt20HZxk+UhzFBO/D868o04X65HM8ntLWve21+6gut9W
+ Fi/dSwPquf61Te90L2oWJHNXtHcitRIW5oCHtGYj38Uw9pWbxgYWmS7rbcmaLOvLwz38nOzXjLF
+ odgBUCovvDOGt/0wsnQyH78C48Lc8fD2h+IYE2A5/nfdF37Axwwbk1Y0p0ALkZzK1+VVYKitYGc
+ aR1WhXOJP6n1Xz/XiMUwWndONYvHx4smqFyTUJkLzQWRYlZ2yQ6H8YY+XxAG7EJUCKXIsoBWigk
+ xOz26FQUrh/LP5xN4AUFRTvOUWPebEnVIzqnOpsTBm+Z+xkrJq2++D0gDXmZJp6nKLP8NeJcaNp
+ Bidfukwbq2iaJXBpZ0n2Jqp35je+nyz8OGIc3dV1ZMNQGdsbjzkGKm690H8zTQVMybefc/jULoa
+ fg3rAcuSP18+ub
+X-Google-Smtp-Source: AGHT+IHelTFD/6eyJl55bPn6h0h2qCPlAEcjf6xEmaHE7c0nv5FzNep3RfWsm3FjU/yzVLvG86PL9g==
+X-Received: by 2002:a17:90b:28c4:b0:338:3789:2e7b with SMTP id
+ 98e67ed59e1d1-33bcf86b5bbmr642520a91.13.1760634740118; 
+ Thu, 16 Oct 2025 10:12:20 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-79cf0a052b8sm14518427b3a.67.2025.10.16.10.11.05
+ 98e67ed59e1d1-33bb66c4a93sm2557506a91.23.2025.10.16.10.12.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Oct 2025 10:11:06 -0700 (PDT)
-Message-ID: <1de38eaa-28f8-4b56-9673-624f6c9b8b10@linaro.org>
-Date: Thu, 16 Oct 2025 10:11:04 -0700
+ Thu, 16 Oct 2025 10:12:19 -0700 (PDT)
+Message-ID: <d44a4957-4b0e-4ab3-a720-04b7fc88978b@linaro.org>
+Date: Thu, 16 Oct 2025 10:12:18 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 16/24] docs: arm: update virt machine model description
+Subject: Re: [PATCH v7 19/24] whpx: arm64: implement -cpu host
 Content-Language: en-US
 To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -90,20 +90,20 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  Pedro Barbuda <pbarbuda@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
  Roman Bolshakov <rbolshakov@ddn.com>
 References: <20251016165520.62532-1-mohamed@unpredictable.fr>
- <20251016165520.62532-17-mohamed@unpredictable.fr>
+ <20251016165520.62532-20-mohamed@unpredictable.fr>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251016165520.62532-17-mohamed@unpredictable.fr>
+In-Reply-To: <20251016165520.62532-20-mohamed@unpredictable.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,15 +120,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/16/25 9:55 AM, Mohamed Mediouni wrote:
-> Update the documentation to match current QEMU.
-> 
-> Remove the mention of pre-2.7 machine models as those aren't provided
-> anymore.
+> Logic to fetch MIDR_EL1 for cpu 0 adapted from:
+> https://github.com/FEX-Emu/FEX/blob/e6de17e72ef03aa88ba14fa0ec13163061608c74/Source/Windows/Common/CPUFeatures.cpp#L62
 > 
 > Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 > ---
->   docs/system/arm/virt.rst | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+>   hw/arm/virt.c              |   2 +-
+>   target/arm/cpu64.c         |  19 ++++---
+>   target/arm/whpx/whpx-all.c | 104 +++++++++++++++++++++++++++++++++++++
+>   target/arm/whpx_arm.h      |   1 +
+>   4 files changed, 119 insertions(+), 7 deletions(-)
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
