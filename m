@@ -2,165 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325EEBE3D99
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 16:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309E4BE3A23
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 15:15:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Oa2-00059d-VW; Thu, 16 Oct 2025 10:03:47 -0400
+	id 1v9NmO-00021Z-5I; Thu, 16 Oct 2025 09:12:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <martin.drab@virtuozzo.com>)
- id 1v9Nj9-0001RX-2Q
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 09:09:07 -0400
-Received: from mail-northeuropeazlp170100001.outbound.protection.outlook.com
- ([2a01:111:f403:c200::1] helo=DB3PR0202CU003.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <martin.drab@virtuozzo.com>)
- id 1v9Nj1-0006hk-HN
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 09:09:06 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TDS6WnVsMMnvaSZLfcu80AyV05fPLh6MRJ/4P7iQIWNk6vw9qc2A9QFKpfwa7IpjdHEytU//cHv+Gc59vuylDrmLYSpOpEoBz4YMwkiHTs80/OTWA8DiA1L5p9MFK5ZNlHuXpeEuaEzPAK4tNpUYmg4UfOyhQit1/GQRLf1MOIlmIg1aNa9DUR1GJ0MS/YEJuuoKr5lF8rfrwsF+JzMrPjonx2lUcZZ6c2+AHMXUgyCww43wfyGJi/NrIzR9SKCmu3sNDB0ki6DZ5dCx/aXzKqtA4lzcFj24akdcepQcUBbGDNPO5RFaTfVLAvif6n0swOxxx35HMOzNz+2TAnejuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tdx+LoyDpEGFiBvnDoCSmQsD5VExiCVz2ewFEyMANlQ=;
- b=EsIIuKgIYIl0S9Ovm7t2bm9d8g8yktxCA7M69fOJRR3tpM+TZCSfWuVy4XnD0EXPNsKSeKoCa3l9WUe6TVZoHTaIJFeq7s2aLGcG3Iezpv630rWj022Uhk4B8V0UYXFIMQ4R+OakeuuuA/36k5uQGM8R7zkmZQ0RZ300teXCRGNgjGLkY2+YryhWXZ7HMb1+rA8WTogD+1OgLmRNgB1AT9mak3+nGcr9vrewpfCZLA+ihhvRNtGj+5aeIJioFeHD9Qo0vCyYhjXP+spWbvh6a8D/NY1SmsqQ77PASf4NTc/zBgJjYBf0LveGh/Yt17hBcV5o906Qd9RXZ82pFv47pQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tdx+LoyDpEGFiBvnDoCSmQsD5VExiCVz2ewFEyMANlQ=;
- b=DhuDjIu9BnFxUhyrbc+NWN77cCqhOEX03RXjN3S3nXp/hcAVdG2MQ36yaniGyGecitkL08z8vvbsLlker+aVq3nNN3cViYSsXOtpPMb0uhB0wx9thFKpbIhDsLYIbccwB6uwTGTsr5TSD+GBsIjKYHKyM9pIxxiKdJfQ8B0lZai2KrpXWoeuhflqKm3gxIBRbl6O2SE3K0jkaOuJ8uyM6AMRsSEhbJeXAf5l4HRUXoNghlKJ8TDkMW1HtHPKy7EivzUwF/4339LEU3zdOxWjjgFc9t9ZDW1yET2+OABW2Y4FHf27qomon1zoneUSBQ6nBIHck8/Xh3KQM1/nTzQ+Pg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from DB4PR08MB9863.eurprd08.prod.outlook.com (2603:10a6:10:3f0::16)
- by AM9PR08MB6001.eurprd08.prod.outlook.com (2603:10a6:20b:2d5::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Thu, 16 Oct
- 2025 13:08:52 +0000
-Received: from DB4PR08MB9863.eurprd08.prod.outlook.com
- ([fe80::d9c7:6a37:13f7:701d]) by DB4PR08MB9863.eurprd08.prod.outlook.com
- ([fe80::d9c7:6a37:13f7:701d%5]) with mapi id 15.20.9228.009; Thu, 16 Oct 2025
- 13:08:52 +0000
-Message-ID: <561f5abd-c699-48e5-a396-fd4714b11fa0@virtuozzo.com>
-Date: Thu, 16 Oct 2025 15:08:51 +0200
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v9NmF-0001zx-EM
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 09:12:19 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v9Nm4-0007D0-Jm
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 09:12:19 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-4270491e9easo91163f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 06:12:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760620322; x=1761225122; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XOUFNZvpHvqjnm/AtQ2K0Ky2w9UxP0NVE0y9sfgq5R8=;
+ b=XhF08UrJ+8tx+TuUe3l6gYI6u/zxNdARqUFZFGzMaxe1FwubBWeNTbzGBqSlkNiXdt
+ 7hSs7N1eitfPH3uzPe42/VWebiNAtXfB6JOJlB9aTZgUaFtStk8gbrCJ99ePuu9tsrtG
+ 8FMy9zXoBbeGHxTpCM1cR57vVU/JywnYXKoN3IEQV1GYGnUpi3WwsPCyu7iA0Awzp/t3
+ VfvfYLrGcx5RtIq1Kd3VfBJJQRVo7/QU5Udshwou0ci7MvxZgbSpjuEuJJUnSn/p4Uyz
+ x20y3qzCN4g4O/adh5sK2jFa134/WcnjHHVJs4pp6Tlqpyty6J0iLMAJoeGaN/ESc+AE
+ I/kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760620322; x=1761225122;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XOUFNZvpHvqjnm/AtQ2K0Ky2w9UxP0NVE0y9sfgq5R8=;
+ b=hMfDTVsQeNNaMEBpXi6gdtx5iwBwhWZd+rPdfN1C9ZKucwrYugWJKaHWHBDjqD3R14
+ SFicFX5t0Qdqy8w7x5t8WRz9jTgPohgtqY1oDywBrm+kdPM19DVJj3mv/cj8AWzXrOSv
+ P0EEgGKJuCG7gop8fCEELX+KVs/+GZJEwd+ZRSIFpJ3vghZCiqYuytaG7wqYsVAUl5SM
+ 1pWTe2BtJRGBOD0BlFc0ob9HuWizd8tbiuTH0IsYR8oG6JGjN/URqTUbZ+SizKp35M3z
+ mfHaXBQEnx6qaBZKg3BMxj951nBjX1Tuqp0hJpptQf6FBgkJINVdf1fAChkAzFVaNYHR
+ 5jpA==
+X-Gm-Message-State: AOJu0Yx6jU314dlhgIG3kUBDXm49l8q9wzgf3i2R0ONP/0wZkeEX7QTn
+ 6lAvM37+gkDO/lLozdY4NzQhtLbBUxDIIui7T2vHGJUXFHSuo0PZ+mSMMlYWi/m09gT3ylkGJq6
+ o6peG
+X-Gm-Gg: ASbGnctowAWkRWzTMNqVa785vx47W1Ze06cZXp8xoVfOC0gmd4pzX253IJ0AlIaDahS
+ W3OjlIATsmblpsep8LHZx6q3WDQapLRlvkbAWf+vD+9axMfmppnO2Y0YSMQBnXf0rWOev0KZ95K
+ PqVhbV8JqShXdtnqofhFicajk7xKy8ml0sBnOoAoTUFnLX+ytsN/PpyqxLPajhsDdapzC+/QSwG
+ gXKIElv1xaS5SxCmMwZoEiWfv8uQaQUjj8yCdCZpPfv/jpsHbUfynJ9qjoGl0WGu1AsStTwrxu5
+ dKqG3Tv149QG1T/3ruXIK1jz9XmvDZgjYv4l2K0Ltma/47TONjII2AcWb+OvrVR83Ysct8WUUk9
+ 3QkjT2PRLTofoeIEr8tTYW0bCoy0LBC2D4YdjOzkUCjfL57bhM/mZyxAEtjETqclkFN4BN6qlge
+ h0VCsYd8E9zE7x/KVBJ9wpDlOxkSBX1+M=
+X-Google-Smtp-Source: AGHT+IFbroAqjxKopL/8oWTHIEPp0sO95JEtiIY9HxkTTxB57rQwFTtY3xXmFhLIKybwLh1K7gC2pQ==
+X-Received: by 2002:a5d:5d02:0:b0:3f7:b7ac:f3d2 with SMTP id
+ ffacd0b85a97d-42704d9b22amr30802f8f.43.1760620321700; 
+ Thu, 16 Oct 2025 06:12:01 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4711443e81asm28033515e9.10.2025.10.16.06.12.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Oct 2025 06:12:01 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: martin.drab@email.cz
-From: Martin Drab <martin.drab@virtuozzo.com>
-Subject: [PATCH] [qga]: Close handle to the serial device when destroying a,
- channel
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR09CA0129.eurprd09.prod.outlook.com
- (2603:10a6:803:12c::13) To DB4PR08MB9863.eurprd08.prod.outlook.com
- (2603:10a6:10:3f0::16)
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
+ qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>
+Subject: [PATCH v2] docs/system/security: Restrict "virtualization use case"
+ to specific machines
+Date: Thu, 16 Oct 2025 14:11:59 +0100
+Message-ID: <20251016131159.750480-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB4PR08MB9863:EE_|AM9PR08MB6001:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3d962e6-2692-4c32-ceb7-08de0cb5273b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TG5HWSsxMHZJSjJQYnZXR2RPZHFjczQvRWUwQXZvc0I5QXlCZm5id1BwbFB6?=
- =?utf-8?B?Rm1SS1NzUG5xSis5VGw0dEQxc0c2QnVJc1pkQjMwTjdwY2lQOWdSSmtSZGkr?=
- =?utf-8?B?Y0tyTjJBd2NHZGlXZGM5L0FWM2MxMG9jLy9UWUtEQTJvSWRwUXBwaUtFbWdG?=
- =?utf-8?B?ZUhJeld4ZVNhU3dwYzRrNzBrNzVRdTNvT0QreWpKU2NNZDFMRXdWKyt0WEJD?=
- =?utf-8?B?YTFNUTVYc3FLenVSa2FROUVhYzBiT0pDME1RVTRmUk56RHcwdHVQTlRHaTlY?=
- =?utf-8?B?cmhkTlBwY29YeStIVmNLUlEvT2kzTjlsQ0Y0S0RVRml2QVBkZDU3b1Y1R3FV?=
- =?utf-8?B?ZGJvMVhzWGRWSFJzOE9nOXNFOHppUXRQQ1NJUi9nemxWRkphOXU4dEl4VFBI?=
- =?utf-8?B?K05hanBNbkZQdmljMU9NbCtBY3VTcW9ESzdycFdMQ0Z5VDRqVmJpYlI5bFY1?=
- =?utf-8?B?WG1wTS9NSWFocDJiUm5Mc2NvMnYydkJHUGhhQVVackpEcHlwR0drL0JmcTlO?=
- =?utf-8?B?VzhVb05pbTBMTWE2Lzl0VDhpcDAwWWN3ZmxSZVJjN3NwQWZlVG0xcWZyaERi?=
- =?utf-8?B?QlVVM1IwdGV5ZTc1ZkRPM2pWK012QXozNWd6ZVFWaXVRdEFxSldxK0M3RUNw?=
- =?utf-8?B?UjdNZXJYam9qRWwzdy9vbjZYME5hQ1pMSW5ybGM3YkFHSUFYKzRhK2xYNmZs?=
- =?utf-8?B?Wi8rWEdTQW93dWllN3hkTVc4Vm1pbHdGRXdmSFM0L01HZm8yVVRQWmQ2NVR3?=
- =?utf-8?B?ZlowK1orcWI0MGpaR1pYdDlNb0ZicDQzeGdXU2FnZllhdys2SkNIQUFhN2dL?=
- =?utf-8?B?YmRiN1NjbEtlRWJ3dTIvb2haTnZMUWkrTmJ4eFNHQi9peHNnZ2dnaUFGSjRK?=
- =?utf-8?B?RW5zZS9IOG5PUXUrMER4eWtCYStIdWdqaUhZczlKVFdxZWFMTmZ0QTQ3YS91?=
- =?utf-8?B?Tk1sU2UyaHNlZlN5bUFSRXFlNFF4NFplV042THdBQS9ha3FYdHNuMlhqcHRq?=
- =?utf-8?B?VVg3STdoWU1UN2JQZkxVVEd2eUxXdEJFOXFRUW5LRUJ2emZvY1NGcGs1TjdK?=
- =?utf-8?B?dVZlMWtNY2JDdmlVd28vYytUWWJoUTVMRXQ5TjZWa1lmQkorSnJNVGZsYi93?=
- =?utf-8?B?aGNQZUg5cmFneUdsRmhrZW1ndDZiM0xHMFRHb242NDVsd2V5L3ZaTkJyNE9C?=
- =?utf-8?B?Q3BGRFJXT0FKRFpna3BiT21xQ2ZTMXd1bHUvemJOQlIzMzBtb1I2OVlQTEJo?=
- =?utf-8?B?UXJxMlRIMkRsNnF4TjRqS1BHRStYcHMwdmIzczFoaHVjVDRxWS9pM0t1bTZw?=
- =?utf-8?B?b0t3R1J2TjFLbTVrMktmMWJ5Zk9lM1QxSVBrSmNJMW5rakVSQzMzbytPTlEv?=
- =?utf-8?B?RFFrMkpQNFhabjlRWVNkaWhldFdJcG1zZXJ6MS9WTGlnd2VYeityRVMvVHZZ?=
- =?utf-8?B?eENjcEl2Ymh5eWtKNENZdGVjVkhNamYzUjF4aERGUzUrS3VtNDZuSjY1VWdv?=
- =?utf-8?B?QWd6MllPU05jVU9VbmN1R1pzTjJYNjRjVFU5ZjlVelZSNmU4U3J0dmwvRUJR?=
- =?utf-8?B?SDdkS1MzbE5nVmhMOFJoRXhPSGpLL0s4TEJYSVMyUkE2WWpMRzZOU05UNUpZ?=
- =?utf-8?B?dUdCMlJVYXRiV3grRVF6TkE3a0tTM2ovektXdmkxNFp0TWtwcFVoVU93dTd1?=
- =?utf-8?B?QTI5bVNPMWlJZE54blBLWlNRUzc1WnpRMGFXWEQ4OHZpb2dPT3NaSk5FRDR1?=
- =?utf-8?B?cm52Mk5vWTFOMTRMSDhCUEFmdDAyZzZmZEgyV3NwNy9uOFZrUThKS2ZBT28y?=
- =?utf-8?B?citUak5ybzVDTDhvS0VnVU9vRkpWN2txOEN1MENMcUZ6cVBwV1o1WVBhNkZv?=
- =?utf-8?B?TEtVeFRrMGZJTEVVaUZ3cU9OOGg3V0JJY0hid0R1dlBSSmZ2YlVrV2Y2dDZr?=
- =?utf-8?Q?HSc1J5IfgT/PgH5oa71Z5NLi+i3A8Zkf?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DB4PR08MB9863.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K0tWb2R0NXZDVGdRVFo2WGdJRUVzWkxqeGZLVmNoTkhEeU1FNU1pdDdndVJK?=
- =?utf-8?B?OXI2WnhidjdkaHgxdnhiMlRyaU1xcldxblhyQUpKOEdJRmV4YlhvaFVDODRn?=
- =?utf-8?B?UzdKcSs0OWNUUC80MEhtY1Yzdk15c3VxU29wdnhQZ2FJOFd1a08xRnViMlBH?=
- =?utf-8?B?MXJheTMzRUJuNGFJY3lhTUh0eDV6RnFubHpHU0N4dGgxcTYxRlduVG5GZkZ0?=
- =?utf-8?B?b2pMS2tGQ1AwcnNsMy9RN3lhRXRVZHdncWxyb0xPRVhSZ1VxRGd5VDRkSkZ6?=
- =?utf-8?B?STNMVXpyNFA5d3RJOEJOSkJUR1pjY3hvanVEME50WXBSV3BxcXpEVVgxRS9n?=
- =?utf-8?B?UDg4VTFDMlVKeWNhM3NsczBNN0VYMkVFN1lVdHRUc2hwUFhkRVZPK0xxNUJ5?=
- =?utf-8?B?VlYxSXAyUmJlQ25kVEw2bE5LZ3lSNHRFUkowWG9zRHNkYm1Tb0VoZ0djUjdX?=
- =?utf-8?B?dnNhL0JkSk1kMFE4aWV3Vm5FdFdWYlBhTWxaTTJRb0xrL1pBUDBjamNCWS9Q?=
- =?utf-8?B?MmhzOEdFVFJ0VXh6MUs1RGpaclVseEFOczVLSTdNTll2cGJiZWplNGZPcEYz?=
- =?utf-8?B?MXZ2dmpZM3diNCtiTHd6cy9BclV0c2ZMUmVWc0hJSk93eE5HVGxlSDVxdlpz?=
- =?utf-8?B?TjVaM3M4d1Jpeko2TFJ1UGRhWHF0U2k5UkR1Um92S2F0WW9JREVTSjNzVE1I?=
- =?utf-8?B?MHdTUDc3bDgyeDAzR082aTNYZ1RaTkxLTVJLRE1hSWdvL0NNc0xBYXZuZWtE?=
- =?utf-8?B?ckNYQmJ3ZnhwcFV4N2Jyd2N0SGJ1eUZSV0ZKWXdaWllHbFg0SVpLdVM2RFYy?=
- =?utf-8?B?ZHYxaU9Nekh1UnY2WXlwd0pHbTBIQzNyVHdPRVlEbHFHK2hpV2IvdGsrU2g0?=
- =?utf-8?B?UmFvcGR0WnJkK0N2V0FwMEluMklQNUc0UmRxVE5nYW9ibm1SYktIbWRWYS9w?=
- =?utf-8?B?bnJTS2JJeHZqd0hSMDVLZWR1Zm41K3k0MzVLL2ZYYmVqR3JLdjl5alJNdUNQ?=
- =?utf-8?B?dWxtaXpJbmhaOVdKb3dsYmNHWVB6YUJ1WU9nbFVPbTVBTDUzT0xOZGJkZ0la?=
- =?utf-8?B?L1Z3OThhdlFMYm1oQlN0WlhWV2FnTzV2ai9ndzJBTStFNFFqZVFqbnlKQ3kr?=
- =?utf-8?B?WkFtY2tMMWpEWG9TMS8zaHU0MHRDYVVZZkp5QnVtNFE5ZFQweFYzWE8vZmJU?=
- =?utf-8?B?KyszTnhTRFgvMXY0OUZ4eXNpVWRpOXkxU1kvekIvU3JvdlpQa3JpM2hZT2Vu?=
- =?utf-8?B?RTJ1clhYTlpDajZ1REtkTW5kSGk5NjBqU0d2Q0JWSUY0MkxBdm0wUklYQmNo?=
- =?utf-8?B?MEFrYnRJSFBIc01sUUdKVmZhQXgyYmIyMnhNbWZBa090S3QrdXhtT3RlT01K?=
- =?utf-8?B?aEFTQmNwcWd6SjFsUFZhblNFTy9HVStrRkZYcnNPUlR2UGhaZFB1Z3Nycjc5?=
- =?utf-8?B?Q2pjdW02MThVK3FCVi96OEI2WHUvN21mNFhaQkRpMFBsV3BjMXdiTU9qaXc4?=
- =?utf-8?B?TjBPbWRSdXlHUDNEd0w3TjV6bVFoQm0ycTFnRjB4Q054QWovN0M5S0FTNzVN?=
- =?utf-8?B?ZE96NXF3bnkyNEEzV2o3YnBBN2FtWGtmWTdYNDFma09WT0xyczFuQW9DWHZN?=
- =?utf-8?B?RGdEei81MjkwNE5scDBja000eXhPaENrT29SREVUMnBJaFkxRVRmR0RTYXVP?=
- =?utf-8?B?RXJhdit0TnRFOXc0MzdsMEhPVFJJM0R2OE8vdDdVZ3gvbElDcDkxQWswWGVE?=
- =?utf-8?B?aWVneWNjb1pyZmVYcEVRZzVQSC9zdkdJSktNWWV3akpPbWhxUU5oNExESi9C?=
- =?utf-8?B?bytMN2JnMCt2aHdSQUZmNmxDNTZsbHloZEN2K1ZiZ1MwL1NlY1RSUFQzQldu?=
- =?utf-8?B?dC9XYVIwaUFLYndpMGUyczUxaUIvd0tNelVaOE5OcDlHdlBZVjVjNlNiY0o4?=
- =?utf-8?B?U0FWd0lkVENOby93amNOamVzcmJ2cExaa1QreEx6Sm1hQ0RDL2xjdWIyaldF?=
- =?utf-8?B?R3lOeUd5SzFMWmhrUzh4MnNDN1hETFJzdFk1bVNCZHVQcEZ1Sk9LbWd2UDZw?=
- =?utf-8?B?bFdqWFJaY3FYaEF2L2EwQ1N4SHpibjI3ejRSMURoNXdHOWg3T0dxZVFYSXk1?=
- =?utf-8?B?WXhrL29wMEhqTy9zNlVKRGw0ZllaUmdRWXpER1p6OURjclovV3RWdWtzcEhP?=
- =?utf-8?B?ZUE9PQ==?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3d962e6-2692-4c32-ceb7-08de0cb5273b
-X-MS-Exchange-CrossTenant-AuthSource: DB4PR08MB9863.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 13:08:52.2080 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OwDzT3z7PBQKkIjZyr81LbOQJSosVYMKwWLG3YUPQiXJcw7FKR6dNyvzNU0raQ3dJjz/6sREw4Lstch1QUCEkxXVI3lZRo23+XgtJoyTDjk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6001
-Received-SPF: pass client-ip=2a01:111:f403:c200::1;
- envelope-from=martin.drab@virtuozzo.com;
- helo=DB3PR0202CU003.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 16 Oct 2025 10:03:41 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -175,44 +108,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- From 4010649ca861e78bb45688258db7f37edfe81342 Mon Sep 17 00:00:00 2001
-From: Martin Drab <martin.drab@virtuozzo.com>
-Date: Wed, 15 Oct 2025 23:37:24 +0200
-Subject: [PATCH] [qga]: Close handle to the serial device when destroying a
-  channel
+Currently our security policy defines a "virtualization use case"
+where we consider bugs to be security issues, and a
+"non-virtualization use case" where we do not make any security
+guarantees and don't consider bugs to be security issues.
 
-It seems the handle is not being closed when QGA is freeing its 
-communication channel. The open handle prevents the serial device from 
-being removed. That may happen, for example, when the Virtio serial 
-driver fails to restart its devices after HW resource reassignment due 
-to a CPU/memory hotplug.
+The rationale for this split is that much code in QEMU is older and
+was not written with malicious guests in mind, and we don't have the
+resources to audit, fix and defend it.  So instead we inform users
+about what the can in practice rely on as a security barrier, and
+what they can't.
 
-This fix adds the handle closing code into the ga_channel_free function. 
-Only QGA for Windows is being fixed.
+We don't currently restrict the "virtualization use case" to any
+particular set of machine types.  This means that we have effectively
+barred ourselves from adding KVM support to any machine type that we
+don't want to put into the "bugs are security issues" category, even
+if it would be useful for users to be able to get better performance
+with a trusted guest by enabling KVM. This seems an unnecessary
+restriction, and in practice the set of machine types it makes
+sense to use for untrusted-guest virtualization is quite small.
 
-Signed-Off-By: Martin Drab <martin.drab@virtuozzo.com>
+Specifically, we would like to be able to enable the use of
+KVM with the imx8 development board machine types, but we don't
+want to commit ourselves to having to support those SoC models
+and device models as part of QEMU's security boundary:
+https://lore.kernel.org/qemu-devel/20250629204851.1778-3-shentey@gmail.com/
+
+This patch updates the security policy to explicitly list the
+machine types we consider to be useful for the "virtualization
+use case".
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-  qga/channel-win32.c | 6 ++++++
-  1 file changed, 6 insertions(+)
+changes v1->v2: updated the list:
+ * remove isapc
+ * remove ppc, mips, mips64 (no machines supported)
+ * list pseries as only supported ppc64 machine
+ * list virt as only supported riscv32, riscv64 machine
 
-diff --git a/qga/channel-win32.c b/qga/channel-win32.c
-index 779007e39b..520cd6ae50 100644
---- a/qga/channel-win32.c
-+++ b/qga/channel-win32.c
-@@ -354,6 +354,12 @@ void ga_channel_free(GAChannel *c)
-      if (c->rstate.ov.hEvent) {
-          CloseHandle(c->rstate.ov.hEvent);
-      }
+I believe the list to now be correct, and I think we generally
+had some consensus about the idea on the v1 patch discussion, so
+this one is a non-RFC patch.
+
+---
+ docs/system/security.rst | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/docs/system/security.rst b/docs/system/security.rst
+index f2092c8768b..53992048e65 100644
+--- a/docs/system/security.rst
++++ b/docs/system/security.rst
+@@ -35,6 +35,32 @@ malicious:
+ Bugs affecting these entities are evaluated on whether they can cause damage in
+ real-world use cases and treated as security bugs if this is the case.
+ 
++To be covered by this security support policy you must:
 +
-+    if (c->handle) {
-+        CancelIo(c->handle);
-+        CloseHandle(c->handle);
-+    }
++- use a virtualization accelerator like KVM or HVF
++- use one of the machine types listed below
 +
-      g_free(c->rstate.buf);
-      g_free(c);
-  }
++It may be possible to use other machine types with a virtualization
++accelerator to provide improved performance with a trusted guest
++workload, but any machine type not listed here should not be
++considered to be providing guest isolation or security guarantees,
++and falls under the "non-virtualization use case".
++
++Supported machine types for the virtualization use case, by target architecture:
++
++aarch64
++  ``virt``
++i386, x86_64
++  ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``, ``pc``, ``q35``
++s390x
++  ``s390-ccw-virtio``
++loongarch64:
++  ``virt``
++ppc64:
++  ``pseries``
++riscv32, riscv64:
++  ``virt``
++
+ Non-virtualization Use Case
+ '''''''''''''''''''''''''''
+ 
 -- 
-2.39.1.windows.1
+2.43.0
 
 
