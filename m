@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B7BE1322
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 03:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2122DBE1347
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 03:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9D96-0002Xd-Gg; Wed, 15 Oct 2025 21:51:12 -0400
+	id 1v9DCM-0008F6-Dg; Wed, 15 Oct 2025 21:54:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1v9D8j-0002U2-Gz
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 21:50:50 -0400
+ id 1v9DCK-0008Ey-LA
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 21:54:32 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1v9D8h-0001UT-Bb
- for qemu-devel@nongnu.org; Wed, 15 Oct 2025 21:50:49 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1v9DCI-0001mw-GN
+ for qemu-devel@nongnu.org; Wed, 15 Oct 2025 21:54:32 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Cxf9NoT_BoqrEWAA--.48348S3;
- Thu, 16 Oct 2025 09:50:32 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Dx+tFUUPBoZ7IWAA--.49280S3;
+ Thu, 16 Oct 2025 09:54:28 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxH8JjT_BoAY3oAA--.64734S14;
- Thu, 16 Oct 2025 09:50:32 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowJDx_8NUUPBoH5DoAA--.56092S2;
+ Thu, 16 Oct 2025 09:54:28 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v5 12/14] target/loongarch: Add basic hardware PTW support
-Date: Thu, 16 Oct 2025 09:50:25 +0800
-Message-Id: <20251016015027.1695116-13-maobibo@loongson.cn>
+Subject: [PATCH v5 13/14] target/loongarch: Update matched ptw bit A/D with
+ PTW supported
+Date: Thu, 16 Oct 2025 09:54:27 +0800
+Message-Id: <20251016015427.1696957-1-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20251016015027.1695116-1-maobibo@loongson.cn>
-References: <20251016015027.1695116-1-maobibo@loongson.cn>
+In-Reply-To: <20251016015027.1695116-13-maobibo@loongson.cn>
+References: <20251016015027.1695116-13-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxH8JjT_BoAY3oAA--.64734S14
+X-CM-TRANSID: qMiowJDx_8NUUPBoH5DoAA--.56092S2
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,122 +65,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-However with hardware PTW supported, hardware will search page table
-with TLB miss. Also if there is no TLB miss however bit Present is not set,
-hardware PTW will happen also. Because there is odd/even page in one TLB
-entry on LoongArch system, for example in the first time odd TLB entry is
-valid and even TLB entry is 0. When software accesses with address within
-even page, there is no TLB miss only that TLB entry is 0. In this
-condition, hardwre PTW will happen also.
+With hardware PTE supported, bit A will be set if there is read access
+or instruction fetch, and bit D will be set with write access.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- target/loongarch/cpu-mmu.h        |  2 ++
- target/loongarch/cpu_helper.c     | 17 ++++++++++++++---
- target/loongarch/tcg/tlb_helper.c | 25 +++++++++++++++++++++++++
- 3 files changed, 41 insertions(+), 3 deletions(-)
+ target/loongarch/cpu-mmu.h    | 26 ++++++++++
+ target/loongarch/cpu_helper.c | 93 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 117 insertions(+), 2 deletions(-)
 
 diff --git a/target/loongarch/cpu-mmu.h b/target/loongarch/cpu-mmu.h
-index c3e869234a..4c227d4ef3 100644
+index 4c227d4ef3..85d01e1bbe 100644
 --- a/target/loongarch/cpu-mmu.h
 +++ b/target/loongarch/cpu-mmu.h
-@@ -67,6 +67,8 @@ TLBRet loongarch_check_pte(CPULoongArchState *env, MMUContext *context,
- TLBRet get_physical_address(CPULoongArchState *env, MMUContext *context,
-                             MMUAccessType access_type, int mmu_idx,
-                             int is_debug);
-+TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
-+                     int access_type, int mmu_idx, int debug);
- void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
-                                uint64_t *dir_width, target_ulong level);
- hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+@@ -61,6 +61,32 @@ static inline bool pte_write(CPULoongArchState *env, uint64_t entry)
+     return !!writable;
+ }
+ 
++/*
++ * The folloing functions should be called with PTW enable checked
++ * With hardware PTW enabled
++ *   Bit D will be set by hardware with write access
++ *   Bit A will be set by hardware with read/intruction fetch access
++ */
++static inline uint64_t pte_mkaccess(uint64_t entry)
++{
++    return FIELD_DP64(entry, TLBENTRY, V, 1);
++}
++
++static inline uint64_t pte_mkdirty(uint64_t entry)
++{
++    return FIELD_DP64(entry, TLBENTRY, D, 1);
++}
++
++static inline bool pte_access(uint64_t entry)
++{
++    return !!FIELD_EX64(entry, TLBENTRY, V);
++}
++
++static inline bool pte_dirty(uint64_t entry)
++{
++    return !!FIELD_EX64(entry, TLBENTRY, D);
++}
++
+ bool check_ps(CPULoongArchState *ent, uint8_t ps);
+ TLBRet loongarch_check_pte(CPULoongArchState *env, MMUContext *context,
+                            MMUAccessType access_type, int mmu_idx);
 diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index e2d66f4c86..3fd0f574b4 100644
+index 3fd0f574b4..7419847f95 100644
 --- a/target/loongarch/cpu_helper.c
 +++ b/target/loongarch/cpu_helper.c
-@@ -107,11 +107,11 @@ TLBRet loongarch_check_pte(CPULoongArchState *env, MMUContext *context,
+@@ -107,15 +107,52 @@ TLBRet loongarch_check_pte(CPULoongArchState *env, MMUContext *context,
      return TLBRET_MATCH;
  }
  
--static TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
--                            int access_type, int mmu_idx, int debug)
-+TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
-+                     int access_type, int mmu_idx, int debug)
- {
-     CPUState *cs = env_cpu(env);
--    target_ulong index, phys;
-+    target_ulong index = 0, phys = 0;
-     uint64_t dir_base, dir_width;
-     uint64_t base;
-     int level;
-@@ -139,6 +139,8 @@ static TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
-         if (level) {
-             if (FIELD_EX64(base, TLBENTRY, HUGE)) {
-                 /* base is a huge pte */
-+                index = 0;
-+                dir_base -= 1;
-                 break;
-             } else {
-                 /* Discard high bits with page directory table */
-@@ -156,6 +158,15 @@ static TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
-             base = FIELD_DP64(base, TLBENTRY, HGLOBAL, 0);
-             base = FIELD_DP64(base, TLBENTRY, G, 1);
-         }
-+
-+        context->pte_buddy[index] = base;
-+        context->pte_buddy[1 - index] = base + BIT_ULL(dir_base);
-+        base += (BIT_ULL(dir_base) & address);
-+    } else if (cpu_has_ptw(env)) {
-+        index &= 1;
-+        context->pte_buddy[index] = base;
-+        context->pte_buddy[1 - index] = ldq_phys(cs->as,
-+                                            phys + 8 * (1 - 2 * index));
-     }
- 
-     context->ps = dir_base;
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 708d5576cb..4efa93110f 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -601,6 +601,18 @@ void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
-     }
- }
- 
-+static void ptw_update_tlb(CPULoongArchState *env, MMUContext *context)
++static MemTxResult loongarch_cmpxchg_phys(CPUState *cs, hwaddr phys,
++                                          uint64_t old, uint64_t new)
 +{
-+    int index;
++    hwaddr addr1, l = 8;
++    MemoryRegion *mr;
++    uint8_t *ram_ptr;
++    uint64_t old1;
++    MemTxResult ret;
 +
-+    index = context->tlb_index;
-+    if (index < 0) {
-+        index = get_tlb_random_index(env, context->addr, context->ps);
++    rcu_read_lock();
++    mr = address_space_translate(cs->as, phys, &addr1, &l,
++                                 false, MEMTXATTRS_UNSPECIFIED);
++    if (!memory_region_is_ram(mr)) {
++        /*
++         * Misconfigured PTE in ROM (AD bits are not preset) or
++         * PTE is in IO space and can't be updated atomically.
++         */
++         rcu_read_unlock();
++         return MEMTX_ACCESS_ERROR;
 +    }
 +
-+    update_tlb_index(env, context, index);
++    ram_ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
++    old1 = qatomic_cmpxchg((uint64_t *)ram_ptr, cpu_to_le64(old),
++                           cpu_to_le64(new));
++    old1 = le64_to_cpu(old1);
++    if (old1 == old) {
++        ret = MEMTX_OK;
++    } else {
++        ret = MEMTX_DECODE_ERROR;
++    }
++    rcu_read_unlock();
++
++    return ret;
 +}
 +
- bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                             MMUAccessType access_type, int mmu_idx,
-                             bool probe, uintptr_t retaddr)
-@@ -613,7 +625,20 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+ TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
+                      int access_type, int mmu_idx, int debug)
+ {
+     CPUState *cs = env_cpu(env);
+     target_ulong index = 0, phys = 0;
+     uint64_t dir_base, dir_width;
+-    uint64_t base;
++    uint64_t base, pte;
+     int level;
+     vaddr address;
++    TLBRet ret;
++    MemTxResult ret1;
  
-     /* Data access */
-     context.addr = address;
-+    context.tlb_index = -1;
-     ret = get_physical_address(env, &context, access_type, mmu_idx, 0);
-+    if (ret != TLBRET_MATCH && cpu_has_ptw(env)) {
-+        /* Take HW PTW if TLB missed or bit P is zero */
-+        if (ret == TLBRET_NOMATCH || ret == TLBRET_INVALID) {
-+            ret = loongarch_ptw(env, &context, access_type, mmu_idx, 0);
-+            if (ret == TLBRET_MATCH) {
-+                ptw_update_tlb(env, &context);
+     address = context->addr;
+     if ((address >> 63) & 0x1) {
+@@ -149,7 +186,9 @@ TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
+         }
+     }
+ 
++restart:
+     /* pte */
++    pte = base;
+     if (level > 0) {
+         /* Huge Page. base is pte */
+         base = FIELD_DP64(base, TLBENTRY, LEVEL, 0);
+@@ -171,7 +210,57 @@ TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
+ 
+     context->ps = dir_base;
+     context->pte = base;
+-    return loongarch_check_pte(env, context, access_type, mmu_idx);
++    ret = loongarch_check_pte(env, context, access_type, mmu_idx);
++    if (debug) {
++        return ret;
++    }
++
++    /*
++     * Update bit A/D with hardware PTW supported
++     *
++     * Need atomic compchxg operation with pte update, other vCPUs may
++     * update pte at the same time.
++     */
++    if (ret == TLBRET_MATCH && cpu_has_ptw(env)) {
++        if (access_type == MMU_DATA_STORE && pte_dirty(base)) {
++            return ret;
++        }
++
++        if (access_type != MMU_DATA_STORE && pte_access(base)) {
++            return ret;
++        }
++
++        base = pte_mkaccess(pte);
++        if (access_type == MMU_DATA_STORE) {
++            base = pte_mkdirty(base);
++        }
++        ret1 = loongarch_cmpxchg_phys(cs, phys, pte, base);
++        /* PTE updated by other CPU, reload PTE entry */
++        if (ret1 == MEMTX_DECODE_ERROR) {
++            base = ldq_phys(cs->as, phys);
++            goto restart;
++        }
++
++        base = context->pte_buddy[index];
++        base = pte_mkaccess(base);
++        if (access_type == MMU_DATA_STORE) {
++            base = pte_mkdirty(base);
++        }
++        context->pte_buddy[index] = base;
++
++        /* Bit A/D need be updated with both Even/Odd page with huge pte */
++        if (level > 0) {
++            index = 1 - index;
++            base = context->pte_buddy[index];
++            base = pte_mkaccess(base);
++            if (access_type == MMU_DATA_STORE) {
++                base = pte_mkdirty(base);
 +            }
-+        } else if (context.tlb_index >= 0) {
-+            invalidate_tlb(env, context.tlb_index);
++            context->pte_buddy[index] = base;
 +        }
 +    }
 +
-     if (ret == TLBRET_MATCH) {
-         physical = context.physical;
-         prot = context.prot;
++    return ret;
+ }
+ 
+ static TLBRet loongarch_map_address(CPULoongArchState *env,
 -- 
 2.39.3
 
