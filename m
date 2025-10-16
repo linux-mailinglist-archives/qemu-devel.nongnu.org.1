@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732A2BE3218
+	by mail.lfdr.de (Postfix) with ESMTPS id 80859BE3219
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNW-0007O2-Q5; Thu, 16 Oct 2025 07:42:43 -0400
+	id 1v9MNX-0007No-Lm; Thu, 16 Oct 2025 07:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMa-000758-Il; Thu, 16 Oct 2025 07:41:44 -0400
+ id 1v9MMa-000759-J1; Thu, 16 Oct 2025 07:41:44 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMP-0003T3-CQ; Thu, 16 Oct 2025 07:41:41 -0400
+ id 1v9MMS-0003T4-BH; Thu, 16 Oct 2025 07:41:42 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 0BFE2C01A9;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id F15A2C01B6;
  Thu, 16 Oct 2025 14:41:23 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-X3rf4sm5; Thu, 16 Oct 2025 14:41:22 +0300
+ ESMTPSA id LfP2M73FEmI0-miagcnfi; Thu, 16 Oct 2025 14:41:23 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614882;
- bh=t4zXcSf2BhXU+c47jP6580nHThJN9fa0GjiNC2ZNp5U=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=e8pgsomefb04lAuFscr/+KiZSXIg3XCGsVLmhcXShDVZfJv6WF2HeGOM2l867Oqhs
- r59L8zyY4BbdaHWz6IND2X1TRX0kSvmfjKlPpUhBryVgAWarT/25v4QP4qt/E2VGjh
- ExnMXItzFQqjBcxK4EiG9oEz+g05D3T4pKvLYNms=
+ s=default; t=1760614883;
+ bh=CfhYPdDYFOJ4e5JUBvq3LuUdv3/kmqX/+3b/YXayICo=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=zjmQvNXa10TTR0yKPhfPwBcD6OSuEK6RTnsIkM5zrcCWo+iGH/T1SRKko4ClU5UAy
+ PhSsmLH9FTGaUx0giQgBMfXytg87HLUtxqhuSiNsm/D4pAbLuQkLQMJfMn7TA7m/TN
+ RcK7xepRFCUePAuTdF+e0UDj/xgOji2JJJV8yK7Y=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,10 +45,12 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 00/25] vhost-user-blk: live-backend local migration
-Date: Thu, 16 Oct 2025 14:40:37 +0300
-Message-ID: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 01/25] vhost: store busyloop_timeout into struct vhost_dev
+Date: Thu, 16 Oct 2025 14:40:38 +0300
+Message-ID: <20251016114104.1384675-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
+References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.72;
@@ -60,7 +62,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,160 +77,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all!
+We'll split vhost_dev_init() into _init() and _connect(), to be able
+to postpone communication with backend, to support backend-transfer
+migration of vhost-user-blk in future commit.
 
-v2: extremely simplified API: instead of 
+So, instead of passing it through parameters, store it in vhost_dev
+structure.
 
-- separate capability for migrating chardevs
-- separate capability for migrating vhost-user-blk
-- "support-local-migration" and "local-incoming" chardev options
-- "local-incoming" option for vhost-user-blke
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ hw/virtio/vhost.c         | 11 +++++------
+ include/hw/virtio/vhost.h |  1 +
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-instead of all of this, v2 API is only one capability to
-enable the whole feature.
-
-Still, final look of this capability is not clear yet, the
-discussion is in context of
-"[PATCH v8 00/19] virtio-net: live-TAP local migration", here:
-https://lore.kernel.org/qemu-devel/29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru/
-
-This series comes with temporary API in commit
-"RFC qapi: add local-vhost-user-blk migration capability"
-
-v2 is based on:
-[PATCH v4 0/7] chardev: postpone connect
-  (which in turn is based on [PATCH 0/2] remove deprecated 'reconnect' options)
-[PATCH v3 00/23] vhost refactoring and fixes
-and one commit from v8 of live-tap series:
-[PATCH v8 14/19] migration: introduce .pre_incoming() vmsd handler
-
-Based-on: <20250924133309.334631-1-vsementsov@yandex-team.ru>
-Based-on: <20251015212051.1156334-1-vsementsov@yandex-team.ru>
-Based-on: <20251015145808.1112843-1-vsementsov@yandex-team.ru>
-Based-on: <20251015132136.1083972-15-vsementsov@yandex-team.ru>
-
-The code is also may be found in my gitlab account, tag
-up-vhost-user-blk-fd-migration-v2 :
-https://gitlab.com/vsementsov/qemu/-/tree/up-vhost-user-blk-fd-migration-v2
-
--
-
-Local migration of vhost-user-blk requires non-trivial actions
-from management layer, it should provide a new connection for new
-QEMU process and handle disk operation movement from one connection
-to another.
-
-Such switching, including reinitialization of vhost-user connection,
-draining disk requests, etc, adds significant value to local migration
-downtime.
-
-This all leads to an idea: why not to just pass all we need from
-old QEMU process to the new one (including open file descriptors),
-and don't touch the backend at all? This way, the vhost user backend
-server will not even know, that QEMU process is changed, as live
-vhost-user connection is migrated.
-
-So this series realize the idea. No requests are done to backend
-during migration, instead all backend-related state and all related
-file descriptors (vhost-user connection, guest/host notifiers,
-inflight region) are passed to new process. Of course, migration
-should go through unix socket.
-
-Why not CPR-transfer?
-
-1. In the new mode of local migration we need to pass not only
-file descriptors, but additional parts of backend-related state,
-which we don't want (or even can't) reinitialize in target process.
-And it's a lot simpler to add new fields to common migration stream.
-And why not to pass fds in the same stream?
-
-2. No benefit of vhost-user connection fd passed to target in early
-stage before device creation: we can't use it together with source
-QEMU process anyway. So, we need a moment, when source qemu stops using
-the fd, and target start doing it. And native place for this moment is
-usual save/load of the device in migration process. And yes, we have to
-deeply update initialization/starting of the device to not reinitialize
-the backend, but just continue to work with it in a new QEMU process.
-
-3. So, if we can't actually use fd, passed early before device creation,
-no reason to care about:
-- non-working QMP connection on target until "migrate" command on source
-- additional migration channel
-- implementing code to pass additional non-fd fields together with fds in CPR
-
-However, the series doesn't conflict with CPR-transfer, as it's actually
-a usual migration with some additional capabilities. The only
-requirement is that main migration channel should be a unix socket.
-
-Vladimir Sementsov-Ogievskiy (25):
-  vhost: store busyloop_timeout into struct vhost_dev
-  vhost: reorder logic in vhost_dev_init()
-  vhost: rework vhost_virtqueue_init()
-  vhost: add connect parameter to vhost_dev_init()
-  vhost: split vhost_dev_connect() out of vhost_dev_init()
-  vhost-user: support connect api
-  vhost-user-blk: vhost_user_blk_connect() move connected check to
-    caller
-  vhost-user-blk: vhost_user_blk_connect(): call vhost_dev_connect()
-  vhost-user-blk: rename vhost_user_blk_connect to vhost_user_blk_init
-  vhost-user-blk: split vhost_user_blk_init()
-  vhost-user-blk: move initial reconnect loop to separate function
-  vhost-user-blk: move first vhost_user_blk_init() to _realize()
-  vhost-user-blk: postpone connect to pre-incoming
-  virtio: introduce .skip_vhost_migration_log() handler
-  migration: introduce vmstate_event_notifier
-  chardev: add .chr_get_client() handler
-  vhost: add inflight region backend-transfer vmstate
-  chardev: introduce backend-transfer vmstate for chardev
-  vhost: support backend-transfer migration
-  vhost-user: add vmstate
-  virtio: support vhost backend migration
-  virtio: support .needed for virtio vmsd
-  RFC qapi: add local-vhost-user-blk migration capability
-  vhost-user-blk: support vhost backend migration
-  tests/functional: add test_x86_64_vhost_user_blk_fd_migration.py
-
- backends/cryptodev-vhost.c                    |   2 +-
- backends/vhost-user.c                         |   2 +-
- chardev/char-backend-transfer.c               |  52 +++
- chardev/char-socket.c                         |   7 +
- chardev/char.c                                |   6 +
- chardev/meson.build                           |   1 +
- hw/block/trace-events                         |   2 +
- hw/block/vhost-user-blk.c                     | 255 +++++++++++----
- hw/net/vhost_net.c                            |   2 +-
- hw/scsi/vhost-scsi.c                          |   2 +-
- hw/scsi/vhost-user-scsi.c                     |   2 +-
- hw/virtio/vdpa-dev.c                          |   3 +-
- hw/virtio/vhost-user-base.c                   |   2 +-
- hw/virtio/vhost-user-fs.c                     |   2 +-
- hw/virtio/vhost-user-scmi.c                   |   2 +-
- hw/virtio/vhost-user-vsock.c                  |   2 +-
- hw/virtio/vhost-user.c                        | 127 +++++++-
- hw/virtio/vhost-vsock.c                       |   2 +-
- hw/virtio/vhost.c                             | 266 +++++++++++----
- hw/virtio/virtio-bus.c                        |   2 +-
- hw/virtio/virtio.c                            |  77 ++++-
- include/chardev/char-backend-transfer.h       |  17 +
- include/chardev/char.h                        |   4 +
- include/hw/virtio/vhost-backend.h             |   2 +
- include/hw/virtio/vhost-user-blk.h            |   2 +
- include/hw/virtio/vhost-user.h                |   4 +
- include/hw/virtio/vhost.h                     |  19 +-
- include/hw/virtio/virtio.h                    |   4 +
- include/migration/vmstate.h                   |   7 +
- migration/meson.build                         |   1 +
- migration/options.c                           |   7 +
- migration/options.h                           |   1 +
- migration/vmstate-event-notifier.c            |  54 +++
- qapi/migration.json                           |  11 +-
- ...test_x86_64_vhost_user_blk_fd_migration.py | 307 ++++++++++++++++++
- 35 files changed, 1115 insertions(+), 143 deletions(-)
- create mode 100644 chardev/char-backend-transfer.c
- create mode 100644 include/chardev/char-backend-transfer.h
- create mode 100644 migration/vmstate-event-notifier.c
- create mode 100644 tests/functional/test_x86_64_vhost_user_blk_fd_migration.py
-
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 7ba90c24db..9fc6e7ba65 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1501,8 +1501,7 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+ }
+ 
+ static int vhost_virtqueue_init(struct vhost_dev *dev,
+-                                struct vhost_virtqueue *vq, int n,
+-                                bool busyloop_timeout)
++                                struct vhost_virtqueue *vq, int n)
+ {
+     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, n);
+     struct vhost_vring_file file = {
+@@ -1539,8 +1538,8 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
+                                    vhost_virtqueue_error_notifier);
+     }
+ 
+-    if (busyloop_timeout) {
+-        r = vhost_virtqueue_set_busyloop_timeout(dev, n, busyloop_timeout);
++    if (dev->busyloop_timeout) {
++        r = vhost_virtqueue_set_busyloop_timeout(dev, n, dev->busyloop_timeout);
+         if (r < 0) {
+             VHOST_OPS_DEBUG(r, "Failed to set busyloop timeout");
+             goto fail_err;
+@@ -1628,6 +1627,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+ 
+     hdev->vdev = NULL;
+     hdev->migration_blocker = NULL;
++    hdev->busyloop_timeout = busyloop_timeout;
+ 
+     r = vhost_set_backend_type(hdev, backend_type);
+     assert(r >= 0);
+@@ -1650,8 +1650,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     }
+ 
+     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+-        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i,
+-                                 busyloop_timeout);
++        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
+         if (r < 0) {
+             error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
+             goto fail;
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 1ba1af1d86..f1a7e7b971 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -105,6 +105,7 @@ struct vhost_dev {
+     VIRTIO_DECLARE_FEATURES(_features);
+     VIRTIO_DECLARE_FEATURES(acked_features);
+ 
++    uint32_t busyloop_timeout;
+     uint64_t max_queues;
+     uint64_t backend_cap;
+     /* @started: is the vhost device started? */
 -- 
 2.48.1
 
