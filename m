@@ -2,118 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FD8BE32ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD18DBE32FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:52:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MUZ-0001D9-02; Thu, 16 Oct 2025 07:50:00 -0400
+	id 1v9MVv-00037p-Q0; Thu, 16 Oct 2025 07:51:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1v9MUU-00014B-O1; Thu, 16 Oct 2025 07:49:54 -0400
-Received: from 2.mo548.mail-out.ovh.net ([178.33.255.19])
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1v9MVr-00033j-HV; Thu, 16 Oct 2025 07:51:19 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1v9MUH-0004Y0-Cc; Thu, 16 Oct 2025 07:49:54 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.109.249.197])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cnR7r6JJyz6VNy;
- Thu, 16 Oct 2025 11:49:28 +0000 (UTC)
-Received: from kaod.org (37.59.142.105) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Thu, 16 Oct
- 2025 13:49:27 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-105G00607e934b2-4de4-47bd-b856-36a16f1c38b5,
- 690D5AE12EE8992330AA3CE60F7E42257DE08779) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <965c2eb3-639e-4792-bd8d-f47682099601@kaod.org>
-Date: Thu, 16 Oct 2025 13:49:26 +0200
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1v9MVe-0004wl-0f; Thu, 16 Oct 2025 07:51:18 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59G1KNmV012442;
+ Thu, 16 Oct 2025 11:50:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=WIH7io
+ jamKpeQam6JA6Xg84CXece3MAh58Jm+Rkk17o=; b=iIb/KoHtNS8CircW6Mmuvd
+ hh3LxoX8mXlc5QZm45zEBo6n5zD/HQilu4yWMIGrqxe1jfdd4mg7ojWehO7V2sTe
+ /o4HPDnu8C490V+Ewtke81ePtVFvyD3b5dtER6HkgMZ2CRAsJ3/urlaHflazvQOh
+ qk2w2Kmt4DiLIIOETXs2FMCxTq1HlF3XimwPZ0pcy/Z/CDGh0TpAEr5udkzairoO
+ 863JcjSDbjWgHuIMR1yLMmNPJlgHP7EfMSdsZwyb5gEBHwKNAayyZcDTWSM1swWG
+ o5EIxSlxVwDku5RsDjzJmViyc8t4iPvz6kRiUEUooLGtIv7oUGKHzNYJ8LQXa5EA
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrhj7m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Oct 2025 11:50:53 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59G9KlvI003623;
+ Thu, 16 Oct 2025 11:50:53 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy5k9f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Oct 2025 11:50:53 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59GBop3U17892040
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Oct 2025 11:50:51 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5CAAC58061;
+ Thu, 16 Oct 2025 11:50:51 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A85195805F;
+ Thu, 16 Oct 2025 11:50:50 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 16 Oct 2025 11:50:50 +0000 (GMT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: aspeed: Split the machine definition into individual source files
-To: Jamin Lin <jamin_lin@aspeedtech.com>, "'qemu-arm@nongnu.org'"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: 'Andrew Jeffery' <andrew@codeconstruct.com.au>, Joel Stanley
- <joel@jms.id.au>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Peter Maydell <peter.maydell@linaro.org>, Patrick
- Williams <patrick@stwcx.xyz>
-References: <e2df1ff1-3ce4-4233-b32e-2bc680725c71@kaod.org>
- <KL1PR0601MB41966988C6264D25E6782045FCE9A@KL1PR0601MB4196.apcprd06.prod.outlook.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <KL1PR0601MB41966988C6264D25E6782045FCE9A@KL1PR0601MB4196.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Date: Thu, 16 Oct 2025 13:50:50 +0200
+From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x mailing list <qemu-s390x@nongnu.org>, Sebastian Mitterle
+ <smitterl@redhat.com>, qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Hendrik Brueckner
+ <brueckner@linux.ibm.com>, Michael Mueller <mimu@linux.ibm.com>
+Subject: Re: [PATCH v2 2/2] tests/functional: add tests for SCLP event CPI
+In-Reply-To: <f4ec5b8c-2bdb-43a2-a100-cfb1685aeb52@redhat.com>
+References: <20251013133902.111233-1-shalini@linux.ibm.com>
+ <20251013133902.111233-2-shalini@linux.ibm.com>
+ <f4ec5b8c-2bdb-43a2-a100-cfb1685aeb52@redhat.com>
+Message-ID: <d0eac34ad0a8f244d5fbe1dd91ab0801@linux.ibm.com>
+X-Sender: shalini@linux.ibm.com
+Organization: IBM Deutschland Research & Development GmbH
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.105]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: c9a32436-85c9-4f02-b229-511518cb7e72
-X-Ovh-Tracer-Id: 15836908092875508527
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFhDw+225tgu0beJwmE1aBm0MmsKUSt8RiBDyL7OlOnbc+1ZknnRh7dpLRqmWWmi0C/yAf0+fHGDqo7uFUAV/V+5E2q6PbvG8AsWZ02F37ae91yocAPSroQQePckzCjy8O9ktgle+H/dVuYh9e1/KgGsyybkQQvAHAKvlTAfJUv/2cwYy6hwSx3XRiIvoMc96BRaqjBUUv1eD6OzENvk0sCRadChgX+xCwQsCOOY95jBineNehlYzG/vweE+brboPZZI0uWCDDnSh2UcJvH1SNP2Zr93k2F6Bdi1g+DDJoCEKGzfn2fDChwbOZQavSC9KJNjHHR5VIyH632EitbEKVwG3+SscX7+XkFxIBIe3lWBqfUILLh/9X5G9oGsnGu5Ay70f8BXiXNCKJ+pvXsrSm3Jk5QQzmDNdIpHWW/MlWaYGSn4AmDQAusSuWfbVermyq4byFdg8u/GbUQYd//idT0VonX7OQpTlwsU5mwrATjdcls15aE1vdZ+VdvW++k7XSjDLw1CHJuN06ky+/6XVZS32eBbzwhFU+RQsch5zsw0O83qM3iXPbd3i5r4krzHMiETsNzjMX+aD8bBZCPw9AL/jI24KiCs9a2xM8SdGnb+oHmESkXQuJH8RDiaB5P6+tT9iQnbL6+Cr7SAxsu1J8RAt60iAi3gikXLu/ORI1rmQ
-DKIM-Signature: a=rsa-sha256; bh=876Xla4T8vBVZ6eOgpHWJjnQkxJzs6D33B0DgFOW9W8=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1760615370; v=1;
- b=Ehmf03ttpilutuqJ1gKw21EtE12BfMdLh6nqWcARRRow60b/esGnHDpwVQ2MKrWyXwNE7xvu
- IGX/LvsE/2qVW27dIwhuwY9arK7JHtsTU/fQB+WSXbdLXfETCDPJMkJ3BieXCMcjNLa8fYpdjd9
- IoOE3TGrq80TUqW7LdMAApLxA1TnFcyRphX225EgQkwIi+kQuKfwVPn+cZaNpNAGIel0bxpEvHP
- p4LYMVxORImWf3XaK6wrN/h4qVXCrrdbnSSZZybsbqTRBBjZqKF0RjXIZ59ms8QbVn72Y5xAmJB
- 9FOaMOMQPuB7gaUwA4cJ2tW4lhlpt60qMzbQDE505TmWQ==
-Received-SPF: pass client-ip=178.33.255.19; envelope-from=clg@kaod.org;
- helo=2.mo548.mail-out.ovh.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68f0dc1d cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=WP5zsaevAAAA:8 a=NvKNCtQwuY3EklFOmYsA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=t8Kx07QrZZTALmIZmm-o:22
+ a=poXaRoVlC6wW9_mwW8W4:22
+X-Proofpoint-GUID: lwQGOsi7kKVvG4ZuAH0z-ijm_ch_rl3f
+X-Proofpoint-ORIG-GUID: lwQGOsi7kKVvG4ZuAH0z-ijm_ch_rl3f
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX3lmcdCBUvUci
+ On2cbpeFMWqCG9Wwf/iZvtsgwxho/+pyeVhQ/qGCN7M+JjNc0f8bZB8MnYre+8deklLlNanzdD7
+ EQjUATjdJrbdImnmGAb14hsinoiFfyhrO/CEpRuFfZNQVBl5fx6BNU+ctYijKmfuX/wMCe7ss1B
+ Yzc1RMf5kS7MqWeDVqAgLRoGIvhTDVcUuqnPr9WkeV7Lxpb1fvAIJQu7GFCCBnf3GKncOWfJP+8
+ rr589LjKCKz16flkEFDOUY+l9N9h/FH8UIqRMDbQRnphEW9AbDhlhvp51sPyBvT8L+w+qw+o2tn
+ Qyxi8/yfAli/EVE1rNvw0WX+ee7vFtXzkHXX0jFWw24U7fTNyB5c1JihXsM9D1J7UyzKylrKgwt
+ yi+8OVKR8MWl9dF/d7so3UEaYngBhw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510100140
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=shalini@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,159 +125,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/16/25 04:30, Jamin Lin wrote:
-> Hi all
+On 2025-10-16 09:17, Thomas Huth wrote:
+> On 13/10/2025 15.39, Shalini Chellathurai Saroja wrote:
+>> Add tests for SCLP event type Control-Program Identification.
+>> 
+>> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+>> Suggested-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   tests/functional/s390x/test_ccw_virtio.py | 25 
+>> +++++++++++++++++++++++
+>>   1 file changed, 25 insertions(+)
+>> 
+>> diff --git a/tests/functional/s390x/test_ccw_virtio.py 
+>> b/tests/functional/s390x/test_ccw_virtio.py
+>> index 453711aa0f..82e73ecf5e 100755
+>> --- a/tests/functional/s390x/test_ccw_virtio.py
+>> +++ b/tests/functional/s390x/test_ccw_virtio.py
+>> @@ -15,6 +15,7 @@
+>>   import tempfile
+>>     from qemu_test import QemuSystemTest, Asset
+>> +from qemu_test import exec_command
+>>   from qemu_test import exec_command_and_wait_for_pattern
+>>   from qemu_test import wait_for_console_pattern
+>>   @@ -270,5 +271,29 @@ def test_s390x_fedora(self):
+>>                           'while ! (dmesg -c | grep 
+>> Start.virtcrypto_remove) ; do'
+>>                           ' sleep 1 ; done', 'Start 
+>> virtcrypto_remove.')
+>>   +        # Test SCLP event Control-Program Identification (CPI)
+>> +        cpi = '/sys/firmware/cpi/'
+>> +        sclpcpi = '/machine/sclp/s390-sclp-event-facility/sclpcpi'
+>> +        self.log.info("Test SCLP event CPI")
+>> +        exec_command(self, 'echo TESTVM > ' + cpi + 'system_name')
+>> +        exec_command(self, 'echo LINUX > ' + cpi + 'system_type')
+>> +        exec_command(self, 'echo TESTPLEX > ' + cpi + 'sysplex_name')
+>> +        exec_command(self, 'echo 0x001a000000060b00 > ' + cpi + 
+>> 'system_level')
+>> +        exec_command(self, 'echo 1 > ' + cpi + 'set')
 > 
->> Subject: aspeed: Split the machine definition into individual source files
->>
->> Hi,
->>
->> This is a follow up of a private discussion with Patrick.
->>
->> Aspeed modeling started nearly 10y ago with the palmetto-bmc machine.
->> We now have 5 SoCs and 25 machines which are mostly defined in in a single
->> aspeed.c file. Multi SoC machines, fby35 and ast2700fc, are defined in fby35.c
->> and aspeed_ast27x0-fc.c respectively.
->>
->> Since we started separating the SoCs :
->>
->>     hw/arm/aspeed_ast10x0.c
->>     hw/arm/aspeed_ast2400.c
->>     hw/arm/aspeed_ast2600.c
->>     hw/arm/aspeed_ast27x0.c
->>     hw/arm/aspeed_ast27x0-ssp.c
->>     hw/arm/aspeed_ast27x0-tsp.c
->>
->> We could do the same for the machines keeping an 'aspeed_ast<rev>'
->> prefix (and maybe avoid the 'bmc' suffix). I think this would ease introduction
->> of new machines. We would be able to get rid of aspeed_eeprom.[ch] and
->> move machine custom data in the machine source file. Which seems cleaner.
->>
->> Timing is about right for code reshuffling, still 3w before soft freeze, no
->> important changes inflight, but if we start doing this conversion, we should do
->> it for all. See the list below for the brave.
->>
->> Comments ?
->>
->> Thanks,
->>
->> C.
->>
->>
->>
->> * AST2400
->>
->>     palmetto-bmc
->>     quanta-q71l-bmc
->>     supermicrox11-bmc
->>
->> * AST2500
->>
->>     ast2500-evb
->>     romulus-bmc
->>     sonorapass-bmc
->>     witherspoon-bmc
->>     yosemitev2-bmc
->>     supermicro-x11spi-bmc
->>     fp5280g2-bmc
->>     g220a-bmc
->>     tiogapass-bmc
->>
->> * AST2600
->>
->>     ast2600-evb
->>     qcom-dc-scm-v1-bmc
->>     qcom-firework-bmc
->>     rainier-bmc
->>     fuji-bmc
->>     bletchley-bmc
->>     fby35-bmc           (fby35.c should rename to
->> aspeed_ast2600-fby35.c)
->>
->> * AST2700
->>
->>     ast2700a0-evb
->>     ast2700a1-evb
->>     ast2700fc           (aspeed_ast27x0-fc.c)
->>
->> * AST1030
->>
->>     ast1030-evb
+> I think at least the last statement should be replaced by
+> exec_command_and_wait_for_pattern, waiting for the shell prompt.
+> Otherwise there is a small race condition here that the exec_command()
+> has been sent, but not executed yet. Ok, the event_wait() will wait
+> for a while, so it's very unlikely, but let's better play save and
+> wait for the shell prompt first, before waiting for the event.
 > 
-> 
-> I’ve started working on this refactoring and have sent the first patch for the AST1030:
-> https://patchwork.kernel.org/project/qemu-devel/patch/20251015081219.2766143-2-jamin_lin@aspeedtech.com/
-> I’m doing this because I plan to add a new machine for the AST1060, and it seems like a good opportunity to perform this cleanup first.
-> I just want to make sure I’m moving in the right direction — could you please help review it?
-> 
-> If you agree with the following plan, I’ll create a new patch series to move all existing machines into separate aspeed_ast<rev>_boards.c files:
-> > Planned structure
-> Create aspeed_ast10x0_boards.c
->   ast1030-evb
-> 
-> Create aspeed_ast2400_boards.c
->    palmetto-bmc
->    quanta-q71l-bmc
->    supermicrox11-bmc
-> 
-> Create aspeed_ast2500_boards.c
-> (Or should these be grouped with aspeed_ast2400_boards.c? — I’d appreciate your thoughts.)
 
-no. I'd prefer keeping a consistent 'aspeed_ast<rev>' prefix.
+ok.
 
->   ast2500-evb
->   romulus-bmc
->   sonorapass-bmc
->   witherspoon-bmc
->   yosemitev2-bmc
->   supermicro-x11spi-bmc
->   fp5280g2-bmc
->   g220a-bmc
->   tiogapass-bmc
+>> +        try:
+>> +            event = self.vm.event_wait('SCLP_CPI_INFO_AVAILABLE')
+>> +        except TimeoutError:
+>> +            self.skipTest('SCLP Event type CPI is not supported')
 > 
-> Create aspeed_ast2600_boards.c
->   ast2600-evb
->   qcom-dc-scm-v1-bmc
->   qcom-firework-bmc
->   rainier-bmc
->   fuji-bmc
->   bletchley-bmc
+> Should we rather fail the test in case we don't receive the event?
+
+ok.
+
+Hello Thomas,
+
+I will incorporate the changes and will send the v3. Thank you for
+the review.
+
 > 
-> Rename
-> fby35.c -> aspeed_ast2600-fby35.c
->   fby35-bmc
+>> +        ts = self.vm.cmd('qom-get', path=sclpcpi, 
+>> property='timestamp')
+>> +        self.assertNotEqual(ts, 0)
+>> +        name = self.vm.cmd('qom-get', path=sclpcpi, 
+>> property='system_name')
+>> +        self.assertEqual(name.strip(), 'TESTVM')
+>> +        typ = self.vm.cmd('qom-get', path=sclpcpi, 
+>> property='system_type')
+>> +        self.assertEqual(typ.strip(), 'LINUX')
+>> +        sysplex = self.vm.cmd('qom-get', path=sclpcpi, 
+>> property='sysplex_name')
+>> +        self.assertEqual(sysplex.strip(), 'TESTPLEX')
+>> +        level = self.vm.cmd('qom-get', path=sclpcpi, 
+>> property='system_level')
+>> +        self.assertEqual(level, 0x001a000000060b00)
 > 
-> Create aspeed_ast27x0_board.c
->      ast2700a0-evb
->      ast2700a1-evb
-> 
-> Keep
-> aspeed_ast27x0-fc.c
->    ast2700fc
-> 
-> 
-> One last question
-> Do you think it’s better to:
-> Create one commit per SoC generation (e.g. one for all AST2500-based machines),
-> or
-> Create one commit per board (e.g. one for ast2500-evb, one for romulus-bmc, etc.)?
+>  Thomas
 
-One per machine/board please.
-
-Initially, I thought we would introduce one 'aspeed_ast<rev>_<board>.c'
-file per machine/board but that might be too intrusive. At the same
-time, it would provide a clear view of how many boards QEMU models
-for each SoC revision. What do you think ?
-
-
-Eventually, file 'aspeed_eeprom.c' would be removed, so would file
-'aspeed.c'. 'aspeed_coprocessor_common.c' should probably be renamed.
-File 'aspeed_soc_common.c' should become 'aspeed_common.c' probably.
-
-
-Thanks,
-
-C.
-
-
+-- 
+Mit freundlichen Grüßen / Kind regards
+Shalini Chellathurai Saroja
+Software Developer
+Linux on IBM Z & KVM Development
+IBM Deutschland Research & Development GmbH
+Dept 1419, Schoenaicher Str. 220, 71032 Boeblingen
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Geschäftsführung: David Faller
+Sitz der Gesellschaft: Böblingen / Registergericht: Amtsgericht 
+Stuttgart, HRB 243294
 
