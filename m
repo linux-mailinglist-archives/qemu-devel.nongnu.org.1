@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71088BE3589
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42615BE36A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mwp-0002w1-Rw; Thu, 16 Oct 2025 08:19:12 -0400
+	id 1v9My0-0004FO-2j; Thu, 16 Oct 2025 08:20:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mwl-0002o4-3Q
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:19:07 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mwr-0003HF-Pr
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:19:14 -0400
 Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mwe-0008UA-3U
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:19:06 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mwh-0008Uc-22
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:19:13 -0400
 Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-42701b29a7eso254893f8f.0
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:18:57 -0700 (PDT)
+ ffacd0b85a97d-42557c5cedcso398643f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:19:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617134; x=1761221934; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760617138; x=1761221938; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=m544tGn0dYogJR4H8a2XceOr9j14Kw7cbkaAlw5Myz4=;
- b=fElK/645+Q77VxT4QYhSDBQdeZTe/ImIbcjcnxofIJZSjVGJSvQxZkcsNTJXGycbyU
- Y9J0AaMMrRCZpidRCHbJcyZyRuRENTDas3Da+3B7i11Dwu1yhbRydjAMgrWhevWzKcUX
- YvYSwS4rWntGCQyZ1JbSAwZ3TleOuDml6wYJ+Ol+3R9XyZvgAmm4YcoCn1TBKtCm2ITN
- sz9JP2odu81ct5hUQGncjreVExNRuLApbO60c7yHG1dHB6lyMpNHJY2epOi3vzhW8QWh
- 7N7b+1lORhSvDpwa8HLm11Ub0m/gXiXyqNsXSgBV0AuUYHMhiPr2wNVtxQZtbM9bCsh9
- VnRQ==
+ :reply-to; bh=QCq6tp/1/pEpjwUbXRWq42VSh1hfKDqI/BGHhJ2wjl8=;
+ b=Y/n150/SwHpeeC3zYBnp834F4GtHd630ujGKuilFJwrUWL8ucJu9cdiuL/3ArvyRMr
+ Xbp9Oaup4tRrE2c/SsETpzOM3fHBwaNCLZfVlbiSuoYSJgu1AC9Pu4gmcLW3nrVdu0Kw
+ b5HwtEGqJqJaxEVqa22lxxGg3BWQVrowxc3W6jDUys/wJd/MGcGA9TSfx6yTjwNb6Huc
+ 6YXPj9zmdkn/SGqWJA3ij8JczBlAmv/2lBtVGakNtSQ2ns1vbPS1+OUb/mg9DxlHOLt5
+ 5/ngMU4Rp3e25mbeQy9t4WZv8aIQxt31a370i60R9NuFK1RyTakoKd0v36VUk4Ec76IM
+ xoxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617134; x=1761221934;
+ d=1e100.net; s=20230601; t=1760617138; x=1761221938;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m544tGn0dYogJR4H8a2XceOr9j14Kw7cbkaAlw5Myz4=;
- b=nq072QskaNNjCjLlEZxemriqkKDTAKQnZ1qK7IfHOxVRcjXmaidO6G7cAUhbI0jx7p
- 34TKoJR3rutv1kUgtoLippf9KKNcDvL+9g2XHlFPYwJBCaPvHFHYOpAcFwDLKFS2yKx4
- NvR9Iu89am64mp476BQX7lRPlgVSko34gOTK9Z5aShpe0x7FdWg9KD7g08ErZmOVwQRh
- ILV6SONDdc/G0AuAi3truGuwyMMs4uymnLZdkDbqCZXAdZ/W5iSKD9+u9r8PUY7dQ360
- tbkly+2HxJuY/BtbZNU+ElsH4cSW107C6b9BOUB4B/Zrhn+mTYClJ6VHgyUz5Cwpq/20
- RZ7Q==
-X-Gm-Message-State: AOJu0YyqjEuRNL4hDhRvELbUPNwnVDrB9pUvX3litVVt8aLpgtp1uisb
- qqxlT9v0fkC8EyXi2pKdZ3XbcDSDeNrV8/pwGmQ7/tCSGqdKukl4yx7txjH2GOfiTwzSwQkzkRz
- Fx49a1EI=
-X-Gm-Gg: ASbGncte2Rzxa1rLFi8mmALW+M8Nm2Kf4G3tw5CIshuBv738PGDMWhrwyvowP8D0ChE
- kooHzx1VxKsZcnsR48ptABrSz7XL2w8EaEaJQ+EJC7NVNLlt1W0aWqUjsuUfChe470p9KkJcazN
- g6/i+ZeFr+ZI1J/P/qwvK4uvBvj5i1bTovTw0DuDPYDIPgdIz5EccaoSVVtIyk3IcNs3pkstBt4
- knAamgJ0qAD14DkzH2/Ax0qTMGE98XGHQOTSBrKXtQTaoxWA2Ly+h4S4JL0Oee456d295py4li7
- VTN2LOy6Jsgb10Dfq79TnfGjlyv1DZ6L1ljYzWoK1eEHc+XBN/7REOubqT/2oMHXsxODAEjlR1j
- QYGH45F1NDFwS1q0+w4w3hr76PViF1qeHDA1t8qNn7M2hhsMru1b5hKzGDWiN2wvzjg3lEuBmAQ
- nsNYbOokPYv0G7yGE8QN6u5gE3F7V2FVFtFxmik4tRC0nLSu3l+wPA8X+7Y91vlqRh5eD5l3l47
- oQ=
-X-Google-Smtp-Source: AGHT+IHCzlftcfsllIOBdqbltmlPawJ2ugf2ZX437s6NkEFPIgBGXVTKB6OVbrw5B4KYDe7obEXIDg==
-X-Received: by 2002:a05:6000:250d:b0:426:fb63:c01f with SMTP id
- ffacd0b85a97d-426fb7b5d7emr2647536f8f.29.1760617133829; 
- Thu, 16 Oct 2025 05:18:53 -0700 (PDT)
+ bh=QCq6tp/1/pEpjwUbXRWq42VSh1hfKDqI/BGHhJ2wjl8=;
+ b=dKKr2xqdqX1ovD7Chp18RJBfWwJM4jMANc95RnuH07+0CA6I4duLwwlDCkJjiIACW4
+ LeA/9rX+YPHGQOOusfajwxLv+7rJSmoK/eDbCE2XKVDWboms5taIXPvuVD4KZmr20P7q
+ rRZ2+BllhbKsgYL/SYphGFkGPXWPWxMyWSrHlRZUsjAnojBwPDIIX3bQ3r9UxAQadhWh
+ HWdfXUtm51WlmcNNeBrAZJyOIqMty1LE/pSm7BwJOfJTT7snLjvindiddyaK1+oni6Ga
+ iN1ni7bVGZ0HqhqPmmZzlzYsKx+qaxqExkZDTEDh6k51xa0tiF7gdtg5PdYACAgSY4ag
+ u4Nw==
+X-Gm-Message-State: AOJu0YwL3F/voEjPBTkKOhfo7EQHMxKxTQYLU6bO44hHHIy3PNydaIUZ
+ 9zk3N8OSbG2jVIH+yy/a5La8/Xfb+Op9iHJA0usJIzYhYEXUWUwyGWoIbOG2BhxnL11kiutSyq5
+ ImHkKxBI=
+X-Gm-Gg: ASbGnctuIwsbWI+JdoVtY2J11AOnCqqaHTGKnUzQtQwYf8E/X8S9WJTi618xiTMQ1Zp
+ vTJCSSW8PnPQ1li55LxZrQ1E0sGhq8xv0Exs3z4aS+k8IHXwCgLS6NJmJJtPrak3pKJvzu3XwWO
+ g0q+C9ceDUAfIJdA9RrYYbuey7T1gmc08lIGQmLHLcWthVsldWFZxO4eVFoHW+Y1boswcnq42Eo
+ 5Bxy1HzUiXnrSZg1vFJP0Tu3utX5UijN8BcTRmu+9otxbqoUr3h0G96OGEKtroOZXrD+4G5QxE2
+ LpWC91PWHAi6RXqvEAXObUzplIwpZSxXl3dvklQNTq4lpJeIrVuqF7ZdkMk3qdTaYicCxSq/TTJ
+ KDgcO61oqrLvDJFbmfux0pcGmrzkR7pMM7NNL1MWY0caODzp04H/Xdm/je8mChTDexdXCO0YlXi
+ FRUKTuO2tBM+bQtgYk5PFtPdV+WPd1/7NF70b5VMVKnWY462ij+JZPwA==
+X-Google-Smtp-Source: AGHT+IETDYGZzoIKFHf3Tw1XUoU2op7CLGy6FsWyUPlbT0KUDBVtpGOKjzVkUuR1ljqeeFdgr+/zwA==
+X-Received: by 2002:a05:6000:25eb:b0:426:dbee:3d06 with SMTP id
+ ffacd0b85a97d-426dbee3d1bmr12629201f8f.22.1760617138354; 
+ Thu, 16 Oct 2025 05:18:58 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5cf71dsm32913069f8f.29.2025.10.16.05.18.53
+ ffacd0b85a97d-426ce5e1024sm34158771f8f.42.2025.10.16.05.18.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:18:53 -0700 (PDT)
+ Thu, 16 Oct 2025 05:18:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 43/75] target/rx: Use MemOp type in gen_ld[u]() and gen_st()
-Date: Thu, 16 Oct 2025 14:14:59 +0200
-Message-ID: <20251016121532.14042-44-philmd@linaro.org>
+Subject: [PULL 44/75] target/rx: Propagate DisasContext to generated helpers
+Date: Thu, 16 Oct 2025 14:15:00 +0200
+Message-ID: <20251016121532.14042-45-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
@@ -81,8 +80,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,42 +97,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The @size argument is of MemOp type. All callers respect that.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251009151607.26278-3-philmd@linaro.org>
+Message-Id: <20251009151607.26278-4-philmd@linaro.org>
 ---
- target/rx/translate.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/rx/translate.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/target/rx/translate.c b/target/rx/translate.c
-index 1c911cd9a67..744edd56afc 100644
+index 744edd56afc..b314d94b018 100644
 --- a/target/rx/translate.c
 +++ b/target/rx/translate.c
-@@ -161,19 +161,19 @@ static void gen_goto_tb(DisasContext *dc, unsigned tb_slot_idx, vaddr dest)
+@@ -1894,7 +1894,7 @@ static bool trans_ITOF(DisasContext *ctx, arg_ITOF * a)
+     return true;
  }
  
- /* generic load wrapper */
--static inline void rx_gen_ld(unsigned int size, TCGv reg, TCGv mem)
-+static inline void rx_gen_ld(MemOp size, TCGv reg, TCGv mem)
+-static void rx_bsetm(TCGv mem, TCGv mask)
++static void rx_bsetm(DisasContext *ctx, TCGv mem, TCGv mask)
  {
-     tcg_gen_qemu_ld_i32(reg, mem, 0, size | MO_SIGN | MO_TE);
+     TCGv val;
+     val = tcg_temp_new();
+@@ -1903,7 +1903,7 @@ static void rx_bsetm(TCGv mem, TCGv mask)
+     rx_gen_st(MO_8, val, mem);
  }
  
- /* unsigned load wrapper */
--static inline void rx_gen_ldu(unsigned int size, TCGv reg, TCGv mem)
-+static inline void rx_gen_ldu(MemOp size, TCGv reg, TCGv mem)
+-static void rx_bclrm(TCGv mem, TCGv mask)
++static void rx_bclrm(DisasContext *ctx, TCGv mem, TCGv mask)
  {
-     tcg_gen_qemu_ld_i32(reg, mem, 0, size | MO_TE);
+     TCGv val;
+     val = tcg_temp_new();
+@@ -1912,7 +1912,7 @@ static void rx_bclrm(TCGv mem, TCGv mask)
+     rx_gen_st(MO_8, val, mem);
  }
  
- /* generic store wrapper */
--static inline void rx_gen_st(unsigned int size, TCGv reg, TCGv mem)
-+static inline void rx_gen_st(MemOp size, TCGv reg, TCGv mem)
+-static void rx_btstm(TCGv mem, TCGv mask)
++static void rx_btstm(DisasContext *ctx, TCGv mem, TCGv mask)
  {
-     tcg_gen_qemu_st_i32(reg, mem, 0, size | MO_TE);
+     TCGv val;
+     val = tcg_temp_new();
+@@ -1922,7 +1922,7 @@ static void rx_btstm(TCGv mem, TCGv mask)
+     tcg_gen_mov_i32(cpu_psw_z, cpu_psw_c);
  }
+ 
+-static void rx_bnotm(TCGv mem, TCGv mask)
++static void rx_bnotm(DisasContext *ctx, TCGv mem, TCGv mask)
+ {
+     TCGv val;
+     val = tcg_temp_new();
+@@ -1931,17 +1931,17 @@ static void rx_bnotm(TCGv mem, TCGv mask)
+     rx_gen_st(MO_8, val, mem);
+ }
+ 
+-static void rx_bsetr(TCGv reg, TCGv mask)
++static void rx_bsetr(DisasContext *ctx, TCGv reg, TCGv mask)
+ {
+     tcg_gen_or_i32(reg, reg, mask);
+ }
+ 
+-static void rx_bclrr(TCGv reg, TCGv mask)
++static void rx_bclrr(DisasContext *ctx, TCGv reg, TCGv mask)
+ {
+     tcg_gen_andc_i32(reg, reg, mask);
+ }
+ 
+-static inline void rx_btstr(TCGv reg, TCGv mask)
++static inline void rx_btstr(DisasContext *ctx, TCGv reg, TCGv mask)
+ {
+     TCGv t0;
+     t0 = tcg_temp_new();
+@@ -1950,7 +1950,7 @@ static inline void rx_btstr(TCGv reg, TCGv mask)
+     tcg_gen_mov_i32(cpu_psw_z, cpu_psw_c);
+ }
+ 
+-static inline void rx_bnotr(TCGv reg, TCGv mask)
++static inline void rx_bnotr(DisasContext *ctx, TCGv reg, TCGv mask)
+ {
+     tcg_gen_xor_i32(reg, reg, mask);
+ }
+@@ -1963,7 +1963,7 @@ static inline void rx_bnotr(TCGv reg, TCGv mask)
+         mem = tcg_temp_new();                                           \
+         mask = tcg_constant_i32(1 << a->imm);                           \
+         addr = rx_index_addr(ctx, mem, a->ld, MO_8, a->rs);             \
+-        cat3(rx_, op, m)(addr, mask);                                   \
++        cat3(rx_, op, m)(ctx, addr, mask);                              \
+         return true;                                                    \
+     }                                                                   \
+     static bool cat3(trans_, name, _ir)(DisasContext *ctx,              \
+@@ -1971,7 +1971,7 @@ static inline void rx_bnotr(TCGv reg, TCGv mask)
+     {                                                                   \
+         TCGv mask;                                                      \
+         mask = tcg_constant_i32(1 << a->imm);                           \
+-        cat3(rx_, op, r)(cpu_regs[a->rd], mask);                        \
++        cat3(rx_, op, r)(ctx, cpu_regs[a->rd], mask);                   \
+         return true;                                                    \
+     }                                                                   \
+     static bool cat3(trans_, name, _rr)(DisasContext *ctx,              \
+@@ -1982,7 +1982,7 @@ static inline void rx_bnotr(TCGv reg, TCGv mask)
+         b = tcg_temp_new();                                             \
+         tcg_gen_andi_i32(b, cpu_regs[a->rs], 31);                       \
+         tcg_gen_shl_i32(mask, tcg_constant_i32(1), b);                  \
+-        cat3(rx_, op, r)(cpu_regs[a->rd], mask);                        \
++        cat3(rx_, op, r)(ctx, cpu_regs[a->rd], mask);                   \
+         return true;                                                    \
+     }                                                                   \
+     static bool cat3(trans_, name, _rm)(DisasContext *ctx,              \
+@@ -1995,7 +1995,7 @@ static inline void rx_bnotr(TCGv reg, TCGv mask)
+         tcg_gen_shl_i32(mask, tcg_constant_i32(1), b);                  \
+         mem = tcg_temp_new();                                           \
+         addr = rx_index_addr(ctx, mem, a->ld, MO_8, a->rs);             \
+-        cat3(rx_, op, m)(addr, mask);                                   \
++        cat3(rx_, op, m)(ctx, addr, mask);                              \
+         return true;                                                    \
+     }
+ 
 -- 
 2.51.0
 
