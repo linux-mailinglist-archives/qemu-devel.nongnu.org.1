@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68877BE1860
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 07:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C74BE1878
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 07:42:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Gey-0002Mh-Eo; Thu, 16 Oct 2025 01:36:20 -0400
+	id 1v9Gka-0004J1-1D; Thu, 16 Oct 2025 01:42:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1v9Ges-0002Is-Db
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:36:14 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ id 1v9GkX-0004IZ-Em
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:42:05 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1v9Gep-0004VR-QZ
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:36:14 -0400
+ id 1v9GkV-0005EK-4j
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:42:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760592972; x=1792128972;
+ t=1760593323; x=1792129323;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=BN6SbmnY3NkX37ql8SKyFsYFF1LusPrj1NlfMbwutvU=;
- b=NhlC2YlJ7WodYIz23ialv6lX/Sj7bQsGtzS7tIFCBNbCXxHuz1/U2Df1
- lj0lRnwf3lx4tbSD9ZgnraveZWdN9bwW3mPKYpZeky7z26Glg9JqdEis4
- Kypg3MfrCV7FDWipJ4A9Ts0yZgc9CC61onLqhSrMdvIf92PbtuMGoK04v
- +De1aXU4fblZJZponJswLr7SvDif15MejGx2iDEdIbOy/iy+Su1UHuTnR
- 9fm21ym3/c6xxPA8n+5ji34nwb6o6xSfPNSFH3FiuonUp+vzS8aU/pxBe
- Ykx+z10eGg7pUIYTLX9rTJKzxbDXcOKxOF91nitl6joZizkg93EzcTGL7 A==;
-X-CSE-ConnectionGUID: O+XBtiT7TYKJ+pBBXmbnRg==
-X-CSE-MsgGUID: WdWfLQS5SVKv3J3sXf6fFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="73887924"
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="73887924"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2025 22:36:10 -0700
-X-CSE-ConnectionGUID: jSFnldV5Ta62HIyhXJ48mQ==
-X-CSE-MsgGUID: 8GUomeFJS6CSleo2oJJg4Q==
+ bh=MqXhX/f9anz7hjmVu4/kGqilMISpNjPURX3c2mXSImE=;
+ b=BOBWdlGBk7dbmSLSwoM5Cpok5Jw08WKF+9YTPnt2w28VzcCPbVGVHBko
+ eyGBqo8EEPQ8/T/C20bJJmS1aijLvwEXY0JS4M4HG9FNcN2oZDB8FIHuR
+ TypmRdlSeIRuM7yWHgl8kdwHlpilRtzkzuPpp5pOYqX1B5M2dfsI+2hwM
+ IMVrQJi3ia9emwqdaGkZgZ9d1mPFtNhK/H+kV7+H0SakW1B8qv1p0yZUp
+ Ng7Q45ezhTRvlR/yd2bxCWaDNYzFCtXKbW9yYi+Oei8I8Nwpt5TMSa7RV
+ ixO9YA4WLJeSGHxGeT3xVo5UaqonsqxFJ/jS33LcikvmWmE1LuVryFBLJ A==;
+X-CSE-ConnectionGUID: 1SX0DsIKT9a4kC3pKjo+4Q==
+X-CSE-MsgGUID: dcJ9pEXsRUmsqbMZq9XADw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62816436"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="62816436"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Oct 2025 22:42:00 -0700
+X-CSE-ConnectionGUID: r0op6UcESjywtd9aao+atQ==
+X-CSE-MsgGUID: TdqaO+0zTrui9Z8a1S6MUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="182300547"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2025 22:36:09 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="182346799"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Oct 2025 22:42:00 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 15 Oct 2025 22:36:08 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.27; Wed, 15 Oct 2025 22:41:59 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 15 Oct 2025 22:36:08 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.26) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Wed, 15 Oct 2025 22:41:59 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.54) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 15 Oct 2025 22:36:08 -0700
+ 15.2.2562.27; Wed, 15 Oct 2025 22:41:59 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f2myXWSG4GW5cA364KN/IkobOO3aBS7V6k4i9qUpMjmlAeKHzw0etv+b707JFyaxsOnYQqbPtHZ7hQYpHj+J+KO3TpmRe9i2yPv9dME9b0gM33C15yFj5fUwXDvVQY0FeDkzP8/0mlFTzfMMi227iAgk/D22tcBxCfoquvRiGXv/BwM+QVSWt3t1oY2JRFsK0YGTNxUQkaI5CgJWY5yUbLLvNmi2sOSLvVrH8YmwsFJwnHXCAkUfahn8EEpLlVYGgUi8OrwmGZCEv7aTeQvSmjwwIrFND0Q72xcG+9lOOxnf/8YWcGQlO8flECay9KSbR0OrygGbaFmFj3j8Ch3ogw==
+ b=nSuwcfncsixbqce8aU8H6371xpDbN0MwVV7BfUvfBiyZUzKRI36EnC7ynnLhjKnMXftroYHGQ87pShs6+vrCLjGcTnqwtoZmbAs3yjKDmNeHp0zdWa5G4hJsmUGfRcNaUOL5KvzKemFI92hrHrR4tKnkGf8xmm4GFPnBYIoF/O0Z0OWxT7pz58QLLceaRHrMhw+vYMJpXc/Rdec71otm2cSdpRGiSNDYx+5ZrkZmDUCnAE4UwEOzZ9SaxETVZxh9ZMmt/aqfsEVjfuuFwlUBIakjLC3Tn0oUvFi/VJTkCBQNuM74LeYOz7nIbHl7fhcP7Toa9lo21DoOEYA1UBdjkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BN6SbmnY3NkX37ql8SKyFsYFF1LusPrj1NlfMbwutvU=;
- b=fSUFk4XYYI9kq4XQcqIrkI+PL89r8GBBTJ2bT1tCrijn+dipVVoUeRS8hkSc5QXyMKXZ6DMl6Zh2J0VW2YyP/dtdSjjhENu+P3asXglQChbhB2mXfrYApyCa30SLdUMFr3RLGFJWZ1w0k0BloU5Vl2YbnYBrai0fbwGoYIowYyQT0fM7Yx/jgahQR3JKuPVpgzQPb909/2clqFFATgaCfNPy4VbsqT2BRrt9xZTNhW37EoUYHOP6XR82lEW6Jae0eiJtvn7oM4JOhhVOJZ18CiH3v1u7sVmLaXqV4YlroUiWFa/J8g7aD5Bbv6djIaVKRhFB3oLV77norW2AdcZc/w==
+ bh=MqXhX/f9anz7hjmVu4/kGqilMISpNjPURX3c2mXSImE=;
+ b=pKPlazaWjXhZ9jgENWrvscUcPVXzTlx4YeH7+OPyJ835QP2ySvHmTlDihfcbkeVpu/SeDoEIORp19l5XviTemfYkZ0j3Iu+6GHzODxkraNNsZdNh+prqbq+op5wwHu1H9I9daxxgQIqOlIjqsn2dG/qWg53rEtimyjKsFW/DwGMAVo14gR9vy7Fno5zL06jCdJwCuIbKaU5Ob+2/OmIi7L3SxtvWl1/ICElWy/9A1l/2E39tGhtFN33Mbt777g7QgfU2i0T0DoNW4K4/I9cHR3gmEeY90iRy5dHPq50koqE0FrGoInH1pGf9kM6MYeLB9rlaPp5rPHFpcC0+1UwsoA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from IA0PR11MB7185.namprd11.prod.outlook.com (2603:10b6:208:432::20)
- by MW6PR11MB8365.namprd11.prod.outlook.com (2603:10b6:303:240::18)
+ by SJ1PR11MB6177.namprd11.prod.outlook.com (2603:10b6:a03:45c::22)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Thu, 16 Oct
- 2025 05:36:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.15; Thu, 16 Oct
+ 2025 05:41:55 +0000
 Received: from IA0PR11MB7185.namprd11.prod.outlook.com
  ([fe80::dd3b:ce77:841a:722b]) by IA0PR11MB7185.namprd11.prod.outlook.com
  ([fe80::dd3b:ce77:841a:722b%4]) with mapi id 15.20.9203.015; Thu, 16 Oct 2025
- 05:36:06 +0000
+ 05:41:54 +0000
 From: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>
 To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, "qemu-devel@nongnu.org"
  <qemu-devel@nongnu.org>
@@ -85,9 +85,9 @@ Subject: RE: [PATCH v1 2/7] virtio-gpu: Don't rely on res->blob to identify
  blob resources
 Thread-Topic: [PATCH v1 2/7] virtio-gpu: Don't rely on res->blob to identify
  blob resources
-Thread-Index: AQHcNL+RUYjirTlu+0+SWGS5LfcOTbS60JoAgAQ3pzCAAhCigIABcDrggABCiYCAAVLIYA==
-Date: Thu, 16 Oct 2025 05:36:06 +0000
-Message-ID: <IA0PR11MB718592F15E431D03C1B01762F8E9A@IA0PR11MB7185.namprd11.prod.outlook.com>
+Thread-Index: AQHcNL+RUYjirTlu+0+SWGS5LfcOTbS60JoAgAQ3pzCAAhCigIABcDrggABCiYCAAGOhAIAA+5vw
+Date: Thu, 16 Oct 2025 05:41:54 +0000
+Message-ID: <IA0PR11MB71853F97E13556E781AAE104F8E9A@IA0PR11MB7185.namprd11.prod.outlook.com>
 References: <20251003234138.85820-1-vivek.kasireddy@intel.com>
  <20251003234138.85820-3-vivek.kasireddy@intel.com>
  <1fd966d9-95a5-45aa-8a20-46f2987cd65a@rsg.ci.i.u-tokyo.ac.jp>
@@ -95,7 +95,8 @@ References: <20251003234138.85820-1-vivek.kasireddy@intel.com>
  <ba762750-cab1-4cb8-a629-101de5fdc179@rsg.ci.i.u-tokyo.ac.jp>
  <CH3PR11MB7177C4541131508F53BD27F3F8E8A@CH3PR11MB7177.namprd11.prod.outlook.com>
  <955ea687-ed25-47bd-9ba9-73c6b98c8e29@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <955ea687-ed25-47bd-9ba9-73c6b98c8e29@rsg.ci.i.u-tokyo.ac.jp>
+ <1f127ac5-10dd-435e-9ff5-f70596d7aac4@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <1f127ac5-10dd-435e-9ff5-f70596d7aac4@rsg.ci.i.u-tokyo.ac.jp>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -103,84 +104,84 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7185:EE_|MW6PR11MB8365:EE_
-x-ms-office365-filtering-correlation-id: 33403aab-ac48-4f6d-ca08-08de0c75e712
+x-ms-traffictypediagnostic: IA0PR11MB7185:EE_|SJ1PR11MB6177:EE_
+x-ms-office365-filtering-correlation-id: be300c5e-30df-4754-1d5e-08de0c76b6d6
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?lCEGw+pr855mbHZBK8byWiFPipAdEzKrKUlOegRDKLmwIfUtEXj2/eIZRR?=
- =?iso-8859-1?Q?4s3XJUVim2eIsvpJTPdCPwgNU/6QQ8w/pUYYn/QFYkKeO4dCMA6QoF5YeH?=
- =?iso-8859-1?Q?UoKX4cJABssKPoxRQq1Q8fuaQWTR9cinT9zEaoJ6pm0zqQH74FP2Lghp2t?=
- =?iso-8859-1?Q?iAdZcWzfJjdcby7JMFE/f93KQTcx056nWzth8M4vgFJDjvhfeqE656IEWq?=
- =?iso-8859-1?Q?89qeHRjrPuNA7+n2RLWrWhVmoR1zJ6LS8oCMMCaznK0aC/CxBHR4YrmFdH?=
- =?iso-8859-1?Q?6GGRWY0JmYjD89padc2wFyd5J2U94oZfo3UlURBnycYUZS3SCD60bGQEbp?=
- =?iso-8859-1?Q?h7fozU8ciFEITU9Q7JszU7V3xcsnyCtykH6Uszxw31d0b9BMMMR66jRI8E?=
- =?iso-8859-1?Q?YRy39L2KfizK86u5OuJaxUQEUvy/MjO0g1EZhY4LZeldMYTzp3TZ4AnCP6?=
- =?iso-8859-1?Q?19MRF9lc8Ckj24pNH/SlWoaiN7NFGtc7hr0OQpvi8Zq5NG1iYNAR/e7hbu?=
- =?iso-8859-1?Q?qLiNy2ehSPBLGKVEyWDawHgzPPJZJbmLZWfZ74jTCsMhupbOyxDf3jdPGW?=
- =?iso-8859-1?Q?+YXKnruMZiQW82FH+O/Af8Ygpsf2rPErUqzlKGNDTpWnNyBj7BvoY7BD4/?=
- =?iso-8859-1?Q?mbZpmLpZJhiM+lUIojeyvHCo7xyd/AcLEs5+VN7vt9m4rE+kpkaC7/SxvB?=
- =?iso-8859-1?Q?AD1epsOq25tEqQEKcby4ugeQO9ezJRte5DV0+GpV/oO7sJDCHg8FfuX5qv?=
- =?iso-8859-1?Q?olS/L9cKOYmv8GmxwrMPEoZf3r1DI93xfUXIYzQ8h2Q37KgSUIxmDf5XcD?=
- =?iso-8859-1?Q?yPKklx3KbQQ0aAiP8MG8b+3PkVZqXhsbGlHMUweLBqTPoXk/jyDoUcpAuY?=
- =?iso-8859-1?Q?7yNAYJm4OtyXdwA2XcIlKYdRayCVdB96K7tw4vfLLFnffU3TrhSvW3dHcb?=
- =?iso-8859-1?Q?cdfXuw7sVCYU9/Vz3YZhsDchoCb8zsoKT8DKmxUFULPTnQxlrMahxIi+1L?=
- =?iso-8859-1?Q?dmIzToO6r20465/2m1e+JjcQbcKylHCUMpv/0b11qv6v9sgyWh9K71oBBW?=
- =?iso-8859-1?Q?hjw3O/4AHCfVDzWzS3bkgZpdZ7yeimjUq++fjDap1gq8j4tm7pnSZCKUaL?=
- =?iso-8859-1?Q?+STU+DP3LGrTb5gVWPNiOg4cYP3jXCMSWIyVwNsEDTjddIH5zBX8a9f0Zt?=
- =?iso-8859-1?Q?QOS0BC4V46a3azMX8W2MLfeAd1zAS24E/ub/BPlKdyf68RfylPoAjySw9m?=
- =?iso-8859-1?Q?ubwY5788zjlEKAI1GEXougKsiPCyGWiwSjg0nCuXrhkr95lj0s99qD87RA?=
- =?iso-8859-1?Q?h6qTH+6XalGoY5NTmiuxWdUkykz8goo50VZ2I0xsV6reiURMjGcAQFROD1?=
- =?iso-8859-1?Q?hpwW4HOo0QnnnxLqUFlwcoQ0wMYGBzfO8KxhCUQq/aGBVswPtK8w8IZ4IE?=
- =?iso-8859-1?Q?lPa2XcQgPhCN/10Q7XZrjxr0+OVaMXamwCSDa2pb3/7CQBV8VCft2XOINe?=
- =?iso-8859-1?Q?nEEiJvUXpJP7F0F7ZKCnSy7H+Yi4/TfFyO6VVvboAtN3I9x1SEmBet7Swi?=
- =?iso-8859-1?Q?A8LK+po7F14tttZWGI/dqoURo6KU?=
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?AQA4joU4On+8RevDIjNLUNKoiQOt/T8iogbvyMZqzL8lsZY5Hp6+9ZGRQK?=
+ =?iso-8859-1?Q?u60SSWLmUyh3/ZEKz6ARigdNDNVVneZ4sIF5eeCtH44E7uDARrrh+nYowq?=
+ =?iso-8859-1?Q?B7D38v/rxpHLuxyzgGy1Nxbzx6dWxQaN2T+IghVVjXRbm+zq9RyLm6OeVf?=
+ =?iso-8859-1?Q?oyBpQeRTh8zMTwVfumnTwVTeLzmsDBG0IGg5wzZUym0M7PUJIk95liP9Rq?=
+ =?iso-8859-1?Q?gMlDwO8RLowb2WfucMhNwDIJcvFi3BKEO5k19Yu8JYdIl1kPRVlEamjI/o?=
+ =?iso-8859-1?Q?a759wFWjpeeIwlMShhanu7qu0YIjCwi9jT7nqOLg1mwszZVByitxv3HSPV?=
+ =?iso-8859-1?Q?UmWiitL+IwwKrfeZF3dsbJHWD0T4eURpNR/ZDw6i3PFqkp6nf4gOmZFaUQ?=
+ =?iso-8859-1?Q?s4MqrxwGo2A1WRHvk8BPHYVXf7hqm+G6UYz46ey43/+VxORtUlGSjnr5Gm?=
+ =?iso-8859-1?Q?Awa/TiE1lVcSvAQMj1pPQLKT4yF5zbjZxWUdG6ikFmvK9/0Sm91EiwPRxr?=
+ =?iso-8859-1?Q?VDqNom6Rx/aBwOoSj6hJX7eh1KbjiyhpsbjyrxaxipFjl2d6LZ2vy9rIVF?=
+ =?iso-8859-1?Q?ZUupTcJREKAKg0ysf2Q5LKwyFbxnUy3xgOKajt5rBPBk2gRsbuGQeJTYIV?=
+ =?iso-8859-1?Q?iEJR3IqQ7ZIt9YkDGaTj+bQniUZOnMuUMGPQdBNsf6QWC/jQSBepcEjXIv?=
+ =?iso-8859-1?Q?n56xorZu2DA6TZ2i+YVdYgaUFiUqe1YEn0T+957DGETvoyiDO/vUXTuDeh?=
+ =?iso-8859-1?Q?WHladQ55heac6FR8wyIl1Xw7/tNlY8fc4dk5aMzxfq2jfhihVJ4Ajtlj6j?=
+ =?iso-8859-1?Q?y0w2d4fYtqfSOvioIL+nRZSXJt0ISmUAK33O1y0MXaCNAvAxQpGJe4e20e?=
+ =?iso-8859-1?Q?lc0kqu3AeT+0vLnci2wSbXQHySW+jPzDqhKG+wlnfSsrVWDqeZ9lUzhYYc?=
+ =?iso-8859-1?Q?9LTmYVW6ZYo29IOyzESeLvJ9XqvtiHqEjJ+idpNZgPPnjs4toVkRzIrimn?=
+ =?iso-8859-1?Q?YxchODjcUKTeA40SomtMc9Rrpd5GqGDjCOp1fgdlzg1IVJmF1EK7UlM4cN?=
+ =?iso-8859-1?Q?zXHmu8MFdhZWg6WYyirT+/l8rt0hG9d7D11nZn/wBoJKUk8GiHG36+JBs8?=
+ =?iso-8859-1?Q?cegSNSd1XhpbjNWwa37ix0vhXYeNGHtXlX+jRDsNE58TMnkPaXU96unh6l?=
+ =?iso-8859-1?Q?R3YLNomYu9gZWbE4nVUiGx5Z0ugkYrbeLz2lQPnV93qRy12tTPxZiiPmQC?=
+ =?iso-8859-1?Q?qJFfi5MJBU/sgVM8xM6rfd39wIHc2e68veKq6r9SDGatxOtC9d5Kglsob3?=
+ =?iso-8859-1?Q?X2gj2L46TOMdrrvGZRzCE69Gh7rFvA2smNqj5mq/bZRQ31v6cWFl2SyoGT?=
+ =?iso-8859-1?Q?ZcSmiMzro1jow9q2c/8yrPohySihNKds+crN43b1muqcYny10JJda6PTtd?=
+ =?iso-8859-1?Q?81fzY02qMaFpGjVE3BaXwu+KukGlTbB6T5hFTgXQPZX3hnkUwizMTPW/Qe?=
+ =?iso-8859-1?Q?FQMbrEGN9yml7LZqjk6WDy7wRvSX8RmtojyN85OeyrRSjG3cTaKI9TwPoL?=
+ =?iso-8859-1?Q?IuJL/oxYxfWRywIcImD9MoFfMN8r?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA0PR11MB7185.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(1800799024)(366016)(38070700021); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?64AFBxv0pH/L3jmbYHEULdrduY4wnhjsgP2CsmrlgOfdN+ms0J2MvmGO4g?=
- =?iso-8859-1?Q?4gbGBWf+Cvvcw5Zt1E3jwWU+66ec01yElaV/39lOjWeK9OI8R0fR5AmKaa?=
- =?iso-8859-1?Q?5EjPyBTmHMxcxw8qxb9O3CJy+wTWfm0u0wZymhXSSMXnmCw7ya8jJrlDCd?=
- =?iso-8859-1?Q?YXT609B1y0jlMkkITpZfS69DP5wuUZ3XNvBTXqXBIxQRBv9psvXbs3cJLZ?=
- =?iso-8859-1?Q?qnHqvU6eljMvv1AZmTKrZKtze/Ldx37LAY8WBl6wi0Xxk3/EpM5j1zYflB?=
- =?iso-8859-1?Q?ru+n5e1s9ShGbSonMAnOsW4LJSSB4Le5R9dTCtQd8zXZQpZd+C9k6GsUc1?=
- =?iso-8859-1?Q?vNmTh7bQT9/25nAJkZm0NAKWNJUnIsLSx8pOrIZRahcEvumhVHD3OUvAd7?=
- =?iso-8859-1?Q?+7jB47/YoOFS9OWx+8xra3e7Bb/YlR9ie6CaEe0UQT2tWTaizEDvmlpoJJ?=
- =?iso-8859-1?Q?M2M7iLGcMtobaL8jZM6qkKt+wdKKo/mdn/bGWwFMs+vGfVeDj9k4uqWpBg?=
- =?iso-8859-1?Q?QN2WTqYEwXKZByBFy/ycg7UQxn8R2VsA5sMe30QxbXYQ6QcEezfxfpgcUi?=
- =?iso-8859-1?Q?aDFcxnauZtuu4FJOxQVyAuPqW4YLGbniSM9kI9PmxqYVBK6HVJCcdQz8d2?=
- =?iso-8859-1?Q?RKYuO3mc13bakRYTKtnRKha+IKJvtUwL/ogJPlYvqiVPsERw2yLKkjP4kv?=
- =?iso-8859-1?Q?pctKAMvCggezQBD8+V1Ei90eDqNQix9mww4h34H369RqbIAvWVC3CH0II+?=
- =?iso-8859-1?Q?AqrM4n53t70OxiEvZJb71P2qDJL8yvKmt9MnzoEO4nkmg1U610q2wz2DNP?=
- =?iso-8859-1?Q?E+Z2oz/1a13Au9rZ4kMTATDns84o0wkiDNLAnuDmIegLeUN/gxQKKxbow2?=
- =?iso-8859-1?Q?H7yvy6faRMdo5/Pk1Ta/LstQFRachhNQ0hl2ZryGmK2TQB5MEr3tKealRG?=
- =?iso-8859-1?Q?ZHsxhCS4sfMt6/TOieV6u2AqnK9u0p1bX5OFLj0EcWieQ0F8UIU9kdTD+L?=
- =?iso-8859-1?Q?9mFWg0tits74MyqWInTgzBmn0pQ1h9k4xVXOlHGlQDx5uMMbGIxOWj/HDn?=
- =?iso-8859-1?Q?0pcGn5VmSbuQq+ofxTFRTYkLOO4mrveZEKUjDTK9hfUXNGg+/xE4YRujYb?=
- =?iso-8859-1?Q?W5qE6ULVSd9tjaNY4MRrJDiNmNFIodD1A9qIYLTGbPOqxFDs1nbcT0jFb1?=
- =?iso-8859-1?Q?QzesZbJam/FWV4cXu7uVSZ3KhDHp4jZ32QRcf7faiX4IPqOxOteMmfG7+l?=
- =?iso-8859-1?Q?M1mIUP3ip2vX/QM6NwLccAWKsXT3UM5KbCsuvGEoUA7JsprvIpcF2EceKV?=
- =?iso-8859-1?Q?ttDJQtvumSnDNfTBhQIwXpMyej6iwwcN5p68ghWN3Ow+MshwqETvsonNvr?=
- =?iso-8859-1?Q?Zepl4GdoElnfP9XhWZ0/E1YKCKBtYfdzOvu5wiRXH3QM2JCw8X66Mbh6LQ?=
- =?iso-8859-1?Q?mHFnBro0fAYhysmw97B83R3nqRtRF39x0bN2U3X+Eu1jyqU/hpIPZu8yIO?=
- =?iso-8859-1?Q?eGeHwZpcxbuKQ7f9ZFCnA2+TiBnPC2RmwUDngY8yO4T8yZGR8qk18jP1a6?=
- =?iso-8859-1?Q?NrssK37FrgOacYioHELz+0faAeYJv4Ym6VX4A0cG12q3HXNdkx29v3wTa+?=
- =?iso-8859-1?Q?eva1ISk4tdhQn67wLpeeMjnixidiYyQFJ+?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?9CQpSlzF/9nBywl1u/JhXGcp6ofn9/1uXoLo0A7zB+kA1I1DvBw2idqL/a?=
+ =?iso-8859-1?Q?yqV3SMka2UqRfbJtSOskUzEjpzysmZa3uyV0h8zNBh2pXJqmUwXw/07Epj?=
+ =?iso-8859-1?Q?nNY1On/7uYKHqoMKTDT3CTHuKX8Np1f+MEJXpwu7zRxt545N5K3YNI2f0i?=
+ =?iso-8859-1?Q?Bx4T2cs3WZ8whPmTt/amcHeVt7JU/ZuGZwoXJ3lDjVlHDn2dAt58WYhN5C?=
+ =?iso-8859-1?Q?NPtagLGYZIVIWnHkxSLYXY90LzYsX7ouZeoHeOZ3taiWVeJlirtdKaRfJW?=
+ =?iso-8859-1?Q?cL9MmdBTMtK5FWx9yiOoLz/Z6P6ZlThuph9VyhqKLfwLEViBYTCtbg5iiH?=
+ =?iso-8859-1?Q?VVRbhYKQ8YtdcuAuIQHC25jaoWhlYcRyeywfFiPtx2fMCA54GPg7JSftSU?=
+ =?iso-8859-1?Q?I9Gx+Hu4oNTLvnBYIlGrVCwGWVdAjAEmoY/bRpDMAMpcrY9zWDjWYzzy3k?=
+ =?iso-8859-1?Q?DgVqt2g8t/5oXIG5yzgoNVm8k53hOtT6UppnUL0GTDhk3lwMLKGtJvA5Wk?=
+ =?iso-8859-1?Q?XhzTrZeH7dAnOpsGPBPVIg0FaKTNAC5ejFWNgY4zhuX/G2atvYip8vmxxf?=
+ =?iso-8859-1?Q?ABl0z2+3kuhjW34236zFFm5EGrjEhYSmWMENWNOUrNJ5be16kYoSDMttnI?=
+ =?iso-8859-1?Q?Votr4qV3Nnqsv8J2t71AedRha44kbfroLNdjooXjAgLXzK+Dh5N2/FmnPO?=
+ =?iso-8859-1?Q?y2Qvm9wB3dWBqVQe30nPzQPSKp3faMidfIsUbUUfQfzMNwOePiOz+x/ksl?=
+ =?iso-8859-1?Q?Kagq43MGKSGQ7o/NpOrFtmpe+zwBYArUcjHe6I7OZZu9SnrdjooYqO7GSy?=
+ =?iso-8859-1?Q?+TWXH4fk4eVf5t8D4scOGp93LdivH3AejJuRJWrsXcGyQYeFO9S6kH4WcQ?=
+ =?iso-8859-1?Q?99uyxOGMlJRldHnI0FU/07kUSZphAiL0gsDOHaaRyXPYqctDDfs5s0SQJl?=
+ =?iso-8859-1?Q?cNs8gCqeFehk7rPqp4LEIzSS9tflqF46Yt09diFt5g3tVX26hfLIfmlnfj?=
+ =?iso-8859-1?Q?GdZubY8ZujDEpLfU/hAPy7HFRKo0aOeMg9yA5CLpRu7CZb9LDM+8aBbGzs?=
+ =?iso-8859-1?Q?gMsx98MBN7fcsjCZuXmrofJ4gFEP1JjEHInOnGbHLU0rGmTZwcNiK7tC8T?=
+ =?iso-8859-1?Q?y6QFvpRFVwrnak78mnqMu4Xwn6OpisWN265dK7kSsLCv5wHXbWnDIs52tb?=
+ =?iso-8859-1?Q?PgvYUTa0osVSWZNcg0sKvqvGBh8TWZ6uZf/QywUoOyrOHpyMIFCTD2HSw/?=
+ =?iso-8859-1?Q?iiuFqc/LOitSaGSHfLGMCljZsPT8f7iZ2uGaSdOimD0V99f3fhmlmLMTZT?=
+ =?iso-8859-1?Q?D6BNuEUkKfgXlN/5CrlxcjJcMIm6Yi+pToIFS+YjNu1HVGtINs117iurJh?=
+ =?iso-8859-1?Q?lFHDNgBtm+K7mxt4FMR8/vGU3L4zr0900HysyaZ3i/Xu5OpaqcB78LQ43K?=
+ =?iso-8859-1?Q?xTE2yUHoYuj7iBBJfJ+pU/JIfen4VG7WddMRo+9hMdEWAWGqI0JixRov4c?=
+ =?iso-8859-1?Q?pvL0rp7ZBEHJGMqHh6U8XCG/rDl6P+M/Jqu/VD0hlT5Do21PIr766GK/5B?=
+ =?iso-8859-1?Q?N6rRlpngs41wZBHUzNob2+CsN9y3aZUF0VPLKqz+R/R0FVsSgD+U3RTtMn?=
+ =?iso-8859-1?Q?/Sh1r2v/03tyZtO/AUjhXTT2wrmyi48y1/?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7185.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33403aab-ac48-4f6d-ca08-08de0c75e712
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2025 05:36:06.0433 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: be300c5e-30df-4754-1d5e-08de0c76b6d6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2025 05:41:54.6077 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FykNE/c6ISBlknIvjAQ36iRtG0P1lEen/u8K9oG7w+9xUcobrELxo6YJGC/qX2ECsijUAQI8/Yov0JjZxrZfTpWDwaoyCNNGrOYyGx2sNBU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8365
+X-MS-Exchange-CrossTenant-userprincipalname: LbeV/kU4Lj4gcI3MwxvnWgzCIQzuZMPZuAIqCOputXyfi/MN0gRyMQJrtmSllKyXwDFX0ihUyxTRogZZ89YodkcydzjnQDgEAjkFoL0yAs8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6177
 X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.13;
+Received-SPF: pass client-ip=192.198.163.14;
  envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -211,97 +212,109 @@ Hi Akihiko,
 fy blob
 > resources
 >=20
-> On 2025/10/15 14:07, Kasireddy, Vivek wrote:
-> > Hi Akihiko,
-> >
-> >> Subject: Re: [PATCH v1 2/7] virtio-gpu: Don't rely on res->blob to ide=
-ntify
-> blob
-> >> resources
+> On 2025/10/15 15:11, Akihiko Odaki wrote:
+> > On 2025/10/15 14:07, Kasireddy, Vivek wrote:
+> >> Hi Akihiko,
 > >>
+> >>> Subject: Re: [PATCH v1 2/7] virtio-gpu: Don't rely on res->blob to
+> >>> identify blob
+> >>> resources
 > >>>
-> >>>> Subject: Re: [PATCH v1 2/7] virtio-gpu: Don't rely on res->blob to i=
-dentify
-> >> blob
-> >>>> resources
 > >>>>
-> >>>> On 2025/10/04 8:35, Vivek Kasireddy wrote:
-> >>>>> The res->blob pointer may not be valid (non-NULL) for some blobs
-> >>>>> where the backing storage is not memfd based. Therefore, we cannot
-> >>>>> use it to determine if a resource is a blob or not. Instead, we
-> >>>>> could use res->blob_size to make this determination as it is
-> >>>>> non-zero for blob resources regardless of where their backing
-> >>>>> storage is located.
-> >>>>
-> >>>> I think this patch is no longer necessary since now you add code to
-> >>>> mmap() VFIO storage with "[PATCH v1 7/7] virtio-gpu-udmabuf: Create
-> >>>> dmabuf for blobs associated with VFIO devices".
-> >>> Right, but given that mmap() can still fail for various reasons and t=
-his
-> >>> use-case can work as long as dmabuf creation succeeds, I think it mak=
-es
-> >>> sense to not rely on res->blob to determine if a resource is blob or =
-not.
-> >>
-> >> I think the code will be simpler by making resource creation fail when
-> >> mmap() fails, and I am concerned that the guest may mulfunction with
-> >> such an incomplete resource.
-> > AFAICT, mmap() is a slow, optional path except for the cursor (which ne=
-eds
-> > further improvement). So, failing resource creation when mmap() fails
-> > does not seem like a good idea to me given the fact that supporting mma=
-p()
-> > is considered optional for dmabuf providers. And, even with vfio, mmap(=
-)
-> > can be blocked for various reasons by the kernel driver IIUC.
->=20
-> Being slow doesn't matter, and it is not just for the cursor, but there
-> are several other functions modified; I guess the resulting resource
-> will be unusable except for accelerations like virgl.
->=20
-> >
-> >>
-> >> To motivate the proposed patch, there should be a use-case that requir=
-es
-> >> to have a resource without mmap(), not one that "can work" a resource
-> >> without mmap(). It is extraneous complexity otherwise.
-> >>
-> >> Such a use case should be explained in the patch message and perhaps
-> >> also with a comment in the code. The current patch message needs an
-> >> update as it sounds like it is unnecessary when theere is code to mmap=
+> >>>>> Subject: Re: [PATCH v1 2/7] virtio-gpu: Don't rely on res->blob to
+> >>>>> identify
+> >>> blob
+> >>>>> resources
+> >>>>>
+> >>>>> On 2025/10/04 8:35, Vivek Kasireddy wrote:
+> >>>>>> The res->blob pointer may not be valid (non-NULL) for some blobs
+> >>>>>> where the backing storage is not memfd based. Therefore, we cannot
+> >>>>>> use it to determine if a resource is a blob or not. Instead, we
+> >>>>>> could use res->blob_size to make this determination as it is
+> >>>>>> non-zero for blob resources regardless of where their backing
+> >>>>>> storage is located.
+> >>>>>
+> >>>>> I think this patch is no longer necessary since now you add code to
+> >>>>> mmap() VFIO storage with "[PATCH v1 7/7] virtio-gpu-udmabuf: Create
+> >>>>> dmabuf for blobs associated with VFIO devices".
+> >>>> Right, but given that mmap() can still fail for various reasons and
+> >>>> this
+> >>>> use-case can work as long as dmabuf creation succeeds, I think it ma=
+kes
+> >>>> sense to not rely on res->blob to determine if a resource is blob or
+> >>>> not.
+> >>>
+> >>> I think the code will be simpler by making resource creation fail whe=
+n
+> >>> mmap() fails, and I am concerned that the guest may mulfunction with
+> >>> such an incomplete resource.
+> >> AFAICT, mmap() is a slow, optional path except for the cursor (which
+> >> needs
+> >> further improvement). So, failing resource creation when mmap() fails
+> >> does not seem like a good idea to me given the fact that supporting
+> >> mmap()
+> >> is considered optional for dmabuf providers. And, even with vfio, mmap=
 ()
-> >> VFIO-based backing storage, which this series has already gained.
-> > Although VFIO supports mmap(), it is not guaranteed to work in all case=
-s
-> > and with a different dmabuf provider (in the future), it may not be pos=
-sible
-> > at all.
+> >> can be blocked for various reasons by the kernel driver IIUC.
 >=20
-> The fact that mmap() is being optional for DMA-BUF and VFIO is
-> insufficient, but what matters here is whether a DMA-BUF that lacks
-> mmap() is usable for graphics.
-Yes, it is definitely usable. AFAICS, res->blob pointer is only used when g=
-l=3Doff.
-But given that most environments nowadays support OpenGL, most users
-would prefer gl=3Don, which means the resource's dmabuf fd would be used
-(by the UI) instead of res->blob pointer.
-
+> Reviewing the code again, I don't think mmap() can fail with the current
+> version of this series.
 >=20
-> Reading the cover letter, I suppose you are importing a mmap-incapable
-> DMA-BUF exported by a dGPU, and the imported DMA-BUF is used with virgl
-> or something. Explaining the use case will show that there is a
-> mmap-incapable DMA-BUF usable for graphics.
-The dmabuf provider in this case (vfio-pci dmabuf feature) does not support
-mmap(), but the blob resource/dmabuf can still be accessed via the fd when
-gl=3Don (by Gtk, Spice UI). Please find more details about my use-case here=
-:
-https://lore.kernel.org/dri-devel/20250915072428.1712837-1-vivek.kasireddy@=
-intel.com/
+> udmabuf obviously always supports mmap().
+>=20
+> For VFIO, checking memory_region_is_ram_device() ensures that VFIO
+> supports mmap(); memory_region_init_ram_device_ptr() is called from
+> vfio_region_mmap(), which is only called when VFIO supports mmap().
+My point is not whether a dmabuf provider provides support for mmap()
+or not but about the fact that mmap() can fail (for various reasons because
+it is not a guarantee) making res->blob NULL. But we are incorrectly using
+res->blob pointer to determine whether a resource is a blob (and usable)
+or not which doesn't make sense because even if res->blob is NULL, the
+resource is still valid and usable via the dmabuf fd, which is the preferre=
+d,
+accelerated path.
 
 Thanks,
 Vivek
 
 >=20
-> Regards,
-> Akihiko Odaki
+> The use of ram_device needs to be removed if it is really wanted to
+> create resources with VFIO devices lacking mmap(). This patch is
+> unnecessary otherwise.
+>=20
+> >
+> > Being slow doesn't matter, and it is not just for the cursor, but there
+> > are several other functions modified; I guess the resulting resource
+> > will be unusable except for accelerations like virgl.
+> >
+> >>
+> >>>
+> >>> To motivate the proposed patch, there should be a use-case that requi=
+res
+> >>> to have a resource without mmap(), not one that "can work" a resource
+> >>> without mmap(). It is extraneous complexity otherwise.
+> >>>
+> >>> Such a use case should be explained in the patch message and perhaps
+> >>> also with a comment in the code. The current patch message needs an
+> >>> update as it sounds like it is unnecessary when theere is code to mma=
+p()
+> >>> VFIO-based backing storage, which this series has already gained.
+> >> Although VFIO supports mmap(), it is not guaranteed to work in all cas=
+es
+> >> and with a different dmabuf provider (in the future), it may not be
+> >> possible
+> >> at all.
+> >
+> > The fact that mmap() is being optional for DMA-BUF and VFIO is
+> > insufficient, but what matters here is whether a DMA-BUF that lacks
+> > mmap() is usable for graphics.
+> >
+> > Reading the cover letter, I suppose you are importing a mmap-incapable
+> > DMA-BUF exported by a dGPU, and the imported DMA-BUF is used with virgl
+> > or something. Explaining the use case will show that there is a mmap-
+> > incapable DMA-BUF usable for graphics.
+> >
+> > Regards,
+> > Akihiko Odaki
+
 
