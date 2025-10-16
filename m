@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9B2BE4245
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA79BE423F
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9PdW-0001JZ-AD; Thu, 16 Oct 2025 11:11:26 -0400
+	id 1v9PdY-0001KF-W0; Thu, 16 Oct 2025 11:11:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9PdQ-0001Ex-Hm
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:11:21 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9PdT-0001IC-Rs
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:11:23 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9PdN-0002GC-2m
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:11:20 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3ece0e4c5faso838729f8f.1
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:11:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9PdP-0002Gu-8o
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:11:22 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4710683a644so8728295e9.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760627470; x=1761232270; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=S9xxF7jdm74YStnRJY7Jlt06coOhjqbzVEk9fPNwpOA=;
- b=Xp3eldv6NeiUy5O4xBo0Xnoq9xbJKOfjqnm8SJJwjpfxXMvBFb1eXy09ob81IvHCS+
- 1NTjcUoaatfwKGXHqrMflO6ja73qSpbGSKN3XwmNlGxPu3n75KQsEkvxhVxdKFmOWQUX
- DgHxgAfV7twEhZQUigkkMskM0j31h+MEbDps6681+HTAY6aHIHkQSwyvmU4tu3C7ztrq
- vFgvlvF7jUTcWJF6WRYRrcsegEq6plVF5pf1hMsVNOGCU04UKTObgH7aSwq4taBEcCTh
- /rYM4YLrskMKtSHuKIGwddF37vUHroq6l0jDDi4TI9mxtn20qWS/IOm/SYJPTnHK1vVm
- 1ABQ==
+ d=linaro.org; s=google; t=1760627475; x=1761232275; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ZUSPdwyyhjSMGbZ6how7fllA/2QRSgUHL74b3sTI49U=;
+ b=pkRz3SKAcgNIQqueDkpnsejpcQRpy3m5A/iaLEqDS8YZY0vT8mpf09BAAmPvda0Zv8
+ Xnlyt40qHNP32YPrA+XT3MhAI+VK82l0H/rCb8qFXp6A452nRnxpDogYCnnHf/sgTZfB
+ KZMJlN0dnvWNjqdhfiNPssAOVswH/R/rb7X/9o7vTvJKF6IXEgLGUMNn9O1FIafJivDF
+ uJxuWsiL3DjDKg0jB1ewnGtGk8VF1iLwxZDCu43DyDzbcwXARi9SrtYSZmFevyU51D7V
+ CW164QPG92nCngGgJS4y17MG6HBWgB+yLBQx5dxmwSuMgVEqJZBaQ61Unl6nIgx7pTHy
+ lmhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760627470; x=1761232270;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S9xxF7jdm74YStnRJY7Jlt06coOhjqbzVEk9fPNwpOA=;
- b=hNsQUx5Hsdrsbi3kVMfABXlqni71cxH/lbkfsUidMEVQ2IBD2dO8Gh5zrRSwEeQTPH
- 2cktjb0tPPo0gS1EPkjE5PKRhiKT3171U40k1gQl05zZLP6CuRsQmHcdf9kgBy1FbM5I
- M7FR+j6q3Hlx+rWkWPY80XKWJaQ2lU6VzPTxpk9Mo5e4ImpFDNrgGz8rOdJ9LEle96Qk
- PM33roNgwAY9PpgXgaJBsaU0UhLVQwjiNku1d8IeY8KS8XLdq5/VuaIw7dpCFU6j7pHV
- ub1o4vI5gV3dQrhSat9kXVc1ZQVSZXn9wEElQkVVsfMaUwSKqaKm9NZgbAlA6Hxa6vgp
- JLsw==
-X-Gm-Message-State: AOJu0YykcyEAAdg9hFVwOZIAI7V5+8Ci48x40wtyxTrnt3tQgPYbuCjP
- jwdZdu4q74+idvI8FI1w5Hm5IwMB8w47NfXcyKO0glKFClXMgA8JX/M58m+pCguL80OPjBRSmmU
- BWdTYP+g=
-X-Gm-Gg: ASbGnctOhNYyI5cavTGgdx6+6Df5r9HJ/HxNWTNlLCYAab4a1mfWYHWMRdbjKSc5hy7
- spWSfyJcX0vP3DQL7cwytVk6gdNdlcov0xDOYzDduuTenytvI9qcFUSzqCJ22IENdZndqjlsJV5
- AO5GEpsh94QiC7qg2HQJ2rWD0ZpIszfo/kXNKoOxpNuR51zXl0iswPDoGupLFP4QYO6ZhklbcIT
- KwyzB1F3NQuWRSnFtdfgrQYb87O25dd6bYp1mQz1y4OomKCyCe7BWRVvy/cZ9Bxu2TA/3ecHAam
- 4+pDC6HtThwSOFHgVyIg/fZbI4bhe47KLUWUR0VV7DCRwkLLo5Z/QxwmN3Q929biYSeFuJnvBXR
- L7PEVNttEtWnhumC7JBCGw0PPfaOGV4LSrffn69kgzA8Bk7UQxOMeDZbIf9hDDlUBESB3lLwetd
- qBk5vKCl8vEIe3A1hbebK0d77AC67kmln3LqxkEzHnCUg75JIUQw==
-X-Google-Smtp-Source: AGHT+IHRwijmfEpEWDqiimGZq/jcFqktGAo9faLowCALyurIHuXwUokfga560M47A/SStYtz6Zoojw==
-X-Received: by 2002:a05:6000:2883:b0:3fd:bf1d:15ac with SMTP id
- ffacd0b85a97d-42704d86d0emr416249f8f.20.1760627470223; 
- Thu, 16 Oct 2025 08:11:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760627475; x=1761232275;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZUSPdwyyhjSMGbZ6how7fllA/2QRSgUHL74b3sTI49U=;
+ b=pGBGAkziJDAKBH0BKl7uhaIJ1tTqn3UXD6rtDW/1yXDMz0Ti1rfPmIoaykbb7HfziN
+ gFyGT64iPCKvBkNPXBxXEYKzN9Xi8aWOMBP0f+G/kLvQy66Ch5Jh1Am90P5xPkP06eif
+ C6zm7N90Eidm3TJ0VuHSNoh53UkyAE3lpHvWIWjFCM5KNd44/LmmoyuBF3FJrBEekeHj
+ eYdpVjcVPwwbJwIM/8m14BzONvMALU6lSUQekYhO/Fa9KX72yvMiB5F4vJtpM2j3lUUg
+ 0rWisgGhlCI6f6XpQZjxp79DlA/zlnBfKRY1JPdFQXPukCQPbCvpYZFbui7bjplu3Bxq
+ 14rQ==
+X-Gm-Message-State: AOJu0YyzrfdUXo3uq+XF0WZ2+VmuC9KfD13vSp9RuIceVEkbm6aeyIb4
+ gTmvTqDeb74oeGGONPGSU+F0xh7yiMM8Nl3AYpakJq78pmOaZNB1KNjTF52hJyL/rNYSX+nHxyf
+ kC7jMw2c=
+X-Gm-Gg: ASbGncu6l7RRVqhKEYuNFrUhDvofV4T87Si6/1DiibGRS76ztontsObeF4N8wry49g2
+ wIUfax3sCqfDa8j40Ib/1Qzs5FUL+6U4GLa6ol0LZGcANXcBPm33ryu0jh8RUoA/U1dvdtTJFd3
+ mpZ03gXzqr8VyV1lJ4uDH0vA1GJNFGbXIQyRkCzBF9bPQlmreDmaeK24cfGYBsu8SvilNqaweJ1
+ BKAniXl3k8K/qsHxT2sIxx3bn3Vla5TGn/kPR7t/otQp6rPBNNRquK7vC0mnDvgoU0hJmqoquiX
+ G1FnNkjljnWSynVp5cI1pNeuY50BTFTwdvwqbHkXbCthD40M/3AFGpxGb/hks+ExR9v6S20bzt3
+ beWQN6vo8Aunq2al3MsLe9ytAuPEIjTHFx4T3wxtN+5C+np3QDocH6s6ZNoC+X3M9JY7IvH7td/
+ nIMthfLuxFbWXah84sSne97B9U4UK8TqqQIprToBeUVLqdPy3cnA==
+X-Google-Smtp-Source: AGHT+IFzRpGQ80YVkSLTE4SBs7BRRlK2E7Do20EXwBCX8HTZswABc36RHrBrJ4ETf0udZ33zT+Wkqw==
+X-Received: by 2002:a05:600c:6095:b0:45d:dbf0:4831 with SMTP id
+ 5b1f17b1804b1-47117152c2cmr5400965e9.0.1760627474899; 
+ Thu, 16 Oct 2025 08:11:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42700072619sm3717345f8f.46.2025.10.16.08.11.08
+ ffacd0b85a97d-426fb279857sm6481352f8f.20.2025.10.16.08.11.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 08:11:09 -0700 (PDT)
+ Thu, 16 Oct 2025 08:11:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 00/75] Misc single binary patches for 2025-10-16
-Date: Thu, 16 Oct 2025 17:11:03 +0200
-Message-ID: <20251016151108.18442-1-philmd@linaro.org>
+Subject: [PULL v2 04/79] target/i386/monitor: Propagate CPU address space to
+ 'info mem' handlers
+Date: Thu, 16 Oct 2025 17:11:04 +0200
+Message-ID: <20251016151108.18442-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251016151108.18442-1-philmd@linaro.org>
+References: <20251016151108.18442-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,195 +98,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 8109ebdb95c45d9062c7e6e7beae0ee571fca4f8:
+We want to replace the cpu_physical_memory_read() calls by
+address_space_read() equivalents. Since the latter requires
+an address space, and these commands are run in the context
+of a vCPU, propagate its first address space. Next commit
+will do the replacements.
 
-  Merge tag 'pull-loongarch-20251015' of https://github.com/bibo-mao/qemu into staging (2025-10-15 14:49:51 -0700)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-Id: <20251002145742.75624-2-philmd@linaro.org>
+---
+ target/i386/monitor.c | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/single-binary-20251016
-
-for you to fetch changes up to 8dd133fa85bb49e2e61c489a566ab8460478dc24:
-
-  mailmap: Unify Clément Mathieu--Drif emails (2025-10-16 17:07:52 +0200)
-
-v2: Remove legacy cpu_physical_memory_*() calls
-
-----------------------------------------------------------------
-Various patches related to single binary work:
-
-- Remove some VMSTATE_UINTTL() uses
-- Replace target_ulong by vaddr / hwaddr / uint[32,64]_t
-- Expand TCGv to TCGv_i32 for 32-bit targets
-- Remove some unnecessary checks on TARGET_LONG_BITS
-- Replace few HOST_BIG_ENDIAN preprocessor #ifdef by compile-time if() check
-- Expand MO_TE to either MO_BE or MO_LE
-
-Also:
-
-- Remove legacy cpu_physical_memory_*() calls
-- Fix HPPA FMPYADD opcode
-- Unify Clément Mathieu--Drif email addresses
-----------------------------------------------------------------
-
-Anton Johansson (1):
-  target/riscv: Use 32 bits for misa extensions
-
-Gabriel Brookman (1):
-  target/hppa: correct size bit parity for fmpyadd
-
-Philippe Mathieu-Daudé (77):
-  accel/tcg: Name gen_goto_tb()'s TB slot index as @tb_slot_idx
-  target/alpha: Access CPUState::cpu_index via helper
-  target/alpha: Replace VMSTATE_UINTTL() -> VMSTATE_UINT64()
-  target/i386/monitor: Propagate CPU address space to 'info mem'
-    handlers
-  target/i386/monitor: Replace legacy cpu_physical_memory_read() calls
-  target/hppa: Use hwaddr type for HPPATLBEntry::pa
-  target/hppa: Have hppa_form_gva*() return vaddr type
-  target/hppa: Explode MO_TExx -> MO_TE | MO_xx
-  target/hppa: Conceal MO_TE within do_load()
-  target/hppa: Conceal MO_TE within do_load_32/64()
-  target/hppa: Conceal MO_TE within do_store()
-  target/hppa: Conceal MO_TE within do_store_32/64()
-  target/hppa: Introduce mo_endian() helper
-  target/hppa: Replace MO_TE -> MO_BE
-  target/loongarch: Replace VMSTATE_UINTTL() -> VMSTATE_UINT64()
-  target/loongarch: Remove target_ulong use in gen_goto_tb()
-  target/loongarch: Remove target_ulong use in gdb_write_register
-    handler
-  target/loongarch: Do not use target_ulong type for LDDIR level
-  target/m68k: Remove unused @cpu_exception_index TCGv
-  target/m68k: Remove pointless @cpu_halted TCGv
-  target/microblaze: Remove target_ulong use in cpu_handle_mmu_fault()
-  target/microblaze: Remove target_ulong uses in
-    get_phys_page_attrs_debug
-  target/microblaze: Remove target_ulong use in gen_goto_tb()
-  target/microblaze: Remove target_ulong use in helper_stackprot()
-  target/microblaze: Have compute_ldst_addr_type[ab] return TCGv_i32
-  target/microblaze: Have do_load/store() take a TCGv_i32 address
-    argument
-  target/microblaze: Convert CPUMBState::res_addr field to uint32_t type
-  target/openrisc: Replace VMSTATE_UINTTL() -> VMSTATE_UINT32()
-  target/openrisc: Do not use target_ulong for @mr in MTSPR helper
-  target/openrisc: Remove unused cpu_openrisc_map_address_*() handlers
-  target/openrisc: Remove target_ulong use in raise_mmu_exception()
-  target/openrisc: Use vaddr type for $pc jumps
-  target/openrisc: Remove 'TARGET_LONG_BITS != 32' dead code
-  target/openrisc: Explode MO_TExx -> MO_TE | MO_xx
-  target/openrisc: Conceal MO_TE within do_load()
-  target/openrisc: Conceal MO_TE within do_store()
-  target/openrisc: Introduce mo_endian() helper
-  target/openrisc: Replace MO_TE -> MO_BE
-  target/openrisc: Inline tcg_gen_trunc_i64_tl()
-  target/openrisc: Replace target_ulong -> uint32_t
-  target/riscv/kvm: Replace legacy cpu_physical_memory_read/write()
-    calls
-  target/riscv/monitor: Replace legacy cpu_physical_memory_read() call
-  target/riscv: Replace HOST_BIG_ENDIAN #ifdef with if() check
-  target/rx: Replace target_ulong -> vaddr for translator API uses
-  target/rx: Use MemOp type in gen_ld[u]() and gen_st()
-  target/rx: Propagate DisasContext to generated helpers
-  target/rx: Propagate DisasContext to push() / pop()
-  target/rx: Propagate DisasContext to gen_ld[u]() and gen_st()
-  target/rx: Factor mo_endian() helper out
-  target/rx: Replace MO_TE -> MO_LE
-  target/rx: Expand TCG register definitions for 32-bit target
-  target/rx: Un-inline various helpers
-  target/s390x: Replace HOST_BIG_ENDIAN #ifdef with if() check
-  target/sh4: Convert CPUSH4State::sr register to uint32_t type
-  target/sh4: Remove target_ulong use in cpu_sh4_is_cached()
-  target/sh4: Use hwaddr type for hardware addresses
-  target/sh4: Remove target_ulong uses in superh_cpu_get_phys_page_debug
-  target/sh4: Use vaddr type for TLB virtual addresses
-  target/sh4: Remove target_ulong use in gen_goto_tb()
-  target/sparc: Reduce inclusions of 'exec/cpu-common.h'
-  target/tricore: Remove target_ulong use in gen_goto_tb()
-  target/tricore: Replace target_ulong -> vaddr with tlb_fill() callees
-  target/tricore: Remove target_ulong use in translate_insn() handler
-  target/tricore: Remove target_ulong use in gen_addi_d()
-  target/tricore: Remove unnecessary cast to target_ulong
-  target/tricore: Replace target_ulong -> uint32_t in op_helper.c
-  target/tricore: Declare registers as TCGv_i32
-  target/tricore: Inline tcg_gen_ld32u_tl()
-  target/tricore: Expand TCG helpers for 32-bit target
-  target/tricore: Pass DisasContext as first argument
-  target/tricore: Un-inline various helpers
-  target/tricore: Expand TCGv type for 32-bit target
-  target/xtensa: Replace legacy cpu_physical_memory_[un]map() calls
-  target/xtensa: Remove target_ulong use in xtensa_tr_translate_insn()
-  target/xtensa: Remove target_ulong use in xtensa_get_tb_cpu_state()
-  linux-user/microblaze: Fix little-endianness binary
-  mailmap: Unify Clément Mathieu--Drif emails
-
- target/alpha/helper.h                         |    1 +
- target/hppa/cpu.h                             |   10 +-
- target/loongarch/cpu-mmu.h                    |    2 +-
- target/loongarch/tcg/helper.h                 |    2 +-
- target/microblaze/cpu.h                       |    2 +-
- target/microblaze/helper.h                    |    2 +-
- target/microblaze/mmu.h                       |    2 +-
- target/openrisc/cpu.h                         |   31 +-
- target/openrisc/helper.h                      |    8 +-
- target/riscv/cpu.h                            |    4 +-
- target/sh4/cpu.h                              |    6 +-
- target/sparc/cpu.h                            |    1 -
- target/hppa/insns.decode                      |    8 +-
- linux-user/microblaze/elfload.c               |    3 +-
- target/alpha/machine.c                        |   34 +-
- target/alpha/sys_helper.c                     |    5 +
- target/alpha/translate.c                      |   11 +-
- target/arm/tcg/translate-a64.c                |    8 +-
- target/arm/tcg/translate.c                    |    8 +-
- target/avr/translate.c                        |    7 +-
- target/hexagon/translate.c                    |    8 +-
- target/hppa/helper.c                          |    4 +-
- target/hppa/mem_helper.c                      |    2 +-
- target/hppa/translate.c                       |   24 +-
- target/i386/monitor.c                         |  134 +-
- target/loongarch/cpu_helper.c                 |    2 +-
- target/loongarch/gdbstub.c                    |    2 +-
- target/loongarch/machine.c                    |    4 +-
- target/loongarch/tcg/tlb_helper.c             |    4 +-
- target/loongarch/tcg/translate.c              |    6 +-
- target/m68k/translate.c                       |   17 +-
- target/microblaze/helper.c                    |    3 +-
- target/microblaze/machine.c                   |    6 +-
- target/microblaze/mmu.c                       |    4 +-
- target/microblaze/op_helper.c                 |    4 +-
- target/microblaze/translate.c                 |   83 +-
- target/mips/tcg/translate.c                   |    7 +-
- target/openrisc/fpu_helper.c                  |    8 +-
- target/openrisc/machine.c                     |   20 +-
- target/openrisc/mmu.c                         |    7 +-
- target/openrisc/sys_helper.c                  |    7 +-
- target/openrisc/translate.c                   |  463 +-
- target/ppc/translate.c                        |    7 +-
- target/riscv/kvm/kvm-cpu.c                    |    6 +-
- target/riscv/monitor.c                        |   12 +-
- target/riscv/translate.c                      |    9 +-
- target/riscv/vector_helper.c                  |   32 +-
- target/rx/translate.c                         |  462 +-
- target/s390x/tcg/translate.c                  |    6 +-
- target/sh4/helper.c                           |   34 +-
- target/sh4/translate.c                        |   10 +-
- target/sparc/helper.c                         |    1 +
- target/sparc/int64_helper.c                   |    1 +
- target/sparc/translate.c                      |    6 +-
- target/tricore/cpu.c                          |    2 +-
- target/tricore/helper.c                       |    4 +-
- target/tricore/op_helper.c                    |  219 +-
- target/tricore/translate.c                    | 3978 +++++++++--------
- target/xtensa/cpu.c                           |    6 +-
- target/xtensa/translate.c                     |    2 +-
- target/xtensa/xtensa-semi.c                   |   11 +-
- .../tcg/insn_trans/trans_privileged.c.inc     |    2 +-
- target/riscv/insn_trans/trans_rvv.c.inc       |   16 +-
- target/s390x/tcg/translate_vx.c.inc           |    6 +-
- .mailmap                                      |    1 +
- target/hppa/trace-events                      |    6 +-
- 66 files changed, 2925 insertions(+), 2888 deletions(-)
-
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index 3c9b6ca62f2..7e7854e6c1b 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -68,7 +68,7 @@ static void print_pte(Monitor *mon, CPUArchState *env, hwaddr addr,
+                    pte & PG_RW_MASK ? 'W' : '-');
+ }
+ 
+-static void tlb_info_32(Monitor *mon, CPUArchState *env)
++static void tlb_info_32(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     unsigned int l1, l2;
+     uint32_t pgd, pde, pte;
+@@ -96,7 +96,7 @@ static void tlb_info_32(Monitor *mon, CPUArchState *env)
+     }
+ }
+ 
+-static void tlb_info_pae32(Monitor *mon, CPUArchState *env)
++static void tlb_info_pae32(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     unsigned int l1, l2, l3;
+     uint64_t pdpe, pde, pte;
+@@ -136,7 +136,7 @@ static void tlb_info_pae32(Monitor *mon, CPUArchState *env)
+ }
+ 
+ #ifdef TARGET_X86_64
+-static void tlb_info_la48(Monitor *mon, CPUArchState *env,
++static void tlb_info_la48(Monitor *mon, CPUArchState *env, AddressSpace *as,
+         uint64_t l0, uint64_t pml4_addr)
+ {
+     uint64_t l1, l2, l3, l4;
+@@ -197,7 +197,7 @@ static void tlb_info_la48(Monitor *mon, CPUArchState *env,
+     }
+ }
+ 
+-static void tlb_info_la57(Monitor *mon, CPUArchState *env)
++static void tlb_info_la57(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     uint64_t l0;
+     uint64_t pml5e;
+@@ -208,7 +208,7 @@ static void tlb_info_la57(Monitor *mon, CPUArchState *env)
+         cpu_physical_memory_read(pml5_addr + l0 * 8, &pml5e, 8);
+         pml5e = le64_to_cpu(pml5e);
+         if (pml5e & PG_PRESENT_MASK) {
+-            tlb_info_la48(mon, env, l0, pml5e & 0x3fffffffff000ULL);
++            tlb_info_la48(mon, env, as, l0, pml5e & 0x3fffffffff000ULL);
+         }
+     }
+ }
+@@ -217,6 +217,7 @@ static void tlb_info_la57(Monitor *mon, CPUArchState *env)
+ void hmp_info_tlb(Monitor *mon, const QDict *qdict)
+ {
+     CPUArchState *env;
++    AddressSpace *as;
+ 
+     env = mon_get_cpu_env(mon);
+     if (!env) {
+@@ -228,21 +229,22 @@ void hmp_info_tlb(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "PG disabled\n");
+         return;
+     }
++    as = cpu_get_address_space(env_cpu(env), X86ASIdx_MEM);
+     if (env->cr[4] & CR4_PAE_MASK) {
+ #ifdef TARGET_X86_64
+         if (env->hflags & HF_LMA_MASK) {
+             if (env->cr[4] & CR4_LA57_MASK) {
+-                tlb_info_la57(mon, env);
++                tlb_info_la57(mon, env, as);
+             } else {
+-                tlb_info_la48(mon, env, 0, env->cr[3] & 0x3fffffffff000ULL);
++                tlb_info_la48(mon, env, as, 0, env->cr[3] & 0x3fffffffff000ULL);
+             }
+         } else
+ #endif
+         {
+-            tlb_info_pae32(mon, env);
++            tlb_info_pae32(mon, env, as);
+         }
+     } else {
+-        tlb_info_32(mon, env);
++        tlb_info_32(mon, env, as);
+     }
+ }
+ 
+@@ -271,7 +273,7 @@ static void mem_print(Monitor *mon, CPUArchState *env,
+     }
+ }
+ 
+-static void mem_info_32(Monitor *mon, CPUArchState *env)
++static void mem_info_32(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     unsigned int l1, l2;
+     int prot, last_prot;
+@@ -312,7 +314,7 @@ static void mem_info_32(Monitor *mon, CPUArchState *env)
+     mem_print(mon, env, &start, &last_prot, (hwaddr)1 << 32, 0);
+ }
+ 
+-static void mem_info_pae32(Monitor *mon, CPUArchState *env)
++static void mem_info_pae32(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     unsigned int l1, l2, l3;
+     int prot, last_prot;
+@@ -369,7 +371,7 @@ static void mem_info_pae32(Monitor *mon, CPUArchState *env)
+ 
+ 
+ #ifdef TARGET_X86_64
+-static void mem_info_la48(Monitor *mon, CPUArchState *env)
++static void mem_info_la48(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     int prot, last_prot;
+     uint64_t l1, l2, l3, l4;
+@@ -449,7 +451,7 @@ static void mem_info_la48(Monitor *mon, CPUArchState *env)
+     mem_print(mon, env, &start, &last_prot, (hwaddr)1 << 48, 0);
+ }
+ 
+-static void mem_info_la57(Monitor *mon, CPUArchState *env)
++static void mem_info_la57(Monitor *mon, CPUArchState *env, AddressSpace *as)
+ {
+     int prot, last_prot;
+     uint64_t l0, l1, l2, l3, l4;
+@@ -545,6 +547,7 @@ static void mem_info_la57(Monitor *mon, CPUArchState *env)
+ void hmp_info_mem(Monitor *mon, const QDict *qdict)
+ {
+     CPUArchState *env;
++    AddressSpace *as;
+ 
+     env = mon_get_cpu_env(mon);
+     if (!env) {
+@@ -556,21 +559,22 @@ void hmp_info_mem(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "PG disabled\n");
+         return;
+     }
++    as = cpu_get_address_space(env_cpu(env), X86ASIdx_MEM);
+     if (env->cr[4] & CR4_PAE_MASK) {
+ #ifdef TARGET_X86_64
+         if (env->hflags & HF_LMA_MASK) {
+             if (env->cr[4] & CR4_LA57_MASK) {
+-                mem_info_la57(mon, env);
++                mem_info_la57(mon, env, as);
+             } else {
+-                mem_info_la48(mon, env);
++                mem_info_la48(mon, env, as);
+             }
+         } else
+ #endif
+         {
+-            mem_info_pae32(mon, env);
++            mem_info_pae32(mon, env, as);
+         }
+     } else {
+-        mem_info_32(mon, env);
++        mem_info_32(mon, env, as);
+     }
+ }
+ 
 -- 
 2.51.0
 
