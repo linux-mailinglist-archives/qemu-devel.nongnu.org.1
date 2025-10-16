@@ -2,63 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBD1BE3F44
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 16:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCEFBE3F7A
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 16:41:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9P7a-0008Bt-FU; Thu, 16 Oct 2025 10:38:26 -0400
+	id 1v9P87-0008Ez-Bn; Thu, 16 Oct 2025 10:38:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1v9P7T-0008AC-1g
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:38:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1v9P81-0008De-Vo
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:38:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1v9P7I-0005Id-2J
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:38:16 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1v9P7v-0005Ml-6X
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:38:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760625481;
+ s=mimecast20190719; t=1760625521;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=G8voLkIP2CG9VA31lE5hEmMMElWu0m2hBsrTmYCohic=;
- b=EfFIu50dbFgHxnshaRDErCC/yt7SM6VDPMiKo+snkVUVcSiQpBhVf8kjgP4w7ZL18lZts3
- UhdEi71tRwD8EahEoI3GyzZUdgaRWBtsuHH9HhaU/m0+XpSHnHqtghCmzZUytSY4s85pc5
- +hjhHyN+yVP51fOGA3xY/ZUKVXjHvws=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=t7cvQCGgDn5xgEPJFrNSeEDfdipn4EB738JP+99mu74=;
+ b=aWgVaKfOzEJe+aqVt7VJ/DAOniwGanlMVbU1Q9rdO490OkHEDoKTD7uAJTC8lEiUkYe2QB
+ hErByhrdc1L4oNg3WtbfGeBIuYczUABTlkre+chcS9+8P6Pjinaq/RBX6XT2xvwdyhJUwR
+ iO11yg7qpAWzJncC2I+FmosdhNYQrEE=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-454-Q238G0mEP6-D-CjqRwxWnA-1; Thu,
- 16 Oct 2025 10:37:56 -0400
-X-MC-Unique: Q238G0mEP6-D-CjqRwxWnA-1
-X-Mimecast-MFC-AGG-ID: Q238G0mEP6-D-CjqRwxWnA_1760625476
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-465-f0fAnXDsMGmdfJbFmyxSOA-1; Thu,
+ 16 Oct 2025 10:38:38 -0400
+X-MC-Unique: f0fAnXDsMGmdfJbFmyxSOA-1
+X-Mimecast-MFC-AGG-ID: f0fAnXDsMGmdfJbFmyxSOA_1760625515
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABC0D195609E; Thu, 16 Oct 2025 14:37:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.155])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1AEFB180044F; Thu, 16 Oct 2025 14:37:53 +0000 (UTC)
-Date: Thu, 16 Oct 2025 09:37:51 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Henry Kleynhans <hkleynhans@fb.com>
-Subject: Re: [PATCH v2 1/6] crypto: only verify CA certs in chain of trust
-Message-ID: <yzqgr2jqxrpt3xxw7gzuwsgwo6q6xehcadiuelkqsvzcfoisr3@isqvazofm6m5>
-References: <20250919101022.1491007-1-berrange@redhat.com>
- <20250919101022.1491007-2-berrange@redhat.com>
+ id 5FF391956096; Thu, 16 Oct 2025 14:38:35 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.164])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C66F3180044F; Thu, 16 Oct 2025 14:38:28 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>, hi@alyssa.is,
+ stefanha@redhat.com, david@redhat.com, jasowang@redhat.com,
+ dbassey@redhat.com, stevensd@chromium.org,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ slp@redhat.com, manos.pitsidianakis@linaro.org,
+ Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH v10 0/7] vhost-user: Add SHMEM_MAP/UNMAP requests
+Date: Thu, 16 Oct 2025 16:38:20 +0200
+Message-ID: <20251016143827.1850397-1-aesteve@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250919101022.1491007-2-berrange@redhat.com>
-User-Agent: NeoMutt/20250905
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,62 +86,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 19, 2025 at 11:10:17AM +0100, Daniel P. Berrangé wrote:
-> From: Henry Kleynhans <hkleynhans@fb.com>
-> 
-> The CA file provided to qemu may contain CA certificates which do not
-> form part of the chain of trust for the specific certificate we are
-> sanity checking.
-> 
-> This patch changes the sanity checking from validating every CA
-> certificate to only checking the CA certificates which are part of the
-> chain of trust (issuer chain).  Other certificates are ignored.
+Hi all,
 
-I agree that relaxing this will permit more certs than before (and
-possibly with less CPU cycles spent on the irrelevant portions of the
-cert), without weakening the security of the chain we are actually
-interested in.
+v9->v10
+- Fix transaction_commit invoked without transaction_begin
+  on vhost_user_backend_handle_shmem_map() early errors
+- Removed fd tracking on VirtioSharedMemoryMapping, it
+  is handled by the RAMBlock
+- Reject invalid BAR configurations when VIRTIO Shared Memory
+  Regions are in use by vhost-user-test-device
+v8->v9
+- Fixed vhost-user new handlers to ensure that they always
+  reply
+- Made MMAP request flags field u64 everywhere
+- Fixed double memory_region_del_subregion() on UNMAP
+- Add mappings cleaning on virtio_reset()
+- Some small typos and fixes
+- Fixed virtio pci bar mapping for vhost-user-test-device
+v7->v8
+- Unified VhostUserShmemObject and VirtioSharedMemoryMapping
+- Refined shmem_obj lifecycle by transferring ownership
+- Other small improvements
 
-> 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Henry Kleynhans <hkleynhans@fb.com>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->  crypto/tlscredsx509.c                 | 57 ++++++++++++++++++++++++---
->  tests/unit/test-crypto-tlscredsx509.c | 25 +++++++++++-
->  2 files changed, 75 insertions(+), 7 deletions(-)
-> 
-> diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-> index cd1f504471..797854ac89 100644
-> --- a/crypto/tlscredsx509.c
-> +++ b/crypto/tlscredsx509.c
-> @@ -315,6 +315,51 @@ qcrypto_tls_creds_check_cert(QCryptoTLSCredsX509 *creds,
->      return 0;
->  }
->  
-> +static int
-> +qcrypto_tls_creds_check_authority_chain(QCryptoTLSCredsX509 *creds,
-> +                                        gnutls_x509_crt_t cert,
-> +                                        gnutls_x509_crt_t *cacerts,
-> +                                        unsigned int ncacerts,
-> +                                        const char *cacertFile,
-> +                                        bool isServer,
-> +                                        bool isCA,
-> +                                        Error **errp)
-> +{
-> +    gnutls_x509_crt_t *cert_to_check = &cert;
-> +    int checking_issuer = 1;
+This patch series implements dynamic fd-backed memory mapping support
+for vhost-user backends, enabling backends to dynamically request memory
+mappings and unmappings during runtime through the new
+VHOST_USER_BACKEND_SHMEM_MAP/UNMAP protocol messages.
 
-Why is this int instead of bool?  It's only assigned 1 or 0, and local
-to the function.
+This feature benefits various VIRTIO devices that require dynamic shared
+memory management, including virtiofs (for DAX mappings), virtio-gpu
+(for resource sharing), and the recently standardized virtio-media.
 
-That's a trivial cleanup, so I'm okay if you make that change and add:
+The implementation introduces a QOM-based architecture for managing
+shared memory lifecycle:
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+- VirtioSharedMemoryMapping: an intermediate object that manages
+  individual memory mappings by acting as generic container for regions
+  declared in any vhost-user device type
+- Dynamic Mapping: backends can request mappings via SHMEM_MAP messages,
+  with the frontend creating MemoryRegions from the provided file
+  descriptors and adding them as subregions
+
+When a SHMEM_MAP request is received, the frontend:
+1. Creates VirtioSharedMemoryMapping to manage the mapping lifecycle
+2. Maps the provided fd with memory_region_init_ram_from_fd()
+3. Creates a MemoryRegion backed by the mapped memory
+4. Adds it as a subregion of the appropiate VIRTIO Shared Memory Region
+
+The QOM reference counting ensures automatic cleanup when mappings are
+removed or the device is destroyed.
+
+This patch also includes:
+- VHOST_USER_GET_SHMEM_CONFIG: a new frontend request allowing generic
+  vhost-user devices to query shared memory configuration from backends
+  at device initialization, enabling the generic vhost-user-device
+  frontend to work with any backend regardless of specific shared memory
+  requirements.
+
+The implementation has been tested with rust-vmm based backends.
+
+Albert Esteve (7):
+  vhost-user: Add VirtIO Shared Memory map request
+  vhost_user.rst: Align VhostUserMsg excerpt members
+  vhost_user.rst: Add SHMEM_MAP/_UNMAP to spec
+  vhost_user: Add frontend get_shmem_config command
+  vhost_user.rst: Add GET_SHMEM_CONFIG message
+  qmp: add shmem feature map
+  vhost-user-device: Add shared memory BAR
+
+ docs/interop/vhost-user.rst               | 101 ++++++++
+ hw/virtio/vhost-user-base.c               |  47 +++-
+ hw/virtio/vhost-user-test-device-pci.c    |  39 +++-
+ hw/virtio/vhost-user.c                    | 267 ++++++++++++++++++++++
+ hw/virtio/virtio-qmp.c                    |   3 +
+ hw/virtio/virtio.c                        | 199 ++++++++++++++++
+ include/hw/virtio/vhost-backend.h         |  10 +
+ include/hw/virtio/vhost-user.h            |   1 +
+ include/hw/virtio/virtio.h                | 137 +++++++++++
+ subprojects/libvhost-user/libvhost-user.c |  70 ++++++
+ subprojects/libvhost-user/libvhost-user.h |  54 +++++
+ 11 files changed, 923 insertions(+), 5 deletions(-)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.49.0
 
 
