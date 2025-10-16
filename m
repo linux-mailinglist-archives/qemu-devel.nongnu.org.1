@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310EEBE32B1
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64129BE32E1
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:51:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNs-0007ko-QK; Thu, 16 Oct 2025 07:43:05 -0400
+	id 1v9MNv-0007og-54; Thu, 16 Oct 2025 07:43:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MNF-0007Gw-Ty; Thu, 16 Oct 2025 07:42:30 -0400
+ id 1v9MNG-0007Gv-TY; Thu, 16 Oct 2025 07:42:30 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MN9-0003WI-6G; Thu, 16 Oct 2025 07:42:24 -0400
+ id 1v9MN6-0003WF-KC; Thu, 16 Oct 2025 07:42:24 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E413DC01E2;
- Thu, 16 Oct 2025 14:41:38 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id B63BCC01E6;
+ Thu, 16 Oct 2025 14:41:39 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-RYmLMXZs; Thu, 16 Oct 2025 14:41:38 +0300
+ ESMTPSA id LfP2M73FEmI0-CYxTHhxP; Thu, 16 Oct 2025 14:41:39 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614898;
- bh=kdIFXuaPTp/BfbVEZsthEVutCRQg5Y0tS4H8w9udEPE=;
+ s=default; t=1760614899;
+ bh=hT0GBLbghZ3ll8GWVsJhqMckxe5KaPEjWuD5dmK6b50=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=e2Dxekh174wsHqceWBfHueJM2/cHPGf5UkiSTy8YbRha0/aq5vwelBvKSyfXdaFy2
- 2ckuhk4l5CLHfTY+CF1LNfTJ8POh0Yi4whMgKNLdvirM4sFEHr84XHjpZGSo6KyeoY
- 3YH61i/sQNJdG3+GAaRaUVIJchtL9bffsQsEYZKQ=
+ b=XIgYMJoEfrRleGq7aCD+ipU8x+gSWcNSYiI8zHJ+boaDVQeNfd71eEuHndW8BX6gY
+ q0POpnJD909qm1788FxEg6f97cwZCXIJgMyBq2X7CUJLodUUt1EP8VhQsPHvgo89sf
+ T/Qzocpzorrn6zjNjEndafojUrYURZL+cqD3LfMk=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,9 +46,9 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 20/25] vhost-user: add vmstate
-Date: Thu, 16 Oct 2025 14:40:57 +0300
-Message-ID: <20251016114104.1384675-21-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 21/25] virtio: support vhost backend migration
+Date: Thu, 16 Oct 2025 14:40:58 +0300
+Message-ID: <20251016114104.1384675-22-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -77,138 +77,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add logic to transfer virtio notifiers through migration channel
+for vhost backend migration case.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost-user.c         | 95 ++++++++++++++++++++++++++++++++++
- include/hw/virtio/vhost-user.h |  4 ++
- 2 files changed, 99 insertions(+)
+ hw/virtio/virtio-bus.c     |  2 +-
+ hw/virtio/virtio.c         | 73 ++++++++++++++++++++++++++++++++++++--
+ include/hw/virtio/virtio.h |  2 ++
+ 3 files changed, 74 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index c5cb5ed528..a820214188 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -28,6 +28,8 @@
- #include "system/runstate.h"
- #include "system/cryptodev.h"
- #include "migration/postcopy-ram.h"
-+#include "migration/qemu-file-types.h"
+diff --git a/hw/virtio/virtio-bus.c b/hw/virtio/virtio-bus.c
+index 9b545acda3..577693b6c9 100644
+--- a/hw/virtio/virtio-bus.c
++++ b/hw/virtio/virtio-bus.c
+@@ -291,7 +291,7 @@ int virtio_bus_set_host_notifier(VirtioBusState *bus, int n, bool assign)
+         return -ENOSYS;
+     }
+ 
+-    if (assign) {
++    if (assign && !virtio_is_vhost_backend_transfer(vdev)) {
+         r = event_notifier_init(notifier, 1);
+         if (r < 0) {
+             error_report("%s: unable to init event notifier: %s (%d)",
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 4184aff75c..bf361811d0 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -26,6 +26,7 @@
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/vhost.h"
+ #include "migration/qemu-file-types.h"
 +#include "migration/qemu-file.h"
- #include "trace.h"
- #include "system/ramblock.h"
+ #include "qemu/atomic.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/qdev-properties.h"
+@@ -3032,6 +3033,7 @@ int virtio_save(VirtIODevice *vdev, QEMUFile *f)
+     uint32_t guest_features_lo = (vdev->guest_features & 0xffffffff);
+     int i;
+     Error *local_err = NULL;
++    bool migrating_backend = virtio_is_vhost_backend_transfer(vdev);
  
-@@ -3137,6 +3139,99 @@ void vhost_user_qmp_status(struct vhost_dev *dev, VirtioStatus *status)
-         qmp_decode_protocols(u->protocol_features);
- }
+     if (k->save_config) {
+         k->save_config(qbus->parent, f);
+@@ -3065,11 +3067,23 @@ int virtio_save(VirtIODevice *vdev, QEMUFile *f)
+          */
+         qemu_put_be64(f, vdev->vq[i].vring.desc);
+         qemu_put_be16s(f, &vdev->vq[i].last_avail_idx);
++
++        if (migrating_backend) {
++            qemu_file_put_fd(f,
++                             event_notifier_get_fd(&vdev->vq[i].host_notifier));
++            qemu_file_put_fd(
++                f, event_notifier_get_fd(&vdev->vq[i].guest_notifier));
++        }
++
+         if (k->save_queue) {
+             k->save_queue(qbus->parent, i, f);
+         }
+     }
  
-+typedef struct VhostUserMigTmp {
-+    struct vhost_dev *parent;
-+    bool has_backend_channel;
-+    int backend_fd;
-+    uint32_t memory_slots;
-+    uint64_t protocol_features;
-+} VhostUserMigTmp;
-+
-+static int vhost_user_tmp_pre_save(void *opaque)
-+{
-+    VhostUserMigTmp *tmp = opaque;
-+    struct vhost_dev *dev = tmp->parent;
-+    struct vhost_user *u = dev->opaque;
-+    QIOChannelSocket *sioc = u->backend_sioc;
-+
-+    if (sioc && sioc->fd < 0) {
-+        return -EINVAL;
++    if (migrating_backend) {
++        qemu_file_put_fd(f, event_notifier_get_fd(&vdev->config_notifier));
 +    }
 +
-+    tmp->backend_fd = sioc ? sioc->fd : -1;
-+    tmp->has_backend_channel = !!sioc;
-+    tmp->memory_slots = u->user->memory_slots;
-+    tmp->protocol_features = u->protocol_features;
+     if (vdc->save != NULL) {
+         vdc->save(vdev, f);
+     }
+@@ -3295,6 +3309,7 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+     VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
+     Error *local_err = NULL;
++    bool migrating_backend = virtio_is_vhost_backend_transfer(vdev);
+ 
+     /*
+      * We poison the endianness to ensure it does not get used before
+@@ -3364,6 +3379,13 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+         vdev->vq[i].signalled_used_valid = false;
+         vdev->vq[i].notification = true;
+ 
++        if (migrating_backend) {
++            event_notifier_init_fd(&vdev->vq[i].host_notifier,
++                                   qemu_file_get_fd(f));
++            event_notifier_init_fd(&vdev->vq[i].guest_notifier,
++                                   qemu_file_get_fd(f));
++        }
 +
-+    return 0;
-+}
+         if (!vdev->vq[i].vring.desc && vdev->vq[i].last_avail_idx) {
+             error_report("VQ %d address 0x0 "
+                          "inconsistent with Host index 0x%x",
+@@ -3377,6 +3399,10 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+         }
+     }
+ 
++    if (migrating_backend) {
++        event_notifier_init_fd(&vdev->config_notifier, qemu_file_get_fd(f));
++    }
 +
-+static int vhost_user_tmp_post_load(void *opaque, int version_id)
-+{
-+    struct VhostUserMigTmp *tmp = opaque;
-+    struct vhost_dev *dev = tmp->parent;
-+    struct vhost_user *u = dev->opaque;
-+    Error *local_err = NULL;
-+
-+    if (tmp->has_backend_channel) {
-+        u->backend_sioc = qio_channel_socket_new_fd(tmp->backend_fd,
-+                                                    &local_err);
-+        if (!u->backend_sioc) {
+     virtio_notify_vector(vdev, VIRTIO_NO_VECTOR);
+ 
+     if (vdc->load != NULL) {
+@@ -3394,6 +3420,19 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+         }
+     }
+ 
++    if (migrating_backend) {
++        /*
++         * On vhost backend migration, device do load host_features from
++         * migration stream. So update host_features.
++         */
++        vdev->host_features = vdc->get_features(vdev, vdev->host_features,
++                                                &local_err);
++        if (local_err) {
 +            error_report_err(local_err);
 +            return -EINVAL;
 +        }
-+        u->backend_src = qio_channel_add_watch_source(
-+            QIO_CHANNEL(u->backend_sioc), G_IO_IN | G_IO_HUP,
-+            backend_read, u->dev, NULL, NULL);
 +    }
 +
-+    u->user->memory_slots = tmp->memory_slots;
-+    u->protocol_features = tmp->protocol_features;
+     /* Subsections */
+     ret = vmstate_load_state(f, &vmstate_virtio, vdev, 1, &local_err);
+     if (ret) {
+@@ -3447,6 +3486,18 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+                 continue;
+             }
+ 
++            if (migrating_backend) {
++                /*
++                 * Indices are not synced prior to backend migration (as we
++                 * don't stop vrings by GET_VRING_BASE). No reason to sync them
++                 * now, and do any checks.
++                 */
++                vdev->vq[i].used_idx = 0;
++                vdev->vq[i].shadow_avail_idx = 0;
++                vdev->vq[i].inuse = 0;
++                continue;
++            }
 +
-+    return 0;
-+}
-+
-+static bool vhost_user_tmp_test_fd(void *opaque, int version_id)
+             nheads = vring_avail_idx(&vdev->vq[i]) - vdev->vq[i].last_avail_idx;
+             /* Check it isn't doing strange things with descriptor numbers. */
+             if (nheads > vdev->vq[i].vring.num) {
+@@ -3815,8 +3866,9 @@ int virtio_queue_set_guest_notifier(VirtIODevice *vdev, int n, bool assign,
+     EventNotifierHandler *read_fn = is_config ?
+         virtio_config_guest_notifier_read :
+         virtio_queue_guest_notifier_read;
++    bool migrating_backend = virtio_is_vhost_backend_transfer(vdev);
+ 
+-    if (assign) {
++    if (assign && !migrating_backend) {
+         int r = event_notifier_init(notifier, 0);
+         if (r < 0) {
+             return r;
+@@ -3826,7 +3878,7 @@ int virtio_queue_set_guest_notifier(VirtIODevice *vdev, int n, bool assign,
+     event_notifier_set_handler(notifier,
+                                (assign && !with_irqfd) ? read_fn : NULL);
+ 
+-    if (!assign) {
++    if (!assign && !migrating_backend) {
+         /* Test and clear notifier before closing it,*/
+         /* in case poll callback didn't have time to run. */
+         read_fn(notifier);
+@@ -4445,6 +4497,23 @@ done:
+     return element;
+ }
+ 
++bool virtio_is_vhost_backend_transfer(VirtIODevice *vdev)
 +{
-+    struct VhostUserMigTmp *tmp = opaque;
++    VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
++    struct vhost_dev *hdev;
 +
-+    return tmp->has_backend_channel;
-+}
-+
-+static const VMStateDescription vmstate_vhost_user_blk_tmp = {
-+    .name = "vhost-user-blk-tmp",
-+    .pre_save = vhost_user_tmp_pre_save,
-+    .post_load = vhost_user_tmp_post_load,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(protocol_features, VhostUserMigTmp),
-+        VMSTATE_UINT32(memory_slots, VhostUserMigTmp),
-+        VMSTATE_BOOL(has_backend_channel, VhostUserMigTmp),
-+        VMSTATE_FD_TEST(backend_fd, VhostUserMigTmp, vhost_user_tmp_test_fd),
-+        VMSTATE_END_OF_LIST()
-+   },
-+};
-+
-+static int vhost_user_post_load(void *opaque, int version_id)
-+{
-+    struct vhost_dev *dev = opaque;
-+    struct vhost_user *u = dev->opaque;
-+
-+    u->postcopy_notifier.notify = vhost_user_postcopy_notifier;
-+    postcopy_add_notifier(&u->postcopy_notifier);
-+
-+    return 0;
-+}
-+
-+const VMStateDescription vmstate_vhost_user = {
-+    .name = "vhost-user",
-+    .post_load = vhost_user_post_load,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_WITH_TMP(struct vhost_dev, VhostUserMigTmp,
-+                         vmstate_vhost_user_blk_tmp),
-+        VMSTATE_END_OF_LIST()
++    if (!vdc->get_vhost) {
++        return false;
 +    }
-+};
 +
- const VhostOps user_ops = {
-         .backend_type = VHOST_BACKEND_TYPE_USER,
-         .vhost_backend_init = vhost_user_backend_init,
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 36d96296a3..fb89268de2 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -114,4 +114,8 @@ void vhost_user_async_close(DeviceState *d,
- 
- void vhost_user_qmp_status(struct vhost_dev *dev, VirtioStatus *status);
- 
-+extern const VMStateDescription vmstate_vhost_user;
-+#define VMSTATE_BACKEND_TRANSFER_VHOST_USER(_field, _state) \
-+    VMSTATE_STRUCT(_field, _state, 0, vmstate_vhost_user, struct vhost_dev)
++    hdev = vdc->get_vhost(vdev);
++    if (!hdev) {
++        return false;
++    }
 +
- #endif
++    return hdev->backend_transfer;
++}
++
+ static const TypeInfo virtio_device_info = {
+     .name = TYPE_VIRTIO_DEVICE,
+     .parent = TYPE_DEVICE,
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 620ee4e389..8e2d3019cd 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -242,6 +242,8 @@ struct VirtioDeviceClass {
+     bool (*skip_vhost_migration_log)(VirtIODevice *vdev);
+ };
+ 
++bool virtio_is_vhost_backend_transfer(VirtIODevice *vdev);
++
+ void virtio_instance_init_common(Object *proxy_obj, void *data,
+                                  size_t vdev_size, const char *vdev_name);
+ 
 -- 
 2.48.1
 
