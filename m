@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C361BE41D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A216BE41F1
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:08:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9PWq-0002GK-3H; Thu, 16 Oct 2025 11:04:35 -0400
+	id 1v9PX7-0002Hm-09; Thu, 16 Oct 2025 11:04:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWj-0002F7-2f
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:26 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1v9PWl-0002Fp-7a
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:27 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWT-0001Au-HM
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:24 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-46e3a50bc0fso6871025e9.3
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:07 -0700 (PDT)
+ id 1v9PWX-0001B2-5E
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:25 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3ed20bdfdffso859944f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760627046; x=1761231846; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760627047; x=1761231847; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kaE703fUvjn7HVdw0ZGbrHh7JOU9e0/crufJzCxKJ6k=;
- b=xErF1s27KwYYKa2rRgWe5j8UVwurzhHp8sQskYoLPo5vPM3s2blGKUda21rcstM9ZP
- 1KvbOMbtrrahVwdTok5vs33zYDRl65W0N5F2BwXZpp6rvSDJ6LBTZ77nmNBmshdSzIaO
- JShycyZWLSfiR3Xr0nK2Av1S8mWa1VPinR2Xy0w8abuJDIcgpj49I8hDjh6jQGMfOPND
- SNgXGLCXWOTiiL6SkMaNp/zjI3RgYLiq8M2wq4u4B624jSXHtzWHSHbXGtAugVWAlg82
- F20XbxFV8gte4T2AGsK/yg6oRNXzO99iwXLBkrYA6OqSD4qA8Ri9WbOKcuNsDoOlJejE
- X+zQ==
+ bh=IwPFf1pbtLyHgXrVD3lp8OL749C/noD+jZkGwklcu94=;
+ b=UzaxLOUXbDdAToDIvWDQ6IkyRfq47hkUOkWodmOLqIOaLBdNX+LE/RYQOegN8vpdBn
+ qQDwOG6X+33BW0uKtwZMWYNwOC9eaVM+M60WQ7dA3utiRpE+l9lm2Bg6MIKQ7j4lIK9F
+ UNtqogToeOriF/v7jrsznpSohiOhzdc7wvAc3MKQsQIwRdv2HKSBax1z69XP3zDrPa/s
+ FJzdAu3O6nE4ZrYNAzU7oFnAPVGtY30aYBdhqDeipiMGlfhJhHPbrnaqGqFacRhbQ5Ya
+ ZxrbspROJop4REp0bkWuO9l3WxqQ5IPj1DeK/tSKGz4kHByss53/mxtE275fOOh6dNxK
+ qGGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760627046; x=1761231846;
+ d=1e100.net; s=20230601; t=1760627047; x=1761231847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kaE703fUvjn7HVdw0ZGbrHh7JOU9e0/crufJzCxKJ6k=;
- b=GSGzny+yQaSYctMClyn2ZLPISHHoN3cnLupXDzxHKpitTeQkB3H27/WeKz2wMScznn
- 0j8TD6r0lvOhn63kTvGKpLidz2lNiFeWHZ3ESNQShqg0OwtooIzs8G5uQ3kcDJ19WZmo
- wlRIiq1YFEmZ84EUDz/y6J6iXQ73ZgBRsvmKtAO+oPZ6mtf8jUTHXDVPyjtsfT33Kpn6
- VZV/T5mFC6z0LG6f7rUac2dlw2Bb8+sbakTsw+zR6n9HhsnK04LHZ2p35cuM90J+t/PC
- fcXW2nO+0rEpErB3/WTxt+3dsLyOhkQk0p4tcIS6JyPK2DaAinqRQ8Oi1OCVciSt07hX
- G7Xw==
-X-Gm-Message-State: AOJu0Yz51Vde5L+pFhQYqe0zkrfGYKdj5NmkgQN/YJnZxgy8N+42twuQ
- 0BXBhdgSv3FDOSmaum+9nrpZ6cPqIYmR2ZmESCP3G+uZyUi9U2zvLdOxisTZi1wiBEo=
-X-Gm-Gg: ASbGnctE579u4AIuUSepFB3CWDAy9ywmP4DHhCYFv2DlSFObYusw9lW4Brmq9LvU43+
- OtBqleDsb0SxNLl12YlIgRO7H5baLLJNVyHep0ThmsPMBghlixnTRZbGFY8/pO/KHguvjgjXhdi
- iW0WM+on1nqdOI2XgSPLyHqtj4bKhkCUCzxZd5XOHnhscFikF0ePf5YZEhnzViVmFle/oH/Dp8y
- eslUOG+tGI1/anDq4o3OF/p5DIsq8VzucDDGIV0RNwJT3vXb8HqJTCnx6lohJ+Wnkc5c4J/oRBz
- DLyqWDB3kfC3gmJAhTDcH4rGrMd0gqo1Qv3pNSdKTyY+CnyTxrpfauWBkRrXxJ4x87Y1ApZALSZ
- srzgmYmfqPX8mA137JGbVYQ4sjomMCQnO4QuXbYUTWf1Mp0DZ5dY43wBI/krSWEnKq9934MI2dA
- 1h
-X-Google-Smtp-Source: AGHT+IFJ5r/Hu+7t5E1sXNqbodahqg19RIm6MrpXLCPuUOKUkMQ/TAzcvMViywm3SE2TTAbHHSTFnQ==
-X-Received: by 2002:a05:600c:1e1f:b0:471:1716:11c4 with SMTP id
- 5b1f17b1804b1-4711792a510mr2710505e9.34.1760627045903; 
- Thu, 16 Oct 2025 08:04:05 -0700 (PDT)
+ bh=IwPFf1pbtLyHgXrVD3lp8OL749C/noD+jZkGwklcu94=;
+ b=rBYpyXeJEPE/jffJpz4uWKzPyhRCvCXnYcx2CQTQZ22EYHyz9TLYZrZGJrQ9+C6+hC
+ WDFtI6btvtmbgXG2Yn1/eOdCL1nzE0jlSGLu7kLObT8C/o4bJFM3RSTB77F5uFITk+29
+ fIHk4eJtNL8LymCl5/xQs358YacLYqlrEGVMraiY6b4aG9N77kHRZZItnOuccj1b9hee
+ 66r42+Ix+T/ulpA1/zjalos+r/1k6047geguqY0wkVMvXscgnvm3V58rN+ntu7c8b93I
+ htr4RvyWjbQo59t9TrQSeieD+c1s+BZsWLvt6Pjj9ocmvKnxXwsZQN+4525pIdZ5nWqI
+ +DPA==
+X-Gm-Message-State: AOJu0YyhAgBS1DLVTLJAIMAqhfg9TSQd6WIBRIdzqVD5U130dNxTs9dv
+ aAQRH/RCzl6UdGBGLss4d5Ic5EE1vfcaJZoXusQv5FIkonSIxaxqbWFZNxiTarvO/ss=
+X-Gm-Gg: ASbGncsH3DpagedfLBPycIneKttFvkil1V0x05jSHR+eR/a5MB+kZ+xUQFUkYiPSXjq
+ JXAwvFJImnUu4qfEyYcf13iRlVGK5831OsUobERC3tFdlaajqo2sHtaLbesFvUaInpiO6vjBfi4
+ Rk+WYyRhHLzPYZr83nqulhz2eG2vbGSjgs8fztsQaoLl4RdmCMHe9SQWUoNBH9iDBuT61AJe0cO
+ 0iblbwvX02NMO9Y0T/IQ09Zsvx5WOfWw9g8I1PI7T8g4Eq9OZH7daJxiOlAOvn13t38/wXsDJcI
+ A95dBxuBf5SLbB9E35DPtTb66X1mhv4j9SRxDmkXPfW0qNDokZYctd5tk9wRSA9etVJMI6HTaAe
+ SVwvvEV45+9PxBC/unwxgUJkWb/eBRets8kbAba6S5mYq+BFXzAHfGiuoJckltpl2sX7G+Fe6Ur
+ wK3vzOxxwkfuk=
+X-Google-Smtp-Source: AGHT+IGoiWPVXoZ/ttIWoCl7fBJNOKmMRiQlCb2EZQENFkAVwYkjC72SIJ5jdNk9rZkYOr25tJ5f/g==
+X-Received: by 2002:a05:6000:4b08:b0:427:526:16aa with SMTP id
+ ffacd0b85a97d-42705261894mr182405f8f.58.1760627047183; 
+ Thu, 16 Oct 2025 08:04:07 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e8141sm34817314f8f.48.2025.10.16.08.04.02
+ ffacd0b85a97d-426ff65596csm4134085f8f.24.2025.10.16.08.04.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 16 Oct 2025 08:04:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5CB435FAE6;
+ by draig.lan (Postfix) with ESMTP id 7589B5FAEB;
  Thu, 16 Oct 2025 16:03:58 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,23 +80,24 @@ Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH 09/11] docs/system: unify the naming style for VirtIO devices
-Date: Thu, 16 Oct 2025 16:03:54 +0100
-Message-ID: <20251016150357.876415-10-alex.bennee@linaro.org>
+Subject: [PATCH 10/11] docs/system: drop vhost-user-rng docs
+Date: Thu, 16 Oct 2025 16:03:55 +0100
+Message-ID: <20251016150357.876415-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251016150357.876415-1-alex.bennee@linaro.org>
 References: <20251016150357.876415-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,53 +113,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes the index look a little neater.
+This is a fairly lightweight document which doesn't add much to the
+general advice in vhost-user. Update the vhost-user docs to point
+directly at the rust-vmm repo.
 
 Reviewed-by: John Levon <john.levon@nutanix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/system/devices/virtio/virtio-gpu.rst  | 2 +-
- docs/system/devices/virtio/virtio-pmem.rst | 6 ++----
- docs/system/devices/virtio/virtio-snd.rst  | 2 +-
- 3 files changed, 4 insertions(+), 6 deletions(-)
+ docs/system/devices/virtio/index.rst          |  1 -
+ docs/system/devices/virtio/vhost-user-rng.rst | 41 -------------------
+ docs/system/devices/virtio/vhost-user.rst     |  2 +-
+ 3 files changed, 1 insertion(+), 43 deletions(-)
+ delete mode 100644 docs/system/devices/virtio/vhost-user-rng.rst
 
-diff --git a/docs/system/devices/virtio/virtio-gpu.rst b/docs/system/devices/virtio/virtio-gpu.rst
-index b7eb0fc0e72..39d2fd2d21c 100644
---- a/docs/system/devices/virtio/virtio-gpu.rst
-+++ b/docs/system/devices/virtio/virtio-gpu.rst
-@@ -1,7 +1,7 @@
- ..
-    SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/docs/system/devices/virtio/index.rst b/docs/system/devices/virtio/index.rst
+index fc457ca74c7..e3839e61824 100644
+--- a/docs/system/devices/virtio/index.rst
++++ b/docs/system/devices/virtio/index.rst
+@@ -25,6 +25,5 @@ can also be off-loaded to an external process via :ref:`vhost user
+    virtio-snd.rst
+    vhost-user.rst
+    vhost-user-input.rst
+-   vhost-user-rng.rst
  
--virtio-gpu
-+VirtIO GPU
- ==========
- 
- This document explains the setup and usage of the virtio-gpu device.
-diff --git a/docs/system/devices/virtio/virtio-pmem.rst b/docs/system/devices/virtio/virtio-pmem.rst
-index c82ac067315..0c24de83ec7 100644
---- a/docs/system/devices/virtio/virtio-pmem.rst
-+++ b/docs/system/devices/virtio/virtio-pmem.rst
-@@ -1,7 +1,5 @@
+ .. _VirtIO specification: https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html
+diff --git a/docs/system/devices/virtio/vhost-user-rng.rst b/docs/system/devices/virtio/vhost-user-rng.rst
+deleted file mode 100644
+index ead14053264..00000000000
+--- a/docs/system/devices/virtio/vhost-user-rng.rst
++++ /dev/null
+@@ -1,41 +0,0 @@
+-.. _vhost_user_rng:
 -
--===========
--virtio pmem
--===========
-+VirtIO Persistent Memory
-+========================
- 
- This document explains the setup and usage of the virtio pmem device.
- The virtio pmem device is a paravirtualized persistent memory device
-diff --git a/docs/system/devices/virtio/virtio-snd.rst b/docs/system/devices/virtio/virtio-snd.rst
-index 2a9187fd701..3c797f66e03 100644
---- a/docs/system/devices/virtio/virtio-snd.rst
-+++ b/docs/system/devices/virtio/virtio-snd.rst
-@@ -1,4 +1,4 @@
--virtio sound
-+VirtIO Sound
- ============
- 
- This document explains the setup and usage of the Virtio sound device.
+-QEMU vhost-user-rng - RNG emulation
+-===================================
+-
+-Background
+-----------
+-
+-What follows builds on the material presented in vhost-user.rst - it should
+-be reviewed before moving forward with the content in this file.
+-
+-Description
+------------
+-
+-The vhost-user-rng device implementation was designed to work with a random
+-number generator daemon such as the one found in the vhost-device crate of
+-the rust-vmm project available on github [1].
+-
+-[1]. https://github.com/rust-vmm/vhost-device
+-
+-Examples
+---------
+-
+-The daemon should be started first:
+-
+-::
+-
+-  host# vhost-device-rng --socket-path=rng.sock -c 1 -m 512 -p 1000
+-
+-The QEMU invocation needs to create a chardev socket the device can
+-use to communicate as well as share the guests memory over a memfd.
+-
+-::
+-
+-  host# qemu-system								\
+-      -chardev socket,path=$(PATH)/rng.sock,id=rng0				\
+-      -device vhost-user-rng-pci,chardev=rng0					\
+-      -m 4096 									\
+-      -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on	\
+-      -numa node,memdev=mem							\
+-      ...
+diff --git a/docs/system/devices/virtio/vhost-user.rst b/docs/system/devices/virtio/vhost-user.rst
+index bddf8df5ed5..9c9a28df380 100644
+--- a/docs/system/devices/virtio/vhost-user.rst
++++ b/docs/system/devices/virtio/vhost-user.rst
+@@ -45,7 +45,7 @@ platform details for what sort of virtio bus to use.
+     - :ref:`vhost_user_input`
+   * - vhost-user-rng
+     - Entropy driver
+-    - :ref:`vhost_user_rng`
++    - See https://github.com/rust-vmm/vhost-device
+   * - vhost-user-scmi
+     - System Control and Management Interface
+     - See https://github.com/rust-vmm/vhost-device
 -- 
 2.47.3
 
