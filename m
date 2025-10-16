@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BD7BE4BB6
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 19:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3838BE4C94
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 19:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9RJ5-0001Rq-3G; Thu, 16 Oct 2025 12:58:27 -0400
+	id 1v9ROm-0001gR-3F; Thu, 16 Oct 2025 13:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1v9RIn-0001Du-Ee
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 12:58:10 -0400
-Received: from p-east2-cluster1-host5-snip4-2.eps.apple.com ([57.103.76.85]
- helo=outbound.st.icloud.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v9ROh-0001XQ-UO
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:04:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1v9RIV-0001hQ-6V
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 12:58:09 -0400
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPS id
- A6A4D180017F; Thu, 16 Oct 2025 16:57:45 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=c/5rsUrStdeRorYSqBu3+Q8xyENsD0DokCuHFqMkrGk=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=Qx2WAH2lDvnTPqu2Ezpway7CAh7U/kHiAa0myPfLiHvnT5JzbCU/Ozxql8vTWLU1uHZXDPFNovGSgfPLdh3FjMS1Q6Mcv/yB9RX3Uq8bh8UaqlD0dLmcpukI09uy68zUG/VFSkEdmzU341tNoAzhlHfucpE913sENz34yvIMi+OtNTa3mZFm9Wk0L7WdTsx0YP5uY/4aYWK6DysBMOuf9CAm+NW8qwxmViwYmLZgye7QsB0WXzEqHP3WV2Ku8DoWyW6+l875mrE64TMz7BsD+qu0i0b+59sT0UO6T4ngowZ4wHldGKPUlPtRLxh1WPYjvribVZr6jfudXpWDMxDSlg==
-mail-alias-created-date: 1752046281608
-Received: from localhost.localdomain (unknown [17.42.251.67])
- by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPSA id
- B3362180074D; Thu, 16 Oct 2025 16:56:44 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v9ROX-0002j2-8o
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:04:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760634237;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=zftZ6tpEz05YHR2jJC8m1JzGswjm4nTiI8c0/9HQT9Q=;
+ b=PK2BHGvYIiuK5UzeoiS2AY1rsoqdnHpJYf7AiHMTBMHRiPRBJfAZK1VbldTWWZC6m4/Kfx
+ 05kB6ONG9YrIiJgzMAkmiOjiReLrsN6u+6wWWOlOrJCnfy+m4fsVbqWEvMwumpLN3nTs2/
+ ic1pUBaP9MyjVy8lQs3cgrJhyKw91hY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-526-CdaOTnmbM1WxGumyIhEumQ-1; Thu, 16 Oct 2025 13:03:55 -0400
+X-MC-Unique: CdaOTnmbM1WxGumyIhEumQ-1
+X-Mimecast-MFC-AGG-ID: CdaOTnmbM1WxGumyIhEumQ_1760634234
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-46b303f6c9cso10369395e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 10:03:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760634234; x=1761239034;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zftZ6tpEz05YHR2jJC8m1JzGswjm4nTiI8c0/9HQT9Q=;
+ b=oiwlflzA33xgUTnpd2lGYMO1lBkQtFQFco/SPPhVi+ReAj/ZUEehB3D/qf0pr9MFOq
+ HOVmOwFnZzNJ1lsgwsk5YmZmIMiTCsiF2BKFW5n9h+Ml4EjcFgV+7+ZDwl5+tPBfpqhv
+ x4xiXv+fNiYl2f6Y7Jy3rUsmhnXBoA0O6xlmvxWvaCzIlboik1uPE4cilfSmwM7LKopK
+ jChrPNeDg17qMXbLM+N9fbqpk7RUPmvo2stdTAeRZV2vUaNqM6SqkVLSFKuBkqzQWinU
+ icu5yLI6pJ8FB6PsN7TqQ0goAjYKT1zU3+DtarKovqJMSeGliS6AVj5GqXCsY/0sizzb
+ QMAA==
+X-Gm-Message-State: AOJu0YwSoeeo2Z+9ompWy/l1I8OgpodDzZM+fyYdH+1gR5QhYxYm84gd
+ hMC58ff2qJbqwZspnZsj2h/GTuAyIOiZioRHikKGC2hTznYC2VJJgdJJnsbRMJMZu0diigqdJbE
+ e96xXRBaZF44MEKF7gjAMoELIJeDqPb41mdjwyLPd2XkpHSRbvbTBxwklyopWCbggNR9jSkj+UL
+ vcpiTJe1uBZ9ItfAN9qtw4eJ6FWE3mXY7u/J0icLoF
+X-Gm-Gg: ASbGncumDNLruKsrvuWUuwJf4VXkVMbBrZAVb6V3fY/hZinYOJ6gv461ZGWyT4qjpLP
+ P3rn8D5+PAPj2/26qp9G8GWGsBBbqQrx1+parNABi8C5t10SdHraccefhi/CNMRjaOgzmfpzR0+
+ ggdmCzXcAIkEa2j/U4GfBBVFFc9UYZuzYEcC3kMC1p76uveKmaCfoRUtdUT1MGArfK4FaAuklqY
+ M2zvPj4mY2T84G5dPtgDjVqAaM3BMSSInX70qnJcinO/ubEswnQBdACNWVCdrw5mDmdXM5RNu3h
+ Mn0Yw3+eQdBCdEUJ1+yZXGGRuRscNvXaUJu2wBOKm6zh+woWI6fjTQ9dasPyWhHAO9/q7tU80nM
+ wI9SR/gn7J6loRH/IyJnuyCk8xxZCx7y8R8SgKJSHdLHHNRD2Io6PwPyeCwF9m615bdfusKHg4N
+ U=
+X-Received: by 2002:a05:600c:1f93:b0:46e:761b:e7ff with SMTP id
+ 5b1f17b1804b1-4711791c66fmr6641645e9.28.1760634233902; 
+ Thu, 16 Oct 2025 10:03:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5sUIF9DxcJQJoJVc4HM8BSYFx8QMvd4l8DllGDKBVKWpvmjp/xvwLAPM8CRTTuuklyGbKdQ==
+X-Received: by 2002:a05:600c:1f93:b0:46e:761b:e7ff with SMTP id
+ 5b1f17b1804b1-4711791c66fmr6641235e9.28.1760634233415; 
+ Thu, 16 Oct 2025 10:03:53 -0700 (PDT)
+Received: from [192.168.1.84] ([93.56.170.18])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4711441f975sm37207035e9.4.2025.10.16.10.03.52
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Oct 2025 10:03:52 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Mads Ynddal <mads@ynddal.dk>,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Phil Dennis-Jordan <phil@philjordan.eu>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Eduardo Habkost <eduardo@habkost.net>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PATCH v7 24/24] whpx: apic: use non-deprecated APIs to control
- interrupt controller state
-Date: Thu, 16 Oct 2025 18:55:20 +0200
-Message-ID: <20251016165520.62532-25-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251016165520.62532-1-mohamed@unpredictable.fr>
-References: <20251016165520.62532-1-mohamed@unpredictable.fr>
+Subject: [PATCH] scripts: clean up meson-buildoptions.py
+Date: Thu, 16 Oct 2025 19:03:52 +0200
+Message-ID: <20251016170352.1362765-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDEyMiBTYWx0ZWRfX3i591J451V0o
- sUr0Fl3iXpQwy/Fl4zdiWLFiMpXCSfVPkj64i2rGs4UIzKhvNch4ARxEuJ7d3V9UM+LlzeWvYiP
- CwiG54MjcbPEiIH9JB05aIfno0GN3YhuvFQT6jmSNZanRe0M3bYaDtlmhT2ptdLSU/QIjB14sEv
- Vw+njagl+uYv4sVOoEPu76T34W2l7r7fHWpXMjGViTX6wRD0Nj50QwooFH0g9aDqKVY8VLImich
- O5ekCNCxPInhMy6eMRcvIGRoGtM8Et4yD5CPzHTDVYxlKCZswSRI9MtGKRrlm9f7ebn+Vt80A=
-X-Proofpoint-ORIG-GUID: LFF1_aj_2RXFysquanP2u9LYbbvtgC-y
-X-Proofpoint-GUID: LFF1_aj_2RXFysquanP2u9LYbbvtgC-y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- spamscore=0 mlxlogscore=824 mlxscore=0 bulkscore=0
- phishscore=0
- suspectscore=0 adultscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2510160122
-X-JNJ: AAAAAAABCDIHi3Oq+7eUfU6kQVtln5bsGab5D20obzhGx/RBwT3+UnCVMabBxb0dMK01J2HgwJ46Ww/4ugDyIy4pWrM9aJgR5Ic5avONZXpjWKzw4dSjkzeg9pKKVeoeiXLXV47Q5fv+c9MMPP+ltky/OJ81LqzITocrn4Ssnk47d66KC/iBUaAsW+73JI/Rd/EdvFNanjHdRj/uT3rr/lYsshaeLsvzBS5aUWYDcwH6Gg6GrbuFGuKrKA4XEpOiDJ1qnjKnYDxZUuzLjc8WoYIqdwyGF9P0FsWjCHN7gvSveEv69ZDybTPlmE7O6121UR6WS7+DpeOAOHrScyG1WAyH50iEbVhXlthWY66jLDUAfgwtG62RZEJKPJFP30MANYW3ZNqIDsxKdX/0K+9jv75271g/chZmpeQuZGH5qn4waXrO2U3GAj32rXkT60JGX9T+vPspdNHQUMbs0wLBzTIz00jGmj2fvovUvGnqUwE9RSzAlhN5e01hlqV3g8n8Yxc0SAu71D/StJlQgVSxiUKBfjORcInbFBDloXgvSKtT0rn+3pyCFt8IeUWUiZO4BNv0tvztVQgumWlsplFgLR3ypIqBqzEGR21HBRbXyCPIisP88hl6qRVYjC5yrn6n3u0MPVIHHL9uHph36Icm8UeQc6fYpEriWwKE6S5nRMFvMm9845X73TpiM/Zuhj6hCUtgXkSOYV61ryHBwTRomlO9ALuAw5R7yAw7DiWZXmkempImhGf0OaVtbSG7GVPkpsjKQzz4sKNWn/iB22pXaj+l2M3fmz0tWzbJyEswFSUHLNa8suzsktqNQHoUklpSE69DblaHahW/XxLGE5QRpXJp0oC1GB+29vqp+O1z8WgPxh7TTCCcEAw/xXFxnzQ2kVr2N24Eo4xTnZu13Pb7/AevUVx1hJFABKfq
-Received-SPF: pass client-ip=57.103.76.85;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.st.icloud.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,107 +104,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-WHvGetVirtualProcessorInterruptControllerState2 and
-WHvSetVirtualProcessorInterruptControllerState2 are
-deprecated since Windows 10 version 2004.
+Fix a few issues reported by flake8 and pylint, mostly parameter names
+that shadow globals.
 
-Use the non-deprecated WHvGetVirtualProcessorState and
-WHvSetVirtualProcessorState when available.
-
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/system/whpx-internal.h |  9 +++++++
- target/i386/whpx/whpx-apic.c   | 46 +++++++++++++++++++++++++---------
- 2 files changed, 43 insertions(+), 12 deletions(-)
+ scripts/meson-buildoptions.py | 51 +++++++++++++++++++----------------
+ 1 file changed, 28 insertions(+), 23 deletions(-)
 
-diff --git a/include/system/whpx-internal.h b/include/system/whpx-internal.h
-index 366bc525a3..b87d35cf1b 100644
---- a/include/system/whpx-internal.h
-+++ b/include/system/whpx-internal.h
-@@ -84,6 +84,15 @@ void whpx_apic_get(DeviceState *s);
-   X(HRESULT, WHvSetVirtualProcessorInterruptControllerState2, \
-         (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, PVOID State, \
-          UINT32 StateSize)) \
-+  X(HRESULT, WHvGetVirtualProcessorState, \
-+        (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, \
-+        WHV_VIRTUAL_PROCESSOR_STATE_TYPE StateType, PVOID Buffer, \
-+        UINT32 BufferSizeInBytes, UINT32 *BytesWritten)) \
-+  X(HRESULT, WHvSetVirtualProcessorState, \
-+        (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, \
-+        WHV_VIRTUAL_PROCESSOR_STATE_TYPE StateType, PVOID Buffer, \
-+        UINT32 BufferSizeInBytes)) \
+diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
+index a3e22471b2f..e636d258e8a 100644
+--- a/scripts/meson-buildoptions.py
++++ b/scripts/meson-buildoptions.py
+@@ -111,13 +111,13 @@ def help_line(left, opt, indent, long):
+     right = f'{opt["description"]}'
+     if long:
+         value = get_help(opt)
+-        if value != "auto" and value != "":
++        if value not in {"", "auto"}:
+             right += f" [{value}]"
+     if "choices" in opt and long:
+         choices = "/".join(sorted(opt["choices"]))
+         right += f" (choices: {choices})"
+-    for x in wrap("  " + left, right, indent):
+-        sh_print(x)
++    for line in wrap("  " + left, right, indent):
++        sh_print(line)
+ 
+ 
+ # Return whether the option (a dictionary) can be used with
+@@ -144,18 +144,18 @@ def require_arg(opt):
+     return not ({"enabled", "disabled"}.intersection(opt["choices"]))
+ 
+ 
+-def filter_options(json):
+-    if ":" in json["name"]:
++def filter_options(opt):
++    if ":" in opt["name"]:
+         return False
+-    if json["section"] == "user":
+-        return json["name"] not in SKIP_OPTIONS
++    if opt["section"] == "user":
++        return opt["name"] not in SKIP_OPTIONS
+     else:
+-        return json["name"] in BUILTIN_OPTIONS
++        return opt["name"] in BUILTIN_OPTIONS
+ 
+ 
+-def load_options(json):
+-    json = [x for x in json if filter_options(x)]
+-    return sorted(json, key=lambda x: x["name"])
++def load_options(opts):
++    opts = [opt for opt in opts if filter_options(opt)]
++    return sorted(opts, key=lambda opt: opt["name"])
+ 
+ 
+ def cli_option(opt):
+@@ -223,7 +223,7 @@ def print_parse(options):
+         key = cli_option(opt)
+         name = opt["name"]
+         if require_arg(opt):
+-            if opt["type"] == "array" and not "choices" in opt:
++            if opt["type"] == "array" and "choices" not in opt:
+                 print(f'    --{key}=*) quote_sh "-D{name}=$(meson_option_build_array $2)" ;;')
+             else:
+                 print(f'    --{key}=*) quote_sh "-D{name}=$2" ;;')
+@@ -241,14 +241,19 @@ def print_parse(options):
+     print("  esac")
+     print("}")
+ 
+-json_data = sys.stdin.read()
+-try:
+-    options = load_options(json.loads(json_data))
+-except:
+-    print("Failure in scripts/meson-buildoptions.py parsing stdin as json",
+-          file=sys.stderr)
+-    print(json_data, file=sys.stderr)
+-    sys.exit(1)
+-print("# This file is generated by meson-buildoptions.py, do not edit!")
+-print_help(options)
+-print_parse(options)
 +
- 
- #define LIST_WINHVEMULATION_FUNCTIONS(X) \
-   X(HRESULT, WHvEmulatorCreateEmulator, (const WHV_EMULATOR_CALLBACKS* Callbacks, WHV_EMULATOR_HANDLE* Emulator)) \
-diff --git a/target/i386/whpx/whpx-apic.c b/target/i386/whpx/whpx-apic.c
-index badb404b63..285ca28ba2 100644
---- a/target/i386/whpx/whpx-apic.c
-+++ b/target/i386/whpx/whpx-apic.c
-@@ -137,11 +137,21 @@ static void whpx_apic_put(CPUState *cs, run_on_cpu_data data)
-     whpx_put_apic_base(CPU(s->cpu), s->apicbase);
-     whpx_put_apic_state(s, &kapic);
- 
--    hr = whp_dispatch.WHvSetVirtualProcessorInterruptControllerState2(
--        whpx_global.partition,
--        cs->cpu_index,
--        &kapic,
--        sizeof(kapic));
-+    if (whp_dispatch.WHvSetVirtualProcessorState) {
-+        hr = whp_dispatch.WHvSetVirtualProcessorState(
-+            whpx_global.partition,
-+            cs->cpu_index,
-+            WHvVirtualProcessorStateTypeInterruptControllerState2,
-+            &kapic,
-+            sizeof(kapic));
-+    } else {
-+        hr = whp_dispatch.WHvSetVirtualProcessorInterruptControllerState2(
-+            whpx_global.partition,
-+            cs->cpu_index,
-+            &kapic,
-+            sizeof(kapic));
-+    }
++def main():
++    json_data = sys.stdin.read()
++    try:
++        options = load_options(json.loads(json_data))
++    except:
++        print("Failure in scripts/meson-buildoptions.py parsing stdin as json",
++              file=sys.stderr)
++        print(json_data, file=sys.stderr)
++        sys.exit(1)
++    print("# This file is generated by meson-buildoptions.py, do not edit!")
++    print_help(options)
++    print_parse(options)
 +
-     if (FAILED(hr)) {
-         fprintf(stderr,
-             "WHvSetVirtualProcessorInterruptControllerState failed: %08lx\n",
-@@ -156,16 +166,28 @@ void whpx_apic_get(DeviceState *dev)
-     APICCommonState *s = APIC_COMMON(dev);
-     CPUState *cpu = CPU(s->cpu);
-     struct whpx_lapic_state kapic;
-+    HRESULT hr;
 +
-+    if (whp_dispatch.WHvGetVirtualProcessorState) {
-+        hr = whp_dispatch.WHvGetVirtualProcessorState(
-+            whpx_global.partition,
-+            cpu->cpu_index,
-+            WHvVirtualProcessorStateTypeInterruptControllerState2,
-+            &kapic,
-+            sizeof(kapic),
-+            NULL);
-+    } else {
-+        hr = whp_dispatch.WHvGetVirtualProcessorInterruptControllerState2(
-+            whpx_global.partition,
-+            cpu->cpu_index,
-+            &kapic,
-+            sizeof(kapic),
-+            NULL);
-+    }
- 
--    HRESULT hr = whp_dispatch.WHvGetVirtualProcessorInterruptControllerState2(
--        whpx_global.partition,
--        cpu->cpu_index,
--        &kapic,
--        sizeof(kapic),
--        NULL);
-     if (FAILED(hr)) {
-         fprintf(stderr,
--            "WHvSetVirtualProcessorInterruptControllerState failed: %08lx\n",
-+            "WHvGetVirtualProcessorInterruptControllerState failed: %08lx\n",
-             hr);
- 
-         abort();
++sys.exit(main())
 -- 
-2.50.1 (Apple Git-155)
+2.51.0
 
 
