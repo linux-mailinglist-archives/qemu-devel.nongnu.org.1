@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860BBBE3275
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF669BE323F
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:45:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNc-0007UJ-LW; Thu, 16 Oct 2025 07:42:48 -0400
+	id 1v9MNY-0007Ol-6b; Thu, 16 Oct 2025 07:42:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMh-00076q-Uq; Thu, 16 Oct 2025 07:41:52 -0400
+ id 1v9MMh-00076r-Vo; Thu, 16 Oct 2025 07:41:52 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMS-0003Tj-CU; Thu, 16 Oct 2025 07:41:46 -0400
+ id 1v9MMU-0003To-Em; Thu, 16 Oct 2025 07:41:47 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9BF02C01C8;
- Thu, 16 Oct 2025 14:41:29 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4882AC01CC;
+ Thu, 16 Oct 2025 14:41:30 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-8uCyA1Hn; Thu, 16 Oct 2025 14:41:29 +0300
+ ESMTPSA id LfP2M73FEmI0-KVY9CN4h; Thu, 16 Oct 2025 14:41:29 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760614889;
- bh=3Rz+MXzzYC9OgDI+uA/Nsz/cK/rJU7nqiFJFVGluT4g=;
+ bh=zVW4n0TNZFrmZj1Vy/sRMQ5Ndb91OuTRaE6rQcdPF1k=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=k8DeWtLalt45sEpF4NnXdUFO9fIJwFvKKK50gyo1msyp0vuRBV/eHzoQCGMTC4Gbv
- vNM2NhbnIArh3dpCbOSrhxENkZGW41kopIVBxTzr05rVI8kmPi3FxQhS1E1Wt0CADA
- r9cveRYp/fBi8opR2QJp6cF/6TIPiaqpQlRisqRU=
+ b=mNSSCbFaas5f8BSQF4d5FyOViFiW+hLoUV29VImNn6IwAIS4NrhcxALSxqJNny8rh
+ FxzpjI9aBZW0hPdzqqxFsN7tTwKmR3gv++z06tJVGfp2PNwPuKm6eCBEDyAoSlaw/s
+ oDDNBTVFOVmbW6kwheQWnObG6e4gMHjtkx/QSrsc=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,10 +46,10 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 07/25] vhost-user-blk: vhost_user_blk_connect() move
- connected check to caller
-Date: Thu, 16 Oct 2025 14:40:44 +0300
-Message-ID: <20251016114104.1384675-8-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 08/25] vhost-user-blk: vhost_user_blk_connect(): call
+ vhost_dev_connect()
+Date: Thu, 16 Oct 2025 14:40:45 +0300
+Message-ID: <20251016114104.1384675-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -57,12 +57,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,53 +77,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost_user_blk_connect() has two callers:
-
-- vhost_user_blk_realize_connect(), which directly set .connected = false
-before call
-
-- vhost_user_blk_event(), where we want this check
-
-Move the check to the only caller which needs it, to simplify further
-refactoring.
+Call vhost_dev_connect() directly, to simplify further refactoring.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/block/vhost-user-blk.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ hw/block/vhost-user-blk.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index a92426f18c..57214a69cd 100644
+index 57214a69cd..f2ecf81e4d 100644
 --- a/hw/block/vhost-user-blk.c
 +++ b/hw/block/vhost-user-blk.c
-@@ -352,9 +352,7 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
+@@ -363,7 +363,12 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
  
-     trace_vhost_user_blk_connect_in(vdev);
- 
--    if (s->connected) {
--        return 0;
--    }
-+    assert(!s->connected);
- 
-     s->dev.num_queues = s->num_queues;
-     s->dev.nvqs = s->num_queues;
-@@ -411,10 +409,12 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
- 
-     switch (event) {
-     case CHR_EVENT_OPENED:
--        if (vhost_user_blk_connect(dev, &local_err) < 0) {
--            error_report_err(local_err);
--            qemu_chr_fe_disconnect(&s->chardev);
--            return;
-+        if (!s->connected) {
-+            if (vhost_user_blk_connect(dev, &local_err) < 0) {
-+                error_report_err(local_err);
-+                qemu_chr_fe_disconnect(&s->chardev);
-+                return;
-+            }
-         }
-         break;
-     case CHR_EVENT_CLOSED:
+     s->vhost_user.supports_config = true;
+     ret = vhost_dev_init(&s->dev, &s->vhost_user, VHOST_BACKEND_TYPE_USER, 0,
+-                         true, errp);
++                         false, errp);
++    if (ret < 0) {
++        return ret;
++    }
++
++    ret = vhost_dev_connect(&s->dev, errp);
+     if (ret < 0) {
+         return ret;
+     }
 -- 
 2.48.1
 
