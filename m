@@ -2,109 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7A7BE369A
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EA9BE3571
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:23:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mw0-0001Uz-Jd; Thu, 16 Oct 2025 08:18:20 -0400
+	id 1v9Mvw-000134-V1; Thu, 16 Oct 2025 08:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1v9MvX-0007xi-Bk; Thu, 16 Oct 2025 08:17:54 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1v9MvP-0007ql-9i
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:45 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1v9MvN-0008M2-PT; Thu, 16 Oct 2025 08:17:47 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GAHTeL021227;
- Thu, 16 Oct 2025 12:17:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=wsJVKV2/dXHjBV4dZ
- JEAzYUAvsft7J0SZdUtFRxu2+E=; b=cpBejVg0BSGXN2ZQFf6+ZNk/6ja6+5qdQ
- x8SLJvakR5FFe8Sp0TTz4bu6lG28XlgjoauMiicVWZ7H5uyZPifecx8yOk/B6auw
- lZkl5tgMTME2jDHTydv6fzYOWxyH1CxJRsy1fzZx41eD2uvzCr5gRR/i3XnyihjY
- pLsORmzudEwJ52J+O3n59f6OJKwtAk7d4L1i2imEOCwMLyqbx7vVLUw6P2/dmzEo
- uHJcbQ24YWRhv0jROklT2UT4p/MQipBBxx727c2hQ2Bo8ofAZgIveHmIppBmH7r2
- dR2QzVKrwjNdcuEU5STYEPf4+OI7VtXllKuZNSm5J3haSABwj9mAQ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew09cjt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Oct 2025 12:17:33 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GA85Cb003613;
- Thu, 16 Oct 2025 12:17:32 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy5q93-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Oct 2025 12:17:32 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59GCHS5j52101418
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Oct 2025 12:17:28 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 326EB2013C;
- Thu, 16 Oct 2025 12:17:28 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0EB8A2013B;
- Thu, 16 Oct 2025 12:17:28 +0000 (GMT)
-Received: from a46lp68.lnxne.boe (unknown [9.152.108.100])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 16 Oct 2025 12:17:28 +0000 (GMT)
-From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-To: qemu-s390x mailing list <qemu-s390x@nongnu.org>,
- Thomas Huth <thuth@redhat.com>
-Cc: Sebastian Mitterle <smitterl@redhat.com>,
- qemu-devel mailing list <qemu-devel@nongnu.org>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Hendrik Brueckner <brueckner@linux.ibm.com>,
- Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
- Michael Mueller <mimu@linux.ibm.com>
-Subject: [PATCH v3 2/2] tests/functional: add tests for SCLP event CPI
-Date: Thu, 16 Oct 2025 14:17:08 +0200
-Message-ID: <20251016121708.334133-2-shalini@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251016121708.334133-1-shalini@linux.ibm.com>
-References: <20251016121708.334133-1-shalini@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1v9MvH-0008Kj-AU
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:42 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cnRkq1SgJz6L529;
+ Thu, 16 Oct 2025 20:16:19 +0800 (CST)
+Received: from dubpeml100003.china.huawei.com (unknown [7.214.147.98])
+ by mail.maildlp.com (Postfix) with ESMTPS id 000521402A5;
+ Thu, 16 Oct 2025 20:17:23 +0800 (CST)
+Received: from dubpeml500004.china.huawei.com (7.214.147.1) by
+ dubpeml100003.china.huawei.com (7.214.147.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Oct 2025 13:17:23 +0100
+Received: from dubpeml500004.china.huawei.com ([7.214.147.1]) by
+ dubpeml500004.china.huawei.com ([7.214.147.1]) with mapi id 15.02.1544.011;
+ Thu, 16 Oct 2025 13:17:23 +0100
+To: Peter Maydell <peter.maydell@linaro.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: Salil Mehta <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
+Subject: RE: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+Thread-Topic: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+Thread-Index: AQHcPPUb159YqalKN0iW0Ad9cDluebTEswGg
+Date: Thu, 16 Oct 2025 12:17:23 +0000
+Message-ID: <4b686af261024bad91bf079a098976de@huawei.com>
+References: <20251014102439.319915-1-peter.maydell@linaro.org>
+In-Reply-To: <20251014102439.319915-1-peter.maydell@linaro.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.67.10]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nw6fqr9drwXML8DEYd6XpMe8h-0auhXP
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f0e25d cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=WP5zsaevAAAA:8 a=ugThcBDMf7tpZusDcEcA:9 a=t8Kx07QrZZTALmIZmm-o:22
- a=poXaRoVlC6wW9_mwW8W4:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX6GvvfXJPWB1T
- kF3bWwsMNjh/bOTqDAMi3CqCzJr4F127VWbQ0YHY2bikqc08PB78g0SpkmdbrncwhYDCAbJQlOe
- UIjsNhpVSwW0iylt1+NhsmzI5vhJXGLN4BURw5Aa/2IyEB6lZM4qUDQ5kDEMvnxdi2S3aFztVTr
- KTCdGqzEjqMI/0PLN3n/2Bl/3QFxtMyom5yK4L1ZJVc0Ywyw+na+71BRTCirAaQDuZg4L4B7EDj
- qnR36kevJZngp1apBwxpPinFI96Aeidb9IGYpI7ZMojD3ISLbjEX0rsIg3Ubv09VgxzJZRg7DAS
- AhEKpnghGfnRyk2NLjyiUWspn+4yPFVDmxAQwhTHZQ06VnOWsIq4c+wTJl/6MT7EjFJb126zS6E
- B6+bwQblnAp2g4Yaa9VC+dneLLxXLg==
-X-Proofpoint-GUID: nw6fqr9drwXML8DEYd6XpMe8h-0auhXP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=shalini@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,61 +74,162 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add tests for SCLP event type Control-Program Identification.
+Hi Peter,
 
-Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-Suggested-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/s390x/test_ccw_virtio.py | 26 +++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+> From: qemu-devel-bounces+salil.mehta=3Dhuawei.com@nongnu.org <qemu-
+> devel-bounces+salil.mehta=3Dhuawei.com@nongnu.org> On Behalf Of Peter
+> Maydell
+> Sent: Tuesday, October 14, 2025 11:25 AM
+> To: qemu-devel@nongnu.org
+> Cc: Salil Mehta <salil.mehta@opnsrc.net>; Marc Zyngier <maz@kernel.org>
+> Subject: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+> kernel in cpuif reset
+>=20
+> Currently in arm_gicv3_icc_reset() we read the kernel's value of
+> ICC_CTLR_EL1 as part of resetting the CPU interface.  This mostly works, =
+but
+> we're actually breaking an assumption the kernel makes that userspace onl=
+y
+> accesses the in-kernel GIC data when the VM is totally paused, which may
+> not be the case if a single vCPU is being reset.  The effect is that it's=
+ possible
+> that the read attempt returns EBUSY.
+>=20
+> Avoid this by reading the kernel's value of the reset ICC_CTLR_EL1 once i=
+n
+> device realize. This brings ICC_CTLR_EL1 into line with the other cpuif
+> registers, where we assume we know what the kernel is resetting them to
+> and just update QEMU's data structures in arm_gicv3_icc_reset().
+>=20
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> I've only tested this fairly lightly, but it seems to work.
+> Salil, does this fix the EBUSY issues you were seeing ?
 
-diff --git a/tests/functional/s390x/test_ccw_virtio.py b/tests/functional/s390x/test_ccw_virtio.py
-index 453711aa0f..0455337856 100755
---- a/tests/functional/s390x/test_ccw_virtio.py
-+++ b/tests/functional/s390x/test_ccw_virtio.py
-@@ -15,6 +15,7 @@
- import tempfile
- 
- from qemu_test import QemuSystemTest, Asset
-+from qemu_test import exec_command
- from qemu_test import exec_command_and_wait_for_pattern
- from qemu_test import wait_for_console_pattern
- 
-@@ -270,5 +271,30 @@ def test_s390x_fedora(self):
-                         'while ! (dmesg -c | grep Start.virtcrypto_remove) ; do'
-                         ' sleep 1 ; done', 'Start virtcrypto_remove.')
- 
-+        # Test SCLP event Control-Program Identification (CPI)
-+        cpi = '/sys/firmware/cpi/'
-+        sclpcpi = '/machine/sclp/s390-sclp-event-facility/sclpcpi'
-+        self.log.info("Test SCLP event CPI")
-+        exec_command(self, 'echo TESTVM > ' + cpi + 'system_name')
-+        exec_command(self, 'echo LINUX > ' + cpi + 'system_type')
-+        exec_command(self, 'echo TESTPLEX > ' + cpi + 'sysplex_name')
-+        exec_command(self, 'echo 0x001a000000060b00 > ' + cpi + 'system_level')
-+        exec_command_and_wait_for_pattern(self,
-+                                          'echo 1 > ' + cpi + 'set', ':/#')
-+        try:
-+            event = self.vm.event_wait('SCLP_CPI_INFO_AVAILABLE')
-+        except TimeoutError:
-+            self.fail('Timed out waiting for the SCLP_CPI_INFO_AVAILABLE event')
-+        ts = self.vm.cmd('qom-get', path=sclpcpi, property='timestamp')
-+        self.assertNotEqual(ts, 0)
-+        name = self.vm.cmd('qom-get', path=sclpcpi, property='system_name')
-+        self.assertEqual(name.strip(), 'TESTVM')
-+        typ = self.vm.cmd('qom-get', path=sclpcpi, property='system_type')
-+        self.assertEqual(typ.strip(), 'LINUX')
-+        sysplex = self.vm.cmd('qom-get', path=sclpcpi, property='sysplex_name')
-+        self.assertEqual(sysplex.strip(), 'TESTPLEX')
-+        level = self.vm.cmd('qom-get', path=sclpcpi, property='system_level')
-+        self.assertEqual(level, 0x001a000000060b00)
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
--- 
-2.49.0
+
+Would you be absorbing this in your tree now or should I make it part
+of the RFC V7 ?
+
+Reviewed-by: Salil Mehta <salil.mehta@huawei.com>
+Tested-by: Salil Mehta <salil.mehta@huawei.com>
+
+
+Many thanks!
+
+Best regards
+Salil.
+
+
+>=20
+>  include/hw/intc/arm_gicv3_common.h |  3 ++
+>  hw/intc/arm_gicv3_kvm.c            | 49 +++++++++++++++++++++---------
+>  2 files changed, 38 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/include/hw/intc/arm_gicv3_common.h
+> b/include/hw/intc/arm_gicv3_common.h
+> index 38aa1961c50..61d51915e07 100644
+> --- a/include/hw/intc/arm_gicv3_common.h
+> +++ b/include/hw/intc/arm_gicv3_common.h
+> @@ -166,6 +166,9 @@ struct GICv3CPUState {
+>      uint64_t icc_igrpen[3];
+>      uint64_t icc_ctlr_el3;
+>=20
+> +    /* For KVM, cached copy of the kernel reset value of ICC_CTLR_EL1 */
+> +    uint64_t kvm_reset_icc_ctlr_el1;
+> +
+>      /* Virtualization control interface */
+>      uint64_t ich_apr[3][4]; /* ich_apr[GICV3_G1][x] never used */
+>      uint64_t ich_hcr_el2;
+> diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c index
+> 9829e2146da..b95e6ea057a 100644
+> --- a/hw/intc/arm_gicv3_kvm.c
+> +++ b/hw/intc/arm_gicv3_kvm.c
+> @@ -666,11 +666,24 @@ static void kvm_arm_gicv3_get(GICv3State *s)
+>=20
+>  static void arm_gicv3_icc_reset(CPUARMState *env, const ARMCPRegInfo
+> *ri)  {
+> -    GICv3State *s;
+> -    GICv3CPUState *c;
+> +    GICv3CPUState *c =3D (GICv3CPUState *)env->gicv3state;
+>=20
+> -    c =3D (GICv3CPUState *)env->gicv3state;
+> -    s =3D c->gic;
+> +    /*
+> +     * This function is called when each vcpu resets. The kernel
+> +     * API for the GIC assumes that it is only to be used when the
+> +     * whole VM is paused, so if we attempt to read the kernel's
+> +     * reset values here we might get EBUSY failures.
+> +     * So instead we assume we know what the kernel's reset values
+> +     * are (mostly zeroes) and only update the QEMU state struct
+> +     * fields. The exception is that we do need to know the kernel's
+> +     * idea of the ICC_CTLR_EL1 reset value, so we cache that at
+> +     * device realize time.
+> +     *
+> +     * This makes these sysregs different from the usual CPU ones,
+> +     * which can be validly read and written when only the single
+> +     * vcpu they apply to is paused, and where (in target/arm code)
+> +     * we read the reset values out of the kernel on every reset.
+> +     */
+>=20
+>      c->icc_pmr_el1 =3D 0;
+>      /*
+> @@ -691,16 +704,8 @@ static void arm_gicv3_icc_reset(CPUARMState *env,
+> const ARMCPRegInfo *ri)
+>      memset(c->icc_apr, 0, sizeof(c->icc_apr));
+>      memset(c->icc_igrpen, 0, sizeof(c->icc_igrpen));
+>=20
+> -    if (s->migration_blocker) {
+> -        return;
+> -    }
+> -
+> -    /* Initialize to actual HW supported configuration */
+> -    kvm_device_access(s->dev_fd,
+> KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
+> -                      KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer),
+> -                      &c->icc_ctlr_el1[GICV3_NS], false, &error_abort);
+> -
+> -    c->icc_ctlr_el1[GICV3_S] =3D c->icc_ctlr_el1[GICV3_NS];
+> +    c->icc_ctlr_el1[GICV3_NS] =3D c->kvm_reset_icc_ctlr_el1;
+> +    c->icc_ctlr_el1[GICV3_S] =3D c->kvm_reset_icc_ctlr_el1;
+>  }
+>=20
+>  static void kvm_arm_gicv3_reset_hold(Object *obj, ResetType type) @@ -
+> 939,6 +944,22 @@ static void kvm_arm_gicv3_realize(DeviceState *dev,
+> Error **errp)
+>                                      kvm_arm_gicv3_notifier,
+>                                      MIG_MODE_CPR_TRANSFER);
+>      }
+> +
+> +    /*
+> +     * Now we can read the kernel's initial value of ICC_CTLR_EL1, which
+> +     * we will need if a CPU interface is reset. If the kernel is ancien=
+t
+> +     * and doesn't support writing the GIC state then we don't need to
+> +     * care what reset does to QEMU's data structures.
+> +     */
+> +    if (!s->migration_blocker) {
+> +        for (i =3D 0; i < s->num_cpu; i++) {
+> +            GICv3CPUState *c =3D &s->cpu[i];
+> +
+> +            kvm_device_access(s->dev_fd,
+> KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
+> +                              KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer)=
+,
+> +                              &c->kvm_reset_icc_ctlr_el1, false, &error_=
+abort);
+> +        }
+> +    }
+>  }
+>=20
+>  static void kvm_arm_gicv3_class_init(ObjectClass *klass, const void *dat=
+a)
+> --
+> 2.43.0
+>=20
 
 
