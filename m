@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE18BE41CD
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9BEBE41DC
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:07:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9PX7-0002ID-NJ; Thu, 16 Oct 2025 11:04:49 -0400
+	id 1v9PWq-0002Fw-3N; Thu, 16 Oct 2025 11:04:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWm-0002GC-U4
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:29 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1v9PWi-0002Er-M0
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:24 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWa-0001BP-8i
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:27 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46e6a6a5e42so4509235e9.0
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:13 -0700 (PDT)
+ id 1v9PWT-0001Am-Bu
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:24 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-42557c5cedcso533632f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760627049; x=1761231849; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760627045; x=1761231845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zp4dBelYcrDdnG9qeH0z5QyNjh/aPBWG7icXFCLgLbY=;
- b=gePZE7XPKS3/DSd+oDMA8BCt1PL7RW8nFi2gA7YDD4hL1V6C8NOYHXHmSvONcHKwVG
- 7Bn14h5eWjC0RTYevjKbw6kG1K/EybwZgfidASpmAlI2exjUwGU0gHMCDM9PveVQ+Zny
- HNRiP8BrDVuBpcgl8tfnERc0FwvsUULU4mvdmvh6oDKZaJ7DsSIjn3Fw8fD6/PEcFTln
- 6orUvUUTWr+bLDABmp194On74Gw51ltiwfJUoS/taePd/inuWUNDc8ZcMjCk7jcUWQty
- 2ZopeXv9Rx51S0LLVofpHmXUSTEXsQF1GnrDMqKvI4bQJ7tKhbHARs2YIrVOTWjNTnfB
- pCKA==
+ bh=VFnHEU9xjltvh+ypLAj3KV62Jnkg0sBcs3wWuIX0eJ0=;
+ b=zubRwJME5D5PsdWfsnqUeGr/BECIKKcY5zwLKczJaY7/cfjaolN822aG0gp/OOi9Vw
+ ym+TSIXMRQg9J4Sv8cmWUK6pN0uy58D9E1NqFM6Xv+dp/PD4F2ZTV+F01lhOZ0XTJIpS
+ zbba+vZcKVEjdtHv20F2l31H8x1i2gZgG9YA2rr5YfmvKzbpz6tfjkfeUn2C4Uc4rGsv
+ eWLE7unxtRoBMw+ZHEVoUDvbZJWFw6ltjqdluf7KPiq+BmI8di9Bcjb5BVooixqU5dGs
+ dgTMhdIt7UpOaZalkpTh8/FenTYDkqELo9ax50WtHohsMGiWO56owygOQTlneczQQZQ1
+ otng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760627049; x=1761231849;
+ d=1e100.net; s=20230601; t=1760627045; x=1761231845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zp4dBelYcrDdnG9qeH0z5QyNjh/aPBWG7icXFCLgLbY=;
- b=ljwVXJRi/SjoeGb8/bKsPCNA9UiKXm9w4dEiksPzqOL7Q7q050QkZU0Jsgxyep3C/E
- 79CemUiOr8Bi817f93Z3+6V5+L2jqmC19CA5FR7KRKT9meSRku89+wKSdlc+V8pgdX+L
- Kq3LMotge44K13GtF2EFdv/v8oVxiMoh8gFR7KhE2IYwxnv1CM5zPVMOCpz7cmghB7As
- 5/bnhhLa1GzEzWObbVH7OXA9JhQ/hjJIEweOxfgpbk8DP2mJCt57DecZHO+kUgds9TRb
- +WcL6rm2zIuIWvwWWlEt54442E6BoukQsvSRVcMHhvzXkljEnvRydGil1nBearfZ0m7c
- Ofcw==
-X-Gm-Message-State: AOJu0YzYYqfgbN37nPwYuVUTVQWn8siAMagm5B0Q2Bk2G2hBdAyRtxCr
- tI5dbj5v34ynXSzAGfU9Shqm53GNYk6wDyCG+3K8BV3xX7vBmfKzOx4VXdcvlN2WytM=
-X-Gm-Gg: ASbGncvU8hVVaF2csIAmCIAIQ+bhjMWTxUeYGAh0cA6b1qMUF2EAZRfqGGjSeZSThRF
- X+Da7xoqjjqrlSfAnDFMzcGo6aGbr19Ii6AX0jIemluw/U9BbsfikHHt5HIP95Vi2wdFEC9+fE8
- 0G4iU7ly1y49k7QWelYcfM9JJKMLJPruZIRYVnxINBDhGyVAgcy1K3BZC0JulhdkzmzIOhgapGu
- gMP8VPPrLmgV7mSYcyf6LFjUNEtriNmFnGm2PFo83mCeB0FNDanp0Vz5F7q7JlW7paoWoAuJZQQ
- XGMsMWw3LFhEnA3AMCJjH8XihVOPqTppdpfIk5B7d8d2provIWkMlCDmAQdd1yJkV3oFXQJ85sA
- iOUakckaM76jY1xb/ES9+cgjeqVrGNfsbOmSLxFD/uf+H1yy0nBe5bzN8jhoivjij5tMr1sxitS
- isAB6SOrarHENefViL8FWF8ixzVg==
-X-Google-Smtp-Source: AGHT+IFQprA22hyfbXF9KVjjlncotxu4f6SHQ8l012K8WptALDqjp16O5AHXuFVKfEaeFiSU/dPhZQ==
-X-Received: by 2002:a05:600c:a013:b0:46d:ba6d:65bb with SMTP id
- 5b1f17b1804b1-47117919b6cmr2509825e9.31.1760627048967; 
- Thu, 16 Oct 2025 08:04:08 -0700 (PDT)
+ bh=VFnHEU9xjltvh+ypLAj3KV62Jnkg0sBcs3wWuIX0eJ0=;
+ b=iW87QLOlhamFA3gQ5xS3QkneTYWX0ZpWuJtmoUqgnfSyDXn6mrj0DFLfDXZFn2XDlo
+ RNgA/axaOFZL9yfAnuwuqyH4clGXTctXr+sKoPNbzTHxaF86n0kPbdJSTwAOChd3/o/i
+ gkG2BX8qhxXxEXGIxmPAiigGoCC0TeYmTos47ddetggZaM05yGqVQydRVaMQrHmzpPqi
+ n066BW3M4MQVbr48UaOQo3TnSeLOCdsW8eRk3ZJLIl+a1bkIvizLF4V2qSF4Iguy1ZGu
+ F68hy5etd4aYL0HoKrCO6BJohNdrfkmSQPUsLHq96nnhNZNsjslX1eOHKI4jydXk9QG0
+ tRCA==
+X-Gm-Message-State: AOJu0YzBgtKdm87+GkR88meY+5rE6RRNIY/8TIyjtMxm46Z+c2aAg9yK
+ 0Wm3D5EyP3/5oCZfYStQWOYCfveU4t7ffff8J/cz4QhTNXOFyeFESJaR6jKp33xWGTU=
+X-Gm-Gg: ASbGncs0sfjYYJO/QWoEfvgPLcyPBAOfCY+In+52eKvnEV32F1di2U+g78SX99NsiC4
+ Xu7fWOqq2XTelGT3fIaIqlHYKtGmKx38K9Nwapb6DO7lKYaqCJXMenRtAWHNnMmksviTyk0fVCG
+ umaLqKjPsr7ONqoLGdJhATN/BsxhMTYBgp15aD+dmUBxXPwRUPkNHOFwMFcf0hBSUhtbJTmbO4K
+ GheU2Uevlz9gevroxrNCdnJJOYFW4DgEa0qaqoUtx0LO5sLuim+xwRo4x18mEsOOFH44MN1h9Wj
+ osbGpS5rvM/D4rpWXwKCKsOCLVLbwnic+6K86LSYhGAQlfN8ZbmqRUnWKdzURNH/e4palmze3rw
+ mcPGqc/pKs4uMce1s4QhnMGzj6QYX1o2OFS0F1UwBY1YuSn6xIW67F40ub6qTcTDbqjniqC3o44
+ V6I1kGhkd/Lrs=
+X-Google-Smtp-Source: AGHT+IFF8H43+e8MRI2EbA9TpwS6S4VuaDGg6SQ44rLsKOAXzusgPe/QpAuz22b3YblyUKsBJ46SuA==
+X-Received: by 2002:a5d:5888:0:b0:3ec:2ef7:2134 with SMTP id
+ ffacd0b85a97d-42704d54b25mr281115f8f.18.1760627045189; 
+ Thu, 16 Oct 2025 08:04:05 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce57cd11sm35592379f8f.5.2025.10.16.08.04.00
+ ffacd0b85a97d-426ce583424sm34452478f8f.21.2025.10.16.08.04.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 16 Oct 2025 08:04:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 27FF15FAD2;
+ by draig.lan (Postfix) with ESMTP id 425B95FADF;
  Thu, 16 Oct 2025 16:03:58 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,26 +79,26 @@ Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH 07/11] contrib/plugins/uftrace_symbols.py: generate debug
- files to map symbols to source
-Date: Thu, 16 Oct 2025 16:03:52 +0100
-Message-ID: <20251016150357.876415-8-alex.bennee@linaro.org>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH 08/11] docs/system: split VirtIO devices from the rest
+Date: Thu, 16 Oct 2025 16:03:53 +0100
+Message-ID: <20251016150357.876415-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251016150357.876415-1-alex.bennee@linaro.org>
 References: <20251016150357.876415-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,230 +114,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In an effort to tidy up our device documentation split the VirtIO docs
+from the rest of the index and put the index to them at the front of
+the list. Sort the remaining entries alphabetically and tweak the
+references appropriately.
 
-Enhance uftrace_symbols.py to generate .dbg files, containing
-source location for every symbol present in .sym file.
-It allows to use `uftrace {replay,dump} --srcline` and show origin of
-functions, connecting trace to original source code.
+Add a short preface to the VirtIO section nudging users to use VirtIO
+unless they specifically want a particular piece of hardware
+emulation.
 
-It was first implemented with pyelftools DWARF parser, which was way
-too slow (~minutes) to get locations for every symbol in the linux
-kernel. Thus, we use `addr2line` instead, which runs in seconds.
-
-As well, there were some bugs with latest pyelftools release,
-requiring to run master version, which is not installable with pip.
-Thus, since we now require binutils (addr2line), we can ditch pyelftools
-based implementation and simply rely on `nm` to get symbols information,
-which is faster and better.
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: John Levon <john.levon@nutanix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- contrib/plugins/uftrace_symbols.py | 120 +++++++++++++++++++----------
- 1 file changed, 78 insertions(+), 42 deletions(-)
 
-diff --git a/contrib/plugins/uftrace_symbols.py b/contrib/plugins/uftrace_symbols.py
-index b49e03203c8..45fb79c7a58 100755
---- a/contrib/plugins/uftrace_symbols.py
-+++ b/contrib/plugins/uftrace_symbols.py
-@@ -1,7 +1,7 @@
- #!/usr/bin/env python3
- # -*- coding: utf-8 -*-
- #
--# Create symbols and mapping files for uftrace.
-+# Create symbols, debug and mapping files for uftrace.
- #
- # Copyright 2025 Linaro Ltd
- # Author: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-@@ -9,44 +9,71 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
+---
+v2
+  - fix recommend/recommended
+---
+ docs/system/device-emulation.rst              | 18 +++++------
+ docs/system/devices/vfio-user.rst             |  2 +-
+ docs/system/devices/virtio/index.rst          | 30 +++++++++++++++++++
+ .../devices/{ => virtio}/vhost-user-input.rst |  0
+ .../devices/{ => virtio}/vhost-user-rng.rst   |  0
+ .../devices/{ => virtio}/vhost-user.rst       |  0
+ .../devices/{ => virtio}/virtio-gpu.rst       |  0
+ .../devices/{ => virtio}/virtio-pmem.rst      |  0
+ .../devices/{ => virtio}/virtio-snd.rst       |  0
+ 9 files changed, 38 insertions(+), 12 deletions(-)
+ create mode 100644 docs/system/devices/virtio/index.rst
+ rename docs/system/devices/{ => virtio}/vhost-user-input.rst (100%)
+ rename docs/system/devices/{ => virtio}/vhost-user-rng.rst (100%)
+ rename docs/system/devices/{ => virtio}/vhost-user.rst (100%)
+ rename docs/system/devices/{ => virtio}/virtio-gpu.rst (100%)
+ rename docs/system/devices/{ => virtio}/virtio-pmem.rst (100%)
+ rename docs/system/devices/{ => virtio}/virtio-snd.rst (100%)
+
+diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
+index 911381643f1..db714ad47aa 100644
+--- a/docs/system/device-emulation.rst
++++ b/docs/system/device-emulation.rst
+@@ -82,22 +82,18 @@ Emulated Devices
+ .. toctree::
+    :maxdepth: 1
  
- import argparse
--import elftools # pip install pyelftools
- import os
--
--from elftools.elf.elffile import ELFFile
--from elftools.elf.sections import SymbolTableSection
--
--def elf_func_symbols(elf):
--    symbol_tables = [(idx, s) for idx, s in enumerate(elf.iter_sections())
--                  if isinstance(s, SymbolTableSection)]
--    symbols = []
--    for _, section in symbol_tables:
--        for _, symbol in enumerate(section.iter_symbols()):
--            if symbol_size(symbol) == 0:
--                continue
--            type = symbol['st_info']['type']
--            if type == 'STT_FUNC' or type == 'STT_NOTYPE':
--                symbols.append(symbol)
--    symbols.sort(key = lambda x: symbol_addr(x))
-+import subprocess
++   devices/virtio/index.rst
 +
-+class Symbol:
-+    def __init__(self, name, addr, size):
-+        self.name = name
-+        # clamp addr to 48 bits, like uftrace entries
-+        self.addr = addr & 0xffffffffffff
-+        self.full_addr = addr
-+        self.size = size
+    devices/can.rst
++   devices/canokey.rst
+    devices/ccid.rst
+    devices/cxl.rst
+-   devices/vfio-user.rst
+-   devices/ivshmem.rst
++   devices/igb.rst
+    devices/ivshmem-flat.rst
++   devices/ivshmem.rst
+    devices/keyboard.rst
+    devices/net.rst
+    devices/nvme.rst
+-   devices/usb.rst
+-   devices/vhost-user.rst
+-   devices/virtio-gpu.rst
+-   devices/virtio-pmem.rst
+-   devices/virtio-snd.rst
+-   devices/vhost-user-input.rst
+-   devices/vhost-user-rng.rst
+-   devices/canokey.rst
+    devices/usb-u2f.rst
+-   devices/igb.rst
++   devices/usb.rst
++   devices/vfio-user.rst
+diff --git a/docs/system/devices/vfio-user.rst b/docs/system/devices/vfio-user.rst
+index b6dcaa5615e..30c2215f4ea 100644
+--- a/docs/system/devices/vfio-user.rst
++++ b/docs/system/devices/vfio-user.rst
+@@ -6,7 +6,7 @@ vfio-user
+ 
+ QEMU includes a ``vfio-user`` client. The ``vfio-user`` specification allows for
+ implementing (PCI) devices in userspace outside of QEMU; it is similar to
+-``vhost-user`` in this respect (see :doc:`vhost-user`), but can emulate arbitrary
++``vhost-user`` in this respect (see :doc:`virtio/vhost-user`), but can emulate arbitrary
+ PCI devices, not just ``virtio``. Whereas ``vfio`` is handled by the host
+ kernel, ``vfio-user``, while similar in implementation, is handled entirely in
+ userspace.
+diff --git a/docs/system/devices/virtio/index.rst b/docs/system/devices/virtio/index.rst
+new file mode 100644
+index 00000000000..fc457ca74c7
+--- /dev/null
++++ b/docs/system/devices/virtio/index.rst
+@@ -0,0 +1,30 @@
++VirtIO Devices
++==============
 +
-+    def set_loc(self, file, line):
-+        self.file = file
-+        self.line = line
++VirtIO devices are paravirtualized devices designed to be efficient to
++emulate and virtualize. Unless you are specifically trying to exercise
++a driver for some particular hardware they are the recommended device
++models to use for virtual machines.
 +
-+def get_symbols(elf_file):
-+    symbols=[]
-+    try:
-+        out = subprocess.check_output(['nm', '--print-size', elf_file],
-+                                      stderr=subprocess.STDOUT,
-+                                      text=True)
-+    except subprocess.CalledProcessError as e:
-+        print(e.output)
-+        raise
-+    out = out.strip().split('\n')
-+    for line in out:
-+        info = line.split(' ')
-+        if len(info) == 3:
-+            # missing size information
-+            continue
-+        addr, size, type, name = info
-+        # add only symbols from .text section
-+        if type.lower() != 't':
-+            continue
-+        addr = int(addr, 16)
-+        size = int(size, 16)
-+        symbols.append(Symbol(name, addr, size))
-+    symbols.sort(key = lambda x: x.addr)
-     return symbols
- 
--def symbol_size(symbol):
--    return symbol['st_size']
--
--def symbol_addr(symbol):
--    addr = symbol['st_value']
--    # clamp addr to 48 bits, like uftrace entries
--    return addr & 0xffffffffffff
--
--def symbol_name(symbol):
--    return symbol.name
-+def find_symbols_locations(elf_file, symbols):
-+    addresses = '\n'.join([hex(x.full_addr) for x in symbols])
-+    try:
-+        out = subprocess.check_output(['addr2line', '--exe', elf_file],
-+                                      stderr=subprocess.STDOUT,
-+                                      input=addresses, text=True)
-+    except subprocess.CalledProcessError as e:
-+        print(e.output)
-+        raise
-+    out = out.strip().split('\n')
-+    assert len(out) == len(symbols)
-+    for i in range(len(symbols)):
-+        s = symbols[i]
-+        file, line = out[i].split(':')
-+        # addr2line may return 'line (discriminator [0-9]+)' sometimes,
-+        # remove this to keep only line number.
-+        line = line.split(' ')[0]
-+        s.set_loc(file, line)
- 
- class BinaryFile:
-     def __init__(self, path, map_offset):
-         self.fullpath = os.path.realpath(path)
-         self.map_offset = map_offset
--        with open(path, 'rb') as f:
--            self.elf = ELFFile(f)
--            self.symbols = elf_func_symbols(self.elf)
-+        self.symbols = get_symbols(self.fullpath)
-+        find_symbols_locations(self.fullpath, self.symbols)
- 
-     def path(self):
-         return self.fullpath
-@@ -56,24 +83,31 @@ def addr_start(self):
- 
-     def addr_end(self):
-         last_sym = self.symbols[-1]
--        return symbol_addr(last_sym) + symbol_size(last_sym) + self.map_offset
-+        return last_sym.addr + last_sym.size + self.map_offset
- 
-     def generate_symbol_file(self, prefix_symbols):
-         binary_name = os.path.basename(self.fullpath)
--        sym_file_path = f'./uftrace.data/{binary_name}.sym'
-+        sym_file_path = os.path.join('uftrace.data', f'{binary_name}.sym')
-         print(f'{sym_file_path} ({len(self.symbols)} symbols)')
-         with open(sym_file_path, 'w') as sym_file:
-             # print hexadecimal addresses on 48 bits
-             addrx = "0>12x"
-             for s in self.symbols:
--                addr = symbol_addr(s)
-+                addr = s.addr
-                 addr = f'{addr:{addrx}}'
--                size = f'{symbol_size(s):{addrx}}'
--                name = symbol_name(s)
-+                size = f'{s.size:{addrx}}'
-                 if prefix_symbols:
--                    name = f'{binary_name}:{name}'
-+                    name = f'{binary_name}:{s.name}'
-                 print(addr, size, 'T', name, file=sym_file)
- 
-+    def generate_debug_file(self):
-+        binary_name = os.path.basename(self.fullpath)
-+        dbg_file_path = os.path.join('uftrace.data', f'{binary_name}.dbg')
-+        with open(dbg_file_path, 'w') as dbg_file:
-+            for s in self.symbols:
-+                print(f'F: {hex(s.addr)} {s.name}', file=dbg_file)
-+                print(f'L: {s.line} {s.file}', file=dbg_file)
++The `VirtIO specification`_ is an open standard managed by OASIS. It
++describes how a *driver* in a guest operating system interacts with
++the *device* model provided by QEMU. Multiple Operating Systems
++support drivers for VirtIO with Linux perhaps having the widest range
++of device types supported.
 +
- def parse_parameter(p):
-     s = p.split(":")
-     path = s[0]
-@@ -84,7 +118,7 @@ def parse_parameter(p):
-     offset = s[1]
-     if not offset.startswith('0x'):
-         err = f'offset "{offset}" is not an hexadecimal constant. '
--        err += 'It should starts with "0x".'
-+        err += 'It should start with "0x".'
-         raise ValueError(err)
-     offset = int(offset, 16)
-     return path, offset
-@@ -97,7 +131,7 @@ def is_from_user_mode(map_file_path):
-     return False
- 
- def generate_map(binaries):
--    map_file_path = './uftrace.data/sid-0.map'
-+    map_file_path = os.path.join('uftrace.data', 'sid-0.map')
- 
-     if is_from_user_mode(map_file_path):
-         print(f'do not overwrite {map_file_path} generated from qemu-user')
-@@ -124,7 +158,8 @@ def generate_map(binaries):
- 
- def main():
-     parser = argparse.ArgumentParser(description=
--                                     'generate symbol files for uftrace')
-+                                     'generate symbol files for uftrace. '
-+                                     'Require binutils (nm and addr2line).')
-     parser.add_argument('elf_file', nargs='+',
-                         help='path to an ELF file. '
-                         'Use /path/to/file:0xdeadbeef to add a mapping offset.')
-@@ -133,8 +168,8 @@ def main():
-                         action=argparse.BooleanOptionalAction)
-     args = parser.parse_args()
- 
--    if not os.path.exists('./uftrace.data'):
--        os.mkdir('./uftrace.data')
-+    if not os.path.exists('uftrace.data'):
-+        os.mkdir('uftrace.data')
- 
-     binaries = []
-     for file in args.elf_file:
-@@ -145,6 +180,7 @@ def main():
- 
-     for b in binaries:
-         b.generate_symbol_file(args.prefix_symbols)
-+        b.generate_debug_file()
- 
-     generate_map(binaries)
- 
++The device implementation can either be provided wholly by QEMU, or in
++concert with the kernel (known as *vhost*). The device implementation
++can also be off-loaded to an external process via :ref:`vhost user
++<vhost_user>`.
++
++.. toctree::
++   :maxdepth: 1
++
++   virtio-gpu.rst
++   virtio-pmem.rst
++   virtio-snd.rst
++   vhost-user.rst
++   vhost-user-input.rst
++   vhost-user-rng.rst
++
++.. _VirtIO specification: https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html
+diff --git a/docs/system/devices/vhost-user-input.rst b/docs/system/devices/virtio/vhost-user-input.rst
+similarity index 100%
+rename from docs/system/devices/vhost-user-input.rst
+rename to docs/system/devices/virtio/vhost-user-input.rst
+diff --git a/docs/system/devices/vhost-user-rng.rst b/docs/system/devices/virtio/vhost-user-rng.rst
+similarity index 100%
+rename from docs/system/devices/vhost-user-rng.rst
+rename to docs/system/devices/virtio/vhost-user-rng.rst
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/virtio/vhost-user.rst
+similarity index 100%
+rename from docs/system/devices/vhost-user.rst
+rename to docs/system/devices/virtio/vhost-user.rst
+diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio/virtio-gpu.rst
+similarity index 100%
+rename from docs/system/devices/virtio-gpu.rst
+rename to docs/system/devices/virtio/virtio-gpu.rst
+diff --git a/docs/system/devices/virtio-pmem.rst b/docs/system/devices/virtio/virtio-pmem.rst
+similarity index 100%
+rename from docs/system/devices/virtio-pmem.rst
+rename to docs/system/devices/virtio/virtio-pmem.rst
+diff --git a/docs/system/devices/virtio-snd.rst b/docs/system/devices/virtio/virtio-snd.rst
+similarity index 100%
+rename from docs/system/devices/virtio-snd.rst
+rename to docs/system/devices/virtio/virtio-snd.rst
 -- 
 2.47.3
 
