@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D88BE321E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95B4BE327B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNU-0007Gs-Ll; Thu, 16 Oct 2025 07:42:41 -0400
+	id 1v9MNW-0007O3-PO; Thu, 16 Oct 2025 07:42:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMa-000757-IW; Thu, 16 Oct 2025 07:41:44 -0400
+ id 1v9MMm-00077W-5Q; Thu, 16 Oct 2025 07:41:57 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMS-0003Tt-5y; Thu, 16 Oct 2025 07:41:40 -0400
+ id 1v9MMa-0003V1-UX; Thu, 16 Oct 2025 07:41:52 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id F2BFBC01CF;
- Thu, 16 Oct 2025 14:41:30 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A45E8C01C0;
+ Thu, 16 Oct 2025 14:41:31 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-Tij31T1z; Thu, 16 Oct 2025 14:41:30 +0300
+ ESMTPSA id LfP2M73FEmI0-kbTFYAzO; Thu, 16 Oct 2025 14:41:31 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614890;
- bh=PJRYSlh/MYnWxyKJiwlYbe6xhlYoS+CYlv2eltv+hYU=;
+ s=default; t=1760614891;
+ bh=s9yCrQBHmEqUJP+BAtrGs9xnsIszRjeHBLrqv/k9/kY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=P0Ux5ni957+92wSL4EifqrF03NrY30VNtyIlretVkHgJOf3CdaqX8BbK7FmX6aH94
- +gGTx4uzS9gEQ+7zfuL4qaYEBGRJaLFRZsnGSaK7m84uyaxtDmz+Rs6pROYZGaSya+
- zRwSM/XegeZgvB3YNg4i8kga2tYfu/i4ex5+yrJw=
+ b=nGMFivfrKNwEYIg4qwdqbFWpAbeT2qjkF2VfBM6/5cHP4iADYxGoBuyFaeYKhyjCE
+ nTuClrPtD2w8Gm2KvZ4UojN8fA31c+j9bTunxgzi2ta2nXtoE9VELDvlS43fuq4mq2
+ aKRDhC38KQ64KEkYt2XCUupg+hX9++fFFxuTvOhs=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,10 +46,9 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 09/25] vhost-user-blk: rename vhost_user_blk_connect to
- vhost_user_blk_init
-Date: Thu, 16 Oct 2025 14:40:46 +0300
-Message-ID: <20251016114104.1384675-10-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 10/25] vhost-user-blk: split vhost_user_blk_init()
+Date: Thu, 16 Oct 2025 14:40:47 +0300
+Message-ID: <20251016114104.1384675-11-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -78,79 +77,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function does both vhost_dev_init() and vhost_dev_connect().
-Following interface of vhost_dev_init(), and preparing to further
-refactoring, let's rename to _init() and add boolean "connect"
-parameter.
+Split it into _init() and _connect() part, following pattern of
+vhost_dev_init / vhost_dev_connect.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/block/trace-events     |  2 ++
- hw/block/vhost-user-blk.c | 13 ++++++++-----
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ hw/block/vhost-user-blk.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/hw/block/trace-events b/hw/block/trace-events
-index dbaa5ca6cb..9f00412a99 100644
---- a/hw/block/trace-events
-+++ b/hw/block/trace-events
-@@ -63,6 +63,8 @@ vhost_user_blk_start_in(void *vdev) "vdev %p"
- vhost_user_blk_start_out(void *vdev) "vdev %p"
- vhost_user_blk_stop_in(void *vdev) "vdev %p"
- vhost_user_blk_stop_out(void *vdev) "vdev %p"
-+vhost_user_blk_init_in(void *vdev) "vdev %p"
-+vhost_user_blk_init_out(void *vdev) "vdev %p"
- vhost_user_blk_connect_in(void *vdev) "vdev %p"
- vhost_user_blk_connect_out(void *vdev) "vdev %p"
- vhost_user_blk_device_realize_in(void *vdev) "vdev %p"
 diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index f2ecf81e4d..c31c265a0e 100644
+index c31c265a0e..9c727c3977 100644
 --- a/hw/block/vhost-user-blk.c
 +++ b/hw/block/vhost-user-blk.c
-@@ -344,13 +344,16 @@ static void vhost_user_blk_reset(VirtIODevice *vdev)
-     vhost_dev_free_inflight(s->inflight);
- }
+@@ -58,6 +58,7 @@ static const int user_feature_bits[] = {
+ };
  
--static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
-+static int vhost_user_blk_init(DeviceState *dev, bool connect, Error **errp)
+ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event);
++static int vhost_user_blk_connect(DeviceState *dev, Error **errp);
+ 
+ static void vhost_user_blk_update_config(VirtIODevice *vdev, uint8_t *config)
  {
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-     VHostUserBlk *s = VHOST_USER_BLK(vdev);
-     int ret = 0;
+@@ -352,9 +353,6 @@ static int vhost_user_blk_init(DeviceState *dev, bool connect, Error **errp)
  
--    trace_vhost_user_blk_connect_in(vdev);
-+    trace_vhost_user_blk_init_in(vdev);
-+
-+    /* TODO: implement support for connect=false */
-+    assert(connect);
+     trace_vhost_user_blk_init_in(vdev);
  
+-    /* TODO: implement support for connect=false */
+-    assert(connect);
+-
      assert(!s->connected);
  
-@@ -380,7 +383,7 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
-         ret = vhost_user_blk_start(vdev, errp);
-     }
- 
--    trace_vhost_user_blk_connect_out(vdev);
-+    trace_vhost_user_blk_init_out(vdev);
- 
-     return ret;
- }
-@@ -415,7 +418,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
-     switch (event) {
-     case CHR_EVENT_OPENED:
-         if (!s->connected) {
--            if (vhost_user_blk_connect(dev, &local_err) < 0) {
-+            if (vhost_user_blk_init(dev, true, &local_err) < 0) {
-                 error_report_err(local_err);
-                 qemu_chr_fe_disconnect(&s->chardev);
-                 return;
-@@ -447,7 +450,7 @@ static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
+     s->dev.num_queues = s->num_queues;
+@@ -371,6 +369,29 @@ static int vhost_user_blk_init(DeviceState *dev, bool connect, Error **errp)
          return ret;
      }
  
--    ret = vhost_user_blk_connect(dev, errp);
-+    ret = vhost_user_blk_init(dev, true, errp);
++    if (connect) {
++        ret = vhost_user_blk_connect(dev, errp);
++        if (ret < 0) {
++            return ret;
++        }
++    }
++
++    trace_vhost_user_blk_init_out(vdev);
++
++    return 0;
++}
++
++static int vhost_user_blk_connect(DeviceState *dev,
++                                  Error **errp)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    VHostUserBlk *s = VHOST_USER_BLK(vdev);
++    int ret = 0;
++
++    trace_vhost_user_blk_connect_in(vdev);
++
++    assert(!s->connected);
++
+     ret = vhost_dev_connect(&s->dev, errp);
      if (ret < 0) {
-         qemu_chr_fe_disconnect(&s->chardev);
          return ret;
 -- 
 2.48.1
