@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C38BE3284
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB3BBE3215
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MMp-00076J-E4; Thu, 16 Oct 2025 07:42:00 -0400
+	id 1v9MMv-00077q-0W; Thu, 16 Oct 2025 07:42:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMU-00074M-5Q; Thu, 16 Oct 2025 07:41:38 -0400
+ id 1v9MMW-00074e-T6; Thu, 16 Oct 2025 07:41:41 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMP-0003T5-3e; Thu, 16 Oct 2025 07:41:37 -0400
+ id 1v9MMO-0003T9-4R; Thu, 16 Oct 2025 07:41:38 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A7E4CC01BE;
- Thu, 16 Oct 2025 14:41:24 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 577A9C00CF;
+ Thu, 16 Oct 2025 14:41:25 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-BlswLnpY; Thu, 16 Oct 2025 14:41:24 +0300
+ ESMTPSA id LfP2M73FEmI0-qM11FZnG; Thu, 16 Oct 2025 14:41:24 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760614884;
- bh=/c9vHUY6t9wfX6BiEAXJfYRSmsDMfiIQQ+vKZjiVzb0=;
+ bh=oUrqGQn8nA2eMNAmO6zdAoCyWwMbaYpJ91T595m/zmU=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=MafyoRUcLEbYcdoJ+sEz3cvhWuIXSu+2B6TXBp1MEhbJBG4eiapp4lN1KGFgoNsxo
- 4LT5CrmsXyJ02ntsF1j6o/pEJd5VbnFpUMm6+2kvrCUZskSlnumNwLD3mibuQM4jTm
- J1heqg+91rRWAn61Xw5ilmB5TxQ/EEOetpeWVZl4=
+ b=COUKJ3TvjuN+AO0dq37aSPxwgnWuDHk4szXMPRYQuiLLeoatWXNjg3E1g7JVWOFQT
+ dhHi5V+/oPYun/F/yQ89Nnht2Ul0Hx+6Ke+nqlGL2aFw9y7oOYzOrkgqkOi+kdvEBY
+ NtbgvB6pBxOQ4GHbhWsVnBzmSMB+K2r59fMn5tKY=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,9 +46,9 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 02/25] vhost: reorder logic in vhost_dev_init()
-Date: Thu, 16 Oct 2025 14:40:39 +0300
-Message-ID: <20251016114104.1384675-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 03/25] vhost: rework vhost_virtqueue_init()
+Date: Thu, 16 Oct 2025 14:40:40 +0300
+Message-ID: <20251016114104.1384675-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -84,99 +84,62 @@ this for future support for backend-transfer migration support for
 vhost-user-blk (backend will not be available in the early
 initialization point).
 
-With this commit, we simply reorder the logic in vhost_dev_init()
-in accordance with idea of further split.
+With this commit, let's split vhost_virtqueue_init(). The whole function
+is mostly about configuring the backend, so this logic will be postponed
+until backend become available. The only thing to keep in early
+initialization is attaching vhost_dev structure. Let's simply move it to
+vhost_dev_init().
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost.c | 60 +++++++++++++++++++++++------------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ hw/virtio/vhost.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 9fc6e7ba65..551d1687fc 100644
+index 551d1687fc..1998663461 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -1637,26 +1637,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         goto fail;
+@@ -1500,9 +1500,9 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+     }
+ }
+ 
+-static int vhost_virtqueue_init(struct vhost_dev *dev,
+-                                struct vhost_virtqueue *vq, int n)
++static int vhost_virtqueue_connect(struct vhost_virtqueue *vq, int n)
+ {
++    struct vhost_dev *dev = vq->dev;
+     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, n);
+     struct vhost_vring_file file = {
+         .index = vhost_vq_index,
+@@ -1519,8 +1519,6 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
+         goto fail_call;
      }
  
--    r = hdev->vhost_ops->vhost_set_owner(hdev);
--    if (r < 0) {
--        error_setg_errno(errp, -r, "vhost_set_owner failed");
--        goto fail;
--    }
+-    vq->dev = dev;
 -
--    r = vhost_dev_init_features(hdev);
--    if (r < 0) {
--        error_setg_errno(errp, -r, "vhost_init_features failed");
--        goto fail;
--    }
--
--    for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+     if (dev->vhost_ops->vhost_set_vring_err) {
+         r = event_notifier_init(&vq->error_notifier, 0);
+         if (r < 0) {
+@@ -1629,6 +1627,10 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     hdev->migration_blocker = NULL;
+     hdev->busyloop_timeout = busyloop_timeout;
+ 
++    for (i = 0; i < hdev->nvqs; ++i) {
++        hdev->vqs[i].dev = hdev;
++    }
++
+     r = vhost_set_backend_type(hdev, backend_type);
+     assert(r >= 0);
+ 
+@@ -1680,7 +1682,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     }
+ 
+     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
 -        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
--        if (r < 0) {
--            error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
--            goto fail;
--        }
--    }
--
-     hdev->memory_listener = (MemoryListener) {
-         .name = "vhost",
-         .begin = vhost_begin,
-@@ -1677,6 +1657,36 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         .region_del = vhost_iommu_region_del,
-     };
- 
-+    hdev->mem = g_malloc0(offsetof(struct vhost_memory, regions));
-+    hdev->n_mem_sections = 0;
-+    hdev->mem_sections = NULL;
-+    hdev->log = NULL;
-+    hdev->log_size = 0;
-+    hdev->log_enabled = false;
-+    hdev->started = false;
-+    memory_listener_register(&hdev->memory_listener, &address_space_memory);
-+    QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
-+
-+    r = hdev->vhost_ops->vhost_set_owner(hdev);
-+    if (r < 0) {
-+        error_setg_errno(errp, -r, "vhost_set_owner failed");
-+        goto fail;
-+    }
-+
-+    r = vhost_dev_init_features(hdev);
-+    if (r < 0) {
-+        error_setg_errno(errp, -r, "vhost_init_features failed");
-+        goto fail;
-+    }
-+
-+    for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
-+        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
-+        if (r < 0) {
-+            error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
-+            goto fail;
-+        }
-+    }
-+
-     if (hdev->migration_blocker == NULL) {
-         if (!vhost_dev_has_feature_ex(hdev, VHOST_F_LOG_ALL)) {
-             error_setg(&hdev->migration_blocker,
-@@ -1694,16 +1704,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         }
-     }
- 
--    hdev->mem = g_malloc0(offsetof(struct vhost_memory, regions));
--    hdev->n_mem_sections = 0;
--    hdev->mem_sections = NULL;
--    hdev->log = NULL;
--    hdev->log_size = 0;
--    hdev->log_enabled = false;
--    hdev->started = false;
--    memory_listener_register(&hdev->memory_listener, &address_space_memory);
--    QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
--
-     if (!check_memslots(hdev, errp)) {
-         r = -EINVAL;
-         goto fail;
++        r = vhost_virtqueue_connect(hdev->vqs + i, hdev->vq_index + i);
+         if (r < 0) {
+             error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
+             goto fail;
 -- 
 2.48.1
 
