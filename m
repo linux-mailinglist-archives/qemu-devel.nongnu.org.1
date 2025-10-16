@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D80BE185A
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 07:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D6ADBE185D
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 07:36:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9GeW-00025e-OI; Thu, 16 Oct 2025 01:35:53 -0400
+	id 1v9Gf5-0002ce-0a; Thu, 16 Oct 2025 01:36:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v9GeT-00025O-Rk
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:35:49 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1v9Gf3-0002cE-0B
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:36:25 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1v9GeP-0004Tj-FP
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:35:49 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-634b774f135so462116a12.2
- for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 22:35:45 -0700 (PDT)
+ id 1v9Gf1-0004Vu-FC
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 01:36:24 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-637e9f9f9fbso543288a12.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Oct 2025 22:36:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760592944; x=1761197744; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760592980; x=1761197780; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hCdFjs4XrjyJI2hjnHLkNo/JMrR4kwrg7b7RfrKnCe0=;
- b=DGwbeCU86Vd1GUdKZ+vij7ub8MZOdkk3IER5lKqoFz+persbmU3skrXpLVLsOz/0QN
- 0gSr9RC6GlNS60FTnmDhWPvbdS+g6JpJqtRkPqwNGpBYvD/pLcxY45eKYABcCC1eDgnc
- l/kd98ziFe1c6/vo8oLgZ0u7WqxH9mr+4xx/+cepCDfrx9Afl5W1Uhi/ARpKCa1a/6yn
- pgNltHAVU6mdus3qqflyXIyydNxJmdZ0nsZbtLKDY76b3dR4JiLV97tdQPuTOGSU7xn8
- kHjCmbH22b9BhjTyj+b+jPK4mlNzmk+Ja/uEGhtZybDL83HeMclkjB9Bv+DaD5vvze2r
- BNAg==
+ bh=itkQV7sgpQVFOb8iQ9DGOKMH66B1oqUuX3nCjsGsA8g=;
+ b=ACbmUFC3MzxACMvijQlv8MwTYkV+mQCDhugCPsaWSXNO21JHE7py8SK/U4QfMkJUaB
+ LdST4YEiGVXtQ0/XX6mF/wR1dcjfyefBhsuWDXdjqozdL1avKaxBuN+8AWrtmkQpML3w
+ +Zkgp/mk1cif6qF3Avtg0lYLptqx9FHXkwx2c24U8eZiXnbuIVpp2ep6ePwLs7khDVHm
+ s8eTgeF4tckuwqVl4hSgiiep7WC+ooro4LIqUDwuYCgg7sddxnMwADmbknIiEqWLbZ98
+ HzIqbMVvvSboZZvyCiRkjJKK8ofgR3lu+E52XPGcAtI8DRH1XLzqmON9AK0h0EKn8XGu
+ 6dgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760592944; x=1761197744;
+ d=1e100.net; s=20230601; t=1760592980; x=1761197780;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hCdFjs4XrjyJI2hjnHLkNo/JMrR4kwrg7b7RfrKnCe0=;
- b=BcaXvAvfG3gveAHnbK1xBp7fzhi2/47xygYlS27lDW1G4juc/m/VgxOIJfcd4xr8KR
- ahbonnVbPc9XWQ29wMv7UMgDzeFq3u71MzRnNBSRyhulumzRsxWMiD7UNUNlr+FG/nOl
- NrpZiTXcfnMUzy0RSzDnpv8bpy3Pc0Vek3wrc1OOiXDYtXxmpao1L2a6717bI1m5wcSD
- uZcY0DUN6qXVK+5Znbaq6GBR0XupuHBfWKG/tpey4a7vYMkHar09acPLaPIiDmNIHgZh
- +aOHwbi4K7Ms+nubDhD6SzRW2sEMS5WNNi0dgik7v3vwELabXQdAF6fed9UtQuZ754iS
- arow==
-X-Gm-Message-State: AOJu0YzhL+7jtn5hfh0XjBY98gjy6eTtjDLxM6wbflwG5h9Uxw9xI0rt
- nGLbsJn8E6bSepx1gsTrZoHswl7Z/WjChi8FijQAe8sMZeDSwUWP6Ax+C7Rjz4yVvhkQPjSfldv
- 1UMzIhtiD9qROfPAtsFpFe9amWpN/Bw8=
-X-Gm-Gg: ASbGncvmD1ir+u/WoUWOAkVJ8cxWY7ODkm6N1zzgElhM6l09eUXuU1CZy3BPrUUItDL
- jnLafIacD7WqO4MvRwHYs6kx+LcrBu7oldcxhR9cAOQZgQzU4tPMsRkrQkg0Plv5DBcmvGElGwe
- XyBZyRywzApveSmN1PwGBJ2rR+anfc3aiANaB5wM8+8KN3BCYA3MYZvMyN1pUML00IdjJ1vqv/c
- dcTv6T9cP9/NkVSLgaPKj9Lht2zTG77/gJywPZBkIFQdPRCrRF8wrg/D1qGSAP5j9NCKgsUiDAd
- 05oXNb//3KCDU5s=
-X-Google-Smtp-Source: AGHT+IGhXLvFY4+shr18YC2vMCK7Wnoxd2kXOYMh6TbYQa+H8307P4bxyLsri9D5LikXc1/xqHWQv/rIOrgQNNAMw9E=
-X-Received: by 2002:a05:6402:50c7:b0:634:ab36:3c74 with SMTP id
- 4fb4d7f45d1cf-639d5b80653mr29414266a12.9.1760592943567; Wed, 15 Oct 2025
- 22:35:43 -0700 (PDT)
+ bh=itkQV7sgpQVFOb8iQ9DGOKMH66B1oqUuX3nCjsGsA8g=;
+ b=chke2pwqcpO7RW9lsA8qDtT+4KS60/8dZjGqxjAMMamENwPN4O5NGxIygVRRICdYFt
+ 4yidQB7RTEwypy+RKeNX3ohPHzoI3eOgbXsPJvMk6gbkIFH4VM5/KrXMr2qHQw9AJVPM
+ J7iPMIJqe1mAAPRUO2vPNJaUFYBQKASe7zBP4gxQxJ8LVJlRznQ6pkWISUb+hkVPZ4ky
+ rJw2MtOM6gbPfexbdazfmMpho7lb3YGw6QXPICRb3pLW5ANIG0CIthwB1b7KDpXgP8XQ
+ NUYRGRH100KE2N33UwbrQkESisdeq3B3HUrM1pnUFE4FDot4sVmaIiADQp6F3Em/cJpn
+ NsDg==
+X-Gm-Message-State: AOJu0Yy/a4jbLqdyZEhFP00f1phVenjIO173wjhmFLmrs2g+p+VlQShH
+ ImUEpTEpbs1QbT1Zvaab7FBxppGZ27rpZxWWIcZTK4rnHVKozhLkyYQzVmX58J53UZUjF4s3wXv
+ DcBS+927uQEOjjdNWFCcLP+kCxBICG6w=
+X-Gm-Gg: ASbGnctb5ebMJ7kYZmRSDS8N/2cxSmM89ptmYpDuZXU4Ziy4xqMSaBRSPIFApCTr4HU
+ T6DIFccNOj2TJ22c62vVvbOatVDQN8dEPgZcTU35y1gNnEH5KteoN6q5QU0DHTNT7gpEO5xWgMr
+ G49DVLBjaJ/Tmmyc3c9SGDQncF6sO7b6ACbAZVEDaJ4RFlfAJUVeuE3j+ki4dY6QxtAPbNzAJsf
+ AKa/nCZczHHojfZdcahmfCbwa6g1kLyY1xkg3y4oeSj+57pcbKjYlzqqSxQWk+z7tnjopAyZYz+
+ fcao4ruPQTvv7l3jVj3hgztF4Q==
+X-Google-Smtp-Source: AGHT+IEEDP0/xJ+V2U1q44ICDtR5FgpDsRe7thzLe41rboogmX++k1KYHjrZxJSV33ThCdkPyKInNX5GC4UQFzvjRpk=
+X-Received: by 2002:a05:6402:234c:b0:63c:74c:aaf with SMTP id
+ 4fb4d7f45d1cf-63c074c0b4dmr891093a12.36.1760592979711; Wed, 15 Oct 2025
+ 22:36:19 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251014203512.26282-1-anjo@rev.ng>
- <20251014203512.26282-19-anjo@rev.ng>
-In-Reply-To: <20251014203512.26282-19-anjo@rev.ng>
+ <20251014203512.26282-20-anjo@rev.ng>
+In-Reply-To: <20251014203512.26282-20-anjo@rev.ng>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 16 Oct 2025 15:35:17 +1000
-X-Gm-Features: AS18NWCy14G_3c7flK3W1ZXlpOnsodGr1j1HtiISOtn7-7V08P6DUyMCEpYZRlk
-Message-ID: <CAKmqyKPWK0OiYR2XRnea1JttHvhEQ5smRSL55Zbo_qTMvzeAYQ@mail.gmail.com>
-Subject: Re: [PATCH v3 18/34] target/riscv: Fix size of ssp
+Date: Thu, 16 Oct 2025 15:35:53 +1000
+X-Gm-Features: AS18NWDAbRP_fgPcg-thzpArFPjr9XeWPn4fx8F5KkTXInWPArC8pZZvS4WQ10g
+Message-ID: <CAKmqyKOLQJVCs2LMJQSmXqGoRKOQjuv-RQoGU-CEgO31q=1HQw@mail.gmail.com>
+Subject: Re: [PATCH v3 19/34] target/riscv: Fix size of excp_uw2
 To: Anton Johansson <anjo@rev.ng>
 Cc: qemu-devel@nongnu.org, pierrick.bouvier@linaro.org, philmd@linaro.org, 
  alistair.francis@wdc.com, palmer@dabbelt.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,11 +99,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, Oct 15, 2025 at 6:39=E2=80=AFAM Anton Johansson via
 <qemu-devel@nongnu.org> wrote:
 >
-> As ssp holds a pointer, fix to 64 bits in size and make sure stores from
-> TCG use the correct size to avoid problems on big endian hosts.
->
-> Note, the cpu/ssp VMSTATE version is bumped, breaking migration from
-> older versions.
+> Fix to 64 bits to match size of instruction start words.
 >
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
 > Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
@@ -113,102 +109,22 @@ Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  target/riscv/cpu.h                            |  2 +-
->  target/riscv/machine.c                        |  6 +++---
->  target/riscv/insn_trans/trans_rvzicfiss.c.inc | 18 +++++++++++++-----
->  3 files changed, 17 insertions(+), 9 deletions(-)
+>  target/riscv/cpu.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index d7a41e6db5..2a71393118 100644
+> index 2a71393118..6bee15cb5e 100644
 > --- a/target/riscv/cpu.h
 > +++ b/target/riscv/cpu.h
-> @@ -255,7 +255,7 @@ struct CPUArchState {
->      /* elp state for zicfilp extension */
->      bool      elp;
+> @@ -257,7 +257,7 @@ struct CPUArchState {
 >      /* shadow stack register for zicfiss extension */
-> -    target_ulong ssp;
-> +    uint64_t ssp;
+>      uint64_t ssp;
 >      /* env place holder for extra word 2 during unwind */
->      target_ulong excp_uw2;
+> -    target_ulong excp_uw2;
+> +    uint64_t excp_uw2;
 >      /* sw check code for sw check exception */
-> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> index 1cf744c5f0..c55794c554 100644
-> --- a/target/riscv/machine.c
-> +++ b/target/riscv/machine.c
-> @@ -390,11 +390,11 @@ static bool ssp_needed(void *opaque)
->
->  static const VMStateDescription vmstate_ssp =3D {
->      .name =3D "cpu/ssp",
-> -    .version_id =3D 1,
-> -    .minimum_version_id =3D 1,
-> +    .version_id =3D 2,
-> +    .minimum_version_id =3D 2,
->      .needed =3D ssp_needed,
->      .fields =3D (const VMStateField[]) {
-> -        VMSTATE_UINTTL(env.ssp, RISCVCPU),
-> +        VMSTATE_UINT64(env.ssp, RISCVCPU),
->          VMSTATE_END_OF_LIST()
->      }
->  };
-> diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv=
-/insn_trans/trans_rvzicfiss.c.inc
-> index f4a1c12ca0..fa1489037d 100644
-> --- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-> @@ -32,7 +32,9 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspop=
-chk *a)
->      TCGLabel *skip =3D gen_new_label();
->      uint32_t tmp =3D (get_xl(ctx) =3D=3D MXL_RV64) ? 8 : 4;
->      TCGv data =3D tcg_temp_new();
-> -    tcg_gen_ld_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    TCGv_i64 wide_addr =3D tcg_temp_new_i64();
-> +    tcg_gen_ld_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    tcg_gen_trunc_i64_tl(addr, wide_addr);
->      decode_save_opc(ctx, RISCV_UW2_ALWAYS_STORE_AMO);
->      tcg_gen_qemu_ld_tl(data, addr, SS_MMU_INDEX(ctx),
->                         mxl_memop(ctx) | MO_ALIGN);
-> @@ -45,7 +47,8 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspop=
-chk *a)
->                    tcg_constant_i32(RISCV_EXCP_SW_CHECK));
->      gen_set_label(skip);
->      tcg_gen_addi_tl(addr, addr, tmp);
-> -    tcg_gen_st_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    tcg_gen_ext_tl_i64(wide_addr, addr);
-> +    tcg_gen_st_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
->
->      return true;
->  }
-> @@ -59,12 +62,15 @@ static bool trans_sspush(DisasContext *ctx, arg_sspus=
-h *a)
->      TCGv addr =3D tcg_temp_new();
->      int tmp =3D (get_xl(ctx) =3D=3D MXL_RV64) ? -8 : -4;
->      TCGv data =3D get_gpr(ctx, a->rs2, EXT_NONE);
-> +    TCGv_i64 wide_addr =3D tcg_temp_new_i64();
->      decode_save_opc(ctx, RISCV_UW2_ALWAYS_STORE_AMO);
-> -    tcg_gen_ld_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    tcg_gen_ld_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    tcg_gen_trunc_i64_tl(addr, wide_addr);
->      tcg_gen_addi_tl(addr, addr, tmp);
->      tcg_gen_qemu_st_tl(data, addr, SS_MMU_INDEX(ctx),
->                         mxl_memop(ctx) | MO_ALIGN);
-> -    tcg_gen_st_tl(addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    tcg_gen_ext_tl_i64(wide_addr, addr);
-> +    tcg_gen_st_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
->
->      return true;
->  }
-> @@ -76,7 +82,9 @@ static bool trans_ssrdp(DisasContext *ctx, arg_ssrdp *a=
-)
->      }
->
->      TCGv dest =3D dest_gpr(ctx, a->rd);
-> -    tcg_gen_ld_tl(dest, tcg_env, offsetof(CPURISCVState, ssp));
-> +    TCGv_i64 wide_addr =3D tcg_temp_new_i64();
-> +    tcg_gen_ld_i64(wide_addr, tcg_env, offsetof(CPURISCVState, ssp));
-> +    tcg_gen_trunc_i64_tl(dest, wide_addr);
->      gen_set_gpr(ctx, a->rd, dest);
->
->      return true;
+>      target_ulong sw_check_code;
+>  #ifdef CONFIG_USER_ONLY
 > --
 > 2.51.0
 >
