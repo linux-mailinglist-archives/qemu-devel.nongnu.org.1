@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538BABE357E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93FDBE3538
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:21:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mvy-0001QT-Bs; Thu, 16 Oct 2025 08:18:18 -0400
+	id 1v9Mvx-0001EY-9B; Thu, 16 Oct 2025 08:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mvf-00089l-6b
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:59 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mvk-0000Mh-Dp
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:18:05 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MvU-0008ML-5e
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:58 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46e42fa08e4so6069845e9.3
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:17:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MvX-0008Mq-Cs
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:18:04 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3ece1102998so506926f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617056; x=1761221856; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760617061; x=1761221861; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hqAm09FNNNsCLJ2l1MwRt8dw6+jXQWERN6neWN3YjvU=;
- b=ovCas/1L/POonxSMWPH5RIQFDahMBU6OIwxjNgbIYLJIMTG0ys4eO2TZldE8H1mQet
- O/sBZ9NdrxMALi2oOiAFx7EfpbCjGhfRwSG0NBbwNHTzWSgxM+Lr9AZcw8OjZMjNx5cc
- 67RV9uWrNbLPYL2iYbPWDwi2WOLBF7gF31sGctzeU+Yha3rDcBouLnqv0RTCmWrtTUMD
- drEaU2Q7/IlXjjqrYrdAuSbrCJeVkWcFhiuKTzczmbkanMd2wpSKfikGWYgwZQqVVYGD
- jQJJyusZ5jrHSX7fe7Ht9lXebDkYRfxzJO/JTY7s4oQupC92nT9JaVrl/4sXdxyOnJ0v
- k6KA==
+ :reply-to; bh=rZA1fWSYzUnWZQGD1H1+GmKfsAyRn/bLV4Ew+uYFMHI=;
+ b=Ia2ZN1kQGKI90UPFZCXfTYjTjndxXL6U3WhWn5IQ8KdO5rCqDRQ8HqnpV86jyIGy/Y
+ NmlvSZ7Bcr5Eynof+99YXzxX+EONmTaDDDzVOhS0ENSmJQ2IQCWIke5SOsybPffVCBLG
+ gJ5GWz5pMITWewBqe8y9dT4CuLSRZKRLZ4ykbEfNwww9lKSMXPYFQE7cF2KHcUwG2ae7
+ DEpb/Kid76QQXhMgP+wV/ptHtXj8iaYNy9Ht/ZcLrHiq1BmkAVm8yFy9B0sIN2Y0avQy
+ 8BE8XVCp/5IdgWYw5WJjEnvewlirPIbkkVxbA8xGxLYbCPAKqqwsQcEty/esUIqSTF7x
+ XWPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617056; x=1761221856;
+ d=1e100.net; s=20230601; t=1760617061; x=1761221861;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hqAm09FNNNsCLJ2l1MwRt8dw6+jXQWERN6neWN3YjvU=;
- b=ldosqo5X/2J0WPxdndOgbxp97S/A3mhg/DlHkb+lZWCHP6cWnFgPfWK+Jm5SdtIuxF
- J6toL1r/BdK//ZzWO36rCkAUC0kJlxHtnDV9EeYBT1JD2DiW8eIFAQUZIAMb0dqhfrhD
- 8pvS8cJunn0bE9ldSVeEIx+iRm57itNUqxNHSqKd19bLvjUuCw7LysuEYkRLS2mrLADM
- 6Lxs5frkkazgOviVG7V7Vywq3UeiTwMcv9EXsByHUhf95Nbviwp0KosMXlYSZfFFYTkv
- sKMACNSEuMTB6eiTe56Jghazvuq6TKG4ftr0LXqCKlXk7GbAgAE39JaSoOBCoylsERDf
- VOMg==
-X-Gm-Message-State: AOJu0Yz9H24i3BPrF5n7A/1gdkDV1USMU4tyQmmUYnxs81bbT+P5dDYo
- L1V73dg2C9B5eOZL1VfH5knBMdbr8d2KOZdE4rjRnyoZRn+ZjAlLYzfj2FP+aVLOODitHPCuJ4z
- Gm/Y8FKM=
-X-Gm-Gg: ASbGncvt4+Yp9hcvan4nLzTOdncjLrs32kECaFXsm8dTIHmgotr9oaMy71cBmr2GP+J
- L4lPAFoKpU5fWn78L8APwUPJprxLHjM49Wp5x9PqeLGFFPyfpbEjWDaccwKencTVuul6hoTwe1+
- Jdn6oGXHmtYQpSyf+ajxetLAy7cSNkVbHywXrsImvbEAR0Yv6kjH+Y1BKEiyzbpLZU0p2TAREIq
- AFv0YSdbuvTkGuJhmWXW3nQH51hGEvopC3KPPEJcBV8xFV5T83Eg0pZHPmXmWhc2LjzTDXLAunK
- ++0uzBnyD/1Uv1wODsX5WwyjT1wEfhStM6LpFjce37Kftt/4MQyDoNQF7V4giNwXLusC1OYMM5z
- by6uCVaOY/sha9O71dg6cUyktEWTs29/jqoslUO97N41IGTJP7/3nrkGbz6bd5iQTJVpNMD0euI
- idyl6hfHiuXDCcOFdUOyaG9J8Ta1XW1w/mrrrma8DVAn/FZJkOaSxs5jGXNMb4TMvb
-X-Google-Smtp-Source: AGHT+IHtXGdM18Hob9ifLvfdJ8dFXdDU5rPcHu/PYJ85o2yu75fUmW0r8QQ8QEYoXMqpMx3jpp1w4g==
-X-Received: by 2002:a05:600c:35cc:b0:471:1435:b0ea with SMTP id
- 5b1f17b1804b1-4711435b1b5mr12800175e9.24.1760617056055; 
- Thu, 16 Oct 2025 05:17:36 -0700 (PDT)
+ bh=rZA1fWSYzUnWZQGD1H1+GmKfsAyRn/bLV4Ew+uYFMHI=;
+ b=AmM/B9hgrYN2I2GDiLJJ85uVwDXCGxZUMC3W4afh8bAHEbefvxD3RmGSjCIC3JlR55
+ yU+KrrKi7d5EnF6tZb1ZCI6iC3iw2ngoHbh/ar8yHsRKY+2qW12OW9ZziLc1zxHHl9Eh
+ pjwG9qyCvGvVxnHPD2uVilqcpP8XR/xta3CN0XfhHLe8JIvD8U6Hipc2+igZvhlK/wYx
+ sX3nqTzTmUCc6+iARY6+NnR2SHwl+IWpLaCvR9iFNHnZpCk4pmbwIPIh0oqgoRjuOfzE
+ 0RuhT4JcFH+FDnTSBAmhvSvfHeois7L0VhDv+uRvVg+khZSHtohmoIEliqGLPi38j/jN
+ zzBg==
+X-Gm-Message-State: AOJu0Yzen97VnKZjwduuM+V78FXdfWEp8C4qolOgCupNpVnR2JDThhV7
+ HQKMeDmUBD37SVVYRKral/oyTzatqSG+u23i+MlWLddIqsHRsdeOnerbLyWagHOpHHY7/XWkYDG
+ rP9uJdz0=
+X-Gm-Gg: ASbGncsrOfoTUGf2vrtpBJyPVyfnD11WRpaX3w2rksVeF+VmhZktLuerwNURc60Gnlf
+ ybWc41JoVuzzqjuuh5Cr7bW5gsOHXOE77R1mkE6cE1Jt258xEtefoZvRzbptbnQuYoP+08vPKUP
+ Y58UY1CgoEXxjnnsRHojOdP+SGiTOetLQ22hB8lOZBcJe8QGMnDPBWBqmjeegrLO99tePPOByoJ
+ pOitqF/V75bVML9BDuqB358ZflIWJN3LJ1pRfh3tAlk9FGfAuitZLKZvB3ZwBB0ECpQBCzXkeTU
+ 2KHMmAhEfphrtOj9arDWVnk+MjOpwv59MrIe3M4PDBvQFqmVXlLr+wUu0qxqsNDbFMdPb013vhY
+ iOPcZVw+Wi0s/D8Tw1lq6pxNmSog9j2pYUs2dAV3+q04KeL9ic/y6rgBw6TQWrWswa2ZK7kEVrj
+ vp047dY8l41q7MOoL41zXy3pl3GsLSBxK2AvIbKXDeWN8I1K/cU2JfQsGOo9oayKQn
+X-Google-Smtp-Source: AGHT+IEWMEiDj+9NLP0wsZ7ohuqSeThP2M2HEBHSp6XQZxPvJZeNyqTRhUn+1PbpZyE6v+PTHjoJiQ==
+X-Received: by 2002:a05:6000:71e:b0:427:72:4c9 with SMTP id
+ ffacd0b85a97d-42700720595mr1334387f8f.26.1760617060623; 
+ Thu, 16 Oct 2025 05:17:40 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710ca4931csm22989805e9.0.2025.10.16.05.17.35
+ ffacd0b85a97d-426ce5833dcsm34119256f8f.19.2025.10.16.05.17.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:17:35 -0700 (PDT)
+ Thu, 16 Oct 2025 05:17:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/75] target/microblaze: Convert CPUMBState::res_addr field to
- uint32_t type
-Date: Thu, 16 Oct 2025 14:14:42 +0200
-Message-ID: <20251016121532.14042-27-philmd@linaro.org>
+Subject: [PULL 27/75] target/openrisc: Replace VMSTATE_UINTTL() ->
+ VMSTATE_UINT32()
+Date: Thu, 16 Oct 2025 14:14:43 +0200
+Message-ID: <20251016121532.14042-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,127 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUMBState::@res_addr field is used as u32 since commit
-cfeea807e5a ("target-microblaze: Tighten up TCGv_i32 vs
-TCGv type usage"). Convert it as such, bumping the migration
-version. Use the RES_ADDR_NONE definition when appropriate.
+Both OpenRISCTLBEntry fields are of uint32_t type. Use the
+appropriate VMSTATE_UINT32() macro.
+
+There is no functional change (the migration stream is not
+modified), because the OpenRISC targets are only built as 32-bit:
+
+  $ git grep TARGET_LONG_BITS configs/targets/or1k-*
+  configs/targets/or1k-linux-user.mak:5:TARGET_LONG_BITS=32
+  configs/targets/or1k-softmmu.mak:5:TARGET_LONG_BITS=32
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251015180115.97493-8-philmd@linaro.org>
+Message-Id: <20251010070702.51484-2-philmd@linaro.org>
 ---
- target/microblaze/cpu.h       |  2 +-
- target/microblaze/machine.c   |  6 +++---
- target/microblaze/translate.c | 17 +++++++++--------
- 3 files changed, 13 insertions(+), 12 deletions(-)
+ target/openrisc/machine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index 3ce28b302fe..14b107876a4 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -259,7 +259,7 @@ struct CPUArchState {
- 
-     /* lwx/swx reserved address */
- #define RES_ADDR_NONE 0xffffffff /* Use 0xffffffff to indicate no reservation */
--    target_ulong res_addr;
-+    uint32_t res_addr;
-     uint32_t res_val;
- 
-     /* Internal flags.  */
-diff --git a/target/microblaze/machine.c b/target/microblaze/machine.c
-index a4cf38dc891..48efa546d39 100644
---- a/target/microblaze/machine.c
-+++ b/target/microblaze/machine.c
-@@ -78,7 +78,7 @@ static const VMStateField vmstate_env_fields[] = {
-     VMSTATE_UINT32(iflags, CPUMBState),
- 
-     VMSTATE_UINT32(res_val, CPUMBState),
--    VMSTATE_UINTTL(res_addr, CPUMBState),
-+    VMSTATE_UINT32(res_addr, CPUMBState),
- 
-     VMSTATE_STRUCT(mmu, CPUMBState, 0, vmstate_mmu, MicroBlazeMMU),
- 
-@@ -87,8 +87,8 @@ static const VMStateField vmstate_env_fields[] = {
- 
- static const VMStateDescription vmstate_env = {
-     .name = "env",
--    .version_id = 0,
--    .minimum_version_id = 0,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-     .fields = vmstate_env_fields,
+diff --git a/target/openrisc/machine.c b/target/openrisc/machine.c
+index 081c706d02c..fa054e528bd 100644
+--- a/target/openrisc/machine.c
++++ b/target/openrisc/machine.c
+@@ -26,8 +26,8 @@ static const VMStateDescription vmstate_tlb_entry = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL(mr, OpenRISCTLBEntry),
+-        VMSTATE_UINTTL(tr, OpenRISCTLBEntry),
++        VMSTATE_UINT32(mr, OpenRISCTLBEntry),
++        VMSTATE_UINT32(tr, OpenRISCTLBEntry),
+         VMSTATE_END_OF_LIST()
+     }
  };
- 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index ed53848bad5..6442a250c5d 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -55,7 +55,7 @@ static TCGv_i32 cpu_imm;
- static TCGv_i32 cpu_bvalue;
- static TCGv_i32 cpu_btarget;
- static TCGv_i32 cpu_iflags;
--static TCGv cpu_res_addr;
-+static TCGv_i32 cpu_res_addr;
- static TCGv_i32 cpu_res_val;
- 
- /* This is the state at translation time.  */
-@@ -857,7 +857,7 @@ static bool trans_lwx(DisasContext *dc, arg_typea *arg)
- 
-     tcg_gen_qemu_ld_i32(cpu_res_val, addr, dc->mem_index,
-                         mo_endian(dc) | MO_UL);
--    tcg_gen_mov_tl(cpu_res_addr, addr);
-+    tcg_gen_mov_i32(cpu_res_addr, addr);
- 
-     if (arg->rd) {
-         tcg_gen_mov_i32(cpu_R[arg->rd], cpu_res_val);
-@@ -1024,7 +1024,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
-      * branch, but we know we can use the equal version in the global.
-      * In either case, addr is no longer needed.
-      */
--    tcg_gen_brcond_tl(TCG_COND_NE, cpu_res_addr, addr, swx_fail);
-+    tcg_gen_brcond_i32(TCG_COND_NE, cpu_res_addr, addr, swx_fail);
- 
-     /*
-      * Compare the value loaded during lwx with current contents of
-@@ -1052,7 +1052,7 @@ static bool trans_swx(DisasContext *dc, arg_typea *arg)
-      * Prevent the saved address from working again without another ldx.
-      * Akin to the pseudocode setting reservation = 0.
-      */
--    tcg_gen_movi_tl(cpu_res_addr, -1);
-+    tcg_gen_movi_i32(cpu_res_addr, RES_ADDR_NONE);
-     return true;
- }
- 
-@@ -1173,7 +1173,7 @@ static bool trans_brk(DisasContext *dc, arg_typea_br *arg)
-         tcg_gen_movi_i32(cpu_R[arg->rd], dc->base.pc_next);
-     }
-     tcg_gen_ori_i32(cpu_msr, cpu_msr, MSR_BIP);
--    tcg_gen_movi_tl(cpu_res_addr, -1);
-+    tcg_gen_movi_i32(cpu_res_addr, RES_ADDR_NONE);
- 
-     dc->base.is_jmp = DISAS_EXIT;
-     return true;
-@@ -1194,7 +1194,7 @@ static bool trans_brki(DisasContext *dc, arg_typeb_br *arg)
-     if (arg->rd) {
-         tcg_gen_movi_i32(cpu_R[arg->rd], dc->base.pc_next);
-     }
--    tcg_gen_movi_tl(cpu_res_addr, -1);
-+    tcg_gen_movi_i32(cpu_res_addr, RES_ADDR_NONE);
- 
- #ifdef CONFIG_USER_ONLY
-     switch (imm) {
-@@ -1885,6 +1885,7 @@ void mb_tcg_init(void)
-           tcg_global_mem_new_i32(tcg_env, i32s[i].ofs, i32s[i].name);
-     }
- 
--    cpu_res_addr =
--        tcg_global_mem_new(tcg_env, offsetof(CPUMBState, res_addr), "res_addr");
-+    cpu_res_addr = tcg_global_mem_new_i32(tcg_env,
-+                                          offsetof(CPUMBState, res_addr),
-+                                          "res_addr");
- }
 -- 
 2.51.0
 
