@@ -2,72 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB307BE33A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71198BE3432
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mh8-0006wM-Kz; Thu, 16 Oct 2025 08:02:58 -0400
+	id 1v9MoI-0000kf-Kq; Thu, 16 Oct 2025 08:10:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MgX-0006mW-4O; Thu, 16 Oct 2025 08:02:25 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1v9Mnq-0000a0-5b; Thu, 16 Oct 2025 08:09:54 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MgO-0006Bp-9N; Thu, 16 Oct 2025 08:02:20 -0400
-Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 87A0E807A1;
- Thu, 16 Oct 2025 15:01:59 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a8c::1:19] (unknown
- [2a02:6bf:8080:a8c::1:19])
- by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id v1QGxO3FU4Y0-7nd8kGOt; Thu, 16 Oct 2025 15:01:58 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760616118;
- bh=NHb38OUiqZXgSaC8IVKwJ0dD65lfqrd3/dZAyp7Br2o=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=H7BmWk1u9DGtwrI+Y0X2vucKO8ikVX+Ljrmns036OTn62/dnxvORbjW8GoluRafSR
- afpYOWjMzrBtrxitJRebtNMP16QaAJqQmPziaU83wLJpspKq2EVVU3pKx8Ff1wd52E
- IeJSO8B13ChXlHyRcwpNJqTaZxOk2wNperUknwxw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <15fc4cbf-33b0-4dd4-9387-db657e1d88d6@yandex-team.ru>
-Date: Thu, 16 Oct 2025 15:01:57 +0300
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1v9Mnj-0006yP-59; Thu, 16 Oct 2025 08:09:53 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GA9Poj012327;
+ Thu, 16 Oct 2025 12:09:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=CBA8QNOEHYuBUyfVHvdYeasAg2ZQOdtRszj9sMf+l
+ D0=; b=qGYJh5ioHoCjqEeouaVZTBTi0l/g8ADyh64xQ41zkXF0Bee6qNcd5uS5s
+ GQG2xdHaH4xLJQy4SUkyUfbgRUwfOhp/lO76+7TZ3mB5UTSELaQ9Oe5y1Qp00Ntr
+ SCuKJ6DGS5wDMDRohGhSa7DmBrutCNvnLPh9C/VQrzJv+U9jYfHFya8bCyiLqTBG
+ 7kn1pMlR3uZMw4gV7/Xd1x9g9SDX7DubNbd/Q//kijPYD5pThX6GZCa5glrolcXC
+ rxuXFKQk4tLL1IjkzqCEl8IEM0upWWq7Q0DScMEtkOQNIrfJOaYt4aUjiWPouvUD
+ bc+VPZiJp10DUl0tYXpB2e11UtfPw==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrhnbe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Oct 2025 12:09:34 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GAvNR5016756;
+ Thu, 16 Oct 2025 12:09:33 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r32k5h5m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Oct 2025 12:09:33 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59GC9VL331064482
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Oct 2025 12:09:32 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D595620175;
+ Thu, 16 Oct 2025 12:09:31 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 674CA20174;
+ Thu, 16 Oct 2025 12:09:31 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.111.71.186])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 16 Oct 2025 12:09:31 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v3 0/3] target/s390x: Fix missing clock-comparator interrupts
+Date: Thu, 16 Oct 2025 14:06:58 +0200
+Message-ID: <20251016120928.22467-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 18/25] chardev: introduce backend-transfer vmstate for
- chardev
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: raphael@enfabrica.net, pbonzini@redhat.com, farosas@suse.de,
- mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
- kwolf@redhat.com, hreitz@redhat.com, eblake@redhat.com, armbru@redhat.com,
- qemu-devel@nongnu.org, qemu-block@nongnu.org, steven.sistare@oracle.com,
- yc-core@yandex-team.ru, d-tatianin@yandex-team.ru, jasowang@redhat.com
-References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
- <20251016114104.1384675-19-vsementsov@yandex-team.ru>
- <aPDdThfXS4lOB8nV@redhat.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <aPDdThfXS4lOB8nV@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68f0e07e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=wulB5n37dczb7JW1nh8A:9 a=cPQSjfK2_nFv0Q5t_7PE:22 a=HhbK4dLum7pmb74im6QT:22
+ a=pHzHmUro8NiASowvMSCR:22 a=Ew2E2A-JSTLzCXPT_086:22
+X-Proofpoint-GUID: pNGhjbj0GDT7Xd56en_r8_AukjsBqE3F
+X-Proofpoint-ORIG-GUID: pNGhjbj0GDT7Xd56en_r8_AukjsBqE3F
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX49zMmf3IFLOZ
+ QeQbsdg4NcNuCEuFSO6NbgNkvCACpTf9h35jHlvKpJ7sHYGqKQbDvh3xbHvdp+YfIm20WKkVN6h
+ TFo4zKJgmRjc+McFWdom0fFOp9Z8T4necr5HA/nD6+eImbNbLCMRnIF4KozlGsq/zAM5wuNtTJE
+ ekESPLrlpxsxdeN6SOmJOEkepmKX9fEi5zHQjvJHjKNvwqr0/YEyq98YFKVGB8cFb9AEidlOA2T
+ oCqjkjrfoJ6/ydG7uFBIgmexYcZJd2Hf0TS30tZneS6j+a4tUZoT2GEOAgAPIqodPTOtiDImjPt
+ ou0A+3UMZAOo2Dr6eSPxuExXXIqLI2DjocBfZIhvD4AfifBXUDfLXovWBwxYDbHjmmgtg4Ys7BC
+ 4lLtLUYwVnhRF7Iiua6ViVF3xc31hg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510100140
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -79,100 +116,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16.10.25 14:55, Daniel P. Berrangé wrote:
-> On Thu, Oct 16, 2025 at 02:40:55PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> We'll need to transfer the chardev attached to vhost-user-blk, to
->> support backend-transfer migration for vhost-user-blk. So, prepare
->> chardev vmsd now.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   chardev/char-backend-transfer.c         | 52 +++++++++++++++++++++++++
->>   chardev/meson.build                     |  1 +
->>   include/chardev/char-backend-transfer.h | 17 ++++++++
->>   3 files changed, 70 insertions(+)
->>   create mode 100644 chardev/char-backend-transfer.c
->>   create mode 100644 include/chardev/char-backend-transfer.h
->>
->> diff --git a/chardev/char-backend-transfer.c b/chardev/char-backend-transfer.c
->> new file mode 100644
->> index 0000000000..f1a399c7fa
->> --- /dev/null
->> +++ b/chardev/char-backend-transfer.c
->> @@ -0,0 +1,52 @@
->> +/*
->> + * Event notifier migration support
->> + * Copyright (c) Yandex Technologies LLC, 2025
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +#include "chardev/char-fe.h"
->> +#include "migration/vmstate.h"
->> +
->> +typedef struct CharBackendTransferTmp {
->> +    CharBackend *parent;
->> +    int fd;
->> +} CharBackendTransferTmp;
->> +
->> +static int char_backend_transfer_pre_save(void *opaque)
->> +{
->> +    CharBackendTransferTmp *tmp = opaque;
->> +
->> +    tmp->fd = qemu_chr_get_client(tmp->parent->chr);
->> +    if (tmp->fd < 0) {
->> +        return -1;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +static int char_backend_transfer_post_load(void *opaque, int version_id)
->> +{
->> +    CharBackendTransferTmp *tmp = opaque;
->> +
->> +    return qemu_chr_add_client(tmp->parent->chr, tmp->fd);
->> +}
->> +
->> +const VMStateDescription vmstate_backend_transfer_char_tmp = {
->> +    .name = "backend-transfer-char-tmp",
->> +    .pre_save = char_backend_transfer_pre_save,
->> +    .post_load = char_backend_transfer_post_load,
->> +    .fields = (const VMStateField[]) {
->> +        VMSTATE_FD(fd, CharBackendTransferTmp),
->> +        VMSTATE_END_OF_LIST()
->> +    },
->> +};
->> +
->> +const VMStateDescription vmstate_backend_transfer_char = {
->> +    .name = "backend-transfer-char",
->> +    .fields = (const VMStateField[]) {
->> +        VMSTATE_WITH_TMP(CharBackend, CharBackendTransferTmp,
->> +                         vmstate_backend_transfer_char_tmp),
->> +        VMSTATE_END_OF_LIST()
->> +    },
->> +};
-> 
-> On the one hand this code is positioned as if it were a generic
-> mechanism for transferring chardev vmstate, but on the oother
-> hand it is hardcoded to only work with the socket chardev and
-> is only able to transfer an FD, no other state.
-> 
-> Socket chardevs can involve telnet, tls or websocket protocol
-> layering all of which have considerable state that is being
-> ignored by this.
-> 
-> IMHO each chardev backend needs to be directly responsible
-> for handling vmstate, and it needs to be able to raise an
-> error if there is state which cannot be transferred. This
-> would avoid creatin of the undesirable qemu_chr_get_client
-> method as public API.
-> 
+v2: https://lore.kernel.org/qemu-devel/20251015142141.3238-1-iii@linux.ibm.com/
+v2 -> v3: Rearm the timer on control register load (Thomas).
+          Add Thomas' R-b to the test.
 
-Ow, that's right, me ashamed. I implemented it in a wrong layer.
-Will rework, thanks!
+v1: https://lore.kernel.org/qemu-devel/20251014160743.398093-1-iii@linux.ibm.com/
+v1 -> v2: Add Thomas' R-b.
+          Cc: stable (Michael).
+          Improve formatting, commit messages, and test (Ilya).
+
+Hi,
+
+While trying to (so far unsuccessfully) reproduce [1], I found two bugs
+in the clock comparator handling. This series fixes both and adds a
+test.
+
+[1] https://lore.kernel.org/lkml/ab3131a2-c42a-47ff-bf03-e9f68ac053c0@t-8ch.de/
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (3):
+  target/s390x: Fix missing interrupts for small CKC values
+  target/s390x: Fix missing clock-comparator interrupts after reset
+  tests/tcg/s390x: Test SET CLOCK COMPARATOR
+
+ target/s390x/tcg/mem_helper.c           | 11 ++++-
+ target/s390x/tcg/misc_helper.c          | 12 ++++--
+ tests/tcg/s390x/Makefile.softmmu-target |  1 +
+ tests/tcg/s390x/sckc.S                  | 55 +++++++++++++++++++++++++
+ 4 files changed, 74 insertions(+), 5 deletions(-)
+ create mode 100644 tests/tcg/s390x/sckc.S
 
 -- 
-Best regards,
-Vladimir
+2.51.0
+
 
