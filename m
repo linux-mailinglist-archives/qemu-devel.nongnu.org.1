@@ -2,106 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFC4BE342C
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAA9BE340F
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:09:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MoO-0000wM-Dt; Thu, 16 Oct 2025 08:10:28 -0400
+	id 1v9Mlm-0007y9-Iw; Thu, 16 Oct 2025 08:07:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1v9Mnt-0000ha-FI; Thu, 16 Oct 2025 08:09:57 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1v9Mnm-0006zS-HL; Thu, 16 Oct 2025 08:09:56 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GBnVX9021793;
- Thu, 16 Oct 2025 12:09:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=3FSU47RGtnCQB/ov4
- YA8aPN+XrcB8C07+ZWC65TGiS4=; b=DmzKNyBIMz3g2BWmJiZ1w/M68kVB+rYtp
- yXoU1TQ0EHqhU/oDT8lq04zYET8NBsdhFu+cAgYcJ/sdAMjnTe+C7QiR0DpPAUAU
- P4u7JASAetjQaLVdJ1QaxQA6zTw2DOpcY5/Q2AirnFhrbngeeFDARmGvRkhvZrt/
- z0jgm5JRyNKfgGjjikYWPtuMnQt+ayo1eBoXrUuC0aJ5qgPvKcpthkCcTem4Hpug
- Qt9jHJ5Y3fsuHP5rslWDfDzk1Zonm/AhG+G7FqZI8n1hW0hnZizX4mQ1U0t9NwcL
- 1Z02hRY/rUGw6Y1o0rHmhlvLdVAcia4M7lzPpDqjspAYaOs0K3H4g==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qey92hnm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Oct 2025 12:09:36 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GA9Lbn018812;
- Thu, 16 Oct 2025 12:09:35 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jmwm53-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Oct 2025 12:09:35 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59GC9XX062259688
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Oct 2025 12:09:33 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9753C20175;
- Thu, 16 Oct 2025 12:09:33 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27BB920174;
- Thu, 16 Oct 2025 12:09:33 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.111.71.186])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 16 Oct 2025 12:09:33 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH v3 3/3] tests/tcg/s390x: Test SET CLOCK COMPARATOR
-Date: Thu, 16 Oct 2025 14:07:01 +0200
-Message-ID: <20251016120928.22467-4-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251016120928.22467-1-iii@linux.ibm.com>
-References: <20251016120928.22467-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mld-0007x6-6e
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:07:38 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MlV-0006pr-Mo
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:07:34 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b90so451607f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:07:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760616438; x=1761221238; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8nl8+aCVc6MnHi449xOsXy7u+daf8qJov2bS5j31z5E=;
+ b=iBSIjEheruCM2mc7EXJ5p8gAg7jutqV5cQepdK1cFuL0YSXGc2KIUTenBAbdiUinea
+ fNO+U3IX+UU37x2uuR7v6mPeIgLiffiPOJbQ0CEnlTbDxldYZN2Wtfie8SE2+pP/Ywe3
+ CKcxW8C63D+SF1RThJkSUXMzWQpdRsbmLUZ/BqVX1kV6jVM6jMsFS0Ns5q45NcSKPaF4
+ PQkXiu+rH0X1mjQZTuEdNZs8rNqBNbUTHrzEy5cCiOeYNhNnUwGONzicVcXcLId5KNaI
+ z1C0rpJK/rxDiTJ1EjqLTvOVO9BsZ+ygOhkkVuE816fpX18X8X6YV4SzFKTQksNCcBU1
+ MvRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760616438; x=1761221238;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8nl8+aCVc6MnHi449xOsXy7u+daf8qJov2bS5j31z5E=;
+ b=N+9Rh6LhYwWh2YvSg77LOsg4bjzxP1ucIXphsoUdIJ8HGjRb4AN8Q5ysunxXCjp8LG
+ 1pmrlHMDPqvxy58v53yMdZbPp9LX1GnLRcFz/WQqnMy1wtJ1MP+er2WFBAgFmBSBETQc
+ p7nO16+DYd4AoPDs8MG2K1mtGy4aCZKqA71FUL5+mGnqwy4EcK7RS8LMHnDdegpPdBzv
+ OPYodVoWXLayghhYV8F9B993fcUzzDIdlR4QXMztlDWNmtgGIZZCmUMEgod70c/GbBWW
+ IFuuymPfzUn9uKqPLriOgrgZzt/dYIlFer7zpP6s67BAehj673xMmu80AXmoX5mFnF55
+ /flg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX32Qr+LJwZrU8JBONhvac+aKc2icUgmCaQuKx3E3MqwjbsqTvUmyGHb/kOUPvS4+Hz9AbC0WzvPB8b@nongnu.org
+X-Gm-Message-State: AOJu0YznFTZjcd0pru7y0aTQtoHnYRge7EW6RiSkPprcxmuA/+NBcvHm
+ LsOaZBGzZDAO50Duxg7eRXzVdOoLwur3/ApgjM7UWtMNnzO5dwVc9j/0x/f6cgmTReQ=
+X-Gm-Gg: ASbGncvBDBNs3GJBdGgfbIw2yp0gnWUFVPveFXG50qxK9pygfIvzREkMAaBmdlgPZz2
+ ilkB6DOY0EmceDOS8op0PJOf49rOQkjeKLRRn71FK/kzFVI2kLqkk9zntqBIse+Xuf4vwkUhsJ+
+ Zh2Sie3RFpQts3miFqmSEKDluc4o/7YwiJX9U8hXUHXph3uFxTlUpztipns+euS33AmW4OJ0AnX
+ z/3k0eIM83Qd37hCbNbs6Nx2zgc2mudlDQaqPtARhJWIUoI1pTV46OXIuEODucZ34URTuvgVob0
+ e44t26Ip18Crcbsro1I9PUV3fIGLrgSkF5NxgeDRyOZm22tUnqlwujRiZsR8LC3bRAgne2jKSAT
+ 3lWsqFOHRJx6mSmhdZLEspPOtJwm6hD5pYrxI5bYh7GpNF8UTQzlZjLe65GwPSm92exlgl1L7Sk
+ 8u3OTjpQgVMJE3NRlx633+xTE5YMZ6v0ghGE8Wd8U7XQILRqh0QiNzPlq5Pg==
+X-Google-Smtp-Source: AGHT+IF+gUKvX2um9gIt2ygqlGKR3ctLIlBvcTtGe0sYSWZWeLQvlmodCoil7b1kYlwpX7W7wYLRgw==
+X-Received: by 2002:a05:6000:2010:b0:402:4142:c7a7 with SMTP id
+ ffacd0b85a97d-42666ac6f35mr23553877f8f.16.1760616437597; 
+ Thu, 16 Oct 2025 05:07:17 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-426ce5cfe74sm33816743f8f.35.2025.10.16.05.07.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Oct 2025 05:07:16 -0700 (PDT)
+Message-ID: <7b263ac1-b8a8-475c-a59a-23b8d419f6e6@linaro.org>
+Date: Thu, 16 Oct 2025 14:07:15 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/16] overall: Replace HOST_BIG_ENDIAN #ifdef with
+ runtime if() check
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20251010134226.72221-1-philmd@linaro.org>
+ <5e4d3a1a-ee13-40c3-b470-d68f5b6b4ad1@redhat.com>
+ <614c4af0-1fea-4d48-bb52-a1ef60302b9a@linaro.org>
+In-Reply-To: <614c4af0-1fea-4d48-bb52-a1ef60302b9a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _KV8zhtB_UgFmH5RUCZNiTVFfbnj_CF9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxMSBTYWx0ZWRfX+KbFsqPaN2MY
- lY63t3twFs5ZD+Y8XAq4pnviavW8hflf3Kj3GqzSlgqUN9QMUjp4qa0fdaGqXTj2JrWuuH71R95
- Sdry60IGpObUrQCegENMJEg1d4fITcomiqP9GZGF+VicUF/adq1VxcTkEdhSaWvpCjqTKR23SZf
- DKCjLsWhIFb6K9mihy0shPgj6CvD1I1wN30usJDsVFNDD43MQKCidG9Cjz/8nkLbRwqDy4EusWI
- +1C4z2xvUmqk0nnT6IJkIpAKgY+9bKWE83Z7mkkxDJ2odr4vOqOjHsacQH8vLB74hG2BDO4YGpv
- Hm86xRgWsUi672Ii/TmZZne15qBjsKEQB6uzdHLGERZ47puavufZ1ToCQ4nZL8ImdaLN7u2CL9a
- Md+1gg78+/pF7ZuSkX+yPhb4X6layw==
-X-Proofpoint-GUID: _KV8zhtB_UgFmH5RUCZNiTVFfbnj_CF9
-X-Authority-Analysis: v=2.4 cv=QZ5rf8bv c=1 sm=1 tr=0 ts=68f0e080 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=69wJf7TsAAAA:8 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=H4dCiJhQUaCM5N7H5isA:9 a=Fg1AiH1G6rFz08G2ETeA:22
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
- spamscore=0 malwarescore=0 impostorscore=0 clxscore=1015 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110011
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SUSPICIOUS_RECIPS=2.51,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,91 +104,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
+On 10/10/25 16:37, Philippe Mathieu-Daudé wrote:
+> On 10/10/25 15:51, Paolo Bonzini wrote:
+>> On 10/10/25 15:42, Philippe Mathieu-Daudé wrote:
+>>> Replace compile-time #ifdef with a runtime check to ensure all code
+>>> paths are built and tested. This reduces build-time configuration
+>>> complexity and improves maintainability.
+>>>
+>>> No functional change intended.
+>>
+>> No need to repost (and I didn't review), but please change throughout 
+>> the commit message to mention a *compile-time* if() check.  The code 
+>> for the wrong endianness will not make it past compilation, and 
+>> mentioning runtime checks left me wondering if you had mistaken HOST 
+>> for TARGET.
+> 
+> I want HOST, and hope the changes are correct: I meant to express the
+> code is elided by the compiler, indeed not at *runtime* 🤦 I'll reword
+> the commit description. Thanks for catching this.
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/sckc.S                  | 55 +++++++++++++++++++++++++
- 2 files changed, 56 insertions(+)
- create mode 100644 tests/tcg/s390x/sckc.S
+What about:
 
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 8cd4667c63b..a4425d3184a 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -28,6 +28,7 @@ ASM_TESTS =                                                                    \
-     mc                                                                         \
-     per                                                                        \
-     precise-smc-softmmu                                                        \
-+    sckc                                                                       \
-     ssm-early                                                                  \
-     stosm-early                                                                \
-     stpq                                                                       \
-diff --git a/tests/tcg/s390x/sckc.S b/tests/tcg/s390x/sckc.S
-new file mode 100644
-index 00000000000..66e8733f45c
---- /dev/null
-+++ b/tests/tcg/s390x/sckc.S
-@@ -0,0 +1,55 @@
-+/*
-+ * Test clock comparator.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+    .org 0x130
-+ext_old_psw:
-+    .org 0x1b0
-+ext_new_psw:
-+    .quad 0x180000000, _ext            /* 64-bit mode */
-+    .org 0x200                         /* lowcore padding */
-+
-+    .globl _start
-+_start:
-+    lpswe start31_psw
-+_start31:
-+    stctg %c0,%c0,c0
-+    oi c0+6,8                          /* set clock-comparator subclass mask */
-+    lctlg %c0,%c0,c0
-+    jg .
-+
-+_ext:
-+    stg %r0,ext_saved_r0
-+
-+    lg %r0,ext_counter
-+    aghi %r0,1
-+    stg %r0,ext_counter
-+
-+    cgfi %r0,0x1000
-+    jnz 0f
-+    lpswe success_psw
-+0:
-+
-+    stck clock
-+    lg %r0,clock
-+    agfi %r0,0x40000                   /* 64us * 0x1000 =~ 0.25s */
-+    stg %r0,clock
-+    sckc clock
-+
-+    lg %r0,ext_saved_r0
-+    lpswe ext_old_psw
-+
-+    .align 8
-+start31_psw:
-+    .quad 0x100000080000000,_start31   /* EX, 31-bit mode */
-+success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
-+c0:
-+    .skip 8
-+clock:
-+    .quad 0
-+ext_counter:
-+    .quad 0
-+ext_saved_r0:
-+    .skip 8
--- 
-2.51.0
+   Replace preprocessor-time #ifdef with a compile-time check
+   to ensure all code paths are built and tested. This reduces
+   build-time configuration complexity and simplifies code
+   maintainability.
 
+?
 
