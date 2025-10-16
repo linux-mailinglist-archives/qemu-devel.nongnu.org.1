@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80859BE3219
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C38BE3284
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNX-0007No-Lm; Thu, 16 Oct 2025 07:42:43 -0400
+	id 1v9MMp-00076J-E4; Thu, 16 Oct 2025 07:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMa-000759-J1; Thu, 16 Oct 2025 07:41:44 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1v9MMU-00074M-5Q; Thu, 16 Oct 2025 07:41:38 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMS-0003T4-BH; Thu, 16 Oct 2025 07:41:42 -0400
+ id 1v9MMP-0003T5-3e; Thu, 16 Oct 2025 07:41:37 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id F15A2C01B6;
- Thu, 16 Oct 2025 14:41:23 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A7E4CC01BE;
+ Thu, 16 Oct 2025 14:41:24 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-miagcnfi; Thu, 16 Oct 2025 14:41:23 +0300
+ ESMTPSA id LfP2M73FEmI0-BlswLnpY; Thu, 16 Oct 2025 14:41:24 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614883;
- bh=CfhYPdDYFOJ4e5JUBvq3LuUdv3/kmqX/+3b/YXayICo=;
+ s=default; t=1760614884;
+ bh=/c9vHUY6t9wfX6BiEAXJfYRSmsDMfiIQQ+vKZjiVzb0=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=zjmQvNXa10TTR0yKPhfPwBcD6OSuEK6RTnsIkM5zrcCWo+iGH/T1SRKko4ClU5UAy
- PhSsmLH9FTGaUx0giQgBMfXytg87HLUtxqhuSiNsm/D4pAbLuQkLQMJfMn7TA7m/TN
- RcK7xepRFCUePAuTdF+e0UDj/xgOji2JJJV8yK7Y=
+ b=MafyoRUcLEbYcdoJ+sEz3cvhWuIXSu+2B6TXBp1MEhbJBG4eiapp4lN1KGFgoNsxo
+ 4LT5CrmsXyJ02ntsF1j6o/pEJd5VbnFpUMm6+2kvrCUZskSlnumNwLD3mibuQM4jTm
+ J1heqg+91rRWAn61Xw5ilmB5TxQ/EEOetpeWVZl4=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,24 +46,23 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 01/25] vhost: store busyloop_timeout into struct vhost_dev
-Date: Thu, 16 Oct 2025 14:40:38 +0300
-Message-ID: <20251016114104.1384675-2-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 02/25] vhost: reorder logic in vhost_dev_init()
+Date: Thu, 16 Oct 2025 14:40:39 +0300
+Message-ID: <20251016114104.1384675-3-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,74 +77,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll split vhost_dev_init() into _init() and _connect(), to be able
-to postpone communication with backend, to support backend-transfer
-migration of vhost-user-blk in future commit.
+We are going to split vhost_dev_init() so that the first part will do
+early initialization of QEMU structures, but don't communicate with
+backend, and the second part will do backend communication. We need
+this for future support for backend-transfer migration support for
+vhost-user-blk (backend will not be available in the early
+initialization point).
 
-So, instead of passing it through parameters, store it in vhost_dev
-structure.
+With this commit, we simply reorder the logic in vhost_dev_init()
+in accordance with idea of further split.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost.c         | 11 +++++------
- include/hw/virtio/vhost.h |  1 +
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ hw/virtio/vhost.c | 60 +++++++++++++++++++++++------------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 7ba90c24db..9fc6e7ba65 100644
+index 9fc6e7ba65..551d1687fc 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -1501,8 +1501,7 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
- }
- 
- static int vhost_virtqueue_init(struct vhost_dev *dev,
--                                struct vhost_virtqueue *vq, int n,
--                                bool busyloop_timeout)
-+                                struct vhost_virtqueue *vq, int n)
- {
-     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, n);
-     struct vhost_vring_file file = {
-@@ -1539,8 +1538,8 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
-                                    vhost_virtqueue_error_notifier);
+@@ -1637,26 +1637,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+         goto fail;
      }
  
--    if (busyloop_timeout) {
--        r = vhost_virtqueue_set_busyloop_timeout(dev, n, busyloop_timeout);
-+    if (dev->busyloop_timeout) {
-+        r = vhost_virtqueue_set_busyloop_timeout(dev, n, dev->busyloop_timeout);
-         if (r < 0) {
-             VHOST_OPS_DEBUG(r, "Failed to set busyloop timeout");
-             goto fail_err;
-@@ -1628,6 +1627,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+-    r = hdev->vhost_ops->vhost_set_owner(hdev);
+-    if (r < 0) {
+-        error_setg_errno(errp, -r, "vhost_set_owner failed");
+-        goto fail;
+-    }
+-
+-    r = vhost_dev_init_features(hdev);
+-    if (r < 0) {
+-        error_setg_errno(errp, -r, "vhost_init_features failed");
+-        goto fail;
+-    }
+-
+-    for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+-        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
+-        if (r < 0) {
+-            error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
+-            goto fail;
+-        }
+-    }
+-
+     hdev->memory_listener = (MemoryListener) {
+         .name = "vhost",
+         .begin = vhost_begin,
+@@ -1677,6 +1657,36 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+         .region_del = vhost_iommu_region_del,
+     };
  
-     hdev->vdev = NULL;
-     hdev->migration_blocker = NULL;
-+    hdev->busyloop_timeout = busyloop_timeout;
- 
-     r = vhost_set_backend_type(hdev, backend_type);
-     assert(r >= 0);
-@@ -1650,8 +1650,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     }
- 
-     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
--        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i,
--                                 busyloop_timeout);
++    hdev->mem = g_malloc0(offsetof(struct vhost_memory, regions));
++    hdev->n_mem_sections = 0;
++    hdev->mem_sections = NULL;
++    hdev->log = NULL;
++    hdev->log_size = 0;
++    hdev->log_enabled = false;
++    hdev->started = false;
++    memory_listener_register(&hdev->memory_listener, &address_space_memory);
++    QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
++
++    r = hdev->vhost_ops->vhost_set_owner(hdev);
++    if (r < 0) {
++        error_setg_errno(errp, -r, "vhost_set_owner failed");
++        goto fail;
++    }
++
++    r = vhost_dev_init_features(hdev);
++    if (r < 0) {
++        error_setg_errno(errp, -r, "vhost_init_features failed");
++        goto fail;
++    }
++
++    for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
 +        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
-         if (r < 0) {
-             error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
-             goto fail;
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 1ba1af1d86..f1a7e7b971 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -105,6 +105,7 @@ struct vhost_dev {
-     VIRTIO_DECLARE_FEATURES(_features);
-     VIRTIO_DECLARE_FEATURES(acked_features);
++        if (r < 0) {
++            error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
++            goto fail;
++        }
++    }
++
+     if (hdev->migration_blocker == NULL) {
+         if (!vhost_dev_has_feature_ex(hdev, VHOST_F_LOG_ALL)) {
+             error_setg(&hdev->migration_blocker,
+@@ -1694,16 +1704,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+         }
+     }
  
-+    uint32_t busyloop_timeout;
-     uint64_t max_queues;
-     uint64_t backend_cap;
-     /* @started: is the vhost device started? */
+-    hdev->mem = g_malloc0(offsetof(struct vhost_memory, regions));
+-    hdev->n_mem_sections = 0;
+-    hdev->mem_sections = NULL;
+-    hdev->log = NULL;
+-    hdev->log_size = 0;
+-    hdev->log_enabled = false;
+-    hdev->started = false;
+-    memory_listener_register(&hdev->memory_listener, &address_space_memory);
+-    QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
+-
+     if (!check_memslots(hdev, errp)) {
+         r = -EINVAL;
+         goto fail;
 -- 
 2.48.1
 
