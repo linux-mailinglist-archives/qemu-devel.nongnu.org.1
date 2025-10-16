@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC2EBE35A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E56BE359B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:25:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9N0o-0000aK-J7; Thu, 16 Oct 2025 08:23:18 -0400
+	id 1v9N1z-0002Hu-6B; Thu, 16 Oct 2025 08:24:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9Mzb-0006d4-QV
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:22:05 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1v9N0y-0000vK-Mc
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:23:30 -0400
+Received: from mail-yx1-xb134.google.com ([2607:f8b0:4864:20::b134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9MzK-0000YU-9Z
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:22:03 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-46e6a689bd0so6424995e9.1
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:21:43 -0700 (PDT)
+ id 1v9N0j-0000dD-6F
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:23:25 -0400
+Received: by mail-yx1-xb134.google.com with SMTP id
+ 956f58d0204a3-633c1b740c5so728713d50.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:23:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617300; x=1761222100; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gX9CHLtUQzQsqafvh1D9/xpeNHhLNsIOOlPyJTczAG0=;
- b=SoJlCJbNwYuM0cskrbBk1tCDtnVz2eucg0nr6VUnQsT8dtlF+K3e40WqnIVWLw9cM3
- hCvs16bOuRhnbJ7QGXLvIrKXUNTzBJ57fKsXWpXpbrASVJzfM0i5MeEDpk31oI+FXQFR
- noJWhr0UBJWgXvaTXN/Ve92o2y0jCMNNqilHnafSO66cTft4epnyYVHFGxbygAkowbqQ
- d3Bmd8UaePnLfEIs/HJ2lpztvqSPxpWYYKuT9ENCCCvtahvj4jHUWhcRmw2JbaXFyCtJ
- hqUHFu++BuIpqlaTamXP+2B3hW5m4PSbGsz/5ywU3Gs3OJeolb4gLiOBeMo/sZJIL7Mf
- D05Q==
+ d=linaro.org; s=google; t=1760617386; x=1761222186; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=2C+0wEFz4rwq6y2h5JGMTivrxHAjZFvVlCHfttp9nns=;
+ b=kegkQT2gJd7b6qJE+ElbZSqim0i/uEevnghfJ3pwfeZlrsFRzOkXXNiBwZ/no/2eY2
+ g5kHEO1ACM1Cm4p3oTjEzkn7K4nb8pFrLW4N3/5Rq6JJdyeB0GuRsPLoLDOi5vDoEB9E
+ r6NIuOTjDRmAnt1yswiPMuLQ9q/Wwo01whPjYRXsFFhohAgQ3fccR3AYjxctb/wHA+Fn
+ PyaTOC6imUgEbozvOpcCvdtNRIQvqOXwYBCP1gpl10pEwOQQMsRpt5diLnZqoPnVpM30
+ A0/MdeLsFnVImgbSXvxKkKzqoQlvbMX4RNbznuBLgip/nvbppVoxrYva/OVcbLh8z7Vy
+ V/XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617300; x=1761222100;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gX9CHLtUQzQsqafvh1D9/xpeNHhLNsIOOlPyJTczAG0=;
- b=FBLds1jecD5CiUpLtwkXmS9vMVFRHdzdgASezM/i1LiAk+c//BIh5MLc2VXmN29yBR
- tTDgqZ3xMyJ34xZ6NDAbICXwQ4cJkjhw0P5xUdYJZqjHYRu2XuaxdmzVyAleVAodWtrZ
- bnYcb12/uMwJznoXKoqC8Wm/sI3oMDDoDLoE9IlWSEQorTlRxX/vucVNs17yRHhI02I2
- vLKgnby7YM2wtzaleFYhRX4FnX5dPnFJkExCLsHifiii1acz6GhpJgnq9coJRRnmHtUA
- 8tPkOeNT01uW4cRC4ivcg/a8DX3HwbRVQrIs8low+GtPN/KdmsnidKtMnsJpLAERxHU8
- MUsA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVMX06rmRb5/s+gtknCsc9+8sXXjXkjyerC3SS7JMSzu+yD5W7AJT70Zbyh8ar78KmhsV0Am3y3wV/n@nongnu.org
-X-Gm-Message-State: AOJu0Yz9BRdZeZVtNI9/Pei7Ya+Jt2GAz8VuujxAPgLcsZquSPOPfHhK
- wsAGsbaic3gidqt2xVSeSZ9s/2mwlaYTxMB7p7upaY9tV8Yqb7x4dN0dFiInyTue5us=
-X-Gm-Gg: ASbGncvVZrP1VcQoAFGtsJmoqaguoe+rDvqBep8+3ZiO6PEJ6AiOysho2EY0l8h2WoN
- Xox11K7VngZeBEwzW9DR1bUfUi5FWC+TjLXwbwVUYL8xxwOVbOnZsF7aCXyzUFvvHbbW04U7NGF
- vpEsXEBgU/HHjH7AcQUFnVp89qeq0Bvqfa0fkJQEwK/S201ebPru6m2WHLGqpwhWXrzOIZWSCas
- 4rrJ3QghtPuhTbD09jCxURO2TOaoEQw6KkGeU2r520dXeGLBxuGFkSKmtZmsZLH1oL4iHvNkoQ9
- p5V3hE9/k7KjwrT+o/O5A3BVOUQ9y6hIdASwQ1qYiuGIOYSDO1GXmSkTw4ROWWuJJzqbm29Hwx6
- xA+k6nVdjpWAbY4uxkP6URu4hWwRTU2k0v4GFV/NH4Pkw/ndcjjTziOCz6XjNhBOpQvMwPe/hOl
- hP9g/mhPZvyg==
-X-Google-Smtp-Source: AGHT+IGPMAj6OtELXZZ/34tlacL08Jh1Co154afKw23slH2RJDiPuDZPXSh3jdw6LBjZU3G55H9icA==
-X-Received: by 2002:a05:600c:3d87:b0:45b:7d77:b592 with SMTP id
- 5b1f17b1804b1-46fa9a9ede8mr228152475e9.12.1760617300520; 
- Thu, 16 Oct 2025 05:21:40 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ff65596csm3412428f8f.24.2025.10.16.05.21.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Oct 2025 05:21:39 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Subject: [PATCH 2/2] tests/tcg/aarch64: Add test case for SME2 gdbstub
- registers
-Date: Thu, 16 Oct 2025 13:21:32 +0100
-Message-ID: <20251016122132.737016-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251016122132.737016-1-peter.maydell@linaro.org>
-References: <20251016122132.737016-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1760617386; x=1761222186;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2C+0wEFz4rwq6y2h5JGMTivrxHAjZFvVlCHfttp9nns=;
+ b=VdXDoo+6cSpHKn9+ILALiAqe4kxht69Dd4F1azMA02R7g9vwuBIhgVJJ5Wr/xhvUVm
+ MTBX+v/3vouhwKXCSSmraWwt0hALyzFnohzlL4nZ35HykNW9OYOF/t+h3f2rNCat+V9I
+ EO1YCFC5kdgaUwY/JF6LmW95lDwID330WZGhBjtYijieDysQ1725gviMrCYaoxY/+cqe
+ J02RBxgho90DFgwleKz37Lry8mQQqvCQkxOkZ5W9I+bxQkv4OhWmh9y8kLxA7AxGP+Jo
+ 4/T3ohQS/VS+zMUmSkIc+AiD/zdGhfpRFEIfwz/yTwL+CPu4hE6iF9cEcTFp1VDwbbLl
+ tJ8Q==
+X-Gm-Message-State: AOJu0Yx+XISZlaVlEgCGJOwLO5O3Ie4IOGWUdT1m7vqpbdWxgRXFpmtE
+ 71+/0dVJzie6B4D4CyfCSYqWHaUg92a2NvCeJZ+92SGASXKuYbohzWphJKNwxNZBrqWqBv+Saz6
+ 8cq0hBmx/hdP9GwOCv/vpLp1qxa9V3O7ufivYJleQxw==
+X-Gm-Gg: ASbGncsZv5wUE/TG6YViQ++fQS4fk5KaUjy14/9ffmMbdhkBxME9gkwt9B2/vba8Qvl
+ SqLXtIni8LMc3s/F/4ERoWb89nmvBT0C4Imn3QZYFdmi65BnQSI0yXkfydWWAvJ58GCUcB+jloo
+ 9LeCxqXaSlgVW3Vcq8GU65uulQGQgQ67pI7AZYyaS4bjrlpMx+p4dCv4YRGMV1ltVzPrgy5T97D
+ alo3bBpuNA2Hlre66ocgl0AapVhjsY+XsxHubUppVBtv+9WWCk1pR6q3jZjdFrmrJaXAfVMkKvo
+X-Google-Smtp-Source: AGHT+IEwHF/GiXpZNqHBRR9xTxHtPNUxgldoL2RqzeCqOq0dsseWOmLfdGygDlEe56B7fOhMCmUNQ60vq8VMrSBVOzU=
+X-Received: by 2002:a05:690e:14c5:b0:63c:e930:e37 with SMTP id
+ 956f58d0204a3-63e1604f30amr39006d50.0.1760617386581; Thu, 16 Oct 2025
+ 05:23:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20251014102439.319915-1-peter.maydell@linaro.org>
+ <4b686af261024bad91bf079a098976de@huawei.com>
+In-Reply-To: <4b686af261024bad91bf079a098976de@huawei.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 16 Oct 2025 13:22:54 +0100
+X-Gm-Features: AS18NWDfwEe5i76U4GBkkONd_DMLp09zKNqd_bkq6OHHw8UQjDF2NiQzQMO5RYE
+Message-ID: <CAFEAcA-CdCSD36azVc=7EVKn2jgXggOa8Rt-Gvnqnyebwbx6eg@mail.gmail.com>
+Subject: Re: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Salil Mehta <salil.mehta@opnsrc.net>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb134.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,84 +92,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test the SME2 register exposure over gdbstub, in the same way
-we already do for SME.
+On Thu, 16 Oct 2025 at 13:17, Salil Mehta <salil.mehta@huawei.com> wrote:
+>
+> Hi Peter,
+>
+> > From: qemu-devel-bounces+salil.mehta=huawei.com@nongnu.org <qemu-
+> > devel-bounces+salil.mehta=huawei.com@nongnu.org> On Behalf Of Peter
+> > Maydell
+> > Sent: Tuesday, October 14, 2025 11:25 AM
+> > To: qemu-devel@nongnu.org
+> > Cc: Salil Mehta <salil.mehta@opnsrc.net>; Marc Zyngier <maz@kernel.org>
+> > Subject: [PATCH] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+> > kernel in cpuif reset
+> >
+> > Currently in arm_gicv3_icc_reset() we read the kernel's value of
+> > ICC_CTLR_EL1 as part of resetting the CPU interface.  This mostly works, but
+> > we're actually breaking an assumption the kernel makes that userspace only
+> > accesses the in-kernel GIC data when the VM is totally paused, which may
+> > not be the case if a single vCPU is being reset.  The effect is that it's possible
+> > that the read attempt returns EBUSY.
+> >
+> > Avoid this by reading the kernel's value of the reset ICC_CTLR_EL1 once in
+> > device realize. This brings ICC_CTLR_EL1 into line with the other cpuif
+> > registers, where we assume we know what the kernel is resetting them to
+> > and just update QEMU's data structures in arm_gicv3_icc_reset().
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> > I've only tested this fairly lightly, but it seems to work.
+> > Salil, does this fix the EBUSY issues you were seeing ?
+>
+>
+> Would you be absorbing this in your tree now or should I make it part
+> of the RFC V7 ?
+>
+> Reviewed-by: Salil Mehta <salil.mehta@huawei.com>
+> Tested-by: Salil Mehta <salil.mehta@huawei.com>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- tests/tcg/aarch64/Makefile.target      |  9 +++++-
- tests/tcg/aarch64/gdbstub/test-sme2.py | 41 ++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/aarch64/gdbstub/test-sme2.py
+Thanks for the testing. I'll pull it into target-arm.next since
+it does fix a potential issue with the current codebase.
 
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 55ce34e45ee..9fa86874534 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -164,7 +164,14 @@ run-gdbstub-sysregs-sme-tile-slice: sysregs
- 	"selected gdb ($(GDB)) does not support SME ZA tile slices")
- endif
- 
--EXTRA_RUNS += run-gdbstub-sysregs-sme run-gdbstub-sysregs-sme-tile-slice
-+run-gdbstub-sysregs-sme2: sysregs
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sme2.py, \
-+	gdbstub SME ZA tile slice support)
-+
-+EXTRA_RUNS += run-gdbstub-sysregs-sme run-gdbstub-sysregs-sme-tile-slice run-gdbstub-sysregs-sme2
- 
- endif
- 
-diff --git a/tests/tcg/aarch64/gdbstub/test-sme2.py b/tests/tcg/aarch64/gdbstub/test-sme2.py
-new file mode 100644
-index 00000000000..1d189ac01ca
---- /dev/null
-+++ b/tests/tcg/aarch64/gdbstub/test-sme2.py
-@@ -0,0 +1,41 @@
-+#
-+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#
-+# Test the SME registers are visible and changeable via gdbstub
-+#
-+# This is launched via tests/guest-debug/run-test.py
-+#
-+
-+import argparse
-+import gdb
-+from test_gdbstub import main, report
-+
-+MAGIC = 0x01020304
-+BASIC_ZA_TEST = 0
-+TILE_SLICE_TEST = 0
-+
-+
-+def run_test():
-+    """Test reads and writes of the SME2 ZT0 register"""
-+    frame = gdb.selected_frame()
-+    rname = "zt0"
-+    zt0 = frame.read_register(rname)
-+    report(True, "Reading %s" % rname)
-+
-+    # Writing to the ZT0 register, byte by byte.
-+    for i in range(0, 64):
-+        cmd = "set $zt0[%d] = 0x01" % (i)
-+            gdb.execute(cmd)
-+            report(True, "%s" % cmd)
-+
-+    # Reading from the ZT0 register, byte by byte.
-+    for i in range(0, 64):
-+        reg = "$zt0[%d]" % (i)
-+        v = gdb.parse_and_eval(reg)
-+        report(str(v.type) == "uint8_t", "size of %s" % (reg))
-+        report(v == 0x1, "%s is 0x%x" % (reg, 0x1))
-+
-+main(run_test, expected_arch="aarch64")
--- 
-2.43.0
-
+-- PMM
 
