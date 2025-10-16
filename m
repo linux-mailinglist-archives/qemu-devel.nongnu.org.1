@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64685BE3221
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4064BE3212
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MN6-0007A7-IT; Thu, 16 Oct 2025 07:42:17 -0400
+	id 1v9MMw-00078Q-S7; Thu, 16 Oct 2025 07:42:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMb-00075S-Qi; Thu, 16 Oct 2025 07:41:46 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1v9MMX-00074f-OK; Thu, 16 Oct 2025 07:41:41 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMQ-0003TM-DP; Thu, 16 Oct 2025 07:41:44 -0400
+ id 1v9MMQ-0003Ta-16; Thu, 16 Oct 2025 07:41:38 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 2093FC01C6;
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E6E48C01C7;
  Thu, 16 Oct 2025 14:41:28 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-tJ9HppKJ; Thu, 16 Oct 2025 14:41:27 +0300
+ ESMTPSA id LfP2M73FEmI0-ehkGRQYn; Thu, 16 Oct 2025 14:41:28 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614887;
- bh=NCBQBj1KLYl9rxemiXXzJo8O03ptUskg5oqIPqd6fMU=;
+ s=default; t=1760614888;
+ bh=4rS5GwKjIvlDX1eshLc4ZTaaWpM9BPePyTr5g8fR2nE=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Gm2tYnLEYpgakuaZolY3N0OZpoTs2w0M/6wY6x3J5iIfQCOetsskp7V7cil59D4yn
- 8jtLr5v7oO6E05J8MOsAt32f5t8RcZv9TnpjJl4JqUIq0P/PpPwqoLAUhFzCJaolDU
- KBGFI1aAss3Am78ApraFMhS+xqMpo+e4WX3wkjI4=
+ b=ZxvaYQe2l/ECS6bCdiFwdBkT1icqfbUOvLZwVEcEU6vm/SJx/gkhP6jwRW1R3fmpl
+ wy5/3mn/UKNBgILAGNDD40PvPZ7JX5vcrOtoSx8Cu6RsPBfFgVZPPd4+QKWJAhrc1X
+ Cj3UYvBKncrxqW2jWUrbqABgM24rp+Wk1FGXMuQU=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,25 +46,23 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 05/25] vhost: split vhost_dev_connect() out of
- vhost_dev_init()
-Date: Thu, 16 Oct 2025 14:40:42 +0300
-Message-ID: <20251016114104.1384675-6-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 06/25] vhost-user: support connect api
+Date: Thu, 16 Oct 2025 14:40:43 +0300
+Message-ID: <20251016114104.1384675-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,92 +77,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split vhost_dev_init() so that the first part will do early
-initialization of QEMU structures, but don't communicate with backend,
-and the second part will do backend communication.
+Memory allocation and connecting of structures remain ins _init(),
+communication with backend goes to _connect().
 
-We need this for future support for backend-transfer migration support
-for vhost-user-blk (backend will not be available in the early
-initialization point).
+We need this for further support of backend-transfer migration of
+vhost-user-blk, as we'll need to postpone (or not do) initial
+communication to backend.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost.c         | 27 +++++++++++++++++++++------
- include/hw/virtio/vhost.h |  2 ++
- 2 files changed, 23 insertions(+), 6 deletions(-)
+ hw/virtio/vhost-user.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index f733e98b4a..09d00e4d98 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1619,7 +1619,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-                    VhostBackendType backend_type, uint32_t busyloop_timeout,
-                    bool connect, Error **errp)
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index e45b74eddd..c5cb5ed528 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -2270,21 +2270,12 @@ static int vhost_user_postcopy_notifier(NotifierWithReturn *notifier,
+     return 0;
+ }
+ 
+-static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+-                                   Error **errp)
++static int vhost_user_backend_connect(struct vhost_dev *dev, Error **errp)
  {
--    int i, r, n_initialized_vqs = 0;
-+    int i, r;
+     uint64_t features, ram_slots;
+-    struct vhost_user *u;
+-    VhostUserState *vus = (VhostUserState *) opaque;
++    struct vhost_user *u = dev->opaque;
+     int err;
  
-     trace_vhost_dev_init_in(hdev);
- 
-@@ -1640,9 +1640,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-      */
-     assert(connect || hdev->vhost_ops->vhost_backend_connect);
- 
--    /* TDDO: support connect=false */
--    assert(connect);
+-    assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_USER);
 -
-     r = hdev->vhost_ops->vhost_backend_init(hdev, opaque, errp);
-     if (r < 0) {
-         goto fail;
-@@ -1678,6 +1675,26 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     memory_listener_register(&hdev->memory_listener, &address_space_memory);
-     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
- 
-+    trace_vhost_dev_init_out(hdev);
-+
-+    return connect ? vhost_dev_connect(hdev, errp) : 0;
-+
-+fail:
-+    vhost_dev_cleanup(hdev);
-+    return r;
-+}
-+
-+int vhost_dev_connect(struct vhost_dev *hdev, Error **errp)
-+{
-+    int i, r, n_initialized_vqs = 0;
-+
-+    if (hdev->vhost_ops->vhost_backend_connect) {
-+        r = hdev->vhost_ops->vhost_backend_connect(hdev, errp);
-+        if (r < 0) {
-+            goto fail;
-+        }
-+    }
-+
-     r = hdev->vhost_ops->vhost_set_owner(hdev);
-     if (r < 0) {
-         error_setg_errno(errp, -r, "vhost_set_owner failed");
-@@ -1720,8 +1737,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         goto fail;
+-    u = g_new0(struct vhost_user, 1);
+-    u->user = vus;
+-    u->dev = dev;
+-    dev->opaque = u;
+-
+     err = vhost_user_get_features(dev, &features);
+     if (err < 0) {
+         error_setg_errno(errp, -err, "vhost_backend_init failed");
+@@ -2292,7 +2283,7 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
      }
  
--    trace_vhost_dev_init_out(hdev);
--
+     if (virtio_has_feature(features, VHOST_USER_F_PROTOCOL_FEATURES)) {
+-        bool supports_f_config = vus->supports_config ||
++        bool supports_f_config = u->user->supports_config ||
+             (dev->config_ops && dev->config_ops->vhost_dev_config_notifier);
+         uint64_t protocol_features;
+ 
+@@ -2408,6 +2399,22 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
      return 0;
+ }
  
- fail:
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 74ed24232e..af46d4b5f2 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -158,6 +158,8 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-                    uint32_t busyloop_timeout,
-                    bool connect, Error **errp);
- 
-+int vhost_dev_connect(struct vhost_dev *hdev, Error **errp);
++static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
++                                   Error **errp)
++{
++    struct vhost_user *u;
++    VhostUserState *vus = (VhostUserState *) opaque;
 +
- /**
-  * vhost_dev_cleanup() - tear down and cleanup vhost interface
-  * @hdev: the common vhost_dev structure
++    assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_USER);
++
++    u = g_new0(struct vhost_user, 1);
++    u->user = vus;
++    u->dev = dev;
++    dev->opaque = u;
++
++    return 0;
++}
++
+ static int vhost_user_backend_cleanup(struct vhost_dev *dev)
+ {
+     struct vhost_user *u;
+@@ -3133,6 +3140,7 @@ void vhost_user_qmp_status(struct vhost_dev *dev, VirtioStatus *status)
+ const VhostOps user_ops = {
+         .backend_type = VHOST_BACKEND_TYPE_USER,
+         .vhost_backend_init = vhost_user_backend_init,
++        .vhost_backend_connect = vhost_user_backend_connect,
+         .vhost_backend_cleanup = vhost_user_backend_cleanup,
+         .vhost_backend_memslots_limit = vhost_user_memslots_limit,
+         .vhost_backend_no_private_memslots = vhost_user_no_private_memslots,
 -- 
 2.48.1
 
