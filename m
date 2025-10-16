@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1C0BE517D
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 20:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2495FBE5199
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 20:48:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Sy9-0001hq-EQ; Thu, 16 Oct 2025 14:44:59 -0400
+	id 1v9Sxo-0001dP-8U; Thu, 16 Oct 2025 14:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1v9Sxr-0001gi-6o
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:44:39 -0400
-Received: from p-east3-cluster6-host12-snip4-8.eps.apple.com ([57.103.85.249]
+ id 1v9Sxk-0001d1-Tl
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:44:32 -0400
+Received: from p-east3-cluster6-host1-snip4-5.eps.apple.com ([57.103.85.136]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1v9Sxa-00025P-S3
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:44:38 -0400
+ id 1v9Sxa-00025j-3E
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 14:44:32 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-9 (Postfix) with ESMTPS id
- 43D2518004E4; Thu, 16 Oct 2025 18:44:17 +0000 (UTC)
+ CC6CC18003BC; Thu, 16 Oct 2025 18:44:18 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=jXPIkvwftnVZHRg4Mjz/B4doNai4bCzAxKe4sYL/QI8=;
+ s=sig1; bh=6QHLe7sI/ta/TpnlofGbhZSXfY72nxkqv2tu61id1Xw=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=AjIcr1rcdLHwDBsG9Y09IiNwKBwXwuFU5S/dzH46M5KSSPbpjK/2vZVJAy5TFKBdTvC464x5kzxfYehth060Vzz91WWqegB/Fog7hLnEIYcr1xFj/CecTIc/MoMEjANS3Hv4nHOBVntBWv5SpDLYp1zdM6JLbeBPCfCISJu+Y1UbU2HALHXKUa6/8aGDneCByUP8snYXRirpEzopLHCQy2gKvdDs4fLCKOCbGJSSRYeeeu5pa32WdU8hYc+11qGI310WtgJ33xRcZaWB53aDjCFz/aEhAIDeCUotO3eKm5590dhsRFMCu2U3243/J4WWd9WyGAOSNwUVQoNhV9vbQw==
+ b=PxhxC3Z8IAuI5QSeEt4QEpSzpUpz8TLaWfAbsnFxMwfk8Jg0xR1TGsw7WrCnQdJMvYRUSXd1aq7eQrLfdagXb9bPw4JA4YQmNQdrcW1hhlkIguhSSakQC5PJEEx+O+k/X91owBVK6IAVTnW8J/225U5iY/hJR1hjlpaVTNpNbZcw9eYZzb/fbb+Xple11u/RmCEBWWhElg/1cMd/HGFP6D+auamky8a5AFgklRQkZeww91RnUzUvXrADenx1njr8MLA77dDTM95Ys6D2s+wlJjAvaM3hmBwJ/2EozdZjJ3gXXQZq4/SLwA0tBm9FU5VtfF8RlHmI72sWTIX0h20/OA==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (unknown [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-9 (Postfix) with ESMTPSA id
- 7E6E1180016A; Thu, 16 Oct 2025 18:44:15 +0000 (UTC)
+ 1EE8A18004E3; Thu, 16 Oct 2025 18:44:17 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
@@ -40,38 +40,39 @@ Cc: qemu-arm@nongnu.org,
  Cameron Esfahani <dirty@apple.com>, Alexander Graf <agraf@csgraf.de>,
  Mohamed Mediouni <mohamed@unpredictable.fr>, Mads Ynddal <mads@ynddal.dk>,
  Pedro Barbuda <pbarbuda@microsoft.com>
-Subject: [PATCH v8 15/24] hw/arm: virt: cleanly fail on attempt to use the
- platform vGIC together with ITS
-Date: Thu, 16 Oct 2025 20:44:04 +0200
-Message-ID: <20251016184413.69870-1-mohamed@unpredictable.fr>
+Subject: [PATCH v8 16/24] docs: arm: update virt machine model description
+Date: Thu, 16 Oct 2025 20:44:05 +0200
+Message-ID: <20251016184413.69870-2-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251016184413.69870-1-mohamed@unpredictable.fr>
+References: <20251016184413.69870-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDEzNyBTYWx0ZWRfX7WfhM/iit82v
- OIdbfV3Ku4ZRZ13APXm7TPtLQc3LpR5ZYiSU6FxKnF3qjM9BXf2RrcgtqL7AqdWYfZOC0DEhF7v
- YYYzZWjnmxn1DONW3+cY5mDXMRr7YcFTV5HKvpfLvL9hHXHlyeLt5GaGSGTP8LIgbx58MgDjnp2
- OZPSw3QPyaGijxte/3La96ZHppxrWYSVwtZWH8GbuidPNiJtUzS5uQj2Tepoghe1CqxX9JydDir
- fOZj0fy9SbLKT/UwntnX1JhcQT4nJA2QM21iWhnC1vS3Bo0vAuHnDptSvJZ9Fy5DhxlbB6PRo=
-X-Proofpoint-ORIG-GUID: kkO2l9kMjSZ6w_dX1_ZU-DJeyo8IG1yI
-X-Proofpoint-GUID: kkO2l9kMjSZ6w_dX1_ZU-DJeyo8IG1yI
+X-Proofpoint-ORIG-GUID: _cjDYhu_9pi6ADUSlvX5u2xKcWUNV2fE
+X-Proofpoint-GUID: _cjDYhu_9pi6ADUSlvX5u2xKcWUNV2fE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDEzNyBTYWx0ZWRfX4kmr28EVszsW
+ +KU6TD6X7BSCO3JxAOOZey+4egaibpcdowyencSbZKVDDMVvqkF5po5Rcw+TECinHRD3rl+/Ywv
+ S54W9s1rGKAcM3YLaVMsgULNpgHP5iV6pXKzgb1IkiKGi0U2pHe8vOq99jXsMf2XsK744255UKl
+ AXeM7LFS0uMvj6O+yxR8CLSPAZC3ZPKFo/dBWhqM9oNmg/ltZBXgYfSHMPNSSz7HhJ9LJCzoM+9
+ YeiEXsb0de6/nfx0PyKhJEWDqAYKxYvwU2XZVkSF8ffYR6/h4Sl0JZ6eBZsiXxfXi2iOojflI=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-16_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxscore=0 adultscore=0 phishscore=0 spamscore=0
- malwarescore=0 bulkscore=0
- mlxlogscore=953 clxscore=1030 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.22.0-2506270000 definitions=main-2510160137
-X-JNJ: AAAAAAABJCq2o+OH+ad70jQ+yt4p9n4BqR6E6d0+iEqG9L8Qkg6dMc3MRR7ZHQZJYJFUzGSKo7k88y5fG2tJ/jS/KJRUGgSjIbATRxC//rOuTsVf91hjrqI4QGamhxUIo+pAzYApQ4to92QF51YqyWyvYSWHsZX4iHZU1jdE//XV2P9MFuFKW4yVK17vSp9Xv5UBwcje6xCjbUgrMu+NcqdLrhLuI9E9mngPimSW1bCFay2SMhZ2O96C6XdatSdWBv1u65S5MxLX2IqjYG65HV/HaQdyXjH6gSciUZBXAJxBlypK3uqtsch8AMQT5vlWTLwsNkqBi1NJxLfCtFGknILGclx0BTOPOzq6u3i0qeBl4x+OuMDtne2kwjO0Lxq6rFSa7xM0w/QjpbeXDQcNKIrNPqd/AYguIb2sb7C7WM5d6JFhoGxCLqiHDUcNnU9R6L0KsTnlTQgKK+8uPtqVDwQ0YsnqePklvYOkNYCNaubi78CITehlaUSjVgdD/ZWfh0o00eGD1ZmLNbde+mcXaNd6s0dP4A0nFyy2iGpLLb0DJK+si8GJymy1RdFCA/nTSmyHPuPz2uXmtoQ9a5oWZ+Hv81WDHNMJVM4Do/deVjohIsLgPsV7PIuGGE7Ri2pJ5Hq0wZAri/6a3g/w+XvuRu+bY+8elktCRsZbSNhR4b+CreQExO67ny4OR6X6KpTo9Bs=
-Received-SPF: pass client-ip=57.103.85.249;
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxlogscore=984 mlxscore=0 suspectscore=0
+ clxscore=1030 spamscore=0
+ phishscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2510160137
+X-JNJ: AAAAAAABz3as9KHlgXv1iBH7JzggIZxi4BmA5L4obTortuPxQBaoC1C2FjuM1CEXp8sV7h68zudSPt9YS/klgzM5hGEEQnytBPtdU9OfrIVOzmOsyX7YKqBdK0hWTXcnkrpNPQ1hKN4S+3k5wxjWdbFrnmoEe5Qd4bcTe078e5W99elOQRHzPAwQebdrCiZXd7EVxs1n2IMTwE3IIub//C1LqJPBbW2oT7LQkMHLUsd74luZjjvSgibI3+u+uOEhGTGTLTDDuOhtaGtH9F8xOEB5KBVGbumhw4APmuO4/C0P+zq85K+UZ97S66KJULSzOGxXg8GA00mlucJhCDCpNNqmdQOccVik4Grq8ANvnCq4miIXd5mDnUKYrV7yQD8d2DaZJvHEz6bmleFLQEFb6xQ0OFKuIKvE4JfNjFTnSMQLyMDDdFCcRJ6NLguk97rsURy7xWf6e4iVhScrcRnkRMmVsXkiSMbre11hhnc7TBEvPO0wPoP+oSo+hhSkwealzSSgT+v1ZutdMbsXlmpRpO85dQsiY5kwgThuMnX/JvwSpMl/mXSkaHgbDqGhYnHjNDENFhySoupUJAp9ZMmk3HzNJo0sNKnmQ/zr4F33hQYYG+vns8loHm4gp0+RnqX4FdCnQ4rttZxgC5sBphKbCMLGNNuHRomAl0q7Jn0ivTYWYwGzuObm8qPYPWj6O+4qOnJoTIWl
+Received-SPF: pass client-ip=57.103.85.136;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,210 +88,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Switch its to a tristate.
+Update the documentation to match current QEMU.
 
-Windows Hypervisor Platform's vGIC doesn't support ITS.
-Deal with this by reporting to the user and exiting.
-
-Regular configuration: GICv3 + ITS
-New default configuration with WHPX: GICv3 with GICv2m
-And its=off explicitly for the newest machine version: GICv3 + GICv2m
+Remove the mention of pre-2.7 machine models as those aren't provided
+anymore.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 ---
- hw/arm/virt-acpi-build.c | 15 +++++++------
- hw/arm/virt.c            | 46 +++++++++++++++++++++++++++++++---------
- include/hw/arm/virt.h    |  4 +++-
- 3 files changed, 47 insertions(+), 18 deletions(-)
+ docs/system/arm/virt.rst | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 0a6ec74aa0..8e730731ca 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -472,7 +472,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         nb_nodes = num_smmus + 1; /* RC and SMMUv3 */
-         rc_mapping_count = rc_smmu_idmaps_len;
+diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+index 10cbffc8a7..fe95be991e 100644
+--- a/docs/system/arm/virt.rst
++++ b/docs/system/arm/virt.rst
+@@ -40,9 +40,10 @@ The virt board supports:
+ - An optional SMMUv3 IOMMU
+ - hotpluggable DIMMs
+ - hotpluggable NVDIMMs
+-- An MSI controller (GICv2M or ITS). GICv2M is selected by default along
+-  with GICv2. ITS is selected by default with GICv3 (>= virt-2.7). Note
+-  that ITS is not modeled in TCG mode.
++- An MSI controller (GICv2m or ITS).
++  - When using a GICv3, ITS is selected by default when available on the platform.
++  - If using a GICv2 or when ITS is not available, a GICv2m is provided by default instead.
++  - Before virt-10.2, a GICv2m is not provided when the ITS is disabled.
+ - 32 virtio-mmio transport devices
+ - running guests using the KVM accelerator on aarch64 hardware
+ - large amounts of RAM (at least 255GB, and more if using highmem)
+@@ -167,8 +168,7 @@ gic-version
+     ``4`` if ``virtualization`` is ``on``, but this may change in future)
  
--        if (vms->its) {
-+        if (virt_is_its_enabled(vms)) {
-             /*
-              * Knowing the ID ranges from the RC to the SMMU, it's possible to
-              * determine the ID ranges from RC that go directly to ITS.
-@@ -483,7 +483,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-             rc_mapping_count += rc_its_idmaps->len;
-         }
-     } else {
--        if (vms->its) {
-+        if (virt_is_its_enabled(vms)) {
-             nb_nodes = 2; /* RC and ITS */
-             rc_mapping_count = 1; /* Direct map to ITS */
-         } else {
-@@ -498,7 +498,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     build_append_int_noprefix(table_data, IORT_NODE_OFFSET, 4);
-     build_append_int_noprefix(table_data, 0, 4); /* Reserved */
+ its
+-  Set ``on``/``off`` to enable/disable ITS instantiation. The default is ``on``
+-  for machine types later than ``virt-2.7``.
++  Set ``on``/``off``/``auto`` to control ITS instantiation. The default is ``auto``.
  
--    if (vms->its) {
-+    if (virt_is_its_enabled(vms)) {
-         /* Table 12 ITS Group Format */
-         build_append_int_noprefix(table_data, 0 /* ITS Group */, 1); /* Type */
-         node_size =  20 /* fixed header size */ + 4 /* 1 GIC ITS Identifier */;
-@@ -517,7 +517,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         int smmu_mapping_count, offset_to_id_array;
-         int irq = sdev->irq;
- 
--        if (vms->its) {
-+        if (virt_is_its_enabled(vms)) {
-             smmu_mapping_count = 1; /* ITS Group node */
-             offset_to_id_array = SMMU_V3_ENTRY_SIZE; /* Just after the header */
-         } else {
-@@ -610,7 +610,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-             }
-         }
- 
--        if (vms->its) {
-+        if (virt_is_its_enabled(vms)) {
-             /*
-              * Map bypassed (don't go through the SMMU) RIDs (input) to
-              * ITS Group node directly: RC -> ITS.
-@@ -945,7 +945,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-                                           memmap[VIRT_HIGH_GIC_REDIST2].size);
-         }
- 
--        if (vms->its) {
-+        if (virt_is_its_enabled(vms)) {
-             /*
-              * ACPI spec, Revision 6.0 Errata A
-              * (original 6.0 definition has invalid Length)
-@@ -961,7 +961,8 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         }
-     }
- 
--    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) && !vms->no_gicv3_with_gicv2m) {
-+    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms))
-+     && !vms->no_gicv3_with_gicv2m) {
-         const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
- 
-         /* 5.2.12.16 GIC MSI Frame Structure */
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 9121eb37eb..dbf9a28b8d 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -735,7 +735,7 @@ static void create_its(VirtMachineState *vms)
- {
-     DeviceState *dev;
- 
--    assert(vms->its);
-+    assert(virt_is_its_enabled(vms));
-     if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
-         /*
-          * Do nothing if ITS is neither supported by the host nor emulated by
-@@ -744,6 +744,15 @@ static void create_its(VirtMachineState *vms)
-         return;
-     }
- 
-+    if (whpx_enabled() && vms->tcg_its) {
-+        /*
-+         * Signal to the user when ITS is neither supported by the host
-+         * nor emulated by the machine.
-+         */
-+        info_report("ITS not supported on WHPX.");
-+        exit(1);
-+    }
-+
-     dev = qdev_new(its_class_name());
- 
-     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
-@@ -955,7 +964,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
- 
-     fdt_add_gic_node(vms);
- 
--    if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
-+    if (vms->gic_version != VIRT_GIC_VERSION_2 && virt_is_its_enabled(vms)) {
-         create_its(vms);
-     } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
-         create_v2m(vms);
-@@ -2705,18 +2714,34 @@ static void virt_set_highmem_mmio_size(Object *obj, Visitor *v,
-     extended_memmap[VIRT_HIGH_PCIE_MMIO].size = size;
- }
- 
--static bool virt_get_its(Object *obj, Error **errp)
-+bool virt_is_its_enabled(VirtMachineState *vms)
-+{
-+    if (vms->its == ON_OFF_AUTO_OFF) {
-+        return false;
-+    }
-+    if (vms->its == ON_OFF_AUTO_AUTO) {
-+        if (whpx_enabled()) {
-+            return false;
-+        }
-+    }
-+    return true;
-+}
-+
-+static void virt_get_its(Object *obj, Visitor *v, const char *name,
-+                          void *opaque, Error **errp)
- {
-     VirtMachineState *vms = VIRT_MACHINE(obj);
-+    OnOffAuto its = vms->its;
- 
--    return vms->its;
-+    visit_type_OnOffAuto(v, name, &its, errp);
- }
- 
--static void virt_set_its(Object *obj, bool value, Error **errp)
-+static void virt_set_its(Object *obj, Visitor *v, const char *name,
-+                          void *opaque, Error **errp)
- {
-     VirtMachineState *vms = VIRT_MACHINE(obj);
- 
--    vms->its = value;
-+    visit_type_OnOffAuto(v, name, &vms->its, errp);
- }
- 
- static bool virt_get_dtb_randomness(Object *obj, Error **errp)
-@@ -3426,8 +3451,9 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
-                                           "guest CPU which implements the ARM "
-                                           "Memory Tagging Extension");
- 
--    object_class_property_add_bool(oc, "its", virt_get_its,
--                                   virt_set_its);
-+    object_class_property_add(oc, "its", "OnOffAuto",
-+        virt_get_its, virt_set_its,
-+        NULL, NULL);
-     object_class_property_set_description(oc, "its",
-                                           "Set on/off to enable/disable "
-                                           "ITS instantiation");
-@@ -3487,8 +3513,8 @@ static void virt_instance_init(Object *obj)
-     vms->highmem_mmio = true;
-     vms->highmem_redists = true;
- 
--    /* Default allows ITS instantiation */
--    vms->its = true;
-+    /* Default allows ITS instantiation if available */
-+    vms->its = ON_OFF_AUTO_AUTO;
-     /* Allow ITS emulation if the machine version supports it */
-     vms->tcg_its = !vmc->no_tcg_its;
-     vms->no_gicv3_with_gicv2m = false;
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index d31348dd61..997dd51678 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -149,7 +149,7 @@ struct VirtMachineState {
-     bool highmem_ecam;
-     bool highmem_mmio;
-     bool highmem_redists;
--    bool its;
-+    OnOffAuto its;
-     bool tcg_its;
-     bool virt;
-     bool ras;
-@@ -218,4 +218,6 @@ static inline int virt_gicv3_redist_region_count(VirtMachineState *vms)
-             vms->highmem_redists) ? 2 : 1;
- }
- 
-+bool virt_is_its_enabled(VirtMachineState *vms);
-+
- #endif /* QEMU_ARM_VIRT_H */
+ iommu
+   Set the IOMMU type to create for the guest. Valid values are:
 -- 
 2.50.1 (Apple Git-155)
 
