@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCBBBE3D66
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 16:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F20BE3D6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 16:02:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9OXl-0002fF-Bf; Thu, 16 Oct 2025 10:01:25 -0400
+	id 1v9OXu-0002hE-Po; Thu, 16 Oct 2025 10:01:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1v9OXf-0002d0-SJ
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:01:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v9OXr-0002gm-9x
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:01:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1v9OXa-0006tf-Ja
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:01:19 -0400
+ id 1v9OXj-0006uk-Sx
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 10:01:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760623272;
+ s=mimecast20190719; t=1760623276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rFvybGKOgQgMcwFiT581cFeXfHcbVpkvXj0ltTBUf/A=;
- b=XRPuSRv5CzQH+0f2JX5U3TxbnHecHPKD9bvmiHCdVlPdOqfPl459nplACNbRQxQmf8rIDk
- 7udwTOzS0mHS/evUsxypKxdzI+Z3NKwWHJRfKVm5IWAHHAea/paBIjOYBzce6wgwwIpHj9
- euZgEiKhR56E96QTFKtd/8wMY6cogRU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ntVvVf8/M035uETjgq/33f4ABncTA+oJSQYYqx0UURM=;
+ b=efxmGSIpuFWn7/VzmOF7WRb7pvyqao6CCQwaNRbmnK6FPjzem3JyICMCRIGPab/f7kFt5+
+ X6cLcLk/zRJZzhZDXwoULVvkQlr/5yctoJ5jhYuOInD4JNM2WBndZANEBYj4efIPa/ju1W
+ 5AiYkpJcqxqb0fWQSJONlh73lNZwYNA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-NTP6JzgHPEiIynHHpxtS9Q-1; Thu,
- 16 Oct 2025 10:01:08 -0400
-X-MC-Unique: NTP6JzgHPEiIynHHpxtS9Q-1
-X-Mimecast-MFC-AGG-ID: NTP6JzgHPEiIynHHpxtS9Q_1760623266
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-xAfkGN8PO1GZv_wp7S5tqg-1; Thu,
+ 16 Oct 2025 10:01:13 -0400
+X-MC-Unique: xAfkGN8PO1GZv_wp7S5tqg-1
+X-Mimecast-MFC-AGG-ID: xAfkGN8PO1GZv_wp7S5tqg_1760623271
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A11041954197; Thu, 16 Oct 2025 14:01:06 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 295B1180A229; Thu, 16 Oct 2025 14:01:11 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.238])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0B4BE300019F; Thu, 16 Oct 2025 14:01:01 +0000 (UTC)
+ id 233EE30001BC; Thu, 16 Oct 2025 14:01:06 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, cohuck@redhat.com,
  maz@kernel.org, oliver.upton@linux.dev, sebott@redhat.com,
  gshan@redhat.com, ddutile@redhat.com, peterx@redhat.com, philmd@linaro.org,
  pbonzini@redhat.com
-Subject: [RESEND PATCH 4/7] kvm-all: Add the capability to blacklist some KVM
- regs
-Date: Thu, 16 Oct 2025 15:59:49 +0200
-Message-ID: <20251016140039.250111-5-eric.auger@redhat.com>
+Subject: [RESEND PATCH 5/7] target/arm/cpu: Implement hide_reg callback()
+Date: Thu, 16 Oct 2025 15:59:50 +0200
+Message-ID: <20251016140039.250111-6-eric.auger@redhat.com>
 In-Reply-To: <20251016140039.250111-1-eric.auger@redhat.com>
 References: <20251016140039.250111-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,7 +68,8 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,77 +85,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On ARM we want to be able to blacklist registers that are exposed
-by KVM. To mitigate some mitigation failures that occur when a new
-register is exposed and does not exist on the destination, some
-registers are tagged "hidden" and their state won't be saved. As the
-state is not saved and they are expected not to be used, we want to
-enforce they aren't. So let's check this. The new CPUClass hide_reg()
-callback is optional and will be implemented on ARM in a subsequent
-patch.
+Checks if the register is hidden.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
- include/hw/core/cpu.h |  2 ++
- accel/kvm/kvm-all.c   | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ target/arm/cpu.h |  2 ++
+ target/arm/cpu.c | 12 ++++++++++++
+ target/arm/kvm.c | 23 ++---------------------
+ 3 files changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index e79e8e0a8e..8efd555f36 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -142,6 +142,7 @@ struct SysemuCPUOps;
-  * the caller will not g_free() it.
-  * @disas_set_info: Setup architecture specific components of disassembly info
-  * @adjust_watchpoint_address: Perform a target-specific adjustment to an
-+ * @hide_reg: Check if a register must be hidden (optional)
-  * address before attempting to match it against watchpoints.
-  * @deprecation_note: If this CPUClass is deprecated, this field provides
-  *                    related information.
-@@ -167,6 +168,7 @@ struct CPUClass {
-     int (*gdb_read_register)(CPUState *cpu, GByteArray *buf, int reg);
-     int (*gdb_write_register)(CPUState *cpu, uint8_t *buf, int reg);
-     vaddr (*gdb_adjust_breakpoint)(CPUState *cpu, vaddr addr);
-+    bool (*hide_reg)(CPUState *cpu, uint64_t regidex);
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 30d59a51d6..3ae4d65422 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -2687,4 +2687,6 @@ static inline bool is_fake_reg(ARMCPU *cpu, uint64_t regidx)
+ #define LOG2_TAG_GRANULE 4
+ #define TAG_GRANULE      (1 << LOG2_TAG_GRANULE)
  
-     const char *gdb_core_xml_file;
-     const char * (*gdb_arch_name)(CPUState *cpu);
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 56031925c4..610f05fd0d 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3783,9 +3783,15 @@ bool kvm_device_supported(int vmfd, uint64_t type)
++bool arm_cpu_hide_reg(CPUState *s, uint64_t regidx);
++
+ #endif
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 3b556f1404..60eee82742 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2366,6 +2366,17 @@ static const TCGCPUOps arm_tcg_ops = {
+ };
+ #endif /* CONFIG_TCG */
  
- int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source)
- {
-+    CPUClass *cc = CPU_GET_CLASS(cs);
-     struct kvm_one_reg reg;
-     int r;
- 
-+    if (cc->hide_reg && cc->hide_reg(cs, id)) {
-+        error_report("%s reg 0x%"PRIx64" is hidden and shall never been accessed",
-+                     __func__, id);
-+        g_assert_not_reached();
++bool arm_cpu_hide_reg(CPUState *s, uint64_t regidx)
++{
++    ARMCPU *cpu = ARM_CPU(s);
++    for (int i = 0; i < cpu->nr_kvm_hidden_regs; i++) {
++        if (cpu->kvm_hidden_regs[i] == regidx) {
++            return true;
++        }
 +    }
-     reg.id = id;
-     reg.addr = (uintptr_t) source;
-     r = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
-@@ -3797,9 +3803,15 @@ int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source)
- 
- int kvm_get_one_reg(CPUState *cs, uint64_t id, void *target)
++    return false;
++}
++
+ static void arm_cpu_class_init(ObjectClass *oc, const void *data)
  {
-+    CPUClass *cc = CPU_GET_CLASS(cs);
-     struct kvm_one_reg reg;
-     int r;
+     ARMCPUClass *acc = ARM_CPU_CLASS(oc);
+@@ -2394,6 +2405,7 @@ static void arm_cpu_class_init(ObjectClass *oc, const void *data)
+     cc->gdb_get_core_xml_file = arm_gdb_get_core_xml_file;
+     cc->gdb_stop_before_watchpoint = true;
+     cc->disas_set_info = arm_disas_set_info;
++    cc->hide_reg = arm_cpu_hide_reg;
  
-+    if (cc->hide_reg && cc->hide_reg(cs, id)) {
-+        error_report("%s reg 0x%"PRIx64" is hidden and shall never been accessed",
-+                     __func__, id);
-+        g_assert_not_reached();
-+    }
-     reg.id = id;
-     reg.addr = (uintptr_t) target;
-     r = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
+ #ifdef CONFIG_TCG
+     cc->tcg_ops = &arm_tcg_ops;
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 7551c43e79..1a95e2c667 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -754,25 +754,6 @@ static bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx)
+     }
+ }
+ 
+-/**
+- * kvm_vcpu_compat_hidden_reg:
+- * @cpu: ARMCPU
+- * @regidx: index of the register to check
+- *
+- * Depending on the CPU compat returns true if @regidx must be
+- * ignored during sync & migration
+- */
+-static inline bool
+-kvm_vcpu_compat_hidden_reg(ARMCPU *cpu, uint64_t regidx)
+-{
+-    for (int i = 0; i < cpu->nr_kvm_hidden_regs; i++) {
+-        if (cpu->kvm_hidden_regs[i] == regidx) {
+-            return true;
+-        }
+-    }
+-    return false;
+-}
+-
+ /**
+  * kvm_arm_init_cpreg_list:
+  * @cpu: ARMCPU
+@@ -834,7 +815,7 @@ static int kvm_arm_init_cpreg_list(ARMCPU *cpu)
+         uint64_t regidx = rlp->reg[i];
+ 
+         if (!kvm_arm_reg_syncs_via_cpreg_list(regidx) ||
+-            kvm_vcpu_compat_hidden_reg(cpu, regidx)) {
++            arm_cpu_hide_reg(&cpu->parent_obj, regidx)) {
+             continue;
+         }
+         switch (rlp->reg[i] & KVM_REG_SIZE_MASK) {
+@@ -867,7 +848,7 @@ static int kvm_arm_init_cpreg_list(ARMCPU *cpu)
+         if (!kvm_arm_reg_syncs_via_cpreg_list(regidx)) {
+             continue;
+         }
+-        if (kvm_vcpu_compat_hidden_reg(cpu, regidx)) {
++        if (arm_cpu_hide_reg(&cpu->parent_obj, regidx)) {
+             trace_kvm_arm_init_cpreg_list_skip_hidden_reg(rlp->reg[i]);
+             continue;
+         }
 -- 
 2.49.0
 
