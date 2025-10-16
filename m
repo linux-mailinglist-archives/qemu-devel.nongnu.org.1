@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4064BE3212
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 860BBBE3275
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MMw-00078Q-S7; Thu, 16 Oct 2025 07:42:06 -0400
+	id 1v9MNc-0007UJ-LW; Thu, 16 Oct 2025 07:42:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMX-00074f-OK; Thu, 16 Oct 2025 07:41:41 -0400
+ id 1v9MMh-00076q-Uq; Thu, 16 Oct 2025 07:41:52 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMQ-0003Ta-16; Thu, 16 Oct 2025 07:41:38 -0400
+ id 1v9MMS-0003Tj-CU; Thu, 16 Oct 2025 07:41:46 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E6E48C01C7;
- Thu, 16 Oct 2025 14:41:28 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9BF02C01C8;
+ Thu, 16 Oct 2025 14:41:29 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-ehkGRQYn; Thu, 16 Oct 2025 14:41:28 +0300
+ ESMTPSA id LfP2M73FEmI0-8uCyA1Hn; Thu, 16 Oct 2025 14:41:29 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614888;
- bh=4rS5GwKjIvlDX1eshLc4ZTaaWpM9BPePyTr5g8fR2nE=;
+ s=default; t=1760614889;
+ bh=3Rz+MXzzYC9OgDI+uA/Nsz/cK/rJU7nqiFJFVGluT4g=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=ZxvaYQe2l/ECS6bCdiFwdBkT1icqfbUOvLZwVEcEU6vm/SJx/gkhP6jwRW1R3fmpl
- wy5/3mn/UKNBgILAGNDD40PvPZ7JX5vcrOtoSx8Cu6RsPBfFgVZPPd4+QKWJAhrc1X
- Cj3UYvBKncrxqW2jWUrbqABgM24rp+Wk1FGXMuQU=
+ b=k8DeWtLalt45sEpF4NnXdUFO9fIJwFvKKK50gyo1msyp0vuRBV/eHzoQCGMTC4Gbv
+ vNM2NhbnIArh3dpCbOSrhxENkZGW41kopIVBxTzr05rVI8kmPi3FxQhS1E1Wt0CADA
+ r9cveRYp/fBi8opR2QJp6cF/6TIPiaqpQlRisqRU=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,9 +46,10 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 06/25] vhost-user: support connect api
-Date: Thu, 16 Oct 2025 14:40:43 +0300
-Message-ID: <20251016114104.1384675-7-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 07/25] vhost-user-blk: vhost_user_blk_connect() move
+ connected check to caller
+Date: Thu, 16 Oct 2025 14:40:44 +0300
+Message-ID: <20251016114104.1384675-8-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -77,86 +78,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Memory allocation and connecting of structures remain ins _init(),
-communication with backend goes to _connect().
+vhost_user_blk_connect() has two callers:
 
-We need this for further support of backend-transfer migration of
-vhost-user-blk, as we'll need to postpone (or not do) initial
-communication to backend.
+- vhost_user_blk_realize_connect(), which directly set .connected = false
+before call
+
+- vhost_user_blk_event(), where we want this check
+
+Move the check to the only caller which needs it, to simplify further
+refactoring.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost-user.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ hw/block/vhost-user-blk.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index e45b74eddd..c5cb5ed528 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -2270,21 +2270,12 @@ static int vhost_user_postcopy_notifier(NotifierWithReturn *notifier,
-     return 0;
- }
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index a92426f18c..57214a69cd 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -352,9 +352,7 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
  
--static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
--                                   Error **errp)
-+static int vhost_user_backend_connect(struct vhost_dev *dev, Error **errp)
- {
-     uint64_t features, ram_slots;
--    struct vhost_user *u;
--    VhostUserState *vus = (VhostUserState *) opaque;
-+    struct vhost_user *u = dev->opaque;
-     int err;
+     trace_vhost_user_blk_connect_in(vdev);
  
--    assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_USER);
--
--    u = g_new0(struct vhost_user, 1);
--    u->user = vus;
--    u->dev = dev;
--    dev->opaque = u;
--
-     err = vhost_user_get_features(dev, &features);
-     if (err < 0) {
-         error_setg_errno(errp, -err, "vhost_backend_init failed");
-@@ -2292,7 +2283,7 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
-     }
+-    if (s->connected) {
+-        return 0;
+-    }
++    assert(!s->connected);
  
-     if (virtio_has_feature(features, VHOST_USER_F_PROTOCOL_FEATURES)) {
--        bool supports_f_config = vus->supports_config ||
-+        bool supports_f_config = u->user->supports_config ||
-             (dev->config_ops && dev->config_ops->vhost_dev_config_notifier);
-         uint64_t protocol_features;
+     s->dev.num_queues = s->num_queues;
+     s->dev.nvqs = s->num_queues;
+@@ -411,10 +409,12 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
  
-@@ -2408,6 +2399,22 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
-     return 0;
- }
- 
-+static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
-+                                   Error **errp)
-+{
-+    struct vhost_user *u;
-+    VhostUserState *vus = (VhostUserState *) opaque;
-+
-+    assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_USER);
-+
-+    u = g_new0(struct vhost_user, 1);
-+    u->user = vus;
-+    u->dev = dev;
-+    dev->opaque = u;
-+
-+    return 0;
-+}
-+
- static int vhost_user_backend_cleanup(struct vhost_dev *dev)
- {
-     struct vhost_user *u;
-@@ -3133,6 +3140,7 @@ void vhost_user_qmp_status(struct vhost_dev *dev, VirtioStatus *status)
- const VhostOps user_ops = {
-         .backend_type = VHOST_BACKEND_TYPE_USER,
-         .vhost_backend_init = vhost_user_backend_init,
-+        .vhost_backend_connect = vhost_user_backend_connect,
-         .vhost_backend_cleanup = vhost_user_backend_cleanup,
-         .vhost_backend_memslots_limit = vhost_user_memslots_limit,
-         .vhost_backend_no_private_memslots = vhost_user_no_private_memslots,
+     switch (event) {
+     case CHR_EVENT_OPENED:
+-        if (vhost_user_blk_connect(dev, &local_err) < 0) {
+-            error_report_err(local_err);
+-            qemu_chr_fe_disconnect(&s->chardev);
+-            return;
++        if (!s->connected) {
++            if (vhost_user_blk_connect(dev, &local_err) < 0) {
++                error_report_err(local_err);
++                qemu_chr_fe_disconnect(&s->chardev);
++                return;
++            }
+         }
+         break;
+     case CHR_EVENT_CLOSED:
 -- 
 2.48.1
 
