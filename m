@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78936BE34ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 621BCBE34F6
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:18:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mup-00078a-Om; Thu, 16 Oct 2025 08:17:08 -0400
+	id 1v9Mvh-00086i-0r; Thu, 16 Oct 2025 08:18:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Muh-0006r8-Vm
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:00 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mup-0007Es-2t
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:07 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MuV-0008Fa-TU
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:16:58 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-4270491e9easo45419f8f.2
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:16:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Muc-0008G9-BU
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:17:04 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-42421b1514fso391479f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:16:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760616997; x=1761221797; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760617001; x=1761221801; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=s/VgKDi/AmTRxccR3mAlzawFNzbduYz91OdfcZBf1s8=;
- b=J3nbZ5UqJvcF7PR3fcibBM9sDif+ugh7PPKTRU6083y2+3WoHZVb7b4muedKDkw3cq
- qsKyyAd84wXYjcnyUN43bdLZeIMptIiWC+3jcRllIIYx/9vWy0Wlz0CilSve4RSappok
- 4zSdxeFxBHRawwOISoO8fiTJeDMd0Dk5f5QUhyaS+jyGhpYPoRj0OG7AZY8hQyDuKI4l
- fPjYKqWWlnzS+Cq71AylNp1ZWYjihqWmBUlUWihaSMzkOtrK6qhCyV8HdO3CAy2Som8e
- Mu1lx0Rnq8gOKkGQ1fw2VpohG6uGFYYUG0mHjWu59WXSkIvzQXR727ERSnjd2kdt5szt
- 4N4w==
+ :reply-to; bh=EG22ngCCy62QgMdqNsP3Zdu5DfGyJ4YhEJz/Fzevipc=;
+ b=Ae5DQ7tWcyzxDF39Rro6lcugqZjl/8o+0OSzgZLtuyJWYgNtX0pRnIdU2Bp9kQNtdk
+ 2sEd9fVP3LHkb33U9Dqrb+zKEp6BdudgMsuYIMP+a6nPHv1py6wGOmAN/LXtGtlsDuvZ
+ mlhOF1e/upqAN4c6Njtsi3jD4OdxJrckgTQgzMciZPvskl903ss+P5tyYu5TZ8sJqrcG
+ Dv3dpzjXLsBRNmjFDwoO4yOfeNZGP+DmmuPprWotLzZyRZ8W7pPQc+bRtdSCKAW6V0L0
+ 3RzCTmoiFynJwRvFj9Fc9H/FOcTJFmxDdZ4l7US06KX3oyZ7MNXNIol/uKkulHXO7l07
+ vBYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760616997; x=1761221797;
+ d=1e100.net; s=20230601; t=1760617001; x=1761221801;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s/VgKDi/AmTRxccR3mAlzawFNzbduYz91OdfcZBf1s8=;
- b=V6H7BnNfr5N9vLQikBSFIGwYXNtfSoj5TJZVP6js9j4SpEI5XUnB9dzoHBOmRZzJX9
- K7GWfpi3jmUQk136fCztzQsU6/bbpZlhNhj/FMwD/bNzPBZuFI3ox5FRfl3IoAaBiuYL
- lrSfiSoyrlqcWYvcB124pr19caULtakBp4dxrbbomjknLMfYtkEpUMe7TSsFk078WOES
- DRTItK9d3vhjzY4QxNDF32gdFmDyC3CTV0ir7sqDB2xJWAMSLIUZit5LmeZXFSrPN74H
- 265i+KhYm1oAkoz1J5aCYFtd4m5p+IWvsSG/rYn57WlE52jTSoczujuO3xpytLgRJjKG
- 24Wg==
-X-Gm-Message-State: AOJu0Yw+C/Yyr1wetsBRfxYbb3yZAGUtlJGF1gPfRVqkK+PJIx2xsSiC
- XDiaE79dxKsIksmLOHdB7qvsvsEpnXLTtk1WEcDYS0TDUNnYYT7Ka2ppWXSyM51BILGNV3KQeF2
- gqGWHXG4=
-X-Gm-Gg: ASbGnctIeocNphbEotuM5FpEwkiAIvxPxc1W8iSLXKOsnImH9WxLAJs5rphDR3O3lsV
- RssjSY/zwVN97v+TDXUj41LXea602vEXHqQIE5+WN3VXX6l9C3BvktPEhy2vNWwS3Bh7KcKzM6M
- 00WjvLCe5D2J0mZG0z9z9l8l7BSy3Lfg/U2MqkfVGTYHqfTM9uW/0funfQGdLFdcFOgqZNqpmm3
- pG+0WqQRBOV55StJPWaHHqqfYxi9tJiz6F6zJdO9lmIZnqN7oyfqt819qICb0QWj41OjVfJx7CS
- Yc6DW4QgeyhEq85TckWyxlP5HueJ+RwTZpYJHB9S+tJDK1Ua0Y8UYaVf2AYc5xoA566o8xsdv63
- MhQ5EGMB9Y/zzmtW4H1aCIXMVyR39FsD+usyQB5G0WuNIZSQjg804sAdfX+UeeVrQhEb7qAri5/
- wIeSRdMO24lUUjyG+yatVAcOfjgpwA5Z4Araxh8YuJCDp8n3eoeRy4gw==
-X-Google-Smtp-Source: AGHT+IFvMlka1BC0GKosIwVxAwURgWiFsYaFDIwU1chkQBwATQ+ULGPGYAAgIpXMjNKKZEcVQJ/1aA==
-X-Received: by 2002:a05:6000:2203:b0:425:57dd:58c4 with SMTP id
- ffacd0b85a97d-4266e7d7eb1mr23208997f8f.26.1760616996712; 
- Thu, 16 Oct 2025 05:16:36 -0700 (PDT)
+ bh=EG22ngCCy62QgMdqNsP3Zdu5DfGyJ4YhEJz/Fzevipc=;
+ b=fwr5mUdIng48lmageLFTvxXhjH69zFPPyb7jrgG4PottvZdXH4ahxT5u7PETC5/qN2
+ reH66r7/NPvHx5y5QcIqd2prsidkqCBE2StNAnkTwhg8PzFDdFZMFxmbXWMrR4pQB2FU
+ JNnMNhy0uMCOUF95AMtZ5pPjpEm4JNGloh2ZOCZdAoKphE+ftV7+hFnLWxpg2Hko93Io
+ M+8Lym+IvsOuR8kCE3/jtL4lNmCM4yf4PwKtw8/fXCR6vYOOBIAgyQX+TuhNso/w5nLK
+ a4U8Sxkup6V1O2qRHhQtlk8Gh9jWftzlFrLfJaht8i4hUi23ffMk8yR2iBPxfSgWXZoE
+ Gn0w==
+X-Gm-Message-State: AOJu0YyGD1/5nJZUR0EKxokeBuoF9mXM0AlLtQyr3WvdReyxUJSE1/sb
+ ujsfKMo+w9KZOScIvjhYSzp6mQDat6qyN9q1m8NtQ/UBQIqW/2OTl9f7n8qn9qHF771WD4oOsz8
+ tXa3lVh0=
+X-Gm-Gg: ASbGnctB4LLhqBegjDmkakzYPuZYwrByU60voPAr7v3TjoR5wvuMXjPdsHRTAyFq/rs
+ nY4OkvRPH3atoHqzQCZPgzQXF9HtaJGbJw0M110/4Ds0u6n2HOYeebgjfFsHc2vU3PJYJHu0MqF
+ DQPZqMZQ+d706j0F1KkTG4SDAlZUlkOwe3cevgfBDW4ZAEjcFvRDqFeXokLjDtvi7e1Qt1fqFvg
+ 9tmOrbDykiL6Zh5GEnifyauLxwxIlTBiQJo+z2PxtliifpP2sqJce6Vg6xBuwcezSbAxVzSLRAo
+ EtLVEmlzUKrOYOjIvNrZy6CI4X2Rh0zGqasKOzr5Fhh6FqjCY1oGp1hogfGh9qd+PGNhn2+Vrgf
+ vE38R9HXtrmetvvNwDIt3w630EzNLwkC6Kjex4LEJcZ6PiL+rVVOEvd8yg2WXLTnHSW30VkSnFC
+ O8e3KfFEDRRqjCLgTMTa6QFGKhyCf0R7rDXlIYOWa+xTytg88D2tWaCNxg3xUz0wNy
+X-Google-Smtp-Source: AGHT+IFWGibzj7b2fNBUdOR70jjnuYDaP6kZ44VUgXJH+KFYT0X7OvqguG9ZWMcYogTEFESTyCAIfQ==
+X-Received: by 2002:a5d:5d88:0:b0:425:769d:4217 with SMTP id
+ ffacd0b85a97d-42666ab88damr21780461f8f.22.1760617001350; 
+ Thu, 16 Oct 2025 05:16:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce583664sm34770776f8f.22.2025.10.16.05.16.36
+ ffacd0b85a97d-426ce5d0011sm34928384f8f.31.2025.10.16.05.16.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:16:36 -0700 (PDT)
+ Thu, 16 Oct 2025 05:16:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/75] target/hppa: correct size bit parity for fmpyadd
-Date: Thu, 16 Oct 2025 14:14:29 +0200
-Message-ID: <20251016121532.14042-14-philmd@linaro.org>
+Subject: [PULL 14/75] target/loongarch: Replace VMSTATE_UINTTL() ->
+ VMSTATE_UINT64()
+Date: Thu, 16 Oct 2025 14:14:30 +0200
+Message-ID: <20251016121532.14042-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gabriel Brookman <brookmangabriel@gmail.com>
+All LoongArchCPU::pc and LoongArchCPU::gpr[] fields are of
+uint64_t type. Use the appropriate VMSTATE_UINT64() macro.
 
-For the fmpyadd instruction on the hppa architecture, there is a bit
-used to specify whether the instruction is operating on a 32 bit or
-64 bit floating point register. For most instructions, such a bit is 0
-when operating on the smaller register and 1 when operating on the
-larger register. However, according to page 6-57 of the PA-RISC 1.1
-Architecture and Instruction Set Reference Manual, this convention is
-reversed for the fmpyadd instruction specifically, meaning the bit is
-1 for operations on 32 bit registers and 0 for 64 bit registers. See
-also page 6-18 (fig. 6-8) and 6-19 (table 6-16), where the f field
-for FMPYADD and FMPYSUB is documented. Previously, QEMU decoded this
-operation as operating on the other size of register, leading to bugs
-when translating the fmpyadd instruction. This patch fixes that issue.
+There is no functional change (the migration stream is not
+modified), because the LoongArch targets are only built as 64-bit:
 
-Reported-by: Andreas Hüttel <andreas.huettel@ur.de>
-Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3096
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Helge Deller <deller@gmx.de>
-Message-ID: <20251009-hppa-correct-fmpyadd-size-bit-decoding-v1-1-f63bb6c3290c@gmail.com>
-[PMD: Add documentation refs mentioned by Andreas K. Huettel]
+  $ git grep TARGET_LONG_BITS configs/targets/loongarch64*
+  configs/targets/loongarch64-linux-user.mak:7:TARGET_LONG_BITS=64
+  configs/targets/loongarch64-softmmu.mak:7:TARGET_LONG_BITS=64
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20250925004327.58764-1-philmd@linaro.org>
 ---
- target/hppa/insns.decode | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/loongarch/machine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 4eaac750ea8..13c6a55bf2a 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -365,10 +365,10 @@ fstd            011100 ..... ..... .. ............1.    @ldstim11
- &mpyadd         rm1 rm2 ta ra tm
- @mpyadd         ...... rm1:5 rm2:5 ta:5 ra:5 . tm:5     &mpyadd
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index 73190fb3672..0366a507637 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -191,8 +191,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
+     .version_id = 4,
+     .minimum_version_id = 4,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+-        VMSTATE_UINTTL(env.pc, LoongArchCPU),
++        VMSTATE_UINT64_ARRAY(env.gpr, LoongArchCPU, 32),
++        VMSTATE_UINT64(env.pc, LoongArchCPU),
  
--fmpyadd_f       000110 ..... ..... ..... ..... 0 .....  @mpyadd
--fmpyadd_d       000110 ..... ..... ..... ..... 1 .....  @mpyadd
--fmpysub_f       100110 ..... ..... ..... ..... 0 .....  @mpyadd
--fmpysub_d       100110 ..... ..... ..... ..... 1 .....  @mpyadd
-+fmpyadd_f       000110 ..... ..... ..... ..... 1 .....  @mpyadd
-+fmpyadd_d       000110 ..... ..... ..... ..... 0 .....  @mpyadd
-+fmpysub_f       100110 ..... ..... ..... ..... 1 .....  @mpyadd
-+fmpysub_d       100110 ..... ..... ..... ..... 0 .....  @mpyadd
- 
- ####
- # Conditional Branches
+         /* Remaining CSRs */
+         VMSTATE_UINT64(env.CSR_CRMD, LoongArchCPU),
 -- 
 2.51.0
 
