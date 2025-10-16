@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC48BE4F89
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 20:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 596D3BE4F9B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 20:02:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9SH2-0002iy-LN; Thu, 16 Oct 2025 14:00:25 -0400
+	id 1v9SHE-0002oE-HT; Thu, 16 Oct 2025 14:00:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1v9SGx-0002hH-1v; Thu, 16 Oct 2025 14:00:19 -0400
+ id 1v9SHA-0002mr-Me; Thu, 16 Oct 2025 14:00:33 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1v9SGs-0002xD-TL; Thu, 16 Oct 2025 14:00:17 -0400
+ id 1v9SH3-0002xx-TY; Thu, 16 Oct 2025 14:00:32 -0400
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GBfFnN021718;
- Thu, 16 Oct 2025 18:00:10 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GCEgBb021081;
+ Thu, 16 Oct 2025 18:00:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=tcnschf6Tzn8lr9Mo
- g6fbobDSxPq5ZSMw3MsU3AWhQQ=; b=nuqGJJCikBA2BsEIY4Ka53TlHB7Uq8aNv
- vr3CWWnDcB64qxZsBOUM/tECS87fF+XgpColpNAYBHvGt2EGlSyWD+86jDnrtaJZ
- pWpKbik7wEBdkNzef0on6xkNyQw7hLZRukYEnJ3eNS6bHl5l+vjvXt4VJn7ArXCE
- kCBuuykkmFdmL5/gMaGeMDy+khjbTCinN498Fg59QjvOdPWMquIjuji92kS/Ujg3
- RBfVpqAX8ubd1tBRw7NqOjWr7HthHAAUtMw3qD2YUtnFQvwYTkKh9kBdDleqWHid
- OW/7mKe3Vza3dfpZywDswY05SLKORAIzhFqs1I7v7ddBafsZZ5Hhg==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=fPo1tw
+ nwUsSW3Ix18wJ37acDLS1absDp45MKVxzaBWw=; b=jsibvCUC13V0HUCDDh4Qfx
+ E5MlJgDW5UhOb22MFwEGDK0tf3FL3jzobyO/LkaNX5V4kn7mWsG0vMdMHSA40V80
+ hF1J7Msfpx1vMGq264EliHVfz3XDnXnmk1DOlNAjwbDsCLOc5I6AvXdLytv5UGK2
+ Dh0o+F1qQhD2gK5C+yi+rmeabXSnRwU5HxmTImJWb4pFhskXuCTKJQg4vnX3WxR0
+ /IerxGRLre4/iOfAbN70m7KH2HmxhKr2/iM5GqaSuG3pNo+jiu7bGTVf+acUx9dW
+ LFNTLZkfHG2O6kuYdC1FPtsZhNFrOgNT6AwcYiSz4GgYZxTBLlCQ2nHh3KvuooCg
+ ==
 Received: from ppma23.wdc07v.mail.ibm.com
  (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0b5ty-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0b5ub-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Oct 2025 18:00:10 +0000 (GMT)
+ Thu, 16 Oct 2025 18:00:13 +0000 (GMT)
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GHhp0Y016705;
- Thu, 16 Oct 2025 18:00:09 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r32k737f-1
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GHdgVr016759;
+ Thu, 16 Oct 2025 18:00:12 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r32k737r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Oct 2025 18:00:09 +0000
+ Thu, 16 Oct 2025 18:00:12 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59GI072L47907282
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59GI08tl55705888
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Oct 2025 18:00:07 GMT
+ Thu, 16 Oct 2025 18:00:08 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9864320086;
- Thu, 16 Oct 2025 18:00:07 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3465520086;
+ Thu, 16 Oct 2025 18:00:08 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 303B620082;
+ by IMSVA (Postfix) with ESMTP id AADF420082;
  Thu, 16 Oct 2025 18:00:07 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.111.58.138])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -60,36 +61,40 @@ To: Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH v4 2/4] target/s390x: Fix missing clock-comparator interrupts
- after reset
-Date: Thu, 16 Oct 2025 19:58:31 +0200
-Message-ID: <20251016175954.41153-3-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Heiko Carstens <hca@linux.ibm.com>, qemu-stable@nongnu.org
+Subject: [PATCH v4 3/4] target/s390x: Use address generation for register
+ branch targets
+Date: Thu, 16 Oct 2025 19:58:32 +0200
+Message-ID: <20251016175954.41153-4-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016175954.41153-1-iii@linux.ibm.com>
 References: <20251016175954.41153-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2YHvbkWk6HZ8mPGx9Za13dluyBbkLxN2
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f132aa cx=c_pps
+X-Proofpoint-ORIG-GUID: i10FYjh3NCuigyLXKLyluTVuaeVwNSwT
+X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f132ad cx=c_pps
  a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=69wJf7TsAAAA:8 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=1K0trMwjMfmDt0goFSAA:9 a=Fg1AiH1G6rFz08G2ETeA:22
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX4aagrODowtLL
- 4dNFS5H53aNJh/n9+jrPpQa8kQ3/j97zIssRJgb++SPkRhoPWVul3DkjgwJ+wY+BO+3N/kDQzL+
- hbcQzha3Z38gUh1fqrY2a7K5qCa/cPFEm93rGYDZP0O+hXl4Tfk735JCyR5yEeSRpSoi6eA9irW
- lRTBEYmsHlCLjPmaMalIksHrhnvS2VFMAi7DsQAbTRzBdFeywDIxg0BPA56ieNkiUQZ8LzBbO8J
- JcfyUJYrcuuP1XIub5Z3b/KA93ubdscv4/+6BxJeRvU3TGexhsnJfj8lJJfbxrWgrLeBQ5W02o7
- bbV7nd1g1oLqfebDXtPsPqYLzRP7lkTUCc3g2ZqIgQANwH1AKfjZQtHXN5in7ZyHEMM23MSUaNQ
- I/nZS2zq/ihklroiYpkkAnuS8MmbdQ==
-X-Proofpoint-GUID: 2YHvbkWk6HZ8mPGx9Za13dluyBbkLxN2
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VTue-mJiAAAA:8 a=VnNF1IyMAAAA:8 a=69wJf7TsAAAA:8
+ a=ZF8_gEG0qyWobQ4ivSYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=S9YjYK_EKPFYWS37g-LV:22 a=Fg1AiH1G6rFz08G2ETeA:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX7SCgXV8+TrIf
+ OWY91geIYyuYPDSvaegT4bi90+e1ISANHNJKETRKCQXp3NQT9Oox8L2wMjSpKQ5Jw888rKBwJiJ
+ eGH2DEssmTLXMBlpYiYAfviBrhKFYSMYBKgDDDXEKWBlzy30emWZUmL7PkyG5hO92GiBPPOd6DP
+ 9+x2q4/+Kdjrfw1vPYk8jl7Yje3u04F0k2Ru4AsFN0O9l6TnZFupTzWDG5uBlWLH0xejjDE+ppr
+ L5LXK/9McIitJ4qpapwl51UNYyreJ0j7XmA4y37/0++bp/D7aZSH4ZwXoHoFBdt9y0EHmRp/zOT
+ Y75ZjsemN3rX3In1xuAJY+rtxMumZR5Vhhk0b8h4SJNHpKfn8pV6yFr2rNf76KBxPIC1lcCwp55
+ njsBA1fNi6CTvvwZQi6QSpEqQxtanA==
+X-Proofpoint-GUID: i10FYjh3NCuigyLXKLyluTVuaeVwNSwT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-16_03,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011 impostorscore=0
  phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
@@ -118,54 +123,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After reset, CKC value is set to 0, so if clock-comparator interrupts
-are enabled, one should occur very shortly thereafter.
+Indirect branches to addresses taken from registers go through address
+generation, e.g., for BRANCH ON CONDITION Principles of Operation says:
 
-Currently the code that loads the respective control register does not
-set tod_timer, so this does not happen.
+    In the RR format, the contents of general register R2 are used to
+    generate the branch address
 
-Fix by adding a tcg_s390_tod_updated() call to LCTL and LCTLG.
+QEMU uses r2_nz handler for the respective register operands. Currently
+it does not zero out extra bits in 24- and 31-bit addressing modes as
+required by address generation. The very frequently used
+s390x_tr_init_disas_context() function has a workaround for this,
+but the code for saving an old PSW during an interrupt does not.
 
+Add the missing masking to r2_nz. Enforce PSW validity by replacing the
+workaround with an assersion.
+
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/lkml/ab3131a2-c42a-47ff-bf03-e9f68ac053c0@t-8ch.de/
 Cc: qemu-stable@nongnu.org
-Suggested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/tcg/mem_helper.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ target/s390x/tcg/translate.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index f1acb1618f7..24675fc818d 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -1959,6 +1959,10 @@ void HELPER(lctlg)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
-         if (env->cregs[i] != val && i >= 9 && i <= 11) {
-             PERchanged = true;
-         }
-+        if (i == 0 && !(env->cregs[i] & CR0_CKC_SC) && (val & CR0_CKC_SC)) {
-+            BQL_LOCK_GUARD();
-+            tcg_s390_tod_updated(env_cpu(env), RUN_ON_CPU_NULL);
-+        }
-         env->cregs[i] = val;
-         HELPER_LOG("load ctl %d from 0x%" PRIx64 " == 0x%" PRIx64 "\n",
-                    i, src, val);
-@@ -1989,10 +1993,15 @@ void HELPER(lctl)(CPUS390XState *env, uint32_t r1, uint64_t a2, uint32_t r3)
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index c7e8574438c..f9487f4044d 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -5613,6 +5613,7 @@ static void in2_r2_nz(DisasContext *s, DisasOps *o)
+     int r2 = get_field(s, r2);
+     if (r2 != 0) {
+         o->in2 = load_reg(r2);
++        gen_addi_and_wrap_i64(s, o->in2, o->in2, 0);
+     }
+ }
+ #define SPEC_in2_r2_nz 0
+@@ -6379,10 +6380,12 @@ static void s390x_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
  
-     for (i = r1;; i = (i + 1) % 16) {
-         uint32_t val = cpu_ldl_data_ra(env, src, ra);
-+        uint64_t val64 = deposit64(env->cregs[i], 0, 32, val);
-         if ((uint32_t)env->cregs[i] != val && i >= 9 && i <= 11) {
-             PERchanged = true;
-         }
--        env->cregs[i] = deposit64(env->cregs[i], 0, 32, val);
-+        if (i == 0 && !(env->cregs[i] & CR0_CKC_SC) && (val64 & CR0_CKC_SC)) {
-+            BQL_LOCK_GUARD();
-+            tcg_s390_tod_updated(env_cpu(env), RUN_ON_CPU_NULL);
+-    /* 31-bit mode */
+-    if (!(dc->base.tb->flags & FLAG_MASK_64)) {
+-        dc->base.pc_first &= 0x7fffffff;
+-        dc->base.pc_next = dc->base.pc_first;
++    if (dc->base.tb->flags & FLAG_MASK_32) {
++        if (!(dc->base.tb->flags & FLAG_MASK_64)) {
++            assert(!(dc->base.pc_first & ~((1ULL << 31) - 1)));
 +        }
-+        env->cregs[i] = val64;
-         HELPER_LOG("load ctl %d from 0x%" PRIx64 " == 0x%x\n", i, src, val);
-         src += sizeof(uint32_t);
++    } else {
++        assert(!(dc->base.pc_first & ~((1ULL << 24) - 1)));
+     }
  
+     dc->cc_op = CC_OP_DYNAMIC;
 -- 
 2.51.0
 
