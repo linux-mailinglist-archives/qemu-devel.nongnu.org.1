@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07084BE34C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84111BE3557
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:22:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mtz-00068b-Jp; Thu, 16 Oct 2025 08:16:16 -0400
+	id 1v9Mtx-00068Y-Pa; Thu, 16 Oct 2025 08:16:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mtw-00067K-B4
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:16:12 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mti-00086H-BH
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mtt-00065u-3N
  for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:16:09 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42557c5cedcso396341f8f.0
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:15:55 -0700 (PDT)
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mtm-000878-BV
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:16:08 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-46fcf9f63b6so3522175e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:15:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760616949; x=1761221749; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760616954; x=1761221754; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=x1nv4sVC6bAaj10+koLwfZ6TzTnUm6H+r4SdUg6myZQ=;
- b=FG0bVDT74JgbnhHP4KgMRLribogI769Ze7zQtU0GKAS0e3oywKpF5xZ7MKjbRtWOEN
- hh6sj+hbQfwmokPM06V1/uuSeNf5GoKNn/1foT7z+GSNF7II2CHsmaUeOJeKpCtPZIQp
- n7cMVVZBi3ma4Gu01NqSKvEeVLquSRB+okyG35BA835DPkHZkiwum1R/lhSpPAbrc3dW
- fNM5nlrDnyjetBl0fLvsIraO3NsquUHxDUO4k2OLGd/BEtZDGBbhkBDY+DJcvDqIMe6H
- YzRJpODsiJcZMOiwcWkgWraAO43l9I+Q4E2LGijcRfKzfM9GKyDnQ4iYb0B+2ZuOhr4z
- hyXA==
+ :reply-to; bh=+6gexP1/asyF00baE5jYVsYkot+6QG6gZHm7RtPxrqk=;
+ b=gzOLpQM3TzNKfu8nV3j29WQMhA7GzA3GqJVID+8p5efCIw7Tqwit6RC88GvpbOPJQn
+ jBSKSGBvj4N72SFsMOYehTXMZzquTewoLTxg2vRAskNQ8ed1fk6+CLG+ged9gOZtBnj/
+ lF8jM253mupv2szs3Vg8KarFo6eeTOFWvQjQBGttly/h8bAVsaA5vopN1YWaBr9SCcAz
+ COsZ/NETCihqyZ7T/r7ZwXWp1ly+ZRiv4bW1PgdOwTs4xtYmVy5CZePVVGOWOC7wVLxx
+ LhjKOdmwtiwQT9zLWpY4KyVndc/MIk4351rOL9nFM894I4UfG8OhB9y5qhiJ3/OWktpi
+ AsyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760616949; x=1761221749;
+ d=1e100.net; s=20230601; t=1760616954; x=1761221754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x1nv4sVC6bAaj10+koLwfZ6TzTnUm6H+r4SdUg6myZQ=;
- b=nDISLSKs1+Ls6vE2ztADuv0QIM9X7iGb0Js9ifcBlaxDC76rtXiQT7UMgYj/8XTO5z
- fYEzVmuSZxm7mJRQ2u8lp9eLr/u0vVL9dIikzg1+RpfLQ3JYII5Le+sGIFAp8vWcxlaO
- w+Yt2JT9d25Vy1aer+Q2cQHWv4m8ZsOKKnqEarbwskLSTgtF3XCDaxMLxzLKS8Ab1bCS
- zWBQqDazvJ85Ikr3/CEb4Ec70DPqBT78ML8pMpxDQLuwIgay3N7RWEI+xcH5nzqGS+Tz
- vOzTD+XGpskShPiour79yiYF+rr/PXzIsanZgXX3U3PDIqMfqFc7ccDcCP0iz6SNiueC
- Zs8w==
-X-Gm-Message-State: AOJu0YzHJw1pj+QD6VYUgKefP/hSGkhW/efw8z7XudG+sjEQOVWIvwpm
- tYQTHxRUtSgqtMp8uxDlEFaiQW0p0Q4Kkiwq6tebHSkJmTsh9qP1h0fwBJdnlImoRWMjcY2ajHW
- kIXzrb/M=
-X-Gm-Gg: ASbGncv69JvScI4SOrcWNUN2QjQ+6LYuEYPjBv1OFU492EHa/ghwUPSxQTtnD82jB06
- DgVd7Cgr2dgWl+xpCRdfbJ7YpvmeyXYw4nieJsZewazxc01FrNzzc0FKLTUlGaCDRwqYgcfu9SX
- 1H8MkNJlp8O/vBtnfkrnrQzCSyesmFtFDraBRjK+33lyd2nogF7AaIPXlKXqOFzmnS1JxVI/yyY
- Aao9d63qIRtU+uap18XOoVxihu0TvzDgqzpbkWGWFGbXks2hvFkx093l5kx+HAM6UefhKCp9Ulk
- roXDCuRwJGOgWXVHzHK8Hn6L/Bq5jJE5Jz7p9Bhnpr58kgsERWcY5J7IBMqNVDtTfD3i93p9Wrp
- bQBh7tAJxBf+HTRanA45C8PVp3d4JYbr15BaGiumPG9i0XcbOo+aXO19sNp+vXJKRChGX7wegXu
- UWoOOahLdNR4KGaTGcOOjQhwWafUkhrOcDmioQGB1U8EZigWdBMWxEW7PLUdL6XrsQ
-X-Google-Smtp-Source: AGHT+IEIG7Sy1SiBRSBgzk2PHUyo6rgw9z3MyEx1j6n12B3pkRqZUcBBojbfUe5aDC9Fh0AR7Xt3fA==
-X-Received: by 2002:a05:6000:1449:b0:425:8559:5d17 with SMTP id
- ffacd0b85a97d-4266e7dfebfmr19812497f8f.30.1760616948896; 
- Thu, 16 Oct 2025 05:15:48 -0700 (PDT)
+ bh=+6gexP1/asyF00baE5jYVsYkot+6QG6gZHm7RtPxrqk=;
+ b=jwajNebsACVwphP6e8kvwXiQtziHRLF4VFrXzb4ya7GrpbAhnfz54Evfc/2GpAA3El
+ FQRZjGwF19//bDAT3MBsb6fVzY6Lt7zxzY7I21EKGpv5FMBWeeVcY7RSz1IN2Q4lz2dt
+ XwVTcNHLbrH+LaVNomh620F4XYpBtwFCx/wSCryNoexg/r13fqWE2tqARzLKvw/wpnSR
+ ButXvWgj/NLNXJ1aVS18xBzoCXG7gelmbY3eyuupsA5AzVaeF0eaifGnIPLwWdLf3HmW
+ tz+0KQZLZPUZITL+HBsReoyZEQWOgcsLEkL4L/D7L3SWk+/vaRSEfUWqkIi7jio4iP92
+ UMIw==
+X-Gm-Message-State: AOJu0Yx26emPZ/zLYXxD4DcUFmlxBPZh1t/jwKcsSjC+g571GxcQ4J6U
+ ZYH36yeut2YigJ5GHjkXbRmbjUxbK81pxAFmZIWksmsIggf1px9gCaty+2HNU/9X37f0rN99z19
+ W3j1A8zE=
+X-Gm-Gg: ASbGncvQwth4X76VZWB7o+BuCT3Bkn0QW/4XCmsfq+YCeK23b2ppSkTNCcysWstzYVy
+ QbNarhhhfHZuCm+RiXkRYfrCPQkQQR9lCfh/xtHCYjXuehQLgq5XJ+1K4KiXmmzhkSJvuokwMh5
+ oC7OIIDl8KZTpfE2ZgiP6F9YrKyq6YHi1xDer4atq7tHSRspbuIhI5KfO92UJOl5bDckYCUTQd/
+ CYiHhItqTstdljsDzO5Lx9jXc5uL4h5k0VMti1cazVf4Bv2+umtmLEUMjFxtG/Cs8FcpmwnRrpZ
+ vL2LoF3uALBKE9krLqAvtymsbwr/T7LPNU9fEdXOBzK0X3tANs1gtnshN4s6nsgmek5b6pWhc0z
+ rxnO5yqQ+Q9C09HF6Bb4NKqgiG/8v3vH7kvvCqEh9WmGK8oJ0L8MCnsOiKWkjvUxpcA/XleOQ1/
+ kPb39xM5Axqptn+IJukdQ49B+FxsAM4GicfaabolZk6IbJwQ7iviaIC0AIOUFV1+KV
+X-Google-Smtp-Source: AGHT+IHzxNPaHE6Gg5JxivvSwS6YHLN6OEfHh6wMt74V0k0wONNY0z2cdQVFF66ZlSQVvmXPFlZCZA==
+X-Received: by 2002:a05:600c:524c:b0:45d:e28c:875a with SMTP id
+ 5b1f17b1804b1-46fa9b08f16mr251343975e9.31.1760616953748; 
+ Thu, 16 Oct 2025 05:15:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5cf70fsm32908119f8f.27.2025.10.16.05.15.48
+ 5b1f17b1804b1-471144c831asm21912455e9.13.2025.10.16.05.15.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:15:48 -0700 (PDT)
+ Thu, 16 Oct 2025 05:15:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/75] target/alpha: Replace VMSTATE_UINTTL() ->
- VMSTATE_UINT64()
-Date: Thu, 16 Oct 2025 14:14:19 +0200
-Message-ID: <20251016121532.14042-4-philmd@linaro.org>
+Subject: [PULL 04/75] target/hppa: Use hwaddr type for HPPATLBEntry::pa
+Date: Thu, 16 Oct 2025 14:14:20 +0200
+Message-ID: <20251016121532.14042-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,82 +97,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All these CPUAlphaState fields are of uint64_t type (except
-the @fir[] array which uses float64, expanded to the same
-type definition). Use the appropriate VMSTATE_UINT64() macro.
-
-There is no functional change (the migration stream is not
-modified), because the Alpha targets are only built as 64-bit:
-
-  $ git grep TARGET_LONG_BITS configs/targets/alpha*
-  configs/targets/alpha-linux-user.mak:4:TARGET_LONG_BITS=64
-  configs/targets/alpha-softmmu.mak:2:TARGET_LONG_BITS=64
+HPPATLBEntry::@pa is a physical address, use the appropriate type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20250925005137.59378-1-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20251009101040.18378-2-philmd@linaro.org>
 ---
- target/alpha/machine.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ target/hppa/cpu.h        | 2 +-
+ target/hppa/trace-events | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/alpha/machine.c b/target/alpha/machine.c
-index 5f302b166da..6828b123ca1 100644
---- a/target/alpha/machine.c
-+++ b/target/alpha/machine.c
-@@ -25,8 +25,8 @@ static const VMStateInfo vmstate_fpcr = {
- };
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 672ab3750c8..869a75876e2 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -187,7 +187,7 @@ typedef struct HPPATLBEntry {
+         struct HPPATLBEntry *unused_next;
+     };
  
- static const VMStateField vmstate_env_fields[] = {
--    VMSTATE_UINTTL_ARRAY(ir, CPUAlphaState, 31),
--    VMSTATE_UINTTL_ARRAY(fir, CPUAlphaState, 31),
-+    VMSTATE_UINT64_ARRAY(ir, CPUAlphaState, 31),
-+    VMSTATE_UINT64_ARRAY(fir, CPUAlphaState, 31),
-     /* Save the architecture value of the fpcr, not the internally
-        expanded version.  Since this architecture value does not
-        exist in memory to be stored, this requires a but of hoop
-@@ -41,27 +41,27 @@ static const VMStateField vmstate_env_fields[] = {
-         .flags = VMS_SINGLE,
-         .offset = 0
-     },
--    VMSTATE_UINTTL(pc, CPUAlphaState),
--    VMSTATE_UINTTL(unique, CPUAlphaState),
--    VMSTATE_UINTTL(lock_addr, CPUAlphaState),
--    VMSTATE_UINTTL(lock_value, CPUAlphaState),
-+    VMSTATE_UINT64(pc, CPUAlphaState),
-+    VMSTATE_UINT64(unique, CPUAlphaState),
-+    VMSTATE_UINT64(lock_addr, CPUAlphaState),
-+    VMSTATE_UINT64(lock_value, CPUAlphaState),
+-    target_ulong pa;
++    hwaddr pa;
  
-     VMSTATE_UINT32(flags, CPUAlphaState),
-     VMSTATE_UINT32(pcc_ofs, CPUAlphaState),
+     unsigned entry_valid : 1;
  
--    VMSTATE_UINTTL(trap_arg0, CPUAlphaState),
--    VMSTATE_UINTTL(trap_arg1, CPUAlphaState),
--    VMSTATE_UINTTL(trap_arg2, CPUAlphaState),
-+    VMSTATE_UINT64(trap_arg0, CPUAlphaState),
-+    VMSTATE_UINT64(trap_arg1, CPUAlphaState),
-+    VMSTATE_UINT64(trap_arg2, CPUAlphaState),
+diff --git a/target/hppa/trace-events b/target/hppa/trace-events
+index a10ba73d5d4..01761a4559b 100644
+--- a/target/hppa/trace-events
++++ b/target/hppa/trace-events
+@@ -1,13 +1,13 @@
+ # See docs/devel/tracing.rst for syntax documentation.
  
--    VMSTATE_UINTTL(exc_addr, CPUAlphaState),
--    VMSTATE_UINTTL(palbr, CPUAlphaState),
--    VMSTATE_UINTTL(ptbr, CPUAlphaState),
--    VMSTATE_UINTTL(vptptr, CPUAlphaState),
--    VMSTATE_UINTTL(sysval, CPUAlphaState),
--    VMSTATE_UINTTL(usp, CPUAlphaState),
-+    VMSTATE_UINT64(exc_addr, CPUAlphaState),
-+    VMSTATE_UINT64(palbr, CPUAlphaState),
-+    VMSTATE_UINT64(ptbr, CPUAlphaState),
-+    VMSTATE_UINT64(vptptr, CPUAlphaState),
-+    VMSTATE_UINT64(sysval, CPUAlphaState),
-+    VMSTATE_UINT64(usp, CPUAlphaState),
- 
--    VMSTATE_UINTTL_ARRAY(shadow, CPUAlphaState, 8),
--    VMSTATE_UINTTL_ARRAY(scratch, CPUAlphaState, 24),
-+    VMSTATE_UINT64_ARRAY(shadow, CPUAlphaState, 8),
-+    VMSTATE_UINT64_ARRAY(scratch, CPUAlphaState, 24),
- 
-     VMSTATE_END_OF_LIST()
- };
+ # mem_helper.c
+-disable hppa_tlb_flush_ent(void *env, void *ent, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p va_b=0x%lx va_e=0x%lx pa=0x%lx"
+-disable hppa_tlb_find_entry(void *env, void *ent, int valid, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p valid=%d va_b=0x%lx va_e=0x%lx pa=0x%lx"
++disable hppa_tlb_flush_ent(void *env, void *ent, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p va_b=0x%lx va_e=0x%lx pa=0x%" PRIx64
++disable hppa_tlb_find_entry(void *env, void *ent, int valid, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p valid=%d va_b=0x%lx va_e=0x%lx pa=0x%" PRIx64
+ disable hppa_tlb_find_entry_not_found(void *env, uint64_t addr) "env=%p addr=%08lx"
+ disable hppa_tlb_get_physical_address(void *env, int ret, int prot, uint64_t addr, uint64_t phys) "env=%p ret=%d prot=%d addr=0x%lx phys=0x%lx"
+ disable hppa_tlb_fill_excp(void *env, uint64_t addr, int size, int type, int mmu_idx) "env=%p addr=0x%lx size=%d type=%d mmu_idx=%d"
+ disable hppa_tlb_fill_success(void *env, uint64_t addr, uint64_t phys, int size, int type, int mmu_idx) "env=%p addr=0x%lx phys=0x%lx size=%d type=%d mmu_idx=%d"
+-disable hppa_tlb_itlba(void *env, void *ent, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p va_b=0x%lx va_e=0x%lx pa=0x%lx"
++disable hppa_tlb_itlba(void *env, void *ent, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p va_b=0x%lx va_e=0x%lx pa=0x%" PRIx64
+ disable hppa_tlb_itlbp(void *env, void *ent, int access_id, int u, int pl2, int pl1, int type, int b, int d, int t) "env=%p ent=%p access_id=%x u=%d pl2=%d pl1=%d type=%d b=%d d=%d t=%d"
+ disable hppa_tlb_ptlb(void *env) "env=%p"
+ disable hppa_tlb_ptlb_local(void *env) "env=%p"
 -- 
 2.51.0
 
