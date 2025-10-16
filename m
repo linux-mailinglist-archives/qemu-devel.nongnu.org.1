@@ -2,148 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF15EBE5C00
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 01:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B49BE5C06
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 01:00:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Wwn-0004VS-H1; Thu, 16 Oct 2025 18:59:49 -0400
+	id 1v9WxW-0005YX-Bq; Thu, 16 Oct 2025 19:00:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1v9Wwl-0004UH-Eh; Thu, 16 Oct 2025 18:59:47 -0400
-Received: from mail-westcentralusazlp170100005.outbound.protection.outlook.com
- ([2a01:111:f403:c112::5] helo=CY7PR03CU001.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1v9Wwh-00069h-Ph; Thu, 16 Oct 2025 18:59:47 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A6/j89+8dyiaEfdHq+u0q9bHQD55SB8DV8NPyqFDKd6ubSuMnC/Z0iYYmMxYiSQG/dZCFYXjXcu+UKxDP8N7B5ce5sclCj+fmpNDxMJyP7THwF6XIsDKNruSn2ynZwRLNOPPq/T8fi+aBE9dXLC1hWRqN0Jtypwr9mkOLLbF4Kr+EktjQx1O37NhKUn7KDQ0C7SlWb/jGq1utkp+OvVvDrJ8O8ABcqq2J7vMuwMp1uVdROB9rR2VjInfAOqJTgaVSRd75jpmMvdKlepVbV3xoOJHcq0MkXIazZCK3EIsHsU/wEEv9KG2balAjuvroPhcqqmY4pO55xXY4LayzsaR3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bXqpW4Pe8cpc3A0aB6+Kb/geyyQek8M7OEuYE8DvwtU=;
- b=ZY8Z+ew296Y8pxsmxQko4ndNmv6u79R9B5StJfcunOuyz/iy0Xq35hdX4svy6aoDHE88CUiFu7+DZqup4lQ5rf3a+REY5sX1Qz9CxGJMei/bOP1E76QzpHhDobkMeWJfcp8ndUAthsqIp5e5jV+hdLre6HGr7Gaj8K7QOAIRALoRtxjnwua884HULjbjn+TXoTgQTRYgVhvWJYjfHmhOMKzD77Gw1SPvY6a/YkejdA6tXFVhkOVIBuGasfbTXd/vhuyi91nWsazrKsqXEd07K1xtdisZ6lrgLhVYsNnPUZAfQdpX41aWChSL5SqlMxfQ3krx8TqlXTZLWhuig7iazA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bXqpW4Pe8cpc3A0aB6+Kb/geyyQek8M7OEuYE8DvwtU=;
- b=VL1zHo+7n1LJc0JcDVXcrcKClT79J7I1Mu9+YYA81gUptYeMMs2W7fu3Bcue013pmk9+dwEM8rKiworXBcbVnp9T1MtDMjYub0pSskC4/OI5uVMAmaDzCcb1Dyrw9Mwzp94+TalSOTSp5iPzyl6X/eWqBTrMxBbcr40ThG7MiXEcXEOTfi2Xk2CahSAbw+ZYdozvl1P4UZWA1l1wAvA+pm/vKc5ADL2wJq7J1xGBk2X6Zo/x3O2XNvTkXSLD9VRTljRZia5TGwhSJbFpGhlzv+eb5xFDppMdcFEmJw+WGPyhhnXCxye+DyVTpDbXczW5RT/en7SEg5Yy099fQSI89g==
-Received: from DM6PR12CA0010.namprd12.prod.outlook.com (2603:10b6:5:1c0::23)
- by SA1PR12MB6680.namprd12.prod.outlook.com (2603:10b6:806:253::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Thu, 16 Oct
- 2025 22:59:37 +0000
-Received: from DS1PEPF0001708E.namprd03.prod.outlook.com
- (2603:10b6:5:1c0:cafe::4) by DM6PR12CA0010.outlook.office365.com
- (2603:10b6:5:1c0::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.13 via Frontend Transport; Thu,
- 16 Oct 2025 22:59:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- DS1PEPF0001708E.mail.protection.outlook.com (10.167.17.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9228.7 via Frontend Transport; Thu, 16 Oct 2025 22:59:36 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 16 Oct
- 2025 15:59:26 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Thu, 16 Oct 2025 15:59:26 -0700
-Received: from Asurada-Nvidia (10.127.8.12) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 16 Oct 2025 15:59:25 -0700
-Date: Thu, 16 Oct 2025 15:59:23 -0700
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
- <peter.maydell@linaro.org>, <jgg@nvidia.com>, <ddutile@redhat.com>,
- <berrange@redhat.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <smostafa@google.com>, <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
- <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
- <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>, <shameerkolothum@gmail.com>
-Subject: Re: [PATCH v4 13/27] hw/arm/smmuv3-accel: Add support to issue
- invalidation cmd to host
-Message-ID: <aPF4y4+/jeZN1ZE5@Asurada-Nvidia>
-References: <20250929133643.38961-1-skolothumtho@nvidia.com>
- <20250929133643.38961-14-skolothumtho@nvidia.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1v9WxL-0005Vg-2Q
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 19:00:24 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1v9WxI-0006P6-69
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 19:00:22 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-63bd822b007so2261688a12.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 16:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1760655615; x=1761260415; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SkTabYCJwi1V4WPmCP8CZ0i429l+ID7DTe6WOfyuxNI=;
+ b=ZGx4LPiUId3Tweo5x2Zism2PHnOC87Yci+zm3QaXGcIMvpMga0tyo79rQl0bnv2R+W
+ qFpi1ZeCW0vbgQYxExfmNqSeakUmwNs4uESRhtK4Xe2Y42iUWwKMdmtnj3mG8GySzFE/
+ Fh/8emSvA2cj85ddejqHeRL4FnGjTqxj6/1JruF59eVM5cOo4p4PUaxE51ivDbsZfHo6
+ 3gptPXtcKkGMgQjsc9JmfP47aSaDpK8NTIVtEsVKZK8T1R7ofeJLd1LLaF3xbkW5GOll
+ EuPWWBfjCHa/RNVzJbzvWjJEaxONK4pScjeaPiz2FnSSEmBhMw0BMQIdC4mdHpvq2RzG
+ 7nHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760655615; x=1761260415;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SkTabYCJwi1V4WPmCP8CZ0i429l+ID7DTe6WOfyuxNI=;
+ b=GsRlfLzr5tKPmcDIDnGtGCSkpraFSGHLmPIgSZgW78qe4de9/RJDZ9Uoxn6KYYcyDZ
+ WXRq8FPtM+94ZNE03xEKVq8sK5hvO5GqIqUpsMbuBBlo+U61uCHR/zgOQxJJGSczCn2Y
+ G0cfI0PfnLgPMeTqdc3RatKQF+7T6V0z2aGWVJz5i0PYV+vLU6Hg6IBA4WmswvuRdvFO
+ EWFRp2MvdIFukgnTtH+OL4yoAdRzjW4CClNRgukQUswvSUH+72imDezY5AhyXSr4NA8L
+ C4bSAv+S9NTfpY1iyGlIzXyH47CaznSxxa2spADkRjLI/VPw8spwZz1eILw8a6gTK0Hs
+ 2WdQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUHbVk9ZopOPFTCOukEsxqiReXdAzEHijDi9OF0hWqkeDHBUGG9Q4QNMTfO9SJK1wswzzcQI4wlirgs@nongnu.org
+X-Gm-Message-State: AOJu0YxDsAnIbh8p96mBeucqb1XetN7Fc+x9UlztFv5k3g8SH4qEXEbo
+ 0t7QBp5WYzWQueeOoIE+W1No3Nb6o3R6wHPK+IWq4xCdJU7FsHbCD9ctLSIiiwpwYwQ5imZWzBD
+ MLk23SXwmm709I8WKX49VFG/DJTeIXe8=
+X-Gm-Gg: ASbGnctcgLLpZXM8Y2G/i7mx+6igZXm09KxvztaJkHQF2Nf8ckxz9AJ4sZPXtXbReNg
+ 4FKVbOmLXjMPCjekbZiTBa7d5i8QXipS8uCg0TPy81bYCgQStsGXNUIM7UKUV1Guo24/x+i8ena
+ mpOLNSJE7pwrMEEnnM4NpDdHj8enNJB7IXRzEzYs/Pe/5R++k2el0PWY4LE+p4DfSyvwyhFIEMo
+ 3qXqkZuUP37x6Jm7DhJWTLuXYkSFRjlu9ZwsfRYjaNKRVzWjS33B/NuTqlpSHbRt3aqcbFZp7pw
+ eCn3mCOVA/I///Q=
+X-Google-Smtp-Source: AGHT+IGlkdVv+Sb9jaOi/staA/gUSwwr9QDkbMYBxNfWFLlu7pDSk2Tw15TtBLmHPfL5RdDzphofx1yyymfZzmXTfRA=
+X-Received: by 2002:a05:6402:3046:10b0:634:bb0c:728 with SMTP id
+ 4fb4d7f45d1cf-63c1f6c0d4amr1314045a12.23.1760655615199; Thu, 16 Oct 2025
+ 16:00:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250929133643.38961-14-skolothumtho@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001708E:EE_|SA1PR12MB6680:EE_
-X-MS-Office365-Filtering-Correlation-Id: af25cb16-8fb2-42fb-b0c8-08de0d07ae18
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|7416014|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?TWh83CrKE2MJnJGNw1X2c/ijao5wXCmnRH6t+Bo/NCLIOu5E+zB2hGG4of?=
- =?iso-8859-1?Q?y1swsefzT7D+cV0HwUV3Ppw6PdorsGv8aUO2809xhk1RpuilFG/C4blfaC?=
- =?iso-8859-1?Q?PZzgxarmGG5kugn8tLZ4+X+tBp/ZvwIE3yW/Eec3UvGulV7UpURsocQ3bD?=
- =?iso-8859-1?Q?wdK6zhSMFG1HvyLBCiIR8ohyvI0JSxMI4y4UT+VdU/A7JjFzXvsIrcpkWY?=
- =?iso-8859-1?Q?vlWFnXmFa3JxFfkZ/XcESN/Vu9uTF0ro6gcuAJYoNqaCbVjf6h6YLqyVOW?=
- =?iso-8859-1?Q?5cnVAOZp+/hNDmzWcSQyEoqTkad5872GfZLoozuQCLCqUX2UtTxnZH4uTD?=
- =?iso-8859-1?Q?pSGDLm9gYwpuZiqBpauHBhPh+m7dWuIETT4qketpZIIbbWzX0drnQX6Rzs?=
- =?iso-8859-1?Q?fqNmTcuWAok0vIViGuZqRcNDgNKlEIce/ttZxc4rCsWJcKPVWdAJFMR9m+?=
- =?iso-8859-1?Q?Gc/Zjuphi+Khp7C8KhpFgQX8NQ76glxHMKWMRGm+YpwuVJeGBtYeMoY5Br?=
- =?iso-8859-1?Q?gJnX8uXvIHB3s0O3lqc7bvjHtd5o2QM3aavdy4YQpW9i6EFWxt82rswlij?=
- =?iso-8859-1?Q?Z3+0YyOu5ZKaRmEQqab8boORFmjmbxpIiLHimHraZRtV+FNoqZKMOG4A5v?=
- =?iso-8859-1?Q?/woNuRDQr++5iXdifXl08d2J3SCIF95yf1C+gr2GHBHWVTzKpkQlc/vnXC?=
- =?iso-8859-1?Q?5QxlIm2JGivu3CpRPFlkZ/6LT75pp50NdqIAeyIKRStUfrTKeoqPIvruYM?=
- =?iso-8859-1?Q?xOyxdgIvHQVdH5r2EutQVdXP2jCVELYo6JwL7/G2W0xiQArpWt7Oiin1R8?=
- =?iso-8859-1?Q?i981RMlTP+pN46+KhPvZQhJ3/AEAF6eO1kM05hq+E6U1mS8yjUIILMTu06?=
- =?iso-8859-1?Q?YNqRKGgUMlJjFV7hxcxI31IZBVCom8FtGvIYbxbGTs36PjPzstyxHaTxaQ?=
- =?iso-8859-1?Q?S0TUdK8s+XfaxDrHQR1S21Pzwf0aihrVA3TShDIjMXQVucU2USH5CLqAOU?=
- =?iso-8859-1?Q?lNh7mmatDSSGzadR7kNGgFxDbDkOIzDI7nQExV2PnisHh/uC/1193ebmbW?=
- =?iso-8859-1?Q?l0/BOpkkd5Yf2E8jq3uW3n3XDj40nO1iWzkLbAQurb1biFCgssQV5KG93U?=
- =?iso-8859-1?Q?ccBxxKMdtRlTQq1vKA3mWPks2yAIzWl7kjWeX1QJVP0RQ0/wdhO+AlUs9V?=
- =?iso-8859-1?Q?p8sPh9q02/JDXVXJzNwCYyYOwnyHi5znlrqAb7Z0ON0hCeRj+eBpQbXdDt?=
- =?iso-8859-1?Q?ben5CATgBMDJnVlwWBQrnnn49cOl12BweIvtfyCZs0QmlXbI2eiJVgWnor?=
- =?iso-8859-1?Q?HF0hCnabPVR5r2wwaLnKxiDAthGfjeaLYxVG2BB0eUE7q5GtSO1be45o5E?=
- =?iso-8859-1?Q?8kGkHyVdhXYezsWpNyPx2L0MbgXE4IF8WLFEN1HcC4n+pIbsp9y+WhST8N?=
- =?iso-8859-1?Q?GFmjUBdZDMMBTvTzoUEED7ilPqPTSIVeN6fArnEUdohtkecbbA918L6Fky?=
- =?iso-8859-1?Q?oCr1UqpPZNmpxcrb++03bdYRfEFhZIaNcNg/ZdPhK+sq+1f7NUTw4Kfiyz?=
- =?iso-8859-1?Q?aLztspxShfQZhxanWXs/BBI6SRNVuGithWOqYcvD8xo+DYZVP1oDxYftwk?=
- =?iso-8859-1?Q?yRHx5i5ly9ltE=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(7416014)(1800799024)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 22:59:36.8700 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: af25cb16-8fb2-42fb-b0c8-08de0d07ae18
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF0001708E.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6680
-Received-SPF: permerror client-ip=2a01:111:f403:c112::5;
- envelope-from=nicolinc@nvidia.com;
- helo=CY7PR03CU001.outbound.protection.outlook.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FORGED_SPF_HELO=1, KHOP_HELO_FCRDNS=0.399,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+References: <20251016173502.1261674-1-vishalc@linux.ibm.com>
+ <20251016173502.1261674-6-vishalc@linux.ibm.com>
+In-Reply-To: <20251016173502.1261674-6-vishalc@linux.ibm.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 17 Oct 2025 08:59:48 +1000
+X-Gm-Features: AS18NWBahsEOR_MNyY9hlz0Uk6cbzmYSkEw8yV9m8P91cAFMcQaRRzC5sPbXCUs
+Message-ID: <CAKmqyKME2SWuE0LjcgcxuR=vLLnKfqUkB2DsvuTxVgX9QrxTDQ@mail.gmail.com>
+Subject: Re: [PATCH 3/5] hw/core: Pass errp to load_image_targphys_as()
+To: Vishal Chourasia <vishalc@linux.ibm.com>
+Cc: adityag@linux.ibm.com, harshpb@linux.ibm.com, milesg@linux.ibm.com, 
+ npiggin@gmail.com, peter.maydell@linaro.org, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, berrange@redhat.com, alistair@alistair23.me, 
+ alex.bennee@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,105 +97,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Nicolin Chen <nicolinc@nvidia.com>
-From:  Nicolin Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 29, 2025 at 02:36:29PM +0100, Shameer Kolothum wrote:
-> Provide a helper and use that to issue the invalidation cmd to host SMMUv3.
-> We only issue one cmd at a time for now.
-> 
-> Support for batching of commands will be added later after analysing the
-> impact.
-> 
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+On Fri, Oct 17, 2025 at 3:41=E2=80=AFAM Vishal Chourasia <vishalc@linux.ibm=
+.com> wrote:
+>
+> Pass errp to load_image_targphys_as() in generic-loader and
+> guest-loader to capture detailed error information from the
+> loader functions.
+>
+> Use error_prepend() instead of error_setg() to preserve the
+> underlying error details while adding context about which image
+> failed to load.
+>
+> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
 > ---
->  hw/arm/smmuv3-accel.c | 38 ++++++++++++++++++++++++++++++++++++++
->  hw/arm/smmuv3-accel.h |  8 ++++++++
->  hw/arm/smmuv3.c       | 30 ++++++++++++++++++++++++++++++
->  3 files changed, 76 insertions(+)
-> 
-> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-> index f4e01fba6d..9ad8595ce2 100644
-> --- a/hw/arm/smmuv3-accel.c
-> +++ b/hw/arm/smmuv3-accel.c
-> @@ -218,6 +218,44 @@ bool smmuv3_accel_install_nested_ste_range(SMMUv3State *s, SMMUSIDRange *range,
->      return true;
->  }
->  
-> +/*
-> + * This issues the invalidation cmd to the host SMMUv3.
-> + * Note: sdev can be NULL for certain invalidation commands
-> + * e.g., SMMU_CMD_TLBI_NH_ASID, SMMU_CMD_TLBI_NH_VA etc.
-
-* Note a TLBI command is passed in with a NULL sdev.
-
-> + */
-> +bool smmuv3_accel_issue_inv_cmd(SMMUv3State *bs, void *cmd, SMMUDevice *sdev,
-> +                                Error **errp)
-> +{
-> +    SMMUv3State *s = ARM_SMMUV3(bs);
-> +    SMMUv3AccelState *s_accel = s->s_accel;
-> +    IOMMUFDViommu *viommu_core;
-> +    uint32_t entry_num = 1;
-> +
-> +    if (!s->accel || !s_accel->viommu) {
-
-    if (!accel || !s_accel->viommu) {
-
-> +   /*
-> +    * We may end up here for any emulated PCI bridge or root port type devices.
-> +    * However, passing invalidation commands with sid (eg: CFGI_CD) to host
-> +    * SMMUv3 only matters for vfio-pci endpoint devices. Hence check that if
-> +    * sdev is valid.
-> +    */
-
-I think we should use "allowed" over "matters".
-
-> +    if (sdev) {
-> +        SMMUv3AccelDevice *accel_dev = container_of(sdev, SMMUv3AccelDevice,
-> +                                                    sdev);
-> +        if (!accel_dev->vdev) {
-> +            return true;
-> +        }
-> +    }
-
-And we could simplify with:
-
-    /*
-     * Only a device associated with the vIOMMU (by having a valid vdev) is
-     * allowed to flush its device cache
-     */
-    if (sdev && !container_of(sdev, SMMUv3AccelDevice, sdev)->vdev) {
-        return true;
-    }
-
-> @@ -1440,18 +1452,36 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
->              QEMU_FALLTHROUGH;
+>  hw/core/generic-loader.c | 4 ++--
+>  hw/core/guest-loader.c   | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
+> index 6689847c33..433efb7387 100644
+> --- a/hw/core/generic-loader.c
+> +++ b/hw/core/generic-loader.c
+> @@ -149,13 +149,13 @@ static void generic_loader_realize(DeviceState *dev=
+, Error **errp)
+>          if (size < 0 || s->force_raw) {
+>              /* Default to the maximum size being the machine's ram size =
+*/
+>              size =3D load_image_targphys_as(s->file, s->addr,
+> -                    current_machine->ram_size, as, NULL);
+> +                    current_machine->ram_size, as, errp);
+>          } else {
+>              s->addr =3D entry;
 >          }
->          case SMMU_CMD_TLBI_NSNH_ALL:
-> +        {
-> +            Error *local_err = NULL;
-> +
->              trace_smmuv3_cmdq_tlbi_nsnh();
->              smmu_inv_notifiers_all(&s->smmu_state);
->              smmu_iotlb_inv_all(bs);
-> +            if (!smmuv3_accel_issue_inv_cmd(s, &cmd, NULL, &local_err)) {
-> +                error_report_err(local_err);
-> +                cmd_error = SMMU_CERROR_ILL;
-> +                break;
-> +            }
->              break;
-> +        }
-
-local_err is not used but only only printed. It'd be cleaner to
-move it inside smmuv3_accel_issue_inv_cmd(). So, you would not
-need to add "{}" nor have an "Error *" parameter in the helper.
-
-Only cmd_error should stay.
-
-With these,
-
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+>
+>          if (size < 0) {
+> -            error_setg(errp, "Cannot load specified image %s", s->file);
+> +            error_prepend(errp, "Cannot load specified image %s: ", s->f=
+ile);
+>              return;
+>          }
+>      }
+> diff --git a/hw/core/guest-loader.c b/hw/core/guest-loader.c
+> index 59f325ad9c..618455e556 100644
+> --- a/hw/core/guest-loader.c
+> +++ b/hw/core/guest-loader.c
+> @@ -101,9 +101,9 @@ static void guest_loader_realize(DeviceState *dev, Er=
+ror **errp)
+>
+>      /* Default to the maximum size being the machine's ram size */
+>      size =3D load_image_targphys_as(file, s->addr, current_machine->ram_=
+size,
+> -                                  NULL, NULL);
+> +                                  NULL, errp);
+>      if (size < 0) {
+> -        error_setg(errp, "Cannot load specified image %s", file);
+> +        error_prepend(errp, "Cannot load specified image %s: ", file);
+>          return;
+>      }
+>
+> --
+> 2.51.0
+>
+>
 
