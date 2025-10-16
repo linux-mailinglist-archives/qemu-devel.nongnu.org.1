@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370ABBE41B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C40BE41C7
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:06:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9PWb-0002Cm-QI; Thu, 16 Oct 2025 11:04:17 -0400
+	id 1v9PWV-0002Bj-0s; Thu, 16 Oct 2025 11:04:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWY-0002CF-TS
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:15 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1v9PWS-0002Bb-Sy
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:08 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWP-0001AQ-8q
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:14 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47117e75258so83775e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:04 -0700 (PDT)
+ id 1v9PWN-0001A4-Tw
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:08 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4710ff3ae81so3418375e9.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760627042; x=1761231842; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760627040; x=1761231840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EO8zY+f+eRKXz2hwkLNT6XbeCb6L/izof5+RV6C6SZU=;
- b=aIAhFNZHi8uracppwjbLISKwfsxFQWFzRd3bZIL8alzPEoe0233AYGMXfd7RGlA7MS
- DYH5CaIJo6BLS69oqA49RJYXrYW6WipWSNWFSJ7TMe5qOGtksPIiQWlloN3lFXZBg+6Z
- 6YRsFjDMf+iqpFuIDXPvqrdhe2WBvaB6vo16fFMH5iB919TNT5cWOmU9vuEdEKgzBWLu
- Mxx32IjB3cPfh+/su3oLhLoVsrqxpHtQbfex02k1Ut+3zCt6ATsmrzpJtKCC/tb2wfI7
- 0Q5hjq7Iy907EHNm4NzrC1PGhE5fmjpBG+pNdm+g/PSV9zeQZ4NWqAGVhnLgZgQf36tr
- PjKw==
+ bh=W0x6s7dJTtXqf7qyTS5AFXH1QH8sqfuQfSpFJBVT5Bc=;
+ b=jNrFEw5zFoC4gfUn9b8BU/j4vVgGo7ik84gEea8iHj84xEC+OyVjRyZuyjsliEs9X+
+ W9rTmGVR61C4xnQrVAShp4guC0ms4HTkymgBJ2P3iGvzyXFusNkxjHuPHZM++wHKzq0r
+ gxd5R90z2TBXi8gLNf0+y24Kb+53E2OIAQbV0+RRTlfSAFxK0V4S8fI25Atxzm7WIj4y
+ K5AuE2nqF2slXuLAdZUsxqiLC++Z9MlV1Z4bvic/wldwImQqOKp9tjfsTkAdOZEDcWWF
+ tjoWh5gtAcRdGAPDFhMFuQzqPiOHuZo+ReMF/GmbROO6Pg1R2HohtQrstXJLtgN5rKIh
+ cWmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760627042; x=1761231842;
+ d=1e100.net; s=20230601; t=1760627040; x=1761231840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EO8zY+f+eRKXz2hwkLNT6XbeCb6L/izof5+RV6C6SZU=;
- b=adyQSmtASoh1OPZHeQ6Ij0ioNYxDPhjbVxnSEggsjFwsUVW3NUMUKE1d4MQSExdpX2
- ukLzCIB197/Tq/oQRarMrhg+FHFm6qxHySSzucIMGbQM95BQg5CvoXrlgrjMfSHYSUqk
- 2p13QGqGY4bp138YKplHk4a16OuwAgmfzhKzzAU1sNHJv7i+Mo0GgqAR/zRm0+ddeAWz
- 5iauwFDXmE46vXSCRkVnXK86UaEM9I6d1jFit2jdxWL8lux4buILqIMREZDWAClR0Ybf
- o4YRRTdsNaMyYDjDEzb0ZzAKVu9HJPZr1lQzHLpuFaDRi3U+F2dApK2jQX4+PXcOqObm
- IjTw==
-X-Gm-Message-State: AOJu0YwKa9DpuwNprqZYsQvgjI83+pv99XkxFlyNgur+b5aie+nQmGGV
- JcxR3XlXe9A2GAsEAAckh7DR2r7ZcC1zSIXyKCkwDehGMPcyCJ1Jj2Aq7qjtQtSZVdk=
-X-Gm-Gg: ASbGnctSo7YE1qhduuVwye/UD5o6dafixdePhWKI1aGOje/jN8W9bdlRWG8nUg18QTf
- IQinA4uRtts5XyDbsb74fi59oKEbOSUZSPLjdUZg+bFBZSPc3CFxLcoZJVZpQp46g33n6FdJycG
- FatB/oiRE7f9iBSgUsGN/n7P15kDfMMzXs0/7ql67wp/pBi1uLSWygImUsnuYng26g9drPDIOaK
- HJtneZosR9ivU6FvjaLhU3kvV+No7lrc8GztvYBbUFqc1/jrlT9sgnLkbV/bsW2EoTAhUcePxW4
- jEcuTGfjsPgim5dPsP8p+0ZSL/Z58Vh/o6xAeHZh4IN09g4u48nH/knRoldYRlSD+WQyUL8OCIY
- uoKj7GNxnhIVDAoRxJZr3q1QexqctuopPv34QgwPxG3fwdK0YLOg8Y9S8oJTitdX9qoHGgK6TIp
- 2KHG2VTlM+RbE=
-X-Google-Smtp-Source: AGHT+IGIZvjzA47nkAowGslp4cd0HOEMBBO80cepdDIGX03OPwrZ5tK31tlJpdKnPlF1bdv608L+dg==
-X-Received: by 2002:a05:600c:3513:b0:46f:b340:75e7 with SMTP id
- 5b1f17b1804b1-471178748a9mr2504435e9.8.1760627042213; 
- Thu, 16 Oct 2025 08:04:02 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710f28a920sm21361185e9.7.2025.10.16.08.03.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ bh=W0x6s7dJTtXqf7qyTS5AFXH1QH8sqfuQfSpFJBVT5Bc=;
+ b=a3wbZJFO1BLkiJh0zQ0fyoaFjwuIX7//CBpYKOOwwyn8AFsnavXC79Vsx4VrDPEkBM
+ Y67MVtjOsaXyLj3qBgRH2Y2/qc57LfKAWpvGsjHuld9gVyqa/kx/lEi3QLG4HxPDrhyl
+ c17asIfN9Bh2PtpllBYz1GtDbyuTwa29xuj/LT4MSWXFrQWxl8QjXJS0Im271AU04OuB
+ SRC6Mma/KNlNUbTd8HHknHCISG+y85JLqDfKNJmmlXkVrcBqJXbR5yiToHXJ8qXV0cd7
+ z8ToWoGVH2f7pXE0K0ZJCnHl4jXHuTK+fIRCZ6ImsUJKLiK82G2Yf04l5M24Z8D2mrED
+ q8Jw==
+X-Gm-Message-State: AOJu0YwZcuYAaQiPgviMwC0KvKYVVvWHUFkEytxkRCLvIS8xi0WVE9At
+ i42CzpjDe4FoXS/hzdcBJf1r9WRGXyd3pPilrqUAd85sJqOJyGuYpzbLKQNecWuK+Ak=
+X-Gm-Gg: ASbGncuTLmFHMg0ZjFY+Ebe4D0QvL4BxWsF5wrIJr2JVNY5VIrbF6tGPctR2xRLkn4z
+ cCEiz1Ubkh3IFaLeEvjVeHKO1nhqIzlZGKucirZ9mSZ9SO4oAqE677Usm06LK+aztjf2s6zQiQ1
+ g4j5pNb6VLH1SvW8VXqoMeFcSe+CYQsIV8iys7ZpxcHFlOASnFKGrE/7RRKUN09Admo7Fn1Cw3o
+ um30Nxha0AJoXd4YO7zGSjiqFfwS+hsL4lYwhSpMyqvkh3k5lj/bXmHa3RQOBnlMhyp8kWk1Xn8
+ 40MqrO8jbBHd1NeS1JR2RVNXtq/jbcUDa3zH1pL/lJ9Ko7pyug1WkWpVcea+AEujrIG9xcX8lEW
+ FZrNS9p3chU7+3rUwoY+dHL34t1ibz1+NlVBlVVdzBZRv4N0yu8597NYtUy8HfGjQMXT0jRiZZT
+ CRGUKQ
+X-Google-Smtp-Source: AGHT+IGaotG52V3vLou9TtMvJuKkTHgM3OvrcgXpKfg2DViKUrt9lJlvcdKa52jx1kTc293B1y4MIQ==
+X-Received: by 2002:a05:600c:b8d:b0:46e:1a14:a81b with SMTP id
+ 5b1f17b1804b1-47117925ce1mr2242205e9.36.1760627039801; 
  Thu, 16 Oct 2025 08:03:59 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-471144b5d48sm32265055e9.9.2025.10.16.08.03.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Oct 2025 08:03:58 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8C2245F87A;
+ by draig.lan (Postfix) with ESMTP id A823F5FA6C;
  Thu, 16 Oct 2025 16:03:57 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,17 @@ Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH 01/11] gitlab: use template for ubuntu-24.04-aarch64 jobs
-Date: Thu, 16 Oct 2025 16:03:46 +0100
-Message-ID: <20251016150357.876415-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/11] gitlab: drop aarch32 runner and associated bits
+Date: Thu, 16 Oct 2025 16:03:47 +0100
+Message-ID: <20251016150357.876415-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251016150357.876415-1-alex.bennee@linaro.org>
 References: <20251016150357.876415-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,271 +113,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of the test is pure boilerplate so to save ourselves from
-repetition move all the main bits into a minimal copy of
-native_build_job_template but without the caching.
+While working out what hoops to jump through to get a full set of
+aarch32 packages installed on the aarch64 runner it was pointed out 32
+bit host support is deprecated. As the extra packages where needed for
+system emulation (marked deprecated since 8.0!) there didn't seem much
+point keeping this in.
 
-We keep all the current allow_fail and configure setups but do take
-the opportunity to replace the -j`nproc --ignore=40` hack with
-something that almost, but not quite, saturates the machine its being
-built on.
+While the full expunging of 32 bit host support will probably be done
+for 11.0 we can at least reduce the CI burden a bit now.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .../custom-runners/ubuntu-24.04-aarch64.yml   | 230 ++++++++----------
- 1 file changed, 96 insertions(+), 134 deletions(-)
+ .gitlab-ci.d/custom-runners.yml               |   1 -
+ .../custom-runners/ubuntu-24.04-aarch32.yml   |  25 ----
+ scripts/ci/setup/ubuntu/build-environment.yml |  17 ---
+ .../setup/ubuntu/ubuntu-2204-armhf-cross.yml  | 127 ------------------
+ 4 files changed, 170 deletions(-)
+ delete mode 100644 .gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
+ delete mode 100644 scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
 
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-index d26c7827f45..46db9ae0138 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-@@ -2,150 +2,112 @@
- # setup by the scripts/ci/setup/ubuntu/build-environment.yml task
- # "Install basic packages to build QEMU on Ubuntu 24.04"
- 
-+.ubuntu_aarch64_template:
-+  extends: .custom_runner_template
-+  needs: []
-+  stage: build
-+  tags:
-+    - ubuntu_24.04
-+    - aarch64
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: "$AARCH64_RUNNER_AVAILABLE"
-+  before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-+    - JOBS=$(expr $(nproc) - 4)
-+    - section_end setup
-+  script:
-+    - mkdir build
-+    - cd build
-+    - section_start configure "Running configure"
-+    - ../configure $CONFIGURE_ARGS ||
-+          { cat config.log meson-logs/meson-log.txt && exit 1; }
-+    - section_end configure
-+    - section_start build "Building QEMU"
-+    - make --output-sync -j"$JOBS"
-+    - section_end build
-+    - section_start test "Running tests"
-+    - if test -n "$MAKE_CHECK_ARGS";
-+      then
-+        make -j"$JOBS" $MAKE_CHECK_ARGS ;
-+      fi
-+    - section_end test
-+
- ubuntu-24.04-aarch64-all-linux-static:
+diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
+index 3eb8216d571..142fbf4a242 100644
+--- a/.gitlab-ci.d/custom-runners.yml
++++ b/.gitlab-ci.d/custom-runners.yml
+@@ -31,4 +31,3 @@
+ include:
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml'
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml'
+-  - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml'
+diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
+deleted file mode 100644
+index 75029c9187e..00000000000
+--- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
++++ /dev/null
+@@ -1,25 +0,0 @@
+-# All ubuntu-24.04 jobs should run successfully in an environment
+-# setup by the scripts/ci/setup/ubuntu/build-environment.yml task
+-# "Install basic packages to build QEMU on Ubuntu 24.04"
+-
+-ubuntu-24.04-aarch32-all:
 - extends: .custom_runner_template
 - needs: []
 - stage: build
 - tags:
 - - ubuntu_24.04
-- - aarch64
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-- - if: "$AARCH64_RUNNER_AVAILABLE"
-- script:
-- - mkdir build
-- - cd build
-- # Disable -static-pie due to build error with system libc:
-- # https://bugs.launchpad.net/ubuntu/+source/glibc/+bug/1987438
-- - ../configure --enable-debug --static --disable-system --disable-pie
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-- - make check-tcg
-- - make --output-sync -j`nproc --ignore=40` check
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    # Disable -static-pie due to build error with system libc:
-+    # https://bugs.launchpad.net/ubuntu/+source/glibc/+bug/1987438
-+    CONFIGURE_ARGS: --enable-debug --static --disable-system --disable-pie
-+    MAKE_CHECK_ARGS: check-tcg
- 
- ubuntu-24.04-aarch64-all:
-- extends: .custom_runner_template
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch64
+- - aarch32
 - rules:
 - - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
 -   when: manual
 -   allow_failure: true
-- - if: "$AARCH64_RUNNER_AVAILABLE"
+- - if: "$AARCH32_RUNNER_AVAILABLE"
 -   when: manual
 -   allow_failure: true
 - script:
 - - mkdir build
 - - cd build
-- - ../configure
+- - ../configure --cross-prefix=arm-linux-gnueabihf-
 -   || { cat config.log meson-logs/meson-log.txt; exit 1; }
 - - make --output-sync -j`nproc --ignore=40`
 - - make --output-sync -j`nproc --ignore=40` check
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    MAKE_CHECK_ARGS: check
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+      when: manual
-+      allow_failure: true
-+    - if: "$AARCH64_RUNNER_AVAILABLE"
-+      when: manual
-+      allow_failure: true
+diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
+index 6042750cb4d..0f8ec5fab04 100644
+--- a/scripts/ci/setup/ubuntu/build-environment.yml
++++ b/scripts/ci/setup/ubuntu/build-environment.yml
+@@ -47,21 +47,4 @@
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['distribution_version'] == '24.04'
  
- ubuntu-24.04-aarch64-without-defaults:
-- extends: .custom_runner_template
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch64
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
--   when: manual
--   allow_failure: true
-- - if: "$AARCH64_RUNNER_AVAILABLE"
--   when: manual
--   allow_failure: true
-- script:
-- - mkdir build
-- - cd build
-- - ../configure --disable-user --without-default-devices --without-default-features
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-- - make --output-sync -j`nproc --ignore=40` check
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    CONFIGURE_ARGS: --disable-user --without-default-devices --without-default-features
-+    MAKE_CHECK_ARGS: check
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+      when: manual
-+      allow_failure: true
-+    - if: "$AARCH64_RUNNER_AVAILABLE"
-+      when: manual
-+      allow_failure: true
+-    - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 24.04
+-      package:
+-        name:
+-          - binutils-arm-linux-gnueabihf
+-          - gcc-arm-linux-gnueabihf
+-          - libblkid-dev:armhf
+-          - libc6-dev:armhf
+-          - libffi-dev:armhf
+-          - libglib2.0-dev:armhf
+-          - libmount-dev:armhf
+-          - libpcre2-dev:armhf
+-          - libpixman-1-dev:armhf
+-          - zlib1g-dev:armhf
+-      when:
+-        - ansible_facts['distribution'] == 'Ubuntu'
+-        - ansible_facts['distribution_version'] == '24.04'
+-        - ansible_facts['architecture'] == 'aarch64'
  
- ubuntu-24.04-aarch64-alldbg:
-- extends: .custom_runner_template
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch64
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-- - if: "$AARCH64_RUNNER_AVAILABLE"
-- script:
-- - mkdir build
-- - cd build
-- - ../configure --enable-debug
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make clean
-- - make --output-sync -j`nproc --ignore=40`
-- - make --output-sync -j`nproc --ignore=40` check
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    CONFIGURE_ARGS: --enable-debug
-+    MAKE_CHECK_ARGS: check-tcg
- 
- ubuntu-24.04-aarch64-clang:
-- extends: .custom_runner_template
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch64
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
--   when: manual
--   allow_failure: true
-- - if: "$AARCH64_RUNNER_AVAILABLE"
--   when: manual
--   allow_failure: true
-- script:
-- - mkdir build
-- - cd build
-- - ../configure --disable-libssh --cc=clang --cxx=clang++ --enable-ubsan
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-- - make --output-sync -j`nproc --ignore=40` check
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-ubsan
-+    MAKE_CHECK_ARGS: check
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+      when: manual
-+      allow_failure: true
-+    - if: "$AARCH64_RUNNER_AVAILABLE"
-+      when: manual
-+      allow_failure: true
- 
- ubuntu-24.04-aarch64-tci:
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch64
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
--   when: manual
--   allow_failure: true
-- - if: "$AARCH64_RUNNER_AVAILABLE"
--   when: manual
--   allow_failure: true
-- script:
-- - mkdir build
-- - cd build
-- - ../configure --enable-tcg-interpreter
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    CONFIGURE_ARGS: --enable-tcg-interpreter
-+    MAKE_CHECK_ARGS: check
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+      when: manual
-+      allow_failure: true
-+    - if: "$AARCH64_RUNNER_AVAILABLE"
-+      when: manual
-+      allow_failure: true
- 
- ubuntu-24.04-aarch64-notcg:
-- extends: .custom_runner_template
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch64
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
--   when: manual
--   allow_failure: true
-- - if: "$AARCH64_RUNNER_AVAILABLE"
--   when: manual
--   allow_failure: true
-- script:
-- - mkdir build
-- - cd build
-- - ../configure --disable-tcg --with-devices-aarch64=minimal
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-- - make --output-sync -j`nproc --ignore=40` check
-+  extends: .ubuntu_aarch64_template
-+  variables:
-+    CONFIGURE_ARGS: --disable-tcg --with-devices-aarch64=minimal
-+    MAKE_CHECK_ARGS: check
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+      when: manual
-+      allow_failure: true
-+    - if: "$AARCH64_RUNNER_AVAILABLE"
-+      when: manual
-+      allow_failure: true
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml b/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
+deleted file mode 100644
+index 0cc34cd10b9..00000000000
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
++++ /dev/null
+@@ -1,127 +0,0 @@
+-# THIS FILE WAS AUTO-GENERATED
+-#
+-#  $ lcitool variables --cross-arch armv7l ubuntu-2204 qemu
+-#
+-# https://gitlab.com/libvirt/libvirt-ci
+-
+-packages:
+-  - bash
+-  - bc
+-  - bison
+-  - bsdextrautils
+-  - bzip2
+-  - ca-certificates
+-  - ccache
+-  - dbus
+-  - debianutils
+-  - diffutils
+-  - exuberant-ctags
+-  - findutils
+-  - flex
+-  - gcc
+-  - gcovr
+-  - gettext
+-  - git
+-  - hostname
+-  - libglib2.0-dev
+-  - libpcre2-dev
+-  - libsndio-dev
+-  - libspice-protocol-dev
+-  - llvm
+-  - locales
+-  - make
+-  - meson
+-  - mtools
+-  - ncat
+-  - ninja-build
+-  - openssh-client
+-  - pkgconf
+-  - python3
+-  - python3-numpy
+-  - python3-opencv
+-  - python3-pillow
+-  - python3-pip
+-  - python3-sphinx
+-  - python3-sphinx-rtd-theme
+-  - python3-tomli
+-  - python3-venv
+-  - python3-yaml
+-  - rpm2cpio
+-  - sed
+-  - socat
+-  - sparse
+-  - swtpm
+-  - tar
+-  - tesseract-ocr
+-  - tesseract-ocr-eng
+-  - xorriso
+-  - zstd
+-  - gcc-arm-linux-gnueabihf
+-  - libaio-dev:armhf
+-  - libasan6:armhf
+-  - libasound2-dev:armhf
+-  - libattr1-dev:armhf
+-  - libbpf-dev:armhf
+-  - libbrlapi-dev:armhf
+-  - libbz2-dev:armhf
+-  - libc6-dev:armhf
+-  - libcacard-dev:armhf
+-  - libcap-ng-dev:armhf
+-  - libcapstone-dev:armhf
+-  - libcmocka-dev:armhf
+-  - libcurl4-gnutls-dev:armhf
+-  - libdaxctl-dev:armhf
+-  - libdrm-dev:armhf
+-  - libepoxy-dev:armhf
+-  - libfdt-dev:armhf
+-  - libffi-dev:armhf
+-  - libfuse3-dev:armhf
+-  - libgbm-dev:armhf
+-  - libgcrypt20-dev:armhf
+-  - libglib2.0-dev:armhf
+-  - libglusterfs-dev:armhf
+-  - libgnutls28-dev:armhf
+-  - libgtk-3-dev:armhf
+-  - libibumad-dev:armhf
+-  - libibverbs-dev:armhf
+-  - libiscsi-dev:armhf
+-  - libjemalloc-dev:armhf
+-  - libjpeg-turbo8-dev:armhf
+-  - libjson-c-dev:armhf
+-  - liblttng-ust-dev:armhf
+-  - liblzo2-dev:armhf
+-  - libncursesw5-dev:armhf
+-  - libnfs-dev:armhf
+-  - libnuma-dev:armhf
+-  - libpam0g-dev:armhf
+-  - libpipewire-0.3-dev:armhf
+-  - libpixman-1-dev:armhf
+-  - libpng-dev:armhf
+-  - libpulse-dev:armhf
+-  - librbd-dev:armhf
+-  - librdmacm-dev:armhf
+-  - libsasl2-dev:armhf
+-  - libsdl2-dev:armhf
+-  - libsdl2-image-dev:armhf
+-  - libseccomp-dev:armhf
+-  - libselinux1-dev:armhf
+-  - libslirp-dev:armhf
+-  - libsnappy-dev:armhf
+-  - libspice-server-dev:armhf
+-  - libssh-dev:armhf
+-  - libsystemd-dev:armhf
+-  - libtasn1-6-dev:armhf
+-  - libubsan1:armhf
+-  - libudev-dev:armhf
+-  - liburing-dev:armhf
+-  - libusb-1.0-0-dev:armhf
+-  - libusbredirhost-dev:armhf
+-  - libvdeplug-dev:armhf
+-  - libvirglrenderer-dev:armhf
+-  - libvte-2.91-dev:armhf
+-  - libxen-dev:armhf
+-  - libzstd-dev:armhf
+-  - nettle-dev:armhf
+-  - systemtap-sdt-dev:armhf
+-  - zlib1g-dev:armhf
+-
 -- 
 2.47.3
 
