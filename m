@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBC1BE329C
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B7F6BE32BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:50:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNf-0007WL-ON; Thu, 16 Oct 2025 07:42:52 -0400
+	id 1v9MNf-0007WI-O6; Thu, 16 Oct 2025 07:42:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MNO-0007JQ-Ew; Thu, 16 Oct 2025 07:42:37 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1v9MN0-0007B8-52; Thu, 16 Oct 2025 07:42:14 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MNA-0003Wa-RW; Thu, 16 Oct 2025 07:42:32 -0400
+ id 1v9MMt-0003Wb-ER; Thu, 16 Oct 2025 07:42:07 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 0C04EC01C7;
- Thu, 16 Oct 2025 14:41:42 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5E24BC01E8;
+ Thu, 16 Oct 2025 14:41:43 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-bUjaRCUF; Thu, 16 Oct 2025 14:41:41 +0300
+ ESMTPSA id LfP2M73FEmI0-j6aB0vES; Thu, 16 Oct 2025 14:41:42 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614901;
- bh=FQa5UwKvUo2fp+LZPlQdGfhHVLkM6RfOrSZz/WATnZE=;
+ s=default; t=1760614902;
+ bh=HFE8QjC8Rnlm0okx70mpoOdoiRgantXWnrfbocdxBfk=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=bKsCtGNDsy2GQ5rtZH+POpEx6fc2lSDcX+oeGoWhgLAKmilMVIyj59UOnpH7ezMfm
- u7J10LBBDQEYhdDIKsOLrArWqZ1+Gmh0Pnr2IkfTHebSVc0CYL8sX1Hljt5gdi+WXj
- fYIWtDqkC6JwqOKCMzbS8rpFGnSqBY+FjzB/gzsE=
+ b=VESwroG5eUtyHBICBfrKSGq1v/Rn3VzMJ/Pp3J6IPMXgIaOi+1wk74VRaDGHio6FQ
+ QxsMo4VjTPaTLrSZdkCfKFbQhks+uWPIjSwEpyTA3VWk4o7rt0prp/ipJuiltADLE4
+ abzylGXg0AXjCKTLzHF+rm0SgdMh6B3aS14vSjbY=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,23 +45,25 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 24/25] vhost-user-blk: support vhost backend migration
-Date: Thu, 16 Oct 2025 14:41:01 +0300
-Message-ID: <20251016114104.1384675-25-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 25/25] tests/functional: add
+ test_x86_64_vhost_user_blk_fd_migration.py
+Date: Thu, 16 Oct 2025 14:41:02 +0300
+Message-ID: <20251016114104.1384675-26-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,245 +78,329 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Opt-out backend initialization code, and instead get the state
-from migration channel (including inflight region).
+Introduce a simple test to check that local migration of vhost-user-blk
+device with passing open fds through unix socket works, and the disk
+is still working on target.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/block/vhost-user-blk.c          | 129 ++++++++++++++++++++++++-----
- include/hw/virtio/vhost-user-blk.h |   2 +
- include/hw/virtio/vhost.h          |   3 +-
- 3 files changed, 111 insertions(+), 23 deletions(-)
+ ...test_x86_64_vhost_user_blk_fd_migration.py | 307 ++++++++++++++++++
+ 1 file changed, 307 insertions(+)
+ create mode 100644 tests/functional/test_x86_64_vhost_user_blk_fd_migration.py
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index ffdd600526..a8fd90480a 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -17,6 +17,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qapi-types-run-state.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/cutils.h"
-@@ -31,7 +32,13 @@
- #include "hw/virtio/virtio-access.h"
- #include "system/system.h"
- #include "system/runstate.h"
-+#include "chardev/char-backend-transfer.h"
- #include "trace.h"
-+#include "migration/qemu-file.h"
-+#include "migration/migration.h"
-+#include "migration/options.h"
-+#include "qemu/event_notifier.h"
-+#include <sys/mman.h>
- 
- static const int user_feature_bits[] = {
-     VIRTIO_BLK_F_SIZE_MAX,
-@@ -160,32 +167,35 @@ static int vhost_user_blk_start(VirtIODevice *vdev, Error **errp)
- 
-     s->dev.acked_features = vdev->guest_features;
- 
--    ret = vhost_dev_prepare_inflight(&s->dev, vdev);
--    if (ret < 0) {
--        error_setg_errno(errp, -ret, "Error setting inflight format");
--        goto err_guest_notifiers;
--    }
--
--    if (!s->inflight->addr) {
--        ret = vhost_dev_get_inflight(&s->dev, s->queue_size, s->inflight);
-+    if (!s->dev.backend_transfer) {
-+        ret = vhost_dev_prepare_inflight(&s->dev, vdev);
-         if (ret < 0) {
--            error_setg_errno(errp, -ret, "Error getting inflight");
-+            error_setg_errno(errp, -ret, "Error setting inflight format");
-             goto err_guest_notifiers;
-         }
--    }
- 
--    ret = vhost_dev_set_inflight(&s->dev, s->inflight);
--    if (ret < 0) {
--        error_setg_errno(errp, -ret, "Error setting inflight");
--        goto err_guest_notifiers;
--    }
-+        if (!s->inflight->addr) {
-+            ret = vhost_dev_get_inflight(&s->dev, s->queue_size, s->inflight);
-+            if (ret < 0) {
-+                error_setg_errno(errp, -ret, "Error getting inflight");
-+                goto err_guest_notifiers;
-+            }
+diff --git a/tests/functional/test_x86_64_vhost_user_blk_fd_migration.py b/tests/functional/test_x86_64_vhost_user_blk_fd_migration.py
+new file mode 100644
+index 0000000000..0523a71f15
+--- /dev/null
++++ b/tests/functional/test_x86_64_vhost_user_blk_fd_migration.py
+@@ -0,0 +1,307 @@
++#!/usr/bin/env python3
++#
++# Functional test that tests vhost-user-blk local migration
++# with fd passing
++#
++# Copyright (c) Yandex
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++import os
++import time
++import subprocess
++
++from qemu_test import (
++    LinuxKernelTest,
++    Asset,
++    exec_command_and_wait_for_pattern,
++)
++
++
++def wait_migration_finish(source_vm, target_vm):
++    migr_events = (
++        ("MIGRATION", {"data": {"status": "completed"}}),
++        ("MIGRATION", {"data": {"status": "failed"}}),
++    )
++
++    source_e = source_vm.events_wait(migr_events)["data"]
++    target_e = target_vm.events_wait(migr_events)["data"]
++
++    source_s = source_vm.cmd("query-status")["status"]
++    target_s = target_vm.cmd("query-status")["status"]
++
++    assert (
++        source_e["status"] == "completed"
++        and target_e["status"] == "completed"
++        and source_s == "postmigrate"
++        and target_s == "paused"
++    ), f"""Migration failed:
++    SRC status: {source_s}
++    SRC event: {source_e}
++    TGT status: {target_s}
++    TGT event:{target_e}"""
++
++
++class VhostUserBlkFdMigration(LinuxKernelTest):
++
++    ASSET_KERNEL = Asset(
++        (
++            "https://archives.fedoraproject.org/"
++            "pub/archive/fedora/linux/releases"
++            "/31/Server/x86_64/os/images/pxeboot/vmlinuz"
++        ),
++        "d4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129",
++    )
++
++    ASSET_INITRD = Asset(
++        (
++            "https://archives.fedoraproject.org/"
++            "pub/archive/fedora/linux/releases"
++            "/31/Server/x86_64/os/images/pxeboot/initrd.img"
++        ),
++        "277cd6c7adf77c7e63d73bbb2cded8ef9e2d3a2f100000e92ff1f8396513cd8b",
++    )
++
++    DATA1 = "TEST_DATA_BEFORE_MIGRATION_12345"
++    DATA2 = "TEST_DATA_AFTER_MIGRATION_54321"
++
++    def write_data(self, data, vm) -> None:
++        exec_command_and_wait_for_pattern(
++            self,
++            f'echo "{data}" | ' "dd of=/dev/vda bs=512 count=1 oflag=direct",
++            "# ",
++            vm=vm,
++        )
++
++    def read_data(self, data, vm) -> None:
++        exec_command_and_wait_for_pattern(
++            self,
++            "dd if=/dev/vda bs=512 count=1 iflag=direct 2>/dev/null",
++            data,
++            vm=vm,
++        )
++
++    def setUp(self):
++        super().setUp()
++        self.vhost_procs = []
++
++    def tearDown(self):
++        # Cleanup vhost-user server processes
++        for proc in self.vhost_procs:
++            if proc:
++                try:
++                    proc.terminate()
++                    proc.wait(timeout=5)
++                except subprocess.TimeoutExpired:
++                    proc.kill()
++                    proc.wait()
++                except:
++                    pass
++
++        super().tearDown()
++
++    def create_test_image(self):
++        """Create a temporary test image for vhost-user-blk"""
++        img_path = self.scratch_file("disk.img")
++
++        # Create 64MB image
++        with open(img_path, "wb") as f:
++            f.write(b"\0" * (64 * 1024 * 1024))
++
++        return img_path
++
++    def start_vhost_user_server(self, socket_path, img_path):
++        """Start vhost-user-blk server using contrib/vhost-user-blk"""
++        # Find vhost-user-blk binary
++        vub_binary = self.build_file(
++            "contrib", "vhost-user-blk", "vhost-user-blk"
++        )
++
++        if not os.path.isfile(vub_binary) or not os.access(vub_binary, os.X_OK):
++            self.skipTest("vhost-user-blk binary not found")
++
++        # assert that our further waiting would be correct
++        self.assertFalse(os.path.exists(socket_path))
++
++        cmd = [vub_binary, "-s", socket_path, "-b", img_path]
++        self.log.info(f'Starting vhost-user server: {" ".join(cmd)}')
++        proc = subprocess.Popen(
++            cmd, stderr=subprocess.PIPE, text=True, preexec_fn=os.setsid
++        )
++        self.vhost_procs.append(proc)
++
++        # Wait for socket to be created
++        for _ in range(100):  # 10 seconds timeout
++            time.sleep(0.1)
++
++            # Check if process is still running
++            if proc.poll() is not None:
++                self.fail(f"vhost-user server failed: {proc.stderr}")
++
++            if os.path.exists(socket_path):
++                return
++
++        self.fail(f"vhost-user socket {socket_path} was not created")
++
++    def setup_shared_memory(self):
++        shm_path = f"/dev/shm/qemu_test_{os.getpid()}"
++
++        try:
++            with open(shm_path, "wb") as f:
++                f.write(b"\0" * (1024 * 1024 * 1024))  # 1GB
++        except Exception as e:
++            self.fail(f"Failed to create shared memory file: {e}")
++
++        return shm_path
++
++    def prepare_and_launch_vm(
++        self,
++        shm_path,
++        vhost_socket,
++        incoming=False,
++        vm=None,
++        use_backend_transfer=True,
++    ):
++        if not vm:
++            vm = self.vm
++
++        vm.add_args("-accel", "kvm")
++        vm.add_args("-device", "pcie-pci-bridge,id=pci.1,bus=pcie.0")
++        vm.add_args("-m", "1G")
++        vm.add_args("-append", "console=ttyS0 rd.rescue")
++
++        vm.add_args(
++            "-object",
++            f"memory-backend-file,id=ram0,size=1G,mem-path={shm_path},share=on",
++        )
++        vm.add_args("-machine", "memory-backend=ram0")
++
++        vm.add_args("-kernel", self.ASSET_KERNEL.fetch())
++        vm.add_args("-initrd", self.ASSET_INITRD.fetch())
++
++        vm.add_args("-S")
++
++        if incoming:
++            vm.add_args("-incoming", "defer")
++
++        vm.set_console()
++
++        vm_s = "target" if incoming else "source"
++        self.log.info(f"Launching {vm_s} VM")
++        vm.launch()
++
++        self.set_migration_capabilities(vm, use_backend_transfer)
++        self.add_vhost_user_blk_device(vm, vhost_socket)
++
++    def add_vhost_user_blk_device(self, vm, socket_path):
++        # Add chardev
++        chardev_params = {
++            "id": "chardev-virtio-disk0",
++            "backend": {
++                "type": "socket",
++                "data": {
++                    "addr": {"type": "unix", "data": {"path": socket_path}},
++                    "server": False,
++                    "reconnect-ms": 20,
++                },
++            },
 +        }
- 
--    /* guest_notifier_mask/pending not used yet, so just unmask
--     * everything here. virtio-pci will do the right thing by
--     * enabling/disabling irqfd.
--     */
--    for (i = 0; i < s->dev.nvqs; i++) {
--        vhost_virtqueue_mask(&s->dev, vdev, i, false);
-+        ret = vhost_dev_set_inflight(&s->dev, s->inflight);
-+        if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Error setting inflight");
-+            goto err_guest_notifiers;
++
++        vm.cmd("chardev-add", chardev_params)
++
++        # Add device
++        device_params = {
++            "id": "virtio-disk0",
++            "driver": "vhost-user-blk-pci",
++            "chardev": "chardev-virtio-disk0",
++            "num-queues": 1,
++            "bus": "pci.1",
++            "config-wce": False,
++            "bootindex": 1,
++            "disable-legacy": "off",
 +        }
 +
-+        /*
-+         * guest_notifier_mask/pending not used yet, so just unmask
-+         * everything here. virtio-pci will do the right thing by
-+         * enabling/disabling irqfd.
-+         */
-+        for (i = 0; i < s->dev.nvqs; i++) {
-+            vhost_virtqueue_mask(&s->dev, vdev, i, false);
-+        }
-     }
- 
-     s->dev.vq_index_end = s->dev.nvqs;
-@@ -232,6 +242,10 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
-     force_stop = s->skip_get_vring_base_on_force_shutdown &&
-                  qemu_force_shutdown_requested();
- 
-+    s->dev.backend_transfer = s->dev.backend_transfer ||
-+        (runstate_check(RUN_STATE_FINISH_MIGRATE) &&
-+         migrate_local_vhost_user_blk());
++        vm.cmd("device_add", device_params)
 +
-     ret = force_stop ? vhost_dev_force_stop(&s->dev, vdev, true) :
-                        vhost_dev_stop(&s->dev, vdev, true);
- 
-@@ -391,6 +405,7 @@ static int vhost_user_blk_connect(DeviceState *dev,
-     trace_vhost_user_blk_connect_in(vdev);
- 
-     assert(!s->connected);
-+    assert(!s->dev.backend_transfer);
- 
-     ret = vhost_dev_connect(&s->dev, errp);
-     if (ret < 0) {
-@@ -464,6 +479,9 @@ static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
-     DeviceState *dev = DEVICE(s);
-     int ret;
- 
-+    assert(!s->connected);
-+    assert(!s->dev.backend_transfer);
++    def set_migration_capabilities(self, vm, use_backend_transfer=True):
++        capabilities = [
++            {"capability": "events", "state": True},
++            {"capability": "x-ignore-shared", "state": True},
++        ]
 +
-     ret = qemu_chr_fe_wait_connected(&s->chardev, errp);
-     if (ret < 0) {
-         return ret;
-@@ -642,7 +660,13 @@ static bool vhost_user_blk_pre_incoming(void *opaque, Error **errp)
- {
-     VHostUserBlk *s = VHOST_USER_BLK(opaque);
- 
--    return vhost_user_blk_realize_connect(s, errp) == 0;
-+    s->dev.backend_transfer = migrate_local_vhost_user_blk();
++        if use_backend_transfer:
++            capabilities.append(
++                {"capability": "local-vhost-user-blk", "state": True}
++            )
 +
-+    if (!s->dev.backend_transfer) {
-+        return vhost_user_blk_realize_connect_loop(s, errp) >= 0;
-+    }
++        vm.cmd("migrate-set-capabilities", {"capabilities": capabilities})
 +
-+    return true;
- }
- 
- static const VMStateDescription vmstate_vhost_user_blk = {
-@@ -656,6 +680,64 @@ static const VMStateDescription vmstate_vhost_user_blk = {
-     },
- };
- 
-+static bool vhost_user_needed(void *opaque)
-+{
-+    return migrate_local_vhost_user_blk();
-+}
++    def do_test_vhost_user_blk_fd_migration(self, use_backend_transfer=True):
++        self.require_accelerator("kvm")
++        self.set_machine("q35")
 +
-+static const VMStateDescription vmstate_vhost_user_blk_device = {
-+    .name = "vhost-user-blk-device",
-+    .version_id = 1,
-+    .needed = vhost_user_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_BACKEND_TRANSFER_CHARDEV(chardev, VHostUserBlk),
-+        VMSTATE_BACKEND_TRANSFER_VHOST_INFLIGHT(inflight, VHostUserBlk),
-+        VMSTATE_BACKEND_TRANSFER_VHOST_USER(dev, VHostUserBlk),
-+        VMSTATE_BACKEND_TRANSFER_VHOST(dev, VHostUserBlk),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
++        socket_dir = self.socket_dir()
++        vhost_socket = os.path.join(socket_dir.name, "vhost-user-blk.sock")
++        migration_socket = os.path.join(socket_dir.name, "migration.sock")
 +
-+static int vhost_user_blk_post_load(VirtIODevice *vdev)
-+{
-+    VHostUserBlk *s = VHOST_USER_BLK(vdev);
-+    struct vhost_dev *hdev = vhost_user_blk_get_vhost(vdev);
-+    DeviceState *dev = &s->parent_obj.parent_obj;
++        img_path = self.create_test_image()
++        shm_path = self.setup_shared_memory()
 +
-+    if (!hdev->backend_transfer) {
-+        return 0;
-+    }
++        self.start_vhost_user_server(vhost_socket, img_path)
 +
-+    s->connected = true;
++        if not use_backend_transfer:
++            target_vhost_socket = os.path.join(
++                socket_dir.name, "vhost-user-blk-target.sock"
++            )
++            self.start_vhost_user_server(target_vhost_socket, img_path)
++        else:
++            target_vhost_socket = vhost_socket
 +
-+    memcpy(&s->blkcfg, vdev->config, vdev->config_len);
++        self.prepare_and_launch_vm(
++            shm_path, vhost_socket, use_backend_transfer=use_backend_transfer
++        )
++        self.vm.cmd("cont")
++        self.wait_for_console_pattern("Entering emergency mode.")
++        self.wait_for_console_pattern("# ")
 +
-+    if (virtio_device_started(vdev, vdev->status)) {
-+        int ret;
-+        ret = vhost_user_blk_start(vdev, NULL);
-+        if (ret < 0) {
-+            return ret;
-+        }
-+    }
++        self.write_data(self.DATA1, self.vm)
++        self.read_data(self.DATA1, self.vm)
 +
-+    /* we're fully initialized, now we can operate, so add the handler */
-+    qemu_chr_fe_set_handlers(&s->chardev,  NULL, NULL,
-+                             vhost_user_blk_event, NULL, (void *)dev,
-+                             NULL, true);
++        target_vm = self.get_vm(name="target")
++        self.prepare_and_launch_vm(
++            shm_path,
++            target_vhost_socket,
++            incoming=True,
++            vm=target_vm,
++            use_backend_transfer=use_backend_transfer,
++        )
 +
-+    return 0;
-+}
++        target_vm.cmd("migrate-incoming", {"uri": f"unix:{migration_socket}"})
 +
-+static bool vhost_user_blk_skip_migration_log(VirtIODevice *vdev)
-+{
-+    /*
-+     * Note that hdev->migrating_backend is false at this moment,
-+     * as logging is being setup during outging migration setup stage,
-+     * which is far before vm stop.
-+     */
-+    return migrate_local_vhost_user_blk();
-+}
++        self.log.info("Starting migration")
++        self.vm.cmd("migrate", {"uri": f"unix:{migration_socket}"})
 +
- static const Property vhost_user_blk_properties[] = {
-     DEFINE_PROP_CHR_NO_CONNECT("chardev", VHostUserBlk, chardev),
-     DEFINE_PROP_UINT16("num-queues", VHostUserBlk, num_queues,
-@@ -688,6 +770,9 @@ static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
-     vdc->set_status = vhost_user_blk_set_status;
-     vdc->reset = vhost_user_blk_reset;
-     vdc->get_vhost = vhost_user_blk_get_vhost;
-+    vdc->vmsd = &vmstate_vhost_user_blk_device;
-+    vdc->post_load = vhost_user_blk_post_load,
-+    vdc->skip_vhost_migration_log = vhost_user_blk_skip_migration_log;
- }
- 
- static const TypeInfo vhost_user_blk_info = {
-diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
-index a10f785672..b06f55fd6f 100644
---- a/include/hw/virtio/vhost-user-blk.h
-+++ b/include/hw/virtio/vhost-user-blk.h
-@@ -52,6 +52,8 @@ struct VHostUserBlk {
-     bool started_vu;
- 
-     bool skip_get_vring_base_on_force_shutdown;
++        self.log.info("Waiting for migration completion")
++        wait_migration_finish(self.vm, target_vm)
 +
-+    bool incoming_backend;
- };
- 
- #endif
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 55ad822848..13ca2c319f 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -592,7 +592,8 @@ static inline int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f,
- 
- extern const VMStateDescription vmstate_backend_transfer_vhost_inflight;
- #define VMSTATE_BACKEND_TRANSFER_VHOST_INFLIGHT(_field, _state) \
--    VMSTATE_STRUCT_POINTER(_field, _state, vmstate_inflight, \
-+    VMSTATE_STRUCT_POINTER(_field, _state, \
-+                           vmstate_backend_transfer_vhost_inflight, \
-                            struct vhost_inflight)
- 
- extern const VMStateDescription vmstate_vhost_dev;
++        target_vm.cmd("cont")
++        self.vm.shutdown()
++
++        self.log.info("Verifying disk on target VM after migration")
++        self.read_data(self.DATA1, target_vm)
++        self.write_data(self.DATA2, target_vm)
++        self.read_data(self.DATA2, target_vm)
++
++        target_vm.shutdown()
++
++    def test_vhost_user_blk_fd_migration_backend_transfer(self):
++        """Test vhost-user-blk migration with backend-transfer (fd passing)"""
++        self.do_test_vhost_user_blk_fd_migration(use_backend_transfer=True)
++
++    def test_vhost_user_blk_fd_migration_regular(self):
++        """Test vhost-user-blk migration without backend-transfer"""
++        self.do_test_vhost_user_blk_fd_migration(use_backend_transfer=False)
++
++
++if __name__ == "__main__":
++    LinuxKernelTest.main()
 -- 
 2.48.1
 
