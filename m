@@ -2,87 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DADBE3595
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD49ABE3568
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:22:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9N1l-0001SJ-5s; Thu, 16 Oct 2025 08:24:20 -0400
+	id 1v9Mvn-0000Hd-Fr; Thu, 16 Oct 2025 08:18:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MzG-00065z-00
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:21:44 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mz5-0000Vv-K2
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:21:40 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-42701f2ad61so260507f8f.1
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617282; x=1761222082; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Wqu+i/9am3Ydoax6jOhAGzrHPg1Qj6gt1vx87Z+86SM=;
- b=TojfHdWAp4gY6D9wqxg5yOLK+V7ilarfeYQSlzQha7M+GS3B+S/t8vN5Ny+VdRdwlK
- 3xDpxBpV92T3qKFHvG0YnSqCmuU3CynPITwGfLSzK1qGlzLJ+Kq+B1jQ7bjfhVpY2zNi
- CxAOGPEjXmNUwt/1xscHnjv5Khx7lFY9rIriQvFiZ99P8mJRQH6Tl8TDuL9LEpnTLb32
- M2l6p6DbbLvLGKCSy9GtwdHYTTd00o5nFbeDOVWsJO1BQf2mLFD8oVgFSsOlnPUz/9YK
- gAq8tKPSjq3yX7IDFZPRvevF050svgR+JCIjElNoWk0Oq7QtEmrYkuZ3nMOZH2N7DlEo
- 18/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617282; x=1761222082;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Wqu+i/9am3Ydoax6jOhAGzrHPg1Qj6gt1vx87Z+86SM=;
- b=FMVeHU1BHWK+R0jRRNukQmMvCpHnZEQk5+w3zjzFdJEz0PAkEK03N4MR1Df9KU8BSN
- kLyPM4ElXL8IGEcqmxsW84ZsKDZjHtSfDyQhUi0lYZoQQ784jYG3/POOpbfzdO6dsFav
- WZ90ADGSpDagfc/czH4jxhqol60qky9qQCBikrm3Vfy15v8qs8W9GMMDhRFjf15LnGvR
- HX8k64tVTvP1xG1WAoq//6/OLVtpWTnDajASSJM9mDDfT1xU0tA0geGFUONZ6F22WbWX
- X4AABfRhs8+rRxC0usqRgXRc2fSfngB8F7Z4XiQkb0CZoqwdt46LiTy93Vj/6xcLip+h
- RSDA==
-X-Gm-Message-State: AOJu0YxT/kAAHFuLV/h+2ho0av8ltvUpA8tJL/Bv4yzE9cCxCCq/M6+g
- Mptn0onTaLF8ysw8Fz4JuMXD5Jq/pYf5Hgbs4+RS4q/3UlWgzF9IJ+o1jmjEEs8Yqc0/ZVXEuQe
- Q9VAeStY=
-X-Gm-Gg: ASbGncvrpLwTd3Ro53PI5C758FvABDdz/oDYyuJSIE5+NNIQE95JmBdJsR55cOMl848
- fJNO8ID7WmpHV2AriHuzP259uBQpoEoJHk6fet16tDNYJRLrNJAsyodBDgc1hOeMIET5lSMww9u
- /a7D1OBNPcBDIdeHgxxXoaIplB39q+HGBrEAV7DRofkR/iFOjCdgSggN3PP8i4irf6l1CQx/Vm9
- EOxO3v94o+6SRYn9IBT0eCYZSrIi4l/QakKx1Yv9XtHLLolHndayOfUZHzCy9f/Q9ALjBc3ktai
- mTS/yWrwshuxJ/ZrEKCd4EeInQyGGmnzRa52LGp5GHI0p2+FzoZfX3gNvD2F8W3jKeyeHFy7ahF
- g1Qf3+gBYTECo4jtTlILJWhjLmYQu2p5+E8xyqItcolIhWWqVf8OaDkNIBLfTRzv1M1Q4/PEu03
- QBt0b9mxzL1ZrM8uhS9kSe74CZLxMtKyvre5xgPUlXSmNyXTIyuMC4qw==
-X-Google-Smtp-Source: AGHT+IHglHr7eTT77ykxWZI4m6CDKBp6kJM0f7ogpXAhd1pm06H+BB9LIg93nbjlhElmcqwS/OVuZQ==
-X-Received: by 2002:a05:6000:310b:b0:425:7f10:d477 with SMTP id
- ffacd0b85a97d-42666ac2dcamr17361511f8f.2.1760617282149; 
- Thu, 16 Oct 2025 05:21:22 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426d0d9050bsm32554307f8f.13.2025.10.16.05.21.21
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:21:21 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 75/75] =?UTF-8?q?mailmap:=20Unify=20Cl=C3=A9ment=20Mathieu-?=
- =?UTF-8?q?-Drif=20emails?=
-Date: Thu, 16 Oct 2025 14:15:31 +0200
-Message-ID: <20251016121532.14042-76-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
-References: <20251016121532.14042-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1v9MvM-0007iu-NP; Thu, 16 Oct 2025 08:17:43 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1v9MvB-0008KY-3S; Thu, 16 Oct 2025 08:17:40 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GA5mA5010062;
+ Thu, 16 Oct 2025 12:17:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=rUN2mvAaJkf3gS7qa2pWkRryVzJSaGT5UZwAai4yB
+ N0=; b=den0ZHatUcJf892y8yjFAF9F+OMTZHx1NDDr4j1EN/oVxrrm4drvXu5+d
+ 5QieeZZCTyZxMYW08xI12sdMWJAcXRZp3pkq+SVr/eBRIFFoygwkxzJloqHRFyKa
+ wAQQz98ODLjPdHVUtHIGjIgrFJ3Z9LY5Q37wYyiWHuWMHjCD+ctkPpmelvlnIQ4c
+ 2ej8pBSL+nLoHU+36m7v3DmrqE1G/g6O0o8Fj5ojNPeHkD2bHRPoUzREQDxv+bQw
+ qzuraPAUk8t9KBQekFB/Rly4BEizHBPrZjLb7kZoMtUusJ3EKsmKM+7VvnREZQDo
+ f1L22XVnmExG+BrcJ9JYXpnE9OKSw==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qewuajmj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Oct 2025 12:17:23 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59G9xaL2003663;
+ Thu, 16 Oct 2025 12:17:22 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy5q8k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Oct 2025 12:17:21 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59GCHIU037814738
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Oct 2025 12:17:18 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 254592013C;
+ Thu, 16 Oct 2025 12:17:18 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00C262013B;
+ Thu, 16 Oct 2025 12:17:18 +0000 (GMT)
+Received: from a46lp68.lnxne.boe (unknown [9.152.108.100])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 16 Oct 2025 12:17:17 +0000 (GMT)
+From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+To: qemu-s390x mailing list <qemu-s390x@nongnu.org>,
+ Thomas Huth <thuth@redhat.com>
+Cc: Sebastian Mitterle <smitterl@redhat.com>,
+ qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>,
+ Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
+ Michael Mueller <mimu@linux.ibm.com>
+Subject: [PATCH v3 1/2] qapi/machine-s390x: add QAPI event
+ SCLP_CPI_INFO_AVAILABLE
+Date: Thu, 16 Oct 2025 14:17:07 +0200
+Message-ID: <20251016121708.334133-1-shalini@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dTmeVqB-l8qk-7FQoDZe08YFb73_aGZ3
+X-Authority-Analysis: v=2.4 cv=Kr1AGGWN c=1 sm=1 tr=0 ts=68f0e253 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
+ a=sj1EmmPjCSn9LTcTfd8A:9
+X-Proofpoint-ORIG-GUID: dTmeVqB-l8qk-7FQoDZe08YFb73_aGZ3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX8ujHR2DCHmXh
+ GGEJtblt1MFIDf1gTK0fLFdyMXJ9ShJgor7G4Qe+yCdaLk7qIZuTVn2oIW9QY5O81BZ0IDXom3s
+ BXf3gpz2yJXQsLwN8FAfvSI/DxXuwtZX37QTrsKOR4abTNd1pOSQPOK4WlIupbkzIZZaPFYmPEH
+ wiJfrRDq/V/9ER+4CKXyaNMPdhcnW0NkqXOhbcIU4/ux7OEIQOv4i3BcV5aK0EQENl45/10sNP4
+ DNBlV4b9Opzt7tNFOr/YUscyDgjv2fVoEVDRTlqs37DdqYtEVDf0qeGz9VQtGMGhQrUq8uqtk5Q
+ x4VDt4cFLTqMRRY9+tksPxtsBVkxREVnBGBorzoHeCYGVwTdGR9G4mv7AfMmYwlCvX7KKNpVKvP
+ 2qGpckjmJVBGLdUadvP5bk4XeEhHUw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
+ phishscore=0 suspectscore=0 malwarescore=0 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=shalini@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,34 +118,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not let git-shortlog make distinction between:
+Add QAPI event SCLP_CPI_INFO_AVAILABLE to notify the availability
+of Control-Program Identification data in QOM.
 
- . Clément Mathieu--Drif
- . Clement Mathieu--Drif
- . CLEMENT MATHIEU--DRIF
-
-as this is the same person.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20251009070512.8736-3-philmd@linaro.org>
+Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+Suggested-by: Thomas Huth <thuth@redhat.com>
 ---
- .mailmap | 1 +
- 1 file changed, 1 insertion(+)
+ hw/s390x/sclpcpi.c      |  4 ++++
+ qapi/machine-s390x.json | 21 +++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/.mailmap b/.mailmap
-index e7271852dc6..15bec72470e 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -136,6 +136,7 @@ Chen Gang <gang.chen.5i5j@gmail.com>
- Chen Gang <gang.chen@sunrus.com.cn>
- Chen Wei-Ren <chenwj@iis.sinica.edu.tw>
- Christophe Lyon <christophe.lyon@st.com>
-+Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
- Collin L. Walling <walling@linux.ibm.com>
- Daniel P. Berrangé <berrange@redhat.com>
- Eduardo Otubo <otubo@redhat.com>
+diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
+index 7aa039d510..68fc1b809b 100644
+--- a/hw/s390x/sclpcpi.c
++++ b/hw/s390x/sclpcpi.c
+@@ -54,6 +54,7 @@
+ #include "hw/s390x/event-facility.h"
+ #include "hw/s390x/ebcdic.h"
+ #include "qapi/qapi-visit-machine.h"
++#include "qapi/qapi-events-machine-s390x.h"
+ #include "migration/vmstate.h"
+ 
+ typedef struct Data {
+@@ -106,6 +107,9 @@ static int write_event_data(SCLPEvent *event, EventBufferHeader *evt_buf_hdr)
+     e->timestamp = qemu_clock_get_ns(QEMU_CLOCK_HOST);
+ 
+     cpim->ebh.flags = SCLP_EVENT_BUFFER_ACCEPTED;
++
++    qapi_event_send_sclp_cpi_info_available();
++
+     return SCLP_RC_NORMAL_COMPLETION;
+ }
+ 
+diff --git a/qapi/machine-s390x.json b/qapi/machine-s390x.json
+index 966dbd61d2..8412668b67 100644
+--- a/qapi/machine-s390x.json
++++ b/qapi/machine-s390x.json
+@@ -119,3 +119,24 @@
+ { 'command': 'query-s390x-cpu-polarization', 'returns': 'CpuPolarizationInfo',
+   'features': [ 'unstable' ]
+ }
++
++##
++# @SCLP_CPI_INFO_AVAILABLE:
++#
++# Emitted when the Control-Program Identification data is available
++# in the QOM tree.
++#
++# Features:
++#
++# @unstable: This event is experimental.
++#
++# Since: 10.2
++#
++# .. qmp-example::
++#
++#     <- { "event": "SCLP_CPI_INFO_AVAILABLE",
++#          "timestamp": { "seconds": 1401385907, "microseconds": 422329 } }
++##
++{ 'event': 'SCLP_CPI_INFO_AVAILABLE',
++  'features': [ 'unstable' ]
++}
 -- 
-2.51.0
+2.49.0
 
 
