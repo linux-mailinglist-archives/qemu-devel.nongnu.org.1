@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59C3BE366E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 531F6BE35D1
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9My8-0004Vq-44; Thu, 16 Oct 2025 08:20:34 -0400
+	id 1v9Mzd-0006VM-Du; Thu, 16 Oct 2025 08:22:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MxX-0004CS-RC
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:19:56 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mxd-0004S2-U3
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:20:06 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MxP-00007c-Gm
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:19:55 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-46e5980471eso5597995e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:19:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MxT-00007v-Ta
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:20:01 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-46e6a689bd0so6404665e9.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:19:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617181; x=1761221981; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760617185; x=1761221985; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tFemSrV+yXNTrcdNlowTIb2z00rqADa2FjVBPDuDWzE=;
- b=DcTm+FOD2k2UofjKKwFqRtFTXbBzemW60czEpXiHxjw/gGbaqovL408gHo2GhdjdDX
- 5JQrPlDkfcwZ0xh6xXMj8fJWTsBVZkWXzFOnYKBL0M3yRrbPHgQMQQHgNmPXH343Z+Iu
- QXhvfNrPFrbgQjsTXn82xt4I26SVBfjZLV6l1nW199ClxnDyro5x3pz2LA9iZa2e8DTm
- pPcsLrbGf5G8lsoTvh4lMYwLXJtPJw2AHFEiCU2Enuee7TER4oLiIcoxiCY8MGtSKGTe
- tEm4EOtkTAUquDLTYDypLZMBWNeC/QBDehpeXTYN1K//8/cntM83tNdVQsgtNGoQLNNK
- /TlA==
+ :reply-to; bh=pC9RqIYu/OpuJxSwTbOA7/FjgnXnjZkCPpqL03xQwls=;
+ b=cgujehRL3kVrOPFBaQJIYMo9/OPdMBuo4nFB71YifidlAJ5avBmivOj01W1N02d8JH
+ sMFn9PfxIn4/Ei3DPHQoXGa+FmNoRW2AlwZDi6bJq99dw/MsMRrNA6ShF8M9cOLkRkys
+ OUWT4xZymogg7QQzRAnlHqzxrJBHv9D9IVmQR6Nzolb3ZsNx/es7ou1imJb3Gz5oG80X
+ 7bfRd65ne0WMX72E2fPvbaSKwXMj834ZAS73SyzIPBwr0l+W8x0N3CdhuOxMozewNGbd
+ gD3AMl98Vup4gxPwh3zTdS9wVwGSKIwUKJ9yRMB0sIWV4/J8TzVZGyy9z0AZ1aAj/YNp
+ zQlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617181; x=1761221981;
+ d=1e100.net; s=20230601; t=1760617185; x=1761221985;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tFemSrV+yXNTrcdNlowTIb2z00rqADa2FjVBPDuDWzE=;
- b=L63J8AJ9RgpU6QslIV2si1pnkBdGXiASXu5hixlRQplXy0jtHRCkrjfz/yZt6jtGhH
- aH6l49bXgyohs663JO1wtn6chVmcnjZr8Mx9itUBJbSPfvk0LPmravefaulTxAT5Rhql
- cHEZr7xobpZgj7x9dsf1BPi0nVh5e+PP+MJErk6W6kK0h9NNffPNGFCh9USIySBOiu1v
- aiuKStI4xJsHlhWgvboecIJhkjOBRjrXmJgdWSzZeHcvuNlLFnCnwA3usObZUxtlObsW
- fOXmmTB3Yg3+fSS/MRFiTJJ0sj8fCxaWAbbdnwwgMFUN3AVa7KWTPhKxN+uMCkYia7Kg
- JVeQ==
-X-Gm-Message-State: AOJu0Yxq8DQWzeceAPDR5Y97qAOpwH045uwxJzrlhS/mvrBlKjWyxgxp
- UFctg4F2mDIljHoG5OjTDOpp4JeWPQxRTmQHJOa3KouD97pAL3btWExvo3kT+7c1SRTariIFSE0
- KcDd2+NA=
-X-Gm-Gg: ASbGnctqJtnQciwkOa5dtA99wQTSvH+VYh80XeGeRiUzleDvJQKYOyE6DqHNxblID4R
- rjP/9gQR62ru2I0anVRQGAOxx+4zRl6sNcK1Y8PsSDHgk7u3RZMkB0tDGbP2X/ChQWFUBQYMJaf
- yQc1XCJJt2kL7YED85/IZPxrdFERr8i7mH3xhzKyEfMp/84zjcj/xacg3wTKwzfnP3C0JRUxwnP
- CIbS70TkMBlKl6hpF3KJ4PCtKwsKaW4NtqAPsHwXACyfoMxCr+mqQbBL2XWOs8c15TTfPcIjzt5
- D4pGxNz7/a7RWVrO510lPgQWhXbX/6ewDlGQdjDmy0C18t4geDVDsL06FmLNi4wLE5yVO63NkUR
- NU+Nz5XGPl9U+VieA7Am4I2wjyZeH6byEBRocALKcHezeuinWNmwa4HKAC7cv4V58ArBG95IP9v
- K7+IXHMDYSyzcoOkxHCGG0DO5i3l73WIOhyE9jqkukPN1mKrJ5BozciA==
-X-Google-Smtp-Source: AGHT+IFhSRBfRkbcS645BVjvJglyH0AgUcW68CzVW5vC7+nP5gRKETdnSUKyAc+5NHHFI7mjaSpusw==
-X-Received: by 2002:a05:600c:450d:b0:470:bcc4:b0a0 with SMTP id
- 5b1f17b1804b1-470bcc4b26amr88325985e9.34.1760617180825; 
- Thu, 16 Oct 2025 05:19:40 -0700 (PDT)
+ bh=pC9RqIYu/OpuJxSwTbOA7/FjgnXnjZkCPpqL03xQwls=;
+ b=dbFLTmweoeNfYYFZf4l7g1KYcJ5Aw9CbhhxLmgwKXPQcxN+q6V/GTEPbufE3HGJ3IM
+ coqDpBjzIH80AB2hW51AIQoU5zNZJ2b1Z7geIjzqAZVq/cQwX/0fhlcPlBCe7sFLInu6
+ L7vAVesmozGiQ8pQRVHhsHnYlVGl/M2fv0dcKNykgQ+rsng1LNeIqYUCcr5z1dPw/x7j
+ Jidd8AKMEjYW1NzSPQ6/JqRnAVOGofdSC7RgKXi/BjdpCdDym041+E9v/a3RBpj+NaMm
+ nwZAMkqrmw+wN/SmCjU3cCwZajrzHtpfNN58SGQWNmVhbJ2xbKeD04UHKX8mBFaUe9BX
+ WQ/A==
+X-Gm-Message-State: AOJu0Ywjuqn0+xJtjzlS5x18qKtvj16xnfTdg7nUaZoovaG7V0PfNphj
+ ZPSAtq53SQ/9KrVSsu9YfTXn/HKbN4A2e3zYmOHsHrhCSFUXJaguJkOCJs7pe8RdwuknLd380Gp
+ 5k6zVnTA=
+X-Gm-Gg: ASbGncs+mkGk59oRrM+1urWAC6aNS3PszqypoGT3BqDDTkJ7j+eoDyzMLRcHa+Ls5M7
+ 81+C2ceNJcrUwI/rgh2zd6Wcacr4yNHmLTWQ7d865feDajE2QZIJp21u8bxnw+Bk72z8dfnbvig
+ CASQsU4Q3KQJ1Xoh9VsEcwvQc90OSaZk5O+zSCWRj1hACRZ9mQ70kCcLjl4NrWdb8Kjx5oKvsGo
+ f3gtTe/KKZuaHZc5wtld3iaSl47dxddHvhgwCq2zEgY46lRTc3X4j4RmcLh+wR4z3+roEyVXWOY
+ ndl2e/XGFRDNDumBplASlkihZK556l7vChcw+47JCHm2d4ukEf0kdrLJjZdbxE9Oenfcm1vFOHP
+ jMWirzbf1iBiZPS+zHiUoOm0HyYreu0WO16aqKe6zGqDully7zZ+4KWBQLLoylcnzIp8ZaV9wMw
+ ubPDPStN73HAELjZb1eUXfSTg54C6UiXVdz4aOw5fksMfWXO8b+6zBARVIYZNP183o
+X-Google-Smtp-Source: AGHT+IG+SUGKjFFVRkk32Pqa//KFWYhWPwwqDAyXYeclhBPEv7Wwsea60LTb9WQZ76u6X4VldmywlA==
+X-Received: by 2002:a05:6000:1a8b:b0:410:3a4f:1298 with SMTP id
+ ffacd0b85a97d-42667177dd6mr23614321f8f.15.1760617185340; 
+ Thu, 16 Oct 2025 05:19:45 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710ca243a3sm20282155e9.0.2025.10.16.05.19.40
+ ffacd0b85a97d-426ce5e10e8sm34477746f8f.39.2025.10.16.05.19.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:19:40 -0700 (PDT)
+ Thu, 16 Oct 2025 05:19:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 53/75] target/sh4: Remove target_ulong use in
- cpu_sh4_is_cached()
-Date: Thu, 16 Oct 2025 14:15:09 +0200
-Message-ID: <20251016121532.14042-54-philmd@linaro.org>
+Subject: [PULL 54/75] target/sh4: Use hwaddr type for hardware addresses
+Date: Thu, 16 Oct 2025 14:15:10 +0200
+Message-ID: <20251016121532.14042-55-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 852d481faf7 ("SH: Improve movca.l/ocbi emulation")
-helper_movcal() pass a uint32_t type to cpu_sh4_is_cached().
+The CPUClass::get_phys_page_debug() handler returns a 'hwaddr' type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20251008064814.90520-3-philmd@linaro.org>
+Message-Id: <20251008064814.90520-4-philmd@linaro.org>
 ---
- target/sh4/cpu.h    | 2 +-
- target/sh4/helper.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/sh4/helper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
-index db27a693f12..b0759010c47 100644
---- a/target/sh4/cpu.h
-+++ b/target/sh4/cpu.h
-@@ -277,7 +277,7 @@ void cpu_sh4_write_mmaped_utlb_data(CPUSH4State *s, hwaddr addr,
-                                     uint32_t mem_value);
- #endif
- 
--int cpu_sh4_is_cached(CPUSH4State * env, target_ulong addr);
-+int cpu_sh4_is_cached(CPUSH4State *env, uint32_t addr);
- 
- void cpu_load_tlb(CPUSH4State * env);
- 
 diff --git a/target/sh4/helper.c b/target/sh4/helper.c
-index 1744ef0e6d8..4f1e2072296 100644
+index 4f1e2072296..55ab1dc9947 100644
 --- a/target/sh4/helper.c
 +++ b/target/sh4/helper.c
-@@ -47,7 +47,7 @@
- 
- #if defined(CONFIG_USER_ONLY)
- 
--int cpu_sh4_is_cached(CPUSH4State *env, target_ulong addr)
-+int cpu_sh4_is_cached(CPUSH4State *env, uint32_t addr)
+@@ -325,7 +325,7 @@ static int find_utlb_entry(CPUSH4State * env, target_ulong address, int use_asid
+    MMU_ITLB_MULTIPLE, MMU_ITLB_VIOLATION,
+    MMU_IADDR_ERROR, MMU_DADDR_ERROR_READ, MMU_DADDR_ERROR_WRITE.
+ */
+-static int get_mmu_address(CPUSH4State * env, target_ulong * physical,
++static int get_mmu_address(CPUSH4State *env, hwaddr *physical,
+                            int *prot, target_ulong address,
+                            MMUAccessType access_type)
  {
-     /* For user mode, only U0 area is cacheable. */
-     return !(addr & 0x80000000);
-@@ -735,7 +735,7 @@ void cpu_sh4_write_mmaped_utlb_data(CPUSH4State *s, hwaddr addr,
-     }
+@@ -392,7 +392,7 @@ static int get_mmu_address(CPUSH4State * env, target_ulong * physical,
+     return n;
  }
  
--int cpu_sh4_is_cached(CPUSH4State * env, target_ulong addr)
-+int cpu_sh4_is_cached(CPUSH4State *env, uint32_t addr)
+-static int get_physical_address(CPUSH4State * env, target_ulong * physical,
++static int get_physical_address(CPUSH4State *env, hwaddr* physical,
+                                 int *prot, target_ulong address,
+                                 MMUAccessType access_type)
  {
-     int n;
-     int use_asid = !(env->mmucr & MMUCR_SV) || !(env->sr & (1u << SR_MD));
+@@ -433,7 +433,7 @@ static int get_physical_address(CPUSH4State * env, target_ulong * physical,
+ 
+ hwaddr superh_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+ {
+-    target_ulong physical;
++    hwaddr physical;
+     int prot;
+ 
+     if (get_physical_address(cpu_env(cs), &physical, &prot, addr, MMU_DATA_LOAD)
+@@ -800,7 +800,7 @@ bool superh_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     CPUSH4State *env = cpu_env(cs);
+     int ret;
+ 
+-    target_ulong physical;
++    hwaddr physical;
+     int prot;
+ 
+     ret = get_physical_address(env, &physical, &prot, address, access_type);
 -- 
 2.51.0
 
