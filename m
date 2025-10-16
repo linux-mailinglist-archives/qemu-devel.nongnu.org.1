@@ -2,102 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471E1BE491D
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 18:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834B9BE493E
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 18:28:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Qnu-0002iC-9k; Thu, 16 Oct 2025 12:26:14 -0400
+	id 1v9QoL-00030P-Td; Thu, 16 Oct 2025 12:26:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v9Qnr-0002hr-Uv
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 12:26:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v9QoE-0002xo-H5
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 12:26:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v9Qnj-0004ta-UQ
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 12:26:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v9Qo0-0004y1-J7
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 12:26:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760631959;
+ s=mimecast20190719; t=1760631977;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oaLW06Ajkd07Au4v3PLf8Z3HIbhqhcVbtvcxvqYcnSI=;
- b=H9rdy4N8aJBciHL9udgMHSzZGngJCUSAcHaRl2vmMRPw7ySI265JenBmVWajwV/0tv51ng
- /Qq7iZzkbxdxzXA/ie29E05ij7kVCIcMBI3FxqlA43VU+OBzRSyId3EQu9vg4T+FLbNEqp
- yG99VF7s5QnM4EfKDi12BTfwLEzd1RA=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-fw7aqWb6P_6ay6_OCXPmqA-1; Thu, 16 Oct 2025 12:25:58 -0400
-X-MC-Unique: fw7aqWb6P_6ay6_OCXPmqA-1
-X-Mimecast-MFC-AGG-ID: fw7aqWb6P_6ay6_OCXPmqA_1760631958
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-8635d47553dso275712585a.0
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 09:25:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760631958; x=1761236758;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oaLW06Ajkd07Au4v3PLf8Z3HIbhqhcVbtvcxvqYcnSI=;
- b=LzMJN1bEIL1vqrgWFh6a+VzTOtR6qgKYgZ5QVcyO+4r1EOS7SOUq9skD/L45OBiI0z
- 30+c8aCmjL+QfnIYeaA0dXQdMiBIK2Qw1gpN3lX89vUThSRQYzKW+BiPVfg43EGAxmXl
- oufIBb0iD3Z5mQ0NAbvoKxTx6TpXnP8UjUyk7dLsU1vXBiM0MnfbGGn8AYne+WhLP7bt
- 8q4wBc3Ve/612d0hYLyXcDOjXw16vTSgbRVpgycWIzgvT83qwlZHO9OWingxIoSwnrmi
- yrE6bYTB1BKJIGOKSI+xHJS0mSxXch0tXBOPfyGcF8wBj0hpWIeisA6l/zb/pnWqIRJk
- re0Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVFkPb6SUcnpjXGTT9M2RVVc/RyyJmJO1KwZNAgTCX+J26cSxq2RxeksOLVyfpAoJ+JP5SCqwKAC9A9@nongnu.org
-X-Gm-Message-State: AOJu0Yw2gba4gXKCBkpmcaydVeDZ/vN+WQy+743fG6d4DIpIs+6h6F0d
- p7urEiF+1ucZ5f1CJTZZMfMxLbooA5YJ0bqZdyrFXx/TRI4INw8aJVH06SwUMuIaxtKDbUM1i6U
- QfiPOvXdKN0xk+S6v/M1aatti96048pV/2TQ4TgVWxUxd5nDHnpp1jwcq
-X-Gm-Gg: ASbGncuYj6bulFq11hdZMDxKY2HsJxqzHvpALwHohubpFdrX8ppCxyNIrvoh3lNP1k2
- nVY/Iw4HDUvyLzX3mmArMIR6xe8UgadAc5XEf8ZZSCFHViBNuS3ewI38r1ZNOfOj0lGaY3laVlE
- NDeqQHEgLtZxTIZjQYPQuXJT93V42dpKc3L0zUKkZ6wJAPZ2RFC3FsHvkU4+l2vpJGqY6HVOkc6
- maoWBLYsW54FpDX4L77Kd3zMu0CelkG86isHkOVnaQE3Clg+tTlYGcHlsGMl9lWZEmAiaKchZom
- kxUQVtgiIHiDwxQdxQ7HPLWeoUs/SwNGowNY1ZwYoPL0/PG56UkN4HGEIySBYczt+bw=
-X-Received: by 2002:a05:620a:46a8:b0:849:a60:79a5 with SMTP id
- af79cd13be357-8906e2ce12cmr66137685a.18.1760631957418; 
- Thu, 16 Oct 2025 09:25:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE37LrzU+zg7574tMeES8ly16GbvO2+jZTK+B5MQo3RdrrdldIsU6QDvn1A8h0xn5LcQJTlnw==
-X-Received: by 2002:a05:620a:46a8:b0:849:a60:79a5 with SMTP id
- af79cd13be357-8906e2ce12cmr66133285a.18.1760631956933; 
- Thu, 16 Oct 2025 09:25:56 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-88f38bf42dasm221576285a.63.2025.10.16.09.25.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Oct 2025 09:25:56 -0700 (PDT)
-Date: Thu, 16 Oct 2025 12:25:53 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: mst@redhat.com, jasowang@redhat.com, farosas@suse.de, sw@weilnetz.de,
- eblake@redhat.com, armbru@redhat.com, thuth@redhat.com,
- philmd@linaro.org, berrange@redhat.com, qemu-devel@nongnu.org,
- michael.roth@amd.com, steven.sistare@oracle.com, leiyang@redhat.com,
- davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
- raphael.s.norwitz@gmail.com
-Subject: Re: [PATCH v7 16/19] qapi: add interface for backend-transfer
- virtio-net/tap migration
-Message-ID: <aPEckcsXUEjfDk2z@x1.local>
-References: <20251010173957.166759-1-vsementsov@yandex-team.ru>
- <20251010173957.166759-17-vsementsov@yandex-team.ru>
- <aO57SKp86zX2R8mV@x1.local>
- <6da192b9-7609-4cc8-82a9-1a445ecb10c9@yandex-team.ru>
- <aO6xqt5_1PDBwOwu@x1.local>
- <9a9ced95-583e-4c1e-84f0-af12a5800193@yandex-team.ru>
- <aO_nfsgM2CWEjyeQ@x1.local>
- <981b9636-0a7a-4334-b222-7621971e6b2c@yandex-team.ru>
+ bh=2XD3fRy146lvHkdMfcroWD93I7TLX17VPZMyGWYUsu4=;
+ b=U2mwobrUZlqInERupovoHSjG5pyhghtzOrgSRfZB5zrOXV7UviteB307Br294o0NLgzax2
+ EYTuZyfv8bpRYejRf/XkTW8UJDz9xUlawj7aqj6dah2qzWMDJEaWKBLGv52pjoQ3VOSLPF
+ fEH1goXEFm0cF1KLNjY8o53IH8qlAKc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-d7VuBpV8OxGnMAyt0yoV1A-1; Thu,
+ 16 Oct 2025 12:26:14 -0400
+X-MC-Unique: d7VuBpV8OxGnMAyt0yoV1A-1
+X-Mimecast-MFC-AGG-ID: d7VuBpV8OxGnMAyt0yoV1A_1760631973
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8030F195422B; Thu, 16 Oct 2025 16:26:13 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.163])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 954D1195419F; Thu, 16 Oct 2025 16:26:11 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Yonggang Luo <luoyonggang@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 03/10] gitlab: purge msys pacman cache
+Date: Thu, 16 Oct 2025 18:25:54 +0200
+Message-ID: <20251016162601.442557-4-thuth@redhat.com>
+In-Reply-To: <20251016162601.442557-1-thuth@redhat.com>
+References: <20251016162601.442557-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <981b9636-0a7a-4334-b222-7621971e6b2c@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -116,52 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 15, 2025 at 11:17:27PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> Off topic:
-> 
-> Didn't you think about moving to some context-free protocol for migration
-> stream? Current protocol is hardly bound to migration states definitions
-> in the code. This, for example, makes writing an external tool to analyze the
-> stream almost impossible. As well, any misconfiguration leads to strange
-> error, when we treat data wrongly on the target.
-> 
-> I imagine.. json? Or something like this.. So that we can always understand
-> the structure of incoming object, even if we don't know, what exactly we
-> are going to get. This also simplifies expanding the state in new verions:
-> we just add a new field into migratable object, and can handle absent field
-> in incoming stream.
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Have you looked at the current encoded JSON dump within the migration
-stream?  See should_send_vmdesc().
+For the Windows msys2 CI job we install many packages using pacman
+and use the GitLab cache to preserve the pacman cache across CI
+runs. While metadata still needs downloading, this avoids pacman
+re-downloading packages from msys2 if they have not changed.
 
-That looks like what you're describing, but definitely different in that it
-should only be used for debugging purposes e.g. when a stream is dumped
-into a file.  The JSON should only only appear also on precopy as of now.
+The problem is that pacman never automatically purges anything
+from its package cache. Thus the GitLab cache is growing without
+bound and packing/unpacking the cache is consuming an increasing
+amount of time in the CI job.
 
-We might try to move it _before_ the real binary stream, or making the
-stream itself to be JSON, but there'll be tricky things we need to think
-about.
+If we run 'pacman -Sc' /after/ installing our desired package set,
+it will purge any cached downloaded packages that are not matching
+any installed package.
 
-At least it should be problematic when we want to dump it before the binary
-stream, because there can be VMSD fields or subsections that has a test()
-function that will only conditionally appear depending on any possible
-conditions (e.g. device register states).  If we try to dump it before
-hand, it may mean after device registers changed and when we stop VM and
-dump the real binary stream the test() fn may return something different,
-starting to mismatch with the JSON description.
+This will (currently) cap the pacman download cache at approx
+256 MB.
 
-Dump the whole thing completely with JSON format is indeed another approach
-that I am not aware of anyone hought further.  I believe some of us
-(including myself) pictured how it could look like, but I am not aware
-anyone went deeper than that.  Maybe it's because the current methods work
-not as good but okay so that no one yet decided to think it all through.
-In short, for simple machine types, they use VMSD versioning hence backward
-migration is not supported.  For enterprise use, machine type properties
-are used and there aren't a huge lot so maybe not as bothering.
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Yonggang Luo <luoyonggang@gmail.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20251010160545.144760-1-berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ .gitlab-ci.d/windows.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 1e6a01bd9ac..6e1135d8b86 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -87,6 +87,7 @@ msys2-64bit:
+       mingw-w64-x86_64-pkgconf
+       mingw-w64-x86_64-python
+       mingw-w64-x86_64-zstd"
++  - .\msys64\usr\bin\bash -lc "pacman -Sc --noconfirm"
+   - Write-Output "Running build at $(Get-Date -Format u)"
+   - $env:JOBS = $(.\msys64\usr\bin\bash -lc nproc)
+   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
 -- 
-Peter Xu
+2.51.0
 
 
