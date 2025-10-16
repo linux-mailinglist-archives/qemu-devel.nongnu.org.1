@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95B4BE327B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22ACEBE324C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:46:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNW-0007O3-PO; Thu, 16 Oct 2025 07:42:42 -0400
+	id 1v9MNU-0007Fn-Lr; Thu, 16 Oct 2025 07:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMm-00077W-5Q; Thu, 16 Oct 2025 07:41:57 -0400
+ id 1v9MMp-00078K-9N; Thu, 16 Oct 2025 07:41:59 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMa-0003V1-UX; Thu, 16 Oct 2025 07:41:52 -0400
+ id 1v9MMa-0003V0-RV; Thu, 16 Oct 2025 07:41:54 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A45E8C01C0;
- Thu, 16 Oct 2025 14:41:31 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 543BEC01CB;
+ Thu, 16 Oct 2025 14:41:32 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-kbTFYAzO; Thu, 16 Oct 2025 14:41:31 +0300
+ ESMTPSA id LfP2M73FEmI0-cwh9id8l; Thu, 16 Oct 2025 14:41:31 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1760614891;
- bh=s9yCrQBHmEqUJP+BAtrGs9xnsIszRjeHBLrqv/k9/kY=;
+ bh=SF+Ue84XhT+g2RO+Jl8Tk8MZ2adI/UHd1mhcu8QJuxs=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=nGMFivfrKNwEYIg4qwdqbFWpAbeT2qjkF2VfBM6/5cHP4iADYxGoBuyFaeYKhyjCE
- nTuClrPtD2w8Gm2KvZ4UojN8fA31c+j9bTunxgzi2ta2nXtoE9VELDvlS43fuq4mq2
- aKRDhC38KQ64KEkYt2XCUupg+hX9++fFFxuTvOhs=
+ b=Q0FyYiPede9zuXeL3XOfmFfI1nsupeMyRbH+AoYJ+K9lzRlMaf5x+2m7P2Ks14pnV
+ 0xP8ZM1JYLcUs7GBpF34ir9uQiGhXQ2eY7gasFzKNhpr5RmZtVVC8yIL5cSKFW6Ol4
+ OG3a89Rs7DcC5nxGfsbmyCIB6SdIwT6QaovbXt5M=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,9 +46,10 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 10/25] vhost-user-blk: split vhost_user_blk_init()
-Date: Thu, 16 Oct 2025 14:40:47 +0300
-Message-ID: <20251016114104.1384675-11-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 11/25] vhost-user-blk: move initial reconnect loop to
+ separate function
+Date: Thu, 16 Oct 2025 14:40:48 +0300
+Message-ID: <20251016114104.1384675-12-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -61,8 +62,8 @@ X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,66 +78,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split it into _init() and _connect() part, following pattern of
-vhost_dev_init / vhost_dev_connect.
+Simplify _realize function, and prepare to further changes.
+
+While being here, also rename virtio_err: label to more generic
+fail:, virtio_err doesn't improve readability here.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/block/vhost-user-blk.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ hw/block/vhost-user-blk.c | 54 +++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
 diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index c31c265a0e..9c727c3977 100644
+index 9c727c3977..36e32229ad 100644
 --- a/hw/block/vhost-user-blk.c
 +++ b/hw/block/vhost-user-blk.c
-@@ -58,6 +58,7 @@ static const int user_feature_bits[] = {
- };
+@@ -489,14 +489,40 @@ static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
+     return 0;
+ }
  
- static void vhost_user_blk_event(void *opaque, QEMUChrEvent event);
-+static int vhost_user_blk_connect(DeviceState *dev, Error **errp);
- 
- static void vhost_user_blk_update_config(VirtIODevice *vdev, uint8_t *config)
+-static void vhost_user_blk_device_realize(DeviceState *dev, Error **errp)
++static int vhost_user_blk_realize_connect_loop(VHostUserBlk *s, Error **errp)
  {
-@@ -352,9 +353,6 @@ static int vhost_user_blk_init(DeviceState *dev, bool connect, Error **errp)
- 
-     trace_vhost_user_blk_init_in(vdev);
- 
--    /* TODO: implement support for connect=false */
--    assert(connect);
--
-     assert(!s->connected);
- 
-     s->dev.num_queues = s->num_queues;
-@@ -371,6 +369,29 @@ static int vhost_user_blk_init(DeviceState *dev, bool connect, Error **errp)
-         return ret;
-     }
- 
-+    if (connect) {
-+        ret = vhost_user_blk_connect(dev, errp);
-+        if (ret < 0) {
-+            return ret;
+     ERRP_GUARD();
++    DeviceState *dev = DEVICE(s);
++    int ret, retries = VU_REALIZE_CONN_RETRIES;
++
++    assert(!*errp);
++    do {
++        if (*errp) {
++            error_prepend(errp, "Reconnecting after error: ");
++            error_report_err(*errp);
++            *errp = NULL;
 +        }
++        ret = vhost_user_blk_realize_connect(s, errp);
++    } while (ret < 0 && retries--);
++
++    if (ret < 0) {
++        return ret;
 +    }
 +
-+    trace_vhost_user_blk_init_out(vdev);
++    /* we're fully initialized, now we can operate, so add the handler */
++    qemu_chr_fe_set_handlers(&s->chardev,  NULL, NULL,
++                             vhost_user_blk_event, NULL, (void *)dev,
++                             NULL, true);
 +
 +    return 0;
 +}
 +
-+static int vhost_user_blk_connect(DeviceState *dev,
-+                                  Error **errp)
++static void vhost_user_blk_device_realize(DeviceState *dev, Error **errp)
 +{
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserBlk *s = VHOST_USER_BLK(vdev);
-+    int ret = 0;
-+
-+    trace_vhost_user_blk_connect_in(vdev);
-+
-+    assert(!s->connected);
-+
-     ret = vhost_dev_connect(&s->dev, errp);
-     if (ret < 0) {
-         return ret;
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VHostUserBlk *s = VHOST_USER_BLK(vdev);
+     size_t config_size;
+-    int retries;
+-    int i, ret;
++    int i;
+ 
+     trace_vhost_user_blk_device_realize_in(vdev);
+ 
+@@ -540,31 +566,15 @@ static void vhost_user_blk_device_realize(DeviceState *dev, Error **errp)
+     s->inflight = g_new0(struct vhost_inflight, 1);
+     s->vhost_vqs = g_new0(struct vhost_virtqueue, s->num_queues);
+ 
+-    retries = VU_REALIZE_CONN_RETRIES;
+-    assert(!*errp);
+-    do {
+-        if (*errp) {
+-            error_prepend(errp, "Reconnecting after error: ");
+-            error_report_err(*errp);
+-            *errp = NULL;
+-        }
+-        ret = vhost_user_blk_realize_connect(s, errp);
+-    } while (ret < 0 && retries--);
+-
+-    if (ret < 0) {
+-        goto virtio_err;
++    if (vhost_user_blk_realize_connect_loop(s, errp) < 0) {
++        goto fail;
+     }
+ 
+-    /* we're fully initialized, now we can operate, so add the handler */
+-    qemu_chr_fe_set_handlers(&s->chardev,  NULL, NULL,
+-                             vhost_user_blk_event, NULL, (void *)dev,
+-                             NULL, true);
+-
+     trace_vhost_user_blk_device_realize_out(vdev);
+ 
+     return;
+ 
+-virtio_err:
++fail:
+     g_free(s->vhost_vqs);
+     s->vhost_vqs = NULL;
+     g_free(s->inflight);
 -- 
 2.48.1
 
