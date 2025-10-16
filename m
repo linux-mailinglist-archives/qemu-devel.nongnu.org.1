@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134DABE41BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B69BE41B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 17:06:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9PWb-0002Cn-1s; Thu, 16 Oct 2025 11:04:18 -0400
+	id 1v9PWn-0002F8-6m; Thu, 16 Oct 2025 11:04:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWY-0002CG-U8
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:15 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1v9PWf-0002E2-Gm
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:21 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v9PWR-0001AY-1A
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:14 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47114a40161so7110995e9.3
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:05 -0700 (PDT)
+ id 1v9PWR-0001Ag-1l
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 11:04:20 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3f0308469a4so635369f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 08:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760627043; x=1761231843; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760627044; x=1761231844; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pJpyoRiL8sYez2Vw3+8NSwXbVIlyqCZS+tzmsklFGkI=;
- b=cWkKQV3XM3/y8cLgwt1KP/BM/SEuAnLpzqq4NtjB4azQUwXrzJ7jHTOXg7NwIAcvZh
- l4/k+7iiksE1/FHT9tgesV8pyciTi8HHNDKMqnDzUPtDr752lbo27IfS+LCEj1L9S1bO
- TDJzFMq6nv7MRzMt+p2KutGFA5coPMhzZgA0Zq0MVwzltE7uUQhqdDbIvO6KdSWRMOVB
- svkYp8ID2Df0jYKzvf1AaRjQtFWIY/Ktxk32UMK19sCTKRUEtiMnIYXdt/kco5Q74B30
- H1o0xikNhtW0JoI7pRYv2A/ZTbY+f5WL5NFweoxuTJnRGMyMgKKaIUBMjPTZkcwFzIXc
- 4vTQ==
+ bh=UBrmEioes5BcTvg3mWej6DkCUcELOhpLd7xx/WVVmZs=;
+ b=zUItmF04rCFYAhOYy7a7W6y+3GIUGF6FKd5+yBKUbMgyqyCZuZOW4uc+7qBdmQaX/g
+ fNDFab6zLKvLbmxejzKaQF7GUP4WAC9TNYBlh1TD75KLjmgf5yFu1T71oPQGQfKAKsDs
+ PozvLp7OgHhrZyyZqDqDEZXiCiqytHSCS+LSoFfWRsSk5V2YAKIZGWEUD78y29186vL4
+ XeAWrvbr36GvU2+l1SpTGeyweRkBr/b+SYajXLir/9y5pyde7eTvDMKygZW/jyDNOEt/
+ WrHJNREWjLf3sXfKydUegVB/3kcoYzPlTO5cGOzqsYo7d6Me6ZT9riJug7KyBNFolltn
+ nrMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760627043; x=1761231843;
+ d=1e100.net; s=20230601; t=1760627044; x=1761231844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pJpyoRiL8sYez2Vw3+8NSwXbVIlyqCZS+tzmsklFGkI=;
- b=rt3it2ztLcmKH8oSB/KcvDNjrkGY5zhJL6cCHqt4KwWk9OX/nLMjgDRLh4Vp4hpmig
- bdWLh4vQN9EZVvVc6CxiAvinLxcVIW6cPzjZhmTYTvnaHirRKelId+FdZivJQ1KkD6TZ
- +6Xm5CWDnbfXv5I5u69WCQw4Fvl+vD6GWRz48dKuVc0daVvmttq1vxAobn1VWRNAh3mK
- uXpPAmdrVvgynG7trCAl+SziOpP9OgTZix+rzQGdAa1euXrX/GfGvZtxJMJNuXXN3XLk
- U6VCi/7hr1GQvG6g7EHfs7z+zeBVAVWkA5PQrZZ8mn8AdU33TSrGIJtRqfX2m1YN5983
- b4ZA==
-X-Gm-Message-State: AOJu0YyiT6Qs97GSwycjJUxIlVKAsvxa3y4enRZibyaA9Ep3TYXcmI/7
- kH//Rqfwp9KSHYOL7uATeOV4WblWPJto168PXAHO6Xcz84wc2nZWGk6MANChedooFvQ=
-X-Gm-Gg: ASbGnctIP5E5nuH9LBzaj7vGAo+tBYWO1LfeUIlS3QTDjTaWlB1ezaVrX+Ob/Vr5sOA
- YrTNdH1UUP86e7EMgqZFc73JNZuDSrf/mgOfPi9D4fGlHl9gR6L+K4VkIkeZniGx0ZqMZzLyjXl
- YPHMtj5P4LJz04jfpH4CIQWZlcZyEwzPRWZS7usgASo/8JOy46eEaFRzb+lFgvQvqqcu8QrDzj1
- XPM/ultbroGVRPdCW300ytbUsOijRAqHL6WCrxIV8td5ThrE/7taRegT8ZdVSxfTDcuN1ES144L
- aBqVkpOWSyj3GlSV5W+LV1pLqkN1un1ZNDNCqCSMNdIQ/ENlGTNUNbhxLCk2Xvqc5wgeoXeaaGJ
- IMu9igcKlT0Nm2l8DuP5tIDi0waqcCKW8b0lygEwo6KaWrMvoMT2HwlqcYtK41cUywJgA6+JLE3
- EKtBkbqVdwE/M9l7g=
-X-Google-Smtp-Source: AGHT+IHdw34NJ7JAA2SgB5l3oeY5Tn3bu4IE+sgGv9Tb29cCrBfcVdrvtYBvYQH8XBqrJZaoTselFQ==
-X-Received: by 2002:a05:600c:4ec9:b0:471:15c1:45b9 with SMTP id
- 5b1f17b1804b1-471179133b2mr2482055e9.29.1760627043091; 
+ bh=UBrmEioes5BcTvg3mWej6DkCUcELOhpLd7xx/WVVmZs=;
+ b=er6IIveAkQi32TUJ8wtSQBWYbqMHq4JHn3mU12CtuFv9pV0k+Csx5kA0pSaw/uKBJF
+ DwkODUnUn/y5xeWiVghuzxoj5wDZLe+1qnhS1Ad9VLkwiuy/TmkF6j1hGRO6ex6hiJ7h
+ sBGSRsGoopMe9Ypqkv6eAJWtq+OHuGO2Helf4guuvcNtfqeNqr0BdMdgD9QpusWal0jL
+ +/p1AUCvA2KlyV3jZuCpggsSCU51bRk6GHHuAht7ltDi2T9PeYgI6u1tYz/ttWJhwRZU
+ QzDHA6i+i19d8el/jY5Hjtc3Jk0wmPSaulnYElpSIzCvp5Py9SSvr/utBKvsxSoW/2oQ
+ ufGA==
+X-Gm-Message-State: AOJu0YyCeTWQNcmSW29pwXr9jwE74Uss581a+toV3vAoYyeIUVM1yTYd
+ ieqQfisJeu76x8apDvT7tyJblcbqiEI5D9bz/jmEQCgwcivbFxMJX6b1M8buzKWiYq0=
+X-Gm-Gg: ASbGnctapxzVNOVhvlfM/hfDT0i/QC5bFxp+cFQ9zKNkkU5Tu9VjAP4ljBubA64jpjq
+ ln0Q+T3/LQwsWF2aBb11zcr671IHUVWA/KIqOmNODDjQUiINOG71mnErDO2xxhpKBBoHuYpB2hy
+ PxPLYDmoy2MH1OPf3PxbEQCj2XEUENIZfY2B1fug9McQRpT65lZyWE1v6qSv7GCJG/B3ktv1IYS
+ xy8U3YZool8InxT3WPA4AX2RdeNMtpA2kmIRbzFlnbaU7Jubfiua76LBts1uwluBqxj+s+hx6B6
+ Qcrbc+n9OsRH2UZLtXnyUUrGV7tcWmuIojdCVjoZ1Ej7UCDE7yor1+fcu0zdxMLU68DmEqYVmjg
+ uFc07cnzetMJupxmKVj8dJZ3RX+6IVuZoU3y/0dyk8AZ4FCWIXBDM+pn8p2eWXh1C8KEREDO++j
+ 8F
+X-Google-Smtp-Source: AGHT+IGidc46ksb55VYkEQ2ctOcuO5Kok6UJE2BXc+kXHohYK04LJWkpjhBdomLr955V0jZ/h98HNw==
+X-Received: by 2002:a05:6000:240f:b0:425:8bf9:557d with SMTP id
+ ffacd0b85a97d-42704d9e934mr342256f8f.44.1760627043795; 
  Thu, 16 Oct 2025 08:04:03 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5d015esm36294984f8f.33.2025.10.16.08.03.59
+ ffacd0b85a97d-426ce5cf6b4sm35470459f8f.25.2025.10.16.08.03.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 16 Oct 2025 08:03:59 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EB33A5FACE;
- Thu, 16 Oct 2025 16:03:57 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 11E605FACF;
+ Thu, 16 Oct 2025 16:03:58 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
@@ -79,26 +79,25 @@ Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Dongwon Kim <dongwon.kim@intel.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-stable@nongnu.org
-Subject: [PATCH 05/11] ui/gtk-gl-area: Remove extra draw call in refresh
-Date: Thu, 16 Oct 2025 16:03:50 +0100
-Message-ID: <20251016150357.876415-6-alex.bennee@linaro.org>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH 06/11] hw/display: add blob map/unmap trace events
+Date: Thu, 16 Oct 2025 16:03:51 +0100
+Message-ID: <20251016150357.876415-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251016150357.876415-1-alex.bennee@linaro.org>
 References: <20251016150357.876415-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,64 +113,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+As these events happen dynamically as the guest does various things
+they are quite handy to trace.
 
-This partially reverts commit 77bf310084dad38b3a2badf01766c659056f1cf2
-which causes some guest display corruption when gtk-gl-area
-is used for GTK rendering (e.g. Wayland Compositor) possibly due to
-simulataneous accesses on the guest frame buffer by host compositor
-and the guest.
-
-Fixes: 77bf310084 ("ui/gtk: Draw guest frame at refresh cycle")
-Reported-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Reported-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Message-Id: <20250214170813.2234754-1-dongwon.kim@intel.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250603110204.838117-12-alex.bennee@linaro.org>
-Cc: qemu-stable@nongnu.org
-
 ---
-vpre-PR:
-  - added large comment where draw command was removed
----
- ui/gtk-gl-area.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ hw/display/virtio-gpu-virgl.c | 4 ++++
+ hw/display/trace-events       | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 05fc38096ec..cd86022d264 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -165,7 +165,22 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 94ddc01f91c..07f6355ad62 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -134,6 +134,8 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
  
-     if (vc->gfx.guest_fb.dmabuf &&
-         qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
--        gd_gl_area_draw(vc);
-+        /*
-+         * gd_egl_refresh() calls gd_egl_draw() if a DMA-BUF draw has already
-+         * been submitted, but this function does not call gd_gl_area_draw() in
-+         * such a case due to display corruption.
-+         *
-+         * Calling gd_gl_area_draw() is necessary to prevent a situation where
-+         * there is a scheduled draw event but it won't happen bacause the window
-+         * is currently in inactive state (minimized or tabified). If draw is not
-+         * done for a long time, gl_block timeout and/or fence timeout (on the
-+         * guest) will happen eventually.
-+         *
-+         * However, it is found that calling gd_gl_area_draw() here causes guest
-+         * display corruption on a Wayland Compositor. The display corruption is
-+         * more serious than the possible fence timeout so gd_gl_area_draw() is
-+         * omitted for now.
-+         */
-         return;
-     }
+     res->mr = mr;
  
++    trace_virtio_gpu_cmd_res_map_blob(res->base.resource_id, vmr, mr);
++
+     return 0;
+ }
+ 
+@@ -153,6 +155,8 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+ 
+     vmr = to_hostmem_region(res->mr);
+ 
++    trace_virtio_gpu_cmd_res_unmap_blob(res->base.resource_id, mr, vmr->finish_unmapping);
++
+     /*
+      * Perform async unmapping in 3 steps:
+      *
+diff --git a/hw/display/trace-events b/hw/display/trace-events
+index 52786e6e184..e323a82cff2 100644
+--- a/hw/display/trace-events
++++ b/hw/display/trace-events
+@@ -38,6 +38,8 @@ virtio_gpu_cmd_set_scanout_blob(uint32_t id, uint32_t res, uint32_t w, uint32_t
+ virtio_gpu_cmd_res_create_2d(uint32_t res, uint32_t fmt, uint32_t w, uint32_t h) "res 0x%x, fmt 0x%x, w %d, h %d"
+ virtio_gpu_cmd_res_create_3d(uint32_t res, uint32_t fmt, uint32_t w, uint32_t h, uint32_t d) "res 0x%x, fmt 0x%x, w %d, h %d, d %d"
+ virtio_gpu_cmd_res_create_blob(uint32_t res, uint64_t size) "res 0x%x, size %" PRId64
++virtio_gpu_cmd_res_map_blob(uint32_t res, void *vmr, void *mr) "res 0x%x, vmr %p, mr %p"
++virtio_gpu_cmd_res_unmap_blob(uint32_t res, void *mr, bool finish_unmapping) "res 0x%x, mr %p, finish_unmapping %d"
+ virtio_gpu_cmd_res_unref(uint32_t res) "res 0x%x"
+ virtio_gpu_cmd_res_back_attach(uint32_t res) "res 0x%x"
+ virtio_gpu_cmd_res_back_detach(uint32_t res) "res 0x%x"
 -- 
 2.47.3
 
