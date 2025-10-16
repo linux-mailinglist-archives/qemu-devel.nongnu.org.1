@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9574BE323C
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2356BE3254
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 13:46:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MNb-0007Sk-W3; Thu, 16 Oct 2025 07:42:48 -0400
+	id 1v9MNi-0007Xj-NW; Thu, 16 Oct 2025 07:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMx-00079V-5o; Thu, 16 Oct 2025 07:42:07 -0400
+ id 1v9MN8-0007Et-Ff; Thu, 16 Oct 2025 07:42:21 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v9MMk-0003WL-F9; Thu, 16 Oct 2025 07:42:02 -0400
+ id 1v9MMp-0003WD-EU; Thu, 16 Oct 2025 07:42:13 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 510E7C01DF;
- Thu, 16 Oct 2025 14:41:37 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 200DEC01BE;
+ Thu, 16 Oct 2025 14:41:38 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a8c::1:19])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LfP2M73FEmI0-jWRYgAwK; Thu, 16 Oct 2025 14:41:36 +0300
+ ESMTPSA id LfP2M73FEmI0-jabrmu5C; Thu, 16 Oct 2025 14:41:37 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760614896;
- bh=bpYyRH+FH5+ms+TFU93oV6x9PSDyaNh07aiBxI/3YRc=;
+ s=default; t=1760614897;
+ bh=4cgovY7tyDau9EmQRY+aKBap0SqRZ3wu+IcsVV5ZIew=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Sqbpc+alHMEB7F5+LCy/2E+v4XokjaMKFtsNcShpufQqZBFPuScB3DtUzpfIAbaKu
- Xk/nI7wCrWm6LKqlkxpblLr5DineKaFJBXfIUzNL4ov6c6VD/z9VqRFQGZueuBQ38J
- /5qMcjOv4mG7lcUsWMv43JGPdnQNZlq4Xb6sX3o4=
+ b=OrheK5kWODMj9Sm46WDHPjCXdSUUw773g/qtifCblTi3dJZ/aIUb5UrRZCV3YRCRz
+ QAIhycvDA9+Gu9Rop2ssBVP2TwoNAn5o/s7HKFCRs0zah1HSuInZ7xbiYSrNm7dJuf
+ 0UXSFQ6rtSJWL1TYLpNWsU4nTKOppKZoQxdVXJr0=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,10 +45,9 @@ Cc: mst@redhat.com, sgarzare@redhat.com, marcandre.lureau@redhat.com,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, jasowang@redhat.com
-Subject: [PATCH v2 18/25] chardev: introduce backend-transfer vmstate for
- chardev
-Date: Thu, 16 Oct 2025 14:40:55 +0300
-Message-ID: <20251016114104.1384675-19-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 19/25] vhost: support backend-transfer migration
+Date: Thu, 16 Oct 2025 14:40:56 +0300
+Message-ID: <20251016114104.1384675-20-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
 References: <20251016114104.1384675-1-vsementsov@yandex-team.ru>
@@ -63,7 +62,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,112 +77,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll need to transfer the chardev attached to vhost-user-blk, to
-support backend-transfer migration for vhost-user-blk. So, prepare
-chardev vmsd now.
+Introduce vhost_dev.backend_transfer field,
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- chardev/char-backend-transfer.c         | 52 +++++++++++++++++++++++++
- chardev/meson.build                     |  1 +
- include/chardev/char-backend-transfer.h | 17 ++++++++
- 3 files changed, 70 insertions(+)
- create mode 100644 chardev/char-backend-transfer.c
- create mode 100644 include/chardev/char-backend-transfer.h
+ hw/virtio/vhost.c         | 121 +++++++++++++++++++++++++++++++++-----
+ include/hw/virtio/vhost.h |   7 +++
+ 2 files changed, 113 insertions(+), 15 deletions(-)
 
-diff --git a/chardev/char-backend-transfer.c b/chardev/char-backend-transfer.c
-new file mode 100644
-index 0000000000..f1a399c7fa
---- /dev/null
-+++ b/chardev/char-backend-transfer.c
-@@ -0,0 +1,52 @@
-+/*
-+ * Event notifier migration support
-+ * Copyright (c) Yandex Technologies LLC, 2025
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 63036f8214..c46203eb9c 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1325,6 +1325,8 @@ out:
+     return ret;
+ }
+ 
++static void vhost_virtqueue_error_notifier(EventNotifier *n);
 +
-+#include "qemu/osdep.h"
-+#include "chardev/char-fe.h"
-+#include "migration/vmstate.h"
+ int vhost_virtqueue_start(struct vhost_dev *dev,
+                           struct VirtIODevice *vdev,
+                           struct vhost_virtqueue *vq,
+@@ -1350,7 +1352,13 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+         return r;
+     }
+ 
+-    vq->num = state.num = virtio_queue_get_num(vdev, idx);
++    vq->num = virtio_queue_get_num(vdev, idx);
 +
-+typedef struct CharBackendTransferTmp {
-+    CharBackend *parent;
-+    int fd;
-+} CharBackendTransferTmp;
-+
-+static int char_backend_transfer_pre_save(void *opaque)
-+{
-+    CharBackendTransferTmp *tmp = opaque;
-+
-+    tmp->fd = qemu_chr_get_client(tmp->parent->chr);
-+    if (tmp->fd < 0) {
-+        return -1;
++    if (dev->backend_transfer) {
++        return 0;
 +    }
++
++    state.num = vq->num;
+     r = dev->vhost_ops->vhost_set_vring_num(dev, &state);
+     if (r) {
+         VHOST_OPS_DEBUG(r, "vhost_set_vring_num failed");
+@@ -1428,6 +1436,10 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
+ 
+     trace_vhost_virtque_stop_in(dev, vdev->name, idx);
+ 
++    if (dev->backend_transfer) {
++        return 0;
++    }
++
+     if (virtio_queue_get_desc_addr(vdev, idx) == 0) {
+         /* Don't stop the virtqueue which might have not been started */
+         return 0;
+@@ -1565,10 +1577,14 @@ fail_call:
+ 
+ static void vhost_virtqueue_cleanup(struct vhost_virtqueue *vq)
+ {
+-    event_notifier_cleanup(&vq->masked_notifier);
++    if (!vq->dev->backend_transfer) {
++        event_notifier_cleanup(&vq->masked_notifier);
++    }
+     if (vq->dev->vhost_ops->vhost_set_vring_err) {
+         event_notifier_set_handler(&vq->error_notifier, NULL);
+-        event_notifier_cleanup(&vq->error_notifier);
++        if (!vq->dev->backend_transfer) {
++            event_notifier_cleanup(&vq->error_notifier);
++        }
+     }
+ }
+ 
+@@ -1635,6 +1651,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+ 
+     hdev->vdev = NULL;
+     hdev->migration_blocker = NULL;
++    hdev->_features_wait_incoming = true;
+     hdev->busyloop_timeout = busyloop_timeout;
+ 
+     for (i = 0; i < hdev->nvqs; ++i) {
+@@ -1717,6 +1734,8 @@ int vhost_dev_connect(struct vhost_dev *hdev, Error **errp)
+         goto fail;
+     }
+ 
++    hdev->_features_wait_incoming = false;
++
+     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+         r = vhost_virtqueue_connect(hdev->vqs + i, hdev->vq_index + i);
+         if (r < 0) {
+@@ -1808,8 +1827,11 @@ void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
+      */
+     memory_region_transaction_commit();
+ 
+-    for (i = 0; i < nvqs; ++i) {
+-        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i);
++    if (!hdev->backend_transfer) {
++        for (i = 0; i < nvqs; ++i) {
++            virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus),
++                                             hdev->vq_index + i);
++        }
+     }
+     virtio_device_release_ioeventfd(vdev);
+ }
+@@ -1967,6 +1989,11 @@ void vhost_get_features_ex(struct vhost_dev *hdev,
+ {
+     const int *bit = feature_bits;
+ 
++    if (hdev->_features_wait_incoming) {
++        /* Excessive set is enough for early initialization. */
++        return;
++    }
++
+     while (*bit != VHOST_INVALID_FEATURE_BIT) {
+         if (!vhost_dev_has_feature_ex(hdev, *bit)) {
+             virtio_clear_feature_ex(features, *bit);
+@@ -2001,6 +2028,54 @@ const VMStateDescription vmstate_backend_transfer_vhost_inflight = {
+     }
+ };
+ 
++const VMStateDescription vmstate_vhost_virtqueue = {
++    .name = "vhost-virtqueue",
++    .fields = (const VMStateField[]) {
++        VMSTATE_EVENT_NOTIFIER(error_notifier, struct vhost_virtqueue),
++        VMSTATE_EVENT_NOTIFIER(masked_notifier, struct vhost_virtqueue),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
++static int vhost_dev_post_load(void *opaque, int version_id)
++{
++    struct vhost_dev *hdev = opaque;
++    Error *err = NULL;
++    int i;
++
++    if (!check_memslots(hdev, &err)) {
++        error_report_err(err);
++        return -EINVAL;
++    }
++
++    hdev->_features_wait_incoming = false;
++
++    if (hdev->vhost_ops->vhost_set_vring_err) {
++        for (i = 0; i < hdev->nvqs; ++i) {
++            event_notifier_set_handler(&hdev->vqs[i].error_notifier,
++                                       vhost_virtqueue_error_notifier);
++        }
++    }
++
 +
 +    return 0;
 +}
 +
-+static int char_backend_transfer_post_load(void *opaque, int version_id)
-+{
-+    CharBackendTransferTmp *tmp = opaque;
-+
-+    return qemu_chr_add_client(tmp->parent->chr, tmp->fd);
-+}
-+
-+const VMStateDescription vmstate_backend_transfer_char_tmp = {
-+    .name = "backend-transfer-char-tmp",
-+    .pre_save = char_backend_transfer_pre_save,
-+    .post_load = char_backend_transfer_post_load,
++const VMStateDescription vmstate_vhost_dev = {
++    .name = "vhost-dev",
++    .post_load = vhost_dev_post_load,
 +    .fields = (const VMStateField[]) {
-+        VMSTATE_FD(fd, CharBackendTransferTmp),
++        VMSTATE_UINT64(_features, struct vhost_dev),
++        VMSTATE_UINT64(max_queues, struct vhost_dev),
++        VMSTATE_UINT32_EQUAL(nvqs, struct vhost_dev, NULL),
++        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(vqs, struct vhost_dev,
++                                             nvqs,
++                                             vmstate_vhost_virtqueue,
++                                             struct vhost_virtqueue),
 +        VMSTATE_END_OF_LIST()
 +    },
 +};
 +
-+const VMStateDescription vmstate_backend_transfer_char = {
-+    .name = "backend-transfer-char",
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_WITH_TMP(CharBackend, CharBackendTransferTmp,
-+                         vmstate_backend_transfer_char_tmp),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-diff --git a/chardev/meson.build b/chardev/meson.build
-index 56ee39ac0b..239c8cd072 100644
---- a/chardev/meson.build
-+++ b/chardev/meson.build
-@@ -31,6 +31,7 @@ chardev_ss = chardev_ss.apply({})
+ void vhost_ack_features_ex(struct vhost_dev *hdev, const int *feature_bits,
+                            const uint64_t *features)
+ {
+@@ -2127,19 +2202,24 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+     hdev->started = true;
+     hdev->vdev = vdev;
  
- system_ss.add(files(
-     'char-hmp-cmds.c',
-+    'char-backend-transfer.c',
-     'msmouse.c',
-     'wctablet.c',
-     'testdev.c'))
-diff --git a/include/chardev/char-backend-transfer.h b/include/chardev/char-backend-transfer.h
-new file mode 100644
-index 0000000000..2c3da5f836
---- /dev/null
-+++ b/include/chardev/char-backend-transfer.h
-@@ -0,0 +1,17 @@
-+/*
-+ * Event notifier migration support
-+ * Copyright (c) Yandex Technologies LLC, 2025
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
+-    r = vhost_dev_set_features(hdev, hdev->log_enabled);
+-    if (r < 0) {
+-        goto fail_features;
++    if (!hdev->backend_transfer) {
++        r = vhost_dev_set_features(hdev, hdev->log_enabled);
++        if (r < 0) {
++            warn_report("%s %d", __func__, __LINE__);
++            goto fail_features;
++        }
+     }
+ 
+     if (vhost_dev_has_iommu(hdev)) {
+         memory_listener_register(&hdev->iommu_listener, vdev->dma_as);
+     }
+ 
+-    r = hdev->vhost_ops->vhost_set_mem_table(hdev, hdev->mem);
+-    if (r < 0) {
+-        VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
+-        goto fail_mem;
++    if (!hdev->backend_transfer) {
++        r = hdev->vhost_ops->vhost_set_mem_table(hdev, hdev->mem);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
++            goto fail_mem;
++        }
+     }
+     for (i = 0; i < hdev->nvqs; ++i) {
+         r = vhost_virtqueue_start(hdev,
+@@ -2179,13 +2259,13 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+         }
+         vhost_dev_elect_mem_logger(hdev, true);
+     }
+-    if (vrings) {
++    if (vrings && !hdev->backend_transfer) {
+         r = vhost_dev_set_vring_enable(hdev, true);
+         if (r) {
+             goto fail_log;
+         }
+     }
+-    if (hdev->vhost_ops->vhost_dev_start) {
++    if (hdev->vhost_ops->vhost_dev_start && !hdev->backend_transfer) {
+         r = hdev->vhost_ops->vhost_dev_start(hdev, true);
+         if (r) {
+             goto fail_start;
+@@ -2207,6 +2287,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+     }
+     vhost_start_config_intr(hdev);
+ 
++    hdev->backend_transfer = false;
 +
-+#ifndef CHAR_BACKEND_TRANSFER_H
-+#define CHAR_BACKEND_TRANSFER_H
+     trace_vhost_dev_start_out(hdev, vdev->name);
+     return 0;
+ fail_iotlb:
+@@ -2262,9 +2344,18 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
+     if (hdev->vhost_ops->vhost_dev_start) {
+         hdev->vhost_ops->vhost_dev_start(hdev, false);
+     }
+-    if (vrings) {
++    if (vrings && !hdev->backend_transfer) {
+         vhost_dev_set_vring_enable(hdev, false);
+     }
 +
-+#include "qemu/typedefs.h"
++    if (hdev->backend_transfer) {
++        for (i = 0; i < hdev->nvqs; ++i) {
++            struct vhost_virtqueue *vq = hdev->vqs + i;
 +
-+extern const VMStateDescription vmstate_backend_transfer_char;
-+#define VMSTATE_BACKEND_TRANSFER_CHARDEV(_field, _state)                       \
-+    VMSTATE_STRUCT(_field, _state, 0, vmstate_backend_transfer_char,           \
-+                   CharBackend)
++            event_notifier_set_handler(&vq->error_notifier, NULL);
++        }
++    }
 +
-+#endif
+     for (i = 0; i < hdev->nvqs; ++i) {
+         rc |= do_vhost_virtqueue_stop(hdev,
+                                       vdev,
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 94a0c75fc8..55ad822848 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -105,6 +105,9 @@ struct vhost_dev {
+     VIRTIO_DECLARE_FEATURES(_features);
+     VIRTIO_DECLARE_FEATURES(acked_features);
+ 
++    bool _features_wait_incoming;
++    bool backend_transfer;
++
+     uint32_t busyloop_timeout;
+     uint64_t max_queues;
+     uint64_t backend_cap;
+@@ -592,4 +595,8 @@ extern const VMStateDescription vmstate_backend_transfer_vhost_inflight;
+     VMSTATE_STRUCT_POINTER(_field, _state, vmstate_inflight, \
+                            struct vhost_inflight)
+ 
++extern const VMStateDescription vmstate_vhost_dev;
++#define VMSTATE_BACKEND_TRANSFER_VHOST(_field, _state) \
++    VMSTATE_STRUCT(_field, _state, 0, vmstate_vhost_dev, struct vhost_dev)
++
+ #endif
 -- 
 2.48.1
 
