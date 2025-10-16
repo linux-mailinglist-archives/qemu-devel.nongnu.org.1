@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DEDBE4CB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 19:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAC9BE4CC1
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 19:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9RUe-0000n5-2g; Thu, 16 Oct 2025 13:10:24 -0400
+	id 1v9RVV-0001JG-9s; Thu, 16 Oct 2025 13:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v9RUa-0000m1-QN
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:10:20 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1v9RVF-0001D6-3o
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:11:02 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1v9RUV-0003XE-Vq
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:10:19 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-b57bf560703so676320a12.2
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 10:10:14 -0700 (PDT)
+ id 1v9RV6-0003bk-KF
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 13:11:00 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-76e2ea933b7so985558b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 10:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760634611; x=1761239411; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760634646; x=1761239446; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=W+y9590Rju55IBWNEEnri44H8IFlGQsvQbodRDeKMnE=;
- b=b05ygwiUzLm7S3GtlRL27lIH6WT13WjJQgp6T2xpFnt+zlm/+KzmkqdrZxpWIFJjEO
- Cq74KrQoKbCNaNs4UKaGLQhyroS7I6AjOAoJxt6J/6xsDCjYihfc/FsI/LqCq0cD6f/E
- gIXMs25vzP4bdglDxrZtgG/k5Rtj/kqlxyIaxKa9aYARPusTg+hZqzLG4Z0Jop+YAImm
- ZExp+El6onUh6iBiqJ9PV+PdvMyjZK6sEtbv+lNH9DRlEgxLInIuflWkTwYwO5hMRBxX
- yIEgnREe1UrEWDeEEP3/uSYYcX+Mz7DTV+74DtW3cSA5LG0ndBlCTMbUUHZr6+dwBsTf
- CnhQ==
+ bh=4bG/CW24bkdpxwOsKcr0LjlYCeDV8qC5cwo2zwpHqrg=;
+ b=mXv9HGB4G8IcIkBdC7BPguVH6bNJC0zGYMjHk2SdM5SyDMQfB0qi2H3gaDaYBWEqiv
+ 33otBntQXcFl68GzXO5UbrAaCXEKNhBuFUJ27E1yXb0rbE0ftGxNG1iuoUcI2Oz0FB2j
+ XoafcMvi9hnCAWUmVZY6pqGdxbbD5xaF9Ajy18D5mEljxKSG+Y/Iiruc4WcAO5zQmVRM
+ A8hOQ9E78f59izMciVmGion89Z6/IY4iacTyRy8C0QxMCwvM6Tqi0VzVoV2wSoPYlZ3g
+ pXQr2tT6m770jaxqG04PuFOuQtXFeL77O0JWSrVH7dx4MatD9AMhsbH3LYYrlaGIxpDz
+ e/oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760634611; x=1761239411;
+ d=1e100.net; s=20230601; t=1760634646; x=1761239446;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W+y9590Rju55IBWNEEnri44H8IFlGQsvQbodRDeKMnE=;
- b=DRFTU+HmO7Y4PQKyKERDqzgsZD4ZXbl6K5YvaCzf3vvv4fL2GR+yBWjqsK/l/5nxzX
- WFVHtREVQWdqtUJy8JZaf6TKijkM0cnheY+CZOur462Pzq8CksUn77H3H7MlUMaj4C7D
- wLqkhxdQzeYQ1CwtgHQN0Nkue/JxeVApQa3s1g8Q5FiB8riDwLzMjUfrXnP829gS8wol
- yRp3VABGz4bKwOYBqJQ3hgBlllZlA7g4WnM3qualTsbzfQZVKcldOpaowYskmyo+7C/w
- GAWUpDVbNPdM5Zf7FoDv7ZTiJyl0KNIsOwv9npbkSOCHAPAafH+RquGLU6ITPXYkNe38
- nr/A==
+ bh=4bG/CW24bkdpxwOsKcr0LjlYCeDV8qC5cwo2zwpHqrg=;
+ b=QIRxKarrxloCBy3s7cY168T98heaPm9woX2FbPEoOvlOUGs3UxGE+K+6VBXm6ziQkV
+ hqs56F72BzAg+2WQa8vk2gQZIB0vB8gHDkF05XvpAINuw27XGgNOd0a8mwLqgYP+hUMM
+ nL1Jb10YzROZyr1aU4E0iAhAm2SSEGP2In9F/yML4jmP8voiKhkDkyl+geRI4f1A1jK8
+ Vm6H4/G8YnRv5sudIJatnsol5ZAfuAtceX5iPoM0JNyDnPdDZL26pHsHighgVPb8bZTd
+ 2bHSQRGD7+jZqoomdBdT0PsCu0HVG1K+uZ5PzNU2wYpSo/N06cacM1yP5XP3PRmrUgaA
+ aYGg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWke5dLGCIJnhV7zoR59a+gbjBKA3/pR6+qLr2dXLVZqdiomRXmQO02JtfuFKeMcZMmIS4uRpIwrWRJ@nongnu.org
-X-Gm-Message-State: AOJu0Yyq6VmdSNiEh55opc+VrqJqHeyjaCbDJJaSMvi/rhOW3Vqvqe/o
- AeuNKClYt3O+FH7Wiauf8Ud5ffnB51+VGHTNtsXXAY/LuOF8EZaETnmr58Mz5n6Ybao=
-X-Gm-Gg: ASbGncszftayjFhCbLSUVNDOtbo0g5kazFgZ5iu7YWAgx1TdK22exquPBc+k7j0wC7f
- x0QxPySqqm30V9m9/rEQUQ3XRQvPntcVWjQYoA2L5yxwPueJ+e6IyBLuyZEf7mmkT1hdqL+9qhI
- /uICrAMla1/aQEELDlvfzZ5Ch7eaYZ0LU9BipPShC1d2KqRbIoofZewXZfOdyQTdqt9j75ZEiEg
- /WZFyKJ7LpuwwwAJfJqyTsiVXneYpExZeCsQorwU0tdy+oAOMnhMaAk71EHfe+ReoOy3yFT0f97
- uc8tWRG31IB1XtFZ/GVkYwF1L/9UXAgqFUdPQk2uCd27PSlj8r3OV4xF2fkhoIX7CX3kZfDmX+k
- 18nC+5uSlAEAuySd3fZhV6xn9rUheFdrw+TezAJj8VOKmIoNK/DmblbvN3iN23zTZN65i0JeEN9
- iiwWXBsLCNfM5oIb62oWN1nUY=
-X-Google-Smtp-Source: AGHT+IG7g9yccGCOr/5huwpVE+juN7DtgCivkbOxdSHJ6ZzNVUlh2v23F9GTlu369LKOQmKWdP6tJA==
-X-Received: by 2002:a17:902:e944:b0:290:b14c:4f36 with SMTP id
- d9443c01a7336-290cba4edaemr7926005ad.31.1760634611255; 
- Thu, 16 Oct 2025 10:10:11 -0700 (PDT)
+ AJvYcCVZGv5+CWrX5UyjEm38So29D8z+dTlIglPzC+Gs7RVfVcP8XN4icS0tnnQxtUkOgQYgaHiK1En9tmYj@nongnu.org
+X-Gm-Message-State: AOJu0YxRCR86kNBsfM5rVA+lB/NLWb3t0HL1BAw4qKQOVA2/AhVntbAb
+ Zs+NzRCPPumDPk1sGcztahjoKl/wU3Muw421zPiot4h+a6Fl+wsLxS1hWnx5FH66CUM=
+X-Gm-Gg: ASbGncvM19rVQUacg+y2lqcj1IQTL5w1FRpgZKM4uswLRR+1iYBkc4522Zu1skyW+Fb
+ bse3SmrZlyu8DmEbCTXcHHxKpsUhSGvOZ8+KatehdU+PKgSf6Xt6zBd8F7Pb0+3yEFjb+r9pimn
+ XJTYOeAjTioKnXLHGIE4/AaL7OyDp6I+LuzPtB/eCKpndikFjNhfJusuYpWIZMGKw0+gVJTgkFu
+ VAqjth6iZBjWABNvnhUcxr9ttFovYGcrF417nezIdhUEKdBtolXECmQvhK+qyo6pNUp0s4xi3zK
+ yCfvmTcsCM2t+vEZA+MJYvJVkG5N/9lbKBAvxImFSN/qr7AT+sOIH88eMKhvqn+ePOnwSiLGMHL
+ 0KW3Qc5ob7dUPxA25AKYTrwjJKgublMAfbk82AAJNxB5tXxoyYtTPCo9zZsGyJmvvM71RgcPem6
+ OGftP/Jk0atUaR
+X-Google-Smtp-Source: AGHT+IFoML3KxKt6peZtjA99LF0wQnp97PYYwkoNppHByhoQa3+D2YD6/jKPVLmtFICCxoo+Jw1kOw==
+X-Received: by 2002:a05:6a00:139e:b0:7a1:3b82:8d61 with SMTP id
+ d2e1a72fcca58-7a21f9449f4mr1113465b3a.4.1760634645981; 
+ Thu, 16 Oct 2025 10:10:45 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-290c5c7d305sm10174435ad.70.2025.10.16.10.10.10
+ d2e1a72fcca58-7992dd854a2sm22883770b3a.76.2025.10.16.10.10.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Oct 2025 10:10:10 -0700 (PDT)
-Message-ID: <72f680c3-e2f4-4023-a6c2-b508e5af1c0c@linaro.org>
-Date: Thu, 16 Oct 2025 10:10:09 -0700
+ Thu, 16 Oct 2025 10:10:45 -0700 (PDT)
+Message-ID: <68871362-029f-4927-9860-017d66fe055f@linaro.org>
+Date: Thu, 16 Oct 2025 10:10:44 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/24] tests: data: update AArch64 ACPI tables
+Subject: Re: [PATCH v7 15/24] hw/arm: virt: cleanly fail on attempt to use the
+ platform vGIC together with ITS
 Content-Language: en-US
 To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -90,13 +91,13 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  Pedro Barbuda <pbarbuda@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
  Roman Bolshakov <rbolshakov@ddn.com>
 References: <20251016165520.62532-1-mohamed@unpredictable.fr>
- <20251016165520.62532-6-mohamed@unpredictable.fr>
+ <20251016165520.62532-16-mohamed@unpredictable.fr>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251016165520.62532-6-mohamed@unpredictable.fr>
+In-Reply-To: <20251016165520.62532-16-mohamed@unpredictable.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,14 +121,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/16/25 9:55 AM, Mohamed Mediouni wrote:
-> After the previous commit introducing GICv3 + GICv2m configurations,
-> update the AArch64 ACPI table for the its=off case.
+> Switch its to a tristate.
+> 
+> Windows Hypervisor Platform's vGIC doesn't support ITS.
+> Deal with this by reporting to the user and exiting.
+> 
+> Regular configuration: GICv3 + ITS
+> New default configuration with WHPX: GICv3 with GICv2m
+> And its=off explicitly for the newest machine version: GICv3 + GICv2m
 > 
 > Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 > ---
->   tests/data/acpi/aarch64/virt/APIC.its_off   | Bin 164 -> 188 bytes
->   tests/qtest/bios-tables-test-allowed-diff.h |   1 -
->   2 files changed, 1 deletion(-)
+>   hw/arm/virt-acpi-build.c | 14 +++++------
+>   hw/arm/virt.c            | 50 ++++++++++++++++++++++++++++++++--------
+>   include/hw/arm/virt.h    |  4 +++-
+>   3 files changed, 50 insertions(+), 18 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
