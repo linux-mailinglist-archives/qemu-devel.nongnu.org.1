@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49999BE362B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5194BE358C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:25:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9Mwj-0002d5-Fz; Thu, 16 Oct 2025 08:19:05 -0400
+	id 1v9MxK-0003dC-9L; Thu, 16 Oct 2025 08:19:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MwX-0002LZ-CP
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:18:56 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mwa-0002NS-9h
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:18:58 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MwU-0008TF-Qh
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:18:53 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-46e3a50bc0fso5141135e9.3
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:18:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MwV-0008Tf-RI
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:18:55 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-42701b29a7eso254815f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760617120; x=1761221920; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760617125; x=1761221925; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7jkpIB9jVoYkyVuwo6rPqTXTnxZbZPHzXN+SQOqmnfE=;
- b=k2kIkafz1O5lkoJ2ce+3CVCU5Q6a1l49t/6x2+iimjSBYoK84HP73S3mC/JBHKb4S9
- MR9hIFCC1w23YQTUeCpu27Qlwev0zpEqht6cHpt/zrVptXiFtu3pmPGNAjdz61J2yFGM
- 96OgkxgGMv52weg/U9fpYvl9hr2M08qjVOPOJqJ3eWdz/l8m+kezcv10jkEz4+L2fXXF
- vsBbe8IVLpjXzSVaOK58ZtyCrIQbG09RY6XwzfNM/D3ndpJngLscbQjm8rBae7SAtYta
- iB5u0c+6JliF8d9lEzDtVTlOKmcwXjl7+F1b/aGStyR31DsRUMjsc4UI9uprkkE8MS99
- juXA==
+ :reply-to; bh=P7blmDCF8sM42OmGl4/6ogMGKaMzc2e24JLbAyfldN8=;
+ b=Phv/ulrzrHjFanZnyN990jjGvRQ2rsNnglkEdZPOzW0GGBuSQ+mskJ5mwutlp7UraK
+ LK672t2fQNCl57ViWspK7OkOk0ulfFm1u1vk3Ahh4/oiUQ+xFEU2VDkA0S4OCoRnYWsR
+ uOiyRy6NeX1yfezcaCDuYnix46xHfR+wZcmzCT1kbZ1wdJUJLOfdCz3UR7QzdpiGQsXj
+ 9YFDh3YHK1am3tsxh0ghtSbRNgEN2vy6os6XFYyE0Vji3Znz194t6gwlRKtvAIaM3sZ5
+ r5yjJD7DZOikQkCHi200O+R/nd8/7YotUiMskmzRIt82L7lNfMgedC9y6HCSqNdsGqse
+ /2yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760617120; x=1761221920;
+ d=1e100.net; s=20230601; t=1760617125; x=1761221925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7jkpIB9jVoYkyVuwo6rPqTXTnxZbZPHzXN+SQOqmnfE=;
- b=I91Wv0maEhdC7eMfl9HHqtGaba8pAx7h3+U0e/WjQBM0qQ0+SQGr4xiMw+vg64nmgu
- LmFoqPe1IWGIfCSyFMcksN4I6F92qpT5WMV9oRnjeMW0xSY4Co1pZTBBwsO9ePzCRnSj
- dfeNLPGjQULJ4nNZkvFfSyaheIspIyBZEHPnrPSmSwXu8aHMlrg4jwTPblwxJpiLQG+1
- AyTbtq1pGE851wEJQ8KwRV/JYSCHpPt3Y4g6rbV755zBOgAJztlixiWuBh6BTu2cLi1+
- UyJZU1qmVfGTyBBgCIX/DlA90My7lmER6GzslOMoBdB5hqgaCAsO/JTDpAyWurggTMcF
- fiPw==
-X-Gm-Message-State: AOJu0Yx0089jF1Ouf0jo6s85Ibz1p93fDzpnDESBqBOeh0pZsiWW0I6N
- EDG1Ptg9aYR0cYXJGzYor6/YW6ne3vnMlDdPK9Uj8dfrq6aIFvCRlZwdNwIk0JcPkGgspnUnAdw
- biWSyGM4=
-X-Gm-Gg: ASbGncvsBSEaKqHuMeyUygvq9ZOnYmlkebRfTgGr6AOKdXo2l/YNgmeV8D5oFMZag/U
- /N+piSRLDA/vxvzpLY0wpMRTp47cID+GQtjy/GKz4sUVGCyUSrxQpdMLn2tx5sw6q2ErfPgra/z
- GIiTb/EhGJCMMD8D41A44FzqZCHWltLCHD9W2Qlak5LmPfY7yZWOgeM7d9qRucmaRRMpR86umxF
- vS7BE3A4MgQNXAL0ZEZYDF1rC+EoUSv6kzfmF2/jgGvqDXsYB+TZZiRpzCRt0D/MCV+IBIxMbEs
- +GqrmQMBNeecipfWEEJtuKsLjIIAXCHAiPP/dgsth0VMMjBBwXsbHsYvjgzMAnCLgB2/KFCIQv0
- Os+CLmYcosI7zUH19UhnGNDMlloVBpCSJiLRLfRZ6Z7444jJzS3PdpQo/Zi6U8iZ598x3el4EZj
- tuownNjEDZ+ROxZjTpmyMnO0+fLQ626JHZ8nnUv07dsNrCPLT4DUOB/VMGN6fvDlPt
-X-Google-Smtp-Source: AGHT+IGsacMRdYjP83FH/OKfHRzwI3PWPvASBlQiED89W619Pd/CbExnVvWq1uNoelpxJuvA3eCzBA==
-X-Received: by 2002:a05:600c:4f95:b0:471:3b5:aeac with SMTP id
- 5b1f17b1804b1-47103b5b630mr47031095e9.15.1760617120336; 
- Thu, 16 Oct 2025 05:18:40 -0700 (PDT)
+ bh=P7blmDCF8sM42OmGl4/6ogMGKaMzc2e24JLbAyfldN8=;
+ b=axTe1uWZEm99WdfgafTE22ZXjp2VCTqjIYxvEdJJiuaxSrQN3rTQ66fw8uFShcriC6
+ CvGiV9/QkBprc8IWz2CuSO49I6ZIbK3nQdRs4nidlPOEzannD63LsE4YudDGCO5k+Xxu
+ YJJBpHdsb7k+Gj+xW9hJ/PEqjYjuFaSCDHke8TvCI+Jw5fb0p1PayJFNoBGHy245jfdn
+ ufhe7XZe1ryec8n+uZ+K1QB5O+lqzy77jfRIm9ad9hNkTazBcyyZxGe6KTEoNudeN1TO
+ ropDbvE3HoHGR3FzM1bogu33mXlCKQqzV6XRHk4cQJfhldGWQ3ALUOscmAUBLvzK/TQq
+ HLyw==
+X-Gm-Message-State: AOJu0YwrwxrHNkHOu5aB+8kkreWOKex3vKIslmT4FpxF9ihuW/IClcrH
+ bD5V1PGpbUamcK1dRIbyC3x4LH0jauHIBAUk+xmWrE+6s9d4R5yVn6+zcsejy/jvkxeXyDgzkca
+ KNSjQZoA=
+X-Gm-Gg: ASbGncvTG6+QM36f9bCEo7kPXUa/WoDn4EnLTIeJSmkn1BCDlxrlIkmvatVmWhuDSG1
+ 1KV9vr86nCe5cI0dJ2KQyfgO4jkN8BB7BLSvjt6XvtH8abLaRAeuA+IRsBzONGMjaqZgpSC2i9T
+ wMdKKo140o1orJOfpbUtzl1VanlWmVTsGAHkyDy49QpCL4VGBU7jCxIkZHuaJZr+MSE48Ueum8K
+ BpdnTfDwRaYC3O/NVdZjG9sbVsfl0sCDujU1rGc+/w5u+hgBoWfPksa0ZUCLRHNjz3Bs0bGZAyk
+ H+nTzUdhtDbdEL2eQJW8HXBabifRK5DCFTwxUJ+2LzBiuNKL67ohRD3LjQJGMnff45D5K6LNqza
+ p/73QjoDFcOSEazkEiDO22MUnEa9HYYnmSXrIoT3E5kMdCrRdBnhy6mNrTRU3OhsKspO6MVG6W3
+ hkYKtVah7XFK19469RdagxGjB9Bejd0gmungE3IbRz5AZEE1ECOoYYcA==
+X-Google-Smtp-Source: AGHT+IHcXQUpI4FtgE/qAVc9LGgOPMskwWaC4SljugD3J9veTmb6B7Rk4ZcbgMtjgxNFM3RhSp/8QA==
+X-Received: by 2002:a05:6000:2c06:b0:3e9:54d1:e708 with SMTP id
+ ffacd0b85a97d-426fb7ab8abmr2235135f8f.20.1760617124909; 
+ Thu, 16 Oct 2025 05:18:44 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710eeaa236sm18773265e9.4.2025.10.16.05.18.39
+ ffacd0b85a97d-42704141cd0sm1034058f8f.11.2025.10.16.05.18.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Oct 2025 05:18:39 -0700 (PDT)
+ Thu, 16 Oct 2025 05:18:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 40/75] target/riscv: Use 32 bits for misa extensions
-Date: Thu, 16 Oct 2025 14:14:56 +0200
-Message-ID: <20251016121532.14042-41-philmd@linaro.org>
+Subject: [PULL 41/75] target/riscv: Replace HOST_BIG_ENDIAN #ifdef with if()
+ check
+Date: Thu, 16 Oct 2025 14:14:57 +0200
+Message-ID: <20251016121532.14042-42-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016121532.14042-1-philmd@linaro.org>
 References: <20251016121532.14042-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,45 +98,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+Replace preprocessor-time #ifdef with a compile-time check
+to ensure all code paths are built and tested. This reduces
+build-time configuration complexity and simplifies code
+maintainability.
 
-uint32_t is already in use in most places storing misa extensions such
-as CPUArchState::misa_exts, RISCVCPUProfile::misa_exts,
-RISCVImpliedExtsRule::implied_misa_exts.  Additionally. the field is
-already migrated as uint32_t.
+No functional change intended.
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20251001073306.28573-2-anjo@rev.ng>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-Id: <20251010134226.72221-14-philmd@linaro.org>
 ---
- target/riscv/cpu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/vector_helper.c            | 32 ++++++++++++-------------
+ target/riscv/insn_trans/trans_rvv.c.inc | 16 ++++++-------
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 2c2266415ec..4c13012442d 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -50,7 +50,7 @@ typedef struct CPUArchState CPURISCVState;
-  */
- #define RISCV_UW2_ALWAYS_STORE_AMO 1
- 
--#define RV(x) ((target_ulong)1 << (x - 'A'))
-+#define RV(x) BIT(x - 'A')
- 
- /*
-  * Update misa_bits[], misa_ext_info_arr[] and misa_ext_cfgs[]
-@@ -582,7 +582,7 @@ struct RISCVCPUClass {
-     RISCVCPUDef *def;
- };
- 
--static inline int riscv_has_ext(CPURISCVState *env, target_ulong ext)
-+static inline int riscv_has_ext(CPURISCVState *env, uint32_t ext)
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 41ea2231067..2de3358ee86 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -235,26 +235,26 @@ vext_continuous_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
+                         void *vd, uint32_t evl, uint32_t reg_start, void *host,
+                         uint32_t esz, bool is_load)
  {
-     return (env->misa_ext & ext) != 0;
+-#if HOST_BIG_ENDIAN
+-    for (; reg_start < evl; reg_start++, host += esz) {
+-        ldst_host(vd, reg_start, host);
+-    }
+-#else
+-    if (esz == 1) {
+-        uint32_t byte_offset = reg_start * esz;
+-        uint32_t size = (evl - reg_start) * esz;
+-
+-        if (is_load) {
+-            memcpy(vd + byte_offset, host, size);
+-        } else {
+-            memcpy(host, vd + byte_offset, size);
+-        }
+-    } else {
++    if (HOST_BIG_ENDIAN) {
+         for (; reg_start < evl; reg_start++, host += esz) {
+             ldst_host(vd, reg_start, host);
+         }
++    } else {
++        if (esz == 1) {
++            uint32_t byte_offset = reg_start * esz;
++            uint32_t size = (evl - reg_start) * esz;
++
++            if (is_load) {
++                memcpy(vd + byte_offset, host, size);
++            } else {
++                memcpy(host, vd + byte_offset, size);
++            }
++        } else {
++            for (; reg_start < evl; reg_start++, host += esz) {
++                ldst_host(vd, reg_start, host);
++            }
++        }
+     }
+-#endif
  }
+ 
+ static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index f4b5460340e..2a487179f63 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -3351,19 +3351,19 @@ static void load_element(TCGv_i64 dest, TCGv_ptr base,
+ /* offset of the idx element with base register r */
+ static uint32_t endian_ofs(DisasContext *s, int r, int idx)
+ {
+-#if HOST_BIG_ENDIAN
+-    return vreg_ofs(s, r) + ((idx ^ (7 >> s->sew)) << s->sew);
+-#else
+-    return vreg_ofs(s, r) + (idx << s->sew);
+-#endif
++    if (HOST_BIG_ENDIAN) {
++        return vreg_ofs(s, r) + ((idx ^ (7 >> s->sew)) << s->sew);
++    } else {
++        return vreg_ofs(s, r) + (idx << s->sew);
++    }
+ }
+ 
+ /* adjust the index according to the endian */
+ static void endian_adjust(TCGv_i32 ofs, int sew)
+ {
+-#if HOST_BIG_ENDIAN
+-    tcg_gen_xori_i32(ofs, ofs, 7 >> sew);
+-#endif
++    if (HOST_BIG_ENDIAN) {
++        tcg_gen_xori_i32(ofs, ofs, 7 >> sew);
++    }
+ }
+ 
+ /* Load idx >= VLMAX ? 0 : vreg[idx] */
 -- 
 2.51.0
 
