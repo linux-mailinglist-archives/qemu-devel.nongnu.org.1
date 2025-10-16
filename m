@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415D8BE55FB
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 22:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC2DBE5651
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 22:27:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9UTT-0005ne-72; Thu, 16 Oct 2025 16:21:23 -0400
+	id 1v9UYi-0004iI-7S; Thu, 16 Oct 2025 16:26:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1v9UTP-0005l7-Dl
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 16:21:19 -0400
-Received: from p-east2-cluster5-host1-snip4-8.eps.apple.com ([57.103.79.11]
- helo=outbound.st.icloud.com)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v9UYf-0004cf-1q
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 16:26:45 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1v9UTJ-000106-Of
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 16:21:18 -0400
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-1a-60-percent-2 (Postfix) with ESMTPS id
- C37C118002FA; Thu, 16 Oct 2025 20:21:08 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=h7u/XWsux0pmMZnA7+paR99F4ZhLVNBkIu/tmCtAH0I=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=YEgPW3ffV8FRjRpnj3kpllUYohNCdA+16xl+hsFsqyPIDUDCEvr31xZdYE2laRZwytlcYsxHMnp0+0uniOAVz0tBrzcF1/kUgS/cpf48a9PKFaebr4EDqLq25VyWjIzKsQBpciU8/iF/VU1k8HBCYTDgR8JqXz3JsoBVKenuSgTk5J1ldzouqDecIrc4xW0Rh1aIPKllqKJGeo7iqRiBeFxQZgmqZhvexgtvIcPFoc1ONPF2j58/0rrfHrvN/ok5LmjP0drTGOlg5LOWikZPoR2pWEwOcZTz/SQvIAlg1v5MDz6B4yave+Y7qiqr/unVy3cnm7wYFhOFvl52tTOQdQ==
-mail-alias-created-date: 1752046281608
-Received: from localhost.localdomain (unknown [17.42.251.67])
- by p00-icloudmta-asmtp-us-east-1a-60-percent-2 (Postfix) with ESMTPSA id
- D593118005F6; Thu, 16 Oct 2025 20:21:04 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-To: qemu-devel@nongnu.org
-Cc: Pedro Barbuda <pbarbuda@microsoft.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v9 10/24] hw, target,
- accel: whpx: change apic_in_platform to kernel_irqchip
-Date: Thu, 16 Oct 2025 22:20:30 +0200
-Message-ID: <20251016202044.75261-11-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251016202044.75261-1-mohamed@unpredictable.fr>
-References: <20251016202044.75261-1-mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v9UYX-0001a0-B2
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 16:26:44 -0400
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:9297:0:640:61e7:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 38652808B6;
+ Thu, 16 Oct 2025 23:26:32 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:a8c::1:19] (unknown
+ [2a02:6bf:8080:a8c::1:19])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id TQYfZM2FiGk0-hM7p52gw; Thu, 16 Oct 2025 23:26:31 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1760646391;
+ bh=rxUec4Lnpo5lw40QLIBIGiHDM5iAPMEcS20njVOo1r8=;
+ h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
+ b=eljPXxQZQQ3wfAvvfrOUeMAtDw3dV0ZKqKF9D5mUCNPeiYteJ35fc93wlcZZ3F7ln
+ pBZn9iEWQttKtMuYGE1Z6OHNrR2f9OiDRm7bQsV3LrpIM6LJ5qj6qazqPVyn/YyMD8
+ 30oM+lj+qdZkhVyMsOlOyZSLnsSGA8Ak0zR9cd74=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <a36fdf7e-b7c7-4faa-8cb3-40e2433e9d8c@yandex-team.ru>
+Date: Thu, 16 Oct 2025 23:26:29 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 16/19] qapi: introduce backend-transfer migration
+ parameter
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, mst@redhat.com, jasowang@redhat.com,
+ farosas@suse.de, sw@weilnetz.de, eblake@redhat.com, armbru@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org,
+ michael.roth@amd.com, leiyang@redhat.com, davydov-max@yandex-team.ru,
+ yc-core@yandex-team.ru, raphael.s.norwitz@gmail.com
+References: <20251015132136.1083972-1-vsementsov@yandex-team.ru>
+ <20251015132136.1083972-17-vsementsov@yandex-team.ru>
+ <aO_ll4Lf0bq6vgdm@x1.local>
+ <3b9f1da4-6264-45d4-ade1-a6273cc6fa1e@yandex-team.ru>
+ <aO_--QWDJO7iOhR4@x1.local>
+ <8c575b3a-7d1f-446d-8f6d-4b2e4b851731@yandex-team.ru>
+ <aPCtkB-GvFNuqlHn@redhat.com>
+ <29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru>
+Content-Language: en-US
+In-Reply-To: <29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: C7oEKbrd8wSU04x7dnCeqCWtXcPEgkOj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDE1MSBTYWx0ZWRfX60YmZwLNf1pR
- nic2ImIGWhQYp0nAB2GXOEzkYxoOhFzrcj9/z3scyPnEKSRJ5nGCUOYz0R2nrB/hTBBUq9fIWFO
- 1eLqDuiRzrIDUlMpqqt5JhQ3Nb707s/ioDLHTpnsn9jqmwsiMC1aeBJhCc1/3vweEEF1C7d+w/N
- m81oVhqdhvfdoZcmwD91EAW1vpZL6GupJDFGETKM/H5dIcU6OGstU8BWYjObCY4uhgCHZGS9l+O
- 2e42w6aaxX9YFtbLYWFaH6zZNXFQnnIjH1vPvdMtwYaEEH9arSuWxN+ZtwXUdVTBdstVfU8gQ=
-X-Proofpoint-GUID: C7oEKbrd8wSU04x7dnCeqCWtXcPEgkOj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_04,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 phishscore=0 mlxlogscore=862
- bulkscore=0 malwarescore=0
- mlxscore=0 spamscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2510160151
-X-JNJ: AAAAAAABBsfqEe4nmChG1BmgzDj3ZUNyYAZsfbl/1VsYA8CiVTeJc6FteehA1Nz8aCNlvsUoxH5Y6+vF0ke9zt9B4u6N+DFcUhOXPAzQSPhGQ9xHGMXjPkThBD9KUIexl5hPJEliEJGgElMmd1tM3IrA4zv4NBOW5O2nwY/A3RLEt2qDbE8A+GmGKGP+cRrSyaboJyku8y7NwNfvWwu6DAKhMvVK6dwsEvKG+cmy5QEj6n8KBfJLQrOdxqW+oVpybDYbTKyGG8s1nTVVdwk7EYX3RkNiyRRkIIGNQjH5/9gpkIvub9VNZlojM2C/DgwHTvoM+g/5oA8MlbDBvXYV3/YRhfZnlSXIFuK3VMIQsxtGNJo1FG9fOfMCz+RQQ3kp1HYWNALnJXjfMyA5cC+k1dKKDq0KN4BtDFTw5jAQ4bhyeLKAvIXhEhve6nHq9fxfmZPHEwX6JavY2VI/Y98P7i4/ifCJvvBMf8E1aVzFQPtaoOVB/l7t7qvRc8Nc5k77uv2rACDzu2TkM/MHY5Ka+/v1rWqotgBZAclKUWMpvEUnqqof8umLbQXkbvv6etP6zpwHy5kSaPweXuGF4JxYfBG2C3yChFg3+EQTg0fDHTNqerU6p5ePt0UstBOMik7z2spnmxLLROpDeubRHCOkwJLhpleJ0xNLiLCHNyaj50uG2JH4McgM+WHgDkTt5UdhVcOsVA==
-Received-SPF: pass client-ip=57.103.79.11;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.st.icloud.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -89,184 +86,474 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change terminology to match the KVM one, as APIC is x86-specific.
+On 16.10.25 12:23, Vladimir Sementsov-Ogievskiy wrote:
+> On 16.10.25 11:32, Daniel P. Berrangé wrote:
+>> On Thu, Oct 16, 2025 at 12:02:45AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>> On 15.10.25 23:07, Peter Xu wrote:
+>>>> On Wed, Oct 15, 2025 at 10:02:14PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>>>> On 15.10.25 21:19, Peter Xu wrote:
+>>>>>> On Wed, Oct 15, 2025 at 04:21:32PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>>>>>> This parameter enables backend-transfer feature: all devices
+>>>>>>> which support it will migrate their backends (for example a TAP
+>>>>>>> device, by passing open file descriptor to migration channel).
+>>>>>>>
+>>>>>>> Currently no such devices, so the new parameter is a noop.
+>>>>>>>
+>>>>>>> Next commit will add support for virtio-net, to migrate its
+>>>>>>> TAP backend.
+>>>>>>>
+>>>>>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>>>>>> ---
+>>>>>
+>>>>> [..]
+>>>>>
+>>>>>>> --- a/qapi/migration.json
+>>>>>>> +++ b/qapi/migration.json
+>>>>>>> @@ -951,9 +951,16 @@
+>>>>>>>     #     is @cpr-exec.  The first list element is the program's filename,
+>>>>>>>     #     the remainder its arguments.  (Since 10.2)
+>>>>>>>     #
+>>>>>>> +# @backend-transfer: Enable backend-transfer feature for devices that
+>>>>>>> +#     supports it. In general that means that backend state and its
+>>>>>>> +#     file descriptors are passed to the destination in the migraton
+>>>>>>> +#     channel (which must be a UNIX socket). Individual devices
+>>>>>>> +#     declare the support for backend-transfer by per-device
+>>>>>>> +#     backend-transfer option. (Since 10.2)
+>>>>>>
+>>>>>> Thanks.
+>>>>>>
+>>>>>> I still prefer the name "fd-passing" or anything more explicit than
+>>>>>> "backend-transfer". Maybe the current name is fine for TAP, only because
+>>>>>> TAP doesn't have its own VMSD to transfer?
+>>>>>>
+>>>>>> Consider a device that would be a backend that supports VMSDs already to be
+>>>>>> migrated, then if it starts to allow fd-passing, this name will stop being
+>>>>>> suitable there, because it used to "transfer backend" already, now it's
+>>>>>> just started to "fd-passing".
+>>>>>>
+>>>>>> Meanwhile, consider another example - what if a device is not a backend at
+>>>>>> all (e.g. vfio?), has its own VMSD, then want to do fd-passing?
+>>>>>
+>>>>> Reasonable.
+>>>>>
+>>>>> But consider also the discussion with Fabiano in v5, where he argues against fds
+>>>>> (reasonable too):
+>>>>>
+>>>>> https://lore.kernel.org/qemu-devel/87y0qatqoa.fsf@suse.de/
+>>>>>
+>>>>> (still, they were against my "fds" name for the parameter, which is
+>>>>> really too generic, fd-passing is not)
+>>>>>
+>>>>> and the arguments for backend-transfer (to read similar with cpr-transfer)
+>>>>>
+>>>>> https://lore.kernel.org/qemu-devel/87ms6qtlgf.fsf@suse.de/
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> In general, I think "fd" is really a core concept of this whole thing.
+>>>>>
+>>>>> I think, we can call "backend" any external object, linked by the fd.
+>>>>>
+>>>>> Still, backend/frontend terminology is so misleading, when applied to
+>>>>> complex systems (for me, at least), that I don't really like "-backend"
+>>>>> word here.
+>>>>>
+>>>>> fd-passing is OK for me, I can resend with it, if arguments by Fabiano
+>>>>> not change your mind.
+>>>>
+>>>> Ah, I didn't notice the name has been discussed.
+>>>>
+>>>> I think it means you can vote for your own preference now because we have
+>>>> one vote for each. :) Let's also see whether Fabiano will come up with
+>>>> something better than both.
+>>>>
+>>>> You mentioned explicitly the file descriptors in the qapi doc, that's what
+>>>> I would strongly request for.  The other thing is the unix socket check, it
+>>>> looks all good below now with it, thanks.  No strong feelings on the names.
+>>>>
+>>>
+>>> After a bit more thinking, I leaning towards keeping backend-transfer. I think
+>>> it's more meaningful for the user:
+>>>
+>>> If we call it "fd-passing", user may ask:
+>>>
+>>> Ok, what is it? Allow QEMU to pass some fds through migration stream, if it
+>>> supports fds? Which fds? Why to pass them? Finally, why QEMU can't just check
+>>> is it unix socket or not, and pass any fds it wants if it is?
+>>>
+>>> Logical question is, why not just drop the global capability, and check only
+>>> is it unix socket or not? (OK, relying only on socket type is wrong anyway,
+>>> as it may be some complex tunneling, which includes unix sockets, but still
+>>> can't pass fds, but I think now about feature naming)
+>>>
+>>> But we really want an explicit switch for the feature. As qemu-update is
+>>> not the only case of local migration. The another case is changing the
+>>> backend. So for the user's choice is:
+>>>
+>>> 1. Remote migration: we can't reuse backends (files, sockets, host devices), as
+>>> we are moving to another host. So, we don't enable "backend-transfer". We don't
+>>> transfer the backend, we have to initialize new backend on another host.
+>>>
+>>> 2. Local migration to update QEMU, with minimal freeze-time and minimal
+>>> extra actions: use "backend-transfer", exactly to keep the backends
+>>> (vhost-user-server, TAP device in kernel, in-kernel vfio device state, etc)
+>>> as is.
+>>>
+>>> 3. Local migration, but we want to reconfigure some backend, or switch
+>>> to another backend. We disable "backend-transfer" for one device.
+>>
+>> This implies that you're changing 'backend-transfer' against the
+>> device at time of each migration.
+>>
+>> This takes us back to the situation we've had historically where the
+>> behaviour of migration depends on global properties the mgmt app has
+>> set prior to the 'migrate' command being run. We've just tried to get
+>> away from that model by passing everything as parameters to the
+>> migrate command, so I'm loathe to see us invent a new way to have
+>> global state properties changing migration behaviour.
+>>
+>> This 'backend-transfer' device property is not really a device property,
+>> it is an indirect parameter to the 'migrate' command.
+>>
+>> Ergo, if we need the ability to selectively migrate the backend state
+>> of individal devices, then instead of a property on the device, we
+>> should pass a list of device IDs as a parameter to the migrate
+>> command in QMP.
+> 
+> Understand.
+> 
+> So, it will look like
+> 
+> # @backend-transfer: List of devices IDs or QOM paths, to enable
+> #     backend-transfer for. In general that means that backend
+> #     states and their file descriptors are passed to the destination
+> #     in the migration channel (which must be a UNIX socket), and
+> #     management tool doesn't have to configure new backends for
+> #     target QEMU (like vhost-user server, or TAP device in the kernel).
+> #     Default is no backend-transfer migration (Since 10.2)
+> 
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- accel/whpx/whpx-accel-ops.c    |  2 +-
- accel/whpx/whpx-common.c       |  4 ++--
- hw/i386/x86-cpu.c              |  4 ++--
- include/system/whpx-internal.h |  2 +-
- include/system/whpx.h          |  4 ++--
- target/i386/cpu-apic.c         |  2 +-
- target/i386/whpx/whpx-all.c    | 14 +++++++-------
- 7 files changed, 16 insertions(+), 16 deletions(-)
+RFC diff to these series, to switch the API to list of IDs:
 
-diff --git a/accel/whpx/whpx-accel-ops.c b/accel/whpx/whpx-accel-ops.c
-index c84a25c273..50fadea0fd 100644
---- a/accel/whpx/whpx-accel-ops.c
-+++ b/accel/whpx/whpx-accel-ops.c
-@@ -78,7 +78,7 @@ static void whpx_kick_vcpu_thread(CPUState *cpu)
- 
- static bool whpx_vcpu_thread_is_idle(CPUState *cpu)
- {
--    return !whpx_apic_in_platform();
-+    return !whpx_irqchip_in_kernel();
- }
- 
- static void whpx_accel_ops_class_init(ObjectClass *oc, const void *data)
-diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-index c0ff6cacb8..18d93225c1 100644
---- a/accel/whpx/whpx-common.c
-+++ b/accel/whpx/whpx-common.c
-@@ -496,9 +496,9 @@ static const TypeInfo whpx_cpu_accel_type = {
-  * Partition support
-  */
- 
--bool whpx_apic_in_platform(void)
-+bool whpx_irqchip_in_kernel(void)
- {
--    return whpx_global.apic_in_platform;
-+    return whpx_global.kernel_irqchip;
- }
- 
- static void whpx_accel_class_init(ObjectClass *oc, const void *data)
-diff --git a/hw/i386/x86-cpu.c b/hw/i386/x86-cpu.c
-index c876e6709e..778607e7ca 100644
---- a/hw/i386/x86-cpu.c
-+++ b/hw/i386/x86-cpu.c
-@@ -45,7 +45,7 @@ static void pic_irq_request(void *opaque, int irq, int level)
- 
-     trace_x86_pic_interrupt(irq, level);
-     if (cpu_is_apic_enabled(cpu->apic_state) && !kvm_irqchip_in_kernel() &&
--        !whpx_apic_in_platform()) {
-+        !whpx_irqchip_in_kernel()) {
-         CPU_FOREACH(cs) {
-             cpu = X86_CPU(cs);
-             if (apic_accept_pic_intr(cpu->apic_state)) {
-@@ -71,7 +71,7 @@ int cpu_get_pic_interrupt(CPUX86State *env)
-     X86CPU *cpu = env_archcpu(env);
-     int intno;
- 
--    if (!kvm_irqchip_in_kernel() && !whpx_apic_in_platform()) {
-+    if (!kvm_irqchip_in_kernel() && !whpx_irqchip_in_kernel()) {
-         intno = apic_get_interrupt(cpu->apic_state);
-         if (intno >= 0) {
-             return intno;
-diff --git a/include/system/whpx-internal.h b/include/system/whpx-internal.h
-index e57d2c8526..366bc525a3 100644
---- a/include/system/whpx-internal.h
-+++ b/include/system/whpx-internal.h
-@@ -42,7 +42,7 @@ struct whpx_state {
- 
-     bool kernel_irqchip_allowed;
-     bool kernel_irqchip_required;
--    bool apic_in_platform;
-+    bool kernel_irqchip;
- };
- 
- extern struct whpx_state whpx_global;
-diff --git a/include/system/whpx.h b/include/system/whpx.h
-index 00f6a3e523..98fe045ba1 100644
---- a/include/system/whpx.h
-+++ b/include/system/whpx.h
-@@ -26,10 +26,10 @@
- #ifdef CONFIG_WHPX_IS_POSSIBLE
- extern bool whpx_allowed;
- #define whpx_enabled() (whpx_allowed)
--bool whpx_apic_in_platform(void);
-+bool whpx_irqchip_in_kernel(void);
- #else /* !CONFIG_WHPX_IS_POSSIBLE */
- #define whpx_enabled() 0
--#define whpx_apic_in_platform() (0)
-+#define whpx_irqchip_in_kernel() (0)
- #endif /* !CONFIG_WHPX_IS_POSSIBLE */
- 
- #endif /* QEMU_WHPX_H */
-diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
-index 242a05fdbe..d4d371a616 100644
---- a/target/i386/cpu-apic.c
-+++ b/target/i386/cpu-apic.c
-@@ -32,7 +32,7 @@ APICCommonClass *apic_get_class(Error **errp)
-         apic_type = "kvm-apic";
-     } else if (xen_enabled()) {
-         apic_type = "xen-apic";
--    } else if (whpx_apic_in_platform()) {
-+    } else if (whpx_irqchip_in_kernel()) {
-         apic_type = "whpx-apic";
-     }
- 
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index d1f8e49cb2..feabbec427 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -607,7 +607,7 @@ void whpx_get_registers(CPUState *cpu)
-                      hr);
-     }
- 
--    if (whpx_apic_in_platform()) {
-+    if (whpx_irqchip_in_kernel()) {
-         /*
-          * Fetch the TPR value from the emulated APIC. It may get overwritten
-          * below with the value from CR8 returned by
-@@ -749,7 +749,7 @@ void whpx_get_registers(CPUState *cpu)
- 
-     assert(idx == RTL_NUMBER_OF(whpx_register_names));
- 
--    if (whpx_apic_in_platform()) {
-+    if (whpx_irqchip_in_kernel()) {
-         whpx_apic_get(x86_cpu->apic_state);
-     }
- 
-@@ -1379,7 +1379,7 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
-     }
- 
-     /* Get pending hard interruption or replay one that was overwritten */
--    if (!whpx_apic_in_platform()) {
-+    if (!whpx_irqchip_in_kernel()) {
-         if (!vcpu->interruption_pending &&
-             vcpu->interruptable && (env->eflags & IF_MASK)) {
-             assert(!new_int.InterruptionPending);
-@@ -1552,7 +1552,7 @@ int whpx_vcpu_run(CPUState *cpu)
- 
-     if (exclusive_step_mode == WHPX_STEP_NONE) {
-         whpx_vcpu_process_async_events(cpu);
--        if (cpu->halted && !whpx_apic_in_platform()) {
-+        if (cpu->halted && !whpx_irqchip_in_kernel()) {
-             cpu->exception_index = EXCP_HLT;
-             qatomic_set(&cpu->exit_request, false);
-             return 0;
-@@ -1641,7 +1641,7 @@ int whpx_vcpu_run(CPUState *cpu)
-             break;
- 
-         case WHvRunVpExitReasonX64ApicEoi:
--            assert(whpx_apic_in_platform());
-+            assert(whpx_irqchip_in_kernel());
-             ioapic_eoi_broadcast(vcpu->exit_ctx.ApicEoi.InterruptVector);
-             break;
- 
-@@ -2186,7 +2186,7 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
-                 goto error;
-             }
-         } else {
--            whpx->apic_in_platform = true;
-+            whpx->kernel_irqchip = true;
-         }
-     }
- 
-@@ -2195,7 +2195,7 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
-     prop.ExtendedVmExits.X64MsrExit = 1;
-     prop.ExtendedVmExits.X64CpuidExit = 1;
-     prop.ExtendedVmExits.ExceptionExit = 1;
--    if (whpx_apic_in_platform()) {
-+    if (whpx_irqchip_in_kernel()) {
-         prop.ExtendedVmExits.X64ApicInitSipiExitTrap = 1;
-     }
- 
+
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index a3d77f5604..681adbb7ac 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -40,7 +40,6 @@
+  
+  GlobalProperty hw_compat_10_1[] = {
+      { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
+-    { TYPE_VIRTIO_NET, "backend-transfer", "false" },
+  };
+  const size_t hw_compat_10_1_len = G_N_ELEMENTS(hw_compat_10_1);
+  
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 5f9711dee7..a895b26e5d 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3638,7 +3638,7 @@ static bool virtio_net_is_tap_mig(void *opaque, int version_id)
+  
+      nc = qemu_get_queue(n->nic);
+  
+-    return migrate_backend_transfer() && n->backend_transfer && nc->peer &&
++    return migrate_backend_transfer(DEVICE(n)) && nc->peer &&
+          nc->peer->info->type == NET_CLIENT_DRIVER_TAP;
+  }
+  
+@@ -4461,7 +4461,6 @@ static const Property virtio_net_properties[] = {
+                                 host_features_ex,
+                                 VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM,
+                                 false),
+-    DEFINE_PROP_BOOL("backend-transfer", VirtIONet, backend_transfer, true),
+  };
+  
+  static void virtio_net_class_init(ObjectClass *klass, const void *data)
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index a7bfb10dc7..0f3b7aa55e 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -1160,4 +1160,7 @@ typedef enum MachineInitPhase {
+  bool phase_check(MachineInitPhase phase);
+  void phase_advance(MachineInitPhase phase);
+  
++bool migrate_backend_transfer(DeviceState *dev);
++bool migrate_backend_transfer_check_list(const strList *list, Error **errp);
++
+  #endif
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index bf07f8a4cb..5b8ab7bda7 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -231,7 +231,6 @@ struct VirtIONet {
+      struct EBPFRSSContext ebpf_rss;
+      uint32_t nr_ebpf_rss_fds;
+      char **ebpf_rss_fds;
+-    bool backend_transfer;
+  };
+  
+  size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index 592b93021e..7f931bed17 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -152,4 +152,6 @@ bool multifd_device_state_save_thread_should_exit(void);
+  void multifd_abort_device_state_save_threads(void);
+  bool multifd_join_device_state_save_threads(void);
+  
++const strList *migrate_backend_transfer_list(void);
++
+  #endif
+diff --git a/migration/options.c b/migration/options.c
+index a461b07b54..1644728ed7 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -13,6 +13,7 @@
+  
+  #include "qemu/osdep.h"
+  #include "qemu/error-report.h"
++#include "qapi/util.h"
+  #include "exec/target_page.h"
+  #include "qapi/clone-visitor.h"
+  #include "qapi/error.h"
+@@ -24,6 +25,7 @@
+  #include "migration/colo.h"
+  #include "migration/cpr.h"
+  #include "migration/misc.h"
++#include "migration/options.h"
+  #include "migration.h"
+  #include "migration-stats.h"
+  #include "qemu-file.h"
+@@ -262,7 +264,7 @@ bool migrate_mapped_ram(void)
+      return s->capabilities[MIGRATION_CAPABILITY_MAPPED_RAM];
+  }
+  
+-bool migrate_backend_transfer(void)
++const strList *migrate_backend_transfer_list(void)
+  {
+      MigrationState *s = migrate_get_current();
+      return s->parameters.backend_transfer;
+@@ -969,8 +971,11 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+      params->cpr_exec_command = QAPI_CLONE(strList,
+                                            s->parameters.cpr_exec_command);
+  
+-    params->has_backend_transfer = true;
+-    params->backend_transfer = s->parameters.backend_transfer;
++    if (s->parameters.backend_transfer) {
++        params->has_backend_transfer = true;
++        params->backend_transfer = QAPI_CLONE(strList,
++                                              s->parameters.backend_transfer);
++    }
+  
+      return params;
+  }
+@@ -1193,6 +1198,11 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+          return false;
+      }
+  
++    if (params->has_backend_transfer &&
++        !migrate_backend_transfer_check_list(params->backend_transfer, errp)) {
++        return false;
++    }
++
+      return true;
+  }
+  
+@@ -1459,7 +1469,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+      }
+  
+      if (params->has_backend_transfer) {
+-        s->parameters.backend_transfer = params->backend_transfer;
++        qapi_free_strList(s->parameters.backend_transfer);
++
++        s->parameters.backend_transfer = QAPI_CLONE(strList,
++                                                    params->backend_transfer);
+      }
+  }
+  
+diff --git a/migration/options.h b/migration/options.h
+index 755ba1c024..82d839709e 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -87,8 +87,6 @@ const char *migrate_tls_hostname(void);
+  uint64_t migrate_xbzrle_cache_size(void);
+  ZeroPageDetection migrate_zero_page_detection(void);
+  
+-bool migrate_backend_transfer(void);
+-
+  /* parameters helpers */
+  
+  bool migrate_params_check(MigrationParameters *params, Error **errp);
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 35601a1f87..9478c4ddab 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -951,12 +951,11 @@
+  #     is @cpr-exec.  The first list element is the program's filename,
+  #     the remainder its arguments.  (Since 10.2)
+  #
+-# @backend-transfer: Enable backend-transfer feature for devices that
+-#     supports it. In general that means that backend state and its
+-#     file descriptors are passed to the destination in the migraton
+-#     channel (which must be a UNIX socket). Individual devices
+-#     declare the support for backend-transfer by per-device
+-#     backend-transfer option. (Since 10.2)
++# @backend-transfer: List of devices (IDs or QOM paths) for
++#     backend-transfer migration.  When enabled, device backends
++#     including opened fds will be passed to the destination in the
++#     migration channel (which must be a UNIX domain socket).  Default
++#     is no backend-transfer migration. (Since 10.2)
+  #
+  # Features:
+  #
+@@ -1145,12 +1144,11 @@
+  #     is @cpr-exec.  The first list element is the program's filename,
+  #     the remainder its arguments.  (Since 10.2)
+  #
+-# @backend-transfer: Enable backend-transfer feature for devices that
+-#     supports it. In general that means that backend state and its
+-#     file descriptors are passed to the destination in the migraton
+-#     channel (which must be a UNIX socket). Individual devices
+-#     declare the support for backend-transfer by per-device
+-#     backend-transfer option. (Since 10.2)
++# @backend-transfer: List of devices (IDs or QOM paths) for
++#     backend-transfer migration.  When enabled, device backends
++#     including opened fds will be passed to the destination in the
++#     migration channel (which must be a UNIX domain socket).  Default
++#     is no backend-transfer migration. (Since 10.2)
+  #
+  # Features:
+  #
+@@ -1195,7 +1193,7 @@
+              '*zero-page-detection': 'ZeroPageDetection',
+              '*direct-io': 'bool',
+              '*cpr-exec-command': [ 'str' ],
+-            '*backend-transfer': { 'type': 'bool',
++            '*backend-transfer': { 'type': [ 'str' ],
+                                     'features': [ 'unstable' ] } } }
+  
+  ##
+@@ -1369,12 +1367,11 @@
+  #     is @cpr-exec.  The first list element is the program's filename,
+  #     the remainder its arguments.  (Since 10.2)
+  #
+-# @backend-transfer: Enable backend-transfer feature for devices that
+-#     supports it. In general that means that backend state and its
+-#     file descriptors are passed to the destination in the migraton
+-#     channel (which must be a UNIX socket). Individual devices
+-#     declare the support for backend-transfer by per-device
+-#     backend-transfer option. (Since 10.2)
++# @backend-transfer: List of devices (IDs or QOM paths) for
++#     backend-transfer migration.  When enabled, device backends
++#     including opened fds will be passed to the destination in the
++#     migration channel (which must be a UNIX domain socket).  Default
++#     is no backend-transfer migration. (Since 10.2)
+  #
+  # Features:
+  #
+@@ -1416,7 +1413,7 @@
+              '*zero-page-detection': 'ZeroPageDetection',
+              '*direct-io': 'bool',
+              '*cpr-exec-command': [ 'str' ],
+-            '*backend-transfer': { 'type': 'bool',
++            '*backend-transfer': { 'type': [ 'str' ],
+                                     'features': [ 'unstable' ] } } }
+  
+  ##
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 2ac92d0a07..b4a1a88992 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -939,6 +939,32 @@ void qmp_device_del(const char *id, Error **errp)
+      }
+  }
+  
++bool migrate_backend_transfer(DeviceState *dev)
++{
++    const strList *el = migrate_backend_transfer_list();
++
++    for ( ; el; el = el->next) {
++        if (find_device_state(el->value, false, NULL) == dev) {
++            return true;
++        }
++    }
++
++    return false;
++}
++
++bool migrate_backend_transfer_check_list(const strList *list, Error **errp)
++{
++    const strList *el = list;
++
++    for ( ; el; el = el->next) {
++        if (!find_device_state(el->value, false, errp)) {
++            return false;
++        }
++    }
++
++    return true;
++}
++
+  int qdev_sync_config(DeviceState *dev, Error **errp)
+  {
+      DeviceClass *dc = DEVICE_GET_CLASS(dev);
+diff --git a/tests/functional/test_x86_64_tap_migration.py b/tests/functional/test_x86_64_tap_migration.py
+index 1f88ff174c..a324b0f374 100644
+--- a/tests/functional/test_x86_64_tap_migration.py
++++ b/tests/functional/test_x86_64_tap_migration.py
+@@ -254,17 +254,16 @@ def prepare_and_launch_vm(
+          self.log.info(f"Launching {vm_s} VM")
+          vm.launch()
+  
+-        self.set_migration_capabilities(vm, backend_transfer)
+-
+          if not backend_transfer:
+              tap_name = TAP_ID2 if incoming else TAP_ID
+          else:
+              tap_name = TAP_ID
+  
+-        self.add_virtio_net(vm, vhost, tap_name, backend_transfer)
++        self.add_virtio_net(vm, vhost, tap_name)
++
++        self.set_migration_capabilities(vm, backend_transfer)
+  
+-    def add_virtio_net(self, vm, vhost: bool, tap_name: str,
+-                       backend_transfer: bool):
++    def add_virtio_net(self, vm, vhost: bool, tap_name: str = "tap0"):
+          netdev_params = {
+              "id": "netdev.1",
+              "vhost": vhost,
+@@ -289,17 +288,19 @@ def add_virtio_net(self, vm, vhost: bool, tap_name: str,
+              bus="pci.1",
+              mac=GUEST_MAC,
+              disable_legacy="off",
+-            backend_transfer=backend_transfer,
+          )
+  
+      def set_migration_capabilities(self, vm, backend_transfer=True):
+-        vm.cmd("migrate-set-capabilities", { "capabilities": [
++        capabilities = [
+              {"capability": "events", "state": True},
+              {"capability": "x-ignore-shared", "state": True},
+-        ]})
+-        vm.cmd("migrate-set-parameters", {
+-            "backend-transfer": backend_transfer
+-        })
++        ]
++        vm.cmd("migrate-set-capabilities", {"capabilities": capabilities})
++        if backend_transfer:
++            vm.cmd(
++                "migrate-set-parameters",
++                {"backend-transfer": ["/machine/peripheral/vnet.1/virtio-backend"]},
++            )
+  
+      def setup_guest_network(self) -> None:
+          exec_command_and_wait_for_pattern(self, "ip addr", "# ")
+
+
+
 -- 
-2.50.1 (Apple Git-155)
-
+Best regards,
+Vladimir
 
