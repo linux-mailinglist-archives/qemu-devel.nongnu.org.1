@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EBEBE3465
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24446BE34C5
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Oct 2025 14:16:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9MqA-0004I8-Rf; Thu, 16 Oct 2025 08:12:18 -0400
+	id 1v9Mtu-00063a-MD; Thu, 16 Oct 2025 08:16:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9Mq1-0004Fc-LK
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:12:09 -0400
-Received: from mail-yx1-xb131.google.com ([2607:f8b0:4864:20::b131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9Mtf-00061y-OX
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:15:55 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9Mpq-0007Vh-74
- for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:12:08 -0400
-Received: by mail-yx1-xb131.google.com with SMTP id
- 956f58d0204a3-635380a4a67so596479d50.0
- for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:11:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9MtT-00083Q-Ix
+ for qemu-devel@nongnu.org; Thu, 16 Oct 2025 08:15:54 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3ed20bdfdffso692815f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 05:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760616709; x=1761221509; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=74prRsWt9fN/jTucFMtsjHX21AKgfiRm6RmaEx0wV40=;
- b=GpJvN5N3qoQyrfmHL+VnO/sMPxV7mFdoodoCKRUUTnzCcFAyNocTfglFvSkYZ+I0x2
- Gh17bICOY/nuF5TSdDzAne+L3RpcnbJUvsYJpkrbc2Dcub43ULfI8aodfMb4heimbgLj
- YF4rxTZADShSj2rucajZly8aNvUZ24RapmjYW0mCKmZ4uwgvGBP0Dse9KDxXRPPhx6Tv
- /TkTu2+heZj8DgzzYQbSuVrj1VT7eKUkTbLhAc1icRLSqoA3mlo8NU7USy7+aLnmj8bU
- jYUuJEGXrI+dnvqxblpnJ0v5qwIYhpJrfdCC8MDCRsXTCI0HP7u5MFFCASnEvuNMvNM3
- e28A==
+ d=linaro.org; s=google; t=1760616935; x=1761221735; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=E+4YTGKP36pt6mvcQO+b8RWSJSAkWm5iLXUm8vLAp9A=;
+ b=FXGL2Hr5kT8DESUuHTeSJ1NwX+u174LMbHpr21hRHxYeh/w9qRewymEbaMvKYo34Oi
+ IsStEqWwuBDrq/CLG75pN6Bz6MXZwzQyQYryonIF7WiG0SIy02ctFCk0Ds9d+nZiW/yJ
+ DsEZN4y3YgXUL/XVHNc+Jek8ZNHKlVQYWIkWokHIalCqgGUbnZ3YrWbPEU3IlGEcpHg5
+ 891en51AmidanfFTLGd+zNhrK7lw5OCglpLpm1EE5pzHFSaFtLsgOTqx/uN3Uoaccirt
+ nuwFibrvp9ApTO6+BtcI4tFyF63e7nTcXbSY5H/9Ai8htFaAbV5Naa9cu+iRdzgbum+2
+ ZPoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760616709; x=1761221509;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=74prRsWt9fN/jTucFMtsjHX21AKgfiRm6RmaEx0wV40=;
- b=jcIxCwlgV3OXZkW4ieKDyDWc7VkbwMWIXvCckJxLefQq91tDCeSgtTUX2o7mrycOYb
- scGaINw7DfPrioKIG0eTT0jQRnydKgnwHw+KzoM1NltyfMCMxVeDVaegM1ogGTrLnYLL
- RdPVrptuaOwdFNBzQOAD5KqkSrC3FBZtbRzjVm9zy+eptZgyovO1zwnHVXeU4I6fHjUG
- lJ0GMeWbaw1BHd1hlAMHL8lkLGvtA+ob0q7jZ/+faAjbYf/7p3ehzB0xqy002kCSsCiP
- ctl3GzDgZxpd6cIeFRwGvw5IJ29rYrl1mloNNv0hhnUoo08klTKFtB+ij4tPwR64bP7W
- 0Cdw==
-X-Gm-Message-State: AOJu0YzVS8f5X4PPiUDXbFSdbujthblWNWSphquKR806OvBoomHq0u30
- jvZAHraaWtqayl88KBZYBc69NKlI3HlM7yuIP+pIMAzs47ld71DH34ZbW9OUD9JYNOq2s+Ip+EJ
- 2ggwdzNAxKb4i3qJ+dP4ppx0JBZjpj2P2echHM51qSQ==
-X-Gm-Gg: ASbGncsrUY3RamAjfonI+/xzvZXgpOYVRrinNds3X9ObFHwDVPnF6rfHAIy6DJQ/zBD
- MfO117PlSTqcRDlkXCJ0ZeQhsRsmsjEASJnIs60YluIDi5DH4mQ3hL7KdcovDZe7I89u7dPi85O
- EW9NdMHBTpEsWCZqRxuK4rwZwQ6wEDiPFVZ1Js2sJ62Vhgr5dE+/tOXk2U9M1hqqBZ4B51fHnLb
- oX7VBlbXWhUSyJuXKBkkw2UQj9R7VaUIhT8dBzg9XUYc3xPu/27nWwQVYpU6lKRkf9PkA5nCLAQ
-X-Google-Smtp-Source: AGHT+IH8iTmPmiSludiYkeeYjZ3LtQ7nmOsK6tVWQIwHNTcppT5F01A3Jp78Un4F+GZ9aRMv9PMVEGQ8sNN/zo+PDKQ=
-X-Received: by 2002:a05:690e:1287:b0:63e:12d7:8f35 with SMTP id
- 956f58d0204a3-63e12d79256mr512626d50.49.1760616709239; Thu, 16 Oct 2025
- 05:11:49 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760616935; x=1761221735;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E+4YTGKP36pt6mvcQO+b8RWSJSAkWm5iLXUm8vLAp9A=;
+ b=kxU3TgtCvX1OjwZWKCfftlk3VbtsfP6t/ocLy1LtTifaSSm1VWmHeMzUljJp+SaT9T
+ T9wYqzR4E7d2F2aGdCZMuzJQflmkPozrT/jIwZETEUs33o9/Zpc2hoD9bqEoglcHyHou
+ mwMMm35UimMnZHPWbNcovUEc8sZ+pBDqxg2GV/AWXqWaEAkbwwMY4P8rrYkcZ6ffHNAG
+ s7+lsGrVPBS3LqbjwOohhl/pKjzF7yFhSuEYJi5cadzk17Uk0AwoTePjIoaVvvFAre7p
+ kG42NDqWnwqZQZ9FRhsHEApBnzH4DIX1uc4Ww/vRGUY7TEhFz8Z977DUsWj6q3uJOp6E
+ DcZQ==
+X-Gm-Message-State: AOJu0YwEA1W6O3KEde0FBOJ5NTJvgOiH5IONgRfxJTWiRLiKY5w5bCUL
+ clBxjj5qfBVspiviktBj2ds0ODATApSoJ+TpWMU7PJhn/mD813OGIr0Y7gHi9TzaEpa+PaD/hks
+ qYM3dzUo=
+X-Gm-Gg: ASbGncsCmvFxhJGJ1doO56eoktGnfwavDwgl7kmnm7r27dU4ExdyzanEO7ZIdgyaBUm
+ 0PJCgGN/xKQcNglb1hTml3V//yC1Jfp0SKVzc7XzTvJUgnCOuB64f+KpJvO6roctbtQxUHl6XkK
+ QP70YuxRvjtAHbg9goiaUv06dkTsVathaeG1frfhBU//oFwg8Qx685rTEAmdkhD/NOOva+MU431
+ 0RyTFWN+U5+MNQd0xFnAqJPAyb4fx5C0/XCh5snd1GIlGl6gxqIWsqBDnlHVlapZSSrv560vuIL
+ YdOvGQixsc8mCJfvpgqf48l9ZhYM9fkae0oAOFyjkMVQNTHNKxS6H9rnqHdClbVOmfJEQr+E1fs
+ E8etqwk3psZCnvWBdtKJVXwgkfLF7xIPfu7SYDUN+bx62QR2qHGD0Hq5f1bc7EC/KH5VO7NDGK/
+ VmdVifSh5RG8LTd2sHqLDgNpPhPeEcMelqk3d88Y8ve6EqGA29gGL//Q==
+X-Google-Smtp-Source: AGHT+IFHPuNUSe5COb9GZT0psYtgoNSwYDinFxSobl76Pd0ocqxGxhTYSCOUs5Dw9IRAN7f8Q8SXPQ==
+X-Received: by 2002:a05:6000:26c5:b0:3ee:1357:e191 with SMTP id
+ ffacd0b85a97d-4266e7d9252mr19308131f8f.30.1760616934558; 
+ Thu, 16 Oct 2025 05:15:34 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-426ce5cfe69sm35546984f8f.32.2025.10.16.05.15.33
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 16 Oct 2025 05:15:34 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/75] Misc single binary patches for 2025-10-16
+Date: Thu, 16 Oct 2025 14:14:16 +0200
+Message-ID: <20251016121532.14042-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20251010121435.3885228-1-peter.maydell@linaro.org>
- <03c1d056-7319-438b-a2dc-27687108b678@redhat.com>
-In-Reply-To: <03c1d056-7319-438b-a2dc-27687108b678@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 16 Oct 2025 13:11:37 +0100
-X-Gm-Features: AS18NWDYEp2fMbXdLllyh9mHzJ7IbBOZyflYj3tp8eTC2yYVKa--RF9XLxMTTwQ
-Message-ID: <CAFEAcA9sZ+ss7H8HrjLsHrsh_Rpj0ykt=y_y=vptwE2pLE09uQ@mail.gmail.com>
-Subject: Re: [PATCH] tests/tcg/multiarch/linux/linux-test: Don't try to test
- atime update
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b131;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb131.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,39 +94,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Oct 2025 at 13:08, Thomas Huth <thuth@redhat.com> wrote:
->
-> On 10/10/2025 14.14, Peter Maydell wrote:
-> >   tests/tcg/multiarch/linux/linux-test.c | 9 +++++++--
-> >   1 file changed, 7 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/tests/tcg/multiarch/linux/linux-test.c b/tests/tcg/multiarch/linux/linux-test.c
-> > index 64f57cb287e..bf6e0fda262 100644
-> > --- a/tests/tcg/multiarch/linux/linux-test.c
-> > +++ b/tests/tcg/multiarch/linux/linux-test.c
-> > @@ -155,9 +155,14 @@ static void test_file(void)
->
-> Maybe drop the "tbuf.actime = 1001;" earlier in this file, too?
+The following changes since commit 8109ebdb95c45d9062c7e6e7beae0ee571fca4f8:
 
-The utime("file2", &tbuf)  call will still set both atime and
-mtime, so we want to keep the initialization of that field
-so we're not accessing an uninitialized value with the syscall.
+  Merge tag 'pull-loongarch-20251015' of https://github.com/bibo-mao/qemu into staging (2025-10-15 14:49:51 -0700)
 
-> >           error("stat mode");
-> >       if ((st.st_mode & 0777) != 0600)
-> >           error("stat mode2");
-> > -    if (st.st_atime != 1001 ||
-> > -        st.st_mtime != 1000)
-> > +    /*
-> > +     * Only check mtime, not atime: other processes such as
-> > +     * virus scanners might race with this test program and get
-> > +     * in and update the atime, causing random failures.
->
-> I actually saw similar problems when looking at the atimes of the files in
-> the functional test cache, so I agree, checking atime cannot work reliably.
->
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+are available in the Git repository at:
 
-thanks
--- PMM
+  https://github.com/philmd/qemu.git tags/single-binary-20251016
+
+for you to fetch changes up to 3b283e98d7f3b1cec795bfac0213265e41fbecfe:
+
+  mailmap: Unify Clément Mathieu--Drif emails (2025-10-16 14:08:44 +0200)
+
+----------------------------------------------------------------
+Various patches related to single binary work:
+
+- Remove some VMSTATE_UINTTL() uses
+- Replace target_ulong by vaddr / hwaddr / uint[32,64]_t
+- Expand TCGv to TCGv_i32 for 32-bit targets
+- Remove some unnecessary checks on TARGET_LONG_BITS
+- Replace few HOST_BIG_ENDIAN preprocessor #ifdef by compile-time if() check
+- Expand MO_TE to either MO_BE or MO_LE
+
+Also:
+
+- Fix HPPA FMPYADD opcode
+- Unify Clément Mathieu--Drif email addresses
+----------------------------------------------------------------
+
+Anton Johansson (1):
+  target/riscv: Use 32 bits for misa extensions
+
+Gabriel Brookman (1):
+  target/hppa: correct size bit parity for fmpyadd
+
+Philippe Mathieu-Daudé (73):
+  accel/tcg: Name gen_goto_tb()'s TB slot index as @tb_slot_idx
+  target/alpha: Access CPUState::cpu_index via helper
+  target/alpha: Replace VMSTATE_UINTTL() -> VMSTATE_UINT64()
+  target/hppa: Use hwaddr type for HPPATLBEntry::pa
+  target/hppa: Have hppa_form_gva*() return vaddr type
+  target/hppa: Explode MO_TExx -> MO_TE | MO_xx
+  target/hppa: Conceal MO_TE within do_load()
+  target/hppa: Conceal MO_TE within do_load_32/64()
+  target/hppa: Conceal MO_TE within do_store()
+  target/hppa: Conceal MO_TE within do_store_32/64()
+  target/hppa: Introduce mo_endian() helper
+  target/hppa: Replace MO_TE -> MO_BE
+  target/loongarch: Replace VMSTATE_UINTTL() -> VMSTATE_UINT64()
+  target/loongarch: Remove target_ulong use in gen_goto_tb()
+  target/loongarch: Remove target_ulong use in gdb_write_register
+    handler
+  target/loongarch: Do not use target_ulong type for LDDIR level
+  target/m68k: Remove unused @cpu_exception_index TCGv
+  target/m68k: Remove pointless @cpu_halted TCGv
+  target/microblaze: Remove target_ulong use in cpu_handle_mmu_fault()
+  target/microblaze: Remove target_ulong uses in
+    get_phys_page_attrs_debug
+  target/microblaze: Remove target_ulong use in gen_goto_tb()
+  target/microblaze: Remove target_ulong use in helper_stackprot()
+  target/microblaze: Have compute_ldst_addr_type[ab] return TCGv_i32
+  target/microblaze: Have do_load/store() take a TCGv_i32 address
+    argument
+  target/microblaze: Convert CPUMBState::res_addr field to uint32_t type
+  target/openrisc: Replace VMSTATE_UINTTL() -> VMSTATE_UINT32()
+  target/openrisc: Do not use target_ulong for @mr in MTSPR helper
+  target/openrisc: Remove unused cpu_openrisc_map_address_*() handlers
+  target/openrisc: Remove target_ulong use in raise_mmu_exception()
+  target/openrisc: Use vaddr type for $pc jumps
+  target/openrisc: Remove 'TARGET_LONG_BITS != 32' dead code
+  target/openrisc: Explode MO_TExx -> MO_TE | MO_xx
+  target/openrisc: Conceal MO_TE within do_load()
+  target/openrisc: Conceal MO_TE within do_store()
+  target/openrisc: Introduce mo_endian() helper
+  target/openrisc: Replace MO_TE -> MO_BE
+  target/openrisc: Inline tcg_gen_trunc_i64_tl()
+  target/openrisc: Replace target_ulong -> uint32_t
+  target/riscv: Replace HOST_BIG_ENDIAN #ifdef with if() check
+  target/rx: Replace target_ulong -> vaddr for translator API uses
+  target/rx: Use MemOp type in gen_ld[u]() and gen_st()
+  target/rx: Propagate DisasContext to generated helpers
+  target/rx: Propagate DisasContext to push() / pop()
+  target/rx: Propagate DisasContext to gen_ld[u]() and gen_st()
+  target/rx: Factor mo_endian() helper out
+  target/rx: Replace MO_TE -> MO_LE
+  target/rx: Expand TCG register definitions for 32-bit target
+  target/rx: Un-inline various helpers
+  target/s390x: Replace HOST_BIG_ENDIAN #ifdef with if() check
+  target/sh4: Convert CPUSH4State::sr register to uint32_t type
+  target/sh4: Remove target_ulong use in cpu_sh4_is_cached()
+  target/sh4: Use hwaddr type for hardware addresses
+  target/sh4: Remove target_ulong uses in superh_cpu_get_phys_page_debug
+  target/sh4: Use vaddr type for TLB virtual addresses
+  target/sh4: Remove target_ulong use in gen_goto_tb()
+  target/sparc: Reduce inclusions of 'exec/cpu-common.h'
+  target/tricore: Remove target_ulong use in gen_goto_tb()
+  target/tricore: Replace target_ulong -> vaddr with tlb_fill() callees
+  target/tricore: Remove target_ulong use in translate_insn() handler
+  target/tricore: Remove target_ulong use in gen_addi_d()
+  target/tricore: Remove unnecessary cast to target_ulong
+  target/tricore: Replace target_ulong -> uint32_t in op_helper.c
+  target/tricore: Declare registers as TCGv_i32
+  target/tricore: Inline tcg_gen_ld32u_tl()
+  target/tricore: Expand TCG helpers for 32-bit target
+  target/tricore: Pass DisasContext as first argument
+  target/tricore: Un-inline various helpers
+  target/tricore: Expand TCGv type for 32-bit target
+  target/xtensa: Replace legacy cpu_physical_memory_[un]map() calls
+  target/xtensa: Remove target_ulong use in xtensa_tr_translate_insn()
+  target/xtensa: Remove target_ulong use in xtensa_get_tb_cpu_state()
+  linux-user/microblaze: Fix little-endianness binary
+  mailmap: Unify Clément Mathieu--Drif emails
+
+ target/alpha/helper.h                         |    1 +
+ target/hppa/cpu.h                             |   10 +-
+ target/loongarch/cpu-mmu.h                    |    2 +-
+ target/loongarch/tcg/helper.h                 |    2 +-
+ target/microblaze/cpu.h                       |    2 +-
+ target/microblaze/helper.h                    |    2 +-
+ target/microblaze/mmu.h                       |    2 +-
+ target/openrisc/cpu.h                         |   31 +-
+ target/openrisc/helper.h                      |    8 +-
+ target/riscv/cpu.h                            |    4 +-
+ target/sh4/cpu.h                              |    6 +-
+ target/sparc/cpu.h                            |    1 -
+ target/hppa/insns.decode                      |    8 +-
+ linux-user/microblaze/elfload.c               |    3 +-
+ target/alpha/machine.c                        |   34 +-
+ target/alpha/sys_helper.c                     |    5 +
+ target/alpha/translate.c                      |   11 +-
+ target/arm/tcg/translate-a64.c                |    8 +-
+ target/arm/tcg/translate.c                    |    8 +-
+ target/avr/translate.c                        |    7 +-
+ target/hexagon/translate.c                    |    8 +-
+ target/hppa/helper.c                          |    4 +-
+ target/hppa/mem_helper.c                      |    2 +-
+ target/hppa/translate.c                       |   24 +-
+ target/loongarch/cpu_helper.c                 |    2 +-
+ target/loongarch/gdbstub.c                    |    2 +-
+ target/loongarch/machine.c                    |    4 +-
+ target/loongarch/tcg/tlb_helper.c             |    4 +-
+ target/loongarch/tcg/translate.c              |    6 +-
+ target/m68k/translate.c                       |   17 +-
+ target/microblaze/helper.c                    |    3 +-
+ target/microblaze/machine.c                   |    6 +-
+ target/microblaze/mmu.c                       |    4 +-
+ target/microblaze/op_helper.c                 |    4 +-
+ target/microblaze/translate.c                 |   83 +-
+ target/mips/tcg/translate.c                   |    7 +-
+ target/openrisc/fpu_helper.c                  |    8 +-
+ target/openrisc/machine.c                     |   20 +-
+ target/openrisc/mmu.c                         |    7 +-
+ target/openrisc/sys_helper.c                  |    7 +-
+ target/openrisc/translate.c                   |  463 +-
+ target/ppc/translate.c                        |    7 +-
+ target/riscv/translate.c                      |    9 +-
+ target/riscv/vector_helper.c                  |   32 +-
+ target/rx/translate.c                         |  462 +-
+ target/s390x/tcg/translate.c                  |    6 +-
+ target/sh4/helper.c                           |   34 +-
+ target/sh4/translate.c                        |   10 +-
+ target/sparc/helper.c                         |    1 +
+ target/sparc/int64_helper.c                   |    1 +
+ target/sparc/translate.c                      |    6 +-
+ target/tricore/cpu.c                          |    2 +-
+ target/tricore/helper.c                       |    4 +-
+ target/tricore/op_helper.c                    |  219 +-
+ target/tricore/translate.c                    | 3978 +++++++++--------
+ target/xtensa/cpu.c                           |    6 +-
+ target/xtensa/translate.c                     |    2 +-
+ target/xtensa/xtensa-semi.c                   |   11 +-
+ .../tcg/insn_trans/trans_privileged.c.inc     |    2 +-
+ target/riscv/insn_trans/trans_rvv.c.inc       |   16 +-
+ target/s390x/tcg/translate_vx.c.inc           |    6 +-
+ .mailmap                                      |    1 +
+ target/hppa/trace-events                      |    6 +-
+ 63 files changed, 2848 insertions(+), 2813 deletions(-)
+
+-- 
+2.51.0
+
 
