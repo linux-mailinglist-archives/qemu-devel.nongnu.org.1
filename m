@@ -2,64 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7DABE8C86
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E26A3BE8CA1
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:20:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kKS-0006FP-Eg; Fri, 17 Oct 2025 09:17:08 -0400
+	id 1v9kMD-0007fn-0G; Fri, 17 Oct 2025 09:18:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v9kKO-0006Dw-7E
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:17:04 -0400
+ id 1v9kM8-0007cG-Me
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:18:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v9kKF-00062i-Ev
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:17:03 -0400
+ id 1v9kLx-0006Fy-Ll
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:18:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760707008;
+ s=mimecast20190719; t=1760707115;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=78jlCb0Sk2N9fGMqdOaOsH3p9jNjMVjLnh8lc81tcwE=;
- b=LBEaKxl+IT0u+HayQX+EhUo+T1CEuJZe12Lpyk3lKAjQ67Wn4X35pBrShwN29O4kls55UN
- LWD+Lcf41xtNUECJDmmLBi2259OLiDzPjPwBXuWCNv/vP7vQ29rGv887IDr4Np5caHJxow
- R8i/ZpVB3Uy5vxHwhcXvDAuQdrqCdwU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=jAkRelVz1BnP2QFOmLj5neVDaWWMzJ0SC1T6l3BxGAY=;
+ b=JU96bECicveG0uq03UvFGfnQjVT0vaVBgQM0jxFLzeGQqNlSlfqy/q988mUvsmUywWALcW
+ 881R5pAALfy0w3OZJHnZElVWcwG9QadIeiiykWNZAv14NqRn8VgPzdPtfg0jV4AAN+7o/j
+ lpac3xRntWr7TCOMSgRvOQTuRBvk3Pw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-s5KKG6iRN3Kza11l1OgO1g-1; Fri,
- 17 Oct 2025 09:16:44 -0400
-X-MC-Unique: s5KKG6iRN3Kza11l1OgO1g-1
-X-Mimecast-MFC-AGG-ID: s5KKG6iRN3Kza11l1OgO1g_1760707003
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-158-5E2a032kMP-KYOp3hGJEIg-1; Fri,
+ 17 Oct 2025 09:18:33 -0400
+X-MC-Unique: 5E2a032kMP-KYOp3hGJEIg-1
+X-Mimecast-MFC-AGG-ID: 5E2a032kMP-KYOp3hGJEIg_1760707112
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 36DDC195609E; Fri, 17 Oct 2025 13:16:43 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B6031956048; Fri, 17 Oct 2025 13:18:32 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.139])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DEFFC19560AD; Fri, 17 Oct 2025 13:16:41 +0000 (UTC)
-Date: Fri, 17 Oct 2025 14:16:38 +0100
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7BFD9180035A; Fri, 17 Oct 2025 13:18:29 +0000 (UTC)
+Date: Fri, 17 Oct 2025 14:18:26 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH] hw/m68k: Remove deprecated virt-6.0 to virt-7.2 machines
-Message-ID: <aPJBto1ArfyQgKm_@redhat.com>
-References: <20251017124104.56199-1-philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 00/20] hw/arm/virt: Remove virt-4.1 -> virt-7.2 machines
+Message-ID: <aPJCIuoL2_C2wrv2@redhat.com>
+References: <20251017130821.58388-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251017124104.56199-1-philmd@linaro.org>
+In-Reply-To: <20251017130821.58388-1-philmd@linaro.org>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -69,7 +74,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,31 +91,47 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 17, 2025 at 02:41:04PM +0200, Philippe Mathieu-Daudé wrote:
-> The following machines:
+On Fri, Oct 17, 2025 at 03:07:59PM +0200, Philippe Mathieu-Daudé wrote:
+> Remove the deprecated virt-4.1 up to virt-7.2 machines,
+> which are older than 6 years. Remove resulting dead code.
+
+Nope, that's too aggressive here too. Only the 4.1/4.2 machines
+can be removed. The others are all still reported as being valid
+machines with '-machine help' - they'll be automatically removed
+from that list once their expiry release cycle is started.
+
 > 
->   - virt-6.0
->   - virt-6.1
->   - virt-6.2
->   - virt-7.0
->   - virt-7.1
->   - virt-7.2
+> Philippe Mathieu-Daudé (20):
+>   hw/arm/virt: Remove deprecated virt-4.1 machine
+>   hw/arm/virt: Remove VirtMachineClass::no_ged field
+>   hw/arm/virt: Remove deprecated virt-4.2 machine
+>   hw/arm/virt: Remove VirtMachineClass::kvm_no_adjvtime field
+>   hw/arm/virt: Remove deprecated virt-5.0 machine
+>   hw/arm/virt: Remove VirtMachineClass::acpi_expose_flash field
+>   hw/arm/virt: Remove deprecated virt-5.1 machine
+>   hw/arm/virt: Remove VirtMachineClass::no_kvm_steal_time field
+>   hw/arm/virt: Remove deprecated virt-5.2 machine
+>   hw/arm/virt: Remove VirtMachineClass::no_secure_gpio field
+>   hw/arm/virt: Remove deprecated virt-6.0 machine
+>   hw/arm/virt: Remove deprecated virt-6.1 machine
+>   hw/arm/virt: Remove VirtMachineClass::no_tcg_its field
+>   hw/arm/virt: Remove VirtMachineClass::no_cpu_topology field
+>   hw/arm/virt: Remove deprecated virt-6.2 machine
+>   hw/arm/virt: Remove VirtMachineClass::no_tcg_lpa2 field
+>   hw/arm/virt: Remove deprecated virt-7.0 machine
+>   hw/arm/virt: Remove deprecated virt-7.1 machine
+>   hw/arm/virt: Remove VirtMachineClass::no_highmem_compact field
+>   hw/arm/virt: Remove deprecated virt-7.2 machine
 > 
-> have been supported for a period of more than 6 years. According
-> to our versioned machine support policy (see commit ce80c4fa6ff
-> "docs: document special exception for machine type deprecation &
-> removal"), they can now be removed.
-
-Err ythat calculation is wrong.  The 6.0 release dates from 2021,
-so the virt-6.0 machine has not even existed for 5 years yet.
-
-The versioned machine type macros automatically mark machines as
-deprecated on the required timescale, and will automatically hide
-deprecated machines when they hit the removal point.
-
-IOW, a versioned machine can be removed if-and-only-if the output
-from '$QEMU -machine help' no longer includes the machine version.
-None of these can be removed yet.
+>  include/hw/arm/virt.h    |  11 --
+>  hw/arm/virt-acpi-build.c |  37 +------
+>  hw/arm/virt.c            | 228 ++++++++-------------------------------
+>  3 files changed, 50 insertions(+), 226 deletions(-)
+> 
+> -- 
+> 2.51.0
+> 
+> 
 
 With regards,
 Daniel
