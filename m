@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DE0BE7243
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 10:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C454CBE72A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 10:28:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9fkJ-0001Gu-KF; Fri, 17 Oct 2025 04:23:31 -0400
+	id 1v9fnz-0005YN-FX; Fri, 17 Oct 2025 04:27:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v9fkF-0001GG-2Q
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:23:27 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v9fnu-0005Y8-RF
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:27:15 -0400
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v9fkA-0001D4-Ta
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:23:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760689403; x=1792225403;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=99JHrZ3heZiFx9ybLFmQo2l6rqpitP2LQYczzzOLO+I=;
- b=Z753gYkan03nUSyAgPmdW1dfycNAGouhlUotOgl2f3hsZ9wRiPUUrWkU
- STJSqrX+PvlXAUavaNfrjsRdJW0NvXYnZL7D7ysK3Mc8IxJ4frEQJtA+k
- 6cmDrWHewY5v9TEfo51S05f6liHOQjEQ9P+EZF+beIP+fbN5MCVl3ygyO
- e9bRcQJ0y6wo8XoScwFS5tPeS77YV8QGUQKtur7QvZgyaMnUNIs6uXrAX
- 4htJ95XBsU/PlGPdTQWerbGDZDkeBWOr05S2C0TxloTieNdbBDlQqQfYw
- Cdeg0y1ZEBsnHo7za/RVkg9uz5D2XOesyUpwjJmbCMMAJ1Nm6Yd9fFGVC A==;
-X-CSE-ConnectionGUID: Bq8R23JMRlOkkbVXUTgQ4g==
-X-CSE-MsgGUID: pOT9nlNySCyS1D3b/eF1XQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="61927454"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="61927454"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2025 01:23:15 -0700
-X-CSE-ConnectionGUID: ryH0PFVBSSadMP7NOa4gTg==
-X-CSE-MsgGUID: FFrA1QNlRYq7Pf3e3PVZ4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="182484709"
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2025 01:23:12 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, yi.l.liu@intel.com, clement.mathieu--drif@eviden.com,
- eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
- xudong.hao@intel.com, giovanni.cabiddu@intel.com, mark.gross@intel.com,
- arjan.van.de.ven@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Jason Zeng <jason.zeng@intel.com>
-Subject: [PATCH v2 8/8] vfio/migration: Allow live migration with vIOMMU
- without VFs using device dirty tracking
-Date: Fri, 17 Oct 2025 04:22:33 -0400
-Message-ID: <20251017082234.517827-9-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20251017082234.517827-1-zhenzhong.duan@intel.com>
-References: <20251017082234.517827-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v9fnn-00023n-Tq
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:27:14 -0400
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id DC09280850;
+ Fri, 17 Oct 2025 11:27:01 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:a93::1:3a] (unknown
+ [2a02:6bf:8080:a93::1:3a])
+ by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id xQNP9O3FxuQ0-9Hnqil5M; Fri, 17 Oct 2025 11:27:01 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1760689621;
+ bh=0IDcEuJd2wD2vqfCzQSW9hoVzd0D/XkATRo7uV432bM=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=i3uV9sLurstYGw2qqTgAhUhTI+ylpO/NCQ2dR4K+MviZHW/mmOq/5FCRkw0vbrIB9
+ 3Yr3viBKmc7JcElzNgf9mWohQlHOQ/woIxoSR6VA5EiFBLbYZgQYAV9ruhLaTFzA9i
+ TEWs6mUyqkJ4jJzmQq/eBlrIpp1NL3vg0mhEMJBk=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <7b6ad405-0dbe-41d7-8d29-e3e92d969647@yandex-team.ru>
+Date: Fri, 17 Oct 2025 11:26:59 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 16/19] qapi: introduce backend-transfer migration
+ parameter
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+Cc: mst@redhat.com, jasowang@redhat.com, farosas@suse.de, sw@weilnetz.de,
+ eblake@redhat.com, armbru@redhat.com, thuth@redhat.com, philmd@linaro.org,
+ qemu-devel@nongnu.org, michael.roth@amd.com, steven.sistare@oracle.com,
+ leiyang@redhat.com, davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
+ raphael.s.norwitz@gmail.com
+References: <3b9f1da4-6264-45d4-ade1-a6273cc6fa1e@yandex-team.ru>
+ <aO_--QWDJO7iOhR4@x1.local>
+ <8c575b3a-7d1f-446d-8f6d-4b2e4b851731@yandex-team.ru>
+ <aPCtkB-GvFNuqlHn@redhat.com>
+ <29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru>
+ <aPE8Oo5D3oesB7sV@x1.local> <aPE-vmyg1mLDO4pf@redhat.com>
+ <aPFHl3VWV0pCmzd1@x1.local> <aPFOHjl5BoWEMqSL@redhat.com>
+ <aPFVWi1pwxS8yGay@x1.local> <aPH557l6YnXT-3r8@redhat.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <aPH557l6YnXT-3r8@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.19;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -86,109 +87,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e46883204c38 ("vfio/migration: Block migration with vIOMMU")
-introduces a migration blocker when vIOMMU is enabled, because we need
-to calculate the IOVA ranges for device dirty tracking. But this is
-unnecessary for iommu dirty tracking.
+On 17.10.25 11:10, Daniel P. Berrangé wrote:
+>> Meanwhile, the admin will need to manage the list of devices even if the
+>> admin doesn't really needed to, IMHO.
+> We shouldn't need to list devices in every scenario. 
 
-Limit the vfio_viommu_preset() check to those devices which use device
-dirty tracking. This allows live migration with VFIO devices which use
-iommu dirty tracking.
+Do you mean, we may make union,
 
-Introduce a helper vfio_device_dirty_pages_disabled() to facilicate it.
+    backend-transfer = true | false | [list of IDs]
 
-Suggested-by: Jason Zeng <jason.zeng@intel.com>
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Tested-by: Xudong Hao <xudong.hao@intel.com>
-Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
----
- include/hw/vfio/vfio-device.h | 10 ++++++++++
- hw/vfio/container.c           |  5 +----
- hw/vfio/device.c              |  6 ++++++
- hw/vfio/migration.c           |  6 +++---
- 4 files changed, 20 insertions(+), 7 deletions(-)
+Where true means, enable backend-transfer for all supporting devices?
+So that normally, we'll not list all devices, but just set it to true?
 
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index 7e9aed6d3c..feda521514 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -148,6 +148,16 @@ bool vfio_device_irq_set_signaling(VFIODevice *vbasedev, int index, int subindex
- 
- void vfio_device_reset_handler(void *opaque);
- bool vfio_device_is_mdev(VFIODevice *vbasedev);
-+/**
-+ * vfio_device_dirty_pages_disabled: Check if device dirty tracking will be
-+ * used for a VFIO device
-+ *
-+ * @vbasedev: The VFIODevice to transform
-+ *
-+ * Return: true if either @vbasedev doesn't support device dirty tracking or
-+ * is forcedly disabled from command line, otherwise false.
-+ */
-+bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev);
- bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
-                                          const char *typename, Error **errp);
- bool vfio_device_attach(char *name, VFIODevice *vbasedev,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 7706603c1c..8879da78c8 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -178,10 +178,7 @@ bool vfio_container_devices_dirty_tracking_is_supported(
-     VFIODevice *vbasedev;
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
--        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
--            return false;
--        }
--        if (!vbasedev->dirty_pages_supported) {
-+        if (vfio_device_dirty_pages_disabled(vbasedev)) {
-             return false;
-         }
-     }
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 64f8750389..837872387f 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -400,6 +400,12 @@ bool vfio_device_is_mdev(VFIODevice *vbasedev)
-     return subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
- }
- 
-+bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev)
-+{
-+    return (!vbasedev->dirty_pages_supported ||
-+            vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF);
-+}
-+
- bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
-                                          const char *typename, Error **errp)
- {
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 1106ca7857..1093857a34 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1213,8 +1213,7 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
--    if ((!vbasedev->dirty_pages_supported ||
--         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-+    if (vfio_device_dirty_pages_disabled(vbasedev) &&
-         !vbasedev->iommu_dirty_tracking) {
-         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
-             error_setg(&err,
-@@ -1232,7 +1231,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         goto out_deinit;
-     }
- 
--    if (vfio_viommu_preset(vbasedev)) {
-+    if (!vfio_device_dirty_pages_disabled(vbasedev) &&
-+        vfio_viommu_preset(vbasedev)) {
-         error_setg(&err, "%s: Migration is currently not supported "
-                    "with vIOMMU enabled", vbasedev->name);
-         goto add_blocker;
+But this way, migration will fail, if target version doesn't support
+backend-transfer for some of used devices, or support for some
+another, where source lack the support. So that's a way to create a
+situation, where two QEMUs, with same device options, same machine
+types, same configurations and same migration parameters / capabilities
+define incompatible migration states..
+
+
+> We need to focus on
+> the internal API design. We need to have suitable APIs exposed by backends
+> to allow us to query migratability and process vmstate a mere property
+> 'backend-transfer' is insufficient, whether set by QEMU code, or set by
+> the mgmt app.
+> 
+> If we have proper APIs each device should be able to query whether its
+> backend can be transferred, and so "do the right thing" if backend
+> transfer is requested by migration. The ability to list devices in the
+> migrate command is only needed to be able to exclude some backends if
+> the purpose of migration is to change a backend
+
+
 -- 
-2.47.1
-
+Best regards,
+Vladimir
 
