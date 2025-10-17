@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47811BE8C66
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F218BE8C57
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:13:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kDg-0004QH-6O; Fri, 17 Oct 2025 09:10:08 -0400
+	id 1v9kDo-0004ln-DR; Fri, 17 Oct 2025 09:10:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDR-0003uQ-NI
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:54 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDT-0003w1-Qg
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:57 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDA-0004cA-1U
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:53 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3ecde0be34eso1805658f8f.1
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:09:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDM-0004d3-BE
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:55 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47106fc51faso20750975e9.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:09:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760706572; x=1761311372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760706577; x=1761311377; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fIMpzyrAOcPtBPGdInfo4s/SrMi0/0YFf+KlykEpc/A=;
- b=Gu0rETGA9YAW9KSmV1MFUOMxC0lwdl15VZJdUjKqX7+3JCtQ39c5AFh6Zc30WuNtMH
- RgZ4r8zPbYFQrcAzomwJnASJE37XF79UzUr9hvc0LzSQbJXf+p8h0uhgC62F9eFhdanG
- Q3aqoA09JLYGt0qukPKqsJyEh+dqDz123jccoB6dYKL2IqQIDzE2NHhvR9yc9QRMwNpn
- 4hsnEZj/6LedjWJSR+3t7zMzSQZYLlWi7Gmttgvf4A1kmFDo6O4+t+VnUq9PWHGEPosb
- 7gyHc0Oclk/PhyaiAp8giYPpHytmleInpjtZG3jPIkxJDlm/pFV7/4qOn2emux9hpI4g
- MHoA==
+ bh=9xu2jmCHiYAeLROkpD0sdtohOaAgHtlD3k156owbQkw=;
+ b=ZmA76biKSvoJL3UgJ+dfQ2Shp4dhMPHDuSrGnp1vrTdJkMK2vi4hyDmmfm8KNoMxad
+ Hlh+R9IqGdd4j95sP3kxA+1T9xGdV87zCN4PKRtuDbVP3QV25/ugmh131COD8gbFZ31g
+ 8ya0Pw+GvhGe45uEjui0oTIGa1kcjqZ0YreIfA6YI54kz88HhwQL9hBfBjuihe/2iwid
+ 384NnGDYhjTIDOrGPMMTB5KqDXkiDABU70Zm5g+1ZxPvNQqeR8xibhWTasdzolFwVNDE
+ oGzEAHVKLRi1jkYyHc11Z7QjUwqEC8VvgKGPDNpxKbEFzAEmJmREbpVYGhyUffhMVeAu
+ d+tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760706572; x=1761311372;
+ d=1e100.net; s=20230601; t=1760706577; x=1761311377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fIMpzyrAOcPtBPGdInfo4s/SrMi0/0YFf+KlykEpc/A=;
- b=nyn1gkiH6Tq77FrtSVdrN/W/Njpfb8fvS+RAIUhXRmC/gGcpD6aEBqqaQAtJ5ZQ7TB
- Jv+CpltiUhb06BoM1c5/cfJJ3vRgL7X4pR4tgJqkpSZGdBS7m/6+HcPb03LcoAdEdF2h
- /XK+3WRdaJlJNzsewxQ3qeLfzK4XcaxzhIqV01BmWc7UvDvNMaTvpw/DjQl+RISK8FMt
- fajumitDX2HiVWsPc2O2jFd+shZZVqsKe6HyYr/S/O+LGMf5ED8thannRDuddD2uKAS/
- v4DTAeFGfHx2zBnIuea1C7ZKj9XLAL3tvJZGChchx02azYYm/ArOHucxvsAlPijaoFdk
- oODg==
-X-Gm-Message-State: AOJu0YwH943IEFW4/bZyDGF8TYvq4u2gcfCekv9nBwj8oLdfoS+Ae7M0
- 4PeLQizxCnmmr1dj56Yw7cfUNqvyb7WvZFuDU4/er52iipROWbM4ntuQ3LZicriwIYQa9uSHgVd
- 5T0ojL+M=
-X-Gm-Gg: ASbGncs8sbUM4W45I37jdkiLEwNA84WhFCP+PZLSzUVh/s/auU3p6wDHSODPQv+LO7g
- f6BeaCBWpxRRlUJtwFRm0YUAFpYwj2vh5ulSmGM2yUeH+YMJSHLXRiqRMHCqxS6IkMa9EUasQXh
- GrdgcyExI0w3sB1J9FhGp8FCh2D5+UfASrO2M0n627fUW7As0S2K/XkliH68hAz7sayIrpZmSKp
- kVYlcg5SIuyGPFr65nGYOk89bfBO+XjIcXSjx31P6ISGEXiN7p0HoIPaZDKccsVuQfa4abJfKHm
- mLN7KOcZWEGEJ2wo0p+ytXCbTqCEQhh5gO6KLkPRYmV122JYnV97cJ8O5uWMbUEIX7UIEe/Sa4i
- cBt6jeJxfXeq2EFBwRDOIKoPd8ygeqK3q3O2c/sTH3VxD9gpaOEORLIYxiVCByAMONhCWXDcaaV
- x/R8q2ay4B5fc/lp4ef/EQ66hI3J6mVfRspjX5Mzwu9owZzP9kDUa0M3W35TSQ
-X-Google-Smtp-Source: AGHT+IEon46n634LcQ0NffQPGicHLJ4Uhp3AY22+O9e4mNcOr9dtEGd+houpek1WXCHRCcvEVx5I9w==
-X-Received: by 2002:a05:6000:1868:b0:401:c55d:2d20 with SMTP id
- ffacd0b85a97d-426fb9b52f5mr5123154f8f.26.1760706572137; 
- Fri, 17 Oct 2025 06:09:32 -0700 (PDT)
+ bh=9xu2jmCHiYAeLROkpD0sdtohOaAgHtlD3k156owbQkw=;
+ b=wnXFPWVSnYjziOJ+r/eu+tfowyNunTl0nW7Ds4roq+BlKsSgI/FetXcJKJFUyPAKmW
+ OAqzHZ2SmeETFSmpyEUModbACCxFyWM0oSfpSGlEmUErAeYqMlplq/cFzVRDqYSVefP+
+ T/jP+b4HZKjFqifevOHWx+DZLC0OlAqq4AyjhNE7Ww3xbJTt3nEIp11K1yAWg0Gv1qJK
+ ZdfnaYbzh+2+qLl+resgEyUuHMMwaVYP0QUhCX05BZWPgfJgvxBQFUm/XFCBLpfLhLj8
+ +hcfEl2oNz9D9NWFEPmZqvtkGQoYYHs97/GTLfoPUFINQVBSWoBS190GbEfiAEpK88K6
+ ZauA==
+X-Gm-Message-State: AOJu0YwuUalmVJakwZauNzIMkxGgjOi9IPKxtVSylYuXL5IMvFzXLl7s
+ 1GMtxiku0rAih10jVGOLff++wi5POEOal8ItHywMS8VfwxtFKduVt/Rveih64s00JmslRq5kp6t
+ rYVFeLXA=
+X-Gm-Gg: ASbGncvXJxmXaeWlDVZY9caJwKbvfF0KjCy/TPLTE3vFzyAjMTFoxFtyaxCXA+0b5EK
+ jGxyYYngSmRy84cBp3aRvHI0P5K4rF83K9+YnL5Oebv4drFB2aX5qjsl7Pm8FCJx/bBNacHr9cV
+ HXxWEjRlTbv0Y4ROkjo6O5OVU0n8jicyWchqYBeeVQojOHTw1sUMSfF8i7xJe5FG92GQXcN8TwL
+ Z9CpI0+wX8pIJLiE4YgWtKqxqyr9Tei2o26JaFP72aZ14Wt+VWENsOkLv8ujR52upqvvnk/ylNZ
+ 5oIwr/evjCac6YttQHQoreMYNelpfY9VKvLGxkPHFtHzAqXIzcHnaqDgDPo2de/fGptxsLY/Uvv
+ QXOjm6WtgnAU/5ERIQN0vyPPIeRQYDF6L3IhgZiVrPBQioqFVvB++SEmXKBO5oc/NpeI0CofQ+f
+ /hr28YwuEiH2xAbb016iSHwjMtgsrhV8cl1EqwQ2QtKlQtVLiOag==
+X-Google-Smtp-Source: AGHT+IEwwA66KCv4mItbDA/DleedZpwkTerAkKFdKlPk6+S2ioQzfFLqp1lIjYkHYFtW+Tkquzs6Wg==
+X-Received: by 2002:a05:600c:3150:b0:471:114e:58a8 with SMTP id
+ 5b1f17b1804b1-4711790696fmr28250065e9.25.1760706577011; 
+ Fri, 17 Oct 2025 06:09:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4711441f975sm83398975e9.4.2025.10.17.06.09.31
+ 5b1f17b1804b1-47121ed98e9sm7289555e9.3.2025.10.17.06.09.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 17 Oct 2025 06:09:31 -0700 (PDT)
+ Fri, 17 Oct 2025 06:09:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -69,25 +69,24 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  qemu-arm@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 14/20] hw/arm/virt: Remove VirtMachineClass::no_cpu_topology
- field
-Date: Fri, 17 Oct 2025 15:08:13 +0200
-Message-ID: <20251017130821.58388-15-philmd@linaro.org>
+Subject: [PATCH 15/20] hw/arm/virt: Remove deprecated virt-6.2 machine
+Date: Fri, 17 Oct 2025 15:08:14 +0200
+Message-ID: <20251017130821.58388-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017130821.58388-1-philmd@linaro.org>
 References: <20251017130821.58388-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,167 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VirtMachineClass::no_cpu_topology field was
-only used by virt-6.1 machine, which got removed.
-Remove it as now unused.
+This machine has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") it can now be removed.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/virt.h    |  2 -
- hw/arm/virt-acpi-build.c |  9 ++---
- hw/arm/virt.c            | 85 +++++++++++++++++++---------------------
- 3 files changed, 43 insertions(+), 53 deletions(-)
+ hw/arm/virt.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 21d91a43d8b..ca2e59ec569 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -122,8 +122,6 @@ typedef enum VirtGICType {
- struct VirtMachineClass {
-     MachineClass parent;
-     bool no_highmem_compact;
--    /* Machines < 6.2 have no support for describing cpu topology to guest */
--    bool no_cpu_topology;
-     bool no_tcg_lpa2;
-     bool no_ns_el2_virt_timer_irq;
-     bool no_nested_smmu;
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 5db5baa7cf3..8d40570c1e3 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -1110,7 +1110,6 @@ static const AcpiNotificationSourceId hest_ghes_notify_10_0[] = {
- static
- void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
- {
--    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
-     GArray *table_offsets;
-     unsigned dsdt, xsdt;
-     GArray *tables_blob = tables->table_data;
-@@ -1134,11 +1133,9 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-     acpi_add_table(table_offsets, tables_blob);
-     build_madt(tables_blob, tables->linker, vms);
- 
--    if (!vmc->no_cpu_topology) {
--        acpi_add_table(table_offsets, tables_blob);
--        build_pptt(tables_blob, tables->linker, ms,
--                   vms->oem_id, vms->oem_table_id);
--    }
-+    acpi_add_table(table_offsets, tables_blob);
-+    build_pptt(tables_blob, tables->linker, ms,
-+               vms->oem_id, vms->oem_table_id);
- 
-     acpi_add_table(table_offsets, tables_blob);
-     build_gtdt(tables_blob, tables->linker, vms);
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 3e7858d6e11..4243da3c87e 100644
+index 4243da3c87e..d9ec61e7354 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -431,7 +431,6 @@ static void fdt_add_cpu_nodes(const VirtMachineState *vms)
-     int cpu;
-     int addr_cells = 1;
-     const MachineState *ms = MACHINE(vms);
--    const VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
-     int smp_cpus = ms->smp.cpus;
- 
-     /*
-@@ -488,57 +487,53 @@ static void fdt_add_cpu_nodes(const VirtMachineState *vms)
-                 ms->possible_cpus->cpus[cs->cpu_index].props.node_id);
-         }
- 
--        if (!vmc->no_cpu_topology) {
--            qemu_fdt_setprop_cell(ms->fdt, nodename, "phandle",
--                                  qemu_fdt_alloc_phandle(ms->fdt));
--        }
-+        qemu_fdt_setprop_cell(ms->fdt, nodename, "phandle",
-+                              qemu_fdt_alloc_phandle(ms->fdt));
- 
-         g_free(nodename);
-     }
- 
--    if (!vmc->no_cpu_topology) {
--        /*
--         * Add vCPU topology description through fdt node cpu-map.
--         *
--         * See Linux Documentation/devicetree/bindings/cpu/cpu-topology.txt
--         * In a SMP system, the hierarchy of CPUs can be defined through
--         * four entities that are used to describe the layout of CPUs in
--         * the system: socket/cluster/core/thread.
--         *
--         * A socket node represents the boundary of system physical package
--         * and its child nodes must be one or more cluster nodes. A system
--         * can contain several layers of clustering within a single physical
--         * package and cluster nodes can be contained in parent cluster nodes.
--         *
--         * Note: currently we only support one layer of clustering within
--         * each physical package.
--         */
--        qemu_fdt_add_subnode(ms->fdt, "/cpus/cpu-map");
-+    /*
-+     * Add vCPU topology description through fdt node cpu-map.
-+     *
-+     * See Linux Documentation/devicetree/bindings/cpu/cpu-topology.txt
-+     * In a SMP system, the hierarchy of CPUs can be defined through
-+     * four entities that are used to describe the layout of CPUs in
-+     * the system: socket/cluster/core/thread.
-+     *
-+     * A socket node represents the boundary of system physical package
-+     * and its child nodes must be one or more cluster nodes. A system
-+     * can contain several layers of clustering within a single physical
-+     * package and cluster nodes can be contained in parent cluster nodes.
-+     *
-+     * Note: currently we only support one layer of clustering within
-+     * each physical package.
-+     */
-+    qemu_fdt_add_subnode(ms->fdt, "/cpus/cpu-map");
- 
--        for (cpu = smp_cpus - 1; cpu >= 0; cpu--) {
--            char *cpu_path = g_strdup_printf("/cpus/cpu@%d", cpu);
--            char *map_path;
-+    for (cpu = smp_cpus - 1; cpu >= 0; cpu--) {
-+        char *cpu_path = g_strdup_printf("/cpus/cpu@%d", cpu);
-+        char *map_path;
- 
--            if (ms->smp.threads > 1) {
--                map_path = g_strdup_printf(
--                    "/cpus/cpu-map/socket%d/cluster%d/core%d/thread%d",
--                    cpu / (ms->smp.clusters * ms->smp.cores * ms->smp.threads),
--                    (cpu / (ms->smp.cores * ms->smp.threads)) % ms->smp.clusters,
--                    (cpu / ms->smp.threads) % ms->smp.cores,
--                    cpu % ms->smp.threads);
--            } else {
--                map_path = g_strdup_printf(
--                    "/cpus/cpu-map/socket%d/cluster%d/core%d",
--                    cpu / (ms->smp.clusters * ms->smp.cores),
--                    (cpu / ms->smp.cores) % ms->smp.clusters,
--                    cpu % ms->smp.cores);
--            }
--            qemu_fdt_add_path(ms->fdt, map_path);
--            qemu_fdt_setprop_phandle(ms->fdt, map_path, "cpu", cpu_path);
--
--            g_free(map_path);
--            g_free(cpu_path);
-+        if (ms->smp.threads > 1) {
-+            map_path = g_strdup_printf(
-+                "/cpus/cpu-map/socket%d/cluster%d/core%d/thread%d",
-+                cpu / (ms->smp.clusters * ms->smp.cores * ms->smp.threads),
-+                (cpu / (ms->smp.cores * ms->smp.threads)) % ms->smp.clusters,
-+                (cpu / ms->smp.threads) % ms->smp.cores,
-+                cpu % ms->smp.threads);
-+        } else {
-+            map_path = g_strdup_printf(
-+                "/cpus/cpu-map/socket%d/cluster%d/core%d",
-+                cpu / (ms->smp.clusters * ms->smp.cores),
-+                (cpu / ms->smp.cores) % ms->smp.clusters,
-+                cpu % ms->smp.cores);
-         }
-+        qemu_fdt_add_path(ms->fdt, map_path);
-+        qemu_fdt_setprop_phandle(ms->fdt, map_path, "cpu", cpu_path);
-+
-+        g_free(map_path);
-+        g_free(cpu_path);
-     }
+@@ -3608,13 +3608,3 @@ static void virt_machine_7_0_options(MachineClass *mc)
+     compat_props_add(mc->compat_props, hw_compat_7_0, hw_compat_7_0_len);
  }
- 
+ DEFINE_VIRT_MACHINE(7, 0)
+-
+-static void virt_machine_6_2_options(MachineClass *mc)
+-{
+-    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
+-
+-    virt_machine_7_0_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_6_2, hw_compat_6_2_len);
+-    vmc->no_tcg_lpa2 = true;
+-}
+-DEFINE_VIRT_MACHINE(6, 2)
 -- 
 2.51.0
 
