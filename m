@@ -2,54 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E23BE66DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 07:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03379BE66E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 07:32:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9d3y-0004jG-Ug; Fri, 17 Oct 2025 01:31:39 -0400
+	id 1v9d4Q-0005nt-Df; Fri, 17 Oct 2025 01:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d3h-0004gq-CI
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:31:22 -0400
-Received: from smtpout2.mo529.mail-out.ovh.net ([79.137.123.220])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d4D-0005NW-VM
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:31:59 -0400
+Received: from smtpout1.mo529.mail-out.ovh.net ([178.32.125.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d3X-0002Cp-G3
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:31:18 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.43.125])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4cnthn4vCVz5vpM;
- Fri, 17 Oct 2025 05:31:05 +0000 (UTC)
-Received: from kaod.org (37.59.142.108) by DAG8EX2.mxp5.local (172.16.2.72)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d44-0002Fb-Me
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:31:52 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.249.222])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4cntjS2TnNz5vpM;
+ Fri, 17 Oct 2025 05:31:40 +0000 (UTC)
+Received: from kaod.org (37.59.142.95) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 17 Oct
- 2025 07:31:04 +0200
+ 2025 07:31:39 +0200
 Authentication-Results: garm.ovh; auth=pass
- (GARM-108S00236974cb1-5d1d-46e3-9c4d-e437d9eac13d,
+ (GARM-95G001f12d9d3a-9a75-4460-9390-78b17ef9ed53,
  48F321F6F3AAA1B288770452BCFEC79A981EE5C7) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <aaa7ee12-d74a-48b2-8175-097837f1d611@kaod.org>
-Date: Fri, 17 Oct 2025 07:31:03 +0200
+Message-ID: <f1bd1978-2f2f-4df3-9a09-77e15ccb46cf@kaod.org>
+Date: Fri, 17 Oct 2025 07:31:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/6] hw/sd/sdcard: Fix size check for backing block
- image
-To: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-CC: Bin Meng <bmeng.cn@gmail.com>, <qemu-block@nongnu.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Jan_L=C3=BCbbe?= <jlu@pengutronix.de>,
- Jerome Forissier <jerome.forissier@linaro.org>, Warner Losh <imp@bsdimp.com>, 
- Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
- Alexander Bulekov <alxndr@bu.edu>, 'Jamin Lin' <jamin_lin@aspeedtech.com>
-References: <cover.1757854006.git.jan.kiszka@siemens.com>
- <48930c1092424d22dc2171140378de19e0814ef3.1757854006.git.jan.kiszka@siemens.com>
- <c144202b-0d99-4507-8a57-35df1ece3cc0@siemens.com>
- <2070f7bb-cd1a-448f-ba87-50d75e24f4c0@kaod.org>
- <b09cd869-39e7-4a62-b452-4ea39ccf4df0@siemens.com>
- <e992011b-ac3f-4770-97e8-3c0321410e72@kaod.org>
- <aa63efc6-8edc-4db4-9221-a1a54fc1cdce@siemens.com>
- <8b14bde0-2ca8-4b45-a41a-f1459a7710fe@kaod.org>
- <2c028368-b840-4f22-bb5f-a9ffcfec26c8@siemens.com>
+Subject: Re: [PATCH v2 1/5] hw/gpio: Add property for ASPEED GPIO in 32 bits
+ basis
+To: Andrew Jeffery <andrew@codeconstruct.com.au>, Coco Li
+ <lixiaoyan@google.com>, <peter.maydell@linaro.org>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <flwu@google.com>,
+ <philmd@linaro.org>
+References: <20251015011830.1688468-1-lixiaoyan@google.com>
+ <20251015011830.1688468-2-lixiaoyan@google.com>
+ <dbd7c26cf0a77545bffaccaed7c9a364f97ac7af.camel@codeconstruct.com.au>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -94,35 +84,35 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <2c028368-b840-4f22-bb5f-a9ffcfec26c8@siemens.com>
+In-Reply-To: <dbd7c26cf0a77545bffaccaed7c9a364f97ac7af.camel@codeconstruct.com.au>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.108]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX2.mxp5.local
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: 1dcb8f21-52fe-48da-83e7-9a067e255940
-X-Ovh-Tracer-Id: 15319275608314645310
+X-Ovh-Tracer-GUID: 4c64469f-f015-44d4-94a4-632657ccf278
+X-Ovh-Tracer-Id: 15329127232020450153
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEMEfL4cw6JEm6Xs0R+C92kvjNTohiAf3tjoqs/RnO0206ADD8YvWuycPD2pAT4B3FGciDs6Yx4Uk76M21zJXM/WfJziMk0Hh4g+rvkeLKW/And/Ap74FIWce1dbz638lmVyOUry5w2bnSjhtXuYaexMdbO4TiZqAQTzuBeowwL9lych63GKJOr7AkvjS9L0pEJeY0IFKSC7iVq/Wa+3k8B4S27bPKp251HPyPSF2TbSx7/UeXVxRMdNDHa4UFqSlVeZzlRMMmsBPTwGebm3uR+vUtEZAC9f7G7CqfFSO1TQxXu7v+T6jAdCqERgkzfdXmEsV5rZe3SA0jLfOwGRuPAOPRmxXE89TWEdmbDagdo08Ycvc29wm3r5c9f4WtaN3s0Sml91EcCfE1OphsgbFoNDj+Ir2cAxvKAOn1bvZEB+fKtRDsQzWkpcS3T7wz2m1hKrJd03m0FAPahbFIR7LsZv7aAzBs5oysaLxfdy+nso6l53Dnv4y6io0QaVgF2WIFv64QJyOII7udUrxlSOotDZqCJDb7ZC/7a4uPYJdbyu4dA6WCRm8ty0o2vVKS/TJI+YTHhAS38kFSwxhYzGwRAu5cFO+5eatQhkvjeQrqTrtgoM7f/ui23fGRDi6kr67PLA3Nvclbo/Z+PXnqZlTwXchvAkNgkjg3EExNtC2x5FQ
-DKIM-Signature: a=rsa-sha256; bh=AkhrxMI26W6O/HmimAl5eNM+Sp76hBpRWrWpv0AQw3A=; 
+X-VR-SPAMCAUSE: dmFkZTGy39/g7VddYU7IHDk4EFM/ak3RdrvKVj+Np12/GC/DF0dbH739MkJ5BayWbb2JSFN8mRPdjBtj7D9aLud5MkJSgFUeSf7451/+/qTJzp/K7GJ9hnLAfO9GNM2Nr2UD02lJGpMGTlUOpVvcskP6qrO438xEiN7fHe1e9FehZnhTYfTVk7l6UwDQV1gsMr+FNnZR+oeHhaIFYcUrv8RD66fhEGmP9Tpq327G0rXvRNS1DZIjN+yGuqpjsgMt+CXriQC4FFZzCWu9jRUn1LDQ58u9VOOchHpV0RQjFSz4QKAmav3e6YF+g7XxMi/nwC/ewcUm1EtaxlFsidJ3ZEstwdBSojwUqH2rY3KqnHLGoGQwGtCsQ3IsnhPPGXMph7hdl6RseXnrnAVaQ3HTLdolscY6LTLb+I9cVlDep+euDpQ8r5rFhhLfsbb1H7BRBhHz6hJEU+oHCGKXHleRSau2ENajTDEWn3QeOLs+HkbKsx9MhbqlITvR3Mo3ZCc1lbFRIwGV/Bsnfb8lkOZmhxYZQoLUJVmIO32H/txzpxylMNy5g7/S3cuZhXEIo0UREAzgaGJy+irXltuJNyzr9aNw5Z1XmmQQvbPdoLJfozMg0g9XusQOUfugmfBKy45BY0rIQ0CHoBT2U0H/xlO0LAcOq/qQuIADWHtWwCRCD73ZReLHpg
+DKIM-Signature: a=rsa-sha256; bh=036JagTWklqcsM7825S7Bf/5Pda4V47gxaXL61jjmRA=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1760679066; v=1;
- b=Zsc4E5axTis+WUWpP4SfXiKgvIgHEkOZxSivyXMWkctyarf9Bym7HHZwXeFiLchP2DshYQWw
- sJU2+O8FHcVgDzRwajC1CL9JhOmJBv9saixzc9o5oylKQxmEL3F6h60NL26XEMc5LOsUGF9dszT
- EuEGUCMnLKW47HZif57EbNiFR/yQtBzNi6XlGI1TO+QxDEVHp7faCgkx4dSrw7aM3kHgkUurT/k
- PfL21Os02Qyh6SGu8ABY4rZL2aoNXTLKg7svcLXse/LrQGILxJ03dCGRm8Hf2SVutT8ah+XeTrA
- z2iYMCdeQosqS6VW7LNqGA508AoWE9YIQwsNTUd6yehlg==
-Received-SPF: pass client-ip=79.137.123.220; envelope-from=clg@kaod.org;
- helo=smtpout2.mo529.mail-out.ovh.net
+ t=1760679100; v=1;
+ b=F8eMTPmU5hzLXIwgLuvKs/uoHe1jdYnPFmkYCP0ayBVbtw7WutcmddUj61b1zGhM9+tlAyck
+ IKl1Ap5rZODaC8zkRzn9q03HiN1eD0OZszt6lXkUjShWhQtf0pEDMCnSEiSVV8BVNadiNIC2L83
+ KgykS2viOnI/4hah+ESWCjEbRy4mqrxEkxwVmYUeXOz2X8tIM93UIxazANpFqYdn4+H8tF7MNQu
+ 3wgoKOIPgVVWrtWXCLvbYCZzkPkkveYBonxjuJMD2Uy6WcGX4lbqt+IkHBqaS4tyuczLN1ms2Pa
+ ac6IHfwRfO22ZEGLq5NxyJ1nin8rn2LREevSGfrVyanUA==
+Received-SPF: pass client-ip=178.32.125.2; envelope-from=clg@kaod.org;
+ helo=smtpout1.mo529.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,31 +128,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Jan,
-
->>> Just to avoid we are in deadlock: My understanding of this issue is that
->>> it is not a fault of this series. Am I right? Or am I supposed to
->>> address that as well?
+On 10/17/25 00:56, Andrew Jeffery wrote:
+> On Wed, 2025-10-15 at 01:18 +0000, Coco Li wrote:
+>> From: Felix Wu <flwu@google.com>
 >>
->> Could you add to your series :
+>> Added 32 bits property for ASPEED GPIO. Previously it can only be access in bitwise manner.
 >>
->>     https://lore.kernel.org/qemu-devel/20250930142448.1030476-1-
->> clg@redhat.com/
+>> The changes to qobject is to index gpios with array indices on top of accessing with registers.
+>> This allows for easier gpio access, especially in tests with complex behaviors that requires large number of gpios at a time, like fault injection and networking behaviors.
 >>
->> and retry the aspeed machines ?
+>> Indexing multiple gpios at once allows qmp/side band client to no longer hardcode and populate register names and manipulate them faster.
+>>
+>> Signed-off-by: Felix Wu <flwu@google.com>
 > 
-> Yes, that patch resolves the issue above.
-
-A similar version is now merged.
-
->> I am afraid more should be done to run 'make check' with your series.
->> Maybe set 'mc->auto_create_sdcard' to false for all machines ?
+> Thanks for updating the commit message. It should be properly wrapped,
+> but I expect that can be done when the patch is applied.
 > 
-> Who should do that?
+> Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-/me looks at sd maintainers. 
+yeah. I can do that.
+
+
 Thanks,
 
 C.
+
 
 
