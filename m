@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E8EBE8CB8
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E8CBE8C21
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:10:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kDd-0003wv-JD; Fri, 17 Oct 2025 09:10:05 -0400
+	id 1v9kDc-0003vv-Qz; Fri, 17 Oct 2025 09:10:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDN-0003of-R9
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDN-0003oe-R1
  for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:51 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kD5-0004a1-NC
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:44 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4710022571cso16160435e9.3
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:09:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kD5-0004aZ-9H
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:46 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3ee64bc6b85so1960386f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:09:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760706562; x=1761311362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760706567; x=1761311367; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pwb0PJgSr2BfTlaSLjpWqnUcDaMDaP78/yq/3EzyncQ=;
- b=xFW9MFJOa8Jf6q1PmSPhXNNA7CJESMl47BJOxV3s3WR0ya7NnI3tirHSIz7SdXw/oD
- Vq2sUken7SZa0cDkjM5tN0YSWSUSe1CdpmzxtLXsT0t0otOi+gXNNv/ovwwgVxOE8e0O
- x7bpdG4xsO6xXIJDYV+wadXMSBTnCNGb0xxMonvjwaU8rn2JSxMbKyiAaKUcmBaRPZBE
- ml8GqYwx7GNm3i2bv81RyvnzFtjGb1kJOWCiV/tOieUMSqILULo2LRNhcFKnLX3JsEfV
- ffN0UKMesjI+bloTVPM3B7KujNF3FIVo/YkYjWlC6znp+4DulpvPjp08hbS7fABGm03W
- Z3pg==
+ bh=l/4CR0KG3sLN16Y+p37w7dv3aFm2uWBfTJDp9n3g/Ks=;
+ b=JPTa3dTsfQeZ6wRBe8Q/gEvY3c4D+a/u0Q9QbTOhZiw0OSGIxjyK6GUd9/MpK+q2pZ
+ rdk2hEwlLmpl/0EpWzD+nMrGItw9asH5cNJF+q4LFe6srr1WmEdVdE7R0ZgSD2458X8I
+ 4uNPWnkzTP1wSAoaNy9RienFsMpYF3NPykX1HS9s7pRYkqCXCYJ8OnK4m8AMnaEjUZ8Y
+ +StUlhB9owCX/JGqpd4jcoPfihgoHM+jq96UXfBdCbQcAaw5+n0fnWm6Mh6XQMRb0Kw6
+ 83oYDRJJpeYNAwFswdlLrt9258JL9pgbn8sQX0A4CP1UwCWs4MEn84HR1lBJvwevf7vi
+ wRVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760706562; x=1761311362;
+ d=1e100.net; s=20230601; t=1760706567; x=1761311367;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pwb0PJgSr2BfTlaSLjpWqnUcDaMDaP78/yq/3EzyncQ=;
- b=tGS5zFUM91vfRyMkHXLxH0lZ+UPdipA9Ix+nJxlgrwWFoWr5NE8gzgXqxzrcKdUKst
- pz+0PcXd/vUcZAC66aTxzkFnd1N9VcWQPj6lf8EW/xFGzV+vX7njeuhq4jdCL83IBQSA
- H8rBEquCEEKRclJA66S802xBITcxfed2x/W8fcjU5X7nIZVrisSP+WbjWnU1+DuHe5vE
- GoxLkEFoctKd4iR3CJJgwrh3juVcLiVZr17zeb7asXFvsK1YdX5LufzTU8vvACQ8aok7
- YKa126XZ6m8iBnRGs0qBR0SJz5dyYXA4BP/SFc6gKMww0fuHyac92KU5XBrnZV+hCyQD
- rW8A==
-X-Gm-Message-State: AOJu0Yy2nBA36Sn7PoZyhr4CKLtgIoJkgDpTqjGh8qsT8OsfbyksgcUX
- 7RYaIB2XkAlosjA6EGBQKxjR//m3uF4/AnBm5YZdVQQbANM2dMDk/dxKDdIVvpt5Sgvac2XIbey
- YEMoXet4=
-X-Gm-Gg: ASbGncuN0huyNEh0q8FjDbA13Rne3uxy2UZ+UM3tyS3v1c7MaEMA+L0gGx+Wnhb4xMj
- cD2ID/QA2wrwYrJKBtJNasADNR3RpYlmLBq8s2dWq73jyFusG/ip2uW0RSTwNoEKyPXwX4YWXkJ
- NeatnSPc1H+wcOQGbudBfmifTUk7vQG0FQxZFoUWFMt6WupMiZinAjWi/5982f1q+9TM4fJhSet
- cYlgvU51cbvJauXQerirqYyl95labgN2ZyUI3QQKVgHalNXeMmQxdlrfluIRtl+TSmUoEBYGSj5
- YRJTszgZuv53S2FmUGeMg4XeFcUHfOcgTyaPox2b9a/E/3bHxT7s8nkJwMFqrRalbgmXREZkEHH
- 1T9mPRgyA/odGR5Ru0gtWh5FUSKkotL8TnXpZkpsEa8P3Tl4G4yPClQDWxEcnKb8OhMsB7zaBDb
- QCZlXsE4X9D7wJuYqgHpAM4/VjIJCt6lUQsIzoHZVz0K1KhgUeMg==
-X-Google-Smtp-Source: AGHT+IHDj4AFwp18ZHcnh2UZvTGNAfF/YXNA98LVcRKk79McZXtaIUl/pO3uSbGUmS5y8kFVQTTbTw==
-X-Received: by 2002:a05:600c:4688:b0:46f:b42e:ed87 with SMTP id
- 5b1f17b1804b1-47117925eb5mr27746575e9.40.1760706562251; 
- Fri, 17 Oct 2025 06:09:22 -0700 (PDT)
+ bh=l/4CR0KG3sLN16Y+p37w7dv3aFm2uWBfTJDp9n3g/Ks=;
+ b=PS3f+cDHESxFzheVphoPVzDmFCC/rsYwCHnJ+cuA3JciYJlxTz6LilnQJoIbTxOAH2
+ fMUMIR20i9pqtcsIXGo/0toinWa3gNCwUnAos3v9EDrv1WPCUEBC042qSGPBPIavkijn
+ d0h8DbU3bTlEsd9He28lHFqjQx0nFn2sS+pZPAi/8GfIkyM/9xQzLN6BUM3yE5haoiOB
+ Pyq8mvGIFnKA00AzOzCDWM9B8l4/WmuUmf1PZlBvT+IhjuYUv25/+Nq3GjkL5xrHan0u
+ AkFje3LKRJXB5SFJLLp8v8eBt+46R+ounURZA3LypkMyE/0pm6Ti8xkra82z2AQ1gDS4
+ HiRg==
+X-Gm-Message-State: AOJu0YyM497rQraXfejc+MV+NMCCRohKY+Rykg+Bc+9iNuLSao23IhaY
+ Er2gNgZNBqbPiFGxiFTvNjxiR59HOAeXV/7IpreZiNUP9E9GdWjgX/sc5RgymyU44WmRRt9j1jH
+ 3Y/xUhYg=
+X-Gm-Gg: ASbGncszRQgvQ6Pz+a1DZSwtEUWhg7J28/vppYB/uFdPEzDiCMoIlxbTxkfpgCswSPH
+ jDWisSExF/EQKJSH1NDf+dBCCv4/pj8XCY+mbShn0vFq7MDKwH6g6mpEzwh6E4YJk908dyyOiXw
+ cGwzK18JEy2z13Zlw4YtW0j7Nb5VAO6U0PRJ1j21B1V92e+qH9ADh320Gz/l6EAEn/jmZN/t5/b
+ 2OFdL+RXaoNzgiylIYdGFMEuzT1IErMej1TV01SYNJXZZqTeNwchPfXWdio5+8xBBir7QXOtbSa
+ IZnYfs5Aw7Rdm96KtZ0UQjonnmomurhJwnM1K9QkOQzJ4vhH+xxiULf5d/yj4YGfE39bvmyD6Xp
+ syN9qAqCcGnFZ4rJvIKDWIC7u6yfDzktv2Wx5Z8Y3NRjto1a6tpL73YbqLc6BdN2oFQUVlYQdIX
+ 4I6WqnUATvTGS85pjr1SC4WP/mo/ooY6VA94PhX8zpov0PlSTQNAWNrV2YBwvq
+X-Google-Smtp-Source: AGHT+IFvecIm6L8RkVTs56+m4o4LTc760F0HVwmo5AKmOvOUfD9DqVf76mE5cKnYxwwNQoTO/ZPkxg==
+X-Received: by 2002:a5d:588c:0:b0:427:83d:34b6 with SMTP id
+ ffacd0b85a97d-427083d3c88mr1412162f8f.42.1760706567205; 
+ Fri, 17 Oct 2025 06:09:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47121ed98e9sm7279285e9.3.2025.10.17.06.09.20
+ ffacd0b85a97d-426ce5e1024sm40333313f8f.42.2025.10.17.06.09.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 17 Oct 2025 06:09:21 -0700 (PDT)
+ Fri, 17 Oct 2025 06:09:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -69,17 +69,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  qemu-arm@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 12/20] hw/arm/virt: Remove deprecated virt-6.1 machine
-Date: Fri, 17 Oct 2025 15:08:11 +0200
-Message-ID: <20251017130821.58388-13-philmd@linaro.org>
+Subject: [PATCH 13/20] hw/arm/virt: Remove VirtMachineClass::no_tcg_its field
+Date: Fri, 17 Oct 2025 15:08:12 +0200
+Message-ID: <20251017130821.58388-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017130821.58388-1-philmd@linaro.org>
 References: <20251017130821.58388-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,38 +102,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This machine has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
+The VirtMachineClass::no_tcg_its field was only used by the
+virt-6.1 machine, which got removed.  Remove it as now unused,
+along with the VirtMachineState::tcg_its field.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/virt.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ include/hw/arm/virt.h |  2 --
+ hw/arm/virt.c         | 12 ++++--------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index c5ccd6ec9ea..21d91a43d8b 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -121,7 +121,6 @@ typedef enum VirtGICType {
+ 
+ struct VirtMachineClass {
+     MachineClass parent;
+-    bool no_tcg_its;
+     bool no_highmem_compact;
+     /* Machines < 6.2 have no support for describing cpu topology to guest */
+     bool no_cpu_topology;
+@@ -144,7 +143,6 @@ struct VirtMachineState {
+     bool highmem_mmio;
+     bool highmem_redists;
+     bool its;
+-    bool tcg_its;
+     bool virt;
+     bool ras;
+     bool mte;
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index f928a73272d..f23283e6ddd 100644
+index f23283e6ddd..3e7858d6e11 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3627,17 +3627,3 @@ static void virt_machine_6_2_options(MachineClass *mc)
-     vmc->no_tcg_lpa2 = true;
- }
- DEFINE_VIRT_MACHINE(6, 2)
--
--static void virt_machine_6_1_options(MachineClass *mc)
--{
--    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
--
--    virt_machine_6_2_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_6_1, hw_compat_6_1_len);
--    mc->smp_props.prefer_sockets = true;
--    vmc->no_cpu_topology = true;
--
--    /* qemu ITS was introduced with 6.2 */
--    vmc->no_tcg_its = true;
--}
--DEFINE_VIRT_MACHINE(6, 1)
+@@ -735,7 +735,7 @@ static void create_its(VirtMachineState *vms)
+     DeviceState *dev;
+ 
+     assert(vms->its);
+-    if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
++    if (!kvm_irqchip_in_kernel()) {
+         /*
+          * Do nothing if ITS is neither supported by the host nor emulated by
+          * the machine.
+@@ -857,11 +857,9 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+                             redist_region_count);
+ 
+         if (!kvm_irqchip_in_kernel()) {
+-            if (vms->tcg_its) {
+-                object_property_set_link(OBJECT(vms->gic), "sysmem",
+-                                         OBJECT(mem), &error_fatal);
+-                qdev_prop_set_bit(vms->gic, "has-lpi", true);
+-            }
++            object_property_set_link(OBJECT(vms->gic), "sysmem",
++                                     OBJECT(mem), &error_fatal);
++            qdev_prop_set_bit(vms->gic, "has-lpi", true);
+         } else if (vms->virt) {
+             qdev_prop_set_uint32(vms->gic, "maintenance-interrupt-id",
+                                  ARCH_GIC_MAINT_IRQ);
+@@ -3471,8 +3469,6 @@ static void virt_instance_init(Object *obj)
+ 
+     /* Default allows ITS instantiation */
+     vms->its = true;
+-    /* Allow ITS emulation if the machine version supports it */
+-    vms->tcg_its = !vmc->no_tcg_its;
+ 
+     /* Default disallows iommu instantiation */
+     vms->iommu = VIRT_IOMMU_NONE;
 -- 
 2.51.0
 
