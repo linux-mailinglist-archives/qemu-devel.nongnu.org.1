@@ -2,80 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08981BE8DEA
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4223BE8E41
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:36:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kZU-0000n7-B2; Fri, 17 Oct 2025 09:32:40 -0400
+	id 1v9kbu-0004Qj-GA; Fri, 17 Oct 2025 09:35:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9kZ8-0000ji-IQ
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:32:20 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1v9kbV-0004Iz-Q8
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:34:50 -0400
+Received: from mail-yx1-xb130.google.com ([2607:f8b0:4864:20::b130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9kYz-00089p-N3
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:32:16 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-471131d6121so15235365e9.1
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:32:00 -0700 (PDT)
+ id 1v9kbO-000090-Sm
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:34:43 -0400
+Received: by mail-yx1-xb130.google.com with SMTP id
+ 956f58d0204a3-63b710f276fso2280241d50.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760707918; x=1761312718; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uO7mYKt8IHdYhHEVKQzf4sCsKSeLXK5fOVq74VVC9b4=;
- b=Po/FQ5xg2yocLj/8fMyF3f/knhrpUSCJzDnRXOh3V0M1vKi/BrM4HOMTiAOgZ0dEgQ
- rWKT/JHcf/URMu3jm2PNthXp0OvNDwsKYl5w8V2GCBMxuGwqtnneqGPMKtqSWp87dxpc
- lmKZaPRrtG0CI1dCe0k8OAV7yGHEYCP0sEMY0JA9eH9OnZPhFJJQBSqg6MHaJMtVFMFY
- 9UYsHikj/lxh0Vi8sY8sksS1zUVx2XNWChflC+QIG2/eVCH4bda0txrNgsiVM3AWENMp
- 4HVxPO9JJ2uiWngk8JGqHJaF0qpRDOu0GwoqMzzFbhxauAGtmYHuBZKUa+Q1Zs7QXZNn
- xe/w==
+ d=linaro.org; s=google; t=1760708072; x=1761312872; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zU23yWGtSetwuWLS5SAyqN+GewwgZYsp4hXqLSA2xTQ=;
+ b=MGMHqj0JoftpTZ5BhBKoiJFLv47A2ffNJfJsANoljYtTFCLmE1KBVIKDt/rHKH6BQo
+ z6vtamKtZKN7wUEY3XRCNNKy6x4gvdar7Z4Qvx97+1T+4ThsHKbY0J64kqVxDaWL3bYe
+ MuQAlD5g6KcxZ/S4lm9j/cCiUZHCmxdN8YbTtLQQ/s+X30qGB7tlko3BycTlaj3ikC2v
+ FVBPolYNNc5JdmO1Ozv7j+C4NiL0INNjdTcMJSoXD9CTB4w+xLJDkwd+ChPVgfH+adPI
+ Sy0mVxuZCQc30B9RH1mqeKBPn2PCPo7lnY5h1OPKZN5Iy70IIKaDFfnixW8VE7w8uWYR
+ /j0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760707918; x=1761312718;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1760708072; x=1761312872;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uO7mYKt8IHdYhHEVKQzf4sCsKSeLXK5fOVq74VVC9b4=;
- b=I5asG89fPJbRvwHXuQcuLlgJDIx1kTHBP2G/MsK887YLkGnym+qPuWfA+FSkF3cjNS
- YZmEr2pt19omIj/8sk33BaqEZHSI+BcFyk7PprqTaZmsaR9SuXxIGCpK/OQGql/hLqRc
- wiwcaKPC11HywKX/0zidh7LfTx2GTTOtXH/I+XQZw6PN505Vd1ZcYrcCvmbiC4JkuNjP
- c4QMQdQIghpMQDWfAk7v4QQxtaiQBHCEO0809/ZSTKEaLMnrJKI1oko07UG4cUb/ruHC
- fLSXjycuuO98DN/KLcob7D0XouK5Kl4SJq5nyjBu4EbXKzooIQUYPVztmYt6B7qU+UrV
- fY1A==
-X-Gm-Message-State: AOJu0YyEp58XDztCevjeIC7pNa/0WFUKm/rq4MlMgkUuQ+0qajqsifm/
- 4K6TDoC7w3Z93FlwgStSE37CV3tXwpHQgy7hazo698z1M0cLvu24B9GavNw05vWBtCrZAb2wG3V
- HSr0X
-X-Gm-Gg: ASbGncvEvd+8p2cPjeYTmQ4OVzpic8bsY7NGWS0AGDjo/hl3v9qPJAFI4/Z09RQa04z
- F4g6BCiT5vaB9I1ziQBlNnntwh1x5wPtFImAGQB37MVOcQJ3HRPKVZp8QqB79Z65ETw6dcRudw7
- yReDReCSFjlGuwJgqcsGnHwAFWdCu/jxl+OOLddipsgBVVsNIyBn/VHd5eISlr7NOqyyJ0gBo0g
- 23vNy4YUYjpiwELw16Jd+abQ3LUhOlH9mzFwHPKmTbbA+U3xrDL0tjNE7+kW2hgCokCxgcZQnfb
- 4Z/7Vgc3tdxjFjud9dBQwGIA+OaD39zHn7ycPnGfazEJLgYpOK0jXMO6/Zl7x66NiSTwYJOnPhL
- FvD+AUmDcPSyevKWEtliV5DWoR8ICXHbGODKadd+/BlIIN0eXFXSkBnlQTI7S4QyRVqoCpQKSqu
- +ycJRMiA==
-X-Google-Smtp-Source: AGHT+IG52+HKn+pYvcR9v8R5/YTm5EDqrIPqT0HpcnaUKkazvjFKqkSflypy16LsART68HpbQo+vAg==
-X-Received: by 2002:a05:600c:8b78:b0:471:d2f:7987 with SMTP id
- 5b1f17b1804b1-47117902dbcmr24578985e9.26.1760707918243; 
- Fri, 17 Oct 2025 06:31:58 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710e7050c6sm51535775e9.1.2025.10.17.06.31.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 06:31:57 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] .gitlab-ci.d/buildtest.yml: Install 'file' for the Coverity
- job
-Date: Fri, 17 Oct 2025 14:31:56 +0100
-Message-ID: <20251017133156.926094-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ bh=zU23yWGtSetwuWLS5SAyqN+GewwgZYsp4hXqLSA2xTQ=;
+ b=FWc7Wbdq3IkueANysQq7Svj4E0+A48iLU8TWbTPRCml3KSX2GzltE6nww93NQeXO8n
+ ZczoUEwNZnwW51EiqmUZsj9YyMuSuen452wPpalRsLj4I43MhnHfb3L0Dt/kzhc52lwD
+ PE6RbF5KOJMbYu98fnr14kBmIVSBCpZSvV8LBR+VjG/1BBQu63WQLTK78QnvKehNO1/2
+ BR4IABqvlj7IL4T1zMQSkVWy8XIklMIRnCaGU6xCtoNDG47YbzfnNVT5VkiBSHTi0pev
+ 3c1MAmiDyVLNPuTQgi9RM81ZjD1Lxk/XY6qJm+odPF7wXUKHLZvUSh3F0TRZFLTz6vFE
+ m6hQ==
+X-Gm-Message-State: AOJu0YyNKedPILQ57nPR6QCXV7S43dQE8cH09SjB289ysQfGCNwgWt4X
+ gWJPVtDqEsuluhWlBGXef4TmbxeEc+pRMkHTHIBnb/JINK7Fp8z/tR8C2eZu7olKDKhqbW/1KNl
+ EXIgdns5H8uPsFqA8lHaJksAhgf2cdwSJzOvm3qZyRg==
+X-Gm-Gg: ASbGncvkXRqYMeUKPIPyjmhmd6YZ+kimjeHyXe5FeqIrfD5NDKM1wal02CB23OawNgw
+ wSQvSqBOM4u6cC8Xp3CpcLpEMNtVXb6peKSUdmKbm4yBOZV2QjU7fDsYNsG5zSAEeJ+GeYuK/JT
+ mtLMmRxlD17XMBlcLwTP8yz0xZSyJd99ykpH3KFhX32IYC8gVjyGU1me/0tyPOP7DfjIZeC4Iyc
+ lFP2hItAzvgoRg4VesA6v14tdcvgv/SC7RWO1ETd4wDNHEQBXDAiuKcsJWIWg==
+X-Google-Smtp-Source: AGHT+IHNj6Hn16xb/wtZGMMzSy61F2WVi+0rR/OZMYChgRQ/dXTByA1NI4KKESVUjB6oxsMM2gb+Qq5FMeHXntmGGsE=
+X-Received: by 2002:a05:690e:4182:b0:632:5ba8:1bb5 with SMTP id
+ 956f58d0204a3-63e161395c5mr3448885d50.21.1760708072371; Fri, 17 Oct 2025
+ 06:34:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+References: <20251014200718.422022-1-richard.henderson@linaro.org>
+ <20251014200718.422022-12-richard.henderson@linaro.org>
+In-Reply-To: <20251014200718.422022-12-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 17 Oct 2025 14:34:20 +0100
+X-Gm-Features: AS18NWBs8X9ldjDYHkAX24-dX5s7TD8iVpA1kJ2Ohte3MQtLfk26shTo3wJHFec
+Message-ID: <CAFEAcA9VbjnWPV+WmtHPc+H46aW96Yq3VQEBwzKzOzqA5M1xrg@mail.gmail.com>
+Subject: Re: [PATCH v2 11/37] target/arm: Handle ARM_CP_128BIT in cpu reset
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,44 +91,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The coverity-scan upload job has started failing as of 30th
-September:
+On Tue, 14 Oct 2025 at 21:09, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
 
-[ERROR] Cannot find '/usr/bin/file' command, and no 'file' command is found in the PATH
-        Coverity Capture uses this tool to identify the file type of executables.
-        Please ensure '/usr/bin/file' is available, or add the 'file' utility to your PATH.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-This seems to have broken when we moved our containers from Fedora 40
-to 41 -- probably F40 indirectly pulled in 'file' via some other
-dependency, but in F41 it does not.
-
-Explicitly install 'file' for the coverity job, in the same way we
-already do for curl and wget.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-I don't know any way to test this except by applying it and letting the
-coverity job run when it hits upstream git... Possibly we might find that
-it complains about some other missing dependency and we need to iterate
-on this.
----
- .gitlab-ci.d/buildtest.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 0502094b9aa..21f6d7e96fe 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -759,7 +759,7 @@ coverity:
-     - job: amd64-fedora-container
-       optional: true
-   before_script:
--    - dnf install -y curl wget
-+    - dnf install -y curl wget file
-   script:
-     # would be nice to cancel the job if over quota (https://gitlab.com/gitlab-org/gitlab/-/issues/256089)
-     # for example:
--- 
-2.43.0
-
+thanks
+-- PMM
 
