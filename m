@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95043BE922F
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EEDBE9217
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:16:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9lCW-0004e9-Cr; Fri, 17 Oct 2025 10:13:00 -0400
+	id 1v9lCf-0004hd-Lb; Fri, 17 Oct 2025 10:13:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCT-0004dA-Sn
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:12:57 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCY-0004fr-AW
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:02 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCM-0005eh-Dr
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:12:56 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-4270a3464bcso194768f8f.2
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:12:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCN-0005fU-7H
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:01 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-47112a73785so14863425e9.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:12:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760710365; x=1761315165; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gzW3ekQZ7Psj0DsMhnvdQfGfYGGMgoTsdSCNvzg/jEU=;
- b=lpCx423vz/ClH8LDX+PMyW+IKJ3kL1pnR5TYpSXsuXCe4Ksx+mRtJ8OWDch0NOjrLP
- 3pzeEBWg390IJW3qbIqSH1nzULOF5L2UFUkcU+BPdk5b5bjXDeaLG9RstOlsDURW6gz4
- 1vhR3b/hYwB38V+ehNR5YoPBGlXkXi/XxEbpJDgRJuMOHcJtbOftQLPMNAFgxX6NmzcW
- v0X6JZ/7WmeH5xL6kv7ZEfPyRYLVtSYMLuNgVoRmLi/GnRd3Ilcr+6xbQz/xzRfALGIi
- Mxf7B2ZkgKipeysq5bv5kyR8mbSNKUMe75r62vf//409H6QXrPveG5x4ZJjMBlF/IhFc
- rZ1A==
+ d=gmail.com; s=20230601; t=1760710366; x=1761315166; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CFuBYoXthwAAHQXYSal9xNPgZEHCC/OlTSTKqa/XfA4=;
+ b=HBe/Q+M+FQqmcb19I6gB6NwtH0UfyQyIUB8Anp5N0O43ChilinCZGfdevtC3np6x6S
+ BVyj4YlFL459Lk66CQ90szBu4J6ZBWxMdGMAgD0TPZrcSZqOwY6102qdLBaoD9KSONGc
+ puEcoDN75mcguzhZhebEu41Nz3N83lKfGg+7LwgynXxRB4Z3vTXINzFIG6h0v0phiBui
+ glGkSC7GLLBZ+efc3zPuRk9YVVpcLlHVIIbnIHfGgHzkBr0Cvv/xB5NmvZibDhcY9ueR
+ VDmSkMQHi+WwqSek1s2Kzny0Y4HpgY8TWJNOXiVmemBB0G0VB/EsaH8hCGWXDfrkp5R2
+ Gz9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760710365; x=1761315165;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gzW3ekQZ7Psj0DsMhnvdQfGfYGGMgoTsdSCNvzg/jEU=;
- b=QvIFZZtwf/zCVvB2scK5XWhTpDL4mpA2KFC6gY6Quq0On5zeYoTaFKA06aHsgFejyh
- 9frPTDULazZopk+LYIpyiZYDYkV1EA2BJqZklD0zPUf6dHustT02mVo8SQlqvh+HSNAu
- TpOc/S4ZdbZv+QMy+bEJyT8dMuY7VoC51IMCs74gDqAfkmfPG1xM0BqYxFVfhxe47jD6
- vN3qxhP+p0rK3sMC8HCvagJ+LVQ13LR1+K4B6Wxn/7mzh9JJZw8hssyP4UGkT+mEbi1z
- 2dQFiYfAhIlCxnGlvlXBd1R0YYRVx2zQ03vmTAE1OcCf7NGQV/E2vmCJ3GFbCT5ew8S9
- AheQ==
-X-Gm-Message-State: AOJu0YxPiGWj4WyEeBHLiiDaDNMZkW7yqSbyMIA12+cxKDrB7iXAB/+O
- p/0RF+TzOYp6ekSADs+CUZixDEpK7Kv7NlikBSebjb8gDwOJM+7Xd6JKRxqBqw==
-X-Gm-Gg: ASbGncuCZWJsA7Ztz5LgGg1kXwyojbmFLOV56bt9efJsOHAe1Rf7+ub9f3Qj1a8gMYf
- g6xBvGzL99BLksBG5e2FmcnMdexNpNtB77o5Yvab+HoxHEs6a339UiG4RExegj65avsJNmTvuC3
- /Os9NRVaxmKT1gYiaEseZnpy3mYJyat1yxFuAZAZm1deHRxJuqV2tjee4Y6tl9znJwRDu+NQyhK
- tetQ9KBRlrm492McGBLOzQcV5FsVpukN24TBszP4HvUosh09+ffXXGvciBcRABeIYQKbsLl7OTZ
- OK+3IiL7mii42nDyffU4uJRyrOU/qyGrPUXcvpUpvEJSUgWaoHoLztePRHyZT/DLDZ2JQfaxpPR
- f9bu3NpJ8ITDcfIl0G/CV73h8ahUDo71t2BNnUtCXTk+YRpZ8lbh3S5SSWJhmhGnjIgobybk/92
- 7XnG8ZVhtnYKDj5pgG/+zyWx5eMKmT1tY1
-X-Google-Smtp-Source: AGHT+IGeuxOJBWpmVCX3U1tHBDipCkpzrypzvQWf6sOPwcugLBzMa9b7CCp6AGBV0FZ+Pn8TPlDLZw==
-X-Received: by 2002:a05:6000:25c7:b0:427:854:787 with SMTP id
- ffacd0b85a97d-4270854085bmr1487022f8f.51.1760710364350; 
- Fri, 17 Oct 2025 07:12:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760710366; x=1761315166;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CFuBYoXthwAAHQXYSal9xNPgZEHCC/OlTSTKqa/XfA4=;
+ b=lsTWG3oanlQsbIDlc07OiyZXIJLyGwfKkNxDnkuk3/29PjBa/Y/6zwQ7a94P1gNsQW
+ 4zh0DfE2ux10Eq9YJzviliNdrzWBf2pPosvX4r7VFOFLGCxcS2XMNqa4Ti6A80S1V6Je
+ vAg579O/UMHmjavSpYh0ENUkdBK2wDxXZ+gMooa/QlAc+Q3H7irbmBjM3249G/1WJvMA
+ 5C8IvNMJ1C6QG6bfWUMMxHDT9Y3hL3+5jE/iXxkq6QpQyPzT++lyfj4RitsxJij2DYkG
+ ZXe4ILYojwtYkjqiCYWc7Q2pTtvzEiEvgiWP7lXf9AJOO7Zu6pInXVnA+unsblg7vU6x
+ CbWw==
+X-Gm-Message-State: AOJu0YzJpgEFrl+XTPSqtR6Axxkq26fxAYR6cKQZ0UdSCn/zhIfSsSZW
+ M9S7W80bG1rJaRXOUN/gDsZF8bHHna5Evp/4CWhZbtgWagraurgw9h7QN7dhpQ==
+X-Gm-Gg: ASbGncsKDIKYN98LUsao6AHcQ4dJo3/oueWex8BidsJJTGt7omsLQtATI9U3QXl55eo
+ n55mB77ls+ur4IOcuMda82L+N0yPeOcAqyWEHPg6KHLH0Tb1Nr+qiPwjjzGeBxHVpnWdUQTvsq9
+ WlM/RCR80e/7KaE9BEVZd2YAM2JohNdnQQdKQC4OS3w41dI7JavOwxKgsNWcLsDDn7hw/VCOedV
+ OE/liAkhvC+EwgojF/opAwU/7hHuLBEq/UOTj7MXtMOV3klEp7TTu3lu21frZ+qOFaHBQ5CFFzo
+ WkUWoXTWL0LR2C+Bq3tWEGD5Oi+gArsona9yL/QNupORGOfW0QkZFYEKREtiGaEER2FGEnyamSV
+ M+8gwUks1stJtmlcQj6TM7zMWpM4It2SW0WfLkR77FslEgSB4KfvWtOWGJWnW9jXwQz+IQZHLU9
+ Z2SjJ6fIx4ySocO0p3t6Xky5+bfaXuK1Xy
+X-Google-Smtp-Source: AGHT+IGHj5C2eusACsFwArx+C7dtue7Nn7sN6TxgdAb/eWFrYxY0hNIfyjFi65Oo95iq3W/yO2xXEg==
+X-Received: by 2002:a05:6000:1865:b0:425:8bd2:24de with SMTP id
+ ffacd0b85a97d-42704d145c9mr2514261f8f.9.1760710365572; 
+ Fri, 17 Oct 2025 07:12:45 -0700 (PDT)
 Received: from archlinux (pd95edc07.dip0.t-ipconnect.de. [217.94.220.7])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.43
+ 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 07:12:43 -0700 (PDT)
+ Fri, 17 Oct 2025 07:12:45 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -75,22 +76,23 @@ Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Michael Tokarev <mjt@tls.msk.ru>,
  John Snow <jsnow@redhat.com>, kvm@vger.kernel.org,
  Laurent Vivier <lvivier@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 00/11] Cleanup patches, mostly PC-related
-Date: Fri, 17 Oct 2025 16:11:06 +0200
-Message-ID: <20251017141117.105944-1-shentey@gmail.com>
+Subject: [PATCH v2 01/11] hw/timer/i8254: Add I/O trace events
+Date: Fri, 17 Oct 2025 16:11:07 +0200
+Message-ID: <20251017141117.105944-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.51.1.dirty
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20251017141117.105944-1-shentey@gmail.com>
+References: <20251017141117.105944-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,70 +108,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series mostly contains PC-related patches I came up with when doing=0D
-"virtual retrocomputing" with my via-apollo-pro-133t branch [1]. It include=
-s=0D
-improved tracing and removal of cpu_get_current_apic(). The remaining patch=
-=0D
-resolves duplicate code in the test of DS1338 RTC which is used in e500=0D
-machines.=0D
-=0D
-v2:=0D
-* Remove some redundant APIC_COMMON(cpu->apic_state) casts=0D
-* Resolve cpu_get_current_apic()=0D
-=0D
-Testing done:=0D
-* make check=0D
-* Work with recent x86_64 Linux distribution running on WHPX=0D
-=0D
-[1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t=0D
-=0D
-Supersedes: 20251017113338.7953-1-shentey@gmail.com=0D
-=0D
-Bernhard Beschow (11):=0D
-  hw/timer/i8254: Add I/O trace events=0D
-  hw/audio/pcspk: Add I/O trace events=0D
-  hw/rtc/mc146818rtc: Convert CMOS_DPRINTF() into trace events=0D
-  hw/rtc/mc146818rtc: Use ARRAY_SIZE macro=0D
-  hw/rtc/mc146818rtc: Assert correct usage of=0D
-    mc146818rtc_set_cmos_data()=0D
-  hw/ide/ide-internal: Move dma_buf_commit() into ide "namespace"=0D
-  hw/i386/apic: Prefer APICCommonState over DeviceState=0D
-  hw/i386/apic: Ensure own APIC use in apic_msr_{read,write}=0D
-  hw/intc/apic: Ensure own APIC use in apic_register_{read,write}=0D
-  hw/i386/x86-cpu: Remove now unused cpu_get_current_apic()=0D
-  tests/qtest/ds1338-test: Reuse from_bcd()=0D
-=0D
- hw/ide/ide-internal.h                |   2 +-=0D
- include/hw/i386/apic.h               |  38 +++++----=0D
- include/hw/i386/apic_internal.h      |   7 +-=0D
- target/i386/cpu.h                    |   4 +-=0D
- target/i386/kvm/kvm_i386.h           |   2 +-=0D
- target/i386/whpx/whpx-internal.h     |   2 +-=0D
- hw/audio/pcspk.c                     |  10 ++-=0D
- hw/i386/kvm/apic.c                   |   3 +-=0D
- hw/i386/vapic.c                      |   2 +-=0D
- hw/i386/x86-cpu.c                    |  10 ---=0D
- hw/ide/ahci.c                        |   8 +-=0D
- hw/ide/core.c                        |  10 +--=0D
- hw/intc/apic.c                       | 116 +++++++++------------------=0D
- hw/intc/apic_common.c                |  56 +++++--------=0D
- hw/rtc/mc146818rtc.c                 |  20 ++---=0D
- hw/timer/i8254.c                     |   6 ++=0D
- target/i386/cpu-apic.c               |  16 ++--=0D
- target/i386/cpu-dump.c               |   2 +-=0D
- target/i386/cpu.c                    |   2 +-=0D
- target/i386/hvf/hvf.c                |   4 +-=0D
- target/i386/kvm/kvm.c                |   2 +-=0D
- target/i386/tcg/system/misc_helper.c |   5 +-=0D
- target/i386/whpx/whpx-apic.c         |   3 +-=0D
- tests/qtest/ds1338-test.c            |  12 +--=0D
- hw/audio/trace-events                |   4 +=0D
- hw/rtc/trace-events                  |   4 +=0D
- hw/timer/trace-events                |   4 +=0D
- 27 files changed, 146 insertions(+), 208 deletions(-)=0D
-=0D
--- =0D
-2.51.1.dirty=0D
-=0D
+Allows to see how the guest interacts with the device.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/timer/i8254.c      | 6 ++++++
+ hw/timer/trace-events | 4 ++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/hw/timer/i8254.c b/hw/timer/i8254.c
+index 4b25c487f7..7033ebf50d 100644
+--- a/hw/timer/i8254.c
++++ b/hw/timer/i8254.c
+@@ -29,6 +29,7 @@
+ #include "hw/timer/i8254.h"
+ #include "hw/timer/i8254_internal.h"
+ #include "qom/object.h"
++#include "trace.h"
+ 
+ //#define DEBUG_PIT
+ 
+@@ -130,6 +131,8 @@ static void pit_ioport_write(void *opaque, hwaddr addr,
+     int channel, access;
+     PITChannelState *s;
+ 
++    trace_pit_ioport_write(addr, val);
++
+     addr &= 3;
+     if (addr == 3) {
+         channel = val >> 6;
+@@ -248,6 +251,9 @@ static uint64_t pit_ioport_read(void *opaque, hwaddr addr,
+             break;
+         }
+     }
++
++    trace_pit_ioport_read(addr, ret);
++
+     return ret;
+ }
+ 
+diff --git a/hw/timer/trace-events b/hw/timer/trace-events
+index c5b6db49f5..2bb51f95ea 100644
+--- a/hw/timer/trace-events
++++ b/hw/timer/trace-events
+@@ -49,6 +49,10 @@ cmsdk_apb_dualtimer_read(uint64_t offset, uint64_t data, unsigned size) "CMSDK A
+ cmsdk_apb_dualtimer_write(uint64_t offset, uint64_t data, unsigned size) "CMSDK APB dualtimer write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
+ cmsdk_apb_dualtimer_reset(void) "CMSDK APB dualtimer: reset"
+ 
++# i8254.c
++pit_ioport_read(uint8_t addr, uint32_t value) "[0x%" PRIx8 "] -> 0x%" PRIx32
++pit_ioport_write(uint8_t addr, uint32_t value) "[0x%" PRIx8 "] <- 0x%" PRIx32
++
+ # imx_gpt.c
+ imx_gpt_set_freq(uint32_t clksrc, uint32_t freq) "Setting clksrc %u to %u Hz"
+ imx_gpt_read(const char *name, uint64_t value) "%s -> 0x%08" PRIx64
+-- 
+2.51.1.dirty
+
 
