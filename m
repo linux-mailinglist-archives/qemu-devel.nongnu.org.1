@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45ED0BE9215
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9EEBE9242
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9lCY-0004fq-Hu; Fri, 17 Oct 2025 10:13:02 -0400
+	id 1v9lCn-0004m1-8V; Fri, 17 Oct 2025 10:13:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCW-0004eK-JH
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:01 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCf-0004jC-J3
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:09 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCM-0005ft-U7
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:00 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-4270a0127e1so215928f8f.3
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:12:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCQ-0005gT-6s
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:08 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47114a40161so19688655e9.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:12:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760710367; x=1761315167; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760710368; x=1761315168; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NYtLEyH2FfideJwdnFZ4JM8eULzVedauT+XtbsfYWyM=;
- b=amsn5G/cU4k+ME9GC7M0RX6kU05AK2j5JR5DY6h6jCNWeZcyHgqPa3RmQG+1j8WBcv
- ooxF9ClUyeAaZDWBGcng0YIZrNbcIpQm8+wx57SDAQVO2xtMd6VrD+pGi0J3GUHK9+ha
- xtY1uVkQ6uy82URRZr6GJcxRbcTlMNB/ESG/rT2jKm0I/yW9p8EfIQqwYKQu5VGE5IX1
- IzrewAWDgdF+PTHEk/rUgGmxU/4nIZcMlWUgK0nBJcx8OHJh9sl6Iybk7mw67Qd/UVKR
- k65l/NapPLrdHrWeueoIkHbEnE8Z3TFDxeqy1zwA9ClagqVCc7dqCHNFZPFG6nUz+7zL
- s+9w==
+ bh=n8oXWw/dktgNDXuS33Gpiga0QxIzazhu/qxi0riXcZ8=;
+ b=ZUKYJdrMcPHLsaW3sELc/wPljyOuA8KNMhYRpoIn7lUZkeIhvFyM6y8yJe+lumISuS
+ 4QRuvg0Q1FgwqwcAQ6n8EoOWLmcAziNEX75+Wg7cnBWlT14aohUJ92h9QK9hZ338FmVo
+ V9+/PeT5i34x3R7jVeLfVrv6YLIVeDFwRV3K/lVZQ/2JLqsLghwwXG4o3ItVnnfWX0IP
+ Vi3ViVTpRvUYJ3jDS62tdnGOvKsVUvts63jMaI1MyvEpijpw7205Ym4qnYnIgen+iRKA
+ GTbtPoHMCV5Grsgsk9TgtG7wMhZzxj7R3a1VjCGR6juu06JLSIcD/rzHJomdO3uZ3gAN
+ 7YOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760710367; x=1761315167;
+ d=1e100.net; s=20230601; t=1760710368; x=1761315168;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NYtLEyH2FfideJwdnFZ4JM8eULzVedauT+XtbsfYWyM=;
- b=bf+Gc9kyyMixDt5nPIV1fPXivXDJlZ1iDRhQo4uu2gavvbKQl6VaC+HgR0eeyCrx34
- vMlUSSNS0XwA/5DQi1KNq8Y0T7riWYGHcCS7Jf/+ERVTPLsJ/QAiB/1/kQyKOGdL/8ha
- TNoP7VacUGF5KjAIxb1Of/AsJ6FP37wB4keQtx9E0o5XOIkD/s971u0swz9I1eFl3+nv
- acwVTHnRxJPlejzHbK4jkcKlYtPZu7amcKkH8JTOYEdQshpj1ibVDMTVbUi7zjIdnO9U
- iKrVZh7mQeq/kwUR/0bcDs2N8auSduk0TnmMARJRmzxqQKhk41VJBYTRg+MO5GeDq6jw
- 90Fw==
-X-Gm-Message-State: AOJu0YxaKMc9jlg03TJ5tWnM3I2O35uIcdEGJnPiOujZDUJyOHqt+sCJ
- ccoSs2OEKQP+jR1Y7T23OTASHkT8ss5++sjfZmnZ4n4MvnM9PdO98DdME16Rbw==
-X-Gm-Gg: ASbGncuPaJ1EZ+R7mCrQIYTPSgHFEL/7C0EnajRQnbXjmyMFWDjwhYGsBMVIztgEWQx
- US/nZAljet1zm7prh8qyxwK3suHDrQZkd5ovjEQ6dDv0HOVmu+jgxyGxE+EtGZjKUfhzyUM+V5E
- 12RWkFcKvLQRoxjADi3nIJKOA2iIRAA+IF7iisOjLzGpbIABHbcZmcOPvSqp1wLCnQq7RQHd49d
- YvTTMZaD09EqTTB3N4Vme7YFvr2kw6PDz4kRvIhfyDYbtToQhaZCPJA6v1/3Ja2NL5vqfGX5FA4
- yKmayIYESRDY5r3WKjKFm21XqYW1bFD9NjmnOtzKpReiajPBL/MVIhrslYAZfdLrVrVwl5aXTJn
- bl2VqPupAxvAzSemYoSOx3C7oZo4Z4Qsi8eP8TZthcSao3yGBwjNbG4qe19ZJxiCyq4TBCSdBbV
- DEAh6j/HraHIg9Dj8Os2UTB1tLAhfGjLfcfq2sd5ocAR0=
-X-Google-Smtp-Source: AGHT+IEpVNrad4ULoYv87FWp8OQYnoQLnUzWsjxgBNny7ih8x0h9VPWd6hpnLRrzvILGi/tZVWmNGw==
-X-Received: by 2002:a05:6000:250d:b0:3f8:8aa7:464d with SMTP id
- ffacd0b85a97d-42704d9b235mr3022647f8f.42.1760710366783; 
- Fri, 17 Oct 2025 07:12:46 -0700 (PDT)
+ bh=n8oXWw/dktgNDXuS33Gpiga0QxIzazhu/qxi0riXcZ8=;
+ b=RduQl2Mp8TmSC1MGEFvYZ3aR5k2QBY3D01m8/wI9yDjJAPhMCt5kY5ZQ3J13yeOBkK
+ YoDWQp3Xcbcfjb73DKOj6P/6i48rGXOsurLMgwjABKcCVsJee1Yqq9jkJc+JaX827sOw
+ ENoLuAEqhYD5brCtvKLWt6brrTPcrYj3Opp+Bk7RKG3Q0fZ0DYndE1xkcA37+KWJJhg1
+ Fg8qeRGJNwnzUAdwRQ42BkSIDZ1PdzddjGPeh/6mNPHp4uLAwCLE8YHHf89nCMMqpf37
+ CYPBOoLwW+Rdm+4dxQPGBpMKY0K1P4HG+2aNh4WmxtLP3BXn9gK+sKi/NG640n0aQHo2
+ vdFA==
+X-Gm-Message-State: AOJu0Yz0fMqnV2pllV9vXs3Y0y4gwV3dN2lHUv/tB8vuHbgdLW0Rg0Y+
+ TUJV4c3Qk5RyoTY8boWo48HDPyohICRLBrKKwes7uWLseXtJRG3DtjYuP6Y9kg==
+X-Gm-Gg: ASbGncsPB8nSsDHBDGmANsvT8fCVQoonw7HyfnhqFUtkPGaCx5BGuti7lKk1lLlseTp
+ 8mpafmQALXfND7MRNiMCcBn2RkpbMkeFZ3H7v7SmqzCfUSgQR9ixOc6MbxfUV+uIuqdVpmRMVsC
+ h1IjmYJ2RrOLdRdDb7EhSr9zyMW1ldgNnbri3uVqhCW0/j4e7+GQ3nclFDfC7ceBe63NXJ9tl6v
+ VzNt0abCgEJVRBre7k7Bnget1CxJD0qy9p5VJXbY/5wQG+bbezucFNSnVlR9BEyU7eg+y9vmH0Z
+ EDVfvkyEYH0gQdyp171sIgw3AH/FNUqntDeUjzw/2H9kVjyf14tUneK6Kizo5vaD+JGtiGFsE58
+ bq4J4GN+xQSKuYx5NKyA8NJrXGm0bLXO/6Op5ggOywZxBmGBlQvfXEASTKS1TG70MsEOJYKc6L5
+ iNcPlz/IBNetF7wkiIpX9h1+VAL3D1WpQppAXXyGl+35k=
+X-Google-Smtp-Source: AGHT+IGhiyzkzAr+6r0KBtkLRDLs2tlXhqCkwBqEUxcf5/lWQeWBHbLeSI13oIDWMKk0dtvqeisVSw==
+X-Received: by 2002:a05:600c:3488:b0:459:e398:ed89 with SMTP id
+ 5b1f17b1804b1-4711786c586mr30171665e9.1.1760710367930; 
+ Fri, 17 Oct 2025 07:12:47 -0700 (PDT)
 Received: from archlinux (pd95edc07.dip0.t-ipconnect.de. [217.94.220.7])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.45
+ 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 07:12:46 -0700 (PDT)
+ Fri, 17 Oct 2025 07:12:47 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -76,16 +76,17 @@ Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Michael Tokarev <mjt@tls.msk.ru>,
  John Snow <jsnow@redhat.com>, kvm@vger.kernel.org,
  Laurent Vivier <lvivier@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 02/11] hw/audio/pcspk: Add I/O trace events
-Date: Fri, 17 Oct 2025 16:11:08 +0200
-Message-ID: <20251017141117.105944-3-shentey@gmail.com>
+Subject: [PATCH v2 03/11] hw/rtc/mc146818rtc: Convert CMOS_DPRINTF() into
+ trace events
+Date: Fri, 17 Oct 2025 16:11:09 +0200
+Message-ID: <20251017141117.105944-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.51.1.dirty
 In-Reply-To: <20251017141117.105944-1-shentey@gmail.com>
 References: <20251017141117.105944-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,70 +109,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allows to see how the guest interacts with the device.
-
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/audio/pcspk.c      | 10 +++++++++-
- hw/audio/trace-events |  4 ++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ hw/rtc/mc146818rtc.c | 14 +++-----------
+ hw/rtc/trace-events  |  4 ++++
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/hw/audio/pcspk.c b/hw/audio/pcspk.c
-index a419161b5b..f8020593b0 100644
---- a/hw/audio/pcspk.c
-+++ b/hw/audio/pcspk.c
-@@ -34,6 +34,7 @@
- #include "hw/audio/pcspk.h"
+diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+index f9f5cf396f..61e9c0bf99 100644
+--- a/hw/rtc/mc146818rtc.c
++++ b/hw/rtc/mc146818rtc.c
+@@ -43,16 +43,10 @@
  #include "qapi/error.h"
- #include "qom/object.h"
+ #include "qapi/qapi-events-misc.h"
+ #include "qapi/visitor.h"
 +#include "trace.h"
  
- #define PCSPK_BUF_LEN 1792
- #define PCSPK_SAMPLE_RATE 32000
-@@ -137,13 +138,18 @@ static uint64_t pcspk_io_read(void *opaque, hwaddr addr,
- {
-     PCSpkState *s = opaque;
-     PITChannelInfo ch;
-+    uint8_t val;
+-//#define DEBUG_CMOS
+ //#define DEBUG_COALESCED
  
-     pit_get_channel_info(s->pit, 2, &ch);
- 
-     s->dummy_refresh_clock ^= (1 << 4);
- 
--    return ch.gate | (s->data_on << 1) | s->dummy_refresh_clock |
-+    val = ch.gate | (s->data_on << 1) | s->dummy_refresh_clock |
-        (ch.out << 5);
-+
-+    trace_pcspk_io_read(s->iobase, val);
-+
-+    return val;
+-#ifdef DEBUG_CMOS
+-# define CMOS_DPRINTF(format, ...)      printf(format, ## __VA_ARGS__)
+-#else
+-# define CMOS_DPRINTF(format, ...)      do { } while (0)
+-#endif
+-
+ #ifdef DEBUG_COALESCED
+ # define DPRINTF_C(format, ...)      printf(format, ## __VA_ARGS__)
+ #else
+@@ -439,8 +433,7 @@ static void cmos_ioport_write(void *opaque, hwaddr addr,
+     if ((addr & 1) == 0) {
+         s->cmos_index = data & 0x7f;
+     } else {
+-        CMOS_DPRINTF("cmos: write index=0x%02x val=0x%02" PRIx64 "\n",
+-                     s->cmos_index, data);
++        trace_mc146818_rtc_ioport_write(s->cmos_index, data);
+         switch(s->cmos_index) {
+         case RTC_SECONDS_ALARM:
+         case RTC_MINUTES_ALARM:
+@@ -726,8 +719,7 @@ static uint64_t cmos_ioport_read(void *opaque, hwaddr addr,
+             ret = s->cmos_data[s->cmos_index];
+             break;
+         }
+-        CMOS_DPRINTF("cmos: read index=0x%02x val=0x%02x\n",
+-                     s->cmos_index, ret);
++        trace_mc146818_rtc_ioport_read(s->cmos_index, ret);
+         return ret;
+     }
  }
+diff --git a/hw/rtc/trace-events b/hw/rtc/trace-events
+index b9f2852d35..d2f36217cb 100644
+--- a/hw/rtc/trace-events
++++ b/hw/rtc/trace-events
+@@ -32,6 +32,10 @@ m48txx_nvram_io_write(uint64_t addr, uint64_t value) "io write addr:0x%04" PRIx6
+ m48txx_nvram_mem_read(uint32_t addr, uint32_t value) "mem read addr:0x%04x value:0x%02x"
+ m48txx_nvram_mem_write(uint32_t addr, uint32_t value) "mem write addr:0x%04x value:0x%02x"
  
- static void pcspk_io_write(void *opaque, hwaddr addr, uint64_t val,
-@@ -152,6 +158,8 @@ static void pcspk_io_write(void *opaque, hwaddr addr, uint64_t val,
-     PCSpkState *s = opaque;
-     const int gate = val & 1;
- 
-+    trace_pcspk_io_write(s->iobase, val);
++# mc146818rtc.c
++mc146818_rtc_ioport_read(uint8_t addr, uint8_t value) "[0x%02" PRIx8 "] -> 0x%02" PRIx8
++mc146818_rtc_ioport_write(uint8_t addr, uint8_t value) "[0x%02" PRIx8 "] <- 0x%02" PRIx8
 +
-     s->data_on = (val >> 1) & 1;
-     pit_set_gate(s->pit, 2, gate);
-     if (s->voice) {
-diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-index b8ef572767..30f5921545 100644
---- a/hw/audio/trace-events
-+++ b/hw/audio/trace-events
-@@ -23,6 +23,10 @@ hda_audio_format(const char *stream, int chan, const char *fmt, int freq) "st %s
- hda_audio_adjust(const char *stream, int pos) "st %s, pos %d"
- hda_audio_overrun(const char *stream) "st %s"
- 
-+# pcspk.c
-+pcspk_io_read(uint16_t addr, uint8_t val) "[0x%"PRIx16"] -> 0x%"PRIx8
-+pcspk_io_write(uint16_t addr, uint8_t val) "[0x%"PRIx16"] <- 0x%"PRIx8
-+
- #via-ac97.c
- via_ac97_codec_write(uint8_t addr, uint16_t val) "0x%x <- 0x%x"
- via_ac97_sgd_fetch(uint32_t curr, uint32_t addr, char stop, char eol, char flag, uint32_t len) "curr=0x%x addr=0x%x %c%c%c len=%d"
+ # goldfish_rtc.c
+ goldfish_rtc_read(uint64_t addr, uint64_t value) "addr 0x%02" PRIx64 " value 0x%08" PRIx64
+ goldfish_rtc_write(uint64_t addr, uint64_t value) "addr 0x%02" PRIx64 " value 0x%08" PRIx64
 -- 
 2.51.1.dirty
 
