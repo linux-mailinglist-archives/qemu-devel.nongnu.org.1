@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC47EBEBC9B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 23:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA21BEBC9E
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 23:13:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9rka-0003px-Tp; Fri, 17 Oct 2025 17:12:36 -0400
+	id 1v9rkb-0003q5-8Y; Fri, 17 Oct 2025 17:12:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev>)
- id 1v9rkV-0003pH-O3
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 17:12:32 -0400
-Received: from pc232-62.mailgun.net ([143.55.232.62])
+ id 1v9rkX-0003pY-BD
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 17:12:34 -0400
+Received: from pc232-55.mailgun.net ([143.55.232.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1)
  (envelope-from <bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev>)
- id 1v9rkT-0005kp-2S
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 17:12:31 -0400
+ id 1v9rkT-0005ko-9z
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 17:12:33 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mail.yodel.dev;
  q=dns/txt; s=pdk1; t=1760735538; x=1760742738; 
- h=Content-Transfer-Encoding: Content-Type: MIME-Version: Message-ID: Date:
- Subject: Subject: Cc: To: To: From: From: Sender: Sender; 
- bh=XXG6XyRvvWWJM2g6tmrow053fnjUzMhW3R28qYPomZY=;
- b=mADzAIfV38xb8iitKSgxRfNQ34C8LSz38+gHvsjsq01EW/8CJT2zUwfKSiiWiu1f3IU/vjwcMAok5NtjLpHrKbd1Unb1uO6P6dva8NxelypuQdMfrTSWNi6gJA2BnApWw3E+L/MjL2pyhRE3wsRsSAt9nNnBzSRfRSMxWgYVD3cKBar+Y2AO5mD+4N7RJk/gffuV1robYZwxXyvVWW1Krs8hGucRvs8QDLDjreFq3IGNnAXAFcL04wE3pt2ZV29Ty9MpYblpmbBr8rONXM2tXl6bz7uA58XFcM3qFvtMxIw4Dm/MG365WGytAhfUkhUG6lR3qxNKylJabrnwMbWtvg==
+ h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
+ Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender; 
+ bh=5Sbhjsngm4RxsNio2W5tuQwDo7g8V5Wa8vXSVRSbXiA=;
+ b=BzBUH30JxVAYTvAfIrQ8JVYNaBe1JMaKlrr2yhYwdG5I4BxNBikQDx5jARWLBUKNbMC1ZGmfHHhMuYni8tGlje9bKBK53VSfgPgTAw2a5YG57FMGseQikqbghedbfJABie0DmjG2c3XcRZeL9WPT4NBn02ozOd04GhD0wGJn3lelUSd5/tPdW811gYC/wiTsXerAtNZJ4xjdZpEri/LDsXgeFtcdQfkEhwCgkkwCPWDW+Qjy53q/E7J+Z3ojwqzdCHQrLp/Tjh7w2lwb43fziA9fDICn/+FXLNMXO1CrX8YDTcglAbARdwJJE6VCXuYWc27hPgpc/qVNKJbRe5pWgg==
 X-Mailgun-Sid: WyJjZmM4NiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjMzZTkyMCJd
 Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
- 103c014fc94d69143aaea30297fe13644379dd6e036d047744d4acfe9a9dfef0 with SMTP id
- 68f2b13201f5cfbfc24094da; Fri, 17 Oct 2025 21:12:18 GMT
-X-Mailgun-Sending-Ip: 143.55.232.62
+ 65586c34f6143b3160f0ced55fa49016b6000fbc8f25c7264d78fa599f872416 with SMTP id
+ 68f2b132698b6ee81bb95cba; Fri, 17 Oct 2025 21:12:18 GMT
+X-Mailgun-Sending-Ip: 143.55.232.55
 To: qemu-devel@nongnu.org
-Cc: Yodel Eldar <yodel.eldar@yodel.dev>
-Subject: [PATCH v2 0/3] gdbstub: Export helper to use GDB errno values
-Date: Fri, 17 Oct 2025 16:11:42 -0500
-Message-ID: <20251017211149.163762-1-yodel.eldar@yodel.dev>
+Cc: Yodel Eldar <yodel.eldar@yodel.dev>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 1/3] include/gdbstub/syscalls: Add GDB_{EIO,
+ ENOSYS} errno values
+Date: Fri, 17 Oct 2025 16:11:43 -0500
+Message-ID: <20251017211149.163762-2-yodel.eldar@yodel.dev>
+In-Reply-To: <20251017211149.163762-1-yodel.eldar@yodel.dev>
+References: <20251017211149.163762-1-yodel.eldar@yodel.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1927; i=yodel.eldar@yodel.dev;
- h=from:subject; bh=pDlO0OF00whh1Hhef+ufJPLx+POzU7c981l7OIPzs0w=;
- b=owGbwMvMwCU29Z3/drNU3zWMp9WSGDI+rWCpfxCTcX+/9qvTWp/zJh955qVTmfwzTHj91S2sz
- C6MMYz7OkpZGMS4GGTFFFkun5U465C7uytt5Y/7MHNYmUCGMHBxCsBEWCQZ/tkWzJ1/Sb/jLeeE
- uGf/lxyf1mCxt6DHt+DNgj0NOywnuzEwMvTGfuA5UScU1nOgrvF3iEaN0+MbIsK6Nz893N/51cd
- 7EzcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1030; i=yodel.eldar@yodel.dev;
+ h=from:subject; bh=x0CRH2C9uucROXz3oRf89PhjQREONSb8IRV2Yv27pjw=;
+ b=owGbwMvMwCU29Z3/drNU3zWMp9WSGDI+reARYNuVOzdL6cwhjc+hFXxxD8XrtQNXCHRl1gWfb
+ RLQeCjRUcrCIMbFICumyHL5rMRZh9zdXWkrf9yHmcPKBDKEgYtTACZy/Qojwwnz/m4rJSYDuS8X
+ HRd8Edpyr0hyE2dp3rUn6oWNsxca8TH84ay8/LXj1qYDqvFtKtGyBx7V/j05+fFDB7UErx6zRYX
+ NDAA=
 X-Developer-Key: i=yodel.eldar@yodel.dev; a=openpgp;
  fpr=D3CD18CD406DBB8A66A9F8DF95EE4FB736654DAC
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=143.55.232.62;
+Received-SPF: pass client-ip=143.55.232.55;
  envelope-from=bounce+c033f0.33e920-qemu-devel=nongnu.org@mail.yodel.dev;
- helo=pc232-62.mailgun.net
+ helo=pc232-55.mailgun.net
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,50 +78,39 @@ From:  Yodel Eldar via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, F reply packets in gdbstub/user-target.c emit the host's
-errno values [1], but to facilitate host<->target independence the GDB
-File-I/O protocol defines its own set of supported errno values that
-should be used in replies instead.
+This patch adds the EIO and ENOSYS errno values as supported by GDB's
+File-I/O.
 
-This series sees to that by:
-Patch 2: Exporting a mapping helper function statically defined in
-m68k-dependent code by declaring it in include/gdbstub/syscalls.h
-with the GDB File-I/O errno values, and moving the definition to
-gdbstub/syscalls.c.
-Patch 3: Passing the host errnos to the newly global mapping function
-before emitting the result in F reply packets. Please note that this
-patch resolves the final task remaining in GitLab issue #2751.
+Until recently, they were not documented in the relevant section of the
+GDB manual:
 
-Patch 1 adds two GDB File-I/O errno values that were previously
-undocumented despite having support.
+https://sourceware.org/gdb/current/onlinedocs/gdb.html/Errno-Values.html
 
-To Alex Bennée: Thanks for reviewing v1! I deliberately left out the
-Reviewed-by git trailer, because the patch underwent nontrivial
-changes, and I did not think I could include it in good faith. Your
-comment about the existing File-I/O errno values led me to the helper
-function in the target-dependent code.
+Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
+---
+ include/gdbstub/syscalls.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks!
-
-Changes in v2:
-- Split into multiple commits
-- Use existing mapping function (host_to_gdb_errno) via exportation
-
-Link to v1: https://lore.kernel.org/qemu-devel/20251015162520.15736-1-yodel.eldar@yodel.dev/
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2751
-
-Yodel Eldar (3):
-  include/gdbstub/syscalls: Add GDB_{EIO,ENOSYS} errno values
-  gdbstub: Export host_to_gdb_errno File-I/O helper function
-  gdbstub/user-target: Convert host errno to GDB File-I/O errno
-
- gdbstub/syscalls.c         | 36 ++++++++++++++++++++++++++++++++++++
- gdbstub/user-target.c      | 13 +++++++++----
- include/gdbstub/syscalls.h | 11 +++++++++++
- target/m68k/m68k-semi.c    | 29 -----------------------------
- 4 files changed, 56 insertions(+), 33 deletions(-)
-
+diff --git a/include/gdbstub/syscalls.h b/include/gdbstub/syscalls.h
+index d63228e96b..6200416f77 100644
+--- a/include/gdbstub/syscalls.h
++++ b/include/gdbstub/syscalls.h
+@@ -22,6 +22,7 @@
+ #define GDB_EPERM           1
+ #define GDB_ENOENT          2
+ #define GDB_EINTR           4
++#define GDB_EIO             5
+ #define GDB_EBADF           9
+ #define GDB_EACCES         13
+ #define GDB_EFAULT         14
+@@ -37,6 +38,7 @@
+ #define GDB_ENOSPC         28
+ #define GDB_ESPIPE         29
+ #define GDB_EROFS          30
++#define GDB_ENOSYS         88
+ #define GDB_ENAMETOOLONG   91
+ #define GDB_EUNKNOWN       9999
+ 
 -- 
 2.51.1.dirty
 
