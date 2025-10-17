@@ -2,109 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411EABEA50E
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 17:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96954BEAEEE
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 18:59:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9moK-0003ET-L3; Fri, 17 Oct 2025 11:56:08 -0400
+	id 1v9nlb-0007rM-Ur; Fri, 17 Oct 2025 12:57:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v9moG-0003DR-Tq
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:56:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <k.semichastnov@syntacore.com>)
+ id 1v9m1v-000436-DG; Fri, 17 Oct 2025 11:06:08 -0400
+Received: from m.syntacore.com ([178.249.69.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v9moC-0004To-DB
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:56:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760716551;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=syK7eWmOhrAxwTy1DDdEa/5Z2/CCRj5xu3iY+rH1JEM=;
- b=agysOYBIZRJAGXxF638G0Uhjq/oRj0E4ceXOoZpT5pgWfhJEEXfis5B4prxSjXveopdIyw
- ml2M8/2Vihn2bkeiS1ZxYE+Cg6HWq8KU/OTJkuiY74sJFaQZjJXvPTO1u+8vBZtT0mxpwu
- STdsK9WHANf8wFbJTHOYwA8uFA22W8s=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-geKGzzlIM_6IqPeiL2L_2w-1; Fri, 17 Oct 2025 11:55:48 -0400
-X-MC-Unique: geKGzzlIM_6IqPeiL2L_2w-1
-X-Mimecast-MFC-AGG-ID: geKGzzlIM_6IqPeiL2L_2w_1760716547
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-86b8db0e70dso108897206d6.0
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 08:55:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760716547; x=1761321347;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=syK7eWmOhrAxwTy1DDdEa/5Z2/CCRj5xu3iY+rH1JEM=;
- b=c3YoFlEi8ZbKMuSy2Y2rFW9FvLQjBlcVUzDW2KJv9Wae5oPatvY+hW+RWj+K/abxJD
- BTvUFRKqEPF6QijY4uucarD5ZjNMKhBJwUECv1xAlp4k3WppSFC1aWqjrug2fi0GVBn7
- hZylEezywU54UkGIEGS+/VHTsDcjysaCraM+XZwnCXTL8D1aSNYGkBOdEl/rFNGG2PkC
- qxJes+z1dE1z0zmKyGT+e42jxCoDmDsPAtoKfqXIny1VChMi2gthWFvTCUTcEE5Jyx8h
- 21F6Q9ZWzomJfSsDEK/HE26ZKDYNmLktxD67NnNmr5FSe3fdUO06EsBP3OAT95bnYivz
- oNKw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUQ60AfKqIhwo2rDRGE1l+mlyGX911spPWYHQ6QFMd7VvAPEPQGbRVa36dL8Z0bTm6rb8QwD72q3POv@nongnu.org
-X-Gm-Message-State: AOJu0YzoRrs79Vs3E945pagzwnSskut9iZKNqht09xHvKn2/kxxz7ZcM
- RQqZtA9vSElH/wPXnhkfk/gB8PQzB6JFnED1VIBMybvKWJezCG0RMvg1GxsFtBJPFNOXQWxi194
- ojlQvN9yOb2FHL3mIBJVSZ5s1l6hDmUTjPpoKRxqE4yyvBibncwt0mNlf
-X-Gm-Gg: ASbGncuh2CGRUuVpUbESu29JgzPVT7ylVl069ZkLNE/QjakPD6wlCKlEKPihbLAmKyg
- 1qBx6ZJSDb+HpWS9oKmNpnWgnbZT5/D30q4EXPODtjpe3GOussNfuhaRpi9hKj4DIDfbOuLUnUV
- OD/SCgJt9wzC/n738owHvfqt8RUYlbCnJFUwgMiRtVIf9qpJbesEUuPcZVdSdZCBaAZQl8Ljjjt
- lQW9sj1Y4wCclORpG6TwBTetP9AHNbiY9h0c7QrsV6gcF53JMrvUYdzaGxWWMMhEbwewYqgpcIA
- 4IiCTLG2e8UaIABXxkKDvS8kBSsmHIECoH06Vb2/0kcssU8whxH/fPtLsLBr5bPznfQ=
-X-Received: by 2002:ad4:5f0e:0:b0:87c:8e1:d739 with SMTP id
- 6a1803df08f44-87c202c8d38mr55561146d6.23.1760716547374; 
- Fri, 17 Oct 2025 08:55:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2KUihrUt88zOMw0c8qaUWieYca6qNjHyi5CIIz1mMcRAsAiVVgAL69Nn1PwmEyERP42kvLA==
-X-Received: by 2002:ad4:5f0e:0:b0:87c:8e1:d739 with SMTP id
- 6a1803df08f44-87c202c8d38mr55560636d6.23.1760716546824; 
- Fri, 17 Oct 2025 08:55:46 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-87cf5237273sm1213676d6.26.2025.10.17.08.55.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 08:55:45 -0700 (PDT)
-Date: Fri, 17 Oct 2025 11:55:42 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- mst@redhat.com, jasowang@redhat.com, farosas@suse.de,
- sw@weilnetz.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org,
- michael.roth@amd.com, steven.sistare@oracle.com, leiyang@redhat.com,
- davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
- raphael.s.norwitz@gmail.com
-Subject: Re: [PATCH v8 16/19] qapi: introduce backend-transfer migration
- parameter
-Message-ID: <aPJm_vrlDTxSNzYR@x1.local>
-References: <aO_--QWDJO7iOhR4@x1.local>
- <8c575b3a-7d1f-446d-8f6d-4b2e4b851731@yandex-team.ru>
- <aPCtkB-GvFNuqlHn@redhat.com>
- <29aa1d66-9fa7-4e44-b0e3-2ca26e77accf@yandex-team.ru>
- <aPE8Oo5D3oesB7sV@x1.local> <aPE-vmyg1mLDO4pf@redhat.com>
- <aPFHl3VWV0pCmzd1@x1.local> <aPFOHjl5BoWEMqSL@redhat.com>
- <aPFVWi1pwxS8yGay@x1.local>
- <7995fd74-5f02-4cd6-94b5-f1b361298257@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <k.semichastnov@syntacore.com>)
+ id 1v9m1i-0005Nu-6A; Fri, 17 Oct 2025 11:06:04 -0400
+Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
+ by m.syntacore.com (Postfix) with ESMTP id 3EB2A1A0004;
+ Fri, 17 Oct 2025 15:05:40 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com 3EB2A1A0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
+ t=1760713540; bh=DTFS90AP3/VP9hxdygjMUjRKJkCvMbeeSBjLdW57QCY=;
+ h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From:From;
+ b=ABekka0eDqG7RGDc3KtFHQd5cRmjK8tPCRUBBIV3tLr0aze+qiyxs/q4EOrUhW4Ug
+ Ll5GW9WJpPfOzozlmalKWA5MNOxptyFpL8CIk57JBcShdLWFBoVKim3zQKOKVuCST3
+ RnrTu9f1gPIdI/mKKzeDQNBTRtCJvmsIyryytyayyproMIJi4PTIBBxCNNnBtk40/a
+ qWAUvFHbEaHRZNWhs9XJGprOnqb8q81dXqqBq+vSs03uh4oJM/88DE6fv8LtBR7Y3i
+ /Q67CUsJLbvgPUbdIyvmXcotI9BacBYolgVXfBJNxwO1DL8E74HqiF7VfXBJ5XlOsV
+ rQzi2ahI8rPUQ==
+Received: from S-SC-EXCH-01.corp.syntacore.com (exchange.syntacore.com
+ [10.76.202.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by m.syntacore.com (Postfix) with ESMTPS;
+ Fri, 17 Oct 2025 15:05:39 +0000 (UTC)
+Received: from [172.17.56.115] (172.17.56.115) by
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 17 Oct 2025 18:04:46 +0300
+Content-Type: multipart/alternative;
+ boundary="------------SL4Gut365lzvxhHNVneUq4uM"
+Message-ID: <2e7ac207-5aee-4941-9fe8-91456e1c7ea9@syntacore.com>
+Date: Fri, 17 Oct 2025 18:05:38 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7995fd74-5f02-4cd6-94b5-f1b361298257@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/17] hw/riscv, target/riscv: send resync updiscon trace
+ packets
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ <qemu-devel@nongnu.org>
+CC: <qemu-riscv@nongnu.org>, <alistair.francis@wdc.com>, <liwei1518@gmail.com>,
+ <zhiwei_liu@linux.alibaba.com>, <palmer@dabbelt.com>,
+ <richard.henderson@linaro.org>, <k.semichastnov@syntacore.com>
+References: <20251002112335.2374517-1-dbarboza@ventanamicro.com><20251002112335.2374517-15-dbarboza@ventanamicro.com>
+Content-Language: en-US
+From: Konstantin Semichastnov <k.semichastnov@syntacore.com>
+In-Reply-To: <20251002112335.2374517-15-dbarboza@ventanamicro.com>
+X-Originating-IP: [172.17.56.115]
+X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310,
+ bases: 2025/10/17 13:40:00 #27882168
+X-KSMG-LinksScanning: NotDetected, bases: 2025/10/17 14:34:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
+Received-SPF: pass client-ip=178.249.69.228;
+ envelope-from=k.semichastnov@syntacore.com; helo=m.syntacore.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 17 Oct 2025 12:57:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,76 +92,540 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 17, 2025 at 09:51:26AM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 16.10.25 23:28, Peter Xu wrote:
-> > On Thu, Oct 16, 2025 at 08:57:18PM +0100, Daniel P. Berrangé wrote:
-> > > Errm, machine types apply to devices, but this is about transferring
-> > > backends which are outside the scope of machine types.
-> > 
-> > Ah.. I didn't notice that net backends are not inherited by default from
-> > qdev, hence not applicable to machine type properties.
-> > 
-> > Is it possible we enable it somehow, so that backends can have compat
-> > properties similarly to frontends?
-> 
-> But that would mean, that we can't reconfigure a backend during live migration.
-> 
-> In my understanding, machine type properties are visible to the guest,
-> and that's why we can't change them for running vm, even during live
-> migration.
+--------------SL4Gut365lzvxhHNVneUq4uM
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-IIUC machine type properties may or may not be visible to the guest.  It
-should depend on whether it is relevant to a guest-visible behavior.  Here
-a flag showing "whether TAP, as a backend, can migrate" shouldn't be
-exposed to guest.
 
-I was indeed expecting that one will need to qom-set it for each device if
-you want to get rid of versioned machine types.  It's not ideal interfacing
-as what Dan was looking for, but it should still work so far, and I think
-it might still be fair if it's only needed without machine type versionings.
+On 02.10.2025 14:23, Daniel Henrique Barboza wrote:
+> Send updiscon packets based on the constraints already discussed in the
+> previous patch:
+>
+> - We do not implement any form of call/return prediction in the encoder,
+>    and TCG will always retire a single insn per cycle, e.g. irreport will
+>    always be equal to updiscon;
+>
+> - irdepth is not implemented since we'll always return a  package where
+>    irreport == updiscon.
+>
+> Note that we're sending an updiscon packet if the 'updiscon_pending'
+> flag is set when we're about the send a resync or a trap packet. The TCG
+> helper in this case is just setting the trace encoder flags instead of
+> actually triggering a RAM sink SMEM write.
+>
+> Signed-off-by: Daniel Henrique Barboza<dbarboza@ventanamicro.com>
+> ---
+>   hw/riscv/trace-encoder.c                      | 37 +++++++++++++++++++
+>   hw/riscv/trace-encoder.h                      |  3 ++
+>   target/riscv/helper.h                         |  1 +
+>   .../riscv/insn_trans/trans_privileged.c.inc   | 11 ++++++
+>   target/riscv/insn_trans/trans_rvi.c.inc       |  2 +
+>   target/riscv/trace_helper.c                   | 14 +++++++
+>   target/riscv/translate.c                      | 11 ++++++
+>   7 files changed, 79 insertions(+)
+>
+> diff --git a/hw/riscv/trace-encoder.c b/hw/riscv/trace-encoder.c
+> index 9a4530bbea..5572483d26 100644
+> --- a/hw/riscv/trace-encoder.c
+> +++ b/hw/riscv/trace-encoder.c
+> @@ -402,6 +402,22 @@ static void trencoder_send_sync_msg(Object *trencoder_obj, uint64_t pc)
+>       trencoder_send_message_smem(trencoder, msg, msg_size);
+>   }
+>   
+> +static void trencoder_send_updiscon(TraceEncoder *trencoder, uint64_t pc)
+> +{
+> +    g_autofree uint8_t *format2_msg = g_malloc0(TRACE_MSG_MAX_SIZE);
+> +    uint8_t addr_msb = extract64(pc, 31, 1);
+> +    bool notify = addr_msb;
+> +    bool updiscon = !notify;
+> +    uint8_t msg_size;
+> +
+> +    msg_size = rv_etrace_gen_encoded_format2_msg(format2_msg, pc,
+> +                                                 notify,
+> +                                                 updiscon);
+> +    trencoder_send_message_smem(trencoder, format2_msg, msg_size);
+> +
+> +    trencoder->updiscon_pending = false;
+> +}
+> +
+>   void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
+>   {
+>       TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
+> @@ -409,6 +425,10 @@ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
+>       g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
+>       uint8_t msg_size;
+>   
+> +    if (trencoder->updiscon_pending) {
+> +        trencoder_send_updiscon(trencoder, pc);
+> +    }
+> +
+>       trencoder->first_pc = pc;
+>       trace_trencoder_first_trace_insn(pc);
+>       msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
+> @@ -426,6 +446,10 @@ void trencoder_trace_trap_insn(Object *trencoder_obj,
+>       g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
+>       uint8_t msg_size;
+>   
+> +    if (trencoder->updiscon_pending) {
+> +        trencoder_send_updiscon(trencoder, pc);
+> +    }
+> +
+>       msg_size = rv_etrace_gen_encoded_trap_msg(msg, pc, priv,
+>                                                 ecause, is_interrupt,
+>                                                 tval);
+> @@ -435,9 +459,22 @@ void trencoder_trace_trap_insn(Object *trencoder_obj,
+>   
+>   void trencoder_trace_ppccd(Object *trencoder_obj, uint64_t pc)
+>   {
+> +    TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
+> +
+> +    if (trencoder->updiscon_pending) {
+> +        trencoder_send_updiscon(trencoder, pc);
+> +    }
+> +
+>       trencoder_send_sync_msg(trencoder_obj, pc);
+>   }
+>   
+> +void trencoder_report_updiscon(Object *trencoder_obj)
+> +{
+> +    TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
+> +
+> +    trencoder->updiscon_pending = true;
+> +}
+> +
+>   static const Property trencoder_props[] = {
+>       /*
+>        * We need a link to the associated CPU to
+> diff --git a/hw/riscv/trace-encoder.h b/hw/riscv/trace-encoder.h
+> index 2bf07c01f6..0c44092ccb 100644
+> --- a/hw/riscv/trace-encoder.h
+> +++ b/hw/riscv/trace-encoder.h
+> @@ -36,6 +36,8 @@ struct TraceEncoder {
+>       uint32_t regs[TRACE_R_MAX];
+>       RegisterInfo regs_info[TRACE_R_MAX];
+>   
+> +    bool updiscon_pending;
+> +
+>       bool enabled;
+>       bool trace_running;
+>       bool trace_next_insn;
+> @@ -51,5 +53,6 @@ void trencoder_trace_trap_insn(Object *trencoder_obj,
+>                                  bool is_interrupt,
+>                                  uint64_t tval);
+>   void trencoder_trace_ppccd(Object *trencoder_obj, uint64_t pc);
+> +void trencoder_report_updiscon(Object *trencoder_obj);
+>   
+>   #endif
+> diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+> index e80320ad16..f27ff319e9 100644
+> --- a/target/riscv/helper.h
+> +++ b/target/riscv/helper.h
+> @@ -131,6 +131,7 @@ DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
+>   
+>   /* Trace helpers (should be put inside ifdef) */
+>   DEF_HELPER_2(trace_insn, void, env, i64)
+> +DEF_HELPER_1(trace_updiscon, void, env)
+>   
+>   #ifndef CONFIG_USER_ONLY
+>   DEF_HELPER_1(sret, tl, env)
+> diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
+> index 8a62b4cfcd..28089539d5 100644
+> --- a/target/riscv/insn_trans/trans_privileged.c.inc
+> +++ b/target/riscv/insn_trans/trans_privileged.c.inc
+> @@ -26,6 +26,8 @@
+>   
+>   static bool trans_ecall(DisasContext *ctx, arg_ecall *a)
+>   {
+> +    gen_trace_updiscon();
+> +
+>       /* always generates U-level ECALL, fixed in do_interrupt handler */
+>       generate_exception(ctx, RISCV_EXCP_U_ECALL);
+>       return true;
+> @@ -40,6 +42,8 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebreak *a)
+>       uint32_t ebreak = 0;
+>       uint32_t post   = 0;
+>   
+> +    gen_trace_updiscon();
+> +
+>       /*
+>        * The RISC-V semihosting spec specifies the following
+>        * three-instruction sequence to flag a semihosting call:
+> @@ -95,6 +99,8 @@ static bool trans_sret(DisasContext *ctx, arg_sret *a)
+>   {
+>   #ifndef CONFIG_USER_ONLY
+>       if (has_ext(ctx, RVS)) {
+> +        gen_trace_updiscon();
+> +
+>           decode_save_opc(ctx, 0);
+>           translator_io_start(&ctx->base);
+>           gen_update_pc(ctx, 0);
+> @@ -113,6 +119,8 @@ static bool trans_sret(DisasContext *ctx, arg_sret *a)
+>   static bool trans_mret(DisasContext *ctx, arg_mret *a)
+>   {
+>   #ifndef CONFIG_USER_ONLY
+> +    gen_trace_updiscon();
+> +
+>       decode_save_opc(ctx, 0);
+>       translator_io_start(&ctx->base);
+>       gen_update_pc(ctx, 0);
+> @@ -129,6 +137,9 @@ static bool trans_mnret(DisasContext *ctx, arg_mnret *a)
+>   {
+>   #ifndef CONFIG_USER_ONLY
+>       REQUIRE_SMRNMI(ctx);
+> +
+> +    gen_trace_updiscon();
+> +
+>       decode_save_opc(ctx, 0);
+>       gen_helper_mnret(cpu_pc, tcg_env);
+>       tcg_gen_exit_tb(NULL, 0); /* no chaining */
+> diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
+> index b9c7160468..adda6b5bd8 100644
+> --- a/target/riscv/insn_trans/trans_rvi.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvi.c.inc
+> @@ -183,6 +183,8 @@ static bool trans_jalr(DisasContext *ctx, arg_jalr *a)
+>           }
+>       }
+>   
+> +    gen_trace_updiscon();
+> +
+>       lookup_and_goto_ptr(ctx);
+>   
+>       if (misaligned) {
+> diff --git a/target/riscv/trace_helper.c b/target/riscv/trace_helper.c
+> index ed84e6f79a..4b2b645f04 100644
+> --- a/target/riscv/trace_helper.c
+> +++ b/target/riscv/trace_helper.c
+> @@ -28,9 +28,23 @@ void helper_trace_insn(CPURISCVState *env, uint64_t pc)
+>           te->trace_next_insn = false;
+>       }
+>   }
+> +
+> +void helper_trace_updiscon(CPURISCVState *env)
+> +{
+> +    RISCVCPU *cpu = env_archcpu(env);
+> +    TraceEncoder *te = TRACE_ENCODER(cpu->trencoder);
+> +
+> +    te->updiscon_pending = true;
+> +    te->trace_next_insn = true;
+> +}
+>   #else /* #ifndef CONFIG_USER_ONLY */
+>   void helper_trace_insn(CPURISCVState *env, uint64_t pc)
+>   {
+>       return;
+>   }
+> +
+> +void helper_trace_updiscon(CPURISCVState *env)
+> +{
+> +    return;
+> +}
+>   #endif /* #ifndef CONFIG_USER_ONLY*/
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index 75348480e6..17a6174899 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -604,6 +604,15 @@ static void gen_ctr_jal(DisasContext *ctx, int rd, target_ulong imm)
+>   }
+>   #endif
+>   
+> +static void gen_trace_updiscon(void)
+> +{
+> +    TCGLabel *skip = gen_new_label();
+> +
+> +    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_trace_running, 0, skip);
+> +    gen_helper_trace_updiscon(tcg_env);
+> +    gen_set_label(skip);
+> +}
+> +
+>   static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
+>   {
+>       TCGv succ_pc = dest_gpr(ctx, rd);
+> @@ -629,6 +638,8 @@ static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
+>       gen_pc_plus_diff(succ_pc, ctx, ctx->cur_insn_len);
+>       gen_set_gpr(ctx, rd, succ_pc);
+>   
+> +    gen_trace_updiscon();
+I have a question about this line. Why have you added the generation of 
+an updiscon message if the JAL instruction is an inferable jump?
+> +
+>       gen_goto_tb(ctx, 0, imm); /* must use this for safety */
+>       ctx->base.is_jmp = DISAS_NORETURN;
+>   }
+--------------SL4Gut365lzvxhHNVneUq4uM
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-> 
-> Bringing here another type of properties, which we _can_ change for
-> running vm (even if changing is not very comfortable for admin), will
-> be like tying ourselves hands.
-> 
-> And yes, there is a way to change any properties by qom-set. But it
-> lays out of paradigm of machine types, and normally we can't change
-> most of properties in flight.
-> 
-> 
-> Or in other words: if we _can_ go on only with migration parameters,
-> that actually shows, that what we are talking about is definitely
-> property of migration, not property of device.
-> 
-> 
-> And final note: if we can use one mechanism instead of two mechanisms,
-> it makes the architecture twice simpler. Trying to go on with _only_
-> device properties would mean run a bench of qom-set commands before
-> every migration (as we have to distinguish local and remote migrations
-> anyway), that looks bad. On the other hand, go on with _only_ migration
-> parameter is feasible and looks better.
-> 
-> 
-> And very final note: making global parameter + per-device parameters,
-> actually, global parameter become a workaround to the fact that we
-> don't want run a bench of qom-set commands. So, global parameter is
-> an additional API to hide inconvenience of the main API.
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 02.10.2025 14:23, Daniel Henrique
+      Barboza wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20251002112335.2374517-15-dbarboza@ventanamicro.com">
+      <pre wrap="" class="moz-quote-pre">Send updiscon packets based on the constraints already discussed in the
+previous patch:
 
-IMHO it's not a workaround.  To me, it's a better way of abstraction,
-because the migration side provides the capability of passing FDs, and
-whatever is generic about that should be attached to the global knob.
-Migration shouldn't care about behavior or attributes of a specific device.
-Listing the devices in any way in migration's QAPI is a workaround instead.
+- We do not implement any form of call/return prediction in the encoder,
+  and TCG will always retire a single insn per cycle, e.g. irreport will
+  always be equal to updiscon;
 
-But I agree I do not know whether it's easy to have net backends support
-machine types properties.  I think it still makes sense logically that a
-net backend is a TYPE_DEVICE, even if it's a backend device which is not
-directly visible to the guest.
+- irdepth is not implemented since we'll always return a  package where
+  irreport == updiscon.
 
-Thanks,
+Note that we're sending an updiscon packet if the 'updiscon_pending'
+flag is set when we're about the send a resync or a trap packet. The TCG
+helper in this case is just setting the trace encoder flags instead of
+actually triggering a RAM sink SMEM write.
 
--- 
-Peter Xu
+Signed-off-by: Daniel Henrique Barboza <a class="moz-txt-link-rfc2396E" href="mailto:dbarboza@ventanamicro.com">&lt;dbarboza@ventanamicro.com&gt;</a>
+---
+ hw/riscv/trace-encoder.c                      | 37 +++++++++++++++++++
+ hw/riscv/trace-encoder.h                      |  3 ++
+ target/riscv/helper.h                         |  1 +
+ .../riscv/insn_trans/trans_privileged.c.inc   | 11 ++++++
+ target/riscv/insn_trans/trans_rvi.c.inc       |  2 +
+ target/riscv/trace_helper.c                   | 14 +++++++
+ target/riscv/translate.c                      | 11 ++++++
+ 7 files changed, 79 insertions(+)
 
+diff --git a/hw/riscv/trace-encoder.c b/hw/riscv/trace-encoder.c
+index 9a4530bbea..5572483d26 100644
+--- a/hw/riscv/trace-encoder.c
++++ b/hw/riscv/trace-encoder.c
+@@ -402,6 +402,22 @@ static void trencoder_send_sync_msg(Object *trencoder_obj, uint64_t pc)
+     trencoder_send_message_smem(trencoder, msg, msg_size);
+ }
+ 
++static void trencoder_send_updiscon(TraceEncoder *trencoder, uint64_t pc)
++{
++    g_autofree uint8_t *format2_msg = g_malloc0(TRACE_MSG_MAX_SIZE);
++    uint8_t addr_msb = extract64(pc, 31, 1);
++    bool notify = addr_msb;
++    bool updiscon = !notify;
++    uint8_t msg_size;
++
++    msg_size = rv_etrace_gen_encoded_format2_msg(format2_msg, pc,
++                                                 notify,
++                                                 updiscon);
++    trencoder_send_message_smem(trencoder, format2_msg, msg_size);
++
++    trencoder-&gt;updiscon_pending = false;
++}
++
+ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
+ {
+     TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
+@@ -409,6 +425,10 @@ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
+     g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
+     uint8_t msg_size;
+ 
++    if (trencoder-&gt;updiscon_pending) {
++        trencoder_send_updiscon(trencoder, pc);
++    }
++
+     trencoder-&gt;first_pc = pc;
+     trace_trencoder_first_trace_insn(pc);
+     msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
+@@ -426,6 +446,10 @@ void trencoder_trace_trap_insn(Object *trencoder_obj,
+     g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
+     uint8_t msg_size;
+ 
++    if (trencoder-&gt;updiscon_pending) {
++        trencoder_send_updiscon(trencoder, pc);
++    }
++
+     msg_size = rv_etrace_gen_encoded_trap_msg(msg, pc, priv,
+                                               ecause, is_interrupt,
+                                               tval);
+@@ -435,9 +459,22 @@ void trencoder_trace_trap_insn(Object *trencoder_obj,
+ 
+ void trencoder_trace_ppccd(Object *trencoder_obj, uint64_t pc)
+ {
++    TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
++
++    if (trencoder-&gt;updiscon_pending) {
++        trencoder_send_updiscon(trencoder, pc);
++    }
++
+     trencoder_send_sync_msg(trencoder_obj, pc);
+ }
+ 
++void trencoder_report_updiscon(Object *trencoder_obj)
++{
++    TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
++
++    trencoder-&gt;updiscon_pending = true;
++}
++
+ static const Property trencoder_props[] = {
+     /*
+      * We need a link to the associated CPU to
+diff --git a/hw/riscv/trace-encoder.h b/hw/riscv/trace-encoder.h
+index 2bf07c01f6..0c44092ccb 100644
+--- a/hw/riscv/trace-encoder.h
++++ b/hw/riscv/trace-encoder.h
+@@ -36,6 +36,8 @@ struct TraceEncoder {
+     uint32_t regs[TRACE_R_MAX];
+     RegisterInfo regs_info[TRACE_R_MAX];
+ 
++    bool updiscon_pending;
++
+     bool enabled;
+     bool trace_running;
+     bool trace_next_insn;
+@@ -51,5 +53,6 @@ void trencoder_trace_trap_insn(Object *trencoder_obj,
+                                bool is_interrupt,
+                                uint64_t tval);
+ void trencoder_trace_ppccd(Object *trencoder_obj, uint64_t pc);
++void trencoder_report_updiscon(Object *trencoder_obj);
+ 
+ #endif
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index e80320ad16..f27ff319e9 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -131,6 +131,7 @@ DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
+ 
+ /* Trace helpers (should be put inside ifdef) */
+ DEF_HELPER_2(trace_insn, void, env, i64)
++DEF_HELPER_1(trace_updiscon, void, env)
+ 
+ #ifndef CONFIG_USER_ONLY
+ DEF_HELPER_1(sret, tl, env)
+diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
+index 8a62b4cfcd..28089539d5 100644
+--- a/target/riscv/insn_trans/trans_privileged.c.inc
++++ b/target/riscv/insn_trans/trans_privileged.c.inc
+@@ -26,6 +26,8 @@
+ 
+ static bool trans_ecall(DisasContext *ctx, arg_ecall *a)
+ {
++    gen_trace_updiscon();
++
+     /* always generates U-level ECALL, fixed in do_interrupt handler */
+     generate_exception(ctx, RISCV_EXCP_U_ECALL);
+     return true;
+@@ -40,6 +42,8 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebreak *a)
+     uint32_t ebreak = 0;
+     uint32_t post   = 0;
+ 
++    gen_trace_updiscon();
++
+     /*
+      * The RISC-V semihosting spec specifies the following
+      * three-instruction sequence to flag a semihosting call:
+@@ -95,6 +99,8 @@ static bool trans_sret(DisasContext *ctx, arg_sret *a)
+ {
+ #ifndef CONFIG_USER_ONLY
+     if (has_ext(ctx, RVS)) {
++        gen_trace_updiscon();
++
+         decode_save_opc(ctx, 0);
+         translator_io_start(&amp;ctx-&gt;base);
+         gen_update_pc(ctx, 0);
+@@ -113,6 +119,8 @@ static bool trans_sret(DisasContext *ctx, arg_sret *a)
+ static bool trans_mret(DisasContext *ctx, arg_mret *a)
+ {
+ #ifndef CONFIG_USER_ONLY
++    gen_trace_updiscon();
++
+     decode_save_opc(ctx, 0);
+     translator_io_start(&amp;ctx-&gt;base);
+     gen_update_pc(ctx, 0);
+@@ -129,6 +137,9 @@ static bool trans_mnret(DisasContext *ctx, arg_mnret *a)
+ {
+ #ifndef CONFIG_USER_ONLY
+     REQUIRE_SMRNMI(ctx);
++
++    gen_trace_updiscon();
++
+     decode_save_opc(ctx, 0);
+     gen_helper_mnret(cpu_pc, tcg_env);
+     tcg_gen_exit_tb(NULL, 0); /* no chaining */
+diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
+index b9c7160468..adda6b5bd8 100644
+--- a/target/riscv/insn_trans/trans_rvi.c.inc
++++ b/target/riscv/insn_trans/trans_rvi.c.inc
+@@ -183,6 +183,8 @@ static bool trans_jalr(DisasContext *ctx, arg_jalr *a)
+         }
+     }
+ 
++    gen_trace_updiscon();
++
+     lookup_and_goto_ptr(ctx);
+ 
+     if (misaligned) {
+diff --git a/target/riscv/trace_helper.c b/target/riscv/trace_helper.c
+index ed84e6f79a..4b2b645f04 100644
+--- a/target/riscv/trace_helper.c
++++ b/target/riscv/trace_helper.c
+@@ -28,9 +28,23 @@ void helper_trace_insn(CPURISCVState *env, uint64_t pc)
+         te-&gt;trace_next_insn = false;
+     }
+ }
++
++void helper_trace_updiscon(CPURISCVState *env)
++{
++    RISCVCPU *cpu = env_archcpu(env);
++    TraceEncoder *te = TRACE_ENCODER(cpu-&gt;trencoder);
++
++    te-&gt;updiscon_pending = true;
++    te-&gt;trace_next_insn = true;
++}
+ #else /* #ifndef CONFIG_USER_ONLY */
+ void helper_trace_insn(CPURISCVState *env, uint64_t pc)
+ {
+     return;
+ }
++
++void helper_trace_updiscon(CPURISCVState *env)
++{
++    return;
++}
+ #endif /* #ifndef CONFIG_USER_ONLY*/
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index 75348480e6..17a6174899 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -604,6 +604,15 @@ static void gen_ctr_jal(DisasContext *ctx, int rd, target_ulong imm)
+ }
+ #endif
+ 
++static void gen_trace_updiscon(void)
++{
++    TCGLabel *skip = gen_new_label();
++
++    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_trace_running, 0, skip);
++    gen_helper_trace_updiscon(tcg_env);
++    gen_set_label(skip);
++}
++
+ static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
+ {
+     TCGv succ_pc = dest_gpr(ctx, rd);
+@@ -629,6 +638,8 @@ static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
+     gen_pc_plus_diff(succ_pc, ctx, ctx-&gt;cur_insn_len);
+     gen_set_gpr(ctx, rd, succ_pc);
+ 
++    gen_trace_updiscon();</pre>
+    </blockquote>
+    <span style="white-space: pre-wrap;">I have a question about this line. Why have you added the generation of an updiscon message if the JAL instruction is an inferable jump?</span>
+    <blockquote type="cite"
+      cite="mid:20251002112335.2374517-15-dbarboza@ventanamicro.com">
+      <pre wrap="" class="moz-quote-pre">
++
+     gen_goto_tb(ctx, 0, imm); /* must use this for safety */
+     ctx-&gt;base.is_jmp = DISAS_NORETURN;
+ }
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------SL4Gut365lzvxhHNVneUq4uM--
 
