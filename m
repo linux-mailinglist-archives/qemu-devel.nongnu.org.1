@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CF3BE66B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 07:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB858BE66B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 07:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9d0r-0001ZO-5v; Fri, 17 Oct 2025 01:28:25 -0400
+	id 1v9d0t-0001aM-Kt; Fri, 17 Oct 2025 01:28:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d0f-0001Z2-4u
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:28:13 -0400
-Received: from smtpout2.mo529.mail-out.ovh.net ([79.137.123.220])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d0q-0001aC-DE
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:28:24 -0400
+Received: from 2.mo548.mail-out.ovh.net ([178.33.255.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d0Z-0001gZ-ME
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:28:12 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.58.72])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4cntdD3BLHz5vpl;
- Fri, 17 Oct 2025 05:27:59 +0000 (UTC)
-Received: from kaod.org (37.59.142.100) by DAG8EX2.mxp5.local (172.16.2.72)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9d0j-0001ha-Kh
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:28:23 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.37.21])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cntdP6z12z5vtW;
+ Fri, 17 Oct 2025 05:28:09 +0000 (UTC)
+Received: from kaod.org (37.59.142.109) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 17 Oct
- 2025 07:27:59 +0200
+ 2025 07:28:09 +0200
 Authentication-Results: garm.ovh; auth=pass
- (GARM-100R0036377a0f0-c2dc-4419-987b-33e470cd31bf,
+ (GARM-109S003c9b7a0ab-1333-4991-9b0c-a57d1d6ae707,
  48F321F6F3AAA1B288770452BCFEC79A981EE5C7) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <d873388b-3141-4348-b61c-390e5f262b22@kaod.org>
-Date: Fri, 17 Oct 2025 07:27:58 +0200
+Message-ID: <22e167da-43f8-43b7-b5b4-bd03d749999c@kaod.org>
+Date: Fri, 17 Oct 2025 07:28:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v1 01/12] hw/arm/aspeed_ast27x0-ssp: Add SDRAM
+Subject: Re: [SPAM] [PATCH v1 02/12] hw/arm/aspeed_ast27x0-tsp: Add SDRAM
  region and fix naming and size to 512MB
 To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
@@ -40,7 +40,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>
 References: <20251015062210.3128710-1-jamin_lin@aspeedtech.com>
- <20251015062210.3128710-2-jamin_lin@aspeedtech.com>
+ <20251015062210.3128710-3-jamin_lin@aspeedtech.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -85,33 +85,33 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251015062210.3128710-2-jamin_lin@aspeedtech.com>
+In-Reply-To: <20251015062210.3128710-3-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG8EX2.mxp5.local
+X-Originating-IP: [37.59.142.109]
+X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: cd51ec00-3e72-46e7-98db-4f3def86c55f
-X-Ovh-Tracer-Id: 15266921264954444591
+X-Ovh-Tracer-GUID: 648ddbcf-e48a-46f5-ad02-b5b0e66b0edd
+X-Ovh-Tracer-Id: 15269736015335361327
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEHIQurLfibfEdwWXVLQ4Aqdd9pvmc2AN8u9+bEBlOucR3J93IzjWhEc+9zSAIaATRtzF7Ei6DNYGV8RzDI4OSM1kBrWBNQNheyb6zArcx3SBQ2ZBzAy6FVsXJgMrBR6hDyqVpi8J9JYfiH55m7S+Em+7JN89nflMHG7Vr0W8j0rYeCgZtaG2vVussgQ0HuNZx+6p9YGarKIH1vFfQiDgAl+My/9wy6ees5VCfPdCLqXNuBOWLXUklVK8mb8XYJ99W616a0mCyaKHRXkY8XiweuV9khXzGYmFqDG7iGtuO3s/BMc4kZOBjHIpV+Yb89LEXK7txtIlnHNvTkTHRIDBIypZEgz8JMlVOMz33liC839WG0kbrw9w80gwJdnqPncR6LlJYw/GWAH1hnYBXY8s1aNXQxalRaLpk+iVNpC2WKBVmRuR9G/dRfwyDH5q+cDc3PyoUbSpBtOcFuIKP1tBLptqVx4Se4HMMGKRzzfzE40wwgpjkH5yHhonwgvZpERCM6h8gA0iMaSENb3wy0fSe7taufq17swpD2eLwC8TTfzTq+ex/M+2kJfXOW3NNGviWC362ze5Qxu8NbgG65WqExjNmMWqFUEuNwvvwNr3F4GHqxthbMgj3baEyusC8WqmU/wCzTN5kNc4jnvbQ7789m0ONucFFWuwK7iEibFFxagQ
-DKIM-Signature: a=rsa-sha256; bh=Ks5d+4NHForqp8UEX4CD6MA+1nTjkwjxT1Yx15vFwGM=; 
+X-VR-SPAMCAUSE: dmFkZTEDv6ZNwVhKYaziEgVmM1YfAlkOXkmUr7x6Lf+fq6zknUAp3Ta1qd4pXXDgpsMY3IHpLJN/NDZdJtvSurC4tMh/UipebAiX77QUcZfRcEO6nxgxCuZD47TfMH2/DoFI94nageRV93eNk3qsJU7BuV2D0jItQmsQoYOP3HI41e/mPUUvECfctFE7cU0pCA9LgRae1VoQFx+owVLZsWMcd52EkzBE7yQGvxmaZ5yEDyUeAOQGdYhljeGs8VApwQf/V7w9ycozRfxE75zvRlNM8z534UhV6AxqnLZrZOLmQ0bqXoVCCkkjyWH1gySx+HPZa6clOpfNyL3oOWqPG0IVEci7CXsQ3u+UjlBvXYw2nQJduBqQwcW8YGOarabE6xf4co+/Myy84yOwYb1of9nS64yalnizJ/1k8PVN4VS3LcmOBZslb+WsqjhA2o7BgAl8GWS7ONacYO0/9uouJp0Lc09BiPZvreqT+d6A6TCC2Bo0Qo4y3uQBS8eUpPrkUYiiTgChB9F9wNQmN94wyqMFRA03VLI3vJkZtoS0mpg/lJsGouIxY+eQxtsHitDJVEmc1DUQ2Q2yoz0VY1jq/e4rQKrHDX3An+MYp/N3Fe5Xc3RCHa/TDzJcN6OPO0/LTOC6Gy8u2THcLspGZafLvDXAkl0/p1whJrVHSwt8HFgEL1MaCA
+DKIM-Signature: a=rsa-sha256; bh=FE3gVeuucSj2t0wIwggZ9Fd9VVdY0naqs8TiB9Z/+0I=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1760678882; v=1;
- b=e45A0PejpYQsgkGTEUzwHYXgpOAYDm99U/+d1T/u46GDFNfv2RrEt/MZgV0fHJyKtz/O5J0E
- cV1B1kYWYKXMLOjJXbkzU1Y56yRI25Ifo/Gg3/n/YYEPKq83efeSo7AdO19RP8uZ3GwK6Og9R3H
- swCcBqYXCfosHwZJ1MjzIwrxyw/jPXiAUibti4QUEEnMu4qn279sAeUqLpAKEcyPaJ0ZnzemetY
- nnXQTde44ZiMK3LBj5SWfRLfPKbSjiu26g2BPxzZwbMihouRYdeiU++QBB0J/kOKGMK7ophClPZ
- 32LTh+LhM7UJrTMp9TBSPKS8chbSMdDiwd62BjA8oZoyA==
-Received-SPF: pass client-ip=79.137.123.220; envelope-from=clg@kaod.org;
- helo=smtpout2.mo529.mail-out.ovh.net
+ t=1760678891; v=1;
+ b=sKC5iXktCaZteqFcYJXg7VQkJiz0QYsO204N8k5eZFJWo4sB838B/c/IlQxjQx5WUTQbEoy0
+ l4c3rgbscr2KxRrUHDj+4w85416TQH2cpI4NVIezM0TM8GiJ17RPQcxLUHk69fVngT+OML8PwNv
+ 8c1IesIZlvuGdjiOw7SqblZAzjMkhxZYcOuPv9fXATxoN6BjoIDgzkRILf40wmNiTv4V6iNg8xd
+ wnQfskWGDHuMltJnLQC4iiPfnqBF+FwbJiHna8DXmYMX3Go6vSoXwt3VUULypb8qBiTUCWJoWvQ
+ /biJfHevEcqqyRrlvqDAFq7dNHWUL30hQgFlKwlPvNSGw==
+Received-SPF: pass client-ip=178.33.255.19; envelope-from=clg@kaod.org;
+ helo=2.mo548.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -130,22 +130,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/15/25 08:21, Jamin Lin wrote:
-> Previously, the SSP memory was incorrectly modeled as "SRAM" with
-> a 32 MB size. This change introduces a new sdram field in
-> AspeedCoprocessorState and updates the realization logic accordingly.
-> Rename from SRAM to SDRAM and correct size from 32MB to 512MB to match
-> hardware.
+> Previously, the TSP memory was incorrectly modeled as "SRAM" with
+> a 32 MB size. Rename from SRAM to SDRAM and correct size from 32MB
+> to 512MB to match hardware.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > ---
->   include/hw/arm/aspeed_coprocessor.h |  1 +
->   hw/arm/aspeed_ast27x0-ssp.c         | 20 ++++++++++----------
->   2 files changed, 11 insertions(+), 10 deletions(-)
+>   hw/arm/aspeed_ast27x0-tsp.c | 20 ++++++++++----------
+>   1 file changed, 10 insertions(+), 10 deletions(-)
 > 
+
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
+
 
 
