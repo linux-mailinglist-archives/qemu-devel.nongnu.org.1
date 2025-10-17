@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0976BBE98EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 17:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FE3BE9909
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 17:13:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9m7c-0005pO-AU; Fri, 17 Oct 2025 11:12:00 -0400
+	id 1v9m8X-0006AN-DC; Fri, 17 Oct 2025 11:12:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9m7V-0005oI-RW
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:11:54 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v9m8U-00068d-HT
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:12:54 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9m7F-0005zT-5n
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:11:44 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-7814273415aso22678077b3.1
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 08:11:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v9m8L-0006Cd-9w
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:12:54 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-290c2b6a6c2so16139845ad.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 08:12:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760713891; x=1761318691; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=WLPXgJeVat7oDNY1CZ+cXvPctPFHchcSnpArFIUPAvo=;
- b=SCAqCx2joZh+1UnCCF6DGduKcWgnVuOP9wVfeit60uwe+TvMJGbEb+ugFJl5vH55Rk
- dk/TqJzEPhpgfhjs6dlDxxQTnKghtGunCoeWaGou6ti908wkJqCStA0FGW0wikrXwrbe
- B/XUICXaKHQuyh8kXWRO+29RaEOq+sPPe5czoXvZHFIe2eZa7+d0HYMPdOXRIEtlVX/G
- JG0kSVykcP1oGSeZSQTdvDFfYRcKPkcxgFuKIsw+NBGe52UoQULoTjlpmjsii0vtlW4V
- wj1H5klq1pKLWWxpaKLR0oOwDvRtg/BWUH1lcfsjRqYI2eY0DdpYdZ4aPQhrvYEO3WJG
- 0OOg==
+ d=linaro.org; s=google; t=1760713961; x=1761318761; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=koQsAFouNUd1W5J4wdrheLPAPSOaKLbycwvoS2z+Iws=;
+ b=q5v1qlc/kKHQKRIdk83oV0x09pcrhpLONho5n6EypLBXMf/PcyYEw8cd+gH6Q6zvC6
+ qhKtn6pYu8fowXibqMc4NPBYvmCw8CnddLWe6xKAFzDe3HXhn3OVqXpA16Tlplw+z4O6
+ MjCHxku7+A4DJ28cTAjyurLJCOz/ysIPHXCD4sfSIhS04s5nigtwpMSg5vSqQdsGlK4S
+ yIzYGvY5n6dPh16n1IOaCXwzJ4ivWOjWNoREEMuo/wt6Fyy01SJXbidHl4tfLnMzzaPE
+ UM0YFA6Q+vP439Fmbr9F02JaZnrRMYD2nyvA8PYT+iJa1e+xFyTatKRd5Qvpz3oVTIqi
+ NGzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760713891; x=1761318691;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WLPXgJeVat7oDNY1CZ+cXvPctPFHchcSnpArFIUPAvo=;
- b=Z9HWMRJD0HQkNWwR9UryM536W4evYTkiYc3edUJv0J9qD9uMf4c/1jSCDV2oESmkug
- nOf6Myyj2ZUiOKNrfiabmoqaVbPZJDJqIDZTV9lurHwo6itsQZNc9cIZIIg4OxzPPlGv
- hbi82t5UV+7x6MgnHY1guror7Z8l3lTbQWIB6bgxAk629B3anRh5hs8e+IPsMeF7w/hg
- PiSwPj43R3ckpVrrBXcRJdV8Ve5qr/hgXSgrc/P5UXgY3/tG9+bVWXR2UVhjQtbqNo89
- 3nOokEq79ep1lFohWiw1fQfN61/lyxcp7MPDx0DLcCDF470CAAwYVnA9ePj0n804GUGW
- 79QQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUV8aNVhgfWQtEhSeM/ozVXrnRdJrdiyIvjKy5LEc2XP4nKg1tDE1OjiWPlPoPu5tNwJ5HGO8pufwYR@nongnu.org
-X-Gm-Message-State: AOJu0Yzs2cRSCDsrlyhHMWM0UmCLPrhn+7Lgczlv9wC7hdOacEmxQEcQ
- ug1vO0n644Xmkmpfki1CwpLyoekkKue3Sq3l7dYoIDO4fgjmt5euBjimJsfO6Xu4zmIv2kd1vhr
- bVMKXmo2/WLVck4savpqdKH6fe+dJCEkbt+Au1lRsDA==
-X-Gm-Gg: ASbGncuo3GFLyu5w0gzisCow/7r1olPGi/kaLyLsUoC2fWwnyHlO9xkBfj+vumRtMxC
- v8GHJNwBt0zUNymACIYh2IslSjmMAGsh0kG+ltIi82nOfoViEUNP3ywzh74U69zAuZE6t/cDCzr
- EAk0T1uPk4WbftpwqqB9jVzSJyfzAeTWfy1Iw6n+s7a9HIOJ7L7Tcx1HoqypGl1Esc/KGGgT5QV
- Hs52VZG8Xba1mYmdN2U7sbfxkRDn2rmbe/+kBGCZQKRSnQ0C8sTSCBMUTTgYw==
-X-Google-Smtp-Source: AGHT+IGfob1Vl5LkyZJefYGukGPbhexB362aiPrv7wVjXM1ieNI1YTCv6K+U3EwQgRv/GPMMlKyu2gWoCjjISvMQBGU=
-X-Received: by 2002:a05:690e:14c1:b0:63e:231a:cb5a with SMTP id
- 956f58d0204a3-63e231acc2fmr751556d50.48.1760713891322; Fri, 17 Oct 2025
- 08:11:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760713961; x=1761318761;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=koQsAFouNUd1W5J4wdrheLPAPSOaKLbycwvoS2z+Iws=;
+ b=BHwPRmc22MxH3tJNjd6f0kWOu4bW1aQPEZxYPe7boDU0T6jIYhlGKGlmZiJrVzr+dZ
+ tE8ZV6pSS3G9R6pf1DAZwsQJmlIsaYTlHT+PXfN6rXupDQ9RBI4k3Kky5hdU0NeIQ8bK
+ bR8FyQQuvR9aO0t7dC0XFHdiyMNOEx54RoLzj5OyE3+pl9BZR2rgHligEa1RcLYqku+a
+ Eo2BrzRi3q0hd2VURm7pxZRpli8lG/Afqf/sKum+Krm/bXf9qjJf0p4iAfpFh+oyP7Cn
+ Cfhh6PvrD+EqDSk5r9ya9qZENNUDP/X+mV9Sb5lTS43jGFjxo9CDHSGW9MBk5mydMQPw
+ BzFg==
+X-Gm-Message-State: AOJu0YyILuzJP9YNIDQZwoGnbIqg6EdhyItfT9F7wFd400WhRECspxSV
+ OI5AtLntP7CPckxKpTxS0uqdmZl1dy4M2rEX9SKsdEX3q78PLLcHb2QTvMfpqfzoP0KMbBYe7Ff
+ UlI2cLhA=
+X-Gm-Gg: ASbGncudaTK2T8j5FxqahpmLFj1Qf6Uz7W8d4TYMNkR8okD9L2C/TNY/M5+aGjJbunh
+ DGydw9kka/v8XY+lbqegNn6qQE/g5tZ6uNu4oV23YFXvhKwX+HlBFf6X67RJaEQDy9NuTpU322u
+ GnL1xXnoAI3ccqugkk2jYOxCXLP6zIOlzphwVuWx+7nTzlvnVIprJs2OsQQUbBitYSA/jXkteOK
+ MXRgrPfGnuqIQRrTega5GprJVg/cBWd6Ez3pfkvmyWJU2/RAJSg2Wdzb37y8RbZA0b48p3sMUM0
+ xeozfIkXPUsDU53Y5CNWpFqzV0Sjk5lIyAdfeMO5Ds0Dkf6lDDcko6oBYvsw9XiXum1Z0H3GTUn
+ qOmnuOgbeDcCQje6GOIGdGXU4pULEgaAuGXJbhhmi/TMlIiyHeu4lXRNFFxk+H6DTz5azyWr2CL
+ Wcd5wf9dstLioT/WMLR63escJl
+X-Google-Smtp-Source: AGHT+IGitKBv8nKclMo3hytN1NfGoHZ4dHPu/mBYSEb8q2cUanLsLBF7GD0YUb+xPmPRfE+IfBAssA==
+X-Received: by 2002:a17:902:d2c6:b0:290:c0d7:237e with SMTP id
+ d9443c01a7336-290caf831cdmr52810205ad.39.1760713960421; 
+ Fri, 17 Oct 2025 08:12:40 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2909934fde5sm66987155ad.41.2025.10.17.08.12.39
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 17 Oct 2025 08:12:40 -0700 (PDT)
+Message-ID: <d2c32a8a-72d0-4409-9285-f35c8b5b6efa@linaro.org>
+Date: Fri, 17 Oct 2025 08:12:38 -0700
 MIME-Version: 1.0
-References: <20251016122132.737016-1-peter.maydell@linaro.org>
- <20251016122132.737016-3-peter.maydell@linaro.org>
-In-Reply-To: <20251016122132.737016-3-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 17 Oct 2025 16:11:19 +0100
-X-Gm-Features: AS18NWAa9NvZBNarUD9X2a3av_-e8MwJYcp2VzyC8KSX4I9KZ9fo7EGn_PBk9cU
-Message-ID: <CAFEAcA9o6zTXn-=YmZizZ7rephox_FjpGs3Z8+PmJLeUNKcsMw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] tests/tcg/aarch64: Add test case for SME2 gdbstub
- registers
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1133.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL v2 00/75] Misc single binary patches for 2025-10-16
+To: qemu-devel@nongnu.org
+References: <20251016151108.18442-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251016151108.18442-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,71 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Oct 2025 at 13:21, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Test the SME2 register exposure over gdbstub, in the same way
-> we already do for SME.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  tests/tcg/aarch64/Makefile.target      |  9 +++++-
->  tests/tcg/aarch64/gdbstub/test-sme2.py | 41 ++++++++++++++++++++++++++
->  2 files changed, 49 insertions(+), 1 deletion(-)
->  create mode 100644 tests/tcg/aarch64/gdbstub/test-sme2.py
->
-> diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-> index 55ce34e45ee..9fa86874534 100644
-> --- a/tests/tcg/aarch64/Makefile.target
-> +++ b/tests/tcg/aarch64/Makefile.target
-> @@ -164,7 +164,14 @@ run-gdbstub-sysregs-sme-tile-slice: sysregs
->         "selected gdb ($(GDB)) does not support SME ZA tile slices")
->  endif
->
-> -EXTRA_RUNS += run-gdbstub-sysregs-sme run-gdbstub-sysregs-sme-tile-slice
-> +run-gdbstub-sysregs-sme2: sysregs
-> +       $(call run-test, $@, $(GDB_SCRIPT) \
-> +               --gdb $(GDB) \
-> +               --qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-> +               --bin $< --test $(AARCH64_SRC)/gdbstub/test-sme2.py, \
-> +       gdbstub SME ZA tile slice support)
-> +
-> +EXTRA_RUNS += run-gdbstub-sysregs-sme run-gdbstub-sysregs-sme-tile-slice run-gdbstub-sysregs-sme2
->
->  endif
->
-> diff --git a/tests/tcg/aarch64/gdbstub/test-sme2.py b/tests/tcg/aarch64/gdbstub/test-sme2.py
-> new file mode 100644
-> index 00000000000..1d189ac01ca
-> --- /dev/null
-> +++ b/tests/tcg/aarch64/gdbstub/test-sme2.py
-> @@ -0,0 +1,41 @@
-> +#
-> +# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+On 10/16/25 08:11, Philippe Mathieu-Daudé wrote:
+> The following changes since commit 8109ebdb95c45d9062c7e6e7beae0ee571fca4f8:
+> 
+>    Merge tag 'pull-loongarch-20251015' ofhttps://github.com/bibo-mao/qemu into staging (2025-10-15 14:49:51 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/philmd/qemu.git tags/single-binary-20251016
+> 
+> for you to fetch changes up to 8dd133fa85bb49e2e61c489a566ab8460478dc24:
+> 
+>    mailmap: Unify Clément Mathieu--Drif emails (2025-10-16 17:07:52 +0200)
+> 
+> v2: Remove legacy cpu_physical_memory_*() calls
+> 
+> ----------------------------------------------------------------
+> Various patches related to single binary work:
+> 
+> - Remove some VMSTATE_UINTTL() uses
+> - Replace target_ulong by vaddr / hwaddr / uint[32,64]_t
+> - Expand TCGv to TCGv_i32 for 32-bit targets
+> - Remove some unnecessary checks on TARGET_LONG_BITS
+> - Replace few HOST_BIG_ENDIAN preprocessor #ifdef by compile-time if() check
+> - Expand MO_TE to either MO_BE or MO_LE
+> 
+> Also:
+> 
+> - Remove legacy cpu_physical_memory_*() calls
+> - Fix HPPA FMPYADD opcode
+> - Unify Clément Mathieu--Drif email addresses
+> ----------------------------------------------------------------
 
-This is obviously wrong -- I used the SME test case as
-an initial template, but forgot to edit the copyright line :-/
 
-Will fix in v2.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/10.2 as appropriate.
 
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +#
-> +# Test the SME registers are visible and changeable via gdbstub
-> +#
-> +# This is launched via tests/guest-debug/run-test.py
-> +#
-> +
-> +import argparse
-> +import gdb
-> +from test_gdbstub import main, report
-> +
-> +MAGIC = 0x01020304
-> +BASIC_ZA_TEST = 0
-> +TILE_SLICE_TEST = 0
-
-These constants and the argparse import aren't needed
-for this simple test case.
-
--- PMM
+r~
 
