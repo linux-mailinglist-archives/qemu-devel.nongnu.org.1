@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1895DBE8C9B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 541A4BE8C6D
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:15:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kHB-00013g-Ej; Fri, 17 Oct 2025 09:13:45 -0400
+	id 1v9kHG-0001MN-EE; Fri, 17 Oct 2025 09:13:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sourabhjain@linux.ibm.com>)
- id 1v9fb1-0006fd-Mb; Fri, 17 Oct 2025 04:13:55 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1v9g12-0007xW-MP; Fri, 17 Oct 2025 04:40:48 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sourabhjain@linux.ibm.com>)
- id 1v9faw-0008EN-Rq; Fri, 17 Oct 2025 04:13:55 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H6SrZj021059;
- Fri, 17 Oct 2025 08:13:41 GMT
+ id 1v9g0x-000436-Se; Fri, 17 Oct 2025 04:40:48 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H4v2Ng021932;
+ Fri, 17 Oct 2025 08:40:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=jE/ew2
- 66+5wHl82JDcNmpsY0zWi4YVBbUe2r9CckZyk=; b=aKma4JmakE+MHtxijPmEkm
- 2AFpyAUJncImzxkRKpO0CEjxNJl6D3oBUT5AD2D639ej+bPOBPyoUgs+IhFc2VBe
- 5iQbxUq3K4FRIwvwEDNZq7bNWpuFXJJtjaYm6Gvb8Zm3g/uARyskoKuwRiZBsxTM
- 09VQFOADefufOPE85NhvMV8JCwcG7q6dFQyX0IS9CUS9J23SkQZ9o5yaxzqylTAV
- D3Kau89c+VgLBTZ+xAxG0/oRH8RceuF8VieI086mD9tJRzPXpmkvUc7eOXWU2tGR
- Do1ZffCmykeBle7whqncBtQoGXvLSTGop1o1EQK3aneVeyVXtGCVu21izcgcOlxA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=QrElBk
+ G7fD5gYglEKUGuTHdT1sDsQicHZQOsSAbn1Ik=; b=Ku3Da2L/vXHdZ3Ej0GwgOP
+ 8B1a/ipXsaWjUzszwvn/0fJ/qSSg1Nn5XQLUHSfgf9M0ytFc6XJl+EqTrImWLm1f
+ vcftU62jREpnw0D4Sxhz24VPDaPDdlzmXJ2qsh6UWOdCt2dK0CA67uoDUO3d3sin
+ aAgsWnmdZf18HP5qaG+CNAXKgs5tHZTgIfmF2T+tHFPspeY4kQyHB6GVuDEGNczL
+ mc34UhHkqUWnhYCC+TKA+ZV9Owe7wy1sKpotw8FGifvScDOcnBHVdWkiuiUZpQZB
+ hRgEN4WWx654W7bzzhiDK8k7IKqj6cUVsnQ/m/VXRwQyi8qcs/dUKcgjfK1I2zAA
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0e8c0-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qey984mb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Oct 2025 08:13:40 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59H7v5UR008059;
- Fri, 17 Oct 2025 08:13:40 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0e8by-1
+ Fri, 17 Oct 2025 08:40:35 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59H8ZvqD009461;
+ Fri, 17 Oct 2025 08:40:35 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qey984kk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Oct 2025 08:13:40 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59H7Jrwn014981;
- Fri, 17 Oct 2025 08:13:39 GMT
+ Fri, 17 Oct 2025 08:40:35 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59H8XlSB003618;
+ Fri, 17 Oct 2025 08:40:33 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sjswsw-1
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xyaqc7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Oct 2025 08:13:39 +0000
+ Fri, 17 Oct 2025 08:40:33 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
  by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59H8DZlA49873226
+ 59H8eS2d51249656
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Oct 2025 08:13:35 GMT
+ Fri, 17 Oct 2025 08:40:28 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DEB08201F3;
- Fri, 17 Oct 2025 07:51:37 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C478F20356;
+ Fri, 17 Oct 2025 08:40:28 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0BA9201EC;
- Fri, 17 Oct 2025 07:51:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CBD2D20351;
+ Fri, 17 Oct 2025 08:40:26 +0000 (GMT)
 Received: from [9.124.221.21] (unknown [9.124.221.21])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 17 Oct 2025 07:51:35 +0000 (GMT)
-Message-ID: <51a2ae35-a40c-44c3-b72f-aa5580433cbc@linux.ibm.com>
-Date: Fri, 17 Oct 2025 13:21:34 +0530
+ Fri, 17 Oct 2025 08:40:26 +0000 (GMT)
+Message-ID: <0827c237-df2b-4a7a-8157-c496c4fa98cc@linux.ibm.com>
+Date: Fri, 17 Oct 2025 14:10:25 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/8] hw/ppc: Implement skeleton code for fadump in
+Subject: Re: [PATCH v4 1/8] hw/ppc: Implement skeleton code for fadump in
  PSeries
 To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
@@ -75,37 +75,37 @@ Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Hari Bathini <hbathini@linux.ibm.com>
-References: <20250313192341.132171-1-adityag@linux.ibm.com>
- <20250313192341.132171-2-adityag@linux.ibm.com>
+References: <20250323174007.221116-1-adityag@linux.ibm.com>
+ <20250323174007.221116-2-adityag@linux.ibm.com>
 Content-Language: en-US
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20250313192341.132171-2-adityag@linux.ibm.com>
+In-Reply-To: <20250323174007.221116-2-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iGQrR3KuEOl9aC6IAP1t9sEjY_fR2d4v
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f1fab4 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-ORIG-GUID: K_UOSZe06dp3JoLKnm0JEwNag_8SSsmj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxMSBTYWx0ZWRfX2RvZpGHAk6+2
+ v8Vfiry4D851owQGXYX9bdkki5YsaO5gOMK6etPSMlhoP/1qAGknMwkpm8kR7kM1FSsjuS+P++2
+ 6fHJk2aEuG4XyIMtyDDyBNjaWJMjvmyt0WJ/vhv07vBBfbWMG0IWmdOhc4TIEcszQAypYOIvm2e
+ 55Fodgl9zWyw7YpwQewWh8MDd5IbLXRGX8Thupu0cYY48DYzgRoDowO3QeIDtEtGL02b/Ieztt5
+ VMCj3uR1IcOUOxGDldu4wkyi32BITpyYy7DpH6rec7bMCNfJ2pdKYLH8hlyWixDuYIlH7KHkucP
+ 3iZdkyzYv3IAr65UtPsmogf9zQXNd1fxPZW9VQSp5n8YUct78jZeFbi5ZFqrnyjTJrmCEJfzTKt
+ VABpitMk75H/BAc98Mk2aaVVBaMMGw==
+X-Proofpoint-GUID: 7SFStD-kUSi1YTrPLcVIPTR2idJHLX61
+X-Authority-Analysis: v=2.4 cv=QZ5rf8bv c=1 sm=1 tr=0 ts=68f20103 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=4bwDFNG5ePBMsAPI1C8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfXxwvis1d+twLh
- nZ5claqQXGUHuFd3kx3NcmTWoeDUP+77ZjsTbZZXiNYNGoI23k4HHNHsgmtWyLNvdEj1Z4UBD1f
- rc7Or+DkbiKy4jVYF/MVGvLgb10/Jb8PY+33PY1SBf+wmMU6KpzSaGBNFQvzb5yhzLzFcLUDU2T
- GtmEL6vDhHWDbwFgYB2ovRf9Rv/zxB8v5SpSy7IzsvAZ5TwHL2W6aOQ8aVGweAVLqjC5xQFtgf+
- akmo5tP938JWgJ1OSoY77y9LTqdL0PK/gpujrli+Fbo3zwBD3/oJoOlipzC8DX6ZbVeAqF25av2
- GJHX6CpKQs/ye6dETefTdb+SN2799JRDNjMfNUWfK41aJcKuej8OyWPHzia+dB3z7GmBAtU0inT
- 96Bnd0nqyL25ZaQIZHIMt56zZL+fMQ==
-X-Proofpoint-GUID: rFUnAT65FkE3TDAz-b17-jpaaRozrIBF
+ a=VnNF1IyMAAAA:8 a=c49T4zjn-J0lh6aMyFcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
+ spamscore=0 malwarescore=0 impostorscore=0 clxscore=1015 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=sourabhjain@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110011
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=sourabhjain@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -115,7 +115,7 @@ X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 17 Oct 2025 09:13:15 -0400
+X-Mailman-Approved-At: Fri, 17 Oct 2025 09:13:16 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,7 +132,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hello Aditya,
 
-On 14/03/25 00:53, Aditya Gupta wrote:
+On 23/03/25 23:10, Aditya Gupta wrote:
 > Add skeleton for handle "ibm,configure-kernel-dump" rtas call in QEMU.
 >
 > Verify basic details mandated by the PAPR, such as number of
@@ -220,6 +220,7 @@ On 14/03/25 00:53, Aditya Gupta wrote:
 > +        qemu_log_mask(LOG_GUEST_ERROR,
 > +                "FADump: ibm,configure-kernel-dump RTAS called with nret != 1.\n");
 
+
 No rtas_st for above failure?
 
 > +        return;
@@ -244,6 +245,7 @@ No qemu_log_mask for the above failure?
 > +        break;
 > +    case FADUMP_CMD_UNREGISTER:
 > +        if (spapr->fadump_dump_active == 1) {
+
 
 fadump_dump_active is bool, so comparing with an integer is not needed.
 
@@ -319,16 +321,6 @@ fadump_dump_active is bool, so comparing with an integer is not needed.
 >   #define RTAS_OUT_NOT_SUPPORTED                  -3
 >   #define RTAS_OUT_NO_SUCH_INDICATOR              -3
 > +#define RTAS_OUT_DUMP_ALREADY_REGISTERED        -9
-
-
-As per the PAPR:
-Error code -9 is for the case where dump is active and kernel try to 
-register fadump.
-The correct Error code for the case where kernel try to register fadump 
-when it is already registered is -8.
-
-Refer section R1–7.3.30–4 and R1–7.3.30–5
-
 > +#define RTAS_OUT_DUMP_ACTIVE                    -10
 >   #define RTAS_OUT_NOT_AUTHORIZED                 -9002
 >   #define RTAS_OUT_SYSPARM_PARAM_ERROR            -9999
@@ -387,7 +379,8 @@ if it’s used; otherwise, remove it if it’s not needed.
 > +
 > +struct SpaprMachineState;
 
-Didn't understand the reason for the above forward declaration here?
+
+Didn't understand the reason for the above forward declaration.
 
 > +
 > +/* Kernel Dump section info */
