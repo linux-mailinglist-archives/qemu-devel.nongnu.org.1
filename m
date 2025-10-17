@@ -2,103 +2,165 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC057BEA3B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 17:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F873BEA547
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 17:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9mk3-0000kr-PD; Fri, 17 Oct 2025 11:51:44 -0400
+	id 1v9mpP-0003Ul-Cm; Fri, 17 Oct 2025 11:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1v9mk0-0000gZ-Cu
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:51:40 -0400
-Received: from fhigh-b5-smtp.messagingengine.com ([202.12.124.156])
+ (Exim 4.90_1) (envelope-from <roger.pau@citrix.com>)
+ id 1v9mpJ-0003UM-MK
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:57:09 -0400
+Received: from mail-eastusazon11012044.outbound.protection.outlook.com
+ ([52.101.53.44] helo=BL0PR03CU003.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1v9mjs-0003qc-9Q
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:51:39 -0400
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
- by mailfhigh.stl.internal (Postfix) with ESMTP id B8D647A0082;
- Fri, 17 Oct 2025 11:51:29 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-09.internal (MEProxy); Fri, 17 Oct 2025 11:51:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1760716289; x=
- 1760802689; bh=yaOzH4ZD5Q2CrGhXF6tFydMjuFnRzi1IMa76PXsDv6I=; b=R
- H7qRfeD7RZ9JX3OPWDhzXLyYAXS9G8yDRCsend28Q4igda4wN7MUbrfdLhVAqgET
- tD6Ds5QweVvpIQMk+Brkm4wQjJmhXZOR1GgWjZ4SYEyqacW9+F1xqRf8BfDtV7G5
- AaX6uqQmlhCS5YR4kQq0fQxQLGozxNy4x/LzXL91L2skuYe65Z1ac1slOcVn2f85
- stf19SBvcy+eczV/JJ5f/SW8+gp65TUpq6e8gg344zOaJltPIm+7jmFixGK6EsAk
- lZyWdG7xxIRino2ZUx0ncMy6HGWFftknK8MeNAdSuWtHZKA/4/D21+to9YSP0lP5
- 0GSSwkRq9wBWO3NbKFLkw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm2; t=1760716289; x=1760802689; bh=y
- aOzH4ZD5Q2CrGhXF6tFydMjuFnRzi1IMa76PXsDv6I=; b=wUWLfG6HV2ckjxGij
- R2lc8dXUBp0Roq15WppumhL0cslpG0C14stqQ8DU3NruE+/93JIVcfnBlUdWbv3j
- ZJs9K6AMP/6nAtjaYw39Z5pjuB9U4Iq4jhg/BgWg1R8q15n6+PX/jQo9US2WR4Rx
- kXH8PdgSgDn4qtBRwGJN7yQJOO1DnLYfoppNgQ7FZ7YaZ7OKwPpjQf2s6jPxf9Z8
- /cY+8yd+9MU5XE8at8FyQzJixY5wPgSohzNj/gFI9VACP5TiXWDtfcAYtuFTsC3K
- QLZ/snEXTJP1zLNJ8M3kHB+owjOAGpb9YkHNi/kxdSET3wHLdBB3Jy5wF2roUsdu
- DWDtw==
-X-ME-Sender: <xms:AWbyaAj7RbkJMSoaNN5RMPxELHBEI3KZyQU2oENaN2EJbq4_OmMY4A>
- <xme:AWbyaP744TiifaaqORZLn-80pZKrSlMCkVk_3_Zj701jbTAaLq3I02_RtuB9B6Znj
- pLQ-z7lznpwp_Fjc5-VhVZu9qtBruvUo5KIjn9OMOFRfIKZ8iYQgWc>
-X-ME-Received: <xmr:AWbyaAbLJa_D_CXlzR6W9uVpReqUS2lRG35mB2uetSZxFLmF92_GDC7YAWvn>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdelheekucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
- rghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenucfjughrpefhvfevuf
- ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeevhhgrugculfgrsghlohhnshhk
- ihcuoegthhgrugesjhgrsghlohhnshhkihdrgiihiieqnecuggftrfgrthhtvghrnhepgf
- eiteejhfelheefieetjefgleejfffhueffvdduieejgfeuueeuvddvkeejhfelnecuvehl
- uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhrggusehjrg
- gslhhonhhskhhirdighiiipdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhu
- thdprhgtphhtthhopehmrghrtggrnhgurhgvrdhluhhrvggruhesrhgvughhrghtrdgtoh
- hmpdhrtghpthhtohepkhhrrgigvghlsehrvgguhhgrthdrtghomhdprhgtphhtthhopehq
- vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepsggrlhgrthhonh
- esvghikhdrsghmvgdrhhhupdhrtghpthhtoheptghhrggusehjrggslhhonhhskhhirdig
- hiii
-X-ME-Proxy: <xmx:AWbyaM7_p2pepeIJu4YM31DV7yiHfSmxZHJBnwPAWiZcOssOgb0O8A>
- <xmx:AWbyaLC7WATriPXvHVBYyuY0fqGQL0hG61XFhKP6_lVJFGvZKI7k9w>
- <xmx:AWbyaKdjpDyr_cqZoRE8sz-YOmq6mPKJuRaz7i72kEeduRpXh9u8KQ>
- <xmx:AWbyaCLAs4njkP2ZL5L7rYvF_SABS4WNxQaga5QDuj-swCIY5p6bJQ>
- <xmx:AWbyaDWsRseybaKy7dVUEelek-wRwzLbknGkEjgIOTIkoISfNe5jnKcO>
-Feedback-ID: ib26944c1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Oct 2025 11:51:28 -0400 (EDT)
-Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id eebbe656;
- Fri, 17 Oct 2025 15:51:28 +0000 (UTC)
-From: Chad Jablonski <chad@jablonski.xyz>
+ (Exim 4.90_1) (envelope-from <roger.pau@citrix.com>)
+ id 1v9mpE-0004Wp-Ml
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 11:57:09 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DODxHeo2OngVSR5aH+DQqhy6KE8xdm1FYP0BkOQ3bh6LoJPd5lvWEA1mpf3r/p5708/rTQoR/pKdmGZxvAvcM0cNHuO//0hDodrfiuYCjy4Y4RochDAnnsnP3DD5hc7YuBK7yt0zo/hRnuvrPyctEmmaDPSuSSJtmvELrFFWqDcw98ToSSR5zQPhxtn5sh5GG6cmOqzwHpiqgOb5Fp6EpW5P3OpScxrK7gnQRRGFBRwokMjA4zAvkDGBnJWJXljIsWZ5S9BMGVzQ6V+sxsufAiR3G9DCnpZSn7s+55RTJesD9KR3yVfn1NjhtmPFoWBdAWwoOm27QYnojSLONnWCxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3qMWxcf0rg5YHkceVGM3qS2pgcb4t2ikbgNbz1m3Vhc=;
+ b=n4gFODnTDEhE8UXXJhV3ElIuH0jeMDfcJ/LFiZUw9FkiCo5Gw/ltVHJ2ZB6j5NHaR95m9rW9TNtOF+7qS5vHSnkH5tkeGU1m2tmmZ/io1rZq5phsp4iGtfbEXguYJCkXvXRN2AXKasUjr3fDGS/qC9tNZbd1IENw4R+mrmc/INYimqbqzOJhzxF6pgb90IlCcCgObVSjSIWgn1GaegNBGiBc2Oi/4Q+vslT0Wbb2QaYYMvN6zHzJ9VjPGzCNZOa9jlAisE8dAYBvNiGs6SOkme67PspIIi4Cg5YpLymTwM4nT+1SRg7fHilfq6w7Ia7UhsthOt2NyXD+UO5yrfR/PQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3qMWxcf0rg5YHkceVGM3qS2pgcb4t2ikbgNbz1m3Vhc=;
+ b=WovroAtZy6ShyqYhglHYBtR2P1ySpfcyx7dzfCmhTlQNmH4JMoLPjApkgGuEL3Z05teKdCRNKNc8wLekV4nAzZxBOKzYSgSh8zfD7iRhMG+4ZVl34J/t8zlCDIjkAulNdzOf2682e4OCJWE76G1cD+sLIdWj4HIOc0ijnregjl8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=citrix.com;
+Received: from DM6PR03MB5227.namprd03.prod.outlook.com (2603:10b6:5:247::22)
+ by CO1PR03MB5908.namprd03.prod.outlook.com (2603:10b6:303:9d::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
+ 2025 15:51:53 +0000
+Received: from DM6PR03MB5227.namprd03.prod.outlook.com
+ ([fe80::c9a0:563d:c344:aec2]) by DM6PR03MB5227.namprd03.prod.outlook.com
+ ([fe80::c9a0:563d:c344:aec2%5]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
+ 15:51:53 +0000
+From: Roger Pau Monne <roger.pau@citrix.com>
 To: qemu-devel@nongnu.org
-Cc: balaton@eik.bme.hu, kraxel@redhat.com, marcandre.lureau@redhat.com,
- Chad Jablonski <chad@jablonski.xyz>
-Subject: [PATCH v4 1/1] ati-vga: Fix framebuffer mapping by using
- hardware-correct aperture sizes
-Date: Fri, 17 Oct 2025 11:51:17 -0400
-Message-ID: <20251017155117.1953708-2-chad@jablonski.xyz>
+Cc: Roger Pau Monne <roger.pau@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ xen-devel@lists.xenproject.org
+Subject: [PATCH] hw/xen: pass PCI domain to xc_physdev_map_pirq_msi()
+Date: Fri, 17 Oct 2025 17:51:36 +0200
+Message-ID: <20251017155136.16540-1-roger.pau@citrix.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017155117.1953708-1-chad@jablonski.xyz>
-References: <20251017155117.1953708-1-chad@jablonski.xyz>
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=202.12.124.156; envelope-from=chad@jablonski.xyz;
- helo=fhigh-b5-smtp.messagingengine.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_SUSPICIOUS_NTLD=0.499, PDS_OTHER_BAD_TLD=1.999, RCVD_IN_DNSWL_LOW=-0.7,
+X-ClientProxiedBy: MA2P292CA0011.ESPP292.PROD.OUTLOOK.COM
+ (2603:10a6:250:1::15) To DM6PR03MB5227.namprd03.prod.outlook.com
+ (2603:10b6:5:247::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR03MB5227:EE_|CO1PR03MB5908:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55257727-9222-40e1-c175-08de0d951767
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZGxwei9sdEk1c0hTZTdxNndRVi9TMmRQMDl4ZVVWbTdUdDQ1VkM5ZC81aGtB?=
+ =?utf-8?B?NElIT05hdFhwblJVTHpGMDNBbiszbVB4WkloUHNXUE4rQmZiNFVJckg4MFpw?=
+ =?utf-8?B?Q2p0L0U1SUtHb3p0eGp0eXFDQW9QaEcvbUtyQXNYcHZKYWxjLzFETkhjUlVM?=
+ =?utf-8?B?aWFHOHJQWlpIQUJmTzF3NnFUZUJ3bE13RmpNbUZNUWV4L0tEMXNTQk1oVk8y?=
+ =?utf-8?B?eG9vYmlyRkMzc0FHSFd2WjZrb29iMkpuNmNCRmY3N0tCOXV6b0dFclQ5bG9z?=
+ =?utf-8?B?N1FxUVZLdXpQUGxzQncvcUExcTlXeXFjMDBwMDE0TG1peUEwYXJRb3c3eUtR?=
+ =?utf-8?B?bldObks4d2NjMjNHK0VlelRFUkVmQUlSNHBrTWxCdFdjVDBsUStCZUZ1VVZC?=
+ =?utf-8?B?ajhuZVBNb3FpN1JuYWFqS054cFliaVlzQm4xS2Y4endQeWdUMS8zR3B3cklk?=
+ =?utf-8?B?b24zVmR1VmFISDA1VDRPblN3ZmJSanhPc0dSTnpmNFpLYTRMcHVCeTIwVVpD?=
+ =?utf-8?B?ektPM0xrR2lOcGpIOGFkaFgrbVdSMGgwMVdJZnJCUTlyK1dQOVIxVHhiZ3ox?=
+ =?utf-8?B?TVpvcWd3NWJqWlc2ZTY0YXJ0V1lwck1kMG1zOGtMYkZiT1hCZHBiZGNoNWZh?=
+ =?utf-8?B?ZlFWL3hvV2VwWXRIWWFQM1ZEWWQ5N2ZFU3VNVWQwUXR4bUJTWTUzeTJwSndv?=
+ =?utf-8?B?MWEvZjI1M0FDOVhaK2lQWXJkOXI4eXJNQ1JaUnhwV0lFajZZT0FTQ1Erc3BR?=
+ =?utf-8?B?UllldVE1dTg4ekFGeTdPdHpCU01XaVYrUitTMzdvL2phbnlHbW5aajFZVmE0?=
+ =?utf-8?B?a09QZHJuQUgxMzZKM2dFeW9aLytqZjVVRGkyRUMyYW1qOVFLTkdKeUw1VTls?=
+ =?utf-8?B?QkxMNFNwcmVPK2hZbTV1S29KS2xuVmhudjNKSjJHZGIwaXhjR1hJMGtENjNY?=
+ =?utf-8?B?V1l3SmFvclVmdHNUVDlkOFltbFFxdXBvOHFzc1d0ZkVrUG1uZVZuU0RCNkc1?=
+ =?utf-8?B?dFBMeVIwL0pUcmVFSWZRMU5ab3hyeE9SbVBvZzlydDQyL29vTkpybXZhTUtu?=
+ =?utf-8?B?TXZnYUZObFg1MVZ2RGUyUzBWNVIrMXRqQ25va2lyZEJhREx2aGxUV2hrWGln?=
+ =?utf-8?B?VDRHS05KQnVnSmVMc1Q3Q043RW5lTXorV1VHNFpDcEp2akZmaHliRmVCbXIv?=
+ =?utf-8?B?QjdyOFhSN3FHMldwd25MbGdnVGtobElBcU9pNjBIYnBNazFURlZ0Y3hSc0hO?=
+ =?utf-8?B?ZUkxWnRaUjVNNDgxOVp0V3J3NWZPN0twYkFPSVlTa1NFQmdtSi9hNjBOd0ly?=
+ =?utf-8?B?bGk2VkxTSzJ1M1hzTitKSXBuNlIzTFBrbnZFczhId0pYblFtVEp4eFR1WVdP?=
+ =?utf-8?B?ZTVYa1JRcUgyWm1JK3FwcnV6TFpjcFhpdUhrQ2J5WCtmY2hoNTlKb1dXcnYr?=
+ =?utf-8?B?c3pIMUE4aDROSVpRMnpkOEwxdk94T3UvV0hQYWtIcElGd0hlVDNPNG9aUEJ6?=
+ =?utf-8?B?d3NZRmZvSXdOTlN0Mi83REpEcUhHckJpSy93WlJRUXF0SWgrV2NpY0I0WUZN?=
+ =?utf-8?B?aFBzNEtPcU5GclRmaEZaNVpEUWVsK1BmRXJnOUFIa2ZoMFg5K2FoWi9QU3hH?=
+ =?utf-8?B?UjdVdjVONStwYi9qMlRCdDArYzMxb3pSdkhxSG50S1lqbmNzK0gzT3VpTzU2?=
+ =?utf-8?B?U0lBbGp5cHYrS0pZWlc5T2V3Nms5azRKZTVIcUljNDAzZERKTnFnN0duQ29i?=
+ =?utf-8?B?bXJSZlZBY253bEtEZEROWHJ1Zi9EL2NqeVExM21GYXl4MnhDSVl2eHhJUXZi?=
+ =?utf-8?B?ZE5Gd1VTMnVaVEZlajFrWkVrU2F0ODhwMU5pblVCWm44L3BEMzdLbDkzSCtI?=
+ =?utf-8?B?UGpsNDBmZWRNSjQrQ0x3TE40YTYwSFV1SjJjTnNBS0svTEQxc245dFlLS081?=
+ =?utf-8?Q?s6ftQJLOppwN+is+sUUMrKRonLKcT35n?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR03MB5227.namprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEEvcGxSU1RlUkRXVkxZa0dBV1MrMU5TREliWmFpTE8yR3hhNk9YdDBiK2VH?=
+ =?utf-8?B?UyttQ1lBdHlheklra3l1cHlKYmJwT09BZjZ1UTEzd3lXTERpSkVvM3VpRnNX?=
+ =?utf-8?B?WWdTWFNrY2ljWGVUNnlDb09yUjBHTzJRVzcxM3YwVzJvaUdlcE1zbUIzVmJX?=
+ =?utf-8?B?ZkQwaUxVdmUrelFFY2s3Snp4NGdZTmp2YmtJRXJIeTFqZDgydEkydnRvSFpY?=
+ =?utf-8?B?VG9TVlhPL1JnSU1NUVl0R3VVQWVhSzloeEU5Q2ZjeW1qR2RNUkZza2FTZUFV?=
+ =?utf-8?B?UGJvVWE0YkY5WTdtcDN0YlRYY2dzU3VONUZMTFcxNmNBNlUxOHU2S0Y4ejNv?=
+ =?utf-8?B?TE0wNHUwc3J4bEtHTUoyM0x6K2luQ0tJT0o4ZnE0N0psSWRFWTNWTGN0QkR2?=
+ =?utf-8?B?V3NmZWtLN3d3K3ErOG42VG5ZT2dZKzYyUHJBd0lFMWtKRjZrVUpPaGx6OFJl?=
+ =?utf-8?B?bjVZQzdMaHNCejhtcFAxWjVjNXBQcTFHcE9jalN4NmZqNWw0allOVS9XcVJH?=
+ =?utf-8?B?Z0tRS3FobmF4dEFObzZXcHlVS1dvd1hHbVlPNEZUL2IyWStpM05WcDlmVko0?=
+ =?utf-8?B?T1F6SVVDczB6RVVjZHRTRlA2aGZIb0RZcnNCN1JUSjdwdVhwSVpHaE1zenVh?=
+ =?utf-8?B?UFk3b0VRZnQ3NmpIWmZIVzMxYUhKZ0xWNi9JQk5sYlFPcDlLdlVGWlR5dWx0?=
+ =?utf-8?B?ZFBVVW5mbkJOTUxlV1lzYVZvTkYzeGZJem1mY3owODVEUmE3L0J6TGFvMFlH?=
+ =?utf-8?B?NXdsU0ZYNVI1L001YkVjT1Z1N0JRVjFmZ2tKZSs0MWxRVDRBcWF0NWIzRjBa?=
+ =?utf-8?B?Vm8zUlRlQXU1Tzl0WFU4QmVmbmpld09tYnlJaFkzV05qZUlBd1NZM2g5Lzd0?=
+ =?utf-8?B?dHBWWmFnR2x0RU11OTFHNVFJMFBtZjg0MFFXTnlnd0F6WTFBTTF5ZG9Kc2xn?=
+ =?utf-8?B?cTR5QUxJQnJTckZNYXlLK2tUYWNyTURDbFpPOHl3aVlabVNPS0JIdGZWSERY?=
+ =?utf-8?B?S1I5MGI2YnNCQ0hzS1BzSlN0Wm9oMnlGSHpUMzFFdkhKejdYYTFlbm1MZEVo?=
+ =?utf-8?B?Nkh0azk2TStFTU54Y1c2QUduMG1lQWJHMDJkZ0lJOHJvYitrdjZBVXZlbGdj?=
+ =?utf-8?B?aDBQYy9jQnBNREdmL01paVBmUnFLOHVXVjVPQ3g4TkMzWjFYUDZKQXpOZVk4?=
+ =?utf-8?B?NkVWeExCeGUwTWZrSXdCQ0h0VHZCWUprdGRBcTIzalhEckZwTDFpWDJTeFRG?=
+ =?utf-8?B?dUIwQ2JKd2RJTGlMMFR0SE9QbndHWi9WQVBMQ3BYWllrbG53Um90ekh3TS9H?=
+ =?utf-8?B?eEVSYVRmREhkbm9Lb1JEaXVKUjFHa0lrUWZJWmxDcEZXUWxMOG84OGdza3pF?=
+ =?utf-8?B?dW5kRW1RWXYwaUJWUWc1L0kwd1hMVkkwMXlWdUR3NFYwZTdaT3MyNXY0Y3hh?=
+ =?utf-8?B?YzN4NlpvMWk3UFNxYkxrOHYvZVRSYVp3eGZoeTN1QXpHTGdWeHZKcjBPWG1I?=
+ =?utf-8?B?TWxncTZNUGNZZ1V1K1Z5NGJFRUFkRGVUVWpUd3RIRE5nYVVXNXptT1lOc0Yy?=
+ =?utf-8?B?TnIyaXJXWFN3QmRmdUxnakFiMlBMZ3FIOE5KTk9RTFhSL0Z3Vk1uTTBiVFZ2?=
+ =?utf-8?B?emxVeDByTTEzVVM0SFZBTGExM2U1YlhFbGFjMTNoblRINWFDWHNYYmRvdWlD?=
+ =?utf-8?B?RE5HbUVpU1dzZ2lCUU16b29zTHA4K2VHbFVQVlpyYkgwMGY5RThqR0dWc2xO?=
+ =?utf-8?B?QTdiRUNCOW5jL2JnajZUTXNhcWhoQzNLL2R1TGxqdCswd2xPMjVaUmRrQnRM?=
+ =?utf-8?B?ZXRMUGpTSHRZa0JKTEsrNFZlekJLWm9xbnB0czBJdGxxQzl1SFUwcTRURHRC?=
+ =?utf-8?B?Q1NRSGJ3Y2I1aUtUVlFpb2o1QkhsTXNVSkpzdnBXblg2WW5XS2pMVmk2VS9v?=
+ =?utf-8?B?cFQxSVlqYzVzTmZ5SlVkcVZwdXpyaVg4WnlTMEVqelJsS1FVN0tZR0RFOWFL?=
+ =?utf-8?B?RjdNLzY1RFRBSWduL0VucFBBczIvZGV4REl2eTFXRW9scDBnZEpEejRaU0Vv?=
+ =?utf-8?B?NUd6d2lhWUZ5NTdxSGo0VFJHc21pbmZHOEg0NFlTNmJ0bk9UMTEvM01ueGIz?=
+ =?utf-8?Q?zV1nQ8+KO+U3ZVlbQ6tOi2dND?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55257727-9222-40e1-c175-08de0d951767
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR03MB5227.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 15:51:53.1608 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /a+6d5BvsPnlvbQOUxzweATilvANoN5NpSl3MuPQWRTZEUkmkX0s9HIiOr1iZACWH0I2FPfSXuXEQcYaqjT9ug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR03MB5908
+Received-SPF: pass client-ip=52.101.53.44; envelope-from=roger.pau@citrix.com;
+ helo=BL0PR03CU003.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,114 +176,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rage 128 cards always request 64MB for their linear (framebuffer)
-aperture and R100 cards always request 128MB. This is regardless
-of the amount of physical VRAM on the board. The following are results
-from real hardware tests:
+It's currently impossible for passthrough devices on segment different than
+0 to work correctly, as the PCI domain is not provided to
+xc_physdev_map_pirq_msi(), and hence it's unconditionally assumed that all
+devices are on segment 0.
 
-Card                              VRAM    PCI BAR0   CONFIG_MEMSIZE  CONFIG_APER_SIZE  AGP_APER_OFFSET
------------------------           ----    --------   --------------  ----------------  ---------------
-Rage 128 Pro Ultra TF             32MB     64MB       0x02000000      0x02000000        0x02000000
-Rage 128 RF/SG AGP                16MB     64MB       0x01000000      0x02000000        0x02000000
-Radeon R100 QD [Radeon 7200]      64MB    128MB       0x04000000      0x04000000        N/A
-Radeon RV100 QY [Radeon 7000/VE]  32MB    128MB       0x02000000      0x04000000        N/A
+Adjust the call to xc_physdev_map_pirq_msi() to pass the PCI domain in the
+high 16bits of the bus parameter.  On versions of Xen where this is not
+supported the passed segment will be ignored and assume to be 0, no worse
+than the current state.
 
-Previously the linear aperture (BAR0) would match the VRAM size.
-This discrepancy caused issues with the X.org and XFree86 r128 drivers.
-These drivers apply a mask of 0xfc000000 (2^26 = 64MB) to the linear
-aperture address. If that address is not on a 64MB boundary the
-framebuffer points to an incorrect memory location.
-
-Testing shows that the Radeon R100 also has a BAR0 larger than VRAM
-(128MB in this case) and the X.org radeon driver also masks to 64MB.
-
-For Rage 128, CONFIG_APER_SIZE also differs from the previous value and
-the behavior stated in the documentation. The Rage 128 register guide
-states that it should contain the size of the VRAM + AGP memory. The cards
-tested above show that this isn't the case. These tests also included
-enabling/disabling AGP with 8MB of memory. It didn't change the
-contents of CONFIG_APER_SIZE.
-
-For both Rage 128 and R100 the CONFIG_APER_SIZE is half of the PCI BAR0 size.
-
-Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
 ---
- hw/display/ati.c     | 16 ++++++++++++++--
- hw/display/ati_int.h |  5 +++++
- 2 files changed, 19 insertions(+), 2 deletions(-)
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Anthony PERARD <anthony@xenproject.org>
+Cc: Paul Durrant <paul@xen.org>
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: xen-devel@lists.xenproject.org
+---
+ hw/xen/xen_pt_msi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index f7c0006a87..0b4298d078 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -361,7 +361,7 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
-                                       PCI_BASE_ADDRESS_0, size) & 0xfffffff0;
-         break;
-     case CONFIG_APER_SIZE:
--        val = s->vga.vram_size / 2;
-+        val = memory_region_size(&s->linear_aper) / 2;
-         break;
-     case CONFIG_REG_1_BASE:
-         val = pci_default_read_config(&s->dev,
-@@ -952,6 +952,7 @@ static void ati_vga_realize(PCIDevice *dev, Error **errp)
- {
-     ATIVGAState *s = ATI_VGA(dev);
-     VGACommonState *vga = &s->vga;
-+    uint64_t aper_size;
- 
- #ifndef CONFIG_PIXMAN
-     if (s->use_pixman != 0) {
-@@ -1011,7 +1012,18 @@ static void ati_vga_realize(PCIDevice *dev, Error **errp)
-     /* io space is alias to beginning of mmregs */
-     memory_region_init_alias(&s->io, OBJECT(s), "ati.io", &s->mm, 0, 0x100);
- 
--    pci_register_bar(dev, 0, PCI_BASE_ADDRESS_MEM_PREFETCH, &vga->vram);
-+    /*
-+     * The framebuffer is at the beginning of the linear aperture. For
-+     * Rage128 the upper half of the aperture is reserved for an AGP
-+     * window (which we do not emulate.)
-+     */
-+    aper_size = s->dev_id == PCI_DEVICE_ID_ATI_RAGE128_PF ?
-+                ATI_RAGE128_LINEAR_APER_SIZE : ATI_R100_LINEAR_APER_SIZE;
-+    memory_region_init(&s->linear_aper, OBJECT(dev), "ati-linear-aperture0",
-+                       aper_size);
-+    memory_region_add_subregion(&s->linear_aper, 0, &vga->vram);
-+
-+    pci_register_bar(dev, 0, PCI_BASE_ADDRESS_MEM_PREFETCH, &s->linear_aper);
-     pci_register_bar(dev, 1, PCI_BASE_ADDRESS_SPACE_IO, &s->io);
-     pci_register_bar(dev, 2, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->mm);
- 
-diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-index f5a47b82b0..708cc1dd3a 100644
---- a/hw/display/ati_int.h
-+++ b/hw/display/ati_int.h
-@@ -10,6 +10,7 @@
- #define ATI_INT_H
- 
- #include "qemu/timer.h"
-+#include "qemu/units.h"
- #include "hw/pci/pci_device.h"
- #include "hw/i2c/bitbang_i2c.h"
- #include "vga_int.h"
-@@ -29,6 +30,9 @@
- /* Radeon RV100 (VE) */
- #define PCI_DEVICE_ID_ATI_RADEON_QY 0x5159
- 
-+#define ATI_RAGE128_LINEAR_APER_SIZE (64 * MiB)
-+#define ATI_R100_LINEAR_APER_SIZE (128 * MiB)
-+
- #define TYPE_ATI_VGA "ati-vga"
- OBJECT_DECLARE_SIMPLE_TYPE(ATIVGAState, ATI_VGA)
- 
-@@ -97,6 +101,7 @@ struct ATIVGAState {
-     QEMUCursor *cursor;
-     QEMUTimer vblank_timer;
-     bitbang_i2c_interface bbi2c;
-+    MemoryRegion linear_aper;
-     MemoryRegion io;
-     MemoryRegion mm;
-     ATIVGARegs regs;
+diff --git a/hw/xen/xen_pt_msi.c b/hw/xen/xen_pt_msi.c
+index e9ba17317aba..df15ccf0d030 100644
+--- a/hw/xen/xen_pt_msi.c
++++ b/hw/xen/xen_pt_msi.c
+@@ -138,6 +138,7 @@ static int msi_msix_setup(XenPCIPassthroughState *s,
+         rc = xc_physdev_map_pirq_msi(xen_xc, xen_domid, XEN_PT_AUTO_ASSIGN,
+                                      ppirq, PCI_DEVFN(s->real_device.dev,
+                                                       s->real_device.func),
++                                     ((uint32_t)s->real_device.domain << 16) |
+                                      s->real_device.bus,
+                                      msix_entry, table_base);
+         if (rc) {
 -- 
 2.51.0
 
