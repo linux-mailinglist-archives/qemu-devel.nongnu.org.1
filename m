@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED701BE920E
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C3CBE9245
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:17:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9lCt-0004rx-IV; Fri, 17 Oct 2025 10:13:23 -0400
+	id 1v9lDD-00053v-5Z; Fri, 17 Oct 2025 10:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCq-0004qW-T3
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:20 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lD5-00050d-Az
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:36 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCW-0005kJ-2T
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:20 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-471076f819bso16193715e9.3
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCY-0005kh-AW
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:34 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-471131d6121so15684095e9.1
  for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:12:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760710377; x=1761315177; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760710378; x=1761315178; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gteGWnMF2R6W+vB6CRlq0+Co1hdivkhTuMvbx2i6MfQ=;
- b=SeyaaAYLKdGyG4AHtrYzrljWxnQUnkuixI1lKpJZgiXVUmHgUpw0oYOk/u8bOQtqMo
- t5xyDSuxmY6SLieSrgNrwwhdFiry68oIQv3clDjnxOpXgOsubyvigGsNVh7bjv0/G619
- 1g70lPDy+OltEt6jGh9TPqgP+7QSGYL9RCmteelQ9JujBQMGgYOUL0HI7zlmjIK2PC/m
- ideCrCNwvIJPs4lfHQN7awQS6ZABlhTXedj3pWP8tB4iaUsT+hJks20lCFmdUngWb/Uu
- cDQ/+8mXdt/J+qWLyI4i1frCcuGSATjxmr13srZVWW/PlzXPp97psCXuhaLnJycABQzx
- pgSQ==
+ bh=oQnslZlvL/ycghWXR/jv6T9Aq0fKGJTc5vHN36t+VJw=;
+ b=c5wykiyxzSpjQNSSy0pfMlC5KU3GMx4FO7WU5+prJpQOVbxKR8Y5A9pAab2pGNh89J
+ /p0XcqyCepHtAKFzvMKAHUBPsuffd2C5GIeTmlGK+0Ygcjqg4UUto4Y50fXf8ShKaTIo
+ x220rd/v8DSwE1b3hgjUwbsyJ+CxxJx2jcbr5ns6Mc04KAdtFCICrt/TLDTezsoPB1Fk
+ 7fv23mcxxqtdQvv9pSCtsQATU1WAoHBuDI1iBXh2fWoj4nYc0SrOK26Vwaw1hlLPZjzL
+ XI0DyKgD+o/SBPyuGu2GIzFJemIEYtqJQ9bmHt8Emfy6z083ijYdziP4M98kBCsdnrpj
+ ChXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760710377; x=1761315177;
+ d=1e100.net; s=20230601; t=1760710378; x=1761315178;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gteGWnMF2R6W+vB6CRlq0+Co1hdivkhTuMvbx2i6MfQ=;
- b=Ae+7VdojHkhfEpsEgvPI+sYiKuSFk3ITEYgQO1UYShWpqwb1wcX8Cd8RWqwD5axeAp
- bDA8pbgqlpCGGcYZyWEeaWwC1obm7IhkdUDrZ2nXITBHT/u4jrE8WZxGCnA8OSIFRjPX
- BTXgQS0HwlaWR/Vu99Acyy//i6xqAcPpXjyNsUMopgQUCefNzP3r9K4RkPr0eqr2sKO+
- uOTFr34XEvozyiRg2GEyx8mDwqTkGzqfDdYhafQJrYPq65ygNCZlHB46Ld+A1dHas+A6
- 4S1a+CHZ5Qygp2XtnrHXVNT7GI54a7yXywtYjE5JdJjrMenJjkgCgrUYmtqV2zHgeyp6
- wEnw==
-X-Gm-Message-State: AOJu0YzwfUsJw5yY1fl2tKvxv4nYn6wDx8x8JreeNnYWo1ceZqrco3iU
- FsJlrAZh4ZPJrk+TG2kQ+moDNs5Nod0v9Jk5CviaYam7TlVkWNKXZrwkgyWGQw==
-X-Gm-Gg: ASbGnct0LNx2VUm7W4r0V8n8LFGU3mKmYnGC9XOUlg6z5yIirlL8xIt6NLGj+dT1lc4
- xB9+p2kiLh2FhyDEOMlk7OyKVe30iHV/L7DG9rn64dF6fhjjud5/fmHiHVH85XL7UzAbTmf54dw
- QAF3Qqm0NeaAoUXf9vH4p/onX7qCFQp0tCpVLRQM2WY97/9XrCXC6cHyWH58O3/VKJ+C5Q5YOnm
- NRnyhoVBInon3T8IQwnDmslsxtq1gOF8alw5D8AFT4y+4pFy7tL+sNPY/8dVsrC3WYKgbzFBt9f
- 9rTtFE6ort+mvCxZwpmXQKoB9sU/rz60uQwC3LXT8MZRprBaIlY+9Ny6w6krzs7wBTA5jir326b
- 8e479dDZOtb62ocfpectjMyYBYjoNvI7a/ekjKJXteEel26hmqDw3f3o7yzBaeB+QnkYIf0Muzf
- qwHvPJ1DuNiNFbt8JU9/mnCetDyfbmCGKYsziRHsf5PJQ=
-X-Google-Smtp-Source: AGHT+IF0gmmFJZZWMtm31nH8oxPWJUvDxjlKcg/T2Pi9eXPhQiM4NczNuxSbXUqG5YCCifXib1OY9A==
-X-Received: by 2002:a05:600c:3541:b0:46d:a04:50c6 with SMTP id
- 5b1f17b1804b1-4711791934dmr28602455e9.30.1760710376471; 
- Fri, 17 Oct 2025 07:12:56 -0700 (PDT)
+ bh=oQnslZlvL/ycghWXR/jv6T9Aq0fKGJTc5vHN36t+VJw=;
+ b=ISBf8u8cVIw4ydPbbW4Gry+HV2SBChGDSyznGCJIkvx/zlvmJgQRy9pU9N9RBNSopO
+ iXPyEPFF6tLdnUraFfUbFBrhMOrDHTuonzI0XMmhUg4A05fKzOH9SadC/EBDJCLpz4VB
+ bZGmJRdjL+zM5FDs55HAVmG0z1IpEc1WiscAiwTPJOpbshsJYOQxR+DdZ0exyTF4k92C
+ //Rt/aXYJxF9iWvGuf6XehCSx9YLs5AG90flUeIOqbn1OPTzo2bHZwc1R2hfBk6iTnQF
+ MwrCJ9M6sKH1JM3Loq+Re2jtUuaHBzMep+TW9E8X5le8iB5Ta78K7ujnWOKyhG+izf9v
+ DuHw==
+X-Gm-Message-State: AOJu0YxzTilrxVdtDbf9TOOKUGI/+mak3a3vd9CXQFv1fSChorQlZ2B7
+ LuBUCA8u8uaDtz/OWGlpJubbdEW1nlcvnrRax0gdYNuC8NrXjBdUDNK9Wcr9Ww==
+X-Gm-Gg: ASbGncuSiGQT79XUrA1oXzzWz2FVNadfkBS+TSysIN3zjAXVcPQj81aeZLZld8JWiQt
+ 7WjvoppddHuVF9aUEjPc2BDsstlelZi5upeBBvCqy+SKoY3AnVHgScdXhrBG2duQmAVAom9IWOT
+ 8BWQ4WNsIFULPDAiN9IF6ZwOtP3VrTnDj0WRJKHvKE0bRc1NxgKWZ8m9mS3QnoiZFihSvtjXNvg
+ 5uxGLxcqOK73pBhEhfGhI3h/IEAbzU2DF7k4610fq8INZRkcWC0lXGCu0uCBsMNR3yc4j/Cfily
+ RobxaQla+6Cva7iCNqLXQKO4johpfZavMV+l8zrJ8fjSMl1R3Bpc/Skr47sMJAWGSvUeCFhzAJx
+ QWDIRqY99ypuxCMoyp3Frs18atgja/PvNqZxoyXnrV6ZBdKg7rDGUAGV39jhRIhY9LkdXT3b7nn
+ XMglA4akDqbO7fR0uhApEtjaDCZWbHF+Hc
+X-Google-Smtp-Source: AGHT+IE3VdA3wZK4Q+OXcjfSwZbSfpo04I9zXOgWlNizZyarmBkO2VPXkxj5kadJ9tYwUN2d2fgUFA==
+X-Received: by 2002:a05:600c:37c7:b0:471:12ef:84be with SMTP id
+ 5b1f17b1804b1-47117900c2dmr26449135e9.22.1760710377632; 
+ Fri, 17 Oct 2025 07:12:57 -0700 (PDT)
 Received: from archlinux (pd95edc07.dip0.t-ipconnect.de. [217.94.220.7])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.55
+ 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 07:12:56 -0700 (PDT)
+ Fri, 17 Oct 2025 07:12:57 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -76,24 +76,23 @@ Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Michael Tokarev <mjt@tls.msk.ru>,
  John Snow <jsnow@redhat.com>, kvm@vger.kernel.org,
  Laurent Vivier <lvivier@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 10/11] hw/i386/x86-cpu: Remove now unused
- cpu_get_current_apic()
-Date: Fri, 17 Oct 2025 16:11:16 +0200
-Message-ID: <20251017141117.105944-11-shentey@gmail.com>
+Subject: [PATCH v2 11/11] tests/qtest/ds1338-test: Reuse from_bcd()
+Date: Fri, 17 Oct 2025 16:11:17 +0200
+Message-ID: <20251017141117.105944-12-shentey@gmail.com>
 X-Mailer: git-send-email 2.51.1.dirty
 In-Reply-To: <20251017141117.105944-1-shentey@gmail.com>
 References: <20251017141117.105944-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,46 +108,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No users are left for cpu_get_current_apic(), so remove it.
-
-As a further benefit, it removes one use of the `current_cpu` global.
+from_bcd() is a public API function which can be unit-tested. Reuse it to avoid
+code duplication.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/i386/apic.h |  3 ---
- hw/i386/x86-cpu.c      | 10 ----------
- 2 files changed, 13 deletions(-)
+ tests/qtest/ds1338-test.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
-index 6a0933f401..1b0b26e4c5 100644
---- a/include/hw/i386/apic.h
-+++ b/include/hw/i386/apic.h
-@@ -23,7 +23,4 @@ int apic_msr_read(APICCommonState *s, int index, uint64_t *val);
- int apic_msr_write(APICCommonState *s, int index, uint64_t val);
- bool is_x2apic_mode(APICCommonState *s);
+diff --git a/tests/qtest/ds1338-test.c b/tests/qtest/ds1338-test.c
+index d12424d27f..b8d0e65ec4 100644
+--- a/tests/qtest/ds1338-test.c
++++ b/tests/qtest/ds1338-test.c
+@@ -18,16 +18,12 @@
+  */
  
--/* pc.c */
--APICCommonState *cpu_get_current_apic(void);
--
- #endif
-diff --git a/hw/i386/x86-cpu.c b/hw/i386/x86-cpu.c
-index 1a86a853d5..86a57c685b 100644
---- a/hw/i386/x86-cpu.c
-+++ b/hw/i386/x86-cpu.c
-@@ -85,13 +85,3 @@ int cpu_get_pic_interrupt(CPUX86State *env)
-     intno = pic_read_irq(isa_pic);
-     return intno;
- }
--
--APICCommonState *cpu_get_current_apic(void)
+ #include "qemu/osdep.h"
++#include "qemu/bcd.h"
+ #include "libqtest.h"
+ #include "libqos/i2c.h"
+ 
+ #define DS1338_ADDR 0x68
+ 
+-static inline uint8_t bcd2bin(uint8_t x)
 -{
--    if (current_cpu) {
--        X86CPU *cpu = X86_CPU(current_cpu);
--        return cpu->apic_state;
--    } else {
--        return NULL;
--    }
+-    return ((x) & 0x0f) + ((x) >> 4) * 10;
 -}
+-
+ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+ {
+     QI2CDevice *i2cdev = (QI2CDevice *)obj;
+@@ -39,9 +35,9 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     i2c_read_block(i2cdev, 0, resp, sizeof(resp));
+ 
+     /* check retrieved time against local time */
+-    g_assert_cmpuint(bcd2bin(resp[4]), == , tm_ptr->tm_mday);
+-    g_assert_cmpuint(bcd2bin(resp[5]), == , 1 + tm_ptr->tm_mon);
+-    g_assert_cmpuint(2000 + bcd2bin(resp[6]), == , 1900 + tm_ptr->tm_year);
++    g_assert_cmpuint(from_bcd(resp[4]), == , tm_ptr->tm_mday);
++    g_assert_cmpuint(from_bcd(resp[5]), == , 1 + tm_ptr->tm_mon);
++    g_assert_cmpuint(2000 + from_bcd(resp[6]), == , 1900 + tm_ptr->tm_year);
+ }
+ 
+ static void ds1338_register_nodes(void)
 -- 
 2.51.1.dirty
 
