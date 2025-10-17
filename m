@@ -2,115 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47425BE954E
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D40FBE96A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 17:01:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9lnm-0006Md-1e; Fri, 17 Oct 2025 10:51:30 -0400
+	id 1v9lvA-00018a-6d; Fri, 17 Oct 2025 10:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1v9lnQ-0006Je-5l
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:51:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v9lv7-00018I-3R; Fri, 17 Oct 2025 10:59:05 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1v9lnG-0003QX-Qf
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:51:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760712651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Slj7ZKPK0xvytalJly4TT5I3RXQEVVcilA0m7Bpil6o=;
- b=f9h8ua5/xB6BAbakr39pOE9wYYC5FmJd//zcDSbJ1L9avxH4IKw+OnuOzEJ6RLCyfUeARg
- 3KOuC+jz3DyYrvXQgwkfESNTBNB7PeruvtzAFZwG27GtYWBxDuK7v7WTJlbOQqHEQpi0Rt
- 1tuEj3DSKUCeL5oKzHFCDrVo929D3XI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-Q5akP1DQOIGXevtjZrszgA-1; Fri, 17 Oct 2025 10:50:49 -0400
-X-MC-Unique: Q5akP1DQOIGXevtjZrszgA-1
-X-Mimecast-MFC-AGG-ID: Q5akP1DQOIGXevtjZrszgA_1760712648
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3ecdb10a612so3009595f8f.2
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:50:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760712648; x=1761317448;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Slj7ZKPK0xvytalJly4TT5I3RXQEVVcilA0m7Bpil6o=;
- b=Abt3sgKZNinQTY7367irc+VS8OS/f/1eSdMJ+73lN60MnMjuCxEBb//7lIWt1tGxdU
- VKN3mpSeGQ7IyqMIfMUfhrr6KtSs1+UBlRW+UJgi2KphG3I49KZD27bDJqp/WjdKEPoz
- WtsvaPGMyGMFTpDuwY1/PrheBYiDzgzIRCSdhQBvjo58+PMYqdt3qBT+L+iLxcPWXGXK
- jVKqj9iXiQoaxf0Vaf/KWeFST9Olbwt8TLOVT1eL5w/2mbHdJWh6B/QMC7XwpiHB7xgP
- I69gn5CjhN5VxU7ybQTBW7W0ujHrE9tpyU9tylZmTh7YLFDCJMZMQA+Id4TWBh6nYrTZ
- Dk5Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXxwEqRZJHSDZTtTnk30D/kuX+7rTLaUejMrglDT9lK0WxAWuHrCIGmc3AvH0MIZdMVjEptor6abAHN@nongnu.org
-X-Gm-Message-State: AOJu0Yzkxzf0QvaqVTgWaffJQkvCwfFJ7j7M/h5Gtwhvjdd6g+wLEgTB
- y+lYcDC1//ldCh7EGV/5zu4daQlULZstB5YYCPP/79sAkDaoY5kcrC4/ZrfQZ1kaGXvzZ4gybbC
- z+8lhTjadnK7lLZnoQYZCAWXK9QZn9C4R6mSjhzrKDlcgYPLsQZ/IJ+oo
-X-Gm-Gg: ASbGnctHcwOO5uOGyu+haDkbyrl7KQcOtgYZkaaxdallcEEPqEeDpWIfuXqCikgM5OT
- ZjwcDgmZJCjvAWCRhHFEs9Pk3hqNrTvMzLySs/W+q8rr6PzCnDIFX17QwORsehJcaIbBhMAipGW
- 2JCu7L/19uUhBMBmFtqS5biIspPvvKLm61PcNnuNEzFyZ3nNO3czl3WRBiczRk6e69xuFO8LWDN
- d/rPUUWa25Y1fE+EpdOjS/fH+4ZKh6df/zTrvg4VhMEcUe+b7/o/B6zCAuqtxduOjYOnqTwXQVX
- dPfUz35jHdbFyfd39lLMzXu4NdCVVWR16rJ8UwkWpDWY6zbPtD2t6Rm5HMlvPe3JuQ==
-X-Received: by 2002:a5d:5d8a:0:b0:408:9c48:e26c with SMTP id
- ffacd0b85a97d-42704ded11cmr2662185f8f.62.1760712648261; 
- Fri, 17 Oct 2025 07:50:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHH46TewHy39mb4mEpu2uB9bkN7QAfp6b18sxLO05JMkKg19tLq/t7Z5uGdZKGMd8kUXk96ww==
-X-Received: by 2002:a5d:5d8a:0:b0:408:9c48:e26c with SMTP id
- ffacd0b85a97d-42704ded11cmr2662131f8f.62.1760712647682; 
- Fri, 17 Oct 2025 07:50:47 -0700 (PDT)
-Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4711444c8adsm89053555e9.13.2025.10.17.07.50.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 07:50:47 -0700 (PDT)
-Date: Fri, 17 Oct 2025 16:50:44 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: salil.mehta@opnsrc.net, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- mst@redhat.com, salil.mehta@huawei.com, maz@kernel.org,
- jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, andrew.jones@linux.dev, david@redhat.com,
- philmd@linaro.org, eric.auger@redhat.com, will@kernel.org, ardb@kernel.org,
- oliver.upton@linux.dev, pbonzini@redhat.com, gshan@redhat.com,
- rafael@kernel.org, borntraeger@linux.ibm.com, alex.bennee@linaro.org,
- gustavo.romero@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- gankulkarni@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, zhukeqian1@huawei.com, wangxiongfeng2@huawei.com,
- wangyanan55@huawei.com, wangzhou1@hisilicon.com, linuxarm@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- shahuang@redhat.com, zhao1.liu@intel.com, devel@lists.libvirt.org
-Subject: Re: [PATCH RFC V6 22/24] monitor,qdev: Introduce 'device_set' to
- change admin state of existing devices
-Message-ID: <20251017165044.76b39f5c@fedora>
-In-Reply-To: <87wm54nmyt.fsf@pond.sub.org>
-References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
- <20251001010127.3092631-23-salil.mehta@opnsrc.net>
- <87plawh2sz.fsf@pond.sub.org> <20251009145125.6583a24a@fedora>
- <87wm54nmyt.fsf@pond.sub.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1v9lv3-0004IY-DU; Fri, 17 Oct 2025 10:59:04 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D1C9F15F293;
+ Fri, 17 Oct 2025 17:58:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7C4052EFE85;
+ Fri, 17 Oct 2025 17:58:50 +0300 (MSK)
+Message-ID: <f074aed2-7702-4a4a-a7d5-7abeb29ea663@tls.msk.ru>
+Date: Fri, 17 Oct 2025 17:58:50 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/11] hw/intc/apic: Ensure own APIC use in
+ apic_register_{read, write}
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>, 
+ Eduardo Habkost <eduardo@habkost.net>, Cameron Esfahani <dirty@apple.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, qemu-trivial@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-block@nongnu.org,
+ Phil Dennis-Jordan <phil@philjordan.eu>, John Snow <jsnow@redhat.com>,
+ kvm@vger.kernel.org, Laurent Vivier <lvivier@redhat.com>
+References: <20251017141117.105944-1-shentey@gmail.com>
+ <20251017141117.105944-10-shentey@gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <20251017141117.105944-10-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,267 +113,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 09 Oct 2025 16:55:54 +0200
-Markus Armbruster <armbru@redhat.com> wrote:
+17.10.2025 17:11, Bernhard Beschow wrote:
+> ... In apic_mem_{read,write}, the
+> own APIC instance is available as the opaque parameter
 
-> Igor Mammedov <imammedo@redhat.com> writes:
->=20
-> > On Thu, 09 Oct 2025 10:55:40 +0200
-> > Markus Armbruster <armbru@redhat.com> wrote:
-> > =20
-> >> salil.mehta@opnsrc.net writes:
-> >>  =20
-> >> > From: Salil Mehta <salil.mehta@huawei.com>
-> >> >
-> >> > This patch adds a "device_set" interface for modifying properties of=
- devices
-> >> > that already exist in the guest topology. Unlike 'device_add'/'devic=
-e_del'
-> >> > (hot-plug), 'device_set' does not create or destroy devices. It is i=
-ntended
-> >> > for guest-visible hot-add semantics where hardware is provisioned at=
- boot but
-> >> > logically enabled/disabled later via administrative policy.
-> >> >
-> >> > Compared to the existing 'qom-set' command, which is less intuitive =
-and works
-> >> > only with object IDs, device_set provides a more device-oriented int=
-erface.
-> >> > It can be invoked at the QEMU prompt using natural device arguments,=
- and the
-> >> > new '-deviceset' CLI option allows properties to be set at boot time=
-, similar
-> >> > to how '-device' specifies device creation.   =20
-> >>=20
-> >> Why can't we use -device? =20
-> >
-> > that's was my concern/suggestion in reply to cover letter
-> > (as a place to put high level review and what can be done for the next =
-revision) =20
->=20
-> Yes.
->=20
-> > (PS: It looks like I'm having email receiving issues (i.e. not getting =
-from
-> > mail list my own emails that it bonces to me, so threading is all broke=
-n on
-> > my side and I'm might miss replies). But on positive side it looks like=
- my
-> > replies reach the list and CCed just fine) =20
->=20
-> For what it's worth, your replies arrive fine here.
->=20
-> >> > While the initial implementation focuses on "admin-state" changes (e=
-.g.,
-> >> > enable/disable a CPU already described by ACPI/DT), the interface is=
- designed
-> >> > to be generic. In future, it could be used for other per-device set/=
-unset
-> >> > style controls =E2=80=94 beyond administrative power-states =E2=80=
-=94 provided the target
-> >> > device explicitly allows such changes. This enables fine-grained run=
-time
-> >> > control of device properties.   =20
-> >>=20
-> >> Beware, designing a generic interface can be harder, sometimes much
-> >> harder, than designing a specialized one.
-> >>=20
-> >> device_add and qom-set are generic, and they have issues:
-> >>=20
-> >> * device_add effectively bypasses QAPI by using 'gen': false.
-> >>=20
-> >>   This bypasses QAPI's enforcement of documentation.  Property
-> >>   documentation is separate and poor.
-> >>=20
-> >>   It also defeats introspection with query-qmp-schema.  You need to
-> >>   resort to other means instead, say QOM introspection (which is a bag
-> >>   of design flaws on its own), then map from QOM to qdev.
-> >>=20
-> >> * device_add lets you specify any qdev property, even properties that
-> >>   are intended only for use by C code.
-> >>=20
-> >>   This results in accidental external interfaces.
-> >>=20
-> >>   We tend to name properties like "x-prop" to discourage external use,
-> >>   but I wouldn't bet my own money on us getting that always right.
-> >>   Moreover, there's beauties like "x-origin".
-> >>=20
-> >> * qom-set & friends effectively bypass QAPI by using type 'any'.
-> >>=20
-> >>   Again, the bypass results in poor documentation and a defeat of
-> >>   query-qmp-schema.
-> >>=20
-> >> * qom-set lets you mess with any QOM property with a setter callback.
-> >>=20
-> >>   Again, accidental external interfaces: most of these properties are
-> >>   not meant for use with qom-set.  For some, qom-set works, for some it
-> >>   silently does nothing, and for some it crashes.  A lot more dangerous
-> >>   than device_add.
-> >>=20
-> >>   The "x-" convention can't help here: some properties are intended for
-> >>   external use with object-add, but not with qom-set.
-> >>=20
-> >> We should avoid such issues in new interfaces. =20
->=20
-> [...]
->=20
-> >> > diff --git a/hmp-commands.hx b/hmp-commands.hx
-> >> > index d0e4f35a30..18056cf21d 100644
-> >> > --- a/hmp-commands.hx
-> >> > +++ b/hmp-commands.hx
-> >> > @@ -707,6 +707,36 @@ SRST
-> >> >    or a QOM object path.
-> >> >  ERST
-> >> > =20
-> >> > +{
-> >> > +    .name       =3D "device_set",
-> >> > +    .args_type  =3D "device:O",
-> >> > +    .params     =3D "driver[,prop=3Dvalue][,...]",
-> >> > +    .help       =3D "set/unset existing device property",
-> >> > +    .cmd        =3D hmp_device_set,
-> >> > +    .command_completion =3D device_set_completion,
-> >> > +},
-> >> > +
-> >> > +SRST
-> >> > +``device_set`` *driver[,prop=3Dvalue][,...]*
-> >> > +  Change the administrative power state of an existing device.
-> >> > +
-> >> > +  This command enables or disables a known device (e.g., CPU) using=
- the
-> >> > +  "device_set" interface. It does not hotplug or add a new device.
-> >> > +
-> >> > +  Depending on platform support (e.g., PSCI or ACPI), this may trig=
-ger
-> >> > +  corresponding operational changes =E2=80=94 such as powering down=
- a CPU or
-> >> > +  transitioning it to active use.
-> >> > +
-> >> > +  Administrative state:
-> >> > +    * *enabled*  =E2=80=94 Allows the guest to use the device (e.g.=
-, CPU_ON)
-> >> > +    * *disabled* =E2=80=94 Prevents guest use; device is powered of=
-f (e.g., CPU_OFF)
-> >> > +
-> >> > +  Note: The device must already exist (be declared during machine c=
-reation).
-> >> > +
-> >> > +  Example:
-> >> > +      (qemu) device_set host-arm-cpu,core-id=3D3,admin-state=3Ddisa=
-bled
-> >> > +ERST   =20
-> >>=20
-> >> How exactly is the device selected?  You provide a clue above: 'can be
-> >> located by "id" or via driver+property match'.
-> >>=20
-> >> I assume by "id" is just like device_del, i.e. by qdev ID or QOM path.
-> >>=20
-> >> By "driver+property match" is not obvious.  Which of the arguments are
-> >> for matching, and which are for setting?
-> >>=20
-> >> If "id" is specified, is there any matching?
-> >>=20
-> >> The matching feature complicates this interface quite a bit.  I doubt
-> >> it's worth the complexity.  If you think it is, please split it off in=
-to
-> >> a separate patch. =20
-> >
-> > It's likely /me who to blame for asking to invent generic
-> > device-set QMP command.
-> > I see another application (beside ARM CPU power-on/off) for it,
-> > PCI devices to simulate powering on/off them at runtime without
-> > actually removing device. =20
->=20
-> I prefer generic commands over collecting ad hoc single-purpose
-> commands, too.  Getting the design right can be difficult.
->=20
-> > wrt command,
-> > I'd use only 'id' with it to identify target device
-> > (i.e. no template matching nor QMP path either).
-> > To enforce rule, what user hasn't named explicitly by providing 'id'
-> > isn't meant to be accessed/manged by user later on.  =20
->=20
-> Works well, except when we need to access / manage onboard devices.
-> That's still an unsolved problem.
->=20
-> > potentially we can invent specialized power_set/get command as
-> > an alternative if it makes design easier.
-> > But then we would be spawning similar commands for other things,
-> > where as device-set would cover it all. But then I might be
-> > over-complicating things by suggesting a generic approach.  =20
->=20
-> Unclear.
->=20
-> I feel it's best to start the design process with ensvisaged uses.  Can
-> you tell me a bit more about the uses you have in mind?
+> diff --git a/hw/intc/apic.c b/hw/intc/apic.c
 
-We have nic failover 'feature'
-   https://www.qemu.org/docs/master/system/virtio-net-failover.html
-to make it work we do abuse hotplug and that poses problem
-during migration, since:
-  - unplugging primary device releases resources (which might not be
-    possible to claim back in case migration failure)
-  - it's similar on destination side, where attempt to hotplug
-    primary might fail die to insufficient resources leaving guest
-    on 'degraded' virtio-net link.
+> @@ -876,7 +870,7 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
+>       }
+>   
+>       index = (addr >> 4) & 0xff;
+> -    apic_register_read(index, &val);
+> +    apic_register_read(opaque, index, &val);
 
-Idea was that instead of hotplug we can power off primary device,
-(it will still exist and keep resources), initiate migration,
-and then on target do the same starting with primary fully realized
-but powered of (and failing migration early if it can't claim resources,
-safely resuming QEMU on source incl. primary link), and then guest
-failover driver on destination would power primary on as part of
-switching to primary link.
+I think it would be better to use local variable here:
 
-Above would require -device/device_add support for specifying device's
-power state as minimum.
+  APICCommonState *s = opaque;
 
-> >> Next question.  Is there a way for management applications to detect
-> >> whether a certain device supports device_set for a certain property? =
-=20
-> >
-> > is there some kind of QMP command to check what does a device support,
-> > or at least what properties it supports? Can we piggy-back on that? =20
->=20
-> Maybe.
->=20
-> QAPI schema introspection (query-qmp-schema) has been a success.  It has
-> a reasonably expressive type system, deprecation information, and hides
-> much implementation detail.  Sadly, it doesn't cover most of QOM and all
-> of qdev due to QAPI schema bypass.
->=20
-> QOM type introspection (qom-list-types and qom-list-properties) is weak.
-> You can retrieve a property's name and type.  The latter is seriously
-> underspecified, and somewhere between annoying and impossible to use
-> reliably.  Properties created in certain ways are not visible here.
-> These are rare.
->=20
-> QOM object introspection (qom-list) is the same for concrete objects
-> rather than types.
->=20
-> qdev introspection (device-list-properties) is like QOM type
-> introspection.  I'm not sure why it exists.  Use QOM type introspection
-> instead.
->=20
-> QOM introspection is servicable for checking whether a certain property
-> exists.  Examining a property's type is unadvisable.
->=20
-> >> Without that, what are management application supposed to do?  Hard-co=
-de
-> >> what works?  Run the command and see whether it fails? =20
-> >
-> > Adding libvirt list to discussion and possible ideas on what can be don=
-e here.
-> > =20
-> >> I understand right now the command supports just "admin-state" for a
-> >> certain set of devices, so hard-coding would be possible.  But every n=
-ew
-> >> (device, property) pair then requires management application updates,
-> >> and the hard-coded information becomes version specific.  This will
-> >> become unworkable real quick.  Not good enough for a command designed =
-to
-> >> be generic. =20
->=20
-> [...]
->=20
+and use it down the line.  Yes, there's just one usage, but it is
+still clearer this way (in my opinion anyway).
 
+Ditto in apic_mem_write.
+
+But it's more a nitpick really.
+
+Thanks,
+
+/mjt
 
