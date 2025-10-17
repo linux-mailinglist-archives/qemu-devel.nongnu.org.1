@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72874BE8E08
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D58BE8DDA
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:33:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kXp-0008UR-TG; Fri, 17 Oct 2025 09:30:57 -0400
+	id 1v9kXj-0008VL-86; Fri, 17 Oct 2025 09:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kXZ-0008Ry-Hd
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kXY-0008Rz-FH
  for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:30:42 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kXO-0007vy-QS
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:30:38 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-42701b29a7eso917752f8f.0
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:30:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kXR-0007ww-WB
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:30:37 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-46e42fa08e4so18008295e9.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:30:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760707820; x=1761312620; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760707825; x=1761312625; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A78zNbnMmecNZ6Tf/K0Gio4uGTZm2OiwrEyaD1kmTEc=;
- b=FppZNboQgEN3bEqc9q4b5jxE1pIQ31Trl3cwDt3ar1c8E4KkmGb0fRn8ZVJXEq8fLQ
- wn90sQIN8iYrVMpW1mOE5R/huv4EdRPi0q/iUGN3WDIWYZBXLGdA5Vb1lXofLu9VPfo/
- 6Tf81MxoUYRVesceRU3aXT1bwwcpNQMcMiefYJFENrYTrJGlDbbjReaCJF2ykrh40/Xt
- ugRD7D8EIrOwqliYn3/fvQOpRnckigrWb26oeU4qR1QFkXTioQVF3WFo6CaptD3Fv2yu
- vxLP8nsv0cT4s5xSAUGmbAtftFwCPvRd79bc9NqUwWE4tOKLd3YprrsdhSYh0UklPQk9
- I6zw==
+ bh=uVdMxvU4zOm3LxJuUKvCUnGY81c6LCFhSfSScZbUVig=;
+ b=RNFukF4aXpmvNQ6uOphTmH0EMiRnuj80MQj5t7TaYgj1E7FdFgz8q810PcvCMy5uG6
+ XW45alamizlx9B4BW0SFsqG2X88ybh5YQnKG/sa3CwG/25K4YV/PwziQTS1BYXaBYK/2
+ pOo1iyQloXfsRhcgYgXfWmTE2whFvjs5c9EHoidv0j2ySOfj+mb4hej4q3hjabdikv2Y
+ /s00MAwIgoNSJPYdmDvAuvULdakZ/1TzlThu7witM+/IYFTzkMzXeOoSLeNkeIrc5kkH
+ IpDDJOQfs/EC/aIKRDVFUsKuAyi1EiRk+OmBPLgNmOmlFMMAQ82fDMRADaMFrIDU2K6m
+ xfgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760707820; x=1761312620;
+ d=1e100.net; s=20230601; t=1760707825; x=1761312625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A78zNbnMmecNZ6Tf/K0Gio4uGTZm2OiwrEyaD1kmTEc=;
- b=N4j2L+p0ir9N9Q+d3UNGtxs/14DfoI7B4HaQ/xAJlhu8IF3i1CVC5aMKbWdv8TcDbO
- MpTpvxW3wK5bLptd/DSFNvuizvCWRDUBD7JU+W0Z7+2SqH9E8d2zpM+N1pprDaSSRl+b
- jV6UpMMxU59BIvWQvw5Csg7I82rkPpJLGnWvvrHoPk4C1R/KA70ts98BGY+AGLbPeoc/
- jbEvRAfOQ3EM8gV89OgleVoiN7FAvYU/zAzgUMtF6+9AGmv3FdsS2KC1Chqos89vjnOL
- +8RqFAXoQ+56JwyNdF4J0/bXliDY6xzIpeIy2GvC3XG1gO1e+SvR2kvC1EcDV0dGSGHp
- 2IUw==
-X-Gm-Message-State: AOJu0YzCw/dFmUqdhwvKebssrTP0WCsI7ZThqiEeHYiGHVYz9RuovoAI
- 4CQfhBbjfhtRpUy1gq1g13lUObMuMun2zbHDLND3rgBpY+NSSOxxOax7xO7eqdJ2OOWJd77daWa
- W9U1pmW4=
-X-Gm-Gg: ASbGncs0BdHh4e/wyGPojbE/3GGxWFoWRtEI8xhTA5ofuZd3DxEDi0Bsghhr0XMgAYu
- PnuLfS4oeR6Ae02F5GyWaVs835CAdZ+XgbVnOHiZ7c/Q/dadE5lLVMQEjUZMfFSkcQXdbC+CXM/
- 2g/aKRedTcoU+d76Wu0TDuUoeXIh4pc698JajLn2es5ucLS6O0Le8m4Y1W/GnHr7N06L1W8Cocc
- JtJGEaL00/N2BxncCVqRoT+wiDww+C7XeVsu8nEuSjR2M1dV2vBXaYOu+VKpe6O5mJsQ1/7XDt/
- 7pG+t3UdMB40CKEtJJkfNo1UK13QBG3UMLtcj4vbp+ouwas6m7wVesB0ycWQEm2t0gVsCY73J40
- cE2/CE+x3ju2eJVBtqspjNpqjofWgOVtimSJyuMeCkQyNmtSxhly94G687vncD5eR+4/9FmKrmn
- h1Dv4fdQNCwWWcyCis8H1ildlX5zdXcyWLaR5a6uMt3SUIlm6OsWdoEIqujHly
-X-Google-Smtp-Source: AGHT+IH6NEb92+04ReM37pymEPXcRn/KBwk6INmqVbgmpoOtMmeZpdxMFKvLu9A1Q1OO7uW7F44Hug==
-X-Received: by 2002:a05:6000:3108:b0:3df:9ba8:21a3 with SMTP id
- ffacd0b85a97d-42704bc0d07mr3064974f8f.18.1760707820465; 
- Fri, 17 Oct 2025 06:30:20 -0700 (PDT)
+ bh=uVdMxvU4zOm3LxJuUKvCUnGY81c6LCFhSfSScZbUVig=;
+ b=e6Uz/oDoXkM2k1TLYWESv7LdjTrA4lbIZmYXA977P2hOUEjcMxlnQafhFmRMLvZcai
+ u4zcqhVmf/eDG0w4PDZkkXrm/dJToHnfPjybeDKTvDr+kOX0l3SL9yMhJ0hKc14nu9gU
+ HGpz0Fgs5I7leLmH+OmifzSEIwSOwZqDG7QgOmWyOZ/zFQgrLocmG5bDCr3eur9ssYaP
+ +zhbWIRz0M41WmdqE3Kdr39aJngDZO/1BKBRxibb0ygWSr5XLS4pdIfjgGl2RE55pJ6x
+ HMiOl21f0c6cbMfco7fU9D2r+d2UcTgAomA+xEFaNFwzVZuXTPZA7Q7z+sW/S1W3SNqB
+ 4QRA==
+X-Gm-Message-State: AOJu0YwVyZlfejiLWxexLDdXsSVUmJxXVVP0w3oB1Bmt7Galbga19iED
+ /o7KvHKwU+tpvxRf/U+hI00PW/2p4/mgbWX28U5Err1uS6G8Jes1BLb8O452QukEPQcf7dDcjaU
+ sGFoF17U=
+X-Gm-Gg: ASbGncvEXVawQxdyfsqW0a+WgaRkfXkhvfxcg8JNrxKtFw/hzHWuHf611J6iCYo7h3t
+ KeKC1qHpG3xCC+KzUTg/hoyT8hlT9PzfpIGq1x1+Dlk6Jgnnu1mmulwAOfW7jH7vt4U3tVwVIuA
+ oygSp42SofxayHzbCFnZIWxdr6y0mixDFeQ6r20mDIkb0OmD2L/7x68qoIgZMdRVEJHrWTBKNdN
+ yrnMcO+htj2Ru8/agjTtFX+wZMgVya/Hfh0hPenDcEmyjUoSb2Je9Nt0sVWhTIFgsyUDpBz15iA
+ omn7Qwd7A8X7TBS581W00ey3862kNDojzpY6DtBG0wdD0ZUmiJPx6sk60sWNa0vsNOc2mBNN11a
+ vkmvy7CMFoTCMReyJ9AeChshbDFSxJkXJAuIUSX64hg127K2r2SNDRDzBdrJrW+p+nZx9aF0L+B
+ Ges3Pjq9jPDGZB1TzrkRhdA2MPiKz7CKy/HTICoKRMLc7kVjupQQ==
+X-Google-Smtp-Source: AGHT+IEBkGeXv4i4nViSeHAshYqIqORZq/y1PuipgDzHDyX1qp/Ce9eQnUgMsiVo9VgKak4yGB0KlA==
+X-Received: by 2002:a05:600c:3b0c:b0:471:669:ec1f with SMTP id
+ 5b1f17b1804b1-471178785e1mr30099525e9.8.1760707825475; 
+ Fri, 17 Oct 2025 06:30:25 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e1024sm40420867f8f.42.2025.10.17.06.30.19
+ 5b1f17b1804b1-471144239f4sm83162505e9.2.2025.10.17.06.30.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 17 Oct 2025 06:30:19 -0700 (PDT)
+ Fri, 17 Oct 2025 06:30:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -72,18 +72,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 03/12] hw/s390x/ccw: Remove deprecated s390-ccw-virtio-5.0
+Subject: [PATCH 04/12] hw/s390x/ccw: Remove deprecated s390-ccw-virtio-5.1
  machine
-Date: Fri, 17 Oct 2025 15:29:52 +0200
-Message-ID: <20251017133002.61410-4-philmd@linaro.org>
+Date: Fri, 17 Oct 2025 15:29:53 +0200
+Message-ID: <20251017133002.61410-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017133002.61410-1-philmd@linaro.org>
 References: <20251017133002.61410-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,24 +117,24 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
  1 file changed, 12 deletions(-)
 
 diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 64b81345f1e..e1868eb7cc8 100644
+index e1868eb7cc8..7be998168e8 100644
 --- a/hw/s390x/s390-virtio-ccw.c
 +++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1133,18 +1133,6 @@ static void ccw_machine_5_1_class_options(MachineClass *mc)
+@@ -1121,18 +1121,6 @@ static void ccw_machine_5_2_class_options(MachineClass *mc)
  }
- DEFINE_CCW_MACHINE(5, 1);
+ DEFINE_CCW_MACHINE(5, 2);
  
--static void ccw_machine_5_0_instance_options(MachineState *machine)
+-static void ccw_machine_5_1_instance_options(MachineState *machine)
 -{
--    ccw_machine_5_1_instance_options(machine);
+-    ccw_machine_5_2_instance_options(machine);
 -}
 -
--static void ccw_machine_5_0_class_options(MachineClass *mc)
+-static void ccw_machine_5_1_class_options(MachineClass *mc)
 -{
--    ccw_machine_5_1_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_5_0, hw_compat_5_0_len);
+-    ccw_machine_5_2_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_5_1, hw_compat_5_1_len);
 -}
--DEFINE_CCW_MACHINE(5, 0);
+-DEFINE_CCW_MACHINE(5, 1);
 -
  static void ccw_machine_register_types(void)
  {
