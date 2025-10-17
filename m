@@ -2,97 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C3CBE9245
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FA3BE9218
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 16:16:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9lDD-00053v-5Z; Fri, 17 Oct 2025 10:13:43 -0400
+	id 1v9lE1-0005X5-31; Fri, 17 Oct 2025 10:14:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lD5-00050d-Az
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:36 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v9lDy-0005WR-FR
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:14:31 -0400
+Received: from mail-yx1-xb136.google.com ([2607:f8b0:4864:20::b136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9lCY-0005kh-AW
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:13:34 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-471131d6121so15684095e9.1
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:12:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v9lDq-0005zh-Ka
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 10:14:30 -0400
+Received: by mail-yx1-xb136.google.com with SMTP id
+ 956f58d0204a3-6354a4b4871so1926243d50.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 07:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760710378; x=1761315178; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1760710460; x=1761315260; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oQnslZlvL/ycghWXR/jv6T9Aq0fKGJTc5vHN36t+VJw=;
- b=c5wykiyxzSpjQNSSy0pfMlC5KU3GMx4FO7WU5+prJpQOVbxKR8Y5A9pAab2pGNh89J
- /p0XcqyCepHtAKFzvMKAHUBPsuffd2C5GIeTmlGK+0Ygcjqg4UUto4Y50fXf8ShKaTIo
- x220rd/v8DSwE1b3hgjUwbsyJ+CxxJx2jcbr5ns6Mc04KAdtFCICrt/TLDTezsoPB1Fk
- 7fv23mcxxqtdQvv9pSCtsQATU1WAoHBuDI1iBXh2fWoj4nYc0SrOK26Vwaw1hlLPZjzL
- XI0DyKgD+o/SBPyuGu2GIzFJemIEYtqJQ9bmHt8Emfy6z083ijYdziP4M98kBCsdnrpj
- ChXw==
+ bh=Gr9dKSSr29/Ar3cRy+h9xUxtJ6t94e5ocT5KOvAMoU4=;
+ b=LVK8Ghl/xLP3/kzwdJVmhPXLga2twJudd/PL8h9SgkMqQiQe0Tl7IlqQrYcBwajUco
+ J7G2dFCVBiNV5ssbvKbJvNU74tOp+90fWxgiOoqRgf9ofpZlxkhqdfJSaZSEb6EDOq8v
+ WU7hecWOplFBBgFBOR0n2TDygLbp1ubOXdvxfI7T+HCEtQuEUbbrpk8NXiRfBQzxAKIN
+ 3+L/a+yI3Qb2GR/3/N7DlO+a0oATIX9HoEz1sEUA0fsFBWa6IjOgtWAq+ziEiqHJb5tA
+ inhXDV0z1x3cmEpBsfjcHdZV3dOkbUQgM4+RVcr0lRqZ2G8UO2FsoklySu1BGLAzLnwG
+ Q7Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760710378; x=1761315178;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1760710460; x=1761315260;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oQnslZlvL/ycghWXR/jv6T9Aq0fKGJTc5vHN36t+VJw=;
- b=ISBf8u8cVIw4ydPbbW4Gry+HV2SBChGDSyznGCJIkvx/zlvmJgQRy9pU9N9RBNSopO
- iXPyEPFF6tLdnUraFfUbFBrhMOrDHTuonzI0XMmhUg4A05fKzOH9SadC/EBDJCLpz4VB
- bZGmJRdjL+zM5FDs55HAVmG0z1IpEc1WiscAiwTPJOpbshsJYOQxR+DdZ0exyTF4k92C
- //Rt/aXYJxF9iWvGuf6XehCSx9YLs5AG90flUeIOqbn1OPTzo2bHZwc1R2hfBk6iTnQF
- MwrCJ9M6sKH1JM3Loq+Re2jtUuaHBzMep+TW9E8X5le8iB5Ta78K7ujnWOKyhG+izf9v
- DuHw==
-X-Gm-Message-State: AOJu0YxzTilrxVdtDbf9TOOKUGI/+mak3a3vd9CXQFv1fSChorQlZ2B7
- LuBUCA8u8uaDtz/OWGlpJubbdEW1nlcvnrRax0gdYNuC8NrXjBdUDNK9Wcr9Ww==
-X-Gm-Gg: ASbGncuSiGQT79XUrA1oXzzWz2FVNadfkBS+TSysIN3zjAXVcPQj81aeZLZld8JWiQt
- 7WjvoppddHuVF9aUEjPc2BDsstlelZi5upeBBvCqy+SKoY3AnVHgScdXhrBG2duQmAVAom9IWOT
- 8BWQ4WNsIFULPDAiN9IF6ZwOtP3VrTnDj0WRJKHvKE0bRc1NxgKWZ8m9mS3QnoiZFihSvtjXNvg
- 5uxGLxcqOK73pBhEhfGhI3h/IEAbzU2DF7k4610fq8INZRkcWC0lXGCu0uCBsMNR3yc4j/Cfily
- RobxaQla+6Cva7iCNqLXQKO4johpfZavMV+l8zrJ8fjSMl1R3Bpc/Skr47sMJAWGSvUeCFhzAJx
- QWDIRqY99ypuxCMoyp3Frs18atgja/PvNqZxoyXnrV6ZBdKg7rDGUAGV39jhRIhY9LkdXT3b7nn
- XMglA4akDqbO7fR0uhApEtjaDCZWbHF+Hc
-X-Google-Smtp-Source: AGHT+IE3VdA3wZK4Q+OXcjfSwZbSfpo04I9zXOgWlNizZyarmBkO2VPXkxj5kadJ9tYwUN2d2fgUFA==
-X-Received: by 2002:a05:600c:37c7:b0:471:12ef:84be with SMTP id
- 5b1f17b1804b1-47117900c2dmr26449135e9.22.1760710377632; 
- Fri, 17 Oct 2025 07:12:57 -0700 (PDT)
-Received: from archlinux (pd95edc07.dip0.t-ipconnect.de. [217.94.220.7])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710cb36e7csm51359675e9.2.2025.10.17.07.12.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 07:12:57 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
- Eduardo Habkost <eduardo@habkost.net>, Cameron Esfahani <dirty@apple.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, qemu-trivial@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-block@nongnu.org,
- Phil Dennis-Jordan <phil@philjordan.eu>, Michael Tokarev <mjt@tls.msk.ru>,
- John Snow <jsnow@redhat.com>, kvm@vger.kernel.org,
- Laurent Vivier <lvivier@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 11/11] tests/qtest/ds1338-test: Reuse from_bcd()
-Date: Fri, 17 Oct 2025 16:11:17 +0200
-Message-ID: <20251017141117.105944-12-shentey@gmail.com>
-X-Mailer: git-send-email 2.51.1.dirty
-In-Reply-To: <20251017141117.105944-1-shentey@gmail.com>
-References: <20251017141117.105944-1-shentey@gmail.com>
+ bh=Gr9dKSSr29/Ar3cRy+h9xUxtJ6t94e5ocT5KOvAMoU4=;
+ b=wxwR4qX8alWiYtPLnyvyVB5/3cRLqv+NQr8GZGlz0J0UyXMWfE/cyjpqJhOczOwO1D
+ Fm7VNdqldZx/Fcu7okrVtdsM05ooDwqE8S99qq7UrrzLFDBT6iUNDiD+fhHez4Hcd/JM
+ VDPiS72ULBzq15kSpfKVf2kd79DpCzr6jCr4bjCbxWTi5vID7usIMy0KP5uoq0+RJ879
+ QS2ZnlsxnMSmIE1/1VrwzX8BiBVCYuAf125HszVr4UQK9NEwO+eKTBQ+RmQ/aRyPND/q
+ E2bOM1KPD+K+d4LVab+lzUlAKpMUoLr3QbKS20dIoekWHJKlyNmryCKpz2StwGaazOgv
+ 6Mhw==
+X-Gm-Message-State: AOJu0YzIx8cxdOCoJda2aO1M+w4rPhurvgjWoCOyulaEwAgznsJMdSP3
+ dUFEWbb4JQjliRtzALxQhtB3JzSCE1FMUP+y1MyMy4y7P8qAHaZg9vPwrHfzw9JZcHCYagP8NNd
+ zp0knOKZVaWlHMfGWkDcBVPJb+v+At5kqgVlSX1aMaA==
+X-Gm-Gg: ASbGncsNGPiCKin6wqgqFJDsg/MJF5t4y4ig7pLsozmC9ac8uDXitiJ14NtCiDrd0Ad
+ MYbEQJ2OEqgkLmji8A93q7KdHhIXzkjL5UxeaZYEe9ruWajXQIUK3YHEqDtDjtQIsrX9NuRZyvv
+ 5lUnZZ5uWTOG9SMikH7TcodCY+D5xfa1OpH/m7jfpiq/TeenHd9DJungBwLRSMcYsg7IWDi5ksM
+ Fh3Is4CH629X1algIZlI+AX+4q1wBMVJWbjLjpFnuQ6Llu5DeGA5WndTbn51A==
+X-Google-Smtp-Source: AGHT+IFcU2pObgeeDBR0o/1k5lb0+WfvxAqOZeNFhv7LGUFmZfFF1P/UN3rVME90toyaQTdf/J11Tt2HgtUZB5MsVvc=
+X-Received: by 2002:a53:acd8:0:10b0:63c:f04a:99a3 with SMTP id
+ 956f58d0204a3-63e160e9821mr3198266d50.14.1760710460171; Fri, 17 Oct 2025
+ 07:14:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32c.google.com
+References: <20251016122132.737016-1-peter.maydell@linaro.org>
+ <20251016122132.737016-2-peter.maydell@linaro.org>
+ <c6bea598-23d8-4f38-b488-ae017df8a8f4@linaro.org>
+In-Reply-To: <c6bea598-23d8-4f38-b488-ae017df8a8f4@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 17 Oct 2025 15:14:07 +0100
+X-Gm-Features: AS18NWAKI6zWWzPjw6Fec24XOusRx37d7LuWO907QhwHdBMV9dg35avv4sf5SWQ
+Message-ID: <CAFEAcA_rdzN_eHiEa=G7w2-=-HrPDQF4RDp9+K0v6nboDWk6bg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/arm: Implement SME2 support in gdbstub
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,50 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-from_bcd() is a public API function which can be unit-tested. Reuse it to avoid
-code duplication.
+On Thu, 16 Oct 2025 at 22:17, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 10/16/25 05:21, Peter Maydell wrote:
+> > For SME2, we need to expose the new ZT0 register in the gdbstub XML.
+> > gdb documents that the requirements are:
+> >
+> >> The =E2=80=98org.gnu.gdb.aarch64.sme2=E2=80=99 feature is optional.  I=
+f present,
+> >> then the =E2=80=98org.gnu.gdb.aarch64.sme=E2=80=99 feature must also b=
+e present.
+> >> The =E2=80=98org.gnu.gdb.aarch64.sme2=E2=80=99 feature should contain =
+the
+> >> following:
+> >>
+> >>     - ZT0 is a register of 512 bits (64 bytes).  It is defined as a
+> >>       vector of bytes.
+> >
+> > Implement this.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>
+> The size of ZT0 is fixed at 512 bits.
+> There's no need for the xml to be dynamically generated.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- tests/qtest/ds1338-test.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+I suppose not. GDB upstream dynamically generates the XML,
+though, so there's no upstream XML file for us to use.
 
-diff --git a/tests/qtest/ds1338-test.c b/tests/qtest/ds1338-test.c
-index d12424d27f..b8d0e65ec4 100644
---- a/tests/qtest/ds1338-test.c
-+++ b/tests/qtest/ds1338-test.c
-@@ -18,16 +18,12 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/bcd.h"
- #include "libqtest.h"
- #include "libqos/i2c.h"
- 
- #define DS1338_ADDR 0x68
- 
--static inline uint8_t bcd2bin(uint8_t x)
--{
--    return ((x) & 0x0f) + ((x) >> 4) * 10;
--}
--
- static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
- {
-     QI2CDevice *i2cdev = (QI2CDevice *)obj;
-@@ -39,9 +35,9 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
-     i2c_read_block(i2cdev, 0, resp, sizeof(resp));
- 
-     /* check retrieved time against local time */
--    g_assert_cmpuint(bcd2bin(resp[4]), == , tm_ptr->tm_mday);
--    g_assert_cmpuint(bcd2bin(resp[5]), == , 1 + tm_ptr->tm_mon);
--    g_assert_cmpuint(2000 + bcd2bin(resp[6]), == , 1900 + tm_ptr->tm_year);
-+    g_assert_cmpuint(from_bcd(resp[4]), == , tm_ptr->tm_mday);
-+    g_assert_cmpuint(from_bcd(resp[5]), == , 1 + tm_ptr->tm_mon);
-+    g_assert_cmpuint(2000 + from_bcd(resp[6]), == , 1900 + tm_ptr->tm_year);
- }
- 
- static void ds1338_register_nodes(void)
--- 
-2.51.1.dirty
-
+-- PMM
 
