@@ -2,147 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD32EBE69D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 08:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E76BE6AB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 08:28:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9dnY-0007PP-OE; Fri, 17 Oct 2025 02:18:44 -0400
+	id 1v9duZ-0002K2-MZ; Fri, 17 Oct 2025 02:25:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
- id 1v9dnW-0007OV-TJ
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 02:18:42 -0400
-Received: from mail-eastusazlp17011000f.outbound.protection.outlook.com
- ([2a01:111:f403:c100::f] helo=BL2PR02CU003.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
- id 1v9dnT-0000St-6Y
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 02:18:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZKxYtk9Xa3ivljZHi82BGtWpDR+fsASVweUEqlKKEwFA4Zu5FM6aO1mPtdNv8cBo1iJnwvRo+Adr+7rGmfBEesPPlkv+9X/yEnG3+BH0lMynN4HVX7/7Eqq+6iJvdgiOV4s4UJPW0jYLfIfbZX/BGKYdumzbY6tF0XelPkSlFOcX1WKAl7olvINtlLcE5Ohna3QBrEftOkeTLv1nMYvt20zSu272T9JJkvO7ckMjk5YFODTkQoJRcwHKcKxoPjbI03dTloMf2gqHoDtatgP77spU+O8I30B7mUKi5sSkJMxyPub/wxi9su/BZnyRUSpcaiECVYaePcsbqf+k4Jq6KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OZwM131nG2IqGmMIricq8uWHqKa0RaeYquKKvFxq+Ss=;
- b=Hba+sE75Q4nH4LcYmTtKYFsL6dz8qNWiUDiUa0h2nmcUjC+WFoopmQb5qnPyyIMXUAhzqAiEyZc0+6eb7o38UiYtn4jm+PEhLOSR6FIj+DP/DfwgJN+mBw1tkCoGNjtmoAKEigUAuxfgPwXh4kwPejzeSafVNpo5o/XZ1AOwH00e+SUZZ8MJB5AIJjYcK61CP9dx+i3JuKbcUpTebSS6EjteUS2RLmKIdl6AdjbaBZNtSmoV9GWicJJzhNF9FBCyTcvDmjieggL43Q9OM0P5Q+3Byjf+6iO8jCeP6Gg5y1qBUXIMqjckZm9nMpyN911feQilhCw+p5m7Fkm8YVFVMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OZwM131nG2IqGmMIricq8uWHqKa0RaeYquKKvFxq+Ss=;
- b=kfgL/OSADFFUHvUB7M3xul/DcR63BGYPCj+XPBqC2BMJelGgZsc7EGV0zOcf/xY6DL/EdtQHKEuiWdtHXcc3dI/y1bL+emZ+xdKB08GZnrColDxDooPrsHsqQ9ovXZluGfTafLFwiynDR6U7bvIqmGnkfkB9e+sCFhS3UAuC3Ck=
-Received: from CH5PR05CA0012.namprd05.prod.outlook.com (2603:10b6:610:1f0::10)
- by LV9PR12MB9760.namprd12.prod.outlook.com (2603:10b6:408:2f0::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 06:18:31 +0000
-Received: from CH3PEPF00000016.namprd21.prod.outlook.com
- (2603:10b6:610:1f0:cafe::df) by CH5PR05CA0012.outlook.office365.com
- (2603:10b6:610:1f0::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.6 via Frontend Transport; Fri,
- 17 Oct 2025 06:18:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH3PEPF00000016.mail.protection.outlook.com (10.167.244.121) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.0 via Frontend Transport; Fri, 17 Oct 2025 06:18:31 +0000
-Received: from [172.31.35.81] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 16 Oct
- 2025 23:18:27 -0700
-Message-ID: <72b0a089-9148-4257-a0f7-fa9824a97c17@amd.com>
-Date: Fri, 17 Oct 2025 11:48:20 +0530
+ (Exim 4.90_1) (envelope-from <zhangfei.gao@linaro.org>)
+ id 1v9duS-0002Jk-DO
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 02:25:53 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zhangfei.gao@linaro.org>)
+ id 1v9duJ-0001ey-Cm
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 02:25:52 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-3717780ea70so14890271fa.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Oct 2025 23:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760682338; x=1761287138; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZmLGdQdxQezXgDJXBxj33ObpNLGygnZoOAk6H+H16Y0=;
+ b=oPRtigSQzAWmOm41Q8SnFEMXMdrQ0FLNdeYqPWfD7YTPLq8bJcZ2/+EARTGkRtOgQG
+ BUtyzSEaL3MfJavudt8MlkmORLSj4hIMeRcRow3qCWf1biZETqcIxwMADDENnZW7doS+
+ kTVLKQnk5K2SMzmYBOUKjI5kNWpv0yorTuroCRv/3xVR0dk4ic/xvPSnVoVNfsnTLmcv
+ vBLOcFR4w4IM1Decuygk6TO/jf2sKyQZgq8qNvz1eoqq3wXLDu8eRzgXXgHFrEYci6gb
+ 4Js01sEf0n66PBj6BBAj0XZhhRyd5LXVoaD+UFChP/ftj2pz3a3+ovvPJ7JFPpqCUMqo
+ qQ6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760682338; x=1761287138;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZmLGdQdxQezXgDJXBxj33ObpNLGygnZoOAk6H+H16Y0=;
+ b=AeU/MmG6Agi322oLgHRsD84MjKrKbrnvV0hpPsxCqm283VI5F5e8FqsRAZK6ONDclJ
+ Ta23TJkPToNaXH7GTzMPFwvTa6w3m7taoqhSMBcL1OKum/cWwy3fH6rYwSC57WhMiKYR
+ DkKtvVqYPMdW+xvimhrb1dESnHe9qKvtwu3OEiWRdIEGiXxUgLsIR33tBSp2kExfG2dm
+ KFhjl4w+4MIXjJCSbn7Q/937wUcxRZ9oSOMjdeNpuTXTJg1fkiNmmIDnfBVZBzJnCdtU
+ 9fs8icpPPO7+qxTt/CG6VP9gOc0ozkBYxXPlGcMbVmjDZDp2PXdozUkrMovcangFfVne
+ OQcw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUpL6bzibuhLpLexkplKSxLRaDf5fJeZdy51oR+YWLgaEGY+Y6wb+1OrNgHYCxnGMXDlA1roxJtK4m0@nongnu.org
+X-Gm-Message-State: AOJu0Ywx35CHC382l+Fl+N/Jd1fnc0GjSLr4Vwe1cUHLJKae58ozG58E
+ nvRPHI6IKFurUvjySEeGwElEIWo57N4sJS3Lz55dHtaBHFuNBhBQyM8IQdB9QuG39svP1yAikWa
+ mqGYyZSpqMTXtW5RvfMOf0Mv8T2SV5ktVVdiBU8Fxag==
+X-Gm-Gg: ASbGnctFTxpameILEtgZuXufNVR8J3fkQ9SUX0hBKPJwAX43Mcg/spHhGU4mcFA4LlI
+ IjlRE4Bg0Uq/ylRPZGhz7vOitQTDRNjTh1I5CNASdtRG5lv2xP0sKvRh3xVgFEjS3tgZE4Y7I5Z
+ fl4NwazOIRmQ25h3+8IwFiIRdUNgux94GO/NWDSJ4zvCLHf+Eae1BcR0nnv7iIfuDNHfOzCSqMP
+ dFQOFAFZXv7okaYsFUqoWMzutHf6VqaJpzLKe/rfXEIFbNYRIUz9APkM4uGuIwOVM8JzxjooM6t
+ FziH
+X-Google-Smtp-Source: AGHT+IEkRsauOpdYHg6HZWmxW+UKvjnYgksS5Be/PHl1sEUqMqEzAYWiiFeZS6PgG8uUud9ncIPvBZHZEHOoZmFMuPo=
+X-Received: by 2002:a05:651c:12c3:b0:375:f6bf:880 with SMTP id
+ 38308e7fff4ca-377978aefe5mr10992191fa.19.1760682338396; Thu, 16 Oct 2025
+ 23:25:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] amd_iommu: Cleanups and fixes (PART 2)
-Content-Language: en-US
-To: <qemu-devel@nongnu.org>, <alejandro.j.jimenez@oracle.com>
-CC: <mst@redhat.com>, <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
- <philmd@linaro.org>, <suravee.suthikulpanit@amd.com>, <vasant.hegde@amd.com>, 
- <marcel.apfelbaum@gmail.com>, <eduardo@habkost.net>, <aik@amd.com>
-References: <20251017061322.1584-1-sarunkod@amd.com>
-From: Sairaj Kodilkar <sarunkod@amd.com>
-In-Reply-To: <20251017061322.1584-1-sarunkod@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000016:EE_|LV9PR12MB9760:EE_
-X-MS-Office365-Filtering-Correlation-Id: acf8e306-a107-4e45-f674-08de0d44feb4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ajNqZWM0WlJuM3lqeTErK2FnSG1QQWlmVmdaWHIrVkJzd0p1Z0Y2M3YzMi9O?=
- =?utf-8?B?N1pQRUUrY2tpbnpYQlFnc2lqQXF0c2pGb2U2YUtZVnZCYU0rUi84WnBWdXNQ?=
- =?utf-8?B?dWJjb3doTDlOZ0ttWFlxU0pQaGMyeTBVc0VZb1hveHp2T1o2WS9UVHJ4Y3U3?=
- =?utf-8?B?YTliODN3SzhueERtTDRncjd5NTVGWHFEdS9WTjZ0TGVOcUFWNWtoMXhZR2NC?=
- =?utf-8?B?VnhOWkZ0YVhDQjIxV0xiZUQ0dWhkTXpKWEtYT243ODlZdm50N0NWbTQ5emRw?=
- =?utf-8?B?Sm1FdDl2bnBoQUV4MHhaNEdaUUhJUEpBTXZHa2F4UTBjZFNEWG1jUVFyVlF5?=
- =?utf-8?B?OGQ5SnBuRHBoVzQzRTJkaVJGQVRxbHk0WCtQUGFlS0FMeTJ0R1hDU0hqTGFt?=
- =?utf-8?B?bTk3aG1lMnFXeG9acjhHL2RDVXRPL0JNc0c3Y3ZCNEZoSitsN1FDZzNBYVlV?=
- =?utf-8?B?WGx2dHYxSU5RMXd0ODl6SlFkR0NjRDZWMytERVk5ZzNUcHQyZ0xVMU5LRkxl?=
- =?utf-8?B?Y2o3dUVlZEJ4NFBzUnNqcldER1d5VFpjSVlVS1BWaU04RjRSVElqZUM2c21K?=
- =?utf-8?B?MnVKR05PVWlZcm4vMkZXak5DVUJlVHdiQ21zd1o3MnFWd3l1bEdSUUx6WTY5?=
- =?utf-8?B?cnIvSko3OEc1RWpHSHNqREV4ZFlOVWlXclJiaXRHR1RtWE1iSksxV0crbHFu?=
- =?utf-8?B?cGprS3hNcU5OZkZ4RTU0bmRDVnFaZThaZVhoNVZ3NWxsbVAxak1vVGVlREhC?=
- =?utf-8?B?dW1JdnQwYW45OEJ1Y1ZGdWtIaldjZXAxMnFWY3ZhazI4SmpyYzlNeFF4Um9M?=
- =?utf-8?B?UCtIKzJVZHFIa093WGFYSFVFOXg2RGRGcElYZ2FySE9vQkdrMVNiZWFIMnpa?=
- =?utf-8?B?U3oxd3VFTkVLS3ROSm1nSElHVXlpQ2RGemJjeVVBdVpiMSsvSW5BZWVhbTBP?=
- =?utf-8?B?c25sZE1hSmg1WEdkL0pOd2Y3cy9nRld2ZFpNVUNQSFRJN2cyVDVTeERYYi9h?=
- =?utf-8?B?MTJvTisyM2hTZHV6ZzEzYW5DZ3JKZXh3b2MzY3JYS2N2ME1GMDF5ZndTMTcv?=
- =?utf-8?B?aHRQME5UMjhLK3ZRNFVnY296c1BtbHAwM1RYZFRJQ0VZSUduNzhueVBEemNl?=
- =?utf-8?B?WTEyanlnejMrbzZNS0UrYkZrZlY1encrMEkrVHordks5R0JaWlZsejcvc0VJ?=
- =?utf-8?B?dEFoOXJQdFBkY0tMTnM2S09YcWRRd29FcTJNVUQ5cW5oQ3ErRlFVWUNESEYx?=
- =?utf-8?B?aTVWWnJCc29Qa2Rac3JheVhkbjcvUkV3K1NvdXJ0N2RYcTFPL1RWTENoU2U2?=
- =?utf-8?B?S1JoTWcwY1BXN3pkYWxNZWtrc1BaMzlpRCtwbDVFbndaTUJUTjd6OWZUTFNi?=
- =?utf-8?B?L1g1ZkM3anJmaWVVOXF4N0VBVjBITE54a1hkS0VBbVNXcCtUaW1aSW1wOVRG?=
- =?utf-8?B?ZjIyR2gzUVZOL1lremw4aDU4eWhpT1ZiemhvRnppYkFXeVpOOWJ5a3plR0xC?=
- =?utf-8?B?eG5renM4QWZlUUh6ZmJERi94VGxXNFJVblU3eWpYbWpYZ3dBZ2swbGtTZXQ1?=
- =?utf-8?B?aks0VWZKYU96QndqbEJ2S2paNVcxaUlJMWo3QWMvRW9DUVdlclh2K2tqZnRI?=
- =?utf-8?B?WWZ2Wlp4Z2dVSVhWMWw5L0t5Rm5ZTUNwUVZGMmk4VUp3YUxvV3FpaU5RU2Jv?=
- =?utf-8?B?b01RanNWaU43eE5rUlVxNUU1ZVNuS3ZrVmNOMFFQUFlUZnNtUnl6MjJPcW5Q?=
- =?utf-8?B?MUd3cXJ3NjVMbm5sTVhteEEvd3JXa3BDT1pLckhVdDVjQWVRRE1BSFRVT01R?=
- =?utf-8?B?TVY2UDVBZGRwQ3Zad2RMZVgxcEEyV3BZNE9QM2hiVldnb2x3MURxTnlpM0Vh?=
- =?utf-8?B?T0dLYjluK2J3RDJSTTdnSmhQN3plYmpuVnAyZU1DdTJlNEhQYm5hZ0l2Zjhn?=
- =?utf-8?B?dnc5anNSbCtrYmE4MHU5K0FZejZMSS91bTJWZVNaLys0bWt1TE1uWmFCQWxr?=
- =?utf-8?B?aXlzeDhoWURlQzBZYkZ4NUc0NGNITTlLUUE4Q0Z0UFlLdUdEQmJvWXdHU3c5?=
- =?utf-8?B?Y0o1VHJOa083cG1UbHVickw5SWJxYisrTnNvNlJsYUJNa2tMV1FTY0x5OE5K?=
- =?utf-8?Q?J4EM=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 06:18:31.4875 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: acf8e306-a107-4e45-f674-08de0d44feb4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000016.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9760
-Received-SPF: permerror client-ip=2a01:111:f403:c100::f;
- envelope-from=Sairaj.ArunKodilkar@amd.com;
- helo=BL2PR02CU003.outbound.protection.outlook.com
+References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+In-Reply-To: <20250929133643.38961-1-skolothumtho@nvidia.com>
+From: Zhangfei Gao <zhangfei.gao@linaro.org>
+Date: Fri, 17 Oct 2025 14:25:25 +0800
+X-Gm-Features: AS18NWBA7dy9XcjIp02VfRlQYVGsxYyj3Q3HvOsiF6YA0YwEbKw-f-hyrA-n82I
+Message-ID: <CABQgh9Fzf0XJYwybb2S0ophuSZ6v+=FM=OWmnG3md7bXOo95-Q@mail.gmail.com>
+Subject: Re: [PATCH v4 00/27] hw/arm/virt: Add support for user-creatable
+ accelerated SMMUv3
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, eric.auger@redhat.com, 
+ peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com, 
+ ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com, mochs@nvidia.com, 
+ smostafa@google.com, wangzhou1@hisilicon.com, jiangkunkun@huawei.com, 
+ jonathan.cameron@huawei.com, zhenzhong.duan@intel.com, yi.l.liu@intel.com, 
+ shameerkolothum@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=zhangfei.gao@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,56 +100,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi, Shameer
+
+On Mon, 29 Sept 2025 at 21:39, Shameer Kolothum <skolothumtho@nvidia.com> w=
+rote:
+>
+> Hi,
+>
+> Changes from RFCv3:
+>
+>  -Removed RFC tag as we have the user-creatable SMMUv3 sereis now applied=
+[0]
+>  -Addressed feedback from RFCv3. Thanks to all!(I believe I have addresse=
+d
+>   all comments, apologies if I missed any)
+>  -Removed dependency on =E2=80=9Cat least one cold-plugged vfio-pci devic=
+e.=E2=80=9D The
+>   accelerated SMMUv3 features are now initialized based on QEMU SMMUv3
+>   defaults, and each time a device is attached, the host SMMUv3 info is
+>   retrieved and features are cross-checked.
+>  -Includes IORT RMR support to enable MSI doorbell address translation.
+>   Thanks to Eric, this is based on his earlier attempt on DSM #5 and
+>   IORT RMR support.
+>  -Added optional properties (like ATS, RIL, etc.) for the user to overrid=
+e
+>   the default QEMU SMMUv3 features.
+>  -Deferred batched invalidation of commands for now. This series supports
+>   basic single in-order command issuing to the host. Batched support will
+>   be added as a follow up series.
+>  -Includes synthesizing PASID capability for the assigned vfio-pci device=
+.
+>   Thanks to Yi=E2=80=99s effort, this is based on his out-of-tree patches=
+.
+>  -Added a migration blocker for now. Plan is to enable migration support
+>   later.
+>  -Has dependency(patches: 4/5/8)on Zhenzhong's pass-through support serie=
+s[1]
+>
+> PATCH organization:
+>  1=E2=80=9320: Enables accelerated SMMUv3 with features based on default =
+QEMU SMMUv3,
+>        including IORT RMR based MSI support.
+>  21=E2=80=9323: Adds options for specifying RIL, ATS, and OAS features.
+>  24=E2=80=9327: Adds PASID support, including VFIO changes.
+>
+> Tests:
+> Performed basic sanity tests on an NVIDIA GRACE platform with GPU device
+> assignments. A CUDA test application was used to verify the SVA use case.
+> Further tests are always welcome.
+>
+> Eg: Qemu Cmd line:
+>
+> qemu-system-aarch64 -machine virt,gic-version=3D3,highmem-mmio-size=3D2T =
+\
+> -cpu host -smp cpus=3D4 -m size=3D16G,slots=3D2,maxmem=3D66G -nographic \
+> -bios QEMU_EFI.fd -object iommufd,id=3Diommufd0 -enable-kvm \
+> -object memory-backend-ram,size=3D8G,id=3Dm0 \
+> -object memory-backend-ram,size=3D8G,id=3Dm1 \
+> -numa node,memdev=3Dm0,cpus=3D0-3,nodeid=3D0 -numa node,memdev=3Dm1,nodei=
+d=3D1 \
+> -numa node,nodeid=3D2 -numa node,nodeid=3D3 -numa node,nodeid=3D4 -numa n=
+ode,nodeid=3D5 \
+> -numa node,nodeid=3D6 -numa node,nodeid=3D7 -numa node,nodeid=3D8 -numa n=
+ode,nodeid=3D9 \
+> -device pxb-pcie,id=3Dpcie.1,bus_nr=3D1,bus=3Dpcie.0 \
+> -device arm-smmuv3,primary-bus=3Dpcie.1,id=3Dsmmuv3.0,accel=3Don,ats=3Don=
+,ril=3Doff,pasid=3Don,oas=3D48 \
+> -device pcie-root-port,id=3Dpcie.port1,bus=3Dpcie.1,chassis=3D1,pref64-re=
+serve=3D512G,id=3Ddev0 \
+> -device vfio-pci,host=3D0019:06:00.0,rombar=3D0,id=3Ddev0,iommufd=3Diommu=
+fd0,bus=3Dpcie.port1 \
+> -object acpi-generic-initiator,id=3Dgi0,pci-dev=3Ddev0,node=3D2 \
+> ...
+> -object acpi-generic-initiator,id=3Dgi7,pci-dev=3Ddev0,node=3D9 \
+> -device pxb-pcie,id=3Dpcie.2,bus_nr=3D8,bus=3Dpcie.0 \
+> -device arm-smmuv3,primary-bus=3Dpcie.2,id=3Dsmmuv3.1,accel=3Don,ats=3Don=
+,ril=3Doff,pasid=3Don \
+> -device pcie-root-port,id=3Dpcie.port2,bus=3Dpcie.2,chassis=3D2,pref64-re=
+serve=3D512G \
+> -device vfio-pci,host=3D0018:06:00.0,rombar=3D0,id=3Ddev1,iommufd=3Diommu=
+fd0,bus=3Dpcie.port2 \
+> -device virtio-blk-device,drive=3Dfs \
+> -drive file=3Dimage.qcow2,index=3D0,media=3Ddisk,format=3Dqcow2,if=3Dnone=
+,id=3Dfs \
+> -net none \
+> -nographic
+>
+> A complete branch can be found here,
+> https://github.com/shamiali2008/qemu-master smmuv3-accel-v4
 
 
-On 10/17/2025 11:43 AM, Sairaj Kodilkar wrote:
-> This series provide fixes for following two issues:
->
-> 1. AMD IOMMU fails to detect the devices when they are attached to PCI bus with
->     bus id != 0.
->     e.g. With following command line, dhclient command fails inside the guest
->
->      -device pcie-root-port,port=0x10,chassis=1,id=pci.1,bus=pcie.0,multifunction=on,addr=0x5 \
->      -netdev user,id=USER0,hostfwd=tcp::3333-:22 \
->      -device virtio-net-pci,id=vnet0,iommu_platform=on,disable-legacy=on,romfile=,netdev=USER0,bus=pci.1,addr=0 \
->
-> 2. Current AMD IOMMU supports IOVAs upto 60 bit which cause failure while
->     setting up the devices when guest is booted with command line
->     "iommu.forcedac=1".
->
->     One example of the failure is when there are two virtio ethernet devices
->     attached to the guest with command line
->     
->         -netdev user,id=USER0 \
->         -netdev user,id=USER1 \
->         -device virtio-net-pci,id=vnet0,iommu_platform=on,disable-legacy=on,romfile=,netdev=USER0 \
->         -device virtio-net-pci,id=vnet1,iommu_platform=on,disable-legacy=on,romfile=,netdev=USER1 \
->     
->     In this case dhclient fails for second device with following dmesg
->     
->     [   24.802644] virtio_net virtio0 enp0s1: TX timeout on queue: 0, sq: output.0, vq: 0x1, name: output.0, 5664000 usecs ago
->     [   29.856716] virtio_net virtio0 enp0s1: NETDEV WATCHDOG: CPU: 59: transmit queue 0 timed out 10720 ms
->     [   29.858585] virtio_net virtio0 enp0s1: TX timeout on queue: 0, sq: output.0, vq: 0x1, name: output.0, 10720000 usecs ago
->
-> -------------------------------------------------------------------------------
->
-> Change log:
-> ----------
->
-> * Changes since V2:
-> https://lore.kernel.org/qemu-devel/20251013050046.393-1-sarunkod@amd.com/
-> P1:
->   - Remove cast from the pointer assignment [MST]
->   - Rename struct amdvi_as_key to AMDViAsKey [Alejandro, MST]
->   - Fix compilation error due to missing 'static' [Alejandro]
->
-> P2:
->   - Rename struct amdvi_iotlb_key to AMDViIOTLBKey [Alejandro, MST]
->   - Fix compilation error [Alejandro]
->
-Correction...
-This is AMDVIAskey and AMDVIIOTLBKey, not AMDViAsKey and AMDViIOTLBKey
+I have tested this series with stall enabled.
+ https://github.com/Linaro/qemu/pull/new/10.1.50-wip
+
+Tested-by:  Zhangfei Gao <zhangfei.gao@linaro.org>
+
+By the way, the stall feature requires some additional patches,
+including page fault handling.
+Shall we handle that after this series?
 
 Thanks
-Sairaj
 
