@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC259BE67D5
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CBABE67D2
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 07:52:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9dM1-0003Ea-8A; Fri, 17 Oct 2025 01:50:17 -0400
+	id 1v9dM3-0003FR-1m; Fri, 17 Oct 2025 01:50:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9dLs-00038C-S9
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:50:09 -0400
-Received: from 4.mo548.mail-out.ovh.net ([188.165.42.229])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9dLz-0003BH-E4
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:50:15 -0400
+Received: from smtpout2.mo529.mail-out.ovh.net ([79.137.123.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9dLn-0004dI-Q3
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:50:08 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.58.167])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cnv6Z1RFyz5x6S;
- Fri, 17 Oct 2025 05:49:58 +0000 (UTC)
-Received: from kaod.org (37.59.142.98) by DAG8EX2.mxp5.local (172.16.2.72)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v9dLu-0004pd-C1
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 01:50:14 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.254.75])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4cnv6k1JX7z5wvC;
+ Fri, 17 Oct 2025 05:50:06 +0000 (UTC)
+Received: from kaod.org (37.59.142.96) by DAG8EX2.mxp5.local (172.16.2.72)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 17 Oct
- 2025 07:49:57 +0200
+ 2025 07:50:05 +0200
 Authentication-Results: garm.ovh; auth=pass
- (GARM-98R0029bdceaed-dd06-410d-a4db-a64fad21235b,
+ (GARM-96R001892f1120-fad7-40f0-b700-06484ed7bebd,
  48F321F6F3AAA1B288770452BCFEC79A981EE5C7) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <8483b727-f8c4-4626-8b04-8e2867a0a480@kaod.org>
-Date: Fri, 17 Oct 2025 07:49:57 +0200
+Message-ID: <f1ead156-38c4-4f94-8c45-caa237b219f2@kaod.org>
+Date: Fri, 17 Oct 2025 07:50:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] Add Aspeed GPIO test and Support Nuvoton Serial
- GPIO Expansion (SGPIO) device
-To: Coco Li <lixiaoyan@google.com>, <peter.maydell@linaro.org>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <flwu@google.com>,
- <andrew@codeconstruct.com.au>, <philmd@linaro.org>
-References: <20251015011830.1688468-1-lixiaoyan@google.com>
+Subject: Re: [PATCH] hw/arm/aspeed: ast2600-evb: Use w25q512jv flash model
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
+ <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>
+References: <20251016212437.1046135-1-clg@redhat.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -81,33 +83,33 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251015011830.1688468-1-lixiaoyan@google.com>
+In-Reply-To: <20251016212437.1046135-1-clg@redhat.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.98]
-X-ClientProxiedBy: DAG1EX1.mxp5.local (172.16.2.1) To DAG8EX2.mxp5.local
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.96]
+X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX2.mxp5.local
  (172.16.2.72)
-X-Ovh-Tracer-GUID: 30608c05-2de3-4bb5-81bc-c07dca71739a
-X-Ovh-Tracer-Id: 15638186757671848809
+X-Ovh-Tracer-GUID: 961b67ce-0ceb-4446-bbaf-06d045d464f2
+X-Ovh-Tracer-Id: 15640438559471799087
 X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: dmFkZTExn6INrKLxWkQJYtU6LCQH/m65B5PntwiUm5oflpSqZUZDA330n33UyPp3Ovn61gFKIBTp/8AJbmOJBQrmQNFdP96RlZnoOqs1ONQVM2jiZRo9/KS0sdN+tXcbR2L8QQqXAq45zrlYFDGDQXaxoTFTgo561gSfMnJTCAucculylRcr4jJ1NhU3UzJpsLPqSlhsG6l5Q/PR1dgGxLbSNx6X1MpRIgYoIOxgz07pdSXRASwQSlID1qvxUmv5mOrIWvxxfYOaIKxvGWSCMknfVKMAZjagVcBPJ7YHl0Za/eC539OuZHjUpxER598bMam9+BtgTDOnibC+3rff5fRwCOnKDCi0Vtjt78F1LLAc8dhaeAWAdePjpjB0jAmH/tQu4vrtTyAwGRekf/oah7100L9pawLQAz+PuOZV+Bg7kVVgTqmDmhSVQMYAJh6DWDCfbaWud+LKBMWBqluZOmHueQmZbnpiMemev8AFcVbZUiw22ezL26HiI6PruyXqoVopt7DJmwmjF8T0o3Jata8Nystaa7uHNmpLI/O55zVdCmjG0TIAbuMt8Vu9ySl/1x1xTmS5gIY0pv3hnbrhygxXg8KzN17qS6m2UUtg4cokisBwEwPOUOKd835w4dc3FvVMlPIcNurhjO3e3uwDT7bc9WjvSYI4XCUnbJ/OPinYwgo/Tg
-DKIM-Signature: a=rsa-sha256; bh=EID7rj2yXLIJcWWalARjptsn44rq8y5wd1Ghlajd7no=; 
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFq3wds2oEz9swbbnnNA3EGUId8BONGSyQNg7iiEqWhPbLqn2mMdunGln+oOMpL/x2ZRhLua0iOhz+yRir6E4Kb58Kj0p+BsTzCtsW6eBX7c258YvXTBtIi665Q6Umiitnt856KRCox0xsUGxfFvVLGs3hj5oUPpS2Yj84fkwIqzjAH2HWE/pUO9TNfpXMd2vR7qYcifNt8L1iIBj1qSK9g1iQYdqY2SJqeQFYJ0rKC0vo9KTMQY62J73eGhiBhnPpZmBHtVk90RzBQ0+F6cr5nPpi/wX0A6A8VvstC0lPNZlcOD/A6Sh2coiDH00kxOtvs4QnOXD8VWFFiYAe5/iWgc/BqwFm9Kmo3uz+bzPUkDUpQa6C8kDqZigWSyOnfkE8voSboKuNkJP7ztUcHZSCz4lOZ+3/MWMoTm8g7E8AF0riYBlKxP+fwVoUSW5rd8G0wdXlT8hAbuwjTn0TdR2nkryZltoic3brHaKVzeKS5pOkvmRaw2izVbILdQAr9KNXLsY8HOXdR1WVLIntuRT+wKei6v9Y++xSwV1srwOkoFkppCQx25FGfN3KmieDJiw1f3bdPhqIhv2PrjqhC7ohdE/ykPnniiuMbJwLvlWFBIXymKqFQUbUzaFiBsHyuBih+jGuawW9AmmRcz5CMH4Z3uFHqx+xoncj4Gua8LpyfwA
+DKIM-Signature: a=rsa-sha256; bh=RVXB7xyrJ282x4GuQh1KIIITyIkWOiUxriyUFaMI47E=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1760680198; v=1;
- b=HfdLEXY/51e40wNBi3k+FzAeNW5FcWLq67Hmg4/KoddbnFsnGgh4u6n/9EXwfAF4tsVD7YoE
- VfwqhLAqfx7V3rs5AQewxcePWpq1+vw4pQ36TouFBQoVcAl69Tqa4WXAtSNTkRHbi28OTQ81Jhg
- zFuHxQTzuoVlf2cinxS1SDr19lkxp40D+VHOD4cLGjgRt7nKtV/D4xPUaismOuNqHa8d4w2bEHj
- 19N6bFHtbk3j6Ey6kkZCE1TwCoBYNgji6D1EzDrpDvNXwBG1YE3OEmuFw9IbG/9rOWWGyEGGfDY
- Vn+Nh5ph6l1yMb060KV9oALVkZKj5vRSL9dggqv43oYGQ==
-Received-SPF: pass client-ip=188.165.42.229; envelope-from=clg@kaod.org;
- helo=4.mo548.mail-out.ovh.net
+ t=1760680206; v=1;
+ b=Ur93QXmw8eNt2REDn2gGCE6WXXSpPamYDBHUE236f3KiYp93riImMjKGNVUJ5UrXjBJQIVKB
+ pA+qDrztg1Sl4POgwIyBDlW6p8C/pxWiT15T8Ru7eIxH+QAY17wm8QKGmAOMtSJmqzPmkq4QKIk
+ zJn6pT4q6L1Ag9IX8hGF9YjB2sRiXMxW5pHpcFLrcvPq26Nh8pPygyvqRCoE/H3bgbtrgt1THQp
+ BsLEWQTWSVrBHqSv1mmKrwv6DkJxGsoaj+fZZizQJkYmr+BEvoHg1b+I8SyO+u1i9wBKRqGDSiy
+ QXikaGlQXvda2aJI3a5QEjQvxj61GnYCVxWyXnqtszhmg==
+Received-SPF: pass client-ip=79.137.123.220; envelope-from=clg@kaod.org;
+ helo=smtpout2.mo529.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -125,58 +127,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/15/25 03:18, Coco Li wrote:
-> GPIO series:
-> Added 32 bits property for ASPEED GPIO with updated qtests.
+On 10/16/25 23:24, Cédric Le Goater wrote:
+> The ast2600-evb machine model is using the "mx66u51235f" flash model,
+> which has issues with recent Linux kernels (6.15+) when reading SFDP
+> data.
 > 
-> SGPIO series:
-> Implemented SGPIO device according for npcm8xx.
-> Two notable implementations left undone in these patches are:
+> Change the flash model to "w25q512jv", which is the model present on
+> some ast2600a3 EVB board and is known to work correctly with recent
+> kernels. Adjust the corresponding qtest to reflect the new JEDEC ID of
+> the w25q512jv flash.
 > 
-> 1. Reading the data from the host controlled SIOX via register IOXDATR
-> 2. On-demand with polling reading node
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/arm/aspeed.c               | 4 ++--
+>   tests/qtest/aspeed_smc-test.c | 4 ++--
+>   2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> The reason for this ommitance is that both features are currently unused/umimplemented by the nuvoton driver.
-> 
-> The changes to qobject is used in both sets of patches. The patch series implements indexing gpios with array indices on top of accessing with registers.
-> The reasons for this is becasue it creates another easier way to access gpio. In our internal tests, we model complex behaviors with a large number of gpios, such as in fault injection, or in networking behaviors.
-> Indexing multiple gpios at once allows qmp/side band client to no longer hardcode and populate register names and manipulate them faster.
-> 
-> Updates since V0: added more descriptions on qobjects change in cover letter.
-> Updates since V1:
->    - added more description to "hw/gpio: Add property for ASPEED GPIO in 32 bits basis" patch
->    - used bitops.h for bit operations in "hw/gpio/npcm8xx: Implement npcm sgpio device input pin"
-> 
-> Coco Li (3):
->    hw/arm/npcm8xx.c: Add all IRQ ENUMs
->    hw/gpio/npcm8xx: Implement SIOX (SPGIO) device for NPCM without input
->      pin logic
->    hw/gpio/npcm8xx: Implement npcm sgpio device input pin logic
-> 
-> Felix Wu (2):
->    hw/gpio: Add property for ASPEED GPIO in 32 bits basis
->    tests/qtest: Add qtest for for ASPEED GPIO gpio-set property
-> 
->   hw/arm/npcm8xx.c                 |  66 +++-
->   hw/gpio/aspeed_gpio.c            |  57 ++++
->   hw/gpio/meson.build              |   1 +
->   hw/gpio/npcm8xx_sgpio.c          | 518 +++++++++++++++++++++++++++++++
->   hw/gpio/trace-events             |   4 +
->   include/hw/arm/npcm8xx.h         |   2 +
->   include/hw/gpio/npcm8xx_sgpio.h  |  45 +++
->   include/qobject/qdict.h          |   1 +
->   qobject/qdict.c                  |  13 +
->   tests/qtest/aspeed_gpio-test.c   | 105 ++++++-
->   tests/qtest/meson.build          |   3 +-
->   tests/qtest/npcm8xx_sgpio-test.c | 222 +++++++++++++
->   12 files changed, 1024 insertions(+), 13 deletions(-)
->   create mode 100644 hw/gpio/npcm8xx_sgpio.c
->   create mode 100644 include/hw/gpio/npcm8xx_sgpio.h
->   create mode 100644 tests/qtest/npcm8xx_sgpio-test.c
-> 
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index 2e43898d6403..c29bbd54059d 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -1610,8 +1610,8 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc,
+>       amc->soc_name  = "ast2600-a3";
+>       amc->hw_strap1 = AST2600_EVB_HW_STRAP1;
+>       amc->hw_strap2 = AST2600_EVB_HW_STRAP2;
+> -    amc->fmc_model = "mx66u51235f";
+> -    amc->spi_model = "mx66u51235f";
+> +    amc->fmc_model = "w25q512jv";
+> +    amc->spi_model = "w25q512jv";
+>       amc->num_cs    = 1;
+>       amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
+>                        ASPEED_MAC3_ON;
+> diff --git a/tests/qtest/aspeed_smc-test.c b/tests/qtest/aspeed_smc-test.c
+> index 52a00e6f0a7e..50a87e625001 100644
+> --- a/tests/qtest/aspeed_smc-test.c
+> +++ b/tests/qtest/aspeed_smc-test.c
+> @@ -134,10 +134,10 @@ static void test_ast2600_evb(AspeedSMCTestData *data)
+>                             "-drive file=%s,format=raw,if=mtd",
+>                             data->tmp_path);
+>   
+> -    /* fmc cs0 with mx66u51235f flash */
+> +    /* fmc cs0 with w25q512jv flash */
+>       data->flash_base = 0x20000000;
+>       data->spi_base = 0x1E620000;
+> -    data->jedec_id = 0xc2253a;
+> +    data->jedec_id = 0xef4020;
+>       data->cs = 0;
+>       data->node = "/machine/soc/fmc/ssi.0/child[0]";
+>       /* beyond 16MB */
 
 
-Applied patches 1,2 to aspeed-next.
+Applied to aspeed-next.
 
 Thanks,
 
