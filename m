@@ -2,105 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5077FBEB2C2
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 20:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C8ABEB2D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 20:17:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9p0A-0003zO-6h; Fri, 17 Oct 2025 14:16:30 -0400
+	id 1v9p0V-0004R2-4I; Fri, 17 Oct 2025 14:16:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1v9p06-0003ym-Sf; Fri, 17 Oct 2025 14:16:26 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1v9p0N-0004FR-QZ; Fri, 17 Oct 2025 14:16:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vishalc@linux.ibm.com>)
- id 1v9p04-0007Ll-FC; Fri, 17 Oct 2025 14:16:26 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59HGrrVB012398;
- Fri, 17 Oct 2025 18:16:19 GMT
+ id 1v9p0E-0007Mk-R8; Fri, 17 Oct 2025 14:16:43 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59HARLkL001980;
+ Fri, 17 Oct 2025 18:16:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=VsPixCQuXr0a3YA1K
- wWnXXRiIgqzlv8MPMc2bZkj0yA=; b=L9pAaWG34T5Fa5q7h3Sv3gAt0J2OpDXdn
- jzRg76nAHT9AkuF6DUOZl2ZOGzFkJP1BPNjgLl33xFbth6S0t25GkThvo7FEZsjA
- Dar4lStYl6f8EPWCIEVXgKXrsidGkkq5joCRbdUZSJcoovBCWx5s0Ba6k9DnM4go
- 6xcPZtGqMvZ+LdBtlv5I4tra5uFEITWEDX+9o/Bu7dszRQbXM/uHU5rccOY6KkQl
- a8eMrNHd+hHoAGER+z9xmUgw0CxtYJM2ZJa+abUEkeRdQ/D4qIfjRwfSabFuRROe
- 7+umKuiKSea35ybYpGRMp7Ert4lWcv3pDIFFfkEnYQU4buZR4dVGg==
+ :mime-version:references:subject:to; s=pp1; bh=wICqCNOYkl/SO0Iud
+ QTMSf41t6cz8HYOHXuy0A6JdNg=; b=NQ3ekffTNTapIQ58BPO4Kpe8hnS0rHylF
+ hmsWmESOWk3jH3P213kiGctCNK6tsFY37M4jZVoHdw3NiifF+WAnQF1iMjnSSroH
+ Sswp0Gmf1/tyi6r4bwYqaWE+swD7GK5IUTdmOyK38+bFyrgqil1UvfEqt5kHJIas
+ l/SCzKbtbfwPher3ARpqIeUyGlozgSZ0n4CqtbSuCD3s71a+myYy9/1e7PlzsBSp
+ cy/HrxK5WBBAjofxkc6Ou9XTIYVnKbRNx4mfRj/4+wDzwypJOT9HccwCi4BtDCRN
+ hMYzXqAHRVFk6NfDv7ON3o49r9E2eHPAFmNIDBSbBiuUncFq3OszQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnru7pd-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49rfp8fbdk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Oct 2025 18:16:19 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59HIGIhu030417;
- Fri, 17 Oct 2025 18:16:18 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnru7pa-1
+ Fri, 17 Oct 2025 18:16:29 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59HI5rPd024302;
+ Fri, 17 Oct 2025 18:16:29 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49rfp8fbdg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Oct 2025 18:16:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59HIEw3x003626;
- Fri, 17 Oct 2025 18:16:17 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xyevsv-1
+ Fri, 17 Oct 2025 18:16:29 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59HFdlvH016745;
+ Fri, 17 Oct 2025 18:16:28 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r32keqw7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Oct 2025 18:16:17 +0000
+ Fri, 17 Oct 2025 18:16:28 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59HIGESl31654652
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59HIGO5x48824582
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Oct 2025 18:16:14 GMT
+ Fri, 17 Oct 2025 18:16:24 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 05F8620040;
- Fri, 17 Oct 2025 18:16:14 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1BDF820040;
+ Fri, 17 Oct 2025 18:16:24 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A3762004B;
- Fri, 17 Oct 2025 18:16:11 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AB86F20043;
+ Fri, 17 Oct 2025 18:16:21 +0000 (GMT)
 Received: from vishalc-ibm.ibm.com (unknown [9.39.22.45])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 17 Oct 2025 18:16:11 +0000 (GMT)
+ Fri, 17 Oct 2025 18:16:21 +0000 (GMT)
 From: Vishal Chourasia <vishalc@linux.ibm.com>
 To: adityag@linux.ibm.com, harshpb@linux.ibm.com, milesg@linux.ibm.com,
  npiggin@gmail.com, peter.maydell@linaro.org, alistair23@gmail.com,
  balaton@eik.bme.hu, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  berrange@redhat.com
 Cc: Vishal Chourasia <vishalc@linux.ibm.com>
-Subject: [Patch v4 3/5] hw/core: Pass errp to load_image_targphys_as()
-Date: Fri, 17 Oct 2025 23:42:51 +0530
-Message-ID: <20251017181250.1421446-8-vishalc@linux.ibm.com>
+Subject: [Patch v4 4/5] hw/ppc/spapr: Rename resize_hpt_err to errp
+Date: Fri, 17 Oct 2025 23:42:52 +0530
+Message-ID: <20251017181250.1421446-9-vishalc@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017181250.1421446-2-vishalc@linux.ibm.com>
 References: <20251017181250.1421446-2-vishalc@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68f287f3 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-ORIG-GUID: wh5ygjvHOa9cPeC-0R0AeWvm2mOnER1i
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEyMDA4NCBTYWx0ZWRfX1FsQowAglX+N
+ gUU7YTLrM23HXnPpRhvKU1/gtJj20aUXnDXdR20m8+XpPEL+Fr3Mh65Xy0DsYjz5IcBsHvNSu7f
+ 9vzCnyxdLS73xxkXePtb51zlolG1DvELLd5lqNGtWYbWLMBudhJbuYqYewj733NddeS9gn+A/uL
+ lOqcOMyvyMBa7nyXFa6HWK7Aw1TlywlTJ/kL2ICZRDAUwyrsk+w5NAXJdRjKMlf3bbDXzLjypwA
+ PIF2P60YnqPInZeNHUobGrI/U9hNQvEI+Ejiqmh5m6KWvd2hYTQ9Y3nkOT5pvDUGmBD7v+8TPhk
+ pbACTs+o62PRr7l05wBl/l6XqM9d/DQijeZ971zckMqNYvobdiX3u6v48K/KLJU0N470maiXLRR
+ Skv2lJsFu4QS56E7lCAXI+DfaMJROg==
+X-Proofpoint-GUID: 6p9gv3uMYWi2y9yfxgRr_cDhNv9m8Q5t
+X-Authority-Analysis: v=2.4 cv=af5sXBot c=1 sm=1 tr=0 ts=68f287fd cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=WwcbXC5amFkfT6oAP7YA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: KeZ3cedI9TTVXvDEfEZu_FwWdPr2uRSX
-X-Proofpoint-ORIG-GUID: WwjdRroBSZG-hIihs61MwHALgHfUJI3W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX4kxmtIC1NGF8
- 0w92Ujp+CCDVzBO38lbzZcdDpwtg2JVGBJHe26ahmotQrJsx6qdF2U90Xm3ad4lqaSJnb7i7noa
- +yYzdc/MTckHPOEq0/b61+OR5/0w062QULteFHqWRO2UteAJrwvL4Ay34uMDY1Mtc67p3MkyZK2
- hHeCD1EhjMMmKAgcmB9BkT6GHonAn5RX9LuJYFYkO9a3akxscr8CrMgdwGR9vlnxwRO7IL+y5lq
- EuTj/ncK0ffSXpL2ivuljuHVYhn+ArU4QM5DS1yfpl/pJi2iAvPjfnATSQWkOXrIINO4Zc/M4fF
- dUU9EvgnHTTx1UvwbWQZWOEYT1NkLA3TBFmwffrMf5U7loz8iHOciFgu0dNH7DcnJHjrBI8TLp8
- 3PABQgG7wQ081+FXh2oc3XH1TPoaqg==
+ a=YPwFAxgEYmRXNWQnHQUA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-17_06,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015 impostorscore=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
- definitions=main-2510100140
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=vishalc@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510120084
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=vishalc@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -108,7 +107,7 @@ X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,73 +123,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass errp to load_image_targphys_as() in generic-loader and
-guest-loader to capture detailed error information from the
-loader functions.
-
-Use error_prepend() instead of error_setg() to preserve the
-underlying error details while adding context about which image
-failed to load.
+Rename resize_hpt_err to standard errp naming convention.
 
 Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
 ---
- hw/core/generic-loader.c | 7 ++++---
- hw/core/guest-loader.c   | 7 ++++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ hw/ppc/spapr.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
-index 6689847c33..35d4e5f4ea 100644
---- a/hw/core/generic-loader.c
-+++ b/hw/core/generic-loader.c
-@@ -60,6 +60,7 @@ static void generic_loader_reset(void *opaque)
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index d69117d3b4..e51540a5ad 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2817,7 +2817,7 @@ static void spapr_machine_init(MachineState *machine)
+     int i;
+     MemoryRegion *sysmem = get_system_memory();
+     long load_limit, fw_size;
+-    Error *resize_hpt_err = NULL;
++    Error *errp = NULL;
+     NICInfo *nd;
  
- static void generic_loader_realize(DeviceState *dev, Error **errp)
- {
-+    ERRP_GUARD();
-     GenericLoaderState *s = GENERIC_LOADER(dev);
-     hwaddr entry;
-     ssize_t size = 0;
-@@ -149,13 +150,13 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
-         if (size < 0 || s->force_raw) {
-             /* Default to the maximum size being the machine's ram size */
-             size = load_image_targphys_as(s->file, s->addr,
--                    current_machine->ram_size, as, NULL);
-+                    current_machine->ram_size, as, errp);
+     if (!filename) {
+@@ -2845,7 +2845,7 @@ static void spapr_machine_init(MachineState *machine)
+     /* Determine capabilities to run with */
+     spapr_caps_init(spapr);
+ 
+-    kvmppc_check_papr_resize_hpt(&resize_hpt_err);
++    kvmppc_check_papr_resize_hpt(&errp);
+     if (spapr->resize_hpt == SPAPR_RESIZE_HPT_DEFAULT) {
+         /*
+          * If the user explicitly requested a mode we should either
+@@ -2853,10 +2853,10 @@ static void spapr_machine_init(MachineState *machine)
+          * it's not set explicitly, we reset our mode to something
+          * that works
+          */
+-        if (resize_hpt_err) {
++        if (errp) {
+             spapr->resize_hpt = SPAPR_RESIZE_HPT_DISABLED;
+-            error_free(resize_hpt_err);
+-            resize_hpt_err = NULL;
++            error_free(errp);
++            errp = NULL;
          } else {
-             s->addr = entry;
+             spapr->resize_hpt = smc->resize_hpt_default;
          }
+@@ -2864,14 +2864,14 @@ static void spapr_machine_init(MachineState *machine)
  
--        if (size < 0) {
--            error_setg(errp, "Cannot load specified image %s", s->file);
-+        if (*errp) {
-+            error_prepend(errp, "Cannot load specified image %s: ", s->file);
-             return;
-         }
+     assert(spapr->resize_hpt != SPAPR_RESIZE_HPT_DEFAULT);
+ 
+-    if ((spapr->resize_hpt != SPAPR_RESIZE_HPT_DISABLED) && resize_hpt_err) {
++    if ((spapr->resize_hpt != SPAPR_RESIZE_HPT_DISABLED) && errp) {
+         /*
+          * User requested HPT resize, but this host can't supply it.  Bail out
+          */
+-        error_report_err(resize_hpt_err);
++        error_report_err(errp);
+         exit(1);
      }
-diff --git a/hw/core/guest-loader.c b/hw/core/guest-loader.c
-index 59f325ad9c..dcbe8e4520 100644
---- a/hw/core/guest-loader.c
-+++ b/hw/core/guest-loader.c
-@@ -81,6 +81,7 @@ static void loader_insert_platform_data(GuestLoaderState *s, int size,
+-    error_free(resize_hpt_err);
++    error_free(errp);
  
- static void guest_loader_realize(DeviceState *dev, Error **errp)
- {
-+    ERRP_GUARD();
-     GuestLoaderState *s = GUEST_LOADER(dev);
-     char *file = s->kernel ? s->kernel : s->initrd;
-     int size = 0;
-@@ -101,9 +102,9 @@ static void guest_loader_realize(DeviceState *dev, Error **errp)
- 
-     /* Default to the maximum size being the machine's ram size */
-     size = load_image_targphys_as(file, s->addr, current_machine->ram_size,
--                                  NULL, NULL);
--    if (size < 0) {
--        error_setg(errp, "Cannot load specified image %s", file);
-+                                  NULL, errp);
-+    if (*errp) {
-+        error_prepend(errp, "Cannot load specified image %s: ", file);
-         return;
-     }
+     spapr->rma_size = spapr_rma_size(spapr, &error_fatal);
  
 -- 
 2.51.0
