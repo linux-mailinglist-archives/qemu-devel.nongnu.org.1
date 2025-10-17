@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87836BEA9F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 18:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CAEBEA9FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 18:21:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9nAe-0005W1-6S; Fri, 17 Oct 2025 12:19:12 -0400
+	id 1v9nAb-0005Th-GZ; Fri, 17 Oct 2025 12:19:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1v9nAX-0005SK-82; Fri, 17 Oct 2025 12:19:05 -0400
-Received: from mail-northcentralusazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c105::7] helo=CH4PR04CU002.outbound.protection.outlook.com)
+ id 1v9nAT-0005Qx-7I; Fri, 17 Oct 2025 12:19:01 -0400
+Received: from mail-westus2azlp170120002.outbound.protection.outlook.com
+ ([2a01:111:f403:c007::2] helo=MW6PR02CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1v9nAN-0007ch-6i; Fri, 17 Oct 2025 12:19:04 -0400
+ id 1v9nAN-0007dC-6l; Fri, 17 Oct 2025 12:19:00 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g21YLjlUGizBLQmTf2JlHjeNRaT4emCGbUCyNd5wOein+M2SUnqYa8rqyjb9scexl5LZkxh7ttCH5VRHZrCG0z9pjbtahSZj8OtFKsHl9idXCsI10A4MPW3ti1mrwB2TBuFmZqSs/HSq7U043s6tLg1u8/L34DXXIwHfrV7Nhk+ff/0wpkfZiL2I59M/O4Ai0oYRJGrsntNcofOW1W5evZyhAuRdUIhFovvoYumGlk7mUca9gqCBZVau/UQsPTa+uWBLD9+knU/ShGYuHB5aE1BkD5J05lohToHEfBN7TEcVOh6LoPrk4KBO5SKrTdvGsc+9IO3UJ3AMZl0rLoI3DQ==
+ b=VH3q3bOsTuB4GxmZ9Fay8b9pOnSMQIlScqi+BhiO0F002kjdgXnXzxaKcr2kXst2eweZ4u/iXQEIaj5H9mDBojDimNB/cn+/molHgUCqbxIwpm/W5MOGb1V1gHidN72IWNYR314s0LsGM1viwuxKaFwJ+odxtie0yiKNBu69u9sr2ACAQjNzCahzJVTLmEnm1MidIIfJ1Ehn0ciY0/nrX7KRXN2NpU3/qkmp8bWKBydkKE5CjQ9KW0OVjivTFOjE0NqxsWxiSLtvEl1Lf5u3WJb7KlpMdf+RQ5n36yO1b6G7vv5PAcgdAXmLEbRI7qmfU86OZhhcb4mLh/y3HEMJzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/oFRoaoQdW8U6S+Zn09mD+BfqtR3c0el0VvEJj+XdpQ=;
- b=jahYbAQ5ZZ7YdyCHEn0ZnRpi4pLIBFNSadXkkNZa/tD9gqI2LRRIbc/A6V046gRdB2JzaXvHJ9/VhQ3qQ00uLWJ3wMhu5FrCoOYrFLCY+vE5uunir+GQjoo91+sbE94qlAZvCSvYzwJjwi3QXB3pfaF+RsI0OtKUsaYPMEBeJKgFW9qCMdxS/cTC/7cZ6v9PmeJBxy7jvMK+HmgADrchCO+UxrI+hONTESwl5uYVLiBYUcpA0ajwBEdM69aVD68oZML3PGxZtR/lufwNhW4sYNQeuuDKrILq7vig6yfl3h117N9zbujg+qxj1subDJMcSk2Qz1YJXl/L6HiaA9tvDA==
+ bh=ALSJf63g6EOqbxWBGxPBCqT5/sgAAMPwNIqmQ0Mu/5I=;
+ b=mR4eyDPNSOuKWnBE7pQJ6V2ikI4xM62BHjEZ+PHPm/kCqgocEMhVvv+c8u5UN4VvzS2EPSWDNngfqItOPlMWjZAqY1tlmOYkF5W7+1W9g0RCFQ84mMsVCcPg4zbxSmR9f9HFYxkzrRV53fi8dlPsbG6CB8C0cEeVG3JudCIDalggQ0htlngE9jduTjZNonJNOSlFlV6SYKfw4nvONEz1L6vHZj7Va3gcbSjpaqJWnRQAqZXzMfu8VOu8f39OGiYgTpPHX7dqVgPCc2bJV+rQKcGsFHWxiPL+PSH9x0eokC27nnFWBT5wa2VN4K26ZNPFEHMe5gXtMS9p9idrjdl5SQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/oFRoaoQdW8U6S+Zn09mD+BfqtR3c0el0VvEJj+XdpQ=;
- b=YoJ44qdAXATDjBv16O6lbm3xnSwCi+VPGlVQ9o9nXOUkY+gtsdtZOECIwUwiCfMGCV6DONFimsSudPhYJfyn3ygldZdEveQS6gPDadZZNlmisKqoa00y3viBVlK3ge9UogZkwJHNUK1HHpNtUhw93GLUtvfOuJOBcpRAKMyZAS4=
-Received: from PH7PR17CA0031.namprd17.prod.outlook.com (2603:10b6:510:323::14)
- by MW6PR12MB9018.namprd12.prod.outlook.com (2603:10b6:303:241::6)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=ALSJf63g6EOqbxWBGxPBCqT5/sgAAMPwNIqmQ0Mu/5I=;
+ b=v1qY3GbOHXBOI/AGsKo6RLIfZRRdewvjASYPHaCNJWI3KGJJgFiAadIOD6mfMcQUd+EOVp+fQrEgw0VKv9HvX4/P9twKnOx6fGWJ1eGbiWJpn3Vq9pj7H5ILu9ZwxIpCZY4Ifh2eEnGyd/WnnmLHrhbQPZqCMr3zUJbfJg7CCAw=
+Received: from BN9PR03CA0154.namprd03.prod.outlook.com (2603:10b6:408:f4::9)
+ by PH7PR12MB6394.namprd12.prod.outlook.com (2603:10b6:510:1fe::11) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Fri, 17 Oct
- 2025 16:18:31 +0000
-Received: from CY4PEPF0000EE32.namprd05.prod.outlook.com
- (2603:10b6:510:323:cafe::6b) by PH7PR17CA0031.outlook.office365.com
- (2603:10b6:510:323::14) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 16:18:34 +0000
+Received: from BN2PEPF0000449F.namprd02.prod.outlook.com
+ (2603:10b6:408:f4:cafe::a3) by BN9PR03CA0154.outlook.office365.com
+ (2603:10b6:408:f4::9) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.13 via Frontend Transport; Fri,
- 17 Oct 2025 16:18:30 +0000
+ 17 Oct 2025 16:18:34 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000EE32.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN2PEPF0000449F.mail.protection.outlook.com (10.167.243.150) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.7 via Frontend Transport; Fri, 17 Oct 2025 16:18:30 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9253.7 via Frontend Transport; Fri, 17 Oct 2025 16:18:34 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 17 Oct
- 2025 09:18:30 -0700
+ 2025 09:18:32 -0700
 Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 17 Oct
- 2025 11:18:30 -0500
+ 2025 11:18:32 -0500
 Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via
- Frontend Transport; Fri, 17 Oct 2025 09:18:28 -0700
+ Frontend Transport; Fri, 17 Oct 2025 09:18:30 -0700
 From: Luc Michel <luc.michel@amd.com>
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
  Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
  <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>
-Subject: [PATCH v3 0/6] Register API leaks fixes
-Date: Fri, 17 Oct 2025 18:17:59 +0200
-Message-ID: <20251017161809.235740-1-luc.michel@amd.com>
+ <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Alistair
+ Francis" <alistair.francis@wdc.com>
+Subject: [PATCH v3 1/6] hw/core/register: remove the REGISTER device type
+Date: Fri, 17 Oct 2025 18:18:00 +0200
+Message-ID: <20251017161809.235740-2-luc.michel@amd.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251017161809.235740-1-luc.michel@amd.com>
+References: <20251017161809.235740-1-luc.michel@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -80,62 +83,62 @@ Received-SPF: None (SATLEXMB04.amd.com: luc.michel@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE32:EE_|MW6PR12MB9018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a1a43b0-5dff-4dfd-c9b3-08de0d98d016
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000449F:EE_|PH7PR12MB6394:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93c80a4e-9b17-497a-ee8b-08de0d98d1f6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|82310400026|36860700013|1800799024|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?FoHHUkBar33aLzGo6Jgl+Wc4KOLTg6sGRa3c/gLRGVIDpwsoBBDN9SP1C3uC?=
- =?us-ascii?Q?xlWG4G8H6qL5n6QG3i/yDognzUXAf08Ny+Xbd7V5u1HddfQH62R9vB0a6m/8?=
- =?us-ascii?Q?5ze10leo+NB7hrGz6cF6QK3aDUGw9tJoqkL20tZvl53AjMrWzUDRgCYade3t?=
- =?us-ascii?Q?wGblHNdeiBYDU782VypgNnuiC47eKyDStvKfRNOV9vKEiJmMxJMmeQkKXxwb?=
- =?us-ascii?Q?TK3nX4W2JxqAVMYS4Yp4irM79dWI3c8cCqJuswTKiWq55tY6cDd17iCO49Z3?=
- =?us-ascii?Q?LDqCr6QwTUs5uTkhrjEfPE8rgXIGVpzy17skb63oV+LL9n1s45FBBydlFXpf?=
- =?us-ascii?Q?dxRhlaZWOe5WylRj1L34GoMqGepF6lY/tW3WrD0i1enH15Y30WcGjMBdXZwM?=
- =?us-ascii?Q?sCcasWNNnKOmNhkHwZTrXqPMliuKokUaSKryxh/c0l5tCp0yfsRTbnW++Xz7?=
- =?us-ascii?Q?P7jxPlg5Xh1bRgeFt1VHl0rEzCLjgXaXpwy3srg11w0X1Ju8v8xSounIC3FX?=
- =?us-ascii?Q?NLSn42h9Ch8fOiPbbwwJpp5IEoJ2RQ2BaIpQT9DvYICY3gUH223nEvvBV0Nk?=
- =?us-ascii?Q?jeM+idEFNpUiK8u/GeFMu/xCcEMcneE3qCfErRLGLNB4jZviKAil+jwBQoy4?=
- =?us-ascii?Q?KwPUfuwr/2BUI/yFlfE+2E7kY32o+31cS/ozxSICD/Ii3Gy4UUp45Hb5z/uz?=
- =?us-ascii?Q?x3N4inRtb1dCcCeDWmEsKZ+8aw8Nd7tzQ2rFIlbdiIt9KkSAr12/M8W83EX8?=
- =?us-ascii?Q?CqTRDVWoWi3UlbFAyzTFAGA/x+0vP8z6JyHdm87vxVVEymGjOJOgdQ8PSbW1?=
- =?us-ascii?Q?lh8dh7+g/y8si+Lcs0ZKLIiN+nnM/a94vXh9ZvsJ5uQxmV/ird9VEIAYoQuI?=
- =?us-ascii?Q?nQIkFisWHKsLMETISPawfj3BuMXaHfR7PzbPHYwHhr9bk0ZjwACOYnb+7yl6?=
- =?us-ascii?Q?GInY9u55EWcQc61Zelux/HncgHRNppx0XXXPFSzmmuuuJ3PGYvVGxP0nOpnZ?=
- =?us-ascii?Q?X9Z1oToaY1mqZ9oRr8iVxwpbRRfSTqa6vy6KemgjtyJPXSU1psM1XrHjbsH9?=
- =?us-ascii?Q?Fu/GG8bNtqBbYFT8hnUqDcx/b+ks8gliwJvZx83Ppv32l1pnRHRZ72ab+aFX?=
- =?us-ascii?Q?iB58RKuJWmy8MYY6O5bkpYj3htu0fwqPlgQblZtxx3C7t3YNEGvO0zsUBRiy?=
- =?us-ascii?Q?8C7d2PyAR2W5S/Dyxj0atpn/Z1xkR7JzF45EVkBOcaNyfrvJoRx949E+eBL/?=
- =?us-ascii?Q?o97HMR5jbROb6CueZidTJ1kuFy64de+zQ8XVGXHhk7fs4U9Dbfq/tpbHljnJ?=
- =?us-ascii?Q?+d4/3VmUxYZMAHcsyuZmLRotZV3dIVmNXYF+UGP2fSrZE9Sl+z7z7mJUEpoQ?=
- =?us-ascii?Q?e/zlavSlbBRtMklDEB+B5DrGzFVR06HibJDmThyvDcxjYMCs0Aqr6FZGisWg?=
- =?us-ascii?Q?4ohfC2gkqq6SnM/My8wANnVF9A/08XDyxuBVuM99SZatPCf7ghZqZT9TH/ZH?=
- =?us-ascii?Q?5Ij7/Gm4JkNoCb+kGEYaE6juNFxhszZ7VRk6+AulPxdCa9YquUdI7vw/lG14?=
- =?us-ascii?Q?9n15cC16Sad+xkahXcI=3D?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?47Ur9laQrmdOpLt1sToPvx43TSDvbG+Z4w29+BqZdhejt/FoI4rWCkwquhTa?=
+ =?us-ascii?Q?9ihQsLdsBxAwcPrd3InjGcJ11gl1inOPen0p2TFW1R3gtkhbthxuTfhQ488x?=
+ =?us-ascii?Q?fR0yMsd2is7kQYXekFwqy1Ry3cMG64feuH/zaj8pwGUpMCySsw/x4KIRLhei?=
+ =?us-ascii?Q?1zFKYj0HOpxaGGbl47lgzonx1EU2eqjIXANLBEUjqGEoOSAroU7LGdqJjo/n?=
+ =?us-ascii?Q?sGy6XM8qgcxIHZbz/sR1Iva1Ake9SZpoRYt5p+kjjgMzTDKh/HbmQMX7OW6r?=
+ =?us-ascii?Q?7TIFbYS/+3IVx0LB0RipJP18W9gQAsfSdd/fJdc9VT7fa0JF87YmJgItpQzq?=
+ =?us-ascii?Q?J4Q59i0CBpJeT07w+6J2B99ZNq1Q3CFzGGtnkyAiydmz4yeXMePb8LtQx+C7?=
+ =?us-ascii?Q?Iy0tUToDNdJeg+t0H/M6f6sRJqvbHA8odnt9pSkRTeCMWTImQB+dKoPaZCJe?=
+ =?us-ascii?Q?GxKODFnSraaDvI+u7p6sYcKoij5cCSiTec96813quWcX30oMGQgO1zMA/FfT?=
+ =?us-ascii?Q?txRroder6NW2LJ+osH81hq6rv5sQbzr0Td00vmH8lZ3+MNmE7SyStIP7C/eX?=
+ =?us-ascii?Q?4J9ZhXZgkRiCXIW5qnQ9mTnGgVBJGK/dy2c0nczgkz2h5cVNRGSZu9Yi9P+h?=
+ =?us-ascii?Q?iIpGGX5X7FkqqpAD2t7LPuHYVB2gmPbnCGs5SMkLlbuFSoj9KXjTbpYQ/Lev?=
+ =?us-ascii?Q?0JE2hc70rN+GRwNPEJtV0+xSFxjkYOHpwf7V9/t5waxo/2iTad0m9dbK1Doh?=
+ =?us-ascii?Q?3uEEGdf3SKl9ytoJzdjn0gJtP2OAA47SN+6HdEkQp6B6PMfAencnJ/Q0/PS2?=
+ =?us-ascii?Q?LId4P8riceutph11EW77kHwQDYznQqneDkpSHk+ihHWRhY+93bsq18eDYak2?=
+ =?us-ascii?Q?py02ywsfuvEjU91CGqxKRJ5Wo9fgVA2m0ATL4+vBnHXEgER/sKekDkfTOTDJ?=
+ =?us-ascii?Q?9uiz7GLkpvgL3t6iGCnoe/K/7zKYmhvkz5T/iwQxocDcvhKhnjeg/6qwGawa?=
+ =?us-ascii?Q?IzeeGN0C2l8DwtNNFjo/G+WUm4wcqDhyae1Dy3Fa0+JrXSZD0R8nB3LabSLV?=
+ =?us-ascii?Q?Uu5J1JmuYEuzYuM9jQPT7a0PcSoRM4OFmDimgiXAzcRDktqKVZPeM28URPTm?=
+ =?us-ascii?Q?L2lY9MANWmOuL5RISzkXgj9Turz+Wyieycnr7Vn9zsMXdUSACqteppgqbTDS?=
+ =?us-ascii?Q?anVWTBPBh4K5/Fk1sOkGV/NAWBizz4A6uBoUG+pJLZFyUJcMrqHqaR0Co9He?=
+ =?us-ascii?Q?09Ic576R5excalfL8sCMzO27OmU71uriJULbMvLyTtQGf4fdOOM/LF+GRdS6?=
+ =?us-ascii?Q?KGQ+DRkPakqRm3c1IWJX+lVddrXYzCndEqf8a8Vb7NRxG9IUWLmEhNx07FXq?=
+ =?us-ascii?Q?zsbvpi2aW8/TCfuFf+zU6j9QwDcWM3TY5fOJ8u1fKUVePeu8Ih5jPQzyyVud?=
+ =?us-ascii?Q?GBej9Hkq1fHlWBDHVmfZq/vrVzzU+PzfziH5Jl2zsXBltENVbybmclwgiS2Y?=
+ =?us-ascii?Q?MxiShpV7wILAAKu0MM/hjYhgxrwrY80LEBmiHpWG40NiNZy97H2aPrwpCdkb?=
+ =?us-ascii?Q?jpj1vmjZqYwCsC4T4V8=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ IPV:CAL; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 16:18:30.9665 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a1a43b0-5dff-4dfd-c9b3-08de0d98d016
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 16:18:34.1573 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93c80a4e-9b17-497a-ee8b-08de0d98d1f6
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE32.namprd05.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF0000449F.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB9018
-Received-SPF: permerror client-ip=2a01:111:f403:c105::7;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6394
+Received-SPF: permerror client-ip=2a01:111:f403:c007::2;
  envelope-from=Luc.Michel@amd.com;
- helo=CH4PR04CU002.outbound.protection.outlook.com
+ helo=MW6PR02CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,87 +154,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-  - Rebased on master
-  - Fixed compilation issues in intermediate patches [Phil]
-  - Parent the memory region in the REGISTER_ARRAY object to the
-    REGISTER_ARRAY object itself instead of the REGISTER_ARRAY owner.
-    This ensure correct finalizing order and fixes the use-after-free
-    encountered by Phil [Phil]
+The REGISTER class (RegisterInfo struct) is currently a QOM type
+inheriting from DEVICE. This class has no real purpose:
+   - the qdev API is not used,
+   - according to the comment preceding it, the object_initialize call
+     is here to zero-initialize the struct. However all the effective
+     struct attributes are then initialized explicitly.
+   - the object is never parented.
 
-v2:
-  - Rebased, now applies cleanly. The conflict came from f9ce0848942490
-    that was merged in the mean time.
-    As discussed with Phil, this is still based on Versal 2 series to
-    avoid having to rebase the later on this one, as it is basically
-    ready to be merged. [Phil]
+This commits drops the REGISTER QOM type completely, leaving the
+RegisterInfo struct as a bare C struct.
 
-Hello,
+The register_register_types function is left empty here because it is
+reused in the next commit.
 
-This series addresses the memory leaks caused by the register API. The
-first patches fix the API itself while the last ones take care of the
-CANFD model.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Signed-off-by: Luc Michel <luc.michel@amd.com>
+---
+ include/hw/register.h          |  7 -------
+ hw/core/register.c             | 18 ------------------
+ hw/net/can/xlnx-versal-canfd.c |  2 --
+ 3 files changed, 27 deletions(-)
 
-The leaks in the register API were caused by:
-   - the REGISTER device being initialized without being realized nor
-     finalized. Those devices were not parented to anything and were
-     not using the qdev API. So in the end I chose to drop the REGISTER
-     object completely (patch 1).
-   - Register API users not calling `register_finalize_block' on the
-     RegisterInfoArray returned by `register_init_block'. Instead of
-     fixing all the users, I chose to simplify the API by removing the
-     need for this call. I turned the RegisterInfoArray struct into a QOM
-     object and parented it to the device in `register_init_block'. This
-     way it has its own finalize function that gets called when the
-     parent device is finalized. This implies a small API change: the
-     `register_finalize_block' function is removed (patch 2, 3, 4).
-
-The CANFD model needed special care. It was rolling out its own version
-of `register_init_block', including the discrepancies leading to the
-memory leaks. This is because the register map of this device is
-composed of main registers (from 0x0 to 0xec), followed by several banks
-of multiple registers (Tx banks, filter banks, Txe banks, ...). The
-register API is not suited for this kind of layout and the resulting
-code to handle that is convoluted. However a simple decoding logic is
-easily written for this, those registers having basically no side effect
-upon access.
-
-Patch 6 introduces this decoding logic for the banked registers, patch 7
-removes the register API bits for those, keeping the one for the base
-registers.
-
-Thanks
-
-Luc
-
-Luc Michel (6):
-  hw/core/register: remove the REGISTER device type
-  hw/core/register: add the REGISTER_ARRAY type
-  hw/core/register: remove the calls to `register_finalize_block'
-  hw/core/register: remove the `register_finalize_block' function
-  hw/net/can/xlnx-versal-canfd: refactor the banked registers logic
-  hw/net/can/xlnx-versal-canfd: remove register API usage for banked
-    regs
-
- include/hw/misc/xlnx-versal-crl.h      |   1 -
- include/hw/misc/xlnx-versal-xramc.h    |   1 -
- include/hw/misc/xlnx-zynqmp-apu-ctrl.h |   1 -
- include/hw/misc/xlnx-zynqmp-crf.h      |   1 -
- include/hw/net/xlnx-versal-canfd.h     |   8 -
- include/hw/nvram/xlnx-bbram.h          |   1 -
- include/hw/register.h                  |  25 +-
- hw/core/register.c                     |  38 +--
- hw/misc/xlnx-versal-crl.c              |  38 +--
- hw/misc/xlnx-versal-trng.c             |   1 -
- hw/misc/xlnx-versal-xramc.c            |  12 +-
- hw/misc/xlnx-zynqmp-apu-ctrl.c         |  12 +-
- hw/misc/xlnx-zynqmp-crf.c              |  12 +-
- hw/net/can/xlnx-versal-canfd.c         | 430 +++++++++----------------
- hw/nvram/xlnx-bbram.c                  |  13 +-
- hw/nvram/xlnx-versal-efuse-ctrl.c      |   1 -
- hw/nvram/xlnx-zynqmp-efuse.c           |   8 -
- 17 files changed, 197 insertions(+), 406 deletions(-)
-
+diff --git a/include/hw/register.h b/include/hw/register.h
+index a913c52aee5..4d13ea183c7 100644
+--- a/include/hw/register.h
++++ b/include/hw/register.h
+@@ -73,25 +73,18 @@ struct RegisterAccessInfo {
+  *
+  * @opaque: Opaque data for the register
+  */
+ 
+ struct RegisterInfo {
+-    /* <private> */
+-    DeviceState parent_obj;
+-
+-    /* <public> */
+     void *data;
+     int data_size;
+ 
+     const RegisterAccessInfo *access;
+ 
+     void *opaque;
+ };
+ 
+-#define TYPE_REGISTER "qemu-register"
+-DECLARE_INSTANCE_CHECKER(RegisterInfo, REGISTER,
+-                         TYPE_REGISTER)
+ 
+ /**
+  * This structure is used to group all of the individual registers which are
+  * modeled using the RegisterInfo structure.
+  *
+diff --git a/hw/core/register.c b/hw/core/register.c
+index 3340df70b06..2553cb15aba 100644
+--- a/hw/core/register.c
++++ b/hw/core/register.c
+@@ -256,13 +256,10 @@ static RegisterInfoArray *register_init_block(DeviceState *owner,
+ 
+     for (i = 0; i < num; i++) {
+         int index = rae[i].addr / data_size;
+         RegisterInfo *r = &ri[index];
+ 
+-        /* Init the register, this will zero it. */
+-        object_initialize((void *)r, sizeof(*r), TYPE_REGISTER);
+-
+         /* Set the properties of the register */
+         r->data = data + data_size * index;
+         r->data_size = data_size;
+         r->access = &rae[i];
+         r->opaque = owner;
+@@ -316,26 +313,11 @@ void register_finalize_block(RegisterInfoArray *r_array)
+ {
+     g_free(r_array->r);
+     g_free(r_array);
+ }
+ 
+-static void register_class_init(ObjectClass *oc, const void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    /* Reason: needs to be wired up to work */
+-    dc->user_creatable = false;
+-}
+-
+-static const TypeInfo register_info = {
+-    .name  = TYPE_REGISTER,
+-    .parent = TYPE_DEVICE,
+-    .class_init = register_class_init,
+-    .instance_size = sizeof(RegisterInfo),
+-};
+ 
+ static void register_register_types(void)
+ {
+-    type_register_static(&register_info);
+ }
+ 
+ type_init(register_register_types)
+diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
+index 343348660b5..99bbdd7d3fe 100644
+--- a/hw/net/can/xlnx-versal-canfd.c
++++ b/hw/net/can/xlnx-versal-canfd.c
+@@ -1866,12 +1866,10 @@ static int canfd_populate_regarray(XlnxVersalCANFDState *s,
+ 
+     for (i = 0; i < num_rae; i++) {
+         int index = rae[i].addr / 4;
+         RegisterInfo *r = &s->reg_info[index];
+ 
+-        object_initialize(r, sizeof(*r), TYPE_REGISTER);
+-
+         *r = (RegisterInfo) {
+             .data = &s->regs[index],
+             .data_size = sizeof(uint32_t),
+             .access = &rae[i],
+             .opaque = OBJECT(s),
 -- 
 2.51.0
 
