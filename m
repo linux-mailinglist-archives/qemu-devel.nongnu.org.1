@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF94CBE8655
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 13:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45101BE862B
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 13:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9ijG-0000sm-8a; Fri, 17 Oct 2025 07:34:38 -0400
+	id 1v9ijF-0000si-EK; Fri, 17 Oct 2025 07:34:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9ijB-0000rt-EM
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 07:34:33 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9ij9-0000qx-EX
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 07:34:31 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9iiq-00061I-JT
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 07:34:33 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-471131d6121so14038635e9.1
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 04:34:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1v9iin-00061f-7n
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 07:34:30 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-470ffbf2150so16769215e9.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 04:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760700844; x=1761305644; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760700845; x=1761305645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S6vKc0hwwlCgha4p0dnyBbkmC+U2R4VT4bcnp+IbsaQ=;
- b=WUcepVeya89yWO3f1r7wI1rzIfRQ6UnjuYEx2wKaZ+1cW67/PHXbuEsx8UwDpVQLq2
- 1gMsKU766E1n1bcDoaZ0V+Vw+mD4a+53r2L6W0sfMJpsOerR7Kg3+AzkR2D9gOr2ZjlP
- siNP8qlglR+G/lVINcqpbSDVDlO0LKVnPt6+tq3iJrxcyB5Fp2bBTjb7FYevOzNvJROh
- HYcK6wFm/GpZf8gUf+yoUOy5Xhh+YmwKKodicq70N/vFWqPbspNaIftsppU28uiVVTBG
- +zFmNGWshG3bT+JIkO7E7cDBZsD7q3nqSfu0N9kbZGV7d5Kr/4UzLsGoRFT4K27nzHN6
- VkBA==
+ bh=BM6QgAOG34zDGb9jZI8DkkbGa1KuVCoA2kRHxsUOX8Q=;
+ b=J0/Q8a99uHbddqr8eEuhbYg43kERV6BnoyqXqKY/153/gVWnO9phgn2vNhbypyHYIv
+ /w6tNgbDDol8jIq3OGGGZudff1HmpszhTavgO1rhdZh2K8u0JSiqK3I2QbyHd+LweUx9
+ UhajrPDExSoBIFnWiyYTVHy3iPQwqbu9aciUdoUoU9CsC7G/Kjmf5OwCHIhWQA1Oeyk1
+ nyj0e8qJJQ+58zqVQQZnXmR3w7J6qBxLm87ZP1cS43GmLrJ0UW1WTS3MOtEHfTA+xt/6
+ 3r5cNCaEgMtgQR5v6xwHRR5EDEBOVX610aWvyzuLqvMEtQKUY5v6PnvHgjovVaZHJnuf
+ xGsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760700844; x=1761305644;
+ d=1e100.net; s=20230601; t=1760700845; x=1761305645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S6vKc0hwwlCgha4p0dnyBbkmC+U2R4VT4bcnp+IbsaQ=;
- b=JuMnbcjPfUyqximuq5Cs/UvByr7EkZS08TgC2TiYpq93fChwAlGsymhVIeiyUyYWhD
- r0unrIluACv7v24xmrBxwPFkYb+uVmApZCLWLeTJcElFXmMnjn0X3CghTmR/qHFnSjZa
- hu4gc3UARPd6zddKAObkNLjFMlSN5Oh/IoBptTQ5urtdkBVRAW1QB+Ug7ZnxRzHMRn+1
- JlZuLaoQt/ZitXd5txCrO8jtZ5DlnDl9U6hOuEP7q+Ctru1WuYQSLTrAERnme/q46z7F
- RqG4v+b9G1SoiIvcsymZnX57MNG1CBZ1bppPz4AQGnJP2aIPNJON4unBo/l8IJmQvitV
- OAQA==
-X-Gm-Message-State: AOJu0Yy3gbmxOW5PYZ89r92q4b7RG5NwyxR9B+vEOhmrIUdDqivMjwgN
- 7+bMxv6lHOdnBEtf/yuVeCemT5o+/nqSixo9oyucl/UGR0XxHSTDFWyp1a4y5g==
-X-Gm-Gg: ASbGncvZtzsM1TyOBuccexKuVxFoHeluZmjAB1q9O+x0z/7WwBsKknAHgYv0krO1lrf
- Pij/qrAwdT65fbJQocPkqkIam70hWvAFF66lx6BGCl6xk0izaEAha/QHDJQRnprq8d1g2SnHIzw
- p/XmkhgLTY9E/YqJektPF/vd3X/mHz8kAnkXtQkgqFJcwABYAJsCSmkbMeISukWOfC+Q99ua8T+
- 9YGZXmkrkgSn7efBNSbTvWCSBJiUZ9X9ifgcQLSvWYsy/HCXauh6nj0YN6JYeQhN6VH40tZWXB8
- VrV5nHqKyhbGpxzxYpJD+bprsSJL9HnkFclpXEXDwyvpiHVfGHMt6GG98wXBLbndBnKcJ5c5ES9
- djw5KAclHyKOjHkfNIJJJ3J/M8yRsub1FKvOLdQ/8QQWx6Gg0Ruqx66/qojP7LkUvtYPzQcKSHV
- UEDCDC9p0FMYaQX308SesWFWlf5YoeMLNODjAAvgkvrJ0=
-X-Google-Smtp-Source: AGHT+IGqAbveX4RPg/hEwQ7NGKwV+poU7tSRSzAmvVTRRBLpbtC5gXANcUNsHQ/As79zVpdgRNR6Bg==
-X-Received: by 2002:a05:600c:1f93:b0:46f:b42e:e367 with SMTP id
- 5b1f17b1804b1-4711792a527mr23002855e9.41.1760700843581; 
- Fri, 17 Oct 2025 04:34:03 -0700 (PDT)
+ bh=BM6QgAOG34zDGb9jZI8DkkbGa1KuVCoA2kRHxsUOX8Q=;
+ b=bVWTUYojhkTzzsOf1Z2DB6GpeMCGINRoEquzp7lXtCBThoUHLNo2GVJu1tBLHiNu+n
+ YC5DKzGL8lKX8c0Qb93wknXt7flf9fXYPrSjq4b0dy+s6Pu6idNgZWJMZG1GsjXUN9ZO
+ 0Zw3zgPW7coBjh423TyoZ2EVpu6Zk5QSkFKHYQOhIvhbR0tqXz36XhHLDhnubZ/4J0Ub
+ 7S4avfWQC9DKsLhOc5UZV4FWAimzC8jeOrh+cLTZq/rw363NPiv5fEqpJk8vazDqFuPa
+ WsxVziCGRMzKG+AVpQkjQn5DpNhzXJCBJi7v6PE5Xur8Fvgwf+KSlGVXV5B7yQKVgASe
+ N1DQ==
+X-Gm-Message-State: AOJu0YzCI6iUssxr9AnZDqzr/eanSuDbH44xIcS9j3b8mlsOX+vqLSSy
+ uvko2/Sa6+69WaPAeenkm08M0om4vMlQQVfTrXEEa8oA/Nb8nJFFVYdz+0eaTg==
+X-Gm-Gg: ASbGncsusWophoTKjNOwQscAjZIopSLIb7+j0oxkuR4/q7Yv4Mfo96N5RAfFcUxWcIK
+ 4OojW7ffJNretw5RX6bbYB75CimWugP98Cxj3KyDTVQHm+NiSDAYiBiXXXsGnH1i3obJp4JqRh0
+ 6d3syplFDVloWFyhGeS/286MnYWgmBWE1iEIAA+tT7zyKS4eLfRBqVZDPgQY0g8aMewsrSWc8gO
+ pdvjH0NSn80QAX2eTGOwNxdSn2+/IvFtQxc1xm8zKzXh6KhfRmB2qie9dG2HbRXgpxX9jXz62EA
+ /xSFJoaYICOMoO1srwajwzPWvU87AB5QzXpyp9IuqLHNepZuXCiHjpJWCmdLia6B4HQnTI7WH+D
+ l+ISouh0Z+9IDP0p27BrEuSJRM9v39CBtpg7zN4aRgG5DOu4CQwvwAsYK/9qQvi3ahlNoyxRrHr
+ R+yJjlFHKWKGzXlXu5TgBUD3QYzoetCxbq
+X-Google-Smtp-Source: AGHT+IGLsMwNa24SVKElCrTuDly2JhrkRR3DVkahMshWsaOruLCSdJ+4rhKxrSHRXVTtx+GQp2kERQ==
+X-Received: by 2002:a05:600c:364d:b0:471:6a1:26e7 with SMTP id
+ 5b1f17b1804b1-47109b4f8bemr37360005e9.12.1760700844745; 
+ Fri, 17 Oct 2025 04:34:04 -0700 (PDT)
 Received: from archlinux (pd95edc07.dip0.t-ipconnect.de. [217.94.220.7])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4711444c8adsm80395435e9.13.2025.10.17.04.34.02
+ 5b1f17b1804b1-4711444c8adsm80395435e9.13.2025.10.17.04.34.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 04:34:03 -0700 (PDT)
+ Fri, 17 Oct 2025 04:34:04 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -74,16 +74,17 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 6/8] hw/i386/apic: Prefer APICCommonState over DeviceState
-Date: Fri, 17 Oct 2025 13:33:36 +0200
-Message-ID: <20251017113338.7953-7-shentey@gmail.com>
+Subject: [PATCH 7/8] hw/ide/ide-internal: Move dma_buf_commit() into ide
+ "namespace"
+Date: Fri, 17 Oct 2025 13:33:37 +0200
+Message-ID: <20251017113338.7953-8-shentey@gmail.com>
 X-Mailer: git-send-email 2.51.1.dirty
 In-Reply-To: <20251017113338.7953-1-shentey@gmail.com>
 References: <20251017113338.7953-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,744 +107,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes the APIC API more type-safe by resolving quite a few APIC_COMMON
-downcasts.
-
-Like PICCommonState, the APICCommonState is now a public typedef while staying
-an abstract datatype.
+The identifier suggests that it is a generic DMA function while it is tied
+to IDE. Fix this by adding an "ide_" prefix.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/i386/apic.h           | 33 +++++------
- include/hw/i386/apic_internal.h  |  7 +--
- target/i386/cpu.h                |  4 +-
- target/i386/kvm/kvm_i386.h       |  2 +-
- target/i386/whpx/whpx-internal.h |  2 +-
- hw/i386/kvm/apic.c               |  3 +-
- hw/i386/vapic.c                  |  2 +-
- hw/i386/x86-cpu.c                |  2 +-
- hw/intc/apic.c                   | 97 +++++++++++++-------------------
- hw/intc/apic_common.c            | 56 +++++++-----------
- target/i386/cpu-apic.c           |  4 +-
- target/i386/cpu.c                |  2 +-
- target/i386/kvm/kvm.c            |  2 +-
- target/i386/whpx/whpx-apic.c     |  3 +-
- 14 files changed, 89 insertions(+), 130 deletions(-)
+ hw/ide/ide-internal.h |  2 +-
+ hw/ide/ahci.c         |  8 ++++----
+ hw/ide/core.c         | 10 +++++-----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
-index eb606d6076..871f142888 100644
---- a/include/hw/i386/apic.h
-+++ b/include/hw/i386/apic.h
-@@ -1,28 +1,29 @@
- #ifndef APIC_H
- #define APIC_H
+diff --git a/hw/ide/ide-internal.h b/hw/ide/ide-internal.h
+index 0d64805da2..281d07c9d5 100644
+--- a/hw/ide/ide-internal.h
++++ b/hw/ide/ide-internal.h
+@@ -398,7 +398,7 @@ int64_t ide_get_sector(IDEState *s);
+ void ide_set_sector(IDEState *s, int64_t sector_num);
  
-+typedef struct APICCommonState APICCommonState;
+ void ide_start_dma(IDEState *s, BlockCompletionFunc *cb);
+-void dma_buf_commit(IDEState *s, uint32_t tx_bytes);
++void ide_dma_buf_commit(IDEState *s, uint32_t tx_bytes);
+ void ide_dma_error(IDEState *s);
+ void ide_abort_command(IDEState *s);
  
- /* apic.c */
- void apic_set_max_apic_id(uint32_t max_apic_id);
--int apic_accept_pic_intr(DeviceState *s);
--void apic_deliver_pic_intr(DeviceState *s, int level);
--void apic_deliver_nmi(DeviceState *d);
--int apic_get_interrupt(DeviceState *s);
--int cpu_set_apic_base(DeviceState *s, uint64_t val);
--uint64_t cpu_get_apic_base(DeviceState *s);
--bool cpu_is_apic_enabled(DeviceState *s);
--void cpu_set_apic_tpr(DeviceState *s, uint8_t val);
--uint8_t cpu_get_apic_tpr(DeviceState *s);
--void apic_init_reset(DeviceState *s);
--void apic_sipi(DeviceState *s);
--void apic_poll_irq(DeviceState *d);
--void apic_designate_bsp(DeviceState *d, bool bsp);
--int apic_get_highest_priority_irr(DeviceState *dev);
-+int apic_accept_pic_intr(APICCommonState *s);
-+void apic_deliver_pic_intr(APICCommonState *s, int level);
-+void apic_deliver_nmi(APICCommonState *s);
-+int apic_get_interrupt(APICCommonState *s);
-+int cpu_set_apic_base(APICCommonState *s, uint64_t val);
-+uint64_t cpu_get_apic_base(APICCommonState *s);
-+bool cpu_is_apic_enabled(APICCommonState *s);
-+void cpu_set_apic_tpr(APICCommonState *s, uint8_t val);
-+uint8_t cpu_get_apic_tpr(APICCommonState *s);
-+void apic_init_reset(APICCommonState *s);
-+void apic_sipi(APICCommonState *s);
-+void apic_poll_irq(APICCommonState *s);
-+void apic_designate_bsp(APICCommonState *s, bool bsp);
-+int apic_get_highest_priority_irr(APICCommonState *s);
- int apic_msr_read(int index, uint64_t *val);
- int apic_msr_write(int index, uint64_t val);
--bool is_x2apic_mode(DeviceState *d);
-+bool is_x2apic_mode(APICCommonState *s);
- 
- /* pc.c */
--DeviceState *cpu_get_current_apic(void);
-+APICCommonState *cpu_get_current_apic(void);
- 
- #endif
-diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
-index 429278da61..4a62fdceb4 100644
---- a/include/hw/i386/apic_internal.h
-+++ b/include/hw/i386/apic_internal.h
-@@ -22,6 +22,7 @@
- #define QEMU_APIC_INTERNAL_H
- 
- #include "cpu.h"
-+#include "hw/i386/apic.h"
- #include "system/memory.h"
- #include "qemu/timer.h"
- #include "target/i386/cpu-qom.h"
-@@ -125,8 +126,6 @@
- #define VAPIC_ENABLE_BIT                0
- #define VAPIC_ENABLE_MASK               (1 << VAPIC_ENABLE_BIT)
- 
--typedef struct APICCommonState APICCommonState;
--
- #define TYPE_APIC_COMMON "apic-common"
- typedef struct APICCommonClass APICCommonClass;
- DECLARE_OBJ_CHECKERS(APICCommonState, APICCommonClass,
-@@ -203,8 +202,8 @@ typedef struct VAPICState {
- extern bool apic_report_tpr_access;
- 
- bool apic_next_timer(APICCommonState *s, int64_t current_time);
--void apic_enable_tpr_access_reporting(DeviceState *d, bool enable);
--void apic_enable_vapic(DeviceState *d, hwaddr paddr);
-+void apic_enable_tpr_access_reporting(APICCommonState *s, bool enable);
-+void apic_enable_vapic(APICCommonState *s, hwaddr paddr);
- 
- void vapic_report_tpr_access(DeviceState *dev, CPUState *cpu, target_ulong ip,
-                              TPRAccess access);
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index ce948861a7..67ff52a8b4 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2349,7 +2349,7 @@ struct ArchCPU {
- 
-     /* in order to simplify APIC support, we leave this pointer to the
-        user */
--    struct DeviceState *apic_state;
-+    struct APICCommonState *apic_state;
-     struct MemoryRegion *cpu_as_root, *cpu_as_mem, *smram;
-     Notifier machine_done;
- 
-@@ -2830,7 +2830,7 @@ bool cpu_svm_has_intercept(CPUX86State *env, uint32_t type);
- 
- /* apic.c */
- void cpu_report_tpr_access(CPUX86State *env, TPRAccess access);
--void apic_handle_tpr_access_report(DeviceState *d, target_ulong ip,
-+void apic_handle_tpr_access_report(APICCommonState *s, target_ulong ip,
-                                    TPRAccess access);
- 
- /* Special values for X86CPUVersion: */
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 5f83e8850a..5c908fdd6a 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -56,7 +56,7 @@ bool kvm_has_adjust_clock_stable(void);
- bool kvm_has_exception_payload(void);
- void kvm_synchronize_all_tsc(void);
- 
--void kvm_get_apic_state(DeviceState *d, struct kvm_lapic_state *kapic);
-+void kvm_get_apic_state(APICCommonState *s, struct kvm_lapic_state *kapic);
- void kvm_put_apicbase(X86CPU *cpu, uint64_t value);
- 
- bool kvm_has_x2apic_api(void);
-diff --git a/target/i386/whpx/whpx-internal.h b/target/i386/whpx/whpx-internal.h
-index 6633e9c4ca..066e16bd8e 100644
---- a/target/i386/whpx/whpx-internal.h
-+++ b/target/i386/whpx/whpx-internal.h
-@@ -44,7 +44,7 @@ struct whpx_state {
- };
- 
- extern struct whpx_state whpx_global;
--void whpx_apic_get(DeviceState *s);
-+void whpx_apic_get(struct APICCommonState *s);
- 
- #define WHV_E_UNKNOWN_CAPABILITY 0x80370300L
- 
-diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
-index 1be9bfe36e..82355f0463 100644
---- a/hw/i386/kvm/apic.c
-+++ b/hw/i386/kvm/apic.c
-@@ -60,9 +60,8 @@ static void kvm_put_apic_state(APICCommonState *s, struct kvm_lapic_state *kapic
-     kvm_apic_set_reg(kapic, 0x3e, s->divide_conf);
- }
- 
--void kvm_get_apic_state(DeviceState *dev, struct kvm_lapic_state *kapic)
-+void kvm_get_apic_state(APICCommonState *s, struct kvm_lapic_state *kapic)
- {
--    APICCommonState *s = APIC_COMMON(dev);
-     int i, v;
- 
-     if (kvm_has_x2apic_api() && s->apicbase & MSR_IA32_APICBASE_EXTD) {
-diff --git a/hw/i386/vapic.c b/hw/i386/vapic.c
-index 0c1c92c479..f1089f0a7c 100644
---- a/hw/i386/vapic.c
-+++ b/hw/i386/vapic.c
-@@ -490,7 +490,7 @@ void vapic_report_tpr_access(DeviceState *dev, CPUState *cs, target_ulong ip,
- }
- 
- typedef struct VAPICEnableTPRReporting {
--    DeviceState *apic;
-+    APICCommonState *apic;
-     bool enable;
- } VAPICEnableTPRReporting;
- 
-diff --git a/hw/i386/x86-cpu.c b/hw/i386/x86-cpu.c
-index c876e6709e..1a86a853d5 100644
---- a/hw/i386/x86-cpu.c
-+++ b/hw/i386/x86-cpu.c
-@@ -86,7 +86,7 @@ int cpu_get_pic_interrupt(CPUX86State *env)
-     return intno;
- }
- 
--DeviceState *cpu_get_current_apic(void)
-+APICCommonState *cpu_get_current_apic(void)
- {
-     if (current_cpu) {
-         X86CPU *cpu = X86_CPU(current_cpu);
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index c768033856..cb35c80c75 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -181,10 +181,8 @@ static void apic_local_deliver(APICCommonState *s, int vector)
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index 1303c21cb7..14bc66fb7f 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -1417,7 +1417,7 @@ static void ahci_pio_transfer(const IDEDMA *dma)
      }
- }
  
--void apic_deliver_pic_intr(DeviceState *dev, int level)
-+void apic_deliver_pic_intr(APICCommonState *s, int level)
+     /* Update number of transferred bytes, destroy sglist */
+-    dma_buf_commit(s, size);
++    ide_dma_buf_commit(s, size);
+ 
+ out:
+     /* declare that we processed everything */
+@@ -1482,8 +1482,8 @@ static int32_t ahci_dma_prepare_buf(const IDEDMA *dma, int32_t limit)
+ 
+ /**
+  * Updates the command header with a bytes-read value.
+- * Called via dma_buf_commit, for both DMA and PIO paths.
+- * sglist destruction is handled within dma_buf_commit.
++ * Called via ide_dma_buf_commit, for both DMA and PIO paths.
++ * sglist destruction is handled within ide_dma_buf_commit.
+  */
+ static void ahci_commit_buf(const IDEDMA *dma, uint32_t tx_bytes)
  {
--    APICCommonState *s = APIC(dev);
--
-     if (level) {
-         apic_local_deliver(s, APIC_LVT_LINT0);
-     } else {
-@@ -301,10 +299,8 @@ static void apic_deliver_irq(uint32_t dest, uint8_t dest_mode,
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
- }
- 
--bool is_x2apic_mode(DeviceState *dev)
-+bool is_x2apic_mode(APICCommonState *s)
- {
--    APICCommonState *s = APIC(dev);
--
-     return s->apicbase & MSR_IA32_APICBASE_EXTD;
- }
- 
-@@ -388,15 +384,12 @@ static void apic_set_tpr(APICCommonState *s, uint8_t val)
+@@ -1511,7 +1511,7 @@ static int ahci_dma_rw_buf(const IDEDMA *dma, bool is_write)
      }
+ 
+     /* free sglist, update byte count */
+-    dma_buf_commit(s, l);
++    ide_dma_buf_commit(s, l);
+     s->io_buffer_index += l;
+ 
+     trace_ahci_dma_rw_buf(ad->hba, ad->port_no, l);
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index b14983ec54..8c380abf7c 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -827,7 +827,7 @@ static void ide_sector_read(IDEState *s)
+                                       ide_sector_read_cb, s);
  }
  
--int apic_get_highest_priority_irr(DeviceState *dev)
-+int apic_get_highest_priority_irr(APICCommonState *s)
+-void dma_buf_commit(IDEState *s, uint32_t tx_bytes)
++void ide_dma_buf_commit(IDEState *s, uint32_t tx_bytes)
  {
--    APICCommonState *s;
--
--    if (!dev) {
-+    if (!s) {
-         /* no interrupts */
-         return -1;
-     }
--    s = APIC_COMMON(dev);
-     return get_highest_priority_int(s->irr);
- }
+     if (s->bus->dma->ops->commit_buf) {
+         s->bus->dma->ops->commit_buf(s->bus->dma, tx_bytes);
+@@ -848,7 +848,7 @@ void ide_set_inactive(IDEState *s, bool more)
  
-@@ -458,22 +451,19 @@ static int apic_irq_pending(APICCommonState *s)
- static void apic_update_irq(APICCommonState *s)
+ void ide_dma_error(IDEState *s)
  {
-     CPUState *cpu;
--    DeviceState *dev = (DeviceState *)s;
- 
-     cpu = CPU(s->cpu);
-     if (!qemu_cpu_is_self(cpu)) {
-         cpu_interrupt(cpu, CPU_INTERRUPT_POLL);
-     } else if (apic_irq_pending(s) > 0) {
-         cpu_interrupt(cpu, CPU_INTERRUPT_HARD);
--    } else if (!apic_accept_pic_intr(dev) || !pic_get_output(isa_pic)) {
-+    } else if (!apic_accept_pic_intr(s) || !pic_get_output(isa_pic)) {
-         cpu_reset_interrupt(cpu, CPU_INTERRUPT_HARD);
-     }
- }
- 
--void apic_poll_irq(DeviceState *dev)
-+void apic_poll_irq(APICCommonState *s)
- {
--    APICCommonState *s = APIC(dev);
--
-     apic_sync_vapic(s, SYNC_FROM_VAPIC);
-     apic_update_irq(s);
- }
-@@ -516,7 +506,7 @@ static void apic_eoi(APICCommonState *s)
- 
- static bool apic_match_dest(APICCommonState *apic, uint32_t dest)
- {
--    if (is_x2apic_mode(&apic->parent_obj)) {
-+    if (is_x2apic_mode(apic)) {
-         return apic->initial_apic_id == dest;
-     } else {
-         return apic->id == (uint8_t)dest;
-@@ -550,7 +540,7 @@ static void apic_get_broadcast_bitmask(uint32_t *deliver_bitmask,
-     for (i = 0; i < max_apics; i++) {
-         apic_iter = local_apics[i];
-         if (apic_iter) {
--            bool apic_in_x2apic = is_x2apic_mode(&apic_iter->parent_obj);
-+            bool apic_in_x2apic = is_x2apic_mode(apic_iter);
- 
-             if (is_x2apic_broadcast && apic_in_x2apic) {
-                 apic_set_bit(deliver_bitmask, i);
-@@ -642,27 +632,24 @@ static void apic_startup(APICCommonState *s, int vector_num)
-     cpu_interrupt(CPU(s->cpu), CPU_INTERRUPT_SIPI);
- }
- 
--void apic_sipi(DeviceState *dev)
-+void apic_sipi(APICCommonState *s)
- {
--    APICCommonState *s = APIC(dev);
--
-     if (!s->wait_for_sipi)
-         return;
-     cpu_x86_load_seg_cache_sipi(s->cpu, s->sipi_vector);
-     s->wait_for_sipi = 0;
- }
- 
--static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
-+static void apic_deliver(APICCommonState *s, uint32_t dest, uint8_t dest_mode,
-                          uint8_t delivery_mode, uint8_t vector_num,
-                          uint8_t trigger_mode, uint8_t dest_shorthand)
- {
--    APICCommonState *s = APIC(dev);
-     APICCommonState *apic_iter;
-     uint32_t deliver_bitmask_size = max_apic_words * sizeof(uint32_t);
-     g_autofree uint32_t *deliver_bitmask = g_new(uint32_t, max_apic_words);
-     uint32_t current_apic_id;
- 
--    if (is_x2apic_mode(dev)) {
-+    if (is_x2apic_mode(s)) {
-         current_apic_id = s->initial_apic_id;
-     } else {
-         current_apic_id = s->id;
-@@ -709,18 +696,15 @@ static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
- 
- static bool apic_check_pic(APICCommonState *s)
- {
--    DeviceState *dev = (DeviceState *)s;
--
--    if (!apic_accept_pic_intr(dev) || !pic_get_output(isa_pic)) {
-+    if (!apic_accept_pic_intr(s) || !pic_get_output(isa_pic)) {
-         return false;
-     }
--    apic_deliver_pic_intr(dev, 1);
-+    apic_deliver_pic_intr(s, 1);
-     return true;
- }
- 
--int apic_get_interrupt(DeviceState *dev)
-+int apic_get_interrupt(APICCommonState *s)
- {
--    APICCommonState *s = APIC(dev);
-     int intno;
- 
-     /* if the APIC is installed or enabled, we let the 8259 handle the
-@@ -752,9 +736,8 @@ int apic_get_interrupt(DeviceState *dev)
-     return intno;
- }
- 
--int apic_accept_pic_intr(DeviceState *dev)
-+int apic_accept_pic_intr(APICCommonState *s)
- {
--    APICCommonState *s = APIC(dev);
-     uint32_t lvt0;
- 
-     if (!s)
-@@ -788,20 +771,18 @@ static void apic_timer(void *opaque)
- 
- static int apic_register_read(int index, uint64_t *value)
- {
--    DeviceState *dev;
-     APICCommonState *s;
-     uint32_t val;
-     int ret = 0;
- 
--    dev = cpu_get_current_apic();
--    if (!dev) {
-+    s = cpu_get_current_apic();
-+    if (!s) {
-         return -1;
-     }
--    s = APIC(dev);
- 
-     switch(index) {
-     case 0x02: /* id */
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             val = s->initial_apic_id;
-         } else {
-             val = s->id << 24;
-@@ -828,14 +809,14 @@ static int apic_register_read(int index, uint64_t *value)
-         val = 0;
-         break;
-     case 0x0d:
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             val = s->extended_log_dest;
-         } else {
-             val = s->log_dest << 24;
+-    dma_buf_commit(s, 0);
++    ide_dma_buf_commit(s, 0);
+     ide_abort_command(s);
+     ide_set_inactive(s, false);
+     ide_bus_set_irq(s->bus);
+@@ -893,7 +893,7 @@ static void ide_dma_cb(void *opaque, int ret)
+     if (ret < 0) {
+         if (ide_handle_rw_error(s, -ret, ide_dma_cmd_to_retry(s->dma_cmd))) {
+             s->bus->dma->aiocb = NULL;
+-            dma_buf_commit(s, 0);
++            ide_dma_buf_commit(s, 0);
+             return;
          }
-         break;
-     case 0x0e:
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             val = 0;
-             ret = -1;
-         } else {
-@@ -902,14 +883,14 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
- 
- int apic_msr_read(int index, uint64_t *val)
- {
--    DeviceState *dev;
-+    APICCommonState *s;
- 
--    dev = cpu_get_current_apic();
--    if (!dev) {
-+    s = cpu_get_current_apic();
-+    if (!s) {
-         return -1;
      }
- 
--    if (!is_x2apic_mode(dev)) {
-+    if (!is_x2apic_mode(s)) {
-         return -1;
-     }
- 
-@@ -943,20 +924,18 @@ static void apic_send_msi(MSIMessage *msi)
- 
- static int apic_register_write(int index, uint64_t val)
- {
--    DeviceState *dev;
-     APICCommonState *s;
- 
--    dev = cpu_get_current_apic();
--    if (!dev) {
-+    s = cpu_get_current_apic();
-+    if (!s) {
-         return -1;
-     }
--    s = APIC(dev);
- 
-     trace_apic_register_write(index, val);
- 
-     switch(index) {
-     case 0x02:
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             return -1;
-         }
- 
-@@ -979,14 +958,14 @@ static int apic_register_write(int index, uint64_t val)
-         apic_eoi(s);
-         break;
-     case 0x0d:
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             return -1;
-         }
- 
-         s->log_dest = val >> 24;
-         break;
-     case 0x0e:
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             return -1;
-         }
- 
-@@ -1005,20 +984,20 @@ static int apic_register_write(int index, uint64_t val)
-         uint32_t dest;
- 
-         s->icr[0] = val;
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             s->icr[1] = val >> 32;
-             dest = s->icr[1];
-         } else {
-             dest = (s->icr[1] >> 24) & 0xff;
-         }
- 
--        apic_deliver(dev, dest, (s->icr[0] >> 11) & 1,
-+        apic_deliver(s, dest, (s->icr[0] >> 11) & 1,
-                      (s->icr[0] >> 8) & 7, (s->icr[0] & 0xff),
-                      (s->icr[0] >> 15) & 1, (s->icr[0] >> 18) & 3);
-         break;
-     }
-     case 0x31:
--        if (is_x2apic_mode(dev)) {
-+        if (is_x2apic_mode(s)) {
-             return -1;
-         }
- 
-@@ -1053,7 +1032,7 @@ static int apic_register_write(int index, uint64_t val)
-     case 0x3f: {
-         int vector = val & 0xff;
- 
--        if (!is_x2apic_mode(dev)) {
-+        if (!is_x2apic_mode(s)) {
-             return -1;
-         }
- 
-@@ -1063,7 +1042,7 @@ static int apic_register_write(int index, uint64_t val)
-          * - Trigger mode: 0 (Edge)
-          * - Delivery mode: 0 (Fixed)
+@@ -912,7 +912,7 @@ static void ide_dma_cb(void *opaque, int ret)
+     sector_num = ide_get_sector(s);
+     if (n > 0) {
+         assert(n * 512 == s->sg.size);
+-        dma_buf_commit(s, s->sg.size);
++        ide_dma_buf_commit(s, s->sg.size);
+         sector_num += n;
+         ide_set_sector(s, sector_num);
+         s->nsector -= n;
+@@ -944,7 +944,7 @@ static void ide_dma_cb(void *opaque, int ret)
+          * Reset the Active bit and don't raise the interrupt.
           */
--        apic_deliver(dev, 0, 0, APIC_DM_FIXED, vector, 0, 1);
-+        apic_deliver(s, 0, 0, APIC_DM_FIXED, vector, 0, 1);
- 
-         break;
+         s->status = READY_STAT | SEEK_STAT;
+-        dma_buf_commit(s, 0);
++        ide_dma_buf_commit(s, 0);
+         goto eot;
      }
-@@ -1102,14 +1081,14 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
- 
- int apic_msr_write(int index, uint64_t val)
- {
--    DeviceState *dev;
-+    APICCommonState *s;
- 
--    dev = cpu_get_current_apic();
--    if (!dev) {
-+    s = cpu_get_current_apic();
-+    if (!s) {
-         return -1;
-     }
- 
--    if (!is_x2apic_mode(dev)) {
-+    if (!is_x2apic_mode(s)) {
-         return -1;
-     }
- 
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index 394fe02013..ec9e978b0b 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -35,12 +35,11 @@
- 
- bool apic_report_tpr_access;
- 
--int cpu_set_apic_base(DeviceState *dev, uint64_t val)
-+int cpu_set_apic_base(APICCommonState *s, uint64_t val)
- {
-     trace_cpu_set_apic_base(val);
- 
--    if (dev) {
--        APICCommonState *s = APIC_COMMON(dev);
-+    if (s) {
-         APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
-         /* Reset possibly modified xAPIC ID */
-         s->id = s->initial_apic_id;
-@@ -50,10 +49,9 @@ int cpu_set_apic_base(DeviceState *dev, uint64_t val)
-     return 0;
- }
- 
--uint64_t cpu_get_apic_base(DeviceState *dev)
-+uint64_t cpu_get_apic_base(APICCommonState *s)
- {
--    if (dev) {
--        APICCommonState *s = APIC_COMMON(dev);
-+    if (s) {
-         trace_cpu_get_apic_base((uint64_t)s->apicbase);
-         return s->apicbase;
-     } else {
-@@ -62,52 +60,43 @@ uint64_t cpu_get_apic_base(DeviceState *dev)
-     }
- }
- 
--bool cpu_is_apic_enabled(DeviceState *dev)
-+bool cpu_is_apic_enabled(APICCommonState *s)
- {
--    APICCommonState *s;
--
--    if (!dev) {
-+    if (!s) {
-         return false;
-     }
- 
--    s = APIC_COMMON(dev);
--
-     return s->apicbase & MSR_IA32_APICBASE_ENABLE;
- }
- 
--void cpu_set_apic_tpr(DeviceState *dev, uint8_t val)
-+void cpu_set_apic_tpr(APICCommonState *s, uint8_t val)
- {
--    APICCommonState *s;
-     APICCommonClass *info;
- 
--    if (!dev) {
-+    if (!s) {
-         return;
-     }
- 
--    s = APIC_COMMON(dev);
-     info = APIC_COMMON_GET_CLASS(s);
- 
-     info->set_tpr(s, val);
- }
- 
--uint8_t cpu_get_apic_tpr(DeviceState *dev)
-+uint8_t cpu_get_apic_tpr(APICCommonState *s)
- {
--    APICCommonState *s;
-     APICCommonClass *info;
- 
--    if (!dev) {
-+    if (!s) {
-         return 0;
-     }
- 
--    s = APIC_COMMON(dev);
-     info = APIC_COMMON_GET_CLASS(s);
- 
-     return info->get_tpr(s);
- }
- 
--void apic_enable_tpr_access_reporting(DeviceState *dev, bool enable)
-+void apic_enable_tpr_access_reporting(APICCommonState *s, bool enable)
- {
--    APICCommonState *s = APIC_COMMON(dev);
-     APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
- 
-     apic_report_tpr_access = enable;
-@@ -116,26 +105,22 @@ void apic_enable_tpr_access_reporting(DeviceState *dev, bool enable)
-     }
- }
- 
--void apic_enable_vapic(DeviceState *dev, hwaddr paddr)
-+void apic_enable_vapic(APICCommonState *s, hwaddr paddr)
- {
--    APICCommonState *s = APIC_COMMON(dev);
-     APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
- 
-     s->vapic_paddr = paddr;
-     info->vapic_base_update(s);
- }
- 
--void apic_handle_tpr_access_report(DeviceState *dev, target_ulong ip,
-+void apic_handle_tpr_access_report(APICCommonState *s, target_ulong ip,
-                                    TPRAccess access)
- {
--    APICCommonState *s = APIC_COMMON(dev);
--
-     vapic_report_tpr_access(s->vapic, CPU(s->cpu), ip, access);
- }
- 
--void apic_deliver_nmi(DeviceState *dev)
-+void apic_deliver_nmi(APICCommonState *s)
- {
--    APICCommonState *s = APIC_COMMON(dev);
-     APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
- 
-     info->external_nmi(s);
-@@ -193,16 +178,14 @@ uint32_t apic_get_current_count(APICCommonState *s)
-     return val;
- }
- 
--void apic_init_reset(DeviceState *dev)
-+void apic_init_reset(APICCommonState *s)
- {
--    APICCommonState *s;
-     APICCommonClass *info;
-     int i;
- 
--    if (!dev) {
-+    if (!s) {
-         return;
-     }
--    s = APIC_COMMON(dev);
-     s->tpr = 0;
-     s->spurious_vec = 0xff;
-     s->log_dest = 0;
-@@ -233,13 +216,12 @@ void apic_init_reset(DeviceState *dev)
-     }
- }
- 
--void apic_designate_bsp(DeviceState *dev, bool bsp)
-+void apic_designate_bsp(APICCommonState *s, bool bsp)
- {
--    if (dev == NULL) {
-+    if (s == NULL) {
-         return;
-     }
- 
--    APICCommonState *s = APIC_COMMON(dev);
-     if (bsp) {
-         s->apicbase |= MSR_IA32_APICBASE_BSP;
-     } else {
-@@ -262,7 +244,7 @@ static void apic_reset_common(DeviceState *dev)
-     s->vapic_paddr = 0;
-     info->vapic_base_update(s);
- 
--    apic_init_reset(dev);
-+    apic_init_reset(s);
- }
- 
- static const VMStateDescription vmstate_apic_common;
-diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
-index 242a05fdbe..9b6c479865 100644
---- a/target/i386/cpu-apic.c
-+++ b/target/i386/cpu-apic.c
-@@ -48,7 +48,7 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
-         return;
-     }
- 
--    cpu->apic_state = DEVICE(object_new_with_class(OBJECT_CLASS(apic_class)));
-+    cpu->apic_state = APIC_COMMON(object_new_with_class(OBJECT_CLASS(apic_class)));
-     object_property_add_child(OBJECT(cpu), "lapic",
-                               OBJECT(cpu->apic_state));
-     object_unref(OBJECT(cpu->apic_state));
-@@ -63,7 +63,7 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
-      * feature in case APIC ID >= 255, so we need to set apic->cpu
-      * before setting APIC ID
-      */
--    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
-+    qdev_prop_set_uint32(DEVICE(cpu->apic_state), "id", cpu->apic_id);
- }
- 
- void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 455caff6b2..0a66e1fec9 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8789,7 +8789,7 @@ void x86_cpu_after_reset(X86CPU *cpu)
-     }
- 
-     if (cpu->apic_state) {
--        device_cold_reset(cpu->apic_state);
-+        device_cold_reset(DEVICE(cpu->apic_state));
-     }
- #endif
- }
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 309f043373..f7a6ef650a 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5029,7 +5029,7 @@ static int kvm_get_mp_state(X86CPU *cpu)
- 
- static int kvm_get_apic(X86CPU *cpu)
- {
--    DeviceState *apic = cpu->apic_state;
-+    APICCommonState *apic = cpu->apic_state;
-     struct kvm_lapic_state kapic;
-     int ret;
- 
-diff --git a/target/i386/whpx/whpx-apic.c b/target/i386/whpx/whpx-apic.c
-index e1ef6d4e6d..afcb25843b 100644
---- a/target/i386/whpx/whpx-apic.c
-+++ b/target/i386/whpx/whpx-apic.c
-@@ -151,9 +151,8 @@ static void whpx_apic_put(CPUState *cs, run_on_cpu_data data)
-     }
- }
- 
--void whpx_apic_get(DeviceState *dev)
-+void whpx_apic_get(APICCommonState *s)
- {
--    APICCommonState *s = APIC_COMMON(dev);
-     CPUState *cpu = CPU(s->cpu);
-     struct whpx_lapic_state kapic;
  
 -- 
 2.51.1.dirty
