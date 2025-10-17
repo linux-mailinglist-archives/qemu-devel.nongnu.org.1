@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FE6BE7255
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 10:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9A0BE7237
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 10:24:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9fkM-0001H9-O9; Fri, 17 Oct 2025 04:23:34 -0400
+	id 1v9fkG-0001G1-92; Fri, 17 Oct 2025 04:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v9fkF-0001GR-Qz
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:23:28 -0400
+ id 1v9fkD-0001EX-4w
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:23:25 -0400
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1v9fk3-0001DU-LW
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:23:27 -0400
+ id 1v9fk6-0001BE-Pa
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 04:23:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760689396; x=1792225396;
+ t=1760689399; x=1792225399;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=B8RsLZ8p+QijWO4o8Awavo9qU6AbRzyIRgV0bwow53E=;
- b=NXwjAYI4Bn4c4UKXO64u2WB8o62yu6LEJBAo4cUGF/8IV2Djczp9DYDb
- nAtgfTLZ/FpICcdSVNv5+Ejq2crEC2u5nrRh2pYFt6A+VmORBn3Mfowvg
- U/YDnrh7d1yVo/ZaAJsHkiBTIpQZxEopGIFceJcUV2LGmLO/26GdtE19S
- YRLwKvBt0rv5XPZx9cRikLoLi25FdGov3h/p1V2u3LbB6vrC1ANFF64/U
- PNFT0wvaXUl11Yyctu6qrYj8rynHKxnQ3nwBAfTTzKlwUrK/QS9GltPHY
- Nm+Yj6Ywl3JPODISDVGVNkfMPtczM0l9U4FCnjFH0ojJVTBDhGHnr39cf A==;
-X-CSE-ConnectionGUID: mXs+fq7wTCGGijaW0eQAmw==
-X-CSE-MsgGUID: FU5CeVyPRJOsu4f1N6uxTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="61927432"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="61927432"
+ bh=tUFPPm29u+6P7k6wOoH03Z1NWisfoxackVYz0mSbGHQ=;
+ b=URtNv5bpFVhnnGSETP8wJ0N2r+j1nZSdAUb6xGXNT/UIFfVtWFm1miKz
+ Mt+h0mRlDEucQlHNGLSTbd5MwWpEHyEK4onFrDQen0JdXJxb74+ScLk4q
+ MyW544DBbGC8OgldyDdkzFaILOqFLALucfzU+kO7YA+J5WIZrBDbpcitl
+ GVVDjSeFAngyD+S7ZrsO/fklpQJnVzQpwxcmE1FK7hV70JHJZFcwmcBlr
+ /Bv5RCxxMVppogFqdPXVdka1+1xMI8Z1n1RH4qZ+yZHxgD3esSSuBKGyL
+ /QN9EgQ28pIVZNVciaHVB4MWii1l0YKW8Zhrf/6aTrFjlDYMmKD9FXXdQ A==;
+X-CSE-ConnectionGUID: uvs+V4a+Td6ZwW1vy4ou3A==
+X-CSE-MsgGUID: fOj7b+VyS6+PpnpY49aIkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="61927445"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="61927445"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2025 01:23:07 -0700
-X-CSE-ConnectionGUID: omXMVP9kQN2LttWG4ivX0Q==
-X-CSE-MsgGUID: WnjumPZhSw2O/uozIhDAiw==
+ 17 Oct 2025 01:23:11 -0700
+X-CSE-ConnectionGUID: 9F8DiyzSTX+ZDd1ZOgi34Q==
+X-CSE-MsgGUID: vIRPZ3ntSDekMMxIw+w/8Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="182484700"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="182484706"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2025 01:23:04 -0700
+ 17 Oct 2025 01:23:08 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
@@ -51,10 +51,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
  eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
  xudong.hao@intel.com, giovanni.cabiddu@intel.com, mark.gross@intel.com,
  arjan.van.de.ven@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 6/8] intel_iommu: Fix unmap_bitmap failure with legacy VFIO
- backend
-Date: Fri, 17 Oct 2025 04:22:31 -0400
-Message-ID: <20251017082234.517827-7-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 7/8] vfio/migration: Add migration blocker if VM memory is
+ too large to cause unmap_bitmap failure
+Date: Fri, 17 Oct 2025 04:22:32 -0400
+Message-ID: <20251017082234.517827-8-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251017082234.517827-1-zhenzhong.duan@intel.com>
 References: <20251017082234.517827-1-zhenzhong.duan@intel.com>
@@ -62,13 +62,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.19;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,100 +85,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a VFIO device in guest switches from IOMMU domain to block domain,
-vtd_address_space_unmap() is called to unmap whole address space.
+With default config, kernel VFIO type1 driver limits dirty bitmap to 256MB
+for unmap_bitmap ioctl so the maximum guest memory region is no more than
+8TB size for the ioctl to succeed.
 
-If that happens during migration, migration fails with legacy VFIO
-backend as below:
+Be conservative here to limit total guest memory to 8TB or else add a
+migration blocker. IOMMUFD backend doesn't have such limit, one can use
+IOMMUFD backed device if there is a need to migration such large VM.
 
-Status: failed (vfio_container_dma_unmap(0x561bbbd92d90, 0x100000000000, 0x100000000000) = -7 (Argument list too long))
-
-Because legacy VFIO limits maximum bitmap size to 256MB which maps to 8TB on
-4K page system, when 16TB sized UNMAP notification is sent, unmap_bitmap
-ioctl fails.
-
-Fix it by iterating over DMAMap list to unmap each range with active mapping
-when migration is active. If migration is not active, unmapping the whole
-address space in one go is optimal.
-
-There is no such limitation with iommufd backend, but it's still not optimal
-to allocate large bitmap, e.g., there may be large hole between IOVA ranges,
-allocating large bitmap and dirty tracking on the hole is time consuming and
-useless work.
-
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
 ---
- hw/i386/intel_iommu.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ hw/vfio/migration.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 6a168d5107..f32d4f5a15 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -37,6 +37,7 @@
- #include "system/system.h"
- #include "hw/i386/apic_internal.h"
- #include "kvm/kvm_i386.h"
-+#include "migration/misc.h"
- #include "migration/vmstate.h"
- #include "trace.h"
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 4c06e3db93..1106ca7857 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -16,6 +16,7 @@
+ #include <sys/ioctl.h>
  
-@@ -4533,6 +4534,42 @@ static void vtd_dev_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
-     vtd_iommu_unlock(s);
+ #include "system/runstate.h"
++#include "hw/boards.h"
+ #include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/vfio-migration.h"
+ #include "migration/misc.h"
+@@ -1152,6 +1153,35 @@ static bool vfio_viommu_preset(VFIODevice *vbasedev)
+     return vbasedev->bcontainer->space->as != &address_space_memory;
  }
  
-+/*
-+ * Unmapping a large range in one go is not optimal during migration because
-+ * a large dirty bitmap needs to be allocated while there may be only small
-+ * mappings, iterate over DMAMap list to unmap each range with active mapping.
-+ */
-+static void vtd_address_space_unmap_in_migration(VTDAddressSpace *as,
-+                                                 IOMMUNotifier *n)
++static bool vfio_dirty_tracking_exceed_limit(VFIODevice *vbasedev)
 +{
-+    const DMAMap *map;
-+    const DMAMap target = {
-+        .iova = n->start,
-+        .size = n->end,
-+    };
-+    IOVATree *tree = as->iova_tree;
++    VFIOContainer *bcontainer = vbasedev->bcontainer;
++    uint64_t max_size, page_size;
 +
-+    /*
-+     * DMAMap is created during IOMMU page table sync, it's either 4KB or huge
-+     * page size and always a power of 2 in size. So the range of DMAMap could
-+     * be used for UNMAP notification directly.
-+     */
-+    while ((map = iova_tree_find(tree, &target))) {
-+        IOMMUTLBEvent event;
-+
-+        event.type = IOMMU_NOTIFIER_UNMAP;
-+        event.entry.iova = map->iova;
-+        event.entry.addr_mask = map->size;
-+        event.entry.target_as = &address_space_memory;
-+        event.entry.perm = IOMMU_NONE;
-+        /* This field is meaningless for unmap */
-+        event.entry.translated_addr = 0;
-+        memory_region_notify_iommu_one(n, &event);
-+
-+        iova_tree_remove(tree, *map);
++    if (!object_dynamic_cast(OBJECT(bcontainer), TYPE_VFIO_IOMMU_LEGACY)) {
++        return false;
 +    }
++
++    if (!bcontainer->dirty_pages_supported) {
++        return true;
++    }
++    /*
++     * VFIO type1 driver has a limitation of bitmap size on unmap_bitmap
++     * ioctl(), calculate the limit and compare with guest memory size to
++     * catch dirty tracking failure early.
++     *
++     * This limit is 8TB with default kernel and QEMU config, we are a bit
++     * conservative here as VM memory layout may be nonconsecutive or VM
++     * can run with vIOMMU enabled so the limitation could be relaxed. One
++     * can also switch to use IOMMUFD backend if there is a need to migrate
++     * large VM.
++     */
++    page_size = 1 << ctz64(bcontainer->dirty_pgsizes);
++    max_size = bcontainer->max_dirty_bitmap_size * BITS_PER_BYTE * page_size;
++
++    return current_machine->ram_size > max_size;
 +}
 +
- /* Unmap the whole range in the notifier's scope. */
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
- {
-@@ -4542,6 +4579,11 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-     IntelIOMMUState *s = as->iommu_state;
-     DMAMap map;
+ /*
+  * Return true when either migration initialized or blocker registered.
+  * Currently only return false when adding blocker fails which will
+@@ -1208,6 +1238,13 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+         goto add_blocker;
+     }
  
-+    if (migration_is_running()) {
-+        vtd_address_space_unmap_in_migration(as, n);
-+        return;
++    if (vfio_dirty_tracking_exceed_limit(vbasedev)) {
++        error_setg(&err, "%s: Migration is currently not supported with "
++                   "large memory VM due to dirty tracking limitation in "
++                   "VFIO type1 driver", vbasedev->name);
++        goto add_blocker;
 +    }
 +
-     /*
-      * Note: all the codes in this function has a assumption that IOVA
-      * bits are no more than VTD_MGAW bits (which is restricted by
+     trace_vfio_migration_realize(vbasedev->name);
+     return true;
+ 
 -- 
 2.47.1
 
