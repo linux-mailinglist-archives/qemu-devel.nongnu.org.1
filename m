@@ -2,82 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5E5BE880C
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 14:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83689BE8804
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 14:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9jAO-0008Ho-F0; Fri, 17 Oct 2025 08:02:41 -0400
+	id 1v9j9H-0007CN-JY; Fri, 17 Oct 2025 08:01:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <galush.horowitz@gmail.com>)
- id 1v9j9R-0007bv-RI
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 08:01:42 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <galush.horowitz@gmail.com>)
- id 1v9j7T-0001BH-18
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 08:01:39 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47114a40161so18085835e9.3
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 04:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760702373; x=1761307173; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4afp/6dI6zHZWkA9HSSK0D8+/OSOH9fXxwsEQGCRDlg=;
- b=d7DzhikN5JocZTRUlsoFtp8CZwfQweWQAYbGB9Bxh3faBbH5yXgck3x1JqRvQDDL5n
- vPrFSoxYoC99F+0tCCl7HJiMMJrpoEmlz3GqxkhIWu0YwEu3pkdEnRSdlT9n1YZ4elHm
- Dg6PWzM0hfwTsur0n+gB6rViC6hyZ9vFQ6n72v8/l+8IfaWplqfnhr+FYy6bAP9brZwK
- A+f8dUCMXFTZBksociQSfHA18HRd2n2VMesELOkK4W0HWjV15jPnx8H35ucFgKQVz0Fu
- 4qBHQL+Qabh+cGh3d9g7+PGWVimpUko4+WhL9o/d1pAMzmUSDmALidurUoDnY9z/7oR3
- ck4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760702373; x=1761307173;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4afp/6dI6zHZWkA9HSSK0D8+/OSOH9fXxwsEQGCRDlg=;
- b=dhXiIEb7ZWHFxOF6IUvGW1wI4MgYmvLrim0c34OUAjAgrLvpW3kWGUda+ydlMLcADh
- GGktPV8IpO3Fvs1BScxAP2ioVJfqAvc3kByvzV8CBwquEJ1oUJSxMHxEu99uwWX3F3dO
- jtSjswM0D+0OKDDSM0dTTd26GjUEdP8GIXixFe3SegXBA44dV7clrH184gowE2v6pdbI
- L7GFhbImbzuCPzDhBXK7+9Hl8GitDX+kgllbZ+SuH/y1Zah+gFAz7GwhEmVUXfd95NX4
- 5o5N3lb1dLyLRCjTv884HT/PQrviqunxVMRZanDcxCwtuNfFDWRQRwHqvNjH00F53+xn
- 3Mqg==
-X-Gm-Message-State: AOJu0YyKcEhIwEyImLDVtkCl2cSkU0qjYCrjLfS8mWmdttXOLpO1lI7C
- D3EwiBSZMV8PMp8VPnMMWkykn7qEMIbZO/hWdQPDHYx6qedrFtcrS7uzgsbTNA==
-X-Gm-Gg: ASbGncvXHQeQR9JunpxRKq2+MBkQaXseBdvb5xb1yyD6DN1TTdRjkiaiGnLTZ4YTMTR
- 4VEHWUv/grnIV7psdPGpuQbjraBEgpNPXRwejfBIfyHIhxX7/lsYVoWJFIDNFduTLvc6Bid2/u7
- Z/fHv2Y0HAdCzYUpvZ+eDxORywmJ+2AUmeFVT8i4HQqWbmU64wKZMggiQ2BCgIDnZJ1dJLgzKjt
- cIORV7h13yguko+vXTRfwiJE+t1BVdhUAYHbb/RWellEs92dgY3O1lL5CewQqmTxr1ddeqYuvnL
- uiVCmjenP12YZJ7fF8IaJVYUxmjPsLHAe/HGzpls/u4vdLL57tL40ayyI2ZspMtH5dR5UBeoIAX
- fa2SDFEVsJVCf3Ei5jkHulUPC8QgvHwYUTI+pm1N9iC42b7al272wBkX8xHYXlgum6jd8Kr+t+y
- PQeIgmCc5nHtVd1J/VYtW6AD51EO1Ql+f2lDZO3zzKAJhWHjlux86Hob5SL3AJKRsKmb6Dj0c6/
- lQt
-X-Google-Smtp-Source: AGHT+IHB8QdrAb9W28MQQ3JLbb/Jk4cciv9uYOYgM2SqEMX7yLau0hAMO2UFRpbHXz8XbXvJFFht7g==
-X-Received: by 2002:a05:600c:64cf:b0:471:12ed:f698 with SMTP id
- 5b1f17b1804b1-4711786c793mr26462725e9.8.1760702372927; 
- Fri, 17 Oct 2025 04:59:32 -0700 (PDT)
-Received: from GAL-PC.localdomain (bzq-79-177-159-123.red.bezeqint.net.
- [79.177.159.123]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42707b482b3sm3208493f8f.50.2025.10.17.04.59.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Oct 2025 04:59:32 -0700 (PDT)
-From: Gal Horowitz <galush.horowitz@gmail.com>
-Date: Fri, 17 Oct 2025 14:59:02 +0300
-Subject: [PATCH v4 1/2] tap-win32: cleanup leaked handles on tap close
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1v9j95-00072Y-K7; Fri, 17 Oct 2025 08:01:19 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1v9j78-00014l-OZ; Fri, 17 Oct 2025 08:01:19 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H9NFWj021748;
+ Fri, 17 Oct 2025 11:59:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=pp1; bh=UoiXajcXxrzbl/VwEhcR6KCaqfZgwK
+ Z44F/Y2ouyG8o=; b=CuoDvNXN0UQCWyKA+I9OAqGseMmGZFGt95dJPRb3WmPQH8
+ xirUEZ+5eiWK5GZmp8mofs+zoGKEZiX0b1Ks1r5bD8fSXFMamluvuKznsHY7vSyR
+ VE5/59ehu1PD+GbeDnk16H+Z1FMuxZaXlb+cjbjCu+s/SW5QmKRPmRpdyki/b7TR
+ 2qds8JExZbeWPJbG9w6KDHKd187mBy8T6mYTQn3BQPeP62cGqOmFNv5ipvT/LKok
+ 9R8Emkgka2l0IhkZf9CGZmjITB5c1zPIze5LlxbBFjSLd0F0zdd+pvs8V+i4CcFl
+ cDVyRQzhJ/tt8z3sUSldkdd9DMek6W5NkGPWQQ0A==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qey9aj0w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Oct 2025 11:59:12 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59HBo7C5028136;
+ Fri, 17 Oct 2025 11:59:12 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qey9aj0s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Oct 2025 11:59:12 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59H9dOIm014981;
+ Fri, 17 Oct 2025 11:59:11 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sjvujt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Oct 2025 11:59:11 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59HBx7RR28443224
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 Oct 2025 11:59:07 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 667F220040;
+ Fri, 17 Oct 2025 11:59:07 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 284DC2004B;
+ Fri, 17 Oct 2025 11:59:05 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
+ [9.39.26.210]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Fri, 17 Oct 2025 11:59:04 +0000 (GMT)
+Date: Fri, 17 Oct 2025 17:29:03 +0530
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v4 3/8] hw/ppc: Trigger Fadump boot if fadump is registered
+Message-ID: <b7evdypwdhwnxurt4etjm3aryodf2cqgzxaemmbvii7lo36v53@2r5uzeowpjlx>
+References: <20250323174007.221116-1-adityag@linux.ibm.com>
+ <20250323174007.221116-4-adityag@linux.ibm.com>
+ <0dda0c58-0351-41a6-bc76-56e46aa8f02c@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251017-fix-win32-multiple-taps-v4-1-483415799ed8@gmail.com>
-References: <20251017-fix-win32-multiple-taps-v4-0-483415799ed8@gmail.com>
-In-Reply-To: <20251017-fix-win32-multiple-taps-v4-0-483415799ed8@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
- Gal Horowitz <galush.horowitz@gmail.com>
-X-Mailer: b4 0.14.2
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=galush.horowitz@gmail.com; helo=mail-wm1-x32f.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0dda0c58-0351-41a6-bc76-56e46aa8f02c@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Dws6Uj4uLt5q7rD_lexy3GcuTb3wCL7a
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxMSBTYWx0ZWRfXyJNdoUvmO9Du
+ TH31Fpz7BT7wSdoNcSagh39/1grsk+fdbW9RR1836g71zPcyjefeM2Abm1OIVfQRY0XuRDFHqJ/
+ rKveEFo1kteaS7vg0Yke8mPLPAjs17cIOhCyK5u6HGgXwDOBJnAGInGxZNcroUR8AFKfO61MRSB
+ gjrURjrSlmLthWbOEgCTxY0zBJsbjtq6gewT0K11A3zgZGTzMcO5MNGheHMx6LDSo/0NxJ+N1si
+ jwIONjZXvNc532BiFpfkQ4/ZM5Wizi5J5odmXPWi+tW47SomLmMO78d2ti7Pm8LSHKXnmv+2z5e
+ qe8zI2kHyFJX51mWIkFa0d7Cgsli4F2C+GHxcqwB/WfrkIIRMCiUFHRKzoPK2rQiwc2CFUA4xjs
+ ieP3SzIvKB3hJDAX4Nck+ySOXy4ztQ==
+X-Proofpoint-GUID: uXDuvOvtpi3MVIJDInQF06lJzLrgVy3x
+X-Authority-Analysis: v=2.4 cv=QZ5rf8bv c=1 sm=1 tr=0 ts=68f22f90 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=8BSAm38HViyM-3UT0loA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-17_04,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
+ spamscore=0 malwarescore=0 impostorscore=0 clxscore=1015 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110011
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,102 +118,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, all handles owned by a win32 tap are leaked on cleanup.
-This commit ensures that the handles are properly closed upon tap
-cleanup. A check for the return value of CreateThread is also added.
+On 25/10/17 04:56PM, Sourabh Jain wrote:
+> 
+> > <...snip...>
+> > +    /*
+> > +     * Mark next boot as fadump boot
+> > +     *
+> > +     * Note: These is some bit of assumption involved here, as PAPR doesn't
+> > +     * specify any use of the dump status flags, nor does the kernel use it
+> > +     *
+> > +     * But from description in Table 136 in PAPR v2.13, it looks like:
+> > +     *   FADUMP_STATUS_DUMP_TRIGGERED
+> > +     *      = Dump was triggered by the previous system boot (PAPR says)
+> > +     *      = Next boot will be a fadump boot (My perception)
+> 
+> Can we say assumption made or assumed instead of My perception.
+> 
+> > +     *
+> > +     *   FADUMP_STATUS_DUMP_PERFORMED
+> > +     *      = Dump performed (Set to 0 by caller of the
+> > +     *        ibm,configure-kernel-dump call) (PAPR says)
+> > +     *      = Firmware has performed the copying/dump of requested regions
+> > +     *        (My perception)
+> > +     *      = Dump is active for the next boot (My perception)
+> 
+> Same here.
 
-Signed-off-by: Gal Horowitz <galush.horowitz@gmail.com>
----
- net/tap-win32.c | 40 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+Done. Thanks Sourabh !
 
-diff --git a/net/tap-win32.c b/net/tap-win32.c
-index 38baf90e0b3f121f74eb32f1bff779c84ce03114..ae25e5a883343bf9f570d0f382b8c64712d95242 100644
---- a/net/tap-win32.c
-+++ b/net/tap-win32.c
-@@ -104,6 +104,7 @@ typedef struct tap_win32_overlapped {
-     HANDLE output_queue_semaphore;
-     HANDLE free_list_semaphore;
-     HANDLE tap_semaphore;
-+    HANDLE thread_handle;
-     CRITICAL_SECTION output_queue_cs;
-     CRITICAL_SECTION free_list_cs;
-     OVERLAPPED read_overlapped;
-@@ -589,6 +590,26 @@ static void tap_win32_free_buffer(tap_win32_overlapped_t *overlapped,
-     put_buffer_on_free_list(overlapped, buffer);
- }
- 
-+static void tap_win32_close(tap_win32_overlapped_t *overlapped)
-+{
-+    TerminateThread(overlapped->thread_handle, 0);
-+    CloseHandle(overlapped->thread_handle);
-+
-+    CloseHandle(overlapped->tap_semaphore);
-+    CloseHandle(overlapped->free_list_semaphore);
-+    CloseHandle(overlapped->output_queue_semaphore);
-+
-+    DeleteCriticalSection(&overlapped->free_list_cs);
-+    DeleteCriticalSection(&overlapped->output_queue_cs);
-+
-+    CloseHandle(overlapped->write_event);
-+    CloseHandle(overlapped->read_event);
-+
-+    CloseHandle(overlapped->handle);
-+
-+    g_free(overlapped);
-+}
-+
- static int tap_win32_open(tap_win32_overlapped_t **phandle,
-                           const char *preferred_name)
- {
-@@ -604,7 +625,6 @@ static int tap_win32_open(tap_win32_overlapped_t **phandle,
-         unsigned long debug;
-     } version;
-     DWORD version_len;
--    DWORD idThread;
- 
-     if (preferred_name != NULL) {
-         snprintf(name_buffer, sizeof(name_buffer), "%s", preferred_name);
-@@ -642,15 +662,22 @@ static int tap_win32_open(tap_win32_overlapped_t **phandle,
-     }
- 
-     if (!tap_win32_set_status(handle, TRUE)) {
-+        CloseHandle(handle);
-         return -1;
-     }
- 
-     tap_win32_overlapped_init(&tap_overlapped, handle);
- 
--    *phandle = &tap_overlapped;
-+    tap_overlapped.thread_handle = CreateThread(NULL, 0,
-+        tap_win32_thread_entry, (LPVOID)&tap_overlapped, 0, NULL);
-+
-+    if (tap_overlapped->thread_handle == NULL) {
-+        tap_win32_close(tap_overlapped);
-+        return -1;
-+    }
-+
-+    *phandle = tap_overlapped;
- 
--    CreateThread(NULL, 0, tap_win32_thread_entry,
--                 (LPVOID)&tap_overlapped, 0, &idThread);
-     return 0;
- }
- 
-@@ -667,9 +694,8 @@ static void tap_cleanup(NetClientState *nc)
- 
-     qemu_del_wait_object(s->handle->tap_semaphore, NULL, NULL);
- 
--    /* FIXME: need to kill thread and close file handle:
--       tap_win32_close(s);
--    */
-+    tap_win32_close(s->handle);
-+    s->handle = NULL;
- }
- 
- static ssize_t tap_receive(NetClientState *nc, const uint8_t *buf, size_t size)
+- Aditya G
 
--- 
-2.34.1
 
 
