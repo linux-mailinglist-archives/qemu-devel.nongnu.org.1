@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1B8BEB71E
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 22:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6839DBEB721
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 22:09:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9qjJ-00060X-D3; Fri, 17 Oct 2025 16:07:13 -0400
+	id 1v9qjL-00061J-2e; Fri, 17 Oct 2025 16:07:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1v9qjF-0005zM-Ov
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 16:07:09 -0400
-Received: from tor.source.kernel.org ([172.105.4.254])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1v9qjH-0005zq-Ij
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 16:07:11 -0400
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1v9qjC-0005Nz-Rv
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 16:07:09 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1v9qjE-0005OA-St
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 16:07:11 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id E4A2E64620;
+ by tor.source.kernel.org (Postfix) with ESMTP id 77C9B6485A;
+ Fri, 17 Oct 2025 20:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD33C4CEFB;
  Fri, 17 Oct 2025 20:07:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F9CC4CEE7;
- Fri, 17 Oct 2025 20:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1760731625;
- bh=URW2V7zPKBtVw4Jw8sBsKuV6eyWwm2Cw9QxpicWv3Gg=;
+ s=k20201202; t=1760731627;
+ bh=Hp/0HTI5oxrXmMDMo/nJimqv818j/piwR0Qr3qUdLoQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=XVq+/CyzFzpA7CSHXLON8HbgtBYHzLW0zsWJC38xZP4og84qoKMdx4KVtZm7egSPR
- DeZhZS2BIZMb3dz7KgcxtfZmbLzQAgj1fOV2T9cc1LQSl3SMQ9bO9C0XEaYQUdW8HJ
- +XvB5lgJi3l5TRS+jIUG+CkXDd4JQM3FGmGYSBzEnJywoQcTORDe1rs3HDiaeHGju1
- i3CVNU+GlRbE0lKWwa89uwCeHg4CWGmU25Za9k+9MZcsBlzZveYBembsR3at4pV+YJ
- DUM/90KjYNONGP560F7amMYrMruknJN5vNfLs/Iby/Sk0EeYQVgVoaewcLYFndNJrY
- a69aGyEpw8ugA==
+ b=oz2DrSgM5JXcAxpmg74XytAFJ6lmekztcqIJI3F2Gzk5ZFlPvbOcBrYlPbyftfNl6
+ 3wJf5IPE8zKnceuusDUzq2GBzTxIUs2rw/sewkXwBwl3zXDMB4y40heC6ie/f2iS44
+ 5dHgG/FRX8BUm5GQbU2EiXwobp4IXIzXnUUe9j2cKf+FDjLKcYiQbsW3J9b4w+SkVh
+ PK1a36x9vMQnlRMmGEnkfEmOL3r2binDrh+iU5HbsY2afwLLKv7YPao6XPlIumpKwa
+ VTodXrVwWVpQI8Vv8xGD6RDBh8mZw5hGEQh3DfjbA0Dv3lzTCB9gUV7D90G07zbXei
+ PgufUYVZjRSFg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>,
  Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Subject: [PATCH 05/10] hw/hppa: Fix firmware end address for LASI chip
-Date: Fri, 17 Oct 2025 22:06:48 +0200
-Message-ID: <20251017200653.23337-6-deller@kernel.org>
+Subject: [PATCH 06/10] hw/hppa: Fix interrupt of LASI parallel port
+Date: Fri, 17 Oct 2025 22:06:49 +0200
+Message-ID: <20251017200653.23337-7-deller@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017200653.23337-1-deller@kernel.org>
 References: <20251017200653.23337-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.105.4.254; envelope-from=deller@kernel.org;
- helo=tor.source.kernel.org
+Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
+ envelope-from=deller@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,36 +69,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The base address of a LASI chip on a 715 machine starts at HPA
-0xf0100000.  Make sure that the firmware does not extend beyond that
-address, otherwise it's not possible to access the LASI ports.
+Fix wrong assignment where the LASI parallel port was using the IRQ line of the
+LASI LAN card.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/hppa_hardware.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/hppa/machine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/hppa/hppa_hardware.h b/hw/hppa/hppa_hardware.h
-index 21c777cba6..d422af0429 100644
---- a/hw/hppa/hppa_hardware.h
-+++ b/hw/hppa/hppa_hardware.h
-@@ -5,7 +5,7 @@
- #define HW_HPPA_HPPA_HARDWARE_H
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index cddca69b93..bec5a86f24 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -584,7 +584,7 @@ static void machine_HP_B160L_init(MachineState *machine)
  
- #define FIRMWARE_START  0xf0000000
--#define FIRMWARE_END    0xf0800000
-+#define FIRMWARE_END    0xf0100000
- #define FIRMWARE_HIGH   0xfffffff0  /* upper 32-bits of 64-bit firmware address */
+     /* Parallel port */
+     parallel_mm_init(addr_space, translate(NULL, LASI_LPT_HPA + 0x800), 0,
+-                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA),
++                     qdev_get_gpio_in(lasi_dev, LASI_IRQ_LPT_HPA),
+                      parallel_hds[0]);
  
- #define RAM_MAP_HIGH  0x0100000000  /* memory above 3.75 GB is mapped here */
-@@ -19,6 +19,7 @@
- #define DINO_UART_HPA   0xfff83000
- #define  DINO_UART_BASE 0xfff83800
- #define DINO_SCSI_HPA   0xfff8c000
-+#define LASI_HPA_715    0xf0100000
- #define LASI_HPA        0xffd00000
- #define LASI_UART_HPA   0xffd05000
- #define LASI_SCSI_HPA   0xffd06000
+     /* PS/2 Keyboard/Mouse */
 -- 
 2.51.0
 
