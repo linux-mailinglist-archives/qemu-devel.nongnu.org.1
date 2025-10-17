@@ -2,111 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4324FBE893B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 14:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5728EBE897B
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 14:31:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9jUp-0003Gg-MQ; Fri, 17 Oct 2025 08:23:48 -0400
+	id 1v9jai-0005FN-Hv; Fri, 17 Oct 2025 08:29:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1v9jUm-0003Dd-EV
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 08:23:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1v9jUb-00061i-1v
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 08:23:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760703808;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gir8vCCONvNLbr5oS8AWzNsJd6V+MI0sZXsiRO1ZMdE=;
- b=IXzBIkZij414Eswa5KxjO1JcJHwr9hqeISE9Rgv4aXehPwJjHM5+UIMP25013v4lRVqKVG
- tx0GpgDq88AeYrDiFPV5qe8eZM4akQPDz/U1xsRd5Ntsi0sAbdP2gR/4NIS9ve8Q7hqn4o
- h2+9Q1d0RVqfcyUibTWQsaapDX8U4ds=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-gKqiKJcwMGec_EX5UJGs0w-1; Fri, 17 Oct 2025 08:23:27 -0400
-X-MC-Unique: gKqiKJcwMGec_EX5UJGs0w-1
-X-Mimecast-MFC-AGG-ID: gKqiKJcwMGec_EX5UJGs0w_1760703806
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-47114d373d5so14636415e9.1
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 05:23:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
+ id 1v9jaf-0005Ep-Qk
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 08:29:49 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
+ id 1v9jaa-0007BJ-Vf
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 08:29:49 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-27ee41e0798so29584105ad.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 05:29:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1760704174; x=1761308974; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vWmqt1v+3Y70kkV26yKBlbKyQnGOSAk1SbH8gXltSZw=;
+ b=ENnI6Y5Xv33+dzBImnJh1BabdxdmXHS6g7YxTO3GeexGh1MYmt1YhorzqdlVhWE/jI
+ SOy2eotMFqliziF/eoJoD9EzD7K0DEHOUjjwEVcHgAzHCrg1ej3GmdnQnytrxMLrU+H4
+ rYk5w3pWCO3WEoQS8AZOoYWUgizHR99lQlqW7ZwSscabi58+mr+bbxdaYOBoxSnZ8tRn
+ F4ivh6gFvsLTZNu7h/zSedbaUwltnzf8DEFdRJeivOJRVV0TqR6YdoPaZ8NZU1+0wkyd
+ VjQN1bfxglUbor0o6TjvRp/rtmh/sbWNPuYp681MUtvpGD5LEbgi3UBJJZ+usFoKwfHR
+ Byww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760703806; x=1761308606;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1760704174; x=1761308974;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=gir8vCCONvNLbr5oS8AWzNsJd6V+MI0sZXsiRO1ZMdE=;
- b=vOLsYIaf4YxrKRjHIs2/TD3zh/gW9sf/T0LnJo/baMtVfzxVxSaDlb0tPGacPd3zWE
- kS2Dk1tI6bU/eeoTjjbpvrfzJZM/ZOBVceoTP3dwPJ02PnOPwTOV/0YvLSywBxu9+ICY
- 214qJtA8OZ45C3g2G4rykvAg08OSY2XOsUXA8HWenwy4sS1LZEkdbHqD/nNZJoXjgb1X
- O0w7wsqIopIr9PcnNovKvPQ2d+G8y1AB5gqMH77F9du11hD5DvFEM/IcKCXPqhu999x0
- 1EnL8Jp3Fz3541nYvhgaptTytZhhtgplf5cPyf826PIY1fxd07gnKiPcKmqBHR6SyAGa
- u0Ww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWm6LVjnRBrX1rY+qkwM9R4PTV4wCEbRB2+1tfk12eUywZRtYqhQilWNAPuTn0O31YSEv1oQoyv1XOW@nongnu.org
-X-Gm-Message-State: AOJu0YxuFaYqkt5XzfDMLLeNU7TRYqMyIonWLR1KdyveE4gnzoaCHIu/
- tpdSGCOd+yDzgKvuWBTGtUTy5O1/3YOM/BdxScS88SyURGK7t2NPIEp2FIwwoGro7DhLfjVYcCU
- k6lGQqVyLhysn96XYBO5GJK79X+XaT9GhJZjg2LG/YQtDXvJS7ldHVN12wNKTt/H0
-X-Gm-Gg: ASbGncvSAwnRZjnMkedZIgtyMinS9kI3DXFSqOt51k8yQvCo2yrpnjtT1ODYjnMwrtK
- 24vGS9wW/n7oW2snJqHW8kXSYjnGErszV8sploic8CYmqCKsr0Ovke5NK/dM1mlqDnWKnDBwcvw
- IuH9/h7rCvymv0BzXkP06mO/GRlIOrDqlhP1s9d0sN2dN3W4hPexEF/vvpdC+LpbFsuraxiZ9fN
- nmyBo5FxnO1Cf3T5Vp10FCUJY/wD6ZpTZz35wc+vtUzwTrYeH9BmmrZk7Q6FunbkNR3hj2V2l+G
- zid9Eiltpj8SIHAmh/XGX9wrND7coQAxtElHBPSbcODkCy3z/7bjxX4q42jlL+c3yu7uCPo4JLZ
- fSjkOPs8bvxCQjjXo0M146kQRn16LIxTHAqi7VecPPIlJkA==
-X-Received: by 2002:a05:600c:5029:b0:46f:b32e:4af3 with SMTP id
- 5b1f17b1804b1-471178784efmr23790555e9.1.1760703805732; 
- Fri, 17 Oct 2025 05:23:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG5b1wu857sDXHKaCt0SZFQGUs/3rIRFnWzbKmIFNuBfi0g78y8Hkf5jW/4Fz05LMp9btXiTQ==
-X-Received: by 2002:a05:600c:5029:b0:46f:b32e:4af3 with SMTP id
- 5b1f17b1804b1-471178784efmr23790345e9.1.1760703805247; 
- Fri, 17 Oct 2025 05:23:25 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710cd4480fsm49085275e9.1.2025.10.17.05.23.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Oct 2025 05:23:24 -0700 (PDT)
-Message-ID: <8ee4e023-7a14-4a02-b481-b54bb9f5225b@redhat.com>
-Date: Fri, 17 Oct 2025 14:23:23 +0200
+ bh=vWmqt1v+3Y70kkV26yKBlbKyQnGOSAk1SbH8gXltSZw=;
+ b=iKouVN09Q+h2ypId4R2oGTjn2woOYSJ16eEhA6CvQiA5r8NRdlJzHsm8bRmeSgZrhG
+ MvvejbeB+DMpjgvEw2MwTljWG7sMSGb8OjnMotJAHHktH7pA3GNTh0pTVfV1dBRDNY7Q
+ IjoRnuVQFBQFkAbzqYM8QnVjmPQwQNbAqzRREdaY2rPNI7c/med2Enfr8hkhvKNam+kJ
+ 2cKThaWz266XoJAnFsMNNBgChUkEHtE0jctcEDW7+/mdd+qOWIYdPzsntvNxfxQ52jPl
+ ULLztBteKfKArxe8kfLX8kAW5Xy8AVVIEVCBZEjEFbNk+dAbdcFnfKfCRsjFiAF+dwnT
+ xVdA==
+X-Gm-Message-State: AOJu0YwMTJy2OvEdOpQfoR9KJEPo7M/V3F8NPxnKiNw3VKBZlIcLfx1j
+ RhbcSWW9gX40BqhnKeRDOB0R6jA7KE1Nqs0cgVtDk0dsAO8qk4SGhvGT7P8jV98ZdeIrxLFL6ir
+ 6WtwcOaJQ3kWVubzzDeKXGhcNq1jsUEEgvfM3KeSo6Q==
+X-Gm-Gg: ASbGncvXVa1vVaacqi33kwoT+F4Za9mV9Ag5E2j0lXv2w4m6EUPnFNQeqqapjaOPvKV
+ xbd+Bd5QR1RNN9kGJ6yhzd+ZBhowiTd8ytX2ajcuz7AOQeJLaa3UtayEdMS5e7ZINzsI1D9QYdS
+ uB64aAIRn9s3W8Gb9uyk9Hy/y1Wmyw2F/Z11yzVCuP5GGeoYyXcj+CKCM9mTxAvKa51NWQ1PHxK
+ 03hEo7JQvi7K95ownPTCZ8JWhbRrdfy8lQLjanig4jJ7J/oBJII+bz2pP5ziz0=
+X-Google-Smtp-Source: AGHT+IFduCMWpL1q4Zg37yWLeXaZxniYoNGc6Sniy2fuJGLwbBqrGSXic0Kso1C+am+bP2YxVnVdkgNpask7IaR6lwY=
+X-Received: by 2002:a17:902:c947:b0:24e:e5c9:ecfd with SMTP id
+ d9443c01a7336-290cbb49e26mr54097705ad.42.1760704174317; Fri, 17 Oct 2025
+ 05:29:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/27] hw/arm/smmuv3-accel: Add set/unset_iommu_device
- callback
-Content-Language: en-US
-To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
- ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
- mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
- jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
- zhangfei.gao@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
- shameerkolothum@gmail.com
-References: <20250929133643.38961-1-skolothumtho@nvidia.com>
- <20250929133643.38961-9-skolothumtho@nvidia.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250929133643.38961-9-skolothumtho@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+References: <20251014082338.87618-1-jay.chang@sifive.com>
+ <20251014082338.87618-3-jay.chang@sifive.com>
+ <CAKmqyKOxwPbJSimJH+Qx+aXP1dunQwamCWaObWMXfgA6+UJuqQ@mail.gmail.com>
+In-Reply-To: <CAKmqyKOxwPbJSimJH+Qx+aXP1dunQwamCWaObWMXfgA6+UJuqQ@mail.gmail.com>
+From: Jay Chang <jay.chang@sifive.com>
+Date: Fri, 17 Oct 2025 20:29:23 +0800
+X-Gm-Features: AS18NWBhqiY1TLSPMZ3EsQjBVu_Qbs11jxqqzUae6H9yc2EFcLDkA6kBGIkf14k
+Message-ID: <CACNNAjMw2NaTN1Q3wGK3wRW1xO4hOSptD5bNYriJeh1aV7Boeg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] target/riscv: Make PMP CSRs conform to WARL
+ constraints
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Frank Chang <frank.chang@sifive.com>,
+ Jim Shu <jim.shu@sifive.com>
+Content-Type: multipart/alternative; boundary="000000000000dd70e0064159e28c"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=jay.chang@sifive.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,292 +96,380 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000dd70e0064159e28c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+I=E2=80=99ll change UL to ULL.
 
-On 9/29/25 3:36 PM, Shameer Kolothum wrote:
-> From: Nicolin Chen <nicolinc@nvidia.com>
+As for the second point, according to the spec:
+
+=E2=80=9CAlthough changing pmpcfgA[1] affects the value read from pmpaddr, =
+it does
+not affect the underlying value stored in that register.=E2=80=9D
+
+If we modify the value at write time instead of masking on read, it could
+cause issues during software context switches.
+For example, if pmpaddr is programmed in NAPOT mode and software switches
+to TOR mode for context save/restore (i.e., read pmpaddr =E2=86=92 write pm=
+paddr in
+TOR mode =E2=86=92 switch back to NAPOT), the NAPOT granularity bits pmpadd=
+r[G-2:0]
+would be lost because pmpaddr[G-1:0] reads as all zeros in TOR/OFF mode.
+This behavior would be incorrect.
+
+On Fri, Oct 17, 2025 at 9:02=E2=80=AFAM Alistair Francis <alistair23@gmail.=
+com>
+wrote:
+
+> On Tue, Oct 14, 2025 at 6:25=E2=80=AFPM Jay Chang <jay.chang@sifive.com> =
+wrote:
+> >
+> > This patch ensure pmpcfg and pmpaddr comply with WARL constraints.
+> >
+> > When the PMP granularity is greater than 4 bytes, NA4 mode is not valid
+> > per the spec and will be silently ignored.
+> >
+> > According to the spec, changing pmpcfg.A only affects the "read" value
+> > of pmpaddr. When G > 2 and pmpcfg.A is NAPOT, bits pmpaddr[G-2:0] read
+> > as all ones. When G > 1 and pmpcfg.A is OFF or TOR, bits pmpaddr[G-1:0]
+> > read as all zeros. This allows software to read back the correct
+> > granularity value.
+> >
+> > In addition, when updating the PMP address rule in TOR mode,
+> > the start and end addresses of the PMP region should be aligned
+> > to the PMP granularity. (The current SPEC only state in TOR mode
+> > that bits pmpaddr[G-1:0] do not affect the TOR address-matching logic.)
+> >
+> > Signed-off-by: Jay Chang <jay.chang@sifive.com>
+> > Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> > Reviewed-by: Jim Shu <jim.shu@sifive.com>
+> > ---
+> >  target/riscv/pmp.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 46 insertions(+)
+> >
+> > diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> > index 72f1372a49..a15265c8d2 100644
+> > --- a/target/riscv/pmp.c
+> > +++ b/target/riscv/pmp.c
+> > @@ -108,6 +108,17 @@ static int pmp_is_invalid_smepmp_cfg(CPURISCVState
+> *env, uint8_t val)
+> >          g_assert_not_reached();
+> >      }
+> >  }
+> > +/*
+> > + * Calculate PMP granularity value 'g'
+> > + *
+> > + * The granularity value 'g' is defined as log2(granularity) - 2, wher=
+e
+> > + * granularity is the minimum alignment requirement for PMP regions in
+> bytes.
+> > + */
+> > +static inline int pmp_get_granularity_g(CPURISCVState *env)
+> > +{
+> > +    return __builtin_ctz(riscv_cpu_cfg(env)->pmp_granularity >> 2);
+> > +}
+> > +
+> >
+> >  /*
+> >   * Count the number of active rules.
+> > @@ -153,6 +164,15 @@ static bool pmp_write_cfg(CPURISCVState *env,
+> uint32_t pmp_index, uint8_t val)
+> >              qemu_log_mask(LOG_GUEST_ERROR,
+> >                            "ignoring pmpcfg write - invalid\n");
+> >          } else {
+> > +            uint8_t a_field =3D pmp_get_a_field(val);
+> > +            /*
+> > +             * When granularity g >=3D 1 (i.e., granularity > 4 bytes)=
+,
+> > +             * the NA4 (Naturally Aligned 4-byte) mode is not selectab=
+le
+> > +             */
+> > +            if ((riscv_cpu_cfg(env)->pmp_granularity >
+> > +                MIN_RISCV_PMP_GRANULARITY) && (a_field =3D=3D
+> PMP_AMATCH_NA4)) {
+> > +                    return false;
+> > +            }
+> >              env->pmp_state.pmp[pmp_index].cfg_reg =3D val;
+> >              pmp_update_rule_addr(env, pmp_index);
+> >              return true;
+> > @@ -199,6 +219,7 @@ void pmp_update_rule_addr(CPURISCVState *env,
+> uint32_t pmp_index)
+> >      target_ulong prev_addr =3D 0u;
+> >      hwaddr sa =3D 0u;
+> >      hwaddr ea =3D 0u;
+> > +    int g =3D pmp_get_granularity_g(env);
+> >
+> >      if (pmp_index >=3D 1u) {
+> >          prev_addr =3D env->pmp_state.pmp[pmp_index - 1].addr_reg;
+> > @@ -211,6 +232,11 @@ void pmp_update_rule_addr(CPURISCVState *env,
+> uint32_t pmp_index)
+> >          break;
+> >
+> >      case PMP_AMATCH_TOR:
+> > +        /* Bits pmpaddr[G-1:0] do not affect the TOR address-matching
+> logic. */
+> > +        if (g >=3D 1) {
+> > +            prev_addr &=3D ~((1UL << g) - 1UL);
+> > +            this_addr &=3D ~((1UL << g) - 1UL);
+> > +        }
+> >          if (prev_addr >=3D this_addr) {
+> >              sa =3D ea =3D 0u;
+> >              break;
+> > @@ -577,6 +603,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t
+> addr_index,
+> >
+> >  /*
+> >   * Handle a read from a pmpaddr CSR
+> > + * Change A field of pmpcfg affects the read value of pmpaddr
+> >   */
+> >  target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index)
+> >  {
+> > @@ -585,6 +612,25 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env,
+> uint32_t addr_index)
+> >
+> >      if (addr_index < pmp_regions) {
+> >          val =3D env->pmp_state.pmp[addr_index].addr_reg;
+> > +        int g =3D pmp_get_granularity_g(env);
+> > +        switch
+> (pmp_get_a_field(env->pmp_state.pmp[addr_index].cfg_reg)) {
+> > +        case PMP_AMATCH_OFF:
+> > +            /* fallthrough */
+> > +        case PMP_AMATCH_TOR:
+> > +            /* Bit [g-1:0] read all zero */
+> > +            if (g >=3D 1 && g < TARGET_LONG_BITS) {
+> > +                val &=3D ~((1UL << g) - 1UL);
+> > +            }
+> > +            break;
+> > +        case PMP_AMATCH_NAPOT:
+> > +            /* Bit [g-2:0] read all one */
+> > +            if (g >=3D 2 && g < TARGET_LONG_BITS) {
+> > +                val |=3D ((1UL << (g - 1)) - 1UL);
+> > +            }
 >
-> Implement a set_iommu_device callback:
->  -If found an existing viommu reuse that.
->  -Else,
->     Allocate a vIOMMU with the nested parent S2 hwpt allocated by VFIO.
->     Though, iommufd’s vIOMMU model supports nested translation by
->     encapsulating a S2 nesting parent HWPT, devices cannot attach to this
->     parent HWPT directly. So two proxy nested HWPTs (bypass and abort) are
->     allocated to handle device attachments.
->  -And add the dev to viommu device list
+> ULL instead of UL?
 >
-> Also add an unset_iommu_device to unwind/cleanup above.
+> Also should we just ensure a valid value is written? Instead of
+> writing something invalid and then masking the read
 >
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> ---
->  hw/arm/smmuv3-accel.c   | 150 ++++++++++++++++++++++++++++++++++++++++
->  hw/arm/smmuv3-accel.h   |  17 +++++
->  hw/arm/trace-events     |   4 ++
->  include/hw/arm/smmuv3.h |   1 +
->  4 files changed, 172 insertions(+)
+> Alistair
 >
-> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-> index 6b0e512d86..81fa738f6f 100644
-> --- a/hw/arm/smmuv3-accel.c
-> +++ b/hw/arm/smmuv3-accel.c
-> @@ -8,6 +8,7 @@
->  
->  #include "qemu/osdep.h"
->  #include "qemu/error-report.h"
-> +#include "trace.h"
->  
->  #include "hw/arm/smmuv3.h"
->  #include "hw/iommu.h"
-> @@ -17,6 +18,9 @@
->  
->  #include "smmuv3-accel.h"
->  
-> +#define SMMU_STE_VALID      (1ULL << 0)
-> +#define SMMU_STE_CFG_BYPASS (1ULL << 3)
-> +
->  static SMMUv3AccelDevice *smmuv3_accel_get_dev(SMMUState *bs, SMMUPciBus *sbus,
->                                                 PCIBus *bus, int devfn)
->  {
-> @@ -35,6 +39,149 @@ static SMMUv3AccelDevice *smmuv3_accel_get_dev(SMMUState *bs, SMMUPciBus *sbus,
->      return accel_dev;
->  }
->  
-> +static bool
-> +smmuv3_accel_dev_alloc_viommu(SMMUv3AccelDevice *accel_dev,
-> +                              HostIOMMUDeviceIOMMUFD *idev, Error **errp)
-> +{
-> +    struct iommu_hwpt_arm_smmuv3 bypass_data = {
-> +        .ste = { SMMU_STE_CFG_BYPASS | SMMU_STE_VALID, 0x0ULL },
-> +    };
-> +    struct iommu_hwpt_arm_smmuv3 abort_data = {
-> +        .ste = { SMMU_STE_VALID, 0x0ULL },
-> +    };
-> +    SMMUDevice *sdev = &accel_dev->sdev;
-> +    SMMUState *bs = sdev->smmu;
-> +    SMMUv3State *s = ARM_SMMUV3(bs);
-> +    SMMUv3AccelState *s_accel = s->s_accel;
-> +    uint32_t s2_hwpt_id = idev->hwpt_id;
-> +    SMMUViommu *viommu;
-> +    uint32_t viommu_id;
-> +
-> +    if (s_accel->viommu) {
-> +        accel_dev->viommu = s_accel->viommu;
-> +        return true;
-> +    }
-> +
-> +    if (!iommufd_backend_alloc_viommu(idev->iommufd, idev->devid,
-> +                                      IOMMU_VIOMMU_TYPE_ARM_SMMUV3,
-> +                                      s2_hwpt_id, &viommu_id, errp)) {
-> +        return false;
-> +    }
-> +
-> +    viommu = g_new0(SMMUViommu, 1);
-> +    viommu->core.viommu_id = viommu_id;
-> +    viommu->core.s2_hwpt_id = s2_hwpt_id;
-> +    viommu->core.iommufd = idev->iommufd;
-> +
-> +    if (!iommufd_backend_alloc_hwpt(idev->iommufd, idev->devid,
-> +                                    viommu->core.viommu_id, 0,
-> +                                    IOMMU_HWPT_DATA_ARM_SMMUV3,
-> +                                    sizeof(abort_data), &abort_data,
-> +                                    &viommu->abort_hwpt_id, errp)) {
-> +        goto free_viommu;
-> +    }
-> +
-> +    if (!iommufd_backend_alloc_hwpt(idev->iommufd, idev->devid,
-> +                                    viommu->core.viommu_id, 0,
-> +                                    IOMMU_HWPT_DATA_ARM_SMMUV3,
-> +                                    sizeof(bypass_data), &bypass_data,
-> +                                    &viommu->bypass_hwpt_id, errp)) {
-> +        goto free_abort_hwpt;
-> +    }
-> +
-> +    viommu->iommufd = idev->iommufd;
-> +
-> +    s_accel->viommu = viommu;
-> +    accel_dev->viommu = viommu;
-> +    return true;
-> +
-> +free_abort_hwpt:
-> +    iommufd_backend_free_id(idev->iommufd, viommu->abort_hwpt_id);
-> +free_viommu:
-> +    iommufd_backend_free_id(idev->iommufd, viommu->core.viommu_id);
-> +    g_free(viommu);
-> +    return false;
-> +}
-> +
-> +static bool smmuv3_accel_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-> +                                          HostIOMMUDevice *hiod, Error **errp)
-> +{
-> +    HostIOMMUDeviceIOMMUFD *idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
-> +    SMMUState *bs = opaque;
-> +    SMMUv3State *s = ARM_SMMUV3(bs);
-> +    SMMUv3AccelState *s_accel = s->s_accel;
-> +    SMMUPciBus *sbus = smmu_get_sbus(bs, bus);
-> +    SMMUv3AccelDevice *accel_dev = smmuv3_accel_get_dev(bs, sbus, bus, devfn);
-> +    SMMUDevice *sdev = &accel_dev->sdev;
-> +    uint16_t sid = smmu_get_sid(sdev);
-> +
-> +    if (!idev) {
-> +        return true;
-> +    }
-> +
-> +    if (accel_dev->idev) {
-> +        if (accel_dev->idev != idev) {
-> +            error_setg(errp, "Device 0x%x already has an associated IOMMU dev",
-> +                       sid);
-> +            return false;
-> +        }
-> +        return true;
-> +    }
-> +
-> +    if (!smmuv3_accel_dev_alloc_viommu(accel_dev, idev, errp)) {
-> +        error_setg(errp, "Device 0x%x: Unable to alloc viommu", sid);
-> +        return false;
-> +    }
-> +
-> +    accel_dev->idev = idev;
-> +    QLIST_INSERT_HEAD(&s_accel->viommu->device_list, accel_dev, next);
-> +    trace_smmuv3_accel_set_iommu_device(devfn, sid);
-> +    return true;
-> +}
-> +
-> +static void smmuv3_accel_unset_iommu_device(PCIBus *bus, void *opaque,
-> +                                            int devfn)
-> +{
-> +    SMMUState *bs = opaque;
-> +    SMMUv3State *s = ARM_SMMUV3(bs);
-> +    SMMUPciBus *sbus = g_hash_table_lookup(bs->smmu_pcibus_by_busptr, bus);
-> +    SMMUv3AccelDevice *accel_dev;
-> +    SMMUViommu *viommu;
-> +    SMMUDevice *sdev;
-> +    uint16_t sid;
-> +
-> +    if (!sbus) {
-> +        return;
-> +    }
-> +
-> +    sdev = sbus->pbdev[devfn];
-> +    if (!sdev) {
-> +        return;
-> +    }
-> +
-> +    sid = smmu_get_sid(sdev);
-> +    accel_dev = container_of(sdev, SMMUv3AccelDevice, sdev);
-> +    if (!host_iommu_device_iommufd_attach_hwpt(accel_dev->idev,
-> +                                               accel_dev->idev->hwpt_id,
-> +                                               NULL)) {
-> +        error_report("Unable to attach dev 0x%x to the default HW pagetable",
-> +                     sid);
-> +    }
-> +
-> +    accel_dev->idev = NULL;
-> +    QLIST_REMOVE(accel_dev, next);
-> +    trace_smmuv3_accel_unset_iommu_device(devfn, sid);
-> +
-> +    viommu = s->s_accel->viommu;
-> +    if (QLIST_EMPTY(&viommu->device_list)) {
-> +        iommufd_backend_free_id(viommu->iommufd, viommu->bypass_hwpt_id);
-> +        iommufd_backend_free_id(viommu->iommufd, viommu->abort_hwpt_id);
-> +        iommufd_backend_free_id(viommu->iommufd, viommu->core.viommu_id);
-> +        g_free(viommu);
-> +        s->s_accel->viommu = NULL;
-> +    }
-> +}
-> +
->  static bool smmuv3_accel_pdev_allowed(PCIDevice *pdev, bool *vfio_pci)
->  {
->  
-> @@ -121,6 +268,8 @@ static uint64_t smmuv3_accel_get_viommu_flags(void *opaque)
->  static const PCIIOMMUOps smmuv3_accel_ops = {
->      .get_address_space = smmuv3_accel_find_add_as,
->      .get_viommu_flags = smmuv3_accel_get_viommu_flags,
-> +    .set_iommu_device = smmuv3_accel_set_iommu_device,
-> +    .unset_iommu_device = smmuv3_accel_unset_iommu_device,
->  };
->  
->  void smmuv3_accel_init(SMMUv3State *s)
-> @@ -128,4 +277,5 @@ void smmuv3_accel_init(SMMUv3State *s)
->      SMMUState *bs = ARM_SMMU(s);
->  
->      bs->iommu_ops = &smmuv3_accel_ops;
-> +    s->s_accel = g_new0(SMMUv3AccelState, 1);
->  }
-> diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
-> index 70da16960f..3c8506d1e6 100644
-> --- a/hw/arm/smmuv3-accel.h
-> +++ b/hw/arm/smmuv3-accel.h
-> @@ -10,12 +10,29 @@
->  #define HW_ARM_SMMUV3_ACCEL_H
->  
->  #include "hw/arm/smmu-common.h"
-> +#include "system/iommufd.h"
-> +#include <linux/iommufd.h>
->  #include CONFIG_DEVICES
->  
-> +typedef struct SMMUViommu {
-> +    IOMMUFDBackend *iommufd;
-> +    IOMMUFDViommu core;
-could we avoid using too generic field names like "core". In the rest of
-the code it is then difficult to understand what the field corresponds to.
+> > +            break;
+> > +        default:
+> > +            break;
+> > +        }
+> >          trace_pmpaddr_csr_read(env->mhartid, addr_index, val);
+> >      } else {
+> >          qemu_log_mask(LOG_GUEST_ERROR,
+> > --
+> > 2.48.1
+> >
+> >
+>
 
-viommu?
-> +    uint32_t bypass_hwpt_id;
-> +    uint32_t abort_hwpt_id;
-> +    QLIST_HEAD(, SMMUv3AccelDevice) device_list;
-> +} SMMUViommu;
-> +
->  typedef struct SMMUv3AccelDevice {
->      SMMUDevice  sdev;
-> +    HostIOMMUDeviceIOMMUFD *idev;
-same here. hdev at least would refer to host dev at least. Or does it
-correspond to some kernel terminology?
+--000000000000dd70e0064159e28c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Eric
-> +    SMMUViommu *viommu;
-> +    QLIST_ENTRY(SMMUv3AccelDevice) next;
->  } SMMUv3AccelDevice;
->  
-> +typedef struct SMMUv3AccelState {
-> +    SMMUViommu *viommu;
-> +} SMMUv3AccelState;
-> +
->  #ifdef CONFIG_ARM_SMMUV3_ACCEL
->  void smmuv3_accel_init(SMMUv3State *s);
->  #else
-> diff --git a/hw/arm/trace-events b/hw/arm/trace-events
-> index f3386bd7ae..86370d448a 100644
-> --- a/hw/arm/trace-events
-> +++ b/hw/arm/trace-events
-> @@ -66,6 +66,10 @@ smmuv3_notify_flag_del(const char *iommu) "DEL SMMUNotifier node for iommu mr=%s
->  smmuv3_inv_notifiers_iova(const char *name, int asid, int vmid, uint64_t iova, uint8_t tg, uint64_t num_pages, int stage) "iommu mr=%s asid=%d vmid=%d iova=0x%"PRIx64" tg=%d num_pages=0x%"PRIx64" stage=%d"
->  smmu_reset_exit(void) ""
->  
-> +#smmuv3-accel.c
-> +smmuv3_accel_set_iommu_device(int devfn, uint32_t sid) "devfn=0x%x (sid=0x%x)"
-> +smmuv3_accel_unset_iommu_device(int devfn, uint32_t sid) "devfn=0x%x (sid=0x%x)"
-> +
->  # strongarm.c
->  strongarm_uart_update_parameters(const char *label, int speed, char parity, int data_bits, int stop_bits) "%s speed=%d parity=%c data=%d stop=%d"
->  strongarm_ssp_read_underrun(void) "SSP rx underrun"
-> diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
-> index bb7076286b..5f3e9089a7 100644
-> --- a/include/hw/arm/smmuv3.h
-> +++ b/include/hw/arm/smmuv3.h
-> @@ -66,6 +66,7 @@ struct SMMUv3State {
->  
->      /* SMMU has HW accelerator support for nested S1 + s2 */
->      bool accel;
-> +    struct SMMUv3AccelState  *s_accel;
->  };
->  
->  typedef enum {
+<div dir=3D"ltr"><div dir=3D"ltr"><p>I=E2=80=99ll change <code>UL</code> to=
+ <code>ULL</code>.</p>
+<p>As for the second point, according to the spec:</p>
+<blockquote>
+<p>=E2=80=9CAlthough changing pmpcfgA[1] affects the value read from pmpadd=
+r, it does not affect the underlying value stored in that register.=E2=80=
+=9D</p>
+</blockquote>
+<p>If we modify the value at write time instead of masking on read, it coul=
+d cause issues during software context switches.<br>
+For example, if <code>pmpaddr</code> is programmed in NAPOT mode and softwa=
+re switches to TOR mode for context save/restore (i.e., read <code>pmpaddr<=
+/code> =E2=86=92 write <code>pmpaddr</code> in TOR mode =E2=86=92 switch ba=
+ck to NAPOT), the NAPOT granularity bits <code>pmpaddr[G-2:0]</code> would =
+be lost because <code>pmpaddr[G-1:0]</code> reads as all zeros in TOR/OFF m=
+ode. This behavior would be incorrect.</p></div><br><div class=3D"gmail_quo=
+te gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct=
+ 17, 2025 at 9:02=E2=80=AFAM Alistair Francis &lt;<a href=3D"mailto:alistai=
+r23@gmail.com">alistair23@gmail.com</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">On Tue, Oct 14, 2025 at 6:25=E2=80=AFPM =
+Jay Chang &lt;<a href=3D"mailto:jay.chang@sifive.com" target=3D"_blank">jay=
+.chang@sifive.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; This patch ensure pmpcfg and pmpaddr comply with WARL constraints.<br>
+&gt;<br>
+&gt; When the PMP granularity is greater than 4 bytes, NA4 mode is not vali=
+d<br>
+&gt; per the spec and will be silently ignored.<br>
+&gt;<br>
+&gt; According to the spec, changing pmpcfg.A only affects the &quot;read&q=
+uot; value<br>
+&gt; of pmpaddr. When G &gt; 2 and pmpcfg.A is NAPOT, bits pmpaddr[G-2:0] r=
+ead<br>
+&gt; as all ones. When G &gt; 1 and pmpcfg.A is OFF or TOR, bits pmpaddr[G-=
+1:0]<br>
+&gt; read as all zeros. This allows software to read back the correct<br>
+&gt; granularity value.<br>
+&gt;<br>
+&gt; In addition, when updating the PMP address rule in TOR mode,<br>
+&gt; the start and end addresses of the PMP region should be aligned<br>
+&gt; to the PMP granularity. (The current SPEC only state in TOR mode<br>
+&gt; that bits pmpaddr[G-1:0] do not affect the TOR address-matching logic.=
+)<br>
+&gt;<br>
+&gt; Signed-off-by: Jay Chang &lt;<a href=3D"mailto:jay.chang@sifive.com" t=
+arget=3D"_blank">jay.chang@sifive.com</a>&gt;<br>
+&gt; Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com"=
+ target=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
+&gt; Reviewed-by: Jim Shu &lt;<a href=3D"mailto:jim.shu@sifive.com" target=
+=3D"_blank">jim.shu@sifive.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 target/riscv/pmp.c | 46 ++++++++++++++++++++++++++++++++++++++++=
+++++++<br>
+&gt;=C2=A0 1 file changed, 46 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c<br>
+&gt; index 72f1372a49..a15265c8d2 100644<br>
+&gt; --- a/target/riscv/pmp.c<br>
+&gt; +++ b/target/riscv/pmp.c<br>
+&gt; @@ -108,6 +108,17 @@ static int pmp_is_invalid_smepmp_cfg(CPURISCVStat=
+e *env, uint8_t val)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 g_assert_not_reached();<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 }<br>
+&gt; +/*<br>
+&gt; + * Calculate PMP granularity value &#39;g&#39;<br>
+&gt; + *<br>
+&gt; + * The granularity value &#39;g&#39; is defined as log2(granularity) =
+- 2, where<br>
+&gt; + * granularity is the minimum alignment requirement for PMP regions i=
+n bytes.<br>
+&gt; + */<br>
+&gt; +static inline int pmp_get_granularity_g(CPURISCVState *env)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 return __builtin_ctz(riscv_cpu_cfg(env)-&gt;pmp_granula=
+rity &gt;&gt; 2);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;<br>
+&gt;=C2=A0 /*<br>
+&gt;=C2=A0 =C2=A0* Count the number of active rules.<br>
+&gt; @@ -153,6 +164,15 @@ static bool pmp_write_cfg(CPURISCVState *env, uin=
+t32_t pmp_index, uint8_t val)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUES=
+T_ERROR,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;ignoring pmpcfg write - invalid\n&quot;);=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uint8_t a_field =3D pmp_get=
+_a_field(val);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* When granularity g =
+&gt;=3D 1 (i.e., granularity &gt; 4 bytes),<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* the NA4 (Naturally =
+Aligned 4-byte) mode is not selectable<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if ((riscv_cpu_cfg(env)-&gt=
+;pmp_granularity &gt;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MIN_RISCV_PMP=
+_GRANULARITY) &amp;&amp; (a_field =3D=3D PMP_AMATCH_NA4)) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ return false;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 env-&gt;pmp_state.pmp[=
+pmp_index].cfg_reg =3D val;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmp_update_rule_addr(e=
+nv, pmp_index);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return true;<br>
+&gt; @@ -199,6 +219,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint=
+32_t pmp_index)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 target_ulong prev_addr =3D 0u;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 hwaddr sa =3D 0u;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 hwaddr ea =3D 0u;<br>
+&gt; +=C2=A0 =C2=A0 int g =3D pmp_get_granularity_g(env);<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 if (pmp_index &gt;=3D 1u) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 prev_addr =3D env-&gt;pmp_state.pmp[=
+pmp_index - 1].addr_reg;<br>
+&gt; @@ -211,6 +232,11 @@ void pmp_update_rule_addr(CPURISCVState *env, uin=
+t32_t pmp_index)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 case PMP_AMATCH_TOR:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Bits pmpaddr[G-1:0] do not affect the =
+TOR address-matching logic. */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (g &gt;=3D 1) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 prev_addr &amp;=3D ~((1UL &=
+lt;&lt; g) - 1UL);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 this_addr &amp;=3D ~((1UL &=
+lt;&lt; g) - 1UL);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (prev_addr &gt;=3D this_addr) {<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sa =3D ea =3D 0u;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt; @@ -577,6 +603,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_=
+t addr_index,<br>
+&gt;<br>
+&gt;=C2=A0 /*<br>
+&gt;=C2=A0 =C2=A0* Handle a read from a pmpaddr CSR<br>
+&gt; + * Change A field of pmpcfg affects the read value of pmpaddr<br>
+&gt;=C2=A0 =C2=A0*/<br>
+&gt;=C2=A0 target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_=
+index)<br>
+&gt;=C2=A0 {<br>
+&gt; @@ -585,6 +612,25 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env,=
+ uint32_t addr_index)<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 if (addr_index &lt; pmp_regions) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 val =3D env-&gt;pmp_state.pmp[addr_i=
+ndex].addr_reg;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 int g =3D pmp_get_granularity_g(env);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 switch (pmp_get_a_field(env-&gt;pmp_state=
+.pmp[addr_index].cfg_reg)) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case PMP_AMATCH_OFF:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* fallthrough */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case PMP_AMATCH_TOR:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Bit [g-1:0] read all zer=
+o */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (g &gt;=3D 1 &amp;&amp; =
+g &lt; TARGET_LONG_BITS) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 val &amp;=3D =
+~((1UL &lt;&lt; g) - 1UL);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 case PMP_AMATCH_NAPOT:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Bit [g-2:0] read all one=
+ */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (g &gt;=3D 2 &amp;&amp; =
+g &lt; TARGET_LONG_BITS) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 val |=3D ((1U=
+L &lt;&lt; (g - 1)) - 1UL);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+<br>
+ULL instead of UL?<br>
+<br>
+Also should we just ensure a valid value is written? Instead of<br>
+writing something invalid and then masking the read<br>
+<br>
+Alistair<br>
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 default:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_pmpaddr_csr_read(env-&gt;mhart=
+id, addr_index, val);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 } else {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR,<br>
+&gt; --<br>
+&gt; 2.48.1<br>
+&gt;<br>
+&gt;<br>
+</blockquote></div></div>
 
+--000000000000dd70e0064159e28c--
 
