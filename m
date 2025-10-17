@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F218BE8C57
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7470BE8C89
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:18:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9kDo-0004ln-DR; Fri, 17 Oct 2025 09:10:16 -0400
+	id 1v9kE0-0004pi-8B; Fri, 17 Oct 2025 09:10:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDT-0003w1-Qg
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:57 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDV-0003xG-7W
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:10:01 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDM-0004d3-BE
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:55 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-47106fc51faso20750975e9.0
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:09:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v9kDO-0004eC-Vk
+ for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:09:56 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-47109187c32so9921435e9.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760706577; x=1761311377; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760706582; x=1761311382; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9xu2jmCHiYAeLROkpD0sdtohOaAgHtlD3k156owbQkw=;
- b=ZmA76biKSvoJL3UgJ+dfQ2Shp4dhMPHDuSrGnp1vrTdJkMK2vi4hyDmmfm8KNoMxad
- Hlh+R9IqGdd4j95sP3kxA+1T9xGdV87zCN4PKRtuDbVP3QV25/ugmh131COD8gbFZ31g
- 8ya0Pw+GvhGe45uEjui0oTIGa1kcjqZ0YreIfA6YI54kz88HhwQL9hBfBjuihe/2iwid
- 384NnGDYhjTIDOrGPMMTB5KqDXkiDABU70Zm5g+1ZxPvNQqeR8xibhWTasdzolFwVNDE
- oGzEAHVKLRi1jkYyHc11Z7QjUwqEC8VvgKGPDNpxKbEFzAEmJmREbpVYGhyUffhMVeAu
- d+tw==
+ bh=JqZvHOn07DkcN1hM5TgN0Mo/k+1lQdqmWA6ozj/h18E=;
+ b=uiHU0XxdnOsrQu/Pv81QbyjbLEqPZD9eajY2KfWyxnZ7lD8yPpIWtDxjelCa5q88z0
+ 3Du51rWDlurl7UKDL7SVT0toH3jvWL+h0SrvbhG6Uj0Kl2HDRyA31on3WpWfrAu3GEPt
+ 7uNen3MOJL17piTKCAnWY5ARgkb2wBaNg4RCsJ5ca0rx9SHhLUEf/dFhfQY22ttwEWcZ
+ O4LsPvfjfyDJBUmpH7bxuNncZ3SS9ldO1r7tjsIVTmKGWep4zxXwNVCigVgb1mdpXEvm
+ KPtNCNqHpny4Um+ikNBADKCq9KmfbpxU+pCPF9ANhAo53mhg9YFKGDT1UULJGr/Q6dFN
+ Rn7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760706577; x=1761311377;
+ d=1e100.net; s=20230601; t=1760706582; x=1761311382;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9xu2jmCHiYAeLROkpD0sdtohOaAgHtlD3k156owbQkw=;
- b=wnXFPWVSnYjziOJ+r/eu+tfowyNunTl0nW7Ds4roq+BlKsSgI/FetXcJKJFUyPAKmW
- OAqzHZ2SmeETFSmpyEUModbACCxFyWM0oSfpSGlEmUErAeYqMlplq/cFzVRDqYSVefP+
- T/jP+b4HZKjFqifevOHWx+DZLC0OlAqq4AyjhNE7Ww3xbJTt3nEIp11K1yAWg0Gv1qJK
- ZdfnaYbzh+2+qLl+resgEyUuHMMwaVYP0QUhCX05BZWPgfJgvxBQFUm/XFCBLpfLhLj8
- +hcfEl2oNz9D9NWFEPmZqvtkGQoYYHs97/GTLfoPUFINQVBSWoBS190GbEfiAEpK88K6
- ZauA==
-X-Gm-Message-State: AOJu0YwuUalmVJakwZauNzIMkxGgjOi9IPKxtVSylYuXL5IMvFzXLl7s
- 1GMtxiku0rAih10jVGOLff++wi5POEOal8ItHywMS8VfwxtFKduVt/Rveih64s00JmslRq5kp6t
- rYVFeLXA=
-X-Gm-Gg: ASbGncvXJxmXaeWlDVZY9caJwKbvfF0KjCy/TPLTE3vFzyAjMTFoxFtyaxCXA+0b5EK
- jGxyYYngSmRy84cBp3aRvHI0P5K4rF83K9+YnL5Oebv4drFB2aX5qjsl7Pm8FCJx/bBNacHr9cV
- HXxWEjRlTbv0Y4ROkjo6O5OVU0n8jicyWchqYBeeVQojOHTw1sUMSfF8i7xJe5FG92GQXcN8TwL
- Z9CpI0+wX8pIJLiE4YgWtKqxqyr9Tei2o26JaFP72aZ14Wt+VWENsOkLv8ujR52upqvvnk/ylNZ
- 5oIwr/evjCac6YttQHQoreMYNelpfY9VKvLGxkPHFtHzAqXIzcHnaqDgDPo2de/fGptxsLY/Uvv
- QXOjm6WtgnAU/5ERIQN0vyPPIeRQYDF6L3IhgZiVrPBQioqFVvB++SEmXKBO5oc/NpeI0CofQ+f
- /hr28YwuEiH2xAbb016iSHwjMtgsrhV8cl1EqwQ2QtKlQtVLiOag==
-X-Google-Smtp-Source: AGHT+IEwwA66KCv4mItbDA/DleedZpwkTerAkKFdKlPk6+S2ioQzfFLqp1lIjYkHYFtW+Tkquzs6Wg==
-X-Received: by 2002:a05:600c:3150:b0:471:114e:58a8 with SMTP id
- 5b1f17b1804b1-4711790696fmr28250065e9.25.1760706577011; 
- Fri, 17 Oct 2025 06:09:37 -0700 (PDT)
+ bh=JqZvHOn07DkcN1hM5TgN0Mo/k+1lQdqmWA6ozj/h18E=;
+ b=EayucJbM4JtDUdn5EGAJ/oO9+LgrDwNWOEaUl/xpztQwfMHVWcfXUFnPDj45Bufpas
+ BBuSBUBTiquJlKx86qQ5jXFUt9my4TybhbRkHeMQqTfiIhLMrO+mBtZbcuTB6UcZGWwn
+ bBDnq0D28NaMzKjLklX+PS2duD+07PW64SK+mIto5+QdnJevOV9lyIVJGM11xB9Hwqet
+ tzxQU97geMBi+WxOEOj/NdEqAv5QMCVzTV7gDq/2cDNkMQE5A0p1MvDbDObHFwWbSP5U
+ o1yrhXQY1BWQI2eL9aS8VWaqlZwMbuzOs5dd7cUbGzq2JLCrUml2ume5gm1M0SI4fgeI
+ EvEg==
+X-Gm-Message-State: AOJu0YzD9Zk971cz+c/3tFyGgEmDJNv03xLZvWqGjXtuluXFWvtUvfx2
+ e7eaZY59oSizDNlg96cqYNAxXgdwSxmXOgVZueKdqsR7JNi6xVgPXnX+gNwYOooMzFHTO9dKSFO
+ emGNLUPg=
+X-Gm-Gg: ASbGncsf6gue0XCVctez9NxEZDJKyhnxQo7W9HniYu2SR5fWvIuocgZXN55GAOZ4QXq
+ ovMoylLt1qIjhlEq8JeOYYJeb6NUNNF7cYgjUhbDGAu417W17ZBlP5NuxAnfLb8gqQvvmVCtcvP
+ pVT1Wnmag74lEFKjxjz6ouJLSlzjSFifd32u5xwOeWUmLMCcQztUWtwu0OUPVFB8zbnMMgXwCm+
+ l85too5xn+7WZJq2ev1D+gEfbPhePkfyxqvJRDTf4gS6pb9g19MfJiGtLdvHinXsqZ7YWyD1zjA
+ xGfkc9KVpYKA1eUe+Of9v5w7tmo3TWxElDo8E7s1WgPSxS9C56nnWn7FTLqUH0kqvGy7CWOXh/G
+ bhUbDq6HGraolVYTJTXRfa4TOUl3ja/l+UKaaHM0Br5r8CeOzP7zTb3GkQRC7E5ZLZSTc9LJVhn
+ u7wx9WjdDIXkWi/ByyezHpDJSHyZl+p3ZWT28H4DlcO/N+C9PoPWujflrs7QK1
+X-Google-Smtp-Source: AGHT+IErk1H3Uz2OQcj2tx4t4Ui2XV3s3oek1yyPvPrLTYbX/X+ZHZ5KPM+3ywNHAM+7XoLnU7xU1w==
+X-Received: by 2002:a05:600c:3e86:b0:46e:36f8:1eb7 with SMTP id
+ 5b1f17b1804b1-471178a3a94mr28480705e9.10.1760706581890; 
+ Fri, 17 Oct 2025 06:09:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47121ed98e9sm7289555e9.3.2025.10.17.06.09.36
+ 5b1f17b1804b1-471143663afsm81871395e9.0.2025.10.17.06.09.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 17 Oct 2025 06:09:36 -0700 (PDT)
+ Fri, 17 Oct 2025 06:09:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -69,17 +69,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  qemu-arm@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 15/20] hw/arm/virt: Remove deprecated virt-6.2 machine
-Date: Fri, 17 Oct 2025 15:08:14 +0200
-Message-ID: <20251017130821.58388-16-philmd@linaro.org>
+Subject: [PATCH 16/20] hw/arm/virt: Remove VirtMachineClass::no_tcg_lpa2 field
+Date: Fri, 17 Oct 2025 15:08:15 +0200
+Message-ID: <20251017130821.58388-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017130821.58388-1-philmd@linaro.org>
 References: <20251017130821.58388-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,34 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This machine has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
+The VirtMachineClass::no_tcg_lpa2 field was
+only used by virt-7.1 machine, which got removed.
+Remove it as now unused.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/virt.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/hw/arm/virt.h | 1 -
+ hw/arm/virt.c         | 4 ----
+ 2 files changed, 5 deletions(-)
 
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index ca2e59ec569..ddbd2d78209 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -122,7 +122,6 @@ typedef enum VirtGICType {
+ struct VirtMachineClass {
+     MachineClass parent;
+     bool no_highmem_compact;
+-    bool no_tcg_lpa2;
+     bool no_ns_el2_virt_timer_irq;
+     bool no_nested_smmu;
+ };
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 4243da3c87e..d9ec61e7354 100644
+index d9ec61e7354..eb0e0e1bee3 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3608,13 +3608,3 @@ static void virt_machine_7_0_options(MachineClass *mc)
-     compat_props_add(mc->compat_props, hw_compat_7_0, hw_compat_7_0_len);
- }
- DEFINE_VIRT_MACHINE(7, 0)
+@@ -2355,10 +2355,6 @@ static void machvirt_init(MachineState *machine)
+             object_property_set_bool(cpuobj, "has_el2", false, NULL);
+         }
+ 
+-        if (vmc->no_tcg_lpa2 && object_property_find(cpuobj, "lpa2")) {
+-            object_property_set_bool(cpuobj, "lpa2", false, NULL);
+-        }
 -
--static void virt_machine_6_2_options(MachineClass *mc)
--{
--    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
--
--    virt_machine_7_0_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_6_2, hw_compat_6_2_len);
--    vmc->no_tcg_lpa2 = true;
--}
--DEFINE_VIRT_MACHINE(6, 2)
+         if (object_property_find(cpuobj, "reset-cbar")) {
+             object_property_set_int(cpuobj, "reset-cbar",
+                                     vms->memmap[VIRT_CPUPERIPHS].base,
 -- 
 2.51.0
 
