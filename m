@@ -2,81 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C79BE8BE5
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C22CBE8C77
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Oct 2025 15:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v9k9Q-0001Ay-Je; Fri, 17 Oct 2025 09:05:44 -0400
+	id 1v9kHK-00023X-Fb; Fri, 17 Oct 2025 09:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9k9L-0001AO-Gd
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:05:39 -0400
-Received: from mail-yx1-xb12b.google.com ([2607:f8b0:4864:20::b12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v9k95-0003j6-Gz
- for qemu-devel@nongnu.org; Fri, 17 Oct 2025 09:05:35 -0400
-Received: by mail-yx1-xb12b.google.com with SMTP id
- 956f58d0204a3-63bcfcb800aso2107401d50.0
- for <qemu-devel@nongnu.org>; Fri, 17 Oct 2025 06:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760706319; x=1761311119; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KuBZKmjoBlsw1oUgNA9R0/DESgCD3LzDHTcsDPY6GZA=;
- b=tXLFa4E1rtHf2d6IQG6qE6Ts+k7J9KPM3TlExZaHn1EmWZz8Q9u+6Q5ozBOUuT/vy5
- iVWcXCxCKPUFd4CD8K546hvZY64Uc7zaG+tJBx6ZEjoJDx2S33rVm/A088RRe4L0mSrN
- wtdX2jeq8+JJDNlLLhrjT4pApM3x/KP61vzDIT37/nW0aoHyKcRIlH6zY06X9ZAtbpb5
- wXPPVuRA2BmVnfsFmo8tvvMWhap6mCA4U2xBSUOeWNMCchcjA/QXPBKnIQ0A6UWZeUgS
- B2XwW/7HI4zPWPIap6TRR6XLX3IWNCkUWRPhBqN+G2pMpgiX2XriCPDhaOh7H0KrWZo9
- xlWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760706319; x=1761311119;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KuBZKmjoBlsw1oUgNA9R0/DESgCD3LzDHTcsDPY6GZA=;
- b=Z4BeR5JIyzWzjufj924EPhb0e39YEJgQf+FMq4072e+z6fOobyqAmYBJu72z5O8VUS
- F6ae0jKPO/POjLZY0B2Hz6U+uxEq3ChSHngwz/CgYu4OYoh0gKHTz47XrPraRjLbopu1
- rOGRiAs6cLVXqomTOHHX/AbucofJRz22gV4iOM5cWTMFqcCNL1354Dt0iabXxa+X0p3G
- BTbNZpVnXiooWvfIzn3CzrDEo6eXXcuHNidihBv9h5dFLIPkEA4GZevXg0LytiqXaXHs
- LCwbEn/zoGMuQmo9sn4UgDwfga6o+fHVJee52N/V+dxT27mLru+NisFVbw9DYUvpB0W+
- MNpw==
-X-Gm-Message-State: AOJu0YzF5y0Ol8eSZ2BjukyJ2jFOHBsQDrIcVMHfAYfIsKgQFB1uc548
- 6u9aKtZIByzK3JYRhFCngFDv+QVVK5olsJ2d/4o+gOT6RDnfYKtdI0uXtgjz3R/U+1+/UAXxBsC
- Ra1KiLZWGwwIBaMaDbRnQRNuV8BE2Nx8YoZvnL9hafQ==
-X-Gm-Gg: ASbGnctZ16Vk0SQiEf2fOLLdlJoNSADS2ScYN/d0hQKkPsGINVTg1MFL37wL82PK3iu
- o8H3+bWg+qQO5+ZKOfunrbXinDDnFhGdn3aEiRs1MfFQLrWrQbJzul1CSS4pWe7O/brTDXGxhXD
- CM/XDiI3FZG+P2VC006lhdX4QMnZ2X3iMzDOUubNZkfTFeEbqcwt+cx5P1BGcXN0MkpxcZVO06I
- lMiGqFws37EBJtWh/mRI6Y3R/95YcwGnJOWMc+6uYhVUUA2KIxlE1lP7BhJuIqjLDhx6YQz
-X-Google-Smtp-Source: AGHT+IH19t8SFRumLoN+BuL4EHLU42mChpBHIMBiuO/r2HdZ2RgjgtDfljTnDFNkQwzegu2NMcEtFJmgWNy0PZF+Ja4=
-X-Received: by 2002:a05:690e:140d:b0:63e:2471:96ff with SMTP id
- 956f58d0204a3-63e247198fbmr133819d50.60.1760706318417; Fri, 17 Oct 2025
- 06:05:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sourabhjain@linux.ibm.com>)
+ id 1v9kAT-0001zg-Dm; Fri, 17 Oct 2025 09:06:49 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sourabhjain@linux.ibm.com>)
+ id 1v9kAM-0003yl-2s; Fri, 17 Oct 2025 09:06:47 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H8gqD6021747;
+ Fri, 17 Oct 2025 13:06:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=9jGg9J
+ PdwGoyuLKlPLsy1dms3MUXOTYXDbheTRD0FJo=; b=JPIhFMDjjSl5uTsyhiGU1W
+ STYRbjYIL1gdg+6yanWC2Fr5vtDNWbB83NYgT0KRxp0DAUF+OIH6F16kBQPMteAj
+ oEeB28Ghpjcf3jKFDwqnMlQO8Ea3pizkv2sUxHd+jz8kuKFEJmWYIBUSAF1xv3s0
+ YfF8Nju35ph9xdDY/wfFsIx/ATOKBvdeHJPm/HaXcWxlRfPDwILsNcUO2KJamfp1
+ K9Ix6r0hmR4plB2HEEnJYHZcpAiS8/WpbR5KRyTKcfxx4ALlVLE64rK03hFIu2h1
+ FLv83TpdbtDCVQ4+jf0R5CXKmm/izCE3hUveY0BQGW0ph52IMKpFe0/fgBoKzUfA
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0hab3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Oct 2025 13:06:35 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59HD6YRi018630;
+ Fri, 17 Oct 2025 13:06:34 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0hab2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Oct 2025 13:06:34 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59HD1Ymh015002;
+ Fri, 17 Oct 2025 13:06:33 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sjw4cq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Oct 2025 13:06:33 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59HD6U6751839454
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 Oct 2025 13:06:30 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25076200D2;
+ Fri, 17 Oct 2025 13:06:30 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2E2C52006A;
+ Fri, 17 Oct 2025 13:06:28 +0000 (GMT)
+Received: from [9.124.221.21] (unknown [9.124.221.21])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 17 Oct 2025 13:06:27 +0000 (GMT)
+Message-ID: <e032c9c2-1df3-40db-9d74-4a115f612da4@linux.ibm.com>
+Date: Fri, 17 Oct 2025 18:36:27 +0530
 MIME-Version: 1.0
-References: <20251014200718.422022-1-richard.henderson@linaro.org>
- <20251014200718.422022-6-richard.henderson@linaro.org>
-In-Reply-To: <20251014200718.422022-6-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 17 Oct 2025 14:05:07 +0100
-X-Gm-Features: AS18NWDYmmqOTLdlzswdY2NG5BQ0Mvgmh8sfOdNV1i334C8SwkCr9Wqbzj5iEfM
-Message-ID: <CAFEAcA9KZcuMenU4yKeGBc7EtWu07-ELHO-SwG+dYKGN-B3zUg@mail.gmail.com>
-Subject: Re: [PATCH v2 05/37] target/arm: Split add_cpreg_to_hashtable_aa64
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/8] hw/ppc: Preserve memory regions registered for
+ fadump
+To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
+References: <20250323174007.221116-1-adityag@linux.ibm.com>
+ <20250323174007.221116-5-adityag@linux.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <20250323174007.221116-5-adityag@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -8sgUpG9weV8CBwFbXih-Wh6L3hm-Rdt
+X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f23f5b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=nAr4IrdYd7bBxpyDJhUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX9BPzRkMEAwLV
+ Jbd+YmHwAqA2VnvhT1HI7PiFHvHGFBC4HuNjYbckg62DbfeDdRp86PJ95NWVS0iBkY4YJwpyJjm
+ OW5yyZPT/xMhg1flnGOjeQ1u3bdD1iNRg1kbuxnPsjAn2cvwJEoVTs6X0yHyFerRfoz0dIbMrE8
+ ukXniJpSThMgWwYM6YG4nuUtimH9fx+ANzzY1Ah/DkNyqSRmjBOAXbg0R9Jn1mUh88x1DQcwHky
+ WKjJXYif1PhYyVTg6YjKVAnnDokqowBozlSldD2akRMIow+iA4C1Y49LB3fvw376alXJNMhpRE2
+ /n0GftaKb6n+ZkmeNjROyjyyL8evfzz6xeD4NYvlIPIY+1qAO3cBX+msD2YnY7yebv293FhDMF3
+ PlA2fv3sB1FbtxkLT/lD2cOwU9l64Q==
+X-Proofpoint-GUID: 4JQVm97dtJnNG3aX1Plcllc8FpEzbUGQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-17_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=sourabhjain@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 17 Oct 2025 09:13:28 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,37 +130,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Oct 2025 at 21:15, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+
+
+On 23/03/25 23:10, Aditya Gupta wrote:
+> While the first kernel boots, it registers memory regions for fadump
+> such as:
+>      * CPU state data  (has to be populated by the platform)
+>      * HPTE state data (has to be populated by the platform)
+>      * Real Mode Regions (platform should copy it to requested
+>        destination addresses)
+>      * OS defined regions (such as parameter save area)
 >
-> Rename the existing add_cpreg_to_hashtable_aa64 as *_1.
-> Introduce a new add_cpreg_to_hashtable_aa64 that handles
-> 128-bit and 64-bit views of an AArch64 system register.
+> Platform is also expected to modify the 'bytes_dumped' to the length of
+> data preserved/copied by platform (ideally same as the source length
+> passed by kernel).
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> The kernel passes source address and length for the memory regions, and
+> a destination address to where the memory is to be copied.
+>
+> Implement the preserving/copying of the Real Mode Regions and the
+> Parameter Save Area in QEMU Pseries
+>
+> Note: As of this patch, the "kernel-dump" device tree entry is still not
+> added for the second boot, so after crash, the second kernel will boot
+> assuming fadump dump is "NOT" active, and try to register for fadump,
+> but since we already have fadump registered in QEMU internal state, the
+> register rtas call will fail with: "DUMP ACTIVE"
+>
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 > ---
->  target/arm/helper.c | 61 ++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 57 insertions(+), 4 deletions(-)
+>   hw/ppc/spapr_fadump.c         | 161 ++++++++++++++++++++++++++++++++--
+>   include/hw/ppc/spapr_fadump.h |  18 ++++
+>   2 files changed, 174 insertions(+), 5 deletions(-)
 >
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index 3b06704963..c240edf182 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -7668,11 +7668,9 @@ static void add_cpreg_to_hashtable_aa32(ARMCPU *cpu, ARMCPRegInfo *r)
->      }
->  }
->
-> -static void add_cpreg_to_hashtable_aa64(ARMCPU *cpu, ARMCPRegInfo *r)
-> +static void add_cpreg_to_hashtable_aa64_1(ARMCPU *cpu, ARMCPRegInfo *r,
-> +                                          uint32_t key)
+> diff --git a/hw/ppc/spapr_fadump.c b/hw/ppc/spapr_fadump.c
+> index fedd2cde9a4f..c105b8d21da5 100644
+> --- a/hw/ppc/spapr_fadump.c
+> +++ b/hw/ppc/spapr_fadump.c
+> @@ -123,14 +123,165 @@ uint32_t do_fadump_register(SpaprMachineState *spapr, target_ulong args)
+>       return RTAS_OUT_SUCCESS;
+>   }
+>   
+> +/*
+> + * Copy the source region of given fadump section, to the destination
+> + * address mentioned in the region
+> + *
+> + * Also set the region's error flag, if the copy fails due to non-existent
+> + * address (MEMTX_DECODE_ERROR) or permission issues (MEMTX_ACCESS_ERROR)
+> + *
+> + * Returns true if successful copy
+> + *
+> + * Returns false in case of any other error, being treated as hardware
+> + * error for fadump purposes
+> + */
+> +static bool do_preserve_region(FadumpSection *region)
+> +{
+> +    AddressSpace *default_as = &address_space_memory;
+> +    MemTxResult io_result;
+> +    MemTxAttrs attrs;
+> +    uint64_t src_addr, src_len, dest_addr;
+> +    g_autofree void *copy_buffer = NULL;
+> +
+> +    src_addr  = be64_to_cpu(region->source_address);
+> +    src_len   = be64_to_cpu(region->source_len);
+> +    dest_addr = be64_to_cpu(region->destination_address);
+> +
+> +    /* Mark the memory transaction as privileged memory access */
+> +    attrs.user = 0;
+> +    attrs.memory = 1;
+> +
+> +    /*
+> +     * Optimisation: Skip copy if source and destination are same
+> +     * (eg. param area)
+> +     */
+> +    if (src_addr != dest_addr) {
+> +        /*
+> +         * Using 'g_try_malloc' as the source length is coming from kernel,
+> +         * which can be invalid/huge, due to which allocation can fail
+> +         */
+> +        copy_buffer = g_try_malloc(src_len + 1);
 
-I prefer "do_foo()" over "foo_1()" for naming this kind of "internal
-part of some other function", and we have a lot more do_foo than
-foo_1 in target/arm.
+The region size could be in GBs. I think it is better to do it in chunks.
 
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+And don't we need to free the copy_buffer?
 
-thanks
--- PMM
+> +        if (copy_buffer == NULL) {
+> +            qemu_log_mask(LOG_GUEST_ERROR,
+> +                "FADump: Failed allocating memory (size: %ld) for copying"
+> +                " reserved memory regions\n", src_len);
+> +
+> +            return false;
+> +        }
+> +
+> +        /* Copy the source region to destination */
+> +        io_result = address_space_read(default_as, src_addr, attrs,
+> +                copy_buffer, src_len);
+> +        if ((io_result & MEMTX_DECODE_ERROR) ||
+> +            (io_result & MEMTX_ACCESS_ERROR)) {
+> +            /*
+> +             * Invalid source address is not an hardware error, instead
+> +             * wrong parameter from the kernel.
+> +             * Return true to let caller know to continue reading other
+> +             * sections
+> +             */
+> +            region->error_flags = FADUMP_ERROR_INVALID_SOURCE_ADDR;
+> +            region->bytes_dumped = 0;
+> +            return true;
+> +        } else if (io_result != MEMTX_OK) {
+> +            qemu_log_mask(LOG_GUEST_ERROR,
+> +                "FADump: Failed to read source region in section: %d\n",
+> +                region->source_data_type);
+> +
+> +            return false;
+> +        }
+> +
+> +        io_result = address_space_write(default_as, dest_addr, attrs,
+> +                copy_buffer, src_len);
+> +        if ((io_result & MEMTX_DECODE_ERROR) ||
+> +            (io_result & MEMTX_ACCESS_ERROR)) {
+> +            /*
+> +             * Invalid destination address is not an hardware error,
+> +             * instead wrong parameter from the kernel.
+> +             * Return true to let caller know to continue reading other
+> +             * sections
+
+Logging MEMTX_DECODE_ERROR would help identify kernel bugs. I think
+we should log this for both read and write.
+
+> +             */
+> +            region->error_flags = FADUMP_ERROR_INVALID_DEST_ADDR;
+> +            region->bytes_dumped = 0;
+
+Seems like caller is already setting bytes_dump to 0. But even if you 
+wanna do here.
+How about setting region->bytes_dumped = 0 early to avoid setting at 
+multiple
+places?
+
+In cases you need to free the copy_buffer I recommend having an exit label
+in this function.
+
+> +            return true;
+> +        } else if (io_result != MEMTX_OK) {
+> +            qemu_log_mask(LOG_GUEST_ERROR,
+> +                "FADump: Failed to write destination in section: %d\n",
+> +                region->source_data_type);
+> +
+> +            return false;
+> +        }
+> +    }
+> +
+> +    /*
+> +     * Considering address_space_write would have copied the
+> +     * complete region
+> +     */
+> +    region->bytes_dumped = cpu_to_be64(src_len);
+> +    return true;
+> +}
+> +
+>   /* Preserve the memory locations registered for fadump */
+> -static bool fadump_preserve_mem(void)
+> +static bool fadump_preserve_mem(SpaprMachineState *spapr)
+>   {
+> +    FadumpMemStruct *fdm = &spapr->registered_fdm;
+> +    uint16_t dump_num_sections, data_type;
+> +
+> +    assert(spapr->fadump_registered);
+> +
+>       /*
+> -     * TODO: Implement preserving memory regions requested during fadump
+> -     * registration
+> +     * Handle all sections
+> +     *
+> +     * CPU State Data and HPTE regions are handled in their own cases
+> +     *
+> +     * RMR regions and any custom OS reserved regions such as parameter
+> +     * save area, are handled by simply copying the source region to
+> +     * destination address
+>        */
+> -    return false;
+> +    dump_num_sections = be16_to_cpu(fdm->header.dump_num_sections);
+> +    for (int i = 0; i < dump_num_sections; ++i) {
+> +        data_type = be16_to_cpu(fdm->rgn[i].source_data_type);
+> +
+> +        /* Reset error_flags & bytes_dumped for now */
+> +        fdm->rgn[i].error_flags = 0;
+> +        fdm->rgn[i].bytes_dumped = 0;
+> +
+> +        /* If kernel did not request for the memory region, then skip it */
+> +        if (be32_to_cpu(fdm->rgn[i].request_flag) != FADUMP_REQUEST_FLAG) {
+> +            qemu_log_mask(LOG_UNIMP,
+> +                "FADump: Skipping copying region as not requested\n");
+> +            continue;
+> +        }
+> +
+> +        switch (data_type) {
+> +        case FADUMP_CPU_STATE_DATA:
+> +            /* TODO: Add CPU state data */
+> +            break;
+> +        case FADUMP_HPTE_REGION:
+> +            /* TODO: Add hpte state data */
+> +            break;
+> +        case FADUMP_REAL_MODE_REGION:
+> +        case FADUMP_PARAM_AREA:
+> +            /* Copy the memory region from region's source to its destination */
+> +            if (!do_preserve_region(&fdm->rgn[i])) {
+> +                qemu_log_mask(LOG_GUEST_ERROR,
+> +                    "FADump: Failed to preserve dump section: %d\n",
+> +                    be16_to_cpu(fdm->rgn[i].source_data_type));
+> +                fdm->header.dump_status_flag |=
+> +                    cpu_to_be16(FADUMP_STATUS_DUMP_ERROR);
+> +            }
+> +
+> +            break;
+> +        default:
+> +            qemu_log_mask(LOG_GUEST_ERROR,
+> +                "FADump: Skipping unknown source data type: %d\n", data_type);
+> +
+> +            fdm->rgn[i].error_flags =
+> +                cpu_to_be16(FADUMP_ERROR_INVALID_DATA_TYPE);
+> +        }
+> +    }
+> +
+> +    return true;
+
+This function only returns true. Since caller has some action when this 
+function
+returns false I am considering there is something wrong in this function.
+
+If this suppose to return true always then lets not have return at all.
+
+>   }
+>   
+>   /*
+> @@ -151,7 +302,7 @@ void trigger_fadump_boot(SpaprMachineState *spapr, target_ulong spapr_retcode)
+>       pause_all_vcpus();
+>   
+>       /* Preserve the memory locations registered for fadump */
+> -    if (!fadump_preserve_mem()) {
+> +    if (!fadump_preserve_mem(spapr)) {
+>           /* Failed to preserve the registered memory regions */
+>           rtas_st(spapr_retcode, 0, RTAS_OUT_HW_ERROR);
+>   
+> diff --git a/include/hw/ppc/spapr_fadump.h b/include/hw/ppc/spapr_fadump.h
+> index e484604c1c70..d56ca1d6d651 100644
+> --- a/include/hw/ppc/spapr_fadump.h
+> +++ b/include/hw/ppc/spapr_fadump.h
+> @@ -16,11 +16,29 @@
+>   
+>   #define FADUMP_VERSION                 1
+>   
+> +/* Firmware provided dump sections */
+> +#define FADUMP_CPU_STATE_DATA   0x0001
+> +#define FADUMP_HPTE_REGION      0x0002
+> +#define FADUMP_REAL_MODE_REGION 0x0011
+> +
+> +/* OS defined sections */
+> +#define FADUMP_PARAM_AREA       0x0100
+> +
+> +/* Dump request flag */
+> +#define FADUMP_REQUEST_FLAG     0x00000001
+> +
+>   /* Dump status flags */
+>   #define FADUMP_STATUS_DUMP_PERFORMED            0x8000
+>   #define FADUMP_STATUS_DUMP_TRIGGERED            0x4000
+>   #define FADUMP_STATUS_DUMP_ERROR                0x2000
+>   
+> +/* Region dump error flags */
+> +#define FADUMP_ERROR_INVALID_DATA_TYPE          0x8000
+> +#define FADUMP_ERROR_INVALID_SOURCE_ADDR        0x4000
+> +#define FADUMP_ERROR_LENGTH_EXCEEDS_SOURCE      0x2000
+> +#define FADUMP_ERROR_INVALID_DEST_ADDR          0x1000
+> +#define FAUDMP_ERROR_DEST_TOO_SMALL             0x0800
+> +
+>   /*
+>    * The Firmware Assisted Dump Memory structure supports a maximum of 10 sections
+>    * in the dump memory structure. Presently, three sections are used for
+
 
