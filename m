@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A807CBEDBDF
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 22:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD31BBEDBF9
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 22:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vADzC-00081G-Ch; Sat, 18 Oct 2025 16:57:10 -0400
+	id 1vADzE-00083j-O0; Sat, 18 Oct 2025 16:57:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vADyz-0007z5-Pj; Sat, 18 Oct 2025 16:56:57 -0400
+ id 1vADz1-0007zT-UR; Sat, 18 Oct 2025 16:57:01 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vADyx-0004xB-BT; Sat, 18 Oct 2025 16:56:56 -0400
+ id 1vADz0-0004xV-BJ; Sat, 18 Oct 2025 16:56:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8DFD715F879;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9DE2A15F87A;
  Sat, 18 Oct 2025 23:56:40 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 727092F0682;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 866BD2F0683;
  Sat, 18 Oct 2025 23:56:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jon Kohler <jon@nutanix.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 16/23] i386/kvm: Expose ARCH_CAP_FB_CLEAR when
- invulnerable to MDS
-Date: Sat, 18 Oct 2025 23:56:34 +0300
-Message-ID: <20251018205644.1185050-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ YiFei Zhu <zhuyifei@google.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 17/23] i386/cpu: Prevent delivering SIPI during SMM in
+ TCG mode
+Date: Sat, 18 Oct 2025 23:56:35 +0300
+Message-ID: <20251018205644.1185050-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251018221314@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251018221314@cover.tls.msk.ru>
@@ -60,70 +58,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jon Kohler <jon@nutanix.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Newer Intel hardware (Sapphire Rapids and higher) sets multiple MDS
-immunity bits in MSR_IA32_ARCH_CAPABILITIES but lacks the hardware-level
-MSR_ARCH_CAP_FB_CLEAR (bit 17):
-    ARCH_CAP_MDS_NO
-    ARCH_CAP_TAA_NO
-    ARCH_CAP_PSDP_NO
-    ARCH_CAP_FBSDP_NO
-    ARCH_CAP_SBDR_SSDP_NO
+[commit message by YiFei Zhu]
 
-This prevents VMs with fb-clear=on from migrating from older hardware
-(Cascade Lake, Ice Lake) to newer hardware, limiting live migration
-capabilities. Note fb-clear was first introduced in v8.1.0 [1].
+A malicious kernel may control the instruction pointer in SMM in a
+multi-processor VM by sending a sequence of IPIs via APIC:
 
-Expose MSR_ARCH_CAP_FB_CLEAR for MDS-invulnerable systems to enable
-seamless migration between hardware generations.
+CPU0			CPU1
+IPI(CPU1, MODE_INIT)
+			x86_cpu_exec_reset()
+			apic_init_reset()
+			s->wait_for_sipi = true
+IPI(CPU1, MODE_SMI)
+			do_smm_enter()
+			env->hflags |= HF_SMM_MASK;
+IPI(CPU1, MODE_STARTUP, vector)
+			do_cpu_sipi()
+			apic_sipi()
+			/* s->wait_for_sipi check passes */
+			cpu_x86_load_seg_cache_sipi(vector)
 
-Note: There is no impact when a guest migrates to newer hardware as
-the existing bit combinations already mark the host as MMIO-immune and
-disable FB_CLEAR operations in the kernel (see Linux's
-arch_cap_mmio_immune() and vmx_update_fb_clear_dis()). See kernel side
-discussion for [2] for additional context.
+A different sequence, SMI INIT SIPI, is also buggy in TCG because
+INIT is not blocked or latched during SMM. However, it is not
+vulnerable to an instruction pointer control in the same way because
+x86_cpu_exec_reset clears env->hflags, exiting SMM.
 
-[1] 22e1094ca82 ("target/i386: add support for FB_CLEAR feature")
-[2] https://patchwork.kernel.org/project/kvm/patch/20250401044931.793203-1-jon@nutanix.com/
-
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Link: https://lore.kernel.org/r/20251008202557.4141285-1-jon@nutanix.com
+Fixes: a9bad65d2c1f ("target-i386: wake up processors that receive an SMI")
+Analyzed-by: YiFei Zhu <zhuyifei@google.com>
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 00001a22d183ce96c110690987bf9dd6a8548552)
+(cherry picked from commit df32e5c568c9cf68c15a9bbd98d0c3aff19eab63)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e88e5d17db..f251286eb3 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -650,6 +650,23 @@ uint64_t kvm_arch_get_supported_msr_feature(KVMState *s, uint32_t index)
-         must_be_one = (uint32_t)value;
-         can_be_one = (uint32_t)(value >> 32);
-         return can_be_one & ~must_be_one;
-+    case MSR_IA32_ARCH_CAPABILITIES:
-+        /*
-+         * Special handling for fb-clear bit in ARCH_CAPABILITIES MSR.
-+         * KVM will only report the bit if it is enabled in the host,
-+         * but, for live migration capability purposes, we want to
-+         * expose the bit to the guest even if it is disabled in the
-+         * host, as long as the host itself is not vulnerable to
-+         * the issue that the fb-clear bit is meant to mitigate.
-+         */
-+        if ((value & MSR_ARCH_CAP_MDS_NO) &&
-+            (value & MSR_ARCH_CAP_TAA_NO) &&
-+            (value & MSR_ARCH_CAP_SBDR_SSDP_NO) &&
-+            (value & MSR_ARCH_CAP_FBSDP_NO) &&
-+            (value & MSR_ARCH_CAP_PSDP_NO)) {
-+                value |= MSR_ARCH_CAP_FB_CLEAR;
-+        }
-+        return value;
+diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+index d18c1dbf2c..b2a2b671b0 100644
+--- a/hw/intc/apic.c
++++ b/hw/intc/apic.c
+@@ -645,8 +645,6 @@ void apic_sipi(DeviceState *dev)
+ {
+     APICCommonState *s = APIC(dev);
  
-     default:
-         return value;
+-    cpu_reset_interrupt(CPU(s->cpu), CPU_INTERRUPT_SIPI);
+-
+     if (!s->wait_for_sipi)
+         return;
+     cpu_x86_load_seg_cache_sipi(s->cpu, s->sipi_vector);
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index c07b1b16ea..891f7bac46 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -617,6 +617,10 @@ void do_cpu_init(X86CPU *cpu)
+ 
+ void do_cpu_sipi(X86CPU *cpu)
+ {
++    CPUX86State *env = &cpu->env;
++    if (env->hflags & HF_SMM_MASK) {
++        return;
++    }
+     apic_sipi(cpu->apic_state);
+ }
+ 
+diff --git a/target/i386/tcg/system/seg_helper.c b/target/i386/tcg/system/seg_helper.c
+index b07cc9f9b1..ea7e42d068 100644
+--- a/target/i386/tcg/system/seg_helper.c
++++ b/target/i386/tcg/system/seg_helper.c
+@@ -182,6 +182,7 @@ bool x86_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+         apic_poll_irq(cpu->apic_state);
+         break;
+     case CPU_INTERRUPT_SIPI:
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_SIPI);
+         do_cpu_sipi(cpu);
+         break;
+     case CPU_INTERRUPT_SMI:
 -- 
 2.47.3
 
