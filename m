@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD415BED232
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 17:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D644CBED22C
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 17:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vA8ax-0008GC-1V; Sat, 18 Oct 2025 11:11:47 -0400
+	id 1vA8aw-0008Ff-2V; Sat, 18 Oct 2025 11:11:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA8as-0008DZ-OE; Sat, 18 Oct 2025 11:11:42 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1vA8au-0008FE-P8; Sat, 18 Oct 2025 11:11:44 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA8ar-0005gP-6h; Sat, 18 Oct 2025 11:11:42 -0400
+ id 1vA8as-0005gg-CA; Sat, 18 Oct 2025 11:11:44 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C22155972F2;
- Sat, 18 Oct 2025 17:11:39 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id D30055972F0;
+ Sat, 18 Oct 2025 17:11:40 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id kCtEyuRt3L2n; Sat, 18 Oct 2025 17:11:37 +0200 (CEST)
+ id t0DACFwylb9v; Sat, 18 Oct 2025 17:11:38 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C4BCF5972E9; Sat, 18 Oct 2025 17:11:37 +0200 (CEST)
-Message-ID: <59db89084080a26119b41af21ad977b6fd86ec0a.1760798392.git.balaton@eik.bme.hu>
+ id D34F55972E0; Sat, 18 Oct 2025 17:11:38 +0200 (CEST)
+Message-ID: <ed95b94037b835f8e9458bb849d1ec29aa38f5d5.1760798392.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1760798392.git.balaton@eik.bme.hu>
 References: <cover.1760798392.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 06/13] hw/ppc/pegasos2: Add south bridge pointer in the
- machine state
+Subject: [PATCH v3 07/13] hw/ppc/pegasos2: Move PCI IRQ routing setup to a
+ function
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,14 +38,15 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Date: Sat, 18 Oct 2025 17:11:37 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Sat, 18 Oct 2025 17:11:38 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,37 +62,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add field for the south bridge in machine state to have both north and
-south bridges in it.
+Collect steps of setting up PCI IRQ routing in one function.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/pegasos2.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/ppc/pegasos2.c | 66 +++++++++++++++++++++++------------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
 diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index 9b50cd3dab..66bceec5ef 100644
+index 66bceec5ef..26a571f82e 100644
 --- a/hw/ppc/pegasos2.c
 +++ b/hw/ppc/pegasos2.c
-@@ -69,6 +69,7 @@ struct Pegasos2MachineState {
+@@ -107,6 +107,38 @@ static void pegasos2_pci_irq(void *opaque, int n, int level)
+     qemu_set_irq(pm->via_pirq[n], level);
+ }
  
-     PowerPCCPU *cpu;
-     DeviceState *nb; /* north bridge */
-+    DeviceState *sb; /* south bridge */
-     IRQState pci_irqs[PCI_NUM_PINS];
-     OrIRQState orirq[PCI_NUM_PINS];
-     qemu_irq mv_pirq[PCI_NUM_PINS];
-@@ -174,7 +175,8 @@ static void pegasos2_init(MachineState *machine)
++/* Set up PCI interrupt routing: lines from pci.0 and pci.1 are ORed */
++static void pegasos2_setup_pci_irq(Pegasos2MachineState *pm)
++{
++    for (int h = 0; h < 2; h++) {
++        DeviceState *pd;
++        g_autofree const char *pn = g_strdup_printf("pcihost%d", h);
++
++        pd = DEVICE(object_resolve_path_component(OBJECT(pm->nb), pn));
++        assert(pd);
++        for (int i = 0; i < PCI_NUM_PINS; i++) {
++            OrIRQState *ori = &pm->orirq[i];
++
++            if (h == 0) {
++                g_autofree const char *n = g_strdup_printf("pci-orirq[%d]", i);
++
++                object_initialize_child_with_props(OBJECT(pm), n,
++                                                   ori, sizeof(*ori),
++                                                   TYPE_OR_IRQ, &error_fatal,
++                                                   "num-lines", "2", NULL);
++                qdev_realize(DEVICE(ori), NULL, &error_fatal);
++                qemu_init_irq(&pm->pci_irqs[i], pegasos2_pci_irq, pm, i);
++                qdev_connect_gpio_out(DEVICE(ori), 0, &pm->pci_irqs[i]);
++                pm->mv_pirq[i] = qdev_get_gpio_in_named(pm->nb, "gpp", 12 + i);
++                pm->via_pirq[i] = qdev_get_gpio_in_named(pm->sb, "pirq", i);
++            }
++            qdev_connect_gpio_out(pd, i, qdev_get_gpio_in(DEVICE(ori), h));
++        }
++    }
++    qdev_connect_gpio_out_named(pm->sb, "intr", 0,
++                                qdev_get_gpio_in_named(pm->nb, "gpp", 31));
++}
++
+ static void pegasos2_init(MachineState *machine)
+ {
+     Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
+@@ -118,7 +150,6 @@ static void pegasos2_init(MachineState *machine)
+     I2CBus *i2c_bus;
+     const char *fwname = machine->firmware ?: PROM_FILENAME;
+     char *filename;
+-    int i;
+     ssize_t sz;
+     uint8_t *spd_data;
+ 
+@@ -169,9 +200,6 @@ static void pegasos2_init(MachineState *machine)
+     /* Marvell Discovery II system controller */
+     pm->nb = DEVICE(sysbus_create_simple(TYPE_MV64361, -1,
+                           qdev_get_gpio_in(DEVICE(pm->cpu), PPC6xx_INPUT_INT)));
+-    for (i = 0; i < PCI_NUM_PINS; i++) {
+-        pm->mv_pirq[i] = qdev_get_gpio_in_named(pm->nb, "gpp", 12 + i);
+-    }
      pci_bus = mv64361_get_pci_bus(pm->nb, 1);
  
      /* VIA VT8231 South Bridge (multifunction PCI device) */
--    via = OBJECT(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
-+    pm->sb = DEVICE(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
-+    via = OBJECT(pm->sb);
+@@ -185,14 +213,9 @@ static void pegasos2_init(MachineState *machine)
+     }
  
-     /* Set properties on individual devices before realizing the south bridge */
-     if (machine->audiodev) {
+     pci_realize_and_unref(PCI_DEVICE(via), pci_bus, &error_abort);
+-    for (i = 0; i < PCI_NUM_PINS; i++) {
+-        pm->via_pirq[i] = qdev_get_gpio_in_named(DEVICE(via), "pirq", i);
+-    }
+     object_property_add_alias(OBJECT(machine), "rtc-time",
+                               object_resolve_path_component(via, "rtc"),
+                               "date");
+-    qdev_connect_gpio_out_named(DEVICE(via), "intr", 0,
+-                                qdev_get_gpio_in_named(pm->nb, "gpp", 31));
+ 
+     dev = PCI_DEVICE(object_resolve_path_component(via, "ide"));
+     pci_ide_create_devs(dev);
+@@ -205,30 +228,7 @@ static void pegasos2_init(MachineState *machine)
+     /* other PC hardware */
+     pci_vga_init(pci_bus);
+ 
+-    /* PCI interrupt routing: lines from pci.0 and pci.1 are ORed */
+-    for (int h = 0; h < 2; h++) {
+-        DeviceState *pd;
+-        g_autofree const char *pn = g_strdup_printf("pcihost%d", h);
+-
+-        pd = DEVICE(object_resolve_path_component(OBJECT(pm->nb), pn));
+-        assert(pd);
+-        for (i = 0; i < PCI_NUM_PINS; i++) {
+-            OrIRQState *ori = &pm->orirq[i];
+-
+-            if (h == 0) {
+-                g_autofree const char *n = g_strdup_printf("pci-orirq[%d]", i);
+-
+-                object_initialize_child_with_props(OBJECT(pm), n,
+-                                                   ori, sizeof(*ori),
+-                                                   TYPE_OR_IRQ, &error_fatal,
+-                                                   "num-lines", "2", NULL);
+-                qdev_realize(DEVICE(ori), NULL, &error_fatal);
+-                qemu_init_irq(&pm->pci_irqs[i], pegasos2_pci_irq, pm, i);
+-                qdev_connect_gpio_out(DEVICE(ori), 0, &pm->pci_irqs[i]);
+-            }
+-            qdev_connect_gpio_out(pd, i, qdev_get_gpio_in(DEVICE(ori), h));
+-        }
+-    }
++    pegasos2_setup_pci_irq(pm);
+ 
+     if (machine->kernel_filename) {
+         sz = load_elf(machine->kernel_filename, NULL, NULL, NULL,
 -- 
 2.41.3
 
