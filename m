@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5057BED85D
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 21:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E022BED857
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 21:10:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vACHV-0006jr-CG; Sat, 18 Oct 2025 15:07:57 -0400
+	id 1vACHR-0006jO-W7; Sat, 18 Oct 2025 15:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vACHB-0006Z7-0Z; Sat, 18 Oct 2025 15:07:37 -0400
+ id 1vACHB-0006ZT-Dy; Sat, 18 Oct 2025 15:07:37 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vACH9-00017f-44; Sat, 18 Oct 2025 15:07:36 -0400
+ id 1vACH9-00017o-Ev; Sat, 18 Oct 2025 15:07:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 41BF415F7A2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 58B2E15F7A3;
  Sat, 18 Oct 2025 22:06:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 091122F060B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 19F322F060C;
  Sat, 18 Oct 2025 22:07:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Gabriel Brookman <brookmangabriel@gmail.com>,
+ =?UTF-8?q?Andreas=20H=C3=BCttel?= <andreas.huettel@ur.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.2 21/23] accel/tcg: Hoist first page lookup above
- pointer_wrap
-Date: Sat, 18 Oct 2025 22:06:56 +0300
-Message-ID: <20251018190702.1178893-10-mjt@tls.msk.ru>
+Subject: [Stable-10.1.2 22/23] target/hppa: correct size bit parity for fmpyadd
+Date: Sat, 18 Oct 2025 22:06:57 +0300
+Message-ID: <20251018190702.1178893-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.2-20251018220623@cover.tls.msk.ru>
 References: <qemu-stable-10.1.2-20251018220623@cover.tls.msk.ru>
@@ -60,77 +62,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Gabriel Brookman <brookmangabriel@gmail.com>
 
-For strict alignment targets we registered cpu_pointer_wrap_notreached,
-but generic code used it before recognizing the alignment exception.
-Hoist the first page lookup, so that the alignment exception happens first.
+For the fmpyadd instruction on the hppa architecture, there is a bit
+used to specify whether the instruction is operating on a 32 bit or
+64 bit floating point register. For most instructions, such a bit is 0
+when operating on the smaller register and 1 when operating on the
+larger register. However, according to page 6-57 of the PA-RISC 1.1
+Architecture and Instruction Set Reference Manual, this convention is
+reversed for the fmpyadd instruction specifically, meaning the bit is
+1 for operations on 32 bit registers and 0 for 64 bit registers. See
+also page 6-18 (fig. 6-8) and 6-19 (table 6-16), where the f field
+for FMPYADD and FMPYSUB is documented. Previously, QEMU decoded this
+operation as operating on the other size of register, leading to bugs
+when translating the fmpyadd instruction. This patch fixes that issue.
 
-Cc: qemu-stable@nongnu.org
-Buglink: https://bugs.debian.org/1112285
-Fixes: a4027ed7d4be ("target: Use cpu_pointer_wrap_notreached for strict align targets")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit ec03dd9723781c7e9d4b4f70c7f54d12da9459d5)
+Reported-by: Andreas Hüttel <andreas.huettel@ur.de>
+Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3096
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Helge Deller <deller@gmx.de>
+Message-ID: <20251009-hppa-correct-fmpyadd-size-bit-decoding-v1-1-f63bb6c3290c@gmail.com>
+[PMD: Add documentation refs mentioned by Andreas K. Huettel]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit cea82f8cdd07697a48ae1c4e026707463f432a45)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 87e14bde4f..b063a572e7 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1744,6 +1744,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                        uintptr_t ra, MMUAccessType type, MMULookupLocals *l)
- {
-     bool crosspage;
-+    vaddr last;
-     int flags;
+diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
+index 4eaac750ea..13c6a55bf2 100644
+--- a/target/hppa/insns.decode
++++ b/target/hppa/insns.decode
+@@ -365,10 +365,10 @@ fstd            011100 ..... ..... .. ............1.    @ldstim11
+ &mpyadd         rm1 rm2 ta ra tm
+ @mpyadd         ...... rm1:5 rm2:5 ta:5 ra:5 . tm:5     &mpyadd
  
-     l->memop = get_memop(oi);
-@@ -1753,13 +1754,15 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+-fmpyadd_f       000110 ..... ..... ..... ..... 0 .....  @mpyadd
+-fmpyadd_d       000110 ..... ..... ..... ..... 1 .....  @mpyadd
+-fmpysub_f       100110 ..... ..... ..... ..... 0 .....  @mpyadd
+-fmpysub_d       100110 ..... ..... ..... ..... 1 .....  @mpyadd
++fmpyadd_f       000110 ..... ..... ..... ..... 1 .....  @mpyadd
++fmpyadd_d       000110 ..... ..... ..... ..... 0 .....  @mpyadd
++fmpysub_f       100110 ..... ..... ..... ..... 1 .....  @mpyadd
++fmpysub_d       100110 ..... ..... ..... ..... 0 .....  @mpyadd
  
-     l->page[0].addr = addr;
-     l->page[0].size = memop_size(l->memop);
--    l->page[1].addr = (addr + l->page[0].size - 1) & TARGET_PAGE_MASK;
-+    l->page[1].addr = 0;
-     l->page[1].size = 0;
--    crosspage = (addr ^ l->page[1].addr) & TARGET_PAGE_MASK;
- 
--    if (likely(!crosspage)) {
--        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
-+    /* Lookup and recognize exceptions from the first page. */
-+    mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
- 
-+    last = addr + l->page[0].size - 1;
-+    crosspage = (addr ^ last) & TARGET_PAGE_MASK;
-+    if (likely(!crosspage)) {
-         flags = l->page[0].flags;
-         if (unlikely(flags & (TLB_WATCHPOINT | TLB_NOTDIRTY))) {
-             mmu_watch_or_dirty(cpu, &l->page[0], type, ra);
-@@ -1769,18 +1772,18 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-         }
-     } else {
-         /* Finish compute of page crossing. */
--        int size0 = l->page[1].addr - addr;
-+        vaddr addr1 = last & TARGET_PAGE_MASK;
-+        int size0 = addr1 - addr;
-         l->page[1].size = l->page[0].size - size0;
-         l->page[0].size = size0;
--
-         l->page[1].addr = cpu->cc->tcg_ops->pointer_wrap(cpu, l->mmu_idx,
--                                                         l->page[1].addr, addr);
-+                                                         addr1, addr);
- 
-         /*
--         * Lookup both pages, recognizing exceptions from either.  If the
--         * second lookup potentially resized, refresh first CPUTLBEntryFull.
-+         * Lookup and recognize exceptions from the second page.
-+         * If the lookup potentially resized the table, refresh the
-+         * first CPUTLBEntryFull pointer.
-          */
--        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
-         if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
-             uintptr_t index = tlb_index(cpu, l->mmu_idx, addr);
-             l->page[0].full = &cpu->neg.tlb.d[l->mmu_idx].fulltlb[index];
+ ####
+ # Conditional Branches
 -- 
 2.47.3
 
