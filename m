@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCABBED0EF
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 16:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23588BED0FE
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 16:07:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vA7Yp-0000Fg-SD; Sat, 18 Oct 2025 10:05:31 -0400
+	id 1vA7Yp-0000FY-H7; Sat, 18 Oct 2025 10:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA7Yl-00009U-MX; Sat, 18 Oct 2025 10:05:27 -0400
+ id 1vA7Yl-00009T-JZ; Sat, 18 Oct 2025 10:05:27 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA7Yi-0006zY-W6; Sat, 18 Oct 2025 10:05:27 -0400
+ id 1vA7Yj-00071w-14; Sat, 18 Oct 2025 10:05:27 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 085ED5972FC;
- Sat, 18 Oct 2025 16:05:02 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1674F5972FE;
+ Sat, 18 Oct 2025 16:05:03 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id h-kq4R2lPUSn; Sat, 18 Oct 2025 16:05:00 +0200 (CEST)
+ id 3DF0xR6QihYI; Sat, 18 Oct 2025 16:05:01 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0D0D95972E9; Sat, 18 Oct 2025 16:05:00 +0200 (CEST)
-Message-ID: <195188bacefcd309585a54b129684a44e380c652.1760795082.git.balaton@eik.bme.hu>
+ id 19CC75972F8; Sat, 18 Oct 2025 16:05:01 +0200 (CEST)
+Message-ID: <2aa235b8bd820907efffc648df6ebc88cb4d81b6.1760795082.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1760795082.git.balaton@eik.bme.hu>
 References: <cover.1760795082.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v4 15/16] hw/ppc/prep: Fix non-contiguous IO control bit
+Subject: [PATCH v4 16/16] hw/ppc/prep: Add reset method to prep-systemio
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -39,7 +39,7 @@ Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Date: Sat, 18 Oct 2025 16:05:00 +0200 (CEST)
+Date: Sat, 18 Oct 2025 16:05:01 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -63,116 +63,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The bit that is supposed to control if ISA IO ports are accessed with
-discontiguous addresses was not connected so it did nothing. We can
-now directly enable or disable the discontiguous region so allow the
-bit to function. This did not cause a problem so far as nothing seems
-to use this bit or discontiguous IO addresses.
+The initial state needs to be reset so it's not enough to set it once
+at realize. Add a reset method to fix device reset state.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/pci-host/raven.c    |  9 ---------
- hw/ppc/prep.c          |  3 +++
- hw/ppc/prep_systemio.c | 17 +++++++++++------
- 3 files changed, 14 insertions(+), 15 deletions(-)
+ hw/pci-host/raven.c    |  1 -
+ hw/ppc/prep_systemio.c | 13 ++++++++++---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index 1e36a637a6..7ebca8186b 100644
+index 7ebca8186b..fd45acb7eb 100644
 --- a/hw/pci-host/raven.c
 +++ b/hw/pci-host/raven.c
-@@ -161,13 +161,6 @@ static const PCIIOMMUOps raven_iommu_ops = {
-     .get_address_space = raven_pcihost_set_iommu,
- };
- 
--static void raven_change_gpio(void *opaque, int n, int level)
--{
--    PREPPCIState *s = opaque;
--
--    memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
--}
--
- static void raven_pcihost_realize(DeviceState *d, Error **errp)
- {
-     SysBusDevice *dev = SYS_BUS_DEVICE(d);
-@@ -176,8 +169,6 @@ static void raven_pcihost_realize(DeviceState *d, Error **errp)
-     Object *o = OBJECT(d);
-     MemoryRegion *mr, *bm, *address_space_mem = get_system_memory();
- 
--    qdev_init_gpio_in(d, raven_change_gpio, 1);
--
-     memory_region_init(&s->pci_io, o, "pci-io", 0x3f800000);
+@@ -173,7 +173,6 @@ static void raven_pcihost_realize(DeviceState *d, Error **errp)
      memory_region_init_io(&s->pci_discontiguous_io, o,
                            &raven_io_ops, &s->pci_io,
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 973d2fb7eb..3f497910f4 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -322,6 +322,9 @@ static void ibm_40p_init(MachineState *machine)
-     dev = DEVICE(isa_dev);
-     qdev_prop_set_uint32(dev, "ibm-planar-id", 0xfc);
-     qdev_prop_set_uint32(dev, "equipment", 0xc0);
-+    object_property_set_link(OBJECT(dev), "discontiguous-io",
-+                             OBJECT(sysbus_mmio_get_region(pcihost, 1)),
-+                             &error_fatal);
-     isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
+                           "pci-discontiguous-io", 8 * MiB);
+-    memory_region_set_enabled(&s->pci_discontiguous_io, false);
+     memory_region_init(&s->pci_memory, o, "pci-memory", 0x3f000000);
  
-     /* Memory controller */
+     sysbus_init_mmio(dev, &s->pci_io);
 diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-index 41cd923b94..6ef9b91317 100644
+index 6ef9b91317..13b8fdb56b 100644
 --- a/hw/ppc/prep_systemio.c
 +++ b/hw/ppc/prep_systemio.c
-@@ -44,9 +44,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
+@@ -252,6 +252,15 @@ static const MemoryRegionOps ppc_parity_error_ops = {
+     },
+ };
  
- struct PrepSystemIoState {
-     ISADevice parent_obj;
++static void prep_systemio_reset(DeviceState *dev)
++{
++    PrepSystemIoState *s = PREP_SYSTEMIO(dev);
 +
-     MemoryRegion ppc_parity_mem;
-+    MemoryRegion *discontiguous_io;
- 
--    qemu_irq non_contiguous_io_map_irq;
-     uint8_t sreset; /* 0x0092 */
-     uint8_t equipment; /* 0x080c */
-     uint8_t system_control; /* 0x081c */
-@@ -206,8 +207,8 @@ static void prep_port0850_write(void *opaque, uint32_t addr, uint32_t val)
-     PrepSystemIoState *s = opaque;
- 
-     trace_prep_systemio_write(addr, val);
--    qemu_set_irq(s->non_contiguous_io_map_irq,
--                 val & PORT0850_IOMAP_NONCONTIGUOUS);
-+    memory_region_set_enabled(s->discontiguous_io,
-+                              !(val & PORT0850_IOMAP_NONCONTIGUOUS));
-     s->iomap_type = val & PORT0850_IOMAP_NONCONTIGUOUS;
- }
- 
-@@ -257,10 +258,10 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
-     PrepSystemIoState *s = PREP_SYSTEMIO(dev);
-     PowerPCCPU *cpu;
- 
--    qdev_init_gpio_out(dev, &s->non_contiguous_io_map_irq, 1);
-+    assert(s->discontiguous_io);
-     s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
--    qemu_set_irq(s->non_contiguous_io_map_irq,
--                 s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS);
++    s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
 +    memory_region_set_enabled(s->discontiguous_io,
 +                              !(s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS));
++}
++
+ static void prep_systemio_realize(DeviceState *dev, Error **errp)
+ {
+     ISADevice *isa = ISA_DEVICE(dev);
+@@ -259,9 +268,6 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
+     PowerPCCPU *cpu;
+ 
+     assert(s->discontiguous_io);
+-    s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
+-    memory_region_set_enabled(s->discontiguous_io,
+-                              !(s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS));
      cpu = POWERPC_CPU(first_cpu);
      s->softreset_irq = qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_HRESET);
  
-@@ -288,6 +289,8 @@ static const VMStateDescription vmstate_prep_systemio = {
- static const Property prep_systemio_properties[] = {
-     DEFINE_PROP_UINT8("ibm-planar-id", PrepSystemIoState, ibm_planar_id, 0),
-     DEFINE_PROP_UINT8("equipment", PrepSystemIoState, equipment, 0),
-+    DEFINE_PROP_LINK("discontiguous-io", PrepSystemIoState, discontiguous_io,
-+                     TYPE_MEMORY_REGION, MemoryRegion *),
- };
- 
- static void prep_systemio_class_initfn(ObjectClass *klass, const void *data)
-@@ -296,6 +299,8 @@ static void prep_systemio_class_initfn(ObjectClass *klass, const void *data)
- 
-     dc->realize = prep_systemio_realize;
+@@ -301,6 +307,7 @@ static void prep_systemio_class_initfn(ObjectClass *klass, const void *data)
      dc->vmsd = &vmstate_prep_systemio;
-+    /* Reason: PReP specific device, needs to be wired via properties */
-+    dc->user_creatable = false;
+     /* Reason: PReP specific device, needs to be wired via properties */
+     dc->user_creatable = false;
++    device_class_set_legacy_reset(dc, prep_systemio_reset);
      device_class_set_props(dc, prep_systemio_properties);
  }
  
