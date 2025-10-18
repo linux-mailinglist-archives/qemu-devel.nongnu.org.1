@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23588BED0FE
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 16:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DC1BED250
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 17:14:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vA7Yp-0000FY-H7; Sat, 18 Oct 2025 10:05:31 -0400
+	id 1vA8as-0008CV-GR; Sat, 18 Oct 2025 11:11:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA7Yl-00009T-JZ; Sat, 18 Oct 2025 10:05:27 -0400
+ id 1vA8ap-0008At-AS; Sat, 18 Oct 2025 11:11:39 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA7Yj-00071w-14; Sat, 18 Oct 2025 10:05:27 -0400
+ id 1vA8an-0005fP-48; Sat, 18 Oct 2025 11:11:39 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1674F5972FE;
- Sat, 18 Oct 2025 16:05:03 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9AE645972F0;
+ Sat, 18 Oct 2025 17:11:33 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id 3DF0xR6QihYI; Sat, 18 Oct 2025 16:05:01 +0200 (CEST)
+ id Aw74348iQ-IE; Sat, 18 Oct 2025 17:11:31 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 19CC75972F8; Sat, 18 Oct 2025 16:05:01 +0200 (CEST)
-Message-ID: <2aa235b8bd820907efffc648df6ebc88cb4d81b6.1760795082.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1760795082.git.balaton@eik.bme.hu>
-References: <cover.1760795082.git.balaton@eik.bme.hu>
+ id 4DA245972E4; Sat, 18 Oct 2025 17:11:31 +0200 (CEST)
+Message-ID: <cover.1760798392.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v4 16/16] hw/ppc/prep: Add reset method to prep-systemio
+Subject: [PATCH v3 00/13] Pegasos2 clean up and pegasos1 emulation
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
-Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
+Cc: Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Date: Sat, 18 Oct 2025 16:05:01 +0200 (CEST)
+Date: Sat, 18 Oct 2025 17:11:31 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -63,65 +59,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The initial state needs to be reset so it's not enough to set it once
-at realize. Add a reset method to fix device reset state.
+This series changes how the fdt for VOF is generated in pegasos2 by
+moving the static parts to a dtb and only generate the changing parts
+such as memory size and PCI devices programmatically. This simplifies
+the code and allows simply adding emulation of Pegasos I which has a
+different north bridge and slightly different memory map but otherwise
+very similar and can be emulated by reusing parts from the amigaone
+machine. The machine was tested with a Pegasos I ROM image and MorphOS.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/pci-host/raven.c    |  1 -
- hw/ppc/prep_systemio.c | 13 ++++++++++---
- 2 files changed, 10 insertions(+), 4 deletions(-)
+The first VOF patch (submitted separetely before, the reviewed v3 is
+included here) fixes handling the name property in VOF that cannot be
+represented in a dts as that always takes the path as the name and
+cannot accept an explicit name property but we need the name property
+to appear when guest queries properties which previously was worked
+around by adding it to every node.
 
-diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index 7ebca8186b..fd45acb7eb 100644
---- a/hw/pci-host/raven.c
-+++ b/hw/pci-host/raven.c
-@@ -173,7 +173,6 @@ static void raven_pcihost_realize(DeviceState *d, Error **errp)
-     memory_region_init_io(&s->pci_discontiguous_io, o,
-                           &raven_io_ops, &s->pci_io,
-                           "pci-discontiguous-io", 8 * MiB);
--    memory_region_set_enabled(&s->pci_discontiguous_io, false);
-     memory_region_init(&s->pci_memory, o, "pci-memory", 0x3f000000);
- 
-     sysbus_init_mmio(dev, &s->pci_io);
-diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-index 6ef9b91317..13b8fdb56b 100644
---- a/hw/ppc/prep_systemio.c
-+++ b/hw/ppc/prep_systemio.c
-@@ -252,6 +252,15 @@ static const MemoryRegionOps ppc_parity_error_ops = {
-     },
- };
- 
-+static void prep_systemio_reset(DeviceState *dev)
-+{
-+    PrepSystemIoState *s = PREP_SYSTEMIO(dev);
-+
-+    s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
-+    memory_region_set_enabled(s->discontiguous_io,
-+                              !(s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS));
-+}
-+
- static void prep_systemio_realize(DeviceState *dev, Error **errp)
- {
-     ISADevice *isa = ISA_DEVICE(dev);
-@@ -259,9 +268,6 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
-     PowerPCCPU *cpu;
- 
-     assert(s->discontiguous_io);
--    s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
--    memory_region_set_enabled(s->discontiguous_io,
--                              !(s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS));
-     cpu = POWERPC_CPU(first_cpu);
-     s->softreset_irq = qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_HRESET);
- 
-@@ -301,6 +307,7 @@ static void prep_systemio_class_initfn(ObjectClass *klass, const void *data)
-     dc->vmsd = &vmstate_prep_systemio;
-     /* Reason: PReP specific device, needs to be wired via properties */
-     dc->user_creatable = false;
-+    device_class_set_legacy_reset(dc, prep_systemio_reset);
-     device_class_set_props(dc, prep_systemio_properties);
- }
- 
+The series also adds an extended DEFINE_MACHINE macro that is later
+used for more easily define the abstract machine type and hide most of
+the QOM boiler plate.
+
+Regards,
+BALATON Zoltan
+
+Link to previous version:
+https://patchew.org/QEMU/cover.1751494995.git.balaton@eik.bme.hu/
+
+v3:
+- rebase on master
+
+v2:
+- rebase on master
+- added some R-b tags from Philippe
+- move first patch later (was first to allow merging separately)
+- clarify blurb above
+
+BALATON Zoltan (13):
+  ppc/vof: Make nextprop behave more like Open Firmware
+  hw/ppc/pegasos2: Remove explicit name properties from device tree
+  hw/ppc/pegasos2: Change device tree generation
+  hw/ppc/pegasos2: Remove fdt pointer from machine state
+  hw/ppc/pegasos2: Rename mv field in machine state
+  hw/ppc/pegasos2: Add south bridge pointer in the machine state
+  hw/ppc/pegasos2: Move PCI IRQ routing setup to a function
+  hw/ppc/pegasos2: Move hardware specific parts out of machine reset
+  hw/ppc/pegasos2: Introduce abstract superclass
+  hw/ppc/pegasos2: Add bus frequency to machine state
+  hw/boards: Extend DEFINE_MACHINE macro to cover more use cases
+  hw/ppc/pegasos2: Add Pegasos I emulation
+  hw/ppc/pegasos2: Add VOF support for pegasos1
+
+ MAINTAINERS              |   1 +
+ hw/ppc/pegasos2.c        | 770 +++++++++++++++++++--------------------
+ hw/ppc/vof.c             |  50 ++-
+ include/hw/boards.h      |  16 +-
+ pc-bios/dtb/meson.build  |   2 +
+ pc-bios/dtb/pegasos1.dtb | Bin 0 -> 857 bytes
+ pc-bios/dtb/pegasos1.dts | 125 +++++++
+ pc-bios/dtb/pegasos2.dtb | Bin 0 -> 1701 bytes
+ pc-bios/dtb/pegasos2.dts | 167 +++++++++
+ 9 files changed, 718 insertions(+), 413 deletions(-)
+ create mode 100644 pc-bios/dtb/pegasos1.dtb
+ create mode 100644 pc-bios/dtb/pegasos1.dts
+ create mode 100644 pc-bios/dtb/pegasos2.dtb
+ create mode 100644 pc-bios/dtb/pegasos2.dts
+
 -- 
 2.41.3
 
