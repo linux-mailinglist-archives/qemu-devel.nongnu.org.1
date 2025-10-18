@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28B5BED878
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 21:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8990EBED84B
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 21:08:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vACHP-0006gn-DW; Sat, 18 Oct 2025 15:07:51 -0400
+	id 1vACHJ-0006Yy-VK; Sat, 18 Oct 2025 15:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vACH4-0006Qc-4E; Sat, 18 Oct 2025 15:07:30 -0400
+ id 1vACH7-0006Tu-HJ; Sat, 18 Oct 2025 15:07:33 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vACH2-00015D-4O; Sat, 18 Oct 2025 15:07:29 -0400
+ id 1vACH5-00016D-L6; Sat, 18 Oct 2025 15:07:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 08FB415F79F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 17FB415F7A0;
  Sat, 18 Oct 2025 22:06:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C4ABC2F0608;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D581E2F0609;
  Sat, 18 Oct 2025 22:07:02 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.1.2 18/23] target/i386: fix access to the T bit of the TSS
-Date: Sat, 18 Oct 2025 22:06:53 +0300
-Message-ID: <20251018190702.1178893-7-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.1.2 19/23] async: access bottom half flags with
+ qatomic_read
+Date: Sat, 18 Oct 2025 22:06:54 +0300
+Message-ID: <20251018190702.1178893-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.1.2-20251018220623@cover.tls.msk.ru>
 References: <qemu-stable-10.1.2-20251018220623@cover.tls.msk.ru>
@@ -59,36 +60,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-The T bit is bit 0 of the 16-bit word at offset 100 of the TSS.  However,
-accessing it with a 32-bit word is not really correct, because bytes
-102-103 contain the I/O map base address (relative to the base of the
-TSS) and bits 1-15 are reserved.  In particular, any task switch to a TSS that
-has a nonzero I/O map base address is broken.
+Running test-aio-multithread under TSAN reveals data races on bh->flags.
+Because bottom halves may be scheduled or canceled asynchronously,
+without taking a lock, adjust aio_compute_bh_timeout() and aio_ctx_check()
+to use a relaxed read to access the flags.
 
-This fixes the eventinj and taskswitch tests in kvm-unit-tests.
+Use an acquire load to ensure that anything that was written prior to
+qemu_bh_schedule() is visible.
 
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2749
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/851
 Cc: qemu-stable@nongnu.org
-Fixes: ad441b8b791 ("target/i386: implement TSS trap bit", 2025-05-12)
-Reported-by: Thomas Huth <thuth@redhat.com>
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/3101
-Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 0d22b621b7969eefde3535a0805977a334936fd7)
+(cherry picked from commit 5142397c79330aab9bef3230991c8ac0c251110f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 071f3fbd83..f49fe851cd 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -456,7 +456,7 @@ static void switch_tss_ra(CPUX86State *env, int tss_selector,
-             new_segs[i] = access_ldw(&new, tss_base + (0x48 + i * 4));
+diff --git a/util/async.c b/util/async.c
+index 2719c629ae..a736d2cd0d 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -256,8 +256,9 @@ static int64_t aio_compute_bh_timeout(BHList *head, int timeout)
+     QEMUBH *bh;
+ 
+     QSLIST_FOREACH_RCU(bh, head, next) {
+-        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+-            if (bh->flags & BH_IDLE) {
++        int flags = qatomic_load_acquire(&bh->flags);
++        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++            if (flags & BH_IDLE) {
+                 /* idle bottom halves will be polled at least
+                  * every 10ms */
+                 timeout = 10000000;
+@@ -335,14 +336,16 @@ aio_ctx_check(GSource *source)
+     aio_notify_accept(ctx);
+ 
+     QSLIST_FOREACH_RCU(bh, &ctx->bh_list, next) {
+-        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++        int flags = qatomic_load_acquire(&bh->flags);
++        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+             return true;
          }
-         new_ldt = access_ldw(&new, tss_base + 0x60);
--        new_trap = access_ldl(&new, tss_base + 0x64);
-+        new_trap = access_ldw(&new, tss_base + 0x64) & 1;
-     } else {
-         /* 16 bit */
-         new_cr3 = 0;
+     }
+ 
+     QSIMPLEQ_FOREACH(s, &ctx->bh_slice_list, next) {
+         QSLIST_FOREACH_RCU(bh, &s->bh_list, next) {
+-            if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++            int flags = qatomic_load_acquire(&bh->flags);
++            if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+                 return true;
+             }
+         }
 -- 
 2.47.3
 
