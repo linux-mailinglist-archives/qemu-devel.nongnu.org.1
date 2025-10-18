@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFC8BEDBE4
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 22:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D02BEDC08
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 22:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vADzF-00083o-AX; Sat, 18 Oct 2025 16:57:13 -0400
+	id 1vADzH-00086q-QS; Sat, 18 Oct 2025 16:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vADz6-00080R-Dt; Sat, 18 Oct 2025 16:57:04 -0400
+ id 1vADz6-00080S-QG; Sat, 18 Oct 2025 16:57:04 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vADz3-0004xz-IS; Sat, 18 Oct 2025 16:57:04 -0400
+ id 1vADz5-0004y9-4P; Sat, 18 Oct 2025 16:57:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C94C215F87C;
+ by isrv.corpit.ru (Postfix) with ESMTP id D6B2915F87D;
  Sat, 18 Oct 2025 23:56:40 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A7BCB2F0685;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C138F2F0686;
  Sat, 18 Oct 2025 23:56:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Ogrisegg <tom-bugs-qemu@fnord.at>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.6 19/23] target/i386: fix x86_64 pushw op
-Date: Sat, 18 Oct 2025 23:56:37 +0300
-Message-ID: <20251018205644.1185050-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 20/23] async: access bottom half flags with
+ qatomic_read
+Date: Sat, 18 Oct 2025 23:56:38 +0300
+Message-ID: <20251018205644.1185050-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251018221314@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251018221314@cover.tls.msk.ru>
@@ -57,41 +58,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Ogrisegg <tom-bugs-qemu@fnord.at>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-For x86_64 a 16 bit push op (pushw) of a memory address would generate
-a 64 bit store on the stack instead of a 16 bit store.
+Running test-aio-multithread under TSAN reveals data races on bh->flags.
+Because bottom halves may be scheduled or canceled asynchronously,
+without taking a lock, adjust aio_compute_bh_timeout() and aio_ctx_check()
+to use a relaxed read to access the flags.
 
-For example:
-        pushw (%rax)
+Use an acquire load to ensure that anything that was written prior to
+qemu_bh_schedule() is visible.
 
-behaves like
-        pushq (%rax)
-
-which is incorrect.
-
-This patch fixes that.
-
-Signed-off-by: Thomas Ogrisegg <tom-bugs-qemu@fnord.at>
-Link: https://lore.kernel.org/r/20250715210307.GA1115@x1.fnord.at
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2749
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/851
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 5a2faa0a0a2cbdad4a108a0e122b0e51b9bc94fd)
+(cherry picked from commit 5142397c79330aab9bef3230991c8ac0c251110f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index f4cfc196b8..1a3ee3b1f6 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1541,7 +1541,7 @@ static void decode_group4_5(DisasContext *s, CPUX86State *env, X86OpEntry *entry
-         [0x0b] = X86_OP_ENTRYr(CALLF_m, M,p),
-         [0x0c] = X86_OP_ENTRYr(JMP_m,   E,f64,                         zextT0),
-         [0x0d] = X86_OP_ENTRYr(JMPF_m,  M,p),
--        [0x0e] = X86_OP_ENTRYr(PUSH,    E,f64),
-+        [0x0e] = X86_OP_ENTRYr(PUSH,    E,d64),
-     };
+diff --git a/util/async.c b/util/async.c
+index 863416dee9..c3ddb1c79b 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -256,8 +256,9 @@ static int64_t aio_compute_bh_timeout(BHList *head, int timeout)
+     QEMUBH *bh;
  
-     int w = (*b & 1);
+     QSLIST_FOREACH_RCU(bh, head, next) {
+-        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+-            if (bh->flags & BH_IDLE) {
++        int flags = qatomic_load_acquire(&bh->flags);
++        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++            if (flags & BH_IDLE) {
+                 /* idle bottom halves will be polled at least
+                  * every 10ms */
+                 timeout = 10000000;
+@@ -335,14 +336,16 @@ aio_ctx_check(GSource *source)
+     aio_notify_accept(ctx);
+ 
+     QSLIST_FOREACH_RCU(bh, &ctx->bh_list, next) {
+-        if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++        int flags = qatomic_load_acquire(&bh->flags);
++        if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+             return true;
+         }
+     }
+ 
+     QSIMPLEQ_FOREACH(s, &ctx->bh_slice_list, next) {
+         QSLIST_FOREACH_RCU(bh, &s->bh_list, next) {
+-            if ((bh->flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
++            int flags = qatomic_load_acquire(&bh->flags);
++            if ((flags & (BH_SCHEDULED | BH_DELETED)) == BH_SCHEDULED) {
+                 return true;
+             }
+         }
 -- 
 2.47.3
 
