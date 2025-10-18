@@ -2,118 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFEABEC87B
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 08:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 164B2BEC933
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 09:22:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vA06c-00018k-7d; Sat, 18 Oct 2025 02:07:54 -0400
+	id 1vA1Fp-00011T-3c; Sat, 18 Oct 2025 03:21:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vA06Z-00018Y-Tu; Sat, 18 Oct 2025 02:07:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1vA1Fk-00010X-61
+ for qemu-devel@nongnu.org; Sat, 18 Oct 2025 03:21:24 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vA06X-0001E6-9n; Sat, 18 Oct 2025 02:07:51 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59I3YgDb022483;
- Sat, 18 Oct 2025 06:07:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=QKHhfA
- ezuA2Zbm7y3+O1PYwlqcz4rKl/boiDKjlu8Dg=; b=lSoxjUjxytKZYsHZttCB6D
- uZjVUfZaTVjuGEKC57JRnpXNzjvQWe3tAbSIUnV1G3BctOzyrO6wyavZSBwk/f4P
- 3+FQH6cePUQktG97yQfUUdom4dzg2h8GpooWYhRLScz+Hn1fyMym5ZiJvRXQIdix
- 4/w73KV/hZXJT0A9Olxq6KY6Rjy8KXKvwlwSPdIbfg4EdzlO6/DqVRd0MqXv2v2K
- DHKr2y0AqReYk8Aq8gdS56FDgbQTqGVHca0NxuIxtHUD2il9n85DVtHEOIDh2Gml
- O8r3/XidwPmZQB21G2o7ggFPGq2M81c4E71tFJzcdQkd1qjQo/35sY3SV5vDnU5A
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33ereh9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 18 Oct 2025 06:07:38 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59I67cML004137;
- Sat, 18 Oct 2025 06:07:38 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33ereh6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 18 Oct 2025 06:07:38 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59I5OBsX015002;
- Sat, 18 Oct 2025 06:07:37 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sk0qhk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 18 Oct 2025 06:07:37 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59I67bEW26804884
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 18 Oct 2025 06:07:37 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 025F35805A;
- Sat, 18 Oct 2025 06:07:37 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3C175803F;
- Sat, 18 Oct 2025 06:07:34 +0000 (GMT)
-Received: from [9.39.26.64] (unknown [9.39.26.64])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Sat, 18 Oct 2025 06:07:34 +0000 (GMT)
-Message-ID: <a69c0e62-1cfa-474d-abe1-151df0caf234@linux.ibm.com>
-Date: Sat, 18 Oct 2025 11:37:32 +0530
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1vA1Fi-0000MX-8b
+ for qemu-devel@nongnu.org; Sat, 18 Oct 2025 03:21:23 -0400
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 697BB3F21F
+ for <qemu-devel@nongnu.org>; Sat, 18 Oct 2025 07:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20251003; t=1760772077;
+ bh=aegHmhQdAdIn3GtLUD5DrBNVravsdQm5O98UpW03S3M=;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+ In-Reply-To:Content-Type;
+ b=TC1004tyYk67oKWgHfNqEvFWSh1lvpVnWAlsWMFMnfXvettlid7GPr981XKJQk/Vb
+ OmAQpDyGxi+RveRsOgRmxbTKU27V1KLt1biu8e6f9UrMv7TrZeMXYng3lZuc+2KfKx
+ R26Xyw1JFsbZICuT4gPlJ7fCT8oTr/JvW8U3WaEnmdnq9Rol0DS4kFG+FCrzuqNvIl
+ /sanHl18jXEUotr5M0dVHhMbkjUpGzJVxaXGJwbxBySnftXwg15ObYTrXg7OxsKNU7
+ 3ccHuHXzKi18njPU3JAzT1fQfGdqamfh7RKoqRaTSNbbFEqXxGLFwOAKieyv4zrnAp
+ mOHYCbySme51/h+hXkjoY/B5DIwG0CSkDoqNXRrBlkDrIk8V2TvJ52fWCTNLHwrdnI
+ gkSs+Tzt9dq+suSR6fwZwCAVg0y9Nuq3YAuZBAxZYvedcqxxyrN243pJ7CTbSwsxoF
+ KFozbmRn5qcbQZEL+VnwZcrvXk++m1jG0ibuCP2QPtZX+h8zH3r+f/Hteccr4y9XdQ
+ 6ImOQ8l/mxaTbbg/vmMiXuVWGn4NQGyJ4eCq3io+0xnuNHUzGnJe9czKRGeaJ4RPM9
+ c2b0asFyTSaAzehu6ncxPGcLZzG0dPCIpml5cU16RExJCLhJ5g/kFWDfx3gN5EXEBP
+ nBcskFSz0JfkxtHKsIy8CbKE=
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-4256fae4b46so1808677f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 18 Oct 2025 00:21:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760772077; x=1761376877;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aegHmhQdAdIn3GtLUD5DrBNVravsdQm5O98UpW03S3M=;
+ b=tJA8d2ESuXpGNHJXFYEuwAPwaqYJ8LBjoANRCySPkze8vjgMUQ4BPgm+lxxNsg12Si
+ UdD+D9rT+MiRjtWaB4CzoxtleCDbdqPF0pf+XMluoWnnjslcuDdF0JOPG9Xx3Z5uk/+V
+ W6gK7jieeGDHSridIbMmyC84l40Tcew2oLqvHZyskj2Sli6Sp69V184A3xt3OxjHW8v/
+ up786suUTTCiS6AGA4K5vgOXh+Q7qGckXlgsYDWViN7M94B0HEqeS3lAL+H5oUGoK59u
+ FQswPWf7G4e96WMnT/chwOb7LYy9WAkv2Rzmahycp9yKBIizOWCgPkYahn93de9YsHBb
+ RPCA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVuCsePoq7DsJPl8A79SgaB3HqUTnRKL75bfbiyMP+jdeuR+HWgtzy5pkf3i8sMAETxANBgHPjtieo4@nongnu.org
+X-Gm-Message-State: AOJu0YxoinvpjbqO98+A8yOuEAghTQDXQZJW+8uePWRwvBs1azd4MBst
+ bUXBQeUF0g1vahzJrlYXXA2/+sqcB/58E/GphLBmkuoyq7WukdFpzXhz4rT6cZXVbgrIJShadvn
+ JRPvuFJTiLKzZyPJIQ791jqu+VJtO1L2rOPd2PStDek66wXWt7ajyp6G6oJ0s25f+RPEfN4DerB
+ vPMV2c
+X-Gm-Gg: ASbGnctm2kDnNskRxD4o1LjRMQO9a3s4fxzwUQU6mHgJgNg+XLDdWhdf65c3s2fLPmc
+ utVKaZst21k7P5EWBF74G96Bj+gjAZll3yPdNpbT4UR/PxGXqPQIHskIcWQt2kk9P2LtftCHe28
+ AtNwy4AD9ByUq++LPb0C41BD4KMwE666aVAFNsUbZWuB3raK2frSYvPP47MIGeQ4cqxNAQ0e+Xr
+ x73oVw1IqUOijVQL55KT2kLI9jZeyB3XJd9Q3DHFm+Awh91Ag2d3mkXdtI3mLJW0AiKBLbduABb
+ BMD3uXnZzTnYGpFd2x7lHpWC7ZMRYu07q8kVl1a6LeTvC9QwaF+aDydbYw/iSyi6dmBAD0sNLZt
+ aDIehFTYIKLSSzWvCkFMRIT5h0H/PVqZewPPGeC6dt/Bjk3T+62Bur89qy6kVYrJL3Mkfxj93
+X-Received: by 2002:a05:6000:2287:b0:428:1475:6a0f with SMTP id
+ ffacd0b85a97d-42814756c75mr1044426f8f.54.1760772076901; 
+ Sat, 18 Oct 2025 00:21:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/UTUWQMTr9HCGB1KlhyvNzHLzUHRf94rreYwZz03gbOCDV5StIg52iJe1ZsMaZVFZje8LKg==
+X-Received: by 2002:a05:6000:2287:b0:428:1475:6a0f with SMTP id
+ ffacd0b85a97d-42814756c75mr1044407f8f.54.1760772076421; 
+ Sat, 18 Oct 2025 00:21:16 -0700 (PDT)
+Received: from [192.168.123.154]
+ (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-427f009a781sm3552325f8f.30.2025.10.18.00.21.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 18 Oct 2025 00:21:15 -0700 (PDT)
+Message-ID: <4d1a679a-f1c2-487b-bddb-eaf7dd56fd0e@canonical.com>
+Date: Sat, 18 Oct 2025 09:21:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] target/ppc: Remove the unusable e200 CPUs
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20251017144504.563594-1-thuth@redhat.com>
- <295be472-7778-49f7-9ede-e5ef51dd908e@linux.ibm.com>
- <3c2d1838-0fc9-46e3-a6b4-382ecc4d4ff8@kaod.org>
+Subject: Re: [PATCH 3/3] semihosting: Check for overflow in FLEN on 32-bit
+ systems
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Luc Michel <lmichel@kalray.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+References: <20251017213529.998267-1-sean.anderson@linux.dev>
+ <20251017213529.998267-4-sean.anderson@linux.dev>
 Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <3c2d1838-0fc9-46e3-a6b4-382ecc4d4ff8@kaod.org>
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <20251017213529.998267-4-sean.anderson@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f32eaa cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
- a=qqAnmVY_W5D1_cK4rDQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-GUID: J6JDAVvsj6pSGvAxfF-dOn5-em9pS8oF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX98n8mBRmmtQr
- s/8y9dTG/B8XJliS49uk9ks6lMGVYKokNjaUHw4sId4JvoQQXizjHKbFb0ol1rl9hbVPxZ0SNBK
- k116OrVZCiJoiSXvACkGsIKSLW7wTfDteHGCAbsiINIhTEUDC4ToJaNWm+4YDbMw86Jw0tHSjtC
- yEiha1FTbp5vnmMqKFvBSS9uZvs8n5atHegIJjQvnnU/Z4UQGuxtvJ7J666A66LTUnN3J10zcEt
- oShEjwLj27CyZ53vBz3m2jLXCyLwVAeVEDbRdBXxKXKPGQd89jC0EdxH/YUZoDzKV/rlnG3yNoy
- zJ+J29e6PcQxa4bHwKXHLl841Yik7zI8DvJRW1Ido/TDqARFvGRLeb7d5/u2YzbFU7AqUmx29M7
- b3Dmmm2iSe75AUgV3q9rIJk9rgumyg==
-X-Proofpoint-ORIG-GUID: di9WmfFtrFCWnOEGRKensBmlWy6-mq1t
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-18_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=185.125.188.122;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-0.canonical.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,84 +125,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 10/17/25 23:35, Sean Anderson wrote:
+> When semihosting 32-bit systems, the return value of FLEN will be stored
+> in a 32-bit integer. To prevent wraparound, return -1 and set EOVERFLOW.
+> This matches the behavior of stat(2). Static files don't need to be
+> checked, since are always small.
+> 
+> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+> ---
+> 
+>   semihosting/arm-compat-semi.c | 17 ++++++++++++++---
+>   1 file changed, 14 insertions(+), 3 deletions(-)
+> 
+> diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
+> index c5a07cb947..57453ca6be 100644
+> --- a/semihosting/arm-compat-semi.c
+> +++ b/semihosting/arm-compat-semi.c
+> @@ -305,8 +305,19 @@ static uint64_t common_semi_flen_buf(CPUState *cs)
+>       return sp - 64;
+>   }
+>   
+> +static void common_semi_flen_cb(CPUState *cs, uint64_t ret, int err)
+> +{
+> +    CPUArchState *env = cpu_env(cs);
+> +
+> +    if (!err && !is_64bit_semihosting(env) && ret > INT32_MAX) {
 
 
-On 10/18/25 11:31, Cédric Le Goater wrote:
-> On 10/17/25 17:50, Harsh Prateek Bora wrote:
->>
->>
->> On 10/17/25 20:15, Thomas Huth wrote:
->>> From: Thomas Huth <thuth@redhat.com>
->>>
->>> There is currently no machine in QEMU (except the "none" machine)
->>> that can be run with one of the e200 ppc CPUs - all machines either
->>> complain about an invalid CPU type or crash QEMU immediatly.
->>>
->>> Looking at the history of this CPU type, it seems like it has never
->>> been used in QEMU and only implemented as a placeholder (see e.g. the
->>> comment about unimplemented instructions in the POWERPC_FAMILY(e200)
->>> section of cpu_init.c). Being completely unused and unusable since
->>> such a long time, let's just remove it now.
->>>
->>> Note: The init_excp_e200() is used by the e500 CPUs, too, so we
->>> rename this function to init_excp_e500() instead of removing it.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   target/ppc/cpu-models.h |   4 --
->>>   target/ppc/cpu-models.c |   5 --
->>>   target/ppc/cpu_init.c   | 147 +---------------------------------------
->>>   3 files changed, 2 insertions(+), 154 deletions(-)
->>>
->>> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
->>> index c6cd27f390e..a439eb37ee4 100644
->>> --- a/target/ppc/cpu-models.h
->>> +++ b/target/ppc/cpu-models.h
->>> @@ -120,10 +120,6 @@ enum {
->>>   #define CPU_POWERPC_MPC5200_v12      CPU_POWERPC_G2LEgp1
->>>   #define CPU_POWERPC_MPC5200B_v20     CPU_POWERPC_G2LEgp1
->>>   #define CPU_POWERPC_MPC5200B_v21     CPU_POWERPC_G2LEgp1
->>> -    /* e200 family */
->>> -    /* e200 cores */
->>> -    CPU_POWERPC_e200z5             = 0x81000000,
->>> -    CPU_POWERPC_e200z6             = 0x81120000,
->>>       /* e300 family */
->>>       /* e300 cores */
->>>       CPU_POWERPC_e300c1             = 0x00830010,
->>> diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
->>> index 89ae763c7f6..26b6debcfc9 100644
->>> --- a/target/ppc/cpu-models.c
->>> +++ b/target/ppc/cpu-models.c
->>> @@ -244,11 +244,6 @@
->>>                       CPU_POWERPC_MPC5200B_v20, 
->>> POWERPC_SVR_5200B_v20, G2LE)
->>>       POWERPC_DEF_SVR("mpc5200b_v21", "MPC5200B v2.1",
->>>                       CPU_POWERPC_MPC5200B_v21, 
->>> POWERPC_SVR_5200B_v21, G2LE)
->>> -    /* e200 
->>> family                                                           */
->>> -    POWERPC_DEF("e200z5",        CPU_POWERPC_e200z5,                 
->>> e200,
->>> -                "PowerPC e200z5 core")
->>> -    POWERPC_DEF("e200z6",        CPU_POWERPC_e200z6,                 
->>> e200,
->>> -                "PowerPC e200z6 core")
->>
->> While I hope removal of e200 should be fine, I am thinking if we want to
->> deprecate it in this cycle and remove it in next ?
-> 
-> Since it was never usable (I don't remember of any tests for these
-> CPUs), I agree with Thomas to bypass the deprecation process.
-> 
+The issue with the current implementation is that files with file sizes 
+over 4 GiB will be reported as file size < 4 -GiB on 32bit systems. 
+Thanks for addressing this.
 
-Sure, reasonable.
+But unfortunately with your change you are additionally dropping support 
+for file sizes 2 GiB to 4 GiB on 32bit devices. This should be avoided.
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+The semihosting specification specifies that the value returned in r0 
+should be -1 if an error occurs. So on 32 bit systems 0xffffffff should 
+be returned.
 
-> 
-> 
-> Thanks,
-> 
-> C.
-> 
+As file sizes cannot be negative there is not reason to assume that the 
+value in r0 has to be interpreted by semihosting clients as signed.
+
+Please, change your commit to check against 0xffffffff.
+
+It might make sense to contact ARM to make their specification clearer.
+
+Best regards
+
+Heinrich
+
+
+> +            ret = -1, err = EOVERFLOW;
+> +    }
+> +    common_semi_cb(cs, ret, err);
+> +}
+> +
+> +
+>   static void
+> -common_semi_flen_fstat_cb(CPUState *cs, uint64_t ret, int err)
+> +common_semi_flen_gdb_cb(CPUState *cs, uint64_t ret, int err)
+>   {
+>       if (!err) {
+>           /* The size is always stored in big-endian order, extract the value. */
+> @@ -319,7 +330,7 @@ common_semi_flen_fstat_cb(CPUState *cs, uint64_t ret, int err)
+>               ret = be64_to_cpu(size);
+>           }
+>       }
+> -    common_semi_cb(cs, ret, err);
+> +    common_semi_flen_cb(cs, ret, err);
+>   }
+>   
+>   static void
+> @@ -517,7 +528,7 @@ void do_common_semihosting(CPUState *cs)
+>   
+>       case TARGET_SYS_FLEN:
+>           GET_ARG(0);
+> -        semihost_sys_flen(cs, common_semi_flen_fstat_cb, common_semi_cb,
+> +        semihost_sys_flen(cs, common_semi_flen_gdb_cb, common_semi_flen_cb,
+>                             arg0, common_semi_flen_buf(cs));
+>           break;
+>   
+
 
