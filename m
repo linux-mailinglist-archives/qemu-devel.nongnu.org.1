@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE73BED224
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 17:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD415BED232
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 17:13:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vA8au-0008EJ-Iq; Sat, 18 Oct 2025 11:11:44 -0400
+	id 1vA8ax-0008GC-1V; Sat, 18 Oct 2025 11:11:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA8as-0008D4-5p; Sat, 18 Oct 2025 11:11:42 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1vA8as-0008DZ-OE; Sat, 18 Oct 2025 11:11:42 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vA8aq-0005g8-Eg; Sat, 18 Oct 2025 11:11:41 -0400
+ id 1vA8ar-0005gP-6h; Sat, 18 Oct 2025 11:11:42 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BEEBC5972EF;
- Sat, 18 Oct 2025 17:11:38 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C22155972F2;
+ Sat, 18 Oct 2025 17:11:39 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id sucI9oFys26D; Sat, 18 Oct 2025 17:11:36 +0200 (CEST)
+ id kCtEyuRt3L2n; Sat, 18 Oct 2025 17:11:37 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B99CD5972F2; Sat, 18 Oct 2025 17:11:36 +0200 (CEST)
-Message-ID: <42e16310ac59454613c48eb379df7c31a7e1b66f.1760798392.git.balaton@eik.bme.hu>
+ id C4BCF5972E9; Sat, 18 Oct 2025 17:11:37 +0200 (CEST)
+Message-ID: <59db89084080a26119b41af21ad977b6fd86ec0a.1760798392.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1760798392.git.balaton@eik.bme.hu>
 References: <cover.1760798392.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 05/13] hw/ppc/pegasos2: Rename mv field in machine state
+Subject: [PATCH v3 06/13] hw/ppc/pegasos2: Add south bridge pointer in the
+ machine state
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,15 +38,14 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Date: Sat, 18 Oct 2025 17:11:36 +0200 (CEST)
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Date: Sat, 18 Oct 2025 17:11:37 +0200 (CEST)
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,93 +61,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use more generic name for the field used to store the north bridge in
-the machine state.
+Add field for the south bridge in machine state to have both north and
+south bridges in it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/pegasos2.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ hw/ppc/pegasos2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index 7dc7803c64..9b50cd3dab 100644
+index 9b50cd3dab..66bceec5ef 100644
 --- a/hw/ppc/pegasos2.c
 +++ b/hw/ppc/pegasos2.c
-@@ -68,7 +68,7 @@ struct Pegasos2MachineState {
-     MachineState parent_obj;
+@@ -69,6 +69,7 @@ struct Pegasos2MachineState {
  
      PowerPCCPU *cpu;
--    DeviceState *mv;
-+    DeviceState *nb; /* north bridge */
+     DeviceState *nb; /* north bridge */
++    DeviceState *sb; /* south bridge */
      IRQState pci_irqs[PCI_NUM_PINS];
      OrIRQState orirq[PCI_NUM_PINS];
      qemu_irq mv_pirq[PCI_NUM_PINS];
-@@ -166,12 +166,12 @@ static void pegasos2_init(MachineState *machine)
-     }
- 
-     /* Marvell Discovery II system controller */
--    pm->mv = DEVICE(sysbus_create_simple(TYPE_MV64361, -1,
-+    pm->nb = DEVICE(sysbus_create_simple(TYPE_MV64361, -1,
-                           qdev_get_gpio_in(DEVICE(pm->cpu), PPC6xx_INPUT_INT)));
-     for (i = 0; i < PCI_NUM_PINS; i++) {
--        pm->mv_pirq[i] = qdev_get_gpio_in_named(pm->mv, "gpp", 12 + i);
-+        pm->mv_pirq[i] = qdev_get_gpio_in_named(pm->nb, "gpp", 12 + i);
-     }
--    pci_bus = mv64361_get_pci_bus(pm->mv, 1);
-+    pci_bus = mv64361_get_pci_bus(pm->nb, 1);
+@@ -174,7 +175,8 @@ static void pegasos2_init(MachineState *machine)
+     pci_bus = mv64361_get_pci_bus(pm->nb, 1);
  
      /* VIA VT8231 South Bridge (multifunction PCI device) */
-     via = OBJECT(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
-@@ -190,7 +190,7 @@ static void pegasos2_init(MachineState *machine)
-                               object_resolve_path_component(via, "rtc"),
-                               "date");
-     qdev_connect_gpio_out_named(DEVICE(via), "intr", 0,
--                                qdev_get_gpio_in_named(pm->mv, "gpp", 31));
-+                                qdev_get_gpio_in_named(pm->nb, "gpp", 31));
+-    via = OBJECT(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
++    pm->sb = DEVICE(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
++    via = OBJECT(pm->sb);
  
-     dev = PCI_DEVICE(object_resolve_path_component(via, "ide"));
-     pci_ide_create_devs(dev);
-@@ -208,7 +208,7 @@ static void pegasos2_init(MachineState *machine)
-         DeviceState *pd;
-         g_autofree const char *pn = g_strdup_printf("pcihost%d", h);
- 
--        pd = DEVICE(object_resolve_path_component(OBJECT(pm->mv), pn));
-+        pd = DEVICE(object_resolve_path_component(OBJECT(pm->nb), pn));
-         assert(pd);
-         for (i = 0; i < PCI_NUM_PINS; i++) {
-             OrIRQState *ori = &pm->orirq[i];
-@@ -267,7 +267,7 @@ static void pegasos2_init(MachineState *machine)
- static uint32_t pegasos2_mv_reg_read(Pegasos2MachineState *pm,
-                                      uint32_t addr, uint32_t len)
- {
--    MemoryRegion *r = sysbus_mmio_get_region(SYS_BUS_DEVICE(pm->mv), 0);
-+    MemoryRegion *r = sysbus_mmio_get_region(SYS_BUS_DEVICE(pm->nb), 0);
-     uint64_t val = 0xffffffffULL;
-     memory_region_dispatch_read(r, addr, &val, size_memop(len) | MO_LE,
-                                 MEMTXATTRS_UNSPECIFIED);
-@@ -277,7 +277,7 @@ static uint32_t pegasos2_mv_reg_read(Pegasos2MachineState *pm,
- static void pegasos2_mv_reg_write(Pegasos2MachineState *pm, uint32_t addr,
-                                   uint32_t len, uint32_t val)
- {
--    MemoryRegion *r = sysbus_mmio_get_region(SYS_BUS_DEVICE(pm->mv), 0);
-+    MemoryRegion *r = sysbus_mmio_get_region(SYS_BUS_DEVICE(pm->nb), 0);
-     memory_region_dispatch_write(r, addr, val, size_memop(len) | MO_LE,
-                                  MEMTXATTRS_UNSPECIFIED);
- }
-@@ -858,10 +858,10 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
- 
-     fi.fdt = fdt;
-     fi.path = "/pci@c0000000";
--    pci_bus = mv64361_get_pci_bus(pm->mv, 0);
-+    pci_bus = mv64361_get_pci_bus(pm->nb, 0);
-     pci_for_each_device_reverse(pci_bus, 0, add_pci_device, &fi);
-     fi.path = "/pci@80000000";
--    pci_bus = mv64361_get_pci_bus(pm->mv, 1);
-+    pci_bus = mv64361_get_pci_bus(pm->nb, 1);
-     pci_for_each_device_reverse(pci_bus, 0, add_pci_device, &fi);
- 
-     return fdt;
+     /* Set properties on individual devices before realizing the south bridge */
+     if (machine->audiodev) {
 -- 
 2.41.3
 
