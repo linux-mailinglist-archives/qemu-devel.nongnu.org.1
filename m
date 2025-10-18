@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E7FBEDBDE
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 22:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E76DABEDBF3
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Oct 2025 22:58:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vADyu-0007wf-Fw; Sat, 18 Oct 2025 16:56:52 -0400
+	id 1vADz0-0007yL-0A; Sat, 18 Oct 2025 16:56:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vADys-0007wM-Hr; Sat, 18 Oct 2025 16:56:50 -0400
+ id 1vADyv-0007xY-OW; Sat, 18 Oct 2025 16:56:53 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vADyq-0004vi-Jk; Sat, 18 Oct 2025 16:56:50 -0400
+ id 1vADyt-0004wU-Tf; Sat, 18 Oct 2025 16:56:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3EF3315F875;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4E6C415F876;
  Sat, 18 Oct 2025 23:56:40 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 280322F067E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 376B92F067F;
  Sat, 18 Oct 2025 23:56:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [Stable-10.0.6 01/23] Revert "target/i386: do not expose
- ARCH_CAPABILITIES on AMD CPU"
-Date: Sat, 18 Oct 2025 23:56:30 +0300
-Message-ID: <20251018205644.1185050-1-mjt@tls.msk.ru>
+Subject: [Stable-10.0.6 02/23] Revert "i386/cpu: Move adjustment of
+ CPUID_EXT_PDCM before feature_dependencies[] check"
+Date: Sat, 18 Oct 2025 23:56:31 +0300
+Message-ID: <20251018205644.1185050-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.6-20251018221314@cover.tls.msk.ru>
 References: <qemu-stable-10.0.6-20251018221314@cover.tls.msk.ru>
@@ -58,39 +58,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 24778b1c7ee7aca9721ed4757b0e0df0c16390f7
-(v10.0.2-66-g24778b1c7ee7) from the 10.0.x branch.
+This reverts commit 3d26cb65c27190e57637644ecf6c96b8c3d246a3
+(v10.0.3-34-g3d26cb65c271) from 10.0.x branch.
 
 The problem is that the change makes qemu 10.0.x non-migratable
 to subsequent qemu versions, since it requires introducing a new
-machine type.
-
-This revert re-introduces the problem with windows guests (which
-is already fixed in windows but not in prior versions).
-Details: https://gitlab.com/qemu-project/qemu/-/issues/3001
+machine type.  This change should not have been picked up for 10.0.x.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reopens: https://gitlab.com/qemu-project/qemu/-/issues/3001 (for 10.0.x)
+Reopens: https://gitlab.com/qemu-project/qemu/-/issues/3061 (for 10.0.x)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 70d6095be9..e88e5d17db 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -500,12 +500,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-          * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
-          * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
-          * returned by KVM_GET_MSR_INDEX_LIST.
--         *
--         * But also, because Windows does not like ARCH_CAPABILITIES on AMD
--         * mcahines at all, do not show the fake ARCH_CAPABILITIES MSR that
--         * KVM sets up.
-          */
--        if (!has_msr_arch_capabs || !(edx & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
-+        if (!has_msr_arch_capabs) {
-             ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 58c62ff5b5..34b52ef7a1 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6851,6 +6851,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             /* Fixup overflow: max value for bits 23-16 is 255. */
+             *ebx |= MIN(num, 255) << 16;
          }
-     } else if (function == 7 && index == 1 && reg == R_EAX) {
++        if (!cpu->enable_pmu) {
++            *ecx &= ~CPUID_EXT_PDCM;
++        }
+         break;
+     case 2:
+         /* cache info: needed for Pentium Pro compatibility */
+@@ -7840,10 +7843,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
+     }
+ 
+-    if (!cpu->enable_pmu) {
+-        env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
+-    }
+-
+     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
+         FeatureDep *d = &feature_dependencies[i];
+         if (!(env->features[d->from.index] & d->from.mask)) {
 -- 
 2.47.3
 
