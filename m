@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE927BEE87A
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 17:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB11BEE880
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 17:18:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAV9E-0001ys-Ny; Sun, 19 Oct 2025 11:16:40 -0400
+	id 1vAV9H-0001zZ-Ki; Sun, 19 Oct 2025 11:16:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vAV9B-0001xf-JQ
- for qemu-devel@nongnu.org; Sun, 19 Oct 2025 11:16:37 -0400
-Received: from mailgate01.uberspace.is ([95.143.172.20])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vAV9F-0001z2-D6
+ for qemu-devel@nongnu.org; Sun, 19 Oct 2025 11:16:41 -0400
+Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vAV99-0003Be-O9
- for qemu-devel@nongnu.org; Sun, 19 Oct 2025 11:16:37 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vAV9D-0003CP-QF
+ for qemu-devel@nongnu.org; Sun, 19 Oct 2025 11:16:41 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 5FFC860A96
- for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 17:16:34 +0200 (CEST)
-Received: (qmail 23152 invoked by uid 990); 19 Oct 2025 15:16:34 -0000
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id AB3CA60A75
+ for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 17:16:38 +0200 (CEST)
+Received: (qmail 23227 invoked by uid 990); 19 Oct 2025 15:16:38 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,42 +28,40 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PATCH v8 10/25] target/loongarch: call plugin trap callbacks
-Date: Sun, 19 Oct 2025 17:14:59 +0200
-Message-ID: <deadf813e00387bbcf59e93be411ba44d3c915c8.1760884672.git.neither@nut.email>
+	Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH v8 11/25] target/m68k: call plugin trap callbacks
+Date: Sun, 19 Oct 2025 17:15:00 +0200
+Message-ID: <5443bb9ab89d96f0f8670060734226f04d40a668.1760884672.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1760884672.git.neither@nut.email>
 References: <cover.1760884672.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999998) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999873) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599998
+X-Rspamd-Score: -5.599873
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=P6g3y4aF4gqxYoKAfyzuZc16pIeVypfgEAD1P9uwUBU=;
- b=ogmjiaiycJx60KUmURrYKjChKSVhhe8pRnK6qTeMmkiN7Absi8TRXhH/PZScohWgmrdFvQtIdi
- n0y5BRb3ggSAUhn8uZ9qbd9icvvJ8qBvbDpLzlq+YAhLT4NJAImoGWrQS72RTAPeBeBPKimvvS5f
- SApo+nTKqyK4Vm1ByQRNbtxxiXkRjmpKvN0gCWg5O3Mpnyh4xdfnS+BP48i3zwZD6Jq7ITX7oQg9
- Hdh5fnnRK24n52b6To/smUawJA9ZvpyvGzNhV9iPlSd0eBBnsxURuu/kuaK35RgFNsiUqy5TWMSI
- 1MgX+HUO8A7aB/kxFrLXapQBkNAH0Q1+uYZksby41SvLLIipmFkvunL+sCsi0fyBGKlBwrdhL2/5
- DyudyNvI9ZSZ/JD3+FkJ4nT1xBGklM4IBBYfItPiB3Q2LdDSn8v2nXj15V39PuVOmFGzdm+n0O9t
- 9AVUw8NU1Ra9pk+y2uBab5McBrngwxUytllsjU/AOGidjvbu+jFbJBMo5YFeiR7xGz4LpTtJS/k/
- oAfY44JpffOpLU/092n8X8Wy1xz09HSHb4cVd4U6hsX9vNUpmIfsrKkFRj9NCoZlwXSV2EdcJ2/i
- JhbQOcblhnoGPJhx9uBDJhFSHMU2tWC7dDpRy1bd9R/grlrtV7P88QMPrYw5jls/jPZuC+gvq5ik
- E=
-Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
- helo=mailgate01.uberspace.is
+ bh=FRZ2j8rbmm/3ycj8ZP5YixYFG9zzEquVSOdWN5ofsr0=;
+ b=qg2jRGMaQxgS4v8H3+1EeJkm+IB50WNekO6ukmyHdGuRdxcYUvG6S3dhKxTC9OqBVWsQth7iJ9
+ UfPDX6kKpHEoJ0uDqc/7CUntmXTx3DJbxd/IjESRYggl+/Iwifbre8p64reXv4kWEIDuKOqZoQ7J
+ 7c27lSkc2V0h/OZkszQpBiJkeOBWv0/TlPvmvux12+QVVgTnCOY343uSOqjqqWOGWGUs/vDao03N
+ KyIOzlWUieSX4QewVwjwennp95XeO+Sw9VMHJ38ETxih1OATZ42U6sFniqWz9w10SlJreJoRT8Hl
+ 747XehRdjohIsmZeGRM9HsNf4K3LtqG3EgwGJxM5wi/DKubl7TLkoijL+Rdq0j/4QsTfqQBMqbn7
+ 6JtWOYnBy/sxmWVjfHbJ6/Giqxftab8lpb8d9dPozhldtadX6NhqNOMdlz/2fZt1B+Sch8O97vtW
+ 0rC4qtMnsfNWK5ON9BsygmmS/LJNHncr7gqZHeMzU3m2/oP7W9R1eg1hFQCPsQKQ/9ZPiKv+I5GO
+ sic6N64GfMjo/ySKijaiMOUoF3OrWbh9E9NVOWEch7mHyFQDZ/yOCSmvjBAhLkp982SQ0/aZot8l
+ wcS10EXc+ErGkKMTB/VRbwku0lAU/mnj344gnCtKLTlWZM87dg+U1n2Z09si91ufW9AqhKmHYs/x
+ k=
+Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
+ envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,51 +82,81 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for loongarch targets. This architecture
-has one special "exception" for interrupts and no host calls.
+This change places hooks for Motorola 68000 targets.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/loongarch/tcg/tcg_cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/m68k/op_helper.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/target/loongarch/tcg/tcg_cpu.c b/target/loongarch/tcg/tcg_cpu.c
-index 82b54e6dc3..9d077c56d9 100644
---- a/target/loongarch/tcg/tcg_cpu.c
-+++ b/target/loongarch/tcg/tcg_cpu.c
-@@ -8,6 +8,7 @@
- #include "qemu/accel.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
-+#include "qemu/plugin.h"
- #include "accel/accel-cpu-target.h"
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index f29ae12af8..e9c20a8e03 100644
+--- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -22,6 +22,7 @@
+ #include "exec/helper-proto.h"
  #include "accel/tcg/cpu-ldst.h"
- #include "accel/tcg/cpu-ops.h"
-@@ -80,6 +81,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     int cause = -1;
-     bool tlbfill = FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR);
-     uint32_t vec_size = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, VS);
+ #include "semihosting/semihost.h"
++#include "qemu/plugin.h"
+ 
+ #if !defined(CONFIG_USER_ONLY)
+ 
+@@ -183,6 +184,21 @@ static const char *m68k_exception_name(int index)
+     return "Unassigned";
+ }
+ 
++static void do_plugin_vcpu_interrupt_cb(CPUState *cs, uint64_t from)
++{
++    switch (cs->exception_index) {
++    case EXCP_SPURIOUS ... EXCP_INT_LEVEL_7:
++        qemu_plugin_vcpu_interrupt_cb(cs, from);
++        break;
++    case EXCP_SEMIHOSTING:
++        qemu_plugin_vcpu_hostcall_cb(cs, from);
++        break;
++    default:
++        qemu_plugin_vcpu_exception_cb(cs, from);
++        break;
++    }
++}
++
+ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -203,6 +219,7 @@ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
+             return;
+         case EXCP_SEMIHOSTING:
+             do_m68k_semihosting(env, env->dregs[0]);
++            qemu_plugin_vcpu_hostcall_cb(cs, retaddr);
+             return;
+         }
+     }
+@@ -239,6 +256,8 @@ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
+     env->aregs[7] = sp;
+     /* Jump to vector.  */
+     env->pc = cpu_ldl_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
++
++    do_plugin_vcpu_interrupt_cb(cs, retaddr);
+ }
+ 
+ static inline void do_stack_frame(CPUM68KState *env, uint32_t *sp,
+@@ -277,6 +296,7 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
+     uint32_t sp;
+     uint32_t vector;
+     uint16_t sr, oldsr;
 +    uint64_t last_pc = env->pc;
  
-     if (cs->exception_index != EXCCODE_INT) {
-         qemu_log_mask(CPU_LOG_INT,
-@@ -190,6 +192,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-                       __func__, env->pc, env->CSR_ERA,
-                       cause, env->CSR_BADV, env->CSR_DERA, vector,
-                       env->CSR_ECFG, env->CSR_ESTAT);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-     } else {
-         if (tlbfill) {
-             set_pc(env, env->CSR_TLBRENTRY);
-@@ -208,6 +211,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-                       tlbfill ? env->CSR_TLBRBADV : env->CSR_BADV,
-                       env->CSR_BADI, env->gpr[11], cs->cpu_index,
-                       env->CSR_ASID);
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-     }
-     cs->exception_index = -1;
+     if (!is_hw) {
+         switch (cs->exception_index) {
+@@ -417,6 +437,8 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
+     env->aregs[7] = sp;
+     /* Jump to vector.  */
+     env->pc = cpu_ldl_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
++
++    do_plugin_vcpu_interrupt_cb(cs, last_pc);
  }
+ 
+ static void do_interrupt_all(CPUM68KState *env, int is_hw)
 -- 
 2.49.1
 
