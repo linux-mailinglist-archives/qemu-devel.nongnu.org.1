@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69576BEECAD
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 23:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E9EBEECCD
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 23:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAaZP-0007Y8-SN; Sun, 19 Oct 2025 17:04:04 -0400
+	id 1vAaZK-0007Xt-JP; Sun, 19 Oct 2025 17:03:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vAaZH-0007XQ-MT
- for qemu-devel@nongnu.org; Sun, 19 Oct 2025 17:03:55 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vAaZ8-00023C-85
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vAaZG-0007Vz-Nc
  for qemu-devel@nongnu.org; Sun, 19 Oct 2025 17:03:54 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-63c3d7e2217so3760295a12.3
- for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 14:03:45 -0700 (PDT)
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vAaZD-000240-1d
+ for qemu-devel@nongnu.org; Sun, 19 Oct 2025 17:03:53 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-b457d93c155so542181066b.1
+ for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 14:03:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760907824; x=1761512624; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1760907827; x=1761512627; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ROqS5b9mjR1Hcdo/MNxQW9zo/TvwGOsH5rFLzCQXjhw=;
- b=Xi6wop5ZBLtEvQ7okDhUca5A8UKK2iFeejWZmbfNmgtgPG3GJpGEh/asEIiLsJpojg
- YDPosdY1jqq9P0XEiRjoY//JHWSUIynF9v2jJt9oIU/aGwf2w8IlWSyCge5Z1dfP0OXX
- ypcdtexxV3TZ7BOQ9BFUjyDH0XEtVgGjCJFixe1jFwckSxd+nO6Mowc9gRLTvwdPKtFO
- HUxoj0CjyPJK8ResVw7gHTUP11DY2tLOtvb/xenrQ+poOiYt4qKQPWqGbm3FQtUipcFC
- yz0/DghId5boNP8t7Jiwu8CcFGPYt+w6iUe8TTZMMPkQ8CWx8RJgkL0mxDwrw6j10lIF
- Tt/A==
+ bh=oQnslZlvL/ycghWXR/jv6T9Aq0fKGJTc5vHN36t+VJw=;
+ b=LpY0szDXKHb2hGm8477/xrqtA7rDzKAFs4rNIwDeFuWjyrx+k+zxTnAKVhCU3RWxpb
+ lGeAOZIA58LiORMaiSbfDp+6/QlOTjbgFw61oIvuq4zHMfkhF3Ue6ST4mD+VPFzRGwDk
+ MFRWd4lYmjnQP0GmP94+cMKB1EZ63ycgnjURQ2kPcHJHq9L4BDmU/3WCtUKPbNHfdi8m
+ dFYCY3iWslhUXXpz4l1LqWXL7rzih/H7hD5iZVVSO2yvw2IWQusFT9tRmu39KE6V4Pdl
+ 0+pqqRnPVUUGP1un3UL2Q2A58M//qrAuv8OlK/PvHOOLysuHyiQOBX+BqqnP9VSkknrQ
+ Jcfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760907824; x=1761512624;
+ d=1e100.net; s=20230601; t=1760907827; x=1761512627;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ROqS5b9mjR1Hcdo/MNxQW9zo/TvwGOsH5rFLzCQXjhw=;
- b=LQzDy6dEVgoramNR76DCY9VG0x/JxKpL+JbOPSdOjaoPM1/pTLiWovsILLzvSTSIoB
- Gwe1YHNUtsE3UVm/ZfdLg4HcZIryuRlQw4qZe45fAY1MacGBtF2yw1Z97Vtns80tFUr5
- unO21G2kktFsixCz0dyK0n/EtW2ei9u7tTgvIZGW0zTc6mXUbDyfzE1LKWzDNOz3BhlH
- VPB/8DrQSNxdjUJz4aq7XnDxPsfYAGA7uuKlpLR7B2hplWpJkRn+k6o91FQM3bHBW55g
- STsR4foU2oGehaFnB9IkRycNPMSl9XQjIhcIQ0z2lXUQJ7tKO7qVA5yFoV2R1tzvel1d
- KhNg==
-X-Gm-Message-State: AOJu0YxFRN0ASCz0TuRYjSsUh/VGvFzMz2TRy0BzrJXY3ri4H2MzCrba
- Ikt+bQoAPRVToyDxfk+en23nge3Pk8oqSDbGlx5losvjVpeu/CMngHVRCf5EElJS
-X-Gm-Gg: ASbGncuIwxqxfpqkbMIMLmZk26jiuDjnyGAKnTJCb/jPlf15a2DFZthGxcabt40kpEI
- +4HI4xV4RQOfj8LFoOsmhnbtaEisMasRaug1MHHTe9EjTbsU0liQD3FrEE9pjsf4CfZ3QMhy+h6
- +jEgWK047fA43rdBbqJm3ypQhEp42hl80lxAoe/XCZCxYK/dt/dXWSXlOi2DMY5gtmDDTc1uWoy
- XeckF/S36f0ZPHhXKc7qx7pKjUmFB7kFxtP5HXrfZY1sogbxXD8+wdXCaD8WJjlLa0GrSl04Ebv
- srxuSvwxxFWrM6jLvF+79Mby4fRk0eFvl5F/KcC2mwdUCcJfGEhLrTz6sXE05BTeXznBDDUfPC7
- huTF47I8k++I2mZu/4FXYIvBvR4p/3yxrxFkKmHIpzbls/1dxSGre3MKOTwjgbgRdI0zJQ8V139
- JcdUFX+fPBWXEu0hq20R7GuKQhJpv1hSabvVnU/Mj0D4u1tMvcl6DctdArvPyx+vT1khXf
-X-Google-Smtp-Source: AGHT+IHqxQHSLWGjl/1o+caM7v59/pl99Hw05CaKkU9VxpB1BkUo2CSz0N/TNd5uoNKIH8Cs1RcreQ==
-X-Received: by 2002:a05:6402:461a:b0:634:ab80:d84b with SMTP id
- 4fb4d7f45d1cf-63c1f6c42c3mr10193464a12.32.1760907824053; 
- Sun, 19 Oct 2025 14:03:44 -0700 (PDT)
+ bh=oQnslZlvL/ycghWXR/jv6T9Aq0fKGJTc5vHN36t+VJw=;
+ b=VGGjfy2Q+UamSTcbFRexKbwKDYge/4Ei7OIW1a+tWumtZgjZLrEExNRgu+BL53rHMO
+ 5mJSOvRCN1KPUtdGXrvcRRT53ErWGlsaPaIpS1qY6Yi23CLiAZKPU6sWoTd0/cD4Ghok
+ eQfyoebF/SfjKNjko59i+fRRxMs3DGFznG4jBZ3bzx6r5r8Z5/auc4lAyJvzcb+FhNYG
+ k8llIzLcDEIZDV3s9AOWrGgC02bCA3NN7jieSrR7Dudury9EZ1xwAIRxx7RSn7liEeRt
+ p6VxH1Zt2RWJ4GI/CTZwEFK4S3MkmScYXc92nQjO3Ga4aKlGV62ViHLCZdEG/n4punUH
+ QZ4w==
+X-Gm-Message-State: AOJu0Yy8JHmJrpZkiaEHCVHSfgUamom98m3rszImfpq096CdvnSE1lxB
+ aREf7UpGtTemv6PqstSDL54BrYj3O8fsDKWDXQnfwDvMIQtDfYkwV+qscQmXehSX
+X-Gm-Gg: ASbGncsYi+cjyIf2sAUSAaCmdtIX6sxkx93UUbeHW3w8PPqm72Ay9fMuFRorXMDCj+4
+ pPYPxYHVNZDp1Jn1W6fOk2elk8X9YM0QgYqbFSd+4k0GXGqTh/nrMD+SlJ3frP9nVsyG2rhAn2O
+ wAAx0WzGS/DBZYOENAT/V1+0CYFQiny/w903nM4eyYLEelXKETCkkVH/2648IzChZzql9HQkDhw
+ j21Y/lmXae8yn4Kq4Y/y2VnOGoRmSPn98P7zA/xFXyxI8TEJn8EqpYRm9lKEG0QF1J3JpmQE8Mm
+ BXN10sIzOLQvs79W6pl7XNMZPhzVPOrySnKgTdxtSlWD8kpquTrus/A5h1CdhevqG6tj2b3Gj2e
+ o4USl5D3BV2VGsMXVWgpK5XX5ESHHw/3vfjjmtL879moO7tEvObRr0d2HxFxcfWeUFBeRqXblF5
+ pcPEQiYr/GWxN+2eyOPG8fP1qR7E5dWeVvKph86yUkEtUKHPoHON75GNwFs7+K4Q1kvOiU
+X-Google-Smtp-Source: AGHT+IFxPtXo9vzXd3rOAqwwxaNDvJIFsK7Eo1zA6M2lE6v+t/sNoVY4Repet5YBzuRnemWgklColw==
+X-Received: by 2002:a17:907:c06:b0:b3c:bd91:28a4 with SMTP id
+ a640c23a62f3a-b6473045139mr1262880766b.28.1760907826411; 
+ Sun, 19 Oct 2025 14:03:46 -0700 (PDT)
 Received: from archlinux (dynamic-002-245-026-170.2.245.pool.telefonica.de.
  [2.245.26.170]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63c4945f003sm5107655a12.27.2025.10.19.14.03.41
+ 4fb4d7f45d1cf-63c4945f003sm5107655a12.27.2025.10.19.14.03.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Oct 2025 14:03:43 -0700 (PDT)
+ Sun, 19 Oct 2025 14:03:45 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -76,17 +76,16 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Fabiano Rosas <farosas@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Sunil Muthuswamy <sunilmut@microsoft.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 09/10] hw/intc/apic: Pass APICCommonState to
- apic_register_{read, write}
-Date: Sun, 19 Oct 2025 23:03:02 +0200
-Message-ID: <20251019210303.104718-10-shentey@gmail.com>
+Subject: [PATCH v3 10/10] tests/qtest/ds1338-test: Reuse from_bcd()
+Date: Sun, 19 Oct 2025 23:03:03 +0200
+Message-ID: <20251019210303.104718-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.51.1.dirty
 In-Reply-To: <20251019210303.104718-1-shentey@gmail.com>
 References: <20251019210303.104718-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,125 +108,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per the previous patch, the APIC instance is already available in
-apic_msr_{read,write}, so it can be passed along. It turns out that
-the call to cpu_get_current_apic() is only required in
-apic_mem_{read,write}, so it has been moved there. Longer term,
-cpu_get_current_apic() could be removed entirely if
-apic_mem_{read,write} is tied to a CPU's local address space.
+from_bcd() is a public API function which can be unit-tested. Reuse it to avoid
+code duplication.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/intc/apic.c | 35 ++++++++++++++++-------------------
- 1 file changed, 16 insertions(+), 19 deletions(-)
+ tests/qtest/ds1338-test.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index ba0eda3921..077ef18686 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -769,17 +769,11 @@ static void apic_timer(void *opaque)
-     apic_timer_update(s, s->next_time);
- }
+diff --git a/tests/qtest/ds1338-test.c b/tests/qtest/ds1338-test.c
+index d12424d27f..b8d0e65ec4 100644
+--- a/tests/qtest/ds1338-test.c
++++ b/tests/qtest/ds1338-test.c
+@@ -18,16 +18,12 @@
+  */
  
--static int apic_register_read(int index, uint64_t *value)
-+static int apic_register_read(APICCommonState *s, int index, uint64_t *value)
- {
--    APICCommonState *s;
-     uint32_t val;
-     int ret = 0;
+ #include "qemu/osdep.h"
++#include "qemu/bcd.h"
+ #include "libqtest.h"
+ #include "libqos/i2c.h"
  
--    s = cpu_get_current_apic();
--    if (!s) {
--        return -1;
--    }
+ #define DS1338_ADDR 0x68
+ 
+-static inline uint8_t bcd2bin(uint8_t x)
+-{
+-    return ((x) & 0x0f) + ((x) >> 4) * 10;
+-}
 -
-     switch(index) {
-     case 0x02: /* id */
-         if (is_x2apic_mode(s)) {
-@@ -868,6 +862,7 @@ static int apic_register_read(int index, uint64_t *value)
- 
- static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
+ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
  {
-+    APICCommonState *s = cpu_get_current_apic();
-     uint64_t val;
-     int index;
+     QI2CDevice *i2cdev = (QI2CDevice *)obj;
+@@ -39,9 +35,9 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     i2c_read_block(i2cdev, 0, resp, sizeof(resp));
  
-@@ -875,8 +870,12 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
-         return 0;
-     }
- 
-+    if (!s) {
-+        return -1;
-+    }
-+
-     index = (addr >> 4) & 0xff;
--    apic_register_read(index, &val);
-+    apic_register_read(s, index, &val);
- 
-     return val;
- }
-@@ -891,7 +890,7 @@ int apic_msr_read(APICCommonState *s, int index, uint64_t *val)
-         return -1;
-     }
- 
--    return apic_register_read(index, val);
-+    return apic_register_read(s, index, val);
+     /* check retrieved time against local time */
+-    g_assert_cmpuint(bcd2bin(resp[4]), == , tm_ptr->tm_mday);
+-    g_assert_cmpuint(bcd2bin(resp[5]), == , 1 + tm_ptr->tm_mon);
+-    g_assert_cmpuint(2000 + bcd2bin(resp[6]), == , 1900 + tm_ptr->tm_year);
++    g_assert_cmpuint(from_bcd(resp[4]), == , tm_ptr->tm_mday);
++    g_assert_cmpuint(from_bcd(resp[5]), == , 1 + tm_ptr->tm_mon);
++    g_assert_cmpuint(2000 + from_bcd(resp[6]), == , 1900 + tm_ptr->tm_year);
  }
  
- static void apic_send_msi(MSIMessage *msi)
-@@ -919,15 +918,8 @@ static void apic_send_msi(MSIMessage *msi)
-     apic_deliver_irq(dest, dest_mode, delivery, vector, trigger_mode);
- }
- 
--static int apic_register_write(int index, uint64_t val)
-+static int apic_register_write(APICCommonState *s, int index, uint64_t val)
- {
--    APICCommonState *s;
--
--    s = cpu_get_current_apic();
--    if (!s) {
--        return -1;
--    }
--
-     trace_apic_register_write(index, val);
- 
-     switch(index) {
-@@ -1054,12 +1046,17 @@ static int apic_register_write(int index, uint64_t val)
- static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
-                            unsigned size)
- {
-+    APICCommonState *s = cpu_get_current_apic();
-     int index = (addr >> 4) & 0xff;
- 
-     if (size < 4) {
-         return;
-     }
- 
-+    if (!s) {
-+        return;
-+    }
-+
-     if (addr > 0xfff || !index) {
-         /*
-          * MSI and MMIO APIC are at the same memory location,
-@@ -1073,7 +1070,7 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
-         return;
-     }
- 
--    apic_register_write(index, val);
-+    apic_register_write(s, index, val);
- }
- 
- int apic_msr_write(APICCommonState *s, int index, uint64_t val)
-@@ -1086,7 +1083,7 @@ int apic_msr_write(APICCommonState *s, int index, uint64_t val)
-         return -1;
-     }
- 
--    return apic_register_write(index, val);
-+    return apic_register_write(s, index, val);
- }
- 
- static void apic_pre_save(APICCommonState *s)
+ static void ds1338_register_nodes(void)
 -- 
 2.51.1.dirty
 
