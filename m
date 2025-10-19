@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB71BEEB63
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 20:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94D9BEEB6B
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 20:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAY99-0005B6-Gx; Sun, 19 Oct 2025 14:28:47 -0400
+	id 1vAY9A-0005BZ-Sh; Sun, 19 Oct 2025 14:28:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vAY96-00059J-Fl
- for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:44 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1vAY97-0005A3-Dj
+ for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:45 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vAY93-0000Zc-QF
- for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:44 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-290c2b6a6c2so30700875ad.1
- for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 11:28:41 -0700 (PDT)
+ id 1vAY94-0000a5-V0
+ for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:45 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-b49c1c130c9so2186584a12.0
+ for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 11:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760898520; x=1761503320; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760898521; x=1761503321; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FHn1R3ZF55YJWZfpnAUbmLtJwg62Lau4AKHNQr6hxkg=;
- b=oemWtCMdLv3ofmBMJkLsLK2ucXAdXLW5FyxRGq3zy9e2Gy1rq40O3A94ChiQJO7klu
- 5fZ7kNSFx1q0I7RfBe6fQp2m2lMSUjdbQOUIL9diK4vunKsq73LXDR14q2CUYg//oVk6
- JsXzcCoffCpoFNuEqN0wFEfVdpVXkBqhbQpXX2LExlJBt5OLzQjzugcog8QCNVBGboBz
- GQ4u9H2+Aj8xKyjOxPtzHx+LCGXFvP+R+6F+BdsGCFlLHBceF8g5LDuaaaUxaHfeBg/F
- deNTotcoajH21+R8hyZMLaBYQt2adR9apDCsSv4hzeDITS1DYym3jeW3MkQIP3b/s1lV
- PISQ==
+ bh=m+6QxrQ2Grf7WmLsUxgCW2QmJGtF5cs8k5PSTxarhNg=;
+ b=KoSmEnLWQ9VlySBJAJryIB/1S4/D7/jMa3wgxXE7R3OuqO0qRdFJ3GsMkZR//QiBvc
+ BgIo6cF33twAuggpXBkscatUmd1Muec33ENnlZ6MNYJzVnTL0gHQF9s6XKJVAg8lNZuh
+ XpKjr6oDrF97SKvvVr+EeLRSSJAokCG6U3JuKP6fh4ov2vDxX10NuhwMp116Asv4034l
+ M8zBSCuPi1J2RDUOObw2330Wi5ljg69KHRXgerY2PZ3FOE/33pQ0fwDyYhKAxyYDYuNN
+ nOIB+2RnM2S+aINL/F5a4EcHYjncUYEekcUd2uBCrxhKbIC73nWXQia402IuDB8JMBwj
+ o60A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760898520; x=1761503320;
+ d=1e100.net; s=20230601; t=1760898521; x=1761503321;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FHn1R3ZF55YJWZfpnAUbmLtJwg62Lau4AKHNQr6hxkg=;
- b=mBOP58l/rw6T9cWpg4sG9gMab6JUeHk3W7D9ROJkWYx3Z2yDXKHbqHa4Z4ZfGDhr3Y
- rkaPznPvdvaDGUjKKf3CBPV9aXwSVC8TbEYaVVXM/2kpcCYmE4K7RdBkKufOYLuXyskd
- lvXWXuCrMLw9NsPZ1TdsH7C9ky2e7pdbRBl4ZhyXOTh07BvRvB73dXbemveb+HiVE4ur
- EBpQFEYxDd6vOCgS+00Id1nGf/wU9Nqfvr8aNF+crxPIweAUNZp27j9WirFhlm95eBID
- 63/NzUbjgdY4ImrtaDIO8U49opJVR+eCmGG0ApcV0EtdDkPGFn5JKS6soakrsUpU+DXD
- +CJA==
-X-Gm-Message-State: AOJu0YzhKd1CkpgGxBgrwR34k3KFsoOfoBwazqtKPzEW6TwvjLW77eMO
- +O4KEr12es3Wz/YNLWROCcQnl7dVRbBbVH+o2Ip2RY+KFC/kViah0XHs8qZzo5Q21XnDhw+J6ca
- 6A2+22+c=
-X-Gm-Gg: ASbGncuVcCkRBbd2140YwCnc4Ek+zGw820IzZLd+Wp3q16onuvWHBtJXtjdZ0axBYEZ
- xYW+1B4qQHYlRUTwUuUjvyKovSel4EcRFGZ+ZEbUpRWbfGCZzsTECMG7tjmnjcMKc2WAmRk/zwk
- ovaNxhEFegN0Y54tlZcaG7WuWChuLG6/HRFdhw6a5853rHOA1LamBkzSjCW5B8+3JBehT2/UBDF
- HPSMuD2hagdZEH6f1Cng2sYVtWF7fMiqUJ5qsRqVgj+XEDenXt/zoBl7RF5D6HcHvuUpEUR0nuv
- WaUKUWGauASq4LHUigFMpmwmzuIDZBieLAQE8nkr+UpTFpStK+ZvKIeVXS1WttdYdcMkedRonHn
- MEDm9j+mGdWoN/nbsSoW5IXvYU7M4cP9Zc6WSCf4ln8rIeN2GSHQO/wJmwwHxq3Ye4xJHWI2xQh
- m5X6Wzog==
-X-Google-Smtp-Source: AGHT+IFzfINuDZJtChvPqsJiYrGE3UAZhvBoEbANvvkD3gx+OozwLX0k5sId5W4w5t6Sd/5IlvebOw==
-X-Received: by 2002:a17:902:ce0e:b0:264:befb:829c with SMTP id
- d9443c01a7336-290c9c8a738mr128099595ad.9.1760898520318; 
+ bh=m+6QxrQ2Grf7WmLsUxgCW2QmJGtF5cs8k5PSTxarhNg=;
+ b=vT1Ki0jheLSZvJmVHwshSU8C/yYQGiClNAHAzYKvhru52hpyBVsvHo37j4PBk88Yhs
+ GQNO1gaf8dc4tDetRszt1ho1ZQ3akzx0w3qlNrPUcL8tZgmWVHGd8lMyvAJXswmLnZ5C
+ ubVMNG9WOn/3FNBZ4KXG726LDuebLw2ZA8lpyR+fq472DnGDlH+YoomRm/zaNOfX2wIx
+ QNlbnh8zfpdd18XJKI83aP600yAFk2A1w9sQ40mrTbuSv+5Hs4IOjyIvk1rCCobC7T1P
+ s4cwBwnO32NyM90Up1Sax5LoOVpffCLK4SuYNL9RIlT/G97YjPKkhCj6IGjfsHRciIt/
+ T4ng==
+X-Gm-Message-State: AOJu0Yz5cTece3sCcu9XFprbKwyCOJTI+cz5CGFzQ6HPzL3UMnSfkBzA
+ 1L/Ys48LoVND4ari+E0PCmnDHBvpG00NxyNO8IxO/xPK2HQLdxLjrLMoGTxFlZR4jES44swAnkV
+ rBMoHqZ0=
+X-Gm-Gg: ASbGncs70fT3a07AtWQPr607NvELdfyNcv9no7urIQDCCwohORZ7ELmESjJ+IBa9Y0U
+ DLcMNtAYOehGPFpOueVRs+2o6lPev5GGH/JHf4liC+loGgS46oePSYv9Fw0r2nwtFTxwa3rFjCX
+ BtMpx0mJyxHSCUPxoZvbgker7LR01e60Wm0P4LFSewtUX5MMbJoMZzg5g+5dF2a3AYppw8IcsfO
+ pY0ZgkwMOOstg8FwYfeckZnHKAzZa0KTtw+wgjYZA+jL3llB5ni23TxJP9eieAkSqqfut3ZlOZ/
+ GQqSXEnRY/kmtfHBxFDoNY2/QQX0WaIug9U4kCiBHi3qbWpWKvVx4Kxsvelarvl7DuzIs1JXJ1k
+ QbfyXFSc5DD3i5ov1JkBXm+sJq0004OYM203o9hNce3IYq2bUdskqcCCAvRSrISS9L6Q6kKbSEw
+ 7ikG1eUtkSQUpVv9wt
+X-Google-Smtp-Source: AGHT+IHeltuXUntrSR8pI7fDhXAnJinTVYbyajvNUaB6HGYn8fcg7XnlrL347RJIwtLnOX/FkbHJfw==
+X-Received: by 2002:a17:902:db11:b0:28e:a70f:e879 with SMTP id
+ d9443c01a7336-290c9c8cc5bmr145108855ad.1.1760898520999; 
  Sun, 19 Oct 2025 11:28:40 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29246ebccf3sm58985775ad.1.2025.10.19.11.28.39
+ d9443c01a7336-29246ebccf3sm58985775ad.1.2025.10.19.11.28.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 19 Oct 2025 11:28:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 6/9] tcg/mips: Remove ALIAS_PADD, ALIAS_PADDI
-Date: Sun, 19 Oct 2025 11:28:31 -0700
-Message-ID: <20251019182834.481541-7-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 7/9] buildsys: Remove support for 32-bit PPC hosts
+Date: Sun, 19 Oct 2025 11:28:32 -0700
+Message-ID: <20251019182834.481541-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251019182834.481541-1-richard.henderson@linaro.org>
 References: <20251019182834.481541-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,116 +100,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These aliases existed to simplify code for O32 and N32.
-Now that the 64-bit abi is the only one supported, we
-can use the DADD* instructions directly.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Stop detecting 32-bit PPC host as supported.
+See previous commit for rationale.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[rth: Retain _ARCH_PPC64 check in udiv_qrnnd]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251014173900.87497-4-philmd@linaro.org>
 ---
- tcg/mips/tcg-target.c.inc | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ include/qemu/timer.h | 13 +------------
+ disas/disas-host.c   |  4 +---
+ util/cacheflush.c    |  4 ++--
+ configure            | 19 +++++--------------
+ 4 files changed, 9 insertions(+), 31 deletions(-)
 
-diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index 51a15705cb..60c703a093 100644
---- a/tcg/mips/tcg-target.c.inc
-+++ b/tcg/mips/tcg-target.c.inc
-@@ -340,10 +340,6 @@ typedef enum {
-     OPC_SYNC_ACQUIRE = OPC_SYNC | 0x11 << 6,
-     OPC_SYNC_RELEASE = OPC_SYNC | 0x12 << 6,
-     OPC_SYNC_RMB     = OPC_SYNC | 0x13 << 6,
--
--    /* Aliases for convenience.  */
--    ALIAS_PADD     = sizeof(void *) == 4 ? OPC_ADDU : OPC_DADDU,
--    ALIAS_PADDI    = sizeof(void *) == 4 ? OPC_ADDIU : OPC_DADDIU,
- } MIPSInsn;
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index aec730ac25..406d741120 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -850,12 +850,11 @@ static inline int64_t get_clock(void)
+ /*******************************************/
+ /* host CPU ticks (if available) */
  
- /*
-@@ -700,7 +696,7 @@ static void tcg_out_ldst(TCGContext *s, MIPSInsn opc, TCGReg data,
-     if (ofs != lo) {
-         tcg_out_movi(s, TCG_TYPE_PTR, TCG_TMP0, ofs - lo);
-         if (addr != TCG_REG_ZERO) {
--            tcg_out_opc_reg(s, ALIAS_PADD, TCG_TMP0, TCG_TMP0, addr);
-+            tcg_out_opc_reg(s, OPC_DADDU, TCG_TMP0, TCG_TMP0, addr);
-         }
-         addr = TCG_TMP0;
+-#if defined(_ARCH_PPC)
++#if defined(_ARCH_PPC64)
+ 
+ static inline int64_t cpu_get_host_ticks(void)
+ {
+     int64_t retval;
+-#ifdef _ARCH_PPC64
+     /* This reads timebase in one 64bit go and includes Cell workaround from:
+        http://ozlabs.org/pipermail/linuxppc-dev/2006-October/027052.html
+     */
+@@ -863,16 +862,6 @@ static inline int64_t cpu_get_host_ticks(void)
+                           "cmpwi   %0,0\n\t"
+                           "beq-    $-8"
+                           : "=r" (retval));
+-#else
+-    /* http://ozlabs.org/pipermail/linuxppc-dev/1999-October/003889.html */
+-    unsigned long junk;
+-    __asm__ __volatile__ ("mfspr   %1,269\n\t"  /* mftbu */
+-                          "mfspr   %L0,268\n\t" /* mftb */
+-                          "mfspr   %0,269\n\t"  /* mftbu */
+-                          "cmpw    %0,%1\n\t"
+-                          "bne     $-16"
+-                          : "=r" (retval), "=r" (junk));
+-#endif
+     return retval;
+ }
+ 
+diff --git a/disas/disas-host.c b/disas/disas-host.c
+index 8146fafe80..4b06f41fa6 100644
+--- a/disas/disas-host.c
++++ b/disas/disas-host.c
+@@ -56,11 +56,9 @@ static void initialize_debug_host(CPUDebug *s)
+     s->info.cap_mode = CS_MODE_64;
+     s->info.cap_insn_unit = 1;
+     s->info.cap_insn_split = 8;
+-#elif defined(_ARCH_PPC)
++#elif defined(_ARCH_PPC64)
+     s->info.cap_arch = CS_ARCH_PPC;
+-# ifdef _ARCH_PPC64
+     s->info.cap_mode = CS_MODE_64;
+-# endif
+ #elif defined(__riscv)
+ #if defined(_ILP32) || (__riscv_xlen == 32)
+     s->info.print_insn = print_insn_riscv32;
+diff --git a/util/cacheflush.c b/util/cacheflush.c
+index 17c58918de..69c9614e2c 100644
+--- a/util/cacheflush.c
++++ b/util/cacheflush.c
+@@ -153,7 +153,7 @@ static void arch_cache_info(int *isize, int *dsize)
      }
-@@ -1103,7 +1099,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-         tcg_out_opc_reg(s, OPC_AND, TCG_TMP3, TCG_TMP3, TCG_TMP0);
+ }
  
-         /* Add the tlb_table pointer, creating the CPUTLBEntry address.  */
--        tcg_out_opc_reg(s, ALIAS_PADD, TCG_TMP3, TCG_TMP3, TCG_TMP1);
-+        tcg_out_opc_reg(s, OPC_DADDU, TCG_TMP3, TCG_TMP3, TCG_TMP1);
+-#elif defined(_ARCH_PPC) && defined(__linux__)
++#elif defined(_ARCH_PPC64) && defined(__linux__)
+ # include "elf.h"
  
-         /* Load the tlb comparator.  */
-         if (addr_type == TCG_TYPE_I32) {
-@@ -1142,7 +1138,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
- 
-         /* delay slot */
-         base = TCG_TMP3;
--        tcg_out_opc_reg(s, ALIAS_PADD, base, TCG_TMP3, addr);
-+        tcg_out_opc_reg(s, OPC_DADDU, base, TCG_TMP3, addr);
+ static void arch_cache_info(int *isize, int *dsize)
+@@ -187,7 +187,7 @@ static void fallback_cache_info(int *isize, int *dsize)
+     } else if (*dsize) {
+         *isize = *dsize;
      } else {
-         if (a_mask && (use_mips32r6_instructions || a_bits != s_bits)) {
-             ldst = new_ldst_label(s);
-@@ -1171,9 +1167,9 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-         }
-         if (guest_base) {
-             if (guest_base == (int16_t)guest_base) {
--                tcg_out_opc_imm(s, ALIAS_PADDI, TCG_REG_A0, base, guest_base);
-+                tcg_out_opc_imm(s, OPC_DADDIU, TCG_REG_A0, base, guest_base);
-             } else {
--                tcg_out_opc_reg(s, ALIAS_PADD, TCG_REG_A0, base,
-+                tcg_out_opc_reg(s, OPC_DADDU, TCG_REG_A0, base,
-                                 TCG_GUEST_BASE_REG);
-             }
-             base = TCG_REG_A0;
-@@ -1411,7 +1407,7 @@ static void tcg_out_exit_tb(TCGContext *s, uintptr_t a0)
-         } else {
-             base = TCG_REG_V0;
-             tcg_out_movi(s, TCG_TYPE_PTR, base, ofs - lo);
--            tcg_out_opc_reg(s, ALIAS_PADD, base, base, TCG_REG_TB);
-+            tcg_out_opc_reg(s, OPC_DADDU, base, base, TCG_REG_TB);
-         }
-     }
-     if (!tcg_out_opc_jmp(s, OPC_J, tb_ret_addr)) {
-@@ -1419,7 +1415,7 @@ static void tcg_out_exit_tb(TCGContext *s, uintptr_t a0)
-         tcg_out_opc_reg(s, OPC_JR, 0, TCG_TMP0, 0);
-     }
-     /* delay slot */
--    tcg_out_opc_imm(s, ALIAS_PADDI, TCG_REG_V0, base, lo);
-+    tcg_out_opc_imm(s, OPC_DADDIU, TCG_REG_V0, base, lo);
- }
+-#if defined(_ARCH_PPC)
++#if defined(_ARCH_PPC64)
+         /*
+          * For PPC, we're going to use the cache sizes computed for
+          * flush_idcache_range.  Which means that we must use the
+diff --git a/configure b/configure
+index 8263f81370..a2f66f7ff9 100755
+--- a/configure
++++ b/configure
+@@ -391,15 +391,11 @@ elif check_define __sparc__ ; then
+   else
+     cpu="sparc"
+   fi
+-elif check_define _ARCH_PPC ; then
+-  if check_define _ARCH_PPC64 ; then
+-    if check_define _LITTLE_ENDIAN ; then
+-      cpu="ppc64le"
+-    else
+-      cpu="ppc64"
+-    fi
++elif check_define _ARCH_PPC64 ; then
++  if check_define _LITTLE_ENDIAN ; then
++    cpu="ppc64le"
+   else
+-    cpu="ppc"
++    cpu="ppc64"
+   fi
+ elif check_define __mips__ ; then
+   if check_define __mips64 ; then
+@@ -472,11 +468,6 @@ case "$cpu" in
+     linux_arch=mips
+     ;;
  
- static void tcg_out_goto_tb(TCGContext *s, int which)
-@@ -1438,7 +1434,7 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
- 
-     set_jmp_reset_offset(s, which);
-     /* For the unlinked case, need to reset TCG_REG_TB. */
--    tcg_out_ldst(s, ALIAS_PADDI, TCG_REG_TB, TCG_REG_TB,
-+    tcg_out_ldst(s, OPC_DADDIU, TCG_REG_TB, TCG_REG_TB,
-                  -tcg_current_code_size(s));
- }
- 
-@@ -2360,7 +2356,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
-     tcg_set_frame(s, TCG_REG_SP, TCG_STATIC_CALL_ARGS_SIZE, TEMP_SIZE);
- 
-     /* TB prologue */
--    tcg_out_opc_imm(s, ALIAS_PADDI, TCG_REG_SP, TCG_REG_SP, -FRAME_SIZE);
-+    tcg_out_opc_imm(s, OPC_DADDIU, TCG_REG_SP, TCG_REG_SP, -FRAME_SIZE);
-     for (i = 0; i < ARRAY_SIZE(tcg_target_callee_save_regs); i++) {
-         tcg_out_st(s, TCG_TYPE_REG, tcg_target_callee_save_regs[i],
-                    TCG_REG_SP, SAVE_OFS + i * REG_SIZE);
-@@ -2403,7 +2399,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
- 
-     tcg_out_opc_reg(s, OPC_JR, 0, TCG_REG_RA, 0);
-     /* delay slot */
--    tcg_out_opc_imm(s, ALIAS_PADDI, TCG_REG_SP, TCG_REG_SP, FRAME_SIZE);
-+    tcg_out_opc_imm(s, OPC_DADDIU, TCG_REG_SP, TCG_REG_SP, FRAME_SIZE);
- 
-     if (use_mips32r2_instructions) {
-         return;
+-  ppc)
+-    host_arch=ppc
+-    linux_arch=powerpc
+-    CPU_CFLAGS="-m32"
+-    ;;
+   ppc64)
+     host_arch=ppc64
+     linux_arch=powerpc
+@@ -1471,7 +1462,7 @@ probe_target_compiler() {
+         container_image=debian-all-test-cross
+         container_cross_prefix=mips64-linux-gnuabi64-
+         ;;
+-      ppc|ppc64|ppc64le)
++      ppc64|ppc64le)
+         container_image=debian-all-test-cross
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         ;;
 -- 
 2.43.0
 
