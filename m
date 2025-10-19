@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2194BBEEB58
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 20:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01F7BEEB68
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 20:30:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAY9C-0005BY-8Z; Sun, 19 Oct 2025 14:28:50 -0400
+	id 1vAY98-0005AO-GX; Sun, 19 Oct 2025 14:28:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vAY93-00058X-SB
+ id 1vAY95-00058w-NJ
  for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:43 -0400
 Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vAY90-0000ZC-M2
- for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:41 -0400
+ id 1vAY91-0000ZH-Lv
+ for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:42 -0400
 Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2909448641eso35044915ad.1
- for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 11:28:37 -0700 (PDT)
+ d9443c01a7336-2698384978dso26385835ad.0
+ for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 11:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1760898517; x=1761503317; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=llxq6qfqlHF5luVrkm+L5VreeqcrRVzoabCRD01R3N4=;
- b=cBSvh2UnyEPBcyKxz9omWEBIL8Ci4VXD9kDQDCfUwqEv6l4TzoM7HBZ5vg2MZI+6XH
- fnPbpx+ZnlWTSeC/LHSt3XiaWhAXiGJTEw195O3Ga7QxJD6UvQjmb+s3KkWea0wIW1iG
- cieb6e5H7vpPJDyNMUMDwZIX4WGA0hwIxN9BfDviq7bNBM+9VSRIYMJF4fhqF8ZUKD7t
- daXHr88s8vX5avnV+VT1WUYAfd1beC0sYZxm9tFjXU3f813soeGtGO5kHmOYQ/c34BPy
- SxIPnpdo+xWx4Ahbfh13uBlS1v7B07i5VAOV++Zr42lcNcy7qFAiWIX2xvEn/2B4Xa8T
- lLKQ==
+ bh=EAYhbIEVnqIpv3UM3lZTlnJP6T433ZQvfgE/KFwrBAE=;
+ b=RQfI8GmuC1/KpsGzCsTsqWLPbbbuIzgVRRdXpQHL11KsKOm0sYLAvK4ZqBui/d3qpG
+ nBrfGewY1M2AJqnsoKQUXOyoXWdYw2seNzvXqS5HntidQP9nEiqBazKkwkupjRS3m0WF
+ +wuhRR+Dc7etZCKrC/SmAFsdMHq6v7IC+y5p2MGOtdCcyR/KHSbGsKmVVgC6LGnOYT9g
+ 031ZR4Vif1X7POJiFFRgwSyJwpckrM80MOmotqq4DSz1m+jxP5XFxhRf+6jsdr9pKReF
+ ybro87cECm6nKOp4eutlU3Y8Kk1AVB8HRuk0G2dQkB2A7dKPbjzGclJSyGtmmB1mDG0o
+ LNdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1760898517; x=1761503317;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=llxq6qfqlHF5luVrkm+L5VreeqcrRVzoabCRD01R3N4=;
- b=q4ghtNjT6olKVEyyiytvXqWnKBlrLzr/nn0140XmX7tqU/divtJ74UCbRsjenlNDac
- XiB4Uk4ZfCCJf3P8HIdJ1AgArhOzeycyIqZj+JoNF8E1o39WI4tT02Cwku6fE3xe03qj
- /8Hx8GmPK9ROwhOj4Xsu8UjPLh91PbKpn0C+FL7acTVS/BtAfel8lHGgBG/UuQz3JKCX
- 8HgzzfDQ5YVilP0UgtLcz/osgzn1DP2QhVIPoiQcwF/FygV/uNZP2i2TiapnudRbLms8
- IDhgpNyS8XFRHv+s0tngO3zxKJpc+G2KMoAn7H7MWxNFQNxQu9U3BchX1ap5rYTg0YXD
- lpBw==
-X-Gm-Message-State: AOJu0YwvGpw0L5oFjABMDfvH/IyQxyDyzW6w5nSLkf0v1ET2gyQZv12y
- BOH+r11jKDQq8FHZAAPhqVk5WCfnKIqxszgo/NhkOlUqkd97uhLiMEuwo9EiSFAlXlAb531vGGH
- 9/bhKTUY=
-X-Gm-Gg: ASbGncugFuhtIiCgFsAFv9oqo/jzMsbr38M8xFqV/WqyPrmBiWwxojuGcrRcTfzgvgf
- k6yVECaiRmM3xJDbZTq18y8Z77P25GZ6gCGLPuMKBbDRCITugYq4HRLIMkfDIVJY7VXMmgAYA7O
- JvR51URZP9EI+mR+pD7JDptxzx4ri8hAJ/D2yWpxk4BpwiOLA73E3DjtntKl9YaSXCs4+Voj/HU
- YeFqu9Ga8VDxNnaA3nJKEW9bqcSuZHjQTjYB7He6ucetZH9l/7l+spBEaRxTBmgxlYP6m41EhpC
- BFXXF8MFdnFQyV2G+yDsGBzYtGjfMaJbVnEn2jCI3LDFhYZcDYwS/kLCQpkZV9anat/gYFj0qSt
- GcSXhY/a2ISGQNDbfIC069t4F5MJRl0edn2tBjtWgowLDbmtneNVuKcFcTJYxF+0srf0A0f9ueH
- MMsihQ41tgpQiopBy0
-X-Google-Smtp-Source: AGHT+IFOlq3mi7jtou9ldBF1RgvU6BVNJr0IRHHU/F6+ituaEKKiHa2DH7iNdQLLKe9CIiAuMPtQag==
-X-Received: by 2002:a17:903:2310:b0:290:ad7a:bb50 with SMTP id
- d9443c01a7336-290ad7abe3amr146387505ad.27.1760898516478; 
- Sun, 19 Oct 2025 11:28:36 -0700 (PDT)
+ bh=EAYhbIEVnqIpv3UM3lZTlnJP6T433ZQvfgE/KFwrBAE=;
+ b=bSu8cgV7/YUc5aCpRCIfwBKEButMFkF1jY+cl2/3qsoor7Ey515wnBlkLnqHtX2mAs
+ ba3bIDbmgjenioMg/+CxiIPDpB8cDgk9ro3dQwgIsw6lAPBUQzJr0j+KGoFnzKdyIFbn
+ EPvPsQNfwTINuY+IuiOxN1oragZ3/0jFgq2V1gMaHI+Ei2lVcV1NYpWU6/eXWXdgL0yR
+ WisuEuaStjPOkzYmELIQbvIpEUPayH6fkEaB+jVk/+FITemaotR2anfYjtlIlx0Punb5
+ l2AW+0EYa2Ujzmuv/jfr5Q6oVEpVfnbnEojbulhdAKYtVxCIa8AALsxoYRGVh6+hE8On
+ Z6NA==
+X-Gm-Message-State: AOJu0YwjU4hNX6TqTe6R/adIW2hmOAM39dq3j54+KwXq+BRVhpMDFplU
+ YufgO9nmz1kQqKgK8LcaPuwcLpL7VvLKVmp1hpKSbZYvA6RCSMygH2gRYIcq3vRy0r6SyNi0fd7
+ g6HqXkV0=
+X-Gm-Gg: ASbGncvGovPo54zottkpLxHneXiAxlshMLkhDzvTXOOOxZfMGepI2JQP6eSeCPHcjV4
+ wBskyGaQxKERzrFnj7A4logvlV3da1tUMP5sPXqdKF4DkTicziT3lH07ewgDuVKri+uoTEPfxai
+ oJJpt1rTYtzHgzO/Od7PQPKRXoOkWIA0py2gUmbV4pyFp2EY/eoHlHOrpQnz6Y2ddIeoQM7ku2v
+ LGVpOlMIxmsjIeIINqEx3BIJVG7IAaLqd+DDW8eQo4bv1JbuiiMVH+omFJvkiOlyNmdxhS7teoJ
+ 6okccjbQjKFRvZP7thNEQX0j+yrdJpIPbUFtRxod+wqGTXo2tkEosz3rHtuk9vo6KqH2eyOYCnB
+ IURMAEpcMLY10rMQOJTDv1mxpZwl3csyXf1slIvZmDBFcVrc9Eo9P8q6ZiGXG6XvrdS5kQSn+rO
+ 2O2kNxBW/RG59Sereq
+X-Google-Smtp-Source: AGHT+IGZye/y9cvU3r+6Vk8P00+ttuOfroBP5EjFw/lvymGB3T04YVW53B/0W72rWissYo+uMd77yA==
+X-Received: by 2002:a17:903:2306:b0:240:9dd8:219b with SMTP id
+ d9443c01a7336-290cb65b6camr156117885ad.49.1760898517280; 
+ Sun, 19 Oct 2025 11:28:37 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29246ebccf3sm58985775ad.1.2025.10.19.11.28.35
+ d9443c01a7336-29246ebccf3sm58985775ad.1.2025.10.19.11.28.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 19 Oct 2025 11:28:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 1/9] gitlab: Stop cross-testing for 32-bit MIPS hosts
-Date: Sun, 19 Oct 2025 11:28:26 -0700
-Message-ID: <20251019182834.481541-2-richard.henderson@linaro.org>
+Subject: [PULL 2/9] buildsys: Remove support for 32-bit MIPS hosts
+Date: Sun, 19 Oct 2025 11:28:27 -0700
+Message-ID: <20251019182834.481541-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251019182834.481541-1-richard.henderson@linaro.org>
 References: <20251019182834.481541-1-richard.henderson@linaro.org>
@@ -102,63 +102,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-32-bit host support is deprecated since commit 6d701c9bac1
-("meson: Deprecate 32-bit host support"). Next commits will
-remove support for 32-bit MIPS hosts. Stop cross-building
-QEMU on our CI.
+Stop detecting 32-bit MIPS host as supported, update the
+deprecation document. See previous commit for rationale.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251009195210.33161-3-philmd@linaro.org>
+Message-ID: <20251009195210.33161-8-philmd@linaro.org>
 ---
- .gitlab-ci.d/container-cross.yml |  6 ------
- .gitlab-ci.d/crossbuilds.yml     | 14 --------------
- 2 files changed, 20 deletions(-)
+ configure                       |  7 -------
+ docs/about/deprecated.rst       | 13 +++++--------
+ docs/about/removed-features.rst |  6 ++++++
+ 3 files changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 8d3be53b75..0fd7341afa 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -52,12 +52,6 @@ mips64el-debian-cross-container:
-   variables:
-     NAME: debian-mips64el-cross
+diff --git a/configure b/configure
+index 461b53dd60..8263f81370 100755
+--- a/configure
++++ b/configure
+@@ -404,8 +404,6 @@ elif check_define _ARCH_PPC ; then
+ elif check_define __mips__ ; then
+   if check_define __mips64 ; then
+     cpu="mips64"
+-  else
+-    cpu="mips"
+   fi
+ elif check_define __s390__ ; then
+   if check_define __s390x__ ; then
+@@ -473,11 +471,6 @@ case "$cpu" in
+     host_arch=mips
+     linux_arch=mips
+     ;;
+-  mips*)
+-    cpu=mips
+-    host_arch=mips
+-    linux_arch=mips
+-    ;;
  
--mipsel-debian-cross-container:
--  extends: .container_job_template
--  stage: containers
--  variables:
--    NAME: debian-mipsel-cross
--
- ppc64el-debian-cross-container:
-   extends: .container_job_template
-   stage: containers
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index 8ff0c27f74..99dfa7eea6 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -68,20 +68,6 @@ cross-i686-tci:
-     # would otherwise be using a parallelism of 9.
-     MAKE_CHECK_ARGS: check check-tcg -j2
+   ppc)
+     host_arch=ppc
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 98361f5832..dacf2882e4 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -172,17 +172,14 @@ This argument has always been ignored.
+ Host Architectures
+ ------------------
  
--cross-mipsel-system:
--  extends: .cross_system_build_job
--  needs:
--    - job: mipsel-debian-cross-container
--  variables:
--    IMAGE: debian-mipsel-cross
+-Big endian MIPS since 7.2; 32-bit little endian MIPS since 9.2, MIPS since 11.0
+-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++MIPS (since 11.0)
++'''''''''''''''''
+ 
+-As Debian 10 ("Buster") moved into LTS the big endian 32 bit version of
+-MIPS moved out of support making it hard to maintain our
+-cross-compilation CI tests of the architecture. As we no longer have
+-CI coverage support may bitrot away before the deprecation process
++MIPS is not supported by Debian 13 ("Trixie") and newer, making it hard to
++maintain our cross-compilation CI tests of the architecture. As we no longer
++have CI coverage support may bitrot away before the deprecation process
+ completes.
+ 
+-Likewise, MIPS is not supported by Debian 13 ("Trixie") and newer.
 -
--cross-mipsel-user:
--  extends: .cross_user_build_job
--  needs:
--    - job: mipsel-debian-cross-container
--  variables:
--    IMAGE: debian-mipsel-cross
--
- cross-mips64el-system:
-   extends: .cross_system_build_job
-   needs:
+ System emulation on 32-bit x86 hosts (since 8.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index a5338e44c2..53829f59e6 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -896,6 +896,12 @@ work around the atomicity issues in system mode by running all vCPUs
+ in a single thread context; in user mode atomicity was simply broken.
+ From 10.0, QEMU has disabled configuration of 64-bit guests on 32-bit hosts.
+ 
++32-bit MIPS (since 11.0)
++''''''''''''''''''''''''
++
++Debian 12 "Bookworm" removed support for 32-bit MIPS, making it hard to
++maintain our cross-compilation CI tests of the architecture.
++
+ Guest Emulator ISAs
+ -------------------
+ 
 -- 
 2.43.0
 
