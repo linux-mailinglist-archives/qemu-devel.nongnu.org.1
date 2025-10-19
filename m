@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC4ABEEB57
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 20:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E93BEBEEB53
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Oct 2025 20:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAY98-0005AU-Tr; Sun, 19 Oct 2025 14:28:46 -0400
+	id 1vAY97-00059L-4w; Sun, 19 Oct 2025 14:28:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vAY95-00058v-ND
+ id 1vAY95-00058x-N0
  for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:43 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vAY91-0000ZL-Jh
+ id 1vAY92-0000ZP-9S
  for qemu-devel@nongnu.org; Sun, 19 Oct 2025 14:28:42 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-26e68904f0eso36671455ad.0
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-290ac2ef203so34512245ad.1
  for <qemu-devel@nongnu.org>; Sun, 19 Oct 2025 11:28:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1760898518; x=1761503318; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+w5No0Ep1LX3XR7FDPjD+GZNr16ogOShPRDBWgvVMw0=;
- b=bDt4+SzPPKGx2QR27QPUuCHvIATmg/kKmraQMhn+LFRBZGurNVTCwZEmYFc9FZy3vJ
- gDcDlM2Bh8dtw7Ef8yZuRUAKjSTLw24Fy8UY3s5yZlclp+ZyjDb7k4qOsLUk9fIoe3f+
- qHEu8ekHSwQXg1Ad1elzkj+wOhCrrSo03YqeEw6SShY78T2r87RMaIQeTPseHsu+hoM3
- qRaefrNpfz8gLJm0Rc/QamE3+DlJ9ojFf4eEpyFKL5Lwy/rfNZWHY+wZ1oof6s9jbhMv
- CUf00i80fu7YPgjMGhS0fxgAPbCHgJ8imBlIffhb5frS0vq0QIvdv+1kI4EtRYYriUyi
- zOng==
+ bh=+klw1qSTazAtmpLZcTp4xmaIM2w3pdybISxZjtuBn6w=;
+ b=HkKKXcCzFnyf6lS070d07NX716Z4wqaZvs1C29hYLKDX5+b9iXbH4PtSHxIfERvkcF
+ W451kuy4wVIka200PiXR+/DboRbbt1U0nJtoMxLXYHQYMgWZzkCvDBIoXMIV5MF61nsi
+ eMrk59MDkYqk2HCuh0mfWF4i3NgkTUzfavGDkQdVoEHYo5lbNjRcj4oe/ht0FegnN2qd
+ 7yfqZBz4y7UfiXUZs/pcRVp5OLnOmsJzxlCXxgtHpiNfsA8GEXTwDUbW6Uoyn41Hxm5C
+ 1TwvUlUNGl0RNGN6Aa+HtnifS5KtTOjbXI+k8tAjoQkBy4yIewtwAU1qxa/Xineb1Ix3
+ cTcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1760898518; x=1761503318;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+w5No0Ep1LX3XR7FDPjD+GZNr16ogOShPRDBWgvVMw0=;
- b=Qa/tyzJDCl41Rjrinf/EleQaTXByXXLMzoy29wDHr6qffhvrUsa52LSrxNeGdgJxOT
- 2sRGUTWrkHZ2q3oYA34v9o/eOs1WocbNTX155HcJW062TzeP4Ylq/2/pnINIpNeuZlbq
- fiDSHQD0kmup0V6SvVbVFxjj/O47VSv3SOt3XvIpC59fUvKF+GxPH2VWZp2xzx+a58Ys
- +8fyBe7sdVZPUVfpjzcG1bfV+mBzsKg9M2RpBSzKFcyys3P2WL8OTL1t3Sh1+aMQSONP
- BXrqXmAtCiPRpZIEt/GrI5vq3/19Y0W1p0JdV95jI7LPOV9TXvIG22zd/r4kiD6wvD8G
- 5t9g==
-X-Gm-Message-State: AOJu0YxZ722cO7+jGxd2pFVhATzJc0CNwU6Zh0GnOL9WcOYsU6fbS66u
- Y8xtnNh6AH9kYqbuiiXnAC+9Q1ORkFCQfyQ34n+S/SM946TfafcRr/WCLc0BQdBmHw/vO+7901d
- xQp71Fwg=
-X-Gm-Gg: ASbGncvBwV6YZHor1FNFICRNamQ071r/nKSVIK66LYMiu2lmNeBsAN81p1s11/n0OXU
- t8wEJX/WLYcHUxTRbSTHtm5m+jq3t3oslzFEn59qGP4Ob8CGY+jhbUfda8pj58ooEU4lREcCJOE
- BxPQJrsQ9p5FlErEhzalC1IaNEnhKn7UIUktuv8HBFrQl/scIIJnXiyYrwCUnWAjTnWI+Cea0Cj
- mlJ+dtOFNVCsi4GS+HJDV9QMU+fcoFR8gaA5PXHpPUu0H0G9Rw0LOGwoux5U3h5g2qAmVhR1+EU
- jKeBTmEH1XR7Gedc71v/5llgxoIpUSoRtNsbzoZoTSuy9HhjTLBHn/IMG+FW3yK1SBbh9RNIMLT
- iC5WQ/PUgc5qhYJS/4whLNU5HO+pdHVNf55PqKtGX4vROah96daJ85M2UodeDyPeRYHLYX8LQH1
- PBH1sxL6BiukuPDjTu
-X-Google-Smtp-Source: AGHT+IGh+PAbDy2Xo7dzm6WOBjAnX4qq9nK8WzFXW4AAz/ilcDbOeejwCNOLBqUZRkpYgiZI7FHwdg==
-X-Received: by 2002:a17:903:46c7:b0:28a:8ae7:4034 with SMTP id
- d9443c01a7336-290c9cd4b1bmr129232225ad.25.1760898517856; 
- Sun, 19 Oct 2025 11:28:37 -0700 (PDT)
+ bh=+klw1qSTazAtmpLZcTp4xmaIM2w3pdybISxZjtuBn6w=;
+ b=eLtMk7+y1Sll5vwcIK5NoJDUuOY+HdMBlEACmp3ZSO1ufDJViLuVBqzBOEbNWCvyCm
+ l1sji5mEy5m1U07toSfjnaH3sCqLBY+tSP7JFhA+qpk+4hC+/owKCBOwQhr/oSlzG4yc
+ NHM4DiSZsG0EI1tqzyG6xwrjXPD+yEe6OTl7ISPr8q1CUw5vfc/hEi4MF2H7bEATxGbm
+ HCCdHx+pCzAwTGjKG7pQQTCP4PMedO1K8VLIRZ4RkToUys2qNe/z5A8P7fACIwcevy7p
+ w3Ve+wNw7Lrc6d3eHr7VtV7xOn4oqwH3CR0TwKfm3y9q17bU/G4EbKG6sNvJfA6RHgIi
+ ZPmA==
+X-Gm-Message-State: AOJu0YzkopU14EUqW2J7o+l6nZGoT41khoXvuTWcbLfXRSLykJ2APa2y
+ uetjUItyqg0p1BqViYEqe0iS6gvsMGSnCYMObc7ZFVaSdEKMJgx3xFUbMT/RjkSQCzubKsaUAxW
+ 4udYuv3M=
+X-Gm-Gg: ASbGncvuewNYUByR+DPMBNprA5DFn8F0TP4GbaXmtNwVOBOS3uW1IYV/neNfjHRUmj/
+ uB8Rv6p+3eOrrNU2ndzS3y4dSUVWKylmeCbjiXLrp+rEUT7WMwzdCTP8Qvlxe+m0G97rFCEezgO
+ iVwMsnDZZpmKRUW7w+7iypWjgTKgSNwN9J+FEhalDa+Xu/+k7in5BnOz7McRCnrIzneoQDDWM03
+ ZpkXJHTE3vSjp0TStw4rRgpHWlbrR2Ce91va0Ccuy2WD/+TvciogwDKsd5jMbk2W0i0Uyvrmq96
+ b7zSshCzY0ZdxOF8R0EkAv2Jr+/OFhtFYhU4lejgZBHxcDDcQs/beIDYO35PzRn1dCjTQ1dZSnj
+ d9JTM7nXhix6SFEWHdIetKBMPL7/kjbsUZ9a3ny3fffzkIuaHzkKqAMM6s2gsr36WtWNE87/1C7
+ ltG6dCxcfNVxU75SyO
+X-Google-Smtp-Source: AGHT+IGo+UP26dFHhUxD2YZmI8pWarIH54DEWupyCvV743y98VsXi1k1YlDHtEH9EBR/kvnKGowZkQ==
+X-Received: by 2002:a17:903:2408:b0:27e:ea82:5ce8 with SMTP id
+ d9443c01a7336-290c9ca6afbmr141854675ad.14.1760898518513; 
+ Sun, 19 Oct 2025 11:28:38 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-29246ebccf3sm58985775ad.1.2025.10.19.11.28.37
+ d9443c01a7336-29246ebccf3sm58985775ad.1.2025.10.19.11.28.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Oct 2025 11:28:37 -0700 (PDT)
+ Sun, 19 Oct 2025 11:28:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 3/9] kvm/mips: Remove support for 32-bit hosts
-Date: Sun, 19 Oct 2025 11:28:28 -0700
-Message-ID: <20251019182834.481541-4-richard.henderson@linaro.org>
+Subject: [PULL 4/9] tcg/mips: Remove support for O32 and N32 ABIs
+Date: Sun, 19 Oct 2025 11:28:29 -0700
+Message-ID: <20251019182834.481541-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251019182834.481541-1-richard.henderson@linaro.org>
 References: <20251019182834.481541-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,24 +107,154 @@ See previous commit for rationale.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251009195210.33161-7-philmd@linaro.org>
+Message-ID: <20251009195210.33161-5-philmd@linaro.org>
 ---
- meson.build | 2 --
- 1 file changed, 2 deletions(-)
+ tcg/mips/tcg-target-reg-bits.h           |  8 ++----
+ common-user/host/mips/safe-syscall.inc.S | 35 ------------------------
+ tcg/mips/tcg-target.c.inc                | 26 ++++--------------
+ 3 files changed, 9 insertions(+), 60 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index afaefa0172..c5710a6a47 100644
---- a/meson.build
-+++ b/meson.build
-@@ -295,8 +295,6 @@ elif cpu == 'ppc'
-   kvm_targets = ['ppc-softmmu']
- elif cpu == 'ppc64'
-   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
--elif cpu == 'mips'
--  kvm_targets = ['mips-softmmu', 'mipsel-softmmu']
- elif cpu == 'mips64'
-   kvm_targets = ['mips-softmmu', 'mipsel-softmmu', 'mips64-softmmu', 'mips64el-softmmu']
- elif cpu == 'riscv32'
+diff --git a/tcg/mips/tcg-target-reg-bits.h b/tcg/mips/tcg-target-reg-bits.h
+index 56fe0a725e..ee346a3f25 100644
+--- a/tcg/mips/tcg-target-reg-bits.h
++++ b/tcg/mips/tcg-target-reg-bits.h
+@@ -7,12 +7,10 @@
+ #ifndef TCG_TARGET_REG_BITS_H
+ #define TCG_TARGET_REG_BITS_H
+ 
+-#if _MIPS_SIM == _ABIO32
+-# define TCG_TARGET_REG_BITS 32
+-#elif _MIPS_SIM == _ABIN32 || _MIPS_SIM == _ABI64
+-# define TCG_TARGET_REG_BITS 64
+-#else
++#if !defined(_MIPS_SIM) || _MIPS_SIM != _ABI64
+ # error "Unknown ABI"
+ #endif
+ 
++#define TCG_TARGET_REG_BITS 64
++
+ #endif
+diff --git a/common-user/host/mips/safe-syscall.inc.S b/common-user/host/mips/safe-syscall.inc.S
+index 6a44614970..3b196cc634 100644
+--- a/common-user/host/mips/safe-syscall.inc.S
++++ b/common-user/host/mips/safe-syscall.inc.S
+@@ -30,15 +30,9 @@
+          * arguments being syscall arguments (also 'long').
+          */
+ 
+-#if _MIPS_SIM == _ABIO32
+-/* 8 * 4 = 32 for outgoing parameters; 1 * 4 for s0 save; 1 * 4 for align. */
+-#define FRAME    40
+-#define OFS_S0   32
+-#else
+ /* 1 * 8 for s0 save; 1 * 8 for align. */
+ #define FRAME    16
+ #define OFS_S0   0
+-#endif
+ 
+ 
+ NESTED(safe_syscall_base, FRAME, ra)
+@@ -47,34 +41,6 @@ NESTED(safe_syscall_base, FRAME, ra)
+         .cfi_adjust_cfa_offset FRAME
+         REG_S   s0, OFS_S0(sp)
+         .cfi_rel_offset s0, OFS_S0
+-#if _MIPS_SIM == _ABIO32
+-        /*
+-         * The syscall calling convention is nearly the same as C:
+-         * we enter with a0 == &signal_pending
+-         *               a1 == syscall number
+-         *               a2, a3, stack == syscall arguments
+-         *               and return the result in a0
+-         * and the syscall instruction needs
+-         *               v0 == syscall number
+-         *               a0 ... a3, stack == syscall arguments
+-         *               and returns the result in v0
+-         * Shuffle everything around appropriately.
+-         */
+-        move    s0, a0          /* signal_pending pointer */
+-        move    v0, a1          /* syscall number */
+-        move    a0, a2          /* syscall arguments */
+-        move    a1, a3
+-        lw      a2, FRAME+16(sp)
+-        lw      a3, FRAME+20(sp)
+-        lw      t4, FRAME+24(sp)
+-        lw      t5, FRAME+28(sp)
+-        lw      t6, FRAME+32(sp)
+-        lw      t7, FRAME+40(sp)
+-        sw      t4, 16(sp)
+-        sw      t5, 20(sp)
+-        sw      t6, 24(sp)
+-        sw      t7, 28(sp)
+-#else
+         /*
+          * The syscall calling convention is nearly the same as C:
+          * we enter with a0 == &signal_pending
+@@ -95,7 +61,6 @@ NESTED(safe_syscall_base, FRAME, ra)
+         move    a3, a5
+         move    a4, a6
+         move    a5, a7
+-#endif
+ 
+         /*
+          * This next sequence of code works in conjunction with the
+diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
+index 400eafbab4..4d9d029844 100644
+--- a/tcg/mips/tcg-target.c.inc
++++ b/tcg/mips/tcg-target.c.inc
+@@ -26,16 +26,10 @@
+ 
+ /* used for function call generation */
+ #define TCG_TARGET_STACK_ALIGN        16
+-#if _MIPS_SIM == _ABIO32
+-# define TCG_TARGET_CALL_STACK_OFFSET 16
+-# define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_EVEN
+-# define TCG_TARGET_CALL_RET_I128     TCG_CALL_RET_BY_REF
+-#else
+-# define TCG_TARGET_CALL_STACK_OFFSET 0
+-# define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_RET_I128     TCG_CALL_RET_NORMAL
+-#endif
++#define TCG_TARGET_CALL_STACK_OFFSET  0
+ #define TCG_TARGET_CALL_ARG_I32       TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64       TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_RET_I128      TCG_CALL_RET_NORMAL
+ #define TCG_TARGET_CALL_ARG_I128      TCG_CALL_ARG_EVEN
+ 
+ #if TCG_TARGET_REG_BITS == 32
+@@ -135,12 +129,10 @@ static const TCGReg tcg_target_call_iarg_regs[] = {
+     TCG_REG_A1,
+     TCG_REG_A2,
+     TCG_REG_A3,
+-#if _MIPS_SIM == _ABIN32 || _MIPS_SIM == _ABI64
+     TCG_REG_T0,
+     TCG_REG_T1,
+     TCG_REG_T2,
+     TCG_REG_T3,
+-#endif
+ };
+ 
+ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
+@@ -1053,17 +1045,11 @@ static void tcg_out_call_int(TCGContext *s, const tcg_insn_unit *arg, bool tail)
+      * Note that __mips_abicalls requires the called function's address
+      * to be loaded into $25 (t9), even if a direct branch is in range.
+      *
+-     * For n64, always drop the pointer into the constant pool.
+-     * We can re-use helper addresses often and do not want any
+-     * of the longer sequences tcg_out_movi may try.
++     * We can re-use helper addresses often; always drop the pointer
++     * into the constant pool.
+      */
+-    if (sizeof(uintptr_t) == 8) {
+-        tcg_out_movi_pool(s, TCG_REG_T9, (uintptr_t)arg, TCG_REG_TB);
+-    } else {
+-        tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_T9, (uintptr_t)arg);
+-    }
++    tcg_out_movi_pool(s, TCG_REG_T9, (uintptr_t)arg, TCG_REG_TB);
+ 
+-    /* But do try a direct branch, allowing the cpu better insn prefetch.  */
+     if (tail) {
+         if (!tcg_out_opc_jmp(s, OPC_J, arg)) {
+             tcg_out_opc_reg(s, OPC_JR, 0, TCG_REG_T9, 0);
 -- 
 2.43.0
 
