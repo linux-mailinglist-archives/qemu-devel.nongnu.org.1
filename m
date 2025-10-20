@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC92BEF90A
+	by mail.lfdr.de (Postfix) with ESMTPS id 6266FBEF90C
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 09:02:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAjt4-000898-FE; Mon, 20 Oct 2025 03:00:58 -0400
+	id 1vAjtc-0008Tp-US; Mon, 20 Oct 2025 03:01:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vAjt1-00088j-Sj
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 03:00:56 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vAjtX-0008Sn-3J
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 03:01:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vAjsz-0004UP-Dt
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 03:00:55 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vAjtV-0004Yp-Av
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 03:01:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760943650;
+ s=mimecast20190719; t=1760943684;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=nPnS977vRtUX7XQYo41fY1RfprVT0/lLAdzhFiqwd6Q=;
- b=gteDn+aib2Np66HH74gLPlq0U1nvNT/+3kCn1gUyTbEciuPZuw/bcIdK1qp24GNEGEBbul
- CRwXSSE7MZoXt3Ce7vvYaa7BnmwzB40sufptPiQKiJiWekjDMKlJvhrRu/LmUrBLYpg+u1
- ykkO6CIHB/G9Qd6LDP8jFlUx5FzLypg=
+ bh=ce6a+r2zYEIIak1H9gln/r1PqxxeW1y45sVTsUMR6/A=;
+ b=YWeVPPtgbvY3zlRys/ZGXpXZiNM4aNjniCcYJ72gZb17WC7cR+JePW4FD3qOmyXFKOgYPt
+ +MOkOpErT6k1NAXxMklnFeBKRdBtOApZNen/WRTWmfSvYLdluMyQSRsiBbmY2VJ9HMZLv8
+ SV2FcXG/l/TwPWUdZcohc15Ec+KaxPM=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-xwQQ4m2KNBiHnOpwBUuIpA-1; Mon, 20 Oct 2025 03:00:48 -0400
-X-MC-Unique: xwQQ4m2KNBiHnOpwBUuIpA-1
-X-Mimecast-MFC-AGG-ID: xwQQ4m2KNBiHnOpwBUuIpA_1760943647
+ us-mta-446-F6Acalz4PLiaJLHuprq90g-1; Mon, 20 Oct 2025 03:01:22 -0400
+X-MC-Unique: F6Acalz4PLiaJLHuprq90g-1
+X-Mimecast-MFC-AGG-ID: F6Acalz4PLiaJLHuprq90g_1760943681
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3f6b44ab789so1883535f8f.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 00:00:48 -0700 (PDT)
+ ffacd0b85a97d-3ee888281c3so8020199f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 00:01:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760943647; x=1761548447;
+ d=1e100.net; s=20230601; t=1760943681; x=1761548481;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nPnS977vRtUX7XQYo41fY1RfprVT0/lLAdzhFiqwd6Q=;
- b=obB98wERtUxBLKdQb+PLsSrP+0Fz9cBQR5cD2KWnvKg4DxEQ0/GX2Q+3lkUluwn7n+
- ocbowlrqxbOPPgZxEV2/G465A6FLhpvwXaug0ctj5DTW+ItpoeQNU5sN3DDcc1kO/9Kp
- 2f1eswheIPznmS1OWILbYBIPR1BPu0cUvSMdMsf1K7WD59tbvO5dNn6VRORhqj4QS76K
- Uo6lCNXl7Gwk6cX9NWR/qDhMHsZLR4LSOT35Uo8buwiVY35SeIWvdJVuw6NX7Vnzd3x7
- WjiaEbgVonYDWNEEgCcC4ouaFK3PYagy81jWe4T+rbzJStqWRyTI1Z0VZL3SIzmNNNrf
- iETw==
+ bh=ce6a+r2zYEIIak1H9gln/r1PqxxeW1y45sVTsUMR6/A=;
+ b=tWRkNjN7klDjoHsjhfK+mIYEpOx61aZEWY0OFv6Ie9TDLVSk5tsPVkm7uiEnf+jD5B
+ c9MQGjCYsDqENHNNVPRzvE8qOz4+VU9LViGXRTP6ePKt2sUp5iJB+Jw2gk2lt6J9n1lH
+ N0K1cAUPoaUEf5UQpC1zWOWF9ld+2rLFGobHNHnpDfvl2Bh4uzaBWYOTGhRUSP3f8h1u
+ X0rw0Ro5lmyVIXj9W32lHXqS1wHklduKdTWGQzWPl5Iyhehm10Zx6ExHRN768r0jy7hh
+ kqITPnbkjQ1eozYO7pVG3DG2nMd1BnTTU8OHVrSCOelr+guV2oQHDUe1iWGAS6jsAl2T
+ fp5A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXlnJxqyZRgwWkjvPSi+P8esLqN9SBXehQrpJgbNY2aMe4ABnB2KLsvdSwYnkVQgSb7miGMa3plxL09@nongnu.org
-X-Gm-Message-State: AOJu0Yyrxiyn25Kus9sjpUb/P4NbGPqeA0djSjZQCGBmjSiTepwFZ3Fc
- j7ygfIYdd5vE7ra2PccNaHAFGb/ruS8W6+H2Mh+WxCfireVDQ9VWb2d8EfJBkxRI9IdHYZAhvHC
- tWaiRLcL50i2NvWEDiDHiVW39WAXLFScIK7EE21YlgMze8vzYf1c5kexV
-X-Gm-Gg: ASbGncv6Yi9EL2Pq56S0n9P63tQOVOhrCaQJpmoFiigh9LZxxMkW6476leSpeaB4op5
- +n1kaWB30FwAFtH1P2IS8UWyucInuxGBiLadKTMezqDg06EJF/0wzCtnhA14o7oqss6dGOlA0S1
- aixHVDC5UP+o8rGAxITSSVZOXoYbzNimcGZpajfj87I9kHvG6GUiV+XMYXc4eJ+1826Wb4QS66Z
- VK6XBIHVglywPANQ/FxAYMjobBjTy52i3lqKQEDI8U0nqBt+yJYToTDUZH8d+WTslJCPhUFDrUI
- 6UmSrfr4HXOtWlRNQHgI/MyHoT+QG6QLJVDCv9lu8dqeUUfi9TrNThSvP1Ut7zHKxmvJ4d7SY11
- XTH1VMvGh6bHNoDnrv1Hpr2EI6UET1dN3+HkbUA==
-X-Received: by 2002:a05:6000:428a:b0:428:3cd7:a340 with SMTP id
- ffacd0b85a97d-4283cd7a42dmr4990543f8f.35.1760943647277; 
- Mon, 20 Oct 2025 00:00:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWIyqoyr8+NhZCuT0gbnCssRbt4XLCyfjqwm9KfsDegni0EZrLAyuHIx7mUa936jgIpMyA6g==
-X-Received: by 2002:a05:6000:428a:b0:428:3cd7:a340 with SMTP id
- ffacd0b85a97d-4283cd7a42dmr4990512f8f.35.1760943646772; 
- Mon, 20 Oct 2025 00:00:46 -0700 (PDT)
+ AJvYcCV0mx5yzvXfUPhc29YWlD9TWpGckf7YdoYK/IfvAlyyQsF7PQW/Z+yNm7jwnKc8yEUAV0l//JuGGXSA@nongnu.org
+X-Gm-Message-State: AOJu0YwKCXE88JakJIf71O4Wl19FdHh7ZRmQhkfkETstnaVbgBMcbbE+
+ GDV4jLgn9XYjCX1XMj4YrgG6ekdYHTRWx53KUzoO9b6uKSU+VnhTP+ZBypJL7wLxWs9c+dFBHBx
+ T5Q5iQDfDVdu7GMM4zpOg1NaAV/fabbyD6TJr9Sh4hl/bW/lW6v6qfuXc
+X-Gm-Gg: ASbGncsifgxyX6O0bc1+shhjLIVrZ9ryIGgSqZ1NUbH2oX0sQNtzKFX/gekPpHS3O2s
+ 4tJMTjx5qQrmm1j0lkX6x1GSh5+Nv3QJmRg1QPiUt+T3LrD0yJc8EyRm+L+YTaVU7vsctatwHM+
+ 16QkXIsVRHZgIemh0Lu9BixMH2Dh//qwDLWSNnklrGtKM0J2WRQAyj9wAhrqhZw9eUUoN+GukvD
+ jN0RaYeoPw6Sqi78hFYDAxCENM7tmWZYZu+k77JG3MabB9TqjeG/XKdpyObGR/O/cwsj/MQtqiT
+ 3DgzqEaolgLS/AwKISzmRqPD/tFoAXbrjTu0mWfKl1lx0Mbw02od7gCgPBYz1toWCkfEZoPYJdV
+ dA7knAZoiiA+ffgnIqt7je1bmjfYW7N1ysanNwg==
+X-Received: by 2002:a05:600c:1914:b0:471:c72:c7f8 with SMTP id
+ 5b1f17b1804b1-47117907a52mr82132915e9.21.1760943680676; 
+ Mon, 20 Oct 2025 00:01:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwFRZ+B83RzrC86bWjOda8qJxyj+KGyvYv6oZwOW9v29jTlLwH6uqcCHSAGohaDlLgVWuDhw==
+X-Received: by 2002:a05:600c:1914:b0:471:c72:c7f8 with SMTP id
+ 5b1f17b1804b1-47117907a52mr82132665e9.21.1760943680319; 
+ Mon, 20 Oct 2025 00:01:20 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5b3acfsm13697628f8f.14.2025.10.20.00.00.45
+ 5b1f17b1804b1-471529598c9sm127838885e9.5.2025.10.20.00.01.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Oct 2025 00:00:46 -0700 (PDT)
-Message-ID: <0925d04c-42f5-488d-8c39-7367768610fa@redhat.com>
-Date: Mon, 20 Oct 2025 09:00:45 +0200
+ Mon, 20 Oct 2025 00:01:19 -0700 (PDT)
+Message-ID: <c39e42e8-6956-4279-b9ee-5432d6e42bac@redhat.com>
+Date: Mon, 20 Oct 2025 09:01:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] vfio/container-legacy: rename
- vfio_dma_unmap_bitmap() to vfio_legacy_dma_unmap_get_dirty_bitmap()
+Subject: Re: [PATCH v2 4/8] vfio: Add a backend_flag parameter to
+ vfio_contianer_query_dirty_bitmap()
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, mst@redhat.com, jasowang@redhat.com,
  yi.l.liu@intel.com, clement.mathieu--drif@eviden.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, avihaih@nvidia.com, xudong.hao@intel.com,
  giovanni.cabiddu@intel.com, mark.gross@intel.com, arjan.van.de.ven@intel.com
 References: <20251017082234.517827-1-zhenzhong.duan@intel.com>
- <20251017082234.517827-4-zhenzhong.duan@intel.com>
+ <20251017082234.517827-5-zhenzhong.duan@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -130,7 +130,7 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251017082234.517827-4-zhenzhong.duan@intel.com>
+In-Reply-To: <20251017082234.517827-5-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -159,45 +159,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/17/25 10:22, Zhenzhong Duan wrote:
-> This is to follow naming style in container-legacy.c to have low level functions
-> with vfio_legacy_ prefix.
+> From: Joao Martins <joao.m.martins@oracle.com>
 > 
-> No functional changes.
+> This new parameter will be used in following patch, currently 0 is passed.
 > 
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
 > ---
->   hw/vfio/container-legacy.c | 10 ++++++----
->   1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
-> index 8e9639603e..b7e3b892b9 100644
-> --- a/hw/vfio/container-legacy.c
-> +++ b/hw/vfio/container-legacy.c
-> @@ -68,9 +68,10 @@ static int vfio_ram_block_discard_disable(VFIOLegacyContainer *container,
->       }
->   }
->   
-> -static int vfio_dma_unmap_bitmap(const VFIOLegacyContainer *container,
-> -                                 hwaddr iova, uint64_t size,
-> -                                 IOMMUTLBEntry *iotlb)
-> +static int
-> +vfio_legacy_dma_unmap_get_dirty_bitmap(const VFIOLegacyContainer *container,
-> +                                       hwaddr iova, uint64_t size,
-> +                                       IOMMUTLBEntry *iotlb)
->   {
->       const VFIOContainer *bcontainer = VFIO_IOMMU(container);
->       struct vfio_iommu_type1_dma_unmap *unmap;
-> @@ -141,7 +142,8 @@ static int vfio_legacy_dma_unmap_one(const VFIOLegacyContainer *container,
->       if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
->           if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
->               bcontainer->dirty_pages_supported) {
-> -            return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
-> +            return vfio_legacy_dma_unmap_get_dirty_bitmap(container, iova, size,
-> +                                                          iotlb);
->           }
->   
->           need_dirty_sync = true;
+>   include/hw/vfio/vfio-container.h |  8 ++++++--
+>   hw/vfio-user/container.c         |  5 +++--
+>   hw/vfio/container-legacy.c       |  5 +++--
+>   hw/vfio/container.c              | 15 +++++++++------
+>   hw/vfio/iommufd.c                |  7 ++++---
+>   hw/vfio/listener.c               |  6 +++---
+>   hw/vfio/trace-events             |  2 +-
+>   7 files changed, 29 insertions(+), 19 deletions(-)
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
