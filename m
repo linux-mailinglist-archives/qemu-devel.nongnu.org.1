@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D881EBEFF47
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 10:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3B5BEFF74
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 10:32:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAlGs-0003Ik-46; Mon, 20 Oct 2025 04:29:38 -0400
+	id 1vAlIo-0004Tb-MK; Mon, 20 Oct 2025 04:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAlGo-0003IL-UM
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 04:29:36 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAlIm-0004Sl-Dy
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 04:31:36 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAlGm-0007fY-SK
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 04:29:34 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-471066cfc2aso36883945e9.0
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 01:29:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAlIj-00087P-3D
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 04:31:35 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-46e6ba26c50so26254885e9.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 01:31:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760948970; x=1761553770; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760949090; x=1761553890; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=upLQabNrkLN9xzP5rlMjYwim4MepxAdcp1g39Wi3qvw=;
- b=j8i7E4YWRWjhyWpjPxpyh2ouCNFmF7YVBjNMhtSUNF0F1EzjTqL9ddZOcpbg0haz1t
- ewzKbLGoyWPQ3Hs7kPN+moVY9y1+/ie1I9n0MQAQ0+D4zkTafR8GUPEfaCfMEfTtQyN4
- 8NdxQ1VbMimo42/YD+VgkDmbZeNMSvahIwRVLAisCN/SgEJXBIx1aXpWIkblkUidxq7H
- YfEt7/FMb4EEroKadFkwWZnRY4MMtDs5pArTFcKyAZpEhobGValVZOZySDx9JXjYYEMX
- sxj6b6nziPhmpt2EI/AqEuHPcJHcFRUv1W1lECveBit1LKyGMOeaY1F5XmvVHG45aW9S
- UlkA==
+ bh=Kfk0zu0vmO9W22pWKATMNhqU90DG1WSCANu4coVqJ3k=;
+ b=ZBSoMiUUboKGLlPbOq6NrW61Nabn0qJlmyDSY1W7vgl2Yl7oFabUHnSMr80WihKtG1
+ mf9Mw8+V+JoJQeD12Kg+rMcYF+63u9VI5Mc+4zqYagJqv2SlLXq1pOJUWiLh4rgAHuGK
+ 9bcCuiB3KU4t9zpQ/2M3Vu894BtQ+GJ5wfbfZzeyL88OeRfbC0gtujwwm6ylXtbAtJzf
+ dOH31GsBY9yO5TVXKlWbNkYUvOH5lztKUOrHGzi/9ELH0ECOOHKXJXOBm1CZ0p0Qk4eN
+ wo86y8Vuq8DNSkZnKzghJLyLIqlhNP+zv+GuSyHsVgWpLmnn1a8dTzfTme28NlXn1ArP
+ w4uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760948970; x=1761553770;
+ d=1e100.net; s=20230601; t=1760949090; x=1761553890;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=upLQabNrkLN9xzP5rlMjYwim4MepxAdcp1g39Wi3qvw=;
- b=QoMWBLEOBKGW1LrvnV6WkXTckmJAdDb/OWYFWn75ZvKq7TF4IyECsKRwjN6ac3ZCKY
- AK0C8zAQeDfr66AD8UQ0i594ZsUJYfimBvnv+wKDD4YahJb+AD9RFmCcJ1AC2eCgLol1
- GcWgzHe/yv5akUlB/P2UUdtQdz/OdMHtPVFleIBPEHyb9EeJ8SGF2nCB7zT++Ie4NSrk
- l+DjzmvCdjx2QWME/Z8DBjsl+zPjVCDC4SMk5VNpU094WOSfi2SzW40Ju1Clx2HdyfGT
- l2uzW58tYyv4I0L2PMM9d45ihZfqzTUE/a+ZdxoQw8788j0sGjtCYIcnvcyHViB1WFdT
- Djpw==
+ bh=Kfk0zu0vmO9W22pWKATMNhqU90DG1WSCANu4coVqJ3k=;
+ b=wg00GoPxghlqh3SNXzDstirwvQEP8C+6C3WoLl4t+PzvdcCNpNv6cm8HulNtoO+6Tb
+ LYo3TgaMK0+JjBBYkrX1eVgiVa6th2jCmvo1hHDzXFLkWx1yzA6rd3yXIbvR0kWxW45l
+ LvtjeXrDDUoQ/rPzQMmpRO+vbOa/rsNE1uCuEphegHcaXoHy29q5ZH2Niyube6zA4Sbg
+ YYiSDvU54rNFU/UiXKVQRjfqsRa7YjS6dJDvo70A5l0lGqHYtWeWiiEpcjz07Qjw+yl9
+ LtcS2tbAaTKG4WgH0R33i3gFra90lVLYnA3spodygESe4LGKR2kE2qO9QKt2Yv7E/DDJ
+ 2PXQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU0nH+pAbT2UzDh00OFqb5Ml1qVn38A/MpHh4Vpszp2f7Oias14qQYBLr49dQo+0uHUNVI5LyLxfesU@nongnu.org
-X-Gm-Message-State: AOJu0YyzfMXw4B551N2I5Fh9Pu9Uv5XPYV4cfaePRCCR0IEEqottp7AW
- ke+Msw3lhCTKUJgYNMOCYDhvsXwrfy9wFob1WHyGt9tu5ch45toVABdSxX4UpfqzTYw=
-X-Gm-Gg: ASbGncuOiuzIwvUYat68NH4mrQogLoRRHP1Q7mp1lDJn28vbxKolSqfOi+H5FUEObXe
- m6RP8hPlscesU/VF8M84lS3e2ZXL3Ur/0FIDWscZRJAP5MZ4jhnyjU4K8K4Z3WllyufZ6cgkkRN
- klU5senSJuY6trebWulp7K3wlRwJvw9igGED4FOp00OukRlrEZw8tGQ1yjkKN8u7gxieXUIojXb
- qoosxue7Xh5wALQvfrieOlZpUWHqd8BuOSMoXIUKHMPFbQo2rc8BbKHZY/OKCn6BxG3WxJm9uaN
- N3wC1TPniWh0x8/4kXu93Xri5Cd9VZsqcyL13+Qyo6ef+sJWsPCFHlCuc02tShBvpC3eUsesO35
- IDxbSUakuWDm7CyBxkn9Vo32cTrW3mL1rDcIdXm4CgvCVkTZDDOplOFl1qqLoBeCpMp0uwOoePr
- OweA7Il0b/QQXCw8fJ3WgTTjDUPKjL3RhKUN6cM4stZGtEWi1rbT5eeJ9XSh0YLO49
-X-Google-Smtp-Source: AGHT+IEzE1bsNkCQUwgrRUB+00ZejTXpM1jHhePaWJboCKPtO+YsgVt7DQis+/s5Igcc0ShXfXMXog==
-X-Received: by 2002:a05:600c:3e8f:b0:46e:4b89:13d9 with SMTP id
- 5b1f17b1804b1-471177ad526mr90113505e9.0.1760948969780; 
- Mon, 20 Oct 2025 01:29:29 -0700 (PDT)
+ AJvYcCUyMAnoDPv0fneLJXimQwcYmRIs7NtzXM+ZztvuHWlOJBWdsoNsLTVdBKrSLjCY/6pf4RX6IZHgSgu7@nongnu.org
+X-Gm-Message-State: AOJu0YzJShGeJ9g0gOI/j7dWNgnMNx1Rr7IjtYRpl9fWu2PlOLZGoTj2
+ NaLKmRHdnNo8kxsxvAittx2aR5LWYC2u0ATtQbRNKtTsH+SoU4Bq4PNU5xIrhdRLGbs=
+X-Gm-Gg: ASbGncv+53zSmMNMEyMidM70rkKN9l6o2Hz2ceoqisAOUiKHtvj1uQ5zUtmI+SL/Xwq
+ xA50fCDDXR8isVhnQZKzdkaMBJF49jVMOgP7tNTRXvjSo2DpkYIMuzjaf83krmLyRZuKHzi88NN
+ 3eW9GUEVmaM45oUdAmFniOyL/8YbYVpr0q0+aE++L+kPfYMjeV228Eb9nG0CbXAcA4x/iTcVmFp
+ BCu/u9ydV+LtiHHbCnfvSKhg1x3bFYfMIQl8UbcxsWI9tYYXD3wFi2qdmgy2UsQShNteNz2wmWd
+ ELPqgzSu/ITFlAHBROxtGP6Vn8cFq6lEFU2KrqsD23qgnr4GFeO1viz1LK6jleYcyJJqnNev4hn
+ nnZMFznWWMvBqq+F8Rd4EdAvGtHfluDwnRkOhlJ1LhiyUH9OqMY61mhp3xZrVpqPjgqR/hcZCwR
+ UhdTHYteawozO5jG2k5va6bSRnCoi/MYOhPXQnhEu1TqJ6Q4pldjlUMA==
+X-Google-Smtp-Source: AGHT+IGMZtfmBcTewqhPn1UIg+L75Wku84JXFjnzM4sfO50VVAoNSP2FKvx8EcGUTSa8RrcqwmTWoQ==
+X-Received: by 2002:a05:600c:524f:b0:471:115e:624f with SMTP id
+ 5b1f17b1804b1-4711790c2d6mr85823025e9.21.1760949089797; 
+ Mon, 20 Oct 2025 01:31:29 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710e7050c6sm114773395e9.1.2025.10.20.01.29.28
+ 5b1f17b1804b1-47152959b6dsm129861005e9.7.2025.10.20.01.31.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Oct 2025 01:29:29 -0700 (PDT)
-Message-ID: <5cee31c8-57d6-4245-a49b-bf317677e211@linaro.org>
-Date: Mon, 20 Oct 2025 10:29:27 +0200
+ Mon, 20 Oct 2025 01:31:29 -0700 (PDT)
+Message-ID: <4f8a640e-d1ac-49c8-8b14-743d248a91e4@linaro.org>
+Date: Mon, 20 Oct 2025 10:31:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] hw/audio/pcspk: Add I/O trace events
+Subject: Re: [PATCH v3 01/10] hw/timer/i8254: Add I/O trace events
 Content-Language: en-US
 To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -84,13 +84,13 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Sunil Muthuswamy <sunilmut@microsoft.com>,
  Marcelo Tosatti <mtosatti@redhat.com>
 References: <20251019210303.104718-1-shentey@gmail.com>
- <20251019210303.104718-3-shentey@gmail.com>
+ <20251019210303.104718-2-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251019210303.104718-3-shentey@gmail.com>
+In-Reply-To: <20251019210303.104718-2-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,9 +118,9 @@ On 19/10/25 23:02, Bernhard Beschow wrote:
 > 
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
->   hw/audio/pcspk.c      | 10 +++++++++-
->   hw/audio/trace-events |  4 ++++
->   2 files changed, 13 insertions(+), 1 deletion(-)
+>   hw/timer/i8254.c      | 6 ++++++
+>   hw/timer/trace-events | 4 ++++
+>   2 files changed, 10 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
