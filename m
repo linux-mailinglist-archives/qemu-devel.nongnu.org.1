@@ -2,201 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57219BF1452
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 14:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3D6BF14F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 14:47:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vApAs-0002G2-Ar; Mon, 20 Oct 2025 08:39:42 -0400
+	id 1vApHu-0007DZ-72; Mon, 20 Oct 2025 08:46:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
- id 1vApAj-00029d-1H
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 08:39:33 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
- id 1vApAe-0000oS-Qq
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 08:39:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760963969; x=1792499969;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=bzLHv/gVz2ZkzDVCHuyIcP7UsUJRiw+4+m3RtB2aUQY=;
- b=XR8B1CnieytJHrSgBksYSaZo8ofltu9iTwsbEp2KTwatRaEZDn1Ppveg
- Pb9pbkMgHqGuQg+aYUOabc7HpdQdcu4mJRl8Lu74cO99/pDAly9Yd1Bbw
- znQGbxhZJ/rdwzxB/lRb/bGVUGjoEJ7bL3xWMfTaD4FLoUMIqyGhOs4F0
- frd2UP0JhyziYmHFyRCxlUtPJx9ibyBl3Zu8OoBJODiB4rbZvJkMuVOoV
- bTo/9gR7gxWHz7Jv7ibYcUfKkOcH+L64emaprU77RfwdXo6Sch7faHz+k
- VvBtoX6/ZbHJaN2jIopgROb1wvIptYDPHBeC4xR9xp4MlB8wEWFDSBltH A==;
-X-CSE-ConnectionGUID: CS+/lXM8RE+AUG7O96U3bA==
-X-CSE-MsgGUID: BAvXuXx3RU6DojZ76SAmFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63222831"
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="63222831"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 05:39:25 -0700
-X-CSE-ConnectionGUID: yvhsFZl+RLmqnIjRkAUA1w==
-X-CSE-MsgGUID: KRmbLoG6TQenoWNm8m1SPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="188417380"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 05:39:24 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 20 Oct 2025 05:39:23 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 20 Oct 2025 05:39:23 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.54) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 20 Oct 2025 05:39:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gnLciRT38E2G/O9T93bS2tAVHTFCUjJdQj/VrbgCNigdTayL5NDOhszkpvnzescNPxSstjtYCVGVf5pNmUCAlRPN7DpKBi0BPrD6auOS7eFLi02j8ar1SrLHKaHwSv4r+ewlGZ/GpD/zN3jqJXj7WS6Pie0cefV3WiKnQ0lNzxmTzVy8w2kJKIL8zOjXV6DT/Nw+0NA+PVrfgWQ3YetsxE6PTDKNjZUbOc4Sd/3XdX2OXpfCQZdU7Dexi0S3wbN2deX6lhJss7hv5n20qTiQ2+en4xMyle2xVLXXnl38Cdyjn1PH4Om/60DbXBuv2HlrL1TiTfPzM7kdzw/wdxuaDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TK7Wz4nnXKK7mjtDi7bC8So/1NCNYqWMR6QnZvPhUOo=;
- b=wl81z7n2kFsCCWxhJ+iR1k3oQ27LIZspuuRvpiSuVjwpZO67DQX23l8z7UOcoj6qtVQXc/avVxw6x1AYjY7FD/DZEkLMTsNBVnwRM/FQW9ne65Qvs1dMi9hIRhtxsAFesbiWNMDCL2srLCXMAuDLWdLu9jBRU3l+Yg+O8QWnwLUDTtQllKeFyrvTRdQKdDpv3wJIfJ8ouX67RbriKNe4NoDvvy5NbhJdaJJ+wL1aYGbxrV0gdu1wFR7bqOxM2ggf2HCWlKHGZR6hsbA9dGHHMDUtPbd/fgORnY+fCE9n04yPvMI+a8g/Ru2scf7/JHe/EiOllujj0O/aWG3zJKPj4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4798.namprd11.prod.outlook.com (2603:10b6:a03:2d5::12)
- by SJ5PPFB8C3A0B7C.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::84c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
- 2025 12:39:21 +0000
-Received: from SJ0PR11MB4798.namprd11.prod.outlook.com
- ([fe80::d946:6abf:6e7e:fd1e]) by SJ0PR11MB4798.namprd11.prod.outlook.com
- ([fe80::d946:6abf:6e7e:fd1e%7]) with mapi id 15.20.9228.016; Mon, 20 Oct 2025
- 12:39:21 +0000
-Message-ID: <631f49a8-e39c-48ee-b9e4-f6cdc5633afb@intel.com>
-Date: Mon, 20 Oct 2025 20:46:07 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] vfio/migration: Allow live migration with vIOMMU
- without VFs using device dirty tracking
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, <qemu-devel@nongnu.org>
-CC: <alex.williamson@redhat.com>, <clg@redhat.com>, <mst@redhat.com>,
- <jasowang@redhat.com>, <clement.mathieu--drif@eviden.com>,
- <eric.auger@redhat.com>, <joao.m.martins@oracle.com>, <avihaih@nvidia.com>,
- <xudong.hao@intel.com>, <giovanni.cabiddu@intel.com>, <mark.gross@intel.com>, 
- <arjan.van.de.ven@intel.com>, Jason Zeng <jason.zeng@intel.com>
-References: <20251017082234.517827-1-zhenzhong.duan@intel.com>
- <20251017082234.517827-9-zhenzhong.duan@intel.com>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <20251017082234.517827-9-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: KU0P306CA0039.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:29::13) To SJ0PR11MB4798.namprd11.prod.outlook.com
- (2603:10b6:a03:2d5::12)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vApHX-0006x0-5d
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 08:46:48 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vApHM-00025l-AY
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 08:46:34 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-b463f986f80so847277866b.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 05:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760964379; x=1761569179; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=e29QLgBd6FcHgVf9Iyy3OwGPEGUkB9UOBMRXzO98Nzo=;
+ b=WHhz508m0z6nqYXnoL2eM7n7QopTGlh+PU1UKijGQNz3R8vk7KvymqsGeeesNASq+O
+ khnj606MH0D45mzqtR1EhidUPREaDeBujWWfTXmi6T+hsMS39YsRq5slHwnwsk+RqdIv
+ aGnXPsaDS54o+hsw9SEo9h7gpeytphPyu5fWG/D8ShQC4mNkVJLkknZBPqswh0sN4pwd
+ rmvEPlCQkF9QZnEJz+Q48FR50PWLm3t9hoQ7JBtD4iZkK9TWgtUmCG0hoYiD/BvyqRQO
+ 2+5qgMtqu7Qy8nn9xh7zVQ57DCLYbpdI02+y1jiBu/ZTij+qO5PpbAxI3ikTi2qWRsOk
+ XgmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760964379; x=1761569179;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=e29QLgBd6FcHgVf9Iyy3OwGPEGUkB9UOBMRXzO98Nzo=;
+ b=X+ZwdyIYf51Nz/VQtakQW48sRga8rVr1bEOuRi6OH2XTN780hrNY6pA/nqR0fmGCjX
+ 1RyzHvj9Xsj79glm6xzFLt3glg5zaurGPjoFukRdqJhqtDJ4Fyhs/2rnlX5qGG8x5BGn
+ 4h5fS5TEhcma7V7+jt3xBZx3g9ia5Fo+uB6aIWuNgUHoATmJa01K8z8iLk1wSRiuZ999
+ wU+LzPU1cC3OtpEaYMg37UQR0CTbtAg80Ha2nPK2knrxgMzrPRM315bAO7cSDG1+eT6t
+ 9IqCCrwqhscbPt9yTZSXMFltNaX06jAc8MNCn1TON7ji6niRxHh2Q9gnBt/d5TYu64YJ
+ HhTQ==
+X-Gm-Message-State: AOJu0Yx9xnxJJn8K/EJXDnFvrmlI7AhcWsveu30yeBxfIj1KQvGxHrs0
+ N6H3dLSwfuhRLXhdAegPKWfOw859thQuw+jjHU54R6Wk8m4KKiIt31RyLiPFuyGW12A=
+X-Gm-Gg: ASbGncv8YwPTun/6aBvbM7pveOLEjepAuYcKsMEx9B0noMISjsCIT/Oc+rbORtl5OxC
+ tUhuPfYdOaOgfu6xbHTLUIXqPw9Jj7bynjaxNcw5dYWHrwcDt8RaY10tQQ4M1yov+dbh+IoTrd1
+ Dqe3KdUzcRSbZPWoaWf9QgVS9nB76429iklJGHaafwmOpaJzOGmG6iKwtY/TnFylinxudCHwkNT
+ 6ugBynHzZwyRWghg6fEKwi+svyjghRZQtHBKvigGJz23EwwK5xuoQaw6W/xZtLWimzepk9fXjxA
+ QIYcjfy9wTlCyIRz3EtTUt/w7l1mErWhA/UmhWsx6VM9lPgHoc6Q7Y5CLdsZPrlno7uH3c2BATt
+ EoIUsy7Pton+Paz7GrkzDfzpqUS1mueLkdqPdnHCiyg1d14ho5vtSvvl6xpC34rosJsMcxBsPkv
+ dA
+X-Google-Smtp-Source: AGHT+IFL1t1R2wn69Tdu2sOdWiHiYudWSQ0i/oxyCI+n0P2q7633icI63PyyTSWG4gCJOFNujmQhPA==
+X-Received: by 2002:a17:907:d06:b0:b3b:d167:944a with SMTP id
+ a640c23a62f3a-b647551012fmr1534978866b.57.1760964378772; 
+ Mon, 20 Oct 2025 05:46:18 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b65ebc474c6sm767523666b.78.2025.10.20.05.46.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 20 Oct 2025 05:46:17 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id BC5DF5F83E;
+ Mon, 20 Oct 2025 13:46:16 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  Andrew Keesler <ankeesler@google.com>,  Daniel
+ P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,  Dmitry Osipenko
+ <dmitry.osipenko@collabora.com>,  Eric Blake <eblake@redhat.com>
+Subject: Re: [PULL 04/11] Support per-head resolutions with virtio-gpu
+In-Reply-To: <87ms5lu6rx.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Mon, 20 Oct 2025 13:55:30 +0200")
+References: <20251020104149.4034124-1-alex.bennee@linaro.org>
+ <20251020104149.4034124-5-alex.bennee@linaro.org>
+ <87ms5lu6rx.fsf@pond.sub.org>
+User-Agent: mu4e 1.12.14-dev1; emacs 30.1
+Date: Mon, 20 Oct 2025 13:46:16 +0100
+Message-ID: <877bwp91wn.fsf@draig.linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4798:EE_|SJ5PPFB8C3A0B7C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 054d7bef-212f-41d1-8fc3-08de0fd5b13d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|42112799006|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?T2padis5UWJZWTkvZ0FLNjAzUm1BQVV1YXZYQTF2RzlZZUx0WCtDSDNCcnZl?=
- =?utf-8?B?aFU3cjJQQzI0RkdjRXVXdVprREd0MHQrbUhCWEZlR0hzV0ZQUytLdFlJUkxY?=
- =?utf-8?B?Z0hmMjRLaUdaTEFNdjNldi9EdVBRV1hqS1ozMGlLaTgyc2JQK0cxSE9QcnNS?=
- =?utf-8?B?cHI1NXRldXd4Y0pEa1VoSE5naVkvYXZ2V24yM3BrTS9FaVFqZFRHWkJ2cjND?=
- =?utf-8?B?aUVsbVhGeGd1KzNMbDFxMEpEdUJLTmJza1NBK2dBTE5DUjNvSExzVlB6eTgw?=
- =?utf-8?B?ZDlHQ0JrcEZuOFRGUTJNUEc4VHpHbktMMjZUQlBUdTBsTHB5YzJETXZGVXdm?=
- =?utf-8?B?K25FLzdSeWZNdFpjQUlyQUdzRGlQdVFMUnU2UFRuWkdQYWVSNmJKa2tKbm1N?=
- =?utf-8?B?T2o0ZFQwalozS0VNTXo3bU5iZUhpbGxkUDBjWnlCWXJSVHhtNDBBeVVRQ3NU?=
- =?utf-8?B?TmM0RURKcDBPS281dmlYK0pRR1F2QU9RbGZtQ0N0UlBrQVdqaUlDWFVaK29y?=
- =?utf-8?B?V20rdTBScTJ1UjduYzFRM2xvTnorSWd3RjlPdkwrdlVPcE03Z1NReGZkRnhy?=
- =?utf-8?B?NEZNK3ZTYlhIc0FVS2FGcnYrYW8xWmk4YnZSOHJqUXhsbW93RlhmaFlhWlA0?=
- =?utf-8?B?bEFzS3ZsSEtWT21xcFk4UXZNZ1ZDWWdMeDdTb2VibEVEQm9lSUVRL0VVVWZh?=
- =?utf-8?B?NFN1aEJCNlRKN0F2RDVoSi9DeFNXelFxRWNDbjY5Vi9qLzNSR2ZIbzJHK0s0?=
- =?utf-8?B?dWMyOWxtUGJEdDZkclNEVTBUOHRyckNTekVZK1FORGRVQ3k5ays0Z3hVL2lu?=
- =?utf-8?B?Rk5zOEYyODVFaG1DOWxuODFHb2FGMmZqT1lYVm9zS04zUHRyYlI1ZVdxQzFZ?=
- =?utf-8?B?TFVwRXdaWkFWV1NmQjFzNEJxWHVBVEdsYzUyUHBqU0xHVDdnZEZpWWszaHNr?=
- =?utf-8?B?TXFPcFluejF0MW1MYlpqVnRveExMUFpza25jenJzN2RoYkkvSVdLYlRHS1Vq?=
- =?utf-8?B?YkZob29BNUtmVk9nVEVtbnZxQXVTdnhWODZ3V3E4aWY3UjBkQnRuNXB1eTNO?=
- =?utf-8?B?b2JyalRzajZNVFpJN1poQ3ZsbkFCTnpwOFdZZ3hJdXR5MVpIMHlJSW96V0Fs?=
- =?utf-8?B?Sk8vUU1hdFZnWFZkQjU2UGxTNHY4UUs3RW5LM0MvNU53VDlvQ1dKU3NJTFlE?=
- =?utf-8?B?ZzZLNzFONHY0dWJORXNwWnBtbm9hV0dCN3FMVTdxUWFaNEQ0MWxLWEFKT0p5?=
- =?utf-8?B?anpPWUk0QVRXSzArQ1BNbGRvcnFSK0ZaSHBNU2tGR0FxWGZmNXhQRFJscVJP?=
- =?utf-8?B?eEYwVnFRUXBOOVRacURGZ2EzbGt1NlNiWFRBWU0wckZ5RndPandPQzd5eXM4?=
- =?utf-8?B?dER2aHdScVg4WjRKTVBuRVRxakhMUXpCYTlkY2JvcFIxRzlxSURGUjFuOWVG?=
- =?utf-8?B?ZVJOb1NvMC9zTjFJbWdJa3htZnRJRHVNUVFoemd1Qkx3MkVZUktzUVIrYllE?=
- =?utf-8?B?T0M4MkFNaGlOVG1hOFE2VldiWldjZjk4ZFN6TGVnUTdpd0hWeHRNd1NRQkNr?=
- =?utf-8?B?NC91TWtaek5tbG1sT0pQNDRoV3ZOc082ZkVVOERvOHI1Z2RnMkMybEt1UnVQ?=
- =?utf-8?B?S2dDdHdRUi80akFUcmlhTlJXMDRoV2YwM2I4eWpMZzEwMUJUdlFnTG9DQmoy?=
- =?utf-8?B?N0hZSXNiemQzYVpPcWVvQ1RYY2tRV01kQmM4cjJLR0l5ektCa0pVcHlkZU1n?=
- =?utf-8?B?cHJRZEVuOTZvOHcyYWh6UzdQcmUzaStZOSs5VENkZ0hUNmlGMkVRQWRmc3Bv?=
- =?utf-8?B?Y2M5SGNDQTkzVG1Pd0tkRzJYU1V3a0tPWEhhSnh2VW9FMUgvdzZFNWl3M2tV?=
- =?utf-8?B?LytCRDBwYjNFQkhhcjJzN0ZWRzhQVDJFRnRyelJmaEhzL0gyL08xRFF5WmZr?=
- =?utf-8?Q?e7mvKAoMQvX3nORkFxsLFIvUCVSERTjk?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB4798.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(42112799006)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NVFLeXl6RUc0bXpWcW5SelhQeWV5UkdiVEpCbXd2NVNZS3dUd1kzWDhPK1Yx?=
- =?utf-8?B?K1V0S0FtSkpRME9UczRydlhjVkRUL2VZbGl4YmFDOURqeG5vTGJmR0tUTVRY?=
- =?utf-8?B?U3B0a29TeDR2NDErMzVyVnE1RlpNQVNxaTI5ZUNzclZYeHl2ZElwQlorOHdL?=
- =?utf-8?B?K01qb3BIcGVpVFZnSGxkTW1ocE5uVmhPRlRzdzFlOW81a0w0cWZSWklhbXpE?=
- =?utf-8?B?ZmVLdzFXdEJySnVsMHFmWFVMSHIwMTNYajZPdHhCZEpieWhDcHRUUFBxM0F2?=
- =?utf-8?B?QjF3d0FtWitmd3QrS1ZTTGFmTUVNOWlUV2srQjIvM1N4Qk0yT1VGS25NVEoz?=
- =?utf-8?B?ZHljdW1DL1pFUitwaVFSalVrRVQ2cnIvazFDSXloVmNmcEVDYnhkNk1QTjNi?=
- =?utf-8?B?QW5TSXBLdjZINDJKNXNuYlBwa0R5dDg1MXArMnFBUVkrNWU0STBzRWkyaGd4?=
- =?utf-8?B?Z3N6b0NjS3FNaFUxbDJCbHQ4ZGtVMTNVOTJGRzRwUUw4dkRiTFNJLzFEV0N6?=
- =?utf-8?B?Q0dSQ1kzZjVvYUhoQjNpenpyZ2hkSnpMVHoxQkRYekVObk9TRk91TGp4VWFC?=
- =?utf-8?B?T3dZOWN4cmd4d0hqWi9NQ2kxWDR4SnpZKzJMc3pkNVRFTnBEajJ6Y1NsbU5Q?=
- =?utf-8?B?MjFLYWZTdUNDTll3MG04aVBIMnEydTBWOE5GZGNmazZ2VXJocm8wTzN1ZXlV?=
- =?utf-8?B?TzRQUWJaSHJIL1VFTlh6WlU4MUwrTkVUQXoxK0s5dHFoajJYdVNFWFJSYjZR?=
- =?utf-8?B?Z0srRVp1akdpdkw5SnlyYmtSR254ODQvT1NVR1pTU1B2VUVFY0JZNlpxMkxR?=
- =?utf-8?B?dSsyN0JBc3VBNmlSNEZZWEJwT3VrSitacmZna3Q2TGNySzdNNFFXajc0Tjdr?=
- =?utf-8?B?UkhTRjVLdWxnVlQ0NGZKdE5HTW1BNGQ2WVF1R1JaOUVYOGpsdjNDckExQldJ?=
- =?utf-8?B?M0FQck5CSWptZlJFWnBLcjEzSDJXdCtUSk51NThSS2xzYVZhWUNaNVN0dTRz?=
- =?utf-8?B?ZmlNV2tzbmxRUFUydGQ2NHE4U3pxOEEwM3R1Vjh4UXZ4TWJFWnN2ck81NDFs?=
- =?utf-8?B?eFg3UmNUM2c2VXpvQTFoYmFVN0lQTHVsTDVyNStOeEpnWVg5VVVoTW5tRGF0?=
- =?utf-8?B?SzZ6aG0rblVDNDBOWFdrQ1pveHJTdWdyZXE3NWVIaHQreDFPVEkveUdPZ3B5?=
- =?utf-8?B?Y2cwV2VBTUVwMnd5QWM2L2hWMGV0SUV3YzBtVWhUQWV5UGZ3OHJHYlI1Mitq?=
- =?utf-8?B?dldTZ2o4NHg5VkwxelIwbGdaM1NLM3FRamJ1QTZDTktEUE81K0NOTmlTUDg4?=
- =?utf-8?B?OCt0Q2FaK2hWYzFkNU14TEpXcDkzRkQ1OUR3dE02ckwwM2JSTktsa21PU2pD?=
- =?utf-8?B?bjUrNDMycGxweVJncUlBWi9QMDFHdjdGakc4eWhaNEFtNHB6WlhuUVFLQWhQ?=
- =?utf-8?B?cGNWUFhOTDI5TWJaeDA3aStTdjk1dmpYVjJRRXBsdFYyMThnd0FJNEhvd2Ft?=
- =?utf-8?B?L3h3THRWWldaY3NkYVVOY0tKSWdLMWt2eHByNC85UU5RZjYyTEtOM3FDOS94?=
- =?utf-8?B?d0xyckVvVWZ1VWVwdzdmOE0zYmcvY0h3ZVkyam03SVh3RkNXL0c3M3NMcmpN?=
- =?utf-8?B?VHRvMWZqVnpacE5zK0E1b01GK01La2dydElBcWlvTlJtZ3grMVkzNnRMaU42?=
- =?utf-8?B?WUo1bnlPeWo0UjV1Q2pJQkZaaU1va0NNRVJmMjYvVG13NktRVC85Ukh4bXJJ?=
- =?utf-8?B?NU80M1VwanVPaXlmdm5YeG9Lajc0bEVQRzBtazgwUXV4Y01zTXhDNkFyRlhl?=
- =?utf-8?B?YzNySDhySjZDWVZBS0ppK2N4SVpjRDJZL2dHT2IyWGdWWHltZklXUU1OZ2sy?=
- =?utf-8?B?NEt5S3VOckhBcExLVFBpR0N4bGVZWW82Qk1qOWpNL2FoUFJKZ1BDcVYzeEJo?=
- =?utf-8?B?cXhqQVFCVWY5MTBoWDVWb3R2ZWZkaG5veUordHM3ZFpacTVvZDZ6dHVjNFhj?=
- =?utf-8?B?eWI5Qk5DVUVsTGlEUEtCTHlac2RpditPcHNRdnRUQWJlUjUremlVWlZEQWFG?=
- =?utf-8?B?OWJqTVhVdWdBTE1IcGV3RWdxTkVXcUNINFR5UFNac3ZCZ1pEZXhpRW5uNHpt?=
- =?utf-8?Q?ogECjMSRWgChqeqrbI1WtpHdu?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 054d7bef-212f-41d1-8fc3-08de0fd5b13d
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4798.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 12:39:21.2251 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sHU+SLITvp99Sb+fDw8cAFSKCjkn8mVT2XOwDeKZedsiAFNSR1hcaVK52dK770LdMJ6dgdUtASgb7TevH4pErw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFB8C3A0B7C
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=yi.l.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -213,112 +108,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/10/17 16:22, Zhenzhong Duan wrote:
-> Commit e46883204c38 ("vfio/migration: Block migration with vIOMMU")
-> introduces a migration blocker when vIOMMU is enabled, because we need
-> to calculate the IOVA ranges for device dirty tracking. But this is
-> unnecessary for iommu dirty tracking.
-> 
-> Limit the vfio_viommu_preset() check to those devices which use device
-> dirty tracking. This allows live migration with VFIO devices which use
-> iommu dirty tracking.
-> 
-> Introduce a helper vfio_device_dirty_pages_disabled() to facilicate it.
+Markus Armbruster <armbru@redhat.com> writes:
 
-s/facilicate/facilitate/
+> I missed this one somehow.  My apologies!
+>
+> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+>
+>> From: Andrew Keesler <ankeesler@google.com>
+>>
+>> In 454f4b0f, we started down the path of supporting separate
+>> configurations per display head (e.g., you have 2 heads - one with
+>> EDID name "AAA" and the other with EDID name "BBB").
+>>
+>> In this change, we add resolution to this configuration surface (e.g.,
+>> you have 2 heads - one with resolution 111x222 and the other with
+>> resolution 333x444).
+>>
+>>   -display vnc=3Dlocalhost:0,id=3Daaa,display=3Dvga,head=3D0 \
+>>   -display vnc=3Dlocalhost:1,id=3Dbbb,display=3Dvga,head=3D1 \
+>>   -device '{"driver":"virtio-vga",
+>>             "max_outputs":2,
+>>             "id":"vga",
+>>             "outputs":[
+>>               {
+>>                  "name":"AAA",
+>>                  "xres":111,
+>>                  "yres":222
+>>               },
+>>               {
+>>                  "name":"BBB",
+>>                  "xres":333,
+>>                  "yres":444
+>>               }
+>>             ]}'
+>>
+>> Here is the behavior matrix of the current resolution configuration
+>> surface (xres/yres) with the new resolution configuration surface
+>> (outputs[i].xres/yres).
+>>
+>> Case: !(xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
+>> Behavior: current behavior - outputs[0] enabled with default xres/yres
+>>
+>> Case: (xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
+>> Behavior: current behavior - outputs[0] enabled with xres/yres
+>>
+>> Case: !(xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
+>> Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
+>>
+>> Case: (xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
+>> Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
+>>
+>> Signed-off-by: Andrew Keesler <ankeesler@google.com>
+>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> Message-ID: <20250902141312.750525-2-ankeesler@google.com>
+>> [AJB: dropped pointless output_idx range check, tweak commit]
+>> Message-ID: <20251016150357.876415-5-alex.bennee@linaro.org>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>
+>> diff --git a/qapi/virtio.json b/qapi/virtio.json
+>> index 05295ab6655..0ce789bb22f 100644
+>> --- a/qapi/virtio.json
+>> +++ b/qapi/virtio.json
+>> @@ -971,15 +971,21 @@
+>>  ##
+>>  # @VirtIOGPUOutput:
+>>  #
+>> -# Describes configuration of a VirtIO GPU output.
+>> +# Describes configuration of a VirtIO GPU output. If both xres and
+>> +# yres are set, they take precedence over root virtio-gpu
+>
+> Please use @NAME to refer to a local member or argument NAME for proper
+> rendering.
+>
+> Elsewhere, we use @width and @height.  Consistency is desirable.
+>
+> What happens when only one of @xres and @yres are provided?
 
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+*sigh* OK I'll drop this from the PR.
 
-> 
-> Suggested-by: Jason Zeng <jason.zeng@intel.com>
-> Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Tested-by: Xudong Hao <xudong.hao@intel.com>
-> Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
-> ---
->   include/hw/vfio/vfio-device.h | 10 ++++++++++
->   hw/vfio/container.c           |  5 +----
->   hw/vfio/device.c              |  6 ++++++
->   hw/vfio/migration.c           |  6 +++---
->   4 files changed, 20 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-> index 7e9aed6d3c..feda521514 100644
-> --- a/include/hw/vfio/vfio-device.h
-> +++ b/include/hw/vfio/vfio-device.h
-> @@ -148,6 +148,16 @@ bool vfio_device_irq_set_signaling(VFIODevice *vbasedev, int index, int subindex
->   
->   void vfio_device_reset_handler(void *opaque);
->   bool vfio_device_is_mdev(VFIODevice *vbasedev);
-> +/**
-> + * vfio_device_dirty_pages_disabled: Check if device dirty tracking will be
-> + * used for a VFIO device
-> + *
-> + * @vbasedev: The VFIODevice to transform
-> + *
-> + * Return: true if either @vbasedev doesn't support device dirty tracking or
-> + * is forcedly disabled from command line, otherwise false.
-> + */
-> +bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev);
->   bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
->                                            const char *typename, Error **errp);
->   bool vfio_device_attach(char *name, VFIODevice *vbasedev,
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 7706603c1c..8879da78c8 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -178,10 +178,7 @@ bool vfio_container_devices_dirty_tracking_is_supported(
->       VFIODevice *vbasedev;
->   
->       QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
-> -        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
-> -            return false;
-> -        }
-> -        if (!vbasedev->dirty_pages_supported) {
-> +        if (vfio_device_dirty_pages_disabled(vbasedev)) {
->               return false;
->           }
->       }
-> diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-> index 64f8750389..837872387f 100644
-> --- a/hw/vfio/device.c
-> +++ b/hw/vfio/device.c
-> @@ -400,6 +400,12 @@ bool vfio_device_is_mdev(VFIODevice *vbasedev)
->       return subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
->   }
->   
-> +bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev)
-> +{
-> +    return (!vbasedev->dirty_pages_supported ||
-> +            vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF);
-> +}
-> +
->   bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
->                                            const char *typename, Error **errp)
->   {
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 1106ca7857..1093857a34 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -1213,8 +1213,7 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
->           return !vfio_block_migration(vbasedev, err, errp);
->       }
->   
-> -    if ((!vbasedev->dirty_pages_supported ||
-> -         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-> +    if (vfio_device_dirty_pages_disabled(vbasedev) &&
->           !vbasedev->iommu_dirty_tracking) {
->           if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
->               error_setg(&err,
-> @@ -1232,7 +1231,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
->           goto out_deinit;
->       }
->   
-> -    if (vfio_viommu_preset(vbasedev)) {
-> +    if (!vfio_device_dirty_pages_disabled(vbasedev) &&
-> +        vfio_viommu_preset(vbasedev)) {
->           error_setg(&err, "%s: Migration is currently not supported "
->                      "with vIOMMU enabled", vbasedev->name);
->           goto add_blocker;
+>
+>> +# resolution configuration and enable the corresponding output.
+>>  #
+>>  # @name: the name of the output
+>>  #
+>> +# @xres: horizontal resolution of the output in pixels (since 10.2)
+>> +#
+>> +# @yres: vertical resolution of the output in pixels (since 10.2)
+>> +#
+>>  # Since: 10.1
+>>  ##
+>>=20=20
+>>  { 'struct': 'VirtIOGPUOutput',
+>> -  'data': { 'name': 'str' } }
+>> +  'data': { 'name': 'str', '*xres': 'uint16', '*yres': 'uint16' } }
+>>=20=20
+>>  ##
+>>  # @DummyVirtioForceArrays:
+>
+> [...]
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
