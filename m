@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACBEBF1C33
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 16:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77063BF1C8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 16:16:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAqeJ-0004py-Me; Mon, 20 Oct 2025 10:14:12 -0400
+	id 1vAqg2-0007Yo-2N; Mon, 20 Oct 2025 10:15:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAqe4-0004mK-S5
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:13:57 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vAqfR-0007NG-6G
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:15:25 -0400
+Received: from mail-yx1-xb136.google.com ([2607:f8b0:4864:20::b136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAqdw-0007a0-CE
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:13:55 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-46e6ba26c50so28914245e9.2
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 07:13:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vAqfH-0007rN-05
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:15:17 -0400
+Received: by mail-yx1-xb136.google.com with SMTP id
+ 956f58d0204a3-63e18577613so3495021d50.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 07:15:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760969624; x=1761574424; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=351SVBpLy2g1x/Yb4uUyI5EfdhoG2Sv9bMqbCCtarL8=;
- b=X0EswNQmIjMDiX7ihhKC97SJJAwI7NWKx/CDhqGzB/00AxSa4u293MLy8AGqWQkgF1
- iHIYlNlKryNaHSKTOvPGKia1HzQCwhiyAhId9qDk+9E4bPJyrNmdBDJf4JF0bKVGeiLc
- cwslPHYBm0DpwzzoLwJA/rM7QeoPZRdPzCTzJPA6qnkqQmbusBH5EzyKpM461i88Dz7R
- H/+6Bf5RDxwGT0gLbYthFf1D2FgbXJpbvqVxfgt4yqly+dB9cjVGqn3h5tEnCm6AWSg/
- Nse8lBwUpTlB7JnJlKm3u4sb+cHlFmvbqSZG93qwTy4OxmBBH+kdPz4Wx3RxmWlu/7ZT
- Bodw==
+ d=linaro.org; s=google; t=1760969706; x=1761574506; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=2mWS9k5ZzDXSeaA6vdVT8QfX80JDGX6PHd4tnvVM/84=;
+ b=ZRVD2wsGTUlxE4AVYHnfy77wl2+D/ru3owdfrmGZdreSGY+bpymSWn6iAp17SGOTtd
+ Omi21kCouMfxuOZ9haZXN/6zo7gzXgw7NUqKLEsyTW+Dll27GyO40hdy63C2E5LEwjBR
+ 84Oqpn4t56/+z+9edhHss1eF+DvcmBlCRk/OcImp/cYw2F4GyNsx6a+SSAooMxTXHoTo
+ vC09I8tJZ3rLZvy1c0IAMYs27rVgXtftsme2Kg05HFPYfNIUIIeIONo6dpTB1o8bNyjl
+ iyPvIER3SVUKQRHcS9y38L5iyr1n/jRHlNnE3afc/HhKgkxWmZQcPJonVbnI7ufP3nJB
+ KPBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760969624; x=1761574424;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=351SVBpLy2g1x/Yb4uUyI5EfdhoG2Sv9bMqbCCtarL8=;
- b=RmcqecIfP+2PD/aKPC9QZfmpLSs0Sc7ASN19XMbZv3iTmD2pRqdv3Rx1T+/ZbhWiU6
- RIs4775DTyh4wG+0fuwdrpphzhJ+JgxsZiaNNd6i2CZnMY9rBi0jjRWgeUuxsv6IPYKW
- wbV0tjmZTdXqJMKVLGNGZpLhVHM7x+f9JOykWTKGioF4AOJ30teP2NQtfXh5BGrMsQkA
- p3O/P3SxEpqSvtbtCIJ5YJq4+lq/uJDPFTxwoHtAuG5mXi6lpvWItILgSTyXu5GP0m8i
- Fwu6/lh9GCXpK5fe8xczth1Lwapiqc16D4yrWNbQHXl9v4XOUTsXWU7kf0k7xjck6ssp
- KoZg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWGTxxpe0TVFBuUZ4wRFatyMTGHGTT5vqhnsoTLGc8/TBCFjrMglW8SYgkmhsrRIZwY+hCJm19cLSsO@nongnu.org
-X-Gm-Message-State: AOJu0Yw7IGf0NDAahB8yoWtQJganCKYoj0DD0xca+/Kj0v4G0djEwpNH
- 3Lpw4yBQrftX3tUswATjtfdX2rGyVRffBzoW5EjTzAMPotMMut9PbvgIVkAqIrcSQ4I=
-X-Gm-Gg: ASbGncvZpAQI24WximXyEh5KRVJn8TH7ZlDhSFlWuRcioyCt4TVqooVXQTzT7A448E1
- UYHWo3Xpe/SBJb+NS9kF/P/HNmouciHEeX9QqCsSWyBqKTa/99m4ryYIOsswO7rTR5POOjksn8k
- XQTqnWRui5oGNd6VL8wI/iEkUFGrbHYSkoOZm9H/bQEdv0zL9SHmXMoAb/aKSkx1RtRqB8MsV/3
- lpudTvHRE1QB3qVqlWRxMfGPwQiBdytBQPJ6RbYFhE9J4L/7RhTsNrYXknEb+kBr0AjboN6NLGc
- xikybrSTli2+RO1AD1l0etR6ZMLViwBT3jur2VtDoaGFDRWJqc+RKI3CE+6YBi1dG1wRbYX/MO4
- OIkg4l7P9/PN2jD8LfKIPJ6YYnB6jUOvJ0u+hz1UTbH4CS9D8+DIjzkiD8Gr4LJ83N5QIwcDYqC
- 9+IyA7F3/YMQtjOQjA4zkxMpL7ziRYq2X5hMGpk6h0Q3vzOA2Xa89DEw==
-X-Google-Smtp-Source: AGHT+IGjgBGunb1VWdfhh6E+AnRfpT0ryRxQf4QPUK2nTQSKbx27VajkCiOxz83JXQrcayTknCyIcA==
-X-Received: by 2002:a05:600c:3541:b0:46d:a04:50c6 with SMTP id
- 5b1f17b1804b1-4711791934dmr99998145e9.30.1760969624104; 
- Mon, 20 Oct 2025 07:13:44 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710cb49051sm113101675e9.1.2025.10.20.07.13.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Oct 2025 07:13:43 -0700 (PDT)
-Message-ID: <8ca49a7e-6727-4647-9deb-51433765820e@linaro.org>
-Date: Mon, 20 Oct 2025 16:13:42 +0200
+ d=1e100.net; s=20230601; t=1760969706; x=1761574506;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2mWS9k5ZzDXSeaA6vdVT8QfX80JDGX6PHd4tnvVM/84=;
+ b=S04lUZNr7o+Z0EaBikVWWoWh+9EII7jv5LZOW4tlMSVMCHZuFymJL4EjCC0ASqE35p
+ e236TH5680wD/ed6FhyK8aq5tTYJA8GF3OweGLbIpUwgwaHI+q6mLT/UwjFUk4IQ8M6E
+ eri8BXgzRbU7bmzoVyqr0+jxDVoPEsogZAER9dBnwXjIbnx443dGZaaz9mY6yP3Io206
+ ytUa1bB2TGe9BULholsYxfNdUaZg0tGUMRHSOq0p8F0VVPTNt/LPwX+/Ni8TX0rpQSTK
+ uGzDCudT3FUFcDTNZkjz+djWBD8uJa25qU23808xWvxsXjLbW4L1t8JvL2n0X/hY4Gza
+ 7WAw==
+X-Gm-Message-State: AOJu0YxXyzM4wTy8v2arf7Qb2OrLnDrQLZLWUUFF3zox1g64xLa+b/qE
+ cUoNEEvEUV6BU97PSPV97tIwTy7rP71YjrEjk/Xf4hWlLtxZUsKFixWQ32q1aAZiCAQIwj3k8F5
+ qfPO3ifDoHUGhul5NT53+KYSOiQ8X0Dr2S5Pm68742umjYY8Gg0xg
+X-Gm-Gg: ASbGncuXA3E30J6w5uEWnYWIqWTrI1ACAwUEcKy9Up8sQJuw2FTotOfh7/segt8rZxb
+ QGVEYF2rvlL/L9E2I6prtNxN3IM/QnDxSdljwiI9kKIcT0j0Dpp7p8q1ZYUr4iZHLCmMxbLvbgP
+ 6DA4NAsaJrfRvUmIrBJcGXoWfR1O9hetUK39sCgNVXRsCvoyj0cNuDXZadivSJ5wi7KUNE/fcEV
+ BmbB6QRlWWRDpKT8s0RNlw6SoodhsCKHpM8tlx8FW/STe3xK7rcoOWMz9IPIA==
+X-Google-Smtp-Source: AGHT+IGYqixOJRzSn0Do6k6cpOxol9SZ+SrOneIJSAiXXAxA5he80qD4xhN8EjvKr4td36HhfoezuStrzGzfErVRpe0=
+X-Received: by 2002:a05:690e:1209:b0:636:1a8d:9d43 with SMTP id
+ 956f58d0204a3-63e161c65f4mr9087918d50.40.1760969705726; Mon, 20 Oct 2025
+ 07:15:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add missing machine name in the Alpha section
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-References: <20251020140425.45003-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251020140425.45003-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+References: <20251014200718.422022-1-richard.henderson@linaro.org>
+ <20251014200718.422022-26-richard.henderson@linaro.org>
+In-Reply-To: <20251014200718.422022-26-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 20 Oct 2025 15:14:53 +0100
+X-Gm-Features: AS18NWBg0vW-Drd44P4O3CVZHAFPREI7HJsC4-iKjXZDQouJF9OhnH2H-rWnz_Q
+Message-ID: <CAFEAcA_FXddPSD_rHaW1zgB0MKpsJxcUoUe-jBE5ZZmwbg1j4Q@mail.gmail.com>
+Subject: Re: [PATCH v2 25/37] target/arm: Extend TTBR system registers to
+ 128-bit
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,21 +92,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/10/25 16:04, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
-> 
-> Without a machine name here, get_maintainers.pl uses the "-----..."
-> separator for describing what the maintainer is taking care of:
-> 
->   $ scripts/get_maintainer.pl -f hw/alpha/dp264.c
->   Richard Henderson <richard.henderson@linaro.org> (maintainer:--------------)
->   qemu-devel@nongnu.org (open list:All patches CC here)
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+On Tue, 14 Oct 2025 at 21:09, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> So far, just extend the data type and check access; do not yet
+> consume the 128-bit table format.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+
+> @@ -6196,9 +6244,12 @@ static const ARMCPRegInfo contextidr_el2 = {
+>  static const ARMCPRegInfo vhe_reginfo[] = {
+>      { .name = "TTBR1_EL2", .state = ARM_CP_STATE_AA64,
+>        .opc0 = 3, .opc1 = 4, .crn = 2, .crm = 0, .opc2 = 1,
+> -      .access = PL2_RW, .writefn = vmsa_tcr_ttbr_el2_write,
+> -      .raw_writefn = raw_write,
+> -      .fieldoffset = offsetof(CPUARMState, cp15.ttbr1_el[2]) },
+> +      .type = ARM_CP_128BIT,
+> +      .access = PL2_RW, .access128fn = access_d128,
+> +      .writefn = vmsa_tcr_ttbr_el2_write, .raw_writefn = raw_write,
+> +      .write128fn = vmsa_tcr_ttbr_el2_write128, .raw_write128fn = raw_write128,
+> +      .fieldoffset = offsetof(CPUARMState, cp15.ttbr1_el[2]),
+> +      .fieldoffset = offsetof(CPUARMState, cp15.ttbr1_el_hi[2]) },
+
+We set .fieldoffset twice -- one of these should be .fieldoffsethi.
+
+>  #ifndef CONFIG_USER_ONLY
+>      { .name = "CNTHV_CVAL_EL2", .state = ARM_CP_STATE_AA64,
+>        .opc0 = 3, .opc1 = 4, .crn = 14, .crm = 3, .opc2 = 2,
+> --
+
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
