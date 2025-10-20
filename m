@@ -2,97 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A3ABF3DB4
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17221BF3D9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:11:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAy5h-00070q-1Q; Mon, 20 Oct 2025 18:10:57 -0400
+	id 1vAy5L-0006fy-Il; Mon, 20 Oct 2025 18:10:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy5U-0006wB-AD
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:44 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy5J-0006f8-LR
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:33 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy5O-0006KF-Gb
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:44 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-471076f819bso38548645e9.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:10:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy5I-0006JD-0Z
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:33 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4710022571cso41435925e9.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760998237; x=1761603037; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9Cw/auqPGZF90bg+tsodLyu1anbpQABoi+IFSvgYon0=;
- b=zg80fWayYLrf53HlAa+hgpR5HoBUmtyA1SQZFmoT2L0+In1axfLREYDe59wmjeHuFG
- 9gKAyMJBCODxjc8xj/0Pun0b+PxbwFFpr9w3q7YaxoHEfG27pP77herwmXI7uPzuzOp3
- jArbh/6P0c7+f0TO0meu8uyF9o53pGVPoFd8DXD/zgZSzuATHid8snoOk2iKaNXqIML3
- DWGVOGvOVWbDiGtyKbEhwi0cKIkjdgWZGib23GeO67giGHxgYJtn/bY1r/70NeOIN4vw
- 9xA5nLQVWNc5s8LiiI98Lby9URo/11hnIZdb713ie+Q3Fl05GnYGH9RGJwsHBCUL7f64
- g8xg==
+ d=linaro.org; s=google; t=1760998230; x=1761603030; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i98Yuq0ltlKlv4yK9SnQK5pu59pN5J9uGirjRSj4vcU=;
+ b=i232VvbNgYEESRyBHkcSUnQoNse5LMtARl9jwukQiogohm64Q+JKWVUpxDa4dnHQwe
+ UFPrtqisY3Oks6+se3aegYeDVh2l/yPiwAnr08+7qBsJHd68JDM5F1Ax6Mfs+ReJcdyb
+ TO2ESPYFG6+C5D/7+AezTO120O4kmhpkOYjUgqJ4LBnl+z0GqMH8M6PqjTV61358YREE
+ RIvC0E25Ro7sn/s/pY7DTM3RSAD9z7E4xLqpvQKkw1cl+H2x+S6vF1A65jurGt2kFaRI
+ 4WeRXGXDKZbzygrBSU0by0voo9mJ67DWQJGaeEVrOWo6s905lJhkQoG00400JpukDWkQ
+ XoJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760998237; x=1761603037;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9Cw/auqPGZF90bg+tsodLyu1anbpQABoi+IFSvgYon0=;
- b=uTMYFwfa2IkTeoZr3IgeI5l9/V57TUBLMhQglBwOLSMh3v07U34I8+xJQMMZfVVNMA
- 7bINbB7ojuS3aKQdnKozLj46P//m/3UBR8LDSPivtTy3qOoLakKILPOfIzfJSR4CiSeY
- L0Iypbe8Stu/KL+gXlcf+mRI5BzSdczDWIz11jEyinGjVq6uOE39g3b/3RRC8kI7nrek
- HcQN+yKOWYcKwq+cFBfANwJn81hjUBIZsZSHJWl4RenaR/UKMEW9XTE7D2J4TGli2bnf
- 3t28/qqNTv6UK4KxK1PLv3UIqEWldoGsLU4CaP7hR0KDPg/0ApkYJekaxp794pOK4Sq8
- M6kg==
-X-Gm-Message-State: AOJu0YxFBCUAxZ6QVUbQPzQn6tSm56YkTW7Y1mpzUmA9K+DwJ/snAuYX
- /Up2t/AlTKvmfwKPGC83fIYvC+cHw1c5jpmf3ncQ9EdLL/HGETunJZgkdoC8jMmZ1tU15FPxWfs
- IM72piyM=
-X-Gm-Gg: ASbGncvIt/9nuyJLdz1pDaGLbUc0CGAVkb1GQ3E6LsHvV5CSlyetXjreSNmivvQW+vE
- x+3Wq9CMFa0/AdF8mbEHy5XHCWLkXdVZSKgLT6yTzIz4x0YkDD07fSYj38bkaK9qSWQYLu0oKeM
- t0fYUnmpV3cUM2HrDWt67YNczlkvoaANKszPJB2lIFncTZjAYxLWXfXwIf/df2F5uPd7nEEIQ1U
- BZaDMIQaj2xabiDl+UhqOZkEYV+3lFKmOw5vPPHZ3C2Y8SrOk6JZaRd59oci7PTEpK0CJCEeLhi
- gSOUI5XiZSuHY3Ibbmo/4bZixQPM5caHMYHygvLTBnXGJoaUCXKli+WQ22zVt8ewCFApHPwfqdI
- bIWZOHKU5847597Bwb9web0CNARMB93eXDTOPw8lgwicD7Ik4R3mlaKkii2wyjQz8w9Mm5aqNrW
- YUO0H7T0W4L2Ju4r4pDzxGuK+yBUyTv6Mh6wGLoPh4u4lmj76Yzw==
-X-Google-Smtp-Source: AGHT+IFLJcFed2v1EwRR5nAucAd53PrnYFHH3fMQTblIj5z3+zgKP4Me9HwpmLj11s1hThPxS/p+mQ==
-X-Received: by 2002:a05:600c:3b03:b0:471:14af:c715 with SMTP id
- 5b1f17b1804b1-47117874978mr106495845e9.3.1760998236723; 
- Mon, 20 Oct 2025 15:10:36 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1760998230; x=1761603030;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i98Yuq0ltlKlv4yK9SnQK5pu59pN5J9uGirjRSj4vcU=;
+ b=DF/kszAoisjB/2dQo2dI3/s7VBX2q84CSzXFKnmk7MuvdViXCFwDdb0KaX0COqGoJT
+ nJ13RnIdoGn0FOXMC6gEb+1Fq7lPB2Ogr579x3kieh1RtOB9UHsQ0R6pT0kmQNDywiRu
+ 4dI/2/9GUk21v8f+MN8WnqWlXYe9qJJZmvGMH9Tq0t+KoPmo5Hwr63Tqj17wclgjuMWj
+ QDXlT2Rvrump2ADKqeVw0p7uCG5Pgr07XdkQVyeMNYCshriFZg0KwvC1pRShHja1s6ER
+ Jks8MVZfeenpq9F5Vn7soZi3gk5udJtlLviNJ2qdFvz9MN9Uglzb/nmnIY6QKd/NrBaB
+ bEqQ==
+X-Gm-Message-State: AOJu0Yw62PI+j9P3FQ6ZILLrv5wxs36tTKHCVNxcsDPAk7mbZtZItTsi
+ oKnlfTkxxfNiSH90i1hk/IPoA3vi7hp6x8uOzLbcHfC8EfnF0NwraxoTcZnifDaaDV4=
+X-Gm-Gg: ASbGncs/XcZeQ8WGra4W8TAr4h8X+IsVGBxEYIBYZh0hnSWDW3gtidEThv6Mz7/KPyM
+ zjxMwde0YKtzs4WKgnbKkXHAnHAC5qF5ZqHMbUxd+p6Ur4rmVuzg7EQe4TjpuKnJQ9rwLo+x60J
+ uZ/1o5rliOd6RO9eAnxIwldXHgtmQF8jPUVnR9CcrrtVd9JYc78uSxtP1QZ5mlfJvlcFo1lPaVK
+ OIZ3LvEJUAHZ7F3xDcU8Obsar1Dvp0vpedCPU1DraBDhkYIPiCkztwfMAwsV//u8jWEnMDSd1bq
+ WNpVr42UL/7jNg4/VCEKEkE0GznO/5yj45BFZ/p03heImBTNr8pQqmPa3paxufJvkOrg5+C3D0Y
+ Ukl71XSRVuEK8Hg1AjnLbp5aShin+8j5j6n4ccARnzDMB7oyzFlwDiLmouxZuQiMXsLdHz5toiv
+ eaeJCQ1awh+opzIcRotBQQThWWt/V4hGcbxTaLBpm28CY=
+X-Google-Smtp-Source: AGHT+IFCdJ33iX9IfoprfwbMNSNRng0Iy4UBXs5y7kA2QBqldWqeZq5YgNhauCzSIulO/79S1LItfA==
+X-Received: by 2002:a05:6000:4011:b0:425:855c:5879 with SMTP id
+ ffacd0b85a97d-42704d6c536mr10010310f8f.15.1760998230305; 
+ Mon, 20 Oct 2025 15:10:30 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47494aad668sm4570025e9.2.2025.10.20.15.10.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 15:10:36 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Anton Johansson <anjo@rev.ng>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v6 10/30] meson: Prepare to accept per-binary TargetInfo
- structure implementation
-Date: Tue, 21 Oct 2025 00:09:19 +0200
-Message-ID: <20251020220941.65269-11-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020220941.65269-1-philmd@linaro.org>
-References: <20251020220941.65269-1-philmd@linaro.org>
+ 5b1f17b1804b1-47494ac30b4sm4312245e9.2.2025.10.20.15.10.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Oct 2025 15:10:29 -0700 (PDT)
+Message-ID: <daa0fa36-6441-4936-9975-1bb38bb7935e@linaro.org>
+Date: Tue, 21 Oct 2025 00:10:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/16] hw/pci-host/raven: Simplify PCI facing part
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <cover.1760795082.git.balaton@eik.bme.hu>
+ <9f0e1a8860f6a8f00c15e212ba5c46ae6a7fe39a.1760795082.git.balaton@eik.bme.hu>
+ <56bb063e-696c-49fb-943a-7ef9f28c4826@linaro.org>
+ <45817152-d402-cf83-cbd4-22d7d2c6d60d@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <45817152-d402-cf83-cbd4-22d7d2c6d60d@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,78 +105,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a file defining the binary TargetInfo structure is available,
-link with it. Otherwise keep using the stub.
+On 20/10/25 22:54, BALATON Zoltan wrote:
+> On Mon, 20 Oct 2025, Philippe Mathieu-Daudé wrote:
+>> On 18/10/25 16:04, BALATON Zoltan wrote:
+>>> The raven PCI device does not need a state struct as it has no data to
+>>> store there any more, so we can remove that to simplify code.
+>>>
+>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>> ---
+>>>   hw/pci-host/raven.c | 30 +-----------------------------
+>>>   1 file changed, 1 insertion(+), 29 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- MAINTAINERS                 | 1 +
- meson.build                 | 9 ++++++++-
- configs/targets/meson.build | 4 ++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
- create mode 100644 configs/targets/meson.build
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 667acd933c7..17f90230bf2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2001,6 +2001,7 @@ M: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Supported
- F: include/qemu/target-info*.h
- F: target-info*.c
-+F: configs/targets/*.c
- 
- Xtensa Machines
- ---------------
-diff --git a/meson.build b/meson.build
-index f4ac0a6e95b..0f27a2a8f90 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3312,6 +3312,7 @@ config_devices_h = {}
- config_target_h = {}
- config_target_mak = {}
- config_base_arch_mak = {}
-+config_target_info = {}
- 
- disassemblers = {
-   'alpha' : ['CONFIG_ALPHA_DIS'],
-@@ -3912,9 +3913,9 @@ specific_ss.add(files('page-vary-target.c'))
- 
- common_ss.add(files('target-info.c'))
- system_ss.add(files('target-info-qom.c'))
--specific_ss.add(files('target-info-stub.c'))
- 
- subdir('backends')
-+subdir('configs/targets')
- subdir('disas')
- subdir('migration')
- subdir('monitor')
-@@ -4364,6 +4365,12 @@ foreach target : target_dirs
-     arch_srcs += gdbstub_xml
-   endif
- 
-+  if target in config_target_info
-+    arch_srcs += config_target_info[target]
-+  else
-+    arch_srcs += files('target-info-stub.c')
-+  endif
-+
-   t = target_arch[target_base_arch].apply(config_target, strict: false)
-   arch_srcs += t.sources()
-   arch_deps += t.dependencies()
-diff --git a/configs/targets/meson.build b/configs/targets/meson.build
-new file mode 100644
-index 00000000000..a9f6b24ec01
---- /dev/null
-+++ b/configs/targets/meson.build
-@@ -0,0 +1,4 @@
-+foreach target : [
-+  ]
-+  config_target_info += {target : files(target + '.c')}
-+endforeach
--- 
-2.51.0
+>> I'd rather this patch split in 2: remove vmstate, mentioning this breaks
+>> migration, then use pci_create_simple().
+> 
+> I can do the other way around: first convert to pci_create_simple which 
+> leaves RavenPCIState pci_dev unused that then can be removed in another 
+> patch.
+LGTM, thanks!
 
 
