@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A59BF1DFF
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 16:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F2DBF1E10
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 16:36:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAqyO-0008Vr-Rv; Mon, 20 Oct 2025 10:34:56 -0400
+	id 1vAqzN-0001SS-Sd; Mon, 20 Oct 2025 10:35:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vAqyJ-0008RK-VD
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:34:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vAqyG-0002CP-Nf
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:34:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1760970882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OiN+B8uqfQZYBsbiXa9pzqFCbbF6xjyDMzUPPSA8U2A=;
- b=YNLBDqBar4akA3G+1whpw3BxH5Q5GJw2Q0gx50rfpJTizN95iZ8LhFZavX6x24OMFHE+7V
- XZ8OzObcNQIS1GVL8GKRjCbM6Qf5HgIjCQcCcsxlJkd5baV4VXloYgdUoLYfnstdinlUP8
- KAchNFA5HW3HsQiHvn8jvHDigIcY/mM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-1SvGQVIbMQSQfO05OGoRgg-1; Mon,
- 20 Oct 2025 10:34:36 -0400
-X-MC-Unique: 1SvGQVIbMQSQfO05OGoRgg-1
-X-Mimecast-MFC-AGG-ID: 1SvGQVIbMQSQfO05OGoRgg_1760970876
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 743641956076; Mon, 20 Oct 2025 14:34:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D9D1118002AD; Mon, 20 Oct 2025 14:34:34 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 38A2021E6A27; Mon, 20 Oct 2025 16:34:31 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- peterx@redhat.com,  stefanb@linux.vnet.ibm.com,  farosas@suse.de,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] migration: vmsd errp handlers: return bool
-In-Reply-To: <aPYfqzljT3q2noDb@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Mon, 20 Oct 2025 12:40:27 +0100")
-References: <20251020091907.2173711-1-vsementsov@yandex-team.ru>
- <87347d7s0j.fsf@pond.sub.org>
- <0ce2f913-36c2-44a2-8141-256ff847529d@yandex-team.ru>
- <aPYfqzljT3q2noDb@redhat.com>
-Date: Mon, 20 Oct 2025 16:34:31 +0200
-Message-ID: <871pmxskug.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vAqz2-0001No-Tp
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:35:38 -0400
+Received: from mail-yx1-xb136.google.com ([2607:f8b0:4864:20::b136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vAqyz-0002Ro-B6
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:35:36 -0400
+Received: by mail-yx1-xb136.google.com with SMTP id
+ 956f58d0204a3-63e3804362cso983373d50.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 07:35:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1760970929; x=1761575729; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=nv1W4tZskrBscvRN1tlrQ4eSl+R673rIHpTlM3BXU4w=;
+ b=fJWJQkrstxyJoivga6UertdmDg77FSuLIFFfLFkxf70ykNvfKO5ZT0YiA72N4qF0G1
+ /YlnR62XE3OcUv1C2RGg/eBzBkwls+XjTkvPEJrnoudc9xj9l23TNe2kWWzEjtlUeYwG
+ fDHLhKfvLsgLcuUqwTThEviweDpQcLPh1swGEGnoJL/ubvkUn01ks8ZrzmA9st2ik20J
+ b+kRfbjdQwAQun8GdDCcxnq9e3hstF0ZBfUpJzV52ZEhdXVgsZd8qdoNhxJhqIgIQ50h
+ 5ILluphs749wZTLh5jCuHx8i8BNKDtKMlwj5pPV29t7oIor0rZcs+2aQbrsvC96v9v9o
+ x88Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760970929; x=1761575729;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nv1W4tZskrBscvRN1tlrQ4eSl+R673rIHpTlM3BXU4w=;
+ b=JJA+oSaykrzXvQ7NgrZqwNas6CtnxRplv3qq0U506dXHvJihflaXD2jD5alSz6Fpdg
+ hQqWlvAcXA9uPSiu9fhLiVWWp2Up2p2pPSwTFoQ5/nFGUdXGQ/3KuexXdcGxCyR/0+5G
+ 5vSdgpeNPVbPBGPbmsK8yciaf5ATmfKh+w/cBvM+BNjobyIC1fRkrcVDcLWjlWw9np8r
+ Rq8xRQC/7RNPr2zxijs7UMTGUamJOklivl+AG9LllDIj8DPNDOKuTN5FcrW9uvB5y+vB
+ shenntFaZldLZsRuoRdHNJj0jEd/aNIZoR5SHIrLWg92rh3a83yEen38zbkPEHYZA+Ga
+ JvGQ==
+X-Gm-Message-State: AOJu0Yyl1lO7QblknAR+fIXyJGWBar2OAF/eFGXWI/rDILVyjq6Way+c
+ 9BTVqJ6FWGyYgkW3rjQ+hZXPfB7/3th7b9q6YhHyYwCGoCoEgwI4rII4ATBoDMJYalKcUIKgLWO
+ nesJHdALilAfUuYz6HFQqlkzhmRuCTHMJiC8zcs+8tA==
+X-Gm-Gg: ASbGncswO0qBrfpXIdoRP8tngT0Qy8pCqwdSEdkDsg93jGscJYPzGSpTNY0wk93ip+T
+ 3Cgw85qZ6F/nEnEJNwP37paGcCpdu0CTWUk1oLVXmomzlUUePyeGFvHSFrV7LGjAiXJMIS43f5f
+ i66XXx3xSlTqipqS5tKeb/lejVGS1TJ1G/YPlomScqeldRzwNe9+XZ/LTch9bDqZp4u3zGl3eYS
+ oonpatsC/149PwogEciApxN297poYG0JXy+l5PZXHeEctxtzAmheuM25WQuYQ==
+X-Google-Smtp-Source: AGHT+IF3c/H7S6yhqU7vRkOD7+risv31vbtQO9ZWUlELg+I3omJWgeMFvYCnFLoMoewhT5BakmDZMhg9clzXzQ8qIJA=
+X-Received: by 2002:a05:690c:314:b0:780:f794:6e21 with SMTP id
+ 00721157ae682-7836d1ece75mr218169797b3.24.1760970928822; Mon, 20 Oct 2025
+ 07:35:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20251014200718.422022-1-richard.henderson@linaro.org>
+ <20251014200718.422022-28-richard.henderson@linaro.org>
+In-Reply-To: <20251014200718.422022-28-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 20 Oct 2025 15:35:16 +0100
+X-Gm-Features: AS18NWASteFK6MNykXNSK0RfUo9gJ4uuOBbJM_dWPxXWXaThnD9BNlIZPJ9W9vw
+Message-ID: <CAFEAcA-exMfT8SUbYxjGJO2csp9h2Nbc5UzuDWZq-PhzJeZ0zQ@mail.gmail.com>
+Subject: Re: [PATCH v2 27/37] target/arm: Implement TLBIP IPAS2E1IS, IPAS2LE1IS
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,64 +91,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
-
-> On Mon, Oct 20, 2025 at 02:22:22PM +0300, Vladimir Sementsov-Ogievskiy wr=
-ote:
->> On 20.10.25 14:05, Markus Armbruster wrote:
->> > Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
->> >=20
->> > > Recently we moved to returning errp. Why to keep int return value?
->> > > Generally it doesn't help: you can't use in a logic of handling
->> > > an error, as you are never sure, that in future the logic in
->> > > the stack will not change: it may start to return another error
->> > > code in the same case, or return same error code in another case.
->> > >=20
->> > > Actually, we can only rely on concrete errno code when get it
->> > > _directly_ from documented library function or syscall. This way we
->> > > handle for example EINTR. But later in a stack, we can only add
->> > > this errno to the textual error by strerror().
->> >=20
->> > It's a matter of the function's contract, actually.
->> >=20
->> > If the contract is "Return negative value on failure", checking for
->> > failure is all you can do with it.  Same information as "Return false =
-on
->> > failure".
->> >=20
->> > If the contract is "Return negative errno on failure", the function is
->> > responsible for returning values that make sense.  Ideally, the contra=
-ct
->> > spells them all out.
->> >=20
->>=20
->> Do you know an example in code where we have both errno return value
->> and errp, and the return value make sense and used by callers?
+On Tue, 14 Oct 2025 at 21:17, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> If there are examples of that, I would generally consider them to be
-> bugs.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/tlb-insns.c | 23 +++++++++++++++++++----
+>  1 file changed, 19 insertions(+), 4 deletions(-)
 >
-> IMHO if a method is using "Error **errp", then it should be considered
-> forbidden to return 'errno' values.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Several subsystems disagree :)
-
-Quick & dirty search without a claim to accuracy or completeness:
-
-    $ git-ls-files \*.[ch] | xargs awk '/, Error \*\*errp/ { on=3D1 } on &&=
- /return -E/ { print FILENAME ":" FNR ":" $0 } /^}/ { on=3D0 }'
-
-> If there is a need for distinguishing some cases from others, then keep
-> with int '0/-1' example, but turn it into a multi-value return such as
-> 1/0/-1, or 0/-1/-2/-3/..., etc with named constants for the unusual
-> scenarios. An example of that would be QIOChannel were we introduced
-> "#define QIO_CHANNEL_ERR_BLOCK -2" to replace the need for EAGAIN checks
-> in callers.
-
-Defining your own error codes is fine.
-
-Reusing errno codes can also be fine.
-
-In both cases, the function contract is a load-bearing component.
-
+thanks
+-- PMM
 
