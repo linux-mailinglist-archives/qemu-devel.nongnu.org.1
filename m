@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC36BF3DCF
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DF0BF3DD2
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:14:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAy8p-0005Lp-3v; Mon, 20 Oct 2025 18:14:11 -0400
+	id 1vAy8l-0005Ju-Am; Mon, 20 Oct 2025 18:14:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy8j-0005Im-Bz
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy8j-0005Ij-B3
  for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:14:05 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy8f-0006VO-6p
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy8f-0006Vk-FW
  for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:14:04 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-46fcf9f63b6so26395225e9.2
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:13:51 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-46e6ba26c50so31953155e9.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760998430; x=1761603230; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760998435; x=1761603235; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZmAHkKRpKe+N+FLuo6CnpsGLNli5rNouqryFJwonxGY=;
- b=nxg4Zkuh97takp8ZeBL9nVemGzlPqJDI9YASXZNUKIBSQAOEEw8X2FjeD+Zlo10Gsi
- +56fdEALCP9ST+rNFhInTbCCoR0/pzKRuKLgdfCobeNpgJ4p20wJfskqffZXkjfYxRoa
- 82Xj5KrVE9DsyJ5iVpWcQCggUkycV9EHBlK5D/izsujoD3ciKBf9XJUGSd2j2qzUnncs
- kkitfSge6koLnaJ0aAkEFl84FWZ0yK5zNp7Vf4v+jUT/aGePJDm23rjIgLhSFILBLtkw
- ewiyxxSRBBUAYHPIyWsktqxjGnAfM0iiXmctovBxudWRQlWs3QHg0NzqurMCWy3aBdJp
- liWg==
+ bh=+e7VY5y1q7fPnyvbmyUJua9whr/xsLflgiFLuiD5Ih8=;
+ b=lQQ9qlSMBTHbk1z1gENldiiTOdPU5cg5ps0Hqkytn2hiQBGwJ6gHHum+1WrPlXx8VX
+ fnNu+HoSg2IbjsUT6XEenId/V1d6ytXTxeRGg1O7kdr1FIfwo977UOj3FUBvfEAMzVNO
+ oCphHwRI/DL9m9EgowRDG/Ut7Tf6KIICnEH7lTuKw9dECu12hH0wSSPsL7FCvDz3Xp3G
+ qNgdeyGY6IQcvO5rZWjzeBe1Vh33++4yBNmKil8PP2b3EGSIn0o0olTNDhC273lVzVpG
+ FHWjEIpUVOg/N4Fof44rY5KY+sn5TWhHJNEebuk0456zpsQr9ZLmEelgh4+xWqVdSrW3
+ pfNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760998430; x=1761603230;
+ d=1e100.net; s=20230601; t=1760998435; x=1761603235;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZmAHkKRpKe+N+FLuo6CnpsGLNli5rNouqryFJwonxGY=;
- b=fuzudAmI2dO6Q8dBXbss0qSHeLNFrJoY5YZ8YnUyxxTVt4brudw78SRWee+7oIvaEY
- 2Z5L8hped8jkSDsjxVH98mdM0qeSzGf5tli7fWwGTg9EDdozLRm1dlJiKwL5RdASavZA
- d89CabzOFQLafvEpphaoe1urSHJd8vTMjzOwqbmwN8i4tW0ZtDmonNTQ/dc4l3bv6Ya+
- y5c2YVAwGQMxepl5UkudEiFJ3+28QUHvncCISW9o8qebdRSbPIeqWEwWjrzrGeIAWVWD
- T4F3vlT08Otbph0XeGS2fwRYmn+B9xR3EhGY6OvOQHwfF+YXYiggXaSGf1luTEngQYN3
- D0jw==
-X-Gm-Message-State: AOJu0Yygd6sNaIEVoAZVjD315ShyoEDQodAsjsnmwpijMSeB5I7hfpvL
- QpuaeeQamK2XMTryzc+dR8ItlJWQgDX6VrEoU+Uh2IArk/NpTwgkssu92oHkjNmyxwQcp8SBf6i
- NDmZ2eYI=
-X-Gm-Gg: ASbGncuH9DS07yLrrp/VEpR4FzW5F+wizuHtswbYw7KMrjv5Nf4uTdqiq1Lm83M88jW
- 1FdGzadraPH2M9tA9N/vgfVF6YB6eyuyvDrFtODBgAUCQ4XpLLMFawgc1Hu3IS3LZFnKeHkIOGV
- mmFh2I8hCkVFBfXVPeqqh1mwNrE7VFjwUrgioF+aZF4e0BbW1Cjy5w560sZ6azNYJgQ1iJpRPmZ
- JR3pa8FGko2HBZoF+pcNKy9wBhF/j20VFDbm1b5yTBn3NahxA1ueKoysvp2exx8SdmdFOeuMcp6
- afrBdUoPO6s1EgGgiyEp5ExDG03XXj9aV6i+zFsxoq0AnCHOfN/xua3jX+wdYvReA+ficpq//z8
- EVWbtWUu4jqLDW2RI80fBxOheAo/6rvWtAwwJT9mTfdVeCgWBxStEHOY5RVHJPqnosN60cZ49g7
- A3/+h+VvKZqCr7up3OQviHKGYRDSvPCljC1Q+cOClptYxmvYeKMg==
-X-Google-Smtp-Source: AGHT+IFuaULPbuETV1FMmN10syysRKvDy3vJkroLpk5zDOa+1hPU2mx5U6AoZE9Y4Vl6eS/bpfKm8A==
-X-Received: by 2002:a05:6000:4287:b0:425:7c32:d969 with SMTP id
- ffacd0b85a97d-42704d145admr10331749f8f.5.1760998429944; 
- Mon, 20 Oct 2025 15:13:49 -0700 (PDT)
+ bh=+e7VY5y1q7fPnyvbmyUJua9whr/xsLflgiFLuiD5Ih8=;
+ b=oWE2FxqtZY6P4YRupbCtX4pExjaUkWPPgRxGXxXch3ctg8S4XIHUDznXeWeVWPPvoO
+ isBYLwRRgmqHErk/I82LLglSM1j/Wx9Qb2PSvXE0D7Ltn6wWxEacNkQknt/5SgbySEch
+ plm5dfUElQA9EgsucGEKEPv+dGe7Dc4X/OT2W56dL02G4Xv4hBrqdXwflxc4/669R4fv
+ UFs520BzA3LFbMdfauQLi/vRUdyxL6/MlCbD/lN0bcw7qg9LUzBgvDjQjCyqYD4fy6R7
+ 4Ek10RPE9ReKIedLL4bz42hrFqzoByWoktJWNyuvXjcLEskmaNV+DrNjh1TytyA5bQTI
+ kJHQ==
+X-Gm-Message-State: AOJu0YynLHsAXdH1GrV7MMVUmxBj3VdAGqBlmUalY596cjMjyzkiEKQu
+ /LbAWBDY+fbZ4XIrp1040D4Zna6qbGoM4WGSbSO/7VvkB/lxrcv9LcXZhKgS3ZupzH91q98Y/E1
+ /3vGJkao=
+X-Gm-Gg: ASbGnctzA7gfTSNlu0r86IUQlTwj7gT8BGGXcdd/UMQsVeHu1pwmYkXhLhTwnVXOGu8
+ 0xG5nRUCLDGWHrPPJYFQa+HurCPC3C6yi3rvm7Lct1U45ogpGZcPpDZwjqdo9Juyy21EhS8Lwq9
+ 2VqYsKkI9XIVZv7SdepxTOiSHgIwR58tYlBMU7zB/EyAipZc7OJyUik44IWVhFGQDkWwsJ5xUj0
+ zhiEKhMRHX5HMBrChCXbsbsNOXcfBB2WF3gxsWYgnCq0zTkUOHJZmwN1Uso/rhmqjElXOZ8hApS
+ sPV5xeVQIPuyCjBNk4YfQdyQJyLhn4eALFZMBaD5Qi+RFQzKVkAMvgfqXa3sF9rzrLtr0iYYZ5q
+ uBGE8v3Q5aWsGyEXl+y8MbS9oN4fyMgMdT5wjdlpI4Y6sHgp0LcQHN4ffUBKs5KsWm1n49uEu1/
+ QjUdepKDdKDFnTeH9F/Ym0Jzr+cKtlQKnK7d0s40yTiiAM7MKxa2FjHQICknX3
+X-Google-Smtp-Source: AGHT+IGtAoswsOqV2aBqA209eTMwKY6N297qrLfd/+nlmxs0B2DzWhPZz43+vA7zY4vg6H+eYwyhJg==
+X-Received: by 2002:a05:6000:2911:b0:426:fec1:a58e with SMTP id
+ ffacd0b85a97d-42704e0e681mr10936952f8f.53.1760998435377; 
+ Mon, 20 Oct 2025 15:13:55 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00b97f8sm17020178f8f.36.2025.10.20.15.13.48
+ ffacd0b85a97d-427f00cdf6csm17124823f8f.43.2025.10.20.15.13.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 15:13:48 -0700 (PDT)
+ Mon, 20 Oct 2025 15:13:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 13/30] hw/arm/raspi: Build objects once
-Date: Tue, 21 Oct 2025 00:13:18 +0200
-Message-ID: <20251020221336.66479-3-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 14/30] hw/core/machine: Allow dynamic registration of valid
+ CPU types
+Date: Tue, 21 Oct 2025 00:13:19 +0200
+Message-ID: <20251020221336.66479-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020220941.65269-1-philmd@linaro.org>
 References: <20251020220941.65269-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,111 +104,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now than Raspi machines can be filtered when running a
-qemu-system-arm or qemu-system-aarch64 binary, we can
-remove the TARGET_AARCH64 #ifdef'ry and compile the
-aspeed.c file once, moving it from arm_ss[] source set
-to arm_common_ss[]. Note, we expose the TYPE_BCM2837
-and TYPE_BCM2838 types to qemu-system-arm, but they are
-not user-creatable, so not an issue.
+Add MachineClass::get_valid_cpu_types(), a helper that
+returns a dynamic list of CPU types. Since the helper
+takes a MachineState argument, we know the machine is
+created by the time we call it.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/bcm2836.c   | 4 ----
- hw/arm/raspi.c     | 4 ----
- hw/arm/meson.build | 8 ++++++--
- 3 files changed, 6 insertions(+), 10 deletions(-)
+ include/hw/boards.h |  4 ++++
+ hw/core/machine.c   | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index cd61ba15054..aaaff05624c 100644
---- a/hw/arm/bcm2836.c
-+++ b/hw/arm/bcm2836.c
-@@ -195,7 +195,6 @@ static void bcm2836_class_init(ObjectClass *oc, const void *data)
-     dc->realize = bcm2836_realize;
- };
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index a60e1d83390..8fc34579412 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -259,6 +259,9 @@ typedef struct {
+  * @smbios_memory_device_size:
+  *    Default size of memory device,
+  *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
++ * @get_valid_cpu_types:
++ *    Returns a list of valid CPU types for this board. May be NULL
++ *    if not needed.
+  */
+ struct MachineClass {
+     /*< private >*/
+@@ -305,6 +308,7 @@ struct MachineClass {
+     bool ignore_memory_transaction_failures;
+     int numa_mem_align_shift;
+     const char * const *valid_cpu_types;
++    GPtrArray *(*get_valid_cpu_types)(const MachineState *ms);
+     strList *allowed_dynamic_sysbus_devices;
+     bool auto_enable_numa_with_memhp;
+     bool auto_enable_numa_with_memdev;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 681adbb7ac5..5d9684fbc85 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1573,6 +1573,8 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+      */
+     if (mc->valid_cpu_types) {
+         assert(mc->valid_cpu_types[0] != NULL);
++        assert(!mc->get_valid_cpu_types);
++
+         for (i = 0; mc->valid_cpu_types[i]; i++) {
+             if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
+                 break;
+@@ -1599,6 +1601,32 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+                 error_append_hint(errp, "\n");
+             }
  
--#ifdef TARGET_AARCH64
- static void bcm2837_class_init(ObjectClass *oc, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -208,7 +207,6 @@ static void bcm2837_class_init(ObjectClass *oc, const void *data)
-     bc->clusterid = 0x0;
-     dc->realize = bcm2836_realize;
- };
--#endif
- 
- static const TypeInfo bcm283x_types[] = {
-     {
-@@ -219,12 +217,10 @@ static const TypeInfo bcm283x_types[] = {
-         .name           = TYPE_BCM2836,
-         .parent         = TYPE_BCM283X,
-         .class_init     = bcm2836_class_init,
--#ifdef TARGET_AARCH64
-     }, {
-         .name           = TYPE_BCM2837,
-         .parent         = TYPE_BCM283X,
-         .class_init     = bcm2837_class_init,
--#endif
-     }, {
-         .name           = TYPE_BCM283X,
-         .parent         = TYPE_BCM283X_BASE,
-diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index ff5d4368e42..bc9e2b4b361 100644
---- a/hw/arm/raspi.c
-+++ b/hw/arm/raspi.c
-@@ -368,7 +368,6 @@ static void raspi2b_machine_class_init(ObjectClass *oc, const void *data)
-     raspi_machine_class_init(mc, rmc->board_rev);
- };
- 
--#ifdef TARGET_AARCH64
- static void raspi3ap_machine_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -388,7 +387,6 @@ static void raspi3b_machine_class_init(ObjectClass *oc, const void *data)
-     rmc->board_rev = 0xa02082;
-     raspi_machine_class_init(mc, rmc->board_rev);
- };
--#endif /* TARGET_AARCH64 */
- 
- static const TypeInfo raspi_machine_types[] = {
-     {
-@@ -406,7 +404,6 @@ static const TypeInfo raspi_machine_types[] = {
-         .parent         = TYPE_RASPI_MACHINE,
-         .class_init     = raspi2b_machine_class_init,
-         .interfaces     = arm_aarch64_machine_interfaces,
--#ifdef TARGET_AARCH64
-     }, {
-         .name           = MACHINE_TYPE_NAME("raspi3ap"),
-         .parent         = TYPE_RASPI_MACHINE,
-@@ -417,7 +414,6 @@ static const TypeInfo raspi_machine_types[] = {
-         .parent         = TYPE_RASPI_MACHINE,
-         .class_init     = raspi3b_machine_class_init,
-         .interfaces     = aarch64_machine_interfaces,
--#endif
-     }, {
-         .name           = TYPE_RASPI_MACHINE,
-         .parent         = TYPE_RASPI_BASE_MACHINE,
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 98783bbbdeb..a12d690ce74 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -28,8 +28,12 @@ arm_common_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c'
- arm_common_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
- arm_common_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
- arm_common_ss.add(when: 'CONFIG_MAX78000_SOC', if_true: files('max78000_soc.c'))
--arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
--arm_common_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
-+arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files(
-+  'bcm2836.c',
-+  'bcm2838.c',
-+  'raspi.c',
-+  'raspi4b.c'
-+))
- arm_common_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
- arm_common_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
- arm_common_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
++            return false;
++        }
++    } else if (mc->get_valid_cpu_types) {
++        GPtrArray *vct = mc->get_valid_cpu_types(machine);
++        bool valid = false;
++
++        for (i = 0; i < vct->len; i++) {
++            if (object_class_dynamic_cast(oc, vct->pdata[i])) {
++                valid = true;
++                break;
++            }
++        }
++
++        if (!valid) {
++            g_autofree char *requested = cpu_model_from_type(machine->cpu_type);
++
++            error_setg(errp, "Invalid CPU model: %s", requested);
++            error_append_hint(errp, "The valid models are: ");
++            for (i = 0; i < vct->len; i++) {
++                g_autofree char *model = cpu_model_from_type(vct->pdata[i]);
++                error_append_hint(errp, "%s%s",
++                                  model, i + 1 == vct->len ? "\n" : ", ");
++            }
++        }
++        g_ptr_array_free(vct, true);
++        if (!valid) {
+             return false;
+         }
+     }
 -- 
 2.51.0
 
