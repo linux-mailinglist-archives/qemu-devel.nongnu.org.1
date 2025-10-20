@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D125BF09C0
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0302BF0979
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:39:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAnIP-0000o0-Hh; Mon, 20 Oct 2025 06:39:27 -0400
+	id 1vAnIY-0000oM-Uf; Mon, 20 Oct 2025 06:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHq-0000fc-CR
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:46 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHv-0000gv-7Y
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:53 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHo-0000FL-9X
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:46 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so23118405e9.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:38:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHt-0000Fk-7s
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:50 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3ee12807d97so3793221f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760956722; x=1761561522; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760956727; x=1761561527; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2QqASWvK1t899Gg+yC/9t/MGzsv3GeI3HMvGU+Y6Meg=;
- b=Zm8d6DkT86o3ebTFlGokFemniQU2KSQF5cMHFYmemrVHOf26bk5ca6z7O7GtWaxvA4
- c87AWFYUfZE6/eVXEP2XIo+SsTbfydtPi8GPF3aWs2wv1ZhOJZEYO3wPrzx7HVOc9oi2
- Z9zTAOaMwawnzdFGNmLic196CCrh5bw1J6DChDzZ/MdJTrvrcrkpl2HAm3g06SBvfsJ4
- 8m7EVfrMGYwvdJ+DnOLenxj25i5ytWHnGG7Kn91OowGiBHIQEM7kUnlIjf3l5xA1VLKt
- yW3NBBeyK7GH8t/qB237QJCMRCFLB5n8sSK5Y0ei+MtLhbKqN8Wsw7zrF/5Av13Nq6t3
- mnVA==
+ bh=XchvKX1P3pmKtpFUzec2QYG+hUglh7SzS1YPHheIc9Y=;
+ b=s6eQQEnzqlB71OFpF8B9Vm6z/Nr29PBFeJkPzkm0wZcl7Ay7Qsd8z9sbMNXTvJCzZu
+ 5+K6VYOkxbOQKeRiPZZtrK6Ri0gZFHdUGjaYhTpEzzS18bgvl0r/kuY0lRZPWrTm/Dh0
+ OLDEIHY+lbj6B8lcDUIY1ncRgpgFkeq5bqdGEdQj0QixHd1iAJYtHSxIrwqEm8HWhqMT
+ a9Ccg1wcjipG9LXlvhaHepC9H5TK9tFt9MOcEofIXbSg/eeDLUxOtyAFtasfPYNrwi6O
+ ICb9/iy4K5jZ3WAVd2Er3Nc/IzgZlTRFmKXwjpQQ/EAwMINyvJUwMRDntr5YkpRrL5s0
+ wolw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760956722; x=1761561522;
+ d=1e100.net; s=20230601; t=1760956727; x=1761561527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2QqASWvK1t899Gg+yC/9t/MGzsv3GeI3HMvGU+Y6Meg=;
- b=W6SFKk7zurXsEupI8cit2mNxUL7Rs+ZTuPn+EmM1xjkY6lgEqNJEvP9rZsdoPDIDm0
- 2/S6tEtzutc/UI1uzt8LprNCLRb0mX5Ro/4DWpp9hljUDoUpQQgKfimgBcYO+ZpkfCGy
- BVW7ewiG0iVYG0B2s/qfZwyJOjkYsZnAg4NwN+TE/yGucEH3GTK+Ql/K8yXrINNJbvrE
- I9cYDVQvrJnAOKYxJEWgEqvnfwJvdvbXbkymkKekmM/MWjphLJul5seBKcm8SrcHoAZZ
- ZiBy8LD73JRg1fXe2lCIOsaj8z2RwPF4XfeGH4hITKuLfEQTuGJLheMrhhyTDz8vcONy
- BQMw==
-X-Gm-Message-State: AOJu0YzJmectBdp999hSZ96aRcvUQFCHVS+FrQOMrM4hxEE7URbjXDgh
- aq+WYgn15hJ7AK6IJuMknJdDhD4gk5DykcPzMPnZHKbv53hycIZxVRbW5qtYuAoiTGpmARI6EgE
- 95OK583A=
-X-Gm-Gg: ASbGncuw8UP2acNVmE7GvHe2wOi09m0O2lQ/38cCQLyMExxjvLpd4/dJ3BF4uU08qhC
- Jhf5D+fzwvWZbghVeo1tCaarRmzIEMvJjClapXBBE9FDnKAeccxjxWAQ2luBqHZHjtuzZ12XFl7
- c4M0JyQKuzVuXQOwMU384MUe/vEN7vTXQiy2htgniQ8e+uGf1XQZJ1fY6QlvQA3lUYDHB2qzrqD
- mfN4uHCnzskT2wmioHOQZQEWDFpoUXAqbqwu2fbUYEGS9qd7Vd9IYW01A5kUKYTY4Idkjmqc+4H
- IXStmTdqQvfpBamlA999fahBboZiEDRXS3b0wHmhJZQL1bBtv6JH62FAz5LflcznmqZPpOd9Pwm
- cCUumocDMceRZSnnDlQQfgHn3D3cqCCtuEDI5uTr5KxEnVwpfyk5PoEgQ4NCi6JZxgddrDW6tu7
- Nxo7weFNREC6CwG7qUbZSo68NgSFXkDnXDOBbfIXZbEer0UhAJiIJFfOkj7xSG
-X-Google-Smtp-Source: AGHT+IG+2OrotMm39mO/NMpFJE/4JTcqijQrOf5TAI7bKDmv2wXdxouIqwoMumQUqKhnsP0tNIQR8g==
-X-Received: by 2002:a05:600c:3513:b0:471:1415:b545 with SMTP id
- 5b1f17b1804b1-4711786d625mr98567695e9.7.1760956722179; 
- Mon, 20 Oct 2025 03:38:42 -0700 (PDT)
+ bh=XchvKX1P3pmKtpFUzec2QYG+hUglh7SzS1YPHheIc9Y=;
+ b=a0Ex61qu+C/PJpk6eUUOkN9/Gb7LuiCbbRLtzTNzmaL3HTIeom6cMsbaVrEvCHDeYi
+ 17p9xu186wrAO1/T7IHeBgP1+hsl+K7VmPjkXLQutBn7xcrigbfNsexHfHobwi+AmJC4
+ zIyx3DKj5ErBqYGz+EgQnvZdCpNiVtTeysS5clx/4ExTYJsEfeEzm8PUw1BAMrqgBWp8
+ 6fw5F1oKK3TgPTV+dRDoyfIDz6Vj09QsgOg+xdg/IT7QSMTGcWgDqprBpMf1Py+msS5V
+ 9q+6Z/e5C5DKRIohv0Rnv9ecz5YrK3G0J5IVnhVfmjSHn9lteZ7qYZK4o4UF3osaW976
+ wDYQ==
+X-Gm-Message-State: AOJu0Yy8iY3Pmgb3YO14VF03nka6n0Yuls0ALx9nYSa6S42fTcrnVElV
+ 0hbKJCHvYymWw6yWIqixliDQqYqGzhnKB7/RKJeV6MYL1ln0DXomYpROguPWtS6AA0cQ9Hsp4hC
+ jrubnuK0=
+X-Gm-Gg: ASbGncv7W/hcuxyn0qLQj4bTpnA6D0w6RR4P1p8SDakb+RvbbUFqyW7ev5Fq6ocoffh
+ qs11xmY4XLyyHlqTSw9ryLTvQRS/fujfF7PAzV0bLLlM8FmogdtrQMhtM9ZHF5TyB83Mc0ndAWo
+ oF4GC7t0399BVFjeptD5Rb11ekY7/Wn1Ad0tmdz9osu8B87lmC5D9UbIqMpO+1n/CTs7cYTyk7p
+ x7Kto+PJLl8XwBnChNAcYNvAhicUrx14yE2DK0BNF1aaEdKohxH2HOA9dH+vFHebG6qq//HKZOc
+ 7GLmTr9NqRYuYrt4hoPlO2N85BvH6h9cJsTJTOtDjeQdm0CSg4Z0ZTfHeXhbKCCG0P3cbIG7BF/
+ ESWDLM6D0LGhm8Tn8eKzaCuTTR8QS0fPNmZQGN29auKqAb/kemUsqLf9FLMtH6FKMe7qnP+VN4B
+ mMcvRar0WpUbgmZCIhQeRFKIhw828xGLpsDE93/rvQm+SRC8orJ2IJL4lCVUEw
+X-Google-Smtp-Source: AGHT+IHQgd4IyBZk1X8qax/mfrCj0WRZC+hpDHiPajM8IGn0ydegHDG75cWXcjnzX++NX0Exg2anBQ==
+X-Received: by 2002:a5d:64c4:0:b0:426:d51c:4d71 with SMTP id
+ ffacd0b85a97d-42704d44253mr6869195f8f.8.1760956726904; 
+ Mon, 20 Oct 2025 03:38:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4710ca4931csm117818495e9.0.2025.10.20.03.38.41
+ ffacd0b85a97d-427f00ba01bsm14420098f8f.41.2025.10.20.03.38.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 03:38:41 -0700 (PDT)
+ Mon, 20 Oct 2025 03:38:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
@@ -69,17 +69,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Chinmay Rath <rathc@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 05/18] hw/ppc/spapr: Remove deprecated pseries-3.1 machine
-Date: Mon, 20 Oct 2025 12:38:01 +0200
-Message-ID: <20251020103815.78415-6-philmd@linaro.org>
+Subject: [PATCH 06/18] hw/ppc/spapr: Remove
+ SpaprMachineClass::broken_host_serial_model field
+Date: Mon, 20 Oct 2025 12:38:02 +0200
+Message-ID: <20251020103815.78415-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020103815.78415-1-philmd@linaro.org>
 References: <20251020103815.78415-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,49 +103,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This machine has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
+The SpaprMachineClass::broken_host_serial_model field was only used by
+the pseries-3.1 machine, which got removed. Remove it as now unused.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr.c | 22 ----------------------
- 1 file changed, 22 deletions(-)
+ include/hw/ppc/spapr.h | 1 -
+ hw/ppc/spapr.c         | 6 ------
+ 2 files changed, 7 deletions(-)
 
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index 494367fb99a..06e2ad8ffe6 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -145,7 +145,6 @@ struct SpaprMachineClass {
+     /*< public >*/
+     bool dr_phb_enabled;       /* enable dynamic-reconfig/hotplug of PHBs */
+     bool update_dt_enabled;    /* enable KVMPPC_H_UPDATE_DT */
+-    bool broken_host_serial_model; /* present real host info to the guest */
+     bool pre_4_1_migration; /* don't migrate hpt-max-page-size */
+     bool linux_pci_probe;
+     bool smp_threads_vsmt; /* set VSMT to smp_threads by default */
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index b5d20bc1756..2e07c5604aa 100644
+index 2e07c5604aa..e06eefa3233 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -5032,28 +5032,6 @@ static void spapr_machine_4_0_class_options(MachineClass *mc)
+@@ -1213,16 +1213,10 @@ void *spapr_build_fdt(SpaprMachineState *spapr, bool reset, size_t space)
+     /* Host Model & Serial Number */
+     if (spapr->host_model) {
+         _FDT(fdt_setprop_string(fdt, 0, "host-model", spapr->host_model));
+-    } else if (smc->broken_host_serial_model && kvmppc_get_host_model(&buf)) {
+-        _FDT(fdt_setprop_string(fdt, 0, "host-model", buf));
+-        g_free(buf);
+     }
  
- DEFINE_SPAPR_MACHINE(4, 0);
+     if (spapr->host_serial) {
+         _FDT(fdt_setprop_string(fdt, 0, "host-serial", spapr->host_serial));
+-    } else if (smc->broken_host_serial_model && kvmppc_get_host_serial(&buf)) {
+-        _FDT(fdt_setprop_string(fdt, 0, "host-serial", buf));
+-        g_free(buf);
+     }
  
--/*
-- * pseries-3.1
-- */
--static void spapr_machine_3_1_class_options(MachineClass *mc)
--{
--    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
--
--    spapr_machine_4_0_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_3_1, hw_compat_3_1_len);
--
--    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power8_v2.0");
--    smc->update_dt_enabled = false;
--    smc->dr_phb_enabled = false;
--    smc->broken_host_serial_model = true;
--    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_BROKEN;
--    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_BROKEN;
--    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_BROKEN;
--    smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_OFF;
--}
--
--DEFINE_SPAPR_MACHINE(3, 1);
--
- static void spapr_machine_register_types(void)
- {
-     type_register_static(&spapr_machine_info);
+     _FDT(fdt_setprop_cell(fdt, 0, "#address-cells", 2));
 -- 
 2.51.0
 
