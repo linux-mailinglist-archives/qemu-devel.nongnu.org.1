@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015D4BF2602
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1DBBF2614
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:22:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAscj-0003j6-Ni; Mon, 20 Oct 2025 12:20:41 -0400
+	id 1vAscr-0003k7-Do; Mon, 20 Oct 2025 12:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vAscf-0003gy-VP; Mon, 20 Oct 2025 12:20:38 -0400
+ id 1vAsci-0003iZ-Jr; Mon, 20 Oct 2025 12:20:40 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vAscd-0000sP-JU; Mon, 20 Oct 2025 12:20:37 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KFNawE013009;
- Mon, 20 Oct 2025 16:20:34 GMT
+ id 1vAscg-0000su-88; Mon, 20 Oct 2025 12:20:40 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59K7Jg8m025774;
+ Mon, 20 Oct 2025 16:20:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=fuuANGqPQMbYTgFcN
- f4ybcycvExWfEtGEzuckzyU/xo=; b=G+4Qi4IB0nMElkZnxkRHtg6SbPnA4LjnK
- xOp/fImA1MUgWb+G3wS30wLNG8tKV9BDGFa5eSEgZq2JSAV7Il1Zpp8z5cP7YTxk
- kJTgHY2oA2wufWkToIWbfok/KOJITDE6WjXHWCd3p+C89DbYD2esbQPq32fQWA2Y
- yz28M08OOF0Q58JQrYV6uP50H/vyhDLn+WvI9F72+qQ7BebagE3EWdoBkB5gbQPn
- b1oc/DglBX/FNE6pCy3GmYKB2KGc4lo8gZfEVn7VvKcyHKH2vQHI97SLS/t3vEAe
- caltaVO8xTIcIOKsGYToysjU7hK88oYZWBZk1Pv5LOyM++DCfcC+A==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31c1e30-1
+ :mime-version:references:subject:to; s=pp1; bh=7dewvaRSqeMbVtAS3
+ xQlODzV1Ib0tyTeVwjFS/WUHtI=; b=k6ZjThf2UCehHzvXwHkqEDItMspJtiEUi
+ jl7SHOsNVawdFSJQmeieDHA6APedl8RC7ZOsLhprS4VPYX+EmYyLXXcOtMWSiEvk
+ 4AhdDCfrOhadDBHjJuSJTplYjmqWdkIGYk/IqdTeNPKPzsnRgbFH62ki6wAdQZ8X
+ cHGuprI3S9hFRLaWroQwIjPK8GBBoaWJMADh630PRRtt11/i2+I4t0pwXcnWx7VM
+ tNKYpucnCdu4DQS6zeaY41A8eubeelbpM1WbJewuNoVP5TjcCQbfvtG5fV2Mp8Xz
+ nRt/H6jn0e+Kam/Ae7YVM0uBFg0/5f0udPVO9ba9m7cQQhyYecuAA==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32h9b8x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 16:20:33 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59KE09Gg014685;
- Mon, 20 Oct 2025 16:20:33 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7rxrqr-1
+ Mon, 20 Oct 2025 16:20:36 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59KFKYQf002320;
+ Mon, 20 Oct 2025 16:20:35 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqej6bra-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 16:20:33 +0000
+ Mon, 20 Oct 2025 16:20:35 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
  [10.241.53.104])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59KGKWOh6685296
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59KGKXkC50004272
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Oct 2025 16:20:32 GMT
+ Mon, 20 Oct 2025 16:20:34 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 19DB758067;
- Mon, 20 Oct 2025 16:20:32 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9DE6C5806A;
+ Mon, 20 Oct 2025 16:20:33 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4694E58065;
- Mon, 20 Oct 2025 16:20:31 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0635E58065;
+ Mon, 20 Oct 2025 16:20:33 +0000 (GMT)
 Received: from t15.ibmuc.com (unknown [9.61.78.141])
  by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 20 Oct 2025 16:20:31 +0000 (GMT)
+ Mon, 20 Oct 2025 16:20:32 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, jrossi@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH 3/7] pc-bios/s390-ccw: Introduce CLP Architecture
-Date: Mon, 20 Oct 2025 12:20:19 -0400
-Message-ID: <20251020162023.3649165-4-jrossi@linux.ibm.com>
+Subject: [PATCH 4/7] pc-bios/s390-ccw: Introduce PCI device IPL format
+Date: Mon, 20 Oct 2025 12:20:20 -0400
+Message-ID: <20251020162023.3649165-5-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251020162023.3649165-1-jrossi@linux.ibm.com>
 References: <20251020162023.3649165-1-jrossi@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OQPkbTRD8irdY8VpwRP8berbbGQGncZ6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX/jkiGFz4wmI1
- VwYjNgWyrHih7RXNQSNpjHes4vNyRj4wC5dwcaOZM9qkUGN3lK2L6rwfoRLc3MYX3bs9ahb/M8a
- g43E5waYUTixGE8xD5TGXNfoo496Nkko3TlnMUrJi8MBzV8Y+YkA4FGbKZO9sGJIjStTTnCU5m/
- RoPeX3ceIWOPgySLBW8ZDISe7UuSpnNSxNiFD4X7x8ICoEfdkF1JRz/SHy8IfbKjt/zW0N0i7Fo
- g8S7qeQZyOHlKjJ2ZH1W/UdqVKEjtkZ+7bS2XGPJNBTNmlVaGD4q/dOsRf9448DnR89uP4dlZuk
- oPIF42wgPFoy8fGS4h0jGbZNbE+YVfB9pgoQJ/I/ZpsXjeRBKhZT5jubmmLFAUKN9T3Vni8nBuC
- WqLuDJenmekHXiYN0rPPsD1r8zVGbQ==
-X-Proofpoint-GUID: OQPkbTRD8irdY8VpwRP8berbbGQGncZ6
-X-Authority-Analysis: v=2.4 cv=SKNPlevH c=1 sm=1 tr=0 ts=68f66151 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX1RUTUM/nsCIu
+ kwfu7WtQtkxAJG+RfQe6nRUcKHufm4m3uMUI3mpJ0fVclYkh+jRYHj8QkJFpoLfgwXMi1/mhFgx
+ YsUKF+28Urj1V13D26h5XRF1o3Ls+2Fb2mLP1pm9S88xjE0gORt65iiIkn5mPg/Yq9+Inn/rgdJ
+ rLRjJ37tBvJub9APWNDit8CKppRtljAv0lDw7IAi3mPedXHU6WH8PuJrU92IzifpydxOf004igb
+ I9VWAGRCuLUhwCxHGub4Zv69WrGWC2yYjrLEo6mnSTCNb4qZq+L246QfdTCcdvh5C5k7e3yUo/O
+ ytCtZvcey6Hb3RTwqwPBdM+g99w00RtszsdhuM6+YPYfZ6NNabUkO2uN6vhPKTkEIvnycHQ1m88
+ BadVQYmT9j+Uhgc657Sr9Jj2nCWkyg==
+X-Authority-Analysis: v=2.4 cv=OrVCCi/t c=1 sm=1 tr=0 ts=68f66154 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=B6FfjjnMrpp8agTJrekA:9
+ a=WVVyr85AwjsCaWk6uVoA:9
+X-Proofpoint-GUID: 5gyt6_4q8d7toDRzPnYLcQbeSksvy5Eg
+X-Proofpoint-ORIG-GUID: 5gyt6_4q8d7toDRzPnYLcQbeSksvy5Eg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-20_04,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ clxscore=1015 bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
@@ -116,31 +116,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Call Logical Processor (CLP) Architecture is used for managing PCI functions on
-s390x. Define and include the structures and routines needed to interact with
-PCI devices during IPL.
-
-Headers in ~/qemu/include/hw are not normally visible and must be included
-using a relative path.  Due to this, the QEMU_PACKED macro must also be defined
-here.
+Define selected s390x PCI instructions and extend IPLB to allow PCI devices.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 ---
- pc-bios/s390-ccw/clp.h    |  24 +++++++++
- pc-bios/s390-ccw/clp.c    | 106 ++++++++++++++++++++++++++++++++++++++
- pc-bios/s390-ccw/Makefile |   2 +-
- 3 files changed, 131 insertions(+), 1 deletion(-)
- create mode 100644 pc-bios/s390-ccw/clp.h
- create mode 100644 pc-bios/s390-ccw/clp.c
+ include/hw/s390x/ipl/qipl.h |   9 ++
+ pc-bios/s390-ccw/pci.h      |  77 +++++++++++++++
+ pc-bios/s390-ccw/pci.c      | 191 ++++++++++++++++++++++++++++++++++++
+ pc-bios/s390-ccw/Makefile   |   2 +-
+ 4 files changed, 278 insertions(+), 1 deletion(-)
+ create mode 100644 pc-bios/s390-ccw/pci.h
+ create mode 100644 pc-bios/s390-ccw/pci.c
 
-diff --git a/pc-bios/s390-ccw/clp.h b/pc-bios/s390-ccw/clp.h
+diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
+index aadab87c2e..efd7b3797c 100644
+--- a/include/hw/s390x/ipl/qipl.h
++++ b/include/hw/s390x/ipl/qipl.h
+@@ -104,6 +104,14 @@ struct IplBlockQemuScsi {
+ } QEMU_PACKED;
+ typedef struct IplBlockQemuScsi IplBlockQemuScsi;
+ 
++struct IplBlockPci {
++    uint32_t reserved0[80];
++    uint8_t  opt;
++    uint8_t  reserved1[3];
++    uint32_t fid;
++} QEMU_PACKED;
++typedef struct IplBlockPci IplBlockPci;
++
+ union IplParameterBlock {
+     struct {
+         uint32_t len;
+@@ -119,6 +127,7 @@ union IplParameterBlock {
+             IplBlockFcp fcp;
+             IPLBlockPV pv;
+             IplBlockQemuScsi scsi;
++            IplBlockPci pci;
+         };
+     } QEMU_PACKED;
+     struct {
+diff --git a/pc-bios/s390-ccw/pci.h b/pc-bios/s390-ccw/pci.h
 new file mode 100644
-index 0000000000..cb130e5e90
+index 0000000000..b5dc5bff35
 --- /dev/null
-+++ b/pc-bios/s390-ccw/clp.h
-@@ -0,0 +1,24 @@
++++ b/pc-bios/s390-ccw/pci.h
+@@ -0,0 +1,77 @@
 +/*
-+ * Call Logical Processor (CLP) architecture definitions
++ * s390x PCI definitions
 + *
 + * Copyright 2025 IBM Corp.
 + * Author(s): Jared Rossi <jrossi@linux.ibm.com>
@@ -148,29 +170,82 @@ index 0000000000..cb130e5e90
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef CLP_H
-+#define CLP_H
-+
-+#ifndef QEMU_PACKED
-+#define QEMU_PACKED __attribute__((packed))
-+#endif
++#ifndef PCI_H
++#define PCI_H
 +
 +#include <stdint.h>
-+#include "../../include/hw/s390x/s390-pci-clp.h"
++#include "clp.h"
 +
-+int clp_pci(void *data);
-+int enable_pci_function(uint32_t *fhandle);
-+int enumerate_pci_functions(void);
++#define ZPCI_CREATE_REQ(handle, space, len)                    \
++    ((uint64_t) handle << 32 | space << 16 | len)
++
++union register_pair {
++    unsigned __int128 pair;
++    struct {
++        unsigned long even;
++        unsigned long odd;
++    };
++};
++
++#define PCIFIB_FC_ENABLED      0x80
++#define PCIFIB_FC_ERROR        0x40
++#define PCIFIB_FC_BLOCKED      0x20
++#define PCIFIB_FC_DMAREG       0x10
++
++#define PCIST_DISABLED         0x0
++#define PCIST_ENABLED          0x1
++
++#define PCI_CAPABILITY_LIST    0x34 /* Offset of first capability list entry */
++
++struct PciFib {
++    uint32_t reserved0[2];
++    uint8_t fcflags;
++    uint8_t reserved1[3];
++    uint32_t reserved2;
++    uint64_t pba;
++    uint64_t pal;
++    uint64_t iota;
++    uint16_t isc:4;
++    uint16_t noi:12;
++    uint8_t reserved3:2;
++    uint8_t aibvo:6;
++    uint8_t s:1;
++    uint8_t reserved4:1;
++    uint8_t aisbo:6;
++    uint32_t reserved5;
++    uint64_t aibv;
++    uint64_t aisb;
++    uint64_t fmba;
++    uint32_t reserved6[2];
++};
++typedef struct PciFib PciFib;
++
++struct PciDevice {
++    uint16_t device_id;
++    uint16_t vendor_id;
++    uint32_t fid;
++    uint32_t fhandle;
++    uint8_t status;
++    PciFib fib;
++};
++typedef struct PciDevice PciDevice;
++
++int pci_write(uint32_t fhandle, uint64_t offset, uint64_t data, uint8_t len);
++int pci_read(uint32_t fhandle, uint64_t offset, uint8_t picas, void *buf, uint8_t len);
++uint8_t find_cap_pos(uint32_t fhandle, uint64_t cfg_type);
++int pci_dev_enable(PciDevice *pcidev);
++int get_fib(PciFib *fib, uint32_t fhandle);
++int set_fib(PciFib *fib, uint32_t fhandle, uint8_t dma_as, uint8_t opcontrol);
 +
 +#endif
-diff --git a/pc-bios/s390-ccw/clp.c b/pc-bios/s390-ccw/clp.c
+diff --git a/pc-bios/s390-ccw/pci.c b/pc-bios/s390-ccw/pci.c
 new file mode 100644
-index 0000000000..45d496fc18
+index 0000000000..f776bc064c
 --- /dev/null
-+++ b/pc-bios/s390-ccw/clp.c
-@@ -0,0 +1,106 @@
++++ b/pc-bios/s390-ccw/pci.c
+@@ -0,0 +1,191 @@
 +/*
-+ * Call Logical Processor (CLP) architecture
++ * s390x PCI funcionality
 + *
 + * Copyright 2025 IBM Corp.
 + * Author(s): Jared Rossi <jrossi@linux.ibm.com>
@@ -179,112 +254,197 @@ index 0000000000..45d496fc18
 + */
 +
 +#include "clp.h"
++#include "pci.h"
 +#include <stdio.h>
-+#include <string.h>
 +
-+int clp_pci(void *data)
++/* PCI load */
++static inline int pcilg(uint64_t *data, uint64_t req, uint64_t offset, uint8_t *status)
 +{
-+    struct { uint8_t _[2048]; } *req = data;
-+    int cc = 3;
++    union register_pair req_off = {.even = req, .odd = offset};
++    int cc = -1;
++    uint64_t __data = 0x92;
 +
 +    asm volatile (
-+        "     .insn   rrf,0xb9a00000,0,%[req],0,2\n"
++        "     .insn   rre,0xb9d20000,%[data],%[req_off]\n"
 +        "     ipm     %[cc]\n"
 +        "     srl     %[cc],28\n"
-+        : [cc] "+d" (cc), "+m" (*req)
-+        : [req] "a" (req)
-+        : "cc");
++        : [cc] "+d" (cc), [data] "=d" (__data),
++          [req_off] "+&d" (req_off.pair) :: "cc");
++    *status = req_off.even >> 24 & 0xff;
++    *data = __data;
 +    return cc;
 +}
 +
-+/*
-+ * Get the PCI function entry for a given function ID
-+ * Return 0 on success, 1 if the FID is not found, or a negative RC on error
-+ */
-+int find_pci_function(uint32_t fid, ClpFhListEntry *entry)
++/* PCI store */
++int pcistg(uint64_t data, uint64_t req, uint64_t offset, uint8_t *status)
 +{
++    union register_pair req_off = {.even = req, .odd = offset};
++    int cc = -1;
++
++    asm volatile (
++        "     .insn   rre,0xb9d00000,%[data],%[req_off]\n"
++        "     ipm     %[cc]\n"
++        "     srl     %[cc],28\n"
++        : [cc] "+d" (cc), [req_off] "+&d" (req_off.pair)
++        : [data] "d" (data)
++        : "cc");
++    *status = req_off.even >> 24 & 0xff;
++    return cc;
++}
++
++/* store PCI function controls */
++int stpcifc(uint64_t req, PciFib *fib, uint8_t *status)
++{
++    uint8_t cc;
++
++    asm volatile (
++        "     .insn   rxy,0xe300000000d4,%[req],%[fib]\n"
++        "     ipm     %[cc]\n"
++        "     srl     %[cc],28\n"
++        : [cc] "=d" (cc), [req] "+d" (req), [fib] "+Q" (*fib)
++        : : "cc");
++    *status = req >> 24 & 0xff;
++    return cc;
++}
++
++/* modify PCI function controls */
++int mpcifc(uint64_t req, PciFib *fib, uint8_t *status)
++{
++    uint8_t cc;
++
++    asm volatile (
++        "     .insn   rxy,0xe300000000d0,%[req],%[fib]\n"
++        "     ipm     %[cc]\n"
++        "     srl     %[cc],28\n"
++        : [cc] "=d" (cc), [req] "+d" (req), [fib] "+Q" (*fib)
++        : : "cc");
++    *status = req >> 24 & 0xff;
++    return cc;
++}
++
++int pci_write(uint32_t fhandle, uint64_t offset, uint64_t data, uint8_t len)
++{
++
++    uint64_t req = ZPCI_CREATE_REQ(fhandle, 4, len);
++    uint8_t status;
 +    int rc;
-+    int count = 0;
-+    int limit = PCI_MAX_FUNCTIONS;
-+    ClpReqRspListPci rrb;
 +
-+    rrb.request.hdr.len = 32;
-+    rrb.request.hdr.cmd = 0x02;
-+    rrb.request.resume_token = 0;
-+    rrb.response.hdr.len = sizeof(ClpRspListPci);
++    rc = pcistg(data, req, offset, &status);
++    if (rc == 1) {
++        return status;
++    } else if (rc) {
++        return rc;
++    }
 +
-+    do {
-+        rc = clp_pci(&rrb);
-+        if (rc) {
-+            return -rc;
-+        }
++    return 0;
++}
 +
-+        if (rrb.response.hdr.rsp != 0x0010) {
-+            printf("Failed to list PCI functions: %x", rrb.response.hdr.rsp);
-+            return -1;
-+        }
++int pci_read(uint32_t fhandle, uint64_t offset, uint8_t picas, void *buf, uint8_t len)
++{
++    uint64_t req;
++    uint64_t data;
++    uint8_t status;
++    int readlen;
++    int i = 0;
++    int rc = 0;
 +
-+        /* Resume token set when max enteries are returned */
-+        if (rrb.response.resume_token) {
-+            count = CLP_FH_LIST_NR_ENTRIES;
-+            rrb.request.resume_token = rrb.response.resume_token;
-+        } else {
-+            count = (rrb.response.hdr.len - 32) / sizeof(ClpFhListEntry);
-+        }
++    while (len > 0 && !rc) {
++        data = 0;
++        readlen = len > 8 ? 8 : len;
++        req = ZPCI_CREATE_REQ(fhandle, picas, readlen);
++        rc = pcilg(&data, req, offset + (i * 8), &status);
++        ((uint64_t *)buf)[i] = data;
++        len -= readlen;
++        i++;
++    }
 +
-+        limit -= count;
++    if (rc == 1) {
++        return status;
++    } else if (rc) {
++        return rc;
++    }
 +
-+        for (int i = 0; i < count; i++) {
-+            if (rrb.response.fh_list[i].fid == fid) {
-+                memcpy(entry, &rrb.response.fh_list[i], sizeof(ClpFhListEntry));
-+                return 0;
-+            }
-+        }
-+
-+    } while (rrb.request.resume_token && limit);
-+
-+    return 1;
++    return 0;
 +}
 +
 +/*
-+ * Enable the PCI function associated with a given handle
-+ * Return 0 on success or a negative RC on error
++ * Find the position of the capability config within PCI configuration
++ * space for a given cfg type.  Return the position if found, otherwise 0.
 + */
-+int enable_pci_function(uint32_t *fhandle)
-+{
-+    ClpReqRspSetPci rrb;
++uint8_t find_cap_pos(uint32_t fhandle, uint64_t cfg_type) {
++    uint64_t req, next, cfg;
++    uint8_t status;
 +    int rc;
 +
-+    rrb.request.hdr.len = 32;
-+    rrb.request.hdr.cmd = 0x05;
-+    rrb.request.fh = *fhandle;
-+    rrb.request.oc = 0;
-+    rrb.request.ndas = 1;
-+    rrb.response.hdr.len = 32;
++    req = ZPCI_CREATE_REQ(fhandle, 0xf, 1);
++    rc = pcilg(&next, req, PCI_CAPABILITY_LIST, &status);
++    rc = pcilg(&cfg, req, next + 3, &status);
 +
-+    rc = clp_pci(&rrb);
++    while (!rc && (cfg != cfg_type) && next) {
++        rc = pcilg(&next, req, next + 1, &status);
++        rc = pcilg(&cfg, req, next + 3, &status);
++    }
++
++    return rc ? 0 : next;
++}
++
++int pci_dev_enable(PciDevice *pcidev)
++{
++    int rc;
++
++    rc = enable_pci_function(&pcidev->fhandle);
 +    if (rc) {
-+        return -rc;
++        return rc;
 +    }
 +
-+    if (rrb.response.hdr.rsp != 0x0010) {
-+        printf("Failed to enable PCI function: %x", rrb.response.hdr.rsp);
-+        return -1;
++    pcidev->status = PCIST_ENABLED;
++
++    return get_fib(&pcidev->fib, pcidev->fhandle);
++}
++
++int get_fib(PciFib *fib, uint32_t fhandle)
++{
++    uint64_t req = ZPCI_CREATE_REQ(fhandle, 0, 0);
++    uint8_t status;
++    int rc;
++
++    rc = stpcifc(req, fib, &status);
++
++    if (rc == 1) {
++        return status;
++    } else if (rc) {
++        return rc;
 +    }
 +
-+    *fhandle = rrb.response.fh;
++    return 0;
++}
++
++int set_fib(PciFib *fib, uint32_t fhandle, uint8_t dma_as, uint8_t opcontrol)
++{
++    uint64_t req = ZPCI_CREATE_REQ(fhandle, dma_as, opcontrol);
++    uint8_t status;
++    int rc;
++
++    rc = mpcifc(req, fib, &status);
++
++    if (rc == 1) {
++        return status;
++    } else if (rc) {
++        return rc;
++    }
++
 +    return 0;
 +}
 diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
-index 3577ac381a..89a42ae506 100644
+index 89a42ae506..1f17f98fc1 100644
 --- a/pc-bios/s390-ccw/Makefile
 +++ b/pc-bios/s390-ccw/Makefile
 @@ -35,7 +35,7 @@ QEMU_DGFLAGS = -MMD -MP -MT $@ -MF $(@D)/$(*F).d
  
  OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o netmain.o \
        virtio.o virtio-net.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o \
--      virtio-ccw.o
-+      virtio-ccw.o clp.o
+-      virtio-ccw.o clp.o
++      virtio-ccw.o clp.o pci.o
  
  SLOF_DIR := $(SRC_PATH)/../../roms/SLOF
  
