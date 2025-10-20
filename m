@@ -2,95 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83ABABF3E18
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35583BF3E09
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:20:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAyEq-0004se-So; Mon, 20 Oct 2025 18:20:24 -0400
+	id 1vAyEv-0004tt-Bc; Mon, 20 Oct 2025 18:20:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAyEo-0004rg-B8
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:20:22 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAyEt-0004ta-GZ
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:20:27 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAyEm-0007Sr-7a
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:20:21 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so29124095e9.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:20:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAyEr-0007Tf-D4
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:20:27 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-47495477241so1774855e9.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:20:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760998818; x=1761603618; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760998823; x=1761603623; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D/MX9EUM3OlM0fVIXCU1R8/yICbcVLFwc2FcsNTruKA=;
- b=HXhRxyCrhb+AjRMaSIVhzQ8dvZcNFigtKkiR2Wwqt9TL0Hx58qpi3oh6fHNizeBaWU
- Kf3prR+AXKN2SounIpog77Z/fnDP7AAW0mnE4b1aJpkzctV0Bsko8kCo3AWa7XEK0afc
- y5aWP7pSLuEMMb1JsKPbPKRh6wKlzi4yNJsA/e5TWMQMvaQkvhDL1fp9L+Rw2kKFmI8c
- mMAJQhAFpxhaspS1WNALb0Ip1vhJ4wNdWsopMkgbsXD+B42Mn0Q5MJdGvEBXLlIX+Z0J
- Uqxc0cnJ2QAEYuKxsyAIJLz4rRae+z2DPj/AbT2Aw6v4WPx8TVlsi0GSJQiVB4++DUx0
- 5hGw==
+ bh=8808EUNcwke3TPhY+Qw/CQoqBF5kKU0jpneGQtl261k=;
+ b=VFeoaxiGtz+EFhdf0CtkK3k96MBZ8jNcP1GGtJeIsKDjLz4A/7SXvimQH5MvDFsilR
+ yMTEbtlfmbsec0hibHZ5781J+IZW0uxN1vwYZdzNt8aHJrJRaHnb0yx6HrRH2HTEFbkW
+ ynR14bZEIRb5zU/QhpDno0SdHQ/BcuSpfAA1gVouiuDK8JIMDPkXNThcOmHg+n3wOL/s
+ FIqytOU5KbhfThskMqPV4ZQvIZL/Fmy7c5sfnqSewKShDKrE768oAANN9cB7wdrY3Xl4
+ AZDKnSBydNY1vRtnNAU+f7UbE8lw3GLftzEwSBgd/4FTaw8B2n3FePGfBFAqqLGMIGsM
+ C0hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760998818; x=1761603618;
+ d=1e100.net; s=20230601; t=1760998823; x=1761603623;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D/MX9EUM3OlM0fVIXCU1R8/yICbcVLFwc2FcsNTruKA=;
- b=A98Tnsf8VlbYVHgmHxLc3NOd0vPNjutXrMPDJXSQg4KICUKa5lPayAsN7T0X/PeJYx
- ejIkWLvhxiiih8tpLjVd9irQ+hFGwYvFyXjHxRJismKal7PA1DSoiJAo/2NmZxIEBZQS
- fsfWkFoqWZpCzWJxWQv8NXIQKlTu2Ca+xQZMi/nOg+gKSpFWWs+GOGdzVcn5ZXlRGWbb
- kBlgdLWJw03uNMb/1vIw0hVEIAxNCaoGUpxGYZ55G0qwejxsrwikDW48gbO9sc2AV8Vg
- WIo/0lEf8zqX90kxUyDmSVT1iLJCsuF43Od6H4aS34qZ8mqMOSqW3+2KeYbE8iJHSpN3
- ZeFA==
-X-Gm-Message-State: AOJu0Yx9pLdN3QQ7y4Gh68VpkDklTq15+8DERGyCACyv4jne/WkwFTGU
- uyWWSdMd9pBjDrfJ3aUgQ8UqgWZP/2vLntx/qB72fUwmEKsk3Nv0StudRAA3pg96/72InITSxDM
- gQMXjfZs=
-X-Gm-Gg: ASbGnct70VVfFpnsZbuDvTY9GHASDSu0hGe3cwj+UO58LAmZEojDcm2Hks7JWUaplEK
- ib8rtHy2QCmDemVHJHV73yJPeL/fPDyvm4gSZ8kOsjUjhQJNDy/lLHe8KrOzJHMLNsI5I1t4237
- 8NyewEm3KKPbZWLkKpK6OKIIuJoCKaPD2RTJLpvd0qaVwMV4V4fH8bjT02vQ01DGdKdo1t7fNzB
- lSOph4Ws3OkdlcOQ8iF+gYtPY3DxAexfF4sgtdbol1PG/cKxB2HKfBMwydxV2GYifh/I3Mj6B3G
- 9TJ2hOz6xmUJ/MBjuwnFW7kfk6B0tal7IFNe4yKKUmLvlcID86JZQ0ohZbIfEzve+3V+eTiGxeU
- MKILGG9a0A/Sm3H5q35emrhLWU1FuE5iiFZtm2eiljzYR5pPsVLoyJk4I7nmle52LVSM8CGDQtf
- pec/0B/pHI6g5C5S9+Qyns9aYpbXK80VzHDNE8dwK5+SsQVtjLZA==
-X-Google-Smtp-Source: AGHT+IHQd94WnxOqRShneHwKD1auZ5AJi9lX/D5JtmhSmJqVvl4rtAmLxPX6xUZIlTT0afo+HO6Fjg==
-X-Received: by 2002:a05:600c:1d9b:b0:46e:38f7:625f with SMTP id
- 5b1f17b1804b1-471178771b6mr98997475e9.10.1760998818083; 
- Mon, 20 Oct 2025 15:20:18 -0700 (PDT)
+ bh=8808EUNcwke3TPhY+Qw/CQoqBF5kKU0jpneGQtl261k=;
+ b=D/c0jRFWtGNUKihCJY57/5OD67RZVSyhewkosPbzXT1g6JotdK3fVOmNK7LgPLm2gS
+ rQHp6VaBtBIX3H23dVWOHFpH/ae/gaN/4qKX63oObnO6KsGqqjpKs6W38u74oMvywSvR
+ HkcythK5X+B94HRpbd04xUHbWBTwLkJNot+P2pgg9kPZiUdROE6CufGCTUWbjxzM4w+U
+ Y0WPQ6CIbPyxbrNUSpxgHIammCOVNEbR8JOrPNisDy9uUWHdyeLuPGVzekGljMIzjwI8
+ 2BYaqk6gU4Ai4jO5fI6lGh352sJ4Th3TCl9TqJas5f0iCXpkuUD+FK9fnEETsQ656Nfi
+ xv8w==
+X-Gm-Message-State: AOJu0YycocfdGhwCU83xQRSoYMAinlYNDANVCGo+7XH/3eG8Tk03xSUI
+ 6I17cc5BSkN5oUB8SLEbOTR0DIwrQph7AlwCHiCe9Ta/0sSGWnXhhZr03FUsntqC1PVXFjMcOPc
+ ClRUelEc=
+X-Gm-Gg: ASbGnctAlzu2yHqrTurILfkMd5cyc1WS7fcEP5sZG/XgIHhoh7wJQJKNFw3yzJZNVpM
+ kFTuErYYI/vQmVd2Nx0bp7760SRUnGDyzJsqFAIUNIEukhO7UE9Pmtn6KUd6PaNHCJNP7GTENVg
+ jDpM+mScIAPSk0YKG+ps0+ZGF+AqH7Byqx2uK3PcwFrEi/oe+Cv6WOulwnKbsye2qB4YVlLccJz
+ pP4v5BBEyYvXvWmJkTonaoVUuT4ZEqvs5gn9HoSxnoZlJR1z49eiOtaqfnhe2NzScaoo6lbnCqQ
+ yjk6UP/4k8EqNcGSZQq1p+AiretF84pZHjVG2ePzZkJj7yWjehHNte/xmH26HFgs6QtWragHdfa
+ Yxalus+NbuM+d/hEr+ETxJkbG8v7VxJOn4b0MzEc0P3zDj1V0msoQqNhPDej2+YyDRKRqQnd+ZK
+ BTs0bjq0ABtZhnQ1/7r6lJiWcXfP72j/vPikUc1egu16OcUR5V7sMHMg9GptLgrtNIFPgkd5c=
+X-Google-Smtp-Source: AGHT+IES2T8m0f8ghyEV4xRpbbyRCuMU/+ixyjUD/tTpsKc6pOeHIflwLfTm5Zg6+gIWreLNBXxCxg==
+X-Received: by 2002:a05:600c:4748:b0:471:12c2:201b with SMTP id
+ 5b1f17b1804b1-4711791c503mr95830615e9.27.1760998823429; 
+ Mon, 20 Oct 2025 15:20:23 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-474975af467sm3992735e9.10.2025.10.20.15.20.16
+ 5b1f17b1804b1-474949dd479sm5098315e9.0.2025.10.20.15.20.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 15:20:17 -0700 (PDT)
+ Mon, 20 Oct 2025 15:20:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Luc Michel <luc.michel@amd.com>,
  Anton Johansson <anjo@rev.ng>, qemu-arm@nongnu.org,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v6 26/30] hw/arm/virt-acpi-build: Include missing 'cpu.h'
- header
-Date: Tue, 21 Oct 2025 00:20:06 +0200
-Message-ID: <20251020222010.68708-2-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v6 27/30] hw/arm/virt-acpi-build: Build only once
+Date: Tue, 21 Oct 2025 00:20:07 +0200
+Message-ID: <20251020222010.68708-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020220941.65269-1-philmd@linaro.org>
 References: <20251020220941.65269-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,48 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"cpu.h" is indirectly pulled in by another header. Include
-it explicitly in order to avoid when changing default CPPFLAGS path:
-
-  hw/arm/virt-acpi-build.c:903:34: error: call to undeclared function 'arm_feature';
-    903 |         uint32_t pmu_interrupt = arm_feature(&armcpu->env, ARM_FEATURE_PMU) ?
-        |                                  ^
-  hw/arm/virt-acpi-build.c:903:53: error: incomplete definition of type 'ARMCPU' (aka 'struct ArchCPU')
-    903 |         uint32_t pmu_interrupt = arm_feature(&armcpu->env, ARM_FEATURE_PMU) ?
-        |                                               ~~~~~~^
-  include/qemu/typedefs.h:30:16: note: forward declaration of 'struct ArchCPU'
-     30 | typedef struct ArchCPU ArchCPU;
-        |                ^
-  hw/arm/virt-acpi-build.c:903:60: error: use of undeclared identifier 'ARM_FEATURE_PMU'
-    903 |         uint32_t pmu_interrupt = arm_feature(&armcpu->env, ARM_FEATURE_PMU) ?
-        |                                                            ^
-  hw/arm/virt-acpi-build.c:993:10: error: use of undeclared identifier 'QEMU_PSCI_CONDUIT_DISABLED'
-    993 |     case QEMU_PSCI_CONDUIT_DISABLED:
-        |          ^
-  hw/arm/virt-acpi-build.c:996:10: error: use of undeclared identifier 'QEMU_PSCI_CONDUIT_HVC'
-    996 |     case QEMU_PSCI_CONDUIT_HVC:
-        |          ^
-  hw/arm/virt-acpi-build.c:1000:10: error: use of undeclared identifier 'QEMU_PSCI_CONDUIT_SMC'
-   1000 |     case QEMU_PSCI_CONDUIT_SMC:
-        |          ^
+Previous commits removed the target-specificities,
+we can now move virt-acpi-build.c to arm_common_ss[].
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/virt-acpi-build.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/arm/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 8bb6b605154..200e2a1da70 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -62,6 +62,7 @@
- #include "hw/acpi/ghes.h"
- #include "hw/acpi/viot.h"
- #include "hw/virtio/virtio-acpi.h"
-+#include "target/arm/cpu.h"
- #include "target/arm/multiprocessing.h"
- 
- #define ARM_SPI_BASE 32
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index fbd5e8da79c..4dfc7813191 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -1,7 +1,7 @@
+ arm_ss = ss.source_set()
+ arm_common_ss = ss.source_set()
+ arm_ss.add(when: 'CONFIG_ARM_VIRT', if_true: files('virt.c'))
+-arm_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
++arm_common_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
+ arm_common_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
+ arm_common_ss.add(when: 'CONFIG_EMCRAFT_SF2', if_true: files('msf2-som.c'))
+ arm_common_ss.add(when: 'CONFIG_HIGHBANK', if_true: files('highbank.c'))
 -- 
 2.51.0
 
