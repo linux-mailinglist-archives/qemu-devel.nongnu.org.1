@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AE8BF09C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3486BF09BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:40:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAnJG-0002Dl-IL; Mon, 20 Oct 2025 06:40:14 -0400
+	id 1vAnJ9-0001k5-Ij; Mon, 20 Oct 2025 06:40:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnIF-0000ph-Ow
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:39:12 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnIK-0000uy-GO
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:39:21 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnID-0000HL-Sj
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:39:11 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3f2cf786abeso3247573f8f.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:39:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnII-0000Hw-9b
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:39:15 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-427007b1fe5so2732044f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:39:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760956746; x=1761561546; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760956752; x=1761561552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G71RzqW1rRM1q68VyBiXz7BShoBGdhsR1BgR0TIYzSw=;
- b=Jr95HB1wgeORQ5XtMkMzpEoFp6KH+DHjGiLeVdKPTlJD1M6Mal3zYRODQDpT7gQIex
- sBKCdbvH5lIpX1WznFtw6RsttQK3JoAp4drideyJq7YEXjE8PsgnBv8M450AsAfLWkC4
- QMBaND9utm6RbIZPQexRxkSQfyYF/oSXjRCb6MlESDCKKf+IIN5bM/LlUHrOotWfpkFL
- S4k7MVI8oq0c4hUzm2zVpGCB5GbXK0eFlby0SfYxE/3ygoKTUKp5hYj8IR4mvjPR6R7r
- ejY4lj+0ucrHEBDO0VvAgKJD89HZzB6faaykJ+PKwv7aRI4aA3QGe2KLJmtaK249I6ut
- fS8A==
+ bh=TZHEWfyw9nXdEX4o90awyf1j98q0YkzoZ7smAeZYw1c=;
+ b=N/7orSYzHzXMcSiG8kpsa7MTkEDu48TQQBZtS8i7xOTzQ6Nfky3seeNaXs/bPKCQb0
+ WMXNt5lV1auUfV2PL8rDBjZWQzQFR8B+YNdeFw3UIH1qoAVA54AUiu4rF1hE9kEF6TqU
+ CWQkgcQEj3sd4CrLze6jLdj08nvvnqAEzjMHrfZarGfKrYQV8c3I7+0fhPW86OJfMGeC
+ iRDlEMUzNcKi3QUMb7alak31cjCccUvmmIBHJYuKwd0hiOUNfesO3WI+rvkPBV9pktzg
+ HG7LHYaDL2eR/Wqo8KQx55KvszopFzPoteMgH7Uo6NBRXIBzfo5Oa81VyGpvV2LzKa0U
+ hQ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760956746; x=1761561546;
+ d=1e100.net; s=20230601; t=1760956752; x=1761561552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G71RzqW1rRM1q68VyBiXz7BShoBGdhsR1BgR0TIYzSw=;
- b=OIWpsmCanKpTMjFHgZHNsH111SyUP8/SWSUtxtrQatGYyBWUglD2EmQMHUnOtI9LjU
- N6ElGwovSIlOcq8+xhJTDgSsSlDceAUfi8Q8YZsRWnmlcyFd09OgZmtcA4HPYgFkH8GR
- J+erIVOUF/Hf+hGpZc3dWdGXvwL+e57VvtQcZZ5aXdXILBiDyUh1FGZzA461LWwm4TYb
- lOPktggA/67LnCI/SovlM+JJMTaQfpVBF8apMSEiamROSd0SRd2DyQ49MpRkd9qdMQab
- uOMBDPhDV/r5IQLtDViMXVbf0wiHALuWseXBfpKf+v8MRR9bBjbterFaG24+cIW7y4nD
- VcoA==
-X-Gm-Message-State: AOJu0YzkeRzBYZTMLSzKc0wXGaDeQEYkFj6Bi5FvrNYECbqFl4SMNK7Z
- dNgprkEfYa9sm03n1j+DU94l7GEndPckylsyqB6KjuNK0g4VlK8q9nJS17ihpP2MxX5jJ0KEsMa
- JYCxFks4=
-X-Gm-Gg: ASbGnctYzCl79cWhCSRLSkqJbtG3jS5QRu/CjqE1ze6bNG0aAJ7UiBnoHaV9lpwGgj7
- +zxbRHjaihI8Of0AXrh8bAyFKURY74LnQJ6l6mv9rQi3YHf5OoFdyJW6UOJDUhJZMfJba/m8s3D
- zlHq7Nelk91t3YNf8lrYS1rsKLYGedAZr98EAuMZDp+ziBqeT/kxDHYjMUWaHsI0bNznjbPP/2L
- LS9lEiDGiWkKLohFnjyJGjogLpuq4LHS65g1FRBFi6JP5J4gsIlSwl33LLH9tjtcph8hWP4T+m/
- npUWACRZrPmrLY96Os+6mmqJISYDu/G1SponjWfUOhujjv1/oRCYaMXfMzVbWTfsgr0KOjsef1P
- l3Y12rYQph18nl7DjIGqyMqLw/Svch1yWlk8aHJG9ERDq0BZqMqUR4ADDQFnfqOWsA1ZGFbGnDX
- rTrxcs3COFqvb6IVE6X+LTZCVVf+Qlv9avK1Cbtl0Oc+e+Q40J8YsLixuRcQZ6hs6yvbWeB3g=
-X-Google-Smtp-Source: AGHT+IEA6OS/cJN8d7ANvIfUdQD0HaQc+Ga96+ciiQUpkqRgsXl2JRuNNPFZgrzIZpTMTtzjZnOK/A==
-X-Received: by 2002:a05:6000:18a8:b0:427:7f5:2b8 with SMTP id
- ffacd0b85a97d-42707f50382mr6302454f8f.43.1760956746374; 
- Mon, 20 Oct 2025 03:39:06 -0700 (PDT)
+ bh=TZHEWfyw9nXdEX4o90awyf1j98q0YkzoZ7smAeZYw1c=;
+ b=aipZMCU12P9ADo+4eCM33xG22ubT2EC8VNwaVkdI7c6ICdysuJYOn/SpiH6aPj7H+a
+ ZBZbD0rbov0CLDeLNhbTmJpiTD3xRg5faiaYj7QiCCPDPUy7irRqRj3GMlDcVw1882NT
+ rNZO3Aw0o1qaVO6Ha3gdmMyvJInhMLC13ZBIa5jbJMh84AGtBWUchhSMVJlqBvS0MbvG
+ K47nOiyC11GLlbktkF7Co8U3HSWElxLz1bF7CFYL7qunRJaIq0/XhmjasHX78sfJsPFE
+ awQr/HjQUHIPC3XcjCTZYNJVEj3DnqGDRrXaQRj6XmIy7VCLq8exTAPiUWmVAZn/MemH
+ OQSw==
+X-Gm-Message-State: AOJu0Yy7wiSFf5qlG5Dc07t19FNLF8pFuDQfbPsWra8Jrqp8V2vyQSP/
+ k1CAp6lmPJb3UvTBvhpLX+EmEjuy9O52TNYxjjIdmPgL3bJXay3tznlb9VRf1KlDi9ccxGJSz23
+ lt3lLzzw=
+X-Gm-Gg: ASbGncuPa9gKgKA9vmgBHIq0OifFd2igQLrq1LCPEAtd8FMToaQSIWqcSxcq5isU0Pv
+ Q+orCnhuOetcP7HNeSOr+0ZBQVIghVqPA7EOPGwiSdcRKcNDtstuOYrv3BhhXqXxZkBqgQ/Q6+0
+ Nxgu3+j3acUIgPto8sTRxkt2sifNjYT0rp9bPDVLV/7ltRaVHd2OxZ+rRl6bYcqQaK8EbZSSOxx
+ A4QLkbHETF8xK3jRocTdH3HdQR0+BMwTxCbx9N8shxBJaTn0OUALw6RPVdGc+7K6+j+L4C4dZHo
+ ZmG1lpbzMXgpeKF4ekxnqlb7urmTtecp8d9UjnjaWCiWB19/gMArm/7orU+zUfcSK/Rpe9NYokg
+ wl1bGbwboDJ7Yhz69jfaWYGqfzs5GagMgqugWimkhG01aTqgAMmXdH8rD2fWUqlHVw51u9vJ6tP
+ /8pQ7KN35L7Hh5SS9vfXGiDDVB6sIqbrsD2CbrG4tRGpeTypAQ1g==
+X-Google-Smtp-Source: AGHT+IHt0NJvsiUGxeAB/Y5QARjE5h0PkET3wK8rookKp/FSOl9qyNOKlATuA3hZTZ2on/J37dayhQ==
+X-Received: by 2002:a05:6000:2c09:b0:3ee:15bb:72c8 with SMTP id
+ ffacd0b85a97d-42704daececmr10159066f8f.36.1760956752274; 
+ Mon, 20 Oct 2025 03:39:12 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-471144239bdsm270295285e9.3.2025.10.20.03.39.05
+ ffacd0b85a97d-427ea5b3c65sm14592118f8f.15.2025.10.20.03.39.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 03:39:05 -0700 (PDT)
+ Mon, 20 Oct 2025 03:39:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
@@ -69,18 +69,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Chinmay Rath <rathc@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/18] hw/ppc/spapr: Remove
- SpaprMachineClass::update_dt_enabled field
-Date: Mon, 20 Oct 2025 12:38:06 +0200
-Message-ID: <20251020103815.78415-11-philmd@linaro.org>
+Subject: [PATCH 11/18] hw/ppc/spapr: Remove deprecated pseries-4.0 machine
+Date: Mon, 20 Oct 2025 12:38:07 +0200
+Message-ID: <20251020103815.78415-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020103815.78415-1-philmd@linaro.org>
 References: <20251020103815.78415-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,83 +102,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SpaprMachineClass::update_dt_enabled field was only used by the
-pseries-3.1 machine, which got removed. Remove it as now unused.
+This machine has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") it can now be removed.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/ppc/spapr.h | 1 -
- hw/ppc/spapr.c         | 9 ---------
- hw/ppc/spapr_hcall.c   | 5 -----
- 3 files changed, 15 deletions(-)
+ hw/ppc/spapr.c | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index bc75e29084b..1db67784de8 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -143,7 +143,6 @@ struct SpaprMachineClass {
-     MachineClass parent_class;
- 
-     /*< public >*/
--    bool update_dt_enabled;    /* enable KVMPPC_H_UPDATE_DT */
-     bool pre_4_1_migration; /* don't migrate hpt-max-page-size */
-     bool linux_pci_probe;
-     bool smp_threads_vsmt; /* set VSMT to smp_threads by default */
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index b81eb7ffe73..feb1e78b7c0 100644
+index feb1e78b7c0..e861a2e7466 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -2052,13 +2052,6 @@ static const VMStateDescription vmstate_spapr_irq_map = {
-     },
- };
+@@ -4968,33 +4968,6 @@ static void spapr_machine_4_1_class_options(MachineClass *mc)
  
--static bool spapr_dtb_needed(void *opaque)
+ DEFINE_SPAPR_MACHINE(4, 1);
+ 
+-/*
+- * pseries-4.0
+- */
+-static bool phb_placement_4_0(SpaprMachineState *spapr, uint32_t index,
+-                              uint64_t *buid, hwaddr *pio,
+-                              hwaddr *mmio32, hwaddr *mmio64,
+-                              unsigned n_dma, uint32_t *liobns, Error **errp)
 -{
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(opaque);
+-    if (!spapr_phb_placement(spapr, index, buid, pio, mmio32, mmio64, n_dma,
+-                             liobns, errp)) {
+-        return false;
+-    }
+-    return true;
+-}
+-static void spapr_machine_4_0_class_options(MachineClass *mc)
+-{
+-    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
 -
--    return smc->update_dt_enabled;
+-    spapr_machine_4_1_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_4_0, hw_compat_4_0_len);
+-    smc->phb_placement = phb_placement_4_0;
+-    smc->irq = &spapr_irq_xics;
+-    smc->pre_4_1_migration = true;
 -}
 -
- static int spapr_dtb_pre_load(void *opaque)
- {
-     SpaprMachineState *spapr = (SpaprMachineState *)opaque;
-@@ -2074,7 +2067,6 @@ static const VMStateDescription vmstate_spapr_dtb = {
-     .name = "spapr_dtb",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .needed = spapr_dtb_needed,
-     .pre_load = spapr_dtb_pre_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
-@@ -4607,7 +4599,6 @@ static void spapr_machine_class_init(ObjectClass *oc, const void *data)
-     hc->unplug_request = spapr_machine_device_unplug_request;
-     hc->unplug = spapr_machine_device_unplug;
- 
--    smc->update_dt_enabled = true;
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     mc->has_hotpluggable_cpus = true;
-     mc->nvdimm_supported = true;
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index 8c1e0a4817b..8f03b3e7764 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -1475,16 +1475,11 @@ static target_ulong h_update_dt(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     target_ulong dt = ppc64_phys_to_real(args[0]);
-     struct fdt_header hdr = { 0 };
-     unsigned cb;
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-     void *fdt;
- 
-     cpu_physical_memory_read(dt, &hdr, sizeof(hdr));
-     cb = fdt32_to_cpu(hdr.totalsize);
- 
--    if (!smc->update_dt_enabled) {
--        return H_SUCCESS;
--    }
+-DEFINE_SPAPR_MACHINE(4, 0);
 -
-     /* Check that the fdt did not grow out of proportion */
-     if (cb > spapr->fdt_initial_size * 2) {
-         trace_spapr_update_dt_failed_size(spapr->fdt_initial_size, cb,
+ static void spapr_machine_register_types(void)
+ {
+     type_register_static(&spapr_machine_info);
 -- 
 2.51.0
 
