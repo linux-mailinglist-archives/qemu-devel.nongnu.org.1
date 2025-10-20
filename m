@@ -2,80 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6C3BF24B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C737BF24BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:04:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAsJi-0002wT-Og; Mon, 20 Oct 2025 12:01:02 -0400
+	id 1vAsMd-0005CE-QU; Mon, 20 Oct 2025 12:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vAsJS-0002t4-Se
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 12:00:56 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vAsJP-0007Bd-9H
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 12:00:46 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-78487b0960bso20686347b3.2
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 09:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760976041; x=1761580841; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gE0aTv0AybxpyvUrkw48kENR4BDFz7WGor4ksSfbP88=;
- b=DWfKJ1SLlyDZY9mMLBDPMqLLjAGIaOlY3Cd3vk6bSN1dln/WXgm3Z9Q7G/ya9XtnrJ
- v7NKm5ry7aLk9FoEWr/z0Hz0tFicJOwwEm40/ESylChE3ub1mMvqVshA4XZ1031ywCl2
- ZTactjSJi+Mf69Nf+25AhTjz9UUIJQm4s+J0EbbVaiZI6qqD4HT+6JoB/qTwAl1Wx2nP
- +/a670kYjE0B1W3/fjYAFeny0Z0Le5DFD3pxAyEppUYeRLySzLgA3JxDyDdA5OP/UJAJ
- tw4KF77yPVg/lZhTrB1IZIC7bZT2TkxB3SS9s7lUSelDy9nwVxN7pBQ3n2Hx8TKaJLUz
- b6Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760976041; x=1761580841;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gE0aTv0AybxpyvUrkw48kENR4BDFz7WGor4ksSfbP88=;
- b=vKylguO/hdQxRJl+GkA37ealYkeHbquawwgRN+xZ6H1/pn/cvifF+akLrDYGzL+7QQ
- Qc2giyIBnBS33kAfeyFWTGmveZ6mo5qXCZsH+dmNsZzqrWh8H/gv78o9FOCeoceiHKVO
- dLLvPlEodTgG9YFxTk+PhLwgH22KgCwCRg8DHcXXLMtFq2Uy944ecmDrLNae70ymHIQd
- vCttgoF2C+QsBHfjtnY1+u+NZku19Qf3owWKDY7AkVcH0+HEKLo5sEPp4ivJP9496+iT
- +9EuvphiYEMEb7vxdL8ImldXnIfmFE8D3vszj/8qxuV62QntmuCc+pCpmbCUcsy9DxId
- 8o1g==
-X-Gm-Message-State: AOJu0YwwLJvbO+sYVyHhaDNFsXP+vvP3NavoNCNE6fShAuXJQRCq5Oqr
- bEFZvMMoDhoaCNS+XxEvSUjtG4+iHafH5AMMOCvt3lTuX5l6jduKxscz7UU5/BR9wt+GS87B8kN
- OoMNBSAI0oH88R8L1soDJH+U7XRRLMZPJ0G6n37YJHQ==
-X-Gm-Gg: ASbGncu9DQ1wVAWKgoOnCm5Mf8H+44fEZF6TFFf+gWfknSUB+vW26XZAEfaNkZWadlP
- tSyG6XH1v2snfLvirWdifcKubiPq/i4RgPBtqqYMkG5QhOR93snQT4STuOSDaIwJvlt0s3DSU23
- oQtq+EEQTTUDI0u2mYdogCFxNqxsf2YJQlOsez9pvqqwTxfIKsPqL7kENIiDkD9cdcPanHGQIkk
- JUVPT2qbK59rL1Cph4nyQcz5bye9xkk5k+r2oOXIB90DSbHjAGHOCJ32TjZdQzdwafTsaNQ
-X-Google-Smtp-Source: AGHT+IGj5yaIs7YXh4VhmkoPHrKX58fVe1hMF9e/q5XLdNrKaXPl/glyTwbnmvgfq66TDgnU5inmrI+Q/nXD2hPtgmY=
-X-Received: by 2002:a05:690e:1541:20b0:63e:14cd:f988 with SMTP id
- 956f58d0204a3-63e16168238mr8912059d50.6.1760976040858; Mon, 20 Oct 2025
- 09:00:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vAsMX-00056B-Kh
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 12:03:59 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vAsMT-0007Zw-IC
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 12:03:57 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id CE725808A5;
+ Mon, 20 Oct 2025 19:03:47 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a51::1:37])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id k3YMa23Nr8c0-wmLPE3Yb; Mon, 20 Oct 2025 19:03:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1760976227;
+ bh=bDSYgXGyLSYoJyg7KfcAVJBPFx/ii5K914Q9MATS1iY=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=uagSJxAkO2wqXMxLwsBrG94dDCz6u4LIC2EW2mBdSDPfO9kWGri0o9cowNMbf+GcG
+ XAOZq6IBr+9gsw0CyINe1HdQ9YUrJZ5SdSoqj4+fj7KTgLLfiai7v9uXuMdwTafWPS
+ NJUSJPIj4lDB5BjXweoif1hjBa1BWYYPgtnEDsls=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: peterx@redhat.com
+Cc: stefanb@linux.vnet.ibm.com, farosas@suse.de, qemu-devel@nongnu.org,
+ armbru@redhat.com, berrange@redhat.com,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH v2 0/2] migration: vmsd errp handlers: return bool
+Date: Mon, 20 Oct 2025 19:03:42 +0300
+Message-ID: <20251020160344.2401137-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20251011200337.30258-1-mlugg@mlugg.co.uk>
- <20251011200337.30258-4-mlugg@mlugg.co.uk>
-In-Reply-To: <20251011200337.30258-4-mlugg@mlugg.co.uk>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 Oct 2025 17:00:28 +0100
-X-Gm-Features: AS18NWAlsPTs40mKq2vyHbsNI6RtBJhw88U7987zJOHQjNmq-v-zEOkssKjx6xM
-Message-ID: <CAFEAcA-bCh=YdU=+FsHu_oKG_L+8hhrFW+E5XN3xomVyppNvnQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] linux-user: fix reserved_va page leak in do_munmap
-To: Matthew Lugg <mlugg@mlugg.co.uk>
-Cc: qemu-devel@nongnu.org, laurent@vivier.eu, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,98 +72,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 11 Oct 2025 at 21:20, Matthew Lugg <mlugg@mlugg.co.uk> wrote:
->
-> The previous logic here had an off-by-one error: assuming 4k pages on
-> host and guest, if `len == 4097` (indicating to unmap 2 pages), then
-> `last = start + 4096`, so `real_last = start + 4095`, so ultimately
-> `real_len = 4096`. I do not believe this could cause any observable bugs
-> in guests, because `target_munmap` page-aligns the length it passes in.
-> However, calls to this function in `target_mremap` do not page-align the
-> length, so those calls could "drop" pages, leading to a part of the
-> reserved region becoming unmapped. At worst, a host allocation could get
-> mapped into that hole, then clobbered by a new guest mapping.
->
-> A simple fix didn't feel ideal here, because I think this function was
-> not written as well as it could be. Instead, the logic is simpler if we
-> use `end = start + len` instead of `last = start + len - 1` (overflow
-> does not cause any problem here), and use offsets in the loops (avoiding
-> overflows since the offset is never larger than the host page size).
+v2:
+01: new, fix bug
+02: fix mistakes of v1
 
-I don't really understand this code, I'm just looking at
-it fresh, so my comment below might be wrong.
+Vladimir Sementsov-Ogievskiy (2):
+  migration: vmstate_save_state_v(): fix error path
+  migration: vmsd errp handlers: return bool
 
-> -    /*
-> -     * If guest pages remain on the first or last host pages,
-> -     * adjust the deallocation to retain those guest pages.
-> -     * The single page special case is required for the last page,
-> -     * lest real_start overflow to zero.
-> -     */
+ backends/tpm/tpm_emulator.c   | 10 ++++------
+ docs/devel/migration/main.rst |  6 +++---
+ include/migration/vmstate.h   |  6 +++---
+ migration/vmstate.c           | 23 +++++++++++------------
+ 4 files changed, 21 insertions(+), 24 deletions(-)
 
-This comment says we need the special case for
-"real_last - real_start < host_page_size" to avoid an overflow.
+-- 
+2.48.1
 
-> -    if (real_last - real_start < host_page_size) {
-> -        prot = 0;
-
-We delete the special case...
-
-> -        for (a = real_start; a < start; a += TARGET_PAGE_SIZE) {
-> -            prot |= page_get_flags(a);
-> -        }
-> -        for (a = last; a < real_last; a += TARGET_PAGE_SIZE) {
-> -            prot |= page_get_flags(a + 1);
-> -        }
-> -        if (prot != 0) {
-> -            return 0;
-> -        }
-> -    } else {
-> -        for (prot = 0, a = real_start; a < start; a += TARGET_PAGE_SIZE) {
-> -            prot |= page_get_flags(a);
-> -        }
-> -        if (prot != 0) {
-> -            real_start += host_page_size;
-> -        }
-> +    /* end or real_end may have overflowed to 0, but that's okay. */
->
-> -        for (prot = 0, a = last; a < real_last; a += TARGET_PAGE_SIZE) {
-> -            prot |= page_get_flags(a + 1);
-> -        }
-> -        if (prot != 0) {
-> -            real_last -= host_page_size;
-> -        }
-> +    /* If [real_start,start) contains a mapped guest page, retain the first page. */
-> +    for (prot = 0, off = 0; off < start - real_start; off += TARGET_PAGE_SIZE) {
-> +        prot |= page_get_flags(real_start + off);
-> +    }
-> +    if (prot != 0) {
-> +        real_start += host_page_size;
-
-...and now if real_start was the last page in the
-address space, this addition will overflow it to zero.
-
-> +    }
->
-> -        if (real_last < real_start) {
-> -            return 0;
-> -        }
-> +    /* If [end,real_end) contains a mapped guest page, retain the last page. */
-> +    for (prot = 0, off = 0; off < real_end - end; off += TARGET_PAGE_SIZE) {
-> +        prot |= page_get_flags(end + off);
-> +    }
-> +    if (prot != 0) {
-> +        real_end -= host_page_size;
->      }
->
-> -    real_len = real_last - real_start + 1;
->      host_start = g2h_untagged(real_start);
-> -
-> -    return do_munmap(host_start, real_len);
-> +    return do_munmap(host_start, real_end - real_start);
->  }
->
->  int target_munmap(abi_ulong start, abi_ulong len)
-
-thanks
--- PMM
 
