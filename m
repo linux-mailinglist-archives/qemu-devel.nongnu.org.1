@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DE2BEF5F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 07:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288F4BEF5F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 07:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAihV-0003IU-VI; Mon, 20 Oct 2025 01:44:57 -0400
+	id 1vAihW-0003IZ-8s; Mon, 20 Oct 2025 01:44:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vAihO-0003Fq-54
+ id 1vAihQ-0003Fv-UK
  for qemu-devel@nongnu.org; Mon, 20 Oct 2025 01:44:54 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vAihL-0007ti-S5
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 01:44:49 -0400
+ id 1vAihO-0007tx-Oi
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 01:44:52 -0400
 Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id C2A80807BB;
- Mon, 20 Oct 2025 08:44:37 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7B26C807BA;
+ Mon, 20 Oct 2025 08:44:46 +0300 (MSK)
 Received: from dtalexundeer-nx.yandex-team.ru (unknown
  [2a02:6bf:803e:400:cd4:cafc:37a3:de4])
  by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id TiN4Nb4FbmI0-m7kHZoz4; Mon, 20 Oct 2025 08:44:37 +0300
+ ESMTPSA id TiN4Nb4FbmI0-MuEted86; Mon, 20 Oct 2025 08:44:46 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760939077;
- bh=uOg/6TfaArQwoomphYHbobxb61e9PvCzzjvhJyJo4HE=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=yNwYxDayPPUSeIyVWc83XbY53GYm4v/o3UYMIdPpG17afFoAVKuaihbd+uE5n7MSD
- 1j0degqsI4rGJSbypHMlM8pX3sjrvUQu+TBgOB/q5Jjalgsjrgz4rITMF4PpkY46af
- 357zXbRV3+gfRUsTKAsygQbpmZg6FgpHfPb+URhY=
+ s=default; t=1760939086;
+ bh=V9FOOjB10GBn5fAP7xjOXkkA89Pz+nn+KfvWW3CovlI=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=ls5Y1S3g9918k5ZBeVa+gHeRQhN/NSUvu/IcZJL4abR0o3Hno/9XrOE/Wn2ILwTpc
+ 5ayKgaIv1oE2MqhkI22FZVuiA511xzfKSSw203MbJmq4Jw6y7VaO6Bj/CwtLSnoq+Z
+ sruK2CJ0tOMzYczHEydP+ljE2h0TieFVjBkKi5lw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
@@ -46,21 +47,22 @@ Cc: Raphael Norwitz <raphael@enfabrica.net>,
  Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Subject: [PATCH 0/2] vhost-user-blk: support inflight migration
-Date: Mon, 20 Oct 2025 10:44:12 +0500
-Message-Id: <20251020054413.2614932-1-dtalexundeer@yandex-team.ru>
+Subject: [PATCH 1/2] vhost: support inflight save/load
+Date: Mon, 20 Oct 2025 10:44:14 +0500
+Message-Id: <20251020054413.2614932-2-dtalexundeer@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251020054413.2614932-1-dtalexundeer@yandex-team.ru>
+References: <20251020054413.2614932-1-dtalexundeer@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
  envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,34 +78,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi!
+vhost_dev_load_inflight and vhost_dev_save_inflight have been deleted
+by:
 
-During inter-host migration, waiting for disk requests to be drained
-in the vhost-user backend can incur significant downtime.
+abe9ff2 ("vhost: Remove unused vhost_dev_{load|save}_inflight")
 
-This can be avoided if QEMU migrates the inflight region in vhost-user-blk. 
-Thus, during the qemu migration, the vhost-user backend can cancel all inflight requests and
-then, after migration, they will be executed on another host. 
+So, now they are needed for future commit.
+Return them, and their helper vhost_dev_resize_inflight.
 
-At first, I tried to implement migration for all vhost-user devices that support inflight at once, 
-but this would require a lot of changes both in vhost-user-blk (to transfer it to the base class) and 
-in the vhost-user-base base class (inflight implementation and remodeling + a large refactor).
-
-Therefore, for now I decided to leave this idea for later and 
-implement the migration of the inflight region first for vhost-user-blk.
-
-Alexandr Moshkov (2):
-  vhost: support inflight save/load
-  vhost-user-blk: support inflight migration
-
- hw/block/vhost-user-blk.c | 52 ++++++++++++++++++++++++++++++++++++
+Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+---
  hw/virtio/vhost.c         | 56 +++++++++++++++++++++++++++++++++++++++
  include/hw/virtio/vhost.h |  2 ++
- migration/options.c       |  7 +++++
- migration/options.h       |  1 +
- qapi/migration.json       |  9 +++++--
- 6 files changed, 125 insertions(+), 2 deletions(-)
+ 2 files changed, 58 insertions(+)
 
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 266a11514a..16ce9a6037 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -2013,6 +2013,62 @@ int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
+     return 0;
+ }
+ 
++static int vhost_dev_resize_inflight(struct vhost_inflight *inflight,
++                                     uint64_t new_size)
++{
++    Error *err = NULL;
++    int fd = -1;
++    void *addr = qemu_memfd_alloc("vhost-inflight", new_size,
++                                  F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL,
++                                  &fd, &err);
++    if (err) {
++        error_report_err(err);
++        return -ENOMEM;
++    }
++
++    vhost_dev_free_inflight(inflight);
++    inflight->offset = 0;
++    inflight->addr = addr;
++    inflight->fd = fd;
++    inflight->size = new_size;
++
++    return 0;
++}
++
++void vhost_dev_save_inflight(struct vhost_inflight *inflight, QEMUFile *f)
++{
++    if (inflight->addr) {
++        qemu_put_be64(f, inflight->size);
++        qemu_put_be16(f, inflight->queue_size);
++        qemu_put_buffer(f, inflight->addr, inflight->size);
++    } else {
++        qemu_put_be64(f, 0);
++    }
++}
++
++int vhost_dev_load_inflight(struct vhost_inflight *inflight, QEMUFile *f)
++{
++    uint64_t size;
++
++    size = qemu_get_be64(f);
++    if (!size) {
++        return 0;
++    }
++
++    if (inflight->size != size) {
++        int ret = vhost_dev_resize_inflight(inflight, size);
++        if (ret < 0) {
++            return ret;
++        }
++    }
++
++    inflight->queue_size = qemu_get_be16(f);
++
++    qemu_get_buffer(f, inflight->addr, size);
++
++    return 0;
++}
++
+ static int vhost_dev_set_vring_enable(struct vhost_dev *hdev, int enable)
+ {
+     if (!hdev->vhost_ops->vhost_set_vring_enable) {
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 08bbb4dfe9..da1f0c2361 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -402,6 +402,8 @@ int vhost_virtqueue_stop(struct vhost_dev *dev, struct VirtIODevice *vdev,
+ 
+ void vhost_dev_reset_inflight(struct vhost_inflight *inflight);
+ void vhost_dev_free_inflight(struct vhost_inflight *inflight);
++void vhost_dev_save_inflight(struct vhost_inflight *inflight, QEMUFile *f);
++int vhost_dev_load_inflight(struct vhost_inflight *inflight, QEMUFile *f);
+ int vhost_dev_prepare_inflight(struct vhost_dev *hdev, VirtIODevice *vdev);
+ int vhost_dev_set_inflight(struct vhost_dev *dev,
+                            struct vhost_inflight *inflight);
 -- 
 2.34.1
 
