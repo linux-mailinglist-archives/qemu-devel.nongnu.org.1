@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5857BF09F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520C5BF0A2C
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:44:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAnKy-0007Xd-H8; Mon, 20 Oct 2025 06:42:00 -0400
+	id 1vAnL0-0007Yc-59; Mon, 20 Oct 2025 06:42:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vAnKw-0007Wy-Io
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:58 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1vAnKx-0007XP-Pw
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:59 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vAnKu-0000gH-0v
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:58 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-63c2d72581fso4681791a12.0
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:41:55 -0700 (PDT)
+ id 1vAnKv-0000ga-QW
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:59 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-63994113841so7182928a12.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:41:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760956914; x=1761561714; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760956916; x=1761561716; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KmuoIaZJYNvFdS9rN3/tOhcWyvPFH8X8zZaP+5cgj7Y=;
- b=BSEk8dfFKg1ERZuw4Agz9aa2SgqVmus2zsiEY0mJfyk47PjXOiegAsJfQ7r0si8sH8
- TzCZYoLIyMubadWcXQXBrnWvG6QLBpX/pD4Sl9nHuDKLpY/Kew5OohpQkXG3Eqm9L6Rv
- +hv8hA05AXJL9NrwOYMikCqASPXre/XwEjmNrrqI8rHeR1/8ZobKK5NMp6gVa/bZtLq1
- Y28rsYgK0+VXq0ne2mv6yK15S2vLNH4LkrYY/DrHkbzZgAjkpKY/he02LJTxGApNfJHP
- rawSzaxjOpUCMhNXQDdlofAlZdYWqyJZH/UUHVA2zaRNdn5TKOJgGmaQ3u6rS/M9Z79i
- Z4Jw==
+ bh=IvYlwMHdVV/m4b7uoLnXwowMJKhEagoEJQgkNT3N2pE=;
+ b=FYPu1VTtWqrODrIZXJGku0xB2gX/stEqhboAQQ4KnyfEDUjRyl9vWtclR/X4rrvr7I
+ /EIR6PhIMMNOYtXdbsruUy9Py3e11IFQf5b4gBcOaQfOXhi8CNy3++nJ+eoshUdYPDF1
+ aC008TJNqckTM/aW/aUzXaCzbdPdMasKFrA+4HB9R0x9uWRaPqi4Dz5Lq7fZ/g/dkfHr
+ I4ZesKLHHrkaum2XD4L9/fIxHBupdYte1FZhlyMfsK8Htk9q9qUGVO32kwrFrS98eVvS
+ Q5mSahnjxzuk4Urll9aJlAT+lUG+tHi4hku5+3O09D28D+DVQFq7v2ArtdM0gkZ517zC
+ c33g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760956914; x=1761561714;
+ d=1e100.net; s=20230601; t=1760956916; x=1761561716;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KmuoIaZJYNvFdS9rN3/tOhcWyvPFH8X8zZaP+5cgj7Y=;
- b=jHsgHAunXGeMDDeSGffymHUCUiyaZ+TX6X3oIOOLYg9t/c5crvwPd8vuzwPIKwvGIO
- bR0Yvt0Sg1qrhuZsqpBcO8/D1ShrOCjmenSJRI2BH5/3OoPRoK7WNHnO3yGfBN4uZjiZ
- kmUDBCf/ioDCIFABXVsPQZjWJo/sISmph1wHdXcbjut5j9g0D0RscGnSe5i1GPo4BSUD
- gvh4HoGKJIJmBCmIwLfW2AOQyl5LbgG8C+lKKZDtqCMg61TGWQxRLZdqnJYQzQLw5IZo
- RItCg8l3B7XVT1cDWNRyGdPt+/0h+EliLmtgDuDz0PEaiFNqmbDcmQzROsvBf6p24PJF
- Q/ug==
-X-Gm-Message-State: AOJu0YyVUmdpZ9MlYljWHjmXLKnSJhqWubzCMMthFFdgFFrufO/Y2Hy5
- CplvEIwbJ9DaGpTL0Ucp8xhlT5JZqnBlTci6t2uOBMC80Cmm9XnPsfud1oT5WVukjw4=
-X-Gm-Gg: ASbGncu/OO5S5KGh4BmljpM7/L6CCX7DiaweFFQlmyQTPRu/QL7TPHYIYT//bjt9QuR
- s/3VAaHLMgz7f+uHPB2YfFX7Y9FzCNpzWX7mDpbJ9KNYox+9OmD8KpM4rIn1iJl2UXsyAWXTEKq
- nzinEU66ErKgWTXxv3g3wEH+ZtDJq5yZL/OyxfEgpj38V3ysynCUtEaQIiF4orV1lsQ1QpM1Znw
- V5f54CVq0cDeZf5+nxKadGGTapCq+lz7Ork2gjmv8fkcP67wiS4feE9DdG3z5BCWOccjkU6HIpx
- VzswBzRmv+5hh88PVkQh4FAkjxphLkif2brbV28WqzvkIXjYWGkGGsDWZHkZkgLbOjeH/C63U9k
- LJQ0W1h0pnGEZlv1ugyoA5qfm536pRfaJPNsATAwzELllLhp3XBSITbzzBrrajrLsj4+46AJ8dP
- 1VfjrDr8S9dAk=
-X-Google-Smtp-Source: AGHT+IGEnHTAs6zU3fPWxPyPSJsBGHsRI4QAhZ31vHAAF4emgvdV5hhENK6LCrx0IrP5mUqymE7tcA==
-X-Received: by 2002:a05:6402:524c:b0:633:7017:fcbc with SMTP id
- 4fb4d7f45d1cf-63c1f69cd11mr12764098a12.15.1760956914229; 
- Mon, 20 Oct 2025 03:41:54 -0700 (PDT)
+ bh=IvYlwMHdVV/m4b7uoLnXwowMJKhEagoEJQgkNT3N2pE=;
+ b=bush82fjPDGA35TOb8k5CG+CBw2NfgZBEf/9QQ0H1Qz1y8Ij8olORC8JrCHdLt/Efq
+ OWkEx1XWYOIoYG5q5ZPD9UoadzL429b+yGWlTk8C6jwtJxS0kNeSPDj+DdIxobiCosmH
+ VbrChieNkQWOntpNkjrgztSQO6/t7swhg3EG6th80XgthTn6OpNdUQv4vBpgWzg2TT9U
+ MCTChL3b9tLRdaFgXl9mw3qwbXw3c92pv/XNiGlDGb9j4l7P2JHPHIlKcu53nQ6ZpDp1
+ atcAlMyBSGuwqRZwu+Ydui/CGgjpdKWJQ8664jD0WAXYahxDn5ic7zm5JuEpppZC7Ozp
+ aR8w==
+X-Gm-Message-State: AOJu0YxKxnFEqXpvNvItLKxTFrxwz29ROUkuPlrLpWDYooQ7QvOVAH+a
+ 0Wsh+vd6onuKBuxpnSdIPblhLIXrYD3ZEg3RXuoYbumpTu5+7OIngTr8rujejfEDuPSR5xLnTM8
+ QdlU+UFU=
+X-Gm-Gg: ASbGnctdDJuY4i96lWBWaeg5dlgldD0sxtKFgZXyfgIgSrtqTu+J91hN+T6S9q04yyz
+ zMrYVlshERsz9PcffrOAbWC5Fjq9MXdIrtOsbR5SgYSpOzplwp3fRaGaXO98nbFUHXDhYKM+/Cw
+ aU8yYNcO3+0reE1nlDr4tJovP179g1rCTLaJBmUrKTb3gVXCaMBbBlfMuuL9B8yUZDy8OxT973Y
+ sZdUon/sc3XDXgtFr+mva+1n+JBN6PZj/m8ucD69FYr4hdrZpO4ozTjYvd3jVYSe6yl62aO6bqM
+ 7GD9gprhzCZ9SJrLIT5qgdB1AKIkZpHqLs1xsUFXvGTsgDAkk7Dq4ZjejBsenV+dIS9CTXTH6J5
+ 3y5ptG6pmt2W/JshRqljB8ajSn4lE9HeXB/u9Mq0fyfPaDSRSD/lrk1pJ2tkQ6uX0kyNo+IEW5r
+ a6Ios3gFJ7fGs=
+X-Google-Smtp-Source: AGHT+IELUTlT9FnWeQZCFgdMQU9vS1O8jSEMu1Umvh6dXpBuNnEJMdTbxb80C9ft9wLS9uVk4LpRqg==
+X-Received: by 2002:a05:6402:2353:b0:63c:32a6:ea0f with SMTP id
+ 4fb4d7f45d1cf-63c32a6ef2bmr10499261a12.14.1760956915990; 
+ Mon, 20 Oct 2025 03:41:55 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63c4949bed7sm6346663a12.35.2025.10.20.03.41.50
+ 4fb4d7f45d1cf-63c4942f629sm6506973a12.25.2025.10.20.03.41.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Oct 2025 03:41:51 -0700 (PDT)
+ Mon, 20 Oct 2025 03:41:53 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EEE655F9F7;
- Mon, 20 Oct 2025 11:41:49 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 106DA5FA5C;
+ Mon, 20 Oct 2025 11:41:50 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Andrew Keesler <ankeesler@google.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+Cc: Dongwon Kim <dongwon.kim@intel.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 04/11] Support per-head resolutions with virtio-gpu
-Date: Mon, 20 Oct 2025 11:41:42 +0100
-Message-ID: <20251020104149.4034124-5-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-stable@nongnu.org
+Subject: [PULL 05/11] ui/gtk-gl-area: Remove extra draw call in refresh
+Date: Mon, 20 Oct 2025 11:41:43 +0100
+Message-ID: <20251020104149.4034124-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251020104149.4034124-1-alex.bennee@linaro.org>
 References: <20251020104149.4034124-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,105 +106,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Keesler <ankeesler@google.com>
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-In 454f4b0f, we started down the path of supporting separate
-configurations per display head (e.g., you have 2 heads - one with
-EDID name "AAA" and the other with EDID name "BBB").
+This partially reverts commit 77bf310084dad38b3a2badf01766c659056f1cf2
+which causes some guest display corruption when gtk-gl-area
+is used for GTK rendering (e.g. Wayland Compositor) possibly due to
+simulataneous accesses on the guest frame buffer by host compositor
+and the guest.
 
-In this change, we add resolution to this configuration surface (e.g.,
-you have 2 heads - one with resolution 111x222 and the other with
-resolution 333x444).
-
-  -display vnc=localhost:0,id=aaa,display=vga,head=0 \
-  -display vnc=localhost:1,id=bbb,display=vga,head=1 \
-  -device '{"driver":"virtio-vga",
-            "max_outputs":2,
-            "id":"vga",
-            "outputs":[
-              {
-                 "name":"AAA",
-                 "xres":111,
-                 "yres":222
-              },
-              {
-                 "name":"BBB",
-                 "xres":333,
-                 "yres":444
-              }
-            ]}'
-
-Here is the behavior matrix of the current resolution configuration
-surface (xres/yres) with the new resolution configuration surface
-(outputs[i].xres/yres).
-
-Case: !(xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
-Behavior: current behavior - outputs[0] enabled with default xres/yres
-
-Case: (xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
-Behavior: current behavior - outputs[0] enabled with xres/yres
-
-Case: !(xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
-Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
-
-Case: (xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
-Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
-
-Signed-off-by: Andrew Keesler <ankeesler@google.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250902141312.750525-2-ankeesler@google.com>
-[AJB: dropped pointless output_idx range check, tweak commit]
-Message-ID: <20251016150357.876415-5-alex.bennee@linaro.org>
+Fixes: 77bf310084 ("ui/gtk: Draw guest frame at refresh cycle")
+Reported-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+Message-Id: <20250214170813.2234754-1-dongwon.kim@intel.com>
+Message-ID: <20250603110204.838117-12-alex.bennee@linaro.org>
+Cc: qemu-stable@nongnu.org
+Message-ID: <20251016150357.876415-6-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 05295ab6655..0ce789bb22f 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -971,15 +971,21 @@
- ##
- # @VirtIOGPUOutput:
- #
--# Describes configuration of a VirtIO GPU output.
-+# Describes configuration of a VirtIO GPU output. If both xres and
-+# yres are set, they take precedence over root virtio-gpu
-+# resolution configuration and enable the corresponding output.
- #
- # @name: the name of the output
- #
-+# @xres: horizontal resolution of the output in pixels (since 10.2)
-+#
-+# @yres: vertical resolution of the output in pixels (since 10.2)
-+#
- # Since: 10.1
- ##
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 05fc38096ec..cd86022d264 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -165,7 +165,22 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
  
- { 'struct': 'VirtIOGPUOutput',
--  'data': { 'name': 'str' } }
-+  'data': { 'name': 'str', '*xres': 'uint16', '*yres': 'uint16' } }
+     if (vc->gfx.guest_fb.dmabuf &&
+         qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+-        gd_gl_area_draw(vc);
++        /*
++         * gd_egl_refresh() calls gd_egl_draw() if a DMA-BUF draw has already
++         * been submitted, but this function does not call gd_gl_area_draw() in
++         * such a case due to display corruption.
++         *
++         * Calling gd_gl_area_draw() is necessary to prevent a situation where
++         * there is a scheduled draw event but it won't happen bacause the window
++         * is currently in inactive state (minimized or tabified). If draw is not
++         * done for a long time, gl_block timeout and/or fence timeout (on the
++         * guest) will happen eventually.
++         *
++         * However, it is found that calling gd_gl_area_draw() here causes guest
++         * display corruption on a Wayland Compositor. The display corruption is
++         * more serious than the possible fence timeout so gd_gl_area_draw() is
++         * omitted for now.
++         */
+         return;
+     }
  
- ##
- # @DummyVirtioForceArrays:
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index 7269477a1c8..14058f6bffb 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -233,6 +233,15 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
-     g->req_state[0].width = g->conf.xres;
-     g->req_state[0].height = g->conf.yres;
- 
-+    for (output_idx = 0, node = g->conf.outputs;
-+         node; output_idx++, node = node->next) {
-+        if (node->value->has_xres && node->value->has_yres) {
-+            g->enabled_output_bitmask |= (1 << output_idx);
-+            g->req_state[output_idx].width = node->value->xres;
-+            g->req_state[output_idx].height = node->value->yres;
-+        }
-+    }
-+
-     g->hw_ops = &virtio_gpu_ops;
-     for (i = 0; i < g->conf.max_outputs; i++) {
-         g->scanout[i].con =
 -- 
 2.47.3
 
