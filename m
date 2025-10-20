@@ -2,65 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385EBBF0CE2
+	by mail.lfdr.de (Postfix) with ESMTPS id 15790BF0CE1
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 13:23:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAnyG-0004a6-6j; Mon, 20 Oct 2025 07:22:36 -0400
+	id 1vAnyT-0004ch-Q3; Mon, 20 Oct 2025 07:22:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vAnyC-0004ZZ-Ae
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 07:22:32 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vAnyR-0004c6-Ay
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 07:22:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vAny8-0007D7-4J
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 07:22:31 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7A9EA807B9;
- Mon, 20 Oct 2025 14:22:23 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a51::1:37] (unknown
- [2a02:6bf:8080:a51::1:37])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id MMT9qJ4F3eA0-r0mmLLyh; Mon, 20 Oct 2025 14:22:22 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1760959342;
- bh=gP4uucnZa1ra9/baYNOGp0AGEjkEV8CLMy4oICVnWec=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=sSTXE4MSL6PkRLNihrsJ99dX6X1uOvm/8rUpLxN+h2NbbPfK60SK1hz2tMrmaADlx
- wMAZVbSTcRHKW3LhJ5fFxspjjY5IlWPWkirVSHB4IWT7Nh4x6+IgArFee22EWb2qyW
- uUXo8Qgj4Dh6hWDbZyH9A2/dMN0FGogtBdqkgWvQ=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <0ce2f913-36c2-44a2-8141-256ff847529d@yandex-team.ru>
-Date: Mon, 20 Oct 2025 14:22:22 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vAnyO-0007Ei-0Z
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 07:22:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760959363;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Bw5wI8Cdfh2NdDWKH0I8UFb2+F2bLkh/qyJGWki94Mk=;
+ b=AqfOpZrOGeZBRVz20Hpr5lnOCHzyXKCIsGGKwmOTUpx24C0BZPDXa4SHRNh9qRhpPFxRuN
+ ngPHEfeZRzqHH7z0EQLBAplk7O0zmV757yA7ltnDRdMQpIoPiuvtCORfgqia/g4AFtZ1JA
+ yMvGoYuATIuVbazexR57/8alJwTkLts=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-e_4VfOTAP-m2J0-MXkGYYg-1; Mon,
+ 20 Oct 2025 07:22:41 -0400
+X-MC-Unique: e_4VfOTAP-m2J0-MXkGYYg-1
+X-Mimecast-MFC-AGG-ID: e_4VfOTAP-m2J0-MXkGYYg_1760959360
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD82C1800669; Mon, 20 Oct 2025 11:22:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.161])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 895931800578; Mon, 20 Oct 2025 11:22:39 +0000 (UTC)
+Date: Mon, 20 Oct 2025 12:22:36 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, matoro <matoro_mailinglist_qemu@matoro.tk>
+Subject: Re: [PATCH v2 3/6] crypto: allow client/server cert chains
+Message-ID: <aPYbfNkO6Jdo2gDt@redhat.com>
+References: <20250919101022.1491007-1-berrange@redhat.com>
+ <20250919101022.1491007-4-berrange@redhat.com>
+ <jczraatcitsz3tf5aznkeaiffanysz4dlvn7opoyibofvr2loj@u3wumm3rwdq5>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] migration: vmsd errp handlers: return bool
-To: Markus Armbruster <armbru@redhat.com>
-Cc: peterx@redhat.com, stefanb@linux.vnet.ibm.com, farosas@suse.de,
- qemu-devel@nongnu.org
-References: <20251020091907.2173711-1-vsementsov@yandex-team.ru>
- <87347d7s0j.fsf@pond.sub.org>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87347d7s0j.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+In-Reply-To: <jczraatcitsz3tf5aznkeaiffanysz4dlvn7opoyibofvr2loj@u3wumm3rwdq5>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,114 +84,116 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.10.25 14:05, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+On Thu, Oct 16, 2025 at 10:28:59AM -0500, Eric Blake wrote:
+> On Fri, Sep 19, 2025 at 11:10:19AM +0100, Daniel P. Berrangé wrote:
+> > From: matoro <matoro@users.noreply.github.com>
 > 
->> Recently we moved to returning errp. Why to keep int return value?
->> Generally it doesn't help: you can't use in a logic of handling
->> an error, as you are never sure, that in future the logic in
->> the stack will not change: it may start to return another error
->> code in the same case, or return same error code in another case.
->>
->> Actually, we can only rely on concrete errno code when get it
->> _directly_ from documented library function or syscall. This way we
->> handle for example EINTR. But later in a stack, we can only add
->> this errno to the textual error by strerror().
+> The CC: line has a different email address for matoro than the git
+> author attribution.  Does that matter?  I'm not a fan of github's
+> attempt to make it difficult to reach a contributor outside the github
+> walled garden.
 > 
-> It's a matter of the function's contract, actually.
+> > 
+> > The existing implementation assumes that client/server certificates are
+> > single individual certificates.  If using publicly-issued certificates,
+> > or internal CAs that use an intermediate issuer, this is unlikely to be
+> > the case, and they will instead be certificate chains.  While this can
+> > be worked around by moving the intermediate certificates to the CA
+> > certificate, which DOES currently support multiple certificates, this
+> > instead allows the issued certificate chains to be used as-is, without
+> > requiring the overhead of shuffling certificates around.
+> > 
+> > Corresponding libvirt change is available here:
+> > https://gitlab.com/libvirt/libvirt/-/merge_requests/222
+> > 
+> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> > Signed-off-by: matoro <matoro_mailinglist_qemu@matoro.tk>
+> > [DB: adapted for code conflicts with multi-CA patch]
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  crypto/tlscredsx509.c                 | 156 ++++++++++++--------------
+> >  tests/unit/test-crypto-tlscredsx509.c |  77 +++++++++++++
+> >  2 files changed, 147 insertions(+), 86 deletions(-)
 > 
-> If the contract is "Return negative value on failure", checking for
-> failure is all you can do with it.  Same information as "Return false on
-> failure".
+> >  
+> > -static gnutls_x509_crt_t
+> > -qcrypto_tls_creds_load_cert(QCryptoTLSCredsX509 *creds,
+> > -                            const char *certFile,
+> > -                            bool isServer,
+> > -                            Error **errp)
+> > -{
 > 
-> If the contract is "Return negative errno on failure", the function is
-> responsible for returning values that make sense.  Ideally, the contract
-> spells them all out.
+> > -
+> >  static int
+> > -qcrypto_tls_creds_load_ca_cert_list(QCryptoTLSCredsX509 *creds,
+> > -                                    const char *certFile,
+> > -                                    gnutls_x509_crt_t **certs,
+> > -                                    unsigned int *ncerts,
+> > -                                    Error **errp)
+> > +qcrypto_tls_creds_load_cert_list(QCryptoTLSCredsX509 *creds,
+> > +                                 const char *certFile,
+> > +                                 gnutls_x509_crt_t **certs,
+> > +                                 unsigned int *ncerts,
+> > +                                 bool isServer,
+> > +                                 bool isCA,
+> > +                                 Error **errp)
+> >  {
 > 
+> Nice consolidation to reduce duplication.
+> 
+> > @@ -520,41 +497,48 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+> 
+> >  
+> > -    if (cert &&
+> > -        qcrypto_tls_creds_check_cert(creds,
+> > -                                     cert, certFile, isServer,
+> > -                                     false, errp) < 0) {
+> > -        goto cleanup;
+> > +    for (i = 0; i < ncerts; i++) {
+> > +        if (qcrypto_tls_creds_check_cert(creds,
+> > +                                         certs[i], certFile,
+> > +                                         isServer, (i != 0), errp) < 0) {
+> 
+> The () around 'i != 0' look extraneous to me; but that's trivial
+> formatting so I'm not opposed to keeping them.  On the other hand...
 
-Do you know an example in code where we have both errno return value
-and errp, and the return value make sense and used by callers?
-
-> No difference between "documented library function or syscall" and a
-> function we provide ourselves.
-
-I agree... Still the only difference is that for library function
-it's OK to provide specific error only for caller to be able to print it
-to the user (with help of strerror). But for our functions with errp,
-it's assumed that the whole information for the user is already in errp.
-
-So I now think, shouldn't we actually do
-
-diff --git a/include/qapi/error.h b/include/qapi/error.h
-index d798faeec3..1c2484187f 100644
---- a/include/qapi/error.h
-+++ b/include/qapi/error.h
-@@ -43,8 +43,7 @@
-   *   avoid useless error object creation and destruction.  Note that
-   *   we still have many functions returning void.  We recommend
-   *   • bool-valued functions return true on success / false on failure,
-- *   • pointer-valued functions return non-null / null pointer, and
-- *   • integer-valued functions return non-negative / negative.
-+ *   • pointer-valued functions return non-null / null pointer.
-   *
-   * = Creating errors =
-   *
-
-
-?
+Yeah, I'll loose the ()
 
 > 
->> Let this new, recently added API be simpler and clearer, let it
->> return simple boolean value, so we shouldn't think:
->>
->>    - should we handle different error codes differently
->>      (if yes - how exactly, if no - why do we need this information?)
->>
->>    - should we add it to errp, or it was already added earlier in
->>      the stack
+> > +            goto cleanup;
+> > +        }
+> >      }
+> >  
+> > -    if (cert &&
+> > -        qcrypto_tls_creds_check_authority_chain(creds, cert,
+> > +    if (ncerts &&
 > 
-> When no caller actually needs to distinguish between errors, bool is the
-> most obvious interface.
-> 
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   backends/tpm/tpm_emulator.c   | 10 ++++------
+> ...here you are doing an implicit conversion of ncerts to bool; why
+> not do the same implicit conversion of 'i' rather than explicit '(i !=
+> 0)' above?
 
-[..]
+IMHO using an int in a conditional expression  "if (<int vriable>)"
+has pretty clear intent.
 
->> --- a/migration/vmstate.c
->> +++ b/migration/vmstate.c
->> @@ -153,15 +153,12 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
->>           trace_vmstate_load_state_end(vmsd->name, "too old", -EINVAL);
->>           return -EINVAL;
->>       }
->> -    if (vmsd->pre_load_errp) {
->> -        ret = vmsd->pre_load_errp(opaque, errp);
->> -        if (ret < 0) {
->> -            error_prepend(errp, "pre load hook failed for: '%s', "
->> -                          "version_id: %d, minimum version_id: %d, "
->> -                          "ret: %d: ", vmsd->name, vmsd->version_id,
->> -                          vmsd->minimum_version_id, ret);
-> 
-> Numeric errno codes in error messages are an anti-pattern.
-> 
->> -            return ret;
->> -        }
->> +    if (vmsd->pre_load_errp && !vmsd->pre_load_errp(opaque, errp)) {
->> +        error_prepend(errp, "pre load hook failed for: '%s', "
->> +                      "version_id: %d, minimum version_id: %d, "
->> +                      "ret: %d: ", vmsd->name, vmsd->version_id,
->> +                      vmsd->minimum_version_id, ret);
-> 
-> Did you forget to delete ", ret %d:" and its argument @ret?  It's always
-> zero here now.
-> 
-Oh right, thanks.
+Passing an int to a parameter that expects a bool could just as easily be
+indicative of a code bug, as it could be intentionally relying on the
+type conversion. IOW, it has fuzzy intent.
 
+So although I didn't write this patch, I would be inclined to write it
+the same way it is done here.
+
+> 
+> Reviewed-by: Eric Blake <eblake@redhat.com>
+
+With regards,
+Daniel
 -- 
-Best regards,
-Vladimir
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
