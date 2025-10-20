@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B6EBF0A26
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0C9BF0A16
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:43:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAnKx-0007XN-UQ; Mon, 20 Oct 2025 06:41:59 -0400
+	id 1vAnL0-0007ZS-KQ; Mon, 20 Oct 2025 06:42:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vAnKu-0007W4-UY
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:56 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1vAnKv-0007WO-Dz
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:57 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vAnKs-0000fq-Gw
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:56 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-63c1006fdcfso8133121a12.2
+ id 1vAnKt-0000g1-BF
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:41:57 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-b3b3a6f4dd4so781890666b.0
  for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1760956913; x=1761561713; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PdnRwZ3tolRl+7dJTQy0leQsj9SwCkKXi3pwZqwGHj8=;
- b=A/aQVkmYzYKnbM/H5IuCS9y4Y8UHXqh6KZjemVlNqhz3SlKpiLgJwLqYZ3Wajkwejg
- jnPAXonPHeQbgKsORntWTY4mw4DrZxzQEaoJzFfD14KSvzBYDs/KUHtFSuRGVJRmVRN5
- RAp6N8qYqXkLClgC/5afx0hUjRVJBoHzFmyQN3JV04fwx1FIcm9KHmO2Meq8rJDGPTOe
- +dJWdG/gT3CRBRHPBAgSPgmUxfOEv+SO9YbX7XwDGexlxv7EQ8bKufLZM1l1rJxWyHUJ
- AsIifmNZWOou9sVDPsvNWJlk+XrRnK6VqS4QBCLmHhLmtD5wo7DaUPMHoZPkYcjm1ZZO
- N+MQ==
+ bh=pdpnkMbbUpYrtLpkGWrMXiavm+tcMRwuxpmilKnsCCA=;
+ b=Kb98qTObo78LlPgezIQ+zQFQLHFBtFAYShB/+IR4OKK5dV7crAwkVlf7FqNyrDlDTZ
+ i0agl9YSScPSEog1H8SqgSJRTsnR6bVHXM1Cg13h7k504EOUKpJ0Q8JmWvaN/JvRIpq1
+ okuSKTcRMWHCid9x9EGNpaHK2+Kgc59nw1heduZGqsOcs/WsGx3L6gfjADuTxfcMrx9s
+ 8zs8HY/ExstZzUIU28PidqNvNsQiDacnq0N+W/mjoaRTnXXwDrrqg9IKNT1PsgrZXTeT
+ PLElMOeX3TcRrJnVEqMWVdf3ZNEgN948VcOSrwQ9VnhLxUxIB549qlhVVRnIzBVBBGa7
+ rRQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1760956913; x=1761561713;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PdnRwZ3tolRl+7dJTQy0leQsj9SwCkKXi3pwZqwGHj8=;
- b=YqvZv6kO57X6KFjv5abMhBzpOzWB6aaNl6Lpy5W6HY0Z8iRrm1KLCFt9wwGhHhqkrR
- l7sY3pKov3XDzbYyWymy9dBgU8cuYS41e+MOAbKiljS74PUUanB9kiWOZS/Tg0GcuNtD
- wUyeXg8FtoGX3lAQcSvRQoaJpTHhQgpajsXVjRhJe2dtyJnC086rV8QFo4dosS40Usho
- dM9DmtVQfBLhYd3cSkGE+tw9tER256hloAhzuuISpdc3kg2vhlOEn9ohl5CYNUEsbOk1
- PzUyNn9TLvPu9Zh8qCfrxn8tJq+xkuzxmZkCUhga2Mj/6EC91Ac1GVoCazt7tnYl6P6K
- oQnQ==
-X-Gm-Message-State: AOJu0YxMNYPChqqa2Fwta3wzO2zIlOx59crEXcngUMiX7TGsyuFg0uvq
- v5n2jArrHp25Ew/iDc0YDWsjHJkoGoUcnD6O1usc6BGicujePOrNyJDNWxzn81pBed0=
-X-Gm-Gg: ASbGncvJRHiYAqM1YThzEM6ubAnTfw+BIZFsgJ96ZKklQ8vvurSMaQvXQZuYK8Os39X
- Ebb3vWDF4SF7vnjkMK83xJCH2tfTs4/wLcwBjzD3aGPiF2s7kafvZ6J5jR+ubQXYIfMHnkaxTr2
- r6zbSHCabtEdpF66yzNBKXsXnzoQIz6CBjDTpg3FYoi2hm7gsTyisinrWJTiQ3iVN8q7aX9UP0X
- qP+wb95ifofqeoG4IQOgYAwRo0gHsCmfX13sEsGtXZJ35HnHF+fnb3DbkvoyzHrXZzqk7CNKxVz
- RA/Irnxese/vy5VkkaH2As2NOOt4B1WoIshaP9VDr3te5thtZQwdsj3on/qZmVKjONbAVsV4Qgx
- MZjYTVvLzD/7cJIEgm1QqV5Zy2dmakKh4hBECoWUSLGK1MNEketeACUTF5ryL5ZyfjcaFOXxmKi
- 7196omD5tEpTQ=
-X-Google-Smtp-Source: AGHT+IGHFNE8coI7XKCLpdaJJXzmsGN7HOPrXK0XRFVdiSjPu+icLllpk8fL2OAbadaYzpbv83q5Iw==
-X-Received: by 2002:a17:907:984:b0:b4b:cb5:133a with SMTP id
- a640c23a62f3a-b6474b371d9mr1351975266b.39.1760956912587; 
- Mon, 20 Oct 2025 03:41:52 -0700 (PDT)
+ bh=pdpnkMbbUpYrtLpkGWrMXiavm+tcMRwuxpmilKnsCCA=;
+ b=QJ1uq+K9vQZtwiG6EjUf2P7/DwPGrjYvVMqJRoUeyFUqO8NnOJF0X292cknyt9BKFq
+ IoEco47TChwFee+Ufku1WW2h9iNwy5QXuMMVofxaBeifHlDtWdODRupqTKuoZxqqKpNQ
+ k0Ob+ATzZRQ6zUNVkW/icWKVxsJTL8fExID1WtWBEfWo1YsMoeVIDuEMrorac9UVyfo+
+ iccRarfSBfJdILrIlnjHfVooJwNhEYfwdaumXdNK1JmXChg1F+2uVOjQKTcT6VPa9O+W
+ xgq4oDPu0HAm7JKgbtZN4+pHdS0D4Cd9eZh/cQYuRA5hl4ydqikP+6Z+izfsNK+8mi9z
+ Qo+g==
+X-Gm-Message-State: AOJu0Yw/1poSozjcZziaDnHnZqTYaT/5NTym9dlf2KfCKLrt4Em+SFpg
+ kamOoD2tFm60HzVc2Zvtx+tHhmcx6hFV0UQQRsPew4/2DFueRcSzp6GC2eTctriNa8ZsvL88H4f
+ IeMP4af0=
+X-Gm-Gg: ASbGncu3FFiO4pUjA+lkVwBnmwW+lhFifsegCvBDwSDr2xvB0JF3StgtzrGukN27xnw
+ pVZQlWRQjKPCizySAP0ajMPV0vDd4OqEM+7jNgfwsKyt5im/hWArWA6zikoxtuX/+AzT4mpIpgt
+ kXJnKP6uEs9zxWQLzK+3ApoeLolaPgCpv5ADVfkQ6gwiU0fFoMkEjgV56WRLusaHra7yukGZXN+
+ Guts4LCKeLLOBNeCmzvOckUDABoVegnzv1J5J2s0IVz3se8gozqFdh0WjGksX0G2ab1lqW0P8/u
+ 7wTGKFQ+wA6iWDZHLjjlQ6yOLp+Qi/9/hhxJWOu8QmZtsnzVYCsUHI5j7f+KRhMdkTSD6Cvk4yZ
+ d1A5Z1H1IhptVy4TeVZnXTzgIs2IXPgeac6DsJbIhesFNcU4YcJLvvMZLS3I19068kqoHySW3PX
+ kzqeYo8LFj+38=
+X-Google-Smtp-Source: AGHT+IGPcKbhjk7sTWmD13E2n3JKvkcNRO1Xsan0ivp9dCNie+2dSpUFEnn2P87sh/KlCc/t5vRfxw==
+X-Received: by 2002:a17:907:7b87:b0:b2d:d7ba:8e7b with SMTP id
+ a640c23a62f3a-b647463a2d7mr1457036366b.23.1760956913116; 
+ Mon, 20 Oct 2025 03:41:53 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b65e7da33dcsm760523266b.12.2025.10.20.03.41.50
+ a640c23a62f3a-b65e83937a3sm757643366b.23.2025.10.20.03.41.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 20 Oct 2025 03:41:50 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C17D45F872;
+ by draig.lan (Postfix) with ESMTP id D67445F905;
  Mon, 20 Oct 2025 11:41:49 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 02/11] gitlab: drop aarch32 runner and associated bits
-Date: Mon, 20 Oct 2025 11:41:40 +0100
-Message-ID: <20251020104149.4034124-3-alex.bennee@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 03/11] tests/tcg/multiarch/linux/linux-test: Don't try to test
+ atime update
+Date: Mon, 20 Oct 2025 11:41:41 +0100
+Message-ID: <20251020104149.4034124-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251020104149.4034124-1-alex.bennee@linaro.org>
 References: <20251020104149.4034124-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,218 +106,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While working out what hoops to jump through to get a full set of
-aarch32 packages installed on the aarch64 runner it was pointed out 32
-bit host support is deprecated. As the extra packages where needed for
-system emulation (marked deprecated since 8.0!) there didn't seem much
-point keeping this in.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-While the full expunging of 32 bit host support will probably be done
-for 11.0 we can at least reduce the CI burden a bit now.
+The linux-test test includes an attempt to check the utime and stat
+syscalls by setting the atime and mtime of a file to specific values,
+and then calling stat() to check that the values read back correctly.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20251016150357.876415-3-alex.bennee@linaro.org>
+Unfortunately this is flaky, as it will fail if some other process
+(for instance a virus scanner, backup program, etc) gets in and reads
+the file between the utime() and stat() call, resulting in a host
+syscall sequence like this:
+
+utimensat(AT_FDCWD, "file2",
+  [{tv_sec=1001, tv_nsec=0} /* 1970-01-01T01:16:41+0100 */,
+   {tv_sec=1000, tv_nsec=0} /* 1970-01-01T01:16:40+0100 */], 0) = 0
+# successfully set atime to 1001 and mtime to 1000
+statx(AT_FDCWD, "file2", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT,
+  STATX_BASIC_STATS,
+  {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID,
+   stx_blksize=4096, stx_attributes=0, stx_nlink=1, stx_uid=32808,
+   stx_gid=32808, stx_mode=S_IFREG|0600, stx_ino=21659016,
+   stx_size=100, stx_blocks=8,
+   stx_attributes_mask=STATX_ATTR_COMPRESSED|STATX_ATTR_IMMUTABLE|
+         STATX_ATTR_APPEND|STATX_ATTR_NODUMP|STATX_ATTR_ENCRYPTED|
+         STATX_ATTR_AUTOMOUNT|STATX_ATTR_MOUNT_ROOT|STATX_ATTR_VERITY|
+         STATX_ATTR_DAX,
+   stx_atime={tv_sec=1760091862, tv_nsec=63509009} /* 2025-10-10T11:24:22.063509009+0100 */,
+   stx_ctime={tv_sec=1760091862, tv_nsec=63509009} /* 2025-10-10T11:24:22.063509009+0100 */,
+   stx_mtime={tv_sec=1000, tv_nsec=0} /* 1970-01-01T01:16:40+0100 */,
+   stx_rdev_major=0, stx_rdev_minor=0, stx_dev_major=252,
+   stx_dev_minor=0, stx_mnt_id=0x1f}) = 0
+# but when we statx the file, we get back an mtime of 1000
+# but an atime corresponding to when the other process read it
+
+and which will cause the test program to fail with the error
+message "stat time".
+
+In theory we could defend against this by e.g.  operating on files in
+a dummy loopback mount filesystem which we mounted as 'noatime', but
+this isn't worth the hassle.  Just drop the check on atime.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251016150357.876415-4-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-index 3eb8216d571..142fbf4a242 100644
---- a/.gitlab-ci.d/custom-runners.yml
-+++ b/.gitlab-ci.d/custom-runners.yml
-@@ -31,4 +31,3 @@
- include:
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml'
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml'
--  - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml'
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
-deleted file mode 100644
-index 75029c9187e..00000000000
---- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch32.yml
-+++ /dev/null
-@@ -1,25 +0,0 @@
--# All ubuntu-24.04 jobs should run successfully in an environment
--# setup by the scripts/ci/setup/ubuntu/build-environment.yml task
--# "Install basic packages to build QEMU on Ubuntu 24.04"
--
--ubuntu-24.04-aarch32-all:
-- extends: .custom_runner_template
-- needs: []
-- stage: build
-- tags:
-- - ubuntu_24.04
-- - aarch32
-- rules:
-- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
--   when: manual
--   allow_failure: true
-- - if: "$AARCH32_RUNNER_AVAILABLE"
--   when: manual
--   allow_failure: true
-- script:
-- - mkdir build
-- - cd build
-- - ../configure --cross-prefix=arm-linux-gnueabihf-
--   || { cat config.log meson-logs/meson-log.txt; exit 1; }
-- - make --output-sync -j`nproc --ignore=40`
-- - make --output-sync -j`nproc --ignore=40` check
-diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
-index 6042750cb4d..0f8ec5fab04 100644
---- a/scripts/ci/setup/ubuntu/build-environment.yml
-+++ b/scripts/ci/setup/ubuntu/build-environment.yml
-@@ -47,21 +47,4 @@
-         - ansible_facts['distribution'] == 'Ubuntu'
-         - ansible_facts['distribution_version'] == '24.04'
+diff --git a/tests/tcg/multiarch/linux/linux-test.c b/tests/tcg/multiarch/linux/linux-test.c
+index 64f57cb287e..bf6e0fda262 100644
+--- a/tests/tcg/multiarch/linux/linux-test.c
++++ b/tests/tcg/multiarch/linux/linux-test.c
+@@ -155,9 +155,14 @@ static void test_file(void)
+         error("stat mode");
+     if ((st.st_mode & 0777) != 0600)
+         error("stat mode2");
+-    if (st.st_atime != 1001 ||
+-        st.st_mtime != 1000)
++    /*
++     * Only check mtime, not atime: other processes such as
++     * virus scanners might race with this test program and get
++     * in and update the atime, causing random failures.
++     */
++    if (st.st_mtime != 1000) {
+         error("stat time");
++    }
  
--    - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 24.04
--      package:
--        name:
--          - binutils-arm-linux-gnueabihf
--          - gcc-arm-linux-gnueabihf
--          - libblkid-dev:armhf
--          - libc6-dev:armhf
--          - libffi-dev:armhf
--          - libglib2.0-dev:armhf
--          - libmount-dev:armhf
--          - libpcre2-dev:armhf
--          - libpixman-1-dev:armhf
--          - zlib1g-dev:armhf
--      when:
--        - ansible_facts['distribution'] == 'Ubuntu'
--        - ansible_facts['distribution_version'] == '24.04'
--        - ansible_facts['architecture'] == 'aarch64'
- 
-diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml b/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
-deleted file mode 100644
-index 0cc34cd10b9..00000000000
---- a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
-+++ /dev/null
-@@ -1,127 +0,0 @@
--# THIS FILE WAS AUTO-GENERATED
--#
--#  $ lcitool variables --cross-arch armv7l ubuntu-2204 qemu
--#
--# https://gitlab.com/libvirt/libvirt-ci
--
--packages:
--  - bash
--  - bc
--  - bison
--  - bsdextrautils
--  - bzip2
--  - ca-certificates
--  - ccache
--  - dbus
--  - debianutils
--  - diffutils
--  - exuberant-ctags
--  - findutils
--  - flex
--  - gcc
--  - gcovr
--  - gettext
--  - git
--  - hostname
--  - libglib2.0-dev
--  - libpcre2-dev
--  - libsndio-dev
--  - libspice-protocol-dev
--  - llvm
--  - locales
--  - make
--  - meson
--  - mtools
--  - ncat
--  - ninja-build
--  - openssh-client
--  - pkgconf
--  - python3
--  - python3-numpy
--  - python3-opencv
--  - python3-pillow
--  - python3-pip
--  - python3-sphinx
--  - python3-sphinx-rtd-theme
--  - python3-tomli
--  - python3-venv
--  - python3-yaml
--  - rpm2cpio
--  - sed
--  - socat
--  - sparse
--  - swtpm
--  - tar
--  - tesseract-ocr
--  - tesseract-ocr-eng
--  - xorriso
--  - zstd
--  - gcc-arm-linux-gnueabihf
--  - libaio-dev:armhf
--  - libasan6:armhf
--  - libasound2-dev:armhf
--  - libattr1-dev:armhf
--  - libbpf-dev:armhf
--  - libbrlapi-dev:armhf
--  - libbz2-dev:armhf
--  - libc6-dev:armhf
--  - libcacard-dev:armhf
--  - libcap-ng-dev:armhf
--  - libcapstone-dev:armhf
--  - libcmocka-dev:armhf
--  - libcurl4-gnutls-dev:armhf
--  - libdaxctl-dev:armhf
--  - libdrm-dev:armhf
--  - libepoxy-dev:armhf
--  - libfdt-dev:armhf
--  - libffi-dev:armhf
--  - libfuse3-dev:armhf
--  - libgbm-dev:armhf
--  - libgcrypt20-dev:armhf
--  - libglib2.0-dev:armhf
--  - libglusterfs-dev:armhf
--  - libgnutls28-dev:armhf
--  - libgtk-3-dev:armhf
--  - libibumad-dev:armhf
--  - libibverbs-dev:armhf
--  - libiscsi-dev:armhf
--  - libjemalloc-dev:armhf
--  - libjpeg-turbo8-dev:armhf
--  - libjson-c-dev:armhf
--  - liblttng-ust-dev:armhf
--  - liblzo2-dev:armhf
--  - libncursesw5-dev:armhf
--  - libnfs-dev:armhf
--  - libnuma-dev:armhf
--  - libpam0g-dev:armhf
--  - libpipewire-0.3-dev:armhf
--  - libpixman-1-dev:armhf
--  - libpng-dev:armhf
--  - libpulse-dev:armhf
--  - librbd-dev:armhf
--  - librdmacm-dev:armhf
--  - libsasl2-dev:armhf
--  - libsdl2-dev:armhf
--  - libsdl2-image-dev:armhf
--  - libseccomp-dev:armhf
--  - libselinux1-dev:armhf
--  - libslirp-dev:armhf
--  - libsnappy-dev:armhf
--  - libspice-server-dev:armhf
--  - libssh-dev:armhf
--  - libsystemd-dev:armhf
--  - libtasn1-6-dev:armhf
--  - libubsan1:armhf
--  - libudev-dev:armhf
--  - liburing-dev:armhf
--  - libusb-1.0-0-dev:armhf
--  - libusbredirhost-dev:armhf
--  - libvdeplug-dev:armhf
--  - libvirglrenderer-dev:armhf
--  - libvte-2.91-dev:armhf
--  - libxen-dev:armhf
--  - libzstd-dev:armhf
--  - nettle-dev:armhf
--  - systemtap-sdt-dev:armhf
--  - zlib1g-dev:armhf
--
+     chk_error(stat(tmpdir, &st));
+     if (!S_ISDIR(st.st_mode))
 -- 
 2.47.3
 
