@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1DBBF2614
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EBBBF2605
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAscr-0003k7-Do; Mon, 20 Oct 2025 12:20:50 -0400
+	id 1vAscx-0003mD-2V; Mon, 20 Oct 2025 12:20:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vAsci-0003iZ-Jr; Mon, 20 Oct 2025 12:20:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1vAsck-0003jZ-GT; Mon, 20 Oct 2025 12:20:42 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vAscg-0000su-88; Mon, 20 Oct 2025 12:20:40 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59K7Jg8m025774;
- Mon, 20 Oct 2025 16:20:37 GMT
+ id 1vAsch-0000t6-IH; Mon, 20 Oct 2025 12:20:42 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KC2fg3006614;
+ Mon, 20 Oct 2025 16:20:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=7dewvaRSqeMbVtAS3
- xQlODzV1Ib0tyTeVwjFS/WUHtI=; b=k6ZjThf2UCehHzvXwHkqEDItMspJtiEUi
- jl7SHOsNVawdFSJQmeieDHA6APedl8RC7ZOsLhprS4VPYX+EmYyLXXcOtMWSiEvk
- 4AhdDCfrOhadDBHjJuSJTplYjmqWdkIGYk/IqdTeNPKPzsnRgbFH62ki6wAdQZ8X
- cHGuprI3S9hFRLaWroQwIjPK8GBBoaWJMADh630PRRtt11/i2+I4t0pwXcnWx7VM
- tNKYpucnCdu4DQS6zeaY41A8eubeelbpM1WbJewuNoVP5TjcCQbfvtG5fV2Mp8Xz
- nRt/H6jn0e+Kam/Ae7YVM0uBFg0/5f0udPVO9ba9m7cQQhyYecuAA==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32h9b8x-1
+ :mime-version:references:subject:to; s=pp1; bh=s69IrhSy7IoKpJv12
+ smthmV3ue0ebcyT7BZnXMXeGUY=; b=XfZYpVDODc8jbyIz8ECH1zaYFB2lLUK3r
+ PNtLsDbs7apbK5jQBH/nSUdf73uos8h19cPxmL5AQ3kxSoOrlQbRT8WmVUILeodh
+ lY07fGX6w7lfUZbb6tMnXFsFzrYquob6tMWBYhU//FM9YoV2+foCzmeLAZphQab9
+ unjalpsle+IgSabbHdE4/FjQ4ho+S3TvHsHuhvLLrRwflNqG2VLZzkIAFjk/UIdm
+ ZfBc4yFw7WfIQGI6MKd5DvGgKrqFyRQC1venFkpO7oIK5SophWHyIeusCChcEgor
+ HdCinM8TuELK12PXkWWHi/3JrglmqndcD/FzC7+0m4D4KY8Q052Ug==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326jg1k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 16:20:36 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59KFKYQf002320;
- Mon, 20 Oct 2025 16:20:35 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqej6bra-1
+ Mon, 20 Oct 2025 16:20:37 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59KEgxOo032096;
+ Mon, 20 Oct 2025 16:20:36 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vp7mph79-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 16:20:35 +0000
+ Mon, 20 Oct 2025 16:20:36 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
  [10.241.53.104])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59KGKXkC50004272
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59KGKZ1I15467154
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Oct 2025 16:20:34 GMT
+ Mon, 20 Oct 2025 16:20:35 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9DE6C5806A;
- Mon, 20 Oct 2025 16:20:33 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 354085805D;
+ Mon, 20 Oct 2025 16:20:35 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0635E58065;
- Mon, 20 Oct 2025 16:20:33 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 888B258052;
+ Mon, 20 Oct 2025 16:20:34 +0000 (GMT)
 Received: from t15.ibmuc.com (unknown [9.61.78.141])
  by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 20 Oct 2025 16:20:32 +0000 (GMT)
+ Mon, 20 Oct 2025 16:20:34 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, jrossi@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH 4/7] pc-bios/s390-ccw: Introduce PCI device IPL format
-Date: Mon, 20 Oct 2025 12:20:20 -0400
-Message-ID: <20251020162023.3649165-5-jrossi@linux.ibm.com>
+Subject: [PATCH 5/7] pc-bios/s390-ccw: Add support for virtio-blk-pci IPL
+Date: Mon, 20 Oct 2025 12:20:21 -0400
+Message-ID: <20251020162023.3649165-6-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251020162023.3649165-1-jrossi@linux.ibm.com>
 References: <20251020162023.3649165-1-jrossi@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX1RUTUM/nsCIu
- kwfu7WtQtkxAJG+RfQe6nRUcKHufm4m3uMUI3mpJ0fVclYkh+jRYHj8QkJFpoLfgwXMi1/mhFgx
- YsUKF+28Urj1V13D26h5XRF1o3Ls+2Fb2mLP1pm9S88xjE0gORt65iiIkn5mPg/Yq9+Inn/rgdJ
- rLRjJ37tBvJub9APWNDit8CKppRtljAv0lDw7IAi3mPedXHU6WH8PuJrU92IzifpydxOf004igb
- I9VWAGRCuLUhwCxHGub4Zv69WrGWC2yYjrLEo6mnSTCNb4qZq+L246QfdTCcdvh5C5k7e3yUo/O
- ytCtZvcey6Hb3RTwqwPBdM+g99w00RtszsdhuM6+YPYfZ6NNabUkO2uN6vhPKTkEIvnycHQ1m88
- BadVQYmT9j+Uhgc657Sr9Jj2nCWkyg==
-X-Authority-Analysis: v=2.4 cv=OrVCCi/t c=1 sm=1 tr=0 ts=68f66154 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68f66155 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=WVVyr85AwjsCaWk6uVoA:9
-X-Proofpoint-GUID: 5gyt6_4q8d7toDRzPnYLcQbeSksvy5Eg
-X-Proofpoint-ORIG-GUID: 5gyt6_4q8d7toDRzPnYLcQbeSksvy5Eg
+ a=IFyg070M5ZGC1bApo04A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXwMssPJ2FGpJd
+ aOnomox9OGd7vBQV6VlQcGRWTt1l/vki8dU3bh1VDGutJ9DlLjcdqZdgMJejgC8Z2obXBLdYRdO
+ UfpVjiy6dJCoYfJZwTFFJUXE2MPMsDC3Ve+Jn69ZL5ejaxMy4Bblq+jeqqysMHdRW6zo89psnmk
+ lFedoFojjc9S28qmqGoZQ41uQPP5Ey+8XHOhIs/o1XH9MPkgRGmi+iAWeDf8ckLUdIQQ+M8G6Aa
+ DV4GFvFPVgMRryjCJbPPeC7SMDiF3DNBLxVniPHGk/XIWv7fsT7pt+IYIC2ujdRq2/0pYjOwLfd
+ seefV4uZs3g7b1vmX6V2eIwO5KAQ7YJxaj/7AZxg8D1ea40A3Dsw0NiM/rKBcTNyFxA+LtrTK7p
+ iLEBo3I0MKWB7gX3mBARz37nswIQ8A==
+X-Proofpoint-GUID: ioaRqS4mle85IvG-8eUwUjXZfXtokjGq
+X-Proofpoint-ORIG-GUID: ioaRqS4mle85IvG-8eUwUjXZfXtokjGq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-20_04,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
- clxscore=1015 bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -116,53 +116,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Define selected s390x PCI instructions and extend IPLB to allow PCI devices.
+Enable virt-queue PCI configuration and add routines for virtio-blk-pci devices.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 ---
- include/hw/s390x/ipl/qipl.h |   9 ++
- pc-bios/s390-ccw/pci.h      |  77 +++++++++++++++
- pc-bios/s390-ccw/pci.c      | 191 ++++++++++++++++++++++++++++++++++++
- pc-bios/s390-ccw/Makefile   |   2 +-
- 4 files changed, 278 insertions(+), 1 deletion(-)
- create mode 100644 pc-bios/s390-ccw/pci.h
- create mode 100644 pc-bios/s390-ccw/pci.c
+ pc-bios/s390-ccw/clp.h           |   2 +-
+ pc-bios/s390-ccw/virtio-pci.h    |  73 +++++++
+ pc-bios/s390-ccw/virtio.h        |   1 +
+ pc-bios/s390-ccw/main.c          |  59 ++++-
+ pc-bios/s390-ccw/virtio-blkdev.c |   3 +
+ pc-bios/s390-ccw/virtio-pci.c    | 357 +++++++++++++++++++++++++++++++
+ pc-bios/s390-ccw/virtio.c        |   5 +
+ pc-bios/s390-ccw/Makefile        |   2 +-
+ 8 files changed, 498 insertions(+), 4 deletions(-)
+ create mode 100644 pc-bios/s390-ccw/virtio-pci.h
+ create mode 100644 pc-bios/s390-ccw/virtio-pci.c
 
-diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
-index aadab87c2e..efd7b3797c 100644
---- a/include/hw/s390x/ipl/qipl.h
-+++ b/include/hw/s390x/ipl/qipl.h
-@@ -104,6 +104,14 @@ struct IplBlockQemuScsi {
- } QEMU_PACKED;
- typedef struct IplBlockQemuScsi IplBlockQemuScsi;
+diff --git a/pc-bios/s390-ccw/clp.h b/pc-bios/s390-ccw/clp.h
+index cb130e5e90..52232c4c48 100644
+--- a/pc-bios/s390-ccw/clp.h
++++ b/pc-bios/s390-ccw/clp.h
+@@ -19,6 +19,6 @@
  
-+struct IplBlockPci {
-+    uint32_t reserved0[80];
-+    uint8_t  opt;
-+    uint8_t  reserved1[3];
-+    uint32_t fid;
-+} QEMU_PACKED;
-+typedef struct IplBlockPci IplBlockPci;
-+
- union IplParameterBlock {
-     struct {
-         uint32_t len;
-@@ -119,6 +127,7 @@ union IplParameterBlock {
-             IplBlockFcp fcp;
-             IPLBlockPV pv;
-             IplBlockQemuScsi scsi;
-+            IplBlockPci pci;
-         };
-     } QEMU_PACKED;
-     struct {
-diff --git a/pc-bios/s390-ccw/pci.h b/pc-bios/s390-ccw/pci.h
+ int clp_pci(void *data);
+ int enable_pci_function(uint32_t *fhandle);
+-int enumerate_pci_functions(void);
++int find_pci_function(uint32_t fid, ClpFhListEntry *entry);
+ 
+ #endif
+diff --git a/pc-bios/s390-ccw/virtio-pci.h b/pc-bios/s390-ccw/virtio-pci.h
 new file mode 100644
-index 0000000000..b5dc5bff35
+index 0000000000..09fff015cb
 --- /dev/null
-+++ b/pc-bios/s390-ccw/pci.h
-@@ -0,0 +1,77 @@
++++ b/pc-bios/s390-ccw/virtio-pci.h
+@@ -0,0 +1,73 @@
 +/*
-+ * s390x PCI definitions
++ * Definitions for virtio-pci
 + *
 + * Copyright 2025 IBM Corp.
 + * Author(s): Jared Rossi <jrossi@linux.ibm.com>
@@ -170,82 +159,211 @@ index 0000000000..b5dc5bff35
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef PCI_H
-+#define PCI_H
++#ifndef VIRTIO_PCI_H
++#define VIRTIO_PCI_H
 +
-+#include <stdint.h>
-+#include "clp.h"
++/* Common configuration */
++#define VIRTIO_PCI_CAP_COMMON_CFG          1
++/* Notifications */
++#define VIRTIO_PCI_CAP_NOTIFY_CFG          2
++/* ISR access */
++#define VIRTIO_PCI_CAP_ISR_CFG             3
++/* Device specific configuration */
++#define VIRTIO_PCI_CAP_DEVICE_CFG          4
++/* PCI configuration access */
++#define VIRTIO_PCI_CAP_PCI_CFG             5
++/* Additional shared memory capability */
++#define VIRTIO_PCI_CAP_SHARED_MEMORY_CFG   8
++/* PCI vendor data configuration */
++#define VIRTIO_PCI_CAP_VENDOR_CFG          9
 +
-+#define ZPCI_CREATE_REQ(handle, space, len)                    \
-+    ((uint64_t) handle << 32 | space << 16 | len)
++/* Offsets within capability header */
++#define VIRTIO_PCI_CAP_VNDR        0
++#define VIRTIO_PCI_CAP_NEXT        1
++#define VIRTIO_PCI_CAP_LEN         2
++#define VIRTIO_PCI_CAP_CFG_TYPE    3
++#define VIRTIO_PCI_CAP_BAR         4
++#define VIRTIO_PCI_CAP_OFFSET      8
++#define VIRTIO_PCI_CAP_LENGTH      12
 +
-+union register_pair {
-+    unsigned __int128 pair;
-+    struct {
-+        unsigned long even;
-+        unsigned long odd;
-+    };
-+};
++#define VIRTIO_PCI_NOTIFY_CAP_MULT 16 /* VIRTIO_PCI_CAP_NOTIFY_CFG only */
 +
-+#define PCIFIB_FC_ENABLED      0x80
-+#define PCIFIB_FC_ERROR        0x40
-+#define PCIFIB_FC_BLOCKED      0x20
-+#define PCIFIB_FC_DMAREG       0x10
++/* Common Area Offsets for virtio-pci queue */
++#define VPCI_C_OFFSET_DFSELECT      0
++#define VPCI_C_OFFSET_DF            4
++#define VPCI_C_OFFSET_GFSELECT      8
++#define VPCI_C_OFFSET_GF            12
++#define VPCI_C_COMMON_NUMQ          18
++#define VPCI_C_OFFSET_STATUS        20
++#define VPCI_C_OFFSET_Q_SELECT      22
++#define VPCI_C_OFFSET_Q_SIZE        24
++#define VPCI_C_OFFSET_Q_ENABLE      28
++#define VPCI_C_OFFSET_Q_NOFF        30
++#define VPCI_C_OFFSET_Q_DESCLO      32
++#define VPCI_C_OFFSET_Q_DESCHI      36
++#define VPCI_C_OFFSET_Q_AVAILLO     40
++#define VPCI_C_OFFSET_Q_AVAILHI     44
++#define VPCI_C_OFFSET_Q_USEDLO      48
++#define VPCI_C_OFFSET_Q_USEDHI      52
 +
-+#define PCIST_DISABLED         0x0
-+#define PCIST_ENABLED          0x1
++#define VPCI_S_RESET            0
++#define VPCI_S_ACKNOWLEDGE      1
++#define VPCI_S_DRIVER           2
++#define VPCI_S_DRIVER_OK        4
++#define VPCI_S_FEATURES_OK      8
 +
-+#define PCI_CAPABILITY_LIST    0x34 /* Offset of first capability list entry */
++#define VIRTIO_F_VERSION_1      (1 << (32 - 32)) /* Feature bit 32 */
 +
-+struct PciFib {
-+    uint32_t reserved0[2];
-+    uint8_t fcflags;
-+    uint8_t reserved1[3];
-+    uint32_t reserved2;
-+    uint64_t pba;
-+    uint64_t pal;
-+    uint64_t iota;
-+    uint16_t isc:4;
-+    uint16_t noi:12;
-+    uint8_t reserved3:2;
-+    uint8_t aibvo:6;
-+    uint8_t s:1;
-+    uint8_t reserved4:1;
-+    uint8_t aisbo:6;
-+    uint32_t reserved5;
-+    uint64_t aibv;
-+    uint64_t aisb;
-+    uint64_t fmba;
-+    uint32_t reserved6[2];
-+};
-+typedef struct PciFib PciFib;
++#define VIRT_Q_SIZE 16
 +
-+struct PciDevice {
-+    uint16_t device_id;
-+    uint16_t vendor_id;
-+    uint32_t fid;
-+    uint32_t fhandle;
-+    uint8_t status;
-+    PciFib fib;
-+};
-+typedef struct PciDevice PciDevice;
-+
-+int pci_write(uint32_t fhandle, uint64_t offset, uint64_t data, uint8_t len);
-+int pci_read(uint32_t fhandle, uint64_t offset, uint8_t picas, void *buf, uint8_t len);
-+uint8_t find_cap_pos(uint32_t fhandle, uint64_t cfg_type);
-+int pci_dev_enable(PciDevice *pcidev);
-+int get_fib(PciFib *fib, uint32_t fhandle);
-+int set_fib(PciFib *fib, uint32_t fhandle, uint8_t dma_as, uint8_t opcontrol);
++long virtio_pci_notify(uint32_t fhandle, int vq_id);
++int virtio_pci_setup(VDev *vdev);
++int virtio_pci_setup_device(void);
++int virtio_pci_reset(VDev *vdev);
++void virtio_pci_id2type(VDev *vdev, uint16_t device_id);
 +
 +#endif
-diff --git a/pc-bios/s390-ccw/pci.c b/pc-bios/s390-ccw/pci.c
+diff --git a/pc-bios/s390-ccw/virtio.h b/pc-bios/s390-ccw/virtio.h
+index 1c1017a0db..4e4a7280b6 100644
+--- a/pc-bios/s390-ccw/virtio.h
++++ b/pc-bios/s390-ccw/virtio.h
+@@ -259,6 +259,7 @@ struct VDev {
+     uint8_t scsi_dev_heads;
+     bool scsi_device_selected;
+     ScsiDevice selected_scsi_device;
++    uint32_t pci_fh;
+     uint32_t max_transfer;
+     uint32_t guest_features[2];
+ };
+diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
+index 7299b8911f..69e7d39862 100644
+--- a/pc-bios/s390-ccw/main.c
++++ b/pc-bios/s390-ccw/main.c
+@@ -15,8 +15,10 @@
+ #include "s390-arch.h"
+ #include "s390-ccw.h"
+ #include "cio.h"
++#include "clp.h"
+ #include "virtio.h"
+ #include "virtio-scsi.h"
++#include "virtio-pci.h"
+ #include "dasd-ipl.h"
+ 
+ SubChannelId blk_schid = { .one = 1 };
+@@ -150,6 +152,20 @@ static bool find_subch(int dev_no)
+     return false;
+ }
+ 
++static bool find_fid(uint32_t fid) {
++    ClpFhListEntry entry;
++    VDev *vdev = virtio_get_device();
++
++    if (find_pci_function(fid, &entry)) {
++        return false;
++    }
++
++    vdev->pci_fh = entry.fh;
++    virtio_pci_id2type(vdev, entry.device_id);
++
++    return (vdev->type != 0);
++}
++
+ static void menu_setup(void)
+ {
+     if (memcmp(loadparm_str, LOADPARM_PROMPT, LOADPARM_LEN) == 0) {
+@@ -233,6 +249,9 @@ static bool find_boot_device(void)
+         blk_schid.ssid = iplb.scsi.ssid & 0x3;
+         found = find_subch(iplb.scsi.devno);
+         break;
++     case S390_IPL_TYPE_PCI:
++        found = find_fid(iplb.pci.fid);
++        break;
+     default:
+         puts("Unsupported IPLB");
+     }
+@@ -269,7 +288,7 @@ static int virtio_setup(void)
+     return ret;
+ }
+ 
+-static void ipl_boot_device(void)
++static void ipl_ccw_device(void)
+ {
+     switch (cutype) {
+     case CU_TYPE_DASD_3990:
+@@ -282,7 +301,43 @@ static void ipl_boot_device(void)
+         }
+         break;
+     default:
+-        printf("Attempting to boot from unexpected device type 0x%X\n", cutype);
++        printf("Cannot boot CCW device with cu type 0x%X\n", cutype);
++    }
++}
++
++static void ipl_pci_device(void)
++{
++    VDev *vdev = virtio_get_device();
++    vdev->is_cdrom = false;
++    vdev->scsi_device_selected = false;
++
++    if (virtio_pci_setup_device()) {
++        return;
++    }
++
++    switch (vdev->type) {
++    case VIRTIO_ID_BLOCK:
++        if (virtio_setup() == 0) {
++            zipl_load();
++        }
++        break;
++    default:
++        printf("Cannot boot PCI device type 0x%X\n", vdev->type);
++    }
++}
++
++static void ipl_boot_device(void)
++{
++    switch (ipl_type) {
++    case S390_IPL_TYPE_QEMU_SCSI:
++    case S390_IPL_TYPE_CCW:
++        ipl_ccw_device();
++        break;
++    case S390_IPL_TYPE_PCI:
++        ipl_pci_device();
++        break;
++    default:
++        puts("Unrecognized IPL type!");
+     }
+ }
+ 
+diff --git a/pc-bios/s390-ccw/virtio-blkdev.c b/pc-bios/s390-ccw/virtio-blkdev.c
+index df6a6d5b70..c5b65d021b 100644
+--- a/pc-bios/s390-ccw/virtio-blkdev.c
++++ b/pc-bios/s390-ccw/virtio-blkdev.c
+@@ -13,6 +13,7 @@
+ #include "virtio.h"
+ #include "virtio-ccw.h"
+ #include "virtio-scsi.h"
++#include "virtio-pci.h"
+ 
+ #define VIRTIO_BLK_F_GEOMETRY   (1 << 4)
+ #define VIRTIO_BLK_F_BLK_SIZE   (1 << 6)
+@@ -243,6 +244,8 @@ int virtio_blk_setup_device()
+     case S390_IPL_TYPE_CCW:
+         vdev->schid = blk_schid;
+         return virtio_ccw_setup(vdev);
++    case S390_IPL_TYPE_PCI:
++        return virtio_pci_setup(vdev);
+     }
+ 
+     return 1;
+diff --git a/pc-bios/s390-ccw/virtio-pci.c b/pc-bios/s390-ccw/virtio-pci.c
 new file mode 100644
-index 0000000000..f776bc064c
+index 0000000000..b6cb4a661a
 --- /dev/null
-+++ b/pc-bios/s390-ccw/pci.c
-@@ -0,0 +1,191 @@
++++ b/pc-bios/s390-ccw/virtio-pci.c
+@@ -0,0 +1,357 @@
 +/*
-+ * s390x PCI funcionality
++ * Functionality for virtio-pci
 + *
 + * Copyright 2025 IBM Corp.
 + * Author(s): Jared Rossi <jrossi@linux.ibm.com>
@@ -255,196 +373,392 @@ index 0000000000..f776bc064c
 +
 +#include "clp.h"
 +#include "pci.h"
++#include "helper.h"
++#include "s390-ccw.h"
++#include "virtio.h"
++#include "bswap.h"
++#include "virtio-pci.h"
++#include "s390-time.h"
 +#include <stdio.h>
 +
-+/* PCI load */
-+static inline int pcilg(uint64_t *data, uint64_t req, uint64_t offset, uint8_t *status)
-+{
-+    union register_pair req_off = {.even = req, .odd = offset};
-+    int cc = -1;
-+    uint64_t __data = 0x92;
++/* Variable offsets used for reads/writes to modern memory region BAR 4 */
++uint32_t common_offset;
++uint32_t device_offset;
++uint32_t notify_offset;
++uint32_t notify_mult;
++uint16_t q_notify_offset;
 +
-+    asm volatile (
-+        "     .insn   rre,0xb9d20000,%[data],%[req_off]\n"
-+        "     ipm     %[cc]\n"
-+        "     srl     %[cc],28\n"
-+        : [cc] "+d" (cc), [data] "=d" (__data),
-+          [req_off] "+&d" (req_off.pair) :: "cc");
-+    *status = req_off.even >> 24 & 0xff;
-+    *data = __data;
-+    return cc;
++static int virtio_pci_set_status(VDev *vdev, uint8_t status)
++{
++    uint64_t status64 = status;
++
++    return pci_write(vdev->pci_fh, VPCI_C_OFFSET_STATUS, status64, 1);
 +}
 +
-+/* PCI store */
-+int pcistg(uint64_t data, uint64_t req, uint64_t offset, uint8_t *status)
++static int virtio_pci_get_status(VDev *vdev, uint8_t *status)
 +{
-+    union register_pair req_off = {.even = req, .odd = offset};
-+    int cc = -1;
-+
-+    asm volatile (
-+        "     .insn   rre,0xb9d00000,%[data],%[req_off]\n"
-+        "     ipm     %[cc]\n"
-+        "     srl     %[cc],28\n"
-+        : [cc] "+d" (cc), [req_off] "+&d" (req_off.pair)
-+        : [data] "d" (data)
-+        : "cc");
-+    *status = req_off.even >> 24 & 0xff;
-+    return cc;
-+}
-+
-+/* store PCI function controls */
-+int stpcifc(uint64_t req, PciFib *fib, uint8_t *status)
-+{
-+    uint8_t cc;
-+
-+    asm volatile (
-+        "     .insn   rxy,0xe300000000d4,%[req],%[fib]\n"
-+        "     ipm     %[cc]\n"
-+        "     srl     %[cc],28\n"
-+        : [cc] "=d" (cc), [req] "+d" (req), [fib] "+Q" (*fib)
-+        : : "cc");
-+    *status = req >> 24 & 0xff;
-+    return cc;
-+}
-+
-+/* modify PCI function controls */
-+int mpcifc(uint64_t req, PciFib *fib, uint8_t *status)
-+{
-+    uint8_t cc;
-+
-+    asm volatile (
-+        "     .insn   rxy,0xe300000000d0,%[req],%[fib]\n"
-+        "     ipm     %[cc]\n"
-+        "     srl     %[cc],28\n"
-+        : [cc] "=d" (cc), [req] "+d" (req), [fib] "+Q" (*fib)
-+        : : "cc");
-+    *status = req >> 24 & 0xff;
-+    return cc;
-+}
-+
-+int pci_write(uint32_t fhandle, uint64_t offset, uint64_t data, uint8_t len)
-+{
-+
-+    uint64_t req = ZPCI_CREATE_REQ(fhandle, 4, len);
-+    uint8_t status;
++    uint64_t status64;
 +    int rc;
 +
-+    rc = pcistg(data, req, offset, &status);
-+    if (rc == 1) {
-+        return status;
-+    } else if (rc) {
++    rc = pci_read(vdev->pci_fh, VPCI_C_OFFSET_STATUS, 4, &status64, 1);
++    if (rc) {
++        puts("Failed to read virtio-pci status");
 +        return rc;
 +    }
 +
++    *status = (uint8_t) status64;
 +    return 0;
 +}
 +
-+int pci_read(uint32_t fhandle, uint64_t offset, uint8_t picas, void *buf, uint8_t len)
++static int virtio_pci_get_hfeatures(VDev *vdev, uint64_t *features)
 +{
-+    uint64_t req;
-+    uint64_t data;
-+    uint8_t status;
-+    int readlen;
-+    int i = 0;
-+    int rc = 0;
++    uint64_t feat0, feat1;
++    uint32_t selector;
++    int rc;
 +
-+    while (len > 0 && !rc) {
-+        data = 0;
-+        readlen = len > 8 ? 8 : len;
-+        req = ZPCI_CREATE_REQ(fhandle, picas, readlen);
-+        rc = pcilg(&data, req, offset + (i * 8), &status);
-+        ((uint64_t *)buf)[i] = data;
-+        len -= readlen;
-+        i++;
++    selector = bswap32(0);
++    rc = pci_write(vdev->pci_fh, VPCI_C_OFFSET_DFSELECT, selector, 4);
++    rc |= pci_read(vdev->pci_fh, VPCI_C_OFFSET_DF, 4, &feat0, 4);
++    feat0 = bswap32(feat0);
++
++    selector = bswap32(1);
++    rc |= pci_write(vdev->pci_fh, VPCI_C_OFFSET_DFSELECT, selector, 4);
++    rc |= pci_read(vdev->pci_fh, VPCI_C_OFFSET_DF, 4, &feat1, 4);
++    feat1 = bswap32(feat1);
++
++    *features = feat1 << 32;
++    *features |= feat0;
++
++    return rc;
++}
++
++static int virtio_pci_set_gfeatures(VDev *vdev)
++{
++    uint64_t feats;
++    uint32_t selector;
++    int rc;
++
++    selector = bswap32(0);
++    rc = pci_write(vdev->pci_fh, VPCI_C_OFFSET_GFSELECT, selector, 4);
++
++    feats = bswap32((uint64_t)vdev->guest_features[1]);
++    rc |= pci_write(vdev->pci_fh, VPCI_C_OFFSET_GF, feats, 4);
++
++    selector = bswap32(1);
++    rc |= pci_write(vdev->pci_fh, VPCI_C_OFFSET_GFSELECT, selector, 4);
++
++    feats = bswap32((uint64_t)vdev->guest_features[0]);
++    rc |= pci_write(vdev->pci_fh, VPCI_C_OFFSET_GF, feats, 4);
++
++    return rc;
++}
++
++static int virtio_pci_get_blk_config(VDev *vdev)
++{
++    return pci_read(vdev->pci_fh, device_offset, 4, (uint64_t *)&vdev->config.blk,
++                    sizeof(VirtioBlkConfig));
++
++}
++
++int virtio_pci_set_selected_vq(VDev *vdev, uint16_t queue_num)
++{
++    uint16_t le_queue_num;
++
++    le_queue_num = bswap16(queue_num);
++    return pci_write(vdev->pci_fh, VPCI_C_OFFSET_Q_SELECT, (uint64_t)le_queue_num, 2);
++}
++
++int virtio_pci_set_queue_size(VDev *vdev, uint16_t queue_size)
++{
++    uint16_t le_queue_size;
++
++    le_queue_size = bswap16(queue_size);
++    return pci_write(vdev->pci_fh, VPCI_C_OFFSET_Q_SIZE, (uint64_t)le_queue_size, 2);
++}
++
++static int virtio_pci_set_queue_enable(VDev *vdev, uint16_t enabled)
++{
++    uint16_t le_enabled;
++
++    le_enabled = bswap16(enabled);
++    return pci_write(vdev->pci_fh, VPCI_C_OFFSET_Q_ENABLE, (uint64_t)le_enabled, 2);
++}
++
++static int set_pci_vq_addr(VDev *vdev, void* addr, uint64_t config_offset_lo)
++{
++    uint32_t le_lo, le_hi;
++    uint32_t tmp;
++    int rc;
++
++    tmp = (uint32_t)(((uint64_t)addr) >> 32);
++    le_hi = bswap32(tmp);
++
++    tmp = (uint32_t)((uint64_t)addr & 0xFFFFFFFF);
++    le_lo = bswap32(tmp);
++
++    rc =  pci_write(vdev->pci_fh, config_offset_lo, (uint64_t)le_lo, 4);
++    rc |=  pci_write(vdev->pci_fh, config_offset_lo + 4, (uint64_t)le_hi, 4);
++
++    return rc;
++}
++
++/* virtio spec v1.1 para 4.1.2.1 */
++void virtio_pci_id2type(VDev *vdev, uint16_t device_id)
++{
++    switch(device_id) {
++    case 0x1001:
++        vdev->type = VIRTIO_ID_BLOCK;
++        break;
++    case 0x1000: /* Other valid but currently unsupported virtio device types */
++    case 0x1004:
++    default:
++        vdev->type = 0;
 +    }
-+
-+    if (rc == 1) {
-+        return status;
-+    } else if (rc) {
-+        return rc;
-+    }
-+
-+    return 0;
 +}
 +
 +/*
-+ * Find the position of the capability config within PCI configuration
-+ * space for a given cfg type.  Return the position if found, otherwise 0.
++ * Read PCI configuration space to find the offset of the Common, Device, and
++ * Notification memory regions within the modern memory space.
++ * Returns 0 if success, 1 if a capability could not be located, or a
++ * negative RC if the configuration read failed.
 + */
-+uint8_t find_cap_pos(uint32_t fhandle, uint64_t cfg_type) {
-+    uint64_t req, next, cfg;
-+    uint8_t status;
-+    int rc;
++static int virtio_pci_read_pci_cap_config(VDev *vdev)
++{
++    uint8_t pos;
++    uint64_t data;
 +
-+    req = ZPCI_CREATE_REQ(fhandle, 0xf, 1);
-+    rc = pcilg(&next, req, PCI_CAPABILITY_LIST, &status);
-+    rc = pcilg(&cfg, req, next + 3, &status);
-+
-+    while (!rc && (cfg != cfg_type) && next) {
-+        rc = pcilg(&next, req, next + 1, &status);
-+        rc = pcilg(&cfg, req, next + 3, &status);
++    /* Common cabilities */
++    pos = find_cap_pos(vdev->pci_fh, VIRTIO_PCI_CAP_COMMON_CFG);
++    if (!pos) {
++        puts("Failed to locate PCI common configuration");
++        return 1;
 +    }
++    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_CAP_OFFSET, 15, &data, 4)) {
++        return -EIO;
++    }
++    common_offset = bswap32(data);
 +
-+    return rc ? 0 : next;
++    /* Device cabilities */
++    pos = find_cap_pos(vdev->pci_fh, VIRTIO_PCI_CAP_DEVICE_CFG);
++    if (!pos) {
++        puts("Failed to locate PCI device configuration");
++        return 1;
++    }
++    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_CAP_OFFSET, 15, &data, 4)) {
++        return -EIO;
++    }
++    device_offset = bswap32(data);
++
++    /* Notification cabilities */
++    pos = find_cap_pos(vdev->pci_fh, VIRTIO_PCI_CAP_NOTIFY_CFG);
++    if (!pos) {
++        puts("Failed to locate PCI notification configuration");
++        return 1;
++    }
++    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_CAP_OFFSET, 15, &data, 4)) {
++        return -EIO;
++    }
++    notify_offset = bswap32(data);
++
++    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_NOTIFY_CAP_MULT, 15, &data, 4)) {
++        return -EIO;
++    }
++    notify_mult = bswap32(data);
++
++    if (pci_read(vdev->pci_fh, device_offset + VPCI_C_OFFSET_Q_NOFF, 4, &data, 2)) {
++        return -EIO;
++    }
++    q_notify_offset = bswap16(data);
++
++    return 0;
 +}
 +
-+int pci_dev_enable(PciDevice *pcidev)
++int virtio_pci_reset(VDev *vdev)
 +{
 +    int rc;
++    uint8_t status = VPCI_S_RESET;
 +
-+    rc = enable_pci_function(&pcidev->fhandle);
++    rc = virtio_pci_set_status(vdev, status);
++    rc |= virtio_pci_get_status(vdev, &status);
++
++    if (rc || status) {
++        puts("Failed to reset virtio-pci device");
++        return 1;
++    }
++
++    return 0;
++}
++
++int virtio_pci_setup(VDev *vdev)
++{
++    VRing *vr;
++    int rc;
++    uint64_t pci_features, data;
++    uint8_t status;
++    int i = 0;
++
++    vdev->config.blk.blk_size = 0;
++    vdev->guessed_disk_nature = VIRTIO_GDN_NONE;
++    vdev->cmd_vr_idx = 0;
++
++    if (virtio_reset(vdev)) {
++        return -EIO;
++    }
++
++    status = VPCI_S_ACKNOWLEDGE;
++    rc = virtio_pci_set_status(vdev, status);
 +    if (rc) {
-+        return rc;
++        puts("Virtio-pci device Failed to ACKNOWLEDGE");
++        return -EIO;
 +    }
 +
-+    pcidev->status = PCIST_ENABLED;
++    virtio_pci_read_pci_cap_config(vdev);
++    if (rc) {
++        printf("Invalid PCI capabilities");
++        return -EIO;
++    }
 +
-+    return get_fib(&pcidev->fib, pcidev->fhandle);
++    switch (vdev->type) {
++    case VIRTIO_ID_BLOCK:
++        vdev->nr_vqs = 1;
++        vdev->cmd_vr_idx = 0;
++        virtio_pci_get_blk_config(vdev);
++        break;
++    default:
++        puts("Unsupported virtio device");
++        return -ENODEV;
++    }
++
++    status |= VPCI_S_DRIVER;
++    rc = virtio_pci_set_status(vdev, status);
++    if (rc) {
++        puts("Set status failed");
++        return -EIO;
++    }
++
++    /* Feature negotiation */
++    rc = virtio_pci_get_hfeatures(vdev, &pci_features);
++    if (rc) {
++        puts("Failed to get feature bits");
++        return -EIO;
++    }
++
++    rc = virtio_pci_set_gfeatures(vdev);
++    if (rc) {
++        puts("Failed to set feature bits");
++        return -EIO;
++    }
++
++    /* Configure virt-queues for pci */
++    for (i = 0; i < vdev->nr_vqs; i++) {
++        VqInfo info = {
++            .queue = (unsigned long long) virtio_get_ring_area() + (i * VIRTIO_RING_SIZE),
++            .align = KVM_S390_VIRTIO_RING_ALIGN,
++            .index = i,
++            .num = 0,
++        };
++
++        vr = &vdev->vrings[i];
++        rc = pci_read(vdev->pci_fh, VPCI_C_COMMON_NUMQ, 4, &data, 2);
++        if (rc) {
++            return rc;
++        }
++
++        info.num = data;
++        vring_init(vr, &info);
++
++        rc = virtio_pci_set_selected_vq(vdev, vr->id);
++        if (rc) {
++            puts("Failed to set selected virt-queue");
++            return -EIO;
++        }
++
++        rc = virtio_pci_set_queue_size(vdev, 16);
++        if (rc) {
++            puts("Failed to set virt-queue size");
++            return -EIO;
++        }
++
++        rc = set_pci_vq_addr(vdev, vr->desc, VPCI_C_OFFSET_Q_DESCLO);
++        rc |= set_pci_vq_addr(vdev, vr->avail, VPCI_C_OFFSET_Q_AVAILLO);
++        rc |= set_pci_vq_addr(vdev, vr->used, VPCI_C_OFFSET_Q_USEDLO);
++        if (rc) {
++            puts("Failed to set virt-queue address");
++            return -EIO;
++        }
++
++        rc = virtio_pci_set_queue_enable(vdev, true);
++        if (rc) {
++            puts("Failed to set virt-queue enabled");
++            return -EIO;
++        }
++    }
++
++    status |= VPCI_S_FEATURES_OK | VPCI_S_DRIVER_OK;
++    return virtio_pci_set_status(vdev, status);
 +}
 +
-+int get_fib(PciFib *fib, uint32_t fhandle)
++int virtio_pci_setup_device(void)
 +{
-+    uint64_t req = ZPCI_CREATE_REQ(fhandle, 0, 0);
-+    uint8_t status;
 +    int rc;
++    VDev *vdev = virtio_get_device();
 +
-+    rc = stpcifc(req, fib, &status);
-+
-+    if (rc == 1) {
-+        return status;
-+    } else if (rc) {
++    rc = enable_pci_function(&vdev->pci_fh);
++    if (rc) {
++        puts("Failed to enable PCI function");
 +        return rc;
 +    }
 +
 +    return 0;
 +}
 +
-+int set_fib(PciFib *fib, uint32_t fhandle, uint8_t dma_as, uint8_t opcontrol)
++long virtio_pci_notify(uint32_t fhandle, int vq_id)
 +{
-+    uint64_t req = ZPCI_CREATE_REQ(fhandle, dma_as, opcontrol);
-+    uint8_t status;
-+    int rc;
++    uint64_t notice = 1;
++    uint32_t offset = notify_offset + vq_id * q_notify_offset;
 +
-+    rc = mpcifc(req, fib, &status);
-+
-+    if (rc == 1) {
-+        return status;
-+    } else if (rc) {
-+        return rc;
-+    }
-+
-+    return 0;
++    return pci_write(fhandle, offset, notice, 4);
 +}
+diff --git a/pc-bios/s390-ccw/virtio.c b/pc-bios/s390-ccw/virtio.c
+index 05cfca4dad..dba30335b7 100644
+--- a/pc-bios/s390-ccw/virtio.c
++++ b/pc-bios/s390-ccw/virtio.c
+@@ -14,6 +14,7 @@
+ #include "virtio.h"
+ #include "virtio-scsi.h"
+ #include "virtio-ccw.h"
++#include "virtio-pci.h"
+ #include "bswap.h"
+ #include "helper.h"
+ #include "s390-time.h"
+@@ -97,6 +98,8 @@ bool vring_notify(VRing *vr)
+     case S390_IPL_TYPE_QEMU_SCSI:
+     case S390_IPL_TYPE_CCW:
+         vr->cookie = virtio_ccw_notify(vr->schid, vr->id, vr->cookie);
++    case S390_IPL_TYPE_PCI:
++        vr->cookie = virtio_pci_notify(virtio_get_device()->pci_fh, vr->id);
+     }
+ 
+     return vr->cookie >= 0;
+@@ -181,6 +184,8 @@ int virtio_reset(VDev *vdev)
+     case S390_IPL_TYPE_QEMU_SCSI:
+     case S390_IPL_TYPE_CCW:
+         return virtio_ccw_reset(vdev);
++    case S390_IPL_TYPE_PCI:
++        return virtio_pci_reset(vdev);
+     }
+ 
+     return -1;
 diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
-index 89a42ae506..1f17f98fc1 100644
+index 1f17f98fc1..589962b998 100644
 --- a/pc-bios/s390-ccw/Makefile
 +++ b/pc-bios/s390-ccw/Makefile
 @@ -35,7 +35,7 @@ QEMU_DGFLAGS = -MMD -MP -MT $@ -MF $(@D)/$(*F).d
  
  OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o netmain.o \
        virtio.o virtio-net.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o \
--      virtio-ccw.o clp.o
-+      virtio-ccw.o clp.o pci.o
+-      virtio-ccw.o clp.o pci.o
++      virtio-ccw.o clp.o pci.o virtio-pci.o
  
  SLOF_DIR := $(SRC_PATH)/../../roms/SLOF
  
