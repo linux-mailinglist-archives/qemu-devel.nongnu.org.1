@@ -2,82 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77063BF1C8C
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 16:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A21BF1F8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 17:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAqg2-0007Yo-2N; Mon, 20 Oct 2025 10:15:58 -0400
+	id 1vArNl-00067I-5d; Mon, 20 Oct 2025 11:01:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vAqfR-0007NG-6G
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:15:25 -0400
-Received: from mail-yx1-xb136.google.com ([2607:f8b0:4864:20::b136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vAqfH-0007rN-05
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:15:17 -0400
-Received: by mail-yx1-xb136.google.com with SMTP id
- 956f58d0204a3-63e18577613so3495021d50.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 07:15:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760969706; x=1761574506; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2mWS9k5ZzDXSeaA6vdVT8QfX80JDGX6PHd4tnvVM/84=;
- b=ZRVD2wsGTUlxE4AVYHnfy77wl2+D/ru3owdfrmGZdreSGY+bpymSWn6iAp17SGOTtd
- Omi21kCouMfxuOZ9haZXN/6zo7gzXgw7NUqKLEsyTW+Dll27GyO40hdy63C2E5LEwjBR
- 84Oqpn4t56/+z+9edhHss1eF+DvcmBlCRk/OcImp/cYw2F4GyNsx6a+SSAooMxTXHoTo
- vC09I8tJZ3rLZvy1c0IAMYs27rVgXtftsme2Kg05HFPYfNIUIIeIONo6dpTB1o8bNyjl
- iyPvIER3SVUKQRHcS9y38L5iyr1n/jRHlNnE3afc/HhKgkxWmZQcPJonVbnI7ufP3nJB
- KPBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760969706; x=1761574506;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2mWS9k5ZzDXSeaA6vdVT8QfX80JDGX6PHd4tnvVM/84=;
- b=S04lUZNr7o+Z0EaBikVWWoWh+9EII7jv5LZOW4tlMSVMCHZuFymJL4EjCC0ASqE35p
- e236TH5680wD/ed6FhyK8aq5tTYJA8GF3OweGLbIpUwgwaHI+q6mLT/UwjFUk4IQ8M6E
- eri8BXgzRbU7bmzoVyqr0+jxDVoPEsogZAER9dBnwXjIbnx443dGZaaz9mY6yP3Io206
- ytUa1bB2TGe9BULholsYxfNdUaZg0tGUMRHSOq0p8F0VVPTNt/LPwX+/Ni8TX0rpQSTK
- uGzDCudT3FUFcDTNZkjz+djWBD8uJa25qU23808xWvxsXjLbW4L1t8JvL2n0X/hY4Gza
- 7WAw==
-X-Gm-Message-State: AOJu0YxXyzM4wTy8v2arf7Qb2OrLnDrQLZLWUUFF3zox1g64xLa+b/qE
- cUoNEEvEUV6BU97PSPV97tIwTy7rP71YjrEjk/Xf4hWlLtxZUsKFixWQ32q1aAZiCAQIwj3k8F5
- qfPO3ifDoHUGhul5NT53+KYSOiQ8X0Dr2S5Pm68742umjYY8Gg0xg
-X-Gm-Gg: ASbGncuXA3E30J6w5uEWnYWIqWTrI1ACAwUEcKy9Up8sQJuw2FTotOfh7/segt8rZxb
- QGVEYF2rvlL/L9E2I6prtNxN3IM/QnDxSdljwiI9kKIcT0j0Dpp7p8q1ZYUr4iZHLCmMxbLvbgP
- 6DA4NAsaJrfRvUmIrBJcGXoWfR1O9hetUK39sCgNVXRsCvoyj0cNuDXZadivSJ5wi7KUNE/fcEV
- BmbB6QRlWWRDpKT8s0RNlw6SoodhsCKHpM8tlx8FW/STe3xK7rcoOWMz9IPIA==
-X-Google-Smtp-Source: AGHT+IGYqixOJRzSn0Do6k6cpOxol9SZ+SrOneIJSAiXXAxA5he80qD4xhN8EjvKr4td36HhfoezuStrzGzfErVRpe0=
-X-Received: by 2002:a05:690e:1209:b0:636:1a8d:9d43 with SMTP id
- 956f58d0204a3-63e161c65f4mr9087918d50.40.1760969705726; Mon, 20 Oct 2025
- 07:15:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sean.anderson@linux.dev>)
+ id 1vAqlg-0004Y5-7C
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:21:50 -0400
+Received: from out-171.mta1.migadu.com ([2001:41d0:203:375::ab])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sean.anderson@linux.dev>)
+ id 1vAqlc-0000Fg-Se
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:21:47 -0400
+Message-ID: <56d70072-67ee-471a-9b9a-c3257886d668@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1760970097;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rnyTmlzZMiQoNOOywrB+NgZblDfw4hjBofPd+Kb6fVY=;
+ b=LcXwnZ5SKHqEQwKTvwmp8rlKm8EdEVY5EoHYT2M91y2wOTXqdqMSh+oWCjHjNbdRkoDjue
+ d3/ETl4DRhmy7BxdC6c2W9q0XfZh9bGSjvcop6oXqjsGN7KThSvvDvlTtiih+SVxX8+hXA
+ qBKsz/FGufohjxKFDf28kAnSCZGoaWw=
+Date: Mon, 20 Oct 2025 10:21:29 -0400
 MIME-Version: 1.0
-References: <20251014200718.422022-1-richard.henderson@linaro.org>
- <20251014200718.422022-26-richard.henderson@linaro.org>
-In-Reply-To: <20251014200718.422022-26-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 Oct 2025 15:14:53 +0100
-X-Gm-Features: AS18NWBg0vW-Drd44P4O3CVZHAFPREI7HJsC4-iKjXZDQouJF9OhnH2H-rWnz_Q
-Message-ID: <CAFEAcA_FXddPSD_rHaW1zgB0MKpsJxcUoUe-jBE5ZZmwbg1j4Q@mail.gmail.com>
-Subject: Re: [PATCH v2 25/37] target/arm: Extend TTBR system registers to
- 128-bit
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb136.google.com
+Subject: Re: [PATCH 3/3] semihosting: Check for overflow in FLEN on 32-bit
+ systems
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Luc Michel <lmichel@kalray.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+References: <20251017213529.998267-1-sean.anderson@linux.dev>
+ <20251017213529.998267-4-sean.anderson@linux.dev>
+ <4d1a679a-f1c2-487b-bddb-eaf7dd56fd0e@canonical.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <4d1a679a-f1c2-487b-bddb-eaf7dd56fd0e@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=2001:41d0:203:375::ab;
+ envelope-from=sean.anderson@linux.dev; helo=out-171.mta1.migadu.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 20 Oct 2025 11:00:44 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,40 +73,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Oct 2025 at 21:09, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> So far, just extend the data type and check access; do not yet
-> consume the 128-bit table format.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 10/18/25 03:21, Heinrich Schuchardt wrote:
+> On 10/17/25 23:35, Sean Anderson wrote:
+>> When semihosting 32-bit systems, the return value of FLEN will be stored
+>> in a 32-bit integer. To prevent wraparound, return -1 and set EOVERFLOW.
+>> This matches the behavior of stat(2). Static files don't need to be
+>> checked, since are always small.
+>>
+>> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+>> ---
+>>
+>>   semihosting/arm-compat-semi.c | 17 ++++++++++++++---
+>>   1 file changed, 14 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
+>> index c5a07cb947..57453ca6be 100644
+>> --- a/semihosting/arm-compat-semi.c
+>> +++ b/semihosting/arm-compat-semi.c
+>> @@ -305,8 +305,19 @@ static uint64_t common_semi_flen_buf(CPUState *cs)
+>>       return sp - 64;
+>>   }
+>>   +static void common_semi_flen_cb(CPUState *cs, uint64_t ret, int err)
+>> +{
+>> +    CPUArchState *env = cpu_env(cs);
+>> +
+>> +    if (!err && !is_64bit_semihosting(env) && ret > INT32_MAX) {
+> 
+> 
+> The issue with the current implementation is that files with file sizes over 4 GiB will be reported as file size < 4 -GiB on 32bit systems. Thanks for addressing this.
+> 
+> But unfortunately with your change you are additionally dropping support for file sizes 2 GiB to 4 GiB on 32bit devices. This should be avoided.
+> 
+> The semihosting specification specifies that the value returned in r0 should be -1 if an error occurs. So on 32 bit systems 0xffffffff should be returned.
+> 
+> As file sizes cannot be negative there is not reason to assume that the value in r0 has to be interpreted by semihosting clients as signed.
+> 
+> Please, change your commit to check against 0xffffffff.
+> 
+> It might make sense to contact ARM to make their specification clearer.
 
+stat(2) will return -1/EOVERFLOW on 32-bit hosts for files over 2 GiB. I believe we should be consistent.
 
-
-> @@ -6196,9 +6244,12 @@ static const ARMCPRegInfo contextidr_el2 = {
->  static const ARMCPRegInfo vhe_reginfo[] = {
->      { .name = "TTBR1_EL2", .state = ARM_CP_STATE_AA64,
->        .opc0 = 3, .opc1 = 4, .crn = 2, .crm = 0, .opc2 = 1,
-> -      .access = PL2_RW, .writefn = vmsa_tcr_ttbr_el2_write,
-> -      .raw_writefn = raw_write,
-> -      .fieldoffset = offsetof(CPUARMState, cp15.ttbr1_el[2]) },
-> +      .type = ARM_CP_128BIT,
-> +      .access = PL2_RW, .access128fn = access_d128,
-> +      .writefn = vmsa_tcr_ttbr_el2_write, .raw_writefn = raw_write,
-> +      .write128fn = vmsa_tcr_ttbr_el2_write128, .raw_write128fn = raw_write128,
-> +      .fieldoffset = offsetof(CPUARMState, cp15.ttbr1_el[2]),
-> +      .fieldoffset = offsetof(CPUARMState, cp15.ttbr1_el_hi[2]) },
-
-We set .fieldoffset twice -- one of these should be .fieldoffsethi.
-
->  #ifndef CONFIG_USER_ONLY
->      { .name = "CNTHV_CVAL_EL2", .state = ARM_CP_STATE_AA64,
->        .opc0 = 3, .opc1 = 4, .crn = 14, .crm = 3, .opc2 = 2,
-> --
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-thanks
--- PMM
+--Sean
 
