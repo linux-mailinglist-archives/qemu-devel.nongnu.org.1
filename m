@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED91BF096F
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB7FBF0981
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 12:39:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAnHW-0000MK-MH; Mon, 20 Oct 2025 06:38:26 -0400
+	id 1vAnHY-0000NN-PM; Mon, 20 Oct 2025 06:38:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHR-0000Li-VC
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:21 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHW-0000Mn-JB
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:26 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHP-0000Cm-TA
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:21 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3ee15b5435bso4346032f8f.0
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:38:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAnHU-0000DF-QN
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:38:26 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-4283be7df63so989233f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 03:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760956697; x=1761561497; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SXVYYZzATC/E68BfF5OyOxwIvYVntwCirLZoygFZ/oU=;
- b=TfHPIBNau9dgrFYkSjIEzAkygTt23zjh4KnAeAsMWvg63wNhl4330bKIOiGWwaqsFS
- 8Dx58DkfL2A8CGHWdsled+99+0hEH+c29KKcUq7shrL2tVFPHQKfpY/iGSaUtcqcit99
- wKGcnWGk0XmAkg8zH24zcQuoAxdHYYJL+gelLBY5eY1vd+bHBQQ/939sNkGc6UO/6++A
- THVlRsGBZ4mHiRGzzkq3K4pB7C4460Moi2HFpZQIkypbFZAZNLcHyUmccicCdOtBbQ8C
- aF/Jc1hK6Epg+eekryVvWwhwBihKvK1v/yu4QvLCUig72ciX/fuPRPwa9iFarbxIQXOV
- s/gg==
+ d=linaro.org; s=google; t=1760956702; x=1761561502; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Eb2zFhHkdjNt2ehW35HLRPZBhm40gE3e2lVHvPQ87tw=;
+ b=rL+GHqUGmGbN7cXaH2dT5s5lGD1YZQyDmdg7wNh2xYjUpW0iMBJUU95Cz2JVjyrbrs
+ chX0QUKW7Zt4HQ750+79tGxt+OupFqgONxpJpNTNEHuJfk9LayfrQHiHC2bFFlJcWUxX
+ OrVH6vmN6DIoAymir6LesXDKtqLF7C0ocsHfd3kkc2Kxywj2Ry2R4Jlgl49NEcl9bb0b
+ bA/jVr/PQF0iqtQn1+uM7AY5M5rsufCt/Gq9IxIqd1I4w4PqhrEMtw2I8sxK7Qnbgn3D
+ a0+mBV3wJhAhhvZfj6Px3/L1SgDv+rK7QoTnFZ5G0l25cU76T0KrWx8/FTyFf8IDoBkc
+ Pxgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760956697; x=1761561497;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SXVYYZzATC/E68BfF5OyOxwIvYVntwCirLZoygFZ/oU=;
- b=iidzRfetxtgV2+7uC3Vde+TwLHL3TbdYlfW8b4GJGcfdQT+fpoIIYdcmRxK61hOnJS
- i/bYKZzIq/fUQ4NFl8apqmCrJsxF8aa/kNJeN1l36D+nTri17KdffFMYuJg40l3FMVFb
- exEoX3e94lZo+uTpAuvh5kPpRM6B5ok/qlpo0hKvrT+FU6Qgztw9VAxkMGNpso7GfvuB
- r4ZnqQtTNSIYPF5fRt58e1SsehX0WlDo25IV+KgWuvMQpzD3vNwSKqvCKvw0qZoNnVR4
- aAowYdaG/1dtlKEmZ7noHCOPAkzVy8nbcc9vXETR66VRY7/L5zj/yAPb7BkuZJzFkkst
- TdwQ==
-X-Gm-Message-State: AOJu0YwMPApFmueo03tDo1EjX170f0jy/tU4yxqlsf968NfgFpvQE6Ew
- P/Dax6mRFTkRwiCsGKztK6RbV4IkT+0iUq42fplBOKyMOclG+O9PeDVB6B4+rr1QhtNeoyUdXOU
- a/QZhEP4=
-X-Gm-Gg: ASbGncsdmlsGtUM/qwPdi0I5nas2H2DH2BrgwUTTODEGtcXYI9g3zaMcnMGYPktPB6B
- Xu7Fx599wbaovVLV8Gkq/ORQHzc2RNLRcJHeJbWpwzQROwpdcpm8Uq+SgbQG/bZM4gqCwoJc57O
- Xc5YayQxgbDouCrx3wbihssX5z/2SCJXnOz2gX3IZVzDH1jNWdiFNzgO/fBSfDSLUPedmyaqAKa
- M+aSF+WlZ+T514MxGhGUC2dsacoQGX+TEpGjRtUrAql5zwDjd6XpOkeQ3vSWsrl5JzpIH+ZnS4Q
- +GLUsgZX4MxHdv7Uhrc5lSDntJ+H/PSR3Mlr1YhyO4QPBbUKmtLmq0Ze7fOpND8LjZLjuNShDe9
- Sw6vljrRZX72CZK1VsE7H6afp2B7dqAPx7ImfzRp/apoZ3uIcTKbEYzQr9tyMtvZpzVVmQWVZNi
- QpxHtMVkk51HzynS1vPygbxGLGtV4KckniUW16x/6v6CfXoGKWsg==
-X-Google-Smtp-Source: AGHT+IEsi0dFkicIb9qfrLx6BzuXKcU/q9Gch4z8m56d2LnefsNIPkEC8bohEE/RQuoCpdMJImcuaQ==
-X-Received: by 2002:a05:6000:186d:b0:3ed:e1d8:bd72 with SMTP id
- ffacd0b85a97d-42704d8d000mr8191167f8f.17.1760956697633; 
- Mon, 20 Oct 2025 03:38:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1760956702; x=1761561502;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Eb2zFhHkdjNt2ehW35HLRPZBhm40gE3e2lVHvPQ87tw=;
+ b=TYBq+6syLHPv8Qe+fWdh7aqX6VEWtrVHui/P4u6UuoBxQUiK4VP0KsVolM5rE6NHCb
+ lWUTSs7Uv142SxWffm1AObgLrV3ydGN9A7aHiKPu2RaeFxoqtWhEC+lus/xr6FYc6M5L
+ sWVfX6bsYqLr1q2yoLc8GQPxlTdfepA8HJ8JHwOk7MKt7hNz1oqnGoI4rPg+ggKB+Saj
+ XpP/DeYF/GG6kCTr3+vDFnWVgrAsLlMDn/VYbrX/bXbb2ffBdG/bor3duR5eK1JwZ3iQ
+ BCZrM20zMOqbUkExiB+E6rxYukG0wORKA5T+ykpmn+PeOhcRkGP6Kgbdp/hgdfm980Nc
+ 7Plw==
+X-Gm-Message-State: AOJu0Yw1M2jYw+dd2LTn9iVUdhEHypp4pTovLplgxHVMCPeJpvAUaABQ
+ Yqi38pp2SK5w5S2mcnHSMA2FRTCQFy7LxH2Ct6rJdKOfatNLRhO2zgLJfG2BvQ6RWWgJKxuh9xK
+ ZWsn2Ypc=
+X-Gm-Gg: ASbGncv8CkWsMnQFmS9zsv00aBZiGGany7kxadhx/TlblF8IOapx4UKd9ncx8f0M8Mz
+ /KLtpBc5AelgggOTlqOCk2R7Xxqq/EAqG8O/lffR+1rNxbhW1tx7Xg5w+4CH6pYfGMngfXNp1xi
+ b6ZVVxyolBFOACeqDKSpGHmGEWOa27QzcUZI2Ji9xXrWweRGDUKaMgsb6iqg1oED7OMZxQ32vX6
+ VrAwJ+ccW81+JZbKtHUEh8Uxi9EG8ZQnoB2YLyVi8QNaKLGVTa4VytK0SYK0058Hw3IAk24Znty
+ lA1RP8xIUG9VoIq6tpnDXKWhykCI4gxboVVhBD5lP64XDL0PJIiuyfIu4F80/t1aK77sxUb/4vq
+ aGrxLmSZfOgyT3HorV1zGVks44TZnXA3sautw4TRwDVGjx/rADdT9/mT6FSaBxnPrrXANZHObFb
+ YmJ7Yj+cAFJ7/iXPcEscrd1rYJqdoJquqHfM8Dabx1IcZJvBgK2w==
+X-Google-Smtp-Source: AGHT+IFXtCupIGDq2siVPGNf1Z5WcGOG8FPQCLDkC6kjb+5DMC1Dp8EAQOlPDFoxVNiZGk46JqVF8g==
+X-Received: by 2002:a05:6000:25e1:b0:427:580:99a7 with SMTP id
+ ffacd0b85a97d-42705809a1emr7079805f8f.59.1760956702518; 
+ Mon, 20 Oct 2025 03:38:22 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00b985esm15176777f8f.34.2025.10.20.03.38.16
+ 5b1f17b1804b1-47154d382d8sm141032845e9.12.2025.10.20.03.38.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 03:38:17 -0700 (PDT)
+ Mon, 20 Oct 2025 03:38:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
@@ -68,16 +69,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Chinmay Rath <rathc@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/18] hw/ppc/spapr: Remove deprecated pseries-3.0 ->
- pseries-4.2 machines
-Date: Mon, 20 Oct 2025 12:37:56 +0200
-Message-ID: <20251020103815.78415-1-philmd@linaro.org>
+Subject: [PATCH 01/18] hw/ppc/spapr: Remove deprecated pseries-3.0 machine
+Date: Mon, 20 Oct 2025 12:37:57 +0200
+Message-ID: <20251020103815.78415-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251020103815.78415-1-philmd@linaro.org>
+References: <20251020103815.78415-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,42 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the deprecated pseries-3.0 up to pseries-4.2 machines,
-which are older than 6 years. Remove resulting dead code.
+This machine has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") it can now be removed.
 
-Philippe Mathieu-Daudé (18):
-  hw/ppc/spapr: Remove deprecated pseries-3.0 machine
-  hw/ppc/spapr: Remove SpaprMachineClass::spapr_irq_xics_legacy field
-  hw/ppc/spapr: Remove SpaprMachineClass::legacy_irq_allocation field
-  hw/ppc/spapr: Remove SpaprMachineClass::nr_xirqs field
-  hw/ppc/spapr: Remove deprecated pseries-3.1 machine
-  hw/ppc/spapr: Remove SpaprMachineClass::broken_host_serial_model field
-  target/ppc/kvm: Remove kvmppc_get_host_serial() as unused
-  target/ppc/kvm: Remove kvmppc_get_host_model() as unused
-  hw/ppc/spapr: Remove SpaprMachineClass::dr_phb_enabled field
-  hw/ppc/spapr: Remove SpaprMachineClass::update_dt_enabled field
-  hw/ppc/spapr: Remove deprecated pseries-4.0 machine
-  hw/ppc/spapr: Remove SpaprMachineClass::pre_4_1_migration field
-  hw/ppc/spapr: Remove SpaprMachineClass::phb_placement callback
-  hw/ppc/spapr: Remove deprecated pseries-4.1 machine
-  hw/ppc/spapr: Remove SpaprMachineClass::smp_threads_vsmt field
-  hw/ppc/spapr: Remove SpaprMachineClass::linux_pci_probe field
-  hw/ppc/spapr: Remove deprecated pseries-4.2 machine
-  hw/ppc/spapr: Remove SpaprMachineClass::rma_limit field
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/ppc/spapr.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
- include/hw/ppc/spapr.h     |  16 --
- include/hw/ppc/spapr_irq.h |   1 -
- target/ppc/kvm_ppc.h       |  12 --
- hw/ppc/spapr.c             | 298 ++++++++-----------------------------
- hw/ppc/spapr_caps.c        |   6 -
- hw/ppc/spapr_events.c      |  20 +--
- hw/ppc/spapr_hcall.c       |   5 -
- hw/ppc/spapr_irq.c         |  36 +----
- hw/ppc/spapr_pci.c         |  32 +---
- hw/ppc/spapr_vio.c         |   9 --
- target/ppc/kvm.c           |  11 --
- 11 files changed, 75 insertions(+), 371 deletions(-)
-
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 97ab6bebd25..85c27f36535 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -5062,24 +5062,6 @@ static void spapr_machine_3_1_class_options(MachineClass *mc)
+ 
+ DEFINE_SPAPR_MACHINE(3, 1);
+ 
+-/*
+- * pseries-3.0
+- */
+-
+-static void spapr_machine_3_0_class_options(MachineClass *mc)
+-{
+-    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+-
+-    spapr_machine_3_1_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_3_0, hw_compat_3_0_len);
+-
+-    smc->legacy_irq_allocation = true;
+-    smc->nr_xirqs = 0x400;
+-    smc->irq = &spapr_irq_xics_legacy;
+-}
+-
+-DEFINE_SPAPR_MACHINE(3, 0);
+-
+ static void spapr_machine_register_types(void)
+ {
+     type_register_static(&spapr_machine_info);
 -- 
 2.51.0
 
