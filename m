@@ -2,103 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CF9BF25EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7355BF260B
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 18:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAscy-0003pb-D8; Mon, 20 Oct 2025 12:20:56 -0400
+	id 1vAsdr-0005Bb-H7; Mon, 20 Oct 2025 12:21:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vAscl-0003k8-S3; Mon, 20 Oct 2025 12:20:44 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vAsdo-00058Q-Q5
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 12:21:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vAscj-0000tX-UY; Mon, 20 Oct 2025 12:20:43 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KCkPwx030017;
- Mon, 20 Oct 2025 16:20:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=NAyieAw2SufomrfZF
- UwB2+pmnqmdJ+XxYzKZ+g9/cLk=; b=QzpphJTVt6efYu/bC1Uk/Flacz4kre+oi
- wjsPBb6WvNBUYMlfmkK0qfkhOxRe5FVR0GQlqMDhtj+eqEjHm1hpMA02GDhH3DMS
- Fde3vscowvOMEmn96sADPqEhuo55HdpVn0jPsTNXmrX32xkiDSdPQgzCmuxwpCm6
- tbB7YWGyS6ymAWbuT/kb08Q9G8irSkTPltI8dn6UKvpptkNdBcPiPzmvfbRcVsVT
- 2jiBUNfcJGP9kmhG1gjMU3m9s/mCPR27DAF4MT1d6ihIeI1pLP86ZT54j4kif7Zm
- yIRdR03ODQMkDIxOsP+ukyhWSP8jchvp/z71ptVW/SJ2bLA+jlhHg==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rtg4w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 16:20:39 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59KFAbKL002926;
- Mon, 20 Oct 2025 16:20:39 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqej6brt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 16:20:39 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59KGKcIV31064736
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Oct 2025 16:20:38 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A1D758067;
- Mon, 20 Oct 2025 16:20:38 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7248958065;
- Mon, 20 Oct 2025 16:20:37 +0000 (GMT)
-Received: from t15.ibmuc.com (unknown [9.61.78.141])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 20 Oct 2025 16:20:37 +0000 (GMT)
-From: jrossi@linux.ibm.com
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
-Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
- mjrosato@linux.ibm.com, jrossi@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH 7/7] tests/qtest: Add s390x PCI boot test to cdrom-test.c
-Date: Mon, 20 Oct 2025 12:20:23 -0400
-Message-ID: <20251020162023.3649165-8-jrossi@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251020162023.3649165-1-jrossi@linux.ibm.com>
-References: <20251020162023.3649165-1-jrossi@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vAsdk-0000xk-Lz
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 12:21:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1760977302;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TMuhqLCiwvXGhWuHTfUFcUWo7NHSVOEqil3zUev/Yug=;
+ b=a5of/dl43CDAcErQ3b7QJUnaHGkKr5h9gSplp1rzGplVnzQ6/7U8QPhGyOCCEhzyNo3d3V
+ 80HDgRvAQ6zBWe6zxw9CpK5hKxdC3cyZibWIYZI1ol+jTVTeQs/k1g8POulShCKBZvH3am
+ 8dmVt5fmxlg2Domh+rzzHR3sXG3iZuw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-bxxsV7GxPkqjb1RnU-WuBg-1; Mon, 20 Oct 2025 12:21:40 -0400
+X-MC-Unique: bxxsV7GxPkqjb1RnU-WuBg-1
+X-Mimecast-MFC-AGG-ID: bxxsV7GxPkqjb1RnU-WuBg_1760977299
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3f924ae2a89so5566670f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 09:21:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760977299; x=1761582099;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:reply-to:subject:from:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TMuhqLCiwvXGhWuHTfUFcUWo7NHSVOEqil3zUev/Yug=;
+ b=rtRetNdia5bzy/eCR9dqwnwyewC40Nq8lBBihVa7TzhZEtjX/b4itdJkjtgpHbrUID
+ H8oLeq7elB8WcWwBfiblCXiMV+CjrLrgoYtVgkR8aP4a4wLcKQwI7pqiOPnjwliGYG8T
+ Pi25CQArpJ5+YusF7ZMRNMNWh1uHdfeovj2/pag1beeLMA/vjYVlqZNNUO6/qLtylg7W
+ BsDsvgwylw7m31JhD69nFXTJoEJm7SuvvEibj2G0Ha5wxQutYYAqyDpC21yuMnK0mUDb
+ OHBvAPBkJECYAAsB/0ij5SHLT+2fbfXRvIZ5WgMF6PCYvuswm0btMDIdqYOXEMuUxxfI
+ EvpA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU485Bk6obFfNH4ITMkSNS4pQSvEv4f5wzQXmodNZ532+9kU1i5DHhpjyO45EHMVQaD4oQOmj0iG041@nongnu.org
+X-Gm-Message-State: AOJu0YzMYzyILTw3EFeNDtggCXsBAHKl2PaWQju0csx51OVglfYkrxPP
+ 6tdXXwD9wmgjRfFgYDKm4Lv7sjGm+DhtexTIOf0TlCENNDZ5Yxg7+oxhjb715u+VK6QHsia0hjl
+ gWVoOFjzk+vjNE0AbvCJ28eZPHJdDOXN80EucRI9+E/YSpQ7tGROEjvU+
+X-Gm-Gg: ASbGncuaeUjhirzRnd4J0V57bG/X6Y0m74Hg3iPUE98uesUk2isjRNjCvJ7PvVIGLa4
+ 2AokA82apPGpC2m3qN1XwZBJuqvC04silCYRqcjXMfkgE31oqflvtyK2rDT4B6pMZE29/qGBBsz
+ gwOTCef36aefNLi8A45RUEkEuAnm9H4fV5rpL43Vqed1hkSIkBWlnjdY+rzrggsDTV7Bm3nKjFX
+ xYAd74SsTi0rGe+IK3e0gupBjsblqZ0UEW7YvZmI9HONoNbBPqW8v+RdYo5B2KFtINQskopWfYU
+ VBeG3OHJ5bcVkF2Kfu+jEChwptGyoHJqa+6I1V1ZDXkb3DM7WViOXEvj3S9LzQL9HplwZ74b5Sv
+ oSuoA
+X-Received: by 2002:a05:6000:41f4:b0:427:614:83da with SMTP id
+ ffacd0b85a97d-4270614850bmr9459390f8f.48.1760977298751; 
+ Mon, 20 Oct 2025 09:21:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGK1UI06KtBEwhhq8nnp2NmuOuW1bNA2Uh80dIcvi53PgnJznSKm7vuRcy8FWkfVEkUDEr3HA==
+X-Received: by 2002:a05:6000:41f4:b0:427:614:83da with SMTP id
+ ffacd0b85a97d-4270614850bmr9459371f8f.48.1760977298331; 
+ Mon, 20 Oct 2025 09:21:38 -0700 (PDT)
+Received: from [192.168.43.95] ([37.166.134.90])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-427ea5a0f19sm16190908f8f.9.2025.10.20.09.21.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Oct 2025 09:21:37 -0700 (PDT)
+Message-ID: <94132491-1af5-491e-ac98-68e4313bf6af@redhat.com>
+Date: Mon, 20 Oct 2025 18:21:34 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HwU4zMJLiw7IuG5MtiZ7AQ7NIEP9e4YS
-X-Proofpoint-GUID: HwU4zMJLiw7IuG5MtiZ7AQ7NIEP9e4YS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXxM9Ose+l/0ed
- ub/ZUu9xiaMiLcXsaBAStlhiA4PNoLxFp86tnPrb1zbqmQzlQaPhAFd8mztO/NDe+YW5UUrchxy
- N4WE5lXT4KRT4wsOpuOHKDeLVBjmsYP26hcuMyASScj+SpxNun0z4dBY01NRP6fyDJwFl29Ei3A
- Rana9KX/2yug+KVzx9PmjjRjCiKMVJTuSgGYa9BeWJH+Os/u7AiYVX3XPZC/RKdV+068k+yC4IY
- LEmo8WSH35NhSbizkqxRm5rr1GqmqR7DMikMzb7G9Ryndvjg44QzxsR8RihCd5dEOrdsAfdWSIp
- edWVQer+AQZF/qT+/S8DY4LNTZoYBk9EMPD/eKOCKId6EJQ7/M9Z/Is71h/Ms9s/NVpDNZ6Pdzf
- cw2VTOacnXCbpIPWC3eSn3D2jFF/JA==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f66158 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=nJdWAAiftWQBe2TG7ssA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_04,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+From: Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH v4 11/27] hw/pci/pci: Introduce optional
+ get_msi_address_space() callback
+To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
+ ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
+ mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
+ zhangfei.gao@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
+ shameerkolothum@gmail.com
+References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+ <20250929133643.38961-12-skolothumtho@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <20250929133643.38961-12-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,38 +116,137 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jared Rossi <jrossi@linux.ibm.com>
+Hi Shameer
 
-Add a rudimentary test for s390x IPL to verify that a guest may boot using
-virtio-blk-pci device.
+On 9/29/25 3:36 PM, Shameer Kolothum wrote:
+> On ARM, when a device is behind an IOMMU, its MSI doorbell address is
+> subject to translation by the IOMMU. This behavior affects vfio-pci
+> passthrough devices assigned to guests using an accelerated SMMUv3.
+>
+> In this setup, we configure the host SMMUv3 in nested mode, where
+> VFIO sets up the Stage-2 (S2) mappings for guest RAM, while the guest
+> controls Stage-1 (S1). To allow VFIO to correctly configure S2 mappings,
+> we currently return the system address space via the get_address_space()
+> callback for vfio-pci devices.
+>
+> However, QEMU/KVM also uses this same callback path when resolving the
+> address space for MSI doorbells:
+>
+> kvm_irqchip_add_msi_route()
+>   kvm_arch_fixup_msi_route()
+>     pci_device_iommu_address_space()
+>      get_address_space()
+>
+> This will cause the device to be configured with wrong MSI doorbell
+> address if it return the system address space.
+returns
+> Introduce an optional get_msi_address_space() callback and use that in
+> the above path if available. This will enable IOMMU implementations to
+> make use of this if  required.
+if required
+> Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---	
+>  hw/pci/pci.c         | 19 +++++++++++++++++++
+>  include/hw/pci/pci.h | 16 ++++++++++++++++
+>  target/arm/kvm.c     |  2 +-
+>  3 files changed, 36 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 1315ef13ea..6f9e1616dd 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2964,6 +2964,25 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>      return &address_space_memory;
+>  }
+>  
+> +AddressSpace *pci_device_iommu_msi_address_space(PCIDevice *dev)
+> +{
+> +    PCIBus *bus;
+> +    PCIBus *iommu_bus;
+> +    int devfn;
+> +
+> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
+> +    if (iommu_bus) {
+> +        if (iommu_bus->iommu_ops->get_msi_address_space) {
+> +            return iommu_bus->iommu_ops->get_msi_address_space(bus,
+> +                                 iommu_bus->iommu_opaque, devfn);
+See my reply to Nicolin's comment. From a high level point of view the
+semantic of
 
-Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
----
- tests/qtest/cdrom-test.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+get_msi_address_space versus get_address_space
+ does not look very clear. I have the impression for HW nested implementation you were forced to return the &system_address through the get_address_space
+ although there is a protecting IOMMU and you need another callback for return a proper IOMMU as for MSIs. This is still unclear and looks hacky to me at this point. I think we need to get the semantic of get_msi_address_space vs get_address_space more solid and you need to explain why get_address_space
+is mandated to return &system_address in our case. 
+Maybe you explained that earlier in some thread but I fail to find those info again in the commit messages/comments and I think this is important.
 
-diff --git a/tests/qtest/cdrom-test.c b/tests/qtest/cdrom-test.c
-index 56e2d283a9..a65854d2bc 100644
---- a/tests/qtest/cdrom-test.c
-+++ b/tests/qtest/cdrom-test.c
-@@ -246,6 +246,13 @@ static void add_s390x_tests(void)
-                             "-drive if=none,id=d2,media=cdrom,file=",
-                             test_cdboot);
-     }
-+    if (qtest_has_device("virtio-blk-pci")) {
-+        qtest_add_data_func("cdrom/boot/pci-bus-with-bootindex",
-+                            "-device virtio-scsi -device virtio-serial "
-+                            "-device virtio-blk-pci,drive=d1,bootindex=1 "
-+                            "-drive if=none,id=d1,media=cdrom,file=",
-+                            test_cdboot);
-+    }
- }
- 
- int main(int argc, char **argv)
--- 
-2.49.0
+> +        } else {
+> +            return iommu_bus->iommu_ops->get_address_space(bus,
+> +                                 iommu_bus->iommu_opaque, devfn);
+> +        }
+> +    }
+> +    return &address_space_memory;
+> +}
+> +
+>  int pci_iommu_init_iotlb_notifier(PCIDevice *dev, IOMMUNotifier *n,
+>                                    IOMMUNotify fn, void *opaque)
+>  {
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index c54f2b53ae..0d3b351903 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -652,6 +652,21 @@ typedef struct PCIIOMMUOps {
+>                              uint32_t pasid, bool priv_req, bool exec_req,
+>                              hwaddr addr, bool lpig, uint16_t prgi, bool is_read,
+>                              bool is_write);
+> +    /**
+> +     * @get_msi_address_space: get the address space for MSI doorbell address
+> +     * for devices
+> +     *
+> +     * Optional callback which returns a pointer to an #AddressSpace. This
+> +     * is required if MSI doorbell also gets translated through IOMMU(eg: ARM)
+IOMMU (
+
+> +     *
+> +     * @bus: the #PCIBus being accessed.
+> +     *
+> +     * @opaque: the data passed to pci_setup_iommu().
+> +     *
+> +     * @devfn: device and function number
+> +     */
+> +    AddressSpace * (*get_msi_address_space)(PCIBus *bus, void *opaque,
+> +                                            int devfn);
+>  } PCIIOMMUOps;
+>  
+>  bool pci_device_get_iommu_bus_devfn(PCIDevice *dev, PCIBus **piommu_bus,
+> @@ -660,6 +675,7 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
+>  bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
+>                                   Error **errp);
+>  void pci_device_unset_iommu_device(PCIDevice *dev);
+> +AddressSpace *pci_device_iommu_msi_address_space(PCIDevice *dev);
+>  
+>  /**
+>   * pci_device_get_viommu_flags: get vIOMMU flags.
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index b8a1c071f5..10eb8655c6 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -1611,7 +1611,7 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level)
+>  int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
+>                               uint64_t address, uint32_t data, PCIDevice *dev)
+>  {
+> -    AddressSpace *as = pci_device_iommu_address_space(dev);
+> +    AddressSpace *as = pci_device_iommu_msi_address_space(dev);
+>      hwaddr xlat, len, doorbell_gpa;
+>      MemoryRegionSection mrs;
+>      MemoryRegion *mr;
+Thanks
+
+Eric
 
 
