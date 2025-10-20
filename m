@@ -2,96 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33AF6BF35E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 22:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922F4BF37AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 22:42:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAwLB-00033C-D4; Mon, 20 Oct 2025 16:18:49 -0400
+	id 1vAwhG-0007p4-Ic; Mon, 20 Oct 2025 16:41:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAwL8-00032T-N2
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 16:18:46 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAwL6-0003B6-UB
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 16:18:46 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4711f156326so34975395e9.1
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 13:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760991523; x=1761596323; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=a9xi0or0x7ZU6pcC1+lqPJVtUwN6O1VEcxIfhitvDu4=;
- b=dakq0/9e+aIGnZrQliVrLhMabc5IVEcDbr3Ayuis4DIwIJfGWkvXFIHT0pm0I30Fzc
- F3okzxPx30Eoe7JrbCBb40UmyQD/rPYFds2mKJmxEuSCtjQ2k9KiZVHgXtqL6ZBsTZLJ
- cNzpdKgfubJ5lwHWEXRT2Js3fcYDySfoE0okrRuuRhFpDj1MFFZlIEuOEPA5cGLyRptw
- syJKG8RTih6NOgYMFy1A40W7CWp/9gDZu+3A/IQOcP+VyRBAk8sencyakPxD5Uys/QPy
- MW59jXrlr7c4C5f0wzBbdXetXCclergsbshX7GEoyKYAyt/kvJ49yC13bQkbriL2dD7G
- 0QNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760991523; x=1761596323;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a9xi0or0x7ZU6pcC1+lqPJVtUwN6O1VEcxIfhitvDu4=;
- b=D8J9ksgViIfPYG2CQpihr+QMRr1CIzwPCSnjSPf25xdA5fKnZS7lnaGRjx+eIA4/YS
- xdV2bZaazGBAfPnrPzOK/1Xuyyv491zUXK4czNR4fCCU3AzR5WhxGFYzEnwrvkcJid0e
- kLah1gEG6rHZuygze2H4WRRXBKtC3nBxc8MP0UrfNjo9c9oUZdM+u9uXaGy60dBty/GF
- /aH0hYeLgrSZrd+YhNQByyypRh7V8ziHs/zZbCMYSfzhw+GM875v1bcIxNZIi1wnjFpM
- 1tyITECRfsrG1fUMNbDhK6RQfRJnu+XvclmQ5gcWDxr1SKcE7c+ygEJyvUk75geLosvw
- BkoA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVUMACRMx1L0N75+/ob07L7gl8MCSdn3QQh6aRcjLK5ncDGJNFNOvECwfKXwhXAR5/VRjU0mnb1oGXp@nongnu.org
-X-Gm-Message-State: AOJu0YxaJeGpvXDpd2WvLQyhXAdDSScDGXaoSOG2Vc0GYegLZWI5EQGb
- EDRMgrVgubdlpfaiLQeVVa9VoEVHVjAj6J7EYNnyKDXZejW2M0cdZ6dzuybRmPshvHPM1jTWhfP
- iRcwdWpQ=
-X-Gm-Gg: ASbGnctoKE1lJZ3l65PSnOBFWXng3ujzqMQ9cP1F+tWCvfNjfbIe9zXwNiGhnMd0xNA
- OOGrFCR0yeGGOKjQrnDhcE9Jer0UAQYxsLUDAmtfTWKwvECyvDWgRc8/1wAsjAwqZDwE3LHspBe
- XhIO/iTA+1m1yB6cJgHAwGQcTXC9oRXKD/6laIUGL0oMk9RoAWBuQR5lt/64g0E6zWhTKLvFsNu
- +5LJWas5z/QpNAAvHVQUHKOVMi10nGu9NtsYiUQ2v2u/4X6MC0dfyvZwm4imzCE+IZrV+iYZFj9
- 8L6aY4K7czb8vBoEqKRK3eeUQsd4ixc3muKJAGzs+4dQYMiy909mwFaOuVwe7mGJbAfjFuooooQ
- wtOzrkrVep4UbW2rVqV+oYG8NkfveqBJ/vGeiffN4gF2dnYJ3cP+No0HuArZ6CCcMZgs+ciNo/D
- /F3HY0tlwMqaqzxCWTm0+3WqAeENs8ReOdN1RjWTiU+C4=
-X-Google-Smtp-Source: AGHT+IGEfoGpkgWAtyjX1cY/IQcpcJOdCr0Psvitn5YpADo988aHVCeZefv3LAlI/UUcZcVZvp8WBg==
-X-Received: by 2002:a05:600c:4e11:b0:471:c72:c807 with SMTP id
- 5b1f17b1804b1-471179079c7mr117708685e9.22.1760991523420; 
- Mon, 20 Oct 2025 13:18:43 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-471144b5c34sm260890115e9.10.2025.10.20.13.18.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Oct 2025 13:18:42 -0700 (PDT)
-Message-ID: <204af6f8-cb4a-429a-aacf-2fbfb3575a2f@linaro.org>
-Date: Mon, 20 Oct 2025 22:18:42 +0200
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vAwh8-0007ow-QF
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 16:41:30 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vAwh6-0005cY-Kv
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 16:41:30 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1760992874; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=ZlUOLcnuNaUPyIKS7P72poaHiwAW5guO5D/cdOEzYtJ1fuI7YgrkA2iEej5VHHwBJvgyLg0h0fJxONfMjJG0ZjqU8FDcipALAX2ZNUTuavvhM59KHTfLZ0mHIAcrI1HkXivsiJpZcyvVdoxKM+mDpAyAA7JCNMuHICEsZ3bqaRM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1760992874;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=1hsbfBkta5PdOTHjEnn7MftkaKKMptqLLtF5YZj8go4=; 
+ b=UOYo9ezQXdg1leSQjJjsHERW0VBEbkKMTt9CaaY86+9ISoVBUmZp1cBniaWwLBrsC3MIwUsuf1gji74W09seAt06BAIu466Sqq7QNZS9jgV2zNh22xv0gmRh5ROYM7WAGp2uKPbDfQwwND/jMaTN1D+VhLh7qXuzg10ckL1ACd8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760992874; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=1hsbfBkta5PdOTHjEnn7MftkaKKMptqLLtF5YZj8go4=;
+ b=iznnrKmtA410sccCpaWaL3FA2VAWm7QGVS7ln8TQpYvnYf/H9BGiK3gpXR1b07Zk
+ 34WwY0VrT1TyzBieurJY+F5g3VCchf7GQ0vbKRkN8UpHrB4zn28c95yzPg1OU4jwwZL
+ kf9LAA9dEHqeE374DY0UMKFgFL1LLskAGkTWMUGU=
+Received: by mx.zohomail.com with SMTPS id 1760992871509741.2115563051279;
+ Mon, 20 Oct 2025 13:41:11 -0700 (PDT)
+Message-ID: <1e63ee89-66a0-4568-aeb7-b73e72fb5a2e@collabora.com>
+Date: Mon, 20 Oct 2025 23:41:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/16] hw/pci-host/raven: Rename direct config access
- ops
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+Subject: Re: [PATCH] rcu: Unify force quiescent state
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <cover.1760795082.git.balaton@eik.bme.hu>
- <74fcd70106289663ea426161aada78e879995d6c.1760795082.git.balaton@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <74fcd70106289663ea426161aada78e879995d6c.1760795082.git.balaton@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20251016-force-v1-1-919a82112498@rsg.ci.i.u-tokyo.ac.jp>
+ <cc38a1ac-6f05-4c27-90a5-6ed71d9b566c@collabora.com>
+ <626016e1-c7d8-4377-bf9f-ab0f0eef1457@rsg.ci.i.u-tokyo.ac.jp>
+ <f89d4a21-635a-4779-95c1-7db0abe66863@rsg.ci.i.u-tokyo.ac.jp>
+ <606c8d41-7f46-41a1-817b-27cb322bd215@collabora.com>
+ <1c487aba-55e6-4a59-8755-4adedfc8cc72@rsg.ci.i.u-tokyo.ac.jp>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <1c487aba-55e6-4a59-8755-4adedfc8cc72@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,16 +89,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/25 16:04, BALATON Zoltan wrote:
-> Rename memory io ops implementing PCI configuration direct access to
-> mmcfg which describes better what these are for.
+On 10/20/25 04:14, Akihiko Odaki wrote:
+...
+>>> So, if you know some workload that may suffer from the delay, it may be
+>>> a good idea to try them with the patches from Alex first, and then think
+>>> of a clean solution if it improves performance.
+>>
+>> Thanks a lot for the clarification. I'm seeing occasional 10ms stalls
+>> with this patch applied, still it's a huge improvement. Looking forward
+>> to v2.
 > 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/pci-host/raven.c | 17 ++++++++---------
->   1 file changed, 8 insertions(+), 9 deletions(-)
+> Just for (further) clarification, but 10ms stalls are present even
+> without this patch (correct me if I'm wrong). I think the stalls need to
+> be resolved with another patch instead of having v2 of this unless it is
+> a regression.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Stalls present without this patch and they are much worse than with your
+patch. Without your patch - unmaping stalls for 50-100ms, with your
+patch - unmapping stalls for 2-20ms.
 
+There are no stalls at all with patches from Alex, unmapping finishes
+instantly and performance is ideal.
+
+>> In addition to a guest waiting for the virgl commands completion, QEMU
+>> display updates on host are also blocked while unmapping cmd is
+>> suspended. This is a noticeable problem for interactive GFX applications
+>> running on guest.
+> 
+> I guess you meant that the scanout commands following unmapping commands
+> are blocked. While I can imagine that can cause frames skipped and
+> damage user experience, it is nice if you know reproduction cases or
+> affected workloads and share them with me.
+
+Correct, scanout commands are blocked.
+
+Running pretty much any VK application with venus reproduces the
+problem. A simple reproduction case is to run vkmark with venus, it
+would noticeably stall between switching benchmark modes and when app quits.
+
+With native contexts the problem is much more visible. Running any
+Desktop Environment (KDE Plasma in my case) on guest with amd/intel nctx
+would be freezing badly by moving application window around desktop.
+
+-- 
+Best regards,
+Dmitry
 
