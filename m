@@ -2,121 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A6ABEF5F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 07:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEBABEF5D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 07:37:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAihV-0003Fb-6J; Mon, 20 Oct 2025 01:44:57 -0400
+	id 1vAiZB-0008I9-6p; Mon, 20 Oct 2025 01:36:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sourabhjain@linux.ibm.com>)
- id 1vAihI-0003Eh-8V; Mon, 20 Oct 2025 01:44:45 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vAiZ8-0008Hv-1i
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 01:36:18 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sourabhjain@linux.ibm.com>)
- id 1vAihF-0007tg-Lw; Mon, 20 Oct 2025 01:44:43 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59JKibP0029261;
- Mon, 20 Oct 2025 05:44:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=chmjDV
- LMYFgUxZLDpt1C2oSMUrUSxCTzE2t2+SWoH/g=; b=boBNLtWzRNlaz0p4z7r1RL
- +E7WfbqOt1Ov6eAQQyEgk7qyiK+Q8qlr1w7zYn0XNRYOT3zwP7AIAe2NXmfj9QfX
- qBbC3N6MpIcdp4ekpcWAWgU3RZ6WOrseUjBpJEeb7gCGvk++X+IIhan4JjAfZmLC
- MyHnm66y9tx7A984JpPL64Nr04yS+m3YVK+61mHRWRFygPkio4DFcRDPZ4csx6dI
- ylbAX+PdQHpV3nEz+5BTpB2szRX8+6MCCG/0QcUz60YY9T1YUxjn6zZrp/gJk8RO
- LEghBqpqDKp98eNQKkz/0ByRpjkbjQ8Kf82MXqElCt0dzZoHyqgxdaOmAtZggXxw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33eyu67-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 05:44:39 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59K5eokP003144;
- Mon, 20 Oct 2025 05:44:38 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33eyu66-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 05:44:38 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59K2jbKd011053;
- Mon, 20 Oct 2025 05:44:38 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx0v01y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Oct 2025 05:44:37 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59K5iYEG20971842
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Oct 2025 05:44:34 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4EB4C20043;
- Mon, 20 Oct 2025 05:44:34 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 67B7320040;
- Mon, 20 Oct 2025 05:44:32 +0000 (GMT)
-Received: from [9.124.220.242] (unknown [9.124.220.242])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 20 Oct 2025 05:44:32 +0000 (GMT)
-Message-ID: <c79ac8e0-9d87-4c39-89b0-5e6a9981eedd@linux.ibm.com>
-Date: Mon, 20 Oct 2025 11:14:31 +0530
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vAiZ4-0007Fm-PD
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 01:36:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760938575; x=1792474575;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=esGWuBbOZ2/fvxDU0/+W6HKp6MW1NADw1JIbPWWRgi8=;
+ b=ihgpBQr6sbzJYi8ZFitRuwUEU1rvhIWY25cJpIBIS2ejZesnJHvw/L7T
+ mt24wT0Xaj181u8SysYwgo4mKPD5Zk5v8+tYjMbi78jAJR4e6uxlNmm1T
+ PUy4Xmit5jXX+RcDlqVoLnKvZiyTHOwHtgqCWTLDvmXJ2oqA2Eg8WSKRT
+ k8GpNHPDyoNqEsT1y2db4zakSVkHLKevCXgNupzo+y3VlEuQPp9RtkhmS
+ ZCIaNkDYsCJjUIhprkj7WK34EJVK1K3M52lMgbk/4IBpEHKiqICOoOSGz
+ vvD2qSGzSxEGJttIYOLvidJIlIyhudN60PMvtR+2lPHKi2C28HpnC5Rms g==;
+X-CSE-ConnectionGUID: d/ZU4zRhROCsinStSDmdWg==
+X-CSE-MsgGUID: rRvxnDC2SvKKJ5iKwnH7nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11587"; a="74397851"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="74397851"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Oct 2025 22:36:09 -0700
+X-CSE-ConnectionGUID: l7Pu6WazQQKVaPyCqSw8ow==
+X-CSE-MsgGUID: 1NHmU/eSRX+xw5zIBox7qA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="183198630"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa006.fm.intel.com with ESMTP; 19 Oct 2025 22:36:07 -0700
+Date: Mon, 20 Oct 2025 13:58:14 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=C3?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] qapi/machine: Fix missing @modules in topology ordering
+Message-ID: <aPXPdku0QmO+KAjb@intel.com>
+References: <20251013074511.2030073-1-zhao1.liu@intel.com>
+ <87jz0wk7m5.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/8] hw/ppc: Pass dump-sizes property for fadump in
- device tree
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>
-References: <20250323174007.221116-1-adityag@linux.ibm.com>
- <20250323174007.221116-7-adityag@linux.ibm.com>
- <65b70282-c6ca-4140-92f6-d266082b6d49@linux.ibm.com>
- <wr5sfi6omicfuxnfua7pjkbm345niursrgrddfdkbzcexeqoap@xyqknkyfqmif>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <wr5sfi6omicfuxnfua7pjkbm345niursrgrddfdkbzcexeqoap@xyqknkyfqmif>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f5cc47 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7osF5HoJbqPopLT3g4MA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: mPL2Q2udU_canFF21iPuQ6jEnrgo5EHC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX9eYJjYtTO/gy
- bEhuDb132hByyhiBJeFj2brgiJ6a7xFqqERZH6XVYrpplPfLc8K8WuEdNOLpyERHLjQ3hHTpy/D
- MoAqRfU0liPRszMqdpVlazYIRNBWLAV7/FIuYtRcI8M3MB1cd7gsooMgKE8rlO/2e7d9Ajzad0P
- kBWnab2z21zFNfOTdIN2B5XsBxFLXiv00d8O/HlXAoBwT6YVqfJTSL2Pp7CdJUiwPVP4BGGYFQc
- rZxdr/8EL1hEqKpRLFsQHlQWe5a3Cl2s21gS3+QfNBL9cRUzRtGzE3aKUpu48oFSnjyUBeyL29X
- caQaV43Ir6ydM2vJ6bV2ea8S6lOfnF+27Y3GhITk/PVpe4JKt66cemdQ38CD/TSaw8yxRbq1j4v
- SKTGGK8tj8yQhrVym3/Cfa9KeKIJTw==
-X-Proofpoint-ORIG-GUID: rFEckr8sdUlp7Cw1jn-pFzvt0BsP1LYe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_01,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=sourabhjain@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87jz0wk7m5.fsf@pond.sub.org>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,38 +84,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Oct 15, 2025 at 08:21:38AM +0200, Markus Armbruster wrote:
+> Date: Wed, 15 Oct 2025 08:21:38 +0200
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: [PATCH] qapi/machine: Fix missing @modules in topology ordering
+> 
+> Zhao Liu <zhao1.liu@intel.com> writes:
+> 
+> > The module level is between core and cluster levels. Fix the QAPI
+> > documentation to add the module level in topology ordering.
+> >
+> > Reported-by: Markus Armbruster <armbru@redhat.com>
+> > Fixes: 8ec0a4634798 ("hw/core/machine: Support modules in -smp")
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >  qapi/machine.json | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/qapi/machine.json b/qapi/machine.json
+> > index 038eab281c78..5e268479e546 100644
+> > --- a/qapi/machine.json
+> > +++ b/qapi/machine.json
+> > @@ -1624,7 +1624,7 @@
+> >  # containers.
+> >  #
+> >  # The ordering from highest/coarsest to lowest/finest is: @drawers,
+> > -# @books, @sockets, @dies, @clusters, @cores, @threads.
+> > +# @books, @sockets, @dies, @clusters, @modules, @cores, @threads.
+> >  #
+> >  # Different architectures support different subsets of topology
+> >  # containers.
+> 
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+
+Thanks!
+
+> However, there are more mentions of @drawers etc. in comments and
+> documentation elsewhere.  Quick grep for "drawers" there appended.
+> Please double-check for missing mentions of modules.
+> 
+> 
+> docs/about/deprecated.rst:configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+
+This case should be cleaned up since I rememberred the realted change is
+reverted. I will check in details and submit a patch if necessary.
+
+> docs/devel/s390-cpu-topology.rst:    -smp 1,drawers=3,books=3,sockets=2,cores=2,maxcpus=36 \
+> docs/system/s390x/cpu-topology.rst:topology containers: drawers, books and sockets. They define a
+> docs/system/s390x/cpu-topology.rst:If none of the containers attributes (drawers, books, sockets) are
+> hw/s390x/cpu-topology.c: * (0, 0, 0) up to the last (smp->drawers, smp->books, smp->sockets).
+
+s390x doesn't support module level, so its doc is fine.
+
+> include/hw/boards.h: * @drawers_supported - whether drawers are supported by the machine
+> include/hw/boards.h: * @drawers: the number of drawers on the machine
+
+general machine codes has considerred module level.
+
+> tests/functional/s390x/test_topology.py:    the cores, sockets, books and drawers and 2 modifiers attributes,
+
+s390x doesn't support module level.
+
+> tests/unit/test-smp-parse.c: *  -drawers/books/sockets/cores/threads
+> tests/unit/test-smp-parse.c: *  -drawers/books/sockets/dies/clusters/modules/cores/threads
+> tests/unit/test-smp-parse.c:         *   -smp 8,drawers=1,books=1,sockets=2,dies=1,clusters=1,modules=1,\
+> tests/unit/test-smp-parse.c:        /* config: -smp 2,drawers=2 */
+> tests/unit/test-smp-parse.c:        /* config: -smp 16,drawers=2,sockets=2,cores=4,threads=2,maxcpus=16 */
+> tests/unit/test-smp-parse.c:        /* config: -smp 34,drawers=2,sockets=2,cores=4,threads=2,maxcpus=32 */
+> tests/unit/test-smp-parse.c:         * config: -smp 200,drawers=3,books=5,sockets=2,cores=4,\
+> tests/unit/test-smp-parse.c:         * config: -smp 242,drawers=3,books=5,sockets=2,cores=4,\
+> tests/unit/test-smp-parse.c:         * config: -smp 200,drawers=3,books=5,sockets=2,dies=4,\
+> tests/unit/test-smp-parse.c:         * config: -smp 2881,drawers=3,books=5,sockets=2,dies=4,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=3,books=5,sockets=2,dies=4,\
+> tests/unit/test-smp-parse.c:         * config: -smp 0,drawers=1,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * Test "drawers=0".
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=0,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=0,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=0,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=1,dies=0,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+> tests/unit/test-smp-parse.c:        /* when drawers parameter is omitted, it will be set as 1 */
+> tests/unit/test-smp-parse.c:        /* when drawers parameter is specified */
+> tests/unit/test-smp-parse.c:         * when drawers and books parameters are omitted, they will
+> tests/unit/test-smp-parse.c:        /* when drawers and books parameters are both specified */
+> tests/unit/test-smp-parse.c:         * when drawers, books, dies, clusters and modules parameters are
+> tests/unit/test-smp-parse.c:         * when drawers, books, dies, clusters and modules parameters
+
+test-smp-parse has coverred module case, so it's fine too. But test-smp-parse
+doesn't cover smp-cache. I'll consider to add the new test case.
+
+Thanks very much!
+
+Regards,
+Zhao
 
 
-On 20/10/25 01:00, Aditya Gupta wrote:
-> On 25/10/18 04:50PM, Sourabh Jain wrote:
->>
->>> <...snip...>
->>> +    uint32_t fadump_rgn_sizes[2][3] = {
->>> +        {
->>> +            cpu_to_be32(FADUMP_CPU_STATE_DATA),
->>> +            0, 0 /* Calculated later */
->>> +        },
->>> +        {
->>> +            cpu_to_be32(FADUMP_HPTE_REGION),
->>> +            0, 0 /* HPTE region not implemented */
->>> +        }
->> #nit-pick
->> Why to advertise if we don't support it? Kernel anyways ignores this for
->> now.
-> Nice catch.
-> PAPR doesn't seem to say about HPTE being optional anywhere, nor being
-> mandatory, so to be on safe side, exported it with 0 size until/if
-> it's implemented.
->
-> PAPR R1–7.3.30–7 says this (trimmed, emphasis mine):
->
-> 	The platform 'must' present the RTAS property,
-> 	“ibm,configure-kernel-dump-sizes” in the OF device tree, which
-> 	describes space required for 'firmware defined dump sections', where
-> 	the 'firmware defined dump sections' are:
-> 		0x0001 = CPU State Data
-> 		0x0002 = Hardware Page Table for Real Mode Region
-Yeah lets advertise HPTE with zero size.
-
-- Sourabh
 
