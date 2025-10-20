@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECC1BF3D84
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5116BF3D7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 00:11:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAy4t-0006TL-0e; Mon, 20 Oct 2025 18:10:07 -0400
+	id 1vAy4x-0006UH-0H; Mon, 20 Oct 2025 18:10:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy4q-0006SG-Cz
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:04 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy4v-0006Tn-6O
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:09 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy4o-00063p-LU
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:04 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-42701aa714aso2981787f8f.3
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:10:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAy4t-0006GH-6w
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 18:10:08 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4712c6d9495so2927745e9.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 15:10:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760998200; x=1761603000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1760998205; x=1761603005; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=peeMmEa9/4QTziWR6C9i27UArz/pXKVp77TsxavtYSE=;
- b=cnWjboAeQSEDolcr5doos21LBnosv0WOpUczgFbUk/G6y3MeRwYvys69V/8j1aEx+C
- 6N6c37OqcpPH+wAnKg3C8v6l47MF0JRtVEf3wUyAIJch4+LItESowcagTAc18JNti/uY
- XYDKkFKlAMhq5uaNwFs960I0Y5FMAmt4sIAH1dvyGs5fdmHNVJeHLsn+xCaTmgGvJ7Cw
- occIqoE+v1NUOhhtR+60tdUvT7LTcJ2Z7pgI2FU+xJbTFQbnq8M6ydOYV0GTY+MEF1zN
- dsW3aGJJJAYotOvckot4+nWeAudiggX53fXyoIvKOYg8vXYaMNq8tEvBmk2tLuqlh/F7
- zN3A==
+ bh=pTh/TXHrRxWOV1KvlT5RHXxmysc4zuKbZjFKHXnGbRQ=;
+ b=vTywkx/9HpPP4gFVhxgZrbUv/HMXUTEVpo5KemlzbgJHYy1MhyxoXdnc8XgRysyxkv
+ gcBPrfmr2BqyNq1IZIsfH5Gmp5w3QvQ8Lh/3xZZYdiNZH/coLDtfGKnrsbkGROrFnLXF
+ 5DTCxDINxpttYI5I07ozPglimF4ScDxknLi+WRGMBL09QQvI/ILwTqs4FYiNNVIY3Boz
+ 8xaKQ5/SFA6m4O16CxYAtwH7wGAzGwbK3ruoXg8kTjJGkqfaExyStt7q4RLnSUl8TATB
+ K2yXR13QYO5bTBF2juL6O8qKPY+oyyTIq6ZovxZLJErihOcj1au0Q2fIwU2yiIPN3yMF
+ JiXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760998200; x=1761603000;
+ d=1e100.net; s=20230601; t=1760998205; x=1761603005;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=peeMmEa9/4QTziWR6C9i27UArz/pXKVp77TsxavtYSE=;
- b=sgNPQ6N5GHsPVxsyHUlZO3I/GviaYo/K9Q8jRIN1mPIEtG3npfeMD4kLjKi6UkQrcc
- RJir0rwhuybRsMf+C1+ru/pdtsApivKDdpAZh4nx/TJcxSKmU74Eh5FzdHmKs7e4C9Q9
- v2zPTqIR0EFM1h9W/eXsfgWzWhDs2qVllZT5DtCNicDVgjbh/c0IJRDD2ylxBgmYsWcg
- koNrdQgfqVPOFC9+jkUUwbvbdkJSvzSF2kCnXnMpQoGpvSJVbm4z9tRf40/q7KJxlpNU
- lI47wjtZ7egSkmgaGNMmxfBPAhqtoNRrnhFm7GuepBRWYXsuqmQPCe2/EqKmi3rVKATF
- MJqw==
-X-Gm-Message-State: AOJu0Yw0e8/06D5ZEHHeI4ZF7sK0alNmLQHpiF7OG6bBlY43qe60k46t
- +/T4EBYh037aF6umnL0CBcWwTReDKMF6THlHagapGiqCFfoAdODomA+0SEmHWGV0zRbOVkgkNTf
- HxJxOxpo=
-X-Gm-Gg: ASbGncsrhRKudJsfYH4K46Bfj/iD3ei1yNjLvIBT+vTL3C2BXJUdtgSFj/FOzrffGpT
- vBjs8xQBm42ylFslZVQqC0t0PE3xOQmOcaYkNhmfItiOwY2hTo2D3LkPX6/f0FmPiKWBBFMPe6U
- TM1IOM6nUv8T1nkdZQ7QqJbfgbyrAS/Ot/Ba+MISlaaqQe5U0KllgT3h4G2CrQA7/NHuw+ruOFy
- 9uaAuY4A3KjzF3PhaGrc4JefTVLRQjtmLebslokaakeK4jHnzyl+RpclAlfFGCIf6moLcHBJ1n7
- rWfChmuLW1yG8KPKX95lJOgt12Y1ujwJsxDDhoXdeIxIX6w7xIdJslmH9CNGCebJbsVNoySj85F
- F24CrwhN9q2H0iKZfz+rWRX20dq10Trn2dUJCVw/mBhxJXG8AbQM0p/JgdO4ra7Aw+zwzpe/7xV
- AdmMIOF/d45R+j5mmZX/pDtO0jLpXR8qXNQe2ZDOsxSIa9y9clhAz/gC68NcL+
-X-Google-Smtp-Source: AGHT+IEY9dGVhude0M+GcNa2jlGZLSxiMaf6S+dOd8BRUbbC+FnSri8tG8vaEaVMdmGvsI05jsd+nA==
-X-Received: by 2002:a5d:59af:0:b0:427:60d:c50d with SMTP id
- ffacd0b85a97d-427060dc758mr9221403f8f.51.1760998200207; 
- Mon, 20 Oct 2025 15:10:00 -0700 (PDT)
+ bh=pTh/TXHrRxWOV1KvlT5RHXxmysc4zuKbZjFKHXnGbRQ=;
+ b=R0HKhFmbj6dW9OIG1fq/tnNdL8ZYiPx2t+uZo9SvBeTTj7157sXg4a+pIShvv/MHbU
+ +1HRx21xnB8vsp0bQjGcIMPRb5b/ZJL2sUcB9ricRp6qaRHEfKFchme9PpXcagBuNyWw
+ HuE882bTs6kX5JVIqRLHqn2qonHynZseIeqodPGSJttre7fdWynLiOGUfi94qKKrz7kC
+ jcnNN9U1mO0KCMB4eWZyybBWixqK1TJxmN6jM2QDG/ANj1LFxTxHMJO7Pp0VOu7/dQL9
+ 3Poue0Xir0uJwSIaNyD37RPFV3IaAbPApnUJ6ZBUpoT8VRc9PkZQuKz2gElqypzBrHKr
+ Rcnw==
+X-Gm-Message-State: AOJu0YzU2f+dmKytwsFtvuoeE5LyoGHJ2AKyBZN4364SR+Zz1+XpRMHJ
+ UPcC/Ov5s0gf5PeSENkY11DG7WUY39hRJE0rymAmDwK5bxaSNw+N9c0X08R53jsZGt1/6/jJdYg
+ UpokM9lo=
+X-Gm-Gg: ASbGncv2qsxxhJUYemIu41HSx4b47mjCU+6pYhq+J2SjHtTBRluV6/tPbodiLFX9yGg
+ SyqsGgfn0bGI0v312hcOdVh80Ti8uRYT60UhnOGNuM+1Gz1mJvBcN38VfPvAF79+skapC6gMHV6
+ bmHOpIbT0mW9oIGVmi7MoMkflONiXpMdPN1CxpKqVHEef+e32chgJLueTTee4AfLSy07bxTLqx8
+ fVjmPDyhKhuGt8a6mb4YD1VSF2+qk6wB38p3pgv9Tf+hgmNpPF3e/7nfx1EQlRUHp1KuOETGw/y
+ 77FbHnou07txe29cF+AohtrKLHdOafNvFOaWg3+9BF6kR+PA9I3dUINtMGvQwDNIsb1PSHlKwZd
+ 8dX8Xy4vZlmhxLE8iU53u/MVrjg3ttgcoT8uf+GJbdlcnX+H1JyJInyTiauJ/1any8pk4X4QObb
+ 99R725aCZBJGSb2sXiDkQ6u+epC4ZBBZ2mNC2Tt+f6X/clqQ6Css/ITO1LkpwCTJ/WOx/dGKY=
+X-Google-Smtp-Source: AGHT+IGWxyXvKDwNF/DwAbM5Sh3jmQMh/rBRb4o4Yyw3vAcpz6nRLQd8zWBy8X44SuKWzwgtihli7w==
+X-Received: by 2002:a05:6000:2010:b0:426:ff7c:86e4 with SMTP id
+ ffacd0b85a97d-42704d8df97mr9666760f8f.19.1760998205024; 
+ Mon, 20 Oct 2025 15:10:05 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5b3f5esm17054127f8f.20.2025.10.20.15.09.58
+ ffacd0b85a97d-427ea5b3acfsm17032038f8f.14.2025.10.20.15.10.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Oct 2025 15:09:59 -0700 (PDT)
+ Mon, 20 Oct 2025 15:10:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -71,22 +71,21 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v6 03/30] hw/boards: Extend DEFINE_MACHINE macro to cover more
- use cases
-Date: Tue, 21 Oct 2025 00:09:12 +0200
-Message-ID: <20251020220941.65269-4-philmd@linaro.org>
+Subject: [PATCH v6 04/30] hw/boards: Introduce
+ DEFINE_MACHINE_WITH_INTERFACE_ARRAY() macro
+Date: Tue, 21 Oct 2025 00:09:13 +0200
+Message-ID: <20251020220941.65269-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020220941.65269-1-philmd@linaro.org>
 References: <20251020220941.65269-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,62 +108,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+DEFINE_MACHINE_WITH_INTERFACE_ARRAY() is similar to
+DEFINE_MACHINE_WITH_INTERFACES() but allows to pass
+an InterfaceInfo[] pointer.
 
-Add a more general DEFINE_MACHINE_EXTENDED macro and define simpler
-versions with less parameters based on that. This is inspired by how
-the OBJECT_DEFINE macros do this in a similar way to allow using the
-shortened definition in more complex cases too.
-
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <d75c8bbed97650f1a4d2d675444582a240a335b4.1760798392.git.balaton@eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/hw/boards.h | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ include/hw/boards.h | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 67c94bff1c6..99292edf5a8 100644
+index 99292edf5a8..a60e1d83390 100644
 --- a/include/hw/boards.h
 +++ b/include/hw/boards.h
-@@ -503,7 +503,8 @@ struct MachineState {
-  *      DEFINE_VIRT_MACHINE_IMPL(false, major, minor, micro, _, tag)
+@@ -504,7 +504,7 @@ struct MachineState {
   */
  
--#define DEFINE_MACHINE(namestr, machine_initfn) \
-+#define DEFINE_MACHINE_EXTENDED(namestr, PARENT_NAME, InstanceName, \
-+                                machine_initfn, ABSTRACT, ...) \
+ #define DEFINE_MACHINE_EXTENDED(namestr, PARENT_NAME, InstanceName, \
+-                                machine_initfn, ABSTRACT, ...) \
++                                machine_initfn, ABSTRACT, ifaces...) \
      static void machine_initfn##_class_init(ObjectClass *oc, const void *data) \
      { \
          MachineClass *mc = MACHINE_CLASS(oc); \
-@@ -511,8 +512,11 @@ struct MachineState {
-     } \
-     static const TypeInfo machine_initfn##_typeinfo = { \
-         .name       = MACHINE_TYPE_NAME(namestr), \
--        .parent     = TYPE_MACHINE, \
-+        .parent     = TYPE_##PARENT_NAME, \
+@@ -516,7 +516,7 @@ struct MachineState {
          .class_init = machine_initfn##_class_init, \
-+        .instance_size = sizeof(InstanceName), \
-+        .abstract = ABSTRACT, \
-+        .interfaces = (const InterfaceInfo[]) { __VA_ARGS__ }, \
+         .instance_size = sizeof(InstanceName), \
+         .abstract = ABSTRACT, \
+-        .interfaces = (const InterfaceInfo[]) { __VA_ARGS__ }, \
++        .interfaces = ifaces, \
      }; \
      static void machine_initfn##_register_types(void) \
      { \
-@@ -520,6 +524,14 @@ struct MachineState {
-     } \
-     type_init(machine_initfn##_register_types)
+@@ -526,11 +526,15 @@ struct MachineState {
  
-+#define DEFINE_MACHINE(namestr, machine_initfn) \
-+    DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
-+                            false, { })
+ #define DEFINE_MACHINE(namestr, machine_initfn) \
+     DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
+-                            false, { })
++                            false, NULL)
 +
-+#define DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, ...) \
++#define DEFINE_MACHINE_WITH_INTERFACE_ARRAY(namestr, machine_initfn, ifaces...)\
 +    DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
-+                            false, __VA_ARGS__)
-+
++                            false, ifaces)
+ 
+ #define DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, ...) \
+-    DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
+-                            false, __VA_ARGS__)
++    DEFINE_MACHINE_WITH_INTERFACE_ARRAY(namestr, machine_initfn, \
++                                        (const InterfaceInfo[]) { __VA_ARGS__ })
+ 
  /*
   * Helper for dispatching different macros based on how
-  * many __VA_ARGS__ are passed. Supports 1 to 5 variadic
 -- 
 2.51.0
 
