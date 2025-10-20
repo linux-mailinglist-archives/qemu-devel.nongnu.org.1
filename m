@@ -2,92 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B89BF00B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 10:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29716BF01C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 11:13:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAlfF-0005Zo-Ju; Mon, 20 Oct 2025 04:54:49 -0400
+	id 1vAlwd-0002nT-Vf; Mon, 20 Oct 2025 05:12:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAlfB-0005Ze-27
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 04:54:45 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vAlf4-0002l9-Vj
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 04:54:44 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-4282fba734bso800962f8f.0
- for <qemu-devel@nongnu.org>; Mon, 20 Oct 2025 01:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1760950477; x=1761555277; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xs3tYeIUxROfq9Qyi/HAYIGr+WeY+9jWls+cksD7RSw=;
- b=jlGFeI4MkDzcDau19StqQ1y7GnRMh6/WQVnKBU2zMG9KRI8tcQUSnIp9gMF/o3tH6v
- Dtcs/q6fKjgoulFz34labh+xnU20PJg9XqWXswBA8UKHl7x+i3y7EnkiJvBCt0Fo8Sm3
- MLQ79+8qzFPaTgRdSyoQvFk0vvZeTTzCYk45sXlHGbcApd7D4+kJ6ofiKLytkYya9yIW
- qazH/ePg+3ErZzYinYIRW6vr0cG5aTYrxzl6IXvdtRYCWevejKmxEwrzAwDG7pblDKMw
- J5L7XPcpDh0O63lMmJcwDeT2nz8aexW9Iwn+1AzxFWswpOM+HARjT/x8omJDQlcXrrkS
- btYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760950477; x=1761555277;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xs3tYeIUxROfq9Qyi/HAYIGr+WeY+9jWls+cksD7RSw=;
- b=izU4SMQBOqlU9NnoM9gDBiU5ZT7HvPwCHbha+ZwROxPwnASq51FCKmSOTqgmioewLD
- gnCBIpwCCxwp0wS49AftXK8YlrVyFJM02tJZPRrWE0bbKOw5O7g/nZijglaQm3ABDRO+
- yYSi/JgingNckc5x8i1Ul3eZ4Oyvwy+TZCUcncOfnDvIsE7LbHx2tRkvMfytwcG3piZs
- pEGmVyCgUSpy7/cIvqMNVdCJvjF29czEGE04tglgiVr3c9OEzzK/ZVgs5ynGHDf5D8mS
- dnDwnOGe3Insolbev9O7uqaIcZbBFRrOpzkaYytkZr5D4VIjtaDsm8Cxq5amDC6Ytv6t
- exTg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWsmczDjxAyjDzaTcOyL06L9gJ1PTRcntMC4U9AItBI8EOic4ncsipfCu3D1uH9xnlfYT9jnMgwT6xK@nongnu.org
-X-Gm-Message-State: AOJu0Ywc09Oin4TxvykfWjrROVeyk0T1w0AuQaJp+UltN/WHczzqSXTN
- DxXsWmpBhsIcRtZTL/nBGq/0f7B6SSCcRF2/ELpuooog0FB/W6GdkAyxJb5RheAmCNc=
-X-Gm-Gg: ASbGncv1blPCWTAZEULlxzA5Vq6c04bdNgfxDr6LOiphQyN6ecp6g0eeuNsXtYZGdYw
- bPA2Ocp1mFAQ0+dspsN2qsclDs/Li8tdMJSHtXnARy2GP5xm+SpuGXlb1N9zu4vxcv8/A7BAAtX
- Goo9lcdiUgzhoFSn98iu3FIQC/thX8EPRqClI2VZiVdUALIXy7D5KkPJVao9tSGXwC/ycAyRzET
- /ritZOgrvI2kzXmmuiWv7p26kmIHUW7Nqdhzq4fXLhvVG1tGuJ6yNuzJtVVEfuTisrB05OW8tvp
- uutiUzc9oW6P2qlYBM3Ar6ukdd9+oUx5zh1K2g6jentcumRMJawaGg62rQohWOfECJMe9PprXdY
- kP4kjKMokPG7vyZTzwWo3EEacqdhSsxVpcns8WR/8ob3INwawt/Rged1e0IUeoq5eOtnmmCRNHz
- Bf3/7LP1x1xza3Ebu3ZG6RYCHe9teVLBO2Kc0Lo7MYNLVI+kHduzTuUQ==
-X-Google-Smtp-Source: AGHT+IH7OheyZPs9TPr+otf1kEZ7q1qgXF3Y0MfR0BVQSmBubwt6G2vjxM/oX98m2YpRjvVi9qzEjg==
-X-Received: by 2002:a05:6000:4202:b0:426:d82f:889e with SMTP id
- ffacd0b85a97d-42704d74dc8mr9007569f8f.14.1760950476732; 
- Mon, 20 Oct 2025 01:54:36 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5a1056sm14254801f8f.2.2025.10.20.01.54.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Oct 2025 01:54:36 -0700 (PDT)
-Message-ID: <2047e87f-36e8-4e5c-bdf1-6f08192ab55f@linaro.org>
-Date: Mon, 20 Oct 2025 10:54:35 +0200
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1vAlwX-0002lb-74
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 05:12:42 -0400
+Received: from mail-westus2azon11010007.outbound.protection.outlook.com
+ ([52.101.46.7] helo=CO1PR03CU002.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1vAlwU-0005CM-M2
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 05:12:40 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j+gD181qPd7/AyvpvSIhcYI11Hh2zIDh4pYGCxDczDYPq9rZXNp2GbX9djZEwMpSKuan3XlcnIMirM++iJaBSP8zgk29H+sTkNM+EI9spYD3Usl0XNHUhZr+q8ypU4zSRwDP1HhFvGJ8SwjfUYydl+RaxQeUOsYlUAzKE0k+gHwcq7LD6rViOwN1RpfCsrlnDarUA5ElQiaPkHQE+3ZkoELlU1NccV7sgB+dP0aFNhD43yCF9Jg1U771xKUT5OAHfWRU4Q+JyXSixlqH+YxChURK+esOKGQJl1vrJWpVdnNPwOXwS7it+F1clHM+lUWUn7whCcASr8EKsa6FAqupsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GOZ+nixHazb4HnavPJeXgOtMK07jsp2imIRg0VdfqLA=;
+ b=U4+J7deS+v2dw/Pfz3EMJkUOTbbotCd5m4w5CVMhoZa6UbFwop51SkuIPoB+RovYXYnZ5C6O8LcNRL7G4XKp1rhOQtOjgBTNpIiklNJxOhlEdz0kjnD8FSlvsqNOgh31xb3tZYiYyLz5AgY9rZ0iV/ARFIA9t4HPwSQ36ov+Qxnq9jN/QZWarD2LFmCLe7OSz1xTYjDLbLqlLpuxXY6uizVsyxNB2yeCD26vgBbc99D72GvLUWbDpaKPGpSVasjr0/adgNMkdYP3UCXXpExjvjkRDa/6JYsHcoASVZmI9z77wATWSESj19jj+7EZUQu7l7DKgIvdEdUT/UA5Wzi/Ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GOZ+nixHazb4HnavPJeXgOtMK07jsp2imIRg0VdfqLA=;
+ b=zTMdpxm1XWbECTw3xsPGRtSAuAPv4yN2VmXau/QqCr9kCkWyXykxjqNcvdcVndlLbUPUgaj8z2VmU5DENYVLcXxM0MqN57Cy+7jmkBolc+H1RWeX1KvQWYm/3DWtOQmtHq6IRoiWo8pNEW6deyHIV4bMZjoZDdpXfgE2mfj8od8=
+Received: from BN8PR15CA0019.namprd15.prod.outlook.com (2603:10b6:408:c0::32)
+ by MN0PR12MB6151.namprd12.prod.outlook.com (2603:10b6:208:3c5::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
+ 2025 09:07:27 +0000
+Received: from BL6PEPF00022573.namprd02.prod.outlook.com
+ (2603:10b6:408:c0:cafe::9d) by BN8PR15CA0019.outlook.office365.com
+ (2603:10b6:408:c0::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.16 via Frontend Transport; Mon,
+ 20 Oct 2025 09:07:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9253.7 via Frontend Transport; Mon, 20 Oct 2025 09:07:26 +0000
+Received: from k-Super-Server.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 20 Oct
+ 2025 02:07:24 -0700
+From: fanhuang <FangSheng.Huang@amd.com>
+To: <qemu-devel@nongnu.org>, <david@redhat.com>, <imammedo@redhat.com>
+CC: <Zhigang.Luo@amd.com>, <Lianjie.Shi@amd.com>, <FangSheng.Huang@amd.com>
+Subject: [PATCH v2] numa: add 'spm' option for Specific Purpose Memory
+Date: Mon, 20 Oct 2025 17:07:00 +0800
+Message-ID: <20251020090701.4036748-1-FangSheng.Huang@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/13] hw/ppc/pegasos2: Change device tree generation
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster
- <armbru@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <cover.1760798392.git.balaton@eik.bme.hu>
- <f52d9cc6af5249e306ba7a9472ef781b8e1260aa.1760798392.git.balaton@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <f52d9cc6af5249e306ba7a9472ef781b8e1260aa.1760798392.git.balaton@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|MN0PR12MB6151:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa541d35-24d7-47dd-f8c8-08de0fb8171d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026|43062017; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?SurfEjDME3ndmItM4fpO+5z5oabI5HonRz2L6nQO6yW52hTshcazrttf0PwF?=
+ =?us-ascii?Q?ajLXD9WLNfFMZqeWs4hri8D0vEG3nO/nUwOPiZVcY/rEycunPb+2ZMjeNScb?=
+ =?us-ascii?Q?x8AMsAo83QP695WZh9WuZAoFMM6U3+TTgnVUwyR+6EuwZhzOGl6Zen7900bQ?=
+ =?us-ascii?Q?144A9YVyc69fs/Io69ZhIBZYX5hMWUpYROfKYNVTiPsQAmk7epCwf+T5yTMx?=
+ =?us-ascii?Q?9b0RH3tmIKMFjToi/K91lVNNZPmt3sW8QY5dNbt5YQKxIqWQSBi/A71VL4SY?=
+ =?us-ascii?Q?VJxrFWNv5NG3lcV6yxAPmvE9PV+d5+WaIzkeJA6KmKhv3at8NMPGb3oOAaHY?=
+ =?us-ascii?Q?PKiBhbtA0jzFB3y3blb/fC5VPfbSFMHyHDcstW1WdSqJDg4d/WRt02gr/7OY?=
+ =?us-ascii?Q?OuzrV9CrO0dyY4rFKvsD4fX78DD9tz8qPNQVWKmrVDPCWaUuV02HSPZ53ueC?=
+ =?us-ascii?Q?YTynHiru3QSdzx1bEJqexzL1dXM/wfGZXh8NBzSGRU2Mci5wHDgN7oSbn8uL?=
+ =?us-ascii?Q?ZVKFDgGSpYjm4ft9Zt9724xcInsas7cQ33iJiRgxOQSOsAuYkcEwPdu9lDMs?=
+ =?us-ascii?Q?61sQq/Wd+LXfmr3mEenBhrbEbDczbdYt9PqBaEC1MGHdWPcRDiCV9ampaCa2?=
+ =?us-ascii?Q?JZu+u0HTVL7TycGkkGdMVxyOEb5bUAhCYk9N1+1cu8PEGCZ7ovktEFAM7rMr?=
+ =?us-ascii?Q?AxyvN5cUu6CKC8vhCUihKVkEwgH0f058lHBrf6vXK9XvW/y5BWRHiigal24d?=
+ =?us-ascii?Q?H407XY/BouelNUV8yeeHmKH1TwS99Dp5lsYc2oqJOz+HCyjs4TsCYu6SXr8c?=
+ =?us-ascii?Q?HdwO7m0bJSbGqu0nhZRmoNrYsr6/rb3RsMfoyTKzLIBxB5izK7T1NWUAc+wS?=
+ =?us-ascii?Q?ANEUd17VuYTo7JUKyQ2B7ZZ6JYbY/V55nN1PvgkCglsQEcE7jE6W+rclhZv1?=
+ =?us-ascii?Q?algI4Ja31FhMvcBNPkzfdagn6CaxNgrzmzJYkm/PZ/bsBvgndvdkHoesxuXn?=
+ =?us-ascii?Q?68Wvlhn8zGZ1qPhh4uK42SogIjM7hLKrbToEQpaFyNb1fKlKJ9sZPrzknIwe?=
+ =?us-ascii?Q?0Zb4XOiRvZqgNsSwztt9G4k0dBcdQb+tYOMQ01ksJX+dgz5O6A2d1HIOTkv4?=
+ =?us-ascii?Q?XAPlYg+ZVH7GwLvZGfup55KRecyZWiQrUDtHbyoq7ds/tp2ZD67xoO0vxIbe?=
+ =?us-ascii?Q?ONPuA7f9NIsDlWkeQUQMnK3kr4qgf9rHAud+pv9iIpd1K90kqPogIudqoZao?=
+ =?us-ascii?Q?0nIJZ/5lC0ql24fJBztZg4FsaGNR8d5rDDE5X3eX7os2MU6vUeJNf4t4Lkfs?=
+ =?us-ascii?Q?AinWirlI1mh7Zj4hynEJ6Ah51jeeb6dNPaRRbvhGxYxe2tEOy6Aq0On9mnn0?=
+ =?us-ascii?Q?QXtWcDTh9dIBKd/Ve/ncPrYrEjkE/+8H0LR9PEohkj9tvhiLcJdlMdKs+771?=
+ =?us-ascii?Q?5vxtKh5jRwYnkwIAROa1i0nyAWko3skRdPBXgCyeve5dnSeI1vjzNi7FN4og?=
+ =?us-ascii?Q?dBGVIQEaq0I7Jar1qZk8UfeY666qbjgKhZOtVEJh5liiuZCG1RLNg0ed0ABG?=
+ =?us-ascii?Q?t5xUezzX0wkTBNFo372ShoZC4vQW7kI21MSnbClD?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026)(43062017);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 09:07:26.8990 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa541d35-24d7-47dd-f8c8-08de0fb8171d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00022573.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6151
+Received-SPF: permerror client-ip=52.101.46.7;
+ envelope-from=FangSheng.Huang@amd.com;
+ helo=CO1PR03CU002.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,22 +146,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/25 17:11, BALATON Zoltan wrote:
-> We generate a flattened device tree programmatically for VOF. Change
-> this to load the static parts from a device tree blob and only
-> generate the parts that depend on run time conditions such as CPU
-> type, memory size and PCI devices. Moving the static parts in a dts
-> makes the board code simpler and more generic.
-> 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->   hw/ppc/pegasos2.c        | 292 +++++++--------------------------------
->   pc-bios/dtb/meson.build  |   1 +
->   pc-bios/dtb/pegasos2.dtb | Bin 0 -> 1701 bytes
->   pc-bios/dtb/pegasos2.dts | 167 ++++++++++++++++++++++
->   4 files changed, 220 insertions(+), 240 deletions(-)
->   create mode 100644 pc-bios/dtb/pegasos2.dtb
->   create mode 100644 pc-bios/dtb/pegasos2.dts
+Hi David and Igor,
 
-Please update MAINTAINERS entries.
+I apologize for the delayed response. Thank you very much for your thoughtful
+questions and feedback on the SPM patch series.
+
+Before addressing your questions, I'd like to briefly mention what the new
+QEMU patch series additionally resolves:
+
+1. **Corrected SPM terminology**: Fixed the description error from the previous
+   version. The correct acronym is "Specific Purpose Memory" (not "special
+   purpose memory" as previously stated).
+
+2. **Fixed overlapping E820 entries**: Updated the implementation to properly
+   handle overlapping E820 RAM entries before adding E820_SOFT_RESERVED
+   regions. 
+
+   The previous implementation created overlapping E820 entries by first adding
+   a large E820_RAM entry covering the entire above-4GB memory range, then
+   adding E820_SOFT_RESERVED entries for SPM regions that overlapped with the
+   RAM entry. This violated the E820 specification and caused OVMF/UEFI
+   firmware to receive conflicting memory type information for the same
+   physical addresses.
+
+   The new implementation processes SPM regions first to identify reserved
+   areas, then adds RAM entries around the SPM regions, generating a clean,
+   non-overlapping E820 map.
+
+Now, regarding your questions:
+
+========================================================================
+Why SPM Must Be Boot Memory
+========================================================================
+
+SPM cannot be implemented as hotplug memory (DIMM/NVDIMM) because:
+
+The primary goal of SPM is to ensure that memory is managed by guest
+device drivers, not the guest OS. This requires boot-time discovery
+for three key reasons:
+
+1. SPM regions must appear in the E820 memory map as `E820_SOFT_RESERVED`
+   during firmware initialization, before the OS starts.
+
+2. Hotplug memory is integrated into kernel memory management, making
+   it unavailable for device-specific use.
+
+========================================================================
+Detailed Use Case
+========================================================================
+
+**Background**
+Unified Address Space for CPU and GPU:
+
+Modern heterogeneous computing architectures implement a coherent and
+unified address space shared between CPUs and GPUs. Unlike traditional
+discrete GPU designs with dedicated frame buffer, these accelerators
+connect CPU and GPU through high-speed interconnects (e.g., XGMI):
+
+- **HBM (High Bandwidth Memory)**: Physically attached to each GPU,
+  reported to the OS as driver-managed system memory
+
+- **XGMI (eXternal Global Memory Interconnect, aka. Infinity Fabric)**:
+  Maintains data coherence between CPU and GPU, enabling direct CPU
+  access to GPU HBM without data copying
+
+In this architecture, GPU HBM is reported as system memory to the OS,
+but it needs to be managed exclusively by the GPU driver rather than
+the general OS memory allocator. This driver-managed memory provides
+optimal performance for GPU workloads while enabling coherent CPU-GPU
+data sharing through the XGMI. This is where SPM (Specific Purpose
+Memory) becomes essential.
+
+**Virtualization Scenario**
+
+In virtualization, hypervisor need to expose this memory topology to
+guest VMs while maintaining the same driver-managed vs OS-managed
+distinction.
+
+In this example, `0000:c1:02.0` is a GPU Virtual Function (VF) device
+that requires dedicated memory allocation. The host driver obtains VF
+HBM information and creates a user space device for each VF (for
+example `/dev/vf_hbm_0000.c1.02.0`) providing an mmap() interface that
+allows QEMU to allocate memory from the VF's HBM. By using SPM, this
+memory is reserved exclusively for the GPU driver rather than being
+available for general OS allocation.
+
+**QEMU Configuration**:
+```
+-object memory-backend-ram,size=8G,id=m0 \
+-numa node,nodeid=0,memdev=m0 \
+-object memory-backend-file,size=8G,id=m1,mem-path=/dev/vf_hbm_0000.c1.02.0,prealloc=on,align=16M \
+-numa node,nodeid=1,memdev=m1,spm=on \
+-device vfio-pci,host=0000:c1:02.0,bus=pcie.0
+```
+
+**BIOS-e820**
+
+BIOS provided physical RAM map in which 0x280000000-0x47fffffff as
+soft reserved:
+
+```
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000027fffffff] usable
+[    0.000000] BIOS-e820: [mem 0x0000000280000000-0x000000047fffffff] soft reserved
+```
+
+**Guest OS**
+
+Guest OS sees 8GB (0x280000000-0x47fffffff) as "soft reserved" memory
+that only the GPU driver can use, preventing conflicts with general OS
+memory allocation:
+
+```
+100000000-27fffffff : System RAM
+  1b7a00000-1b8ffffff : Kernel code
+  1b9000000-1b9825fff : Kernel rodata
+  1b9a00000-1b9e775bf : Kernel data
+  1ba397000-1ba7fffff : Kernel bss
+280000000-47fffffff : Soft Reserved
+  280000000-47fffffff : dax0.0
+    280000000-47fffffff : System RAM (kmem)
+```
+
+========================================================================
+
+I hope this addresses your concerns. Please let me know if you need any
+further clarification or have additional questions.
+
+Best regards,
+Jerry Huang
+
 
