@@ -2,54 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09368BF1B42
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 16:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39366BF1F8D
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Oct 2025 17:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vAqTu-0000nr-KL; Mon, 20 Oct 2025 10:03:26 -0400
+	id 1vArNk-00065t-SX; Mon, 20 Oct 2025 11:01:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vAqTr-0000lT-51
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:03:23 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vAqTj-0006AS-Nr
- for qemu-devel@nongnu.org; Mon, 20 Oct 2025 10:03:22 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BC037597306;
- Mon, 20 Oct 2025 16:03:10 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id wAPbnfeICIcs; Mon, 20 Oct 2025 16:03:08 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id BC4DF5972FF; Mon, 20 Oct 2025 16:03:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BA8E959703F;
- Mon, 20 Oct 2025 16:03:08 +0200 (CEST)
-Date: Mon, 20 Oct 2025 16:03:08 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, Corey Minyard <cminyard@mvista.com>
-Subject: Re: [PATCH] i2c/smbus_eeprom: Add minimum write recovery time for DDR2
-In-Reply-To: <102a9874-27db-4073-b4ff-dddeb450ff5e@linaro.org>
-Message-ID: <879d49b7-40d8-7ba5-f1d2-ccb37669f9fa@eik.bme.hu>
-References: <20251008122502.9DA8956F301@zero.eik.bme.hu>
- <102a9874-27db-4073-b4ff-dddeb450ff5e@linaro.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-740830889-1760968988=:64218"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+ (Exim 4.90_1) (envelope-from <chao.liu@openatom.club>)
+ id 1vAnZd-0006v6-GD
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:57:09 -0400
+Received: from sg-1-244.ptr.blmpb.com ([118.26.132.244])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chao.liu@openatom.club>)
+ id 1vAnZX-0002iG-Ab
+ for qemu-devel@nongnu.org; Mon, 20 Oct 2025 06:57:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1760957795;
+ h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=imTz6YPfqLKwEiSi/9l87KLIRg+AtWmIedUdwb1xCqk=;
+ b=UoNn7Ma+AGaFv5EcHcDHD4ezxmrmdhfwHQgkEJ9x3glFtKSTlGVtfMZnmGWl4FddLKWKKg
+ vvhz66vRWsXyWwZnuU1I1ZUeL26EK7nwo6AyopZ5QqcheGPrbOe7j8n/lFLCKiGu2sOrHK
+ hXZjduW1snS/+ACVbH797a+XaCYUnrgYxI3p+nvx2SGJPTfZJxgGgg3pEb+yPjr1DRYSVj
+ bmmeQGUpJAf8xBPW5RN4fSKf7eaVLbwX+tF8BVnuDXtOcRMhBLwIpc2YKuCWIErsOE9U7l
+ r+HiS6b2x7hffNqvqiQ30YegziDegWbEH6T5oAi9ZYR96C0OHtpNVF2ohq+Q+Q==
+Mime-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: "Chao Liu(openatom.club)" <chao.liu@openatom.club>
+Content-Transfer-Encoding: 7bit
+To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, 
+ <manos.pitsidianakis@linaro.org>, <marcandre.lureau@redhat.com>, 
+ <philmd@linaro.org>
+Cc: <qemu-rust@nongnu.org>, <qemu-devel@nongnu.org>, <dzm91@openatom.club>, 
+ <luojia@openatom.club>
+Message-Id: <822f8543-10d0-4669-b484-cbd9837e324c@openatom.club>
+Subject: From HUST OpenAtom Club: Inquiry & Contribution Plan for Rust In QEMU
+Date: Mon, 20 Oct 2025 18:56:28 +0800
+From: "Chao Liu(openatom.club)" <chao.liu@openatom.club>
+Received: from [192.168.71.4] ([114.88.97.170]) by smtp.feishu.cn with ESMTPS;
+ Mon, 20 Oct 2025 18:56:32 +0800
+X-Lms-Return-Path: <lba+268f61561+440237+nongnu.org+chao.liu@openatom.club>
+Received-SPF: pass client-ip=118.26.132.244;
+ envelope-from=chao.liu@openatom.club; helo=sg-1-244.ptr.blmpb.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, MSGID_FROM_MTA_HEADER=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 20 Oct 2025 11:00:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,49 +70,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---3866299591-740830889-1760968988=:64218
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+We are the OpenAtom Open Source Club[1] of Huazhong University of Science
+and Technology(HUST). Recently, we have established a new group focusing
+on the Rust In QEMU, aiming to make some contributions to the upstream.
 
-On Mon, 20 Oct 2025, Philippe Mathieu-Daudé wrote:
-> On 8/10/25 14:25, BALATON Zoltan wrote:
->> This is needed for newer u-boot-sam460ex versions to pass the DRAM
->> setup.
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/i2c/smbus_eeprom.c | 1 +
->>   1 file changed, 1 insertion(+)
->> 
->> diff --git a/hw/i2c/smbus_eeprom.c b/hw/i2c/smbus_eeprom.c
->> index 0a1088fbb0..26e211b31a 100644
->> --- a/hw/i2c/smbus_eeprom.c
->> +++ b/hw/i2c/smbus_eeprom.c
->> @@ -288,6 +288,7 @@ uint8_t *spd_data_generate(enum sdram_type type, 
->> ram_addr_t ram_size)
->>       spd[33] = 8;    /* addr/cmd hold time */
->>       spd[34] = 20;   /* data input setup time */
->>       spd[35] = 8;    /* data input hold time */
->> +    spd[36] = (type == DDR2 ? 13 << 2 : 0); /* min. write recovery time */
->
-> We are adapting DDR2 values on a method written for SDR/DDR[1].
-> Better would be to split and correctly document each format,
-> using proper values.
+Prior to this, we have already achieved some results in the field of
+open-source basic software and education using Rust. For example, we
+lead the development of RustSBI[2], an open-source firmware written in
+Rust, that has been adopted as a reference implementation by the
+RISC-V SBI Specification.
 
-I plan to add separate function for DDR3 which is different from these 
-(Bernhard had a patch for that which we can adopt but I haven't got to 
-that yet). Maybe a split could be considered then but these formats up to 
-DDR2 are quite similar with a lot of common values and only a few 
-differences to have them in a single function. As a documentation better 
-consult something else, e.g. wikipedia has a good summary.
+We also hosted a QEMU open-source learning training camp[3] in China,
+with the number of registrants currently approaching 1,000. In the
+training camp's curriculum system, we included contents related to
+Rust for QEMU and continuously shared the latest progress of the
+QEMU upstream.
 
-> Anyhow, for this patch:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+We have reviewed the progress of Rust in the recent QEMU versions,
+and the results are very encouraging. Rust is basically in a usable
+state for QEMU peripheral modeling.
 
-Thank you,
-BALATON Zoltan
---3866299591-740830889-1760968988=:64218--
+Our initial plan is to add Rust versions of peripheral models for some
+simple peripherals, such as block devices or I2C devices.
+
+In addition, we hope to get some other suggestions on what other suitable
+work we can do regarding Rust In QEMU.
+
+We look forward to your reply and hope to contribute to the Rust In QEMU~
+
+
+Link:
+
+[1] HUST OpenAtom Open Source Club:
+     https://hust.openatom.club/news/20250812_intro_to_club/
+[2] RustSBI Github Repo:
+     https://github.com/rustsbi/rustsbi
+[3] Learning QEMU Camp:
+     https://opencamp.cn/qemu/camp/2025
+
+
+Thanks,
+Chao
 
