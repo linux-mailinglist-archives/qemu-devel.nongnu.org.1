@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E005FBF6E42
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA34BF6E21
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:51:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCjb-0002F7-Uy; Tue, 21 Oct 2025 09:49:07 -0400
+	id 1vBCjd-0002GX-G3; Tue, 21 Oct 2025 09:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vBCjZ-0002ET-GC; Tue, 21 Oct 2025 09:49:05 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1vBCjb-0002F6-5A; Tue, 21 Oct 2025 09:49:07 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vBCjW-0006qz-NK; Tue, 21 Oct 2025 09:49:05 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L5OxCE015516;
- Tue, 21 Oct 2025 13:49:00 GMT
+ id 1vBCjZ-0006rG-DM; Tue, 21 Oct 2025 09:49:06 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L33ekb031143;
+ Tue, 21 Oct 2025 13:49:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=yz9ZkpUNAwEB9OjZo
- CbrPegu+3lYt5AKKmCiXg5eIJ4=; b=QFK60+Qt/6kejTSAOSabwIUfSLeE0Br16
- 1RpZKwxlm2PvY1mi45MHc75XOjpSCi7TAuvZh55lx3DzneqMV19lX1gOR8e3YKol
- T2JAfcY71qsHqLZ7XLA2p0NN90R/8tTAL8QLrz17j3sXpu64n2hkyYBDUZZYggzp
- tU1YOKNSTQ3Dn+VQx6NfR91/B34gvKNRxk5eyJEYSvipABaufgDSmO/qgVbZAQxi
- 2wTw9MozccdEVhqwQQ+QkG/qa2QK6BMlzPw6iEukcvf1zeY8Uz1L8sMCm/zbhFfn
- aic/6U2RM7aCjSAwppq2cl2D6kxQ8EAZH4lu7yIJM2+qUiBmRGOuw==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=9h3Vvn
+ GZ8OLoaTVuyoC+Z/mhm5FI0cTT4sjt3vfC8/I=; b=eqw36apJD6TPEBmUGgKAfz
+ ++jNB1iro+miFxAlOjM4QsRiR8P+ZqMDeCtr9p4HP9QNuf71L7c/aJWQ6FsyYpUO
+ ln88/ZnOELWW0ciw8W0hvWp6ecaHgbZgpGuVIvgqLhOeRhh+eY6FueQNZ7TTxYGI
+ w9FkqKV1jTtFz1coqK8Gk2Z3fM0qJWq9m0AFdL8x+h3AYjDUDjU4FlbK+kmnf/eq
+ hfH6nBq9XBwgSx5Gaxw0ylisR706I2dCtX/upliLsA9XZWIDTMJ/g0zUZumkiazC
+ d7mrATOaR3UxZZ1UTQTZ0PJhcjC3e2AVQnG/NyExsrnjA5E1FZIOH0pcFc4TvRYw
+ ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326q9w9-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vnyme-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:49:00 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59LDmxMu018377;
- Tue, 21 Oct 2025 13:48:59 GMT
+ Tue, 21 Oct 2025 13:49:03 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59LDXE3I010426;
+ Tue, 21 Oct 2025 13:49:03 GMT
 Received: from ppma12.dal12v.mail.ibm.com
  (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326q9w5-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vnyma-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:48:59 +0000 (GMT)
+ Tue, 21 Oct 2025 13:49:03 +0000 (GMT)
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LAtb7A014663;
- Tue, 21 Oct 2025 13:48:58 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7s376p-1
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LAqrRi014650;
+ Tue, 21 Oct 2025 13:49:02 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7s376r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:48:58 +0000
+ Tue, 21 Oct 2025 13:49:02 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59LDmsb022414030
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59LDmw8729294892
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Oct 2025 13:48:55 GMT
+ Tue, 21 Oct 2025 13:48:58 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6F432004E;
- Tue, 21 Oct 2025 13:48:54 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 95DFE2004E;
+ Tue, 21 Oct 2025 13:48:58 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B62FC2004D;
- Tue, 21 Oct 2025 13:48:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 36BB02004D;
+ Tue, 21 Oct 2025 13:48:55 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
  [9.124.222.96]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 21 Oct 2025 13:48:51 +0000 (GMT)
+ Tue, 21 Oct 2025 13:48:54 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -73,38 +74,40 @@ Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
  Chinmay Rath <rathc@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Shivang Upadhyay <shivangu@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 7/8] tests/functional: Add test for fadump in PSeries
-Date: Tue, 21 Oct 2025 19:18:17 +0530
-Message-ID: <20251021134823.1861675-8-adityag@linux.ibm.com>
+Subject: [PATCH v5 8/8] MAINTAINERS: Add entry for FADump (pSeries)
+Date: Tue, 21 Oct 2025 19:18:18 +0530
+Message-ID: <20251021134823.1861675-9-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021134823.1861675-1-adityag@linux.ibm.com>
 References: <20251021134823.1861675-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68f78f4c cx=c_pps
+X-Proofpoint-GUID: 3xG7bqptrsQ7izL49-vIfwkB_FgdYuP4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX0bKdjiOQsqrj
+ OoaJ5gyzKVzekHmLGR3gVtNnmco93ksdjr12ZSt2RoEDMev9DCtsJPIaMDGi5+bMdqtpGgfzg9W
+ xMjp7t0cjbldc/anSh9QRhnhBa02dUIkX/9ozAWTHokwaHtFTMPDS9K6/Q64KAPso6eJWCOB+l7
+ QDCjHjvaS/BLDWs/Hop62w+ks3FQpuDJ/AAaX6cBb5V6T1G0xWCtT2HvX+7kqu9/3pxh/ftn2Hc
+ x8smokluuLwSIsPFbULhN2zyEcc+WfFe0xUVSGHG1YT7y1QqAF9bzJ3aw+VujnwVmLvzLIf+HbK
+ YzOegvwSl9KMKtf5Dvtx0dOmpozHIVeHMYPT47Nm+48r90AZ1G0RWhwXDB6Z/6PWKgUM5/OHJwd
+ BYhmpTFp/k6MxAEWZx0DOg27357p/Q==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f78f4f cx=c_pps
  a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=vTr9H3xdAAAA:8
- a=VnNF1IyMAAAA:8 a=Gr56plS7bk8yA4v_bscA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXw3rrUNB8nLvr
- niVwK5JQjyruMFcG1QxgeAYi4juuaBvKNCzcsS8a+9UcUkzanA1zxYESe7Yl/GBevQrLDj92UWg
- EgBow4rI+KtAspMiSXOZwZJ7YUy2XWDm914mff6XQJeEUSZtH4aLEWou0HoWmRBvOmxvOgLZJ9g
- g+tj0QtnJnSMOcI8XVswPZXzYBKbtpLENmciUDYS44YCWhvNs7gXvq5H0EJQSEsic+hGTwkoykc
- FdZDujYD4WxLm66nSAHpLg5dfhjxTYK11Bn4QhOI3Hk06OcRrQdjjIIluICFRphdI8s44/8VIVd
- NHrJRdFdtZUWw+Qcb/8Mk0MTQnYv2KJTQhhikJq5pjmy3wJ+3B4+hS7hHhORMWbkECmJ8zj8L0R
- zo1zAcki5Y9HE4963RnU67dJ98IanA==
-X-Proofpoint-GUID: lvn__1TFMZ0dHAypB6zzXa3iE2Z-9Z8k
-X-Proofpoint-ORIG-GUID: pD9ab2BeggR1hvwJpZebc0FKNj9uh0DK
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=KKAkSRfTAAAA:8 a=mbnq6HtSZEenJqVaWLAA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: JS_TfmVSpN4E3XY9bMpoUe8Orb6tnEHn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-21_02,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -128,328 +131,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add testcases for testing fadump with PSeries and PSeries+KVM
-combinations
-
-It tests if fadump is successfully detected and registered in the first
-kernel boot. Then crashes the kernel, and verifies whether we have a
-/proc/vmcore in the 2nd boot
-
-Also introduce 'wait_for_regex_console_pattern' to check for cases where
-there is a single success message, but can have multiple failure
-messages.
-
-This is particularly useful for cases such as fadump, where the
-success message is
-    "Reserved 1024MB ... successfully"
-But at the same point, it can fail with multiple errors such as
-    "Not supported" or "Allocation failed"
-
-'wait_for_regex_console_pattern' also has a timeout, for cases when we
-know the success/failure should appear in a short amount of time,
-instead of waiting for the much longer test timeout, such as kernels
-with support of fadump will print the success/failure in earlyboot of
-the kernel, while kernel without support of fadump won't print anything
-for long time, and without a timeout the testcase keeps waiting till
-longer test timeout
+Add maintainer and reviewer for fadump subsystem.
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
-PowerNV also can be tested with this, will enable PowerNV tests after
-MPIPL patches go in
----
----
- tests/functional/ppc64/meson.build        |   2 +
- tests/functional/ppc64/test_fadump.py     | 182 ++++++++++++++++++++++
- tests/functional/qemu_test/linuxkernel.py |  59 +++++++
- 3 files changed, 243 insertions(+)
- create mode 100755 tests/functional/ppc64/test_fadump.py
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/functional/ppc64/meson.build b/tests/functional/ppc64/meson.build
-index 1fa0a70f7ed8..f0f8ab8f6172 100644
---- a/tests/functional/ppc64/meson.build
-+++ b/tests/functional/ppc64/meson.build
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 667acd933c7f..5dcea23bfd3d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3213,6 +3213,14 @@ F: scripts/coccinelle/remove_local_err.cocci
+ F: scripts/coccinelle/use-error_fatal.cocci
+ F: scripts/coccinelle/errp-guard.cocci
  
- test_ppc64_timeouts = {
-+  'fadump' : 480,
-   'hv' : 1000,
-   'mac99' : 120,
-   'powernv' : 480,
-@@ -16,6 +17,7 @@ tests_ppc64_system_quick = [
- 
- tests_ppc64_system_thorough = [
-   'e500',
-+  'fadump',
-   'hv',
-   'mac99',
-   'powernv',
-diff --git a/tests/functional/ppc64/test_fadump.py b/tests/functional/ppc64/test_fadump.py
-new file mode 100755
-index 000000000000..2d6b8017e8f0
---- /dev/null
-+++ b/tests/functional/ppc64/test_fadump.py
-@@ -0,0 +1,182 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
++Firmware Assisted Dump (fadump) for sPAPR (pseries)
++M: Aditya Gupta <adityag@linux.ibm.com>
++R: Sourabh Jain <sourabhjain@linux.ibm.com>
++S: Maintained
++F: include/hw/ppc/spapr_fadump.h
++F: hw/ppc/spapr_fadump.c
++F: tests/functional/ppc64/test_fadump.py
 +
-+from unittest import skip
-+from qemu_test import Asset
-+from qemu_test import wait_for_console_pattern
-+from qemu_test import LinuxKernelTest
-+from qemu_test import exec_command, exec_command_and_wait_for_pattern
-+
-+class QEMUFadump(LinuxKernelTest):
-+    """
-+    Functional test to verify Fadump is working in following scenarios:
-+
-+    1. test_fadump_pseries:       PSeries
-+    2. test_fadump_pseries_kvm:   PSeries + KVM
-+    """
-+
-+    timeout = 90
-+    KERNEL_COMMON_COMMAND_LINE = 'console=hvc0 fadump=on '
-+    msg_panic = 'Kernel panic - not syncing'
-+    msg_not_supported = 'Firmware-Assisted Dump is not supported on this hardware'
-+    msg_registered_success = ''
-+    msg_registered_failed = ''
-+    msg_dump_active = ''
-+
-+    ASSET_EPAPR_KERNEL = Asset(
-+        ('https://github.com/open-power/op-build/releases/download/v2.7/'
-+         'zImage.epapr'),
-+        '0ab237df661727e5392cee97460e8674057a883c5f74381a128fa772588d45cd')
-+
-+    ASSET_VMLINUZ_KERNEL = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora-secondary/'
-+         'releases/39/Everything/ppc64le/os/ppc/ppc64/vmlinuz'),
-+        ('81e5541d243b50c8f9568906c6918dda22239744d637bb9a7b22d23c3d661226'
-+         '8d5302beb2ca5c06f93bdbc9736c414ef5120756c8bf496ff488ad07d116d67f')
-+        )
-+
-+    ASSET_FEDORA_INITRD = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora-secondary/'
-+        'releases/39/Everything/ppc64le/os/ppc/ppc64/initrd.img'),
-+        'e7f24b44cb2aaa67d30e551db6ac8d29cc57c934b158dabca6b7f885f2cfdd9b')
-+
-+    def do_test_fadump(self, is_kvm=False, is_powernv=False):
-+        """
-+        Helper Function for Fadump tests below
-+
-+        It boots the VM with fadump enabled, checks if fadump is correctly
-+        registered.
-+        Then crashes the system causing a QEMU_SYSTEM_RESET, after which
-+        dump should be available in the kernel.
-+        Finally it checks the filesize of the exported /proc/vmcore in 2nd
-+        kernel to verify it's same as the VM's memory size
-+        """
-+        if is_kvm:
-+            self.require_accelerator("kvm")
-+            self.vm.add_args("-accel", "kvm")
-+        else:
-+            self.require_accelerator("tcg")
-+
-+        if is_powernv:
-+            self.set_machine("powernv10")
-+        else:
-+            # SLOF takes upto >20s in startup time, use VOF
-+            self.set_machine("pseries")
-+            self.vm.add_args("-machine", "x-vof=on")
-+            self.vm.add_args("-m", "6G")
-+
-+        self.vm.set_console()
-+
-+        kernel_path = None
-+
-+        if is_powernv:
-+            kernel_path = self.ASSET_EPAPR_KERNEL.fetch()
-+        else:
-+            kernel_path = self.ASSET_VMLINUZ_KERNEL.fetch()
-+
-+        initrd_path = self.ASSET_FEDORA_INITRD.fetch()
-+
-+        self.vm.add_args('-kernel', kernel_path)
-+        self.vm.add_args('-initrd', initrd_path)
-+        self.vm.add_args('-append', "fadump=on"\
-+                         " -nodefaults -serial mon:stdio crashkernel=2G"\
-+                         " rdinit=/bin/sh ")
-+
-+        self.vm.launch()
-+
-+        # If kernel detects fadump support, and "fadump=on" is in command
-+        # line which we add above, it will print something like:
-+        #
-+        #     fadump: Reserved 1024MB of memory at 0x00000040000000 ...
-+        #
-+        # Else, if the kernel doesn't detect fadump support, it prints:
-+        #
-+        #     fadump: Firmware-Assisted Dump is not supported on this hardware
-+        #
-+        # Timeout after 20s if kernel doesn't print any fadump logs, this
-+        # can happen due to fadump being disabled in the kernel
-+        self.wait_for_regex_console_pattern(
-+            success_pattern="fadump: Reserved ",
-+            failure_pattern=r"fadump: (Firmware-Assisted Dump is not"\
-+            " supported on this hardware|Failed to find memory chunk for"\
-+            " reservation!)",
-+            timeout=20
-+        )
-+
-+        # Ensure fadump is registered successfully, if registration
-+        # succeeds, we get a log from rtas fadump:
-+        #
-+        #     rtas fadump: Registration is successful!
-+        self.wait_for_console_pattern(
-+            "rtas fadump: Registration is successful!"
-+        )
-+
-+        # Wait for the shell
-+        self.wait_for_console_pattern("#")
-+
-+        # Mount /proc since not available in the initrd used
-+        exec_command(self, command="mount -t proc proc /proc")
-+
-+        # Crash the kernel
-+        exec_command(self, command="echo c > /proc/sysrq-trigger")
-+
-+        # Check for the kernel panic message, setting timeout to 20s as it
-+        # should occur almost immediately after previous echo c
-+        self.wait_for_regex_console_pattern(
-+            success_pattern="Kernel panic - not syncing: sysrq" \
-+                " triggered crash",
-+            timeout=20
-+        )
-+
-+        # Check if fadump is active
-+        # If the kernel shows that fadump is active, that implies it's a
-+        # crashkernel boot
-+        # Else if the kernel shows "fadump: Reserved ..." then it's
-+        # treating this as the first kernel boot, this is likely the case
-+        # that qemu didn't pass the 'ibm,kernel-dump' device tree node
-+        wait_for_console_pattern(
-+            test=self,
-+            success_message="rtas fadump: Firmware-assisted dump is active",
-+            failure_message="fadump: Reserved "
-+        )
-+
-+        # In a successful fadump boot, we get these logs:
-+        #
-+        # [    0.000000] fadump: Firmware-assisted dump is active.
-+        # [    0.000000] fadump: Reserving <>MB of memory at <> for preserving crash data
-+        #
-+        # Check if these logs are present in the fadump boot
-+        self.wait_for_console_pattern("preserving crash data")
-+
-+        # Wait for prompt
-+        self.wait_for_console_pattern("sh-5.2#")
-+
-+        # Mount /proc since not available in the initrd used
-+        exec_command_and_wait_for_pattern(self,
-+            command="mount -t proc proc /proc",
-+            success_message="#"
-+        )
-+
-+        # Check if vmcore exists
-+        exec_command_and_wait_for_pattern(self,
-+            command="stat /proc/vmcore",
-+            success_message="File: /proc/vmcore",
-+            failure_message="No such file or directory"
-+        )
-+
-+    def test_fadump_pseries(self):
-+        return self.do_test_fadump(is_kvm=False, is_powernv=False)
-+
-+    @skip("PowerNV Fadump not supported yet")
-+    def test_fadump_powernv(self):
-+        return
-+
-+    def test_fadump_pseries_kvm(self):
-+        """
-+        Test Fadump in PSeries with KVM accel
-+        """
-+        self.do_test_fadump(is_kvm=True, is_powernv=False)
-+
-+if __name__ == '__main__':
-+    QEMUFadump.main()
-diff --git a/tests/functional/qemu_test/linuxkernel.py b/tests/functional/qemu_test/linuxkernel.py
-index 2aca0ee3cd03..c4767527daf6 100644
---- a/tests/functional/qemu_test/linuxkernel.py
-+++ b/tests/functional/qemu_test/linuxkernel.py
-@@ -5,6 +5,9 @@
- 
- import hashlib
- import urllib.request
-+import logging
-+import re
-+import time
- 
- from .cmd import wait_for_console_pattern, exec_command_and_wait_for_pattern
- from .testcase import QemuSystemTest
-@@ -19,6 +22,62 @@ def wait_for_console_pattern(self, success_message, vm=None):
-                                  failure_message='Kernel panic - not syncing',
-                                  vm=vm)
- 
-+    def wait_for_regex_console_pattern(self, success_pattern,
-+                                       failure_pattern=None,
-+                                       timeout=None):
-+        """
-+        Similar to 'wait_for_console_pattern', but supports regex patterns,
-+        hence multiple failure/success patterns can be detected at a time.
-+
-+        Args:
-+            success_pattern (str | re.Pattern): A regex pattern that indicates
-+                a successful event. If found, the method exits normally.
-+            failure_pattern (str | re.Pattern, optional): A regex pattern that
-+                indicates a failure event. If found, the test fails
-+            timeout (int, optional): The maximum time (in seconds) to wait for
-+                a match.
-+                If exceeded, the test fails.
-+        """
-+
-+        console = self.vm.console_file
-+        console_logger = logging.getLogger('console')
-+
-+        self.log.debug(
-+            f"Console interaction: success_msg='{success_pattern}' " +
-+            f"failure_msg='{failure_pattern}' timeout='{timeout}s'")
-+
-+        # Only consume console output if waiting for something
-+        if success_pattern is None and failure_pattern is None:
-+            return
-+
-+        start_time = time.time()
-+
-+        while time.time() - start_time < timeout:
-+            try:
-+                msg = console.readline().decode().strip()
-+            except UnicodeDecodeError:
-+                msg = None
-+            if not msg:
-+                continue
-+            console_logger.debug(msg)
-+            if success_pattern is None or re.search(success_pattern, msg):
-+                break
-+            if failure_pattern:
-+                # Find the matching error to print in log
-+                match = re.search(failure_pattern, msg)
-+                if not match:
-+                    continue
-+
-+                console.close()
-+                fail = 'Failure message found in console: "%s".' \
-+                        ' Expected: "%s"' % \
-+                        (match.group(), success_pattern)
-+                self.fail(fail)
-+
-+        if time.time() - start_time >= timeout:
-+            fail = f"Timeout ({timeout}s) while trying to search pattern"
-+            self.fail(fail)
-+
-     def launch_kernel(self, kernel, initrd=None, dtb=None, console_index=0,
-                       wait_for=None):
-         self.vm.set_console(console_index=console_index)
+ GDB stub
+ M: Alex Bennée <alex.bennee@linaro.org>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
 -- 
 2.51.0
 
