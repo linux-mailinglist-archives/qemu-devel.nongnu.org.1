@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1582BF8CBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072A3BF8C4D
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJH4-0005a4-Aa; Tue, 21 Oct 2025 16:48:06 -0400
+	id 1vBJH9-0005q3-CS; Tue, 21 Oct 2025 16:48:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH2-0005VC-Fg
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:04 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH7-0005nA-FZ
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:09 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGz-00017t-JM
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:03 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47103b6058fso1514965e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH4-00018J-FZ
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:09 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-427060bc0f5so2045030f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079679; x=1761684479; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079684; x=1761684484; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mcuDkGb+DgMEBmqhUyNSjRYCplIAiUNB//076H3m6Is=;
- b=utkCs6iBSxr38NYA+TtsscuJzPyQpZ5KBXBWjxLpWE/faXmBPDA/8E0e6MwO9L2+9X
- jibx2d/n6Lt4c2Y+GPZwp2sFh+M4+XhvtqNVfldk5lDDtN+4aQoZ9zYBrEBpwJBtJKdi
- GDtYthPNT74socMMSrCdHT62/fZHxGwLQ0V3VlhfVObxuFhB2MDWfSvibF81Kspu3fuV
- RlfbnosXodSgNDEd+fFn+G6g8MpWg/t17C5W2X8OLbQOHPq8Au7AjTTKa0zW9LjJ2TTI
- U1mZTKMEC9ZyFyTW160y71lsVzMTuq9zUupFjCVdyel5iIMOlbZoeofDYSpF6yq4q6Ps
- gyyQ==
+ :reply-to; bh=PCJUsmctVJ9G/52a/hBFRs7P+qmJ1PG9K4Gu5Uohdn8=;
+ b=bHFfc174wW80NuiAztp2dnrO5vBLn3XlY2VUS970mNvUNTtaRszaVSq7SfVc1Bhi9Z
+ n3H8jHyjKUdngyxtQCoWYL3wv0IkCaS4b192PVhs2dTpojGvuF/c4tztcP9TQtJSM6sx
+ 36drqZ9ZYiyc6bJ7YqHLbjFa/ncnmcLBSB+aHb/Q6OJoWS/SIvBIutXYV08oi8OxdKIO
+ XkmjigENObWqXc2lUgXXwQwTzLBAWcG48UqqTD6Tj/awrODXFvjU6zcNgb3ZF7mmgb/9
+ xb7VWQappjI4p4UnbG60IRIQYDveDMpdY5/O8PnnI80s90CqOorio9l8FZqK+YV5/POt
+ q1Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079679; x=1761684479;
+ d=1e100.net; s=20230601; t=1761079684; x=1761684484;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mcuDkGb+DgMEBmqhUyNSjRYCplIAiUNB//076H3m6Is=;
- b=Kp/BgM2KSsahzwpNs2j0LH7TIu/SBsvM5Z/8gCh86AbOPt9FcC8BaGL2fZwDPbj2nu
- 7XRZMfp8fcA5h2N1FfI0hCsH2A8h32HINYsKnSdec6x3pVXKn3vBhHxZHCn2lxbiJyUO
- tjR5EUfUWD7ywpkOws2f/GMIm2+Vu6RUjdnIXHBgar+2i3nFHleaPfQTZPnIelKQ+ugr
- /V4mHYI4hksoJrpqpKuVXo9D7qcfFo2C43B1tGPdgnLCF/KsBZ/0powrL8wp5qN7E79y
- UTGQJGU5k0IKhRg8VSZbWlaTimhsCXy5zLhllWSBUi0iFIpgd2DWPdg0N2tHSV4sg8P1
- HhPg==
-X-Gm-Message-State: AOJu0Yxi+f2Tk9pQQHkKkDPlv3CtGCALN/voWsO6uTy3GztOyyfhmahJ
- wkFqSaw6Ni2i+U2ECqFiOWxVnG4j31ytqLGsIIKzWvuaGNt+Y8+tsUS0Yd0O4MwGIQwIbw1WUiu
- jlGfQnw4=
-X-Gm-Gg: ASbGncueqArjBjaT5qZ7E6wSjPaPcYBVNXk+ZsU1fYFUu32PbV75aeaMAKTmIwLx8LK
- juV7RTU7Nj3he/kXfXtVX8TThNcKqYMPaVpyDkCagiW/f+grFNsnYMZchD+jvodEG1pE+qXvi0s
- w+itRhrksP6I60/XJeCVot3K93KqJCJ6aRYAXhNxSGjsFXOcqYd11UCvUWTjvz1dCAjYD2U+bow
- 5exE0X0sJrbdHZfefUlcGcTmP44bhDSq8F2bpEJZBddBcCdcTyv1WfYVGNWkpVHcxZgYugFnvz0
- OYj1cXIBBnVpNoDYIeVSwQaJsYZ1lqg1DhDFrHqVkN4pvhXU1gtw9uszXDazFg9122o2yBPG2rF
- Z/9H4s+BN0fA3uv+VruZYxIY4eJg9wemhzMAQFbWFvawlP2uvIO8VHx+eQhr/VAXW+YIc/s91wp
- rqm+y+LProldYVkVsQt4mvfI2W0H9XyXu9VFBGIAuXKGeeJ+6qWFmnFVFvIe8Y
-X-Google-Smtp-Source: AGHT+IEjkErrE+kPg3hjMHbcHkpHTqI9PntpyQzrtdsjGjJe7kdxGr4P8NB3DBde98XnsHOTDWNwSQ==
-X-Received: by 2002:a05:600c:34d2:b0:46f:b42e:e38f with SMTP id
- 5b1f17b1804b1-475c4004b2emr8490165e9.19.1761079679191; 
- Tue, 21 Oct 2025 13:47:59 -0700 (PDT)
+ bh=PCJUsmctVJ9G/52a/hBFRs7P+qmJ1PG9K4Gu5Uohdn8=;
+ b=NvprgK6i5c5syVxEb0VwWsVi/jA2y9uNnACCbto2EhtJUc/VQn4ys6Hu6cQv1rMXoD
+ r3IBu8LAErtb1aJcTD6Ch6+Vo4h/4+rdBgyDeGlfTESP9gBE3WkPrSYfcJmUZwKKAPBJ
+ nx769aGOtfXcWuVT+ox4CpqPtfqmDYpTe98BtxC/W7ai9EkGDXtRBLotca3z7hhU/s2h
+ KosGR1duwni9QWLYxqCB8uFic7tSca9CVcMo8BgcZijbaCphV/mYc626eWepAL9FM94k
+ kDeTV1sMyf/P0pe6lLAzpqDmQj/guwl3ITOatwlr7YN4yOvkcm0fk7/nCGAeMbDtBbx9
+ kqqw==
+X-Gm-Message-State: AOJu0YymCG2JNA5Mbu+E16xZCYZybsPM3D3os0PWlFg7qWnjPL/zko7b
+ QYFSqWxyV1gUmO2oE4XAxRtiASo+d+ufnNWrb8t9AgLGiG7Du3ZVzw+sH/GH9ijv4CmgyelOgD7
+ vAWqo+fI=
+X-Gm-Gg: ASbGncuMHtkBweGNnBq63NjICNQPcFzdqbU0LQ5ZXitEIJcKcdR1kcC+8hL3gxj3dk5
+ dPDXWoRyKL2wRVQ6g/BHbs85EiajwCdT7izsMLw93o/SmwqvxiIYIT3Ts+EcpHqSutfA/4Q9wJh
+ V3pg3MPH7teHLeKtS4pqF3gEWJe1J0y51saehQ6mspPNNaDWfgLsoFhde2RU4LhyNRLHE6DtFtu
+ 8NnpvI5ImPM0vAX2zw6kgCTCL3aOU0HbnEsIG/wyZpqMPGRCX77GMr4fY5H3EI86wtnHcSab7zN
+ n35VVkldyGPM+YhSzXp7m/rLhFQO77N1k5+BFpNzHuSF/jmps/txFNkImvR3XZAcOnaKU5Qk8iQ
+ rTYiGK0M+UgFvOEfSYZjp4fGe8SjDcgCUq876GyiCXYfNsurkFAt0KPQYw8xscIj3niemen9XZS
+ Uj63jAS3SfeOfACuXUS7++rQwU2rmCl0GK5dF3TYZGcSklZhsqBvOMTKcExE73
+X-Google-Smtp-Source: AGHT+IHPG1Enz8eZd8UMMAXbzzgM5jPGeK1RyxPZeLYslY1zOZ23jAeA6CZ02FitgRFXgLO7SW9+6g==
+X-Received: by 2002:a05:6000:4718:b0:426:f10e:6b56 with SMTP id
+ ffacd0b85a97d-42704db1df0mr13457479f8f.27.1761079683646; 
+ Tue, 21 Oct 2025 13:48:03 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c41ca845sm10439055e9.0.2025.10.21.13.47.58
+ ffacd0b85a97d-427ea5a0f19sm22008525f8f.9.2025.10.21.13.48.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:47:58 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/45] hw/boards: Introduce
- DEFINE_MACHINE_WITH_INTERFACE_ARRAY() macro
-Date: Tue, 21 Oct 2025 22:46:26 +0200
-Message-ID: <20251021204700.56072-13-philmd@linaro.org>
+Subject: [PULL 13/45] hw/i2c/smbus_eeprom: Add minimum write recovery time for
+ DDR2
+Date: Tue, 21 Oct 2025 22:46:27 +0200
+Message-ID: <20251021204700.56072-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,58 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DEFINE_MACHINE_WITH_INTERFACE_ARRAY() is similar to
-DEFINE_MACHINE_WITH_INTERFACES() but allows to pass
-an InterfaceInfo[] pointer.
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
+This is needed for newer u-boot-sam460ex versions to pass the DRAM
+setup.
+
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251008122502.9DA8956F301@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20251020220941.65269-5-philmd@linaro.org>
 ---
- include/hw/boards.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ hw/i2c/smbus_eeprom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index b2964cf0556..a48ed4f86a3 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -507,7 +507,7 @@ struct MachineState {
-  */
+diff --git a/hw/i2c/smbus_eeprom.c b/hw/i2c/smbus_eeprom.c
+index 0a1088fbb0a..26e211b31ad 100644
+--- a/hw/i2c/smbus_eeprom.c
++++ b/hw/i2c/smbus_eeprom.c
+@@ -288,6 +288,7 @@ uint8_t *spd_data_generate(enum sdram_type type, ram_addr_t ram_size)
+     spd[33] = 8;    /* addr/cmd hold time */
+     spd[34] = 20;   /* data input setup time */
+     spd[35] = 8;    /* data input hold time */
++    spd[36] = (type == DDR2 ? 13 << 2 : 0); /* min. write recovery time */
  
- #define DEFINE_MACHINE_EXTENDED(namestr, PARENT_NAME, InstanceName, \
--                                machine_initfn, ABSTRACT, ...) \
-+                                machine_initfn, ABSTRACT, ifaces...) \
-     static void machine_initfn##_class_init(ObjectClass *oc, const void *data) \
-     { \
-         MachineClass *mc = MACHINE_CLASS(oc); \
-@@ -519,7 +519,7 @@ struct MachineState {
-         .class_init = machine_initfn##_class_init, \
-         .instance_size = sizeof(InstanceName), \
-         .abstract = ABSTRACT, \
--        .interfaces = (const InterfaceInfo[]) { __VA_ARGS__ }, \
-+        .interfaces = ifaces, \
-     }; \
-     static void machine_initfn##_register_types(void) \
-     { \
-@@ -529,11 +529,15 @@ struct MachineState {
- 
- #define DEFINE_MACHINE(namestr, machine_initfn) \
-     DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
--                            false, { })
-+                            false, NULL)
-+
-+#define DEFINE_MACHINE_WITH_INTERFACE_ARRAY(namestr, machine_initfn, ifaces...)\
-+    DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
-+                            false, ifaces)
- 
- #define DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, ...) \
--    DEFINE_MACHINE_EXTENDED(namestr, MACHINE, MachineState, machine_initfn, \
--                            false, __VA_ARGS__)
-+    DEFINE_MACHINE_WITH_INTERFACE_ARRAY(namestr, machine_initfn, \
-+                                        (const InterfaceInfo[]) { __VA_ARGS__ })
- 
- /*
-  * Helper for dispatching different macros based on how
+     /* checksum */
+     for (i = 0; i < 63; i++) {
 -- 
 2.51.0
 
