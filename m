@@ -2,141 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAEBBF6CE8
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644A2BF6E19
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:50:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCVl-0005Rd-4n; Tue, 21 Oct 2025 09:34:49 -0400
+	id 1vBCjD-0001vz-Je; Tue, 21 Oct 2025 09:48:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vBCVe-0005OI-Hw
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:34:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1vBCj9-0001us-Gz; Tue, 21 Oct 2025 09:48:39 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1vBCV6-0003nP-5S
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:34:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761053434;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Q8G6fSfFVaONhcxA1DHI9VcxajpmfGw7mPN/aSeM7JQ=;
- b=TNmu0DTlvL778nnZni5kfWR02bqdOtBWdoGZJo2C+cg1tI+IqNTq3mpx5TU3hhA4y5I6iq
- AXdrtEtMmRXOLc+KLN8aZJ3MZae+gbEJ4c6nxnrqt3jhbmZe5rXCNg16nKsh1EJPi50rlQ
- fZmu5JBACe3z8ik9rtsTCx2b/BuauIU=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-AzS-4A1BM5WjFJQxp9dCZQ-1; Tue, 21 Oct 2025 09:30:31 -0400
-X-MC-Unique: AzS-4A1BM5WjFJQxp9dCZQ-1
-X-Mimecast-MFC-AGG-ID: AzS-4A1BM5WjFJQxp9dCZQ_1761053430
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-33bdd0479a9so4445918a91.2
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 06:30:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761053430; x=1761658230;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Q8G6fSfFVaONhcxA1DHI9VcxajpmfGw7mPN/aSeM7JQ=;
- b=ZmL++VVxlXXCuXaWqZscKiY+MFo1e6y+Couz/OphclnUqlc19MveFDFxiwYCrsM3i4
- Jo3EDpF8DBYyLrAZszjPoQfowAqsVelWq6cIEZHBeFlZv2MjSUYfSMKS5VA+elXhsRY4
- iBENuRUAp4qVBJUAm9fuyQ0anzwG3KMgOLysROCfDvM2nHON6OBpyE289KiZc7stYxFB
- fyPmzDe0sGgM4E/WDXD05zSeIs31YNiQeym74fTP/xEgS0OP9LfvLcEPcDhFj3TooQxE
- A8/f4FXcyzv5deKhwHkmhSLvtIeSuFDcslaH0G/MEvlI8LuFQ1NhUQuQkief+Kf/e1g3
- wcQA==
-X-Gm-Message-State: AOJu0YzZbE42Zn3GXHn4WDsJJeF9KkM+CgZttvpcsZENZi8axER5yRQ0
- FGOVFQH6H6Snd+aQ/4lzELTKRnkPjeg/5MSifJBRX1s3ZcRrZzEsNszTtu9qNcs87CQr41OsPyi
- irje7ubg0SXtBNxu1rt8fmNvtPGsDHWMCcn3iYieTtrtt3FXkHXcL0wr0E5xlVof9PE4suzw5vG
- o+MKc1wgL+dxktyvUk3qSzpnkn1jEfx5w=
-X-Gm-Gg: ASbGncvjUElv3GodmvydFwR0yqGuTkd+ZtPrQIKjfnBrePaLYW4cNX6gzHx9DGio9Qd
- /KbQKjGX3vTlHWyLkPl9wWcA4GdVzahHekm3pmhvj4whDkaQsE+Hc4+XXPLm1w+4fQwmC0AicfZ
- P0+4CvU9+fK0k+QYYsciumYlpLDCvasTw8G6gT4iMsO94jONI1XnljgVr7wFn9ABtHDDlUJwQE+
- MFMAKqrvM62Hwo=
-X-Received: by 2002:a17:90b:3ec6:b0:339:ef05:3575 with SMTP id
- 98e67ed59e1d1-33bcf8f94c3mr25685581a91.26.1761053430048; 
- Tue, 21 Oct 2025 06:30:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrcrzdwZmuF2cCRqH2vToyJMLy2bHoJ+Kx9jzECaxXzAzohnouc6v8JutWnCy0AcLWb81s8PtUoo7SVr1fd6U=
-X-Received: by 2002:a17:90b:3ec6:b0:339:ef05:3575 with SMTP id
- 98e67ed59e1d1-33bcf8f94c3mr25685486a91.26.1761053429385; Tue, 21 Oct 2025
- 06:30:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1vBCj6-0006nt-MW; Tue, 21 Oct 2025 09:48:39 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LBbhVE017699;
+ Tue, 21 Oct 2025 13:48:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=p9xYzrSuULCjYN4zHsL2hyaUDlGl
+ ia52wfrtxg6IY2Y=; b=oQaHfWkpRFhnBRJqWESq/Mk7pWoRoqP0k77/8IbRr4gC
+ +SoH6En/maCq22h64OskV+C1FZa9SzcuYTvJjbNNyWJGFgXFF3JGVgMAeWDp2Yp/
+ yE34+FucvpubaJ1/RWSUlku5MK7mtY77vBr17BNH94QCMmP/dea+hhX9YI7Xdpqo
+ 4qlhPa5kPsv9zqTBOTKCp34h+g1+tL23/QO2UrTVupfmBzYfLvhi7xWy5o3B+8FA
+ 6JiYa33pS0y8RzfJ+Y7Rf8Xrj1kOYq0NusrxtLKn5HR3r551Urw4K+lIuZizA0LB
+ ZFxP7foSI95pqMZI7g8z57JeYyXsDMsDtqrnsTvoEA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vnyjt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Oct 2025 13:48:33 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59LDmXra017058;
+ Tue, 21 Oct 2025 13:48:33 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vnyjq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Oct 2025 13:48:33 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCuYXc011049;
+ Tue, 21 Oct 2025 13:48:32 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx12qyk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Oct 2025 13:48:32 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59LDmSV932571812
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Oct 2025 13:48:28 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60FFD2004B;
+ Tue, 21 Oct 2025 13:48:28 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F62220040;
+ Tue, 21 Oct 2025 13:48:25 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
+ [9.124.222.96]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Oct 2025 13:48:25 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: <qemu-devel@nongnu.org>
+Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Chinmay Rath <rathc@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Shivang Upadhyay <shivangu@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 0/8] Implement Firmware Assisted Dump for PSeries
+Date: Tue, 21 Oct 2025 19:18:10 +0530
+Message-ID: <20251021134823.1861675-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20251021122533.721467-1-marcandre.lureau@redhat.com>
- <01a51fe7-4414-e787-ddf5-5ede0c1e1e74@eik.bme.hu>
-In-Reply-To: <01a51fe7-4414-e787-ddf5-5ede0c1e1e74@eik.bme.hu>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 21 Oct 2025 17:30:18 +0400
-X-Gm-Features: AS18NWC-i6fdjk32NEoXZbM96aNPF-p1sZDoFKybRPcKVdB4OOANWfiaSgrGQ2I
-Message-ID: <CAMxuvaz8GueSp-vPHFWnbv+Odcy63Cz_hZHd3NzReWXp3pnsqg@mail.gmail.com>
-Subject: Re: [PATCH] char: rename CharBackend->CharFrontend
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Zhenwei Pi <pizhenwei@bytedance.com>, 
- Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, 
- =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, 
- Frederic Konrad <konrad.frederic@yahoo.fr>, Alberto Garcia <berto@igalia.com>, 
- Thomas Huth <huth@tuxfamily.org>, Halil Pasic <pasic@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>, Magnus Damm <magnus.damm@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Collin L. Walling" <walling@linux.ibm.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Corey Minyard <minyard@acm.org>, 
- Paul Burton <paulburton@kernel.org>, Aleksandar Rikalo <arikalo@gmail.com>, 
- Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Michael Rolnik <mrolnik@gmail.com>, 
- Antony Pavlov <antonynpavlov@gmail.com>, Joel Stanley <joel@jms.id.au>, 
- Vijai Kumar K <vijai@behindbytes.com>, Samuel Tardieu <sam@rfc1149.net>, 
- Gustavo Romero <gustavo.romero@linaro.org>,
- Raphael Norwitz <raphael@enfabrica.net>, 
- Stefan Hajnoczi <stefanha@redhat.com>,
- "reviewer:vhost-user-scmi" <mzamazal@redhat.com>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, Zhang Chen <zhangckid@gmail.com>,
- Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
- Max Filippov <jcmvbkbc@gmail.com>, Lukas Straub <lukasstraub2@web.de>, 
- "open list:Sharp SL-5500 Co..." <qemu-arm@nongnu.org>, 
- "open list:S390 SCLP-backed..." <qemu-s390x@nongnu.org>,
- "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
- "open list:virtiofs" <virtio-fs@lists.linux.dev>, 
- "open list:Rust-related patc..." <qemu-rust@nongnu.org>
-Content-Type: multipart/alternative; boundary="00000000000016e15b0641ab341a"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SKg7EzX1TXteYYDGs6ZgQy0yvbuhr4DJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX5DyrKFlM/68x
+ Hy7Nj7KOCULBKe8GCI/jajwNQsCKlAf2uyOGtOPZj0rrHakx1u1SaCNLzq3AXeVLPGLFYym3968
+ BLdyGCoxxkoyiWYghnSZX//FtfUQmXWYnn9iVoXF3IiganvYqjqQ6lMOCSjM3+gZkhwhKRfwPxW
+ hBChbrf4QBk5UAHsN0PIzBaBlGsFwz8P0PtR5F1l1U79auvwAV73pXAUUQKd1jGDJoH1rrKRYtD
+ wbN+tTSkdZNiyx6LVRxh1EmeMJRyKMjbpdISoRwLKSYlyPoSGaX5sMNYNiWOwBCjFPgNNu/vKwx
+ oUabYOclL0bhe6u20CiRK/fVYurX74xzpx8KWKHS7zicTXUgcnjfwe3fdp1Rkdcv9I+4hqhW+VF
+ pyhKsR/c+amYvj7R2eSE5FpMOKXB6w==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f78f31 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=p0WdMEafAAAA:8 a=wEDoamZ1AAAA:20 a=NEAV23lmAAAA:8 a=9QOFE4DMaUSoLvWVQo8A:9
+ a=QEXdDO2ut3YA:10 a=poXaRoVlC6wW9_mwW8W4:22 a=yULaImgL6KKpOYXvFmjq:22
+ a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
+X-Proofpoint-ORIG-GUID: 8jmXaxnCjeJYcyLVjxCSfvZXJ7M67urz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-21_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,58 +129,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000016e15b0641ab341a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Overview
+=========
 
-Hi
+Implemented Firmware Assisted Dump (fadump) on PSeries machine in QEMU.
 
-On Tue, Oct 21, 2025 at 5:25=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu>=
- wrote:
+Fadump is an alternative dump mechanism to kdump, in which we the firmware
+does a memory preserving boot, and the second/crashkernel is booted fresh
+like a normal system reset, instead of the crashed kernel loading the
+second/crashkernel in case of kdump.
 
-> On Tue, 21 Oct 2025, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > /**
-> > - * struct CharBackend - back end as seen by front end
-> > + * struct CharFrontend - back end as seen by front end
->
-> I stopped here, haven't read the rest of the patch but the above comment
-> seems to become inconsistent. Which is the front end and back end now?
->
->
-It's the "frontend side" of a chardev "backend". Naming it CharBackend has
-always been the source of confusion, since the actual backend is Chardev.
-There was earlier attempt to rename it and various complains. I believe
-this is is long overdue.
+This requires implementing the "ibm,configure-kernel-dump" RTAS call in
+QEMU.
 
---00000000000016e15b0641ab341a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+While booting with fadump=on, Linux will register fadump memory regions.
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=3D"gmail_quote gma=
-il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 21, 2=
-025 at 5:25=E2=80=AFPM BALATON Zoltan &lt;<a href=3D"mailto:balaton@eik.bme=
-.hu">balaton@eik.bme.hu</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">On Tue, 21 Oct 2025, <a href=3D"mailto:marcandre.lur=
-eau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a> wrote:<br=
->
-&gt; From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@re=
-dhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>&gt;<br>
-&gt; /**<br>
-&gt; - * struct CharBackend - back end as seen by front end<br>
-&gt; + * struct CharFrontend - back end as seen by front end<br>
-<br>
-I stopped here, haven&#39;t read the rest of the patch but the above commen=
-t <br>
-seems to become inconsistent. Which is the front end and back end now?<br><=
-br></blockquote><div><br></div><div>It&#39;s the &quot;frontend side&quot; =
-of a chardev &quot;backend&quot;. Naming it CharBackend has always been the=
- source of confusion, since the actual backend is Chardev. There was earlie=
-r attempt to rename it and various complains. I believe this is is long ove=
-rdue.</div></div></div>
+Some memory regions like Real Mode Memory regions, and custom memory
+regions declared by OS basically require copying the requested memory
+range to a destination
 
---00000000000016e15b0641ab341a--
+While other memory regions are populated by the firmware/platform (QEMU in
+this case), such as CPU State Data and HPTE.
+We pass the sizes for these data segment to the kernel as it needs to know
+how much memory to reserve (ibm,configure-kernel-dump-sizes).
+
+Then after a crash, once Linux does a OS terminate call, we trigger fadump
+if fadump was registered.
+
+Implementing the fadump boot as:
+    * pause all vcpus (will save registers later)
+    * preserve memory regions specified by fadump
+    * do a memory preserving reboot (using GUEST_RESET as it doesn't clear
+      the memory)
+
+And then we pass a metadata (firmware memory structure) as
+"ibm,kernel-dump" in the device tree, containing all details of the
+preserved memory regions to the kernel.
+
+Refer the Patch #7: "hw/ppc: Enable fadump for PSeries" for logs of a
+succesfful fadump crash
+
+Note: HPTE region has not been implemented. It's not planned as of now.
+
+Testing
+=======
+
+Has been tested with following QEMU options:
+
+* make check-functional-ppc64
+* smt1/smt4
+* with/without e1000e device
+* gitlab ci: https://gitlab.com/adi-g15-ibm/qemu/-/pipelines/2111480523
+
+Following vmcore has been generated with v5 of this series, booted with
+-smp 4: https://ibm.box.com/s/dv92hdi67hh0588xn8cbvkjmlcy04d7h
+
+Git Tree for Testing
+====================
+
+https://github.com/adi-g15-ibm/qemu/tree/fadump-pseries-v5
+
+Note: You will need a way to get the /proc/vmcore out of the VM for testing
+with crash-utility
+
+I use the following command line which sets up networking:
+    "-net user,hostfwd=tcp::10022-:22 -net nic"
+
+And a rootfs with ssh support, then copy the /proc/vmcore with networking
+(can do compression using gzip before ssh, but compression might take lot
+of time if done inside the VM)
+
+Changelog
+=========
+v5:
+  + rebased to upstream, implemented reviews by sourabh and harsh
+  + [patch #1]: patch #1 and #2 of v4 merged into one
+  + [patch #3]: copy memory region in chunks of 32MB instead of all at once
+  + [patch #4]: fix endianness of vcpu id in CPUSTRT/CPUEND entries
+  + [patch #5]: replaced type __be32 with uint32_t
+  + [patch #7]: increased timeout for few messages to 20 seconds
+  + [patch #8]: update maintainers file for fadump
+
+v4
+  + [patch #8/8]: fixed kvm testcase, add license
+
+v3:
+  + [patch #3,7]: fix compile errors (#define declared in a later patch
+                  but used in this patch, unused var)
+  + [patch #4/8]: use 'g_autofree' for cpu buffer, and replace g_malloc with
+                  g_try_malloc
+  + [patch #5/8]: use 'g_new' instead of 'malloc', add null check for cpu
+                  region
+  - nothing in other patches has been changed compared to v2
+
+v2:
+  + rearrange code so that no unused functions get introduced in any patch
+  + add functional test for pseries as suggested by nick
+  + fix multiple issues pointed by harsh and nick
+  + fix bug in cpu register saving where it was being stored in
+    little-endian
+  - removed 'is_next_boot_fadump' and used fadump header's status flag to
+    store it
+  + fixed multiple style issues (naming, unneeded diffs etc)
+
+Aditya Gupta (8):
+  hw/ppc: Implement fadump register command
+  hw/ppc: Trigger Fadump boot if fadump is registered
+  hw/ppc: Preserve memory regions registered for fadump
+  hw/ppc: Implement saving CPU state in Fadump
+  hw/ppc: Pass dump-sizes property for fadump in device tree
+  hw/ppc: Enable fadump for PSeries
+  tests/functional: Add test for fadump in PSeries
+  MAINTAINERS: Add entry for FADump (pSeries)
+
+ MAINTAINERS                               |   8 +
+ hw/ppc/meson.build                        |   1 +
+ hw/ppc/spapr.c                            |  69 ++
+ hw/ppc/spapr_fadump.c                     | 730 ++++++++++++++++++++++
+ hw/ppc/spapr_rtas.c                       |  76 +++
+ include/hw/ppc/spapr.h                    |  11 +-
+ include/hw/ppc/spapr_fadump.h             | 124 ++++
+ tests/functional/ppc64/meson.build        |   2 +
+ tests/functional/ppc64/test_fadump.py     | 182 ++++++
+ tests/functional/qemu_test/linuxkernel.py |  59 ++
+ 10 files changed, 1261 insertions(+), 1 deletion(-)
+ create mode 100644 hw/ppc/spapr_fadump.c
+ create mode 100644 include/hw/ppc/spapr_fadump.h
+ create mode 100755 tests/functional/ppc64/test_fadump.py
+
+-- 
+2.51.0
 
 
