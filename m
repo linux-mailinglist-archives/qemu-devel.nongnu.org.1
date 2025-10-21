@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED11BF8FEC
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 00:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 418A0BF8FF6
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 00:05:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBKSr-0003pY-TI; Tue, 21 Oct 2025 18:04:21 -0400
+	id 1vBKSs-0003pe-TW; Tue, 21 Oct 2025 18:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBKSo-0003p1-SE
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 18:04:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBKSp-0003p9-Lu
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 18:04:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBKSm-0001KA-1F
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 18:04:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBKSn-0001KM-Mf
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 18:04:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761084253;
+ s=mimecast20190719; t=1761084256;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=z7BDB6b3AQq0dRCf7+/g6dGq/WGqxKH3wxeSDq0vKPs=;
- b=eHNhKJJ6S+E+LXsGTQR4YzXG8OsjsY09cFv0VoWC1+GYPqz7VBzSuG5dghvDy8zdFuJOuq
- I2kKYcnrvIGfAiKL5KoUdqE4mXwiLT51SV3qbrCNPLFRGCFZUMjmx8M5GyQqcSnv8MNSlb
- g18ZMqqlTtGUcGZdtNdMk62rXTiei00=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=v2vPYC2fE8GpivztwCqYqJ3Uox9D4sCeEMiTNLY9Snk=;
+ b=ib6469JCkQYQZajTbWHMGtpdVHNYelmXE8nd/R5EUUK6RqYk4txZC0Qw3Erdl6q9S2B2gN
+ WYAQt8j6Q/N8Qp3L3llfpy4OHlwMQSC/o18uYV+hLN+JZ4AyewfYKYVpaar64wR0AKO4iA
+ T0KcmPt8uGKeS1VdNlp8bou8qQMNp50=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-wOEkK9VmPqKF-KAucB8EpQ-1; Tue, 21 Oct 2025 18:04:12 -0400
-X-MC-Unique: wOEkK9VmPqKF-KAucB8EpQ-1
-X-Mimecast-MFC-AGG-ID: wOEkK9VmPqKF-KAucB8EpQ_1761084251
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4e89265668fso11027911cf.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 15:04:12 -0700 (PDT)
+ us-mta-631-DL-xZkPwOCOnlbJCK9WS8A-1; Tue, 21 Oct 2025 18:04:14 -0400
+X-MC-Unique: DL-xZkPwOCOnlbJCK9WS8A-1
+X-Mimecast-MFC-AGG-ID: DL-xZkPwOCOnlbJCK9WS8A_1761084253
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-85dd8633b1bso100525185a.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 15:04:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761084251; x=1761689051;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=z7BDB6b3AQq0dRCf7+/g6dGq/WGqxKH3wxeSDq0vKPs=;
- b=dlIrmepcilYFkzxedywn9MBNuu97M7iODZKMbiQYp93OSwZn13SiCDsfFc1AEEO/dC
- jjauoojFwprOhnOTAuJaYSnvdZRf9msmSE6t2Hj4eJvojJFRN6XhNrDODPil8oQyMh04
- XLrrPUYHkQqZ9CNl8y8fq79HnassHmtc58rRw+Sw/y4TGQjlejfEFLLq9QsmctLB/5SZ
- oxhvoYFiEiZI+RFcX2dukmsEAkNHETaQS5PbOxFOFHOOrD8C1k3ujuVUOcHuiKxMYk4P
- P3r+LIXoEWhEmupoqrbKsTFqdSvhus2BM8FJE4cd0oeiBTFpj16wJw8BhkWnV4ts0MWw
- RlGw==
-X-Gm-Message-State: AOJu0Yyg+fvV96FHPvqHVnUYNGurEJZqjg2KxAujKUvcDfoS4oDIdyy9
- F+0WlHYchyexwHanSxkc6KnoO0hrPV1kyMmRTPPRjIZNwghTbttWLsmz96yyzadn4Lu7E+xa1um
- EoQGS+MLC6LYZ+csy/D0TjouMbYDy5lpekixTGx1D1DUmGH2QZ94F1pJbKs9uADs6BLCH4M7h4w
- m1UADJI83WIn8DBE5K12Qoa5umClIE1vggwYxcjw==
-X-Gm-Gg: ASbGncvflc39dDB3V8fzt519SkllhAwPbjSJ3pzLVIDzR+fdGsmrFMQRztExdRP68+R
- xU0t9sbqmTSpp4MjHHAGUKgM7s+GBJNXyYmQGLGr+HAv92HGdEvYPJdkk/jaV+qSq8QCxcLcQGX
- 8hZfjuddacOkgYGtDmKXygVevSrHMWdP1Nf/m25Wis00NO2FFzVPNa/YSGQPNPR4DZplMBDmjq0
- 4ySD21HQYV/W49MSMcoRh9CmnyE5BlpGjCf0sQboU3wyPJ419bbjDmm0O50rvZsPIFmG6nak07l
- 3G/KaqKw7XkflO5Z+15tI4qKfns0rNk2fzynocxuM2ecJygC1YIC7ej86Zig0aKY
-X-Received: by 2002:a05:622a:1820:b0:4e8:9459:4f61 with SMTP id
- d75a77b69052e-4e89d355d9fmr225123161cf.53.1761084251033; 
- Tue, 21 Oct 2025 15:04:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqVNAZGbDwZNwkDmtw1y2HA0xr93fN1pHxoJNzXBVh5ke21VvWPm4N008I214Ky9EA6wUpFQ==
-X-Received: by 2002:a05:622a:1820:b0:4e8:9459:4f61 with SMTP id
- d75a77b69052e-4e89d355d9fmr225122891cf.53.1761084250551; 
- Tue, 21 Oct 2025 15:04:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761084253; x=1761689053;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=v2vPYC2fE8GpivztwCqYqJ3Uox9D4sCeEMiTNLY9Snk=;
+ b=GjQchjdS85qE734gkTmshVW2CMyrlBi+euWFANFKqXldHMd2Kx7K+vsvI+FobFVhHg
+ 0TanroofER6W8hcijSRpjpAdfFkKo3IKj+TE7UVyttV19AZAKfEjb4FSZcbtc+RpwJ4J
+ owY3I+pINyDB11mx7kYY+ScA+UrvSHirpKAtPlKAs/lujettwjXJP8LCCqNE6ywmiMHA
+ jH89SQpzQYHMqeWnDYHEuXZRkaGWpdHkeI4aNMmJqdoN+ZyitulwxEngmdDOO4OneVWW
+ d2+GoWI5Bdpqo0MgHqPu/5XobvsfUNSPf94LpqS5aVYZGz1Rg3pNO5SBypO6vnRPAI5H
+ sKBw==
+X-Gm-Message-State: AOJu0Yz6dz4OCaMM8pnpcrZlBFYMoaXvLr/EVOlqD7gwPur/Xjjys53o
+ KoTuuQeHnZwwRAuR6z/B8b4KKEGIj5d7h2kFZdqdGvX40Hh8W0keVTj6suTLbROMne7kgfCaZz0
+ CNFRxMzWgRX/2KlVi62QFqUvUEDx4ir4Q+DyBVG9pN3nUDWP0Fmz6UnWNG69yVYYMFF+GKi4Oqa
+ +ZMeGB2l7D1M63MVvpCPHYnF4A1H4gbzfZYIg5vw==
+X-Gm-Gg: ASbGncvznhjzuZmhEPTRIXsHp5kEwcsPDxB7CqjvIIfkAzlOjWoGErjQ76ILWoYT12t
+ b1BWpUVFFbaAK1nrCQXkzDSCan3eTl8z2RQ/FFy0F/VbRNGIfLNwWvsfBsBQYlhA8YfTDe4cyFY
+ KPw0Upv6O4S7/Id8OIQHnm2fp1FwxkdpbbKYiOm3M4qwtecb4yadNuT1myEYvUxBPcjQgGi1sFv
+ caXzgXuUAT0FLoX+WCJzO0FP3BSNr5+3B1xyxMlvt8KgrwcYVD/Eo6yblaWklAv5fr0YW8quFh7
+ wV6Cdl/sTn05I9vg01fqk3fJ3pdx54jRnwn1ro71JNskRW2WanbA2jS54aKYZAo1
+X-Received: by 2002:a05:620a:2699:b0:850:78b7:f878 with SMTP id
+ af79cd13be357-899d6d64c4cmr179025985a.0.1761084252873; 
+ Tue, 21 Oct 2025 15:04:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwW2abgfFamvG8IFlZPryfrETn5zm5g84CSPTTR46WLq9o2TwWJL0u4/N8VxkTr3tntqSYkw==
+X-Received: by 2002:a05:620a:2699:b0:850:78b7:f878 with SMTP id
+ af79cd13be357-899d6d64c4cmr179020685a.0.1761084252313; 
+ Tue, 21 Oct 2025 15:04:12 -0700 (PDT)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-891cd098edasm849197285a.19.2025.10.21.15.04.09
+ af79cd13be357-891cd098edasm849197285a.19.2025.10.21.15.04.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Oct 2025 15:04:09 -0700 (PDT)
+ Tue, 21 Oct 2025 15:04:11 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Arun Menon <armenon@redhat.com>,
  Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 0/4] migration: A few fixes on coverity reports
-Date: Tue, 21 Oct 2025 18:04:03 -0400
-Message-ID: <20251021220407.2662288-1-peterx@redhat.com>
+Subject: [PATCH v2 1/4] migration: Fix error leak in
+ postcopy_ram_listen_thread()
+Date: Tue, 21 Oct 2025 18:04:04 -0400
+Message-ID: <20251021220407.2662288-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20251021220407.2662288-1-peterx@redhat.com>
+References: <20251021220407.2662288-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,28 +106,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-- Added tags for Fabiano
-- Patch 1: dump the %d too along with %s [Fabiano]
-- Patch 2: make the error returned to the caller, with some refactoring
-- Added new patch 4 to fix a crash on cpr-exec when args==NULL
+As reported and analyzed by Peter:
 
-A small series that fixes three coverity reported issues.  Please review,
-thanks.
+https://lore.kernel.org/r/CAFEAcA9otBWtR7rPQ0Y9aBm+7ZWJzd4VWpXrAmGr8XspPn+zpw@mail.gmail.com
 
-Peter Xu (4):
-  migration: Fix error leak in postcopy_ram_listen_thread()
-  migration/cpr: Fix coverity report in cpr_exec_persist_state()
-  migration/cpr: Fix UAF in cpr_exec_cb() when execvp() fails
-  migration/cpr: Avoid crashing QEMU when cpr-exec runs with no args
+Fix it by freeing the error.  When at it, always reset the local_err
+pointer in both paths.
 
- include/migration/cpr.h |  4 ++--
- migration/cpr-exec.c    | 14 ++++++++++----
- migration/cpr.c         | 15 +++++++++------
- migration/migration.c   |  8 +++++++-
- migration/savevm.c      |  7 ++++---
- 5 files changed, 32 insertions(+), 16 deletions(-)
+Cc: Arun Menon <armenon@redhat.com>
+Resolves: Coverity CID 1641390
+Fixes: 94272d9b45 ("migration: Capture error in postcopy_ram_listen_thread()")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/savevm.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/migration/savevm.c b/migration/savevm.c
+index aafa40d779..232cae090b 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2136,17 +2136,18 @@ static void *postcopy_ram_listen_thread(void *opaque)
+         if (postcopy_state_get() == POSTCOPY_INCOMING_RUNNING &&
+             !migrate_postcopy_ram() && migrate_dirty_bitmaps())
+         {
+-            error_report("%s: loadvm failed during postcopy: %d. All states "
++            error_report("%s: loadvm failed during postcopy: %d: %s. All states "
+                          "are migrated except dirty bitmaps. Some dirty "
+                          "bitmaps may be lost, and present migrated dirty "
+                          "bitmaps are correctly migrated and valid.",
+-                         __func__, load_res);
++                         __func__, load_res, error_get_pretty(local_err));
++            g_clear_pointer(&local_err, error_free);
+             load_res = 0; /* prevent further exit() */
+         } else {
+             error_prepend(&local_err,
+                           "loadvm failed during postcopy: %d: ", load_res);
+             migrate_set_error(migr, local_err);
+-            error_report_err(local_err);
++            g_clear_pointer(&local_err, error_report_err);
+             migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+                                            MIGRATION_STATUS_FAILED);
+         }
 -- 
 2.50.1
 
