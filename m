@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEACBF56B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43ECEBF571E
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:12:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB8IL-0001Ug-Hj; Tue, 21 Oct 2025 05:04:42 -0400
+	id 1vB8IO-0001VW-Gn; Tue, 21 Oct 2025 05:04:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8IJ-0001UO-2s
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:04:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vB8IL-0001VE-Ou
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:04:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8IH-0003xp-9T
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:04:38 -0400
+ id 1vB8IK-0003y2-0E
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:04:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761037476;
+ s=mimecast20190719; t=1761037479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GJHhV44xA2yV6Pwkj+xG4UfO7EkjL4EsvWC4IiZRDKY=;
- b=RdSQAl+ob4jqYub54yfscubGBzpFlxpNbFvRcI77EGFrFAQEFPrMkUbBNRPqIVB3mX70HP
- Cdwf96gV/Du5DTI5UEIuCMXWPNn0BYnNhHKJUBmF+bbY8cU/o4i8SqSEpsex34aZuPK7C8
- Anx0MEYJBf53KIZZRTiznz6jDwEkq5g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=rwpnWD9iw8bqt6SJCbIjLvqQbhMiOwHt9uoQCFJISgc=;
+ b=dmzCi77Y1f/mXlUg9FjprNCpQBxZBlgKpkl+qSbEbaoInxI0YRScXBNH4NFYxzzLfXbZ6V
+ HlvyO8gxfvRm5Wbp3gFCOHD0jietK8PNDjQhZOKdF5viqUB2vGR8agtmGWTzHQSmz4+J7l
+ UVl3wwTh9yA7kBjVPgia998hrvF9bjo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-42-YmMuRcaaOJG_zpFk1KfFtw-1; Tue,
- 21 Oct 2025 05:04:31 -0400
-X-MC-Unique: YmMuRcaaOJG_zpFk1KfFtw-1
-X-Mimecast-MFC-AGG-ID: YmMuRcaaOJG_zpFk1KfFtw_1761037470
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-437-o4LayQD1OJWH26o8GdIWDQ-1; Tue,
+ 21 Oct 2025 05:04:36 -0400
+X-MC-Unique: o4LayQD1OJWH26o8GdIWDQ-1
+X-Mimecast-MFC-AGG-ID: o4LayQD1OJWH26o8GdIWDQ_1761037475
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 17AAE1800C32; Tue, 21 Oct 2025 09:04:30 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D578219560A1; Tue, 21 Oct 2025 09:04:35 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1E8ED180035A; Tue, 21 Oct 2025 09:04:28 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 61B5819560A2; Tue, 21 Oct 2025 09:04:33 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -52,18 +52,17 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 12/43] hw/audio/virtio-snd-pci: remove custom model callback
-Date: Tue, 21 Oct 2025 13:02:43 +0400
-Message-ID: <20251021090317.425409-13-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH 13/43] hw/audio: simplify 'hda' audio init code
+Date: Tue, 21 Oct 2025 13:02:44 +0400
+Message-ID: <20251021090317.425409-14-marcandre.lureau@redhat.com>
 In-Reply-To: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -91,44 +90,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-virtio-snd can rely on the default code to instantiate the device and
-set the audiodev.
+For consistency, use only qdev_device_add() to instantiate the devices.
+We can't rely on automatic bus lookup for the "hda-duplex" device though
+as it may end up on a different "intel-hda" bus...
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/audio/virtio-snd-pci.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ hw/audio/intel-hda.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/hw/audio/virtio-snd-pci.c b/hw/audio/virtio-snd-pci.c
-index 613538e46f..b78eaff851 100644
---- a/hw/audio/virtio-snd-pci.c
-+++ b/hw/audio/virtio-snd-pci.c
-@@ -71,24 +71,10 @@ static const VirtioPCIDeviceTypeInfo virtio_snd_pci_info = {
-     .class_init    = virtio_snd_pci_class_init,
- };
- 
--/* Create a Virtio Sound PCI device, so '-audio driver,model=virtio' works. */
--static int virtio_snd_pci_init(PCIBus *bus, const char *audiodev)
--{
--    DeviceState *vdev = NULL;
--    VirtIOSoundPCI *dev = NULL;
--
--    vdev = qdev_new(TYPE_VIRTIO_SND_PCI);
--    assert(vdev);
--    dev = VIRTIO_SND_PCI(vdev);
--    qdev_prop_set_string(DEVICE(&dev->vdev), "audiodev", audiodev);
--    qdev_realize_and_unref(vdev, BUS(bus), &error_fatal);
--    return 0;
--}
--
- static void virtio_snd_pci_register(void)
+diff --git a/hw/audio/intel-hda.c b/hw/audio/intel-hda.c
+index 6a0db0dd9e..14bcf1257d 100644
+--- a/hw/audio/intel-hda.c
++++ b/hw/audio/intel-hda.c
+@@ -21,6 +21,7 @@
+ #include "hw/pci/pci.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/pci/msi.h"
++#include "monitor/qdev.h"
+ #include "qemu/timer.h"
+ #include "qemu/bitops.h"
+ #include "qemu/log.h"
+@@ -30,6 +31,7 @@
+ #include "intel-hda.h"
+ #include "migration/vmstate.h"
+ #include "intel-hda-defs.h"
++#include "qobject/qdict.h"
+ #include "system/dma.h"
+ #include "qapi/error.h"
+ #include "qom/object.h"
+@@ -1305,15 +1307,19 @@ static const TypeInfo hda_codec_device_type_info = {
+  */
+ static int intel_hda_and_codec_init(PCIBus *bus, const char *audiodev)
  {
-     virtio_pci_types_register(&virtio_snd_pci_info);
--    audio_register_model_with_cb("virtio", "Virtio Sound", virtio_snd_pci_init);
-+    audio_register_model("virtio", "Virtio Sound", 0, TYPE_VIRTIO_SND_PCI);
+-    DeviceState *controller;
++    g_autoptr(QDict) props = qdict_new();
++    DeviceState *intel_hda, *codec;
+     BusState *hdabus;
+-    DeviceState *codec;
+ 
+-    controller = DEVICE(pci_create_simple(bus, -1, "intel-hda"));
+-    hdabus = QLIST_FIRST(&controller->child_bus);
++    qdict_put_str(props, "driver", "intel-hda");
++    intel_hda = qdev_device_add_from_qdict(props, false, &error_fatal);
++    hdabus = QLIST_FIRST(&intel_hda->child_bus);
++
+     codec = qdev_new("hda-duplex");
+     qdev_prop_set_string(codec, "audiodev", audiodev);
+     qdev_realize_and_unref(codec, hdabus, &error_fatal);
++    object_unref(intel_hda);
++
+     return 0;
  }
  
- type_init(virtio_snd_pci_register);
 -- 
 2.51.0
 
