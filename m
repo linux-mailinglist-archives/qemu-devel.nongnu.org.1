@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9D4BF5562
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 10:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FACBF5574
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 10:45:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB7zT-0000cV-7f; Tue, 21 Oct 2025 04:45:11 -0400
+	id 1vB7zU-0000nV-Vm; Tue, 21 Oct 2025 04:45:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yk-00008z-3v
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:32 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yq-00009Y-GZ
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:39 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yi-0000xP-8Z
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:25 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47100eae3e5so8719905e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 01:44:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yo-0000xq-He
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:32 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3ecde0be34eso3636691f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 01:44:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761036262; x=1761641062; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761036267; x=1761641067; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qI+hF79G3saS4cJM9gBn0qvW7x/aK3K4EItDfXm9eIU=;
- b=ETsqUbdKHnwMAqctzEbyxKSbNzR6g2eLtI12NigYzvBcytiCys3HaXU0WpbnUH9evv
- qv5VseI4ff4VUsPEov94zg/YHFwfc4rogamcUKYa0sX6G9y+ojth6c72RA2sP4R2bxNI
- fKmMSJ86blPBHvh/rLS0A08ZqTAMu9gWMPU5S7gJ6y2wUsIDgnCQJ/JjJKfg6DhOWAe9
- DtAl/joz033KNq46tTX9Q788/vdR+v0h54zDSIFk7dpHCNCkQdlcY5DvxkeF0lMDztt8
- X/p6Tczw4CaEIWPraOOs8ZLKKMtMW7P3n/5mys8VzZXzNEdV9dGOY9sSphCrZRoQ45sy
- C/1g==
+ bh=da9rOiPMCykHVjkJsbrqebc9pkYcny2T2/SQshegPgk=;
+ b=dSP+7oAtRFSbR7i0WgqS0ztVqZvziNY7ohwWsI+j+InECt+lJ90dWsqTC7O7JTQFVi
+ 4Ikj+tCB/e/XN406GPwBa0zCS+BsiUhBXCjh/qwhldKTa1qkmQjEr8XG2qKBGgGe11dU
+ kbFXd6moofBIO7vaS5TjsQuSAnFGh7J6v8jrXzCOw88vGNxYRRWeaeKwFcssMEmSmXku
+ ZPE9Y65Yt+lOLweVm+HWRuJnGzfpgSbyj5nh7crLx3vkKRiYt2BJiDS7dJKUW7/UkBpA
+ QmvXAd63my5cguXzZJfqZ9DFyvQ4TsNVqhWnupLw5SWw4P53KJRn4rzXh2nRfHKFaXGq
+ xfjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761036262; x=1761641062;
+ d=1e100.net; s=20230601; t=1761036267; x=1761641067;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qI+hF79G3saS4cJM9gBn0qvW7x/aK3K4EItDfXm9eIU=;
- b=sNIj7D+bCJHCtQs5Aha4BLmUY0CFcaOvNi0g2PU+udwODIjRVsqG1/sFQIYTPxnkcC
- uP5o152NVnT2JNHwY817/ZlAwjfpA4OA1WsYPzN4R6nneRv1xgXekuQ8SdFWNtM12jGC
- AHLTsWyf38ToKyxb4DyBFPQtztURvSlawEJ+ccUZ7XfOP3NObAWYix8qLSyVuLCo01dE
- JtcIeQmTXcWEBtptCIMFZadnKN+puPltpRYI4ybJkE/K+NU4ulIosdanwpMH/lZiXyR2
- Y+7PSnMvJPwT9w0bY0T1yKsahHeCoIBM/4B+YMowgZgnVbts4Ovh0rPiaMk40Gw1WiOD
- VfBg==
-X-Gm-Message-State: AOJu0Yw8vVy+KNMprUT9Wp3aNG7efV4fvziAxEYMowQY2C4TaPCqpWYA
- CX5cclBG6UTEPREQPjCwwGZzmo/uUjVWjz3ZtjhvEViHRU0kzLeULi3MmQsiUyoeyo1iCg2rFaJ
- +gZuXmIE=
-X-Gm-Gg: ASbGnctWg3DI2sv2+7VgeV+gyQC8N+CtFN2/H89QZAyWoCeKjrj/hWaabIbo2ozge6U
- Kz5UcW23jwPMINYArwHOIAbASwpnYtaynOIutTORSdoaK2jHSFSXwhh6VasPNVuv+iiy/ZGRkwc
- cNtAAteJn+L3wQV0JZla7xrn0qMpktLhOFuUsAOz1vzDpEpEy5oUMzWQYvLa3LfGHdyQR69F5Ve
- NqdhF6SRPi5K/PutHySGv0j6INQv/eIXFeUiI8v4B8ouijO6cR0BmamjasXmODTiif8uGcaGJUb
- rhgjdKOUjaoAE/Wglo2WMb9S4TgKup7XFQRwPLDA4Yu7qRzNsSG59UbkMoRu7jTiivKFwCyrFhh
- 7NFkeMyfpi4gujfOr4ZZds57uemX46zEznql9aK+qRUWf6/UCd22779ehNggguVk/iqkK5o21qc
- QiKnxcPzxytcB1nYIxJ+60H73iGkyf7KL2ibMqia5DRRk5MKUqUw==
-X-Google-Smtp-Source: AGHT+IE8rS6VZYx/i8JiXQJLTMpGlcor/1LQLKzg9IWBTT3rtLq5Bk5Lslt0pycRlR21ilSWorrGLA==
-X-Received: by 2002:a05:600c:8b62:b0:45d:d97c:235e with SMTP id
- 5b1f17b1804b1-47117876bcdmr112776075e9.12.1761036262467; 
- Tue, 21 Oct 2025 01:44:22 -0700 (PDT)
+ bh=da9rOiPMCykHVjkJsbrqebc9pkYcny2T2/SQshegPgk=;
+ b=SWR+eBG4hyCBGOl2zEhf82lBfVFLxscAbJqLnaTDwa4TkzRfqmK8Be0nHljFYy0ZMs
+ sZ+XQmX1ycLxdPX7pkD5XVK6UedNedW1D3ptDzgQwju9wBshwPtFw8MTGDZgdsgKAovC
+ T/LZ62a8SXtc/uh99NTaDzmv5OGlvt82luoRAMf2u00GEVdKEl9KQAJBWT6owPTvDs2f
+ +WuT2cgC0vAmILVOuURT2qX471ouXpIjfsyt73I8jHZKnWOodcuE/eJ9BTLOfNEnoTbM
+ blf++SoXyxnwjAZK/nsqFinLbMvwt/LcAweAoHLdY0lLu7XNKuXkPHpM9genVUd6T/8a
+ U17w==
+X-Gm-Message-State: AOJu0Yx+PX1Uzn5S/kVKpBbK7VH1mdTlYNxMT+amuIFa+Nl+jrNYkGUX
+ 1wIh9qLDf/MJNTGu95tX+XOjcA0s4ANEYc9ONWGecBhvH9FLKe4wK68inI/5rNxTg2vfhDFsgju
+ Z5l434Fs=
+X-Gm-Gg: ASbGncsXyLirn+1CldiA9MInoP6bXMkK29ElgLouHzdEcLOwxcUh79z8Pu5nrY+8UdC
+ dQfNOUeYFWPx5wRqQ+kwk5JG0AF0Bw+KMnj0ODQiZNSmc/gXLErNpA+Qwqpgq1/QW15pmUwW5gr
+ tyGul9ffT9cTNtREWOMZOuV+/wc32eEwajK3B2s3WDjiGGCfWfbWULJyY6u8a5+gSKpFwtEBxOX
+ bas7Dg8iA28Il0rCCa/qOtb/I5aca1qZQN3OD9FIrj7DBDijHOwfI2GgRKGuXtqlmYMepRuI9ig
+ Xiz/OjwrvBwTAdS6d5CWzh53qzWXbnyxlWq9+oG5zrGwHguJMAZcNLH7r9aM56qr+qv0NYp5w9Z
+ ZHo+N+pSG154OdlzzTgCzUkwpECRnkBJWFvLayOWSm2WdvkHcVHQSAQndmQXYlwVHdOMRzyIt1d
+ IUkZtlLrGU6ZC3KNMgpc6RTt8CYwCd3sCv+5ek4XFyNPQcFHFwwA==
+X-Google-Smtp-Source: AGHT+IGdNU6grxDa0fovZHVQYjLk03VGAqM6vVuoTYaGlfenMJOg7eXSZCsDKxqPUFu1TflYXqOl4A==
+X-Received: by 2002:a5d:5849:0:b0:3e7:6424:1b47 with SMTP id
+ ffacd0b85a97d-42704b3db46mr13625580f8f.6.1761036267320; 
+ Tue, 21 Oct 2025 01:44:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5a0f7dsm18934148f8f.4.2025.10.21.01.44.21
+ ffacd0b85a97d-427ea5b3dabsm20200098f8f.16.2025.10.21.01.44.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 01:44:21 -0700 (PDT)
+ Tue, 21 Oct 2025 01:44:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
@@ -69,19 +69,19 @@ Cc: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 07/11] target/ppc/kvm: Remove kvmppc_get_host_model() as
- unused
-Date: Tue, 21 Oct 2025 10:43:41 +0200
-Message-ID: <20251021084346.73671-8-philmd@linaro.org>
+Subject: [PATCH v2 08/11] ppc/spapr: remove deprecated machine pseries-4.0
+Date: Tue, 21 Oct 2025 10:43:42 +0200
+Message-ID: <20251021084346.73671-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021084346.73671-1-philmd@linaro.org>
 References: <20251021084346.73671-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,52 +104,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+pseries-4.0 had been deprecated and due for removal now as per policy.
+Also remove pre-4.1 migration hacks which were introduced for backward
+compatibility.
+
+Suggested-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+[PMD: Remove SpaprMachineClass::pre_4_1_migration field]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/kvm_ppc.h | 6 ------
- target/ppc/kvm.c     | 5 -----
- 2 files changed, 11 deletions(-)
+ include/hw/ppc/spapr.h |  3 ---
+ hw/ppc/spapr.c         | 27 ---------------------------
+ hw/ppc/spapr_caps.c    | 12 +-----------
+ 3 files changed, 1 insertion(+), 41 deletions(-)
 
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index f24cc4de3c2..742881231e1 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -21,7 +21,6 @@
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index 1db67784de8..58d31b096cd 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -139,11 +139,8 @@ struct SpaprCapabilities {
+  * SpaprMachineClass:
+  */
+ struct SpaprMachineClass {
+-    /*< private >*/
+     MachineClass parent_class;
  
- uint32_t kvmppc_get_tbfreq(void);
- uint64_t kvmppc_get_clockfreq(void);
--bool kvmppc_get_host_model(char **buf);
- int kvmppc_get_hasidle(CPUPPCState *env);
- int kvmppc_get_hypercall(CPUPPCState *env, uint8_t *buf, int buf_len);
- int kvmppc_set_interrupt(PowerPCCPU *cpu, int irq, int level);
-@@ -128,11 +127,6 @@ static inline uint32_t kvmppc_get_tbfreq(void)
-     return 0;
- }
+-    /*< public >*/
+-    bool pre_4_1_migration; /* don't migrate hpt-max-page-size */
+     bool linux_pci_probe;
+     bool smp_threads_vsmt; /* set VSMT to smp_threads by default */
+     hwaddr rma_limit;          /* clamp the RMA to this size */
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index ad9fc61c299..deab613e070 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4969,33 +4969,6 @@ static void spapr_machine_4_1_class_options(MachineClass *mc)
  
--static inline bool kvmppc_get_host_model(char **buf)
+ DEFINE_SPAPR_MACHINE(4, 1);
+ 
+-/*
+- * pseries-4.0
+- */
+-static bool phb_placement_4_0(SpaprMachineState *spapr, uint32_t index,
+-                              uint64_t *buid, hwaddr *pio,
+-                              hwaddr *mmio32, hwaddr *mmio64,
+-                              unsigned n_dma, uint32_t *liobns, Error **errp)
 -{
--    return false;
+-    if (!spapr_phb_placement(spapr, index, buid, pio, mmio32, mmio64, n_dma,
+-                             liobns, errp)) {
+-        return false;
+-    }
+-    return true;
+-}
+-static void spapr_machine_4_0_class_options(MachineClass *mc)
+-{
+-    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+-
+-    spapr_machine_4_1_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_4_0, hw_compat_4_0_len);
+-    smc->phb_placement = phb_placement_4_0;
+-    smc->irq = &spapr_irq_xics;
+-    smc->pre_4_1_migration = true;
 -}
 -
- static inline uint64_t kvmppc_get_clockfreq(void)
+-DEFINE_SPAPR_MACHINE(4, 0);
+-
+ static void spapr_machine_register_types(void)
  {
-     return 0;
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index cb61e99f9d4..43124bf1c78 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -1864,11 +1864,6 @@ uint32_t kvmppc_get_tbfreq(void)
-     return cached_tbfreq;
+     type_register_static(&spapr_machine_info);
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index 0f94c192fd4..170795ad6ad 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -66,7 +66,6 @@ typedef struct SpaprCapabilityInfo {
+     void (*apply)(SpaprMachineState *spapr, uint8_t val, Error **errp);
+     void (*cpu_apply)(SpaprMachineState *spapr, PowerPCCPU *cpu,
+                       uint8_t val, Error **errp);
+-    bool (*migrate_needed)(void *opaque);
+ } SpaprCapabilityInfo;
+ 
+ static void spapr_cap_get_bool(Object *obj, Visitor *v, const char *name,
+@@ -336,11 +335,6 @@ static void cap_hpt_maxpagesize_apply(SpaprMachineState *spapr,
+     spapr_check_pagesize(spapr, qemu_minrampagesize(), errp);
  }
  
--bool kvmppc_get_host_model(char **value)
+-static bool cap_hpt_maxpagesize_migrate_needed(void *opaque)
 -{
--    return g_file_get_contents("/proc/device-tree/model", value, NULL, NULL);
+-    return !SPAPR_MACHINE_GET_CLASS(opaque)->pre_4_1_migration;
 -}
 -
- /* Try to find a device tree node for a CPU with clock-frequency property */
- static int kvmppc_find_cpu_dt(char *buf, int buf_len)
+ static bool spapr_pagesize_cb(void *opaque, uint32_t seg_pshift,
+                               uint32_t pshift)
  {
+@@ -793,7 +787,6 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
+         .type = "int",
+         .apply = cap_hpt_maxpagesize_apply,
+         .cpu_apply = cap_hpt_maxpagesize_cpu_apply,
+-        .migrate_needed = cap_hpt_maxpagesize_migrate_needed,
+     },
+     [SPAPR_CAP_NESTED_KVM_HV] = {
+         .name = "nested-hv",
+@@ -982,11 +975,8 @@ int spapr_caps_post_migration(SpaprMachineState *spapr)
+ static bool spapr_cap_##sname##_needed(void *opaque)    \
+ {                                                       \
+     SpaprMachineState *spapr = opaque;                  \
+-    bool (*needed)(void *opaque) =                      \
+-        capability_table[cap].migrate_needed;           \
+                                                         \
+-    return needed ? needed(opaque) : true &&            \
+-           spapr->cmd_line_caps[cap] &&                 \
++    return spapr->cmd_line_caps[cap] &&                 \
+            (spapr->eff.caps[cap] !=                     \
+             spapr->def.caps[cap]);                      \
+ }                                                       \
 -- 
 2.51.0
 
