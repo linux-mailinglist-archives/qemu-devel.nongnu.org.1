@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E33BF8C5C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39DCBF8D27
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:53:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJHM-0006mR-Fc; Tue, 21 Oct 2025 16:48:24 -0400
+	id 1vBJHo-0008Qm-AN; Tue, 21 Oct 2025 16:48:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHJ-0006eM-Mg
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:21 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHl-00088q-7b
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:49 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHF-00019G-JS
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:21 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3ee130237a8so3922469f8f.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHf-00019f-HG
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:47 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4711f156326so46973335e9.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079694; x=1761684494; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079699; x=1761684499; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Q+nGj84oA5Nf5HI4XwQsUpDQo9dIo/p1hzBMc/Uthic=;
- b=ghgZjyuvcFcF0/0LFBEMC3V3P5BXQIep9kX1rnXhty3WxiMKfOzk8JTcxVzkXD6n2l
- NRxztGreg6DMIhoL0ocbe5L61D+4c42D5vNOGPLSyBXzG9kNb3LIKApL+CKRm04Foe1I
- WheeOiOQnAgoJdmeVduuKag91ISrXzaS0Q/f2ECewaoOig3GuR5y8agQtqa3qQnjdfdw
- HurNQJrxhseOrycHUvzrkUjyxcOdq59SjnsyVqsxXfh+gZV4RbYpGgfD5HCYuuHqJGJh
- U+bYxcbDjbI2kRkrk+wIQGetVt0VCKPHE03pPsDJ+i03yNL9Re9qmoaXGn1yXYbRJnc7
- yLfg==
+ :reply-to; bh=MIqpoD4tAWeMFdopoink0YdKGCEbz9DmSRX0eUBynUQ=;
+ b=e6Bj4QwFMalRZPNI636gHuTO+ZkJCmiVFljgCZEvExZY6JqUSP65IRWCj9+3mH5a7c
+ 4XMAH54vvu3fNfrpZTOGssKQTorGX80Nc1bp49c6LskFWpAKfwz38vRRdXuybOnb8WLc
+ hgvdtcUwg3yFlIi3g4sogcjNrqd3IB9nuITxbu6kObriIsG0yo+K80sn3pzMu/XeF16J
+ +zbL79aZJMJ4vhCXmMcGcj9B0XMjHcQDZL1u5Bf6WDM+KjcQpQwpIt+4c9bnxccBncdX
+ /3q5qEIHGjP79Mi1Aleo09dcpAedrSNq4GUMOuEC4cg2doDMXyuLnevZwMbD+GuHQjr7
+ 6PRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079694; x=1761684494;
+ d=1e100.net; s=20230601; t=1761079699; x=1761684499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q+nGj84oA5Nf5HI4XwQsUpDQo9dIo/p1hzBMc/Uthic=;
- b=Hm86biZQ/s9eNgcmpuTjrQWczgm2epUtgrCnHLjq0COHPcydQnjVUC/tRhv5aqScYG
- Hm5H1TAPfegv/Hw2VRpjmX5lz24SZuS9BKQQI70bXkDqK8WtOYpvq0c/TkoS+oqmGOmp
- EgE6UTa6VxOvUnOqzY30VaJcMKYPcdDiM96GY3FDxbnR3wkfnVR/QydZtF86mWZCHvNF
- j/rIx4LOT09XkTAp19zYp1q+PK5mSMLzKtc5pS7qDeZMi2gLOIzxRLlezQCtW6XtPlzl
- fzBX5ObTDugbpWhalfJQ0Uyx19SUHzkiTwh/j3RwWCZ4n6bCQA4Y9fJqAEbXI/bk5/b2
- Skww==
-X-Gm-Message-State: AOJu0Yx7m3P5jkPf1R41fvdxjBI6/eAYKU2VI3YUxKSTVniB5iNFoOAz
- EZ3S6fvJ06tWE9UBH46B5lw2YYGXUG+2+poo4xQ+nnu7ZXCIFhbTV/T41zI8L8zbUIj7euRTZlG
- SCVaKIIw=
-X-Gm-Gg: ASbGncsdOzdA2WIAKYxKtAD8IItfcyuEuipAowgCrlkYf/xvkxP8uFlkuZrr+rG6QJs
- 1LdeLh2iGucLHSe7Vcma78ywzwhXbTpsIYMZQGRTMiiB+HNsM+kmNvokxLWpXON9LLbFLvsatp+
- a3rdhCUM9NVLV9Q8d0+HAxhPb6fjdnOPFU+aoaGAy4+fer7YPhWdUyFb19+B2yEO+H2g1AoSjV4
- Jn79bskE6UmtqFPKUF5TIkNGg06YttDnEWvsT++Bou0P/85i+3tprdlFWooDuAAWsnfdL/ygMBG
- H9TtaDugjj4UP9thT4yth+FuBwAOKxmacEZRUAkY4XshH0Hzic98BMZXkFXqjrI7vcdAeBSDVPB
- Daxr1wHOc0TAjqos8jUFxCb65RF1DFCCjAvDFR1arl2oqk3UShG4vFaF9cdP3yxRRyqBBFlTWvA
- YTusJPi+cjhdmMeFjyy1uij3BDspRpMoREKnaMoRacbXvyW1laOQ==
-X-Google-Smtp-Source: AGHT+IHHbxFhLgwcCn6aezB1693narYiwd2irD1vYqde0u/HTlK17e1WmlBn706iGD4kVPiO0Wy+Yw==
-X-Received: by 2002:a05:6000:1884:b0:3e5:394d:10bb with SMTP id
- ffacd0b85a97d-42704defebdmr12687402f8f.41.1761079694524; 
- Tue, 21 Oct 2025 13:48:14 -0700 (PDT)
+ bh=MIqpoD4tAWeMFdopoink0YdKGCEbz9DmSRX0eUBynUQ=;
+ b=CFY3k0jR36iHoOiD6W/lEefTMiX9biQBxvEaHWe/7VMMN13MUCAlXOH/LZxe1GcIi0
+ TL+Wy4yS4dQLy9Y5AF9+6oiTMVvaXfpBGLfczIzJSDgcI+HHtevaZdpriz5tTueGYSk0
+ 0omeI9dwr1Kq8ONsFzEyokOT6d0nMWq69x08AhQXUk5Ld2b3eUr7efUr4mnvBG7tPS55
+ Azb6Xr7DyjTARfrXyjknl3vQFCbFLO6AryudJaaNNwaEEbssr5hFfqeOEvMFG7VWYyzf
+ qqMd3djalYjXv4V2urK7+NOczfxGjnFdwxCSliOOp/3w/QiIfPi64Gj7M49Qy+QyAqqF
+ 6E1A==
+X-Gm-Message-State: AOJu0YxIEcxM3u/zBRv/X6AB6/01umkDVshMEIcdCrDiEPmgq3Wl+Ktj
+ TAysHAHhj0/GVXlJEIAQxITvN0z+BvWeLYUGIbmw1rkhEINfCaIkK9eK38JMr++qOVdGUyWW8El
+ 1b/ejP04=
+X-Gm-Gg: ASbGncu1JXLzaTVJbtdV+JfwisipbbrWsC64pPuw+fcTwsBextwI2bZ/uQ3qQOnSBvU
+ IV83AMAvGwWirH5LTp9e0w+40tuQR+33OlSiRNPnCMfaqSlyrdRBWbafYPTbeq4urNvjRyVjkL3
+ 93tCp7juJI84avGgJuf+vQnl4sYLRTgizzEKWz5P6A/7SVu7N2zS6HkS6cI7BTyfUEctciDynju
+ YAqL+az0ISgCJ5ktsXo4mHzGWSV5YdliyM1XcA2JAQB+YR0lxVNNv0iWQIU+zP+xodOEh12VEw1
+ DweHwp+qCHXn9ZcI5yEwvOIV9k/OX+T0jhrT7sV3bPvf14tPitHtK5NnZhTeqF6Pn553iqgtj7L
+ 9cImelIbQmOBfnfAal6qoQkvBMuOSdkBzJpBEE8lUw3YpAGO6wnjQS6Bec2PxBGopBDsWl/10Ju
+ Fd0krDrYCqvV3c2b+OuMW/WrZwAzzB92C5ODWCOck0snKxLiHJ4PmOUZd+3dRI
+X-Google-Smtp-Source: AGHT+IHwGlFup/+fggBxT4JWJGPof9Oe4dijyG6xB8tsiBjrnjm7r9vcGZUFnqFchanohQ9oPsH+6g==
+X-Received: by 2002:a05:600c:4e89:b0:46f:b42e:e392 with SMTP id
+ 5b1f17b1804b1-47117931c1dmr125611325e9.39.1761079699035; 
+ Tue, 21 Oct 2025 13:48:19 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00b9fa8sm22364672f8f.38.2025.10.21.13.48.12
+ 5b1f17b1804b1-475c427c3ecsm10312065e9.2.2025.10.21.13.48.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:13 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/45] hw/openrisc/openrisc_sim: Avoid buffer overflow build
- error
-Date: Tue, 21 Oct 2025 22:46:29 +0200
-Message-ID: <20251021204700.56072-16-philmd@linaro.org>
+Subject: [PULL 16/45] hw/xen: pass PCI domain to xc_physdev_map_pirq_msi()
+Date: Tue, 21 Oct 2025 22:46:30 +0200
+Message-ID: <20251021204700.56072-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,60 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-Resolves this build breakage (which is actually a false-positive)
+It's currently impossible for passthrough devices on segment different
+than 0 to work correctly, as the PCI domain is not provided to
+xc_physdev_map_pirq_msi(), and hence it's unconditionally assumed that
+all devices are on segment 0.
 
-../hw/openrisc/openrisc_sim.c: In function ‘openrisc_sim_init’:
-../hw/openrisc/openrisc_sim.c:284:45: error: ‘__builtin___snprintf_chk’ output may be truncated before the last format character [-Werror=format-truncation=]
-     snprintf(alias, sizeof(alias), "serial%d", uart_idx);
-                                             ^
-In file included from /usr/include/stdio.h:964:0,
-                 from /data/qemu/include/qemu/osdep.h:114,
-                 from ../hw/openrisc/openrisc_sim.c:21:
-/usr/include/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 8 and 9 bytes into a destination of size 8
-   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        __glibc_objsize (__s), __fmt,
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        __va_arg_pack ());
-        ~~~~~~~~~~~~~~~~~
+Adjust the call to xc_physdev_map_pirq_msi() to pass the PCI domain in
+the high 16bits of the bus parameter.  On versions of Xen where this
+is not supported the passed segment will be ignored and assume to be 0,
+no worse than the current state.
 
-by using a modern, more robust allocation pattern.
-
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <298bd904-1ee9-439e-8220-7a24e0952861@siemens.com>
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Frediano Ziglio <freddy77@gmail.com>
+Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Message-ID: <20251017155136.16540-1-roger.pau@citrix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/openrisc/openrisc_sim.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/xen/xen_pt_msi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
-index 880c8ebbb8b..b7d9cdd9007 100644
---- a/hw/openrisc/openrisc_sim.c
-+++ b/hw/openrisc/openrisc_sim.c
-@@ -247,10 +247,10 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-                                      OpenRISCCPU *cpus[], int irq_pin,
-                                      int uart_idx)
- {
-+    g_autofree char *alias = g_strdup_printf("serial%d", uart_idx);
-     void *fdt = state->fdt;
-     char *nodename;
-     qemu_irq serial_irq;
--    char alias[sizeof("serial0")];
-     int i;
- 
-     if (num_cpus > 1) {
-@@ -281,7 +281,6 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-         /* The /chosen node is created during fdt creation. */
-         qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename);
-     }
--    snprintf(alias, sizeof(alias), "serial%d", uart_idx);
-     qemu_fdt_setprop_string(fdt, "/aliases", alias, nodename);
- 
-     g_free(nodename);
+diff --git a/hw/xen/xen_pt_msi.c b/hw/xen/xen_pt_msi.c
+index e9ba17317ab..df15ccf0d03 100644
+--- a/hw/xen/xen_pt_msi.c
++++ b/hw/xen/xen_pt_msi.c
+@@ -138,6 +138,7 @@ static int msi_msix_setup(XenPCIPassthroughState *s,
+         rc = xc_physdev_map_pirq_msi(xen_xc, xen_domid, XEN_PT_AUTO_ASSIGN,
+                                      ppirq, PCI_DEVFN(s->real_device.dev,
+                                                       s->real_device.func),
++                                     ((uint32_t)s->real_device.domain << 16) |
+                                      s->real_device.bus,
+                                      msix_entry, table_base);
+         if (rc) {
 -- 
 2.51.0
 
