@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B9FBF6EEA
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F94BF6ED5
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:58:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCs7-0000Fq-To; Tue, 21 Oct 2025 09:57:56 -0400
+	id 1vBCs9-0000GC-J3; Tue, 21 Oct 2025 09:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs2-0000Di-47
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs3-0000Em-Af
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs0-0007ws-43
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs1-0007x5-8n
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761055067;
+ s=mimecast20190719; t=1761055068;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K2L/Jxby2ZpFPnIqwqvxM/ykVi8YDoUxBU6sV7v8gSk=;
- b=JAGVZGUMhihbklCwED+NiFaZmt5sbjKCGO284UFttUOtXs+W2iLd+662JjQCRu8CaMOFXm
- XMA16QjgkLllxEjFeqPjviFIK4ejlm6eBiDw5wvFnvrzcMWe1TT1OxogwvQMJ1Z4dKKi/s
- Nlir1JfMgLPkGp7g+vIsIyaRpITj3ug=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=vt6uwhyIK+73+a2uJbub1PjgJdGjN+jo4yTjn3+Yv3w=;
+ b=IetEASl5o8w7yg3pShMovXlrz62Kk1c0WzlaMBFOOnQxlinKMw+a7GKpgHJjUbYVjikzyG
+ NeHid+ujT/KKpNp9u8v6PoWcApQSak9M3pUAA/J0W8jBPjrntWzm4Ld4bXMLb9YZ0RqRFg
+ Aa5a8pI4fGWgcgVoZP9zVyjhlL1FWi4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-375-IOqRt3DgOBWgR0o-I84kng-1; Tue,
- 21 Oct 2025 09:57:43 -0400
-X-MC-Unique: IOqRt3DgOBWgR0o-I84kng-1
-X-Mimecast-MFC-AGG-ID: IOqRt3DgOBWgR0o-I84kng_1761055061
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-lHsfAsHgMiG0WcsMKvDoxQ-1; Tue,
+ 21 Oct 2025 09:57:44 -0400
+X-MC-Unique: lHsfAsHgMiG0WcsMKvDoxQ-1
+X-Mimecast-MFC-AGG-ID: lHsfAsHgMiG0WcsMKvDoxQ_1761055063
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 98DEC18002DD; Tue, 21 Oct 2025 13:57:41 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 27219195609F; Tue, 21 Oct 2025 13:57:43 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4CD0D19560A2; Tue, 21 Oct 2025 13:57:40 +0000 (UTC)
+ id 090DB19560A2; Tue, 21 Oct 2025 13:57:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
- Hendrik Brueckner <brueckner@linux.ibm.com>
-Subject: [PULL 2/6] tests/functional: add tests for SCLP event CPI
-Date: Tue, 21 Oct 2025 15:57:31 +0200
-Message-ID: <20251021135735.96145-3-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 3/6] hw/s390x/ccw: Remove deprecated s390-ccw-virtio-4.2 machine
+Date: Tue, 21 Oct 2025 15:57:32 +0200
+Message-ID: <20251021135735.96145-4-thuth@redhat.com>
 In-Reply-To: <20251021135735.96145-1-thuth@redhat.com>
 References: <20251021135735.96145-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -82,63 +82,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Add tests for SCLP event type Control-Program Identification.
+This machine has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") it can now be removed.
 
-Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-Suggested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Reviewed-by Thomas Huth <thuth@redhat.com>
-Message-ID: <20251016121708.334133-2-shalini@linux.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251020094903.72182-2-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/s390x/test_ccw_virtio.py | 26 +++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ hw/s390x/s390-virtio-ccw.c | 33 ---------------------------------
+ 1 file changed, 33 deletions(-)
 
-diff --git a/tests/functional/s390x/test_ccw_virtio.py b/tests/functional/s390x/test_ccw_virtio.py
-index 453711aa0f5..04553378567 100755
---- a/tests/functional/s390x/test_ccw_virtio.py
-+++ b/tests/functional/s390x/test_ccw_virtio.py
-@@ -15,6 +15,7 @@
- import tempfile
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index ad2c48188a8..64b81345f1e 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -715,26 +715,6 @@ static void s390_nmi(NMIState *n, int cpu_index, Error **errp)
+     s390_cpu_restart(S390_CPU(cs));
+ }
  
- from qemu_test import QemuSystemTest, Asset
-+from qemu_test import exec_command
- from qemu_test import exec_command_and_wait_for_pattern
- from qemu_test import wait_for_console_pattern
+-static ram_addr_t s390_fixup_ram_size(ram_addr_t sz)
+-{
+-    /* same logic as in sclp.c */
+-    int increment_size = 20;
+-    ram_addr_t newsz;
+-
+-    while ((sz >> increment_size) > MAX_STORAGE_INCREMENTS) {
+-        increment_size++;
+-    }
+-    newsz = sz >> increment_size << increment_size;
+-
+-    if (sz != newsz) {
+-        qemu_printf("Ram size %" PRIu64 "MB was fixed up to %" PRIu64
+-                    "MB to match machine restrictions. Consider updating "
+-                    "the guest definition.\n", (uint64_t) (sz / MiB),
+-                    (uint64_t) (newsz / MiB));
+-    }
+-    return newsz;
+-}
+-
+ static inline bool machine_get_aes_key_wrap(Object *obj, Error **errp)
+ {
+     S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
+@@ -1165,19 +1145,6 @@ static void ccw_machine_5_0_class_options(MachineClass *mc)
+ }
+ DEFINE_CCW_MACHINE(5, 0);
  
-@@ -270,5 +271,30 @@ def test_s390x_fedora(self):
-                         'while ! (dmesg -c | grep Start.virtcrypto_remove) ; do'
-                         ' sleep 1 ; done', 'Start virtcrypto_remove.')
- 
-+        # Test SCLP event Control-Program Identification (CPI)
-+        cpi = '/sys/firmware/cpi/'
-+        sclpcpi = '/machine/sclp/s390-sclp-event-facility/sclpcpi'
-+        self.log.info("Test SCLP event CPI")
-+        exec_command(self, 'echo TESTVM > ' + cpi + 'system_name')
-+        exec_command(self, 'echo LINUX > ' + cpi + 'system_type')
-+        exec_command(self, 'echo TESTPLEX > ' + cpi + 'sysplex_name')
-+        exec_command(self, 'echo 0x001a000000060b00 > ' + cpi + 'system_level')
-+        exec_command_and_wait_for_pattern(self,
-+                                          'echo 1 > ' + cpi + 'set', ':/#')
-+        try:
-+            event = self.vm.event_wait('SCLP_CPI_INFO_AVAILABLE')
-+        except TimeoutError:
-+            self.fail('Timed out waiting for the SCLP_CPI_INFO_AVAILABLE event')
-+        ts = self.vm.cmd('qom-get', path=sclpcpi, property='timestamp')
-+        self.assertNotEqual(ts, 0)
-+        name = self.vm.cmd('qom-get', path=sclpcpi, property='system_name')
-+        self.assertEqual(name.strip(), 'TESTVM')
-+        typ = self.vm.cmd('qom-get', path=sclpcpi, property='system_type')
-+        self.assertEqual(typ.strip(), 'LINUX')
-+        sysplex = self.vm.cmd('qom-get', path=sclpcpi, property='sysplex_name')
-+        self.assertEqual(sysplex.strip(), 'TESTPLEX')
-+        level = self.vm.cmd('qom-get', path=sclpcpi, property='system_level')
-+        self.assertEqual(level, 0x001a000000060b00)
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
+-static void ccw_machine_4_2_instance_options(MachineState *machine)
+-{
+-    ccw_machine_5_0_instance_options(machine);
+-}
+-
+-static void ccw_machine_4_2_class_options(MachineClass *mc)
+-{
+-    ccw_machine_5_0_class_options(mc);
+-    mc->fixup_ram_size = s390_fixup_ram_size;
+-    compat_props_add(mc->compat_props, hw_compat_4_2, hw_compat_4_2_len);
+-}
+-DEFINE_CCW_MACHINE(4, 2);
+-
+ static void ccw_machine_register_types(void)
+ {
+     type_register_static(&ccw_machine_info);
 -- 
 2.51.0
 
