@@ -2,94 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E95BF796D
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 18:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59828BF79C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 18:16:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBEtm-0002Er-Vq; Tue, 21 Oct 2025 12:07:47 -0400
+	id 1vBEzh-0004GT-1B; Tue, 21 Oct 2025 12:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBEtL-0002Dp-D4
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 12:07:20 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1vBEzW-0004D7-UX
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 12:13:45 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBEtF-0000lx-K2
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 12:07:16 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4710683a644so411105e9.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 09:07:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1vBEzU-0001aV-Np
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 12:13:42 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7800ff158d5so5214175b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 09:13:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761062831; x=1761667631; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=S3XDryUWMlktinWjMVeX9cwrrbFOe+BNaPX4vRirTnI=;
- b=R6MPA52R4Wa8BRoOSRw/ZMxhflT9oZ+/Hz0aodFyirjs8z2W/xc/PAACzqJTFRkfXn
- xpKalz+nHZcbgh+mQROSpnjgyEEivJ8GGZpYhGsT/7Z0Ko7GwYcm9LV16cSw3DepmfU/
- wUo5VPcy+qnxzJWfEYlBmwZZGp+dDoCJJzo37NXDh0fce+5kgYHHl1u658P4aY+3CGb2
- q1O2yZwWqO1A6xqR6k8Z3q3EVGedA/FkwYY6T/xPVK59xA8WZpY85WSMiRvLwTC32U6D
- 4Yso/4m7x7Avb8LYQ8hp8q8NlRSJ7huqagvdtomIDKf1bBo74EzU9FvTmAJJDaaZ7WCj
- fV4Q==
+ d=sifive.com; s=google; t=1761063215; x=1761668015; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4Y13V29TyEhcjAwL5nFeY1ayHUoKW0GaN/z1B8E1GJk=;
+ b=AklSlcxxHGTWnz6+yiR5QYj8IneBSb5AiHH49OkNZCmAx48cyuCkP1Xf5KH1vhkTrI
+ pE8RBP3qy05XpkNxbk+70UmOqTqknuIx+45nwBj3hXFlx+//Fz+5U2DsBldenOx/yuP3
+ hpCaaPhXi/Yizn4cduifL1lD51kLMxnyeL1FL83aJ3N+GDUQERi5KG9A7d/267BdwLXG
+ VXVNWv6/5UwJ3+k4EBTpc38M9jH+acdyhW+1ZsPD24QoGcX5MM/scb14v/x34pi23Vtl
+ O6EnO1bAcVWW0YCgOGwrPjy1RFayJU2zYAWg4SsfIVuZ9GE3tNt3pV6FCUqKScMcSmAS
+ t0zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761062831; x=1761667631;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S3XDryUWMlktinWjMVeX9cwrrbFOe+BNaPX4vRirTnI=;
- b=jkMYlyzDZ+CQGHKYXNK0k8O1QGUYW0SSlQYkzHSc17mnBY/Dn8q+LAhKScg5WhWiqO
- braR2lAYlbXmcMCUNQP++2bXJjlmCd/qO7NPwZVmrvDxg9LEkbevrSgr45gPkpENS1ON
- QHgEReFYE1IqoUNomKmjEg5e+SXJvplaOTS9G0gzrU8yao9l4PdQBir2+lPa+WteHir2
- VEOuLE/4tzrPFHPY9MpFe0gSE8AcSCBYWkgAn+juJHoZcVBLYCP/eU4UXjxmphKoZczO
- LbYM7eTDBZZZUDQdkYRWDhQSOnnAzyqDhG1uXItCSyZEnxkViFUN9ucquOf3MW8SG5C+
- p5XQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNqpdXlO3hh4D+7QL5JFEQVq2I0+dPTM0gEKrpof1mVMfNKZtPPVGT19e4vIwMmrvZrqO9uvpbTYT1@nongnu.org
-X-Gm-Message-State: AOJu0YwNjX9QhgG9/TKMgXkCW4vnc0UL6lQS204TExKQvHl5U7JSDguY
- iB1+fI8RjxYBHQhGSXIwLVxPdbeLf6Q69AdCCV5SPjOJ+Kd7zTCpaXZAfRZuf45JZT0=
-X-Gm-Gg: ASbGncsDt5vZ7WWc6js8tqUOGrSh+ePtqLvnOErrSIAHzQmSxh9RtgkTC41nNT/6+FW
- tyOM9pYEx1Y7gv7QYRhHOXdp8wRyAhA69WExeUTgeOSZOgr2WSN31EOgjNR/5R6Gma7omcmVa/2
- JoKJVD4Hml927pll/PYtd5PIlYkwleBRW/40zt6a0/CNQ81OC7J3uzGJr6+DgVz1rntiljlQlHQ
- vImISHMh2cZAykR8OhLbzUkqaVqhd2qEdC3YaLPEAH79om3xBVCf/NS3CfECq+P0Ugo78/FUFgD
- TW5yPyxGo43gy6x85cPf20Wqpnsn1ILGhjQEInY5+cva/oPfy0GIAxEtdiEM0JCP6fFKuS2fCJX
- +q1YMxV9msFojIkv+jzIVyZBve64kc4imxO3f4lfNs2TR5/QNbBSAV0qEINmLrwzgBkwJQULmRj
- 2n+NYUFCHXBE2cCJEf5hjb4clVzaVxvJ3nMl3kssqXrx10GClTzklCTg==
-X-Google-Smtp-Source: AGHT+IFTSxHOXBG2kQtyhLaqbkDJvdPVxrFwI3mIms/IDe5YKtq/OkNzeBFJx+Xy+94fCe8ah5JL/w==
-X-Received: by 2002:a05:600c:4593:b0:45c:b6d3:a11d with SMTP id
- 5b1f17b1804b1-475c3f96e87mr1589135e9.1.1761062830808; 
- Tue, 21 Oct 2025 09:07:10 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47494b22536sm20411435e9.5.2025.10.21.09.07.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Oct 2025 09:07:10 -0700 (PDT)
-Message-ID: <0e7af78a-6156-437a-b76d-8453898a5b57@linaro.org>
-Date: Tue, 21 Oct 2025 18:07:08 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/10] Cleanup patches, mostly PC-related
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Laurent Vivier <laurent@vivier.eu>, "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
- kvm@vger.kernel.org, Michael Tokarev <mjt@tls.msk.ru>,
- Cameron Esfahani <dirty@apple.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>,
+ d=1e100.net; s=20230601; t=1761063215; x=1761668015;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4Y13V29TyEhcjAwL5nFeY1ayHUoKW0GaN/z1B8E1GJk=;
+ b=vOq71aMiJBaYO9PUcVr1zrW3P7yEXq/SoTfoXkLvApZ1G8GFG1urH6xDX5pcOABITV
+ 5QCjz1jVNOCX6YfDlkKShIQjxJYYFwtCUJSJZIxo4UHTFF1TWqSZvbk2Qa7nZmUT9Zns
+ NApFakNRrPTXpq66L7fegQTzuEu/Dzzw0PAKhBYCAohclNDTDRx/quPOEKl4sd0HoaZL
+ uw5k2rQn+rzNfFe0JCBxUFOeKp/7ms+OrBb+Fk5eNVt8QjvVPPt+q0ySH/Csgg48aeLN
+ V3W05E9AeiJURfy0MsmnsAMVCE5LHAfp2g7bBYQnbyqv1yvtCYysZSdpqVUe517WwwoK
+ A0YA==
+X-Gm-Message-State: AOJu0YyDs/7fgSClZlAmBkga0wg7uro48FVO6Oha2b7x+m8BsYWCoPky
+ lW6//AD79gIG39vh1dfrS58cEpQMQ3GWFm1KEGTtd5QeeT6wB2vwZgDBJ5UWv/Oz4cmnuUrWHOG
+ TJCOwxYI/lvcoIynHHh4ygV40sCDfUoCTkwrkWu4M+lpTvDDwn4pOaTbdakaf3zmFh9gqoDE+0Y
+ 7L2g0wavgB4awgfEFQbqNknvLZ0MBxhkWigEuVqA==
+X-Gm-Gg: ASbGnctRx3Tzmei4227eMk55D+IL1VXiavdIEZuXbenE40L9fSDVzbb/A38aqAbz2/c
+ o90HKJ1AFJPb4y2g2veoYNbQtbHvTBfH4FyHBI2PrmiFxlr+T7BwYwL+O275t/dVbSFv7RNizmO
+ 65i1mn5hBWOcwHHepzhXUF+t6NlAv9p/JsELOn8nYmJNX1Xn312kZImqGp1fe6lRL7NOSoIYQsx
+ VPbmi4qGpNiznKxgzgKbb6wAZbGAJx5OE7P11oeNQXmJZ8xgaQkeFG636d145IymWOrfAWebtOO
+ SL+ishF9zkugatSs+zs2rDAcAjU5hdtkwOVNkUL/gsfMx5gKTWtwXnkQ5chzUXUJbbCQdmQ9aCj
+ mY6hUOT2dk12wg7q6Bx9oMHExYju5N8Y4aHb2N6Wae7MyCl+APTQU3rXP1VIjcv+Zv7VmRPXKiM
+ CJYn/EMKZ3rtlvt4rWs7/OGg==
+X-Google-Smtp-Source: AGHT+IESq+Wree+qpeUxnR7Xwrl5wv4lQYZ/VsJBAAZNIYY2fKNL9WpYZZTIkByfOojT6r4EGL3dvw==
+X-Received: by 2002:a05:6a00:94c2:b0:79a:f5eb:3dce with SMTP id
+ d2e1a72fcca58-7a220d5792amr20550258b3a.31.1761063214459; 
+ Tue, 21 Oct 2025 09:13:34 -0700 (PDT)
+Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7a23010f7c7sm11731157b3a.54.2025.10.21.09.13.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Oct 2025 09:13:34 -0700 (PDT)
+From: Jim Shu <jim.shu@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
- <phil@philjordan.eu>, John Snow <jsnow@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-References: <20251019210303.104718-1-shentey@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251019210303.104718-1-shentey@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+ Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Michael Rolnik <mrolnik@gmail.com>, Helge Deller <deller@gmx.de>,
+ Song Gao <gaosong@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Stafford Horne <shorne@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
+ qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
+ Jim Shu <jim.shu@sifive.com>
+Subject: [PATCH v3 08/18] target/riscv: Add defines for WorldGuard CSRs
+Date: Wed, 22 Oct 2025 00:13:14 +0800
+Message-ID: <20251021161325.585278-1-jim.shu@sifive.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251021155548.584543-1-jim.shu@sifive.com>
+References: <20251021155548.584543-1-jim.shu@sifive.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=jim.shu@sifive.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,51 +126,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/10/25 23:02, Bernhard Beschow wrote:
+Add CSRs for 3 WG extensions: Smwg, Smwgd, and Sswg.
 
-> Bernhard Beschow (10):
->    hw/timer/i8254: Add I/O trace events
->    hw/audio/pcspk: Add I/O trace events
->    hw/rtc/mc146818rtc: Convert CMOS_DPRINTF() into trace events
->    hw/rtc/mc146818rtc: Use ARRAY_SIZE macro
->    hw/rtc/mc146818rtc: Assert correct usage of
->      mc146818rtc_set_cmos_data()
->    hw/ide/ide-internal: Move dma_buf_commit() into ide "namespace"
->    hw/i386/apic: Prefer APICCommonState over DeviceState
->    hw/i386/apic: Ensure own APIC use in apic_msr_{read,write}
->    hw/intc/apic: Pass APICCommonState to apic_register_{read,write}
->    tests/qtest/ds1338-test: Reuse from_bcd()
-
-Thanks, except if Paolo/MST/Igor object, series queued squashing:
-
--- >8 --
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 67ff52a8b40..d981ca05977 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -29,2 +29,3 @@
-  #include "exec/memop.h"
-+#include "hw/i386/apic.h"
-  #include "hw/i386/topology.h"
-@@ -2352,3 +2352,3 @@ struct ArchCPU {
-         user */
--    struct APICCommonState *apic_state;
-+    APICCommonState *apic_state;
-      struct MemoryRegion *cpu_as_root, *cpu_as_mem, *smram;
-diff --git a/target/i386/whpx/whpx-internal.h 
-b/target/i386/whpx/whpx-internal.h
-index 066e16bd8e2..2dcad1f5650 100644
---- a/target/i386/whpx/whpx-internal.h
-+++ b/target/i386/whpx/whpx-internal.h
-@@ -7,2 +7,4 @@
-
-+#include "hw/i386/apic.h"
-+
-  typedef enum WhpxBreakpointState {
-@@ -46,3 +48,3 @@ struct whpx_state {
-  extern struct whpx_state whpx_global;
--void whpx_apic_get(struct APICCommonState *s);
-+void whpx_apic_get(APICCommonState *s);
-
+Signed-off-by: Jim Shu <jim.shu@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
+ target/riscv/cpu_bits.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index b62dd82fe7..a546545ff3 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -468,6 +468,11 @@
+ #define CSR_DPC             0x7b1
+ #define CSR_DSCRATCH        0x7b2
+ 
++/* RISC-V WorldGuard */
++#define CSR_MLWID           0x390
++#define CSR_SLWID           0x190
++#define CSR_MWIDDELEG       0x748
++
+ /* Performance Counters */
+ #define CSR_MHPMCOUNTER3    0xb03
+ #define CSR_MHPMCOUNTER4    0xb04
+-- 
+2.43.0
+
 
