@@ -2,93 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D55EBF5571
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 10:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBBEBF567C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:05:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB7zT-0000dV-90; Tue, 21 Oct 2025 04:45:11 -0400
+	id 1vB8HN-0001D7-F7; Tue, 21 Oct 2025 05:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7z5-0000Io-DK
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:49 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7z1-0000yx-Tg
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:46 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-47114a40161so10079185e9.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 01:44:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761036282; x=1761641082; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a6Urqf2BFQoz6tGL67HiUuAvlfebveNoSUnXOo9Qq+w=;
- b=bQ0/NrlVxXwZf6EQvIUK7VPhTU6wt89GcphafSFpXEZ3uveQXBDt+XbQ3MeoN/wobe
- 5JoThl+/QtPswtF56YaVk1uZeOREN3I3YbOYPcx+YBwaXroa4i36u0Pl7AP9FNPMrhiM
- Q8Mtoig4fbXl5mfkrfE5Cie/oHpjnINUA33SQFYAnziaRzfnkgiSgWjfmzOpxOYmV+zD
- KpZLcNpR8owc/ajm4cvERcqQNXWq/v9l+biPehlAPshJX5u/k5ipXKaIBulav8gZcbDx
- DDh3V4USs+C8XjbE/UVFX6j4joAISikzUiMUShbIHGV1fWkHaGSwpxW/Ben3/NbRBoO5
- e1rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761036282; x=1761641082;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=a6Urqf2BFQoz6tGL67HiUuAvlfebveNoSUnXOo9Qq+w=;
- b=DoF4oUGl6yxk6wMhSlXSJtCDpzEQlkS69eMT453Np7lRCKOJvUEd5OoVydPOsYZRnI
- /5JyCeC4Js9GBLusvNRIXjQT/XOUEjYGiQEKUPSfPEMMpoQCg7WnUqXStczhkN3ojbPZ
- Puy990gmD/lYGhCh+CO2q/lBw7NRRZN11vtc2Edx4lRJyJq4ZR3YPn6VGoWz3zFDIxwC
- 0xWZ0L8do5qjuzQxBMNgqNgkBaDh9SSrgaJB26EPgl79fyhO6E+k898PiQWuxR68tKPw
- j4JXWJ1WH66jQvmjGYYEWkLGq8YGMvVnrHtxWQhH8xGQaznUcpaHdz7fXBYSda3HESZp
- w7dA==
-X-Gm-Message-State: AOJu0Yyu3mvsNkMsqfbSP4rVI5sY3z2Atukvm4baFlX4DPqj+ZUVj7Cn
- cHWt/aJv3F9c6UGn2tFN1eBySuaDU+DYy7Br75ky298LczXJ8/svu3Vqu9oV5K5EBT9Cdl9UcSb
- hHN0JGMM=
-X-Gm-Gg: ASbGncskoaaLoRdSyfHa422ZY5cAJfeZv2jrrimRFZsqrYDEl80x9EMYh/9q9sS2fNt
- gJmWQZUEAuH9TRYm+2AmEmK0YtdvgiB9nIA7thf/tyCezcBg+k077thg8VZTmbNYobt3Fhvinsv
- BgnHHbOfxyQNF3P26mQAVpr/aJutCDTlhOI83QLd54Ul+CV+tc2JrgfzibS/JvDOjwPqfcAOhPH
- A7n4gKSs6+xRupiraT7fIR5oQPkxDmA7d/rX3wT8Cqq3A8MHM7tW22vzoJmfSByXjOVxTqFH7qz
- AHBTpIlqlrC1/26S05b/TjRRfd3xovIFnMZzNXWVPnMQq4xJM1IVVXVIAM2a43ZaiocG35I+33w
- 8kucK09BTI59jkayhM24pwWpOwyVj7Ztjsb49H+jz4Qk8bXlqu3i26JdEkTb3bcijOET+0QY5hR
- rH6fArqr96MIYWuU94STKYbNBdhwMdMRavLaGO1RBaT9YIf7bMvQ==
-X-Google-Smtp-Source: AGHT+IHH5GeVeaqK1SOYHRnV5hnEGg+hDnGH3BWGPiH6VG3b1oQcncz2qQzO9HI9FYrWzz+B7lIX0Q==
-X-Received: by 2002:a05:600c:871a:b0:46f:b43a:aeef with SMTP id
- 5b1f17b1804b1-4711791d923mr96345475e9.38.1761036281808; 
- Tue, 21 Oct 2025 01:44:41 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47496c43f68sm11891395e9.5.2025.10.21.01.44.40
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 01:44:41 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1vB8HI-0001Cs-Hr
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1vB8HF-0003sn-Ti
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761037407;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hlTg2LXatGiENy28wgiDO1kIYlSGmc+TUtFKjfH/6/4=;
+ b=VgnJutQdJU54RhheyuEvsdkzongvib9Kbuf/in+ikxVI8p6Go7G6OwS9jX+P+W4aD7107d
+ DUuvyCuwcEqcIWtoa/wG/oRs9ifKS84pzO6NgudhHVLxtxeYfYIZavXdDwJ1t040KCrkFf
+ pMq4U4BHI1ve9RnJAfk7TI1GEagGras=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-F9v-5sKyNgGyuODA8awIgg-1; Tue,
+ 21 Oct 2025 05:03:23 -0400
+X-MC-Unique: F9v-5sKyNgGyuODA8awIgg-1
+X-Mimecast-MFC-AGG-ID: F9v-5sKyNgGyuODA8awIgg_1761037403
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BC4811956094; Tue, 21 Oct 2025 09:03:22 +0000 (UTC)
+Received: from localhost (unknown [10.44.22.9])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3C7FB3000218; Tue, 21 Oct 2025 09:03:20 +0000 (UTC)
+From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org,
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 11/11] ppc/spapr: remove deprecated machine pseries-4.2
-Date: Tue, 21 Oct 2025 10:43:45 +0200
-Message-ID: <20251021084346.73671-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021084346.73671-1-philmd@linaro.org>
-References: <20251021084346.73671-1-philmd@linaro.org>
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 00/43] Audio clean-ups
+Date: Tue, 21 Oct 2025 13:02:31 +0400
+Message-ID: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,84 +84,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Remove the pseries-4.2 machine specific logic as had been deprecated and
-due for removal now as per policy.
+Hi,
 
-Suggested-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/ppc/spapr.h |  1 -
- hw/ppc/spapr.c         | 27 ---------------------------
- 2 files changed, 28 deletions(-)
+This is part of continuous and overdue clean up / modernization effort for the
+audio subsystem. (there is more in the pipeline)
 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 60d9a8a0377..b9d884745fe 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -141,7 +141,6 @@ struct SpaprCapabilities {
- struct SpaprMachineClass {
-     MachineClass parent_class;
- 
--    hwaddr rma_limit;          /* clamp the RMA to this size */
-     bool pre_5_1_assoc_refpoints;
-     bool pre_5_2_numa_associativity;
-     bool pre_6_2_numa_affinity;
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index a06392beff1..b6f151d7468 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2729,7 +2729,6 @@ static PCIHostState *spapr_create_default_phb(void)
- static hwaddr spapr_rma_size(SpaprMachineState *spapr, Error **errp)
- {
-     MachineState *machine = MACHINE(spapr);
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-     hwaddr rma_size = machine->ram_size;
-     hwaddr node0_size = spapr_node0_size(machine);
- 
-@@ -2742,15 +2741,6 @@ static hwaddr spapr_rma_size(SpaprMachineState *spapr, Error **errp)
-      */
-     rma_size = MIN(rma_size, 1 * TiB);
- 
--    /*
--     * Clamp the RMA size based on machine type.  This is for
--     * migration compatibility with older qemu versions, which limited
--     * the RMA size for complicated and mostly bad reasons.
--     */
--    if (smc->rma_limit) {
--        rma_size = MIN(rma_size, smc->rma_limit);
--    }
--
-     if (rma_size < MIN_RMA_SLOF) {
-         error_setg(errp,
-                    "pSeries SLOF firmware requires >= %" HWADDR_PRIx
-@@ -4913,23 +4903,6 @@ static void spapr_machine_5_0_class_options(MachineClass *mc)
- 
- DEFINE_SPAPR_MACHINE(5, 0);
- 
--/*
-- * pseries-4.2
-- */
--static void spapr_machine_4_2_class_options(MachineClass *mc)
--{
--    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
--
--    spapr_machine_5_0_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_4_2, hw_compat_4_2_len);
--    smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_OFF;
--    smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_OFF;
--    smc->rma_limit = 16 * GiB;
--    mc->nvdimm_supported = false;
--}
--
--DEFINE_SPAPR_MACHINE(4, 2);
--
- static void spapr_machine_register_types(void)
- {
-     type_register_static(&spapr_machine_info);
+thanks
+
+Marc-André Lureau (43):
+  hw/audio: improve error reports
+  hw/audio: rename model list function
+  hw/audio: remove global pcspk
+  hw/pcspk: use explicitly the required PIT types
+  hw/pcspk: make 'pit' a class property
+  hw/pcspk: check the "pit" is set
+  docs: update -soundhw -> -device list
+  qdev: add qdev_find_default_bus()
+  hw/audio: look up the default bus from the device class
+  audio: rename audio_define->audio_add_audiodev()
+  hw/audio: use better naming for -audio model handling code
+  hw/audio/virtio-snd-pci: remove custom model callback
+  hw/audio: simplify 'hda' audio init code
+  hw/audio: generalize audio_model.init()
+  hw/audio: drop audio_model.isa
+  audio: start making AudioState a QOM Object
+  audio: register backends in /audiodevs container
+  audio: use /audiodevs qom container
+  audio/paaudio: remove needless return value
+  audio/dsound: simplify init()
+  audio/dsound: report init error via **errp
+  audio: simplify audio_driver_init()
+  audio: move period tick initialization
+  audio: drop needless error message
+  audio: clean-up vmstate change handler on finalize
+  audio: unregister vmstate description
+  audio: initialize card_head during object init
+  audio: remove some needless headers
+  audio: remove AUDIO_HOST_ENDIANNESS
+  audio: introduce AUD_set_volume_{in,out}_lr()
+  hw/audio: replace AUD_log() usage
+  audio/replay: fix type punning
+  audio: move internal APIs to audio_int.h
+  audio: rename AudioState -> AudioBE
+  audio: rename QEMUSoundCard -> AudioFE
+  audio: rename audio_get_id()
+  audio/dbus: use a helper function to set the backend dbus server
+  audio: move audio.h under include/qemu/
+  audio: remove dependency on spice header
+  audio: cleanup, use bool for booleans
+  audio: drop needless list of FE
+  audio: move capture API to own header
+  audio: drop needless audio_driver "descr" field
+
+ docs/qdev-device-use.txt                      |   6 +-
+ audio/audio_int.h                             |  64 ++--
+ audio/audio_template.h                        |  30 +-
+ audio/mixeng.h                                |   1 -
+ hw/audio/lm4549.h                             |   4 +-
+ include/hw/audio/asc.h                        |   4 +-
+ include/hw/audio/model.h                      |  13 +
+ include/hw/audio/soundhw.h                    |  13 -
+ include/hw/audio/virtio-snd.h                 |   4 +-
+ include/hw/display/xlnx_dp.h                  |   4 +-
+ include/hw/isa/vt82c686.h                     |   4 +-
+ include/hw/qdev-properties-system.h           |   2 +-
+ include/hw/timer/i8254.h                      |   4 +-
+ include/monitor/qdev.h                        |   3 +
+ include/qemu/audio-capture.h                  |  43 +++
+ {audio => include/qemu}/audio.h               | 125 +++-----
+ include/system/replay.h                       |   3 +-
+ ui/vnc.h                                      |   4 +-
+ audio/alsaaudio.c                             |   5 +-
+ audio/audio-hmp-cmds.c                        |   4 +-
+ audio/audio.c                                 | 303 +++++++++---------
+ audio/audio_win_int.c                         |   2 +-
+ audio/dbusaudio.c                             |  17 +-
+ audio/dsoundaudio.c                           | 213 ++++++------
+ audio/jackaudio.c                             |   3 +-
+ audio/mixeng.c                                |  12 +-
+ audio/noaudio.c                               |   5 +-
+ audio/ossaudio.c                              |   7 +-
+ audio/paaudio.c                               |  16 +-
+ audio/pwaudio.c                               |   3 +-
+ audio/sdlaudio.c                              |   3 +-
+ audio/sndioaudio.c                            |   3 +-
+ audio/spiceaudio.c                            |   7 +-
+ audio/wavaudio.c                              |   6 +-
+ audio/wavcapture.c                            |   5 +-
+ hw/arm/integratorcp.c                         |   2 +-
+ hw/arm/musicpal.c                             |   2 +-
+ hw/arm/realview.c                             |   2 +-
+ hw/arm/versatilepb.c                          |   2 +-
+ hw/arm/vexpress.c                             |   2 +-
+ hw/arm/xlnx-zcu102.c                          |   2 +-
+ hw/audio/ac97.c                               | 137 ++++----
+ hw/audio/adlib.c                              |  34 +-
+ hw/audio/asc.c                                |  12 +-
+ hw/audio/cs4231a.c                            |  52 ++-
+ hw/audio/es1370.c                             |  37 ++-
+ hw/audio/gus.c                                |  35 +-
+ hw/audio/hda-codec.c                          |  12 +-
+ hw/audio/intel-hda.c                          |  20 +-
+ hw/audio/lm4549.c                             |   6 +-
+ hw/audio/marvell_88w8618.c                    |   2 +-
+ hw/audio/model.c                              | 121 +++++++
+ hw/audio/pcspk.c                              |  27 +-
+ hw/audio/sb16.c                               | 104 +++---
+ hw/audio/soundhw.c                            | 143 ---------
+ hw/audio/via-ac97.c                           |   6 +-
+ hw/audio/virtio-snd-pci.c                     |  18 +-
+ hw/audio/virtio-snd.c                         |   8 +-
+ hw/audio/wm8750.c                             |  20 +-
+ hw/core/machine.c                             |   4 +-
+ hw/core/qdev-properties-system.c              |  14 +-
+ hw/display/xlnx_dp.c                          |   4 +-
+ hw/ppc/prep.c                                 |   2 +-
+ hw/timer/i8254_common.c                       |   6 +-
+ hw/usb/dev-audio.c                            |  12 +-
+ qom/object.c                                  |   1 +
+ replay/replay-audio.c                         |   4 +-
+ replay/stubs-system.c                         |   2 +-
+ system/qdev-monitor.c                         |  21 +-
+ system/runstate.c                             |   2 +-
+ system/vl.c                                   |  16 +-
+ ui/dbus.c                                     |  13 +-
+ ui/vnc.c                                      |  10 +-
+ audio/coreaudio.m                             |   3 +-
+ audio/meson.build                             |   2 +-
+ hw/audio/meson.build                          |   2 +-
+ .../codeconverter/test_regexps.py             |   4 +-
+ 77 files changed, 903 insertions(+), 970 deletions(-)
+ create mode 100644 include/hw/audio/model.h
+ delete mode 100644 include/hw/audio/soundhw.h
+ create mode 100644 include/qemu/audio-capture.h
+ rename {audio => include/qemu}/audio.h (50%)
+ create mode 100644 hw/audio/model.c
+ delete mode 100644 hw/audio/soundhw.c
+
 -- 
 2.51.0
 
