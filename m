@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D499BF8F00
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 23:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BED11BF8FEC
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 00:05:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJvY-0007lH-0Q; Tue, 21 Oct 2025 17:29:56 -0400
+	id 1vBKSr-0003pY-TI; Tue, 21 Oct 2025 18:04:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBJvW-0007l7-3f
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 17:29:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBKSo-0003p1-SE
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 18:04:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBJvS-0005xA-QS
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 17:29:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBKSm-0001KA-1F
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 18:04:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761082189;
+ s=mimecast20190719; t=1761084253;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AyRA5FQFX7yFYw9r8Yv+oYls0INmJmyVHA+nIxj6+eI=;
- b=K8LVYZRW/uxRsUjDnNECyApI0qnz5VoA2V4DfUYrEP5AiPXDrGDlq9pjRiQWfz6zPkvaGM
- WDXqGyVWmf15VdE+EC9xdWYMgg0fmJmQeIb5Hcz1wbz98+iYJQMFer/D+JHzqp2AV2xjP/
- F36rOngs0fl2LCuFniV05cYc9trNwKU=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=z7BDB6b3AQq0dRCf7+/g6dGq/WGqxKH3wxeSDq0vKPs=;
+ b=eHNhKJJ6S+E+LXsGTQR4YzXG8OsjsY09cFv0VoWC1+GYPqz7VBzSuG5dghvDy8zdFuJOuq
+ I2kKYcnrvIGfAiKL5KoUdqE4mXwiLT51SV3qbrCNPLFRGCFZUMjmx8M5GyQqcSnv8MNSlb
+ g18ZMqqlTtGUcGZdtNdMk62rXTiei00=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-EXZwtBVMM5m8QOw97IWzwg-1; Tue, 21 Oct 2025 17:29:47 -0400
-X-MC-Unique: EXZwtBVMM5m8QOw97IWzwg-1
-X-Mimecast-MFC-AGG-ID: EXZwtBVMM5m8QOw97IWzwg_1761082187
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-87df30d45ecso31743136d6.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 14:29:47 -0700 (PDT)
+ us-mta-308-wOEkK9VmPqKF-KAucB8EpQ-1; Tue, 21 Oct 2025 18:04:12 -0400
+X-MC-Unique: wOEkK9VmPqKF-KAucB8EpQ-1
+X-Mimecast-MFC-AGG-ID: wOEkK9VmPqKF-KAucB8EpQ_1761084251
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4e89265668fso11027911cf.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 15:04:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761082186; x=1761686986;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AyRA5FQFX7yFYw9r8Yv+oYls0INmJmyVHA+nIxj6+eI=;
- b=NPYcaqzGINnAfu0ea61LAs7fSjvKfaJadb33u0KIJvqK4iBZbDbU+Y//GyliTlxa8X
- qst1R3fu3XssyBECpVU0dT12GAy7R4nQ+infrITvoeo8aOfA1auPzvVWb9Dg7xLr7pqh
- VRsL5Tej7wkXKgRPy2fM3En1UHcosphDCmotRqK146vEl3vpC88h3XWsIE5ETkB9wnoC
- KFo/A4lQdFQWW/9Vwqh1HR5im1RtsP3S7Ysj6L+rgCqSMxUceTOJQwQPRfaDMR5vtJz4
- vffSsk8FjGLgByw4JniIZQDjrcrMn+0GRvSMvFuGcsQDYW4DTpjABPUXQI7iSCPC27aw
- UZ4Q==
-X-Gm-Message-State: AOJu0YxIoKdWdQjhNo00aZJ1i3gEmZutObR9bjGFywkzkEnqSwXz4uLL
- WLU0jnAmGr7NxMUhLC/FBqPAXOP5/VgkUO0s3cbwIdnEn5CFDvCHCpnXQN2UiUbTg/Sk0qXBjj7
- s08KggvGJLWCK+KdwDQndxfBml8dABexuxdzrUvwO3WwNabW0QSrsBYsW1OICcSN9
-X-Gm-Gg: ASbGncsLh/+TGmAt6wUzQyQIVaBL9CI8Xvr6Hm+74t7eQHSjDP0aNZ7I0db4BKvsToS
- iicfEwdbLNEp55NQqHgMTY00H+G6XHsRgJkzm17nZNxmn5QJhmqjUgI5Z4ON0XKAaSplGu51czU
- Md2iUjZrc2+mzm0TXDHQcM/NgdGKcEmBRVRvtaA/cKXM7JMd+981IlDkgzCOhEbUkYwn0e1Q63+
- IkxD+yrqVghsZnZncfhBGIK08YPoSPcsuecTnPka0atGYS+LtoJ0B0XWtP/8suw818hYzXiRfdK
- IsZX16dG+NuS+V4X773qTIV99eu68jVAkds1PEwwwBmt6Ob3wwpyS6R6B8WMo8rMt8k=
-X-Received: by 2002:ad4:5c45:0:b0:87c:124b:7750 with SMTP id
- 6a1803df08f44-87c20566b16mr230997866d6.21.1761082186491; 
- Tue, 21 Oct 2025 14:29:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6XY1vndS6/XrHWeET7vrZn20PUlyqEViDfT2QYFSX6J/UrTHNOfW6Vv8nNAmtIbGE+zTy7w==
-X-Received: by 2002:ad4:5c45:0:b0:87c:124b:7750 with SMTP id
- 6a1803df08f44-87c20566b16mr230997616d6.21.1761082185893; 
- Tue, 21 Oct 2025 14:29:45 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-87d02892e79sm75609756d6.40.2025.10.21.14.29.44
+ d=1e100.net; s=20230601; t=1761084251; x=1761689051;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=z7BDB6b3AQq0dRCf7+/g6dGq/WGqxKH3wxeSDq0vKPs=;
+ b=dlIrmepcilYFkzxedywn9MBNuu97M7iODZKMbiQYp93OSwZn13SiCDsfFc1AEEO/dC
+ jjauoojFwprOhnOTAuJaYSnvdZRf9msmSE6t2Hj4eJvojJFRN6XhNrDODPil8oQyMh04
+ XLrrPUYHkQqZ9CNl8y8fq79HnassHmtc58rRw+Sw/y4TGQjlejfEFLLq9QsmctLB/5SZ
+ oxhvoYFiEiZI+RFcX2dukmsEAkNHETaQS5PbOxFOFHOOrD8C1k3ujuVUOcHuiKxMYk4P
+ P3r+LIXoEWhEmupoqrbKsTFqdSvhus2BM8FJE4cd0oeiBTFpj16wJw8BhkWnV4ts0MWw
+ RlGw==
+X-Gm-Message-State: AOJu0Yyg+fvV96FHPvqHVnUYNGurEJZqjg2KxAujKUvcDfoS4oDIdyy9
+ F+0WlHYchyexwHanSxkc6KnoO0hrPV1kyMmRTPPRjIZNwghTbttWLsmz96yyzadn4Lu7E+xa1um
+ EoQGS+MLC6LYZ+csy/D0TjouMbYDy5lpekixTGx1D1DUmGH2QZ94F1pJbKs9uADs6BLCH4M7h4w
+ m1UADJI83WIn8DBE5K12Qoa5umClIE1vggwYxcjw==
+X-Gm-Gg: ASbGncvflc39dDB3V8fzt519SkllhAwPbjSJ3pzLVIDzR+fdGsmrFMQRztExdRP68+R
+ xU0t9sbqmTSpp4MjHHAGUKgM7s+GBJNXyYmQGLGr+HAv92HGdEvYPJdkk/jaV+qSq8QCxcLcQGX
+ 8hZfjuddacOkgYGtDmKXygVevSrHMWdP1Nf/m25Wis00NO2FFzVPNa/YSGQPNPR4DZplMBDmjq0
+ 4ySD21HQYV/W49MSMcoRh9CmnyE5BlpGjCf0sQboU3wyPJ419bbjDmm0O50rvZsPIFmG6nak07l
+ 3G/KaqKw7XkflO5Z+15tI4qKfns0rNk2fzynocxuM2ecJygC1YIC7ej86Zig0aKY
+X-Received: by 2002:a05:622a:1820:b0:4e8:9459:4f61 with SMTP id
+ d75a77b69052e-4e89d355d9fmr225123161cf.53.1761084251033; 
+ Tue, 21 Oct 2025 15:04:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqVNAZGbDwZNwkDmtw1y2HA0xr93fN1pHxoJNzXBVh5ke21VvWPm4N008I214Ky9EA6wUpFQ==
+X-Received: by 2002:a05:622a:1820:b0:4e8:9459:4f61 with SMTP id
+ d75a77b69052e-4e89d355d9fmr225122891cf.53.1761084250551; 
+ Tue, 21 Oct 2025 15:04:10 -0700 (PDT)
+Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-891cd098edasm849197285a.19.2025.10.21.15.04.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Oct 2025 14:29:44 -0700 (PDT)
-Date: Tue, 21 Oct 2025 17:29:43 -0400
+ Tue, 21 Oct 2025 15:04:09 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Arun Menon <armenon@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Juraj Marcin <jmarcin@redhat.com>
-Subject: Re: [PATCH 2/3] migration/cpr: Fix coverity report in
- cpr_exec_persist_state()
-Message-ID: <aPf7R-F0uv1RSqXh@x1.local>
-References: <20251021184132.2635958-1-peterx@redhat.com>
- <20251021184132.2635958-3-peterx@redhat.com>
- <87o6q0t1z0.fsf@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Arun Menon <armenon@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v2 0/4] migration: A few fixes on coverity reports
+Date: Tue, 21 Oct 2025 18:04:03 -0400
+Message-ID: <20251021220407.2662288-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87o6q0t1z0.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,68 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 21, 2025 at 05:49:07PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > Per reported and analyzed by Peter:
-> >
-> > https://lore.kernel.org/r/CAFEAcA_mUQ2NeoguR5efrhw7XYGofnriWEA=+Dg+Ocvyam1wAw@mail.gmail.com
-> >
-> > mfd leak is a false positive, try to use a coverity annotation (which I
-> > didn't find manual myself, but still give it a shot).
-> >
-> > Fix the other one by dumping an error message if setenv() failed.
-> >
-> > Resolves: Coverity CID 1641391
-> > Resolves: Coverity CID 1641392
-> > Fixes: efc6587313 ("migration: cpr-exec save and load")
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > ---
-> >  migration/cpr-exec.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
-> > index d57714bc5d..3cf44634a9 100644
-> > --- a/migration/cpr-exec.c
-> > +++ b/migration/cpr-exec.c
-> > @@ -43,13 +43,16 @@ static QEMUFile *qemu_file_new_fd_output(int fd, const char *name)
-> >  void cpr_exec_persist_state(QEMUFile *f)
-> >  {
-> >      QIOChannelFile *fioc = QIO_CHANNEL_FILE(qemu_file_get_ioc(f));
-> > +    /* coverity[leaked_storage] - mfd intentionally kept open across exec() */
-> >      int mfd = dup(fioc->fd);
-> >      char val[16];
-> >  
-> >      /* Remember mfd in environment for post-exec load */
-> >      qemu_clear_cloexec(mfd);
-> >      snprintf(val, sizeof(val), "%d", mfd);
-> > -    g_setenv(CPR_EXEC_STATE_NAME, val, 1);
-> > +    if (!g_setenv(CPR_EXEC_STATE_NAME, val, 1)) {
-> > +        error_report("Setting env %s = %s failed", CPR_EXEC_STATE_NAME, val);
-> > +    }
-> 
-> Best to abort no? We don't want the rest of the code reading whatever
-> may be at that env variable and running with it.
+v2:
+- Added tags for Fabiano
+- Patch 1: dump the %d too along with %s [Fabiano]
+- Patch 2: make the error returned to the caller, with some refactoring
+- Added new patch 4 to fix a crash on cpr-exec when args==NULL
 
-I didn't want to abort, because it's the same as QMP migrate failure at the
-beginning.
+A small series that fixes three coverity reported issues.  Please review,
+thanks.
 
-If we want to do better, we can allow this function to return a failure
-instead.
+Peter Xu (4):
+  migration: Fix error leak in postcopy_ram_listen_thread()
+  migration/cpr: Fix coverity report in cpr_exec_persist_state()
+  migration/cpr: Fix UAF in cpr_exec_cb() when execvp() fails
+  migration/cpr: Avoid crashing QEMU when cpr-exec runs with no args
 
-And.. when I was trying cpr-exec with no argv it already can crash QEMU.  I
-think that's also a bug.
-
-Let me prepare something better than this..  I'll likely add a new patch to
-fix that too.
-
-> 
-> >  }
-> >  
-> >  static int cpr_exec_find_state(void)
-> 
+ include/migration/cpr.h |  4 ++--
+ migration/cpr-exec.c    | 14 ++++++++++----
+ migration/cpr.c         | 15 +++++++++------
+ migration/migration.c   |  8 +++++++-
+ migration/savevm.c      |  7 ++++---
+ 5 files changed, 32 insertions(+), 16 deletions(-)
 
 -- 
-Peter Xu
+2.50.1
 
 
