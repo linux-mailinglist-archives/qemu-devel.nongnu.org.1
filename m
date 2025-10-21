@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C80BF8D22
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D258CBF8C7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:49:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJHs-0000ER-U6; Tue, 21 Oct 2025 16:48:56 -0400
+	id 1vBJHt-0000Fd-82; Tue, 21 Oct 2025 16:48:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHo-000075-KO
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:52 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHp-0000B3-II
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:53 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHg-0001B5-0r
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:52 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-46b303f755aso64862905e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHm-0001Bf-2j
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:53 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-471b80b994bso43074905e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079721; x=1761684521; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079726; x=1761684526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KarjRMReFBr6aXs6DXwNVmSxe1Qqf0rq+Hp4zCMDXIw=;
- b=kvtJbHfyf8OBcxD1Of72yGSzcQN0i17qPiDCmm2sUmPNWFFOez0jxK+NUv/Zp6ZMUy
- 44fiP2KeSlM0Bg4jVuQrmgfWfEed9DDFvExXoMmS1GZLD5aOT94Tut2vsJUKj7ygv//T
- 11MH3cUJTnMCWvS4o/DTmdDGn1QR1nDLEEM7tCVLH/OIp3fjlNQrleyqcnmTvxqwiUP2
- byvuqEryzPbe/IaszDv18JbhBy2w2Gl3DNvBLyEsdaFf2VIsqQrxtKzUkCfxXidbVunn
- ARk1HVUbXNt9V2dHdV6CMNGpZN1TizfX5Ql1bOhKa+QTHnR3QNaXh4ScZqflwBFQJFtp
- URDw==
+ :reply-to; bh=pm3cCQ10tYk8d37QLddrP30Ira7iE5Xo6EG/tSdEOMU=;
+ b=ONPl/mviAiPnYPpO+s+pG5C/7W7YWnywePAT/DuR8iockeRHOSRf5h+HmYcZ733WHc
+ BPkxpb5ej5QgrBpxisdPWNokAgVAHuGAkVwDhMVauHMu3Ctz21cYqvd50AQiVIBb6v6S
+ /XoR9Q5qAqusNF2gGo7JRLNrHBq9MmXId88qxCFoVnoxJQAbayV/H35VTjOJB1J0SRoW
+ 7I5n+QtK67/mciFAlelID+R/LhrdQCEP2biRfMOMfmQtn+sVKzebeq6rd91ZWyMYsEad
+ o7AJfTkW/jB2V16Y1RSUb8RzLk+kDxec0ywkSGf0ijFk9b9Ni74dNfn55N7KKeI+7rEt
+ EfBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079721; x=1761684521;
+ d=1e100.net; s=20230601; t=1761079726; x=1761684526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KarjRMReFBr6aXs6DXwNVmSxe1Qqf0rq+Hp4zCMDXIw=;
- b=sBfDPwPbFiis+3yxKFi+A8JcDsM/c0kaNLv0rwRIHTkUqG9QUjPi/iyqhykfKhsqae
- 5mWdTfRtdYfw5iZ1AWDvkpfU7JkWtP1SGYWU8+ZLLt5lrBjRh18fY6tm4FeSOwiOOUUp
- RnruME7RdU5l4HdXBg7bzNjJs8wmSrO0/9lklE800RfL+cfCi+gZS+GoL/zuJf93WllM
- +6Pc3zkyrjcfIxfoQdn15O2jxkHcFmmRqEmOmAmhaVpS1f0fFdaHVi3LPRHIDkch5dcS
- gorA+418X5gbOcJxvXlAdViQi9xviRojr/2UGP5tU9ODwkaV8zogrXdrbqo4GMBmsaMm
- Xzfg==
-X-Gm-Message-State: AOJu0YzK31BH4vyIFYzFt1uBorfUNB3EbG3eR8AmIVIU6hCXKvfiCWcS
- LVMfHpAHOpVwOfiA4AQEx983y5CcuGXO4MBRxVCSfpBJoTHhyoGdGM3z/q0YdYD5DRoD0cSyFl5
- Oof7xe9U=
-X-Gm-Gg: ASbGnctvBPNZMYCFAbjh6NVukTjfdniHxVa/BGAlx4Z9KZ/46UZco2zx6Uc+NnO4yL6
- 840tQEVJjsfCh6eMs0gtO39Y3Gte1AG9ExmTnf/g7c9F3zg1C0T2l1JGSbJStvXYf9eVAH4fl/R
- /KxiDACcyXZkHLFVKU0eqsWVLRSi1kVbzlH7BX9LNV8e7ecUyb5j2JPiCHOrYWfYde0Fq5xfme+
- 66x1Lf1+NQ5jmGiatocxBH1INLj+6IEp1JzaVn414cISjdIdoUzQ+xRlcHtwH11CRMDmtxJfx4o
- IUlOU99d8/tVHP2C1W3nBUFpy6hjG8rqGCIBEMkZwXG2csmpMhmef4bPSdm1MquVwPoL+eZkxbG
- 0sN+GUN7nHNs/h+Td28npIFso/DcHI1CputeZCg1fSMsn1J1Fd2ktupbA+8c9GXS7DiX8V6yYov
- ocOd7TtAUqW2zUUGHJnbY6qhqXJrXyJoO+WAwGBFRkxlwWKs4jwg==
-X-Google-Smtp-Source: AGHT+IGAJhewCXhBudnXN1xErnFhAK2LieWkMn/v0aeG2RhSEB29iRjOdQsaATDfvlMNNT5GgayXYw==
-X-Received: by 2002:a05:600d:416b:b0:46e:1f92:49aa with SMTP id
- 5b1f17b1804b1-4711787c0b3mr141642025e9.15.1761079721363; 
- Tue, 21 Oct 2025 13:48:41 -0700 (PDT)
+ bh=pm3cCQ10tYk8d37QLddrP30Ira7iE5Xo6EG/tSdEOMU=;
+ b=foo4mai//5npxfImu9cvVDREQGK2sg7VbUURtMde1ZNw95xsdMdXk5sZLJY07uZxvS
+ 7gVLm1nJEx1QP6c4NAnXCCFGWxq8CQMS22VKtozkT6vsywgwIRcKj+JFKAzO2YNdFWTp
+ VdajEljqVysBxGRN8dObSHPv2c5HHn3HdU3b5yoNpZSXtl50U+tqRVLet5gYZuk20TjY
+ rKATPBvt/FKV3CNTWsM2MA6Oh8C19IJpf8Re71T6RuasZFk6ZwNKtiAw7hWFXxu1r+s7
+ 8HVCrAnn+WRk0YUSPg+ALd06D68UeaZQQ5OdP4fZjVdEcou+PXpTku9ZAKnTwEDFt08K
+ P7kQ==
+X-Gm-Message-State: AOJu0YxrNQq2L7gTKAsTLeYXi7e6KFU4yfmmt4nwGnEFkvF9ILuQ9YDU
+ 7tnWXrV+Spm5X0BCaP2UHMzzqytrbakNwC8B2bvsIHiJF+XC594TljBCzs+OIuj5wA2a75pVdXl
+ w6n9h8OU=
+X-Gm-Gg: ASbGnctA09ZQHM/ezRyX5dLOLS5YeyX8xmeGxTs+e2yC3zIlXn20I2i40rAgWM3Yv4s
+ Smd0SAKvGqvtRTm5Zmy2moobHYzAQIQSV02ZTEn2jU8TzuWsgL1N/BtTAqv57DWSjR1xF+j2I3a
+ rK1scXjSOmYEmduBu2EIqm8zlNb8HcDc3wBwJcln7lGQaefpZzPsHNOdodVVcMei9hqMyd7Sa4X
+ xzp4eYrAJ3Y4mcbmHjroO/wt0aN9fmajqBmyYLZ9AUIcM77KZQF7QYFxTEJmhvBUE8d9JfaVvWj
+ E92HM1s9lMin+65kasfRJeHWzTiTPGZyhnFjfKbksg6N9vP5ALIvrRsUU5utDX2x8AnSM63rdmb
+ y3ERzSgB5fJLaaSqFMpgc3R8pc2qsDtRHRYFeUdIvNrHpVJq79nHaKzm+cv4P/sI2c6fPWIgM0e
+ Ajjq/A/L/5xbi/J/twiU2i9Tz8z+kcjSRxVbUXepgmkhkI/RIQDw==
+X-Google-Smtp-Source: AGHT+IF9xeU35tnwNruu0VbMQf5zaeTVg+1Ap70Go1+m30PtINYvI0CUtLPXw/XQ05R1ZZ/o/vlrmA==
+X-Received: by 2002:a05:600c:470d:b0:471:7c8:ddf7 with SMTP id
+ 5b1f17b1804b1-471178a7447mr121045525e9.14.1761079725951; 
+ Tue, 21 Oct 2025 13:48:45 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c427ed3fsm11788005e9.1.2025.10.21.13.48.40
+ 5b1f17b1804b1-475c4378cbesm9203365e9.16.2025.10.21.13.48.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:40 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/45] hw/net/can/xlnx-versal-canfd: refactor the banked
- registers logic
-Date: Tue, 21 Oct 2025 22:46:35 +0200
-Message-ID: <20251021204700.56072-22-philmd@linaro.org>
+Subject: [PULL 22/45] hw/net/can/xlnx-versal-canfd: remove register API usage
+ for banked regs
+Date: Tue, 21 Oct 2025 22:46:36 +0200
+Message-ID: <20251021204700.56072-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,219 +100,383 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-The CANFD device has several groups of registers:
-  - the main control registers from 0x0 to 0xec
-  - several banks of multiple registers. The number of banks is either
-    hardcoded, or configurable using QOM properties:
-      - Tx registers
-      - Filter registers
-      - Tx events registers
-      - Rx0 registers
-      - Rx1 registers
+Now that we have a simple decoding logic for all the banked registers,
+remove the register API usage for them. This restricts the register API
+usage to only the base registers (from 0x0 to 0xec).
 
-As of now, all the registers are handled using the register API. The
-banked register logic results in a convoluted code to correctly allocate
-the register descriptors for the register API. This code bypasses the
-standard register API creation function (register_init_block). The
-resulting code leaks memory when the device is finalized.
-
-This commit introduces decoding logic for the banked registers. Those
-registers are quite simple in practice. Accessing them triggers no
-side-effect (only the filter registers need a check to catch guest
-invalid behaviour). Starting from the Tx events registers, they are all
-read-only.
-
-The main device memory region is changed to an I/O one, calling the
-new decoding logic when accessed. The register API memory region still
-overlaps all of it so for now the introduced code has no effect. The
-next commit will remove the register API usage for banked registers.
+This also removes all the custom code that was creating register
+descriptors for the register API and was leading to memory leaks when
+the device was finalized.
 
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Luc Michel <luc.michel@amd.com>
-Message-ID: <20251017161809.235740-6-luc.michel@amd.com>
-[PMD: Have canfd_decode_reg_bank() take optional @idx, types fixups]
+Message-ID: <20251017161809.235740-7-luc.michel@amd.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/can/xlnx-versal-canfd.c | 150 ++++++++++++++++++++++++++++++++-
- 1 file changed, 146 insertions(+), 4 deletions(-)
+ include/hw/net/xlnx-versal-canfd.h |   8 -
+ hw/net/can/xlnx-versal-canfd.c     | 303 ++---------------------------
+ 2 files changed, 15 insertions(+), 296 deletions(-)
 
+diff --git a/include/hw/net/xlnx-versal-canfd.h b/include/hw/net/xlnx-versal-canfd.h
+index ad3104dd13f..396f90d6dc1 100644
+--- a/include/hw/net/xlnx-versal-canfd.h
++++ b/include/hw/net/xlnx-versal-canfd.h
+@@ -54,14 +54,6 @@ typedef struct XlnxVersalCANFDState {
+     qemu_irq                irq_addr_err;
+ 
+     RegisterInfo            reg_info[XLNX_VERSAL_CANFD_R_MAX];
+-    RegisterAccessInfo      *tx_regs;
+-    RegisterAccessInfo      *rx0_regs;
+-    RegisterAccessInfo      *rx1_regs;
+-    RegisterAccessInfo      *af_regs;
+-    RegisterAccessInfo      *txe_regs;
+-    RegisterAccessInfo      *rx_mailbox_regs;
+-    RegisterAccessInfo      *af_mask_regs_mailbox;
+-
+     uint32_t                regs[XLNX_VERSAL_CANFD_R_MAX];
+ 
+     ptimer_state            *canfd_timer;
 diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 99bbdd7d3fe..04f9a6d57d7 100644
+index 04f9a6d57d7..5735639b85a 100644
 --- a/hw/net/can/xlnx-versal-canfd.c
 +++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -1410,6 +1410,22 @@ static uint64_t canfd_srr_pre_write(RegisterInfo *reg, uint64_t val64)
-     return s->regs[R_SOFTWARE_RESET_REGISTER];
+@@ -1426,46 +1426,6 @@ static void filter_reg_write(XlnxVersalCANFDState *s, hwaddr addr,
+     }
  }
  
-+static void filter_reg_write(XlnxVersalCANFDState *s, hwaddr addr,
-+                             unsigned bank_idx, uint32_t val)
-+{
-+    size_t reg_idx = addr / sizeof(uint32_t);
-+
-+    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] & (1 << bank_idx))) {
-+        s->regs[reg_idx] = val;
-+    } else {
-+        g_autofree char *path = object_get_canonical_path(OBJECT(s));
-+
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter register 0x%"
-+                      HWADDR_PRIx " changed while filter %u enabled\n",
-+                      path, addr, bank_idx + 1);
-+    }
-+}
-+
- static uint64_t filter_mask(RegisterInfo *reg, uint64_t val64)
+-static uint64_t filter_mask(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
+-    uint32_t reg_idx = (reg->access->addr) / 4;
+-    uint32_t val = val64;
+-    uint32_t filter_offset = (reg_idx - R_AFMR_REGISTER) / 2;
+-
+-    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
+-        (1 << filter_offset))) {
+-        s->regs[reg_idx] = val;
+-    } else {
+-        g_autofree char *path = object_get_canonical_path(OBJECT(s));
+-
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter %d not enabled\n",
+-                      path, filter_offset + 1);
+-    }
+-
+-    return s->regs[reg_idx];
+-}
+-
+-static uint64_t filter_id(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
+-    hwaddr reg_idx = (reg->access->addr) / 4;
+-    uint32_t val = val64;
+-    uint32_t filter_offset = (reg_idx - R_AFIR_REGISTER) / 2;
+-
+-    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
+-        (1 << filter_offset))) {
+-        s->regs[reg_idx] = val;
+-    } else {
+-        g_autofree char *path = object_get_canonical_path(OBJECT(s));
+-
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter %d not enabled\n",
+-                      path, filter_offset + 1);
+-    }
+-
+-    return s->regs[reg_idx];
+-}
+-
+ static uint64_t canfd_tx_fifo_status_prew(RegisterInfo *reg, uint64_t val64)
  {
      XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
-@@ -1763,9 +1779,135 @@ static void xlnx_versal_canfd_ptimer_cb(void *opaque)
-     /* No action required on the timer rollover. */
+@@ -1591,125 +1551,6 @@ static uint64_t canfd_write_check_prew(RegisterInfo *reg, uint64_t val64)
+     return 0;
  }
  
-+static bool canfd_decode_reg_bank(XlnxVersalCANFDState *s, hwaddr addr,
-+                                  hwaddr first_reg, hwaddr last_reg,
-+                                  size_t num_banks, unsigned *idx,
-+                                  hwaddr *offset)
-+{
-+    hwaddr base = addr - first_reg;
-+    hwaddr span = last_reg - first_reg + sizeof(uint32_t);
-+    unsigned index = base / span;
+-static const RegisterAccessInfo canfd_tx_regs[] = {
+-    {   .name = "TB_ID_REGISTER",  .addr = A_TB_ID_REGISTER,
+-    },{ .name = "TB0_DLC_REGISTER",  .addr = A_TB0_DLC_REGISTER,
+-    },{ .name = "TB_DW0_REGISTER",  .addr = A_TB_DW0_REGISTER,
+-    },{ .name = "TB_DW1_REGISTER",  .addr = A_TB_DW1_REGISTER,
+-    },{ .name = "TB_DW2_REGISTER",  .addr = A_TB_DW2_REGISTER,
+-    },{ .name = "TB_DW3_REGISTER",  .addr = A_TB_DW3_REGISTER,
+-    },{ .name = "TB_DW4_REGISTER",  .addr = A_TB_DW4_REGISTER,
+-    },{ .name = "TB_DW5_REGISTER",  .addr = A_TB_DW5_REGISTER,
+-    },{ .name = "TB_DW6_REGISTER",  .addr = A_TB_DW6_REGISTER,
+-    },{ .name = "TB_DW7_REGISTER",  .addr = A_TB_DW7_REGISTER,
+-    },{ .name = "TB_DW8_REGISTER",  .addr = A_TB_DW8_REGISTER,
+-    },{ .name = "TB_DW9_REGISTER",  .addr = A_TB_DW9_REGISTER,
+-    },{ .name = "TB_DW10_REGISTER",  .addr = A_TB_DW10_REGISTER,
+-    },{ .name = "TB_DW11_REGISTER",  .addr = A_TB_DW11_REGISTER,
+-    },{ .name = "TB_DW12_REGISTER",  .addr = A_TB_DW12_REGISTER,
+-    },{ .name = "TB_DW13_REGISTER",  .addr = A_TB_DW13_REGISTER,
+-    },{ .name = "TB_DW14_REGISTER",  .addr = A_TB_DW14_REGISTER,
+-    },{ .name = "TB_DW15_REGISTER",  .addr = A_TB_DW15_REGISTER,
+-    }
+-};
+-
+-static const RegisterAccessInfo canfd_rx0_regs[] = {
+-    {   .name = "RB_ID_REGISTER",  .addr = A_RB_ID_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DLC_REGISTER",  .addr = A_RB_DLC_REGISTER,
+-        .ro = 0xfe1fffff,
+-    },{ .name = "RB_DW0_REGISTER",  .addr = A_RB_DW0_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW1_REGISTER",  .addr = A_RB_DW1_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW2_REGISTER",  .addr = A_RB_DW2_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW3_REGISTER",  .addr = A_RB_DW3_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW4_REGISTER",  .addr = A_RB_DW4_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW5_REGISTER",  .addr = A_RB_DW5_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW6_REGISTER",  .addr = A_RB_DW6_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW7_REGISTER",  .addr = A_RB_DW7_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW8_REGISTER",  .addr = A_RB_DW8_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW9_REGISTER",  .addr = A_RB_DW9_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW10_REGISTER",  .addr = A_RB_DW10_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW11_REGISTER",  .addr = A_RB_DW11_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW12_REGISTER",  .addr = A_RB_DW12_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW13_REGISTER",  .addr = A_RB_DW13_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW14_REGISTER",  .addr = A_RB_DW14_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW15_REGISTER",  .addr = A_RB_DW15_REGISTER,
+-        .ro = 0xffffffff,
+-    }
+-};
+-
+-static const RegisterAccessInfo canfd_rx1_regs[] = {
+-    {   .name = "RB_ID_REGISTER_1",  .addr = A_RB_ID_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DLC_REGISTER_1",  .addr = A_RB_DLC_REGISTER_1,
+-        .ro = 0xfe1fffff,
+-    },{ .name = "RB0_DW0_REGISTER_1",  .addr = A_RB0_DW0_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW1_REGISTER_1",  .addr = A_RB_DW1_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW2_REGISTER_1",  .addr = A_RB_DW2_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW3_REGISTER_1",  .addr = A_RB_DW3_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW4_REGISTER_1",  .addr = A_RB_DW4_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW5_REGISTER_1",  .addr = A_RB_DW5_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW6_REGISTER_1",  .addr = A_RB_DW6_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW7_REGISTER_1",  .addr = A_RB_DW7_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW8_REGISTER_1",  .addr = A_RB_DW8_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW9_REGISTER_1",  .addr = A_RB_DW9_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW10_REGISTER_1",  .addr = A_RB_DW10_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW11_REGISTER_1",  .addr = A_RB_DW11_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW12_REGISTER_1",  .addr = A_RB_DW12_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW13_REGISTER_1",  .addr = A_RB_DW13_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW14_REGISTER_1",  .addr = A_RB_DW14_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW15_REGISTER_1",  .addr = A_RB_DW15_REGISTER_1,
+-        .ro = 0xffffffff,
+-    }
+-};
+-
+-/* Acceptance filter registers. */
+-static const RegisterAccessInfo canfd_af_regs[] = {
+-    {   .name = "AFMR_REGISTER",  .addr = A_AFMR_REGISTER,
+-        .pre_write = filter_mask,
+-    },{ .name = "AFIR_REGISTER",  .addr = A_AFIR_REGISTER,
+-        .pre_write = filter_id,
+-    }
+-};
+-
+-static const RegisterAccessInfo canfd_txe_regs[] = {
+-    {   .name = "TXE_FIFO_TB_ID_REGISTER",  .addr = A_TXE_FIFO_TB_ID_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "TXE_FIFO_TB_DLC_REGISTER",  .addr = A_TXE_FIFO_TB_DLC_REGISTER,
+-        .ro = 0xffffffff,
+-    }
+-};
+-
+ static const RegisterAccessInfo canfd_regs_info[] = {
+     {   .name = "SOFTWARE_RESET_REGISTER",  .addr = A_SOFTWARE_RESET_REGISTER,
+         .pre_write = canfd_srr_pre_write,
+@@ -1915,6 +1756,16 @@ static const MemoryRegionOps canfd_ops = {
+     },
+ };
+ 
++static const MemoryRegionOps canfd_regs_ops = {
++    .read = register_read_memory,
++    .write = register_write_memory,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
 +
-+    if (index >= num_banks) {
-+        return false;
-+    }
-+    if (idx) {
-+        *idx = index;
-+    }
-+
-+    *offset = base % span;
-+    *offset += first_reg;
-+
-+    return true;
-+}
-+
-+/*
-+ * Decode the given addr into a (idx, offset) pair:
-+ *   - idx is the bank index of the register at addr,
-+ *   - offset is the register offset relative to bank 0
-+ *
-+ * @return true is the decoding succeded, false otherwise
-+ */
-+static bool canfd_decode_addr(XlnxVersalCANFDState *s, hwaddr addr,
-+                              unsigned *idx, hwaddr *offset)
-+{
-+    if (addr <= A_RX_FIFO_WATERMARK_REGISTER) {
-+        /* from 0x0 to 0xec. Handled by the register API */
-+        g_assert_not_reached();
-+    } else if (addr < A_TB_ID_REGISTER) {
-+        /* no register in this gap */
-+        return false;
-+    } else if (addr < A_AFMR_REGISTER) {
-+        /* TX registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_TB_ID_REGISTER, A_TB_DW15_REGISTER,
-+                                     s->cfg.tx_fifo, idx, offset);
-+    } else if (addr < A_TXE_FIFO_TB_ID_REGISTER) {
-+        /* Filter registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_AFMR_REGISTER, A_AFIR_REGISTER,
-+                                     32, idx, offset);
-+    } else if (addr < A_RB_ID_REGISTER) {
-+        /* TX event registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_TXE_FIFO_TB_ID_REGISTER,
-+                                     A_TXE_FIFO_TB_DLC_REGISTER,
-+                                     32, idx, offset);
-+    } else if (addr < A_RB_ID_REGISTER_1) {
-+        /* RX0 registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_RB_ID_REGISTER,
-+                                     A_RB_DW15_REGISTER,
-+                                     s->cfg.rx0_fifo, idx, offset);
-+    } else if (addr <= A_RB_DW15_REGISTER_1) {
-+        /* RX1 registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_RB_ID_REGISTER_1,
-+                                     A_RB_DW15_REGISTER_1,
-+                                     s->cfg.rx1_fifo, idx, offset);
-+    }
-+
-+    /* decode error */
-+    return false;
-+}
-+
-+static uint64_t canfd_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    XlnxVersalCANFDState *s = XILINX_CANFD(opaque);
-+    hwaddr reg_offset;
-+    uint64_t ret;
-+
-+    if (!canfd_decode_addr(s, addr, NULL, &reg_offset)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, TYPE_XILINX_CANFD
-+                      ": read to unknown register at address 0x%"
-+                      HWADDR_PRIx "\n", addr);
-+        return 0;
-+    }
-+
-+    switch (reg_offset) {
-+    default:
-+        ret = s->regs[addr / sizeof(uint32_t)];
-+    }
-+
-+    return ret;
-+}
-+
-+static void canfd_write(void *opaque, hwaddr addr, uint64_t value,
-+                        unsigned size)
-+{
-+    XlnxVersalCANFDState *s = XILINX_CANFD(opaque);
-+    unsigned bank_idx;
-+    hwaddr reg_offset;
-+
-+    if (!canfd_decode_addr(s, addr, &bank_idx, &reg_offset)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, TYPE_XILINX_CANFD
-+                      ": write to unknown register at address 0x%"
-+                      HWADDR_PRIx "\n", addr);
-+        return;
-+    }
-+
-+    if (addr >= A_TXE_FIFO_TB_ID_REGISTER) {
-+        /* All registers from TX event regs to the end are read-only */
-+        qemu_log_mask(LOG_GUEST_ERROR, TYPE_XILINX_CANFD
-+                      ": write to read-only register at 0x%" HWADDR_PRIx "\n",
-+                      addr);
-+        return;
-+    }
-+
-+    switch (reg_offset) {
-+    case A_AFMR_REGISTER:
-+    case A_AFIR_REGISTER:
-+        filter_reg_write(s, addr, bank_idx, value);
-+        break;
-+
-+    default:
-+        s->regs[addr / sizeof(uint32_t)] = value;
-+    }
-+}
-+
- static const MemoryRegionOps canfd_ops = {
--    .read = register_read_memory,
--    .write = register_write_memory,
-+    .read = canfd_read,
-+    .write = canfd_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-@@ -2018,8 +2160,8 @@ static void canfd_init(Object *obj)
+ static void canfd_reset(DeviceState *dev)
  {
-     XlnxVersalCANFDState *s = XILINX_CANFD(obj);
- 
--    memory_region_init(&s->iomem, obj, TYPE_XILINX_CANFD,
--                       XLNX_VERSAL_CANFD_R_MAX * 4);
-+    memory_region_init_io(&s->iomem, obj, &canfd_ops, s, TYPE_XILINX_CANFD,
-+                          XLNX_VERSAL_CANFD_R_MAX * 4);
+     XlnxVersalCANFDState *s = XILINX_CANFD(dev);
+@@ -1994,140 +1845,16 @@ static int xlnx_canfd_connect_to_bus(XlnxVersalCANFDState *s,
+     return can_bus_insert_client(bus, &s->bus_client);
  }
  
- static const VMStateDescription vmstate_canfd = {
+-#define NUM_REG_PER_AF      ARRAY_SIZE(canfd_af_regs)
+-#define NUM_AF              32
+-#define NUM_REG_PER_TXE     ARRAY_SIZE(canfd_txe_regs)
+-#define NUM_TXE             32
+-
+-static int canfd_populate_regarray(XlnxVersalCANFDState *s,
+-                                  RegisterInfoArray *r_array, int pos,
+-                                  const RegisterAccessInfo *rae,
+-                                  int num_rae)
+-{
+-    int i;
+-
+-    for (i = 0; i < num_rae; i++) {
+-        int index = rae[i].addr / 4;
+-        RegisterInfo *r = &s->reg_info[index];
+-
+-        *r = (RegisterInfo) {
+-            .data = &s->regs[index],
+-            .data_size = sizeof(uint32_t),
+-            .access = &rae[i],
+-            .opaque = OBJECT(s),
+-        };
+-
+-        r_array->r[i + pos] = r;
+-    }
+-    return i + pos;
+-}
+-
+-static void canfd_create_rai(RegisterAccessInfo *rai_array,
+-                                const RegisterAccessInfo *canfd_regs,
+-                                int template_rai_array_sz,
+-                                int num_template_to_copy)
+-{
+-    int i;
+-    int reg_num;
+-
+-    for (reg_num = 0; reg_num < num_template_to_copy; reg_num++) {
+-        int pos = reg_num * template_rai_array_sz;
+-
+-        memcpy(rai_array + pos, canfd_regs,
+-               template_rai_array_sz * sizeof(RegisterAccessInfo));
+-
+-        for (i = 0; i < template_rai_array_sz; i++) {
+-            const char *name = canfd_regs[i].name;
+-            uint64_t addr = canfd_regs[i].addr;
+-            rai_array[i + pos].name = g_strdup_printf("%s%d", name, reg_num);
+-            rai_array[i + pos].addr = addr + pos * 4;
+-        }
+-    }
+-}
+-
+-static RegisterInfoArray *canfd_create_regarray(XlnxVersalCANFDState *s)
+-{
+-    const char *device_prefix = object_get_typename(OBJECT(s));
+-    uint64_t memory_size = XLNX_VERSAL_CANFD_R_MAX * 4;
+-    int num_regs;
+-    int pos = 0;
+-    RegisterInfoArray *r_array;
+-
+-    num_regs = ARRAY_SIZE(canfd_regs_info) +
+-                s->cfg.tx_fifo * NUM_REGS_PER_MSG_SPACE +
+-                s->cfg.rx0_fifo * NUM_REGS_PER_MSG_SPACE +
+-                NUM_AF * NUM_REG_PER_AF +
+-                NUM_TXE * NUM_REG_PER_TXE;
+-
+-    s->tx_regs = g_new0(RegisterAccessInfo,
+-                        s->cfg.tx_fifo * ARRAY_SIZE(canfd_tx_regs));
+-
+-    canfd_create_rai(s->tx_regs, canfd_tx_regs,
+-                     ARRAY_SIZE(canfd_tx_regs), s->cfg.tx_fifo);
+-
+-    s->rx0_regs = g_new0(RegisterAccessInfo,
+-                         s->cfg.rx0_fifo * ARRAY_SIZE(canfd_rx0_regs));
+-
+-    canfd_create_rai(s->rx0_regs, canfd_rx0_regs,
+-                     ARRAY_SIZE(canfd_rx0_regs), s->cfg.rx0_fifo);
+-
+-    s->af_regs = g_new0(RegisterAccessInfo,
+-                        NUM_AF * ARRAY_SIZE(canfd_af_regs));
+-
+-    canfd_create_rai(s->af_regs, canfd_af_regs,
+-                     ARRAY_SIZE(canfd_af_regs), NUM_AF);
+-
+-    s->txe_regs = g_new0(RegisterAccessInfo,
+-                         NUM_TXE * ARRAY_SIZE(canfd_txe_regs));
+-
+-    canfd_create_rai(s->txe_regs, canfd_txe_regs,
+-                     ARRAY_SIZE(canfd_txe_regs), NUM_TXE);
+-
+-    if (s->cfg.enable_rx_fifo1) {
+-        num_regs += s->cfg.rx1_fifo * NUM_REGS_PER_MSG_SPACE;
+-
+-        s->rx1_regs = g_new0(RegisterAccessInfo,
+-                             s->cfg.rx1_fifo * ARRAY_SIZE(canfd_rx1_regs));
+-
+-        canfd_create_rai(s->rx1_regs, canfd_rx1_regs,
+-                         ARRAY_SIZE(canfd_rx1_regs), s->cfg.rx1_fifo);
+-    }
+-
+-    r_array = g_new0(RegisterInfoArray, 1);
+-    r_array->r = g_new0(RegisterInfo * , num_regs);
+-    r_array->num_elements = num_regs;
+-    r_array->prefix = device_prefix;
+-
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  canfd_regs_info,
+-                                  ARRAY_SIZE(canfd_regs_info));
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->tx_regs, s->cfg.tx_fifo *
+-                                  NUM_REGS_PER_MSG_SPACE);
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->rx0_regs, s->cfg.rx0_fifo *
+-                                  NUM_REGS_PER_MSG_SPACE);
+-    if (s->cfg.enable_rx_fifo1) {
+-        pos = canfd_populate_regarray(s, r_array, pos,
+-                                      s->rx1_regs, s->cfg.rx1_fifo *
+-                                      NUM_REGS_PER_MSG_SPACE);
+-    }
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->af_regs, NUM_AF * NUM_REG_PER_AF);
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->txe_regs, NUM_TXE * NUM_REG_PER_TXE);
+-
+-    memory_region_init_io(&r_array->mem, OBJECT(s), &canfd_ops, r_array,
+-                          device_prefix, memory_size);
+-    return r_array;
+-}
+-
+ static void canfd_realize(DeviceState *dev, Error **errp)
+ {
+     XlnxVersalCANFDState *s = XILINX_CANFD(dev);
+     RegisterInfoArray *reg_array;
+ 
+-    reg_array = canfd_create_regarray(s);
++    reg_array = register_init_block32(dev, canfd_regs_info,
++                                      ARRAY_SIZE(canfd_regs_info), s->reg_info,
++                                      s->regs, &canfd_regs_ops, false,
++                                      A_RX_FIFO_WATERMARK_REGISTER
++                                          + sizeof(uint32_t));
+     memory_region_add_subregion(&s->iomem, 0x00, &reg_array->mem);
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
+     sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq_canfd_int);
 -- 
 2.51.0
 
