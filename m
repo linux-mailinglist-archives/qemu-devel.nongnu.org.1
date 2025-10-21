@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB59BF56F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E37EBF570C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:11:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB8Kv-0007MA-Bd; Tue, 21 Oct 2025 05:07:21 -0400
+	id 1vB8L6-0008IS-Tq; Tue, 21 Oct 2025 05:07:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Ks-0007Dc-Nz
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:07:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vB8L3-00086c-UK
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:07:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Kq-0004RP-Kh
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:07:18 -0400
+ id 1vB8L0-0004TN-Kf
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:07:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761037635;
+ s=mimecast20190719; t=1761037644;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CMw81vkVQi04474LbjAtyqfg7CC8nxWj8ZSHSjYZ4I8=;
- b=MzYtnDpOgDlm8J375u3NdH9ouk0rxhSBN9oEtrkjOxKZoBpXOfpMSdQBPqisxnhWyUvQO2
- bgHkUmYfw+ueLCWUWvXdm0r9DSe9qB6oGMxeZzRbHIoz8iK+A5uKJW52nwWAPbPXMcBiDU
- OHp6TLeOX9bwLUgr0q3g/HrMJwO44f8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=22a0insM+50eLf3LfN0tac94SvPSUaogq0VOtJx8xKo=;
+ b=Ksx0+0P8B20Dbi6JwYbjs63UaDsHrHkRDz1WaUaj2u+Puezi74cP1DCNs/n5rm7Elqt+2V
+ l1L3eu9wb+RessFGm2e7kclHsQTc11GAvVkQ/NkTzcgh352Rt+lvhjQknIqywWQYsyGAeB
+ tUc2PCqvgqnTDU/jUAZPb1K7nwNnjIc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-IvOp5BhhOuuqWEv4nctYAg-1; Tue,
- 21 Oct 2025 05:07:11 -0400
-X-MC-Unique: IvOp5BhhOuuqWEv4nctYAg-1
-X-Mimecast-MFC-AGG-ID: IvOp5BhhOuuqWEv4nctYAg_1761037630
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-PI9iVaOWNsybpeGgqUW_Qw-1; Tue,
+ 21 Oct 2025 05:07:16 -0400
+X-MC-Unique: PI9iVaOWNsybpeGgqUW_Qw-1
+X-Mimecast-MFC-AGG-ID: PI9iVaOWNsybpeGgqUW_Qw_1761037635
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4C6191956096; Tue, 21 Oct 2025 09:07:10 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B641319560AA; Tue, 21 Oct 2025 09:07:15 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ED74D1800451; Tue, 21 Oct 2025 09:07:08 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6334A19560A2; Tue, 21 Oct 2025 09:07:13 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -53,16 +53,16 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 41/43] audio: drop needless list of FE
-Date: Tue, 21 Oct 2025 13:03:12 +0400
-Message-ID: <20251021090317.425409-42-marcandre.lureau@redhat.com>
+Subject: [PATCH 42/43] audio: move capture API to own header
+Date: Tue, 21 Oct 2025 13:03:13 +0400
+Message-ID: <20251021090317.425409-43-marcandre.lureau@redhat.com>
 In-Reply-To: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,67 +90,141 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Apparently, it was never used.
+For modularity/clarity reasons, move the capture API in a specific
+header.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/audio_int.h    | 1 -
- include/qemu/audio.h | 1 -
- audio/audio.c        | 4 ----
- 3 files changed, 6 deletions(-)
+ audio/audio_int.h            |  1 +
+ include/qemu/audio-capture.h | 43 ++++++++++++++++++++++++++++++++++++
+ include/qemu/audio.h         | 30 -------------------------
+ ui/vnc.h                     |  2 +-
+ 4 files changed, 45 insertions(+), 31 deletions(-)
+ create mode 100644 include/qemu/audio-capture.h
 
 diff --git a/audio/audio_int.h b/audio/audio_int.h
-index 0116ee6707..ef7a0de200 100644
+index ef7a0de200..67da5ec6da 100644
 --- a/audio/audio_int.h
 +++ b/audio/audio_int.h
-@@ -246,7 +246,6 @@ typedef struct AudioBE {
-     void *drv_opaque;
+@@ -30,6 +30,7 @@
+ /* #define RECIPROCAL */
+ #endif
+ #include "qemu/audio.h"
++#include "qemu/audio-capture.h"
+ #include "mixeng.h"
  
-     QEMUTimer *ts;
--    QLIST_HEAD (fe_listhead, AudioFE) fe_head;
-     QLIST_HEAD (hw_in_listhead, HWVoiceIn) hw_head_in;
-     QLIST_HEAD (hw_out_listhead, HWVoiceOut) hw_head_out;
-     QLIST_HEAD (cap_listhead, CaptureVoiceOut) cap_head;
+ #ifdef CONFIG_GIO
+diff --git a/include/qemu/audio-capture.h b/include/qemu/audio-capture.h
+new file mode 100644
+index 0000000000..7122afd385
+--- /dev/null
++++ b/include/qemu/audio-capture.h
+@@ -0,0 +1,43 @@
++/*
++ * QEMU Audio subsystem
++ *
++ * SPDX-License-Identifier: MIT
++ */
++#ifndef QEMU_AUDIO_CAPTURE_H
++#define QEMU_AUDIO_CAPTURE_H
++
++#include "audio.h"
++
++typedef struct CaptureVoiceOut CaptureVoiceOut;
++
++typedef enum {
++    AUD_CNOTIFY_ENABLE,
++    AUD_CNOTIFY_DISABLE
++} audcnotification_e;
++
++struct audio_capture_ops {
++    void (*notify) (void *opaque, audcnotification_e cmd);
++    void (*capture) (void *opaque, const void *buf, int size);
++    void (*destroy) (void *opaque);
++};
++
++struct capture_ops {
++    void (*info) (void *opaque);
++    void (*destroy) (void *opaque);
++};
++
++typedef struct CaptureState {
++    void *opaque;
++    struct capture_ops ops;
++    QLIST_ENTRY (CaptureState) entries;
++} CaptureState;
++
++CaptureVoiceOut *AUD_add_capture(
++    AudioBE *s,
++    struct audsettings *as,
++    struct audio_capture_ops *ops,
++    void *opaque
++    );
++void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque);
++
++#endif /* QEMU_AUDIO_CAPTURE_H */
 diff --git a/include/qemu/audio.h b/include/qemu/audio.h
-index ab5367d28b..16c8877970 100644
+index 16c8877970..753e18c17c 100644
 --- a/include/qemu/audio.h
 +++ b/include/qemu/audio.h
-@@ -76,7 +76,6 @@ typedef struct AudioBE AudioBE;
- typedef struct AudioFE {
-     char *name;
-     AudioBE *be;
--    QLIST_ENTRY (AudioFE) entries;
- } AudioFE;
+@@ -41,30 +41,7 @@ typedef struct audsettings {
+     int endianness;
+ } audsettings;
  
- typedef struct QEMUAudioTimeStamp {
-diff --git a/audio/audio.c b/audio/audio.c
-index e03da8c344..7c7801a6ce 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -1620,7 +1620,6 @@ static void audio_be_init(Object *obj)
-     QLIST_INIT (&s->hw_head_out);
-     QLIST_INIT (&s->hw_head_in);
-     QLIST_INIT (&s->cap_head);
--    QLIST_INIT (&s->fe_head);
-     s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
+-typedef enum {
+-    AUD_CNOTIFY_ENABLE,
+-    AUD_CNOTIFY_DISABLE
+-} audcnotification_e;
+-
+-struct audio_capture_ops {
+-    void (*notify) (void *opaque, audcnotification_e cmd);
+-    void (*capture) (void *opaque, const void *buf, int size);
+-    void (*destroy) (void *opaque);
+-};
+-
+-struct capture_ops {
+-    void (*info) (void *opaque);
+-    void (*destroy) (void *opaque);
+-};
+-
+-typedef struct CaptureState {
+-    void *opaque;
+-    struct capture_ops ops;
+-    QLIST_ENTRY (CaptureState) entries;
+-} CaptureState;
+-
+ typedef struct SWVoiceOut SWVoiceOut;
+-typedef struct CaptureVoiceOut CaptureVoiceOut;
+ typedef struct SWVoiceIn SWVoiceIn;
  
-     s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
-@@ -1822,15 +1821,12 @@ bool AUD_register_fe (const char *name, AudioFE *card, Error **errp)
-     }
+ typedef struct AudioBEClass AudioBEClass;
+@@ -84,13 +61,6 @@ typedef struct QEMUAudioTimeStamp {
  
-     card->name = g_strdup (name);
--    memset (&card->entries, 0, sizeof (card->entries));
--    QLIST_INSERT_HEAD(&card->be->fe_head, card, entries);
+ bool AUD_register_fe (const char *name, AudioFE *fe, Error **errp);
+ void AUD_unregister_fe (AudioFE *fe);
+-CaptureVoiceOut *AUD_add_capture(
+-    AudioBE *s,
+-    struct audsettings *as,
+-    struct audio_capture_ops *ops,
+-    void *opaque
+-    );
+-void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque);
  
-     return true;
- }
- 
- void AUD_unregister_fe (AudioFE *card)
- {
--    QLIST_REMOVE (card, entries);
-     g_free (card->name);
- }
- 
+ SWVoiceOut *AUD_open_out (
+     AudioFE *fe,
+diff --git a/ui/vnc.h b/ui/vnc.h
+index 8ebf9901bc..87c8cf11e4 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -31,7 +31,7 @@
+ #include "qemu/thread.h"
+ #include "ui/clipboard.h"
+ #include "ui/console.h"
+-#include "qemu/audio.h"
++#include "qemu/audio-capture.h"
+ #include "qemu/bitmap.h"
+ #include "crypto/tlssession.h"
+ #include "qemu/buffer.h"
 -- 
 2.51.0
 
