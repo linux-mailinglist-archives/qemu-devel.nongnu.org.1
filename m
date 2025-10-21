@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22787BF8C83
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E33BF8C5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJHF-00063w-Gr; Tue, 21 Oct 2025 16:48:17 -0400
+	id 1vBJHM-0006mR-Fc; Tue, 21 Oct 2025 16:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHC-0005yM-MQ
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:15 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHJ-0006eM-Mg
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:21 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH9-00018o-6A
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:13 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-46b303f7469so48892315e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHF-00019G-JS
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:21 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3ee130237a8so3922469f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079689; x=1761684489; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079694; x=1761684494; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Vutle4YXIOFFrBvcNunmt19xjODe06KxvyMmRyQ1onQ=;
- b=Os/M8WOM/UQSyyEWo/mF3s4FzkiwXOoa+LZnJmLgroG9Z2qn7mxvV0qq1COkqpgBS/
- +kxS4nIorHTU75BIBsqedoMXKjukmIDfztPu0jiVRy8gOOgwtCpCQ/Iw4Mgzk8fMeeGz
- QGlRIhD0gMGjOqyxk+nJlmKhMoDqzEbX0nLleg8AeacZflbLLjoHryo/fgCr8M6kEygg
- I1KoPUJZHEpdKyzvTjToEaMkk8em5L8RDeye9q45dFTyreQtmPJK6b5Kui4iKUTHmdlF
- NnPjMtOZ1XeOEJ+XFcPj26YLP1CwdnPwufgi76vjiLSRvAjkvjRLJPq580FNitZr3kq1
- Tscw==
+ :reply-to; bh=Q+nGj84oA5Nf5HI4XwQsUpDQo9dIo/p1hzBMc/Uthic=;
+ b=ghgZjyuvcFcF0/0LFBEMC3V3P5BXQIep9kX1rnXhty3WxiMKfOzk8JTcxVzkXD6n2l
+ NRxztGreg6DMIhoL0ocbe5L61D+4c42D5vNOGPLSyBXzG9kNb3LIKApL+CKRm04Foe1I
+ WheeOiOQnAgoJdmeVduuKag91ISrXzaS0Q/f2ECewaoOig3GuR5y8agQtqa3qQnjdfdw
+ HurNQJrxhseOrycHUvzrkUjyxcOdq59SjnsyVqsxXfh+gZV4RbYpGgfD5HCYuuHqJGJh
+ U+bYxcbDjbI2kRkrk+wIQGetVt0VCKPHE03pPsDJ+i03yNL9Re9qmoaXGn1yXYbRJnc7
+ yLfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079689; x=1761684489;
+ d=1e100.net; s=20230601; t=1761079694; x=1761684494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vutle4YXIOFFrBvcNunmt19xjODe06KxvyMmRyQ1onQ=;
- b=DAotKQ5cLjYF/Dj6hiNKM7n5MHWDh5/NNBlgHYV1peB7QhG7MxslCw5wyfPXSeHtvW
- Mzui5koYJdi3dcPcDwo63tX8ph0Ab8XD9qfVNSGw+p0k+wQf1t2b0hB4z7JYTHtJ7S3t
- WBELqn313yWZePSMod+HUR8FKWHaMq9zs8+6fInW+EzQ97X5A/YM8Q1/jJatqPBlPnMf
- BIQxHDYW8D3TAaC7IwVuiQqOun+e1eYuNjxNqCX9Wl0cCGARyDXHkD3KjuzJRpxyiVfF
- rgM4r3O5odbebgADBIs+QRBtUCuFYSsUiHEMCUlXdqlVLevzv2a+Q8qeY4LtL1oTx8LW
- X6cw==
-X-Gm-Message-State: AOJu0YyiNys1Ot+x2tnlnPt1wtHEyRzWS79XYJuBTj9BJd99Dx7rauta
- RkM3U9utT8DgFsPipvd20YEWFCGYguEqkP1z916acjQP5xLNGzVURyhIBj0A+x9mKA4+9eyEI2x
- HMQAy370=
-X-Gm-Gg: ASbGncsnrLautBb9qPsCqqtBHfvpWgEh/C3hIWkQb8AXH5fBoc5jhvAaT/U7g8sCbJ9
- 9RBOgAx/2iahD7BfbIPZfcBUpUuQsKSRS1oU1f/E85QoDv5EQymyB2VgQuUzBpoR4DkpQ71HU8A
- xMJca4btLUq22UN+5jnz+bZw9yG0a7KKYHp581F6G5tV1dDXIE7wWR/B3Zj1IizJNh7+AECotFv
- gr3wDVxOOyPlYessaCh0/09PQAgSYUI99HAjX1iMl3OhpaKXrCTucTPFtzSvJETp/syhfLEPwyZ
- hwl7kSG5Mly6lbgDGbQzkVW+0onk+1hORzoEcK9FlDxnm+x7Ph3PYsCTWBwqyTdRZsXK4LCLP0T
- VvIF9086O70c+BYa8I2RB1q+hQgp4MA5l8uVuDZAJouZg863p8LaOA6H2C91i4nLH3vEh4kr9xa
- 5iNWL1+NZ1+YLFzHBondkKJsYYCZpHjBLQeac6qMnJRaUn4dcPjMiObUCHY+fN
-X-Google-Smtp-Source: AGHT+IHHhz0PfA4M2bG/xsFIM88eKoKfDlYj8m8DXImZxQr/P1sFLrzxhwCGvoejWOU2po78eDzrMg==
-X-Received: by 2002:a05:600c:548a:b0:471:669:e95d with SMTP id
- 5b1f17b1804b1-4711787dcc8mr120147665e9.12.1761079688803; 
- Tue, 21 Oct 2025 13:48:08 -0700 (PDT)
+ bh=Q+nGj84oA5Nf5HI4XwQsUpDQo9dIo/p1hzBMc/Uthic=;
+ b=Hm86biZQ/s9eNgcmpuTjrQWczgm2epUtgrCnHLjq0COHPcydQnjVUC/tRhv5aqScYG
+ Hm5H1TAPfegv/Hw2VRpjmX5lz24SZuS9BKQQI70bXkDqK8WtOYpvq0c/TkoS+oqmGOmp
+ EgE6UTa6VxOvUnOqzY30VaJcMKYPcdDiM96GY3FDxbnR3wkfnVR/QydZtF86mWZCHvNF
+ j/rIx4LOT09XkTAp19zYp1q+PK5mSMLzKtc5pS7qDeZMi2gLOIzxRLlezQCtW6XtPlzl
+ fzBX5ObTDugbpWhalfJQ0Uyx19SUHzkiTwh/j3RwWCZ4n6bCQA4Y9fJqAEbXI/bk5/b2
+ Skww==
+X-Gm-Message-State: AOJu0Yx7m3P5jkPf1R41fvdxjBI6/eAYKU2VI3YUxKSTVniB5iNFoOAz
+ EZ3S6fvJ06tWE9UBH46B5lw2YYGXUG+2+poo4xQ+nnu7ZXCIFhbTV/T41zI8L8zbUIj7euRTZlG
+ SCVaKIIw=
+X-Gm-Gg: ASbGncsdOzdA2WIAKYxKtAD8IItfcyuEuipAowgCrlkYf/xvkxP8uFlkuZrr+rG6QJs
+ 1LdeLh2iGucLHSe7Vcma78ywzwhXbTpsIYMZQGRTMiiB+HNsM+kmNvokxLWpXON9LLbFLvsatp+
+ a3rdhCUM9NVLV9Q8d0+HAxhPb6fjdnOPFU+aoaGAy4+fer7YPhWdUyFb19+B2yEO+H2g1AoSjV4
+ Jn79bskE6UmtqFPKUF5TIkNGg06YttDnEWvsT++Bou0P/85i+3tprdlFWooDuAAWsnfdL/ygMBG
+ H9TtaDugjj4UP9thT4yth+FuBwAOKxmacEZRUAkY4XshH0Hzic98BMZXkFXqjrI7vcdAeBSDVPB
+ Daxr1wHOc0TAjqos8jUFxCb65RF1DFCCjAvDFR1arl2oqk3UShG4vFaF9cdP3yxRRyqBBFlTWvA
+ YTusJPi+cjhdmMeFjyy1uij3BDspRpMoREKnaMoRacbXvyW1laOQ==
+X-Google-Smtp-Source: AGHT+IHHbxFhLgwcCn6aezB1693narYiwd2irD1vYqde0u/HTlK17e1WmlBn706iGD4kVPiO0Wy+Yw==
+X-Received: by 2002:a05:6000:1884:b0:3e5:394d:10bb with SMTP id
+ ffacd0b85a97d-42704defebdmr12687402f8f.41.1761079694524; 
+ Tue, 21 Oct 2025 13:48:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f009a9a9sm22537515f8f.29.2025.10.21.13.48.07
+ ffacd0b85a97d-427f00b9fa8sm22364672f8f.38.2025.10.21.13.48.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:07 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/45] hw/ppc/e500: Check for compatible CPU type instead of
- aborting ungracefully
-Date: Tue, 21 Oct 2025 22:46:28 +0200
-Message-ID: <20251021204700.56072-15-philmd@linaro.org>
+Subject: [PULL 15/45] hw/openrisc/openrisc_sim: Avoid buffer overflow build
+ error
+Date: Tue, 21 Oct 2025 22:46:29 +0200
+Message-ID: <20251021204700.56072-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,56 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-When using the ppce500 machine with an embedded CPU type that has
-the right MMU model, but is not part of the e500 CPU family, QEMU
-currently aborts ungracefully:
+Resolves this build breakage (which is actually a false-positive)
 
- $ ./qemu-system-ppc -machine ppce500 -cpu e200z5 -nographic
- qemu-system-ppc: ../qemu/hw/core/gpio.c:108: qdev_get_gpio_in_named:
-  Assertion `n >= 0 && n < gpio_list->num_in' failed.
- Aborted (core dumped)
+../hw/openrisc/openrisc_sim.c: In function ‘openrisc_sim_init’:
+../hw/openrisc/openrisc_sim.c:284:45: error: ‘__builtin___snprintf_chk’ output may be truncated before the last format character [-Werror=format-truncation=]
+     snprintf(alias, sizeof(alias), "serial%d", uart_idx);
+                                             ^
+In file included from /usr/include/stdio.h:964:0,
+                 from /data/qemu/include/qemu/osdep.h:114,
+                 from ../hw/openrisc/openrisc_sim.c:21:
+/usr/include/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 8 and 9 bytes into a destination of size 8
+   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        __glibc_objsize (__s), __fmt,
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        __va_arg_pack ());
+        ~~~~~~~~~~~~~~~~~
 
-The ppce500 machine expects a CPU with certain GPIO interrupt pins,
-so let's replace the coarse check for the MMU_BOOKE206 model with
-a more precise check that only allows CPUs from the e500 family.
+by using a modern, more robust allocation pattern.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3162
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <20251015111243.1585018-1-thuth@redhat.com>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <298bd904-1ee9-439e-8220-7a24e0952861@siemens.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/e500.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/openrisc/openrisc_sim.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 723c97fad2e..3d69428f31c 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -20,6 +20,7 @@
- #include "qemu/guest-random.h"
- #include "exec/target_page.h"
- #include "qapi/error.h"
-+#include "cpu-models.h"
- #include "e500.h"
- #include "e500-ccsr.h"
- #include "net/net.h"
-@@ -942,9 +943,8 @@ void ppce500_init(MachineState *machine)
-         env = &cpu->env;
-         cs = CPU(cpu);
+diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
+index 880c8ebbb8b..b7d9cdd9007 100644
+--- a/hw/openrisc/openrisc_sim.c
++++ b/hw/openrisc/openrisc_sim.c
+@@ -247,10 +247,10 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
+                                      OpenRISCCPU *cpus[], int irq_pin,
+                                      int uart_idx)
+ {
++    g_autofree char *alias = g_strdup_printf("serial%d", uart_idx);
+     void *fdt = state->fdt;
+     char *nodename;
+     qemu_irq serial_irq;
+-    char alias[sizeof("serial0")];
+     int i;
  
--        if (env->mmu_model != POWERPC_MMU_BOOKE206) {
--            error_report("MMU model %i not supported by this machine",
--                         env->mmu_model);
-+        if (!(POWERPC_CPU_GET_CLASS(cpu)->svr & POWERPC_SVR_E500)) {
-+            error_report("This machine needs a CPU from the e500 family");
-             exit(1);
-         }
+     if (num_cpus > 1) {
+@@ -281,7 +281,6 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
+         /* The /chosen node is created during fdt creation. */
+         qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename);
+     }
+-    snprintf(alias, sizeof(alias), "serial%d", uart_idx);
+     qemu_fdt_setprop_string(fdt, "/aliases", alias, nodename);
  
+     g_free(nodename);
 -- 
 2.51.0
 
