@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6FEBF8C65
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6016BF8CFE
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJHi-0007nC-7Y; Tue, 21 Oct 2025 16:48:46 -0400
+	id 1vBJHn-0008M0-Dw; Tue, 21 Oct 2025 16:48:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHd-0007ak-Tw
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:42 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHk-00089X-Bq
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:48 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHR-00019p-8p
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:35 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-471066cfc2aso14345795e9.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHf-0001A3-HD
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:48 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-47117f92e32so40256245e9.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079704; x=1761684504; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079708; x=1761684508; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=im+OEuCaVAw5x7x2mUEPI+ZYBfpg88mOANk8NkPxsC0=;
- b=hu/SCg0Z6gAuBUlRnxaU9ObpNn3xtFJfMn08ac/p2NfGD57SY/ZlRlgcGoY5oQk4GW
- W6SWE3uymki/AUbB/cOuR7XOgo2+BCFX5ISVN7XReziU/p47pIGV3UQQNLs8SoINVT7i
- 2c2yhIQmPkz3xGUMVkri1T9b+3BuV/MmAyJI+hugGW1cfIWqYbLUHGJss9FJ9+qjsQ5r
- e947jsx2RANpO25AF+Bjsef/jhQ7+hRdLgmn3wqLC3+5fiC0cIlaIaG5fVYRmlMJrZSy
- xA4t2rC8Eb1Xl5vXcJl7s+RE/oGyMJgj5wQhKzyALrUt4B6iV/zC8Is29isMAZ4UCmzi
- 2+sw==
+ :reply-to; bh=lWr7qEOB0Wvdd9KbFII+oaJFwDA5Ps8upXl6LmkSiEU=;
+ b=wIuaSOFIMQaxhZ4Ji8o+gPYgYDw9HI35ItrMHm6q0VuZM2d4lVrx10tKwMIj6eg8jf
+ lLQ5OQf5Quhj3aCeih2/fh+jJu2VR5bQ1Rg9ioJ7Pa6mW3pTzPoSIhvZThSjnYhVJMwK
+ 0gE/5cSex0gBYWOyoufxtu60fERw/vMPgGcUBa9k4yK9SxfVtpgFp50FMFgKg9t4HXE0
+ YUY13PnUTP2QQU2qRAomIMGy53v8G9EGH8dWJCRDofQP8y4t5NkzBlv93TKAEd489mM1
+ Vb+s5O9mqI27o5Tnb9DnwXtssGWkKDPUrxHpNF6MPhM58ZyPp9SDsqmomwfochTgqbf1
+ 222A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079704; x=1761684504;
+ d=1e100.net; s=20230601; t=1761079708; x=1761684508;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=im+OEuCaVAw5x7x2mUEPI+ZYBfpg88mOANk8NkPxsC0=;
- b=BmlnkPExFoTHKlL1mbLnVNXm2gcbFTsfFx3TcSg8qDwNszrr72wNhG4AA7AxuaWD7V
- wISfnySHpSnem9ci+/4W3mnH7h2O3eP4qqQwUoxtHzDO21Tyg2YQd+YsU26khDSC1dfa
- xsj+uqYNH8h97XUhL3ZRrkv+sJHcewr7AKCq5Y6+3o2tkSzHmOqgxbql9QwSa78PL7pe
- 5YzaR+RYnA5KBmAERtc4rMYtK8GyG0Dw9jDCp5vTezt8hxKTfrz5wxfOTfluzF9o0+zy
- WUtLV98IMsa8hXQ1JE1vKxGij21iEzTNgII7heUz1s3w9R0KxATuTRU0FrUCfXlEQNq3
- Phlw==
-X-Gm-Message-State: AOJu0YwWS7sV/182hS1cAZsp70EtvZUFC1SAQgPCr7GF2+Wt5iXoZwTm
- RzTj2aFz+FGxjXwPWUIodvIBgGpWcfiAQh16xGgMEoGiJ7b8m21LqnwyJLFBYmnHh5hr3xmFnuG
- ldIdRMUk=
-X-Gm-Gg: ASbGncsZY3ETxFEOj4Z0/yvlpfqaRr7DeGDIqc0Jh7ZhwQNUSO4jqWzF4M3Ucyk33tl
- 6wWwwuRzgCnvLxfOKQsA4jftIMfwn5usaRwQorpEH9g4BwhTN9+jXKgl7qixlnr7VZ+WVZt8Yp0
- t86sj1fYQrpi60RmaJU4TVBN4fExym4y+Rtil8N48+D3+BPIEsvSDYqrR5ck84U1RGXS6jmiJzM
- uzj2qetQuWE+WY2E1cf14BdZ/gr3qcJ7nn3Nwm2aZZlUFQYdgVaYpv5Ow2VYzTv5SWS67gJCSkY
- FA3LPkRv7DW6v1GZhWNpIjPZpNO81w6pNFRww4SSnn/wa/UemmTxZ5G72Ze36A0OtXe7Tz7w95O
- /KcvOgNhH1E/9Z+v6dE+8lSkQKvpBg/+hASBqv3RxEIT4PxGWZtgd09UgkXo7/Dq5tsSzCFrdkv
- vKdKSf+8Fg2rqIt4yD04nLPNNXgK6aJrgpGaCdc+IEUzBPH5b8vPK2rDfP+Cwv
-X-Google-Smtp-Source: AGHT+IETgh478E3vvkI5VMl3KmOPE93VhkJeXNs7JngB+USmWlOp4L1BQXawj3X5Y5Hedw7qe+251A==
-X-Received: by 2002:a05:600d:4395:b0:471:a259:cdbe with SMTP id
- 5b1f17b1804b1-471a259d086mr55392225e9.23.1761079703625; 
- Tue, 21 Oct 2025 13:48:23 -0700 (PDT)
+ bh=lWr7qEOB0Wvdd9KbFII+oaJFwDA5Ps8upXl6LmkSiEU=;
+ b=q1PvG8VdECJR+aDmspxFdPY5YpEhrW+Qcn54pdjRudERcwCNG7ji2IhsnImAmNdzoS
+ lSnUpP8wg7RFN079cizAcGeTeNrRIU5x1i2EJfPvIsiber5D0y934z/L6dCrkjsJRmQD
+ zphwE4+Nz3n0Jqdc3gha2Qdioq+9K10SDlWuNac4a5OwgER9+unocN9WYWorNkm5gfFO
+ boiburhPCqIdPaFk7zXvkOOXlA8dnGrMZskga2p4Fq+mQd432YpFrTC1msM2CClC25ax
+ OpCWV31SugFC0R+bn1uH3uvIgL2AOYcrGCrGRAvKguEJEK/Em9mgosDVQtxf6HZ7ZAI5
+ iI4w==
+X-Gm-Message-State: AOJu0Yz61aRotw9Ev0JwLV3DKQcTZJ2z9CRtN0l4uS2aifPuQbA21vN3
+ nr2objT26GyM9A7IMzrR6L0Dc6+n7reyT+59FhjHfW6ytgDe9uze9SgGxuCGttTgf5BEsL3LsYC
+ b+qUB2OI=
+X-Gm-Gg: ASbGncs/Yco7V6Rl4sqtzlxP3lVcSmRlTZx2iJj+UBeJNTPq+FIr0MQ+ADk6/pTnigo
+ OxRL73X9CfxP4JNLLL9auZwNH2TFcE26KkTHlwUtUAT8n+lN5KrXXZ4tDTvx56WpJeogfbyfIjS
+ 5JvI/mj4lbRuE4OdicUMi1a7YccFNTzz3Tsb2XqfOLJFnwJq0+c+a+9wgEkuPAob99gBGpWyr+W
+ mj5FlOjRqJtWr3mSJHiP/7koRTqN652LP05JJ9PlkWoby1AWh7b//ETTR+Vb90ms+2uDUe6CYAt
+ 8s0r6XQxGaFzhBslhzN89Q0TEamOQgXXz7nfOJMnj8NYuHygD1JRd4ERzRffJuChPqu43CUUVJD
+ duzgcYMWrQ9YFqp8pxzoE16YWSIYvDd6GOuTnWqp00gqa7D74B96dhvi4XVZGvDfJo60qvSkd7b
+ 5udhUDduUeqN08Rh3YIsCnLK9JR6c1wugAN9MAKdC+BO7O698bMlCiKmJg1u0Q
+X-Google-Smtp-Source: AGHT+IHktbrj0wKz0uueX9HDEMPfrSrxwKAIdGEAQhgBb6Dka2ESQ9O2jE00dpxIS4WpA0CKySfQlw==
+X-Received: by 2002:a05:600c:4e89:b0:45d:dc85:c009 with SMTP id
+ 5b1f17b1804b1-471178a236cmr128546155e9.10.1761079708023; 
+ Tue, 21 Oct 2025 13:48:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c428e9b2sm9680685e9.5.2025.10.21.13.48.22
+ 5b1f17b1804b1-475c427c3ecsm10317625e9.2.2025.10.21.13.48.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:23 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/45] hw/core/register: remove the REGISTER device type
-Date: Tue, 21 Oct 2025 22:46:31 +0200
-Message-ID: <20251021204700.56072-18-philmd@linaro.org>
+Subject: [PULL 18/45] hw/core/register: add the REGISTER_ARRAY type
+Date: Tue, 21 Oct 2025 22:46:32 +0200
+Message-ID: <20251021204700.56072-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,109 +99,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Luc Michel <luc.michel@amd.com>
 
-The REGISTER class (RegisterInfo struct) is currently a QOM type
-inheriting from DEVICE. This class has no real purpose:
-   - the qdev API is not used,
-   - according to the comment preceding it, the object_initialize call
-     is here to zero-initialize the struct. However all the effective
-     struct attributes are then initialized explicitly.
-   - the object is never parented.
+Introduce the REGISTER_ARRAY QOM type. This type reuses the existing
+RegisterInfoArray struct. When `register_init_block' is called, it creates
+a REGISTER_ARRAY object and parents it to the calling device. This way
+it gets finalized when the device is. The memory region is parented to
+the REGISTER_ARRAY object to ensure correct finalizing order.
 
-This commits drops the REGISTER QOM type completely, leaving the
-RegisterInfo struct as a bare C struct.
-
-The register_register_types function is left empty here because it is
-reused in the next commit.
+The finalize function of the REGISTER_ARRAY type performs the necessary
+cleaning that used to be done by `register_finalize_block'. The latter
+is left empty and will be removed when all the register API users have
+been refactored.
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Luc Michel <luc.michel@amd.com>
-Message-ID: <20251017161809.235740-2-luc.michel@amd.com>
+Message-ID: <20251017161809.235740-3-luc.michel@amd.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/register.h          |  7 -------
- hw/core/register.c             | 18 ------------------
- hw/net/can/xlnx-versal-canfd.c |  2 --
- 3 files changed, 27 deletions(-)
+ include/hw/register.h |  4 ++++
+ hw/core/register.c    | 26 ++++++++++++++++++++++----
+ 2 files changed, 26 insertions(+), 4 deletions(-)
 
 diff --git a/include/hw/register.h b/include/hw/register.h
-index a913c52aee5..4d13ea183c7 100644
+index 4d13ea183c7..65c82600e06 100644
 --- a/include/hw/register.h
 +++ b/include/hw/register.h
-@@ -75,10 +75,6 @@ struct RegisterAccessInfo {
-  */
- 
- struct RegisterInfo {
--    /* <private> */
--    DeviceState parent_obj;
--
--    /* <public> */
-     void *data;
-     int data_size;
- 
-@@ -87,9 +83,6 @@ struct RegisterInfo {
+@@ -83,6 +83,8 @@ struct RegisterInfo {
      void *opaque;
  };
  
--#define TYPE_REGISTER "qemu-register"
--DECLARE_INSTANCE_CHECKER(RegisterInfo, REGISTER,
--                         TYPE_REGISTER)
++#define TYPE_REGISTER_ARRAY "qemu-register-array"
++OBJECT_DECLARE_SIMPLE_TYPE(RegisterInfoArray, REGISTER_ARRAY)
  
  /**
   * This structure is used to group all of the individual registers which are
+@@ -96,6 +98,8 @@ struct RegisterInfo {
+  */
+ 
+ struct RegisterInfoArray {
++    Object parent_obj;
++
+     MemoryRegion mem;
+ 
+     int num_elements;
 diff --git a/hw/core/register.c b/hw/core/register.c
-index 3340df70b06..2553cb15aba 100644
+index 2553cb15aba..1612ad174f9 100644
 --- a/hw/core/register.c
 +++ b/hw/core/register.c
-@@ -258,9 +258,6 @@ static RegisterInfoArray *register_init_block(DeviceState *owner,
-         int index = rae[i].addr / data_size;
-         RegisterInfo *r = &ri[index];
+@@ -245,10 +245,16 @@ static RegisterInfoArray *register_init_block(DeviceState *owner,
+                                               size_t data_size_bits)
+ {
+     const char *device_prefix = object_get_typename(OBJECT(owner));
+-    RegisterInfoArray *r_array = g_new0(RegisterInfoArray, 1);
++    Object *obj;
++    RegisterInfoArray *r_array;
+     int data_size = data_size_bits >> 3;
+     int i;
  
--        /* Init the register, this will zero it. */
--        object_initialize((void *)r, sizeof(*r), TYPE_REGISTER);
--
-         /* Set the properties of the register */
-         r->data = data + data_size * index;
-         r->data_size = data_size;
-@@ -318,24 +315,9 @@ void register_finalize_block(RegisterInfoArray *r_array)
-     g_free(r_array);
++    obj = object_new(TYPE_REGISTER_ARRAY);
++    object_property_add_child(OBJECT(owner), "reg-array[*]", obj);
++    object_unref(obj);
++
++    r_array = REGISTER_ARRAY(obj);
+     r_array->r = g_new0(RegisterInfo *, num);
+     r_array->num_elements = num;
+     r_array->debug = debug_enabled;
+@@ -267,7 +273,7 @@ static RegisterInfoArray *register_init_block(DeviceState *owner,
+         r_array->r[i] = r;
+     }
+ 
+-    memory_region_init_io(&r_array->mem, OBJECT(owner), ops, r_array,
++    memory_region_init_io(&r_array->mem, OBJECT(r_array), ops, r_array,
+                           device_prefix, memory_size);
+ 
+     return r_array;
+@@ -309,15 +315,27 @@ RegisterInfoArray *register_init_block64(DeviceState *owner,
+                                data, ops, debug_enabled, memory_size, 64);
  }
  
--static void register_class_init(ObjectClass *oc, const void *data)
--{
--    DeviceClass *dc = DEVICE_CLASS(oc);
--
--    /* Reason: needs to be wired up to work */
--    dc->user_creatable = false;
--}
--
--static const TypeInfo register_info = {
--    .name  = TYPE_REGISTER,
--    .parent = TYPE_DEVICE,
--    .class_init = register_class_init,
--    .instance_size = sizeof(RegisterInfo),
--};
+-void register_finalize_block(RegisterInfoArray *r_array)
++static void register_array_finalize(Object *obj)
+ {
++    RegisterInfoArray *r_array = REGISTER_ARRAY(obj);
++
+     g_free(r_array->r);
+-    g_free(r_array);
+ }
+ 
++void register_finalize_block(RegisterInfoArray *r_array)
++{
++}
++
++static const TypeInfo register_array_info = {
++    .name  = TYPE_REGISTER_ARRAY,
++    .parent = TYPE_OBJECT,
++    .instance_size = sizeof(RegisterInfoArray),
++    .instance_finalize = register_array_finalize,
++};
  
  static void register_register_types(void)
  {
--    type_register_static(&register_info);
++    type_register_static(&register_array_info);
  }
  
  type_init(register_register_types)
-diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 343348660b5..99bbdd7d3fe 100644
---- a/hw/net/can/xlnx-versal-canfd.c
-+++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -1868,8 +1868,6 @@ static int canfd_populate_regarray(XlnxVersalCANFDState *s,
-         int index = rae[i].addr / 4;
-         RegisterInfo *r = &s->reg_info[index];
- 
--        object_initialize(r, sizeof(*r), TYPE_REGISTER);
--
-         *r = (RegisterInfo) {
-             .data = &s->regs[index],
-             .data_size = sizeof(uint32_t),
 -- 
 2.51.0
 
