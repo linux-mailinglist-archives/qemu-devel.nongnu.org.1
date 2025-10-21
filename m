@@ -2,124 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81BEBF8D8E
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED1FBF8D85
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:58:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJQP-0008SQ-0A; Tue, 21 Oct 2025 16:57:45 -0400
+	id 1vBJQW-0008U6-NB; Tue, 21 Oct 2025 16:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBJQH-0008Ri-NG
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:57:38 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJQT-0008TV-DP
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:57:49 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBJQE-0002Dt-GK
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:57:37 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id F064D21187;
- Tue, 21 Oct 2025 20:57:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1761080248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=C8NgEsvKHw4S/0o9XZLFVi0wqJV4aLQ5QpnfJp2smIw=;
- b=zl08H+V2b9H/odq9By+hsSd0SyjiAxMLGUMbgdWFgIAO4ivPMDY3Q6cO9AwSrkD6bOnH6B
- p3WTBBYNbDaS8SowUl2lyVn/9fvgaWOc5hj9tyUjEc8DbQxqptqh6WRBQyESuLHc5ZzeJ4
- MLX/Yf5CQFloWgsAhmVu8PpPyEpIJuE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1761080248;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=C8NgEsvKHw4S/0o9XZLFVi0wqJV4aLQ5QpnfJp2smIw=;
- b=Lxmwkk15+oyCtIe5tuK+g+bNdbZGbDTQAo8oCM74YQqO2P64ym3Z20FMm9KVpu8c7rzov+
- PObXePgy6BuySoBA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pfsvATfO;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sU2ngF7A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1761080243; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=C8NgEsvKHw4S/0o9XZLFVi0wqJV4aLQ5QpnfJp2smIw=;
- b=pfsvATfOr9yXC6KGsBRsRphA7jv7d2FkHeTgsKyWjSssuJ4I5g4OPB2MyhoCBGQY6C+ce1
- KDXj0TxAEYtkDVDPzU7FLiw/o24PCtSuvclM/InZYDd5zmhMlJ7+kJKWjjHjTCiA8d8d5x
- VTO4R3RxSV7IvxozCVGqv9mXu+dMTIs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1761080243;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=C8NgEsvKHw4S/0o9XZLFVi0wqJV4aLQ5QpnfJp2smIw=;
- b=sU2ngF7AGrXZ23O04cXcj96A2vxU/7Gcry2UpvfN+MtV7Fklk+cgQlMKLG8EXrPv+nr8fK
- K9hFHqgobgMvAnDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 688E9139D2;
- Tue, 21 Oct 2025 20:57:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SYMMC7Pz92hUXAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 21 Oct 2025 20:57:23 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, John Snow <jsnow@redhat.com>, Laurent Vivier
- <laurent@vivier.eu>, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>,
- qemu-trivial@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Sunil Muthuswamy
- <sunilmut@microsoft.com>, Marcelo Tosatti <mtosatti@redhat.com>, Michael
- Tokarev <mjt@tls.msk.ru>, Richard Henderson
- <richard.henderson@linaro.org>, qemu-block@nongnu.org, Paolo Bonzini
- <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Bernhard Beschow
- <shentey@gmail.com>
-Subject: Re: [PATCH 8/8] tests/qtest/ds1338-test: Reuse from_bcd()
-In-Reply-To: <20251017113338.7953-9-shentey@gmail.com>
-References: <20251017113338.7953-1-shentey@gmail.com>
- <20251017113338.7953-9-shentey@gmail.com>
-Date: Tue, 21 Oct 2025 17:57:20 -0300
-Message-ID: <87ikg8t1lb.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJQQ-0002Gl-Vv
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:57:49 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-46fcf9f63b6so34150935e9.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:57:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761080264; x=1761685064; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7GEreXBwb2oQd4NdZr8CgAI0vxp7JPLccaI2BF+pSKQ=;
+ b=VqKGdD1I/qcfbkgqHT3En7s3yXLvCSb8dsvujeXLQ/j90Ku1xNPG97RCRCPamRjh9/
+ jX8GPq4YmdYSJRQloB3Gi4km3cqQCH8Lzls/XsqryGt5EdLbCqUgCGjVC2A+OgWHhzTd
+ IHWBUBtxsc2c1au7uCKbdsZddWoyNLBPuvTcdUQk5yg+7JsGvWqsxRrz+8jwLPd68uxe
+ EJ7+db2YvEqIuiZEm9f8JAHsH9MtZyI8Sb0krAjfuwQsCvLCFMihBU1R8t4f8B5uLnyS
+ 5MjmcwodxrWFZjwkaESAgL+eduat74szkmKYysSn4tHWgSiG/T50iuWU5bW22kuAaDE7
+ vnyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761080264; x=1761685064;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7GEreXBwb2oQd4NdZr8CgAI0vxp7JPLccaI2BF+pSKQ=;
+ b=skrrbKRg+Wj62XzYgAtiU874Z/nuH+lxD9BGQl0xtRIvilpvTxtyPFon4J8e87NcfN
+ qkL2UOoptMDE38wqdkZ3Ax568aEu0D9W0Uhvw6kCmv4A1710q4DRnMLjmMYswWxm8bhU
+ Rl5YYbjXNAoSxkl3uRT9tdOy84yZeGuZBynbp1OqZer2C6Y5OA3UkYMjh9RVqv2QK7F1
+ QhPNq0A4zacE8S3RY5NPJVpbnD79fPGCbeO1B1Zg30cv9MOKwv0g8N5IErLhFzklWIr6
+ dMChsB2ADL5c0xxgbfKQNbsBXCE3plZ+bmEbJTp0xU/JIYcKe5p+aDWqhBCyAWAk2QKt
+ zGng==
+X-Gm-Message-State: AOJu0Ywk3FNaXscGw7j3EpOFIQcIeeStaWBiDdb37erZCTWPwPlXVojj
+ g/n6hhDCxr9m69EXizcSv7c6CxSo++QkubNqkyHmg52pteSdcth+bPmGPtQ5g17TYJ4O91Q6SdG
+ SRRMquqs=
+X-Gm-Gg: ASbGncugSun1dvbBzPJzK+A4XnpRGpQcu5s1utsB0Y7T+/RgUxCZCoce7AWr4IDqDRc
+ dc7W3gJ3KAxMlEXy04L74DfPFYMu/HLGBrauaRXl59Hjf4QsTa7gOprvNgPPImbRLVSmAclwych
+ gdamDIDDkMDu/UBuZkwmPudGgZhA07/UNZk9dMz3e1iGmvu3qieN3zZmfuPYmdxrltDxVqMZFKH
+ mO+UOKsI1Q6HDfegIjw3ROoMqYHRx1VyVMt3tLx9NSyDjuMjohQ/5L02DgFPQ3Ffje0OqLYlyv6
+ tVtDMj1iBq1YvEtBIVQOvQYPm6jtCBGEmiEF289UjgME2igJy1RhOEYMsgfc2jYyr+UreN7Gccd
+ V5xr8afaBgQCA51V2a1L0UzjvYusINkQh1+2TYEVez3EhjjEC3BUrM9nr8MsT3p8N8TpBp9Upgv
+ RDSKndFyPt+VKf044xXzRqDgk7MSuf/rYmag8A7I4qZe3X54emsDsscYTp3xd9
+X-Google-Smtp-Source: AGHT+IHmc2WAXunWMSJY0h5+feSjd7fylunygd15nSU3qUMgAWbi9OscTPxUdu3pPzRQU+OOcm7s1g==
+X-Received: by 2002:a05:600c:1da7:b0:46e:4be1:a423 with SMTP id
+ 5b1f17b1804b1-4711786d630mr119251055e9.1.1761080263503; 
+ Tue, 21 Oct 2025 13:57:43 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-475c4369b33sm9444135e9.14.2025.10.21.13.57.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 21 Oct 2025 13:57:43 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Anton Johansson <anjo@rev.ng>,
+ Peter Maydell <peter.maydell@linaro.org>, Luc Michel <luc.michel@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v7 00/19] single-binary: Make hw/arm/ common
+Date: Tue, 21 Oct 2025 22:57:21 +0200
+Message-ID: <20251021205741.57109-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: F064D21187
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-2.79)[99.09%];
- SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- ARC_NA(0.00)[]; RCPT_COUNT_TWELVE(0.00)[19];
- FREEMAIL_TO(0.00)[gmail.com,nongnu.org]; MIME_TRACE(0.00)[0:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]; RCVD_TLS_ALL(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FREEMAIL_CC(0.00)[redhat.com,habkost.net,vivier.eu,vger.kernel.org,intel.com,nongnu.org,gmail.com,microsoft.com,tls.msk.ru,linaro.org];
- MID_RHS_MATCH_FROM(0.00)[]; TAGGED_RCPT(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MISSING_XM_UA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:mid, suse.de:email,
- imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -136,12 +98,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bernhard Beschow <shentey@gmail.com> writes:
+Series fully reviewed.
 
-> from_bcd() is a public API function which can be unit-tested. Reuse it to avoid
-> code duplication.
->
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Since v6:
+- Addressed Jan comment
+- Removed aspeed/raspi meson patches
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Since v5:
+- Rebased
+- Use Zoltan's patch
+- Filter QMP list
+- Addressed Richard & Pierrick comments
+- qtest/device-introspect-test failing
+
+Since v4:
+- Add DEFINE_MACHINE_WITH_INTERFACES (Zoltan)
+- Use GPtrArray for get_valid_cpu_type (Richard)
+- Define InterfaceInfo[] arrays (Richard)
+- Collect R-b tags
+
+Since v3:
+- QAPI structure renamed as QemuTargetInfo
+- MachineClass::get_valid_cpu_types() runtime
+- target_aarch64() checking SysEmuTarget value
+- Remove CONFIG_TCG #ifdef'ry in hw/arm/
+
+Since v2:
+- More comments from Pierrick addressed
+- Use GList to register valid CPUs list
+- Remove all TARGET_AARCH64 uses in hw/arm/
+
+Since v1:
+- Dropped unrelated / irrelevant patches
+- Addressed Pierrick comments
+- Added R-b tag
+- Only considering machines, not CPUs.
+
+Based-on: <20251021204700.56072-1-philmd@linaro.org>
+
+Available here, based on hw-misc:
+https://gitlab.com/philmd/qemu/-/tags/single-binary-hw-arm-rfc-v7
+
+Philippe Mathieu-Daudé (19):
+  hw/arm: Register TYPE_TARGET_ARM/AARCH64_MACHINE QOM interfaces
+  hw/core: Allow ARM/Aarch64 binaries to use the 'none' machine
+  hw/arm: Add DEFINE_MACHINE_ARM() / DEFINE_MACHINE_AARCH64() macros
+  hw/arm: Filter machine types for qemu-system-arm/aarch64 binaries
+  meson: Prepare to accept per-binary TargetInfo structure
+    implementation
+  config/target: Implement per-binary TargetInfo structure (ARM,
+    AARCH64)
+  hw/arm/virt: Register valid CPU types dynamically
+  hw/arm/virt: Check accelerator availability at runtime
+  qemu/target_info: Add target_arm() helper
+  qemu/target_info: Add target_aarch64() helper
+  qemu/target_info: Add target_base_arm() helper
+  hw/arm/virt: Replace TARGET_AARCH64 -> target_aarch64()
+  hw/arm/virt: Get default CPU type at runtime
+  hw/arm/sbsa-ref: Include missing 'cpu.h' header
+  hw/arm/sbsa-ref: Build only once
+  hw/arm/virt-acpi-build: Include missing 'cpu.h' header
+  hw/arm/virt-acpi-build: Build only once
+  hw/arm/virt: Build only once
+  hw/arm/meson: Move Xen files to arm_common_ss[]
+
+ MAINTAINERS                       |  1 +
+ meson.build                       | 10 ++++-
+ include/hw/arm/machines-qom.h     | 46 +++++++++++++++++++
+ include/qemu/target-info.h        | 21 +++++++++
+ configs/targets/aarch64-softmmu.c | 26 +++++++++++
+ configs/targets/arm-softmmu.c     | 26 +++++++++++
+ hw/arm/aspeed.c                   | 27 ++++++++++-
+ hw/arm/aspeed_ast27x0-fc.c        |  2 +
+ hw/arm/b-l475e-iot01a.c           |  2 +
+ hw/arm/bananapi_m2u.c             |  3 +-
+ hw/arm/collie.c                   |  2 +
+ hw/arm/cubieboard.c               |  3 +-
+ hw/arm/digic_boards.c             |  3 +-
+ hw/arm/exynos4_boards.c           |  3 ++
+ hw/arm/fby35.c                    |  2 +
+ hw/arm/highbank.c                 |  3 ++
+ hw/arm/imx25_pdk.c                |  3 +-
+ hw/arm/imx8mp-evk.c               |  4 +-
+ hw/arm/integratorcp.c             |  3 +-
+ hw/arm/kzm.c                      |  3 +-
+ hw/arm/mcimx6ul-evk.c             |  4 +-
+ hw/arm/mcimx7d-sabre.c            |  4 +-
+ hw/arm/microbit.c                 |  2 +
+ hw/arm/mps2-tz.c                  |  5 +++
+ hw/arm/mps2.c                     |  5 +++
+ hw/arm/mps3r.c                    |  2 +
+ hw/arm/msf2-som.c                 |  3 +-
+ hw/arm/musca.c                    |  3 ++
+ hw/arm/musicpal.c                 |  3 +-
+ hw/arm/netduino2.c                |  3 +-
+ hw/arm/netduinoplus2.c            |  3 +-
+ hw/arm/npcm7xx_boards.c           |  6 +++
+ hw/arm/npcm8xx_boards.c           |  2 +
+ hw/arm/olimex-stm32-h405.c        |  3 +-
+ hw/arm/omap_sx1.c                 |  3 ++
+ hw/arm/orangepi.c                 |  3 +-
+ hw/arm/raspi.c                    |  6 +++
+ hw/arm/raspi4b.c                  |  2 +
+ hw/arm/realview.c                 |  5 +++
+ hw/arm/sabrelite.c                |  3 +-
+ hw/arm/sbsa-ref.c                 |  3 ++
+ hw/arm/stellaris.c                |  3 ++
+ hw/arm/stm32vldiscovery.c         |  3 +-
+ hw/arm/versatilepb.c              |  3 ++
+ hw/arm/vexpress.c                 |  3 ++
+ hw/arm/virt-acpi-build.c          |  1 +
+ hw/arm/virt.c                     | 74 ++++++++++++++++++-------------
+ hw/arm/xilinx_zynq.c              |  2 +
+ hw/arm/xlnx-versal-virt.c         |  3 ++
+ hw/arm/xlnx-zcu102.c              |  2 +
+ hw/core/null-machine.c            |  6 ++-
+ target-info-qom.c                 | 24 ++++++++++
+ target-info.c                     | 21 +++++++++
+ target/arm/machine.c              | 18 ++++++++
+ configs/targets/meson.build       |  5 +++
+ hw/arm/meson.build                |  8 ++--
+ 56 files changed, 386 insertions(+), 56 deletions(-)
+ create mode 100644 include/hw/arm/machines-qom.h
+ create mode 100644 configs/targets/aarch64-softmmu.c
+ create mode 100644 configs/targets/arm-softmmu.c
+ create mode 100644 target-info-qom.c
+ create mode 100644 configs/targets/meson.build
+
+-- 
+2.51.0
+
 
