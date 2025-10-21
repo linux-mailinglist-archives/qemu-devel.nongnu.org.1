@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A7DBF8C8F
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D77FBF8C8C
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJI5-00010T-9G; Tue, 21 Oct 2025 16:49:09 -0400
+	id 1vBJIC-0001Ts-Jl; Tue, 21 Oct 2025 16:49:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJI2-0000dp-5x
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:06 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJI8-0001KN-Tl
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:13 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHt-0001Ci-Kl
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:01 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4711b95226dso49332715e9.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHy-0001D1-99
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:12 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-471191ac79dso51280425e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:49:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079735; x=1761684535; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079739; x=1761684539; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ldA81TOhO5CyCm5FfejA2XOTZsnGVZH3vj2puivaEgs=;
- b=TPk+MFFVr5jIXHrUQ0A6ttXJnjjJWThs0RrvAiPrxKeimJHa3z3zZtw03QTGDrVHCb
- ENO4fHyXGZmAuODX2uYpVtx+wgTSULqhFiuhoDmr0lbcqmrXTMZv+gvvMD+Rj/KBfDwK
- Rr8N/pLtTIZKnRTA/3B+XC9oi/qz0DbQxU/lR3/tAlCkdOy0d8grGv5YLrGGgy/l+p70
- FstGtORhxxqMDqbnuu8NmcCdN9amPOibBkuDyIwS5/uTgzcsOFMnFMMT2mWKaGy1TzsM
- VCtNSXzpHw+LOwEXGyqgyEEWIx4ZCB3XVmheNMA2JJMgImhWUE+A6ZUUKvu1MVhpNBYn
- xvwg==
+ :reply-to; bh=bK/IgKwRrJFV3OCY8FzyiKr65tuHFz4ebIlHwo+ale8=;
+ b=x1NIOTsDlkpT5EDKUSULmLnrN9g82cgW3b/AeyVbAPA9jPX+k+eTskXAvMAXGZtuWJ
+ zqvwnEY3/BdaymhtaS6900ZAbO/Bys1zIsZHw7xD7JjkNPsP6y61rYCxKaXk289J8191
+ LnL2C3Y1y899YdoZGkpVCdLYWGkEiZj4K9HS65n2fHyzQ7jpL9CJSxeBFoFpAT5TtTMQ
+ QjiOIyFxtRp47USrOub6dqSNNancPWn/XRi3Xf2o6Wb5ehDa1ZG+W3p3+j3A1WdTY+RC
+ 7tOCwsLHbTu+xiuqYc605sTauyYiLc2tRZe3YFAE+UNFd7Y3l2/ceCpogmiHochqbyjF
+ UgLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079735; x=1761684535;
+ d=1e100.net; s=20230601; t=1761079739; x=1761684539;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ldA81TOhO5CyCm5FfejA2XOTZsnGVZH3vj2puivaEgs=;
- b=sqzzb6PrZi0hCRgIY86Z1NNpkMnRJLJd3E827e62PerD2I2PRUajWxrinQl79lJrPx
- RLvo1eMx+jftgxAOulxS+2zDpTCmBuDEZR7ILhUIP2fMbIe3Z5f+0N4kehTALRtGvAoX
- cKDAb2I+UHXzpFBAjnLdT7yCPyvrLJJqENylndIqnoZrjc/8y8HOxHk//5T+4y1i2oQv
- FCqsbguWqlJELnX4MJ+nJ6jamdPCTDhqxYsOUnJLvXabDDiYqRxPH2PTwAbuSUrelaGR
- 73IDQvPGiOXQ3jP687zbpCJp4kafIIsOXF4yG5c5QqgRiWafm8OFgDyGNxu/6PZtS8tt
- RCXw==
-X-Gm-Message-State: AOJu0YwrlDrFiMrkpTI6EFc4qu8dyMflO4YYNQCSTNx0HJB7SE1hiVDQ
- KnM4Uzs3tzwFGSDiON2YDvDWJr0QdEU0rMo9Fq0p0v8ITUUYgyIbRAmiy9X9E1grgqomjjdrfRb
- Nsi//4zw=
-X-Gm-Gg: ASbGncu62maidQDveyOOeRNUxs3ymsM6J9T6IjQ2X6xZMLpzYMwcvAPCNrwy9s4pjLk
- NYNIG23NzJ2G6+61wkAkYBiQxXRpU5XpW+l/IoAg8oF7W6ZEdbCM8ojEB0XRZSbb1ijQG1eBglB
- ThtJzd3xWWRrfNFJoq3/KbEzXJcCwFuPwFHxnS05IXiojbHrVdaF2lk3WAMmSbFQrUXb7mZMk7E
- 0Uw8i+KAhwSZxYxQqB8qv7/OIR95tjQpHB0ovQeHRwoAno2h8FG94tdA/fRdd47DkYuPCAxjuL1
- Pj+7MWekJN5n7wvHXdE9nYAkBTg0mRnJkrgGYS25iGTyb7bvv5wXgS+HjrLDu+iiJPuYN/ET9CB
- AKYpAnP+IwzpVGFUMaQHMdZNKMMKaY3soBfYIyBfwZZPOzy02Va45hS0YT3XaeQZsaBzoROBbI3
- 3Q7EbF3s2yxJvcNqY08Vpx3j7FYLl01aeCtGYKgsqMvsNeXgIO0TZEsfVSVfcd
-X-Google-Smtp-Source: AGHT+IEjwL4Pt02bvRQBC/REJhqK2MnjVJeC7iXTfXnmhvQnvyk71tYbxZ0pmKAAz4HQPPvMYOyNjg==
-X-Received: by 2002:a05:600c:3e86:b0:46e:36f8:1eb7 with SMTP id
- 5b1f17b1804b1-471178a3a94mr131546405e9.10.1761079735065; 
- Tue, 21 Oct 2025 13:48:55 -0700 (PDT)
+ bh=bK/IgKwRrJFV3OCY8FzyiKr65tuHFz4ebIlHwo+ale8=;
+ b=LLYtMwdlK5Z1uK4wXvnrjB3/qhYb92KfwEkpB8nBr/LDifa0uAxzlyGYCtzUoXETcv
+ oapabLydc3+CfkqCzV8qnuz2XdI3sbzoq+khkqUULGQI8Et3lIybbeBXMN4PHzVANREz
+ VdbHeJW0P2ZplgWxk31GDlnLSIyfvC53Qsuu8unj0ADTdjotdhnkgnL/om/mcr4L2v0z
+ EN5aOCICwsX1TQ3aLRoR5wRjJ2n0I7CqV9ZDJ6dVOzQ6UuyEv3GdJJkFAeypTaextMIB
+ mnPsgPPhNsKAIKSlWmaNUpOU3ZMRgqMxDjwnWteKB9DfNZifvyngNNgz7LsdXe4CXLVQ
+ p9NA==
+X-Gm-Message-State: AOJu0Ywrw4ggR4rrtPcy8jpQbSLswufbO9ZMzXClSKCXVUP2A4PYZVsu
+ dE3sEhzTHbaPku6x6yVADpzQVSbhViOLi/nJUCzqEvuPx8MeNVy9oGtYzyDohippbk+LsLz475/
+ 2IVSEFWM=
+X-Gm-Gg: ASbGnctpMmSPK679/xJqs5mdlS7czR7uVP0O2DqtKP7A1Zd43mEtZgGXbcDb4Obsis/
+ spvlG0BN7Ac6NEgmh6CHw+WUu2rz5elBgDrhEziw55S7Ij9JL8oaTzPO/nWuZDV/Drlbyu8kBKB
+ 1iKlFNtfZV27aBqdzJ0Pw5ZEZE5nv6oXtRQWYHjY2l2+KIJnXPEmXZy4vBbiK4gMbY+bPHUkgt5
+ eKKxnaeEjuIUOxcgazOL0lNErfZdHathzBwr0xSh/ycZ8TJ++l0kOCSAXEkSmZkr/layKaO7ihC
+ DSNMiVeYN3eLZtH8A/oHlHwvPlTtNkSbfpKHLltGNnuOkkUIprXMJ2rNYSD7kGroOwaeRJIE7/X
+ VQ8b+FxGemlX4uuFcsrS4ogbzpyDdopoPfUGri6njkquYJRD8drgCEyTFH+OI4s0wadPtTM1K4m
+ jY+ZAJVXpSMRpoOkFSq3Ni6MOimf6xrUxkdyl+c221sMhPwVw3Rw==
+X-Google-Smtp-Source: AGHT+IHHtf7KB79DNuwlumMgH3spVGKBb5YUBUnO2iWD51AIOtvNgOqco4iS6f/r9Ah7VVWM+El6uw==
+X-Received: by 2002:a05:600c:871a:b0:46e:4882:94c7 with SMTP id
+ 5b1f17b1804b1-471179177camr145140595e9.28.1761079739550; 
+ Tue, 21 Oct 2025 13:48:59 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c42b48c9sm10820645e9.15.2025.10.21.13.48.54
+ 5b1f17b1804b1-47496d269dbsm22407965e9.11.2025.10.21.13.48.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:54 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/45] hw/timer/i8254: Add I/O trace events
-Date: Tue, 21 Oct 2025 22:46:38 +0200
-Message-ID: <20251021204700.56072-25-philmd@linaro.org>
+Subject: [PULL 25/45] hw/audio/pcspk: Add I/O trace events
+Date: Tue, 21 Oct 2025 22:46:39 +0200
+Message-ID: <20251021204700.56072-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,59 +103,69 @@ Allows to see how the guest interacts with the device.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251019210303.104718-2-shentey@gmail.com>
+Message-ID: <20251019210303.104718-3-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/timer/i8254.c      | 6 ++++++
- hw/timer/trace-events | 4 ++++
- 2 files changed, 10 insertions(+)
+ hw/audio/pcspk.c      | 10 +++++++++-
+ hw/audio/trace-events |  4 ++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/hw/timer/i8254.c b/hw/timer/i8254.c
-index 4b25c487f79..7033ebf50da 100644
---- a/hw/timer/i8254.c
-+++ b/hw/timer/i8254.c
-@@ -29,6 +29,7 @@
- #include "hw/timer/i8254.h"
- #include "hw/timer/i8254_internal.h"
+diff --git a/hw/audio/pcspk.c b/hw/audio/pcspk.c
+index a419161b5b1..f8020593b0b 100644
+--- a/hw/audio/pcspk.c
++++ b/hw/audio/pcspk.c
+@@ -34,6 +34,7 @@
+ #include "hw/audio/pcspk.h"
+ #include "qapi/error.h"
  #include "qom/object.h"
 +#include "trace.h"
  
- //#define DEBUG_PIT
+ #define PCSPK_BUF_LEN 1792
+ #define PCSPK_SAMPLE_RATE 32000
+@@ -137,13 +138,18 @@ static uint64_t pcspk_io_read(void *opaque, hwaddr addr,
+ {
+     PCSpkState *s = opaque;
+     PITChannelInfo ch;
++    uint8_t val;
  
-@@ -130,6 +131,8 @@ static void pit_ioport_write(void *opaque, hwaddr addr,
-     int channel, access;
-     PITChannelState *s;
+     pit_get_channel_info(s->pit, 2, &ch);
  
-+    trace_pit_ioport_write(addr, val);
+     s->dummy_refresh_clock ^= (1 << 4);
+ 
+-    return ch.gate | (s->data_on << 1) | s->dummy_refresh_clock |
++    val = ch.gate | (s->data_on << 1) | s->dummy_refresh_clock |
+        (ch.out << 5);
 +
-     addr &= 3;
-     if (addr == 3) {
-         channel = val >> 6;
-@@ -248,6 +251,9 @@ static uint64_t pit_ioport_read(void *opaque, hwaddr addr,
-             break;
-         }
-     }
++    trace_pcspk_io_read(s->iobase, val);
 +
-+    trace_pit_ioport_read(addr, ret);
-+
-     return ret;
++    return val;
  }
  
-diff --git a/hw/timer/trace-events b/hw/timer/trace-events
-index c5b6db49f58..2bb51f95ea8 100644
---- a/hw/timer/trace-events
-+++ b/hw/timer/trace-events
-@@ -49,6 +49,10 @@ cmsdk_apb_dualtimer_read(uint64_t offset, uint64_t data, unsigned size) "CMSDK A
- cmsdk_apb_dualtimer_write(uint64_t offset, uint64_t data, unsigned size) "CMSDK APB dualtimer write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
- cmsdk_apb_dualtimer_reset(void) "CMSDK APB dualtimer: reset"
+ static void pcspk_io_write(void *opaque, hwaddr addr, uint64_t val,
+@@ -152,6 +158,8 @@ static void pcspk_io_write(void *opaque, hwaddr addr, uint64_t val,
+     PCSpkState *s = opaque;
+     const int gate = val & 1;
  
-+# i8254.c
-+pit_ioport_read(uint8_t addr, uint32_t value) "[0x%" PRIx8 "] -> 0x%" PRIx32
-+pit_ioport_write(uint8_t addr, uint32_t value) "[0x%" PRIx8 "] <- 0x%" PRIx32
++    trace_pcspk_io_write(s->iobase, val);
 +
- # imx_gpt.c
- imx_gpt_set_freq(uint32_t clksrc, uint32_t freq) "Setting clksrc %u to %u Hz"
- imx_gpt_read(const char *name, uint64_t value) "%s -> 0x%08" PRIx64
+     s->data_on = (val >> 1) & 1;
+     pit_set_gate(s->pit, 2, gate);
+     if (s->voice) {
+diff --git a/hw/audio/trace-events b/hw/audio/trace-events
+index b8ef5727678..30f59215453 100644
+--- a/hw/audio/trace-events
++++ b/hw/audio/trace-events
+@@ -23,6 +23,10 @@ hda_audio_format(const char *stream, int chan, const char *fmt, int freq) "st %s
+ hda_audio_adjust(const char *stream, int pos) "st %s, pos %d"
+ hda_audio_overrun(const char *stream) "st %s"
+ 
++# pcspk.c
++pcspk_io_read(uint16_t addr, uint8_t val) "[0x%"PRIx16"] -> 0x%"PRIx8
++pcspk_io_write(uint16_t addr, uint8_t val) "[0x%"PRIx16"] <- 0x%"PRIx8
++
+ #via-ac97.c
+ via_ac97_codec_write(uint8_t addr, uint16_t val) "0x%x <- 0x%x"
+ via_ac97_sgd_fetch(uint32_t curr, uint32_t addr, char stop, char eol, char flag, uint32_t len) "curr=0x%x addr=0x%x %c%c%c len=%d"
 -- 
 2.51.0
 
