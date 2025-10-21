@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99C7BF8E04
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 23:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BE6BF8E03
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 23:03:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJVD-0005KO-Ss; Tue, 21 Oct 2025 17:02:45 -0400
+	id 1vBJVW-0005Zl-W3; Tue, 21 Oct 2025 17:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJV9-00059E-53
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 17:02:39 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJVN-0005Tm-Bx
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 17:02:58 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJV6-0002zG-HU
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 17:02:38 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-47112edf9f7so28698685e9.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 14:02:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJVJ-000305-VT
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 17:02:52 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4711810948aso42231925e9.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 14:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761080555; x=1761685355; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761080566; x=1761685366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u0TgeVNPzv68JcCX04RBzBZ666mw+/NGDuzwlB8ZDgk=;
- b=bPh8kTCYkK6kBdm89zfTPffavFWuFUoUC4kIC2GLgohIXQC2u8WuYXzHF4PWAHoxgT
- HtGbykqAM09dfKPrVnLej7JhIOeG8/PQmOkHCtSNrbv4hno1rLdMa+Dp+w8ecPhM/ziy
- kcXkD0PCZgaETUSMPhlYdTh1m+U3qOLuFRriyRZ8CTLI5OtiKZToF34P9UGCYNrI9yq0
- sIgjxSLlfzhbbgZxywUwpV5lLW5m7eIaJuzm7dhx+/CKnt3/DRhV+m2gHgGG/xb1aksE
- 4ueDCm69pZKR8wDwpOP5R7snXx71tqZxzg/UroXHSb4e5YtUYIY9T6pTTlWI6EpK4xVu
- QKmA==
+ bh=mZHYX7VXV4conWXUV38dh7lf+geoYCF1Bpj8/lXvUeA=;
+ b=AeI5Q2ZwkHudCWW9YbRsaX+gtenNhIL/GW+YpaNtvLqaRsG4CeMboET2lUrU/gEwG6
+ ah+FY8wXOqUVocagRewJZIsxmtddSH9DimN4oM5k7jrFeAu0kRGVKxk1QQCvRCDZMqOW
+ WHJDDr2VA9tzXxRzjtnCjp82jpoXGGS92zd8M5ior2APmUA7bbKBEIJS4DYCom72Yj3l
+ u6/OCjg98NKdAjac63x8OHITuVxIjm8IYRpWAWYTfc9woDwhARIfl/7ZoJcLcfKjns9N
+ mNVgqR9NU5rzYEz8FVVmDej1AyzSXDmSQLaKbQ8kFMnt1VcOqQAtEaoxmY5mYc5ylwG4
+ W4hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761080555; x=1761685355;
+ d=1e100.net; s=20230601; t=1761080566; x=1761685366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u0TgeVNPzv68JcCX04RBzBZ666mw+/NGDuzwlB8ZDgk=;
- b=FWOsJVk9oACXjXma77QffZzII1Z4NzxrbIV3K+DqitQYVV2B1ZRmVeJGguWhWGrxzY
- jeieTCo5CqtxOaY+1Ly4X4vnvmjTXsfloszsgNKdNTfn/6bIf2zhALlFzz3ncG+x9n/t
- tBah1rQ2JaylP/cbGY8lx/UhCM0hS1CYylOfOtdJalbhy8syI0FePEo5kS1j1QmxvAzf
- 17u6Tv7bGqPqQtni3j5qRUc/ZXMCDbta8oQzs4dDdP9i6dTShZP8bZKk07VNtuKM97TL
- ldf4vqWgi1rTHYLwMoVfylGTGTGdFyXMhwBqBG59S8ABm8a0MFC2Z7coKH5NkI7rn2a+
- GIRg==
-X-Gm-Message-State: AOJu0Yy6j/ljtKVwK6OdhpNPPE8IM1sGHt7TtjzPTT+lVQ/xt9ENNVnl
- VSi8vdTQqE2l5QfXlxPUZXWqGIMiu1aQMbg/Mqw8somJWov26s8ZnE7B2Yino4xQPZ7zylltUIa
- TD+YtRDQ=
-X-Gm-Gg: ASbGncuddAkqd6JX5pQShziribApWNrOupIT/VUxfqEJ+N3CSFgBiTihLjVO1vZFyKv
- Dg8qdLapnTutNkPsStbb4suAYKKohLMNxaRaeKH87jUZfiTxOpWv4CAMgMOJFmU30BYUCZpkyIO
- zaQL+3taeLuy2XboPyGUvrq7O/bflns77r2rjTZyY3ekXjwjZaDwxSoQL+yVrNHZcsB5RXTiLTK
- ZHQCpuJen/EsCwHsYXOSzT87fW/Mak8qyDvfBfACKTL5vlvalkJNH/glFhkwg6xpOTizYvNobfJ
- 2r7RINWIhy0Er7UrcHftQs6jcCJClI+mdIYmaNpkMaI5+Beg0gjFSs2B+4VevaEDZY93bZsVLjp
- z91xETiWyHaEtkV/IgyUyli3lb1ooxpKMM3O8LIk6rtXYUlspDnEOliH3PBkAYINYk4AiXXZb6y
- ay0OG0PlAUbWuTzzCaH7X6VyXgkrKysal25fWVRAnI8+RLrtcWyw==
-X-Google-Smtp-Source: AGHT+IFqmyrOU0eYDWgzue5wNYagT+6suEDHVe2IA8YQ/1fqqQS5kcdt9rb2iAqFcCTBh231kXjK2A==
-X-Received: by 2002:a05:6000:2f8a:b0:427:9a9:462b with SMTP id
- ffacd0b85a97d-42709a9471amr9361002f8f.18.1761080554568; 
- Tue, 21 Oct 2025 14:02:34 -0700 (PDT)
+ bh=mZHYX7VXV4conWXUV38dh7lf+geoYCF1Bpj8/lXvUeA=;
+ b=seVVL0Xg1ra3GoRxvC65aHo3DDlf5tf6Eqde6Rrop6vvPu1mpVXzB2Sm2RvFZCgw48
+ dsOLDE/K9WCBuHmxyBLxHCt68ELXcjKj+IVush1K/gsgb899Zt+BaovTWw+WvsWmjCdT
+ TFjj4gp6rrsNw0Ku0tJ9SiDtY4fWuuLS5teEOUBWZtfAW3rkRNKTD4WyQttweZmWDlDX
+ ffcf3WjxkqcICr0MqNwi2xIuA4k0yVHlKu2jWIm1D9jUwNBjavR6paYCltZG6sdJHDvH
+ HIj6sgMYdHET0eDIAvOI8666hqnOAqUtZCCi1OoyzGOhxG5XpW2k5K5kVL/Cr1H4L4rh
+ YrRQ==
+X-Gm-Message-State: AOJu0YyAGgYRwf4Hjxp9tfrpxSk85nubYkebx8RgDw/zZDKHUPVB9+tc
+ mL1a8I/ev3w18wKxABroogBI2NH111wcO6TNQvB0qYyEXPAx0uOA07BlqhLr2dvO4yqkL3ReHGC
+ CfK8kxa8=
+X-Gm-Gg: ASbGncugjyn+ZFh7d7Y8xjQx1YvS0FR/KebuocwtDOd6MNCSZgpu1P0tfu6KAaW6yq2
+ uxwWckUVyhZm8yJUiKA7GNxe/xwUW+OafOnxb41uFqWM/wET8vUSAS0Ak9shYWXYP9GrJp2zgOH
+ y/S1jKbGuPUFgiVwFu/AJ23sM62DGYtWU0G6BdBWDA4lcWggigOip4AtHQH04d/ItEGklZE+Sc6
+ K4e8l5PhT4209psCI+OV0vwXQFvGYxTSyvRZNj0coQlGfG0ZoXArDV4dDIfmFbKVZ5YSb8np1pD
+ mM48wdbVQvPsU4MLUfFHvIjo8/z3LHmDxxXeaxjvZPxZZR5Xc04rrgAd7mYHYV8hS1qxGRmFnso
+ uB3rl/Q1bYWebD8OoFU3S6yiUMMsHc5IC5v9qCP7hA60dLl8jkOFKHUt31o4m0mm+C0JFizQ3j6
+ jKms5TEs9iusYHgCSbPFHrfsm9JfYyaCt7MDLDm39YGMHKIxGuC8+xOf8OdeSh
+X-Google-Smtp-Source: AGHT+IEMO2cqQFjxIrVEBZs48U7qwniflxRNGHFGC4XngGfZK8r3NAlFQZJVFwY0+JHkOxc6AaI+/Q==
+X-Received: by 2002:a05:600c:871a:b0:471:14f5:124f with SMTP id
+ 5b1f17b1804b1-471179258f3mr133065255e9.35.1761080566464; 
+ Tue, 21 Oct 2025 14:02:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c4369b3esm9589355e9.13.2025.10.21.14.02.33
+ 5b1f17b1804b1-475c428ece8sm10623795e9.7.2025.10.21.14.02.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 14:02:34 -0700 (PDT)
+ Tue, 21 Oct 2025 14:02:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>,
  Anton Johansson <anjo@rev.ng>, qemu-arm@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhang Chen <zhangckid@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 13/19] hw/arm/virt: Get default CPU type at runtime
-Date: Tue, 21 Oct 2025 23:01:37 +0200
-Message-ID: <20251021210144.58108-5-philmd@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+Subject: [PATCH v7 14/19] hw/arm/sbsa-ref: Include missing 'cpu.h' header
+Date: Tue, 21 Oct 2025 23:01:38 +0200
+Message-ID: <20251021210144.58108-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021205741.57109-1-philmd@linaro.org>
 References: <20251021205741.57109-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,65 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer MachineClass::get_default_cpu_type() over
-MachineClass::default_cpu_type to get CPU type,
-evaluating TCG availability at runtime calling
-tcg_enabled().
+"cpu.h" is indirectly pulled in by another header. Include
+it explicitly in order to avoid when changing default CPPFLAGS path:
 
-It's worth noting that this is a behavior change:
-
-- Previously only
-
-  ./configure --disable-tcg --enable-kvm
-  ./qemu-system-aarch64 -M virt -accel kvm
-
-  would default to 'max' and
-
-  ./configure --enable-tcg --enable-kvm
-  ./qemu-system-aarch64 -M virt -accel kvm
-
-  would default to 'cortex-a15'.
-
-- Afterward, -accel kvm will always default to 'max'.
+  hw/arm/sbsa-ref.c:162:25: error: use of undeclared identifier 'ARM_DEFAULT_CPUS_PER_CLUSTER'
+    162 |     uint8_t clustersz = ARM_DEFAULT_CPUS_PER_CLUSTER;
+        |                         ^
+  hw/arm/sbsa-ref.c:163:12: error: call to undeclared function 'arm_build_mp_affinity'
+    163 |     return arm_build_mp_affinity(idx, clustersz);
+        |            ^
+  hw/arm/sbsa-ref.c:746:25: error: use of undeclared identifier 'QEMU_PSCI_CONDUIT_DISABLED'
+    746 |     sms->psci_conduit = QEMU_PSCI_CONDUIT_DISABLED;
+        |                         ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Zhang Chen <zhangckid@gmail.com>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- hw/arm/virt.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ hw/arm/sbsa-ref.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index dda8edb2745..d07cfe16512 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3257,6 +3257,12 @@ static int virt_hvf_get_physical_address_range(MachineState *ms)
-     return requested_ipa_size;
- }
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index cf6e6eb208a..2205500a8da 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -52,6 +52,7 @@
+ #include "net/net.h"
+ #include "qobject/qlist.h"
+ #include "qom/object.h"
++#include "target/arm/cpu.h"
+ #include "target/arm/cpu-qom.h"
+ #include "target/arm/gtimer.h"
  
-+static const char *virt_get_default_cpu_type(const MachineState *ms)
-+{
-+    return tcg_enabled() ? ARM_CPU_TYPE_NAME("cortex-a15")
-+                         : ARM_CPU_TYPE_NAME("max");
-+}
-+
- static GPtrArray *virt_get_valid_cpu_types(const MachineState *ms)
- {
-     GPtrArray *vct = g_ptr_array_new_with_free_func(g_free);
-@@ -3312,11 +3318,7 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
-     mc->minimum_page_bits = 12;
-     mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = virt_cpu_index_to_props;
--#ifdef CONFIG_TCG
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a15");
--#else
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("max");
--#endif
-+    mc->get_default_cpu_type = virt_get_default_cpu_type;
-     mc->get_valid_cpu_types = virt_get_valid_cpu_types;
-     mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
-     mc->kvm_type = virt_kvm_type;
 -- 
 2.51.0
 
