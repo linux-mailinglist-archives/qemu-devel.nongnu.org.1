@@ -2,137 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6B7BF6EE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857B8BF6FF1
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:12:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCtQ-0001Mv-Di; Tue, 21 Oct 2025 09:59:16 -0400
+	id 1vBD68-0000pj-21; Tue, 21 Oct 2025 10:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBCt4-00016V-9W
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:58:54 -0400
-Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBCsz-00086h-O7
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:58:52 -0400
-Received: by mail-qv1-xf34.google.com with SMTP id
- 6a1803df08f44-7ea50f94045so96040026d6.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 06:58:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761055127; x=1761659927; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a9xo5iRU2UaVqUYhP+NOFPTLpT/CvAzz5jgCqB0Tc9s=;
- b=V09KEVzFH/JLjHjrr3hAe2Ds3Ja+Zo4bxx1nMXVdZq/XeWH2VnX5B78bypF4Nlb9Mo
- ssM+4pSDjNfaG1oECgXbGknUjnXcNx+3I+v1MR39jwpeWjci6Hpp4NaRS+LE2rF1D72U
- qNMSYd4T/v4BEEp88PqFBivRHJppr43Vx4D+XIizGKVa2fOdVeiRx0T/+zt/KDCtScin
- foowNE4090YQCWpjIwdMcxxx66c05WSz7zJpCaZyvX//yhwLjMLzBuqg1dOwbFKH9DvB
- L9w+89QmFLo7D2Wua2ifEvcH3AO9nMOgtQjSEi9KajizLwWQAsLdCUEzYACIvhMYIMbd
- Y/tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761055127; x=1761659927;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=a9xo5iRU2UaVqUYhP+NOFPTLpT/CvAzz5jgCqB0Tc9s=;
- b=UUKLYS7/t2XQrNhGiVuq6jFGYOtISiT5J2EjfODnDsboBmbiT+aYSrDMKTCP1rRnO0
- qGUYEteAJqTlaB6bEihHTnVhXjA592P3P4mEAGpkAMCddSwEjZvpkC2DdOJ1fmwRWqYg
- bUJe7kV0e4GiFDCdHm9zBZ8IvWb3weZ18sD63IBM0wUou0na0pEXdNbBFQFkR8kmqPnR
- Zz2+ADPa2Dh1WWYgjU4z7w60RTGC8xVvz+pNOZcP2FulwA/OuGymNHffJqapseXjleWI
- /hhLuhdutqzeTdfEJgWm7kVbk98Qcvodo+6pnZIhvqfnaqqynKwFhiHe3BhEebM3J2Da
- 382Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXabNN/aSYFRvWGgf4mWKvQl+nhWvOUPUMlLS3WyzpHdmg/OEW1Zmdjq5ph0NX2dU5urd48ifiuhtOg@nongnu.org
-X-Gm-Message-State: AOJu0Yz2h+bPmXJlO1xuDyehVqtV+x19b9j9uad9XIXgsjVxFY39xpiZ
- 1QEwljja8e8TCTD3A01lBDm4MHfHmQcnKU10Uwwc75B7GE27M7+0FASTWpIJYij5RLsmXIBGHWn
- W9qPaCpNK8pmBjoHFYfce1ccxm7B3zpY=
-X-Gm-Gg: ASbGncvvT4JYspRAdke/2m7LklKCXrZ0zosrsx6cmbWglXe1SITK+12qHtWaUNiTXLs
- S3wAKrIkw315yhf9zxbsUlUis0xVfwLRgIIRSOPYbsDdgxpJD4KiW0ejJvODPxTZilYRsZyliDq
- 67vK7vlX97lcPikYGYUYicSMrMRL+Buui/fSwkhJHN8y0oeWDUUJTnsX+hRd8WRcQvNvdWcEDtI
- 3QzFeDi1q/Npf3CeuHOJwe2Qc5mc3RHA1/NOEW3xUvjC8p+YXKKbV+4Vait2qwd4eHt24vnw7Bx
- BR18cqDu6zOuI8UPowOofbBl5m4=
-X-Google-Smtp-Source: AGHT+IEASm5PEMuHtKd5e+Rzj4N98EYCKZGb9xbtNELXIkGVXPi9KMyBQu4pgO6iWCx6Ob5On+OEkhJoPBQQfEnXOkg=
-X-Received: by 2002:ac8:6692:0:b0:4e8:9151:b743 with SMTP id
- d75a77b69052e-4e89151baaemr171529791cf.10.1761055127377; Tue, 21 Oct 2025
- 06:58:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1vBD5m-0000ke-VE; Tue, 21 Oct 2025 10:12:05 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1vBD5k-0001ee-HM; Tue, 21 Oct 2025 10:12:02 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCDhB2001179;
+ Tue, 21 Oct 2025 13:26:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=cwImrI
+ ZkdEztsUTOZiZHWIUdy0Yh1BFQJW+Pg4Ay8sk=; b=pu/8MhRQ3wURxI81YLuigO
+ A5h/fOIOw0sm7erlsyaSl82w52zlGxh1Pb1cGgN4zI1g8WLhCyRxLhovWUiuRgNk
+ gy1Cvnf6HLtXcE6Iq3Qw4Ttq40iuMwXufzB2MqxRSFrjwFWFWu6dFeCGL9evehTk
+ SJE7NrvrJTXVUa7//fTmkgR7qzgyU9Gsq54OEju17obQhuItNBR9tX+g0fv9cMFV
+ Ye6QMaYiW8KR6CYRtRj6jc4YRO+i96p9F37S0AI9hGaM4jS0Gx3WkET4O8of3wTc
+ P9Wq4mCs/ItazHHJADB11ClauCxWVhXAIR8gNG2WWyjdVcTuqaXILToL3sSMzokg
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f778a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Oct 2025 13:26:35 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59LDFEL4001474;
+ Tue, 21 Oct 2025 13:26:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f7784-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Oct 2025 13:26:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCj5wB002324;
+ Tue, 21 Oct 2025 13:26:34 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejar0s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Oct 2025 13:26:34 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59LDQX5663832428
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Oct 2025 13:26:33 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7E5B75805F;
+ Tue, 21 Oct 2025 13:26:33 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A19E758043;
+ Tue, 21 Oct 2025 13:26:30 +0000 (GMT)
+Received: from [9.39.25.124] (unknown [9.39.25.124])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 21 Oct 2025 13:26:30 +0000 (GMT)
+Message-ID: <602c19bc-bed9-43c2-b98c-491b75921604@linux.ibm.com>
+Date: Tue, 21 Oct 2025 18:55:53 +0530
 MIME-Version: 1.0
-References: <20251021122533.721467-1-marcandre.lureau@redhat.com>
- <CAFEAcA-jPE_onLYLMxgcAOB7dWRXOLJrWcGPnR0NUdjYytPDVA@mail.gmail.com>
- <aPePcTKl6s4FoLCL@gallifrey>
-In-Reply-To: <aPePcTKl6s4FoLCL@gallifrey>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 21 Oct 2025 17:58:34 +0400
-X-Gm-Features: AS18NWDhwyu6RSAqqb6h7ri3_0htqQRas44BMuTIvGK_fnZ9NOk0aSqeN68Q1lo
-Message-ID: <CAJ+F1C+bGKtY6nf3LCXrwhZ2aEdu2npXJ9FapmsqgX0uLL5TUw@mail.gmail.com>
-Subject: Re: [PATCH] char: rename CharBackend->CharFrontend
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Zhenwei Pi <pizhenwei@bytedance.com>, 
- Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, 
- Frederic Konrad <konrad.frederic@yahoo.fr>, Alberto Garcia <berto@igalia.com>, 
- Thomas Huth <huth@tuxfamily.org>, Halil Pasic <pasic@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>, Magnus Damm <magnus.damm@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Collin L. Walling" <walling@linux.ibm.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Corey Minyard <minyard@acm.org>, 
- Paul Burton <paulburton@kernel.org>, Aleksandar Rikalo <arikalo@gmail.com>, 
- Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Michael Rolnik <mrolnik@gmail.com>, 
- Antony Pavlov <antonynpavlov@gmail.com>, Joel Stanley <joel@jms.id.au>, 
- Vijai Kumar K <vijai@behindbytes.com>, Samuel Tardieu <sam@rfc1149.net>, 
- Gustavo Romero <gustavo.romero@linaro.org>,
- Raphael Norwitz <raphael@enfabrica.net>, 
- Stefan Hajnoczi <stefanha@redhat.com>,
- "reviewer:vhost-user-scmi" <mzamazal@redhat.com>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Fabiano Rosas <farosas@suse.de>, 
- Markus Armbruster <armbru@redhat.com>, Zhang Chen <zhangckid@gmail.com>, 
- Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
- Max Filippov <jcmvbkbc@gmail.com>, Lukas Straub <lukasstraub2@web.de>, 
- "open list:Sharp SL-5500 Co..." <qemu-arm@nongnu.org>, 
- "open list:S390 SCLP-backed..." <qemu-s390x@nongnu.org>,
- "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
- "open list:virtiofs" <virtio-fs@lists.linux.dev>, 
- "open list:Rust-related patc..." <qemu-rust@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qv1-xf34.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/11] hw/ppc/spapr: Inline spapr_dtb_needed()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20251021084346.73671-1-philmd@linaro.org>
+ <20251021084346.73671-5-philmd@linaro.org>
+Content-Language: en-US
+From: Chinmay Rath <rathc@linux.ibm.com>
+In-Reply-To: <20251021084346.73671-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f78a0b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=KKAkSRfTAAAA:8 a=Rnii0OVWSoyPs2-5-ZUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: OJPBdmFxcI1nz1-YSuMhFXb9JA2ldvK7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX+kRD5Uf7tfgT
+ rTBvnuRFfZd8npAFBRc2yNrzDtXpgb6Iwcr1HCRkIUgMg01u1GXmnPf20fsmwGgXpU4T6rAlqP8
+ ccJ4nCx/TqKiwng1D8ohreXFQSkuAj2oUfELEeFIYAYxda/cqPSPm4Qzglh3j4CgF2RhEgyP9WG
+ KFKwXruEDuYbHbGCchKm9dXLRAWVtsyy/m3VmeOmBThg2vGELmRjwtjlXrDLBboHqTvXAEr4nRY
+ e+kkOVgEom1fdQMoO1N80X2M1Vi6AeiXcZAc1tJz3gDV+N+hMtrUCE9Qff9Xx9MGQKWy/v7GZOt
+ dHNx5DT1rsdMf3sombt/84+xlYDiSt1M/Gha7pcL7oFLVWl3qMHhZk7VZ1IpZcJrf8PsakhmbLK
+ DW7fMXc/TkWkxIbUrWBvHs2Uca+afg==
+X-Proofpoint-ORIG-GUID: dTGD7Ser0z01z-nMZKlhEMcmtjKsd02O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-21_01,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,34 +129,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Hey Philippe,
+The commit message says that this commit is inline-ing 
+spapr_dtb_needed(), but it is actually removing it. I think it's better 
+to convey that in the commit message.
+Or did I miss something ?
 
-On Tue, Oct 21, 2025 at 5:52=E2=80=AFPM Dr. David Alan Gilbert <dave@trebli=
-g.org> wrote:
+On 10/21/25 14:13, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/ppc/spapr.c | 6 ------
+>   1 file changed, 6 deletions(-)
 >
-> * Peter Maydell (peter.maydell@linaro.org) wrote:
-> > Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> wrote:
-> > > The actual backend is "Chardev", CharBackend is the frontend side of =
-it,
-> > > let's rename it for readability.
-> >
-> > I always thought the "frontend" was the device the guest
-> > saw (the 16650 UART or whatever). invocation.html has bits
-> > talking about "virtio hvc console frontend device" which
-> > seem like they also use that terminology.
-> >
-> > If we want to clean up the naming it might be helpful to have
-> > a comment somewhere documenting the different components and
-> > what names we give them and how they fit together (or even
-> > better, something in docs/devel/...)
->
-> Or something more descriptive like 'CharGuestSide'
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index 458d1c29b4d..ad9fc61c299 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -2053,11 +2053,6 @@ static const VMStateDescription vmstate_spapr_irq_map = {
+>       },
+>   };
+>   
+> -static bool spapr_dtb_needed(void *opaque)
+> -{
+> -    return true; /* backward migration compat */
+> -}
+> -
+>   static int spapr_dtb_pre_load(void *opaque)
+>   {
+>       SpaprMachineState *spapr = (SpaprMachineState *)opaque;
+> @@ -2073,7 +2068,6 @@ static const VMStateDescription vmstate_spapr_dtb = {
+>       .name = "spapr_dtb",
+>       .version_id = 1,
 
-If we are talking about the Chardev frontend or user, that's too
-restrictive. We have generic stream handling code (think
-mux/hub/tests/client/server etc) that do not fit that usage naming.
+Does this version number need to be incremented ?
 
+Regards,
+Chinmay
 
---=20
-Marc-Andr=C3=A9 Lureau
+>       .minimum_version_id = 1,
+> -    .needed = spapr_dtb_needed,
+>       .pre_load = spapr_dtb_pre_load,
+>       .fields = (const VMStateField[]) {
+>           VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
 
