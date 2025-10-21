@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C72BF8CE6
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36164BF8C59
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJJe-0005mK-2p; Tue, 21 Oct 2025 16:50:46 -0400
+	id 1vBJH0-0005HA-9Y; Tue, 21 Oct 2025 16:48:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJV-0005La-HF
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:37 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGe-0004wE-AO
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:47 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJT-0001ZI-Hg
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:37 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3ee12807d97so5701075f8f.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGZ-00014v-TU
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:37 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-471191ac79dso51270725e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079833; x=1761684633; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5pCkwXJ0ZMdPMUhQ4XQ9aG/lFbpQNR5L7Pb23bpOUK8=;
- b=p/FmL8PvTjlEdEzy39R1+gDQ7BmyPA4iIwZLYdDRqJYb8SfENwWXbRYrZSe+wWU6LN
- yhBPVspOu/E+vsydFzxl7cXJTMpvzPDg4+vCtgnxzkzoStJK+m/HPPhCw3hM86nqxgKQ
- Dv5kB2Yhw8VX4xVrrQcNKHrDlaFlzXGtYhNcfN2lp/pSY16/X4u1UuyWwmdwx5uY6Lw3
- d9FYYhJlH1Vi527imsZoI8Ig8k82lf0QcpjduUOw6RxIaMTCQ/RX/wxzurVU+00sh0qm
- 5p7xxvUPWQ4kZSqaElN8M+SwlJTKJVT0BZNDop7ELyT03N3iwqaw94NJRj0EY63luMkl
- RAbw==
+ d=linaro.org; s=google; t=1761079652; x=1761684452; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Bbj4DnU9UMuayjGZMJyam2c15BZ4ZqrND3uomWVqkE8=;
+ b=Ply08PmbEkZYScdrfHz2Oon/EMjCnz0pMY4fPpdq1MGfTaIjhrLtKupT8EEaEAqsfo
+ K9tf/EG8Svo5EI9Wp5ORv4gp6qFxjMqMJwDg9Es8ov4wQKbcN0sw0khuw7n2PeFwQSF3
+ /2GL9pxibxSGMLg6d4ETrznWXwJPl6wu14SAvoq8C8/qFU2EyVk7UFbOEzGU1hUPV/Kk
+ ZfLiYrZXzqWG5vX1dAqwLayei+G+ZwwYcPlbSTMyHezmX+wyWTJTstlogz+5CqmqvWmg
+ POLeyEO+FEMmwF4eHdyUJj0Sx1rsrh3407IsLlGRxnQDLx3WsMY/QFl7d9ENd0jwFBYD
+ lYdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079833; x=1761684633;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5pCkwXJ0ZMdPMUhQ4XQ9aG/lFbpQNR5L7Pb23bpOUK8=;
- b=qRK6fBVaX8u8+tqQ7qNayjQF0m11j3cG6So9kZv9ni7GV7vucO4QDucngtpgIjaxKv
- YHiGvFOlZQBINImhTZwmV0k4o4I7KJWs7+JDzyAab66tNFZ3ziHywyPC0z1EQc0TcJs7
- feZq4sAwRiLzPd+lGW+/QY7sttadymjSH3yCVpYqIlFUWHJrAGqdm7dMxLrpG8++B86k
- Vc77682L7mLMHp0nH4KUFR9g62OBHMwGJRg7qFPuuYUEa2yNqHtC0MEWS+/GWj/GYkyG
- a7+TAFZwhnXG+COzZMzVEMAwOHg8Rqk7PvJYgQqrKwxjzrRUF3P4AaA+f8KkY1jU+8lA
- gcDw==
-X-Gm-Message-State: AOJu0YxcQ+QlOpC9mdVO+INMXa/GFYDnkRJcZQF1BrdCvAG+0KGpzr4U
- pt63H7U4Qo/9RRi3eXwjtVtCi9WzctFpWSmNWaFRT8V3J7UxQXzeumevo5mANG8Yx5/t/N96fBm
- PDCS4WVo=
-X-Gm-Gg: ASbGncuZ1G4GEwGcdz+iDWl7b0MDBm1VomecVcxa+gR6U2ldY99Ic7U7zAcLYD+YFaO
- 9Exn867T3boqfp/BqrFy570GmY8NY04eoxd0RBraEH8NbAQ1K2BrGDedDvthSerJYeZVi+wf03z
- 4tj4TzLMTFen9GTaVy7XqJJFMmACwa109E4kYDNZR0bXBVP2mJlWPiQe4ED0yotEzfJdl1TjAvK
- aIkAGerCsRDmV8Yd2OwdZEROKijftNZLgPbYJdI6SBoqKr8rUME8YET6e54wheW223lURncUWK9
- WUwGua8hVG/BMiK99Sv8A3G03Zt0ZJ/RS90wge3+AqnWpRzvBOWXAPJx0er5gldc6spiUbfD8gC
- M8E8aViWEKkjucHvaVZX/nAIYDwtaLUyC9Zlb1ET8/vwm72x6YKXU4Uuf16z/PCdEfMtKXJPVmB
- mRX8YhHBb+mUNW1wTaVry7p0jfCBG1XDgU3WDmxqdl+VyW3eNRaQ==
-X-Google-Smtp-Source: AGHT+IGs2Z3YSA1x/PxUxi5iw2Iw8Rtin3k+88j0qCKZCdFaNJOWoZWsMHacOKp4FGrMNQ593EYyzA==
-X-Received: by 2002:a05:6000:22c6:b0:427:23a:c339 with SMTP id
- ffacd0b85a97d-42704d6c507mr12832022f8f.14.1761079832754; 
- Tue, 21 Oct 2025 13:50:32 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1761079652; x=1761684452;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bbj4DnU9UMuayjGZMJyam2c15BZ4ZqrND3uomWVqkE8=;
+ b=kJyId4/sum9FGRgwWBLx96nsfSAybq1OL6vZAxvVy8G1QKq3srW2kLac7pnXhdt5+M
+ A5GqXQIa/dzHRPF8YlDA69fKiBR93tVvltnGiLDtNaAtH/YU1toripm7/Hc8KrXb1Ohv
+ WpR4DUIZIemDzzV9IftNyZvRS+1fMOQwESS6loBOsCI7IqMGme76hZ5xgcu0JdoXxV2r
+ B/2xObj24Og4gItrQk9tIAr218geRJie8YJh6XwwfXnOnqQ65aV2Wy5DwyQTPpNmKnxa
+ 4F16RCLHLNyYE28PGfGYO0N3cyp5CMCm3ayuOCm7us7eIlZ3M0JY1JGFoJLal1eCdzQG
+ wGFQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWkvUA5wFvLtyq9oLinMswwa96HMhpYW4W9zeqyEMRDTY05j+EuI4efmwFKVl4vxI1HzDRm6gw480vN@nongnu.org
+X-Gm-Message-State: AOJu0Yzb/oZHQN6543NMCygmXELYvRI6aHfkCqVYMj3JGZ0vT7KgbBf9
+ ILFWbdgKMmm4gPq7VFB49b3ViarRn012f7FMGcPFB4YpKHe+jMr5QQyDY/KMJLPUZ4w7l7JBGL3
+ ig2qvN+M=
+X-Gm-Gg: ASbGncuTJX1V/ZcbbqkPAw9KEh28owAA16VJ+Vl+lYqZRXqFFA55rosMNoTYlFq/6ei
+ S5KEZzhncHGJAdKSBtGb7WOX9rSwz5I3s9vtNHIXhs8HCNvgphLh5i4iQLmZHWhcJ+XNpwCr9/Q
+ PhuX+7UAumtLd/X++TE+GrSv4ubYZyj2wAuFNWphKC34A/cBil0hlT6a3SMBXFPBvsDM9tamrTj
+ tdAYxsWGYkB2cxK8HZEh6p0B5BHwUN4iP7sVhfsCLh3rNS0viUdyL1y1b7zaSx1GrC/1tFPvUo+
+ z/lIZ7BJWKHV3Dioai5QjvNCOkq5ORvp9RzotJaf7291V+dfFU5YmdTSeVWrE53DWZiO96DGejZ
+ hNelGWSkJaJmQNwBqcSR/YO4umptNGCSe3FE9+R3P08KWWMPbSpEwfsMuPb/ZEQ4G+hnQ1NjEkF
+ UWIzmRP2edhUs5uZ58qujPw7oxTLjyZbwErYeZJtCvl5Ihtxo1OO64CQ==
+X-Google-Smtp-Source: AGHT+IG+mCw6CFnC9+i5Zw9JMUhd4HTOjLTt1QfZ7Vbl7xNLvhfutdApr28Hi2ofRzqrxb+leeVItw==
+X-Received: by 2002:a05:600c:5299:b0:470:ff87:6c2d with SMTP id
+ 5b1f17b1804b1-4711791781fmr146572925e9.29.1761079652358; 
+ Tue, 21 Oct 2025 13:47:32 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00b985esm22665976f8f.34.2025.10.21.13.50.31
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:50:32 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 45/45] docs: Update mentions of removed '-soundhw' command line
- option
-Date: Tue, 21 Oct 2025 22:46:59 +0200
-Message-ID: <20251021204700.56072-46-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
-References: <20251021204700.56072-1-philmd@linaro.org>
+ 5b1f17b1804b1-47496b09bc4sm24261565e9.2.2025.10.21.13.47.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Oct 2025 13:47:31 -0700 (PDT)
+Message-ID: <8fdacbaf-f760-41b1-9313-fbe8d9c66a4a@linaro.org>
+Date: Tue, 21 Oct 2025 22:47:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 05/25] target/alpha: call plugin trap callbacks
+Content-Language: en-US
+To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
+References: <cover.1760884672.git.neither@nut.email>
+ <78ba254c812a91105bf52f6f0ce73774ee2be265.1760884672.git.neither@nut.email>
+ <2a0a4cde-1427-4d87-a331-f4ed6fa64aa2@linaro.org>
+ <20bf0927d2331f70d92048726362558d78caa4a8@nut.email>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20bf0927d2331f70d92048726362558d78caa4a8@nut.email>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,51 +104,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The `-soundhw` CLI was removed in commit 039a68373c4 ("introduce
--audio as a replacement for -soundhw"). Remove outdated comments
-and update the document mentioning the old usage.
+On 21/10/25 22:38, Julian Ganz wrote:
+> Hi Philippe,
+> 
+> October 21, 2025 at 10:10 PM, "Philippe Mathieu-Daudé" wrote:
+>> On 19/10/25 17:14, Julian Ganz wrote:
+>>> We recently introduced API for registering callbacks for trap related
+>>>   events as well as the corresponding hook functions. Due to differences
+>>>   between architectures, the latter need to be called from target specific
+>>>   code.
+>>>   This change places hooks for Alpha targets.
+>>>   Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>>>   Signed-off-by: Julian Ganz <neither@nut.email>
+>>>   ---
+>>>   target/alpha/helper.c | 13 +++++++++++++
+>>>   1 file changed, 13 insertions(+)
+>>>   diff --git a/target/alpha/helper.c b/target/alpha/helper.c
+>>>   index 096eac3445..a9af52a928 100644
+>>>   --- a/target/alpha/helper.c
+>>>   +++ b/target/alpha/helper.c
+>>>   @@ -27,6 +27,7 @@
+>>>   #include "exec/helper-proto.h"
+>>>   #include "qemu/qemu-print.h"
+>>>   #include "system/memory.h"
+>>>   +#include "qemu/plugin.h"
+>>>   > > #define CONVERT_BIT(X, SRC, DST) \
+>>>   @@ -328,6 +329,7 @@ void alpha_cpu_do_interrupt(CPUState *cs)
+>>>   {
+>>>   CPUAlphaState *env = cpu_env(cs);
+>>>   int i = cs->exception_index;
+>>>   + uint64_t last_pc = env->pc;
+>>>   > if (qemu_loglevel_mask(CPU_LOG_INT)) {
+>>>   static int count;
+>>>   @@ -431,6 +433,17 @@ void alpha_cpu_do_interrupt(CPUState *cs)
+>>>   > /* Switch to PALmode. */
+>>>   env->flags |= ENV_FLAG_PAL_MODE;
+>>>   +
+>>>   + switch (i) {
+>>>   + case EXCP_SMP_INTERRUPT:
+>>>   + case EXCP_CLK_INTERRUPT:
+>>>   + case EXCP_DEV_INTERRUPT:
+>>>   + qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+>>>   + break;
+>>>   + default:
+>>>   + qemu_plugin_vcpu_exception_cb(cs, last_pc);
+>>>   + break;
+>>>
+>> Shouldn't we handle EXCP_CALL_PAL with qemu_plugin_vcpu_hostcall_cb()?
+> 
+> Host calls are exclusively calls that are handled outside the emulation,
+> on the host, regardless of whether they are hypervisor calls or not. In
+> that respect EXCP_CALL_PAL looks to me like a regular exception that is
+> handled by translated code within the emulation.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20251021131825.99390-2-philmd@linaro.org>
----
- docs/qdev-device-use.txt | 4 ++--
- system/qdev-monitor.c    | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/docs/qdev-device-use.txt b/docs/qdev-device-use.txt
-index 043ae461140..fb420da2a9e 100644
---- a/docs/qdev-device-use.txt
-+++ b/docs/qdev-device-use.txt
-@@ -311,9 +311,9 @@ constraints.
- 
- Host and guest part of audio devices have always been separate.
- 
--The old way to define guest audio devices is -soundhw C1,...
-+The old way to define guest audio devices was -soundhw C1,...
- 
--The new way is to define each guest audio device separately with
-+The current way is to define each guest audio device separately with
- -device.
- 
- Map from -soundhw sound card name to -device:
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 2ac92d0a076..ec4a2394ceb 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -73,9 +73,9 @@ typedef struct QDevAlias
- 
- /* Please keep this table sorted by typename. */
- static const QDevAlias qdev_alias_table[] = {
--    { "AC97", "ac97" }, /* -soundhw name */
-+    { "AC97", "ac97" },
-     { "e1000", "e1000-82540em" },
--    { "ES1370", "es1370" }, /* -soundhw name */
-+    { "ES1370", "es1370" },
-     { "ich9-ahci", "ahci" },
-     { "lsi53c895a", "lsi" },
-     { "virtio-9p-device", "virtio-9p", QEMU_ARCH_VIRTIO_MMIO },
--- 
-2.51.0
-
+OK, thanks.
 
