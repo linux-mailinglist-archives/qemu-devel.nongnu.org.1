@@ -2,101 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E23ABF6919
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 14:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FC2BF6949
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 14:58:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBBu5-0005XU-6L; Tue, 21 Oct 2025 08:55:53 -0400
+	id 1vBBwV-00069c-Lu; Tue, 21 Oct 2025 08:58:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wesley.hershberger@canonical.com>)
- id 1vBBty-0005X4-PO
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:55:46 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vBBwQ-00069J-ND
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:58:18 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wesley.hershberger@canonical.com>)
- id 1vBBtu-0008Iw-1h
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:55:44 -0400
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D1FDF3F66F
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 12:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20251003; t=1761051333;
- bh=teQ7noeix4gMctnSWDVFaMK0VGY4Pt2D3JojboZwfnI=;
- h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
- To:Cc:Content-Type;
- b=CzulezxKyUeQ4TJ34Lo+kP74+2Kw246XCtFwtL/l7ZbSUUrM2dqnYcwrJU8tzfSBK
- cgVE26+1Pqk7vvRxqA3ao1k9xImLU4rqcDaSCpt/c+UNzEJwEa6mrOX99V4VBk7XY6
- THlZZwSeQPrBAFrtB4FZqUxxHaYQ6qmmaonwimaAAMZpBB/A0h2NB02Cawg535jI/6
- BY65/H2Ys9KBmzEtfTnhw7kG/f2NoQBl9G2IK11rtNiB2KGm4KO0CCG/IbE1NSknPU
- +H9P9N7FroadAQvycrReqQooGKz552vI6ETRiP0gsuRuI8SN/IsfkPYGlbpuimn4R2
- ucuxpztXjbz3daMjkZcw8297kcyfttZHS+3NUwOirBi5n6ujUKPk2Y1G26u28GcH2l
- 6r/1vV/NLZYG5Cl/wdkRI0GkRF4nPVYSb7lwir7HY4k8QQYzN7DDP6224VrK3sq0Ra
- dm/+WZRZZTAU/Xp6V+q6RpYw61vp/3QePOcNct7SSnRm8nmN9PFCeDjmXiR7fNbyB5
- WrxfUgUnLbLl9mhh9kTL7SKylRyDqk7JQO/4gzJV2qQazljGqO38ghN5j1rMcP5iX0
- ygMprN7QEkNAyVPOz76dxgwEgC6umrTQvn0fUXSWepeSGuT+Avqd7J/grlKnDHD/Ey
- MkgFAehpQvoo57yZJZjLGnmI=
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-7848b193cc5so41967657b3.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 05:55:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761051327; x=1761656127;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=teQ7noeix4gMctnSWDVFaMK0VGY4Pt2D3JojboZwfnI=;
- b=w6E2zBsISWr7BH8csWG8TwrlXWffj7LMPx4N2JEDHuwCpZugjxHBsvfho4v2I6xw0W
- RGnwAUXxc+amFOmNEcMTvJAqs6ENe/yb0xuRQtfRc0/w9pTIEaJMwm+WlPeDSqO3NfOZ
- cDiA0fGMhKYE+JXTUTeOvMuKi3uIcpebaXX+5XSglgIOdjWIPGPmQOo26cJ5EQCRv29Q
- gCHmzNkPH2lowsz67FhDw8uNiSLuZ25sTXMwYy8TzOSlrUhigBmFcRJo6UyAoapVbn6U
- mGS0boS+j5FpldPbb8qsMg5f3sEWQUHwBbW6vHvvk3l1oU1MNqomJ9pFGv+rDwsH+FSJ
- 71fg==
-X-Gm-Message-State: AOJu0YxOQBeXN+KkVAIfZMNBq5NimlG97Ptvw9Ah6ra2vSjYz823FU6O
- Ylw446h4kZiJWZBz5WuhLQr4wfG5awcA+skr4kcdv6UAwfU5TdGmlOnSi6L1+VIQ6y9pj31z4XN
- 4RQKBYsvNvn9wcxHkD2hrF9QJ1tdgsCCMNmGem6LU1DiLmEPJyO7wPbdCxGaUFMdhlOz4hBNj/+
- Aepnv1TFl4xMSFw/l5QJMRf1NqFOK495N35FrLQv9AftCuO1o=
-X-Gm-Gg: ASbGncvX/+r5bTORJZnPjJwzdeUdQBvVHVzD2sjaxNXwVBDMeg2kHf4AHupHhxaFIVp
- l3YLifETfqAaZoYBomlaZP1gOcmxDnlfiqe1k7IC2owosyNb4AQOUeTp2K+680t/adUq2xiFGij
- rnDf0/7Pzgq+A7uIM583eG6EUa8yFbnCpjnTo2flaecSJ0P07LBrNyBixMATf0EFDvonJYe4UDY
- eD+qd0PSJuYVVw=
-X-Received: by 2002:a05:690e:d56:b0:63c:f5a6:f2d3 with SMTP id
- 956f58d0204a3-63e1624b72fmr11727869d50.34.1761051327346; 
- Tue, 21 Oct 2025 05:55:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF/4UBnLMTnib4kkUWMEceV7R2YgIgdSHwRMevodP7zwh78sWb+Vl3tgXQ/vgOTCmsVEZzIoiBRfp0YO+YvSE=
-X-Received: by 2002:a05:690e:d56:b0:63c:f5a6:f2d3 with SMTP id
- 956f58d0204a3-63e1624b72fmr11727856d50.34.1761051327040; Tue, 21 Oct 2025
- 05:55:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vBBwN-0000An-IY
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:58:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id EDABA5972E3;
+ Tue, 21 Oct 2025 14:58:12 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id J2gg7NigFLSw; Tue, 21 Oct 2025 14:58:10 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id E20745972E1; Tue, 21 Oct 2025 14:58:10 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id DFDBF5972DE;
+ Tue, 21 Oct 2025 14:58:10 +0200 (CEST)
+Date: Tue, 21 Oct 2025 14:58:10 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
+cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ =?ISO-8859-15?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [PATCH 34/43] audio: rename AudioState -> AudioBE
+In-Reply-To: <CAJ+F1CKoi5iYZHTxMWKUtx=kRbW2BjtoAzMVGLe8by0Dnmb+KQ@mail.gmail.com>
+Message-ID: <4e621485-01c0-653f-b521-9fcc4272fa92@eik.bme.hu>
+References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
+ <20251021090317.425409-35-marcandre.lureau@redhat.com>
+ <1bd34160-d034-465b-a1ac-0e734ed40484@redhat.com>
+ <d26b8838-c4a9-443f-a651-f46901a40865@redhat.com>
+ <CAJ+F1CLoaufD_1tFUd_1uckWZLXVQ7E-GpRDZRDXtfi6unBw7A@mail.gmail.com>
+ <32170b83-473c-4eb8-96dc-9180c51fe872@redhat.com>
+ <CAJ+F1CKoi5iYZHTxMWKUtx=kRbW2BjtoAzMVGLe8by0Dnmb+KQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20251020-fix-3149-v1-1-04b2d4db5179@canonical.com>
- <edbc31b7-545b-416b-a5c1-eee3276ac9d8@yandex-team.ru>
-In-Reply-To: <edbc31b7-545b-416b-a5c1-eee3276ac9d8@yandex-team.ru>
-From: Wesley Hershberger <wesley.hershberger@canonical.com>
-Date: Tue, 21 Oct 2025 07:55:15 -0500
-X-Gm-Features: AS18NWCqBDAHMO4AXplXODcLnUsF6HOAYITOBZXQWwEO0YRBG0ftwrWr3Nspcy8
-Message-ID: <CADzzt1CAxiFpVoXiH9=K7SJ1YTN3zRA2K=YxTgkibibRGuOcWA@mail.gmail.com>
-Subject: Re: [PATCH] stream: Remove bdrv from job in .clean()
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.125.188.123;
- envelope-from=wesley.hershberger@canonical.com;
- helo=smtp-relay-internal-1.canonical.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-2015573042-1761051490=:49605"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,39 +78,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 21, 2025 at 1:05=E2=80=AFAM Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-2015573042-1761051490=:49605
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 21 Oct 2025, Marc-André Lureau wrote:
+> On Tue, Oct 21, 2025 at 2:49 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>>
+>> On 10/21/25 12:40, Marc-André Lureau wrote:
+>>>>> BE and FE aren't used in existing code though.  Looking at current use:
+>>>
+>>> There is a top-level backends/ though. I meant to say that it's
+>>> usually clearer for everyone when we talk about "backend" vs
+>>> "frontend" (or not?), and I wish we would follow that naming more in
+>>> the code.
+>>
+>> Yes, but the front-end should have a *pointer* to a backend.
+>>
+>>>>> - BlockDriverState*/BlockBackend*
+>>>
+>>> I am not very familiar with the block subsystem, but it is seems
+>>> BlockBackend is actually the backend and BlockDriverState is
+>>> implementation data detail. Correct me if I'm wrong
+>>
+>> Yes, note the "*".  What I meant above is "the frontend has a
+>> BlockBackend*, which itself has the internal BlockDriverState*".  Same
+>> for character and NICs below.
+>>
+>>>>> - Chardev*/CharBackend
+>>>>>
+>>>
+>>> Those are actually always confusing... and I remember I attempted to
+>>> rename it in the past... CharBackend is the front-end side..
+>>
+>> Yes, they are confusing.  I'm not sure why it failed, but
+>> s/CharBackend/CharFrontend/ does get my vote.
+>>
+>>>> QEMUSoundCard's name field is basically unused, and QEMUSoundCard should
+>>>> be just an Audiodev*.  There's no need for a separate AudioFE struct.
+>>>
+>>> For audio, it's pretty obvious that we have "backend" object to
+>>> implement the host audio subsystem details, while "QEMUSoundCard" is
+>>> the "frontend", or "client/user" context.
+>>
+>> I agree, but unlike character devices, QEMUSoundCard is not needed at
+>> all.  So you can drop it and only leave Audiodev*, or AudioBackend* (but
+>> I prefer Audiodev* which matches both the option name and Chardev*).
+>>
 >
-> > This can cause races with qmp query-named-block nodes as described in
-> >   #3149.
+> I see, I'll try to remove QEMUSoundCard.
 >
-> Hmm. But why it lead to segfault? Ok, children kept in global_bdrv_states=
-.
-> and referenced by the job itself (as I can assume from the patch). What's
-> wrong with the state, so we went in segfault?
+> AudioState can't easily be renamed to "Audiodev" though, since that's
+> the QAPI type name. There are slight typename differences between QAPI
+> types for chardev and audiodev. Is it breaking QMP APIs to change
+> typenames? I guess not, I might be wrong. However, this will likely
+> break external code generators based on QAPI (qapi-rs etc)..
 
-My understanding is that when bdrv_replace_node_common is called with
-`detach_subchain=3Dtrue` then `children` is cleared. Here's a trace from
-stream_clean (line numbers approximate on v10.1.0):
+I'm getting lost where this is going but keeping AudioState for the QOM 
+type seems better than using another name just to try to be consistent 
+with char backends that was said to have a confusing naming above. So 
+maybe keep the QOM convention for audio and call it AudioState and later 
+try to match Char to this if that needs similar QOM'ification? If this is 
+replacing QEMUSoundCard then maybe AudioCard can also be considered for 
+keeping consistency with local names. But I don't know what I'm talking 
+about so I stop here and let you agree on something.
 
- - stream_clean (block/stream.c L131)
- - bdrv_cor_filter_drop (block/copy-on-read.c L274)
- - bdrv_drop_filter (block.c L5466)
- - bdrv_replace_node_common (block.c L5404)
-    (called with `detach_subchain=3Dtrue`)
- - bdrv_remove_child (block.c L5335)
- - bdrv_replace_child_tran (block.c L2489)
- - bdrv_replace_child_noperm (block.c L2944)
- - bdrv_child_cb_detach (BdrvChildClass.detach) (block.c L1492)
-
-I can observe that children.lh_first =3D=3D NULL in gdb.
-
-> Also, would be good to write the segfault backtrace here, for someone
-> to search the fix through git.
-
-I'll include the backtrace from #3149 in the commit message of my next
-submission.
-
-Thanks so much for the review!
-~Wesley
+Regards,
+BALATON Zoltan
+--3866299591-2015573042-1761051490=:49605--
 
