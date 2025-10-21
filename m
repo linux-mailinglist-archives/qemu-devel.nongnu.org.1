@@ -2,81 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF780BF6EFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6B7BF6EE7
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:59:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCt3-0000gh-Eg; Tue, 21 Oct 2025 09:58:53 -0400
+	id 1vBCtQ-0001Mv-Di; Tue, 21 Oct 2025 09:59:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1vBCsf-0000W9-20
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:58:30 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vBCt4-00016V-9W
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:58:54 -0400
+Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1vBCsc-0007zq-4U
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:58:27 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7811fa91774so4993658b3a.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 06:58:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vBCsz-00086h-O7
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:58:52 -0400
+Received: by mail-qv1-xf34.google.com with SMTP id
+ 6a1803df08f44-7ea50f94045so96040026d6.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 06:58:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761055103; x=1761659903; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pPdygudXA5Lxli1F/++PwS4Z3c1EOK1lIXgoZ6EeQsQ=;
- b=TFGqHwg7hH2xldqgUC1mwqR3qW4aNiF3iz6QG5PAeGPGR4bwtXqw09iOSZqyQDbaSf
- BqT2EUAIen/U3ECJVUINI12ucqWU9A+jqJ2VqC2l9XatvtWSwqx5cxE5oULj2MIBDhx8
- 4daVIroorEvC2aN4OBenphJcCpxnTOW6nqkzOwqgZ1b+Lk9MbqX6J3Nl2TMUG9ATej0C
- l03vWDd4Wm9q1ylXoNti2a0z421uuTiRtv318bZ5t/UrtqPHc8pR0UDLP/J9P07UeLh7
- o3yjbEfzH6D8nGKig8ZyQMN2rTb2m1U7XxMo1UOHTIcYFK+WB/nluhD7/pFm+dA6CTdn
- zReA==
+ d=gmail.com; s=20230601; t=1761055127; x=1761659927; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=a9xo5iRU2UaVqUYhP+NOFPTLpT/CvAzz5jgCqB0Tc9s=;
+ b=V09KEVzFH/JLjHjrr3hAe2Ds3Ja+Zo4bxx1nMXVdZq/XeWH2VnX5B78bypF4Nlb9Mo
+ ssM+4pSDjNfaG1oECgXbGknUjnXcNx+3I+v1MR39jwpeWjci6Hpp4NaRS+LE2rF1D72U
+ qNMSYd4T/v4BEEp88PqFBivRHJppr43Vx4D+XIizGKVa2fOdVeiRx0T/+zt/KDCtScin
+ foowNE4090YQCWpjIwdMcxxx66c05WSz7zJpCaZyvX//yhwLjMLzBuqg1dOwbFKH9DvB
+ L9w+89QmFLo7D2Wua2ifEvcH3AO9nMOgtQjSEi9KajizLwWQAsLdCUEzYACIvhMYIMbd
+ Y/tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761055103; x=1761659903;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pPdygudXA5Lxli1F/++PwS4Z3c1EOK1lIXgoZ6EeQsQ=;
- b=b4128rbOVy2vuc0rtgHXwL+EbdTL/eeGVzhOpY1HgskwBCf/rws21h9JhIcASJVFKw
- RQJEZH2pD04+fDlrJMxMd7me1CRU8Uj8osd/o+4UZp7FVJyjOdYri65XANeMaplfOJlF
- Orq9VkEjK967qllYtE5bhrIpFJg9gIcJC8O+f7a5QW04o6V64lSfC+kS3E7h4zoQ+zxj
- DexgtCTD58E00FxEuhc+Dpg/tH//IMJ3pgXzuuNya/3nR1M2+X1VHa3hrobApSSEZB+s
- DSLJZU1LMefsRh3kYQ38zPpRuHQivMH0pDlj0kx0LegczD/xMgGeR+JFV+X2l50VL1Fd
- Cilg==
-X-Gm-Message-State: AOJu0Yx6xDf+mNFzU1FWHsc7rCWHpS2qu2RHvHevnJMq4YUZbUUWkqCM
- dfMEqAVtSKKPUYUxbX8pVkprkIf92SeX14kuKgRMZSqfTpr2E2e7nlmI05mYzVQoaiBgSh40t++
- WQ3B+YgtyhjJGgFYecypWlp4wM59/2JtJMQGBOQ3aoA==
-X-Gm-Gg: ASbGncs+vu3uyHYqx5cJUr/x6u9hjQkpvqjo0zZizdefbfHYQQzZR4tikm3yMeBp4R0
- k3U9Qu4ta9Bg3uNkhd9hGfZNFM2QiUR3Dpn0GKlMPwF2vAYaSo2fWiwIYvClXpDYJWIe3L3GQlq
- sQx+QJhFyyVXOKXUmvxdp53tsHArMJ9Ztcjoq047l3V5JKwualvysOcx4k1ZK22+7k6lVEYXnfz
- 88cbyAc7o/7ewmm6S4WHNUvatwTPthyvdkIFfkWdkkLbok1ZRqw5rLuVKAFHzlFMBqE1A==
-X-Google-Smtp-Source: AGHT+IE0+jvJP+jHgFuOGd7AG/ldZHoV3AfhKDbcZoT/QZC6z/r+l4UHVkiL0/gXj0woSudmdvCYrWf6uSTZqfAxvCw=
-X-Received: by 2002:a17:903:94e:b0:290:533b:25c9 with SMTP id
- d9443c01a7336-290c9c8ae4dmr192613605ad.2.1761055103171; Tue, 21 Oct 2025
- 06:58:23 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761055127; x=1761659927;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=a9xo5iRU2UaVqUYhP+NOFPTLpT/CvAzz5jgCqB0Tc9s=;
+ b=UUKLYS7/t2XQrNhGiVuq6jFGYOtISiT5J2EjfODnDsboBmbiT+aYSrDMKTCP1rRnO0
+ qGUYEteAJqTlaB6bEihHTnVhXjA592P3P4mEAGpkAMCddSwEjZvpkC2DdOJ1fmwRWqYg
+ bUJe7kV0e4GiFDCdHm9zBZ8IvWb3weZ18sD63IBM0wUou0na0pEXdNbBFQFkR8kmqPnR
+ Zz2+ADPa2Dh1WWYgjU4z7w60RTGC8xVvz+pNOZcP2FulwA/OuGymNHffJqapseXjleWI
+ /hhLuhdutqzeTdfEJgWm7kVbk98Qcvodo+6pnZIhvqfnaqqynKwFhiHe3BhEebM3J2Da
+ 382Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXabNN/aSYFRvWGgf4mWKvQl+nhWvOUPUMlLS3WyzpHdmg/OEW1Zmdjq5ph0NX2dU5urd48ifiuhtOg@nongnu.org
+X-Gm-Message-State: AOJu0Yz2h+bPmXJlO1xuDyehVqtV+x19b9j9uad9XIXgsjVxFY39xpiZ
+ 1QEwljja8e8TCTD3A01lBDm4MHfHmQcnKU10Uwwc75B7GE27M7+0FASTWpIJYij5RLsmXIBGHWn
+ W9qPaCpNK8pmBjoHFYfce1ccxm7B3zpY=
+X-Gm-Gg: ASbGncvvT4JYspRAdke/2m7LklKCXrZ0zosrsx6cmbWglXe1SITK+12qHtWaUNiTXLs
+ S3wAKrIkw315yhf9zxbsUlUis0xVfwLRgIIRSOPYbsDdgxpJD4KiW0ejJvODPxTZilYRsZyliDq
+ 67vK7vlX97lcPikYGYUYicSMrMRL+Buui/fSwkhJHN8y0oeWDUUJTnsX+hRd8WRcQvNvdWcEDtI
+ 3QzFeDi1q/Npf3CeuHOJwe2Qc5mc3RHA1/NOEW3xUvjC8p+YXKKbV+4Vait2qwd4eHt24vnw7Bx
+ BR18cqDu6zOuI8UPowOofbBl5m4=
+X-Google-Smtp-Source: AGHT+IEASm5PEMuHtKd5e+Rzj4N98EYCKZGb9xbtNELXIkGVXPi9KMyBQu4pgO6iWCx6Ob5On+OEkhJoPBQQfEnXOkg=
+X-Received: by 2002:ac8:6692:0:b0:4e8:9151:b743 with SMTP id
+ d75a77b69052e-4e89151baaemr171529791cf.10.1761055127377; Tue, 21 Oct 2025
+ 06:58:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251017155136.16540-1-roger.pau@citrix.com>
-In-Reply-To: <20251017155136.16540-1-roger.pau@citrix.com>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Tue, 21 Oct 2025 15:58:09 +0200
-X-Gm-Features: AS18NWA58CeS14FdkkCNsTOZQHqLAPZdt-7l1MEooVrAG7tg9H44TnVA3_KoSpQ
-Message-ID: <CAJy5ezpoN0mdSWStgF_RjtrnkbfkaMMsnrHHGuiQqNd4aNp0nQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/xen: pass PCI domain to xc_physdev_map_pirq_msi()
-To: Roger Pau Monne <roger.pau@citrix.com>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org
-Content-Type: multipart/alternative; boundary="000000000000dabea70641ab9724"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-pf1-x431.google.com
+References: <20251021122533.721467-1-marcandre.lureau@redhat.com>
+ <CAFEAcA-jPE_onLYLMxgcAOB7dWRXOLJrWcGPnR0NUdjYytPDVA@mail.gmail.com>
+ <aPePcTKl6s4FoLCL@gallifrey>
+In-Reply-To: <aPePcTKl6s4FoLCL@gallifrey>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 21 Oct 2025 17:58:34 +0400
+X-Gm-Features: AS18NWDhwyu6RSAqqb6h7ri3_0htqQRas44BMuTIvGK_fnZ9NOk0aSqeN68Q1lo
+Message-ID: <CAJ+F1C+bGKtY6nf3LCXrwhZ2aEdu2npXJ9FapmsqgX0uLL5TUw@mail.gmail.com>
+Subject: Re: [PATCH] char: rename CharBackend->CharFrontend
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, 
+ Frederic Konrad <konrad.frederic@yahoo.fr>, Alberto Garcia <berto@igalia.com>, 
+ Thomas Huth <huth@tuxfamily.org>, Halil Pasic <pasic@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, 
+ Yoshinori Sato <yoshinori.sato@nifty.com>, Magnus Damm <magnus.damm@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "Collin L. Walling" <walling@linux.ibm.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Corey Minyard <minyard@acm.org>, 
+ Paul Burton <paulburton@kernel.org>, Aleksandar Rikalo <arikalo@gmail.com>, 
+ Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Michael Rolnik <mrolnik@gmail.com>, 
+ Antony Pavlov <antonynpavlov@gmail.com>, Joel Stanley <joel@jms.id.au>, 
+ Vijai Kumar K <vijai@behindbytes.com>, Samuel Tardieu <sam@rfc1149.net>, 
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Raphael Norwitz <raphael@enfabrica.net>, 
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "reviewer:vhost-user-scmi" <mzamazal@redhat.com>, 
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Fabiano Rosas <farosas@suse.de>, 
+ Markus Armbruster <armbru@redhat.com>, Zhang Chen <zhangckid@gmail.com>, 
+ Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, Lukas Straub <lukasstraub2@web.de>, 
+ "open list:Sharp SL-5500 Co..." <qemu-arm@nongnu.org>, 
+ "open list:S390 SCLP-backed..." <qemu-s390x@nongnu.org>,
+ "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>, 
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, 
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
+ "open list:virtiofs" <virtio-fs@lists.linux.dev>, 
+ "open list:Rust-related patc..." <qemu-rust@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qv1-xf34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,61 +148,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000dabea70641ab9724
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi
 
-On Fri, Oct 17, 2025 at 5:51=E2=80=AFPM Roger Pau Monne <roger.pau@citrix.c=
-om>
-wrote:
-
-> It's currently impossible for passthrough devices on segment different th=
-an
-> 0 to work correctly, as the PCI domain is not provided to
-> xc_physdev_map_pirq_msi(), and hence it's unconditionally assumed that al=
-l
-> devices are on segment 0.
+On Tue, Oct 21, 2025 at 5:52=E2=80=AFPM Dr. David Alan Gilbert <dave@trebli=
+g.org> wrote:
 >
-> Adjust the call to xc_physdev_map_pirq_msi() to pass the PCI domain in th=
-e
-> high 16bits of the bus parameter.  On versions of Xen where this is not
-> supported the passed segment will be ignored and assume to be 0, no worse
-> than the current state.
+> * Peter Maydell (peter.maydell@linaro.org) wrote:
+> > Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> wrote:
+> > > The actual backend is "Chardev", CharBackend is the frontend side of =
+it,
+> > > let's rename it for readability.
+> >
+> > I always thought the "frontend" was the device the guest
+> > saw (the 16650 UART or whatever). invocation.html has bits
+> > talking about "virtio hvc console frontend device" which
+> > seem like they also use that terminology.
+> >
+> > If we want to clean up the naming it might be helpful to have
+> > a comment somewhere documenting the different components and
+> > what names we give them and how they fit together (or even
+> > better, something in docs/devel/...)
 >
-> Signed-off-by: Roger Pau Monn=C3=A9 <roger.pau@citrix.com>
->
+> Or something more descriptive like 'CharGuestSide'
 
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+If we are talking about the Chardev frontend or user, that's too
+restrictive. We have generic stream handling code (think
+mux/hub/tests/client/server etc) that do not fit that usage naming.
 
---000000000000dabea70641ab9724
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 17,=
- 2025 at 5:51=E2=80=AFPM Roger Pau Monne &lt;<a href=3D"mailto:roger.pau@ci=
-trix.com">roger.pau@citrix.com</a>&gt; wrote:<br></div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">It&#39;s currently impossible for passthrough=
- devices on segment different than<br>
-0 to work correctly, as the PCI domain is not provided to<br>
-xc_physdev_map_pirq_msi(), and hence it&#39;s unconditionally assumed that =
-all<br>
-devices are on segment 0.<br>
-<br>
-Adjust the call to xc_physdev_map_pirq_msi() to pass the PCI domain in the<=
-br>
-high 16bits of the bus parameter.=C2=A0 On versions of Xen where this is no=
-t<br>
-supported the passed segment will be ignored and assume to be 0, no worse<b=
-r>
-than the current state.<br>
-<br>
-Signed-off-by: Roger Pau Monn=C3=A9 &lt;<a href=3D"mailto:roger.pau@citrix.=
-com" target=3D"_blank">roger.pau@citrix.com</a>&gt;<br></blockquote><div><b=
-r></div><div>Reviewed-by: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.igl=
-esias@amd.com">edgar.iglesias@amd.com</a>&gt;</div><div><br></div></div></d=
-iv>
-
---000000000000dabea70641ab9724--
+--=20
+Marc-Andr=C3=A9 Lureau
 
