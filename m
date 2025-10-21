@@ -2,65 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFE8BF8B6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 195C7BF8B94
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:33:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBIvO-0003gc-OC; Tue, 21 Oct 2025 16:25:42 -0400
+	id 1vBJ1G-0005TL-Pe; Tue, 21 Oct 2025 16:31:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vBIvI-0003fp-CG
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:25:36 -0400
-Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBJ1A-0005R2-M3
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:31:40 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1vBIvF-0004Oa-Sv
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:25:35 -0400
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id CD8E960DC7
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 22:25:22 +0200 (CEST)
-Received: (qmail 5199 invoked by uid 990); 21 Oct 2025 20:25:22 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Tue, 21 Oct 2025 22:25:22 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBJ18-00064d-0S
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:31:40 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3EC0C211A5;
+ Tue, 21 Oct 2025 20:31:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1761078686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0RRfqwnbwms6EpuMatAnfZafRVIhp5f5wupASckogbk=;
+ b=Y7SHqhUVxaslo8nH0gYIS41riCMTcgg6KwzfcIfwZfTAdJu04MqB+ll/IPCsf0Rcmvopsx
+ rz6Zjgct8pdm/TYhirZD1frMC75vskUszWabGSB19MpaXLCUOU5YamEtDSZO+u623VXJpg
+ XpBQ6ZufR/KWlzO40GsYSWUWrc1CG44=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1761078686;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0RRfqwnbwms6EpuMatAnfZafRVIhp5f5wupASckogbk=;
+ b=yM2P6TDlHgRynfvzSbk+lRk+KBQPtn8fVqTqCYNrEC0bhbaSyAyrPEgsr4xi96X3PWnswD
+ Gsx5WXcH/naBz1DA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1761078682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0RRfqwnbwms6EpuMatAnfZafRVIhp5f5wupASckogbk=;
+ b=s1tcMCdr8R47jAE7YCJ1f4lCAh/XSdYg9VTQW5NgcNFWDSxKT05CpkzBEUPvBj9+oAwkIY
+ KCL9XWwQ4ltlOm+OJtGwrjUXE1JcYpAtXcGeK9TtulH7L+RlBWEw76gvORAPLk5on+DAj1
+ aCAkByWMHPziEOjGg8ZfcjpAjCR7WQc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1761078682;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0RRfqwnbwms6EpuMatAnfZafRVIhp5f5wupASckogbk=;
+ b=q3T73n43Jzh8Sfp6Piw3TtmJ6xFapAfGLQtZp44BGbhOsfyasHqBmz4hmpwb0BEP5icw+A
+ N/AVXgiNBymxaHBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB791139B1;
+ Tue, 21 Oct 2025 20:31:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ajHzH5nt92hBRQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 21 Oct 2025 20:31:21 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>
+Cc: Dhruv Choudhary <dhruv.choudhary@nutanix.com>, qemu-devel@nongnu.org,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH] Improve error propagation via return path
+In-Reply-To: <aPelsAunpYhiQJ0h@x1.local>
+References: <20251021075254.600961-1-dhruv.choudhary@nutanix.com>
+ <aPeaBNIzrq0Ni4IM@x1.local>
+ <41985b55-f99d-47ff-964c-79adc05f3ea1@yandex-team.ru>
+ <aPelsAunpYhiQJ0h@x1.local>
+Date: Tue, 21 Oct 2025 17:31:19 -0300
+Message-ID: <87tszst2so.fsf@suse.de>
 MIME-Version: 1.0
-Date: Tue, 21 Oct 2025 20:25:21 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Julian Ganz" <neither@nut.email>
-Message-ID: <a8d2f909aa7e429b3b5b1d0a342e9656e1492f59@nut.email>
-TLS-Required: No
-Subject: Re: [PATCH v8 18/25] target/s390x: call plugin trap callbacks
-To: "=?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?=" <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "David Hildenbrand" <david@redhat.com>, "Richard Henderson"
- <richard.henderson@linaro.org>, "Ilya Leoshkevich" <iii@linux.ibm.com>,
- "Thomas Huth" <thuth@redhat.com>, "open list:S390 TCG CPUs"
- <qemu-s390x@nongnu.org>
-In-Reply-To: <ad294ba0-5c22-4583-9f24-8514c6bef633@linaro.org>
-References: <cover.1760884672.git.neither@nut.email>
- <50a092042a41f7d679df2b6577edcba1d9316829.1760884672.git.neither@nut.email>
- <ad294ba0-5c22-4583-9f24-8514c6bef633@linaro.org>
-X-Rspamd-Bar: ---
-X-Rspamd-Report: BAYES_HAM(-2.999986) MIME_GOOD(-0.1)
-X-Rspamd-Score: -3.099986
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=LOP5Mx3H01ca9E+MwnFHQV8LoDAmmU1BTeX96MAcMZc=;
- b=eeaiDk3xV1W6iK2MNl0xkS60ncElRkZ4XNBKfkhucY98b+mAXjrt3YTsOnGBpw2EH3262wMXxC
- c3TqRFQvkUT0JITIB3E9slUfaxeeoYRWQEyTk0V+oYi9+lwU5PrfazsN1fHnzMPUOrcIY8aNbr3t
- ON+fI7ogK3ktf6xChKufq9buqaX1EJt9xOyDR8QjMdyzc1Z7ZR2MkjL6ABLsHO9pvbfolhGmy9Fc
- oxcJRoFd4daidjU6vSW+hunGColztgW8WzGJaAE0ULK/FYIRkSL+mkBFtWP/3dV6ObxV2gK1CWBm
- oJx3VNHd6c3KVXgTdgsn0lJL2PIsvrEIvYYzT4wpvOMPXkTRrQ8Sc9JFpIBea7ob5LaUKYR5o0qx
- ltXlNMOjOkg+42dFiR9kaX6oviTGFERJRlYkGCvyqlG4SAFU12PBXTelMWmuIIkAP5n0wgkYk7us
- Vd027JG6XvYlHpVEqT8MLe2QnvcSA/oUslcTdUL6kFFmiRgdJ3lYAhL4iF2GH0KZQarP8JZvxZVF
- ORGsxfExqDLH5nxBSXAOg84h6F4Ur56WSJmiTjLytZ02/ovL4zG91RU5i+SgcpNJ/J0m/9Zo8vF5
- ygZb7fvoOHfu6j+e7+lHDBUVJpkg+18t0Rq7yyQqq9S3O6PFEyfWDmrrffr5Oo+Jsn+LNsUzzzbi
- U=
-Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
- envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.998]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -82,51 +116,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+Peter Xu <peterx@redhat.com> writes:
 
-October 21, 2025 at 10:07 PM, "Philippe Mathieu-Daud=C3=A9" wrote:
-> On 19/10/25 17:15, Julian Ganz wrote:
-> >  @@ -531,21 +533,27 @@ try_deliver:
-> >  switch (cs->exception_index) {
-> >  case EXCP_PGM:
-> >  do_program_interrupt(env);
-> >  + qemu_plugin_vcpu_exception_cb(cs, last_pc);
-> >  break;
-> >  case EXCP_SVC:
-> >  do_svc_interrupt(env);
-> >  + qemu_plugin_vcpu_exception_cb(cs, last_pc);
-> >  break;
-> >  case EXCP_EXT:
-> >  do_ext_interrupt(env);
-> >  + qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-> >  break;
-> >  case EXCP_IO:
-> >  do_io_interrupt(env);
-> >  + qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-> >  break;
-> >  case EXCP_MCHK:
-> >  do_mchk_interrupt(env);
-> >  + qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-> >  break;
-> >  case EXCP_RESTART:
-> >  do_restart_interrupt(env);
-> >  + qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-> >  break;
-> >  case EXCP_STOP:
-> >  do_stop_interrupt(env);
-> >=20
->=20Shouldn't we also track the STOP interrupt?
->=20
->=20 qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
->=20
->=20If not, please mention why in the patch description.
+> On Tue, Oct 21, 2025 at 05:54:09PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>> On 21.10.25 17:34, Peter Xu wrote:
+>> > On Tue, Oct 21, 2025 at 07:52:53AM +0000, Dhruv Choudhary wrote:
+>> > > Use the return-path thread to send error details from the
+>> > > destination to the source on a migration failure. Management
+>> > > applications can then query the source QEMU for errors, as
+>> > > the single source of truth, making failures easy to trace.
+>> > > 
+>> > > Signed-off-by: Dhruv Choudhary <dhruv.choudhary@nutanix.com>
+>> > 
+>> > +Vladimir, Dan
+>> > 
+>> > IIUC we may still need to know whether the src QEMU supports this message
+>> > or not.
+>> > 
+>> > OTOH, we have introduced exit-on-error since 9.1:
+>> > 
+>> > # @exit-on-error: Exit on incoming migration failure.  Default true.
+>> > #     When set to false, the failure triggers a :qapi:event:`MIGRATION`
+>> > #     event, and error details could be retrieved with `query-migrate`.
+>> > #     (since 9.1)
+>> > 
+>> > This patch is going the other way.  That feature suggests the mgmt query
+>> > the error from dest directly.
+>> > 
+>> > We should stick with one plan rather than doing both.
+>> > 
+>> 
+>> Why?
+>> 
+>> exit-on-error=false is good anyway: when QMP connection is established, the
+>> management of target QEMU process is the same: we do call qmp commands to
+>> add devices, etc. We get QMP events. Actually, exiting is unexpected, better
+>> to fit into QMP protocol, continuing to send events and wait for qmp quit
+>> to exit.
+>> 
+>> Passing error back to the source simply improves error message on source,
+>> which otherwise is often confusing.
+>> 
+>> Using both, we of course see same error in two places.. But we do have two
+>> QEMU processes, which both handled by on-host managing services. We should
+>> correctly report error on both parts anyway.
+>> 
+>> Improving error messages on source is just and improvement, which makes
+>> current behavior better (with or without exit-on-error=false).
+>> 
+>> Removing exit-on-error=false semantics (with or without passing errors back)
+>> would be a step backward, to violating of QMP protocol by unexpected exits.
+>
+> I didn't mean to propose removing exit-on-error, what I meant is when with
+> it this patch doesn't look like helpful.
+>
+> Has libvirt been integrated with exit-on-error?  If so, IMHO we don't need
+> this patch anymore.  To me it's not an improvement when with exit-on-error,
+> because duplicating the error from dest to src makes it harder to know
+> where the error happened.
 
-My expectation was that this exception is not observable in software
-running on the target anyway, and that is would lead to a VCPU exit. For
-which we already have qemu_plugin_register_vcpu_exit_cb. If I'm wrong
-about that than we do want to also track STOP interrupts. If not I'll
-add a sentence about that in the commit message.
+Yeah, this does introduce some complexity of the "whose error is this?"
+kind. I can imagine future users of migrate_has_error() having to handle
+the error differently whether it came from this machine or the remote
+one. Maybe with current code there's no issue, but we need to think from
+a design perspective. Another point is whether the source machine is
+always prepared to see an error that has nothing to do with its own
+operation as it usually gets to know about a destination error only when
+TCP connections start to fail.
 
-Regards,
-Julian
+That said, from a usability perspective, I'm in favor of having the
+source machine be able to inform the user about the destination
+machine's error. It goes in the direction of relying less on the
+management layer, which we already agree might be a good idea.
 
