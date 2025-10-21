@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1BCBF694C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 14:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5D1BF6955
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 14:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBBwd-0006Ad-4h; Tue, 21 Oct 2025 08:58:31 -0400
+	id 1vBBxd-0006kl-Fb; Tue, 21 Oct 2025 08:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBBwb-0006A9-4k
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:58:29 -0400
-Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBBwY-0000GL-UL
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:58:28 -0400
-Received: by mail-qk1-x735.google.com with SMTP id
- af79cd13be357-890deb84f95so621172585a.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 05:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761051505; x=1761656305; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=96CYvlD6uhLxBW8TiRf/cv97M07vTXYDF933VGBl2m4=;
- b=awRnMpl3UzItFTMRhzMak8MWphg6OXaZ2/pySX6Bc8Ye6wi5Bj9eDSMHQUpzO2E0un
- vzrxUjE0mK+ufjO3meCVP1/+Jm4Cijwm40L6fi/oT0ufYT5cTu5KELFhyjFKOfJeQIaO
- 741s5/0OQ3eJDwikYxzvPwJz9sBwjoM7ZDcyzrIM3wzGFJZs0cRIDlYSdus6f408Rp52
- NhLV42LO8YbwtfT/0udHQuBdEBOVuN1w5RcLeTI5Vqw/aDNiI25/Rz9h7KJb9ra+321P
- vALN0ltzMqQ4XtUW3CyQ8JZ5u0LNjLlI1vN8/O22yno/eDrhveRBMpV6bCrqp+TQYZp5
- JoeA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vBBxR-0006bC-Ou
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:59:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vBBxO-0000J0-AP
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 08:59:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761051555;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1ZlBmsKZDJiBIJDciru70bUgASgD726oQk2/quELiaU=;
+ b=fggk7vR4rtLZDQlbYdfwUTdeG7Sc/uKyPbguNnZAtpWck3hb5w0uq82M+Y9UCIYt37P41l
+ +HMeduiQru9arnd3JWBCXYYF31laGYeS6NCu+kJWE2lA1EZOn9EsFdZCwzPk/NYu4/yh16
+ zH46abKQzCU6pgqKJxdPzzqQOWRfras=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-154-oOx4FkCUPHW1TSJFu6uwhA-1; Tue, 21 Oct 2025 08:59:13 -0400
+X-MC-Unique: oOx4FkCUPHW1TSJFu6uwhA-1
+X-Mimecast-MFC-AGG-ID: oOx4FkCUPHW1TSJFu6uwhA_1761051552
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47111dc7c5dso29678765e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 05:59:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761051505; x=1761656305;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=96CYvlD6uhLxBW8TiRf/cv97M07vTXYDF933VGBl2m4=;
- b=OQYRvT4iJdtEwU798+Buiyib6McjUqlXkTi9KUprlZd+RvqiYUe7ii3hyAQ7JwBcYS
- cExeB83kF6SY6yhLlHIucSEjA391rMPIikGs3bZBx+taCiQLkDSp2/JAKs+rQHk8pjt7
- tm8O1NwQsRxnk8A+QifDvFNYVxNsBHloGHvdhaREQDTZGNmnLrDt0yIAJ6gmQutPM2hS
- 9JUwCKK6Dbb8fPOFWCyh7iz2vSQcog7Q6lJg+O2vy+OtXFkI5iqgXG5mpwtOSUP7PR87
- 6/RKn1ETheNrinuCaw7pqZ0/JPOADNQYgks5gRTiVGfKMccczWHxpVA8uudNaohft7fu
- MxUg==
-X-Gm-Message-State: AOJu0YxcVCfqP3c2VaQmfoaJi5la7tc358IyW0pz3D+ZQnvQosjZsBih
- 4/KUd5suTfUHt5LIcBFypYhazDl0OuF7U+vU6NBMXAvW5ENZUNE/yjrDvR99IoK/PLGHZBqbvyq
- 2duehUIdvNJW4WxaAAqyPA4jVZPENcAc=
-X-Gm-Gg: ASbGncspyA+NbHSwodK8d7bRCihCGLk+4zgLQLj05R4FhXdmBtzX637zXX7CU2RJ8+X
- yNTFQWnW65jD5igCcDhiHUO5Uh3cUidBpoOQ9olng9ddMZCiNqBfWSVLjZM1ETKaLBuedtxQjAk
- 83E+xuUO0G7v6rH+30TMr575dVQx+z0MUKvYi1l1IpixgLi3ALQG3wD/LUyfKgCCCLeMe0q37Bs
- sa6Rd7XNNz10BEmGe0N7EmQSQ1F9OJOk2KNjo7U/vJZ2pVL7Ioe7qsbrfn/ogiaEkIfc9H7qyL7
- tVV5AtVvxG7VSvzP
-X-Google-Smtp-Source: AGHT+IEt5410kUkhnjNKwQAwOSJAuLd22xXcG1+N7T5FKUMl0Z4g4dYBqiJqYqU3VDkWsGbDIbABUIiusl8bNhgAvnI=
-X-Received: by 2002:ac8:7f44:0:b0:4e8:b478:66 with SMTP id
- d75a77b69052e-4e8b4780995mr115322371cf.82.1761051505046; 
- Tue, 21 Oct 2025 05:58:25 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761051552; x=1761656352;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1ZlBmsKZDJiBIJDciru70bUgASgD726oQk2/quELiaU=;
+ b=MCJYzMWVrEcFwV9GXrpa2cqYzwCYjemHLqgI1QEZXReTCs5ysDtxgcvgClOmhLb0b1
+ mDOL9zMO9W7fWp5LlEWWsnwv5HZAL9NuxS+CTFHp6aRqEoaioDDTrrAdU5WQg12+5vLp
+ 5qYWDc5gAZjjTdRaluRLjZE9I+7qlJF1NOrvvOCr8Vgwo5jSWPG8hwMdaf9tqP3EHfbG
+ QeucWqsxx+St9j9eGM/g5CsmwGSr9VBS1ra6+9RpCFPuU1+raZ9FZjhuGeBRE7NXfhjX
+ T3yfVC5Q8VmpbyEuqF6PJedIk2Mj8Oq3klbMPKo1Y3jLbsOdUpIdOzaDySl1fT9JyJlv
+ NQ3g==
+X-Gm-Message-State: AOJu0Yyl8jRm3RWYOI4vsc7L9rAQzeea5VtlKFVoxLLtfWX2McJfKhc4
+ u/Yc1E972vbKqsrtk/hMhuqsgAkNOHv4xvzAuxsiaHlYKJFJSliqKvud+rukJPx+6zlB6Y1DFtu
+ YPJMoZdpZhJgl+k9jgGWdC0GG3T8+fanWiJxWuWZlK+Gkh6T4DRMlDun6+O8NtEBw
+X-Gm-Gg: ASbGnctgXNsgBrGKuQOPbHOAqKHLqGL4yl0BDvp8OzCFdoOZoidTvgK5RxJ6DukD7Kx
+ mpEj7llQYvHTbCTmkNYxD8wAs6II+P7kA46qaQelRyS8GMc7Kt+a03J2A07vja1HmkQHG4c0zE/
+ NaWd560jwYmVAg4hDZoy4NSoiqU1wh5tj8lGOoT3/kpPhig7nKOx2fHrqTxCYo3JN/6sdnkbG7p
+ lyb043JWfIsBYPkQ6YZdM/uO9m0KxYmo6FwNcUKq5EAJX/UOfoCy33sndN588I5WpSsmSctBNI1
+ 6AetHQzL+7MZOMmDLAoYvmjl+866enEpSOL9M5H/3f0rUMMR5NM3AhxXB+cjaUivbNsE
+X-Received: by 2002:a05:600c:8183:b0:45f:29eb:2148 with SMTP id
+ 5b1f17b1804b1-4711724e5bcmr123916925e9.7.1761051551823; 
+ Tue, 21 Oct 2025 05:59:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFsAmkL5knBOk8a/0pqwNAcziPaakN/ECFuDYC//qeQ4e7YoJMlWByzC4JpXMSSmwDPE44hYw==
+X-Received: by 2002:a05:600c:8183:b0:45f:29eb:2148 with SMTP id
+ 5b1f17b1804b1-4711724e5bcmr123916725e9.7.1761051551320; 
+ Tue, 21 Oct 2025 05:59:11 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:152d:b200:2a90:8f13:7c1e:f479])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47154d382d8sm199479565e9.12.2025.10.21.05.59.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Oct 2025 05:59:10 -0700 (PDT)
+Date: Tue, 21 Oct 2025 08:59:08 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jack Wang <jinpu.wang@ionos.com>
+Cc: qemu-devel@nongnu.org, yu.zhang@ionos.com
+Subject: Re: [PATCH] qmp: Fix a typo for a USO feature
+Message-ID: <20251021085833-mutt-send-email-mst@kernel.org>
+References: <20251021053309.208957-1-jinpu.wang@ionos.com>
 MIME-Version: 1.0
-References: <20251015105419.2975542-1-marcandre.lureau@redhat.com>
- <87o6q0mn4o.fsf@pond.sub.org>
-In-Reply-To: <87o6q0mn4o.fsf@pond.sub.org>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 21 Oct 2025 16:58:13 +0400
-X-Gm-Features: AS18NWDmJOIoYlqGEn3ar7nl0DFPKUYkZk0dX_xv1dcgEyZYZS2qa3OUHVsXl2Q
-Message-ID: <CAJ+F1CJ6UiUZ=rY_O41Za=yPSDoW2atbM8Yk_oSdpQ+Nkjz1uw@mail.gmail.com>
-Subject: Re: [PATCH] RFC: qdev: add legacy properties only for those
- print()-able
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::735;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x735.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251021053309.208957-1-jinpu.wang@ionos.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,124 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Tue, Oct 21, 2025 at 07:33:09AM +0200, Jack Wang wrote:
+> There is a copy & paste error, USO6 should be there.
+> 
+> Fixes: 58f81689789f ("qmp: update virtio feature maps, vhost-user-gpio introspection")
+> Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
 
-On Tue, Oct 21, 2025 at 4:55=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> marcandre.lureau@redhat.com writes:
->
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > The link properties are not printed in "info qtree", I don't know if
-> > this was intentional. We currently register legacy properties for
-> > link/ptr properties, but they don't have PropertyInfo getters (only
-> > ObjectPropertyAccessor, when using non-legacy properties)
-> >
-> > By not registering a (unusable?) legacy property, "info qtree" can now
-> > print the link.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >  hw/core/qdev-properties.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-> > index b7e8a89ba5..fe260a9670 100644
-> > --- a/hw/core/qdev-properties.c
-> > +++ b/hw/core/qdev-properties.c
-> > @@ -1143,14 +1143,13 @@ static void qdev_class_add_legacy_property(Devi=
-ceClass *dc, const Property *prop
-> >  {
-> >      g_autofree char *name =3D NULL;
-> >
-> > -    /* Register pointer properties as legacy properties */
-> > -    if (!prop->info->print && prop->info->get) {
-> > +    if (!prop->info->print) {
-> >          return;
-> >      }
-> >
-> >      name =3D g_strdup_printf("legacy-%s", prop->name);
-> >      object_class_property_add(OBJECT_CLASS(dc), name, "str",
-> > -        prop->info->print ? qdev_get_legacy_property : prop->info->get=
-,
-> > +        qdev_get_legacy_property,
-> >          NULL, NULL, (Property *)prop);
-> >  }
->
-> The old code confuses me.  Let's go through it real slow.
->
->     /**
->      * qdev_class_add_legacy_property:
->      * @dev: Device to add the property to.
->      * @prop: The qdev property definition.
->      *
->      * Add a legacy QOM property to @dev for qdev property @prop.
->      *
->      * Legacy properties are string versions of QOM properties.  The form=
-at of
->      * the string depends on the property type.  Legacy properties are on=
-ly
->      * needed for "info qtree".
->      *
->      * Do not use this in new code!  QOM Properties added through this in=
-terface
->      * will be given names in the "legacy" namespace.
->      */
->     static void qdev_class_add_legacy_property(DeviceClass *dc, const Pro=
-perty *prop)
->     {
->         g_autofree char *name =3D NULL;
->
->         /* Register pointer properties as legacy properties */
->
-> The comment talks about "pointer properties".  We used to call
-> properties defined with DEFINE_PROP_PTR() that way, but these were
-> deleted years ago.  The comment is even older.  I'm going to ignore it.
->
->         if (!prop->info->print && prop->info->get) {
->             return;
->         }
->
-> To get here, prop->info->print || !prop->info->get.
->
->         name =3D g_strdup_printf("legacy-%s", prop->name);
->         object_class_property_add(OBJECT_CLASS(dc), name, "str",
->             prop->info->print ? qdev_get_legacy_property : prop->info->ge=
-t,
->             NULL, NULL, (Property *)prop);
->
-> If qdev property @prop has a .print() method, we create a QOM property
-> "legacy-FOO" of type "str" with qdev_get_legacy_property() as .get(),
-> and no .set() or .release().
->
-> qdev_get_legacy_property() is a QOM .get() wrapping around qdev
-> .print(): it calls .print() to format the property value as a string
-> (arbitrarily limited to 1023 characters), then visits it with
-> visit_type_str().
->
-> Aside: there seems to be just one property that implements .print():
-> DEFINE_PROP_PCI_DEVFN(), in qdev_prop_pci_devfn.  Quite a lot of
-> infrastructure just for that.
->
-> Else, prop->info->get is null, because prop->info->print || !prop->info->=
-get.
-> So we create a QOM property "legacy-FOO" with no .get(), .set(),
-> .release().  Why?
->
-> Your patch gets rid of these.  How does this make "info qtree" show link
-> properties?  Hmm...  qdev_print_props() uses "legacy-FOO" instead of
-> "FOO" when it exists.  But a "legacy-FOO" without a .get() will fail.
-> When it does, the property is skipped.
->
-> Is this what makes the patch work?
->
+Can the FEATURE_ENTRY macro be updated to include the
+string in there automatically, please?
+It's really pointless to repeat it.
 
 
-Yes, that matches my understanding and I agree about your feeling
-about the infrastructure just for DEVFN. But at the same time, it's
-nice to have and I don't have a proposal to change that :)
+> ---
+>  hw/virtio/virtio-qmp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+> index b338344c6cca..968299fda0c9 100644
+> --- a/hw/virtio/virtio-qmp.c
+> +++ b/hw/virtio/virtio-qmp.c
+> @@ -299,7 +299,7 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
+>      FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
+>              "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
+>      FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
+> -            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
+> +            "VIRTIO_NET_F_GUEST_USO6: Driver can receive USOv6"),
+>      FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
+>              "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
+>      FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
+> -- 
+> 2.43.0
 
---=20
-Marc-Andr=C3=A9 Lureau
 
