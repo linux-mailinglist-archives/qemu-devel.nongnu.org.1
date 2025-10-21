@@ -2,118 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857B8BF6FF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A02BABF6FB2
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:10:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBD68-0000pj-21; Tue, 21 Oct 2025 10:12:24 -0400
+	id 1vBD2z-00071Q-Lh; Tue, 21 Oct 2025 10:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1vBD5m-0000ke-VE; Tue, 21 Oct 2025 10:12:05 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBD2w-00070L-HP
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:09:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1vBD5k-0001ee-HM; Tue, 21 Oct 2025 10:12:02 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCDhB2001179;
- Tue, 21 Oct 2025 13:26:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=cwImrI
- ZkdEztsUTOZiZHWIUdy0Yh1BFQJW+Pg4Ay8sk=; b=pu/8MhRQ3wURxI81YLuigO
- A5h/fOIOw0sm7erlsyaSl82w52zlGxh1Pb1cGgN4zI1g8WLhCyRxLhovWUiuRgNk
- gy1Cvnf6HLtXcE6Iq3Qw4Ttq40iuMwXufzB2MqxRSFrjwFWFWu6dFeCGL9evehTk
- SJE7NrvrJTXVUa7//fTmkgR7qzgyU9Gsq54OEju17obQhuItNBR9tX+g0fv9cMFV
- Ye6QMaYiW8KR6CYRtRj6jc4YRO+i96p9F37S0AI9hGaM4jS0Gx3WkET4O8of3wTc
- P9Wq4mCs/ItazHHJADB11ClauCxWVhXAIR8gNG2WWyjdVcTuqaXILToL3sSMzokg
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f778a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:26:35 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59LDFEL4001474;
- Tue, 21 Oct 2025 13:26:35 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f7784-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:26:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCj5wB002324;
- Tue, 21 Oct 2025 13:26:34 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejar0s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:26:34 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59LDQX5663832428
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Oct 2025 13:26:33 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7E5B75805F;
- Tue, 21 Oct 2025 13:26:33 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A19E758043;
- Tue, 21 Oct 2025 13:26:30 +0000 (GMT)
-Received: from [9.39.25.124] (unknown [9.39.25.124])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 21 Oct 2025 13:26:30 +0000 (GMT)
-Message-ID: <602c19bc-bed9-43c2-b98c-491b75921604@linux.ibm.com>
-Date: Tue, 21 Oct 2025 18:55:53 +0530
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBD2s-000155-Sj
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:09:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761055740;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=oZLFJTA4cBmcc0Fwy1diMJn+dAnM6uFOpWEbb9FSyF8=;
+ b=iP1XEyx/T/Le4dF4I66Xshih/PGCKvIBwGsS3ODyqls6iX3tCrjI78gMro93Vr9XPUpIXI
+ iDDbKUyw9PkudLnSrF29Z8bpP3IVBMJ0pUnD713nG7RbuDi7RlB3ALPBpBay49lm1uo2gI
+ uvq8RN0FneQcQUqfCu+uw3596M7iSvI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-548-7QdspFbDPvWG7naE_aoViw-1; Tue, 21 Oct 2025 10:08:59 -0400
+X-MC-Unique: 7QdspFbDPvWG7naE_aoViw-1
+X-Mimecast-MFC-AGG-ID: 7QdspFbDPvWG7naE_aoViw_1761055738
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-47111dc7c5dso30089905e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 07:08:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761055737; x=1761660537;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oZLFJTA4cBmcc0Fwy1diMJn+dAnM6uFOpWEbb9FSyF8=;
+ b=P4/kNP3lciL/fK0fbjyKELSjLgjrx7Pl/PaGT3CSEpFalDq7NRl7fqGfJjQ/l92iE0
+ o0FbsHHM+4K0SjKNLTIrUx2LpPidtaaKyTqREHUNao66g/S4b/Mpj+MJi2NjrPgvm1gk
+ 9BBUi8KOeLe0wuFyHB8QVwCmUorjY4z9tC+KWIShdaob0n09+mvuVKUusxEXG2EXt8sY
+ mLMZlWP8EOdDIbIIyMfr4GbQFr0/gr2YLV2GjdZ5dNKMNei/AXNFHBl5tclI6007Ru4y
+ 05JOy6ANJBjocHkL/Sh2DavYajgBz/RD7Gglq57Z61i8wxqRP+Xuy27UufAkhPVjgAwz
+ 7uJA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNfhzn8Ey3lrPQ6eNpzXqaVTBxVq6hMc30Hs0PY3zqM09WyxXM22fQzmevLKDTFhEOk7tDk3zL4Jbe@nongnu.org
+X-Gm-Message-State: AOJu0Yyc+aZB9wZ9eSh9TQt0RsLP1LnV86suHNu/GNlF+LXCFRBgbYED
+ iFbCjgdG7X7p7UD3j6UFHSl8EO00aysJ5PdHCnEgz5JVddhh+vXYrrjTXxLCEk+7L+p8954Ftkh
+ 6TCRB9yFQWea3hnDKCMjWrvZVurTVT5vWyXDckboQNFr1Fc92FrkI+emN
+X-Gm-Gg: ASbGncvB8EJqcFlAzKS51anoSrLLoLtyONwBLm4S8jQKvvA/6bL2xJLq9SxltI8uiKb
+ vElOstXOvybJzhalLWflPJNCOtDMLqErt/StJ7JZNGTtMykOwZqS7nHXGbJ0d2QP9+HeSIK2WxC
+ iNZOR/42x3OJ8Uw0kyc32nexlw5XE9Uk3vEKwFHjoeZCjFu8OTOw45mPs2jqYbr6Lc8R+yXEGo3
+ aKYJ9fg2aAtQynBzA6WVX7aQcfTBkRTOe50HBuUmVoBZsZ/0Ujap6VefnSxDXxuZt4iNmOzjJQJ
+ 4he3J2kFpDib5Zm7xO0J5yVWPhGU9QLCQ9b7cP0LRA1sWcTLZvXZKRevVKZIukNW6viKs8cbbN3
+ ABRc8wYnxVIzf7AYlUuq6arbV
+X-Received: by 2002:a05:600c:8719:b0:46e:711c:efe9 with SMTP id
+ 5b1f17b1804b1-475c3d9de79mr61295e9.13.1761055737398; 
+ Tue, 21 Oct 2025 07:08:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbCNfbrpktdLsySHOP/K3ZQDsmCIQNEuXG+yXrpZ4DxcJFfUeSv5GY1oqgqzANOOYSY/WyxQ==
+X-Received: by 2002:a05:600c:8719:b0:46e:711c:efe9 with SMTP id
+ 5b1f17b1804b1-475c3d9de79mr61105e9.13.1761055737028; 
+ Tue, 21 Oct 2025 07:08:57 -0700 (PDT)
+Received: from [10.33.192.176] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-471144238easm290959385e9.4.2025.10.21.07.08.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Oct 2025 07:08:56 -0700 (PDT)
+Message-ID: <2fe7ce6a-9e48-46f8-a91c-a2690b41f260@redhat.com>
+Date: Tue, 21 Oct 2025 16:08:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/11] hw/ppc/spapr: Inline spapr_dtb_needed()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20251021084346.73671-1-philmd@linaro.org>
- <20251021084346.73671-5-philmd@linaro.org>
+Subject: Re: [PATCH 6/7] s390x: Build IPLB for virtio-pci devices
+To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
+ mjrosato@linux.ibm.com, zycai@linux.ibm.com
+References: <20251020162023.3649165-1-jrossi@linux.ibm.com>
+ <20251020162023.3649165-7-jrossi@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Chinmay Rath <rathc@linux.ibm.com>
-In-Reply-To: <20251021084346.73671-5-philmd@linaro.org>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20251020162023.3649165-7-jrossi@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f78a0b cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=KKAkSRfTAAAA:8 a=Rnii0OVWSoyPs2-5-ZUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: OJPBdmFxcI1nz1-YSuMhFXb9JA2ldvK7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX+kRD5Uf7tfgT
- rTBvnuRFfZd8npAFBRc2yNrzDtXpgb6Iwcr1HCRkIUgMg01u1GXmnPf20fsmwGgXpU4T6rAlqP8
- ccJ4nCx/TqKiwng1D8ohreXFQSkuAj2oUfELEeFIYAYxda/cqPSPm4Qzglh3j4CgF2RhEgyP9WG
- KFKwXruEDuYbHbGCchKm9dXLRAWVtsyy/m3VmeOmBThg2vGELmRjwtjlXrDLBboHqTvXAEr4nRY
- e+kkOVgEom1fdQMoO1N80X2M1Vi6AeiXcZAc1tJz3gDV+N+hMtrUCE9Qff9Xx9MGQKWy/v7GZOt
- dHNx5DT1rsdMf3sombt/84+xlYDiSt1M/Gha7pcL7oFLVWl3qMHhZk7VZ1IpZcJrf8PsakhmbLK
- DW7fMXc/TkWkxIbUrWBvHs2Uca+afg==
-X-Proofpoint-ORIG-GUID: dTGD7Ser0z01z-nMZKlhEMcmtjKsd02O
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-21_01,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,46 +153,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hey Philippe,
-The commit message says that this commit is inline-ing 
-spapr_dtb_needed(), but it is actually removing it. I think it's better 
-to convey that in the commit message.
-Or did I miss something ?
+On 20/10/2025 18.20, jrossi@linux.ibm.com wrote:
+> From: Jared Rossi <jrossi@linux.ibm.com>
+> 
+> Search for a corresponding S390PCIBusDevice and build an IPLB if a device has
+> been indexed for boot but does not identify as a CCW device,
+> 
+> PCI devices are not yet included in boot probing (they must have a boot index).
+> Per-device loadparm is not yet supported for PCI devices.
 
-On 10/21/25 14:13, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/ppc/spapr.c | 6 ------
->   1 file changed, 6 deletions(-)
->
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 458d1c29b4d..ad9fc61c299 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2053,11 +2053,6 @@ static const VMStateDescription vmstate_spapr_irq_map = {
->       },
->   };
->   
-> -static bool spapr_dtb_needed(void *opaque)
-> -{
-> -    return true; /* backward migration compat */
-> -}
-> -
->   static int spapr_dtb_pre_load(void *opaque)
+Could you add it? Something similar to what has been done in 
+scsi_property_add_specifics() in hw/scsi/scsi-disk.c for the SCSI disks?
+
+...
+> @@ -346,7 +349,7 @@ static void s390_ipl_set_boot_menu(S390IPLState *ipl)
+>   static CcwDevice *s390_get_ccw_device(DeviceState *dev_st, int *devtype)
 >   {
->       SpaprMachineState *spapr = (SpaprMachineState *)opaque;
-> @@ -2073,7 +2068,6 @@ static const VMStateDescription vmstate_spapr_dtb = {
->       .name = "spapr_dtb",
->       .version_id = 1,
+>       CcwDevice *ccw_dev = NULL;
+> -    int tmp_dt = CCW_DEVTYPE_NONE;
+> +    int tmp_dt = S390_DEVTYPE_NONE;
+>   
+>       if (dev_st) {
+>           VirtIONet *virtio_net_dev = (VirtIONet *)
+> @@ -393,6 +396,31 @@ static CcwDevice *s390_get_ccw_device(DeviceState *dev_st, int *devtype)
+>       return ccw_dev;
+>   }
+>   
+> +#define PCI_DEVTYPE_VIRTIO       0x05
 
-Does this version number need to be incremented ?
+Is this for virtio-block only ? If so, I'd maybe rather name it 
+PCI_DEVTYPE_VIRTIO_BLK or so. Or will this be used for virtio-scsi-pci etc., 
+too?
 
-Regards,
-Chinmay
+  Thomas
 
->       .minimum_version_id = 1,
-> -    .needed = spapr_dtb_needed,
->       .pre_load = spapr_dtb_pre_load,
->       .fields = (const VMStateField[]) {
->           VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
 
