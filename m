@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D99BF5724
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FB1BF56D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:08:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB8Jr-0004JX-M7; Tue, 21 Oct 2025 05:06:15 -0400
+	id 1vB8Js-0004Qg-Sd; Tue, 21 Oct 2025 05:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Jg-00049V-Ai
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:06:05 -0400
+ id 1vB8Jm-0004D2-8f
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:06:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Je-0004G8-Cn
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:06:04 -0400
+ id 1vB8Jk-0004Gl-Ef
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:06:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761037559;
+ s=mimecast20190719; t=1761037567;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0IKJ1Ws/UNnAOSMqJqiAkjVIMdrL3tCZMUq99IEVYyQ=;
- b=PQ9+7GT5pZPdcJpGH6aSspu5Jh9RtYA2wy6xJyufihnlkWS1a0lmziAVaso+v7eapW6goj
- xUrf1lhV0WOYeGn7Z+dIU2A1hW7iuRIJYgJNGkOjWj3LSfOI2kxvtEnXHgwlJeM/NX+OkW
- rF4AYvg1gW73sOPKsToVB29r8RCjWC8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Ah5/kHc7tX2OoT2WYx6AS8lZzdIQYHdUYg6EEQFLNKw=;
+ b=ErxFQppmHwfGr6s8FZ8v150b7SCgaelKuPoQFex2MRa2uIZdllfn/U6etVCDwxpbJQdzez
+ V5xNSjz8+yelXMkjsmsDDs67gu815svfmW+7FVKdKb+/ktALpOjAmueO4BK+NFkkRJ9yIL
+ 0ioDQHDXezM8c7BIvp5qqPtDnTVMZa0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-2-AAlTVaTBPy2dVbp7JLiXoQ-1; Tue,
- 21 Oct 2025 05:05:56 -0400
-X-MC-Unique: AAlTVaTBPy2dVbp7JLiXoQ-1
-X-Mimecast-MFC-AGG-ID: AAlTVaTBPy2dVbp7JLiXoQ_1761037555
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-AsdQW_urNJWqxtZ-veU7SQ-1; Tue,
+ 21 Oct 2025 05:06:02 -0400
+X-MC-Unique: AsdQW_urNJWqxtZ-veU7SQ-1
+X-Mimecast-MFC-AGG-ID: AsdQW_urNJWqxtZ-veU7SQ_1761037561
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 460161954199; Tue, 21 Oct 2025 09:05:55 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D6D5E180899E; Tue, 21 Oct 2025 09:06:00 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 02C2F30001BE; Tue, 21 Oct 2025 09:05:53 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 587A3180057C; Tue, 21 Oct 2025 09:05:58 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -52,16 +52,16 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 28/43] audio: remove some needless headers
-Date: Tue, 21 Oct 2025 13:02:59 +0400
-Message-ID: <20251021090317.425409-29-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH 29/43] audio: remove AUDIO_HOST_ENDIANNESS
+Date: Tue, 21 Oct 2025 13:03:00 +0400
+Message-ID: <20251021090317.425409-30-marcandre.lureau@redhat.com>
 In-Reply-To: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -92,142 +92,137 @@ From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/audio.h       | 1 -
- audio/audio.c       | 3 ---
- audio/dbusaudio.c   | 2 --
- audio/dsoundaudio.c | 1 -
- audio/mixeng.c      | 4 +++-
- audio/noaudio.c     | 2 --
- audio/wavaudio.c    | 3 ---
- audio/wavcapture.c  | 1 -
- 8 files changed, 3 insertions(+), 14 deletions(-)
+ audio/audio.h      | 6 ------
+ audio/audio.c      | 6 +++---
+ audio/spiceaudio.c | 4 ++--
+ hw/audio/adlib.c   | 2 +-
+ hw/audio/asc.c     | 2 +-
+ hw/audio/cs4231a.c | 2 +-
+ hw/audio/gus.c     | 2 +-
+ 7 files changed, 9 insertions(+), 15 deletions(-)
 
 diff --git a/audio/audio.h b/audio/audio.h
-index f56a8c8baf..58fa8d7423 100644
+index 58fa8d7423..f8e4353951 100644
 --- a/audio/audio.h
 +++ b/audio/audio.h
-@@ -27,7 +27,6 @@
- 
- #include "qemu/queue.h"
- #include "qapi/qapi-types-audio.h"
--#include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
+@@ -31,12 +31,6 @@
  
  typedef void (*audio_callback_fn) (void *opaque, int avail);
+ 
+-#if HOST_BIG_ENDIAN
+-#define AUDIO_HOST_ENDIANNESS 1
+-#else
+-#define AUDIO_HOST_ENDIANNESS 0
+-#endif
+-
+ typedef struct audsettings {
+     int freq;
+     int nchannels;
 diff --git a/audio/audio.c b/audio/audio.c
-index 934a67ad19..0f3093ad59 100644
+index 0f3093ad59..284ea13289 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -25,7 +25,6 @@
- #include "qemu/osdep.h"
- #include "audio.h"
- #include "migration/vmstate.h"
--#include "monitor/monitor.h"
- #include "qemu/timer.h"
- #include "qapi/error.h"
- #include "qapi/clone-visitor.h"
-@@ -33,7 +32,6 @@
- #include "qapi/qapi-visit-audio.h"
- #include "qapi/qapi-commands-audio.h"
- #include "qobject/qdict.h"
--#include "qemu/cutils.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-@@ -41,7 +39,6 @@
- #include "system/system.h"
- #include "system/replay.h"
- #include "system/runstate.h"
--#include "ui/qemu-spice.h"
- #include "trace.h"
+@@ -274,7 +274,7 @@ static int audio_pcm_info_eq (struct audio_pcm_info *info, struct audsettings *a
+         && info->is_signed == is_signed
+         && info->is_float == is_float
+         && info->bits == bits
+-        && info->swap_endianness == (as->endianness != AUDIO_HOST_ENDIANNESS);
++        && info->swap_endianness == (as->endianness != HOST_BIG_ENDIAN);
+ }
  
- #define AUDIO_CAP "audio"
-diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
-index b44fdd1511..908214a170 100644
---- a/audio/dbusaudio.c
-+++ b/audio/dbusaudio.c
-@@ -24,9 +24,7 @@
+ void audio_pcm_init_info (struct audio_pcm_info *info, struct audsettings *as)
+@@ -320,7 +320,7 @@ void audio_pcm_init_info (struct audio_pcm_info *info, struct audsettings *as)
+     info->nchannels = as->nchannels;
+     info->bytes_per_frame = as->nchannels * mul;
+     info->bytes_per_second = info->freq * info->bytes_per_frame;
+-    info->swap_endianness = (as->endianness != AUDIO_HOST_ENDIANNESS);
++    info->swap_endianness = (as->endianness != HOST_BIG_ENDIAN);
+ }
  
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
--#include "qemu/host-utils.h"
- #include "qemu/module.h"
--#include "qemu/timer.h"
- #include "qemu/dbus.h"
+ void audio_pcm_info_clear_buf (struct audio_pcm_info *info, void *buf, int len)
+@@ -2179,7 +2179,7 @@ audsettings audiodev_to_audsettings(AudiodevPerDirectionOptions *pdo)
+         .freq = pdo->frequency,
+         .nchannels = pdo->channels,
+         .fmt = pdo->format,
+-        .endianness = AUDIO_HOST_ENDIANNESS,
++        .endianness = HOST_BIG_ENDIAN,
+     };
+ }
  
- #ifdef G_OS_UNIX
-diff --git a/audio/dsoundaudio.c b/audio/dsoundaudio.c
-index 6a8b7f1a19..003ef27365 100644
---- a/audio/dsoundaudio.c
-+++ b/audio/dsoundaudio.c
-@@ -31,7 +31,6 @@
+diff --git a/audio/spiceaudio.c b/audio/spiceaudio.c
+index 7f02f7285c..7e737bff9a 100644
+--- a/audio/spiceaudio.c
++++ b/audio/spiceaudio.c
+@@ -102,7 +102,7 @@ static int line_out_init(HWVoiceOut *hw, struct audsettings *as,
+ #endif
+     settings.nchannels  = SPICE_INTERFACE_PLAYBACK_CHAN;
+     settings.fmt        = AUDIO_FORMAT_S16;
+-    settings.endianness = AUDIO_HOST_ENDIANNESS;
++    settings.endianness = HOST_BIG_ENDIAN;
  
- #define AUDIO_CAP "dsound"
- #include "audio_int.h"
--#include "qemu/host-utils.h"
- #include "qemu/module.h"
- #include "qapi/error.h"
+     audio_pcm_init_info (&hw->info, &settings);
+     hw->samples = LINE_OUT_SAMPLES;
+@@ -218,7 +218,7 @@ static int line_in_init(HWVoiceIn *hw, struct audsettings *as, void *drv_opaque)
+ #endif
+     settings.nchannels  = SPICE_INTERFACE_RECORD_CHAN;
+     settings.fmt        = AUDIO_FORMAT_S16;
+-    settings.endianness = AUDIO_HOST_ENDIANNESS;
++    settings.endianness = HOST_BIG_ENDIAN;
  
-diff --git a/audio/mixeng.c b/audio/mixeng.c
-index 703ee5448f..be38617e9b 100644
---- a/audio/mixeng.c
-+++ b/audio/mixeng.c
-@@ -24,11 +24,13 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/bswap.h"
--#include "qemu/error-report.h"
- #include "audio.h"
+     audio_pcm_init_info (&hw->info, &settings);
+     hw->samples = LINE_IN_SAMPLES;
+diff --git a/hw/audio/adlib.c b/hw/audio/adlib.c
+index 0bc0359ae6..50bbb97a56 100644
+--- a/hw/audio/adlib.c
++++ b/hw/audio/adlib.c
+@@ -272,7 +272,7 @@ static void adlib_realizefn (DeviceState *dev, Error **errp)
+     as.freq = s->freq;
+     as.nchannels = SHIFT;
+     as.fmt = AUDIO_FORMAT_S16;
+-    as.endianness = AUDIO_HOST_ENDIANNESS;
++    as.endianness = HOST_BIG_ENDIAN;
  
- #define AUDIO_CAP "mixeng"
- #include "audio_int.h"
-+#ifdef FLOAT_MIXENG
-+#include "qemu/error-report.h"
-+#endif
+     s->voice = AUD_open_out (
+         &s->card,
+diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+index edd42d6d91..41472dc2e3 100644
+--- a/hw/audio/asc.c
++++ b/hw/audio/asc.c
+@@ -650,7 +650,7 @@ static void asc_realize(DeviceState *dev, Error **errp)
+     as.freq = ASC_FREQ;
+     as.nchannels = 2;
+     as.fmt = AUDIO_FORMAT_U8;
+-    as.endianness = AUDIO_HOST_ENDIANNESS;
++    as.endianness = HOST_BIG_ENDIAN;
  
- /* 8 bit */
- #define ENDIAN_CONVERSION natural
-diff --git a/audio/noaudio.c b/audio/noaudio.c
-index 1b60d8518a..34ff1d2a27 100644
---- a/audio/noaudio.c
-+++ b/audio/noaudio.c
-@@ -23,10 +23,8 @@
-  */
+     s->voice = AUD_open_out(&s->card, s->voice, "asc.out", s, asc_out_cb,
+                             &as);
+diff --git a/hw/audio/cs4231a.c b/hw/audio/cs4231a.c
+index 18db8da324..c8837fe269 100644
+--- a/hw/audio/cs4231a.c
++++ b/hw/audio/cs4231a.c
+@@ -305,7 +305,7 @@ static void cs_reset_voices (CSState *s, uint32_t val)
+         s->tab = ALawDecompressTable;
+     x_law:
+         as.fmt = AUDIO_FORMAT_S16;
+-        as.endianness = AUDIO_HOST_ENDIANNESS;
++        as.endianness = HOST_BIG_ENDIAN;
+         s->shift = as.nchannels == 2;
+         break;
  
- #include "qemu/osdep.h"
--#include "qemu/host-utils.h"
- #include "qemu/module.h"
- #include "audio.h"
--#include "qemu/timer.h"
+diff --git a/hw/audio/gus.c b/hw/audio/gus.c
+index 16785ce226..2c84740adf 100644
+--- a/hw/audio/gus.c
++++ b/hw/audio/gus.c
+@@ -254,7 +254,7 @@ static void gus_realizefn (DeviceState *dev, Error **errp)
+     as.freq = s->freq;
+     as.nchannels = 2;
+     as.fmt = AUDIO_FORMAT_S16;
+-    as.endianness = AUDIO_HOST_ENDIANNESS;
++    as.endianness = HOST_BIG_ENDIAN;
  
- #define AUDIO_CAP "noaudio"
- #include "audio_int.h"
-diff --git a/audio/wavaudio.c b/audio/wavaudio.c
-index a8798a1c42..a098b20cad 100644
---- a/audio/wavaudio.c
-+++ b/audio/wavaudio.c
-@@ -23,10 +23,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/host-utils.h"
- #include "qemu/module.h"
--#include "qemu/timer.h"
--#include "qapi/opts-visitor.h"
- #include "audio.h"
- 
- #define AUDIO_CAP "wav"
-diff --git a/audio/wavcapture.c b/audio/wavcapture.c
-index c60286e162..b990844d48 100644
---- a/audio/wavcapture.c
-+++ b/audio/wavcapture.c
-@@ -1,6 +1,5 @@
- #include "qemu/osdep.h"
- #include "qemu/qemu-print.h"
--#include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "audio.h"
- 
+     s->voice = AUD_open_out (
+         &s->card,
 -- 
 2.51.0
 
