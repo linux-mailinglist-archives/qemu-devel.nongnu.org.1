@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07353BF56BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD494BF56DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB8Hi-0001Gm-G3; Tue, 21 Oct 2025 05:04:02 -0400
+	id 1vB8Hs-0001Is-G6; Tue, 21 Oct 2025 05:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Hf-0001GL-MM
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vB8Hn-0001I2-WC
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:04:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Hd-0003vP-1Q
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:58 -0400
+ id 1vB8Hk-0003vu-2H
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:04:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761037435;
+ s=mimecast20190719; t=1761037443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d3HE1DRQvIPUkpsGTEbByNYsb2kKTtuaKAp1eDeFgZo=;
- b=HsSyOmnZNKQYlKDjEuXKZlgn/yUeMnpthq/k9yqHrBmRPFf9Lpx4UrDF/7PS6A5IYu3RLZ
- TzOpZKHwCflUabLmamWrMovhHeWC+nVd2tbWebKDFQ9hUbLZRACUoaWiwj9M9LyxQdpZ5F
- cxRgsPkUaMKoLu8PXS1j/RLjqqOMHpc=
+ bh=DuHgBn6v7c8UQAR8rBWZJ/UAAtSM19kE3jiv1Od/ysc=;
+ b=EA0FiXc56iTwKKOJbnMP3FbtofsIr6BNRImLmaybeBQuWEPGfPEC3Y/ApGjIdiaWarsmXE
+ E/GK4hqrLn4t1A/F2JR9m+g4mjaH1O6x0+vXA/JGt5c+soBcB3dIu9raDodYbB+VggK9Q4
+ S0R67eB+XS5I0LdJdxCSIWHa/0T8blY=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-PLEKuUShOMONw1La3Dsrig-1; Tue,
- 21 Oct 2025 05:03:52 -0400
-X-MC-Unique: PLEKuUShOMONw1La3Dsrig-1
-X-Mimecast-MFC-AGG-ID: PLEKuUShOMONw1La3Dsrig_1761037431
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-l5oIt6scPMmxfuT148O56w-1; Tue,
+ 21 Oct 2025 05:03:57 -0400
+X-MC-Unique: l5oIt6scPMmxfuT148O56w-1
+X-Mimecast-MFC-AGG-ID: l5oIt6scPMmxfuT148O56w_1761037436
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0866618002DD; Tue, 21 Oct 2025 09:03:51 +0000 (UTC)
+ id 565C518002EC; Tue, 21 Oct 2025 09:03:56 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D157F1955F22; Tue, 21 Oct 2025 09:03:49 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 02FAB180057C; Tue, 21 Oct 2025 09:03:54 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -53,16 +53,16 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 05/43] hw/pcspk: make 'pit' a class property
-Date: Tue, 21 Oct 2025 13:02:36 +0400
-Message-ID: <20251021090317.425409-6-marcandre.lureau@redhat.com>
+Subject: [PATCH 06/43] hw/pcspk: check the "pit" is set
+Date: Tue, 21 Oct 2025 13:02:37 +0400
+Message-ID: <20251021090317.425409-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,38 +90,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This should be functionally equivalent. (for some reason, the device
-property was convert to an object instance property in commit 873b4d3f0571)
+We don't let the user create a "isa-pcspk" via -device yet (in theory,
+we could, and fallback on a lookup PIT), but we can add some safety
+checks that the property was correctly set nonetheless.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/audio/pcspk.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ hw/audio/pcspk.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/hw/audio/pcspk.c b/hw/audio/pcspk.c
-index 60cedcb375..40572241cb 100644
+index 40572241cb..8ea3a161a4 100644
 --- a/hw/audio/pcspk.c
 +++ b/hw/audio/pcspk.c
-@@ -174,11 +174,6 @@ static void pcspk_initfn(Object *obj)
-     PCSpkState *s = PC_SPEAKER(obj);
+@@ -181,6 +181,11 @@ static void pcspk_realizefn(DeviceState *dev, Error **errp)
+     ISADevice *isadev = ISA_DEVICE(dev);
+     PCSpkState *s = PC_SPEAKER(dev);
  
-     memory_region_init_io(&s->ioport, OBJECT(s), &pcspk_io_ops, s, "pcspk", 1);
--
--    object_property_add_link(obj, "pit", TYPE_PIT_COMMON,
--                             (Object **)&s->pit,
--                             qdev_prop_allow_set_link_before_realize,
--                             0);
- }
++    if (!s->pit) {
++        error_setg(errp, "pcspk: No \"pit\" set or available");
++        return;
++    }
++
+     isa_register_ioport(isadev, &s->ioport, s->iobase);
  
- static void pcspk_realizefn(DeviceState *dev, Error **errp)
-@@ -216,6 +211,7 @@ static const Property pcspk_properties[] = {
-     DEFINE_AUDIO_PROPERTIES(PCSpkState, card),
-     DEFINE_PROP_UINT32("iobase", PCSpkState, iobase,  0x61),
-     DEFINE_PROP_BOOL("migrate", PCSpkState, migrate,  true),
-+    DEFINE_PROP_LINK("pit", PCSpkState, pit, TYPE_PIT_COMMON, PITCommonState *),
- };
- 
- static void pcspk_class_initfn(ObjectClass *klass, const void *data)
+     if (s->card.state && AUD_register_card(s_spk, &s->card, errp)) {
 -- 
 2.51.0
 
