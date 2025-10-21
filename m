@@ -2,81 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06288BF7363
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 17:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF5BF74EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 17:25:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBDpw-0007Im-4s; Tue, 21 Oct 2025 10:59:44 -0400
+	id 1vBEDm-0003gb-22; Tue, 21 Oct 2025 11:24:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBDpt-0007I9-5M
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:59:41 -0400
-Received: from mail-yx1-xb131.google.com ([2607:f8b0:4864:20::b131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBDpq-00009R-Ni
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:59:40 -0400
-Received: by mail-yx1-xb131.google.com with SMTP id
- 956f58d0204a3-63cd60ca2b2so5830783d50.2
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 07:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761058776; x=1761663576; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UfFg5PlSt7LSn+H9hWmSgczeXynUhTKK7p9zMvIXt7I=;
- b=hp4cx/DMks46AE14bftIXtkdIxLGtOBiVQVK2sKRvER2AHrW3avTmRWwqhz7NNM4A2
- mL2E9IjWhQsTjwronBlMtmalBeO2kd4SD83HNa024cbYNG3sv3xg6AqYonNxn+Plf05W
- 16+mUplEpP8BRVkuwfnfUdvvvj5/TH7aufRVDFJN0UZXYB5YO76jiZ1SoHfYYhVvRou/
- KgWsjnYKmHH7etiuGgxKuBT6Xg8KOLPm8P260nFrplyS8XzkIgWw59F3K5mRkpPY1KuL
- /fodahQtbn8DQYWJnsMo94sE3BSz9AB6vN6XIcbClfty585Zrck1IG0yBT39xKQtTAXq
- N/Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761058776; x=1761663576;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UfFg5PlSt7LSn+H9hWmSgczeXynUhTKK7p9zMvIXt7I=;
- b=IeYZQGQWVi8pZE+Ex9flmnagRu5rNlrftAVxh69IP3rs7SBFrNz19RrarQoTCV7ehQ
- QnkN8hVl/YYqvpvLmixW3tiKDawbboKwvj6UxzTsmwpZ9JrelamjYsLe/m0rNV18AM9G
- 8K4EKdxo5/cXhnv8Wf9T1ZyXmp06PbTezNlD3+zKImyFL89kNKuaEc5zSAcK1qhd/+OH
- L0d7VGdBG6dpAOgfEZM05ltHxYmcFta/qJSqSLmde3RcMX/bByaA1QBO8KHiW53jWMED
- 3V97uOXMof03eSypTAXESTAoD2BMrbY9wCt6MBD8zR0tAsb9CJW35Kfc1idm2CWIJQqU
- /BHw==
-X-Gm-Message-State: AOJu0YxLnm0wkIzss6v9iydaM19sFyJJAVAB/lGPJodkRiJGttd/TGNG
- ckDq7ARNAYWQEq1aIkinXRkvraVZH2h+0C4W9IIWLYLhdJNQBBZbtNIgfQ0ry/RwMkFGEyuTvRC
- YiWRMx5vd3xrYHOFZ2ulUKWR5wjqAKgLNq+mD3iqXFA==
-X-Gm-Gg: ASbGncu9SoOEvlCVItZtGUt7X05SUxsi38Oq3wzMy0cpuehPzVBFCimNF7foTZE5+iM
- JQIUxtS1wO0ZzA1+ehtcWZmNauVkD04bgCCiWiLs/D48S7Pd+fyFWGvj1/MgPdVFyUISiFrF0/1
- XFFTvW4vriXPSLsUpG+Zra7sNE6o8EWnWR8z0n7zke33enU6gY8BOVAKdVuUdZZB1H7McCiRj1D
- EtQcPOmXY+2LFKDEFMLxkwe77i/XrNjM34waSCywaTIYPk10Ma7ZIikhZ4Mgw==
-X-Google-Smtp-Source: AGHT+IGDd/QIe8foDLEnObJBx817B3MFWVIx9DeSwo8BLT3XfV67KWSfxqmad1t209e+ukqwuDkhb2ZEnwtJBgHqtfI=
-X-Received: by 2002:a05:690e:144c:b0:63e:3084:4809 with SMTP id
- 956f58d0204a3-63e30844b2fmr8212093d50.33.1761058776506; Tue, 21 Oct 2025
- 07:59:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1vBEDj-0003g7-26
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:24:19 -0400
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1vBEDg-0003Pc-9Y
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:24:18 -0400
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+ (Exim 4.98.2) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1vBEDU-00000001BM7-2VSF; Tue, 21 Oct 2025 17:24:04 +0200
+Message-ID: <00b80f74-6c26-4c53-bcd5-d21041778373@maciej.szmigiero.name>
+Date: Tue, 21 Oct 2025 17:23:59 +0200
 MIME-Version: 1.0
-References: <20251003153948.1304776-1-peterx@redhat.com>
- <20251003153948.1304776-42-peterx@redhat.com>
-In-Reply-To: <20251003153948.1304776-42-peterx@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 21 Oct 2025 15:59:25 +0100
-X-Gm-Features: AS18NWAqAcXEwEXTveKNAW19fVjDmKupZmZzxJS3aCbaUcvPMMHMRzgq_95Y-gc
-Message-ID: <CAFEAcA_mUQ2NeoguR5efrhw7XYGofnriWEA=+Dg+Ocvyam1wAw@mail.gmail.com>
-Subject: Re: [PULL 41/45] migration: cpr-exec save and load
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Steve Sistare <steven.sistare@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b131;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 6/7] vfio/migration: Add x-migration-load-config-after-iter
+ VFIO property
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, qemu-devel@nongnu.org, Avihai Horon <avihaih@nvidia.com>
+References: <20250715163703.243975-1-clg@redhat.com>
+ <20250715163703.243975-7-clg@redhat.com>
+ <74bd5f4d-c6a9-495d-8842-fe3432c892d7@linaro.org>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Content-Language: en-US, pl-PL
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <74bd5f4d-c6a9-495d-8842-fe3432c892d7@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,40 +105,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 3 Oct 2025 at 16:40, Peter Xu <peterx@redhat.com> wrote:
->
-> From: Steve Sistare <steven.sistare@oracle.com>
->
-> To preserve CPR state across exec, create a QEMUFile based on a memfd, and
-> keep the memfd open across exec.  Save the value of the memfd in an
-> environment variable so post-exec QEMU can find it.
->
-> These new functions are called in a subsequent patch.
->
+On 20.10.2025 21:35, Philippe Mathieu-Daudé wrote:
+> Hi,
+> 
+> On 15/7/25 18:37, Cédric Le Goater wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> This property allows configuring whether to start the config load only
+>> after all iterables were loaded, during non-iterables loading phase.
+>> Such interlocking is required for ARM64 due to this platform VFIO
+>> dependency on interrupt controller being loaded first.
+>>
+>> The property defaults to AUTO, which means ON for ARM, OFF for other
+>> platforms.
+>>
+>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+>> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>> Link: https://lore.kernel.org/qemu-devel/0e03c60dbc91f9a9ba2516929574df605b7dfcb4.1752589295.git.maciej.szmigiero@oracle.com
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>   docs/devel/migration/vfio.rst     |  6 +++
+>>   hw/vfio/migration-multifd.h       |  3 ++
+>>   hw/vfio/vfio-helpers.h            |  2 +
+>>   hw/vfio/vfio-migration-internal.h |  1 +
+>>   include/hw/vfio/vfio-device.h     |  1 +
+>>   hw/core/machine.c                 |  1 +
+>>   hw/vfio/helpers.c                 | 17 +++++++
+>>   hw/vfio/migration-multifd.c       | 79 +++++++++++++++++++++++++++++++
+>>   hw/vfio/migration.c               | 10 +++-
+>>   hw/vfio/pci.c                     | 10 ++++
+>>   10 files changed, 129 insertions(+), 1 deletion(-)
+> 
+> 
+>> diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+>> index 9a5f62154554e1df36545b8c315b9ae25534d0fb..23d13e5db5f2cb10d6914c81497494a98775a78b 100644
+>> --- a/hw/vfio/helpers.c
+>> +++ b/hw/vfio/helpers.c
+>> @@ -209,3 +209,20 @@ retry:
+>>       return info;
+>>   }
+>> +
+>> +bool vfio_arch_wants_loading_config_after_iter(void)
+>> +{
+>> +    /*
+>> +     * Starting the config load only after all iterables were loaded (during
+>> +     * non-iterables loading phase) is required for ARM64 due to this platform
+>> +     * VFIO dependency on interrupt controller being loaded first.
+>> +     *
+>> +     * See commit d329f5032e17 ("vfio: Move the saving of the config space to
+>> +     * the right place in VFIO migration").
+>> +     */
+>> +#if defined(TARGET_ARM)
+> 
+> You mention ARM64 but uses the generic ARM definition, is that expected?
+> 
 
-Hi; Coverity complains about this function:
+It was just in case some 32-bit ARM platform is affected by something similar -
+technically the issue this switch pertains to was reported just on a ARM64 platform
+as the comment says.
 
-> +void cpr_exec_persist_state(QEMUFile *f)
-> +{
-> +    QIOChannelFile *fioc = QIO_CHANNEL_FILE(qemu_file_get_ioc(f));
-> +    int mfd = dup(fioc->fd);
+Thanks,
+Maciej
 
-CID 1641392: we open an fd here, but we don't return it
-and we don't close it, so Coverity thinks we leak it.
-Judging by the commit message, this is a false positive.
-
-> +    char val[16];
-> +
-> +    /* Remember mfd in environment for post-exec load */
-> +    qemu_clear_cloexec(mfd);
-> +    snprintf(val, sizeof(val), "%d", mfd);
-> +    g_setenv(CPR_EXEC_STATE_NAME, val, 1);
-
-CID 1641391: g_setenv() can fail, but we ignore the return
-value here.
-
-> +}
-
-thanks
--- PMM
 
