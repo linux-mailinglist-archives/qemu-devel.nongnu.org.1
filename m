@@ -2,105 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0377DBF6CFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DC3BF6CEB
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCW0-0005Xr-Eq; Tue, 21 Oct 2025 09:35:04 -0400
+	id 1vBCVl-0005RN-4N; Tue, 21 Oct 2025 09:34:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBCVx-0005WE-7g; Tue, 21 Oct 2025 09:35:01 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1vBCVV-0005MN-DJ
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:34:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBCV8-0003mR-5c; Tue, 21 Oct 2025 09:35:00 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 832FD5972E3;
- Tue, 21 Oct 2025 15:25:07 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id Gg8qekahyVnk; Tue, 21 Oct 2025 15:25:05 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 25D775972E4; Tue, 21 Oct 2025 15:25:05 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 218E05972E1;
- Tue, 21 Oct 2025 15:25:05 +0200 (CEST)
-Date: Tue, 21 Oct 2025 15:25:05 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, 
- Zhenwei Pi <pizhenwei@bytedance.com>, Laurent Vivier <lvivier@redhat.com>, 
- Amit Shah <amit@kernel.org>, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Igor Mitsyanko <i.mitsyanko@gmail.com>, 
- =?ISO-8859-15?Q?Cl=E9ment_Chigot?= <chigot@adacore.com>, 
- Frederic Konrad <konrad.frederic@yahoo.fr>, 
- Alberto Garcia <berto@igalia.com>, Thomas Huth <huth@tuxfamily.org>, 
- Halil Pasic <pasic@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Jason Herne <jjherne@linux.ibm.com>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>, 
- Magnus Damm <magnus.damm@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- "Collin L. Walling" <walling@linux.ibm.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Alistair Francis <alistair@alistair23.me>, 
- =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Corey Minyard <minyard@acm.org>, 
- Paul Burton <paulburton@kernel.org>, Aleksandar Rikalo <arikalo@gmail.com>, 
- Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Samuel Thibault <samuel.thibault@ens-lyon.org>, 
- Michael Rolnik <mrolnik@gmail.com>, 
- Antony Pavlov <antonynpavlov@gmail.com>, Joel Stanley <joel@jms.id.au>, 
- Vijai Kumar K <vijai@behindbytes.com>, Samuel Tardieu <sam@rfc1149.net>, 
- Gustavo Romero <gustavo.romero@linaro.org>, 
- Raphael Norwitz <raphael@enfabrica.net>, 
- Stefan Hajnoczi <stefanha@redhat.com>, 
- "reviewer:vhost-user-scmi" <mzamazal@redhat.com>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>, 
- "Dr. David Alan Gilbert" <dave@treblig.org>, 
- Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>, 
- Jason Wang <jasowang@redhat.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Helge Deller <deller@gmx.de>, Max Filippov <jcmvbkbc@gmail.com>, 
- Lukas Straub <lukasstraub2@web.de>, 
- "open list:Sharp SL-5500 Co..." <qemu-arm@nongnu.org>, 
- "open list:S390 SCLP-backed..." <qemu-s390x@nongnu.org>, 
- "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>, 
- "open list:virtiofs" <virtio-fs@lists.linux.dev>, 
- "open list:Rust-related patc..." <qemu-rust@nongnu.org>
-Subject: Re: [PATCH] char: rename CharBackend->CharFrontend
-In-Reply-To: <20251021122533.721467-1-marcandre.lureau@redhat.com>
-Message-ID: <01a51fe7-4414-e787-ddf5-5ede0c1e1e74@eik.bme.hu>
-References: <20251021122533.721467-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1vBCV1-0003pI-0o
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:34:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761053522;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=s5y/GnC80SKUEVH59583YdA84D/SBV/A4Z+WRHJ8NJ8=;
+ b=RmPonM7sy1p8OJ8WG1yywvSMN5bUiC3P4ZKLH/TyGX0Vdwob3BjfSlkEvb+VyAgsjuq7x/
+ IU9PJN8ffwTJj0H5eh9N8DjKSVUaDXMlm3GGFu1TQrMqejE9BpK4cEVYxXiR+EC9kVPb2H
+ XTDTUztkPAlXia4NPfKeC65PypBFYEA=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-186-gJrG8e2qNOWJ31bC9Uqbng-1; Tue, 21 Oct 2025 09:26:39 -0400
+X-MC-Unique: gJrG8e2qNOWJ31bC9Uqbng-1
+X-Mimecast-MFC-AGG-ID: gJrG8e2qNOWJ31bC9Uqbng_1761053198
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-33bb4d11f5eso5564198a91.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 06:26:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761053198; x=1761657998;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s5y/GnC80SKUEVH59583YdA84D/SBV/A4Z+WRHJ8NJ8=;
+ b=s53zNA+QywH0fcD2drDuXczV4zEUfeCBLZZf+6gJhnZ6OSFNfPNQ/MheTdvDs75n1k
+ QCk3H/1Tk3qE+4l8ojxnP3B+nxf4ai2Z+o3TlIYxCEVQxBamqC1E+woUSBoKynjBUJ9z
+ urxiVERgvEsGnZap0jnBQ1sW8kUfyoOfAoPqA3OVKqNoJRERmQINfn6yfylEifqhUu/6
+ OMVkNHF/aRTOPsv0moMwdyIlKKbqitcEuUr40IOYzaEQpqiGWG4zruWcT1iqQhBedCRL
+ 7Gm78iC7zOlaSZ4Uix3qV5lk/ilgOCRZ1oHUpR8uUz9l1dYokW1ImBcyiPriuv5ZR2Zs
+ EEgw==
+X-Gm-Message-State: AOJu0YwLAP8CdjCCXFjerxbfIieCBD8tAatjAxXRVZBkQWnMR9LBCbwN
+ vy9D7bdiUm1ePoyw9nMtukdqrLwq0j8YMk8pXh8lnyCwoKjQ0XCHZnU/RJdF8wnx9hLn3XCNnJr
+ 3bJFbuZziR+PpsradETXdPIGFVFGdYkWRK4/mXz6ZhcTTBT4sFqCDWbQVc+xSjLELZpZzw0JmZY
+ euqux90VCqsPbTIXKH+5bzSIhVjKUTM1U=
+X-Gm-Gg: ASbGncsKHuovEeBngWEJ3hLaZXfSPWL+RHUH9YrdIVk5vlhgpsgFEA15JqeAh5k71Q8
+ KUt8Ymp7YjULn+d9VNcLzduw4zVVWURCzxSaKn+augaXtGVQFm3UUdYOg6d1QAV0V95/2EXGDa2
+ BOPmi3MAhnHR7onkJjCZk6kLxGTf2CV0IqA33rHNln+jg9YaHi8e4Bd1DkESoswQhgrY52AejrI
+ RwsVup9B1LsHrI=
+X-Received: by 2002:a17:90b:3dcb:b0:32e:b87e:a961 with SMTP id
+ 98e67ed59e1d1-33bcf85b526mr19777882a91.5.1761053198155; 
+ Tue, 21 Oct 2025 06:26:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEETc+c72iGZ19cYxSxuP/2eBxRFGBvbEG0AizmKTtuuQ6JerQXKD9GOe+dKQNHIhYqcPKTBAMuM006t3JmQB0=
+X-Received: by 2002:a17:90b:3dcb:b0:32e:b87e:a961 with SMTP id
+ 98e67ed59e1d1-33bcf85b526mr19777846a91.5.1761053197727; Tue, 21 Oct 2025
+ 06:26:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1500696156-1761053105=:49605"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20251021131825.99390-1-philmd@linaro.org>
+ <20251021131825.99390-2-philmd@linaro.org>
+In-Reply-To: <20251021131825.99390-2-philmd@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 21 Oct 2025 17:26:26 +0400
+X-Gm-Features: AS18NWDmfPudKdR3UdCPZN--l59qGQ97ATbLk-6lxVSdbtOryCmr5I300xnY96k
+Message-ID: <CAMxuvazc2voX7SqFAP7YkvmgVE+bbmqE3uJa+evs3gq+wUUT8Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] docs: Update mentions of removed '-soundhw' command
+ line option
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000482cb90641ab2689"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,162 +104,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+--000000000000482cb90641ab2689
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---3866299591-1500696156-1761053105=:49605
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Hi
 
-On Tue, 21 Oct 2025, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Tue, Oct 21, 2025 at 5:18=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
+
+> The `-soundhw` CLI was removed in commit 039a68373c4 ("introduce
+> -audio as a replacement for -soundhw"). Remove outdated comments
+> and update the document mentioning the old usage.
 >
-> The actual backend is "Chardev", CharBackend is the frontend side of it,
-> let's rename it for readability.
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 >
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+I'll take it in my v2.
+
+
 > ---
-> chardev/chardev-internal.h           |  12 +-
-> include/chardev/char-fe.h            |  67 +++++----
-> include/chardev/char.h               |   4 +-
-> include/hw/char/avr_usart.h          |   2 +-
-> include/hw/char/bcm2835_aux.h        |   2 +-
-> include/hw/char/cadence_uart.h       |   2 +-
-> include/hw/char/cmsdk-apb-uart.h     |   2 +-
-> include/hw/char/digic-uart.h         |   2 +-
-> include/hw/char/escc.h               |   2 +-
-> include/hw/char/goldfish_tty.h       |   2 +-
-> include/hw/char/ibex_uart.h          |   2 +-
-> include/hw/char/imx_serial.h         |   2 +-
-> include/hw/char/max78000_uart.h      |   2 +-
-> include/hw/char/nrf51_uart.h         |   2 +-
-> include/hw/char/parallel.h           |   2 +-
-> include/hw/char/pl011.h              |   2 +-
-> include/hw/char/renesas_sci.h        |   2 +-
-> include/hw/char/riscv_htif.h         |   2 +-
-> include/hw/char/serial.h             |   2 +-
-> include/hw/char/shakti_uart.h        |   2 +-
-> include/hw/char/sifive_uart.h        |   2 +-
-> include/hw/char/stm32f2xx_usart.h    |   2 +-
-> include/hw/char/stm32l4x5_usart.h    |   2 +-
-> include/hw/misc/ivshmem-flat.h       |   2 +-
-> include/hw/qdev-properties-system.h  |   2 +-
-> include/hw/virtio/vhost-user-base.h  |   2 +-
-> include/hw/virtio/vhost-user-blk.h   |   2 +-
-> include/hw/virtio/vhost-user-fs.h    |   2 +-
-> include/hw/virtio/vhost-user-scmi.h  |   2 +-
-> include/hw/virtio/vhost-user-vsock.h |   2 +-
-> include/hw/virtio/vhost-user.h       |   8 +-
-> include/hw/virtio/virtio-gpu.h       |   2 +-
-> include/hw/virtio/virtio-scsi.h      |   2 +-
-> include/system/qtest.h               |   4 +-
-> include/system/vhost-user-backend.h  |   2 +-
-> monitor/monitor-internal.h           |   2 +-
-> backends/cryptodev-vhost-user.c      |   2 +-
-> backends/rng-egd.c                   |   2 +-
-> backends/tpm/tpm_emulator.c          |   4 +-
-> chardev/char-fe.c                    | 142 +++++++++----------
-> chardev/char-hub.c                   |  18 +--
-> chardev/char-mux.c                   |  40 +++---
-> chardev/char.c                       |   8 +-
-> gdbstub/system.c                     |   2 +-
-> hw/arm/strongarm.c                   |   2 +-
-> hw/char/debugcon.c                   |   2 +-
-> hw/char/exynos4210_uart.c            |   2 +-
-> hw/char/grlib_apbuart.c              |   2 +-
-> hw/char/ipoctal232.c                 |   2 +-
-> hw/char/mcf_uart.c                   |   2 +-
-> hw/char/sclpconsole-lm.c             |   2 +-
-> hw/char/sclpconsole.c                |   2 +-
-> hw/char/sh_serial.c                  |   2 +-
-> hw/char/spapr_vty.c                  |   2 +-
-> hw/char/terminal3270.c               |   2 +-
-> hw/char/virtio-console.c             |   2 +-
-> hw/char/xen_console.c                |   2 +-
-> hw/char/xilinx_uartlite.c            |   2 +-
-> hw/core/qdev-properties-system.c     |  16 +--
-> hw/ipmi/ipmi_bmc_extern.c            |   2 +-
-> hw/mips/boston.c                     |   2 +-
-> hw/mips/malta.c                      |   2 +-
-> hw/misc/ivshmem-pci.c                |   2 +-
-> hw/ppc/spapr_rtas.c                  |   2 +-
-> hw/riscv/riscv_hart.c                |   2 +-
-> hw/usb/ccid-card-passthru.c          |   2 +-
-> hw/usb/dev-serial.c                  |   2 +-
-> hw/usb/redirect.c                    |   2 +-
-> hw/virtio/vhost-stub.c               |   2 +-
-> hw/virtio/vhost-user.c               |  20 +--
-> net/colo-compare.c                   |  10 +-
-> net/filter-mirror.c                  |   4 +-
-> net/passt.c                          |   2 +-
-> net/slirp.c                          |   2 +-
-> net/vhost-user.c                     |   2 +-
-> semihosting/console.c                |   6 +-
-> system/qtest.c                       |  20 +--
-> target/hppa/sys_helper.c             |   2 +-
-> target/xtensa/xtensa-semi.c          |   2 +-
-> tests/qtest/vhost-user-test.c        |  16 +--
-> tests/unit/test-char.c               | 198 +++++++++++++--------------
-> tests/unit/test-yank.c               |  12 +-
-> rust/bindings/src/lib.rs             |   4 +-
-> rust/chardev/src/bindings.rs         |   6 +-
-> rust/chardev/src/chardev.rs          |  26 ++--
-> rust/hw/char/pl011/src/device.rs     |  12 +-
-> rust/hw/core/src/qdev.rs             |   2 +-
-> 87 files changed, 392 insertions(+), 393 deletions(-)
+>  docs/qdev-device-use.txt | 4 ++--
+>  system/qdev-monitor.c    | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
-> index 9752dd75f7..8ea10414ab 100644
-> --- a/chardev/chardev-internal.h
-> +++ b/chardev/chardev-internal.h
-> @@ -37,9 +37,9 @@
-> struct MuxChardev {
->     Chardev parent;
->     /* Linked frontends */
-> -    CharBackend *backends[MAX_MUX];
-> -    /* Linked backend */
-> -    CharBackend chr;
-> +    CharFrontend *frontends[MAX_MUX];
-> +    /* frontend of the underlying muxed chardev */
-> +    CharFrontend chr;
->     unsigned long mux_bitset;
->     int focus;
->     bool term_got_escape;
-> @@ -64,8 +64,8 @@ typedef struct HubCharBackend HubCharBackend;
->  * `hub->backends` array
->  */
-> struct HubCharBackend {
-> -    HubChardev   *hub;
-> -    CharBackend  be;
-> +    HubChardev *hub;
-> +    CharFrontend fe;
->     unsigned int be_ind;
-> };
+> diff --git a/docs/qdev-device-use.txt b/docs/qdev-device-use.txt
+> index 043ae461140..fb420da2a9e 100644
+> --- a/docs/qdev-device-use.txt
+> +++ b/docs/qdev-device-use.txt
+> @@ -311,9 +311,9 @@ constraints.
 >
-> @@ -108,7 +108,7 @@ DECLARE_INSTANCE_CHECKER(HubChardev, HUB_CHARDEV,
-> #define CHARDEV_IS_HUB(chr)                                \
->     object_dynamic_cast(OBJECT(chr), TYPE_CHARDEV_HUB)
+>  Host and guest part of audio devices have always been separate.
 >
-> -bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
-> +bool mux_chr_attach_frontend(MuxChardev *d, CharFrontend *c,
->                              unsigned int *tag, Error **errp);
-> bool mux_chr_detach_frontend(MuxChardev *d, unsigned int tag);
-> void mux_set_focus(Chardev *chr, unsigned int focus);
-> diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
-> index 8ef05b3dd0..cb28692f38 100644
-> --- a/include/chardev/char-fe.h
-> +++ b/include/chardev/char-fe.h
-> @@ -8,12 +8,12 @@ typedef void IOEventHandler(void *opaque, QEMUChrEvent event);
-> typedef int BackendChangeHandler(void *opaque);
+> -The old way to define guest audio devices is -soundhw C1,...
+> +The old way to define guest audio devices was -soundhw C1,...
 >
-> /**
-> - * struct CharBackend - back end as seen by front end
-> + * struct CharFrontend - back end as seen by front end
+> -The new way is to define each guest audio device separately with
+> +The current way is to define each guest audio device separately with
+>  -device.
+>
+>  Map from -soundhw sound card name to -device:
+> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+> index 4b732f579ad..5c95926aadd 100644
+> --- a/system/qdev-monitor.c
+> +++ b/system/qdev-monitor.c
+> @@ -73,9 +73,9 @@ typedef struct QDevAlias
+>
+>  /* Please keep this table sorted by typename. */
+>  static const QDevAlias qdev_alias_table[] =3D {
+> -    { "AC97", "ac97" }, /* -soundhw name */
+> +    { "AC97", "ac97" },
+>      { "e1000", "e1000-82540em" },
+> -    { "ES1370", "es1370" }, /* -soundhw name */
+> +    { "ES1370", "es1370" },
+>      { "ich9-ahci", "ahci" },
+>      { "lsi53c895a", "lsi" },
+>      { "virtio-9p-device", "virtio-9p", QEMU_ARCH_VIRTIO_MMIO },
+> --
+> 2.51.0
+>
+>
 
-I stopped here, haven't read the rest of the patch but the above comment 
-seems to become inconsistent. Which is the front end and back end now?
+--000000000000482cb90641ab2689
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-BALATON Zoltan
---3866299591-1500696156-1761053105=:49605--
+<div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=3D"gmail_quote gma=
+il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 21, 2=
+025 at 5:18=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:ph=
+ilmd@linaro.org">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote clas=
+s=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
+gb(204,204,204);padding-left:1ex">The `-soundhw` CLI was removed in commit =
+039a68373c4 (&quot;introduce<br>
+-audio as a replacement for -soundhw&quot;). Remove outdated comments<br>
+and update the document mentioning the old usage.<br>
+<br>
+Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
+aro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br></blockquote><div><=
+br></div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:mar=
+candre.lureau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>I&#=
+39;ll take it in my v2.</div><div>=C2=A0</div><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
+4);padding-left:1ex">
+---<br>
+=C2=A0docs/qdev-device-use.txt | 4 ++--<br>
+=C2=A0system/qdev-monitor.c=C2=A0 =C2=A0 | 4 ++--<br>
+=C2=A02 files changed, 4 insertions(+), 4 deletions(-)<br>
+<br>
+diff --git a/docs/qdev-device-use.txt b/docs/qdev-device-use.txt<br>
+index 043ae461140..fb420da2a9e 100644<br>
+--- a/docs/qdev-device-use.txt<br>
++++ b/docs/qdev-device-use.txt<br>
+@@ -311,9 +311,9 @@ constraints.<br>
+<br>
+=C2=A0Host and guest part of audio devices have always been separate.<br>
+<br>
+-The old way to define guest audio devices is -soundhw C1,...<br>
++The old way to define guest audio devices was -soundhw C1,...<br>
+<br>
+-The new way is to define each guest audio device separately with<br>
++The current way is to define each guest audio device separately with<br>
+=C2=A0-device.<br>
+<br>
+=C2=A0Map from -soundhw sound card name to -device:<br>
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c<br>
+index 4b732f579ad..5c95926aadd 100644<br>
+--- a/system/qdev-monitor.c<br>
++++ b/system/qdev-monitor.c<br>
+@@ -73,9 +73,9 @@ typedef struct QDevAlias<br>
+<br>
+=C2=A0/* Please keep this table sorted by typename. */<br>
+=C2=A0static const QDevAlias qdev_alias_table[] =3D {<br>
+-=C2=A0 =C2=A0 { &quot;AC97&quot;, &quot;ac97&quot; }, /* -soundhw name */<=
+br>
++=C2=A0 =C2=A0 { &quot;AC97&quot;, &quot;ac97&quot; },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;e1000&quot;, &quot;e1000-82540em&quot; },<br>
+-=C2=A0 =C2=A0 { &quot;ES1370&quot;, &quot;es1370&quot; }, /* -soundhw name=
+ */<br>
++=C2=A0 =C2=A0 { &quot;ES1370&quot;, &quot;es1370&quot; },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;ich9-ahci&quot;, &quot;ahci&quot; },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;lsi53c895a&quot;, &quot;lsi&quot; },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;virtio-9p-device&quot;, &quot;virtio-9p&quot;, =
+QEMU_ARCH_VIRTIO_MMIO },<br>
+-- <br>
+2.51.0<br>
+<br>
+</blockquote></div></div>
+
+--000000000000482cb90641ab2689--
+
 
