@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEC8BF6EEF
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AAFBF6EEE
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:59:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCs8-0000Ft-8d; Tue, 21 Oct 2025 09:57:56 -0400
+	id 1vBCsi-0000RN-L5; Tue, 21 Oct 2025 09:58:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs3-0000F2-MP
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs8-0000G4-3d
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs1-0007xK-NU
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs6-0007xm-0V
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761055068;
+ s=mimecast20190719; t=1761055071;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FEfPs3lE3YKqxHYGpmEEm9huybksF3x8fh52qUpukbg=;
- b=N3ZOid3op/tjqtO5UUm7JqsyDMMeMc91fUTRcZTI0U0uE3bRvWowjz85baOYwDxY8cLKK1
- tE0PpYGN6mbLnOGrwUR8z34xejgDNtHPq2CzpfagRN1o+oToA12G6ja22LzWGBTDebdGIQ
- BumhjH/OmfeCAWRv0Vd0jvaaxTH4ZHQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=pGAIDv42ZLXGZFlnkWXLQ50dypdaStkaWhAB27BHzxE=;
+ b=ADbtasHfM0Rh+yyJq1rUotaRa/EMORjX4yWaTRJrNDFj2Gw3lhvVA5zU1HYEjy/Vf9/n5e
+ k0lQ6UERtDgPBfXxZstUEq1Prd7wwoTvdEFJcUsYLkKkney4vNkdWa0LnlvBdQcEMRiJHj
+ HYHXk2FdBUAgW2paWlx8P42lzFtrsOQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-pMJx3pEsN8qDYpIbktseFA-1; Tue,
- 21 Oct 2025 09:57:45 -0400
-X-MC-Unique: pMJx3pEsN8qDYpIbktseFA-1
-X-Mimecast-MFC-AGG-ID: pMJx3pEsN8qDYpIbktseFA_1761055064
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-efk3NYn8OA60PgaYQXK3rw-1; Tue,
+ 21 Oct 2025 09:57:47 -0400
+X-MC-Unique: efk3NYn8OA60PgaYQXK3rw-1
+X-Mimecast-MFC-AGG-ID: efk3NYn8OA60PgaYQXK3rw_1761055066
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A3D1A195609D; Tue, 21 Oct 2025 13:57:44 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2D03719560A3; Tue, 21 Oct 2025 13:57:46 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8B76519560A2; Tue, 21 Oct 2025 13:57:43 +0000 (UTC)
+ id 1382119560A2; Tue, 21 Oct 2025 13:57:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/6] hw/s390x/ccw: Remove SCLPDevice::increment_size field
-Date: Tue, 21 Oct 2025 15:57:33 +0200
-Message-ID: <20251021135735.96145-5-thuth@redhat.com>
+Subject: [PULL 5/6] hw/core/machine: Remove MachineClass::fixup_ram_size
+ callback
+Date: Tue, 21 Oct 2025 15:57:34 +0200
+Message-ID: <20251021135735.96145-6-thuth@redhat.com>
 In-Reply-To: <20251021135735.96145-1-thuth@redhat.com>
 References: <20251021135735.96145-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,109 +85,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The SCLPDevice::increment_size field was only used by the
-s390-ccw-virtio-4.2 machine, which got removed. Remove it
-as now unused, along with the sclp_memory_init() method.
+The MachineClass::fixup_ram_size callback, which was added
+in commit 5c30ef937f5 ("vl/s390x: fixup ram sizes for compat
+machines"), was only used by the s390-ccw-virtio-4.2 machine,
+which got removed. Remove it as now unused.
 
+Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251020094903.72182-3-philmd@linaro.org>
+Message-ID: <20251020094903.72182-4-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/sclp.h |  5 +----
- hw/s390x/sclp.c         | 34 +++-------------------------------
- 2 files changed, 4 insertions(+), 35 deletions(-)
+ include/hw/boards.h | 7 -------
+ hw/core/machine.c   | 3 ---
+ 2 files changed, 10 deletions(-)
 
-diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
-index d32f6180e0d..33f01f85bb1 100644
---- a/include/hw/s390x/sclp.h
-+++ b/include/hw/s390x/sclp.h
-@@ -197,12 +197,9 @@ OBJECT_DECLARE_TYPE(SCLPDevice, SCLPDeviceClass,
- struct SCLPEventFacility;
- 
- struct SCLPDevice {
--    /* private */
-     DeviceState parent_obj;
--    struct SCLPEventFacility *event_facility;
--    int increment_size;
- 
--    /* public */
-+    struct SCLPEventFacility *event_facility;
- };
- 
- struct SCLPDeviceClass {
-diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
-index 8602a566a49..c9a9c4bb375 100644
---- a/hw/s390x/sclp.c
-+++ b/hw/s390x/sclp.c
-@@ -110,7 +110,7 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
-     ReadInfo *read_info = (ReadInfo *) sccb;
-     MachineState *machine = MACHINE(qdev_get_machine());
-     int cpu_count;
--    int rnsize, rnmax;
-+    int rnmax;
-     int required_len = SCCB_REQ_LEN(ReadInfo, machine->possible_cpus->len);
-     int offset_cpu = s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB) ?
-                      offsetof(ReadInfo, entries) :
-@@ -153,21 +153,14 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
- 
-     read_info->mha_pow = s390_get_mha_pow();
-     read_info->hmfai = cpu_to_be32(s390_get_hmfai());
--
--    rnsize = 1 << (sclp->increment_size - 20);
--    if (rnsize <= 128) {
--        read_info->rnsize = rnsize;
--    } else {
--        read_info->rnsize = 0;
--        read_info->rnsize2 = cpu_to_be32(rnsize);
--    }
-+    read_info->rnsize = 1;
- 
-     /*
-      * We don't support standby memory. maxram_size is used for sizing the
-      * memory device region, which is not exposed through SCLP but through
-      * diag500.
-      */
--    rnmax = machine->ram_size >> sclp->increment_size;
-+    rnmax = machine->ram_size >> 20;
-     if (rnmax < 0x10000) {
-         read_info->rnmax = cpu_to_be16(rnmax);
-     } else {
-@@ -406,25 +399,6 @@ static void sclp_realize(DeviceState *dev, Error **errp)
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 665b6201214..d0a69cd490b 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -250,12 +250,6 @@ typedef struct {
+  *    It also will be used as a way to option into "-m" option support.
+  *    If it's not set by board, '-m' will be ignored and generic code will
+  *    not create default RAM MemoryRegion.
+- * @fixup_ram_size:
+- *    Amends user provided ram size (with -m option) using machine
+- *    specific algorithm. To be used by old machine types for compat
+- *    purposes only.
+- *    Applies only to default memory backend, i.e., explicit memory backend
+- *    wasn't used.
+  * @smbios_memory_device_size:
+  *    Default size of memory device,
+  *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
+@@ -325,7 +319,6 @@ struct MachineClass {
+                                                          unsigned cpu_index);
+     const CPUArchIdList *(*possible_cpu_arch_ids)(MachineState *machine);
+     int64_t (*get_default_cpu_node_id)(const MachineState *ms, int idx);
+-    ram_addr_t (*fixup_ram_size)(ram_addr_t size);
+     uint64_t smbios_memory_device_size;
+     bool (*create_default_memdev)(MachineState *ms, const char *path,
+                                   Error **errp);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 681adbb7ac5..7aec3916e80 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -648,9 +648,6 @@ static void machine_set_mem(Object *obj, Visitor *v, const char *name,
+         mem->size = mc->default_ram_size;
      }
- }
- 
--static void sclp_memory_init(SCLPDevice *sclp)
--{
--    MachineState *machine = MACHINE(qdev_get_machine());
--    MachineClass *machine_class = MACHINE_GET_CLASS(qdev_get_machine());
--    ram_addr_t initial_mem = machine->ram_size;
--    int increment_size = 20;
--
--    /* The storage increment size is a multiple of 1M and is a power of 2.
--     * For some machine types, the number of storage increments must be
--     * MAX_STORAGE_INCREMENTS or fewer.
--     * The variable 'increment_size' is an exponent of 2 that can be
--     * used to calculate the size (in bytes) of an increment. */
--    while (machine_class->fixup_ram_size != NULL &&
--           (initial_mem >> increment_size) > MAX_STORAGE_INCREMENTS) {
--        increment_size++;
+     mem->size = QEMU_ALIGN_UP(mem->size, 8192);
+-    if (mc->fixup_ram_size) {
+-        mem->size = mc->fixup_ram_size(mem->size);
 -    }
--    sclp->increment_size = increment_size;
--}
--
- static void sclp_init(Object *obj)
- {
-     SCLPDevice *sclp = SCLP(obj);
-@@ -434,8 +408,6 @@ static void sclp_init(Object *obj)
-     object_property_add_child(obj, TYPE_SCLP_EVENT_FACILITY, new);
-     object_unref(new);
-     sclp->event_facility = EVENT_FACILITY(new);
--
--    sclp_memory_init(sclp);
- }
- 
- static void sclp_class_init(ObjectClass *oc, const void *data)
+     if ((ram_addr_t)mem->size != mem->size) {
+         error_setg(errp, "ram size %llu exceeds permitted maximum %llu",
+                    (unsigned long long)mem->size,
 -- 
 2.51.0
 
