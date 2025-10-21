@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072A3BF8C4D
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22787BF8C83
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:49:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJH9-0005q3-CS; Tue, 21 Oct 2025 16:48:11 -0400
+	id 1vBJHF-00063w-Gr; Tue, 21 Oct 2025 16:48:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH7-0005nA-FZ
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:09 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHC-0005yM-MQ
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:15 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH4-00018J-FZ
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:09 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-427060bc0f5so2045030f8f.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJH9-00018o-6A
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:13 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-46b303f7469so48892315e9.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079684; x=1761684484; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079689; x=1761684489; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PCJUsmctVJ9G/52a/hBFRs7P+qmJ1PG9K4Gu5Uohdn8=;
- b=bHFfc174wW80NuiAztp2dnrO5vBLn3XlY2VUS970mNvUNTtaRszaVSq7SfVc1Bhi9Z
- n3H8jHyjKUdngyxtQCoWYL3wv0IkCaS4b192PVhs2dTpojGvuF/c4tztcP9TQtJSM6sx
- 36drqZ9ZYiyc6bJ7YqHLbjFa/ncnmcLBSB+aHb/Q6OJoWS/SIvBIutXYV08oi8OxdKIO
- XkmjigENObWqXc2lUgXXwQwTzLBAWcG48UqqTD6Tj/awrODXFvjU6zcNgb3ZF7mmgb/9
- xb7VWQappjI4p4UnbG60IRIQYDveDMpdY5/O8PnnI80s90CqOorio9l8FZqK+YV5/POt
- q1Gg==
+ :reply-to; bh=Vutle4YXIOFFrBvcNunmt19xjODe06KxvyMmRyQ1onQ=;
+ b=Os/M8WOM/UQSyyEWo/mF3s4FzkiwXOoa+LZnJmLgroG9Z2qn7mxvV0qq1COkqpgBS/
+ +kxS4nIorHTU75BIBsqedoMXKjukmIDfztPu0jiVRy8gOOgwtCpCQ/Iw4Mgzk8fMeeGz
+ QGlRIhD0gMGjOqyxk+nJlmKhMoDqzEbX0nLleg8AeacZflbLLjoHryo/fgCr8M6kEygg
+ I1KoPUJZHEpdKyzvTjToEaMkk8em5L8RDeye9q45dFTyreQtmPJK6b5Kui4iKUTHmdlF
+ NnPjMtOZ1XeOEJ+XFcPj26YLP1CwdnPwufgi76vjiLSRvAjkvjRLJPq580FNitZr3kq1
+ Tscw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079684; x=1761684484;
+ d=1e100.net; s=20230601; t=1761079689; x=1761684489;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PCJUsmctVJ9G/52a/hBFRs7P+qmJ1PG9K4Gu5Uohdn8=;
- b=NvprgK6i5c5syVxEb0VwWsVi/jA2y9uNnACCbto2EhtJUc/VQn4ys6Hu6cQv1rMXoD
- r3IBu8LAErtb1aJcTD6Ch6+Vo4h/4+rdBgyDeGlfTESP9gBE3WkPrSYfcJmUZwKKAPBJ
- nx769aGOtfXcWuVT+ox4CpqPtfqmDYpTe98BtxC/W7ai9EkGDXtRBLotca3z7hhU/s2h
- KosGR1duwni9QWLYxqCB8uFic7tSca9CVcMo8BgcZijbaCphV/mYc626eWepAL9FM94k
- kDeTV1sMyf/P0pe6lLAzpqDmQj/guwl3ITOatwlr7YN4yOvkcm0fk7/nCGAeMbDtBbx9
- kqqw==
-X-Gm-Message-State: AOJu0YymCG2JNA5Mbu+E16xZCYZybsPM3D3os0PWlFg7qWnjPL/zko7b
- QYFSqWxyV1gUmO2oE4XAxRtiASo+d+ufnNWrb8t9AgLGiG7Du3ZVzw+sH/GH9ijv4CmgyelOgD7
- vAWqo+fI=
-X-Gm-Gg: ASbGncuMHtkBweGNnBq63NjICNQPcFzdqbU0LQ5ZXitEIJcKcdR1kcC+8hL3gxj3dk5
- dPDXWoRyKL2wRVQ6g/BHbs85EiajwCdT7izsMLw93o/SmwqvxiIYIT3Ts+EcpHqSutfA/4Q9wJh
- V3pg3MPH7teHLeKtS4pqF3gEWJe1J0y51saehQ6mspPNNaDWfgLsoFhde2RU4LhyNRLHE6DtFtu
- 8NnpvI5ImPM0vAX2zw6kgCTCL3aOU0HbnEsIG/wyZpqMPGRCX77GMr4fY5H3EI86wtnHcSab7zN
- n35VVkldyGPM+YhSzXp7m/rLhFQO77N1k5+BFpNzHuSF/jmps/txFNkImvR3XZAcOnaKU5Qk8iQ
- rTYiGK0M+UgFvOEfSYZjp4fGe8SjDcgCUq876GyiCXYfNsurkFAt0KPQYw8xscIj3niemen9XZS
- Uj63jAS3SfeOfACuXUS7++rQwU2rmCl0GK5dF3TYZGcSklZhsqBvOMTKcExE73
-X-Google-Smtp-Source: AGHT+IHPG1Enz8eZd8UMMAXbzzgM5jPGeK1RyxPZeLYslY1zOZ23jAeA6CZ02FitgRFXgLO7SW9+6g==
-X-Received: by 2002:a05:6000:4718:b0:426:f10e:6b56 with SMTP id
- ffacd0b85a97d-42704db1df0mr13457479f8f.27.1761079683646; 
- Tue, 21 Oct 2025 13:48:03 -0700 (PDT)
+ bh=Vutle4YXIOFFrBvcNunmt19xjODe06KxvyMmRyQ1onQ=;
+ b=DAotKQ5cLjYF/Dj6hiNKM7n5MHWDh5/NNBlgHYV1peB7QhG7MxslCw5wyfPXSeHtvW
+ Mzui5koYJdi3dcPcDwo63tX8ph0Ab8XD9qfVNSGw+p0k+wQf1t2b0hB4z7JYTHtJ7S3t
+ WBELqn313yWZePSMod+HUR8FKWHaMq9zs8+6fInW+EzQ97X5A/YM8Q1/jJatqPBlPnMf
+ BIQxHDYW8D3TAaC7IwVuiQqOun+e1eYuNjxNqCX9Wl0cCGARyDXHkD3KjuzJRpxyiVfF
+ rgM4r3O5odbebgADBIs+QRBtUCuFYSsUiHEMCUlXdqlVLevzv2a+Q8qeY4LtL1oTx8LW
+ X6cw==
+X-Gm-Message-State: AOJu0YyiNys1Ot+x2tnlnPt1wtHEyRzWS79XYJuBTj9BJd99Dx7rauta
+ RkM3U9utT8DgFsPipvd20YEWFCGYguEqkP1z916acjQP5xLNGzVURyhIBj0A+x9mKA4+9eyEI2x
+ HMQAy370=
+X-Gm-Gg: ASbGncsnrLautBb9qPsCqqtBHfvpWgEh/C3hIWkQb8AXH5fBoc5jhvAaT/U7g8sCbJ9
+ 9RBOgAx/2iahD7BfbIPZfcBUpUuQsKSRS1oU1f/E85QoDv5EQymyB2VgQuUzBpoR4DkpQ71HU8A
+ xMJca4btLUq22UN+5jnz+bZw9yG0a7KKYHp581F6G5tV1dDXIE7wWR/B3Zj1IizJNh7+AECotFv
+ gr3wDVxOOyPlYessaCh0/09PQAgSYUI99HAjX1iMl3OhpaKXrCTucTPFtzSvJETp/syhfLEPwyZ
+ hwl7kSG5Mly6lbgDGbQzkVW+0onk+1hORzoEcK9FlDxnm+x7Ph3PYsCTWBwqyTdRZsXK4LCLP0T
+ VvIF9086O70c+BYa8I2RB1q+hQgp4MA5l8uVuDZAJouZg863p8LaOA6H2C91i4nLH3vEh4kr9xa
+ 5iNWL1+NZ1+YLFzHBondkKJsYYCZpHjBLQeac6qMnJRaUn4dcPjMiObUCHY+fN
+X-Google-Smtp-Source: AGHT+IHHhz0PfA4M2bG/xsFIM88eKoKfDlYj8m8DXImZxQr/P1sFLrzxhwCGvoejWOU2po78eDzrMg==
+X-Received: by 2002:a05:600c:548a:b0:471:669:e95d with SMTP id
+ 5b1f17b1804b1-4711787dcc8mr120147665e9.12.1761079688803; 
+ Tue, 21 Oct 2025 13:48:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5a0f19sm22008525f8f.9.2025.10.21.13.48.03
+ ffacd0b85a97d-427f009a9a9sm22537515f8f.29.2025.10.21.13.48.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:03 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/45] hw/i2c/smbus_eeprom: Add minimum write recovery time for
- DDR2
-Date: Tue, 21 Oct 2025 22:46:27 +0200
-Message-ID: <20251021204700.56072-14-philmd@linaro.org>
+Subject: [PULL 14/45] hw/ppc/e500: Check for compatible CPU type instead of
+ aborting ungracefully
+Date: Tue, 21 Oct 2025 22:46:28 +0200
+Message-ID: <20251021204700.56072-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,31 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Thomas Huth <thuth@redhat.com>
 
-This is needed for newer u-boot-sam460ex versions to pass the DRAM
-setup.
+When using the ppce500 machine with an embedded CPU type that has
+the right MMU model, but is not part of the e500 CPU family, QEMU
+currently aborts ungracefully:
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251008122502.9DA8956F301@zero.eik.bme.hu>
+ $ ./qemu-system-ppc -machine ppce500 -cpu e200z5 -nographic
+ qemu-system-ppc: ../qemu/hw/core/gpio.c:108: qdev_get_gpio_in_named:
+  Assertion `n >= 0 && n < gpio_list->num_in' failed.
+ Aborted (core dumped)
+
+The ppce500 machine expects a CPU with certain GPIO interrupt pins,
+so let's replace the coarse check for the MMU_BOOKE206 model with
+a more precise check that only allows CPUs from the e500 family.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3162
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Message-ID: <20251015111243.1585018-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i2c/smbus_eeprom.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/ppc/e500.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/i2c/smbus_eeprom.c b/hw/i2c/smbus_eeprom.c
-index 0a1088fbb0a..26e211b31ad 100644
---- a/hw/i2c/smbus_eeprom.c
-+++ b/hw/i2c/smbus_eeprom.c
-@@ -288,6 +288,7 @@ uint8_t *spd_data_generate(enum sdram_type type, ram_addr_t ram_size)
-     spd[33] = 8;    /* addr/cmd hold time */
-     spd[34] = 20;   /* data input setup time */
-     spd[35] = 8;    /* data input hold time */
-+    spd[36] = (type == DDR2 ? 13 << 2 : 0); /* min. write recovery time */
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index 723c97fad2e..3d69428f31c 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -20,6 +20,7 @@
+ #include "qemu/guest-random.h"
+ #include "exec/target_page.h"
+ #include "qapi/error.h"
++#include "cpu-models.h"
+ #include "e500.h"
+ #include "e500-ccsr.h"
+ #include "net/net.h"
+@@ -942,9 +943,8 @@ void ppce500_init(MachineState *machine)
+         env = &cpu->env;
+         cs = CPU(cpu);
  
-     /* checksum */
-     for (i = 0; i < 63; i++) {
+-        if (env->mmu_model != POWERPC_MMU_BOOKE206) {
+-            error_report("MMU model %i not supported by this machine",
+-                         env->mmu_model);
++        if (!(POWERPC_CPU_GET_CLASS(cpu)->svr & POWERPC_SVR_E500)) {
++            error_report("This machine needs a CPU from the e500 family");
+             exit(1);
+         }
+ 
 -- 
 2.51.0
 
