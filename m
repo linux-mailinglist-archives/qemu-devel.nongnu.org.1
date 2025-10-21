@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161BABF8CD4
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A7DBF8C8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJI1-0000QA-9y; Tue, 21 Oct 2025 16:49:05 -0400
+	id 1vBJI5-00010T-9G; Tue, 21 Oct 2025 16:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHs-0000GP-34
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:56 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJI2-0000dp-5x
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:06 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHp-0001C4-7l
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:48:55 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47114a40161so18069755e9.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJHt-0001Ci-Kl
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:01 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4711b95226dso49332715e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:48:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079730; x=1761684530; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079735; x=1761684535; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1eGb/qWicD87v06dVtQ6TfIwBX5R3IiSQQ+m6Usu1EA=;
- b=ix2sFrRhLEbQn/2iGSmegEzgb240YZeUsja8qUKft+gQJ5Hp18y/DW44w9CnR7660D
- q5viV81cNm40XQHVApahUNnYi7LxtNcgoGbfIZO7uiT1NQ3dni7CTSjdxOU+Vc9UlP1G
- ERnhIUeWlcH8tdY0qbMikbdXb9Uj+0o+/3vSDrtHrhpWgfcB4v0HtJoRnFKJ6g3glnrQ
- ybrmvZVC4t3Gm3nEf3enY7QfIVrCo0UCyVtLDpr4Jt3+C2iwtD+rP0sEG6HmhO1IKuXj
- OIxjjqRhZjdI8cF+Cqoh1+4gSNjAyATqQmn9YS4GyNq4BS03ENkxDqVcMraoQvXgf8dv
- FfwA==
+ :reply-to; bh=ldA81TOhO5CyCm5FfejA2XOTZsnGVZH3vj2puivaEgs=;
+ b=TPk+MFFVr5jIXHrUQ0A6ttXJnjjJWThs0RrvAiPrxKeimJHa3z3zZtw03QTGDrVHCb
+ ENO4fHyXGZmAuODX2uYpVtx+wgTSULqhFiuhoDmr0lbcqmrXTMZv+gvvMD+Rj/KBfDwK
+ Rr8N/pLtTIZKnRTA/3B+XC9oi/qz0DbQxU/lR3/tAlCkdOy0d8grGv5YLrGGgy/l+p70
+ FstGtORhxxqMDqbnuu8NmcCdN9amPOibBkuDyIwS5/uTgzcsOFMnFMMT2mWKaGy1TzsM
+ VCtNSXzpHw+LOwEXGyqgyEEWIx4ZCB3XVmheNMA2JJMgImhWUE+A6ZUUKvu1MVhpNBYn
+ xvwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079730; x=1761684530;
+ d=1e100.net; s=20230601; t=1761079735; x=1761684535;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1eGb/qWicD87v06dVtQ6TfIwBX5R3IiSQQ+m6Usu1EA=;
- b=ecSDphg/wwJJfkrPj/1ajUt8n1WAxv+A6ehFPQYt3/GMaLOlynupPmx4MCLFCEfoKA
- SfxGR+d0G4RE6ikyBWXnIWfIvhgEH2SzNyulmKyyTFyHu8w+71q2f/CEVC95b9plxCuH
- q4K3JkofQA7A5RTgdqfoiSueHvwd5IL4VG3jwGje8MoK0dQDjcbX7RQbXOn8bv7Jg1r6
- 5ushl2TYfxXVc5YRi8bqCC1/lRocUkSMgFMcLjRIQgtzqbPASfYN+DhiR9g4vxsRibG3
- maAUZNBr31n49jCuNkdLhBuAnwQCIvf2CqCKRGcrCMKF6JVbrAqr3VWghgm4fKmX57Lp
- dnNg==
-X-Gm-Message-State: AOJu0Yw8w869JXR4XyLubPpeChxITjzmzlEVIvaxzWsXXlJyZYjJLq85
- Cow0G/QADktdre6rqy+NkgjXhDDBQadYpdx8M9s+3Fi57s568CfKaqU4DlSOSYVBVcADejsq05F
- RFEXxNP0=
-X-Gm-Gg: ASbGncsYKDC0PZngzmW36JYONmSXGkb/uP/IRSQsrvNwlyRrG8rwqbFOpgWViLSUrhf
- 8msSW6f/5KClmxIQnMelrgPpgTnixbBgV1It+ozmgg7q/yXC+vHOb35XsxBP5eksJogGz356Eyl
- 0z4wOmEqIr46GKep4XZa2yp1JGtwyExzpQxJoc5GEP6hraVBDV6qycW9q3P60s4FLs3lGadId8W
- JgbTpyCjFg+yKBhiVgB/nSCj38xaUWe79l5Zx26Nw1MGN1mVgF4VJwHvakS8Iv5/E0/6eyQD++T
- lxZ0SkekFWbYqxZE622zPlvmpqgdYA4N3m9LQIUXi1c1U4otE+r5mRsViYymrf9ObnPNhq2sBFR
- j2DhENmGk5iOvIXquzV4Mmxp0mcjn62dysboUAbyfWHtJ4j+LbUq3pZPdtw9qCVaGwBBtyiKmCF
- gBfEJIWm4fjV8FniGlJSjmqU/IbmxqeSVy4AI9tSHKInfSz6w1YnVd3+GQie92
-X-Google-Smtp-Source: AGHT+IHMtTUsCeDArJeD/9daPczhMPGY8RM1UoZBRhQSnbMXC5+UPgeBXWny49LTqpzMVdmKkwJx5A==
-X-Received: by 2002:a05:600c:3e07:b0:46e:450d:e037 with SMTP id
- 5b1f17b1804b1-4711786c560mr143291925e9.5.1761079730576; 
- Tue, 21 Oct 2025 13:48:50 -0700 (PDT)
+ bh=ldA81TOhO5CyCm5FfejA2XOTZsnGVZH3vj2puivaEgs=;
+ b=sqzzb6PrZi0hCRgIY86Z1NNpkMnRJLJd3E827e62PerD2I2PRUajWxrinQl79lJrPx
+ RLvo1eMx+jftgxAOulxS+2zDpTCmBuDEZR7ILhUIP2fMbIe3Z5f+0N4kehTALRtGvAoX
+ cKDAb2I+UHXzpFBAjnLdT7yCPyvrLJJqENylndIqnoZrjc/8y8HOxHk//5T+4y1i2oQv
+ FCqsbguWqlJELnX4MJ+nJ6jamdPCTDhqxYsOUnJLvXabDDiYqRxPH2PTwAbuSUrelaGR
+ 73IDQvPGiOXQ3jP687zbpCJp4kafIIsOXF4yG5c5QqgRiWafm8OFgDyGNxu/6PZtS8tt
+ RCXw==
+X-Gm-Message-State: AOJu0YwrlDrFiMrkpTI6EFc4qu8dyMflO4YYNQCSTNx0HJB7SE1hiVDQ
+ KnM4Uzs3tzwFGSDiON2YDvDWJr0QdEU0rMo9Fq0p0v8ITUUYgyIbRAmiy9X9E1grgqomjjdrfRb
+ Nsi//4zw=
+X-Gm-Gg: ASbGncu62maidQDveyOOeRNUxs3ymsM6J9T6IjQ2X6xZMLpzYMwcvAPCNrwy9s4pjLk
+ NYNIG23NzJ2G6+61wkAkYBiQxXRpU5XpW+l/IoAg8oF7W6ZEdbCM8ojEB0XRZSbb1ijQG1eBglB
+ ThtJzd3xWWRrfNFJoq3/KbEzXJcCwFuPwFHxnS05IXiojbHrVdaF2lk3WAMmSbFQrUXb7mZMk7E
+ 0Uw8i+KAhwSZxYxQqB8qv7/OIR95tjQpHB0ovQeHRwoAno2h8FG94tdA/fRdd47DkYuPCAxjuL1
+ Pj+7MWekJN5n7wvHXdE9nYAkBTg0mRnJkrgGYS25iGTyb7bvv5wXgS+HjrLDu+iiJPuYN/ET9CB
+ AKYpAnP+IwzpVGFUMaQHMdZNKMMKaY3soBfYIyBfwZZPOzy02Va45hS0YT3XaeQZsaBzoROBbI3
+ 3Q7EbF3s2yxJvcNqY08Vpx3j7FYLl01aeCtGYKgsqMvsNeXgIO0TZEsfVSVfcd
+X-Google-Smtp-Source: AGHT+IEjwL4Pt02bvRQBC/REJhqK2MnjVJeC7iXTfXnmhvQnvyk71tYbxZ0pmKAAz4HQPPvMYOyNjg==
+X-Received: by 2002:a05:600c:3e86:b0:46e:36f8:1eb7 with SMTP id
+ 5b1f17b1804b1-471178a3a94mr131546405e9.10.1761079735065; 
+ Tue, 21 Oct 2025 13:48:55 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47494b02475sm24800085e9.4.2025.10.21.13.48.49
+ 5b1f17b1804b1-475c42b48c9sm10820645e9.15.2025.10.21.13.48.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:48:50 -0700 (PDT)
+ Tue, 21 Oct 2025 13:48:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/45] hw/ppc/prep: Always create prep-systemio
-Date: Tue, 21 Oct 2025 22:46:37 +0200
-Message-ID: <20251021204700.56072-24-philmd@linaro.org>
+Subject: [PULL 24/45] hw/timer/i8254: Add I/O trace events
+Date: Tue, 21 Oct 2025 22:46:38 +0200
+Message-ID: <20251021204700.56072-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,65 +97,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Bernhard Beschow <shentey@gmail.com>
 
-The prep-systemio device models the system control ports of the 40p
-machine which is not an optional pluggable device but part of the
-system so it should not be disabled by -nodefaults but always created.
+Allows to see how the guest interacts with the device.
 
-Additionally remove some line breaks to make lines related to one
-device appear in one block for logical separation from other devices.
-
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <b5b0150b6c579b10682f6482e7832cf381ffb759.1760795082.git.balaton@eik.bme.hu>
+Message-ID: <20251019210303.104718-2-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/prep.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ hw/timer/i8254.c      | 6 ++++++
+ hw/timer/trace-events | 4 ++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 982e40e53e1..c730cb3429e 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -308,6 +308,13 @@ static void ibm_40p_init(MachineState *machine)
-     sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
-     isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
+diff --git a/hw/timer/i8254.c b/hw/timer/i8254.c
+index 4b25c487f79..7033ebf50da 100644
+--- a/hw/timer/i8254.c
++++ b/hw/timer/i8254.c
+@@ -29,6 +29,7 @@
+ #include "hw/timer/i8254.h"
+ #include "hw/timer/i8254_internal.h"
+ #include "qom/object.h"
++#include "trace.h"
  
-+    /* system control ports */
-+    isa_dev = isa_new("prep-systemio");
-+    dev = DEVICE(isa_dev);
-+    qdev_prop_set_uint32(dev, "ibm-planar-id", 0xfc);
-+    qdev_prop_set_uint32(dev, "equipment", 0xc0);
-+    isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
+ //#define DEBUG_PIT
+ 
+@@ -130,6 +131,8 @@ static void pit_ioport_write(void *opaque, hwaddr addr,
+     int channel, access;
+     PITChannelState *s;
+ 
++    trace_pit_ioport_write(addr, val);
 +
-     /* Memory controller */
-     isa_dev = isa_new("rs6000-mc");
-     dev = DEVICE(isa_dev);
-@@ -333,7 +340,6 @@ static void ibm_40p_init(MachineState *machine)
-         dev = DEVICE(isa_dev);
-         qdev_prop_set_uint32(dev, "iobase", 0x830);
-         qdev_prop_set_uint32(dev, "irq", 10);
--
-         if (machine->audiodev) {
-             qdev_prop_set_string(dev, "audiodev", machine->audiodev);
+     addr &= 3;
+     if (addr == 3) {
+         channel = val >> 6;
+@@ -248,6 +251,9 @@ static uint64_t pit_ioport_read(void *opaque, hwaddr addr,
+             break;
          }
-@@ -344,14 +350,7 @@ static void ibm_40p_init(MachineState *machine)
-         qdev_prop_set_uint32(dev, "config", 12);
-         isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
+     }
++
++    trace_pit_ioport_read(addr, ret);
++
+     return ret;
+ }
  
--        isa_dev = isa_new("prep-systemio");
--        dev = DEVICE(isa_dev);
--        qdev_prop_set_uint32(dev, "ibm-planar-id", 0xfc);
--        qdev_prop_set_uint32(dev, "equipment", 0xc0);
--        isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
--
--        dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(1, 0),
--                                       "lsi53c810"));
-+        dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(1, 0), "lsi53c810"));
-         lsi53c8xx_handle_legacy_cmdline(dev);
-         qdev_connect_gpio_out(dev, 0, qdev_get_gpio_in(i82378_dev, 13));
+diff --git a/hw/timer/trace-events b/hw/timer/trace-events
+index c5b6db49f58..2bb51f95ea8 100644
+--- a/hw/timer/trace-events
++++ b/hw/timer/trace-events
+@@ -49,6 +49,10 @@ cmsdk_apb_dualtimer_read(uint64_t offset, uint64_t data, unsigned size) "CMSDK A
+ cmsdk_apb_dualtimer_write(uint64_t offset, uint64_t data, unsigned size) "CMSDK APB dualtimer write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
+ cmsdk_apb_dualtimer_reset(void) "CMSDK APB dualtimer: reset"
  
++# i8254.c
++pit_ioport_read(uint8_t addr, uint32_t value) "[0x%" PRIx8 "] -> 0x%" PRIx32
++pit_ioport_write(uint8_t addr, uint32_t value) "[0x%" PRIx8 "] <- 0x%" PRIx32
++
+ # imx_gpt.c
+ imx_gpt_set_freq(uint32_t clksrc, uint32_t freq) "Setting clksrc %u to %u Hz"
+ imx_gpt_read(const char *name, uint64_t value) "%s -> 0x%08" PRIx64
 -- 
 2.51.0
 
