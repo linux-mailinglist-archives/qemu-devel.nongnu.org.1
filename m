@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D701BF8D46
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7134BF8D07
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJJX-0005IG-34; Tue, 21 Oct 2025 16:50:39 -0400
+	id 1vBJJb-0005YZ-Aj; Tue, 21 Oct 2025 16:50:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJN-00050L-1e
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:30 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJR-00054T-90
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:33 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJK-0001YB-To
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:28 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-470ffbf2150so1608455e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJP-0001YZ-9C
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:32 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-471bde1e8f8so14477055e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079823; x=1761684623; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079828; x=1761684628; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7pVRvMSa1tuaaAjaeaWzWN+zOC+X4LPSLmio2TfrgMc=;
- b=ipqBQ3kmZQowuKpufkNmaLR1GyOb5l9g8tAIRPbFbFadqqHasfLpLFKGMWwTRJIE2N
- 4jO6wbfehnW2O6Z+6sdFQVfi2TDx6g/9mhsAJvQbWJja2C39NeowvS3UBVCepzfL5Vte
- JcKwUbhaWo7kuLsh2rGubr2GnI80mOch3XtBPWnq15e8mRhmJh6BK8ZLiKWqgoDAGQQn
- 9zsasFAaFOwpD4zura618Gs7d+qM8jqMaeelSwxG+56JrlUPmGCQYzB5Cw6bkYRUAzR/
- MM31kCfjPJbjgiAH0ptG8M722cUWNefC5IHtJJrtUhqYXVib8L2vyla/727TTdTG2UAs
- FuwA==
+ :reply-to; bh=XmIazvnMcS62evWaxsTSFabokho2yYFz693QcRgJ7JQ=;
+ b=B0nP/4oNgLLbSsyMveFlgJXdsE+jJjhbrDrQvZRJgjcbrRHrbDR8hiNhb7XviD2rGO
+ JjX+r+E1NnOOfWEH9YdEPoij8J4mdXkBk4HIyWrINlNlCO3sWvyrPKh0TPb71nAc2T7h
+ bHDA5143RtqT+PYLeZolPuzaBrAUk+U0zQble9alNJVog4kQZuY8pLB8W/rL0AHMNH5W
+ pNnvBZpBdA4i26pRKBiwIC4zEuNCzDNqMzb9ChhV1huGVogbeoTa7Br8Jeeqj2Bxxumm
+ oHFNoPx9puOopDS4nxYoJGMAzQ2NqTMhe47E+s2FADIGMLMjr8Y3a4S7DeDJI7vEhFe3
+ NZjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079823; x=1761684623;
+ d=1e100.net; s=20230601; t=1761079828; x=1761684628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7pVRvMSa1tuaaAjaeaWzWN+zOC+X4LPSLmio2TfrgMc=;
- b=MlUOpBTP8xdwwfK9n8j1fNQ8vjaI/MWulC3eEuE2QdbmGYwZjMH0O1rN5TJGk3cIKH
- Mu2saFaZIxRtNwxp4fLWw3AzOzH5dN8KgOpwjmflHUbUX4ZhKbc45RDKfKyCRP3PhdjI
- 6aW+O+2xLHRm1TI6LB91Lo6l3QvYfcOY9NeaPCPVbS86kzy/U9O9ojdmfTLzaI4IGBwD
- GagblDRfOYSogu2vAE2Xd2RvoiRI/EmHOE+zE6QngBFK4DC5TpRMVWMA8SrjjnELSiwr
- mm67PtASveQ1oCikgvqJXesXP7dyZtP9aj+nAMMqU6xSvkmnC0qhAdWD9ntKMrHUNI/l
- XwZA==
-X-Gm-Message-State: AOJu0YyRwxRz+YW9wOIECYFKAz2pnm6u3/MaNsT2nwOfieO2/+Y7QoC/
- G7hDNZ7GmANTKNp8MDkNLC4bVHq2U8jev3G7BqQd0K0YVSvN0gy0pg73iSTad9mK8TLWPSgLfaK
- hNm15cbg=
-X-Gm-Gg: ASbGncvvap4AXtWaALK88AXEyO887s6hEILwXXU0eUzL25VZ2FUx/DG5kV92XOA3oE2
- vcoGHlqJlnLCgQYvcLZIS7Eot3Zw7sULFo+gxVXdtAlg7VDJFhFCYkMWmBRPoV7J3gEnfLewU3R
- FDGtF+PaufwHy8KLy75+4iOemBl6QGU+6iFV+srMsK2Rvu4iMlOzoS6DXJgOS5zx41QLqDM/JfS
- f+tbWeQlX8kS162bhc1IQ+uUf4mBTIvHyAEQ/WAjIxMYDwTI9YPoMUBoIVwi9arOcw0Kg+Ta8Xd
- HeKvl2HSqiKd38t05mm1txLw9WwJQlANBz5wy+pcaSldguH+B7m+hIC6MDMsNK5DrGM7B2au/eP
- rAQClC7Gx3GZ9JPZT85xkbl/dq3XmjdHw1+IVu7ZQbhpZtUxXqI0mXilXlfqKQ+pSH9FddgslQU
- /7d+J/hay3yROwYndsLwq9Dxdk2CBS+ZONLuaMo+KejULqr68bB91nDcgGdFtd9kGxLpkVlOc=
-X-Google-Smtp-Source: AGHT+IFd0IRuX6vS1KrZzAvST7/oqk+CE27Cqtt+XJEK1kuXJXXvseHWKqKzwkkqV2mZ01cWzYS3aQ==
-X-Received: by 2002:a05:600c:3505:b0:46e:59bd:f7e2 with SMTP id
- 5b1f17b1804b1-475c3fcb2fbmr7419785e9.11.1761079823360; 
- Tue, 21 Oct 2025 13:50:23 -0700 (PDT)
+ bh=XmIazvnMcS62evWaxsTSFabokho2yYFz693QcRgJ7JQ=;
+ b=CvuYQy8RAwCBOSkxfS8HsOkhxOFgWzJf1VpoTl5ifW/IEkSPvfVvlHGBYx9O/1Q2z4
+ AeBMZ/9ttbQSP6BfjUr+AkAGOyxLiwb2J2xFSLDumHY75zloUJpiztPYvH9bP9N8ANvV
+ uRc49+aK19DOVnpzTFa45bIsL+pmRz++D9dJ2Xvsy/ANcVtkmcFXZCpKDgtU5a4L3kMW
+ Dcm2kQt0VboKwcA6sq56Yytcb59Yu0IjfgizoTS9R+iBm8oaZUP2BKtcSPQ3ux7EWdoI
+ gxE6JSvdEUvwKAhMYS2pSRzpQV2GaKWcvuYbwnSZFPs+C5Eny9SVNqN4YJyWhRKAZV7I
+ RJ8g==
+X-Gm-Message-State: AOJu0Yw8H+i9gLMnUiqWFuQAA342L19RBv8/EiqsZYBJFTtV/MAhYlrp
+ XQdSn6d37RHHeGDOxYM2wLX9MedBwYn4h+4XB6k64GLIl+VL5oqPtX86/R7ftfhDmKoSNexfIU9
+ 1joH94Ww=
+X-Gm-Gg: ASbGncuVdXRdaV8asLHYAOmdsr6r10Hc/e86NIJ8iVhaxMXJ1KCGgM16tM3ykzIg735
+ JWlV47liwryHYABS5u+Z0fv9yGScQIzBa3JjSBeCamX7cSqcmH5Gc98RvZXDHlfPxEmdR1yIVXC
+ 39zR2y/8+qMkwbYxXwQN5izs0SYXeC3JqRXZgx6YcWrjTuqUVoI6JLqRkPsq7Xl0WJf3jtv/7cn
+ xTUigUPC6ru45dEpiwXWeAvh/KR9ZQeQjgxrGYaYmqigDkfmZSukzyGuPAS+f5sjOTVwR2d+k4H
+ XwKqQBO17h0h/svoj4JdieeUNnI2rXVQKASWQo2xu1O1skIS2UPpL6m07EDqrA7CiuehQ26s35L
+ 39980cdQN3sX4p/yEXXuU/gxjjPKYO84RIQKdFpPElkk75fw2PgtFEAs/Nfwov80QTHwdGVFAeP
+ lIKLstw7glXgH0hDaLHdhmmZalb2CGnnf1zVfZZd0xxRDevpSIb3b1hadUUssFt3OERxtHodI=
+X-Google-Smtp-Source: AGHT+IFD2zqidMb3YwCAOpr2QWjvLy+xm/westVdlBAQozpnhsbyCRWRM9DdfVYm+sSDkpgfJp/RZA==
+X-Received: by 2002:a05:600c:4f89:b0:46e:3edc:2811 with SMTP id
+ 5b1f17b1804b1-4711787750dmr123687955e9.14.1761079827785; 
+ Tue, 21 Oct 2025 13:50:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47494b02475sm24819605e9.4.2025.10.21.13.50.22
+ 5b1f17b1804b1-475c427ed3fsm11858105e9.1.2025.10.21.13.50.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:50:22 -0700 (PDT)
+ Tue, 21 Oct 2025 13:50:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 43/45] MAINTAINERS: Add missing machine name in the Alpha
- section
-Date: Tue, 21 Oct 2025 22:46:57 +0200
-Message-ID: <20251021204700.56072-44-philmd@linaro.org>
+Subject: [PULL 44/45] docs: update -soundhw -> -device list
+Date: Tue, 21 Oct 2025 22:46:58 +0200
+Message-ID: <20251021204700.56072-45-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,35 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Without a machine name here, get_maintainers.pl uses the "-----..."
-separator for describing what the maintainer is taking care of:
+(note: I wonder if pcspk was really an option when -soundhw was
+available, since it was not user-creatable)
 
- $ scripts/get_maintainer.pl -f hw/alpha/dp264.c
- Richard Henderson <richard.henderson@linaro.org> (maintainer:--------------)
- qemu-devel@nongnu.org (open list:All patches CC here)
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251020140425.45003-1-thuth@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20251021090317.425409-8-marcandre.lureau@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ docs/qdev-device-use.txt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 667acd933c7..d4e7fd965b0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -671,6 +671,7 @@ F: tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+diff --git a/docs/qdev-device-use.txt b/docs/qdev-device-use.txt
+index c98c86d8280..043ae461140 100644
+--- a/docs/qdev-device-use.txt
++++ b/docs/qdev-device-use.txt
+@@ -324,8 +324,10 @@ Map from -soundhw sound card name to -device:
+     gus         -device gus,iobase=IOADDR,irq=IRQ,dma=DMA,freq=F
+     hda         -device intel-hda,msi=MSI -device hda-duplex
+     sb16        -device sb16,iobase=IOADDR,irq=IRQ,dma=DMA,dma16=DMA16,version=V
+-    adlib       not yet available with -device
+-    pcspk       not yet available with -device
++    adlib       -device adlib,iobase=IOADDR,freq=F
++
++    pcspk       Not available with -device,
++                but audiodev can be set with -machine pcspk-audiodev=<name>
  
- Alpha Machines
- --------------
-+Clipper
- M: Richard Henderson <richard.henderson@linaro.org>
- S: Maintained
- F: hw/alpha/
+ For PCI devices, you can add bus=PCI-BUS,addr=DEVFN to control the PCI
+ device address, as usual.
 -- 
 2.51.0
 
