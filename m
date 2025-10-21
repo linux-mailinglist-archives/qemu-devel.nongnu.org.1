@@ -2,95 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D388BF78D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 18:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E79F8BF7907
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 18:02:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBEm1-0005HD-9n; Tue, 21 Oct 2025 11:59:46 -0400
+	id 1vBEoT-0008Dg-IM; Tue, 21 Oct 2025 12:02:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBElj-00058n-AG
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:59:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBElb-0008CY-1o
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:59:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761062353;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dnO8YVQo5sXjYRrz3znPcdceLNpP0ZhJ4rfrmcJXm1E=;
- b=O3MtH0WlSuPz3ZAukBeO2YeTE93s8fMsYwxWoIPwiNQ+lvCSGMVaOwez0xOvcP8kLr2XIj
- GdWyABZNYwekNl+VgXpTTxAQyennxSB028bvS3wlNnhPaUWktM4FtKrX1JW54I/CtubWtL
- yDCX16nD/WmcemWD6zVONHqqBiSrabY=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-hj8D9OSdOhyprVKrmnp8aw-1; Tue, 21 Oct 2025 11:59:12 -0400
-X-MC-Unique: hj8D9OSdOhyprVKrmnp8aw-1
-X-Mimecast-MFC-AGG-ID: hj8D9OSdOhyprVKrmnp8aw_1761062352
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-8787a94467cso227133306d6.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 08:59:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBEnZ-0007KB-27
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 12:01:23 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBEnV-00005q-DW
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 12:01:20 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-471066cfc2aso11977255e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 09:01:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761062473; x=1761667273; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Wi4jMzpi3nbawrsaPcGe1LeGK6a/mFs1A8RcgbTOttA=;
+ b=hpVYvxo3JvrIguVRYoLHnxUM6Oa9gupv+6575LHzlylyehRM1VCUUS087Vpnot2wcL
+ XjosPJAjv4SQIf/FhTcXOym2ySjBQl+v6jCHjflJyHX7A3OQDkocdt3SPgBEIaK0uaOo
+ kV5i2vSYqUxB2AF/LaFXXENiEU264Zj1oO9iqKwOyB2VlOdYtf6Hq994bKOVZrbeSRw2
+ F8OpWHubAck01OOelyC1zSc24/Lgq8koU8fZ5lnBlGzYiT4GBCJGDvpJezfq0Q7VSuUC
+ fuKOxyTyolsW5up7pvwzjEJt7WR3Fotc1x5A6jvwZZlkB4ARZoNqSvd/wutSnGSl/uAh
+ x2iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761062352; x=1761667152;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dnO8YVQo5sXjYRrz3znPcdceLNpP0ZhJ4rfrmcJXm1E=;
- b=M8govfDlMgrIVUMhO58OoX9Sk5by5wFsaAilOYtRe8tS8vPuJgd4T9UJcOXQomAoIT
- wpNQ+xtvHdup3R7Cp78BIWcxvEl5eNH7Khiut5OwmIavV42f+FQiERzKtCmg7tBlUxwE
- w0UJ6TIMajKeAnJP3/SJpXOL503E+Q0TEyK9FfF2Hrf0A5TeIFwh2L1v8TTIblD5JTPC
- fHuRi/u9IDXz+gQCBa3kD7wqFq13wyBZbUZhJWSFkEOo/0Mz29mBIxXwRacxOU3q6Q5K
- 1+r24oPXL8Ax8G8Sz8lDsOOxwHDAYDcRXJXR5gf3n9oQmJ2WrQOxtFOah3uENuBvGlbI
- WDtw==
-X-Gm-Message-State: AOJu0YxRUryv3XRIhh64921fK9DdwZuDzWBmi1FXcHm6H2hKvMYFrMli
- KS3LNtOmKb7g7HVHCHeKo65MP7/3SNhd6NSMQsy1sODiDVi2c5Srwn7etvjrxRj28aQh2GBDy5A
- lP4ORkCA8Ot5qiKIrD7PtiwVh4ILj8Bb7nPxonMgJtEsd7sXNnqTLPEusKDAcYecg
-X-Gm-Gg: ASbGncvjl5dn6APT8j4DZl9n93r429Tplz/mEBzsoEwAZnobeONc7KBvEZws/xU7vO1
- 31hn3I7xqROsxxDaZqRouzeXMow/uJCWEP+0P4SfI+hLwdzB8SvwZHk9f1Qn1/Qms5KxeB8FSiT
- h0IupgvJLrV2N1BG2jiTWl+Dt2wT/OaVUpiQEg/D4yu0L+6RSVlkJVyz1TOqb2wf+DrfgUc0oWl
- 4MM7RKAcxfbs82HzAQG9dDwIiyM07oTCzXr5LLLwK0X4Uf6lNrtauEC7GlLMC/XVvxD/b9rbDy5
- 7TnNCu2zcXtjltziyE3nucQfCjCgc6GeWxa5QsF9RJLxJ8EWfa2FY/tCFnQQjJEfjvY=
-X-Received: by 2002:ad4:5cc1:0:b0:7ef:f440:2b40 with SMTP id
- 6a1803df08f44-87c20817f04mr216863666d6.53.1761062351625; 
- Tue, 21 Oct 2025 08:59:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrk8lTodkYMfkdFUBJL/FgmS70MQXDlBI76VTYqBC4yA7VQajKcMHee7yVma1lE6mgXZ8N3w==
-X-Received: by 2002:ad4:5cc1:0:b0:7ef:f440:2b40 with SMTP id
- 6a1803df08f44-87c20817f04mr216863396d6.53.1761062351176; 
- Tue, 21 Oct 2025 08:59:11 -0700 (PDT)
-Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-87d028932d3sm71192476d6.41.2025.10.21.08.59.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Oct 2025 08:59:10 -0700 (PDT)
-Date: Tue, 21 Oct 2025 11:59:08 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PULL 42/45] migration: cpr-exec mode
-Message-ID: <aPetzFnweUu8cxEw@x1.local>
-References: <20251003153948.1304776-1-peterx@redhat.com>
- <20251003153948.1304776-43-peterx@redhat.com>
- <CAFEAcA82ih8RVCm-u1oxiS0V2K4rV4jMzNb13pAV=e2ivmiDRA@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1761062473; x=1761667273;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wi4jMzpi3nbawrsaPcGe1LeGK6a/mFs1A8RcgbTOttA=;
+ b=IgASjFjdp5nfIiVondu1MCIkOQbQj6fMqII8tw7SumjEbClxKBD01qcrrHTbLNGalr
+ lfzs7y92EWabvMwQMObNYwgdU+92VWsN9bofx8pylpt5lqcm3B1VgzjT+ZsJHn+KOt7V
+ 8DM7P0FEii0bveGkw2V16DN90DP1dFTBqHXFpG/iUpHzRmTcgMZFj3U9li8yEihkur2i
+ rj1LhzrQW4OtuxR57c/4L8q+tj94U1gvRapAZWhWY1auC0//RfQdUR570hZ82bN5U2fI
+ wiw4SA6NfhWDgFVSZ9kzInCHNSikw0yO9jvIRSbW5HyDDpfCgjhzw/zNavUwzYdwMKEE
+ VBHA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXV0KS948bsP0W8TF8THEFFSg9d5zsns0uhH8Af5YXyHWuTKQimjz2p6+R1qJIabkB/uxRLuVuSuQpn@nongnu.org
+X-Gm-Message-State: AOJu0YzQkLfbj7l6Qp7Aw0IiW5M2GtO56yZbQZ90+0vGa3TbztxnfWRz
+ ADxkEFkmmWhc1AVlhy5ldS94+9TQMzjKO5GVZUhLbJpbYuFbz/aOHtVPSTlMz79NaSk=
+X-Gm-Gg: ASbGncs/qk+7AKauH0Ab4g0KBIOV6jGj33XT7MFru5rgiHEoM+7lFJxjQzWBxgxr0vJ
+ ypTuh+Ydau0WhStW+Na4H/nx1Uhu+/e4Cr6PnBxeDHCAHEcCPHosUTdTFlRoLQ9bVXbWMHFjNkw
+ lXRj2tlB/gNX3mc9V9JNIOKH+JkyCkcJvYhDuIGY4gxnTEkK6Ox3KnkuE/WDaWckvU/vYOGblEv
+ Fi+ISHKmeH06kaXSddYwLc8DZD/IM7Z6Jv+64hSP+D85C4wKG5gYK8qaohx4pf/PG+nQIrWuUz+
+ ZRUUxpIhuC6sdn0FfWNGdomBBtRqjU9Fgk4Us1e18xEEAke10JQKrIzaWzaFHBnlyqoHZ9gNwVj
+ 54BoXYhQF0Wqv09w+ihNzDeSaZ82+KXNn+sD8TpLXofOH+rxpJtk0j/fkyU6as5LQE7wEZuu2Bg
+ WQWf/7MEhbbOWlOuJqwmkS7cjV81k7WxtnlP2Sjblndgjhr0ZFyoSCgg==
+X-Google-Smtp-Source: AGHT+IHrko61yHL+EkLhNGwx9wqvLp8HifeGykLYFnZoo841oLOivvfKWYEyiB4PmnxGj+jpat6DHA==
+X-Received: by 2002:a05:600c:45ca:b0:46e:59dd:1b4d with SMTP id
+ 5b1f17b1804b1-471178a4bb0mr128739695e9.16.1761062472496; 
+ Tue, 21 Oct 2025 09:01:12 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-471144c82b8sm287502825e9.15.2025.10.21.09.01.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Oct 2025 09:01:12 -0700 (PDT)
+Message-ID: <f1e8c675-d7fb-407c-adba-d30ed0e771b8@linaro.org>
+Date: Tue, 21 Oct 2025 18:01:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA82ih8RVCm-u1oxiS0V2K4rV4jMzNb13pAV=e2ivmiDRA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/10] hw/intc/apic: Pass APICCommonState to
+ apic_register_{read, write}
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Laurent Vivier <laurent@vivier.eu>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ kvm@vger.kernel.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Cameron Esfahani <dirty@apple.com>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
+ <phil@philjordan.eu>, John Snow <jsnow@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+References: <20251019210303.104718-1-shentey@gmail.com>
+ <20251019210303.104718-10-shentey@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251019210303.104718-10-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,58 +114,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 21, 2025 at 04:34:32PM +0100, Peter Maydell wrote:
-> On Fri, 3 Oct 2025 at 16:40, Peter Xu <peterx@redhat.com> wrote:
-> >
-> > From: Steve Sistare <steven.sistare@oracle.com>
-> >
-> > Add the cpr-exec migration mode.  Usage:
-> >   qemu-system-$arch -machine aux-ram-share=on ...
-> >   migrate_set_parameter mode cpr-exec
-> >   migrate_set_parameter cpr-exec-command \
-> >     <arg1> <arg2> ... -incoming <uri-1> \
-> >   migrate -d <uri-1>
+On 19/10/25 23:03, Bernhard Beschow wrote:
+> As per the previous patch, the APIC instance is already available in
+> apic_msr_{read,write}, so it can be passed along. It turns out that
+> the call to cpu_get_current_apic() is only required in
+> apic_mem_{read,write}, so it has been moved there. Longer term,
+> cpu_get_current_apic() could be removed entirely if
+> apic_mem_{read,write} is tied to a CPU's local address space.
 > 
-> Hi; Coverity complains about this code (CID 1641397):
-> 
-> > +static void cpr_exec_cb(void *opaque)
-> > +{
-> > +    MigrationState *s = migrate_get_current();
-> > +    char **argv = strv_from_str_list(s->parameters.cpr_exec_command);
-> > +    Error *err = NULL;
-> > +
-> > +    /*
-> > +     * Clear the close-on-exec flag for all preserved fd's.  We cannot do so
-> > +     * earlier because they should not persist across miscellaneous fork and
-> > +     * exec calls that are performed during normal operation.
-> > +     */
-> > +    cpr_exec_preserve_fds();
-> > +
-> > +    trace_cpr_exec();
-> > +    execvp(argv[0], argv);
-> > +
-> > +    /*
-> > +     * exec should only fail if argv[0] is bogus, or has a permissions problem,
-> > +     * or the system is very short on resources.
-> > +     */
-> > +    g_strfreev(argv);
-> 
-> Here we free the argv array...
-> 
-> > +    cpr_exec_unpreserve_fds();
-> > +
-> > +    error_setg_errno(&err, errno, "execvp %s failed", argv[0]);
-> 
-> ...but here we read from the freed memory argv[0].
-> 
-> Presumably we can just move the free down a bit ?
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   hw/intc/apic.c | 35 ++++++++++++++++-------------------
+>   1 file changed, 16 insertions(+), 19 deletions(-)
 
-Yep, will change this to:
-
-    error_setg_errno(&err, errno, "execvp %s failed", argv[0]);
-    g_clear_pointer(&argv, g_strfreev);
-
--- 
-Peter Xu
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
