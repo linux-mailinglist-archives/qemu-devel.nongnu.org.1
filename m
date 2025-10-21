@@ -2,120 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA34BF6E21
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5724EBF6E2A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCjd-0002GX-G3; Tue, 21 Oct 2025 09:49:09 -0400
+	id 1vBClZ-00040R-Sg; Tue, 21 Oct 2025 09:51:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vBCjb-0002F6-5A; Tue, 21 Oct 2025 09:49:07 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vBClI-0003qg-Iv; Tue, 21 Oct 2025 09:50:55 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vBCjZ-0006rG-DM; Tue, 21 Oct 2025 09:49:06 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L33ekb031143;
- Tue, 21 Oct 2025 13:49:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=9h3Vvn
- GZ8OLoaTVuyoC+Z/mhm5FI0cTT4sjt3vfC8/I=; b=eqw36apJD6TPEBmUGgKAfz
- ++jNB1iro+miFxAlOjM4QsRiR8P+ZqMDeCtr9p4HP9QNuf71L7c/aJWQ6FsyYpUO
- ln88/ZnOELWW0ciw8W0hvWp6ecaHgbZgpGuVIvgqLhOeRhh+eY6FueQNZ7TTxYGI
- w9FkqKV1jTtFz1coqK8Gk2Z3fM0qJWq9m0AFdL8x+h3AYjDUDjU4FlbK+kmnf/eq
- hfH6nBq9XBwgSx5Gaxw0ylisR706I2dCtX/upliLsA9XZWIDTMJ/g0zUZumkiazC
- d7mrATOaR3UxZZ1UTQTZ0PJhcjC3e2AVQnG/NyExsrnjA5E1FZIOH0pcFc4TvRYw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vnyme-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:49:03 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59LDXE3I010426;
- Tue, 21 Oct 2025 13:49:03 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vnyma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:49:03 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LAqrRi014650;
- Tue, 21 Oct 2025 13:49:02 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7s376r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Oct 2025 13:49:02 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59LDmw8729294892
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Oct 2025 13:48:58 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95DFE2004E;
- Tue, 21 Oct 2025 13:48:58 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36BB02004D;
- Tue, 21 Oct 2025 13:48:55 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
- [9.124.222.96]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 21 Oct 2025 13:48:54 +0000 (GMT)
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: <qemu-devel@nongnu.org>
-Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1vBClG-0007Ar-2z; Tue, 21 Oct 2025 09:50:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=LHZXynPB0hLQ+CBy8lrGdpgfsv32Vai29vkeHTpK2ck=; b=AaJoJRCrdJAEQGZf
+ w9YjMn4734mkUHeOBJkdePtpJDTHkk2w0ISZh4Y3GmCbHPFjkCYBAHHj37lXx1pDzaoAxr4GoJNko
+ ZwfZbctB8awpat4JKKZzK7Ns6cbh8Df0Ji2xKMCszqHMUVVgd+wywJpLbDx1pMUVvMj6znwEbGZtz
+ AWAU8OtbzMUmRs1NPVC7lRi8NwfLEQIBy3fgpb+xKUw0twzTBjxPeGCFLmMCFYapg2UIJJxgf8C88
+ 9cypXp+mGgtoL9b6Iw8hSZv5wYZgy/f40cHt/kKq6uZ5C0Hm2gJwc8Bz+y30h1MLM7USJRUv+fETC
+ Ya35X/iXopHXlilz8A==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+ (envelope-from <dg@treblig.org>) id 1vBCk5-000B3N-1t;
+ Tue, 21 Oct 2025 13:49:37 +0000
+Date: Tue, 21 Oct 2025 13:49:37 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org, pbonzini@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ =?iso-8859-1?Q?Cl=E9ment?= Chigot <chigot@adacore.com>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ Alberto Garcia <berto@igalia.com>, Thomas Huth <huth@tuxfamily.org>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>,
+ Magnus Damm <magnus.damm@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Chinmay Rath <rathc@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Shivang Upadhyay <shivangu@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 8/8] MAINTAINERS: Add entry for FADump (pSeries)
-Date: Tue, 21 Oct 2025 19:18:18 +0530
-Message-ID: <20251021134823.1861675-9-adityag@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021134823.1861675-1-adityag@linux.ibm.com>
-References: <20251021134823.1861675-1-adityag@linux.ibm.com>
+ "Collin L. Walling" <walling@linux.ibm.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Corey Minyard <minyard@acm.org>,
+ Paul Burton <paulburton@kernel.org>, Aleksandar Rikalo <arikalo@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ Antony Pavlov <antonynpavlov@gmail.com>, Joel Stanley <joel@jms.id.au>,
+ Vijai Kumar K <vijai@behindbytes.com>, Samuel Tardieu <sam@rfc1149.net>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Raphael Norwitz <raphael@enfabrica.net>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "reviewer:vhost-user-scmi" <mzamazal@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
+ Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>, Max Filippov <jcmvbkbc@gmail.com>,
+ Lukas Straub <lukasstraub2@web.de>,
+ "open list:Sharp SL-5500 Co..." <qemu-arm@nongnu.org>,
+ "open list:S390 SCLP-backed..." <qemu-s390x@nongnu.org>,
+ "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
+ "open list:virtiofs" <virtio-fs@lists.linux.dev>,
+ "open list:Rust-related patc..." <qemu-rust@nongnu.org>
+Subject: Re: [PATCH] char: rename CharBackend->CharFrontend
+Message-ID: <aPePcTKl6s4FoLCL@gallifrey>
+References: <20251021122533.721467-1-marcandre.lureau@redhat.com>
+ <CAFEAcA-jPE_onLYLMxgcAOB7dWRXOLJrWcGPnR0NUdjYytPDVA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3xG7bqptrsQ7izL49-vIfwkB_FgdYuP4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX0bKdjiOQsqrj
- OoaJ5gyzKVzekHmLGR3gVtNnmco93ksdjr12ZSt2RoEDMev9DCtsJPIaMDGi5+bMdqtpGgfzg9W
- xMjp7t0cjbldc/anSh9QRhnhBa02dUIkX/9ozAWTHokwaHtFTMPDS9K6/Q64KAPso6eJWCOB+l7
- QDCjHjvaS/BLDWs/Hop62w+ks3FQpuDJ/AAaX6cBb5V6T1G0xWCtT2HvX+7kqu9/3pxh/ftn2Hc
- x8smokluuLwSIsPFbULhN2zyEcc+WfFe0xUVSGHG1YT7y1QqAF9bzJ3aw+VujnwVmLvzLIf+HbK
- YzOegvwSl9KMKtf5Dvtx0dOmpozHIVeHMYPT47Nm+48r90AZ1G0RWhwXDB6Z/6PWKgUM5/OHJwd
- BYhmpTFp/k6MxAEWZx0DOg27357p/Q==
-X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f78f4f cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=KKAkSRfTAAAA:8 a=mbnq6HtSZEenJqVaWLAA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-ORIG-GUID: JS_TfmVSpN4E3XY9bMpoUe8Orb6tnEHn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-21_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <CAFEAcA-jPE_onLYLMxgcAOB7dWRXOLJrWcGPnR0NUdjYytPDVA@mail.gmail.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
+X-Uptime: 13:49:19 up 176 days, 22:02,  1 user,  load average: 0.00, 0.00, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,33 +122,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add maintainer and reviewer for fadump subsystem.
+* Peter Maydell (peter.maydell@linaro.org) wrote:
+> Marc-Andr� Lureau <marcandre.lureau@redhat.com> wrote:
+> > The actual backend is "Chardev", CharBackend is the frontend side of it,
+> > let's rename it for readability.
+> 
+> I always thought the "frontend" was the device the guest
+> saw (the 16650 UART or whatever). invocation.html has bits
+> talking about "virtio hvc console frontend device" which
+> seem like they also use that terminology.
+> 
+> If we want to clean up the naming it might be helpful to have
+> a comment somewhere documenting the different components and
+> what names we give them and how they fit together (or even
+> better, something in docs/devel/...)
 
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Or something more descriptive like 'CharGuestSide'
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 667acd933c7f..5dcea23bfd3d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3213,6 +3213,14 @@ F: scripts/coccinelle/remove_local_err.cocci
- F: scripts/coccinelle/use-error_fatal.cocci
- F: scripts/coccinelle/errp-guard.cocci
- 
-+Firmware Assisted Dump (fadump) for sPAPR (pseries)
-+M: Aditya Gupta <adityag@linux.ibm.com>
-+R: Sourabh Jain <sourabhjain@linux.ibm.com>
-+S: Maintained
-+F: include/hw/ppc/spapr_fadump.h
-+F: hw/ppc/spapr_fadump.c
-+F: tests/functional/ppc64/test_fadump.py
-+
- GDB stub
- M: Alex Bennée <alex.bennee@linaro.org>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
+Dave
+
+> thanks
+> -- PMM
 -- 
-2.51.0
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
