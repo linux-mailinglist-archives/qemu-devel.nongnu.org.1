@@ -2,101 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52046BF6FE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922ABBF704E
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:19:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBD5W-0000b3-QX; Tue, 21 Oct 2025 10:11:46 -0400
+	id 1vBDBq-0002xC-FF; Tue, 21 Oct 2025 10:18:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBD5L-0000Zw-SG
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:11:36 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBD5J-0001b8-48
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:11:35 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 45ABE5972E3;
- Tue, 21 Oct 2025 16:11:28 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id C9aojm23aPQB; Tue, 21 Oct 2025 16:11:26 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 189265972E2; Tue, 21 Oct 2025 16:11:26 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 142B45972DE;
- Tue, 21 Oct 2025 16:11:26 +0200 (CEST)
-Date: Tue, 21 Oct 2025 16:11:26 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, 
- Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Igor Mitsyanko <i.mitsyanko@gmail.com>, 
- =?ISO-8859-15?Q?Cl=E9ment_Chigot?= <chigot@adacore.com>, 
- Frederic Konrad <konrad.frederic@yahoo.fr>, 
- Alberto Garcia <berto@igalia.com>, Thomas Huth <huth@tuxfamily.org>, 
- Halil Pasic <pasic@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Jason Herne <jjherne@linux.ibm.com>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>, 
- Magnus Damm <magnus.damm@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- "Collin L. Walling" <walling@linux.ibm.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Alistair Francis <alistair@alistair23.me>, 
- =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Corey Minyard <minyard@acm.org>, 
- Paul Burton <paulburton@kernel.org>, Aleksandar Rikalo <arikalo@gmail.com>, 
- Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Samuel Thibault <samuel.thibault@ens-lyon.org>, 
- Michael Rolnik <mrolnik@gmail.com>, 
- Antony Pavlov <antonynpavlov@gmail.com>, Joel Stanley <joel@jms.id.au>, 
- Vijai Kumar K <vijai@behindbytes.com>, Samuel Tardieu <sam@rfc1149.net>, 
- Gustavo Romero <gustavo.romero@linaro.org>, 
- Raphael Norwitz <raphael@enfabrica.net>, 
- Stefan Hajnoczi <stefanha@redhat.com>, 
- "reviewer:vhost-user-scmi" <mzamazal@redhat.com>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>, 
- "Dr. David Alan Gilbert" <dave@treblig.org>, 
- Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>, 
- Jason Wang <jasowang@redhat.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Helge Deller <deller@gmx.de>, Max Filippov <jcmvbkbc@gmail.com>, 
- Lukas Straub <lukasstraub2@web.de>
-Subject: Re: [PATCH] char: rename CharBackend->CharFrontend
-In-Reply-To: <CAMxuvaz8GueSp-vPHFWnbv+Odcy63Cz_hZHd3NzReWXp3pnsqg@mail.gmail.com>
-Message-ID: <6c5e599f-f106-e89e-2a2d-6760a2b65c08@eik.bme.hu>
-References: <20251021122533.721467-1-marcandre.lureau@redhat.com>
- <01a51fe7-4414-e787-ddf5-5ede0c1e1e74@eik.bme.hu>
- <CAMxuvaz8GueSp-vPHFWnbv+Odcy63Cz_hZHd3NzReWXp3pnsqg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBDBn-0002wk-LR
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:18:15 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBDBj-0002Nv-W5
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:18:15 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-475c1f433d8so2623895e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 07:18:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761056282; x=1761661082; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ABz4jLJ287ZKpFUuvwLcoRtiXmZCAH5H8jWLrJQ0S9Y=;
+ b=fekEJrR9gr2LLX9GJ2LluRCgzEq7+4MhvPh06hJYmGUWUhFD5kgNYfY2xg9k8sxdtP
+ doHezVmAzs6eP2++S3bRAq2rLDv4WVB1qOLGXdff9V0TgrXA8SC019aGYZYy6Te9dDBP
+ UaQjnLyFn9ERO91jCfepaTRWO5FLcpvdgzSW8KHYacWqmOhi+KdOtOjiSq+8rt1tWJss
+ WFzsswG0DoULue8IBEY0ta8Oa6biWqIx1+K2rA7VEP/IPNQmD/db5tjYISeUZKc3WGZt
+ h/xFOjHnx+ilyvtSwVR6g7lcY83AuBxTbXxUU0woUxb0Mz5S0hc6FIDX7pWBFhb7855K
+ 717A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761056282; x=1761661082;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ABz4jLJ287ZKpFUuvwLcoRtiXmZCAH5H8jWLrJQ0S9Y=;
+ b=hLnjOAIwqPVDyIoGn2mUK15UGd79iWM+bn0nhn2si83PkyGnwAmRtO9glIR7lSdV53
+ 7mVdyCMcPoFLJTwoRGoI8iWvR20cxvoSz170JBtJgZtkEqu4UprScTIsz9refbyNJ8BB
+ 28wM4/BDtcTQ4S8uqky9l8LOWj/71Zs3QVX78I738dm1IHL2VK7WVUIOuPzTjn0h/lB/
+ jGQZkwjDDVlFeR5j0o1rRRpU92EYbGwGsw6ORb7aQkKziaSSuV4s6D8QtJ86wS8Lkly/
+ u1VsYHU7LxoW5dr8sjBhd774spPNQlSl/6m3J3tH7sV6/JRmXDdU4sRDreHNbUPfxQYH
+ i1pw==
+X-Gm-Message-State: AOJu0YxlxhZkf81siWQmI9j7d7JAst6UnE2mC4o6dND7pHX2cGBljEBZ
+ wvV0fleo06k+Jju0NkEwrsSa11bZjdN1nrlBQiS+f3jYuruQZab1dgTSeyTrik6vcO4=
+X-Gm-Gg: ASbGncuYZIw1dFmmvqgqk43GN2cfCMBMb+T2ftteM7ue+l54oeuf7ao8jcVxnVzgrS0
+ 5xEHBrt1HTv6w1gm+0vEv++Z554aJ7T0SC0LCTxziNkoVtxM/6ZV/ZnKX+YFF5n2N4wT24go2iw
+ yHBuDuKUF2p3u+Mrhg7F3Cz8qF6Z7lgBqSloPO+xLDARh5t7uMdC3KjUE6awLiKtcMUbj5/Tdkz
+ OhebHNaRpcsyHyDvegVAT0AL3pgKxAk0tKVDoym1SBduxGZTEbXDx08vt6k5DzvQrIMKVPSSrVT
+ laUVY2TXgAjFJXIIyd0vs8W73QcCA4e4V0K51shzPIX78+P8MfsNt8UIIN96ON5iMDbXJJ/Hpj6
+ SQPtYKrCq5tHO+Nm1SPN0HZ8+MF2xoniacyCmeIwjqxlWw2auNwn1ZK9ljDzrxLW6a6FTSeeQoW
+ UwmnqwGep9niRo
+X-Google-Smtp-Source: AGHT+IFn1NGxSejIQQHbIFh2Pgaz79SK5BWedaQ+JKzcc0SqABZ1v8snQEpGUyq5uuq/H6U2T600Tg==
+X-Received: by 2002:a05:600c:34d0:b0:471:1717:409 with SMTP id
+ 5b1f17b1804b1-471179071b4mr110768795e9.23.1761056282294; 
+ Tue, 21 Oct 2025 07:18:02 -0700 (PDT)
+Received: from [192.168.69.221] ([88.187.86.199])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47496c2c9dasm17773245e9.4.2025.10.21.07.17.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Oct 2025 07:17:59 -0700 (PDT)
+Message-ID: <b1846b59-081d-46ca-bc65-e6ca26a5e158@linaro.org>
+Date: Tue, 21 Oct 2025 16:17:57 +0200
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1519664904-1761055886=:98406"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] hw/audio: Remove intel_hda_and_codec_init()
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20251021131825.99390-1-philmd@linaro.org>
+ <20251021131825.99390-3-philmd@linaro.org>
+ <CAMxuvaxTYZTzWr85io2whE+soM8Ji58uV-BbfE8B9kpLzdFMwA@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAMxuvaxTYZTzWr85io2whE+soM8Ji58uV-BbfE8B9kpLzdFMwA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,51 +102,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 21/10/25 15:24, Marc-André Lureau wrote:
+> Hi
+> 
+> On Tue, Oct 21, 2025 at 5:18 PM Philippe Mathieu-Daudé 
+> <philmd@linaro.org <mailto:philmd@linaro.org>> wrote:
+> 
+>     `-soundhw hda` was removed in commit 039a68373c4 ("introduce -audio
+>     as a replacement for -soundhw").
+> 
+> 
+> Sorry, that "hda" (= intel-hda + hda-duplex) short form is used by -audio.
 
---3866299591-1519664904-1761055886=:98406
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Yes, it was deprecated for 2 releases but we missed to remove it
+in commit 039a68373c4:
 
-On Tue, 21 Oct 2025, Marc-André Lureau wrote:
-> On Tue, Oct 21, 2025 at 5:25 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
->> On Tue, 21 Oct 2025, marcandre.lureau@redhat.com wrote:
->>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>>
->>> /**
->>> - * struct CharBackend - back end as seen by front end
->>> + * struct CharFrontend - back end as seen by front end
->>
->> I stopped here, haven't read the rest of the patch but the above comment
->> seems to become inconsistent. Which is the front end and back end now?
->>
->>
-> It's the "frontend side" of a chardev "backend". Naming it CharBackend has
-> always been the source of confusion, since the actual backend is Chardev.
-> There was earlier attempt to rename it and various complains. I believe
-> this is is long overdue.
+-- >8 --
+diff --git a/hw/audio/intel-hda.c b/hw/audio/intel-hda.c
+index bc77e3d8c9d..f38117057b9 100644
+--- a/hw/audio/intel-hda.c
++++ b/hw/audio/intel-hda.c
+@@ -1311,17 +1311,16 @@ static const TypeInfo hda_codec_device_type_info = {
+   * create intel hda controller with codec attached to it,
+   * so '-soundhw hda' works.
+   */
+-static int intel_hda_and_codec_init(PCIBus *bus)
++static int intel_hda_and_codec_init(PCIBus *bus, const char *audiodev)
+  {
+      DeviceState *controller;
+      BusState *hdabus;
+      DeviceState *codec;
 
-Comment after patch says: "CharFrontend - back end as seen by front end" 
-This can't be consistent as it calls CharFrontend a back end.
+-    warn_report("'-soundhw hda' is deprecated, "
+-                "please use '-device intel-hda -device hda-duplex' 
+instead");
+      controller = DEVICE(pci_create_simple(bus, -1, "intel-hda"));
+      hdabus = QLIST_FIRST(&controller->child_bus);
+      codec = qdev_new("hda-duplex");
++    qdev_prop_set_string(codec, "audiodev", audiodev);
+      qdev_realize_and_unref(codec, hdabus, &error_fatal);
+      return 0;
+  }
+---
 
-Maybe it's actually the frontend/backend terminology what is confusing so 
-just swapping the names won't fix that. Better find some clearer naming 
-instead? Maybe something with Guest/Host or we already have 
-chardev/blockdev/audiodev (matching the command options to specify these) 
-for backends so call backends like that. But then I don't know what to 
-call guest side as it's added by -device so could be CharDevice but 
-CharDevice and Chardev does not seem too clear either. Maybe ChardevGuest 
-ChardevHost or something along those lines?
-
-Alternatively it may be easier to just add a file to docs first, listing 
-these for existing frontend/backend pairs and explaining which is which 
-before renaming anything and once we have a list of all of them at one 
-place we can see what is the easiest way to rename them with least churn. 
-I think that's similar to what Peter also proposed in previous reply. I'm 
-afraid that renaming only some of these won't make them less confusing.
-
-Regards,
-BALATON Zoltan
---3866299591-1519664904-1761055886=:98406--
+Users should be now using "-device intel-hda -device hda-duplex"
+instead of "-audio hda".
 
