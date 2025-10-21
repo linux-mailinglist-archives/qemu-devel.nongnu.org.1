@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F2FBF5553
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 10:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53F6BF557D
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 10:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB7yY-0008SP-9F; Tue, 21 Oct 2025 04:44:14 -0400
+	id 1vB7yc-0008Tv-5X; Tue, 21 Oct 2025 04:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yV-0008P2-DN
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:11 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7ya-0008TQ-Ne
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:16 -0400
 Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yT-0000vd-JA
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:11 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB7yY-0000wA-NP
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 04:44:16 -0400
 Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-426edfffc66so3917234f8f.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 01:44:09 -0700 (PDT)
+ ffacd0b85a97d-3ecde0be34eso3636500f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 01:44:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761036247; x=1761641047; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761036252; x=1761641052; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t3K5y5Cy9vHhm90mgMJ5DoRZ8l6l8+H0Bizm6UlEWJA=;
- b=chQpY0zndARBr77YwkXaxzTsj14nPP70kHawkGUB+S5O30/SNzOGeTomJZvGTBwv83
- 8reLFm5VIBeFTxykFpDNatCKxhTFyYKgi6ECi6UVXgmGYLK3trXL6pC55fwywzH4Jlv2
- A8AzPEOvW11rfqWPU1OeBBTAd7S2AIqn2WHsmXKlXKrUToVwnZIt2qiyStn8KXBvAOoC
- eoeiAzJjNrSMR1zpKdun3csAGkK7oMh+7myRmGWZ8kpAGmGKHHtLEmU/k9RlfcYpX0je
- RDK3BL97h/kTqYRRiYd0o6Ltiky0y0hT3J9QnuB0H1O+CyZa5/M7guYCnjYSFwGstTRt
- Knmw==
+ bh=fggegq+zKz5OUQPZsxqCN6WOO/FKu9sNtbgG7iUQYj8=;
+ b=UfCYlxyVTyQXwCnvkH1HIXVyl8OdP5RlQUSw72QVhlXcFsmh9jSWTeGzWb/TVW24Xa
+ QNGp1ZSZx+zg81cxnDXlkAsAeWGEI40v4vaKyW4hEEGBrVSBbcHR0Euk/AH5fcItUQVs
+ aeamnG+hnO87BCodCVY4XHDK3EppmtPrJ9nTlUFMccgPHqgMgvpD7kPG7XJul5kpJ+0E
+ vpQApL4EqtCXTbzKRHZ+uSg6zMXmW57o1Aon5hybxgng0jMtA2Lmk3tdUId1bq5ejJRC
+ NB84KGx737UpHAE+IVQCz6dNJZAty287Hjswm4xjpVfEAObbHzzZxc2j058KS38/Z9qn
+ Iwog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761036247; x=1761641047;
+ d=1e100.net; s=20230601; t=1761036252; x=1761641052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t3K5y5Cy9vHhm90mgMJ5DoRZ8l6l8+H0Bizm6UlEWJA=;
- b=j6BEEZqhACLDxpV5Q9h0aut65RWttiAVu1bn5FPG/lFU5RWPBaf1dG25Fc6m+ecIWp
- wcwlRstQ3rDZcyzknxKZVB57ywkaaVnAHgUlXKP0uGNOHog1bSZbutL5SHH0923ua724
- uqtzwHm6vlkE7zadhphivKVUeJqodIMqh4CdPd/7mveX47dxfR+XroDnBRQWKpUPStM/
- z9YJ6Adm8CWtTRRi8w6+r66FrkYjZ7wjfnRKh4lWLMQScjE6CojC6UAmPuFk3PUUMPdv
- eHbPD3Wp8ecF/k7hsL/s6BbF+s/b9nLS3bx6HWcpGsuOot5LfVJjXAeSTr/oq4lAgFdS
- ZY3w==
-X-Gm-Message-State: AOJu0YzHUQf31Ya+yRV3RLxRTBgE4NkETrrFE4cHILHL1DwZcEChhLBX
- cZQjEfSPXDxz5dzDZIh2xySC1u+xyKLrrs4yNrz08VvbI+oSV3+0BL3rHq8AdICvm3wAarqUVwL
- LbBNZoKg=
-X-Gm-Gg: ASbGncvX6IPEhVlpwkGUPnFCPAbIjK0cIXfHqi15EE0FcrOO7iqVN38dFrT7lRinMqB
- oGi2MqWGSJfsPxHvAEjCNmbR7pUIdySGKgeQL9oQ/GKdo5F+e/prRa3oHFyAMdrxw7+WXLIwQmu
- I4633SWQG2FTQKtguwYsGWCy36LxIOPj5T390sQnxpf2d4ehm4P2HBcHVxYPaQLYG3dOO93GMDy
- vlu7swr7pvH/Dht0lw/jcDlzfUbBYhz8c+TF++ssq+zq82dypvHb1fF/wrvvTJUS0xcV4ayU2Y1
- LoJPt8nwpC+HzUiqKKrT6kaW8OllFD0J7OfyN8E+lKt7bhe/Eiv3VBdhT8DA/5rGj3VifpEgM2t
- R5DBW3ZS/wVZkPZxmK1BKIroEN+q9llmho3gBGBQl8pW63DAnBwz/clqA23IpB8pGpLywxrB9Hm
- EzeoP+rWm5v7M9Hnlf08g7l4Ey2qbkOg1m3bAkfuS2ZD1DkwANDw==
-X-Google-Smtp-Source: AGHT+IFrUC44XvQIgOPF1oe6aZhOa3HgUHCNQaYkwG+BqMdOw9kgMknMuXUQUq9O++GPrdyZKrFphA==
-X-Received: by 2002:a05:6000:240d:b0:427:7cd:bde7 with SMTP id
- ffacd0b85a97d-42707cdc0c2mr9949977f8f.5.1761036247544; 
- Tue, 21 Oct 2025 01:44:07 -0700 (PDT)
+ bh=fggegq+zKz5OUQPZsxqCN6WOO/FKu9sNtbgG7iUQYj8=;
+ b=K04pwb+3IzT9uTptI06+GWXB5hQqJx3OEFLM6GCLYK6CLzgk1gizTSFhpMQ8KyZVSi
+ tZ9ZRQNJysDoQWfayt/VraUlI2qf9rTP/o+1ch9M6+8HeLRJWTP6hj20O2CzWeKTAit/
+ +rUuSqpaJeAhduvTngjlnNR4Ks2HzlVkw9HLJkEUTSc+UYAuUUaiX4Q8DiRTcKNugVtK
+ OmpARB0C6lURBFNanq2LBDJJiLY1kv9vlqhnk8lGNXHvD750l8XoxIBHg0cb9EmO1Rox
+ jj0OG8Gq6aRI7TgaVuHnzgZhwDdJZLspO3sSlH5YWlz2hCTgSmDs24GdCkz/y1DFhX5z
+ TBIw==
+X-Gm-Message-State: AOJu0YxArIn/9V0bTUEhdnj7Zx7gJTlMPew5Oa4uFNP4Cm972+Su9HC+
+ ozLmLxZ+d20e0K3EuK3/Y65kSyEg+00retiMXrHztVDI99CrJVrT8Z+yy4/QTZvfvVRWRsuyHIe
+ kXnp0dDY=
+X-Gm-Gg: ASbGncsQCIDfdYEY1/zx9ih8mAr6bdF6LbYxAa10/d4JaxoJH913H3hoTORzSDlK90u
+ 3G8ea2qKBUwUtumnTx/JVEjOB4nJbYHRyY8CwoM1lz7Z/7GBqQ9QtWvdmf8KM7GfqEQ96HuCAzj
+ GL+JV23t+D4phfIWkrz7AemqDdNx4iUF4cTjhbo601bVBr/233iwe4uE06B0/64bkK3yZZV0g7m
+ kspOZ+qIkTi1/jd8TdOtAIritf6NU0SBomSm5A/cvsTmCUEZ6KkI8xPHm+l2r1wS0OhPwR1kaYd
+ ffZCncjj7Jg96+hnYr6iWgUEl/1VnDOzxrWgZ0eIzK5QGYnLSvg7YVVRLc3UVeItvNqU92maQ58
+ xhd//A00G1gBBkuDxihaKxVc5+hlGtL9L9+XUUKVmOIq/0uyDA4YRqRT8GSsNCjXvS2iDDxMXlr
+ NHb+Vcl4biqr9h+c4ZpyKQiJ/7ENs7lj5f14igRVhRW7N6ScMupj2PYAM3PyHG
+X-Google-Smtp-Source: AGHT+IEoYici4uejy48h7rF7LlsVTKlA5+khtpcojAL22mlKWdDcTixLD0jI1vVMR+Nu/9WOupMBrA==
+X-Received: by 2002:a05:6000:4205:b0:3ec:db87:ff53 with SMTP id
+ ffacd0b85a97d-42704b5a931mr12540847f8f.12.1761036252539; 
+ Tue, 21 Oct 2025 01:44:12 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00b9853sm19155987f8f.33.2025.10.21.01.44.06
+ ffacd0b85a97d-427f00ce3e2sm19285508f8f.47.2025.10.21.01.44.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 01:44:06 -0700 (PDT)
+ Tue, 21 Oct 2025 01:44:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
@@ -70,9 +70,9 @@ Cc: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 04/11] hw/ppc/spapr: Inline spapr_dtb_needed()
-Date: Tue, 21 Oct 2025 10:43:38 +0200
-Message-ID: <20251021084346.73671-5-philmd@linaro.org>
+Subject: [PATCH v2 05/11] hw/ppc/spapr: Inline few SPAPR_IRQ_* uses
+Date: Tue, 21 Oct 2025 10:43:39 +0200
+Message-ID: <20251021084346.73671-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021084346.73671-1-philmd@linaro.org>
 References: <20251021084346.73671-1-philmd@linaro.org>
@@ -105,33 +105,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr.c | 6 ------
- 1 file changed, 6 deletions(-)
+ hw/ppc/spapr_events.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 458d1c29b4d..ad9fc61c299 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2053,11 +2053,6 @@ static const VMStateDescription vmstate_spapr_irq_map = {
-     },
- };
+diff --git a/hw/ppc/spapr_events.c b/hw/ppc/spapr_events.c
+index 548a190ce89..892ddc7f8f7 100644
+--- a/hw/ppc/spapr_events.c
++++ b/hw/ppc/spapr_events.c
+@@ -1041,16 +1041,14 @@ void spapr_clear_pending_hotplug_events(SpaprMachineState *spapr)
  
--static bool spapr_dtb_needed(void *opaque)
--{
--    return true; /* backward migration compat */
--}
--
- static int spapr_dtb_pre_load(void *opaque)
+ void spapr_events_init(SpaprMachineState *spapr)
  {
-     SpaprMachineState *spapr = (SpaprMachineState *)opaque;
-@@ -2073,7 +2068,6 @@ static const VMStateDescription vmstate_spapr_dtb = {
-     .name = "spapr_dtb",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .needed = spapr_dtb_needed,
-     .pre_load = spapr_dtb_pre_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
+-    int epow_irq = SPAPR_IRQ_EPOW;
+-
+-    spapr_irq_claim(spapr, epow_irq, false, &error_fatal);
++    spapr_irq_claim(spapr, SPAPR_IRQ_EPOW, false, &error_fatal);
+ 
+     QTAILQ_INIT(&spapr->pending_events);
+ 
+     spapr->event_sources = spapr_event_sources_new();
+ 
+     spapr_event_sources_register(spapr->event_sources, EVENT_CLASS_EPOW,
+-                                 epow_irq);
++                                 SPAPR_IRQ_EPOW);
+ 
+     /* NOTE: if machine supports modern/dedicated hotplug event source,
+      * we add it to the device-tree unconditionally. This means we may
+@@ -1061,12 +1059,10 @@ void spapr_events_init(SpaprMachineState *spapr)
+      * checking that it's enabled.
+      */
+     if (spapr->use_hotplug_event_source) {
+-        int hp_irq = SPAPR_IRQ_HOTPLUG;
+-
+-        spapr_irq_claim(spapr, hp_irq, false, &error_fatal);
++        spapr_irq_claim(spapr, SPAPR_IRQ_HOTPLUG, false, &error_fatal);
+ 
+         spapr_event_sources_register(spapr->event_sources, EVENT_CLASS_HOT_PLUG,
+-                                     hp_irq);
++                                     SPAPR_IRQ_HOTPLUG);
+     }
+ 
+     spapr->epow_notifier.notify = spapr_powerdown_req;
 -- 
 2.51.0
 
