@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B06BF8CE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83580BF8C7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:49:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJH2-0005Qk-7l; Tue, 21 Oct 2025 16:48:04 -0400
+	id 1vBJGy-00054H-Hw; Tue, 21 Oct 2025 16:48:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGe-0004wF-Kk
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGi-0004xx-JX
  for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:47 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGW-00014Z-Kg
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:38 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47495477241so12032575e9.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGf-00015H-IY
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:43 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-471066cfc2aso14340715e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079651; x=1761684451; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079657; x=1761684457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vkfjenACGdmDby4HSj/Tls/WuVgzSU93DPeVdbTcqK0=;
- b=AshTeHY/MGniy2bhUYXJuM4Blt/g9fT15mZSfqDISHTy0YApN651IybQ3FAhNsbfwj
- 38QeHVT7PgJqz4KKjZp7p2TA/Ge4MDcziHtFE6p8oolVmQufJxADX8TTzlFaBeDu7brj
- W0pkXjqhAjOJ8nTZkr2F48Tkc3HnBDThfCuuTtWUyINbAFKHldQtF/U1NXLOtsVBWHlw
- jq86LT6hEomvEly9uHio7lShx5rRs4Ude5oeoMAD3jXVkFntLUSHASkQXsp8yUG8Dtt+
- XCQ0FzniIE90dA42SxyWwudQAVrZ+6tewvxqtlz+Ft0JzVomZXFwZ1QETKgZE5P53WGt
- Mqtw==
+ :reply-to; bh=143/y5s/Vd8n0Hn2bxYMjnN4uzh0g8+kJFFukw13gN0=;
+ b=xJibc5ggTWdlB6efdqYvT3kDFqrUn2DKOD1XrDhOvZ2OjPqL5iwUy+axO/PK+XIwIr
+ 4jPhIhSPCjijk0EL1otPmQ5W2T0eGgDzv6fDVI3Wn1EYWgwLQyT+JCTCFHhxRv9Sl2jt
+ K8nCeoloJSbFlA84raQPCpYtjJzrjA3oJByKsTwwBy2r7K7t7IF4j1oi012ARhnITCml
+ U0QYVezog653u/dgdVAVcbYBzvGxZzhx/DxkFkAVbzP6S3LUXCng9RHixNWUXOZxV6Lt
+ l7hp3z8cEt4hK9nlDQL7l/cu5ByqpBegJegn6+MSQODQ09gPnbxv60U/bn2rH/VU/ZSX
+ Z2kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079651; x=1761684451;
+ d=1e100.net; s=20230601; t=1761079657; x=1761684457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vkfjenACGdmDby4HSj/Tls/WuVgzSU93DPeVdbTcqK0=;
- b=a+vYU7+j00+gnjW8i1oo4qWEcZUrOcYwHZ+SNArUtofKT/Cc6vv9XyS2p17q7kzd2/
- XxPpPeYwYU+wRb2I83u8hq90+HaszsgZ9vQoCYBZIH9IVjOGkhxAoHIUxhJACbtAIzGC
- +VbZC5p9AJlqUnSIdw0JzZ+6csWw0PNW8Jveq0Fph8Pug9io7HMg39P1HSvq886OWltH
- k7ejwe/jwPDkYIYVyaI2VaiTf3EQLGhy0w88NLyDWIznNBopbVDmXjkOA1MLwQVLyUzR
- 2cWlIpDhdJFV55BUFsnencrzy/DbPPO0Ov3Af9oAEiy+fruA2+IfDKowJCkXi4kf+jVu
- QTOA==
-X-Gm-Message-State: AOJu0YzrApBeNfPPysJxbnkMYcef61KelmOwQA+1Pf6p5qCbWlYuXMeh
- yC4Jw7BaYE3jITTqpLlc0lFwxvr/G5q8Dn6C2dzlPkT++o3gQx3vMyBoztzJ4lSY2ZoMYFV1Pw/
- 8cT1lXdo=
-X-Gm-Gg: ASbGncuiSyn8ZUZc4g0A2Y/VQr9mPsVq/0x3yZDSBfzO+WZzm6hfNGxqpbGkC+yPl/M
- lP4aOO5/WePqy8BvNwtFHpSgqT+HBo/bnjYC+Sp4Gdj1b6aV4wGT3FmOY7V3Gc0UhD3EoSh+BQp
- SsWWHmTN/l8yIjJMXg+z9nQ9YAsEsQnr7XF6lQFDkfSyM8K8wCDq+PTpBBH2UtU+kB9b0mhQ5oY
- nK00/WlH2Z24rssLkLLImUvyLcq7WZGB8bJ8fOZLE6JMWESG828UA852hxQE2XhdCT/T2Xnvh5c
- GnXaxW70ty8R/CAOg1iF5kGadpxfs0O8Zy77P0Bfh+BlbKK82V4D/5BlqEGI0++bSGNDBYYAKtn
- ClRFxVmzQr6xhA3z0MO8IhSsUuhSL2H/PNBbr5DId+8xu03CMn4OqqYp1QWoQW/vG/k9QZuG9i0
- zuV8erN7AVhhoGkjlrSwQVIaAEVbxlVy2EICx5rlAV0ZdbMbeT3pTvy5FytZUH
-X-Google-Smtp-Source: AGHT+IE1W6hc8UJf/gnlYEgM61KC6RA11l7SXpbB9VWjUbiWQBGiyvArmboEyGzB2ulB9ee7D8Q0kA==
-X-Received: by 2002:a05:600c:64cf:b0:46e:3dad:31ea with SMTP id
- 5b1f17b1804b1-471178af7cemr124960245e9.17.1761079650688; 
- Tue, 21 Oct 2025 13:47:30 -0700 (PDT)
+ bh=143/y5s/Vd8n0Hn2bxYMjnN4uzh0g8+kJFFukw13gN0=;
+ b=P/w/tJWNIDilIg6TiRhZ83mzcKSgA6nH3mtd1YDSVhXxq3tgWik+/RxF3AQy0yxYOE
+ GZuTdjbmpqLTh4TifJNydaf+96/AjhxE/QlzEhexfBF+6s82T8joaU6ms9zDGVXUV069
+ LwUcdKM23bfkWMfkR598GL72pW+Ubz69t9iAwwqPYEFXsqB1D+ljP/mt1+MkJ0OknMZF
+ 3eQUTI728JlzZSAaJQ/ouqGN4L85dZA2VtXakypAebrm/9vwrV8VyDx2OB8yJmoXzLzt
+ t2bEJMp3H4ZW701e8ZWvWkegJ4HrTPVYa2kqJfOh9/UfZAJVko9v5d4gg1j9/2xAZW+x
+ kF0w==
+X-Gm-Message-State: AOJu0YzsYbNPHQkcq+NBak4dpGErIA2T/sDlzNdIhJ4cl+/cSFJegOuX
+ NePDoCo1oUXRDr43Ac+2AP1QjcKBD8RfLmthuKtYXPFvhsIThI9HCE8SiWBc9I68XKG2FlZPC2n
+ EVFiXejY=
+X-Gm-Gg: ASbGncuzD8R2RlXyPpEFYyfipQYCY9F5BPRi48rjG5ePtYRAzgJNCLGmYPA0jGv+0fx
+ Kq53HnYUEfu3wsATKCZEELF2cAEafoH0l3yi0DNRVO7h2dvJvmjX9waagkm7/77KJWV82yuJxmj
+ hFh2o/ueRrv2mwU509JYCWKy2eozDklndMcEOR5nyXxUEI16UX1NBmekW2m78AyzqWnfda/ueli
+ YbkDVf01oqf1Dni0ITz4ADZlYguPRRFaTSJw0DVyIL0jwq4vJ/cvnX804gQc4HbKd/EoUNWQx3n
+ 7eECWpnouzsJQE/uPUrdveApjIfW2Pq4ZLTR2loeBZgQT5n111ZNZUuknCd5fDoZcp7pNuHrjMc
+ JKips7K1U23sFU/nPSBF/+ran7wkLDoH4nxcoO86N5e0CoehgGtnLqBjm946xnpP9czt5uXg5DU
+ AaZsICDIXDiG54C4qHmHNbVd6d1uA6pYNpH26DzFzlp/lgfym67w==
+X-Google-Smtp-Source: AGHT+IGL58exd3XSoWGVbMb8B9CeCRHWSdOQZkDgYOhFx9gs88WiXAo7b668WHJMxcaHcNLGttYAgA==
+X-Received: by 2002:a05:6000:24c8:b0:427:690:1f7e with SMTP id
+ ffacd0b85a97d-42706901f8dmr12796260f8f.45.1761079656672; 
+ Tue, 21 Oct 2025 13:47:36 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c429e745sm10619525e9.9.2025.10.21.13.47.29
+ ffacd0b85a97d-427f00ce586sm22403052f8f.49.2025.10.21.13.47.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:47:30 -0700 (PDT)
+ Tue, 21 Oct 2025 13:47:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/45] hw/pci-host/raven: Use correct parameter in direct
- access ops
-Date: Tue, 21 Oct 2025 22:46:20 +0200
-Message-ID: <20251021204700.56072-7-philmd@linaro.org>
+Subject: [PULL 07/45] hw/core: Filter machine list available for a particular
+ target binary
+Date: Tue, 21 Oct 2025 22:46:21 +0200
+Message-ID: <20251021204700.56072-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,56 +98,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+Binaries can register a QOM type to filter their machines
+by filling their TargetInfo::machine_typename field.
 
-Instead of passing unneeded enclosing objects to the config direct
-access ops that only need the bus we can pass that directly thus
-simplifying the functions.
+Commit 28502121be7 ("system/vl: Filter machine list available
+for a particular target binary") added the filter to
+machine_help_func() but missed the other places where the machine
+list must be filtered, such QMP 'query-machines' command used by
+QTests, and select_machine(). Fix that.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <226e0756661e72a03ba363887730112a58acde85.1760795082.git.balaton@eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20251020220941.65269-2-philmd@linaro.org>
 ---
- hw/pci-host/raven.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ hw/core/machine-qmp-cmds.c | 4 +++-
+ monitor/qemu-config-qmp.c  | 3 ++-
+ system/vl.c                | 3 ++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index e0ebc81c247..eacffc86d84 100644
---- a/hw/pci-host/raven.c
-+++ b/hw/pci-host/raven.c
-@@ -80,16 +80,16 @@ static inline uint32_t raven_idsel_to_addr(hwaddr addr)
- static void raven_mmcfg_write(void *opaque, hwaddr addr, uint64_t val,
-                               unsigned int size)
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 51d5c230f7e..28dfd3e15bd 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -20,6 +20,7 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/type-helpers.h"
+ #include "qemu/uuid.h"
++#include "qemu/target-info.h"
+ #include "qemu/target-info-qapi.h"
+ #include "qom/qom-qobject.h"
+ #include "system/hostmem.h"
+@@ -94,9 +95,10 @@ CpuInfoFastList *qmp_query_cpus_fast(Error **errp)
+ MachineInfoList *qmp_query_machines(bool has_compat_props, bool compat_props,
+                                     Error **errp)
  {
--    PREPPCIState *s = opaque;
--    PCIHostState *phb = PCI_HOST_BRIDGE(s);
--    pci_data_write(phb->bus, raven_idsel_to_addr(addr), val, size);
-+    PCIBus *hbus = opaque;
-+
-+    pci_data_write(hbus, raven_idsel_to_addr(addr), val, size);
- }
+-    GSList *el, *machines = object_class_get_list(TYPE_MACHINE, false);
++    GSList *el, *machines;
+     MachineInfoList *mach_list = NULL;
  
- static uint64_t raven_mmcfg_read(void *opaque, hwaddr addr, unsigned int size)
++    machines = object_class_get_list(target_machine_typename(), false);
+     for (el = machines; el; el = el->next) {
+         MachineClass *mc = el->data;
+         const char *default_cpu_type = machine_class_default_cpu_type(mc);
+diff --git a/monitor/qemu-config-qmp.c b/monitor/qemu-config-qmp.c
+index 9a3b183602d..8bd28fc2328 100644
+--- a/monitor/qemu-config-qmp.c
++++ b/monitor/qemu-config-qmp.c
+@@ -1,5 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-misc.h"
+ #include "qobject/qlist.h"
+@@ -128,7 +129,7 @@ static CommandLineParameterInfoList *query_all_machine_properties(void)
+     ObjectProperty *prop;
+     bool is_new;
+ 
+-    machines = object_class_get_list(TYPE_MACHINE, false);
++    machines = object_class_get_list(target_machine_typename(), false);
+     assert(machines);
+ 
+     /* Loop over all machine classes */
+diff --git a/system/vl.c b/system/vl.c
+index 646239e4a69..a96063f9901 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1672,7 +1672,8 @@ static MachineClass *select_machine(QDict *qdict, Error **errp)
  {
--    PREPPCIState *s = opaque;
--    PCIHostState *phb = PCI_HOST_BRIDGE(s);
--    return pci_data_read(phb->bus, raven_idsel_to_addr(addr), size);
-+    PCIBus *hbus = opaque;
-+
-+    return pci_data_read(hbus, raven_idsel_to_addr(addr), size);
- }
+     ERRP_GUARD();
+     const char *machine_type = qdict_get_try_str(qdict, "type");
+-    g_autoptr(GSList) machines = object_class_get_list(TYPE_MACHINE, false);
++    g_autoptr(GSList) machines = object_class_get_list(target_machine_typename(),
++                                                       false);
+     MachineClass *machine_class = NULL;
  
- static const MemoryRegionOps raven_mmcfg_ops = {
-@@ -252,7 +252,7 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
-                           "pci-conf-data", 4);
-     memory_region_add_subregion(&s->pci_io, 0xcfc, &h->data_mem);
- 
--    memory_region_init_io(&h->mmcfg, OBJECT(s), &raven_mmcfg_ops, s,
-+    memory_region_init_io(&h->mmcfg, OBJECT(h), &raven_mmcfg_ops, h->bus,
-                           "pci-mmcfg", 0x00400000);
-     memory_region_add_subregion(address_space_mem, 0x80800000, &h->mmcfg);
- 
+     if (machine_type) {
 -- 
 2.51.0
 
