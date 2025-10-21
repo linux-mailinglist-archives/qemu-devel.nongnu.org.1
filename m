@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66FEBF8CE9
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D701BF8D46
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:54:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJJZ-0005SE-4P; Tue, 21 Oct 2025 16:50:42 -0400
+	id 1vBJJX-0005IG-34; Tue, 21 Oct 2025 16:50:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJN-00050M-28
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJN-00050L-1e
  for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:30 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJH-0001Xh-Fv
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:27 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47117f92e32so40263095e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJK-0001YB-To
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:28 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-470ffbf2150so1608455e9.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079819; x=1761684619; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079823; x=1761684623; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8+mIUrwS9misif/yxHTdNYcYKWXudE/3bhL49JVCt/E=;
- b=Hyk8dd1Bv3ZNL1UnQH2AMIUN/3Pbfv7SDu4h3oqK/DQsMIUc3lyzcL0bo9ozMv0Uo/
- GmA3AZBwFSIq9Q6N1c4foFaEFZ3RUejuFAY12pYP44J94atdJ5KP3GiTWJUP4P1mRI7p
- FqHv8zpEj+IMFyzW7wo/epyQ6pkke8IbPMTnO8AhwX2NVv1L0/JRiheJ8opb+ZG9sTaK
- 57uSnwggQaaCPrniMX3WuG/MZCRZqMkMe08bmc7XTrhjfktJ802Nev9jQAFMLM7rNgC2
- oQl8Ynuy/EvIPZatt044ZvNXAoWotAYINJdks5f7sG0GVt2TSD72mnOyY2PD3ymEuslO
- 8A/g==
+ :reply-to; bh=7pVRvMSa1tuaaAjaeaWzWN+zOC+X4LPSLmio2TfrgMc=;
+ b=ipqBQ3kmZQowuKpufkNmaLR1GyOb5l9g8tAIRPbFbFadqqHasfLpLFKGMWwTRJIE2N
+ 4jO6wbfehnW2O6Z+6sdFQVfi2TDx6g/9mhsAJvQbWJja2C39NeowvS3UBVCepzfL5Vte
+ JcKwUbhaWo7kuLsh2rGubr2GnI80mOch3XtBPWnq15e8mRhmJh6BK8ZLiKWqgoDAGQQn
+ 9zsasFAaFOwpD4zura618Gs7d+qM8jqMaeelSwxG+56JrlUPmGCQYzB5Cw6bkYRUAzR/
+ MM31kCfjPJbjgiAH0ptG8M722cUWNefC5IHtJJrtUhqYXVib8L2vyla/727TTdTG2UAs
+ FuwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079819; x=1761684619;
+ d=1e100.net; s=20230601; t=1761079823; x=1761684623;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8+mIUrwS9misif/yxHTdNYcYKWXudE/3bhL49JVCt/E=;
- b=Tpmkl42PzZXdg+WlBMBx36+oozErCNnPs+rlAnOp6BzAHanwk5P7IEZzUfaXMl12hw
- Ze8jQ2kTke+EADqXiw/bJWPXP92oyUUH12IwoTQkCBfP8z+OjpV35OwLpkrnjgqBPc9G
- 3r9wxgi9mNEw4DQcDX66YqOyRJe+daAJsMMZBOFDDK8USFiXbNJ9xSnfYXg2Si2liE2d
- dXjNZ0VyQ4YcQ0y9ugCukqk1LKRgg+CPgw7Xk2MKD67ks7YJiHY2dxrV2A/9sQxNtY0t
- qpoJ/ae1BR1VbNq5uy/Ye5Sxx77vTJDSMeRbW1OyBTgnaWauuE2G9TS6awR46Y0nd4QW
- h0gA==
-X-Gm-Message-State: AOJu0Yz9EcGdd2f+kEjvcMNeCdA7pu917WklCfrln6xNPS3zl+OtW2YZ
- NpucgBfgEVy3rEuVLNaaSDX1qPoYK3HFhNQ24KOBLRJgd/zTmf5o/0jz6DRXv59XaHNi4heMryc
- ofYy9++8=
-X-Gm-Gg: ASbGncuG//p+ageMIYZL1KatDs2J/YPeIghpxeBLeHtAk7em1cafG4eHEgqyDVxPC4X
- eDt9d7pEfCE68O9zSVf6gB3gWhNl80BryynqNmJFerVyDinDq8V49gNCGx+hw5fHLMuO+wE14E7
- TvW+BCklpOVd7lwtHltLfs6Hkjuf9IZl4PfoTBVb/MGW7ZbWoaMyKnpZC+pJVeFEVFcR/btudQd
- 5TPZXVFlhHmu5DJsP9H4vLr+WFBXcdNDXKs54rGQ8J7RzLVAGfDXchfKxgTnmD0Urfdr2AE3vpj
- aP55nsngMVw039J+WwA6aP30qxNHpcU3djPGM3+npVXRpt144KfhFOKcJz7Qt6qHNsxzVypMJ/Q
- jt9VVXdtTUZHbJSjHWjG9FfblSDwtyFCvFCr2wUlDAGmaT5MDf2sUGJWAU0Hsn4/BWJesOpkoWZ
- WHMp/aJXuejnZBU/Rk8soRLW8vBM5x5CbhMyZwQsYQ5XqI4RuC+8VNgrdv7b1A
-X-Google-Smtp-Source: AGHT+IH0ckarYdOwYsc7SCvkF/M81GmT8bT9QiINHVfg7YgXaK9BKSGgOX6NFVZ+bu0EXGT7QJtgjg==
-X-Received: by 2002:a05:600c:4f95:b0:46e:345d:dfde with SMTP id
- 5b1f17b1804b1-471178ac017mr120968615e9.16.1761079818825; 
- Tue, 21 Oct 2025 13:50:18 -0700 (PDT)
+ bh=7pVRvMSa1tuaaAjaeaWzWN+zOC+X4LPSLmio2TfrgMc=;
+ b=MlUOpBTP8xdwwfK9n8j1fNQ8vjaI/MWulC3eEuE2QdbmGYwZjMH0O1rN5TJGk3cIKH
+ Mu2saFaZIxRtNwxp4fLWw3AzOzH5dN8KgOpwjmflHUbUX4ZhKbc45RDKfKyCRP3PhdjI
+ 6aW+O+2xLHRm1TI6LB91Lo6l3QvYfcOY9NeaPCPVbS86kzy/U9O9ojdmfTLzaI4IGBwD
+ GagblDRfOYSogu2vAE2Xd2RvoiRI/EmHOE+zE6QngBFK4DC5TpRMVWMA8SrjjnELSiwr
+ mm67PtASveQ1oCikgvqJXesXP7dyZtP9aj+nAMMqU6xSvkmnC0qhAdWD9ntKMrHUNI/l
+ XwZA==
+X-Gm-Message-State: AOJu0YyRwxRz+YW9wOIECYFKAz2pnm6u3/MaNsT2nwOfieO2/+Y7QoC/
+ G7hDNZ7GmANTKNp8MDkNLC4bVHq2U8jev3G7BqQd0K0YVSvN0gy0pg73iSTad9mK8TLWPSgLfaK
+ hNm15cbg=
+X-Gm-Gg: ASbGncvvap4AXtWaALK88AXEyO887s6hEILwXXU0eUzL25VZ2FUx/DG5kV92XOA3oE2
+ vcoGHlqJlnLCgQYvcLZIS7Eot3Zw7sULFo+gxVXdtAlg7VDJFhFCYkMWmBRPoV7J3gEnfLewU3R
+ FDGtF+PaufwHy8KLy75+4iOemBl6QGU+6iFV+srMsK2Rvu4iMlOzoS6DXJgOS5zx41QLqDM/JfS
+ f+tbWeQlX8kS162bhc1IQ+uUf4mBTIvHyAEQ/WAjIxMYDwTI9YPoMUBoIVwi9arOcw0Kg+Ta8Xd
+ HeKvl2HSqiKd38t05mm1txLw9WwJQlANBz5wy+pcaSldguH+B7m+hIC6MDMsNK5DrGM7B2au/eP
+ rAQClC7Gx3GZ9JPZT85xkbl/dq3XmjdHw1+IVu7ZQbhpZtUxXqI0mXilXlfqKQ+pSH9FddgslQU
+ /7d+J/hay3yROwYndsLwq9Dxdk2CBS+ZONLuaMo+KejULqr68bB91nDcgGdFtd9kGxLpkVlOc=
+X-Google-Smtp-Source: AGHT+IFd0IRuX6vS1KrZzAvST7/oqk+CE27Cqtt+XJEK1kuXJXXvseHWKqKzwkkqV2mZ01cWzYS3aQ==
+X-Received: by 2002:a05:600c:3505:b0:46e:59bd:f7e2 with SMTP id
+ 5b1f17b1804b1-475c3fcb2fbmr7419785e9.11.1761079823360; 
+ Tue, 21 Oct 2025 13:50:23 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c42d9524sm9275545e9.18.2025.10.21.13.50.18
+ 5b1f17b1804b1-47494b02475sm24819605e9.4.2025.10.21.13.50.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:50:18 -0700 (PDT)
+ Tue, 21 Oct 2025 13:50:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/45] qemu/target-info: Include missing 'qapi-types-common.h'
- header
-Date: Tue, 21 Oct 2025 22:46:56 +0200
-Message-ID: <20251021204700.56072-43-philmd@linaro.org>
+Subject: [PULL 43/45] MAINTAINERS: Add missing machine name in the Alpha
+ section
+Date: Tue, 21 Oct 2025 22:46:57 +0200
+Message-ID: <20251021204700.56072-44-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,30 +98,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When adding the TargetInfo::@endianness field in commit a37aec2e7d8,
-we neglected to include the "qapi-types-common.h" header to get the
-EndianMode enum definition. Fix that.
+From: Thomas Huth <thuth@redhat.com>
 
-Fixes: a37aec2e7d8 ("qemu/target-info: Add target_endian_mode()")
+Without a machine name here, get_maintainers.pl uses the "-----..."
+separator for describing what the maintainer is taking care of:
+
+ $ scripts/get_maintainer.pl -f hw/alpha/dp264.c
+ Richard Henderson <richard.henderson@linaro.org> (maintainer:--------------)
+ qemu-devel@nongnu.org (open list:All patches CC here)
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251020140425.45003-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20251020220941.65269-10-philmd@linaro.org>
 ---
- include/qemu/target-info-impl.h | 1 +
+ MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-impl.h
-index 17887f64e26..e446585bf53 100644
---- a/include/qemu/target-info-impl.h
-+++ b/include/qemu/target-info-impl.h
-@@ -9,6 +9,7 @@
- #ifndef QEMU_TARGET_INFO_IMPL_H
- #define QEMU_TARGET_INFO_IMPL_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 667acd933c7..d4e7fd965b0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -671,6 +671,7 @@ F: tests/docker/dockerfiles/emsdk-wasm32-cross.docker
  
-+#include "qapi/qapi-types-common.h"
- #include "qapi/qapi-types-machine.h"
- 
- typedef struct TargetInfo {
+ Alpha Machines
+ --------------
++Clipper
+ M: Richard Henderson <richard.henderson@linaro.org>
+ S: Maintained
+ F: hw/alpha/
 -- 
 2.51.0
 
