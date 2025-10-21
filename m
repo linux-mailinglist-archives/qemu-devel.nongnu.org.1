@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABEA7BF56F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC8FBF56B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:07:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB8J4-0002y3-7U; Tue, 21 Oct 2025 05:05:26 -0400
+	id 1vB8J7-00037s-B0; Tue, 21 Oct 2025 05:05:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Ir-0002LX-OF
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:05:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vB8J4-000330-MS
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:05:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8Ip-0004CL-GO
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:05:13 -0400
+ id 1vB8Ix-0004Dh-ID
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:05:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761037510;
+ s=mimecast20190719; t=1761037518;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gI1QAW8znPF68gfbqfS6bjSoZLHpqR0NqAR5uP2/jK8=;
- b=EYya/NE/0rPo3s/xe8IaG5/kN3QVuVQuhY99tfvLaDqL5qLZb1XPhQIHzQJtRNydeccqeS
- ct4oDSBuIL6B1StsxMZ+sRnFikC3Yv24rhc3op+16edORkj7r3FLWjcMy3HU/OEWbPtzoa
- 2iOKOEMfIG8f9RRyc/dvyTHGy0tkDVA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=T5DGuhfLFoc7PT62ZhKWesCEDaDqaTP9IZTqxum1alU=;
+ b=LdRn//DtKvv3FaiWhuKI7ERsV/80TgcIQMGnhFq0LSdAqDQd8h89Zb7OfZSj11ITH/Yy9X
+ UGdkq4ZktYf4gdbZWxvTrlkmL3wSvf8PLFIA9pcxaD8jhoACnduIE7OMWdNGHleKHGWAqp
+ +WSIX/yFxHmR6VRpPkT36+hHmKiR8yA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-Hxwmnp8yPbiKG8j-8vRHQg-1; Tue,
- 21 Oct 2025 05:05:09 -0400
-X-MC-Unique: Hxwmnp8yPbiKG8j-8vRHQg-1
-X-Mimecast-MFC-AGG-ID: Hxwmnp8yPbiKG8j-8vRHQg_1761037508
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-JPC7Dc8LMGW6s6BzGREGpg-1; Tue,
+ 21 Oct 2025 05:05:14 -0400
+X-MC-Unique: JPC7Dc8LMGW6s6BzGREGpg-1
+X-Mimecast-MFC-AGG-ID: JPC7Dc8LMGW6s6BzGREGpg_1761037513
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0DC531800743; Tue, 21 Oct 2025 09:05:08 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 60F5C1956086; Tue, 21 Oct 2025 09:05:13 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 85E3D30001BE; Tue, 21 Oct 2025 09:05:06 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 059FD19541B2; Tue, 21 Oct 2025 09:05:11 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -53,16 +53,16 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 19/43] audio/paaudio: remove needless return value
-Date: Tue, 21 Oct 2025 13:02:50 +0400
-Message-ID: <20251021090317.425409-20-marcandre.lureau@redhat.com>
+Subject: [PATCH 20/43] audio/dsound: simplify init()
+Date: Tue, 21 Oct 2025 13:02:51 +0400
+Message-ID: <20251021090317.425409-21-marcandre.lureau@redhat.com>
 In-Reply-To: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,47 +90,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Use dsound_audio_fini() on error & fail if the capture failed to
+initialize too.
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/paaudio.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ audio/dsoundaudio.c | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/audio/paaudio.c b/audio/paaudio.c
-index f3193b08c3..93030f3fc8 100644
---- a/audio/paaudio.c
-+++ b/audio/paaudio.c
-@@ -747,14 +747,13 @@ static void qpa_volume_in(HWVoiceIn *hw, Volume *vol)
-     pa_threaded_mainloop_unlock(c->mainloop);
- }
- 
--static int qpa_validate_per_direction_opts(Audiodev *dev,
--                                           AudiodevPaPerDirectionOptions *pdo)
-+static void qpa_validate_per_direction_opts(Audiodev *dev,
-+                                            AudiodevPaPerDirectionOptions *pdo)
- {
-     if (!pdo->has_latency) {
-         pdo->has_latency = true;
-         pdo->latency = 46440;
-     }
--    return 1;
- }
- 
- /* common */
-@@ -844,12 +843,8 @@ static void *qpa_audio_init(Audiodev *dev, Error **errp)
-         }
+diff --git a/audio/dsoundaudio.c b/audio/dsoundaudio.c
+index f3bb48d007..d54d79d41c 100644
+--- a/audio/dsoundaudio.c
++++ b/audio/dsoundaudio.c
+@@ -638,7 +638,7 @@ static void *dsound_audio_init(Audiodev *dev, Error **errp)
+     hr = CoInitialize (NULL);
+     if (FAILED (hr)) {
+         dsound_logerr (hr, "Could not initialize COM\n");
+-        g_free(s);
++        dsound_audio_fini(s);
+         return NULL;
      }
  
--    if (!qpa_validate_per_direction_opts(dev, popts->in)) {
--        return NULL;
--    }
--    if (!qpa_validate_per_direction_opts(dev, popts->out)) {
--        return NULL;
--    }
-+    qpa_validate_per_direction_opts(dev, popts->in);
-+    qpa_validate_per_direction_opts(dev, popts->out);
+@@ -651,19 +651,14 @@ static void *dsound_audio_init(Audiodev *dev, Error **errp)
+         );
+     if (FAILED (hr)) {
+         dsound_logerr (hr, "Could not create DirectSound instance\n");
+-        g_free(s);
++        dsound_audio_fini(s);
+         return NULL;
+     }
  
-     g = g_new0(paaudio, 1);
-     server = popts->server;
+     hr = IDirectSound_Initialize (s->dsound, NULL);
+     if (FAILED (hr)) {
+         dsound_logerr (hr, "Could not initialize DirectSound\n");
+-
+-        hr = IDirectSound_Release (s->dsound);
+-        if (FAILED (hr)) {
+-            dsound_logerr (hr, "Could not release DirectSound\n");
+-        }
+-        g_free(s);
++        dsound_audio_fini(s);
+         return NULL;
+     }
+ 
+@@ -676,17 +671,15 @@ static void *dsound_audio_init(Audiodev *dev, Error **errp)
+         );
+     if (FAILED (hr)) {
+         dsound_logerr (hr, "Could not create DirectSoundCapture instance\n");
+-    } else {
+-        hr = IDirectSoundCapture_Initialize (s->dsound_capture, NULL);
+-        if (FAILED (hr)) {
+-            dsound_logerr (hr, "Could not initialize DirectSoundCapture\n");
++        dsound_audio_fini(s);
++        return NULL;
++    }
+ 
+-            hr = IDirectSoundCapture_Release (s->dsound_capture);
+-            if (FAILED (hr)) {
+-                dsound_logerr (hr, "Could not release DirectSoundCapture\n");
+-            }
+-            s->dsound_capture = NULL;
+-        }
++    hr = IDirectSoundCapture_Initialize (s->dsound_capture, NULL);
++    if (FAILED (hr)) {
++        dsound_logerr (hr, "Could not initialize DirectSoundCapture\n");
++        dsound_audio_fini(s);
++        return NULL;
+     }
+ 
+     err = dsound_set_cooperative_level(s);
 -- 
 2.51.0
 
