@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBC1BF8C4A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B06BF8CE1
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJGX-0004ru-9k; Tue, 21 Oct 2025 16:47:33 -0400
+	id 1vBJH2-0005Qk-7l; Tue, 21 Oct 2025 16:48:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGU-0004pi-JJ
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:30 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGe-0004wF-Kk
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:47 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGS-000143-5W
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:29 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3f99ac9acc4so1501564f8f.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGW-00014Z-Kg
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:38 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-47495477241so12032575e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079646; x=1761684446; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079651; x=1761684451; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VVFA48+wwFEfCjJAr08Wk2/47EEpFuLvgqa9uV1JQUw=;
- b=Fu3V+FuCq4HvJxTXJJuaC1Y7H64/f/s6PCcGEgFJ3ratvU8uxFLhNKfCcfmYsJPXFD
- MY4qG6rnI6g4fKLktsH11gdNqg3RT3fOJR38JIXaLXPthJ9Phb/D6KkkbpBx6Hu43NM8
- 4HHW2M0ZsHZZ3mbFRsIKJciP5pHARdTBVkg9iy9PuHbNWVMlN7KAfGFJOQyBmslkWFXN
- jdBVY9JARZOi5cm+zpxY13iagdWOmsi51CqBP1YdMfDucZGQtHZ7uVN2oPFd+9pPRD7Z
- Ov5WO6l24OtiXP8ByufpIUJIgDtRF29a0n8knaeu6dsW2Acl1VSnrmr/kdI8Lk68EV0c
- 7iDQ==
+ :reply-to; bh=vkfjenACGdmDby4HSj/Tls/WuVgzSU93DPeVdbTcqK0=;
+ b=AshTeHY/MGniy2bhUYXJuM4Blt/g9fT15mZSfqDISHTy0YApN651IybQ3FAhNsbfwj
+ 38QeHVT7PgJqz4KKjZp7p2TA/Ge4MDcziHtFE6p8oolVmQufJxADX8TTzlFaBeDu7brj
+ W0pkXjqhAjOJ8nTZkr2F48Tkc3HnBDThfCuuTtWUyINbAFKHldQtF/U1NXLOtsVBWHlw
+ jq86LT6hEomvEly9uHio7lShx5rRs4Ude5oeoMAD3jXVkFntLUSHASkQXsp8yUG8Dtt+
+ XCQ0FzniIE90dA42SxyWwudQAVrZ+6tewvxqtlz+Ft0JzVomZXFwZ1QETKgZE5P53WGt
+ Mqtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079646; x=1761684446;
+ d=1e100.net; s=20230601; t=1761079651; x=1761684451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VVFA48+wwFEfCjJAr08Wk2/47EEpFuLvgqa9uV1JQUw=;
- b=hP1sGYILSBLSlQpTjCDvusjTPfk+AkilSNZ++i9tZOS4glxP8VJKf1v4sUiItnFswB
- TbMc9xnpnn4AB16LYD2/UfXVuRz9v2yo6NPcW7Jn4YO4LWIZ7IpI7iUnCC5D6ihmx/AJ
- HCAN4Tf4Sjx0k1W0tiPYPf36gCsImcl/kxOZExzCNZj5kGmJHjXNBhLQMOQYny5lel37
- rkneh4yhy4Ljj/7dnwZ1EyrLnaWCBTkYUvjdA+DjWXHXohR7hOOBe16aD97eqN6pttm8
- 3VV2uLp43e4t5DhtzdWDwAfVC5vlwC8M9xC4c0ltr7q3pZE55v4IHmseV/DYoZR4dqn8
- +nbg==
-X-Gm-Message-State: AOJu0YyVfGrdQJg+cS1UlEw+QudqAaNoV4xJ1K7Tqtp0ID4neIvhpriw
- LnlYmX1S4EiPuhQSt2DPnejBzLwo2hyVVn683M7AIZ1xg3Y+aFlIEmatjg1byRnWL5y3vEjrfyG
- saCWyeXo=
-X-Gm-Gg: ASbGnctxogO9rg7pM9GHG1x0RURMi0auIpvB+sX9ZsDVwTTu1Dc7DOrHw3CSN2M4ioJ
- FumsEZO9P2j/tx+viXcFNWIVeSYaFB9QW2pnjiX5nJuDDvwecpVhkC+wTw4vX3K57nL1HcYa2oN
- FHb7ZVwJfIBQjbwTUsqByFkrx53BVaYJNhvreqzQC63Qw0hnxdRC3k66VYtkhPR/GQ2aIMYrah0
- y/XpmfWBqxrL2FgHajx3a8PbALxBwBgFmueQUq82vvUxDsjLUygAPyx5wrbnYW3rQaNptzyCaNp
- Bveg3Hob4UVUL1KoMA+7eu3X7mhHbVyvN7H7Ys9Q9/rb7Uy75akKaYlYkmIocXA32Tsih3Ns29/
- 56VXXujVUnPKxb4UW5uz1K9kn0Cek7uiJkfTpmZyc7RZxUAxQvqNTq3/g+mIdc7rSyvIciloPYb
- jlpvATGD9E6IC47LUwAiFP8kpOWcCwSWm6nwWVaCUBP+E5MW2BVA==
-X-Google-Smtp-Source: AGHT+IE7pVkehO3E+ccpe1mlhe27kGiHRGX6OYRZBA8E+P2kNym0gKM+bWvMLa4rTa9Op8ovQLEzXw==
-X-Received: by 2002:a05:6000:2c09:b0:3ee:15bb:72c8 with SMTP id
- ffacd0b85a97d-42704daececmr14800970f8f.36.1761079646084; 
- Tue, 21 Oct 2025 13:47:26 -0700 (PDT)
+ bh=vkfjenACGdmDby4HSj/Tls/WuVgzSU93DPeVdbTcqK0=;
+ b=a+vYU7+j00+gnjW8i1oo4qWEcZUrOcYwHZ+SNArUtofKT/Cc6vv9XyS2p17q7kzd2/
+ XxPpPeYwYU+wRb2I83u8hq90+HaszsgZ9vQoCYBZIH9IVjOGkhxAoHIUxhJACbtAIzGC
+ +VbZC5p9AJlqUnSIdw0JzZ+6csWw0PNW8Jveq0Fph8Pug9io7HMg39P1HSvq886OWltH
+ k7ejwe/jwPDkYIYVyaI2VaiTf3EQLGhy0w88NLyDWIznNBopbVDmXjkOA1MLwQVLyUzR
+ 2cWlIpDhdJFV55BUFsnencrzy/DbPPO0Ov3Af9oAEiy+fruA2+IfDKowJCkXi4kf+jVu
+ QTOA==
+X-Gm-Message-State: AOJu0YzrApBeNfPPysJxbnkMYcef61KelmOwQA+1Pf6p5qCbWlYuXMeh
+ yC4Jw7BaYE3jITTqpLlc0lFwxvr/G5q8Dn6C2dzlPkT++o3gQx3vMyBoztzJ4lSY2ZoMYFV1Pw/
+ 8cT1lXdo=
+X-Gm-Gg: ASbGncuiSyn8ZUZc4g0A2Y/VQr9mPsVq/0x3yZDSBfzO+WZzm6hfNGxqpbGkC+yPl/M
+ lP4aOO5/WePqy8BvNwtFHpSgqT+HBo/bnjYC+Sp4Gdj1b6aV4wGT3FmOY7V3Gc0UhD3EoSh+BQp
+ SsWWHmTN/l8yIjJMXg+z9nQ9YAsEsQnr7XF6lQFDkfSyM8K8wCDq+PTpBBH2UtU+kB9b0mhQ5oY
+ nK00/WlH2Z24rssLkLLImUvyLcq7WZGB8bJ8fOZLE6JMWESG828UA852hxQE2XhdCT/T2Xnvh5c
+ GnXaxW70ty8R/CAOg1iF5kGadpxfs0O8Zy77P0Bfh+BlbKK82V4D/5BlqEGI0++bSGNDBYYAKtn
+ ClRFxVmzQr6xhA3z0MO8IhSsUuhSL2H/PNBbr5DId+8xu03CMn4OqqYp1QWoQW/vG/k9QZuG9i0
+ zuV8erN7AVhhoGkjlrSwQVIaAEVbxlVy2EICx5rlAV0ZdbMbeT3pTvy5FytZUH
+X-Google-Smtp-Source: AGHT+IE1W6hc8UJf/gnlYEgM61KC6RA11l7SXpbB9VWjUbiWQBGiyvArmboEyGzB2ulB9ee7D8Q0kA==
+X-Received: by 2002:a05:600c:64cf:b0:46e:3dad:31ea with SMTP id
+ 5b1f17b1804b1-471178af7cemr124960245e9.17.1761079650688; 
+ Tue, 21 Oct 2025 13:47:30 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5b3c34sm21760533f8f.17.2025.10.21.13.47.25
+ 5b1f17b1804b1-475c429e745sm10619525e9.9.2025.10.21.13.47.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:47:25 -0700 (PDT)
+ Tue, 21 Oct 2025 13:47:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/45] hw/pci-host/raven: Rename direct config access ops
-Date: Tue, 21 Oct 2025 22:46:19 +0200
-Message-ID: <20251021204700.56072-6-philmd@linaro.org>
+Subject: [PULL 06/45] hw/pci-host/raven: Use correct parameter in direct
+ access ops
+Date: Tue, 21 Oct 2025 22:46:20 +0200
+Message-ID: <20251021204700.56072-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,65 +100,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Rename memory io ops implementing PCI configuration direct access to
-mmcfg which describes better what these are for.
+Instead of passing unneeded enclosing objects to the config direct
+access ops that only need the bus we can pass that directly thus
+simplifying the functions.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <74fcd70106289663ea426161aada78e879995d6c.1760795082.git.balaton@eik.bme.hu>
+Message-ID: <226e0756661e72a03ba363887730112a58acde85.1760795082.git.balaton@eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/raven.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ hw/pci-host/raven.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index ee9058e262a..e0ebc81c247 100644
+index e0ebc81c247..eacffc86d84 100644
 --- a/hw/pci-host/raven.c
 +++ b/hw/pci-host/raven.c
-@@ -77,25 +77,24 @@ static inline uint32_t raven_idsel_to_addr(hwaddr addr)
-     return (ctz16(addr >> 11) << 11) | (addr & 0x7ff);
- }
- 
--static void raven_pci_io_write(void *opaque, hwaddr addr,
--                               uint64_t val, unsigned int size)
-+static void raven_mmcfg_write(void *opaque, hwaddr addr, uint64_t val,
-+                              unsigned int size)
+@@ -80,16 +80,16 @@ static inline uint32_t raven_idsel_to_addr(hwaddr addr)
+ static void raven_mmcfg_write(void *opaque, hwaddr addr, uint64_t val,
+                               unsigned int size)
  {
-     PREPPCIState *s = opaque;
-     PCIHostState *phb = PCI_HOST_BRIDGE(s);
-     pci_data_write(phb->bus, raven_idsel_to_addr(addr), val, size);
+-    PREPPCIState *s = opaque;
+-    PCIHostState *phb = PCI_HOST_BRIDGE(s);
+-    pci_data_write(phb->bus, raven_idsel_to_addr(addr), val, size);
++    PCIBus *hbus = opaque;
++
++    pci_data_write(hbus, raven_idsel_to_addr(addr), val, size);
  }
  
--static uint64_t raven_pci_io_read(void *opaque, hwaddr addr,
--                                  unsigned int size)
-+static uint64_t raven_mmcfg_read(void *opaque, hwaddr addr, unsigned int size)
+ static uint64_t raven_mmcfg_read(void *opaque, hwaddr addr, unsigned int size)
  {
-     PREPPCIState *s = opaque;
-     PCIHostState *phb = PCI_HOST_BRIDGE(s);
-     return pci_data_read(phb->bus, raven_idsel_to_addr(addr), size);
+-    PREPPCIState *s = opaque;
+-    PCIHostState *phb = PCI_HOST_BRIDGE(s);
+-    return pci_data_read(phb->bus, raven_idsel_to_addr(addr), size);
++    PCIBus *hbus = opaque;
++
++    return pci_data_read(hbus, raven_idsel_to_addr(addr), size);
  }
  
--static const MemoryRegionOps raven_pci_io_ops = {
--    .read = raven_pci_io_read,
--    .write = raven_pci_io_write,
-+static const MemoryRegionOps raven_mmcfg_ops = {
-+    .read = raven_mmcfg_read,
-+    .write = raven_mmcfg_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
-@@ -253,8 +252,8 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+ static const MemoryRegionOps raven_mmcfg_ops = {
+@@ -252,7 +252,7 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
                            "pci-conf-data", 4);
      memory_region_add_subregion(&s->pci_io, 0xcfc, &h->data_mem);
  
--    memory_region_init_io(&h->mmcfg, OBJECT(s), &raven_pci_io_ops, s,
--                          "pciio", 0x00400000);
-+    memory_region_init_io(&h->mmcfg, OBJECT(s), &raven_mmcfg_ops, s,
-+                          "pci-mmcfg", 0x00400000);
+-    memory_region_init_io(&h->mmcfg, OBJECT(s), &raven_mmcfg_ops, s,
++    memory_region_init_io(&h->mmcfg, OBJECT(h), &raven_mmcfg_ops, h->bus,
+                           "pci-mmcfg", 0x00400000);
      memory_region_add_subregion(address_space_mem, 0x80800000, &h->mmcfg);
  
-     memory_region_init_io(&s->pci_intack, OBJECT(s), &raven_intack_ops, s,
 -- 
 2.51.0
 
