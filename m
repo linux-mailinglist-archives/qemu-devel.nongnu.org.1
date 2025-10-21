@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457EDBF5A96
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BD7BF5AB7
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB97W-0000fM-Ke; Tue, 21 Oct 2025 05:57:34 -0400
+	id 1vB99Q-0001Dd-4T; Tue, 21 Oct 2025 05:59:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB97U-0000fB-IK
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:57:32 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB99C-0001DI-2a
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:59:19 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB97O-0002h9-CE
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:57:32 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so32598475e9.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 02:57:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB997-0002yf-1Y
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:59:15 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3f2cf786abeso4143057f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 02:59:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761040644; x=1761645444; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761040751; x=1761645551; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pIBZ4Jew2RVd88u9E5nlIctQWPrjD5txu7UPCEXUQxI=;
- b=PG8ehDn4JQQ7INZfA9ToF8yXWq/id3zHn6Dl4UiRIfUUDh5r3Q252cDJqE5U6Srws8
- szxntpFLIfS/lE9tWmxFQaUVlMjEZHqBiwLmnT1r0Ha4fEhPVhoeYWXY74ZMUqNPmcSF
- b28AFPqSiWHRA3nYmoRlJ3veE66+JXsZSm1QwBXr3yMgRNz982lYnenepgn2Gi7Z/lWz
- ddhoKTpdhH8j/U6tDP/liLKwkdm9HK08c3h9rSzGe71Wqm0tm6u1cMFsD2Vo9O5Zi33J
- CAiaVt+JzrslxMIfTOy5EHca+a6RAtC+LsWSVyde08gQ2I7o4gAZJqIICQLkQdG2kIzd
- mNFQ==
+ bh=d5uaF7+pUnU3aSevWsBmpC+HpDp4hJZMzzoI7TT8nSY=;
+ b=hj0kI8RujDd5SG8QNCFREzgFUSydt0x7dtk2abSwGYrwxTtenloBKwbBzsaaPBeaaY
+ B5/h6jI3vrtcm37DsiVzL8bQLTXHZqI4AJ6fG8YKqcSGU4wA3pUlZ0/4rQPtdFMm7T28
+ K/eerFRnCb+ZrTEzQQfmPIz9ZKdKeHGanfbe+K+c79YpVoP/MzqXOSI9UTItkSQlluUH
+ Cv1GIgf8c/M3tzEdP96uvP5RW+3NnMUzd+ARsImCgQ/bO3zbJU+17NHfBUk3wEUQGDgt
+ E+8KdXe0MlVVyhX3veqNP3OMqaUM2rro2IFB8nc3OrCFcWQXecIyXYFtG62Ut4KZ4yiZ
+ 62aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761040644; x=1761645444;
+ d=1e100.net; s=20230601; t=1761040751; x=1761645551;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pIBZ4Jew2RVd88u9E5nlIctQWPrjD5txu7UPCEXUQxI=;
- b=rQ2+ITuL38Dq4/cGI7AUujTDhl3KvFx12PV4a2hpzVBRmHVWnduUccBgBqQkB0AYL+
- 4ZzUHMa819BFltLbuMMHEp301MqgtigsS7o8PraHl32kwoQvCnp89z/I3rJSh89/IIsb
- FRFZzGds9fbgzSkcoRo8IV1GHlZf8PVtcp7JZFaD8vPhcP1FxNuGOLob0odltUaaoNXx
- V5uZftBR/UBZOrxnO9mXe9qieEvUql+yEBB5YyAOxKi8nJBBhleQc4mUzIGZrap5zZUw
- dA9xk23f5csB56Xusej5GGwsP1Qa2YqUgVJcegEyqth8wc4ZyjEqg+DJQqmWG80mfBNH
- isLg==
+ bh=d5uaF7+pUnU3aSevWsBmpC+HpDp4hJZMzzoI7TT8nSY=;
+ b=Zxk0Cyx1AFcVa9usjlHOXVFN85Yk8FHfrCq8XZiTDNlAXHE2Fbgfye+I3q0VuWks3C
+ PmTnbPPzwFXxC4s6AALM9KSv0G4Ze70dXx7EkF1aDU85wkeiyEk/gOm76wY5s7mqZZuo
+ rsRW+tl91971wCjzlVGx1C7gDkqZZ8XNOLtmdeCWEOeY5kSF6U1Y6lpQ8bwbJFRwEDS8
+ Xz9n5iyPnX6+dSZYyk9NGW06iMmnkS7pWJ4hZ55pfyOftj+nRWkzn4Bat/Emh38182Gu
+ jx+JqRC2KsSmLSUVpuOstfA6h39hmSCSbtJdcmpln6tDEVyRD9rT1Rdsa6ySkF+xFKi+
+ Qo+Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXRx4AAFVEb1M1kSPwzWvYlA0P9LVlTwb0KFzk4iomLt2PezARlB9hYsX/I+yd5ygpT8ks7opY1uQmH@nongnu.org
-X-Gm-Message-State: AOJu0YyLlONeqS47kIfWKzk0B2AyCYxrFdNeZqfekSiYwGzPY7xTC/3R
- WQ5MLtMaQ+HOORRYPgvIH2L6wjP8+WSdNtOxlaD70gzJiocJn9BgIR1RsvN8NnBeduk=
-X-Gm-Gg: ASbGncsLPJKfW76xLPGtPG8tZP9MFKYvvjWzcTSzrBEZcE2SQ95lzg4c3iPoTIj9CPt
- sNNKIrIR2JEuTC8r8TUBhRnymIm7w3BJrF7z80tZ/FtC6UvmJjck6NgKsJc7+wV9MwOZRzl0YJj
- o6blWRCgXfzn1qIoImZmnTaDXSKJfbxs2LcNopHd7fuXQ+tCdG+v50YM5M7nMYcSIw3Z0XtKV1c
- JhV76j0OJ7A+sswIij8tUgjm67SzfgPBuFwpCPa/WXi9OXKOaswYB4UoqFu6OG5hdLnro5hCXXT
- FuGbAVrpp5AC00sO+/d7V7BAo1mw5mwEKkYLLzQ+RK/KTS0Aa4Cw8L8WQqOBu2E0dz4ooyJprjV
- 6ck32bHiuZG3LbjRlv0+JTYpyuz1Zhw+l5kDOtnje1bD/5213GxEnpc0no234B2mWwQ/6/fD/dN
- QANLkgyFWyxH94jCFZWIJoc4XXl37JWSHyLvp9jM2hqWg=
-X-Google-Smtp-Source: AGHT+IEvk3Xbn/NJbbO6ECWmU1dnpx1pet8i1My2UeFRaG4W6SQ782IuItKFNXa/T4hNfw1/WYwyPQ==
-X-Received: by 2002:a05:600c:474b:b0:46e:4e6d:79f4 with SMTP id
- 5b1f17b1804b1-47117877525mr121923495e9.15.1761040644361; 
- Tue, 21 Oct 2025 02:57:24 -0700 (PDT)
+ AJvYcCUW2HWwI4qmLi+tGr+TXtcfWE+CJRyKqo0+PfY4rOGEbZQFfyO7dyr2GUlS6cj+S4xQmLGzT6YvIjD9@nongnu.org
+X-Gm-Message-State: AOJu0Yy2PNSiCEmISsE6c8dyxNzHq0LpRiM7LeRENLi9GRHnApViBLwn
+ EnnkIDHo7ECyxG5s+rRTWcoQ1hRiR1shGCKzNXm7ovx9ON9+9B5j/JaQScBfxz4xd1M=
+X-Gm-Gg: ASbGncvIoRiymLUYDQG0DBsUpS2NfcJOCVH3oObCzWcxqycENCzJzVGb0iv8gcR161k
+ CYx+aEPy7W9gmXgGuuPC5R6OFc9+eYZ4oDTrk03lFZFgFTI2yAWI6DuNRjqkegowpT4+FGWC41W
+ +wamEtWt1mbVK348/VxBm7Vk/LU6SZWjH3AXpIoYfHHSo0Q/UoLWTj5P664OPud9yMRsaNOBHzw
+ DOgGr5QR3ONaJYb6K+yIMocB5Eul0/hPyLm0496gQjUCGQwJY9BbiGh5FfKYDo6CWVRKYSsGnUQ
+ KL4/xjBePyfuHjYpBpAdPnRmNvCCnX8sFlWF94NolCM3LNrZjYxqHJ6D7oH5yPj5F/PByhaLVFX
+ hz4KwnBVWoG9frKq1iksxFtJTRc4xB5JDhJU4GJV7XRcLDDyRmIBoH5FvlsRZ+HTG75iTvjLryZ
+ rc5tdPgQnyEZMgpFJpvs1Wcbk9xthHJLEjYm6YTMKtRXAz0d3sDeqAng==
+X-Google-Smtp-Source: AGHT+IGJy8UDTUjDUl/JEKOt1ASrmp/wL63Ng0lsxfHT7V+SP9tJjsNsUgT6kLl/GAt25nFwm2j0IA==
+X-Received: by 2002:a05:6000:2f83:b0:427:4b0:b3e5 with SMTP id
+ ffacd0b85a97d-42704d99d9cmr12136964f8f.47.1761040751179; 
+ Tue, 21 Oct 2025 02:59:11 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4715520d747sm211447375e9.14.2025.10.21.02.57.23
+ ffacd0b85a97d-427f00ce08asm19395822f8f.44.2025.10.21.02.59.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Oct 2025 02:57:23 -0700 (PDT)
-Message-ID: <addd46f7-1e04-4ae4-a598-660a0007b8cd@linaro.org>
-Date: Tue, 21 Oct 2025 11:57:23 +0200
+ Tue, 21 Oct 2025 02:59:10 -0700 (PDT)
+Message-ID: <05aa8f94-06f2-465d-939b-5db6eb607e0d@linaro.org>
+Date: Tue, 21 Oct 2025 11:59:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 17/43] audio: register backends in /audiodevs container
@@ -80,8 +80,8 @@ From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 In-Reply-To: <20251021090317.425409-18-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,19 +114,20 @@ On 21/10/25 11:02, marcandre.lureau@redhat.com wrote:
 >   audio/audio.c | 8 ++++++++
 >   qom/object.c  | 1 +
 >   2 files changed, 9 insertions(+)
-
-
-> @@ -1742,6 +1747,9 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
->       struct audio_driver *driver;
+> 
+> diff --git a/audio/audio.c b/audio/audio.c
+> index 754952ce58..4714ed0b9f 100644
+> --- a/audio/audio.c
+> +++ b/audio/audio.c
+> @@ -1726,6 +1726,11 @@ void audio_create_default_audiodevs(void)
+>       }
+>   }
 >   
->       s = AUDIO_STATE(object_new(TYPE_AUDIO_STATE));
-> +    if (!object_property_try_add_child(get_audiodevs_root(), dev->id, OBJECT(s), errp)) {
+> +static Object *get_audiodevs_root(void)
+> +{
+> +    return object_get_container("audiodevs");
+> +}
 
-&error_fatal?
-
-> +        goto out;
-> +    }
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Move before audio_cleanup() to avoid next patch churn.
 
 
