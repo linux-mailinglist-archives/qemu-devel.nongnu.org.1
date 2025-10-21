@@ -2,92 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36164BF8C59
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34751BF8CEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJH0-0005HA-9Y; Tue, 21 Oct 2025 16:48:02 -0400
+	id 1vBJIs-0002VM-5h; Tue, 21 Oct 2025 16:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGe-0004wE-AO
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:47 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBJIO-00029q-IK
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:32 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGZ-00014v-TU
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:37 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-471191ac79dso51270725e9.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079652; x=1761684452; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Bbj4DnU9UMuayjGZMJyam2c15BZ4ZqrND3uomWVqkE8=;
- b=Ply08PmbEkZYScdrfHz2Oon/EMjCnz0pMY4fPpdq1MGfTaIjhrLtKupT8EEaEAqsfo
- K9tf/EG8Svo5EI9Wp5ORv4gp6qFxjMqMJwDg9Es8ov4wQKbcN0sw0khuw7n2PeFwQSF3
- /2GL9pxibxSGMLg6d4ETrznWXwJPl6wu14SAvoq8C8/qFU2EyVk7UFbOEzGU1hUPV/Kk
- ZfLiYrZXzqWG5vX1dAqwLayei+G+ZwwYcPlbSTMyHezmX+wyWTJTstlogz+5CqmqvWmg
- POLeyEO+FEMmwF4eHdyUJj0Sx1rsrh3407IsLlGRxnQDLx3WsMY/QFl7d9ENd0jwFBYD
- lYdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079652; x=1761684452;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bbj4DnU9UMuayjGZMJyam2c15BZ4ZqrND3uomWVqkE8=;
- b=kJyId4/sum9FGRgwWBLx96nsfSAybq1OL6vZAxvVy8G1QKq3srW2kLac7pnXhdt5+M
- A5GqXQIa/dzHRPF8YlDA69fKiBR93tVvltnGiLDtNaAtH/YU1toripm7/Hc8KrXb1Ohv
- WpR4DUIZIemDzzV9IftNyZvRS+1fMOQwESS6loBOsCI7IqMGme76hZ5xgcu0JdoXxV2r
- B/2xObj24Og4gItrQk9tIAr218geRJie8YJh6XwwfXnOnqQ65aV2Wy5DwyQTPpNmKnxa
- 4F16RCLHLNyYE28PGfGYO0N3cyp5CMCm3ayuOCm7us7eIlZ3M0JY1JGFoJLal1eCdzQG
- wGFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWkvUA5wFvLtyq9oLinMswwa96HMhpYW4W9zeqyEMRDTY05j+EuI4efmwFKVl4vxI1HzDRm6gw480vN@nongnu.org
-X-Gm-Message-State: AOJu0Yzb/oZHQN6543NMCygmXELYvRI6aHfkCqVYMj3JGZ0vT7KgbBf9
- ILFWbdgKMmm4gPq7VFB49b3ViarRn012f7FMGcPFB4YpKHe+jMr5QQyDY/KMJLPUZ4w7l7JBGL3
- ig2qvN+M=
-X-Gm-Gg: ASbGncuTJX1V/ZcbbqkPAw9KEh28owAA16VJ+Vl+lYqZRXqFFA55rosMNoTYlFq/6ei
- S5KEZzhncHGJAdKSBtGb7WOX9rSwz5I3s9vtNHIXhs8HCNvgphLh5i4iQLmZHWhcJ+XNpwCr9/Q
- PhuX+7UAumtLd/X++TE+GrSv4ubYZyj2wAuFNWphKC34A/cBil0hlT6a3SMBXFPBvsDM9tamrTj
- tdAYxsWGYkB2cxK8HZEh6p0B5BHwUN4iP7sVhfsCLh3rNS0viUdyL1y1b7zaSx1GrC/1tFPvUo+
- z/lIZ7BJWKHV3Dioai5QjvNCOkq5ORvp9RzotJaf7291V+dfFU5YmdTSeVWrE53DWZiO96DGejZ
- hNelGWSkJaJmQNwBqcSR/YO4umptNGCSe3FE9+R3P08KWWMPbSpEwfsMuPb/ZEQ4G+hnQ1NjEkF
- UWIzmRP2edhUs5uZ58qujPw7oxTLjyZbwErYeZJtCvl5Ihtxo1OO64CQ==
-X-Google-Smtp-Source: AGHT+IG+mCw6CFnC9+i5Zw9JMUhd4HTOjLTt1QfZ7Vbl7xNLvhfutdApr28Hi2ofRzqrxb+leeVItw==
-X-Received: by 2002:a05:600c:5299:b0:470:ff87:6c2d with SMTP id
- 5b1f17b1804b1-4711791781fmr146572925e9.29.1761079652358; 
- Tue, 21 Oct 2025 13:47:32 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47496b09bc4sm24261565e9.2.2025.10.21.13.47.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Oct 2025 13:47:31 -0700 (PDT)
-Message-ID: <8fdacbaf-f760-41b1-9313-fbe8d9c66a4a@linaro.org>
-Date: Tue, 21 Oct 2025 22:47:31 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBJII-0001En-5v
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:49:28 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id CDFAA1F38D;
+ Tue, 21 Oct 2025 20:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1761079754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/6icJJeqpOP2VnFXpFmRabVCh0Xm/bp4TsLu9YlcLnM=;
+ b=0mfRconk0i8+8BEjDGLpjYdvOvkyrAMQvGTr/ZGu86Jjw46/iZsk2p2+gBlc3k7rdqE/NV
+ rbPmVou/meIi/V3ukPtPehBJ7WZ/cJ2IGijFRfQ7P8UkaQMx+SyCwL0PKMKzvZ8hcc1cx7
+ 4m70M6XBvSqGkEJX6KPC8//yLzFT2ng=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1761079754;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/6icJJeqpOP2VnFXpFmRabVCh0Xm/bp4TsLu9YlcLnM=;
+ b=IEBJ/ejmV7WM9/19/l8H+LQmkhKdidDt00nsSz6D2KSIO2u7cF/Rg6OSMuX064Qd9xYmSK
+ ruljA9y/q3SSU2Bw==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="s7/oZM+x";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+pIEM+ez
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1761079750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/6icJJeqpOP2VnFXpFmRabVCh0Xm/bp4TsLu9YlcLnM=;
+ b=s7/oZM+xCr4RhDywdTe5S6rH3dIsBaVxkAYnAcu4yg+PRORdBGY/aYebts05MhZkwb/gMT
+ safWMQsT0P4wfKMIn9+9GQonwmUJ0v9TlKkFugY6wGh7dJsvzu+Qt2vfNan3qJB0LaoSSO
+ FiTiK3K1IzyeJEcGzb78unISPJR9kv4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1761079750;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/6icJJeqpOP2VnFXpFmRabVCh0Xm/bp4TsLu9YlcLnM=;
+ b=+pIEM+ez1ku7A/pSBnLXcOE47RVDRaT5IfxPVpdpY5VZmpueBzqtNFmt6kzhnssDtMKgE+
+ TBmcAEzNVNYgK/BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52FF0139D2;
+ Tue, 21 Oct 2025 20:49:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id wnsqBsbx92iCVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 21 Oct 2025 20:49:10 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Arun Menon <armenon@redhat.com>, peterx@redhat.com, Peter Maydell
+ <peter.maydell@linaro.org>, Juraj Marcin <jmarcin@redhat.com>
+Subject: Re: [PATCH 2/3] migration/cpr: Fix coverity report in
+ cpr_exec_persist_state()
+In-Reply-To: <20251021184132.2635958-3-peterx@redhat.com>
+References: <20251021184132.2635958-1-peterx@redhat.com>
+ <20251021184132.2635958-3-peterx@redhat.com>
+Date: Tue, 21 Oct 2025 17:49:07 -0300
+Message-ID: <87o6q0t1z0.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/25] target/alpha: call plugin trap callbacks
-Content-Language: en-US
-To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <cover.1760884672.git.neither@nut.email>
- <78ba254c812a91105bf52f6f0ce73774ee2be265.1760884672.git.neither@nut.email>
- <2a0a4cde-1427-4d87-a331-f4ed6fa64aa2@linaro.org>
- <20bf0927d2331f70d92048726362558d78caa4a8@nut.email>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20bf0927d2331f70d92048726362558d78caa4a8@nut.email>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Content-Type: text/plain
+X-Rspamd-Queue-Id: CDFAA1F38D
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_TLS_ALL(0.00)[]; TO_DN_SOME(0.00)[];
+ MISSING_XM_UA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ MIME_TRACE(0.00)[0:+];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,58 +127,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/10/25 22:38, Julian Ganz wrote:
-> Hi Philippe,
-> 
-> October 21, 2025 at 10:10 PM, "Philippe Mathieu-Daudé" wrote:
->> On 19/10/25 17:14, Julian Ganz wrote:
->>> We recently introduced API for registering callbacks for trap related
->>>   events as well as the corresponding hook functions. Due to differences
->>>   between architectures, the latter need to be called from target specific
->>>   code.
->>>   This change places hooks for Alpha targets.
->>>   Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>>   Signed-off-by: Julian Ganz <neither@nut.email>
->>>   ---
->>>   target/alpha/helper.c | 13 +++++++++++++
->>>   1 file changed, 13 insertions(+)
->>>   diff --git a/target/alpha/helper.c b/target/alpha/helper.c
->>>   index 096eac3445..a9af52a928 100644
->>>   --- a/target/alpha/helper.c
->>>   +++ b/target/alpha/helper.c
->>>   @@ -27,6 +27,7 @@
->>>   #include "exec/helper-proto.h"
->>>   #include "qemu/qemu-print.h"
->>>   #include "system/memory.h"
->>>   +#include "qemu/plugin.h"
->>>   > > #define CONVERT_BIT(X, SRC, DST) \
->>>   @@ -328,6 +329,7 @@ void alpha_cpu_do_interrupt(CPUState *cs)
->>>   {
->>>   CPUAlphaState *env = cpu_env(cs);
->>>   int i = cs->exception_index;
->>>   + uint64_t last_pc = env->pc;
->>>   > if (qemu_loglevel_mask(CPU_LOG_INT)) {
->>>   static int count;
->>>   @@ -431,6 +433,17 @@ void alpha_cpu_do_interrupt(CPUState *cs)
->>>   > /* Switch to PALmode. */
->>>   env->flags |= ENV_FLAG_PAL_MODE;
->>>   +
->>>   + switch (i) {
->>>   + case EXCP_SMP_INTERRUPT:
->>>   + case EXCP_CLK_INTERRUPT:
->>>   + case EXCP_DEV_INTERRUPT:
->>>   + qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
->>>   + break;
->>>   + default:
->>>   + qemu_plugin_vcpu_exception_cb(cs, last_pc);
->>>   + break;
->>>
->> Shouldn't we handle EXCP_CALL_PAL with qemu_plugin_vcpu_hostcall_cb()?
-> 
-> Host calls are exclusively calls that are handled outside the emulation,
-> on the host, regardless of whether they are hypervisor calls or not. In
-> that respect EXCP_CALL_PAL looks to me like a regular exception that is
-> handled by translated code within the emulation.
+Peter Xu <peterx@redhat.com> writes:
 
-OK, thanks.
+> Per reported and analyzed by Peter:
+>
+> https://lore.kernel.org/r/CAFEAcA_mUQ2NeoguR5efrhw7XYGofnriWEA=+Dg+Ocvyam1wAw@mail.gmail.com
+>
+> mfd leak is a false positive, try to use a coverity annotation (which I
+> didn't find manual myself, but still give it a shot).
+>
+> Fix the other one by dumping an error message if setenv() failed.
+>
+> Resolves: Coverity CID 1641391
+> Resolves: Coverity CID 1641392
+> Fixes: efc6587313 ("migration: cpr-exec save and load")
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/cpr-exec.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
+> index d57714bc5d..3cf44634a9 100644
+> --- a/migration/cpr-exec.c
+> +++ b/migration/cpr-exec.c
+> @@ -43,13 +43,16 @@ static QEMUFile *qemu_file_new_fd_output(int fd, const char *name)
+>  void cpr_exec_persist_state(QEMUFile *f)
+>  {
+>      QIOChannelFile *fioc = QIO_CHANNEL_FILE(qemu_file_get_ioc(f));
+> +    /* coverity[leaked_storage] - mfd intentionally kept open across exec() */
+>      int mfd = dup(fioc->fd);
+>      char val[16];
+>  
+>      /* Remember mfd in environment for post-exec load */
+>      qemu_clear_cloexec(mfd);
+>      snprintf(val, sizeof(val), "%d", mfd);
+> -    g_setenv(CPR_EXEC_STATE_NAME, val, 1);
+> +    if (!g_setenv(CPR_EXEC_STATE_NAME, val, 1)) {
+> +        error_report("Setting env %s = %s failed", CPR_EXEC_STATE_NAME, val);
+> +    }
+
+Best to abort no? We don't want the rest of the code reading whatever
+may be at that env variable and running with it.
+
+>  }
+>  
+>  static int cpr_exec_find_state(void)
 
