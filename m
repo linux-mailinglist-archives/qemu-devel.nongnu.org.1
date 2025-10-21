@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EFEBF5691
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA41BF5685
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:05:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB8HZ-0001F1-Ar; Tue, 21 Oct 2025 05:03:53 -0400
+	id 1vB8Hd-0001Fn-C0; Tue, 21 Oct 2025 05:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8HY-0001Es-1Q
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:52 -0400
+ id 1vB8Hb-0001Fb-SY
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vB8HR-0003uX-B4
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:49 -0400
+ id 1vB8HX-0003uw-TJ
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:03:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761037424;
+ s=mimecast20190719; t=1761037430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8+aePS60Khl4gHn3swsWqHuO8NvOTF+3TPkXO481BGA=;
- b=UsQ/z3Y7IJDpQiIXtUCaVFYRLH00/Dvi4opvyKI7UsrMHqGUsCHc8s506ekoAstKTOk3BK
- osxm0ccS912O9+URzjou4fDqbMbchQr13n9wU6neOzVVkLRErqVCNF2gJOKpgbGnm9B18O
- wgZbMlElEDfltpNeUHCREqnxGEuw2n0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=oRJnHg9mCdPZO18IoDbCGbmaztLw98nZx1iDHyng678=;
+ b=Wbh+xdzzMZV/SmokSJBcRYQXnWrVBF/riQchscfeP//7ao0dMqK63Z+yZC6ixC+14p0vIs
+ lIZ6jEaBbz81YJRZM/7JBH3KCN9jtxfQk8oVZWGPaiWn2yqR4RqcARLzcu/DOs3bqCNhUs
+ NJzuDoJrv8ymvbwHCtf9+6Ea1fo29lg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-JI0oIKQLPqis6zOttkRugA-1; Tue,
- 21 Oct 2025 05:03:41 -0400
-X-MC-Unique: JI0oIKQLPqis6zOttkRugA-1
-X-Mimecast-MFC-AGG-ID: JI0oIKQLPqis6zOttkRugA_1761037420
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-JxEKliB3M_qqMYuJlpZM9w-1; Tue,
+ 21 Oct 2025 05:03:46 -0400
+X-MC-Unique: JxEKliB3M_qqMYuJlpZM9w-1
+X-Mimecast-MFC-AGG-ID: JxEKliB3M_qqMYuJlpZM9w_1761037425
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E626A18002EC; Tue, 21 Oct 2025 09:03:39 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A3AEB19560B0; Tue, 21 Oct 2025 09:03:45 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 656FB1800452; Tue, 21 Oct 2025 09:03:37 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2031F1955F22; Tue, 21 Oct 2025 09:03:43 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -52,16 +52,16 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 03/43] hw/audio: remove global pcspk
-Date: Tue, 21 Oct 2025 13:02:34 +0400
-Message-ID: <20251021090317.425409-4-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 04/43] hw/pcspk: use explicitly the required PIT types
+Date: Tue, 21 Oct 2025 13:02:35 +0400
+Message-ID: <20251021090317.425409-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -90,42 +90,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-It is no longer used since commit 6033b9ecd4 ("pc: remove -soundhw pcspk")
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/audio/pcspk.c | 4 ----
- 1 file changed, 4 deletions(-)
+ include/hw/timer/i8254.h | 4 ++--
+ hw/audio/pcspk.c         | 2 +-
+ hw/timer/i8254_common.c  | 6 ++----
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
+diff --git a/include/hw/timer/i8254.h b/include/hw/timer/i8254.h
+index 8402caad30..f7148d9286 100644
+--- a/include/hw/timer/i8254.h
++++ b/include/hw/timer/i8254.h
+@@ -75,7 +75,7 @@ static inline ISADevice *kvm_pit_init(ISABus *bus, int base)
+     return d;
+ }
+ 
+-void pit_set_gate(ISADevice *dev, int channel, int val);
+-void pit_get_channel_info(ISADevice *dev, int channel, PITChannelInfo *info);
++void pit_set_gate(PITCommonState *pit, int channel, int val);
++void pit_get_channel_info(PITCommonState *pit, int channel, PITChannelInfo *info);
+ 
+ #endif /* HW_I8254_H */
 diff --git a/hw/audio/pcspk.c b/hw/audio/pcspk.c
-index a419161b5b..1b0cc08119 100644
+index 1b0cc08119..60cedcb375 100644
 --- a/hw/audio/pcspk.c
 +++ b/hw/audio/pcspk.c
-@@ -60,7 +60,6 @@ struct PCSpkState {
- };
+@@ -50,7 +50,7 @@ struct PCSpkState {
+     uint8_t sample_buf[PCSPK_BUF_LEN];
+     QEMUSoundCard card;
+     SWVoiceOut *voice;
+-    void *pit;
++    PITCommonState *pit;
+     unsigned int pit_count;
+     unsigned int samples;
+     unsigned int play_pos;
+diff --git a/hw/timer/i8254_common.c b/hw/timer/i8254_common.c
+index ad091594cd..419d4cd6e5 100644
+--- a/hw/timer/i8254_common.c
++++ b/hw/timer/i8254_common.c
+@@ -32,9 +32,8 @@
+ #include "migration/vmstate.h"
  
- static const char *s_spk = "pcspk";
--static PCSpkState *pcspk_state;
- 
- static inline void generate_samples(PCSpkState *s)
+ /* val must be 0 or 1 */
+-void pit_set_gate(ISADevice *dev, int channel, int val)
++void pit_set_gate(PITCommonState *pit, int channel, int val)
  {
-@@ -192,8 +191,6 @@ static void pcspk_realizefn(DeviceState *dev, Error **errp)
-     if (s->card.state && AUD_register_card(s_spk, &s->card, errp)) {
-         pcspk_audio_init(s);
-     }
--
--    pcspk_state = s;
+-    PITCommonState *pit = PIT_COMMON(dev);
+     PITChannelState *s = &pit->channels[channel];
+     PITCommonClass *c = PIT_COMMON_GET_CLASS(pit);
+ 
+@@ -139,9 +138,8 @@ void pit_get_channel_info_common(PITCommonState *s, PITChannelState *sc,
+     info->out = pit_get_out(sc, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
  }
  
- static bool migrate_needed(void *opaque)
-@@ -229,7 +226,6 @@ static void pcspk_class_initfn(ObjectClass *klass, const void *data)
-     set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
-     dc->vmsd = &vmstate_spk;
-     device_class_set_props(dc, pcspk_properties);
--    /* Reason: realize sets global pcspk_state */
-     /* Reason: pit object link */
-     dc->user_creatable = false;
- }
+-void pit_get_channel_info(ISADevice *dev, int channel, PITChannelInfo *info)
++void pit_get_channel_info(PITCommonState *pit, int channel, PITChannelInfo *info)
+ {
+-    PITCommonState *pit = PIT_COMMON(dev);
+     PITChannelState *s = &pit->channels[channel];
+     PITCommonClass *c = PIT_COMMON_GET_CLASS(pit);
+ 
 -- 
 2.51.0
 
