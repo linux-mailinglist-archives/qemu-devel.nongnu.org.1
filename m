@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0E1BF8CB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E66FEBF8CE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:52:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJJU-00053U-AR; Tue, 21 Oct 2025 16:50:37 -0400
+	id 1vBJJZ-0005SE-4P; Tue, 21 Oct 2025 16:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJJ-0004wn-8A
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:26 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJN-00050M-28
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:30 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJD-0001X9-HN
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:24 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4711f156326so46984295e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJJH-0001Xh-Fv
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:50:27 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47117f92e32so40263095e9.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:50:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079814; x=1761684614; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079819; x=1761684619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oo0V2NSC+Um6jMwrxg0bGYRYcKSTrlyh1iPnhHilHTI=;
- b=uEN5KHScp8VbtV9T0zn/Q/mAVqNnoHlqdhAcuqWrm1u8uUVmc/wCUsZU76TvhUD41N
- gWfVnXkvFQXWZCzH5NqBPZukR+Bx2UjzTusH/v/HwLEq4hrgCHBOtLgYXgkuPieF2mvt
- c5TKCcFwWwYINWjxG9k7PSEVy3x1yjJpG13jzQiWmsvzm7sBewWe3gqtngaOLyly3B3f
- CLbZPPuwXmuRZiaE+kXbDzdurnrNuX5rk8jVgB1hKI5zps74eG8FumBsPmzM5DyXU9I0
- 2dncPY0u6kwk2Ez7IoONxP+2ZsCjAZaquDjxgdvNm3NP3hK9poPhohRyWzrzr15M9Afb
- DJkg==
+ :reply-to; bh=8+mIUrwS9misif/yxHTdNYcYKWXudE/3bhL49JVCt/E=;
+ b=Hyk8dd1Bv3ZNL1UnQH2AMIUN/3Pbfv7SDu4h3oqK/DQsMIUc3lyzcL0bo9ozMv0Uo/
+ GmA3AZBwFSIq9Q6N1c4foFaEFZ3RUejuFAY12pYP44J94atdJ5KP3GiTWJUP4P1mRI7p
+ FqHv8zpEj+IMFyzW7wo/epyQ6pkke8IbPMTnO8AhwX2NVv1L0/JRiheJ8opb+ZG9sTaK
+ 57uSnwggQaaCPrniMX3WuG/MZCRZqMkMe08bmc7XTrhjfktJ802Nev9jQAFMLM7rNgC2
+ oQl8Ynuy/EvIPZatt044ZvNXAoWotAYINJdks5f7sG0GVt2TSD72mnOyY2PD3ymEuslO
+ 8A/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079814; x=1761684614;
+ d=1e100.net; s=20230601; t=1761079819; x=1761684619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oo0V2NSC+Um6jMwrxg0bGYRYcKSTrlyh1iPnhHilHTI=;
- b=qJh3IVGS8Pj0nPAL+SHNrklnGBqL6e9x9eWvIPK/xZxG4M47gs8S5w9dosxvB0AC2c
- YCnnTVg0acTeb42D3ssERKNaFDPu9dLfp2HTE837SOT9idD/nsKri2CU3HYLUWEODbe2
- 5EpLBlrafj+5mD8c/3Su69NwRwihMGvbb+/2978bp4/YuDslln8B7O/P9FSXWCPg4YOi
- rcLGM4524ra8588VIkYWYCp292Ohm+VGImMJJKJw7DgijdOAsi/zf6V39IzEEzH0NfWe
- r9qPJ88tVitaIHnMbuE32JVWKFaJJX52hl06Bb6K9M9APLu7oov6n0pG9hti6xn63ywB
- v0Ow==
-X-Gm-Message-State: AOJu0YwkvZVnZhh+FPRtyQJToPPPXYfR0oHd7GNBFLOUGCPWckdBc14c
- hiay+XG4D63SJmyUmhwU9J/M3gW+nU8a3GaxRgUjit2se8+NOG3E5YJorzN6oXPtjkMZKeRppVI
- /NOLHTZY=
-X-Gm-Gg: ASbGncvlFXiW8496zbvKO7UxjArZUt71x0aW6Sz0A4diYA/pGRcGa2xhJ5BMnM0dP4d
- zTvyXjP7xapMhShbrTCq3E7uqNVEIwksudUXGb51kjyP6BFdNxqDv32GVxNBl2rgaW2646Ri6Ue
- 3QMkLqJhC1e44U8ki0JGuAl1c1Jde9H6jVQEOR6pTdvGX+DRy8xopKOcKtHn2LHbIkgRdvmhlM5
- Pwrfd4RndiVIhZCcRJu9jMLNPM4Qnsp97d7EcDkuKFPjt+q6s0bzhBAhxoyE/LnyMcIu0biXFdB
- v2KjDxYekUWchzI/FqxJPnDgCqfizspmNS7klVHOWg6WYnBqWnDo6TvXyExJHO+hJQttG7BWAoP
- iPpTna9FdK3Xgkohc0jMS75lIdC1Vcn/omWCeA/n49TKnipRim5GIyAKWZ/EF2UgudwNtWZJ6nC
- WGal+gslWQV06Ye6G1c3rg+1fe/9AN5A+YDGShOpx4SYS4WOMcuMWZfELlhjz8q+k+3xPvmqg=
-X-Google-Smtp-Source: AGHT+IHW9KWXdQ9OX3Lnp+QOQw5xni6Go8DaTVEzBnIrHOe65hDSyauG18ERjCA+0sgirIl14cCE/A==
-X-Received: by 2002:a05:600c:470d:b0:471:a98:998d with SMTP id
- 5b1f17b1804b1-471178a4ac3mr123228265e9.12.1761079814429; 
- Tue, 21 Oct 2025 13:50:14 -0700 (PDT)
+ bh=8+mIUrwS9misif/yxHTdNYcYKWXudE/3bhL49JVCt/E=;
+ b=Tpmkl42PzZXdg+WlBMBx36+oozErCNnPs+rlAnOp6BzAHanwk5P7IEZzUfaXMl12hw
+ Ze8jQ2kTke+EADqXiw/bJWPXP92oyUUH12IwoTQkCBfP8z+OjpV35OwLpkrnjgqBPc9G
+ 3r9wxgi9mNEw4DQcDX66YqOyRJe+daAJsMMZBOFDDK8USFiXbNJ9xSnfYXg2Si2liE2d
+ dXjNZ0VyQ4YcQ0y9ugCukqk1LKRgg+CPgw7Xk2MKD67ks7YJiHY2dxrV2A/9sQxNtY0t
+ qpoJ/ae1BR1VbNq5uy/Ye5Sxx77vTJDSMeRbW1OyBTgnaWauuE2G9TS6awR46Y0nd4QW
+ h0gA==
+X-Gm-Message-State: AOJu0Yz9EcGdd2f+kEjvcMNeCdA7pu917WklCfrln6xNPS3zl+OtW2YZ
+ NpucgBfgEVy3rEuVLNaaSDX1qPoYK3HFhNQ24KOBLRJgd/zTmf5o/0jz6DRXv59XaHNi4heMryc
+ ofYy9++8=
+X-Gm-Gg: ASbGncuG//p+ageMIYZL1KatDs2J/YPeIghpxeBLeHtAk7em1cafG4eHEgqyDVxPC4X
+ eDt9d7pEfCE68O9zSVf6gB3gWhNl80BryynqNmJFerVyDinDq8V49gNCGx+hw5fHLMuO+wE14E7
+ TvW+BCklpOVd7lwtHltLfs6Hkjuf9IZl4PfoTBVb/MGW7ZbWoaMyKnpZC+pJVeFEVFcR/btudQd
+ 5TPZXVFlhHmu5DJsP9H4vLr+WFBXcdNDXKs54rGQ8J7RzLVAGfDXchfKxgTnmD0Urfdr2AE3vpj
+ aP55nsngMVw039J+WwA6aP30qxNHpcU3djPGM3+npVXRpt144KfhFOKcJz7Qt6qHNsxzVypMJ/Q
+ jt9VVXdtTUZHbJSjHWjG9FfblSDwtyFCvFCr2wUlDAGmaT5MDf2sUGJWAU0Hsn4/BWJesOpkoWZ
+ WHMp/aJXuejnZBU/Rk8soRLW8vBM5x5CbhMyZwQsYQ5XqI4RuC+8VNgrdv7b1A
+X-Google-Smtp-Source: AGHT+IH0ckarYdOwYsc7SCvkF/M81GmT8bT9QiINHVfg7YgXaK9BKSGgOX6NFVZ+bu0EXGT7QJtgjg==
+X-Received: by 2002:a05:600c:4f95:b0:46e:345d:dfde with SMTP id
+ 5b1f17b1804b1-471178ac017mr120968615e9.16.1761079818825; 
+ Tue, 21 Oct 2025 13:50:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c4342860sm9313135e9.11.2025.10.21.13.50.13
+ 5b1f17b1804b1-475c42d9524sm9275545e9.18.2025.10.21.13.50.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:50:13 -0700 (PDT)
+ Tue, 21 Oct 2025 13:50:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 41/45] hw/ppc/spapr: Rename resize_hpt_err to errp
-Date: Tue, 21 Oct 2025 22:46:55 +0200
-Message-ID: <20251021204700.56072-42-philmd@linaro.org>
+Subject: [PULL 42/45] qemu/target-info: Include missing 'qapi-types-common.h'
+ header
+Date: Tue, 21 Oct 2025 22:46:56 +0200
+Message-ID: <20251021204700.56072-43-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,72 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vishal Chourasia <vishalc@linux.ibm.com>
+When adding the TargetInfo::@endianness field in commit a37aec2e7d8,
+we neglected to include the "qapi-types-common.h" header to get the
+EndianMode enum definition. Fix that.
 
-Rename resize_hpt_err to standard errp naming convention.
-
-Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251021105442.1474602-9-vishalc@linux.ibm.com>
+Fixes: a37aec2e7d8 ("qemu/target-info: Add target_endian_mode()")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20251020220941.65269-10-philmd@linaro.org>
 ---
- hw/ppc/spapr.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ include/qemu/target-info-impl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 97ab6bebd25..e0a2e5a984d 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2817,7 +2817,7 @@ static void spapr_machine_init(MachineState *machine)
-     int i;
-     MemoryRegion *sysmem = get_system_memory();
-     long load_limit, fw_size;
--    Error *resize_hpt_err = NULL;
-+    Error *errp = NULL;
-     NICInfo *nd;
+diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-impl.h
+index 17887f64e26..e446585bf53 100644
+--- a/include/qemu/target-info-impl.h
++++ b/include/qemu/target-info-impl.h
+@@ -9,6 +9,7 @@
+ #ifndef QEMU_TARGET_INFO_IMPL_H
+ #define QEMU_TARGET_INFO_IMPL_H
  
-     if (!filename) {
-@@ -2845,7 +2845,7 @@ static void spapr_machine_init(MachineState *machine)
-     /* Determine capabilities to run with */
-     spapr_caps_init(spapr);
++#include "qapi/qapi-types-common.h"
+ #include "qapi/qapi-types-machine.h"
  
--    kvmppc_check_papr_resize_hpt(&resize_hpt_err);
-+    kvmppc_check_papr_resize_hpt(&errp);
-     if (spapr->resize_hpt == SPAPR_RESIZE_HPT_DEFAULT) {
-         /*
-          * If the user explicitly requested a mode we should either
-@@ -2853,10 +2853,10 @@ static void spapr_machine_init(MachineState *machine)
-          * it's not set explicitly, we reset our mode to something
-          * that works
-          */
--        if (resize_hpt_err) {
-+        if (errp) {
-             spapr->resize_hpt = SPAPR_RESIZE_HPT_DISABLED;
--            error_free(resize_hpt_err);
--            resize_hpt_err = NULL;
-+            error_free(errp);
-+            errp = NULL;
-         } else {
-             spapr->resize_hpt = smc->resize_hpt_default;
-         }
-@@ -2864,14 +2864,14 @@ static void spapr_machine_init(MachineState *machine)
- 
-     assert(spapr->resize_hpt != SPAPR_RESIZE_HPT_DEFAULT);
- 
--    if ((spapr->resize_hpt != SPAPR_RESIZE_HPT_DISABLED) && resize_hpt_err) {
-+    if ((spapr->resize_hpt != SPAPR_RESIZE_HPT_DISABLED) && errp) {
-         /*
-          * User requested HPT resize, but this host can't supply it.  Bail out
-          */
--        error_report_err(resize_hpt_err);
-+        error_report_err(errp);
-         exit(1);
-     }
--    error_free(resize_hpt_err);
-+    error_free(errp);
- 
-     spapr->rma_size = spapr_rma_size(spapr, &error_fatal);
- 
+ typedef struct TargetInfo {
 -- 
 2.51.0
 
