@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F94BF6ED5
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEC8BF6EEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:59:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCs9-0000GC-J3; Tue, 21 Oct 2025 09:57:57 -0400
+	id 1vBCs8-0000Ft-8d; Tue, 21 Oct 2025 09:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs3-0000Em-Af
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs3-0000F2-MP
  for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs1-0007x5-8n
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs1-0007xK-NU
  for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1761055068;
@@ -22,35 +22,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vt6uwhyIK+73+a2uJbub1PjgJdGjN+jo4yTjn3+Yv3w=;
- b=IetEASl5o8w7yg3pShMovXlrz62Kk1c0WzlaMBFOOnQxlinKMw+a7GKpgHJjUbYVjikzyG
- NeHid+ujT/KKpNp9u8v6PoWcApQSak9M3pUAA/J0W8jBPjrntWzm4Ld4bXMLb9YZ0RqRFg
- Aa5a8pI4fGWgcgVoZP9zVyjhlL1FWi4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FEfPs3lE3YKqxHYGpmEEm9huybksF3x8fh52qUpukbg=;
+ b=N3ZOid3op/tjqtO5UUm7JqsyDMMeMc91fUTRcZTI0U0uE3bRvWowjz85baOYwDxY8cLKK1
+ tE0PpYGN6mbLnOGrwUR8z34xejgDNtHPq2CzpfagRN1o+oToA12G6ja22LzWGBTDebdGIQ
+ BumhjH/OmfeCAWRv0Vd0jvaaxTH4ZHQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-lHsfAsHgMiG0WcsMKvDoxQ-1; Tue,
- 21 Oct 2025 09:57:44 -0400
-X-MC-Unique: lHsfAsHgMiG0WcsMKvDoxQ-1
-X-Mimecast-MFC-AGG-ID: lHsfAsHgMiG0WcsMKvDoxQ_1761055063
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-pMJx3pEsN8qDYpIbktseFA-1; Tue,
+ 21 Oct 2025 09:57:45 -0400
+X-MC-Unique: pMJx3pEsN8qDYpIbktseFA-1
+X-Mimecast-MFC-AGG-ID: pMJx3pEsN8qDYpIbktseFA_1761055064
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 27219195609F; Tue, 21 Oct 2025 13:57:43 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A3D1A195609D; Tue, 21 Oct 2025 13:57:44 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 090DB19560A2; Tue, 21 Oct 2025 13:57:41 +0000 (UTC)
+ id 8B76519560A2; Tue, 21 Oct 2025 13:57:43 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 3/6] hw/s390x/ccw: Remove deprecated s390-ccw-virtio-4.2 machine
-Date: Tue, 21 Oct 2025 15:57:32 +0200
-Message-ID: <20251021135735.96145-4-thuth@redhat.com>
+Subject: [PULL 4/6] hw/s390x/ccw: Remove SCLPDevice::increment_size field
+Date: Tue, 21 Oct 2025 15:57:33 +0200
+Message-ID: <20251021135735.96145-5-thuth@redhat.com>
 In-Reply-To: <20251021135735.96145-1-thuth@redhat.com>
 References: <20251021135735.96145-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,70 +84,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This machine has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
+The SCLPDevice::increment_size field was only used by the
+s390-ccw-virtio-4.2 machine, which got removed. Remove it
+as now unused, along with the sclp_memory_init() method.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251020094903.72182-2-philmd@linaro.org>
+Message-ID: <20251020094903.72182-3-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 33 ---------------------------------
- 1 file changed, 33 deletions(-)
+ include/hw/s390x/sclp.h |  5 +----
+ hw/s390x/sclp.c         | 34 +++-------------------------------
+ 2 files changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index ad2c48188a8..64b81345f1e 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -715,26 +715,6 @@ static void s390_nmi(NMIState *n, int cpu_index, Error **errp)
-     s390_cpu_restart(S390_CPU(cs));
+diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
+index d32f6180e0d..33f01f85bb1 100644
+--- a/include/hw/s390x/sclp.h
++++ b/include/hw/s390x/sclp.h
+@@ -197,12 +197,9 @@ OBJECT_DECLARE_TYPE(SCLPDevice, SCLPDeviceClass,
+ struct SCLPEventFacility;
+ 
+ struct SCLPDevice {
+-    /* private */
+     DeviceState parent_obj;
+-    struct SCLPEventFacility *event_facility;
+-    int increment_size;
+ 
+-    /* public */
++    struct SCLPEventFacility *event_facility;
+ };
+ 
+ struct SCLPDeviceClass {
+diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
+index 8602a566a49..c9a9c4bb375 100644
+--- a/hw/s390x/sclp.c
++++ b/hw/s390x/sclp.c
+@@ -110,7 +110,7 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
+     ReadInfo *read_info = (ReadInfo *) sccb;
+     MachineState *machine = MACHINE(qdev_get_machine());
+     int cpu_count;
+-    int rnsize, rnmax;
++    int rnmax;
+     int required_len = SCCB_REQ_LEN(ReadInfo, machine->possible_cpus->len);
+     int offset_cpu = s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB) ?
+                      offsetof(ReadInfo, entries) :
+@@ -153,21 +153,14 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
+ 
+     read_info->mha_pow = s390_get_mha_pow();
+     read_info->hmfai = cpu_to_be32(s390_get_hmfai());
+-
+-    rnsize = 1 << (sclp->increment_size - 20);
+-    if (rnsize <= 128) {
+-        read_info->rnsize = rnsize;
+-    } else {
+-        read_info->rnsize = 0;
+-        read_info->rnsize2 = cpu_to_be32(rnsize);
+-    }
++    read_info->rnsize = 1;
+ 
+     /*
+      * We don't support standby memory. maxram_size is used for sizing the
+      * memory device region, which is not exposed through SCLP but through
+      * diag500.
+      */
+-    rnmax = machine->ram_size >> sclp->increment_size;
++    rnmax = machine->ram_size >> 20;
+     if (rnmax < 0x10000) {
+         read_info->rnmax = cpu_to_be16(rnmax);
+     } else {
+@@ -406,25 +399,6 @@ static void sclp_realize(DeviceState *dev, Error **errp)
+     }
  }
  
--static ram_addr_t s390_fixup_ram_size(ram_addr_t sz)
+-static void sclp_memory_init(SCLPDevice *sclp)
 -{
--    /* same logic as in sclp.c */
+-    MachineState *machine = MACHINE(qdev_get_machine());
+-    MachineClass *machine_class = MACHINE_GET_CLASS(qdev_get_machine());
+-    ram_addr_t initial_mem = machine->ram_size;
 -    int increment_size = 20;
--    ram_addr_t newsz;
 -
--    while ((sz >> increment_size) > MAX_STORAGE_INCREMENTS) {
+-    /* The storage increment size is a multiple of 1M and is a power of 2.
+-     * For some machine types, the number of storage increments must be
+-     * MAX_STORAGE_INCREMENTS or fewer.
+-     * The variable 'increment_size' is an exponent of 2 that can be
+-     * used to calculate the size (in bytes) of an increment. */
+-    while (machine_class->fixup_ram_size != NULL &&
+-           (initial_mem >> increment_size) > MAX_STORAGE_INCREMENTS) {
 -        increment_size++;
 -    }
--    newsz = sz >> increment_size << increment_size;
--
--    if (sz != newsz) {
--        qemu_printf("Ram size %" PRIu64 "MB was fixed up to %" PRIu64
--                    "MB to match machine restrictions. Consider updating "
--                    "the guest definition.\n", (uint64_t) (sz / MiB),
--                    (uint64_t) (newsz / MiB));
--    }
--    return newsz;
+-    sclp->increment_size = increment_size;
 -}
 -
- static inline bool machine_get_aes_key_wrap(Object *obj, Error **errp)
+ static void sclp_init(Object *obj)
  {
-     S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
-@@ -1165,19 +1145,6 @@ static void ccw_machine_5_0_class_options(MachineClass *mc)
+     SCLPDevice *sclp = SCLP(obj);
+@@ -434,8 +408,6 @@ static void sclp_init(Object *obj)
+     object_property_add_child(obj, TYPE_SCLP_EVENT_FACILITY, new);
+     object_unref(new);
+     sclp->event_facility = EVENT_FACILITY(new);
+-
+-    sclp_memory_init(sclp);
  }
- DEFINE_CCW_MACHINE(5, 0);
  
--static void ccw_machine_4_2_instance_options(MachineState *machine)
--{
--    ccw_machine_5_0_instance_options(machine);
--}
--
--static void ccw_machine_4_2_class_options(MachineClass *mc)
--{
--    ccw_machine_5_0_class_options(mc);
--    mc->fixup_ram_size = s390_fixup_ram_size;
--    compat_props_add(mc->compat_props, hw_compat_4_2, hw_compat_4_2_len);
--}
--DEFINE_CCW_MACHINE(4, 2);
--
- static void ccw_machine_register_types(void)
- {
-     type_register_static(&ccw_machine_info);
+ static void sclp_class_init(ObjectClass *oc, const void *data)
 -- 
 2.51.0
 
