@@ -2,109 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E455BF78A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 17:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8360BF789D
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 17:58:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBEj8-00017M-Tm; Tue, 21 Oct 2025 11:56:46 -0400
+	id 1vBEk7-0002QV-N5; Tue, 21 Oct 2025 11:57:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1vBEj5-00016O-Ux
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:56:44 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBEk2-0002Iu-B1
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:57:42 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1vBEj2-0007pp-Ma
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:56:43 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-33db8fde85cso2402224a91.0
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 08:56:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBEjx-0007ul-RC
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:57:41 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-46e6a6a5e42so31687045e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 08:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1761062198; x=1761666998; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f5rIQfR0LdOWH1gZfogqGGKNzbK2Da+vWsJhiDZXltU=;
- b=ettL4Yk386GxmCiHsIok/lq9fRLGJyfMNTGpUdWsdZJnZt9UkXgJQj4aQ+UbCEN6Kw
- sfbnlcqLc8Wo3RyJx15q//eBipexm0TVrttdbXWc8BQLWqdWARFqDSHS68NzF/I/2WJD
- fBW7RvQN/u6W+X2jSCGORTfglLf/EFrJP5iZAmdnzUj7JhShNAkOY8hCky9q/lp8BWDD
- gax///jWDHlFXpehojQPZYqSkIhHVXudV6oZA2VgQSdIFYpoSzXcoJc/BRK2AKG3M+wO
- 7yS8HuOLTXP/P7xzV9fBxb/mYXM3IWnkZM8zWgf/KST1wxqDWefcuuR6/VpWYhn6G8eP
- UlKA==
+ d=linaro.org; s=google; t=1761062254; x=1761667054; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EmsKfQPb+phFt2HKZnH8E/xSwMnb6ZMpj9GAaYtCOVo=;
+ b=RlegZid1LrGl1NGudUsc+c8cPv2OW+BZ3sEySX63+OBjgXqMG6QdjACZN2uE3NUlYj
+ vg6B1zDwhiTMPqlnZ2JfAJz58DhV8EV5QR5hr9OPFjluD2zHExAWVdV6hJPCS17eZrnZ
+ BJhOdaCzQuZtnaoSiwjC/ixjZgpLOb5g/HTO8fV+M/M2/de3sem1M5zZlE/kNfH9M5k1
+ VMcbVEtJRQx8/4tWpmE6aP5M4F7jfVDzKe3BWK6hl2uSq+dQYn7N/zY1ZnCNfa4cHYNk
+ 0l9lC32zF0OR2tZmeWVdkjRWryXUpru49raSHZ1qnLq0Nt98AMbsHXd3FrMSPhl8A8/U
+ t4zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761062198; x=1761666998;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=f5rIQfR0LdOWH1gZfogqGGKNzbK2Da+vWsJhiDZXltU=;
- b=qiB0fP8exmcVXBJO+R3aYRjE5MHWx7J1wU7SViVq5gn/AmzsbBy28KYdbiJnUzxbb/
- 4l3jBgYCEOcj5LxWEFVWmQFESGpuz2/eHLERlpMCApFw4NiBqWJNOl+Kro41CnMvoiB6
- jAya4ZWvC2Ev+001JgZvaR+kigIMOSXQxisJHv/fklh+1svgBE9GB6HsFpFj1bQnY8AK
- 759Z8TLDyKOg7eOPX9SDQHGDO9ZFeV4NsS7FuCccQNRlniLdvpmA46XnnG43PDCWAo/9
- 91+37bS8pA1crGQSXEFtwSi7SpJprj60wx2iUdLctJlHodcWdK9VpFzS6f/MPSdTbxA1
- Bbeg==
-X-Gm-Message-State: AOJu0YyeUC5m8yCgOHMCiGGPA/TGbi1BbIfepu4HqGmib+Oao1VVTCEE
- oqAsE4W/C7MY7okUQj+d1m38/8G9RZzVNleFfkV4WbCuXU6ZYkmdA4kJ2XjuSyYd1/M26RSjBir
- Xokb6JNDthQCMC+ROXC3poSGbAUHaaK38c0RMcFo5alyhaKC3TQUDNauaLndzglnlaHreDkiuQN
- NHrRMaWJSAjlIzDChoQLTNLgj4lPrLLzzT1t1gdQ==
-X-Gm-Gg: ASbGncsf7rPeukMGB2KZpyulX2xmVazAe2+VaIAZCQJsOYoua61V7LD04/r5+TUmPAw
- 7+1MMXTDNG5JuQt9ilzR1JSwRPT0w6XA2GWiGXQZ9R25wuhgfCxsc3B3YYF/w5FHr+4rGgqGbLV
- R22SyCs9GIvUP4/t6eEVYwUCxFm086zRPgOnLeB4b2spm9sMWNuGLi5Tl2cZCblQDHIUhDYOLPK
- 5fo9ku1q/MLEaaKgW9Z21eyV7G/80QgcyeGHcAqWGvv9O0wh86OSrU8qMrvTL/gvIPw17Y2j4nJ
- T6sC1BToNBSjCA5OVD33g55A2uDXVdT4vbGsyr/uKeqDEjJrsh+v0hxDizxzivUyR3ybbl5ynox
- cAg/CJ6Cfo2FftajecZEpz/jkyT7klAYG2KUlfKh5D7EBGfOYAc86AZJf1b7l84msFmwQS4EbIz
- g56oy2IZmVdqZ9LOvMiJvtvK2PhphsWWap
-X-Google-Smtp-Source: AGHT+IE3tDh4RrsD3PH84nIuLTMEa7pF2YbSrTFf2kInDR0bGp+RFzhwLSvuVo5UCnBak6GN00VnHA==
-X-Received: by 2002:a17:90b:4c92:b0:32e:32f8:bf9f with SMTP id
- 98e67ed59e1d1-33bcf8f9960mr20847794a91.30.1761062198330; 
- Tue, 21 Oct 2025 08:56:38 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-33d5de11392sm11490177a91.7.2025.10.21.08.56.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Oct 2025 08:56:37 -0700 (PDT)
-From: Jim Shu <jim.shu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Michael Rolnik <mrolnik@gmail.com>, Helge Deller <deller@gmx.de>,
- Song Gao <gaosong@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
- Yoshinori Sato <yoshinori.sato@nifty.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
- qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
- Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v3 07/18] target/riscv: Add hard-coded CPU state of WG
- extension
-Date: Tue, 21 Oct 2025 23:55:37 +0800
-Message-ID: <20251021155548.584543-8-jim.shu@sifive.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251021155548.584543-1-jim.shu@sifive.com>
-References: <20251021155548.584543-1-jim.shu@sifive.com>
+ d=1e100.net; s=20230601; t=1761062254; x=1761667054;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EmsKfQPb+phFt2HKZnH8E/xSwMnb6ZMpj9GAaYtCOVo=;
+ b=mlGYetg1pXTmhFCLMymnG0Lkg1k3B6X4Ou8xgjUbUXfMRWKwYRzZ9Za6OJUyx9moBu
+ 6FaOgUNevETIPrsG3B0f7FqR1yE4VzNuYiHLoSod9nDmlWYrZPuRlLD7fSEtFiG6Vp7V
+ thrCsi8SvEaU2Kkc4iYJ8KhjsEq8LIY6sEVWbjNjPCUJYHRhX3CMwd1ctiWf4cfU3iCG
+ AO5goljgZb8Qt3LfhzVRiVLmXwwM1yfSh1IHU61BHzANx/qSBX6Dh3r7WueSpCGjQGNM
+ e9igvc5tVLZvBrFGrl0BnA94HJAdHK4o3Qo9j0F35vdtCrfpmhrbxHgyrHiVDUp+GKFE
+ lJDQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNd8p8mD2O3jMwl5H9+L+s/rdAK7z9lvAhQixhm0NKEYgU4thb23caDYI6wqZlmIKV/wAZKeZosCm7@nongnu.org
+X-Gm-Message-State: AOJu0YzqMiQHbJ4DlJHALYOYQeYRj/rZJYJTvleJb0ATRyQjr5wP0UgZ
+ HK0y/uiTssp6z+yfCrlxim6SlpCfBo6i9OhOOP1sua6eOzG0wt/3TcdYQNms7Tlty/w=
+X-Gm-Gg: ASbGnctPXkKMxK002NDr1SLxvmXItgUaFpJQBcTYRA1TYkfUMfOzWmhxLo2C5QfspU+
+ qtEMGDmNpLesVAbHEcvEz3ifX1ZQTP92Sb1mM/74jFUOPIuALUraAioLEK4HwEp4xAV6eL5ySEL
+ sHb1FWwYkizRWrooER/V37P28Gf+usIcAS+w9pW9mn2ymKZ4ROC767JSl2pFm1UNCRvjR5+lmUs
+ +SnWItctsAp5A2mJUQwqnDMQbnyjIJwwSo7dag3L9m/PQ8UhhORsNYTAVd/P85TCRExikfrKJPZ
+ L/EF4ya6nCymtlzkEfJm0CkNXGJeUZwK0j2gCd2RdPIfDWkKGq7g1kxtFxjgch0nPBDOwqzTZ7G
+ YB8+q1fgc48GJEaVc2++DwbtX+bh45n8hBHKu0PyrKHMHRFz1F4of85LFzDVvRwOAGT6wQwWke1
+ AQqbNE5HVsRPD7RRlPYW1HLsOSLWUEua1IvlvMiaTfpjtNDif7YYDJ9Q==
+X-Google-Smtp-Source: AGHT+IF1MmWzJKWbkzi17y79YgTkCd9mQLumlvX/g6V6H92HE0rBKfrbkoNhjBpfHnwGz+8efMIeKg==
+X-Received: by 2002:a05:600c:458b:b0:471:1702:f41a with SMTP id
+ 5b1f17b1804b1-47117919f1bmr138586925e9.33.1761062254190; 
+ Tue, 21 Oct 2025 08:57:34 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47154d3843csm201798655e9.11.2025.10.21.08.57.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Oct 2025 08:57:33 -0700 (PDT)
+Message-ID: <04c7e205-80f3-4f24-aa78-a68c63d2af7a@linaro.org>
+Date: Tue, 21 Oct 2025 17:57:32 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/10] hw/i386/apic: Prefer APICCommonState over
+ DeviceState
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Laurent Vivier <laurent@vivier.eu>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ kvm@vger.kernel.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Cameron Esfahani <dirty@apple.com>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
+ <phil@philjordan.eu>, John Snow <jsnow@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+References: <20251019210303.104718-1-shentey@gmail.com>
+ <20251019210303.104718-8-shentey@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251019210303.104718-8-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=jim.shu@sifive.com; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,76 +114,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add hard-coded state of WG extension. 'mwid' is the M-mode WID of CPU.
-'mwidlist' is the list of allowed WID value of 'mlwid' CSR.
+On 19/10/25 23:03, Bernhard Beschow wrote:
+> Makes the APIC API more type-safe by resolving quite a few APIC_COMMON
+> downcasts.
 
-These CPU states can be set by CPU option, or can be set by machine code
-via newly added APIs. If we want different WG configs of CPUs, we should
-set it by machine code.
+Nice!
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
----
- target/riscv/cpu.h                |  2 ++
- target/riscv/cpu_cfg_fields.h.inc |  3 +++
- target/riscv/cpu_helper.c         | 18 ++++++++++++++++++
- 3 files changed, 23 insertions(+)
+> Like PICCommonState, the APICCommonState is now a public typedef while staying
+> an abstract datatype.
+> 
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   include/hw/i386/apic.h           | 33 +++++------
+>   include/hw/i386/apic_internal.h  |  7 +--
+>   target/i386/cpu.h                |  4 +-
+>   target/i386/kvm/kvm_i386.h       |  2 +-
+>   target/i386/whpx/whpx-internal.h |  2 +-
+>   hw/i386/kvm/apic.c               |  3 +-
+>   hw/i386/vapic.c                  |  2 +-
+>   hw/i386/x86-cpu.c                |  2 +-
+>   hw/intc/apic.c                   | 97 +++++++++++++-------------------
+>   hw/intc/apic_common.c            | 56 +++++++-----------
+>   target/i386/cpu-apic.c           | 18 +++---
+>   target/i386/cpu-dump.c           |  2 +-
+>   target/i386/cpu.c                |  2 +-
+>   target/i386/kvm/kvm.c            |  2 +-
+>   target/i386/whpx/whpx-apic.c     |  3 +-
+>   15 files changed, 95 insertions(+), 140 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 4c13012442..b121e3bca9 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -654,6 +654,8 @@ void riscv_cpu_set_aia_ireg_rmw_fn(CPURISCVState *env, uint32_t priv,
-                                    void *rmw_fn_arg);
- 
- RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
-+void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid);
-+void riscv_cpu_set_wg_mwidlist(CPURISCVState *env, uint32_t mwidlist);
- #endif /* !CONFIG_USER_ONLY */
- 
- void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv, bool virt_en);
-diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
-index 44387a8db3..ba309d9c32 100644
---- a/target/riscv/cpu_cfg_fields.h.inc
-+++ b/target/riscv/cpu_cfg_fields.h.inc
-@@ -172,5 +172,8 @@ TYPED_FIELD(uint8_t,  pmp_regions, 0)
- 
- TYPED_FIELD(int8_t, max_satp_mode, -1)
- 
-+TYPED_FIELD(uint32_t, mwid, 0)
-+TYPED_FIELD(uint32_t, mwidlist, 0)
-+
- #undef BOOL_FIELD
- #undef TYPED_FIELD
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 63acd70543..d2be660d58 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -135,6 +135,24 @@ bool riscv_env_smode_dbltrp_enabled(CPURISCVState *env, bool virt)
- #endif
- }
- 
-+#ifndef CONFIG_USER_ONLY
-+void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid)
-+{
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+
-+    cpu->cfg.mwid = mwid;
-+}
-+
-+void riscv_cpu_set_wg_mwidlist(CPURISCVState *env, uint32_t mwidlist)
-+{
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+
-+    cpu->cfg.mwidlist = mwidlist;
-+}
-+#endif /* CONFIG_USER_ONLY */
-+
- RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
- {
- #ifndef CONFIG_USER_ONLY
--- 
-2.43.0
+
+> -int apic_get_highest_priority_irr(DeviceState *dev)
+> +int apic_get_highest_priority_irr(APICCommonState *s)
+>   {
+> -    APICCommonState *s;
+> -
+> -    if (!dev) {
+> +    if (!s) {
+>           /* no interrupts */
+
+Pre-existing dubious check.
+
+>           return -1;
+>       }
+> -    s = APIC_COMMON(dev);
+>       return get_highest_priority_int(s->irr);
+>   }
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
