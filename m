@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44E1BF8C56
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4DDBF8C62
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 22:48:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBJH0-0005Jw-AO; Tue, 21 Oct 2025 16:48:03 -0400
+	id 1vBJH3-0005Vc-7z; Tue, 21 Oct 2025 16:48:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGk-0004y7-9W
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:47 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGp-00050l-3h
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:57 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGi-00015t-Co
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:46 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-47118259fd8so37842575e9.3
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBJGm-00016O-KY
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 16:47:50 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4711f3c386eso30320775e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 13:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761079661; x=1761684461; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761079666; x=1761684466; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XQQ5psxWRgNiatcKRVUGVhz6uu63XiXm8T64eSiUx9s=;
- b=Yh6xAlyxDL6wGILeqtykZGKs+pg9KBT9Upcis6d3zy/suzcSix8HISaofJYdyGPq9i
- oBeTkLSWXMl2Lo8hu25xzDAPPG9f0gphDutG0U/o0GDiZN9/tsktbWr/0A5kQwcOuZoR
- BQtoVkUgz9Cty1ZONMkq1Bu39yEsJEjsvmGxq+OMTDZPawoNDSRxzD2EqXVuCD+U5Shy
- 6dY0yD2RCGZ/8yf8D8/cVqszJC9d8kmFaAaWhWY6x0xRqREzuRgTxP1mx9F9HstbQzAz
- IhLh+zjW8XPP/HkL9oJbaa2QdSesHnAYq0cqgJ/a8WpN/0V8Net76hMtciXpyknUhMKv
- TE9g==
+ :reply-to; bh=kLrXAGfmdWrgxLaTu8U7Tv+AagNM/KHjl/sq9+z40ow=;
+ b=HuqXrX87NHLCptbeUolbxJI7dAe9LjdsxICxuhOAXON4tQc9SWAPsBrb4Y49TPXPY8
+ qvbEiuppoY2+cA2lCByRIw8p69HiU/a21aIZdypuD8U3RW146cuJlUZX5FLtlm5C2k8F
+ UyeLJIUsqyjC0O9Lmz/z1OfgSNps047JqbMcby5IrNCKWaljxybj4fLuPttrzIRJpGNl
+ 0kAW2XU9J6OC2Aju4nP77ZMOVUZSf5tJU+Mwb8L/fWj+s6TLOc+vEpKE/fTr5iD68UtR
+ MWEnji/6/IY5rqbigXM34FuMRAEW6IIitO5F0MzKcau2uFa3Fsu5oLEgexX4gEaPXGm7
+ S9Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761079661; x=1761684461;
+ d=1e100.net; s=20230601; t=1761079666; x=1761684466;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XQQ5psxWRgNiatcKRVUGVhz6uu63XiXm8T64eSiUx9s=;
- b=IcMTSypv5/22Z5FPhnw5AgRbpHBPvRH1T953gL4X15yesalkFJZNG0qSegD78dKlnz
- M9z1bEjnbTtr32RLK6GH5ME00deV6H8+Fn8fuCENBjGkgcnMK0PuTcAnYeKtkdn/Fpxo
- 8o63iNSZOSzJnalVlRIUp4xVO/ZdmW7Zp5BnF5/zI80UcVuez15eFF1gOKkyFwQXxXqF
- umZfVY6No27JYUuvodLqmkFX3G/PhMSWXJbd+fyYdiSo10d5KDN8u31JtgqoV9RZ4LT4
- 3wlDbJxPjPwKnrWE5gmyeD0AlQlWSg5pgFkMUV1sGFTm+cXyUxmvUhOEHvVLoge76vsj
- BjRQ==
-X-Gm-Message-State: AOJu0YyZPWbnmt9sHa4mvrRr4185k2zxLThAIvzdWaXP7J2d6E9aodR0
- LbZNtQQwKMV8fgs+vJCBTjqppmQWpc8p+FKLVDaDBNLm6r8MLM1EI6WVzGQWahEzHkrndn2GnNq
- YkhUftsk=
-X-Gm-Gg: ASbGncsjuF2IfqA79g3i0lJQSjNTBW/o53GcZZQ1BDgjwe3Prx9+Ivxahfdn4HXQ2JN
- h4xNwN9ubq2Zv/UPJGlQOc7W5An1DC0j880ptaddNZeD1gB4uslntj+E6LVuBVIxgxTLgu8/UKo
- NOvbfw9qVNpAdgyMVE0BjKMB0Rde16zk52I2YddydTCC5ISkWPSpu8vtqO5LCHUvsw5jMNVVXY7
- 9fOLgo3Gn+PXvTrhBcPgm9HqjnZT1KqPc9ON9m7xRkN6VVJgF0O58+4asDbD0XCRtdGTWOfqJGp
- ZrHOL12KheeRvMQMhjI/luB6A8OZz7zclnCN8nW5J0iocD/yaQbWSOMZBGPLxxpdXi8dROOV/Wl
- VnUGSaBHvfHU5wOQY3/KpJJZwSGNOO0chH61nWvIq/4h09FP7mJqEijDU9XyDE3KSrubGhMWLRd
- 8CFk3T7eZboVeW2QyI9as99oTQDMfxHMcWOUk9rrephKnqF7Q5PQeolCxK+R2GKFNONs9WlQA=
-X-Google-Smtp-Source: AGHT+IFD1N3bpaDZizMwReNy1Um64LrLL22FZCa17VDuRV4mh+iFz17s3VGAB+2P7aEsjYJF+CnA0A==
-X-Received: by 2002:a05:600c:800f:b0:471:700:f281 with SMTP id
- 5b1f17b1804b1-471179041b6mr137163555e9.25.1761079661188; 
- Tue, 21 Oct 2025 13:47:41 -0700 (PDT)
+ bh=kLrXAGfmdWrgxLaTu8U7Tv+AagNM/KHjl/sq9+z40ow=;
+ b=tJVXrb13nKaS+s5uKF8rgwcjT5QVr8XplZIk+XY5Gwbfq0DmD+FOCcj+45YGUWf/WU
+ MmPEiavPBSRgJH7z4TpSCA2a88FOs6bR792WU0b7WccShld1hXs5b1DEq052mhVU8gu9
+ vaD1ERtzsPL9FSytOfx6q0Ry+jDGboPp6lIze+Sccih5t4M+BLJoJq9ZEol3kJB9P5vL
+ gpurKkOaqPZycKnOpdqIiO/zeK9y/S5QPuegN0pQBOKDy8bk/h0aIXFjfPt7zE6Ly3/s
+ AqGC7Tqe7jXLKER9ag3b6OY7G+uWJ4dGUb/xJUmSaduLtl8c9lijhz6XT5nrIZPOQQQH
+ pIjA==
+X-Gm-Message-State: AOJu0YwZELPsAe/s+GmMfTG7oF6fJWzo5R3Hog0zhbxUFHy1xn5s73ch
+ 7wsteJmhBLsdW+pvJ3iPPIdoT8Nfbg/b34RImoqOH4hJHR0qe27ckDqwTzoOllLKqAizJChdr5W
+ tinokVNE=
+X-Gm-Gg: ASbGncvBYH7E+xp81NXWfnF5Dr6w0GSeYOhXPm0VZi2Rc11lXpMJLDVi3rYObS/Of1f
+ 3GVFCELp3jiOJHBbPcxHM+P9wIfyR2v9EiQ5TWCx8bVMW0ZbIOucEZ9AeONiBVRfNbvc4KLu318
+ yMDAPUSgv+8Fnhmr0qe8dANSednsA2DiPGJndAjlA1FNkQi9VXb17ZgFA39FT4JvR6fcsTjdqen
+ WbGaoOtF0gM3tmGsPBcLcIoo9/mqp85v8xOPbAn/Vu8qbpsdRkKyvk+E/raLKlusN0/MLBMRI9o
+ Lvv3KKTq/H19epM3gE5dfh0OCVyb/zvAcKyyF6kkPHAdvP1EQRRWfKjb1qa2HaN4Yl+8Q5cBOLP
+ uJgzb3ZMvzpht0s8kYgP1ULTr8RY7U9D2ah2kp32wy1lXPzJnKna2qDH/ESEgYS7HFR6hbD6+/V
+ VbL9hrZof9J/MjNglIupZHr+ZyoZeBzAhEhQZDAY00q25UU3OO9Q==
+X-Google-Smtp-Source: AGHT+IFYCvuUWE3CC9vjZou4ht1ko0skcZlXIvwOSYlX9dWIRoNsLdynSz4CTTu6Fbz5U6JSeEtlLw==
+X-Received: by 2002:a05:600c:468d:b0:45f:28d2:bd38 with SMTP id
+ 5b1f17b1804b1-471178b14acmr130860395e9.18.1761079665776; 
+ Tue, 21 Oct 2025 13:47:45 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c427f77bsm10042785e9.3.2025.10.21.13.47.40
+ 5b1f17b1804b1-475c42b4867sm9617325e9.14.2025.10.21.13.47.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 13:47:40 -0700 (PDT)
+ Tue, 21 Oct 2025 13:47:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/45] hw/core/machine: Allow dynamic registration of valid CPU
- types
-Date: Tue, 21 Oct 2025 22:46:22 +0200
-Message-ID: <20251021204700.56072-9-philmd@linaro.org>
+Subject: [PULL 09/45] hw/core: Introduce MachineClass::get_default_cpu_type()
+ helper
+Date: Tue, 21 Oct 2025 22:46:23 +0200
+Message-ID: <20251021204700.56072-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021204700.56072-1-philmd@linaro.org>
 References: <20251021204700.56072-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,87 +98,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add MachineClass::get_valid_cpu_types(), a helper that
-returns a dynamic list of CPU types. Since the helper
-takes a MachineState argument, we know the machine is
-created by the time we call it.
+MachineClass::get_default_cpu_type() runs once the machine is
+created, being able to evaluate runtime checks; it returns the
+machine default CPU type.
 
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20251020220941.65269-4-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20251020221508.67413-7-philmd@linaro.org>
 ---
- include/hw/boards.h |  4 ++++
- hw/core/machine.c   | 28 ++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ include/hw/boards.h |  6 ++++++
+ hw/core/machine.c   | 10 ++++++++++
+ system/vl.c         |  2 +-
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/boards.h b/include/hw/boards.h
-index d0a69cd490b..c45272b7414 100644
+index c45272b7414..014007920dd 100644
 --- a/include/hw/boards.h
 +++ b/include/hw/boards.h
-@@ -253,6 +253,9 @@ typedef struct {
-  * @smbios_memory_device_size:
-  *    Default size of memory device,
-  *    SMBIOS 3.1.0 "7.18 Memory Device (Type 17)"
-+ * @get_valid_cpu_types:
-+ *    Returns a list of valid CPU types for this board. May be NULL
-+ *    if not needed.
-  */
- struct MachineClass {
-     /*< private >*/
-@@ -299,6 +302,7 @@ struct MachineClass {
-     bool ignore_memory_transaction_failures;
+@@ -25,6 +25,11 @@ OBJECT_DECLARE_TYPE(MachineState, MachineClass, MACHINE)
+ 
+ extern MachineState *current_machine;
+ 
++/**
++ * machine_default_cpu_type: Return the machine default CPU type.
++ * @ms: Machine state
++ */
++const char *machine_default_cpu_type(const MachineState *ms);
+ /**
+  * machine_class_default_cpu_type: Return the machine default CPU type.
+  * @mc: Machine class
+@@ -303,6 +308,7 @@ struct MachineClass {
      int numa_mem_align_shift;
      const char * const *valid_cpu_types;
-+    GPtrArray *(*get_valid_cpu_types)(const MachineState *ms);
+     GPtrArray *(*get_valid_cpu_types)(const MachineState *ms);
++    const char *(*get_default_cpu_type)(const MachineState *ms);
      strList *allowed_dynamic_sysbus_devices;
      bool auto_enable_numa_with_memhp;
      bool auto_enable_numa_with_memdev;
 diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 7aec3916e80..cd2f1414a77 100644
+index cd2f1414a77..cd63803000c 100644
 --- a/hw/core/machine.c
 +++ b/hw/core/machine.c
-@@ -1570,6 +1570,8 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
-      */
-     if (mc->valid_cpu_types) {
-         assert(mc->valid_cpu_types[0] != NULL);
-+        assert(!mc->get_valid_cpu_types);
-+
-         for (i = 0; mc->valid_cpu_types[i]; i++) {
-             if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
-                 break;
-@@ -1596,6 +1598,32 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
-                 error_append_hint(errp, "\n");
-             }
+@@ -1556,6 +1556,16 @@ const char *machine_class_default_cpu_type(MachineClass *mc)
+     return mc->default_cpu_type;
+ }
  
-+            return false;
-+        }
-+    } else if (mc->get_valid_cpu_types) {
-+        GPtrArray *vct = mc->get_valid_cpu_types(machine);
-+        bool valid = false;
++const char *machine_default_cpu_type(const MachineState *ms)
++{
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
 +
-+        for (i = 0; i < vct->len; i++) {
-+            if (object_class_dynamic_cast(oc, vct->pdata[i])) {
-+                valid = true;
-+                break;
-+            }
-+        }
++    if (mc->get_default_cpu_type) {
++        return mc->get_default_cpu_type(ms);
++    }
++    return machine_class_default_cpu_type(mc);
++}
 +
-+        if (!valid) {
-+            g_autofree char *requested = cpu_model_from_type(machine->cpu_type);
-+
-+            error_setg(errp, "Invalid CPU model: %s", requested);
-+            error_append_hint(errp, "The valid models are: ");
-+            for (i = 0; i < vct->len; i++) {
-+                g_autofree char *model = cpu_model_from_type(vct->pdata[i]);
-+                error_append_hint(errp, "%s%s",
-+                                  model, i + 1 == vct->len ? "\n" : ", ");
-+            }
-+        }
-+        g_ptr_array_free(vct, true);
-+        if (!valid) {
-             return false;
-         }
+ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+diff --git a/system/vl.c b/system/vl.c
+index a96063f9901..fd98ea52d9c 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -3817,7 +3817,7 @@ void qemu_init(int argc, char **argv)
+     migration_object_init();
+ 
+     /* parse features once if machine provides default cpu_type */
+-    current_machine->cpu_type = machine_class_default_cpu_type(machine_class);
++    current_machine->cpu_type = machine_default_cpu_type(current_machine);
+     if (cpu_option) {
+         current_machine->cpu_type = parse_cpu_option(cpu_option);
      }
 -- 
 2.51.0
