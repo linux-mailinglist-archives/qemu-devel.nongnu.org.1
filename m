@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1081EBF5ABA
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 11:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF03FBF5ACD
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 12:02:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vB99c-0001FV-83; Tue, 21 Oct 2025 05:59:44 -0400
+	id 1vB9BP-0002Vw-VK; Tue, 21 Oct 2025 06:01:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB99X-0001Ev-44
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:59:39 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB9BO-0002Vi-7m
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 06:01:34 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB99V-000305-Av
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 05:59:38 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-470ffbf2150so35638445e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 02:59:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vB9BM-0003Nh-0B
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 06:01:33 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4711810948aso36632955e9.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 03:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761040775; x=1761645575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761040890; x=1761645690; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=diEGpjF07VrSCVJ5bbgvOPW0SLJplmYw9QFlNMvv++g=;
- b=CNf46BOf8PiVIUKciytNv1Ynt/d01Rvjj7Qotkqv4vLrvrNpMfCRmDx5DnnQWTbsxR
- b745bZnKkqr22lEDbXAIhPiMOp4rCmvRggOYVTAUHRVNtmdjI4AlH2kwT1oUIwg/rAAQ
- VtijCkt/k/kadTO2u20PRTWO9ZZeVsmL/MTc0GXkXHAIue0OJdJWFldo8G8bM7V+oXg5
- nW5drZLOYifMWSyiXSijsfVtFJify9+KL08AMnlo89ilmYiIfX8msZi8RNmHF/nEIhoS
- DA4d+toPo9WyA93vnsiqdj/SBgo1yqdbAFLQh3vcEcUbEtfQ3hvQkGQQmBXOxcVTUkI6
- Fiyg==
+ bh=pwgfOhp/2ij9lnaA+c2M8qIuZDMTiHP92piX+EKP6bc=;
+ b=dPtEJXumVoHUBNeMdH8be9zjQYMN6mRvU24A5pIPvOURCa4OdP9l5/joVUKHR5wxrD
+ dMNXnvEIeqMSAoZ1H2xlJYHvDPlNb8EIiUHkBa5uOreTlk95d0E+NilVpKCryJkLb+Il
+ t9w8hlU+se5nlQacaV1yrDVCW/TNwaXtbrLNIJS/X3lRUgFeM0lt4+Lp+hoqgE1HXFyz
+ ejVA0ZDMI/Je5ruIEJUi/Zw2Kb7JHwLMwFGzlchDPujYbM90maIMpftELWaBbXuS+JVH
+ CzQGLpA6hNxYh2GYDNMxGBguCSR9eSmkQnFVIwtiXzYyanhwu0iSFfhNjIAEx98vV5MM
+ Wz3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761040775; x=1761645575;
+ d=1e100.net; s=20230601; t=1761040890; x=1761645690;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=diEGpjF07VrSCVJ5bbgvOPW0SLJplmYw9QFlNMvv++g=;
- b=cZgRdpCkER/uP4SmNNGttnNdcGz3nWFYxnAIi6GqNzU0gBacJ1JxY920KaJscyZrhL
- CNxPWk9fsjFLych6h+R10CKFJW+AX6uX1JUJdqUuGR7fo9MAsmefN+byWFx9GIJYFWt3
- uOfqLVsgXL74bhVidtxUcsN9cvbfyV194vkxvbmnvoopu74beR2M8Hiwc5M2FfD6lkEm
- vCok0i1uEfePaZ9XaYdBIZH2ORo7SMzYpH0UYsuVwKcvNvDr1RcHuMXDCs3D/HgXXZAd
- UQQAky+NdeVQPWQBXVU8zvSrxulGsgYpCKbc/Ez4gJ/zVoGd0qS6RKFLavaOqnknxcRu
- eoTA==
+ bh=pwgfOhp/2ij9lnaA+c2M8qIuZDMTiHP92piX+EKP6bc=;
+ b=Na1GW9gtGYxQdKxYKDpzMnn7Q+zFjFjyj40uaFbCn9Jg5LEUbBrSsgI2jXSNBObyu1
+ ZMVdrUtZugi1WceWBLrwRUfKLZYG0LGQxLXLXyJzloBwH6OSWQDOejdCZHTM/WNJEofP
+ ccRGLtI4YeZHWjpKA7LMh/nbpnVcS2gC69J8EYoMSE8k98RINdcT8h1IBcdLXvUU9/1I
+ 2A6/Zcdp5XuEfjAkriGpllUA8fCaKswuady4jHT7jlViTkfKefvYk7Kdrq4BwIbTpSF2
+ pDiwj8ROShffYdJ+K/t5Jh9pyeWFEsxnrFSfyQsUN1JIoC/sPlFQ7wz2+7JoO0nHwBst
+ L3Pg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXnltd1a2fAgge8lkV4pGQEkFt4xWuIWJtDp3iy/KZoDyVOJh2mPm+UWdqk58yiC/hHJE5s888G1hwj@nongnu.org
-X-Gm-Message-State: AOJu0YxTG0rmIes/uGRHK3P2Noi2iAfVG2YNFdSWkAcsEei/CzUQx0uQ
- 3xwsUlBx6sz0rrXobGumEkRhFE3hmUxPSQ6txuhMuDjG7RE1e1CUR7gAYu66Ma9gRjU=
-X-Gm-Gg: ASbGnctYOvwHFsBDYsY67ClifikiK9Pye5lvmOodj5vAtVNq7c0GPlTpgNAwxj6esFt
- 5Xe7RZccviP75IBMevX57JeeulaSIyfFFGV1xlBae943iNd6RereKf3b0PBvd/9ZvB/EtwyCyH2
- g/vIp0AGVwFWX2vVFdMo9Nij5AXIA1FpLkjA+Z0l7ViX+GCaqShuBLDf6Tp9WnwSkUb9RMAWxxo
- +64VzslIMbSsGFAu83ElSpFqWLX8prS3gEbiI9ajmgGPYq3VPZYygLhC7A6Pnamxb+bYRcRusco
- 93M9NWLpB9opn0Di5wcM23yUTTu1zJcJby34wgngfzut6y/GNoDoztQwl/0C2nuTixRSqeHRxuC
- TuOCFqUv7fIE5h4JEH4nuZmAPZunT19nV1c62MULVKHHxqDbBHgcYtu6F/0Fj2RlsnOaDIOHMTN
- fClOzrfPIIzeQmPMrCisYvD30m/owq1O3is9GtII7DrTNhBHwBiVh2jw==
-X-Google-Smtp-Source: AGHT+IGxxJJMwiORZBljHoNwNlzwsdKNa/mN/29fcf3y8Kxged0WfLKhK2w+El3kib5hIzRxQZQG5w==
-X-Received: by 2002:a05:600c:3b98:b0:46e:6339:79c5 with SMTP id
- 5b1f17b1804b1-4711724b354mr158150935e9.5.1761040775642; 
- Tue, 21 Oct 2025 02:59:35 -0700 (PDT)
+ AJvYcCVTYH7xRRRP5H8deojUKPxh8tmqca7x2PUg74wMCifNyFcX6Wep360ov4iDaJabL7ZjpV73O4msMEdQ@nongnu.org
+X-Gm-Message-State: AOJu0YwWH65ROcJD7VPnyP0yvqHBLq0U3ci/xLRpjIV6CWER7ucwiWJw
+ 8u3EZ5yR6wAXp6y5YYUHEh0KfJHZMWnakewjNHfdMY0IQ9gcllPOyW+pPcIScx6KCn8=
+X-Gm-Gg: ASbGncvVnYYY5FAWHJAMYhHWgOwCeThGSii8Y6jEIUB024COG+A7Bd543mc1R3cbvQb
+ OTlPnowZeQA7hCnhjCGgk8zb9gmAs5KCA5RgECHyBhdFB1agTsDVOwdReofyx+uWrJ2dCWPljgw
+ 4PWbY5KPn2lwKrI1hWeYHvpl+qrZhoIfoLHzKlrzIlCDgkaFtL36hvPTsfOGawjGlUEGDUiIM5M
+ 7n42tB3etPzpdpLfNMGyM15KEtsDiSD/+yGys14h3KBOhBOzkQjzAnC4icPaap5/ZX+tb+ZAw18
+ mXrXMyLg2nBDIo5dogRB2bevJ/AfKFiTogieum3Cvx3Eaa/mgZPtqwZ3+8ZRfJVI45+be/SgQ7P
+ 5IVTAStHt7TJPT8W3yjXbwZ6+7escaS7f5NhIzonDNe7qBV4anjVLNYplhp7P2dLW5d4+F7fA+V
+ o4Dj0YLW/p77qkqbkxjg7xw3X8iGK48Diz0E1G9JJA/R3Yk6r3HvTrvA==
+X-Google-Smtp-Source: AGHT+IERV0oHns6B5iA6/gFiljyOCPcITw+hfzi338TeUN72rBdTfFHuGwofVfnfrX+607kiwGiRgg==
+X-Received: by 2002:a05:600d:630a:b0:471:1b25:fa00 with SMTP id
+ 5b1f17b1804b1-4711b25fd7cmr75003045e9.36.1761040889838; 
+ Tue, 21 Oct 2025 03:01:29 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4714fb1b668sm217594205e9.0.2025.10.21.02.59.34
+ 5b1f17b1804b1-471144c831asm265022405e9.13.2025.10.21.03.01.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Oct 2025 02:59:34 -0700 (PDT)
-Message-ID: <0fcdb819-7fd3-4d3b-8e56-afc32cad3296@linaro.org>
-Date: Tue, 21 Oct 2025 11:59:33 +0200
+ Tue, 21 Oct 2025 03:01:29 -0700 (PDT)
+Message-ID: <aa7cde28-29f7-4134-a494-0db6a1cfb745@linaro.org>
+Date: Tue, 21 Oct 2025 12:01:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 19/43] audio/paaudio: remove needless return value
+Subject: Re: [PATCH 31/43] hw/audio: replace AUD_log() usage
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini <pbonzini@redhat.com>, 
  =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
  Gerd Hoffmann <kraxel@redhat.com>
 References: <20251021090317.425409-1-marcandre.lureau@redhat.com>
- <20251021090317.425409-20-marcandre.lureau@redhat.com>
+ <20251021090317.425409-32-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251021090317.425409-20-marcandre.lureau@redhat.com>
+In-Reply-To: <20251021090317.425409-32-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,13 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/10/25 11:02, marcandre.lureau@redhat.com wrote:
+On 21/10/25 11:03, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> AUD_log() is just printf(stderr, "prefix: "..), we can use
+> error_report() or warn_report() appropriately instead.
+> 
+> Ideally it should be converted to traces, but there are many places to
+> convert, this is left for another day.
+> 
+> Avoid bit-rot by using conditionals.
+> 
+> The patch could be splitted if necessary.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   audio/paaudio.c | 13 ++++---------
->   1 file changed, 4 insertions(+), 9 deletions(-)
+>   hw/audio/ac97.c    | 120 ++++++++++++++++++++++-----------------------
+>   hw/audio/adlib.c   |  20 +++-----
+>   hw/audio/cs4231a.c |  40 +++++++--------
+>   hw/audio/es1370.c  |  24 ++++-----
+>   hw/audio/gus.c     |  21 ++++----
+>   hw/audio/pcspk.c   |   2 +-
+>   hw/audio/sb16.c    |  93 +++++++++++++++++------------------
+>   7 files changed, 151 insertions(+), 169 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
