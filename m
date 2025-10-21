@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42635BF6F00
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E4DBF6EE4
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 15:59:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBCs7-0000F0-2S; Tue, 21 Oct 2025 09:57:55 -0400
+	id 1vBCs6-0000F1-Rc; Tue, 21 Oct 2025 09:57:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs0-0000DJ-Mi
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCs0-0000DI-Mi
  for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCrx-0007we-U3
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vBCry-0007wi-DZ
  for qemu-devel@nongnu.org; Tue, 21 Oct 2025 09:57:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761055064;
+ s=mimecast20190719; t=1761055065;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=szPxpttNSZBGBgRs5/zRXAVwbzz9nfEweIAoiIl71+Q=;
- b=LM1gR6zZpJ35x9EBJUixS9MtCReuV7RkDffGcb8gBSuWWjgrJDwTl2X2MYex83ET5fF1Rj
- 3qNiFcHbwWIgks+wKLvR4vY9VqbJTNTXMxshHVAbPazrBsv65MaSU8bo03+jqMaIeaFp93
- jiZfSK0YljMXrmn6lUcvz3e0XmnyjD4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2LASpbnvht/YRs8V6TqUYEzVhvHS/fJVgPnoGaPTlRA=;
+ b=WxJ2qdT64cdhue3q9jRsHeotu8/VLR1E+wdXdd9suuFmVxk9D9yFTvSV0nbiS4vxoYkOlp
+ 5tWtZ1Rj+VGijBXYM1HgMmPTmqUH34R40fsbh2shnGQHoLJO+4LN+4RoEgw/G6E+L+C1rp
+ bV6UBy71cgRunDLoJcEt4Ieo23E1iek=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-Lo5v7p8POz6m0nEFHf0LZQ-1; Tue,
- 21 Oct 2025 09:57:39 -0400
-X-MC-Unique: Lo5v7p8POz6m0nEFHf0LZQ-1
-X-Mimecast-MFC-AGG-ID: Lo5v7p8POz6m0nEFHf0LZQ_1761055058
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-519--2jaLvmdMDKuUkIuQ0NSQA-1; Tue,
+ 21 Oct 2025 09:57:41 -0400
+X-MC-Unique: -2jaLvmdMDKuUkIuQ0NSQA-1
+X-Mimecast-MFC-AGG-ID: -2jaLvmdMDKuUkIuQ0NSQA_1761055060
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 29E6E1956086; Tue, 21 Oct 2025 13:57:38 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DC4CD1956050; Tue, 21 Oct 2025 13:57:39 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4015119560A2; Tue, 21 Oct 2025 13:57:36 +0000 (UTC)
+ id 8DFD419560A2; Tue, 21 Oct 2025 13:57:38 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 0/6] s390x patches + gitlab-CI fix
-Date: Tue, 21 Oct 2025 15:57:29 +0200
-Message-ID: <20251021135735.96145-1-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: [PULL 1/6] qapi/machine-s390x: add QAPI event SCLP_CPI_INFO_AVAILABLE
+Date: Tue, 21 Oct 2025 15:57:30 +0200
+Message-ID: <20251021135735.96145-2-thuth@redhat.com>
+In-Reply-To: <20251021135735.96145-1-thuth@redhat.com>
+References: <20251021135735.96145-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -78,47 +82,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Richard!
+From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
 
-The following changes since commit 3a2d5612a7422732b648b46d4b934e2e54622fd6:
+Add QAPI event SCLP_CPI_INFO_AVAILABLE to notify the availability
+of Control-Program Identification data in QOM.
 
-  .gitlab-ci.d/buildtest.yml: Install 'file' for the Coverity job (2025-10-19 11:49:36 -0700)
+Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+Suggested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251016121708.334133-1-shalini@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ qapi/machine-s390x.json | 21 +++++++++++++++++++++
+ hw/s390x/sclpcpi.c      |  4 ++++
+ 2 files changed, 25 insertions(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-10-21
-
-for you to fetch changes up to 8a2b283efa007f705f12784fc10185435bd1852f:
-
-  gitlab-ci: Decrease the size of the compiler cache (2025-10-21 15:47:45 +0200)
-
-----------------------------------------------------------------
-- Add a missing QAPI event + functional test for the CPI feature on s390x
-- Remove the obsolete s390-ccw-virtio-4.2 machine type
-- 2nd try to fix the slow cache up/download in the MSYS2 CI job
-
-----------------------------------------------------------------
-Philippe Mathieu-Daudé (3):
-      hw/s390x/ccw: Remove deprecated s390-ccw-virtio-4.2 machine
-      hw/s390x/ccw: Remove SCLPDevice::increment_size field
-      hw/core/machine: Remove MachineClass::fixup_ram_size callback
-
-Shalini Chellathurai Saroja (2):
-      qapi/machine-s390x: add QAPI event SCLP_CPI_INFO_AVAILABLE
-      tests/functional: add tests for SCLP event CPI
-
-Thomas Huth (1):
-      gitlab-ci: Decrease the size of the compiler cache
-
- qapi/machine-s390x.json                   | 21 +++++++++++++++++++
- include/hw/boards.h                       |  7 -------
- include/hw/s390x/sclp.h                   |  5 +----
- hw/core/machine.c                         |  3 ---
- hw/s390x/s390-virtio-ccw.c                | 33 ------------------------------
- hw/s390x/sclp.c                           | 34 +++----------------------------
- hw/s390x/sclpcpi.c                        |  4 ++++
- .gitlab-ci.d/windows.yml                  |  5 ++++-
- tests/functional/s390x/test_ccw_virtio.py | 26 +++++++++++++++++++++++
- 9 files changed, 59 insertions(+), 79 deletions(-)
+diff --git a/qapi/machine-s390x.json b/qapi/machine-s390x.json
+index 966dbd61d2e..8412668b671 100644
+--- a/qapi/machine-s390x.json
++++ b/qapi/machine-s390x.json
+@@ -119,3 +119,24 @@
+ { 'command': 'query-s390x-cpu-polarization', 'returns': 'CpuPolarizationInfo',
+   'features': [ 'unstable' ]
+ }
++
++##
++# @SCLP_CPI_INFO_AVAILABLE:
++#
++# Emitted when the Control-Program Identification data is available
++# in the QOM tree.
++#
++# Features:
++#
++# @unstable: This event is experimental.
++#
++# Since: 10.2
++#
++# .. qmp-example::
++#
++#     <- { "event": "SCLP_CPI_INFO_AVAILABLE",
++#          "timestamp": { "seconds": 1401385907, "microseconds": 422329 } }
++##
++{ 'event': 'SCLP_CPI_INFO_AVAILABLE',
++  'features': [ 'unstable' ]
++}
+diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
+index 7aa039d5100..68fc1b809bf 100644
+--- a/hw/s390x/sclpcpi.c
++++ b/hw/s390x/sclpcpi.c
+@@ -54,6 +54,7 @@
+ #include "hw/s390x/event-facility.h"
+ #include "hw/s390x/ebcdic.h"
+ #include "qapi/qapi-visit-machine.h"
++#include "qapi/qapi-events-machine-s390x.h"
+ #include "migration/vmstate.h"
+ 
+ typedef struct Data {
+@@ -106,6 +107,9 @@ static int write_event_data(SCLPEvent *event, EventBufferHeader *evt_buf_hdr)
+     e->timestamp = qemu_clock_get_ns(QEMU_CLOCK_HOST);
+ 
+     cpim->ebh.flags = SCLP_EVENT_BUFFER_ACCEPTED;
++
++    qapi_event_send_sclp_cpi_info_available();
++
+     return SCLP_RC_NORMAL_COMPLETION;
+ }
+ 
+-- 
+2.51.0
 
 
