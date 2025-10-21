@@ -2,82 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9FABF74F2
+	by mail.lfdr.de (Postfix) with ESMTPS id 68027BF74F5
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 17:25:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBEDh-0003fF-Ec; Tue, 21 Oct 2025 11:24:17 -0400
+	id 1vBEEC-0003kX-Tk; Tue, 21 Oct 2025 11:24:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBEDe-0003dY-Vp
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:24:14 -0400
-Received: from mail-yx1-xb12b.google.com ([2607:f8b0:4864:20::b12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBEDc-0003Py-VK
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:24:14 -0400
-Received: by mail-yx1-xb12b.google.com with SMTP id
- 956f58d0204a3-63b710f276fso6097006d50.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 08:24:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761060251; x=1761665051; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=c6gj7TDArST1viB6v94swNtLzYxWbfMUUIMQ2jCTgK8=;
- b=ngvLCls8KnqdTurMseuSk/BjugNQ3v5WPGg1Yx+7Td/j8dNmqHXPtqOEeJSNgmC6T0
- soLIZFYC5tSd3QLgBQ1s5WQ2VfaCrpwjhDRzq7LeYr07d/TP5IXQ2FUvJ7iBtmfoI5vo
- pBKgSXj6KCdvHiPGO4mTIUvzfCe1FpYqufIGoBkXXGFk/5XSuC52CKonQitm7Q+8MgUT
- UVj2GIVVv9bBE789CYhTtQ2mHYDl1vGQDdEkq9QIrUmhY8Nh9BHapM55YQc6u7nqVXD/
- cMntZuyCq1Nx7Nat6RS1aJ3PMSWUv1QeXiHdm9wr8+UTNQgID+j4nJ699/Aq9M6c33qP
- 3Wcw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBEEA-0003k9-TX
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:24:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBEE6-0003TZ-Tu
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 11:24:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761060278;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=v9dqkn9tZcBSjgA2cfvO6WpUs4FOwRRs9Us7iGehxio=;
+ b=Uy0qExpn1BNoc8yFwbkn0cXV0zVhAfDwEmh2PLqE9J3UXgINsrSAeQk3wgv+5bIWQ9Podr
+ MARyzA4rQBO7lMtoShKRwXQXJLOBVcNNth5oyNqRPpYnfzdkv3FaX4HeAE+Mna3Np8fiAL
+ Kbs8N8l+0KUTDSoUb5mDoOKEyqAsWwQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-TQ1aJTyWOyyi-1xMcvsv9Q-1; Tue, 21 Oct 2025 11:24:37 -0400
+X-MC-Unique: TQ1aJTyWOyyi-1xMcvsv9Q-1
+X-Mimecast-MFC-AGG-ID: TQ1aJTyWOyyi-1xMcvsv9Q_1761060276
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-79e48b76f68so291152716d6.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 08:24:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761060251; x=1761665051;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=c6gj7TDArST1viB6v94swNtLzYxWbfMUUIMQ2jCTgK8=;
- b=nAfh2DSm/hGQEfTe9M7/X5nrcKokyAip44xt90wUuPC9kmktDf2I/5q45KwILBQjZs
- oj6B6NeKORap+HZWhCf5jZT+cIOYGDzpiLfsuXALMssVuV1pAk5E8ZIj7f5zfNwi1vH3
- l+V4ZVHMjSSh8ssDvvbaUT+VEtBVmKHxImgrSMNhCjI/X0kCKJcVqPoZWf0yAEaRSBT6
- nwxiOO/Vx3ZklFn6AzjwOcqro+24XmnA1618yP0iRMGJlRyAR8YJ2tgOOevY3BvL3OJf
- ZHxnUQJ+/zQehLAoNzh/xhDQh22yAvXEj3nKyZr0hoJRkVh8Teut8pRXgvIrDGsOZMH8
- Yi1Q==
-X-Gm-Message-State: AOJu0YwH0zcXjuNJ3AHqG9LyKtDWkZ9/27ea7uGVlkqkMpzkWm4gH0J6
- a/w4pACfpS/eSqVHbhN7StNPWxyZ1nx9X2JpXZTvlXFAkhW1gTss5WmrrcI0s7KiPTc3dEZtDhK
- JYB03q2Y5+qKoFcqA2O3li5v4frIRUHw1L6d3ET89a0sGLRNiZJtN
-X-Gm-Gg: ASbGncvq9Iio8ywPEFQbRTxzAI5hGfzzu6CnY37LQW8d0S3UDXoup8RlHuYyWBd+5By
- w4JCd2Uvt+c0nimmzKqaChccba4ojF81d0tYRfnh8PZEkv92G0aT67ksSWIJJxbewqCRo947hcl
- 9scfsxxAQ4s8CUHkWXDw9uJ9Hj7e44z2zjQlY6Je0ZB823mj4pBTrUDtLcaGdDoq18kIewn1je5
- b/w5uIDn+G0I6chExBhm6wB07C8RMkPZvdn6ZrbJFqJzzfOjYg97mJX3beiliRa+oikmvdD
-X-Google-Smtp-Source: AGHT+IGgsnDEHOYCZI9tu1XUpktqtwmiHAubJ7Mi7ZQPsVYUrJ7xJRuhHJuVUdjwYSCAwauaSjifQ7U+Vebd5e87bk4=
-X-Received: by 2002:a05:690e:144c:b0:63e:3084:4809 with SMTP id
- 956f58d0204a3-63e30844b2fmr8287285d50.33.1761060250809; Tue, 21 Oct 2025
- 08:24:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761060276; x=1761665076;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=v9dqkn9tZcBSjgA2cfvO6WpUs4FOwRRs9Us7iGehxio=;
+ b=KNAyBelJ5AezQ0wRIn9zUJMW8s5euGuQV1odTQeTkqqMlvbSqaLDDl8LGPE9G1tZxv
+ 6UeDYHAFIIwl0fZ0Iaj8WdS8AqP68S1wejAAddGu7oyTES47bDuRl0cbzM8Dkmj3xOH5
+ smzZDesjM8UbOfAZ6KLqkC7VNqvE8k7/ztIkQLmB/q3+CkVFBWxOOnnGuxdps0kIrf6R
+ cbNjNyHXCSymAKscpKi+IkmTtqHxSN2QfXLYZFP74yVwVsIgI1r5cnfPyj5dtesoH1Px
+ b9x/oZt2bdxZYG3sVDPQGuxvtoOFRyPrU8752bkCmPdLglhq9aP2OpQaGiEfd7ZsNn23
+ 8DUw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUgWIGsnzFR9DGCZztPQiOyANU6xJ1NNPYQQGqfa1+JGZ2B7WacO9pzshzqGohIMCD0dHqccbo6HCGj@nongnu.org
+X-Gm-Message-State: AOJu0YxJAO4JShCpRE4jsokyA3I565VLdynHWEpkI9h8I6Q1qihqHrXy
+ VAaQTmIWk1mu/wH+CO/RtgMEcpv5yRTgvAbKiEPHUre9dIDIBZ0+VsIJeC6Q+rUnmgFcHfC9mjq
+ bSfvkMy1lPJG1fTmYOsVxxOzCnIP0ZVL3ket3PLQw2pKk49iJW3ManHSY
+X-Gm-Gg: ASbGncshsgqITaqATIwHy+dghzUQOMePc4RDOK77QgPYzrrQNnukSlFQ8PaIvW7Y8/x
+ kLmInbUgjruCJKFiAJZxXo4GFTAceokxfqL+3iXIXXqUtqksgk30PCBw0J/WRAIoLQxpXJ6exRy
+ peD3fLYSdmby4ktYZ+V7gCcS8LVNPB9h39KggShs6O1/zO1gJoKoTOmRRIzUcW2fIvJ7IaWSwh0
+ rxOLP4jL38/Ibu3yKP28C+/kEqQfna1GhwIfHQiaYn0Ta/9OHVe9NYarNhc9zqYf/+huK/2MU29
+ MIX7HLtTFQsQeKUeVC1NwEZPbm5Hc+zF6tmatHkTfCDEf+gYQlps9DgpSeApvnX/BOk=
+X-Received: by 2002:ad4:5cc1:0:b0:7ff:7b64:840a with SMTP id
+ 6a1803df08f44-87c2062d7a5mr206750886d6.33.1761060276269; 
+ Tue, 21 Oct 2025 08:24:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+HxaYKqqEYvnVgk7TdxoKQjUbGUiDpE8J6qngb2zsar9om3f1gzdsu50pn6Fks63wK8xsBw==
+X-Received: by 2002:ad4:5cc1:0:b0:7ff:7b64:840a with SMTP id
+ 6a1803df08f44-87c2062d7a5mr206750266d6.33.1761060275409; 
+ Tue, 21 Oct 2025 08:24:35 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-87d028a9987sm70703796d6.44.2025.10.21.08.24.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Oct 2025 08:24:35 -0700 (PDT)
+Date: Tue, 21 Oct 2025 11:24:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: Dhruv Choudhary <dhruv.choudhary@nutanix.com>,
+ Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Subject: Re: [PATCH] Improve error propagation via return path
+Message-ID: <aPelsAunpYhiQJ0h@x1.local>
+References: <20251021075254.600961-1-dhruv.choudhary@nutanix.com>
+ <aPeaBNIzrq0Ni4IM@x1.local>
+ <41985b55-f99d-47ff-964c-79adc05f3ea1@yandex-team.ru>
 MIME-Version: 1.0
-References: <20251003032718.1324734-1-alistair.francis@wdc.com>
- <20251003032718.1324734-5-alistair.francis@wdc.com>
-In-Reply-To: <20251003032718.1324734-5-alistair.francis@wdc.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 21 Oct 2025 16:23:59 +0100
-X-Gm-Features: AS18NWCI5tTm9tcZ7EOzrV7BT6pD2cIxi8MfcmtS6Gd-z_4J6dR0_0mXaIHsCQ4
-Message-ID: <CAFEAcA_y4bwd9GANbXnpTy2mv80Vg_jp+A-VkQS5V6f0+BFRAA@mail.gmail.com>
-Subject: Re: [PULL 04/26] target/riscv: implement MonitorDef HMP API
-To: alistair23@gmail.com
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <41985b55-f99d-47ff-964c-79adc05f3ea1@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,84 +107,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 3 Oct 2025 at 04:29, <alistair23@gmail.com> wrote:
->
-> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->
-> The MonitorDef API is related to two HMP monitor commands: 'p' and 'x':
->
-> (qemu) help p
-> print|p /fmt expr -- print expression value (use $reg for CPU register access)
-> (qemu) help x
-> x /fmt addr -- virtual memory dump starting at 'addr'
->
-> For x86, one of the few targets that implements it, it is possible to
-> print the PC register value with $pc and use the PC value in the 'x'
-> command as well.
->
-> Those 2 commands are hooked into get_monitor_def(), called by
-> exp_unary() in hmp.c. The function tries to fetch a reg value in two
-> ways: by reading them directly via a target_monitor_defs array or using
-> a target_get_monitor_def() helper. In RISC-V we have *A LOT* of
-> registers and this number will keep getting bigger, so we're opting out
-> of an array declaration.
->
-> We're able to retrieve all regs but vregs because the API only fits an
-> uint64_t and vregs have 'vlen' size that are bigger than that.
+On Tue, Oct 21, 2025 at 05:54:09PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 21.10.25 17:34, Peter Xu wrote:
+> > On Tue, Oct 21, 2025 at 07:52:53AM +0000, Dhruv Choudhary wrote:
+> > > Use the return-path thread to send error details from the
+> > > destination to the source on a migration failure. Management
+> > > applications can then query the source QEMU for errors, as
+> > > the single source of truth, making failures easy to trace.
+> > > 
+> > > Signed-off-by: Dhruv Choudhary <dhruv.choudhary@nutanix.com>
+> > 
+> > +Vladimir, Dan
+> > 
+> > IIUC we may still need to know whether the src QEMU supports this message
+> > or not.
+> > 
+> > OTOH, we have introduced exit-on-error since 9.1:
+> > 
+> > # @exit-on-error: Exit on incoming migration failure.  Default true.
+> > #     When set to false, the failure triggers a :qapi:event:`MIGRATION`
+> > #     event, and error details could be retrieved with `query-migrate`.
+> > #     (since 9.1)
+> > 
+> > This patch is going the other way.  That feature suggests the mgmt query
+> > the error from dest directly.
+> > 
+> > We should stick with one plan rather than doing both.
+> > 
+> 
+> Why?
+> 
+> exit-on-error=false is good anyway: when QMP connection is established, the
+> management of target QEMU process is the same: we do call qmp commands to
+> add devices, etc. We get QMP events. Actually, exiting is unexpected, better
+> to fit into QMP protocol, continuing to send events and wait for qmp quit
+> to exit.
+> 
+> Passing error back to the source simply improves error message on source,
+> which otherwise is often confusing.
+> 
+> Using both, we of course see same error in two places.. But we do have two
+> QEMU processes, which both handled by on-host managing services. We should
+> correctly report error on both parts anyway.
+> 
+> Improving error messages on source is just and improvement, which makes
+> current behavior better (with or without exit-on-error=false).
+> 
+> Removing exit-on-error=false semantics (with or without passing errors back)
+> would be a step backward, to violating of QMP protocol by unexpected exits.
 
-Hi; Coverity complains about these functions
-(CID 161401, CID 1641393):
+I didn't mean to propose removing exit-on-error, what I meant is when with
+it this patch doesn't look like helpful.
 
-> +static bool reg_is_ulong_integer(CPURISCVState *env, const char *name,
-> +                                 target_ulong *val, bool is_gprh)
-> +{
-> +    const char * const *reg_names;
-> +    target_ulong *vals;
-> +
-> +    if (is_gprh) {
-> +        reg_names = riscv_int_regnamesh;
-> +        vals = env->gprh;
-> +    } else {
-> +        reg_names = riscv_int_regnames;
-> +        vals = env->gpr;
-> +    }
-> +
-> +    for (int i = 0; i < 32; i++) {
-> +        g_autofree char *reg_name = g_strdup(reg_names[i]);
-> +        char *reg1 = strtok(reg_name, "/");
-> +        char *reg2 = strtok(NULL, "/");
-> +
-> +        if (strcasecmp(reg1, name) == 0 ||
+Has libvirt been integrated with exit-on-error?  If so, IMHO we don't need
+this patch anymore.  To me it's not an improvement when with exit-on-error,
+because duplicating the error from dest to src makes it harder to know
+where the error happened.
 
-Coverity complains because we call strtok() to get reg1,
-and that might return NULL, but strcasecmp() wants a
-non-NULL pointer.
+-- 
+Peter Xu
 
-Similarly with the use of strtok() in reg_is_u64_fpu().
-
-We could fix this with an assert(reg1) since the
-names are compile-time fixed and it would be an error
-for the string to be empty.
-
-But taking a step back, strtok() isn't thread safe.
-Maybe we should use g_strsplit() instead ?
-
-More speculatively, do we need to care about locale here?
-strcasecmp() does a locale-aware comparison, which is
-probably not what we want. (Notoriously Turkish locales
-don't have the upper/lowercase mapping you would expect
-for "i" and "I".) glib has a g_ascii_strcasecmp() which
-might be helpful here.
-
-> +            (reg2 && strcasecmp(reg2, name) == 0)) {
-> +            *val = vals[i];
-> +            return true;
-> +        }
-> +    }
-> +
-> +    return false;
-> +}
-
-thanks
--- PMM
 
