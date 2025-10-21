@@ -2,86 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DCBBF72D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4528FBF72E4
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Oct 2025 16:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBDjy-0005Bj-5d; Tue, 21 Oct 2025 10:53:34 -0400
+	id 1vBDkl-0005PU-Nv; Tue, 21 Oct 2025 10:54:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBDjm-00059O-Fz
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:53:23 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBDji-0007Xi-DC
- for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:53:20 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4711f156326so43874805e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 07:53:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761058396; x=1761663196; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MVnIcv6wpbRHfrTNL4tWp8Jqn8R3H5q+xlspGqWOfao=;
- b=MyecDPnMjxkBNskRSBzrE4x3QYi/O9J7OWgIythzkAzZfe0bKGIuyE9ooBMNwM5+09
- NLW1odVpJqLLIIENzg8wjaQVQOE9xJp0xt8w8AbguOLegcAhq1yZQcaF0RDN4mgUXyr1
- 3WF3pNmrv2S/K4InTzDWfNIhTM8E/lZYWgd5EWdJEFDgRxsEQM7MRE/tcN4dTeJrgm8u
- hPaGV4EZj4W2535niHR7gUnDT42jITOaC2HYuwHsxQyxpWrrURh5ca+28PmE7sIDBgMN
- xOotF6RIfY5upaZGI5b1m43X7bX758E5zluSaG8iYQ8ojMmjcHZP+xJkBlZpY5RfV6Zi
- Kaow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761058396; x=1761663196;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MVnIcv6wpbRHfrTNL4tWp8Jqn8R3H5q+xlspGqWOfao=;
- b=iW5+NGEnyxTmpTYvBk3hSttD3RcoDy05s6HhpjwGDxJuaiTAm38NEOsOeVOlGh9Jwx
- rR09OxazH6edfGksPmXb9uKMLHkPWeMlYh4Bk/7tr3qJjE7maasqJJ+k1trTR/tHzrGi
- X/PDHO/m8a0iaEOLBGD1X2/IQiAve0wfmMeN4Qu5aJIRUTb3Y11IB/uhBfgDmMHMUdU3
- uPsxU7i4zAlV7blTaFpMCNx55cBi2OijR9BP9lXoeH89nVMwIF6yGKxBghnAHKHIodE7
- 9Cpj4BOxGYiTs0/cmQ7XHrT/mbMQNP4+B2RDOQzHOZVhv/xwnwXO4GRYDAcJYehG2U3J
- t7Jg==
-X-Gm-Message-State: AOJu0YyLagQxQ1nN+yYJt2wPYrudW0gVMTARnhvgy8fFm5g6zZCGIMkt
- zxUJE25mR1+vsI6XUq+pwsoPndRQMVlRpV+fAiNrm/Ga4jmhOqXL3aslDbRa3gGzo7JwwhPY7KY
- pUMAVRGY=
-X-Gm-Gg: ASbGncssT9WipLhWvyQ8vMnqnXB5g8ij+zicGtpr30J+4blfvp8qR8OoWYd7icQB8TG
- 9o0eLULGmHaN4YzDeboQldKMGBEF4KMgy8RMiNT0QV/XOViJShQTXxsSQKp1COKtCWGl0x8fhOD
- 0fdByPijUjm034tiacwv+dnoL0EYgAuZAaPkiejbGixF1pVqUUXkNWzxZrwsI+m34sMsXn6Fo4Y
- tOMsS7Q4tLRadf+8DsBWFZzrtLEah72DGjSBWrgro/nCRniaBHHHPnTgCUtvhkMrl1k5r5I5m7q
- q9VJIEnd6SA0l63DvLvK4ilwhd/9xp12A4u86tjryLEBVo9M9OJv/gak8q9sz042l/T1kGjJDkf
- pzQMxw4ytwCwiU8qNCoTUwZHX1z+Bm/lq8HD3l0ggii5J9CCVwLHjzHjB0uifXj9d0ww6d3GEkV
- 6LcptaguC2Hu1vYUYain1dRTEOLKWU5dLXejBtiL+JK5ulY1FxdTMvOzkrzunEfQFJHHH+hO0=
-X-Google-Smtp-Source: AGHT+IEYJDoQQSAN5VthxcVOeBgHBGl95cNTPBPha3rR2zTBcOQ5ZsgFUCegQrHpYAPXBKSWPNeHww==
-X-Received: by 2002:a05:600c:4e11:b0:471:c72:c807 with SMTP id
- 5b1f17b1804b1-471179079c7mr142401585e9.22.1761058395936; 
- Tue, 21 Oct 2025 07:53:15 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f009a797sm20694706f8f.27.2025.10.21.07.53.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Oct 2025 07:53:15 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2] hw/gpio/pl061: Declare pullups/pulldowns as 8-bit types
-Date: Tue, 21 Oct 2025 16:53:13 +0200
-Message-ID: <20251021145313.4584-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vBDki-0005LT-1v
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:54:20 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vBDke-0007cR-4R
+ for qemu-devel@nongnu.org; Tue, 21 Oct 2025 10:54:19 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id C7AC980999;
+ Tue, 21 Oct 2025 17:54:10 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:a4c::1:32] (unknown
+ [2a02:6bf:8080:a4c::1:32])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 9sXUj50bA4Y0-hfhZqJzY; Tue, 21 Oct 2025 17:54:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1761058450;
+ bh=VAdHesSoxs37kLDzbyR6zJ1Crp6IOCk7Vb1U9TBKeRY=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=JKP6w61Nod3DPfgf0YwxW6s5B7k0KktyoEf6bTYUSH2SjkGeIFEburIomkkLJqSb8
+ JwQ+GDETugP/YLV0iglF3OIhfFS9EQ8XKL5WsxDlL3M9UR4FGS78bomtDVFrcSVpPx
+ xBc8IxVmTfJA8VFsjsTKz3JZBhojG1nDPQDW+3wU=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <41985b55-f99d-47ff-964c-79adc05f3ea1@yandex-team.ru>
+Date: Tue, 21 Oct 2025 17:54:09 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Improve error propagation via return path
+To: Peter Xu <peterx@redhat.com>, Dhruv Choudhary <dhruv.choudhary@nutanix.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20251021075254.600961-1-dhruv.choudhary@nutanix.com>
+ <aPeaBNIzrq0Ni4IM@x1.local>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <aPeaBNIzrq0Ni4IM@x1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,93 +77,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-uint8_t is good enough to hold a property "between 0 and 0xff".
+On 21.10.25 17:34, Peter Xu wrote:
+> On Tue, Oct 21, 2025 at 07:52:53AM +0000, Dhruv Choudhary wrote:
+>> Use the return-path thread to send error details from the
+>> destination to the source on a migration failure. Management
+>> applications can then query the source QEMU for errors, as
+>> the single source of truth, making failures easy to trace.
+>>
+>> Signed-off-by: Dhruv Choudhary <dhruv.choudhary@nutanix.com>
+> 
+> +Vladimir, Dan
+> 
+> IIUC we may still need to know whether the src QEMU supports this message
+> or not.
+> 
+> OTOH, we have introduced exit-on-error since 9.1:
+> 
+> # @exit-on-error: Exit on incoming migration failure.  Default true.
+> #     When set to false, the failure triggers a :qapi:event:`MIGRATION`
+> #     event, and error details could be retrieved with `query-migrate`.
+> #     (since 9.1)
+> 
+> This patch is going the other way.  That feature suggests the mgmt query
+> the error from dest directly.
+> 
+> We should stick with one plan rather than doing both.
+> 
 
-Define pullups/pulldowns properties using DEFINE_PROP_UINT8()
-macro, remove unnecessary range checks in pl061_realize().
-Update the two caller sites.
+Why?
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-v2: qdev_prop_set_uint32 -> qdev_prop_set_uint8 in callers (Peter)
----
- hw/arm/virt.c        |  4 ++--
- hw/gpio/pl061.c      | 16 ++++------------
- hw/vmapple/vmapple.c |  4 ++--
- 3 files changed, 8 insertions(+), 16 deletions(-)
+exit-on-error=false is good anyway: when QMP connection is established, the
+management of target QEMU process is the same: we do call qmp commands to
+add devices, etc. We get QMP events. Actually, exiting is unexpected, better
+to fit into QMP protocol, continuing to send events and wait for qmp quit
+to exit.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 175023897a7..28e842f22ea 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1133,8 +1133,8 @@ static void create_gpio_devices(const VirtMachineState *vms, int gpio,
- 
-     pl061_dev = qdev_new("pl061");
-     /* Pull lines down to 0 if not driven by the PL061 */
--    qdev_prop_set_uint32(pl061_dev, "pullups", 0);
--    qdev_prop_set_uint32(pl061_dev, "pulldowns", 0xff);
-+    qdev_prop_set_uint8(pl061_dev, "pullups", 0);
-+    qdev_prop_set_uint8(pl061_dev, "pulldowns", 0xff);
-     s = SYS_BUS_DEVICE(pl061_dev);
-     sysbus_realize_and_unref(s, &error_fatal);
-     memory_region_add_subregion(mem, base, sysbus_mmio_get_region(s, 0));
-diff --git a/hw/gpio/pl061.c b/hw/gpio/pl061.c
-index 1acca3f2f80..a3ac038c2f7 100644
---- a/hw/gpio/pl061.c
-+++ b/hw/gpio/pl061.c
-@@ -79,8 +79,8 @@ struct PL061State {
-     qemu_irq out[N_GPIOS];
-     const unsigned char *id;
-     /* Properties, for non-Luminary PL061 */
--    uint32_t pullups;
--    uint32_t pulldowns;
-+    uint8_t pullups;
-+    uint8_t pulldowns;
- };
- 
- static const VMStateDescription vmstate_pl061 = {
-@@ -547,14 +547,6 @@ static void pl061_realize(DeviceState *dev, Error **errp)
- {
-     PL061State *s = PL061(dev);
- 
--    if (s->pullups > 0xff) {
--        error_setg(errp, "pullups property must be between 0 and 0xff");
--        return;
--    }
--    if (s->pulldowns > 0xff) {
--        error_setg(errp, "pulldowns property must be between 0 and 0xff");
--        return;
--    }
-     if (s->pullups & s->pulldowns) {
-         error_setg(errp, "no bit may be set both in pullups and pulldowns");
-         return;
-@@ -562,8 +554,8 @@ static void pl061_realize(DeviceState *dev, Error **errp)
- }
- 
- static const Property pl061_props[] = {
--    DEFINE_PROP_UINT32("pullups", PL061State, pullups, 0xff),
--    DEFINE_PROP_UINT32("pulldowns", PL061State, pulldowns, 0x0),
-+    DEFINE_PROP_UINT8("pullups", PL061State, pullups, 0xff),
-+    DEFINE_PROP_UINT8("pulldowns", PL061State, pulldowns, 0x0),
- };
- 
- static void pl061_class_init(ObjectClass *klass, const void *data)
-diff --git a/hw/vmapple/vmapple.c b/hw/vmapple/vmapple.c
-index 1e4365f32c9..f3cff329244 100644
---- a/hw/vmapple/vmapple.c
-+++ b/hw/vmapple/vmapple.c
-@@ -326,8 +326,8 @@ static void create_gpio_devices(const VMAppleMachineState *vms, int gpio,
- 
-     pl061_dev = qdev_new("pl061");
-     /* Pull lines down to 0 if not driven by the PL061 */
--    qdev_prop_set_uint32(pl061_dev, "pullups", 0);
--    qdev_prop_set_uint32(pl061_dev, "pulldowns", 0xff);
-+    qdev_prop_set_uint8(pl061_dev, "pullups", 0);
-+    qdev_prop_set_uint8(pl061_dev, "pulldowns", 0xff);
-     s = SYS_BUS_DEVICE(pl061_dev);
-     sysbus_realize_and_unref(s, &error_fatal);
-     memory_region_add_subregion(mem, base, sysbus_mmio_get_region(s, 0));
+Passing error back to the source simply improves error message on source,
+which otherwise is often confusing.
+
+Using both, we of course see same error in two places.. But we do have two
+QEMU processes, which both handled by on-host managing services. We should
+correctly report error on both parts anyway.
+
+Improving error messages on source is just and improvement, which makes
+current behavior better (with or without exit-on-error=false).
+
+Removing exit-on-error=false semantics (with or without passing errors back)
+would be a step backward, to violating of QMP protocol by unexpected exits.
+
+
+> 
+>> ---
+>>   migration/migration.c | 25 +++++++++++++++++++++++--
+>>   1 file changed, 23 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index a63b46bbef..123cffb286 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -87,6 +87,7 @@ enum mig_rp_message_type {
+>>       MIG_RP_MSG_RECV_BITMAP,  /* send recved_bitmap back to source */
+>>       MIG_RP_MSG_RESUME_ACK,   /* tell source that we are ready to resume */
+>>       MIG_RP_MSG_SWITCHOVER_ACK, /* Tell source it's OK to do switchover */
+>> +    MIG_RP_MSG_ERROR,        /* propogate error to source */
+>>   
+>>       MIG_RP_MSG_MAX
+>>   };
+>> @@ -608,6 +609,17 @@ int migrate_send_rp_req_pages(MigrationIncomingState *mis,
+>>       return migrate_send_rp_message_req_pages(mis, rb, start);
+>>   }
+>>   
+>> +static void migrate_send_rp_error(MigrationIncomingState *mis, Error *errp)
+>> +{
+>> +    const char *rpmsg = error_get_pretty(errp);
+>> +    if (!mis->to_src_file) {
+>> +        mis->to_src_file = qemu_file_get_return_path(mis->from_src_file);
+>> +    }
+>> +    migrate_send_rp_message(mis, MIG_RP_MSG_ERROR,
+>> +                            (uint16_t)(strlen(rpmsg) + 1),
+>> +                            (char *)rpmsg);
+>> +}
+>> +
+>>   static bool migration_colo_enabled;
+>>   bool migration_incoming_colo_enabled(void)
+>>   {
+>> @@ -905,8 +917,12 @@ process_incoming_migration_co(void *opaque)
+>>       }
+>>   
+>>       if (ret < 0) {
+>> -        error_prepend(&local_err, "load of migration failed: %s: ",
+>> -                      strerror(-ret));
+>> +        error_prepend(&local_err, "destination error : load of migration failed:
+>> +                       %s: ", strerror(-ret));
+>> +        /* Check if return path is enabled and then send error to source */
+>> +        if (migrate_postcopy_ram() || migrate_return_path()) {
+>> +            migrate_send_rp_error(mis, local_err);
+>> +        }
+>>           goto fail;
+>>       }
+>>   
+>> @@ -2437,6 +2453,7 @@ static struct rp_cmd_args {
+>>       [MIG_RP_MSG_RECV_BITMAP]    = { .len = -1, .name = "RECV_BITMAP" },
+>>       [MIG_RP_MSG_RESUME_ACK]     = { .len =  4, .name = "RESUME_ACK" },
+>>       [MIG_RP_MSG_SWITCHOVER_ACK] = { .len =  0, .name = "SWITCHOVER_ACK" },
+>> +    [MIG_RP_MSG_ERROR]          = { .len = -1, .name = "ERROR"},
+>>       [MIG_RP_MSG_MAX]            = { .len = -1, .name = "MAX" },
+>>   };
+>>   
+>> @@ -2667,6 +2684,10 @@ static void *source_return_path_thread(void *opaque)
+>>               trace_source_return_path_thread_switchover_acked();
+>>               break;
+>>   
+>> +        case MIG_RP_MSG_ERROR:
+>> +            error_setg(&err, "%s", (char *)buf);
+>> +            goto out;
+>> +
+>>           default:
+>>               break;
+>>           }
+>> -- 
+>> 2.39.3
+>>
+> 
+
+
 -- 
-2.51.0
-
+Best regards,
+Vladimir
 
