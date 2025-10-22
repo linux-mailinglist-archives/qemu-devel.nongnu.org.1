@@ -2,88 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC152BFD278
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 18:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7AFBFD2BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 18:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBbdH-0001CK-G0; Wed, 22 Oct 2025 12:24:15 -0400
+	id 1vBbep-0001r4-Id; Wed, 22 Oct 2025 12:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmaglione@redhat.com>)
- id 1vBbdF-0001C9-IJ
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 12:24:13 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vBbed-0001pb-1J
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 12:25:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmaglione@redhat.com>)
- id 1vBbdD-0001yf-7A
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 12:24:13 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vBbeZ-0002FQ-24
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 12:25:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761150250;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=BhCoB7kpxWSu7IUPBewvXVV8G2oilzloaR4zlKcUl10=;
- b=a40r0n1Am5F+qEVN+uXFerJNUO8hr/KJBZmJzfRCtRRZiZ5q6gdRRatb+j++wX/N98WEzi
- yASGUyCb4omv//pBZ/OdHEbbyaLHmjEAv1ypSlBWJETeUhE+RbJdBOnjzB9iYCtx86vIfh
- +iSUeL7feeb9QIjwxS3sHjFQCZaCYDo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1761150334;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AnDE91W32rKttyLPr8fSquof9/QUzpzk6DLr6cfgTcc=;
+ b=R6bu+LDCjRyfatLU/XxuZQC4gfy6UoMomoebW/YCLvCm8pyugPSjWZOmAk7EZZ9QbOLwh2
+ uPhp6aof3dXLL5H2HYc6eIDB0rbqgcGosysQ1fp5pNVFqCdlZnuFuEg9y/Nkc/e9H0jUwb
+ YwdsI8sWnAZRd89O7quXo1PGDUIVkMw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-YVKkfr_uPumusiYHBExiqA-1; Wed, 22 Oct 2025 12:24:09 -0400
-X-MC-Unique: YVKkfr_uPumusiYHBExiqA-1
-X-Mimecast-MFC-AGG-ID: YVKkfr_uPumusiYHBExiqA_1761150248
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-471005f28d2so27154365e9.0
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 09:24:09 -0700 (PDT)
+ us-mta-111-CeYdiAg5Puu-NtB5kK_IvA-1; Wed, 22 Oct 2025 12:25:33 -0400
+X-MC-Unique: CeYdiAg5Puu-NtB5kK_IvA-1
+X-Mimecast-MFC-AGG-ID: CeYdiAg5Puu-NtB5kK_IvA_1761150332
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-470fd92ad57so137063775e9.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 09:25:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761150248; x=1761755048;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1761150332; x=1761755132;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=BhCoB7kpxWSu7IUPBewvXVV8G2oilzloaR4zlKcUl10=;
- b=oWGcrIJrvoWnjQcA6Zo2Y/NGvF3VFRb/Tjgf+bUfdwG9iGBCS3iS115YYMXJ2HVclU
- SlJMnnHwfDbKaPxqjMQX5tH8yoryAHiT76DJbA7Bxb1zLAAR5VD7i707Vf1rU3KSLFI5
- QfBia6T7bFw/6e2EBaUIQYGD8o+QSAlUyfTKO5C3FUKhcTB7rhcf6ZHM8J2+zBjIx8dv
- 52hqepbYqvgEjb75BpE2V61dWhSOdqO+cZdfYe6B3YLR38c+KNXJhPzULK4c5R1vwtzB
- SX9JQR47zkp7CCqNKpo6m8cbzKxtE/cYCgjGesHmWnB4RiAwXAsnu8km7gXSh6Dz0YRu
- NYvA==
-X-Gm-Message-State: AOJu0YzL7y9PbG/dnmR6qxeTgINjSsxGRYsYXtJS5ilehsWiVGBToMEC
- dZ3AaCxqGkjleOw7iydeic42/Mthj8Pfq+8doDeOEV1kHkebsT/g292EfApsYIYpQEgKB6Du+cx
- vRqRUoxXnNPLYwaDYcKILBeGeA8w9t34uSiJVIYxIX4bgyjzffnd4fRAoyOnhxan9c+Vo2Y5D0c
- glv0yb5VPqdt2zs8pZSADs4EqPgWYgczRhrkS/j967IpSs
-X-Gm-Gg: ASbGncur/S6zzP0Nc2Y5RHqKUKGVlavb5qwrvUQRm8Ld1YgQn1JeNkWH4IaeV0wFO6f
- c8OCn/2TnNNDi7dUsl3FlJSWATxrDIjpGoyrZWuyq9IM3EXCySLnkUqRj5dcJS0uT/QvRdplLXO
- pHQ1YqcEX6CUrW3k87mJQEm5oj0evY/LIvhRXwqea20MIAgIjgzVOXJTgiARzq1sJ8kV0r3Kd7+
- PmDTNffwANfvv5SxWLXkUFa61+waUwvuPdTUiSKHZtlbiepAFyWI0FcwVjqIxjFMx/mwwaBiP4Q
- ufToSdmdBCDA0lkKUNhTDaPgcCWFzUp4Cx/IEbjUbOwC8+1fTpj3SCxFlLd+YNxeSLnkttt6/Y5
- VRiFh0g==
-X-Received: by 2002:a05:600c:3149:b0:470:bcc4:b0a0 with SMTP id
- 5b1f17b1804b1-47117925919mr183477955e9.34.1761150247814; 
- Wed, 22 Oct 2025 09:24:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLHfDb8UBdSi0MdRK2CEkLmKdBgRyvEW87L0mhilCMkUgdh5ErPlMn6HxwJpQcbhqG+Al+WA==
-X-Received: by 2002:a05:600c:3149:b0:470:bcc4:b0a0 with SMTP id
- 5b1f17b1804b1-47117925919mr183477645e9.34.1761150247346; 
- Wed, 22 Oct 2025 09:24:07 -0700 (PDT)
-Received: from fedora.redhat.com ([66.81.173.125])
+ bh=AnDE91W32rKttyLPr8fSquof9/QUzpzk6DLr6cfgTcc=;
+ b=VfT3QdPah0qeP63YPORk9LNdG+KYdqRAj176WZVK7l3pGFQWr4f1XH8hVAvxwZeFKu
+ 1lBd9glN1d8mT65lsDi+d8oHIMPV/iJueLHV7a6mRx70940XWKnaDLpT7atME0tso7Oi
+ ohlqaAtiALubYypdE4zIfaluOp9vtaMMEP8iUBhyXxEYWSIl95aSYjEVqfb1EbAvV+/0
+ h480zRH0w6Um0ZXlEAmsmzrZKRR/85OFx+LF4uUP8/XbZv227JP7J0fXJMbDli6Kmj1+
+ YlJ92izKPF8Qq4y0X52IyuhcGCOPDQL8szEDxf+NOpbDzNHSGU8lPER7TebizrVmW1oa
+ JXRQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVNp5dzlODW3v6EaVqEF9Y6euiJDaph5oCi5C5o/4vTiQ6+4BkEG+m64+yTnGCpCudVH+FsFx2+ME8R@nongnu.org
+X-Gm-Message-State: AOJu0YxGH8xazJTxAdMcvcRDRwVa3Qs2FTffRQjJKiUxLYvftXtndvIr
+ /tzyFievYceXTNNr2+n3efK4IxG6bRYAHdvgDl+eNnN/DgUa1wfFnSCO5fV79KZGJTjRl/A1Cmk
+ aiwe0xBEgD/XiREExWvkqBYo+lDTnV8tPVMPInz2v7B/YpjgOFrm0jSrp
+X-Gm-Gg: ASbGncv3UmRw1UFvA0ZuxKLKJF1usJDCMuhFh5SyylnG1dauoPQlLvK1rSkgBW2pX8m
+ 1xJRFSSf5tp/Abv122Q/41df2oHYZ3QXT447aZQJQB2dTlKQUoD37blzHDfn3YiBOWV/Cel4zW1
+ YACbkdMKvkmYD796oY9BB6omR8DE/m6XknB32pgOHqpMdgzLYBDwpdC3fybOtdTACNc13RxTIBL
+ p++M52f3NDI31v1Vpyw0me06XaozXQ1Eu3P/jnt1xA2GQ0N1ZCznqZNce5iZoW96tnBpjMmGc8V
+ rs5xcOcKB71uYWFz/b2gddIklvCNMbgbqaAo0npDoNq18aGf03KPCRA2TlL7XdX2aHPshcT9JO0
+ 2Wfc5rg==
+X-Received: by 2002:a05:600c:4ec9:b0:471:15c1:45b9 with SMTP id
+ 5b1f17b1804b1-471179133b2mr178133915e9.29.1761150331723; 
+ Wed, 22 Oct 2025 09:25:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYD31g6pl5bjIpIJESMrBp/svbacJPks7X6kOgdJVNmCwf8LvJ706l8Tr6wKuXOGGygVnUNg==
+X-Received: by 2002:a05:600c:4ec9:b0:471:15c1:45b9 with SMTP id
+ 5b1f17b1804b1-471179133b2mr178133665e9.29.1761150331294; 
+ Wed, 22 Oct 2025 09:25:31 -0700 (PDT)
+Received: from [192.168.43.95] ([37.166.198.186])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47496c2c9dasm40722945e9.4.2025.10.22.09.24.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 09:24:06 -0700 (PDT)
-From: German Maglione <gmaglione@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Eugenio Perez Martin <eperezma@redhat.com>
-Subject: [PATCH v2] vhost-user: make vhost_set_vring_file() synchronous
-Date: Wed, 22 Oct 2025 18:24:05 +0200
-Message-ID: <20251022162405.318672-1-gmaglione@redhat.com>
-X-Mailer: git-send-email 2.49.0
+ 5b1f17b1804b1-475c428a5bcsm51799725e9.7.2025.10.22.09.25.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Oct 2025 09:25:30 -0700 (PDT)
+Message-ID: <8cb2101e-6699-44c9-bb51-d092e0024cd9@redhat.com>
+Date: Wed, 22 Oct 2025 18:25:28 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/27] hw/pci/pci: Introduce optional
+ get_msi_address_space() callback
+Content-Language: en-US
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, peter.maydell@linaro.org, jgg@nvidia.com,
+ ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
+ mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
+ zhangfei.gao@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
+ shameerkolothum@gmail.com
+References: <20250929133643.38961-1-skolothumtho@nvidia.com>
+ <20250929133643.38961-12-skolothumtho@nvidia.com>
+ <aPFx7Egdny+JCO9U@Asurada-Nvidia>
+ <291fe8be-405e-4ea3-acfb-d090f6a7cd15@redhat.com>
+ <aPZ4tcsMfN+2puGL@Asurada-Nvidia>
+ <add07edd-3652-430d-b52c-cb2bdbc7f587@redhat.com>
+ <aPfXWKE70OuumOQD@Asurada-Nvidia>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <aPfXWKE70OuumOQD@Asurada-Nvidia>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gmaglione@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,107 +122,123 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU sends all of VHOST_USER_SET_VRING_KICK, _CALL, and _ERR without
-setting the NEED_REPLY flag, i.e. by the time the respective
-vhost_user_set_vring_*() function returns, it is completely up to chance
-whether the back-end has already processed the request and switched over
-to the new FD for interrupts.
+Hi Nicolin,
 
-At least for vhost_user_set_vring_call(), that is a problem: It is
-called through vhost_virtqueue_mask(), which is generally used in the
-VirtioDeviceClass.guest_notifier_mask() implementation, which is in turn
-called by virtio_pci_one_vector_unmask().  The fact that we do not wait
-for the back-end to install the FD leads to a race there:
+On 10/21/25 8:56 PM, Nicolin Chen wrote:
+> On Tue, Oct 21, 2025 at 06:26:39PM +0200, Eric Auger wrote:
+>> Hi Nicolin,
+>>
+>> On 10/20/25 8:00 PM, Nicolin Chen wrote:
+>>> On Mon, Oct 20, 2025 at 06:14:33PM +0200, Eric Auger wrote:
+>>>>>> This will cause the device to be configured with wrong MSI doorbell
+>>>>>> address if it return the system address space.
+>>>>> I think it'd be nicer to elaborate why a wrong address will be returned:
+>>>>>
+>>>>> --------------------------------------------------------------------------
+>>>>> On ARM, a device behind an IOMMU requires translation for its MSI doorbell
+>>>>> address. When HW nested translation is enabled, the translation will also
+>>>>> happen in two stages: gIOVA => gPA => ITS page.
+>>>>>
+>>>>> In the accelerated SMMUv3 mode, both stages are translated by the HW. So,
+>>>>> get_address_space() returns the system address space for stage-2 mappings,
+>>>>> as the smmuv3-accel model doesn't involve in either stage.
+>>>> I don't understand "doesn't involve in either stage". This is still not
+>>>> obious to me that for an HW accelerated nested IOMMU get_address_space()
+>>>> shall return the system address space. I think this deserves to be
+>>>> explained and maybe documented along with the callback.
+>>> get_address_space() is used by pci_device_iommu_address_space(),
+>>> which is for attach or translation.
+>>>
+>>> In QEMU, we have an "iommu" type of memory region, to represent
+>>> the address space providing the stage-1 translation.
+>>>
+>>> In accel case excluding MSI, there is no need of "emulated iommu
+>>> translation" since HW/host SMMU takes care of both stages. Thus,
+>>> the system address is returned for get_address_space(), to avoid
+>>> stage-1 translation and to also allow VFIO devices to attach to
+>>> the system address space that the VFIO core will monitor to take
+>>> care of stage-2 mappings.
+>> but in general if you set as output 'as' the system_address_memory it
+>> rather means you have no translation in place. This is what I am not
+>> convinced about.
+> You mean you are not convinced about "no translation"?
+I am not convinced about the choice of using address_space_memory.
+>
+>> you say it aims at
+>> - avoiding stage-1 translation - allow VFIO devices to attach to the
+>> system address space that the VFIO core will monitor to take care of
+>> stage-2 mappings. Can you achieve the same goals with a proper address
+>> space?
+> Would you please define "proper"?
+an address space different from address_space_memory
+>
+> The disagreement is seemingly about using system address space or
+> even address_space_memory, IIUIC.
+Yes my doubt is about:
 
-Masking interrupts is implemented by redirecting interrupts to an
-internal event FD that is not connected to the guest.  Unmasking then
-re-installs the guest-connected IRQ FD, then checks if there are pending
-interrupts left on the masked event FD, and if so, issues an interrupt
-to the guest.
+smmuv3_accel_find_add_as()
+     * We are using the global &address_space_memory here, as this will
+ensure
+     * same system address space pointer for all devices behind the
+accelerated
+     * SMMUv3s in a VM. That way VFIO/iommufd can reuse a single IOAS ID in
+     * iommufd_cdev_attach(), allowing the Stage-2 page tables to be shared
+     * within the VM instead of duplicating them for every SMMUv3 instance.
+     */
+    if (vfio_pci) {
+        return &address_space_memory;
 
-Because guest_notifier_mask() (through vhost_user_set_vring_call())
-doesn't wait for the back-end to switch over to the actual IRQ FD, it's
-possible we check for pending interrupts while the back-end is still
-using the masked event FD, and then we will lose interrupts that occur
-before the back-end finally does switch over.
+I think it would be cleaner to a have an AddressSpace allocated on
+purpose to support the VFIO accel use case, if possible.
+To me returning address_space_memory pretends we are not doing any
+translation. I understand it is "easy" to reuse that one but I wonder it
+is the spirit of the get_address_space callback.
 
-Fix this by setting NEED_REPLY on those VHOST_USER_SET_VRING_* messages,
-so when we get that reply, we know that the back-end is now using the
-new FD.
+I would rather allocate a dedicated (shared) AddressSpace to support the
+VFIO accel case. That's my suggestion.
 
-We have a few reports of a virtiofs mount hanging:
-- https://gitlab.com/virtio-fs/virtiofsd/-/issues/101
-- https://gitlab.com/virtio-fs/virtiofsd/-/issues/133
-- https://gitlab.com/virtio-fs/virtiofsd/-/issues/213
+>
+> To our purpose here, so long as the vfio core can setup a proper
+> listener to monitor the guest physical address space, we are fine
+> with any alternative.
+>
+> The system address space just seems to be the simplest one. FWIW,
+> kvm_arch_fixup_msi_route() also checks in the beginning:
+>     if (as == &address_space_memory)
+>
+> So, returning @address_space_memory seems to be straightforward?
+>
+> I think I also need some education to understand why do we need
+> an indirect address space that eventually will be routed back to
+> address_space_memory?
 
-This is quite difficult bug to reproduce, even for the reporters.
-It only happens on production, every few weeks, and/or on 1 in 300 VMs.
-So, we are not 100% sure this fixes that issue. However, we think this
-is still a bug, and at least we have one report that claims this fixed
-the issue:
+Well I am not an expert of AddressSpaces either. Reading hw/pci/pci.h
+and get_address_space() callback API doc comment, I understand this is
+the output address space for the PCI device. If you return
 
-https://gitlab.com/virtio-fs/virtiofsd/-/issues/133#note_2743209419
+address_space_memory, to me this means there is no translation in place. By the way, this was the interpretation of kvm_arch_fixup_msi_route() on ARM
 
-Signed-off-by: German Maglione <gmaglione@redhat.com>
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- hw/virtio/vhost-user.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+    AddressSpace *as = pci_device_iommu_address_space(dev)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 36c9c2e04d..1605485396 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1327,8 +1327,11 @@ static int vhost_set_vring_file(struct vhost_dev *dev,
-                                 VhostUserRequest request,
-                                 struct vhost_vring_file *file)
- {
-+    int ret;
-     int fds[VHOST_USER_MAX_RAM_SLOTS];
-     size_t fd_num = 0;
-+    bool reply_supported = virtio_has_feature(dev->protocol_features,
-+                                              VHOST_USER_PROTOCOL_F_REPLY_ACK);
-     VhostUserMsg msg = {
-         .hdr.request = request,
-         .hdr.flags = VHOST_USER_VERSION,
-@@ -1336,13 +1339,32 @@ static int vhost_set_vring_file(struct vhost_dev *dev,
-         .hdr.size = sizeof(msg.payload.u64),
-     };
- 
-+    if (reply_supported) {
-+        msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
-+    }
-+
-     if (file->fd > 0) {
-         fds[fd_num++] = file->fd;
-     } else {
-         msg.payload.u64 |= VHOST_USER_VRING_NOFD_MASK;
-     }
- 
--    return vhost_user_write(dev, &msg, fds, fd_num);
-+    ret = vhost_user_write(dev, &msg, fds, fd_num);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-+    if (reply_supported) {
-+        /*
-+         * wait for the back-end's confirmation that the new FD is active,
-+         * otherwise guest_notifier_mask() could check for pending interrupts
-+         * while the back-end is still using the masked event FD, losing
-+         * interrupts that occur before the back-end installs the FD
-+         */
-+        return process_message_reply(dev, &msg);
-+    }
-+
-+    return 0;
- }
- 
- static int vhost_user_set_vring_kick(struct vhost_dev *dev,
--- 
-2.49.0
+    if (as == &address_space_memory) {
+        return 0;
+    }
+
+    /* MSI doorbell address is translated by an IOMMU */
+
+Note: I am currently out of the office so I am not able to reply as fast as you may wish.
+
+Thanks
+
+Eric
+
+>
+> Thanks
+> Nicolin
+>
 
 
