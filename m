@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978B6BFC5B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 16:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB7EBFC5D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 16:04:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBZPg-0007Ql-Vi; Wed, 22 Oct 2025 10:02:05 -0400
+	id 1vBZRS-0000fS-TW; Wed, 22 Oct 2025 10:03:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBZPe-0007Oy-LE
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 10:02:02 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBZRR-0000f1-8n
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 10:03:53 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBZPb-0001fg-FN
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 10:02:02 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4711810948aso48991945e9.2
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 07:01:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBZRO-0001pF-Dq
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 10:03:52 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3f99ac9acc4so2366156f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 07:03:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761141717; x=1761746517; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UaZKulvsvyPazuPCESEO+VqOsAtzjlNqcxauSGwGk78=;
- b=j0gMyBK9xpqrBn6Y+BiW4PpuLWB0zwQuMqw0vjJV9aWmY70gH7u8gvry7lP6Azaub7
- 5AgCacYd32DcXggTtwFLnVsPMHaIbZDmHlhhx26hL58G7aiqSSkopqjzDLcs+EANsb28
- YvbbggcFbCTzmKvmu4EEvllcNiwF8zDZFJW7uwtMjlNQRGgYGY9feMfKYtioarN5BTTX
- Z3tlwvbRHoOJaQQw1CfTLbePtHFcgHG8UAEvLIGz9eC4Wmqi4jUVJZLjeWzu8Rphjk2A
- ljO8ZgryGUIwcTDUz04RaVQ2lqrIfKvs+3khvXhCqrs8287sLxAatyw0IoW6qqSXYxn/
- A0Hg==
+ d=linaro.org; s=google; t=1761141828; x=1761746628; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CgUcTvhc/Itn5uetP9wr2VdFL3LDyvl8uYUjR39f4V0=;
+ b=a8Y4QUY8zkTCcQy93myHyD/pgZ2uP/WWifseGkSe+Km6MuKEE5Trtfu/eqOpQPPK4r
+ ptt+PueaOg9YEjtzZQ5SN26wnF0MGIjPUzWnbfzHSGPipvJBwOiHaD3mp3R7Uh1gyruk
+ M6SXoyyJRavCoMwh0i3EbGS0OVajpjIcvQilfuod+UxRxREnkEagsMqv1/83uSTwiwWi
+ hbQIlSwoedYyi7myfjn5Mo5fsUFgsT8RGC5xeS8DP+PDqE2S7pGBO5hyLRQEPKi/Km3G
+ vmFLNzvEGgdNIHJ0AGOirchNzphDvdXMeIy4EXJBrDy63UIO8P7/GpEfsYUE1wyB3CTM
+ 0ZkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761141717; x=1761746517;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UaZKulvsvyPazuPCESEO+VqOsAtzjlNqcxauSGwGk78=;
- b=et3mPE5l9T9pk4r8SVFe7rbG/G4QqAdrL7Sx/BveGGY3QxoURYKpT7x8MBHbgTkUid
- +x7Vtk9ei07QJlPMwdHZ0GtqsETU4AuIFmdHtBpl86NCT1zvglQi33V5EJBQmvsbco0c
- 8yXoRqH3ATG897ZDHiPn9UCEzFw6p/aiBXeDVL7MC2TjW2lWhe+VYTp53B/bQ7DVQIcp
- 8RdrOGD1c/ugZkEfDz9yAEvdKKYVJ/MsoyF9tjpxmkYB8IHXbjYqYa2qPk84pmzHUahd
- iwQCSLxGig8hz9uNB++rWwa2lqq3kBF65mBTf9TmApUyI3MNG1d5d/wJ3exTZxoeT6OP
- vvgg==
-X-Gm-Message-State: AOJu0Yw8CHdxzAq1GJuXh0mfaGusLfiYCyRCnvmTewjI8JtG6iWf5BhB
- Wx6hp1jxVMfR8QzaUWomZOxGoY03zZiJlANOrbSoD+mCUWQR4C5JlwqN/N02T4cu/x7YCf8/zLG
- e/+wFinE=
-X-Gm-Gg: ASbGncuQIfQK4Da+duweuJJeH302AyKaTa4AH53IkUMTOmFd5zpoik5s0ML+v3Wuv51
- kqjqravznv29ulGfqwsnEaIcXfLnZ/RM9bX5hrutLXQn5KKkUkWG2lHdXrasznhF0UNGQvieK3/
- 9MbubJQbu4aOJLulqkkrShW3FPPuJqpWyuTxGFlr8p5ho7lwbvS0SObfFORMyDKuOcxC5cxjUFa
- z2d2Sh1GLKd3d1f1OxIM0l9nD/BXSobYlJPCYfZzuJtFoir2uxZizejmzup0zeQ7SJ5SwgtYjMe
- 4C9hvMAerlYXbIoCRC/T1xwQhPB0CbP2Nr/zaDKMAquryfl5xiv4c4oKB7cZoW+HtXbSvw8Yb2v
- FaG2ZtiPKrjhSuAsWVOVv67eNABMT0Te7JpyBAN3Prr0guYV0cqx2y+JSyADQztxUi/Bpi26gRq
- e5KHD7XImb0ebZw5FC2Ug+d+lw6NLuvUJ2SO1D6NSoDke3sEOcj8ArXaLLwks/
-X-Google-Smtp-Source: AGHT+IFjoAyFjm2+kFm7KY2q3aB2HGmRZNUqm25Wo0zJ7cEcAB/9ey5BsxA253c/AteFX/omR4r+QQ==
-X-Received: by 2002:a05:600d:630a:b0:471:1b25:fa00 with SMTP id
- 5b1f17b1804b1-4711b25fd7cmr99064095e9.36.1761141717052; 
- Wed, 22 Oct 2025 07:01:57 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1761141828; x=1761746628;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CgUcTvhc/Itn5uetP9wr2VdFL3LDyvl8uYUjR39f4V0=;
+ b=fxiEyXOWB5nrDeSI3CYF66EYbTGrZZ7lAEUKOLpnENbyGtm03XK8lHqKM0+/QYyzWl
+ J6mDEteFY6jekXgvHumraXBj/HGA+D5Uc0xbA6GJXvemd2BX6Doi08CJI0zu4BRw2f/u
+ nS8OmKn1PrMOCS7/N1dLCv4wxhxoTOY8H0lw+SKkj54mC83COX49rzj1fyakwyU7332b
+ V9cyOzacgfwgymYpvLjSnb8OYk+/4ggUJ+3riyP6aVPOFCuZrh7L77IdGQTAmo7WPpTN
+ G8vKpoJ/tLVz6l2NVATwJGRx/szPEja93+1wKp3om/IJpqjrROwtWdq+Wrnc2g689W/b
+ oJ+A==
+X-Gm-Message-State: AOJu0YxP9GRXc91osw5z+wTh1qlMMy8WYKrJfC+/iKOHkvXiCyUkwYxR
+ cvbEd43VypOdsTSmaA5o7qdmuflv+k9mo64em+SkN3W8EijU1JXrnZL/vxuHdfmJJ4s=
+X-Gm-Gg: ASbGncsyt73EIYeKYl4/qjHxmdOtmQVaO7s/rf/Cs8tml49JSYOvSzUP8SzHVwy+XA1
+ 7+kYmtgg8beCqVbLVz9dPleefIltiykNU8Rr3IRaroN/13DXV1iXHUqlQzWQX3wZ/OZzGnccVXw
+ M8h5Npr13vAeWINWS7M1wC7w3lWf+DNmeu5bTJ+jh3wum4VRiJBBtGEy3s2tsigjg5qtHIMubDS
+ 7xMGZiAnkwvR6We+OLX97L6tzG90Dy3rysA9fMsQu772Rsvi2mNj9rUvJ5wyrSdLHsO+wgDGFlj
+ UHW1XdhtACKy1HaOkkhjsZuaZBzcT0FuFasDk/LWwXF5vc8kEr2iTrV5VGQla/TprarhB7UowjU
+ 8wgWVEELqYuElror2RQQnEtLxnq/xn85wzaYgIdNto7/rXNoH5HD9XIpDNt623nx+7eUtAhlck/
+ REu4P/LvCd6rfJd2AXBLdOBcUnWTbTQ8tGxyPrfV6FGBU=
+X-Google-Smtp-Source: AGHT+IGyiU7BD1TK4Bc5fbUAg5DELawcYvAkctr4P23WdzDZ/hl6e/1+LeaMXZ6IJwRwSsPijbWCvw==
+X-Received: by 2002:a05:6000:490c:b0:427:632:cd3f with SMTP id
+ ffacd0b85a97d-4270632cd6amr14476322f8f.28.1761141827917; 
+ Wed, 22 Oct 2025 07:03:47 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00ce586sm25929940f8f.49.2025.10.22.07.01.56
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 22 Oct 2025 07:01:56 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Anthony PERARD <anthony@xenproject.org>, xen-devel@lists.xenproject.org,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paul Durrant <paul@xen.org>, Stefano Stabellini <sstabellini@kernel.org>,
- Anton Johansson <anjo@rev.ng>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] hw/xen: Build only once
-Date: Wed, 22 Oct 2025 16:01:13 +0200
-Message-ID: <20251022140114.72372-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251022140114.72372-1-philmd@linaro.org>
-References: <20251022140114.72372-1-philmd@linaro.org>
+ ffacd0b85a97d-427ea5b3dabsm26402898f8f.16.2025.10.22.07.03.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Oct 2025 07:03:47 -0700 (PDT)
+Message-ID: <a244a654-7bd8-46cf-bc55-87ab5287bda5@linaro.org>
+Date: Wed, 22 Oct 2025 16:03:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/19] single-binary: Make hw/arm/ common
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Anton Johansson
+ <anjo@rev.ng>, Luc Michel <luc.michel@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+References: <20251021205741.57109-1-philmd@linaro.org>
+ <CAFEAcA8A5xa0nJUczM_BDCvVu+sP-tdbt_CxDGos6hKW27qEZA@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8A5xa0nJUczM_BDCvVu+sP-tdbt_CxDGos6hKW27qEZA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,59 +101,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now than hw/xen/ files don't use any target-specific code,
-we can build all file units once, removing the need for the
-xen_specific_ss[] source set.
+On 22/10/25 13:50, Peter Maydell wrote:
+> On Tue, 21 Oct 2025 at 21:57, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Series fully reviewed.
+>>
+>> Since v6:
+>> - Addressed Jan comment
+>> - Removed aspeed/raspi meson patches
+> 
+> I'm assuming you'll take this via your own tree like the
+> other single-binary stuff -- let me know if you want me
+> to take it into target-arm instead.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/xen/meson.build | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+Since most files are hw/arm/ related, I tried to get it fully reviewed
+before the last Tuesday before soft freeze so you could queue it;
+however it is based on my hw-misc-20251021 pull request, which isn't
+yet merged. I'm happy to merge myself, but would you mind to provide
+your Acked-by tag?
 
-diff --git a/hw/xen/meson.build b/hw/xen/meson.build
-index a1850e76988..dcd2b7e1df3 100644
---- a/hw/xen/meson.build
-+++ b/hw/xen/meson.build
-@@ -7,21 +7,16 @@ system_ss.add(when: ['CONFIG_XEN_BUS'], if_true: files(
-   'xen_pvdev.c',
- ))
- 
--system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
--  'xen-operations.c',
--),
--if_false: files(
--  'xen_stubs.c',
--))
--
--xen_specific_ss = ss.source_set()
--xen_specific_ss.add(files(
--  'xen-mapcache.c',
-+xen_common_ss = ss.source_set()
-+xen_common_ss.add(files(
-   'xen-hvm-common.c',
-+  'xen-mapcache.c',
-+  'xen-operations.c',
-   'xen-pvh-common.c',
- ))
-+
- if have_xen_pci_passthrough
--  xen_specific_ss.add(files(
-+  xen_common_ss.add(files(
-     'xen-host-pci-device.c',
-     'xen_pt.c',
-     'xen_pt_config_init.c',
-@@ -30,7 +25,8 @@ if have_xen_pci_passthrough
-     'xen_pt_msi.c',
-   ))
- else
--  xen_specific_ss.add(files('xen_pt_stub.c'))
-+  xen_common_ss.add(files('xen_pt_stub.c'))
- endif
- 
--specific_ss.add_all(when: ['CONFIG_XEN', xen], if_true: xen_specific_ss)
-+system_ss.add_all(when: ['CONFIG_XEN', xen], if_true: xen_common_ss)
-+system_ss.add(when: ['CONFIG_XEN', xen], if_false: files('xen_stubs.c'))
--- 
-2.51.0
+Thanks,
 
+Phil.
 
