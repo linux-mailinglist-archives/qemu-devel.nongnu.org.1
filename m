@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F7ABFB848
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 13:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37442BFB821
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 13:01:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBWaM-0001Y3-V6; Wed, 22 Oct 2025 07:00:54 -0400
+	id 1vBWaN-0001Y6-DV; Wed, 22 Oct 2025 07:00:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBWaI-0001WO-8f
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBWaI-0001WV-DL
  for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBWaA-0005d2-Cv
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:49 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBWaA-0005dM-OH
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761130840;
+ s=mimecast20190719; t=1761130841;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/bvTOU0HYOLSAJaQ2Au/rTDDGroYRoRbK9NjFAix4UU=;
- b=IpIO48n4XZuHizGcuDTdIRy0U2FJvykvvYYMZqq8e0b29H7cmAI2VVheYygtkQCPwws8nA
- dvyefwU3daEzU2q+lxqeK8rDXrWTBrCZ4AKZzQ7YFKczDBehBOKXtyo4x+XLvve/5ch41d
- Q6xLmcXKhVLJN2B6X6993AAqv6eGUDM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=cWO+HWjLIQTLIzxJ/Yn1KzFJP9Nkv8LoxMvKWhvh7Bk=;
+ b=Dv+FWpi0oW6cy/eF8GD+VXQqDBJ23Q8/vyfvT8Qnfja0yUXVNcNlIiY4QhnlaSIb+4XA2D
+ jCR9wC1ne4BPW0g5NklC/Z7Bq6haOpJwcTd3dIwte//xlPsk7/mSTKZRxULmMn8Fs9GaIJ
+ +aEf0TpEauk4zJas8MCsmhvZfLTZiGE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-YhbvZUUOOl6vF_HyeKMIfw-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-1wJRCyd_M0KXLEGyh8_bpQ-1; Wed,
  22 Oct 2025 07:00:37 -0400
-X-MC-Unique: YhbvZUUOOl6vF_HyeKMIfw-1
-X-Mimecast-MFC-AGG-ID: YhbvZUUOOl6vF_HyeKMIfw_1761130835
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+X-MC-Unique: 1wJRCyd_M0KXLEGyh8_bpQ-1
+X-Mimecast-MFC-AGG-ID: 1wJRCyd_M0KXLEGyh8_bpQ_1761130836
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5275F19560B4; Wed, 22 Oct 2025 11:00:35 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BBD741801359; Wed, 22 Oct 2025 11:00:35 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.27])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 27601180057E; Wed, 22 Oct 2025 11:00:34 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 65FF11955F22; Wed, 22 Oct 2025 11:00:34 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 2A30018003AA; Wed, 22 Oct 2025 13:00:28 +0200 (CEST)
+ id 3FECC1800784; Wed, 22 Oct 2025 13:00:28 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -56,14 +56,14 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 2/3] hw/uefi: add 'info firmware-log' hmp monitor command.
-Date: Wed, 22 Oct 2025 13:00:26 +0200
-Message-ID: <20251022110027.441780-3-kraxel@redhat.com>
+Subject: [PULL 3/3] hw/uefi/ovmf-log: add maxsize parameter
+Date: Wed, 22 Oct 2025 13:00:27 +0200
+Message-ID: <20251022110027.441780-4-kraxel@redhat.com>
 In-Reply-To: <20251022110027.441780-1-kraxel@redhat.com>
 References: <20251022110027.441780-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -89,84 +89,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds the hmp variant of the query-firmware-log qmp command.
+Allow limiting the amount of log output sent.  Allow up to 1 MiB.
+In case the guest log buffer is larger than 1 MiB limit the output
+instead of throwing an error.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20251017115006.2696991-3-kraxel@redhat.com>
+Message-ID: <20251017115006.2696991-4-kraxel@redhat.com>
 ---
- include/monitor/hmp.h |  1 +
- hw/uefi/ovmf-log.c    | 27 +++++++++++++++++++++++++++
- hmp-commands-info.hx  | 13 +++++++++++++
- 3 files changed, 41 insertions(+)
+ hw/uefi/ovmf-log.c   | 42 ++++++++++++++++++++++++++++++++++--------
+ hmp-commands-info.hx |  4 ++--
+ qapi/machine.json    |  5 +++++
+ 3 files changed, 41 insertions(+), 10 deletions(-)
 
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index 897dfaa2b6d9..83721b5ffc6d 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -179,5 +179,6 @@ void hmp_boot_set(Monitor *mon, const QDict *qdict);
- void hmp_info_mtree(Monitor *mon, const QDict *qdict);
- void hmp_info_cryptodev(Monitor *mon, const QDict *qdict);
- void hmp_dumpdtb(Monitor *mon, const QDict *qdict);
-+void hmp_info_firmware_log(Monitor *mon, const QDict *qdict);
- 
- #endif
 diff --git a/hw/uefi/ovmf-log.c b/hw/uefi/ovmf-log.c
-index 0d4bd503a06a..fe8acbd19236 100644
+index fe8acbd19236..98ebb0209491 100644
 --- a/hw/uefi/ovmf-log.c
 +++ b/hw/uefi/ovmf-log.c
-@@ -231,3 +231,30 @@ FirmwareLog *qmp_query_firmware_log(Error **errp)
-     ret->log = g_base64_encode((const guchar *)log->str, log->len);
-     return ret;
+@@ -18,6 +18,7 @@
+ #include "qapi/error.h"
+ #include "qapi/type-helpers.h"
+ #include "qapi/qapi-commands-machine.h"
++#include "qobject/qdict.h"
+ 
+ 
+ /* ----------------------------------------------------------------------- */
+@@ -164,7 +165,8 @@ static void handle_ovmf_log_range(GString *out,
+     }
  }
-+
-+void hmp_info_firmware_log(Monitor *mon, const QDict *qdict)
-+{
-+    g_autofree gchar *log_esc = NULL;
-+    g_autofree guchar *log_out = NULL;
-+    Error *err = NULL;
-+    FirmwareLog *log;
-+    gsize log_len;
-+
-+    log = qmp_query_firmware_log(&err);
-+    if (err)  {
-+        hmp_handle_error(mon, err);
-+        return;
+ 
+-FirmwareLog *qmp_query_firmware_log(Error **errp)
++FirmwareLog *qmp_query_firmware_log(bool have_max_size, uint64_t max_size,
++                                    Error **errp)
+ {
+     MEM_DEBUG_LOG_HDR header;
+     dma_addr_t offset, base;
+@@ -184,18 +186,40 @@ FirmwareLog *qmp_query_firmware_log(Error **errp)
+         return NULL;
+     }
+ 
+-    if (header.DebugLogSize > MiB) {
+-        /* default size is 128k (32 pages), allow up to 1M */
+-        error_setg(errp, "firmware log: log buffer is too big");
+-        return NULL;
+-    }
+-
+     if (header.DebugLogHeadOffset > header.DebugLogSize ||
+         header.DebugLogTailOffset > header.DebugLogSize) {
+         error_setg(errp, "firmware log buffer header is invalid");
+         return NULL;
+     }
+ 
++    if (have_max_size) {
++        if (max_size > MiB) {
++            error_setg(errp, "parameter 'max-size' exceeds 1MiB");
++            return NULL;
++        }
++    } else {
++        max_size = MiB;
 +    }
 +
-+    g_assert(log != NULL);
-+    g_assert(log->log != NULL);
-+
-+    if (log->version) {
-+        g_autofree gchar *esc = g_strescape(log->version, NULL);
-+        monitor_printf(mon, "[ firmware version: %s ]\n", esc);
++    /* adjust header.DebugLogHeadOffset so we return at most maxsize bytes */
++    if (header.DebugLogHeadOffset > header.DebugLogTailOffset) {
++        /* wrap around */
++        if (header.DebugLogTailOffset > max_size) {
++            header.DebugLogHeadOffset = header.DebugLogTailOffset - max_size;
++        } else {
++            uint64_t max_chunk = max_size - header.DebugLogTailOffset;
++            if (header.DebugLogSize > max_chunk &&
++                header.DebugLogHeadOffset < header.DebugLogSize - max_chunk) {
++                header.DebugLogHeadOffset = header.DebugLogSize - max_chunk;
++            }
++        }
++    } else {
++        if (header.DebugLogTailOffset > max_size &&
++            header.DebugLogHeadOffset < header.DebugLogTailOffset - max_size) {
++            header.DebugLogHeadOffset = header.DebugLogTailOffset - max_size;
++        }
 +    }
 +
-+    log_out = g_base64_decode(log->log, &log_len);
-+    log_esc = g_strescape((gchar *)log_out, "\r\n");
-+    monitor_printf(mon, "%s\n", log_esc);
-+}
+     base = offset + header.HeaderSize;
+     if (header.DebugLogHeadOffset > header.DebugLogTailOffset) {
+         /* wrap around */
+@@ -239,8 +263,10 @@ void hmp_info_firmware_log(Monitor *mon, const QDict *qdict)
+     Error *err = NULL;
+     FirmwareLog *log;
+     gsize log_len;
++    int64_t maxsize;
+ 
+-    log = qmp_query_firmware_log(&err);
++    maxsize = qdict_get_try_int(qdict, "max-size", -1);
++    log = qmp_query_firmware_log(maxsize != -1, (uint64_t)maxsize, &err);
+     if (err)  {
+         hmp_handle_error(mon, err);
+         return;
 diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 25b4aed51f56..33cf740bbc1b 100644
+index 33cf740bbc1b..2a7f5810d706 100644
 --- a/hmp-commands-info.hx
 +++ b/hmp-commands-info.hx
-@@ -995,3 +995,16 @@ SRST
-   ``info cryptodev``
-     Show the crypto devices.
- ERST
-+
-+    {
-+        .name       = "firmware-log",
-+        .args_type  = "",
-+        .params     = "",
-+        .help       = "show the firmware (ovmf) debug log",
-+        .cmd        = hmp_info_firmware_log,
-+    },
-+
-+SRST
-+  ``info firmware-log``
-+    Show the firmware (ovmf) debug log.
-+ERST
+@@ -998,8 +998,8 @@ ERST
+ 
+     {
+         .name       = "firmware-log",
+-        .args_type  = "",
+-        .params     = "",
++        .args_type  = "max-size:o?",
++        .params     = "[max-size]",
+         .help       = "show the firmware (ovmf) debug log",
+         .cmd        = hmp_info_firmware_log,
+     },
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 96133e5c71cf..c6dc6fe69b5c 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1858,9 +1858,14 @@
+ #
+ # Find firmware memory log buffer in guest memory, return content.
+ #
++# @max-size: limit the amount of log data returned.  Up to 1 MiB of
++#            log data is allowed.  In case the amount of log data is
++#            larger than @max-size the tail of the log is returned.
++#
+ # Since: 10.2
+ ##
+ { 'command': 'query-firmware-log',
++  'data': { '*max-size': 'size' },
+   'returns': 'FirmwareLog' }
+ 
+ ##
 -- 
 2.51.0
 
