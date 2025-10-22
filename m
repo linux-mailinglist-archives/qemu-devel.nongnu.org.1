@@ -2,63 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83478BFAF77
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 10:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3AEBFAFB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 10:52:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBUSs-00018F-41; Wed, 22 Oct 2025 04:45:02 -0400
+	id 1vBUZd-0004wu-Gt; Wed, 22 Oct 2025 04:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBUSq-000180-Ho
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 04:45:00 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBUZb-0004wl-QP
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 04:51:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBUSp-0006kH-0z
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 04:45:00 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBUZa-0007V2-4t
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 04:51:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761122698;
+ s=mimecast20190719; t=1761123115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ynI0aaSbuyKviKYJOg1UW9wzQ4Ffq+ygTNJwJrxfprQ=;
- b=epzpG7Ovxvsr9kW7znNHP98XRcPrCq5TK5XalWLM9LAeU5RU9q+lERdpeTedFiVZk+pnnY
- hnAEtN3NxzYLetIFNVWXl+SileMdViRLXiXTq0mvMGG+IUpDoYzTTpPYbu+ZyfZcur/evr
- ja44zKuRWIyvYyBBEoF5Ue5cp1/Uuqc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HTVfpZ74qmUbTKaRa/nuyPzTywqjM3Wm6K/B+nnaUVk=;
+ b=hzSyXJqcm+lnj7GRJxp60bAN8EsMx9r8uknVXRlghpTmrY61p78KN6zfNC8iPMv2K2wjLP
+ zpwY3ovQU7iK5ISZybe1iB3RyV2AwoM6UNHWA/KZ4wuKWZYWLiy7BKdUHCatLOTBuRaxLS
+ gcoey+Fg1lm5ccB6UIDEXNs5X46uQkM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-42-3ZIRgN6eNPiQwIRazDIKzA-1; Wed,
- 22 Oct 2025 04:44:54 -0400
-X-MC-Unique: 3ZIRgN6eNPiQwIRazDIKzA-1
-X-Mimecast-MFC-AGG-ID: 3ZIRgN6eNPiQwIRazDIKzA_1761122693
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-56-kzR3WXixPjG9lgj5cv38sg-1; Wed,
+ 22 Oct 2025 04:51:52 -0400
+X-MC-Unique: kzR3WXixPjG9lgj5cv38sg-1
+X-Mimecast-MFC-AGG-ID: kzR3WXixPjG9lgj5cv38sg_1761123111
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 70C701956050; Wed, 22 Oct 2025 08:44:53 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E651319541BD; Wed, 22 Oct 2025 08:51:50 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.44.32.27])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0EA7D18003FC; Wed, 22 Oct 2025 08:44:53 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A7F3180044F; Wed, 22 Oct 2025 08:51:50 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 2649D1800841; Wed, 22 Oct 2025 10:44:40 +0200 (CEST)
+ id EC86F18000B5; Wed, 22 Oct 2025 10:51:47 +0200 (CEST)
+Date: Wed, 22 Oct 2025 10:51:47 +0200
 From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Luigi Leonardi <leonardi@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: [PATCH v4 5/5] igvm: add MAINTAINERS entry
-Date: Wed, 22 Oct 2025 10:44:39 +0200
-Message-ID: <20251022084439.242476-6-kraxel@redhat.com>
-In-Reply-To: <20251022084439.242476-1-kraxel@redhat.com>
-References: <20251022084439.242476-1-kraxel@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 5/5] igvm: add MAINTAINERS entry
+Message-ID: <3hkj3ririipknv74qz3d7i3vgfn7hbfp5vibdfe6ax4jebgshd@44gfd4sj4ogw>
+References: <20251015112342.1672955-1-kraxel@redhat.com>
+ <20251015112342.1672955-6-kraxel@redhat.com>
+ <b59aaee4-89c6-4033-946f-bc2702993294@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+In-Reply-To: <b59aaee4-89c6-4033-946f-bc2702993294@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,36 +88,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add Roy (being the original author) as maintainer.  Add myself
-and Ani as reviewer.  Status to be decided.
+On Wed, Oct 22, 2025 at 08:57:39AM +0200, Philippe Mathieu-Daudé wrote:
+> On 15/10/25 13:23, Gerd Hoffmann wrote:
+> > Add Roy (being the original author) as maintainer.  Add myself as
+> > reviewer.  Status to be decided.
+> > 
+> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> > ---
+> >   MAINTAINERS | 9 +++++++++
+> >   1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 84cfd85e1fa1..3ebcbcdfdb04 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -3893,6 +3893,15 @@ F: roms/edk2-*
+> >   F: tests/data/uefi-boot-images/
+> >   F: tests/uefi-test-tools/
+> > +IGVM Firmware
+> > +M: Roy Hopkins <roy.hopkins@randomman.co.uk>
+> > +R: Gerd Hoffmann <kraxel@redhat.com>
+> > +S: TBD
+> 
+> If not Supported, then Maintained?
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- MAINTAINERS | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+I was hoping for Roy (as original igvm author) offers an opinion on
+this.  Not sure he is still working on igvm though given that there
+wasn't a single reply from him so far.  Should he moved on to other
+things it doesn't make much sense to add him as maintainer ...
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0c766961f39a..1c4904ad9187 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3892,6 +3892,16 @@ F: roms/edk2-*
- F: tests/data/uefi-boot-images/
- F: tests/uefi-test-tools/
- 
-+IGVM Firmware
-+M: Roy Hopkins <roy.hopkins@randomman.co.uk>
-+R: Gerd Hoffmann <kraxel@redhat.com>
-+R: Ani Sinha <anisinha@redhat.com>
-+S: TBD
-+F: backends/igvm*.c
-+F: include/system/igvm*.h
-+F: stubs/igvm.c
-+F: target/i386/igvm.c
-+
- VT-d Emulation
- M: Michael S. Tsirkin <mst@redhat.com>
- R: Jason Wang <jasowang@redhat.com>
--- 
-2.51.0
+Roy?
+
+take care,
+  Gerd
 
 
