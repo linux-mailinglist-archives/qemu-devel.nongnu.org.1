@@ -2,63 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674B4BFA608
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 08:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EC4BFA602
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 08:57:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBSn2-0000rA-71; Wed, 22 Oct 2025 02:57:44 -0400
+	id 1vBSn6-0001BK-RX; Wed, 22 Oct 2025 02:57:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vBSmx-0000hT-T1; Wed, 22 Oct 2025 02:57:39 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vBSmr-00084T-KE; Wed, 22 Oct 2025 02:57:39 -0400
-Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 88A5F80B6D;
- Wed, 22 Oct 2025 09:57:28 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a4a::1:14] (unknown
- [2a02:6bf:8080:a4a::1:14])
- by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id RvQZ8F0Io4Y0-XxtiYiXl; Wed, 22 Oct 2025 09:57:27 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761116247;
- bh=Z3Vz9E4I3gBty9emxN8AARWTH0kIbIwJFXWWdxB48ew=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=ExWR+0pUlrw0KhEAFkJgVYHdD3gTZmErlQTjtV6Rz1qWRTlKLJF0ua2GvhpZsFtZ9
- mniIdG465PmxmvjSD8oCHqQdEuEWbii9Qkxx2aWWwrPuktJGl3U7ZWuA9oR40HeeKO
- d7Qb16FfG4CdHNPggvfmEUwwFNzpu8WiCjgweIxs=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <01ae19a1-61e5-499b-bb6c-0cc480f220fb@yandex-team.ru>
-Date: Wed, 22 Oct 2025 09:57:27 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBSn3-00015t-T4
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:57:45 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBSn1-00086B-8B
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:57:45 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4711b95226dso52841145e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Oct 2025 23:57:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761116261; x=1761721061; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QnPloFsjFit3k8b3uukb85Gevv0GhUmTfYnV5ODHyak=;
+ b=QjjodzOVW2R8Rv0HgYj018XhH57IFrOVRpaR1BrUzKf6bDy84QieGbGMZxbp2XaVoK
+ A4jbJMMD3cjI38T4LknvTOKRz33oNxzLOgeNaN3V3TcaFpKFUzQD6Twp7jvroanLb8bW
+ mc59Rvac9AQCPeOx5b2YBTbkyH9Rn7YmbvepEjBAfNje6gDjHJpxXP41aUUEzo1CDnFK
+ L8SHAYRj1uH/yXF44z31RTzJrZZBeqcHSD2tubK1Rjr5Ov5v4LA7zj1rytUJMM0Hzgir
+ 3I9LP6VJT1uCzJGztyOkADtf/mUY1c4zptq7vlL7Bomep8oSLizrDzsEMg0gtPql84N5
+ /SmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761116261; x=1761721061;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QnPloFsjFit3k8b3uukb85Gevv0GhUmTfYnV5ODHyak=;
+ b=kJoeQ7VkIyWtspzX2VP7MN03UE04CXG8xISKqdduFwe9U+nW4wd4thRAj5dv1NktAT
+ /WK0R4p08Ewn09+D1qzeVz9Cn1rot0cxQYse4MVduqnnH9xGc5UZ3fJLoiqNg7Zr7m1E
+ UFjsgw+evu8DgjO9VAIK2ZluCsq5pqFSSCT3ii+btdIdox35VUkdu3Tn5Fjc2KVkAqT+
+ imqCDXTB/Lk+PUm5OPl/Z3IokzfZ0dz12xLwR5UndOyem4pKtVqbW6mUcS/ImjFvIRgE
+ 0wrzswgB4Of3L1fg6XuvW38iAjeZGq2WjrTZV1tBe13Gj3X0FRt/mNN6uKe6Bf2UZjxT
+ eACw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXjfYAh24uZAsADZck8bSi72zhsJxiNPSmYk7R5+HZRie5zWO/kKM0QJc0DvDB4u9Bczb1J8OD4TqC4@nongnu.org
+X-Gm-Message-State: AOJu0Yzzen518u5ffNJ7M3tyKqRA1FXUORLzncTkge1QFtkdNiyQQuA2
+ EqTc8of3m5VDIr5avxw+TW35KDh73HQxFi4f/LBVtKSa33MEGlzf8FYlqyiZQXveeX4=
+X-Gm-Gg: ASbGncv4106vTdF6OaJAlWweHsdZt2amf8QtSFT+NLAI8l+R8nlydWLbGlHHkvc/BKC
+ SR+lfXGDlmfVeW22AOxt/URFLf9Cx8zA5y5GZaf8UfQwsGasHpjKhy77Whm4UnWYNevYUXxO4ak
+ 3GaS3QwV+sxc7VJyV/NaU6FT1amWEApgVqwWIZh4W84/1zE+XP3C/d4mCbFk14S81NBcpGxNqmN
+ ZN1ADp+Xv3+hd3ffeqS8o7i0QJBamccC2j5k2joWVRRqalDXTGZvIAOtChptM8FHwC5QKZ0rBWC
+ CvL+awDG5EWZFFuKAth6qXPhGs6da7oj4zCgIdHZSovT4IOAGNs+bvkds/txc0QivLVgfcH7Zwb
+ 6x9EUpj+CQRV5ybKVF1Oy2THEsWdvA4NHq6M32EOiNVPZ5dM6l09Wb79mSMYH4vNWStf3MCLWnL
+ KA/6b1U1LnsOghWh58leuKpg0Gr8OSNonzym/CQXsFYo4=
+X-Google-Smtp-Source: AGHT+IE5+4ddQWHPr5frwJdpVMVACxr2T4XPoxFldVuShxMrAH5vZ7F/O3blDy8LTBRv3QNP5YxzEA==
+X-Received: by 2002:a05:600c:3b8d:b0:45d:f81d:eae7 with SMTP id
+ 5b1f17b1804b1-471179176b9mr164828215e9.28.1761116261038; 
+ Tue, 21 Oct 2025 23:57:41 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-475c427c3f7sm30356415e9.1.2025.10.21.23.57.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Oct 2025 23:57:40 -0700 (PDT)
+Message-ID: <b59aaee4-89c6-4033-946f-bc2702993294@linaro.org>
+Date: Wed, 22 Oct 2025 08:57:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] stream: Remove bdrv from job in .clean()
-To: Wesley Hershberger <wesley.hershberger@canonical.com>,
- qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-References: <20251021-fix-3149-v2-1-5ffbe701e964@canonical.com>
+Subject: Re: [PATCH v3 5/5] igvm: add MAINTAINERS entry
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+References: <20251015112342.1672955-1-kraxel@redhat.com>
+ <20251015112342.1672955-6-kraxel@redhat.com>
 Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20251021-fix-3149-v2-1-5ffbe701e964@canonical.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251015112342.1672955-6-kraxel@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,205 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21.10.25 21:28, Wesley Hershberger wrote:
-> This is similar to bdc4c4c5e372756a5ba3fb3a61e585b02f0dd7f4
-> (qmp blockdev-backup). The cor_filter_bs was added to the blockjob as
-> the main BDS (by passing it to block_job_create), so
-> bdrv_cor_filter_drop doesn't actually remove it from global_bdrv_states.
+On 15/10/25 13:23, Gerd Hoffmann wrote:
+> Add Roy (being the original author) as maintainer.  Add myself as
+> reviewer.  Status to be decided.
 > 
-> This can cause races with qmp query-named-block nodes as described in
-
-I'm not against the patch itself..
-
-But I still don't understand, how it fixes the bug.
-
-Why segfault happens, which pointer is invalid? And why?
-
-
->   #3149. Stacktrace:
-> 
-> 0  bdrv_refresh_filename (bs=0x5efed72f8350)
-
-Aha, I start to understand.
-
-1. assume that's exactly the cor_filter_bs (is it? it should be noted here if so)
-
-2. As we know, at this time, it doesn't have any children.
-
-3. But, it (most probably) has bs->implicit = true, as we do set it for cor_filter_bs,
-when filter node-name is not given in job parameters. Is it the case?
-
-And finally, in bdrv_refresh_filename(), we have
-
-     if (bs->implicit) {
-         /* For implicit nodes, just copy everything from the single child */
-         child = QLIST_FIRST(&bs->children);
-         assert(QLIST_NEXT(child, next) == NULL);
-
-         pstrcpy(bs->exact_filename, sizeof(bs->exact_filename),
-                 child->bs->exact_filename);
-
-which, of course, will not work when we don't have any children.
-
-
-If my assumptions match, they should be mentioned in commit message.
-
-
----
-
-Ok, so, the commit make a work-around: avoid listing the invalid node
-in query-named-block-nodes by removing it earlier (after the commit,
-the node will be removed on final bdrv_unref() in bdrv_cor_filter_drop().
-
-This doesn't seem safe: what if someone else have another reference on
-the filter node? Or will have in future? The bug will raise again.
-
-More correct would be fix the core problem: bdrv_refresh_filename()
-crashes for detached implicit filters.
-
-Could you check, will something like this fix the reproducer:
-
-
-diff --git a/block.c b/block.c
-index 8848e9a7ed..dfd9090cfc 100644
---- a/block.c
-+++ b/block.c
-@@ -8069,6 +8069,17 @@ void bdrv_refresh_filename(BlockDriverState *bs)
-      if (bs->implicit) {
-          /* For implicit nodes, just copy everything from the single child */
-          child = QLIST_FIRST(&bs->children);
-+
-+        if (!child) {
-+            /*
-+             * The child is detached, which means that filter node
-+             * is in process of removing. Keep filename and full_open_options
-+             * unchanged, let query-named-block-nodes to show them,
-+             * if it called during block-job clean-up process.
-+             */
-+            return;
-+        }
-+
-          assert(QLIST_NEXT(child, next) == NULL);
-
-          pstrcpy(bs->exact_filename, sizeof(bs->exact_filename),
-
-
----
-
-Other ideas:
-
-Maybe, when removing the filter child, we should set its bs->drv to NULL,
-as filter node becomes nonfunctional.
-
-Or, set bs->implicit to false, which will activate generic path in
-bdrv_refresh_filename (I'm not sure it will work good for the detached
-filter node)
-
-
----
-
-Hmm, I also think that mentioned
-bdc4c4c5e372756a "backup: Remove nodes from job in .clean()" is
-at least incomplete.
-
-In block-layer, having reference counters in bs, we can't rely on
-"hmm, let's just drop this one reference, and hope, that after next
-function, the node will be completely removed".
-
-So, we either need a guarantee, that filter node is completely removed
-when we detach it (OK, detaching should just fail if it doesn't lead
-to complete removal), or we should be prepared to existing detached
-filters, and handle them correctly.
-
-
->      at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:8082
-> 1  0x00005efea73cf9dc in bdrv_block_device_info
->      (blk=0x0, bs=0x5efed72f8350, flat=true, errp=0x7ffeb829ebd8)
->      at block/qapi.c:62
-> 2  0x00005efea7391ed3 in bdrv_named_nodes_list
->      (flat=<optimized out>, errp=0x7ffeb829ebd8)
->      at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/block.c:6275
-> 3  0x00005efea7471993 in qmp_query_named_block_nodes
->      (has_flat=<optimized out>, flat=<optimized out>, errp=0x7ffeb829ebd8)
->      at /usr/src/qemu-1:10.1.0+ds-5ubuntu2/b/qemu/blockdev.c:2834
-> 4  qmp_marshal_query_named_block_nodes
->      (args=<optimized out>, ret=0x7f2b753beec0, errp=0x7f2b753beec8)
->      at qapi/qapi-commands-block-core.c:553
-> 5  0x00005efea74f03a5 in do_qmp_dispatch_bh (opaque=0x7f2b753beed0)
->      at qapi/qmp-dispatch.c:128
-> 6  0x00005efea75108e6 in aio_bh_poll (ctx=0x5efed6f3f430)
->      at util/async.c:219
-> 7  0x00005efea74ffdb2 in aio_dispatch (ctx=0x5efed6f3f430)
->      at util/aio-posix.c:436
-> 8  0x00005efea7512846 in aio_ctx_dispatch (source=<optimized out>,
->      callback=<optimized out>,user_data=<optimized out>)
->      at util/async.c:361
-> 9  0x00007f2b77809bfb in ?? ()
->      from /lib/x86_64-linux-gnu/libglib-2.0.so.0
-> 10 0x00007f2b77809e70 in g_main_context_dispatch ()
->      from /lib/x86_64-linux-gnu/libglib-2.0.so.0
-> 11 0x00005efea7517228 in glib_pollfds_poll () at util/main-loop.c:287
-> 12 os_host_main_loop_wait (timeout=0) at util/main-loop.c:310
-> 13 main_loop_wait (nonblocking=<optimized out>) at util/main-loop.c:589
-> 14 0x00005efea7140482 in qemu_main_loop () at system/runstate.c:905
-> 15 0x00005efea744e4e8 in qemu_default_main (opaque=opaque@entry=0x0)
->      at system/main.c:50
-> 16 0x00005efea6e76319 in main
->      (argc=<optimized out>, argv=<optimized out>)
->      at system/main.c:93
-> 
-> As in bdc4c4c, there is no function to remove just the cor_filter_bs
-> from the job, so drop all the job's nodes as they are no longer needed.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3149
-> Buglink: https://bugs.launchpad.net/bugs/2126951
-> Signed-off-by: Wesley Hershberger <wesley.hershberger@canonical.com>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
-> This patch fixes the issue described in Gitlab #3149. Please see the bug
-> for additional context & reproducer for the issue.
+>   MAINTAINERS | 9 +++++++++
+>   1 file changed, 9 insertions(+)
 > 
-> I'm happy to discuss alternative approaches or resubmit as needed.
-> 
-> `make check-block` passes locally.
-> 
-> A review would be greatly appreciated as a customer's production is
-> impacted.
-> 
-> First-time patch mailer so please pardon any mistakes.
-> ---
-> Changes in v2:
-> - Added backtrace to commit message
-> - Link to v1: https://lore.kernel.org/qemu-devel/20251020-fix-3149-v1-1-04b2d4db5179@canonical.com
-> ---
->   block/stream.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/block/stream.c b/block/stream.c
-> index c0616b69e259bf5a9b146dadd9dbac62bfaa9f23..1733abd8f96d7847701f54a7a55d3284387b8582 100644
-> --- a/block/stream.c
-> +++ b/block/stream.c
-> @@ -132,6 +132,12 @@ static void stream_clean(Job *job)
->   {
->       StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 84cfd85e1fa1..3ebcbcdfdb04 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3893,6 +3893,15 @@ F: roms/edk2-*
+>   F: tests/data/uefi-boot-images/
+>   F: tests/uefi-test-tools/
 >   
-> +    /*
-> +     * The job still holds a reference to cor_filter_bs; drop all bdrv to
-> +     * ensure that it is unref-ed
-> +     */
-> +    block_job_remove_all_bdrv(&s->common);
-> +
->       if (s->cor_filter_bs) {
->           bdrv_cor_filter_drop(s->cor_filter_bs);
->           s->cor_filter_bs = NULL;
-> 
-> ---
-> base-commit: 3a2d5612a7422732b648b46d4b934e2e54622fd6
-> change-id: 20251020-fix-3149-f01ae62fa53c
-> 
-> Best regards,
+> +IGVM Firmware
+> +M: Roy Hopkins <roy.hopkins@randomman.co.uk>
+> +R: Gerd Hoffmann <kraxel@redhat.com>
+> +S: TBD
 
+If not Supported, then Maintained?
 
--- 
-Best regards,
-Vladimir
+> +F: backends/igvm*.c
+> +F: include/system/igvm*.h
+> +F: stubs/igvm.c
+> +F: target/i386/igvm.c
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
