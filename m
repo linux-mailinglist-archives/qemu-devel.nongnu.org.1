@@ -2,68 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D356BBFA75C
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7D6BFA704
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:05:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBSoD-0004oK-Tu; Wed, 22 Oct 2025 02:59:00 -0400
+	id 1vBSsq-0002yl-5Y; Wed, 22 Oct 2025 03:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vBSo9-0004br-Fd
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:58:53 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1vBSsT-0002Vw-UU; Wed, 22 Oct 2025 03:03:24 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vBSo7-0008Hv-Jx
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:58:53 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 8E90B80B64;
- Wed, 22 Oct 2025 09:58:49 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a4a::1:14] (unknown
- [2a02:6bf:8080:a4a::1:14])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id mwQGCC0IrmI0-TxtjvlX2; Wed, 22 Oct 2025 09:58:49 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761116329;
- bh=tXdtXALq4rJWjxwWqgYj4nyuzTpmJJp5KmekPfHP4Oo=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=QTPBPkOH6186p/bBkFmMC/Yj2HfLXRtyH/1XVOo17V9UTi5Ml9//Jtqn2nLgY6xau
- BBMklewUOjc2Xp04MdTgCmJM4WEg6GqO5bLPMNtoJTNSp8S/qz3b6I9W+u3WVgz7Xm
- glA6mAwxw19G2dJjLs7cVuDeX7oKVhog/sV3qvaw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <28002e94-fd28-426a-bee8-b67631a5270a@yandex-team.ru>
-Date: Wed, 22 Oct 2025 09:58:48 +0300
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1vBSsR-0000b8-RX; Wed, 22 Oct 2025 03:03:21 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LMeLlV016406;
+ Wed, 22 Oct 2025 07:03:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=QOLj5V
+ QaUwHOEH8RL6jeG0xU7RG3kgqnclCQRhLvZMc=; b=V1899jEURJMolk++yByj1/
+ tuj7iY/aO4sQ1fdjYMVjvE1ZI5KTTy9/B35iBeg7n/90jj/j16hDvTae/kjzfX3T
+ A2Wbqc9sGM4ZrTXmONNwZVYDNZD9ApPr/2VUXd1j1NuFOlNzK0Zp8dzys7pUiSQ/
+ NyvT0GFqWqMzB0uTtoCH2ZTugwkP94tQGUu0A1K5IGRJ58PFuHPYqhfRKQwJcuPH
+ suR70FPuL+wElnV1PzwDg8PSTj9bXuobPTzkFv+Xneuiw83fByZbwMG3Y/llhaz/
+ WsGvVDrJCecXPxco4y3rNrLAbDZSXg50vAjP/zXhpL0Y4UqAZyrUS7dCy9ixLMVw
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32hhrn0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Oct 2025 07:03:17 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59M73Dt8024333;
+ Wed, 22 Oct 2025 07:03:17 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32hhrmw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Oct 2025 07:03:17 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59M6gI4c017058;
+ Wed, 22 Oct 2025 07:03:16 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vnkxy383-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Oct 2025 07:03:16 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59M73FLY26804774
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Oct 2025 07:03:15 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7D7F658063;
+ Wed, 22 Oct 2025 07:03:15 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6C9D58043;
+ Wed, 22 Oct 2025 07:03:12 +0000 (GMT)
+Received: from [9.79.201.141] (unknown [9.79.201.141])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed, 22 Oct 2025 07:03:12 +0000 (GMT)
+Message-ID: <27da22c4-6212-4ff9-8f11-e04b35039a2b@linux.ibm.com>
+Date: Wed, 22 Oct 2025 12:33:09 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] migration: vmsd errp handlers: return bool
-To: Markus Armbruster <armbru@redhat.com>
-Cc: peterx@redhat.com, stefanb@linux.vnet.ibm.com, farosas@suse.de,
- qemu-devel@nongnu.org, berrange@redhat.com
-References: <20251020160344.2401137-1-vsementsov@yandex-team.ru>
- <20251020160344.2401137-3-vsementsov@yandex-team.ru>
- <9064223d-6f35-4023-b5b6-99b8d766f506@yandex-team.ru>
- <87ecqviht6.fsf@pond.sub.org>
+Subject: Re: [PATCH v2 04/11] hw/ppc/spapr: Inline spapr_dtb_needed()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20251021084346.73671-1-philmd@linaro.org>
+ <20251021084346.73671-5-philmd@linaro.org>
+ <602c19bc-bed9-43c2-b98c-491b75921604@linux.ibm.com>
+ <d264c81b-119e-439f-a4c2-68a7336d6ba6@linaro.org>
 Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87ecqviht6.fsf@pond.sub.org>
+From: Chinmay Rath <rathc@linux.ibm.com>
+In-Reply-To: <d264c81b-119e-439f-a4c2-68a7336d6ba6@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX2I0X0TmC3bRo
+ k9dU7S0E50pNSj4qkxHWC4ACpm5oesDmxtRaoLDzueUN44XDV7bM2dsLuMadGH1c9eCBIXHywpZ
+ XGcmDrbB/1R1gC31nN/t06TNaNxDCW91b0QrjM5JkjfttMAPspikEuf0uEkKr8Io9QVS2RWeZtq
+ 29Gg8rIswTFaHLTueXrRerGQSoKM8RLjamp/5qrbIeKfMX9C4EUrAZQ0NS9+NGUjwNj8e2ik3V/
+ QGNeaY1OSsQk7RQpYskCuOqoMqhtEiDK+RNyDY/lWHpH45t34izljkRLsQd5V5B5gL/sTO2Q9sn
+ AU9Zd7H25ATXYl1m3cassb//sYg226wMG50sXBiZxBkVYmirAXo8OVNAIXcxafNvouxoQFUfHrn
+ d85DbodhKkV0cXJx6L/OoytZgIYtag==
+X-Authority-Analysis: v=2.4 cv=OrVCCi/t c=1 sm=1 tr=0 ts=68f881b5 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=KKAkSRfTAAAA:8 a=MvvTU35B-mzZJSykrPEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: swkTMFdgntB-3iu97LvVOF7k4NDyeK2l
+X-Proofpoint-ORIG-GUID: LC3uRKAJMFZE3SgYcC_85cXVAQLOsIDl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ clxscore=1015 bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rathc@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,52 +131,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.10.25 09:14, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> On 20.10.25 19:03, Vladimir Sementsov-Ogievskiy wrote:
->>> Recently we moved to returning errp. Why to keep int return value?
->>> Generally it doesn't help: you can't use in a logic of handling
->>> an error, as you are never sure, that in future the logic in
->>> the stack will not change: it may start to return another error
->>> code in the same case, or return same error code in another case.
->>> Actually, we can only rely on concrete errno code when get it
->>> _directly_ from documented library function or syscall. This way we
->>> handle for example EINTR. But later in a stack, we can only add
->>> this errno to the textual error by strerror().
->>> Let this new, recently added API be simpler and clearer, let it
->>> return simple boolean value, so we shouldn't think:
->>>     - should we handle different error codes differently
->>>       (if yes - how exactly, if no - why do we need this information?)
->>>     - should we add it to errp, or it was already added earlier in
->>>       the stack
->>
->>
->> Less aggressive commit message may be:
->>
->> Switch the new API to simple bool-returning interface, as return value
->> is not used otherwise than check is function failed or not. No logic
->> depend on concrete errno values.
-> 
-> Good, except it isn't quite accurate: callers include the return value
-> in error messages.
-> 
-> They format it as a number, which is inappropriate.
-> 
-> If they formatted it appropriately, with strerror(), would that be
-> helpful?  I *think* the answer is no.  The functions set an Error, and
-> their callers prepend to that Error's message.  The original Error
-> should suffice to tell what went wrong.  The prepended text's purpose is
-> to add context.
-> 
-> I think the easiest way to make this argument is to split this patch
-> into a part changing the error messages, and a part changing the return
-> type.
-> 
 
-Agreed, will do.
+On 10/21/25 19:51, Philippe Mathieu-Daudé wrote:
+> On 21/10/25 15:25, Chinmay Rath wrote:
+>> Hey Philippe,
+>> The commit message says that this commit is inline-ing 
+>> spapr_dtb_needed(), but it is actually removing it. I think it's 
+>> better to convey that in the commit message.
+>> Or did I miss something ?
+>>
+>> On 10/21/25 14:13, Philippe Mathieu-Daudé wrote:
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   hw/ppc/spapr.c | 6 ------
+>>>   1 file changed, 6 deletions(-)
+>>>
+>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>>> index 458d1c29b4d..ad9fc61c299 100644
+>>> --- a/hw/ppc/spapr.c
+>>> +++ b/hw/ppc/spapr.c
+>>> @@ -2053,11 +2053,6 @@ static const VMStateDescription 
+>>> vmstate_spapr_irq_map = {
+>>>       },
+>>>   };
+>>> -static bool spapr_dtb_needed(void *opaque)
+>>> -{
+>>> -    return true; /* backward migration compat */
+>>> -}
+>>> -
+>>>   static int spapr_dtb_pre_load(void *opaque)
+>>>   {
+>>>       SpaprMachineState *spapr = (SpaprMachineState *)opaque;
+>>> @@ -2073,7 +2068,6 @@ static const VMStateDescription 
+>>> vmstate_spapr_dtb = {
+>>>       .name = "spapr_dtb",
+>>>       .version_id = 1,
+>>
+>> Does this version number need to be incremented ?
+>
+> No, this is a no-op.
+>
+>>
+>> Regards,
+>> Chinmay
+>>
+>>>       .minimum_version_id = 1,
+>>> -    .needed = spapr_dtb_needed,
+>
+> Here is the inlining, as '.needed = true' is the default.
+Ahh I see.
+> Would "Inline and remove spapr_dtb_needed()" be clearer?
+Yeah that'd be nice.
 
--- 
-Best regards,
-Vladimir
+Thanks,
+Chinmay
+>
+>>>       .pre_load = spapr_dtb_pre_load,
+>>>       .fields = (const VMStateField[]) {
+>>>           VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
+>
+>
 
