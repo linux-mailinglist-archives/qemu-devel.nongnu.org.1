@@ -2,54 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F149DBFBD0D
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6FCBFBD2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:21:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXo1-0000yg-VS; Wed, 22 Oct 2025 08:19:05 -0400
+	id 1vBXoO-00014L-7X; Wed, 22 Oct 2025 08:19:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXny-0000yR-Ka
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoL-00013p-Dx
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXnt-00071K-OY
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:01 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoJ-00073q-Go
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135532;
+ s=mimecast20190719; t=1761135562;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0FK+knJZayxg7BS7fbMe+D61WT87hhNpRhM5eVAqDYE=;
- b=X6YlvR+ptQVlwjufC5t6ML4I8K5jdcHT1x5rZdi8wTuDd6OAo4dEZS6nkarb2bFUxAvQKj
- LjyXAMA3Zstfbg/sisj4drsoCcU6cItl/MpEopm9Z0z560XQWgskxroGZIEibDWfGXwVGO
- Em+pIw6wgFX4g+IGGdq3qoJZ3eivlO4=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=65Vgceb3D7yf4yWybcxJjxF58FTpfcd+SoMiXXzlJys=;
+ b=AWvJPy4UUwzuUa7qubuSMYkF++EU69Av0k6tAyh0jOczERdI/xISH9ZAUqJZpF9pRNeepj
+ RnPDxGvwLqI9tfPffNjz0cysIwy4L6pqLTgcTVlaHhbS3AAc3lm8gOFC1124ARQ5HROmQV
+ gzN2+S8pwSMBAHK9l9OFRaZCOPvKKUs=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-qtgLBfoTNi-S2xNL1343ww-1; Wed,
- 22 Oct 2025 08:18:51 -0400
-X-MC-Unique: qtgLBfoTNi-S2xNL1343ww-1
-X-Mimecast-MFC-AGG-ID: qtgLBfoTNi-S2xNL1343ww_1761135530
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-196-92ZtQlKVNnCaEEwmV9iqYw-1; Wed,
+ 22 Oct 2025 08:18:54 -0400
+X-MC-Unique: 92ZtQlKVNnCaEEwmV9iqYw-1
+X-Mimecast-MFC-AGG-ID: 92ZtQlKVNnCaEEwmV9iqYw_1761135533
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 60966195422F
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 12:18:50 +0000 (UTC)
+ id 63548195420F; Wed, 22 Oct 2025 12:18:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.12])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 80340180044F; Wed, 22 Oct 2025 12:18:48 +0000 (UTC)
+ id E0318180044F; Wed, 22 Oct 2025 12:18:50 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Steven Sistare <steven.sistare@oracle.com>,
+ David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/12] vfio queue
-Date: Wed, 22 Oct 2025 14:18:34 +0200
-Message-ID: <20251022121846.874152-1-clg@redhat.com>
+Subject: [PULL 01/12] vfio/container: Remap only populated parts in a section
+Date: Wed, 22 Oct 2025 14:18:35 +0200
+Message-ID: <20251022121846.874152-2-clg@redhat.com>
+In-Reply-To: <20251022121846.874152-1-clg@redhat.com>
+References: <20251022121846.874152-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -79,61 +84,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3c0b42c68f98fb276fa248012642be8cbf2cab70:
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-  Merge tag 'pull-request-2025-10-21' of https://gitlab.com/thuth/qemu into staging (2025-10-21 08:59:35 -0500)
+If there are multiple containers and unmap-all fails for some of them, we
+need to remap vaddr for the other containers for which unmap-all succeeded.
+When ram discard is enabled, we should only remap populated parts in a
+section instead of the whole section.
 
-are available in the Git repository at:
+Fixes: eba1f657cbb1 ("vfio/container: recover from unmap-all-vaddr failure")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Steven Sistare <steven.sistare@oracle.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250928085432.40107-2-zhenzhong.duan@intel.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/vfio/vfio-cpr.h |  2 +-
+ hw/vfio/cpr-legacy.c       | 20 +++++++++++++++-----
+ hw/vfio/listener.c         |  4 ++--
+ 3 files changed, 18 insertions(+), 8 deletions(-)
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20251022
-
-for you to fetch changes up to ecbe424a63c9f860a901d6a4a75724b046abd796:
-
-  vfio: only check region info cache for initial regions (2025-10-22 08:12:52 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Fix CPR transfer
-* Add support for VFIO_DMA_UNMAP_FLAG_ALL
-* Fix vfio-user documentation
-* Update Alex Williamson's email address
-* Fix for vfio-region cache for the vGPU use case
-
-----------------------------------------------------------------
-Alex Williamson (1):
-      MAINTAINERS: Update Alex Williamson's email address
-
-John Levon (3):
-      docs/system/devices/vfio-user: fix formatting
-      vfio: rename field to "num_initial_regions"
-      vfio: only check region info cache for initial regions
-
-Zhenzhong Duan (8):
-      vfio/container: Remap only populated parts in a section
-      vfio/cpr-legacy: drop an erroneous assert
-      vfio/iommufd: Set cpr.ioas_id on source side for CPR transfer
-      vfio/iommufd: Restore vbasedev's reference to hwpt after CPR transfer
-      accel/kvm: Fix an erroneous check on coalesced_mmio_ring
-      vfio/container: Support unmap all in one ioctl()
-      vfio/iommufd: Support unmap all in one ioctl()
-      vfio/listener: Add an assertion for unmap_all
-
- MAINTAINERS                             |  4 ++--
- docs/system/devices/vfio-user.rst       |  2 +-
- include/hw/vfio/vfio-container-legacy.h |  1 +
- include/hw/vfio/vfio-cpr.h              |  2 +-
- include/hw/vfio/vfio-device.h           |  2 +-
- accel/kvm/kvm-all.c                     |  3 ++-
- hw/vfio-user/device.c                   |  2 +-
- hw/vfio/ccw.c                           |  4 ++--
- hw/vfio/container-legacy.c              | 38 ++++++++++++++++++--------------
- hw/vfio/cpr-legacy.c                    | 22 +++++++++++++------
- hw/vfio/device.c                        | 39 +++++++++++++++++++++------------
- hw/vfio/iommufd.c                       | 26 ++++++----------------
- hw/vfio/listener.c                      |  5 +++--
- hw/vfio/pci.c                           |  4 ++--
- .mailmap                                |  1 +
- 15 files changed, 86 insertions(+), 69 deletions(-)
+diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+index 81f4e24e229ef35f5b14582ce6e58415e0ebf3df..4606da500a7969b6519b054280464608ae624bb9 100644
+--- a/include/hw/vfio/vfio-cpr.h
++++ b/include/hw/vfio/vfio-cpr.h
+@@ -68,7 +68,7 @@ bool vfio_cpr_container_match(struct VFIOLegacyContainer *container,
+ void vfio_cpr_giommu_remap(struct VFIOContainer *bcontainer,
+                            MemoryRegionSection *section);
+ 
+-bool vfio_cpr_ram_discard_register_listener(
++bool vfio_cpr_ram_discard_replay_populated(
+     struct VFIOContainer *bcontainer, MemoryRegionSection *section);
+ 
+ void vfio_cpr_save_vector_fd(struct VFIOPCIDevice *vdev, const char *name,
+diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+index 80af7469d06b2f15a705a97c4b5ddd25a8044115..b4581e8f859323c1c45560f7d345b34f1ed9bd85 100644
+--- a/hw/vfio/cpr-legacy.c
++++ b/hw/vfio/cpr-legacy.c
+@@ -228,22 +228,32 @@ void vfio_cpr_giommu_remap(VFIOContainer *bcontainer,
+     memory_region_iommu_replay(giommu->iommu_mr, &giommu->n);
+ }
+ 
++static int vfio_cpr_rdm_remap(MemoryRegionSection *section, void *opaque)
++{
++    RamDiscardListener *rdl = opaque;
++
++    return rdl->notify_populate(rdl, section);
++}
++
+ /*
+  * In old QEMU, VFIO_DMA_UNMAP_FLAG_VADDR may fail on some mapping after
+  * succeeding for others, so the latter have lost their vaddr.  Call this
+- * to restore vaddr for a section with a RamDiscardManager.
++ * to restore vaddr for populated parts in a section with a RamDiscardManager.
+  *
+- * The ram discard listener already exists.  Call its populate function
++ * The ram discard listener already exists.  Call its replay_populated function
+  * directly, which calls vfio_legacy_cpr_dma_map.
+  */
+-bool vfio_cpr_ram_discard_register_listener(VFIOContainer *bcontainer,
+-                                            MemoryRegionSection *section)
++bool vfio_cpr_ram_discard_replay_populated(VFIOContainer *bcontainer,
++                                           MemoryRegionSection *section)
+ {
++    RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
+     VFIORamDiscardListener *vrdl =
+         vfio_find_ram_discard_listener(bcontainer, section);
+ 
+     g_assert(vrdl);
+-    return vrdl->listener.notify_populate(&vrdl->listener, section) == 0;
++    return ram_discard_manager_replay_populated(rdm, section,
++                                                vfio_cpr_rdm_remap,
++                                                &vrdl->listener) == 0;
+ }
+ 
+ int vfio_cpr_group_get_device_fd(int d, const char *name)
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index c6bb58f5209a4c8eb67deac41a89c317fa391447..1b6e5065a3267ab08d2d3fea3c5b4965a80947e8 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -577,8 +577,8 @@ void vfio_container_region_add(VFIOContainer *bcontainer,
+             if (!vfio_ram_discard_register_listener(bcontainer, section, &err)) {
+                 goto fail;
+             }
+-        } else if (!vfio_cpr_ram_discard_register_listener(bcontainer,
+-                                                           section)) {
++        } else if (!vfio_cpr_ram_discard_replay_populated(bcontainer,
++                                                          section)) {
+             error_setg(&err,
+                        "vfio_cpr_ram_discard_register_listener for %s failed",
+                        memory_region_name(section->mr));
+-- 
+2.51.0
 
 
