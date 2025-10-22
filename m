@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E265BFA698
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EACEBBFA749
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBSoT-0006b5-TY; Wed, 22 Oct 2025 02:59:13 -0400
+	id 1vBSoX-0006ip-Qx; Wed, 22 Oct 2025 02:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vBSoR-0006UW-Oz
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vBSoW-0006hh-5w
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vBSoP-0008Jk-Nk
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:11 -0400
+ id 1vBSoU-0008KK-QO
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761116347;
+ s=mimecast20190719; t=1761116353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U3qEMyN2Ig2MXdwLXWBdlvpZ1JIUr5GwgkG+gBGafMQ=;
- b=YQiMal0w4+lpLQNc9myKNdrw6TwnRC70zW4NAVrPOZ9IPDeKW7E9I/xwQWf8yo69WFtxq4
- hPcqGFYP+YyUCvAwkL3lu///FwjBdOuGoYZlkSmxSYwjtVNvv7Ep98OF/LQZofS/P+S0yh
- BitbcIHxVZe8249uVDi0o/3miEQnk7g=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=YAafkmBEG44dEvteX7fLDwSFhNPhRmmSpWk7ihmCK6E=;
+ b=CKBXfnh9Xqt+kWPl5qxM8KBZf2Z7XHWS7A8o8ha5u2RnShYddiqc9U0yKPVC2HWsA2/aeP
+ gbHGaWG+JMAGRrhNwI3TRCNzbUUBxOai86omAk58lyYArANAhtemM+dsbXYNv+16smuRQi
+ DdSoSIP9ivCrzWjJK53yXFj6ULbQ3kQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-i9DThp5rN2GmqwHJ7cvLBg-1; Wed,
- 22 Oct 2025 02:59:04 -0400
-X-MC-Unique: i9DThp5rN2GmqwHJ7cvLBg-1
-X-Mimecast-MFC-AGG-ID: i9DThp5rN2GmqwHJ7cvLBg_1761116343
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-F7u92J0vP56eHbkFhx5fsg-1; Wed,
+ 22 Oct 2025 02:59:09 -0400
+X-MC-Unique: F7u92J0vP56eHbkFhx5fsg-1
+X-Mimecast-MFC-AGG-ID: F7u92J0vP56eHbkFhx5fsg_1761116348
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1A58019560A2; Wed, 22 Oct 2025 06:59:03 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9ED8F19540E7; Wed, 22 Oct 2025 06:59:08 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C53E830001BF; Wed, 22 Oct 2025 06:59:01 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4C5B1180044F; Wed, 22 Oct 2025 06:59:06 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -52,16 +52,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v2 25/42] audio: clean-up vmstate change handler on finalize
-Date: Wed, 22 Oct 2025 10:56:20 +0400
-Message-ID: <20251022065640.1172785-26-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 26/42] audio: unregister vmstate description
+Date: Wed, 22 Oct 2025 10:56:21 +0400
+Message-ID: <20251022065640.1172785-27-marcandre.lureau@redhat.com>
 In-Reply-To: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
 References: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -89,70 +89,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-QOM-ification continues.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/audio_int.h |  1 +
- audio/audio.c     | 12 ++++++++----
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ audio/audio.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/audio/audio_int.h b/audio/audio_int.h
-index 4187a2dbfc..4a4d69f2bf 100644
---- a/audio/audio_int.h
-+++ b/audio/audio_int.h
-@@ -235,6 +235,7 @@ typedef struct AudioState {
- 
-     bool timer_running;
-     uint64_t timer_last;
-+    VMChangeStateEntry *vmse;
- } AudioState;
- 
- extern const struct mixeng_volume nominal_volume;
 diff --git a/audio/audio.c b/audio/audio.c
-index 4478041e5d..b39b86cc2e 100644
+index b39b86cc2e..e610e8453a 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -1622,6 +1622,9 @@ static void audio_state_init(Object *obj)
-     QLIST_INIT (&s->hw_head_in);
-     QLIST_INIT (&s->cap_head);
-     s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
+@@ -1614,6 +1614,8 @@ static void audio_vm_change_state_handler (void *opaque, bool running,
+     audio_reset_timer (s);
+ }
+ 
++static const VMStateDescription vmstate_audio;
 +
-+    s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
-+    assert(s->vmse != NULL);
+ static void audio_state_init(Object *obj)
+ {
+     AudioState *s = AUDIO_STATE(obj);
+@@ -1625,6 +1627,8 @@ static void audio_state_init(Object *obj)
+ 
+     s->vmse = qemu_add_vm_change_state_handler(audio_vm_change_state_handler, s);
+     assert(s->vmse != NULL);
++
++    vmstate_register_any(NULL, &vmstate_audio, s);
  }
  
  static void audio_state_finalize(Object *obj)
-@@ -1671,6 +1674,11 @@ static void audio_state_finalize(Object *obj)
-         timer_free(s->ts);
-         s->ts = NULL;
+@@ -1679,6 +1683,8 @@ static void audio_state_finalize(Object *obj)
+         qemu_del_vm_change_state_handler(s->vmse);
+         s->vmse = NULL;
      }
 +
-+    if (s->vmse) {
-+        qemu_del_vm_change_state_handler(s->vmse);
-+        s->vmse = NULL;
-+    }
++    vmstate_unregister(NULL, &vmstate_audio, s);
  }
  
  static Object *get_audiodevs_root(void)
-@@ -1735,7 +1743,6 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
- {
-     int done = 0;
-     const char *drvname;
--    VMChangeStateEntry *vmse;
-     AudioState *s;
-     struct audio_driver *driver;
- 
-@@ -1775,9 +1782,6 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
-         }
+@@ -1787,7 +1793,6 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
      }
+     object_unref(s);
+     QLIST_INIT (&s->card_head);
+-    vmstate_register_any(NULL, &vmstate_audio, s);
+     return s;
  
--    vmse = qemu_add_vm_change_state_handler (audio_vm_change_state_handler, s);
--    assert(vmse != NULL);
--
-     if (!object_property_try_add_child(get_audiodevs_root(), dev->id, OBJECT(s), errp)) {
-         goto out;
-     }
+ out:
 -- 
 2.51.0
 
