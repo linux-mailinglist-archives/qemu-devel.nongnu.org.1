@@ -2,70 +2,153 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43263BFB5B3
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 12:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0F4BFB5F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 12:20:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBVrZ-0000TM-GJ; Wed, 22 Oct 2025 06:14:37 -0400
+	id 1vBVwe-00037v-0C; Wed, 22 Oct 2025 06:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBVrX-0000Sx-5E
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 06:14:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1vBVwa-00037P-Bq
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 06:19:48 -0400
+Received: from mail-eastus2azlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c110::1] helo=BN1PR04CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBVrV-0000NW-Fe
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 06:14:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761128072;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uhfG16hvXCbVCWGnPZmAYWx+63yuz7s4f2/aWRtWMNA=;
- b=fI4wbQ7+FdYIGxzBU8+Gm7ODcnoxb10fHWlO5z8eAmdQ4jCrapc1pkC04SLqo7ovIjUS1H
- hOxcee467C0DR10Xm8d9uAWEcbihUto0Nhi3Cok6o7hY2knabm6zckCaqBqpfUMuFtN/NP
- iEVjmdfj2C7+uXiYFEGayGBjhm5FGH4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-MbEVyagxM1SYMn3btLKjrg-1; Wed,
- 22 Oct 2025 06:14:25 -0400
-X-MC-Unique: MbEVyagxM1SYMn3btLKjrg-1
-X-Mimecast-MFC-AGG-ID: MbEVyagxM1SYMn3btLKjrg_1761128064
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D5477180AE12; Wed, 22 Oct 2025 10:14:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 57FC01800597; Wed, 22 Oct 2025 10:14:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7B4DA21E6935; Wed, 22 Oct 2025 12:14:20 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, philmd@linaro.org
-Subject: [PATCH 3/3] qdev: Legacy properties are now unused, drop
-Date: Wed, 22 Oct 2025 12:14:20 +0200
-Message-ID: <20251022101420.36059-4-armbru@redhat.com>
-In-Reply-To: <20251022101420.36059-1-armbru@redhat.com>
-References: <20251022101420.36059-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1vBVwV-0000zY-FG
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 06:19:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GW6aOmSovsp0wMcpinS1yWstRZ3uCwbpaXCK6p7RRX7fyVNlkhQ9dIHGwUKdU3ON5sbmx0opn7NYWfJUnQXLeRpE6OXkqwI2Bg8wnxFnXwY7OigUEJbMMwbX9WwV/PRVcPE60RZBDH9C2kfdeVPtY/ZsksqbtdL5/ZmC52n7lBQ9+oB5QSMdjGj4UUApJuY9BAfTixHBdcOlar7KuBtCz4EyNBKha3XDK0lSBVi4eaoCOLAY6Z2G/otQiIFSnuQpTwWV6H3iURcaTOxVjghxuVFiSxSGF/ZinfoggBmWqordL8JDBMcIE1tleA+6o1qfYLC2JTZN8nGGFiXyZ82tcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lObWz96HNz34CJmFZLFKi/zf4klGd0vy+EycYDow450=;
+ b=ndIT6htMRHQKKgfbmYgwFaQ61BTAqVmqxfJJhADvTxiwZAsyXXN5xZZhaYxEargdrszpsB6JoaF31IU4VFK2oZijyg3cdL8DUtKPQw3BNNVDUJ9hDRz7TOtiRMDOkl+xjk1l3a8Gc1cgGkijYBlUuYWc7M/FlIchYYvIjO3FbXRmPQZvWW0uyAShIYoauErMb661L/aJBnHeSvxuFYHRcDvBmRmGgq1FjY+AV2A/lG8L9G8nMQVo1Oicxsf9XTdynGAfXeTTVo9kP0N2uf7maKKf0C1GDQN5pUmrumRKKNsC7n6r4RR0Xl7bG4y5bqef00etcn6VeN3BLPhoTc3hDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lObWz96HNz34CJmFZLFKi/zf4klGd0vy+EycYDow450=;
+ b=R9+Z690mPXj8um8eUng3NMT+rpWoanMxQExG2o3tyhbmA9oQOZtlMEN1R7j53yCcItTTmazPSLr0YXOh7+xSefcML6QSZ6oV3SCQg4tw0g0zQsagWZcD3Py7UbKeFbqeO4cFbI7QhHFQKk7DmatzhE60kWr0kJa5nwAeYotAzFM=
+Received: from BL1PR13CA0229.namprd13.prod.outlook.com (2603:10b6:208:2bf::24)
+ by DS2PR12MB9613.namprd12.prod.outlook.com (2603:10b6:8:276::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Wed, 22 Oct
+ 2025 10:19:36 +0000
+Received: from BL02EPF0001A0FC.namprd03.prod.outlook.com
+ (2603:10b6:208:2bf:cafe::d3) by BL1PR13CA0229.outlook.office365.com
+ (2603:10b6:208:2bf::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.12 via Frontend Transport; Wed,
+ 22 Oct 2025 10:19:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0001A0FC.mail.protection.outlook.com (10.167.242.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9253.7 via Frontend Transport; Wed, 22 Oct 2025 10:19:36 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 22 Oct
+ 2025 03:19:35 -0700
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 22 Oct
+ 2025 05:19:34 -0500
+Received: from [10.254.202.150] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 22 Oct 2025 03:19:33 -0700
+Message-ID: <4292fabf-1ae9-4bb1-b8df-fad527592786@amd.com>
+Date: Wed, 22 Oct 2025 18:19:32 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] numa: add 'spm' option for Specific Purpose Memory
+To: David Hildenbrand <david@redhat.com>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>
+CC: <qemu-devel@nongnu.org>, <imammedo@redhat.com>, <Zhigang.Luo@amd.com>,
+ <Lianjie.Shi@amd.com>, Oscar Salvador <osalvador@suse.de>
+References: <20251020090701.4036748-1-FangSheng.Huang@amd.com>
+ <20251020111534.00004a29@huawei.com>
+ <40005e02-17df-43d1-a1d7-0b3bcfefdbf1@redhat.com>
+From: "Huang, FangSheng (Jerry)" <FangSheng.Huang@amd.com>
+In-Reply-To: <40005e02-17df-43d1-a1d7-0b3bcfefdbf1@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: None (SATLEXMB03.amd.com: FangSheng.Huang@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FC:EE_|DS2PR12MB9613:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26387904-d0fb-403c-8c86-08de1154807d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|376014|1800799024|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cHNwTjZQaXBRdlBOZEp4b1pxTnowNkgvYmkzb3N6ZGtLU2NmanNHMVByQWFS?=
+ =?utf-8?B?R2JRUGRoSnI1N081T3hqY3ZYdytRR203bkw0VUVqZmkwL0ZkRVJUTnNlRnFE?=
+ =?utf-8?B?R0pTQU5DV3VuMzJTeVZ3RmNOTEdhK2g1WE1TUkZNcXdSaWQwL3NIZUtNTm5C?=
+ =?utf-8?B?ZWpNdGJhRG1XOXB6ZUxHYnZwb2hYVm40RzVEOXFpdldCQVNyUHpsUzlBc0Y4?=
+ =?utf-8?B?L2dPUFBzQWIxT3pCOW1YV1ZZUTJEcGx3K3RLNE15YjZxWWJtS0FpQUNSTWtv?=
+ =?utf-8?B?RDNVNk50ZG4ya0s4aERDbzdaVmJOemtNaUd1a2VIOUxwUnRkVnU2SG1kb25K?=
+ =?utf-8?B?MlYxc05pRFFyeTM3aERLNHY1dGgxc3ZQdHh0RG9YZEZPaWdrUk02SWRyWlFt?=
+ =?utf-8?B?T0hXODY1TGNXRWpBSGZLWUYyRlgxWWRCM2ZmS3RTOTV1TEpRd0ZHWHc1VDY4?=
+ =?utf-8?B?em80bENxcUlZWUdpVU9ZbXBDUjdxUkJ6eVRHYnVnQm0zUzlsZlFTT1VLREJY?=
+ =?utf-8?B?NXFIS056cDhtbEVqSUJSVGZZWUduZXQ4RXdnMmpydy81cS8zVFlUTWxIWFJm?=
+ =?utf-8?B?NGZUd0ZxS0t1VmpKd0laQzBNTUhWYUtmeE5Ja0NZK3M5bm50VHplMjZxUVBy?=
+ =?utf-8?B?OTV1RFNlemZqK3NXdzlNQ0FuSjduRXljbDgxaTRZT3kvNkxDemhSNDIxVDU3?=
+ =?utf-8?B?aGVPd0g3QWR5aFBQZlc2K1BLWW5iTHIyYkZnS0xkMkZzR3hFRnFTMHJzM0ZH?=
+ =?utf-8?B?cU5pbFhNeW5NQ0dMNDdDNlovUHdESEVDVTVyMUNpSng2VWVCdE8yakF0Nlk3?=
+ =?utf-8?B?dmJNdFBDTlQ0SEtDYVFORUEyOTludkJnVklVYkloaWJLWTI5dnl0RklpZHhN?=
+ =?utf-8?B?S2krUThndDVobnFVaS9BU2dBaWkwYVhVVG53SkgvZlVtR3AvV3laTmhYSEJh?=
+ =?utf-8?B?czdySTBOK3RlTnVoM3hsbndGbmx4anZMeHdycS85MmxiK2N6b1hML1dsdk9L?=
+ =?utf-8?B?bU40dFBuTzFDMlF6VWh3RUVHRnFSbENHOFJGcWVoL25mK0FWdWE0TCtXRm9a?=
+ =?utf-8?B?WUdjMVpZRm9MZjVoamo2M05VVXFGQUNLMmY3c004S2ZpUis1WUhKSU1JckYz?=
+ =?utf-8?B?RE1zMHdjTFBJdWVReW5KQzFUSnhTcmh4bTNTVk9oL0Q0VVh5eklnSm9uRlVY?=
+ =?utf-8?B?SDc5ZzNCc2dpdU81a0pVaW9SUlVFR3VpbDJXdjJoSk5CYWdJTlhxckdzYjNP?=
+ =?utf-8?B?L3A3WkFLWjM2N2NuZEZoTVo4TVFLRXdWT2VlZUpkNVdweHBqT0tXamFrZEJ2?=
+ =?utf-8?B?Z1QyMVhJby9QcmQrdXEvYThKNVBHUVV6bkJpTlVMUmhzS2g2ME83RHh1NFZF?=
+ =?utf-8?B?SG9NZkJNeTN2T1RxYzc0ZWIrcjNBanc5N0VXQ3VWMkxhMWUwMXZVN000QVBq?=
+ =?utf-8?B?N3pjLzJxekZ0c3JzMFpmbi9yLzFzRVVLVGxSVk1XbTl3cE5UVC9hU1AwWWxo?=
+ =?utf-8?B?bUh0UjUyUDBieUFmb00rd0hhc0tuZ1JYYlgyMzYweFFTTXdLdncyTDhKN2Rv?=
+ =?utf-8?B?ekp6dEpjZmhSbEtWaWExK3BsdU9RWXJSUmh5QVpBUDVFUDhMRTNsQy9Pb3Qr?=
+ =?utf-8?B?UjZwcDZleTR5UlBSTUlFSitLNHB4eDNDMGUzQkVPWTlKN2UwM0tQSFhqakdv?=
+ =?utf-8?B?cEgrZUlZRy8xQTdSZFN2ZWE3Q0pteFRSODNuQi8rNE9jQVpZaFhxNUNPNUNo?=
+ =?utf-8?B?cE1IeTRMTHllaTZzR0VPcDE0OE9sdG5YUGxHbU5oa0o2NThhTHE1WjlGYldz?=
+ =?utf-8?B?ZnhvN0t3SVhNUlR5cENnZnd1ajFOOWp0eC9kbndRWGJ2ZjJsSE9laldpU1Fy?=
+ =?utf-8?B?QkhRWkRiVy92Z0dZTUFyV3dLMDROaFVhTWtjbjJuSU5obmVrYTdTL1V1Y2ls?=
+ =?utf-8?B?eUgyR2dTU3NkTko0dk5uTXNob3F4citvMFg1SWtETDExZUhVVjdic1lkVFVp?=
+ =?utf-8?B?UmVkd2xkWkhod09EZzNYTW01VkdXanBlZ3BMYllhY0VHSW5HYm9qWDJRbHdk?=
+ =?utf-8?B?dDBySFlsU0pka3VRR1pBN1VoYVh2RUVCWSt6NTNzNFp6ZFFURmgvTkJQak9s?=
+ =?utf-8?Q?Ov5k=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 10:19:36.3391 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26387904-d0fb-403c-8c86-08de1154807d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FC.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9613
+Received-SPF: permerror client-ip=2a01:111:f403:c110::1;
+ envelope-from=FangSheng.Huang@amd.com;
+ helo=BN1PR04CU002.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,76 +165,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- hw/core/qdev-properties.c | 46 ---------------------------------------
- 1 file changed, 46 deletions(-)
 
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 422a486969..46a12652f4 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -1108,51 +1108,6 @@ static void qdev_class_add_property(DeviceClass *klass, const char *name,
-     object_class_property_set_description(oc, name, prop->info->description);
- }
- 
--/**
-- * Legacy property handling
-- */
--
--static void qdev_get_legacy_property(Object *obj, Visitor *v,
--                                     const char *name, void *opaque,
--                                     Error **errp)
--{
--    const Property *prop = opaque;
--    char *s;
--
--    s = prop->info->print(obj, prop);
--    visit_type_str(v, name, &s, errp);
--    g_free(s);
--}
--
--/**
-- * qdev_class_add_legacy_property:
-- * @dev: Device to add the property to.
-- * @prop: The qdev property definition.
-- *
-- * Add a legacy QOM property to @dev for qdev property @prop.
-- *
-- * Legacy properties are string versions of QOM properties.  The format of
-- * the string depends on the property type.  Legacy properties are only
-- * needed for "info qtree".
-- *
-- * Do not use this in new code!  QOM Properties added through this interface
-- * will be given names in the "legacy" namespace.
-- */
--static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop)
--{
--    g_autofree char *name = NULL;
--
--    /* Register pointer properties as legacy properties */
--    if (!prop->info->print && prop->info->get) {
--        return;
--    }
--
--    name = g_strdup_printf("legacy-%s", prop->name);
--    object_class_property_add(OBJECT_CLASS(dc), name, "str",
--        prop->info->print ? qdev_get_legacy_property : prop->info->get,
--        NULL, NULL, (Property *)prop);
--}
--
- void device_class_set_props_n(DeviceClass *dc, const Property *props, size_t n)
- {
-     /* We used a hole in DeviceClass because that's still a lot. */
-@@ -1165,7 +1120,6 @@ void device_class_set_props_n(DeviceClass *dc, const Property *props, size_t n)
-     for (size_t i = 0; i < n; ++i) {
-         const Property *prop = &props[i];
-         assert(prop->name);
--        qdev_class_add_legacy_property(dc, prop);
-         qdev_class_add_property(dc, prop->name, prop);
-     }
- }
--- 
-2.49.0
+
+On 10/21/2025 4:03 AM, David Hildenbrand wrote:
+> On 20.10.25 12:15, Jonathan Cameron wrote:
+>> On Mon, 20 Oct 2025 17:07:00 +0800
+>> fanhuang <FangSheng.Huang@amd.com> wrote:
+>>
+>>> Hi David and Igor,
+>>>
+>>> I apologize for the delayed response. Thank you very much for your 
+>>> thoughtful
+>>> questions and feedback on the SPM patch series.
+>>>
+>>> Before addressing your questions, I'd like to briefly mention what 
+>>> the new
+>>> QEMU patch series additionally resolves:
+>>>
+>>> 1. **Corrected SPM terminology**: Fixed the description error from 
+>>> the previous
+>>>     version. The correct acronym is "Specific Purpose Memory" (not 
+>>> "special
+>>>     purpose memory" as previously stated).
+>>>
+>>> 2. **Fixed overlapping E820 entries**: Updated the implementation to 
+>>> properly
+>>>     handle overlapping E820 RAM entries before adding E820_SOFT_RESERVED
+>>>     regions.
+>>>
+>>>     The previous implementation created overlapping E820 entries by 
+>>> first adding
+>>>     a large E820_RAM entry covering the entire above-4GB memory 
+>>> range, then
+>>>     adding E820_SOFT_RESERVED entries for SPM regions that overlapped 
+>>> with the
+>>>     RAM entry. This violated the E820 specification and caused OVMF/UEFI
+>>>     firmware to receive conflicting memory type information for the same
+>>>     physical addresses.
+>>>
+>>>     The new implementation processes SPM regions first to identify 
+>>> reserved
+>>>     areas, then adds RAM entries around the SPM regions, generating a 
+>>> clean,
+>>>     non-overlapping E820 map.
+>>
+>> I'm definitely in favor of this support for testing purposes as well as
+>> for the GPU cases you describe.
+> 
+> Thanks for taking a look!
+> 
+>>
+>> Given I took your brief comment on hotplug and expanded on it +CC David
+>> and Oscar.
+>>
+>>>
+>>> Now, regarding your questions:
+>>>
+>>> ========================================================================
+>>> Why SPM Must Be Boot Memory
+>>> ========================================================================
+>>>
+>>> SPM cannot be implemented as hotplug memory (DIMM/NVDIMM) because:
+>>>
+>>> The primary goal of SPM is to ensure that memory is managed by guest
+>>> device drivers, not the guest OS. This requires boot-time discovery
+>>> for three key reasons:
+>>>
+>>> 1. SPM regions must appear in the E820 memory map as 
+>>> `E820_SOFT_RESERVED`
+>>>     during firmware initialization, before the OS starts.
+>>>
+>>> 2. Hotplug memory is integrated into kernel memory management, making
+>>>     it unavailable for device-specific use.
+>>
+>> This is only sort of true and perhaps reflects support in the kernel 
+>> for ACPI
+>> features being missing as no one has yet been interested in them.
+>> See 9.11.3 Hot-pluggable Memory Description Illustrated in the 6.6 
+>> ACPI spec.
+>> That has an example where the EFI_MEMORY_SP bit is provided.
+>> I had a dig around and for now ACPICA / kernel doesn't seem to put 
+>> that alongside
+>> write_protect and the other bits that IIUC come from the same field.
+>> It would be relatively easy to pipe that through and potentially add 
+>> handling
+>> in the memory hotplug path to allow for drivers to pick these regions up
+>> (which boils down I think to making them visible in some way but doing 
+>> nothing
+>> else with them)
+> 
+> Considering something like DIMMs, one challenge is also that hotplugged 
+> memory in QEMU is never advertised in e820 (we only indicate the 
+> hotpluggable region), which is different to real hardware but let's us 
+> stop the early kernel that is booting up from considering these areas 
+> "initial memory" and effectively turning them hot-unpluggable in the 
+> default case.
+> 
+> Then, the question is what happens when someone plugs such a DIMM, 
+> unplugs it, and plugs something else in there that's not supposed to be SP.
+> 
+> I assume that's all solvable, just want to point out that the default 
+> memory hotplug path in QEMU is not really suitable for that right now I 
+> think.
+> 
+>>
+>> Other path would be to use a discoverable path such as emulating CXL 
+>> memory.
+>> Hotplug of that would work fine from point of view of coming up as 
+>> driver managed
+>> SPM style (the flag is in runtime data provided by the device). It 
+>> would however
+>> look different to the firmware managed approach you are using in the 
+>> host.
+> 
+> Right.
+> 
+Hi David and Jonathan,
+
+Thank you both for the support and for the forward-looking
+perspective on potential future approaches like EFI_MEMORY_SP and CXL
+emulation.
+
+I appreciate the constructive technical discussion from both of you. 
+Please let me know if there's anything else I should clarify about the 
+implementation.
+
+Best regards,
+Jerry Huang
 
 
