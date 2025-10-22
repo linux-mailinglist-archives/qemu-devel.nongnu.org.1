@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3046DBFBD28
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7FDBFBD13
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXoE-00012A-WA; Wed, 22 Oct 2025 08:19:19 -0400
+	id 1vBXoG-000137-Q3; Wed, 22 Oct 2025 08:19:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoC-00011e-0F
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:16 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoE-00012O-9k
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXo9-000737-Uy
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:15 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoC-00073N-Et
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135553;
+ s=mimecast20190719; t=1761135555;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nYk2A4wVmkBhIJRz+4s4bB8w/6H5fxKaUobwydL0CgU=;
- b=DHbVhc6R/vVZctxeliqsw+hcHdGxldO2D4gyyj1/WnjvL0DlYlc+VFM0f6MwyIL8pSxltT
- 0X9s1OWyKhanYmLpu45RoRUx/wNTo/eAisWs28598NuKIHmcFKwVOESqhcUak5/yeAXy0I
- tFKYQzti0p4thF7cPX68iFrmqObUc90=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=dIgk14H79IoHwc8VkRMemli5WpxFeVxv6tNapfdMzPA=;
+ b=Syi8RsX+tlM6dMl+SKwKOoUKq7kCnQKpP0NCPAsNJwfMqZIynXZgqSTyB5B1r4uNlZrEg6
+ 4RUGU1UU8+fioBGGS8L+FQdQ+lXgsB5sG11wTQCeKkraKhopM/ub9lRPy93GQwFAHMGLB3
+ ccmZeXyXag7hfz4QFj9f75NwRTX9Ymk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-571-xsQ_4BYwN_ypD3DGopRlUQ-1; Wed,
- 22 Oct 2025 08:19:09 -0400
-X-MC-Unique: xsQ_4BYwN_ypD3DGopRlUQ-1
-X-Mimecast-MFC-AGG-ID: xsQ_4BYwN_ypD3DGopRlUQ_1761135549
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-JFRAwkF6MiKjKacdLzt7sQ-1; Wed,
+ 22 Oct 2025 08:19:12 -0400
+X-MC-Unique: JFRAwkF6MiKjKacdLzt7sQ-1
+X-Mimecast-MFC-AGG-ID: JFRAwkF6MiKjKacdLzt7sQ_1761135551
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 041F41800637; Wed, 22 Oct 2025 12:19:09 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 32FDE1956089; Wed, 22 Oct 2025 12:19:11 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.12])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 417C11800451; Wed, 22 Oct 2025 12:19:06 +0000 (UTC)
+ id 82C5A180044F; Wed, 22 Oct 2025 12:19:09 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 07/12] vfio/iommufd: Support unmap all in one ioctl()
-Date: Wed, 22 Oct 2025 14:18:41 +0200
-Message-ID: <20251022121846.874152-8-clg@redhat.com>
+Subject: [PULL 08/12] vfio/listener: Add an assertion for unmap_all
+Date: Wed, 22 Oct 2025 14:18:42 +0200
+Message-ID: <20251022121846.874152-9-clg@redhat.com>
 In-Reply-To: <20251022121846.874152-1-clg@redhat.com>
 References: <20251022121846.874152-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,45 +84,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-IOMMUFD kernel uAPI supports unmapping whole address space in one call with
-[iova, size] set to [0, UINT64_MAX], this can simplify iommufd_cdev_unmap()
-a bit. See iommufd_ioas_unmap() in kernel for details.
+Currently the maximum of iommu address space is 64bit. So when a maximum
+iommu memory section is deleted, it's in scope [0, 2^64). Add a
+assertion for that.
 
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251009040134.334251-3-zhenzhong.duan@intel.com
+Link: https://lore.kernel.org/qemu-devel/20251009040134.334251-4-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/iommufd.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ hw/vfio/listener.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 24a99efa87f4df268d0df7198f26bba37976874b..fc9cd9d22ff2d6f126d3c0964d7033eee33ed9f2 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -62,21 +62,8 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
- {
-     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index 1b6e5065a3267ab08d2d3fea3c5b4965a80947e8..2d7d3a464577ee258fac869e508e1b79aef2b53e 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -715,6 +715,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         bool unmap_all = false;
  
--    /* unmap in halves */
-     if (unmap_all) {
--        Int128 llsize = int128_rshift(int128_2_64(), 1);
--        int ret;
--
--        ret = iommufd_backend_unmap_dma(container->be, container->ioas_id,
--                                        0, int128_get64(llsize));
--
--        if (ret == 0) {
--            ret = iommufd_backend_unmap_dma(container->be, container->ioas_id,
--                                            int128_get64(llsize),
--                                            int128_get64(llsize));
--        }
--
--        return ret;
-+        size = UINT64_MAX;
-     }
- 
-     /* TODO: Handle dma_unmap_bitmap with iotlb args (migration) */
+         if (int128_eq(llsize, int128_2_64())) {
++            assert(!iova);
+             unmap_all = true;
+             llsize = int128_zero();
+         }
 -- 
 2.51.0
 
