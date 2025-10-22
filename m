@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0EABFB812
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCC9BFB815
 	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 13:01:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBWZw-0001Mo-En; Wed, 22 Oct 2025 07:00:28 -0400
+	id 1vBWaJ-0001WC-VW; Wed, 22 Oct 2025 07:00:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBWZl-0001K4-3M
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:19 -0400
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBWZf-0005OU-Mj
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:14 -0400
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-4e8a25d96ecso15130301cf.0
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 04:00:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761130809; x=1761735609; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=McTDMmm6QPenYAkMV4SaAW97+I5j3duQ0g7xC+IiEwI=;
- b=iQ+ZNAvdeShLaDq1mBvhAuZTscsyqZ6ZNJ409D4F9YIamxWplF2j/cnzv+G6pKbYTK
- jJh7ggmAsFCU67eOJ7NDT52Nf3E3Flw2EpPGzLnyRPYiGwZ0BiiJkdDCjUSRn9+EZ44T
- 8STQyoe0j0BYYtZddGZLTwaEZ0EuXJH20y44JGhC55/mMMgPWamNt/YNrzIULTrA6j4W
- 95ZBbVh+r73foGW0qwPWTwp6QCYG5vDRSF5NUNoVyA4c6hp4AQYA8JP5Y8ZJpf91XauV
- cH9+LwT6QoPzZNNz2KDg8YMbCgfiB8wacbxhUXA9yGFdGZWnl5+2eA3myl6Jhd0FLOYj
- TpSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761130809; x=1761735609;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=McTDMmm6QPenYAkMV4SaAW97+I5j3duQ0g7xC+IiEwI=;
- b=w8kAHF1ZxrArC9/tPrbszoxxeI/42axOOxcK77nAcknX5UJkl+bLdQiQJkCb0qZHH/
- Mf9OYh+wf+r0rehjcMN+xzi2PipBP9spSGK581OVsl+1nAswirpSPgUA862y0SANV7Hz
- JKNvCG226enMuiVnT5cYCAIe+FYFN20caJKy3g9F8IniGa0V5Sb0ePQ0u27u2yFE+/+K
- vELeEd6O0RWnL/4ZIH+KxNgwzguqAoxtdEb3jmIHPl1TQXFbCY6NrhM+A/rxs6wFvXB9
- bj59yz50eTQKQPFRrsncUo53CqczUkLSLcAuNpOy3/pj7Rime4OokYGjc4M9vljO6SDV
- AlXg==
-X-Gm-Message-State: AOJu0Yz18lhctcHH1DyDr6EkWnXR/JBtTNAyJ2rsBHSaj0SvkgJ/yyKp
- xSOEckJ/rQienY/ERUvmVy7OK4NpphkvW0lrY7gP14oW9MRImMY6ortINeC/sxuqornJunX3N06
- SifcL9YdcOYdTy1n08Vt0nDUJRb1S24Q=
-X-Gm-Gg: ASbGncseAiZyz6t0LibnA5Qer14Otp/kLl7j/GAyjcxz7/fJJCyGMtyuNGBIIvSqyYL
- KDL3mtvUX+JZEjJFKcNbozXjh9AjKluEthuZnydtKGvVQP9Ct4FwtnRD1ReL/q+cSx1IpFgbIKm
- sEyL6izE0AAuptJEuPTeRTOCCX9OOgU1knjqGy41IxjlNt6IW9H4D7JLUJ5w0yuLQr/Lj+s2uL0
- EGMoiMHxaE/zBXn5FNAeqjio5WYjuXTgMPv65vHFetV3bMRl1q7bGSMQENK/IxErjPpofVTpSnH
- ksC2yiFh3ujK8PH6
-X-Google-Smtp-Source: AGHT+IF4IlP1X9kDdTlBiAkd/WKzj5+sD3cEI9qiDVDRw4AdO0y3C6GZuZDVgb42xhVBjuV1RM4D0OMrijVdJGrO614=
-X-Received: by 2002:a05:622a:650:b0:4e8:aa22:def3 with SMTP id
- d75a77b69052e-4e8aa22e558mr209278511cf.19.1761130809120; Wed, 22 Oct 2025
- 04:00:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBWaG-0001V5-7n
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vBWa4-0005bW-Gt
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 07:00:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761130835;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kAKuflBqUYmyA+AkX8SRsP7ELTc42PIJsG9RcMYxBWw=;
+ b=TpqauyPzfMO3DgtxcUoESTClZ3YJDihudIimuDQswe05WU2Xz0UIC+PxqW/CtZeVIMpEOr
+ OStaIlNd81SYCVhkkixvF2GGWRxjV04Ev5S3Jo3yTpGYm16sUbP47fZAL4JT2e2HZtGmkA
+ LcAzxI2eTlWf6M0ELfAlaPbjF0SfvWM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-qXTvFC6PMWCkY7GswhDYLg-1; Wed,
+ 22 Oct 2025 07:00:33 -0400
+X-MC-Unique: qXTvFC6PMWCkY7GswhDYLg-1
+X-Mimecast-MFC-AGG-ID: qXTvFC6PMWCkY7GswhDYLg_1761130831
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 80C98180035A; Wed, 22 Oct 2025 11:00:31 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.27])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7415519541B2; Wed, 22 Oct 2025 11:00:30 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id F044518000B5; Wed, 22 Oct 2025 13:00:27 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Fabiano Rosas <farosas@suse.de>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 0/3] Uefi 20251022 patches
+Date: Wed, 22 Oct 2025 13:00:24 +0200
+Message-ID: <20251022110027.441780-1-kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20251022101420.36059-1-armbru@redhat.com>
- <20251022101420.36059-2-armbru@redhat.com>
-In-Reply-To: <20251022101420.36059-2-armbru@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 22 Oct 2025 14:59:57 +0400
-X-Gm-Features: AS18NWC226YaEfJj8jIJ_JUYlWqUBznfYtVZ4gvBYwl-wRC2vdO0Kl6SLnj1-Ng
-Message-ID: <CAJ+F1CKdasvQ14r+e2OEKFk+=4Yu2Mgg8EqSe_ZNQJDVoyiEKA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] qdev: Change PropertyInfo method print() to return
- malloc'ed string
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com, 
- eduardo@habkost.net, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x833.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,97 +87,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+The following changes since commit 3c0b42c68f98fb276fa248012642be8cbf2cab70:
 
-On Wed, Oct 22, 2025 at 2:15=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> Simpler (more so after the next commit), and no risk of truncation
-> because the caller's buffer is too small.  Performance doesn't matter;
-> the method is only used for "info qdev".
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  include/hw/qdev-properties.h     | 2 +-
->  hw/core/qdev-properties-system.c | 7 +++----
->  hw/core/qdev-properties.c        | 9 ++++-----
->  3 files changed, 8 insertions(+), 10 deletions(-)
->
-> diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-> index 0197aa4995..60b8133009 100644
-> --- a/include/hw/qdev-properties.h
-> +++ b/include/hw/qdev-properties.h
-> @@ -34,7 +34,7 @@ struct PropertyInfo {
->      const char *description;
->      const QEnumLookup *enum_table;
->      bool realized_set_allowed; /* allow setting property on realized dev=
-ice */
-> -    int (*print)(Object *obj, const Property *prop, char *dest, size_t l=
-en);
-> +    char *(*print)(Object *obj, const Property *prop);
->      void (*set_default_value)(ObjectProperty *op, const Property *prop);
->      ObjectProperty *(*create)(ObjectClass *oc, const char *name,
->                                const Property *prop);
-> diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-s=
-ystem.c
-> index 1f810b7ddf..4e1afaac82 100644
-> --- a/hw/core/qdev-properties-system.c
-> +++ b/hw/core/qdev-properties-system.c
-> @@ -865,15 +865,14 @@ out:
->      visit_end_alternate(v, (void **) &alt);
->  }
->
-> -static int print_pci_devfn(Object *obj, const Property *prop, char *dest=
-,
-> -                           size_t len)
-> +static char *print_pci_devfn(Object *obj, const Property *prop)
->  {
->      int32_t *ptr =3D object_field_prop_ptr(obj, prop);
->
->      if (*ptr =3D=3D -1) {
-> -        return snprintf(dest, len, "<unset>");
-> +        return g_strdup("<unset>");
->      } else {
-> -        return snprintf(dest, len, "%02x.%x", *ptr >> 3, *ptr & 7);
-> +        return g_strdup_printf("%02x.%x", *ptr >> 3, *ptr & 7);
->      }
->  }
->
-> diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-> index b7e8a89ba5..422a486969 100644
-> --- a/hw/core/qdev-properties.c
-> +++ b/hw/core/qdev-properties.c
-> @@ -1117,12 +1117,11 @@ static void qdev_get_legacy_property(Object *obj,=
- Visitor *v,
->                                       Error **errp)
->  {
->      const Property *prop =3D opaque;
-> +    char *s;
+  Merge tag 'pull-request-2025-10-21' of https://gitlab.com/thuth/qemu into staging (2025-10-21 08:59:35 -0500)
 
-Why not g_autofree ?
+are available in the Git repository at:
 
->
-> -    char buffer[1024];
-> -    char *ptr =3D buffer;
-> -
-> -    prop->info->print(obj, prop, buffer, sizeof(buffer));
-> -    visit_type_str(v, name, &ptr, errp);
-> +    s =3D prop->info->print(obj, prop);
-> +    visit_type_str(v, name, &s, errp);
-> +    g_free(s);
+  https://gitlab.com/kraxel/qemu.git tags/uefi-20251022-pull-request
 
-otherwise,
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+for you to fetch changes up to c6c6d854447a7821288e01857d0f7fb28b82cf44:
 
->  }
->
->  /**
-> --
-> 2.49.0
->
->
+  hw/uefi/ovmf-log: add maxsize parameter (2025-10-22 11:32:07 +0200)
 
+----------------------------------------------------------------
+uefi: add firmware log monitor commands
 
---=20
-Marc-Andr=C3=A9 Lureau
+----------------------------------------------------------------
+
+Gerd Hoffmann (3):
+  hw/uefi: add query-firmware-log monitor command
+  hw/uefi: add 'info firmware-log' hmp monitor command.
+  hw/uefi/ovmf-log: add maxsize parameter
+
+ include/monitor/hmp.h      |   1 +
+ hw/uefi/ovmf-log.c         | 286 +++++++++++++++++++++++++++++++++++++
+ tests/qtest/qmp-cmd-test.c |   2 +
+ hmp-commands-info.hx       |  13 ++
+ hw/uefi/meson.build        |   2 +-
+ qapi/machine.json          |  29 ++++
+ 6 files changed, 332 insertions(+), 1 deletion(-)
+ create mode 100644 hw/uefi/ovmf-log.c
+
+-- 
+2.51.0
+
 
