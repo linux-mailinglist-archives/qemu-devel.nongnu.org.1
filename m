@@ -2,62 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FD0BFBE28
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F05B8BFBE04
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:35:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBY1E-0002ym-3k; Wed, 22 Oct 2025 08:32:46 -0400
+	id 1vBY1Y-0003VL-U1; Wed, 22 Oct 2025 08:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXzL-0001Rd-DS
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:30:56 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1vBY13-000368-Bo
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:32:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXzF-0008RW-OD
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:30:46 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1vBY0z-0008Ux-46
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:32:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761136240;
+ s=mimecast20190719; t=1761136346;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M40PfpnOpJtcy9N5Nocxi9lKZu+Hq5YHP/I1TensomQ=;
- b=f60kflN89gBlXYGZLSi8WOik0TI7t9dcX0cJtCsSjfA3LJ6efGx2gpN2Yfg+1GEju3a7fx
- 8du9HTYe7VU5k4ZKs6DWCqZOZ5XzlMfQ8YiFThLIQk3+GGJdZvqxiDCJJG34nVrrBhbcbG
- jhKggI3I1BXcIvzFOZOIQ4qOau6g+LY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-209-m1M24P3-McGcFrucXlUoOQ-1; Wed,
- 22 Oct 2025 08:30:39 -0400
-X-MC-Unique: m1M24P3-McGcFrucXlUoOQ-1
-X-Mimecast-MFC-AGG-ID: m1M24P3-McGcFrucXlUoOQ_1761136238
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B21D18001C6; Wed, 22 Oct 2025 12:30:38 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.45.224.12])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8BB021800584; Wed, 22 Oct 2025 12:30:36 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 16/16] hw/arm/aspeed: Remove ast2700fc self-aliasing
-Date: Wed, 22 Oct 2025 14:29:53 +0200
-Message-ID: <20251022122953.877335-17-clg@redhat.com>
-In-Reply-To: <20251022122953.877335-1-clg@redhat.com>
-References: <20251022122953.877335-1-clg@redhat.com>
+ bh=/FUIxsSYcMFbBzvpjLyQpgiPPwbJm+w/COxCEVuqcwY=;
+ b=fL8URjSr9iMysYmHTTlMttHSybGa3Z2lx2mJtt5fbECONeKrtw74OjTzlxVP4AaG3lQnSt
+ n8k23napXPFtVgX2AcJNqtz3Gpi9KZ+NpaliGFee4BFxG2QMRsccGjBZHYgCTqiZ3QRfH6
+ uqEjh2gmkq6GCvm1cClLP4uUFutHWoY=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-437-CAh8QTPmPO6pHYhKScEhIw-1; Wed, 22 Oct 2025 08:32:25 -0400
+X-MC-Unique: CAh8QTPmPO6pHYhKScEhIw-1
+X-Mimecast-MFC-AGG-ID: CAh8QTPmPO6pHYhKScEhIw_1761136344
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-6349af0e766so10334476a12.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 05:32:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761136344; x=1761741144;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/FUIxsSYcMFbBzvpjLyQpgiPPwbJm+w/COxCEVuqcwY=;
+ b=AFSCXmXRF4T0h/hnekhXfKn3k/9RIwQT1DakdDYaEp3D2N6HAdMJ2y82MUp5fhLCfk
+ b7nj4Q6A0EA52sZT2UgHTn2rrO5HAqpehk5z4DqHTeHnjUgJNsEdu/ZVa4mb710K49ox
+ Swsf1BBM5TrgNwJx5dG9GJYBAPElskD3SZtNrfFH25gSgRJRywZPVByFBYznZzWqJh9B
+ VNIWi6kJ0TJZodwLLHMM5Bnvzlb5MToI0WnNxRHOq6Sqpv0hzagp+m38tYIu0oKfwFgM
+ 1uPDwEcrcyNgUS/LKFpZPx07shsmHLx5zMAx8r1Ks5pUsuHUwvG7JFv2IysgU+yLoAP9
+ DPQw==
+X-Gm-Message-State: AOJu0Yyln05BiutcLlvTTsEiCsAPVyu678LrsUbSQnGYfSNrKXCP6qnI
+ ScX/zX4dUGWZ//ZroBr4Qad5B7PMWHMCnbz95gpEZLD8N5gMj0KMYdIb+nC8GWdsrFA08oViPOF
+ IBPT1JRxF3diSIyjxdzjRXlr4vAZXz56r9gGLHqFYK1JehJueB9ShCA+k
+X-Gm-Gg: ASbGncvjrWBqGo1gMoogAyiR3mzFOY1iPfMa8yPrtv+50NJPW7uacROuXgW+9GjqD0t
+ sMAEClTrpPU63Q5IvAZUfisnl2lUt8uQYuXsWWPPmh3iXX7lfS97KsKR/1aSvCXnA7aJtLX+R8E
+ KRThgU4jWIJK9SlMma4U2LcBQwS9/9jYWamP/Gms330AxSqTl6zn56PCpfsfYnkk7AEM4kmX48B
+ w5ZbJl82KPJNFJo8CVB9EZdF4S21K6y5J3gj1tymWblIgIWO5P2YYCfJy5eLIyqJSLtDNWQGbv7
+ TY3j2BW9IUrtEltYP/8+4+Lu1VVFA/VRqwh9X8e62zMgG3zDO9kE1M0p4VNFhb9Pt5ceypCS/nc
+ 66KyS+OzbMwPF5pOAWQp3syvD3hUuk+h2j1C+t9w6hbAHJl0CaZw=
+X-Received: by 2002:a05:6402:524f:b0:639:db35:62d2 with SMTP id
+ 4fb4d7f45d1cf-63c1f629bcbmr19675140a12.5.1761136344188; 
+ Wed, 22 Oct 2025 05:32:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGtPVMPe7kp1P90Di9IF+CJ9i/y+n9mjdA7jsmzXOFHl/2JdbAFCnfoK7JgqC3+W4gdIaVOSQ==
+X-Received: by 2002:a05:6402:524f:b0:639:db35:62d2 with SMTP id
+ 4fb4d7f45d1cf-63c1f629bcbmr19675113a12.5.1761136343716; 
+ Wed, 22 Oct 2025 05:32:23 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-153.retail.telecomitalia.it.
+ [79.46.200.153]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-63c48ab65d6sm11647891a12.14.2025.10.22.05.32.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 22 Oct 2025 05:32:23 -0700 (PDT)
+Date: Wed, 22 Oct 2025 14:32:11 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, Luigi Leonardi <leonardi@redhat.com>, 
+ Zhao Liu <zhao1.liu@intel.com>, Roy Hopkins <roy.hopkins@randomman.co.uk>
+Subject: Re: [PATCH v4 2/5] igvm: fix off by one bug in memmap entry count
+ checking
+Message-ID: <t53zcquvbnxxx274jtf3q5jd3g6jlawkml3kckd7vp3saajnmy@usbluppi6bzj>
+References: <20251022084439.242476-1-kraxel@redhat.com>
+ <20251022084439.242476-3-kraxel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20251022084439.242476-3-kraxel@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,36 +109,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Wed, Oct 22, 2025 at 10:44:36AM +0200, Gerd Hoffmann wrote:
 
-Remove pointless alias to the very same machine:
+Should we CC stable and add fixes tag?
 
-  $ qemu-system-aarch64 -M help | fgrep ast2700fc
-  ast2700fc            ast2700 full core support (alias of ast2700fc)
-  ast2700fc            ast2700 full core support
+Fixes: c1d466d267 ("backends/igvm: Add IGVM loader and configuration")
 
-Fixes: a74faf35efc ("hw/arm: Introduce ASPEED AST2700 A1 full core machine")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251021110427.93991-1-philmd@linaro.org
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/arm/aspeed_ast27x0-fc.c | 1 -
- 1 file changed, 1 deletion(-)
+>Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+>---
+> backends/igvm.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-index 7be2e849274d..580ac5f7a124 100644
---- a/hw/arm/aspeed_ast27x0-fc.c
-+++ b/hw/arm/aspeed_ast27x0-fc.c
-@@ -207,7 +207,6 @@ static void ast2700fc_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
- 
--    mc->alias = "ast2700fc";
-     mc->desc = "ast2700 full core support";
-     mc->init = ast2700fc_init;
-     mc->no_floppy = 1;
--- 
-2.51.0
+Thanks for fixing it!
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
+>
+>diff --git a/backends/igvm.c b/backends/igvm.c
+>index 723d45b755a0..055bbba745ad 100644
+>--- a/backends/igvm.c
+>+++ b/backends/igvm.c
+>@@ -567,7 +567,7 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
+>
+>             retval = ctx->cgsc->get_mem_map_entry(entry, &cgmm_entry, errp);
+>             while (retval == 0) {
+>-                if (entry > max_entry_count) {
+>+                if (entry >= max_entry_count) {
+>                     error_setg(
+>                         errp,
+>                         "IGVM: guest memory map size exceeds parameter area defined in IGVM file");
+>-- 
+>2.51.0
+>
 
 
