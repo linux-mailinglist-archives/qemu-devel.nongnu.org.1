@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE8BBFA6C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1ACBFA64D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 08:59:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBSoL-0005Rp-8i; Wed, 22 Oct 2025 02:59:05 -0400
+	id 1vBSoR-00069q-0R; Wed, 22 Oct 2025 02:59:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vBSoE-00050n-3R
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vBSoL-0005lX-Uo
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1vBSoC-0008Ii-As
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:58:57 -0400
+ id 1vBSoJ-0008JO-BO
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:59:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761116335;
+ s=mimecast20190719; t=1761116342;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5VivmlLMnXRxx6PS1LLoJpztwyYc6uGdFp5WcViyarE=;
- b=VJhQ5cILUC0snjbwLQMglFmrkwPRX7l7nocvj/DxkEFxv6/nR65NMszTqdmZRhCBMRslM7
- +WIjshs8mF/rrJP6pG4wH2FFoDeFkI791zXvrZdV7SMO2XZFzH4De4VbZptr4UvW/2QEh9
- r+QNxbiJ8b1Xjbu7+M4VsPFC29Ix21A=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=z3iIUtb7cIX94DkQb9F7TLax93AdBG1w2HRzW7aZl8U=;
+ b=cprf+V5kiRDIlQkP6UUKd5LqnaLOjIQIRyQNvMczKWE/MzC8wtQOUfBFpO0ZBZD5K2TrQl
+ Heck8kNBPVVY0htn6Mmd02VVh8e8jSdGlvbNJVwr2KZ2JzL6pNy7zwH8hRvn5NqqTcqbzP
+ 82PasDuLDPbta7vxnBAklEEig5A1Iw0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-3WYHrgEkMj6jqnSj8BPJwA-1; Wed,
- 22 Oct 2025 02:58:53 -0400
-X-MC-Unique: 3WYHrgEkMj6jqnSj8BPJwA-1
-X-Mimecast-MFC-AGG-ID: 3WYHrgEkMj6jqnSj8BPJwA_1761116332
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-l1adBO76OCiF4V8KTSobcw-1; Wed,
+ 22 Oct 2025 02:58:58 -0400
+X-MC-Unique: l1adBO76OCiF4V8KTSobcw-1
+X-Mimecast-MFC-AGG-ID: l1adBO76OCiF4V8KTSobcw_1761116337
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 63FE51956053; Wed, 22 Oct 2025 06:58:52 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 98C6819560A0; Wed, 22 Oct 2025 06:58:57 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.9])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F1B0819560B2; Wed, 22 Oct 2025 06:58:50 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 95DCB1956056; Wed, 22 Oct 2025 06:58:56 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -52,16 +52,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v2 23/42] audio: move period tick initialization
-Date: Wed, 22 Oct 2025 10:56:18 +0400
-Message-ID: <20251022065640.1172785-24-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 24/42] audio: drop needless error message
+Date: Wed, 22 Oct 2025 10:56:19 +0400
+Message-ID: <20251022065640.1172785-25-marcandre.lureau@redhat.com>
 In-Reply-To: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
 References: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -89,44 +89,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Part of QOM-ification.
+The only reason it would fail to add the handler is if it's calling a
+stub. But this cannot happen as audio is only supported with system qemu.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/audio.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ audio/audio.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/audio/audio.c b/audio/audio.c
-index bffb8cddb0..dcaf86a586 100644
+index dcaf86a586..4478041e5d 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -1582,6 +1582,13 @@ static bool audio_driver_init(AudioState *s, struct audio_driver *drv,
-     audio_init_nb_voices_out(s, drv, 1);
-     audio_init_nb_voices_in(s, drv, 0);
-     s->drv = drv;
-+
-+    if (dev->timer_period <= 0) {
-+        s->period_ticks = 1;
-+    } else {
-+        s->period_ticks = dev->timer_period * (int64_t)SCALE_US;
-+    }
-+
-     return true;
- }
- 
-@@ -1768,12 +1775,6 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
-         }
+@@ -1776,10 +1776,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
      }
  
--    if (dev->timer_period <= 0) {
--        s->period_ticks = 1;
--    } else {
--        s->period_ticks = dev->timer_period * (int64_t)SCALE_US;
--    }
--
      vmse = qemu_add_vm_change_state_handler (audio_vm_change_state_handler, s);
-     if (!vmse) {
-         dolog ("warning: Could not register change state handler\n"
+-    if (!vmse) {
+-        dolog ("warning: Could not register change state handler\n"
+-               "(Audio can continue looping even after stopping the VM)\n");
+-    }
++    assert(vmse != NULL);
+ 
+     if (!object_property_try_add_child(get_audiodevs_root(), dev->id, OBJECT(s), errp)) {
+         goto out;
 -- 
 2.51.0
 
