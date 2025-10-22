@@ -2,69 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EE7BFABC5
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 10:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDCEBFAC3C
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 10:04:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBTlE-0005nT-5O; Wed, 22 Oct 2025 03:59:56 -0400
+	id 1vBTpR-0007he-IP; Wed, 22 Oct 2025 04:04:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vBTlB-0005mz-Ud
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 03:59:53 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vBTl8-0000tx-KA
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 03:59:53 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0871183B5B;
- Wed, 22 Oct 2025 10:59:45 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:559::1:29] (unknown
- [2a02:6bf:8080:559::1:29])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id gxRSpH0IoSw0-XQFiy1vX; Wed, 22 Oct 2025 10:59:44 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761119984;
- bh=H9oGwegLKyEa5NZhkVqe105h25xopNgzVfR8bMdYTCo=;
- h=In-Reply-To:Cc:Date:References:To:Subject:Message-ID:From;
- b=hdtJcbypPsdnHJylbrsY+3r0qCDO85xWwYAOlvieSi2ZqjmjPnXwLfMqTjzmOL51z
- 2fPQaSe8v7cY0WJK5bc1CtERSvdSWAClArBA5sK1B+PIh6xDH7g723mhfTZNib5UH1
- U+A1kbFOs+psbwdANrDSYTIJqVlwdbz/Kj+mMaXU=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Content-Type: multipart/alternative;
- boundary="------------08ApbnoH1AJ1ExvN0hn4oqcj"
-Message-ID: <453ec8f4-fbda-4411-a02c-5d30429d7083@yandex-team.ru>
-Date: Wed, 22 Oct 2025 12:59:41 +0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBTpO-0007hO-Qd
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 04:04:14 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBTpM-0001OJ-FZ
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 04:04:14 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3ecdf2b1751so3932918f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 01:04:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761120250; x=1761725050; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Mvry+m78wLjS3xG2HLg1gJnJN9aP8X25PCNMtTPet6c=;
+ b=suRUmJjLxznKt4jiU/HcpTzgYUXe6iIcvwJt/rxcc+p2VCTmsPGRbjBiCCuyHwUfsU
+ 0qUbODCIZeSj3PiBuX6xgjuMktOwy67BjfXhactzvGNlcy/Rdg1b1pW9kM8vlAVWoGbT
+ nvRzFq8cDQR3uQg1tsl/OmNn6ehSZkMvcHYLFknHTu+LqvrwEXvWRQHPhvFjOOac8wq+
+ nG4yuPVTO7AjgB68BtJuOiGLCLJS2XwPqlkbusigJG3Tyx+cmsURKTyVonTNrpEQOe1X
+ rtiEdGGKW8x5QOVTG/HGi8fLHuKuQgc6YhCvWixNAXNM3q0KRySLHmR/wIsBdtznutcP
+ r1WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761120250; x=1761725050;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Mvry+m78wLjS3xG2HLg1gJnJN9aP8X25PCNMtTPet6c=;
+ b=SMgsaX3IkDmCskIlO36GH2Q55Sak7ozB27pvnztT1l1zskMXCBpMewrHZjXanfXqkE
+ sh3OjS1rPIE+znPC1YudKzXKGJt/Bt1aQAi0dQvOkqkD8Vt65mT98m74qZqDriBzM71B
+ vdz+i7Ykk3af+HId0+VZ9tW8dhx8OardIKXQZFfCN6PjtyPc89MRJs0ea0BdjMiNcMHZ
+ WMH9axm0wMOBpnP+a6lJ9nrMPQZP6DrdVOHkXLwdZWNjJwqUv5JsR23m7oOHYdx/wK8Z
+ eLzBRBwDRwF7k+GOrR77a3Hl78zT33/k6Re08WxSJEY4KvPIa4+Jl+IWff4UwH7zAxn9
+ y2Jw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV/DEA+iKcQ6UJ5EiWEaV8nOqyUohd6QWNDQXezhqIbqG11/TiR+4XG0RwL6LRqPxRQ99j6dc38Jl+3@nongnu.org
+X-Gm-Message-State: AOJu0YzxTub3wriaQqY0kBi48Pv4kQ+4Lqpfc4cLz0G6Rt9oFXsT4XBA
+ hcML8S27wmOgSSym2Kxf2CebIbpSSG5N3tEM3iUH7tqHnX516u8R55xMP46EXgLT+tw=
+X-Gm-Gg: ASbGnctn0tcoN4BolwUz3zdMwDvoQtZ3b1fnrpGCuI5fIzZrNjcrlKS06+0Bh5dp3Qd
+ v5U86C1rv1r90xJV/KMDJDLIzRxYJRz7+nN6+A6LIBujMrAZzPY1pG52ewUewXIOPuv5GpIlS3p
+ ucGelcFsE8E/CpK0LL9VYB4i6g+MlUC4jJaTuMPL2zCoSISUHu0Qg/lahg9TvvtFU212qVTk+b8
+ UEVnphgTxOy+GrIHnn3k5Jv17/OKiMWM9YKcANJBF1TS3ELiBijbfFK7B0usGZB7ZVAK0SRQOqX
+ tQzwkBqQ65Di8QVkFu7VtzDz5Hni2t5rRJkEyphgBfVNkPrg44danZ+b5nnY5rbg7XEqyrEEXv/
+ CBspprHnpwY2zDqZUafz/tTXzr6gKJvHGCER19WczKCF2iWZgS194L9Wt5Sj4GVCyRBWl2g9e36
+ OwEyH1tJmvMfmYYXX1LcSq0YzKqKUqQ0+LzS2W5aAEWWY=
+X-Google-Smtp-Source: AGHT+IEbIjcq8R2vEYjVhpQLgR+Kv4l2G8tjxvo1oaoFacA4JaYFCs0yApsa5UHgbqTIS591W5bMuQ==
+X-Received: by 2002:a05:6000:22c6:b0:427:15:ff3b with SMTP id
+ ffacd0b85a97d-42704d145d4mr13262303f8f.13.1761120249986; 
+ Wed, 22 Oct 2025 01:04:09 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-427f00b988dsm24406219f8f.35.2025.10.22.01.04.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Oct 2025 01:04:09 -0700 (PDT)
+Message-ID: <88445f7d-dc78-4b66-8129-d8abe1e19a8c@linaro.org>
+Date: Wed, 22 Oct 2025 10:04:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] vhost-user-blk: support inflight migration
-To: Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Cc: qemu-devel@nongnu.org, Raphael Norwitz <raphael@enfabrica.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20251020054413.2614932-1-dtalexundeer@yandex-team.ru>
- <CAFubqFsiEGHP1Py78VapGvPBi1rpGWZcRbb8Li-QvWhbRGYDiA@mail.gmail.com>
+Subject: Re: [PATCH v2 11/42] hw/audio: use better naming for -audio model
+ handling code
 Content-Language: en-US
-From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-In-Reply-To: <CAFubqFsiEGHP1Py78VapGvPBi1rpGWZcRbb8Li-QvWhbRGYDiA@mail.gmail.com>
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
+ <20251022065640.1172785-12-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251022065640.1172785-12-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,137 +106,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------08ApbnoH1AJ1ExvN0hn4oqcj
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On 22/10/25 08:56, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> All the functions are about "-audio model=" handling, a simpler
+> way to setup audio. Rename functions/variables to reflect this better.
+> 
+> audio_register_model_with_cb() dropped "pci" from the name, since it
+> will be generalized next.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   include/hw/audio/model.h                      | 13 +++++
+>   include/hw/audio/soundhw.h                    | 13 -----
+>   hw/audio/ac97.c                               |  5 +-
+>   hw/audio/adlib.c                              |  4 +-
+>   hw/audio/cs4231a.c                            |  4 +-
+>   hw/audio/es1370.c                             |  5 +-
+>   hw/audio/gus.c                                |  4 +-
+>   hw/audio/intel-hda.c                          |  4 +-
+>   hw/audio/{soundhw.c => model.c}               | 58 +++++++++----------
+>   hw/audio/pcspk.c                              |  2 +-
+>   hw/audio/sb16.c                               |  5 +-
+>   hw/audio/virtio-snd-pci.c                     |  4 +-
+>   system/vl.c                                   |  6 +-
+>   hw/audio/meson.build                          |  2 +-
+>   .../codeconverter/test_regexps.py             |  2 +-
+>   15 files changed, 64 insertions(+), 67 deletions(-)
+>   create mode 100644 include/hw/audio/model.h
+>   delete mode 100644 include/hw/audio/soundhw.h
+>   rename hw/audio/{soundhw.c => model.c} (68%)
+> 
+> diff --git a/include/hw/audio/model.h b/include/hw/audio/model.h
+> new file mode 100644
+> index 0000000000..27ae7dcc31
+> --- /dev/null
+> +++ b/include/hw/audio/model.h
+> @@ -0,0 +1,13 @@
+> +#ifndef HW_AUDIO_MODEL_H
+> +#define HW_AUDIO_MODEL_H
 
-Hi!
+Pre-existing, but add missing license tag?
 
-On 10/21/25 23:54, Raphael Norwitz wrote:
+> +
+> +void audio_register_model_with_cb(const char *name, const char *descr,
+> +                                  int (*init_pci)(PCIBus *bus, const char *audiodev));
+> +void audio_register_model(const char *name, const char *descr,
+> +                          int isa, const char *typename);
+> +
+> +void audio_model_init(void);
+> +void audio_print_available_models(void);
+> +void audio_set_model(const char *name, const char *audiodev);
+> +
+> +#endif
+> diff --git a/include/hw/audio/soundhw.h b/include/hw/audio/soundhw.h
+> deleted file mode 100644
+> index 83b3011083..0000000000
+> --- a/include/hw/audio/soundhw.h
+> +++ /dev/null
+> @@ -1,13 +0,0 @@
+> -#ifndef HW_SOUNDHW_H
+> -#define HW_SOUNDHW_H
+> -
+> -void pci_register_soundhw(const char *name, const char *descr,
+> -                          int (*init_pci)(PCIBus *bus, const char *audiodev));
+> -void deprecated_register_soundhw(const char *name, const char *descr,
+> -                                 int isa, const char *typename);
 
-> The logic looks ok from the vhost-user-blk side but some comments inline.
->
-> On Mon, Oct 20, 2025 at 1:47 AM Alexandr Moshkov
-> <dtalexundeer@yandex-team.ru> wrote:
->> Hi!
->>
->> During inter-host migration, waiting for disk requests to be drained
->> in the vhost-user backend can incur significant downtime.
->>
->> This can be avoided if QEMU migrates the inflight region in vhost-user-blk.
->> Thus, during the qemu migration, the vhost-user backend can cancel all inflight requests and
->> then, after migration, they will be executed on another host.
->>
->> At first, I tried to implement migration for all vhost-user devices that support inflight at once,
->> but this would require a lot of changes both in vhost-user-blk (to transfer it to the base class) and
->> in the vhost-user-base base class (inflight implementation and remodeling + a large refactor).
->>
-> Even if it's a more significant change I'd rather generalize as much
-> logic as possible and expose it as a vhost-user protocol feature. IMO
-> too much vhost-user device-agnositic code is being pushed into
-> vhost-user-blk.
+Please mention in patch description why this interface is not
+anymore deprecated.
 
-As far as I understand (correct me if I'm wrong), but this feature must 
-be implemented in device itself (along with inflight field location) or 
-in some base class for vhost-user devices. For now vhost-user-blkdoesn't 
-have one yet.The closest base class that i could find is 
-vhost-user-base, but for using it, it has to implement all 
-device-agnostic code from vhost-user-blk, and don't break all existing 
-vhost-user-base derived devices. For example, to support inflight 
-migration in base class, there first need to implement inflight field in 
-it, along with the reconnect feature. Then, with a big refactor, somehow 
-inherit vhost-user-blk from it, along with other devices such as 
-vhost-user-fs.
+Otherwise,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-So, IMO it looks like a whole separate track that will need to be tackled.
+> -
+> -void soundhw_init(void);
+> -void audio_print_available_models(void);
+> -void select_soundhw(const char *name, const char *audiodev);
+> -
+> -#endif
 
-> As Markus noted this also conflicts significantly with Vladimir's
-> series so I'd suggest waiting until those are in, or possibly
-> attempting to generalize on top of his changes.
-
-Yea, but i think, i just need to perform inflight migration only when 
-some non-local migration flag is set.
-
-And i think, Vladimir's series already have that flag.
-
-
-Thanks for the comments!
-
---------------08ApbnoH1AJ1ExvN0hn4oqcj
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>Hi!<br>
-    </p>
-    <p>On 10/21/25 23:54, Raphael Norwitz wrote:</p>
-    <blockquote type="cite"
-cite="mid:CAFubqFsiEGHP1Py78VapGvPBi1rpGWZcRbb8Li-QvWhbRGYDiA@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">The logic looks ok from the vhost-user-blk side but some comments inline.
-
-On Mon, Oct 20, 2025 at 1:47 AM Alexandr Moshkov
-<a class="moz-txt-link-rfc2396E" href="mailto:dtalexundeer@yandex-team.ru">&lt;dtalexundeer@yandex-team.ru&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-Hi!
-
-During inter-host migration, waiting for disk requests to be drained
-in the vhost-user backend can incur significant downtime.
-
-This can be avoided if QEMU migrates the inflight region in vhost-user-blk.
-Thus, during the qemu migration, the vhost-user backend can cancel all inflight requests and
-then, after migration, they will be executed on another host.
-
-At first, I tried to implement migration for all vhost-user devices that support inflight at once,
-but this would require a lot of changes both in vhost-user-blk (to transfer it to the base class) and
-in the vhost-user-base base class (inflight implementation and remodeling + a large refactor).
-
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Even if it's a more significant change I'd rather generalize as much
-logic as possible and expose it as a vhost-user protocol feature. IMO
-too much vhost-user device-agnositic code is being pushed into
-vhost-user-blk.</pre>
-    </blockquote>
-    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
-      style="white-space: pre-wrap;">As far as I understand (correct me if I'm wrong), but this feature must be implemented in device itself (along with inflight field location) or in some base class for vhost-user devices. </span><span
-      style="white-space: pre-wrap;">For now vhost-user-</span><span
-      data-lexical-key="311" data-highlighted="false" data-error="true"
-      style="white-space: pre-wrap;">blk</span><span
-      style="white-space: pre-wrap;"> doesn't have one yet.</span><span
-      style="white-space: pre-wrap;"> 
-The closest base class that i could find is vhost-user-base, but for using it, it has to implement all device-agnostic code from vhost-user-blk, and don't break all existing vhost-user-base derived devices.
-For example, to support inflight migration in base class, there first need to implement inflight field in it, along with the reconnect feature. 
-Then, with a big refactor, somehow inherit vhost-user-blk from it, along with other devices such as vhost-user-fs.</span></p>
-    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
-      style="white-space: pre-wrap;">So, IMO it looks like a whole separate track that will need to be tackled.</span></p>
-    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
-      style="white-space: pre-wrap">
-</span></p>
-    <blockquote type="cite"
-cite="mid:CAFubqFsiEGHP1Py78VapGvPBi1rpGWZcRbb8Li-QvWhbRGYDiA@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">
-As Markus noted this also conflicts significantly with Vladimir's
-series so I'd suggest waiting until those are in, or possibly
-attempting to generalize on top of his changes.
-</pre>
-    </blockquote>
-    <p>Yea, but i think, i just need to perform inflight migration only
-      when some non-local migration flag is set.</p>
-    <p>And i think, Vladimir's series already have that flag.<br>
-    </p>
-    <br>
-    <p>Thanks for the comments!</p>
-  </body>
-</html>
-
---------------08ApbnoH1AJ1ExvN0hn4oqcj--
 
