@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBBDBFBD25
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715F4BFBD22
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:20:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXo8-000112-F7; Wed, 22 Oct 2025 08:19:12 -0400
+	id 1vBXoD-000122-5Q; Wed, 22 Oct 2025 08:19:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXo5-00010P-RL
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoA-00011O-Ce
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXo4-00072P-0U
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXo8-00072v-A8
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135546;
+ s=mimecast20190719; t=1761135551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A5Ad/N+nePZpXSyZ1Bg+sV63303rHbg2A64+yZ90JzY=;
- b=adkJtzeZXAjVaC/Gj0tKOCcjXnfzY3VcbmLWgQcl2c+3+WsCM/fEhCj6h6fwGPXjZICyia
- 5H9WHkGxT8xyiyjgasML3yTkSd95a+Sw5KBy/qyfAGnxKhtTeJnqi6W8YaN6k5hC7KQ/rl
- 7gW5viBzH0t5axPaVGbdLuvhjCJY6P8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=KkuOgutKsnzyz6zzREuIi83VHqQxaO3yShxiifas0sI=;
+ b=hRli+5M4zc3A4h6cs12K9MG49Sqm+yY2OcdmnuQjk2E4lDc1LpUp5aWZfFlLTAYsdssLwo
+ /mlp63vKOlXuWHzmF7ZKrJmL51I9iT9Tg5mYMqE1U4Atx6RMFxaS0+qG0NGZI/oGB4fUX0
+ X6S/Nvr72po59Kiz36Bv70LtPik4HSU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-OnecN58qMZOwA-7dlW0rjQ-1; Wed,
- 22 Oct 2025 08:19:04 -0400
-X-MC-Unique: OnecN58qMZOwA-7dlW0rjQ-1
-X-Mimecast-MFC-AGG-ID: OnecN58qMZOwA-7dlW0rjQ_1761135543
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-MChlWZTgMPWKR6rUC3qOWQ-1; Wed,
+ 22 Oct 2025 08:19:07 -0400
+X-MC-Unique: MChlWZTgMPWKR6rUC3qOWQ-1
+X-Mimecast-MFC-AGG-ID: MChlWZTgMPWKR6rUC3qOWQ_1761135546
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CBCD8180899E; Wed, 22 Oct 2025 12:19:03 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9DDAC1956094; Wed, 22 Oct 2025 12:19:06 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.12])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 89AE1180044F; Wed, 22 Oct 2025 12:19:01 +0000 (UTC)
+ id 56CD81800452; Wed, 22 Oct 2025 12:19:04 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Markus Armbruster <armbru@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
+ John Levon <levon@movementarian.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/12] accel/kvm: Fix an erroneous check on coalesced_mmio_ring
-Date: Wed, 22 Oct 2025 14:18:39 +0200
-Message-ID: <20251022121846.874152-6-clg@redhat.com>
+Subject: [PULL 06/12] vfio/container: Support unmap all in one ioctl()
+Date: Wed, 22 Oct 2025 14:18:40 +0200
+Message-ID: <20251022121846.874152-7-clg@redhat.com>
 In-Reply-To: <20251022121846.874152-1-clg@redhat.com>
 References: <20251022121846.874152-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,35 +85,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-According to KVM uAPI, coalesced mmio page is KVM_COALESCED_MMIO_PAGE_OFFSET
-offset from kvm_run pages. For x86 it's 2 pages offset, for arm it's 1 page
-offset currently. We shouldn't presume it's hardcoded 1 page or else
-coalesced_mmio_ring will not be cleared in do_kvm_destroy_vcpu() in x86.
+VFIO type1 kernel uAPI supports unmapping whole address space in one call
+since commit c19650995374 ("vfio/type1: implement unmap all"). Use the
+unmap_all variant whenever it's supported in kernel.
 
-Fixes: 7ed0919119b0 ("migration: close kvm after cpr")
-Cc: Markus Armbruster <armbru@redhat.com>
+Opportunistically pass VFIOLegacyContainer pointer in low level function
+vfio_legacy_dma_unmap_one().
+
+Co-developed-by: John Levon <levon@movementarian.org>
+Signed-off-by: John Levon <levon@movementarian.org>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/qemu-devel/20250928085432.40107-6-zhenzhong.duan@intel.com
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20251009040134.334251-2-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- accel/kvm/kvm-all.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/hw/vfio/vfio-container-legacy.h |  1 +
+ hw/vfio/container-legacy.c              | 38 ++++++++++++++-----------
+ 2 files changed, 23 insertions(+), 16 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 56031925c4e9e6d46fb0e026e7b8dede2dabc7d2..f9254ae6546671e4569c190a098447becbdac0e0 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -525,7 +525,8 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+diff --git a/include/hw/vfio/vfio-container-legacy.h b/include/hw/vfio/vfio-container-legacy.h
+index 74a72df018b50490b95d80044a31247ba7c9fc3b..ffd594e80d64ee11ebc48940bc481b9aafc127d4 100644
+--- a/include/hw/vfio/vfio-container-legacy.h
++++ b/include/hw/vfio/vfio-container-legacy.h
+@@ -30,6 +30,7 @@ struct VFIOLegacyContainer {
+ 
+     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+     unsigned iommu_type;
++    bool unmap_all_supported;
+     QLIST_HEAD(, VFIOGroup) group_list;
+     VFIOContainerCPR cpr;
+ };
+diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
+index a3615d7b5dba8fce2f633e986036241e3cfd935d..8e9639603e08b2e1b13f1cd2ca51cc3e48913135 100644
+--- a/hw/vfio/container-legacy.c
++++ b/hw/vfio/container-legacy.c
+@@ -121,14 +121,14 @@ unmap_exit:
+     return ret;
+ }
+ 
+-static int vfio_legacy_dma_unmap_one(const VFIOContainer *bcontainer,
++static int vfio_legacy_dma_unmap_one(const VFIOLegacyContainer *container,
+                                      hwaddr iova, uint64_t size,
+-                                     IOMMUTLBEntry *iotlb)
++                                     uint32_t flags, IOMMUTLBEntry *iotlb)
+ {
+-    const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
++    const VFIOContainer *bcontainer = VFIO_IOMMU(container);
+     struct vfio_iommu_type1_dma_unmap unmap = {
+         .argsz = sizeof(unmap),
+-        .flags = 0,
++        .flags = flags,
+         .iova = iova,
+         .size = size,
+     };
+@@ -170,25 +170,28 @@ static int vfio_legacy_dma_unmap(const VFIOContainer *bcontainer,
+                                  hwaddr iova, uint64_t size,
+                                  IOMMUTLBEntry *iotlb, bool unmap_all)
+ {
++    const VFIOLegacyContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
++    uint32_t flags = 0;
+     int ret;
+ 
+     if (unmap_all) {
+-        /* The unmap ioctl doesn't accept a full 64-bit span. */
+-        Int128 llsize = int128_rshift(int128_2_64(), 1);
+-
+-        ret = vfio_legacy_dma_unmap_one(bcontainer, 0, int128_get64(llsize),
+-                                        iotlb);
++        if (container->unmap_all_supported) {
++            flags = VFIO_DMA_UNMAP_FLAG_ALL;
++        } else {
++            /* The unmap ioctl doesn't accept a full 64-bit span. */
++            Int128 llsize = int128_rshift(int128_2_64(), 1);
++            size = int128_get64(llsize);
++
++            ret = vfio_legacy_dma_unmap_one(container, 0, size, flags, iotlb);
++            if (ret) {
++                return ret;
++            }
+ 
+-        if (ret == 0) {
+-            ret = vfio_legacy_dma_unmap_one(bcontainer, int128_get64(llsize),
+-                                            int128_get64(llsize), iotlb);
++            iova = size;
+         }
+-
+-    } else {
+-        ret = vfio_legacy_dma_unmap_one(bcontainer, iova, size, iotlb);
      }
  
-     /* If I am the CPU that created coalesced_mmio_ring, then discard it */
--    if (s->coalesced_mmio_ring == (void *)cpu->kvm_run + PAGE_SIZE) {
-+    if (s->coalesced_mmio_ring ==
-+           (void *)cpu->kvm_run + s->coalesced_mmio * PAGE_SIZE) {
-         s->coalesced_mmio_ring = NULL;
-     }
+-    return ret;
++    return vfio_legacy_dma_unmap_one(container, iova, size, flags, iotlb);
+ }
  
+ static int vfio_legacy_dma_map(const VFIOContainer *bcontainer, hwaddr iova,
+@@ -519,6 +522,9 @@ static bool vfio_legacy_setup(VFIOContainer *bcontainer, Error **errp)
+ 
+     vfio_get_info_iova_range(info, bcontainer);
+ 
++    ret = ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UNMAP_ALL);
++    container->unmap_all_supported = !!ret;
++
+     vfio_get_iommu_info_migration(container, info);
+     return true;
+ }
 -- 
 2.51.0
 
