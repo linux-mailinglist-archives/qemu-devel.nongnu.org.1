@@ -2,72 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA2ABFEFB2
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 05:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB99BFF2C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBlnu-0003iZ-1s; Wed, 22 Oct 2025 23:15:54 -0400
+	id 1vBnGu-0005uH-MH; Thu, 23 Oct 2025 00:49:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1vBlnl-0003i3-2r
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 23:15:50 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1vBlni-0001U8-69
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 23:15:44 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxXNLUnflowJgZAA--.55249S3;
- Thu, 23 Oct 2025 11:15:32 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJBxicDSnfloNDkCAQ--.20151S3;
- Thu, 23 Oct 2025 11:15:32 +0800 (CST)
-Subject: Re: [PATCH v5 00/14] target/loongarch: Add hardware page table walk
- support
-To: Bibo Mao <maobibo@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20251016015027.1695116-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <f33f4c94-a07a-a9d1-8126-97b5b9307c61@loongson.cn>
-Date: Thu, 23 Oct 2025 11:15:40 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <nnovikov@NB-7271.syntacore.com>)
+ id 1vBehX-0005Mu-PB; Wed, 22 Oct 2025 15:40:52 -0400
+Received: from ppp91-77-168-124.pppoe.mtu-net.ru ([91.77.168.124]
+ helo=NB-7271.syntacore.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nnovikov@NB-7271.syntacore.com>)
+ id 1vBehU-0003O2-VE; Wed, 22 Oct 2025 15:40:51 -0400
+Received: from NB-7271.syntacore.com (localhost [127.0.0.1])
+ by NB-7271.syntacore.com (8.18.1/8.18.1) with ESMTP id 59MJAiER038149;
+ Wed, 22 Oct 2025 22:10:44 +0300
+Received: (from nnovikov@localhost)
+ by NB-7271 (8.18.1/8.18.1/Submit) id 59MJ0AOp035115;
+ Wed, 22 Oct 2025 22:00:10 +0300
+Date: Wed, 22 Oct 2025 21:59:09 +0300
+From: Nikita Novikov <nnovikov@NB-7271.syntacore.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: n.novikov@syntacore.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Subject: Re: [PATCH] accel/tcg: Pass actual memop_size to tlb_fill instead of 0
+Message-ID: <busf3stsde5y7hq7zslr2kfyibp5ve2wrvrrawik3xbfpmsr7f@2nr5m4kdlltn>
+References: <20251022115213.91457-1-n.novikov@syntacore.com>
+ <79beaf9a-9558-40e7-a01d-5f80d8931eba@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20251016015027.1695116-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJBxicDSnfloNDkCAQ--.20151S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXrWkXr18ZrWkAFWDJryfXwc_yoW5tF45pr
- W7ur1rKrW8trZrArn3XasIgwn5Wr43Gr42q3Wftry8Cw45tryIvF1vy3yvg3WUJ34rWryj
- qF10kw1UuFs8ZacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.936, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <79beaf9a-9558-40e7-a01d-5f80d8931eba@linaro.org>
+Received-SPF: none client-ip=91.77.168.124;
+ envelope-from=nnovikov@NB-7271.syntacore.com; helo=NB-7271.syntacore.com
+X-Spam_score_int: 37
+X-Spam_score: 3.7
+X-Spam_bar: +++
+X-Spam_report: (3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
+ KHOP_HELO_FCRDNS=0.399, NO_DNS_FOR_FROM=0.001, RCVD_IN_PBL=3.335,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 23 Oct 2025 00:49:54 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,89 +63,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/10/16 ÉÏÎç9:50, Bibo Mao Ð´µÀ:
-> Hardware page table walk (PTW for short) is one feature supported in
-> Loongson 3C6000 system. With hardware PTW supported, if there is an TLB
-> miss, hardware will take PTW and fill it in TLB if matched, report TLB
-> exception if not matched.
->
-> With hardware PTW supported, bit Present and Write in pte entry is HW bit.
-> Bit Present means that the page is valid, and bit Write means that the
-> page is writable. At the same time HW will set bit Valid with read access,
-> bit Dirty will be set with write access.
-> ---
-> v4 ... v5:
->    1. Add common API update_tlb_index() in new patch 11, it is to partly
->       flush QEMU TLB when update LoongArch odd/even TLB entry. And it can
->       be used by both SW/HW PTW hardware.
->    2. Record TLB index if found and update TLB from this index during PTW.
->
-> v3 ... v4:
->    1. Rebase the patch on the latest version.
->    2. Set PTW feature disabled on LA464 CPU by default, ON_OFF_AUTO_AUTO
->       on max CPU type.
->    3. Add field tlb_index and mmu_index when searching TLB table in new
->       patch 10
->
-> v2 ... v3:
->    1. Reserve high 48-63 bit PTE attribute with huge page, which is
->       discard and converted to physical address wrongly.
->    2. Reload PTE entry rather than restart hardware PTW if PTE entry is
->      updated with other CPUs and qatomic_cmpxchg() fails.
->    3. Since Huge page bit is the same with Global bit, judge huge page from
->       page table level rather than Huge page bit.
->
-> v1 ... v2:
->    1. Add wrapper function loongarch_cmpxchg_phys(), and use
->       qatomic_cmpxchg() API to update PTW access/dirty bit.
->    2. Add restart hardware PTW if qatomic_cmpxchg() fails
->    3. Rename loongarch_page_table_walker() with loongarch_ptw().
->    4. Add debug parameter in loongarch_ptw(), with debug mode it is to
->       get physical address only. With normal mode, bit Valid and Dirty
->       will be update.
-> ---
-> Bibo Mao (14):
->    target/loongarch: Use auto method with PTW feature
->    target/loongarch: Add CSR_PWCH write helper function
->    target/loongarch: Add present and write bit with pte entry
->    target/loongarch: Add function sptw_prepare_tlb before adding tlb
->      entry
->    target/loongarch: target/loongarch: Add common function
->      get_tlb_random_index()
->    target/loongarch: Add MMUContext parameter in fill_tlb_entry()
->    target/loongarch: Add debug parameter with
->      loongarch_page_table_walker()
->    target/loongarch: Reserve higher 48 bit PTE attribute with huge page
->    target/loongarch: Move last PTE lookup into page table walker loop
->    target/loongarch: Add field tlb_index to record TLB search info
->    target/loongarch: Add common interface update_tlb_index()
->    target/loongarch: Add basic hardware PTW support
->    target/loongarch: Update matched ptw bit A/D with PTW supported
->    target/loongarch: Add bit A/D checking in TLB entry with PTW supported
->
->   target/loongarch/cpu-csr.h                    |   4 +
->   target/loongarch/cpu-mmu.h                    |  62 ++++++++
->   target/loongarch/cpu.c                        |  25 +++
->   target/loongarch/cpu.h                        |   2 +
->   target/loongarch/cpu_helper.c                 | 146 ++++++++++++++---
->   target/loongarch/tcg/csr_helper.c             |  15 ++
->   target/loongarch/tcg/helper.h                 |   1 +
->   .../tcg/insn_trans/trans_privileged.c.inc     |   1 +
->   target/loongarch/tcg/tlb_helper.c             | 148 ++++++++++++++----
->   9 files changed, 348 insertions(+), 56 deletions(-)
->
->
-> base-commit: 8109ebdb95c45d9062c7e6e7beae0ee571fca4f8
-
-For this series:
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-
-
-Thanks.
-Song Gao
-
-
-
-
-
+On Wed, Oct 22, 2025 at 10:32:31AM -0500, Richard Henderson wrote:
+> On 10/22/25 06:52, Nikita Novikov wrote:
+> > Recent debugging of misaligned access handling on RISC-V revealed that we
+> > always call `tlb_fill` with `memop_size == 0`. This behavior effectively
+> > disables natural alignment checks in `riscv_tlb_fill_align()`, because we
+> > have to fall back from `memop_size` to `size` when computing the alignment bits.
+> > 
+> > With `memop_size == 0`, misaligned cross-page stores end up reported as
+> > `store access fault` (AF, cause=7) instead of the expected
+> > `store page fault` (PF, cause=15), since the â€œmisalignâ€ path triggers before
+> > the second page translation can fault. This breaks misaligned accesses at
+> > page boundaries.
+> > 
+> > After switching to pass the real `l->memop` into `tlb_fill`, the cross-page
+> > faults are no longer mis-classified as AF.
+> > 
+> > Fixes: ec03dd972378 ("accel/tcg: Hoist first page lookup above pointer_wrap")
+> > 
+> > Signed-off-by: Nikita Novikov <n.novikov@syntacore.com>
+> > ---
+> >   accel/tcg/cputlb.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> > index 631f1fe135..271c061be1 100644
+> > --- a/accel/tcg/cputlb.c
+> > +++ b/accel/tcg/cputlb.c
+> > @@ -1782,7 +1782,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+> >            * If the lookup potentially resized the table, refresh the
+> >            * first CPUTLBEntryFull pointer.
+> >            */
+> > -        if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
+> > +        if (mmu_lookup1(cpu, &l->page[1], l->memop, l->mmu_idx, type, ra)) {
+> >               uintptr_t index = tlb_index(cpu, l->mmu_idx, addr);
+> >               l->page[0].full = &cpu->neg.tlb.d[l->mmu_idx].fulltlb[index];
+> >           }
+> 
+> How is the memop really applicable to the second half of a split-page operation?
+> 
+Because the second half is still part of the same guest memory operation. It must obey
+the same size, alignment, and atomicity rules. Passing the real memop ensures correct
+alignment and atomic checks even if the access crosses a page boundary.
+> 
+> r~
+> 
 
