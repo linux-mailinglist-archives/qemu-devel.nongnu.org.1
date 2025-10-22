@@ -2,60 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6595BFA5A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 08:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B283BFA5E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 08:57:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBSkU-0007Kz-Ex; Wed, 22 Oct 2025 02:55:07 -0400
+	id 1vBSmG-000854-Rf; Wed, 22 Oct 2025 02:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
- id 1vBSkG-0007Hp-Ak
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:54:54 -0400
-Received: from smtp233.sjtu.edu.cn ([202.120.2.233])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1vBSmC-00084c-F8
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:56:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
- id 1vBSkE-0007fi-1H
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:54:52 -0400
-Received: from mta91.sjtu.edu.cn (unknown [10.118.0.91])
- by smtp233.sjtu.edu.cn (Postfix) with ESMTPS id 6C31A101B6934;
- Wed, 22 Oct 2025 14:54:46 +0800 (CST)
-Received: from mstore136.sjtu.edu.cn (unknown [10.118.0.136])
- by mta91.sjtu.edu.cn (Postfix) with ESMTP id 3F65E37C8FB;
- Wed, 22 Oct 2025 14:54:46 +0800 (CST)
-Date: Wed, 22 Oct 2025 14:54:46 +0800 (CST)
-From: Ziyang Zhang <functioner@sjtu.edu.cn>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>, 
- alex bennee <alex.bennee@linaro.org>, 
- Alexandre Iooss <erdnaxe@crans.org>, 
- Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- richard henderson <richard.henderson@linaro.org>, 
- Zhengwei Qi <qizhwei@sjtu.edu.cn>, Yun Wang <yunwang94@sjtu.edu.cn>, 
- Mingyuan Xia <xiamy@ultrarisc.com>, Kailiang Xu <xukl2019@sjtu.edu.cn>
-Message-ID: <577112454.5812719.1761116086174.JavaMail.zimbra@sjtu.edu.cn>
-In-Reply-To: <1341969682.5812455.1761115945695.JavaMail.zimbra@sjtu.edu.cn>
-References: <1341969682.5812455.1761115945695.JavaMail.zimbra@sjtu.edu.cn>
-Subject: [RFC PATCH V2 2/2] tcg tests: add a test to verify the syscall
- filter plugin API
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1vBSm9-000805-JY
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 02:56:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761116208;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MEGt9LCJ1rwSM2481Gtvp+TYshIius/MePHHZ9t7WKA=;
+ b=Vv0tjSzrwlLzuWA5jmUmsjVGKfAGCxIFFAuLCulajrUfTU8pwOJMCn5OK6OtwmZoXcef/7
+ RvzGjrrd29Z3Vc3COr3IC66Mn6R4hFhCTfZ6GalYAIctq0yF6GIQhpdXRcS7Vf1yZZhj0P
+ lEJMJlKNa33y4CqfW6VU6hriEhZ9Ewc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-nVXtl3nIN1WRif8HUgZd2A-1; Wed,
+ 22 Oct 2025 02:56:46 -0400
+X-MC-Unique: nVXtl3nIN1WRif8HUgZd2A-1
+X-Mimecast-MFC-AGG-ID: nVXtl3nIN1WRif8HUgZd2A_1761116205
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 711091956086; Wed, 22 Oct 2025 06:56:45 +0000 (UTC)
+Received: from localhost (unknown [10.44.22.9])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EC8EB1956056; Wed, 22 Oct 2025 06:56:43 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v2 00/42] Audio clean-ups
+Date: Wed, 22 Oct 2025 10:55:55 +0400
+Message-ID: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [119.237.255.163]
-X-Mailer: Zimbra 10.0.14_GA_4767 (ZimbraWebClient - GC141
- (Win)/10.0.15_GA_4781)
-Thread-Topic: tcg tests: add a test to verify the syscall filter plugin API
-Thread-Index: O8UVQ/TJHmck9snQ4N2r1rVTqb8mpCd4fjGN
-Received-SPF: pass client-ip=202.120.2.233;
- envelope-from=functioner@sjtu.edu.cn; helo=smtp233.sjtu.edu.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,93 +83,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Register a syscall filter callback in tests/tcg/plugins/sycall.c,
-returns a specific value for a magic system call number, and check
-it in tests/tcg/multiarch/test-plugin-syscall-filter.c.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Ziyang Zhang <functioner@sjtu.edu.cn>
----
- tests/tcg/multiarch/Makefile.target              |  4 +++-
- tests/tcg/multiarch/test-plugin-syscall-filter.c | 21 +++++++++++++++++++++
- tests/tcg/plugins/syscall.c                      | 14 ++++++++++++++
- 3 files changed, 38 insertions(+), 1 deletion(-)
+Hi,
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index f5b4d2b813..4005e3a8a9 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -202,8 +202,10 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
- 	CHECK_PLUGIN_OUTPUT_COMMAND= \
- 	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
- 	$(QEMU) $<
-+run-plugin-test-plugin-syscall-filter-with-libsyscall.so:
- 
--EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so
-+EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so \
-+			   			  run-plugin-test-plugin-syscall-filter-with-libsyscall.so
- endif
- 
- # Update TESTS
-diff --git a/tests/tcg/multiarch/test-plugin-syscall-filter.c b/tests/tcg/multiarch/test-plugin-syscall-filter.c
-new file mode 100644
-index 0000000000..e8676e4c29
---- /dev/null
-+++ b/tests/tcg/multiarch/test-plugin-syscall-filter.c
-@@ -0,0 +1,21 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This test attempts to execute a magic syscall. The syscall test plugin
-+ * should intercept this and returns an expected value.
-+ */
-+
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+int main(int argc, char *argv[])
-+{
-+    long ret = syscall(0x66CCFF);
-+    if (ret != 0xFFCC66) {
-+        perror("ERROR: syscall returned unexpected value!!!");
-+        return EXIT_FAILURE;
-+    }
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
-index 42801f5c86..310f69ff05 100644
---- a/tests/tcg/plugins/syscall.c
-+++ b/tests/tcg/plugins/syscall.c
-@@ -170,6 +170,19 @@ static void vcpu_syscall_ret(qemu_plugin_id_t id, unsigned int vcpu_idx,
-     }
- }
- 
-+static bool vcpu_syscall_filter(qemu_plugin_id_t id, unsigned int vcpu_index,
-+                         int64_t num, uint64_t a1, uint64_t a2,
-+                         uint64_t a3, uint64_t a4, uint64_t a5,
-+                         uint64_t a6, uint64_t a7, uint64_t a8, uint64_t *ret)
-+{
-+    if (num == 0x66CCFF) {
-+        *ret = 0xFFCC66;
-+        qemu_plugin_outs("syscall 0x66CCFF filtered, ret=0xFFCC66\n");
-+        return true;
-+    }
-+    return false;
-+}
-+
- static void print_entry(gpointer val, gpointer user_data)
- {
-     SyscallStats *entry = (SyscallStats *) val;
-@@ -255,6 +268,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     qemu_plugin_register_vcpu_syscall_cb(id, vcpu_syscall);
-     qemu_plugin_register_vcpu_syscall_ret_cb(id, vcpu_syscall_ret);
-+    qemu_plugin_register_vcpu_syscall_filter_cb(id, vcpu_syscall_filter);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-     return 0;
- }
+This is part of continuous and overdue clean up / modernization effort for the
+audio subsystem. (there is more in the pipeline)
+
+v2:
+- renamed AudioBE AudioBackend
+- "qdev: add qdev_find_default_bus()" report different error for full bus
+- added "remove QEMUSoundCard" & drop AudioFE renaming patch
+- added "docs: Update mentions of removed '-soundhw' command line option" patch from philmd
+- added r-b tags
+
+thanks
+
+Marc-André Lureau (41):
+  hw/audio: improve error reports
+  hw/audio: rename model list function
+  hw/audio: remove global pcspk
+  hw/pcspk: use explicitly the required PIT types
+  hw/pcspk: make 'pit' a class property
+  hw/pcspk: check the "pit" is set
+  docs: update -soundhw -> -device list
+  qdev: add qdev_find_default_bus()
+  hw/audio: look up the default bus from the device class
+  audio: rename audio_define->audio_add_audiodev()
+  hw/audio: use better naming for -audio model handling code
+  hw/audio/virtio-snd-pci: remove custom model callback
+  hw/audio: simplify 'hda' audio init code
+  hw/audio: generalize audio_model.init()
+  hw/audio: drop audio_model.isa
+  audio: start making AudioState a QOM Object
+  audio: register backends in /audiodevs container
+  audio: use /audiodevs QOM container
+  audio/paaudio: remove needless return value
+  audio/dsound: simplify init()
+  audio/dsound: report init error via **errp
+  audio: simplify audio_driver_init()
+  audio: move period tick initialization
+  audio: drop needless error message
+  audio: clean-up vmstate change handler on finalize
+  audio: unregister vmstate description
+  audio: initialize card_head during object init
+  audio: remove some needless headers
+  audio: remove AUDIO_HOST_ENDIANNESS
+  audio: introduce AUD_set_volume_{in,out}_lr()
+  hw/audio: replace AUD_log() usage
+  audio/replay: fix type punning
+  audio: move internal APIs to audio_int.h
+  audio: rename AudioState -> AudioBackend
+  audio: remove QEMUSoundCard
+  audio/dbus: use a helper function to set the backend dbus server
+  audio: move audio.h under include/qemu/
+  audio: remove dependency on spice header
+  audio: cleanup, use bool for booleans
+  audio: move capture API to own header
+  audio: drop needless audio_driver "descr" field
+
+Philippe Mathieu-Daudé (1):
+  docs: Update mentions of removed '-soundhw' command line option
+
+ docs/qdev-device-use.txt                      |  10 +-
+ audio/audio_int.h                             |  62 ++--
+ audio/audio_template.h                        |  44 ++-
+ audio/mixeng.h                                |   1 -
+ hw/audio/lm4549.h                             |   4 +-
+ include/hw/audio/asc.h                        |   4 +-
+ include/hw/audio/model.h                      |  13 +
+ include/hw/audio/soundhw.h                    |  13 -
+ include/hw/audio/virtio-snd.h                 |   4 +-
+ include/hw/display/xlnx_dp.h                  |   4 +-
+ include/hw/isa/vt82c686.h                     |   4 +-
+ include/hw/qdev-properties-system.h           |   2 +-
+ include/hw/timer/i8254.h                      |   4 +-
+ include/monitor/qdev.h                        |   3 +
+ include/qemu/audio-capture.h                  |  43 +++
+ {audio => include/qemu}/audio.h               | 121 ++-----
+ include/system/replay.h                       |   3 +-
+ ui/vnc.h                                      |   4 +-
+ audio/alsaaudio.c                             |   5 +-
+ audio/audio-hmp-cmds.c                        |   4 +-
+ audio/audio.c                                 | 310 +++++++++---------
+ audio/audio_win_int.c                         |   2 +-
+ audio/dbusaudio.c                             |  17 +-
+ audio/dsoundaudio.c                           | 213 +++++-------
+ audio/jackaudio.c                             |   3 +-
+ audio/mixeng.c                                |  12 +-
+ audio/noaudio.c                               |   5 +-
+ audio/ossaudio.c                              |   7 +-
+ audio/paaudio.c                               |  16 +-
+ audio/pwaudio.c                               |   3 +-
+ audio/sdlaudio.c                              |   3 +-
+ audio/sndioaudio.c                            |   3 +-
+ audio/spiceaudio.c                            |   7 +-
+ audio/wavaudio.c                              |   6 +-
+ audio/wavcapture.c                            |   5 +-
+ hw/arm/integratorcp.c                         |   2 +-
+ hw/arm/musicpal.c                             |   2 +-
+ hw/arm/realview.c                             |   2 +-
+ hw/arm/versatilepb.c                          |   2 +-
+ hw/arm/vexpress.c                             |   2 +-
+ hw/arm/xlnx-zcu102.c                          |   2 +-
+ hw/audio/ac97.c                               | 156 +++++----
+ hw/audio/adlib.c                              |  37 +--
+ hw/audio/asc.c                                |  15 +-
+ hw/audio/cs4231a.c                            |  56 ++--
+ hw/audio/es1370.c                             |  54 ++-
+ hw/audio/gus.c                                |  38 +--
+ hw/audio/hda-codec.c                          |  21 +-
+ hw/audio/intel-hda.c                          |  20 +-
+ hw/audio/lm4549.c                             |  12 +-
+ hw/audio/marvell_88w8618.c                    |   2 +-
+ hw/audio/model.c                              | 121 +++++++
+ hw/audio/pcspk.c                              |  32 +-
+ hw/audio/pl041.c                              |   2 +-
+ hw/audio/sb16.c                               | 116 ++++---
+ hw/audio/soundhw.c                            | 143 --------
+ hw/audio/via-ac97.c                           |  11 +-
+ hw/audio/virtio-snd-pci.c                     |  18 +-
+ hw/audio/virtio-snd.c                         |  17 +-
+ hw/audio/wm8750.c                             |  37 +--
+ hw/core/machine.c                             |   4 +-
+ hw/core/qdev-properties-system.c              |  17 +-
+ hw/display/xlnx_dp.c                          |   8 +-
+ hw/ppc/prep.c                                 |   2 +-
+ hw/timer/i8254_common.c                       |   6 +-
+ hw/usb/dev-audio.c                            |  17 +-
+ qom/object.c                                  |   1 +
+ replay/replay-audio.c                         |   4 +-
+ replay/stubs-system.c                         |   2 +-
+ system/qdev-monitor.c                         |  29 +-
+ system/runstate.c                             |   2 +-
+ system/vl.c                                   |  16 +-
+ ui/dbus.c                                     |  13 +-
+ ui/vnc.c                                      |  10 +-
+ audio/coreaudio.m                             |   3 +-
+ audio/meson.build                             |   2 +-
+ hw/audio/meson.build                          |   2 +-
+ .../codeconverter/test_regexps.py             |   4 +-
+ 78 files changed, 968 insertions(+), 1058 deletions(-)
+ create mode 100644 include/hw/audio/model.h
+ delete mode 100644 include/hw/audio/soundhw.h
+ create mode 100644 include/qemu/audio-capture.h
+ rename {audio => include/qemu}/audio.h (50%)
+ create mode 100644 hw/audio/model.c
+ delete mode 100644 hw/audio/soundhw.c
 
 -- 
-2.25.1
+2.51.0
+
 
