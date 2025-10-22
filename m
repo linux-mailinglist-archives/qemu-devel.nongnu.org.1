@@ -2,106 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A81BFDF11
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 20:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEC0BFDF29
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 20:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBdzU-0007Yr-Ru; Wed, 22 Oct 2025 14:55:20 -0400
+	id 1vBe1a-0000Zb-L8; Wed, 22 Oct 2025 14:57:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBdzT-0007Yc-H5
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 14:55:19 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBdzR-0005Fm-Sd
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 14:55:19 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-4270a3464caso3108737f8f.1
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 11:55:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761159315; x=1761764115; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QGkHgFHWO0U4DFQBXgyqF0iZP7bVTfnDWioQ3Y6m0Ac=;
- b=bgucnWy7AKa+hRE7YhD8DjzDPhAH0v3G6wsaPo9W1JV2vd94Idu3Bh9+mCOlixHbvb
- LXwWGDva49+iZqnR4tj1OkbrsgAVFRAOMBIJNF/Z5NwTXbUPF5FcvKOPNGDfedelFTW+
- rGAif/QSqXvaE7aaI2FeQanYsjz41yBTfXAFCjHnRpwm0P34jWm0Pn/IXKgBOVdyu3cb
- qwzBsrr9xXOThzGA/OELWowv9S+q8vqLmhnqnmuc4rW9XjoXHxcPzS0hY26XKweL9lV7
- n884rqVuVTPO91IFpOw2cVty+A+6DlOThiaGxtg/nH3w2GONCLfwntVcpuRfKAb3Cfq4
- xhsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761159315; x=1761764115;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QGkHgFHWO0U4DFQBXgyqF0iZP7bVTfnDWioQ3Y6m0Ac=;
- b=M4LD8UOpmQ9WTCRJ6ptuMpCiDbsYezP+WZOtOAknZHq1jwWUFL+gMo/fZsIBz/DHeW
- Gw5wf6+0LHH7H8VNs6656CdkEYQbO16AX0aw+5YnOEY9Cd1uWWlkF+e4NZicFJXuZW3M
- ZFKc3a+RrAcyGVhv60tDADBjtqq9OIw8qji4Dmweql2MsRTiX8b01Kw0YvpOIgBL8knx
- I27tELNFfwG1/fgKuiuLRw3xLB/24/v5ErY4mBZ/FOKGvGFwdC+Z3vJjrBKFc1wgNmTH
- Q9GevXW+xDay7lbd/kO//eKtN5Cc4+9ebPCOP+n+LXo4xywKpeiUTj8Dq9P00HWt1hry
- ut7g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV08wZ72SwoRp1hfg4AUTvD5YP0pQGCzJSCKYwSPxlt1Lm7kKQQjGJSA3ujtZkgxRWzN6Q+dpPwi2ko@nongnu.org
-X-Gm-Message-State: AOJu0Yy5zdQWngIdI0OqGywTrKoh+oIpAlH8EgMLBL2HsrkH76+eDK4H
- hOjj1P3CrEJTMk2/igScfDMQOaWUwXgMPGQKdvkDWk9GkYyd2a3m41/ZcAvLwSlLiUY=
-X-Gm-Gg: ASbGncs5srasNqRILkeHWL51yCRYgZA4zJGGtCRLXgvwZAFNkf53NxDsN1ljgySOSB/
- PqLFxdgzZgSqXFDVf+E5ZG/GDx2jwDuOzOBqxiBELsrYIDzDieNSabWz3im9H5lcCNqOXeu4kEg
- GZvVrJjRVwF5/RKRvkqhXMUiy9aVqpFET74hTNyJO/K7gioKBYUFL2kV0FV6BvkB1xUeAaMpD6c
- aDdGI+K2XceAA2pXgb0SPD7blv425QKq1zbaZ+kb/eb+ARIO+zFOi613t64pS/8A9wRYMSAOS1V
- EK/Ricy1RKeThiEl1Bgt7vLCa1ZULuD4vUk2NjycmSnTt61LVTOVgROQCzFpDCLhb1OmAQDRABc
- Qj4+NmQUp9PQEa2RH+st8mx2ZhRZDbBlwYwKNxKNnACVNWni0ehX6Oj2kJLbl6zkqb/lr0xCNUw
- pRQkTvmkNa/dwfABzH7OhU+oqUnH+r0FNaNpxUydZsXGI=
-X-Google-Smtp-Source: AGHT+IFYXDlLQ7YP0z8og7q6VrFv/s7meAZcL3aZjFzVSsJLj81XC/yv3vsS1AASm9CKvPhjtxR4XQ==
-X-Received: by 2002:a05:6000:1a8e:b0:427:60d:c505 with SMTP id
- ffacd0b85a97d-427060dc6eamr14277953f8f.15.1761159314792; 
- Wed, 22 Oct 2025 11:55:14 -0700 (PDT)
-Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427ea5a0f88sm25419514f8f.7.2025.10.22.11.55.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Oct 2025 11:55:14 -0700 (PDT)
-Message-ID: <5930e266-cd3a-4ce9-94dc-2849d5c7c18d@linaro.org>
-Date: Wed, 22 Oct 2025 20:55:12 +0200
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1vBe1V-0000ZP-8X; Wed, 22 Oct 2025 14:57:25 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1vBe1R-0005OT-CF; Wed, 22 Oct 2025 14:57:25 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MBUhT1002476;
+ Wed, 22 Oct 2025 18:57:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=7s098h
+ T4cF5qy+Q+JlitlQN/87EM12eIWaKEZ6yYKrA=; b=G7e0thPRR1gfl8iBE2nknA
+ 0AOtpeNgjqMd74EB18rc0XuMlPZA0Xwp0uBJMkosfb/vurcKMPwIkCRWWPdF3Ujc
+ y6DaONrBScbf80/spmQ7qmtqtFRS9J4bCACuhOe9fKVz3/NVwmnvjDg00qFpLuXQ
+ n8NYz9O4/8STgBOPnyhUiSbu5WQQpRhBSjFM3KqKqKGNvEFc57Wty7pj8C8zt4PI
+ ZG1Q6FU1cuu+G3zzoqbhIm32jgpUfESef5nogIYIXtG5rkK5biekLUo2NwAaPkTM
+ JKp+ZNTGQNEu8VZeGL1pj1zx6tjIZgX0LnSSieN/7TvyOlSFonpaWyK/lpM5t9yQ
+ ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vw2sh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Oct 2025 18:57:14 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MGxx8M014676;
+ Wed, 22 Oct 2025 18:57:13 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7sa7kf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Oct 2025 18:57:13 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59MIvCCj22741754
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Oct 2025 18:57:12 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B4CB58059;
+ Wed, 22 Oct 2025 18:57:12 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFD5958062;
+ Wed, 22 Oct 2025 18:57:11 +0000 (GMT)
+Received: from [9.61.130.101] (unknown [9.61.130.101])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed, 22 Oct 2025 18:57:11 +0000 (GMT)
+Message-ID: <dfdbb980-93b6-4356-a407-e4c5d155c964@linux.ibm.com>
+Date: Wed, 22 Oct 2025 14:57:11 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 13/24] whpx: copy over memory management logic from hvf
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Mads Ynddal <mads@ynddal.dk>,
- qemu-arm@nongnu.org, Ani Sinha <anisinha@redhat.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Eduardo Habkost <eduardo@habkost.net>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20251016165520.62532-1-mohamed@unpredictable.fr>
- <20251016165520.62532-14-mohamed@unpredictable.fr>
+Subject: Re: [PATCH 5/7] pc-bios/s390-ccw: Add support for virtio-blk-pci IPL
+To: Zhuoying Cai <zycai@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, thuth@redhat.com
+Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
+ mjrosato@linux.ibm.com
+References: <20251020162023.3649165-1-jrossi@linux.ibm.com>
+ <20251020162023.3649165-6-jrossi@linux.ibm.com>
+ <bb66b492-38e5-419d-ba9c-6fe017460bb0@linux.ibm.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251016165520.62532-14-mohamed@unpredictable.fr>
+From: Jared Rossi <jrossi@linux.ibm.com>
+In-Reply-To: <bb66b492-38e5-419d-ba9c-6fe017460bb0@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JuVxVwthhS19W8bjUbnMgOWwu6_vwm9J
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXygOsLVrv7XQ0
+ C9azO5ZVlWNyIjUtkzw0KddQkrb+j00Hyz/lXS4CtdI1KaM3ZmcPMn2dKkfmQBoQx++nZvrZrGI
+ O/r35MmReZ8Kx85GMr4Z0BlA7ZTuogFEkPgulD1PJPKt0s9e/5yQzODAH7ERcutybXG4cwbVZdx
+ fIr1HZwGY0OEBVJCtWykrD/D2ad+ik5VHnqFhJRjVa4ke7bDiTm81/oYEg9qpD7b4OAHrSTJQ0q
+ xTIjBXzRNOVjlOxTrSSCPWQwgz5Vhk4h/G/o/aa0jUmRVyGTRycRGkV5V84leHHal+CDqqfJzFM
+ j+AJFH/74Rvee6qEjbO/hKKjUB9Jk77HLhqqLardqfP6De+LTz7oEyK6qZFcMNUWiojjDDy9+js
+ FRMVenf+JHpmIilBkXj/bcHggVIjKQ==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f9290a cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=zyrXiSxKzjXuiyie_RIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: JuVxVwthhS19W8bjUbnMgOWwu6_vwm9J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_07,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,15 +120,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/25 18:55, Mohamed Mediouni wrote:
-> This allows edk2 to work, although u-boot is still not functional.
-> 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-> 
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   accel/whpx/whpx-common.c | 201 ++++++++++++++++++++++++++++-----------
->   1 file changed, 147 insertions(+), 54 deletions(-)
 
-Is migration working with this code? AFAICT it isn't with HVF.
+On 10/22/25 12:40 PM, Zhuoying Cai wrote:
+> [snip...]
+>
+> +/*
+> + * Read PCI configuration space to find the offset of the Common, Device, and
+> + * Notification memory regions within the modern memory space.
+> + * Returns 0 if success, 1 if a capability could not be located, or a
+> + * negative RC if the configuration read failed.
+> + */
+> +static int virtio_pci_read_pci_cap_config(VDev *vdev)
+> +{
+> +    uint8_t pos;
+> +    uint64_t data;
+> +
+> +    /* Common cabilities */
+> +    pos = find_cap_pos(vdev->pci_fh, VIRTIO_PCI_CAP_COMMON_CFG);
+> +    if (!pos) {
+> +        puts("Failed to locate PCI common configuration");
+> +        return 1;
+> +    }
+> +    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_CAP_OFFSET, 15, &data, 4)) {
+> +        return -EIO;
+> +    }
+> +    common_offset = bswap32(data);
+> +
+> +    /* Device cabilities */
+> +    pos = find_cap_pos(vdev->pci_fh, VIRTIO_PCI_CAP_DEVICE_CFG);
+> +    if (!pos) {
+> +        puts("Failed to locate PCI device configuration");
+> +        return 1;
+> +    }
+> +    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_CAP_OFFSET, 15, &data, 4)) {
+> +        return -EIO;
+> +    }
+> +    device_offset = bswap32(data);
+> +
+> +    /* Notification cabilities */
+> +    pos = find_cap_pos(vdev->pci_fh, VIRTIO_PCI_CAP_NOTIFY_CFG);
+> +    if (!pos) {
+> +        puts("Failed to locate PCI notification configuration");
+> +        return 1;
+> +    }
+> +    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_CAP_OFFSET, 15, &data, 4)) {
+> +        return -EIO;
+> +    }
+> +    notify_offset = bswap32(data);
+> +
+> +    if (pci_read(vdev->pci_fh, pos + VIRTIO_PCI_NOTIFY_CAP_MULT, 15, &data, 4)) {
+> +        return -EIO;
+> +    }
+> Could you please explain why we use
+> pci_read(vdev->pci_fh, pos + VIRTIO_PCI_NOTIFY_CAP_MULT, 15, &data, 4)
+> instead of
+> pci_read(vdev->pci_fh, notify_offset + VIRTIO_PCI_NOTIFY_CAP_MULT, 4,
+> &data, 4) here?
+The notification capability in particular has an extra field at the end, 
+which is what we are looking for.  We are still in PCI configuration 
+space (BAR 15), we just want to read some different bytes in the 
+notification capability configuration.
+>> +    notify_mult = bswap32(data);
+>> +
+>> +    if (pci_read(vdev->pci_fh, device_offset + VPCI_C_OFFSET_Q_NOFF, 4, &data, 2)) {
+>> +        return -EIO;
+>> +    }
+> Should queue_notify_off be read using pci_read(vdev->pci_fh,
+> common_offset + VPCI_C_OFFSET_Q_NOFF, 4, &data, 2)?
+> (Virtio specs v-1.3 section 4.1.4.3 Common configuration structure layout)
+I think you are correct.  This is a mistake.  The queue notification 
+offset is in the common configuration, not the device configuration.  I 
+suspect it didn't cause a problem here because virtio-blk uses only one 
+queue.
+
+>
+>> +long virtio_pci_notify(uint32_t fhandle, int vq_id)
+>> +{
+>> +    uint64_t notice = 1;
+>> +    uint32_t offset = notify_offset + vq_id * q_notify_offset;
+> Shoud the offset be calculated as notify_offset + q_notify_offset *
+> notify_mult?
+> (Virtio specs v-1.3 section 4.1.4.4 Notification structure layout)
+I'll double check this, but you are probably right.  As with the 
+previous instance it didn't cause a problem due to there only being one 
+queue for virtio-blk, so the offset is always just the base 
+notify_offset and, luckily, the incorrect parts get multiplied by zero.
+
+>
+>> +
+>> +    return pci_write(fhandle, offset, notice, 4);
+> Please correct me if I'm wrong - instead of always writing notice = 1,
+> should we write vq_id to vq_index of the Queue Notify address.
+> (Virtio specs v-1.3 section 4.1.5.2 Available Buffer Notifications)
+I'll double and triple check the queue offset/notification calculations 
+since it seems there are multiple errors on my part and I just got lucky 
+that virtio-blk wasn't affected.  Thanks for catching these mistakes.
+
+Regards,
+Jared Rossi
+
 
