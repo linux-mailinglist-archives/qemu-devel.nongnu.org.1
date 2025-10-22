@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9C8BFBCA6
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B90E5BFBCC1
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:13:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXh3-0006hM-Vb; Wed, 22 Oct 2025 08:11:54 -0400
+	id 1vBXiI-000865-90; Wed, 22 Oct 2025 08:13:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vBXgY-0006fe-Us
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:11:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBXiG-000841-7F
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:13:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vBXgV-0006FO-Fm
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:11:21 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBXiD-0006Xx-P6
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:13:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135078;
+ s=mimecast20190719; t=1761135183;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SZoPCTibKsXFGSpdbRs0ENuEKqZfpK9mg/7h/xYqpds=;
- b=Gy6/tj7SWfkjqQWPm/yK8uDThq4HBZpqsm/KCeiD1yFs/B03DpDIWL0WblUvM8dk4IBg48
- pUvx1346vDhHbtbRwqg5lUO2pt+sv7IvEsPiGiWCvLldMWmk31JvrPAh+3sPQkAJsG3MdP
- LU0G/iSZFhXKUMUFfM7v9g/5Eztl7iE=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-Jb1W9YpFP-uNGL-RYZsGqw-1; Wed, 22 Oct 2025 08:11:16 -0400
-X-MC-Unique: Jb1W9YpFP-uNGL-RYZsGqw-1
-X-Mimecast-MFC-AGG-ID: Jb1W9YpFP-uNGL-RYZsGqw_1761135076
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4e89265668fso28261361cf.3
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 05:11:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761135076; x=1761739876;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SZoPCTibKsXFGSpdbRs0ENuEKqZfpK9mg/7h/xYqpds=;
- b=wiJQu6Pk+aNZ5Z+8h6YDzZQUbIyCLGGW4XhSspZjlxMO+re2elM75Gh94ojBpY6d5o
- si2SzBNXAPcSeqUXfSocmHG+uMeHhxBBRUqoFnVWKJPQY1al8S4OH/D8m6V3OILYEvEB
- dXMQtr3NsBy/luzMObO4z/mQmxhGt1feq4Er+lkpSPMwuASJpvEDr8ml7C8GYmaaAiZT
- 0Q+aoeLTvLzFAI0HYPHTJ3pVL3oDVmw+E7z/aiKbNxizB4S/YuFbTbcnL1bnH3++D5mG
- 1Pdy/D787jy0VHxFdjimq7M/3V4xpObdGbB5lsOmFywdAatpxr0ppVUjUcLd9jpQ7Ty6
- tjQQ==
-X-Gm-Message-State: AOJu0YyKelIMTBJDBhWk0/4PnaRoFdXU6282FZ4ehg5q++G/t4aDZCsK
- XvfRdRbl1L6C+IgtduBlriQIWn984pZjJtfn2eaoWzDomaqWI3KB8Y/lgKdRbt+8pI0Tz3OONrw
- uwEiBm0y6KBnqpg//4qaYEIIlpT3/xX2NWm4suRPVvnKFEZ8+/+phxwxq
-X-Gm-Gg: ASbGncu6ti89WbjpkgDWAxWhiNjgrW2LGDDxjYtwhBG3cqZdcFkr961Ao1FkfWUVi0s
- ptgMp2QsdblVz7Rv1QfgGjAG/LcS5wg+W+CNilzP4q4fTMQsJK4f4F/FiCgjUZZNmdbsz1dja0I
- mPq6gTXOz65/3JOXZMT/Ndr2aWGAMmWGcIw2yoVVVTt9iE7PX/Eiw1n3kqK0AuzIH2ja//50tS6
- Yv31YbD6WUMCB3YGP1kZJrjhKQtOEmIHCC6h27LHYg10q+FHXl+qlM19cRbaKuhdeib5c49OqQc
- v3bp0fLQBXPAOu2xzc2M5Ks+0/gDru0q5iPnZLQ4761vSo402Sge4Oj0DQs/oxjIsnU5JeYOVeA
- q7W8=
-X-Received: by 2002:ac8:598b:0:b0:4e8:912a:bdc5 with SMTP id
- d75a77b69052e-4e89d2760camr232736501cf.27.1761135076311; 
- Wed, 22 Oct 2025 05:11:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXkkKJPLBB2t6hn2BhD58d/pJYKEXVpUGhiLQTw+UyeG+FtokbvfHNDfNj2dxL/c++DeY81A==
-X-Received: by 2002:ac8:598b:0:b0:4e8:912a:bdc5 with SMTP id
- d75a77b69052e-4e89d2760camr232736131cf.27.1761135075882; 
- Wed, 22 Oct 2025 05:11:15 -0700 (PDT)
-Received: from leonardi-redhat ([151.29.47.252])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-891cd57c825sm960601585a.28.2025.10.22.05.11.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 05:11:15 -0700 (PDT)
-Date: Wed, 22 Oct 2025 14:11:10 +0200
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: Re: [PATCH v4 3/5] igvm: add support for igvm memory map parameter
- in native mode
-Message-ID: <wube2wvgsjtl4upcbnkucppfkczdscxpgx3ugwh47twvfoucxf@tuny57lf7ywj>
-References: <20251022084439.242476-1-kraxel@redhat.com>
- <20251022084439.242476-4-kraxel@redhat.com>
+ bh=N3N+OkwY0E4YV57KWU839CSjIKngYfZ1ERB/MbF1Y4o=;
+ b=E5Wa/g1JI1q5/Tj4zEQc1/FBBcOomEymZZf+yIXNHSzXRjKdGSHzZ/qVt84ItYVsIC/7G0
+ jw6S2muSyVGJzN1rpRNWMFCKOrZ7rF33mdj5s/JbUb5fML++boNWUxrFmew7olBzkxE3Pm
+ CgHC1vzpZ9U+cEsiOSvyR8Ks3m6iFN4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-OvFSMotxNIOrR4ks5sDoXg-1; Wed,
+ 22 Oct 2025 08:13:00 -0400
+X-MC-Unique: OvFSMotxNIOrR4ks5sDoXg-1
+X-Mimecast-MFC-AGG-ID: OvFSMotxNIOrR4ks5sDoXg_1761135178
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C7BEA1801376; Wed, 22 Oct 2025 12:12:57 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5021119560B4; Wed, 22 Oct 2025 12:12:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 94B9921E6A27; Wed, 22 Oct 2025 14:12:54 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  berrange@redhat.com,
+ eduardo@habkost.net,  philmd@linaro.org
+Subject: Re: [PATCH 3/3] qdev: Legacy properties are now unused, drop
+In-Reply-To: <CAJ+F1C+2vp+Byp2Q40GQZUYLW0xpoTbFAj5oc2R=nbsy8i_8Eg@mail.gmail.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?= Lureau"'s message of "Wed, 22 Oct 2025
+ 15:13:20 +0400")
+References: <20251022101420.36059-1-armbru@redhat.com>
+ <20251022101420.36059-4-armbru@redhat.com>
+ <CAJ+F1C+2vp+Byp2Q40GQZUYLW0xpoTbFAj5oc2R=nbsy8i_8Eg@mail.gmail.com>
+Date: Wed, 22 Oct 2025 14:12:54 +0200
+Message-ID: <87ms5jf83d.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251022084439.242476-4-kraxel@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=leonardi@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,204 +88,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 22, 2025 at 10:44:37AM +0200, Gerd Hoffmann wrote:
->Add and wire up qigvm_x86_get_mem_map_entry function which converts the
->e820 table into an igvm memory map parameter.  This makes igvm files for
->the native (non-confidential) platform with memory map parameter work.
->
->Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
->Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
->---
-> include/system/igvm.h   |  5 +++++
-> backends/igvm.c         | 16 ++++++++++----
-> stubs/igvm.c            | 21 +++++++++++++++++++
-> target/i386/igvm.c      | 46 +++++++++++++++++++++++++++++++++++++++++
-> stubs/meson.build       |  1 +
-> target/i386/meson.build |  3 +++
-> 6 files changed, 88 insertions(+), 4 deletions(-)
-> create mode 100644 stubs/igvm.c
-> create mode 100644 target/i386/igvm.c
->
->diff --git a/include/system/igvm.h b/include/system/igvm.h
->index a4abab043a1f..3f72a40b8897 100644
->--- a/include/system/igvm.h
->+++ b/include/system/igvm.h
->@@ -19,4 +19,9 @@
-> int qigvm_process_file(IgvmCfg *igvm, ConfidentialGuestSupport *cgs,
->                       bool onlyVpContext, Error **errp);
->
->+/* x86 native */
->+int qigvm_x86_get_mem_map_entry(int index,
->+                                ConfidentialGuestMemoryMapEntry *entry,
->+                                Error **errp);
->+
-> #endif
->diff --git a/backends/igvm.c b/backends/igvm.c
->index 055bbba745ad..2ab7a9d96565 100644
->--- a/backends/igvm.c
->+++ b/backends/igvm.c
->@@ -12,6 +12,7 @@
-> #include "qemu/osdep.h"
->
-> #include "qapi/error.h"
->+#include "qemu/target-info-qapi.h"
-> #include "system/igvm.h"
-> #include "system/memory.h"
-> #include "system/address-spaces.h"
->@@ -543,6 +544,8 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
->                                       Error **errp)
-> {
->     const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
->+    int (*get_mem_map_entry)(int index, ConfidentialGuestMemoryMapEntry *entry,
->+                             Error **errp) = NULL;
->     QIgvmParameterData *param_entry;
->     int max_entry_count;
->     int entry = 0;
->@@ -550,7 +553,13 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
->     ConfidentialGuestMemoryMapEntry cgmm_entry;
->     int retval = 0;
->
->-    if (!ctx->cgs) {
->+    if (ctx->cgs && ctx->cgsc->get_mem_map_entry) {
->+        get_mem_map_entry = ctx->cgsc->get_mem_map_entry;
->+
->+    } else if (target_arch() == SYS_EMU_TARGET_X86_64) {
->+        get_mem_map_entry = qigvm_x86_get_mem_map_entry;
->+
->+    } else {
->         error_setg(errp,
->                    "IGVM file contains a memory map but this is not supported "
->                    "by the current system.");
->@@ -565,7 +574,7 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
->                 param_entry->size / sizeof(IGVM_VHS_MEMORY_MAP_ENTRY);
->             mm_entry = (IGVM_VHS_MEMORY_MAP_ENTRY *)param_entry->data;
->
->-            retval = ctx->cgsc->get_mem_map_entry(entry, &cgmm_entry, errp);
->+            retval = get_mem_map_entry(entry, &cgmm_entry, errp);
->             while (retval == 0) {
->                 if (entry >= max_entry_count) {
->                     error_setg(
->@@ -598,8 +607,7 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
->                         IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->                     break;
->                 }
->-                retval =
->-                    ctx->cgsc->get_mem_map_entry(++entry, &cgmm_entry, errp);
->+                retval = get_mem_map_entry(++entry, &cgmm_entry, errp);
->             }
->             if (retval < 0) {
->                 return retval;
->diff --git a/stubs/igvm.c b/stubs/igvm.c
->new file mode 100644
->index 000000000000..c32058eb2a6e
->--- /dev/null
->+++ b/stubs/igvm.c
->@@ -0,0 +1,21 @@
->+/*
->+ * QEMU IGVM, stubs
->+ *
->+ * Copyright (C) 2026 Red Hat
->+ *
->+ * Authors:
->+ *  Gerd Hoffmann <kraxel@redhat.com>
->+ *
->+ * SPDX-License-Identifier: GPL-2.0-or-later
->+ */
->+
->+#include "qemu/osdep.h"
->+
->+#include "system/igvm.h"
->+
->+int qigvm_x86_get_mem_map_entry(int index,
->+                                ConfidentialGuestMemoryMapEntry *entry,
->+                                Error **errp)
->+{
->+    return -1;
->+}
->diff --git a/target/i386/igvm.c b/target/i386/igvm.c
->new file mode 100644
->index 000000000000..2ed6cd052c79
->--- /dev/null
->+++ b/target/i386/igvm.c
->@@ -0,0 +1,46 @@
->+/*
->+ * QEMU IGVM, support for native x86 guests
->+ *
->+ * Copyright (C) 2026 Red Hat
->+ *
->+ * Authors:
->+ *  Gerd Hoffmann <kraxel@redhat.com>
->+ *
->+ * SPDX-License-Identifier: GPL-2.0-or-later
->+ */
->+
->+#include "qemu/osdep.h"
->+
->+#include "hw/i386/e820_memory_layout.h"
->+#include "system/igvm.h"
->+
->+/*
->+ * convert e820 table into igvm memory map
->+ */
->+int qigvm_x86_get_mem_map_entry(int index,
->+                                ConfidentialGuestMemoryMapEntry *entry,
->+                                Error **errp)
->+{
->+    struct e820_entry *table;
->+    int num_entries;
->+
->+    num_entries = e820_get_table(&table);
->+    if ((index < 0) || (index >= num_entries)) {
->+        return 1;
->+    }
->+    entry->gpa = table[index].address;
->+    entry->size = table[index].length;
->+    switch (table[index].type) {
->+    case E820_RAM:
->+        entry->type = CGS_MEM_RAM;
->+        break;
->+    case E820_RESERVED:
->+        entry->type = CGS_MEM_RESERVED;
->+        break;
->+    default:
->+        /* should not happen */
->+        error_setg(errp, "unknown e820 type");
->+        return -1;
->+    }
->+    return 0;
->+}
->diff --git a/stubs/meson.build b/stubs/meson.build
->index 5d577467bfdd..27be2dec9f9e 100644
->--- a/stubs/meson.build
->+++ b/stubs/meson.build
->@@ -74,6 +74,7 @@ if have_system
->   stub_ss.add(files('dump.c'))
->   stub_ss.add(files('cmos.c'))
->   stub_ss.add(files('fw_cfg.c'))
->+  stub_ss.add(files('igvm.c'))
->   stub_ss.add(files('target-get-monitor-def.c'))
->   stub_ss.add(files('target-monitor-defs.c'))
->   stub_ss.add(files('win32-kbd-hook.c'))
->diff --git a/target/i386/meson.build b/target/i386/meson.build
->index 89ba4912aaeb..d385eafdf7e1 100644
->--- a/target/i386/meson.build
->+++ b/target/i386/meson.build
->@@ -26,6 +26,9 @@ i386_system_ss.add(files(
-> ))
-> i386_system_ss.add(when: 'CONFIG_SEV', if_true: files('sev.c'),
->                                        if_false: files('sev-system-stub.c'))
->+if igvm.found()
->+  i386_system_ss.add(files('igvm.c'))
->+endif
->
-> i386_user_ss = ss.source_set()
->
->-- 
->2.51.0
->
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
 
-LGTM!
+> Hi
+>
+>
+> On Wed, Oct 22, 2025 at 2:15=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>>
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>
+> I don't think we have much reasonable way to use those "legacy-*"
+> properties from qom-get and similar, so it's probably ok to just
+> remove them without deprecation.
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Almost all of them are unreadable via qom-get:
+
+    (qemu) qom-get /machine/unattached/device[3]/pm bus
+    "/machine/i440fx/pci.0"
+    (qemu) qom-get /machine/unattached/device[3]/pm legacy-bus
+    Error: Property 'PIIX4_PM.legacy-bus' is not readable
+
+Same for all the other properties where the qdev property doesn't have a
+.get().
+
+Only the ones with a .print() are readable, i.e. only PCI address
+properties:
+
+    (qemu) qom-get /machine/unattached/device[3]/pm addr
+    11
+    (qemu) qom-get /machine/unattached/device[3]/pm legacy-addr
+    "01.3"
+
+PATCH 2's commit message explains why.
+
+If a deprecation period is wanted, I'll replace this patch.
+
+If not, I can work the above into the commit message.
+
+> Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+Thanks!
 
 
