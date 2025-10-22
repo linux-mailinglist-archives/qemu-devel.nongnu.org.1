@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12446BFBDE9
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A239BFBDCE
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBY0e-00023q-D6; Wed, 22 Oct 2025 08:32:09 -0400
+	id 1vBY0j-0002R3-U7; Wed, 22 Oct 2025 08:32:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXz8-0001I6-My
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:30:35 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXzD-0001Ng-TK
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:30:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXz4-0008PT-Oa
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:30:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXz9-0008Qc-Lh
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:30:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761136229;
+ s=mimecast20190719; t=1761136234;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NiL6bE9oL27bwsJLB5al9tSpk773hiCMrh7JUdV6Yiw=;
- b=AtQHe3iYF6y4MQRIDfA2m7FsJc8j0vUliNO3VJxFdtwzQ8GeLPpXuV8ekEctLGwuP3Ru4v
- ZcSOT75fsLh6lcVKyYz0bJE5GMRc8o+EwqjGBYSeyy0TCny783/iXqLkm5v/jTfr/4XjTw
- xxXBdsyqQNKJgFyAUK2/HlbCB0AB6iA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=TdTrbPXtynNAXwAhpN5/gd4TGsAWE13woMEeI3VLlnU=;
+ b=ZIbPNXyj+DpbLZm/z82mb16l5bnd/jkOYPp9v5HnJoxCDizvCBm70dvdMmq6+/J5VNxYn2
+ v6aRX6CgIHutF82bMOiOeRuVihoHtG7hzLXRHAdiWuvveX6vbcMncC0kLblMhgs9QqOZnz
+ Ri1rEufwxryua0KEWR0rKK1WL/gumCQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-FbPS9IrSMU-44txqekFngg-1; Wed,
- 22 Oct 2025 08:30:25 -0400
-X-MC-Unique: FbPS9IrSMU-44txqekFngg-1
-X-Mimecast-MFC-AGG-ID: FbPS9IrSMU-44txqekFngg_1761136224
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-qgk6dzNRN2yK9iS0MJowxQ-1; Wed,
+ 22 Oct 2025 08:30:27 -0400
+X-MC-Unique: qgk6dzNRN2yK9iS0MJowxQ-1
+X-Mimecast-MFC-AGG-ID: qgk6dzNRN2yK9iS0MJowxQ_1761136227
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C4F691956053; Wed, 22 Oct 2025 12:30:24 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E610D18002C0; Wed, 22 Oct 2025 12:30:26 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.12])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2B6381800589; Wed, 22 Oct 2025 12:30:22 +0000 (UTC)
+ id 4EE871800586; Wed, 22 Oct 2025 12:30:25 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 10/16] tests/functional/aarch64/ast2700fc: Add eth2 network
- interface check in PCIe test
-Date: Wed, 22 Oct 2025 14:29:47 +0200
-Message-ID: <20251022122953.877335-11-clg@redhat.com>
+Subject: [PULL 11/16] tests/functional/aarch64/ast2700fc: Move coprocessor
+ image loading to common function
+Date: Wed, 22 Oct 2025 14:29:48 +0200
+Message-ID: <20251022122953.877335-12-clg@redhat.com>
 In-Reply-To: <20251022122953.877335-1-clg@redhat.com>
 References: <20251022122953.877335-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,41 +85,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Enhance the AST2700 functional PCIe test to verify the network interface
-configuration for eth2. This adds an additional command to check the IP
-address assignment on eth2 to ensure network functionality is correctly
-initialized in the test environment.
+This removes duplicate code in start_ast2700fc_test() and prepares for reuse in
+upcoming VBOOTROM tests.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251015062210.3128710-11-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20251015062210.3128710-12-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/aarch64/test_aspeed_ast2700fc.py | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../aarch64/test_aspeed_ast2700fc.py          | 22 ++++++++++---------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/tests/functional/aarch64/test_aspeed_ast2700fc.py b/tests/functional/aarch64/test_aspeed_ast2700fc.py
-index bcce0c8d4e53..843647e6c539 100755
+index 843647e6c539..9ab3d3269b2a 100755
 --- a/tests/functional/aarch64/test_aspeed_ast2700fc.py
 +++ b/tests/functional/aarch64/test_aspeed_ast2700fc.py
-@@ -60,6 +60,9 @@ def do_ast2700_pcie_test(self):
-             'lspci -s 0002:01:00.0',
-             '0002:01:00.0 Ethernet controller: '
-             'Intel Corporation 82574L Gigabit Network Connection')
-+        exec_command_and_wait_for_pattern(self,
-+            'ip addr show dev eth2',
-+            'inet 10.0.2.15/24')
+@@ -36,6 +36,17 @@ def verify_openbmc_boot_and_login(self, name):
+         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
+         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
  
-     def do_ast2700fc_ssp_test(self):
-         self.vm.shutdown()
-@@ -135,6 +138,7 @@ def start_ast2700fc_test(self, name):
++    def load_ast2700fc_coprocessor(self, name):
++        load_elf_list = {
++            'ssp': self.scratch_file(name, 'zephyr-aspeed-ssp.elf'),
++            'tsp': self.scratch_file(name, 'zephyr-aspeed-tsp.elf')
++        }
++
++        for cpu_num, key in enumerate(load_elf_list, start=4):
++            file = load_elf_list[key]
++            self.vm.add_args('-device',
++                             f'loader,file={file},cpu-num={cpu_num}')
++
+     ASSET_SDK_V908_AST2700 = Asset(
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-default-obmc.tar.gz',
+             'eac3dc409b7ea3cd4b03d4792d3cebd469792ad893cb51e1d15f0fc20bd1e2cd')
+@@ -123,16 +134,7 @@ def start_ast2700fc_test(self, name):
+             self.vm.add_args('-device',
+                              f'loader,addr=0x430000000,cpu-num={i}')
  
-     def test_aarch64_ast2700fc_sdk_v09_08(self):
-         self.set_machine('ast2700fc')
-+        self.require_netdev('user')
+-        load_elf_list = {
+-            'ssp': self.scratch_file(name, 'zephyr-aspeed-ssp.elf'),
+-            'tsp': self.scratch_file(name, 'zephyr-aspeed-tsp.elf')
+-        }
+-
+-        for cpu_num, key in enumerate(load_elf_list, start=4):
+-            file = load_elf_list[key]
+-            self.vm.add_args('-device',
+-                             f'loader,file={file},cpu-num={cpu_num}')
+-
++        self.load_ast2700fc_coprocessor(name)
+         self.do_test_aarch64_aspeed_sdk_start(
+                 self.scratch_file(name, 'image-bmc'))
  
-         self.archive_extract(self.ASSET_SDK_V908_AST2700)
-         self.start_ast2700fc_test('ast2700-default')
 -- 
 2.51.0
 
