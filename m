@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7FDBFBD13
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3A7BFBD1C
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXoG-000137-Q3; Wed, 22 Oct 2025 08:19:20 -0400
+	id 1vBXoH-00013e-EW; Wed, 22 Oct 2025 08:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoE-00012O-9k
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoF-00012u-Pd
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoC-00073N-Et
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:18 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXoD-00073W-UT
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135555;
+ s=mimecast20190719; t=1761135557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dIgk14H79IoHwc8VkRMemli5WpxFeVxv6tNapfdMzPA=;
- b=Syi8RsX+tlM6dMl+SKwKOoUKq7kCnQKpP0NCPAsNJwfMqZIynXZgqSTyB5B1r4uNlZrEg6
- 4RUGU1UU8+fioBGGS8L+FQdQ+lXgsB5sG11wTQCeKkraKhopM/ub9lRPy93GQwFAHMGLB3
- ccmZeXyXag7hfz4QFj9f75NwRTX9Ymk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=UGJem6LAZsTDVDqrozo2wgi49k6GWNPrOC56h01KjKg=;
+ b=QUGw05b4q6SJp2qXPKB/f77dDouusIvxEuGXPHDxQjZBq2X7pQnwx4vyRTAuAbN8R7nOXN
+ /PcB4bZxCotAjO3KB1QrfD3LkYg/sjfkPkffCgOupskQMRDMtgIBGjabx6x4HCXqfALOK1
+ 86K0A3JvsF1VF28bhpGUmrG+jX83wtU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-JFRAwkF6MiKjKacdLzt7sQ-1; Wed,
- 22 Oct 2025 08:19:12 -0400
-X-MC-Unique: JFRAwkF6MiKjKacdLzt7sQ-1
-X-Mimecast-MFC-AGG-ID: JFRAwkF6MiKjKacdLzt7sQ_1761135551
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-FN9xbUiHP1G8fFLJtlxOeg-1; Wed,
+ 22 Oct 2025 08:19:14 -0400
+X-MC-Unique: FN9xbUiHP1G8fFLJtlxOeg-1
+X-Mimecast-MFC-AGG-ID: FN9xbUiHP1G8fFLJtlxOeg_1761135553
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32FDE1956089; Wed, 22 Oct 2025 12:19:11 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A511B1800654; Wed, 22 Oct 2025 12:19:13 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.12])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 82C5A180044F; Wed, 22 Oct 2025 12:19:09 +0000 (UTC)
+ id B2CA11800452; Wed, 22 Oct 2025 12:19:11 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ John Levon <john.levon@nutanix.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 08/12] vfio/listener: Add an assertion for unmap_all
-Date: Wed, 22 Oct 2025 14:18:42 +0200
-Message-ID: <20251022121846.874152-9-clg@redhat.com>
+Subject: [PULL 09/12] docs/system/devices/vfio-user: fix formatting
+Date: Wed, 22 Oct 2025 14:18:43 +0200
+Message-ID: <20251022121846.874152-10-clg@redhat.com>
 In-Reply-To: <20251022121846.874152-1-clg@redhat.com>
 References: <20251022121846.874152-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,33 +83,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: John Levon <john.levon@nutanix.com>
 
-Currently the maximum of iommu address space is 64bit. So when a maximum
-iommu memory section is deleted, it's in scope [0, 2^64). Add a
-assertion for that.
+The example QEMU argument was not rendering properly, as it was not
+indented.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: John Levon <john.levon@nutanix.com>
+Fixes: c688cc165b ("docs: add vfio-user documentation")
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Link: https://lore.kernel.org/qemu-devel/20251009140206.386249-1-john.levon@nutanix.com
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251009040134.334251-4-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/listener.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/devices/vfio-user.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index 1b6e5065a3267ab08d2d3fea3c5b4965a80947e8..2d7d3a464577ee258fac869e508e1b79aef2b53e 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -715,6 +715,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
-         bool unmap_all = false;
+diff --git a/docs/system/devices/vfio-user.rst b/docs/system/devices/vfio-user.rst
+index 30c2215f4ea5ad69c751bac4353ecaea7070b4f7..e10a6d0822993fc7565122d3dc6379853c541b16 100644
+--- a/docs/system/devices/vfio-user.rst
++++ b/docs/system/devices/vfio-user.rst
+@@ -20,7 +20,7 @@ Presuming a suitable ``vfio-user`` server has opened a socket at
  
-         if (int128_eq(llsize, int128_2_64())) {
-+            assert(!iova);
-             unmap_all = true;
-             llsize = int128_zero();
-         }
+ .. code-block:: console
+ 
+--device '{"driver": "vfio-user-pci","socket": {"path": "/tmp/vfio-user.sock", "type": "unix"}}'
++  --device '{"driver": "vfio-user-pci","socket": {"path": "/tmp/vfio-user.sock", "type": "unix"}}'
+ 
+ See `libvfio-user <https://github.com/nutanix/libvfio-user/>`_ for further
+ information.
 -- 
 2.51.0
 
