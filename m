@@ -2,68 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90E5BFBCC1
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F149DBFBD0D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXiI-000865-90; Wed, 22 Oct 2025 08:13:10 -0400
+	id 1vBXo1-0000yg-VS; Wed, 22 Oct 2025 08:19:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBXiG-000841-7F
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:13:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXny-0000yR-Ka
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBXiD-0006Xx-P6
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:13:07 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vBXnt-00071K-OY
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:19:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135183;
+ s=mimecast20190719; t=1761135532;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N3N+OkwY0E4YV57KWU839CSjIKngYfZ1ERB/MbF1Y4o=;
- b=E5Wa/g1JI1q5/Tj4zEQc1/FBBcOomEymZZf+yIXNHSzXRjKdGSHzZ/qVt84ItYVsIC/7G0
- jw6S2muSyVGJzN1rpRNWMFCKOrZ7rF33mdj5s/JbUb5fML++boNWUxrFmew7olBzkxE3Pm
- CgHC1vzpZ9U+cEsiOSvyR8Ks3m6iFN4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0FK+knJZayxg7BS7fbMe+D61WT87hhNpRhM5eVAqDYE=;
+ b=X6YlvR+ptQVlwjufC5t6ML4I8K5jdcHT1x5rZdi8wTuDd6OAo4dEZS6nkarb2bFUxAvQKj
+ LjyXAMA3Zstfbg/sisj4drsoCcU6cItl/MpEopm9Z0z560XQWgskxroGZIEibDWfGXwVGO
+ Em+pIw6wgFX4g+IGGdq3qoJZ3eivlO4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-OvFSMotxNIOrR4ks5sDoXg-1; Wed,
- 22 Oct 2025 08:13:00 -0400
-X-MC-Unique: OvFSMotxNIOrR4ks5sDoXg-1
-X-Mimecast-MFC-AGG-ID: OvFSMotxNIOrR4ks5sDoXg_1761135178
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-qtgLBfoTNi-S2xNL1343ww-1; Wed,
+ 22 Oct 2025 08:18:51 -0400
+X-MC-Unique: qtgLBfoTNi-S2xNL1343ww-1
+X-Mimecast-MFC-AGG-ID: qtgLBfoTNi-S2xNL1343ww_1761135530
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C7BEA1801376; Wed, 22 Oct 2025 12:12:57 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5021119560B4; Wed, 22 Oct 2025 12:12:57 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 94B9921E6A27; Wed, 22 Oct 2025 14:12:54 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  berrange@redhat.com,
- eduardo@habkost.net,  philmd@linaro.org
-Subject: Re: [PATCH 3/3] qdev: Legacy properties are now unused, drop
-In-Reply-To: <CAJ+F1C+2vp+Byp2Q40GQZUYLW0xpoTbFAj5oc2R=nbsy8i_8Eg@mail.gmail.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?= Lureau"'s message of "Wed, 22 Oct 2025
- 15:13:20 +0400")
-References: <20251022101420.36059-1-armbru@redhat.com>
- <20251022101420.36059-4-armbru@redhat.com>
- <CAJ+F1C+2vp+Byp2Q40GQZUYLW0xpoTbFAj5oc2R=nbsy8i_8Eg@mail.gmail.com>
-Date: Wed, 22 Oct 2025 14:12:54 +0200
-Message-ID: <87ms5jf83d.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 60966195422F
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 12:18:50 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.45.224.12])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 80340180044F; Wed, 22 Oct 2025 12:18:48 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/12] vfio queue
+Date: Wed, 22 Oct 2025 14:18:34 +0200
+Message-ID: <20251022121846.874152-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,46 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
+The following changes since commit 3c0b42c68f98fb276fa248012642be8cbf2cab70:
 
-> Hi
->
->
-> On Wed, Oct 22, 2025 at 2:15=E2=80=AFPM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->
-> I don't think we have much reasonable way to use those "legacy-*"
-> properties from qom-get and similar, so it's probably ok to just
-> remove them without deprecation.
+  Merge tag 'pull-request-2025-10-21' of https://gitlab.com/thuth/qemu into staging (2025-10-21 08:59:35 -0500)
 
-Almost all of them are unreadable via qom-get:
+are available in the Git repository at:
 
-    (qemu) qom-get /machine/unattached/device[3]/pm bus
-    "/machine/i440fx/pci.0"
-    (qemu) qom-get /machine/unattached/device[3]/pm legacy-bus
-    Error: Property 'PIIX4_PM.legacy-bus' is not readable
+  https://github.com/legoater/qemu/ tags/pull-vfio-20251022
 
-Same for all the other properties where the qdev property doesn't have a
-.get().
+for you to fetch changes up to ecbe424a63c9f860a901d6a4a75724b046abd796:
 
-Only the ones with a .print() are readable, i.e. only PCI address
-properties:
+  vfio: only check region info cache for initial regions (2025-10-22 08:12:52 +0200)
 
-    (qemu) qom-get /machine/unattached/device[3]/pm addr
-    11
-    (qemu) qom-get /machine/unattached/device[3]/pm legacy-addr
-    "01.3"
+----------------------------------------------------------------
+vfio queue:
 
-PATCH 2's commit message explains why.
+* Fix CPR transfer
+* Add support for VFIO_DMA_UNMAP_FLAG_ALL
+* Fix vfio-user documentation
+* Update Alex Williamson's email address
+* Fix for vfio-region cache for the vGPU use case
 
-If a deprecation period is wanted, I'll replace this patch.
+----------------------------------------------------------------
+Alex Williamson (1):
+      MAINTAINERS: Update Alex Williamson's email address
 
-If not, I can work the above into the commit message.
+John Levon (3):
+      docs/system/devices/vfio-user: fix formatting
+      vfio: rename field to "num_initial_regions"
+      vfio: only check region info cache for initial regions
 
-> Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Zhenzhong Duan (8):
+      vfio/container: Remap only populated parts in a section
+      vfio/cpr-legacy: drop an erroneous assert
+      vfio/iommufd: Set cpr.ioas_id on source side for CPR transfer
+      vfio/iommufd: Restore vbasedev's reference to hwpt after CPR transfer
+      accel/kvm: Fix an erroneous check on coalesced_mmio_ring
+      vfio/container: Support unmap all in one ioctl()
+      vfio/iommufd: Support unmap all in one ioctl()
+      vfio/listener: Add an assertion for unmap_all
 
-Thanks!
+ MAINTAINERS                             |  4 ++--
+ docs/system/devices/vfio-user.rst       |  2 +-
+ include/hw/vfio/vfio-container-legacy.h |  1 +
+ include/hw/vfio/vfio-cpr.h              |  2 +-
+ include/hw/vfio/vfio-device.h           |  2 +-
+ accel/kvm/kvm-all.c                     |  3 ++-
+ hw/vfio-user/device.c                   |  2 +-
+ hw/vfio/ccw.c                           |  4 ++--
+ hw/vfio/container-legacy.c              | 38 ++++++++++++++++++--------------
+ hw/vfio/cpr-legacy.c                    | 22 +++++++++++++------
+ hw/vfio/device.c                        | 39 +++++++++++++++++++++------------
+ hw/vfio/iommufd.c                       | 26 ++++++----------------
+ hw/vfio/listener.c                      |  5 +++--
+ hw/vfio/pci.c                           |  4 ++--
+ .mailmap                                |  1 +
+ 15 files changed, 86 insertions(+), 69 deletions(-)
 
 
