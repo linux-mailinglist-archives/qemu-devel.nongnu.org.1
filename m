@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58218BFE05C
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 21:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA47FBFE08C
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 21:28:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBeTu-0002ue-6l; Wed, 22 Oct 2025 15:26:46 -0400
+	id 1vBeTv-0002vQ-3A; Wed, 22 Oct 2025 15:26:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBeTc-0002sQ-AQ
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBeTd-0002se-94
  for qemu-devel@nongnu.org; Wed, 22 Oct 2025 15:26:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBeTZ-0001R0-9z
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 15:26:27 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vBeTZ-0001SM-HM
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 15:26:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761161181;
+ s=mimecast20190719; t=1761161183;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=61OlonQ1mj4eAWEnn8sA5zmXZ1Lvykf4bLCwkotKe7k=;
- b=Q22eI8f4SqdTT9MGAXffbAThCM6Tr67epp8ttgGPxVybzaHtUsAD/p3VdYjbNiwbPXDNtc
- AR/Olr4Hm8PpdcPhMaUe8veGXUF4EYLxuClQZkrDF/8XH/HFgjxei6bLXsnahuOZTBFRWn
- D0pl45VuIg3YdzDuNcbkpgNabsDAXW0=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=o0Y12EUm6tzSrzap8kCRMoEI4B4aZdSYBje8g8u1lmQ=;
+ b=a5gfZ0nC3C2J1hukHP553Mv3ExwzTQZROr9rcsfR5Lxy3kwMDNeyYYuvCHwTX5lw6McL6H
+ Rux7gtOxLhqj9WVO3/t3X/J5OzTgDhOlaCmH8wr3ZqS3klaBR2Scy9B8O1P2D0cJQfKS6Q
+ vuwkqUcfEOO7vLqbSzMBW9NLJcOPQAo=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-BAukl99nPHCukyQQcdU8OQ-1; Wed, 22 Oct 2025 15:26:20 -0400
-X-MC-Unique: BAukl99nPHCukyQQcdU8OQ-1
-X-Mimecast-MFC-AGG-ID: BAukl99nPHCukyQQcdU8OQ_1761161179
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-4e8916e8d4aso67858841cf.2
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 12:26:20 -0700 (PDT)
+ us-mta-580-qDXt4KGaOy-CnY70OB4oiQ-1; Wed, 22 Oct 2025 15:26:21 -0400
+X-MC-Unique: qDXt4KGaOy-CnY70OB4oiQ-1
+X-Mimecast-MFC-AGG-ID: qDXt4KGaOy-CnY70OB4oiQ_1761161181
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4e89265668fso42312741cf.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 12:26:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761161179; x=1761765979;
+ d=1e100.net; s=20230601; t=1761161181; x=1761765981;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=61OlonQ1mj4eAWEnn8sA5zmXZ1Lvykf4bLCwkotKe7k=;
- b=IZ6m1L1N6RHNAvg7U+6yRuBRtzMBnvZvyOwIdkK0hPiEWFSe+4FhqY3pw6IKl8Tci3
- Vy0inht+LLRHjD+Z6WUW+me0IpfhiObwhhF2nNnajVGh3p7J8Es+nq87WhBlYC2Jv8qJ
- lmRgsBVo8KKkPze0UhNTv8ozWsBJG27nA5THHzVUJC/uA5sQeHVj9yCkr8SWPMYdIh8z
- 93YPht9XfHV06dLr98BvB0NncsgRylQ2KRhrdYtBVHhOMv70qtKHbB+kJX653pzDkuub
- nSeRyEfDoVWWQr0ys5uOSP0YSfVHeRT02AC00WFzNj76VildT8NAcr6OwWQqyjOhk3Jr
- hTNQ==
-X-Gm-Message-State: AOJu0YyqsIxHiYV8E8B0t+F+1tRfRwVr28KgwHKuOzLOnQdXfeDQ2Csr
- jGaQJXst0KsiT7CJD/V1eMgco1hTNFVqRrVqXQ61WSkvDyKliMOsXnrIoeIaN9FjC+NAsZXBHe8
- Arso5Ab/lvEk46bMU0o6sWsXvTb69OI42UHgk5xduk9s8pwWE+0IE5RiwxuCPXyYisYrFdWJ3et
- d7afMp36Q2ax4LLD9aH7LEzc+i4+XiuBviBtw5zQ==
-X-Gm-Gg: ASbGncsKSYzwwtpoV567v/easr273QNchvuOrw1/nXrM3RpOEPLhnOgFDB8VF1IvrGa
- bOD3Dl9MN+xFsThJLNHy+F+4q4+fUY1/CdW9QZjAuCTFkCyqXbwqD/+F6PYl1iVsLsP+VpHR++S
- kosl6pMh1hxulBTTNmaBYbEBVbGWO7F26xMNb2iyVedYIGtZyR4mOQtQykXoN8vh7w6lSSKhCzg
- +SuKjf+8xA4PDmHzppeVcIDELwZYmnCcPjoSoNob8pF/W+TY85D+rOoyf8zhKut7ljULYu1TJdx
- 7Qeq7D6vfIS6cfg+ym9DxC4yspMan+aCo8vS4vYybn9z9pUOU5FZxG9l+WT4pGi1
-X-Received: by 2002:a05:622a:1a9f:b0:4e8:9809:82b5 with SMTP id
- d75a77b69052e-4e89d1d994dmr236809231cf.5.1761161179073; 
- Wed, 22 Oct 2025 12:26:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEatqoyacPnKNZo7Jnm+fR9tBJpJFoFqlKY/9GAgG99O+3Zgv/7SpB6pt3hl+BFskr/hQEg5g==
-X-Received: by 2002:a05:622a:1a9f:b0:4e8:9809:82b5 with SMTP id
- d75a77b69052e-4e89d1d994dmr236808901cf.5.1761161178590; 
- Wed, 22 Oct 2025 12:26:18 -0700 (PDT)
+ bh=o0Y12EUm6tzSrzap8kCRMoEI4B4aZdSYBje8g8u1lmQ=;
+ b=kTzBYodJrx1Tu6MP7rEoKdiv8TKywcRcQ3mglulqUAd61Ywu5l/EeLTBg1Bu0nj1S8
+ 1fvYlWlQKaQ2v3Ty834shBfFhMDLG9v5dsuzT7TK2XLq2cLGd1sEypukQZglW12m00RS
+ U3k5snFyk1E46iSAt7XkXGlFh25B1lSecxPTm0CiDFE1XA9WzfHoSwm6geQPK4bquWcP
+ Cean8DO9UOcozf881w7Y7wvWWv0JkRNa6GAA2b8OW9pStEaOcGATNiua4GxL4yahlBZQ
+ iFF7PcoYo1JGf0n7z2p+Hn+oTDC6WGoh9BNBcsRLtyVkOin91dCGRIGVT/aNJdMruX9K
+ DCoA==
+X-Gm-Message-State: AOJu0YylDud3IJTSQw6O0zOlk5tLMohD+1cey2EmveA/hdRRKIdRsD0t
+ /74lC9BI+os7qZnJEJnbxMlb05RTA2/2juuCfEDxzN8sh6srk1nC2wVw/uiSrNDCW0q7Yssvht2
+ crukSNDLLAMhPf/mFxXI3L3frm+ht1/n4qFWuSiNqND4Fl68k5JKWMucgKpuXQfk4cQMqQVbgQ9
+ X6E1bTSBkwEWBhzZ8bC0OMu5fsiKQRQW2mQN325A==
+X-Gm-Gg: ASbGncutxePVDDqKeT1pWKwpASEiDF7uqcInCdDvb5hiiIQjEmYRGfdczQuKwaSi7PD
+ QgLVkD5QI1mjjh3HiOtfLA4u+ZuAfOJvdF1M01RHlYgmIRkQR/Foe+b26lL78inbYoq+kcdxrOw
+ a16KP82b6Q78tlKxppuOCUPsSANwyCYWg5OZLwMzlH9KBbHHszSCS+/MsGVxURaAF9w9hc7irG+
+ U76jCec9CABfgA0QxfWqtaHplV3epY1wfYnA+/VsHsATTnCOulxYKMPc5IrpWKSliA2Wb8BX8fV
+ y7QN96aEpWTUiVTkVIfuYD2hrlYogqm/P8qlPO5RO1wGoh17ZLorKsZmLiqptoyJ
+X-Received: by 2002:ac8:5d87:0:b0:4d8:372b:e16a with SMTP id
+ d75a77b69052e-4e89d1f48d9mr304194551cf.4.1761161180725; 
+ Wed, 22 Oct 2025 12:26:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDVD5J3AIWUWrtFeF5As8P8/yQlMPmUx0PwmtfSfmkYfW5IVIE/Erd4RPNFMqFTNJdGsvTew==
+X-Received: by 2002:ac8:5d87:0:b0:4d8:372b:e16a with SMTP id
+ d75a77b69052e-4e89d1f48d9mr304194051cf.4.1761161180209; 
+ Wed, 22 Oct 2025 12:26:20 -0700 (PDT)
 Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4e8aaf34307sm99748561cf.1.2025.10.22.12.26.16
+ d75a77b69052e-4e8aaf34307sm99748561cf.1.2025.10.22.12.26.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 12:26:17 -0700 (PDT)
+ Wed, 22 Oct 2025 12:26:19 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Li Zhijian <lizhijian@fujitsu.com>,
@@ -77,11 +77,12 @@ Cc: Li Zhijian <lizhijian@fujitsu.com>,
  Fabiano Rosas <farosas@suse.de>, Zhang Chen <zhangckid@gmail.com>,
  "Dr . David Alan Gilbert" <dave@treblig.org>,
  Prasad Pandit <ppandit@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Yury Kotov <yury-kotov@yandex-team.ru>, Juraj Marcin <jmarcin@redhat.com>
-Subject: [PATCH 02/13] migration: Properly wait on G_IO_IN when peeking
- messages
-Date: Wed, 22 Oct 2025 15:26:01 -0400
-Message-ID: <20251022192612.2737648-3-peterx@redhat.com>
+ Yury Kotov <yury-kotov@yandex-team.ru>, Juraj Marcin <jmarcin@redhat.com>,
+ Lidong Chen <jemmy858585@gmail.com>
+Subject: [PATCH 03/13] migration/rdma: Fix wrong context in
+ qio_channel_rdma_shutdown()
+Date: Wed, 22 Oct 2025 15:26:02 -0400
+Message-ID: <20251022192612.2737648-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251022192612.2737648-1-peterx@redhat.com>
 References: <20251022192612.2737648-1-peterx@redhat.com>
@@ -112,33 +113,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-migration_channel_read_peek() used to do explicit waits of a short period
-when peeking message needs retry.  Replace it with explicit polls on the io
-channel, exactly like what qemu_fill_buffer() does.
+The rdmaout should be a cache of rioc->rdmaout, not rioc->rdmain.
 
+Cc: Lidong Chen <jemmy858585@gmail.com>
+Fixes: 54db882f07 ("migration: implement the shutdown for RDMA QIOChannel")
+Reviewed-by: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/channel.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ migration/rdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/channel.c b/migration/channel.c
-index a547b1fbfe..462cc183e1 100644
---- a/migration/channel.c
-+++ b/migration/channel.c
-@@ -135,12 +135,7 @@ int migration_channel_read_peek(QIOChannel *ioc,
-             break;
-         }
+diff --git a/migration/rdma.c b/migration/rdma.c
+index 2d839fce6c..e6837184c8 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -2986,7 +2986,7 @@ qio_channel_rdma_shutdown(QIOChannel *ioc,
+     RCU_READ_LOCK_GUARD();
  
--        /* 1ms sleep. */
--        if (qemu_in_coroutine()) {
--            qemu_co_sleep_ns(QEMU_CLOCK_REALTIME, 1000000);
--        } else {
--            g_usleep(1000);
--        }
-+        qio_channel_wait_cond(ioc, G_IO_IN);
-     }
+     rdmain = qatomic_rcu_read(&rioc->rdmain);
+-    rdmaout = qatomic_rcu_read(&rioc->rdmain);
++    rdmaout = qatomic_rcu_read(&rioc->rdmaout);
  
-     return 0;
+     switch (how) {
+     case QIO_CHANNEL_SHUTDOWN_READ:
 -- 
 2.50.1
 
