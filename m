@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6C2BFBC97
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 793BBBFBCB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 14:12:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBXgN-0006S7-LP; Wed, 22 Oct 2025 08:11:11 -0400
+	id 1vBXhJ-0007KX-M7; Wed, 22 Oct 2025 08:12:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vBXgL-0006Rr-6T
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:11:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vBXhE-0007JW-1s
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:12:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vBXgI-0006ED-8I
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:11:08 -0400
+ id 1vBXhC-0006KD-5Q
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 08:12:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761135063;
+ s=mimecast20190719; t=1761135121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=XfKk6EKmoL9ozvf83OfBuanaYxQ8B27KRXyonsPJ7Xo=;
- b=bODBMqWBVyVOmI6TT6vPlNSOLIb87ek7JGULuDVtfI7J3UZVLGwJvi4wAMw9bWPgrav9/E
- ZfrI4muSV33KDhBhOnRx1MM8y2XMtbfApuNHfxgJn0fXY4rtM5GLlNWPetfFzazkQGkRbo
- 2iaaGm+2pwiv0oPolZyFhyt7JHILiLg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=O1Ns62Il11dff67zEJEgsd6ELKS8+Lx43eNF7ALkIgY=;
+ b=dtOTz6WBPML9Zjl1IkDEALXHgaqQOIXzEFzf62aIwrqOQQQARq3/yDcnKpvnO1XAkgaR0/
+ NtEC3ZCO+WYO8r0X2zXMHypVLgEOpZ+lLhyo9VteqX90QmEVLyZ2CHypu9sN12KRlbB9Ud
+ B81YYQL3z0dWe6F2AyAwZvCwkf8fJ/8=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-lMD6jPCaOH2sk0r4XIcPHA-1; Wed, 22 Oct 2025 08:09:51 -0400
-X-MC-Unique: lMD6jPCaOH2sk0r4XIcPHA-1
-X-Mimecast-MFC-AGG-ID: lMD6jPCaOH2sk0r4XIcPHA_1761134991
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-891504015e5so435309285a.3
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 05:09:51 -0700 (PDT)
+ us-mta-390-7wk0L4gINlqZRqdkS8T-Ig-1; Wed, 22 Oct 2025 08:10:42 -0400
+X-MC-Unique: 7wk0L4gINlqZRqdkS8T-Ig-1
+X-Mimecast-MFC-AGG-ID: 7wk0L4gINlqZRqdkS8T-Ig_1761135042
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-78e5b6f1296so197093986d6.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 05:10:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761134991; x=1761739791;
+ d=1e100.net; s=20230601; t=1761135041; x=1761739841;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XfKk6EKmoL9ozvf83OfBuanaYxQ8B27KRXyonsPJ7Xo=;
- b=pMk+nc4GL8vaFAtHI4ym9DB7PzcH4K/MbUPwqQ0pfniNo4pXlpl++we/HMu5GvbgTp
- YjtIuXmxhfVmKVHEFvHVLTCABw925QGdbcncdLZxEOzOTuRA6tJ+A7dRdS5P9h43amBB
- t0CHef9oIZFfa7tNUuiyXDbLKodWvKTqPTK/FKfz+CG8Z2zuRXoL09fbuqwBj1KwOsjR
- NBxC3YiXf9tV5o+fADm3hzczlCg7F9rIUwNNew00j8isbj7/DKW2zEExkce8/JGWt/Cx
- LtPvN8jPJp1HXSuLUbY5QqEvC1xIbx+lFojpQPeeJzOB6219JKSwHZo851YlfvQc4eJg
- CTfA==
-X-Gm-Message-State: AOJu0Yy7xEChvhTJiR+8rjbRZZx8k7z1qJClsoHF3QXhoRG9En2yaigi
- PthwApmMyMI/qbR40Ow/+kiMxF2WPx9e5u+QxEPDE5EIYzvdFG8kzEEuKEqlo98K0dUKK/FyAJO
- dxG+DujujxikLRW+rLzT0KTi74Pa6QGu4m/l1Zm2yClCnkiOc18JiL962
-X-Gm-Gg: ASbGncv5oloTf93GASxVCRMh/iyMKL2FAR55KzaM8/+PmpuVovvFO8B5/Mzu5kM0qeC
- f1LSk+XaTn6NokfSv0DzSR7wjqlRG1NpWshhceysO2un0i6NtcpFq9BtI1+6PDltL38GNDt0iDo
- 3cX856KMTfXCL510MF3Xn5e1wbNkkAdZusMgMyF96uvTPAM1YaPHts0da6t/yk/oYKYa+zlQ+X3
- eUgH+C4T+/s6jMqh6xi7wstGpcjfBrFwNQZxIGzEg7p/c8NtokFhijA5rN0PAgtDO3AY7PIuXkf
- OtOU3mhmVn0o63s3403Xm2IDIwDAG/4/vcKz0MzLtOuKtJD/lC0UMkjlecnmledV98vmInzrsbg
- BJ1w=
-X-Received: by 2002:a05:620a:4053:b0:891:a6b0:7cda with SMTP id
- af79cd13be357-891a6b081c2mr2128333785a.81.1761134991364; 
- Wed, 22 Oct 2025 05:09:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHM1uDwFA8uNiXwptppDJAOJv4rM7738+GmgsQWAvKtcZTPLxnYWGSGIFF5o399wogo4S4Qtw==
-X-Received: by 2002:a05:620a:4053:b0:891:a6b0:7cda with SMTP id
- af79cd13be357-891a6b081c2mr2128329785a.81.1761134990921; 
- Wed, 22 Oct 2025 05:09:50 -0700 (PDT)
+ bh=O1Ns62Il11dff67zEJEgsd6ELKS8+Lx43eNF7ALkIgY=;
+ b=RU9MEhvbmt9ZVWMZYRTC5R2IMR3rT8Q0RhxF4z8nV5mhnlSpNpxC1XiAeaAzOv2yrw
+ FiRU868UeT53nJ77teKsR9qX5UxD/cm4W9+9nlmHMV5v/wpXPyJ18RGboMB+wZrnDFJH
+ Idfa0zR2BncHg7IvlwuwbOnOpn2KQdWchQrT9uwNIeln8szqnQVRdRpTIvPwcdY8hDvy
+ daTqFhj1oWGMze65eO4XybuMWgOnhq9Pbz6Uvzy4cca8X6BI20Xxn6Tgw29Ulkvmhaja
+ MNTNI8vM6Lc6kHZCLPwmMjnIXM4D+lsOIfblhCFzTXJPm2AKi+IspF75oRTg2v3cowVu
+ XzvA==
+X-Gm-Message-State: AOJu0Yyu0tdmnWEEFEdBlbZIbr4sY//OMK31uz1QkDV8rp4d3xHpzCvy
+ 3U155tr46ikIw5WCRU9+lLXBaxOFZifbXhL2gJrpxfHsQ1uAINcHLwQ3uHPyKp1n7ngR3/YhPjq
+ jNvCodnbw0dI8kmYFBW+HTJvir64DJs8m54e4y7GqKPbKnxdBQk3BgZ38
+X-Gm-Gg: ASbGncviHd0tj1NH9FW9LzhIcK8tj4IK2eG7s3NaOP6gsexgpe/Ey1fz9gXSkXQaqHp
+ tS3kGPtHXPVhDbdjsRhJp8VUPt09v1vJyiCfkRVoOMEB+jIEvgJ2M6+6rC6HZebrjLA+A89Z6Or
+ wkWIv5seRQjYRtlEV0WaH3nTCMyznUgTqhJk/Y2gZstSG0jdMWELVESqft4PTwDNa6ZeGiVdHUq
+ vgLJLNNTXQwP8E/2q2HMy6WD8aC5p2yS6xZ8j+Zb5OLPIGxTH8Hzso2VO2zT0MYHBPxXHhYyG/8
+ Wl0bCKfh/BwpRKX8y5tRQzEcr+C47AuB6ik2QL2VJqScD0uW043gq7OnP4a0f6BfxA4nIcFVd2Y
+ AbPU=
+X-Received: by 2002:a05:6214:2a87:b0:87d:e5dd:38ae with SMTP id
+ 6a1803df08f44-87de5dd40efmr84211706d6.9.1761135041678; 
+ Wed, 22 Oct 2025 05:10:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqCDslirHqdpfO22qOm9tEQYWnZ7iFtFe7CbTLed/NQcipuaiCs18Kd9HIt0acLFNIpHzwow==
+X-Received: by 2002:a05:6214:2a87:b0:87d:e5dd:38ae with SMTP id
+ 6a1803df08f44-87de5dd40efmr84211356d6.9.1761135041314; 
+ Wed, 22 Oct 2025 05:10:41 -0700 (PDT)
 Received: from leonardi-redhat ([151.29.47.252])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-891cefba740sm955129285a.29.2025.10.22.05.09.49
+ 6a1803df08f44-87d028ad9a7sm86701066d6.48.2025.10.22.05.10.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 05:09:50 -0700 (PDT)
-Date: Wed, 22 Oct 2025 14:09:46 +0200
+ Wed, 22 Oct 2025 05:10:41 -0700 (PDT)
+Date: Wed, 22 Oct 2025 14:10:37 +0200
 From: Luigi Leonardi <leonardi@redhat.com>
 To: Gerd Hoffmann <kraxel@redhat.com>
 Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: Re: [PATCH v4 1/5] igvm: move igvm.h file to include/system
-Message-ID: <rxjm52dvlrxpmhmwvs6zp2j5gex7xp3kzefgjh7jx77fihe4l6@65m35qp4nmak>
+Subject: Re: [PATCH v4 2/5] igvm: fix off by one bug in memmap entry count
+ checking
+Message-ID: <fjw5ao27rwi2gaujth7xt22fjylpwoqd6qfuucltwpoznhjkx5@givogb6n44tt>
 References: <20251022084439.242476-1-kraxel@redhat.com>
- <20251022084439.242476-2-kraxel@redhat.com>
+ <20251022084439.242476-3-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20251022084439.242476-2-kraxel@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leonardi@redhat.com;
+In-Reply-To: <20251022084439.242476-3-kraxel@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leonardi@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,53 +109,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 22, 2025 at 10:44:35AM +0200, Gerd Hoffmann wrote:
->Prepare for arch-specific igvm code being added to the code base.
->
+On Wed, Oct 22, 2025 at 10:44:36AM +0200, Gerd Hoffmann wrote:
 >Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
->Reviewed-by: Ani Sinha <anisinha@redhat.com>
->Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 >---
-> {backends => include/system}/igvm.h | 0
-> backends/igvm-cfg.c                 | 2 +-
-> backends/igvm.c                     | 2 +-
-> 3 files changed, 2 insertions(+), 2 deletions(-)
-> rename {backends => include/system}/igvm.h (100%)
+> backends/igvm.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 >
->diff --git a/backends/igvm.h b/include/system/igvm.h
->similarity index 100%
->rename from backends/igvm.h
->rename to include/system/igvm.h
->diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
->index 45df63e06c1a..d00acf351249 100644
->--- a/backends/igvm-cfg.c
->+++ b/backends/igvm-cfg.c
->@@ -12,7 +12,7 @@
-> #include "qemu/osdep.h"
->
-> #include "system/igvm-cfg.h"
->-#include "igvm.h"
->+#include "system/igvm.h"
-> #include "qom/object_interfaces.h"
->
-> static char *get_igvm(Object *obj, Error **errp)
 >diff --git a/backends/igvm.c b/backends/igvm.c
->index 9ad41582ee5e..723d45b755a0 100644
+>index 723d45b755a0..055bbba745ad 100644
 >--- a/backends/igvm.c
 >+++ b/backends/igvm.c
->@@ -11,8 +11,8 @@
+>@@ -567,7 +567,7 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
 >
-> #include "qemu/osdep.h"
+>             retval = ctx->cgsc->get_mem_map_entry(entry, &cgmm_entry, errp);
+>             while (retval == 0) {
+>-                if (entry > max_entry_count) {
+>+                if (entry >= max_entry_count) {
+>                     error_setg(
+>                         errp,
+>                         "IGVM: guest memory map size exceeds parameter area defined in IGVM file");
+>-- 2.51.0
 >
->-#include "igvm.h"
-> #include "qapi/error.h"
->+#include "system/igvm.h"
-> #include "system/memory.h"
-> #include "system/address-spaces.h"
-> #include "hw/core/cpu.h"
->-- 
->2.51.0
->
+
+LGTM!
+
 Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
 
 
