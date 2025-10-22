@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296A8BFA755
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9A4BFA77C
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Oct 2025 09:09:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBSub-0005Ld-7s; Wed, 22 Oct 2025 03:05:33 -0400
+	id 1vBSxI-0002LK-AO; Wed, 22 Oct 2025 03:08:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBSuB-00050X-IL
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 03:05:09 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBSx9-0002DD-IC
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 03:08:11 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBSu8-0000oU-8v
- for qemu-devel@nongnu.org; Wed, 22 Oct 2025 03:05:07 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3ece1102998so5313847f8f.2
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 00:05:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBSx7-0001AQ-Q9
+ for qemu-devel@nongnu.org; Wed, 22 Oct 2025 03:08:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4712c6d9495so12007185e9.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 00:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761116701; x=1761721501; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761116888; x=1761721688; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=laSEhwk0/2pHmc6nx1AjCtcj9n308ZzbCyOnAEG3CPw=;
- b=X/IBvPgxmWrNgNcpb3Z/+gw6B5XE9eBPrXym6lmgngkCZoeavth6odBvQXSHOpCLRV
- FqwKI5d32Ljrq2KTOBdUkIllgqV16pU/sIjjT6DxHOvxW+V/b3g1mtQ5nWD5iIcqMV22
- SNO0CkuniZ81T9ohR451jVlsp+1zEviD9HsRrZ0q8iiUl7/arVuveFBRsXCTNhh/odvi
- 5AMLc9w14pLyxG7sFR1Zsq2Cp9GtUMhl9NCAdtV1a1bJEpA4YpoAww8No2zaf4xqi6YT
- PK5pCmOKp2X44DEQJJfAPShFWQnqLWaIVC/MW2GA2uBDl1Qh5IYjom2lvKlrsiZm/RwT
- 8wLA==
+ bh=wOSDp5qQnkQ65tSJhq1PFeeSmoZ2QbjUjpF4sKIY7Ds=;
+ b=J036t94HOnVvTEwTVxEO+/6jKDDqrp46Thvewm3PDi0VqopAX1a7o18TKshaswYhL7
+ uYqDPKmbrUcRUtvQgnfxvPn8ca21HPqySLxnP3p2ZbHlmjfLvz7QroEmu7gZ6FDvU9n7
+ 55pxNss/S9jk4afEVq8B57eDpP5QlJH9yrqbfmlJRiEhuF9uFWTmbpopiVUlwvoJorCD
+ bkFt/BWVG6h8WWAeKizF/lx2gN4XeBMkDUhJGv4Q7ETTFU5R6IPsdObuHdGZ6nBvfKjq
+ dnKm3yGc91nq4GtfsyNdrqxEWv4aQOp+VkrA/pPsfpy7Et62K8bO45lcCz9Ilm16Bi5K
+ 8BOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761116701; x=1761721501;
+ d=1e100.net; s=20230601; t=1761116888; x=1761721688;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=laSEhwk0/2pHmc6nx1AjCtcj9n308ZzbCyOnAEG3CPw=;
- b=mfEaJTBI76HPTSa3taScUkRKmYo3YM2p/5i2NgsE7WmCYNrRibLs6R3k5GjzyZiVrN
- YLX2wkPt/cNIvvEn+crTQ6BHBeyEXtNU+/9T4+pA3f+1hZNWZpy0sX33XeJEOb9QmkOF
- VGJasru37Q1/w5b7bbna/3RMoMyuQU79/1+M7B8k1N7WUVZHzdNhglfI66XGf54jX8Wn
- Ke24WICIgku9yWSOFdpCr720WskoyauoNUwMmpW6xJqM9EIRySJgsp022YwZcz9iYEpW
- /vqvqoGIInNmURA2wHpA+VOIdZ22L41KfZPMofBOUXyHAAL8fTKjORKgmuGI/2J5EAet
- L0RQ==
+ bh=wOSDp5qQnkQ65tSJhq1PFeeSmoZ2QbjUjpF4sKIY7Ds=;
+ b=RjeEivqdyG9MgJAFoykAd6YoUZCmGnWGiFUUcmN/EZ3iI64sgjuUHYsrbVIp8Sm5Co
+ mXT48WdySstygxk8rVb5SRiWPDXE/8vaEs/ysA8S5j3UlFM9bXorxww2Y9JjIbPdO/oE
+ ZDL3AhjlqOpkdqF2vW8HVM5Nc2UemE+Lt55Tghnw2fzkANnieIZdUmxAokNDCdtEDGgQ
+ VOks2/H9NGv1Hpbnchq4rQqcsBtMniGN+K3lOhlM6pX+e/0aUSvZ4CMIZ9ke9PHMWFX5
+ HpKom8olwAf/lI6+QzcC9vU05tSsMeP2LtKhfv6xKTlqw+Jass2aBmDyVAF/wtWzUktZ
+ 1Siw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJum+WqfAd/MeUMfZyQodREkM1Duz3HCtA/Rpolw9eYl3CFNSBWVI4varRsa0ZdaCQrh5BX5ZX7lMh@nongnu.org
-X-Gm-Message-State: AOJu0Yw8Brgz9ou5uArRhvDUvHAfW7kkTUQNjgsCoP0/Lk9x+TbvdSxV
- aSw9NUrNdhgxh6ECI8Zix2X1ebHItmTTmOf1sknYBMgi4iGDv6C9nsULDg9/kiXyQqCsHkadu4Y
- CwF9UPDU=
-X-Gm-Gg: ASbGncuwacYTygC5diqAjODdoPvgCM73h4WGvZAKY6meJ352xkLaagiP5Nh4PrFPmVV
- JMoV5xuTdSvckO4j9q6fjx3VidEgqUYgx8bL3JzrTa41+bLejvhee/B53oXJCIsM6nIOK+UF82S
- 9inmU0x1bwF1PaXi/8fhc61s9gaotGISc0LgYBpz8CF8Coh0lDyA175GOfydpOlMO6Tu8YhRGE9
- mOXeePT3fsWBh/tkFukrKUHVrb6Nbmuy2zym24vEffR8CN4AaQAM7R3o1eSd7EMJOYONSlsf6dL
- vhJ8PnwiHSg0Tt9In0cJrPodAfSx8fwVf7mY42ZvpHzRRoQPmQV8rm99kPLWy+56m1GtvtKoXha
- e1g5TWOofRep+a00HPWJVIn1oIgllKrLcQMka6ERxrWi2Fgx/dQhvbU7Lv0M5TYPPY5/poSz9tb
- QfTKQcDcu5oJccykBxOl4TKwp6hP+DuC+XIc1bAlS5xOZlAMyP3zbJpoNhqGiVuZi6
-X-Google-Smtp-Source: AGHT+IFpCpNkIECIdZgp2TwvXqHF6qsyGpAiROiPf6Y06gqhauwgS//i5yzEd1o7wz41QvHYN6NL3g==
-X-Received: by 2002:a05:6000:420e:b0:425:72a0:a981 with SMTP id
- ffacd0b85a97d-42704d830aemr11094288f8f.2.1761116701519; 
- Wed, 22 Oct 2025 00:05:01 -0700 (PDT)
+ AJvYcCUaheudI4jcmQ+MmLb6h9TT+axktFRUs7qk3P/HiBcwh0Eu1B9cVw743auQqGiXRKN+O0dJiBYJKy4C@nongnu.org
+X-Gm-Message-State: AOJu0YyL362GQ2UMHGgclMHr8v9j+A4IFwIY++ubdMg6OtHD4vw8e454
+ Sic8tSAwdf/UJLAXTVy2slkMP4tbtofYb4gnqXojWSnxtJFKQEJ5uAtKmsbLcutSK4Q=
+X-Gm-Gg: ASbGncvt1MFii+JXZFf7Oyisy9a2VrmXHMLWcq9zmVQHwZYHKzTkMUAsL5I/SqTKBiC
+ Xt6VE5CT6OplN98qJ2ZHJPojunUry8cZzid3lZsXU1jvyFINvF4+smoK5LS2TNIxn1jmLfdIaTT
+ sywQh+fWdHGKkIyDowgVNg+xh7yq6EucuCjXkK0Cj0dXCjD2C5tEm4a6wU/2qhXu5SQI9ALZUQF
+ 98g5En7c6+tOhaEMOWkjT82umEn4zM+pwWZY1KTBcqC8PF62KeT60qUK50UDnu8mEnhZQRrdvs4
+ 2FolCoQrdz2TIGArMiAqvQn2guhi1/SnJfNdaJiGELen4IFDMMLVNpMpdTnGW9lAQkW4ImDsD5p
+ bNMvmRPm2gQxs9SzF84/tm3o3oaD9N9YKAp04b7jSe3GM0no3alEhyPZCQJSkjTTq7SaAu4Slbq
+ Ufp6VoIQY8J/3FTi1JzVociq1ESBLfhl9QjXBgUs9ZyrQ=
+X-Google-Smtp-Source: AGHT+IEWXYxjTKYhPNfWoqPikHLHBDoVpGkerT9WoOwOtpWi1p7xnR1m959nnzgFUm3jDSqZEsGrHg==
+X-Received: by 2002:a05:600c:8b62:b0:45d:d97c:235e with SMTP id
+ 5b1f17b1804b1-47117876bcdmr140234075e9.12.1761116887893; 
+ Wed, 22 Oct 2025 00:08:07 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-427f00ce678sm24051715f8f.51.2025.10.22.00.05.00
+ 5b1f17b1804b1-475c4342946sm28490065e9.10.2025.10.22.00.08.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Oct 2025 00:05:01 -0700 (PDT)
-Message-ID: <35fc3048-85de-4f75-a967-f57c8cca58bd@linaro.org>
-Date: Wed, 22 Oct 2025 09:05:00 +0200
+ Wed, 22 Oct 2025 00:08:07 -0700 (PDT)
+Message-ID: <d5f3459a-35b8-41ae-b9d3-4b38678576fa@linaro.org>
+Date: Wed, 22 Oct 2025 09:08:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 39/42] audio: cleanup, use bool for booleans
+Subject: Re: [PATCH v2 33/42] audio: move internal APIs to audio_int.h
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
  Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  Gerd Hoffmann <kraxel@redhat.com>
 References: <20251022065640.1172785-1-marcandre.lureau@redhat.com>
- <20251022065640.1172785-40-marcandre.lureau@redhat.com>
+ <20251022065640.1172785-34-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251022065640.1172785-40-marcandre.lureau@redhat.com>
+In-Reply-To: <20251022065640.1172785-34-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,55 +106,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 22/10/25 08:56, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Use slightly better types for the job.
-> 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   audio/audio_int.h      | 12 ++++++------
->   audio/audio_template.h |  6 +++---
->   include/qemu/audio.h   |  8 ++++----
->   audio/audio.c          | 30 +++++++++++++++---------------
->   4 files changed, 28 insertions(+), 28 deletions(-)
+>   audio/audio.h          | 21 ---------------------
+>   audio/audio_int.h      | 22 ++++++++++++++++++++++
+>   audio/audio-hmp-cmds.c |  2 +-
+>   audio/wavcapture.c     |  2 +-
+>   4 files changed, 24 insertions(+), 23 deletions(-)
 
 
-> diff --git a/include/qemu/audio.h b/include/qemu/audio.h
-> index 216b95eb4f..f5c32550dc 100644
-> --- a/include/qemu/audio.h
-> +++ b/include/qemu/audio.h
-> @@ -98,8 +98,8 @@ SWVoiceOut *AUD_open_out (
->   void AUD_close_out (AudioBackend *be, SWVoiceOut *sw);
->   size_t AUD_write (SWVoiceOut *sw, void *pcm_buf, size_t size);
->   int  AUD_get_buffer_size_out (SWVoiceOut *sw);
-> -void AUD_set_active_out (SWVoiceOut *sw, int on);
-> -int  AUD_is_active_out (SWVoiceOut *sw);
-> +void AUD_set_active_out (SWVoiceOut *sw, bool on);
-> +bool AUD_is_active_out (SWVoiceOut *sw);
+> diff --git a/audio/audio_int.h b/audio/audio_int.h
+> index 4a4d69f2bf..cc7a6fe087 100644
+> --- a/audio/audio_int.h
+> +++ b/audio/audio_int.h
+> @@ -29,12 +29,16 @@
+>   #define FLOAT_MIXENG
+>   /* #define RECIPROCAL */
+>   #endif
+> +#include "audio.h"
+>   #include "mixeng.h"
 >   
->   void     AUD_init_time_stamp_out (SWVoiceOut *sw, QEMUAudioTimeStamp *ts);
->   uint64_t AUD_get_elapsed_usec_out (SWVoiceOut *sw, QEMUAudioTimeStamp *ts);
-> @@ -128,8 +128,8 @@ SWVoiceIn *AUD_open_in (
+>   #ifdef CONFIG_GIO
+>   #include <gio/gio.h>
+>   #endif
 >   
->   void AUD_close_in (AudioBackend *be, SWVoiceIn *sw);
->   size_t AUD_read (SWVoiceIn *sw, void *pcm_buf, size_t size);
-> -void AUD_set_active_in (SWVoiceIn *sw, int on);
-> -int  AUD_is_active_in (SWVoiceIn *sw);
-> +void AUD_set_active_in (SWVoiceIn *sw, bool on);
-> +bool AUD_is_active_in (SWVoiceIn *sw);
+> +void AUD_vlog (const char *cap, const char *fmt, va_list ap) G_GNUC_PRINTF(2, 0);
+> +void AUD_log (const char *cap, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
+> +
+>   struct audio_pcm_ops;
 >   
->   void     AUD_init_time_stamp_in (SWVoiceIn *sw, QEMUAudioTimeStamp *ts);
->   uint64_t AUD_get_elapsed_usec_in (SWVoiceIn *sw, QEMUAudioTimeStamp *ts);
-> diff --git a/audio/audio.c b/audio/audio.c
-> index 5d3fb799f9..a9df7d73cd 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -405,7 +405,7 @@ static void audio_notify_capture (CaptureVoiceOut *cap, audcnotification_e cmd)
->       }
->   }
+>   struct audio_callback {
+> @@ -187,6 +191,24 @@ struct audio_pcm_ops {
+>       void   (*volume_in)(HWVoiceIn *hw, Volume *vol);
+>   };
 >   
-> -static void audio_capture_maybe_changed (CaptureVoiceOut *cap, int enabled)
-> +static void audio_capture_maybe_changed (CaptureVoiceOut *cap, bool enabled)
+> +audsettings audiodev_to_audsettings(AudiodevPerDirectionOptions *pdo);
+> +int audioformat_bytes_per_sample(AudioFormat fmt);
+> +int audio_buffer_frames(AudiodevPerDirectionOptions *pdo,
+> +                        audsettings *as, int def_usecs);
+> +int audio_buffer_samples(AudiodevPerDirectionOptions *pdo,
+> +                         audsettings *as, int def_usecs);
+> +int audio_buffer_bytes(AudiodevPerDirectionOptions *pdo,
+> +                       audsettings *as, int def_usecs);
+> +
+> +static inline void *advance (void *p, int incr)
+> +{
+> +    uint8_t *d = p;
+> +    return (d + incr);
+> +}
 
-Please fix checkpatch.pl errors while modifying these lines, otherwise:
+Modulo checkpatch.pl errors,
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
