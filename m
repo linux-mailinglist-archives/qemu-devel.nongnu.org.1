@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB06C0118A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EB9C0128A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:35:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuKf-0005PS-Do; Thu, 23 Oct 2025 08:22:23 -0400
+	id 1vBuJV-0003Ov-UW; Thu, 23 Oct 2025 08:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuGA-0001Hn-7W
+ id 1vBuGB-0001Hr-QG
  for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:42 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuG5-0006Rv-4w
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:37 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N5GEA3030419;
- Thu, 23 Oct 2025 12:17:29 GMT
+ id 1vBuG8-0006Sh-Ko
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:39 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N7mFXV031838;
+ Thu, 23 Oct 2025 12:17:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=+0H0Da
- 7VdCvdfrj0RFNrEHQOMPnaTngWJ/qx5eIWKFQ=; b=AkeVGH2uzvUpAo/NGlXkYW
- iv44OmNl/gcQDlAJrMITL9RJmpw9lXEMfVxL+ugE3GWNuUbdQ3o8LX4L+/PjCXtx
- sqPN+TkOo/uUvmPBaGrVZlJmRikg5Z70gW21wqbdALGgyfjqoU8CtnNhJqZL1J4g
- d3Vjz8A//yeWqivChymon43XzaD25YVZUBKSOANhSLx4jrNDlahkvNrYOWjv40nz
- JDU+9QPNqqVhsMWtX6o7nDshh5moS+B4tun446ANc+tJVKDardw+fPHHO8A074O+
- GQRANyZR6ND288D4Evd2tsJ7eHa0RWQVWc5VHNfHQbOZKRmz/r1gzMS9iQF4eIyA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=xy+FpD
+ SQIuSIz8SH+Jrmw+29iCnIy43AKGGljobRpnk=; b=bAWlLepRS4qvVsUI8Zx5Eb
+ JUhND+HvfoUHEkzZplocMkMkHi+gjybHtTYBeEPo89CuRtfYESy4X3XjyDtsUeH9
+ mZLPZOvwlabji5ToIXeUJLnpxMbXqMHcXf/TyVXHWZzCkK+T7GdTEaiXtnxUFfgW
+ BDL0YEYS1sEHHm3DnzuF4n/zQKN9a6pKpMynl3tiXFwdz4DXjyTOvCUbT9VLG+Q0
+ 5Xbi1y+GY2lEItX5+7b6Jnlj5unxDa6ByOibvtJtcpGsZGB+IW4Gz0xnmhIUqFwv
+ fCrfPf1lEBuDMusMq6oJ6pdx7qF81Irm/yW29VOutx/5DaqaptP8h8uQI7XfpFWg
  ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31cgp05-1
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33fj26s-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 12:17:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59N94bRo014650;
- Thu, 23 Oct 2025 12:17:28 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7sdtu5-1
+ Thu, 23 Oct 2025 12:17:31 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NA8XTP024303;
+ Thu, 23 Oct 2025 12:17:30 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk5hw5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 12:17:28 +0000
+ Thu, 23 Oct 2025 12:17:30 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NCHRqc49742198
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NCHSRU62914944
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 12:17:27 GMT
+ Thu, 23 Oct 2025 12:17:28 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EAB8120043;
- Thu, 23 Oct 2025 12:17:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 33B7F20040;
+ Thu, 23 Oct 2025 12:17:28 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11E4A20040;
- Thu, 23 Oct 2025 12:17:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4983120043;
+ Thu, 23 Oct 2025 12:17:27 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.124.221.73]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 12:17:25 +0000 (GMT)
+ Thu, 23 Oct 2025 12:17:27 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/32] hw/ppc/pegasos2: Move hardware specific parts out of
- machine reset
-Date: Thu, 23 Oct 2025 17:46:39 +0530
-Message-ID: <20251023121653.3686015-21-harshpb@linux.ibm.com>
+Subject: [PULL 21/32] hw/ppc/pegasos2: Introduce abstract superclass
+Date: Thu, 23 Oct 2025 17:46:40 +0530
+Message-ID: <20251023121653.3686015-22-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251023121653.3686015-1-harshpb@linux.ibm.com>
 References: <20251023121653.3686015-1-harshpb@linux.ibm.com>
@@ -73,32 +72,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mMgOvhBZXlU1NI7lFpdICaoAGBiqqnFY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX2N+cE04tw4iD
- 8Riga3vqWchgZHLc+j4PYlSU4FT7D+YwUQh2kvfag8I7G+WPWcr5xB22BtjP5oKmmS5xvVJIk1N
- IeLsCDvkyaC2VSj1QK++qG8icH/E0iW0SvWEStRqpcFhl143MoNjHvfFrpJnnn63yPe0kGko4W2
- tpBSuYbGHLEn03CxH/QTKKZOR7P2zxYUWcrhVDrFfpKhPbZw8FVk54AklrcW32L/dwL7RXMVi/M
- RN2Tes479wootE4qHpmnfbmwaWBd0yHR4pjnw/5O33WJFk2L60C8ZDNwA2kcSgXL2afiFKYsn7G
- mPjGdQ3tQpU1x+Kj8NLdaViU1dM2lOZ0qseArJ0iaoTFY3iP4uJSMf4sX1l4JfKZoUp8P6y4EDX
- 0BYspP11PeZaVZMQf6+7oaPQCj3XGw==
-X-Proofpoint-GUID: mMgOvhBZXlU1NI7lFpdICaoAGBiqqnFY
-X-Authority-Analysis: v=2.4 cv=SKNPlevH c=1 sm=1 tr=0 ts=68fa1cd9 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68fa1cdb cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
  a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8
- a=29-1D86bl-XE_ZHJWoEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=PatsMKc-9FYN22uO058A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
  a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
  a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-GUID: KHs_ww-_Mz9VMIE0lalgCyg17yYdc2Yt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX8bVh4bd17ZJ0
+ aXbNxkUHnhoLVHxRKox3hKegtlQ77eOvpK2CYhBj9A7D6Huo6PfnhurPz8KdyRqfCxWMqM1HiY2
+ 6m/yZEwbi1aMaLA0jAS38/ey+cgCTg/Ki8ifz0GY8DIizchE+jABc7TrFBc+3vxJPhUvvA1BXoA
+ mKga1wGmIiMKbQYW8am7/QPbK8Ei9ueFApvhKGfOEzVoW3F4idr2dKgf0qrlC0hNkENG6qBf7yF
+ IkYEuG1elDztm0muHc6XwaggTLTEJ93wcnMMhqT9mADSm2D7Qb8HBrBsjti/k08h6dOZ+O+Ejtj
+ Lt0giCBbMwJqS4twsnqznMKwr6K68QaIfmQhYOZu5QKyaviA5LtRJuNzlx6/04JCm+dz69SWuFO
+ kzomN+GyT40GhHUx3Cci8WFAYjmajw==
+X-Proofpoint-ORIG-GUID: KHs_ww-_Mz9VMIE0lalgCyg17yYdc2Yt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -124,167 +123,200 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Move the pegasos2 specific chipset reset out from machine reset to a
-separate function and move generic parts that are not pegasos2
-specific from build_fdt to machine reset so now build_fdt only
-contains pegasos2 specific parts and can be renamed accordingly.
+Rename machine state struct to PegasosMachineState as it will be used
+for pegasos1 too.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/f6633a68a72aad4fefb8d2373b52561f8ca8d41d.1761176219.git.balaton@eik.bme.hu
+Link: https://lore.kernel.org/qemu-devel/a09590a5da4572c9d392542f5c3793e6eb08ab9e.1761176219.git.balaton@eik.bme.hu
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- hw/ppc/pegasos2.c | 79 ++++++++++++++++++++++++-----------------------
- 1 file changed, 41 insertions(+), 38 deletions(-)
+ hw/ppc/pegasos2.c | 66 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 32 deletions(-)
 
 diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index 2f9bd3eac5..ed3070204b 100644
+index ed3070204b..f5b56c0e94 100644
 --- a/hw/ppc/pegasos2.c
 +++ b/hw/ppc/pegasos2.c
-@@ -57,10 +57,6 @@
+@@ -57,10 +57,10 @@
  
  #define BUS_FREQ_HZ 133333333
  
--#define PCI0_CFG_ADDR 0xcf8
--#define PCI1_CFG_ADDR 0xc78
--#define PCI1_IO_BASE  0xfe000000
--
- #define TYPE_PEGASOS2_MACHINE  MACHINE_TYPE_NAME("pegasos2")
- OBJECT_DECLARE_TYPE(Pegasos2MachineState, MachineClass, PEGASOS2_MACHINE)
+-#define TYPE_PEGASOS2_MACHINE  MACHINE_TYPE_NAME("pegasos2")
+-OBJECT_DECLARE_TYPE(Pegasos2MachineState, MachineClass, PEGASOS2_MACHINE)
++#define TYPE_PEGASOS_MACHINE MACHINE_TYPE_NAME("pegasos")
++OBJECT_DECLARE_SIMPLE_TYPE(PegasosMachineState, PEGASOS_MACHINE)
  
-@@ -82,7 +78,7 @@ struct Pegasos2MachineState {
+-struct Pegasos2MachineState {
++struct PegasosMachineState {
+     MachineState parent_obj;
+ 
+     PowerPCCPU *cpu;
+@@ -78,12 +78,12 @@ struct Pegasos2MachineState {
      uint64_t initrd_size;
  };
  
--static void *build_fdt(MachineState *machine, int *fdt_size);
-+static void *pegasos2_build_fdt(Pegasos2MachineState *pm, int *fdt_size);
+-static void *pegasos2_build_fdt(Pegasos2MachineState *pm, int *fdt_size);
++static void *pegasos2_build_fdt(PegasosMachineState *pm, int *fdt_size);
  
  static void pegasos2_cpu_reset(void *opaque)
  {
-@@ -284,6 +280,9 @@ static void pegasos2_mv_reg_write(Pegasos2MachineState *pm, uint32_t addr,
-                                  MEMTXATTRS_UNSPECIFIED);
+     PowerPCCPU *cpu = opaque;
+-    Pegasos2MachineState *pm = PEGASOS2_MACHINE(current_machine);
++    PegasosMachineState *pm = PEGASOS_MACHINE(current_machine);
+ 
+     cpu_reset(CPU(cpu));
+     cpu->env.spr[SPR_HID1] = 7ULL << 28;
+@@ -96,7 +96,7 @@ static void pegasos2_cpu_reset(void *opaque)
+ 
+ static void pegasos2_pci_irq(void *opaque, int n, int level)
+ {
+-    Pegasos2MachineState *pm = opaque;
++    PegasosMachineState *pm = opaque;
+ 
+     /* PCI interrupt lines are connected to both MV64361 and VT8231 */
+     qemu_set_irq(pm->mv_pirq[n], level);
+@@ -104,7 +104,7 @@ static void pegasos2_pci_irq(void *opaque, int n, int level)
  }
  
-+#define PCI0_CFG_ADDR 0xcf8
-+#define PCI1_CFG_ADDR 0xc78
-+
- static uint32_t pegasos2_pci_config_read(Pegasos2MachineState *pm, int bus,
-                                          uint32_t addr, uint32_t len)
+ /* Set up PCI interrupt routing: lines from pci.0 and pci.1 are ORed */
+-static void pegasos2_setup_pci_irq(Pegasos2MachineState *pm)
++static void pegasos2_setup_pci_irq(PegasosMachineState *pm)
  {
-@@ -308,23 +307,12 @@ static void pegasos2_pci_config_write(Pegasos2MachineState *pm, int bus,
+     for (int h = 0; h < 2; h++) {
+         DeviceState *pd;
+@@ -137,7 +137,7 @@ static void pegasos2_setup_pci_irq(Pegasos2MachineState *pm)
  
- static void pegasos2_superio_write(uint8_t addr, uint8_t val)
- {
--    cpu_physical_memory_write(PCI1_IO_BASE + 0x3f0, &addr, 1);
--    cpu_physical_memory_write(PCI1_IO_BASE + 0x3f1, &val, 1);
-+    cpu_physical_memory_write(0xfe0003f0, &addr, 1);
-+    cpu_physical_memory_write(0xfe0003f1, &val, 1);
- }
- 
--static void pegasos2_machine_reset(MachineState *machine, ResetType type)
-+static void pegasos2_chipset_reset(Pegasos2MachineState *pm)
+ static void pegasos2_init(MachineState *machine)
  {
 -    Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
--    void *fdt;
--    uint64_t d[2];
--    int sz;
--
--    qemu_devices_reset(type);
--    if (!pm->vof) {
--        return; /* Firmware should set up machine so nothing to do */
--    }
--
--    /* Otherwise, set up devices that board firmware would normally do */
++    PegasosMachineState *pm = PEGASOS_MACHINE(machine);
+     CPUPPCState *env;
+     MemoryRegion *rom = g_new(MemoryRegion, 1);
+     PCIBus *pci_bus;
+@@ -262,7 +262,7 @@ static void pegasos2_init(MachineState *machine)
+     }
+ }
+ 
+-static uint32_t pegasos2_mv_reg_read(Pegasos2MachineState *pm,
++static uint32_t pegasos2_mv_reg_read(PegasosMachineState *pm,
+                                      uint32_t addr, uint32_t len)
+ {
+     MemoryRegion *r = sysbus_mmio_get_region(SYS_BUS_DEVICE(pm->nb), 0);
+@@ -272,7 +272,7 @@ static uint32_t pegasos2_mv_reg_read(Pegasos2MachineState *pm,
+     return val;
+ }
+ 
+-static void pegasos2_mv_reg_write(Pegasos2MachineState *pm, uint32_t addr,
++static void pegasos2_mv_reg_write(PegasosMachineState *pm, uint32_t addr,
+                                   uint32_t len, uint32_t val)
+ {
+     MemoryRegion *r = sysbus_mmio_get_region(SYS_BUS_DEVICE(pm->nb), 0);
+@@ -283,7 +283,7 @@ static void pegasos2_mv_reg_write(Pegasos2MachineState *pm, uint32_t addr,
+ #define PCI0_CFG_ADDR 0xcf8
+ #define PCI1_CFG_ADDR 0xc78
+ 
+-static uint32_t pegasos2_pci_config_read(Pegasos2MachineState *pm, int bus,
++static uint32_t pegasos2_pci_config_read(PegasosMachineState *pm, int bus,
+                                          uint32_t addr, uint32_t len)
+ {
+     hwaddr pcicfg = bus ? PCI1_CFG_ADDR : PCI0_CFG_ADDR;
+@@ -296,7 +296,7 @@ static uint32_t pegasos2_pci_config_read(Pegasos2MachineState *pm, int bus,
+     return val;
+ }
+ 
+-static void pegasos2_pci_config_write(Pegasos2MachineState *pm, int bus,
++static void pegasos2_pci_config_write(PegasosMachineState *pm, int bus,
+                                       uint32_t addr, uint32_t len, uint32_t val)
+ {
+     hwaddr pcicfg = bus ? PCI1_CFG_ADDR : PCI0_CFG_ADDR;
+@@ -311,7 +311,7 @@ static void pegasos2_superio_write(uint8_t addr, uint8_t val)
+     cpu_physical_memory_write(0xfe0003f1, &val, 1);
+ }
+ 
+-static void pegasos2_chipset_reset(Pegasos2MachineState *pm)
++static void pegasos2_chipset_reset(PegasosMachineState *pm)
+ {
      pegasos2_mv_reg_write(pm, 0, 4, 0x28020ff);
      pegasos2_mv_reg_write(pm, 0x278, 4, 0xa31fc);
-     pegasos2_mv_reg_write(pm, 0xf300, 4, 0x11ff0400);
-@@ -387,6 +375,23 @@ static void pegasos2_machine_reset(MachineState *machine, ResetType type)
+@@ -379,7 +379,7 @@ static void pegasos2_chipset_reset(Pegasos2MachineState *pm)
  
-     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 6) << 8) |
-                               PCI_INTERRUPT_LINE, 2, 0x309);
-+}
-+
-+static void pegasos2_machine_reset(MachineState *machine, ResetType type)
-+{
-+    Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
-+    void *fdt;
-+    uint32_t c[2];
-+    uint64_t d[2];
-+    int sz;
-+
-+    qemu_devices_reset(type);
-+    if (!pm->vof) {
-+        return; /* Firmware should set up machine so nothing to do */
-+    }
-+
-+    /* Otherwise, set up devices that board firmware would normally do */
-+    pegasos2_chipset_reset(pm);
+ static void pegasos2_machine_reset(MachineState *machine, ResetType type)
+ {
+-    Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
++    PegasosMachineState *pm = PEGASOS_MACHINE(machine);
+     void *fdt;
+     uint32_t c[2];
+     uint64_t d[2];
+@@ -463,7 +463,7 @@ enum pegasos2_rtas_tokens {
+     RTAS_SYSTEM_REBOOT = 20,
+ };
  
-     /* Device tree and VOF set up */
-     vof_init(pm->vof, machine->ram_size, &error_fatal);
-@@ -405,10 +410,25 @@ static void pegasos2_machine_reset(MachineState *machine, ResetType type)
-         exit(1);
-     }
+-static target_ulong pegasos2_rtas(PowerPCCPU *cpu, Pegasos2MachineState *pm,
++static target_ulong pegasos2_rtas(PowerPCCPU *cpu, PegasosMachineState *pm,
+                                   target_ulong args_real)
+ {
+     AddressSpace *as = CPU(cpu)->as;
+@@ -566,7 +566,7 @@ static bool pegasos2_cpu_in_nested(PowerPCCPU *cpu)
  
--    fdt = build_fdt(machine, &sz);
-+    fdt = pegasos2_build_fdt(pm, &sz);
-     if (!fdt) {
-         exit(1);
-     }
-+
-+    /* Set memory size */
-+    c[0] = 0;
-+    c[1] = cpu_to_be32(machine->ram_size);
-+    qemu_fdt_setprop(fdt, "/memory@0", "reg", c, sizeof(c));
-+
-+    /* Boot parameters */
-+    if (pm->initrd_addr && pm->initrd_size) {
-+        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end",
-+                              pm->initrd_addr + pm->initrd_size);
-+        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-start",
-+                              pm->initrd_addr);
-+    }
-+    qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
-+                            machine->kernel_cmdline ?: "");
-     /* FIXME: VOF assumes entry is same as load address */
-     d[0] = cpu_to_be64(pm->kernel_entry);
-     d[1] = cpu_to_be64(pm->kernel_size - (pm->kernel_entry - pm->kernel_addr));
-@@ -827,12 +847,10 @@ static void *load_dtb(const char *filename, int *fdt_size)
+ static void pegasos2_hypercall(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu)
+ {
+-    Pegasos2MachineState *pm = PEGASOS2_MACHINE(vhyp);
++    PegasosMachineState *pm = PEGASOS_MACHINE(vhyp);
+     CPUPPCState *env = &cpu->env;
+ 
+     /* The TCG path should also be holding the BQL at this point */
+@@ -629,24 +629,26 @@ static void pegasos2_machine_class_init(ObjectClass *oc, const void *data)
+     vmc->setprop = pegasos2_setprop;
+ }
+ 
+-static const TypeInfo pegasos2_machine_info = {
+-    .name          = TYPE_PEGASOS2_MACHINE,
+-    .parent        = TYPE_MACHINE,
+-    .class_init    = pegasos2_machine_class_init,
+-    .instance_size = sizeof(Pegasos2MachineState),
+-    .interfaces = (const InterfaceInfo[]) {
+-        { TYPE_PPC_VIRTUAL_HYPERVISOR },
+-        { TYPE_VOF_MACHINE_IF },
+-        { }
++static const TypeInfo pegasos_machine_types[] = {
++    {
++        .name          = TYPE_PEGASOS_MACHINE,
++        .parent        = TYPE_MACHINE,
++        .instance_size = sizeof(PegasosMachineState),
++        .abstract      = true,
++        .interfaces = (const InterfaceInfo[]) {
++              { TYPE_PPC_VIRTUAL_HYPERVISOR },
++              { TYPE_VOF_MACHINE_IF },
++              { }
++        },
++    },
++    {
++        .name          = MACHINE_TYPE_NAME("pegasos2"),
++        .parent        = TYPE_PEGASOS_MACHINE,
++        .class_init    = pegasos2_machine_class_init,
+     },
+ };
+ 
+-static void pegasos2_machine_register_types(void)
+-{
+-    type_register_static(&pegasos2_machine_info);
+-}
+-
+-type_init(pegasos2_machine_register_types)
++DEFINE_TYPES(pegasos_machine_types)
+ 
+ /* FDT creation for passing to firmware */
+ 
+@@ -847,7 +849,7 @@ static void *load_dtb(const char *filename, int *fdt_size)
      return fdt;
  }
  
--static void *build_fdt(MachineState *machine, int *fdt_size)
-+static void *pegasos2_build_fdt(Pegasos2MachineState *pm, int *fdt_size)
+-static void *pegasos2_build_fdt(Pegasos2MachineState *pm, int *fdt_size)
++static void *pegasos2_build_fdt(PegasosMachineState *pm, int *fdt_size)
  {
--    Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
      FDTInfo fi;
      PCIBus *pci_bus;
--    uint32_t cells[2];
-     void *fdt = load_dtb("pegasos2.dtb", fdt_size);
- 
-     if (!fdt) {
-@@ -840,21 +858,6 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
-     }
-     qemu_fdt_setprop_string(fdt, "/", "name", "bplan,Pegasos2");
- 
--    /* Set memory size */
--    cells[0] = 0;
--    cells[1] = cpu_to_be32(machine->ram_size);
--    qemu_fdt_setprop(fdt, "/memory@0", "reg", cells, 2 * sizeof(cells[0]));
--
--    /* Boot parameters */
--    if (pm->initrd_addr && pm->initrd_size) {
--        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end",
--                              pm->initrd_addr + pm->initrd_size);
--        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-start",
--                              pm->initrd_addr);
--    }
--    qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
--                            machine->kernel_cmdline ?: "");
--
-     add_cpu_info(fdt, pm->cpu);
- 
-     fi.fdt = fdt;
 -- 
 2.43.5
 
