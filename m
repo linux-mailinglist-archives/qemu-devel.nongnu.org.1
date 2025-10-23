@@ -2,183 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416B9C01C68
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F28CC01C62
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:31:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwKO-00019S-Bx; Thu, 23 Oct 2025 10:30:09 -0400
+	id 1vBwKM-000168-Mt; Thu, 23 Oct 2025 10:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1vBwK3-0000sG-QM
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:29:48 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1vBwK1-0001Lj-6s
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:29:47 -0400
-Received: from pps.filterd (m0127840.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 59N7EDBT3927941; Thu, 23 Oct 2025 07:29:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=/FzWYLAxVv96mv1ngoGDToKMmsQEgbnH2Zxf4fyRy
- GM=; b=oWffVxtYLBy6G6qKC4GHVFN09hXjTRgk1Y9Ld0mmoM0eZHS74mwbCi09R
- lY76HMhHdeeAQwkbBwmMJkfmh5qMzMQdO1HNdgN47QWDywMklzz43XvviwSV5mLO
- Mv749yYCZBmVfehJuPPLiW5XoJoz9dxaVlrfTjf5aSbZPM7bhOhiNqWHC4kyHP6G
- mv2GWIkMckgCwSe0R12+fofjPFG4wMmz4YpAkkpC0aonig3RffCdgtDeu/wLmsdG
- FQXdHpaCSD6S8Y3oZ6cUEhJQiz0fW8raor+f5Xxv4eI3q7oyhOZ7uK1lEJ5vRpoi
- Q0gdWy1yMrcnInrWGw6keHcIJRCFA==
-Received: from dm5pr21cu001.outbound.protection.outlook.com
- (mail-centralusazon11021100.outbound.protection.outlook.com [52.101.62.100])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 49yfss8vtc-1
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 07:29:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t7JnV+vNwbVM0kIW2whT19HSV5j0pv41NnEbtIZkkLGi91oWL0EvhNbfkAwH0pS6PiZqGNJ+nrJfARQoTrMzqxApeiMQ0fqRUXtbdcWytWHNwDk5lY5yVX/u7togKSo3M9hyp2HgAUrqYJe3ApCycgg9dpZTW7CTiJ0O8KpZi8Tpx99NZ/20GU4fHxj/VikVYAcpC/JmZfIvd3YIb/82N5qia6/gBzdqDKtSVzcMg7xWkrm/8eHcGy1/1OQgJHUDzsbPYFKWPwMIots3zcf++VyZFSJIPzV9++agp1+1a9ODmaT7ZqaEWnPFsh6VQOnZG3BUHYLRAgnt5yQqIwzidA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/FzWYLAxVv96mv1ngoGDToKMmsQEgbnH2Zxf4fyRyGM=;
- b=SG5gLOcuj1Nt7OqHQe8+ipYHm+SlkjJXEuz/07K6b/C6nhwkq025BJnZZoITYHc3vpSa/13JO8N6POjCYcUlUBg9B9POKRA1ZMLvXIYCUsQNN3CpoKaRbDHgjT2KSsQA/LT7YCTgGepEr7o23Uq2qGqxP6lxcrtIa8+xEndRZBLmJtif+7mHBwsv6K/mm3vOmsdmB160igM7uOLdj33H5UCi930u8KDf6BDhZL6PX/r8lEc7UXsoY2GgO2RIXRxAKSqMpMWGEAi+PddEgRBsUJyh5uHr6oms43KWr2jRCEJucO95bNw/KQWOls7rsihhuF9AO2t3N6Kxeg0jPtamVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/FzWYLAxVv96mv1ngoGDToKMmsQEgbnH2Zxf4fyRyGM=;
- b=RMm70XUIIt5U5ueVRGijzHG7Uc6wPAzT1BBA84FM3UN2bBUiIgWQDrHViiv7Pa4UuZYZEAvbz4gz2KlgBqLa1+AdopdXLcZbHfrAGhRIMX7ZXI/llTXwhUi45LnbmnDT5wwOhneSRd1p4yufCqSKHklxDSq/xMoMBkW51xD6eDCom29c9jLuMtb3Zbu6bSmlpa5bWI/CUybDSX1QA1BWPPk8y0wrL9hGyhPY3Lr8DeKJP+QlfnwaZcmFX9KdzdB25qyiGXaVtmX1pEOLCKldsKcpc8wdMI8FPSObi4FPOnwCh0EZwEMRTHzAbc1+Y74I+FmrQyFYGd/BYNHDleldNg==
-Received: from PH0PR02MB7159.namprd02.prod.outlook.com (2603:10b6:510:16::8)
- by SN7PR02MB9331.namprd02.prod.outlook.com (2603:10b6:806:329::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Thu, 23 Oct
- 2025 14:29:38 +0000
-Received: from PH0PR02MB7159.namprd02.prod.outlook.com
- ([fe80::6cf9:b35c:b143:bb88]) by PH0PR02MB7159.namprd02.prod.outlook.com
- ([fe80::6cf9:b35c:b143:bb88%3]) with mapi id 15.20.9228.016; Thu, 23 Oct 2025
- 14:29:37 +0000
-From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-To: imammedo@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
- pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
- qemu-devel@nongnu.org
-Subject: [PATCH 2/2] docs/about/deprecated.rst: document isapc deprecation for
- modern x86 CPU models
-Date: Thu, 23 Oct 2025 15:28:10 +0100
-Message-ID: <20251023142926.964718-3-mark.caveayland@nutanix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251023142926.964718-1-mark.caveayland@nutanix.com>
-References: <20251023142926.964718-1-mark.caveayland@nutanix.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA1P222CA0133.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c2::18) To PH0PR02MB7159.namprd02.prod.outlook.com
- (2603:10b6:510:16::8)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBwJu-0000ma-2j
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:29:38 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vBwJs-0001It-0m
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:29:37 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 0179B21196;
+ Thu, 23 Oct 2025 14:29:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1761229768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qWQnq3rhcmuTeRWi+KJMH833c0BoceOzoH4HDgODqmQ=;
+ b=oCGi746gDqkogxPrU40AaTtmNTNLVrFVybA3AwCP28ZUXYY7nHtjX4r5BbHAh9s1e9Lm8P
+ O8W6V7IwrJQ5n2I25nZIMeT9r69Y7457mpOaCi4R6Ku6IoYQD5N7ZO0i7ZBt5sHxDOdpCv
+ 0wqWofJuaFWgG4jMHIkUguDHzAHQfTM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1761229768;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qWQnq3rhcmuTeRWi+KJMH833c0BoceOzoH4HDgODqmQ=;
+ b=0wKa07grvpLBcT3T8Ga2yiBVp3qS291DN6oyV9tUKJAdbHMOyA6KdjzvpL+4+1dGTFEq6b
+ b/1buD6B13Nd2dDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1761229764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qWQnq3rhcmuTeRWi+KJMH833c0BoceOzoH4HDgODqmQ=;
+ b=KrUkobWmS0SDQkl2+at54TW+W1tyg91AHxaZzgTeslrWgBRAHppt+eoOpiPNy0maSxJHAO
+ 8ZqnOlBLoDmyatIvHI5Sh2uMuySlAKEAQqb6NPJM5itRg4RQO2eR5T8IcbN8fc7RjkvcFV
+ 9dh/V8f1I4bTluN5MGgeFvPK3MVNwNc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1761229764;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qWQnq3rhcmuTeRWi+KJMH833c0BoceOzoH4HDgODqmQ=;
+ b=prc1Z2BQl7jXGnb9FrUzHZQXZf8CMjIXsRIdtMbJf6LhE/oe5epb/mj4ZDcNBKhVm+7EMu
+ lKHgUkP3rNriKUCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 77B70136CF;
+ Thu, 23 Oct 2025 14:29:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id Ux9fD8M7+mjFZAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 23 Oct 2025 14:29:23 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Bin Guo <guobin@linux.alibaba.com>
+Cc: peterx@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 03/24] migration: Normalize tls arguments
+In-Reply-To: <20251015023114.24876-1-guobin@linux.alibaba.com>
+References: <20250630195913.28033-4-farosas@suse.de>
+ <20251015023114.24876-1-guobin@linux.alibaba.com>
+Date: Thu, 23 Oct 2025 11:29:20 -0300
+Message-ID: <871pmtu1xb.fsf@suse.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|SN7PR02MB9331:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16c17582-ca3c-4941-a515-08de12409861
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|10070799003|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?gxEe9hiSsu5lilWxUMAsL/e1+oL+giwnyKHUjL9pYi/Rx63wtsLhSIa49+js?=
- =?us-ascii?Q?obDuHnh264FmjAk9yO9rrz0N7Vuk22f56JNpP4BFoSf6v1LQ4FIU2NvDrw1m?=
- =?us-ascii?Q?aebN7roIGoWnlKoJ+lh+9tUhfVl9y/yfltOXEFT64U2/f06y317jK6iw/HbG?=
- =?us-ascii?Q?mPZQuL0bxOc9a3wB+5TB5II2zH2NT/bpFHOO4j3osFDdX/PyaIZ2d6ThEETd?=
- =?us-ascii?Q?ZoLCt6ZonuWL5BmRT2sJYzvyXrxP+3iFn//iDGTlzXbIQNlqHowU5gLwKDf7?=
- =?us-ascii?Q?JigIKlCd3IYtkaP9dvq4nSLbo/ffjy1s1bRvZfyDrpV4cUrUSmucIRJM0vjU?=
- =?us-ascii?Q?Igi8XjDcxZeOMseP1gp38JJxKRpuueU7nfokz/eUDOSLcyn6DZCxQl8J8chZ?=
- =?us-ascii?Q?ssQ0NrDryQ9ohuOv3PXwqs5dAkiqPZsaOWZMefX6fCvWASIeWij8I0uY+aSu?=
- =?us-ascii?Q?fitEZyj9ZJ7x8B9cGPRd7HPJJludnewiXPhHlDre6mAnCywek5QKdku2lt/o?=
- =?us-ascii?Q?ocOlVW91MHBMpQKea/4ZR/EQA1BosWYkTFDeP7QdOGQLMPcJZu2YVw0U0Of1?=
- =?us-ascii?Q?r8lq/X1CYjGrUIhRWy//7N3Un5ApQCZUUA+cA8MICywAm5CuR8iGHLY89EJ6?=
- =?us-ascii?Q?n/DUtU2HP/H34RbIucsnXDbXpHk+IEWwL8HIMgGWFrMOlAlaML35PDRe220D?=
- =?us-ascii?Q?XP81Dq2IOwhiSZuFtLUTSTdPYoPYAJX9q68bNTxRL2J0UgIGVm3lYTzgeYot?=
- =?us-ascii?Q?FoQpjPh7T/NwSk4JcXGbG9Vp+ahAEgM1W6vA94+5S2ukxFJFjDmADVXumuyP?=
- =?us-ascii?Q?wtXuAIodEBpoZnmAIRrn9JrM+x1XuFsRgZ72b0onuKsjccgt/fglM0Ky+fzl?=
- =?us-ascii?Q?LebPYmPmFYLfVvNfbB5OSei1KdP0r1stxbmvskZF4OPjSg0/ldPbBaFuR1ta?=
- =?us-ascii?Q?asJWkcLxLQ+IiMDjNc7As40elEK3pllxXNnz3USDRvysiWf2NbdpN4Jf1Dl/?=
- =?us-ascii?Q?K2bNYMxpI5PpPIUP6WWi4yUK5TIJ9Cj77b72NezKGf9JDuQtqtc8nQnvJakU?=
- =?us-ascii?Q?S/XUTI4AE27768mSu/epzH3HTb7kWLVjXHu5K/61G1GA3emYo3wUpURD8VLs?=
- =?us-ascii?Q?Avms5sAspjFjSRuY86mQNKHSlzPrVO1cdQjLKhfgJzdiEE84GaH4nt2AKHSz?=
- =?us-ascii?Q?5mrkDqJ27CyXi0WxWrmie1ndG3UedOE7rvkJgVvqAcbOQBuBF+E7R/IAJ5i/?=
- =?us-ascii?Q?XHUCyzE51nRFII7rQ71Qv7WAewjAR8esxNSWW3b6ny4JqTYR+V3S6VGo9GDd?=
- =?us-ascii?Q?diewwPr68UH8RBqp8Wov1ZpRwjLOLphNFjtRw/Ct5j+dYz21Hbou1uS921tP?=
- =?us-ascii?Q?QL+u7jPkFh103Gltw3S28fJRSODoMVP9FZx0chqAlNvP+pHwV2g9wgN+DSAS?=
- =?us-ascii?Q?OmURwJtqEdMlVe5QwVDFW8t62rtyc95k?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR02MB7159.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(10070799003)(1800799024)(366016)(376014); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Kj9VzBWLRbsKfZ4qSut/W4+ao5OUVdOMls49vsi2nM2+8KYKxSGL/F+zohKC?=
- =?us-ascii?Q?w6xjQUkcbXGy31D0ExCjtDp113MUhRNwI/D/hLHcv1UjXs4fkrllAF7SRJde?=
- =?us-ascii?Q?S3UqjJ6taZXIAffaXPsOaWRkNZ60nrHmblAghRJ5uARCibAp6r35yqz3Vvae?=
- =?us-ascii?Q?QUEihT2IdGRThrJhzqlBXG3mZXHtma1zcyMEii+g7DKroV3pW3F2w91OaVmp?=
- =?us-ascii?Q?LI5Ea8Nb3WKCE4t3tEoinDv0E5PLScDzoAPeBbwgg55H8wj1fCRFgawQ/oCC?=
- =?us-ascii?Q?zpPOnNNYCssqRua1qerFM/Dia4GLJur8aZv3OuZPONq4M7NrilwQ1OBScWzi?=
- =?us-ascii?Q?sypU4SdzmzBox/14oKfZuv75R0HtJ3dd9mBXcGWQiezJzOBF/7d18n62LD3Y?=
- =?us-ascii?Q?Un6gWVjRRZozqXHRQTzKCpio1gdf8SkJJn09h8JPTbTCRnHgSAlPPcVc2azM?=
- =?us-ascii?Q?t80Bs0XizssJU0Uoqsr4Dr/yxDC6Dg4TPJZ5I2SraEicwkRC1ON0jdIVor94?=
- =?us-ascii?Q?imSpV/cTt2zmSAh8nyJoC509htlkKcxnd1uvZBSsHdHYOXtHSZ7gNfCLsbea?=
- =?us-ascii?Q?L2xzMS2OwSASEGpK8+3mMELHNjeZqnyEzFfUgiXmdzIpx0/pD0e1kY2qfSfi?=
- =?us-ascii?Q?D75zQvgwbnRXWTNIqu1c3u6TUVRTTKzkPggoipnOZFRYnEQm+MdAcbLoxEEx?=
- =?us-ascii?Q?uwaGUPAiTm0KznI+1hunDCrpOV22AS2fBCBOhtKtN918hE8H+Cilcf5b/A0J?=
- =?us-ascii?Q?nErZNAGQrsVWr2GxK20oycPXTfYXJAvR9Iv19PvgojcH42Y3zPyoQ3CMyY3g?=
- =?us-ascii?Q?JQ5jadUqPibDIx7syBGPNhPME2FaeeYrntDrI0X3xTYugKszlH5E2TYAJKhf?=
- =?us-ascii?Q?IMJbKB5bonCtPQUhgrm1eBbCOqSB5lzHuMh+jiTdJeOyqF3ziMXK/c5dYkes?=
- =?us-ascii?Q?a4Oz2LZsBnIVzDH5Q1xps0Ld5IjAca1QMzEzky7IecmvOUkdWmYOgUooSsGs?=
- =?us-ascii?Q?vrhXiUOaSi7dA/y7BAmKNXvZ0U3ecsBwmfbLRmGU9UBy+5vWIX9EtSCUgJ6k?=
- =?us-ascii?Q?paS+JGy5/jLphmcTuJxRIrh3kqhfg8BHImOopkTNn4VX0Zg1hL9U9xybEiFT?=
- =?us-ascii?Q?7gkIYIlkqmuFCNusHwJOSjGiEPlOzofW+r7VayEzLrgC9bC8DZSWn0HKLeQB?=
- =?us-ascii?Q?C3a108HgHK7O0T6ZZbe6ulARGcgQUqsVtRw5APIvyUFxWMuc/chZpw554nZA?=
- =?us-ascii?Q?6BR6HCMxRlF+sWnTfLmTj2iD/JwnG6BumzAi92IjlQkLyy7U/k1uJs0MK4JX?=
- =?us-ascii?Q?SP8hl3/+w08OO266GWfIw9oJHZ20Uc1WNDYKcSHxDPeDp2kAZCIDezwq3+PL?=
- =?us-ascii?Q?f7noOlxuel1OO7dmky1CqWIy2kqslhv5Nq8OgiwdjUxIpwWolT48AUGGEh1Y?=
- =?us-ascii?Q?uj+xQYOmGRwzeXVwjDkaauh4ItNJIaWEjvX/TQK1JVyHjlC1UoKlJWFk5Tkw?=
- =?us-ascii?Q?Dy8QfcwAoCR7arZYy2H1Q5DKilSXQrq+EbTuHmRHJ3lempGnGeBurB6KVwLg?=
- =?us-ascii?Q?VaSMNO2QRllHBk03luojUDAe2kGTGSYbfgJeso55ctdpfojcFZ/KWqwyJS8s?=
- =?us-ascii?Q?ERMLauwV0kd6xRcji/xc3yV+2NHEZTjQFdYpFLtxq2rAuiHAhao9xlZQaxCR?=
- =?us-ascii?Q?e2oW+A=3D=3D?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16c17582-ca3c-4941-a515-08de12409861
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR02MB7159.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2025 14:29:37.8741 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u+Vx3hpeyW7/H9/SBuJwicZF+knBYvaA0eHbbHsFCCcPxJ6HFYRFUeNOi3YgwwnvmJWl+PCVtD0DNyq3avJymP6AYVW0M6fCvzTSth7wMTE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR02MB9331
-X-Proofpoint-ORIG-GUID: EzsdGajSrDRYfnQGCvvIuFLUIcijWL7A
-X-Proofpoint-GUID: EzsdGajSrDRYfnQGCvvIuFLUIcijWL7A
-X-Authority-Analysis: v=2.4 cv=IoETsb/g c=1 sm=1 tr=0 ts=68fa3bd3 cx=c_pps
- a=qXr7QywujOwG71/BKD+DQg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=x6icFKpwvdMA:10 a=0kUYKlekyDsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=64Cc0HZtAAAA:8 a=MBvpz3Z36PH11TwarkUA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIzMDEzMiBTYWx0ZWRfX1qQFTGkmlsK+
- VKxSe/aUeOtHRHYozzcZltixKEcNS7Xl4Y9MGlUwOFW8eepwqcAxKbilWWLJ85I6HNJZycc39nn
- wcPfD8YJYTsSnvqldhBLtST2zWBNNQdyEkYw31Ax2VukPItgimzElAX7bpF3Dj6m2s0IbznVbeY
- CrkoEApHHQErLFZ4uZB16BB21hBAwRRzCeGTmXiV4VT5Pc0QF/YbPF15ITQLzOctmZkGa665RP8
- nfkD/i5SyFeR3RTYwdhRQaphelorxyBlgLP373QmIV13tDOh+6hOupFSl8b4S9aLRbWjeaGYed7
- KOZTnfzFt9pZEA+Sh31K+s1SGQisIA1qMbTHWmR/a1rGMod22dRVK+Jc3ua4ZFjhVQruegzwIs3
- IKjjIqhy6YhuHEw9JxOVN548GzYaTw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-23_01,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=mark.caveayland@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -196,41 +114,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new paragraph in the "Backwards compatibility" section documenting that
-using modern x86 CPU models with the isapc machine is deprecated, and will be
-rejected in a future release.
+Bin Guo <guobin@linux.alibaba.com> writes:
 
-Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
----
- docs/about/deprecated.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+> Fabiano Rosas wrote on Mon, 30 Jun 2025 16:58:52 -0300:
+>
+>> The migration parameters tls_creds, tls_authz and tls_hostname
+>> currently have a non-uniform handling. When used as arguments to
+>> migrate-set-parameters, their type is StrOrNull and when used as
+>> return value from query-migrate-parameters their type is a plain
+>> string.
+>> 
+>> Not only having to convert between the types is cumbersome, but it
+>> also creates the issue of requiring two different QAPI types to be
+>> used, one for each command. MigrateSetParameters is used for
+>> migrate-set-parameters with the TLS arguments as StrOrNull while
+>> MigrationParameters is used for query-migrate-parameters with the TLS
+>> arguments as str.
+>> 
+>> Since StrOrNull could be considered a superset of str, change the type
+>> of the TLS arguments in MigrationParameters to StrOrNull. Also ensure
+>> that QTYPE_QNULL is never used.
+>> 
+>> 1) migrate-set-parameters will always write QTYPE_QSTRING to
+>>   s->parameters, either an empty or non-empty string.
+>> 
+>> 2) query-migrate-parameters will always return a QTYPE_QSTRING, either
+>>   empty or non-empty.
+>> 
+>> 3) the migrate_tls_* helpers will always return a non-empty string or
+>>   NULL, for the internal migration code's consumption.
+>> 
+>> Points (1) and (2) above help simplify the parameters validation and
+>> the query command handling because s->parameters is already kept in
+>> the format that query-migrate-parameters (and info migrate_paramters)
+>> expect. Point (3) is so people don't need to care about StrOrNull in
+>> migration code.
+>> 
+>> This will allow the type duplication to be removed in the next
+>> patches.
+>> 
+>> Note that the type of @tls_creds, @tls-hostname, @tls-authz changes
+>> from str to StrOrNull in introspection of the query-migrate-parameters
+>> command. We accept this imprecision to enable de-duplication.
+>> 
+>> There's no need to free the TLS options in
+>> migration_instance_finalize() because they're freed by the qdev
+>> properties .release method.
+>> 
+>> Temporary in this patch:
+>> migrate_params_test_apply() copies s->parameters into a temporary
+>> structure, so it's necessary to drop the references to the TLS options
+>> if they were not set by the user to avoid double-free. This is fixed
+>> in the next patches.
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  migration/migration-hmp-cmds.c |   7 +-
+>>  migration/options.c            | 156 ++++++++++++++++++++-------------
+>>  migration/options.h            |   1 +
+>>  migration/tls.c                |   2 +-
+>>  qapi/migration.json            |   6 +-
+>>  5 files changed, 106 insertions(+), 66 deletions(-)
+>> 
+>> +void migrate_tls_opts_free(MigrationParameters *params)
+>> +{
+>> +    qapi_free_StrOrNull(params->tls_creds);
+>> +    qapi_free_StrOrNull(params->tls_hostname);
+>> +    qapi_free_StrOrNull(params->tls_authz);
+>> +}
+>> +
+>> +/* either non-empty or empty string */
+>> +static void tls_opt_to_str(StrOrNull **tls_opt)
+>> +{
+>> +    StrOrNull *opt = *tls_opt;
+>> +
+>> +    if (!opt) {
+>> +        return;
+>> +    }
+>> +
+>> +    switch (opt->type) {
+>> +    case QTYPE_QSTRING:
+>> +        return;
+>> +    case QTYPE_QNULL:
+>> +        qobject_unref(opt->u.n);
+>> +        break;
+>> +    default:
+>> +        g_assert_not_reached();
+>> +    }
+>> +
+>> +    opt->type = QTYPE_QSTRING;
+>> +    opt->u.s = g_strdup("");
+>> +    *tls_opt = opt;
+>> +}
+>> +
+>
+> Can these two functions be changed to be general, not just for tls?
+> IMHO: 
+> void migrate_strornull_opts_free(MigrationParameters *params)
+> boid strornull_to_str(StrOrNull **the_opt)
+>
+> In this way, when members of type StrOrNull are added later,
+> the function can be reused.
+>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index dacf2882e4..020610132f 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -544,6 +544,20 @@ available firmwares that are using the current (wrong) name.  The
- property is kept as is in 9.1, together with "riscv,delegation", to
- give more time for firmware developers to change their code.
- 
-+x86 "isapc" board use of modern x86 CPUs (since 10.2)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+The "isapc" board represents a historical x86 ISA PC and is intended for
-+older 32-bit x86 CPU models, defaulting to a 486 CPU model.  Previously it
-+was possible (but non-sensical) to specify a more modern x86 CPU, including
-+``-cpu host`` or ``-cpu max`` even if the features were incompatible with many
-+of the intended guest OSs.
-+
-+If the user requests a modern x86 CPU model (i.e. not one of ``486``,
-+``athlon``, ``kvm32``, ``pentium``, ``pentium2``, ``pentium3``or ``qemu32``)
-+a warning will be displayed until a future QEMU version when such CPUs will
-+be rejected.
-+
- Migration
- ---------
- 
--- 
-2.43.0
+Ah, that's a clever observation, but we should probably refrain from
+adding more StrOrNull options. The original intent behind the creation
+of this type was already to workaround issues with the TLS options. I'd
+rather leave it like this.
 
+> --
+> Bin Guo
 
