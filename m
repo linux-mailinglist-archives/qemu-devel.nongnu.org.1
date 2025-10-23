@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFE8C00E82
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 174A2C00D71
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBtkn-0001it-6S; Thu, 23 Oct 2025 07:45:13 -0400
+	id 1vBtkN-0001Gq-0L; Thu, 23 Oct 2025 07:44:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBtkP-0001IT-4S
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:50 -0400
+ id 1vBtkH-0001Fp-8P
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:41 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBtkM-0001an-Im
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:48 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N7kbFT015153;
- Thu, 23 Oct 2025 11:44:36 GMT
+ id 1vBtkF-0001Zu-9K
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:41 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N51OWN017546;
+ Thu, 23 Oct 2025 11:44:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=3evc8z
- gMd4yDoo0HZUV76MwS81vhCGcm/t7SODkPzw4=; b=fm1NWELtNtbwdn/uzHs4iy
- YAjgr6CPEAASOS0uzTpVNG/lmwfpCYrDZEJNJLyfPVxrfgqy+lfo5CelF0ZEOjUE
- uL/p5IrJgzB7pWj8lcX/vvhzSaefKMDw+8BkCRcReWpbAylEA4Ch5QtsTyiLub4M
- pfNmNdWlxZwxqtOndLAGpB9S/8HW6HNpX1rWEHMDwrSi9VLYoWBXeyxIT2Hgy2bf
- zdvsmIfI7pOPxM54cnDDfbnuYoHC7ULslmZABJUy+TclozE3ALFkXEiqtBM93Sn9
- q1WXbxAm3iHtxeezkbRLeH1HFGncbrpxpohfyIJSwkf+Np9BAMNmqLctYsq3GwRw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=jiEKWW
+ yOzFcKs9G5MbbG6wff0diB/5Hd2AkM87nJ2BM=; b=SvG5hA3uLBa+XlvGACstnz
+ 9KYwBG0YDVkWjEoJVlXITxt8qse2d5p976/V9uw7uZiHIx6yPSfsohatm/Tof5w4
+ q4zewpWQEbvvLKAseVNgCbWB4ESPPTifv2OLFkf2XLom5D04bxluEfYvXi1FM5wh
+ HX7p/mnp6n8fg/zAZj3SOt7q1S9/56SgKfykO7v7aRjVgk/8g2Nv8uWbn977uS2Y
+ Th2g5ggA1mLRLuMTNl6erQKbrkavYnmXl01XXxUliL4xgsoqJVHvx0nDpHV1k8eo
+ z8rWMSt0RcPIkpGhnf2m4dQd1ADlZrkSAyJEtTiblZyeFzvA14gnRgEHFVpg/LvQ
  ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s9w9u-1
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33fhx52-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 23 Oct 2025 11:44:36 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NAO12Q024677;
- Thu, 23 Oct 2025 11:44:35 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk5dru-1
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NBV7mn011053;
+ Thu, 23 Oct 2025 11:44:36 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx1d6ee-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 23 Oct 2025 11:44:35 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NBiX8U31916532
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NBiYKO54657504
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 11:44:33 GMT
+ Thu, 23 Oct 2025 11:44:34 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37A062004E;
+ by IMSVA (Postfix) with ESMTP id 4C00F20040;
+ Thu, 23 Oct 2025 11:44:34 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89B3C20049;
  Thu, 23 Oct 2025 11:44:33 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B65A20049;
- Thu, 23 Oct 2025 11:44:32 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.124.221.73]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 11:44:31 +0000 (GMT)
+ Thu, 23 Oct 2025 11:44:33 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/32] ppc/spapr: remove deprecated machine pseries-3.1
-Date: Thu, 23 Oct 2025 17:13:50 +0530
-Message-ID: <20251023114422.3675018-4-harshpb@linux.ibm.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 04/32] hw/ppc/spapr: Inline spapr_dtb_needed()
+Date: Thu, 23 Oct 2025 17:13:51 +0530
+Message-ID: <20251023114422.3675018-5-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251023114422.3675018-1-harshpb@linux.ibm.com>
 References: <20251023114422.3675018-1-harshpb@linux.ibm.com>
@@ -73,28 +71,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: NLp6IHAwkFYwz8Zo97dFLfqenw8b49r8
-X-Proofpoint-GUID: NLp6IHAwkFYwz8Zo97dFLfqenw8b49r8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX1MzE2k7Hxwpg
- z0WzcEu3QgQ8ACGPwVdh+xgRSTXD95r4LYQ3x5mdqprXofjQLseS1d090INCOQwh9sHamWy/lL6
- BsgPPBg9jK6Nv8WY4WL6x06YhbYN8u21b8no2Cl+/tKd9xk1yCJ/Ly6Omopw3lPVLiYwUUiQMMX
- YGg7Zcc2TT5OhAXPAdFtgCiu/KvKcBcY+nsQ25t7X6T8xxVKFV7/P8/9HBY9P2Sk5LKGIxlD9to
- FHARe/byep9+RnPxk8o9wPXVG05tS6PEQQH7KOsmTOi6v1Xg6+Y0AKNaqTa/Km8J2ALFarkFpfv
- wHxkRWg+tj8Q5sWQ4bi5SK6OZjv95NNcTNLcAyGcf7OLscmQEDl0KUHxigRZ01Su8cFBDxmnqnI
- rCy2z5PsYS/1Tcy2n2s1I0Ica5lMlg==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68fa1524 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68fa1524 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=aow-egSQAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=Yh3J_22oyFJWg4qsq-cA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=gFNbaldVC-z-bsjSTzMo:22
- a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8
+ a=aeNWSmdylBY4NdqMzywA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
+ a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-GUID: u_My64QL4rLTsKONoP0ehZBOzLTcbi1A
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX80YJ34IDw90E
+ aY9qYnr54NWAtXHVwlNnm+hcLwhC77P7Sb6Dlwl6DU8lUqWWmmto5HAN9L+eJ2wtv7U9Ewaa4Ep
+ /9ohbAwNmKxqpaJlxflqsOxvNMnsLp5hduY76GhfaBZi3tjxJs1Vt16PXje7f4ZQFWJq5+IsV7j
+ 9qIuyXDDOYDIqTNg9Mb0i5P/SBL4Bkdrr5eNn7sari7oNQtou/vVX+tKhYBnJWXliI7aZSVgvLS
+ o89ournytLOCAHKAk4gPXNR06oCLNNsQXKuRqb4Xaqq/pAXK9sbuJvogUvIAhlGQgQ7/t3qLYcH
+ dHUwCl8JWCRe127BgbQpUGpK7737KroohNkfWa7uANB4MmBDrBV4eueB0Krk4vwmRIOLJkaUm4J
+ nRMJmpTDCo9GjcwPqoJe44n6mwdS6w==
+X-Proofpoint-ORIG-GUID: u_My64QL4rLTsKONoP0ehZBOzLTcbi1A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
@@ -122,214 +120,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pseries-3.1 had been deprecated and due for removal now as per policy.
-Also remove backward compatibility flags and related code introduced for
-pre pseries-4.0 machines.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Suggested-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20251021084346.73671-4-philmd@linaro.org
+Link: https://lore.kernel.org/qemu-devel/20251021084346.73671-5-philmd@linaro.org
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- include/hw/ppc/spapr.h |  3 --
- hw/ppc/spapr.c         | 62 ++++--------------------------------------
- hw/ppc/spapr_hcall.c   |  5 ----
- 3 files changed, 5 insertions(+), 65 deletions(-)
+ hw/ppc/spapr.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 494367fb99..1db67784de 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -143,9 +143,6 @@ struct SpaprMachineClass {
-     MachineClass parent_class;
- 
-     /*< public >*/
--    bool dr_phb_enabled;       /* enable dynamic-reconfig/hotplug of PHBs */
--    bool update_dt_enabled;    /* enable KVMPPC_H_UPDATE_DT */
--    bool broken_host_serial_model; /* present real host info to the guest */
-     bool pre_4_1_migration; /* don't migrate hpt-max-page-size */
-     bool linux_pci_probe;
-     bool smp_threads_vsmt; /* set VSMT to smp_threads by default */
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 7be7fdaed8..efeea03741 100644
+index efeea03741..ab46e3bd60 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -1182,7 +1182,6 @@ void *spapr_build_fdt(SpaprMachineState *spapr, bool reset, size_t space)
- {
-     MachineState *machine = MACHINE(spapr);
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(machine);
-     uint32_t root_drc_type_mask = 0;
-     int ret;
-     void *fdt;
-@@ -1213,16 +1212,10 @@ void *spapr_build_fdt(SpaprMachineState *spapr, bool reset, size_t space)
-     /* Host Model & Serial Number */
-     if (spapr->host_model) {
-         _FDT(fdt_setprop_string(fdt, 0, "host-model", spapr->host_model));
--    } else if (smc->broken_host_serial_model && kvmppc_get_host_model(&buf)) {
--        _FDT(fdt_setprop_string(fdt, 0, "host-model", buf));
--        g_free(buf);
-     }
+@@ -2053,11 +2053,6 @@ static const VMStateDescription vmstate_spapr_irq_map = {
+     },
+ };
  
-     if (spapr->host_serial) {
-         _FDT(fdt_setprop_string(fdt, 0, "host-serial", spapr->host_serial));
--    } else if (smc->broken_host_serial_model && kvmppc_get_host_serial(&buf)) {
--        _FDT(fdt_setprop_string(fdt, 0, "host-serial", buf));
--        g_free(buf);
-     }
- 
-     _FDT(fdt_setprop_cell(fdt, 0, "#address-cells", 2));
-@@ -1260,9 +1253,8 @@ void *spapr_build_fdt(SpaprMachineState *spapr, bool reset, size_t space)
- 
-     /* ibm,drc-indexes and friends */
-     root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_LMB;
--    if (smc->dr_phb_enabled) {
--        root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_PHB;
--    }
-+    root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_PHB;
-+
-     if (mc->nvdimm_supported) {
-         root_drc_type_mask |= SPAPR_DR_CONNECTOR_TYPE_PMEM;
-     }
-@@ -2063,9 +2055,7 @@ static const VMStateDescription vmstate_spapr_irq_map = {
- 
- static bool spapr_dtb_needed(void *opaque)
- {
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(opaque);
--
--    return smc->update_dt_enabled;
-+    return true; /* backward migration compat */
- }
- 
- static int spapr_dtb_pre_load(void *opaque)
-@@ -3009,10 +2999,8 @@ static void spapr_machine_init(MachineState *machine)
-      * connectors for a PHBs PCI slots) are added as needed during their
-      * parent's realization.
-      */
--    if (smc->dr_phb_enabled) {
--        for (i = 0; i < SPAPR_MAX_PHBS; i++) {
--            spapr_dr_connector_new(OBJECT(machine), TYPE_SPAPR_DRC_PHB, i);
--        }
-+    for (i = 0; i < SPAPR_MAX_PHBS; i++) {
-+        spapr_dr_connector_new(OBJECT(machine), TYPE_SPAPR_DRC_PHB, i);
-     }
- 
-     /* Set up PCI */
-@@ -4095,11 +4083,6 @@ static bool spapr_phb_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     const unsigned windows_supported = spapr_phb_windows_supported(sphb);
-     SpaprDrc *drc;
- 
--    if (dev->hotplugged && !smc->dr_phb_enabled) {
--        error_setg(errp, "PHB hotplug not supported for this machine");
--        return false;
--    }
--
-     if (sphb->index == (uint32_t)-1) {
-         error_setg(errp, "\"index\" for PAPR PHB is mandatory");
-         return false;
-@@ -4125,16 +4108,10 @@ static bool spapr_phb_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
- 
- static void spapr_phb_plug(HotplugHandler *hotplug_dev, DeviceState *dev)
- {
--    SpaprMachineState *spapr = SPAPR_MACHINE(OBJECT(hotplug_dev));
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-     SpaprPhbState *sphb = SPAPR_PCI_HOST_BRIDGE(dev);
-     SpaprDrc *drc;
-     bool hotplugged = spapr_drc_hotplugged(dev);
- 
--    if (!smc->dr_phb_enabled) {
--        return;
--    }
--
-     drc = spapr_drc_by_id(TYPE_SPAPR_DRC_PHB, sphb->index);
-     /* hotplug hooks should check it's enabled before getting this far */
-     assert(drc);
-@@ -4260,7 +4237,6 @@ static void spapr_machine_device_unplug_request(HotplugHandler *hotplug_dev,
- {
-     SpaprMachineState *sms = SPAPR_MACHINE(OBJECT(hotplug_dev));
-     MachineClass *mc = MACHINE_GET_CLASS(sms);
--    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
- 
-     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         if (spapr_memory_hot_unplug_supported(sms)) {
-@@ -4275,10 +4251,6 @@ static void spapr_machine_device_unplug_request(HotplugHandler *hotplug_dev,
-         }
-         spapr_core_unplug_request(hotplug_dev, dev, errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_SPAPR_PCI_HOST_BRIDGE)) {
--        if (!smc->dr_phb_enabled) {
--            error_setg(errp, "PHB hot unplug not supported on this machine");
--            return;
--        }
-         spapr_phb_unplug_request(hotplug_dev, dev, errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_SPAPR_TPM_PROXY)) {
-         spapr_tpm_proxy_unplug(hotplug_dev, dev);
-@@ -4634,7 +4606,6 @@ static void spapr_machine_class_init(ObjectClass *oc, const void *data)
-     hc->unplug_request = spapr_machine_device_unplug_request;
-     hc->unplug = spapr_machine_device_unplug;
- 
--    smc->update_dt_enabled = true;
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     mc->has_hotpluggable_cpus = true;
-     mc->nvdimm_supported = true;
-@@ -4688,7 +4659,6 @@ static void spapr_machine_class_init(ObjectClass *oc, const void *data)
-     smc->default_caps.caps[SPAPR_CAP_AIL_MODE_3] = SPAPR_CAP_ON;
-     spapr_caps_add_properties(smc);
-     smc->irq = &spapr_irq_dual;
--    smc->dr_phb_enabled = true;
-     smc->linux_pci_probe = true;
-     smc->smp_threads_vsmt = true;
-     xfc->match_nvt = spapr_match_nvt;
-@@ -5032,28 +5002,6 @@ static void spapr_machine_4_0_class_options(MachineClass *mc)
- 
- DEFINE_SPAPR_MACHINE(4, 0);
- 
--/*
-- * pseries-3.1
-- */
--static void spapr_machine_3_1_class_options(MachineClass *mc)
+-static bool spapr_dtb_needed(void *opaque)
 -{
--    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
--
--    spapr_machine_4_0_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_3_1, hw_compat_3_1_len);
--
--    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power8_v2.0");
--    smc->update_dt_enabled = false;
--    smc->dr_phb_enabled = false;
--    smc->broken_host_serial_model = true;
--    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_BROKEN;
--    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_BROKEN;
--    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_BROKEN;
--    smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_OFF;
+-    return true; /* backward migration compat */
 -}
 -
--DEFINE_SPAPR_MACHINE(3, 1);
--
- static void spapr_machine_register_types(void)
+ static int spapr_dtb_pre_load(void *opaque)
  {
-     type_register_static(&spapr_machine_info);
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index 8c1e0a4817..8f03b3e776 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -1475,16 +1475,11 @@ static target_ulong h_update_dt(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     target_ulong dt = ppc64_phys_to_real(args[0]);
-     struct fdt_header hdr = { 0 };
-     unsigned cb;
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-     void *fdt;
- 
-     cpu_physical_memory_read(dt, &hdr, sizeof(hdr));
-     cb = fdt32_to_cpu(hdr.totalsize);
- 
--    if (!smc->update_dt_enabled) {
--        return H_SUCCESS;
--    }
--
-     /* Check that the fdt did not grow out of proportion */
-     if (cb > spapr->fdt_initial_size * 2) {
-         trace_spapr_update_dt_failed_size(spapr->fdt_initial_size, cb,
+     SpaprMachineState *spapr = (SpaprMachineState *)opaque;
+@@ -2073,7 +2068,6 @@ static const VMStateDescription vmstate_spapr_dtb = {
+     .name = "spapr_dtb",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = spapr_dtb_needed,
+     .pre_load = spapr_dtb_pre_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
 -- 
 2.43.5
 
