@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA42BFF20E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B20BFF234
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:37:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBn3j-0003hG-5W; Thu, 23 Oct 2025 00:36:19 -0400
+	id 1vBn42-0003nE-DR; Thu, 23 Oct 2025 00:36:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBn3e-0003g9-GP
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:36:14 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1vBn3i-0003hU-JG
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:36:18 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBn3c-0001WF-Iq
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:36:14 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-273a0aeed57so20596225ad.1
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:36:11 -0700 (PDT)
+ id 1vBn3g-0001XJ-On
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:36:18 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-33bbeec2ed7so351808a91.1
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761194170; x=1761798970; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1761194173; x=1761798973; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UxB6FODqYUMK6h1Cfe/8gzhtSOYVOup1m3VIbIjv3uI=;
- b=J3SWClr106Xh8+k7wo8YKp/J25/5BRuQXcsl30aFVIcS2Xg/JvEbacI4oJXqoL3wlQ
- IaHUi0+vDo2rWVLNfFoK1LwFSWJcy7pUCHqubFptJJK9G1ZxucP5dX4nIgDhZuxHrGR7
- ohQu+3yAD/63/xaH9g7FxkVIRTMVPFluGdzIvJnHgPqs5PS796fCrLdMiJznZu39YO6d
- RuEfAGUvhZQcKt+szNq3EnUM174lQeUvviJ0EMvccMTbX0KLEqsX/MzICrSKRNNALovg
- el3Hy8T1KRm5KHrHM32G4F6snKe0ASLz0w4b8qu2titdH+MLvh9tXsdmNgguv63jPUh+
- +ybQ==
+ bh=BEQEOMtu60rG98D2pD2eQ/ov/DkPTh4vzA3I2V26s10=;
+ b=CzOssTMdHd7S9MY+In439hxb8iQrBoGCUwbaX78Mra55JE/Ez0T3J24DFYcohCo1im
+ 7yFTVWgexHB1mFmVWM1QJ8b+gk4Y0v5B7Mjsw9J2oF5UdRuXn+QFCrzB+x6FsGZArINH
+ /CgdoiSa0YGgp+IIc9XDlwonGjOil5yWlXi/oO5RV/om0Q5p7BIX/Sh01tIrriYDqK2u
+ GGINPzRG8FZiHV/h1od4E5rRg/R1cIBW6kauwZOIljrsxZCyrD1LdIhIeIJDjq5nBkDZ
+ KXWknLM+OVDAr9DNORhTLhWRtiE7UhdEe4e6KyfpAxt7NCFwn2C29EUHFxHRC/mSedc7
+ yJMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761194170; x=1761798970;
+ d=1e100.net; s=20230601; t=1761194173; x=1761798973;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UxB6FODqYUMK6h1Cfe/8gzhtSOYVOup1m3VIbIjv3uI=;
- b=GMAx/HHF9a6q4y9zVzsZthbZy4hPhu5XjL2tXvO48tEaZEpCRzA+QJLIccEhUfU2RY
- rj4lM7T8uSY0T/aDqijMTe56btbOlhfJYqFJBIt13A8Bmi3lFZHrzbropbBRuvBg8sp9
- Qe866kKq7KhhiFlj18kGsnm5w+YoqawJ0DqxzgjsKU7Z/RqxInBPx5i0U9TCRTUN5PgS
- PG3brwU6bgVNgYdaMajjQ0Hcr9TqiySBQ2/Ib1K8R+0WTHa7JLELMMOGyWV1L8CpLcR4
- /FTxMSud4t/ztw9beDiWix8gOR4U0qE2RSFkJfrc0rt5xoF5LWHE9V+CYjiL2riXcvO7
- pj1w==
-X-Gm-Message-State: AOJu0YwK4gsxTLgWKiqd2q4usqsonWinOvDMHtG/9IKfe213+1LyNAaa
- wSLBXiUqVYWuq7IXZgVCzXMRz7vvnu17Jfc8s7RlqAlxawY7qv3v1Tn/PJZ6EA==
-X-Gm-Gg: ASbGncsU8NDRtNO0Ss8PHefYYMO5w2VLLEgM4Obu4D5h0LLkj+QbKXSvpNeKZFAg8k7
- EOxB0kqKuEhAwhrfMDxxp8qAx69fqWpUQMaPbI9v9TtAH98GWPVA7+fjsOF8IO2bSZd4OcZ4foI
- kS8VQi+TD1DcstaeTASWygIiifeRGdsIgAwepaJGxeysNJLcCxrakrGgymJ5CdlQQg5Swmnlu/M
- nYpneWjzFNiIxGSIjkEGur9JGfZm3/c3ZT/6KkEhNa9mNby1F0VnsAv6JqqmMiGAEriMghDt76U
- UBLdSXUJTd+9Y2SbiC+m/seXizKLaiivJhaRu/sz6oYElgIhyk3prdI2uZYd2YoF0C4xZBaPl0r
- p0x7d/os6CV1ZXCm9oIU3VqXN11Qga7ORh4O/sYYqgOf4RQf9dXsmg7eC8H0P78mHGfJ85zyq1n
- pzcRYqEIyLdh1y+az8COXlrOpjEFcS4iQpH/r18t49r8C7eTluJd4su/xRTjQsz3F1IIVpLlb+e
- RYP2eo3
-X-Google-Smtp-Source: AGHT+IEM5mXc+MlNatc11qNshciMEouuiKtrGbqzsWMfhrk9NTzIf+H4S7/KPJSzVHywp8254OkFIA==
-X-Received: by 2002:a17:903:41cf:b0:267:99be:628e with SMTP id
- d9443c01a7336-2935dff658dmr47255525ad.2.1761194169925; 
- Wed, 22 Oct 2025 21:36:09 -0700 (PDT)
+ bh=BEQEOMtu60rG98D2pD2eQ/ov/DkPTh4vzA3I2V26s10=;
+ b=rgJa6S0I51OaEzdCqW4gporYd2XnmQpL37jnGWWh7Jt2HGckbnjosjon9/OI9NqLkh
+ EbfdG6CGYQy+P1R/gRP5HFoWI1kxgNLTSolhK+zF1qkCgL7O9p2PvWS+7ee1sxluyI95
+ J9kkD0mrrJJHf+xFBaQkhWtuHO58s4JuUP6L65M9cKEQd4mT8W0vGH2mV/y7LlGORMjk
+ snWhQbDlkQKzaCXRsnipc3zMbr8OhRkgVYR9POrxwnRV+h1YSj/U4I100OdgNsZlZlNK
+ PAuDhyEFNNYThOI0C40zTAzJba1hNM00wtBYS30KsKxeCGnBOzbeQfsv9B+/Oo8ioHLy
+ R2ig==
+X-Gm-Message-State: AOJu0YwcRL4vydUqXMhKoppG4yblLgj6CLRrI/ywFgN/sEYuqNJpIZtb
+ mCSQUwHxeSX7ehLnG7E7syvB7KfYu4Rh64zpED1GLg4A7S+BUN5+peTOJrnyqA==
+X-Gm-Gg: ASbGnctD3fMDOwNrgO0eM3z7h+HFU0BLP5qw5S3UhDnKF+3AhBUtHnQs0GEhkYj/b/O
+ gwWSaiFWC8y+i7V6RHtAud9j3P+HeZnnzXKrtoFJcvOnMbfCMreMVmFDlHQuVZDPmdGKlKcNIqe
+ wNu83CS8I5KVKPH4PP3JcJbZojJ5F1qSNf8p5qj9h5yHNFaSv8K0+GjPC70EuiJC+hxofLF6VVQ
+ PzTBmdwuItpbrGDlnovg8KbAaN3gOGIDA104uPEEWIPhVl+VjsaAA0JGcrpbY6BG/ytLBa5Vnib
+ BEap2hS0sPeBK8FyJ1dsdqX+PezwkImunWYzItCb7AmSFJ9r+LWkpyTxUW0Lm6FItlWTL9/TzTs
+ Hkgvxvk3oQJRESlN3pfKlozV3c8cI90IUbarjh34yXnwVcZQEwjm0qfB/7vwon29YGX46VtI0aI
+ +KPEMO/i6eXh1sKOH2/9ACR2llPBnjylA2d7aVtgBbT4t0C1mFVSIgDKhJJp6SJrVxOnZnahckx
+ 0cw6N6X/LRVM2igIsA=
+X-Google-Smtp-Source: AGHT+IGNR8DeDWaQP5mrH1hmvswQkYMRyMzcxep7ezaCZeIzz2HTVAPqNbJ1qsswx7n1TCkBK7c93w==
+X-Received: by 2002:a17:903:166e:b0:290:ac36:2ecc with SMTP id
+ d9443c01a7336-2946de83f2dmr15782855ad.18.1761194173454; 
+ Wed, 22 Oct 2025 21:36:13 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946dfc113csm8643015ad.68.2025.10.22.21.36.06
+ d9443c01a7336-2946dfc113csm8643015ad.68.2025.10.22.21.36.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 21:36:09 -0700 (PDT)
+ Wed, 22 Oct 2025 21:36:12 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-stable@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 32/37] target/riscv/kvm: fix env->priv setting in
- reset_regs_csr()
-Date: Thu, 23 Oct 2025 14:35:15 +1000
-Message-ID: <20251023043520.1777130-11-alistair.francis@wdc.com>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 33/37] target/riscv/riscv-qmp-cmds.c: coverity-related fixes
+Date: Thu, 23 Oct 2025 14:35:16 +1000
+Message-ID: <20251023043520.1777130-12-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023043520.1777130-1-alistair.francis@wdc.com>
 References: <20251023043520.1777130-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -89,7 +89,7 @@ X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,48 +107,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This patch was originally made by Gitlab user Bo Gan (@ganboing) 4
-months ago in the context of issue [1]. I asked the author to send a
-patch to the mailing list ~3 months ago and got no reply. I'm sending
-the patch myself because we already missed 10.1 without this fix.
+Coverity CID 1641401 reports that, in reg_is_ulong_integer(), we're
+dereferencing a NULL pointer in "reg1" when using it in strcasecmp()
+call. A similar case is reported with CID 1641393.
 
-I'll also just post verbatim Bo Gan comment in the commit msg:
+In theory that will never happen - it's guaranteed that both "reg1" and
+"reg2" is non-NULL because we're retrieving them in compile-time from
+static arrays. Coverity doesn't know that though.
 
-"In RISCV Linux with KVM enabled, gdbstub is broken. The
-get_physical_address isn't able to page-walk correctly and resolve the
-physical page. This is due to that the vcpu is being treated as starting
-in M mode even if KVM enabled. However, with KVM, the vcpu is actually
-started in S mode. The mmu_idx will give 3 (M), instead of 1 (S),
-resulting in Guest PA == VA (wrong)!"
+To make Coverity happier and add a bit more clarity in the code,
+g_assert() each token to make it clear that those 2 values aren't
+supposed to be NULL ever. Do that in both reg_is_ulong_integer() and
+reg_is_u64_fpu().
 
-Set env->priv to PRV_S in kvm_riscv_reset_regs_csr() since the VCPU is
-always started in S-mode for KVM.
+We're also taking the opportunity to implement suggestions made by Peter
+in [1] in both functions:
 
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2991
+- use g_strsplit() instead of strtok();
+- use g_ascii_strcasecmp() instead of strcasecmp().
 
-Cc: qemu-stable@nongnu.org
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2991
-Originally-by: Bo Gan (@ganboing in Gitlab)
+[1] https://lore.kernel.org/qemu-devel/CAFEAcA_y4bwd9GANbXnpTy2mv80Vg_jp+A-VkQS5V6f0+BFRAA@mail.gmail.com/
+
+Coverity: CID 1641393, 1641401
+Fixes: e06d209aa6 ("target/riscv: implement MonitorDef HMP API")
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251022111105.483992-1-dbarboza@ventanamicro.com>
+Message-ID: <20251022125643.588947-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/riscv-qmp-cmds.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 0dd0d59d41..000e44b2b7 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -705,6 +705,7 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
-     env->satp = 0;
-     env->scounteren = 0;
-     env->senvcfg = 0;
-+    env->priv = PRV_S;
- }
+diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
+index c499f9b9a7..d5e9bec0f8 100644
+--- a/target/riscv/riscv-qmp-cmds.c
++++ b/target/riscv/riscv-qmp-cmds.c
+@@ -273,12 +273,13 @@ static bool reg_is_ulong_integer(CPURISCVState *env, const char *name,
+     }
  
- static int kvm_riscv_get_regs_fp(CPUState *cs)
+     for (int i = 0; i < 32; i++) {
+-        g_autofree char *reg_name = g_strdup(reg_names[i]);
+-        char *reg1 = strtok(reg_name, "/");
+-        char *reg2 = strtok(NULL, "/");
++        g_auto(GStrv) reg_name = g_strsplit(reg_names[i], "/", 2);
+ 
+-        if (strcasecmp(reg1, name) == 0 ||
+-            (reg2 && strcasecmp(reg2, name) == 0)) {
++        g_assert(reg_name[0]);
++        g_assert(reg_name[1]);
++
++        if (g_ascii_strcasecmp(reg_name[0], name) == 0 ||
++            g_ascii_strcasecmp(reg_name[1], name) == 0) {
+             *val = vals[i];
+             return true;
+         }
+@@ -294,12 +295,13 @@ static bool reg_is_u64_fpu(CPURISCVState *env, const char *name, uint64_t *val)
+     }
+ 
+     for (int i = 0; i < 32; i++) {
+-        g_autofree char *reg_name = g_strdup(riscv_fpr_regnames[i]);
+-        char *reg1 = strtok(reg_name, "/");
+-        char *reg2 = strtok(NULL, "/");
++        g_auto(GStrv) reg_name = g_strsplit(riscv_fpr_regnames[i], "/", 2);
++
++        g_assert(reg_name[0]);
++        g_assert(reg_name[1]);
+ 
+-        if (strcasecmp(reg1, name) == 0 ||
+-            (reg2 && strcasecmp(reg2, name) == 0)) {
++        if (g_ascii_strcasecmp(reg_name[0], name) == 0 ||
++            g_ascii_strcasecmp(reg_name[1], name) == 0) {
+             *val = env->fpr[i];
+             return true;
+         }
 -- 
 2.51.0
 
