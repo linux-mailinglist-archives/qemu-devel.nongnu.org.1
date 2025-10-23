@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D2AC037C4
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 23:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34588C03900
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 23:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC2V5-0007hK-QM; Thu, 23 Oct 2025 17:05:35 -0400
+	id 1vC2xD-0008Bj-Lo; Thu, 23 Oct 2025 17:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vC2V3-0007gv-N2
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 17:05:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1vC2V0-000477-2j
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 17:05:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761253528;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UgNldyxdOuhhU2ac40xxI3sx0IHf6Bd+ucs3wGWK14g=;
- b=eRxjrweDJEBnyxEUrUQL57zbyDUDjy6X5OJiI884aItfUaOH1wug822wrU3DMWNDbj7KOJ
- mn9O3AaAdLgUA/GPQtRU8M9FxE5x0m8LOmhW4IzrodkaD/OghNU+Xs5y3fhDTfDvB6muNt
- niYdScjyusyx1ut2cWEFGQyp72j3STs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-lum7IXSBO0Kq2WQbacyFGQ-1; Thu,
- 23 Oct 2025 17:05:19 -0400
-X-MC-Unique: lum7IXSBO0Kq2WQbacyFGQ-1
-X-Mimecast-MFC-AGG-ID: lum7IXSBO0Kq2WQbacyFGQ_1761253516
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B526B1954224; Thu, 23 Oct 2025 21:05:16 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.155])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 22C9C30002DB; Thu, 23 Oct 2025 21:05:12 +0000 (UTC)
-Date: Thu, 23 Oct 2025 16:05:10 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Leonid Bloch <lb.workbox@gmail.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <ehabkost@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 3/4] hw/acpi: Introduce the QEMU AC adapter
-Message-ID: <ysrf4llll3b36ay23ftyylvqqkhhgamtx4ftgnpfmwf2akxv4q@chxuswy5zybr>
-References: <20250827220054.37268-1-lb.workbox@gmail.com>
- <20250827220054.37268-4-lb.workbox@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1vC2xB-0008BK-07
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 17:34:37 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1vC2x9-0003Ff-8m
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 17:34:36 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-63c523864caso3002921a12.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 14:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1761255272; x=1761860072; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QOmC2tiM/IvAmDg7gFMFf/gerrctVExmtEqvUk6yOgA=;
+ b=RfnktX/YqNIUe120G4MXYnqXnob0VnL6MFlBAWREJgoQfifoOsN1cYm6AjYztDdh1X
+ yt3tC1O1T+CVUHErqYXgdObjdI9/UrnpDrUoGZZR/IZiay/5uBI9QOcdPTbJMzkRn2A1
+ GEKYPBjoi5B9gsIffEMEKUZcBTBgEpMQYJxtMx1rvQPgynmkYAZoy+H4UJXwHR6VSXEE
+ xdpqu/WJrBXTMAQ/3SYIfG/pHMWaCBxSuV4lsJOfx3VYOODdIHvJACLsQsOhwXEPk04y
+ uZAE5Ne+nhiCRSz2MbzT3oMBs/HA5rCwPoc79UDh/boCa04vuA3dtVxGkPQDj7j/8M/y
+ pBPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761255272; x=1761860072;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QOmC2tiM/IvAmDg7gFMFf/gerrctVExmtEqvUk6yOgA=;
+ b=JPe07PCiBfKTUgUdoeu9e1QdFqVTCDuOYya0qaDCycyC1lE90Ol2uEJvyDJy2Atryq
+ tUZsB6dG5jczZegHoyt/tG9u2jgnXPSNaYzUqBHmA4SscVix2+Ma8pg3dnVpaijnM5C1
+ iY/cATSAHTS0hrx6KHo86XgtrBWaLXsH4n0rDq/ctgGDXcnsUoOnpEJhnEwIdp8ERx9F
+ G10DXRiXJwmICV/nd8DDJLSju26daYuF4A6MFcy+NFI1t/98oVpOqnFN5O+K9TqHba/l
+ K+pBL8FMKy6sdsjrKG4Hz3GQE+DW8j14N0/QpdnKST5nMsHdZJAON/kGGyY/GhLhWaMN
+ VS7A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUCreu/nzDUw7HAvkMSqndaOZ5RsOsVG3IyNijypMtkDpJ76pY0CM9mLInozKgvtJXYYbgEMHu+eij2@nongnu.org
+X-Gm-Message-State: AOJu0Ywk2q9RvaW2PYUOxGJDXDsKB7bOnuYf5IybwnGhNUi9RWeDarpT
+ RtKs/nuj+5c2Y890C8zPxltvNu0jUlxGgaCEbSt1Krei1fo3QzkuqxqrhAEtmXjGOwtiA+iG30M
+ ySLHWDfevXoettdB0+s1c7B7pxsg+GK8=
+X-Gm-Gg: ASbGncvyzTb8YT69k9qg70kVtlgGNIfkrJ3xYuRvMfW3kn9O1iI7RBH0rS00/hexySH
+ 9uqXL3BSboxzxB5sxnhFb8Gnfsa4vQSkOXaGrYWg8wGyFCUFSh10dOSU5Tn6GApAq8zyMVOWobz
+ iuuSqRmbyAftQMd55xUOEfZqLKJjKwCUwVCkVSaoAGw2wx0acjVmQprFyEFZJcR2VKsBIPyhzes
+ FyvjMrVc+m3aZIndPAWGAGxmL4Jh5DuWUR7Ardlw1d8Qgd75bDYT4b0EMBlBy3PS9LSGg==
+X-Google-Smtp-Source: AGHT+IH2Ib6su9qEvlAV83TykLYhPh/mUEKs7gJm4McAIsaj1VAB4Dz2qkijn6nx6PxOP9hjIkeVgHXYTiMEkk5gE+A=
+X-Received: by 2002:a05:6402:35d4:b0:634:bdb3:e63f with SMTP id
+ 4fb4d7f45d1cf-63e600d16b7mr137146a12.20.1761255272137; Thu, 23 Oct 2025
+ 14:34:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827220054.37268-4-lb.workbox@gmail.com>
-User-Agent: NeoMutt/20250905
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <d98deec4-c95a-434c-9ef4-d7a0fd41a42b@linaro.org>
+In-Reply-To: <d98deec4-c95a-434c-9ef4-d7a0fd41a42b@linaro.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 23 Oct 2025 17:34:20 -0400
+X-Gm-Features: AWmQ_bmBA7fizfp6BdSpTu1xNJIlaW2Czi5bAzYh9OKQviRUpNXUgnCEc5AQ1hg
+Message-ID: <CAJSP0QU9M1QEXjKBjHtq2NgHu0FUTC4rXMxB657BsdxGvcs1ew@mail.gmail.com>
+Subject: Re: AWS CI Oddities
+To: Camilla Conte <cconte@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000dac9ce0641da32cc"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,58 +94,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 28, 2025 at 01:00:49AM +0300, Leonid Bloch wrote:
-> The AC adapter device communicates AC power state to the guest via ACPI.
-> It supports two modes of operation:
-> 
-> 1. QMP control mode (default): AC adapter state is controlled
->    programmatically via QMP commands, ensuring deterministic behavior.
-> 
-> 2. Host mirroring mode (optional): The device reflects the host's AC
->    adapter state from sysfs. Probing occurs on guest ACPI requests and
->    at timed intervals. State changes trigger ACPI notifications.
-> 
-> Properties:
-> - 'use-qmp': Enable QMP control mode (default: true)
-> - 'enable-sysfs': Enable host AC adapter mirroring (default: false)
-> - 'probe_interval': Probe interval in ms for sysfs mode (default: 2000)
-> - 'sysfs_path': Override default sysfs path /sys/class/power_supply/
+--000000000000dac9ce0641da32cc
+Content-Type: text/plain; charset="UTF-8"
 
-Any reason half the properties use - and the other use _ between words?
+On Thu, Oct 23, 2025, 15:03 Richard Henderson <richard.henderson@linaro.org>
+wrote:
 
-> +++ b/qapi/acpi.json
-> @@ -215,3 +215,52 @@
->  ##
->  { 'command': 'query-battery',
->    'returns': 'BatteryInfo' }
-> +
-> +##
-> +# @ac-adapter-set-state:
-> +#
-> +# Set the state of the emulated AC adapter device
-> +#
-> +# @connected: whether the AC adapter is connected
-> +#
-> +
-> +#
+> https://gitlab.com/qemu-project/qemu/-/jobs/11827686852#L1010
+>
+> ERROR: Job failed (system failure): pod
+> "gitlab-runner/runner-o82plkzob-project-11167699-concurrent-9-ther90lx" is
+> disrupted:
+> reason "EvictionByEvictionAPI", message "Eviction API: evicting"
+>
+>
+> So.. if I'm guessing correctly, the job is doing fine, 28 minutes in to a
+> 1 hour timeout,
+> when it gets kicked off the machine?
+>
+> This has happened a few times the the last week or two.  Is there any way
+> to fix this?
+>
 
-Another odd blank line.
+Hi Camilla,
+Any ideas?
 
-> +# Since: 10.2
-> +#
-> +# .. qmp-example::
-> +#
-> +#     -> { "execute": "ac-adapter-set-state",
-> +#          "arguments": { "connected": true } }
-> +#     <- { "return": {} }
-> +##
-> +{ 'command': 'ac-adapter-set-state',
-> +  'data': { 'connected': 'bool' } }
-> +
+Stan
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+>
 
+--000000000000dac9ce0641da32cc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div class=3D"gmail_quote gmail_quote_container"><di=
+v dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 23, 2025, 15:03 Richard Hend=
+erson &lt;<a href=3D"mailto:richard.henderson@linaro.org">richard.henderson=
+@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><a href=3D"https://gitlab.com/qemu-project/qemu/-/jobs/118276868=
+52#L1010" rel=3D"noreferrer noreferrer" target=3D"_blank">https://gitlab.co=
+m/qemu-project/qemu/-/jobs/11827686852#L1010</a><br>
+<br>
+ERROR: Job failed (system failure): pod <br>
+&quot;gitlab-runner/runner-o82plkzob-project-11167699-concurrent-9-ther90lx=
+&quot; is disrupted: <br>
+reason &quot;EvictionByEvictionAPI&quot;, message &quot;Eviction API: evict=
+ing&quot;<br>
+<br>
+<br>
+So.. if I&#39;m guessing correctly, the job is doing fine, 28 minutes in to=
+ a 1 hour timeout, <br>
+when it gets kicked off the machine?<br>
+<br>
+This has happened a few times the the last week or two.=C2=A0 Is there any =
+way to fix this?<br></blockquote></div></div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">Hi Camilla,</div><div dir=3D"auto">Any ideas?=C2=A0</div><d=
+iv dir=3D"auto"><br></div><div dir=3D"auto">Stan</div><div dir=3D"auto"><di=
+v class=3D"gmail_quote gmail_quote_container"><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
+4);padding-left:1ex">
+</blockquote></div></div></div>
+
+--000000000000dac9ce0641da32cc--
 
