@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6C9C01F1A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3885C01ED8
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:57:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwjc-0004ms-Cs; Thu, 23 Oct 2025 10:56:12 -0400
+	id 1vBwje-0004o0-Gz; Thu, 23 Oct 2025 10:56:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBwja-0004mY-EK
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:10 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1vBwjb-0004mv-MF
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:12 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBwjY-0005ZW-IB
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:10 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-426fc536b5dso692391f8f.3
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:56:08 -0700 (PDT)
+ id 1vBwjZ-0005Zn-Qx
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:11 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-471b80b994bso13024365e9.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:56:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761231367; x=1761836167; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761231368; x=1761836168; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Mpia8VtBhyjUZ96P3AibBv3IBX5aDSXvG00OnWmgK9A=;
- b=N1yiv6lXKESXMI2yIuRZjc95sy0bVkOegnRLkG0sJ5zYjpzPOTfO8xN/+PmJUe0Rlg
- mYSpA9qU/s0EELYJgyIOKi/51kfshsBq5GN/mvnlu8tSPARAK/+UN+MFKql8OF66co1V
- owAVB9c6W/B5Axl+IcO7jGxipagTTM5LFFSUKwo9cBsAEeKuS/5WSBSmU6Dnk52MsNxA
- eGbg6Gjy6xy4eb4qV5bSRDI5q8ZlGE8XQCCP/avNZHSVB91kzdexwtmzLTlgUj4W0lmW
- eFrR7Ij49YCPnWwap0fy4j/WOJhmmgs3JzDxCQ49NuImofSVIqMO054VgAwNfJJQ/M87
- dtnA==
+ :reply-to; bh=ar66TTmPzOwjx9/IPkHZAqhVMFm+dkSo+frnjYQI6Ts=;
+ b=SqkzF6PkCVUOUe5g4LT6+fMMTN+h350TMB22iy7IUPxsNQvpB2uTFKxDjucTkZblMP
+ OR3tnRLvfTmNvXJKL/qViFoRTm28c4WddV/czWYXhL1BDOt5diMhwG0t1Y7cvEM4YbnD
+ fuYeNKKI+fkZsJ91UUeHx7amEvEr/xnxAArtLg0pRTLBVsQbg8fsMG5OtYcEOaTwIkA3
+ 8sBOGneKh7m00CfHk/HeJ6IShV5EXKyLzCsr1YvY3Pge1r3BurzSkqAqrVtc8TtBAR7O
+ Th98SyqDgOf6gAZugP1YN3hk6PF/YEWJqIP1oNN1QLMlYbJoTdxyWd1MroSOfD/C0IL9
+ 3j8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761231367; x=1761836167;
+ d=1e100.net; s=20230601; t=1761231368; x=1761836168;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Mpia8VtBhyjUZ96P3AibBv3IBX5aDSXvG00OnWmgK9A=;
- b=CQaBNHdxWPB+k4lt6U+d2w8cuarfCi0r6tbTohsUlYKx2lELO4mh3aV26uZBypPyQ1
- FX7V1k0GwGlsPdB8vxQ0WXlCEDqzO7uvWWURS43bM1sX+JqB2yZJOVRKsiLkVIUHv161
- VvXUN8lYbtUTDE0T243qrCkhsAUoDR/xM/dc1kTpPCJxBDE8jVPBtwtgK4DAjzvTAo0z
- C4H8YyuGitkEj0M204pEl01uCdidfQFZn7O0ITM0LXK2BRb+Dpbf9bVfCENIoerkj29g
- QfnUdHOyZHLafGi7no1VpAH0sPNje1L9kRkssoh9QFU+NsmNKcDswaxV6U7xSN8T8ymb
- rdrA==
-X-Gm-Message-State: AOJu0YwV3Pj5j/073e50cnlUUkheAYb6ZtxXPyuOc5Mf8UYxFmU56mhs
- Piepq7dzGE4qFeNBz3G7aTJo6kpQ0A/jvEtF9aScbWWd1TX5ZC0vqAt+wLUrmT1bw5M9YiQUGoj
- vfq92
-X-Gm-Gg: ASbGnctR+lEdWYCr7nv1gLacAfp0Yd0I/Gbycp40GRWJ54wH5BJhYq1vACzvENYrvqN
- 9XgaXhqw0YUjMlnNOcOMMuHLY0vifwh5yRHpIph+4wRe5J4aqirOs6KgIOA4jZRQgMmwdyfyTdC
- aNjniQ1XjtQ4T2VO4DAqS+xiBV3sZDqPkE6SsoRWT9g9QM82AKM0jmmO8QOfv70MfyPS2s5ynR3
- 9kP7GM9lKhSRoBrBvwO3wcPZW8wajEuoH4YUhakMjuW9sWFq5me6XAzyt+xxwoiZofj88PtiQcQ
- Yb9SgZJ9u+Z8GETc73EQRoBxx40vYZzqDe0SrSHsM9IsZRXo7Oq+rFRK+xvhpFGZ+4foAPs6Pbz
- T18TMSF8eJGLO7Ojl4s1ormTUBxpCtrd19Klmtsdf12pYtuUzSH/uCWdr7R1UD9MVEuu/7O53ZR
- 5VXVJEmQpTd4gjtuxE
-X-Google-Smtp-Source: AGHT+IFsTzjfRBanOU7LaokSXhMprnVaaedq4sxulK9yqSk7iton/NC/FjykliuiYbHi784oVC2s/g==
-X-Received: by 2002:a05:6000:26d1:b0:3ec:db0a:464c with SMTP id
- ffacd0b85a97d-42704dc94a0mr18735827f8f.44.1761231366879; 
- Thu, 23 Oct 2025 07:56:06 -0700 (PDT)
+ bh=ar66TTmPzOwjx9/IPkHZAqhVMFm+dkSo+frnjYQI6Ts=;
+ b=bK7T96gFQeEVPb4OLD6rQf2JSBcEqrrH5tHbcW8eYhPWh0N4U8yoFtz9xJBIEDUG7K
+ qbm/fs0jDvq4pZl5nHZe0jBYWFHOgprzuMRfpi7nHnUe2mnJvPhYSWW3TAgtHew0/hiQ
+ f6ipO9pi5/n12iTDYYHZEkTuqCSeMdhBgH+bMH6uhXSHoGG9cHfp3X25OP5ibfYfCmOX
+ 2O9KpwrYEZdwlq+zj3ZTmI4EDc17E0orgCZ0LXy73r/FpXOhUI3oWf4W7DnQzxBIrFCQ
+ bu06YakW+n9Mt8zN4wZ/eJyL9BJBCkDZszCgAjXWfkmYBeXdP8xw1SIEQpwHsecqI3kz
+ Auew==
+X-Gm-Message-State: AOJu0YxgQPn9++I9lCxyUyRZCk1KYEkJ1jdGCwPEwC8rT4CdJMLvHGYp
+ NaFA8r4m3/WYCf0B+dOM8+o2LBxonrjdsjGvmmYfXwmMkoeza6UKjiPXf4JshGly/fof++0qq3q
+ 0CGaU
+X-Gm-Gg: ASbGncvuEslyoaqov+Q0YHhZefUREZkHBxFjjqbTu/isOTMAFoJLnJQN0+eS+GnctVx
+ GNLgs82m40B2zdqmHZnDKV+pV569l6LX4WEWWqBj23V1D0CsykDcqODkKkmUNKYtY0SkFnkTkTR
+ /EaQEGG1gOL6vNauI1Kk/jvyRsz02kfMgMu5LBxjPEcnYWZtPMACLx0W9m/MYogxz0rVVdbtgjq
+ 0E8TuI4T0+hX4X6Tv3Li3xM4mhdeipo1FfUQU4niXb/sUUB8N9MPAlH57Y9eRbSi3kk32jEKK+j
+ f+vucoMUJ4SuNHNXToCjsiU5EC16S4Cixta52Teyb3FHYnI2ArPo1CHNwAWEVGlv9rnB01pN51c
+ UQ7PkN8oo4OcN+Ss+dCKmBCsvVcrTVm6550C9exsO5y5X5ZtiK7lz86W5PViZOftigOnAwe8YTL
+ FE3RyKPQuk9bY8iuf3
+X-Google-Smtp-Source: AGHT+IFAC7Z93O8G8w+8wTuj+wQ/M1qOZr9n+fPLrXCAU0AU3sk9aJ/E114yInhoDPrevgAcDObaDg==
+X-Received: by 2002:a05:600c:8b66:b0:46e:428a:b4c7 with SMTP id
+ 5b1f17b1804b1-471179120ccmr170785645e9.23.1761231367862; 
+ Thu, 23 Oct 2025 07:56:07 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429898acc63sm4398465f8f.27.2025.10.23.07.56.05
+ ffacd0b85a97d-429898acc63sm4398465f8f.27.2025.10.23.07.56.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 07:56:06 -0700 (PDT)
+ Thu, 23 Oct 2025 07:56:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/16] target/arm: Fix reads of CNTFRQ_EL0 in linux-user mode
-Date: Thu, 23 Oct 2025 15:55:48 +0100
-Message-ID: <20251023145554.2062752-11-peter.maydell@linaro.org>
+Subject: [PULL 11/16] hw/intc/arm_gicv3_kvm: Avoid reading ICC_CTLR_EL1 from
+ kernel in cpuif reset
+Date: Thu, 23 Oct 2025 15:55:49 +0100
+Message-ID: <20251023145554.2062752-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251023145554.2062752-1-peter.maydell@linaro.org>
 References: <20251023145554.2062752-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,47 +99,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit bd8e9ddf6f6 ("target/arm: Refactor default generic timer
-frequency handling") we changed how we initialized the generic timer
-frequency as reported in the CNTFRQ_EL0 register.  As part of that,
-we chanegd the linux-user version of the CNTFRQ_EL0 sysreg from
-having a constant value set at compile time through the .resetvalue
-field to having a reset value which we compute in a .resetfn.
+Currently in arm_gicv3_icc_reset() we read the kernel's value of
+ICC_CTLR_EL1 as part of resetting the CPU interface.  This mostly
+works, but we're actually breaking an assumption the kernel makes
+that userspace only accesses the in-kernel GIC data when the VM is
+totally paused, which may not be the case if a single vCPU is being
+reset.  The effect is that it's possible that the read attempt
+returns EBUSY.
 
-This accidentally broke the reading of CNTFRQ_EL0 in linux-user mode,
-because the cpreg is marked as ARM_CP_CONST, which means we translate
-it as a read of the compile-time constant value in the .resetvalue
-field.  This is now zero, so userspace sees a 0 frequency value.
+Avoid this by reading the kernel's value of the reset ICC_CTLR_EL1
+once in device realize. This brings ICC_CTLR_EL1 into line with
+the other cpuif registers, where we assume we know what the kernel
+is resetting them to and just update QEMU's data structures in
+arm_gicv3_icc_reset().
 
-Fix the bug by dropping the ARM_CP_CONST marking.  This will cause us
-to translate the read as a load of the value from the CPU state
-struct cp15.c14_cntfrq field, which is where the real frequency value
-now lives.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3159
-Fixes: bd8e9ddf6f6 ("target/arm: Refactor default generic timer frequency handling")
+Reviewed-by: Salil Mehta <salil.mehta@huawei.com>
+Tested-by: Salil Mehta <salil.mehta@huawei.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251013161040.216819-1-peter.maydell@linaro.org
+Message-id: 20251014102439.319915-1-peter.maydell@linaro.org
 ---
- target/arm/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/intc/arm_gicv3_common.h |  3 ++
+ hw/intc/arm_gicv3_kvm.c            | 49 +++++++++++++++++++++---------
+ 2 files changed, 38 insertions(+), 14 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8c0b8889dbf..2ef9c178147 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2309,7 +2309,7 @@ static uint64_t gt_virt_cnt_read(CPUARMState *env, const ARMCPRegInfo *ri)
- static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
-     { .name = "CNTFRQ_EL0", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 0,
--      .type = ARM_CP_CONST, .access = PL0_R /* no PL1_RW in linux-user */,
-+      .access = PL0_R /* no PL1_RW in linux-user */,
-       .fieldoffset = offsetof(CPUARMState, cp15.c14_cntfrq),
-       .resetfn = arm_gt_cntfrq_reset,
-     },
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index 38aa1961c50..61d51915e07 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -166,6 +166,9 @@ struct GICv3CPUState {
+     uint64_t icc_igrpen[3];
+     uint64_t icc_ctlr_el3;
+ 
++    /* For KVM, cached copy of the kernel reset value of ICC_CTLR_EL1 */
++    uint64_t kvm_reset_icc_ctlr_el1;
++
+     /* Virtualization control interface */
+     uint64_t ich_apr[3][4]; /* ich_apr[GICV3_G1][x] never used */
+     uint64_t ich_hcr_el2;
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 405496c7bb3..66b0dddfd4b 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -658,11 +658,24 @@ static void kvm_arm_gicv3_get(GICv3State *s)
+ 
+ static void arm_gicv3_icc_reset(CPUARMState *env, const ARMCPRegInfo *ri)
+ {
+-    GICv3State *s;
+-    GICv3CPUState *c;
++    GICv3CPUState *c = (GICv3CPUState *)env->gicv3state;
+ 
+-    c = (GICv3CPUState *)env->gicv3state;
+-    s = c->gic;
++    /*
++     * This function is called when each vcpu resets. The kernel
++     * API for the GIC assumes that it is only to be used when the
++     * whole VM is paused, so if we attempt to read the kernel's
++     * reset values here we might get EBUSY failures.
++     * So instead we assume we know what the kernel's reset values
++     * are (mostly zeroes) and only update the QEMU state struct
++     * fields. The exception is that we do need to know the kernel's
++     * idea of the ICC_CTLR_EL1 reset value, so we cache that at
++     * device realize time.
++     *
++     * This makes these sysregs different from the usual CPU ones,
++     * which can be validly read and written when only the single
++     * vcpu they apply to is paused, and where (in target/arm code)
++     * we read the reset values out of the kernel on every reset.
++     */
+ 
+     c->icc_pmr_el1 = 0;
+     /*
+@@ -683,16 +696,8 @@ static void arm_gicv3_icc_reset(CPUARMState *env, const ARMCPRegInfo *ri)
+     memset(c->icc_apr, 0, sizeof(c->icc_apr));
+     memset(c->icc_igrpen, 0, sizeof(c->icc_igrpen));
+ 
+-    if (s->migration_blocker) {
+-        return;
+-    }
+-
+-    /* Initialize to actual HW supported configuration */
+-    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
+-                      KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer),
+-                      &c->icc_ctlr_el1[GICV3_NS], false, &error_abort);
+-
+-    c->icc_ctlr_el1[GICV3_S] = c->icc_ctlr_el1[GICV3_NS];
++    c->icc_ctlr_el1[GICV3_NS] = c->kvm_reset_icc_ctlr_el1;
++    c->icc_ctlr_el1[GICV3_S] = c->kvm_reset_icc_ctlr_el1;
+ }
+ 
+ static void kvm_arm_gicv3_reset_hold(Object *obj, ResetType type)
+@@ -926,6 +931,22 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+                                     kvm_arm_gicv3_notifier,
+                                     MIG_MODE_CPR_TRANSFER);
+     }
++
++    /*
++     * Now we can read the kernel's initial value of ICC_CTLR_EL1, which
++     * we will need if a CPU interface is reset. If the kernel is ancient
++     * and doesn't support writing the GIC state then we don't need to
++     * care what reset does to QEMU's data structures.
++     */
++    if (!s->migration_blocker) {
++        for (i = 0; i < s->num_cpu; i++) {
++            GICv3CPUState *c = &s->cpu[i];
++
++            kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
++                              KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer),
++                              &c->kvm_reset_icc_ctlr_el1, false, &error_abort);
++        }
++    }
+ }
+ 
+ static void kvm_arm_gicv3_class_init(ObjectClass *klass, const void *data)
 -- 
 2.43.0
 
