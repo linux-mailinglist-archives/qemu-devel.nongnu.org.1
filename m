@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9A4C01325
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE5DC01382
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:53:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuee-00020C-0g; Thu, 23 Oct 2025 08:42:56 -0400
+	id 1vBun1-00038l-Cp; Thu, 23 Oct 2025 08:51:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBueX-0001ml-R0
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:42:50 -0400
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vBumy-00037t-Bq
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:51:32 -0400
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vBueU-0001am-R3
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:42:49 -0400
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-4e2d2d764a3so6385081cf.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:42:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vBumv-0003AR-J1
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:51:31 -0400
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-781421f5be6so8543537b3.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761223361; x=1761828161; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rofAI/4qWf5zCtx5Cnfa2mUjU5mb96zHd5mznPItKGo=;
- b=cT1RzsKj8JDXmWrHwZ+HtZuULpqOnMFcMH3Vjz8RqJ9JVOUkjmMpDOBA5jZirkfT2D
- C0XyRrTIViwLBtQiOjZV5sjaU/LVSmlvTmr0/kHzjp+x8hJ1HA7RdA+JpNPo2RT/3PUx
- mv10EYhJyD8SRy6iIqWgoIgUp69gWxbpEvrJAisBE+0cuoiF+z5++ZIoI6m1SynmJl19
- ghMV5qJihyMu+q32XaIJYX6ZQm895LDTQCe5FKiC5BtmVdP9AGoRS0AjyJ9DVvw1beSu
- UPpFXBkVNTniBiMs7svC0kcTSfKZNqXszS++mCzxRha+V+vV+TeWX4A68XwVgJYvb23X
- YLPQ==
+ d=linaro.org; s=google; t=1761223886; x=1761828686; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=+5PqL5ZxUUsmEc2PAC+LfM+bZGlSeMgP+auKmNkesXo=;
+ b=DUFCWp45E1AVgN99FvsRUWUD4uJCySqZV/rPQqetBUhHDUCXmpgwisuKgAabUJ7KCZ
+ GWnRXJAEzHuerGbuzvo53mq6wARLtIeGNL95VCP+XE5wdEhoahsa7gJ2YUg0vltp2Zw9
+ HDu06TTHlSZqHwZ3SXQ7fDs/Yoi86YTeFGU7sLjJb6Tkye6wEY94p1sr0VYBNPEJ4AJc
+ vIXmRM5Qt7h/v5YBttmIMMMitej/sKMnxB0zlR5oVNcKWBnh/Mip/UZ7Pjw7f2sA56E5
+ dJBdNa25TQHTx34xPxqOhR1sBpwUi656ihO8zlHgDlazcD0V2krSBk0lwhDBrVukhpoe
+ bdUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761223361; x=1761828161;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rofAI/4qWf5zCtx5Cnfa2mUjU5mb96zHd5mznPItKGo=;
- b=DyBZxJd1oWYnix5LptF/DM9VxJHlVLEC83ZwUqKMx/mqr0v1hpG46iE/7mGEPWRBFW
- XMEasd1DqQycGkFn+c9n5eshnycbeqRH7U+kYpHZ26dZ/dc+dIdGhRlsXiL/qMHG8g5w
- Pi1dVgMhXUFa/WDx8aFF6gHYz75EsSzcsU3xuClccuazw4XIYaZ5Ie53Er3CgJWPTQCQ
- afZ9DbDT6yw/W+/Si8fsesEvWc9EoOOveaz2Lip+bxk9EO5qFgi1MW66lc2Pj0ceax1Z
- Cly4iYwA34akmxPZoiEwIThD8Gn6W0x8T0URFNMIDUdRQEZw6O8lDyNWdY7SvP1uecBd
- 1UFg==
-X-Gm-Message-State: AOJu0Yw9HDmiaxWw/Qhu2qkmUyODB2Wl9yBxITBWQiPv4xWbPG5sudc0
- /2uG8Rm5eMMiIcMWPLd+83KjMABEN9pyHYRV1GXhFC2IVjH4UR6BrLGy9HEs4A/Hp2HpIRed4MX
- CJHgby+flYAordBMVj4d4rEi9OkLrcLI=
-X-Gm-Gg: ASbGnctVrhXsaIlDSvGjOd7+cHGzZCGCoLi6CFe4S8AH8Y9iYheSKPHIafFNBdXoKWg
- X9NHezVBKjfqj8OwiRiZCy0J3hpVqPEEkmTRzJ2dRKyfEBVQDksTpuf61HI29iUcyKWuDR2DAX9
- 87GpXaR3o0a4mM4zO1iqSGX0GtXKwyA5tqvQyUNp5/vZ5LeGlv8q089S0Z1Eo2B/BIB9S7j4PF6
- Yw2yVlblvKzGmaR4OTnarghm+YnOAV5COYuLvmfUv4XOe/uDX/6EgKPIpfxXHDOBlrIMOFU8kN4
- 8rWgThfFjiGAnrlXnROaa0cEiArqeOShJJZeiw==
-X-Google-Smtp-Source: AGHT+IFGHsXepv1T1F851b5vyo6zfi7aBdM4llwPG2/J9+RJg2iacAWCYyeF5nh69wLx7zG6rJXqXdTR1qlbANihI44=
-X-Received: by 2002:a05:622a:1813:b0:4b7:95da:b3c7 with SMTP id
- d75a77b69052e-4eb8153dba4mr25501651cf.48.1761223361297; Thu, 23 Oct 2025
- 05:42:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761223886; x=1761828686;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+5PqL5ZxUUsmEc2PAC+LfM+bZGlSeMgP+auKmNkesXo=;
+ b=sFVU3FNNm6KRyuTyX6L3jCIx0nlfx5eZG5hhFYjj7/6G4QiKU6iA2pwFUw2/p5zF5e
+ zz5rpUqsp5OAIybWd1i9wU9jjw/uwxxzxe/uHmDLQtzUjrbFAO/W4Y4GdvPNiqXsjQmg
+ UCS77fRBx6NO7naE4acUTeHTx2TDzKkADhDM6qZG8oilg3UWoOLdP1qjiiDIPQTmf0T8
+ wrsE4wb1aBX8asb7cBbbgoSNcQ7Ilfz4GsvO0d3DHX0+oQusDofbgkRy5Y5qRUJUK+VT
+ TCAi6l9fcnNW9xcIgAaRialfFyDND9VtMB7bcsIm/gbJctC8DqivT7OkFSxtPmhCi0S4
+ 2w2Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXk4dGPII6IrvJDGyXoJZ6iRcOkpUE9PU5fOVfYz+6hKy0Gllgb9umXeikFWfQhURSSZ/OGnTf4RM8u@nongnu.org
+X-Gm-Message-State: AOJu0Yx8mHBPIwaX+BuYEmu2mZeLN76ndoTL+xe+UdesNsHl77Q9oE8m
+ HlVoJzGyOmryf9ycKaKH7mwKp2ff1C1zu2DIIglZrcdcb4YO3NhbAu7cNsLVAy1oCpgkDP+NwpD
+ 9BjE0C/ri/CDBM0kvRBhaT3Yuvd+TmDUk2LbPktM+0Q==
+X-Gm-Gg: ASbGncvBirxDZNnyl0Kz/sZg2lt7rNF8+w3PaOkhc8ywR80tIXyf2w5N75gkJmJmz6I
+ kIPGzs/+rJlf/FnZ8ilThsrtTbUucy3mQ1istKwhTb32+vVGzb6u50Py/u8sva6j41gGyBySqMO
+ 35GRAwvGlgz7+ctajhAeg1bYbDO6z64mRPySQTS4f4qTZtEsV3aL8TlLO2G70d1ecsDRuBfWW7S
+ PvjxtV7LWPTj2lSF7SNXMEZfRPFqRcnXZTf6dWlECHgQ7to+nNo8s8aUx7QHc9JybzWqOr2
+X-Google-Smtp-Source: AGHT+IHSLRsQ4vEaol9uukXm+lusfl02KWmZxCyEr67FYX85YmpQnPDN29Kvvc9oOQLd1Ho4rDVCg1f/AV53gbkNEHk=
+X-Received: by 2002:a05:690e:1511:b0:633:a883:3d1b with SMTP id
+ 956f58d0204a3-63e160e98a9mr18500658d50.6.1761223886060; Thu, 23 Oct 2025
+ 05:51:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <56a2ea44-7633-4858-8b04-def663322af0@nutanix.com>
-In-Reply-To: <56a2ea44-7633-4858-8b04-def663322af0@nutanix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 23 Oct 2025 16:42:29 +0400
-X-Gm-Features: AS18NWAhXgb3RUU5P83lzrmYAM8urOFhyT1GX041H970e-FPiUUzV8ON7DWdZY0
-Message-ID: <CAJ+F1CLLdJiCrn6o+gGSMUN4mc4d2AohveT=2gSM5FtwZL=-TQ@mail.gmail.com>
-Subject: Re: The impact of vdagent migration support patches on windows SPICE
- agent
-To: Lucas Kornicki <lucas.kornicki@nutanix.com>
-Cc: qemu-devel@nongnu.org
+References: <20251017153027.969016-1-peter.maydell@linaro.org>
+ <20251017153027.969016-4-peter.maydell@linaro.org>
+In-Reply-To: <20251017153027.969016-4-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 23 Oct 2025 13:51:13 +0100
+X-Gm-Features: AS18NWC33KCwJiaDFRUpINc-4aLCNb-T3Np3MyG1ihe1OjHu4K0U9pisn9bjtjk
+Message-ID: <CAFEAcA8BobzAHpgQ3p=UVN3p0Hm1_P_xr8AN=sJ0GQtFP98FEA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] tests/tcg/aarch64: Add test case for SME2 gdbstub
+ registers
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, 
+ Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,64 +95,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Thu, Oct 23, 2025 at 3:29=E2=80=AFPM Lucas Kornicki
-<lucas.kornicki@nutanix.com> wrote:
+On Fri, 17 Oct 2025 at 16:30, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> Hello,
+> Test the SME2 register exposure over gdbstub, in the same way
+> we already do for SME.
 >
-> I've found that using -chardev qemu-vdagent with a windows 11 guest
-> and win32/vd_agent
-> (https://gitlab.freedesktop.org/spice/win32/vd_agent), results in
-> non-functioning copy paste.
->
-> Further investigation reveals that messages such as clipboard-grab are
-> being sent from qemu, but they do not reach the guest agent because the
-> VirtIOSerialPort has been closed from the host side
-> (host_connected=3Dfalse). This is likely a result of the CHR_EVENT_CLOSED
-> event call done by vdagent_clipboard_reset_serial, which appears to be a
-> deliberate measure to force a guest reconnect (?).
->
-> This has only become a problem with the introduction of commit
-> f626116f9897b95f68e5514a08098d590349c22e (factor out clipboard peer
-> registration), as it has changed the execution flow by moving the notify
-> =3D=3D NULL, check inside the peer registration function
->
-> -    if (have_clipboard(vd) && vd->cbpeer.notifier.notify =3D=3D NULL) {
-> +    if (have_clipboard(vd)) {
->           qemu_clipboard_reset_serial();
-> -
-> -        vd->cbpeer.name =3D "vdagent";
-> -        vd->cbpeer.notifier.notify =3D vdagent_clipboard_notify;
-> -        vd->cbpeer.request =3D vdagent_clipboard_request;
-> -        qemu_clipboard_peer_register(&vd->cbpeer);
-> +        vdagent_clipboard_peer_register(vd);
->       }
->
-> This change has created a new execution path that makes it possible for
-> vdagent to "self invoke" the vdagent_clipboard_reset_serial if it
-> receives caps from guest twice, which wasn't possible previously due to
-> the notify =3D=3D NULL check. It just so happens that win32/vd_agent does=
-n't
-> handle the disconnect too well, while also enacting this exact scenario
-> by first sending a CAPS request of it's own, and then replying to the
-> CAPS request of qemu, leading to device closure.
->
-> Was it the original intention of commit
-> f626116f9897b95f68e5514a08098d590349c22e to enable such behavior?
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-That regression is unintentional.
+> +def run_test():
+> +    """Test reads and writes of the SME2 registers"""
+> +    frame = gdb.selected_frame()
+> +    rname = "zt0"
+> +    zt0 = frame.read_register(rname)
+> +    report(True, "Reading %s" % rname)
+> +
+> +    # Writing to the ZT0 register, byte by byte.
+> +    for i in range(0, 64):
+> +        cmd = "set $zt0[%d] = 0x01" % (i)
+> +            gdb.execute(cmd)
+> +            report(True, "%s" % cmd)
 
-Is it enough to change:
--    if (have_clipboard(vd)) {
-+    if (have_clipboard(vd) && vd->cbpeer.notifier.notify =3D=3D NULL) {
+These two lines are wrongly indented, and Python will error
+out with "unexpected indent". I fixed this up in my local
+tree but clearly forgot to commit the change to git before
+sending. I'll fix this up in applying them to target-arm.next.
 
-to revert the behaviour? Are you working on a fix?
-
-thanks a lot for the report!
-
-
---=20
-Marc-Andr=C3=A9 Lureau
+-- PMM
 
