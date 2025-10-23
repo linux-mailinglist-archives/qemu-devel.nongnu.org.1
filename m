@@ -2,118 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3251BFF176
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF1BFF215
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:36:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBmiz-0000XU-Ng; Thu, 23 Oct 2025 00:14:53 -0400
+	id 1vBn32-0003b2-Bf; Thu, 23 Oct 2025 00:35:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vBmix-0000XE-RO
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:14:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1vBmiv-00074l-GE
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:14:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761192887;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1AQhcu0ef2vYWog2vQWDJYDcfHvPz4PP9U5M+NKzdXI=;
- b=MKtzPIB1PttCVyMimlyTyek9RHQMJtcjasN8cp4hJLGyKNoxjNMDa4r+ID3KBQtRCD27Hv
- HX3N2bLzSvXfuw9dA97Fz+khYyCv00fufHSW4OvRtvZ3YcGd4jnnp35wRAzd8Cl8icMX3C
- VljOseE91yv++vrqzCMPc1pm/phDjXY=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-07b0uTHFNeieb4o4tqhTiw-1; Thu, 23 Oct 2025 00:14:45 -0400
-X-MC-Unique: 07b0uTHFNeieb4o4tqhTiw-1
-X-Mimecast-MFC-AGG-ID: 07b0uTHFNeieb4o4tqhTiw_1761192885
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-b5a013bc46dso275422a12.1
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:14:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vBn30-0003ao-7L
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:35:34 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1vBn2x-0001Le-Eo
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:35:33 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-27ee41e074dso3610755ad.1
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:35:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1761194129; x=1761798929; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yKNfPhQybkr+kdghjTk1+NTs/BYrMKh7K92oxFd3u+0=;
+ b=TOyjEzJndd7LHYR6n4h/b5qUBBnAwk8T/iso21j50lNFFk3Ktowi1TE8o+YJNhM0mw
+ ZIbl8+zcbGZLSfh2akPU3ItDNFOl5sU4CPGsVLtUyBt2axYwfk9ELNiCjKSk8xlQdvWQ
+ xUHdStwBPD4wyDNkZsbHDyTTI6sKA4QBPfvOMNi4rDkjiC7ekvbfbtvzUL8AKRxjqpDQ
+ +ZXOaTthgsHeHMFKED2OxyhFXes7ZPZdrJIL8d8gToOtwtk3oDk+O6j+V0mhaO1avHna
+ dnHyeZkcoHeeyI7HoF+9U16EDeAP8Fh6LuQy94kriLa1qtRoxbP/wpEnRSwWIjFsYOjc
+ QeKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761192885; x=1761797685;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1AQhcu0ef2vYWog2vQWDJYDcfHvPz4PP9U5M+NKzdXI=;
- b=fc2L6PZz0eCAYu6GiPOiwaK+Bvi5wCdQYpmO6kwCR3RhBIRYbjo0LR2P1D4XqKlBeI
- LePlmzHZlLOEDfphAvW61RtRt2X56brW9Lyjis5o7zolXlDWln3GgI6qMvd8/aYtxgKc
- WyclRG7Fz5iprRCkQiPbdjWU8NY/M0xu6jBixUqiu7KRyYtlVGrbgiwpq983w/Zy+OLJ
- YzA17vS+Xq5UtOtDesLOyUe4sKVeaTxzVf4a5AvHZnd3UU5fCtO8FbkfXKSvZuELFQK5
- OpUUl+u1JvTeBzidwpF/L1WN5QptTmgInNR0HFtxByhfGqNJTxNaWz0E6pbg/AoqppMZ
- LL2w==
-X-Gm-Message-State: AOJu0YwKYtOBx4fghniQpHtC9LCw0JEdLJ/gVsip8AKVBkaqwV1rGpyk
- x9dRjMgv3bXY2VEJLg/uM4+XTsKcMG/uJoy1iIgyJqJBL/sFPqkNRuHEspZJQ4cO+2PAukVauhf
- mqkX4LYje1Ku9aFBsD+38sZtTIOz5SXoE+Cku5pS+SqwG3MvYsfy0/WRp
-X-Gm-Gg: ASbGnct7IHpttcx7Ui4Rc9P+0OQFxYRh8RKAKTR6FyPz8dHRQUMPVclbyiBzSE1S2w7
- BdwpRDGtgvhNbAeN/qhkASewms7jDFgRDn5Xy50zgf1DAtZ4ZAOF2ScW11DXSg/eby0dT9bas01
- sAGCRvw4YnavelShtcQCjL4lJlWi7/zE5NNsJhBa64fo7sDF94AFiEiZGHhxpCOuOTk4dDRroKg
- Nb0vIiK44FdAZyVdjeBvFx+nGVKhmHnbeggrtGNTen3P4jAVZ0xziz1h5CJBdv8fVCGu1Fiqvmo
- sKTpKRPfOtGR977vyxiVEd4fmJpGKDIQUw3XSpiXaVK+5eMEtpCdsz0iNCf9P7qitVcYl0ktjpw
- 76UQxeVOXytMDX56H5Wx++S8UfpJE/HSU9WGmHt4=
-X-Received: by 2002:a17:902:f548:b0:276:76e1:2e84 with SMTP id
- d9443c01a7336-290c9c8941dmr289040755ad.3.1761192884713; 
- Wed, 22 Oct 2025 21:14:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSHb0xcJz/0pnPdAbzl+219vr6lFdN3kuvZqVMtqnNWelLGg/Ux5uQcBG8nT/Eo4UfcvJ6/g==
-X-Received: by 2002:a17:902:f548:b0:276:76e1:2e84 with SMTP id
- d9443c01a7336-290c9c8941dmr289040325ad.3.1761192884277; 
- Wed, 22 Oct 2025 21:14:44 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au.
- [175.34.62.5]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946de0fdc1sm8343475ad.48.2025.10.22.21.14.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Oct 2025 21:14:43 -0700 (PDT)
-Message-ID: <5a13811b-628f-4e47-86b9-fad1ab7df244@redhat.com>
-Date: Thu, 23 Oct 2025 14:14:27 +1000
+ d=1e100.net; s=20230601; t=1761194129; x=1761798929;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yKNfPhQybkr+kdghjTk1+NTs/BYrMKh7K92oxFd3u+0=;
+ b=YD80PBChBg9WhysbQAxu9qKLJFUrKek/KzoE3SiefaJQCThqnr0oybF7J7NP1tIo1F
+ vT51VRCA7WW0PCdKGwyYp+tL3ftrvBwzpju8EAd0yt+6xDmC84337z+VDr0FIkkazX/C
+ c8rocjNi7pWgvGu9PjZx9Yhf2DjmSgpfE2ui9OHKIYzjUBgE4QGwsE3lUffCQynfLGgI
+ OOQZCvlBhgqcAnQ32UIiCdEBBwD3NWjDIT/J5K9eOgdD7i68/oMofFUtIJPIG0yG+zAn
+ M+1FFCknHT4HCtH3mjAblfdu4ktVeA9g6a3x/hyd+YW4l7hVA4mDc7T2telXOD5Hzlqs
+ CYlA==
+X-Gm-Message-State: AOJu0Yyx2z1BZKMbMg6zul2e4YUchbeExjkZF73hAjg0ZG81xXzS1Wte
+ Z3j0YfiuPxGLQvyMAlD+eh846QctsLPODP6gRpUME8doD1vxZk/b6/sOjQ31WQ==
+X-Gm-Gg: ASbGncv5aN5tCQ8WcPiBvv3H4JMSnkKOP3z7ehjTY8kGqKSEpNCtikhcP1WZhlkeMcW
+ NG+dtFtP1LytzoleJVN6JWN98uxVJfxKa6I+WT5aj/AcJUfrr1mPCnCAD5B7gkHXrwgIldzao0t
+ jllzpzze6fOOA6FcskoznlzTN611JyYgbskPgvedN+27rAKNOQQDTOUMw+rtqBb5sRD/lvQI6Nu
+ zpx04v9oyK7BdXADto/ZPWD/5BkmDTv6bdfMZ6VY2Ymh3pvBm0AEz5wzYOQt90SGxfgFJ4saH+d
+ CJ/RsbQbnKEXdlvP90jnwXJmhhDA3pURO+gEZEv0SKu7bGkcyyJz9uLigf/zBe3cJ3bXgYhSlKr
+ 2yo03hydx6Lh1d49uqZb5hNQvjSzKtrdMtFzvUlQyWGXM4izViIdQaMkMxt4RI0GLOHFVncnS+n
+ yZreBghn7+HUFGLmuzIgI6HcKVfwhfz8tzqhkTIgsz+gpxyrMrAzB32ypjHf9cri2FanGswiHmQ
+ 88YRQNj
+X-Google-Smtp-Source: AGHT+IG7/VKdWM3jibVRfGTgu2d7m1W9/DZlKjURxqj/fL24EiWxwm9vKXMuE4/ueHMTv0Eg5t1Tsg==
+X-Received: by 2002:a17:902:dac2:b0:275:2328:5d3e with SMTP id
+ d9443c01a7336-290c9ca32f9mr304534045ad.18.1761194129220; 
+ Wed, 22 Oct 2025 21:35:29 -0700 (PDT)
+Received: from toolbx.alistair23.me
+ (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
+ [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2946dfc113csm8643015ad.68.2025.10.22.21.35.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 22 Oct 2025 21:35:28 -0700 (PDT)
+From: alistair23@gmail.com
+X-Google-Original-From: alistair.francis@wdc.com
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ Chao-ying Fu <cfu@mips.com>,
+ Djordje Todorovic <djordje.todorovic@htecgroup.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 22/37] target/riscv: Add MIPS P8700 CSRs
+Date: Thu, 23 Oct 2025 14:35:05 +1000
+Message-ID: <20251023043520.1777130-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC V6 05/24] arm/virt,kvm: Pre-create KVM vCPUs for
- 'disabled' QOM vCPUs at machine init
-To: Salil Mehta <salil.mehta@opnsrc.net>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, mst@redhat.com,
- salil.mehta@huawei.com, maz@kernel.org, jean-philippe@linaro.org,
- jonathan.cameron@huawei.com, lpieralisi@kernel.org,
- peter.maydell@linaro.org, richard.henderson@linaro.org, imammedo@redhat.com,
- armbru@redhat.com, andrew.jones@linux.dev, david@redhat.com,
- philmd@linaro.org, eric.auger@redhat.com, will@kernel.org, ardb@kernel.org,
- oliver.upton@linux.dev, pbonzini@redhat.com, rafael@kernel.org,
- borntraeger@linux.ibm.com, alex.bennee@linaro.org,
- gustavo.romero@linaro.org, npiggin@gmail.com, harshpb@linux.ibm.com,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- gankulkarni@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, zhukeqian1@huawei.com, wangxiongfeng2@huawei.com,
- wangyanan55@huawei.com, wangzhou1@hisilicon.com, linuxarm@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- shahuang@redhat.com, zhao1.liu@intel.com, Keqian Zhu <zhuqian1@huawei.com>
-References: <20251001010127.3092631-1-salil.mehta@opnsrc.net>
- <20251001010127.3092631-6-salil.mehta@opnsrc.net>
- <a03ed205-b61a-4bba-9f25-83663b7d8a86@redhat.com>
- <CAJ7pxeYurHLqj8GnLrfznmofMpsaw91GeZ3KMyucL0B_gn9gPg@mail.gmail.com>
- <CAJ7pxeaUfUeXwtTVheCTxej-aCTCx0n8-XyAKaFneVUjcWL_7w@mail.gmail.com>
- <beab3dd4-0c19-441c-a9f5-ecae9e791753@redhat.com>
- <CAJ7pxeYEpJGhtL1-3qFEJYTzL-s19fF-it6p5dkq=fg384wBpg@mail.gmail.com>
- <CAJ7pxeZG1w++2DNVD5L5N3sEPRLYPFSFECLqFgh3BYgKpfJtog@mail.gmail.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <CAJ7pxeZG1w++2DNVD5L5N3sEPRLYPFSFECLqFgh3BYgKpfJtog@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,82 +104,287 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
+From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-On 10/23/25 11:29 AM, Salil Mehta wrote:
+Define MIPS CSRs used for P8700 CPU.
 
-[...]
+Signed-off-by: Chao-ying Fu <cfu@mips.com>
+Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20251018154522.745788-5-djordje.todorovic@htecgroup.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu.h       |   3 +
+ target/riscv/cpu.c       |   3 +
+ target/riscv/mips_csr.c  | 217 +++++++++++++++++++++++++++++++++++++++
+ target/riscv/meson.build |   1 +
+ 4 files changed, 224 insertions(+)
+ create mode 100644 target/riscv/mips_csr.c
 
->>
->> Ah, I see. I think I understand the issue. It's complaining
->> about calling the  finalize twice. Is it possible to check as
->> I do not have a way to test it?
->>
->>
->> int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature)
->> {
->> switch (feature) {
->> case KVM_ARM_VCPU_SVE:
->> [...]
->> if (kvm_arm_vcpu_sve_finalized(vcpu))
->> return -EPERM;-----> this where it must be popping?
->> [...]
->> }
-> 
-> I've pushed the fix to avoid calling the finalizing SVE
-> feature (KVM_ARM_VCPU_FINALIZE) twice on the
-> same RFC-V6.2 branch.
-> 
-> May I kindly request you to validate the fix again and
-> check SVE works on NVIDIA grace-hopper?
-> 
-
-With the latest rfc-v6.2 branch, I don't hit the issue. The vCPU can be hot added
-and removed on grace-hopper host.
-
-host$ /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64                     \
-       -accel kvm -machine virt,gic-version=host,nvdimm=on                         \
-       -cpu host,sve=on                                                            \
-       -smp maxcpus=4,cpus=2,disabledcpus=2,sockets=2,clusters=2,cores=1,threads=1 \
-       -m 4096M,slots=16,maxmem=128G                                               \
-       -object memory-backend-ram,id=mem0,size=2048M                               \
-       -object memory-backend-ram,id=mem1,size=2048M                               \
-       -numa node,nodeid=0,memdev=mem0,cpus=0-1                                    \
-       -numa node,nodeid=1,memdev=mem1,cpus=2-3                                    \
-       -L /home/gavin/sandbox/qemu.main/build/pc-bios                              \
-       -monitor none -serial mon:stdio -nographic -gdb tcp::6666                   \
-       -qmp tcp:localhost:5555,server,wait=off                                     \
-       -bios /home/gavin/sandbox/qemu.main/build/pc-bios/edk2-aarch64-code.fd      \
-       -kernel /home/gavin/sandbox/linux.guest/arch/arm64/boot/Image               \
-       -initrd /home/gavin/sandbox/images/rootfs.cpio.xz                           \
-       -append memhp_default_state=online_movable
-          :
-          :
-guest$ cd /sys/devices/system/cpu
-guest$ cat present enabled online
-0-3
-0-1
-0-1
-(qemu) device_set host-arm-cpu,socket-id=1,cluster-id=0,core-id=0,thread-id=0,admin-state=enable
-guest$ echo 1 > cpu2/online
-guest$ cat present enabled online
-0-3
-0-2
-0-2
-         :
-         :
-guest$ cd /sys/device/system/cpu
-guest$ cat present enabled online
-0-3
-0-2
-0-2
-(qemu) device_set host-arm-cpu,socket-id=1,cluster-id=0,core-id=0,thread-id=0,admin-state=disable
-guest$ cat present enabled online
-0-3
-0-1
-0-1
-
-Thanks,
-Gavin
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 0ac31e5c61..00ac947772 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -988,5 +988,8 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+ /* In th_csr.c */
+ extern const RISCVCSR th_csr_list[];
+ 
++/* Implemented in mips_csr.c */
++extern const RISCVCSR mips_csr_list[];
++
+ const char *priv_spec_to_str(int priv_version);
+ #endif /* RISCV_CPU_H */
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index f05747a2d2..a52e6b7b7a 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -3297,6 +3297,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.ext_zbb = true,
+         .cfg.marchid = 0x8000000000000201,
+         .cfg.mvendorid = MIPS_VENDOR_ID,
++#ifndef CONFIG_USER_ONLY
++        .custom_csrs = mips_csr_list,
++#endif
+     ),
+ 
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+diff --git a/target/riscv/mips_csr.c b/target/riscv/mips_csr.c
+new file mode 100644
+index 0000000000..822e25e346
+--- /dev/null
++++ b/target/riscv/mips_csr.c
+@@ -0,0 +1,217 @@
++/*
++ * MIPS-specific CSRs.
++ *
++ * Copyright (c) 2025 MIPS
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ */
++
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "cpu_vendorid.h"
++
++/* Static MIPS CSR state storage */
++static struct {
++    uint64_t tvec;
++    uint64_t config[12];
++    uint64_t pmacfg[16];
++} mips_csr_state;
++
++/* MIPS CSR */
++#define CSR_MIPSTVEC        0x7c0
++#define CSR_MIPSCONFIG0     0x7d0
++#define CSR_MIPSCONFIG1     0x7d1
++#define CSR_MIPSCONFIG2     0x7d2
++#define CSR_MIPSCONFIG3     0x7d3
++#define CSR_MIPSCONFIG4     0x7d4
++#define CSR_MIPSCONFIG5     0x7d5
++#define CSR_MIPSCONFIG6     0x7d6
++#define CSR_MIPSCONFIG7     0x7d7
++#define CSR_MIPSCONFIG8     0x7d8
++#define CSR_MIPSCONFIG9     0x7d9
++#define CSR_MIPSCONFIG10    0x7da
++#define CSR_MIPSCONFIG11    0x7db
++#define CSR_MIPSPMACFG0     0x7e0
++#define CSR_MIPSPMACFG1     0x7e1
++#define CSR_MIPSPMACFG2     0x7e2
++#define CSR_MIPSPMACFG3     0x7e3
++#define CSR_MIPSPMACFG4     0x7e4
++#define CSR_MIPSPMACFG5     0x7e5
++#define CSR_MIPSPMACFG6     0x7e6
++#define CSR_MIPSPMACFG7     0x7e7
++#define CSR_MIPSPMACFG8     0x7e8
++#define CSR_MIPSPMACFG9     0x7e9
++#define CSR_MIPSPMACFG10    0x7ea
++#define CSR_MIPSPMACFG11    0x7eb
++#define CSR_MIPSPMACFG12    0x7ec
++#define CSR_MIPSPMACFG13    0x7ed
++#define CSR_MIPSPMACFG14    0x7ee
++#define CSR_MIPSPMACFG15    0x7ef
++
++static RISCVException any(CPURISCVState *env, int csrno)
++{
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException read_mipstvec(CPURISCVState *env, int csrno,
++                                    target_ulong *val)
++{
++    *val = mips_csr_state.tvec;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_mipstvec(CPURISCVState *env, int csrno,
++                                     target_ulong val, uintptr_t ra)
++{
++    mips_csr_state.tvec = val;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException read_mipsconfig(CPURISCVState *env, int csrno,
++                                      target_ulong *val)
++{
++    *val = mips_csr_state.config[csrno - CSR_MIPSCONFIG0];
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_mipsconfig(CPURISCVState *env, int csrno,
++                                       target_ulong val, uintptr_t ra)
++{
++    mips_csr_state.config[csrno - CSR_MIPSCONFIG0] = val;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException read_mipspmacfg(CPURISCVState *env, int csrno,
++                                      target_ulong *val)
++{
++    *val = mips_csr_state.pmacfg[csrno - CSR_MIPSPMACFG0];
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_mipspmacfg(CPURISCVState *env, int csrno,
++                                       target_ulong val, uintptr_t ra)
++{
++    mips_csr_state.pmacfg[csrno - CSR_MIPSPMACFG0] = val;
++    return RISCV_EXCP_NONE;
++}
++
++const RISCVCSR mips_csr_list[] = {
++    {
++        .csrno = CSR_MIPSTVEC,
++        .csr_ops = { "mipstvec", any, read_mipstvec, write_mipstvec }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG0,
++        .csr_ops = { "mipsconfig0", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG1,
++        .csr_ops = { "mipsconfig1", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG2,
++        .csr_ops = { "mipsconfig2", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG3,
++        .csr_ops = { "mipsconfig3", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG4,
++        .csr_ops = { "mipsconfig4", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG5,
++        .csr_ops = { "mipsconfig5", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG6,
++        .csr_ops = { "mipsconfig6", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG7,
++        .csr_ops = { "mipsconfig7", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG8,
++        .csr_ops = { "mipsconfig8", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG9,
++        .csr_ops = { "mipsconfig9", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG10,
++        .csr_ops = { "mipsconfig10", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG11,
++        .csr_ops = { "mipsconfig11", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG0,
++        .csr_ops = { "mipspmacfg0", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG1,
++        .csr_ops = { "mipspmacfg1", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG2,
++        .csr_ops = { "mipspmacfg2", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG3,
++        .csr_ops = { "mipspmacfg3", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG4,
++        .csr_ops = { "mipspmacfg4", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG5,
++        .csr_ops = { "mipspmacfg5", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG6,
++        .csr_ops = { "mipspmacfg6", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG7,
++        .csr_ops = { "mipspmacfg7", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG8,
++        .csr_ops = { "mipspmacfg8", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG9,
++        .csr_ops = { "mipspmacfg9", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG10,
++        .csr_ops = { "mipspmacfg10", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG11,
++        .csr_ops = { "mipspmacfg11", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG12,
++        .csr_ops = { "mipspmacfg12", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG13,
++        .csr_ops = { "mipspmacfg13", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG14,
++        .csr_ops = { "mipspmacfg14", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG15,
++        .csr_ops = { "mipspmacfg15", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    { },
++};
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index fdefe88ccd..25d59ef9f9 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -36,6 +36,7 @@ riscv_system_ss.add(files(
+   'debug.c',
+   'monitor.c',
+   'machine.c',
++  'mips_csr.c',
+   'pmu.c',
+   'th_csr.c',
+   'time_helper.c',
+-- 
+2.51.0
 
 
