@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184D7C012C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2995C0128D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:35:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuVA-0006cI-VW; Thu, 23 Oct 2025 08:33:09 -0400
+	id 1vBuX5-0000AB-LU; Thu, 23 Oct 2025 08:35:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBuNl-0002DW-VA
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:25:32 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
+ id 1vBuSu-0002wp-R5
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:30:50 -0400
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBuNi-0007dv-59
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:25:29 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-71d71bcab69so7337317b3.0
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:25:16 -0700 (PDT)
+ id 1vBuOt-0007kd-Oj
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:26:41 -0400
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-781014f4e12so8853617b3.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:26:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761222315; x=1761827115; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761222397; x=1761827197; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=coX3KGZGroDxNHrZ4mhAkuLR6HRjaI1KOz7uItO4O2U=;
- b=aGrlR5i9oqqOjnX1in/aySesJX8t5LDVsgV9JUTfvTIAMzQgk/5PsFRVoAR1l0kogi
- T5N7JgPKfQqvuTjZJG2dZZy8AgdDYIoCXE1Rgu6PF88eQxVz9LggjDi/BnGEOCvGnfa7
- 7/l7yIBdBucAVvVzYA7c0bcAHJpHq2N/ts/UfyUVkly5vcALTpk5nG3Jk0KdKOebCJuf
- ltEFEKCUSrNBH9jiY7gae8UC7UTjIN/fXj/WPKr4cv+OLqnwiPC6XpNYwkXq+gjopOqb
- OWybaqm0wcAmpOaCrG7pxCW8D0fLTlqw0nBb4lwverYblDEzAAqyFO7Sr65uVN/pgeCh
- jdNw==
+ bh=Lln/eupkPghiN4WMdu5B7GSpVCzOPMvVzfobpx6m6ms=;
+ b=SnQFH+KBPYNSFaOJ8/Ae3B/DStEfoyBYW3g9TT6YBwjgLSKpXOgvJfC1j57l9zberl
+ SK2tOnZ5UwndLde2AH7FwUwAfOtist91yGfaZpQLe5BSZz+SiVRuDE+mNa/EZ+hW/zUK
+ /84IUk0Ri+2ck21ErhQEVG+B/YMqbN3yH2qNBnyUp5hz1gdwVjGCuJVVFOmfUffODhOa
+ APoeR/syy6SXjFpIX15dGwiRDVSGgLs+KIemAjBuggxdS3aiR1TMKirylXjLC/KyjbRg
+ DBfocxvn+LtWpEUK051F1eHY85MOhq//bMUKLzmcSmVSysWQ2kBq8RjUmx/fanTUQuG3
+ CwKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761222315; x=1761827115;
+ d=1e100.net; s=20230601; t=1761222397; x=1761827197;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=coX3KGZGroDxNHrZ4mhAkuLR6HRjaI1KOz7uItO4O2U=;
- b=PBRSwZAkHL750BoFstApNTl5hQB+uT6px9qmOxLhABWeypOZ81pyFO+uXBdZz1hV7j
- 2SGpX6IhYNfdzQ+CkaLIwlDK3Ikbj3PDR1G6UgA8DYUC9Ztr/pD9QyH7sBfcOFQa9G10
- AtI9jyt+68Awgdjx2bpTvsLPnsZIoc1hp08KoVpD+odaOYvD1hb+FdxIayRI3+BzJmpt
- bQUOgkSEXZSYN2461YsM0K2e63z8q6LFj64T0VgpwWRJhSdrjV7OS0SQcS2oSHFnmhxS
- UpN22fxDp7Bb7zk0hII1+JhUdKxueIVjM0ZESzwDWt25yIv7yQYvF/GHT9Qwh42J1dxa
- n+3A==
-X-Gm-Message-State: AOJu0Yxrr2z2WIj1suuLLrrKYKBznrXoTdRBwsf/SWCTrPwgM/jny3w9
- zU5PML+cFHWOp5IJ0DJD8iwMRIi038B7+4WMiszyL1EulbS1zY0ojsER6/HblUN00pUK3lXlxuv
- fl1fxKKxSNc5Ff/mCYNpJcwADoukT55EihaRcNFp2cg==
-X-Gm-Gg: ASbGncsI6ajKJ7hQXRGfVdFAxIPVO4txHjmPxKkYzqdWySQ6oJbl9ILj/3G9GXLFC1X
- igjudKpDvzMkaK3Wy1NIjWquNr0pTe3jJj0kp6CtCnoZ2AjP3XweGM1BJvBOqnRrCjfQSk0f2sp
- WoB3UfC86g1SppA2NmFs4quEUcX68ESpjaUlreHAbK+6/FPXw3WKl23YrJc0Gr1rRCwLhHFvype
- +3Jvi/qcDFnqFC41HHY8c9W1e0N9DMhlRjdCcE5kln/Oc87VangLQtA9xO3GYwvOAoliK5q
-X-Google-Smtp-Source: AGHT+IGzbrBaOc7ai4U1OaQbuxrP84QC0YVxrQ7D3vpHpxPjHvD9UkmEWLERW/NCW1H3gRZZpTCByAtiy8sYHS3ANtU=
-X-Received: by 2002:a05:690c:6891:b0:781:64f:2b0f with SMTP id
- 00721157ae682-7836d39a031mr211048657b3.65.1761222315071; Thu, 23 Oct 2025
- 05:25:15 -0700 (PDT)
+ bh=Lln/eupkPghiN4WMdu5B7GSpVCzOPMvVzfobpx6m6ms=;
+ b=WYKx64iDUeRezUnvU1XVGFTJPUfBss7YuTUmuu8LLv/8IdM4j+54DkDaxNI7H5sZLX
+ 6eDlbspDdP6LXOZtjEomc2ys8UKHGiEygaJKDHsd0BbNdw3gXR/7q7jDxQQTbw2MWJ3k
+ ZhHtN+Vj1QlK+s+a9rIAdF+aYmxnV1LyDxKZxwPQG2TXhacugGguPSJsslQa4o2EeuRK
+ kSyr5QdW/BakbjElomQCislnHnZOxxuCxd+1TKN87Xz2lReGdZoSXsszITmQRcK27M4f
+ vP4CPgTd4fNC3iwwGINoujXgUv1NNSm7HFlV4ri5l6FzjbIFIhgBg0BFhUqaaoiK3sbK
+ GzIw==
+X-Gm-Message-State: AOJu0YwuIkSDgDt3FXOTrAwhqtzMrK2BN4kAPyhhtjdXvvWe3Mzjw+NU
+ y9s8qOzy+21ItEHoABZikqR/kf6jHK6TcLZIdb61Q6XIVXlvYUIUtytknmzmRkuHffCse7wqHvj
+ ZCxrKBZUDYs6sPpojpdWYM81h/TiIxlc0RU80Lx4eDw==
+X-Gm-Gg: ASbGncvzxptmw3t7C5857fy7mMnOyoK6VJVcywNX69MPPkTM8Fd7tlKKWVst2Pj8ZS1
+ H+xT7Ra1kQG1ZEx5I2MapFl0K9HWRdu4CfR5DMjtjZEt3nQpTmD9J1FaAdTqhG7tgId7BaTiffO
+ PanFyts8ByU+m3g54UalwtrEspLuJsO37C5BI0G4+X/+9Y6MWXT2Q94uDO3fFxO/UfT3gxkLVEE
+ fZzONMGZCzgfFBUk0QN05qtQVhWFsFpWAgBqeM/+eegvVpCT1KcYoFBixWkmA==
+X-Google-Smtp-Source: AGHT+IHyz8nwl79aDkaY6MfGb1SlWgdpWUyEblw8X6InkI6RTeeC1YnXsWgOalcPRtFcQT/yGEu8v+rjYSYBGELMWuI=
+X-Received: by 2002:a05:690c:e05:b0:781:64f:3139 with SMTP id
+ 00721157ae682-7836d376dc7mr225073807b3.55.1761222397485; Thu, 23 Oct 2025
+ 05:26:37 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251015091729.33761-1-corvin.koehne@gmail.com>
-In-Reply-To: <20251015091729.33761-1-corvin.koehne@gmail.com>
+ <CAFEAcA9+oSu+z_Jgm6dK6hVdTYf=NyGrD_cOF--+j=uOZJD8rg@mail.gmail.com>
+In-Reply-To: <CAFEAcA9+oSu+z_Jgm6dK6hVdTYf=NyGrD_cOF--+j=uOZJD8rg@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 23 Oct 2025 13:25:03 +0100
-X-Gm-Features: AS18NWDD2W97qDDD_xi7uFaf-_MuoPVPNNqBSox42xGoAABTh1wWHkPB0-lbDr8
-Message-ID: <CAFEAcA9+oSu+z_Jgm6dK6hVdTYf=NyGrD_cOF--+j=uOZJD8rg@mail.gmail.com>
+Date: Thu, 23 Oct 2025 13:26:25 +0100
+X-Gm-Features: AS18NWDkEHHtnNfKKd282nDK8KSI7Z0dGu-BotSmcBjuH1lgg-FoCwbo6B-w1rQ
+Message-ID: <CAFEAcA9AyisijV=a4w8yD=dnYM-iW4e=Huqx-X9J16--ULBdJA@mail.gmail.com>
 Subject: Re: [PATCH v3 00/14] hw/arm: add Beckhoff CX7200 board
 To: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>
 Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
@@ -74,15 +75,15 @@ Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  qemu-block@nongnu.org, =?UTF-8?Q?Corvin_K=C3=B6hne?= <c.koehne@beckhoff.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,22 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 15 Oct 2025 at 10:17, Corvin K=C3=B6hne <corvin.koehne@gmail.com> w=
-rote:
+On Thu, 23 Oct 2025 at 13:25, Peter Maydell <peter.maydell@linaro.org> wrot=
+e:
 >
-> From: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
+> On Wed, 15 Oct 2025 at 10:17, Corvin K=C3=B6hne <corvin.koehne@gmail.com>=
+ wrote:
+> >
+> > From: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
+> >
+> > Hi,
+> >
+> > Beckhoff has build a board, called CX7200, based on the Xilinx Zynq A9
+> > platform. This commit series adds the Beckhoff CX7200 as new board vari=
+ant to
+> > QEMU.
 >
-> Hi,
->
-> Beckhoff has build a board, called CX7200, based on the Xilinx Zynq A9
-> platform. This commit series adds the Beckhoff CX7200 as new board varian=
-t to
-> QEMU.
+> Did you base this on current master? beckhoff_ccat.c tries
+> to include "exec/address-spaces.h", which hasn't existed since
+> commit dfc56946a7005 renamed it to system/address-spaces.h
+> back in March, so it doesn't compile...
 
-Did you base this on current master? beckhoff_ccat.c tries
-to include "exec/address-spaces.h", which hasn't existed since
-commit dfc56946a7005 renamed it to system/address-spaces.h
-back in March, so it doesn't compile...
+Similarly for references to exec/memory.h.
 
+Please rebase this on current head-of-git, make sure it
+compiles and passes 'make check' and 'make check-functional',
+and then resend it.
+
+thanks
 -- PMM
 
