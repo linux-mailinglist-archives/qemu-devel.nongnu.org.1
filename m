@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35EEC0130D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9A4C01325
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:44:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBubR-0006oe-VZ; Thu, 23 Oct 2025 08:39:39 -0400
+	id 1vBuee-00020C-0g; Thu, 23 Oct 2025 08:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBuap-0006XS-7e
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:39:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBual-0000wy-F4
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:38:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761223131;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nrICuWHY7mjRal5EkNAEKD1FmbbP2dlIg0AQuUlvJ5c=;
- b=bvDgWjtYht9hjFEwS5J9MmGvDyTx3vnkj0eIGSAnsAa3lUFat6RzmoHwwVos8WU3ZkSXyp
- n69YGtQzsxkeQ/M7RjKo3JkTbVia5pvBGppoIeq89p4VhHKnINFySgwsr2DPmdjkG/fr9M
- pMnsTvm4fpQRvO7ZbrgP2NbI6txBrbA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-CEZoH32BORa8bMZtizNrlQ-1; Thu,
- 23 Oct 2025 08:38:47 -0400
-X-MC-Unique: CEZoH32BORa8bMZtizNrlQ-1
-X-Mimecast-MFC-AGG-ID: CEZoH32BORa8bMZtizNrlQ_1761223127
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 02D4B195609F; Thu, 23 Oct 2025 12:38:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0BECC1800353; Thu, 23 Oct 2025 12:38:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 451CF21E6A27; Thu, 23 Oct 2025 14:38:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Peter
- Maydell <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 00/32] Encode object type security status in code
-In-Reply-To: <20250926140144.1998694-1-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 26 Sep 2025 15:01:11
- +0100")
-References: <20250926140144.1998694-1-berrange@redhat.com>
-Date: Thu, 23 Oct 2025 14:38:43 +0200
-Message-ID: <87o6px6be4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vBueX-0001ml-R0
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:42:50 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vBueU-0001am-R3
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:42:49 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-4e2d2d764a3so6385081cf.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:42:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1761223361; x=1761828161; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rofAI/4qWf5zCtx5Cnfa2mUjU5mb96zHd5mznPItKGo=;
+ b=cT1RzsKj8JDXmWrHwZ+HtZuULpqOnMFcMH3Vjz8RqJ9JVOUkjmMpDOBA5jZirkfT2D
+ C0XyRrTIViwLBtQiOjZV5sjaU/LVSmlvTmr0/kHzjp+x8hJ1HA7RdA+JpNPo2RT/3PUx
+ mv10EYhJyD8SRy6iIqWgoIgUp69gWxbpEvrJAisBE+0cuoiF+z5++ZIoI6m1SynmJl19
+ ghMV5qJihyMu+q32XaIJYX6ZQm895LDTQCe5FKiC5BtmVdP9AGoRS0AjyJ9DVvw1beSu
+ UPpFXBkVNTniBiMs7svC0kcTSfKZNqXszS++mCzxRha+V+vV+TeWX4A68XwVgJYvb23X
+ YLPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761223361; x=1761828161;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rofAI/4qWf5zCtx5Cnfa2mUjU5mb96zHd5mznPItKGo=;
+ b=DyBZxJd1oWYnix5LptF/DM9VxJHlVLEC83ZwUqKMx/mqr0v1hpG46iE/7mGEPWRBFW
+ XMEasd1DqQycGkFn+c9n5eshnycbeqRH7U+kYpHZ26dZ/dc+dIdGhRlsXiL/qMHG8g5w
+ Pi1dVgMhXUFa/WDx8aFF6gHYz75EsSzcsU3xuClccuazw4XIYaZ5Ie53Er3CgJWPTQCQ
+ afZ9DbDT6yw/W+/Si8fsesEvWc9EoOOveaz2Lip+bxk9EO5qFgi1MW66lc2Pj0ceax1Z
+ Cly4iYwA34akmxPZoiEwIThD8Gn6W0x8T0URFNMIDUdRQEZw6O8lDyNWdY7SvP1uecBd
+ 1UFg==
+X-Gm-Message-State: AOJu0Yw9HDmiaxWw/Qhu2qkmUyODB2Wl9yBxITBWQiPv4xWbPG5sudc0
+ /2uG8Rm5eMMiIcMWPLd+83KjMABEN9pyHYRV1GXhFC2IVjH4UR6BrLGy9HEs4A/Hp2HpIRed4MX
+ CJHgby+flYAordBMVj4d4rEi9OkLrcLI=
+X-Gm-Gg: ASbGnctVrhXsaIlDSvGjOd7+cHGzZCGCoLi6CFe4S8AH8Y9iYheSKPHIafFNBdXoKWg
+ X9NHezVBKjfqj8OwiRiZCy0J3hpVqPEEkmTRzJ2dRKyfEBVQDksTpuf61HI29iUcyKWuDR2DAX9
+ 87GpXaR3o0a4mM4zO1iqSGX0GtXKwyA5tqvQyUNp5/vZ5LeGlv8q089S0Z1Eo2B/BIB9S7j4PF6
+ Yw2yVlblvKzGmaR4OTnarghm+YnOAV5COYuLvmfUv4XOe/uDX/6EgKPIpfxXHDOBlrIMOFU8kN4
+ 8rWgThfFjiGAnrlXnROaa0cEiArqeOShJJZeiw==
+X-Google-Smtp-Source: AGHT+IFGHsXepv1T1F851b5vyo6zfi7aBdM4llwPG2/J9+RJg2iacAWCYyeF5nh69wLx7zG6rJXqXdTR1qlbANihI44=
+X-Received: by 2002:a05:622a:1813:b0:4b7:95da:b3c7 with SMTP id
+ d75a77b69052e-4eb8153dba4mr25501651cf.48.1761223361297; Thu, 23 Oct 2025
+ 05:42:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <56a2ea44-7633-4858-8b04-def663322af0@nutanix.com>
+In-Reply-To: <56a2ea44-7633-4858-8b04-def663322af0@nutanix.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 23 Oct 2025 16:42:29 +0400
+X-Gm-Features: AS18NWAhXgb3RUU5P83lzrmYAM8urOFhyT1GX041H970e-FPiUUzV8ON7DWdZY0
+Message-ID: <CAJ+F1CLLdJiCrn6o+gGSMUN4mc4d2AohveT=2gSM5FtwZL=-TQ@mail.gmail.com>
+Subject: Re: The impact of vdagent migration support patches on windows SPICE
+ agent
+To: Lucas Kornicki <lucas.kornicki@nutanix.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,126 +94,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Hi
 
-> Our docs/system/security.rst file loosely classifies code into that
-> applicable for 'virtualization' vs 'non-virtualization' use cases.
-> Only code relevant to the former group is eligible for security
-> bug handling. Peter's recent proposal pointed out that we are
-> increasingly hitting the limits of such a crude classification
+On Thu, Oct 23, 2025 at 3:29=E2=80=AFPM Lucas Kornicki
+<lucas.kornicki@nutanix.com> wrote:
 >
-> Michael suggested that with the increased complexity, docs are not
-> going to be an effective way to convey the information, and we
-> need to re-consider embedding this info in code.  This also allows
-> users to validate a configuration's security status when starting
-> a guest, or modifying a running guest.
+> Hello,
 >
-> This series is an attempt to start the embedding process.
+> I've found that using -chardev qemu-vdagent with a windows 11 guest
+> and win32/vd_agent
+> (https://gitlab.freedesktop.org/spice/win32/vd_agent), results in
+> non-functioning copy paste.
 >
-> Probably I should split in multiple series. One introducing the
-> overall framework, and then multiple series doing type annotations,
-> as the latter really need to be CC'd to maintainers, but the CC
-> list would be way too huge on this combined series. At least this
-> combined series shows what the real world implictions of this code
-> approach will be though.
-
-I appreciate seeing the entire work.  We can split later if it helps
-with review.
-
-> It starts with QOM, adding a "bool secure" property to the
-> TypeInfo struct, which get turned into a flag on the Type
-> struct. This enables querying any ObjectClass to ask whether or
-> not it is declared secure.
+> Further investigation reveals that messages such as clipboard-grab are
+> being sent from qemu, but they do not reach the guest agent because the
+> VirtIOSerialPort has been closed from the host side
+> (host_connected=3Dfalse). This is likely a result of the CHR_EVENT_CLOSED
+> event call done by vdagent_clipboard_reset_serial, which appears to be a
+> deliberate measure to force a guest reconnect (?).
 >
-> By only using a single boolean flag, at runtime we are unable
-> to distinguish between "marked insecure" and "no decision,
-> implicitly insecure". As such, all our existing code is
-> initially considered insecure, except for that which gets
-> explicit annotation.
+> This has only become a problem with the introduction of commit
+> f626116f9897b95f68e5514a08098d590349c22e (factor out clipboard peer
+> registration), as it has changed the execution flow by moving the notify
+> =3D=3D NULL, check inside the peer registration function
 >
-> The "-compat" argument gains a new parameter
+> -    if (have_clipboard(vd) && vd->cbpeer.notifier.notify =3D=3D NULL) {
+> +    if (have_clipboard(vd)) {
+>           qemu_clipboard_reset_serial();
+> -
+> -        vd->cbpeer.name =3D "vdagent";
+> -        vd->cbpeer.notifier.notify =3D vdagent_clipboard_notify;
+> -        vd->cbpeer.request =3D vdagent_clipboard_request;
+> -        qemu_clipboard_peer_register(&vd->cbpeer);
+> +        vdagent_clipboard_peer_register(vd);
+>       }
 >
->   * insecure-types=3Daccept|reject|warn
+> This change has created a new execution path that makes it possible for
+> vdagent to "self invoke" the vdagent_clipboard_reset_serial if it
+> receives caps from guest twice, which wasn't possible previously due to
+> the notify =3D=3D NULL check. It just so happens that win32/vd_agent does=
+n't
+> handle the disconnect too well, while also enacting this exact scenario
+> by first sending a CAPS request of it's own, and then replying to the
+> CAPS request of qemu, leading to device closure.
 >
->     The default 'accept' preserves historical behaviour of
->     anything being permissible. The other two options both
->     identify use of types that are not explicitly marked
->     as secure.
->
-> The code annotations are useful immediately, but to make the
-> new -compat switch useful, we need to annotate as much as is
-> possible. This series makes a strong attempt to do that across
-> a large subset of the codebase. My guidance was to mark enough
-> as being 'secure', that a downstream RHEL build of QEMU would
-> have explicit anntation of most of its devices, with most being
-> secure given they target virtualization use cases.
->
-> This annotation is 90% complete for the x86 target, but more
-> work is needed to finish it and then address the arch specific
-> devices for arm, ppc, s390.
->
-> Example: TCG is explicitly insecure, KVM is explicitly secure:
+> Was it the original intention of commit
+> f626116f9897b95f68e5514a08098d590349c22e to enable such behavior?
 
-[...]
+That regression is unintentional.
 
->  281 files changed, 632 insertions(+), 38 deletions(-)
+Is it enough to change:
+-    if (have_clipboard(vd)) {
++    if (have_clipboard(vd) && vd->cbpeer.notifier.notify =3D=3D NULL) {
 
-PATCH 01..13, i.e. just the infrastructure:
+to revert the behaviour? Are you working on a fix?
 
- docs/system/security.rst     | 43 ++++++++++++++++++++++++++++++++++++++++=
-+++
- qapi/compat.json             | 24 +++++++++++++++++++++++-
- qapi/machine.json            |  8 +++++++-
- qapi/qom.json                | 10 ++++++++--
- include/hw/boards.h          | 12 +++++++++++-
- include/hw/i386/pc.h         | 13 ++++++++++++-
- include/qapi/compat-policy.h |  5 +++++
- include/qom/object.h         | 13 +++++++++++++
- hw/core/machine-qmp-cmds.c   |  1 +
- qapi/qapi-util.c             | 30 ++++++++++++++++++++++++++++++
- qom/object.c                 | 30 +++++++++++++++++++++++-------
- qom/qom-qmp-cmds.c           | 30 ++++++++++++++++++++++++------
- system/qdev-monitor.c        | 12 ++++++++++++
- system/vl.c                  | 35 ++++++++++++++++++++++++++++++-----
- 14 files changed, 242 insertions(+), 24 deletions(-)
+thanks a lot for the report!
 
-Quite tractable.
 
-The remainder is purely declarative:
-
-    $ git-diff -U0 3f6db27c42..review | egrep '^[-+][^-+]'| sed 's/  */ /g'=
- | sort -u
-    + .abstract =3D true,
-    + .class_init =3D i2c_ddc_class_init,
-    + .instance_init =3D aw_emac_init,
-    + .instance_init =3D xhci_sysbus_instance_init,
-    + .secure =3D false,
-    + .secure =3D true,
-    + .secure =3D true, \
-    + isapc_machine_options);
-    + type_info.secure =3D false,
-    + type_info.secure =3D false;
-    + type_info.secure =3D true,
-    + xenfv_machine_3_1_options);
-    + xenfv_machine_4_2_options);
-    +DEFINE_INSECURE_MACHINE("none", machine_none_machine_init)
-    +DEFINE_INSECURE_PC_MACHINE(isapc, "isapc", pc_init_isa,
-    +DEFINE_SECURE_MACHINE("xenpv", xenpv_machine_init)
-    +DEFINE_SECURE_PC_MACHINE(xenfv, "xenfv-3.1", pc_xen_hvm_init,
-    +DEFINE_SECURE_PC_MACHINE(xenfv_4_2, "xenfv-4.2", pc_xen_hvm_init,
-    - .abstract =3D true
-    - .class_init =3D i2c_ddc_class_init
-    - .instance_init =3D aw_emac_init,
-    - .instance_init =3D xhci_sysbus_instance_init
-    - isapc_machine_options);
-    - xenfv_machine_3_1_options);
-    - xenfv_machine_4_2_options);
-    -DEFINE_MACHINE("none", machine_none_machine_init)
-    -DEFINE_MACHINE("xenpv", xenpv_machine_init)
-    -DEFINE_PC_MACHINE(isapc, "isapc", pc_init_isa,
-    -DEFINE_PC_MACHINE(xenfv, "xenfv-3.1", pc_xen_hvm_init,
-    -DEFINE_PC_MACHINE(xenfv_4_2, "xenfv-4.2", pc_xen_hvm_init,
-
-I like it.
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
