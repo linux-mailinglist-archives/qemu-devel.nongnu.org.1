@@ -2,82 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16CDC005CB
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 11:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5E6C00605
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:02:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBs5T-0000Wu-Go; Thu, 23 Oct 2025 05:58:27 -0400
+	id 1vBs9J-0001KD-QX; Thu, 23 Oct 2025 06:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBs5R-0000Wl-JG
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 05:58:25 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBs5P-0002pn-Gr
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 05:58:25 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-780fe76f457so6672497b3.0
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 02:58:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761213501; x=1761818301; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2uCZYUUy2pPaW+WI53ENBf6uxgXbiMMJyi4oRoJmj/I=;
- b=gkPPcvEYacvbTMpseyGKOrMCBqcJBAon/DNBDGMtRGui9DJ4UQPkf8xgKrLdoFD/bL
- y7ZwKn+k3HDXsD/2A4ImqVx/6x0LUQrtbl9XWOt3e4mlbQZbP4XvfTdtjLBEjBuyVIBY
- wqPcofMACpNzBmNI8uz8rEO5v66rom/TR7psfy+WkCn7YSN0m1jAksgDCZnqUnuKJBtR
- BNP4iiU2VXXtGzgdQIXxuxdmS07F7Y9xrbsR+DXeB3A1iLgzrgq7B64xLuXp6scGymgB
- kfvSJgI6VHIguyR6tl4PDFkdDZ+n76fHuvwZMAXp/d91Nip+TXfghsGK0xrwoDOfg4al
- b8rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761213501; x=1761818301;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2uCZYUUy2pPaW+WI53ENBf6uxgXbiMMJyi4oRoJmj/I=;
- b=MmQJI8FsI7k3ijQS+0MY1uYJhR4QFdbJqo5C7Qkqeu2GWRRL7HBbZoyH/h1YgvTjih
- zaapWh4gSBvQbntjzeftuH7qRIeaKNALtvG7+PEwdnlBOiQimOlVnYyTQZmDfrzaDckr
- 3Gz1KgPmX6JmYtrxSmsIr3cdVKpSTtIAQFvxZawGvZY0f6axPub/81Whv6O7nm73Byg0
- ubaWUkTRz8ckuC5iB+XEH8sXdyDwzyVAle1Hn9wWBPEeOYZCwQwMnTa+9MLrXf22awLT
- ehlB7wEOJsY8PY2f5yLtrVh4/51JliHGRoYvYdKZE6V6yUjFR7eGBoDZJTeSxeFHGE5b
- q7Fw==
-X-Gm-Message-State: AOJu0YxYAWFf/dV328EDaTL8AZ2FEWZ7atDKFdB7xBlQgZa8NKgLBCP+
- s9eAniXqDzXdamiuKavR2zwlAoZrh4DDgVWEZ0H0CmKgM4eSd/rc2zDASQL461dqcQBXHx43x5M
- ChPbr+XHA2trjsse6+61faiq+ghz+vTCxEOeN7YICmw==
-X-Gm-Gg: ASbGncu8CqLEXdUTpMsGiq4YeV0lT5fmRzKcLuIp2vn4cP7x4EI4lkHmDj5nuzOj8o5
- JcaWnPFOqNLwb7gjzwDtCXTJB7UOOJoRodibjrj/yyTs/XJ7si4mHr0pCsLdtgzLXzA3Zdl9uPy
- Q1PiPmPBXENOT+ydsiDekNMiD6XvIO6JyTNinWqgkg/J2yjPkSqVFyw5qL/VC5Hg36mSX31NVQP
- DwT7FTFM2kpNt5DSmJClTo0NhItP5BXZhCt831Vkz6NRhArjAxrFxivyTH4zkPGWTdgEE9f
-X-Google-Smtp-Source: AGHT+IHGdFE1vaRM/LwHh2b/SkXWVv6uOP2079WMrEPY2/Lnv5iEm6RyBmmKEVDJFWzAcvfe8dvixv9vzcXjTU+e1AI=
-X-Received: by 2002:a05:690c:6901:b0:783:7143:d826 with SMTP id
- 00721157ae682-7837143e02emr373269267b3.29.1761213501337; Thu, 23 Oct 2025
- 02:58:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1vBs8w-0001Gb-HH; Thu, 23 Oct 2025 06:02:05 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1vBs8u-00039r-8P; Thu, 23 Oct 2025 06:02:02 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 23 Oct
+ 2025 18:01:50 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Thu, 23 Oct 2025 18:01:50 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <kane_chen@aspeedtech.com>
+Subject: [PATCH v1 00/13] Split AST2500 SoC machines into separate source
+ files for maintainability
+Date: Thu, 23 Oct 2025 18:01:33 +0800
+Message-ID: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251005194734.4084726-1-samuel.thibault@ens-lyon.org>
- <20251005194734.4084726-2-samuel.thibault@ens-lyon.org>
-In-Reply-To: <20251005194734.4084726-2-samuel.thibault@ens-lyon.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 23 Oct 2025 10:58:10 +0100
-X-Gm-Features: AS18NWDu7BoC5j1Y6x1Y5u34B8z3AnBEez0HpBArB-jBjNO64An1_ejkOv4DKAY
-Message-ID: <CAFEAcA_P2=kv_WZZP7k_5TRvTmzo1NMUq8r+sMFCRBApORXkKA@mail.gmail.com>
-Subject: Re: [PULL 1/1] Add a feature for mapping a host unix socket to a
- guest tcp socket
-To: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Cc: qemu-devel@nongnu.org, Viktor Kurilko <murlockkinght@gmail.com>,
- stefanha@redhat.com, jan.kiszka@siemens.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,79 +58,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 5 Oct 2025 at 20:48, Samuel Thibault
-<samuel.thibault@ens-lyon.org> wrote:
->
-> From: Viktor Kurilko <murlockkinght@gmail.com>
->
-> This patch adds the ability to map a host unix socket to a guest tcp socket when
-> using the slirp backend. This feature was added in libslirp version 4.7.0.
->
-> A new syntax for unix socket: -hostfwd=unix:hostpath-[guestaddr]:guestport
->
-> Signed-off-by: Viktor Kurilko <murlockkinght@gmail.com>
-> Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-> Message-ID: <20250808143904.363907-1-murlockkinght@gmail.com>
-> ---
+v1:
+ 1. Move "AspeedMachineState" definition to a shared header.
+ 2. Make common helper functions globally accessible.
+ 3. Split each AST2500 machine into its own source file:
+   - FP5280G2
+   - G220A
+   - Tiogapass
+   - YosemiteV2
+   - Witherspoon
+   - Sonorapass
+   - Romulus
+   - Supermicro X11SPI
+   - AST2500 EVB
+ 
+Jamin Lin (13):
+  hw/arm/aspeed: Move AspeedMachineState definition to common header for
+    reuse
+  hw/arm/aspeed: Make aspeed_machine_class_init_cpus_defaults() globally
+    accessible
+  hw/arm/aspeed: Make create_pca9552() globally accessible for reuse
+  hw/arm/aspeed: Make create_pca9554() available for use by other Aspeed
+    machines
+  hw/arm/aspeed: Split FP5280G2 machine into a separate source file for
+    maintenance
+  hw/arm/aspeed: Split G220A machine into a separate source file for
+    better maintenance
+  hw/arm/aspeed: Split Tiogapass machine into a separate source file for
+    cleanup
+  hw/arm/aspeed: Split YosemiteV2 machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Split Witherspoon machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Split Sonorapass machine into a separate source file
+    for maintainability
+  hw/arm/aspeed: Split Romulus machine into a separate source file for
+    maintainability
+  hw/arm/aspeed: Split Supermicro X11SPI machine into a separate file
+    for maintainability
+  hw/arm/aspeed: Split AST2500 EVB machine into a separate source file
+    for maintainability
 
-Coverity worries here about a possible time-of-check-time-of-use
-bug (CID 1641394). This is a heuristic that tends to fire even
-when there's no interesting attack possible, but I don't
-know what this code is doing so I raise it here:
+ hw/arm/aspeed_eeprom.h                    |   7 -
+ include/hw/arm/aspeed.h                   |  17 +
+ hw/arm/aspeed.c                           | 508 +---------------------
+ hw/arm/aspeed_ast2500_evb.c               |  66 +++
+ hw/arm/aspeed_ast2500_fp5280g2.c          |  87 ++++
+ hw/arm/aspeed_ast2500_g220a.c             |  91 ++++
+ hw/arm/aspeed_ast2500_romulus.c           |  61 +++
+ hw/arm/aspeed_ast2500_sonorapass.c        | 101 +++++
+ hw/arm/aspeed_ast2500_supermicro-x11spi.c |  76 ++++
+ hw/arm/aspeed_ast2500_tiogapass.c         |  89 ++++
+ hw/arm/aspeed_ast2500_witherspoon.c       | 111 +++++
+ hw/arm/aspeed_ast2500_yosemitev2.c        |  90 ++++
+ hw/arm/aspeed_eeprom.c                    |  44 --
+ hw/arm/meson.build                        |   9 +
+ 14 files changed, 801 insertions(+), 556 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast2500_evb.c
+ create mode 100644 hw/arm/aspeed_ast2500_fp5280g2.c
+ create mode 100644 hw/arm/aspeed_ast2500_g220a.c
+ create mode 100644 hw/arm/aspeed_ast2500_romulus.c
+ create mode 100644 hw/arm/aspeed_ast2500_sonorapass.c
+ create mode 100644 hw/arm/aspeed_ast2500_supermicro-x11spi.c
+ create mode 100644 hw/arm/aspeed_ast2500_tiogapass.c
+ create mode 100644 hw/arm/aspeed_ast2500_witherspoon.c
+ create mode 100644 hw/arm/aspeed_ast2500_yosemitev2.c
 
-> +#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
-> +    if (is_unix) {
-> +        if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
-> +            fail_reason = "Missing - separator";
-> +            goto fail_syntax;
-> +        }
-> +        if (buf[0] == '\0') {
-> +            fail_reason = "Missing unix socket path";
-> +            goto fail_syntax;
-> +        }
-> +        if (buf[0] != '/') {
-> +            fail_reason = "unix socket path must be absolute";
-> +            goto fail_syntax;
-> +        }
-> +
-> +        size_t path_len = strlen(buf);
-> +        if (path_len > sizeof(host_addr.un.sun_path) - 1) {
-> +            fail_reason = "Unix socket path is too long";
-> +            goto fail_syntax;
-> +        }
-> +
-> +        struct stat st;
-> +        if (stat(buf, &st) == 0) {
+-- 
+2.43.0
 
-Coverity notes that we do a check on the filename here
-with stat()...
-
-> +            if (!S_ISSOCK(st.st_mode)) {
-> +                fail_reason = "file exists and it's not unix socket";
-> +                goto fail_syntax;
-> +            }
-> +
-> +            if (unlink(buf) < 0) {
-
-...and then later we do an unlink() if it's a unix socket.
-But Coverity points out that an attacker could change what
-the filename points to between the stat and the unlink,
-causing us to unlink some non-socket file.
-
-Do we care ?
-
-> +                error_setg_errno(errp, errno, "Failed to unlink '%s'", buf);
-> +                goto fail_syntax;
-> +            }
-> +        }
-> +        host_addr.un.sun_family = AF_UNIX;
-> +        memcpy(host_addr.un.sun_path, buf, path_len);
-> +        host_addr_size = sizeof(host_addr.un);
-> +    } else
-
-thanks
--- PMM
 
