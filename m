@@ -2,84 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1B9C008A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D68C008F1
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:44:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBsiL-0007Ss-Bu; Thu, 23 Oct 2025 06:38:37 -0400
+	id 1vBsnT-0000p0-RG; Thu, 23 Oct 2025 06:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBsiJ-0007Sj-OK
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 06:38:35 -0400
-Received: from mail-yx1-xb12e.google.com ([2607:f8b0:4864:20::b12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBsiH-0007Ug-WD
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 06:38:35 -0400
-Received: by mail-yx1-xb12e.google.com with SMTP id
- 956f58d0204a3-63bc1aeb427so666865d50.3
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 03:38:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761215913; x=1761820713; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9kmLl3P36/yEEM09lnpiD4uIE10oSCPcTYAukiM3g70=;
- b=MJzzDvi/3c+Gam1wpRoRA9+svonGQ27bbF5JRZDc2f0gWdeSvvEghKyJpIG4Co77HU
- kcgXLa/i5+//dVrqMDLp62wO239Wj0wdYlc2Fj+rymFgIQQneR8rJZFDdFRfAgPGMFch
- vSASbHD5unQ4uLgPhMo0BCpyPsxx8698ntl8OH1kD0AS4snjwtq3yqcQLGPFjE8yFUE0
- CRfCTAnH+G7FFFwWrC5TqFtevvV3Xo/HSEDVmv6NKFrpGtjaFI4YhC7XzukNLvdNsqNR
- mKlCqVqPBWATpQWzVv4RMKxHdPYmNzdKf0vs5ZQx9CPfewvl4JPVpY6UH7KrcCk9dQwH
- BsQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761215913; x=1761820713;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9kmLl3P36/yEEM09lnpiD4uIE10oSCPcTYAukiM3g70=;
- b=fgCJ9NvG0yUHlu/4+5SBlm4/WLGBEwwqPj+4/VGsU8ghs5WtPTnu+9FQbr4XlwaOEX
- C8PYsi8Z3tgUaUhQg+YFMUJw3JPxIge6ZhrrqNYjpRRdZPv9eWy3GBj0BFuspt7/ui0n
- ZO89d3E3kHL837kBs6XciviNxvkbttaXqnY6zmnKjLokECUkKltE6vT3/rvkgg/yQEbS
- 3R179V9vYmohZ7KsW4JRJ8ebecGR2fkLqnwH917RLzIDGvno3oK7E9YQfleJJVDy9M3B
- NSIRQY7Zwq1NmoF124d9ZyWSxKnds0QpBeEiGuX2xetQnw9O+YZI/zJisdBNhwZ90Vhn
- NyeQ==
-X-Gm-Message-State: AOJu0Yxh6FIomknZQHh6n8jJxQtmd+U2J9mmG5FHhKPLL/t9HCD321iK
- ZeWh8PVOPXm3Oi+UiACFpRdtwlQY43syoTX7K3ofeTaImNYJuSL4xdixVOUt1wY7OzZa/a7D/Nb
- ETxb1KxKEbKoPR2XKzzCRMHh/H4V11vs0y5M1QKkd9Q==
-X-Gm-Gg: ASbGncshb8Dzt4ByqzxGXgmz64whfOzRCt2/FnTbAICJL52M/Zf+K1YUox3TgGuFJ+6
- QKBxCBh1e6KJAonTZ2I5Yrm14scsoG0tSsllC7I4x2njUVKmHxCD98t6aHrW/vqIgzFNj99POg0
- pO6CndvvuHtYN2R68SwVm3LRO7otRQ6/DnD3V3nw+fSd1U/xdtRkEU18WRkQxYaQePrPXoCYU/8
- uoTG6l74R4yt8BWZvRkQ+KnBiHej7f8M/nA02OT1oZoty2RECjbyj0WTYK1Imye0j/VfY1D
-X-Google-Smtp-Source: AGHT+IF5IUYbtDN0anuUq3PbAGGCww7O8sYanRiThAA7P6njZVKEBzM+rboIjtqUxFv2mb7bmhA4eQ8zhy+lGSfUwzE=
-X-Received: by 2002:a05:690e:4106:b0:63e:22b1:21a5 with SMTP id
- 956f58d0204a3-63e22b1439emr15308547d50.17.1761215912533; Thu, 23 Oct 2025
- 03:38:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vBsnS-0000om-3g
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 06:43:54 -0400
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vBsnQ-00084H-2L
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 06:43:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=wrVEUk0hbhiNHRCsP0pbve8d28pq4R933LqdrNSHt5g=; b=peNHI7zJhYyJSbU
+ oAgsOlSYLBl0OVWf6qXUYXainLS3zs99rBZjdLlTYhZLvg4JEdxEah+Nfl1ukQgbjvnlkbX5+4lhT
+ TnfTGGOnNZjCG7tOB3gFbza99GDCxpc4FhjH/oYPx7tZGlsJh6RLBI+qJrLVKNhVkbOHcf4XSRko3
+ Dk=;
+Date: Thu, 23 Oct 2025 12:46:31 +0200
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, pierrick.bouvier@linaro.org, 
+ alistair.francis@wdc.com, palmer@dabbelt.com
+Subject: Re: [PATCH v3 29/34] target/riscv: Fix size of trigger data
+Message-ID: <mfhg7njqvfv563gdy43sme4d2jemjoybmemzrzewi42ngrlxq2@xbuo4frf5qj6>
+References: <20251014203512.26282-1-anjo@rev.ng>
+ <20251014203512.26282-30-anjo@rev.ng>
+ <3395a80a-d3db-4ebd-a11c-e7746d59c9ce@linaro.org>
 MIME-Version: 1.0
-References: <20251005194734.4084726-1-samuel.thibault@ens-lyon.org>
- <20251005194734.4084726-2-samuel.thibault@ens-lyon.org>
- <CAFEAcA_P2=kv_WZZP7k_5TRvTmzo1NMUq8r+sMFCRBApORXkKA@mail.gmail.com>
- <aPn_Jtkj9PWHkaQ7@begin>
-In-Reply-To: <aPn_Jtkj9PWHkaQ7@begin>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 23 Oct 2025 11:38:20 +0100
-X-Gm-Features: AS18NWCbiRMtPdUQNXcDtcy1u5xgl5dopivz-QPRCVA8DZHdYteic2PV7Ez3aYA
-Message-ID: <CAFEAcA9z4psGV90FtruCKjcGVpU=g9ZO=r7eFh8FpKg4=GaEzw@mail.gmail.com>
-Subject: Re: [PULL 1/1] Add a feature for mapping a host unix socket to a
- guest tcp socket
-To: Samuel Thibault <samuel.thibault@gnu.org>
-Cc: qemu-devel@nongnu.org, Viktor Kurilko <murlockkinght@gmail.com>,
- stefanha@redhat.com, jan.kiszka@siemens.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3395a80a-d3db-4ebd-a11c-e7746d59c9ce@linaro.org>
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,60 +61,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 Oct 2025 at 11:12, Samuel Thibault <samuel.thibault@gnu.org> wrote:
->
-> Hello,
->
-> Peter Maydell, le jeu. 23 oct. 2025 10:58:10 +0100, a ecrit:
-> > Coverity worries here about a possible time-of-check-time-of-use
-> > bug (CID 1641394). This is a heuristic that tends to fire even
-> > when there's no interesting attack possible, but I don't
-> > know what this code is doing so I raise it here:
-> >
-> > > +#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
-> > > +        struct stat st;
-> > > +        if (stat(buf, &st) == 0) {
-> >
-> > Coverity notes that we do a check on the filename here
-> > with stat()...
-> >
-> > > +            if (!S_ISSOCK(st.st_mode)) {
-> > > +                fail_reason = "file exists and it's not unix socket";
-> > > +                goto fail_syntax;
-> > > +            }
-> > > +
-> > > +            if (unlink(buf) < 0) {
-> >
-> > ...and then later we do an unlink() if it's a unix socket.
-> > But Coverity points out that an attacker could change what
-> > the filename points to between the stat and the unlink,
-> > causing us to unlink some non-socket file.
-> >
-> > Do we care ?
->
-> It is true that an "attacker" could be pointing qemu to a symlink to
-> a socket, and stat() will follow it, and they can change the symlink
-> into something else (a symlink to something else, or another type of
-> file), and we'll unlink() that (which will not follow any symlink, so
-> just unlink the given path).
->
-> I don't see which harmful scenario we could have here. Either the
-> attacker has control over the given path, and we'll just unlink it, too
-> bad for them, or they don't have control over the given path, and they
-> won't be able to change it to their liking between stat() and unlink().
+On 15/10/25, Philippe Mathieu-Daudé wrote:
+> On 14/10/25 22:35, Anton Johansson wrote:
+> > mcontext is at most 14 bits in size with the H extension, fix to 16
+> > bits. trigger_cur indexes into tdata*[RV_MAX_TRIGGERS] which holds 2
+> > elements, fix to 8 bits.
+> > 
+> > Note, the cpu/debug VMSTATE version is bumped, breaking migration from
+> > older versions.
+> > 
+> > Signed-off-by: Anton Johansson <anjo@rev.ng>
+> > Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> > ---
+> >   target/riscv/cpu.h     | 10 +++++-----
+> >   target/riscv/machine.c | 12 ++++++------
+> >   2 files changed, 11 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> > index 85ad250a8f..e404b120bc 100644
+> > --- a/target/riscv/cpu.h
+> > +++ b/target/riscv/cpu.h
+> > @@ -466,11 +466,11 @@ struct CPUArchState {
+> >       target_ulong mseccfg;
+> >       /* trigger module */
+> > -    target_ulong trigger_cur;
+> > -    target_ulong tdata1[RV_MAX_TRIGGERS];
+> > -    target_ulong tdata2[RV_MAX_TRIGGERS];
+> > -    target_ulong tdata3[RV_MAX_TRIGGERS];
+> > -    target_ulong mcontext;
+> > +    uint16_t mcontext;
+> > +    uint8_t trigger_cur;
+> > +    uint64_t tdata1[RV_MAX_TRIGGERS];
+> > +    uint64_t tdata2[RV_MAX_TRIGGERS];
+> > +    uint64_t tdata3[RV_MAX_TRIGGERS];
+> >       struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
+> >       struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
+> >       QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
+> > diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+> > index 376075b2bd..e86fc58e43 100644
+> > --- a/target/riscv/machine.c
+> > +++ b/target/riscv/machine.c
+> > @@ -239,15 +239,15 @@ static int debug_post_load(void *opaque, int version_id)
+> >   static const VMStateDescription vmstate_debug = {
+> >       .name = "cpu/debug",
+> > -    .version_id = 2,
+> > -    .minimum_version_id = 2,
+> > +    .version_id = 3,
+> > +    .minimum_version_id = 3,
+> >       .needed = debug_needed,
+> >       .post_load = debug_post_load,
+> >       .fields = (const VMStateField[]) {
+> > -        VMSTATE_UINTTL(env.trigger_cur, RISCVCPU),
+> > -        VMSTATE_UINTTL_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
+> > -        VMSTATE_UINTTL_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
+> > -        VMSTATE_UINTTL_ARRAY(env.tdata3, RISCVCPU, RV_MAX_TRIGGERS),
+> > +        VMSTATE_UINT8(env.trigger_cur, RISCVCPU),
+> > +        VMSTATE_UINT64_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
+> > +        VMSTATE_UINT64_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
+> > +        VMSTATE_UINT64_ARRAY(env.tdata3, RISCVCPU, RV_MAX_TRIGGERS),
+> 
+> Pre-existing, but mcontext is not migrated. Deliberate?
+> 
+> Otherwise:
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Yes, I agree. The "only unlink if it was a unix socket"
-check is essentially a molly-guard against a user passing
-a wrong filename. If an attacker bypasses the molly-guard
-this doesn't gain them anything. Similarly, an attacker
-reinstating something at the file-path after the unlink()
-but before slirp binds the unix socket is pretty futile
-as it will just cause the bind to fail.
+Since trigger data is migrated I think it is correct to also migrate
+mcontext.  I'll add the migration entry to this patch in v4 and maybe
+Alistair or someone else can chime in.
 
-I'll mark the coverity issue as a false-positive.
-
--- PMM
+Thanks!:)
 
