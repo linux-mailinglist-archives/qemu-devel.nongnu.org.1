@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CC7BFF191
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3783DBFF16F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBmjP-0000f5-Gb; Thu, 23 Oct 2025 00:15:19 -0400
+	id 1vBmjQ-0000j6-7t; Thu, 23 Oct 2025 00:15:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBmjK-0000co-2p
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:14 -0400
+ id 1vBmjM-0000e8-0H
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:16 -0400
 Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBmjH-0007J6-SE
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:13 -0400
+ id 1vBmjK-0007Jf-3Y
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:15 -0400
 Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-77f67ba775aso449290b3a.3
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:15:10 -0700 (PDT)
+ d2e1a72fcca58-781ea2cee3fso376062b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761192909; x=1761797709; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1761192912; x=1761797712; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dT1VY6c3XA4W7tm/UffiQu1Cbfu56OKc9VjdmzDBxLA=;
- b=kUDrA9U6aV5oIN7MA8cbBgM1Odj7SQBNCCgucYWMOS9w3fBiDivDLqx6Wh7Vg+CebE
- aitt1gBoNCG2uK7CUCkJTxBi7M7ujaJiYeJgapKm+SsENTu13QFCqb05h3Ve9dlZi/Hu
- j/g1GQo1aptHIyKluJN5eluiYhZpa36z6AGTy+13R+dXLsICou2DnF/RvoNn17yPEzCQ
- W6zas0FSoP3jlhH3nsSRvUY5AjfSCD2BKn97Snfov50f9bFl5CLGW/S77FjVtWTK+asu
- IDTMhEY43sSGcQcSMUWSOeLz83MdXR4I4wn3yXYQGQKgHAmN49IzlEfs0DdyxHhcI+bC
- 51Ww==
+ bh=FVk43MZU3eODXH5tqOa2IO00Re4cjN++W5+uBbDHnOk=;
+ b=MTdsakn5gDvM8H6EzXGh6N2XYuj5iL1PQp3UnRM+t0O5IjiL7ZLz0ZECVihA840gMP
+ ++edDcp+SD8S8psSxcVNrtMrCJLrYHBJBwgAOE3yrfVRc3uJMAIh1piNv6sy3zqaNl1s
+ qcBXuy9IEw4UaWyX13ywyweG+dayLUUFemNE6fRthCrpE92ykuBWJZo4oQAGQje7yHwI
+ UUQgOj1WHaROaj3i35Oek+b0mSgUUaHEGoqpEgdnjMvpn0UqZdYT4nkUIkJJ7k/7AH1c
+ b0mtQuiOjZ/IqU4EJB7Rl/qI59cR4zZxtpzEuMb/eGDIoizEWdoADAjI6G5OKiiMCqcu
+ E4Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761192909; x=1761797709;
+ d=1e100.net; s=20230601; t=1761192912; x=1761797712;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dT1VY6c3XA4W7tm/UffiQu1Cbfu56OKc9VjdmzDBxLA=;
- b=sq4d6Qx5u0PiyG4D0+q4yPFS/U5sBYAA3R95MIoBUDiqoBhpKEzlaWjhfRdIWLvNw3
- CvLwBo3rpVL3Go4WiPDPcmEgJBpKZm3Z7OYjxD5/sj9wyUBOq9V1qnrmJKvpGJwpqV5Y
- roFXk7WCqeVTzIdCCfxWmbpXHoXybOmRjeZIr6AOw1gAb+3NlZSW9v4VE60yWDNv6B93
- wuaG2GL0OhLHVHjdoNozLt1Zu3OuC45mQ8htEZo2f+kXL2N/+hLAFchMj2GlgKxGxuea
- yzgXj6+cvOIzxLQZ0DLx0tvAUcx6soVNfoMGYwqeN2TaoOC5hASvib2IGruTbjiXTl+Z
- lAQQ==
-X-Gm-Message-State: AOJu0YwLp2dkaxOoz1R79DfW7HwfvA1+E2k1k9KOY8GaDcPSBVK7D1bW
- MQdw1lD45w7oC0sLZky/R/DXadhLLawQ+DoUbUxBkaktWJyRS7G7lmNs8/o7Aw==
-X-Gm-Gg: ASbGnctOfTd9uUOkbxns+cgY2WeDnMTJH0V4SLBrWqts52CPEb14TmE01FHWDucZOP4
- pVxorkN1pR8lEx3B3IMCyatQgzLftkoboasU6VJo43AM1DGFtp4udt/uURTQJIoFWJ/lfEmb4e7
- qwuWYHqLD+wURIYGZUpgosjGDEWMG+mXJXShGXxu8tj/+4PpTQA+zzCnnFbZwg9JgVznXHUWq9B
- hRAPNiTV5mVJzkzQtkZVFUE4uaYGRTy/JGOWCm2SlxNX+HNNFnd77jy1l6aJ1uudLKFf56sVJeh
- yyWfr2IrnVXaYLsCyxqknWzIy8siOOj4zXYQvPumfoYFOrR4DKZotMqfiYPZWUtsoX0Lpky7NrP
- SveIiY/hNCH6HjfsivaA++W0ycwH2OZvhkuux3UWrMK3KEU/k3G6H+U1vpZq89DRlwnqnUO7IO4
- pQb5HUJlDHD5OhBJOxm44Na5nd5NeyFfbOKT1xiHcCpETeHQjcGKKl80nzgHgfVaj2S5BNfK+UU
- jk0i57Fhw==
-X-Google-Smtp-Source: AGHT+IFV5JCap/WIO1udc1Ykp/0dcm7QZ4cE7drJGzUOU6na5mrhynNB/MxDxm8Grb3FD3Ow2euseg==
-X-Received: by 2002:a05:6a00:228a:b0:780:fd97:77d4 with SMTP id
- d2e1a72fcca58-7a220a7f0d3mr26985619b3a.10.1761192908951; 
- Wed, 22 Oct 2025 21:15:08 -0700 (PDT)
+ bh=FVk43MZU3eODXH5tqOa2IO00Re4cjN++W5+uBbDHnOk=;
+ b=jpRzeYlvDAXnTMbAFqsoQ5GU0AYSJweH5pt3xmQOQN+t4kwtcru/ejwnas/x9AQyMZ
+ a/eL7ftjphYTYAuRAwysvvmLTGB0H3Z1+KtQfVezauAoP1cZxgNYxVbksZq/2D8KgEa7
+ MuXFth0I4vooV7VchQF/VJIp7LpM2SoMP/06DDfooZxLTLbtpY/O3K3zQUe62I5EUU/k
+ IERG6ibQ/cAzljvVKi3vTSCAUPZJ8GOJtvAUmSL9mdoDfMIl7yXQJKzK0FR5kejOAcZQ
+ PT9Ic3KzcF0bq6e97HXhz/Xc+TjzQQVldlAGb7aENBCyygi6hqMIKTdjCC8OG5XrvrE8
+ GGoA==
+X-Gm-Message-State: AOJu0Yz9+QTGQ2V5z3rlxACDR2qSa273bgFx/Vb7GwzAymz7e9s8wKjX
+ Xqm4Klx/Nuq+WLNGhsFobWl/McbJetWW0w/CV1swykt3lkx+qSu3uLsvwg7owg==
+X-Gm-Gg: ASbGnctQ6bpdYw9w0bF0f7MZQJ0HxPSJ9pQFm7JZCBcExFW6xjy7fuaUj1DY/qlIKo/
+ Btsd/+7pHiEjtgJdi5AcZVm7j+Oaix9wuyqaz1LbwEhywH8gEGqDNtOfZ/OYJzXRW1FbXi+hW3p
+ ISugLNOFwisPy/+8E3wUB8UmhrGAmf3L5Kh840tXa/YEhb6Z1X3UqccXoB8Ui9yd/8aIVuMh1j0
+ wrYStlIW/bUKpjl7xxV7Jn7XdL3tA8IVKSdZ7nL7T2zoaD3RkoihVBncD1ddrSw66HaIzWYbpyd
+ QvJB0Xl35Kb2K2LA1ZteDvIBH1uI4DWBMox9X2lD1ZWekq3d9MLoVxb/OJMzxH6vDTv5G07hvCX
+ cQVQzj8tuH9eENMvkD2RhgzY6uyG+ZL05H3a2oKWfqblZs6OictvNE/xtNs5AfTDNrU5WHAGyqx
+ SslnXzK2SYeMw1+ssjXlp05Y9H7anfE/VpW0MCHeAwAznVzDWMYxdM65yJLH4DiMzBfF8SH1eE/
+ vjY1Y0xww==
+X-Google-Smtp-Source: AGHT+IHoR1FNv21hNSxMAio8UNGaDxftyenzMUFtaJfHmXmKSELU8p5JytmGSbbw3DSEiAtP5naukQ==
+X-Received: by 2002:a05:6a00:809:b0:7a2:7a4e:116c with SMTP id
+ d2e1a72fcca58-7a27a4e132amr82731b3a.30.1761192912247; 
+ Wed, 22 Oct 2025 21:15:12 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7a274abe5f0sm961640b3a.34.2025.10.22.21.15.06
+ d2e1a72fcca58-7a274abe5f0sm961640b3a.34.2025.10.22.21.15.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 21:15:08 -0700 (PDT)
+ Wed, 22 Oct 2025 21:15:11 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -73,10 +73,10 @@ Cc: alistair23@gmail.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 06/37] target/riscv: Conceal MO_TE within gen_load_idx() /
- gen_store_idx()
-Date: Thu, 23 Oct 2025 14:14:04 +1000
-Message-ID: <20251023041435.1775208-7-alistair.francis@wdc.com>
+Subject: [PULL 07/37] target/riscv: Conceal MO_TE within gen_fload_idx() /
+ gen_fstore_idx()
+Date: Thu, 23 Oct 2025 14:14:05 +1000
+Message-ID: <20251023041435.1775208-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023041435.1775208-1-alistair.francis@wdc.com>
 References: <20251023041435.1775208-1-alistair.francis@wdc.com>
@@ -110,160 +110,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-All callers of gen_load_idx() / gen_store_idx() set the MO_TE flag.
+All callers of gen_fload_idx() / gen_fstore_idx() set the MO_TE flag.
 Set it once in the callees.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251010155045.78220-7-philmd@linaro.org>
+Message-ID: <20251010155045.78220-8-philmd@linaro.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/insn_trans/trans_xthead.c.inc | 34 ++++++++++++----------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ target/riscv/insn_trans/trans_xthead.c.inc | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/target/riscv/insn_trans/trans_xthead.c.inc b/target/riscv/insn_trans/trans_xthead.c.inc
-index 7e69906e5b..70c563664a 100644
+index 70c563664a..859cbc26cb 100644
 --- a/target/riscv/insn_trans/trans_xthead.c.inc
 +++ b/target/riscv/insn_trans/trans_xthead.c.inc
-@@ -745,6 +745,7 @@ static bool gen_load_idx(DisasContext *ctx, arg_th_memidx *a, MemOp memop,
-     TCGv rd = dest_gpr(ctx, a->rd);
+@@ -349,6 +349,7 @@ static bool gen_fload_idx(DisasContext *ctx, arg_th_memidx *a, MemOp memop,
+     TCGv_i64 rd = cpu_fpr[a->rd];
      TCGv addr = get_th_address_indexed(ctx, a->rs1, a->rs2, a->imm2, zext_offs);
  
 +    memop |= MO_TE;
-     tcg_gen_qemu_ld_tl(rd, addr, ctx->mem_idx, memop);
-     gen_set_gpr(ctx, a->rd, rd);
- 
-@@ -762,6 +763,7 @@ static bool gen_store_idx(DisasContext *ctx, arg_th_memidx *a, MemOp memop,
-     TCGv data = get_gpr(ctx, a->rd, EXT_NONE);
+     tcg_gen_qemu_ld_i64(rd, addr, ctx->mem_idx, memop);
+     if ((memop & MO_SIZE) == MO_32) {
+         gen_nanbox_s(rd, rd);
+@@ -369,6 +370,7 @@ static bool gen_fstore_idx(DisasContext *ctx, arg_th_memidx *a, MemOp memop,
+     TCGv_i64 rd = cpu_fpr[a->rd];
      TCGv addr = get_th_address_indexed(ctx, a->rs1, a->rs2, a->imm2, zext_offs);
  
 +    memop |= MO_TE;
-     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
+     tcg_gen_qemu_st_i64(rd, addr, ctx->mem_idx, memop);
  
      return true;
-@@ -771,32 +773,32 @@ static bool trans_th_lrd(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
-     REQUIRE_64BIT(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_SQ, false);
-+    return gen_load_idx(ctx, a, MO_SQ, false);
+@@ -379,7 +381,7 @@ static bool trans_th_flrd(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVD);
+-    return gen_fload_idx(ctx, a, MO_TE | MO_UQ, false);
++    return gen_fload_idx(ctx, a, MO_UQ, false);
  }
  
- static bool trans_th_lrw(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_SL, false);
-+    return gen_load_idx(ctx, a, MO_SL, false);
+ static bool trans_th_flrw(DisasContext *ctx, arg_th_memidx *a)
+@@ -387,7 +389,7 @@ static bool trans_th_flrw(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVF);
+-    return gen_fload_idx(ctx, a, MO_TE | MO_UL, false);
++    return gen_fload_idx(ctx, a, MO_UL, false);
  }
  
- static bool trans_th_lrwu(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
-     REQUIRE_64BIT(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_UL, false);
-+    return gen_load_idx(ctx, a, MO_UL, false);
+ static bool trans_th_flurd(DisasContext *ctx, arg_th_memidx *a)
+@@ -395,7 +397,7 @@ static bool trans_th_flurd(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVD);
+-    return gen_fload_idx(ctx, a, MO_TE | MO_UQ, true);
++    return gen_fload_idx(ctx, a, MO_UQ, true);
  }
  
- static bool trans_th_lrh(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_SW, false);
-+    return gen_load_idx(ctx, a, MO_SW, false);
+ static bool trans_th_flurw(DisasContext *ctx, arg_th_memidx *a)
+@@ -403,7 +405,7 @@ static bool trans_th_flurw(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVF);
+-    return gen_fload_idx(ctx, a, MO_TE | MO_UL, true);
++    return gen_fload_idx(ctx, a, MO_UL, true);
  }
  
- static bool trans_th_lrhu(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_UW, false);
-+    return gen_load_idx(ctx, a, MO_UW, false);
+ static bool trans_th_fsrd(DisasContext *ctx, arg_th_memidx *a)
+@@ -411,7 +413,7 @@ static bool trans_th_fsrd(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVD);
+-    return gen_fstore_idx(ctx, a, MO_TE | MO_UQ, false);
++    return gen_fstore_idx(ctx, a, MO_UQ, false);
  }
  
- static bool trans_th_lrb(DisasContext *ctx, arg_th_memidx *a)
-@@ -815,19 +817,19 @@ static bool trans_th_srd(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
-     REQUIRE_64BIT(ctx);
--    return gen_store_idx(ctx, a, MO_TE | MO_SQ, false);
-+    return gen_store_idx(ctx, a, MO_SQ, false);
+ static bool trans_th_fsrw(DisasContext *ctx, arg_th_memidx *a)
+@@ -419,7 +421,7 @@ static bool trans_th_fsrw(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVF);
+-    return gen_fstore_idx(ctx, a, MO_TE | MO_UL, false);
++    return gen_fstore_idx(ctx, a, MO_UL, false);
  }
  
- static bool trans_th_srw(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_store_idx(ctx, a, MO_TE | MO_SL, false);
-+    return gen_store_idx(ctx, a, MO_SL, false);
+ static bool trans_th_fsurd(DisasContext *ctx, arg_th_memidx *a)
+@@ -427,7 +429,7 @@ static bool trans_th_fsurd(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVD);
+-    return gen_fstore_idx(ctx, a, MO_TE | MO_UQ, true);
++    return gen_fstore_idx(ctx, a, MO_UQ, true);
  }
  
- static bool trans_th_srh(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_store_idx(ctx, a, MO_TE | MO_SW, false);
-+    return gen_store_idx(ctx, a, MO_SW, false);
+ static bool trans_th_fsurw(DisasContext *ctx, arg_th_memidx *a)
+@@ -435,7 +437,7 @@ static bool trans_th_fsurw(DisasContext *ctx, arg_th_memidx *a)
+     REQUIRE_XTHEADFMEMIDX(ctx);
+     REQUIRE_FPU;
+     REQUIRE_EXT(ctx, RVF);
+-    return gen_fstore_idx(ctx, a, MO_TE | MO_UL, true);
++    return gen_fstore_idx(ctx, a, MO_UL, true);
  }
  
- static bool trans_th_srb(DisasContext *ctx, arg_th_memidx *a)
-@@ -839,32 +841,32 @@ static bool trans_th_lurd(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
-     REQUIRE_64BIT(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_SQ, true);
-+    return gen_load_idx(ctx, a, MO_SQ, true);
- }
- 
- static bool trans_th_lurw(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_SL, true);
-+    return gen_load_idx(ctx, a, MO_SL, true);
- }
- 
- static bool trans_th_lurwu(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
-     REQUIRE_64BIT(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_UL, true);
-+    return gen_load_idx(ctx, a, MO_UL, true);
- }
- 
- static bool trans_th_lurh(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_SW, true);
-+    return gen_load_idx(ctx, a, MO_SW, true);
- }
- 
- static bool trans_th_lurhu(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_load_idx(ctx, a, MO_TE | MO_UW, true);
-+    return gen_load_idx(ctx, a, MO_UW, true);
- }
- 
- static bool trans_th_lurb(DisasContext *ctx, arg_th_memidx *a)
-@@ -883,19 +885,19 @@ static bool trans_th_surd(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
-     REQUIRE_64BIT(ctx);
--    return gen_store_idx(ctx, a, MO_TE | MO_SQ, true);
-+    return gen_store_idx(ctx, a, MO_SQ, true);
- }
- 
- static bool trans_th_surw(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_store_idx(ctx, a, MO_TE | MO_SL, true);
-+    return gen_store_idx(ctx, a, MO_SL, true);
- }
- 
- static bool trans_th_surh(DisasContext *ctx, arg_th_memidx *a)
- {
-     REQUIRE_XTHEADMEMIDX(ctx);
--    return gen_store_idx(ctx, a, MO_TE | MO_SW, true);
-+    return gen_store_idx(ctx, a, MO_SW, true);
- }
- 
- static bool trans_th_surb(DisasContext *ctx, arg_th_memidx *a)
+ /* XTheadFmv */
 -- 
 2.51.0
 
