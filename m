@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7137C000F6
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 11:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDFDC0010F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 11:03:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBrBk-00012O-Jd; Thu, 23 Oct 2025 05:00:52 -0400
+	id 1vBrDG-00020h-1A; Thu, 23 Oct 2025 05:02:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vBrBh-000122-Bf
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 05:00:50 -0400
+ id 1vBrDD-0001zy-RA
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 05:02:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vBrBc-0003rG-H2
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 05:00:48 -0400
+ id 1vBrDB-0003vk-Iw
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 05:02:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761210038;
+ s=mimecast20190719; t=1761210139;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=one7yfDXSubdf//evTy5lANWrQMpj8K0JD+gNHfvif8=;
- b=KsoxxowPlMUU2kR46PYmN1NClqR2HK+L+NQgrMVkzY4vORoruCnO381hFEd69W9ule76CZ
- 7Yp3FcU6/lbEV0QuPNxvYo2GHRE4L0T7KUrudpjqUlbBb970/PuW4s2bBsTGJNSxRWZRHg
- UZ2qX6XFqpnvd8jZzmT7bTp24smR84o=
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6FjeV0ByxThf6Rfy63szC/M7Xv9Wv6uoL+5EPG/+UMw=;
+ b=dI7UqsIpBiaeJQZCCKMGUs4Sirg210T0zyqBgW0Vqt+adDZmeD+yRcIsbhY7xLD9a6MQbV
+ SahO5UVVrFoixHw5q8hOvFqEFJgPfD3h4JcG52x3ZklYF8JQlH385XYKBFaAg2lwYrJLCZ
+ Q4xOrPzkvXUDbHbOu+lpky5n9HjXH4c=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-5k7MC57oPs2QMfjStmYtZA-1; Thu,
- 23 Oct 2025 05:00:34 -0400
-X-MC-Unique: 5k7MC57oPs2QMfjStmYtZA-1
-X-Mimecast-MFC-AGG-ID: 5k7MC57oPs2QMfjStmYtZA_1761210033
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-571-_2zjYVJ8PvKKlBhZmt_0Pg-1; Thu,
+ 23 Oct 2025 05:02:16 -0400
+X-MC-Unique: _2zjYVJ8PvKKlBhZmt_0Pg-1
+X-Mimecast-MFC-AGG-ID: _2zjYVJ8PvKKlBhZmt_0Pg_1761210135
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 11F6C180121E; Thu, 23 Oct 2025 09:00:33 +0000 (UTC)
+ id 9DF7C18089A2; Thu, 23 Oct 2025 09:02:15 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.96])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D55CB19560B5; Thu, 23 Oct 2025 09:00:29 +0000 (UTC)
-Date: Thu, 23 Oct 2025 10:00:26 +0100
+ id 8EC3119560B5; Thu, 23 Oct 2025 09:02:12 +0000 (UTC)
+Date: Thu, 23 Oct 2025 10:02:08 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 00/32] Encode object type security status in code
-Message-ID: <aPnuqpbH6mPpNqzq@redhat.com>
-References: <20250926140144.1998694-1-berrange@redhat.com>
- <87qzuu9j56.fsf@pond.sub.org>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ "reviewer:Incompatible changes" <devel@lists.libvirt.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH v3] audio: deprecate HMP audio commands
+Message-ID: <aPnvEM3SWABt-Ozn@redhat.com>
+References: <20251022105753.1474739-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87qzuu9j56.fsf@pond.sub.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251022105753.1474739-1-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -88,17 +88,25 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 23, 2025 at 09:23:01AM +0200, Markus Armbruster wrote:
-> Doesn't apply cleanly for me.  I fetched it from patchew[*], doesn't
-> rebase cleanly.  Not a blocker for me.
+On Wed, Oct 22, 2025 at 02:57:53PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> [*] https://github.com/patchew-project/qemu tags/patchew/20250926140144.1998694-1-berrange@redhat.com
+> The command is niche and better served by the host audio system.
+> There is no QMP equivalent, fortunately. You can capture the audio
+> stream via remote desktop protocols too (dbus, vnc, spice).
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
+> ---
+>  docs/about/deprecated.rst | 20 ++++++++++++++++++++
+>  audio/audio-hmp-cmds.c    |  7 +++++++
+>  audio/meson.build         |  5 +++--
+>  hmp-commands-info.hx      |  6 ++++--
+>  hmp-commands.hx           |  9 +++++++--
+>  5 files changed, 41 insertions(+), 6 deletions(-)
 
-FYI, I've pushed a rebase to:
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-https://gitlab.com/berrange/qemu/-/tree/docs-security-status
-
-which fixes the conflict in VFIO files.
 
 With regards,
 Daniel
