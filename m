@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91803C01CB0
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B90EFC01C9B
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwMP-0004Wq-3P; Thu, 23 Oct 2025 10:32:13 -0400
+	id 1vBwMN-0004Jl-NN; Thu, 23 Oct 2025 10:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLp-0003V8-Db
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:40 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLu-0003XJ-PL
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:47 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLn-0001xY-Ce
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:36 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4710665e7deso4590435e9.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:31:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLs-0001yN-IS
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:42 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-427084a641aso655962f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:31:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761229893; x=1761834693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761229898; x=1761834698; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uJPhtmNHwD4RyfSudQB2lB4+tgVTD2bBz5E4KUs98F4=;
- b=vhgwCS5kRVWfvpD2WCxrp9a9+z7CxkNFj3z9jDKiKxuAkbDJN5tsGjFfM0NIGdX5t6
- 6tlL5lpWstMJ6ki1yFMFPrDXsiVjZjAwDGlyQW609O2XDjtDrI+ifcTvaDGkJevj8LR2
- x9K32ZtfG2a4o+0MXa5v4HjZ3qNDWalUPwco44s+ZW5cNHSfIxWllZz8J6d2R5MEUR0i
- HxFYyN80jm3cCc9GGAsT4BWvk9JQRaZAACLtxXaYuo9G92ofrboqod0OGj0lSX/ZTSiG
- 8CTHC4jS7fmhK6yii3Llji9rV6xEYXizXKmbnwVDU7DqkI+7BDvgNo4uWLB4McD1lZCh
- zGtQ==
+ bh=Y25iYUJ6/iyXKTCTBsNk+6avJFehWayKoJUbzLs9o+M=;
+ b=EfWX83uJquqDhJRr5SrQO47izZ76X5ek5wspiMBZxnQnv/y77MfRbKSPvTFmscUcTo
+ qR6ANg5d8/MMYukMed9OBf/D4vN+Z7fDX+mujDimlanWoOaHeW+9Y5fZaldVAgIGFUXQ
+ 604o25xKUn1WfREIfjZ0nZ3d3Gbm5atOwiwxMM6IDNAQkurb+RjSCbLom4XrZHWYb/d6
+ nGeZLwEMUqrSTh83mmbzi2C13yPa+VENZe9HkhkQFyOWiziR2USUxLZSdhM06vuxaQdC
+ mU+dCssqGN21/ODdNi0QN/1Tu1nNb1ShSLKh0QWxYcCCTS5Nc5R2KlCPefAb+vATk81a
+ kd7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761229893; x=1761834693;
+ d=1e100.net; s=20230601; t=1761229898; x=1761834698;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uJPhtmNHwD4RyfSudQB2lB4+tgVTD2bBz5E4KUs98F4=;
- b=Lz/ANlTgqYTX5Iy6yupGrbvpzt8dU0Y5SlHhZUvYu7JMJdLY8kzbTkQwvJ9KQMn/Sp
- zR5EYvODhGoWNE7y00AkKE6hSE9sAsEyqvruNIxYylw0FCwwrEwjjuR6SmuYGDpSKlVq
- YxBGwHsZeSeZAL0WLfZKtzQFLvZic7T7mnHuvE8jhfrpiIoRAwRKyGc31YxG/a9dEa4G
- MxcGrEptxPH4LojAs5UMOJk12fwB7ZKv05g1LedmXGcX5HjP2SGmc/lIpFIguygsx/OI
- BWHTBo5pEedpQz5pzM8VPnrJZ40eVEryPkdjqqjN3B9Vt2KzP9fyi0DcrVuAnhzHyK6O
- AGxw==
-X-Gm-Message-State: AOJu0YzBcXqhQAEhUv5tK15vpz3xt+spYBIvRa0ICfwvsYIs72pZGDbj
- VoBfu42v7PagNDOobr3E+dnDHv8a1EvScH5egF+dk75HqVjk/OtAQHAp1lDI/V8LEo/pFcn7jAo
- pedz/BSs=
-X-Gm-Gg: ASbGncsxn+V0h7dIqKuAQyryV7IORtTl7XFGn97SH1xbJuNpnnPOZVmWYHxyXgoIXpe
- VMyFSO6X7olzYA7vAAZC87aLgankKV76KiRAm50mFL+k/LZvoIRQaDiMiU5XeR3VjF5KSKPqaox
- 28BcftiwxHZBqwZ06Zooa2wdcG15/eF9vaRoXvjScvNhkuneBlrJhkLYc1D+q8v2tZXE68EwShD
- GKlqIepnpvi3cUY/gw7D30KeGMGCHjUk30J53o0EjFHCzTKq8RVmq4cWYY2eKEfMRqZYMw82QjH
- 3ari96S6c2NzAqLGAMQXbQ3NyhCNmJcR344P+IN9dCdlTWUKq5O0+WE384IT2/gaRiLGchoDXuo
- +2SHCsG7I1aqEhACd2clDWyrZy4cXylYIVfCSShBCyA8aq/XmUYiTX1vovIY9U42wBxN0KDHbGd
- ZQwoKQxFxN5NLiyoRPJs2SbA8RzlcFJIC0io2eEPwNbg26oR9thl/FcOu8WFk+
-X-Google-Smtp-Source: AGHT+IGTLm24JLDGYoibU7m+mWfY+5u1JheArmeOiHx2uyp7Ijs4kwHqOpR+EEUQxFTEbrfFp4iQ4Q==
-X-Received: by 2002:a05:600c:4695:b0:46e:32dd:1b1a with SMTP id
- 5b1f17b1804b1-475caf92922mr19038425e9.7.1761229892652; 
- Thu, 23 Oct 2025 07:31:32 -0700 (PDT)
+ bh=Y25iYUJ6/iyXKTCTBsNk+6avJFehWayKoJUbzLs9o+M=;
+ b=fG1SYfE10cSzObhKOfQFUA2A9zcmrb5kerQkcBB5SpqZ3WhDnWWiONIP8fsJ59cXZB
+ oejwe/m+3osBjKNR9xm9yMTmvWQy6Ur1BoW4V5ptz5q8sCGHYyeHBlzeX1lCZxwRG4Dr
+ t+dJVD5KLIVJBqHfMSO1TM4z1ud9NTB058mqsp5Nr+JuJMClGJAAi1dVybMCgPywxAwX
+ ZBZLdH3oHZmV+RwAyhJY+DaRyPksgcOvn9qi80QU9M+EDE5q7UVIQbjlgDyBjubA1c5z
+ e093B7wnn7KQ3Zx8ULHAkZv1MhFJDOrA8HTZwXT6ZEXeNYz6az9SfDMqfyZS6J9Q/0Ud
+ 8gKg==
+X-Gm-Message-State: AOJu0YzjMI9PDE1sCC5Y0RzJw8OS3GbX60+vnZIN3gc15K8cTTZSHmjo
+ D/GnCAnls2cj9NO06O/M6qjyQYhTi/Ry01+PqZustZHXJjbuD5CpWuNI2bgA1wLE7jDGuGNW2N8
+ UpBrBiIY=
+X-Gm-Gg: ASbGncvtd+gMs2BlD+WmxNe+t+OOyq4ovIFtL/Stxh7ToMzIkD2k+XiEY+SQVdIqsrF
+ F1364WfxBXfJTgCZf2RI+SPtra4NQOhZIXOaIIdzj3AcIBN8HggqXqsmuzHByk4ZisDx/O7dbvr
+ xND0hgA3atrNPCrYaRd5KAFDg1efaAvUrOtqCGZNdCvXLV76jQXA2b0zNBAaSzaotRy70uTX65e
+ QoVIIydr+7xXcnSaygUU/njecqUkv5fZJNPEzqUbG6YvJTvAK2un0KLWq6sutMT4TNxuYHpdq/Y
+ tW7oVFXxlgJs9UNVYrF3O2Cqps50z9EU1Y3dia+PrXQUqx8RKjCIP7xF68gbtp2Pni3Os/4OZ5Q
+ qKjUpaJj0x4G8KS+td+TFvE3mpMrHRBEFTgtQLZkATOzvaU9+q1pq1wDwtW/LBMzjIFAL0Hv8b4
+ 4imjLF0wFi6pTSpVntdE4X2tMJbPzbZOBgZca9LoA4ZWGb+9Wnbk1Yhh2+SgdL
+X-Google-Smtp-Source: AGHT+IEqqBDXThZqURPuuI0fB68PXXmmwPJNSvl6KtIlYTuzwmIFWn7M+haWwaLGYiiJZsnpUFFlmQ==
+X-Received: by 2002:a05:6000:4285:b0:3ea:80ec:855d with SMTP id
+ ffacd0b85a97d-42704d6c57amr16021787f8f.19.1761229897491; 
+ Thu, 23 Oct 2025 07:31:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c4369b33sm99643335e9.14.2025.10.23.07.31.31
+ ffacd0b85a97d-429897f5696sm4542822f8f.14.2025.10.23.07.31.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Oct 2025 07:31:32 -0700 (PDT)
+ Thu, 23 Oct 2025 07:31:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mads Ynddal <mads@ynddal.dk>, Alexander Graf <agraf@csgraf.de>,
@@ -74,17 +74,17 @@ Cc: Mads Ynddal <mads@ynddal.dk>, Alexander Graf <agraf@csgraf.de>,
  Mohamed Mediouni <mohamed@unpredictable.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Cameron Esfahani <dirty@apple.com>
-Subject: [PATCH v2 28/58] target/arm/hvf: Emulate PMU registers
-Date: Thu, 23 Oct 2025 16:30:49 +0200
-Message-ID: <20251023143051.11195-9-philmd@linaro.org>
+Subject: [PATCH v2 29/58] target/arm/hvf: Emulate Monitor Debug registers
+Date: Thu, 23 Oct 2025 16:30:50 +0200
+Message-ID: <20251023143051.11195-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
 References: <20251023114638.5667-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,35 +111,23 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
 TODO: audit it is safe
 ---
- target/arm/hvf/hvf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ target/arm/hvf/hvf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 26bafee259e..4fc92760934 100644
+index 4fc92760934..67130ce27d2 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1214,6 +1214,10 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
-             *val = env->cp15.c9_pmcnten;
-             return 0;
-         case SYSREG_PMUSERENR_EL0:
-+            /* Call the TCG sysreg handler. This is only safe for PMU regs. */
-+            if (hvf_sysreg_read_cp(cpu, "PMU", reg, val)) {
-+                return 0;
-+            }
-             *val = env->cp15.c9_pmuserenr;
-             return 0;
-         case SYSREG_PMCEID0_EL0:
-@@ -1505,6 +1509,10 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-             pmu_op_finish(env);
-             return 0;
-         case SYSREG_PMUSERENR_EL0:
-+            /* Call the TCG sysreg handler. This is only safe for PMU regs. */
-+            if (hvf_sysreg_write_cp(cpu, "PMU", reg, val)) {
-+                return 0;
-+            }
-             env->cp15.c9_pmuserenr = val & 0xf;
-             return 0;
-         case SYSREG_PMCNTENSET_EL0:
+@@ -1596,6 +1596,9 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+         }
+         break;
+     case SYSREG_MDSCR_EL1:
++        if (hvf_sysreg_write_cp(cpu, "Monitor Debug", reg, val)) {
++            return 0;
++        }
+         env->cp15.mdscr_el1 = val;
+         return 0;
+     case SYSREG_DBGBVR0_EL1:
 -- 
 2.51.0
 
