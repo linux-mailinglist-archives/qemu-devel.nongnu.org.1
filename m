@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B72EC01EB1
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B570C01EC9
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:57:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwjY-0004l3-0S; Thu, 23 Oct 2025 10:56:08 -0400
+	id 1vBwjZ-0004lc-Nc; Thu, 23 Oct 2025 10:56:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBwjW-0004jx-Bf
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:06 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1vBwjX-0004kq-7R
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:07 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBwjU-0005YX-PP
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:06 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-471193a9d9eso10431735e9.2
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:56:04 -0700 (PDT)
+ id 1vBwjV-0005Yh-LN
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:07 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4711f3c386eso7068755e9.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761231363; x=1761836163; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761231364; x=1761836164; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5sQyl4cLeHedDemKHaJUP3GoZkvBtZHXRHUJ6AnG9SQ=;
- b=p0Ye7Ou/JrWO7Bhub14b6ICMbAibpD63fT5+7lCvmxriaINhuzTK/oJBBRyzw+XfHH
- Q0GB3H44XsFr4F0gvZE4r14SOq9W9jJzM9steUMsklWYDOsgXqbkKP22xGRCBk/dqiX0
- qzVXyitNL9MgOe3hEyhUxbqUHR33bD0FjS3gevjHRMbPGC2NRpI5LgJw/wfqAxtk1gcX
- rKke5ijPdkndKTK7tSef25t3gDc6AXIlYqURUghBOM8fXNgZzmJ0WjbjVcDEcVMM23uE
- 3/tDf5P6ER9fVmzu5GghqLB2wx2Fm/OaVFu6z9IQgSqLReE2nxrEv195pBj0qowaFpFN
- /ozQ==
+ :reply-to; bh=Uir+DCzIAMR+d974t4+bUz1BzOrdumPLHshzxJg6y18=;
+ b=omHNIL5jwWoKP2Yy6fmPHi+2t1bMg1aHfqaZyxz/h8pOXIGM50OyuWtZcnTznSy8Cq
+ den9zjIzc52DT184cI4HsORGQ9wTIkuuGLO8JEGqJDXlxDov6vAalfCHN2WORO5Nkblv
+ L4jE2V0MppxeJqJy91eeSl95nWBmwzfLyTQKdKDzFvcakimDFLEkzQjoSAT3h65jFT8W
+ kkUiAwnF0ypXAC0zRQTcqEuO+TSj81zQLTmQZgyMCVZouNQ/F5VWIf3yS9SVMkY/RdE3
+ gsaveM3vBXqFf9fvF9slOs9FSrBnA5JQ2PeootN1dbRiiKUdgRwid93wsytL721mLmec
+ bepg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761231363; x=1761836163;
+ d=1e100.net; s=20230601; t=1761231364; x=1761836164;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5sQyl4cLeHedDemKHaJUP3GoZkvBtZHXRHUJ6AnG9SQ=;
- b=D487ZAXeZBmkgXvzFR38MlHl4AFrFp4cSwjOsuxe3oz+bNHcQlwbHy03kNizCxCDvx
- 49SXYXOb6dNjDmjDxRXSli+0kfkob+57fXbtYQ6/TJtpXrMZaxcJ9khcdfNnPHuoq4yi
- lQ71eIHv8XuPO28PMKiuuC2cZBNs95qsgAWGZVOURWC3iTvfvVpmz8OBkVlb2N9lYuGz
- /xFXff76b+HiGLIl6JozN5pEBZ/rN+W0zRFFarPi+4WWRw/ilSpDDvZfNrPNWurdkEab
- oZ3en+DGe/dFwgSw2AtV3RyAgvc/e2Mb7YvES+Vt0jbJm/2kzBCYUd6KTh/sUAASOpmm
- A3tw==
-X-Gm-Message-State: AOJu0YzAF2GR2rIukNgcKpj3gR16AS6vG5M1RM/dw9LNmKwcRdzo1MdL
- IE7qsIbfXPY16TacOAbPsEkSMsbgbO2I/R3fZGSumb0gEW4DzQSu8W6ca9isZtLSTNuU1yLvHhj
- JnzRk
-X-Gm-Gg: ASbGnctIrxR+i5Uj7Li4y6uEzIk4OZ9xcyIyh3iEKiIKDe1RgvrhwLs6KV+17urFEtv
- d1K4VN05a6RtZ8rIzd/KOyZn9VC0uzIim8tqVtNxST3WWhzMHWSKKlZc3m9BIi7Z+Zf8rYiK5Ur
- hCOPdHCR7I+dFbXzM2VNnlIzxMlNvWTSCgAyuhgA0jvhbnIzkD8Uexlo0dbDjN9QmWWuX3AmfMq
- Ayr+AlRGThmFhEAbuMjDeW142rxdaPQwFEM/OatBQ1PCZa+VWrLbx/EcRQTbavwa2JiR/3di8p3
- BGynJ9T1YkP0tZnHoZ+Sf+BU1aD6VpNkS1rTM5ZuEkftLUEcrUkXDen9Iv8PsGGLZA8lJY/LyB3
- PTyCsGt+QDgYZDKH3x6osF98lGfCR81e8KX0r7upSQr53YP3IELBnCcpVI8s+nH3R7hMJ+8McR9
- 1QFA879A==
-X-Google-Smtp-Source: AGHT+IGY+LLlvHHren1jOocvq4LuYLSJ8zUq31NR80RYcIG9fqGVn0NgfvgJZdhbJRWHmKispxfZGg==
-X-Received: by 2002:a05:600c:871a:b0:46e:4882:94c7 with SMTP id
- 5b1f17b1804b1-471179177camr197675805e9.28.1761231362679; 
- Thu, 23 Oct 2025 07:56:02 -0700 (PDT)
+ bh=Uir+DCzIAMR+d974t4+bUz1BzOrdumPLHshzxJg6y18=;
+ b=dKqT6sZ/KsqC+zoFw6pK7u3+kHw+qSd5O3fAHOdCiBwCb7uRGDf93piJ+bDa2xpFO7
+ Tnwoo0sauYuwhqgkZ0Tlg/cemLNk18/kR/wa984lvUOi+kZJASKDNsF9f9v1Ghshbkf9
+ Dw6AMK9mcIbh9ltc9wvP8hQ1CA9+AwtPqyH1o6x4JY+2TVsoSyYzeYRwsXwaya4nqkwu
+ Uq4IR5D0Zifp2WONrEPz4ODb9xM8U5D6yRpjWhsCTyTnB8A0axmZinq8vivw0ZxRSlnD
+ 477iH6Jh2pdPI8I9CYBzfSX8mtgrRVm+hKzWYcFTWnelcPhXRoJhFgl/w6/FEJEZlnmg
+ aYUQ==
+X-Gm-Message-State: AOJu0YzsjryYxXWCH9ctEFEiJHQIQsxKuKL3LeiZ7yHqtGvTVP8wVe4U
+ FKTivarmePIwznGcoQBdUNhhSAIhywzBNZ29zvrnNexF577aDX7dnFzfiAExEDFiNoXveBrfQnA
+ +lrSA
+X-Gm-Gg: ASbGncvTC32VCkac19aEa4KHl/KXCjtf64Wnp4/Y0j6GW1VNj1kis8GYeAQAun/dI2j
+ fEGp+Tdjyc0EU0renK2NicAVZeOqa7XYZ/b2KWjuQ3ffyDPNfvvmmFXgOElo+19jO9ZBfUD+CCf
+ mQ7MviXh9lnyrTMxXXEDEKR6NBJeUsIHEebIBsvyEhQBro9gQ69onysIEpam+oRMk83GCxnCIgR
+ c+K+ehthdoksStIP+t++Jh97VrkDFqxBUSvZtJvGWsg6v6MSqCdpivC1JChce0D+40sTw0XCuGX
+ M8TRgva8LweyBCLYonbtoPXPRDX1vgDwzBMMRa+TKKE4/UmaBW92HHwyo1/15vKWRbqbYbbvoKx
+ +AJ57Xp/pw5RpL+Ij/yZ40q3Flz8R6SUUP7cX1q9zmaOcj+UNuJrAtPWzQAD0oS7WdGGGSV+zGu
+ KXJMPNQWb7frgBBGiV
+X-Google-Smtp-Source: AGHT+IGFH9fqQoz5JcUH9ZqWVsIxK2xPgUeyiXkZk/iYHaU8qxWV//fmaDrJ3pjKff8VfgAipIU3Eg==
+X-Received: by 2002:a05:600c:3548:b0:471:131f:85aa with SMTP id
+ 5b1f17b1804b1-471178a74a2mr148248165e9.13.1761231363677; 
+ Thu, 23 Oct 2025 07:56:03 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429898acc63sm4398465f8f.27.2025.10.23.07.56.01
+ ffacd0b85a97d-429898acc63sm4398465f8f.27.2025.10.23.07.56.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 07:56:02 -0700 (PDT)
+ Thu, 23 Oct 2025 07:56:03 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/16] target/arm: Drop trivial assert vs attrindx
-Date: Thu, 23 Oct 2025 15:55:44 +0100
-Message-ID: <20251023145554.2062752-7-peter.maydell@linaro.org>
+Subject: [PULL 07/16] target/arm: Use el local indexing mair_el
+Date: Thu, 23 Oct 2025 15:55:45 +0100
+Message-ID: <20251023145554.2062752-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251023145554.2062752-1-peter.maydell@linaro.org>
 References: <20251023145554.2062752-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,25 +100,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-We just extracted 3 bits; the <= 7 test is trivially true.
+We already have regime_el() computed to a local.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251014195017.421681-5-richard.henderson@linaro.org
+Message-id: 20251014195017.421681-6-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/ptw.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/arm/ptw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index d4386ede73e..54c45fc9feb 100644
+index 54c45fc9feb..5fcf1042726 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -2320,7 +2320,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+@@ -2319,7 +2319,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+ 
          /* Index into MAIR registers for cache attributes */
          attrindx = extract32(attrs, 2, 3);
-         mair = env->cp15.mair_el[regime_el(mmu_idx)];
--        assert(attrindx <= 7);
+-        mair = env->cp15.mair_el[regime_el(mmu_idx)];
++        mair = env->cp15.mair_el[el];
          result->cacheattrs.is_s2_format = false;
          result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
  
