@@ -2,62 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D8FC02E4E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 20:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B43AAC03046
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 20:36:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBzw2-0002CD-ES; Thu, 23 Oct 2025 14:21:14 -0400
+	id 1vC098-0006kV-Aq; Thu, 23 Oct 2025 14:34:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vBzvt-0002AZ-SN
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 14:21:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vC08x-0006hh-2F
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 14:34:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vBzvr-0006Us-I1
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 14:21:05 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vC08o-0008NN-SG
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 14:34:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761243661;
+ s=mimecast20190719; t=1761244459;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tpvw1ocDqVJ6iJOZ/XM4STlfLgrjUCg2rMhKsgkLDp0=;
- b=VVCn8oYyW2Yea1aR0vqwOe7cz+28BzQKEpmdDfC9ChGY0S40iszn51j6EJJybbmLpbpC/Y
- Nb9cd7niGSaCv1qMCNPwYezBX6FNzAIOgIq7Hy3CPY6cWLJYAzoKohfDp9hfol0u/JbVt8
- JEZm0zO2zvPA+LeSaGre6qNLgvSrVHU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-BraGkLnwNTi21S2NyBwY8Q-1; Thu,
- 23 Oct 2025 14:20:59 -0400
-X-MC-Unique: BraGkLnwNTi21S2NyBwY8Q-1
-X-Mimecast-MFC-AGG-ID: BraGkLnwNTi21S2NyBwY8Q_1761243657
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03368195609D; Thu, 23 Oct 2025 18:20:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.225.90])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3EC633000B50; Thu, 23 Oct 2025 18:20:54 +0000 (UTC)
-Date: Thu, 23 Oct 2025 20:20:51 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: =?iso-8859-1?Q?Cl=E9ment?= Chigot <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, qemu-block@nongnu.org
-Subject: Re: [PATCH 1/5] vvfat: introduce no-mbr option
-Message-ID: <aPpyAzn7abZZ5WNv@redhat.com>
-References: <20250903075721.77623-1-chigot@adacore.com>
- <20250903075721.77623-2-chigot@adacore.com>
+ bh=vx2HDZNtLxUMfZCBDty82P24MN4iwcy/ajPXvNtcWx4=;
+ b=BV9DRSVBM9XKLW96ptlvuo5cSIGD6q5oGiiD6oyLPkP2BFe9nqz9BzclDCR166IhkygVZ/
+ Q7wnEfUMjdXtWH1AXRBXn3BRQpd1PBeWlJGrN1AZDnsZ6w2a6xAEpetu2yor/cBX0Uz4kS
+ M4UKCbv0mwFVseYyvO1bIzv9wsCulbQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-SsGDvoM3NiKe__Q3NWvc_w-1; Thu, 23 Oct 2025 14:34:15 -0400
+X-MC-Unique: SsGDvoM3NiKe__Q3NWvc_w-1
+X-Mimecast-MFC-AGG-ID: SsGDvoM3NiKe__Q3NWvc_w_1761244455
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-87c2085ff29so30760936d6.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 11:34:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761244455; x=1761849255;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vx2HDZNtLxUMfZCBDty82P24MN4iwcy/ajPXvNtcWx4=;
+ b=OFzmtJ3ItHu6tEX/A4yoMVJXgdpQvIY/rYjXjEj578PfHhuzod2pFq/cgA8GvFGN3z
+ lXbQ+KawMfvvCJiR9sBmMC6lSvvj0pQ3zLeXd/WdOM4VblMLAuKWpw2ymWUz5PgaABnd
+ Ssd8DUHNlF5impRr6lBR+CqcthPfxx97pEuUTunqtmQgGMHOcPz0vDyiDYn9KT185Bqy
+ RLqAHh6jSkKnwjPn8K8PUnhCq9KbzFoqj88dQ6Naj8pkiTk/RyVXXuFs/rbbJ2/Kq5Ep
+ D8fpmURuNT0yYmN4iEXc7kkGdLyeoeYouQeH0BfyHpjVwGWxc0vxJYjuAZl0l7K/2Tmx
+ JsfA==
+X-Gm-Message-State: AOJu0Yz3uG9qO1PDN2z1yM4J/OFiwjDvPAbSD150B79AI9LLE6voVLtD
+ A9c49eWtPP+puITSHdgH/SbAR007222AyZa5Pwt1xPIaFnM0pLr9V/JiZLiRG36VnJdjH6r20wz
+ AMCySWUXTJyn9VvBwXrVDRdeHYWYFeZxEbydo33N+HHYRVK2xg2gPxTK4
+X-Gm-Gg: ASbGncsT5edweUdFhs+a9rFVK/5kVNE5seNPpEK8LkaSGtZyKfkV+O/g9zM8iwon6LV
+ VL2mAvHomgwaR7Yfe77IXwVL+pjnMw+3vW8Aky0sloLoz8aPPWEtmPNdMg7IhaDGF4aO3+hzqAr
+ Btq+v5h9Fy9NFhjhpDcabItVVXhJ17t6R3hsdPGtkKnzW++4h8+37cBtbAeaQrfyfdcHKT5cUrs
+ E4zMbOUyASy0PWl/pbYqzUYROrxtM5fgvEiwnkOsnzZeNjMKWSfH+xpGrBi7bzmx2AZEoEn1xpo
+ ymbPmCqUdjZl6AOsZwn0p8Pfah82ctY6VoWwFsQYLhzEiGtG99fgqbgWLWoWw0lqxxA=
+X-Received: by 2002:a05:622a:1341:b0:4e8:b980:4792 with SMTP id
+ d75a77b69052e-4e8b9804bbdmr206932861cf.37.1761244455176; 
+ Thu, 23 Oct 2025 11:34:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF30cbO0GOkDg/Yz7xFTV1hItlJGB/tYGJSHOqvXpMApN3cCW37llsD73Y8WG6xnhI4i+1+nQ==
+X-Received: by 2002:a05:622a:1341:b0:4e8:b980:4792 with SMTP id
+ d75a77b69052e-4e8b9804bbdmr206932451cf.37.1761244454665; 
+ Thu, 23 Oct 2025 11:34:14 -0700 (PDT)
+Received: from x1.local ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4eb80804d81sm18966571cf.19.2025.10.23.11.34.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Oct 2025 11:34:13 -0700 (PDT)
+Date: Thu, 23 Oct 2025 14:34:11 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Juraj Marcin <jmarcin@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] migration/cpr: Document obscure usage of g_autofree when
+ parse str
+Message-ID: <aPp1IwqiGpBUToWg@x1.local>
+References: <20251023161657.2821652-1-peterx@redhat.com>
+ <aPppA7F1WamLCFdP@gallifrey>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250903075721.77623-2-chigot@adacore.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <aPppA7F1WamLCFdP@gallifrey>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,92 +104,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 03.09.2025 um 09:57 hat Clément Chigot geschrieben:
-> This option when set prevents a master boot record (MBR) to be
-> initialized. This is mandatory as some operating system don't recognized
-> mounted disks if a MBR is present.
+On Thu, Oct 23, 2025 at 05:42:27PM +0000, Dr. David Alan Gilbert wrote:
+> * Peter Xu (peterx@redhat.com) wrote:
+> > HMP parsing of cpr_exec_command contains an obscure usage of g_autofree.
+> > Provide a document for it to be clear that it's intentional, rather than
+> > memory leaked.
+> > 
+> > Cc: Dr. David Alan Gilbert <dave@treblig.org>
+> > Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >  migration/migration-hmp-cmds.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+> > index 847d18faaa..79426bf5d7 100644
+> > --- a/migration/migration-hmp-cmds.c
+> > +++ b/migration/migration-hmp-cmds.c
+> > @@ -734,6 +734,12 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+> >          visit_type_bool(v, param, &p->direct_io, &err);
+> >          break;
+> >      case MIGRATION_PARAMETER_CPR_EXEC_COMMAND: {
+> > +        /*
+> > +         * NOTE: g_autofree will only auto g_free() the strv array when
+> > +         * needed, it will not free the strings within the array. It's
+> > +         * intentional: when strv is set, the ownership of the strings will
+> > +         * always be passed to p->cpr_exec_command via QAPI_LIST_APPEND().
+> > +         */
 > 
-> Signed-off-by: Clément Chigot <chigot@adacore.com>
-
-Can we actually give an example of such an OS in the commit message?
-
-> ---
->  block/vvfat.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
+> Eww that's a bit weird isn't it.
+> It's not clear to me if g_shell_parse_argv() might return an error part
+> way through its parsing, and if it does whether there may be valid entries in
+> strv which really do need freeing.
 > 
-> diff --git a/block/vvfat.c b/block/vvfat.c
-> index 814796d918..0220dd828b 100644
-> --- a/block/vvfat.c
-> +++ b/block/vvfat.c
-> @@ -1082,6 +1082,11 @@ static QemuOptsList runtime_opts = {
->              .type = QEMU_OPT_BOOL,
->              .help = "Make the image writable",
->          },
-> +        {
-> +            .name = "no-mbr",
-> +            .type = QEMU_OPT_BOOL,
-> +            .help = "Do not add a Master Boot Record on this disk",
-> +        },
+> https://docs.gtk.org/glib/func.shell_parse_argv.html doesn't seem to say.
 
-Let's keep option names positive to avoid double negations like
-'no-mbr=false'. We can have an 'mbr' option that defaults to true. Or in
-fact, maybe calling it 'partitioned' would be easier to understand.
+I checked glib code, it should be fine, the code looks like this since 2000:
 
-You need to update BlockdevOptionsVVFAT in qapi/block-core.json, too, to
-make the new option work with -blockdev. You should update the
-description for @floppy there, too, because it says that hard disks are
-always partitioned.
+gboolean
+g_shell_parse_argv (const gchar *command_line,
+                    gint        *argcp,
+                    gchar     ***argvp,
+                    GError     **error)
+{
+  ...
+ failed:
 
-It should also be added to vvfat_strong_runtime_opts because the value
-of this option changes the data that the guest sees.
+  g_assert (error == NULL || *error != NULL);
+  g_strfreev (argv);                            <-------------
+  g_slist_free_full (tokens, g_free);
+  
+  return FALSE;
+}
 
->          { /* end of list */ }
->      },
->  };
-> @@ -1092,6 +1097,7 @@ static void vvfat_parse_filename(const char *filename, QDict *options,
->      int fat_type = 0;
->      bool floppy = false;
->      bool rw = false;
-> +    bool no_mbr = false;
->      int i;
->  
->      if (!strstart(filename, "fat:", NULL)) {
-> @@ -1116,6 +1122,10 @@ static void vvfat_parse_filename(const char *filename, QDict *options,
->          rw = true;
->      }
->  
-> +    if (strstr(filename, ":no-mbr:")) {
+The hope is with the comment, the current way is still the most efficient,
+avoiding strdup()s.
 
-In the string, the negative form can stay (because the positive one
-doesn't exist here).
+Still, let me know if any of us still prefer changing the code instead of
+adding the comment..  The perf isn't a major issue, afaiu.  But it's still
+good to consider that always, I believe that was when Steve developed this.
 
-> +        no_mbr = true;
-> +    }
-> +
->      /* Get the directory name without options */
->      i = strrchr(filename, ':') - filename;
->      assert(i >= 3);
-> @@ -1131,6 +1141,7 @@ static void vvfat_parse_filename(const char *filename, QDict *options,
->      qdict_put_int(options, "fat-type", fat_type);
->      qdict_put_bool(options, "floppy", floppy);
->      qdict_put_bool(options, "rw", rw);
-> +    qdict_put_bool(options, "no-mbr", no_mbr);
->  }
->  
->  static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-> @@ -1196,7 +1207,10 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
->          if (!s->fat_type) {
->              s->fat_type = 16;
->          }
-> -        s->offset_to_bootsector = 0x3f;
-> +        /* Reserver space for MBR */
-> +        if (!qemu_opt_get_bool(opts, "no-mbr", false)) {
-> +            s->offset_to_bootsector = 0x3f;
-> +        }
->          cyls = s->fat_type == 12 ? 64 : 1024;
->          heads = 16;
->          secs = 63;
+Thanks!
 
-Kevin
+-- 
+Peter Xu
 
 
