@@ -2,61 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D08C029EC
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B77DC02A22
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:03:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vByfa-0004qR-6c; Thu, 23 Oct 2025 13:00:10 -0400
+	id 1vByiU-0006oy-LE; Thu, 23 Oct 2025 13:03:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1vByfW-0004lk-0B
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:00:06 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1vByfS-0005iC-VZ
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:00:05 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 0A46F8086B;
- Thu, 23 Oct 2025 20:00:01 +0300 (MSK)
-Received: from davydov-max-lin.yandex.net (unknown
- [2a02:6bf:8011:f00:ef9:2188:6644:f7b6])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 8xbwbU0ImGk0-Jw1D5jFi; Thu, 23 Oct 2025 20:00:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761238800;
- bh=2jgKdiMkswKfHdeVn84I4j71Yy3RosUUcW+e/xTiSbM=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=B8rEgs22F3d80qr6IzsN6kFdJ2xrvE2/6GqPh7W8yukM5Fs5zBWAyIZ5F94vhJdvO
- yODavFL/+3UVlMcCxU1QNsL3NCwBAi12JhPlcm2X7G9ecidoNFq9/hWZQRzhjRF3sd
- tLEW/M76sLfOzHrNGePLBvWw4BQgo8uc4RiAlil8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Maksim Davydov <davydov-max@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: crosa@redhat.com, jsnow@redhat.com, davydov-max@yandex-team.ru,
- philmd@linaro.org, vsementsov@yandex-team.ru
-Subject: [PATCH 2/2] scripts/compare-mt: stop using global variables
-Date: Thu, 23 Oct 2025 19:58:46 +0300
-Message-Id: <20251023165846.326295-3-davydov-max@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251023165846.326295-1-davydov-max@yandex-team.ru>
-References: <20251023165846.326295-1-davydov-max@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vByiQ-0006nm-Kx
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:03:06 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vByiO-0006TT-SY
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:03:06 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-b3e234fcd4bso199552766b.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 10:03:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1761238983; x=1761843783; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lRFOS9vWQLsIf7YSp0CpPuUhihCN5JPDMh7Wa4ZB3VY=;
+ b=TJMn7PwBuqoI/19eDQZ/lDfqtCxbmcsrV5YmTW6yP1BrIaw/8dmkWutnn/K64H95gS
+ qO4HbhnxHCAzXmfkzlzqd8d6JuJGZINJjeGC6UVCfm1AFg25IQna4m+RJD5utgzCzpjc
+ OH7NbAfEo4tlyiIT2Jf/MKeLd4I+VNPUqj/Nm0ZORAxuymlYZtkLGDbgnc8HSnepH6XS
+ N83zQiMVFb4D3+qtHB0dM1ig0l7gWs4EyRRTH7Eor21nAni/z+TIaJ4BaolJ0Ydl5Ofd
+ 7Te5BSOt6kSQtQ61pitnJNv5jlHldGQhaLfYSeXzGStXv3NN/wEg73gNlY8mYZmeddsH
+ 8KrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761238983; x=1761843783;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lRFOS9vWQLsIf7YSp0CpPuUhihCN5JPDMh7Wa4ZB3VY=;
+ b=QRF+NBcSr/K6Cs+B2Cg+tg8lm02Glc6tAKRT7gde8SdfEGSs0BNyyOztcefUmaJzEa
+ RSyp/+Xcww5Gl9XlvI7FwJB8WfKEtQf29jrY/6jgtalkPuE3pt8TAHJG1pZPn/Rfy/dH
+ 0FwkpXmfKSJJOV5xmg6OcbcVdyXn5gC5Lpdxf+PXomRAdGTUIhjBDUIDguH79h4ybsR+
+ SJjqXQdSLQkUcGTTxxBCccdyDi9W+dRW6hBCckGb4DZTNLYyo/AHcZeu/kwOnkfmaWPs
+ yxc+PC5K5D6ux/qXanNleaJO2d+gHibQ4fL+cIlz7F9rxqKdOj3ReKkr9RXzo+cbLfdg
+ JEeA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVVcZAclBeUO6ZfFgac2m3lHz/14jlNKrW7LhdurGSQb1+c5xlor20HqYSPQjfTjmuEzXUsHBYeEKOH@nongnu.org
+X-Gm-Message-State: AOJu0YwEwyNGfboD7GqpXMlR9VgZKCsNsc5eDCkbHlzh0upo/PdzKqwA
+ 1aDGKNRThm3R24NzsVZAHtmepYFZ0JiY7WNJae0+MK6RmBN1RCjft1Sm
+X-Gm-Gg: ASbGncuyzK/uImyjqST1rKPCe1TZ1RtaV1cwUQC0HRGTR+RXL95Mv1vQxtB6z6SiDR+
+ M3C0WzHF1Xeyu+ZMJXl4JbSyws9qME36WloEKpro2rf3FOVHHPkZD3YED2DAdP2anY89rKBClIV
+ 2AN7PGIwM2q5fptj2VlZ4LnAbTtVMR71Eyx9cNm1MPjxuQEjyI0d0C+xruM2rJJeBxTeOhA/MHO
+ Sg79R3UL8u6sz5jTG/D5DNEoRm7rT7g8OoeBqUBWMurmEd319eaAokxWvpmK70Pkbx4cEGasqsm
+ eaOH2mB+1GeRS6w7IDCJwcpouFY1pOegC5zZtDMQy5bFsUhOQO27kevT02Oi18AmfPAO2QEGkpz
+ lKl3E7FM2z2aWHSSw/d2JUvvEtOzipHycVzjnxKWTeqwVLdicA5ZZLge2vP4WxxkIkCtjQARY+/
+ 56k+pj3QZKFN6QJ8vOfhVYRdvpJInr6wnbRWkZCQXnpvI=
+X-Google-Smtp-Source: AGHT+IFoCA0ZxzVDg1+ILaAZKVQzRMksVjUmfnL1RLSWuIAUgydiwvg/IRa3z+n8QNHpG8feaoY6fg==
+X-Received: by 2002:a17:907:d93:b0:b32:2b60:f13 with SMTP id
+ a640c23a62f3a-b6473f42d62mr3091022766b.54.1761238982590; 
+ Thu, 23 Oct 2025 10:03:02 -0700 (PDT)
+Received: from ehlo.thunderbird.net (ip-109-41-114-163.web.vodafone.de.
+ [109.41.114.163]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b6d511d012bsm311143066b.7.2025.10.23.10.02.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Oct 2025 10:02:59 -0700 (PDT)
+Date: Thu, 23 Oct 2025 17:02:56 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>
+CC: Alexander Graf <agraf@csgraf.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, Mads Ynddal <mads@ynddal.dk>,
+ qemu-arm@nongnu.org, Ani Sinha <anisinha@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Pedro Barbuda <pbarbuda@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v7_24/24=5D_whpx=3A_apic=3A_use_non-deprec?=
+ =?US-ASCII?Q?ated_APIs_to_control_interrupt_controller_state?=
+In-Reply-To: <0C41CA0E-C523-4C00-AD07-71F6A7890C0E@gmail.com>
+References: <20251016165520.62532-1-mohamed@unpredictable.fr>
+ <20251016165520.62532-25-mohamed@unpredictable.fr>
+ <2cbd9feb-2c20-46e0-af40-0bd64060dfba@linaro.org>
+ <6982BC4E-1F59-47AD-B6E6-9FFF4212C627@gmail.com>
+ <60cd413d-d901-4da7-acb6-c9d47a198c9c@linaro.org>
+ <0C41CA0E-C523-4C00-AD07-71F6A7890C0E@gmail.com>
+Message-ID: <4F98A2AD-02A7-4A7F-91B8-269E9EC8E5B1@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
- envelope-from=davydov-max@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,62 +122,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All variables inside the main if-structure are global that can be
-confusing or be the reason of an issue. So, all code inside this structure
-was moved to the separate function to detect all usages of these global
-variables. All these usages were deleted.
 
-Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
----
- scripts/compare-machine-types.py | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/scripts/compare-machine-types.py b/scripts/compare-machine-types.py
-index dba9e03548..e6fcea22e1 100755
---- a/scripts/compare-machine-types.py
-+++ b/scripts/compare-machine-types.py
-@@ -264,7 +264,6 @@ def __init__(self, vm: QEMUMachine,
-                  req_mt: List[str], all_mt: bool) -> None:
-         self._vm = vm
-         self._binary = vm.binary
--        self._qemu_args = args.qemu_args.split(' ')
- 
-         self._qemu_drivers = VMPropertyGetter(vm)
-         self.req_mt = get_req_mt(self._qemu_drivers, vm, req_mt, all_mt)
-@@ -482,17 +481,17 @@ def fill_prop_table(configs: List[Configuration],
- 
- def print_table(table: pd.DataFrame, table_format: str) -> None:
-     if table_format == 'json':
--        print(comp_table.to_json())
-+        print(table.to_json())
-     elif table_format == 'csv':
--        print(comp_table.to_csv())
-+        print(table.to_csv())
-     else:
--        print(comp_table.to_markdown(index=False, stralign='center',
--                                     colalign=('center',), headers='keys',
--                                     tablefmt='fancy_grid',
--                                     disable_numparse=True))
-+        print(table.to_markdown(index=False, stralign='center',
-+                                colalign=('center',), headers='keys',
-+                                tablefmt='fancy_grid',
-+                                disable_numparse=True))
- 
- 
--if __name__ == '__main__':
-+def main() -> None:
-     args = parse_args()
-     with ExitStack() as stack:
-         vms = [stack.enter_context(QEMUMachine(binary=binary, qmp_timer=15,
-@@ -506,3 +505,7 @@ def print_table(table: pd.DataFrame, table_format: str) -> None:
-         comp_table = fill_prop_table(configurations, args.raw)
-         if not comp_table.empty:
-             print_table(comp_table, args.format)
-+
-+
-+if __name__ == '__main__':
-+    main()
--- 
-2.34.1
+Am 23=2E Oktober 2025 09:23:58 UTC schrieb Bernhard Beschow <shentey@gmail=
+=2Ecom>:
+>
+>
+>Am 23=2E Oktober 2025 06:33:18 UTC schrieb "Philippe Mathieu-Daud=C3=A9" =
+<philmd@linaro=2Eorg>:
+>>On 20/10/25 12:27, Bernhard Beschow wrote:
+>>>=20
+>>>=20
+>>> Am 16=2E Oktober 2025 17:15:42 UTC schrieb Pierrick Bouvier <pierrick=
+=2Ebouvier@linaro=2Eorg>:
+>>>> On 10/16/25 9:55 AM, Mohamed Mediouni wrote:
+>>>>> WHvGetVirtualProcessorInterruptControllerState2 and
+>>>>> WHvSetVirtualProcessorInterruptControllerState2 are
+>>>>> deprecated since Windows 10 version 2004=2E
+>>>>>=20
+>>>>> Use the non-deprecated WHvGetVirtualProcessorState and
+>>>>> WHvSetVirtualProcessorState when available=2E
+>>>>>=20
+>>>>> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable=2Efr>
+>>>>> ---
+>>>>>    include/system/whpx-internal=2Eh |  9 +++++++
+>>>>>    target/i386/whpx/whpx-apic=2Ec   | 46 +++++++++++++++++++++++++--=
+-------
+>>>>>    2 files changed, 43 insertions(+), 12 deletions(-)
+>>>>=20
+>>>> Reviewed-by: Pierrick Bouvier <pierrick=2Ebouvier@linaro=2Eorg>
+>>>=20
+>>> Couldn't we merge this patch already until the rest of the series is f=
+igured out?
+>>
+>>OK if you provide your Tested-by tag (:
+>
+>Oh, I did for an older version of the series w/o this patch: <https://lor=
+e=2Ekernel=2Eorg/qemu-devel/5758AEBA-9E33-4DCA-9B08-0AF91FD03B0E@gmail=2Eco=
+m/>
+>
+>I'll retest=2E
 
+Unfortunately I get:
+
+WHvSetVirtualProcessorInterruptControllerState failed: c0350005
+
+and the VM terminates=2E Reverting the patch resolves the problem=2E
+
+Best regards,
+Bernhard
 
