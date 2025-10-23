@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1983AC02CDF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA954C02CF4
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:56:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBzVM-0007cb-K7; Thu, 23 Oct 2025 13:53:40 -0400
+	id 1vBzXu-0000Kt-7m; Thu, 23 Oct 2025 13:56:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
- id 1vBzVJ-0007c2-PV
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:53:37 -0400
-Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBzXe-0000A0-EU
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:56:06 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <raphael.s.norwitz@gmail.com>)
- id 1vBzVE-0003Et-TT
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:53:35 -0400
-Received: by mail-il1-x133.google.com with SMTP id
- e9e14a558f8ab-430cd27de3eso5303545ab.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 10:53:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBzXa-0003aV-Sn
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:56:00 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-47117f92e32so10649995e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 10:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761242010; x=1761846810; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gLxuKcSubCR6viDDbMsAbQt9pP1J4RDabAVm7vVMkeg=;
- b=JsvNhQX11pnNU4aJb9eb9WE4jdfb6Mc3kyTh1Ol6KA5sI3DR+dP3fW16jdLQrV3nXO
- kGSm9gX+SknopwzECYmtwI8ESgMUOGh3qE8rKF/SEqDfHQ6SWYa6tE8jITFw0xxGO1zm
- Jj7cA3vW9feJ9EzruB6fVBRr3JUaddqYfW7lH0yOygxQrNrQWmyZAtpNpRs/wUymUXxV
- j06XvFYlt74vWxZgb98ieyqUaamM/4uHJ1U87ktUzlx9O2GBytgKhMwE2TRhZkDSG0x/
- jZZMyYYsmgO5MPBFQX3oyElcl5pp+FEoAAh3mC9EYX+YAmUiSMMQhNlsMeO7wiwuOUHY
- rQQg==
+ d=linaro.org; s=google; t=1761242157; x=1761846957; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=n+obvAx1Tk32r7xzbZXaZN9kGErxtn5ECBBwFi5HAMI=;
+ b=qM3LynL8lqk5CR8vvbsadkzN/s2+v0qOwQx/PK+7c42B17X3JpYp7hRdEqnF+K1mDl
+ Rj6khGoQ5NxKYiR03RDJpjK5RQcZ43BevYDLoxKEm9EUXKi8PEqnFwGBNKfJ/kZMEqQO
+ 6EDY0ajrQmOxkYreLS+KdIv3Ltp5YIUbF+jrhQ4VzcNT+vqtrpGX9BPNbGk7MjdMMbg/
+ zkCafGxpPzV66ZiKPB2FCQ8xrDwmwpgZEegl2vP6Lw0PvVdGQ/iL5u7BHVc86s4+E4DH
+ gm0E70Q2mj2uw5i38P7My45FV9EItFlQAQMZU/cH5w5I+TvnP0vSh8Gp2S1nvpyyj/Sh
+ 9qvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761242010; x=1761846810;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gLxuKcSubCR6viDDbMsAbQt9pP1J4RDabAVm7vVMkeg=;
- b=ZIrvnoZudihOx2lpGdZijfXJlGZjfmC+Rd2DrXHQhidW4ebCQkwLhj0ubYwUefP37s
- Hd7jRjpAesPMWKggrUzd15lIQO9HdQL0e77AyCtB6RGpJXZePI6R2+V7uDUQU6X2TYdC
- BL/07VPRxjtaJI2eKKFMPXH9pDnqpT9gkKs9xbHQjLa9w61FONtvdVAZlnr/EUYT7z0I
- 5oL2vTMfi2XU09kR1CMWBOi4mf9KjNlfCgl1w1oXsMONh9fJ3QyaNxUrZKPlZZo0G8Uc
- p1fR8GGPjYUrI6usECLwXbXZFZvxihFrr9mmp3A2t8khW+dVcTqJFjwjB8Yq+Sk5bU9o
- 92/A==
-X-Gm-Message-State: AOJu0YzgHYtLxGKBTTLmksc5IEGTAMaXegU8YIt92xFQUIA5LX+rRhqy
- 0FFRPCG7LOmI/shVwJhxUGQsA+fq5mcmkaEEanWK3DQkXLsOKYn/DWXFdF9CNjofLdtLXqrAHZv
- BI2lXoumUpqQ+00SmicIoU6vjvg44erE=
-X-Gm-Gg: ASbGncuyyBL/rbx7fW5Q0XuFLlxWqWMmqFWThpPlhZS0BfXxxHZwId3CErXsyKn0ToU
- MlFSGx2AGQi7IF2nBwDJFiJl/CQ3xwtON+9PZjgI+XDUy+uI+QeAExO5SRlcWoBY0HYMew2UgDF
- VZijpsSeCdWG8cylN0mDsYICpdCrLjDJA3X/GkNQjj3haCZwdg3NsuYNssBVfzbIs65qR5AtUXw
- 66ahJe60IS397kiU63Q9sCKX0TqmLZH6Yr488UofO2ztghYiXNzJsEAtXZw
-X-Google-Smtp-Source: AGHT+IGoD7YdMSCZo94Q/k2r/atpPo9Czh3sPNRkSu0OMjXaGTB/2QVX2hQULCwIBzlprMhogMDsCG5tVUIo3YF+Inc=
-X-Received: by 2002:a05:6e02:216e:b0:430:ab21:8c4d with SMTP id
- e9e14a558f8ab-430c5232bd3mr346212725ab.11.1761242009968; Thu, 23 Oct 2025
- 10:53:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761242157; x=1761846957;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=n+obvAx1Tk32r7xzbZXaZN9kGErxtn5ECBBwFi5HAMI=;
+ b=u2SLwSS8dbUyO/7+H4hqlcjOSw2QKD35KFYqZ0ufeSa9Wgcfl6d6UKNJmvjdSoH70y
+ lyg7ABpUmNYsx+ac207Wj6aBq8YMONWptkUDrIwYHwTPQgYAmZ75/FeqOlR7Po+Yfp9r
+ BPA2cEzY0vE6/vgwqXwYsdzDS6n+zVwFSEKlXgZyUzebIL3eIqtlz0gUpiXrFR2QdHGN
+ mTDDkB6E40N7kFKnW+HodCubwCgs6ypV7fy9uvsWAX3YckbxI/qboTVjwBu1tDCbxmzF
+ aoTfXCmcG8MvsiQ2Nihngn7ox6p7eWHvC23yXUqb+Gnl9/Qd23hdYqsyRB0JDqaChTqO
+ 40gw==
+X-Gm-Message-State: AOJu0YwaGTfmgUSfTQjSQDiOw/Ew78hR8xFGlzTnFVYLFOi1DcLtBz3e
+ pTTH5mwP2niYMXlYxeM8iCtWwNYZHaL3aheUoKb2lqVoR4UjZ6PCvClWPt6/IKJVlyk=
+X-Gm-Gg: ASbGncvczPIE9Z5ojMInwqQO9TedaF560EoMRyOFrZ4yE73J52jG/riHW1+LU3L/zsD
+ NibH26Wi6x30myhzJPqSFCMOConURZefGe1jpIS/YvyRVg9fNTZkAaRmA2qVbhQCJdeJsL5NZEq
+ 6D1VD6+kcKMqdntjd3XHpybxqUFmn//CHBzejLmHVne+Zmria5l6cRzZ56Emz1Ru57LfJ2iUwen
+ TkL9+S9RGBZCCkXoypnQMsidcw/m5+OGWleBH1R5tz7+nXIDFXDiTjqVnbdsl0T+n6vQoYLLNSs
+ aGmFEgDjZPK2CW6TwYNZtiUoBfXPRE3cJa6L1GUt0qrCKflF5VPABqa/Fa0hUXWvx7mP+tCaHNK
+ lIeE67S+Dt8FfHm0R5Qn7DWEKeP5CMQE2xJJt4oUs1CPwZ79pgF1GjqTBU10EZc63sje1whJobe
+ O2+hQJOndaI8J8vI1CVNk9MjOpeSwim0712qmnkqSqtoGvcfLA2YEJGw==
+X-Google-Smtp-Source: AGHT+IG9G8hVnRMST1Se76EHB0N/FxL6Rq199W3AGiwl4DKoNoEYrwTDa9Drjc1b9Kj26Ey76odB0w==
+X-Received: by 2002:a05:600c:3b8d:b0:46e:4883:27d with SMTP id
+ 5b1f17b1804b1-4711791c8d3mr202012915e9.30.1761242156732; 
+ Thu, 23 Oct 2025 10:55:56 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47494aad668sm67276875e9.2.2025.10.23.10.55.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Oct 2025 10:55:56 -0700 (PDT)
+Message-ID: <0f154c4e-0bc5-403f-a8fb-06090957b0e4@linaro.org>
+Date: Thu, 23 Oct 2025 19:55:55 +0200
 MIME-Version: 1.0
-References: <20251020054413.2614932-1-dtalexundeer@yandex-team.ru>
- <CAFubqFsiEGHP1Py78VapGvPBi1rpGWZcRbb8Li-QvWhbRGYDiA@mail.gmail.com>
- <453ec8f4-fbda-4411-a02c-5d30429d7083@yandex-team.ru>
- <CAFubqFsFPoa5xuP1Pd=hhY1bo5vhLL4chhEpfVn3VxhR_SnZEQ@mail.gmail.com>
- <8c79d385-d7a9-4752-b610-9d7b8b3c7f5d@yandex-team.ru>
-In-Reply-To: <8c79d385-d7a9-4752-b610-9d7b8b3c7f5d@yandex-team.ru>
-From: Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Date: Thu, 23 Oct 2025 13:53:19 -0400
-X-Gm-Features: AS18NWCNN46csafOKPwsJsjcXiOxv392LwYi2xrYiM4Srz-PkZklz85Pvce5mOU
-Message-ID: <CAFubqFtTWDeDUUxq1jO=AFuwd2vmiTYa3ZbVZLXmxNUp01xVtw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] vhost-user-blk: support inflight migration
-To: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, Raphael Norwitz <raphael@enfabrica.net>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, 
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
- envelope-from=raphael.s.norwitz@gmail.com; helo=mail-il1-x133.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] hw/riscv: Use generic hwaddr for firmware addressses
+To: Anton Johansson <anjo@rev.ng>
+Cc: qemu-devel@nongnu.org, pierrick.bouvier@linaro.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, palmer@dabbelt.com
+References: <20251015-feature-single-binary-hw-v1-v1-0-8b416eda42cf@rev.ng>
+ <20251015-feature-single-binary-hw-v1-v1-1-8b416eda42cf@rev.ng>
+ <1f8876eb-9e57-4102-8d04-3de29c4832f9@linaro.org>
+ <gfywynwh3pl4emzpepos7r2usnapgwdro27qxa3njqo22rbuuj@ydxpxmfa3lu2>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <gfywynwh3pl4emzpepos7r2usnapgwdro27qxa3njqo22rbuuj@ydxpxmfa3lu2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,124 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 23, 2025 at 2:44=E2=80=AFAM Alexandr Moshkov
-<dtalexundeer@yandex-team.ru> wrote:
->
->
-> On 10/23/25 02:33, Raphael Norwitz wrote:
->
-> On Wed, Oct 22, 2025 at 3:59=E2=80=AFAM Alexandr Moshkov
-> <dtalexundeer@yandex-team.ru> wrote:
->
-> Hi!
->
-> On 10/21/25 23:54, Raphael Norwitz wrote:
->
-> The logic looks ok from the vhost-user-blk side but some comments inline.
->
-> On Mon, Oct 20, 2025 at 1:47=E2=80=AFAM Alexandr Moshkov
-> <dtalexundeer@yandex-team.ru> wrote:
->
-> Hi!
->
-> During inter-host migration, waiting for disk requests to be drained
-> in the vhost-user backend can incur significant downtime.
->
-> This can be avoided if QEMU migrates the inflight region in vhost-user-bl=
-k.
-> Thus, during the qemu migration, the vhost-user backend can cancel all in=
-flight requests and
-> then, after migration, they will be executed on another host.
->
-> At first, I tried to implement migration for all vhost-user devices that =
-support inflight at once,
-> but this would require a lot of changes both in vhost-user-blk (to transf=
-er it to the base class) and
-> in the vhost-user-base base class (inflight implementation and remodeling=
- + a large refactor).
->
-> Even if it's a more significant change I'd rather generalize as much
-> logic as possible and expose it as a vhost-user protocol feature. IMO
-> too much vhost-user device-agnositic code is being pushed into
-> vhost-user-blk.
->
-> As far as I understand (correct me if I'm wrong), but this feature must b=
-e implemented in device itself (along with inflight field location) or in s=
-ome base class for vhost-user devices. For now vhost-user-blk doesn't have =
-one yet. The closest base class that i could find is vhost-user-base, but f=
-or using it, it has to implement all device-agnostic code from vhost-user-b=
-lk, and don't break all existing vhost-user-base derived devices. For examp=
-le, to support inflight migration in base class, there first need to implem=
-ent inflight field in it, along with the reconnect feature. Then, with a bi=
-g refactor, somehow inherit vhost-user-blk from it, along with other device=
-s such as vhost-user-fs.
->
-> So, IMO it looks like a whole separate track that will need to be tackled=
-.
->
-> I get that inflight is inside of struct VhostUserBlk, not in struct
-> vhost_user. Even if not all device types support inflight I think that
-> could probably be changed? If we do keep things as you have it here
-> patch 1 should probably bring the vhost_dev_load_inflight() and
-> vhost_dev_save_inflight() into vhost_user.c rather than vhost.c since
-> only vhost_user devices seem to use inflight.
->
-> Firstly, I tried to implement inflight in the vhost_user structure, but t=
-his structure is initialized on every vhost_user_blk_connect() and then des=
-troyed on every vhost_user_blk_disconnect(). But, the inflight region must =
-survive device disconnect.
->
-> During active migration, the vhost_user struct will be destroyed before t=
-he inflight saving.
->
+On 23/10/25 19:14, Anton Johansson wrote:
+> On 15/10/25, Philippe Mathieu-Daudé wrote:
+>> On 15/10/25 15:27, Anton Johansson wrote:
+>>> Signed-off-by: Anton Johansson <anjo@rev.ng>
+>>> ---
+>>>    include/hw/riscv/boot.h    | 20 ++++++++++----------
+>>>    hw/riscv/boot.c            | 22 +++++++++++-----------
+>>>    hw/riscv/microchip_pfsoc.c |  2 +-
+>>>    hw/riscv/sifive_u.c        |  2 +-
+>>>    hw/riscv/spike.c           |  4 ++--
+>>>    hw/riscv/virt.c            |  2 +-
+>>>    6 files changed, 26 insertions(+), 26 deletions(-)
+>>>
+>>> diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
+>>> index 7d59b2e6c6..d835594baa 100644
+>>> --- a/include/hw/riscv/boot.h
+>>> +++ b/include/hw/riscv/boot.h
+>>> @@ -43,21 +43,21 @@ bool riscv_is_32bit(RISCVHartArrayState *harts);
+>>>    char *riscv_plic_hart_config_string(int hart_count);
+>>>    void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts);
+>>> -target_ulong riscv_calc_kernel_start_addr(RISCVBootInfo *info,
+>>> -                                          target_ulong firmware_end_addr);
+>>> -target_ulong riscv_find_and_load_firmware(MachineState *machine,
+>>> -                                          const char *default_machine_firmware,
+>>> -                                          hwaddr *firmware_load_addr,
+>>> -                                          symbol_fn_t sym_cb);
+>>> +hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
+>>> +                                    hwaddr firmware_end_addr);
+>>> +hwaddr riscv_find_and_load_firmware(MachineState *machine,
+>>> +                                    const char *default_machine_firmware,
+>>> +                                    hwaddr *firmware_load_addr,
+>>> +                                    symbol_fn_t sym_cb);
+>>>    const char *riscv_default_firmware_name(RISCVHartArrayState *harts);
+>>>    char *riscv_find_firmware(const char *firmware_filename,
+>>>                              const char *default_machine_firmware);
+>>> -target_ulong riscv_load_firmware(const char *firmware_filename,
+>>> -                                 hwaddr *firmware_load_addr,
+>>> -                                 symbol_fn_t sym_cb);
+>>> +hwaddr riscv_load_firmware(const char *firmware_filename,
+>>> +                           hwaddr *firmware_load_addr,
+>>> +                           symbol_fn_t sym_cb);
+>>>    void riscv_load_kernel(MachineState *machine,
+>>>                           RISCVBootInfo *info,
+>>> -                       target_ulong kernel_start_addr,
+>>> +                       hwaddr kernel_start_addr,
+>>
+>> vaddr?
+> 
+> Maybe vaddr would be more suitable, I went with hwaddr as
+> kernel_start_addr is fed into load_image_targphys_as()
+> which expects hwaddr, and hw/arm does the same.
 
-In struct vhost we should probably add some data which persists
-between reconnects. I take your point that we cannot generalize
-inflight migration without doing that first.
-
-> And you are right about the location of the functions in patch 1. I will =
-move them to the vhost-user.c file, which will be more appropriate. Thanks!
->
-> As Markus noted this also conflicts significantly with Vladimir's
-> series so I'd suggest waiting until those are in, or possibly
-> attempting to generalize on top of his changes.
->
-> Yea, but i think, i just need to perform inflight migration only when som=
-e non-local migration flag is set.
->
-> I'm not sure about that. While it may be completely safe in your case
-> to avoid GET_VRING_BASE/quiescing the backend, it could introduce
-> corruption cases on other vhost-user-blk storage backends which work
-> differently. I think this would require an "opt-in" migration
-> parameter over and above checking that it's not a local migration.
->
-> In patch 2 I introduce migration capability for that. Or you think that w=
-e need something like per-device parameter?
->
-
-My point here was that you will definitely need a parameter you have.
-I'll leave it to others to say if we actually need a per-device
-parameter.
-
-> Ideally there would be some way to have the vhost-user backends expose
-> support per device with a protocol feature and, if the source and
-> destination both advertise support, we perform the inflight migration
-> skipping GET_VRING_BASE. I don't know enough about the migration code
-> to know how that would be done or if it is practical.
->
-> Also (and I think this also applies to Vladimir's series), it should
-> be possible to add multiple vhost-user-blk devices to the same Qemu
-> instance but have the devices backed by very different backend
-> implementations. What happens if some of those backend implementations
-> support things like lightweight local migration and/or inflight
-> migration but others don't? Ideally you would want the API to be able
-> to select target vhost-user-blk devices for accelerated migration
-> rather than assuming they will all want to use the same features. I
-> don't know if anyone is doing that or if we care about such cases but
-> I just want to throw the concern out there.
->
-> Hmm, that looks like we need some per-device parameter in order to set th=
-is feature on for them.
->
-> I guess we need a opinion from migration maintainer about such cases
+load_kernel() tries to load a file at a vaddr; when it fails
+(because can not be parsed, i.e. ELF) the fallback is to try
+to load as firmware at a hwaddr. My understanding anyway...
 
