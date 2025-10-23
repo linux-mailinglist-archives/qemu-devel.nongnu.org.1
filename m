@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF4FBFF179
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64264BFF197
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:17:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBmjh-0000mk-SM; Thu, 23 Oct 2025 00:15:37 -0400
+	id 1vBmjj-0000ni-RL; Thu, 23 Oct 2025 00:15:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBmjf-0000mA-Il
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:35 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1vBmji-0000nU-Tl
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:38 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBmjd-0007M3-KL
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:35 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-781ea2cee3fso376214b3a.0
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:15:33 -0700 (PDT)
+ id 1vBmjg-0007MO-PR
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:38 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-79ef9d1805fso378590b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:15:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761192932; x=1761797732; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1761192935; x=1761797735; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qx6kJuJ+y2uonSR6j062ZvpEMgL6rrm991VyMn6kDgk=;
- b=JJGdcNOOG50vs1oBs/4zBwKIbsqm2YI0h/Bzfh+SC2yOcOZP5mYyFRavXgKUjZRnWw
- GkwHAPCcW7O13L8ST2X8xmL2Hh6p5IJx3tVe7AizPc7UX5DVPiFgu1sMm32moF4ed3Yy
- 1MuPkKKimHZ3ErNV/K4cfPYqgrkxnp83UuJAh3RmuFbBSQxZtGaLbL56/Ln8xIQKsCE/
- Ch0qyz+KN3hrDvQT50YewjKM4bvGwBn80QTu2MwER2dXx1DgY2ow52m4MDJn35exXHao
- jOoQmL44jBmWimFJXMBsmOiJ4oFOOcMcK0TpVs7EYf6WeUUJWjImzfwcanmc0lMYygXP
- Gljw==
+ bh=DaV098G5oL4FGgdKQrx8xC9vbZLN/Fck1L4/UQZrfQY=;
+ b=AGp0wK1C0bUfotdxSMhUomvKUXr+suL+8TZj57nPommKiNza4G4wFErX/IMDHM0449
+ WnUGi5HbYIGrYCXNyNSXbx1J3nl8++MV4hK3+gj41DTBfXU37j80izlMIkPQzufvWK94
+ s2eJikWSNvIsitDBmgGY/Rm6PPeMhQiwm5iuzaIhf5QHccsTyAH3CTie4sbuaUekJ8HL
+ Z+VC24GzORTFH512kg1x4RmsbJVVYwF8SriWvz8n6wnTdINrU64se7hMLGOqGC4kdeqr
+ 9xaWQDL7mjTh+9CT0AsB+2BLIazpNGT9bTdz6KPweb1wNFZzwqp/goxEuqpD0gDirkhJ
+ pq4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761192932; x=1761797732;
+ d=1e100.net; s=20230601; t=1761192935; x=1761797735;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qx6kJuJ+y2uonSR6j062ZvpEMgL6rrm991VyMn6kDgk=;
- b=Wu5nRrNTgRawO5dDEiCf6/0JZwdDfak8qANGjTmEGTY8SeFAWK/MoKp0ACg0H4tcEW
- RFRLlEd9mkZSG2PCmJ6+eUTWC7v0XA6JTU5If4MgZ4z5TOx74EE1hdrLYOtwN3BDYfG7
- CJWh1dubpto2jc30IOoiiJWJsU4hs6iEyCaSaUoSY7k5yRDG/Yl3tC1sl2myfNxygbN3
- TKAampI+o08oo7UnmrH4Ylyckx1u1nrQvE32JB3Kusgl3Xz+rjWvwEkA5PDdTKQ8e58O
- 1RugQ7BEIvevlpiWcrWNFzZ3IIUUAQLveGpBsQt1PLDh3y+x5qcJNwGK9qg4hK3XTpcQ
- pusg==
-X-Gm-Message-State: AOJu0YwSRE0ExHq3LVcrPcP+k1k5g2s/7MwBrzprZjlKNcd+IvtZK/Mb
- yFHGqmyDViWkQvKOF1UhhTvxVQrqK9YtTgoXb16uYELre/F6/fzvD7daz2kQwA==
-X-Gm-Gg: ASbGnctlROeJKidfsELRt0myGekYLZuBNKnVkhUq16NFaGeq0Li2m3qxfFDiu916BMD
- d8mZedbmmy3Pluu44CynuiHsRoP1d9QurwQAYbNXLMcLQbfgVCjzWri/GUSpFG61Vm7f5dPFJaq
- vC5XNXZyPZ+onom5/2VCBZ3krkx6Z4l/omHmWncDe8Xd0KNacDgk4Hx1/IZD5YndKgGu6oozC+X
- aQGZf0Unlyzr0P42IMkBdZ+jrxysd06yGVav75Eilq+YJkrKbMzOekXQhgnM3gZ8zjt95SS8nCi
- zgoAzm8OcBQ8nKgME+ynffDfGmyCIcSzDxI5jPnoU3uYrWBo7P0fzvJ1rXceb2fkyJd1X4WAFqp
- Znk+xxEA+G0jAzo3eh4CyDnu4J58sYDjK1JdBbOoxZ+G6I6d44bdbfmAHQi3M9kJf9QGfMPmCxg
- mBk/PUSF9ArvRJNLjqVkn8r8g5HkyCt1yGN2mNOszAtGAV2riLyElYDiWhb3kE4MAkpYTGykhO/
- WmC9nAiixH2lEW4jK7W
-X-Google-Smtp-Source: AGHT+IFyAdO43IMfZJ0857VHszrdF6aaThr5V7sOwn1Bf3XhZU3raksQr4RqDZY21HNz3cjyo+gJIw==
-X-Received: by 2002:a05:6a00:855:b0:7a2:6fce:19bf with SMTP id
- d2e1a72fcca58-7a26fce2ee4mr3996216b3a.17.1761192931850; 
- Wed, 22 Oct 2025 21:15:31 -0700 (PDT)
+ bh=DaV098G5oL4FGgdKQrx8xC9vbZLN/Fck1L4/UQZrfQY=;
+ b=pVoYFUDuJZuD6XPNQ3vdwZZWLbiwuB7gbbSXryuNQa8gjk4NDZsfFimqdfpayultVt
+ Pulb0Lw4VE4YLQoyzVgRr3VDUxL5K1wp/nD1ma/xgHgffcXHq+GepY8w7R26F+xpuURM
+ c4TeqvXtjJrudeKd5QVp2lGD13d2Zagre2aLZz13oZAkxVSHSu2bsKLDWFmTQZufEHWr
+ ejRDwG+wMvznvWUspNEnDCJ1P6y2tK5p6fPw3h0ORJ5+g/Wi5i5dsxLdqFQmacr3Anf7
+ VT0OzQr3UXWBLFPQ79CXHj2ukEQeIK6ggQPBxLGusEt08r7ObXwNC4eTUU2xZR+eOhql
+ r5Ww==
+X-Gm-Message-State: AOJu0Yw8/T4H0hmaDje0eU+f9DgUmQ3kGz0T+r1CDOVey/jzpOqv0jgc
+ Og6EBFZu4kDyxoUrQ+4ST3JORzzCoGRYTAwGc50pFdmd63LOpWji3ep0Ex//Gg==
+X-Gm-Gg: ASbGncuHnkd1DWprzEiQyd0VrqS1BxKrc1wL0wRkzcmYnoyI/1QW4vfShiPvlfpj0CK
+ +IuWu/xP81n2W0xFkU3MK165CtcuMLYsdzZtCSkRFjCVqbGfxHFwMyZlQe6mB1d6NBOYVLIiY6K
+ Byh5POb72P3c+4fWMswLSVvz5sb+EmYY8v5SH/+MYwL2lpeH0UJ3v7tWvb8OOd78o0Mw658QVJo
+ UHGxN6GCHv1v46OhA3+AwFejXWhKQux0/6jZ8fMS7srUWmvXCJHPndLoxc00tuCpQD8DPbkf2Fy
+ Ai/JVoEC7FVxooA/ZLiHf8zcOf/HzsUsbpvXiKKVidgRUJzwOfGMzKFSERk0qftZK0dckNFKuWN
+ nGUB/4IiQN7wPuOjqlvxR3TZpLxLHFwzQW+99bED78Wo3b852sYxZBi9p9GsauOMQC5YWNXKXal
+ 9zM0N+TN2am9ZhMpnfcQq1CFrEZZkcmqmCKfZYsjlec1xdyid95BHA4qS26bZtr4tTepKNab9Ud
+ emL9u7RHs6sWa5WtpEQ
+X-Google-Smtp-Source: AGHT+IFUc7zBAuGrOhaEzFmBf6PKJhYtMK5Ma4zNgtwhr1JB1Kmgp1XsmcBjYC4c9hmJSbB6QtWf1A==
+X-Received: by 2002:a05:6a00:1742:b0:77d:6a00:1cd1 with SMTP id
+ d2e1a72fcca58-7a274ba91e4mr1683937b3a.12.1761192934853; 
+ Wed, 22 Oct 2025 21:15:34 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7a274abe5f0sm961640b3a.34.2025.10.22.21.15.29
+ d2e1a72fcca58-7a274abe5f0sm961640b3a.34.2025.10.22.21.15.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 21:15:31 -0700 (PDT)
+ Wed, 22 Oct 2025 21:15:34 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+Cc: alistair23@gmail.com, Guenter Roeck <linux@roeck-us.net>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 13/37] target/riscv: Introduce mo_endian_env() helper
-Date: Thu, 23 Oct 2025 14:14:11 +1000
-Message-ID: <20251023041435.1775208-14-alistair.francis@wdc.com>
+Subject: [PULL 14/37] hw/net/cadence_gem: Support two Ethernet interfaces
+ connected to single MDIO bus
+Date: Thu, 23 Oct 2025 14:14:12 +1000
+Message-ID: <20251023041435.1775208-15-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023041435.1775208-1-alistair.francis@wdc.com>
 References: <20251023041435.1775208-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -107,119 +105,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-mo_endian_env() returns the target endianness from CPUArchState.
+The Microchip PolarFire SoC Icicle Kit supports two Ethernet interfaces.
+The PHY on each may be connected to separate MDIO busses, or both may be
+connected on the same MDIO bus using different PHY addresses.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251010155045.78220-14-philmd@linaro.org>
-[ Changes by AF:
- - Only define mo_endian_env() for softmmu
-]
+To be able to support two PHY instances on a single MDIO bus, two properties
+are needed: First, there needs to be a flag indicating if the MDIO bus on
+a given Ethernet interface is connected. If not, attempts to read from this
+bus must always return 0xffff. Implement this property as phy-connected.
+Second, if the MDIO bus on an interface is active, it needs a link to the
+consumer interface to be able to provide PHY access for it. Implement this
+property as phy-consumer.
+
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20251004200049.871646-2-linux@roeck-us.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/op_helper.c | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ include/hw/net/cadence_gem.h |  3 +++
+ hw/net/cadence_gem.c         | 24 ++++++++++++++++++------
+ 2 files changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index c486f771d3..6ccc127c30 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -28,6 +28,20 @@
- #include "exec/tlb-flags.h"
- #include "trace.h"
+diff --git a/include/hw/net/cadence_gem.h b/include/hw/net/cadence_gem.h
+index 91ebb5c8ae..21e7319f53 100644
+--- a/include/hw/net/cadence_gem.h
++++ b/include/hw/net/cadence_gem.h
+@@ -81,6 +81,9 @@ struct CadenceGEMState {
  
-+#ifndef CONFIG_USER_ONLY
-+static inline MemOp mo_endian_env(CPURISCVState *env)
-+{
-+    /*
-+     * A couple of bits in MSTATUS set the endianness:
-+     *  - MSTATUS_UBE (User-mode),
-+     *  - MSTATUS_SBE (Supervisor-mode),
-+     *  - MSTATUS_MBE (Machine-mode)
-+     * but we don't implement that yet.
-+     */
-+    return MO_TE;
-+}
-+#endif
+     uint8_t phy_loop; /* Are we in phy loopback? */
+ 
++    bool phy_connected; /* true if connected */
++    struct CadenceGEMState *phy_consumer;
 +
- /* Exceptions processing helpers */
- G_NORETURN void riscv_raise_exception(CPURISCVState *env,
-                                       RISCVException exception,
-@@ -633,7 +647,7 @@ target_ulong helper_hyp_hlv_hu(CPURISCVState *env, target_ulong addr)
+     /* The current DMA descriptor pointers */
+     uint32_t rx_desc_addr[MAX_PRIORITY_QUEUES];
+     uint32_t tx_desc_addr[MAX_PRIORITY_QUEUES];
+diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
+index 44446666de..520324adfd 100644
+--- a/hw/net/cadence_gem.c
++++ b/hw/net/cadence_gem.c
+@@ -1541,12 +1541,20 @@ static void gem_handle_phy_access(CadenceGEMState *s)
  {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, false, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UW, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UW, mmu_idx);
+     uint32_t val = s->regs[R_PHYMNTNC];
+     uint32_t phy_addr, reg_num;
++    CadenceGEMState *ps = s;
++    uint32_t op;
  
-     return cpu_ldw_mmu(env, adjust_addr_virt(env, addr), oi, ra);
- }
-@@ -642,7 +656,7 @@ target_ulong helper_hyp_hlv_wu(CPURISCVState *env, target_ulong addr)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, false, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UL, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UL, mmu_idx);
+     phy_addr = FIELD_EX32(val, PHYMNTNC, PHY_ADDR);
++    op = FIELD_EX32(val, PHYMNTNC, OP);
  
-     return cpu_ldl_mmu(env, adjust_addr_virt(env, addr), oi, ra);
- }
-@@ -651,7 +665,7 @@ target_ulong helper_hyp_hlv_d(CPURISCVState *env, target_ulong addr)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, false, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UQ, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UQ, mmu_idx);
+-    if (phy_addr != s->phy_addr) {
+-        /* no phy at this address */
+-        if (FIELD_EX32(val, PHYMNTNC, OP) == MDIO_OP_READ) {
++    /* Switch phy to consumer interface if there is an address match */
++    if (s->phy_consumer && phy_addr == s->phy_consumer->phy_addr) {
++        ps = s->phy_consumer;
++    }
++
++    if (!s->phy_connected || phy_addr != ps->phy_addr) {
++        /* phy not connected or no phy at this address */
++        if (op == MDIO_OP_READ) {
+             s->regs[R_PHYMNTNC] = FIELD_DP32(val, PHYMNTNC, DATA, 0xffff);
+         }
+         return;
+@@ -1554,14 +1562,14 @@ static void gem_handle_phy_access(CadenceGEMState *s)
  
-     return cpu_ldq_mmu(env, adjust_addr_virt(env, addr), oi, ra);
- }
-@@ -669,7 +683,7 @@ void helper_hyp_hsv_h(CPURISCVState *env, target_ulong addr, target_ulong val)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, false, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UW, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UW, mmu_idx);
+     reg_num = FIELD_EX32(val, PHYMNTNC, REG_ADDR);
  
-     cpu_stw_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
- }
-@@ -678,7 +692,7 @@ void helper_hyp_hsv_w(CPURISCVState *env, target_ulong addr, target_ulong val)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, false, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UL, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UL, mmu_idx);
+-    switch (FIELD_EX32(val, PHYMNTNC, OP)) {
++    switch (op) {
+     case MDIO_OP_READ:
+         s->regs[R_PHYMNTNC] = FIELD_DP32(val, PHYMNTNC, DATA,
+-                                         gem_phy_read(s, reg_num));
++                                         gem_phy_read(ps, reg_num));
+         break;
  
-     cpu_stl_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
- }
-@@ -687,7 +701,7 @@ void helper_hyp_hsv_d(CPURISCVState *env, target_ulong addr, target_ulong val)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, false, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UQ, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UQ, mmu_idx);
+     case MDIO_OP_WRITE:
+-        gem_phy_write(s, reg_num, val);
++        gem_phy_write(ps, reg_num, val);
+         break;
  
-     cpu_stq_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
- }
-@@ -703,7 +717,7 @@ target_ulong helper_hyp_hlvx_hu(CPURISCVState *env, target_ulong addr)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, true, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UW, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UW, mmu_idx);
- 
-     return cpu_ldw_code_mmu(env, addr, oi, GETPC());
- }
-@@ -712,7 +726,7 @@ target_ulong helper_hyp_hlvx_wu(CPURISCVState *env, target_ulong addr)
- {
-     uintptr_t ra = GETPC();
-     int mmu_idx = check_access_hlsv(env, true, ra);
--    MemOpIdx oi = make_memop_idx(MO_TE | MO_UL, mmu_idx);
-+    MemOpIdx oi = make_memop_idx(mo_endian_env(env) | MO_UL, mmu_idx);
- 
-     return cpu_ldl_code_mmu(env, addr, oi, ra);
- }
+     default:
+@@ -1813,6 +1821,10 @@ static const Property gem_properties[] = {
+                       num_type2_screeners, 4),
+     DEFINE_PROP_UINT16("jumbo-max-len", CadenceGEMState,
+                        jumbo_max_len, 10240),
++    DEFINE_PROP_BOOL("phy-connected", CadenceGEMState, phy_connected, true),
++    DEFINE_PROP_LINK("phy-consumer", CadenceGEMState, phy_consumer,
++                     TYPE_CADENCE_GEM, CadenceGEMState *),
++
+     DEFINE_PROP_LINK("dma", CadenceGEMState, dma_mr,
+                      TYPE_MEMORY_REGION, MemoryRegion *),
+ };
 -- 
 2.51.0
 
