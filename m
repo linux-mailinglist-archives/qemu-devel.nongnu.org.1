@@ -2,71 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF1BBFF613
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 08:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A7BBFF63A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 08:46:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBp3t-0005dt-KZ; Thu, 23 Oct 2025 02:44:37 -0400
+	id 1vBp5V-0006FN-73; Thu, 23 Oct 2025 02:46:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vBp3r-0005dd-Rw
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 02:44:35 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vBp3n-0002KS-G3
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 02:44:35 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 2107C80854;
- Thu, 23 Oct 2025 09:44:27 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:803e:400:65f8:2bbd:d1fb:978e] (unknown
- [2a02:6bf:803e:400:65f8:2bbd:d1fb:978e])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id PiRdKP0IlSw0-LOBwVAzU; Thu, 23 Oct 2025 09:44:26 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1761201866;
- bh=+tYBk411aGq7jzTNAZE1TivzB7cZRGW/oT1e/dEecUM=;
- h=In-Reply-To:Cc:Date:References:To:Subject:Message-ID:From;
- b=FFDTz585CMeb1P3VShLvODRiS4RaQDed3POT9Yu8N9rHe9R8igqimpdpN467MOG9m
- HXahO+VBm1rYDX0OQ7hrrcYykO3ySFjI7ze8Z3eyNessruyFwRCV2Ey3ZnL+iW6T59
- KDCBVytI8KKAh4f/SJUUMOd0ZpubCM4lYnKXqNGE=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Content-Type: multipart/alternative;
- boundary="------------AP47d7tBnIfmT2GQG50Q9BiN"
-Message-ID: <8c79d385-d7a9-4752-b610-9d7b8b3c7f5d@yandex-team.ru>
-Date: Thu, 23 Oct 2025 11:44:25 +0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBp5Q-00069A-5X
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 02:46:13 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBp5N-0002ap-VS
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 02:46:11 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3ecde0be34eso1102843f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 23:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761201968; x=1761806768; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=je6WSncMjTpVDb/U6xATlVvmB79vlcDWY6gH/sVhpzA=;
+ b=A1KyW54BLSBXXPLSQimJeutQBj43CrxhYRxcp2PV8tSWREyg4vvtiltgReDzljPbTW
+ KqUb500LYuak9WloTI6RqkVnZqh04xArDcwpgOKo92vgV8tbE7jyW0p51Axd3UG452V1
+ grtKNAysiaJ+bIiBKj4m/t/6D5ZquUwTOB6TzJ7aq77g296cgVedqepEt40x+v43BwHE
+ LN4IdclBWj2sYtZ+aBw/kVjKhZwk06l2n9Wd6NAybe+ar+WRo6H48s7ogxMttPRUEYwj
+ h/cY3lhMum2cIGxRwaZzOp3w5sxoqSABTABz8QKPwXM82NcKDnDfmcWdgkB8GnT98qRc
+ YymA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761201968; x=1761806768;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=je6WSncMjTpVDb/U6xATlVvmB79vlcDWY6gH/sVhpzA=;
+ b=xHxpDpyknBAO+bh1+QHCujanhbbiWHE6tpKZesKouwCeZmI7vWBDozXAQ1ELYRFvyk
+ caxKN/jTyzQ+Vy/8wqmZ85twhLabI+fe5XL+ewMrx5dzwU9pikHcr32y6YiU7+dfZ9jp
+ MZDCiP2OSXVSzQz2luBacBYKUjKcSj8+xFfbpH8YVahwF8oPCH+O42Zjw0RVtqtmrDlQ
+ gfVcJm/5dcGp1KhEOT+biMgtSHn8Nsbu0vZa6T/hrjxLsdFhVzBeoF/MCE9J3MbqZTEE
+ +nGRfwive2FKImnTsVGb0emnwfciyZRF/utCGrqLCTU3UHXAPIR2n/l5WgFkynINk2Su
+ fOfw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXY79MN8TyVPaLwAjTe1FGVdDF6Uw1boZnTQOoEHM9jOKP6jst4uNlOxRg/buqMfFYlagkqJZNUa/Fu@nongnu.org
+X-Gm-Message-State: AOJu0YwYh64Z5DcQPYEC+/r39mDfdl9M++mZPSpKAe/WDNs25D9Qpp2v
+ 3bzhne/rWMKoVmC9rxI0+d8CSlLR9RmKqwZHLb/tdVjMTxblhBI5QZhWp6A6fs84S+o=
+X-Gm-Gg: ASbGncvrnS0PLHGe1S5oN+qKfeT3b3ahsvL2vNmYmHVBYKUrtMRsxN+BT2nfcUZndKX
+ mw1ceEcRHjD2+5DxPy1FHsYYLx19wkcL43mjTleofWSEjRYZ/exkjrlsL46OV4cTkB+E3pcfl+2
+ 9QjLa3w4pL54SXm6RRBWaqxUhCbSKWDBLMNR7wn7JDIgXcgz/IDdCET9Brgetk5e8ZCHHpuEK/d
+ suZNCIb9h6uMVXiI0wXVg82M3uNG824J8WgNrOb8uXp4veUP0Wl4sWMBeIoYVDrFbteWIh3Dv1L
+ LvTvQD1abcRqd+7GhOtmRyvHy4I9Fzn9h8+x9EzaiV4WtzSdACsyp5SsCnFdo0wclBg5dP8SqUv
+ 1qJOZj74UN3gw3fuPIuiKDufgYKZa/7+JLxV6qm4owDNsX/Tx5iNRuwKmQjZDoJQVK40wJ/myGn
+ wKVFKYRSvzz4+hed/28R637vpFS1Ke9oM3XsI97HMM7nACwBkB/VDZCw==
+X-Google-Smtp-Source: AGHT+IGhjfOM69NG48aGlf3b1oOgVglT4fva2y4L0CsX4+BP5bbYf5NWDucnx5TcYXdvRbePxOcJzA==
+X-Received: by 2002:a05:6000:40dd:b0:427:548:6e3b with SMTP id
+ ffacd0b85a97d-42853264540mr4436345f8f.13.1761201967841; 
+ Wed, 22 Oct 2025 23:46:07 -0700 (PDT)
+Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4298b996aaasm579621f8f.3.2025.10.22.23.46.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Oct 2025 23:46:07 -0700 (PDT)
+Message-ID: <ee9b01ab-fd91-453e-b1d3-1a91d9447a2a@linaro.org>
+Date: Thu, 23 Oct 2025 08:46:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] vhost-user-blk: support inflight migration
-To: Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Cc: qemu-devel@nongnu.org, Raphael Norwitz <raphael@enfabrica.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20251020054413.2614932-1-dtalexundeer@yandex-team.ru>
- <CAFubqFsiEGHP1Py78VapGvPBi1rpGWZcRbb8Li-QvWhbRGYDiA@mail.gmail.com>
- <453ec8f4-fbda-4411-a02c-5d30429d7083@yandex-team.ru>
- <CAFubqFsFPoa5xuP1Pd=hhY1bo5vhLL4chhEpfVn3VxhR_SnZEQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/12] hw/ppc/pegasos2: Move hardware specific parts
+ out of machine reset
 Content-Language: en-US
-From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-In-Reply-To: <CAFubqFsFPoa5xuP1Pd=hhY1bo5vhLL4chhEpfVn3VxhR_SnZEQ@mail.gmail.com>
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
- envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster
+ <armbru@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <cover.1761176219.git.balaton@eik.bme.hu>
+ <f6633a68a72aad4fefb8d2373b52561f8ca8d41d.1761176219.git.balaton@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <f6633a68a72aad4fefb8d2373b52561f8ca8d41d.1761176219.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,221 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------AP47d7tBnIfmT2GQG50Q9BiN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On 23/10/25 02:06, BALATON Zoltan wrote:
+> Move the pegasos2 specific chipset reset out from machine reset to a
+> separate function and move generic parts that are not pegasos2
+> specific from build_fdt to machine reset so now build_fdt only
+> contains pegasos2 specific parts and can be renamed accordingly.
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   hw/ppc/pegasos2.c | 79 ++++++++++++++++++++++++-----------------------
+>   1 file changed, 41 insertions(+), 38 deletions(-)
 
 
-On 10/23/25 02:33, Raphael Norwitz wrote:
-> On Wed, Oct 22, 2025 at 3:59 AM Alexandr Moshkov
-> <dtalexundeer@yandex-team.ru> wrote:
->> Hi!
->>
->> On 10/21/25 23:54, Raphael Norwitz wrote:
->>
->> The logic looks ok from the vhost-user-blk side but some comments inline.
->>
->> On Mon, Oct 20, 2025 at 1:47 AM Alexandr Moshkov
->> <dtalexundeer@yandex-team.ru> wrote:
->>
->> Hi!
->>
->> During inter-host migration, waiting for disk requests to be drained
->> in the vhost-user backend can incur significant downtime.
->>
->> This can be avoided if QEMU migrates the inflight region in vhost-user-blk.
->> Thus, during the qemu migration, the vhost-user backend can cancel all inflight requests and
->> then, after migration, they will be executed on another host.
->>
->> At first, I tried to implement migration for all vhost-user devices that support inflight at once,
->> but this would require a lot of changes both in vhost-user-blk (to transfer it to the base class) and
->> in the vhost-user-base base class (inflight implementation and remodeling + a large refactor).
->>
->> Even if it's a more significant change I'd rather generalize as much
->> logic as possible and expose it as a vhost-user protocol feature. IMO
->> too much vhost-user device-agnositic code is being pushed into
->> vhost-user-blk.
->>
->> As far as I understand (correct me if I'm wrong), but this feature must be implemented in device itself (along with inflight field location) or in some base class for vhost-user devices. For now vhost-user-blk doesn't have one yet. The closest base class that i could find is vhost-user-base, but for using it, it has to implement all device-agnostic code from vhost-user-blk, and don't break all existing vhost-user-base derived devices. For example, to support inflight migration in base class, there first need to implement inflight field in it, along with the reconnect feature. Then, with a big refactor, somehow inherit vhost-user-blk from it, along with other devices such as vhost-user-fs.
->>
->> So, IMO it looks like a whole separate track that will need to be tackled.
->>
-> I get that inflight is inside of struct VhostUserBlk, not in struct
-> vhost_user. Even if not all device types support inflight I think that
-> could probably be changed? If we do keep things as you have it here
-> patch 1 should probably bring the vhost_dev_load_inflight() and
-> vhost_dev_save_inflight() into vhost_user.c rather than vhost.c since
-> only vhost_user devices seem to use inflight.
+> -#define PCI1_IO_BASE  0xfe000000
 
-Firstly, I tried to implement inflight in the vhost_user structure, but 
-this structure is initialized on every vhost_user_blk_connect() and then 
-destroyed on every vhost_user_blk_disconnect(). But, the inflight region 
-must survive device disconnect.
+Can't we keep such definition?
 
-During active migration, the vhost_user struct will be destroyed before 
-the inflight saving.
+> @@ -308,23 +307,12 @@ static void pegasos2_pci_config_write(Pegasos2MachineState *pm, int bus,
+>   
+>   static void pegasos2_superio_write(uint8_t addr, uint8_t val)
+>   {
+> -    cpu_physical_memory_write(PCI1_IO_BASE + 0x3f0, &addr, 1);
+> -    cpu_physical_memory_write(PCI1_IO_BASE + 0x3f1, &val, 1);
+> +    cpu_physical_memory_write(0xfe0003f0, &addr, 1);
+> +    cpu_physical_memory_write(0xfe0003f1, &val, 1);
 
-And you are right about the location of the functions in patch 1. I will 
-move them to the vhost-user.c file, which will be more appropriate. Thanks!
+Otherwise it is harder to notice we are accessing the MMIO mapped ISA space.
 
->> As Markus noted this also conflicts significantly with Vladimir's
->> series so I'd suggest waiting until those are in, or possibly
->> attempting to generalize on top of his changes.
->>
->> Yea, but i think, i just need to perform inflight migration only when some non-local migration flag is set.
->>
-> I'm not sure about that. While it may be completely safe in your case
-> to avoid GET_VRING_BASE/quiescing the backend, it could introduce
-> corruption cases on other vhost-user-blk storage backends which work
-> differently. I think this would require an "opt-in" migration
-> parameter over and above checking that it's not a local migration.
-In patch 2 I introduce migration capability for that. Or you think that 
-we need something like per-device parameter?
->
-> Ideally there would be some way to have the vhost-user backends expose
-> support per device with a protocol feature and, if the source and
-> destination both advertise support, we perform the inflight migration
-> skipping GET_VRING_BASE. I don't know enough about the migration code
-> to know how that would be done or if it is practical.
->
-> Also (and I think this also applies to Vladimir's series), it should
-> be possible to add multiple vhost-user-blk devices to the same Qemu
-> instance but have the devices backed by very different backend
-> implementations. What happens if some of those backend implementations
-> support things like lightweight local migration and/or inflight
-> migration but others don't? Ideally you would want the API to be able
-> to select target vhost-user-blk devices for accelerated migration
-> rather than assuming they will all want to use the same features. I
-> don't know if anyone is doing that or if we care about such cases but
-> I just want to throw the concern out there.
+>   }
+Consider renaming as pegasos_superio_write() since this method becomes
+common to PegasOS I and II.
 
-Hmm, that looks like we need some per-device parameter in order to set 
-this feature on for them.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-I guess we need a opinion from migration maintainer about such cases
-
---------------AP47d7tBnIfmT2GQG50Q9BiN
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 10/23/25 02:33, Raphael Norwitz
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAFubqFsFPoa5xuP1Pd=hhY1bo5vhLL4chhEpfVn3VxhR_SnZEQ@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">On Wed, Oct 22, 2025 at 3:59 AM Alexandr Moshkov
-<a class="moz-txt-link-rfc2396E" href="mailto:dtalexundeer@yandex-team.ru">&lt;dtalexundeer@yandex-team.ru&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-Hi!
-
-On 10/21/25 23:54, Raphael Norwitz wrote:
-
-The logic looks ok from the vhost-user-blk side but some comments inline.
-
-On Mon, Oct 20, 2025 at 1:47 AM Alexandr Moshkov
-<a class="moz-txt-link-rfc2396E" href="mailto:dtalexundeer@yandex-team.ru">&lt;dtalexundeer@yandex-team.ru&gt;</a> wrote:
-
-Hi!
-
-During inter-host migration, waiting for disk requests to be drained
-in the vhost-user backend can incur significant downtime.
-
-This can be avoided if QEMU migrates the inflight region in vhost-user-blk.
-Thus, during the qemu migration, the vhost-user backend can cancel all inflight requests and
-then, after migration, they will be executed on another host.
-
-At first, I tried to implement migration for all vhost-user devices that support inflight at once,
-but this would require a lot of changes both in vhost-user-blk (to transfer it to the base class) and
-in the vhost-user-base base class (inflight implementation and remodeling + a large refactor).
-
-Even if it's a more significant change I'd rather generalize as much
-logic as possible and expose it as a vhost-user protocol feature. IMO
-too much vhost-user device-agnositic code is being pushed into
-vhost-user-blk.
-
-As far as I understand (correct me if I'm wrong), but this feature must be implemented in device itself (along with inflight field location) or in some base class for vhost-user devices. For now vhost-user-blk doesn't have one yet. The closest base class that i could find is vhost-user-base, but for using it, it has to implement all device-agnostic code from vhost-user-blk, and don't break all existing vhost-user-base derived devices. For example, to support inflight migration in base class, there first need to implement inflight field in it, along with the reconnect feature. Then, with a big refactor, somehow inherit vhost-user-blk from it, along with other devices such as vhost-user-fs.
-
-So, IMO it looks like a whole separate track that will need to be tackled.
-
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-I get that inflight is inside of struct VhostUserBlk, not in struct
-vhost_user. Even if not all device types support inflight I think that
-could probably be changed? If we do keep things as you have it here
-patch 1 should probably bring the vhost_dev_load_inflight() and
-vhost_dev_save_inflight() into vhost_user.c rather than vhost.c since
-only vhost_user devices seem to use inflight.
-</pre>
-    </blockquote>
-    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
-      style="white-space: pre-wrap;">Firstly, I tried to implement inflight in the vhost_user structure, but this structure is initialized on every vhost_user_blk_connect() and then destroyed on every vhost_user_blk_disconnect(). But, the inflight region must survive device disconnect. </span></p>
-    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
-      style="white-space: pre-wrap;">During active migration, the vhost_user struct will be destroyed before the inflight saving.</span></p>
-    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
-      style="white-space: pre-wrap;">And you are right about the location of the functions in patch 1. I will move them to the vhost-user.c file, which will be more appropriate. Thanks!</span></p>
-    <blockquote type="cite"
-cite="mid:CAFubqFsFPoa5xuP1Pd=hhY1bo5vhLL4chhEpfVn3VxhR_SnZEQ@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">As Markus noted this also conflicts significantly with Vladimir's
-series so I'd suggest waiting until those are in, or possibly
-attempting to generalize on top of his changes.
-
-Yea, but i think, i just need to perform inflight migration only when some non-local migration flag is set.
-
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-I'm not sure about that. While it may be completely safe in your case
-to avoid GET_VRING_BASE/quiescing the backend, it could introduce
-corruption cases on other vhost-user-blk storage backends which work
-differently. I think this would require an "opt-in" migration
-parameter over and above checking that it's not a local migration.</pre>
-    </blockquote>
-    In patch 2 I introduce migration capability for that. Or you think
-    that we need something like per-device param<span
-    style="white-space: pre-wrap">eter?</span>
-    <blockquote type="cite"
-cite="mid:CAFubqFsFPoa5xuP1Pd=hhY1bo5vhLL4chhEpfVn3VxhR_SnZEQ@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">
-
-Ideally there would be some way to have the vhost-user backends expose
-support per device with a protocol feature and, if the source and
-destination both advertise support, we perform the inflight migration
-skipping GET_VRING_BASE. I don't know enough about the migration code
-to know how that would be done or if it is practical.
-
-Also (and I think this also applies to Vladimir's series), it should
-be possible to add multiple vhost-user-blk devices to the same Qemu
-instance but have the devices backed by very different backend
-implementations. What happens if some of those backend implementations
-support things like lightweight local migration and/or inflight
-migration but others don't? Ideally you would want the API to be able
-to select target vhost-user-blk devices for accelerated migration
-rather than assuming they will all want to use the same features. I
-don't know if anyone is doing that or if we care about such cases but
-I just want to throw the concern out there.
-</pre>
-    </blockquote>
-    <p>Hmm, that looks like we need some per-device parameter in order
-      to set this feature on for them.</p>
-    <p>I guess we need a opinion from migration maintainer about such
-      cases</p>
-  </body>
-</html>
-
---------------AP47d7tBnIfmT2GQG50Q9BiN--
 
