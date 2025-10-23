@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E9FBFF18E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846EFBFF194
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBmk1-00017c-1j; Thu, 23 Oct 2025 00:15:57 -0400
+	id 1vBmk0-00015w-Mz; Thu, 23 Oct 2025 00:15:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBmjx-00015i-6N
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:53 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1vBmjv-00014N-IR
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:51 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBmjr-0007NF-1m
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:52 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-33bafd5d2adso360653a91.3
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:15:45 -0700 (PDT)
+ id 1vBmjt-0007Nl-Cx
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:15:51 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-77f67ba775aso449722b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:15:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761192944; x=1761797744; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1761192947; x=1761797747; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=epTAxD5qTIBr78ty+Lt7XQcrxEgeR2/1ctmBBVhqSCg=;
- b=eMfSEPF1BvTxu5xHqDgDCPX7f6Z8LhfaweBWr5DMcHxRHyeVyKgB/+PxO+7UFP4R+/
- f9zCEz+xwBXBGfPXKJFaqYFFHA7X0Mvq8/Ss/FYecxdgFcVDPWSX0S+ACWcn9sZ6zRY0
- ynHZAxEDnkH9gg3utFdgrfh0pepgX68fijBQDrqGp7uwIP2V3zN/Em0ptiNUmXUHJy/N
- h/Mi1nkDjOD4BKCkCPd+ZjG8ZqgRH93hwKI8iZ++WIJFp24v8fMVZg+dZr7kQ0FbPgxr
- Dt1DASQP32coQNWpYky9fWhaaTfaaRbnBhuaARtG95J2PnTCgK1ugb2ltxbzVguufww7
- yl9w==
+ bh=2Mao6PD8wwENV7peOfswOR2w88gBwEoO4ue8fP0vqGc=;
+ b=SujPqDR4OhCvdIwPF5ajfuKQjq2cNewe/QkZkWdEYol+UFcH+DYkvDpYQSCzVFz1lF
+ WTmnXvoQ2KaAsRxszhfu1VApq/tLTmovp/3VevvtN8isA1Nttgjh+Sr1q32JLkuhpKsG
+ ER4owa329qMPowqGP5Wm99K37dv84EPWL3Sx1MJwhTBVrjDAkgabvs09DzK3kqQ/C4PG
+ UIAV14oxNsqFUd/3Nox8Ht3i9CUFclXKnUT2Sq5ex8H0gVAEFXSgcpT25tP/2SVoRKkb
+ PDFeUc9fuKV68Mx1Lz4YxwC8I930fC8q0j0JFyQp0KPs7+Ceh0Sqhi6dd1URtQbYaYhb
+ px3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761192944; x=1761797744;
+ d=1e100.net; s=20230601; t=1761192947; x=1761797747;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=epTAxD5qTIBr78ty+Lt7XQcrxEgeR2/1ctmBBVhqSCg=;
- b=H6BNl67vilLAScDtViKdPrPlvVgKxRpBfhHUKnV0AB6D+2LNUipJttAKvk3WvAUzej
- QyLh4eMURWjrvQ3/MKrvFPcfnQYycL0q0payaDwP78OUhpUjEqNVdTtpUF9NDnZ6p666
- qZy1ctiQnmOa2Lvz90wcLwyNkiqydiPXERGXGWI0trtjLUVu+5ILo2QIFftfq3vYfBoT
- v5vSP6QF0+U7pyl6ko3KgkaXAaULFAoE6lXUrSzPzatu8o9xqeFtgEKNZTJ7LcJgVybp
- 5Ah7QRc/J7q8TZIyvSBy+qf+op90TujA3upJqIaoUiPOJ+rYpcQ5yGtv/+DbXKmThJgl
- Wdng==
-X-Gm-Message-State: AOJu0YxPq9mhruCXf4UmZC6tqkwiuf4ejw8ACO9eD2sxbRZZdi+p8vwZ
- OqtOJGtVIW9a8RL1EeDoEz2VcDnxr+AKtzdWZMh0kw1x72I8lyKb9LFlrEGvMw==
-X-Gm-Gg: ASbGnct+V8SXVGYsPbkyEA52XodEs/tM3i7piqfZM0ZGzHEBsg9D81GDe+IgT+b/uXI
- 16u1hlb+sSUueMvLr2iIt+OKWC++k8yIPlwrTtvWNkI9Mtlc2WViSPO64KVusG//EsPvfUTb/bZ
- dABTPVnJB4NZA/BVnKvr6fKFwoG9B3c+rz98a0L/9uquq+PxLSViWPdroOt2pQ6WHHSBtRpiOnX
- Mo++XlpG+5os4K7jnz3J/l+VeM9M+0lMSB7x07dbyN2JqsP2c+lR/rAGdcGZQUcpHGAE0rRkS5D
- pUPlc1V9+xO07VHsVZlvPWSKJQtFaNJ0CvYgXnrPuNpHTS6B05RIM2jWeVKOuNP/IsXLLer0NNY
- PRJ/GlNU+T+mZfOVuVVrxeZYzk5Kox+UeM8sCWTCqmg2rdxJEwY8ubIlG6UxjVfrIK6eBqVZKfM
- GYH56xcXtICxvexY46IJp9VBjXyvskf9pDQ5vLBX8XDzqyw/UnP4u4RGClwwy5KfO14uYEA9L7a
- oZCRfPH+fJ+meXmhaYI
-X-Google-Smtp-Source: AGHT+IEM1tu9ciJ40IrL8FLd5iIlwX64ckTx4UuV0QP6wR++j1/7JiOfoJGF9AH/4uWvXHDeNcAe6Q==
-X-Received: by 2002:a17:90b:5291:b0:33b:cbb2:31ed with SMTP id
- 98e67ed59e1d1-33bcec1b599mr28324363a91.0.1761192944123; 
- Wed, 22 Oct 2025 21:15:44 -0700 (PDT)
+ bh=2Mao6PD8wwENV7peOfswOR2w88gBwEoO4ue8fP0vqGc=;
+ b=FKmFv6kL6Km4OaFM5/vISzcwz/R1ZwbqvBI0JJDz9cGwpfT18O3bVHAtIAQj+Zgr26
+ 8k85YjLECCQXln5p/wtHX0DYLxS0iKCgIcD5XgDBiE3hPimMkqXz1loCHNZTRtFt8ItW
+ aV5C7Hbn2jPZFXYPcd1xm0d/iIjlH9khknRQfumS7jWrSosxk3XUENx1ULNAsoIfw6GM
+ Z7XySBATkTfvVY2MsGKAZHn4NMnuPwhjKZyltC5pJjVclK2Ng4eDHu8foNUsbiKV8fLh
+ 1Pv98rDTY1KPIgEWnTG777nVXXa6kdZhQ6OmqbMyIMICrugrN7Slew2cfpeO3ag02ZVv
+ Dy5A==
+X-Gm-Message-State: AOJu0YzpsET+C0TeoKS0GWOPzoPJqjgd9e8/eNx8MQwJLWk/6tJgCKUf
+ nY/O4AwdbKf9Widt8EEpKdOWwnnqo4ztIlKdpE4EUHWFz7DehgRoEIVBpkrmlw==
+X-Gm-Gg: ASbGncuCyfg66gxsYZfNECCYT8KSI1PkFxtwKL0yLEfki/b70Z7xJvAnd5QEG3HONni
+ NnGJ+KglwbdSV9CYSZ3s8j9dWu0dB81/OAKkr9PsCBDrF1K9tsDJVhGHpLLrGZ92wM8Z9zubwp+
+ MYqIDRkoB8hAfwwjmztDh65ncxFLwQn5dU00ZWiWhCaw8MuU2guwCfK3FfAGhvXuf+1FfWFX0lP
+ f549KmNm/nkeNLKUeKijSsIhxeb6SYU2B0RvTrbE9eULRAzk5c2vQbP3oIDMSQWx327cd2WDVSi
+ RZApR995xcgYjI8wvejII131c0oL/D1xVgYsJzr2MJDnM/+ppgNEiydvKkX9o+6iDUK39172JOX
+ sx/rf2mAIXAQAZQbzbQo0Vvgj6cpFCds/cXU/FHHfUqTsuwaVUnh80H8W+76cM+6ybbYkreYIhb
+ uxlcaaDEiljrsUIyzjwDdicKgz+cBa4mAKyDVcfcjJSFdHJSQMGpxsZC9KUt6Dj9Fshep4ECDTo
+ U2M5VZpUA==
+X-Google-Smtp-Source: AGHT+IHzrdbgICr9bYVV0tVRXfzZGNnOBmoOuY0hEvHgQYs6WmrgWjMypMEuK6d+y7eBVrjhkyGvQQ==
+X-Received: by 2002:a05:6a20:158a:b0:2e5:655c:7f93 with SMTP id
+ adf61e73a8af0-334a8616c19mr32310941637.33.1761192947438; 
+ Wed, 22 Oct 2025 21:15:47 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7a274abe5f0sm961640b3a.34.2025.10.22.21.15.41
+ d2e1a72fcca58-7a274abe5f0sm961640b3a.34.2025.10.22.21.15.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 21:15:43 -0700 (PDT)
+ Wed, 22 Oct 2025 21:15:46 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Guenter Roeck <linux@roeck-us.net>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 17/37] microchip icicle: Enable PCS on Cadence Ethernet
-Date: Thu, 23 Oct 2025 14:14:15 +1000
-Message-ID: <20251023041435.1775208-18-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Jialong Yang <z_bajeer@yeah.net>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-stable@nongnu.org
+Subject: [PULL 18/37] aplic: fix mask for smsiaddrcfgh
+Date: Thu, 23 Oct 2025 14:14:16 +1000
+Message-ID: <20251023041435.1775208-19-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023041435.1775208-1-alistair.francis@wdc.com>
 References: <20251023041435.1775208-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,38 +104,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jialong Yang <z_bajeer@yeah.net>
 
-PCS needs to be enabled for SGMII to be supported by the Linux kernel.
+ 4.5.4. Supervisor MSI address configuration (smsiaddrcfg and
+   smsiaddrcfgh)
+smsiaddrcfgh:
+        bits 22:20 LHXS(WARL)
+        bits 11:0  High Base PPN(WARL)
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Jialong Yang <z_bajeer@yeah.net>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251004200049.871646-5-linux@roeck-us.net>
+Message-ID: <44f3e0d1.161.199d0c338b0.Coremail.z_bajeer@yeah.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Cc: qemu-stable@nongnu.org
 ---
- hw/riscv/microchip_pfsoc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/intc/riscv_aplic.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index 9fbfba8ece..4c939d8e96 100644
---- a/hw/riscv/microchip_pfsoc.c
-+++ b/hw/riscv/microchip_pfsoc.c
-@@ -415,6 +415,7 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
-     object_property_set_int(OBJECT(&s->gem0), "revision", GEM_REVISION, errp);
-     object_property_set_int(OBJECT(&s->gem0), "phy-addr", 8, errp);
-     object_property_set_bool(OBJECT(&s->gem0), "phy-connected", false, errp);
-+    object_property_set_bool(OBJECT(&s->gem0), "pcs-enabled", true, errp);
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index a1d9fa5085..6dccca73af 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -96,7 +96,7 @@
+     (APLIC_xMSICFGADDR_PPN_HHX_MASK(__hhxw) << \
+      APLIC_xMSICFGADDR_PPN_HHX_SHIFT(__hhxs))
  
-     sysbus_realize(SYS_BUS_DEVICE(&s->gem0), errp);
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->gem0), 0,
-@@ -426,6 +427,7 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
-     object_property_set_int(OBJECT(&s->gem1), "phy-addr", 9, errp);
-     object_property_set_link(OBJECT(&s->gem1), "phy-consumer",
-                              OBJECT(&s->gem0), errp);
-+    object_property_set_bool(OBJECT(&s->gem1), "pcs-enabled", true, errp);
-     sysbus_realize(SYS_BUS_DEVICE(&s->gem1), errp);
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->gem1), 0,
-                     memmap[MICROCHIP_PFSOC_GEM1].base);
+-#define APLIC_xMSICFGADDRH_VALID_MASK   \
++#define APLIC_MMSICFGADDRH_VALID_MASK   \
+     (APLIC_xMSICFGADDRH_L | \
+      (APLIC_xMSICFGADDRH_HHXS_MASK << APLIC_xMSICFGADDRH_HHXS_SHIFT) | \
+      (APLIC_xMSICFGADDRH_LHXS_MASK << APLIC_xMSICFGADDRH_LHXS_SHIFT) | \
+@@ -104,6 +104,10 @@
+      (APLIC_xMSICFGADDRH_LHXW_MASK << APLIC_xMSICFGADDRH_LHXW_SHIFT) | \
+      APLIC_xMSICFGADDRH_BAPPN_MASK)
+ 
++#define APLIC_SMSICFGADDRH_VALID_MASK   \
++    ((APLIC_xMSICFGADDRH_LHXS_MASK << APLIC_xMSICFGADDRH_LHXS_SHIFT) | \
++     APLIC_xMSICFGADDRH_BAPPN_MASK)
++
+ #define APLIC_SETIP_BASE               0x1c00
+ #define APLIC_SETIPNUM                 0x1cdc
+ 
+@@ -184,7 +188,7 @@ void riscv_aplic_set_kvm_msicfgaddr(RISCVAPLICState *aplic, hwaddr addr)
+         addr >>= APLIC_xMSICFGADDR_PPN_SHIFT;
+         aplic->kvm_msicfgaddr = extract64(addr, 0, 32);
+         aplic->kvm_msicfgaddrH = extract64(addr, 32, 32) &
+-                                 APLIC_xMSICFGADDRH_VALID_MASK;
++                                 APLIC_MMSICFGADDRH_VALID_MASK;
+     }
+ #endif
+ }
+@@ -409,13 +413,8 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
+         msicfgaddr = aplic->kvm_msicfgaddr;
+         msicfgaddrH = ((uint64_t)aplic->kvm_msicfgaddrH << 32);
+     } else {
+-        if (aplic->mmode) {
+-            msicfgaddr = aplic_m->mmsicfgaddr;
+-            msicfgaddrH = aplic_m->mmsicfgaddrH;
+-        } else {
+-            msicfgaddr = aplic_m->smsicfgaddr;
+-            msicfgaddrH = aplic_m->smsicfgaddrH;
+-        }
++        msicfgaddr = aplic_m->mmsicfgaddr;
++        msicfgaddrH = aplic_m->mmsicfgaddrH;
+     }
+ 
+     lhxs = (msicfgaddrH >> APLIC_xMSICFGADDRH_LHXS_SHIFT) &
+@@ -427,6 +426,14 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
+     hhxw = (msicfgaddrH >> APLIC_xMSICFGADDRH_HHXW_SHIFT) &
+             APLIC_xMSICFGADDRH_HHXW_MASK;
+ 
++    if (!aplic->kvm_splitmode && !aplic->mmode) {
++        msicfgaddrH = aplic_m->smsicfgaddrH;
++        msicfgaddr = aplic_m->smsicfgaddr;
++
++        lhxs = (msicfgaddrH >> APLIC_xMSICFGADDRH_LHXS_SHIFT) &
++            APLIC_xMSICFGADDRH_LHXS_MASK;
++    }
++
+     group_idx = hart_idx >> lhxw;
+ 
+     addr = msicfgaddr;
+@@ -771,7 +778,7 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
+     } else if (aplic->mmode && aplic->msimode &&
+                (addr == APLIC_MMSICFGADDRH)) {
+         if (!(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+-            aplic->mmsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
++            aplic->mmsicfgaddrH = value & APLIC_MMSICFGADDRH_VALID_MASK;
+         }
+     } else if (aplic->mmode && aplic->msimode &&
+                (addr == APLIC_SMSICFGADDR)) {
+@@ -792,7 +799,7 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
+                (addr == APLIC_SMSICFGADDRH)) {
+         if (aplic->num_children &&
+             !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+-            aplic->smsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
++            aplic->smsicfgaddrH = value & APLIC_SMSICFGADDRH_VALID_MASK;
+         }
+     } else if ((APLIC_SETIP_BASE <= addr) &&
+             (addr < (APLIC_SETIP_BASE + aplic->bitfield_words * 4))) {
 -- 
 2.51.0
 
