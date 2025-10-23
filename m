@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A00EC01B14
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B7CC01B48
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:18:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBw5c-0006WH-K0; Thu, 23 Oct 2025 10:14:52 -0400
+	id 1vBw9B-0003Jh-47; Thu, 23 Oct 2025 10:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw5K-0006EF-Vs
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:14:35 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vBw98-0003I9-2m
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:18:30 -0400
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw5H-0007Rz-3N
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:14:32 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-47117e75258so6851105e9.2
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:14:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vBw95-0007st-0h
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:18:29 -0400
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-78488cdc20aso10967267b3.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761228869; x=1761833669; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1761229105; x=1761833905; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LgKVVP81quRHZdasM9p0tFwKU7dqmMROiJUy9ix33mI=;
- b=zmK9+yZIO5dGyv75q3mKda+HdEIhyvyyoTO6/zjxX3qsVobXb55siLrzvoc5jfC1zH
- FeHDJS8JYHM1leajc3QbuKsZPIzshx4ZsCUTg+B/bXqPft3bjibC1v0q/M6dKVIBTbTj
- 3ACylSrJtzM9cmAOT9ZlCnh/AWibTROWc7qHNnUBsFAyCiQP7DqjKbbR97ED2vFL/Gnb
- 1H16CpcXjqIlM/5AjzDjSlo0GhKZ3ivSUMX3U5JgKghGhSS0ib9ip1wtT24QLIhj+MRb
- 1s5/vRNjScWc3UAV8MtATsr2mGnAfKB3LJfD+XoWnILVmQKlByFqCayA/kia6y8K9wUX
- PV8Q==
+ bh=ILb6a6dquYwm4ywy49WY48dEBgbB4ZDhcXdzJecZtIA=;
+ b=lUyk59dLmLLD+kkCwXS4sYApgDohef5xSUFf+tUhOLXIZUXHs/WprT9z3Z48YI8vWD
+ cTuz53Tpjfymv09JBIl+L/8BIYHorEcYzNCl6H/LvBFHpyoKYfZXazucAOAtua6fz4Kd
+ QWSzbPfGTnEZ2gaPy0egF2er+cQeW2GKI04s6xX6P9N95xhkJQpnZvo7/HMGjkX85G8/
+ IX0y7i/YWXr6ZJxiO5sQYA8Qo3aHZS3sSdMOLP5AMFvCcMLXNIBcl7SMmionLzJCvVZI
+ cUHpWCFb2RgIHU2rEvzf+q0VUFhOybNmy8Hz+ZlQDcEiWxV46OnwqGMJfPn6E9QKVdgZ
+ wd5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761228869; x=1761833669;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1761229105; x=1761833905;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LgKVVP81quRHZdasM9p0tFwKU7dqmMROiJUy9ix33mI=;
- b=IsMh0gg4uqBW9DIBGLwRgymwXYc5NKxdLkAEBF3HQ7GC50sIf5qPy02Oaf0JFi4iAx
- SxBBHWN5kMfSw+860LzhkAV10ZCN5HHayghMTPmNCH/QfBowUSm+auTFvel7EhQpYPco
- 6bkzf1+7GLXoioqbmlCCmk4uRTt1tucVlmx4ERToIvCnvb8+KgSAtA5yNUIkVm3uTmU4
- 7UWXC4vVR1lvXYFXQUVC5erTGrK3UhHLZ9iyE9LqWn6UtENDvAY863QawJsrzXrpnqJF
- wHbbR8bSC7wH4hvnHZEY2b3P/XRh2FFXb0RJ33KIZ2lSQMG5DKEl5ZC3JK4frre3lrVa
- ofZQ==
-X-Gm-Message-State: AOJu0YyXox2hbEhXy1FC+jQQ6hUN8F5ruPg5qZe1SkT+xCQUOnaDG5K8
- dlyaEgwwXkFSssTssGtKRIHbQtU4TbLMRRShu3bAbpgYgQcac5Ye9vjnaEMjknKd6JLM3dm9sDA
- D6xQWe98=
-X-Gm-Gg: ASbGncvo2qBMCq3mvkhb7lm8YgW2cnS9XZUCkKs2ZZq0rrlsa3J2heyo0i8EMak/AJr
- beXBhPavvgSHowdqNmFCZvv4fu6BQtbdgK3P+26pPF6ImbIQgMBcLM62QWaXXnqIS3Pe4zzUNvy
- QhhXZ7TA/spNd9ItONt2U9sOK9Rww21nxmhDZlGdcHh/dMrzsyJFl137wmEFgTwVF7XJn6pku/m
- gvp34fFYhjwKTW6QODAwkZbVv4FTIDPcP4HNKdH5y+JLJOJ6HJyE5DscLlQVcrwRdzazr27wlzx
- g6IhVrX6QCqkJbBgTMvXupxfBuYD//2TJzgvO2PybMu4sTI8G4GuxntUXQTLaqYfLIIemlkul/v
- BDvG3uZjRc7OLbiIj3QVwXmG2wQnC6n8cduVQPJPREb5Ix5KDjLvmcbY3UgMXc7nC0pNaNhFDoP
- lI+Kha2wNXqYCH2AG+9t4Q8izWnv8QItbuQqX+7KULgmlK5IyBXJUPIXyD6ukX
-X-Google-Smtp-Source: AGHT+IFb/XSWqKHanfFo0JpGugOKs3B2G/i5axTSdAeolnzGHJFkkiz6qvyxK3ppW72qVwNLeyHDww==
-X-Received: by 2002:a05:600c:8b74:b0:456:1a69:94fa with SMTP id
- 5b1f17b1804b1-475cafae81emr16050175e9.13.1761228868811; 
- Thu, 23 Oct 2025 07:14:28 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c43900e1sm117498495e9.17.2025.10.23.07.14.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Oct 2025 07:14:26 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Collingbourne <pcc@google.com>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
- Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PATCH v2 19/58] target/arm/hvf: Factor hvf_handle_vmexit() out
-Date: Thu, 23 Oct 2025 16:13:38 +0200
-Message-ID: <20251023141339.10143-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
-References: <20251023114638.5667-1-philmd@linaro.org>
+ bh=ILb6a6dquYwm4ywy49WY48dEBgbB4ZDhcXdzJecZtIA=;
+ b=QPgRLvOTrgFLpuLE+A3Rq50Iv6GeEQqejSolQA7I2AtqwBZ4tHJ+OHoKYTyUKlHVuh
+ MVJgLxLUQts1YNkFvf954A7TkYdPzGiKWPvoHiDEzP8g1dBTVO8TpBBCcRIzSibYtu3F
+ HEuhC1XZibRC/zj7ru8E+HDGBFcipx1QfYkY3MNwp99C0H0gg/EL75F3OOHUcgJ09ntM
+ MhSaiiVFhRJtyJqeb0+IfGgIT/UmN4Jybdo+1xOTC/bce1FHjRalzyQgWxtQc9PdTrJf
+ 0A4DvSg2NLgIFbcQa2+bXsLreCbY4D1g2qgYALZpuL60lSi/RJDFSxQnr9e0d1ay/73O
+ lCxA==
+X-Gm-Message-State: AOJu0YzuV9r2l2EDPfY7DTnJ27SHbJlwVkAloxCEDHjrMPmkLQqEg00C
+ KIUXzoFooS98eSugLYkIYURtBatnYGGmLiEHtcwEw3W0W4/iAW2/6mY6bx+TxO9bSqKL88THC2T
+ WdMw9jHsnqTvBcihptCOMxQeCH0gm/J5Sg5e1ncTncQ==
+X-Gm-Gg: ASbGncsAJSMrlRoYhPIRNEvh/hhvk8Nadt180u9BFC0C05IfcrN7nw2udilksKwdtFa
+ 1txPFP1krm2UvK6BTAcJkmW4EP69smu0Fl0oWwIswyf1zZrI6NcqRUZRryfVoSUTSkQqaLa0R97
+ u4N1YppKrMs6/rWw1wo3ZpLUY9qCO90z5cq2wei9c6NEin2kUvsUWgn9PpQmCcDsx4EZKZIt2zB
+ +a13QWjiJc2D93zNKmqAa62z43u8OQl1ANw6lJlhesiDkiwQK7hLLArxna0k4Dua/ng8dFO
+X-Google-Smtp-Source: AGHT+IFrBvYTznie5yOrXKRJeJERtPINvFVVYR1GSwPbvkwVab/Z6QUfz1SSGw+7D1+rAUd61nVybMIep1rnnZATmPQ=
+X-Received: by 2002:a05:690e:151a:b0:63f:1e8c:f264 with SMTP id
+ 956f58d0204a3-63f1e8cfb4emr8097616d50.69.1761229105416; Thu, 23 Oct 2025
+ 07:18:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+References: <20251021145313.4584-1-philmd@linaro.org>
+In-Reply-To: <20251021145313.4584-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 23 Oct 2025 15:18:13 +0100
+X-Gm-Features: AS18NWAMpIG0-9i3EwRbCO1532y9Q9DCV5ubWS2KFVwAsxDgyTq6cgGiLfv5NYM
+Message-ID: <CAFEAcA88AB9q=R4aN+CJj_xOiBNmS=aWEV72cwKTRfX_FEjTPA@mail.gmail.com>
+Subject: Re: [PATCH v2] hw/gpio/pl061: Declare pullups/pulldowns as 8-bit types
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>,
+ qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,93 +93,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor hvf_handle_vmexit() out of hvf_vcpu_exec().
+On Tue, 21 Oct 2025 at 15:53, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> uint8_t is good enough to hold a property "between 0 and 0xff".
+>
+> Define pullups/pulldowns properties using DEFINE_PROP_UINT8()
+> macro, remove unnecessary range checks in pl061_realize().
+> Update the two caller sites.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> v2: qdev_prop_set_uint32 -> qdev_prop_set_uint8 in callers (Peter)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Mads Ynddal <mads@ynddal.dk>
----
- target/arm/hvf/hvf.c | 50 ++++++++++++++++++++++++--------------------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 8553ce6adc2..27c600148f9 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1984,10 +1984,33 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-     return ret;
- }
- 
-+static int hvf_handle_vmexit(CPUState *cpu, hv_vcpu_exit_t *exit)
-+{
-+    ARMCPU *arm_cpu = env_archcpu(cpu_env(cpu));
-+    int ret = 0;
-+
-+    switch (exit->reason) {
-+    case HV_EXIT_REASON_EXCEPTION:
-+        hvf_sync_vtimer(cpu);
-+        ret = hvf_handle_exception(cpu, &exit->exception);
-+        break;
-+    case HV_EXIT_REASON_VTIMER_ACTIVATED:
-+        qemu_set_irq(arm_cpu->gt_timer_outputs[GTIMER_VIRT], 1);
-+        cpu->accel->vtimer_masked = true;
-+        break;
-+    case HV_EXIT_REASON_CANCELED:
-+        /* we got kicked, no exit to process */
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    return ret;
-+}
-+
- int hvf_arch_vcpu_exec(CPUState *cpu)
- {
--    ARMCPU *arm_cpu = ARM_CPU(cpu);
--    hv_vcpu_exit_t *hvf_exit = cpu->accel->exit;
-+    int ret;
-     hv_return_t r;
- 
-     if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
-@@ -2006,6 +2029,7 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
-     bql_lock();
-     switch (r) {
-     case HV_SUCCESS:
-+        ret = hvf_handle_vmexit(cpu, cpu->accel->exit);
-         break;
-     case HV_ILLEGAL_GUEST_STATE:
-         trace_hvf_illegal_guest_state();
-@@ -2014,27 +2038,7 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
-         g_assert_not_reached();
-     }
- 
--    /* handle VMEXIT */
--    uint64_t exit_reason = hvf_exit->reason;
--
--    switch (exit_reason) {
--    case HV_EXIT_REASON_EXCEPTION:
--        /* This is the main one, handle below. */
--        break;
--    case HV_EXIT_REASON_VTIMER_ACTIVATED:
--        qemu_set_irq(arm_cpu->gt_timer_outputs[GTIMER_VIRT], 1);
--        cpu->accel->vtimer_masked = true;
--        return 0;
--    case HV_EXIT_REASON_CANCELED:
--        /* we got kicked, no exit to process */
--        return 0;
--    default:
--        g_assert_not_reached();
--    }
--
--    hvf_sync_vtimer(cpu);
--
--    return hvf_handle_exception(cpu, &hvf_exit->exception);
-+    return ret;
- }
- 
- static const VMStateDescription vmstate_hvf_vtimer = {
--- 
-2.51.0
-
+thanks
+-- PMM
 
