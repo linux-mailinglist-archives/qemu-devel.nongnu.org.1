@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58733C03E7F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 01:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE28C03E88
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 01:54:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC58P-00058w-90; Thu, 23 Oct 2025 19:54:21 -0400
+	id 1vC58T-0005AH-QA; Thu, 23 Oct 2025 19:54:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vC58N-00058e-OO
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:54:19 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1vC58R-00059t-F4
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:54:23 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vC58M-00082m-47
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:54:19 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-b6329b6e3b0so2185761a12.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 16:54:17 -0700 (PDT)
+ id 1vC58P-00083Y-OA
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:54:23 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-273a0aeed57so31182125ad.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 16:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761263656; x=1761868456; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1761263660; x=1761868460; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QI6TJMPtaM0+7myaheiZ8p5Uvu3cs2aSIj1ObAHg/hk=;
- b=QsG/LveKgUIeUbPWv94uCxJysN9WbGv3Sdb/XrSCgV0P9G4KKYmnB4i0Zvdw4OGcVW
- d24uKdZUMNuR10d1wbSBVAp4jp0P22rz9ZAU7z5RQfmV2VTn7uucECsRsCvwownZ07ix
- WXts5Caurs4BAVcWaBAdM8UIVle6vCxNs3i+hN120BHSMj2HTMfsqGoYqL9ZAb3Zw2xy
- prNkVahC7qGQgfZZ7AXg6sTDlWuoU4taR7tAM1SI9fxg/QsDu2MkD1vXapTNcPArkX7B
- o2l3Y7U9zEdF1EwsZa852wHEym9kEIh02RDESjfCvoSm9xcVOTgengPWMqB0/Dm816oP
- o+rA==
+ bh=V4kt999Rj3wH++qWMTPygGhomVBAKD/G/hJMFgOA/vI=;
+ b=Tc9VTZOkh43zd2zGeTHTUozp72Q6LvQW7lF7sNLX0H0oSoA+48txlEX7EndGOqB1BX
+ hmGTqMZRDDj7a/lNj7fyoJg1fxdhCnFr7e2aV6F4Z3vZOgXMcc3evN94DYIYr1KOtr4p
+ 1Hly+1SDz4niwEpsDgewu+5AwkLCzEQ7ZRWW7vHNYCO6EeMLGgVqwVPnQ2NbQ4Q7XzAF
+ S/wfV4yhhqGMeW9VzG01TMYL788RGNW5V8+2TQe0VKqbgKuredIYWem3IBP/11fcE2BM
+ ccmnnxtiaIlhTRFFauxM0PoIihXvtMhbzoLdApBrvjRWV+p0+I1/W69UcCLUquyrbeEk
+ hyAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761263656; x=1761868456;
+ d=1e100.net; s=20230601; t=1761263660; x=1761868460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QI6TJMPtaM0+7myaheiZ8p5Uvu3cs2aSIj1ObAHg/hk=;
- b=CCsCNf4m6Sd52NSqmN3nuLluk3Fsw6tM/+83pBE9SzXkVQpcXWzfy7lvwurqBtOrFT
- iWJktO9O0TEETkW9FHNqnV+K/DC8drcOb4pmqIue3+i+wM1Qt4xtamXIdJGC3NDjBRPg
- MDHAkBUXnAOv/IKRAJbDJtzquQ+bILmhJcCrs/Ecq7XFAW02WlN53/huQNy3GHC30x2n
- geHCdQJpa6l37zJF+sz2HJFLXnwTrpiklx2WVOVS5W+HgGJQagtqE27vbcydnPBYofSv
- KYhgen5sHrBT2Tkecb7bzlHGvzoKKWFGCCKdlBdOSiINKOlG+MpUj2Zo6l8rqB4GlQtA
- +uNA==
-X-Gm-Message-State: AOJu0YwVa+YJede4giTIWiS5OMqo2dv/7ljt3dbum1exEgGo1VWvPOHN
- 6WNEFN1ZA2ohXufDaob1khvl6ukWvzMyOQQWFvYZ3bD4xKjgoZysCV29E1x4fw==
-X-Gm-Gg: ASbGncsJot9w+8DixKDzbiQuQP5mr9XegPNfX98Sj1PPXa+jj8m1akIbF9EvdF9bf+6
- oziTa8ZpCEjICOq5/zwzFnczpBtVE93x1Rj0wKBB6A0UmN+VDUgW+Idwm5QkZ+AINYDWZgIzqoi
- 6by+/4LNOM1EWV4nO1O1rNAHgwmRx3UbyXHHuLscGcgg+86I/OYpZbtBV2KG4xqWaf724Aq+2FV
- ys8zXipb9YyAjlqVJMig4kcvdgr3J0VJRQbEOfi786hOlBYoqdQN0Opn8o+Sz7tcKIripV5EpAy
- QmSMOSfRa/0iVPG4pNYeJnndzptZSdlW4jnYNeHfTfNj4WJRYscOp9wuMMQnll08mdnjrWfO88Z
- 4aNtvz9HC3/utk5MIHdpmZbORTSrWllp/ZCDLYxPQW+4myuaGVeQsP17gMYz6wCs2TzWVgTF9oB
- 5F2w/+gxo9Ik1O6BNHLbvXaIJ2PlbSufR6hWPD+jwml68V5Xl/3ugBF6NgFV+ZL5HaR25BjBxTW
- QoGSlBo
-X-Google-Smtp-Source: AGHT+IG+d8H6H3+dK1ghRGYfY1mgU7mQ8gVCJuvqUn4aK+i/G2W8lFb+3mthyg1LgL7Svv+Jdu0d3Q==
-X-Received: by 2002:a17:902:dacf:b0:269:8eba:e9b2 with SMTP id
- d9443c01a7336-29489e6c09amr7680695ad.29.1761263656220; 
- Thu, 23 Oct 2025 16:54:16 -0700 (PDT)
+ bh=V4kt999Rj3wH++qWMTPygGhomVBAKD/G/hJMFgOA/vI=;
+ b=GDffnh8/gKVa+JjEBmOc874cCiVspjyf1lBAv05UENnasQhZvKxuSZ1q9tYbD/RJG3
+ Ad//9JdakcYgeqgqcK1DE0GcAB6XLuHpxkKs03y0zz0viqXLdCj5yIjzugld01PJk3lj
+ 4vn61E92rr+Nz6IQfel9ZyQ3nDTZm74VLwCTGFe67GDYczHmx8nJ/s+FFRwfRpkGWmAZ
+ u57BWtSDqfwQVAXZOYPQvPWI7eIJHkDA0vhrZvbMSDpk8S5O3O4wWbkNioq4rahIbTps
+ NOg9IaHqqXJbSb/G73PskiKwd38vrr6PaQHFyf0E6MaIPlCi0vk82cvF5TLBL0gFAZzM
+ 6mNQ==
+X-Gm-Message-State: AOJu0YzHySvnOYi8SjkqbS7YjilyI1Clc7Q8on/W3vIQJjBeaWHICuwK
+ 4w5wrfGOgh1nT9Koi9U9VtlIotve6zis/AweVsLp7DYfHEZ6uNLD9gZwCHQOJA==
+X-Gm-Gg: ASbGncukaWA1PA8L7qm4I2cl/Cd/ejnaNgaWSK77fsz+maOm5DQFlzos4JWIK0LomJ8
+ phO0jyhvb5SiuYJHKyLO+Z7cLm9snYDxV9rIw/UvbIYgnzm9XiLgLNnXyBfCcTcnE11e7N/Tf+L
+ j3rCoj54NaJ6byvyV7106/KTu37/NwDL2DX6JIO9MtDjnKIFt9LY9q9hs9V9egJ/wt+HsgahxtX
+ 6w4GhvhW7mRS2aT2TCBaa86q8bP3xA2F1zNMXBxDJYwtvI6kNf8M7oH+t9n3/gkL3zWqvoa9qp8
+ iYHXPaGnW0A1iLCmVV5ci5G/d6s/NgImbcY+dcUSwvlP6pjevXJRgiwxo82+X6q1HPpktKHqc6w
+ hM8keYx7SExBZ0wTdyP4M1bpqXlDrNJuOBWoJLa466yLcsHpj3XklMkQypmSFOkS3A+9x04oHYR
+ SN0Ox6XsfhzVotzdLXs/6/dRGiyiDjX6C/cHDzH8VL4KXHUEA8IP1ypt7S1Gh25k9dUTNMR2Se/
+ 9fLgaLeZ3vgHfy/XMM=
+X-Google-Smtp-Source: AGHT+IEuLkaG+cnfvKMY9CGi2aGlZad+gNc+5sxwqBolVyvUGt3E+daI+B3EetVp7A3CnZW3mhHEaA==
+X-Received: by 2002:a17:902:ea09:b0:281:fd60:807d with SMTP id
+ d9443c01a7336-29489db6849mr7480165ad.2.1761263659813; 
+ Thu, 23 Oct 2025 16:54:19 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946dda7949sm36542295ad.3.2025.10.23.16.54.13
+ d9443c01a7336-2946dda7949sm36542295ad.3.2025.10.23.16.54.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 16:54:15 -0700 (PDT)
+ Thu, 23 Oct 2025 16:54:19 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Jay Chang <jay.chang@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>, Jim Shu <jim.shu@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 23/25] target/riscv: Fix a uninitialized variable warning
-Date: Fri, 24 Oct 2025 09:54:03 +1000
-Message-ID: <20251023235405.1865337-2-alistair.francis@wdc.com>
+Subject: [PULL v2 24/25] target/riscv: Make PMP granularity configurable
+Date: Fri, 24 Oct 2025 09:54:04 +1000
+Message-ID: <20251023235405.1865337-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023235405.1865337-1-alistair.francis@wdc.com>
 References: <20251023235405.1865337-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,53 +105,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+From: Jay Chang <jay.chang@sifive.com>
 
-riscv_cpu_validate_v() left its variable, min_vlen, uninitialized if
-no vector extension is available, causing a compiler warning.
+Previously, the PMP granularity in qemu always used a minimum
+granularity of 4 bytes, this patch add pmp-granularity to allow
+platforms to configure the value.
 
-Re-define riscv_cpu_validate_v() as no-op when no vector extension is
-available to prevent the scenario that will read the unintialized
-variable by construction. It also simplifies its caller as a bonus.
+A new CPU parameter pmp-granularity has been introduced to the QEMU
+command line. For example:
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20251021-vlen-v2-1-1fb581d4c6bf@rsg.ci.i.u-tokyo.ac.jp>
+        -cpu rv64, g=true, c=true, pmp=true, pmp-granularity=1024
+
+If no specific value is provided, the default value is 4 bytes.
+
+Signed-off-by: Jay Chang <jay.chang@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Jim Shu <jim.shu@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20251022024141.42178-2-jay.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/riscv/cpu.h                |  1 +
+ target/riscv/cpu_cfg_fields.h.inc |  1 +
+ target/riscv/cpu.c                | 39 +++++++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 1150bd1469..d3968251fa 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -426,6 +426,8 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-         min_vlen = 64;
-     } else if (cfg->ext_zve32x) {
-         min_vlen = 32;
-+    } else {
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 4c13012442..36e7f10037 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -176,6 +176,7 @@ extern RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[];
+ 
+ #define MAX_RISCV_PMPS (64)
+ #define OLD_MAX_RISCV_PMPS (16)
++#define MIN_RISCV_PMP_GRANULARITY 4
+ 
+ #if !defined(CONFIG_USER_ONLY)
+ #include "pmp.h"
+diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+index e2d116f0df..a154ecdc79 100644
+--- a/target/riscv/cpu_cfg_fields.h.inc
++++ b/target/riscv/cpu_cfg_fields.h.inc
+@@ -166,6 +166,7 @@ TYPED_FIELD(uint16_t, cbom_blocksize, 0)
+ TYPED_FIELD(uint16_t, cbop_blocksize, 0)
+ TYPED_FIELD(uint16_t, cboz_blocksize, 0)
+ TYPED_FIELD(uint8_t,  pmp_regions, 0)
++TYPED_FIELD(uint32_t, pmp_granularity, 0)
+ 
+ TYPED_FIELD(int8_t, max_satp_mode, -1)
+ 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index a877018ab0..73d4280d7c 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1121,6 +1121,7 @@ static void riscv_cpu_init(Object *obj)
+     cpu->cfg.cbop_blocksize = 64;
+     cpu->cfg.cboz_blocksize = 64;
+     cpu->cfg.pmp_regions = 16;
++    cpu->cfg.pmp_granularity = MIN_RISCV_PMP_GRANULARITY;
+     cpu->env.vext_ver = VEXT_VERSION_1_00_0;
+     cpu->cfg.max_satp_mode = -1;
+ 
+@@ -1606,6 +1607,43 @@ static const PropertyInfo prop_num_pmp_regions = {
+     .set = prop_num_pmp_regions_set,
+ };
+ 
++static void prop_pmp_granularity_set(Object *obj, Visitor *v, const char *name,
++                                     void *opaque, Error **errp)
++{
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    uint32_t value;
++
++    visit_type_uint32(v, name, &value, errp);
++
++    if ((value < MIN_RISCV_PMP_GRANULARITY) && (value & (value - 1))) {
++        error_setg(errp, "PMP granularity must be a power of 2 and at least %d",
++                   MIN_RISCV_PMP_GRANULARITY);
 +        return;
-     }
- 
-     if (vlen > RV_VLEN_MAX || vlen < min_vlen) {
-@@ -676,12 +678,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
- 
--    if (cpu->cfg.ext_zve32x) {
--        riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
--        if (local_err != NULL) {
--            error_propagate(errp, local_err);
--            return;
--        }
-+    riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
++    }
++
++    if (cpu->cfg.pmp_granularity != value && riscv_cpu_is_vendor(obj)) {
++        cpu_set_prop_err(cpu, name, errp);
 +        return;
-     }
++    }
++
++    cpu_option_add_user_setting(name, value);
++    cpu->cfg.pmp_granularity = value;
++}
++
++static void prop_pmp_granularity_get(Object *obj, Visitor *v, const char *name,
++                                     void *opaque, Error **errp)
++{
++    uint32_t value = RISCV_CPU(obj)->cfg.pmp_granularity;
++
++    visit_type_uint32(v, name, &value, errp);
++}
++
++static const PropertyInfo prop_pmp_granularity = {
++    .description = "pmp-granularity",
++    .get = prop_pmp_granularity_get,
++    .set = prop_pmp_granularity_set,
++};
++
+ static int priv_spec_from_str(const char *priv_spec_str)
+ {
+     int priv_version = -1;
+@@ -2606,6 +2644,7 @@ static const Property riscv_cpu_properties[] = {
+     {.name = "mmu", .info = &prop_mmu},
+     {.name = "pmp", .info = &prop_pmp},
+     {.name = "num-pmp-regions", .info = &prop_num_pmp_regions},
++    {.name = "pmp-granularity", .info = &prop_pmp_granularity},
  
-     /* The Zve64d extension depends on the Zve64f extension */
+     {.name = "priv_spec", .info = &prop_priv_spec},
+     {.name = "vext_spec", .info = &prop_vext_spec},
 -- 
 2.51.0
 
