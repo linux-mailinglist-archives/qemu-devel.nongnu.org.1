@@ -2,120 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99003C00E4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0FEC00E7F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:52:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBto0-0000oX-Ui; Thu, 23 Oct 2025 07:48:33 -0400
+	id 1vBtrI-00011o-Aa; Thu, 23 Oct 2025 07:51:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBtnd-0000H1-BM; Thu, 23 Oct 2025 07:48:11 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBtqz-0000sR-6Z
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:51:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBtnZ-00025J-Cs; Thu, 23 Oct 2025 07:48:08 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N9g5ak003946;
- Thu, 23 Oct 2025 11:48:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=4Zqa0v
- 85Z6eJjhNLnjuHesU9geC6XkCwBv0f3ip+vbo=; b=kb6yKlcHaLSYjoYPVSK0Hs
- udTX5TGAhPZ6Lhx1s0CpHVwohtMqiLXtzlFz/i4wU4bQtQY9qNYTosgo3EA1R7lk
- iI+sbn4fWgFPW2ew4O+RtceRAuftodX4RdYAS9d8MWQcqkFi6gjjuP5O1Dr64O80
- k+il1o7LXStbHgQAL5+lKT5rUP8/PPBDOGWVz7GZVwfrQ0WesmBfuheO9Kp1wPSG
- 874h31/wJt4y0i1WYmt/yyWWLgwow7SNEho8PBaaDiSjwkMFDg7y98+m4Vw7ZZs/
- xXfldWBybtWohMGX6HB3dvTlG3dYtxnHBYlWfQIVExnkAN1YBSQrti0x7gPYe0eQ
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32hrd00-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 11:48:02 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59NBm24s023003;
- Thu, 23 Oct 2025 11:48:02 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v32hrcyw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 11:48:02 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NBAD2u002488;
- Thu, 23 Oct 2025 11:48:01 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejna9m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 11:48:01 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NBm05J29688456
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 11:48:00 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 45BD058061;
- Thu, 23 Oct 2025 11:48:00 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C193C58057;
- Thu, 23 Oct 2025 11:47:57 +0000 (GMT)
-Received: from [9.124.221.73] (unknown [9.124.221.73])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 11:47:57 +0000 (GMT)
-Message-ID: <00e825dc-4e44-4001-9924-77435ce2ff59@linux.ibm.com>
-Date: Thu, 23 Oct 2025 17:17:56 +0530
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBtqx-0002RU-3n
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:51:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761220293;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=o5J0XleYy35J72GSLb8VrlEjmKmwrzI5uCA4kevpMWE=;
+ b=dp/riD5LDdLz7yyHM++9SSSuJWWihO0ShscTQX9JMF/b5OGFDeKzwPQ8wv/cG+hiLStL1S
+ MXMDoXvNzVx0Lzfcnd0mRSvDkol8fteIw5iateSdseSXGTfZ1NCNGDFLy1E1256cayQt7R
+ nF5nzBuU2TelNoZfTdi4Y0a40qK0iA4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-VvcMHZOqNiKpgA0i6iCdjA-1; Thu,
+ 23 Oct 2025 07:51:29 -0400
+X-MC-Unique: VvcMHZOqNiKpgA0i6iCdjA-1
+X-Mimecast-MFC-AGG-ID: VvcMHZOqNiKpgA0i6iCdjA_1761220288
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 052061800657; Thu, 23 Oct 2025 11:51:28 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B079A180057C; Thu, 23 Oct 2025 11:51:27 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id F136021E6A27; Thu, 23 Oct 2025 13:51:24 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v2 06/32] system: check security for machine types
+In-Reply-To: <20250926140144.1998694-7-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 26 Sep 2025 15:01:17
+ +0100")
+References: <20250926140144.1998694-1-berrange@redhat.com>
+ <20250926140144.1998694-7-berrange@redhat.com>
+Date: Thu, 23 Oct 2025 13:51:24 +0200
+Message-ID: <87frb97s5f.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/11] hw/ppc/spapr: Remove deprecated pseries-3.0 ->
- pseries-4.2 machines
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>
-References: <20251021084346.73671-1-philmd@linaro.org>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20251021084346.73671-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXxS+oYxdzxhd3
- 74xs60lmW35DmTjkRRb+bdu4i80cIPh6Kb7d08yOEm9x7phWNnCP2Em/QWIwl/Ar5WVBfJc+Kj5
- L6pUtUIdV9/uh1AWYlmHU9gQVN6AbYY2dZs0HgvvVdjyesthpuKrojdIX7w8TEmxrmfnsy6lCil
- WJtr3OJYXv/sjdOmYeMW6vklzT/H+Q077eQ3JN5W2RZm+2TSjmsGv7Pof2NHE9Ka0H6/qt2XYRE
- 9ZOD6C4MY3daT0KHYt84BjDCwRq7xxzybmdEta3koS8wAFhwmzZ8MWI9JQ/OGsXQ/M2mCPPqKii
- TiGbr0Pn4XJE1anmtUXaexC1XICWahQ1eZZGV+JxceTf6fsrTPoy64QnRNTw6AuMlMNXD2woJ0s
- uO2Gy9W7q0wxCCohvnZVnKERcsvz6w==
-X-Authority-Analysis: v=2.4 cv=OrVCCi/t c=1 sm=1 tr=0 ts=68fa15f2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=AHPAAfRtqs9UFnfsTcQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=oH34dK2VZjykjzsv8OSz:22 a=cPQSjfK2_nFv0Q5t_7PE:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
- a=jd6J4Gguk5HxikPWLKER:22
-X-Proofpoint-GUID: 2zBzW8fBvBgXORAKnPFHflbdrcrc3Y8a
-X-Proofpoint-ORIG-GUID: ElCUNWUEIT-CDHk6-EjbkGoUucIWTq-6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
- clxscore=1015 bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,33 +90,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
+> This wires up the machine creation code to apply the compat policy
+> security check.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  system/vl.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+>
+> diff --git a/system/vl.c b/system/vl.c
+> index 38c6caf524..716bf6d490 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -2182,10 +2182,19 @@ static void qemu_create_machine_containers(Object=
+ *machine)
+>      }
+>  }
+>=20=20
+> -static void qemu_create_machine(QDict *qdict)
+> +static int qemu_create_machine(QDict *qdict)
 
-On 10/21/25 14:13, Philippe Mathieu-Daudé wrote:
-> v2: Rebased on https://lore.kernel.org/qemu-devel/20251009184057.19973-1-harshpb@linux.ibm.com/
-> 
-> Remove the deprecated pseries-3.0 up to pseries-4.2 machines,
-> which are older than 6 years. Remove resulting dead code.
-> 
-> Harsh Prateek Bora (5):
->    ppc/spapr: remove deprecated machine pseries-3.0
->    ppc/spapr: remove deprecated machine pseries-3.1
->    ppc/spapr: remove deprecated machine pseries-4.0
->    ppc/spapr: remove deprecated machine pseries-4.1
->    ppc/spapr: remove deprecated machine pseries-4.2
-> 
-> Philippe Mathieu-Daudé (6):
->    hw/ppc/spapr: Remove SpaprMachineClass::nr_xirqs field
->    hw/ppc/spapr: Inline spapr_dtb_needed()
->    hw/ppc/spapr: Inline few SPAPR_IRQ_* uses
->    target/ppc/kvm: Remove kvmppc_get_host_serial() as unused
->    target/ppc/kvm: Remove kvmppc_get_host_model() as unused
->    hw/ppc/spapr: Remove SpaprMachineClass::phb_placement callback
+Suggest bool.
 
-Queued and posted PR.
-Additional cleanup suggestions on patch 2 can be taken up as a 
-follow-up. Thanks.
+>  {
+>      MachineClass *machine_class =3D select_machine(qdict, &error_fatal);
+>      object_set_machine_compat_props(machine_class->compat_props);
+> +    Error *local_err;
+> +
+> +    if (!compat_policy_check_security(&compat_policy,
+> +                                      object_class_get_name(OBJECT_CLASS=
+(machine_class)),
+> +                                      object_class_is_secure(OBJECT_CLAS=
+S(machine_class)),
+> +                                      &local_err)) {
+> +        error_report_err(local_err);
+> +        return -1;
+> +    }
+>=20=20
+>      current_machine =3D MACHINE(object_new_with_class(OBJECT_CLASS(machi=
+ne_class)));
+>      object_property_add_child(object_get_root(), "machine",
+> @@ -2222,6 +2231,8 @@ static void qemu_create_machine(QDict *qdict)
+>                                            false, &error_abort);
+>          qobject_unref(default_opts);
+>      }
+> +
+> +    return 0;
+>  }
+>=20=20
+>  static int global_init_func(void *opaque, QemuOpts *opts, Error **errp)
+> @@ -3763,7 +3774,9 @@ void qemu_init(int argc, char **argv)
+>      /* Transfer QemuOpts options into machine options */
+>      parse_memory_options();
+>=20=20
+> -    qemu_create_machine(machine_opts_dict);
+> +    if (qemu_create_machine(machine_opts_dict) < 0) {
+> +        exit(1);
+> +    }
+>=20=20
+>      /*
+>       * Load incoming CPR state before any devices are created, because it
 
-regards,
-Harsh
 
