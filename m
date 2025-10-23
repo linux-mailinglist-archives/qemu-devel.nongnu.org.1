@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FFAC01EC3
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A595EC01EB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:56:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwjV-0004h4-E2; Thu, 23 Oct 2025 10:56:05 -0400
+	id 1vBwjV-0004iz-VF; Thu, 23 Oct 2025 10:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBwjS-0004gK-Vh
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:02 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1vBwjT-0004gO-1O
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:03 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBwjQ-0005Xa-8z
+ id 1vBwjR-0005Xe-AU
  for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:56:02 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-4298a028de6so588098f8f.0
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:55:59 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-42421b1514fso665163f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:56:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1761231359; x=1761836159; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AGZpsqJmNFV2S3U5w399Aimk84khi2fK7lf+2CsSRB8=;
- b=u0GXwagKeYwUEEniqzqMeVjaahQsT4HBMzf18ZETaykD97SCX/E28YKMJtj7DcSHos
- MqdsCA1TjhwincqEL7dEGsE1f0AlOPMCM+YZolCLBXuVaYE1Dv0Z3MrDf0aPHME4Iy4z
- PmzfhJrRKxoUgGTBZ+GtauLDW4gWdMATcLXVkIwC+WXtoXVGAZAGyvI/ATI05w99qZPZ
- 9Rvy60MkX7RC1Vw4Hx889Se0PtO+5dSD0ye7x9uWxSH1xXMsNnclcLfKPS/M7LwBbS2T
- FV/iOIZlidw5ULSHfw9C/J96ZQEHSThAcCnm2pywrgJlbK5ldgyva2bDP36yoYFf9l7V
- DGww==
+ :reply-to; bh=rKggUMTp2Py8H2Mu640NwLE70wGVNBBA8/YWOG7pk50=;
+ b=SP6QEcIBXd29JYeSULpNEhCm1zfbgk02pvxJXIcbjCdyHm7At8bTZG1LMKHOa4ede4
+ dduomW+QbHSC9EHJncpQbLvvVqeyEzG+uAp3kzks03xwlGJOvibRvBcBOL3GzxFlmEk4
+ w3q8z6lHz0QLJSyNfToacUYUrZHYpZTbbXudkt1BNOspV5Xp7Virrbe2oWmSiKrP4vmA
+ 5emli+Czalt3kfJtwWh+bztMzOvEP80OMeKXNR6OlSoclOftA8qouz+gT9jYBrxUpf5M
+ CtQsjWrxTVJ4O2EdBBgLPxKhJPk1IJ6T2SqUv3q5x/msYwrg2ib0x0Glg6neSJJwGF4i
+ DHpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1761231359; x=1761836159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AGZpsqJmNFV2S3U5w399Aimk84khi2fK7lf+2CsSRB8=;
- b=uIj1JT+Rd//0FKw2uDRxVrcQZ0ecAW7c/lTAh+K17HE77TwU+qpdUcdsZysrTtDkAC
- sLDbiqHrSBumje/SUIvFmr7+Hg6UyvWWJDLTiMwCIJtp60angW92k87qXutyvHD+WiiI
- 1TmH9xO7Qx96lIk05QRi3KnLaep5hO1SCr+Jcm63ZhyxORuRPHFeSGptU8YUKXMd1gNV
- NHv+yD8FEa6TcpnkfG+ccq/DEaq4+QCg0fn5mGX5ntlqCbQdfb3n+JUhLuyqHl5Hld5v
- 2yn5IMbCMvG+0O5wIawReIeo8EioEqz5hX55JXt2bFDJfbZ9vPCSbWoh2XBeibwP1DXL
- xciQ==
-X-Gm-Message-State: AOJu0YxBmM+P+jybP3XGwiLFpujqiQ53hbeJYMRFL0q38vh7ss8e3PV+
- C2+BZmdTmY2mhvQQDFgYAbCmnadG6cMIOiMpAGRTr6uwOCwF3qTgHK++Rkk9kLK3fXpirmQ5z3k
- c4kiU
-X-Gm-Gg: ASbGncu7LleiC1Bn1FWkJaivhNKLhr54d9F3/XeQP+yE+iI2vjgqZMxOXsoYUbdc9Bf
- 0HxXKilefH5/nWq0WT+EC+Mnl94UPQNPZHY1DBAuzuKpX7YcDjt60Pln7teWUy8/6ZkDgoPKJIP
- sVkHeDibXk0cpslELqNtjAiw3C+oETEMmU4MVWbHHHZBPoKT0PmyRcLcKPMPDG04lbhrLCfrPEl
- MixPlCtG8dnJGimTSlk9wUVmHqoISxC4+2yOnDeDvwXeXvu1jta+U/5dfCpdN3Rs8emzHp0E+mb
- O/aJvKiihNJOM+z0Hc3Qcq7TIpUyMR/oCbciX9eOzEbXJtf6oHiDXmhHUCTzu+v46wTFkPEIFjz
- N4FfHbxwX5lC8UeQGmzJmwDVxQxiIVeqO7PaHtjEw7p8RkPAg38b1cTyTykQiP4Kc080Zxw30q2
- KYKOXwqOtVA9d7cx3/
-X-Google-Smtp-Source: AGHT+IEJzQc+JKCUg/EHKHWKuUiispFgfI/O65CHj1dZkykJMkPKZsI9amP3F0AGHHdF9xsG4Y7a4g==
-X-Received: by 2002:a05:6000:4012:b0:3df:9ba8:21a3 with SMTP id
- ffacd0b85a97d-4285326765cmr5237609f8f.18.1761231358705; 
- Thu, 23 Oct 2025 07:55:58 -0700 (PDT)
+ bh=rKggUMTp2Py8H2Mu640NwLE70wGVNBBA8/YWOG7pk50=;
+ b=hrfD2M1hDLvtzY0qr8fVzcDeNMrH5EG2BfajNH3KpoAST8PiTt9oTAMIIiAuE91lmE
+ 7akqdAHbAQoDW7IMv5FWpLaDduh8f4/7Ll4FFRZFz1w9B4RCRKw779cRPyoMaugk7O2G
+ KoTVjQB2oktAJrUfTs7WPEY4DCY9b4yb6GStiuNKBUlkl/ctUuwnhiQ/H/QNgrubhV5B
+ WdH+5YYksCYw5YxrbIUuqIr8yaHnrcrePUHrh8R3Ua7qooLfJchZ/wJwvuei+Zo8L+Gu
+ N1s907v3zKjDR0oTgi3+WL2PxlRr8FvwgutE81NpSIV8wyrO85Vj+OjAoUxwytmUHeuS
+ CLAA==
+X-Gm-Message-State: AOJu0YzZq3+4bf5X3UjG2J/m5X47HqfTGcr/o9P6576ZOFkg272nucva
+ FsiERNeCQaHEib/etPQedeyUASd4C+T119tr98iy+3oHZNZoqK5irmHD6M7ZF5w26bT0PaP5whU
+ yiBnA
+X-Gm-Gg: ASbGncviGIGCYJJEBp0HEHzo+rW2xkexFQvUmCKPItGSEdSwE7SMF1eeaOUgwHGPc8l
+ Ip+7/evJkpcwlrlgNXA0BRoafk+I3BbMBfrqkEQyNlO7VaQ3wBB+8cl41a0KsS/MSZBrdB5zq1n
+ wpnPmuKDw1OPusT+jZDg9uE76lP6vziZZfg4wTxWtfMN4vb3H86dMr1wNc+kZ5d6n9lLPEM4AIW
+ q+/cLxQsaEXEJG6OwXBAr/dTO2qmS0Osc6EwS2/YRbwRGl3vdq5hW/2zcssunBFE95uTOt6IDpk
+ rHHSkCUVae5mMOar/EBmOvv7awem+Fy2th7ljeI3IfQvi+3KLGoqvrtWiV+T8YKyQPkkHTXBKCt
+ xoaB9dxkwj669Rjcbnem4fXIVh0FHcWkVKNXBQ2XQo9gP5ur4U3Dm9lC7I/vYxrD89OEEVchs8h
+ Gqldsevw==
+X-Google-Smtp-Source: AGHT+IEm+QqjzO5gtTQGBwLGKiyQs1iuQLEuVX0UUsWDBngrBv7HoJzeUirEpU9ji6vMGyabIk3pnA==
+X-Received: by 2002:a05:6000:24c9:b0:426:d549:5861 with SMTP id
+ ffacd0b85a97d-42704e029bcmr19155367f8f.42.1761231359632; 
+ Thu, 23 Oct 2025 07:55:59 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429898acc63sm4398465f8f.27.2025.10.23.07.55.57
+ ffacd0b85a97d-429898acc63sm4398465f8f.27.2025.10.23.07.55.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 07:55:57 -0700 (PDT)
+ Thu, 23 Oct 2025 07:55:59 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/16] hw/intc/arm_gicv3_kvm: Drop DPRINTF macro
-Date: Thu, 23 Oct 2025 15:55:40 +0100
-Message-ID: <20251023145554.2062752-3-peter.maydell@linaro.org>
+Subject: [PULL 03/16] target/arm: Add isar feature test for FEAT_AIE
+Date: Thu, 23 Oct 2025 15:55:41 +0100
+Message-ID: <20251023145554.2062752-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251023145554.2062752-1-peter.maydell@linaro.org>
 References: <20251023145554.2062752-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,62 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't generally like DPRINTF debug macros, preferring tracepoints.
-In this case the macro is used in only three places (reset, realize,
-and in the unlikely event the host kernel doesn't have GICv3 register
-access support). These don't seem worth converting to tracepoints,
-so simply delete the macro and its uses.
+From: Richard Henderson <richard.henderson@linaro.org>
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20251014195017.421681-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/intc/arm_gicv3_kvm.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ target/arm/cpu-features.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index 9829e2146da..405496c7bb3 100644
---- a/hw/intc/arm_gicv3_kvm.c
-+++ b/hw/intc/arm_gicv3_kvm.c
-@@ -36,14 +36,6 @@
- #include "target/arm/cpregs.h"
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 37f1eca3af6..579fa8f8f42 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -1364,6 +1364,11 @@ static inline bool isar_feature_aa64_s2pie(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64MMFR3, S2PIE) != 0;
+ }
  
- 
--#ifdef DEBUG_GICV3_KVM
--#define DPRINTF(fmt, ...) \
--    do { fprintf(stderr, "kvm_gicv3: " fmt, ## __VA_ARGS__); } while (0)
--#else
--#define DPRINTF(fmt, ...) \
--    do { } while (0)
--#endif
--
- #define TYPE_KVM_ARM_GICV3 "kvm-arm-gicv3"
- typedef struct KVMARMGICv3Class KVMARMGICv3Class;
- /* This is reusing the GICv3State typedef from ARM_GICV3_ITS_COMMON */
-@@ -708,14 +700,11 @@ static void kvm_arm_gicv3_reset_hold(Object *obj, ResetType type)
-     GICv3State *s = ARM_GICV3_COMMON(obj);
-     KVMARMGICv3Class *kgc = KVM_ARM_GICV3_GET_CLASS(s);
- 
--    DPRINTF("Reset\n");
--
-     if (kgc->parent_phases.hold) {
-         kgc->parent_phases.hold(obj, type);
-     }
- 
-     if (s->migration_blocker) {
--        DPRINTF("Cannot put kernel gic state, no kernel interface\n");
-         return;
-     }
- 
-@@ -797,8 +786,6 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
-     Error *local_err = NULL;
-     int i;
- 
--    DPRINTF("kvm_arm_gicv3_realize\n");
--
-     kgc->parent_realize(dev, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
++static inline bool isar_feature_aa64_aie(const ARMISARegisters *id)
++{
++    return FIELD_EX64_IDREG(id, ID_AA64MMFR3, AIE) != 0;
++}
++
+ static inline bool isar_feature_aa64_mec(const ARMISARegisters *id)
+ {
+     return FIELD_EX64_IDREG(id, ID_AA64MMFR3, MEC) != 0;
 -- 
 2.43.0
 
