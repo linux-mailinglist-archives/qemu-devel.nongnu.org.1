@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C5FC03E40
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 01:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C4AC03E29
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 01:50:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC53x-0003pe-7w; Thu, 23 Oct 2025 19:49:45 -0400
+	id 1vC53z-0003qP-DZ; Thu, 23 Oct 2025 19:49:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vC53u-0003pO-Ot
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:49:42 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1vC53x-0003pw-K0
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:49:45 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vC53s-00073W-LG
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:49:42 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-27d3540a43fso13374645ad.3
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 16:49:40 -0700 (PDT)
+ id 1vC53w-000748-5M
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:49:45 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-b6cf07258e8so1001741a12.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 16:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761263378; x=1761868178; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=04/xSRj7ipZ9Qm1tVaaz6k08CkdaPczkvm+yEXsd83k=;
- b=BjECS1gAm/bEjQuWoUMnZhhyEuH4iPR0ktaqX3bDk9eJ/x3oXtb9FZs5Fkg7JxaYh9
- PgIxMP7qGwUGaGet7SkVuOQ2+js12vtWKOcNNgoko8LXesgkDkXACqyfSNQgnn2o9BvW
- 4v1G76zNYpEPd6m9CKbtC8Uib+blb4RxSJtmE92st62KEJawDvJbvgS1CL0ugLHhiWnN
- xQsxH65z9OtbxnBst4UsjNDCK7skAQBWKLD5s0mk2OwCkD+HNyPVhaTEfPic85TR7I1a
- 5XuPhNYfNK9+7fnNfkHHp7MB8CkibwK3wRMdgo/iezXv4G9glYPoQ9W9JTk0uDCKB0d7
- sulQ==
+ d=gmail.com; s=20230601; t=1761263382; x=1761868182; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FZLyqH7Fvcg+HojmfroD3Z/4L2yTHzsWHg7CTJ36+8Y=;
+ b=SYW2mC9WfyT8zFIFDgtCUaawRMlf2Nrv0OrQU5nSkdH9SRevVQUQQVjAHBt7I1eR/J
+ WlklP39MAnsNYE/mmNUQXIHvzAHVnXS7RU0tjfg3cHWO/iSZKa9/rdaBokES7zcikARt
+ 7k43F5PSU5JaFs23ojI7I773M7lC75vQ9Qql4u4a6O4+H5y+m+UON9u9Lk17oSQOQJfX
+ 14BX244JYSTgq2C1uQcZ8Tnb84iyOuV6nSks07vJRwjM1ouuEQS/wHOr8YJg2xjvHFtU
+ BuIHtJCGNQUPpPYUuTv69WvyOyYlrV5nceik/1Ku8Qlh3LDXjW2JnesJIp6mqncFkxnJ
+ y1dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761263378; x=1761868178;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=04/xSRj7ipZ9Qm1tVaaz6k08CkdaPczkvm+yEXsd83k=;
- b=CLRyQqGDBeVyBLhKilK1kT03Fp6VF5yyK/Eom6/9oVcWMCBcuTjTUV/Tmow0NeGTqF
- wEK7ae0RUP3LWDc0jSbCB0xJeeFe+nj+codW43F4ATPpI7ou1Bv6P/mOVqQ0ley477Kq
- DAUytcdJbWU4Q7s/7yL8WlhaZOwQtCT11vaVIjgCSyrVjehYgseY3xyhnL4KgZqvromk
- nHL31dG3nBog37KSzL6QYm9W+pWIwbPq+rj3diWD+uAk23zGVbzK1vFd45njlZhwxD3B
- 361RZysw+MNxXujO1CIYCxAsavYqdA+F9zsw1VZMOe5eEOO8hHKSC6pFzA8U/V+U5rIU
- 8o6Q==
-X-Gm-Message-State: AOJu0YyhbtLEYB9BS4/zOMZMNfRV39BGGslCccFnN3kfaDJMs1qtdhfO
- utO/PYL4mvHmcDVl7barL4vtXXsabdlCrdLqpx6/NkNDrF6h1jne4oE3S8JSuw==
-X-Gm-Gg: ASbGncuNREBWCpKngZZg9+0ljoaDX8fT8QqZDePzA69xzW4Fh20yNXQoODVYqbtClkj
- 2gvrU4KLOKffaWj/q83p1RAOzZxT2Axkj41YaqoSVCfEu6qLsSAz/hes9D4bBlZyT+FmYjpPvTu
- /nT27ggDCzUOvQGLUJOGpIHm7txdBTVo+BQFvgentU7dpB1jOaB6T40E2XKE1WGgj6BqP3YV18V
- dXiWtXfD97Bqv9IOSP+tGpZpC7WZTZyuebfV0Wk+tk+w3KgpdBSmTVl5p+YWR1BqH3IQetQr50F
- a14aSLXgs2B6DN9HltCxrWikenvBivHAloWWSGuMCI404ynSjHj66ArCURr08IF1SFcTiszSK1A
- yCZVLUA//8mu6Zp7TIMuOi3krsqUpMZG7CfCpghgibQuXBtwWZeE70Dms0vtPXjiGyhMgWJMMlS
- DqplFsHHpeToW6VdmKdS+pLgVAAdHQGczg3y9kqykpEU3i2E/s/XEOWrwHaRV/AEyjdajMvFkGY
- nYQSC/lWRxrjXaEdo91RGTobzSrUA==
-X-Google-Smtp-Source: AGHT+IGiZNxeGoAS6DuuUyGJywxvXYqzvSi6H7tFCxEy3buR0DFwCR4KUAITYqoRXVPS0vUJVpmgww==
-X-Received: by 2002:a17:902:ce12:b0:24c:7b94:2f53 with SMTP id
- d9443c01a7336-290c9c8a765mr296440155ad.6.1761263378465; 
- Thu, 23 Oct 2025 16:49:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761263382; x=1761868182;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FZLyqH7Fvcg+HojmfroD3Z/4L2yTHzsWHg7CTJ36+8Y=;
+ b=YOSA0LviftLImizt3hl4OhVIBlBocVEGi63nNghV/y13tk5WVAYU2EpMIDFkUZ5J7s
+ MXkuHqV9ubu0stIEVSAcZyObtBpOCzoktRzv3uObOF88SFpgyn5q0tstE+2g+/FncJhk
+ Z43U/N9SVB48kNCS87fMHjXwtw+g3ueje78zGVNWa9GhMS+RmGkFQpjug2dgdSXNK9Nb
+ WMoYFYBwXQF/EVsp+jKX4a8K6wRA+DhNP0HCtzU56da+ADrH71MCdFqeIIxKV6GcVoQF
+ UXygscsx/mo271z8lpcHuMTsQ4E1NNAXiQatXNJ/tZCByB6zmZ6u0M+eWdpALSDOl7om
+ 2unQ==
+X-Gm-Message-State: AOJu0Yzsb3auiaJW9KS7il9q6NQ10aCYDQ9Iks8Ve/WiN1uowkZIoOQK
+ cTcIAPTD6pZICpnqhhjmWnR9okFZX2BylEQqwXxlstFf0z3DBnR/zETTatY3Mw==
+X-Gm-Gg: ASbGncuYG5eYc8N60Xatsa2G+iMgRPlXFiP/Co4+iRPITsHoRjUz05huE1CEkChVKhR
+ MWg2BunAUn43r/hXeW9dEPZMrV0Ii4ms2/fcpR+ixE3DyZA9X3GwvUEH/31CRU2rmFPg8ESE7qO
+ t/dmoING74GiQLEr0k3phXOM6SCJJXs1dfjy+lElMTS7fIX5wq5he8Nr2oxL3p7PJXK0MN7sdGf
+ Wua5SjjrtigmE+B+36RMCAL3j6EruxzuXiOoH+lKF8CQVWAH9ZSXtMXyALc8YiELScI73CtRAim
+ hpuIsTdsS5y0lDs0B9xUHW+xwGiYzg9E8d96Fdn5nWQHdiTONI79NmjKdArkVsSWZWFYxkDeXaC
+ 0fyfETJcaecR88kXE3oIJvyIo/h0Eb5g1c4ocNtQh1ihxF1voJQl9xyLCxVuDBNQL+8F3lWzRCo
+ GnjwoI4LO0j+oM3dxz2cm7XH6uiJ61aFkxMJdi0KzKdRDah6q4QsxnNpigfED3E3fM7OLvXo2Nw
+ PblW7m8AggmDc6ojW8=
+X-Google-Smtp-Source: AGHT+IENP9Mqj9caalooQAmmJliO2qoezCOuMLziy9RjYav52zqUybv00HCLj42TaPA/+MN7M3jmxQ==
+X-Received: by 2002:a17:902:e88e:b0:248:ff5a:b768 with SMTP id
+ d9443c01a7336-290c9cf35cdmr94912055ad.10.1761263382016; 
+ Thu, 23 Oct 2025 16:49:42 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946de02cb7sm36088525ad.40.2025.10.23.16.49.36
+ d9443c01a7336-2946de02cb7sm36088525ad.40.2025.10.23.16.49.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 16:49:37 -0700 (PDT)
+ Thu, 23 Oct 2025 16:49:41 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 00/25] riscv-to-apply queue
-Date: Fri, 24 Oct 2025 09:49:02 +1000
-Message-ID: <20251023234927.1864284-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Zejun Zhao <jelly.zhao.42@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-stable@nongnu.org
+Subject: [PULL v2 01/25] hw/riscv: Correct mmu-type property of sifive_u harts
+ in device tree
+Date: Fri, 24 Oct 2025 09:49:03 +1000
+Message-ID: <20251023234927.1864284-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251023234927.1864284-1-alistair.francis@wdc.com>
+References: <20251023234927.1864284-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -86,7 +90,7 @@ X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,100 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair.francis@wdc.com>
+From: Zejun Zhao <jelly.zhao.42@gmail.com>
 
-The following changes since commit 88b1716a407459c8189473e4667653cb8e4c3df7:
+Correct mmu-type property of sifive_u harts from Sv48 to Sv39 in 64-bit
+mode since it's the only supported SATP mode.
 
-  Merge tag 'pull-target-arm-20251023' of https://gitlab.com/pm215/qemu into staging (2025-10-23 13:17:27 -0500)
+Signed-off-by: Zejun Zhao <jelly.zhao.42@gmail.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20251013133242.1945681-1-jelly.zhao.42@gmail.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Cc: qemu-stable@nongnu.org
+---
+ hw/riscv/sifive_u.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index d69f942cfb..3e1ed209ca 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -176,7 +176,7 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+             if (is_32_bit) {
+                 qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv32");
+             } else {
+-                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
++                qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv39");
+             }
+             riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
+         } else {
+-- 
+2.51.0
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20251024
-
-for you to fetch changes up to eccf20c02a5ad913a910444dc6bbe5de0952d254:
-
-  target/riscv: Make PMP CSRs conform to WARL constraints (2025-10-24 09:24:08 +1000)
-
-----------------------------------------------------------------
-Second RISC-V PR for 10.2
-
-* Correct mmu-type property of sifive_u harts in device tree
-* Centralize MO_TE uses in a pair of helpers
-* Fix Ethernet interface support for microchip-icicle-kit
-* Fix mask for smsiaddrcfgh
-* Fix env->priv setting in reset_regs_csr()
-* Coverity-related fixes
-* Fix riscv_cpu_sirq_pending() mask
-* Fix a uninitialized variable warning
-* Make PMP granularity configurable
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      target/riscv: Fix a uninitialized variable warning
-
-Daniel Henrique Barboza (3):
-      target/riscv/kvm: fix env->priv setting in reset_regs_csr()
-      target/riscv/riscv-qmp-cmds.c: coverity-related fixes
-      target/riscv: fix riscv_cpu_sirq_pending() mask
-
-Djordje Todorovic (1):
-      hw/intc: Allow gaps in hartids for aclint and aplic
-
-Guenter Roeck (4):
-      hw/net/cadence_gem: Support two Ethernet interfaces connected to single MDIO bus
-      hw/riscv: microchip_pfsoc: Connect Ethernet PHY channels
-      hw/net/cadence_gem: Add pcs-enabled property
-      microchip icicle: Enable PCS on Cadence Ethernet
-
-Jay Chang (2):
-      target/riscv: Make PMP granularity configurable
-      target/riscv: Make PMP CSRs conform to WARL constraints
-
-Jialong Yang (1):
-      aplic: fix mask for smsiaddrcfgh
-
-Philippe Mathieu-Daudé (12):
-      target/riscv: Explode MO_TExx -> MO_TE | MO_xx
-      target/riscv: Conceal MO_TE within gen_amo()
-      target/riscv: Conceal MO_TE within gen_inc()
-      target/riscv: Conceal MO_TE within gen_load() / gen_store()
-      target/riscv: Conceal MO_TE within gen_load_idx() / gen_store_idx()
-      target/riscv: Conceal MO_TE within gen_fload_idx() / gen_fstore_idx()
-      target/riscv: Conceal MO_TE within gen_storepair_tl()
-      target/riscv: Conceal MO_TE within gen_cmpxchg*()
-      target/riscv: Conceal MO_TE|MO_ALIGN within gen_lr() / gen_sc()
-      target/riscv: Factor MemOp variable out when MO_TE is set
-      target/riscv: Introduce mo_endian() helper
-      target/riscv: Introduce mo_endian_env() helper
-
-Zejun Zhao (1):
-      hw/riscv: Correct mmu-type property of sifive_u harts in device tree
-
- include/hw/net/cadence_gem.h                  |  4 ++
- target/riscv/cpu.h                            |  1 +
- target/riscv/cpu_cfg_fields.h.inc             |  1 +
- hw/intc/riscv_aclint.c                        | 18 ++++-
- hw/intc/riscv_aplic.c                         | 42 ++++++++----
- hw/net/cadence_gem.c                          | 31 +++++++--
- hw/riscv/microchip_pfsoc.c                    |  6 ++
- hw/riscv/sifive_u.c                           |  2 +-
- target/riscv/cpu.c                            | 39 +++++++++++
- target/riscv/cpu_helper.c                     |  3 +-
- target/riscv/kvm/kvm-cpu.c                    |  1 +
- target/riscv/op_helper.c                      | 30 +++++---
- target/riscv/pmp.c                            | 46 +++++++++++++
- target/riscv/riscv-qmp-cmds.c                 | 22 +++---
- target/riscv/tcg/tcg-cpu.c                    | 12 ++--
- target/riscv/translate.c                      | 16 ++++-
- target/riscv/insn_trans/trans_rva.c.inc       | 50 ++++++++------
- target/riscv/insn_trans/trans_rvd.c.inc       |  6 +-
- target/riscv/insn_trans/trans_rvf.c.inc       |  6 +-
- target/riscv/insn_trans/trans_rvi.c.inc       | 24 ++++---
- target/riscv/insn_trans/trans_rvzabha.c.inc   | 20 +++---
- target/riscv/insn_trans/trans_rvzacas.c.inc   | 12 ++--
- target/riscv/insn_trans/trans_rvzce.c.inc     | 12 ++--
- target/riscv/insn_trans/trans_rvzfh.c.inc     |  8 ++-
- target/riscv/insn_trans/trans_rvzicfiss.c.inc | 10 +--
- target/riscv/insn_trans/trans_xthead.c.inc    | 98 +++++++++++++++------------
- 26 files changed, 361 insertions(+), 159 deletions(-)
 
