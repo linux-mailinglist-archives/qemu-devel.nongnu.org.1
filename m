@@ -2,93 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC18C010AC
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF93C010C8
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:16:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuBD-00020q-Rl; Thu, 23 Oct 2025 08:12:32 -0400
+	id 1vBuFA-00070T-AW; Thu, 23 Oct 2025 08:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vBu8x-0008UW-0A
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:10:12 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vBu8s-0005Io-UZ
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:10:09 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-b6d53684cfdso167846066b.0
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:10:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761221402; x=1761826202; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=06bmaVkTHcaq4jFseyDrJdNi7QHB236TwhvYBcaGYEw=;
- b=h+c7DzOaT4gE2QP8zRX6W25a72F4y9/aB0YmfbhDEkW7YLN097PNnnsZfcDlhn6LKO
- rj/h6z0DRoNFtjggWRI3UFyalNomvTPUqifOVutG16H8S7KCoGvRUqCJEPFz120wAGQK
- 3xuct1jGGzlN9xdZkwYMcodhZxxnzgYXxrJlHpZZGk4BgPyk8gi1HLjUAt4fHGOk4o2+
- lvCYx3EY4b+7s0B5dQFY8xPlq8rniaMi0aC176syhFGdil8WAvIV/qQEbOVt+yO/yaru
- XIcWrtJvD8L5A7qaAmhmrzFYkY49Tv2Bf8QvWKUE8lu4Nt0QUdKQRUCK8NRk87U0Ic+z
- lQPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761221402; x=1761826202;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=06bmaVkTHcaq4jFseyDrJdNi7QHB236TwhvYBcaGYEw=;
- b=UkeUiP0hNqbbz33kdEQxaiDDx+BJlkML5LThZtRdZFay6deMfsnHivYffFoPVFUH2T
- loGIILGwxowTruNrudSV5PRBl2xUGcawl9T8RdHll9989Rsb5RW62xXvjP3PUzlKU+Wj
- SZzQia5HjSAN58xVXdEuqrxWONfra0HkFXHPK6TyhwpaP1km1+c+MUhuwn0dLUe+CqWE
- H3FV3lL8rRUf1LtQ66fDwySm1cn+meXrKyyN5058nix2+Xh/VZIcf3AMWtwhBxWOkc14
- OHbbjHwYzBP1+T/5OReemsrxyTlc97V6fVKs4cHTTvHGtdQkyGNEMdzkRK76Pu1K/zsF
- VycQ==
-X-Gm-Message-State: AOJu0Yyd29rPmubf8DBWDK37kskZlBpErUOx2y0l3j8rhmEoN7u2WwHq
- owCPAvCzmuXBdlblU05a0L9ajWu3ZIwW21T+8rfofnqGoHpJMmokGiSg/SowwlnFwLk=
-X-Gm-Gg: ASbGncu2rAa1dIYRCl1e++s6MfXxdJER+sA9kYbArwxI/PeaC+Ut9gexnLWiqAevIzW
- r3ZyNIE4osWJqpxl7lcNRmqp2cEE2DiQfeRw+paJJnt8uu4mCTC0jDWkRouAkg8DJKf5eiuUIVd
- rH9QWQt7PM2PG9c09RIwcBUXxdrH1ElUpj45lGXO9cXFi53c6JFonssEPxkNfZJqUsQIbMWbvmx
- bLYTnFyyvwsNAK+fmOHc51SAO33HWJyfskBh+UZimXOCyG3DK6xJ0Okiv/ZZPFA2uTYghsRV8JJ
- AgP5EMqI5cf8RCdVygzAtuLXGK9RLPYQ9bQ6ZbgOynXxjcJcGWPlRprbDQS/CShze9RuyybfXpW
- FoO4/OGRmcE7enld0f6UEPRhLx9DC79W4B9OI3puuAfalwBPli4oKjGYW1Z4tMlWJ2EVgGD6xP8
- eR4epv8fHvQ8Wb3KfKKdbbpA==
-X-Google-Smtp-Source: AGHT+IEvbafavPUhgLdXbmF3gP2et1yYkX/XgDnGBThDhol3Cgi0iPpfJig3NhF4r6BCcMGBKIefKA==
-X-Received: by 2002:a17:906:794e:b0:b3a:b949:3059 with SMTP id
- a640c23a62f3a-b6473143f12mr3069083566b.18.1761221402278; 
- Thu, 23 Oct 2025 05:10:02 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b6d511f87a9sm208019366b.26.2025.10.23.05.09.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 05:09:59 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7613C610D1;
- Thu, 23 Oct 2025 13:09:54 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Gustavo Romero <gustavo.romero@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-s390x@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 7/7] gitlab: add initial ppc64le custom-runner test
-Date: Thu, 23 Oct 2025 13:09:53 +0100
-Message-ID: <20251023120953.2905297-8-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251023120953.2905297-1-alex.bennee@linaro.org>
-References: <20251023120953.2905297-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vBuEL-0006l6-EF; Thu, 23 Oct 2025 08:15:50 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vBuEH-0006E4-0W; Thu, 23 Oct 2025 08:15:45 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BE0AC5972ED;
+ Thu, 23 Oct 2025 14:15:35 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id oBwM2kSIMeY8; Thu, 23 Oct 2025 14:15:33 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id BBC0A5972EA; Thu, 23 Oct 2025 14:15:33 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BA3B65972E8;
+ Thu, 23 Oct 2025 14:15:33 +0200 (CEST)
+Date: Thu, 23 Oct 2025 14:15:33 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v4 00/12] Pegasos2 clean up and pegasos1 emulation
+In-Reply-To: <671f7ace-fe86-5443-40b7-d02dd16b922b@eik.bme.hu>
+Message-ID: <f4473b0d-f25e-bc05-a1e6-e5e2971a6688@eik.bme.hu>
+References: <cover.1761176219.git.balaton@eik.bme.hu>
+ <764df5c7-55d3-48ec-a28b-0c837e13c595@linux.ibm.com>
+ <671f7ace-fe86-5443-40b7-d02dd16b922b@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,89 +63,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a plain configure/make check build.
+On Thu, 23 Oct 2025, BALATON Zoltan wrote:
+> On Thu, 23 Oct 2025, Harsh Prateek Bora wrote:
+>> On 10/23/25 05:36, BALATON Zoltan wrote:
+>>> This series changes how the fdt for VOF is generated in pegasos2 by
+>>> moving the static parts to a dtb and only generate the changing parts
+>>> such as memory size and PCI devices programmatically. This simplifies
+>>> the code and allows simply adding emulation of Pegasos I which has a
+>>> different north bridge and slightly different memory map but otherwise
+>>> very similar and can be emulated by reusing parts from the amigaone
+>>> machine. The machine was tested with a Pegasos I ROM image and MorphOS.
+>>> 
+>>> The first VOF patch (submitted separetely before, the reviewed v3 is
+>>> included here) fixes handling the name property in VOF that cannot be
+>>> represented in a dts as that always takes the path as the name and
+>>> cannot accept an explicit name property but we need the name property
+>>> to appear when guest queries properties which previously was worked
+>>> around by adding it to every node.
+>>> 
+>>> Regards,
+>>> BALATON Zoltan
+>> 
+>> Queued.
+>
+> OK. In that case I can do follow up if needed but I still plan to send 
+> updated raven series and if time allows updated firmware for sam460ex but the 
+> latter is unsure if I can finish before the freeze.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- docs/devel/testing/ci-jobs.rst.inc            |  6 +++
- .gitlab-ci.d/custom-runners.yml               |  1 +
- .../custom-runners/debian-13-ppc64le.yml      | 40 +++++++++++++++++++
- 3 files changed, 47 insertions(+)
- create mode 100644 .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+Or if you haven't sent the pull request yet (I was confused by getting 
+cc-d on a pull that did not go to the list, maybe was only for testing) 
+then I can still update this series too. I see there was some problem with 
+another patch from Thomas so there will be another version of that too. So 
+the plan is to update raven series, after that update this one to address 
+Philippe's comments then if there's still time I see if I can do the 
+sam460ex U-Boot update but you don't have to wait for that last one.
 
-diff --git a/docs/devel/testing/ci-jobs.rst.inc b/docs/devel/testing/ci-jobs.rst.inc
-index b92d372a0a9..f1c70344ece 100644
---- a/docs/devel/testing/ci-jobs.rst.inc
-+++ b/docs/devel/testing/ci-jobs.rst.inc
-@@ -174,6 +174,12 @@ If you've got access to an IBM Z host that can be used as a gitlab-CI
- runner, you can set this variable to enable the tests that require this
- kind of host. The runner should be tagged with "s390x".
- 
-+PPC64LE_RUNNER_AVAILABLE
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+If you've got access to an PPC64LE host that can be used as a gitlab-CI
-+runner, you can set this variable to enable the tests that require this
-+kind of host. The runner should be tagged with "ppc64le".
-+
- CCACHE_DISABLE
- ~~~~~~~~~~~~~~
- The jobs are configured to use "ccache" by default since this typically
-diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-index 142fbf4a242..3e28e48c97c 100644
---- a/.gitlab-ci.d/custom-runners.yml
-+++ b/.gitlab-ci.d/custom-runners.yml
-@@ -31,3 +31,4 @@
- include:
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml'
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml'
-+  - local: '/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml'
-diff --git a/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-new file mode 100644
-index 00000000000..6733a8e0dae
---- /dev/null
-+++ b/.gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
-@@ -0,0 +1,40 @@
-+# All jobs should run successfully in an environment setup by the
-+# scripts/ci/setup/build-environment.yml task:
-+# "Install basic packages to build QEMU on Ubuntu/Debian"
-+
-+.debian_ppc64le_template:
-+  extends: .custom_runner_template
-+  needs: []
-+  stage: build
-+  tags:
-+    - debian_13
-+    - ppc64le
-+  rules:
-+    - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+    - if: "$PPC64LE_RUNNER_AVAILABLE"
-+  before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-+    - JOBS=$(expr $(nproc) - 2)
-+    - section_end setup
-+  script:
-+    - mkdir build
-+    - cd build
-+    - section_start configure "Running configure"
-+    - ../configure $CONFIGURE_ARGS ||
-+          { cat config.log meson-logs/meson-log.txt && exit 1; }
-+    - section_end configure
-+    - section_start build "Building QEMU"
-+    - make --output-sync -j"$JOBS"
-+    - section_end build
-+    - section_start test "Running tests"
-+    - if test -n "$MAKE_CHECK_ARGS";
-+      then
-+        make -j"$JOBS" $MAKE_CHECK_ARGS ;
-+      fi
-+    - section_end test
-+
-+debian-13-ppc64le-default:
-+  extends: .debian_ppc64le_template
-+  variables:
-+    MAKE_CHECK_ARGS: check
--- 
-2.47.3
-
+Regards,
+BALATON Zoltan
 
