@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C5DC00EC7
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 844D6C00EE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:58:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBtty-0007YD-R3; Thu, 23 Oct 2025 07:54:42 -0400
+	id 1vBtx0-0003oD-2I; Thu, 23 Oct 2025 07:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBtts-0007DI-6g
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:54:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBtwx-0003o1-Nv
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:57:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBttp-0002jA-Gy
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:54:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBtwv-0003GD-HY
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:57:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761220472;
+ s=mimecast20190719; t=1761220663;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gZZr63NIUe+8BmFvq0yS3qOihBbOcrnesFIvraTfKIc=;
- b=Vdcd8FgALDntpABinqqMRw2W9y0ee1zzOOudodRhrfPkk44onUnQaEds/Ss0Mib/4q4K1b
- EUojM2M88aoy5asGdrLg03m7UclqfDbQKD88u/ZmOqr58HaMOAO6i7FESAbd3wOikCh0mX
- BsVdB1tQqJwh7I2VinSla3Bxo0K841w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=oGhaBB8smjuXs9ZPZSORRAnq2EMNSt51NFa+GqnUuEU=;
+ b=SaTE7gaKrmx/2PfYVgFQ4+NUbUxU5GnR4Do9HnXFTos0UJWJpkMYVK55stzojq90o/Pxke
+ 2q5eM2Pk2eZtGHcDjWmYuNhvkZ66v25vAk9wRErPkQPNjMA2wjPM4s7U1QSoLhVZgd1g2s
+ xtk8BjEVqZBKkICWQbtb2XrKy46lB6w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-iXZ8de5mPTWvu9FQcj7joA-1; Thu,
- 23 Oct 2025 07:54:28 -0400
-X-MC-Unique: iXZ8de5mPTWvu9FQcj7joA-1
-X-Mimecast-MFC-AGG-ID: iXZ8de5mPTWvu9FQcj7joA_1761220467
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-VPLBvAADPCCp2fQsJgwkzQ-1; Thu,
+ 23 Oct 2025 07:57:40 -0400
+X-MC-Unique: VPLBvAADPCCp2fQsJgwkzQ-1
+X-Mimecast-MFC-AGG-ID: VPLBvAADPCCp2fQsJgwkzQ_1761220659
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 91C12180057A; Thu, 23 Oct 2025 11:54:27 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8B8FA1956089; Thu, 23 Oct 2025 11:57:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1249319540EB; Thu, 23 Oct 2025 11:54:26 +0000 (UTC)
+ id 4069A19540E2; Thu, 23 Oct 2025 11:57:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3177021E6A27; Thu, 23 Oct 2025 13:54:24 +0200 (CEST)
+ id 840A421E6A27; Thu, 23 Oct 2025 13:57:36 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
@@ -52,20 +52,21 @@ Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
  <philmd@linaro.org>,  Peter
  Maydell <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 08/32] system: check security of device types
-In-Reply-To: <20250926140144.1998694-9-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 26 Sep 2025 15:01:19
+Subject: Re: [PATCH v2 09/32] system: report device security status in help
+ output
+In-Reply-To: <20250926140144.1998694-10-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 26 Sep 2025 15:01:20
  +0100")
 References: <20250926140144.1998694-1-berrange@redhat.com>
- <20250926140144.1998694-9-berrange@redhat.com>
-Date: Thu, 23 Oct 2025 13:54:24 +0200
-Message-ID: <87bjlx7s0f.fsf@pond.sub.org>
+ <20250926140144.1998694-10-berrange@redhat.com>
+Date: Thu, 23 Oct 2025 13:57:36 +0200
+Message-ID: <874irp7rv3.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,50 +93,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> This wires up the DeviceClass types to have their
-> security checked when devices are created.
->
+> When '-device help' is given, report the security status of each
+> device.
+
+Affects not just "-device help" and "device_add help", but also "info
+qdm".
+
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 > ---
->  system/qdev-monitor.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  system/qdev-monitor.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
 > diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-> index 2ac92d0a07..520fe5c495 100644
+> index 520fe5c495..86ae64dccd 100644
 > --- a/system/qdev-monitor.c
 > +++ b/system/qdev-monitor.c
-> @@ -43,6 +43,8 @@
->  #include "hw/qdev-properties.h"
->  #include "hw/clock.h"
->  #include "hw/boards.h"
-> +#include "qapi/compat-policy.h"
-> +
->=20=20
->  /*
->   * Aliases were a bad idea from the start.  Let's keep them
-> @@ -644,6 +646,13 @@ DeviceState *qdev_device_add_from_qdict(const QDict =
-*opts,
->          return NULL;
+> @@ -166,6 +166,9 @@ static void qdev_print_devinfo(DeviceClass *dc)
+>      if (!dc->user_creatable) {
+>          qemu_printf(", no-user");
 >      }
->=20=20
-> +    if (!compat_policy_check_security(&compat_policy,
-> +                                      object_class_get_name(OBJECT_CLASS=
-(dc)),
-> +                                      object_class_is_secure(OBJECT_CLAS=
-S(dc)),
-> +                                      errp)) {
-> +        return NULL;
+> +    if (object_class_is_secure(OBJECT_CLASS(dc))) {
+> +        qemu_printf(", secure");
 > +    }
-> +
->      /* find bus */
->      path =3D qdict_get_try_str(opts, "bus");
->      if (path !=3D NULL) {
-
-All users of compat_policy_check_security() in this series pass
-
-    object_class_get_name(<the-object>),
-    object_class_is_secure(<the-object>),
-
-Have you considered passing just <the-object> instead?
+>      qemu_printf("\n");
+>  }
 
 
