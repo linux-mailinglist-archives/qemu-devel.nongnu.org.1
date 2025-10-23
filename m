@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232A1C00611
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FAC5C0062C
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBs9L-0001Kx-N7; Thu, 23 Oct 2025 06:02:27 -0400
+	id 1vBs9N-0001N2-TO; Thu, 23 Oct 2025 06:02:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vBs93-0001H3-4g; Thu, 23 Oct 2025 06:02:09 -0400
+ id 1vBs96-0001HO-Pq; Thu, 23 Oct 2025 06:02:12 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vBs91-00039r-0G; Thu, 23 Oct 2025 06:02:08 -0400
+ id 1vBs94-00039r-Ss; Thu, 23 Oct 2025 06:02:12 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 23 Oct
- 2025 18:01:51 +0800
+ 2025 18:01:52 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 23 Oct 2025 18:01:51 +0800
+ Transport; Thu, 23 Oct 2025 18:01:52 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,16 +30,16 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 02/13] hw/arm/aspeed: Make
- aspeed_machine_class_init_cpus_defaults() globally accessible
-Date: Thu, 23 Oct 2025 18:01:35 +0800
-Message-ID: <20251023100150.295370-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 03/13] hw/arm/aspeed: Make create_pca9552() globally
+ accessible for reuse
+Date: Thu, 23 Oct 2025 18:01:36 +0800
+Message-ID: <20251023100150.295370-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
 References: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -65,14 +65,16 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function aspeed_machine_class_init_cpus_defaults() is now made
-globally visible so that it can be used by other Aspeed machine C files.
+The helper function create_pca9552() is now made globally visible
+so it can be reused by different Aspeed machine source files.
 
-Previously, this function was declared as static, restricting its
-visibility to aspeed.c. Since future machine split files will also
-need to call this helper to initialize default CPU settings, its
-declaration has been moved to the common header aspeed.h and the
-static keyword has been removed.
+Previously, the function was declared static, limiting its scope
+to aspeed.c. Since multiple Aspeed machine implementations will
+require I²C device initialization using PCA9552 GPIO expanders,
+this function has been promoted to global visibility.
+
+This change improves code sharing and reduces duplication across
+machine-specific initialization files.
 
 No functional changes.
 
@@ -83,29 +85,29 @@ Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
  2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index 383ebb9759..7743ad2fb0 100644
+index 7743ad2fb0..d4d63996a6 100644
 --- a/include/hw/arm/aspeed.h
 +++ b/include/hw/arm/aspeed.h
-@@ -59,5 +59,6 @@ struct AspeedMachineClass {
-     bool vbootrom;
+@@ -60,5 +60,6 @@ struct AspeedMachineClass {
  };
  
-+void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
+ void aspeed_machine_class_init_cpus_defaults(MachineClass *mc);
++void create_pca9552(AspeedSoCState *soc, int bus_id, int addr);
  
  #endif
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 761b526994..5da21a4d6a 100644
+index 5da21a4d6a..2695f0c11b 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -1338,7 +1338,7 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
-                                           "Change the SPI Flash model");
+@@ -536,7 +536,7 @@ static void tiogapass_bmc_i2c_init(AspeedMachineState *bmc)
+     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 6), "tmp421", 0x4e);
  }
  
--static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
-+void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
+-static void create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
++void create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
  {
-     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(mc);
-     AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
+     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
+                             TYPE_PCA9552, addr);
 -- 
 2.43.0
 
