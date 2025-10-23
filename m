@@ -2,55 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE49C012ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCDAC012C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:38:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuUm-0005Yd-O1; Thu, 23 Oct 2025 08:32:45 -0400
+	id 1vBuXI-00016M-MO; Thu, 23 Oct 2025 08:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBuSy-00036a-Hi; Thu, 23 Oct 2025 08:31:00 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBuRl-00082h-5J; Thu, 23 Oct 2025 08:29:41 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6C48F5972E8;
- Thu, 23 Oct 2025 14:29:33 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id JAZKo4c0i2cR; Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 61F015972E1; Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6003459703F;
- Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
-Date: Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v4 00/12] Pegasos2 clean up and pegasos1 emulation
-In-Reply-To: <610d1821-71a7-4bfd-b588-3baea0bfff95@linux.ibm.com>
-Message-ID: <2ff8c9cc-5c26-8d1b-c25b-2c2b2543969e@eik.bme.hu>
-References: <cover.1761176219.git.balaton@eik.bme.hu>
- <764df5c7-55d3-48ec-a28b-0c837e13c595@linux.ibm.com>
- <671f7ace-fe86-5443-40b7-d02dd16b922b@eik.bme.hu>
- <f4473b0d-f25e-bc05-a1e6-e5e2971a6688@eik.bme.hu>
- <610d1821-71a7-4bfd-b588-3baea0bfff95@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBuTz-0005HN-Qr
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:32:00 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBuTt-0008O9-EF
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:31:55 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-4270491e9easo529109f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1761222705; x=1761827505; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=P9xBVWd6FRt+OGCLZ6nEzr4EP/14LH00UlqrogCUybs=;
+ b=szpLmfg2FC2G7G+igeW45fL7idbOcuRAt1Pc3SO7bF6x7DShjORFITgZgnBX16E2nR
+ UihLWS9qucJ+p+vKF0BeRPVk6hj4B/DpuUNsmhqlczO7kNV1J1bOYxzEILLJB+CheXLs
+ vBrjIMByAmyOt3QV4ScXBdGaeF5tO6+3boD7VfFh/VKUF1MW8BlehrQ1ui7GSdlc97fR
+ QF1aKMRrr0nhRgF9Tiu7J1BzGjI1yCcbijC4xlibIUdDoh9dWGv5XKVABgETOAYUkhVo
+ XV3pzdf9zq0fFL5fc5+Z+t1zSqWupgR8B2MMygkG0ic7mc2UuUrVUjUEOl3j+Mb8x4y+
+ mImA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761222705; x=1761827505;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=P9xBVWd6FRt+OGCLZ6nEzr4EP/14LH00UlqrogCUybs=;
+ b=JGPAD3dDR1j/Skw+xg/YoHOQ9Yiq9S8/nltgxqZS9tTRZOSO1tvam9pfEVvzdiiD6s
+ 5ZqlJmfjYTVTiGWM4/XEjqnBX1Oa3UNy1ULhM3aup7m6vGYDkmOC6q9Mg83NnJsmzfiX
+ 5/4PMzsYlPBI6ESp21z8EZLnZxEb4tfXz4XMMwcqjVXZ+0WwfFeO0DeQJhDpRfH+JI7y
+ YY5+FtRuXdjKoWHSrDRqx86mRNrYbQ8itD7bWgWGgEmNRxrXqff/xyr5SaCV5Hhe9KAU
+ 7Cl1e886TONWZYXPPTXD+eBscUMCflSZj1yrT80M099hw6dKbaIDI7ECX+4jWyJFDHXu
+ XzpQ==
+X-Gm-Message-State: AOJu0YzGYNnIwS/Z9PWlRxMuoL9s4t1gtLoXhB2dCnYdjv8sV6HCih40
+ +lVFAogs+51dhTQt4UQwubB+IIOFh8PuXS3iy76qQpkYrPOBQX0z6CjTuJC2gZbPqieWFh7vtIW
+ IIkXNaSI=
+X-Gm-Gg: ASbGncus+aWK+vOebWOvP7gjY7SN9jSz8aalVLgyMh6V3KWFdwGm7AOhhfdn4hkhC9F
+ p1dneWPGgYdxHVfZGND5O3nle9VxIVyOmtf5U8/NT1oixsoZ8ktfh4t25eTyaWkaPTuaT6IpXjd
+ oj2LMrWooOUDizPMWXSNHIUydLNdUaiTtQVcQmwHnwoVBVVe76fN4AUFHHQkwvY6oKWJ09gZQdW
+ m04+S7UrXhvIAh4ScEF7mlcr1B5MzRdxiR0fhhlFln1Gt8cncfUWzwrUGXkoTaM7/62D+dj05PL
+ H/6DPQ5BeJbMeaWkCzRgotcQRwrAwhTLZzwiQZhMLrYVkVtQ5EuZLC4BNtkYf/f6c416QBxDtr5
+ Hd4w5wABapehSCZZ+N2CsNiYSPMJez4YcTZ05HmyWDS7oR5DqmiAcp+Tehts4K64gJKpBagicaK
+ mpwED4GPVqU6cvYnU9FYRLJbfasCGAlVWVg0T7ph0cbT0P+AC+9g==
+X-Google-Smtp-Source: AGHT+IFepACm3K4zjIZUTmac3W2rSbj15b968A/27aOp77LvhZzzmOLCvTNXq2XWyWm8tmCnMF9LEg==
+X-Received: by 2002:a05:6000:428a:b0:428:3cd7:a336 with SMTP id
+ ffacd0b85a97d-4283cd7a3a7mr14311255f8f.63.1761222705120; 
+ Thu, 23 Oct 2025 05:31:45 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429897ff371sm3744166f8f.21.2025.10.23.05.31.43
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 23 Oct 2025 05:31:44 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>,
+ Peter Collingbourne <pcc@google.com>, Alexander Graf <agraf@csgraf.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Cameron Esfahani <dirty@apple.com>
+Subject: [PATCH v2 50/58] accel/hvf: Sync CNTV_CTL_EL0 & CNTV_CVAL_EL0
+Date: Thu, 23 Oct 2025 14:31:34 +0200
+Message-ID: <20251023123142.8062-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
+References: <20251023114638.5667-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,53 +106,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 Oct 2025, Harsh Prateek Bora wrote:
-> On 10/23/25 17:45, BALATON Zoltan wrote:
->> On Thu, 23 Oct 2025, BALATON Zoltan wrote:
->>> On Thu, 23 Oct 2025, Harsh Prateek Bora wrote:
->>>> On 10/23/25 05:36, BALATON Zoltan wrote:
->>>>> This series changes how the fdt for VOF is generated in pegasos2 by
->>>>> moving the static parts to a dtb and only generate the changing parts
->>>>> such as memory size and PCI devices programmatically. This simplifies
->>>>> the code and allows simply adding emulation of Pegasos I which has a
->>>>> different north bridge and slightly different memory map but otherwise
->>>>> very similar and can be emulated by reusing parts from the amigaone
->>>>> machine. The machine was tested with a Pegasos I ROM image and MorphOS.
->>>>> 
->>>>> The first VOF patch (submitted separetely before, the reviewed v3 is
->>>>> included here) fixes handling the name property in VOF that cannot be
->>>>> represented in a dts as that always takes the path as the name and
->>>>> cannot accept an explicit name property but we need the name property
->>>>> to appear when guest queries properties which previously was worked
->>>>> around by adding it to every node.
->>>>> 
->>>>> Regards,
->>>>> BALATON Zoltan
->>>> 
->>>> Queued.
->>> 
->>> OK. In that case I can do follow up if needed but I still plan to send 
->>> updated raven series and if time allows updated firmware for sam460ex but 
->>> the latter is unsure if I can finish before the freeze.
->> 
->> Or if you haven't sent the pull request yet (I was confused by getting cc-d 
->> on a pull that did not go to the list, maybe was only for testing) then I 
->> can still update this series too. I see there was some problem with another 
->> patch from Thomas so there will be another version of that too. So the plan 
->> is to update raven series, after that update this one to address Philippe's 
->> comments then if there's still time I see if I can do the sam460ex U-Boot 
->> update but you don't have to wait for that last one.
->
-> Sure. no issues.
-> I have included these patches in the pull request I sent today and am
-> planning another pull request before soft/hard freeze, so we can include
-> remaining patches that gets reviewed in that. Thanks.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/arm/hvf/hvf.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-OK, so the pull did go to the list. I'm OK with this series as it is, the 
-remaining changes were minor and could be done as follow up (or later). 
-I'll then concentrate on the raven series and see if I'll have time for 
-sam460ex. Thank you for stepping in and taking care of it.
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 36fa67caf62..dbf6b83532d 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -201,6 +201,9 @@ void hvf_arm_init_debug(void)
+ #define SYSREG_PMCEID0_EL0    SYSREG(3, 3, 9, 12, 6)
+ #define SYSREG_PMCEID1_EL0    SYSREG(3, 3, 9, 12, 7)
+ #define SYSREG_PMCCNTR_EL0    SYSREG(3, 3, 9, 13, 0)
++
++#define SYSREG_CNTV_CTL_EL0   SYSREG(3, 3, 14, 3, 1)
++#define SYSREG_CNTV_CVAL_EL0  SYSREG(3, 3, 14, 3, 2)
+ #define SYSREG_PMCCFILTR_EL0  SYSREG(3, 3, 14, 15, 7)
+ 
+ #define SYSREG_ICC_AP0R0_EL1     SYSREG(3, 0, 12, 8, 4)
+@@ -2009,13 +2012,49 @@ static int hvf_handle_vmexit(CPUState *cpu, hv_vcpu_exit_t *exit)
+     return ret;
+ }
+ 
++static void hvf_sync_vtimer_pre_exec(CPUState *cpu)
++{
++    hv_return_t r;
++    uint64_t val;
++    bool b;
++
++    b = hvf_sysreg_read_cp(cpu, "VTimer", SYSREG_CNTV_CVAL_EL0, &val);
++    assert(b);
++    r = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CVAL_EL0, val);
++    assert_hvf_ok(r);
++
++    b = hvf_sysreg_read_cp(cpu, "VTimer", SYSREG_CNTV_CTL_EL0, &val);
++    assert(b);
++    r = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CTL_EL0, val);
++    assert_hvf_ok(r);
++}
++
++static void hvf_sync_vtimer_post_exec(CPUState *cpu)
++{
++    hv_return_t r;
++    uint64_t val;
++    bool b;
++
++    r = hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CVAL_EL0, &val);
++    assert_hvf_ok(r);
++    b = hvf_sysreg_write_cp(cpu, "VTimer", SYSREG_CNTV_CVAL_EL0, val);
++    assert(b);
++
++    r = hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CTL_EL0, &val);
++    assert_hvf_ok(r);
++    b = hvf_sysreg_write_cp(cpu, "VTimer", SYSREG_CNTV_CTL_EL0, val);
++    assert(b);
++}
++
+ void hvf_arch_cpu_synchronize_pre_exec(CPUState *cpu)
+ {
++    hvf_sync_vtimer_pre_exec(cpu);
+     flush_cpu_state(cpu);
+ }
+ 
+ void hvf_arch_cpu_synchronize_post_exec(CPUState *cpu)
+ {
++    hvf_sync_vtimer_post_exec(cpu);
+ }
+ 
+ int hvf_arch_vcpu_exec(CPUState *cpu)
+-- 
+2.51.0
 
-Regards,
-BALATON Zoltan
 
