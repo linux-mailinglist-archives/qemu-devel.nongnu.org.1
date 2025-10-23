@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849D6C01C8C
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3DCC01CA4
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:33:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwLo-00033H-HF; Thu, 23 Oct 2025 10:31:39 -0400
+	id 1vBwMK-0003ky-BG; Thu, 23 Oct 2025 10:32:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLV-0002pR-O7
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:17 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLi-0003Nk-JQ
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:32 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLT-0001sz-Hm
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:17 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-4298a028de6so568450f8f.0
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:31:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwLa-0001vH-EL
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:31:28 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-475ca9237c2so5212105e9.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:31:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761229873; x=1761834673; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761229878; x=1761834678; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y/pnrcoc7cYS7GwGVqSI0sbh32hz5/hHl5ailiW8kns=;
- b=EsDjM/dYUM45rokp2gdyIcESbPlvuJPcqXQ62wMX1k/BMvH2Ek8BuQluFpAEddeJXM
- qKQpXFqf/ijupwVMmzQUYRMfTtYRaxhriVkimHeJZqTY45PzVdYJVB4Win01RiOnteBm
- Dvs9YcKn/bqDjwNXJqD+7o6+Og53huTNKLsVMxA+sEfDc+KMzJeUKV/1Mo7Nhe89L/jN
- Xt+seVhPT6bBCGd4VOF3i2RHgd4v6PPX3jXGrSilczzGNjmxvdKzvrHMmfLGnhDLJJ+I
- nres1bNI+ciWXUhHLLGt0vVOuoJWGjyDiOXVypCdxfuCxMKix7qKbW3F95WVtSQE5wcT
- Xwbw==
+ bh=DslsWZRISh7psS9m/3Vcm25WGBA0WCzWSpcN8EjiiSM=;
+ b=DM86/v/Ssz+U2lZjZX5gPDDtMVmJ2dI+OdMbSDBP+vOYPxIULXBr7ANt2IeZl28nZp
+ MPEy2wZqcRBw8mRGynY6Nh0Z9AnWdSOcQlPb/mN3HLu1mFYVgRwEiYeJNMWLSmadDXst
+ wtoaUgkSay+KGRvRu4b+iiiNRMvggETMAda4BPBfHsJ8i068/3hZrkCb72Z7gecH3Q8V
+ d2SZfP6yV6qAj7UpUYYXdplff1HcODHfe/voppBfwzx1JEuzEcQVyAi+L95w/9rgJ8GC
+ hkZ6ViNuhGh+4l0nSJxCFdMMfR5B8VIJxbCHEA9aT0Gmo3y1R8UyCB5v/AeYIwSpgNnl
+ q8oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761229873; x=1761834673;
+ d=1e100.net; s=20230601; t=1761229878; x=1761834678;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y/pnrcoc7cYS7GwGVqSI0sbh32hz5/hHl5ailiW8kns=;
- b=MbINdYiicHpvW/Rd4g1/SUiS5qXEfv27e3VYI/ukN9CU5Siimg0AC8XLYkiasWOvf6
- BSJmv/SVXT7VtzMreIKTSqlBE3ifrAgbHQ17wW03t7LaUTSGRYjmoMnLaD5c+G73GGY0
- ixul8P9tEQCxGnsuz8l9ZJaxmAA56oGJiADKwoyEqJvZATV8o92zL8CmtC2rbiaE4g11
- 00FLQ/V+WqDGyMyGduwSIJG1mofSJ8Y7B2G966bvrCC5fKbezABqHBkawXnBVE0IESDY
- 01qxtoYAVXhl2kvOYkYxMAu0auvE99/3kkXQck0ltq6WQTEUEv/AAPOPRiPHyCjPwJzJ
- IiiA==
-X-Gm-Message-State: AOJu0Yxszfiu08cZhr98T9PdQ0pVEaJw5x26Jn/FLPDbIxH5YTakGYEm
- dDAy4rq5wRtjCYTgdcr4Zr43/TFjCKgE5tnpT6m79+R9ptqVHCK5zTm1YLQL1KL3Mid7zkkz60r
- XSU4xahY=
-X-Gm-Gg: ASbGncsOjA9W1o/GpDnlswqCfbY4UMRd2cGcv1lV6UHjVuiA5XfoD78VxLvvMd/ulNB
- IFPY1GCgfa7QYqI9uKSGuvWnkVivsOP0/KuQp7Qo/BQ9fvtTGGzGPRWSCrwpK7iZwC/lBFIJW00
- k4ZQS0kF2lxC2OGCnb91j4UEjL+YLkMNjJ1W3qlpFTruJ67CEw2m0ij1aMzEPl+AJLWuORkDzEZ
- h2eUNUgmCeCNPcElqDsYRR23PCvrCc4bOTC01Vuc7YNH1Hzrh4BD+9BdCgJMltg4YZq1EXgL9cQ
- 6JS1njzTRMcj9VCaOb1UFC3+V5i3MN42AlGwf1GeBKLUZbbuKe14sdcFOYg81cCE7BuhLZATZIx
- 7cR+gnT07sCbQZar0Umk7t5Q1dMRl5y7nGUm5Pt4vG7DYrE+XlDiVeNmKNhtqWv6ylBj4bCVJUu
- tJArs3hF/5UGDSZvOVIqTm5z7eWIjA2FmA632MNOMSnXw7s9BKpA==
-X-Google-Smtp-Source: AGHT+IHkR8W1MvRpp609Gf74Z1yewPmxQUUgOJcQ3VVKK1u2vq1dtS5BzGk9WOf6s75DONZ03Q6q1A==
-X-Received: by 2002:a05:6000:2c0f:b0:3ec:db87:ff53 with SMTP id
- ffacd0b85a97d-42853255d50mr6053232f8f.12.1761229873078; 
- Thu, 23 Oct 2025 07:31:13 -0700 (PDT)
+ bh=DslsWZRISh7psS9m/3Vcm25WGBA0WCzWSpcN8EjiiSM=;
+ b=QvS8qrnLNBjbp2/PmE6zvH4oVM7Cy8fC2kl85jEf1fEI5RcJrX8f1zQ15hhuPsYH8d
+ iSbVSGMGpO/1kDnFjDGR49/TQtmZLwCBskEpirKTF3HhwU0PARpduVgqiNtFYcTz02Zp
+ WmEm3m2P6xvQmuCG82nPzQbqMt7BsmCztKDuCtSs2IEAY3RnkX9lLElhh6uk176Wjrtj
+ qES6Ya0ckTDQxZpNMF33kQtOuqGNVTnt508HUFhWHI5+OsmukWK1fVFWMk/U6ZXtDGVA
+ Nw6yYRUcye586oa6Ju76e5MCRWhSUHPaebtrHA+PiJ0wWukDzicfQUOUKOzxlgRz9wid
+ 4YTg==
+X-Gm-Message-State: AOJu0YxVw8ckDpEcGIY+BREECM1/zWKBIdS5nUxm2PKSK4y16C8ni+VA
+ MU8oYkE709jGkec+PKEIZeV7eftgDOph4MrrOId3IUIdXxIUQSjMFBnpxsTAZGCYcOHh7WQcWiQ
+ MmdLzZ+4=
+X-Gm-Gg: ASbGncuDtk8JsFOLCXVWNln9wWqJnxfavEBqAAN688k2LcTuFUSe51gLOmzGjzsZMRY
+ KzKrNk9wMgshQNHEPUdpg3Gkn2YNqsudZpsaWKNRzu2Il/BlayZNiNHZGdsf6TT1GRrdjQKyK5D
+ asB+HtJHpoymtPkL186k7liVSfF+ZWHI73b1v0wJEq9Yo/APnsEcnLArn025RJvdcj3G7Oef3ZS
+ cKxCErchs4yL9pZ0DJB5o+QiVJWju2wX6XYogxOI0DBXfGbTHXuHMkP+i5qbPhL6ZahE9wdBRH9
+ iul0Wn2VxDs+KN/+1NrQ5tp/z70ciaALJCR2u2rkZsR3doXFHt7snvBy0bhpAqTc84YFS140tSR
+ w1MkT6D4IzA7S1UKiJFBHnONQKSqfx49dty/g+WxWAoAWx4xyglNByJ2nKfof/T7u2HqBLZACkr
+ vp/d1V7V5JgXFyouRs9i+bRdM5y0zGznmaPooEtmmELHL04qARPArCazRjS2Mq
+X-Google-Smtp-Source: AGHT+IHnqCO3OclczupLRt+ToLRSlrB4ZN0DpT4EbwOFTjy88cSPESepugjR271vr7x5UyTpD3KtGQ==
+X-Received: by 2002:a05:600c:548a:b0:471:669:e95d with SMTP id
+ 5b1f17b1804b1-4711787dcc8mr164752235e9.12.1761229877945; 
+ Thu, 23 Oct 2025 07:31:17 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429898cc930sm5145512f8f.33.2025.10.23.07.31.12
+ 5b1f17b1804b1-475caf2ef9fsm40582415e9.13.2025.10.23.07.31.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Oct 2025 07:31:12 -0700 (PDT)
+ Thu, 23 Oct 2025 07:31:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mads Ynddal <mads@ynddal.dk>, Alexander Graf <agraf@csgraf.de>,
@@ -74,18 +74,18 @@ Cc: Mads Ynddal <mads@ynddal.dk>, Alexander Graf <agraf@csgraf.de>,
  Mohamed Mediouni <mohamed@unpredictable.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Cameron Esfahani <dirty@apple.com>
-Subject: [PATCH v2 24/58] accel/hvf: Restrict ARM specific fields of
- AccelCPUState
-Date: Thu, 23 Oct 2025 16:30:45 +0200
-Message-ID: <20251023143051.11195-5-philmd@linaro.org>
+Subject: [PATCH v2 25/58] target/arm: Rename init_cpreg_list() ->
+ arm_init_cpreg_list()
+Date: Thu, 23 Oct 2025 16:30:46 +0200
+Message-ID: <20251023143051.11195-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
 References: <20251023114638.5667-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,33 +108,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not expose ARM specific fields to X86 implementation,
-allowing to use the proper 'hv_vcpu_exit_t' type.
+Prefix init_cpreg_list() with 'arm_'.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/system/hvf_int.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/arm/internals.h | 2 +-
+ target/arm/cpu.c       | 2 +-
+ target/arm/helper.c    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index 195d64dcf18..3d2be4092ef 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -59,10 +59,12 @@ extern HVFState *hvf_state;
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f539bbe58e1..972b8bc50da 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -376,7 +376,7 @@ static inline int r14_bank_number(int mode)
+ void arm_cpu_register(const ARMCPUInfo *info);
  
- struct AccelCPUState {
-     hvf_vcpuid fd;
--    void *exit;
-+#ifdef __aarch64__
-+    hv_vcpu_exit_t *exit;
-     bool vtimer_masked;
-     sigset_t unblock_ipi_mask;
-     bool guest_debug_enabled;
-+#endif
- };
+ void register_cp_regs_for_features(ARMCPU *cpu);
+-void init_cpreg_list(ARMCPU *cpu);
++void arm_init_cpreg_list(ARMCPU *cpu);
  
- void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
+ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu);
+ void arm_translate_init(void);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 3b556f1404e..bfc031c70c1 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2138,7 +2138,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     arm_cpu_register_gdb_regs_for_features(cpu);
+     arm_cpu_register_gdb_commands(cpu);
+ 
+-    init_cpreg_list(cpu);
++    arm_init_cpreg_list(cpu);
+ 
+ #ifndef CONFIG_USER_ONLY
+     MachineState *ms = MACHINE(qdev_get_machine());
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 167f2909b3f..9e26edf4dd0 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -252,7 +252,7 @@ static void count_cpreg(gpointer key, gpointer value, gpointer opaque)
+     }
+ }
+ 
+-void init_cpreg_list(ARMCPU *cpu)
++void arm_init_cpreg_list(ARMCPU *cpu)
+ {
+     /*
+      * Initialise the cpreg_tuples[] array based on the cp_regs hash.
 -- 
 2.51.0
 
