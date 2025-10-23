@@ -2,32 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E687C021A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 17:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A9CC021C7
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 17:28:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBxD2-0005p8-Nq; Thu, 23 Oct 2025 11:26:36 -0400
+	id 1vBxD5-0005rm-Dj; Thu, 23 Oct 2025 11:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBxCw-0005o7-JH; Thu, 23 Oct 2025 11:26:30 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1vBxCx-0005of-P0; Thu, 23 Oct 2025 11:26:31 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vBxCt-00018N-TD; Thu, 23 Oct 2025 11:26:30 -0400
+ id 1vBxCt-00018T-TI; Thu, 23 Oct 2025 11:26:31 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D94C95972F1;
- Thu, 23 Oct 2025 17:26:22 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9A8815972E8;
+ Thu, 23 Oct 2025 17:26:23 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id LdBDTZcjl6Bo; Thu, 23 Oct 2025 17:26:20 +0200 (CEST)
+ id VPNQlTcISdtv; Thu, 23 Oct 2025 17:26:21 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 844A05972DE; Thu, 23 Oct 2025 17:26:20 +0200 (CEST)
-Message-ID: <cover.1761232472.git.balaton@eik.bme.hu>
+ id 945565972EA; Thu, 23 Oct 2025 17:26:21 +0200 (CEST)
+Message-ID: <5a60e395d72e5eb4d01093434fbb645d72ac567a.1761232472.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1761232472.git.balaton@eik.bme.hu>
+References: <cover.1761232472.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v5 00/13] hw/pci-host/raven clean ups
+Subject: [PATCH v5 01/13] hw/pci-host/raven: Simplify creating PCI facing part
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,14 +40,15 @@ Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Date: Thu, 23 Oct 2025 17:26:20 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Thu, 23 Oct 2025 17:26:21 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,64 +64,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+There is no need to init and realize the PCI facing part of the host
+bridge separately as it does not expose any properties that need to be
+available before realize. It can be simpilfied using pci_create_simple.
 
-This series cleans up and simplifies the raven model which does some
-strange stuff that no other pci-host is doing and does it in a
-convoluted way and also has some legacy bits that can be removed.
-Apart from making the model much more readable this also fixes the
-non-contiguous IO control bit which was there but did not work as it
-was not connected but apparently it's not really used by any guest so
-that wasn't noticed.
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/pci-host/raven.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-Regards,
-BALATON Zoltan
-
-Link to previous version:
-https://patchew.org/QEMU/cover.1760795082.git.balaton@eik.bme.hu/
-
-v5:
-- rebased on master
-- split patch 1 (Philippe)
-
-V4:
-- added R-b tags from Mark and address some of his review comments
-(other comments not addressed were answered on the list explaining why
-I did not add them to this version)
-- added new patches to fix creation and reset of prep-systemio
-- rebased on master
-
-V3:
-- rebase on master
-- Fix issue with device-crash-test reported by Akihiko Odaki: make
-sure device is correctly used by adding assert and making it not user
-creatable in patch 14.
-
-v2:
-- rebase on master
-- add R-b tags from Philippe
-
-BALATON Zoltan (13):
-  hw/pci-host/raven: Simplify creating PCI facing part
-  hw/pci-host/raven: Simplify PCI facing part
-  hw/pci-host/raven: Simplify host bridge type declaration
-  hw/pci-host/raven: Use DEFINE_TYPES macro
-  hw/pci-host/raven: Simplify PCI bus creation
-  hw/pci-host/raven: Simplify PCI interrupt routing
-  hw/pci-host/raven: Do not use parent object for mmcfg region
-  hw/pci-host/raven: Fix PCI config direct access region
-  hw/pci-host/raven: Simpify discontiguous IO access
-  hw/pci-host/raven: Move bus master address space creation to one place
-  hw/pci-host/raven: Do not map regions in init method
-  hw/ppc/prep: Fix non-contiguous IO control bit
-  hw/ppc/prep: Add reset method to prep-systemio
-
- hw/pci-host/raven.c       | 292 ++++++++++++--------------------------
- hw/ppc/prep.c             |  18 ++-
- hw/ppc/prep_systemio.c    |  26 +++-
- include/hw/pci/pci_host.h |   1 -
- 4 files changed, 123 insertions(+), 214 deletions(-)
-
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index eacffc86d8..c0492d1456 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -65,7 +65,6 @@ struct PRePPCIState {
+     MemoryRegion bm_ram_alias;
+     MemoryRegion bm_pci_memory_alias;
+     AddressSpace bm_as;
+-    RavenPCIState pci_dev;
+ 
+     int contiguous_map;
+ };
+@@ -260,8 +259,7 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+                           "pci-intack", 1);
+     memory_region_add_subregion(address_space_mem, 0xbffffff0, &s->pci_intack);
+ 
+-    /* TODO Remove once realize propagates to child devices. */
+-    qdev_realize(DEVICE(&s->pci_dev), BUS(&s->pci_bus), errp);
++    pci_create_simple(&s->pci_bus, PCI_DEVFN(0, 0), TYPE_RAVEN_PCI_DEVICE);
+ }
+ 
+ static void raven_pcihost_initfn(Object *obj)
+@@ -269,7 +267,6 @@ static void raven_pcihost_initfn(Object *obj)
+     PCIHostState *h = PCI_HOST_BRIDGE(obj);
+     PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(obj);
+     MemoryRegion *address_space_mem = get_system_memory();
+-    DeviceState *pci_dev;
+ 
+     memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
+     memory_region_init_io(&s->pci_io_non_contiguous, obj, &raven_io_ops, s,
+@@ -306,12 +303,6 @@ static void raven_pcihost_initfn(Object *obj)
+     pci_setup_iommu(&s->pci_bus, &raven_iommu_ops, s);
+ 
+     h->bus = &s->pci_bus;
+-
+-    object_initialize(&s->pci_dev, sizeof(s->pci_dev), TYPE_RAVEN_PCI_DEVICE);
+-    pci_dev = DEVICE(&s->pci_dev);
+-    object_property_set_int(OBJECT(&s->pci_dev), "addr", PCI_DEVFN(0, 0),
+-                            NULL);
+-    qdev_prop_set_bit(pci_dev, "multifunction", false);
+ }
+ 
+ static void raven_realize(PCIDevice *d, Error **errp)
 -- 
 2.41.3
 
