@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF1BFF215
+	by mail.lfdr.de (Postfix) with ESMTPS id 34033BFF213
 	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:36:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBn32-0003b2-Bf; Thu, 23 Oct 2025 00:35:36 -0400
+	id 1vBn35-0003bS-1Q; Thu, 23 Oct 2025 00:35:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBn30-0003ao-7L
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:35:34 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1vBn33-0003bH-Mc
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:35:37 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBn2x-0001Le-Eo
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:35:33 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-27ee41e074dso3610755ad.1
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:35:31 -0700 (PDT)
+ id 1vBn31-0001M1-5E
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:35:37 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b6cf25c9ad5so259888a12.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:35:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761194129; x=1761798929; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yKNfPhQybkr+kdghjTk1+NTs/BYrMKh7K92oxFd3u+0=;
- b=TOyjEzJndd7LHYR6n4h/b5qUBBnAwk8T/iso21j50lNFFk3Ktowi1TE8o+YJNhM0mw
- ZIbl8+zcbGZLSfh2akPU3ItDNFOl5sU4CPGsVLtUyBt2axYwfk9ELNiCjKSk8xlQdvWQ
- xUHdStwBPD4wyDNkZsbHDyTTI6sKA4QBPfvOMNi4rDkjiC7ekvbfbtvzUL8AKRxjqpDQ
- +ZXOaTthgsHeHMFKED2OxyhFXes7ZPZdrJIL8d8gToOtwtk3oDk+O6j+V0mhaO1avHna
- dnHyeZkcoHeeyI7HoF+9U16EDeAP8Fh6LuQy94kriLa1qtRoxbP/wpEnRSwWIjFsYOjc
- QeKg==
+ d=gmail.com; s=20230601; t=1761194133; x=1761798933; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7uqEiFYtxMjkxvxS6uKXvLcW2kyntPL9oQXhowe/Obo=;
+ b=TZilBe5hk0SRL2vh/ekoYqsohEMqye1ejB+0uOSMruliyLNj5/9pl/lZSoGSbHfPQA
+ HCp006v9r7CApB+vOK5+U2+AdA8dE7KZIRNOl+jhh74qcS2dH2074RswcAfO9mtA9ffG
+ ZyeyW8Re8WJ0ri0waTRTbGwf1/Senzi/0esqcdWsTFllAQOvzTsie9YBdW0X4FdA1SQD
+ wuB1V9eqni5CuIBd9dk52j8saYTNMNz9sLsqawfB4a3TkA5uNjFmI+L9IEWRMnROvots
+ qhfvewInr9Zh+4CJ5bHrtNgbMyfItzsYPXNL4voSbSMwqDdktZ4dAtZFTZ/AlV5cjoxM
+ Lg9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761194129; x=1761798929;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yKNfPhQybkr+kdghjTk1+NTs/BYrMKh7K92oxFd3u+0=;
- b=YD80PBChBg9WhysbQAxu9qKLJFUrKek/KzoE3SiefaJQCThqnr0oybF7J7NP1tIo1F
- vT51VRCA7WW0PCdKGwyYp+tL3ftrvBwzpju8EAd0yt+6xDmC84337z+VDr0FIkkazX/C
- c8rocjNi7pWgvGu9PjZx9Yhf2DjmSgpfE2ui9OHKIYzjUBgE4QGwsE3lUffCQynfLGgI
- OOQZCvlBhgqcAnQ32UIiCdEBBwD3NWjDIT/J5K9eOgdD7i68/oMofFUtIJPIG0yG+zAn
- M+1FFCknHT4HCtH3mjAblfdu4ktVeA9g6a3x/hyd+YW4l7hVA4mDc7T2telXOD5Hzlqs
- CYlA==
-X-Gm-Message-State: AOJu0Yyx2z1BZKMbMg6zul2e4YUchbeExjkZF73hAjg0ZG81xXzS1Wte
- Z3j0YfiuPxGLQvyMAlD+eh846QctsLPODP6gRpUME8doD1vxZk/b6/sOjQ31WQ==
-X-Gm-Gg: ASbGncv5aN5tCQ8WcPiBvv3H4JMSnkKOP3z7ehjTY8kGqKSEpNCtikhcP1WZhlkeMcW
- NG+dtFtP1LytzoleJVN6JWN98uxVJfxKa6I+WT5aj/AcJUfrr1mPCnCAD5B7gkHXrwgIldzao0t
- jllzpzze6fOOA6FcskoznlzTN611JyYgbskPgvedN+27rAKNOQQDTOUMw+rtqBb5sRD/lvQI6Nu
- zpx04v9oyK7BdXADto/ZPWD/5BkmDTv6bdfMZ6VY2Ymh3pvBm0AEz5wzYOQt90SGxfgFJ4saH+d
- CJ/RsbQbnKEXdlvP90jnwXJmhhDA3pURO+gEZEv0SKu7bGkcyyJz9uLigf/zBe3cJ3bXgYhSlKr
- 2yo03hydx6Lh1d49uqZb5hNQvjSzKtrdMtFzvUlQyWGXM4izViIdQaMkMxt4RI0GLOHFVncnS+n
- yZreBghn7+HUFGLmuzIgI6HcKVfwhfz8tzqhkTIgsz+gpxyrMrAzB32ypjHf9cri2FanGswiHmQ
- 88YRQNj
-X-Google-Smtp-Source: AGHT+IG7/VKdWM3jibVRfGTgu2d7m1W9/DZlKjURxqj/fL24EiWxwm9vKXMuE4/ueHMTv0Eg5t1Tsg==
-X-Received: by 2002:a17:902:dac2:b0:275:2328:5d3e with SMTP id
- d9443c01a7336-290c9ca32f9mr304534045ad.18.1761194129220; 
- Wed, 22 Oct 2025 21:35:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1761194133; x=1761798933;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7uqEiFYtxMjkxvxS6uKXvLcW2kyntPL9oQXhowe/Obo=;
+ b=d8UaUGuWQWsZ5C/1l1a4hGabYsKUF5Sg5J5OCrt1awh1mPx3EAn/1bnlOwDC5B6ZLV
+ yH8zjnRzsRZnCZ+q6O8EFqv3ypPUrJvJzSHN73LQpNk5XezQ6Ll8gDmPfPVd0Ze+DmEt
+ Xj/yZ2WJBjZeDCPxRRamLcWv+J4hZVAfGBPI8jMvYbgITFLvHVURy4jH1qzCMHmYy4xO
+ BWGqSF6uuUvoyM02rGRY8yGXYeRSu+LBzrEtS9fHR0WZVkdGi4NAT8jlP7o0GbEq9bZR
+ GzeyMEODEXV8ljR5O48xF0XCxJi171nEy8eV0aVCDyBOjx8Kzl8r7VmK6RvTVE09o3jQ
+ x3fw==
+X-Gm-Message-State: AOJu0YzAUYN99oVuUleDu62ITsTN/GW/x3XdVzJ15PM8wNDZa6S7IH1O
+ bXKGAjbNnGshW+swBEIfZ1xHgZFlK0I2c9J7/TEAPySiNPn2ATmEpOjO6xZVTQ==
+X-Gm-Gg: ASbGncs/pYv225ZZ/2qhD1vM/7YJKqc1uHGPtlQAhdp9Hy2TL87+kbtiDMm2UdrMv8h
+ EC86dcEOOGzT5HqvU18gfu8HuPhtzW6BmKMTKkxp33B17iZ7mDR2szgCg8zbAbWB3nEkiakrU3S
+ TN0nXih8vOMqelBelRb21Wa84vPvne9EPMoe0dDSlq26tvMXmP8du94YJ3Cr5u2zM2EcqD977Bq
+ 4hAY/2qrteGLMSZGAyOPnhj6f0j7OYeCM8S66OueI8zcrl1tC9H2bI5vqbM0/svalxJUVS+tysO
+ gIzGUFQd0dZNqfdwHtp4enWrZIKkgy1sjjL+ePFR2tT3rna5dUJ158oSspDebbHZB+4RoL2R6L9
+ dMIPfTqKPOxKb8em8un507H5/XTc+Hh1Wvi/569XC8SpPKbgCoaTmdmaBPHkK9sMWS+3JhSYThp
+ x6S/mwyupdnmHicEcOe3BaKyZc6Ni6ZuxyyK7kpOBRNsSvD1Ze0YTx7nJXYhtoCmuExRfCFdQhz
+ s5IxHXm
+X-Google-Smtp-Source: AGHT+IGvbLo21VMpBoLrUtc2FKegDsPwTcuPOcX8CmZIrf07ieFZDCeeOOd1cZNGniqDJcL7WkLcyA==
+X-Received: by 2002:a17:902:f543:b0:24c:965a:f97e with SMTP id
+ d9443c01a7336-290c9cf2e68mr301020125ad.2.1761194133224; 
+ Wed, 22 Oct 2025 21:35:33 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946dfc113csm8643015ad.68.2025.10.22.21.35.25
+ d9443c01a7336-2946dfc113csm8643015ad.68.2025.10.22.21.35.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 21:35:28 -0700 (PDT)
+ Wed, 22 Oct 2025 21:35:32 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -73,14 +74,16 @@ Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
  Djordje Todorovic <djordje.todorovic@htecgroup.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 22/37] target/riscv: Add MIPS P8700 CSRs
-Date: Thu, 23 Oct 2025 14:35:05 +1000
-Message-ID: <20251023043520.1777130-1-alistair.francis@wdc.com>
+Subject: [PULL 23/37] target/riscv: Add mips.ccmov instruction
+Date: Thu, 23 Oct 2025 14:35:06 +1000
+Message-ID: <20251023043520.1777130-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251023043520.1777130-1-alistair.francis@wdc.com>
+References: <20251023043520.1777130-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,284 +109,173 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-Define MIPS CSRs used for P8700 CPU.
+Add mips.ccmov defined by Xmipscmov.
 
 Signed-off-by: Chao-ying Fu <cfu@mips.com>
 Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251018154522.745788-5-djordje.todorovic@htecgroup.com>
+Acked-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20251018154522.745788-6-djordje.todorovic@htecgroup.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h       |   3 +
- target/riscv/cpu.c       |   3 +
- target/riscv/mips_csr.c  | 217 +++++++++++++++++++++++++++++++++++++++
- target/riscv/meson.build |   1 +
- 4 files changed, 224 insertions(+)
- create mode 100644 target/riscv/mips_csr.c
+ target/riscv/cpu_cfg.h                    |  5 ++++
+ target/riscv/cpu_cfg_fields.h.inc         |  1 +
+ target/riscv/xmips.decode                 | 11 ++++++++
+ target/riscv/cpu.c                        |  3 +++
+ target/riscv/translate.c                  |  3 +++
+ target/riscv/insn_trans/trans_xmips.c.inc | 33 +++++++++++++++++++++++
+ target/riscv/meson.build                  |  1 +
+ 7 files changed, 57 insertions(+)
+ create mode 100644 target/riscv/xmips.decode
+ create mode 100644 target/riscv/insn_trans/trans_xmips.c.inc
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 0ac31e5c61..00ac947772 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -988,5 +988,8 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
- /* In th_csr.c */
- extern const RISCVCSR th_csr_list[];
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index aa28dc8d7e..2db471ad17 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -36,6 +36,11 @@ static inline bool always_true_p(const RISCVCPUConfig *cfg __attribute__((__unus
+     return true;
+ }
  
-+/* Implemented in mips_csr.c */
-+extern const RISCVCSR mips_csr_list[];
++static inline bool has_xmips_p(const RISCVCPUConfig *cfg)
++{
++    return cfg->ext_xmipscmov;
++}
 +
- const char *priv_spec_to_str(int priv_version);
- #endif /* RISCV_CPU_H */
+ static inline bool has_xthead_p(const RISCVCPUConfig *cfg)
+ {
+     return cfg->ext_xtheadba || cfg->ext_xtheadbb ||
+diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+index e2d116f0df..a290303ee7 100644
+--- a/target/riscv/cpu_cfg_fields.h.inc
++++ b/target/riscv/cpu_cfg_fields.h.inc
+@@ -147,6 +147,7 @@ BOOL_FIELD(ext_xtheadmemidx)
+ BOOL_FIELD(ext_xtheadmempair)
+ BOOL_FIELD(ext_xtheadsync)
+ BOOL_FIELD(ext_XVentanaCondOps)
++BOOL_FIELD(ext_xmipscmov)
+ 
+ BOOL_FIELD(mmu)
+ BOOL_FIELD(pmp)
+diff --git a/target/riscv/xmips.decode b/target/riscv/xmips.decode
+new file mode 100644
+index 0000000000..fadcb78470
+--- /dev/null
++++ b/target/riscv/xmips.decode
+@@ -0,0 +1,11 @@
++#
++# RISC-V translation routines for the MIPS extension
++#
++# Copyright (c) 2025 MIPS
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Reference: MIPS P8700 instructions
++#            (https://mips.com/products/hardware/p8700/)
++
++ccmov          rs3:5 11 rs2:5 rs1:5 011 rd:5 0001011
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f05747a2d2..a52e6b7b7a 100644
+index a52e6b7b7a..b0a1de6a26 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -3297,6 +3297,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+@@ -249,6 +249,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(svrsw60t59b, PRIV_VERSION_1_13_0, ext_svrsw60t59b),
+     ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
+     ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
++    ISA_EXT_DATA_ENTRY(xmipscmov, PRIV_VERSION_1_12_0, ext_xmipscmov),
+     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+     ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+@@ -1381,6 +1382,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+     MULTI_EXT_CFG_BOOL("xtheadmempair", ext_xtheadmempair, false),
+     MULTI_EXT_CFG_BOOL("xtheadsync", ext_xtheadsync, false),
+     MULTI_EXT_CFG_BOOL("xventanacondops", ext_XVentanaCondOps, false),
++    MULTI_EXT_CFG_BOOL("xmipscmov", ext_xmipscmov, false),
+ 
+     { },
+ };
+@@ -3295,6 +3297,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.pmp = true,
+         .cfg.ext_zba = true,
          .cfg.ext_zbb = true,
++        .cfg.ext_xmipscmov = true,
          .cfg.marchid = 0x8000000000000201,
          .cfg.mvendorid = MIPS_VENDOR_ID,
-+#ifndef CONFIG_USER_ONLY
-+        .custom_csrs = mips_csr_list,
-+#endif
-     ),
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index e1f4dc5ffd..53ce86d583 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -1210,8 +1210,10 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+ #include "insn_trans/trans_svinval.c.inc"
+ #include "insn_trans/trans_rvbf16.c.inc"
+ #include "decode-xthead.c.inc"
++#include "decode-xmips.c.inc"
+ #include "insn_trans/trans_xthead.c.inc"
+ #include "insn_trans/trans_xventanacondops.c.inc"
++#include "insn_trans/trans_xmips.c.inc"
  
- #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
-diff --git a/target/riscv/mips_csr.c b/target/riscv/mips_csr.c
+ /* Include the auto-generated decoder for 16 bit insn */
+ #include "decode-insn16.c.inc"
+@@ -1227,6 +1229,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+ 
+ const RISCVDecoder decoder_table[] = {
+     { always_true_p, decode_insn32 },
++    { has_xmips_p, decode_xmips},
+     { has_xthead_p, decode_xthead},
+     { has_XVentanaCondOps_p, decode_XVentanaCodeOps},
+ };
+diff --git a/target/riscv/insn_trans/trans_xmips.c.inc b/target/riscv/insn_trans/trans_xmips.c.inc
 new file mode 100644
-index 0000000000..822e25e346
+index 0000000000..3202fd9cc0
 --- /dev/null
-+++ b/target/riscv/mips_csr.c
-@@ -0,0 +1,217 @@
++++ b/target/riscv/insn_trans/trans_xmips.c.inc
+@@ -0,0 +1,33 @@
 +/*
-+ * MIPS-specific CSRs.
++ * RISC-V translation routines for the MIPS extensions (xmips*).
 + *
 + * Copyright (c) 2025 MIPS
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
++ * Reference: MIPS P8700 instructions
++ *            (https://mips.com/products/hardware/p8700/)
 + */
 +
-+#include "qemu/osdep.h"
-+#include "cpu.h"
-+#include "cpu_vendorid.h"
++#define REQUIRE_XMIPSCMOV(ctx) do {              \
++    if (!ctx->cfg_ptr->ext_xmipscmov) {          \
++        return false;                            \
++    }                                            \
++} while (0)
 +
-+/* Static MIPS CSR state storage */
-+static struct {
-+    uint64_t tvec;
-+    uint64_t config[12];
-+    uint64_t pmacfg[16];
-+} mips_csr_state;
-+
-+/* MIPS CSR */
-+#define CSR_MIPSTVEC        0x7c0
-+#define CSR_MIPSCONFIG0     0x7d0
-+#define CSR_MIPSCONFIG1     0x7d1
-+#define CSR_MIPSCONFIG2     0x7d2
-+#define CSR_MIPSCONFIG3     0x7d3
-+#define CSR_MIPSCONFIG4     0x7d4
-+#define CSR_MIPSCONFIG5     0x7d5
-+#define CSR_MIPSCONFIG6     0x7d6
-+#define CSR_MIPSCONFIG7     0x7d7
-+#define CSR_MIPSCONFIG8     0x7d8
-+#define CSR_MIPSCONFIG9     0x7d9
-+#define CSR_MIPSCONFIG10    0x7da
-+#define CSR_MIPSCONFIG11    0x7db
-+#define CSR_MIPSPMACFG0     0x7e0
-+#define CSR_MIPSPMACFG1     0x7e1
-+#define CSR_MIPSPMACFG2     0x7e2
-+#define CSR_MIPSPMACFG3     0x7e3
-+#define CSR_MIPSPMACFG4     0x7e4
-+#define CSR_MIPSPMACFG5     0x7e5
-+#define CSR_MIPSPMACFG6     0x7e6
-+#define CSR_MIPSPMACFG7     0x7e7
-+#define CSR_MIPSPMACFG8     0x7e8
-+#define CSR_MIPSPMACFG9     0x7e9
-+#define CSR_MIPSPMACFG10    0x7ea
-+#define CSR_MIPSPMACFG11    0x7eb
-+#define CSR_MIPSPMACFG12    0x7ec
-+#define CSR_MIPSPMACFG13    0x7ed
-+#define CSR_MIPSPMACFG14    0x7ee
-+#define CSR_MIPSPMACFG15    0x7ef
-+
-+static RISCVException any(CPURISCVState *env, int csrno)
++/* Conditional move by MIPS. */
++static bool trans_ccmov(DisasContext *ctx, arg_ccmov *a)
 +{
-+    return RISCV_EXCP_NONE;
-+}
++    REQUIRE_XMIPSCMOV(ctx);
 +
-+static RISCVException read_mipstvec(CPURISCVState *env, int csrno,
-+                                    target_ulong *val)
-+{
-+    *val = mips_csr_state.tvec;
-+    return RISCV_EXCP_NONE;
-+}
++    TCGv zero, source1, source2, source3;
++    zero = tcg_constant_tl(0);
++    source1 = get_gpr(ctx, a->rs1, EXT_NONE);
++    source2 = get_gpr(ctx, a->rs2, EXT_NONE);
++    source3 = get_gpr(ctx, a->rs3, EXT_NONE);
 +
-+static RISCVException write_mipstvec(CPURISCVState *env, int csrno,
-+                                     target_ulong val, uintptr_t ra)
-+{
-+    mips_csr_state.tvec = val;
-+    return RISCV_EXCP_NONE;
-+}
++    tcg_gen_movcond_tl(TCG_COND_NE, cpu_gpr[a->rd],
++                       source2, zero, source1, source3);
 +
-+static RISCVException read_mipsconfig(CPURISCVState *env, int csrno,
-+                                      target_ulong *val)
-+{
-+    *val = mips_csr_state.config[csrno - CSR_MIPSCONFIG0];
-+    return RISCV_EXCP_NONE;
++    return true;
 +}
-+
-+static RISCVException write_mipsconfig(CPURISCVState *env, int csrno,
-+                                       target_ulong val, uintptr_t ra)
-+{
-+    mips_csr_state.config[csrno - CSR_MIPSCONFIG0] = val;
-+    return RISCV_EXCP_NONE;
-+}
-+
-+static RISCVException read_mipspmacfg(CPURISCVState *env, int csrno,
-+                                      target_ulong *val)
-+{
-+    *val = mips_csr_state.pmacfg[csrno - CSR_MIPSPMACFG0];
-+    return RISCV_EXCP_NONE;
-+}
-+
-+static RISCVException write_mipspmacfg(CPURISCVState *env, int csrno,
-+                                       target_ulong val, uintptr_t ra)
-+{
-+    mips_csr_state.pmacfg[csrno - CSR_MIPSPMACFG0] = val;
-+    return RISCV_EXCP_NONE;
-+}
-+
-+const RISCVCSR mips_csr_list[] = {
-+    {
-+        .csrno = CSR_MIPSTVEC,
-+        .csr_ops = { "mipstvec", any, read_mipstvec, write_mipstvec }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG0,
-+        .csr_ops = { "mipsconfig0", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG1,
-+        .csr_ops = { "mipsconfig1", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG2,
-+        .csr_ops = { "mipsconfig2", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG3,
-+        .csr_ops = { "mipsconfig3", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG4,
-+        .csr_ops = { "mipsconfig4", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG5,
-+        .csr_ops = { "mipsconfig5", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG6,
-+        .csr_ops = { "mipsconfig6", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG7,
-+        .csr_ops = { "mipsconfig7", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG8,
-+        .csr_ops = { "mipsconfig8", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG9,
-+        .csr_ops = { "mipsconfig9", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG10,
-+        .csr_ops = { "mipsconfig10", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSCONFIG11,
-+        .csr_ops = { "mipsconfig11", any, read_mipsconfig, write_mipsconfig }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG0,
-+        .csr_ops = { "mipspmacfg0", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG1,
-+        .csr_ops = { "mipspmacfg1", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG2,
-+        .csr_ops = { "mipspmacfg2", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG3,
-+        .csr_ops = { "mipspmacfg3", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG4,
-+        .csr_ops = { "mipspmacfg4", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG5,
-+        .csr_ops = { "mipspmacfg5", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG6,
-+        .csr_ops = { "mipspmacfg6", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG7,
-+        .csr_ops = { "mipspmacfg7", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG8,
-+        .csr_ops = { "mipspmacfg8", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG9,
-+        .csr_ops = { "mipspmacfg9", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG10,
-+        .csr_ops = { "mipspmacfg10", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG11,
-+        .csr_ops = { "mipspmacfg11", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG12,
-+        .csr_ops = { "mipspmacfg12", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG13,
-+        .csr_ops = { "mipspmacfg13", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG14,
-+        .csr_ops = { "mipspmacfg14", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    {
-+        .csrno = CSR_MIPSPMACFG15,
-+        .csr_ops = { "mipspmacfg15", any, read_mipspmacfg, write_mipspmacfg }
-+    },
-+    { },
-+};
 diff --git a/target/riscv/meson.build b/target/riscv/meson.build
-index fdefe88ccd..25d59ef9f9 100644
+index 25d59ef9f9..3842c7c1a8 100644
 --- a/target/riscv/meson.build
 +++ b/target/riscv/meson.build
-@@ -36,6 +36,7 @@ riscv_system_ss.add(files(
-   'debug.c',
-   'monitor.c',
-   'machine.c',
-+  'mips_csr.c',
-   'pmu.c',
-   'th_csr.c',
-   'time_helper.c',
+@@ -4,6 +4,7 @@ gen = [
+   decodetree.process('insn32.decode', extra_args: '--static-decode=decode_insn32'),
+   decodetree.process('xthead.decode', extra_args: '--static-decode=decode_xthead'),
+   decodetree.process('XVentanaCondOps.decode', extra_args: '--static-decode=decode_XVentanaCodeOps'),
++  decodetree.process('xmips.decode', extra_args: '--static-decode=decode_xmips'),
+ ]
+ 
+ riscv_ss = ss.source_set()
 -- 
 2.51.0
 
