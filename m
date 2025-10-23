@@ -2,75 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDDDC02B6D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F46C02C0F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:38:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vByzl-0004Tu-3T; Thu, 23 Oct 2025 13:21:01 -0400
+	id 1vBzFo-0000rB-3a; Thu, 23 Oct 2025 13:37:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vByze-0004SX-7s
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:20:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
+ id 1vBzFi-0000qA-Cw
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:37:30 -0400
+Received: from mail-m17212.xmail.ntesmail.com ([45.195.17.212])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vByzb-0008AT-KR
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:20:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761240047;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YXz1R8r+d7eg20w9hXw17NnYFjuRGU+RuFSStFX4K5g=;
- b=BjvXq06qI/M2eb21AVEarKXk/Eg+TZfW0shVT1YOGj3WuhYWc8TbiKpruOq1WsJ5Jdws7d
- Ph2/avEaUTYDkuFR3o5CXBmXxrmbVh5tT42rfqmIP9UVRvhE/RnbCI7JMCBSwfUhnsr7Sh
- UVLY29Sz/1JFK5F1wuNZzBD5AZuAZ/4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-AHbek06DPAWPNy1dZpTFtA-1; Thu,
- 23 Oct 2025 13:20:43 -0400
-X-MC-Unique: AHbek06DPAWPNy1dZpTFtA-1
-X-Mimecast-MFC-AGG-ID: AHbek06DPAWPNy1dZpTFtA_1761240042
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C15F619540D6; Thu, 23 Oct 2025 17:20:41 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6DCB919540EB; Thu, 23 Oct 2025 17:20:41 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B51DB21E6A27; Thu, 23 Oct 2025 19:20:38 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,  Fabiano
- Rosas <farosas@suse.de>,  Juraj Marcin <jmarcin@redhat.com>
-Subject: Re: [PATCH] migration/qmp: Update "resume" flag doc in "migrate"
- command
-In-Reply-To: <aPo7Sw29g_gdOD0k@x1.local> (Peter Xu's message of "Thu, 23 Oct
- 2025 10:27:23 -0400")
-References: <20251022190425.2730441-1-peterx@redhat.com>
- <87cy6eb25c.fsf@pond.sub.org> <aPozyk9Do9iu32G4@x1.local>
- <87sef94suf.fsf@pond.sub.org> <aPo7Sw29g_gdOD0k@x1.local>
-Date: Thu, 23 Oct 2025 19:20:38 +0200
-Message-ID: <875xc54jrt.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
+ id 1vBzFd-0001pf-UK
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:37:29 -0400
+Received: from DESKTOP-FHFCVTH.localdomain (unknown [114.104.79.1])
+ by smtp.qiye.163.com (Hmail) with ESMTP id 26f8a51a7;
+ Fri, 24 Oct 2025 01:30:10 +0800 (GMT+08:00)
+From: fanyihao@rt-thread.org
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Yihao Fan <fanyihao@rt-thread.org>
+Subject: 
+Date: Fri, 24 Oct 2025 01:30:07 +0800
+Message-ID: <20251023173008.46232-1-fanyihao@rt-thread.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9a121ef64503a4kunm9f8d824b246a9b
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+ tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZGk8YVhpCSxlPS0oeS0lNT1YVFAkWGhdVEwETFh
+ oSFyQUDg9ZV1kYEgtZQVlKSk9VSktPVUxCVUpZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
+DKIM-Signature: a=rsa-sha256;
+ b=BZqeyAFSugWKp/8aPyhTgBqu/NjW/r/7uKI72AUisdcnLVW7E5rtjR/5VaXjw0tSkrnc23+hcqNWn/M+uM9+LnHjG10jo6BRWaMdZlDhocy0LYkVJkMzMe5LYrKZUg6oLPxNZe2rpOR80c+XD6RkG4Q9lud4xH2CdqxmLrgEtSXjqhHJhe5BI3pg9eDqqfG5cDo5ZkO8o8wM4GrAui7O7gvBGqfMy31hfwwkNmNXJ/iDT7LA4N/1jK61yz73emFhPZzaSAQKnwFguzsPB2zj4vvuJ8O5p/JF73EU7ZVT6ZvPMAe2PCf5wxM4WIdrRWUeeNcW/0k52vL8JHynPwYr1Q==;
+ s=default; c=relaxed/relaxed; d=rt-thread.org; v=1; 
+ bh=UJ2+eSqtg6AU1/zT1PesOqvWnJFtkJ9DfQOO2qNggAk=;
+ h=date:mime-version:subject:message-id:from;
+Received-SPF: pass client-ip=45.195.17.212;
+ envelope-from=fanyihao@rt-thread.org; helo=mail-m17212.xmail.ntesmail.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,76 +66,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+From: Yihao Fan <fanyihao@rt-thread.org>
 
-> On Thu, Oct 23, 2025 at 04:04:40PM +0200, Markus Armbruster wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Oct 23, 2025 at 07:47:11AM +0200, Markus Armbruster wrote:
->> >> Peter Xu <peterx@redhat.com> writes:
->> >> 
->> >> > It wasn't obvious how the resume flag should be used when staring at the
->> >> > QAPI doc.  Enrich it to be crystal clear.
->> >> >
->> >> > Reported-by: Markus Armbruster <armbru@redhat.com>
->> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
->> >> > ---
->> >> >  qapi/migration.json | 5 ++++-
->> >> >  1 file changed, 4 insertions(+), 1 deletion(-)
->> >> >
->> >> > diff --git a/qapi/migration.json b/qapi/migration.json
->> >> > index be0f3fcc12..48856078db 100644
->> >> > --- a/qapi/migration.json
->> >> > +++ b/qapi/migration.json
->> >> > @@ -1732,7 +1732,10 @@
->> >> >  # @detach: this argument exists only for compatibility reasons and is
->> >> >  #     ignored by QEMU
->> >> >  #
->> >> > -# @resume: resume one paused migration, default "off".  (since 3.0)
->> >> > +# @resume: when set, resume one paused postcopy migration, using the new
->> >> 
->> >> Scratch "one" unless there can be more than one.
->> >
->> > Sure.
->> >
->> >> 
->> >> > +#     URI/channels specified to replace the old/broken channels.  The user
->> >> > +#     should make sure the migration is in "postcopy-paused" state before
->> >> > +#     the resume request.  Default "off".  (since 3.0)
->> >> >  #
->> >> >  # Features:
->> >> >  #
->> >> 
->> >> What happens when migration is not in state "postcopy-paused"?
->> >
->> > The QMP command "migrate" with resume=true set will be rejected,
->> > corresponds to:
->> >
->> > migrate_prepare():
->> >         if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
->> >             error_setg(errp, "Cannot resume if there is no "
->> >                        "paused migration");
->> >             return false;
->> >         }
->> 
->> Makes sense, thanks!
->> 
->> I'd suggest something like 'Resume fails unless migration is in
->> "postcopy-paused" state.  (default: false, since 3.0)'
->
-> Since it's still a "migrate" QMP command, should I use "the command will
-> fail"? I also re-arranged the words slightly.. would below look a better
-> next version as a whole?
->
-> # @resume: when set, use the new uri/channels specified to resume paused
-> #     postcopy migration.  This flag should only be used if the previous
-> #     postcopy migration was interrupted.  The command will fail unless
-> #     migration is in "postcopy-paused" state.  (default: false, since 3.0)
->
-> Thanks,
+Subject: [PATCH v3 0/3] hw/arm Add STM32F4 support and PWR device model
 
-I like it.
+This patch series introduces basic support for the STM32F407 SoC and
+a new STM32F4spark machine in QEMU, along with a PWR device model.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+In addition, I have modified the header file referenced by the RCC
+driver to STM32RCC in accordance with the suggestions.
+
+This series includes:
+- A new SoC model (STM32F407) with initial integration.
+- A board model called STM32F4spark to instantiate and test the SoC.
+- A PWR device implementation for STM32F4xx family.
+
+Signed-off-by: Yihao Fan <fanyihao@rt-thread.org>
+
+
+Yihao Fan (3):
+  hw/arm: Add support for the STM32F407 SoC
+  hw/arm: Add support for the STM32F407-RT-SPARk board
+  hw/arm/stm32f407: Add PWR device to stm32f407 SoC
+
+ MAINTAINERS                            |  14 ++
+ docs/system/arm/STM32F407-RT-SPARK.rst |  41 +++++
+ docs/system/arm/stm32.rst              |   2 +
+ docs/system/target-arm.rst             |   1 +
+ hw/arm/Kconfig                         |  13 ++
+ hw/arm/meson.build                     |   2 +
+ hw/arm/stm32f407_soc.c                 | 217 +++++++++++++++++++++++++
+ hw/arm/stm32f4spark.c                  |  56 +++++++
+ hw/misc/Kconfig                        |   3 +
+ hw/misc/meson.build                    |   1 +
+ hw/misc/stm32f4xx_pwr.c                | 111 +++++++++++++
+ include/hw/arm/stm32f407_soc.h         |  77 +++++++++
+ include/hw/misc/stm32f4xx_pwr.h        |  40 +++++
+ 13 files changed, 578 insertions(+)
+ create mode 100644 docs/system/arm/STM32F407-RT-SPARK.rst
+ create mode 100644 hw/arm/stm32f407_soc.c
+ create mode 100644 hw/arm/stm32f4spark.c
+ create mode 100644 hw/misc/stm32f4xx_pwr.c
+ create mode 100644 include/hw/arm/stm32f407_soc.h
+ create mode 100644 include/hw/misc/stm32f4xx_pwr.h
+
+-- 
+2.43.0
 
 
