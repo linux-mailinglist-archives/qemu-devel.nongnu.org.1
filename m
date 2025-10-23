@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25152C01260
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED67AC01316
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:43:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuLa-0007Iw-Jf; Thu, 23 Oct 2025 08:23:14 -0400
+	id 1vBuNx-0001kg-OE; Thu, 23 Oct 2025 08:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBuGT-0001Px-Fz
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:18:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <a.aliokhin@syntacore.com>)
+ id 1vBuKs-0006KK-7x; Thu, 23 Oct 2025 08:22:36 -0400
+Received: from m.syntacore.com ([178.249.69.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBuGN-0006VM-Hd
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1761221869;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Hg2hC5L98UVtQ++c8KdSziVy7OBtW1l3z8LTPULgwGo=;
- b=iUB9NJ78hi0YitwGdNUwTriEouCLwECjvO3Fp9h9C4koaBp8UOC7ehfHWDysqaMP1Q5fsG
- cyEE+IKbUm7rZgFEVbET7kp5PCwrXJvYILSCMp/bj1rHeMAIpSWWWtCJ/ORmMbMKcbpSTC
- appxxtEhKFR0FKNLiAO+G68j8G8q7Pg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-VoUxbbfOMNGctsJ8hbaXNQ-1; Thu,
- 23 Oct 2025 08:17:46 -0400
-X-MC-Unique: VoUxbbfOMNGctsJ8hbaXNQ-1
-X-Mimecast-MFC-AGG-ID: VoUxbbfOMNGctsJ8hbaXNQ_1761221865
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Exim 4.90_1) (envelope-from <a.aliokhin@syntacore.com>)
+ id 1vBuKp-00078B-P1; Thu, 23 Oct 2025 08:22:29 -0400
+Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
+ by m.syntacore.com (Postfix) with ESMTP id DE7461A0005;
+ Thu, 23 Oct 2025 12:22:15 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com DE7461A0005
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
+ t=1761222135; bh=yTrFtcH5W+HLnEhgtmthehlr4V835CwHQv+3ZwafY58=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=V6nbW9rjkBVBKXEOROhoEDtn2TQdPXquS2B3UnSiITlPo2vHnWTwp75vjVd5Gief3
+ 2ZdYAGlH6ypTYjNBtNpi8t938Hz7EFHWjHU0oj+4AAaCKSWDTlrHIkH7DsRdFSzttp
+ D5G8CUrr6qMx5bysVRNzfvdFNVve9o3+yi2DSZ9MsbTHmUnI9HQ8DPhgXo+gP82MK0
+ pv8O0OPL4la9/kbMqDl0S0At7H2RSHAZtmdda2vuGga3YNKqGnKnik5osxD4DsMb46
+ oW6dVKew6xEyX/Qa/TvR/xv4lLaizVUmoHl/1oPWmA8cB0e5uiZayYW9lb4YgIb565
+ ji/Ta2bMO+bsw==
+Received: from S-SC-EXCH-01.corp.syntacore.com (exchange.syntacore.com
+ [10.76.202.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3D2311800744; Thu, 23 Oct 2025 12:17:45 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8ECA180044F; Thu, 23 Oct 2025 12:17:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0D7BF21E6A27; Thu, 23 Oct 2025 14:17:42 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Peter
- Maydell <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 10/32] hw/core: report security status in query-machines
-In-Reply-To: <20250926140144.1998694-11-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 26 Sep 2025 15:01:21
- +0100")
-References: <20250926140144.1998694-1-berrange@redhat.com>
- <20250926140144.1998694-11-berrange@redhat.com>
-Date: Thu, 23 Oct 2025 14:17:42 +0200
-Message-ID: <87zf9h6cd5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by m.syntacore.com (Postfix) with ESMTPS;
+ Thu, 23 Oct 2025 12:22:14 +0000 (UTC)
+Received: from mail.syntacore.com (172.27.12.37) by
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 23 Oct 2025 15:21:45 +0300
+From: Andrey Alekhin <a.aliokhin@syntacore.com>
+To: <qemu-devel@nongnu.org>
+CC: Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, Liu
+ Zhiwei <zhiwei_liu@linux.alibaba.com>, Alistair Francis
+ <alistair.francis@wdc.com>, <qemu-riscv@nongnu.org>, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Andrey Alekhin <a.aliokhin@syntacore.com>
+Subject: [PATCH] target/riscv/insn_trans: Fix sc.w & sc.d incorrect behavior
+ on misaligned access
+Date: Thu, 23 Oct 2025 15:20:21 +0300
+Message-ID: <20251023122021.16138-1-a.aliokhin@syntacore.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.27.12.37]
+X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310,
+ bases: 2025/10/23 07:51:00 #27791923
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
+Received-SPF: pass client-ip=178.249.69.228;
+ envelope-from=a.aliokhin@syntacore.com; helo=m.syntacore.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 23 Oct 2025 08:24:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,56 +90,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+cs.w and sc.d instructions should throw
+a "Load/Save/AMO address misaligned" exception when this
+happens, but they don't. Fix solves this issue.
 
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  hw/core/machine-qmp-cmds.c | 1 +
->  qapi/machine.json          | 8 +++++++-
->  2 files changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-> index 6aca1a626e..4d9906f64a 100644
-> --- a/hw/core/machine-qmp-cmds.c
-> +++ b/hw/core/machine-qmp-cmds.c
-> @@ -100,6 +100,7 @@ MachineInfoList *qmp_query_machines(bool has_compat_p=
-rops, bool compat_props,
->          if (mc->default_ram_id) {
->              info->default_ram_id =3D g_strdup(mc->default_ram_id);
->          }
-> +        info->secure =3D object_class_is_secure(OBJECT_CLASS(mc));
->=20=20
->          if (compat_props && mc->compat_props) {
->              int i;
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index 038eab281c..bb2b308ccd 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -194,6 +194,11 @@
->  #     present when `query-machines` argument @compat-props is true.
->  #     (since 9.1)
->  #
-> +# @secure: If true, the machine is declared to provide a security
-> +#     boundary from the guest; if false the machine is either
-> +#     not providing a security boundary, or its status is undefined.
-> +#     (since 10.2)
-> +#
->  # Features:
->  #
->  # @unstable: Member @compat-props is experimental.
-> @@ -207,7 +212,8 @@
->              'deprecated': 'bool', '*default-cpu-type': 'str',
->              '*default-ram-id': 'str', 'acpi': 'bool',
->              '*compat-props': { 'type': ['CompatProperty'],
-> -                               'features': ['unstable'] } } }
-> +                               'features': ['unstable'] },
-> +            'secure': 'bool' } }
->=20=20
->  ##
->  # @query-machines:
+Note: When using misaligned address sc.w and sc.d commands
+always skip store phase because either there was
+no corresponding lr.w or lr.d command or there was
+a corresponding command with an unaligned address
+or there was mismatched command with a completely different
+address.
+In either case, the reservation set did not match the
+address and command goes to final step to invalidate
+reservation set. According specification all sc commands
+always must first invalidate reservation set (if any)
+and then complete execution normally or by throwing
+an exception
 
-Isn't this redundant with qom-list-types?
+Signed-off-by: Andrey Alekhin <a.aliokhin@syntacore.com>
+---
+ target/riscv/insn_trans/trans_rva.c.inc | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-{"execute": "qom-list-types", "arguments": {"implements": "machine"}}
+diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
+index 9cf3ae8019..93b89866ae 100644
+--- a/target/riscv/insn_trans/trans_rva.c.inc
++++ b/target/riscv/insn_trans/trans_rva.c.inc
+@@ -57,9 +57,10 @@ static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
+ 
+ static bool gen_sc(DisasContext *ctx, arg_atomic *a, MemOp mop)
+ {
+-    TCGv dest, src1, src2;
++    TCGv dest, src1, src2, mc;
+     TCGLabel *l1 = gen_new_label();
+     TCGLabel *l2 = gen_new_label();
++    TCGLabel *l3 = gen_new_label();
+ 
+     decode_save_opc(ctx, 0);
+     src1 = get_address(ctx, a->rs1, 0);
+@@ -93,6 +94,26 @@ static bool gen_sc(DisasContext *ctx, arg_atomic *a, MemOp mop)
+      */
+     tcg_gen_movi_tl(load_res, -1);
+ 
++    mc = tcg_constant_tl((1 << (mop & MO_SIZE)) - 1);
++    /*
++     *   When using misaligned address sc.w and sc.d commands
++     *   always skip store phase because either there was
++     *   no corresponding lr.w or lr.d command or there was
++     *   a corresponding command with an unaligned address
++     *   or there was mismatched command with a completely different
++     *   address.
++     *   In either case, the reservation set did not match the
++     *   address and command goes to final step to invalidate
++     *   reservation set. According specification all sc commands
++     *   always must first invalidate reservation set (if any)
++     *   and then complete execution normally or by throwing
++     *   an exception
++     */
++    tcg_gen_brcond_tl(TCG_COND_TSTEQ, src1, mc, l3);
++    gen_helper_raise_exception(tcg_env,
++        tcg_constant_i32(RISCV_EXCP_STORE_AMO_ADDR_MIS));
++
++    gen_set_label(l3);
+     return true;
+ }
+ 
+-- 
+2.43.0
 
 
