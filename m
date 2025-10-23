@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8636C01B1A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A00EC01B14
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:16:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBw5W-0006Kd-BI; Thu, 23 Oct 2025 10:14:46 -0400
+	id 1vBw5c-0006WH-K0; Thu, 23 Oct 2025 10:14:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw5F-00063O-AO
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:14:32 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw5K-0006EF-Vs
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:14:35 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw5B-0007RG-DG
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:14:28 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3ece1102998so620621f8f.2
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:14:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw5H-0007Rz-3N
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:14:32 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-47117e75258so6851105e9.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761228862; x=1761833662; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761228869; x=1761833669; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0e3/oLz91m0M4PKqzD0FMNzJKdz5qkqdZGotGocB/sY=;
- b=tRQSx7uUmE4TuTs8DNKMnM9tEdAyvOgv0r55fudns25AykH1/2LFMRkJmmX21yhxq/
- Sc/HhxObE5T3tfO+cCYQ92M4YJOTe1ItL33i4Ni1g0I6/xsFpDVrDq2ezi6Zw0xXS2v5
- Aq7zqN4LBKfdbEHWaUOPbI2I1eZZXiSYYmE0Yst/7kOkivX5RO8koniExcAYDqe/OFBr
- tbFbzzjuNkuUSV7mBwYigK1XVmUrwlROx0izqXZmO/R4JNvBpS0EFVEmWYOLATXmvWog
- MEPCr3idYIP2IAlLe/Z5ms/ZmkyM1cudA9/r7XBNV1NDGfRDcPiFsl0xuSdUNNpl9gKI
- PqLw==
+ bh=LgKVVP81quRHZdasM9p0tFwKU7dqmMROiJUy9ix33mI=;
+ b=zmK9+yZIO5dGyv75q3mKda+HdEIhyvyyoTO6/zjxX3qsVobXb55siLrzvoc5jfC1zH
+ FeHDJS8JYHM1leajc3QbuKsZPIzshx4ZsCUTg+B/bXqPft3bjibC1v0q/M6dKVIBTbTj
+ 3ACylSrJtzM9cmAOT9ZlCnh/AWibTROWc7qHNnUBsFAyCiQP7DqjKbbR97ED2vFL/Gnb
+ 1H16CpcXjqIlM/5AjzDjSlo0GhKZ3ivSUMX3U5JgKghGhSS0ib9ip1wtT24QLIhj+MRb
+ 1s5/vRNjScWc3UAV8MtATsr2mGnAfKB3LJfD+XoWnILVmQKlByFqCayA/kia6y8K9wUX
+ PV8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761228862; x=1761833662;
+ d=1e100.net; s=20230601; t=1761228869; x=1761833669;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0e3/oLz91m0M4PKqzD0FMNzJKdz5qkqdZGotGocB/sY=;
- b=d0cAvu5VwDdknM61oK9nNMOuAqhZpPbD2RKPaszo4YuADXLtVd4WE0Ro7Z4yM8q+Dm
- ADG70f41nN/vlV1oUsRD2psa7+sMsKC/z5iwI11tHUmQNaBR7kgIzHWcF0A777LOl4OH
- 9Wx3WMRmY/l1ZHoNcRFVjvHBHmNfec0rkxR3IjnQvbQg9QReD+A+GkXdI1xTBxjDGc4p
- goTqEHtx5Kssaobar/y3hlt+Xd99K+sl6ulnVq2RQILGQR5kJhcC1IRStYKtr/LYP382
- Jwcq4BTot6QeiqrKveAoNUaWSLRIa+ohc/fitcHm6veOUXsBTxJzqnO1RFnwRNCP+qzo
- wW6Q==
-X-Gm-Message-State: AOJu0Ywh+jLoY7ioZtSXDfdq8WodMtarWCMKhuc8uJaOxlG9uxiSAMHB
- E0swiqWHxhtgpYgwrK9vuSNwmkelE4+8IG1sOuF+W813ln/qw32o1W50/WEAX32Wbr7k/AkvkWc
- IPRGDPuE=
-X-Gm-Gg: ASbGncsANJP9JFIrZfTN0Y1f5xuliD1mfYFZknfLtZF4P1bn76snd2yY4qRprnbR1uO
- S/KD+32n+Nq2ce6Nr80/UM+o8pwYfRcVNfjn/XEvcwqFjE3N4jg34N+Q6YBioOcIWwNFOJO0KJ8
- u6rfS5+QSDdKvnRvuEJ6MkVBwi9OlDU7aHXGcowS5AmSnYFxKJgM0rjgxUuQEDimAQ8C08kad59
- WYPm4nQHM1vcKcFZ43OrWMcti1y1OH/1DPqhfYI87YBEXpHkXF7aeJw9i5s4d5Mc8Wa3O88dHQO
- Vvs0QK95+piDBnPIydoQ7c9O4KHYPJ5oaBDDN4aT8bQTM+j4Zt2xP0n89TCm0SMOCbi9tDfbxnl
- MPKd+8mL2W3sfthANU1CSYYI6ryh7+X3QeHI7tQIDJB2CARECk5lyB3vx0nYm6Fknro3HwR/JJc
- /OZJBbC1r1n7/ZkI1kWIvOsbq6RZUoWmod2+6b4YLMPp1HtCXdxw==
-X-Google-Smtp-Source: AGHT+IFKiy+g0Qp3DW9IbB4fDmn9/sBjcbm6QTJeX8mOOw5VZa/yKCHvwlkueSeSC8ims1kgraG/IQ==
-X-Received: by 2002:a05:6000:2f83:b0:427:880:9538 with SMTP id
- ffacd0b85a97d-4298a0bd253mr1981490f8f.45.1761228861765; 
- Thu, 23 Oct 2025 07:14:21 -0700 (PDT)
+ bh=LgKVVP81quRHZdasM9p0tFwKU7dqmMROiJUy9ix33mI=;
+ b=IsMh0gg4uqBW9DIBGLwRgymwXYc5NKxdLkAEBF3HQ7GC50sIf5qPy02Oaf0JFi4iAx
+ SxBBHWN5kMfSw+860LzhkAV10ZCN5HHayghMTPmNCH/QfBowUSm+auTFvel7EhQpYPco
+ 6bkzf1+7GLXoioqbmlCCmk4uRTt1tucVlmx4ERToIvCnvb8+KgSAtA5yNUIkVm3uTmU4
+ 7UWXC4vVR1lvXYFXQUVC5erTGrK3UhHLZ9iyE9LqWn6UtENDvAY863QawJsrzXrpnqJF
+ wHbbR8bSC7wH4hvnHZEY2b3P/XRh2FFXb0RJ33KIZ2lSQMG5DKEl5ZC3JK4frre3lrVa
+ ofZQ==
+X-Gm-Message-State: AOJu0YyXox2hbEhXy1FC+jQQ6hUN8F5ruPg5qZe1SkT+xCQUOnaDG5K8
+ dlyaEgwwXkFSssTssGtKRIHbQtU4TbLMRRShu3bAbpgYgQcac5Ye9vjnaEMjknKd6JLM3dm9sDA
+ D6xQWe98=
+X-Gm-Gg: ASbGncvo2qBMCq3mvkhb7lm8YgW2cnS9XZUCkKs2ZZq0rrlsa3J2heyo0i8EMak/AJr
+ beXBhPavvgSHowdqNmFCZvv4fu6BQtbdgK3P+26pPF6ImbIQgMBcLM62QWaXXnqIS3Pe4zzUNvy
+ QhhXZ7TA/spNd9ItONt2U9sOK9Rww21nxmhDZlGdcHh/dMrzsyJFl137wmEFgTwVF7XJn6pku/m
+ gvp34fFYhjwKTW6QODAwkZbVv4FTIDPcP4HNKdH5y+JLJOJ6HJyE5DscLlQVcrwRdzazr27wlzx
+ g6IhVrX6QCqkJbBgTMvXupxfBuYD//2TJzgvO2PybMu4sTI8G4GuxntUXQTLaqYfLIIemlkul/v
+ BDvG3uZjRc7OLbiIj3QVwXmG2wQnC6n8cduVQPJPREb5Ix5KDjLvmcbY3UgMXc7nC0pNaNhFDoP
+ lI+Kha2wNXqYCH2AG+9t4Q8izWnv8QItbuQqX+7KULgmlK5IyBXJUPIXyD6ukX
+X-Google-Smtp-Source: AGHT+IFb/XSWqKHanfFo0JpGugOKs3B2G/i5axTSdAeolnzGHJFkkiz6qvyxK3ppW72qVwNLeyHDww==
+X-Received: by 2002:a05:600c:8b74:b0:456:1a69:94fa with SMTP id
+ 5b1f17b1804b1-475cafae81emr16050175e9.13.1761228868811; 
+ Thu, 23 Oct 2025 07:14:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-429898eac60sm4123656f8f.39.2025.10.23.07.14.20
+ 5b1f17b1804b1-475c43900e1sm117498495e9.17.2025.10.23.07.14.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Oct 2025 07:14:21 -0700 (PDT)
+ Thu, 23 Oct 2025 07:14:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
@@ -74,17 +74,17 @@ Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
  Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PATCH v2 18/58] target/i386/hvf: Factor hvf_handle_vmexit() out
-Date: Thu, 23 Oct 2025 16:13:37 +0200
-Message-ID: <20251023141339.10143-9-philmd@linaro.org>
+Subject: [PATCH v2 19/58] target/arm/hvf: Factor hvf_handle_vmexit() out
+Date: Thu, 23 Oct 2025 16:13:38 +0200
+Message-ID: <20251023141339.10143-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
 References: <20251023114638.5667-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,259 +107,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor hvf_handle_vmexit() out of hvf_arch_vcpu_exec().
+Factor hvf_handle_vmexit() out of hvf_vcpu_exec().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Mads Ynddal <mads@ynddal.dk>
 ---
- target/i386/hvf/hvf.c | 477 +++++++++++++++++++++---------------------
- 1 file changed, 244 insertions(+), 233 deletions(-)
+ target/arm/hvf/hvf.c | 50 ++++++++++++++++++++++++--------------------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 76a58cb0350..2929a92defe 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -721,6 +721,249 @@ void hvf_simulate_wrmsr(CPUState *cs)
-     printf("write msr %llx\n", RCX(cs));*/
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 8553ce6adc2..27c600148f9 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1984,10 +1984,33 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
+     return ret;
  }
  
-+static int hvf_handle_vmexit(CPUState *cpu)
++static int hvf_handle_vmexit(CPUState *cpu, hv_vcpu_exit_t *exit)
 +{
-+    X86CPU *x86_cpu = env_archcpu(cpu_env(cpu));
-+    uint64_t exit_reason = rvmcs(cpu->accel->fd, VMCS_EXIT_REASON);
-+    uint64_t exit_qual = rvmcs(cpu->accel->fd, VMCS_EXIT_QUALIFICATION);
-+    uint32_t ins_len = (uint32_t)rvmcs(cpu->accel->fd,
-+                                       VMCS_EXIT_INSTRUCTION_LENGTH);
-+
-+    uint64_t idtvec_info = rvmcs(cpu->accel->fd, VMCS_IDT_VECTORING_INFO);
++    ARMCPU *arm_cpu = env_archcpu(cpu_env(cpu));
 +    int ret = 0;
 +
-+    hvf_store_events(cpu, ins_len, idtvec_info);
-+    rip = rreg(cpu->accel->fd, HV_X86_RIP);
-+    env->eflags = rreg(cpu->accel->fd, HV_X86_RFLAGS);
-+
-+    bql_lock();
-+
-+    update_apic_tpr(cpu);
-+    current_cpu = cpu;
-+
-+    switch (exit_reason) {
-+    case EXIT_REASON_HLT: {
-+        macvm_set_rip(cpu, rip + ins_len);
-+        if (!(cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD)
-+              && (env->eflags & IF_MASK))
-+            && !cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI)
-+            && !(idtvec_info & VMCS_IDT_VEC_VALID)) {
-+            cpu->halted = 1;
-+            ret = EXCP_HLT;
-+            break;
-+        }
-+        ret = EXCP_INTERRUPT;
++    switch (exit->reason) {
++    case HV_EXIT_REASON_EXCEPTION:
++        hvf_sync_vtimer(cpu);
++        ret = hvf_handle_exception(cpu, &exit->exception);
 +        break;
-+    }
-+    case EXIT_REASON_MWAIT: {
-+        ret = EXCP_INTERRUPT;
++    case HV_EXIT_REASON_VTIMER_ACTIVATED:
++        qemu_set_irq(arm_cpu->gt_timer_outputs[GTIMER_VIRT], 1);
++        cpu->accel->vtimer_masked = true;
 +        break;
-+    }
-+    /* Need to check if MMIO or unmapped fault */
-+    case EXIT_REASON_EPT_FAULT:
-+    {
-+        hvf_slot *slot;
-+        uint64_t gpa = rvmcs(cpu->accel->fd, VMCS_GUEST_PHYSICAL_ADDRESS);
-+
-+        if (((idtvec_info & VMCS_IDT_VEC_VALID) == 0) &&
-+            ((exit_qual & EXIT_QUAL_NMIUDTI) != 0)) {
-+            vmx_set_nmi_blocking(cpu);
-+        }
-+
-+        slot = hvf_find_overlap_slot(gpa, 1);
-+        /* mmio */
-+        if (ept_emulation_fault(slot, gpa, exit_qual)) {
-+            struct x86_decode decode;
-+
-+            hvf_load_regs(cpu);
-+            decode_instruction(env, &decode);
-+            exec_instruction(env, &decode);
-+            hvf_store_regs(cpu);
-+            break;
-+        }
-+        break;
-+    }
-+    case EXIT_REASON_INOUT:
-+    {
-+        uint32_t in = (exit_qual & 8) != 0;
-+        uint32_t size =  (exit_qual & 7) + 1;
-+        uint32_t string =  (exit_qual & 16) != 0;
-+        uint32_t port =  exit_qual >> 16;
-+        /*uint32_t rep = (exit_qual & 0x20) != 0;*/
-+        struct x86_decode decode;
-+
-+        if (!string && in) {
-+            uint64_t val = 0;
-+
-+            hvf_load_regs(cpu);
-+            hvf_handle_io(env_cpu(env), port, &val, 0, size, 1);
-+            if (size == 1) {
-+                AL(env) = val;
-+            } else if (size == 2) {
-+                AX(env) = val;
-+            } else if (size == 4) {
-+                RAX(env) = (uint32_t)val;
-+            } else {
-+                RAX(env) = (uint64_t)val;
-+            }
-+            env->eip += ins_len;
-+            hvf_store_regs(cpu);
-+            break;
-+        } else if (!string && !in) {
-+            RAX(env) = rreg(cpu->accel->fd, HV_X86_RAX);
-+            hvf_handle_io(env_cpu(env), port, &RAX(env), 1, size, 1);
-+            macvm_set_rip(cpu, rip + ins_len);
-+            break;
-+        }
-+
-+        hvf_load_regs(cpu);
-+        decode_instruction(env, &decode);
-+        assert(ins_len == decode.len);
-+        exec_instruction(env, &decode);
-+        hvf_store_regs(cpu);
-+
-+        break;
-+    }
-+    case EXIT_REASON_CPUID: {
-+        uint32_t rax = (uint32_t)rreg(cpu->accel->fd, HV_X86_RAX);
-+        uint32_t rbx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RBX);
-+        uint32_t rcx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RCX);
-+        uint32_t rdx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RDX);
-+
-+        if (rax == 1) {
-+            /* CPUID1.ecx.OSXSAVE needs to know CR4 */
-+            env->cr[4] = rvmcs(cpu->accel->fd, VMCS_GUEST_CR4);
-+        }
-+        hvf_cpu_x86_cpuid(env, rax, rcx, &rax, &rbx, &rcx, &rdx);
-+
-+        wreg(cpu->accel->fd, HV_X86_RAX, rax);
-+        wreg(cpu->accel->fd, HV_X86_RBX, rbx);
-+        wreg(cpu->accel->fd, HV_X86_RCX, rcx);
-+        wreg(cpu->accel->fd, HV_X86_RDX, rdx);
-+
-+        macvm_set_rip(cpu, rip + ins_len);
-+        break;
-+    }
-+    case EXIT_REASON_XSETBV: {
-+        uint32_t eax = (uint32_t)rreg(cpu->accel->fd, HV_X86_RAX);
-+        uint32_t ecx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RCX);
-+        uint32_t edx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RDX);
-+
-+        if (ecx) {
-+            macvm_set_rip(cpu, rip + ins_len);
-+            break;
-+        }
-+        env->xcr0 = ((uint64_t)edx << 32) | eax;
-+        wreg(cpu->accel->fd, HV_X86_XCR0, env->xcr0 | 1);
-+        macvm_set_rip(cpu, rip + ins_len);
-+        break;
-+    }
-+    case EXIT_REASON_INTR_WINDOW:
-+        vmx_clear_int_window_exiting(cpu);
-+        ret = EXCP_INTERRUPT;
-+        break;
-+    case EXIT_REASON_NMI_WINDOW:
-+        vmx_clear_nmi_window_exiting(cpu);
-+        ret = EXCP_INTERRUPT;
-+        break;
-+    case EXIT_REASON_EXT_INTR:
-+        /* force exit and allow io handling */
-+        ret = EXCP_INTERRUPT;
-+        break;
-+    case EXIT_REASON_RDMSR:
-+    case EXIT_REASON_WRMSR:
-+    {
-+        hvf_load_regs(cpu);
-+        if (exit_reason == EXIT_REASON_RDMSR) {
-+            hvf_simulate_rdmsr(cpu);
-+        } else {
-+            hvf_simulate_wrmsr(cpu);
-+        }
-+        env->eip += ins_len;
-+        hvf_store_regs(cpu);
-+        break;
-+    }
-+    case EXIT_REASON_CR_ACCESS: {
-+        int cr;
-+        int reg;
-+
-+        hvf_load_regs(cpu);
-+        cr = exit_qual & 15;
-+        reg = (exit_qual >> 8) & 15;
-+
-+        switch (cr) {
-+        case 0x0: {
-+            macvm_set_cr0(cpu->accel->fd, RRX(env, reg));
-+            break;
-+        }
-+        case 4: {
-+            macvm_set_cr4(cpu->accel->fd, RRX(env, reg));
-+            break;
-+        }
-+        case 8: {
-+            if (exit_qual & 0x10) {
-+                RRX(env, reg) = cpu_get_apic_tpr(x86_cpu->apic_state);
-+            } else {
-+                int tpr = RRX(env, reg);
-+                cpu_set_apic_tpr(x86_cpu->apic_state, tpr);
-+                ret = EXCP_INTERRUPT;
-+            }
-+            break;
-+        }
-+        default:
-+            error_report("Unrecognized CR %d", cr);
-+            abort();
-+        }
-+        env->eip += ins_len;
-+        hvf_store_regs(cpu);
-+        break;
-+    }
-+    case EXIT_REASON_APIC_ACCESS: { /* TODO */
-+        struct x86_decode decode;
-+
-+        hvf_load_regs(cpu);
-+        decode_instruction(env, &decode);
-+        exec_instruction(env, &decode);
-+        hvf_store_regs(cpu);
-+        break;
-+    }
-+    case EXIT_REASON_TPR: {
-+        ret = 1;
-+        break;
-+    }
-+    case EXIT_REASON_TASK_SWITCH: {
-+        uint64_t vinfo = rvmcs(cpu->accel->fd, VMCS_IDT_VECTORING_INFO);
-+        x86_segment_selector sel = {.sel = exit_qual & 0xffff};
-+
-+        vmx_handle_task_switch(cpu, sel, (exit_qual >> 30) & 0x3,
-+                               vinfo & VMCS_INTR_VALID,
-+                               vinfo & VECTORING_INFO_VECTOR_MASK,
-+                               vinfo & VMCS_INTR_T_MASK);
-+        break;
-+    }
-+    case EXIT_REASON_TRIPLE_FAULT: {
-+        qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-+        ret = EXCP_INTERRUPT;
-+        break;
-+    }
-+    case EXIT_REASON_RDPMC:
-+        wreg(cpu->accel->fd, HV_X86_RAX, 0);
-+        wreg(cpu->accel->fd, HV_X86_RDX, 0);
-+        macvm_set_rip(cpu, rip + ins_len);
-+        break;
-+    case VMX_REASON_VMCALL:
-+        env->exception_nr = EXCP0D_GPF;
-+        env->exception_injected = 1;
-+        env->has_error_code = true;
-+        env->error_code = 0;
++    case HV_EXIT_REASON_CANCELED:
++        /* we got kicked, no exit to process */
 +        break;
 +    default:
-+        error_report("%llx: unhandled exit %llx", rip, exit_reason);
++        g_assert_not_reached();
 +    }
 +
 +    return ret;
@@ -367,248 +150,49 @@ index 76a58cb0350..2929a92defe 100644
 +
  int hvf_arch_vcpu_exec(CPUState *cpu)
  {
-     X86CPU *x86_cpu = X86_CPU(cpu);
-@@ -753,239 +996,7 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
-         assert_hvf_ok(r);
+-    ARMCPU *arm_cpu = ARM_CPU(cpu);
+-    hv_vcpu_exit_t *hvf_exit = cpu->accel->exit;
++    int ret;
+     hv_return_t r;
  
-         /* handle VMEXIT */
--        uint64_t exit_reason = rvmcs(cpu->accel->fd, VMCS_EXIT_REASON);
--        uint64_t exit_qual = rvmcs(cpu->accel->fd, VMCS_EXIT_QUALIFICATION);
--        uint32_t ins_len = (uint32_t)rvmcs(cpu->accel->fd,
--                                           VMCS_EXIT_INSTRUCTION_LENGTH);
--
--        uint64_t idtvec_info = rvmcs(cpu->accel->fd, VMCS_IDT_VECTORING_INFO);
--
--        hvf_store_events(cpu, ins_len, idtvec_info);
--        rip = rreg(cpu->accel->fd, HV_X86_RIP);
--        env->eflags = rreg(cpu->accel->fd, HV_X86_RFLAGS);
--
--        bql_lock();
--
--        update_apic_tpr(cpu);
--        current_cpu = cpu;
--
--        ret = 0;
--        switch (exit_reason) {
--        case EXIT_REASON_HLT: {
--            macvm_set_rip(cpu, rip + ins_len);
--            if (!(cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD) &&
--                (env->eflags & IF_MASK))
--                && !cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI) &&
--                !(idtvec_info & VMCS_IDT_VEC_VALID)) {
--                cpu->halted = 1;
--                ret = EXCP_HLT;
--                break;
--            }
--            ret = EXCP_INTERRUPT;
--            break;
--        }
--        case EXIT_REASON_MWAIT: {
--            ret = EXCP_INTERRUPT;
--            break;
--        }
--        /* Need to check if MMIO or unmapped fault */
--        case EXIT_REASON_EPT_FAULT:
--        {
--            hvf_slot *slot;
--            uint64_t gpa = rvmcs(cpu->accel->fd, VMCS_GUEST_PHYSICAL_ADDRESS);
--
--            if (((idtvec_info & VMCS_IDT_VEC_VALID) == 0) &&
--                ((exit_qual & EXIT_QUAL_NMIUDTI) != 0)) {
--                vmx_set_nmi_blocking(cpu);
--            }
--
--            slot = hvf_find_overlap_slot(gpa, 1);
--            /* mmio */
--            if (ept_emulation_fault(slot, gpa, exit_qual)) {
--                struct x86_decode decode;
--
--                hvf_load_regs(cpu);
--                decode_instruction(env, &decode);
--                exec_instruction(env, &decode);
--                hvf_store_regs(cpu);
--                break;
--            }
--            break;
--        }
--        case EXIT_REASON_INOUT:
--        {
--            uint32_t in = (exit_qual & 8) != 0;
--            uint32_t size =  (exit_qual & 7) + 1;
--            uint32_t string =  (exit_qual & 16) != 0;
--            uint32_t port =  exit_qual >> 16;
--            /*uint32_t rep = (exit_qual & 0x20) != 0;*/
--
--            if (!string && in) {
--                uint64_t val = 0;
--                hvf_load_regs(cpu);
--                hvf_handle_io(env_cpu(env), port, &val, 0, size, 1);
--                if (size == 1) {
--                    AL(env) = val;
--                } else if (size == 2) {
--                    AX(env) = val;
--                } else if (size == 4) {
--                    RAX(env) = (uint32_t)val;
--                } else {
--                    RAX(env) = (uint64_t)val;
--                }
--                env->eip += ins_len;
--                hvf_store_regs(cpu);
--                break;
--            } else if (!string && !in) {
--                RAX(env) = rreg(cpu->accel->fd, HV_X86_RAX);
--                hvf_handle_io(env_cpu(env), port, &RAX(env), 1, size, 1);
--                macvm_set_rip(cpu, rip + ins_len);
--                break;
--            }
--            struct x86_decode decode;
--
--            hvf_load_regs(cpu);
--            decode_instruction(env, &decode);
--            assert(ins_len == decode.len);
--            exec_instruction(env, &decode);
--            hvf_store_regs(cpu);
--
--            break;
--        }
--        case EXIT_REASON_CPUID: {
--            uint32_t rax = (uint32_t)rreg(cpu->accel->fd, HV_X86_RAX);
--            uint32_t rbx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RBX);
--            uint32_t rcx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RCX);
--            uint32_t rdx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RDX);
--
--            if (rax == 1) {
--                /* CPUID1.ecx.OSXSAVE needs to know CR4 */
--                env->cr[4] = rvmcs(cpu->accel->fd, VMCS_GUEST_CR4);
--            }
--            hvf_cpu_x86_cpuid(env, rax, rcx, &rax, &rbx, &rcx, &rdx);
--
--            wreg(cpu->accel->fd, HV_X86_RAX, rax);
--            wreg(cpu->accel->fd, HV_X86_RBX, rbx);
--            wreg(cpu->accel->fd, HV_X86_RCX, rcx);
--            wreg(cpu->accel->fd, HV_X86_RDX, rdx);
--
--            macvm_set_rip(cpu, rip + ins_len);
--            break;
--        }
--        case EXIT_REASON_XSETBV: {
--            uint32_t eax = (uint32_t)rreg(cpu->accel->fd, HV_X86_RAX);
--            uint32_t ecx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RCX);
--            uint32_t edx = (uint32_t)rreg(cpu->accel->fd, HV_X86_RDX);
--
--            if (ecx) {
--                macvm_set_rip(cpu, rip + ins_len);
--                break;
--            }
--            env->xcr0 = ((uint64_t)edx << 32) | eax;
--            wreg(cpu->accel->fd, HV_X86_XCR0, env->xcr0 | 1);
--            macvm_set_rip(cpu, rip + ins_len);
--            break;
--        }
--        case EXIT_REASON_INTR_WINDOW:
--            vmx_clear_int_window_exiting(cpu);
--            ret = EXCP_INTERRUPT;
--            break;
--        case EXIT_REASON_NMI_WINDOW:
--            vmx_clear_nmi_window_exiting(cpu);
--            ret = EXCP_INTERRUPT;
--            break;
--        case EXIT_REASON_EXT_INTR:
--            /* force exit and allow io handling */
--            ret = EXCP_INTERRUPT;
--            break;
--        case EXIT_REASON_RDMSR:
--        case EXIT_REASON_WRMSR:
--        {
--            hvf_load_regs(cpu);
--            if (exit_reason == EXIT_REASON_RDMSR) {
--                hvf_simulate_rdmsr(cpu);
--            } else {
--                hvf_simulate_wrmsr(cpu);
--            }
--            env->eip += ins_len;
--            hvf_store_regs(cpu);
--            break;
--        }
--        case EXIT_REASON_CR_ACCESS: {
--            int cr;
--            int reg;
--
--            hvf_load_regs(cpu);
--            cr = exit_qual & 15;
--            reg = (exit_qual >> 8) & 15;
--
--            switch (cr) {
--            case 0x0: {
--                macvm_set_cr0(cpu->accel->fd, RRX(env, reg));
--                break;
--            }
--            case 4: {
--                macvm_set_cr4(cpu->accel->fd, RRX(env, reg));
--                break;
--            }
--            case 8: {
--                if (exit_qual & 0x10) {
--                    RRX(env, reg) = cpu_get_apic_tpr(x86_cpu->apic_state);
--                } else {
--                    int tpr = RRX(env, reg);
--                    cpu_set_apic_tpr(x86_cpu->apic_state, tpr);
--                    ret = EXCP_INTERRUPT;
--                }
--                break;
--            }
--            default:
--                error_report("Unrecognized CR %d", cr);
--                abort();
--            }
--            env->eip += ins_len;
--            hvf_store_regs(cpu);
--            break;
--        }
--        case EXIT_REASON_APIC_ACCESS: { /* TODO */
--            struct x86_decode decode;
--
--            hvf_load_regs(cpu);
--            decode_instruction(env, &decode);
--            exec_instruction(env, &decode);
--            hvf_store_regs(cpu);
--            break;
--        }
--        case EXIT_REASON_TPR: {
--            ret = 1;
--            break;
--        }
--        case EXIT_REASON_TASK_SWITCH: {
--            uint64_t vinfo = rvmcs(cpu->accel->fd, VMCS_IDT_VECTORING_INFO);
--            x86_segment_selector sel = {.sel = exit_qual & 0xffff};
--            vmx_handle_task_switch(cpu, sel, (exit_qual >> 30) & 0x3,
--             vinfo & VMCS_INTR_VALID, vinfo & VECTORING_INFO_VECTOR_MASK, vinfo
--             & VMCS_INTR_T_MASK);
--            break;
--        }
--        case EXIT_REASON_TRIPLE_FAULT: {
--            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
--            ret = EXCP_INTERRUPT;
--            break;
--        }
--        case EXIT_REASON_RDPMC:
--            wreg(cpu->accel->fd, HV_X86_RAX, 0);
--            wreg(cpu->accel->fd, HV_X86_RDX, 0);
--            macvm_set_rip(cpu, rip + ins_len);
--            break;
--        case VMX_REASON_VMCALL:
--            env->exception_nr = EXCP0D_GPF;
--            env->exception_injected = 1;
--            env->has_error_code = true;
--            env->error_code = 0;
--            break;
--        default:
--            error_report("%llx: unhandled exit %llx", rip, exit_reason);
--        }
-+        ret = hvf_handle_vmexit(cpu);
-     } while (ret == 0);
+     if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
+@@ -2006,6 +2029,7 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
+     bql_lock();
+     switch (r) {
+     case HV_SUCCESS:
++        ret = hvf_handle_vmexit(cpu, cpu->accel->exit);
+         break;
+     case HV_ILLEGAL_GUEST_STATE:
+         trace_hvf_illegal_guest_state();
+@@ -2014,27 +2038,7 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
+         g_assert_not_reached();
+     }
  
-     return ret;
+-    /* handle VMEXIT */
+-    uint64_t exit_reason = hvf_exit->reason;
+-
+-    switch (exit_reason) {
+-    case HV_EXIT_REASON_EXCEPTION:
+-        /* This is the main one, handle below. */
+-        break;
+-    case HV_EXIT_REASON_VTIMER_ACTIVATED:
+-        qemu_set_irq(arm_cpu->gt_timer_outputs[GTIMER_VIRT], 1);
+-        cpu->accel->vtimer_masked = true;
+-        return 0;
+-    case HV_EXIT_REASON_CANCELED:
+-        /* we got kicked, no exit to process */
+-        return 0;
+-    default:
+-        g_assert_not_reached();
+-    }
+-
+-    hvf_sync_vtimer(cpu);
+-
+-    return hvf_handle_exception(cpu, &hvf_exit->exception);
++    return ret;
+ }
+ 
+ static const VMStateDescription vmstate_hvf_vtimer = {
 -- 
 2.51.0
 
