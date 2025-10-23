@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45284C00E79
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D245C00D91
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 13:45:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBtkT-0001Jm-Dj; Thu, 23 Oct 2025 07:44:53 -0400
+	id 1vBtkZ-0001Js-Nu; Thu, 23 Oct 2025 07:45:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBtkN-0001I2-PZ
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:48 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1vBtkQ-0001Iw-Hn
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:50 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBtkL-0001ad-8A
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:47 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N0CwAm024633;
- Thu, 23 Oct 2025 11:44:42 GMT
+ id 1vBtkO-0001b5-5f
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 07:44:50 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N81Ye0016386;
+ Thu, 23 Oct 2025 11:44:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=SkGLAI
- 6wR3emVs7t6GIaXUPTfsowf3owzDMsV/QcsGw=; b=Z62gMKFGF0EcC2NNJc1mwp
- QUI1H9bTTPFMIIoNfBPMQF6/j0Ibs6q/dxE7Q8VH3GxCGecxB0Z9HJWIZuVkKUR8
- NSxCm28XnoaLx4RrDYBVZQOimLYti8HbBs/2dp0NWYDpV2lv3HZ4q5K1YbjjWDi3
- xFoCidZr0mV4HgmSqpXGdpEXQpNFY1zsq+aXLkeqE0SxAxcErZBFWcuuKzQtKiJz
- BbTRG7lnIlUknkogxrLLs9/1GNYrTHN4QOZSo8U48ZiuUwcpYZZmFkN8l6plfdJA
- F2wapu94oXbGpDbr5ssonCmH8FtC7gNty4oyYS5fmdUxx4RtpxAm6NT8RkzwJQCw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=dcACo3
+ S87IyV+ig7TtWdbS+8ojMBsIUe/dLyrFg9j/U=; b=jm1QwXA8/qz82+vwsTy8GH
+ v0XxY1DoLNFKgFMF7UWNgzjLeRLi1+5TDqAQWF8TeI6+x76SE+ufDxyWPF3As436
+ 2cQwQQtgZe18esMuDpRiCMfwsSj3j4mqGndvvejm4O5sPGXxu/fNQGW1fTDaFxVx
+ mQgduNX6yR+VSIUXZst8tcjcOv9nvq73QUnlIrEShcPnZTUV6jZalR2oQRkpgXu8
+ BCOhm4QCOe+mME/WSb6kE72IJZlaMoIKmqFqWqkccIbpM6197WqpsrACUjvuDYEH
+ uhFgYTGteG+qV7PE6KoSrwG4ulZB0lU+AX1Wf2K5jSoZ4+yFk5OYEvV81xiJNn3w
  ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31cgj1r-1
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v3271wc2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 11:44:41 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NA8le5024690;
- Thu, 23 Oct 2025 11:44:41 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk5ds3-1
+ Thu, 23 Oct 2025 11:44:45 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NA8V2w032092;
+ Thu, 23 Oct 2025 11:44:44 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vp7n5eq0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Oct 2025 11:44:41 +0000
+ Thu, 23 Oct 2025 11:44:44 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NBidsC7864602
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NBiesd49676730
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 11:44:39 GMT
+ Thu, 23 Oct 2025 11:44:40 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F31420049;
+ by IMSVA (Postfix) with ESMTP id 8145E2004B;
+ Thu, 23 Oct 2025 11:44:40 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9FDC920040;
  Thu, 23 Oct 2025 11:44:39 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40E4220040;
- Thu, 23 Oct 2025 11:44:38 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
  [9.124.221.73]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 11:44:38 +0000 (GMT)
+ Thu, 23 Oct 2025 11:44:39 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/32] ppc/spapr: remove deprecated machine pseries-4.0
-Date: Thu, 23 Oct 2025 17:13:55 +0530
-Message-ID: <20251023114422.3675018-9-harshpb@linux.ibm.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Chinmay Rath <rathc@linux.ibm.com>
+Subject: [PULL 09/32] hw/ppc/spapr: Remove SpaprMachineClass::phb_placement
+ callback
+Date: Thu, 23 Oct 2025 17:13:56 +0530
+Message-ID: <20251023114422.3675018-10-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251023114422.3675018-1-harshpb@linux.ibm.com>
 References: <20251023114422.3675018-1-harshpb@linux.ibm.com>
@@ -73,32 +73,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PuIBsfIsj6kvwEMUHdBw8hQJcdb-HEHf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX0StCdBkVjNzj
- /mtbUv6uhVGAtHPJ3XN5USncIRMkwvZciMGHoxxsecYbWJJdTIVcF1KZccegpASZ6zn3sqemtEI
- 11OAV6hGYh1IFlFTFtXlxKTd+cZYHtZngQdUoWtOwNqOFqXiMfcrseZGTY02CV08n5rCKoKHhys
- Xep2WTDihFm/UrkuKREl9Fdw9b0xBENKQJF0aiArtbO8/+5EkeP7CMQsjxf7sx58u/CxCzb7VhQ
- 5GbCLtkxroj9ddg5Us3+MRQCx86TwYSugh8inUdMfa8aXtBzcUcl40UwZT9vRtL2XTFJyh97r2E
- YBNFO0pWrGQH9snLwrbU+Fmh+/lZPTqXBW7M1B+ygdoyaBZK+kUNYaF68IoqiZDhOQh44tSdVkt
- s2D3WMX71Wq4mhQdS9bIKjyY1xUGgw==
-X-Proofpoint-GUID: PuIBsfIsj6kvwEMUHdBw8hQJcdb-HEHf
-X-Authority-Analysis: v=2.4 cv=SKNPlevH c=1 sm=1 tr=0 ts=68fa152a cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68fa152d cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=aow-egSQAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=VqWj-gOvcHZ2Xb4X8q8A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=gFNbaldVC-z-bsjSTzMo:22
- a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8
+ a=l7mRzedawI2mqaqXN0wA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
+ a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX7unxM4dIR/Iv
+ DcH2ZlQbF+fm221Aa2A3PEgYV3iWdUR/T4Nd5lN59FY5EoGdAkfgBXjLjy7i854IVTg23/klDT5
+ ml49Tg9pUHkeZ6My02PLkj8P/cxATT8s2FSNPEE8JPjqbzZGHCIsPcUSCd6H8eNyu5LEzsaalTj
+ QVSE2yzt0z0aMgHRzphUdPLwpdxQV63129NlSRlehZkJ6GMLx80XkHq/fivv0Aed3di8f8kuMT7
+ njM8e+999ObPuL9NwZ5XV8Rskkn+bWz0KHGUO/Eg7iSECLKDc82xN2XQHZVfX8C/h6iD28Qd9Xp
+ 6S9rikEijgrOsEFoL6T/V5SzTMfzTNeS9zmNvpd3esgtU6ojxHooHKHGHaUT6J3jK2WWnQraIK0
+ y0OksnheU24paG519QbYueCdzQaSog==
+X-Proofpoint-GUID: z_E0x7NynJngwnBeXmqC8tk0kR1jEJng
+X-Proofpoint-ORIG-GUID: z_E0x7NynJngwnBeXmqC8tk0kR1jEJng
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -122,121 +122,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pseries-4.0 had been deprecated and due for removal now as per policy.
-Also remove pre-4.1 migration hacks which were introduced for backward
-compatibility.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Suggested-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-[PMD: Remove SpaprMachineClass::pre_4_1_migration field]
+The SpaprMachineClass::phb_placement callback was only used by
+the pseries-4.0 machine, which got removed. Remove it as now
+unused, directly calling spapr_phb_placement().
+Move spapr_phb_placement() definition to avoid forward declaration.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20251021084346.73671-9-philmd@linaro.org
+Reviewed-by: Chinmay Rath <rathc@linux.ibm.com>
+Link: https://lore.kernel.org/qemu-devel/20251021084346.73671-10-philmd@linaro.org
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- include/hw/ppc/spapr.h |  3 ---
- hw/ppc/spapr.c         | 27 ---------------------------
- hw/ppc/spapr_caps.c    | 12 +-----------
- 3 files changed, 1 insertion(+), 41 deletions(-)
+ include/hw/ppc/spapr.h |   5 --
+ hw/ppc/spapr.c         | 114 ++++++++++++++++++++---------------------
+ 2 files changed, 55 insertions(+), 64 deletions(-)
 
 diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 1db67784de..58d31b096c 100644
+index 58d31b096c..bd783e92e1 100644
 --- a/include/hw/ppc/spapr.h
 +++ b/include/hw/ppc/spapr.h
-@@ -139,11 +139,8 @@ struct SpaprCapabilities {
-  * SpaprMachineClass:
-  */
- struct SpaprMachineClass {
--    /*< private >*/
-     MachineClass parent_class;
- 
--    /*< public >*/
--    bool pre_4_1_migration; /* don't migrate hpt-max-page-size */
-     bool linux_pci_probe;
-     bool smp_threads_vsmt; /* set VSMT to smp_threads by default */
-     hwaddr rma_limit;          /* clamp the RMA to this size */
+@@ -147,11 +147,6 @@ struct SpaprMachineClass {
+     bool pre_5_1_assoc_refpoints;
+     bool pre_5_2_numa_associativity;
+     bool pre_6_2_numa_affinity;
+-
+-    bool (*phb_placement)(SpaprMachineState *spapr, uint32_t index,
+-                          uint64_t *buid, hwaddr *pio,
+-                          hwaddr *mmio32, hwaddr *mmio64,
+-                          unsigned n_dma, uint32_t *liobns, Error **errp);
+     SpaprResizeHpt resize_hpt_default;
+     SpaprCapabilities default_caps;
+     SpaprIrq *irq;
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index ab46e3bd60..ea7d2a03aa 100644
+index ea7d2a03aa..371593d0b5 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -4969,33 +4969,6 @@ static void spapr_machine_4_1_class_options(MachineClass *mc)
- 
- DEFINE_SPAPR_MACHINE(4, 1);
- 
--/*
-- * pseries-4.0
-- */
--static bool phb_placement_4_0(SpaprMachineState *spapr, uint32_t index,
--                              uint64_t *buid, hwaddr *pio,
--                              hwaddr *mmio32, hwaddr *mmio64,
--                              unsigned n_dma, uint32_t *liobns, Error **errp)
--{
--    if (!spapr_phb_placement(spapr, index, buid, pio, mmio32, mmio64, n_dma,
--                             liobns, errp)) {
--        return false;
--    }
--    return true;
--}
--static void spapr_machine_4_0_class_options(MachineClass *mc)
--{
--    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
--
--    spapr_machine_4_1_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_4_0, hw_compat_4_0_len);
--    smc->phb_placement = phb_placement_4_0;
--    smc->irq = &spapr_irq_xics;
--    smc->pre_4_1_migration = true;
--}
--
--DEFINE_SPAPR_MACHINE(4, 0);
--
- static void spapr_machine_register_types(void)
- {
-     type_register_static(&spapr_machine_info);
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 0f94c192fd..170795ad6a 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -66,7 +66,6 @@ typedef struct SpaprCapabilityInfo {
-     void (*apply)(SpaprMachineState *spapr, uint8_t val, Error **errp);
-     void (*cpu_apply)(SpaprMachineState *spapr, PowerPCCPU *cpu,
-                       uint8_t val, Error **errp);
--    bool (*migrate_needed)(void *opaque);
- } SpaprCapabilityInfo;
- 
- static void spapr_cap_get_bool(Object *obj, Visitor *v, const char *name,
-@@ -336,11 +335,6 @@ static void cap_hpt_maxpagesize_apply(SpaprMachineState *spapr,
-     spapr_check_pagesize(spapr, qemu_minrampagesize(), errp);
+@@ -4068,12 +4068,62 @@ int spapr_phb_dt_populate(SpaprDrc *drc, SpaprMachineState *spapr,
+     return 0;
  }
  
--static bool cap_hpt_maxpagesize_migrate_needed(void *opaque)
++static bool spapr_phb_placement(SpaprMachineState *spapr, uint32_t index,
++                                uint64_t *buid, hwaddr *pio,
++                                hwaddr *mmio32, hwaddr *mmio64,
++                                unsigned n_dma, uint32_t *liobns, Error **errp)
++{
++    /*
++     * New-style PHB window placement.
++     *
++     * Goals: Gives large (1TiB), naturally aligned 64-bit MMIO window
++     * for each PHB, in addition to 2GiB 32-bit MMIO and 64kiB PIO
++     * windows.
++     *
++     * Some guest kernels can't work with MMIO windows above 1<<46
++     * (64TiB), so we place up to 31 PHBs in the area 32TiB..64TiB
++     *
++     * 32TiB..(33TiB+1984kiB) contains the 64kiB PIO windows for each
++     * PHB stacked together.  (32TiB+2GiB)..(32TiB+64GiB) contains the
++     * 2GiB 32-bit MMIO windows for each PHB.  Then 33..64TiB has the
++     * 1TiB 64-bit MMIO windows for each PHB.
++     */
++    const uint64_t base_buid = 0x800000020000000ULL;
++    int i;
++
++    /* Sanity check natural alignments */
++    QEMU_BUILD_BUG_ON((SPAPR_PCI_BASE % SPAPR_PCI_MEM64_WIN_SIZE) != 0);
++    QEMU_BUILD_BUG_ON((SPAPR_PCI_LIMIT % SPAPR_PCI_MEM64_WIN_SIZE) != 0);
++    QEMU_BUILD_BUG_ON((SPAPR_PCI_MEM64_WIN_SIZE % SPAPR_PCI_MEM32_WIN_SIZE) != 0);
++    QEMU_BUILD_BUG_ON((SPAPR_PCI_MEM32_WIN_SIZE % SPAPR_PCI_IO_WIN_SIZE) != 0);
++    /* Sanity check bounds */
++    QEMU_BUILD_BUG_ON((SPAPR_MAX_PHBS * SPAPR_PCI_IO_WIN_SIZE) >
++                      SPAPR_PCI_MEM32_WIN_SIZE);
++    QEMU_BUILD_BUG_ON((SPAPR_MAX_PHBS * SPAPR_PCI_MEM32_WIN_SIZE) >
++                      SPAPR_PCI_MEM64_WIN_SIZE);
++
++    if (index >= SPAPR_MAX_PHBS) {
++        error_setg(errp, "\"index\" for PAPR PHB is too large (max %llu)",
++                   SPAPR_MAX_PHBS - 1);
++        return false;
++    }
++
++    *buid = base_buid + index;
++    for (i = 0; i < n_dma; ++i) {
++        liobns[i] = SPAPR_PCI_LIOBN(index, i);
++    }
++
++    *pio = SPAPR_PCI_BASE + index * SPAPR_PCI_IO_WIN_SIZE;
++    *mmio32 = SPAPR_PCI_BASE + (index + 1) * SPAPR_PCI_MEM32_WIN_SIZE;
++    *mmio64 = SPAPR_PCI_BASE + (index + 1) * SPAPR_PCI_MEM64_WIN_SIZE;
++    return true;
++}
++
+ static bool spapr_phb_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+                                Error **errp)
+ {
+     SpaprMachineState *spapr = SPAPR_MACHINE(OBJECT(hotplug_dev));
+     SpaprPhbState *sphb = SPAPR_PCI_HOST_BRIDGE(dev);
+-    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
+     const unsigned windows_supported = spapr_phb_windows_supported(sphb);
+     SpaprDrc *drc;
+ 
+@@ -4092,12 +4142,10 @@ static bool spapr_phb_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+      * This will check that sphb->index doesn't exceed the maximum number of
+      * PHBs for the current machine type.
+      */
+-    return
+-        smc->phb_placement(spapr, sphb->index,
+-                           &sphb->buid, &sphb->io_win_addr,
+-                           &sphb->mem_win_addr, &sphb->mem64_win_addr,
+-                           windows_supported, sphb->dma_liobn,
+-                           errp);
++    return spapr_phb_placement(spapr, sphb->index,
++                               &sphb->buid, &sphb->io_win_addr,
++                               &sphb->mem_win_addr, &sphb->mem64_win_addr,
++                               windows_supported, sphb->dma_liobn, errp);
+ }
+ 
+ static void spapr_phb_plug(HotplugHandler *hotplug_dev, DeviceState *dev)
+@@ -4345,57 +4393,6 @@ static const CPUArchIdList *spapr_possible_cpu_arch_ids(MachineState *machine)
+     return machine->possible_cpus;
+ }
+ 
+-static bool spapr_phb_placement(SpaprMachineState *spapr, uint32_t index,
+-                                uint64_t *buid, hwaddr *pio,
+-                                hwaddr *mmio32, hwaddr *mmio64,
+-                                unsigned n_dma, uint32_t *liobns, Error **errp)
 -{
--    return !SPAPR_MACHINE_GET_CLASS(opaque)->pre_4_1_migration;
+-    /*
+-     * New-style PHB window placement.
+-     *
+-     * Goals: Gives large (1TiB), naturally aligned 64-bit MMIO window
+-     * for each PHB, in addition to 2GiB 32-bit MMIO and 64kiB PIO
+-     * windows.
+-     *
+-     * Some guest kernels can't work with MMIO windows above 1<<46
+-     * (64TiB), so we place up to 31 PHBs in the area 32TiB..64TiB
+-     *
+-     * 32TiB..(33TiB+1984kiB) contains the 64kiB PIO windows for each
+-     * PHB stacked together.  (32TiB+2GiB)..(32TiB+64GiB) contains the
+-     * 2GiB 32-bit MMIO windows for each PHB.  Then 33..64TiB has the
+-     * 1TiB 64-bit MMIO windows for each PHB.
+-     */
+-    const uint64_t base_buid = 0x800000020000000ULL;
+-    int i;
+-
+-    /* Sanity check natural alignments */
+-    QEMU_BUILD_BUG_ON((SPAPR_PCI_BASE % SPAPR_PCI_MEM64_WIN_SIZE) != 0);
+-    QEMU_BUILD_BUG_ON((SPAPR_PCI_LIMIT % SPAPR_PCI_MEM64_WIN_SIZE) != 0);
+-    QEMU_BUILD_BUG_ON((SPAPR_PCI_MEM64_WIN_SIZE % SPAPR_PCI_MEM32_WIN_SIZE) != 0);
+-    QEMU_BUILD_BUG_ON((SPAPR_PCI_MEM32_WIN_SIZE % SPAPR_PCI_IO_WIN_SIZE) != 0);
+-    /* Sanity check bounds */
+-    QEMU_BUILD_BUG_ON((SPAPR_MAX_PHBS * SPAPR_PCI_IO_WIN_SIZE) >
+-                      SPAPR_PCI_MEM32_WIN_SIZE);
+-    QEMU_BUILD_BUG_ON((SPAPR_MAX_PHBS * SPAPR_PCI_MEM32_WIN_SIZE) >
+-                      SPAPR_PCI_MEM64_WIN_SIZE);
+-
+-    if (index >= SPAPR_MAX_PHBS) {
+-        error_setg(errp, "\"index\" for PAPR PHB is too large (max %llu)",
+-                   SPAPR_MAX_PHBS - 1);
+-        return false;
+-    }
+-
+-    *buid = base_buid + index;
+-    for (i = 0; i < n_dma; ++i) {
+-        liobns[i] = SPAPR_PCI_LIOBN(index, i);
+-    }
+-
+-    *pio = SPAPR_PCI_BASE + index * SPAPR_PCI_IO_WIN_SIZE;
+-    *mmio32 = SPAPR_PCI_BASE + (index + 1) * SPAPR_PCI_MEM32_WIN_SIZE;
+-    *mmio64 = SPAPR_PCI_BASE + (index + 1) * SPAPR_PCI_MEM64_WIN_SIZE;
+-    return true;
 -}
 -
- static bool spapr_pagesize_cb(void *opaque, uint32_t seg_pshift,
-                               uint32_t pshift)
+ static ICSState *spapr_ics_get(XICSFabric *dev, int irq)
  {
-@@ -793,7 +787,6 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-         .type = "int",
-         .apply = cap_hpt_maxpagesize_apply,
-         .cpu_apply = cap_hpt_maxpagesize_cpu_apply,
--        .migrate_needed = cap_hpt_maxpagesize_migrate_needed,
-     },
-     [SPAPR_CAP_NESTED_KVM_HV] = {
-         .name = "nested-hv",
-@@ -982,11 +975,8 @@ int spapr_caps_post_migration(SpaprMachineState *spapr)
- static bool spapr_cap_##sname##_needed(void *opaque)    \
- {                                                       \
-     SpaprMachineState *spapr = opaque;                  \
--    bool (*needed)(void *opaque) =                      \
--        capability_table[cap].migrate_needed;           \
-                                                         \
--    return needed ? needed(opaque) : true &&            \
--           spapr->cmd_line_caps[cap] &&                 \
-+    return spapr->cmd_line_caps[cap] &&                 \
-            (spapr->eff.caps[cap] !=                     \
-             spapr->def.caps[cap]);                      \
- }                                                       \
+     SpaprMachineState *spapr = SPAPR_MACHINE(dev);
+@@ -4606,7 +4603,6 @@ static void spapr_machine_class_init(ObjectClass *oc, const void *data)
+     smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
+     fwc->get_dev_path = spapr_get_fw_dev_path;
+     nc->nmi_monitor_handler = spapr_nmi;
+-    smc->phb_placement = spapr_phb_placement;
+     vhc->cpu_in_nested = spapr_cpu_in_nested;
+     vhc->deliver_hv_excp = spapr_exit_nested;
+     vhc->hypercall = emulate_spapr_hypercall;
 -- 
 2.43.5
 
