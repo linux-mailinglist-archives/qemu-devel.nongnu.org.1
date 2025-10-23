@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8605AC01D02
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29912C01D05
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:37:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBwQo-0002RU-Bs; Thu, 23 Oct 2025 10:36:47 -0400
+	id 1vBwQx-0002bn-G1; Thu, 23 Oct 2025 10:36:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwQW-0002Ow-2W
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:36:29 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwQf-0002Vi-Ls
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:36:38 -0400
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwQT-0002eW-Pb
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:36:27 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBwQd-0002fp-VL
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:36:37 -0400
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4711f156326so8759225e9.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:36:24 -0700 (PDT)
+ 5b1f17b1804b1-46e6ba26c50so7622405e9.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:36:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761230183; x=1761834983; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761230194; x=1761834994; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yjpyF/1fKhMues6CxnLiUv7Dt8TBIl2szKKd2PGZMu4=;
- b=w6JVN0OdjbjCqtFCXuATLp23aQhzEogsG/00uOFGcGkm8zvkIY8fs6TK0zyi3xTKMu
- zOLbfYna0zv0UhUPp4Ul4/Wf5ALXLdCRhXcBKtUVAxKUjyuQruIFimjmTXowRKqpBmjo
- 54q45FdhLYSWGwP/SdgMhDWKELKIk4d26lE4YTTgjRwffnv3VfHgGJKkL8FekDuIjGCt
- q++JZsdxtcCS0bVRe1gOqJf48FdoFF45p/GOFluev56tZMEZp9VibMLbpANlKJ5F8VGy
- Ol9h5phpN9qOCM+uxFJrwHiy7+14iHPq09cnn+f7pgUO9CwWeDQEG6n+5RKc43KShYZ4
- fkkg==
+ bh=c+ThxEWVQxXshxqXktgAOdE159T4weVKPrTjmJTbNVU=;
+ b=cG8/e9Cq4uLAHw4A0HbOymcNWdvY20VHdFgqAEomIM/Hhg4nRdqlf7OolwFxyjgQB3
+ XS/b9BZm+B2foGr7VyOSfnbQYkdbPp+e/zvbhtTg170E2GinrwVf3U8oTtjgWCu7/xq0
+ ajCUg/YVYfFNXh2sUl/y3psfg1oAS9uIG/g9wVoGdmPNwI4focai2QwTyaYYexIKzWJb
+ P0kh05tgnXXNiE8jJifJ4ou6Sfhl5zAM9BnphnC25BNa00DhLv6za9FWGG4NxWDw4QBj
+ Em37KJL4FpkN0r7viICRi300oT17WkibSdMgC/PiUHh2v1jy/gFYmLkylbdB+bJYPg18
+ 35ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761230183; x=1761834983;
+ d=1e100.net; s=20230601; t=1761230194; x=1761834994;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yjpyF/1fKhMues6CxnLiUv7Dt8TBIl2szKKd2PGZMu4=;
- b=k1wEv1xpVBXy9uhOjnzVsGI8GdWd0zG0ZU8aRjcBLbYS/N4G+hxOwJGCAiK0B9HWHD
- +u2VEWF8CrrB/DnuakxRzM97s1asNfJX0H/opFnjxKdH6kxYmrJnxlF87J7YR11erxuJ
- zLP6yenv4v+y6Dd7N7mFgP7U9hkOqNgT5MEpooProvkVoYrLXBYAsss4T8RUviJlN1ot
- VIaXlqSMCTw5UnuVU++HCFmRiY/2LOQiVWBOkQhX0roHYMqACiIltO59zgPbE62pI7vu
- 1eXrLZnbbtePjsq9CLqdACxPO9u4txOmHQZPLCgq8B/tsdtnsHqlSrWxMua+6b8pRMzU
- oznA==
+ bh=c+ThxEWVQxXshxqXktgAOdE159T4weVKPrTjmJTbNVU=;
+ b=a5HAh1PI86mAOnEjW7ptR9EvlV2fMfpoPwCu7b4APQMvlhVzOU9ycQNMJ/N6X1yfut
+ YWUIpM8P55TJUewAN8zI880mPZNsZJExTmQYyzjdkZcSOxGN1w5UBvgrrd8HWksCUwpB
+ 8+pGq+2s5tDT3x3sKA6U8t6UiBI4dkqUa2KrRhlOXRKegs3XgstE5ihkzAzzygU1fBJ5
+ uoS0bfR5oAcn4Z6Bpk8d3q1bB6TllIya3hECteze2X3FhaBhP1eJqKFAjOwT9QUnL2lE
+ oev+dxMrku+5FqjRZqXf5Olmvjs+RvKT+KfB54l51X70Jd8QKAFTrdTfjYpRCsCHO9sy
+ KZbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzf+cy99m6yAUwnezeOAoTkHkemYiXtJobxzE/7qVVEb9uch39ohAGXGeuSNuRG7PxGZplpC54Yy/v@nongnu.org
-X-Gm-Message-State: AOJu0Yz7n1RHFzPUf2s2cgAPM1Mea6lFtKzGChpXkhkTk2a0kW/t9Mre
- +QBn9llRu32pT9p7SLhbw3W4uLa49chGHx2reeP81Zmvi1b/ovE0dWHlntXnSAJgWXc=
-X-Gm-Gg: ASbGncvmGL4uZ2JIjONfQn3q+HTa+FxAEYqTY6i437p9RrwHMtsToOciWzTmi4RA4rh
- 1EMadxJqyvBkVIsuhabk/dmldnCuTwqSVznlEcYOxo/gBHcI7/UZ002t72/OgAvP4zTfuO7r2WH
- nEYfiJ9KxQVdiXlZIbG8Va/Iojff5Y7a01VMR0QoDMi0E14ePV0iYyhYOpzutFlfttWrous146V
- cFz/kMG/1yvkKHh1Mo2frw9WMBgOp2pIWqjgqy3NN4TVMKOOB2OiAPGvYUNqWO4CGoySYwQyOL/
- LMV5vex8c3Wy1zAp9ZFZeBP8MRdk85iAuFn0bAaDaF4pqAW5iIIcBC8xysPbOhW7LJAXkJe0qsS
- 55stWYfZMvFkuH6t5Y9lg1yx+QcP/QtC0GLhqZHKU5jNTrYUkYnUs6uBGNU7n76TdV2BGhUvNCO
- /FPRttl/8SGcCGR5W0LYYX7WL4MiweVDqOcyA2rcYj5OxfMc9vRgbVIg==
-X-Google-Smtp-Source: AGHT+IGNDyFoTjmMqObtlsJ6wzCrffuU6JGCq1S5/fddBkST8sf4Et813G5B1h8qgXaXqYgv3Ww91w==
-X-Received: by 2002:a05:600c:4710:b0:471:115e:9605 with SMTP id
- 5b1f17b1804b1-4711791fc13mr180226145e9.35.1761230183074; 
- Thu, 23 Oct 2025 07:36:23 -0700 (PDT)
+ AJvYcCXnALpZdekoWroAF4QNGrPs5F7xljJYHpVdz/ndPBIaF3cUrKQKGNIS8EARlHURh2bzxghBnfA2TkvQ@nongnu.org
+X-Gm-Message-State: AOJu0YwgUCnn7zM93x7VUdo80JwfW6WQdaONI00/qXeOLY14PVf3550v
+ GCa8hewpSuG4b9KE+kiK30EZFEQFZ3eis9VbrreH6uU+qt2H3h+S82S/IlvfmoCN+/I=
+X-Gm-Gg: ASbGncuoMcXiB5SvS/yua6cJ2sq9qoEHrAp3tpXD4XW3wuy5cTI+mTzAKu6qRbeMwwV
+ WIeVYb3RYc4LjbvRd1brJfY8X8eteciTFSUIcj3BpgJfTzpP4Nt08XcUiNIY33MEn/G7ma+rZ2h
+ y/K9fCYMEPyd03YPRfhS7a0r2YElMMngrVeBRA7kPXZWH9kDzd5T4nHmf/l+kOEnZpKLKDxe7us
+ bBiBK6HE3T0CEAGv2xl/xa2gRtPEs1dtfMPD5K8/1KTFPG5JtAb9bXmF/9Sbgdc8b9srZEQXPlk
+ a0Cj1zVx1VR65iw4KsBufShu5qFAeEZxWoe68P+AaoSKIOVAQfWSiZHZvUvQxbSUEjpgczaDJ8W
+ f/OKLTKQY6qruPaxR+QjDzutm6utvMkhtbDKTAnWBJrzr7W13ZJr+IkelMZSVoG/A+bL8owoBdr
+ 6+94+cZssIKX+R3VwPuUpxRQ1YispyeGd1uS8IArj9Ifc=
+X-Google-Smtp-Source: AGHT+IGnVq+Eh7IMDGf93RkkUKHcAzokWuI1lz6BXAvirp33kuvtAn/gcYi5lYmfkNQWKJQoax2yaw==
+X-Received: by 2002:a05:600c:3492:b0:46e:3193:fecb with SMTP id
+ 5b1f17b1804b1-471179193c3mr168961225e9.27.1761230194450; 
+ Thu, 23 Oct 2025 07:36:34 -0700 (PDT)
 Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47496b09bc4sm63736335e9.2.2025.10.23.07.36.22
+ 5b1f17b1804b1-47494b365adsm62172975e9.6.2025.10.23.07.36.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Oct 2025 07:36:22 -0700 (PDT)
-Message-ID: <c22daec6-0954-4836-ad78-3a3f17ff4199@linaro.org>
-Date: Thu, 23 Oct 2025 16:36:21 +0200
+ Thu, 23 Oct 2025 07:36:33 -0700 (PDT)
+Message-ID: <e6df234c-6229-45e6-9aea-e03d9eb6d023@linaro.org>
+Date: Thu, 23 Oct 2025 16:36:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] hw/i386/isapc.c: warn rather than reject modern x86
- CPU models
+Subject: Re: [PATCH 2/2] docs/about/deprecated.rst: document isapc deprecation
+ for modern x86 CPU models
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, imammedo@redhat.com,
  mst@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, eduardo@habkost.net, qemu-devel@nongnu.org
 References: <20251023142926.964718-1-mark.caveayland@nutanix.com>
- <20251023142926.964718-2-mark.caveayland@nutanix.com>
+ <20251023142926.964718-3-mark.caveayland@nutanix.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251023142926.964718-2-mark.caveayland@nutanix.com>
+In-Reply-To: <20251023142926.964718-3-mark.caveayland@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
@@ -104,18 +104,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23/10/25 16:28, Mark Cave-Ayland wrote:
-> Commit e1e2909f8e ("hw/i386/pc_piix.c: restrict isapc machine to 32-bit CPUs")
-> restricted the isapc machine to 32-bit CPUs, but subsequent concern has been
-> expressed as to the effect this could have on users.
-> 
-> The outcome of the latest discussion is that we should exercise more caution
-> and follow the official deprecation route, so instead of rejecting modern x86
-> CPUs issue a deprecation warning but allow the user to continue.
+> Add a new paragraph in the "Backwards compatibility" section documenting that
+> using modern x86 CPU models with the isapc machine is deprecated, and will be
+> rejected in a future release.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 > ---
->   hw/i386/isapc.c | 53 ++++++++++++++++++++-----------------------------
->   1 file changed, 21 insertions(+), 32 deletions(-)
+>   docs/about/deprecated.rst | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
