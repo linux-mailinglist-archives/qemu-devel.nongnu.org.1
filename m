@@ -2,111 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4AFC011BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25152C01260
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:33:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuLW-00078i-JO; Thu, 23 Oct 2025 08:23:11 -0400
+	id 1vBuLa-0007Iw-Jf; Thu, 23 Oct 2025 08:23:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuGX-0001R2-8g
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:18:16 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBuGT-0001Px-Fz
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:18:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vBuGU-0006VA-HA
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:18:00 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N9juxH008824
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=uCO/EB
- +UN6CTuXsOasfQigrg9LojCtdeujXdL0HMJ8w=; b=RX3qo3B/Qt2pA1Sv8pe+V0
- I9H3SE477jX9fMsDDQlMn9x2vcU2aijyay4rA0vmVdbVCBsIBowiyT51PhryCC+O
- 0mBrPpxFyXqk1qb8MP5VB4EjEPqFINWPqELCGpZyvUz7DepjI3QGE92dUSsk+27o
- H6hXp1SJIq8QKDqJmSKsdqUrE18Hr0Fh8vzQCxkGaLihp7EsiHs2ya5NhcPJxNSi
- 7my4/h/hGgjqiyqrCvFKBVXDVFck9djb3u8+8p5Qjgv2Y38tT776iqYEMc0UKDLc
- n7FBDuGh/3cikcPfWdc7r2SMtUN+J7SNpHVQ8UAT30Z3bUDBBonnHkg3+F97g7sA
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31cgp2a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:47 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NB1VtR011075
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:46 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx1daqa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:46 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 59NCHgBJ52953508
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Oct 2025 12:17:43 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D654920043;
- Thu, 23 Oct 2025 12:17:42 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0B5420040;
- Thu, 23 Oct 2025 12:17:41 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
- [9.124.221.73]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 Oct 2025 12:17:41 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Aditya Gupta <adityag@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Shivang Upadhyay <shivangu@linux.ibm.com>
-Subject: [PULL 32/32] MAINTAINERS: Add entry for FADump (pSeries)
-Date: Thu, 23 Oct 2025 17:46:51 +0530
-Message-ID: <20251023121653.3686015-33-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251023121653.3686015-1-harshpb@linux.ibm.com>
-References: <20251023121653.3686015-1-harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vBuGN-0006VM-Hd
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1761221869;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Hg2hC5L98UVtQ++c8KdSziVy7OBtW1l3z8LTPULgwGo=;
+ b=iUB9NJ78hi0YitwGdNUwTriEouCLwECjvO3Fp9h9C4koaBp8UOC7ehfHWDysqaMP1Q5fsG
+ cyEE+IKbUm7rZgFEVbET7kp5PCwrXJvYILSCMp/bj1rHeMAIpSWWWtCJ/ORmMbMKcbpSTC
+ appxxtEhKFR0FKNLiAO+G68j8G8q7Pg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-VoUxbbfOMNGctsJ8hbaXNQ-1; Thu,
+ 23 Oct 2025 08:17:46 -0400
+X-MC-Unique: VoUxbbfOMNGctsJ8hbaXNQ-1
+X-Mimecast-MFC-AGG-ID: VoUxbbfOMNGctsJ8hbaXNQ_1761221865
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3D2311800744; Thu, 23 Oct 2025 12:17:45 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.19])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C8ECA180044F; Thu, 23 Oct 2025 12:17:44 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0D7BF21E6A27; Thu, 23 Oct 2025 14:17:42 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v2 10/32] hw/core: report security status in query-machines
+In-Reply-To: <20250926140144.1998694-11-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 26 Sep 2025 15:01:21
+ +0100")
+References: <20250926140144.1998694-1-berrange@redhat.com>
+ <20250926140144.1998694-11-berrange@redhat.com>
+Date: Thu, 23 Oct 2025 14:17:42 +0200
+Message-ID: <87zf9h6cd5.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gXWyDy6YNcyQNEp6v82AHhEu1WEaW-r_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXxwtiW1GKifUj
- HXOfddbEkb4PIXLS7IQLVDCkc5BGxm+mzMa/KSj+xKsYoLjcSprxWopRnfqQfLDfrrH5PEk+gIy
- aj4u+AlHSIN+d/20ANZ3IZ9tVrpUhhqyxYGcDbgYWaEcHYPJ7HiVrseLBtccHd/4G9CQsNQacQX
- /WV1G3FI1eMPHIRlPzLpIR3WU2wIqtWqTCsIeiOqtPT5juGQ0SNprgsDyMv8oLCVzTyrQwrkCK+
- PSFDCp5Thsk219VLvAOmvQ4Os4ZNx53c9kchvSnRZNo86scJrANztT3BSbFhNwDZGM425ForjYD
- um4Eg4fxqeYcQnK7gHHFV3YpySsnRZd9pf3AowqaF6ckyNm0POO8r46z4bku/GSVwu3X0ZKFehb
- 0OQQh17QT4QkR6sl+MDtpYYvLN3e+Q==
-X-Proofpoint-GUID: gXWyDy6YNcyQNEp6v82AHhEu1WEaW-r_
-X-Authority-Analysis: v=2.4 cv=SKNPlevH c=1 sm=1 tr=0 ts=68fa1ceb cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=KKAkSRfTAAAA:8
- a=bbZZDkM4wAf7KGCsbpkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cvBusfyB2V15izCimMoJ:22 a=oH34dK2VZjykjzsv8OSz:22 a=pHzHmUro8NiASowvMSCR:22
- a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,39 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Add maintainer and reviewer for fadump subsystem.
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  hw/core/machine-qmp-cmds.c | 1 +
+>  qapi/machine.json          | 8 +++++++-
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+> index 6aca1a626e..4d9906f64a 100644
+> --- a/hw/core/machine-qmp-cmds.c
+> +++ b/hw/core/machine-qmp-cmds.c
+> @@ -100,6 +100,7 @@ MachineInfoList *qmp_query_machines(bool has_compat_p=
+rops, bool compat_props,
+>          if (mc->default_ram_id) {
+>              info->default_ram_id =3D g_strdup(mc->default_ram_id);
+>          }
+> +        info->secure =3D object_class_is_secure(OBJECT_CLASS(mc));
+>=20=20
+>          if (compat_props && mc->compat_props) {
+>              int i;
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index 038eab281c..bb2b308ccd 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -194,6 +194,11 @@
+>  #     present when `query-machines` argument @compat-props is true.
+>  #     (since 9.1)
+>  #
+> +# @secure: If true, the machine is declared to provide a security
+> +#     boundary from the guest; if false the machine is either
+> +#     not providing a security boundary, or its status is undefined.
+> +#     (since 10.2)
+> +#
+>  # Features:
+>  #
+>  # @unstable: Member @compat-props is experimental.
+> @@ -207,7 +212,8 @@
+>              'deprecated': 'bool', '*default-cpu-type': 'str',
+>              '*default-ram-id': 'str', 'acpi': 'bool',
+>              '*compat-props': { 'type': ['CompatProperty'],
+> -                               'features': ['unstable'] } } }
+> +                               'features': ['unstable'] },
+> +            'secure': 'bool' } }
+>=20=20
+>  ##
+>  # @query-machines:
 
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Acked-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Tested-by: Shivang Upadhyay <shivangu@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20251021134823.1861675-9-adityag@linux.ibm.com
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Isn't this redundant with qom-list-types?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 684d7a5b37..53dbf915ea 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3215,6 +3215,14 @@ F: scripts/coccinelle/remove_local_err.cocci
- F: scripts/coccinelle/use-error_fatal.cocci
- F: scripts/coccinelle/errp-guard.cocci
- 
-+Firmware Assisted Dump (fadump) for sPAPR (pseries)
-+M: Aditya Gupta <adityag@linux.ibm.com>
-+R: Sourabh Jain <sourabhjain@linux.ibm.com>
-+S: Maintained
-+F: include/hw/ppc/spapr_fadump.h
-+F: hw/ppc/spapr_fadump.c
-+F: tests/functional/ppc64/test_fadump.py
-+
- GDB stub
- M: Alex Bennée <alex.bennee@linaro.org>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
--- 
-2.43.5
+{"execute": "qom-list-types", "arguments": {"implements": "machine"}}
 
 
