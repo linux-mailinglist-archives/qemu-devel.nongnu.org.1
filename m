@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5E6C00605
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C7EC00644
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 12:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBs9J-0001KD-QX; Thu, 23 Oct 2025 06:02:25 -0400
+	id 1vBs9N-0001LM-2l; Thu, 23 Oct 2025 06:02:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vBs8w-0001Gb-HH; Thu, 23 Oct 2025 06:02:05 -0400
+ id 1vBs8z-0001Go-Gh; Thu, 23 Oct 2025 06:02:07 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vBs8u-00039r-8P; Thu, 23 Oct 2025 06:02:02 -0400
+ id 1vBs8x-00039r-Vb; Thu, 23 Oct 2025 06:02:05 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 23 Oct
- 2025 18:01:50 +0800
+ 2025 18:01:51 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 23 Oct 2025 18:01:50 +0800
+ Transport; Thu, 23 Oct 2025 18:01:51 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,14 +30,16 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 00/13] Split AST2500 SoC machines into separate source
- files for maintainability
-Date: Thu, 23 Oct 2025 18:01:33 +0800
-Message-ID: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 01/13] hw/arm/aspeed: Move AspeedMachineState definition to
+ common header for reuse
+Date: Thu, 23 Oct 2025 18:01:34 +0800
+Message-ID: <20251023100150.295370-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
+References: <20251023100150.295370-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -63,72 +65,82 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1:
- 1. Move "AspeedMachineState" definition to a shared header.
- 2. Make common helper functions globally accessible.
- 3. Split each AST2500 machine into its own source file:
-   - FP5280G2
-   - G220A
-   - Tiogapass
-   - YosemiteV2
-   - Witherspoon
-   - Sonorapass
-   - Romulus
-   - Supermicro X11SPI
-   - AST2500 EVB
+Aspeed machines will be moved into split C files for better
+modularization and future maintenance.
+
+To allow all machine implementations to reuse the same
+AspeedMachineState structure, the struct definition is moved
+from aspeed.c to the shared header aspeed.h.
+
+This change centralizes the common state structure used across
+all Aspeed machine models, reduces redundancy, and simplifies
+future refactoring work for new machines.
+
+No functional changes.
+
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ include/hw/arm/aspeed.h | 14 ++++++++++++++
+ hw/arm/aspeed.c         | 14 --------------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+index 6c36455656..383ebb9759 100644
+--- a/include/hw/arm/aspeed.h
++++ b/include/hw/arm/aspeed.h
+@@ -11,6 +11,7 @@
  
-Jamin Lin (13):
-  hw/arm/aspeed: Move AspeedMachineState definition to common header for
-    reuse
-  hw/arm/aspeed: Make aspeed_machine_class_init_cpus_defaults() globally
-    accessible
-  hw/arm/aspeed: Make create_pca9552() globally accessible for reuse
-  hw/arm/aspeed: Make create_pca9554() available for use by other Aspeed
-    machines
-  hw/arm/aspeed: Split FP5280G2 machine into a separate source file for
-    maintenance
-  hw/arm/aspeed: Split G220A machine into a separate source file for
-    better maintenance
-  hw/arm/aspeed: Split Tiogapass machine into a separate source file for
-    cleanup
-  hw/arm/aspeed: Split YosemiteV2 machine into a separate source file
-    for maintainability
-  hw/arm/aspeed: Split Witherspoon machine into a separate source file
-    for maintainability
-  hw/arm/aspeed: Split Sonorapass machine into a separate source file
-    for maintainability
-  hw/arm/aspeed: Split Romulus machine into a separate source file for
-    maintainability
-  hw/arm/aspeed: Split Supermicro X11SPI machine into a separate file
-    for maintainability
-  hw/arm/aspeed: Split AST2500 EVB machine into a separate source file
-    for maintainability
-
- hw/arm/aspeed_eeprom.h                    |   7 -
- include/hw/arm/aspeed.h                   |  17 +
- hw/arm/aspeed.c                           | 508 +---------------------
- hw/arm/aspeed_ast2500_evb.c               |  66 +++
- hw/arm/aspeed_ast2500_fp5280g2.c          |  87 ++++
- hw/arm/aspeed_ast2500_g220a.c             |  91 ++++
- hw/arm/aspeed_ast2500_romulus.c           |  61 +++
- hw/arm/aspeed_ast2500_sonorapass.c        | 101 +++++
- hw/arm/aspeed_ast2500_supermicro-x11spi.c |  76 ++++
- hw/arm/aspeed_ast2500_tiogapass.c         |  89 ++++
- hw/arm/aspeed_ast2500_witherspoon.c       | 111 +++++
- hw/arm/aspeed_ast2500_yosemitev2.c        |  90 ++++
- hw/arm/aspeed_eeprom.c                    |  44 --
- hw/arm/meson.build                        |   9 +
- 14 files changed, 801 insertions(+), 556 deletions(-)
- create mode 100644 hw/arm/aspeed_ast2500_evb.c
- create mode 100644 hw/arm/aspeed_ast2500_fp5280g2.c
- create mode 100644 hw/arm/aspeed_ast2500_g220a.c
- create mode 100644 hw/arm/aspeed_ast2500_romulus.c
- create mode 100644 hw/arm/aspeed_ast2500_sonorapass.c
- create mode 100644 hw/arm/aspeed_ast2500_supermicro-x11spi.c
- create mode 100644 hw/arm/aspeed_ast2500_tiogapass.c
- create mode 100644 hw/arm/aspeed_ast2500_witherspoon.c
- create mode 100644 hw/arm/aspeed_ast2500_yosemitev2.c
-
+ #include "hw/boards.h"
+ #include "qom/object.h"
++#include "hw/arm/aspeed_soc.h"
+ 
+ typedef struct AspeedMachineState AspeedMachineState;
+ 
+@@ -24,6 +25,19 @@ DECLARE_OBJ_CHECKERS(AspeedMachineState, AspeedMachineClass,
+ #define ASPEED_MAC2_ON   (1 << 2)
+ #define ASPEED_MAC3_ON   (1 << 3)
+ 
++struct AspeedMachineState {
++    /* Private */
++    MachineState parent_obj;
++    /* Public */
++
++    AspeedSoCState *soc;
++    MemoryRegion boot_rom;
++    bool mmio_exec;
++    uint32_t uart_chosen;
++    char *fmc_model;
++    char *spi_model;
++    uint32_t hw_strap1;
++};
+ 
+ struct AspeedMachineClass {
+     MachineClass parent_obj;
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 1bc9e534ba..761b526994 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -35,20 +35,6 @@ static struct arm_boot_info aspeed_board_binfo = {
+     .board_id = -1, /* device-tree-only board */
+ };
+ 
+-struct AspeedMachineState {
+-    /* Private */
+-    MachineState parent_obj;
+-    /* Public */
+-
+-    AspeedSoCState *soc;
+-    MemoryRegion boot_rom;
+-    bool mmio_exec;
+-    uint32_t uart_chosen;
+-    char *fmc_model;
+-    char *spi_model;
+-    uint32_t hw_strap1;
+-};
+-
+ /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+ #if HOST_LONG_BITS == 32
+ #define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
 -- 
 2.43.0
 
