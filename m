@@ -2,88 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2995C0128D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE49C012ED
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuX5-0000AB-LU; Thu, 23 Oct 2025 08:35:07 -0400
+	id 1vBuUm-0005Yd-O1; Thu, 23 Oct 2025 08:32:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBuSu-0002wp-R5
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:30:50 -0400
-Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vBuOt-0007kd-Oj
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:26:41 -0400
-Received: by mail-yw1-x1132.google.com with SMTP id
- 00721157ae682-781014f4e12so8853617b3.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:26:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761222397; x=1761827197; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Lln/eupkPghiN4WMdu5B7GSpVCzOPMvVzfobpx6m6ms=;
- b=SnQFH+KBPYNSFaOJ8/Ae3B/DStEfoyBYW3g9TT6YBwjgLSKpXOgvJfC1j57l9zberl
- SK2tOnZ5UwndLde2AH7FwUwAfOtist91yGfaZpQLe5BSZz+SiVRuDE+mNa/EZ+hW/zUK
- /84IUk0Ri+2ck21ErhQEVG+B/YMqbN3yH2qNBnyUp5hz1gdwVjGCuJVVFOmfUffODhOa
- APoeR/syy6SXjFpIX15dGwiRDVSGgLs+KIemAjBuggxdS3aiR1TMKirylXjLC/KyjbRg
- DBfocxvn+LtWpEUK051F1eHY85MOhq//bMUKLzmcSmVSysWQ2kBq8RjUmx/fanTUQuG3
- CwKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761222397; x=1761827197;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Lln/eupkPghiN4WMdu5B7GSpVCzOPMvVzfobpx6m6ms=;
- b=WYKx64iDUeRezUnvU1XVGFTJPUfBss7YuTUmuu8LLv/8IdM4j+54DkDaxNI7H5sZLX
- 6eDlbspDdP6LXOZtjEomc2ys8UKHGiEygaJKDHsd0BbNdw3gXR/7q7jDxQQTbw2MWJ3k
- ZhHtN+Vj1QlK+s+a9rIAdF+aYmxnV1LyDxKZxwPQG2TXhacugGguPSJsslQa4o2EeuRK
- kSyr5QdW/BakbjElomQCislnHnZOxxuCxd+1TKN87Xz2lReGdZoSXsszITmQRcK27M4f
- vP4CPgTd4fNC3iwwGINoujXgUv1NNSm7HFlV4ri5l6FzjbIFIhgBg0BFhUqaaoiK3sbK
- GzIw==
-X-Gm-Message-State: AOJu0YwuIkSDgDt3FXOTrAwhqtzMrK2BN4kAPyhhtjdXvvWe3Mzjw+NU
- y9s8qOzy+21ItEHoABZikqR/kf6jHK6TcLZIdb61Q6XIVXlvYUIUtytknmzmRkuHffCse7wqHvj
- ZCxrKBZUDYs6sPpojpdWYM81h/TiIxlc0RU80Lx4eDw==
-X-Gm-Gg: ASbGncvzxptmw3t7C5857fy7mMnOyoK6VJVcywNX69MPPkTM8Fd7tlKKWVst2Pj8ZS1
- H+xT7Ra1kQG1ZEx5I2MapFl0K9HWRdu4CfR5DMjtjZEt3nQpTmD9J1FaAdTqhG7tgId7BaTiffO
- PanFyts8ByU+m3g54UalwtrEspLuJsO37C5BI0G4+X/+9Y6MWXT2Q94uDO3fFxO/UfT3gxkLVEE
- fZzONMGZCzgfFBUk0QN05qtQVhWFsFpWAgBqeM/+eegvVpCT1KcYoFBixWkmA==
-X-Google-Smtp-Source: AGHT+IHyz8nwl79aDkaY6MfGb1SlWgdpWUyEblw8X6InkI6RTeeC1YnXsWgOalcPRtFcQT/yGEu8v+rjYSYBGELMWuI=
-X-Received: by 2002:a05:690c:e05:b0:781:64f:3139 with SMTP id
- 00721157ae682-7836d376dc7mr225073807b3.55.1761222397485; Thu, 23 Oct 2025
- 05:26:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vBuSy-00036a-Hi; Thu, 23 Oct 2025 08:31:00 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vBuRl-00082h-5J; Thu, 23 Oct 2025 08:29:41 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6C48F5972E8;
+ Thu, 23 Oct 2025 14:29:33 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id JAZKo4c0i2cR; Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 61F015972E1; Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6003459703F;
+ Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
+Date: Thu, 23 Oct 2025 14:29:31 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v4 00/12] Pegasos2 clean up and pegasos1 emulation
+In-Reply-To: <610d1821-71a7-4bfd-b588-3baea0bfff95@linux.ibm.com>
+Message-ID: <2ff8c9cc-5c26-8d1b-c25b-2c2b2543969e@eik.bme.hu>
+References: <cover.1761176219.git.balaton@eik.bme.hu>
+ <764df5c7-55d3-48ec-a28b-0c837e13c595@linux.ibm.com>
+ <671f7ace-fe86-5443-40b7-d02dd16b922b@eik.bme.hu>
+ <f4473b0d-f25e-bc05-a1e6-e5e2971a6688@eik.bme.hu>
+ <610d1821-71a7-4bfd-b588-3baea0bfff95@linux.ibm.com>
 MIME-Version: 1.0
-References: <20251015091729.33761-1-corvin.koehne@gmail.com>
- <CAFEAcA9+oSu+z_Jgm6dK6hVdTYf=NyGrD_cOF--+j=uOZJD8rg@mail.gmail.com>
-In-Reply-To: <CAFEAcA9+oSu+z_Jgm6dK6hVdTYf=NyGrD_cOF--+j=uOZJD8rg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 23 Oct 2025 13:26:25 +0100
-X-Gm-Features: AS18NWDkEHHtnNfKKd282nDK8KSI7Z0dGu-BotSmcBjuH1lgg-FoCwbo6B-w1rQ
-Message-ID: <CAFEAcA9AyisijV=a4w8yD=dnYM-iW4e=Huqx-X9J16--ULBdJA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/14] hw/arm: add Beckhoff CX7200 board
-To: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- =?UTF-8?Q?Yannick_Vo=C3=9Fen?= <y.vossen@beckhoff.com>, 
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, 
- qemu-block@nongnu.org, =?UTF-8?Q?Corvin_K=C3=B6hne?= <c.koehne@beckhoff.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,32 +66,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 Oct 2025 at 13:25, Peter Maydell <peter.maydell@linaro.org> wrot=
-e:
+On Thu, 23 Oct 2025, Harsh Prateek Bora wrote:
+> On 10/23/25 17:45, BALATON Zoltan wrote:
+>> On Thu, 23 Oct 2025, BALATON Zoltan wrote:
+>>> On Thu, 23 Oct 2025, Harsh Prateek Bora wrote:
+>>>> On 10/23/25 05:36, BALATON Zoltan wrote:
+>>>>> This series changes how the fdt for VOF is generated in pegasos2 by
+>>>>> moving the static parts to a dtb and only generate the changing parts
+>>>>> such as memory size and PCI devices programmatically. This simplifies
+>>>>> the code and allows simply adding emulation of Pegasos I which has a
+>>>>> different north bridge and slightly different memory map but otherwise
+>>>>> very similar and can be emulated by reusing parts from the amigaone
+>>>>> machine. The machine was tested with a Pegasos I ROM image and MorphOS.
+>>>>> 
+>>>>> The first VOF patch (submitted separetely before, the reviewed v3 is
+>>>>> included here) fixes handling the name property in VOF that cannot be
+>>>>> represented in a dts as that always takes the path as the name and
+>>>>> cannot accept an explicit name property but we need the name property
+>>>>> to appear when guest queries properties which previously was worked
+>>>>> around by adding it to every node.
+>>>>> 
+>>>>> Regards,
+>>>>> BALATON Zoltan
+>>>> 
+>>>> Queued.
+>>> 
+>>> OK. In that case I can do follow up if needed but I still plan to send 
+>>> updated raven series and if time allows updated firmware for sam460ex but 
+>>> the latter is unsure if I can finish before the freeze.
+>> 
+>> Or if you haven't sent the pull request yet (I was confused by getting cc-d 
+>> on a pull that did not go to the list, maybe was only for testing) then I 
+>> can still update this series too. I see there was some problem with another 
+>> patch from Thomas so there will be another version of that too. So the plan 
+>> is to update raven series, after that update this one to address Philippe's 
+>> comments then if there's still time I see if I can do the sam460ex U-Boot 
+>> update but you don't have to wait for that last one.
 >
-> On Wed, 15 Oct 2025 at 10:17, Corvin K=C3=B6hne <corvin.koehne@gmail.com>=
- wrote:
-> >
-> > From: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
-> >
-> > Hi,
-> >
-> > Beckhoff has build a board, called CX7200, based on the Xilinx Zynq A9
-> > platform. This commit series adds the Beckhoff CX7200 as new board vari=
-ant to
-> > QEMU.
->
-> Did you base this on current master? beckhoff_ccat.c tries
-> to include "exec/address-spaces.h", which hasn't existed since
-> commit dfc56946a7005 renamed it to system/address-spaces.h
-> back in March, so it doesn't compile...
+> Sure. no issues.
+> I have included these patches in the pull request I sent today and am
+> planning another pull request before soft/hard freeze, so we can include
+> remaining patches that gets reviewed in that. Thanks.
 
-Similarly for references to exec/memory.h.
+OK, so the pull did go to the list. I'm OK with this series as it is, the 
+remaining changes were minor and could be done as follow up (or later). 
+I'll then concentrate on the raven series and see if I'll have time for 
+sam460ex. Thank you for stepping in and taking care of it.
 
-Please rebase this on current head-of-git, make sure it
-compiles and passes 'make check' and 'make check-functional',
-and then resend it.
-
-thanks
--- PMM
+Regards,
+BALATON Zoltan
 
