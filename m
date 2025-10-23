@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CAF7C03E3A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 01:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03BDC03E52
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Oct 2025 01:52:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vC54h-0004YD-Cc; Thu, 23 Oct 2025 19:50:31 -0400
+	id 1vC54l-0004gP-I5; Thu, 23 Oct 2025 19:50:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vC54f-0004Uh-27
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:50:29 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1vC54i-0004bC-6e
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:50:32 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vC54d-0007Qc-9J
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:50:28 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-b608df6d2a0so1231266a12.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 16:50:26 -0700 (PDT)
+ id 1vC54g-0007R6-4g
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 19:50:31 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-28e7cd6dbc0so18592165ad.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 16:50:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761263425; x=1761868225; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1761263428; x=1761868228; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DaV098G5oL4FGgdKQrx8xC9vbZLN/Fck1L4/UQZrfQY=;
- b=HVgPNf0PmBN9iuXvrE5UcTm9YYB05VDruutqkgdzcBqcYwOLsMGt8L+VO00ZoN6CRl
- n3OS4Tom6iHyfwFwXko5NjHBW+Bi3uyrwCScpzcxahp+rRDEzlwO7MGrfVJWWAhPQADE
- LM5Kri5S1rTTdeTA5J490BfCtPb7qnUXeEHxBS0W0XoU0fB9+71qcSS8s0d5HNrE28xM
- FEH5uoTxppW5H8wZ90mH2ieAL3nHCwKkFaD8DZu9mgI4iScOCsPBVZ+elyXvy0Btazou
- yuv/OVnWE/vb4hsPS5c9KolyBqg5e5mWANAHhQElBIbzRIZ0Dqx09/BAEvFDMDbrR+Rj
- hTbg==
+ bh=DSdBIzUFAJ8jmSWRkWF95NhSo1Eq4JPgHiE1RjnAzx0=;
+ b=TqgZvelAsjBAKh+kZOzdNCQ76MHoASnw1Z3LKzLNJOG9fYqPrUz9Lk85HfQZ28mMIS
+ cbHbJiOcgZXjty+sWYoVR5XvOI5vh6K84+V9t/e0gopzHoa5tBMTYtoj6bcD0He5yawh
+ SLr3jzKpgDfkhNp9fRqz/uT/aBD0afe6oSWbwu/NQ7DwKyizLfgGhNWcq6OaHdr6CjMe
+ 5tKSrh/zd1Axxf/zcJRqkbiZxohYXC3vPyRAeWaHpiwXPylIoi8Dm3FsFWP72iJW8FJY
+ aEuU4RJ6wF2NY+Z64bzaBcL003dFEnRJUwQOeAPnIVg7K9oMIZhuRKApKBXB1mW/kkQk
+ G1Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761263425; x=1761868225;
+ d=1e100.net; s=20230601; t=1761263428; x=1761868228;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DaV098G5oL4FGgdKQrx8xC9vbZLN/Fck1L4/UQZrfQY=;
- b=r5kSVXZyWx5Cd+jyQGp0vQ87a78Ft3SDIqJavllrfE5/QgsM/ShiXza1l/EwjeSWUX
- sG20jJRtWJ3ZyVlX228bm6IS81nrFkulTunsQQyhwW31K67WfR+kPzQnyVtl7utyi7Fj
- x65GAjdR53ZO4tj0QibXLJSJhw4e8aoFE5CKESJfhpSORrYYAf5UIpefmRnc0YyPkvu1
- UsIHa1UaxcwRGNk52cW9GuSpyztXiPAAP5l7yToriysrCFPqDa6FqErbANivVhXz4+6V
- fTrIKri/H+o2gHXXgbMGqCS/YaP4wkZw1rgOV3W8txj2WJjoznJtCI4JKT9bHHlxKx7P
- hxkw==
-X-Gm-Message-State: AOJu0YyeSgDY+UYFZkboRqdM9JPU63IlDkc2RkOz5i7eG5cthGp+axpn
- VRRGhjEIq401/VyhDDzHa6owccDS5bnpePO8RRzx703irbZx8Np1TRfKMn2XGg==
-X-Gm-Gg: ASbGncuGEZz10+GSbu9MLBJItHj9QMrCZxVG50uH7vB3X2KF5Q1DUqdG4hWE305uL7q
- TF4zW+e/rTM3u5EtL5s1vKNJ3C+ugaeSa01obw6AsN2/KvI/pE+8wdmQEa1UBvSHfqdsppIqa95
- 4L5YIhaMBY/F2ucf/H4oXYqbharFPJ6pnshQxV7+lDcG9IJOxa+XFxmcW9xcxiGSSCTObCEucSh
- iI2R48OBmiiH3X4gjWhnr5YUux/BgVUmzWcP8O4X/tDsoBLIhG36z8ygUBZ3IruJbX+dnLRILUj
- f0vu68V5s+qAVOoRmVzvUmewtaURCpUuYGwkvs15UZpfSz5sZ8L6Bep4adWGLZnl+LiWYhVa3gI
- YL0cYis/bxu9l8gVHR/wTpEK0i2IC43cpHrmSxnFtij2yvR5/RD+DdJQ2um6zQoVEPvXUktyAyN
- 1plyEZfURoaqvSbosMyLA8uh5SEaVVI1xzD1IWhcYSINbePp+uZjfRxFc6clst79/DgG9V1brQ0
- YLxpI+D
-X-Google-Smtp-Source: AGHT+IFGUsRaMl50hhZX1kMN4WIkLzDPqiGEW4Kao3SjduNLr1Y+ckEIYHpw8QwKjdvkHuVRMzxrLQ==
-X-Received: by 2002:a17:902:ccc3:b0:28e:9a74:7b58 with SMTP id
- d9443c01a7336-2948ba3ba9dmr2788605ad.31.1761263425190; 
- Thu, 23 Oct 2025 16:50:25 -0700 (PDT)
+ bh=DSdBIzUFAJ8jmSWRkWF95NhSo1Eq4JPgHiE1RjnAzx0=;
+ b=enT0GzvO4/sVrkIidaNw3edBQsfsDjsEkvpDyjXs1CertjsDafrx0d+4mzb7XtBK+o
+ 2Wda4H6ARMWGfNh3jcTvqSUolm5hNi25Mi/Z+NVfxhgIIcVRpJ1JEI3F8MoG+ala7076
+ hdICjtn4BnAkKda/IhGfDku9cYouQevKslX356k18sE47X45o/cjx8f1UDDXGcrD+Nbk
+ QV8Z6wZeVzL/3/tx3mT4KTTfhZWIcqRfRMGNeNeo46okHPadC1s2X+pnONE4YkZRit3S
+ PGzI4G5JYgm3lErHjiz23tTNBsG+LxnuvUHzTwf6IewQ50BWym0EELC4qjYha3UV0XNO
+ tZeg==
+X-Gm-Message-State: AOJu0YxqQvSZpFO58BGHoDxwFTKuzOamYStAPbdqZe08Ly5qw4QO/Dze
+ rISFtGH9YIZy8A9afNCkovj8oKfGn4++afzS9chp+GFqsCSoSrJ5SY06gfXKKA==
+X-Gm-Gg: ASbGncukGFHQekJjBntvVgydp3sYOJORFMQ7GQByLOOk6ZBzRojeVkRxQZMj+OHukvt
+ LjqdfZisJX6ghge5woEDADbpdeyD0P0sAlDwaWxG4pYvXtSzcgqeGO4j3thgUK+xlDN8s5wcm2l
+ EQ8oKqK4Y8SvLuw8j6Gv/QxEH/ulzMsW9lpS/98y4R2Cvta8a6VOKKqYfHQ5RkW58zAWbmMeQ02
+ y6oCcpcJOYdLgHWaUZy0RtLNpQVhyxvUG3EWHL+VtsgMJPNv3G1eHZEh8kdfmE/+3YWuFzKnfW6
+ kRk58/J0fcXXFwXz8nEqUvvFTtR5rxbqJon3ZjN94NZVe5drlRnix7XQceDGkdaVuHc40Ftz/9Z
+ jAOcFqKqb3a1IAUzty5i6e9JEi7EdaSFb5fBQsezXmfu9+q4puMJDUYThYlZqYorTUPRounpDOJ
+ lDBajxdz7V9dCn9z60h7yfvOxJM1k0PsCBCNdYXmUjtg4jZLEODA0Eoq/mAqrB6jOXgeNh4kgMo
+ IvqfmV9
+X-Google-Smtp-Source: AGHT+IGDfCxSQTgX1Ucivyhvv2syL2OJX+KyuSEZw48bnpdRHh9jzBQx6gaY6IdU2LJ1FG5sXJX1fw==
+X-Received: by 2002:a17:903:238b:b0:26b:3aab:f6b8 with SMTP id
+ d9443c01a7336-2948ba7c997mr2412085ad.58.1761263428306; 
+ Thu, 23 Oct 2025 16:50:28 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946de02cb7sm36088525ad.40.2025.10.23.16.50.22
+ d9443c01a7336-2946de02cb7sm36088525ad.40.2025.10.23.16.50.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 16:50:24 -0700 (PDT)
+ Thu, 23 Oct 2025 16:50:27 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Guenter Roeck <linux@roeck-us.net>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 14/25] hw/net/cadence_gem: Support two Ethernet interfaces
- connected to single MDIO bus
-Date: Fri, 24 Oct 2025 09:49:16 +1000
-Message-ID: <20251023234927.1864284-15-alistair.francis@wdc.com>
+Subject: [PULL v2 15/25] hw/riscv: microchip_pfsoc: Connect Ethernet PHY
+ channels
+Date: Fri, 24 Oct 2025 09:49:17 +1000
+Message-ID: <20251023234927.1864284-16-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023234927.1864284-1-alistair.francis@wdc.com>
 References: <20251023234927.1864284-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -107,98 +107,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-The Microchip PolarFire SoC Icicle Kit supports two Ethernet interfaces.
-The PHY on each may be connected to separate MDIO busses, or both may be
-connected on the same MDIO bus using different PHY addresses.
-
-To be able to support two PHY instances on a single MDIO bus, two properties
-are needed: First, there needs to be a flag indicating if the MDIO bus on
-a given Ethernet interface is connected. If not, attempts to read from this
-bus must always return 0xffff. Implement this property as phy-connected.
-Second, if the MDIO bus on an interface is active, it needs a link to the
-consumer interface to be able to provide PHY access for it. Implement this
-property as phy-consumer.
-
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251004200049.871646-2-linux@roeck-us.net>
+Message-ID: <20251004200049.871646-3-linux@roeck-us.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/net/cadence_gem.h |  3 +++
- hw/net/cadence_gem.c         | 24 ++++++++++++++++++------
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ hw/riscv/microchip_pfsoc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/hw/net/cadence_gem.h b/include/hw/net/cadence_gem.h
-index 91ebb5c8ae..21e7319f53 100644
---- a/include/hw/net/cadence_gem.h
-+++ b/include/hw/net/cadence_gem.h
-@@ -81,6 +81,9 @@ struct CadenceGEMState {
+diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+index 2e74783fce..9fbfba8ece 100644
+--- a/hw/riscv/microchip_pfsoc.c
++++ b/hw/riscv/microchip_pfsoc.c
+@@ -414,6 +414,8 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
  
-     uint8_t phy_loop; /* Are we in phy loopback? */
- 
-+    bool phy_connected; /* true if connected */
-+    struct CadenceGEMState *phy_consumer;
+     object_property_set_int(OBJECT(&s->gem0), "revision", GEM_REVISION, errp);
+     object_property_set_int(OBJECT(&s->gem0), "phy-addr", 8, errp);
++    object_property_set_bool(OBJECT(&s->gem0), "phy-connected", false, errp);
 +
-     /* The current DMA descriptor pointers */
-     uint32_t rx_desc_addr[MAX_PRIORITY_QUEUES];
-     uint32_t tx_desc_addr[MAX_PRIORITY_QUEUES];
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index 44446666de..520324adfd 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -1541,12 +1541,20 @@ static void gem_handle_phy_access(CadenceGEMState *s)
- {
-     uint32_t val = s->regs[R_PHYMNTNC];
-     uint32_t phy_addr, reg_num;
-+    CadenceGEMState *ps = s;
-+    uint32_t op;
+     sysbus_realize(SYS_BUS_DEVICE(&s->gem0), errp);
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->gem0), 0,
+                     memmap[MICROCHIP_PFSOC_GEM0].base);
+@@ -422,6 +424,8 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
  
-     phy_addr = FIELD_EX32(val, PHYMNTNC, PHY_ADDR);
-+    op = FIELD_EX32(val, PHYMNTNC, OP);
- 
--    if (phy_addr != s->phy_addr) {
--        /* no phy at this address */
--        if (FIELD_EX32(val, PHYMNTNC, OP) == MDIO_OP_READ) {
-+    /* Switch phy to consumer interface if there is an address match */
-+    if (s->phy_consumer && phy_addr == s->phy_consumer->phy_addr) {
-+        ps = s->phy_consumer;
-+    }
-+
-+    if (!s->phy_connected || phy_addr != ps->phy_addr) {
-+        /* phy not connected or no phy at this address */
-+        if (op == MDIO_OP_READ) {
-             s->regs[R_PHYMNTNC] = FIELD_DP32(val, PHYMNTNC, DATA, 0xffff);
-         }
-         return;
-@@ -1554,14 +1562,14 @@ static void gem_handle_phy_access(CadenceGEMState *s)
- 
-     reg_num = FIELD_EX32(val, PHYMNTNC, REG_ADDR);
- 
--    switch (FIELD_EX32(val, PHYMNTNC, OP)) {
-+    switch (op) {
-     case MDIO_OP_READ:
-         s->regs[R_PHYMNTNC] = FIELD_DP32(val, PHYMNTNC, DATA,
--                                         gem_phy_read(s, reg_num));
-+                                         gem_phy_read(ps, reg_num));
-         break;
- 
-     case MDIO_OP_WRITE:
--        gem_phy_write(s, reg_num, val);
-+        gem_phy_write(ps, reg_num, val);
-         break;
- 
-     default:
-@@ -1813,6 +1821,10 @@ static const Property gem_properties[] = {
-                       num_type2_screeners, 4),
-     DEFINE_PROP_UINT16("jumbo-max-len", CadenceGEMState,
-                        jumbo_max_len, 10240),
-+    DEFINE_PROP_BOOL("phy-connected", CadenceGEMState, phy_connected, true),
-+    DEFINE_PROP_LINK("phy-consumer", CadenceGEMState, phy_consumer,
-+                     TYPE_CADENCE_GEM, CadenceGEMState *),
-+
-     DEFINE_PROP_LINK("dma", CadenceGEMState, dma_mr,
-                      TYPE_MEMORY_REGION, MemoryRegion *),
- };
+     object_property_set_int(OBJECT(&s->gem1), "revision", GEM_REVISION, errp);
+     object_property_set_int(OBJECT(&s->gem1), "phy-addr", 9, errp);
++    object_property_set_link(OBJECT(&s->gem1), "phy-consumer",
++                             OBJECT(&s->gem0), errp);
+     sysbus_realize(SYS_BUS_DEVICE(&s->gem1), errp);
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->gem1), 0,
+                     memmap[MICROCHIP_PFSOC_GEM1].base);
 -- 
 2.51.0
 
