@@ -2,94 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E43BFF22E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DBBBFF26A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 06:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBn46-00048p-Fi; Thu, 23 Oct 2025 00:36:42 -0400
+	id 1vBn8j-000206-Ca; Thu, 23 Oct 2025 00:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBn44-00045L-2r
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:36:40 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1vBn3v-0001dF-8u
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 00:36:39 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-b6271ea3a6fso227790a12.0
- for <qemu-devel@nongnu.org>; Wed, 22 Oct 2025 21:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761194185; x=1761798985; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WtMz//IUF4vYwJZ5SQ+VGQMEdxPCQofn5TrUJkk623U=;
- b=Io2ntmKFlMZr7PW/+GRcsw8fGpLn4hbLpp8ALCVNfsRpKDkudTbJs+QWcqKvVt4r9E
- /E8JpZcAm2qCLF8SE8bW+UCg8YwGGjvLu6TUmOaB7TpeBHuhtkCjXka53l7fZ2Qor7SM
- rdZ4IOzmSq1zeSELfTHb3+3Ci3F9BAIV9VVfpZfO28b8XZ7C80w7vzMDY5nvN8sXiuJe
- G774SrtLUbosAhiuvXInikDdd5IVjDFKIngdhjkEzcC0jLiGpjL3ytK8GrISFD6ue9DW
- Q4qO8sMsU/U0Y4KbS/jGTWWrdgtqflr4unwRrAtzSriWn0HEVS5g8nDkBxOBIdRDFZWX
- v10A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761194185; x=1761798985;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WtMz//IUF4vYwJZ5SQ+VGQMEdxPCQofn5TrUJkk623U=;
- b=HRKl+7plBgHbi0uejHGxI7GvvzBFPoT3DjHuQ0UOLAmi0+37lQ9YDrDVEKv422w9JG
- Mg1R+YSyUB6Pdf3j4/zIzdLYG0jmB1bfC8hAHRcpz9WropmzRNQcmlE28ekbsOFNkprD
- 9pDF+PyMYtcPMxb7qVN+V7jA8o6eWKwRzgDbGwXQPbIp6Kd9cuciamrAFPQ4rj6LCOFQ
- bjojIPSGqVvSBoraXZTYbR1pXTIFeOHVDcNA7FYroDAllm5sArF2B+icDStA9VIQ3//4
- pns5fBijeRRY6hPVDeCAvPvOYNY4lx3X0M9zfZKAXptThKibaTB6m6S9SdRbbaFy3JrD
- qN9g==
-X-Gm-Message-State: AOJu0YzGxzOMKVEoeOHvar1nr+jfKC/udcter8uzhdlMCMSZ8EfMy0Hz
- ewqGidMJJfgQ+G5EptIKTCt+sRsP4pir04n2JSf3OVmbLlvSM005ub+EOZ7tRQ==
-X-Gm-Gg: ASbGncvEBQQEPvY6sAzVtfOLINVf9udP/nKuGoE+F8v3FFqsEcXBRqExGqeYdZ7kSoS
- 1n4/LcFAN9UPnN/0FRIvxwI7jzLW5ZkR1Bs8HMJg5YU8ppfiBkIS+T0ZfY8xAzBahcTTTpvLtud
- rz5T1pfNU3q84bvfuEbYSe7kgsge2tI+haDGIb1mzRCcoLr5y+0nKoHquiix7L0J4zzIVu4aPMj
- G3hgAV1gMpk/KmoyLQlocu/aAuTx8DwMQhNwFmYVMVLOLHisUNofWbAqwTqnxdyeQHnPO4vzMy0
- usVAICM40jKOjO5979rGC0QeMzXQGxgiLIMQ0gjo8lQeWfyhncapPbd7IOmz9YfL3mb9oKQorOu
- SekfjCjJYmn1TTw0zecRd680AOOnjB8mWRMIcIFPmloQYWuH3NjWvOFUeH5y31DFB776BWrDsCn
- jLbrZFn7OfWvh/AwlvavzQFLEKOtQr1YxVsHX7LXglB3auzuqYPk7/j1PpZTioDyD4h1ZmwSeQv
- capgeWEVQIdEvWILkuBHDVZJFOK3g==
-X-Google-Smtp-Source: AGHT+IEHxKsqT2PwXsTKrV9Zn3CYlwhPS2pQdPLLbgdFFwt6nGIxPXlOkgWPhlcvylpXhfyL9PYe9Q==
-X-Received: by 2002:a17:902:e74a:b0:267:776b:a315 with SMTP id
- d9443c01a7336-290caf844ddmr292613945ad.32.1761194185270; 
- Wed, 22 Oct 2025 21:36:25 -0700 (PDT)
-Received: from toolbx.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2946dfc113csm8643015ad.68.2025.10.22.21.36.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Oct 2025 21:36:24 -0700 (PDT)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jay Chang <jay.chang@sifive.com>,
- Frank Chang <frank.chang@sifive.com>, Jim Shu <jim.shu@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 36/37] target/riscv: Make PMP granularity configurable
-Date: Thu, 23 Oct 2025 14:35:19 +1000
-Message-ID: <20251023043520.1777130-15-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251023043520.1777130-1-alistair.francis@wdc.com>
-References: <20251023043520.1777130-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vBn8h-0001zu-Db; Thu, 23 Oct 2025 00:41:27 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vBn8f-00028V-3j; Thu, 23 Oct 2025 00:41:27 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N0Cwcn024633;
+ Thu, 23 Oct 2025 04:41:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=XxH7fz
+ mE4P6hVwXVE5RqwkB0iPebh0mHLUi2ZdQzt2o=; b=BSGPtEvRTsR9aObiqkgzoA
+ GDRImamy7QmSGo5ZcPk9bapqmfjSgA526digcV2coY1tOzNtTFZ3x64uv0Bh05Cx
+ nmtLVfSy5wFLKpH4xVc431n9U95m/qItBG1FDMbBUPiJMZYzZqpW9H2Hs43wcbeR
+ 59d9x2FpDdwCG8XCPU2R5Yh8sZ6dVsEteN+Y4Ity06lB8PNjGkgZrDEDWAdH57qP
+ VLnkJ4LhEwBd5Q6ZKe3weIrR1WQhQpV4PLmHYwU7XiE9Ywh/a4PInR7M3Me0LYJ9
+ bkC14hps78cgQ0fvogqyUY1MI+yXuBw0Fo4SefboftCVSsPh4QBX6WYI8WfUt9ow
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31ceykn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Oct 2025 04:41:19 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59N4VqPI014555;
+ Thu, 23 Oct 2025 04:41:18 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31ceykj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Oct 2025 04:41:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59N0NbLa014676;
+ Thu, 23 Oct 2025 04:41:17 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7sc6g3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Oct 2025 04:41:17 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59N4fG5m51184006
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Oct 2025 04:41:17 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A347458052;
+ Thu, 23 Oct 2025 04:41:16 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E37775805D;
+ Thu, 23 Oct 2025 04:41:14 +0000 (GMT)
+Received: from [9.124.221.73] (unknown [9.124.221.73])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Oct 2025 04:41:14 +0000 (GMT)
+Message-ID: <3071c558-61e0-49fb-8442-9f6e9b363c93@linux.ibm.com>
+Date: Thu, 23 Oct 2025 10:11:13 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ppc/amigaone: Free allocated struct
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20251022211649.9A09E5972E5@zero.eik.bme.hu>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20251022211649.9A09E5972E5@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: aAcOo04Tu693yGxTzmK7QGxMCdxSFkv-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX9gDlELOPbVnx
+ 3st6Vf1OqCP8hMoKnbcJpHcmRj07/AXzU41ncxsZbPKYxQfUuD5f7OjNIPRBYXEtuc+2almXWYY
+ 2OvubCBT+wqY4ml/0T4hit9beCxXs+/ZEdLTfbqoRhZg+VdNz0rhCgdINPM1l8pwTQP90xmeWwc
+ EAyjghxKIW4AG84hMUtKfJ34f99qWzYPVX3Pc+bpj1nRisxkFEuuq5XJ543iwNbtm9CFRVtTPSR
+ UOEev7mCcwNmhDHGK05E3b1C4FLhbssJk8VRKcOkMQT9qkrc3xkMpQBtxX6Nuu3BGLNvhs40Z7Z
+ OG9bv6WCWcCtn7m6b5RWrk+hNbzwVJ/WTrZTb7SoWNke0GhmlKIkEbHYnXyxmlPXezn6egHBaKM
+ D/aiyNb8H3gnsD3uB6349vM668IuPg==
+X-Proofpoint-GUID: 7X2LA4QUpRqcOJo8LUNGm9dU3b5eKn9u
+X-Authority-Analysis: v=2.4 cv=SKNPlevH c=1 sm=1 tr=0 ts=68f9b1ef cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=O0fAPOUEty8ZO6K3NPAA:9
+ a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=oH34dK2VZjykjzsv8OSz:22
+ a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015 priorityscore=1501
+ spamscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,120 +127,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jay Chang <jay.chang@sifive.com>
 
-Previously, the PMP granularity in qemu always used a minimum
-granularity of 4 bytes, this patch add pmp-granularity to allow
-platforms to configure the value.
 
-A new CPU parameter pmp-granularity has been introduced to the QEMU
-command line. For example:
+On 10/23/25 02:37, BALATON Zoltan wrote:
+> In create_bd_info function a bd_info struct is allocated but never
+> freed. Mark it g_autofree to avoid leaking it.
+> 
+> Fixes: 34f053d86b (ppc/amigaone: Add kernel and initrd support)
+> Resolves: Coverity CID 1641398
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   hw/ppc/amigaone.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+> index 12279f42bc..47fb016b4a 100644
+> --- a/hw/ppc/amigaone.c
+> +++ b/hw/ppc/amigaone.c
+> @@ -221,7 +221,7 @@ struct bd_info {
+>   
+>   static void create_bd_info(hwaddr addr, ram_addr_t ram_size)
+>   {
+> -    struct bd_info *bd = g_new0(struct bd_info, 1);
+> +    g_autofree struct bd_info *bd = g_new0(struct bd_info, 1);
+>   
 
-        -cpu rv64, g=true, c=true, pmp=true, pmp-granularity=1024
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-If no specific value is provided, the default value is 4 bytes.
-
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Jim Shu <jim.shu@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20251022024141.42178-2-jay.chang@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/cpu.h                |  1 +
- target/riscv/cpu_cfg_fields.h.inc |  1 +
- target/riscv/cpu.c                | 39 +++++++++++++++++++++++++++++++
- 3 files changed, 41 insertions(+)
-
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 00ac947772..44f173b84e 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -176,6 +176,7 @@ extern RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[];
- 
- #define MAX_RISCV_PMPS (64)
- #define OLD_MAX_RISCV_PMPS (16)
-+#define MIN_RISCV_PMP_GRANULARITY 4
- 
- #if !defined(CONFIG_USER_ONLY)
- #include "pmp.h"
-diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
-index 7c624ab677..7729fef3a8 100644
---- a/target/riscv/cpu_cfg_fields.h.inc
-+++ b/target/riscv/cpu_cfg_fields.h.inc
-@@ -169,6 +169,7 @@ TYPED_FIELD(uint16_t, cbom_blocksize, 0)
- TYPED_FIELD(uint16_t, cbop_blocksize, 0)
- TYPED_FIELD(uint16_t, cboz_blocksize, 0)
- TYPED_FIELD(uint8_t,  pmp_regions, 0)
-+TYPED_FIELD(uint32_t, pmp_granularity, 0)
- 
- TYPED_FIELD(int8_t, max_satp_mode, -1)
- 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 77388ac76e..5f63494d07 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1140,6 +1140,7 @@ static void riscv_cpu_init(Object *obj)
-     cpu->cfg.cbop_blocksize = 64;
-     cpu->cfg.cboz_blocksize = 64;
-     cpu->cfg.pmp_regions = 16;
-+    cpu->cfg.pmp_granularity = MIN_RISCV_PMP_GRANULARITY;
-     cpu->env.vext_ver = VEXT_VERSION_1_00_0;
-     cpu->cfg.max_satp_mode = -1;
- 
-@@ -1628,6 +1629,43 @@ static const PropertyInfo prop_num_pmp_regions = {
-     .set = prop_num_pmp_regions_set,
- };
- 
-+static void prop_pmp_granularity_set(Object *obj, Visitor *v, const char *name,
-+                                     void *opaque, Error **errp)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint32_t value;
-+
-+    visit_type_uint32(v, name, &value, errp);
-+
-+    if ((value < MIN_RISCV_PMP_GRANULARITY) && (value & (value - 1))) {
-+        error_setg(errp, "PMP granularity must be a power of 2 and at least %d",
-+                   MIN_RISCV_PMP_GRANULARITY);
-+        return;
-+    }
-+
-+    if (cpu->cfg.pmp_granularity != value && riscv_cpu_is_vendor(obj)) {
-+        cpu_set_prop_err(cpu, name, errp);
-+        return;
-+    }
-+
-+    cpu_option_add_user_setting(name, value);
-+    cpu->cfg.pmp_granularity = value;
-+}
-+
-+static void prop_pmp_granularity_get(Object *obj, Visitor *v, const char *name,
-+                                     void *opaque, Error **errp)
-+{
-+    uint32_t value = RISCV_CPU(obj)->cfg.pmp_granularity;
-+
-+    visit_type_uint32(v, name, &value, errp);
-+}
-+
-+static const PropertyInfo prop_pmp_granularity = {
-+    .description = "pmp-granularity",
-+    .get = prop_pmp_granularity_get,
-+    .set = prop_pmp_granularity_set,
-+};
-+
- static int priv_spec_from_str(const char *priv_spec_str)
- {
-     int priv_version = -1;
-@@ -2628,6 +2666,7 @@ static const Property riscv_cpu_properties[] = {
-     {.name = "mmu", .info = &prop_mmu},
-     {.name = "pmp", .info = &prop_pmp},
-     {.name = "num-pmp-regions", .info = &prop_num_pmp_regions},
-+    {.name = "pmp-granularity", .info = &prop_pmp_granularity},
- 
-     {.name = "priv_spec", .info = &prop_priv_spec},
-     {.name = "vext_spec", .info = &prop_vext_spec},
--- 
-2.51.0
-
+>       bd->bi_memsize =    cpu_to_be32(ram_size);
+>       bd->bi_flashstart = cpu_to_be32(PROM_ADDR);
 
