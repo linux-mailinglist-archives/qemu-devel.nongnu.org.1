@@ -2,54 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FB9C02C9F
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEE8C02BD3
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 19:32:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBzQ5-00059b-QP; Thu, 23 Oct 2025 13:48:13 -0400
+	id 1vBz9j-0007bJ-TS; Thu, 23 Oct 2025 13:31:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
- id 1vBzQ3-000596-3C
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:48:11 -0400
-Received: from mail-m32118.qiye.163.com ([220.197.32.118])
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1vBz9h-0007Ya-4e; Thu, 23 Oct 2025 13:31:17 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
- id 1vBzPx-0002XC-Uf
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 13:48:10 -0400
-Received: from DESKTOP-FHFCVTH.localdomain (unknown [114.104.79.1])
- by smtp.qiye.163.com (Hmail) with ESMTP id 26f8a51f1;
- Fri, 24 Oct 2025 01:30:31 +0800 (GMT+08:00)
-From: fanyihao@rt-thread.org
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Yihao Fan <fanyihao@rt-thread.org>
-Subject: 
-Date: Fri, 24 Oct 2025 01:30:10 +0800
-Message-ID: <20251023173008.46232-4-fanyihao@rt-thread.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251023173008.46232-1-fanyihao@rt-thread.org>
-References: <20251023173008.46232-1-fanyihao@rt-thread.org>
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1vBz9e-0000o1-94; Thu, 23 Oct 2025 13:31:16 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59NH7faM014602;
+ Thu, 23 Oct 2025 17:31:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=F4I5JC
+ 0BrLfo7ZNv0rRMokmQ3oJaEeJbKeJf2nEExVA=; b=Ey71sFknplAFSwWb7Y+jeq
+ LttzQN5A2ILDwZDd8J7tZTKMMJsZz3eBXrXCDLbcy695sQTr8rieVJMpIheXIN6p
+ ZGRr6LWkNjoXXhHQkE7zZb1dVS9Gj5SZMx/NBJlekNQ4U6AaJ0jx9Di8mRgIQOsR
+ Dly7uoLEb7YIMej+dGXzgXbPSw6KJeIM7cLFl53MD60qtBqAd04OUl+/ft4Bb0Ww
+ 2ynFbuvEqd8bmUKxdnfalFO23Mm0HuOq5c8Sri6a+z0OVJEtmU/+6MI+9j9xKULS
+ UbOYBcgz59EYlZ66llDNFcriV7R0wfNg2f2dwcLreInRvthYc6P+KrfgOeXBpBJA
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31sbk84-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Oct 2025 17:31:10 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59NGdkRM017061;
+ Thu, 23 Oct 2025 17:31:08 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vnky74fv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Oct 2025 17:31:08 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NHV7Cs27918890
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Oct 2025 17:31:07 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F02F5805D;
+ Thu, 23 Oct 2025 17:31:07 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EEBA058057;
+ Thu, 23 Oct 2025 17:31:06 +0000 (GMT)
+Received: from [9.61.246.20] (unknown [9.61.246.20])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Oct 2025 17:31:06 +0000 (GMT)
+Message-ID: <49301ff9-894c-4341-bd9e-7b2213aa184b@linux.ibm.com>
+Date: Thu, 23 Oct 2025 10:31:05 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9a121f46db03a4kunm9f8d824b246cb3
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
- tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCQkMZVkhLHUlOQ0NPHUNCHlYVFAkWGhdVEwETFh
- oSFyQUDg9ZV1kYEgtZQVlKSk9VSktPVUxCVUpZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
-DKIM-Signature: a=rsa-sha256;
- b=e3HW7Dj/1n+QMyA9I+XH8lMwJ6S09hDSeetUt0ndqeTXERxjtaEocuXD/Ofov4ZTa3IhmT5KAHd5rqsNn+Y6mF5fmHkctRl3ja+DKu3nKn9jfDpWLl1jXPoj1e9Ay6NxxnM233r5VIpoN5gxij9Mg+EMcoIcxnNU6KBsbaX86lm2UbL4oqQ/ds3dZd2yFX+qpbqWwi/D/JWEeBOsTFLZvQolzPTgR6s3h+Lh2SrBGDP1Z1PQFMJjf7hd5tuhs9tmRH+rk2pse7dFyhmxRp1xmd2cdyC9JJL68xJ9BZdI8x/90D6McQGmQgxt9SqS3dsWv0MfD3XFbJIfRvfjzXOnJg==;
- s=default; c=relaxed/relaxed; d=rt-thread.org; v=1; 
- bh=wupiFzrkpArJUOgqfnjT8iwksgPsea8cskbxJt7DQXQ=;
- h=date:mime-version:subject:message-id:from;
-Received-SPF: pass client-ip=220.197.32.118;
- envelope-from=fanyihao@rt-thread.org; helo=mail-m32118.qiye.163.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+From: Farhan Ali <alifm@linux.ibm.com>
+Subject: Re: [PATCH 4/7] pc-bios/s390-ccw: Introduce PCI device IPL format
+To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
+ thuth@redhat.com
+Cc: jjherne@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
+ zycai@linux.ibm.com
+References: <20251020162023.3649165-1-jrossi@linux.ibm.com>
+ <20251020162023.3649165-5-jrossi@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20251020162023.3649165-5-jrossi@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: t9xlhXe-9TS8pnTX4SxMU8WMfKTIaidF
+X-Proofpoint-GUID: t9xlhXe-9TS8pnTX4SxMU8WMfKTIaidF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX3DXaN5JkqkWK
+ 4fORfOT6EDkKzpzrfDhUgIhzq7n4kUhL674W3KyU71KT62H2aquypjAIaqQoACoy480tGrbbRiH
+ Qe4yKKpfTRviMmNsVYs4Ht/YlbwHjxnti59CSafNnc0PpMxWTXIIuYvWhfcWb/Q/oHrMSeOBYr4
+ F4mw+l7n74hhNV70XQ88fwejAzJbMA3jLxe/B8U+75WoOoGJUkv9Kz+RshBjo0YTcpv/VrtqztE
+ PYSCwZAkq22AVBYPrH0XEhW8IaYnbpssQ0iYKiLeg44hk7ybgomSXgfJd7ABo6OOM03xkXZpthD
+ SCtnqMYV2VIWF/3zN7HQs5qiB7tXCNa3VvxWxFZJ7fxkIl02InE8MyoKBY5l0ZcSV8/5A7j8KEX
+ DUgnTI0KQtYZcKk50yuzyHjLl7BF3Q==
+X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68fa665e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=WrN3LOE88S3Oh2TfRc0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-23_01,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -68,295 +119,317 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yihao Fan <fanyihao@rt-thread.org>
+Hi Jared,
 
-Subject: [PATCH v3 3/3] hw/arm/stm32f407: Add PWR device to stm32f407 SoC
+On 10/20/2025 9:20 AM, jrossi@linux.ibm.com wrote:
+> From: Jared Rossi<jrossi@linux.ibm.com>
+>
+> Define selected s390x PCI instructions and extend IPLB to allow PCI devices.
+>
+> Signed-off-by: Jared Rossi<jrossi@linux.ibm.com>
+> ---
+>   include/hw/s390x/ipl/qipl.h |   9 ++
+>   pc-bios/s390-ccw/pci.h      |  77 +++++++++++++++
+>   pc-bios/s390-ccw/pci.c      | 191 ++++++++++++++++++++++++++++++++++++
+>   pc-bios/s390-ccw/Makefile   |   2 +-
+>   4 files changed, 278 insertions(+), 1 deletion(-)
+>   create mode 100644 pc-bios/s390-ccw/pci.h
+>   create mode 100644 pc-bios/s390-ccw/pci.c
+>
+> diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
+> index aadab87c2e..efd7b3797c 100644
+> --- a/include/hw/s390x/ipl/qipl.h
+> +++ b/include/hw/s390x/ipl/qipl.h
+> @@ -104,6 +104,14 @@ struct IplBlockQemuScsi {
+>   } QEMU_PACKED;
+>   typedef struct IplBlockQemuScsi IplBlockQemuScsi;
+>   
+> +struct IplBlockPci {
+> +    uint32_t reserved0[80];
+> +    uint8_t  opt;
+> +    uint8_t  reserved1[3];
+> +    uint32_t fid;
+> +} QEMU_PACKED;
+> +typedef struct IplBlockPci IplBlockPci;
+> +
+>   union IplParameterBlock {
+>       struct {
+>           uint32_t len;
+> @@ -119,6 +127,7 @@ union IplParameterBlock {
+>               IplBlockFcp fcp;
+>               IPLBlockPV pv;
+>               IplBlockQemuScsi scsi;
+> +            IplBlockPci pci;
+>           };
+>       } QEMU_PACKED;
+>       struct {
+> diff --git a/pc-bios/s390-ccw/pci.h b/pc-bios/s390-ccw/pci.h
+> new file mode 100644
+> index 0000000000..b5dc5bff35
+> --- /dev/null
+> +++ b/pc-bios/s390-ccw/pci.h
+> @@ -0,0 +1,77 @@
+> +/*
+> + * s390x PCI definitions
+> + *
+> + * Copyright 2025 IBM Corp.
+> + * Author(s): Jared Rossi<jrossi@linux.ibm.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef PCI_H
+> +#define PCI_H
+> +
+> +#include <stdint.h>
+> +#include "clp.h"
+> +
+> +#define ZPCI_CREATE_REQ(handle, space, len)                    \
+> +    ((uint64_t) handle << 32 | space << 16 | len)
+> +
+> +union register_pair {
+> +    unsigned __int128 pair;
+> +    struct {
+> +        unsigned long even;
+> +        unsigned long odd;
+> +    };
+> +};
+> +
+> +#define PCIFIB_FC_ENABLED      0x80
+> +#define PCIFIB_FC_ERROR        0x40
+> +#define PCIFIB_FC_BLOCKED      0x20
+> +#define PCIFIB_FC_DMAREG       0x10
+> +
+> +#define PCIST_DISABLED         0x0
+> +#define PCIST_ENABLED          0x1
+> +
+> +#define PCI_CAPABILITY_LIST    0x34 /* Offset of first capability list entry */
+> +
+> +struct PciFib {
+> +    uint32_t reserved0[2];
+> +    uint8_t fcflags;
+> +    uint8_t reserved1[3];
+> +    uint32_t reserved2;
+> +    uint64_t pba;
+> +    uint64_t pal;
+> +    uint64_t iota;
+> +    uint16_t isc:4;
+> +    uint16_t noi:12;
+> +    uint8_t reserved3:2;
+> +    uint8_t aibvo:6;
+> +    uint8_t s:1;
+> +    uint8_t reserved4:1;
+> +    uint8_t aisbo:6;
+> +    uint32_t reserved5;
+> +    uint64_t aibv;
+> +    uint64_t aisb;
+> +    uint64_t fmba;
+> +    uint32_t reserved6[2];
+> +};
+> +typedef struct PciFib PciFib;
+> +
+> +struct PciDevice {
+> +    uint16_t device_id;
+> +    uint16_t vendor_id;
+> +    uint32_t fid;
+> +    uint32_t fhandle;
+> +    uint8_t status;
+> +    PciFib fib;
+> +};
+> +typedef struct PciDevice PciDevice;
+> +
+> +int pci_write(uint32_t fhandle, uint64_t offset, uint64_t data, uint8_t len);
+> +int pci_read(uint32_t fhandle, uint64_t offset, uint8_t picas, void *buf, uint8_t len);
+> +uint8_t find_cap_pos(uint32_t fhandle, uint64_t cfg_type);
+> +int pci_dev_enable(PciDevice *pcidev);
+> +int get_fib(PciFib *fib, uint32_t fhandle);
+> +int set_fib(PciFib *fib, uint32_t fhandle, uint8_t dma_as, uint8_t opcontrol);
+> +
+> +#endif
+> diff --git a/pc-bios/s390-ccw/pci.c b/pc-bios/s390-ccw/pci.c
+> new file mode 100644
+> index 0000000000..f776bc064c
+> --- /dev/null
+> +++ b/pc-bios/s390-ccw/pci.c
+> @@ -0,0 +1,191 @@
+> +/*
+> + * s390x PCI funcionality
+> + *
+> + * Copyright 2025 IBM Corp.
+> + * Author(s): Jared Rossi<jrossi@linux.ibm.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "clp.h"
+> +#include "pci.h"
+> +#include <stdio.h>
+> +
+> +/* PCI load */
+> +static inline int pcilg(uint64_t *data, uint64_t req, uint64_t offset, uint8_t *status)
+> +{
+> +    union register_pair req_off = {.even = req, .odd = offset};
+> +    int cc = -1;
+> +    uint64_t __data = 0x92;
+> +
 
-Add the Power supply configuration device to the stm32f407 SoC.
+Why is __data initialized to 0x92?
 
-Signed-off-by: Yihao Fan <fanyihao@rt-thread.org>
----
- docs/system/arm/stm32.rst       |   1 +
- hw/arm/Kconfig                  |   1 +
- hw/arm/stm32f407_soc.c          |   9 +++
- hw/misc/Kconfig                 |   3 +
- hw/misc/meson.build             |   1 +
- hw/misc/stm32f4xx_pwr.c         | 111 ++++++++++++++++++++++++++++++++
- include/hw/arm/stm32f407_soc.h  |   3 +
- include/hw/misc/stm32f4xx_pwr.h |  40 ++++++++++++
- 8 files changed, 169 insertions(+)
- create mode 100644 hw/misc/stm32f4xx_pwr.c
- create mode 100644 include/hw/misc/stm32f4xx_pwr.h
 
-diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
-index 3f085eb35ee..c83276f6c12 100644
---- a/docs/system/arm/stm32.rst
-+++ b/docs/system/arm/stm32.rst
-@@ -38,6 +38,7 @@ Supported devices
-  * System configuration (SYSCFG)
-  * Timer controller (TIMER)
-  * Reset and Clock Controller (RCC) (STM32F4 only, reset and enable only)
-+ * Power supply configuration (PWR) (STM32F4 only)
- 
- Missing devices
- ---------------
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index ddb2da45ae9..2c07220eb0b 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -417,6 +417,7 @@ config STM32F407_SOC
-     select ARM_V7M
-     select STM32F4XX_SYSCFG
-     select STM32F4XX_EXTI
-+    select STM32F4XX_PWR
- 
- config B_L475E_IOT01A
-     bool
-diff --git a/hw/arm/stm32f407_soc.c b/hw/arm/stm32f407_soc.c
-index 8e20ddcd5b1..1512d922e5e 100644
---- a/hw/arm/stm32f407_soc.c
-+++ b/hw/arm/stm32f407_soc.c
-@@ -51,6 +51,7 @@ static void stm32f407_soc_initfn(Object *obj)
-     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32F4XX_SYSCFG);
-     object_initialize_child(obj, "exti", &s->exti, TYPE_STM32F4XX_EXTI);
-     object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32_RCC);
-+    object_initialize_child(obj, "pwr", &s->pwr, TYPE_STM32F4XX_PWR);
- 
-     for (i = 0; i < STM_NUM_USARTS; i++) {
-         object_initialize_child(obj, "usart[*]", &s->usart[i],
-@@ -183,6 +184,14 @@ static void stm32f407_soc_realize(DeviceState *dev_soc, Error **errp)
-         sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m, timer_irq[i]));
-     }
- 
-+    /* PWR controller */
-+    dev = DEVICE(&s->pwr);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->pwr), errp)) {
-+        return;
-+    }
-+    busdev = SYS_BUS_DEVICE(dev);
-+    sysbus_mmio_map(busdev, 0, PWR_BASE_ADDR);
-+
- }
- 
- static void stm32f407_soc_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 4e35657468b..ff4dc58b4d3 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -108,6 +108,9 @@ config STM32F4XX_SYSCFG
- config STM32F4XX_EXTI
-     bool
- 
-+config STM32F4XX_PWR
-+    bool
-+
- config STM32L4X5_EXTI
-     bool
- 
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index b1d8d8e5d2a..0e0f5c3a275 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -112,6 +112,7 @@ system_ss.add(when: 'CONFIG_STM32_RCC', if_true: files('stm32_rcc.c'))
- system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: files('stm32f2xx_syscfg.c'))
- system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_syscfg.c'))
- system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.c'))
-+system_ss.add(when: 'CONFIG_STM32F4XX_PWR', if_true: files('stm32f4xx_pwr.c'))
- system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_exti.c'))
- system_ss.add(when: 'CONFIG_STM32L4X5_SYSCFG', if_true: files('stm32l4x5_syscfg.c'))
- system_ss.add(when: 'CONFIG_STM32L4X5_RCC', if_true: files('stm32l4x5_rcc.c'))
-diff --git a/hw/misc/stm32f4xx_pwr.c b/hw/misc/stm32f4xx_pwr.c
-new file mode 100644
-index 00000000000..83ce0e6a0a9
---- /dev/null
-+++ b/hw/misc/stm32f4xx_pwr.c
-@@ -0,0 +1,111 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+/*
-+ * Copyright (c) liang yan <yanl1229@rt-thread.org>
-+ * Copyright (c) Yihao Fan <fanyihao@rt-thread.org>
-+ * The reference used is the STMicroElectronics RM0090 Reference manual
-+ * https://www.st.com/en/microcontrollers-microprocessors/stm32f407-417/documentation.html
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qemu/log.h"
-+#include "hw/misc/stm32f4xx_pwr.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-properties.h"
-+#include "qemu/module.h"
-+#include "migration/vmstate.h"
-+#include "qemu/module.h"
-+
-+#ifndef STM32F4XX_PWR_DEBUG
-+#define STM32F4XX_PWR_DEBUG 0
-+#endif
-+
-+#define DB_PRINT_L(lvl, fmt, args...) do { \
-+    if (STM32F4XX_PWR_DEBUG >= lvl) { \
-+        qemu_log("%s: " fmt, __func__, ## args); \
-+    } \
-+} while (0);
-+
-+#define DB_PRINT(fmt, args...) DB_PRINT_L(1, fmt, ## args)
-+
-+static uint64_t stm32f4xx_pwr_read(void *opaque, hwaddr offset, unsigned size)
-+{
-+    STM32F4XXPwrState *s = opaque;
-+
-+    switch (offset) {
-+    case PWR_CR:
-+        return s->pwr_cr;
-+    case PWR_CSR:
-+        return s->pwr_csr;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "STM32F4XX PWR: Bad read offset 0x%lx\n", offset);
-+        return 0;
-+    }
-+}
-+
-+static void stm32f4xx_pwr_write(void *opaque, hwaddr offset, uint64_t value, unsigned size)
-+{
-+    STM32F4XXPwrState *s = opaque;
-+
-+    switch (offset) {
-+    case PWR_CR:
-+        s->pwr_cr = value;
-+        if (value & PWR_CR_ODEN)
-+            s->pwr_csr |= PWR_CSR_ODRDY;
-+        if (value & PWR_CR_ODSWEN)
-+            s->pwr_csr |= PWR_CSR_ODSWRDY;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "STM32F4XX PWR: Bad write offset 0x%lx\n", offset);
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps stm32f4xx_pwr_ops = {
-+    .read = stm32f4xx_pwr_read,
-+    .write = stm32f4xx_pwr_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static void stm32f4xx_pwr_init(Object *obj)
-+{
-+    STM32F4XXPwrState *s = STM32F4XX_PWR(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &stm32f4xx_pwr_ops, s, TYPE_STM32F4XX_PWR, 0x400);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+}
-+
-+static void stm32f4xx_pwr_reset(DeviceState *dev)
-+{
-+    STM32F4XXPwrState *s = STM32F4XX_PWR(dev);
-+
-+    s->pwr_cr  = 0x0000;
-+    s->pwr_csr = 0x0000;
-+}
-+
-+static void stm32f4xx_pwr_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    device_class_set_legacy_reset(dc, stm32f4xx_pwr_reset);
-+}
-+
-+static const TypeInfo stm32f4xx_pwr_info = {
-+    .name          = TYPE_STM32F4XX_PWR,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(STM32F4XXPwrState),
-+    .instance_init = stm32f4xx_pwr_init,
-+    .class_init    = stm32f4xx_pwr_class_init,
-+};
-+
-+static void stm32f4xx_pwr_register_types(void)
-+{
-+    type_register_static(&stm32f4xx_pwr_info);
-+}
-+
-+type_init(stm32f4xx_pwr_register_types)
-diff --git a/include/hw/arm/stm32f407_soc.h b/include/hw/arm/stm32f407_soc.h
-index 3497e91aa1c..f7e39ffaceb 100644
---- a/include/hw/arm/stm32f407_soc.h
-+++ b/include/hw/arm/stm32f407_soc.h
-@@ -17,6 +17,7 @@
- #include "hw/char/stm32f2xx_usart.h"
- #include "hw/timer/stm32f2xx_timer.h"
- #include "hw/misc/stm32_rcc.h"
-+#include "hw/misc/stm32f4xx_pwr.h"
- #include "qom/object.h"
- 
- #define TYPE_STM32F407_SOC "stm32f407-soc"
-@@ -39,6 +40,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(STM32F407State, STM32F407_SOC)
- #define SYSCFG_BASE_ADDRESS 0x40013800
- #define SYSCFG_IRQ  71
- #define EXIT_BASE_ADDRESS 0x40013C00
-+#define PWR_BASE_ADDR       0x40007000
- 
- #define FLASH_BASE_ADDRESS  0x8000000
- #define FLASH_SIZE          0x100000
-@@ -57,6 +59,7 @@ typedef struct STM32F407State {
-     STM32RccState rcc;
-     STM32F4xxSyscfgState syscfg;
-     STM32F4xxExtiState exti;
-+    STM32F4XXPwrState pwr;
-     STM32F2XXUsartState usart[STM_NUM_USARTS];
-     STM32F2XXTimerState timer[STM_NUM_TIMERS];
- 
-diff --git a/include/hw/misc/stm32f4xx_pwr.h b/include/hw/misc/stm32f4xx_pwr.h
-new file mode 100644
-index 00000000000..889fbc26ab0
---- /dev/null
-+++ b/include/hw/misc/stm32f4xx_pwr.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+/*
-+ * Copyright (c) liang yan <yanl1229@rt-thread.org>
-+ * Copyright (c) Yihao Fan <fanyihao@rt-thread.org>
-+ * The reference used is the STMicroElectronics RM0090 Reference manual
-+ * https://www.st.com/en/microcontrollers-microprocessors/stm32f407-417/documentation.html
-+ */
-+
-+#ifndef STM32F4XX_PWR_H
-+#define STM32F4XX_PWR_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define PWR_CR      0x00
-+#define PWR_CSR     0x04
-+
-+#define PWR_CR_DBP      (1 << 8)
-+#define PWR_CR_ODEN     (1 << 16)
-+#define PWR_CR_ODSWEN   (1 << 17)
-+
-+#define PWR_CSR_ODRDY   (1 << 16)
-+#define PWR_CSR_ODSWRDY (1 << 17)
-+
-+#define TYPE_STM32F4XX_PWR "stm32f4xx-pwr"
-+OBJECT_DECLARE_SIMPLE_TYPE(STM32F4XXPwrState, STM32F4XX_PWR)
-+
-+struct STM32F4XXPwrState {
-+    /* <private> */
-+    SysBusDevice parent_obj;
-+
-+    /* <public> */
-+    MemoryRegion mmio;
-+
-+    uint32_t pwr_cr;
-+    uint32_t pwr_csr;
-+};
-+
-+#endif
--- 
-2.43.0
+> +    asm volatile (
+> +        "     .insn   rre,0xb9d20000,%[data],%[req_off]\n"
+> +        "     ipm     %[cc]\n"
+> +        "     srl     %[cc],28\n"
+> +        : [cc] "+d" (cc), [data] "=d" (__data),
+> +          [req_off] "+&d" (req_off.pair) :: "cc");
+> +    *status = req_off.even >> 24 & 0xff;
+> +    *data = __data;
+> +    return cc;
+> +}
+> +
+> +/* PCI store */
+> +int pcistg(uint64_t data, uint64_t req, uint64_t offset, uint8_t *status)
+> +{
+> +    union register_pair req_off = {.even = req, .odd = offset};
+> +    int cc = -1;
+> +
+> +    asm volatile (
+> +        "     .insn   rre,0xb9d00000,%[data],%[req_off]\n"
+> +        "     ipm     %[cc]\n"
+> +        "     srl     %[cc],28\n"
+> +        : [cc] "+d" (cc), [req_off] "+&d" (req_off.pair)
+> +        : [data] "d" (data)
+> +        : "cc");
+> +    *status = req_off.even >> 24 & 0xff;
+> +    return cc;
+> +}
+> +
+> +/* store PCI function controls */
+> +int stpcifc(uint64_t req, PciFib *fib, uint8_t *status)
+> +{
+> +    uint8_t cc;
+> +
+> +    asm volatile (
+> +        "     .insn   rxy,0xe300000000d4,%[req],%[fib]\n"
+> +        "     ipm     %[cc]\n"
+> +        "     srl     %[cc],28\n"
+> +        : [cc] "=d" (cc), [req] "+d" (req), [fib] "+Q" (*fib)
+> +        : : "cc");
+> +    *status = req >> 24 & 0xff;
+> +    return cc;
+> +}
+> +
+> +/* modify PCI function controls */
+> +int mpcifc(uint64_t req, PciFib *fib, uint8_t *status)
+> +{
+> +    uint8_t cc;
+> +
+> +    asm volatile (
+> +        "     .insn   rxy,0xe300000000d0,%[req],%[fib]\n"
+> +        "     ipm     %[cc]\n"
+> +        "     srl     %[cc],28\n"
+> +        : [cc] "=d" (cc), [req] "+d" (req), [fib] "+Q" (*fib)
+> +        : : "cc");
+> +    *status = req >> 24 & 0xff;
+> +    return cc;
+> +}
+> +
+> +int pci_write(uint32_t fhandle, uint64_t offset, uint64_t data, uint8_t len)
+> +{
+> +
+> +    uint64_t req = ZPCI_CREATE_REQ(fhandle, 4, len);
+
+This assumes that we will only read to BAR 4? I think we should pass the 
+PCIAS here as well if we want to generalize this function?
+
+
+> +    uint8_t status;
+> +    int rc;
+> +
+> +    rc = pcistg(data, req, offset, &status);
+> +    if (rc == 1) {
+> +        return status;
+> +    } else if (rc) {
+> +        return rc;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +int pci_read(uint32_t fhandle, uint64_t offset, uint8_t picas, void *buf, uint8_t len)
+> +{
+> +    uint64_t req;
+> +    uint64_t data;
+> +    uint8_t status;
+> +    int readlen;
+> +    int i = 0;
+> +    int rc = 0;
+> +
+> +    while (len > 0 && !rc) {
+> +        data = 0;
+> +        readlen = len > 8 ? 8 : len;
+> +        req = ZPCI_CREATE_REQ(fhandle, picas, readlen);
+> +        rc = pcilg(&data, req, offset + (i * 8), &status);
+
+Shouldn't this be offset + (i * readlen)? but I guess this works because 
+we will only increment i on reads greater than 8 bytes. Maybe we could 
+try to simplify this and have a single pci_read function and several 
+other helper functions that uses pci_read to read sizes of 1/2/4/8 
+bytes. For reads greater than 8 bytes we can have another function 
+(similar to zpci_memcpy_from_io, in the kernel). From what I can tell 
+most of the pci_read calls reads are 8 bytes in the rest of the patches, 
+except maybe for one case which reads greater than 8?
+
+
+> +        ((uint64_t *)buf)[i] = data;
+> +        len -= readlen;
+> +        i++;
+> +    }
+> +
+> +    if (rc == 1) {
+> +        return status;
+> +    } else if (rc) {
+> +        return rc;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +/*
+> + * Find the position of the capability config within PCI configuration
+> + * space for a given cfg type.  Return the position if found, otherwise 0.
+> + */
+> +uint8_t find_cap_pos(uint32_t fhandle, uint64_t cfg_type) {
+> +    uint64_t req, next, cfg;
+> +    uint8_t status;
+> +    int rc;
+> +
+> +    req = ZPCI_CREATE_REQ(fhandle, 0xf, 1);
+> +    rc = pcilg(&next, req, PCI_CAPABILITY_LIST, &status);
+> +    rc = pcilg(&cfg, req, next + 3, &status);
+
+Why are we reading next + 3 into cfg? If I understand this correctly 
+next will be the address of the first capability in the linked list, and 
+so we should just read the first byte from next to get the capability 
+id? I think we should have helper function like qpci_find_capability to 
+find the capabilities?
+
+
+> +
+> +    while (!rc && (cfg != cfg_type) && next) {
+> +        rc = pcilg(&next, req, next + 1, &status);
+> +        rc = pcilg(&cfg, req, next + 3, &status);
+
+Same question here?
+
+
+> +    }
+> +
+> +    return rc ? 0 : next;
+> +}
+> +
+
+[..snip..]
+
 
 
