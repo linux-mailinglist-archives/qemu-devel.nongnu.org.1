@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57605C01B17
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29785C01AE4
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 16:14:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBw4c-0005gY-Fn; Thu, 23 Oct 2025 10:13:50 -0400
+	id 1vBw4f-0005hx-P1; Thu, 23 Oct 2025 10:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw4a-0005fb-2L
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:13:48 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw4e-0005hD-11
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:13:52 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw4W-0007MH-3v
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:13:46 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-47100eae3e5so8893975e9.1
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:13:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBw4a-0007MZ-Gi
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 10:13:50 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-4298b49f103so214635f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 07:13:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761228821; x=1761833621; darn=nongnu.org;
+ d=linaro.org; s=google; t=1761228826; x=1761833626; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Jp6xdYt7Qm+0J/pdgQITMBLjBSEIftoO6mxQrB4mn0=;
- b=PF2YNPXE5IopRNiFkc6/P9emOjXL6OKSX7iB0gGpKth3a1trGs8kOPPyxEXDwL+xOp
- 71LjStc5ajpdCxBPfK6vj9l3oxA89MnWuXdsrfeqCQ9q063jt9YQBjq7qvYV3qVd7LFn
- Xowdg4OWESu3QQja5w/QCzHpcx/A5SIT+PNTiqVH8bvGk4WLvQW+38NdVf6NxJ3VD0OM
- hu/8z9IUZMbK3XJP4kMt+mQvoF30IrYGTId3M21Ibz2BjY6jN9LfMOesY988Jr+MTeub
- LfTIdbw6UqFLLQoc6M21+X439LmIMODOJ2uHl4TbEfBfUzbqlu1StvYTDR65VqGg1G2T
- O9hg==
+ bh=bn2C92Ox23h5s0IuScw63a4Ihrbd//B4afSM1bgktqo=;
+ b=zCut6CCnlIr/hJcruYMVtZg71sK+5Uh5Kt2OVLSn3yHPnIu5e/kkSb8HMwVNKOZQof
+ en/ue5ACG0sv4DDSe/DrysYnT1enfSszzE8QpfxR006zCtcRpVMg5gdkZfK6jmbEFY0I
+ sERYil58MJSPZyuSf3ltpFFNHAaxX88TK0BmumuWx370on3GBMGK9MKceIpwdMuC6qov
+ MoR9c9/NUAz50Zc7h+WMapQ1UdGdaXWdpMMAPD24vdcfP8GkBzfUnQkNbF3X3ZlZ5Syl
+ hVLJRhpjI8HMaAebltvRT5kqZjhvjOFkJoNT941My6bqfzB+yyD2/1/6ebk2fdh6CpKW
+ 5JZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761228821; x=1761833621;
+ d=1e100.net; s=20230601; t=1761228826; x=1761833626;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Jp6xdYt7Qm+0J/pdgQITMBLjBSEIftoO6mxQrB4mn0=;
- b=h18rgmYMRMDBGd+skHvHkK1SDgy68iTLQTc9ngjyl9SoAsz9bg8r2b5dIO6VhJws0A
- r+ezCw55UuJug0UuxHO8VDpHJjoeC3WtPssc1/BNQdl3yI79J6vT+RukLOG1SbPVSmLJ
- aqeCnkUMgnP3jYvBt8096v3SqmGm6jij08kBXpTpquyKgqq5WbwNdr+L+vjxls7NeOvX
- XtnsCFOBs3mjUwO6AtgcObPqnWcOFA9GaB9zVPhXXF3v158nT8AHzyWvQfrxOOZCJLiF
- 9Jm7MnO2+sThUMcIu0IdMPUMl+AD+Fx/s7FanpeAzgdRJW8VGwyFxKIYUuIB++SjzGx9
- EcgA==
-X-Gm-Message-State: AOJu0Yz1Fm8jFzzoORAyWSgDZ3BIs5TxpeKV86IB6og10lnQJT7EOP52
- 3Syrf6PGwpJmZt7FdDZLomXG8vXixNQAnIiZmnPVcc+W3xTTTqUcIp2Ssm2/VealSYZyxZFO6dd
- uwvnG1XY=
-X-Gm-Gg: ASbGncvoPyNO9Iy2Wd394erWSQ6C0zlL33iI/4nCVDTOyQfr3XQ3NN5fBL94Ftg8HCr
- b/217caDA3XdWa3DjWsMc4864C3TEdL38p3fvpfNFbPInbHHS0EEvASWKthib/lSU080emFXhoW
- I7yh8lhjs9iST+Vp04e9q+GRGsqh/l/hb0QtfTs0lbn/cE/Ok1L79yEJo//eV1XSgdfh35KiDUk
- EbES3FxNHts1AmNn0BZ0EyhC8iSxUVcLGDLBD9ITTJPbvpoZgDBe03jfMHw0O+oZmAKswkDLWrw
- jncy9q1lNuvPI/4HiLrkiVmusK1rJHtm9TiyixAmfCHgB3kmbahqew12R7AxO4G3JRA9mrwJ8Xs
- B15ksTs+0Lq+/IujgrHvmbX6egj86S/X7C62jmYaD1yzFlZ5SEtteZwaOoPzpl47phPN/S8nN6p
- 1QBluhXY69n3wllBGjQ6oTKQzZpah4F7QXJxXu42+fVX50zaaCGhL2HYNqYfej
-X-Google-Smtp-Source: AGHT+IEnnTwsXVBYIuBp3v9AGSUlhgGakvZU4O00YAw+251OY8sxd7ngtnxckQj0WYUB6nVCavx1QA==
-X-Received: by 2002:a05:600c:5009:b0:46e:50ce:a353 with SMTP id
- 5b1f17b1804b1-471178788f0mr173644175e9.14.1761228821121; 
- Thu, 23 Oct 2025 07:13:41 -0700 (PDT)
+ bh=bn2C92Ox23h5s0IuScw63a4Ihrbd//B4afSM1bgktqo=;
+ b=VMrzcpYZzgwN3tYM9+VkZtgitFCfMcaPOzkmt+LysCE6DfkxtnBG5+/t1AWBWKzCjU
+ sYQnHNZA26SC4slHnMdqMJnEOkS2JqdPW+vXnBArrb+XWDrsaNbWkkvSXwp8TOQ9Nm10
+ h96Co3AEUgy9s5p+DO+IfGvozbl/NiSnHrajTdk7THTW+tiz2ljrdWL350b+LVxAVkpQ
+ rql+kyrDBdBaS302wvpFZq3Coy9QpJT2qt5wOstfHhgzBz7GZqz2JG3md1Z7LnT7iG3Q
+ W1OfiKjGm8RJXGawGeIf+7KMs/qb05gS96dCGwXj1LU1JOapw+v90ozSwsNCkMNiecOZ
+ bm+Q==
+X-Gm-Message-State: AOJu0YwgvK3YABlaWFKQ3Y+Wft6XReMuPLS34rP7C57pldE4Z9VlM+d8
+ E+bmd7wkZEbuI0zYaaY/Qxa6XfIY4ozbQIWPBUBfeLGQZ1lBT709MTsxdIDR390brmcmPnNWq7V
+ AUPPwxJg=
+X-Gm-Gg: ASbGncs5nA/KtI4sQ+x10nMUD8aKqGZRS5tP60EiCb8/33LQStSqEia9UcAOx78tUAN
+ C5HzSMlzoftCGeoBWSp9V2XKkt1mCQ35d5KZS3timvkrw7xBhV0/pMdDI1QJT0aVChoPbddR8J6
+ +wqr1ZivpMWMKqpnyFtg61SfngFLc4262n7B7x4DmaOW59vqtrL3EqbUkUthxFJ5f3asFAgivXT
+ lB1inPXehpeGSz4PS6JYj8OdS/6M4SgmoDmc9yoIrpnhZJYT9Rh58ifSwFrokxnn/t+f8UnrEdt
+ c9Pd07VNilAoy+WBR3tlapeulqZOFA16U9HbJMxW7y/UuOfJX0gH0jjgChyo2L4ZBFHaGQSEEpx
+ lqXAEOEojkkaOPbwHlBt/H4xuQ+3FY2hn2Fez+XV2mrG269CfWLkj2HW8I4EaG/DWLBRVPzqHDF
+ 9qYQ7cjAdOi644tF4ylYumizYVDhC7SdwxWTWwDaL5G6kpaYGDCCnWPokPjtRx
+X-Google-Smtp-Source: AGHT+IFOObY4FZQI60HAKVyYFMcVdLy2QIR00SAsee7dM4Kc4Y6LZN9jVb7S4ynbEXe1Qt2RZDCCiw==
+X-Received: by 2002:a05:6000:2884:b0:429:8d0f:eb4 with SMTP id
+ ffacd0b85a97d-4298d0f1116mr410025f8f.28.1761228826243; 
+ Thu, 23 Oct 2025 07:13:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c43900e1sm117463675e9.17.2025.10.23.07.13.40
+ ffacd0b85a97d-429897ff3f5sm4349458f8f.22.2025.10.23.07.13.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Oct 2025 07:13:40 -0700 (PDT)
+ Thu, 23 Oct 2025 07:13:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
@@ -74,18 +74,18 @@ Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
  Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PATCH v2 10/58] target/arm/hvf: Mention hvf_arch_set_traps() must
- run on vCPU thread
-Date: Thu, 23 Oct 2025 16:13:29 +0200
-Message-ID: <20251023141339.10143-1-philmd@linaro.org>
+Subject: [PATCH v2 11/58] accel/hvf: Mention hvf_arch_update_guest_debug()
+ must run on vCPU
+Date: Thu, 23 Oct 2025 16:13:30 +0200
+Message-ID: <20251023141339.10143-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
 References: <20251023114638.5667-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,28 +108,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since hvf_arch_set_traps() calls hv_vcpu_set_trap_debug_exceptions()
-and hv_vcpu_set_trap_debug_reg_accesses(), which must run on a vCPU,
-it also must. Mention it.
+Since hvf_arch_update_guest_debug() calls hvf_arch_set_traps()
+and hvf_arch_update_guest_debug(), which must run on a vCPU, it
+also must. Mention it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mads Ynddal <mads@ynddal.dk>
 ---
- target/arm/hvf/hvf.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/system/hvf_int.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index bfccf5e9a2a..ee04943b0f8 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -2192,6 +2192,7 @@ static inline bool hvf_arm_hw_debug_active(CPUState *cpu)
-     return ((cur_hw_wps > 0) || (cur_hw_bps > 0));
- }
- 
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index 0c335facc3b..241c668795e 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -83,6 +83,8 @@ int hvf_arch_vcpu_exec(CPUState *);
+ int hvf_arch_put_registers(CPUState *);
+ /* Must be called by the owning thread */
+ int hvf_arch_get_registers(CPUState *);
 +/* Must be called by the owning thread */
- static void hvf_arch_set_traps(CPUState *cpu)
- {
-     bool should_enable_traps = false;
++void hvf_arch_update_guest_debug(CPUState *cpu);
+ 
+ struct hvf_sw_breakpoint {
+     vaddr pc;
+@@ -109,7 +111,6 @@ void hvf_arch_remove_all_hw_breakpoints(void);
+  * handled by calling down to hvf_arch_update_guest_debug.
+  */
+ int hvf_update_guest_debug(CPUState *cpu);
+-void hvf_arch_update_guest_debug(CPUState *cpu);
+ 
+ /*
+  * Return whether the guest supports debugging.
 -- 
 2.51.0
 
