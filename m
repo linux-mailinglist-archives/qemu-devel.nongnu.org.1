@@ -2,92 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C62C010E3
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A91EBC0111E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 14:19:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBuFV-00087Z-Bu; Thu, 23 Oct 2025 08:16:58 -0400
+	id 1vBuH5-0001Ja-1q; Thu, 23 Oct 2025 08:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vBuEv-0007Hb-Bc
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:16:26 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vBuEs-0006Gd-7u
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:16:20 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b6d5e04e0d3so37023266b.2
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 05:16:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761221773; x=1761826573; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ih//sRhSyHA9hVOZL8Tj2g2gvQANfeVCuUwMr5JE4NM=;
- b=rVO1oV9PHXg5sbxam9cos7FbhaiMHaMQJml8DdQL+TAGVjn12/az27FgIHAn2fjyZ7
- 39ndAd3uXpAX7TFB+SKZqqrCX/hT9g4hsjZUfsSw/jR4joTguzg03RbiPjAVUepHX8B6
- ZQcGz6hmHzfZYky8YTRtg5xpOwxc+UTZwN7jE46YiH5dqYz8tZmN6j1i8OCHwHRaF8vV
- hgw4HCL4/ZScwGGbeUupN8S/JdEQeJV8lgc8ObmQBe4rojTnDwGxpm0b5urNmJpDOrFQ
- 0cnsxAHArxS/pA6YahjgwFlW10a4dwLKsJ3tpxWI+xMdY+AJavlzu26mIJxiqt8l8Nkg
- cV/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761221773; x=1761826573;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Ih//sRhSyHA9hVOZL8Tj2g2gvQANfeVCuUwMr5JE4NM=;
- b=VU5I626S5fXHZmFWXaBEwmypJpjl5dwLkIb44WsAxpNEGmlFWufYE+ziLohxh5GMXA
- wI34HKO27XByNNM0fSQEzwzRnw7dxCrU27LVvcRbsOl0HQluvB4GXJ8JdolgfrO0V4r6
- Y/Cm9QcW01BmHUCghPA7Kkj6XwI+JOOjrPexNSpa7fhtsWoCOuBcL6pxEoshIEuBYThf
- POgko1WPJc+8sdx7E9ukdCoq1Rqec2wtYaojrYmqSwxGKtoVd6WnzXEHqBbRVt+6FCWS
- 99ALa2JSNnnXc/+I4MVZ+03syGLVuCVCExaGyUBsIXi/qSnc0+CnVuRKpQV0REPr6Mdn
- U2Jg==
-X-Gm-Message-State: AOJu0YwtNdSnLw4irZd5sDUcF+Cq0ayleUxFls9UklJ+B71lMhVA3v0o
- CrgehZXvE2fY+6CWOiCvQI3g/UYxm8YSVQpUSnKwkmS4+5WSqYJ9UuBB7ueOULCEpHC8hAJ5ygt
- 6Qk+PUNs=
-X-Gm-Gg: ASbGncu4uC9bCn8qhigosjSzX6va+XQ2PVyulMXJR9wu6LAExgO/GgvEW9Bo6d0FaTF
- pJH4FeUV9bvNxcva5VllPEHCdwobWayeVsfAQfAuOQ3ztJ1ObiPSyP/lqXrQfoADNn/gf6Zfs3m
- eR+I1y/2WKHwNQDMWt1B8gOQO1cXrVs36CigxwU8khHfG0fMyomHCLInqKv9hKIE8q2Jvj2EpCH
- 7Jez4/DkKbSw9hwqJCtNkt/ArWd5NEpW9ORBu2/N44uKeOGRTCCqMzxuquqYldnk8AsUukDGLTA
- fEr19HsjwoVb60fY1jDHfLO1UBZQe480m7CaVJX3gIgzt3IzYkWLd3I2VZ8aNVeFx1FqFDi/XqC
- 6BAx/0AETJGCQ6XVOd4FvI0ap7p8Wrc1rAZAlLMzhx1ETdGh01dJLBb2qRBDhFKh254QG6LJczf
- WA
-X-Google-Smtp-Source: AGHT+IEcfEPCKO630AYFgoHcXYElDyKqMrW86n40wCsqTZ2KdkUg9MAMPxXaaLm8hlOCmaGcMMFCIg==
-X-Received: by 2002:a17:906:fe4d:b0:b3c:e14c:e24 with SMTP id
- a640c23a62f3a-b647195b339mr2711608566b.13.1761221773209; 
- Thu, 23 Oct 2025 05:16:13 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63e3f3348cfsm1542139a12.35.2025.10.23.05.16.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Oct 2025 05:16:12 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 81CBA5F7F5;
- Thu, 23 Oct 2025 13:16:11 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Julian Ganz <neither@nut.email>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v8 00/25] tcg-plugins: add hooks for discontinuities
-In-Reply-To: <cover.1760884672.git.neither@nut.email> (Julian Ganz's message
- of "Sun, 19 Oct 2025 17:14:49 +0200")
-References: <cover.1760884672.git.neither@nut.email>
-User-Agent: mu4e 1.12.14-dev1; emacs 30.1
-Date: Thu, 23 Oct 2025 13:16:11 +0100
-Message-ID: <87ecqtn790.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vBuFr-0000uV-Mr
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:22 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vBuFp-0006OJ-52
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 08:17:19 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N2124b027635
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=AH6f+QHYzACZOrv2G/umBWx+vX+e
+ IP3SYe/93iZddz4=; b=Gz+jNKQvwAYQlgoThbxWONDoYckQ2zmyu2Ac1zEduoqn
+ F9jXGSZmGOhiedWlnSZ9aBzaOo2PdJocL3O+9QbOzWFtswbHowuWtDE76t9z2e7S
+ Xj+4uMjzK5hXPncTh5Tem0fKidwV3ZayA5KZiithd24hVNnXDN2Mks1h6QNXYmAT
+ xOD7pmTsM/jvvCDBA27t1EezmfnsrKMK75a+5ft+EJjsAfEFNV8YiePNzwiW5fFk
+ Wp+CRj2Ogi0qBawdoTgZX69Blv/ZacBa71dHQL90qQYKGjBA5dVeAyjk4CKyDuzO
+ hX04HofSFhSwdNCsYU413zeZC0t6+cEx796KUCDa8g==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33fj243-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:15 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59N9J2EA014676
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:02 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7sdtrx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:02 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 59NCH06E56099316
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:00 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7333020043
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:17:00 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E297220040
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:16:59 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
+ [9.124.221.73]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP
+ for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 12:16:59 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL RESEND 00/32] ppc-for-10.2 queue
+Date: Thu, 23 Oct 2025 17:46:19 +0530
+Message-ID: <20251023121653.3686015-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68fa1ccb cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=p0WdMEafAAAA:8
+ a=cNqUCJnAJEEDHSxotCYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=oH34dK2VZjykjzsv8OSz:22 a=poXaRoVlC6wW9_mwW8W4:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=QOGEsqRv6VhmHaoFNykA:22
+X-Proofpoint-GUID: fCNeSCVGPqsPIgLkcCuHu_nPjISKYrgC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX0WkNFqGJsO1d
+ 2H2k0hrRNtTsVr26Pxj93zJX7fnbcoE1wGCjc5xecMBedsUKjy6jqBPDQbLMWPyA7g9jxebKUbp
+ azb3g3SfVyfxkY9+cnv5bALaWUaD941MGCMIBsHDTq5bXqf5M3eqbzahq/UuIfWSyIJ77pUpEMB
+ AuAONojD7ZDmXiDEfRru4owh0yvGvwS3AWXNtNmwte3hWy135mDbo/ZWVnUyWowY05OboTGmeNZ
+ Bg1X92mu72+GYYx2qtNOMRQw5D/98fvTDR0aL+dxYyxaEuOofJOSHus7u1dxr4WL234mryirvda
+ jl9scWnwlpPmtqE/KlhRICXsQT815YoVnoG0mZNMwZZvB9/y2CzuHHTwyQxMr9Tmf2XvrxF+SVe
+ QRDOiAp4E6DdqzOIqazt1VQqch5iZw==
+X-Proofpoint-ORIG-GUID: fCNeSCVGPqsPIgLkcCuHu_nPjISKYrgC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,15 +116,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Julian Ganz <neither@nut.email> writes:
+The following changes since commit c0e80879c876cbe4cbde43a92403329bcedf2ba0:
 
-> Some analysis greatly benefits, or depends on, information about
-> certain types of dicontinuities such as interrupts. For example, we may
-> need to handle the execution of a new translation block differently if
-> it is not the result of normal program flow but of an interrupt.
+  Merge tag 'pull-vfio-20251022' of https://github.com/legoater/qemu into staging (2025-10-22 08:01:21 -0500)
 
-Queued to plugins/next, thanks.
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+are available in the Git repository at:
+
+  https://gitlab.com/harshpb/qemu.git tags/pull-ppc-for-10.2-d2-20251023-1
+
+for you to fetch changes up to 3db841bf1194b2720a08df2ee0a6ca517091ad0e:
+
+  MAINTAINERS: Add entry for FADump (pSeries) (2025-10-23 17:37:42 +0530)
+
+----------------------------------------------------------------
+ppc queue for 10.2
+
+* FADUMP Support for pSeries
+* Pegasos II cleanup and Pegasos I emulation
+* Deprecation of pseries 3.0 up till 4.2
+* Coverity fix for amigaone (CID: 1641398)
+
+----------------------------------------------------------------
+Aditya Gupta (8):
+      hw/ppc: Implement fadump register command
+      hw/ppc: Trigger Fadump boot if fadump is registered
+      hw/ppc: Preserve memory regions registered for fadump
+      hw/ppc: Implement saving CPU state in Fadump
+      hw/ppc: Pass dump-sizes property for fadump in device tree
+      hw/ppc: Enable fadump for PSeries
+      tests/functional: Add test for fadump in PSeries
+      MAINTAINERS: Add entry for FADump (pSeries)
+
+BALATON Zoltan (13):
+      ppc/amigaone: Free allocated struct
+      ppc/vof: Make nextprop behave more like Open Firmware
+      hw/ppc/pegasos2: Remove explicit name properties from device tree
+      hw/ppc/pegasos2: Change device tree generation
+      hw/ppc/pegasos2: Remove fdt pointer from machine state
+      hw/ppc/pegasos2: Rename mv field in machine state
+      hw/ppc/pegasos2: Add south bridge pointer in the machine state
+      hw/ppc/pegasos2: Move PCI IRQ routing setup to a function
+      hw/ppc/pegasos2: Move hardware specific parts out of machine reset
+      hw/ppc/pegasos2: Introduce abstract superclass
+      hw/ppc/pegasos2: Add bus frequency to machine state
+      hw/ppc/pegasos2: Add Pegasos I emulation
+      hw/ppc/pegasos2: Add VOF support for pegasos1
+
+Harsh Prateek Bora (5):
+      ppc/spapr: remove deprecated machine pseries-3.0
+      ppc/spapr: remove deprecated machine pseries-3.1
+      ppc/spapr: remove deprecated machine pseries-4.0
+      ppc/spapr: remove deprecated machine pseries-4.1
+      ppc/spapr: remove deprecated machine pseries-4.2
+
+Philippe Mathieu-Daudé (6):
+      hw/ppc/spapr: Remove SpaprMachineClass::nr_xirqs field
+      hw/ppc/spapr: Inline spapr_dtb_needed()
+      hw/ppc/spapr: Inline few SPAPR_IRQ_* uses
+      target/ppc/kvm: Remove kvmppc_get_host_serial() as unused
+      target/ppc/kvm: Remove kvmppc_get_host_model() as unused
+      hw/ppc/spapr: Remove SpaprMachineClass::phb_placement callback
+
+ MAINTAINERS                               |   9 +
+ include/hw/ppc/spapr.h                    |  27 +-
+ include/hw/ppc/spapr_fadump.h             | 124 +++++
+ include/hw/ppc/spapr_irq.h                |   1 -
+ target/ppc/kvm_ppc.h                      |  12 -
+ hw/ppc/amigaone.c                         |   2 +-
+ hw/ppc/pegasos2.c                         | 769 +++++++++++++++---------------
+ hw/ppc/spapr.c                            | 368 +++++---------
+ hw/ppc/spapr_caps.c                       |  12 +-
+ hw/ppc/spapr_events.c                     |  20 +-
+ hw/ppc/spapr_fadump.c                     | 730 ++++++++++++++++++++++++++++
+ hw/ppc/spapr_hcall.c                      |   5 -
+ hw/ppc/spapr_irq.c                        |  36 +-
+ hw/ppc/spapr_pci.c                        |  32 +-
+ hw/ppc/spapr_rtas.c                       |  76 +++
+ hw/ppc/spapr_vio.c                        |   9 -
+ hw/ppc/vof.c                              |  50 +-
+ target/ppc/kvm.c                          |  11 -
+ hw/ppc/meson.build                        |   1 +
+ pc-bios/dtb/meson.build                   |   2 +
+ pc-bios/dtb/pegasos1.dtb                  | Bin 0 -> 857 bytes
+ pc-bios/dtb/pegasos1.dts                  | 125 +++++
+ pc-bios/dtb/pegasos2.dtb                  | Bin 0 -> 1701 bytes
+ pc-bios/dtb/pegasos2.dts                  | 167 +++++++
+ tests/functional/ppc64/meson.build        |   2 +
+ tests/functional/ppc64/test_fadump.py     | 182 +++++++
+ tests/functional/qemu_test/linuxkernel.py |  59 +++
+ 27 files changed, 2042 insertions(+), 789 deletions(-)
+ create mode 100644 include/hw/ppc/spapr_fadump.h
+ create mode 100644 hw/ppc/spapr_fadump.c
+ create mode 100644 pc-bios/dtb/pegasos1.dtb
+ create mode 100644 pc-bios/dtb/pegasos1.dts
+ create mode 100644 pc-bios/dtb/pegasos2.dtb
+ create mode 100644 pc-bios/dtb/pegasos2.dts
+ create mode 100755 tests/functional/ppc64/test_fadump.py
 
