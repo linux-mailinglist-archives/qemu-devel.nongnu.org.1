@@ -2,97 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC21C01433
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 15:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830A6C01445
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Oct 2025 15:08:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vBv26-0001hb-Cb; Thu, 23 Oct 2025 09:07:11 -0400
+	id 1vBv2K-0001q6-JP; Thu, 23 Oct 2025 09:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBv24-0001gf-6T
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 09:07:08 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vBv22-0006Mg-7t
- for qemu-devel@nongnu.org; Thu, 23 Oct 2025 09:07:07 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4711825a02bso6620705e9.2
- for <qemu-devel@nongnu.org>; Thu, 23 Oct 2025 06:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1761224824; x=1761829624; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cUD9VjEjc/+uf3h+hW1mjHVxk+h9JxXhL/sKrTHkMf0=;
- b=GCJ/GRgpDsjh9xA1uIy9R2HzW0BAItUg2P+I8ZzOWPrJbOT+IuL1oVtiSQT/jcpt+Q
- bUICuH52fiAmpraKMYM/7pijKgmgDophvU09eHqQCQ9rH2HgA3fEYPG/5lSI6V+EiBQf
- IGMvNZj1xsXqFkDi47MlEqbEwDoihom510rl/iUrUktANqyBkM0ThHt/ovMNe/Jq7DG1
- MrRRDQCIoRJek+aAxRNBPxeaBN/2AyzjCGL/IyVFU0RE82VW75YNMnFuv3tEduDT1ric
- QzCBI8eBmBYk3xXO1CvijZ8pUOe3WBPr8bgWcoHzcEqDKBVIYjaWQHdPTMx57n5UTSZW
- 5nDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761224824; x=1761829624;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cUD9VjEjc/+uf3h+hW1mjHVxk+h9JxXhL/sKrTHkMf0=;
- b=m8PRA3N8aOIC/QxfKhML7WvMwa5KPztONAK8iA/v5y2zNh1ZTcE6edw17ulCSCcp3+
- 4dFlFXKI/VguZXRfPt88CMuJGavy2Psrs1oYLSARAL16IvY+e/J9WJxhiIDDFqenfj3a
- U+l3DL8Cj9fqiff2m+VMVWKjF7ULQ/4HdyaRDiXcWDO3F32/XyEME1OQV5O4Dfu1n1ID
- KNxi3EunjCl08MzIx0SnifLh//Igtv2+h+70EbXwWByrDjnYP5FH+63VZIKaRj8RxdQw
- 65xKKnJhAXEdSUrdIvZ1Jc3PO3l+I9S2od0gbLekls3xHGKQ1j54izTHe+NS+6NblQ60
- O/Hw==
-X-Gm-Message-State: AOJu0Yys9jJ+LI3+WntvpSKzoHQezrQF1FjPqsXllPElvX2Qsp1eTk9X
- jCnWbK8poDcGa5iQRNY3WKOpAKzm7PoUeZxTo/iLnm2QvKeDlHDmZWgy8bpRDXRRSqJPVysartf
- 2Wlyf67M=
-X-Gm-Gg: ASbGnctkQGwrRvhjEwmTsn3Qf0lZ3s4VAGaC3v1QuckPVbdizQzz6ouIu4MyMusqM11
- WqBTC4/GAQY7nCRpw/+x7/1MepnUqaAdtXypOI2x0rcSaPIfNbdXhuMWxZdshwNHhDxt19NQ1mX
- YvXweYVWo5w/aUyYuCd40O/zxNNKo3xZmtR4HIvUA9kf+r0HOlIOm2aWIT3z3GmtL7GhnA0Zf5p
- kg3CLTtqQVqBQfND6kEguOYK/Rlhsw5n5Aa6YCy9BJFrLnuGOXtIMk3rJy6vLTjDMZocbCJr368
- 2zZGer6vQM8EN4kmNSpHA6l+PIMJxBdbpqKPgD3udCJlGtaQC8vn43vJmt8mRhmFgJiOA85Mhye
- 2j4/9ZdXh5MYOyVzolEwcfCNHPdOJU3JjfeGYTq1gqy7qgmuDv/frT2NjB4TJtlrKufH1X5Bv7C
- R8c9AwP+DdokAoAIpdn9jC08Azev/of9zH+QDTQDBgvyxSGLFDTRcfnNVkFVSP
-X-Google-Smtp-Source: AGHT+IENDPQ5lhOGTVg85xuMpTGQAYdvenEYRDfQGhyjdalAp0NV2em7ZAGR2Wy79H4xgqIFNeHX7w==
-X-Received: by 2002:a05:600c:818f:b0:46f:b42e:ed86 with SMTP id
- 5b1f17b1804b1-4711791fbdemr173502435e9.39.1761224824197; 
- Thu, 23 Oct 2025 06:07:04 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-475c4281314sm96584315e9.4.2025.10.23.06.07.02
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Oct 2025 06:07:03 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Stefan Hajnoczi <stefanha@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Peter Collingbourne <pcc@google.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, qemu-arm@nongnu.org,
- Mads Ynddal <mads@ynddal.dk>, Phil Dennis-Jordan <phil@philjordan.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PATCH v2 49/58] target/arm/hvf: Flush vCPU registers once before
- vcpu_exec() loop
-Date: Thu, 23 Oct 2025 15:06:25 +0200
-Message-ID: <20251023130625.9157-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251023114638.5667-1-philmd@linaro.org>
-References: <20251023114638.5667-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vBv2H-0001pR-A9
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 09:07:21 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vBv2D-0006OF-Qb
+ for qemu-devel@nongnu.org; Thu, 23 Oct 2025 09:07:21 -0400
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id CDD5580787;
+ Thu, 23 Oct 2025 16:07:12 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:538::1:38] (unknown
+ [2a02:6bf:8080:538::1:38])
+ by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id A7YcZS0I1a60-bMJrwxj6; Thu, 23 Oct 2025 16:07:12 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1761224832;
+ bh=3Ykka7Yu1DP/7d0l1Z5TkGTvLX1+c+KtNOURShz/Rks=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=hL0LAi8Sv+mWoD+fNqRnM/davdWPguM/DBDSSJ7pjFJ7T7s3L65TkPpL1J/QFfaXz
+ o/v7HWiviFkHCj+QJqdpMiLL3SkSphV1ct+R7mXZezMzOUD3nfTo3VOTpqMjDv0yJi
+ O9DL3U5Ol+H4cmop77KqOBaRRpJJhJqKSeN82D9o=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <223ecf5e-cc0f-41cd-9120-fbb0e01dc118@yandex-team.ru>
+Date: Thu, 23 Oct 2025 16:07:10 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/13] migration: Properly wait on G_IO_IN when peeking
+ messages
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Li Zhijian <lizhijian@fujitsu.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>, Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Zhang Chen <zhangckid@gmail.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Prasad Pandit <ppandit@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Yury Kotov <yury-kotov@yandex-team.ru>, Juraj Marcin <jmarcin@redhat.com>
+References: <20251022192612.2737648-1-peterx@redhat.com>
+ <20251022192612.2737648-3-peterx@redhat.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20251022192612.2737648-3-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,33 +82,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/arm/hvf/hvf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On 22.10.25 22:26, Peter Xu wrote:
+> migration_channel_read_peek() used to do explicit waits of a short period
+> when peeking message needs retry.  Replace it with explicit polls on the io
+> channel, exactly like what qemu_fill_buffer() does.
+> 
+> Signed-off-by: Peter Xu<peterx@redhat.com>
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index c83bffe46ad..36fa67caf62 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -2011,6 +2011,7 @@ static int hvf_handle_vmexit(CPUState *cpu, hv_vcpu_exit_t *exit)
- 
- void hvf_arch_cpu_synchronize_pre_exec(CPUState *cpu)
- {
-+    flush_cpu_state(cpu);
- }
- 
- void hvf_arch_cpu_synchronize_post_exec(CPUState *cpu)
-@@ -2026,8 +2027,6 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
-         return EXCP_HLT;
-     }
- 
--    flush_cpu_state(cpu);
--
-     do {
-         if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
-             hvf_inject_interrupts(cpu)) {
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+
 -- 
-2.51.0
-
+Best regards,
+Vladimir
 
